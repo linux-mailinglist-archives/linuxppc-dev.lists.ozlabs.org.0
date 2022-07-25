@@ -2,66 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 909B357FC96
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jul 2022 11:38:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98E0B57FDA5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jul 2022 12:36:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lrw2c42rhz3cfb
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jul 2022 19:38:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LrxKV42qbz3c4Y
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jul 2022 20:36:14 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=SpfiMXzU;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=hyKiJ+Cv;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=srs0=5dt6=x6=zx2c4.com=jason@kernel.org; receiver=<UNKNOWN>)
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LrxJx3kW0z3bfC
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Jul 2022 20:35:45 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=SpfiMXzU;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=hyKiJ+Cv;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lrw1z6cq8z2xjm
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Jul 2022 19:37:43 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 4FEBC612A0
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Jul 2022 09:37:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB258C341C7
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Jul 2022 09:37:39 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="SpfiMXzU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1658741856;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3cUpfZrsKgEGJdkkpFrCNXEnszi93Av4FpAsIC0uCa0=;
-	b=SpfiMXzUOpap0aBEfAfZZi7o1TEwaCATt4xLMdF0Zred+ymrbuL+5xvQwBCk/R+ObteizU
-	ScP65Bn44eIbQOpKP6FA9erfr5zVNhclTelPIeQ09uYgfHkIibo7kdbhd/QmZgO51srDdk
-	ROpeJfuW2p4cPnz4Ko230z76w+vfIPs=
-Received: 	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id f516eb2b (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO)
-	for <linuxppc-dev@lists.ozlabs.org>;
-	Mon, 25 Jul 2022 09:37:36 +0000 (UTC)
-Received: by mail-yb1-f182.google.com with SMTP id 65so4280983ybd.13
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Jul 2022 02:37:36 -0700 (PDT)
-X-Gm-Message-State: AJIora8zmhebW3eRDwsOGoINokvMuQqoiPfjdhOkkL8SEre3t8UAZkQj
-	G6scNaTOZFB5zEaxyZP4ca4e0l3S4GjdG7eoO/U=
-X-Google-Smtp-Source: AGRyM1vtoTUXGG7Jo0TmtRIDj+cf9M1nxJdYxKMZn/u+8fRh8UlxuZYJsVFy/hmuvwvzi2boh3ezXgmA1ZUhN9Iv32Y=
-X-Received: by 2002:a5b:70f:0:b0:670:7f57:e46b with SMTP id
- g15-20020a5b070f000000b006707f57e46bmr7841207ybq.24.1658741853953; Mon, 25
- Jul 2022 02:37:33 -0700 (PDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LrxJt751Fz4x1V;
+	Mon, 25 Jul 2022 20:35:42 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1658745343;
+	bh=0lCaavWzTEZHOsWuEv+IyLlCXiBw3fnmcQUsCDoTEz0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=hyKiJ+CvxWjTeFH0JhJenCdhUYGHkDfBTRDkIc1X4zHDAv1/FORSiBRgQZB8PGbR5
+	 Ldq6Btgt1i2zTlEr8ad8HFzqPXb/+gAdWOAweGIzyste/CmE/GPFpKKhVepo/o7PMo
+	 qcv/NfGcS3nH4QJxf0T2hElvPY+KR0jUTkUReVyEY4BQ0vhi0Y8WC5TNfwdlFCSiPB
+	 hkwx+cQ+V/GdxacJ/9pGduOp1MLDyWSTNZwtogKMwaoHm+NYNN7nwvNo+7f28rnRgG
+	 Pw+8J41ddH3Jw1FevbnYJkIOkTIuEhkjoH2TUnRbPWqJ59NslgXeD1L/xOyPUXtePH
+	 uk6gSM1mTppzA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Julia Lawall <julia.lawall@inria.fr>
+Subject: Re: [PATCH] powerpc/kvm: fix repeated words in comments Delete the
+ redundant word 'that'.
+In-Reply-To: <alpine.DEB.2.22.394.2207250913290.2424@hadrien>
+References: <20220724062920.1551-1-wangjianli@cdjrlc.com>
+ <87bktdd6s8.fsf@mpe.ellerman.id.au>
+ <alpine.DEB.2.22.394.2207250913290.2424@hadrien>
+Date: Mon, 25 Jul 2022 20:35:40 +1000
+Message-ID: <87zggxbhtv.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-References: <CAHmME9qTA90=GEr6h1GZh0CjS+6tpe5uuqkYoJVv79h0zd0w1w@mail.gmail.com>
- <20220719130207.147536-1-Jason@zx2c4.com> <Yt5gBZe9F1BE0MVF@zn.tnic>
- <Yt5hwxC1xgvA8Asw@zx2c4.com> <10561a841a7342c882aabb0fbdbfc762@AcuMS.aculab.com>
-In-Reply-To: <10561a841a7342c882aabb0fbdbfc762@AcuMS.aculab.com>
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Date: Mon, 25 Jul 2022 11:37:23 +0200
-X-Gmail-Original-Message-ID: <CAHmME9p_9j_B2d1h3cKVbv=ucNAa9_grBBW_jdWa8GTbm5WpZg@mail.gmail.com>
-Message-ID: <CAHmME9p_9j_B2d1h3cKVbv=ucNAa9_grBBW_jdWa8GTbm5WpZg@mail.gmail.com>
-Subject: Re: [PATCH v3] random: handle archrandom with multiple longs
-To: David Laight <David.Laight@aculab.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,35 +60,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, "x86@kernel.org" <x86@kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Johannes Berg <johannes@sipsolutions.net>, Harald Freudenberger <freude@linux.ibm.com>, "H . Peter Anvin" <hpa@zytor.com>, Alexander Gordeev <agordeev@linux.ibm.com>, Borislav Petkov <bp@suse.de>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Thomas Gleixner <tglx@linutronix.de>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Cc: linux-kernel@vger.kernel.org, Julia.Lawall@inria.fr, paulus@samba.org, liubo03@inspur.com, wangjianli <wangjianli@cdjrlc.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jul 25, 2022 at 11:36 AM David Laight <David.Laight@aculab.com> wrote:
+Julia Lawall <julia.lawall@inria.fr> writes:
+> On Mon, 25 Jul 2022, Michael Ellerman wrote:
+>> wangjianli <wangjianli@cdjrlc.com> writes:
+>> > diff --git a/arch/powerpc/kvm/book3s_64_mmu_hv.c b/arch/powerpc/kvm/book3s_64_mmu_hv.c
+>> > index 514fd45c1994..73c6db20cd8a 100644
+>> > --- a/arch/powerpc/kvm/book3s_64_mmu_hv.c
+>> > +++ b/arch/powerpc/kvm/book3s_64_mmu_hv.c
+>> > @@ -1601,7 +1601,7 @@ long kvm_vm_ioctl_resize_hpt_commit(struct kvm *kvm,
+>> >   * is valid, it is written to the HPT as if an H_ENTER with the
+>> >   * exact flag set was done.  When the invalid count is non-zero
+>> >   * in the header written to the stream, the kernel will make
+>> > - * sure that that many HPTEs are invalid, and invalidate them
+>> > + * sure that many HPTEs are invalid, and invalidate them
+>> >   * if not.
+>>
+>> The existing wording is correct:
+>>
+>>  "the kernel will make sure that ... that many HPTEs are invalid"
 >
-> ...
-> > More directly, the reason we don't want to error is because the use case
-> > has fallbacks meant to handle errors. The cascade looks like this
-> > (quoting from the other email):
-> >
-> >     unsigned long array[whatever];
-> >     for (i = 0; i < ARRAY_SIZE(array);) {
-> >         longs = arch_get_random_seed_longs(&array[i], ARRAY_SIZE(array) - i);
-> >         if (longs) {
-> >             i += longs;
-> >             continue;
-> >         }
-> >         longs = arch_get_random_longs(&array[i], ARRAY_SIZE(array) - i);
-> >         if (longs) {
-> >             i += longs;
-> >             continue;
-> >         }
-> >         array[i++] = random_get_entropy();
-> >     }
-> >
-> > It tries to get the best that it can as much as it can, but isn't going
-> > to block or do anything too nuts for that.
->
-> Do you really want to retry the earlier calls that returned no data?
+> Maybe it would be better as "that the number of invalid HPTEs is the same
+> as the invalid count"?
 
-Does the above code do that?
+That doesn't read quite right, I think because if the number of invalid
+HPTEs doesn't match the invalid count, the code will invalidate HPTEs so
+that the number matches.
+
+So maybe:
+
+  When the invalid count is non-zero in the header written to the stream,
+  the kernel will make sure that number of HPTEs are invalid, or
+  invalidate them if not.
+
+cheers
