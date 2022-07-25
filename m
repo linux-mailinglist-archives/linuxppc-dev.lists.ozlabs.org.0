@@ -1,64 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D8E45804A4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jul 2022 21:44:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65231580493
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jul 2022 21:40:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ls9Tf0CZZz3c79
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jul 2022 05:44:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ls9PT1Wl1z3cfL
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jul 2022 05:40:29 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=HUXCmnoH;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=lnm0tSCC;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=raptorengineering.com (client-ip=23.155.224.58; helo=raptorengineering.com; envelope-from=tpearson@raptorengineering.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux-foundation.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=HUXCmnoH;
+	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=lnm0tSCC;
 	dkim-atps=neutral
-X-Greylist: delayed 555 seconds by postgrey-1.36 at boromir; Tue, 26 Jul 2022 05:43:31 AEST
-Received: from raptorengineering.com (mail.raptorengineering.com [23.155.224.58])
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ls9Sz4xGPz3bZs
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jul 2022 05:43:31 +1000 (AEST)
-Received: from localhost (localhost [127.0.0.1])
-	by mail.rptsys.com (Postfix) with ESMTP id E1E9237CDA30A2;
-	Mon, 25 Jul 2022 14:34:11 -0500 (CDT)
-Received: from mail.rptsys.com ([127.0.0.1])
-	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10032)
-	with ESMTP id VnwW3Pumlutw; Mon, 25 Jul 2022 14:34:10 -0500 (CDT)
-Received: from localhost (localhost [127.0.0.1])
-	by mail.rptsys.com (Postfix) with ESMTP id 657C637CDA309F;
-	Mon, 25 Jul 2022 14:34:10 -0500 (CDT)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.rptsys.com 657C637CDA309F
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=raptorengineering.com; s=B8E824E6-0BE2-11E6-931D-288C65937AAD;
-	t=1658777650; bh=C6eQ56WoqflhVshYvw4eSCbTOWmWQugcnRK1KwC4InQ=;
-	h=Date:From:To:Message-ID:MIME-Version;
-	b=HUXCmnoHrk+82zDVSN5TwrZtJv5I32HBsm1W/0ygtdInl+yif0P4tia7Sd5JAJRPU
-	 yulkymOoGGK7dA9UI8YmyA5VSuDRN1JJjoR3zzEIZDjsweTlVG5bWsddAOn3MbNmWo
-	 OfLJgjUHcP5wIl4ettt6QsLNsTiDjIz4SB4rD9wA=
-X-Virus-Scanned: amavisd-new at rptsys.com
-Received: from mail.rptsys.com ([127.0.0.1])
-	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id DNoUORfc-qsk; Mon, 25 Jul 2022 14:34:10 -0500 (CDT)
-Received: from vali.starlink.edu (localhost [127.0.0.1])
-	by mail.rptsys.com (Postfix) with ESMTP id 3BA9737CDA309C;
-	Mon, 25 Jul 2022 14:34:10 -0500 (CDT)
-Date: Mon, 25 Jul 2022 14:34:08 -0500 (CDT)
-From: Timothy Pearson <tpearson@raptorengineering.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Message-ID: <1446417444.13111032.1658777648586.JavaMail.zimbra@raptorengineeringinc.com>
-In-Reply-To: <CAHk-=wihON4Ytte5zLHWNQtTapUvCpkToxY06OjX-_2B+Gq6Gg@mail.gmail.com>
-References: <20220725123918.1903255-1-mpe@ellerman.id.au> <CAHk-=wihON4Ytte5zLHWNQtTapUvCpkToxY06OjX-_2B+Gq6Gg@mail.gmail.com>
-Subject: Re: [PATCH] drm/amdgpu: Re-enable DCN for 64-bit powerpc
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: Zimbra 8.5.0_GA_3042 (ZimbraWebClient - GC103 (Linux)/8.5.0_GA_3042)
-Thread-Topic: drm/amdgpu: Re-enable DCN for 64-bit powerpc
-Thread-Index: bYJinp50nUzyW/1gBugq0G+Et27Ikw==
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ls9Nt1Rmwz3bZs
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jul 2022 05:39:57 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id E5517B810A4;
+	Mon, 25 Jul 2022 19:39:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24445C341C6;
+	Mon, 25 Jul 2022 19:39:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1658777989;
+	bh=cuudPE0wtvbxElXfQCMzPg0O3xDu7MgSPTnAUbd2BI0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=lnm0tSCCxjmphQNW5NriYcH19FeO0pMC/0MZl19jo18xWrIdpmYjjReLjZrbQc3nV
+	 M3OCLSW3PO1gZvubU1+zIdU9EZbB6ratbRpHX/aNA2dD8ZrjXLNedUC8xa5hrDNMbu
+	 lcZp1M+CGZGybihQDDnCvRc7tTtqd8IELi5v8huc=
+Date: Mon, 25 Jul 2022 12:39:48 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Ben Dooks <ben-linux@fluff.org>
+Subject: Re: [PATCH] profile: setup_profiling_timer() is moslty not
+ implemented
+Message-Id: <20220725123948.f16674b10022404814161d4a@linux-foundation.org>
+In-Reply-To: <20220721195509.418205-1-ben-linux@fluff.org>
+References: <20220721195509.418205-1-ben-linux@fluff.org>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,39 +58,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Dan =?utf-8?Q?Hor=C3=A1k?= <dan@danny.cz>, linux-kernel <linux-kernel@vger.kernel.org>, amd-gfx <amd-gfx@lists.freedesktop.org>, Alex Deucher <alexdeucher@gmail.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux@roeck-us.net
+Cc: linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org, openrisc@lists.librecores.org, linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linux-snps-arc@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Thu, 21 Jul 2022 20:55:09 +0100 Ben Dooks <ben-linux@fluff.org> wrote:
 
+> The setup_profiling_timer() is mostly un-implemented by many
+> architectures. In many places it isn't guarded by CONFIG_PROFILE
+> which is needed for it to be used. Make it a weak symbol in
+> kernel/profile.c and remove the 'return -EINVAL' implementations
+> from the kenrel.
+> 
+> There are a couple of architectures which do return 0 from
+> the setup_profiling_timer() function but they don't seem to
+> do anything else with it. To keep the /proc compatibility for
+> now, leave these for a future update or removal.
+> 
+> On ARM, this fixes the following sparse warning:
+> arch/arm/kernel/smp.c:793:5: warning: symbol 'setup_profiling_timer' was not declared. Should it be static?
 
------ Original Message -----
-> From: "Linus Torvalds" <torvalds@linux-foundation.org>
-> To: "Michael Ellerman" <mpe@ellerman.id.au>
-> Cc: "linuxppc-dev" <linuxppc-dev@lists.ozlabs.org>, "Alex Deucher" <alexd=
-eucher@gmail.com>, "amd-gfx"
-> <amd-gfx@lists.freedesktop.org>, linux@roeck-us.net, "linux-kernel" <linu=
-x-kernel@vger.kernel.org>, "Dan Hor=C3=A1k"
-> <dan@danny.cz>, "Timothy Pearson" <tpearson@raptorengineering.com>
-> Sent: Monday, July 25, 2022 2:19:57 PM
-> Subject: Re: [PATCH] drm/amdgpu: Re-enable DCN for 64-bit powerpc
+I'll grab this.
 
-> On Mon, Jul 25, 2022 at 5:39 AM Michael Ellerman <mpe@ellerman.id.au> wro=
-te:
->>
->> Further digging shows that the build failures only occur with compilers
->> that default to 64-bit long double.
->=20
-> Where the heck do we have 'long double' things anywhere in the kernel?
->=20
-> I tried to grep for it, and failed miserably. I found some constants
-> that would qualify, but they were in the v4l colorspaces-details.rst
-> doc file.
->=20
-> Strange.
+We have had some problems with weak functions lately.  See
 
-We don't, at least not that I can see.  The affected code uses standard dou=
-bles.
+https://lore.kernel.org/all/87ee0q7b92.fsf@email.froward.int.ebiederm.org/T/#u
 
-What I'm wondering is if the compiler is getting confused between standard =
-and long doubles when they are both the same bit length...
+Hopefully that was a rare corner case.
