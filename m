@@ -1,78 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 772D05807AD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jul 2022 00:41:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB911580850
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jul 2022 01:35:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LsFQ72QLSz3c70
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jul 2022 08:41:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LsGcz4qP8z3cf7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jul 2022 09:35:47 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=qUtmtma6;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=CuxM3sWs;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62b; helo=mail-pl1-x62b.google.com; envelope-from=groeck7@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::332; helo=mail-ot1-x332.google.com; envelope-from=yury.norov@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=qUtmtma6;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=CuxM3sWs;
 	dkim-atps=neutral
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
+Received: from mail-ot1-x332.google.com (mail-ot1-x332.google.com [IPv6:2607:f8b0:4864:20::332])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LsFPW3fbTz304J
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jul 2022 08:40:45 +1000 (AEST)
-Received: by mail-pl1-x62b.google.com with SMTP id y15so11688824plp.10
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Jul 2022 15:40:45 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LsGcN686Nz30Qc
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jul 2022 09:35:14 +1000 (AEST)
+Received: by mail-ot1-x332.google.com with SMTP id o16-20020a9d4110000000b0061cac66bd6dso9770937ote.11
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Jul 2022 16:35:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=sender:message-id:date:mime-version:user-agent:content-language:to
-         :cc:references:from:subject:in-reply-to:content-transfer-encoding;
-        bh=+gsloq9DrRj40wgtL1Bj5I/zKXAptLmoCHjL2BnUObw=;
-        b=qUtmtma6HAQJVGOAzv8j1zpuhY/PD+n2lLtrvXqfLjDEbW/92oJFBSdQSqvu0vrBl1
-         6wA5y5aBh4XKOitO+OtYvo6eIpaT54/UGk0fdpdZZrk5dWPezSTLL1T1dX5bNd6Fejmy
-         wLZQ58Uh9DVm4Q9Vwasenaz16K7iKmeICk5jmwSYudByNWr4HffVTxdC0gZv5NSfXM7d
-         h38haZ1YMo7ToVhCDJr7KtgZ+MhXyr2vZFb8eeHqZk9oqtrUHMJN2887ZizkRpG4a9Xq
-         a/V6LSSiy7mRYJSLoWW67r75jEdfwxX8h22LSYiYxrZqvGTo1UdtTggGJHe6S4fqi1gM
-         pIkw==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=DeZ0i71m7lXsgqJ3r02BqYK+cq3KZTMlnLHmvKXbYxU=;
+        b=CuxM3sWsBSTPgEOjZsRT4+4fjCKRp1DD+h+q+tZsJRmUqGgttEcydVnl3HwtZDIHer
+         zxXhs/Vjw76o3wJC5EHOUZ6QyEMyToO4FSwgjULATEJOuaKcPo2Yu3N0q/uewVDZD369
+         YIKPwTVKdqvc2Sz8CbHeesLVfi4Ka1YUdHmIi8XTW8plTbruiqXKUMqM+8De8VVnVWJ+
+         0/X1uPuvJcI8rqqJlVL9KSYPTSEyEyipCPPXvfCwwXgUwUdpMfTig+A4aZQy5s3XpeEa
+         X7lgFDZHvvnS/yLDdjjKsdMVMzeeDMdKDA2q5aIH6LiG9807L2flrLQ32a1Gc5SSkaIf
+         NFoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
-         :content-language:to:cc:references:from:subject:in-reply-to
-         :content-transfer-encoding;
-        bh=+gsloq9DrRj40wgtL1Bj5I/zKXAptLmoCHjL2BnUObw=;
-        b=BzUd6ehitqLL3pxuilTup3GYUzb+01br3ffjX53oRwCSF/AECyb9+HqtHMRRQ31Toc
-         KCoPHgsvlk5j4TDZtkxej+/bTF43U4kzUskooFwTzqEak1k9u46vdKDD2MEjZdZPITyg
-         ahA+eSM5mCdpMXbA01hO5AaqQmtGLzCpdIhNtev2fmO8gxoZSpmsZCBkgPnEotneilUc
-         O+0ozanmFd1EoaP79PMN1XNWfMu9k0QhIJZkY2RU6cdZBTwD70ANmy3bEMeX+32s7KhB
-         wowECfX85laMk7UzZRIgHU+WXYxWDB+iH1PHYuk+9A2uOdkKXvd1COg2RLHOK72OIt4s
-         7AQw==
-X-Gm-Message-State: AJIora+0cb+lefmYc2Db/nCozlFvO4n9YJAhWyYguEWtyib38jMaTCjU
-	xM2QFDcELTXotVjc6k8HAoI=
-X-Google-Smtp-Source: AGRyM1sY6xs2vLFIRjWV2bnzc91l1WGwCvv+DJXVUNptBy7iZlV1vdS9ruecuC6uACy/vvyxKuwSiQ==
-X-Received: by 2002:a17:902:ba91:b0:16c:6b8e:cd06 with SMTP id k17-20020a170902ba9100b0016c6b8ecd06mr13859080pls.33.1658788842670;
-        Mon, 25 Jul 2022 15:40:42 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id z14-20020aa7958e000000b0052a75004c51sm10440383pfj.146.2022.07.25.15.40.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 Jul 2022 15:40:41 -0700 (PDT)
-Message-ID: <5ef016a9-c1bb-91dd-454d-504d26074477@roeck-us.net>
-Date: Mon, 25 Jul 2022 15:40:40 -0700
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=DeZ0i71m7lXsgqJ3r02BqYK+cq3KZTMlnLHmvKXbYxU=;
+        b=JttC1gp2ITXbqApvP/NP3LcYG+axQnTP9M6nns7m9hr20Hl6oq/BvaKJFHAbcnAbm4
+         6Sk0IggTioUZm5zhBm2+oAp/zHQnMAy3VwjQAOZ5UzmHF4gpbhs5EknHSk/l2EfNcYNr
+         M8Tg+1X6JH6q5QRS4CBBWqb8BvLsglc/h7Yj96hqlPjim+WfWrw8obxMCp8QvKKe21bU
+         KhoVvNM2DkewBh5AkjBM6M9PsAOkF+9y/JZIzX3n/Q6ZBf+F+zVIjuYXFK2LRPgc4ZgC
+         qNcB90lcg9vQ2zZTsWGhNhWe1TgfvtshI26osF0JR4UzanzgwdV4mXuxXFwZHkzlk6Cm
+         b2Rg==
+X-Gm-Message-State: AJIora9FMcmvyvdzI7ZBtdsMa/ng+gyyhLq7CUvkaqRfWGPLdeXfhkMB
+	fyDsRG0euHAByJZvDAJ2X/fV2Gxw9oE=
+X-Google-Smtp-Source: AGRyM1vy8C5iqLabeXFffOkfvK810psuEvspeFasjH3OSccwMohmjm9n6GHknf3IO6BpuRysXhKSzQ==
+X-Received: by 2002:a05:6830:1f3b:b0:61c:8421:6dbb with SMTP id e27-20020a0568301f3b00b0061c84216dbbmr5437090oth.263.1658792111438;
+        Mon, 25 Jul 2022 16:35:11 -0700 (PDT)
+Received: from localhost ([12.97.180.36])
+        by smtp.gmail.com with ESMTPSA id l11-20020a9d550b000000b0061ca92ae442sm5450341oth.72.2022.07.25.16.35.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 Jul 2022 16:35:11 -0700 (PDT)
+Date: Mon, 25 Jul 2022 16:32:59 -0700
+From: Yury Norov <yury.norov@gmail.com>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: Re: [PATCH 1/2] powerpc: drop dependency on <asm/machdep.h> in
+ archrandom.h
+Message-ID: <Yt8oK1gUojEbO0WI@yury-laptop>
+References: <20220723214537.2054208-1-yury.norov@gmail.com>
+ <20220723214537.2054208-2-yury.norov@gmail.com>
+ <CAHp75VfOmN=cTEs7gbwxZ7W3hXjBo67N4AmHHiDfcVfFzHkMLA@mail.gmail.com>
+ <Yt7CJj8r3eo05pKd@yury-laptop>
+ <CAHp75VcGPQkY9ApsX2fi6sK5=3U=0vKbrHZZ3x___wUtgrFRSA@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Content-Language: en-US
-To: Segher Boessenkool <segher@kernel.crashing.org>,
- Timothy Pearson <tpearson@raptorengineering.com>
-References: <20220725123918.1903255-1-mpe@ellerman.id.au>
- <CAHk-=wihON4Ytte5zLHWNQtTapUvCpkToxY06OjX-_2B+Gq6Gg@mail.gmail.com>
- <1446417444.13111032.1658777648586.JavaMail.zimbra@raptorengineeringinc.com>
- <20220725204217.GU25951@gate.crashing.org>
-From: Guenter Roeck <linux@roeck-us.net>
-Subject: Re: [PATCH] drm/amdgpu: Re-enable DCN for 64-bit powerpc
-In-Reply-To: <20220725204217.GU25951@gate.crashing.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHp75VcGPQkY9ApsX2fi6sK5=3U=0vKbrHZZ3x___wUtgrFRSA@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,50 +81,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: =?UTF-8?Q?Dan_Hor=c3=a1k?= <dan@danny.cz>, Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel <linux-kernel@vger.kernel.org>, amd-gfx <amd-gfx@lists.freedesktop.org>, Alex Deucher <alexdeucher@gmail.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Paul Mackerras <paulus@samba.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, "open list:LINUX FOR POWERPC PA SEMI PWRFICIENT" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 7/25/22 13:42, Segher Boessenkool wrote:
-> On Mon, Jul 25, 2022 at 02:34:08PM -0500, Timothy Pearson wrote:
->>>> Further digging shows that the build failures only occur with compilers
->>>> that default to 64-bit long double.
->>>
->>> Where the heck do we have 'long double' things anywhere in the kernel?
->>>
->>> I tried to grep for it, and failed miserably. I found some constants
->>> that would qualify, but they were in the v4l colorspaces-details.rst
->>> doc file.
->>>
->>> Strange.
->>
->> We don't, at least not that I can see.  The affected code uses standard doubles.
->>
->> What I'm wondering is if the compiler is getting confused between standard and long doubles when they are both the same bit length...
+On Mon, Jul 25, 2022 at 11:39:39PM +0200, Andy Shevchenko wrote:
+> On Mon, Jul 25, 2022 at 6:19 PM Yury Norov <yury.norov@gmail.com> wrote:
+> > On Mon, Jul 25, 2022 at 09:28:12AM +0200, Andy Shevchenko wrote:
+> > > On Sun, Jul 24, 2022 at 12:19 AM Yury Norov <yury.norov@gmail.com> wrote:
 > 
-> The compiler emits the same code (DFmode things, double precision float)
-> in both cases, and it itself does not see any difference anymore fairly
-> early in the pipeline.  Compare to int and long on most 32-bit targets,
-> both are SImode, the compiler will not see different types anymore:
-> there *are* no types, except in the compiler frontend.
+> ...
 > 
-> It only happens for powerpc64le things, and not for powerpc64 builds.
+> > > >  EXPORT_SYMBOL_GPL(pm_power_off);
+> > >
+> > > ^^^ (Note this and read below)
+> > >
+> > > ...
+> > >
+> > > > +EXPORT_SYMBOL(arch_get_random_seed_long);
+> > >
+> > > It can't be like this. Brief browsing of the callees shows that.
+> >
+> > Is my understanding correct that you're suggesting to make it GPL?
+> >
+> > ppc_md is exported with EXPORT_SYMBOL(), and the function is in header,
+> > so it's available for non-GPL code now. I don't want to change it.
 > 
-> It is probably a GCC problem.  I don't see what forces the GCC build
-> here to use 64-bit long double either btw?  Compilers build via buildall
-> have all kinds of unnecessary things disabled, but not that, not
-> directly at least.
-> 
+> The symbols your function calls are GPL. As far as I understand (not a
+> lawyer!) it logically one may not call GPL and pretend to be non-GPL.
 
- From what little documentation I can find, there appears to be
-"--with-long-double-128" and "--with-long-double-format=ieee".
-That looks like something that would need to be enabled, not disabled.
+Can you explain what you mean in details?
 
-FWIW, depending on compiler build options such as the above for kernel
-builds seems to be a little odd to me, and I am not sure I'd want to
-blame gcc if the kernel wants to be built with 128-bit floating point
-as default. At the very least, that should be documented somewhere,
-and if possible the kernel should refuse to build if the compiler build
-options don't meet the requirements.
+The function is:
+        static inline bool __must_check arch_get_random_seed_long(unsigned long *v)
+        {
+               if (ppc_md.get_random_seed)
+                       return ppc_md.get_random_seed(v);
 
-Guenter
+               return false;
+        }
+
+ppc_md is non-GPL:
+ 77 /* The main machine-dep calls structure
+ 78  */
+ 79 struct machdep_calls ppc_md;
+ 80 EXPORT_SYMBOL(ppc_md);
+
+And get_random_seed is initialized in in arch/powerpc/platforms/powernv/rng.c
+with different functions that are static and not exported at all. 
+
+I don't understand where arch_get_random_seed_long calls GPL...
