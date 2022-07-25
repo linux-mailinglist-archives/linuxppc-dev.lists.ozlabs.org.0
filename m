@@ -2,85 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD73357F963
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jul 2022 08:28:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF67B57F966
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jul 2022 08:28:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lrqq94w0Sz3chp
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jul 2022 16:28:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lrqr147V8z3drZ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jul 2022 16:28:49 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TVQrZzPB;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=STj0kdp8;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=rmclure@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=rmclure@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TVQrZzPB;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=STj0kdp8;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lrqp40Twkz3d9h
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Jul 2022 16:27:07 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 26P6L8u2001820;
-	Mon, 25 Jul 2022 06:27:01 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lrqq93lhqz3dxm
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Jul 2022 16:28:05 +1000 (AEST)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 26P6KdPq024875;
+	Mon, 25 Jul 2022 06:28:00 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
  : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=s80XWhgX/cKZP5k3H1YrkJVbWV6EHq2u/S1FduupPUU=;
- b=TVQrZzPBPYMW3rtIFdmbpLl8UFYxZQTWAlACKlVSMWD3mlhAoDSFUFPfI8hZgHdXdoG/
- yx3KH1i41VKbfvdvFivPNcaQfpmw8KqprvZsVNPRpY4lKgd7jA9QwciSzWQl6Sko9aCm
- kVvdybRWBlk6UPf+u8IvuzLyKoshlDe3fbofGeoXbkZmhMmB/jLSHT03KwD0EikTUgqk
- ciAJHoYsP3j0kAm89lhVMUquRxWpxqbjJhMh7j8Bjpl48KNZkJuPnT/UQYIjC4xbQyk5
- rIIkVOcf6Lu+ztBnhqjT9Qgrn/CcQDc8HN9sJNf/a4wNrRYn8hcQ/PvY6D6j4GreoVpj 7w== 
+ bh=rjXkcqz5AYTcQwIeTuFmIZq8LW9NIA8BDoXWtn/mXQM=;
+ b=STj0kdp89bCEMf3Ec0n02wIu0rjBjBYe6kcU5P11KRlyNaQC/asIDq2EcM16/jXhu9UK
+ DFsmjpulUusiOVuwtvjA4ztygJPUOknWSclZb7NhY6MFmxttF79psOwqJyAAubRfFQeB
+ v6PVaKnDrmMYM6sY0FS8tX9YpHXjH8Cw5EnbY0FWi7S2+evSnZgZh7zQAHm4S6ZJR8nb
+ kdz2iQA9VH4+cf34VUMndv10mF8YdmjaoBRv6fS/9z6XASKpr/U2TpBvTeAdSf8LYt16
+ eQo+ektS0sN2JL+hZBgxGlNPgDfBiiMFuwz3ReTSTdq47o+Y8uLWwQJTy4gthsLjlX+H Hw== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3hhnu4g4hx-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3hhntvg4bp-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 25 Jul 2022 06:27:01 +0000
-Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 26P6M7Qc004347;
-	Mon, 25 Jul 2022 06:27:01 GMT
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3hhnu4g4he-1
+	Mon, 25 Jul 2022 06:28:00 +0000
+Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 26P6MYBj029015;
+	Mon, 25 Jul 2022 06:27:59 GMT
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3hhntvg4b3-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 25 Jul 2022 06:27:00 +0000
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
-	by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 26P6LU1R017336;
-	Mon, 25 Jul 2022 06:26:59 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
-	by ppma02fra.de.ibm.com with ESMTP id 3hg9469xu1-1
+	Mon, 25 Jul 2022 06:27:59 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+	by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 26P6Lgwb001238;
+	Mon, 25 Jul 2022 06:27:58 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+	by ppma04ams.nl.ibm.com with ESMTP id 3hg96whywp-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 25 Jul 2022 06:26:59 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
-	by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 26P6QuXa14811544
+	Mon, 25 Jul 2022 06:27:57 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
+	by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 26P6S98X32244202
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 25 Jul 2022 06:26:56 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9A97211C050;
-	Mon, 25 Jul 2022 06:26:56 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8B83411C04A;
-	Mon, 25 Jul 2022 06:26:54 +0000 (GMT)
+	Mon, 25 Jul 2022 06:28:09 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9555BAE053;
+	Mon, 25 Jul 2022 06:27:55 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A508EAE045;
+	Mon, 25 Jul 2022 06:27:53 +0000 (GMT)
 Received: from civic.. (unknown [9.192.255.53])
-	by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Mon, 25 Jul 2022 06:26:54 +0000 (GMT)
+	by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Mon, 25 Jul 2022 06:27:53 +0000 (GMT)
 From: Rohan McLure <rmclure@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 05/14] powerpc: Use generic fallocate compatibility syscall
-Date: Mon, 25 Jul 2022 16:26:51 +1000
-Message-Id: <20220725062651.119176-1-rmclure@linux.ibm.com>
+Subject: [PATCH v2 06/14] powerpc: Include all arch-specific syscall prototypes
+Date: Mon, 25 Jul 2022 16:27:50 +1000
+Message-Id: <20220725062750.119476-1-rmclure@linux.ibm.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 6HOFq3eW69Goopb3IszE4RtQv5kmzLbB
-X-Proofpoint-GUID: suB2tsLp9rjZvs0KjZv9QMs236qLlrwG
+X-Proofpoint-GUID: 76_Cw-zYORFpYmLCXUU2TyTUor6_ocEg
+X-Proofpoint-ORIG-GUID: bSvCd-A1IHYnm5Jd3JC7cN8WSM0NH78s
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
  definitions=2022-07-23_02,2022-07-21_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- suspectscore=0 lowpriorityscore=0 mlxlogscore=670 mlxscore=0 adultscore=0
- phishscore=0 impostorscore=0 spamscore=0 bulkscore=0 malwarescore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ mlxlogscore=999 suspectscore=0 priorityscore=1501 phishscore=0 mlxscore=0
+ bulkscore=0 adultscore=0 impostorscore=0 lowpriorityscore=0 clxscore=1015
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2206140000 definitions=main-2207250026
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -93,104 +93,186 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rohan McLure <rmclure@linux.ibm.com>, arnd@arndb.de, npiggin@gmail.com
+Cc: Rohan McLure <rmclure@linux.ibm.com>, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The powerpc fallocate compat syscall handler is identical to the
-generic implementation provided by commit 59c10c52f573f ("riscv:
-compat: syscall: Add compat_sys_call_table implementation"), and as
-such can be removed in favour of the generic implementation.
+Forward declare all syscall handler prototypes where a generic prototype
+is not provided in either linux/syscalls.h or linux/compat.h in
+asm/syscalls.h. This is required for compile-time type-checking for
+syscall handlers, which is implemented later in this series.
 
-A future patch series will replace more architecture-defined syscall
-handlers with generic implementations, dependent on introducing generic
-implementations that are compatible with powerpc and arm's parameter
-reorderings.
+32-bit compatibility syscall handlers are expressed in terms of types in
+ppc32.h. Expose this header globally.
 
-Reported-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Rohan McLure <rmclure@linux.ibm.com>
 ---
-V1 -> V2: Remove arch-specific fallocate handler.
+V1 -> V2: Explicitly include prototypes.
 ---
- arch/powerpc/include/asm/compat.h        | 5 +++++
- arch/powerpc/include/asm/unistd.h        | 1 +
- arch/powerpc/kernel/asm-offsets.c        | 1 +
- arch/powerpc/kernel/sys_ppc32.c          | 8 --------
- arch/powerpc/kernel/syscalls/syscall.tbl | 2 +-
- 5 files changed, 8 insertions(+), 9 deletions(-)
+ arch/powerpc/{kernel => include/asm}/ppc32.h |   0
+ arch/powerpc/include/asm/syscalls.h          | 104 ++++++++++++-----
+ arch/powerpc/kernel/signal_32.c              |   2 +-
+ arch/powerpc/perf/callchain_32.c             |   2 +-
+ 4 files changed, 76 insertions(+), 32 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/compat.h b/arch/powerpc/include/asm/compat.h
-index dda4091fd012..f20caae3f019 100644
---- a/arch/powerpc/include/asm/compat.h
-+++ b/arch/powerpc/include/asm/compat.h
-@@ -16,6 +16,11 @@ typedef u16		compat_ipc_pid_t;
- #include <asm-generic/compat.h>
- 
- #ifdef __BIG_ENDIAN__
-+#define compat_arg_u64(name)		u32  name##_hi, u32  name##_lo
-+#define compat_arg_u64_dual(name)	u32, name##_hi, u32, name##_lo
-+#define compat_arg_u64_glue(name)	(((u64)name##_lo & 0xffffffffUL) | \
-+					 ((u64)name##_hi << 32))
-+
- #define COMPAT_UTS_MACHINE	"ppc\0\0"
- #else
- #define COMPAT_UTS_MACHINE	"ppcle\0\0"
-diff --git a/arch/powerpc/include/asm/unistd.h b/arch/powerpc/include/asm/unistd.h
-index b1129b4ef57d..659a996c75aa 100644
---- a/arch/powerpc/include/asm/unistd.h
-+++ b/arch/powerpc/include/asm/unistd.h
-@@ -45,6 +45,7 @@
- #define __ARCH_WANT_SYS_UTIME
- #define __ARCH_WANT_SYS_NEWFSTATAT
- #define __ARCH_WANT_COMPAT_STAT
-+#define __ARCH_WANT_COMPAT_FALLOCATE
- #define __ARCH_WANT_COMPAT_SYS_SENDFILE
- #endif
- #define __ARCH_WANT_SYS_FORK
-diff --git a/arch/powerpc/kernel/asm-offsets.c b/arch/powerpc/kernel/asm-offsets.c
-index 8c10f536e478..c669f1d1ee77 100644
---- a/arch/powerpc/kernel/asm-offsets.c
-+++ b/arch/powerpc/kernel/asm-offsets.c
-@@ -9,6 +9,7 @@
-  * #defines from the assembly-language output.
-  */
- 
-+#include <asm/compat.h>
+diff --git a/arch/powerpc/kernel/ppc32.h b/arch/powerpc/include/asm/ppc32.h
+similarity index 100%
+rename from arch/powerpc/kernel/ppc32.h
+rename to arch/powerpc/include/asm/ppc32.h
+diff --git a/arch/powerpc/include/asm/syscalls.h b/arch/powerpc/include/asm/syscalls.h
+index 025d4b877161..8b2757d7f423 100644
+--- a/arch/powerpc/include/asm/syscalls.h
++++ b/arch/powerpc/include/asm/syscalls.h
+@@ -8,49 +8,93 @@
+ #include <linux/types.h>
  #include <linux/compat.h>
- #include <linux/signal.h>
- #include <linux/sched.h>
-diff --git a/arch/powerpc/kernel/sys_ppc32.c b/arch/powerpc/kernel/sys_ppc32.c
-index 89e8c478fd6a..bd00b7dab7cd 100644
---- a/arch/powerpc/kernel/sys_ppc32.c
-+++ b/arch/powerpc/kernel/sys_ppc32.c
-@@ -89,14 +89,6 @@ COMPAT_SYSCALL_DEFINE4(ppc_truncate64,
- 	return ksys_truncate(path, merge_64(len1, len2));
- }
  
--COMPAT_SYSCALL_DEFINE6(ppc_fallocate,
--		       int, fd, int, mode, u32, offset1, u32, offset2,
--		       u32, len1, u32, len2)
--{
--	return ksys_fallocate(fd, mode, ((loff_t)offset1 << 32) | offset2,
--			     merge_64(len1, len2));
--}
--
- COMPAT_SYSCALL_DEFINE4(ppc_ftruncate64,
- 		       unsigned int, fd, u32, reg4, unsigned long, len1,
- 		       unsigned long, len2)
-diff --git a/arch/powerpc/kernel/syscalls/syscall.tbl b/arch/powerpc/kernel/syscalls/syscall.tbl
-index c6cfcdf52c57..b4c970c9c6b1 100644
---- a/arch/powerpc/kernel/syscalls/syscall.tbl
-+++ b/arch/powerpc/kernel/syscalls/syscall.tbl
-@@ -391,7 +391,7 @@
- 306	common	timerfd_create			sys_timerfd_create
- 307	common	eventfd				sys_eventfd
- 308	common	sync_file_range2		sys_sync_file_range2		compat_sys_ppc_sync_file_range2
--309	nospu	fallocate			sys_fallocate			compat_sys_ppc_fallocate
-+309	nospu	fallocate			sys_fallocate			compat_sys_fallocate
- 310	nospu	subpage_prot			sys_subpage_prot
- 311	32	timerfd_settime			sys_timerfd_settime32
- 311	64	timerfd_settime			sys_timerfd_settime
++#ifdef CONFIG_PPC64
++#include <asm/ppc32.h>
++#endif
++#include <asm/unistd.h>
++#include <asm/ucontext.h>
++
+ struct rtas_args;
+ 
+-asmlinkage long sys_mmap(unsigned long addr, size_t len,
+-		unsigned long prot, unsigned long flags,
+-		unsigned long fd, off_t offset);
+-asmlinkage long sys_mmap2(unsigned long addr, size_t len,
+-		unsigned long prot, unsigned long flags,
+-		unsigned long fd, unsigned long pgoff);
+-asmlinkage long sys_ppc64_personality(unsigned long personality);
++#ifndef CONFIG_ARCH_HAS_SYSCALL_WRAPPER
++
++/*
++ * PowerPC architecture-specific syscalls
++ */
++
+ asmlinkage long sys_rtas(struct rtas_args __user *uargs);
+-int sys_ppc_select(int n, fd_set __user *inp, fd_set __user *outp,
+-		   fd_set __user *exp, struct __kernel_old_timeval __user *tvp);
+-long sys_ppc_fadvise64_64(int fd, int advice, u32 offset_high, u32 offset_low,
+-			  u32 len_high, u32 len_low);
++asmlinkage long sys_ni_syscall(void);
+ 
++#ifdef CONFIG_PPC64
++asmlinkage long sys_ppc64_personality(unsigned long personality);
+ #ifdef CONFIG_COMPAT
+-unsigned long compat_sys_mmap2(unsigned long addr, size_t len,
+-			       unsigned long prot, unsigned long flags,
+-			       unsigned long fd, unsigned long pgoff);
++asmlinkage long compat_sys_ppc64_personality(unsigned long personality);
++#endif /* CONFIG_COMPAT */
++#endif /* CONFIG_PPC64 */
+ 
+-compat_ssize_t compat_sys_pread64(unsigned int fd, char __user *ubuf, compat_size_t count,
+-				  u32 reg6, u32 pos1, u32 pos2);
++/* Parameters are reordered for powerpc to avoid padding */
++asmlinkage long sys_ppc_fadvise64_64(int fd, int advice,
++				     u32 offset_high, u32 offset_low,
++				     u32 len_high, u32 len_low);
++asmlinkage long sys_swapcontext(struct ucontext __user *old_ctx,
++				struct ucontext __user *new_ctx, long ctx_size);
++asmlinkage long sys_mmap(unsigned long addr, size_t len,
++			 unsigned long prot, unsigned long flags,
++			 unsigned long fd, off_t offset);
++asmlinkage long sys_mmap2(unsigned long addr, size_t len,
++			  unsigned long prot, unsigned long flags,
++			  unsigned long fd, unsigned long pgoff);
++asmlinkage long sys_switch_endian(void);
+ 
+-compat_ssize_t compat_sys_pwrite64(unsigned int fd, const char __user *ubuf, compat_size_t count,
+-				   u32 reg6, u32 pos1, u32 pos2);
++#ifdef CONFIG_PPC32
++asmlinkage long sys_sigreturn(void);
++asmlinkage long sys_debug_setcontext(struct ucontext __user *ctx, int ndbg,
++				     struct sig_dbg_op __user *dbg);
++#endif
+ 
+-compat_ssize_t compat_sys_readahead(int fd, u32 r4, u32 offset1, u32 offset2, u32 count);
++asmlinkage long sys_rt_sigreturn(void);
+ 
+-int compat_sys_truncate64(const char __user *path, u32 reg4,
+-			  unsigned long len1, unsigned long len2);
++asmlinkage long sys_subpage_prot(unsigned long addr,
++				 unsigned long len, u32 __user *map);
+ 
+-long compat_sys_fallocate(int fd, int mode, u32 offset1, u32 offset2, u32 len1, u32 len2);
++#ifdef CONFIG_COMPAT
++asmlinkage long compat_sys_swapcontext(struct ucontext32 __user *old_ctx,
++				       struct ucontext32 __user *new_ctx,
++				       int ctx_size);
++asmlinkage long compat_sys_old_getrlimit(unsigned int resource,
++					 struct compat_rlimit __user *rlim);
++asmlinkage long compat_sys_sigreturn(void);
++asmlinkage long compat_sys_rt_sigreturn(void);
+ 
+-int compat_sys_ftruncate64(unsigned int fd, u32 reg4, unsigned long len1,
+-			   unsigned long len2);
++/* Architecture-specific implementations in sys_ppc32.c */
+ 
+-long compat_sys_ppc32_fadvise64(int fd, u32 unused, u32 offset1, u32 offset2,
+-				size_t len, int advice);
++asmlinkage long compat_sys_mmap2(unsigned long addr, size_t len,
++				     unsigned long prot, unsigned long flags,
++				     unsigned long fd, unsigned long pgoff);
++asmlinkage long compat_sys_ppc_pread64(unsigned int fd,
++				       char __user *ubuf, compat_size_t count,
++				       u32 reg6, u32 pos1, u32 pos2);
++asmlinkage long compat_sys_ppc_pwrite64(unsigned int fd,
++					const char __user *ubuf, compat_size_t count,
++					u32 reg6, u32 pos1, u32 pos2);
++asmlinkage long compat_sys_ppc_readahead(int fd, u32 r4,
++					 u32 offset1, u32 offset2, u32 count);
++asmlinkage long compat_sys_ppc_truncate64(const char __user *path, u32 reg4,
++					  unsigned long len1, unsigned long len2);
++asmlinkage long compat_sys_ppc_fallocate(int fd, int mode, u32 offset1, u32 offset2,
++					 u32 len1, u32 len2);
++asmlinkage long compat_sys_ppc_ftruncate64(unsigned int fd, u32 reg4,
++					   unsigned long len1, unsigned long len2);
++asmlinkage long compat_sys_ppc32_fadvise64(int fd, u32 unused, u32 offset1, u32 offset2,
++					   size_t len, int advice);
++asmlinkage long compat_sys_ppc_sync_file_range2(int fd, unsigned int flags,
++						unsigned int offset1,
++						unsigned int offset2,
++						unsigned int nbytes1,
++						unsigned int nbytes2);
++#endif /* CONFIG_COMPAT */
+ 
+-long compat_sys_sync_file_range2(int fd, unsigned int flags,
+-				 unsigned int offset1, unsigned int offset2,
+-				 unsigned int nbytes1, unsigned int nbytes2);
+-#endif
++#endif /* CONFIG_ARCH_HAS_SYSCALL_WRAPPER */
+ 
+ #endif /* __KERNEL__ */
+ #endif /* __ASM_POWERPC_SYSCALLS_H */
+diff --git a/arch/powerpc/kernel/signal_32.c b/arch/powerpc/kernel/signal_32.c
+index 157a7403e3eb..d45c0d7d0a55 100644
+--- a/arch/powerpc/kernel/signal_32.c
++++ b/arch/powerpc/kernel/signal_32.c
+@@ -43,7 +43,7 @@
+ #include <asm/tm.h>
+ #include <asm/asm-prototypes.h>
+ #ifdef CONFIG_PPC64
+-#include "ppc32.h"
++#include <asm/ppc32.h>
+ #include <asm/unistd.h>
+ #else
+ #include <asm/ucontext.h>
+diff --git a/arch/powerpc/perf/callchain_32.c b/arch/powerpc/perf/callchain_32.c
+index b83c47b7947f..7e94c32b8398 100644
+--- a/arch/powerpc/perf/callchain_32.c
++++ b/arch/powerpc/perf/callchain_32.c
+@@ -19,7 +19,7 @@
+ #include "callchain.h"
+ 
+ #ifdef CONFIG_PPC64
+-#include "../kernel/ppc32.h"
++#include <asm/ppc32.h>
+ #else  /* CONFIG_PPC64 */
+ 
+ #define __SIGNAL_FRAMESIZE32	__SIGNAL_FRAMESIZE
 -- 
 2.34.1
 
