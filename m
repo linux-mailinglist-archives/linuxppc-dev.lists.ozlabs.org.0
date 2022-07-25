@@ -1,100 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0394258022C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jul 2022 17:47:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90AAD58027A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jul 2022 18:12:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ls4DN6T1wz3cj5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jul 2022 01:47:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ls4nV307Cz3cfG
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jul 2022 02:12:30 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QLlTi3+7;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QLlTi3+7;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=p4mC6ISK;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=javierm@redhat.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=cheloha@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QLlTi3+7;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QLlTi3+7;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=p4mC6ISK;
 	dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ls4Cg1vXlz3bmD
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jul 2022 01:46:38 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1658763996;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZJ885KKzcUvf1e2EVl4lSKhnhoxNx06B5g4T95NscQU=;
-	b=QLlTi3+7VQ8ttDQ+z/lEH46mQLREKPXKjdbuOXDlwL00BoY7FbexOw7tfIPaev70CToVlX
-	SJpaFbwnWYonm7PI24VszSpPZwSp+cjDP51Xvwa32DwXk5/tasERcWZIdrID5cEBObbJf/
-	byIKxQT9WUj+Twz7EmxThDqG+vRDMf4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1658763996;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZJ885KKzcUvf1e2EVl4lSKhnhoxNx06B5g4T95NscQU=;
-	b=QLlTi3+7VQ8ttDQ+z/lEH46mQLREKPXKjdbuOXDlwL00BoY7FbexOw7tfIPaev70CToVlX
-	SJpaFbwnWYonm7PI24VszSpPZwSp+cjDP51Xvwa32DwXk5/tasERcWZIdrID5cEBObbJf/
-	byIKxQT9WUj+Twz7EmxThDqG+vRDMf4=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-388-pY5-VUGRMB60z653BKlSNw-1; Mon, 25 Jul 2022 11:46:35 -0400
-X-MC-Unique: pY5-VUGRMB60z653BKlSNw-1
-Received: by mail-wm1-f70.google.com with SMTP id v132-20020a1cac8a000000b003a34081050bso5411987wme.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Jul 2022 08:46:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=ZJ885KKzcUvf1e2EVl4lSKhnhoxNx06B5g4T95NscQU=;
-        b=1kIla4cT9d5T/PRfXnLjwVaDL0Yc1m9csPI/B4sBGKOK6pi+ZvOTzRhvWHJqmH0K3R
-         gelX1UGS4Bri/QtJbeSPHyT+pL9a11pub+7uYHikkW9IjF735xs2TKzfgqzf27gkEoq0
-         0gTQPTJ7zvOLrwBEiU7konu1Eny8cPCZ9U8MBo8HqUmAHO2J7sEiyD+i5Bokqmond0rr
-         oHXdl4jzcBP/LFZsj0YUtiapQf0t7Eaht9wL/TzCa7/lSwHPRN038Pz2qARlWVRO/lpj
-         0dC8j4I4DRVOo5nuLwDZSItfpSdLJlHcY6Yo3Z5XJ4ZibMTDhGoDdEYyhgxcEUrgHliE
-         G/zA==
-X-Gm-Message-State: AJIora/1aOJ0vrvEWSvPXXk7WYo7zzlDWPR83lggwHpLP6bGln+5E9GZ
-	JvY4NU/PRpHfzgBMCf4BUtWvjLbLvhhYN1ATnyunKpsxkaZOG4q/vJy42/S6BlES+HfBnTPNI0y
-	/H+w38ObCdrsq7nMq/rOa0gvIeg==
-X-Received: by 2002:a05:6000:79b:b0:21e:9709:2c28 with SMTP id bu27-20020a056000079b00b0021e97092c28mr1207789wrb.539.1658763993863;
-        Mon, 25 Jul 2022 08:46:33 -0700 (PDT)
-X-Google-Smtp-Source: AGRyM1sef1GCaKVbSp+vxG6KoAAfgr161OZAbpd5DTP5j+7q2VRX59IcIlySPt3xxwReMmx+Yu5DCg==
-X-Received: by 2002:a05:6000:79b:b0:21e:9709:2c28 with SMTP id bu27-20020a056000079b00b0021e97092c28mr1207777wrb.539.1658763993587;
-        Mon, 25 Jul 2022 08:46:33 -0700 (PDT)
-Received: from [192.168.1.130] (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
-        by smtp.gmail.com with ESMTPSA id e13-20020a5d65cd000000b0021e47386eb8sm12290743wrw.2.2022.07.25.08.46.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 Jul 2022 08:46:33 -0700 (PDT)
-Message-ID: <3d2de29a-2a96-867d-907f-6b85573586ab@redhat.com>
-Date: Mon, 25 Jul 2022 17:46:31 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ls4mn0L8fz2yJQ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jul 2022 02:11:52 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 26PG9S8F028278;
+	Mon, 25 Jul 2022 16:11:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=VEyXKsLKkNRouMWUVwi/lwM5zyAUu5jFyXE4yvmUVg4=;
+ b=p4mC6ISK63UhtWOy328GRCW/XKXETz3gPP9OEPdqBfBvPiCuA1BrLbHgS7kXtten01cc
+ JYjXpQQ+pPbUOslT5xBKeC6Goc1cp3311UR+fqXWoc0s7X8Jj9FE6apx8eXSFxSPnRzW
+ ZcjUsPA4L1GTzAHamBkYrQ7NYbpyi3U/YdsUYgraPBGvM2RPtSuB8mE5v2fUNUcCd0nG
+ 9x0wPzSJJEFfg4eQX2/u/2IGjYDeYU5kXgTLJ6lKvxPzdv2on5hNbopCJhl8Ne+qosEG
+ E/G2QQhwYb/XfOgv7ria72Ogt83ZSFW0l8XwkrEhY5PzfRj4SxzMcniHuUZhscbHBSPk hg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3hhx588ve5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 25 Jul 2022 16:11:44 +0000
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 26PG9TPx028476;
+	Mon, 25 Jul 2022 16:11:43 GMT
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3hhx588vcx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 25 Jul 2022 16:11:43 +0000
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+	by ppma01dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 26PG54Qq007332;
+	Mon, 25 Jul 2022 16:11:42 GMT
+Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com [9.57.198.25])
+	by ppma01dal.us.ibm.com with ESMTP id 3hg98rrrr7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 25 Jul 2022 16:11:42 +0000
+Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com [9.57.199.109])
+	by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 26PGBfZF64094482
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 25 Jul 2022 16:11:41 GMT
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 966F5112063;
+	Mon, 25 Jul 2022 16:11:41 +0000 (GMT)
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 713F3112061;
+	Mon, 25 Jul 2022 16:11:41 +0000 (GMT)
+Received: from localhost (unknown [9.41.178.126])
+	by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
+	Mon, 25 Jul 2022 16:11:41 +0000 (GMT)
+Date: Mon, 25 Jul 2022 11:11:41 -0500
+From: Scott Cheloha <cheloha@linux.ibm.com>
+To: Guenter Roeck <linux@roeck-us.net>, MichaelEllerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH v3 4/4] watchdog/pseries-wdt: initial support for
+ H_WATCHDOG-based watchdog timers
+Message-ID: <Yt7AvQjmYzUTYuVy@rascal-austin-ibm-com>
+References: <20220713202335.1217647-1-cheloha@linux.ibm.com>
+ <20220713202335.1217647-5-cheloha@linux.ibm.com>
+ <28eb0fd6-4c4e-17d5-0f89-73eb68b051fa@roeck-us.net>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH v2 05/10] drm/simpledrm: Convert to atomic helpers
-To: Thomas Zimmermann <tzimmermann@suse.de>, airlied@linux.ie,
- daniel@ffwll.ch, deller@gmx.de, maxime@cerno.tech, sam@ravnborg.org,
- msuchanek@suse.de, mpe@ellerman.id.au, benh@kernel.crashing.org,
- paulus@samba.org, geert@linux-m68k.org, mark.cave-ayland@ilande.co.uk
-References: <20220720142732.32041-1-tzimmermann@suse.de>
- <20220720142732.32041-6-tzimmermann@suse.de>
-From: Javier Martinez Canillas <javierm@redhat.com>
-In-Reply-To: <20220720142732.32041-6-tzimmermann@suse.de>
-Authentication-Results: relay.mimecast.com;
-	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=javierm@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <28eb0fd6-4c4e-17d5-0f89-73eb68b051fa@roeck-us.net>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: COQ3pD9I0UPFyKru2zaYuYKHtw1cCm--
+X-Proofpoint-ORIG-GUID: lR_QCgAaIZoq2vdUyUj0xSFMOk4v0YKM
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-07-25_11,2022-07-25_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 phishscore=0
+ spamscore=0 mlxscore=0 bulkscore=0 lowpriorityscore=0 malwarescore=0
+ suspectscore=0 priorityscore=1501 clxscore=1015 adultscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2206140000 definitions=main-2207250066
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -106,62 +98,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-fbdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, dri-devel@lists.freedesktop.org
+Cc: nathanl@linux.ibm.com, wvoigt@us.ibm.com, linux-watchdog@vger.kernel.org, aik@ozlabs.ru, vaishnavi@linux.ibm.com, npiggin@gmail.com, tzungbi@kernel.org, brking@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 7/20/22 16:27, Thomas Zimmermann wrote:
-> Replace the simple-KMS helpers with the regular atomic helpers. The
-> regular helpers are better architectured and therefore allow for easier
-> code sharing among drivers. No functional changes.
->
+On Wed, Jul 13, 2022 at 01:50:14PM -0700, Guenter Roeck wrote:
+> On 7/13/22 13:23, Scott Cheloha wrote:
+> > PAPR v2.12 defines a new hypercall, H_WATCHDOG.  The hypercall permits
+> > guest control of one or more virtual watchdog timers.  The timers have
+> > millisecond granularity.  The guest is terminated when a timer
+> > expires.
+> > 
+> > This patch adds a watchdog driver for these timers, "pseries-wdt".
+> > 
+> > pseries_wdt_probe() currently assumes the existence of only one
+> > platform device and always assigns it watchdogNumber 1.  If we ever
+> > expose more than one timer to userspace we will need to devise a way
+> > to assign a distinct watchdogNumber to each platform device at device
+> > registration time.
+> > 
+> > Signed-off-by: Scott Cheloha <cheloha@linux.ibm.com>
+> 
+> Acked-by: Guenter Roeck <linux@roeck-us.net>
 
-Acked-by: Javier Martinez Canillas <javierm@redhat.com>
+Guenter, Michael,
 
-But I've a question below...
- 
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> ---
->  drivers/gpu/drm/tiny/simpledrm.c | 283 ++++++++++++++++++++-----------
->  1 file changed, 180 insertions(+), 103 deletions(-)
+Which tree is taking this series?
 
-[...]
+watchdog-next or PPC development?
 
-> +static void simpledrm_crtc_helper_atomic_enable(struct drm_crtc *crtc,
-> +						struct drm_atomic_state *old_state)
-> +{
-> +	/*
-> +	 * Always enabled; screen updates are performed by
-> +	 * the primary plane's atomic_update function.
-> +	 */
-> +}
-> +
-> +static void simpledrm_crtc_helper_atomic_disable(struct drm_crtc *crtc,
-> +						 struct drm_atomic_state *old_state)
-> +{
-> +	/*
-> +	 * Always enabled; disabling clears the screen in the
-> +	 * primary plane's atomic_disable function.
-> +	 */
-> +}
-
-...do we really need to have these ? Can't we just not set them ?
-
-> +
-> +static const struct drm_crtc_helper_funcs simpledrm_crtc_helper_funcs = {
-> +	.mode_valid = simpledrm_crtc_helper_mode_valid,
-> +	.atomic_check = simpledrm_crtc_helper_atomic_check,
-> +	.atomic_enable = simpledrm_crtc_helper_atomic_enable,
-> +	.atomic_disable = simpledrm_crtc_helper_atomic_disable,
-> +};
-> +
-looking at https://elixir.bootlin.com/linux/latest/source/include/drm/drm_modeset_helper_vtables.h#L703
-that says the .atomic_{en,dis}able handlers are optional.
-
--- 
-Best regards,
-
-Javier Martinez Canillas
-Linux Engineering
-Red Hat
-
+-Scott
