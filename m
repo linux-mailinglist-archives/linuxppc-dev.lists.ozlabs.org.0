@@ -2,97 +2,37 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E694257FEFC
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jul 2022 14:26:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FDFE57FEF7
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jul 2022 14:25:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LrzmV6CDpz3cjJ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jul 2022 22:26:18 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pXoNXmj6;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lrzln1twZz3chd
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jul 2022 22:25:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pXoNXmj6;
-	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LrzlZ6hmhz3cjL
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Jul 2022 22:25:30 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 26PCEp16024163;
-	Mon, 25 Jul 2022 12:25:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=+7hMN0q9bSC1Ax80dNPgUH6uvz9nFDik+dDQ/moFeyI=;
- b=pXoNXmj6ASPxcc2MUMkLCeOmtnC/wUQXinKKGQi4VSEHQlDeY16Aeu1dTYz5L8juWAPd
- dNiOq4fZ9m/rw7UAkoQGufY3wD8d47zO2s+CnIF7jjhzS5Xvc8oGQmxcHkMgddhSuIom
- xO2hGddaCD+Eg183ogh0fCxCTNp9zuyfIvW9HQmfcp7sq2t7Tr3Czp70C8nOi2EukZcZ
- xHKEQU88RILejBcui7SR/U/CecwadJD8RaaUIaaMaD22/+fNXl/2j4MTDjTwQsDOWDv+
- +Ke23KWOLnZuZnW5ymGRd3HvagLjwOvAULfMejJ8wiUUnGrfzPUgN2YdAIujIMX4LKKC UQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3hhu0m8bjj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 25 Jul 2022 12:25:13 +0000
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 26PCFl7W027830;
-	Mon, 25 Jul 2022 12:25:13 GMT
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3hhu0m8bhf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 25 Jul 2022 12:25:12 +0000
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
-	by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 26PCL3cF017397;
-	Mon, 25 Jul 2022 12:25:11 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
-	by ppma06ams.nl.ibm.com with ESMTP id 3hg97tadw1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 25 Jul 2022 12:25:10 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
-	by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 26PCNB4A23200028
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 25 Jul 2022 12:23:12 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 83B7011C050;
-	Mon, 25 Jul 2022 12:25:08 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0DA8811C04C;
-	Mon, 25 Jul 2022 12:25:08 +0000 (GMT)
-Received: from [9.101.4.33] (unknown [9.101.4.33])
-	by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Mon, 25 Jul 2022 12:25:07 +0000 (GMT)
-Message-ID: <4e366d73-fb9f-bd83-abd0-c624a737a0cd@linux.ibm.com>
-Date: Mon, 25 Jul 2022 14:25:07 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LrzlQ53CDz306K
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Jul 2022 22:25:22 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LrzlP5kY6z4x1V;
+	Mon, 25 Jul 2022 22:25:20 +1000 (AEST)
+From: Michael Ellerman <michael@ellerman.id.au>
+To: Dan =?utf-8?Q?Hor=C3=A1k?= <dan@danny.cz>
+Subject: Re: [PATCH] amdgpu: re-enable DCN for ppc64le
+In-Reply-To: <20220722145453.eb37bd3a99c4b738ed2e26b9@danny.cz>
+References: <20220722082122.571974-1-dan@danny.cz>
+ <87o7xhcoqh.fsf@mpe.ellerman.id.au>
+ <20220722145453.eb37bd3a99c4b738ed2e26b9@danny.cz>
+Date: Mon, 25 Jul 2022 22:25:19 +1000
+Message-ID: <87pmhtbcr4.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.0.3
-Subject: Re: [PATCH v5 4/4] pseries/mobility: set NMI watchdog factor during
- an LPM
-To: Randy Dunlap <rdunlap@infradead.org>, mpe@ellerman.id.au,
-        npiggin@gmail.com, christophe.leroy@csgroup.eu, wim@linux-watchdog.org,
-        linux@roeck-us.net, nathanl@linux.ibm.com
-References: <20220713154729.80789-1-ldufour@linux.ibm.com>
- <20220713154729.80789-5-ldufour@linux.ibm.com>
- <e6232bb4-a8e5-8f33-e80e-06b1356565b7@infradead.org>
-Content-Language: fr
-From: Laurent Dufour <ldufour@linux.ibm.com>
-In-Reply-To: <e6232bb4-a8e5-8f33-e80e-06b1356565b7@infradead.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: oaoX5aaD2obYHUM1BDYUNJcpyVzDgQkz
-X-Proofpoint-GUID: 1K3Wa8DBSonxvU57zc15TRRFAuGltn2H
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-07-25_09,2022-07-25_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 impostorscore=0
- lowpriorityscore=0 mlxscore=0 phishscore=0 bulkscore=0 suspectscore=0
- adultscore=0 spamscore=0 malwarescore=0 priorityscore=1501 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2206140000
- definitions=main-2207250051
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,42 +44,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: hch@infradead.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, haren@linux.vnet.ibm.com, linux-watchdog@vger.kernel.org
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org, Alex Deucher <alexdeucher@gmail.com>, linuxppc-dev@lists.ozlabs.org, Guenter Roeck <linux@roeck-us.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Le 13/07/2022 à 22:17, Randy Dunlap a écrit :
-> Hi Laurent,
-> 
-> On 7/13/22 08:47, Laurent Dufour wrote:
->> diff --git a/Documentation/admin-guide/sysctl/kernel.rst b/Documentation/admin-guide/sysctl/kernel.rst
->> index ddccd1077462..d73faa619c15 100644
->> --- a/Documentation/admin-guide/sysctl/kernel.rst
->> +++ b/Documentation/admin-guide/sysctl/kernel.rst
->> @@ -592,6 +592,18 @@ to the guest kernel command line (see
->>  Documentation/admin-guide/kernel-parameters.rst).
->>  
->>  
->> +nmi_wd_lpm_factor (PPC only)
->> +============================
->> +
->> +Factor apply to the NMI watchdog timeout (only when ``nmi_watchdog`` is
-> 
->    Factor to apply to
+Dan Hor=C3=A1k <dan@danny.cz> writes:
+> On Fri, 22 Jul 2022 22:32:06 +1000
+> Michael Ellerman <michael@ellerman.id.au> wrote:
+>> Dan Hor=C3=A1k <dan@danny.cz> writes:
+>> > Commit d11219ad53dc disabled the DCN driver for all platforms that
+>> > define PPC64 due long build issues during "make allmodconfig" using
+>> > cross-compilation. Cross-compilation defaults to the ppc64_defconfig
+>> > and thus big-endian toolchain configuration. The ppc64le platform uses=
+ a
+>> > different ABI and doesn't suffer from the build issues.
+>>=20
+>> Unfortunately it's a bit messier than that.
+>>=20
+>> The build error occurs when the compiler is built to use a 64-bit long
+>> double type.
+>>=20
+>> The ppc64le ABI document says that long double should be 128-bits, but
+>> there are ppc64le compilers out there that are configured to use 64-bit
+>> long double, notably the kernel.org crosstool compilers.
+>>=20
+>> So just testing for CPU_LITTLE_ENDIAN means we'll still get build errors
+>> on those compilers.
+>>=20
+>> But I think we can detect the long double size and key off that. Can you
+>> test the patch below works for you?
+>>=20
+>> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+>> index 7aa12e88c580..e9f8cd50af99 100644
+>> --- a/arch/powerpc/Kconfig
+>> +++ b/arch/powerpc/Kconfig
+>> @@ -281,6 +281,9 @@ config PPC
+>>  	# Please keep this list sorted alphabetically.
+>>  	#
+>>=20=20
+>> +config PCC_LONG_DOUBLE_128
+>> +	def_bool $(success,test "$(shell,echo __LONG_DOUBLE_128__ | $(CC) -E -=
+P -)" =3D 1)
+>
+> ^^^ there is a typo s/PCC/PPC/ :-)
 
-Thanks, Randy.
+Oops, renamed it after testing :}
 
-Michael, could you fix that when applying the series?
+> with that fixed, it then defines AMD_DC_DCN on Fedora 36 with
+> gcc-12.1.1-1.fc36.ppc64le and we should be OK.
 
-Cheers,
-Laurent
+Thanks. I'll send a proper patch.
 
-> 
->> +set to 1). This factor represents the percentage added to
->> +``watchdog_thresh`` when calculating the NMI watchdog timeout during an
->> +LPM. The soft lockup timeout is not impacted.
->> +
->> +A value of 0 means no change. The default value is 200 meaning the NMI
->> +watchdog is set to 30s (based on ``watchdog_thresh`` equal to 10).
-> 
-
+cheers
