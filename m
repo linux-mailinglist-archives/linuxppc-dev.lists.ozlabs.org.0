@@ -2,60 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 192C25811AC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jul 2022 13:10:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88D6F5811F5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jul 2022 13:31:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LsZ2q1rbwz3cdT
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jul 2022 21:10:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LsZVC3Sfzz3cdw
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jul 2022 21:30:59 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=D6sUQ7Ak;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=KvScXiLf;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.24; helo=mga09.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=D6sUQ7Ak;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=KvScXiLf;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LsZ290YRlz2xmj
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jul 2022 21:10:08 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id E708D61298;
-	Tue, 26 Jul 2022 11:10:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F05C8C341C0;
-	Tue, 26 Jul 2022 11:10:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1658833804;
-	bh=WbKliBFXTxrgN6Cv+1JYUylkWk7EhU/4UIHhcTfvc+w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=D6sUQ7AkRhrj3O9TXl462M8zzz/Jmn+VdLMYNCYl1Kb+8MAqQRzJXP7KkkU6Y5Z+F
-	 tyF223QpdJ80Dc4iKMaHoOySOkNMhJupURDnuUc4+qJOPIKQ/GcBo9e0b19zvVC5Ng
-	 s6owfbQPjXGwLS3x/8IVqw30UF8zdCcdzzyabB5bvanssQBBekLR38YZWN2SvPnObo
-	 hccladLLxbFOw0cgXwEeNHDwKjzCKbAl+uR1uHUzQznaJpIgAHGu08UkyMZGeWfhKO
-	 EfCXPCz2a/9yMhv0hei+69+0jh1g1HnyeQ6FLIn71BbyMxQglQMmqntQIRn1RQ4gut
-	 BVzexJu46i3PQ==
-Received: by pali.im (Postfix)
-	id 3281782D; Tue, 26 Jul 2022 13:10:01 +0200 (CEST)
-Date: Tue, 26 Jul 2022 13:10:01 +0200
-From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LsZTW5mqrz2xmc
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jul 2022 21:30:17 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1658835024; x=1690371024;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=nMd8jNyaB5PzW17+xR68zbKTG+hOiEM/RglP+kVbf8A=;
+  b=KvScXiLf0thqW86KFWCalrgkX4VL23kvCQXu3/nA6KILeF5lszXl2Fpp
+   IRjikqVQRr+kJJpZ0Jj2mGq/NIf0hPj6hGVnaqEI7q7kIBoiZ2hDqZGhh
+   yAp3thfJoLEt0gn64clTkllgVrAc5SVgX8Od2TRgXtlpOKlNSm0ydMbBc
+   w8qadnUclSXA1ceVn7Ockk9Szh8f9YvTyfg/ah0W/+R4c/MjmE25S8W/I
+   FFmHo6JcMXimzOG9N0lOdg59jp2PvjuaS8zET3o1GyysDhzbzsC+SpYik
+   yMji8tjWAwMggGhzrrwiz4I/zkqgyYnnmPWXrVZIKxjUobpvIMHoBlAOr
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10419"; a="288686399"
+X-IronPort-AV: E=Sophos;i="5.93,193,1654585200"; 
+   d="scan'208";a="288686399"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jul 2022 04:30:06 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.93,193,1654585200"; 
+   d="scan'208";a="550367367"
+Received: from lkp-server01.sh.intel.com (HELO e0eace57cfef) ([10.239.97.150])
+  by orsmga003.jf.intel.com with ESMTP; 26 Jul 2022 04:30:05 -0700
+Received: from kbuild by e0eace57cfef with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1oGIlI-0006k1-14;
+	Tue, 26 Jul 2022 11:30:04 +0000
+Date: Tue, 26 Jul 2022 19:29:26 +0800
+From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH 5/5] powerpc/pci: Add config option for using all 256 PCI
- buses
-Message-ID: <20220726111001.a2upqf5m5welcla6@pali>
-References: <20220706104308.5390-1-pali@kernel.org>
- <20220706104308.5390-6-pali@kernel.org>
- <20220721222145.rzgthbwoselx2l43@pali>
- <875yjkb0ht.fsf@mpe.ellerman.id.au>
+Subject: [powerpc:fixes-test] BUILD SUCCESS
+ c653c591789b3acfa4bf6ae45d5af4f330e50a91
+Message-ID: <62dfd016.dAvGzDvVbc2LG+w6%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <875yjkb0ht.fsf@mpe.ellerman.id.au>
-User-Agent: NeoMutt/20180716
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,88 +69,143 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nick Child <nick.child@ibm.com>, linux-kernel@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>, =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>, linux-pci@vger.kernel.org, Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tuesday 26 July 2022 21:02:22 Michael Ellerman wrote:
-> Pali Rohár <pali@kernel.org> writes:
-> > On Wednesday 06 July 2022 12:43:08 Pali Rohár wrote:
-> >> By default on PPC32 are PCI bus numbers unique across all PCI domains.
-> >> So system could have only 256 PCI buses independently of available
-> >> PCI domains.
-> >>
-> >> This is due to filling DT property pci-OF-bus-map which does not reflect
-> >> multi-domain setup.
-> >>
-> >> On all powerpc platforms except chrp and powermac there is no DT property
-> >> pci-OF-bus-map anymore and therefore it is possible on non-chrp/powermac
-> >> platforms to avoid this limitation of maximal number of 256 PCI buses in
-> >> system even on multi-domain setup.
-> >>
-> >> But avoiding this limitation would mean that all PCI and PCIe devices would
-> >> be present on completely different BDF addresses as every PCI domain starts
-> >> numbering PCI bueses from zero (instead of the last bus number of previous
-> >> enumerated PCI domain). Such change could break existing software which
-> >> expects fixed PCI bus numbers.
-> >>
-> >> So add a new config option CONFIG_PPC_PCI_BUS_NUM_DOMAIN_DEPENDENT which
-> >> enables this change. By default it is disabled. It cause that initial value
-> >> of hose->first_busno is zero.
-> >>
-> >> Signed-off-by: Pali Rohár <pali@kernel.org>
-> >> ---
-> >>  arch/powerpc/Kconfig         | 11 +++++++++++
-> >>  arch/powerpc/kernel/pci_32.c |  6 ++++++
-> >>  2 files changed, 17 insertions(+)
-> >>
-> >> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> >> index be68c1f02b79..f66084bc1dfe 100644
-> >> --- a/arch/powerpc/Kconfig
-> >> +++ b/arch/powerpc/Kconfig
-> >> @@ -370,6 +370,17 @@ config PPC_DCR
-> >>  	depends on PPC_DCR_NATIVE || PPC_DCR_MMIO
-> >>  	default y
-> >>
-> >> +config PPC_PCI_BUS_NUM_DOMAIN_DEPENDENT
-> >> +	depends on PPC32
-> >> +	depends on !PPC_PMAC && !PPC_CHRP
-> >> +	bool "Assign PCI bus numbers from zero individually for each PCI domain"
-> >> +	help
-> >> +	  By default on PPC32 were PCI bus numbers unique across all PCI domains.
-> >> +	  So system could have only 256 PCI buses independently of available
-> >> +	  PCI domains. When this option is enabled then PCI bus numbers are
-> >> +	  PCI domain dependent and each PCI controller on own domain can have
-> >> +	  256 PCI buses, like it is on other Linux architectures.
-> >> +
-> >
-> > What do you think, would it be possible to set default value of this
-> > option to enabled?
-> 
-> My preference would be to not have the option at all, just make it the
-> default behaviour. Every new CONFIG option adds more combinations that
-> need testing, or more likely don't get well tested.
-> 
-> But I don't have a good feel for what could break if we turn it on, so
-> honestly I don't really know.
-> 
-> Also I do most of my 32-bit testing on pmacs, which are not affected by
-> the change.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
+branch HEAD: c653c591789b3acfa4bf6ae45d5af4f330e50a91  drm/amdgpu: Re-enable DCN for 64-bit powerpc
 
-It is because this change is incompatible with deprecated pci-OF-bus-map
-which pmac uses. I do not have any pmac box for testing or development,
-so I let this part as is.
+elapsed time: 727m
 
-If one day pci-OF-bus-map would be possible to disable on pmac then this
-pci bus number change can be enabled also for pmac.
+configs tested: 117
+configs skipped: 4
 
-> So I'll probably take the series as-is, and then we can do some more
-> widespread testing and possibly flip the default to enabled, and then
-> maybe remove the option entirely in future.
-> 
-> cheers
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-I have tested it on P2020 board with 3 PCIe devices, each on own bus
-where each bus is connected to different PCIe controller / domain and it
-works correctly. Every PCIe device is on bus 1 bus but on different
-domains.
+gcc tested configs:
+arm64                            allyesconfig
+arm                                 defconfig
+arm                              allyesconfig
+powerpc              randconfig-c003-20220724
+i386                          randconfig-c001
+sh                   sh7724_generic_defconfig
+arm                         s3c6400_defconfig
+m68k                       m5249evb_defconfig
+arm                       multi_v4t_defconfig
+mips                     loongson1b_defconfig
+m68k                          multi_defconfig
+xtensa                          iss_defconfig
+arc                      axs103_smp_defconfig
+m68k                            mac_defconfig
+sh                            shmin_defconfig
+parisc                generic-32bit_defconfig
+mips                         rt305x_defconfig
+loongarch                 loongson3_defconfig
+alpha                               defconfig
+loongarch                           defconfig
+powerpc                 mpc85xx_cds_defconfig
+arm                             ezx_defconfig
+mips                             allmodconfig
+sh                             espt_defconfig
+m68k                                defconfig
+mips                           gcw0_defconfig
+mips                         tb0226_defconfig
+sh                     sh7710voipgw_defconfig
+sparc                             allnoconfig
+powerpc                    adder875_defconfig
+sh                          polaris_defconfig
+m68k                          atari_defconfig
+mips                 decstation_r4k_defconfig
+powerpc                      tqm8xx_defconfig
+powerpc                     tqm8555_defconfig
+mips                      fuloong2e_defconfig
+arm                        oxnas_v6_defconfig
+sparc                               defconfig
+m68k                         amcore_defconfig
+nios2                         10m50_defconfig
+s390                                defconfig
+s390                             allmodconfig
+arc                                 defconfig
+s390                             allyesconfig
+arm64                               defconfig
+ia64                             allyesconfig
+arm                              allmodconfig
+ia64                                defconfig
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+riscv                    nommu_k210_defconfig
+riscv                             allnoconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+loongarch                         allnoconfig
+ia64                             allmodconfig
+csky                              allnoconfig
+alpha                             allnoconfig
+arc                               allnoconfig
+m68k                             allyesconfig
+m68k                             allmodconfig
+arc                              allyesconfig
+alpha                            allyesconfig
+powerpc                           allnoconfig
+mips                             allyesconfig
+powerpc                          allmodconfig
+sh                               allmodconfig
+i386                             allyesconfig
+i386                                defconfig
+x86_64                        randconfig-a006
+x86_64                        randconfig-a004
+x86_64                        randconfig-a002
+i386                          randconfig-a003
+i386                          randconfig-a001
+i386                          randconfig-a005
+x86_64                        randconfig-a011
+x86_64                        randconfig-a013
+x86_64                        randconfig-a015
+i386                          randconfig-a012
+i386                          randconfig-a014
+i386                          randconfig-a016
+s390                 randconfig-r044-20220724
+riscv                randconfig-r042-20220724
+arc                  randconfig-r043-20220724
+s390                 randconfig-r044-20220726
+riscv                randconfig-r042-20220726
+arc                  randconfig-r043-20220726
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                              defconfig
+x86_64                           allyesconfig
+x86_64                               rhel-8.3
+x86_64                           rhel-8.3-kvm
+x86_64                          rhel-8.3-func
+x86_64                           rhel-8.3-syz
+x86_64                         rhel-8.3-kunit
+
+clang tested configs:
+arm                          moxart_defconfig
+powerpc                      walnut_defconfig
+powerpc                 mpc832x_rdb_defconfig
+arm                         shannon_defconfig
+powerpc               mpc834x_itxgp_defconfig
+powerpc                     powernv_defconfig
+arm                      tct_hammer_defconfig
+x86_64                           allyesconfig
+x86_64                        randconfig-k001
+x86_64                        randconfig-a005
+x86_64                        randconfig-a003
+x86_64                        randconfig-a001
+i386                          randconfig-a002
+i386                          randconfig-a006
+i386                          randconfig-a004
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+x86_64                        randconfig-a016
+i386                          randconfig-a011
+i386                          randconfig-a013
+i386                          randconfig-a015
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
