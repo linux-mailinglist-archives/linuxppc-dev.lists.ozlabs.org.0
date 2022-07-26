@@ -1,75 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB0FA58164A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jul 2022 17:19:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 465DA581684
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jul 2022 17:34:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LsgZL4hmZz3cgh
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Jul 2022 01:19:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LsgvM1l4Jz3cFL
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Jul 2022 01:34:39 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=G3K1g/yF;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=oKbW8vdH;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::730; helo=mail-qk1-x730.google.com; envelope-from=yury.norov@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.43; helo=mga05.intel.com; envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=G3K1g/yF;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=oKbW8vdH;
 	dkim-atps=neutral
-Received: from mail-qk1-x730.google.com (mail-qk1-x730.google.com [IPv6:2607:f8b0:4864:20::730])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LsgYh75Qhz3bmY
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Jul 2022 01:19:18 +1000 (AEST)
-Received: by mail-qk1-x730.google.com with SMTP id m7so11171216qkk.6
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jul 2022 08:19:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=oU/PFM076uQxVNOZcY0Zccr8pXxC8l8aoZK0KtggnV0=;
-        b=G3K1g/yFwuaU8qm6hN080k/NOsnbTDalKmxaoQZxHy0uwGW3EO23D/QO5vfWXNOBSY
-         2Ua82Lrys/l3itci7BrIm9y1Ktc3VjTcJ2fTsb3kX583UaTYzRFMgyYygJLK14l1hjId
-         bzwjsLqS9piEuDFTyeeORGOJJk2aHASWXLqGHBawC77mdo+c3AueS1dxDvicH6Jnor0a
-         DSJOtjsV9kS3hq092jpDTNmQlAVa7BNUgog8EGhe9j+5L3a4VnlHBwszgdsI9is7pEa7
-         wDOpzy9LDFFAc6O45S2vDMJIIi4oHcEFn48pBBWBvhEoB142+tkzftYuAWUQieYMBfss
-         qh4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=oU/PFM076uQxVNOZcY0Zccr8pXxC8l8aoZK0KtggnV0=;
-        b=5um+vv17+vWwYlgMXokw3LFI7zNcPHyZE9eY81bBo8SzJ8jwxIoVYpwM2JFiKLXsgg
-         EgihSd8vcfVzJHTOS+1GO7kX6ArN8bgVyjM4ozWA7gXGmhepNOxNt+v7wlB8SgsjeUqi
-         3BMAKIYkIn3AOAR444UwnKjEPHPJ0WWmFKdjnHSisndcYJwIq0fUczheBXWxHYWuv+te
-         bxvEAc0IqG+5x+yKuyaH2suG3J2RjRmHc362kxuJcn6tD31kvt/t6iHgSncVfYQEl8a2
-         esBhu5MHmcVFkfZK3ohLHIVPzeS2IxMVzZ1pAnuttuMJjB5LZNXP7JJx7V5ugqQUR4P3
-         qiJw==
-X-Gm-Message-State: AJIora+48jAQbDQ7bRkboJXCE29DTqmR8g7kSKQrSD/22o+uu1acRuXb
-	MYnhrRwXmIaruNTrdSI5nTs=
-X-Google-Smtp-Source: AGRyM1u3LM6n0ZHE1JaFrgS+gI2RKjPyiDakaF7wBubPavR1Lo9pw7bdraLDdnmDkZ/HgCUX95FYHA==
-X-Received: by 2002:a05:620a:370b:b0:6b6:d59:fcab with SMTP id de11-20020a05620a370b00b006b60d59fcabmr13593141qkb.564.1658848755222;
-        Tue, 26 Jul 2022 08:19:15 -0700 (PDT)
-Received: from localhost (c-69-254-185-160.hsd1.fl.comcast.net. [69.254.185.160])
-        by smtp.gmail.com with ESMTPSA id w5-20020ac86b05000000b00304bc2acc25sm9223681qts.6.2022.07.26.08.19.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Jul 2022 08:19:12 -0700 (PDT)
-Date: Tue, 26 Jul 2022 08:19:09 -0700
-From: Yury Norov <yury.norov@gmail.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH 1/2] powerpc: drop dependency on <asm/machdep.h> in
- archrandom.h
-Message-ID: <YuAF7ahr58HjMqXs@yury-laptop>
-References: <20220723214537.2054208-1-yury.norov@gmail.com>
- <20220723214537.2054208-2-yury.norov@gmail.com>
- <CAHp75VfOmN=cTEs7gbwxZ7W3hXjBo67N4AmHHiDfcVfFzHkMLA@mail.gmail.com>
- <Yt7CJj8r3eo05pKd@yury-laptop>
- <87edy8bbtp.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lsgtg2hwlz3bbQ
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Jul 2022 01:34:00 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1658849643; x=1690385643;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=5I+V662NLC2jjOM/6eWnzGMznOWDTJj0WWANyuaqAc4=;
+  b=oKbW8vdHVyGBqnOKwdc0AEB2JVeS+55k7aJQfu8SJzb+G/pm5wTk+TJi
+   zWHDXY4ZEbr2s3trOVpgGMNlf8m/mV8X2OZ6971M4/bx/iwKn1MGkQ+Ie
+   YuwN0HLdwDs0e5YPvPy3Ds4+qPWn9uzDQbfKXjO9lW/hQqYZtmtypkRNJ
+   DTTi9gCK3fkXIPJxQy3UPcFhG9W0LojveZMLMvhQ3pn3ysYpZFDF07zoX
+   vPJKZ0UwHuWAksKbROZWvvWftxnAsDcnPmbr2K9OPTPClJvCvJlUJY2jk
+   68CLEU2jL2YaQg7zPkxkzM1mwryXffzXlaaIOtaMu2dk9cJSynGBC0vA+
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10420"; a="374284434"
+X-IronPort-AV: E=Sophos;i="5.93,193,1654585200"; 
+   d="scan'208";a="374284434"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jul 2022 08:33:55 -0700
+X-IronPort-AV: E=Sophos;i="5.93,193,1654585200"; 
+   d="scan'208";a="927378192"
+Received: from arianrah-mobl2.amr.corp.intel.com (HELO [10.251.20.146]) ([10.251.20.146])
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jul 2022 08:33:54 -0700
+Message-ID: <b41d1840-b726-2caa-5bc8-69c3aeb230cf@linux.intel.com>
+Date: Tue, 26 Jul 2022 08:33:54 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87edy8bbtp.fsf@mpe.ellerman.id.au>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Firefox/91.0 Thunderbird/91.11.0
+Subject: Re: [PATCH v2] PCI/ERR: Use pcie_aer_is_native() to judge whether OS
+ owns AER
+Content-Language: en-US
+To: Zhuo Chen <chenzhuo.1@bytedance.com>, ruscur@russell.cc,
+ oohall@gmail.com, bhelgaas@google.com
+References: <20220726020527.99816-1-chenzhuo.1@bytedance.com>
+From: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <20220726020527.99816-1-chenzhuo.1@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,58 +69,95 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>, "Jason A. Donenfeld" <Jason@zx2c4.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Andy Shevchenko <andy.shevchenko@gmail.com>, Paul Mackerras <paulus@samba.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, "open list:LINUX FOR POWERPC PA SEMI PWRFICIENT" <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-pci@vger.kernel.org, stuart.w.hayes@gmail.com, linux-kernel@vger.kernel.org, lukas@wunner.de, jan.kiszka@siemens.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 26, 2022 at 04:57:38PM +1000, Michael Ellerman wrote:
-> Yury Norov <yury.norov@gmail.com> writes:
-> > On Mon, Jul 25, 2022 at 09:28:12AM +0200, Andy Shevchenko wrote:
-> >> On Sun, Jul 24, 2022 at 12:19 AM Yury Norov <yury.norov@gmail.com> wrote:
-> >> >
-> >> > archrandom.h includes <asm/machdep.h> to refer ppc_md. This causes
-> >> > circular header dependency, if generic nodemask.h  includes random.h:
-> >> >
-> >> > In file included from include/linux/cred.h:16,
-> >> >                  from include/linux/seq_file.h:13,
-> >> >                  from arch/powerpc/include/asm/machdep.h:6,
-> >> >                  from arch/powerpc/include/asm/archrandom.h:5,
-> >> >                  from include/linux/random.h:109,
-> >> >                  from include/linux/nodemask.h:97,
-> >> >                  from include/linux/list_lru.h:12,
-> >> >                  from include/linux/fs.h:13,
-> >> >                  from include/linux/compat.h:17,
-> >> >                  from arch/powerpc/kernel/asm-offsets.c:12:
-> >> > include/linux/sched.h:1203:9: error: unknown type name 'nodemask_t'
-> >> >  1203 |         nodemask_t                      mems_allowed;
-> >> >       |         ^~~~~~~~~~
-> >> >
-> >> > Fix it by removing <asm/machdep.h> dependency from archrandom.h
-> >> 
-> >> ...
-> >> 
-> >> >  EXPORT_SYMBOL_GPL(pm_power_off);
-> >> 
-> >> ^^^ (Note this and read below)
-> >> 
-> >> ...
-> >> 
-> >> > +EXPORT_SYMBOL(arch_get_random_seed_long);
-> >> 
-> >> It can't be like this. Brief browsing of the callees shows that.
-> >
-> > Is my understanding correct that you're suggesting to make it GPL?
-> >
-> > ppc_md is exported with EXPORT_SYMBOL(), and the function is in header,
-> > so it's available for non-GPL code now. I don't want to change it.
-> 
-> That's true, your change maintains the status quo.
-> 
-> But I think we actually don't need it exported to modules, I think it's
-> a private detail of the RNG <-> architecture interface, not something
-> that modules should be calling.
-> 
-> So I think it's OK to drop the EXPORT_SYMBOL, either in this patch or a
-> subsequent one if you don't want to rebase.
 
-OK, changed.
+
+On 7/25/22 7:05 PM, Zhuo Chen wrote:
+> The AER status of the device that reported the error rather than
+> the first downstream port is cleared after commit 7d7cbeaba5b7
+> ("PCI/ERR: Clear status of the reporting device"). So "a bridge
+> may not exist" which commit aa344bc8b727 ("PCI/ERR: Clear AER
+> status only when we control AER") referring to is no longer
+> existent, and we just use pcie_aer_is_native() in stead of
+> "host->native_aer || pcie_ports_native".
+
+IMO, above history is not required to justify using pcie_aer_is_native()
+in place of "host->native_aer || pcie_ports_native".
+
+> 
+> pci_aer_clear_nonfatal_status() already has pcie_aer_is_native(),
+> so we move pci_aer_clear_nonfatal_status() out of
+> pcie_aer_is_native().
+
+Moving it outside (pcie_aer_is_native()) does not optimize the
+code. So I think it is better to leave it inside.
+
+> 
+> Replace statements that judge whether OS owns AER in
+> get_port_device_capability() with pcie_aer_is_native(), which has
+> no functional changes.
+> 
+> Signed-off-by: Zhuo Chen <chenzhuo.1@bytedance.com>
+> ---
+> v2:
+> - Add details and note in commit log
+> ---
+>  drivers/pci/pcie/err.c          | 12 ++----------
+>  drivers/pci/pcie/portdrv_core.c |  3 +--
+>  2 files changed, 3 insertions(+), 12 deletions(-)
+> 
+> diff --git a/drivers/pci/pcie/err.c b/drivers/pci/pcie/err.c
+> index 0c5a143025af..28339c741555 100644
+> --- a/drivers/pci/pcie/err.c
+> +++ b/drivers/pci/pcie/err.c
+> @@ -184,7 +184,6 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
+>  	int type = pci_pcie_type(dev);
+>  	struct pci_dev *bridge;
+>  	pci_ers_result_t status = PCI_ERS_RESULT_CAN_RECOVER;
+> -	struct pci_host_bridge *host = pci_find_host_bridge(dev->bus);
+>  
+>  	/*
+>  	 * If the error was detected by a Root Port, Downstream Port, RCEC,
+> @@ -237,16 +236,9 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
+>  	pci_dbg(bridge, "broadcast resume message\n");
+>  	pci_walk_bridge(bridge, report_resume, &status);
+>  
+> -	/*
+> -	 * If we have native control of AER, clear error status in the device
+> -	 * that detected the error.  If the platform retained control of AER,
+> -	 * it is responsible for clearing this status.  In that case, the
+> -	 * signaling device may not even be visible to the OS.
+> -	 */
+
+The above comment is still applicable. So I think you don't need to remove it.
+
+> -	if (host->native_aer || pcie_ports_native) {
+> +	if (pcie_aer_is_native(dev))
+>  		pcie_clear_device_status(dev);
+> -		pci_aer_clear_nonfatal_status(dev);
+> -	}
+> +	pci_aer_clear_nonfatal_status(dev);
+>  	pci_info(bridge, "device recovery successful\n");
+>  	return status;
+>  
+> diff --git a/drivers/pci/pcie/portdrv_core.c b/drivers/pci/pcie/portdrv_core.c
+> index 604feeb84ee4..98c18f4a01b2 100644
+> --- a/drivers/pci/pcie/portdrv_core.c
+> +++ b/drivers/pci/pcie/portdrv_core.c
+> @@ -221,8 +221,7 @@ static int get_port_device_capability(struct pci_dev *dev)
+>  	}
+>  
+>  #ifdef CONFIG_PCIEAER
+> -	if (dev->aer_cap && pci_aer_available() &&
+> -	    (pcie_ports_native || host->native_aer)) {
+> +	if (pcie_aer_is_native(dev) && pci_aer_available()) {
+>  		services |= PCIE_PORT_SERVICE_AER;
+>  
+>  		/*
+
+-- 
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
