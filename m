@@ -1,100 +1,37 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31D19581451
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jul 2022 15:39:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55D4F581467
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jul 2022 15:45:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LsdLK16xrz3c4W
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jul 2022 23:39:21 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RDOWtdst;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fnPNX4CC;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LsdTn1cvwz3cjJ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jul 2022 23:45:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=javierm@redhat.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RDOWtdst;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fnPNX4CC;
-	dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LsdKd4XTvz3bd5
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jul 2022 23:38:45 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1658842722;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+Adj4jrU1SP5osnWw1jwoXpRrBSvPiISvLrv57eggvs=;
-	b=RDOWtdstZoZ5QI2vQ4r6lAtNgf1PnWf1hM0LhDm+hbEJwxCr/qS5CPsml6FpNNQ2/Eq7LQ
-	DOk6WQaJF7BZcCu5l3hFBZinkBBPKTu2F2gHgswyx6qSdAflab2Wv8a4EOzYsaBslcu2SG
-	3soNNh7tRd8gehutGJe2+fJDaygnRnE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1658842723;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+Adj4jrU1SP5osnWw1jwoXpRrBSvPiISvLrv57eggvs=;
-	b=fnPNX4CCj6+7S4r6/ULLOV79jQE4hmEflgZXvrthOvtecVNMs7jdVIJuSiL0m/SeEd7TPQ
-	BujIcruOzIvnalDj4ZDSgAhBYeQ1EaV9LcqycHGs7DRUhwLOoINZI+B2duJkqr/bZPKDod
-	Xx/m8God8+wDEnTukvfxZOJ5pl2of40=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-614-9bWMqnSONDKB7iY2egFo2Q-1; Tue, 26 Jul 2022 09:38:41 -0400
-X-MC-Unique: 9bWMqnSONDKB7iY2egFo2Q-1
-Received: by mail-wr1-f71.google.com with SMTP id c7-20020adfc6c7000000b0021db3d6961bso2138188wrh.23
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jul 2022 06:38:40 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=+Adj4jrU1SP5osnWw1jwoXpRrBSvPiISvLrv57eggvs=;
-        b=LSuXGwEIT5exSGHJCm0qH5aO8mpkkC1FFG4ymD4ylNE+FWf1dx9M/Sr3HV5W10Q9/I
-         rSByJHT7xZ2sSGOedCyoah0QLiNd47XXdMTnNYW7QsGCt4XRXLYNA0HDyo5C1i6Dusao
-         ez2i4IuwYFbHc93R0HHhMWLzUhBLGmEJ8ymTfyYXwyRHuYCFgaCRF53qGHMQUMYim84m
-         8D8YDB8POyqsxiQY/36Jr+FT5VWlYAcW4v7SQhpXIU5gnpau6rHdZyZRF5vBLwSDgPyo
-         pGp5vTmFwCo+BY2dkwq2HvtnEN0kTdSaarnYUg3+YkcZnFfSVjqzSQ71Bp0L3QvT3Ezn
-         JGzA==
-X-Gm-Message-State: AJIora+XQYxSea4oMnJ11rwBbyOv7X1m6F/YPGxDh9JB4SrVD5Vh3g2l
-	C7cSr2bG8CZpDcZ70y/NqibOd4v+s4h951y8uGkuBdawfnnCKMZ7ERFs2+/K6D7QBsq3hkiG0N+
-	2r+JcHqJPSr12NtCHetVi66V88Q==
-X-Received: by 2002:a05:6000:1541:b0:21d:b298:96be with SMTP id 1-20020a056000154100b0021db29896bemr10656797wry.206.1658842719914;
-        Tue, 26 Jul 2022 06:38:39 -0700 (PDT)
-X-Google-Smtp-Source: AGRyM1vn5gO3Bopg+51fzCZTQS+LUztnjj2PQ5ldn7oubUEVRSuljc6/I3CCwqkTlMx6jNch/xeE8g==
-X-Received: by 2002:a05:6000:1541:b0:21d:b298:96be with SMTP id 1-20020a056000154100b0021db29896bemr10656771wry.206.1658842719436;
-        Tue, 26 Jul 2022 06:38:39 -0700 (PDT)
-Received: from [192.168.1.130] (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
-        by smtp.gmail.com with ESMTPSA id 5-20020a05600c248500b003a3279b9037sm21045175wms.16.2022.07.26.06.38.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 26 Jul 2022 06:38:39 -0700 (PDT)
-Message-ID: <7b1a2807-59c7-d524-af8e-1ec634c740a7@redhat.com>
-Date: Tue, 26 Jul 2022 15:38:37 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH v2 09/10] drm/ofdrm: Add per-model device function
-To: Thomas Zimmermann <tzimmermann@suse.de>, airlied@linux.ie,
- daniel@ffwll.ch, deller@gmx.de, maxime@cerno.tech, sam@ravnborg.org,
- msuchanek@suse.de, mpe@ellerman.id.au, benh@kernel.crashing.org,
- paulus@samba.org, geert@linux-m68k.org, mark.cave-ayland@ilande.co.uk
-References: <20220720142732.32041-1-tzimmermann@suse.de>
- <20220720142732.32041-10-tzimmermann@suse.de>
-From: Javier Martinez Canillas <javierm@redhat.com>
-In-Reply-To: <20220720142732.32041-10-tzimmermann@suse.de>
-Authentication-Results: relay.mimecast.com;
-	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=javierm@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LsdTJ4ZtNz3bZY
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jul 2022 23:45:23 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 26QDi6KA001944;
+	Tue, 26 Jul 2022 08:44:06 -0500
+Received: (from segher@localhost)
+	by gate.crashing.org (8.14.1/8.14.1/Submit) id 26QDi53k001943;
+	Tue, 26 Jul 2022 08:44:05 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
+Date: Tue, 26 Jul 2022 08:44:05 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Arnd Bergmann <arnd@arndb.de>
+Subject: Re: Regression: Linux v5.15+ does not boot on Freescale P2020
+Message-ID: <20220726134405.GX25951@gate.crashing.org>
+References: <20220722090929.mwhmxxdd7yioxqpz@pali> <6b227478-73b8-2a97-1c78-89570d928739@csgroup.eu> <20220723150702.jecerkhxhy65dgww@pali> <875yjld2oe.fsf@mpe.ellerman.id.au> <20220725125256.cg6su4d2ageylvp6@pali> <e2487668-b6d9-9ddb-1bb4-9f4d37fae1a7@csgroup.eu> <20220725201009.gwuchzswcqaxntrk@pali> <20220725215416.GV25951@gate.crashing.org> <20220726083406.tcjvny6d2di6q7ar@pali> <CAK8P3a2iM+RoySWEC2e0==rwBSVrZoRa8c4ADyFNB24JZM=hkw@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAK8P3a2iM+RoySWEC2e0==rwBSVrZoRa8c4ADyFNB24JZM=hkw@mail.gmail.com>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -106,35 +43,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-fbdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, dri-devel@lists.freedesktop.org
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 7/20/22 16:27, Thomas Zimmermann wrote:
-> Add a per-model device-function structure in preparation of adding
-> color-management support. Detection of the individual models has been
-> taken from fbdev's offb.
+On Tue, Jul 26, 2022 at 11:02:59AM +0200, Arnd Bergmann wrote:
+> On Tue, Jul 26, 2022 at 10:34 AM Pali Rohár <pali@kernel.org> wrote:
+> > On Monday 25 July 2022 16:54:16 Segher Boessenkool wrote:
+> > > The EH field in larx insns is new since ISA 2.05, and some ISA 1.x cpu
+> > > implementations actually raise an illegal insn exception on EH=1.  It
+> > > appears P2020 is one of those.
+> >
+> > P2020 has e500 cores. e500 cores uses ISA 2.03. So this may be reason.
+> > But in official Freescale/NXP documentation for e500 is documented that
+> > lwarx supports also eh=1. Maybe it is not really supported.
+> > https://www.nxp.com/files-static/32bit/doc/ref_manual/EREF_RM.pdf (page 562)
+
+(page 6-186)
+
+> > At least there is NOTE:
+> > Some older processors may treat EH=1 as an illegal instruction.
+
+And the architecture says
+  Programming Note
+  Warning: On some processors that comply with versions of the
+  architecture that precede Version 2.00, executing a Load And Reserve
+  instruction in which EH = 1 will cause the illegal instruction error
+  handler to be invoked.
+
+> In commit d6ccb1f55ddf ("powerpc/85xx: Make sure lwarx hint isn't set on ppc32")
+> this was clarified to affect (all?) e500v1/v2,
+
+  e500v1/v2 based chips will treat any reserved field being set in an
+  opcode as illegal.
+
+while the architecture says
+
+  Reserved fields in instructions are ignored by the processor.
+
+Whoops :-)  We need fixes for processor implementation bugs all the
+time of course, but this is a massive *design* bug.  I'm surprised this
+CPU still works as well as it does!
+
+Even the venerable PEM (last updated in 1997) shows the EH field as
+reserved, always treated as 0.
+
+> this one apparently
+> fixed it before,
+> but Christophe's commit effectively reverted that change.
 > 
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> ---
+> I think only the simple_spinlock.h file actually uses EH=1
 
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+That's right afaics.
 
-[...]
+> and this is not
+> included in non-SMP kernels, so presumably the only affected machines were
+> the rare dual-core e500v2 ones (p2020, MPC8572, bsc9132), which would
+> explain why nobody noticed for the past 9 months.
 
-> +static bool is_avivo(__be32 vendor, __be32 device)
-> +{
-> +	/* This will match most R5xx */
-> +	return (vendor == 0x1002) &&
-> +	       ((device >= 0x7100 && device < 0x7800) || (device >= 0x9400));
-> +}
+Also people using an SMP kernel on older cores should see the problem,
+no?  Or is that patched out?  Or does this use case never happen :-)
 
-Maybe add some constant macros to not have these magic numbers ?
 
--- 
-Best regards,
-
-Javier Martinez Canillas
-Linux Engineering
-Red Hat
-
+Segher
