@@ -2,51 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA2C15808D8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jul 2022 02:56:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B13B5580908
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jul 2022 03:32:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LsJQF4kn3z3c9W
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jul 2022 10:56:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LsKCB4h1Qz3bnM
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jul 2022 11:32:06 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=kWgG78BP;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mdtFhrk5;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LsJPh3Fxgz3bYS
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jul 2022 10:56:08 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.100; helo=mga07.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=kWgG78BP;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mdtFhrk5;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LsJPh01Psz4x1T;
-	Tue, 26 Jul 2022 10:56:07 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1658796968;
-	bh=XM/sSLZCdmxU7N0ibsdjeo384f6+QLdmjSl5hrtE3HY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=kWgG78BPwfOqjitCUhFJ1j7aQuatzG1Kzsf+7936A1WLUoNMph3bVIxIlABiTDJEJ
-	 hIIcGB/y8AFSlwe/+vhMtJcBEakfJHeQb/EPEh1G7QM8Fj1g7kmD4E4rDvBAscAEEQ
-	 Y9m7YoapBqwumAnrkXpPVFp4iTJcszdtuCXUjKZ3zAyIkxhYTxrIpZQ+9viWvCIJZN
-	 Lo+0ODKIoi8+wOoWZGyX2w81RnbtPvoDX+kaetTWOCl8t08KBgIfEZU4r9ji6GmqBD
-	 XC9xzCTHZvgPJML2QJUKrzkpJdrABgL2gtRQwE/S/p+qpY1A+EQDJrveHxPMK7Qwkp
-	 zoGf02DW07bSw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [PATCH] drm/amdgpu: Re-enable DCN for 64-bit powerpc
-In-Reply-To: <CAHk-=wihON4Ytte5zLHWNQtTapUvCpkToxY06OjX-_2B+Gq6Gg@mail.gmail.com>
-References: <20220725123918.1903255-1-mpe@ellerman.id.au>
- <CAHk-=wihON4Ytte5zLHWNQtTapUvCpkToxY06OjX-_2B+Gq6Gg@mail.gmail.com>
-Date: Tue, 26 Jul 2022 10:56:07 +1000
-Message-ID: <87k080bsk8.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LsKBZ3nNbz3bXD
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jul 2022 11:31:28 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1658799094; x=1690335094;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Yr5YSpGGK/3MLQ99yHTzY1I/V2RzRRHlWzdzAj9OArM=;
+  b=mdtFhrk5RU/G1YvptgALekqwzJsM6M7S5PH709TmMqmCR5/3014EgBSo
+   9oqSqGmdLwMHxwD2ajhukqcylcwoQJLg8nFSz8skMRpF4OkKVHYIOjCX3
+   25GXTRz0P9+KINA2OJXXZSmYoHJWIv9B0YPjze8QEdZH0TPyv/eMt4di8
+   8nF7TKEKoIgRh9iujUzITjKmYPrFenEcmAqysc6OswX9bH2DqNSlk/8Jg
+   okC28UapTAHQnhRBZlCdM12hdp9neLHITfhYxsmrNAKc1+/8ICHutv8+2
+   llXlmxUqLNf7Gx8FLQ0ryEY8NnTpBTHWdK624q4b3gYwPVcK+3xI4jfkF
+   w==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10419"; a="351827044"
+X-IronPort-AV: E=Sophos;i="5.93,193,1654585200"; 
+   d="scan'208";a="351827044"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jul 2022 18:31:23 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.93,193,1654585200"; 
+   d="scan'208";a="632561974"
+Received: from lkp-server01.sh.intel.com (HELO e0eace57cfef) ([10.239.97.150])
+  by orsmga001.jf.intel.com with ESMTP; 25 Jul 2022 18:31:22 -0700
+Received: from kbuild by e0eace57cfef with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1oG9Pt-0005nE-1Z;
+	Tue, 26 Jul 2022 01:31:21 +0000
+Date: Tue, 26 Jul 2022 09:31:10 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:merge] BUILD SUCCESS
+ e1b85275d37739ed5d9be41eab1116b759f83391
+Message-ID: <62df43de.qexgoZAbA4YVdQWb%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,37 +69,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dan@danny.cz, linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org, tpearson@raptorengineering.com, alexdeucher@gmail.com, linuxppc-dev@lists.ozlabs.org, linux@roeck-us.net
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Linus Torvalds <torvalds@linux-foundation.org> writes:
-> On Mon, Jul 25, 2022 at 5:39 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
->>
->> Further digging shows that the build failures only occur with compilers
->> that default to 64-bit long double.
->
-> Where the heck do we have 'long double' things anywhere in the kernel?
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
+branch HEAD: e1b85275d37739ed5d9be41eab1116b759f83391  Automatic merge of 'korg/next' into merge (2022-07-25 22:54)
 
-There's one or two uses, but not in any code that's relevant to this
-issue AFAICS.
+elapsed time: 722m
 
-> I tried to grep for it, and failed miserably. I found some constants
-> that would qualify, but they were in the v4l colorspaces-details.rst
-> doc file.
->
-> Strange.
+configs tested: 63
+configs skipped: 2
 
-It doesn't seem to matter if you use long double or not. It's just that
-if the long double size is 64-bits the linker refuses to link a mixture
-of soft/hard-float objects.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-The 64-bit ABI says long double is 128-bits, so the compilers that are
-using 64-bit long double are either not built correctly, or we are not
-passing the correct flags to them.
+gcc tested configs:
+arm                                 defconfig
+arm                              allyesconfig
+arm64                            allyesconfig
+arc                        vdk_hs38_defconfig
+ia64                            zx1_defconfig
+powerpc                   currituck_defconfig
+ia64                             allmodconfig
+arc                               allnoconfig
+alpha                             allnoconfig
+riscv                             allnoconfig
+csky                              allnoconfig
+arc                              allyesconfig
+alpha                            allyesconfig
+m68k                             allmodconfig
+m68k                             allyesconfig
+powerpc                           allnoconfig
+sh                               allmodconfig
+mips                             allyesconfig
+powerpc                          allmodconfig
+i386                                defconfig
+i386                             allyesconfig
+i386                          randconfig-a001
+i386                          randconfig-a003
+i386                          randconfig-a005
+x86_64                        randconfig-a013
+x86_64                        randconfig-a011
+x86_64                        randconfig-a015
+i386                          randconfig-a014
+i386                          randconfig-a012
+i386                          randconfig-a016
+arc                  randconfig-r043-20220724
+riscv                randconfig-r042-20220724
+s390                 randconfig-r044-20220724
+x86_64                        randconfig-a002
+x86_64                        randconfig-a004
+x86_64                        randconfig-a006
+um                             i386_defconfig
+um                           x86_64_defconfig
+x86_64                           rhel-8.3-kvm
+x86_64                          rhel-8.3-func
+x86_64                         rhel-8.3-kunit
+x86_64                    rhel-8.3-kselftests
+x86_64                           rhel-8.3-syz
+x86_64                              defconfig
+x86_64                           allyesconfig
+x86_64                               rhel-8.3
 
-There's an -mlong-double-128 flag which we can pass at build time which
-seems to do the right thing, I will probably add that to the kernel
-CFLAGS, but I want that to get a bit more testing.
+clang tested configs:
+arm                          moxart_defconfig
+powerpc                      walnut_defconfig
+powerpc                 mpc832x_rdb_defconfig
+i386                          randconfig-a002
+i386                          randconfig-a004
+i386                          randconfig-a006
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+x86_64                        randconfig-a016
+i386                          randconfig-a013
+i386                          randconfig-a011
+i386                          randconfig-a015
+hexagon              randconfig-r041-20220724
+hexagon              randconfig-r045-20220724
+x86_64                        randconfig-a001
+x86_64                        randconfig-a003
+x86_64                        randconfig-a005
 
-cheers
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
