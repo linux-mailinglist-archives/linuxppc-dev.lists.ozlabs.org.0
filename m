@@ -1,71 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8349580942
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jul 2022 04:06:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1FE9580993
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jul 2022 04:40:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LsKyZ3nLLz3cdw
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jul 2022 12:06:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LsLkK5fS6z3c4K
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jul 2022 12:40:41 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bytedance-com.20210112.gappssmtp.com header.i=@bytedance-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=nTioK+/s;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=M5UeYee0;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bytedance.com (client-ip=2607:f8b0:4864:20::533; helo=mail-pg1-x533.google.com; envelope-from=chenzhuo.1@bytedance.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bytedance-com.20210112.gappssmtp.com header.i=@bytedance-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=nTioK+/s;
-	dkim-atps=neutral
-Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com [IPv6:2607:f8b0:4864:20::533])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LsKxy5VrHz30LS
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jul 2022 12:05:40 +1000 (AEST)
-Received: by mail-pg1-x533.google.com with SMTP id 23so11905141pgc.8
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Jul 2022 19:05:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance-com.20210112.gappssmtp.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=PcLN0/0rRk3ozwmqISVR6hRqPCsf6L35JebQehRi1LA=;
-        b=nTioK+/s3DBU4jhK/bp6W9HoNaLbn9VTPFlcs/nnOeaSY3yYsAwlorbKuiVR7waFli
-         AxujWyUJgbFWM1RSWzgWAot6NAd4pZCKLsDvc0HoF7s+VR5bgVgLdNXLJPLxIyzHIRK4
-         dZTAKNdgCB93tMvwtYmp03T0eThljIHTh6fSfcaZulw0c/dHrvS+dfJJOU2Vek4SJ9P9
-         RIm02AJVXfyvtCeoZx6qBZIxr8dWPSUmMt8ey9XYpzEl4vsh4ETs7Jwhzi3CAIH58g4Z
-         je5gG6n2jX+D76groH6t8w6Ym4ZwYL7z4ZhI/ZxwWmin5anmjrCyI5e1VsfJpb2RWXti
-         1jiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=PcLN0/0rRk3ozwmqISVR6hRqPCsf6L35JebQehRi1LA=;
-        b=SYAV4ZE3H+b9ZY9vKQIVdGFJlDS9WSESlahLhrCBL2zsGQPNAXx4WRctGNM+1LrOep
-         83FlKNiHH2CRdi9nqDtND9IFhJShoGDIIfAN9pyXJ+ZMl/b+1yCZ/8aNEUhdl9vxNhZR
-         iXWo3WCcCVIAUT/BJnuJumiWiQcv9lnXKGLRJWweejwbr1jSUogLBo7eH4sFr+5AIuEt
-         XuhB1ZczmQ9M6QGoP2L/IWIPD9T5BsconjF5uo3M7Lc6gIiuwwYg/HMCAycXbT9nNPrN
-         V9zkmnk3N2Ap0U+Sr6NcZgxvMnAbkgm+4vjQ5Kv7TV/49fCn7WhQ80KUsHlOWYn6XEy2
-         34gA==
-X-Gm-Message-State: AJIora9My3p+A92QgR75zKYkY7enLQl+9c96AsEO6za12CNQPgzn16CZ
-	kOsjeN71y7LDgM3ouZ+uhY+ItQ==
-X-Google-Smtp-Source: AGRyM1tN5cI8PLb9GQMnAmTK897rbjPgqmQUBbRdtqBmGzc3THxBtOvtBkrHDhPlskpkikFyhQ/6Lw==
-X-Received: by 2002:a62:7bd7:0:b0:52b:1d57:e098 with SMTP id w206-20020a627bd7000000b0052b1d57e098mr15017966pfc.19.1658801138825;
-        Mon, 25 Jul 2022 19:05:38 -0700 (PDT)
-Received: from C02F63J9MD6R.bytedance.net ([61.120.150.78])
-        by smtp.gmail.com with ESMTPSA id f4-20020a170902684400b0016bdf0032b9sm9834200pln.110.2022.07.25.19.05.34
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 25 Jul 2022 19:05:38 -0700 (PDT)
-From: Zhuo Chen <chenzhuo.1@bytedance.com>
-To: ruscur@russell.cc,
-	oohall@gmail.com,
-	bhelgaas@google.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: [PATCH v2] PCI/ERR: Use pcie_aer_is_native() to judge whether OS owns AER
-Date: Tue, 26 Jul 2022 10:05:27 +0800
-Message-Id: <20220726020527.99816-1-chenzhuo.1@bytedance.com>
-X-Mailer: git-send-email 2.30.1 (Apple Git-130)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LsLjm0Wsdz30Qc
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jul 2022 12:40:12 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=M5UeYee0;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LsLjk21fwz4x1b;
+	Tue, 26 Jul 2022 12:40:10 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+	s=201702; t=1658803210;
+	bh=ffPbgwsAiF6f9gP1BoTJ3ZTtIV+bTqNsS3kxf/UFcWw=;
+	h=Date:From:To:Cc:Subject:From;
+	b=M5UeYee0MWczs8lgpT3Vk8LfoKOOdhOcWp6UMYFbcCHdDxjYwJuBvcYY7ed9S0tZ9
+	 uUo9byHDPa62dNhC93lFDoyTs8dCZVSJrbchzbZuVIXCI+KmUyD/5prLb1b+tJque8
+	 bfnN2U3tLw/TkMLXl0jj/BOUSFfWEZFhS/Rtx9+QY4dgY26vRvmFbK/FToemLmYdcD
+	 ph5qIE4EIcllZ0v/HsCyMGLSlaAgH0GOUAT4U/ZzVHkijhlxKL9IeQ9ptYJYHiyQ4I
+	 l4AjEiHokyFc29HLXc82HEyxjZHnJSf+ywDJIhpLFTEm6M+AbOnSbWnfACC2ZC9iVa
+	 Y/oQxuobiDNOQ==
+Date: Tue, 26 Jul 2022 12:39:49 +1000
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Alex Deucher <alexdeucher@gmail.com>, Michael Ellerman
+ <mpe@ellerman.id.au>
+Subject: linux-next: manual merge of the amdgpu tree with the powerpc-fixes
+ tree
+Message-ID: <20220726123949.357cece8@canb.auug.org.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; boundary="Sig_/HalYUGpJ3pAUkov+3DQMFHZ";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,80 +58,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: lukas@wunner.de, linux-pci@vger.kernel.org, chenzhuo.1@bytedance.com, linux-kernel@vger.kernel.org, stuart.w.hayes@gmail.com, jan.kiszka@siemens.com, linuxppc-dev@lists.ozlabs.org
+Cc: Linux Next Mailing List <linux-next@vger.kernel.org>, PowerPC <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Guenter Roeck <linux@roeck-us.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The AER status of the device that reported the error rather than
-the first downstream port is cleared after commit 7d7cbeaba5b7
-("PCI/ERR: Clear status of the reporting device"). So "a bridge
-may not exist" which commit aa344bc8b727 ("PCI/ERR: Clear AER
-status only when we control AER") referring to is no longer
-existent, and we just use pcie_aer_is_native() in stead of
-"host->native_aer || pcie_ports_native".
+--Sig_/HalYUGpJ3pAUkov+3DQMFHZ
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-pci_aer_clear_nonfatal_status() already has pcie_aer_is_native(),
-so we move pci_aer_clear_nonfatal_status() out of
-pcie_aer_is_native().
+Hi all,
 
-Replace statements that judge whether OS owns AER in
-get_port_device_capability() with pcie_aer_is_native(), which has
-no functional changes.
+Today's linux-next merge of the amdgpu tree got a conflict in:
 
-Signed-off-by: Zhuo Chen <chenzhuo.1@bytedance.com>
----
-v2:
-- Add details and note in commit log
----
- drivers/pci/pcie/err.c          | 12 ++----------
- drivers/pci/pcie/portdrv_core.c |  3 +--
- 2 files changed, 3 insertions(+), 12 deletions(-)
+  drivers/gpu/drm/amd/display/Kconfig
 
-diff --git a/drivers/pci/pcie/err.c b/drivers/pci/pcie/err.c
-index 0c5a143025af..28339c741555 100644
---- a/drivers/pci/pcie/err.c
-+++ b/drivers/pci/pcie/err.c
-@@ -184,7 +184,6 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
- 	int type = pci_pcie_type(dev);
- 	struct pci_dev *bridge;
- 	pci_ers_result_t status = PCI_ERS_RESULT_CAN_RECOVER;
--	struct pci_host_bridge *host = pci_find_host_bridge(dev->bus);
- 
- 	/*
- 	 * If the error was detected by a Root Port, Downstream Port, RCEC,
-@@ -237,16 +236,9 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
- 	pci_dbg(bridge, "broadcast resume message\n");
- 	pci_walk_bridge(bridge, report_resume, &status);
- 
--	/*
--	 * If we have native control of AER, clear error status in the device
--	 * that detected the error.  If the platform retained control of AER,
--	 * it is responsible for clearing this status.  In that case, the
--	 * signaling device may not even be visible to the OS.
--	 */
--	if (host->native_aer || pcie_ports_native) {
-+	if (pcie_aer_is_native(dev))
- 		pcie_clear_device_status(dev);
--		pci_aer_clear_nonfatal_status(dev);
--	}
-+	pci_aer_clear_nonfatal_status(dev);
- 	pci_info(bridge, "device recovery successful\n");
- 	return status;
- 
-diff --git a/drivers/pci/pcie/portdrv_core.c b/drivers/pci/pcie/portdrv_core.c
-index 604feeb84ee4..98c18f4a01b2 100644
---- a/drivers/pci/pcie/portdrv_core.c
-+++ b/drivers/pci/pcie/portdrv_core.c
-@@ -221,8 +221,7 @@ static int get_port_device_capability(struct pci_dev *dev)
- 	}
- 
- #ifdef CONFIG_PCIEAER
--	if (dev->aer_cap && pci_aer_available() &&
--	    (pcie_ports_native || host->native_aer)) {
-+	if (pcie_aer_is_native(dev) && pci_aer_available()) {
- 		services |= PCIE_PORT_SERVICE_AER;
- 
- 		/*
--- 
-2.30.1 (Apple Git-130)
+between commits:
 
+  c653c591789b ("drm/amdgpu: Re-enable DCN for 64-bit powerpc")
+
+from the powerpc-fixes tree and commit:
+
+  3876a8b5e241 ("drm/amd/display: Enable building new display engine with K=
+COV enabled")
+
+from the amdgpu tree.
+
+I fixed it up (see below) and can carry the fix as necessary. This
+is now fixed as far as linux-next is concerned, but any non trivial
+conflicts should be mentioned to your upstream maintainer when your tree
+is submitted for merging.  You may also want to consider cooperating
+with the maintainer of the conflicting tree to minimise any particularly
+complex conflicts.
+
+--=20
+Cheers,
+Stephen Rothwell
+
+diff --cc drivers/gpu/drm/amd/display/Kconfig
+index ec6771e87e73,96cbc87f7b6b..000000000000
+--- a/drivers/gpu/drm/amd/display/Kconfig
++++ b/drivers/gpu/drm/amd/display/Kconfig
+@@@ -6,7 -6,7 +6,7 @@@ config DRM_AMD_D
+  	bool "AMD DC - Enable new display engine"
+  	default y
+  	select SND_HDA_COMPONENT if SND_HDA_CORE
+- 	select DRM_AMD_DC_DCN if (X86 || PPC_LONG_DOUBLE_128) && !(KCOV_INSTRUME=
+NT_ALL && KCOV_ENABLE_COMPARISONS)
+ -	select DRM_AMD_DC_DCN if (X86 || PPC64)
+++	select DRM_AMD_DC_DCN if (X86 || PPC_LONG_DOUBLE_128)
+  	help
+  	  Choose this option if you want to use the new display engine
+  	  support for AMDGPU. This adds required support for Vega and
+
+
+--Sig_/HalYUGpJ3pAUkov+3DQMFHZ
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmLfU/YACgkQAVBC80lX
+0GyLLQgAhhY4KdYihV9xUmSYc/ELpAv5uV8zN7OIe0g2DoQbTzfpCKKUcI8iiQrj
+fDF6NO515TQ4f8MdbypFQMsykzX6brlHni/5YNwNZqBzKNafWQ9lCjQsylgn/MZA
+FfqMKH8yxyI10AHNxNIfizy+zAtyMQZbdu9WjAVYSTflnGZYJfmOp5NYrEGoO94r
+gqoi3Wa5XUbiTjTI/X4sDFqfjUOmRfoVk3L+lvs94ZSD4Yk3fpfdvuT2YllhPj7C
+dZBN53KlnlSVw+yMs94aWB2ldwtMzWy8cLYKTBoRqJdZAF8T/g2A2URXaRDvCIJa
+E7mkyFtHESBJEsIUosQf720WjSq+3A==
+=Pv19
+-----END PGP SIGNATURE-----
+
+--Sig_/HalYUGpJ3pAUkov+3DQMFHZ--
