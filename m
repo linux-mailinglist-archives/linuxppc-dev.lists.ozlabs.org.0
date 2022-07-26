@@ -1,63 +1,99 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 465DA581684
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jul 2022 17:34:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EC6F581A3E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jul 2022 21:23:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LsgvM1l4Jz3cFL
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Jul 2022 01:34:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lsmyq08Gbz3cfL
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Jul 2022 05:22:59 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=oKbW8vdH;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cN2r67Ua;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cN2r67Ua;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.43; helo=mga05.intel.com; envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=javierm@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=oKbW8vdH;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cN2r67Ua;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cN2r67Ua;
 	dkim-atps=neutral
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lsgtg2hwlz3bbQ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Jul 2022 01:34:00 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1658849643; x=1690385643;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=5I+V662NLC2jjOM/6eWnzGMznOWDTJj0WWANyuaqAc4=;
-  b=oKbW8vdHVyGBqnOKwdc0AEB2JVeS+55k7aJQfu8SJzb+G/pm5wTk+TJi
-   zWHDXY4ZEbr2s3trOVpgGMNlf8m/mV8X2OZ6971M4/bx/iwKn1MGkQ+Ie
-   YuwN0HLdwDs0e5YPvPy3Ds4+qPWn9uzDQbfKXjO9lW/hQqYZtmtypkRNJ
-   DTTi9gCK3fkXIPJxQy3UPcFhG9W0LojveZMLMvhQ3pn3ysYpZFDF07zoX
-   vPJKZ0UwHuWAksKbROZWvvWftxnAsDcnPmbr2K9OPTPClJvCvJlUJY2jk
-   68CLEU2jL2YaQg7zPkxkzM1mwryXffzXlaaIOtaMu2dk9cJSynGBC0vA+
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10420"; a="374284434"
-X-IronPort-AV: E=Sophos;i="5.93,193,1654585200"; 
-   d="scan'208";a="374284434"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jul 2022 08:33:55 -0700
-X-IronPort-AV: E=Sophos;i="5.93,193,1654585200"; 
-   d="scan'208";a="927378192"
-Received: from arianrah-mobl2.amr.corp.intel.com (HELO [10.251.20.146]) ([10.251.20.146])
-  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jul 2022 08:33:54 -0700
-Message-ID: <b41d1840-b726-2caa-5bc8-69c3aeb230cf@linux.intel.com>
-Date: Tue, 26 Jul 2022 08:33:54 -0700
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lsmy20rbSz3bgR
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Jul 2022 05:22:15 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1658863330;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HM/992FpowUrZBdOewYXTdFa78rfvZ1wIMJtEZDEzFo=;
+	b=cN2r67UaTp5zrWI4EkfRQyUi8Txa3UtON2qB9KdIOip1YlFiYifcPk0XZXGarr3Wip6D5U
+	w6vz7+MsKQ+zSLVpQoY2lxrwnnrv9hOxWBJkciCMa0aP0xzC5vZh/tkLQrDW7HNEyfhb9G
+	rKfh1f6Neoc3e2tt/9oWfSMHJunvt8o=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1658863330;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HM/992FpowUrZBdOewYXTdFa78rfvZ1wIMJtEZDEzFo=;
+	b=cN2r67UaTp5zrWI4EkfRQyUi8Txa3UtON2qB9KdIOip1YlFiYifcPk0XZXGarr3Wip6D5U
+	w6vz7+MsKQ+zSLVpQoY2lxrwnnrv9hOxWBJkciCMa0aP0xzC5vZh/tkLQrDW7HNEyfhb9G
+	rKfh1f6Neoc3e2tt/9oWfSMHJunvt8o=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-75-u4MLbdzAN3mcSFrN8pD4KA-1; Tue, 26 Jul 2022 15:22:08 -0400
+X-MC-Unique: u4MLbdzAN3mcSFrN8pD4KA-1
+Received: by mail-wm1-f72.google.com with SMTP id h65-20020a1c2144000000b003a30cae106cso10626547wmh.8
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jul 2022 12:22:08 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=HM/992FpowUrZBdOewYXTdFa78rfvZ1wIMJtEZDEzFo=;
+        b=hQMm7DnRpsELvBsaYypuYMz3EAYyOADqOVviTitg4u0EQYMlkwf0dANy6UsWjmw7Rl
+         85rYgkNv3qqU8J0e647GJJFqVJAlQyg7Wd1X6nIV4JER30hkUBz58NwWzBThpqLzHaYz
+         KD/Dh+LYjtnksV2faiTQ1o9lhEucPD1e79kSDZR7u4oa8CHPQJfA+cXL7ZjD6+ekyN1J
+         f145JszIeiWSIicRaFf1EonvI0HRh/YpoETIJQDNgkv76G2KW1RiCVln1tFBwJyCZ7uZ
+         DYnHtNfILnePH6oLUDB7jneKs2pV2xXjJF/odh1GzOgGmiCu6pH/WhE84ER/GqMXk1ha
+         6c+Q==
+X-Gm-Message-State: AJIora/DQ2ma/VMRtrh26Pc5y6876RsPDrdVnhxJBZTK/xxHnLGXfSla
+	SXMfGvgJH8fYKDS99aqylEZKjifxpciSL0s0G71refhQONiRWB5HTFFiNKdTX1iOMA5COTDj6zi
+	zeRS/wPD73lM63CidbJFXeQd5QA==
+X-Received: by 2002:a5d:64e5:0:b0:21d:945a:e7c4 with SMTP id g5-20020a5d64e5000000b0021d945ae7c4mr12161322wri.0.1658863327406;
+        Tue, 26 Jul 2022 12:22:07 -0700 (PDT)
+X-Google-Smtp-Source: AGRyM1vGZKU+Yu4t/pJR7G/x3ABdDb+Jc5JIBwBhoD8uXuQNqfQGzOOG9RFUs5hjLn5ORhAmUgcRxw==
+X-Received: by 2002:a5d:64e5:0:b0:21d:945a:e7c4 with SMTP id g5-20020a5d64e5000000b0021d945ae7c4mr12161300wri.0.1658863326979;
+        Tue, 26 Jul 2022 12:22:06 -0700 (PDT)
+Received: from [192.168.1.130] (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
+        by smtp.gmail.com with ESMTPSA id z21-20020a05600c0a1500b0039c454067ddsm19704276wmp.15.2022.07.26.12.22.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 26 Jul 2022 12:22:06 -0700 (PDT)
+Message-ID: <90aef621-b686-12dd-de55-9a680f5783d7@redhat.com>
+Date: Tue, 26 Jul 2022 21:22:05 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Firefox/91.0 Thunderbird/91.11.0
-Subject: Re: [PATCH v2] PCI/ERR: Use pcie_aer_is_native() to judge whether OS
- owns AER
+ Thunderbird/91.11.0
+Subject: Re: [PATCH v2 09/10] drm/ofdrm: Add per-model device function
+To: =?UTF-8?Q?Michal_Such=c3=a1nek?= <msuchanek@suse.de>
+References: <20220720142732.32041-1-tzimmermann@suse.de>
+ <20220720142732.32041-10-tzimmermann@suse.de>
+ <7b1a2807-59c7-d524-af8e-1ec634c740a7@redhat.com>
+ <20220726144024.GP17705@kitsune.suse.cz>
+From: Javier Martinez Canillas <javierm@redhat.com>
+In-Reply-To: <20220726144024.GP17705@kitsune.suse.cz>
+Authentication-Results: relay.mimecast.com;
+	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=javierm@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
 Content-Language: en-US
-To: Zhuo Chen <chenzhuo.1@bytedance.com>, ruscur@russell.cc,
- oohall@gmail.com, bhelgaas@google.com
-References: <20220726020527.99816-1-chenzhuo.1@bytedance.com>
-From: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <20220726020527.99816-1-chenzhuo.1@bytedance.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,95 +105,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-pci@vger.kernel.org, stuart.w.hayes@gmail.com, linux-kernel@vger.kernel.org, lukas@wunner.de, jan.kiszka@siemens.com, linuxppc-dev@lists.ozlabs.org
+Cc: linux-fbdev@vger.kernel.org, sam@ravnborg.org, airlied@linux.ie, deller@gmx.de, mark.cave-ayland@ilande.co.uk, dri-devel@lists.freedesktop.org, paulus@samba.org, maxime@cerno.tech, Thomas Zimmermann <tzimmermann@suse.de>, geert@linux-m68k.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hello Michal,
 
-
-On 7/25/22 7:05 PM, Zhuo Chen wrote:
-> The AER status of the device that reported the error rather than
-> the first downstream port is cleared after commit 7d7cbeaba5b7
-> ("PCI/ERR: Clear status of the reporting device"). So "a bridge
-> may not exist" which commit aa344bc8b727 ("PCI/ERR: Clear AER
-> status only when we control AER") referring to is no longer
-> existent, and we just use pcie_aer_is_native() in stead of
-> "host->native_aer || pcie_ports_native".
-
-IMO, above history is not required to justify using pcie_aer_is_native()
-in place of "host->native_aer || pcie_ports_native".
-
+On 7/26/22 16:40, Michal Suchánek wrote:
+> Hello,
 > 
-> pci_aer_clear_nonfatal_status() already has pcie_aer_is_native(),
-> so we move pci_aer_clear_nonfatal_status() out of
-> pcie_aer_is_native().
-
-Moving it outside (pcie_aer_is_native()) does not optimize the
-code. So I think it is better to leave it inside.
-
+> On Tue, Jul 26, 2022 at 03:38:37PM +0200, Javier Martinez Canillas wrote:
+>> On 7/20/22 16:27, Thomas Zimmermann wrote:
+>>> Add a per-model device-function structure in preparation of adding
+>>> color-management support. Detection of the individual models has been
+>>> taken from fbdev's offb.
+>>>
+>>> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+>>> ---
+>>
+>> Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+>>
+>> [...]
+>>
+>>> +static bool is_avivo(__be32 vendor, __be32 device)
+>>> +{
+>>> +	/* This will match most R5xx */
+>>> +	return (vendor == 0x1002) &&
+>>> +	       ((device >= 0x7100 && device < 0x7800) || (device >= 0x9400));
+>>> +}
+>>
+>> Maybe add some constant macros to not have these magic numbers ?
 > 
-> Replace statements that judge whether OS owns AER in
-> get_port_device_capability() with pcie_aer_is_native(), which has
-> no functional changes.
+> This is based on the existing fbdev implementation's magic numbers:
 > 
-> Signed-off-by: Zhuo Chen <chenzhuo.1@bytedance.com>
-> ---
-> v2:
-> - Add details and note in commit log
-> ---
->  drivers/pci/pcie/err.c          | 12 ++----------
->  drivers/pci/pcie/portdrv_core.c |  3 +--
->  2 files changed, 3 insertions(+), 12 deletions(-)
-> 
-> diff --git a/drivers/pci/pcie/err.c b/drivers/pci/pcie/err.c
-> index 0c5a143025af..28339c741555 100644
-> --- a/drivers/pci/pcie/err.c
-> +++ b/drivers/pci/pcie/err.c
-> @@ -184,7 +184,6 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
->  	int type = pci_pcie_type(dev);
->  	struct pci_dev *bridge;
->  	pci_ers_result_t status = PCI_ERS_RESULT_CAN_RECOVER;
-> -	struct pci_host_bridge *host = pci_find_host_bridge(dev->bus);
->  
->  	/*
->  	 * If the error was detected by a Root Port, Downstream Port, RCEC,
-> @@ -237,16 +236,9 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
->  	pci_dbg(bridge, "broadcast resume message\n");
->  	pci_walk_bridge(bridge, report_resume, &status);
->  
-> -	/*
-> -	 * If we have native control of AER, clear error status in the device
-> -	 * that detected the error.  If the platform retained control of AER,
-> -	 * it is responsible for clearing this status.  In that case, the
-> -	 * signaling device may not even be visible to the OS.
-> -	 */
+> drivers/video/fbdev/offb.c:                 ((*did >= 0x7100 && *did < 0x7800) ||
+>
 
-The above comment is still applicable. So I think you don't need to remove it.
+Ah, I see. Then we might have to go with the magic numbers...
+ 
+> Of course, it would be great if somebody knowledgeable could clarify
+> those.
+>
 
-> -	if (host->native_aer || pcie_ports_native) {
-> +	if (pcie_aer_is_native(dev))
->  		pcie_clear_device_status(dev);
-> -		pci_aer_clear_nonfatal_status(dev);
-> -	}
-> +	pci_aer_clear_nonfatal_status(dev);
->  	pci_info(bridge, "device recovery successful\n");
->  	return status;
->  
-> diff --git a/drivers/pci/pcie/portdrv_core.c b/drivers/pci/pcie/portdrv_core.c
-> index 604feeb84ee4..98c18f4a01b2 100644
-> --- a/drivers/pci/pcie/portdrv_core.c
-> +++ b/drivers/pci/pcie/portdrv_core.c
-> @@ -221,8 +221,7 @@ static int get_port_device_capability(struct pci_dev *dev)
->  	}
->  
->  #ifdef CONFIG_PCIEAER
-> -	if (dev->aer_cap && pci_aer_available() &&
-> -	    (pcie_ports_native || host->native_aer)) {
-> +	if (pcie_aer_is_native(dev) && pci_aer_available()) {
->  		services |= PCIE_PORT_SERVICE_AER;
->  
->  		/*
+Indeed.
 
 -- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
+Best regards,
+
+Javier Martinez Canillas
+Linux Engineering
+Red Hat
+
