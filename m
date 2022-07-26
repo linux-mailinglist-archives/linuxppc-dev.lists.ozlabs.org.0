@@ -1,66 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29D8F58158B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jul 2022 16:41:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB0FA58164A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jul 2022 17:19:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lsfjl00fJz3c6k
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Jul 2022 00:41:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LsgZL4hmZz3cgh
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Jul 2022 01:19:54 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=slnjENGe;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=+9jOMyM9;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=G3K1g/yF;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.29; helo=smtp-out2.suse.de; envelope-from=msuchanek@suse.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::730; helo=mail-qk1-x730.google.com; envelope-from=yury.norov@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=slnjENGe;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=+9jOMyM9;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=G3K1g/yF;
 	dkim-atps=neutral
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+Received: from mail-qk1-x730.google.com (mail-qk1-x730.google.com [IPv6:2607:f8b0:4864:20::730])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lsfj41GmBz3bZY
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Jul 2022 00:40:40 +1000 (AEST)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-	by smtp-out2.suse.de (Postfix) with ESMTP id ED8121FEAA;
-	Tue, 26 Jul 2022 14:40:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1658846426; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eTmDdk3BCJXU66FNIOyDwXn3D4Z4E7It/BpD50zR37c=;
-	b=slnjENGecyoF9cdEgc3AdMM/bgS3ZaMTCjuJhT/ATqsSIq8r2k+z9jerENWV2+GKZiz019
-	IydVJQpgTKEvbsa17clvsvC2q/L4NvNOwqgQQMgtpcrTLiiusoTKu3CofLq1DdztGY4bLt
-	dpm80iIgIcQHtQLXGDZzjssGyaBIWPw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1658846426;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eTmDdk3BCJXU66FNIOyDwXn3D4Z4E7It/BpD50zR37c=;
-	b=+9jOMyM9GYJd8e7hl0Ul/rnbsYdkLNTVLbIlMof86f5aY6/bt7N77Vxg7HIHi07pzV74et
-	uKa9ispc+GfyPZDA==
-Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by relay2.suse.de (Postfix) with ESMTPS id 45C7B2C141;
-	Tue, 26 Jul 2022 14:40:25 +0000 (UTC)
-Date: Tue, 26 Jul 2022 16:40:24 +0200
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: Javier Martinez Canillas <javierm@redhat.com>
-Subject: Re: [PATCH v2 09/10] drm/ofdrm: Add per-model device function
-Message-ID: <20220726144024.GP17705@kitsune.suse.cz>
-References: <20220720142732.32041-1-tzimmermann@suse.de>
- <20220720142732.32041-10-tzimmermann@suse.de>
- <7b1a2807-59c7-d524-af8e-1ec634c740a7@redhat.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LsgYh75Qhz3bmY
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Jul 2022 01:19:18 +1000 (AEST)
+Received: by mail-qk1-x730.google.com with SMTP id m7so11171216qkk.6
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jul 2022 08:19:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=oU/PFM076uQxVNOZcY0Zccr8pXxC8l8aoZK0KtggnV0=;
+        b=G3K1g/yFwuaU8qm6hN080k/NOsnbTDalKmxaoQZxHy0uwGW3EO23D/QO5vfWXNOBSY
+         2Ua82Lrys/l3itci7BrIm9y1Ktc3VjTcJ2fTsb3kX583UaTYzRFMgyYygJLK14l1hjId
+         bzwjsLqS9piEuDFTyeeORGOJJk2aHASWXLqGHBawC77mdo+c3AueS1dxDvicH6Jnor0a
+         DSJOtjsV9kS3hq092jpDTNmQlAVa7BNUgog8EGhe9j+5L3a4VnlHBwszgdsI9is7pEa7
+         wDOpzy9LDFFAc6O45S2vDMJIIi4oHcEFn48pBBWBvhEoB142+tkzftYuAWUQieYMBfss
+         qh4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=oU/PFM076uQxVNOZcY0Zccr8pXxC8l8aoZK0KtggnV0=;
+        b=5um+vv17+vWwYlgMXokw3LFI7zNcPHyZE9eY81bBo8SzJ8jwxIoVYpwM2JFiKLXsgg
+         EgihSd8vcfVzJHTOS+1GO7kX6ArN8bgVyjM4ozWA7gXGmhepNOxNt+v7wlB8SgsjeUqi
+         3BMAKIYkIn3AOAR444UwnKjEPHPJ0WWmFKdjnHSisndcYJwIq0fUczheBXWxHYWuv+te
+         bxvEAc0IqG+5x+yKuyaH2suG3J2RjRmHc362kxuJcn6tD31kvt/t6iHgSncVfYQEl8a2
+         esBhu5MHmcVFkfZK3ohLHIVPzeS2IxMVzZ1pAnuttuMJjB5LZNXP7JJx7V5ugqQUR4P3
+         qiJw==
+X-Gm-Message-State: AJIora+48jAQbDQ7bRkboJXCE29DTqmR8g7kSKQrSD/22o+uu1acRuXb
+	MYnhrRwXmIaruNTrdSI5nTs=
+X-Google-Smtp-Source: AGRyM1u3LM6n0ZHE1JaFrgS+gI2RKjPyiDakaF7wBubPavR1Lo9pw7bdraLDdnmDkZ/HgCUX95FYHA==
+X-Received: by 2002:a05:620a:370b:b0:6b6:d59:fcab with SMTP id de11-20020a05620a370b00b006b60d59fcabmr13593141qkb.564.1658848755222;
+        Tue, 26 Jul 2022 08:19:15 -0700 (PDT)
+Received: from localhost (c-69-254-185-160.hsd1.fl.comcast.net. [69.254.185.160])
+        by smtp.gmail.com with ESMTPSA id w5-20020ac86b05000000b00304bc2acc25sm9223681qts.6.2022.07.26.08.19.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 Jul 2022 08:19:12 -0700 (PDT)
+Date: Tue, 26 Jul 2022 08:19:09 -0700
+From: Yury Norov <yury.norov@gmail.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH 1/2] powerpc: drop dependency on <asm/machdep.h> in
+ archrandom.h
+Message-ID: <YuAF7ahr58HjMqXs@yury-laptop>
+References: <20220723214537.2054208-1-yury.norov@gmail.com>
+ <20220723214537.2054208-2-yury.norov@gmail.com>
+ <CAHp75VfOmN=cTEs7gbwxZ7W3hXjBo67N4AmHHiDfcVfFzHkMLA@mail.gmail.com>
+ <Yt7CJj8r3eo05pKd@yury-laptop>
+ <87edy8bbtp.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <7b1a2807-59c7-d524-af8e-1ec634c740a7@redhat.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <87edy8bbtp.fsf@mpe.ellerman.id.au>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,41 +81,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-fbdev@vger.kernel.org, Thomas Zimmermann <tzimmermann@suse.de>, airlied@linux.ie, deller@gmx.de, mark.cave-ayland@ilande.co.uk, linuxppc-dev@lists.ozlabs.org, dri-devel@lists.freedesktop.org, paulus@samba.org, maxime@cerno.tech, daniel@ffwll.ch, geert@linux-m68k.org, sam@ravnborg.org
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>, "Jason A. Donenfeld" <Jason@zx2c4.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Andy Shevchenko <andy.shevchenko@gmail.com>, Paul Mackerras <paulus@samba.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, "open list:LINUX FOR POWERPC PA SEMI PWRFICIENT" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello,
-
-On Tue, Jul 26, 2022 at 03:38:37PM +0200, Javier Martinez Canillas wrote:
-> On 7/20/22 16:27, Thomas Zimmermann wrote:
-> > Add a per-model device-function structure in preparation of adding
-> > color-management support. Detection of the individual models has been
-> > taken from fbdev's offb.
-> > 
-> > Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> > ---
+On Tue, Jul 26, 2022 at 04:57:38PM +1000, Michael Ellerman wrote:
+> Yury Norov <yury.norov@gmail.com> writes:
+> > On Mon, Jul 25, 2022 at 09:28:12AM +0200, Andy Shevchenko wrote:
+> >> On Sun, Jul 24, 2022 at 12:19 AM Yury Norov <yury.norov@gmail.com> wrote:
+> >> >
+> >> > archrandom.h includes <asm/machdep.h> to refer ppc_md. This causes
+> >> > circular header dependency, if generic nodemask.h  includes random.h:
+> >> >
+> >> > In file included from include/linux/cred.h:16,
+> >> >                  from include/linux/seq_file.h:13,
+> >> >                  from arch/powerpc/include/asm/machdep.h:6,
+> >> >                  from arch/powerpc/include/asm/archrandom.h:5,
+> >> >                  from include/linux/random.h:109,
+> >> >                  from include/linux/nodemask.h:97,
+> >> >                  from include/linux/list_lru.h:12,
+> >> >                  from include/linux/fs.h:13,
+> >> >                  from include/linux/compat.h:17,
+> >> >                  from arch/powerpc/kernel/asm-offsets.c:12:
+> >> > include/linux/sched.h:1203:9: error: unknown type name 'nodemask_t'
+> >> >  1203 |         nodemask_t                      mems_allowed;
+> >> >       |         ^~~~~~~~~~
+> >> >
+> >> > Fix it by removing <asm/machdep.h> dependency from archrandom.h
+> >> 
+> >> ...
+> >> 
+> >> >  EXPORT_SYMBOL_GPL(pm_power_off);
+> >> 
+> >> ^^^ (Note this and read below)
+> >> 
+> >> ...
+> >> 
+> >> > +EXPORT_SYMBOL(arch_get_random_seed_long);
+> >> 
+> >> It can't be like this. Brief browsing of the callees shows that.
+> >
+> > Is my understanding correct that you're suggesting to make it GPL?
+> >
+> > ppc_md is exported with EXPORT_SYMBOL(), and the function is in header,
+> > so it's available for non-GPL code now. I don't want to change it.
 > 
-> Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+> That's true, your change maintains the status quo.
 > 
-> [...]
+> But I think we actually don't need it exported to modules, I think it's
+> a private detail of the RNG <-> architecture interface, not something
+> that modules should be calling.
 > 
-> > +static bool is_avivo(__be32 vendor, __be32 device)
-> > +{
-> > +	/* This will match most R5xx */
-> > +	return (vendor == 0x1002) &&
-> > +	       ((device >= 0x7100 && device < 0x7800) || (device >= 0x9400));
-> > +}
-> 
-> Maybe add some constant macros to not have these magic numbers ?
+> So I think it's OK to drop the EXPORT_SYMBOL, either in this patch or a
+> subsequent one if you don't want to rebase.
 
-This is based on the existing fbdev implementation's magic numbers:
-
-drivers/video/fbdev/offb.c:                 ((*did >= 0x7100 && *did < 0x7800) ||
-
-Of course, it would be great if somebody knowledgeable could clarify
-those.
-
-Thanks
-
-Michal
+OK, changed.
