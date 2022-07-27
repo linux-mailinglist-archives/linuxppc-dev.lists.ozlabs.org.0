@@ -1,81 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83679582192
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Jul 2022 09:54:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A7245821A8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Jul 2022 09:59:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lt5dQ3grmz3cfG
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Jul 2022 17:54:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lt5lr2JBVz3by0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Jul 2022 17:59:36 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=pU6sPxbU;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=RBBwUkUc;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=u1EWbUmC;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=WnllXQ83;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2001:67c:2178:6::1d; helo=smtp-out2.suse.de; envelope-from=tzimmermann@suse.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=tzimmermann@suse.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=pU6sPxbU;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=RBBwUkUc;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=u1EWbUmC;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=WnllXQ83;
 	dkim-atps=neutral
-X-Greylist: delayed 142 seconds by postgrey-1.36 at boromir; Wed, 27 Jul 2022 17:53:28 AEST
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lt5cm6r93z3bdM
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Jul 2022 17:53:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lt5lC4fGKz3bdM
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Jul 2022 17:59:03 +1000 (AEST)
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id EE20D2048D;
-	Wed, 27 Jul 2022 07:53:25 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id A6529348A8;
+	Wed, 27 Jul 2022 07:59:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1658908405; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1658908740; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=TPRrum7C0GADnunmZQXrzRvNUeJ3NKuqlmtzcR5HzTs=;
-	b=pU6sPxbUQ/2W9sDOeMnc4NGqmLO4+dFk68FC7v720uKPuRevbh330aTOrBG9zeZIbne2s+
-	XsppHHs6IJ2SEOdBDTf+HGjXOKe/06bLMTCQXyq1UOzEhT2XMTyWr1SSz37CEVdwqgyxhA
-	CDyasmKp39aKBbwbdKtDoLJQel9EQko=
+	bh=XOvwwx0ITLquWkW22Zh+vbGQyEd1ZvaL/HMJnDRJdLE=;
+	b=u1EWbUmCSESyTiCZZ8FXZiHCDzWDOu79cDUv0rGcmWAPxDRdJta4RS9S1o+q587AnVmTzx
+	o73RruJU8GPOfY6EoTVKBSwcTpbuOcYYE5mY3lj+N33xAEcjCzUBUqxdXi4t2iaPiJ63Rk
+	7Ya1BlHQCewSwlaKMgDJv5TC5PW6QbI=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1658908405;
+	s=susede2_ed25519; t=1658908740;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=TPRrum7C0GADnunmZQXrzRvNUeJ3NKuqlmtzcR5HzTs=;
-	b=RBBwUkUcNDjqldV7IW/lWiZP9JL2ostffV73g/ujkQGu9cZkuHoM0KgqCmHE4+AGXWOzh9
-	jP5I3dXq6IlYRDDw==
+	bh=XOvwwx0ITLquWkW22Zh+vbGQyEd1ZvaL/HMJnDRJdLE=;
+	b=WnllXQ83MjducR7rHl/dmMAvB1kGnRHGgC6m1wWfC2lEqh04gyo35rs5GNbufQSgZ/0VhP
+	I4gjlqA4gYVPi3Cg==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 9EA0813AD7;
-	Wed, 27 Jul 2022 07:53:25 +0000 (UTC)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 2DD1413AD7;
+	Wed, 27 Jul 2022 07:59:00 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
 	by imap2.suse-dmz.suse.de with ESMTPSA
-	id SYzdJfXu4GJTHQAAMHmgww
-	(envelope-from <tzimmermann@suse.de>); Wed, 27 Jul 2022 07:53:25 +0000
-Message-ID: <20f4e5e6-2ff2-af21-1f85-70a545d147bc@suse.de>
-Date: Wed, 27 Jul 2022 09:53:25 +0200
+	id jIRbCkTw4GLUHwAAMHmgww
+	(envelope-from <tzimmermann@suse.de>); Wed, 27 Jul 2022 07:59:00 +0000
+Message-ID: <f2575e8e-2c9e-7f1a-f681-418a2725b4ef@suse.de>
+Date: Wed, 27 Jul 2022 09:58:59 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.11.0
-Subject: Re: [PATCH v2 04/10] drm/simpledrm: Compute framebuffer stride if not
- set
+Subject: Re: [PATCH v2 05/10] drm/simpledrm: Convert to atomic helpers
 Content-Language: en-US
-To: Javier Martinez Canillas <javierm@redhat.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>
+To: Javier Martinez Canillas <javierm@redhat.com>, airlied@linux.ie,
+ daniel@ffwll.ch, deller@gmx.de, maxime@cerno.tech, sam@ravnborg.org,
+ msuchanek@suse.de, mpe@ellerman.id.au, benh@kernel.crashing.org,
+ paulus@samba.org, geert@linux-m68k.org, mark.cave-ayland@ilande.co.uk
 References: <20220720142732.32041-1-tzimmermann@suse.de>
- <20220720142732.32041-5-tzimmermann@suse.de>
- <CAMuHMdWEah62Ho4C8NQr-qwz62pKQiJiTi8Fa4KcXNRzo7ySJA@mail.gmail.com>
- <4a7c2c1d-2bf9-84e7-9257-41fcfd66ab9d@redhat.com>
+ <20220720142732.32041-6-tzimmermann@suse.de>
+ <3d2de29a-2a96-867d-907f-6b85573586ab@redhat.com>
 From: Thomas Zimmermann <tzimmermann@suse.de>
-In-Reply-To: <4a7c2c1d-2bf9-84e7-9257-41fcfd66ab9d@redhat.com>
+In-Reply-To: <3d2de29a-2a96-867d-907f-6b85573586ab@redhat.com>
 Content-Type: multipart/signed; micalg=pgp-sha256;
  protocol="application/pgp-signature";
- boundary="------------iYBsinc0RYF8EfTtX1kKdCtN"
+ boundary="------------1enSdAK5XocaDrylNwunWey0"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,89 +86,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Fbdev development list <linux-fbdev@vger.kernel.org>, David Airlie <airlied@linux.ie>, Helge Deller <deller@gmx.de>, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, DRI Development <dri-devel@lists.freedesktop.org>, Paul Mackerras <paulus@samba.org>, Maxime Ripard <maxime@cerno.tech>, Daniel Vetter <daniel@ffwll.ch>, Michal Suchanek <msuchanek@suse.de>, Sam Ravnborg <sam@ravnborg.org>
+Cc: linux-fbdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, dri-devel@lists.freedesktop.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------iYBsinc0RYF8EfTtX1kKdCtN
-Content-Type: multipart/mixed; boundary="------------sILgBXHDfeWHFmPh013FeHLZ";
+--------------1enSdAK5XocaDrylNwunWey0
+Content-Type: multipart/mixed; boundary="------------A0NDaS2ad8imxpVrI0WvpdAo";
  protected-headers="v1"
 From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Javier Martinez Canillas <javierm@redhat.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
- Helge Deller <deller@gmx.de>, Maxime Ripard <maxime@cerno.tech>,
- Sam Ravnborg <sam@ravnborg.org>, Michal Suchanek <msuchanek@suse.de>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- DRI Development <dri-devel@lists.freedesktop.org>
-Message-ID: <20f4e5e6-2ff2-af21-1f85-70a545d147bc@suse.de>
-Subject: Re: [PATCH v2 04/10] drm/simpledrm: Compute framebuffer stride if not
- set
+To: Javier Martinez Canillas <javierm@redhat.com>, airlied@linux.ie,
+ daniel@ffwll.ch, deller@gmx.de, maxime@cerno.tech, sam@ravnborg.org,
+ msuchanek@suse.de, mpe@ellerman.id.au, benh@kernel.crashing.org,
+ paulus@samba.org, geert@linux-m68k.org, mark.cave-ayland@ilande.co.uk
+Cc: linux-fbdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ dri-devel@lists.freedesktop.org
+Message-ID: <f2575e8e-2c9e-7f1a-f681-418a2725b4ef@suse.de>
+Subject: Re: [PATCH v2 05/10] drm/simpledrm: Convert to atomic helpers
 References: <20220720142732.32041-1-tzimmermann@suse.de>
- <20220720142732.32041-5-tzimmermann@suse.de>
- <CAMuHMdWEah62Ho4C8NQr-qwz62pKQiJiTi8Fa4KcXNRzo7ySJA@mail.gmail.com>
- <4a7c2c1d-2bf9-84e7-9257-41fcfd66ab9d@redhat.com>
-In-Reply-To: <4a7c2c1d-2bf9-84e7-9257-41fcfd66ab9d@redhat.com>
+ <20220720142732.32041-6-tzimmermann@suse.de>
+ <3d2de29a-2a96-867d-907f-6b85573586ab@redhat.com>
+In-Reply-To: <3d2de29a-2a96-867d-907f-6b85573586ab@redhat.com>
 
---------------sILgBXHDfeWHFmPh013FeHLZ
+--------------A0NDaS2ad8imxpVrI0WvpdAo
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: base64
 
-SGkNCg0KQW0gMjUuMDcuMjIgdW0gMTc6MTMgc2NocmllYiBKYXZpZXIgTWFydGluZXogQ2Fu
-aWxsYXM6DQo+IEhlbGxvIEdlZXJ0LA0KPiANCj4gT24gNy8yMS8yMiAxNjo0NiwgR2VlcnQg
-VXl0dGVyaG9ldmVuIHdyb3RlOg0KPj4gSGkgVGhvbWFzLA0KPj4NCj4+IE9uIFdlZCwgSnVs
-IDIwLCAyMDIyIGF0IDQ6MjcgUE0gVGhvbWFzIFppbW1lcm1hbm4gPHR6aW1tZXJtYW5uQHN1
-c2UuZGU+IHdyb3RlOg0KPj4+IENvbXB1dGUgdGhlIGZyYW1lYnVmZmVyJ3Mgc2NhbmxpbmUg
-c3RyaWRlIGxlbmd0aCBpZiBub3QgZ2l2ZW4gYnkNCj4+PiB0aGUgc2ltcGxlZmIgZGF0YS4N
-Cj4+Pg0KPj4+IFNpZ25lZC1vZmYtYnk6IFRob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFu
-bkBzdXNlLmRlPg0KPj4NCj4+IFRoYW5rcyBmb3IgeW91ciBwYXRjaCENCj4+DQo+Pj4gLS0t
-IGEvZHJpdmVycy9ncHUvZHJtL3Rpbnkvc2ltcGxlZHJtLmMNCj4+PiArKysgYi9kcml2ZXJz
-L2dwdS9kcm0vdGlueS9zaW1wbGVkcm0uYw0KPj4+IEBAIC03NDMsNiArNzQzLDkgQEAgc3Rh
-dGljIHN0cnVjdCBzaW1wbGVkcm1fZGV2aWNlICpzaW1wbGVkcm1fZGV2aWNlX2NyZWF0ZShz
-dHJ1Y3QgZHJtX2RyaXZlciAqZHJ2LA0KPj4+ICAgICAgICAgICAgICAgICAgZHJtX2Vycihk
-ZXYsICJubyBzaW1wbGVmYiBjb25maWd1cmF0aW9uIGZvdW5kXG4iKTsNCj4+PiAgICAgICAg
-ICAgICAgICAgIHJldHVybiBFUlJfUFRSKC1FTk9ERVYpOw0KPj4+ICAgICAgICAgIH0NCj4+
-PiArICAgICAgIGlmICghc3RyaWRlKQ0KPj4+ICsgICAgICAgICAgICAgICBzdHJpZGUgPSBm
-b3JtYXQtPmNwcFswXSAqIHdpZHRoOw0KPj4NCj4+IERJVl9ST1VORF9VUChkcm1fZm9ybWF0
-X2luZm9fYnBwKGZvcm1hdCkgKiB3aWR0aCwgOCkNCj4+DQo+IA0KPiBJIHRoaW5rIHlvdSBt
-ZWFudCBoZXJlOg0KPiANCj4gRElWX1JPVU5EX1VQKGRybV9mb3JtYXRfaW5mb19icHAoZm9y
-bWF0LCAwKSAqIHdpZHRoLCA4KSA/DQoNCkkgZ3Vlc3MsIHRoYXQncyB0aGUgcmlnaHQgZnVu
-Y3Rpb24uIE15IG9yaWdpbmFsIGNvZGUgaXMgY29ycmVjdCwgYnV0IGNwcCANCmlzIGFsc28g
-ZGVwcmVjYXRlZC4NCg0KQmVzdCByZWdhcmRzDQpUaG9tYXMNCg0KPiAgIA0KPiBXaXRoIHRo
-YXQgY2hhbmdlLA0KPiANCj4gQWNrZWQtYnk6IEphdmllciBNYXJ0aW5leiBDYW5pbGxhcyA8
-amF2aWVybUByZWRoYXQuY29tPg0KPiANCg0KLS0gDQpUaG9tYXMgWmltbWVybWFubg0KR3Jh
-cGhpY3MgRHJpdmVyIERldmVsb3Blcg0KU1VTRSBTb2Z0d2FyZSBTb2x1dGlvbnMgR2VybWFu
-eSBHbWJIDQpNYXhmZWxkc3RyLiA1LCA5MDQwOSBOw7xybmJlcmcsIEdlcm1hbnkNCihIUkIg
-MzY4MDksIEFHIE7DvHJuYmVyZykNCkdlc2Now6RmdHNmw7xocmVyOiBJdm8gVG90ZXYNCg==
+SGkNCg0KQW0gMjUuMDcuMjIgdW0gMTc6NDYgc2NocmllYiBKYXZpZXIgTWFydGluZXogQ2Fu
+aWxsYXM6DQo+IE9uIDcvMjAvMjIgMTY6MjcsIFRob21hcyBaaW1tZXJtYW5uIHdyb3RlOg0K
+Pj4gUmVwbGFjZSB0aGUgc2ltcGxlLUtNUyBoZWxwZXJzIHdpdGggdGhlIHJlZ3VsYXIgYXRv
+bWljIGhlbHBlcnMuIFRoZQ0KPj4gcmVndWxhciBoZWxwZXJzIGFyZSBiZXR0ZXIgYXJjaGl0
+ZWN0dXJlZCBhbmQgdGhlcmVmb3JlIGFsbG93IGZvciBlYXNpZXINCj4+IGNvZGUgc2hhcmlu
+ZyBhbW9uZyBkcml2ZXJzLiBObyBmdW5jdGlvbmFsIGNoYW5nZXMuDQo+Pg0KPiANCj4gQWNr
+ZWQtYnk6IEphdmllciBNYXJ0aW5leiBDYW5pbGxhcyA8amF2aWVybUByZWRoYXQuY29tPg0K
+PiANCj4gQnV0IEkndmUgYSBxdWVzdGlvbiBiZWxvdy4uLg0KPiAgIA0KPj4gU2lnbmVkLW9m
+Zi1ieTogVGhvbWFzIFppbW1lcm1hbm4gPHR6aW1tZXJtYW5uQHN1c2UuZGU+DQo+PiAtLS0N
+Cj4+ICAgZHJpdmVycy9ncHUvZHJtL3Rpbnkvc2ltcGxlZHJtLmMgfCAyODMgKysrKysrKysr
+KysrKysrKysrKystLS0tLS0tLS0tLQ0KPj4gICAxIGZpbGUgY2hhbmdlZCwgMTgwIGluc2Vy
+dGlvbnMoKyksIDEwMyBkZWxldGlvbnMoLSkNCj4gDQo+IFsuLi5dDQo+IA0KPj4gK3N0YXRp
+YyB2b2lkIHNpbXBsZWRybV9jcnRjX2hlbHBlcl9hdG9taWNfZW5hYmxlKHN0cnVjdCBkcm1f
+Y3J0YyAqY3J0YywNCj4+ICsJCQkJCQlzdHJ1Y3QgZHJtX2F0b21pY19zdGF0ZSAqb2xkX3N0
+YXRlKQ0KPj4gK3sNCj4+ICsJLyoNCj4+ICsJICogQWx3YXlzIGVuYWJsZWQ7IHNjcmVlbiB1
+cGRhdGVzIGFyZSBwZXJmb3JtZWQgYnkNCj4+ICsJICogdGhlIHByaW1hcnkgcGxhbmUncyBh
+dG9taWNfdXBkYXRlIGZ1bmN0aW9uLg0KPj4gKwkgKi8NCj4+ICt9DQo+PiArDQo+PiArc3Rh
+dGljIHZvaWQgc2ltcGxlZHJtX2NydGNfaGVscGVyX2F0b21pY19kaXNhYmxlKHN0cnVjdCBk
+cm1fY3J0YyAqY3J0YywNCj4+ICsJCQkJCQkgc3RydWN0IGRybV9hdG9taWNfc3RhdGUgKm9s
+ZF9zdGF0ZSkNCj4+ICt7DQo+PiArCS8qDQo+PiArCSAqIEFsd2F5cyBlbmFibGVkOyBkaXNh
+YmxpbmcgY2xlYXJzIHRoZSBzY3JlZW4gaW4gdGhlDQo+PiArCSAqIHByaW1hcnkgcGxhbmUn
+cyBhdG9taWNfZGlzYWJsZSBmdW5jdGlvbi4NCj4+ICsJICovDQo+PiArfQ0KPiANCj4gLi4u
+ZG8gd2UgcmVhbGx5IG5lZWQgdG8gaGF2ZSB0aGVzZSA/IENhbid0IHdlIGp1c3Qgbm90IHNl
+dCB0aGVtID8NCj4gDQo+PiArDQo+PiArc3RhdGljIGNvbnN0IHN0cnVjdCBkcm1fY3J0Y19o
+ZWxwZXJfZnVuY3Mgc2ltcGxlZHJtX2NydGNfaGVscGVyX2Z1bmNzID0gew0KPj4gKwkubW9k
+ZV92YWxpZCA9IHNpbXBsZWRybV9jcnRjX2hlbHBlcl9tb2RlX3ZhbGlkLA0KPj4gKwkuYXRv
+bWljX2NoZWNrID0gc2ltcGxlZHJtX2NydGNfaGVscGVyX2F0b21pY19jaGVjaywNCj4+ICsJ
+LmF0b21pY19lbmFibGUgPSBzaW1wbGVkcm1fY3J0Y19oZWxwZXJfYXRvbWljX2VuYWJsZSwN
+Cj4+ICsJLmF0b21pY19kaXNhYmxlID0gc2ltcGxlZHJtX2NydGNfaGVscGVyX2F0b21pY19k
+aXNhYmxlLA0KPj4gK307DQo+PiArDQo+IGxvb2tpbmcgYXQgaHR0cHM6Ly9lbGl4aXIuYm9v
+dGxpbi5jb20vbGludXgvbGF0ZXN0L3NvdXJjZS9pbmNsdWRlL2RybS9kcm1fbW9kZXNldF9o
+ZWxwZXJfdnRhYmxlcy5oI0w3MDMNCj4gdGhhdCBzYXlzIHRoZSAuYXRvbWljX3tlbixkaXN9
+YWJsZSBoYW5kbGVycyBhcmUgb3B0aW9uYWwuDQo+IA0KDQpUaGUgY29kZSBhbHNvIGxvb2tz
+IGxpa2Ugd2UgZG9uJ3QgbmVlZCB0aGUgaGVscGVycy4gSSBtb3N0bHkgYWRkZWQgdGhlbSAN
+CmZvciB0aGUgY29tbWVudHMgdGhleSBjb250YWluLCBidXQgSSBjYW4gYWxzbyBhZGQgdGhv
+c2UgbmV4dCB0byANCnNpbXBsZWRybV9jcnRjX2hlbHBlcl9mdW5jcy4NCg0KQmVzdCByZWdh
+cmRzDQpUaG9tYXMNCg0KDQotLSANClRob21hcyBaaW1tZXJtYW5uDQpHcmFwaGljcyBEcml2
+ZXIgRGV2ZWxvcGVyDQpTVVNFIFNvZnR3YXJlIFNvbHV0aW9ucyBHZXJtYW55IEdtYkgNCk1h
+eGZlbGRzdHIuIDUsIDkwNDA5IE7DvHJuYmVyZywgR2VybWFueQ0KKEhSQiAzNjgwOSwgQUcg
+TsO8cm5iZXJnKQ0KR2VzY2jDpGZ0c2bDvGhyZXI6IEl2byBUb3Rldg0K
 
+--------------A0NDaS2ad8imxpVrI0WvpdAo--
 
---------------sILgBXHDfeWHFmPh013FeHLZ--
-
---------------iYBsinc0RYF8EfTtX1kKdCtN
+--------------1enSdAK5XocaDrylNwunWey0
 Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
 Content-Description: OpenPGP digital signature
 Content-Disposition: attachment; filename="OpenPGP_signature"
 
 -----BEGIN PGP SIGNATURE-----
 
-wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmLg7vUFAwAAAAAACgkQlh/E3EQov+B7
-Xg//T0xNBZU6P9TF+4Y2HwkbevwCwqvWS0nvoQxbn4Kr7CnOOhNsUlelFf0RkUN+xBUlX8RY7E+H
-x+dF5VLQ3jHSNWYywwSYY6ZGdKQlG5LWdwjXA3PYsqr3xG0H0TBNZmMEacIrC0dVqLh2PB4/qFSy
-g/x207IlDYoxAZkQOeI2XkBiFDfY2nd92ZXyXMfivyCq88s8Wwl3KFGY6RNew14TePXTi49FLMJ1
-awFMEJGZqs6R1ExKokwd/ruP3asvucwPQcGpvHu4n0SnhAIP5frJRc4zR2EzYPx4ddFW1VSCe3PM
-2TwXNyT3mk5TkXn4nUBq39NK6BHM/n0j8JEiNfT2JTX7J9zIqIuEFSpfG65ralbmpkuAj6gSFSM/
-6uaoipvFjQfTgaPCct+4zG89uzcC8+Z48WJ/qxZE0CQfQYbsRaizcU4N8ubL5F0K3zBTol6oxF1I
-0rKmRpE4So5NubwZwPXclh2YoQLajBQsvePAUPrFWjQenvECgznPTYVcXSpFbY2dwMBQw+gnWFqp
-puaBiH2IHfnDAr1IIsbUq4L5KCWabt1TjUiqgLSF/NBO5sCWen30mVOvhNwfHxgOG8XBZ+S3NzZi
-e8ZF7M7Eu2uWrvdm84H8vhvrq/MQQ9ThWCI9e/hHsGCTzqUjWOsNwvGCiKIfAkUQ92Xyd81KNbXm
-O+Q=
-=Q2G6
+wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmLg8EMFAwAAAAAACgkQlh/E3EQov+A/
+rA/+JZ8e/Zq0/NO2+GXJb1wGZC+bUhUrfa/iRuEHm6PHKXaqs3VNEQgOqeXg4hKvyMxxuiNfAqa4
+afh0rquQBa8rOFJusQoMzKSbcR8SwU0SZfH+FWCDHYE8xGwu0Ix1hH3lhcICQK4UAfgGLRNo1Noy
+KK7otffQ1Fvnmo2KIoiuwfH6lIF8m28X7KrQiaSVCqDlgX0idQwjKv7yuHbcvwSmfSh13jcQC9e9
+fwEvAf6/0xFEWWnbJRTHAQBSEOhbFIJ2+4MWlc65c/rqFapBXGnTKVWFgQGPnnE8dq7k98CpikYe
+7WAjmiIOj8X5DrI2mlb3EYFVmBDuNANBvJC853D/UFzI8kd0mO5oHEQfa1zneFKaRltFwY/ogfbm
+cM54gJ69m7R0gzzL67QKr8r54yrUqK5t3gmtSP3r9JMwXXRlLqcaA9h5xyljTs/FNSqB0QhrVuWB
+Dxq0B7i9xlAyRSjR/BPmAezRQGYgrNaTOFxhrGT3+zTsy+R3xXj5+Nl3/DfoyuqXbzd+SwEB4tlb
+J3pGPliSrSqUqeNebG/aRHR949Kcze8QK8mWT1KHY+Rc8ZUcTCMICpqiTMmae8LhL8EDwo+GYzFx
+8j2C9CwsSbJ4W1E48U3fpFsaJQIeJoME0K8XcZyTIDq0p0MEB9zkfz1fQkbfdPRPQxF0qhRsHNWP
+1PM=
+=/PvB
 -----END PGP SIGNATURE-----
 
---------------iYBsinc0RYF8EfTtX1kKdCtN--
+--------------1enSdAK5XocaDrylNwunWey0--
