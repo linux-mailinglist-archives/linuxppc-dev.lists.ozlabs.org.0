@@ -2,65 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60A25581D3B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Jul 2022 03:37:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 582E3581E61
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Jul 2022 05:54:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LsxHN2HDcz3c6l
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Jul 2022 11:37:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lt0Jt2PGxz3cgT
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Jul 2022 13:54:22 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=IGQbirVR;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bytedance-com.20210112.gappssmtp.com header.i=@bytedance-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=TTb6Ern0;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=srs0=hqxn=ya=zx2c4.com=jason@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bytedance.com (client-ip=2607:f8b0:4864:20::1036; helo=mail-pj1-x1036.google.com; envelope-from=chenzhuo.1@bytedance.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=IGQbirVR;
+	dkim=pass (2048-bit key; unprotected) header.d=bytedance-com.20210112.gappssmtp.com header.i=@bytedance-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=TTb6Ern0;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LsxGl0JBZz2x9G
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Jul 2022 11:37:18 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 05D37B81F0C
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Jul 2022 01:37:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 663E9C433D6
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Jul 2022 01:37:12 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="IGQbirVR"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1658885830;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0Fmgx8N0WQu3EBYzpYloNNBsA8XbCPiWqgOrlE5ogDk=;
-	b=IGQbirVRt+XAEdw/tsv9aC4FXX47bbZHb8uoUE2Sl7Y3abOnW/dWAYjjAxmKxWQLvnrfw1
-	RyslTfS71yq0xis8gHLpEiS2spKWYXibLTxUFLH+mMFI3JFeHllHM1P5m/ncXMJYMrvkYs
-	b6LzVMecFEZTK9S/KMuditRJSEAJ+sU=
-Received: 	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 3ae67790 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO)
-	for <linuxppc-dev@lists.ozlabs.org>;
-	Wed, 27 Jul 2022 01:37:10 +0000 (UTC)
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-31bf3656517so160390247b3.12
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jul 2022 18:37:10 -0700 (PDT)
-X-Gm-Message-State: AJIora9b+mYpcP0CQOatkw7KDDn7Mkx/81UN12xU/QQyd8EHuIQBCbVT
-	DunB1iIRiPuNgQaxT2tOLmk42Z1fTIjjUGp9oF0=
-X-Google-Smtp-Source: AGRyM1tHtJ03wVUfoEkcgXr50XYYj4caRdR7VA2UuBfl7LiVUfhisHMKiq0eLG6EFkJRUzT6AFqBdhb+qZrKlPUwn0s=
-X-Received: by 2002:a81:59c4:0:b0:31f:4804:76ad with SMTP id
- n187-20020a8159c4000000b0031f480476admr5528716ywb.143.1658885829426; Tue, 26
- Jul 2022 18:37:09 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lt0JJ1Wd3z3blV
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Jul 2022 13:53:50 +1000 (AEST)
+Received: by mail-pj1-x1036.google.com with SMTP id b10so15223189pjq.5
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jul 2022 20:53:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance-com.20210112.gappssmtp.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=7jhbj5Abg4TXA2patlqLjYtOIDWLphgG/ZlRWxSbkmg=;
+        b=TTb6Ern0vF5/xiSQCYnJ6Gg46rjWaD0lesX5iMjCWYSKagGQwasI8rZx4GE+f9WmcK
+         Ggv2fbmEV69lUNGSXnrr+YM+YEHUekKd1nY4FlYQgZ5IPWhBmUq4u3xQYvHkfcPHMh6B
+         md+w4lFiGy8n1GDONsIK9I1uT+huTwHEDmCv2krKvh0VI6EyRv5Sj4SHZWfjm6CEmXfw
+         80lGsC8h0lp/ctlJKfildkSPLMZzf3dpVDNzZgd0dKZhEV5SMPL2f5tJFQHUvLIxhbtl
+         Yq71FexWR0TTqYK6VkaK+pSjM5vZ3HTz7nMJvhMRrekFbAAZZmXc6weE0qBWmJXMsG3A
+         15+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=7jhbj5Abg4TXA2patlqLjYtOIDWLphgG/ZlRWxSbkmg=;
+        b=p76M8l4o4AeK6I3GXnzUff+Iwjv+81BKylRV+Jol5IHMqQMyu69KwaAv2blpCPnedB
+         jC7ogL/D8ccfqR493bKcoZYFJOmAkEAxnQ1OEs+Q9ZLnOFSq8OingSKGBmMKoncOXWtn
+         +8q12W8j8cEYvKfT6YlMEZC+cpUgZAVfbSyIUqjLALVoiUTJRsoq4PdUKBaIE2lC3Hmo
+         9rI37Kp3HW465ulykTJCPaVFdXgrf5TXij68eOysk0i1c8XXQajf4iVXhHEkcUteqxTv
+         3aGaIZcA+nrzxiN+/ot+28SO2C/GqgWn+z+2VIYrS3OLtbWymx8FgY5VXIwo7n0tFmB0
+         flng==
+X-Gm-Message-State: AJIora+JLYATo2sc/aWOd3g7ncPOuH3bMG97rkPqEcpPva3wlDkbMI33
+	X1mVrRdHTLlFgkAO7CTRfSepCQ==
+X-Google-Smtp-Source: AGRyM1s980FWuq1gVlztoVmgOxTY3rsrl6DOXaqVSgmqR8KVUchf4hKTtG0e9jsYHw4zD/h04NZfrA==
+X-Received: by 2002:a17:903:2601:b0:16d:b055:2985 with SMTP id jd1-20020a170903260100b0016db0552985mr1722624plb.161.1658894025876;
+        Tue, 26 Jul 2022 20:53:45 -0700 (PDT)
+Received: from C02F63J9MD6R.bytedance.net ([61.120.150.78])
+        by smtp.gmail.com with ESMTPSA id t9-20020a1709027fc900b0016bb24f5d19sm12516515plb.209.2022.07.26.20.53.41
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 26 Jul 2022 20:53:45 -0700 (PDT)
+From: Zhuo Chen <chenzhuo.1@bytedance.com>
+To: ruscur@russell.cc,
+	oohall@gmail.com,
+	bhelgaas@google.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: [PATCH v3] PCI/ERR: Use pcie_aer_is_native() to judge whether OS owns AER
+Date: Wed, 27 Jul 2022 11:53:34 +0800
+Message-Id: <20220727035334.9997-1-chenzhuo.1@bytedance.com>
+X-Mailer: git-send-email 2.30.1 (Apple Git-130)
 MIME-Version: 1.0
-References: <20220711232448.136765-1-Jason@zx2c4.com> <YtVbbMpRbfCWEIFn@zx2c4.com>
-In-Reply-To: <YtVbbMpRbfCWEIFn@zx2c4.com>
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Date: Wed, 27 Jul 2022 03:36:58 +0200
-X-Gmail-Original-Message-ID: <CAHmME9pMOQKnMUQQyOA+CkN5scQjtLN79pvdYSu70MkuU207cw@mail.gmail.com>
-Message-ID: <CAHmME9pMOQKnMUQQyOA+CkN5scQjtLN79pvdYSu70MkuU207cw@mail.gmail.com>
-Subject: Re: [PATCH v5 0/2] powerpc rng cleanups
-To: PowerPC <linuxppc-dev@lists.ozlabs.org>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Sachin Sant <sachinp@linux.ibm.com>, LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,34 +77,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: lukas@wunner.de, linux-pci@vger.kernel.org, chenzhuo.1@bytedance.com, linux-kernel@vger.kernel.org, stuart.w.hayes@gmail.com, jan.kiszka@siemens.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Michael,
+Use pcie_aer_is_native() in place of "host->native_aer ||
+pcie_ports_native" to judge whether OS has native control of AER
+in pcie_do_recovery().
 
-On Mon, Jul 18, 2022 at 3:09 PM Jason A. Donenfeld <Jason@zx2c4.com> wrote:
->
-> Hey again,
->
-> On Tue, Jul 12, 2022 at 01:24:46AM +0200, Jason A. Donenfeld wrote:
-> > These are two small cleanups for -next. This v5 rebases on the latest
-> > git master, as some whitespace was added that made v4 no longer apply.
-> >
-> > Jason A. Donenfeld (2):
-> >   powerpc/powernv: rename remaining rng powernv_ functions to pnv_
-> >   powerpc/kvm: don't crash on missing rng, and use darn
-> >
-> >  arch/powerpc/include/asm/archrandom.h |  7 +--
-> >  arch/powerpc/kvm/book3s_hv_builtin.c  |  7 +--
-> >  arch/powerpc/platforms/powernv/rng.c  | 66 ++++++++++-----------------
-> >  drivers/char/hw_random/powernv-rng.c  |  2 +-
-> >  4 files changed, 30 insertions(+), 52 deletions(-)
->
-> I think v5 has reached a completion point. Could you queue these up in
-> some PPC tree for 5.20?
+Replace "dev->aer_cap && (pcie_ports_native || host->native_aer)" in
+get_port_device_capability() with pcie_aer_is_native(), which has no
+functional changes.
 
-Just paging again. Do you think you could queue these up for 5.20?
-This trivial series is over a month old now.
+Signed-off-by: Zhuo Chen <chenzhuo.1@bytedance.com>
+---
+Changelog:
+v3:
+- Simplify why we use pcie_aer_is_native().
+- Revert modification of pci_aer_clear_nonfatal_status() and comments.
+v2:
+- Add details and note in commit log.
+---
+ drivers/pci/pcie/err.c          | 3 +--
+ drivers/pci/pcie/portdrv_core.c | 3 +--
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-Thanks,
-Jason
+diff --git a/drivers/pci/pcie/err.c b/drivers/pci/pcie/err.c
+index 0c5a143025af..121a53338e44 100644
+--- a/drivers/pci/pcie/err.c
++++ b/drivers/pci/pcie/err.c
+@@ -184,7 +184,6 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
+ 	int type = pci_pcie_type(dev);
+ 	struct pci_dev *bridge;
+ 	pci_ers_result_t status = PCI_ERS_RESULT_CAN_RECOVER;
+-	struct pci_host_bridge *host = pci_find_host_bridge(dev->bus);
+ 
+ 	/*
+ 	 * If the error was detected by a Root Port, Downstream Port, RCEC,
+@@ -243,7 +242,7 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
+ 	 * it is responsible for clearing this status.  In that case, the
+ 	 * signaling device may not even be visible to the OS.
+ 	 */
+-	if (host->native_aer || pcie_ports_native) {
++	if (pcie_aer_is_native(dev)) {
+ 		pcie_clear_device_status(dev);
+ 		pci_aer_clear_nonfatal_status(dev);
+ 	}
+diff --git a/drivers/pci/pcie/portdrv_core.c b/drivers/pci/pcie/portdrv_core.c
+index 604feeb84ee4..98c18f4a01b2 100644
+--- a/drivers/pci/pcie/portdrv_core.c
++++ b/drivers/pci/pcie/portdrv_core.c
+@@ -221,8 +221,7 @@ static int get_port_device_capability(struct pci_dev *dev)
+ 	}
+ 
+ #ifdef CONFIG_PCIEAER
+-	if (dev->aer_cap && pci_aer_available() &&
+-	    (pcie_ports_native || host->native_aer)) {
++	if (pcie_aer_is_native(dev) && pci_aer_available()) {
+ 		services |= PCIE_PORT_SERVICE_AER;
+ 
+ 		/*
+-- 
+2.30.1 (Apple Git-130)
+
