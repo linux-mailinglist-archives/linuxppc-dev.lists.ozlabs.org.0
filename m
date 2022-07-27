@@ -1,98 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EC6F581A3E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jul 2022 21:23:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36527581D31
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Jul 2022 03:34:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lsmyq08Gbz3cfL
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Jul 2022 05:22:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LsxCY0yVBz3ch6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Jul 2022 11:34:33 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cN2r67Ua;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cN2r67Ua;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=acyN2D9y;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=javierm@redhat.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=canonical.com (client-ip=185.125.188.120; helo=smtp-relay-canonical-0.canonical.com; envelope-from=kai.heng.feng@canonical.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cN2r67Ua;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cN2r67Ua;
+	dkim=pass (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=acyN2D9y;
 	dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-relay-canonical-0.canonical.com (smtp-relay-canonical-0.canonical.com [185.125.188.120])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lsmy20rbSz3bgR
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Jul 2022 05:22:15 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1658863330;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HM/992FpowUrZBdOewYXTdFa78rfvZ1wIMJtEZDEzFo=;
-	b=cN2r67UaTp5zrWI4EkfRQyUi8Txa3UtON2qB9KdIOip1YlFiYifcPk0XZXGarr3Wip6D5U
-	w6vz7+MsKQ+zSLVpQoY2lxrwnnrv9hOxWBJkciCMa0aP0xzC5vZh/tkLQrDW7HNEyfhb9G
-	rKfh1f6Neoc3e2tt/9oWfSMHJunvt8o=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1658863330;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HM/992FpowUrZBdOewYXTdFa78rfvZ1wIMJtEZDEzFo=;
-	b=cN2r67UaTp5zrWI4EkfRQyUi8Txa3UtON2qB9KdIOip1YlFiYifcPk0XZXGarr3Wip6D5U
-	w6vz7+MsKQ+zSLVpQoY2lxrwnnrv9hOxWBJkciCMa0aP0xzC5vZh/tkLQrDW7HNEyfhb9G
-	rKfh1f6Neoc3e2tt/9oWfSMHJunvt8o=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-75-u4MLbdzAN3mcSFrN8pD4KA-1; Tue, 26 Jul 2022 15:22:08 -0400
-X-MC-Unique: u4MLbdzAN3mcSFrN8pD4KA-1
-Received: by mail-wm1-f72.google.com with SMTP id h65-20020a1c2144000000b003a30cae106cso10626547wmh.8
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jul 2022 12:22:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=HM/992FpowUrZBdOewYXTdFa78rfvZ1wIMJtEZDEzFo=;
-        b=hQMm7DnRpsELvBsaYypuYMz3EAYyOADqOVviTitg4u0EQYMlkwf0dANy6UsWjmw7Rl
-         85rYgkNv3qqU8J0e647GJJFqVJAlQyg7Wd1X6nIV4JER30hkUBz58NwWzBThpqLzHaYz
-         KD/Dh+LYjtnksV2faiTQ1o9lhEucPD1e79kSDZR7u4oa8CHPQJfA+cXL7ZjD6+ekyN1J
-         f145JszIeiWSIicRaFf1EonvI0HRh/YpoETIJQDNgkv76G2KW1RiCVln1tFBwJyCZ7uZ
-         DYnHtNfILnePH6oLUDB7jneKs2pV2xXjJF/odh1GzOgGmiCu6pH/WhE84ER/GqMXk1ha
-         6c+Q==
-X-Gm-Message-State: AJIora/DQ2ma/VMRtrh26Pc5y6876RsPDrdVnhxJBZTK/xxHnLGXfSla
-	SXMfGvgJH8fYKDS99aqylEZKjifxpciSL0s0G71refhQONiRWB5HTFFiNKdTX1iOMA5COTDj6zi
-	zeRS/wPD73lM63CidbJFXeQd5QA==
-X-Received: by 2002:a5d:64e5:0:b0:21d:945a:e7c4 with SMTP id g5-20020a5d64e5000000b0021d945ae7c4mr12161322wri.0.1658863327406;
-        Tue, 26 Jul 2022 12:22:07 -0700 (PDT)
-X-Google-Smtp-Source: AGRyM1vGZKU+Yu4t/pJR7G/x3ABdDb+Jc5JIBwBhoD8uXuQNqfQGzOOG9RFUs5hjLn5ORhAmUgcRxw==
-X-Received: by 2002:a5d:64e5:0:b0:21d:945a:e7c4 with SMTP id g5-20020a5d64e5000000b0021d945ae7c4mr12161300wri.0.1658863326979;
-        Tue, 26 Jul 2022 12:22:06 -0700 (PDT)
-Received: from [192.168.1.130] (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
-        by smtp.gmail.com with ESMTPSA id z21-20020a05600c0a1500b0039c454067ddsm19704276wmp.15.2022.07.26.12.22.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 26 Jul 2022 12:22:06 -0700 (PDT)
-Message-ID: <90aef621-b686-12dd-de55-9a680f5783d7@redhat.com>
-Date: Tue, 26 Jul 2022 21:22:05 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LsxBv19FSz2yMk
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Jul 2022 11:33:57 +1000 (AEST)
+Received: from localhost.localdomain (unknown [10.101.196.174])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id 1508E3F395;
+	Wed, 27 Jul 2022 01:33:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20210705; t=1658885634;
+	bh=J7Mo7gRC9aUnXUlERL8fcZBWoJb2JAks8HFFUOO/0qw=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version;
+	b=acyN2D9yFbUZ/Di08hQd138lFj++ds1vlYZ+Yl49z3HG+jdfU29MdKH+i3syPYvvW
+	 jMeejKm069QBpOOIQ88GvibA3gP6GHjBSbeugvUV/j2Y8a8luyT9yyff0Rn0zoRIrj
+	 k/P1Lf5C8n17MNcgSuBZB6LdaY/w/VkDLMOfM+7r35laPtNsvYRghH8L+CtTZBiMpK
+	 3a1iWObZEdTXFhfrKpzFhEPgGEe6bBPREQ5qp+pro2mnXsJwB/bx62SUGi3kbvfk0x
+	 C0kwAiwb2i3KXtB/ON81AQhdcguRpPJWR5GVC3/Yod9zWEfMTiSsMITi+TN4n0LLPM
+	 KXrElqQEzq+SQ==
+From: Kai-Heng Feng <kai.heng.feng@canonical.com>
+To: bhelgaas@google.com
+Subject: [PATCH 2/3] PCI/AER: Disable AER service on suspend when IRQ is shared with PME
+Date: Wed, 27 Jul 2022 09:32:51 +0800
+Message-Id: <20220727013255.269815-2-kai.heng.feng@canonical.com>
+X-Mailer: git-send-email 2.36.1
+In-Reply-To: <20220727013255.269815-1-kai.heng.feng@canonical.com>
+References: <20220727013255.269815-1-kai.heng.feng@canonical.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH v2 09/10] drm/ofdrm: Add per-model device function
-To: =?UTF-8?Q?Michal_Such=c3=a1nek?= <msuchanek@suse.de>
-References: <20220720142732.32041-1-tzimmermann@suse.de>
- <20220720142732.32041-10-tzimmermann@suse.de>
- <7b1a2807-59c7-d524-af8e-1ec634c740a7@redhat.com>
- <20220726144024.GP17705@kitsune.suse.cz>
-From: Javier Martinez Canillas <javierm@redhat.com>
-In-Reply-To: <20220726144024.GP17705@kitsune.suse.cz>
-Authentication-Results: relay.mimecast.com;
-	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=javierm@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -105,54 +60,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-fbdev@vger.kernel.org, sam@ravnborg.org, airlied@linux.ie, deller@gmx.de, mark.cave-ayland@ilande.co.uk, dri-devel@lists.freedesktop.org, paulus@samba.org, maxime@cerno.tech, Thomas Zimmermann <tzimmermann@suse.de>, geert@linux-m68k.org, linuxppc-dev@lists.ozlabs.org
+Cc: sathyanarayanan.kuppuswamy@linux.intel.com, linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, koba.ko@canonical.com, Kai-Heng Feng <kai.heng.feng@canonical.com>, Oliver O'Halloran <oohall@gmail.com>, mika.westerberg@linux.intel.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello Michal,
+PCIe service that shares IRQ with PME may cause spurious wakeup on
+system suspend.
 
-On 7/26/22 16:40, Michal Suchánek wrote:
-> Hello,
-> 
-> On Tue, Jul 26, 2022 at 03:38:37PM +0200, Javier Martinez Canillas wrote:
->> On 7/20/22 16:27, Thomas Zimmermann wrote:
->>> Add a per-model device-function structure in preparation of adding
->>> color-management support. Detection of the individual models has been
->>> taken from fbdev's offb.
->>>
->>> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
->>> ---
->>
->> Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
->>
->> [...]
->>
->>> +static bool is_avivo(__be32 vendor, __be32 device)
->>> +{
->>> +	/* This will match most R5xx */
->>> +	return (vendor == 0x1002) &&
->>> +	       ((device >= 0x7100 && device < 0x7800) || (device >= 0x9400));
->>> +}
->>
->> Maybe add some constant macros to not have these magic numbers ?
-> 
-> This is based on the existing fbdev implementation's magic numbers:
-> 
-> drivers/video/fbdev/offb.c:                 ((*did >= 0x7100 && *did < 0x7800) ||
->
+PCIe Base Spec 5.0, section 5.2 "Link State Power Management" states
+that TLP and DLLP transmission is disabled for a Link in L2/L3 Ready
+(D3hot), L2 (D3cold with aux power) and L3 (D3cold), so we don't lose
+much here to disable AER during system suspend.
 
-Ah, I see. Then we might have to go with the magic numbers...
+This is very similar to previous attempts to suspend AER and DPC [1],
+but with a different reason.
+
+[1] https://lore.kernel.org/linux-pci/20220408153159.106741-1-kai.heng.feng@canonical.com/
+Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=216295
+
+Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+---
+ drivers/pci/pcie/aer.c | 23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+index 7952e5efd6cf3..60cc373754af2 100644
+--- a/drivers/pci/pcie/aer.c
++++ b/drivers/pci/pcie/aer.c
+@@ -1372,6 +1372,26 @@ static int aer_probe(struct pcie_device *dev)
+ 	return 0;
+ }
  
-> Of course, it would be great if somebody knowledgeable could clarify
-> those.
->
-
-Indeed.
-
++static int aer_suspend(struct pcie_device *dev)
++{
++	struct aer_rpc *rpc = get_service_data(dev);
++
++	if (dev->shared_pme_irq)
++		aer_disable_rootport(rpc);
++
++	return 0;
++}
++
++static int aer_resume(struct pcie_device *dev)
++{
++	struct aer_rpc *rpc = get_service_data(dev);
++
++	if (dev->shared_pme_irq)
++		aer_enable_rootport(rpc);
++
++	return 0;
++}
++
+ /**
+  * aer_root_reset - reset Root Port hierarchy, RCEC, or RCiEP
+  * @dev: pointer to Root Port, RCEC, or RCiEP
+@@ -1441,8 +1461,9 @@ static struct pcie_port_service_driver aerdriver = {
+ 	.name		= "aer",
+ 	.port_type	= PCIE_ANY_PORT,
+ 	.service	= PCIE_PORT_SERVICE_AER,
+-
+ 	.probe		= aer_probe,
++	.suspend	= aer_suspend,
++	.resume		= aer_resume,
+ 	.remove		= aer_remove,
+ };
+ 
 -- 
-Best regards,
-
-Javier Martinez Canillas
-Linux Engineering
-Red Hat
+2.36.1
 
