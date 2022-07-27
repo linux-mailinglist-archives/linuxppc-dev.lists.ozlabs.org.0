@@ -1,77 +1,103 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05EFE582347
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Jul 2022 11:38:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30DB8582357
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Jul 2022 11:40:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lt7xY03nZz3cfW
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Jul 2022 19:38:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lt8001WRYz3c4Y
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Jul 2022 19:40:16 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bytedance-com.20210112.gappssmtp.com header.i=@bytedance-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=BAhli0xR;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=D2nm8c8B;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=D2nm8c8B;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bytedance.com (client-ip=2607:f8b0:4864:20::42f; helo=mail-pf1-x42f.google.com; envelope-from=chenzhuo.1@bytedance.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=javierm@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bytedance-com.20210112.gappssmtp.com header.i=@bytedance-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=BAhli0xR;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=D2nm8c8B;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=D2nm8c8B;
 	dkim-atps=neutral
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lt7wv40c4z3bgC
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Jul 2022 19:37:34 +1000 (AEST)
-Received: by mail-pf1-x42f.google.com with SMTP id d10so15620727pfd.9
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Jul 2022 02:37:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance-com.20210112.gappssmtp.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:content-language
-         :from:to:cc:references:in-reply-to:content-transfer-encoding;
-        bh=vJn+MLWCsk+ei9hsjhMzOKCAi7lwMqHzERz4ilhjRd8=;
-        b=BAhli0xR/K813sba6mxZ6qzpHkBuQ4XWkwcm3SYX26nlD7jupj4lyIm8AZWeSTrPTU
-         uaNdRXX43CRPYE0tkW/2ileR6tI0bBEP3hf1Gb2uTf1dQGypO3EBgYByss0gfOR3mUZv
-         P5/YmzgTICq86WARnnbyd6/1midmJWjkxayGrnR7TaNtYE87DBcqeKyXVMrzn5zQRc9q
-         OoQMm93hby7hlcUQ/FBMFOnGABtmX17n4C4lArmjtRL6pgvbiKX5+vJbaIivq7YiUuHs
-         WAo3aG1YsmNpvTQ7yZ/TmvahbK4tE5hDB+ARbVgHPrPYTVCXpkGHQ3usbGHYgP6NyQRt
-         nDJQ==
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lt7zJ4Hr5z2xkW
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Jul 2022 19:39:40 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1658914776;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QpYq8k+/zMFls5kVctZr6/54tObnNDYVXoF8Fq/DZnM=;
+	b=D2nm8c8BNp6PbmFcApo4NSUDjf8H6GfGB8gTITZ596mIkJf+aySdJE4aNI5XfhvLG/bFGf
+	BuhnJcVnhuPr5BJOSBf1BLB26BztMCdUo4tNrI/xWWB9nGnyqFHPtnUm0DRlNtSCwI961/
+	YX8mamnFzvPvs6/U2BnZ8GYDtB3ibRE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1658914776;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QpYq8k+/zMFls5kVctZr6/54tObnNDYVXoF8Fq/DZnM=;
+	b=D2nm8c8BNp6PbmFcApo4NSUDjf8H6GfGB8gTITZ596mIkJf+aySdJE4aNI5XfhvLG/bFGf
+	BuhnJcVnhuPr5BJOSBf1BLB26BztMCdUo4tNrI/xWWB9nGnyqFHPtnUm0DRlNtSCwI961/
+	YX8mamnFzvPvs6/U2BnZ8GYDtB3ibRE=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-385-OYX98QXtO1GV9rIXAcFriw-1; Wed, 27 Jul 2022 05:39:35 -0400
+X-MC-Unique: OYX98QXtO1GV9rIXAcFriw-1
+Received: by mail-wm1-f72.google.com with SMTP id n30-20020a05600c501e00b003a3264465ebso1580383wmr.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Jul 2022 02:39:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:from:to:cc:references:in-reply-to
+         :content-language:to:cc:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=vJn+MLWCsk+ei9hsjhMzOKCAi7lwMqHzERz4ilhjRd8=;
-        b=0af6az1JhzDrqkbei7jFzZwBt6F6U3rvYSGbnyIOah/s7PyBQDoKyvRP3Mv/zahi3l
-         f2D5YDdjo8odRv1wQoV90WmTgrFNfOolTfbtfj+RMMOqQL1iGSi0iuHmK20stXLGt2u6
-         zW+z7iH23xDSZHzFBxfWaidPtmhStkB5oy+4v5e59Agag3Y9ub+fZDKxySLjevbAGd9J
-         bsZlqNI4d4RbslC0XiqmUFuZ3raadpxU4dWVP4zIJgh9Gebk7pYUIi7+relwlewSI2z0
-         nzq/Z4quTRZmAr6yvuX6bVS+ZNECS2AMx65ji62xUb9GXxc/+lVaF+kKxJpUrvvtsEMC
-         w2Yw==
-X-Gm-Message-State: AJIora9FdnVQ49jCCC4vcKY+A+r3hFWS49tTvuYz3qIRlQYrcn+C4EuO
-	I6KgMZwoqco+8cHNptzZ3ZNljg==
-X-Google-Smtp-Source: AGRyM1vpKLg/coFT9BHg45n8K+BH+qcz7PnJfDmPqrf9RdHbYZUKQkVRHlxrGkdE9u9DBN4Z6IWoXw==
-X-Received: by 2002:a65:6398:0:b0:415:7d00:c1de with SMTP id h24-20020a656398000000b004157d00c1demr18665628pgv.610.1658914652147;
-        Wed, 27 Jul 2022 02:37:32 -0700 (PDT)
-Received: from [10.2.192.95] ([61.120.150.78])
-        by smtp.gmail.com with ESMTPSA id i128-20020a636d86000000b0041a4df3d3e2sm11591867pgc.68.2022.07.27.02.37.28
+        bh=QpYq8k+/zMFls5kVctZr6/54tObnNDYVXoF8Fq/DZnM=;
+        b=GUGb1VSZRr1Npu9LLpACuIaH3SRs69B7zk/PTH45D6/p6nr4R3ABy8O0mfKqnM0ta3
+         w685BpIqZCcJpDML73JNhwUUUJZ0lQeEVXrTclHUQ6tAs+cYJbkxvLWQoj/489bWkrDs
+         B77aAGqwInp4tyTZq93rSGHQQjCuDr6ETZrv2nK4xs5n21U2WJh1n+RsaY1InxS/DBMJ
+         sj2XcaW4/gQBVzZfl8gpickjClXWkSCK+AVtXylm5cukbtMsqGOjSr0/w8g23YLsFXFI
+         fVFF3HZkVSWh1y9M4Q3Y+L5g8JYa9hiBBJbKe7IZL4GTBeh4Uo6Z9nf+OoWk4K3i298Q
+         ez0A==
+X-Gm-Message-State: AJIora9e12ngCAbHizI+65FmNI0npE9ZOtYdK7jKtMs6+NUg4grSJ9Iw
+	m5RTM4JSOlnBWr9D4GBkRh/E40JykmoylhjB4FBAd8YD4ztEZX1QpF6yVmjPgb/RgBniswLkTgM
+	SV4PbyUzLM51dqdlF/878ateCCA==
+X-Received: by 2002:adf:b317:0:b0:21e:5096:cc9a with SMTP id j23-20020adfb317000000b0021e5096cc9amr13218329wrd.481.1658914773562;
+        Wed, 27 Jul 2022 02:39:33 -0700 (PDT)
+X-Google-Smtp-Source: AGRyM1v6OiTl+LoNwlWe8XcV0qSJ43j7F7WYkuLmnsjp6cy+jmMuLmruPU5Ty1ROsOCb5ONKsRirzA==
+X-Received: by 2002:adf:b317:0:b0:21e:5096:cc9a with SMTP id j23-20020adfb317000000b0021e5096cc9amr13218313wrd.481.1658914773238;
+        Wed, 27 Jul 2022 02:39:33 -0700 (PDT)
+Received: from [192.168.1.130] (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
+        by smtp.gmail.com with ESMTPSA id r21-20020a05600c35d500b003a17ab4e7c8sm1877647wmq.39.2022.07.27.02.39.32
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 27 Jul 2022 02:37:31 -0700 (PDT)
-Message-ID: <b54b068b-fe9a-8609-3e9f-170579affc27@bytedance.com>
-Date: Wed, 27 Jul 2022 17:37:23 +0800
+        Wed, 27 Jul 2022 02:39:32 -0700 (PDT)
+Message-ID: <b3392ac8-0e21-d429-489f-b12a562dcb7c@redhat.com>
+Date: Wed, 27 Jul 2022 11:39:31 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.0.3
-Subject: Re: [PATCH v3] PCI/ERR: Use pcie_aer_is_native() to judge whether OS
- owns AER
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH v2 06/10] drm/simpledrm: Move some functionality into fwfb
+ helper library
+To: Thomas Zimmermann <tzimmermann@suse.de>, airlied@linux.ie,
+ daniel@ffwll.ch, deller@gmx.de, maxime@cerno.tech, sam@ravnborg.org,
+ msuchanek@suse.de, mpe@ellerman.id.au, benh@kernel.crashing.org,
+ paulus@samba.org, geert@linux-m68k.org, mark.cave-ayland@ilande.co.uk
+References: <20220720142732.32041-1-tzimmermann@suse.de>
+ <20220720142732.32041-7-tzimmermann@suse.de>
+ <c411480b-27b2-8c0b-534f-bbabd8018577@redhat.com>
+ <623cde06-62ec-c8be-0f0e-2fd900c2359a@suse.de>
+From: Javier Martinez Canillas <javierm@redhat.com>
+In-Reply-To: <623cde06-62ec-c8be-0f0e-2fd900c2359a@suse.de>
+Authentication-Results: relay.mimecast.com;
+	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=javierm@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
 Content-Language: en-US
-From: Zhuo Chen <chenzhuo.1@bytedance.com>
-To: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
-References: <20220727035334.9997-1-chenzhuo.1@bytedance.com>
- <b5c746db-f6a0-d89e-6db5-e4a206c9237a@linux.intel.com>
- <cfd44d9c-453b-e498-2630-9057947cf3cd@bytedance.com>
-In-Reply-To: <cfd44d9c-453b-e498-2630-9057947cf3cd@bytedance.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,112 +109,112 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: chenzhuo.1@bytedance.com, jan.kiszka@siemens.com, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, lukas@wunner.de, oohall@gmail.com, stuart.w.hayes@gmail.com, bhelgaas@google.com, linuxppc-dev@lists.ozlabs.org
+Cc: linux-fbdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, dri-devel@lists.freedesktop.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 7/26/22 1:35 PM, Zhuo Chen wrote:
+On 7/27/22 10:24, Thomas Zimmermann wrote:
+> Hi
 > 
-> On 7/26/22 9:02 PM, Sathyanarayanan Kuppuswamy wrote:
->>
->>
->> On 7/26/22 8:53 PM, Zhuo Chen wrote:
->>> Use pcie_aer_is_native() in place of "host->native_aer ||
->>> pcie_ports_native" to judge whether OS has native control of AER
->>> in pcie_do_recovery().
+> Am 25.07.22 um 18:23 schrieb Javier Martinez Canillas:
+>> On 7/20/22 16:27, Thomas Zimmermann wrote:
+>>> Move some of simpledrm's functionality into a helper library. Other
+>>> drivers for firmware-provided framebuffers will also need functions
+>>> to handle fixed modes and color formats, or update the back buffer.
 >>>
->>> Replace "dev->aer_cap && (pcie_ports_native || host->native_aer)" in
->>> get_port_device_capability() with pcie_aer_is_native(), which has no
->>> functional changes.
->>>
->>> Signed-off-by: Zhuo Chen <chenzhuo.1@bytedance.com>
+>>> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 >>> ---
 >>
->> Patch looks better now. It looks like following two changes
->> can also be replaced with pcie_aer_is_native() check.
->>
->> drivers/pci/pcie/aer.c:1407:    if ((host->native_aer || 
->> pcie_ports_native) && aer) {
->> drivers/pci/pcie/aer.c:1426:    if ((host->native_aer || 
->> pcie_ports_native) && aer) {
+>> Nice patch!
 > 
-> Good advice. But I wonder is there a scenario that dev->rcec ("root") is 
-> NULL meanwhile dev->aer_cap is not NULL? If so, replace 
-> "(host->native_aer || pcie_ports_native) && aer" with 
-> pcie_aer_is_native() will change original function.
+> TBH it took me 3 tries to get something done for this library and I'm 
+> still not happy with the result. I want to share code between simpledrm 
+> and ofdrm, but that turns out to be harder then expected. A good part of 
+> this code appears to belong into other libraries (you also mentioned 
+> this below).
 > 
-Do you mean changing "if ((host->native_aer || pcie_ports_native) && 
-aer)" into "if (pcie_aer_is_native(dev) && aer)" ?
-I thought changing into "if (pcie_aer_is_native(dev))" before.
+> I don't want to duplicated code between simpledrm and ofdrm without 
+> reason, but I expect that this library will somewhen be refactored and 
+> dissolved into existing libraries.
+>
 
-One another doubt. Not every pci device support aer. When dev->aer_cap 
-is NULL and root->aer_cap is not NULL in aer_root_reset(), 
-pcie_aer_is_native() will return false and OS cannot operate root 
-register. It's different from just using "(host->native_aer || 
-pcie_ports_native)".
+Yes, I think is a step in the right direction and guess it would be even
+more useful once/if a 3rd firmware-provided framebuffer driver is added.
 
-Or we can change "if ((host->native_aer || pcie_ports_native) && aer)" 
-into "if (pcie_aer_is_native(root))". But in this way, argument NULL 
-pointer check should be added in pcie_aer_is_native().
-
->>
->>
->>
->>> Changelog:
->>> v3:
->>> - Simplify why we use pcie_aer_is_native().
->>> - Revert modification of pci_aer_clear_nonfatal_status() and comments.
->>> v2:
->>> - Add details and note in commit log.
->>> ---
->>>   drivers/pci/pcie/err.c          | 3 +--
->>>   drivers/pci/pcie/portdrv_core.c | 3 +--
->>>   2 files changed, 2 insertions(+), 4 deletions(-)
->>>
->>> diff --git a/drivers/pci/pcie/err.c b/drivers/pci/pcie/err.c
->>> index 0c5a143025af..121a53338e44 100644
->>> --- a/drivers/pci/pcie/err.c
->>> +++ b/drivers/pci/pcie/err.c
->>> @@ -184,7 +184,6 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev 
->>> *dev,
->>>       int type = pci_pcie_type(dev);
->>>       struct pci_dev *bridge;
->>>       pci_ers_result_t status = PCI_ERS_RESULT_CAN_RECOVER;
->>> -    struct pci_host_bridge *host = pci_find_host_bridge(dev->bus);
->>>       /*
->>>        * If the error was detected by a Root Port, Downstream Port, 
->>> RCEC,
->>> @@ -243,7 +242,7 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev 
->>> *dev,
->>>        * it is responsible for clearing this status.  In that case, the
->>>        * signaling device may not even be visible to the OS.
->>>        */
->>> -    if (host->native_aer || pcie_ports_native) {
->>> +    if (pcie_aer_is_native(dev)) {
->>>           pcie_clear_device_status(dev);
->>>           pci_aer_clear_nonfatal_status(dev);
->>>       }
->>> diff --git a/drivers/pci/pcie/portdrv_core.c 
->>> b/drivers/pci/pcie/portdrv_core.c
->>> index 604feeb84ee4..98c18f4a01b2 100644
->>> --- a/drivers/pci/pcie/portdrv_core.c
->>> +++ b/drivers/pci/pcie/portdrv_core.c
->>> @@ -221,8 +221,7 @@ static int get_port_device_capability(struct 
->>> pci_dev *dev)
->>>       }
->>>   #ifdef CONFIG_PCIEAER
->>> -    if (dev->aer_cap && pci_aer_available() &&
->>> -        (pcie_ports_native || host->native_aer)) {
->>> +    if (pcie_aer_is_native(dev) && pci_aer_available()) {
->>>           services |= PCIE_PORT_SERVICE_AER;
->>>           /*
->>
 > 
-> Thanks,
-> Zhuo Chen
+>>
+>> [...]
+>>
+>>> +
+>>> +/**
+>>> + * DOC: overview
+>>> + *
+>>> + * The Firmware Framebuffer library FWFB provides helpers for devices with
+>>> + * fixed-mode backing storage. It helps drivers to export a display mode of
+>>> + * te correct size and copy updates to the backing storage.
+>>
+>> the
+>>
+>> it is "backing storage" or "backing store" ? I always thought that storage was
+>> used for non-volatile media while "store" could be volatile and non-volatile.
+> 
+> Why store? Isn't that a little shop for fashion or groceries? I'm no 
+> native speaker; I can't tell if either implies that we're sending 
+> pictures to a warehouse or bakery. :)
+> 
+
+LOL.
+
+> Would 'back buffer' (in contrast to 'shadow buffer') be clear?
+>
+
+Back buffer is more clear indeed.
+
+[...]
+
+>> It seems a little bit arbitrary to me that format is the only field that's
+>> a pointer and the other ones are embedded into the struct drm_fwfb. Any
+>> reason for that or is just a consequence of how types were used by the
+>> simpledrm_device_create() function before that code moved into helpers ?
+> 
+> Format is constant and comes from statically initialized memory in 
+> drm_fourcc.c. I'd expect to be able to compare formats by comparing the 
+> pointers. Copying the format here would break the assumption.
+>
+
+I see. Makes sense.
+
+>>
+>> [...]
+>>
+>>> +static bool is_listed_fourcc(const uint32_t *fourccs, size_t nfourccs, uint32_t fourcc)
+>>> +{
+>>> +	const uint32_t *fourccs_end = fourccs + nfourccs;
+>>> +
+>>> +	while (fourccs < fourccs_end) {
+>>> +		if (*fourccs == fourcc)
+>>> +			return true;
+>>> +		++fourccs;
+>>> +	}
+>>> +	return false;
+>>> +}
+>>
+>> This seems a helper that could be useful besides the drm_fwfb_helper.c file.
+>>
+>> I believe patches 1-6 shouldn't wait for the others in this series and could
+>> just be merged when ready. Patches 7-10 can follow later.
+> 
+> Yeah, I'd like to move patches 1 to 5 into a new series for merging. 
+> Patch 6 is only useful for ofdrm and as I said, maybe there's a better 
+> solution then this library. I'd rather keep it here for now.
+>
+
+OK.
 
 -- 
-Thanks,
-Zhuo Chen
+Best regards,
+
+Javier Martinez Canillas
+Linux Engineering
+Red Hat
+
