@@ -2,79 +2,101 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 765845822F7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Jul 2022 11:22:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B74B582324
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Jul 2022 11:31:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lt7Zx33RGz3chW
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Jul 2022 19:22:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lt7nl3Rs4z3cfZ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Jul 2022 19:31:23 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TLYPhW95;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BUU4gB4c;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZcsOAqVv;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=javierm@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TLYPhW95;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BUU4gB4c;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZcsOAqVv;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lt7ZD2fb4z3bqk
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Jul 2022 19:21:23 +1000 (AEST)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 26R9G0QW011970;
-	Wed, 27 Jul 2022 09:21:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=9WVbCnO6TDYhf5XWN6+VnSHbQoj/Tr12da+Y8xsuexo=;
- b=TLYPhW955AVqXuONnWidbXmDd4pkhIuz5Kexdz8QCKrOnCTWIG/qlnrpzCt+fQmJuST6
- 31qL5/Dw1HweB0nUbwtJd+4zBfJ4JB9vPoa0uwZMkpjvRvkSKwsrbi1TIkXtbPeNPz8Z
- b/+T2jdiKlwavHvskH6qCkGolDbnWyGwh8JBCuf88X3mdvQ04ph6A5k0RIieiowq30GS
- fHXjthzaHoQDyiKMjj9Ziguub2bqYtehdoKgk5x4XZYkpHncsqvz3CrJzun5IxYfMocu
- b91MieFMgH0XzHdYqiiV4eFMRNETdT3IYlrF8Wi/MdR0HYxKOtzaCl+UPIbE6AdkWzsu FQ== 
-Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com [149.81.74.107])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3hk2k3g4qr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 27 Jul 2022 09:21:16 +0000
-Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
-	by ppma03fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 26R9K6Na007976;
-	Wed, 27 Jul 2022 09:21:14 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
-	by ppma03fra.de.ibm.com with ESMTP id 3hg95ybns2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 27 Jul 2022 09:21:14 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
-	by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 26R9LPPO32112952
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 27 Jul 2022 09:21:25 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 088CC4C044;
-	Wed, 27 Jul 2022 09:21:11 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B8A9D4C04A;
-	Wed, 27 Jul 2022 09:21:10 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.145.87.150])
-	by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Wed, 27 Jul 2022 09:21:10 +0000 (GMT)
-From: Laurent Dufour <ldufour@linux.ibm.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH] watchdog: Fix build error when CONFIG_SOFTLOCKUP_DETECTOR is not set
-Date: Wed, 27 Jul 2022 11:21:09 +0200
-Message-Id: <20220727092109.31362-1-ldufour@linux.ibm.com>
-X-Mailer: git-send-email 2.37.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lt7n21YY8z3bsl
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Jul 2022 19:30:44 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1658914240;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WnlbuoDO11+s0PkrtymLUg/RTeerO1YGjIAWzaLsXI8=;
+	b=BUU4gB4cSIXZUdPPF/1zwiSzdOqEluuj3RcMj+lUrTpsRpPtzQsyI+fSmBCrzWu5aXYyQM
+	Ivun0Yehu1JPEKTI/S/nQ5oxIsvMb6HWE//g5rJIjVAb7KMQRNrdOOnPYrFfo0lfp/CGtk
+	/zSvjbSQcY9XvBrPKpqCoK0cD00hg4A=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1658914241;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WnlbuoDO11+s0PkrtymLUg/RTeerO1YGjIAWzaLsXI8=;
+	b=ZcsOAqVvrJ2eTAUxTVmgbzwwsdAsU//3wrTt1BIlXh+iLe/8XdF0nh/awCHsMJtqmJOAjy
+	zjgTg1iDJ/m9zCSceKjjWA6hasFLs5yKp8rmZ640vPp50AQ4JYOpnVunYZuVtA+6fPEtEo
+	3Eh41liZt97jnGCed5xDO7h3HvBKVls=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-263-ZkgjhqQeNo6wp7T7ATexPA-1; Wed, 27 Jul 2022 05:30:34 -0400
+X-MC-Unique: ZkgjhqQeNo6wp7T7ATexPA-1
+Received: by mail-wm1-f69.google.com with SMTP id f21-20020a1cc915000000b003a3551598a1so373212wmb.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Jul 2022 02:30:34 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=WnlbuoDO11+s0PkrtymLUg/RTeerO1YGjIAWzaLsXI8=;
+        b=y1JzP0fgbJ2tU2wYaAAvkEhXcH4Nx+L18c1GFnYOV6KPXa8wp0o7ZYTU/4u72d/+Gk
+         IrLHeIUzOLJZribLU/bBkmd9Ql36OxnBqxcWjYeIoYfe+0JYnqq70xua+zz0b76CAumw
+         aX4msK2+aVKTFFMtiQ8d3TfqA3X3VOjIlI8p4c3SvgZfdlVBGCMlBecvHFDNddX/uCLm
+         Tf3qCZoE2USPPf49TZ6932uEZTUgZnrmCLBcCZwMjekpUv8g7iF6fYscL1vHP4eyGFxD
+         I2jIeulZEq9owSVevIxbTf3F7V0tlI4zgr6KZCWNFQQNf2+Gpicna+QmKTzUMFTsb/6r
+         P4MQ==
+X-Gm-Message-State: AJIora/y1Nqp/waNx0OKrrIXoRyShSk/q3StLsLhvd4TVfVDwSSmVIDN
+	hGZHjknX6i2WUQs96nikzCns524Ewp75BIpf7MWxY7k2luBiyednCn3FyavUaLh+c8Jc004DQcZ
+	teN6nuXtKIHfcyGyTTWcjo1jaFQ==
+X-Received: by 2002:a05:600c:41c6:b0:3a3:4cab:74c1 with SMTP id t6-20020a05600c41c600b003a34cab74c1mr2242289wmh.175.1658914233596;
+        Wed, 27 Jul 2022 02:30:33 -0700 (PDT)
+X-Google-Smtp-Source: AGRyM1uXQimwmNj3iiuQIjR5+7GqsX0PKlNmy42WJ5vwSnDC//JqOwhL7VkEb/l38nriYGA+tApYpA==
+X-Received: by 2002:a05:600c:41c6:b0:3a3:4cab:74c1 with SMTP id t6-20020a05600c41c600b003a34cab74c1mr2242250wmh.175.1658914233261;
+        Wed, 27 Jul 2022 02:30:33 -0700 (PDT)
+Received: from [192.168.1.130] (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
+        by smtp.gmail.com with ESMTPSA id w6-20020adfec46000000b0021ed0202015sm1037150wrn.10.2022.07.27.02.30.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 27 Jul 2022 02:30:32 -0700 (PDT)
+Message-ID: <123b9590-8a5d-70b3-b27b-59e71d4cf6da@redhat.com>
+Date: Wed, 27 Jul 2022 11:30:31 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Icyg8G4lulj4I2VcU8rr3Ikb1xmzrZeF
-X-Proofpoint-GUID: Icyg8G4lulj4I2VcU8rr3Ikb1xmzrZeF
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-07-26_07,2022-07-26_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- suspectscore=0 adultscore=0 mlxlogscore=999 mlxscore=0 bulkscore=0
- spamscore=0 malwarescore=0 phishscore=0 priorityscore=1501 clxscore=1011
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2206140000 definitions=main-2207270036
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH v2 02/10] drm/simpledrm: Inline device-init helpers
+To: Thomas Zimmermann <tzimmermann@suse.de>, airlied@linux.ie,
+ daniel@ffwll.ch, deller@gmx.de, maxime@cerno.tech, sam@ravnborg.org,
+ msuchanek@suse.de, mpe@ellerman.id.au, benh@kernel.crashing.org,
+ paulus@samba.org, geert@linux-m68k.org, mark.cave-ayland@ilande.co.uk
+References: <20220720142732.32041-1-tzimmermann@suse.de>
+ <20220720142732.32041-3-tzimmermann@suse.de>
+ <be24a47c-c41a-411a-da63-c699b53cb459@redhat.com>
+ <314820f8-3609-9182-97eb-ee30e240d114@suse.de>
+From: Javier Martinez Canillas <javierm@redhat.com>
+In-Reply-To: <314820f8-3609-9182-97eb-ee30e240d114@suse.de>
+Authentication-Results: relay.mimecast.com;
+	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=javierm@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,53 +108,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-next@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Sachin Sant <sachinp@linux.ibm.com>
+Cc: linux-fbdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, dri-devel@lists.freedesktop.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Sachin reported the following build error when CONFIG_SOFTLOCKUP_DETECTOR
-is not set:
+Hello Thomas,
 
-kernel/watchdog.c:597:20: error: static declaration of 'lockup_detector_reconfigure' follows non-static declaration
- static inline void lockup_detector_reconfigure(void)
-                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~
-In file included from kernel/watchdog.c:17:
-./include/linux/nmi.h:125:6: note: previous declaration of 'lockup_detector_reconfigure' was here
- void lockup_detector_reconfigure(void);
-      ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+On 7/27/22 09:50, Thomas Zimmermann wrote:
+> Hi
+> 
+> Am 25.07.22 um 17:01 schrieb Javier Martinez Canillas:
+>> Hello Thomas,
+>>
+>> On 7/20/22 16:27, Thomas Zimmermann wrote:
+>>> Inline the helpers for initializing the hardware FB, the memory
+>>> management and the modesetting into the device-creation function.
+>>> No functional changes.
+>>>
+>>
+>> Could you please elaborate in the commit message why this change is
+>> desirable?  Without this additional context, this feels like going
+>> backwards, since you are dropping few helpers that have quite self
+>> contained code and making simpledrm_device_create() much larger.
+> 
+> To clarify: I want to make the init code more easy to follow. These old 
+> init functions still had to be called in the right order as each > possibly depends on settings from the others. It also feels like it's 
+> easier to extract common code for ofdrm. And the pipeline is static, so 
+> it doesn't require complex chains of helper calls. Having everything in 
+> one helper seems beneficial. (It's a trade-off, I know.)
+>
 
-The definition of lockup_detector_reconfigure should be exported even in
-that case, and __lockup_detector_reconfigure should remain static.
+I see. That makes sense to me. Could you please add the explanation to
+the commit message ? And feel free to add my Acked-by for this one too.
 
-Fixes: 24a1260705b7 ("watchdog: export lockup_detector_reconfigure")
-Reported-by: Sachin Sant <sachinp@linux.ibm.com>
-Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
----
- kernel/watchdog.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/kernel/watchdog.c b/kernel/watchdog.c
-index 90e6c41d5e33..41596c415111 100644
---- a/kernel/watchdog.c
-+++ b/kernel/watchdog.c
-@@ -590,7 +590,7 @@ static __init void lockup_detector_setup(void)
- }
- 
- #else /* CONFIG_SOFTLOCKUP_DETECTOR */
--void __lockup_detector_reconfigure(void)
-+static void __lockup_detector_reconfigure(void)
- {
- 	cpus_read_lock();
- 	watchdog_nmi_stop();
-@@ -598,7 +598,7 @@ void __lockup_detector_reconfigure(void)
- 	watchdog_nmi_start();
- 	cpus_read_unlock();
- }
--static inline void lockup_detector_reconfigure(void)
-+void lockup_detector_reconfigure(void)
- {
- 	__lockup_detector_reconfigure();
- }
 -- 
-2.37.1
+Best regards,
+
+Javier Martinez Canillas
+Linux Engineering
+Red Hat
 
