@@ -2,64 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44E8C5838ED
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jul 2022 08:42:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05B995838EF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jul 2022 08:42:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lth001Pmxz3fnM
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jul 2022 16:42:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lth0j6k15z3fSb
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jul 2022 16:42:45 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=R3C6/eIn;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=X0Wuk7jC;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::535; helo=mail-pg1-x535.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62c; helo=mail-pl1-x62c.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=R3C6/eIn;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=X0Wuk7jC;
 	dkim-atps=neutral
-Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com [IPv6:2607:f8b0:4864:20::535])
+Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LtgmV3dDVz3cdW
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Jul 2022 16:32:10 +1000 (AEST)
-Received: by mail-pg1-x535.google.com with SMTP id 23so782878pgc.8
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Jul 2022 23:32:10 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LtgmX6qpqz3cBj
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Jul 2022 16:32:12 +1000 (AEST)
+Received: by mail-pl1-x62c.google.com with SMTP id b22so959597plz.9
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Jul 2022 23:32:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=emiYuN23yjrtKIfrpLVYjF3zz0gV9d4bAYwKu+pKUGA=;
-        b=R3C6/eInIN9EyvXwsFhudJ+gkqyfFgN481sJtKjGoAQOz1O7sD/CAMeUC1TGAPr/7j
-         ZJNy62RrJJz8hoJx8cseHoSwqIuxNpKRPnApB+W4ahx6oXZQOhmrSUwWTl6qVmTBuOBG
-         yH0CG+NNqcOQTh8iJnUIgHkVz40B/+o/chPcfOPpdm5ztrCIviQGunxJ8VN33XP1rE3M
-         Qz+wSRprLl/JChpjYr8FVB0HW/xOgkkkr7yK0MfOT4s/pD/4CUSV0ICqXHMTcWyhuyyd
-         nLc7XjheesEp8vq4vagKRFzIU/YKjeGSeP+1UVr6/PNvvp3cfm03zcM3Q+rPnymdbWhj
-         6CAQ==
+        bh=4Uk3cUuEFyqVVX7CBdGmDsxKBk0oPQH/xAQqlGqzV3I=;
+        b=X0Wuk7jCq2hYGuULfOP5DLHYXyGfofOVX1BTq0FDpHoP/9M/Gy0RjugcVbHv/t0v4i
+         J7Rww2iEBDNnQDYUr5kerQlSafLtXN/oj0xS6n8ypH+8XO1rv6hHQrBf57htdYblb0FM
+         LYaVjn0HPQNbr/3up2OaZIxZd+FGR/9IP0Kjgo/ouGlqot/jlgg9Y1SRgZ3D9UgCeQoQ
+         JOTgACUbLMlbOX6PFrTSBZ2ws2Ov/lOluCV7WtOx7ZJou8BZFpmK+fSmrGmyqsbmY2pL
+         4jnBdhN50RUr8MD6Rf/5Ec3xOWQPS5evgHq1BQJVt+28ghMG2Bt/6Z9NxJOsx+V7Etfx
+         Qj3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=emiYuN23yjrtKIfrpLVYjF3zz0gV9d4bAYwKu+pKUGA=;
-        b=eqC8G2v/b6Mnj7T4+bl4mlPG2Jwz6vgLNBJTGq8C1WQCnU4/t00oMeUnAEgO2eh+o/
-         1Azs85nT7KmKrrUFOWrumBaHYhhi/awxkocDr5u8ATxGbdQ1SWhliHms2VG2Ux16zkxb
-         3wllRsQXrn4rhzGZz3XPWlNowp+hC59v87Z59XIZc8ucOqkmWPF+MOK75x2YnpnUEgFl
-         5/GBG81YSl6tgrftiPVC8WgycnR92bBgP5PMTmlOTJC1CoC9yBkTeqBJUMJkCgYT5SW6
-         8fEVqpUB/at5vA+GsgZ84O9jqRfKtEPONSWdwvdXojbTwr0LbJfC/JbCCyxY53nOqLGq
-         RpEA==
-X-Gm-Message-State: AJIora/6QoQqjfmyTj8Ys7Ndm5GgsLfPe6xRCFHEAJ50dbJcWiQRKhkR
-	2OzphkOTbbjXkIgvMnQpk9aWUh4Dz+8=
-X-Google-Smtp-Source: AGRyM1t8Ht3QHzRsWOlsKh6d6o4uIgHA3LQmSk3fMGVs9ttQZ/5+kCeLlioEymSfNe5+NeRMYi+MPw==
-X-Received: by 2002:a05:6a00:248b:b0:52b:f07b:796c with SMTP id c11-20020a056a00248b00b0052bf07b796cmr19938932pfv.47.1658989928001;
-        Wed, 27 Jul 2022 23:32:08 -0700 (PDT)
+        bh=4Uk3cUuEFyqVVX7CBdGmDsxKBk0oPQH/xAQqlGqzV3I=;
+        b=qLBLE+hNM62SqP2Rk1LGkNDXkVBcnbGPwXi2PFOoelTreVpY9ocg/SFp/T+y5qHorq
+         4KWfk8d7sTTlIKwMiLdsdvW0fL77TUHdSdcyzzfN1MyD7f7EJqm4MRif6Ea640PUNVPG
+         f5lnwsuKfDyr/iPrLqweXvjlvA/rrp3oroBo6KGjWvm7vByp9zVRfUv3x6YtMCXND/X7
+         oZRl9BW4ImutUtXmGIXObBceyzU9heranI9eYResXbl32Mf3p2Td2PdNGI5BX4K7ddd8
+         r30lYujB5M1lyRREXtuCO+CjwMrqQBFKR33cWeKoU+8/JxCu58LGCKsiFN1FHZIORM/u
+         CMkg==
+X-Gm-Message-State: AJIora9onPPuAVw3OQmFba0H2TcrX2RagTqcPwJE1zVzE/pTGq0EkT15
+	NphI25b2pom904bq6VhI4RXmRQ5sPqo=
+X-Google-Smtp-Source: AGRyM1uUmjgc1l1yPLmWYIMB+P2s609hnzKlQkAyM6uDvkTY2z8Mnrx/6nSe/DffNn5QVwvKk/v+sQ==
+X-Received: by 2002:a17:902:f608:b0:16d:20a0:5339 with SMTP id n8-20020a170902f60800b0016d20a05339mr24494604plg.133.1658989930304;
+        Wed, 27 Jul 2022 23:32:10 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com (193-116-97-43.tpgi.com.au. [193.116.97.43])
-        by smtp.gmail.com with ESMTPSA id s63-20020a635e42000000b003fadd680908sm189861pgb.83.2022.07.27.23.32.06
+        by smtp.gmail.com with ESMTPSA id s63-20020a635e42000000b003fadd680908sm189861pgb.83.2022.07.27.23.32.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Jul 2022 23:32:07 -0700 (PDT)
+        Wed, 27 Jul 2022 23:32:09 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 16/17] powerpc/qspinlock: allow indefinite spinning on a preempted owner
-Date: Thu, 28 Jul 2022 16:31:19 +1000
-Message-Id: <20220728063120.2867508-18-npiggin@gmail.com>
+Subject: [PATCH 17/17] powerpc/qspinlock: provide accounting and options for sleepy locks
+Date: Thu, 28 Jul 2022 16:31:20 +1000
+Message-Id: <20220728063120.2867508-19-npiggin@gmail.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220728063120.2867508-1-npiggin@gmail.com>
 References: <20220728063120.2867508-1-npiggin@gmail.com>
@@ -80,196 +80,453 @@ Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Provide an option that holds off queueing indefinitely while the lock
-owner is preempted. This could reduce queueing latencies for very
-overcommitted vcpu situations.
-
-This is disabled by default.
+Finding the owner or a queued waiter on a lock with a preempted vcpu
+is indicative of an oversubscribed guest causing the lock to get into
+trouble. Provide some options to detect this situation and have new
+CPUs avoid queueing for a longer time (more steal iterations) to
+minimise the problems caused by vcpu preemption on the queue.
 ---
- arch/powerpc/lib/qspinlock.c | 91 +++++++++++++++++++++++++++++++-----
- 1 file changed, 79 insertions(+), 12 deletions(-)
+ arch/powerpc/include/asm/qspinlock_types.h |   7 +-
+ arch/powerpc/lib/qspinlock.c               | 240 +++++++++++++++++++--
+ 2 files changed, 232 insertions(+), 15 deletions(-)
 
+diff --git a/arch/powerpc/include/asm/qspinlock_types.h b/arch/powerpc/include/asm/qspinlock_types.h
+index 35f9525381e6..4fbcc8a4230b 100644
+--- a/arch/powerpc/include/asm/qspinlock_types.h
++++ b/arch/powerpc/include/asm/qspinlock_types.h
+@@ -30,7 +30,7 @@ typedef struct qspinlock {
+  *
+  *     0: locked bit
+  *  1-14: lock holder cpu
+- *    15: unused bit
++ *    15: lock owner or queuer vcpus observed to be preempted bit
+  *    16: must queue bit
+  * 17-31: tail cpu (+1)
+  */
+@@ -49,6 +49,11 @@ typedef struct qspinlock {
+ #error "qspinlock does not support such large CONFIG_NR_CPUS"
+ #endif
+ 
++#define _Q_SLEEPY_OFFSET	15
++#define _Q_SLEEPY_BITS		1
++#define _Q_SLEEPY_MASK		_Q_SET_MASK(SLEEPY_OWNER)
++#define _Q_SLEEPY_VAL		(1U << _Q_SLEEPY_OFFSET)
++
+ #define _Q_MUST_Q_OFFSET	16
+ #define _Q_MUST_Q_BITS		1
+ #define _Q_MUST_Q_MASK		_Q_SET_MASK(MUST_Q)
 diff --git a/arch/powerpc/lib/qspinlock.c b/arch/powerpc/lib/qspinlock.c
-index 24f68bd71e2b..5cfd69931e31 100644
+index 5cfd69931e31..c18133c01450 100644
 --- a/arch/powerpc/lib/qspinlock.c
 +++ b/arch/powerpc/lib/qspinlock.c
-@@ -35,6 +35,7 @@ static int HEAD_SPINS __read_mostly = (1<<8);
+@@ -5,6 +5,7 @@
+ #include <linux/percpu.h>
+ #include <linux/smp.h>
+ #include <linux/topology.h>
++#include <linux/sched/clock.h>
+ #include <asm/qspinlock.h>
+ #include <asm/paravirt.h>
  
+@@ -36,24 +37,54 @@ static int HEAD_SPINS __read_mostly = (1<<8);
  static bool pv_yield_owner __read_mostly = true;
  static bool pv_yield_allow_steal __read_mostly = false;
-+static bool pv_spin_on_preempted_owner __read_mostly = false;
+ static bool pv_spin_on_preempted_owner __read_mostly = false;
++static bool pv_sleepy_lock __read_mostly = true;
++static bool pv_sleepy_lock_sticky __read_mostly = false;
++static u64 pv_sleepy_lock_interval_ns __read_mostly = 0;
++static int pv_sleepy_lock_factor __read_mostly = 256;
  static bool pv_yield_prev __read_mostly = true;
  static bool pv_yield_propagate_owner __read_mostly = true;
  static bool pv_prod_head __read_mostly = false;
-@@ -220,13 +221,15 @@ static struct qnode *get_tail_qnode(struct qspinlock *lock, u32 val)
- 	BUG();
+ 
+ static DEFINE_PER_CPU_ALIGNED(struct qnodes, qnodes);
++static DEFINE_PER_CPU_ALIGNED(u64, sleepy_lock_seen_clock);
+ 
+-static __always_inline int get_steal_spins(bool paravirt, bool remote)
++static __always_inline bool recently_sleepy(void)
++{
++	if (pv_sleepy_lock_interval_ns) {
++		u64 seen = this_cpu_read(sleepy_lock_seen_clock);
++
++		if (seen) {
++			u64 delta = sched_clock() - seen;
++			if (delta < pv_sleepy_lock_interval_ns)
++				return true;
++			this_cpu_write(sleepy_lock_seen_clock, 0);
++		}
++	}
++
++	return false;
++}
++
++static __always_inline int get_steal_spins(bool paravirt, bool remote, bool sleepy)
+ {
+ 	if (remote) {
+-		return REMOTE_STEAL_SPINS;
++		if (paravirt && sleepy)
++			return REMOTE_STEAL_SPINS * pv_sleepy_lock_factor;
++		else
++			return REMOTE_STEAL_SPINS;
+ 	} else {
+-		return STEAL_SPINS;
++		if (paravirt && sleepy)
++			return STEAL_SPINS * pv_sleepy_lock_factor;
++		else
++			return STEAL_SPINS;
+ 	}
  }
  
--static __always_inline void __yield_to_locked_owner(struct qspinlock *lock, u32 val, bool paravirt, bool clear_mustq)
-+static __always_inline void __yield_to_locked_owner(struct qspinlock *lock, u32 val, bool paravirt, bool clear_mustq, bool *preempted)
+-static __always_inline int get_head_spins(bool paravirt)
++static __always_inline int get_head_spins(bool paravirt, bool sleepy)
  {
- 	int owner;
- 	u32 yield_count;
+-	return HEAD_SPINS;
++	if (paravirt && sleepy)
++		return HEAD_SPINS * pv_sleepy_lock_factor;
++	else
++		return HEAD_SPINS;
+ }
  
- 	BUG_ON(!(val & _Q_LOCKED_VAL));
+ static inline u32 encode_tail_cpu(void)
+@@ -206,6 +237,60 @@ static __always_inline u32 lock_clear_mustq(struct qspinlock *lock)
+ 	return prev;
+ }
+ 
++static __always_inline bool lock_try_set_sleepy(struct qspinlock *lock, u32 old)
++{
++	u32 prev;
++	u32 new = old | _Q_SLEEPY_VAL;
++
++	BUG_ON(!(old & _Q_LOCKED_VAL));
++	BUG_ON(old & _Q_SLEEPY_VAL);
++
++	asm volatile(
++"1:	lwarx	%0,0,%1		# lock_try_set_sleepy			\n"
++"	cmpw	0,%0,%2							\n"
++"	bne-	2f							\n"
++"	stwcx.	%3,0,%1							\n"
++"	bne-	1b							\n"
++"2:									\n"
++	: "=&r" (prev)
++	: "r" (&lock->val), "r"(old), "r" (new)
++	: "cr0", "memory");
++
++	if (prev == old)
++		return true;
++	return false;
++}
++
++static __always_inline void seen_sleepy_owner(struct qspinlock *lock, u32 val)
++{
++	if (pv_sleepy_lock) {
++		if (pv_sleepy_lock_interval_ns)
++			this_cpu_write(sleepy_lock_seen_clock, sched_clock());
++		if (!(val & _Q_SLEEPY_VAL))
++			lock_try_set_sleepy(lock, val);
++	}
++}
++
++static __always_inline void seen_sleepy_lock(void)
++{
++	if (pv_sleepy_lock && pv_sleepy_lock_interval_ns)
++		this_cpu_write(sleepy_lock_seen_clock, sched_clock());
++}
++
++static __always_inline void seen_sleepy_node(struct qspinlock *lock)
++{
++	if (pv_sleepy_lock) {
++		u32 val = READ_ONCE(lock->val);
++
++		if (pv_sleepy_lock_interval_ns)
++			this_cpu_write(sleepy_lock_seen_clock, sched_clock());
++		if (val & _Q_LOCKED_VAL) {
++			if (!(val & _Q_SLEEPY_VAL))
++				lock_try_set_sleepy(lock, val);
++		}
++	}
++}
++
+ static struct qnode *get_tail_qnode(struct qspinlock *lock, u32 val)
+ {
+ 	int cpu = get_tail_cpu(val);
+@@ -244,6 +329,7 @@ static __always_inline void __yield_to_locked_owner(struct qspinlock *lock, u32
+ 
+ 	spin_end();
+ 
++	seen_sleepy_owner(lock, val);
+ 	*preempted = true;
+ 
+ 	/*
+@@ -307,11 +393,13 @@ static __always_inline void propagate_yield_cpu(struct qnode *node, u32 val, int
+ 	}
+ }
+ 
+-static __always_inline void yield_to_prev(struct qspinlock *lock, struct qnode *node, int prev_cpu, bool paravirt)
++static __always_inline void yield_to_prev(struct qspinlock *lock, struct qnode *node, int prev_cpu, bool paravirt, bool *preempted)
+ {
+ 	u32 yield_count;
+ 	int yield_cpu;
  
 +	*preempted = false;
 +
  	if (!paravirt)
  		goto relax;
  
-@@ -241,6 +244,8 @@ static __always_inline void __yield_to_locked_owner(struct qspinlock *lock, u32
+@@ -332,6 +420,9 @@ static __always_inline void yield_to_prev(struct qspinlock *lock, struct qnode *
  
  	spin_end();
  
 +	*preempted = true;
++	seen_sleepy_node(lock);
 +
- 	/*
- 	 * Read the lock word after sampling the yield count. On the other side
- 	 * there may a wmb because the yield count update is done by the
-@@ -265,14 +270,14 @@ static __always_inline void __yield_to_locked_owner(struct qspinlock *lock, u32
- 	spin_cpu_relax();
- }
+ 	smp_rmb();
  
--static __always_inline void yield_to_locked_owner(struct qspinlock *lock, u32 val, bool paravirt)
-+static __always_inline void yield_to_locked_owner(struct qspinlock *lock, u32 val, bool paravirt, bool *preempted)
- {
--	__yield_to_locked_owner(lock, val, paravirt, false);
-+	__yield_to_locked_owner(lock, val, paravirt, false, preempted);
- }
+ 	if (yield_cpu == node->yield_cpu) {
+@@ -353,6 +444,9 @@ static __always_inline void yield_to_prev(struct qspinlock *lock, struct qnode *
  
--static __always_inline void yield_head_to_locked_owner(struct qspinlock *lock, u32 val, bool paravirt, bool clear_mustq)
-+static __always_inline void yield_head_to_locked_owner(struct qspinlock *lock, u32 val, bool paravirt, bool clear_mustq, bool *preempted)
- {
--	__yield_to_locked_owner(lock, val, paravirt, clear_mustq);
-+	__yield_to_locked_owner(lock, val, paravirt, clear_mustq, preempted);
- }
+ 	spin_end();
  
- static __always_inline void propagate_yield_cpu(struct qnode *node, u32 val, int *set_yield_cpu, bool paravirt)
-@@ -364,12 +369,33 @@ static __always_inline void yield_to_prev(struct qspinlock *lock, struct qnode *
++	*preempted = true;
++	seen_sleepy_node(lock);
++
+ 	smp_rmb(); /* See yield_to_locked_owner comment */
+ 
+ 	if (!node->locked) {
+@@ -369,6 +463,9 @@ static __always_inline void yield_to_prev(struct qspinlock *lock, struct qnode *
  
  static __always_inline bool try_to_steal_lock(struct qspinlock *lock, bool paravirt)
  {
--	int iters;
-+	int iters = 0;
-+
-+	if (!STEAL_SPINS) {
-+		if (paravirt && pv_spin_on_preempted_owner) {
-+			spin_begin();
-+			for (;;) {
-+				u32 val = READ_ONCE(lock->val);
-+				bool preempted;
-+
-+				if (val & _Q_MUST_Q_VAL)
-+					break;
-+				if (!(val & _Q_LOCKED_VAL))
-+					break;
-+				if (!vcpu_is_preempted(get_owner_cpu(val)))
-+					break;
-+				yield_to_locked_owner(lock, val, paravirt, &preempted);
-+			}
-+			spin_end();
-+		}
-+		return false;
-+	}
++	bool preempted;
++	bool seen_preempted = false;
++	bool sleepy = false;
+ 	int iters = 0;
  
- 	/* Attempt to steal the lock */
+ 	if (!STEAL_SPINS) {
+@@ -376,7 +473,6 @@ static __always_inline bool try_to_steal_lock(struct qspinlock *lock, bool parav
+ 			spin_begin();
+ 			for (;;) {
+ 				u32 val = READ_ONCE(lock->val);
+-				bool preempted;
+ 
+ 				if (val & _Q_MUST_Q_VAL)
+ 					break;
+@@ -395,7 +491,6 @@ static __always_inline bool try_to_steal_lock(struct qspinlock *lock, bool parav
  	spin_begin();
  	for (;;) {
  		u32 val = READ_ONCE(lock->val);
-+		bool preempted;
+-		bool preempted;
  
  		if (val & _Q_MUST_Q_VAL)
  			break;
-@@ -382,9 +408,22 @@ static __always_inline bool try_to_steal_lock(struct qspinlock *lock, bool parav
+@@ -408,9 +503,29 @@ static __always_inline bool try_to_steal_lock(struct qspinlock *lock, bool parav
  			continue;
  		}
  
--		yield_to_locked_owner(lock, val, paravirt);
--
--		iters++;
-+		yield_to_locked_owner(lock, val, paravirt, &preempted);
-+
-+		if (paravirt && preempted) {
-+			if (!pv_spin_on_preempted_owner)
-+				iters++;
-+			/*
-+			 * pv_spin_on_preempted_owner don't increase iters
-+			 * while the owner is preempted -- we won't interfere
-+			 * with it by definition. This could introduce some
-+			 * latency issue if we continually observe preempted
-+			 * owners, but hopefully that's a rare corner case of
-+			 * a badly oversubscribed system.
-+			 */
-+		} else {
-+			iters++;
++		if (paravirt && pv_sleepy_lock && !sleepy) {
++			if (!sleepy) {
++				if (val & _Q_SLEEPY_VAL) {
++					seen_sleepy_lock();
++					sleepy = true;
++				} else if (recently_sleepy()) {
++					sleepy = true;
++				}
++			}
++			if (pv_sleepy_lock_sticky && seen_preempted &&
++					!(val & _Q_SLEEPY_VAL)) {
++				if (lock_try_set_sleepy(lock, val))
++					val |= _Q_SLEEPY_VAL;
++			}
 +		}
++
+ 		yield_to_locked_owner(lock, val, paravirt, &preempted);
++		if (preempted)
++			seen_preempted = true;
  
- 		if (iters >= get_steal_spins(paravirt, false))
+ 		if (paravirt && preempted) {
++			sleepy = true;
++
+ 			if (!pv_spin_on_preempted_owner)
+ 				iters++;
+ 			/*
+@@ -425,14 +540,15 @@ static __always_inline bool try_to_steal_lock(struct qspinlock *lock, bool parav
+ 			iters++;
+ 		}
+ 
+-		if (iters >= get_steal_spins(paravirt, false))
++		if (iters >= get_steal_spins(paravirt, false, sleepy))
  			break;
-@@ -463,8 +502,10 @@ static __always_inline void queued_spin_lock_mcs_queue(struct qspinlock *lock, b
- 		/* We're at the head of the waitqueue, wait for the lock. */
+-		if (iters >= get_steal_spins(paravirt, true)) {
++		if (iters >= get_steal_spins(paravirt, true, sleepy)) {
+ 			int cpu = get_owner_cpu(val);
+ 			if (numa_node_id() != cpu_to_node(cpu))
+ 				break;
+ 		}
+ 	}
++
+ 	spin_end();
+ 
+ 	return false;
+@@ -443,6 +559,7 @@ static __always_inline void queued_spin_lock_mcs_queue(struct qspinlock *lock, b
+ 	struct qnodes *qnodesp;
+ 	struct qnode *next, *node;
+ 	u32 val, old, tail;
++	bool seen_preempted = false;
+ 	int idx;
+ 
+ 	BUILD_BUG_ON(CONFIG_NR_CPUS >= (1U << _Q_TAIL_CPU_BITS));
+@@ -485,8 +602,13 @@ static __always_inline void queued_spin_lock_mcs_queue(struct qspinlock *lock, b
+ 
+ 		/* Wait for mcs node lock to be released */
  		spin_begin();
- 		while ((val = READ_ONCE(lock->val)) & _Q_LOCKED_VAL) {
+-		while (!node->locked)
+-			yield_to_prev(lock, node, prev_cpu, paravirt);
++		while (!node->locked) {
 +			bool preempted;
 +
++			yield_to_prev(lock, node, prev_cpu, paravirt, &preempted);
++			if (preempted)
++				seen_preempted = true;
++		}
+ 		spin_end();
+ 
+ 		/* Clear out stale propagated yield_cpu */
+@@ -506,6 +628,8 @@ static __always_inline void queued_spin_lock_mcs_queue(struct qspinlock *lock, b
+ 
  			propagate_yield_cpu(node, val, &set_yield_cpu, paravirt);
--			yield_head_to_locked_owner(lock, val, paravirt, false);
-+			yield_head_to_locked_owner(lock, val, paravirt, false, &preempted);
+ 			yield_head_to_locked_owner(lock, val, paravirt, false, &preempted);
++			if (preempted)
++				seen_preempted = true;
  		}
  		spin_end();
  
-@@ -486,11 +527,20 @@ static __always_inline void queued_spin_lock_mcs_queue(struct qspinlock *lock, b
+@@ -521,27 +645,47 @@ static __always_inline void queued_spin_lock_mcs_queue(struct qspinlock *lock, b
+ 	} else {
+ 		int set_yield_cpu = -1;
+ 		int iters = 0;
++		bool sleepy = false;
+ 		bool set_mustq = false;
++		bool preempted;
+ 
+ again:
  		/* We're at the head of the waitqueue, wait for the lock. */
  		spin_begin();
  		while ((val = READ_ONCE(lock->val)) & _Q_LOCKED_VAL) {
-+			bool preempted;
-+
- 			propagate_yield_cpu(node, val, &set_yield_cpu, paravirt);
- 			yield_head_to_locked_owner(lock, val, paravirt,
--					pv_yield_allow_steal && set_mustq);
-+					pv_yield_allow_steal && set_mustq,
-+					&preempted);
-+
-+			if (paravirt && preempted) {
-+				if (!pv_spin_on_preempted_owner)
-+					iters++;
-+			} else {
-+				iters++;
+-			bool preempted;
++			if (paravirt && pv_sleepy_lock) {
++				if (!sleepy) {
++					if (val & _Q_SLEEPY_VAL) {
++						seen_sleepy_lock();
++						sleepy = true;
++					} else if (recently_sleepy()) {
++						sleepy = true;
++					}
++				}
++				if (pv_sleepy_lock_sticky && seen_preempted &&
++						!(val & _Q_SLEEPY_VAL)) {
++					if (lock_try_set_sleepy(lock, val))
++						val |= _Q_SLEEPY_VAL;
++				}
 +			}
  
--			iters++;
- 			if (!set_mustq && iters >= get_head_spins(paravirt)) {
+ 			propagate_yield_cpu(node, val, &set_yield_cpu, paravirt);
+ 			yield_head_to_locked_owner(lock, val, paravirt,
+ 					pv_yield_allow_steal && set_mustq,
+ 					&preempted);
++			if (preempted)
++				seen_preempted = true;
+ 
+ 			if (paravirt && preempted) {
++				sleepy = true;
++
+ 				if (!pv_spin_on_preempted_owner)
+ 					iters++;
+ 			} else {
+ 				iters++;
+ 			}
+ 
+-			if (!set_mustq && iters >= get_head_spins(paravirt)) {
++			if (!set_mustq && iters >= get_head_spins(paravirt, sleepy)) {
  				set_mustq = true;
  				lock_set_mustq(lock);
-@@ -663,6 +713,22 @@ static int pv_yield_allow_steal_get(void *data, u64 *val)
+ 				val |= _Q_MUST_Q_VAL;
+@@ -729,6 +873,70 @@ static int pv_spin_on_preempted_owner_get(void *data, u64 *val)
  
- DEFINE_SIMPLE_ATTRIBUTE(fops_pv_yield_allow_steal, pv_yield_allow_steal_get, pv_yield_allow_steal_set, "%llu\n");
+ DEFINE_SIMPLE_ATTRIBUTE(fops_pv_spin_on_preempted_owner, pv_spin_on_preempted_owner_get, pv_spin_on_preempted_owner_set, "%llu\n");
  
-+static int pv_spin_on_preempted_owner_set(void *data, u64 val)
++static int pv_sleepy_lock_set(void *data, u64 val)
 +{
-+	pv_spin_on_preempted_owner = !!val;
++	pv_sleepy_lock = !!val;
 +
 +	return 0;
 +}
 +
-+static int pv_spin_on_preempted_owner_get(void *data, u64 *val)
++static int pv_sleepy_lock_get(void *data, u64 *val)
 +{
-+	*val = pv_spin_on_preempted_owner;
++	*val = pv_sleepy_lock;
 +
 +	return 0;
 +}
 +
-+DEFINE_SIMPLE_ATTRIBUTE(fops_pv_spin_on_preempted_owner, pv_spin_on_preempted_owner_get, pv_spin_on_preempted_owner_set, "%llu\n");
++DEFINE_SIMPLE_ATTRIBUTE(fops_pv_sleepy_lock, pv_sleepy_lock_get, pv_sleepy_lock_set, "%llu\n");
++
++static int pv_sleepy_lock_sticky_set(void *data, u64 val)
++{
++	pv_sleepy_lock_sticky = !!val;
++
++	return 0;
++}
++
++static int pv_sleepy_lock_sticky_get(void *data, u64 *val)
++{
++	*val = pv_sleepy_lock_sticky;
++
++	return 0;
++}
++
++DEFINE_SIMPLE_ATTRIBUTE(fops_pv_sleepy_lock_sticky, pv_sleepy_lock_sticky_get, pv_sleepy_lock_sticky_set, "%llu\n");
++
++static int pv_sleepy_lock_interval_ns_set(void *data, u64 val)
++{
++	pv_sleepy_lock_interval_ns = val;
++
++	return 0;
++}
++
++static int pv_sleepy_lock_interval_ns_get(void *data, u64 *val)
++{
++	*val = pv_sleepy_lock_interval_ns;
++
++	return 0;
++}
++
++DEFINE_SIMPLE_ATTRIBUTE(fops_pv_sleepy_lock_interval_ns, pv_sleepy_lock_interval_ns_get, pv_sleepy_lock_interval_ns_set, "%llu\n");
++
++static int pv_sleepy_lock_factor_set(void *data, u64 val)
++{
++	pv_sleepy_lock_factor = val;
++
++	return 0;
++}
++
++static int pv_sleepy_lock_factor_get(void *data, u64 *val)
++{
++	*val = pv_sleepy_lock_factor;
++
++	return 0;
++}
++
++DEFINE_SIMPLE_ATTRIBUTE(fops_pv_sleepy_lock_factor, pv_sleepy_lock_factor_get, pv_sleepy_lock_factor_set, "%llu\n");
 +
  static int pv_yield_prev_set(void *data, u64 val)
  {
  	pv_yield_prev = !!val;
-@@ -719,6 +785,7 @@ static __init int spinlock_debugfs_init(void)
- 	if (is_shared_processor()) {
+@@ -786,6 +994,10 @@ static __init int spinlock_debugfs_init(void)
  		debugfs_create_file("qspl_pv_yield_owner", 0600, arch_debugfs_dir, NULL, &fops_pv_yield_owner);
  		debugfs_create_file("qspl_pv_yield_allow_steal", 0600, arch_debugfs_dir, NULL, &fops_pv_yield_allow_steal);
-+		debugfs_create_file("qspl_pv_spin_on_preempted_owner", 0600, arch_debugfs_dir, NULL, &fops_pv_spin_on_preempted_owner);
+ 		debugfs_create_file("qspl_pv_spin_on_preempted_owner", 0600, arch_debugfs_dir, NULL, &fops_pv_spin_on_preempted_owner);
++		debugfs_create_file("qspl_pv_sleepy_lock", 0600, arch_debugfs_dir, NULL, &fops_pv_sleepy_lock);
++		debugfs_create_file("qspl_pv_sleepy_lock_sticky", 0600, arch_debugfs_dir, NULL, &fops_pv_sleepy_lock_sticky);
++		debugfs_create_file("qspl_pv_sleepy_lock_interval_ns", 0600, arch_debugfs_dir, NULL, &fops_pv_sleepy_lock_interval_ns);
++		debugfs_create_file("qspl_pv_sleepy_lock_factor", 0600, arch_debugfs_dir, NULL, &fops_pv_sleepy_lock_factor);
  		debugfs_create_file("qspl_pv_yield_prev", 0600, arch_debugfs_dir, NULL, &fops_pv_yield_prev);
  		debugfs_create_file("qspl_pv_yield_propagate_owner", 0600, arch_debugfs_dir, NULL, &fops_pv_yield_propagate_owner);
  		debugfs_create_file("qspl_pv_prod_head", 0600, arch_debugfs_dir, NULL, &fops_pv_prod_head);
