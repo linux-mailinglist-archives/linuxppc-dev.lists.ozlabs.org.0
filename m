@@ -2,56 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFC26584C32
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jul 2022 08:53:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DA71584C3F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jul 2022 08:58:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LvJBr1vnnz3bpW
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jul 2022 16:53:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LvJJ16lcZz2xkY
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jul 2022 16:58:09 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=gokuqtaq;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XIkgnkyV;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LvJBH0M0Dz2xH9
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Jul 2022 16:53:11 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=gokuqtaq;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XIkgnkyV;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LvJBG0jjkz4x1Y;
-	Fri, 29 Jul 2022 16:53:10 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1659077590;
-	bh=mMQHa95tZrtKAkKeRbCcHdd7SVD3uqX6L7aTavd4BmI=;
-	h=From:To:Subject:In-Reply-To:References:Date:From;
-	b=gokuqtaqlk17LP6I/P2clgOWiapPyjljq5Fa/jnOMj8Ln7tdwUAC0mIq6pqLZv4aO
-	 lMg02ahMBupC9gROCF1HCPi23mzBTxYMxU2kjZi/4L5TH54rktOb7l8EMpEar1e77w
-	 PCOlMuj6i98zKM10riGf3w100QnM/4j1AQDycpU8CyEvPP13IgfxiThCvn635/5SFd
-	 KnCuaUkSRLpBvu91Yevu9mtCwZzU5XNdzKkqyoSXiJ7tPQ8Q2t9dD/muO063u0lmAl
-	 30zdzIfNi7CXYXcjt//J/A4IsvnN44+o3KJadZFs/01KWsz3JWw+TbN/60NpCe8HoM
-	 OCQ7kVw2QyWAw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Miaoqian Lin <linmq006@gmail.com>, Scott Wood <oss@buserror.net>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras
- <paulus@samba.org>, Christophe Leroy <christophe.leroy@csgroup.eu>,
- Miaoqian Lin <linmq006@gmail.com>, Nick Child <nick.child@ibm.com>, Nate
- Case <ncase@xes-inc.com>, Kumar Gala <galak@kernel.crashing.org>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] powerpc/85xx: Fix reference leak in
- xes_mpc85xx_setup_arch
-In-Reply-To: <20220603121752.23548-1-linmq006@gmail.com>
-References: <20220603121752.23548-1-linmq006@gmail.com>
-Date: Fri, 29 Jul 2022 16:53:06 +1000
-Message-ID: <87pmhobeb1.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LvJHD73vKz2xH9
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Jul 2022 16:57:28 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id DE854B826F0
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Jul 2022 06:57:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A0EE5C433B5
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Jul 2022 06:57:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1659077843;
+	bh=4+ps4jhic18z3a295PKxXGHl9/G196qqiHsA9FxSdLc=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=XIkgnkyVm5Z/GsiJBLaH5r0ytnxspQVnS+hbnvKqSGvYAg30RJIqNYQSLLyUiys1Y
+	 zHx2J+HRUoW/u3w47yzcTMz5jBzYCVZx0n5Sd/543fbgm+TP8xOGVj5TqxS9EmlZv/
+	 EmvP44E9PZrybXp/VYFEYIiWtbeYMkv2rQoQwDBTtTUWo6Z48xMKJlNNtoLG6eZpBK
+	 H/IuidJDCfONURGfbaF3r8NvdEZAdKiPfB34AGSqS2rOmvBTA0kwtVjhhKXdAahMb+
+	 +y3nlSQ4kguktlIFCprsxlV+DSS7Ms3YfU0aFUW2SNUMRxOuTE9Q+NwTa51xq6EeTl
+	 zrhisAfIP7KYw==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
+	id 8813BC433E4; Fri, 29 Jul 2022 06:57:23 +0000 (UTC)
+From: bugzilla-daemon@kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 216090] GCC12: printk.h:446:44: error: using a dangling pointer
+ to '__str'
+Date: Fri, 29 Jul 2022 06:57:23 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-64
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: michael@ellerman.id.au
+X-Bugzilla-Status: RESOLVED
+X-Bugzilla-Resolution: CODE_FIX
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: cc resolution
+Message-ID: <bug-216090-206035-ui5n2dBSRL@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-216090-206035@https.bugzilla.kernel.org/>
+References: <bug-216090-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,73 +82,23 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Miaoqian Lin <linmq006@gmail.com> writes:
-> of_find_node_by_path() returns remote device nodepointer with
-> refcount incremented, we should use of_node_put() on it when done.
-> Add missing of_node_put() to avoid refcount leak.
->
-> Fixes: 3038acf9091f ("powerpc/85xx: Add platform support for X-ES MPC85xx boards")
-> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-> ---
-> changes in v2:
-> - update Fixes tag.
-> v1 Link: https://lore.kernel.org/all/20220603120907.19999-1-linmq006@gmail.com
-> ---
->  arch/powerpc/platforms/85xx/xes_mpc85xx.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/arch/powerpc/platforms/85xx/xes_mpc85xx.c b/arch/powerpc/platforms/85xx/xes_mpc85xx.c
-> index 5836e4ecb7a0..93f67b430714 100644
-> --- a/arch/powerpc/platforms/85xx/xes_mpc85xx.c
-> +++ b/arch/powerpc/platforms/85xx/xes_mpc85xx.c
-> @@ -130,6 +130,8 @@ static void __init xes_mpc85xx_setup_arch(void)
->  	mpc85xx_smp_init();
->  
->  	fsl_pci_assign_primary();
-> +
-> +	of_node_put(root);
->  }
+https://bugzilla.kernel.org/show_bug.cgi?id=3D216090
 
-For context, here is the full function:
+Michael Ellerman (michael@ellerman.id.au) changed:
 
-static void __init xes_mpc85xx_setup_arch(void)
-{
-	struct device_node *root;
-	const char *model = "Unknown";
+           What    |Removed                     |Added
+----------------------------------------------------------------------------
+                 CC|                            |michael@ellerman.id.au
+         Resolution|ANSWERED                    |CODE_FIX
 
-	root = of_find_node_by_path("/");
-	if (root == NULL)
-		return;
+--- Comment #2 from Michael Ellerman (michael@ellerman.id.au) ---
+Fixed in 2a83afe72a2b ("powerpc/64: Drop ppc_inst_as_str()").
 
-	model = of_get_property(root, "model", NULL);
+The warning has also been disabled in 49beadbd47c2 ("gcc-12: disable
+'-Wdangling-pointer' warning for now").
 
-	printk(KERN_INFO "X-ES MPC85xx-based single-board computer: %s\n",
-	       model + strlen("xes,"));
+--=20
+You may reply to this email to add a comment.
 
-	xes_mpc85xx_fixups();
-
-	mpc85xx_smp_init();
-
-	fsl_pci_assign_primary();
-}
-
-
-So yes it's missing an of_node_put(root).
-
-But rather than add the of_node_put(), it would be simpler to just use
-of_root directly, then it doesn't need an of_node_put() at all.
-
-But then look closer. To begin with model is assigned "Unknown", but
-then unconditionally overwritten by the of_get_property() call. So
-that's a waste of space.
-
-And then if there's no model property of_get_property() will return
-NULL, and then the model + strlen("xes,") would oops.
-
-And all of that just to print the model at boot, which is not really
-necessary, anyone who cares can look it up in /proc/device-tree
-after the system has booted.
-
-So please just remove the lookup and printing of model entirely.
-
-cheers
+You are receiving this mail because:
+You are watching the assignee of the bug.=
