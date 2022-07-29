@@ -2,32 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6668585083
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jul 2022 15:11:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A6465850D7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jul 2022 15:23:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LvSZT4LYHz3dtC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jul 2022 23:11:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LvSs62wTmz3hVN
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jul 2022 23:23:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LvSYs38dSz2xHZ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Jul 2022 23:10:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LvSlt1Tyjz3gZt
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Jul 2022 23:19:22 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LvSYs1F4vz4x1c;
-	Fri, 29 Jul 2022 23:10:41 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LvSls4lyXz4xG0;
+	Fri, 29 Jul 2022 23:19:21 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, jolsa@kernel.org, mpe@ellerman.id.au, acme@kernel.org
-In-Reply-To: <20220520084630.15181-1-atrajeev@linux.vnet.ibm.com>
-References: <20220520084630.15181-1-atrajeev@linux.vnet.ibm.com>
-Subject: Re: [PATCH V3 1/2] powerpc/perf: Add support for caps under sysfs in powerpc
-Message-Id: <165909971373.253830.11662171769797597633.b4-ty@ellerman.id.au>
-Date: Fri, 29 Jul 2022 23:01:53 +1000
+To: Anatolij Gustschin <agust@denx.de>, Michael Ellerman <mpe@ellerman.id.au>, Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20220612213400.159257-1-u.kleine-koenig@pengutronix.de>
+References: <20220612213400.159257-1-u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH] powerpc/52xx: Mark gpt driver as not removable
+Message-Id: <165909971479.253830.16544264778618959955.b4-ty@ellerman.id.au>
+Date: Fri, 29 Jul 2022 23:01:54 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -42,25 +42,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: irogers@google.com, maddy@linux.vnet.ibm.com, rnsastry@linux.ibm.com, kjain@linux.ibm.com, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org, kernel@pengutronix.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 20 May 2022 14:16:29 +0530, Athira Rajeev wrote:
-> Add caps support under "/sys/bus/event_source/devices/<pmu>/"
-> for powerpc. This directory can be used to expose some of the
-> specific features that powerpc PMU supports to the user.
-> Example: pmu_name. The name of PMU registered will depend on
-> platform, say power9 or power10 or it could be Generic Compat
-> PMU.
+On Sun, 12 Jun 2022 23:34:00 +0200, Uwe Kleine-König wrote:
+> Returning an error code (here -EBUSY) from a remove callback doesn't
+> prevent the driver from being unloaded. The only effect is that an error
+> message is emitted and the driver is removed anyhow.
+> 
+> So instead drop the remove function (which is equivalent to returning zero)
+> and set the suppress_bind_attrs property to make it impossible to unload
+> the driver via sysfs.
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/2] powerpc/perf: Add support for caps under sysfs in powerpc
-      https://git.kernel.org/powerpc/c/6320e693d98c7430653866b7ca6679338134cb79
-[2/2] docs: ABI: sysfs-bus-event_source-devices: Document sysfs caps entry for PMU
-      https://git.kernel.org/powerpc/c/999d7c47a0f737157608b9b0d2d37bdd1afec58c
+[1/1] powerpc/52xx: Mark gpt driver as not removable
+      https://git.kernel.org/powerpc/c/1978c48495171165453a7c90d1345c1d8d776d02
 
 cheers
