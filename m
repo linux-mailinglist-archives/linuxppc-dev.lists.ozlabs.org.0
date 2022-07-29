@@ -2,32 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B96BE5850CF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jul 2022 15:22:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9B605850B0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jul 2022 15:17:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LvSql5Dqgz3hKL
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jul 2022 23:22:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LvSk26qBgz3drL
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jul 2022 23:17:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LvSk52lLpz3bb2
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Jul 2022 23:17:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LvSZC5wGYz3cdM
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Jul 2022 23:10:59 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LvSk522s8z4xG5;
-	Fri, 29 Jul 2022 23:17:49 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LvSZC282Wz4xGD;
+	Fri, 29 Jul 2022 23:10:59 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Rashmica Gupta <rashmica@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-In-Reply-To: <20220617043935.428083-1-rashmica@linux.ibm.com>
-References: <20220617043935.428083-1-rashmica@linux.ibm.com>
-Subject: Re: [PATCH] selftests/powerpc: Fix matrix multiply assist test
-Message-Id: <165909978606.253830.18356182209193654780.b4-ty@ellerman.id.au>
-Date: Fri, 29 Jul 2022 23:03:06 +1000
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20220727143219.2684192-1-mpe@ellerman.id.au>
+References: <20220727143219.2684192-1-mpe@ellerman.id.au>
+Subject: Re: [PATCH v6 1/3] powerpc/powernv: Avoid crashing if rng is NULL
+Message-Id: <165909978923.253830.5419750752675440971.b4-ty@ellerman.id.au>
+Date: Fri, 29 Jul 2022 23:03:09 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -42,26 +42,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alistair@popple.id.au, npiggin@gmail.com
+Cc: Jason@zx2c4.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 17 Jun 2022 14:39:35 +1000, Rashmica Gupta wrote:
-> The ISA states: "when ACC[i] contains defined data, the contents of VSRs
-> 4×i to 4×i+3 are undefined until either a VSX Move From ACC instruction
-> is used to copy the contents of ACC[i] to VSRs 4×i to 4×i+3 or some other
-> instruction directly writes to one of these VSRs." We aren't doing this.
+On Thu, 28 Jul 2022 00:32:17 +1000, Michael Ellerman wrote:
+> On a bare-metal Power8 system that doesn't have an "ibm,power-rng", a
+> malicious QEMU and guest that ignore the absence of the
+> KVM_CAP_PPC_HWRNG flag, and calls H_RANDOM anyway, will dereference a
+> NULL pointer.
 > 
-> This test only works on Power10 because the hardware implementation
-> happens to map ACC0 to VSRs 0-3, but will fail on any other implementation
-> that doesn't do this. So add xxmfacc between writing to the accumulator
-> and accessing the VSRs.
+> In practice all Power8 machines have an "ibm,power-rng", but let's not
+> rely on that, add a NULL check and early return in
+> powernv_get_random_real_mode().
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/1] selftests/powerpc: Fix matrix multiply assist test
-      https://git.kernel.org/powerpc/c/cd1e64935f79e31d666172c52c951ca97152b783
+[1/3] powerpc/powernv: Avoid crashing if rng is NULL
+      https://git.kernel.org/powerpc/c/90b5d4fe0b3ba7f589c6723c6bfb559d9e83956a
+[2/3] powerpc/powernv/kvm: Use darn for H_RANDOM on Power9
+      https://git.kernel.org/powerpc/c/7ef3d06f1bc4a5e62273726f3dc2bd258ae1c71f
+[3/3] powerpc/powernv: rename remaining rng powernv_ functions to pnv_
+      https://git.kernel.org/powerpc/c/978030f054ff97d9079b35f0178e2013918fb316
 
 cheers
