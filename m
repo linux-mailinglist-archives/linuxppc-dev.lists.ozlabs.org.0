@@ -1,51 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A927058536E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jul 2022 18:31:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8202585370
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jul 2022 18:31:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LvY124Qdqz3drJ
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Jul 2022 02:31:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LvY1f4Zkkz3dxQ
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Jul 2022 02:31:34 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=j/ssGM4U;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.128.175; helo=mail-yw1-f175.google.com; envelope-from=rjwysocki@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=srs0=719g=yc=paulmck-thinkpad-p17-gen-1.home=paulmck@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=j/ssGM4U;
+	dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LvW073T2jz2xHf
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Jul 2022 01:00:05 +1000 (AEST)
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-322b5199358so51400607b3.6
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Jul 2022 08:00:05 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=S1YI+SR1sGADVizxFmy+lJ0FTmSOnUKcWTIA6mLx/E8=;
-        b=HQjoEdo8hK2IS6r7YB0Mh3UWaiXgQEz6r8A6b1RAoQZo1pq4mfK0fQd0dIcZ5HK95H
-         feoakTAyHItyqh3lq5LHe7PQwfwxcsIS4bFmN5nIOnIAsDZk336g6De/28XZ3ee9UQ85
-         Sf8DxdiZg+8NMomp1xEwaZPAX4zxDCwReqF4rNusbGysbPvwTgyLJUuRoq/cUh4ffc5I
-         T82TePzRXLY3gqCvpFiUzL8uXC7fJhnU1WWoYZXl8ND5/6N0gNa1pcyoexsCtrJssyMM
-         uXPT0JJJWXjtOULUbMIXLIIsh+fYH5uYQVZGelUEJ51JZ/BT37nXE0nFBrwjJmep7ArK
-         UUQw==
-X-Gm-Message-State: ACgBeo02OUuTNeUFml9db2JYYP4gAFOTZkc3Q+DS13PC6Worb9RnwHue
-	8gXszEdENIr/X9hQMgg70ReJXC01T5PdTtiFJtI=
-X-Google-Smtp-Source: AA6agR5QQFhqUTEC/IGPMir7zUIdteVkQo93xHT0n5oUM+G+UQ5tpfdzHAC9fZE5clkaGoQ4WXKUt2zD7Q2S/JCn7tY=
-X-Received: by 2002:a81:1b97:0:b0:2db:640f:49d8 with SMTP id
- b145-20020a811b97000000b002db640f49d8mr3338822ywb.326.1659106801810; Fri, 29
- Jul 2022 08:00:01 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220608142723.103523089@infradead.org> <20220608144516.172460444@infradead.org>
- <20220725194306.GA14746@lespinasse.org> <20220728172053.GA3607379@paulmck-ThinkPad-P17-Gen-1>
- <20220729102458.GA1695@lespinasse.org>
-In-Reply-To: <20220729102458.GA1695@lespinasse.org>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 29 Jul 2022 16:59:50 +0200
-Message-ID: <CAJZ5v0gyPtX=ksCibo2ZN_BztCqUn9KRtRu+gsJ5KetB_1MwEQ@mail.gmail.com>
-Subject: Re: [PATCH 04/36] cpuidle,intel_idle: Fix CPUIDLE_FLAG_IRQ_ENABLE
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LvWZV1fPGz2xCS
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Jul 2022 01:26:26 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 0442661BF0;
+	Fri, 29 Jul 2022 15:26:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 618D7C433B5;
+	Fri, 29 Jul 2022 15:26:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1659108382;
+	bh=u7iMRCibJGPgHojnAneRfpJQLfO1v9UeCr7NEqXA5r0=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+	b=j/ssGM4UwMLUBLCP78RosSv+xdTA5IxQuurJEQkAk0bXcmXPO93JJUXNFsdGh+1wg
+	 +oQu9G8HFTFvq7oWLnSNFUXfz91zcbExFBxbHvUUrLwuFGec8y0pgDI7OkmIEUiDsJ
+	 xuSOA0nMD0LfFRMzO/hFHpmNupsJvKL62OZ7Ogs2Sct+xobNCKamTbCGFqWe+ziWO5
+	 X1ZeZmjvoSs9jG1zXifbRaMvzpG1WXKjUcVgoHT0G2I9F3u+FSVuGP4WeqriMREnTB
+	 5LhXtVu1diWGmPLJYP56buqhIf3r1Jp2kzJeotpuUGt61TvxvtDbwosjkjOrYw33Op
+	 oX8J8MWyCJV3g==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id 0AF325C033E; Fri, 29 Jul 2022 08:26:22 -0700 (PDT)
+Date: Fri, 29 Jul 2022 08:26:22 -0700
+From: "Paul E. McKenney" <paulmck@kernel.org>
 To: Michel Lespinasse <michel@lespinasse.org>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH 04/36] cpuidle,intel_idle: Fix CPUIDLE_FLAG_IRQ_ENABLE
+Message-ID: <20220729152622.GM2860372@paulmck-ThinkPad-P17-Gen-1>
+References: <20220608142723.103523089@infradead.org>
+ <20220608144516.172460444@infradead.org>
+ <20220725194306.GA14746@lespinasse.org>
+ <20220728172053.GA3607379@paulmck-ThinkPad-P17-Gen-1>
+ <20220729102458.GA1695@lespinasse.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220729102458.GA1695@lespinasse.org>
 X-Mailman-Approved-At: Sat, 30 Jul 2022 02:30:06 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -58,72 +66,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juri Lelli <juri.lelli@redhat.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Linus Walleij <linus.walleij@linaro.org>, Benjamin Segall <bsegall@google.com>, Guo Ren <guoren@kernel.org>, Pavel Machek <pavel@ucw.cz>, Alexander Gordeev <agordeev@linux.ibm.com>, srivatsa@csail.mit.edu, linux-arch <linux-arch@vger.kernel.org>, Vincent Guittot <vincent.guittot@linaro.org>, Huacai Chen <chenhuacai@kernel.org>, ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Andy Gross <agross@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>, dl-linux-imx <linux-imx@nxp.com>, Catalin Marinas <catalin.marinas@arm.com>, xen-devel@lists.xenproject.org, Matt Turner <mattst88@gmail.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Michael Turquette <mturquette@baylibre.com>, sammy@sammy.net, Petr Mladek <pmladek@suse.com>, Linux PM <linux-pm@vger.kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>, linux-um@lists.infradead.org, acme@kernel.org, Thomas G
- leixner <tglx@linutronix.de>, Linux OMAP Mailing List <linux-omap@vger.kernel.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, Richard Henderson <rth@twiddle.net>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-perf-users@vger.kernel.org, senozhatsky@chromium.org, Sven Schnelle <svens@linux.ibm.com>, jolsa@kernel.org, Paul Mackerras <paulus@samba.org>, Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, virtualization@lists.linux-foundation.org, James Bottomley <James.Bottomley@hansenpartnership.com>, Max Filippov <jcmvbkbc@gmail.com>, Thierry Reding <thierry.reding@gmail.com>, kernel@xen0n.name, quic_neeraju@quicinc.com, linux-s390@vger.kernel.org, vschneid@redhat.com, John Ogness <john.ogness@linutronix.de>, Yoshinori Sato <ysato@users.sourceforge.jp>, Linux-sh list <linux-sh@vger.kernel.org>, Will Deacon <will@kernel.org>, Helge Deller <deller@gmx.de>, Danie
- l Lezcano <daniel.lezcano@linaro.org>, Jon Hunter <jonathanh@nvidia.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Frederic Weisbecker <frederic@kernel.org>, Len Brown <lenb@kernel.org>, linux-xtensa@linux-xtensa.org, Sascha Hauer <kernel@pengutronix.de>, Vasily Gorbik <gor@linux.ibm.com>, linux-arm-msm <linux-arm-msm@vger.kernel.org>, linux-alpha@vger.kernel.org, linux-m68k <linux-m68k@lists.linux-m68k.org>, Stafford Horne <shorne@gmail.com>, Linux ARM <linux-arm-kernel@lists.infradead.org>, Chris Zankel <chris@zankel.net>, Stephen Boyd <sboyd@kernel.org>, rh0@fb.com, dinguyen@kernel.org, Daniel Bristot de Oliveira <bristot@redhat.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, Joel Fernandes <joel@joelfernandes.org>, Fabio Estevam <festevam@gmail.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Josh Triplett <josh@joshtriplett.org>, Kevin Hilman <khilman@kernel.org>
- , linux-csky@vger.kernel.org, Tony Lindgren <tony@atomide.com>, linux-snps-arc@lists.infradead.org, Mel Gorman <mgorman@suse.de>, Jacob Pan <jacob.jun.pan@linux.intel.com>, Yury Norov <yury.norov@gmail.com>, ulli.kroll@googlemail.com, vgupta@kernel.org, linux-clk <linux-clk@vger.kernel.org>, Michal Simek <monstr@monstr.eu>, Steven Rostedt <rostedt@goodmis.org>, rcu@vger.kernel.org, Borislav Petkov <bp@alien8.de>, bcain@quicinc.com, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Parisc List <linux-parisc@vger.kernel.org>, Sudeep Holla <sudeep.holla@arm.com>, Shawn Guo <shawnguo@kernel.org>, David Miller <davem@davemloft.net>, Rich Felker <dalias@libc.org>, Peter Zijlstra <peterz@infradead.org>, amakhalov@vmware.com, Bjorn Andersson <bjorn.andersson@linaro.org>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-riscv <linux-riscv@lists.infradead.org>, anton.ivanov@cambridgegreys.com, jonas@southpole.se, Arnd Bergmann <arnd@arndb.de>, 
- Richard Weinberger <richard@nod.at>, the arch/x86 maintainers <x86@kernel.org>, Russell King - ARM Linux <linux@armlinux.org.uk>, Ingo Molnar <mingo@redhat.com>, Albert Ou <aou@eecs.berkeley.edu>, "Paul E. McKenney" <paulmck@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, stefan.kristiansson@saunalahti.fi, openrisc@lists.librecores.org, Paul Walmsley <paul.walmsley@sifive.com>, linux-tegra <linux-tegra@vger.kernel.org>, namhyung@kernel.org, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, jpoimboe@kernel.org, Juergen Gross <jgross@suse.com>, pv-drivers@vmware.com, "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Anup Patel <anup@brainfault.org>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Johannes Berg <johannes@sipsolutions.net>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Reply-To: paulmck@kernel.org
+Cc: juri.lelli@redhat.com, rafael@kernel.org, linus.walleij@linaro.org, bsegall@google.com, guoren@kernel.org, pavel@ucw.cz, agordeev@linux.ibm.com, srivatsa@csail.mit.edu, linux-arch@vger.kernel.org, vincent.guittot@linaro.org, chenhuacai@kernel.org, linux-acpi@vger.kernel.org, agross@kernel.org, geert@linux-m68k.org, linux-imx@nxp.com, catalin.marinas@arm.com, xen-devel@lists.xenproject.org, mattst88@gmail.com, borntraeger@linux.ibm.com, mturquette@baylibre.com, sammy@sammy.net, pmladek@suse.com, linux-pm@vger.kernel.org, jiangshanlai@gmail.com, Sascha Hauer <s.hauer@pengutronix.de>, linux-um@lists.infradead.org, acme@kernel.org, tglx@linutronix.de, linux-omap@vger.kernel.org, dietmar.eggemann@arm.com, rth@twiddle.net, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, senozhatsky@chromium.org, svens@linux.ibm.com, jolsa@kernel.org, paulus@samba.org, mark.rutland@arm.com, linux-ia64@vger.kernel.org, dave.hansen@linux.intel.com, virtualizatio
+ n@lists.linux-foundation.org, James.Bottomley@HansenPartnership.com, jcmvbkbc@gmail.com, thierry.reding@gmail.com, kernel@xen0n.name, quic_neeraju@quicinc.com, linux-s390@vger.kernel.org, vschneid@redhat.com, john.ogness@linutronix.de, ysato@users.sourceforge.jp, linux-sh@vger.kernel.org, festevam@gmail.com, deller@gmx.de, daniel.lezcano@linaro.org, jonathanh@nvidia.com, mathieu.desnoyers@efficios.com, frederic@kernel.org, lenb@kernel.org, linux-xtensa@linux-xtensa.org, kernel@pengutronix.de, gor@linux.ibm.com, linux-arm-msm@vger.kernel.org, linux-alpha@vger.kernel.org, linux-m68k@lists.linux-m68k.org, shorne@gmail.com, linux-arm-kernel@lists.infradead.org, chris@zankel.net, sboyd@kernel.org, rh0@fb.com, dinguyen@kernel.org, bristot@redhat.com, alexander.shishkin@linux.intel.com, lpieralisi@kernel.org, linux@rasmusvillemoes.dk, joel@joelfernandes.org, will@kernel.org, boris.ostrovsky@oracle.com, josh@joshtriplett.org, khilman@kernel.org, linux-csky@vger.kernel.org, tony@atomide.com,
+  linux-snps-arc@lists.infradead.org, mgorman@suse.de, jacob.jun.pan@linux.intel.com, yury.norov@gmail.com, ulli.kroll@googlemail.com, vgupta@kernel.org, linux-clk@vger.kernel.org, monstr@monstr.eu, rostedt@goodmis.org, rcu@vger.kernel.org, bp@alien8.de, bcain@quicinc.com, tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, sudeep.holla@arm.com, shawnguo@kernel.org, davem@davemloft.net, dalias@libc.org, Peter Zijlstra <peterz@infradead.org>, amakhalov@vmware.com, bjorn.andersson@linaro.org, hpa@zytor.com, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org, anton.ivanov@cambridgegreys.com, jonas@southpole.se, Arnd Bergmann <arnd@arndb.de>, richard@nod.at, x86@kernel.org, linux@armlinux.org.uk, mingo@redhat.com, aou@eecs.berkeley.edu, hca@linux.ibm.com, stefan.kristiansson@saunalahti.fi, openrisc@lists.librecores.org, paul.walmsley@sifive.com, linux-tegra@vger.kernel.org, namhyung@kernel.org, andriy.shevchenko@linux.intel.com, jpoimboe@kerne
+ l.org, jgross@suse.com, pv-drivers@vmware.com, linux-mips@vger.kernel.org, palmer@dabbelt.com, anup@brainfault.org, ink@jurassic.park.msu.ru, johannes@sipsolutions.net, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jul 29, 2022 at 12:25 PM Michel Lespinasse
-<michel@lespinasse.org> wrote:
->
+On Fri, Jul 29, 2022 at 03:24:58AM -0700, Michel Lespinasse wrote:
 > On Thu, Jul 28, 2022 at 10:20:53AM -0700, Paul E. McKenney wrote:
 > > On Mon, Jul 25, 2022 at 12:43:06PM -0700, Michel Lespinasse wrote:
 > > > On Wed, Jun 08, 2022 at 04:27:27PM +0200, Peter Zijlstra wrote:
 > > > > Commit c227233ad64c ("intel_idle: enable interrupts before C1 on
 > > > > Xeons") wrecked intel_idle in two ways:
-> > > >
+> > > > 
 > > > >  - must not have tracing in idle functions
 > > > >  - must return with IRQs disabled
-> > > >
+> > > > 
 > > > > Additionally, it added a branch for no good reason.
-> > > >
+> > > > 
 > > > > Fixes: c227233ad64c ("intel_idle: enable interrupts before C1 on Xeons")
 > > > > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> > >
+> > > 
 > > > After this change was introduced, I am seeing "WARNING: suspicious RCU
 > > > usage" when booting a kernel with debug options compiled in. Please
 > > > see the attached dmesg output. The issue starts with commit 32d4fd5751ea
 > > > and is still present in v5.19-rc8.
-> > >
+> > > 
 > > > I'm not sure, is this too late to fix or revert in v5.19 final ?
-> >
+> > 
 > > I finally got a chance to take a quick look at this.
-> >
+> > 
 > > The rcu_eqs_exit() function is making a lockdep complaint about
 > > being invoked with interrupts enabled.  This function is called from
 > > rcu_idle_exit(), which is an expected code path from cpuidle_enter_state()
 > > via its call to rcu_idle_exit().  Except that rcu_idle_exit() disables
 > > interrupts before invoking rcu_eqs_exit().
-> >
+> > 
 > > The only other call to rcu_idle_exit() does not disable interrupts,
 > > but it is via rcu_user_exit(), which would be a very odd choice for
 > > cpuidle_enter_state().
-> >
+> > 
 > > It seems unlikely, but it might be that it is the use of local_irq_save()
 > > instead of raw_local_irq_save() within rcu_idle_exit() that is causing
 > > the trouble.  If this is the case, then the commit shown below would
 > > help.  Note that this commit removes the warning from lockdep, so it
 > > is necessary to build the kernel with CONFIG_RCU_EQS_DEBUG=y to enable
 > > equivalent debugging.
-> >
+> > 
 > > Could you please try your test with the -rce commit shown below applied?
->
+> 
 > Thanks for looking into it.
->
+
+And thank you for trying this shot in the dark!
+
 > After checking out Peter's commit 32d4fd5751ea,
 > cherry picking your commit ed4ae5eff4b3,
 > and setting CONFIG_RCU_EQS_DEBUG=y in addition of my usual debug config,
 > I am now seeing this a few seconds into the boot:
->
+> 
 > [    3.010650] ------------[ cut here ]------------
 > [    3.010651] WARNING: CPU: 0 PID: 0 at kernel/sched/clock.c:397 sched_clock_tick+0x27/0x60
+
+And this is again a complaint about interrupts not being disabled.
+
+But it does appear that the problem was the lockdep complaint, and
+eliminating that did take care of part of the problem.  But lockdep
+remained enabled, and you therefore hit the next complaint.
+
 > [    3.010657] Modules linked in:
 > [    3.010660] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.19.0-rc1-test-00005-g1be22fea0611 #1
 > [    3.010662] Hardware name: LENOVO 30BFS44D00/1036, BIOS S03KT51A 01/17/2022
 > [    3.010663] RIP: 0010:sched_clock_tick+0x27/0x60
+
+The most straightforward way to get to sched_clock_tick() from
+cpuidle_enter_state() is via the call to sched_clock_idle_wakeup_event().
+
+Except that it disables interrupts before invoking sched_clock_tick().
+
 > [    3.010665] Code: 1f 40 00 53 eb 02 5b c3 66 90 8b 05 2f c3 40 01 85 c0 74 18 65 8b 05 60 88 8f 4e 85 c0 75 0d 65 8b 05 a9 85 8f 4e 85 c0 74 02 <0f> 0b e8 e2 6c 89 00 48 c7 c3 40 d5 02 00
 >  89 c0 48 03 1c c5 c0 98
 > [    3.010667] RSP: 0000:ffffffffb2803e28 EFLAGS: 00010002
@@ -155,6 +176,23 @@ On Fri, Jul 29, 2022 at 12:25 PM Michel Lespinasse
 > [    3.010738] softirqs last disabled at (44171): [<ffffffffb16c760b>] irq_exit_rcu+0xab/0xf0
 > [    3.010741] ---[ end trace 0000000000000000 ]---
 
-Can you please give this patch a go:
-https://patchwork.kernel.org/project/linux-pm/patch/Yt/AxPFi88neW7W5@e126311.manchester.arm.com/
-?
+Would you be willing to try another shot in the dark, but untested
+this time?  I freely admit that this is getting strange.
+
+							Thanx, Paul
+
+------------------------------------------------------------------------
+
+diff --git a/kernel/sched/clock.c b/kernel/sched/clock.c
+index e374c0c923dae..279f557bf60bb 100644
+--- a/kernel/sched/clock.c
++++ b/kernel/sched/clock.c
+@@ -394,7 +394,7 @@ notrace void sched_clock_tick(void)
+ 	if (!static_branch_likely(&sched_clock_running))
+ 		return;
+ 
+-	lockdep_assert_irqs_disabled();
++	WARN_ON_ONCE(IS_ENABLED(CONFIG_RCU_EQS_DEBUG) && !raw_irqs_disabled());
+ 
+ 	scd = this_scd();
+ 	__scd_stamp(scd);
