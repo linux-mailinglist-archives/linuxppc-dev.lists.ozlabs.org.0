@@ -1,33 +1,33 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E06C958508B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jul 2022 15:12:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 368485850D2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jul 2022 15:23:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LvSc764Fsz3fBj
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jul 2022 23:12:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LvSr90nsHz3hNr
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jul 2022 23:23:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LvSYv72kbz2yn3
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Jul 2022 23:10:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LvSk84hk5z3fCy
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Jul 2022 23:17:52 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LvSYv2GSLz4x1h;
-	Fri, 29 Jul 2022 23:10:43 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LvSk566zjz4xG7;
+	Fri, 29 Jul 2022 23:17:49 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linux-watchdog@vger.kernel.org, Scott Cheloha <cheloha@linux.ibm.com>
-In-Reply-To: <20220713202335.1217647-1-cheloha@linux.ibm.com>
-References: <20220713202335.1217647-1-cheloha@linux.ibm.com>
-Subject: Re: [PATCH v3 0/4] pseries-wdt: initial support for H_WATCHDOG-based watchdog timers
-Message-Id: <165909971888.253830.15454249099878371474.b4-ty@ellerman.id.au>
-Date: Fri, 29 Jul 2022 23:01:58 +1000
+To: benh@kernel.crashing.org, Ning Qiang <sohu0106@126.com>
+In-Reply-To: <20220713153734.2248-1-sohu0106@126.com>
+References: <20220713153734.2248-1-sohu0106@126.com>
+Subject: Re: [PATCH] macintosh:fix oob read in do_adb_query function
+Message-Id: <165909971980.253830.1618039188917103373.b4-ty@ellerman.id.au>
+Date: Fri, 29 Jul 2022 23:01:59 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -42,29 +42,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nathanl@linux.ibm.com, wvoigt@us.ibm.com, aik@ozlabs.ru, vaishnavi@linux.ibm.com, npiggin@gmail.com, tzungbi@kernel.org, brking@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, linux@roeck-us.net
+Cc: greg@kroah.com, security@kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 13 Jul 2022 15:23:31 -0500, Scott Cheloha wrote:
-> PAPR v2.12 defines a new hypercall, H_WATCHDOG.  This patch series
-> adds support for this hypercall to powerpc/pseries kernels and
-> introduces a new watchdog driver, "pseries-wdt", for the virtual
-> timers exposed by the hypercall.
+On Wed, 13 Jul 2022 23:37:34 +0800, Ning Qiang wrote:
+> In do_adb_query function of drivers/macintosh/adb.c, req->data is copy
+> form userland. the  parameter "req->data[2]" is Missing check, the
+> array size of adb_handler[] is 16, so "adb_handler[
+> req->data[2]].original_address" and "adb_handler[
+> req->data[2]].handler_id" will lead to oob read.
 > 
-> This series is preceded by the following:
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/4] powerpc/pseries: hvcall.h: add H_WATCHDOG opcode, H_NOOP return code
-      https://git.kernel.org/powerpc/c/c6b2bd262b33aa2451f52aec2190131d1762945a
-[2/4] powerpc/pseries: add FW_FEATURE_WATCHDOG flag
-      https://git.kernel.org/powerpc/c/1621563ec62ff143c7b817dd5eab0884cdfaf89d
-[3/4] powerpc/pseries: register pseries-wdt device with platform bus
-      https://git.kernel.org/powerpc/c/578030bfe117060bf86c81aaa7b3faead4589810
-[4/4] watchdog/pseries-wdt: initial support for H_WATCHDOG-based watchdog timers
-      https://git.kernel.org/powerpc/c/69472ffa6575e3a1c1e3324dd06395af0f63eb71
+[1/1] macintosh:fix oob read in do_adb_query function
+      https://git.kernel.org/powerpc/c/fd97e4ad6d3b0c9fce3bca8ea8e6969d9ce7423b
 
 cheers
