@@ -1,50 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24B02584C40
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jul 2022 08:58:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28306584C4A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jul 2022 09:02:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LvJJq0VKGz2ywV
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jul 2022 16:58:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LvJNm0Fxfz2xmH
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jul 2022 17:02:16 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GiJNRosq;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hKMXQNeU;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GiJNRosq;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hKMXQNeU;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LvJHK5CLhz2xH9
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Jul 2022 16:57:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LvJN90sMJz2xJ7
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Jul 2022 17:01:44 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id CA849615F1
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Jul 2022 06:57:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 3C111C433D6
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Jul 2022 06:57:30 +0000 (UTC)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 6FFEEB826F8
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Jul 2022 07:01:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 21CA1C433B5
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Jul 2022 07:01:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1659077850;
-	bh=pAIF4kU8grLJCGFdr5dN5wRNL/iRkJY6jdgCsMDYwlg=;
+	s=k20201202; t=1659078101;
+	bh=b4Bf3075aij+32c1CBqIJFkO1bQbldibzJvjSzU+7VQ=;
 	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=GiJNRosqOO5+Xlv/eR+AHjojDSAo8rCNGPWzA+wfk0mzCIgL2R7AZF1k/01krbnJo
-	 M6AfLKGEuN4immyXyEETSc3hNNFDb85Bd0fnkmi9rz6omkhAkMzHa7dKPUDs66DbeB
-	 LBnV+v1oeKPMC9RyZHjUTBdi+Xv1VKUt5TTtaKpsSnFZpaEeFjM31jEpsAxPa80MtB
-	 mFBumkFJaYG7wOBnFxshv7sW2aNU8d1NS69Ew1iKO3UKouPou4B8cVsaj+si5OSbK5
-	 75/vPaWWXWUUAmkKq4G9PsnlSxl0fNiWDd9Its4kSis4n2jxpjEM7Pk5aYT5LSg7nI
-	 K8gTR9uO5aibg==
+	b=hKMXQNeUuDZ12SlERohYX6oKUlfnhZo01WqOqjy58elF2ebvBYCTokECMxjFZl+iA
+	 ON+/sSV4auAwk7J1ey9GubVtUbPBozjYJH6eBTysh5up8UeF5qhVttvzfh2pLa6Qt3
+	 LOZZW1BPRq/QG7CpcrhYH+FawK9J0YtcEMPkdzFRuveBZgLeysDye//f0aSCbNB22x
+	 I1y418gpcdbi3iS992owkW66+CYXJt4P2iwXgWHe1K3iOgdPyLcilrezOZnyo1BOih
+	 jNZuJAXl/y7WGby479xYaWW6amccWFkkCXlEssKgUJb2z6b5t1BuBfr3ygLU5RqSgU
+	 Rlc0ygqa5Pomg==
 Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id 2A32CC433E6; Fri, 29 Jul 2022 06:57:30 +0000 (UTC)
+	id 0E091C433E4; Fri, 29 Jul 2022 07:01:41 +0000 (UTC)
 From: bugzilla-daemon@kernel.org
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 216090] GCC12: printk.h:446:44: error: using a dangling pointer
- to '__str'
-Date: Fri, 29 Jul 2022 06:57:30 +0000
+Subject: [Bug 213079] [bisected] IRQ problems and crashes on a PowerMac G5
+ with 5.12.3
+Date: Fri, 29 Jul 2022 07:01:40 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
@@ -54,15 +54,15 @@ X-Bugzilla-Version: 2.5
 X-Bugzilla-Keywords: 
 X-Bugzilla-Severity: normal
 X-Bugzilla-Who: michael@ellerman.id.au
-X-Bugzilla-Status: CLOSED
-X-Bugzilla-Resolution: CODE_FIX
+X-Bugzilla-Status: NEEDINFO
+X-Bugzilla-Resolution: 
 X-Bugzilla-Priority: P1
 X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: bug_status
-Message-ID: <bug-216090-206035-GSyKBrY6Fi@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-216090-206035@https.bugzilla.kernel.org/>
-References: <bug-216090-206035@https.bugzilla.kernel.org/>
+X-Bugzilla-Changed-Fields: bug_status cc
+Message-ID: <bug-213079-206035-ge8gOniQAq@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-213079-206035@https.bugzilla.kernel.org/>
+References: <bug-213079-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Bugzilla-URL: https://bugzilla.kernel.org/
@@ -82,13 +82,14 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D216090
+https://bugzilla.kernel.org/show_bug.cgi?id=3D213079
 
 Michael Ellerman (michael@ellerman.id.au) changed:
 
            What    |Removed                     |Added
 ----------------------------------------------------------------------------
-             Status|RESOLVED                    |CLOSED
+             Status|NEW                         |NEEDINFO
+                 CC|                            |michael@ellerman.id.au
 
 --=20
 You may reply to this email to add a comment.
