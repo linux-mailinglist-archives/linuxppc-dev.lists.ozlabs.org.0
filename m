@@ -1,33 +1,33 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0F225850C2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jul 2022 15:21:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C2A65850BF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jul 2022 15:20:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LvSpW4ljmz3h6Q
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jul 2022 23:21:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LvSnH0sFBz3dxb
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jul 2022 23:20:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LvSk352Zhz3gDC
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Jul 2022 23:17:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LvSk14PxDz3bnM
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Jul 2022 23:17:45 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LvSk31xBBz4x1P;
-	Fri, 29 Jul 2022 23:17:47 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LvSk13J74z4xFy;
+	Fri, 29 Jul 2022 23:17:45 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, Tyrel Datwyler <tyreld@linux.ibm.com>, Pali Rohár <pali@kernel.org>, Guowen Shan <gshan@redhat.com>, "Guilherme G. Piccoli" <gpiccoli@igalia.com>, Bjorn Helgaas <helgaas@kernel.org>
-In-Reply-To: <20220706102148.5060-1-pali@kernel.org>
-References: <20220706102148.5060-1-pali@kernel.org>
-Subject: Re: [PATCH v2 1/2] powerpc/pci: Add config option for using OF 'reg' for PCI domain
-Message-Id: <165909977663.253830.17432035953486470333.b4-ty@ellerman.id.au>
-Date: Fri, 29 Jul 2022 23:02:56 +1000
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, Pali Rohár <pali@kernel.org>, Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+In-Reply-To: <20220504180822.29782-1-pali@kernel.org>
+References: <20220504180822.29782-1-pali@kernel.org>
+Subject: Re: [PATCH] powerpc/85xx: P2020: Add law_trgt_if property to PCIe DT nodes
+Message-Id: <165909977761.253830.2305727219055135050.b4-ty@ellerman.id.au>
+Date: Fri, 29 Jul 2022 23:02:57 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -42,23 +42,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-pci@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 6 Jul 2022 12:21:47 +0200, Pali Rohár wrote:
-> Since commit 63a72284b159 ("powerpc/pci: Assign fixed PHB number based on
-> device-tree properties"), powerpc kernel always fallback to PCI domain
-> assignment from OF / Device Tree 'reg' property of the PCI controller.
+On Wed, 4 May 2022 20:08:22 +0200, Pali Rohár wrote:
+> DT law_trgt_if property defines Local Access Window Target Interface.
 > 
-> In most cases 'reg' property is not zero and therefore there it cause that
-> PCI domain zero is not present in system anymore.
+> Local Access Window Target Interface is used for identifying individual
+> peripheral and mapping its memory to CPU. Interface id is defined by
+> hardware itself.
+> 
+> U-Boot uses law_trgt_if DT property in PCIe nodes for configuring memory
+> mapping of individual PCIe controllers.
 > 
 > [...]
 
-Patch 2 applied to powerpc/next.
+Applied to powerpc/next.
 
-[2/2] powerpc/pci: Prefer PCI domain assignment via DT 'linux,pci-domain' and alias
-      https://git.kernel.org/powerpc/c/0fe1e96fef0a5c53b4c0d1500d356f3906000f81
+[1/1] powerpc/85xx: P2020: Add law_trgt_if property to PCIe DT nodes
+      https://git.kernel.org/powerpc/c/1f00b5ab992c122c51bc37662b3b4df5963462f3
 
 cheers
