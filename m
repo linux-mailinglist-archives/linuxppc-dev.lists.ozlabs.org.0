@@ -2,135 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDFC75856CC
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Jul 2022 00:16:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C06F8585780
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Jul 2022 02:05:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lvhgr5VcXz3bgC
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Jul 2022 08:16:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lvl5m4Yqjz3c2R
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Jul 2022 10:05:48 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=jBFxOYol;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Lb03SbN2;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=seco.com (client-ip=40.107.6.70; helo=eur04-db3-obe.outbound.protection.outlook.com; envelope-from=sean.anderson@seco.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=jBFxOYol;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Lb03SbN2;
 	dkim-atps=neutral
-Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-eopbgr60070.outbound.protection.outlook.com [40.107.6.70])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lvhg53X9jz2xGQ
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Jul 2022 08:15:58 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=SzFBlUIyZlFtmGWzvcmttYKvC2iM1dVrSTKdHk/WHLNO5lpvOrCITeqEZt9sZ++QxTl0vd0ITLMSRaiv5FVKi51nfFL0d3g8M42ofLJzZkjvfNdKk0aiK0ZFSlpsbq4VzT4rQyQqfWZRZG3B8ZRBBvXhqWIsdkdZG9ACH+YsPlHjdCcaeS/S4XAV7YxEg8ozWCNDNvnaqFoXvTsoGFTahTeaAqDvXW4R+r+aHnDpf2BkvcuXRD4BLdK/mcsnD5FAOA4X4uEuVqjdcQJvNz5SMOVchIhBVXSF+Bc7IDCrUdMG6AdOwIlzkRtkuEDnHW/ftClKvy8lmLatf8yN+WmTpw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mOH0YKAKtvWv1dheocDHDngOmwFPArjMNuPYs+fAa7g=;
- b=UplDLT9nqWO9/4qHThBVQzO16doYbpo2XJRoAHKyOre20VQVr/fBDDONH9TpL4sDO0K6ES8WnXPJ7QjVz4vPdv1Pk7vjqj336oE5RRpKhkdIqf3BL9sGD7O14SMbuPuuHKfNdwOzhTdqekcDfBDIlOBTBmmcL6hZnhJKnKdnh2ZLcRs2+mTtk7XSXIQMmoBWyNKxRftrxw/Ahvqz/HJVT5vHILyrPtYZ4ShF6zABbUU2Z141KQ2TH5P0XGeHy7w2lQ7B+hObPKIXjB51Qc0OvoRk/cQ2ZC0CBJnYgW5l+9/8cYJqmVhKQ4qXmdhUQxLAMy9ajyKhf27+xCoYCdMdYQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=seco.com; dmarc=pass action=none header.from=seco.com;
- dkim=pass header.d=seco.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seco.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mOH0YKAKtvWv1dheocDHDngOmwFPArjMNuPYs+fAa7g=;
- b=jBFxOYolDfGiZiPi3jtHVPJfjyOU9zqCI4QV0HDCvMGCDmfGfa/V15OjK4RuhD5EPwKXjv65eSyRI7GktvJ93FMtA0nwaBtYsrhj0fylRnGGg3q4DUPN1SoGvoHQaY0Iqv8nOjuCoI21xKm9Jj0bdT4EHKJu+ucv9OfzB0QA5RZ44by+4+zlyfpjufQlqjNupquS9e65Lm2JVHF5sK64L54w6iwjLkxYOjFsjfzTTavIeXVFI0hIlNYK6GQGiRP2fSPLm/WiHNnhId/873sfkS83LBCh1HG85Wcd8VGMIVzCxbNrjglroWiZntth35Q0V/EC5fA9N9f23z+Vti7jYA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=seco.com;
-Received: from DB7PR03MB4972.eurprd03.prod.outlook.com (2603:10a6:10:7d::22)
- by AM6PR03MB6005.eurprd03.prod.outlook.com (2603:10a6:20b:e2::26) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5438.25; Fri, 29 Jul
- 2022 22:15:39 +0000
-Received: from DB7PR03MB4972.eurprd03.prod.outlook.com
- ([fe80::7d32:560f:9dd0:c36]) by DB7PR03MB4972.eurprd03.prod.outlook.com
- ([fe80::7d32:560f:9dd0:c36%4]) with mapi id 15.20.5482.011; Fri, 29 Jul 2022
- 22:15:39 +0000
-From: Sean Anderson <sean.anderson@seco.com>
-Subject: Re: [RFC PATCH net-next 0/9] net: pcs: Add support for devices probed
- in the "usual" manner
-To: Vladimir Oltean <olteanv@gmail.com>
-References: <2d028102-dd6a-c9f6-9e18-5abf84eb37a1@seco.com>
- <20220719181113.q5jf7mpr7ygeioqw@skbuf>
- <20220711160519.741990-1-sean.anderson@seco.com>
- <20220719152539.i43kdp7nolbp2vnp@skbuf>
- <bec4c9c3-e51b-5623-3cae-6df1a8ce898f@seco.com>
- <20220719153811.izue2q7qff7fjyru@skbuf>
- <2d028102-dd6a-c9f6-9e18-5abf84eb37a1@seco.com>
- <20220719181113.q5jf7mpr7ygeioqw@skbuf>
- <c0a11900-5a31-ca90-220f-74e3380cef8c@seco.com>
- <c0a11900-5a31-ca90-220f-74e3380cef8c@seco.com>
- <20220720135314.5cjxiifrq5ig4vjb@skbuf>
- <8622e12e-66c9-e338-27a1-07e53390881e@seco.com>
-Message-ID: <9747f8ef-66b3-0870-cbc0-c1783896b30d@seco.com>
-Date: Fri, 29 Jul 2022 18:15:33 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-In-Reply-To: <8622e12e-66c9-e338-27a1-07e53390881e@seco.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BL1PR13CA0004.namprd13.prod.outlook.com
- (2603:10b6:208:256::9) To DB7PR03MB4972.eurprd03.prod.outlook.com
- (2603:10a6:10:7d::22)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lvl5169dhz2xHf
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Jul 2022 10:05:08 +1000 (AEST)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 26TNcGwr027777;
+	Sat, 30 Jul 2022 00:05:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=p/yAIYpfoL3bQqw4MufSiU+JvQHAjxzakg3qtntbQMw=;
+ b=Lb03SbN2fNqiya+P19VEmrUt96oEy/qC0lbcVmxoJhNoYl5t+XZyhmGqkfUQpEtu7hG4
+ lIUu2b7SSbJdqqjR6iHbQjWlh+46Zk5Z0QBFx6t03Hi5YulFUj15bXmMRTBXsN6cWJdG
+ MlomjpyGwSPfxL/6JQi1O/ZXvbhdVDBOTRS2bMKi2ceoqg5arz7hsxFzpI0qshjt/srG
+ G+BM/QyE+H0+maoy1fOdITIRC3wanf5iGt1okf1bFoxdeJ1gvjpcOmGVTAQiZdCM75Iz
+ orbI5w2xP9Zi1IyEE9GILKl3WGYw3xHD2XDVJtGq0tkEsL4xkwYyf6F8dfgunPhkJwx3 jg== 
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com [169.63.121.186])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3hms6ngm6n-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 30 Jul 2022 00:05:00 +0000
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+	by ppma03wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 26TNo7Cd032656;
+	Sat, 30 Jul 2022 00:05:00 GMT
+Received: from b03cxnp08025.gho.boulder.ibm.com (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
+	by ppma03wdc.us.ibm.com with ESMTP id 3hg97sgp0f-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 30 Jul 2022 00:05:00 +0000
+Received: from b03ledav002.gho.boulder.ibm.com (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
+	by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 26U04wni25952766
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sat, 30 Jul 2022 00:04:58 GMT
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D2C72136055;
+	Sat, 30 Jul 2022 00:04:58 +0000 (GMT)
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9BC39136051;
+	Sat, 30 Jul 2022 00:04:58 +0000 (GMT)
+Received: from localhost (unknown [9.211.124.186])
+	by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
+	Sat, 30 Jul 2022 00:04:58 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/pseries: add lparctl driver for platform-specific functions
+Date: Fri, 29 Jul 2022 19:04:58 -0500
+Message-Id: <20220730000458.130938-1-nathanl@linux.ibm.com>
+X-Mailer: git-send-email 2.37.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: FjS2xhlclfOy0K-NN283_dU0ozh1frAI
+X-Proofpoint-ORIG-GUID: FjS2xhlclfOy0K-NN283_dU0ozh1frAI
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: bb9f1722-a288-49fb-5b00-08da71afde22
-X-MS-TrafficTypeDiagnostic: AM6PR03MB6005:EE_
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	lsUrRhb86xcmmZXQXk2Bonf0BAvyNa4Mw3x+foO2GCeNFloHr+OFP/fFPLa0ZuPZZsLvZ/2luLWqAE7ZOk1D9l42asBsSnTauItV+N7riyZ3zCPPOb02QkxS5ctjIcBM+qdKOzpYbgaEks4B0HfnOfpoZJDpbCuhbGVP4jqufHQLASOVzFcYHEShh2Clb6eFom/0yc1KqpvB3/Vnb6RPHcN6ptb+crIhsJUoZCOppZS4Zt12XyPgJySz6fT1zub7a46FaSgaY/78FwrZ27mrkFGBefPeAT4lDSzZAmhFcOjSQ4CZqrd8tYoH0AOM/3RJjCXMi+m4/em7RrWw/M1BF0klD57JrTgd+PZydrF4h2oMZzJ80HQ3KRZPN6BmOXlsnDAO9oFbttfVSFY9xwfLvGHJsAkti7PPjfutYDXY08V2tiNTLcW7sV8nJEh3laPoLQK/+TOtMJLZPuxJ0lX/pbXzdGE9/i86pX0bfTZk7Ll2WwvHDUqgj+zE+20TfE5P6s6VTC2LmIvizAOAj8gx8fhwFQ8Hf6IOsjqSH/73xviycLJKbDz5EK3aHW/xRW+QvMupM7XVzcvKQnZhD3LskOtPIvmJOqKNfIgfVRdDgVuv2j5uFKC25hO8HvrZ4vCt3vX1PFxF12VOWlXAwAY8O6ZNvFIj6dIvuleur+7/f6u/0jvEm1b6FhHRPtYlz4WmjwfR9uULmmqV25m4+koB7jzVSP//wb3hgyW+8ES+Heq69f/tJnuPrkVIuGOBvYKqmCuwu+SNeTSE8l9iSaCZAt46MPQ0B1bcbCe6YDj8oMwgB1ObwMyU7hlU779BkHbXn6/6UEw0TFI6H2+gIJXivHMUTXiGKLf36/9tVO0AIDw=
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB7PR03MB4972.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(376002)(39850400004)(346002)(136003)(396003)(366004)(31696002)(52116002)(478600001)(6512007)(6486002)(26005)(41300700001)(86362001)(6506007)(6666004)(38100700002)(38350700002)(2616005)(53546011)(186003)(8676002)(83380400001)(7406005)(8936002)(7416002)(2906002)(5660300002)(31686004)(44832011)(66946007)(36756003)(316002)(6916009)(54906003)(4326008)(66556008)(66476007)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?utf-8?B?enlXVVM1b0NrQTNGU20zUnY5YUtxZVQzRys2L3dOT0dIczUwQVR4SDR0dFFq?=
- =?utf-8?B?TThvbVVHbVZnRk9KQlpmNzFDNE1NWjNZZXhWc2tkQzYwRHZBZzlPbG1qYU5k?=
- =?utf-8?B?TFhva2hWd1RVKytYZmlQVGo5cWFBMWtrd0J1ZE9wTURtYkdMejJEU0hGZ3g5?=
- =?utf-8?B?SlRENzhmRUFiY0lYaVhFZnU5NG96RnI0N3J3NllSQ3ppNnhNRFlaMlRGOTUr?=
- =?utf-8?B?UUNQS1NaLzExQTZlK0JENmRpaVh3bFZJbmtSekloaWR6ZkFnV01oMmNZeThN?=
- =?utf-8?B?MjYxVlVTNVlJUjl6SG4vbnB6WUtvbXZ0cUJLbldLMGtXRFZRREJsOHZHVFI2?=
- =?utf-8?B?anViMEZpKzJaRTB6bWEyc2laYjlNTWR4SzZjdFoxc09XT1lCNmhDVFN4MFdj?=
- =?utf-8?B?QThWSy9iVEhCY2pVdHFEZ1NQMWNLMXlNN0dwUEpobmFEempHcjcyc0d6M1Aw?=
- =?utf-8?B?RGxFZWgxTUdIUWpKanpLNXhVQVRmYXpPNmhQWEpFVDlHYVJ1SGR3TmUzN1BQ?=
- =?utf-8?B?T0Z2MUFUV3ZjRXZVdDZqeVBMNzNzbHM4V051TlJ2djRjQytlc2NwN0dqcWN0?=
- =?utf-8?B?NDdBd1l4QzN1RERzSWd2eC9teGRQT3kxZ20vTDZZOTlYbTcyL1d2aEFkWjF6?=
- =?utf-8?B?ZFNtU0JIK2VoZkxwZnEwSUQ0M3dIRjB1djFrZ0pub25kTzlXMkszejhPWTRi?=
- =?utf-8?B?UndheStnaUFOaG9DNC9TZWpwcHJ3QVRZem5KRjl4QmpWQ1ZBcHIzL290ekVX?=
- =?utf-8?B?aFQ5OSswcWREQWNNQm5lY2hMeDA5OXFPR3RiSXk2bVc1THlLdWJTR0w1a1Js?=
- =?utf-8?B?cFNmZFdTVVRjaWVCLy9RRnZVbkFLYjR0b0JOSzJFRFRZMzRZRTBWZW93dlZ0?=
- =?utf-8?B?MjEySXEwNjQ4ZjR3THZJUk5wRHcxSm9mSjZHVjRPc0FMd2k3bkR1UFUwOHRy?=
- =?utf-8?B?RWxqajhOQVc5U3dxejNYWU9maFlZTTZkZkxqQko0ZDdVZ09ReG5XenVxTzB6?=
- =?utf-8?B?Y21CRzJ5K1gwWi9hYW9XNTlHek1BWTJjcWtwa0RJY1NBNzAwVStINml1Y0NS?=
- =?utf-8?B?d3VQUUV4RElsTEJNMVc5czBPVWZUQkNNWGpENnJhbFBKVXJjbUhKd1NDQ2Rk?=
- =?utf-8?B?MmZVdzFhNkF5U0pKUG1GMGt1enBNRE8rTzI1SXEzeVM3R0Rqd1dPVzlUdE8w?=
- =?utf-8?B?T0NibCt2RDdyZG1ZT0U5U08zbWNpck5mUEJiR1cwVlJSekQxcThlcEp6MjBR?=
- =?utf-8?B?ZmlJdytGbm92MWkyc2lSNWtIWjZzMmVJK2JmZ3NkV1N1TGxLTGZXUllMc0dq?=
- =?utf-8?B?Mi9SdTg5K2pRMmt5T3l1K3E0NVRkZ0pYdGhDNDlvZjE3ZzQ2ZWF4UGRRS2Mw?=
- =?utf-8?B?UUUyT1ZUU2N6SnlaN004emplUmczVXVOUitONGVNclJsbFRSdVFVWW9sNzg4?=
- =?utf-8?B?ZWxQUkJCZnd0ditySEdReXQ3UUlLWUMxdkREdC9BNE55MUQ3czc1ZWtDVUdC?=
- =?utf-8?B?ZHpBbW1xbWY3Ri81QU83YktjVW9ZMHVVa01PL2tPR2U5NDJWS2NpWHRLV2dq?=
- =?utf-8?B?Ynl0bVpLK0pGVFhEak9TK2xDRzV0UEdkTFFTQ0E3cGd3V3pQVXlUNnFtd3Qx?=
- =?utf-8?B?ckZna2JvenpmdEdlcDlGTk1HYTBGYURRUmFNNm04MnlWd0NPdThISVhLMG44?=
- =?utf-8?B?TWl6Qit6ME8zR0RZMUlzR0Z4b2pIWDcrbWdqRy94ZUlrUFZJRkVNVzZhQlla?=
- =?utf-8?B?N3NHUUdwRkNzUTNERThZRUxaYWRhZi9YYUF6bXcrMlhOdUR2Ym9wc0hHdkpv?=
- =?utf-8?B?Zmw1WmxNKzVud1dyeXJpSG5JR3Q0aWh3Q3JGOW51RVNKSU94Z09QakFaNVFI?=
- =?utf-8?B?L3hhdEUzYktWRkJYeGtsMHZsWkQ5Sk1uSHJtOU5kWVBIODh4WkJ1UmZ0N0FU?=
- =?utf-8?B?RzJ1TXNpWVIvUnJSQkFvVnhtR0MxaVlNTHZ1QXpZSTJ0a1lDcWVzQndPRUU3?=
- =?utf-8?B?TUFCc20zMklmTG9kMk1icXdnaWZlN2d0RUloV2l2M3JldHhQS1FwYVhnVyt5?=
- =?utf-8?B?Wk1sbEpqWkhFUHNyM1hLcmtUalRhSVFYTnRPRzZTWStlN3o1VmJjQkRrQ1ps?=
- =?utf-8?B?WEJCT0g4ZnVMaTZlSldibHVMWEZ4SDMvMnUzSXJqeVdRMVBQRHpQL0Q5L3NI?=
- =?utf-8?B?aGc9PQ==?=
-X-OriginatorOrg: seco.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bb9f1722-a288-49fb-5b00-08da71afde22
-X-MS-Exchange-CrossTenant-AuthSource: DB7PR03MB4972.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jul 2022 22:15:38.8542
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bebe97c3-6438-442e-ade3-ff17aa50e733
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1LgFnzlCVyknS92fG6rUOXyD/qkYtK1ydGd5Kpp+ZjwEWAFcM18bmJkd3vDi1WKXufFybHDNxmwQSDQAMItyww==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM6PR03MB6005
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-07-29_21,2022-07-28_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
+ priorityscore=1501 malwarescore=0 lowpriorityscore=0 suspectscore=0
+ spamscore=0 phishscore=0 mlxscore=0 impostorscore=0 clxscore=1011
+ adultscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2206140000 definitions=main-2207290104
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -142,128 +87,342 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, Alexandre Belloni <alexandre.belloni@bootlin.com>, Madalin Bucur <madalin.bucur@nxp.com>, Eric Dumazet <edumazet@google.com>, Paul Mackerras <paulus@samba.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Ioana Ciornei <ioana.ciornei@nxp.com>, UNGLinuxDriver@microchip.com, Frank Rowand <frowand.list@gmail.com>, Florian Fainelli <f.fainelli@gmail.com>, Saravana Kannan <saravanak@google.com>, Russell King <linux@armlinux.org.uk>, Vladimir Oltean <vladimir.oltean@nxp.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Vivien Didelot <vivien.didelot@gmail.com>, devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Claudiu Manoil <claudiu.manoil@nxp.com>, Rob Herring <robh+dt@kernel.org>, linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Li Yang <leoyang.li@nxp.com>, Shawn Guo <shawnguo@kernel.org>, "David S . Miller" <davem@davemloft.net>, Heiner Kallweit <hkallweit1@gmail.c
- om>
+Cc: tyreld@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 7/21/22 5:41 PM, Sean Anderson wrote:
-> On 7/20/22 9:53 AM, Vladimir Oltean wrote:
->> On Tue, Jul 19, 2022 at 03:34:45PM -0400, Sean Anderson wrote:
->>> We could do it, but it'd be a pretty big hack. Something like the
->>> following. Phylink would need to be modified to grab the lock before
->>> every op and check if the PCS is dead or not. This is of course still
->>> not optimal, since there's no way to re-attach a PCS once it goes away.
->> 
->> You assume it's just phylink who operates on a PCS structure, but if you
->> include your search pool to also cover include/linux/pcs/pcs-xpcs.h,
->> you'll see a bunch of exported functions which are called directly by
->> the client drivers (stmmac, sja1105). At this stage it gets pretty hard
->> to validate that drivers won't attempt from any code path to do
->> something stupid with a dead PCS. All in all it creates an environment
->> with insanely weak guarantees; that's pretty hard to get behind IMO.
-> 
-> Right. To do this properly, we'd need wrapper functions for all the PCS
-> operations. And the super-weak guarantees is why I referred to this as a
-> "hack". But we could certainly make it so that removing a PCS might not
-> bring down the MAC.
-> 
->>> IMO a better solution is to use devlink and submit a patch to add
->>> notifications which the MAC driver can register for. That way it can
->>> find out when the PCS goes away and potentially do something about it
->>> (or just let itself get removed).
->> 
->> Not sure I understand what connection there is between devlink (device
->> links) and PCS {de}registration notifications. 
-> 
-> The default action when a supplier is going to be removed is to remove
-> the consumers. However, it'd be nice to notify the consumer beforehand.
-> If we used device links, this would need to be integrated (since otherwise
-> we'd only find out that a PCS was gone after the MAC was gone too).
-> 
->> We could probably add those
->> notifications without any intervention from the device core: we would
->> just need to make this new PCS "core" to register an blocking_notifier_call_chain
->> to which interested drivers could add their notifier blocks. How a> certain phylink user is going to determine that "hey, this PCS is
->> definitely mine and I can use it" is an open question. In any case, my
->> expectation is that we have a notifier chain, we can at least continue
->> operating (avoid unbinding the struct device), but essentially move our
->> phylink_create/phylink_destroy calls to within those notifier blocks.
->> Again, retrofitting this model to existing drivers, phylink API (and
->> maybe even its internal structure) is something that's hard to hop on
->> board of; I think it's a solution waiting for a problem, and I don't
->> have an interest to develop or even review it.
-> 
-> I don't either. I'd much rather just bring down the whole MAC when any
-> PCS gets removed. Whatever we decide on doing here should also be done
-> for (serdes) phys as well, since they have all the same pitfalls. For
-> that reason I'd rather use a generic, non-intrusive solution like device
-> links. I know Russell mentioned composite devices, but I think those
-> would have similar advantages/drawbacks as a device-link-based solution
-> (unbinding of one device unbinds the rest).
+This adds a chardev+ioctl-based interface for user space to access pseries
+platform-specific functions which don't easily fit elsewhere.
 
-OK, I've thought about this a bit more. Right now, you can crash the
-kernel by unbinding a phy (either serdes or networking) and waiting for
-a state change. The serdes problem could probably be solved by
-strengthening the existing device_link_add calls. This will of course
-unbind the netdev if you unbind the serdes. I think this is not a common
-use case; if a user does this they probably know what they're doing (or
-not).
+The immediate motivation is to unbreak librtas[1] with kernel lockdown
+enabled. librtas provides a thin root-only user-space API, allowing nearly
+direct access to RTAS functions. Since its inception, some of librtas's
+APIs have used /dev/mem to allocate buffers that are addressable by RTAS
+for use with the powerpc-specific rtas() syscall. This design likely would
+not be our first choice today, but it has served adequately for about two
+decades without much change, and librtas has a non-negligible number of
+existing users, including powerpc-utils, ppc64-diag, lsvpd, lscpu
+(util-linux), and several non-OSS programs. With lockdown enabled, /dev/mem
+access is prohibited, preventing communication with the management console
+and breaking associated functions such as DLPAR and partition migration.
 
-The problem with ethernet phys is a bit worse. It's very common to have
-something like
+So the task is to provide new lockdown-compatible interfaces for librtas to
+prefer over the legacy /dev/mem+sys_rtas(), allowing it to maintain its own
+user-facing ABIs as much as possible. This means that we make different
+interface choices than we would were we writing everything from scratch. In
+the ioctl commands added here, we do not map RTAS error statuses to Linux
+errno values, because the existing users of librtas's system parameter APIs
+expect the RTAS status codes. Instead, the ioctl succeeds if the kernel
+manages to call the RTAS function at all, and passes the RTAS status back
+to user space in the argument buffer.
 
-	+ netdev
-	|
-	+-+ mdiobus
-	  |
-	  +-- phy
+Add the ability to retrieve and change system parameters as defined by
+PAPR. Along with proposed implementation changes to librtas[2], this
+effectively fixes librtas's rtas_get_sysparm() and rtas_set_sysparm() APIs
+for existing users with lockdown. This is enough to get HMC communication
+working via the proprietary RSCT stack, enabling LPM, processor DLPAR,
+memory DLPAR, and various other use cases.
 
-which poses a problem for device links. The phy is a child of the
-netdev, so it should be unbound first. device_link_add will see this and
-refuse to create a link, since such a link implies that netdev should be
-unbound before phy.
+While this starts with RTAS-implemented functions, there's no reason it
+couldn't host facilities that rely on hcalls or other PAPR-specified
+interfaces. It could be an alternative to adding more key=value lines to
+/proc/powrpc/lparcfg. Hence the generic name 'lparctl'.
 
-One solution might be something like:
+Utilities tested (ppc64le kernel and user space):
+* ppc64_cpu --run-mode (powerpc-utils, gets/sets processor diag run mode)
+* serv_config (powerpc-utils, gets/sets various system and LPAR policies)
+* lscpu (util-linux, retrieves processor topology)
+* RSCT (proprietary, retrieves HMC connection details)
 
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index a74b320f5b27..05894e1c3e59 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -27,6 +27,7 @@
- #include <linux/phy.h>
- #include <linux/phy_led_triggers.h>
- #include <linux/property.h>
-+#include <linux/rtnetlink.h>
- #include <linux/sfp.h>
- #include <linux/skbuff.h>
- #include <linux/slab.h>
-@@ -3111,6 +3112,13 @@ static int phy_remove(struct device *dev)
- {
-        struct phy_device *phydev = to_phy_device(dev);
- 
-+	// I'm pretty sure this races with multiple unbinds...
-+       rtnl_lock();
-+       device_unlock(dev);
-+       dev_close(phydev->attached_dev);
-+       device_lock(dev);
-+       rtnl_unlock();
-+       WARN_ON(phydev->attached_dev);
+Future work to unbreak more librtas APIs may include:
+* VPD retrieval via ibm,get-vpd
+* RTAS error injection
+* indicator query/manipulation for diagnostics
+
+[1] https://github.com/ibm-power-utilities/librtas
+[2] https://github.com/ibm-power-utilities/librtas/pull/26
+
+Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+---
+ .../userspace-api/ioctl/ioctl-number.rst      |   1 +
+ arch/powerpc/include/uapi/asm/lparctl.h       |  63 +++++++
+ arch/powerpc/platforms/pseries/Makefile       |   2 +-
+ arch/powerpc/platforms/pseries/lparctl.c      | 171 ++++++++++++++++++
+ 4 files changed, 236 insertions(+), 1 deletion(-)
+ create mode 100644 arch/powerpc/include/uapi/asm/lparctl.h
+ create mode 100644 arch/powerpc/platforms/pseries/lparctl.c
+
+diff --git a/Documentation/userspace-api/ioctl/ioctl-number.rst b/Documentation/userspace-api/ioctl/ioctl-number.rst
+index fcab013e47c9..029de1b7ebdb 100644
+--- a/Documentation/userspace-api/ioctl/ioctl-number.rst
++++ b/Documentation/userspace-api/ioctl/ioctl-number.rst
+@@ -349,6 +349,7 @@ Code  Seq#    Include File                                           Comments
+                                                                      <mailto:vgo@ratio.de>
+ 0xB1  00-1F                                                          PPPoX
+                                                                      <mailto:mostrows@styx.uwaterloo.ca>
++0xB2  01-02  arch/powerpc/include/uapi/asm/lparctl.h                 powerpc/pseries lparctl API
+ 0xB3  00     linux/mmc/ioctl.h
+ 0xB4  00-0F  linux/gpio.h                                            <mailto:linux-gpio@vger.kernel.org>
+ 0xB5  00-0F  uapi/linux/rpmsg.h                                      <mailto:linux-remoteproc@vger.kernel.org>
+diff --git a/arch/powerpc/include/uapi/asm/lparctl.h b/arch/powerpc/include/uapi/asm/lparctl.h
+new file mode 100644
+index 000000000000..42e1ee5fe3c8
+--- /dev/null
++++ b/arch/powerpc/include/uapi/asm/lparctl.h
+@@ -0,0 +1,63 @@
++/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
++#ifndef POWERPC_UAPI_LPARCTL_H
++#define POWERPC_UAPI_LPARCTL_H
 +
-        cancel_delayed_work_sync(&phydev->state_queue);
++#include <linux/ioctl.h>
++#include <linux/types.h>
++
++#define LPARCTL_IOCTL_BASE 0xb2
++
++#define LPARCTL_IO(nr)         _IO(LPARCTL_IOCTL_BASE, nr)
++#define LPARCTL_IOR(nr, type)  _IOR(LPARCTL_IOCTL_BASE, nr, type)
++#define LPARCTL_IOW(nr, type)  _IOW(LPARCTL_IOCTL_BASE, nr, type)
++#define LPARCTL_IOWR(nr, type) _IOWR(LPARCTL_IOCTL_BASE, nr, type)
++
++/**
++ * struct lparctl_get_system_parameter - System parameter retrieval.
++ *
++ * @rtas_status: (output) The result of the ibm,get-system-parameter RTAS
++ *               call attempted by the kernel.
++ * @token: (input) System parameter token as specified in PAPR+ 7.3.16
++ *         "System Parameters Option".
++ * @data: (input and output) If applicable, any required input data ("OS
++ *        Service Entitlement Status" appears to be the only system
++ *        parameter that requires this). If @rtas_status is zero on return
++ *        from ioctl(), contains the value of the specified parameter. The
++ *        first two bytes contain the (big-endian) length of valid data in
++ *        both cases. If @rtas_status is not zero the contents are
++ *        indeterminate.
++ */
++struct lparctl_get_system_parameter {
++	__s32 rtas_status;
++	__u16 token;
++	union {
++		__be16 length;
++		__u8   data[4002];
++	};
++};
++
++#define LPARCTL_GET_SYSPARM LPARCTL_IOWR(0x01, struct lparctl_get_system_parameter)
++
++/**
++ * struct lparctl_set_system_parameter - System parameter update.
++ *
++ * @rtas_status: (output) The result of the ibm,get-system-parameter RTAS
++ *               call attempted by the kernel.
++ * @token: (input) System parameter token as specified in PAPR+ 7.3.16
++ *         "System Parameters Option".
++ * @data: (input) The desired value for the parameter corresponding to
++ *        @token. The first two bytes contain the (big-endian) length of
++ *        valid data.
++ */
++struct lparctl_set_system_parameter {
++	__s32 rtas_status;
++	__u16 token;
++	union {
++		__be16 length;
++		__u8   data[1026];
++	};
++};
++
++#define LPARCTL_SET_SYSPARM LPARCTL_IOWR(0x02, struct lparctl_set_system_parameter)
++
++#endif /* POWERPC_UAPI_LPARCTL_H */
+diff --git a/arch/powerpc/platforms/pseries/Makefile b/arch/powerpc/platforms/pseries/Makefile
+index 14e143b946a3..8fff7ed10d7c 100644
+--- a/arch/powerpc/platforms/pseries/Makefile
++++ b/arch/powerpc/platforms/pseries/Makefile
+@@ -3,7 +3,7 @@ ccflags-$(CONFIG_PPC64)			:= $(NO_MINIMAL_TOC)
+ ccflags-$(CONFIG_PPC_PSERIES_DEBUG)	+= -DDEBUG
  
-        mutex_lock(&phydev->lock);
+ obj-y			:= lpar.o hvCall.o nvram.o reconfig.o \
+-			   of_helpers.o \
++			   of_helpers.o lparctl.o \
+ 			   setup.o iommu.o event_sources.o ras.o \
+ 			   firmware.o power.o dlpar.o mobility.o rng.o \
+ 			   pci.o pci_dlpar.o eeh_pseries.o msi.o \
+diff --git a/arch/powerpc/platforms/pseries/lparctl.c b/arch/powerpc/platforms/pseries/lparctl.c
+new file mode 100644
+index 000000000000..11a33b8d9234
+--- /dev/null
++++ b/arch/powerpc/platforms/pseries/lparctl.c
+@@ -0,0 +1,171 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Character device for accessing pseries/PAPR platform-specific
++ * facilities.
++ */
++#define pr_fmt(fmt) "lparctl: " fmt
++
++#include <linux/build_bug.h>
++#include <linux/fs.h>
++#include <linux/init.h>
++#include <linux/kernel.h>
++#include <linux/miscdevice.h>
++#include <linux/slab.h>
++#include <linux/string.h>
++#include <asm/lparctl.h>
++#include <asm/machdep.h>
++#include <asm/rtas.h>
++
++/**
++ * lparctl_get_sysparm() - Query a PAPR system parameter.
++ *
++ * Retrieve the value of the parameter indicated by the @token member of
++ * the &struct lparctl_get_system_parameter at @arg. If available and
++ * accessible, the value of the parameter is copied to the @data member of
++ * the &struct lparctl_get_system_parameter at @arg, and its @rtas_status
++ * field is set to zero. Otherwise, the @rtas_status member reflects the
++ * most recent RTAS call status, and the contents of @data are
++ * indeterminate.
++ *
++ * Non-zero RTAS call statuses are not translated to conventional errno
++ * values. Only kernel issues or API misuse result in an error at the
++ * syscall level. This is to serve the needs of legacy software which
++ * historically has accessed system parameters via the rtas() syscall,
++ * which has similar behavior.
++ *
++ * Return:
++ * * 0 - OK. Caller must examine the @rtas_status member of the returned
++ *       &struct lparctl_get_system_parameter to determine whether a parameter
++ *       value was copied out.
++ * * -EINVAL - The copied-in &struct lparctl_get_system_parameter.rtas_status
++ *             is non-zero.
++ * * -EFAULT - The supplied @arg is a bad address.
++ * * -ENOMEM - Allocation failure.
++ */
++static long lparctl_get_sysparm(struct lparctl_get_system_parameter __user *argp)
++{
++	struct lparctl_get_system_parameter *gsp;
++	long ret;
++	int fwrc;
++
++	/*
++	 * Special case to allow user space to probe the command.
++	 */
++	if (argp == NULL)
++		return 0;
++
++	gsp = memdup_user(argp, sizeof(*gsp));
++	if (IS_ERR(gsp)) {
++		ret = PTR_ERR(gsp);
++		goto err_return;
++	}
++
++	ret = -EINVAL;
++	if (gsp->rtas_status != 0)
++		goto err_free;
++
++	do {
++		static_assert(sizeof(gsp->data) <= sizeof(rtas_data_buf));
++
++		spin_lock(&rtas_data_buf_lock);
++		memset(rtas_data_buf, 0, sizeof(rtas_data_buf));
++		memcpy(rtas_data_buf, gsp->data, sizeof(gsp->data));
++		fwrc = rtas_call(rtas_token("ibm,get-system-parameter"), 3, 1,
++				 NULL, gsp->token, __pa(rtas_data_buf),
++				 sizeof(gsp->data));
++		if (fwrc == 0)
++			memcpy(gsp->data, rtas_data_buf, sizeof(gsp->data));
++		spin_unlock(&rtas_data_buf_lock);
++	} while (rtas_busy_delay(fwrc));
++
++	gsp->rtas_status = fwrc;
++	ret = 0;
++	if (copy_to_user(argp, gsp, sizeof(*gsp)))
++		ret = -EFAULT;
++err_free:
++	kfree(gsp);
++err_return:
++	return ret;
++}
++
++static long lparctl_set_sysparm(struct lparctl_set_system_parameter __user *argp)
++{
++	struct lparctl_set_system_parameter *ssp;
++	long ret;
++	int fwrc;
++
++	/*
++	 * Special case to allow user space to probe the command.
++	 */
++	if (argp == NULL)
++		return 0;
++
++	ssp = memdup_user(argp, sizeof(*ssp));
++	if (IS_ERR(ssp)) {
++		ret = PTR_ERR(ssp);
++		goto err_return;
++	}
++
++	ret = -EINVAL;
++	if (ssp->rtas_status != 0)
++		goto err_free;
++
++	do {
++		static_assert(sizeof(ssp->data) <= sizeof(rtas_data_buf));
++
++		spin_lock(&rtas_data_buf_lock);
++		memset(rtas_data_buf, 0, sizeof(rtas_data_buf));
++		memcpy(rtas_data_buf, ssp->data, sizeof(ssp->data));
++		fwrc = rtas_call(rtas_token("ibm,set-system-parameter"), 2, 1,
++				 NULL, ssp->token, __pa(rtas_data_buf));
++		spin_unlock(&rtas_data_buf_lock);
++	} while (rtas_busy_delay(fwrc));
++
++	ret = 0;
++	if (copy_to_user(&argp->rtas_status, &fwrc, sizeof(argp->rtas_status)))
++		ret = -EFAULT;
++err_free:
++	kfree(ssp);
++err_return:
++	return ret;
++}
++
++static long lparctl_dev_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
++{
++	void __user *argp = (void __user *)arg;
++	long ret;
++
++	switch (ioctl) {
++	case LPARCTL_GET_SYSPARM:
++		ret = lparctl_get_sysparm(argp);
++		break;
++	case LPARCTL_SET_SYSPARM:
++		ret = lparctl_set_sysparm(argp);
++		break;
++	default:
++		ret = -ENOIOCTLCMD;
++		break;
++	}
++	return ret;
++}
++
++static const struct file_operations lparctl_ops = {
++	.unlocked_ioctl = lparctl_dev_ioctl,
++	.llseek		= noop_llseek,
++};
++
++static struct miscdevice lparctl_dev = {
++	MISC_DYNAMIC_MINOR,
++	"lparctl",
++	&lparctl_ops,
++};
++
++static __init int lparctl_init(void)
++{
++	int ret;
++
++	ret = misc_register(&lparctl_dev);
++
++	return ret;
++}
++machine_device_initcall(pseries, lparctl_init);
+-- 
+2.35.1
 
-which is probably the least intrusive we can get. But this isn't very
-nice for PCSs.
-
-First, PCSs are not always used by netdevs. So there's no generic way to
-ask the user "please clean up this PCS." Additionally, most PCS users
-expect the PCS to be around for the lifetime of the driver (or at least
-until they're done using it).
-
-Maybe the best solution is to provide some helper functions to use with
-bus_register_notifier and just let the drivers fend for themselves. Or
-possibly default to a devlink, but allow registering a notifier instead.
-
---Sean
