@@ -2,82 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 379A5586AE7
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Aug 2022 14:36:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CA03586C23
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Aug 2022 15:41:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LxHgF0Ctyz3c7r
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Aug 2022 22:36:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LxK5S0Prlz3c3T
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Aug 2022 23:41:00 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nq9rIgl2;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=vZsF5JXt;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=HMNxuNm0;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=gjoyce@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=msuchanek@suse.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nq9rIgl2;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=vZsF5JXt;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=HMNxuNm0;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LxK4l5N3Gz2xkr
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Aug 2022 23:40:23 +1000 (AEST)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+	by smtp-out1.suse.de (Postfix) with ESMTP id 7B6ED38C76;
+	Mon,  1 Aug 2022 13:40:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1659361219; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=a/15e5KZCnNKb0azDiCVDEz20SQoPdOtelD54ZT3HrI=;
+	b=vZsF5JXt0yunqdghLnL8szmYGnecduZ5VaUF50ssv6NhWp/sQ/Eoqo26SQgkJghY6gmXSI
+	2yUH4JSJxYyzwbRG69QWbS8VhnlIvOs2vK1vMqgrN9cmcPTxGc4YaB6ORGS3ggcUhw5Y6h
+	IUBr3gPcpkJNVdZqb7IRrfvb0+LZeGM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1659361219;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=a/15e5KZCnNKb0azDiCVDEz20SQoPdOtelD54ZT3HrI=;
+	b=HMNxuNm0lGxkGLz2Wj+1OUU44LycDhShMQHSDOcCtFhc0cGYVlZ4pNxYPg7V5AqsB2Llw9
+	jbnAZv4hyp16SwBA==
+Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LxHd64XYyz2xmk
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Aug 2022 22:34:50 +1000 (AEST)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 271BRdIn013318;
-	Mon, 1 Aug 2022 12:34:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=4vO33KM9Kg2lQ/XR0IrQu6Dhh3R1NiWTNIKnWvbRKBI=;
- b=nq9rIgl2tw5p5Zd1V/FcIntqJXJgzVumx3qzuqVK5BloPgG52L6JUGSvLsaqwrUPwnE9
- 45qNy/Ltz++BgpO6ThJFew//zYfuDaVyouj02OJMe/MvQ2Xzd33zg4oK5YigzpH8R5gR
- hQRDYss3Ov0lVOJsJpadGF2p4Bx/h/K9YX0hgQyTwbe04L43kZOO918TK1SwvGXJiR9u
- 8yeRuSwnTNa3Fyj5TJYccaLa/4L7i9lUaxRwrP737pKKF/f1C+277LlTza8hSktlKcsh
- 9R5Z6xcMpYeuUMntjPLG3SBbGXbVxr6k8b8CO4XerdhdYiH/yoXaOZI0TuuX4CBJcC5l 4g== 
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com [169.47.144.26])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3hp9y31p0d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 01 Aug 2022 12:34:44 +0000
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
-	by ppma04wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 271CMgYf017422;
-	Mon, 1 Aug 2022 12:34:43 GMT
-Received: from b03cxnp08025.gho.boulder.ibm.com (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
-	by ppma04wdc.us.ibm.com with ESMTP id 3hmv99bujm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 01 Aug 2022 12:34:43 +0000
-Received: from b03ledav002.gho.boulder.ibm.com (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
-	by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 271CYg2232899524
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 1 Aug 2022 12:34:42 GMT
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5FF11136065;
-	Mon,  1 Aug 2022 12:34:42 +0000 (GMT)
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7AE7C136053;
-	Mon,  1 Aug 2022 12:34:41 +0000 (GMT)
-Received: from rhel-laptop.ibm.com.com (unknown [9.77.138.167])
-	by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
-	Mon,  1 Aug 2022 12:34:41 +0000 (GMT)
-From: gjoyce@linux.vnet.ibm.com
-To: linux-block@vger.kernel.org
-Subject: [PATCH v3 2/2] powerpc/pseries: Override lib/arch_vars.c functions
-Date: Mon,  1 Aug 2022 07:34:26 -0500
-Message-Id: <20220801123426.585801-3-gjoyce@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20220801123426.585801-1-gjoyce@linux.vnet.ibm.com>
+	by relay2.suse.de (Postfix) with ESMTPS id 4520B2C141;
+	Mon,  1 Aug 2022 13:40:19 +0000 (UTC)
+Date: Mon, 1 Aug 2022 15:40:18 +0200
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: gjoyce@linux.vnet.ibm.com
+Subject: Re: [PATCH v3 1/2] lib: generic accessor functions for arch keystore
+Message-ID: <20220801134018.GY17705@kitsune.suse.cz>
 References: <20220801123426.585801-1-gjoyce@linux.vnet.ibm.com>
+ <20220801123426.585801-2-gjoyce@linux.vnet.ibm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: G3TPLUp4pRsPMsXsPxoWnQb-pdxOu5TZ
-X-Proofpoint-GUID: G3TPLUp4pRsPMsXsPxoWnQb-pdxOu5TZ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-08-01_07,2022-08-01_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 phishscore=0
- lowpriorityscore=0 clxscore=1015 bulkscore=0 priorityscore=1501
- malwarescore=0 adultscore=0 spamscore=0 impostorscore=0 mlxlogscore=999
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2206140000 definitions=main-2208010062
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220801123426.585801-2-gjoyce@linux.vnet.ibm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,211 +71,117 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: axboe@kernel.dk, gjoyce@linux.vnet.ibm.com, nayna@linux.ibm.com, jonathan.derrick@linux.dev, brking@linux.vnet.ibm.com, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, gjoyce@ibm.com
+Cc: axboe@kernel.dk, nayna@linux.ibm.com, linux-block@vger.kernel.org, jonathan.derrick@linux.dev, brking@linux.vnet.ibm.com, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, gjoyce@ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
+Hello,
 
-Self Encrypting Drives(SED) make use of POWER LPAR Platform KeyStore
-for storing its variables. Thus the block subsystem needs to access
-PowerPC specific functions to read/write objects in PLPKS.
+On Mon, Aug 01, 2022 at 07:34:25AM -0500, gjoyce@linux.vnet.ibm.com wrote:
+> From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
+> 
+> Generic kernel subsystems may rely on platform specific persistent
+> KeyStore to store objects containing sensitive key material. In such case,
+> they need to access architecture specific functions to perform read/write
+> operations on these variables.
+> 
+> Define the generic variable read/write prototypes to be implemented by
+> architecture specific versions. The default(weak) implementations of
+> these prototypes return -EOPNOTSUPP unless overridden by architecture
+> versions.
+> 
+> Signed-off-by: Greg Joyce <gjoyce@linux.vnet.ibm.com>
+> ---
+>  include/linux/arch_vars.h | 23 +++++++++++++++++++++++
+>  lib/Makefile              |  2 +-
+>  lib/arch_vars.c           | 25 +++++++++++++++++++++++++
+>  3 files changed, 49 insertions(+), 1 deletion(-)
+>  create mode 100644 include/linux/arch_vars.h
+>  create mode 100644 lib/arch_vars.c
+> 
+> diff --git a/include/linux/arch_vars.h b/include/linux/arch_vars.h
+> new file mode 100644
+> index 000000000000..9c280ff9432e
+> --- /dev/null
+> +++ b/include/linux/arch_vars.h
+> @@ -0,0 +1,23 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +/*
+> + * Platform variable opearations.
+> + *
+> + * Copyright (C) 2022 IBM Corporation
+> + *
+> + * These are the accessor functions (read/write) for architecture specific
+> + * variables. Specific architectures can provide overrides.
+> + *
+> + */
+> +
+> +#include <linux/kernel.h>
+> +
+> +enum arch_variable_type {
+> +	ARCH_VAR_OPAL_KEY      = 0,     /* SED Opal Authentication Key */
+> +	ARCH_VAR_OTHER         = 1,     /* Other type of variable */
+> +	ARCH_VAR_MAX           = 1,     /* Maximum type value */
+> +};
+> +
+> +int arch_read_variable(enum arch_variable_type type, char *varname,
+> +		       void *varbuf, u_int *varlen);
+> +int arch_write_variable(enum arch_variable_type type, char *varname,
+> +			void *varbuf, u_int varlen);
+> diff --git a/lib/Makefile b/lib/Makefile
+> index f99bf61f8bbc..b90c4cb0dbbb 100644
+> --- a/lib/Makefile
+> +++ b/lib/Makefile
+> @@ -48,7 +48,7 @@ obj-y += bcd.o sort.o parser.o debug_locks.o random32.o \
+>  	 bsearch.o find_bit.o llist.o memweight.o kfifo.o \
+>  	 percpu-refcount.o rhashtable.o \
+>  	 once.o refcount.o usercopy.o errseq.o bucket_locks.o \
+> -	 generic-radix-tree.o
+> +	 generic-radix-tree.o arch_vars.o
+>  obj-$(CONFIG_STRING_SELFTEST) += test_string.o
+>  obj-y += string_helpers.o
+>  obj-$(CONFIG_TEST_STRING_HELPERS) += test-string_helpers.o
+> diff --git a/lib/arch_vars.c b/lib/arch_vars.c
+> new file mode 100644
+> index 000000000000..e6f16d7d09c1
+> --- /dev/null
+> +++ b/lib/arch_vars.c
+> @@ -0,0 +1,25 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Platform variable operations.
+> + *
+> + * Copyright (C) 2022 IBM Corporation
+> + *
+> + * These are the accessor functions (read/write) for architecture specific
+> + * variables. Specific architectures can provide overrides.
+> + *
+> + */
+> +
+> +#include <linux/kernel.h>
+> +#include <linux/arch_vars.h>
+> +
+> +int __weak arch_read_variable(enum arch_variable_type type, char *varname,
+> +			      void *varbuf, u_int *varlen)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+> +
+> +int __weak arch_write_variable(enum arch_variable_type type, char *varname,
+> +			       void *varbuf, u_int varlen)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+> -- 
 
-Override the default implementations in lib/arch_vars.c file with
-PowerPC specific versions.
+Doesn't EFI already have some variables?
 
-Signed-off-by: Greg Joyce <gjoyce@linux.vnet.ibm.com>
----
- arch/powerpc/platforms/pseries/Makefile       |   1 +
- .../platforms/pseries/plpks_arch_ops.c        | 167 ++++++++++++++++++
- 2 files changed, 168 insertions(+)
- create mode 100644 arch/powerpc/platforms/pseries/plpks_arch_ops.c
+And even powernv?
 
-diff --git a/arch/powerpc/platforms/pseries/Makefile b/arch/powerpc/platforms/pseries/Makefile
-index 14e143b946a3..3a545422eae5 100644
---- a/arch/powerpc/platforms/pseries/Makefile
-+++ b/arch/powerpc/platforms/pseries/Makefile
-@@ -29,6 +29,7 @@ obj-$(CONFIG_PPC_SPLPAR)	+= vphn.o
- obj-$(CONFIG_PPC_SVM)		+= svm.o
- obj-$(CONFIG_FA_DUMP)		+= rtas-fadump.o
- obj-$(CONFIG_PSERIES_PLPKS) += plpks.o
-+obj-$(CONFIG_PSERIES_PLPKS) += plpks_arch_ops.o
- 
- obj-$(CONFIG_SUSPEND)		+= suspend.o
- obj-$(CONFIG_PPC_VAS)		+= vas.o vas-sysfs.o
-diff --git a/arch/powerpc/platforms/pseries/plpks_arch_ops.c b/arch/powerpc/platforms/pseries/plpks_arch_ops.c
-new file mode 100644
-index 000000000000..fdea3322f696
---- /dev/null
-+++ b/arch/powerpc/platforms/pseries/plpks_arch_ops.c
-@@ -0,0 +1,167 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * POWER Platform arch specific code for SED
-+ * Copyright (C) 2022 IBM Corporation
-+ *
-+ * Define operations for generic kernel subsystems to read/write keys
-+ * from POWER LPAR Platform KeyStore(PLPKS).
-+ *
-+ * List of subsystems/usecase using PLPKS:
-+ * - Self Encrypting Drives(SED)
-+ */
-+
-+#include <linux/kernel.h>
-+#include <linux/slab.h>
-+#include <linux/string.h>
-+#include <linux/ioctl.h>
-+#include <uapi/linux/sed-opal.h>
-+#include <linux/sed-opal.h>
-+#include <linux/arch_vars.h>
-+#include "plpks.h"
-+
-+/*
-+ * variable structure that contains all SED data
-+ */
-+struct plpks_sed_object_data {
-+	u_char version;
-+	u_char pad1[7];
-+	u_long authority;
-+	u_long range;
-+	u_int  key_len;
-+	u_char key[32];
-+};
-+
-+/*
-+ * ext_type values
-+ *     00        no extension exists
-+ *     01-1F     common
-+ *     20-3F     AIX
-+ *     40-5F     Linux
-+ *     60-7F     IBMi
-+ */
-+
-+/*
-+ * This extension is optional for version 1 sed_object_data
-+ */
-+struct sed_object_extension {
-+	u8 ext_type;
-+	u8 rsvd[3];
-+	u8 ext_data[64];
-+};
-+
-+#define PKS_SED_OBJECT_DATA_V1          1
-+#define PKS_SED_MANGLED_LABEL           "/default/pri"
-+#define PLPKS_SED_COMPONENT             "sed-opal"
-+
-+#define PLPKS_ARCHVAR_POLICY            WORLDREADABLE
-+#define PLPKS_ARCHVAR_OS_COMMON         4
-+
-+/*
-+ * Read the variable data from PKS given the label
-+ */
-+int arch_read_variable(enum arch_variable_type type, char *varname,
-+		       void *varbuf, u_int *varlen)
-+{
-+	struct plpks_var var;
-+	struct plpks_sed_object_data *data;
-+	u_int offset = 0;
-+	char *buf = (char *)varbuf;
-+	int ret;
-+
-+	var.name = varname;
-+	var.namelen = strlen(varname);
-+	var.policy = PLPKS_ARCHVAR_POLICY;
-+	var.os = PLPKS_ARCHVAR_OS_COMMON;
-+	var.data = NULL;
-+	var.datalen = 0;
-+
-+	switch (type) {
-+	case ARCH_VAR_OPAL_KEY:
-+		var.component = PLPKS_SED_COMPONENT;
-+#ifdef OPAL_AUTH_KEY
-+		if (strcmp(OPAL_AUTH_KEY, varname) == 0) {
-+			var.name = PKS_SED_MANGLED_LABEL;
-+			var.namelen = strlen(varname);
-+		}
-+#endif
-+		offset = offsetof(struct plpks_sed_object_data, key);
-+		break;
-+	case ARCH_VAR_OTHER:
-+		var.component = "";
-+		break;
-+	}
-+
-+	ret = plpks_read_os_var(&var);
-+	if (ret != 0)
-+		return ret;
-+
-+	if (offset > var.datalen)
-+		offset = 0;
-+
-+	switch (type) {
-+	case ARCH_VAR_OPAL_KEY:
-+		data = (struct plpks_sed_object_data *)var.data;
-+		*varlen = data->key_len;
-+		break;
-+	case ARCH_VAR_OTHER:
-+		*varlen = var.datalen;
-+		break;
-+	}
-+
-+	if (var.data) {
-+		memcpy(varbuf, var.data + offset, var.datalen - offset);
-+		buf[*varlen] = '\0';
-+		kfree(var.data);
-+	}
-+
-+	return 0;
-+}
-+
-+/*
-+ * Write the variable data to PKS given the label
-+ */
-+int arch_write_variable(enum arch_variable_type type, char *varname,
-+			void *varbuf, u_int varlen)
-+{
-+	struct plpks_var var;
-+	struct plpks_sed_object_data data;
-+	struct plpks_var_name vname;
-+
-+	var.name = varname;
-+	var.namelen = strlen(varname);
-+	var.policy = PLPKS_ARCHVAR_POLICY;
-+	var.os = PLPKS_ARCHVAR_OS_COMMON;
-+	var.datalen = varlen;
-+	var.data = varbuf;
-+
-+	switch (type) {
-+	case ARCH_VAR_OPAL_KEY:
-+		var.component = PLPKS_SED_COMPONENT;
-+#ifdef OPAL_AUTH_KEY
-+		if (strcmp(OPAL_AUTH_KEY, varname) == 0) {
-+			var.name = PKS_SED_MANGLED_LABEL;
-+			var.namelen = strlen(varname);
-+		}
-+#endif
-+		var.datalen = sizeof(struct plpks_sed_object_data);
-+		var.data = (u8 *)&data;
-+
-+		/* initialize SED object */
-+		data.version = PKS_SED_OBJECT_DATA_V1;
-+		data.authority = 0;
-+		data.range = 0;
-+		data.key_len = varlen;
-+		memcpy(data.key, varbuf, varlen);
-+		break;
-+	case ARCH_VAR_OTHER:
-+		var.component = "";
-+		break;
-+	}
-+
-+	/* variable update requires delete first */
-+	vname.namelen = var.namelen;
-+	vname.name = var.name;
-+	(void)plpks_remove_var(var.component, var.os, vname);
-+
-+	return plpks_write_var(var);
-+}
--- 
-2.27.0
+Shouldn't this generalize the already existing variables?
 
+Or move to powerpc and at least generalize the powerpc ones?
+
+Thanks
+
+Michal
