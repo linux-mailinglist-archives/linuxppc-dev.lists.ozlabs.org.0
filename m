@@ -2,51 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABA7458641C
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Aug 2022 08:36:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62AFD5865EB
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Aug 2022 09:56:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lx7gq5c3lz3c3B
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Aug 2022 16:36:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lx9S81tCyz3bc3
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Aug 2022 17:56:40 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=K0yfJNKM;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XHyqkREM;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lx7gD5K6Pz2xHN
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Aug 2022 16:36:08 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=K0yfJNKM;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XHyqkREM;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Lx7gB7047z4x1L;
-	Mon,  1 Aug 2022 16:36:06 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1659335767;
-	bh=KlQQmnUVuaEUxMMjUhKl86RMR9H7Qw3GkPi6RTcciHE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=K0yfJNKMDtGlkyfwvBU+udgax/uri2aoU+kEXhNAHZ42CoOwXoMMmmcxpM3wdTC2u
-	 OCICfqNBi2CJdP1vgtzvuc5z2BAkpyjInb8fXfcvhTxoJcDYcQI6YmZI4bfX4F+CLt
-	 S+/UYnC+BwGL/EwJfCU+wqzqMW8lSmqfbi11HkotBeLZlVKmOBpGKbsO8iaqdHeY2r
-	 HRuk9d9CVX9oZxih7icVm+Zwo+eer2UF83vEmxCuuUs6oZXhZSjUSWGAqVEBH7dUhb
-	 bWUS0G/YEeJFsqOFlNqt5Fj+9dgOzgcpW9YkRnOVqnXIpteL9cXP2h/+Zl3eeuTJOC
-	 cMp5leerQUymQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: cgel.zte@gmail.com, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH linux-next] macintosh:adb:recordmcount:use !E in
- conditional statements
-In-Reply-To: <20220801022521.1594464-1-ye.xingchen@zte.com.cn>
-References: <20220801022521.1594464-1-ye.xingchen@zte.com.cn>
-Date: Mon, 01 Aug 2022 16:36:06 +1000
-Message-ID: <87edy0bhd5.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lx9RV14mwz2xHC
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Aug 2022 17:56:05 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 029EE60EDF;
+	Mon,  1 Aug 2022 07:56:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 339F0C433C1;
+	Mon,  1 Aug 2022 07:56:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1659340562;
+	bh=x3Fg/Rbx8Ng7EwGIUGb7gYjJKq38W2VLLAiBUTzBwUQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XHyqkREMjXZIALfQgy1Cu/GsXenY3wYf/Xd1OB/ULWO1vihVUAOjYJFOaB/WF1FgR
+	 RRwKpChPwxguNRW8WaqI3SZt1oIfWI11BOkBb//PHn30D3i81qpyB9fjst8p42BNcG
+	 cHSZ3bKZ/+QmRE3ZeXIZqkGPZAnAcb7zSRJIeFCVou519sO+IVI6xxk78aBLErFUba
+	 8rmz4SG8igePx24OQgcQe7YSXMF9PDZUg+q5MhuMkIRqIZh/fVSGbR393/shz85pTM
+	 2d/rtw7iXNLlA09em4VH46l2yWlPxXmjRDwcx30bldkSm7A2D8NzZ7HYf+PPPv/NQm
+	 In9HFGRtVt2RQ==
+Received: by pali.im (Postfix)
+	id 14C3D75F; Mon,  1 Aug 2022 09:55:59 +0200 (CEST)
+Date: Mon, 1 Aug 2022 09:55:58 +0200
+From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc/85xx: P2020: Add law_trgt_if property to PCIe DT
+ nodes
+Message-ID: <20220801075558.jdkaegjjzexhe7kl@pali>
+References: <20220504180822.29782-1-pali@kernel.org>
+ <165909977761.253830.2305727219055135050.b4-ty@ellerman.id.au>
+ <CAL_JsqJZ6s4qU+Yt4CCj3q-Fk_MKEddx5aLKu15NLnTbgMyRGA@mail.gmail.com>
+ <87k07sbpl3.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87k07sbpl3.fsf@mpe.ellerman.id.au>
+User-Agent: NeoMutt/20180716
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,42 +67,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ye xingchen <ye.xingchen@zte.com.cn>, Zeal Robot <zealci@zte.com.cn>, linuxppc-dev@lists.ozlabs.org
+Cc: Michael Ellerman <patch-notifications@ellerman.id.au>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>, Paul Mackerras <paulus@samba.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-cgel.zte@gmail.com writes:
-> From: ye xingchen <ye.xingchen@zte.com.cn>
->
-> Use !E to replace the type of x == 0. This change is just to 
-> simplify the code, no actual functional changes.
->
-> Reported-by: Zeal Robot <zealci@zte.com.cn>
-> Signed-off-by: ye xingchen <ye.xingchen@zte.com.cn>
-> ---
->  drivers/macintosh/adb.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+On Monday 01 August 2022 13:38:32 Michael Ellerman wrote:
+> Rob Herring <robh+dt@kernel.org> writes:
+> > On Fri, Jul 29, 2022 at 7:17 AM Michael Ellerman
+> > <patch-notifications@ellerman.id.au> wrote:
+> >>
+> >> On Wed, 4 May 2022 20:08:22 +0200, Pali Rohár wrote:
+> >> > DT law_trgt_if property defines Local Access Window Target Interface.
+> >> >
+> >> > Local Access Window Target Interface is used for identifying individual
+> >> > peripheral and mapping its memory to CPU. Interface id is defined by
+> >> > hardware itself.
+> >> >
+> >> > U-Boot uses law_trgt_if DT property in PCIe nodes for configuring memory
+> >> > mapping of individual PCIe controllers.
+> >> >
+> >> > [...]
+> >>
+> >> Applied to powerpc/next.
+> >>
+> >> [1/1] powerpc/85xx: P2020: Add law_trgt_if property to PCIe DT nodes
+> >>       https://git.kernel.org/powerpc/c/1f00b5ab992c122c51bc37662b3b4df5963462f3
+> >
+> > Why? Minimally, it needs a vendor prefix and s/_/-/ as I commented.
+> 
+> OK. I misread your "maybe that's fine" as approval.
+> 
+> Pali can you send a fixup patch please?
+> 
+> cheers
 
-The subject is wrong, why does it mention recordmcount?
-
-But in general this is very old code which is best left alone unless
-there's an actual bug, it doesn't need these sort of style refactorings
-done to it IMO.
-
-cheers
-
-> diff --git a/drivers/macintosh/adb.c b/drivers/macintosh/adb.c
-> index 1bbb9ca08d40..368ab25db234 100644
-> --- a/drivers/macintosh/adb.c
-> +++ b/drivers/macintosh/adb.c
-> @@ -673,7 +673,7 @@ static int adb_open(struct inode *inode, struct file *file)
->  		goto out;
->  	}
->  	state = kmalloc(sizeof(struct adbdev_state), GFP_KERNEL);
-> -	if (state == 0) {
-> +	if (!state) {
->  		ret = -ENOMEM;
->  		goto out;
->  	}
-> -- 
-> 2.25.1
+No I cannot. This is how this property is used by bootloaders for at
+least 10 years. There are underlines (not hyphens) and there is no
+vendor prefix.
