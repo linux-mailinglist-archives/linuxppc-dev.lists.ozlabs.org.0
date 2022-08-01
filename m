@@ -1,52 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ADC55870C7
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Aug 2022 21:03:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCBEE5870D3
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Aug 2022 21:03:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LxSF76b19z3bbl
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Aug 2022 05:03:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LxSFv6DSsz3bXn
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Aug 2022 05:03:47 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ee7sS+Wj;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LJ1qFUOu;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ee7sS+Wj;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LJ1qFUOu;
 	dkim-atps=neutral
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LxSDX1C0tz2xHD
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Aug 2022 05:02:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LxSDt2y8qz3bmY
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Aug 2022 05:02:54 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id DA5D961218;
-	Mon,  1 Aug 2022 19:02:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 624A3C433D6;
-	Mon,  1 Aug 2022 19:02:31 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 787D061218;
+	Mon,  1 Aug 2022 19:02:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A385C433C1;
+	Mon,  1 Aug 2022 19:02:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1659380552;
-	bh=8TuZYBANaANy8tBI2NDEhOSwYzvW/85ai8F71UZsmK0=;
+	s=k20201202; t=1659380571;
+	bh=ai9n7In6AvAmJCXp8dgLUdN/R33ZQxYkQ1xdEtuRzyY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ee7sS+WjoKsphXm66prEadyQX1DQgMBZO1yMuoKsg6JsJdFBn7zgDeBDDoMeny9S3
-	 Vc+qqsVb2sX+q/6wcgD3dA1vhXPagwHjH0/7fHeu+T4HznDsUqJGu/UvZa+eBQo/Sz
-	 uLmHke+6xZjCfAwZZ0+7eTn+GeE9aAFJIbBdGTj22J7HivLtZbheHphFLgVU5DXgGo
-	 WVZi107lIHUjT0Mn3c70laXxR8Wltjys+ddE7HqIJyhm7yJf93jaOCJSf6ftwYfDfu
-	 O+f3tq7iogbHnLFCKnEfXpB5alNEuN8luqlXTsxCxWaaRBOVibmAXN0t3KbqTFh4Y6
-	 10FM5iORe/t+g==
+	b=LJ1qFUOuCRn3kWaSGgLWeW/uWPhH/GJYXaJhbhP0Z2g9D33UNc1rqoSw9Sda0QoWS
+	 jatA/nWZDzSSPLQ0uq29JwuUANTnmS/JOlXpMd44ZDCmm0PeHf2eqsKW4Xi1qLi7ND
+	 Hjig+VXHaQAl8h7dE+ljwYp6v3QjB7OD6J5l8RMfQORI7Shova/Qzcg7aR2z24Kzn8
+	 sBlXfeBXSPUA12F7KyKG2Hr8w+43HI9OLOnuyErXlZNU3kDe5hoJYi8foN1cVQo//3
+	 0Z9bRlyuVFCNIOl58pVnkIdk5QEb4XmfXKLd865HHs/Bia+/JMA1LMeXBvTDOXFPEq
+	 ed2Qkkb8CfFug==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.18 04/10] powerpc/64s: Disable stack variable initialisation for prom_init
-Date: Mon,  1 Aug 2022 15:02:16 -0400
-Message-Id: <20220801190222.3818378-4-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 3/8] powerpc/64s: Disable stack variable initialisation for prom_init
+Date: Mon,  1 Aug 2022 15:02:38 -0400
+Message-Id: <20220801190243.3818811-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220801190222.3818378-1-sashal@kernel.org>
-References: <20220801190222.3818378-1-sashal@kernel.org>
+In-Reply-To: <20220801190243.3818811-1-sashal@kernel.org>
+References: <20220801190243.3818811-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -102,7 +102,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+)
 
 diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
-index 4ddd161aef32..63c384c3e6d4 100644
+index b1b23b4d56ba..ed91d5b9ffc6 100644
 --- a/arch/powerpc/kernel/Makefile
 +++ b/arch/powerpc/kernel/Makefile
 @@ -20,6 +20,7 @@ CFLAGS_prom.o += $(DISABLE_LATENT_ENTROPY_PLUGIN)
