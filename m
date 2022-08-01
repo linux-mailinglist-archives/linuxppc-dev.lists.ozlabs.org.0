@@ -2,68 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5579658628D
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Aug 2022 04:26:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA33C586320
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Aug 2022 05:39:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lx26k2pj1z3bXR
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Aug 2022 12:26:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lx3l54pYQz3bgR
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Aug 2022 13:39:13 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ftsjD0vs;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=nmtXVlTJ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1035; helo=mail-pj1-x1035.google.com; envelope-from=cgel.zte@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ftsjD0vs;
-	dkim-atps=neutral
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lx2645wkmz2xGf
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Aug 2022 12:25:30 +1000 (AEST)
-Received: by mail-pj1-x1035.google.com with SMTP id x2-20020a17090ab00200b001f4da5cdc9cso3613288pjq.0
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 31 Jul 2022 19:25:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc;
-        bh=EVBoyRWZigkccBsvB4uh5xlF3s1rJUHBaQVZeXyiy68=;
-        b=ftsjD0vsSTdUSAtjICFc5VLtK0DuMYkrCipIK+3xEfRxuyD1Ft8rbDG6h7znNIGZEO
-         WoJEJhUexPRnABkElPICbvzjXRskN321/XNAg23r+B39jp80ez3MokGqdQQtJck9iZ4K
-         eDBDmVgYaewLCsen0tyj/lArm+ARV7m5VG2aIHI8EMdV0Uc3n+8AH0xeA/aGZgMCE5ZX
-         akdSIHJybpWhvQpgpUqrdqIkWcx8eSvPO/F/ZZlmP3zJwlAdQ0MD19iZhLapgnMd6/1J
-         jBibAJdg61wUlTdjjAhXqErmpEbjAkqwUYx7t/oPSCgh7YrB9JY3J2o5XKhWksFs0XNo
-         reFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc;
-        bh=EVBoyRWZigkccBsvB4uh5xlF3s1rJUHBaQVZeXyiy68=;
-        b=Nh6e6OC8Eqf4bSivnk6THqLiIQ+gTVnpoX3RP/EboLz8nJ/l8yIyk90logQmUzRAsD
-         ZYdDBrVBVFsDAWsdKW+b3HaN87l0/DkCNGGai3324UquslfhRGHM4/TZoJ/BwFIAw8vF
-         xMPir8oGoqrRzJ1OmNdKaoqLQ4q/iyOL6w9oJxCSN53X09UdLkPKTSyrdnvveCu81NZ6
-         FdxP4jDpQ1Q6o4p75FRJAEklnODsfVroug9Pmu8E6SVQnS2i/oYKDkyDSo3Du5HJkhEC
-         EJPg/RLAu3kdbseSVd4UjURaqMHXhRRzUOt9YOLRxWIUP7wfBxBFwnWSWdSKvgtmGEeq
-         Yi/A==
-X-Gm-Message-State: ACgBeo3bDUEGqmrnYnXDNtn2Cjh2PziDfOHFWdpjNSSZL4oaDcqiMnFz
-	cTVBgpB6zUW5IyFpHjA9AuQ=
-X-Google-Smtp-Source: AA6agR7aNyMg2Wo2Fkh9Ql/YgG/B+msUN4m1xsfJUklb5q1MqEExamxbZAzRou9ZYayAxJPO6Dikrw==
-X-Received: by 2002:a17:902:8502:b0:16c:c5c5:a198 with SMTP id bj2-20020a170902850200b0016cc5c5a198mr14528236plb.88.1659320725884;
-        Sun, 31 Jul 2022 19:25:25 -0700 (PDT)
-Received: from localhost.localdomain ([193.203.214.57])
-        by smtp.gmail.com with ESMTPSA id t3-20020a17090a950300b001f21a8f7f14sm7431098pjo.9.2022.07.31.19.25.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 31 Jul 2022 19:25:25 -0700 (PDT)
-From: cgel.zte@gmail.com
-X-Google-Original-From: ye.xingchen@zte.com.cn
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH linux-next] macintosh:adb:recordmcount:use !E in conditional statements
-Date: Mon,  1 Aug 2022 02:25:21 +0000
-Message-Id: <20220801022521.1594464-1-ye.xingchen@zte.com.cn>
-X-Mailer: git-send-email 2.25.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lx3kR5sPWz2xHQ
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Aug 2022 13:38:39 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=nmtXVlTJ;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Lx3kN1zBNz4x1S;
+	Mon,  1 Aug 2022 13:38:36 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1659325116;
+	bh=a6rojnADEQz4YaXLUNDgDgnJraQcyq4lfTUzba9isA8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=nmtXVlTJeDidpXmsU/j+3ucJNxrzRKUeJQRe8pZVaJ0HQ51/vNAoFjPqblu3ThgPG
+	 AZZH3vioqUl9prqZkTQMvrMJpvaC6FjO850uPILuAG7Hq386q2ZN3Ol9d5W/53Rt7j
+	 5cy5hu0yse14NuKB4xfznYYIaysk0yciTDZbVzEzuMnYCEb/6uiWeZwIgoTs/gvl5Y
+	 q4H9/tCS6DCD56ehJEw48UyxI/F8gIFrOfhDmEXWD7ep8zbGvW4anDaNdlsQ42+Bz4
+	 6zphYwPGc9Zj9ZVPYM1nW8N/lnohYmLV3HzUJNuDzxfMNLhglzlWrQKw6sghhpvw19
+	 JzyM3TvEJXtXA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Rob Herring <robh+dt@kernel.org>, Michael Ellerman
+ <patch-notifications@ellerman.id.au>
+Subject: Re: [PATCH] powerpc/85xx: P2020: Add law_trgt_if property to PCIe
+ DT nodes
+In-Reply-To: <CAL_JsqJZ6s4qU+Yt4CCj3q-Fk_MKEddx5aLKu15NLnTbgMyRGA@mail.gmail.com>
+References: <20220504180822.29782-1-pali@kernel.org>
+ <165909977761.253830.2305727219055135050.b4-ty@ellerman.id.au>
+ <CAL_JsqJZ6s4qU+Yt4CCj3q-Fk_MKEddx5aLKu15NLnTbgMyRGA@mail.gmail.com>
+Date: Mon, 01 Aug 2022 13:38:32 +1000
+Message-ID: <87k07sbpl3.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,33 +62,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ye xingchen <ye.xingchen@zte.com.cn>, Zeal Robot <zealci@zte.com.cn>, linuxppc-dev@lists.ozlabs.org
+Cc: Pali =?utf-8?Q?Roh=C3=A1r?= <pali@kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Paul Mackerras <paulus@samba.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: ye xingchen <ye.xingchen@zte.com.cn>
+Rob Herring <robh+dt@kernel.org> writes:
+> On Fri, Jul 29, 2022 at 7:17 AM Michael Ellerman
+> <patch-notifications@ellerman.id.au> wrote:
+>>
+>> On Wed, 4 May 2022 20:08:22 +0200, Pali Roh=C3=A1r wrote:
+>> > DT law_trgt_if property defines Local Access Window Target Interface.
+>> >
+>> > Local Access Window Target Interface is used for identifying individual
+>> > peripheral and mapping its memory to CPU. Interface id is defined by
+>> > hardware itself.
+>> >
+>> > U-Boot uses law_trgt_if DT property in PCIe nodes for configuring memo=
+ry
+>> > mapping of individual PCIe controllers.
+>> >
+>> > [...]
+>>
+>> Applied to powerpc/next.
+>>
+>> [1/1] powerpc/85xx: P2020: Add law_trgt_if property to PCIe DT nodes
+>>       https://git.kernel.org/powerpc/c/1f00b5ab992c122c51bc37662b3b4df59=
+63462f3
+>
+> Why? Minimally, it needs a vendor prefix and s/_/-/ as I commented.
 
-Use !E to replace the type of x == 0. This change is just to 
-simplify the code, no actual functional changes.
+OK. I misread your "maybe that's fine" as approval.
 
-Reported-by: Zeal Robot <zealci@zte.com.cn>
-Signed-off-by: ye xingchen <ye.xingchen@zte.com.cn>
----
- drivers/macintosh/adb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Pali can you send a fixup patch please?
 
-diff --git a/drivers/macintosh/adb.c b/drivers/macintosh/adb.c
-index 1bbb9ca08d40..368ab25db234 100644
---- a/drivers/macintosh/adb.c
-+++ b/drivers/macintosh/adb.c
-@@ -673,7 +673,7 @@ static int adb_open(struct inode *inode, struct file *file)
- 		goto out;
- 	}
- 	state = kmalloc(sizeof(struct adbdev_state), GFP_KERNEL);
--	if (state == 0) {
-+	if (!state) {
- 		ret = -ENOMEM;
- 		goto out;
- 	}
--- 
-2.25.1
+cheers
