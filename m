@@ -1,53 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0307586972
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Aug 2022 14:02:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED383586B04
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Aug 2022 14:43:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LxGw135Swz3053
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Aug 2022 22:02:41 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=sCAF76C1;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LxHpW6V1Cz3c9L
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Aug 2022 22:42:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=92.121.34.21; helo=inva021.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LxGvR1nl6z2xGH
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Aug 2022 22:02:11 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=sCAF76C1;
-	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LxGvL0zpbz4x1S;
-	Mon,  1 Aug 2022 22:02:06 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1659355326;
-	bh=Vq9IA/cFesGB5Mx5eyRC2AhqzrsVyJfSsyWUHa5qg+0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=sCAF76C144IP1WmVfpfc5HyzOoPBq81zl/iqcJOzdHUDkWmiP42uwSWmr4bcbFLNB
-	 WqRlWqo9ioHsmwEy/cma4AM54+79JmYSYs5de2zcbClAnZgbcDOkQnFNuk7RRR3imd
-	 TkSWiq2b1Gl2SYqo4Bp2HWphJUxzfe2WLQ7YsfFOLyKoPe5D/n2YGLoF0qppLtnJXV
-	 ZieIlRdjbPhIcMc3rkmX0Cs0FreJT5AeRje1njEAGRcfnD9WrBlHFHCw9Sl/wjZC+u
-	 mItj323vIbkhx4zRjkmeUGGruD9YPimQcv/0rjClGYY1qqLSZ/uJnEvmaGTFd3hdD/
-	 9BvqimsH/UhKQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 2/2] powerpc/64: poison __per_cpu_offset to catch
- use-before-init
-In-Reply-To: <20220711030653.150950-2-npiggin@gmail.com>
-References: <20220711030653.150950-1-npiggin@gmail.com>
- <20220711030653.150950-2-npiggin@gmail.com>
-Date: Mon, 01 Aug 2022 22:02:03 +1000
-Message-ID: <87bkt4b29w.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LxHp717Gkz2xG5
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Aug 2022 22:42:37 +1000 (AEST)
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 0228A20148F;
+	Mon,  1 Aug 2022 14:42:34 +0200 (CEST)
+Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id BEB9220130A;
+	Mon,  1 Aug 2022 14:42:33 +0200 (CEST)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 4C22A180031C;
+	Mon,  1 Aug 2022 20:42:32 +0800 (+08)
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: nicoleotsuka@gmail.com,
+	Xiubo.Lee@gmail.com,
+	festevam@gmail.com,
+	shengjiu.wang@gmail.com,
+	lgirdwood@gmail.com,
+	broonie@kernel.org,
+	perex@perex.cz,
+	tiwai@suse.com,
+	alsa-devel@alsa-project.org
+Subject: [PATCH] ASoC: imx-rpmsg: Support configure sysclk for codec dai
+Date: Mon,  1 Aug 2022 20:26:13 +0800
+Message-Id: <1659356773-8315-1-git-send-email-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,23 +50,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ganesh Goudar <ganeshgr@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nicholas Piggin <npiggin@gmail.com> writes:
-> If the boot CPU tries to access per-cpu data of other CPUs before
-> per cpu areas are set up, it will unexpectedly use offset 0.
->
-> Try to catch such accesses by poisoning the __per_cpu_offset array.
+Some codecs need to configure the sysclk even with slave
+mode, otherwise it may not work properly with some case.
 
-I wasn't sure about this.
+wm8960 is the one that need sysclk be configured, so add
+late_probe() to call the snd_soc_dai_set_sysclk() of codec
 
-On bare metal it's just an instant checkstop which is very user hostile.
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+---
+ sound/soc/fsl/imx-rpmsg.c | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
-I worry it's just going to cause unusual configurations/options to crash
-for folks, like eg. booting with page_poison=1 did a while back.
+diff --git a/sound/soc/fsl/imx-rpmsg.c b/sound/soc/fsl/imx-rpmsg.c
+index 2e117311e582..bef4bd997c98 100644
+--- a/sound/soc/fsl/imx-rpmsg.c
++++ b/sound/soc/fsl/imx-rpmsg.c
+@@ -19,6 +19,7 @@
+ struct imx_rpmsg {
+ 	struct snd_soc_dai_link dai;
+ 	struct snd_soc_card card;
++	unsigned int sysclk;
+ };
+ 
+ static const struct snd_soc_dapm_widget imx_rpmsg_dapm_widgets[] = {
+@@ -28,6 +29,27 @@ static const struct snd_soc_dapm_widget imx_rpmsg_dapm_widgets[] = {
+ 	SND_SOC_DAPM_MIC("Main MIC", NULL),
+ };
+ 
++static int imx_rpmsg_late_probe(struct snd_soc_card *card)
++{
++	struct imx_rpmsg *data = snd_soc_card_get_drvdata(card);
++	struct snd_soc_pcm_runtime *rtd = list_first_entry(&card->rtd_list,
++							   struct snd_soc_pcm_runtime, list);
++	struct snd_soc_dai *codec_dai = asoc_rtd_to_codec(rtd, 0);
++	struct device *dev = card->dev;
++	int ret;
++
++	if (!data->sysclk)
++		return 0;
++
++	ret = snd_soc_dai_set_sysclk(codec_dai, 0, data->sysclk, SND_SOC_CLOCK_IN);
++	if (ret && ret != -ENOTSUPP) {
++		dev_err(dev, "failed to set sysclk in %s\n", __func__);
++		return ret;
++	}
++
++	return 0;
++}
++
+ static int imx_rpmsg_probe(struct platform_device *pdev)
+ {
+ 	struct snd_soc_dai_link_component *dlc;
+@@ -72,12 +94,18 @@ static int imx_rpmsg_probe(struct platform_device *pdev)
+ 		data->dai.codecs->dai_name = "snd-soc-dummy-dai";
+ 		data->dai.codecs->name = "snd-soc-dummy";
+ 	} else {
++		struct clk *clk;
++
+ 		data->dai.codecs->of_node = args.np;
+ 		ret = snd_soc_get_dai_name(&args, &data->dai.codecs->dai_name);
+ 		if (ret) {
+ 			dev_err(&pdev->dev, "Unable to get codec_dai_name\n");
+ 			goto fail;
+ 		}
++
++		clk = devm_get_clk_from_child(&pdev->dev, args.np, NULL);
++		if (!IS_ERR(clk))
++			data->sysclk = clk_get_rate(clk);
+ 	}
+ 
+ 	data->dai.cpus->dai_name = dev_name(&rpmsg_pdev->dev);
+@@ -103,6 +131,7 @@ static int imx_rpmsg_probe(struct platform_device *pdev)
+ 	data->card.owner = THIS_MODULE;
+ 	data->card.dapm_widgets = imx_rpmsg_dapm_widgets;
+ 	data->card.num_dapm_widgets = ARRAY_SIZE(imx_rpmsg_dapm_widgets);
++	data->card.late_probe = imx_rpmsg_late_probe;
+ 	/*
+ 	 * Inoder to use common api to get card name and audio routing.
+ 	 * Use parent of_node for this device, revert it after finishing using
+-- 
+2.34.1
 
-Can we put it behind a debug option? Maybe CONFIG_DEBUG_VM ?
-
-cheers
