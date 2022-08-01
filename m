@@ -1,57 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11A2458611F
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 31 Jul 2022 21:56:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5579658628D
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Aug 2022 04:26:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LwsTW73L3z3cfS
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Aug 2022 05:56:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lx26k2pj1z3bXR
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Aug 2022 12:26:06 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=T9jGZEBn;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ftsjD0vs;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1035; helo=mail-pj1-x1035.google.com; envelope-from=cgel.zte@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=T9jGZEBn;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ftsjD0vs;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LwrZT0RzFz2xG8
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Aug 2022 05:16:00 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id AE46BB80DCD;
-	Sun, 31 Jul 2022 19:15:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 313F4C433C1;
-	Sun, 31 Jul 2022 19:15:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1659294954;
-	bh=wZPiOmb/8y3eGL/2h6/nS4c4cbBrC5BVAnNHwWdf0GU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=T9jGZEBnUXLfaa8X7PKLziwJ0/gtSigoQGvVgA14bEv3XngpVWIXW8iksAjIMqSav
-	 4WfoTj7ox8y9lP3t1dusu++r8cFwf/tf8PrbfwSPUAA07RjC+/uTe5h7uINWx6eP9m
-	 czT313x97GQnnWiUz9oSONS3V1P5iqus9MVAr+VbYyB6+YJ27X56fsTF2Kx1mSfdh5
-	 11eHqxXr4IDxrxksfrnc0A2YCNqabIB3vbZRK0GejO1qfVDJE7ezzxLQirWm2d6o1G
-	 EKnfF0rHw4RHjqtNTXRHDkEgKAx4AwjERSjAybhUArQGdxXnWUBriayLi9pLhmdpOO
-	 xx2EZNtgZDN7Q==
-Received: by pali.im (Postfix)
-	id 388B36E8; Sun, 31 Jul 2022 21:15:51 +0200 (CEST)
-Date: Sun, 31 Jul 2022 21:15:51 +0200
-From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To: Stephen Hemminger <stephen@networkplumber.org>
-Subject: Re: [RFC] Remove DECNET support from kernel
-Message-ID: <20220731191551.5m7ql3ysozi3owrl@pali>
-References: <20220731190646.97039-1-stephen@networkplumber.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lx2645wkmz2xGf
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Aug 2022 12:25:30 +1000 (AEST)
+Received: by mail-pj1-x1035.google.com with SMTP id x2-20020a17090ab00200b001f4da5cdc9cso3613288pjq.0
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 31 Jul 2022 19:25:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc;
+        bh=EVBoyRWZigkccBsvB4uh5xlF3s1rJUHBaQVZeXyiy68=;
+        b=ftsjD0vsSTdUSAtjICFc5VLtK0DuMYkrCipIK+3xEfRxuyD1Ft8rbDG6h7znNIGZEO
+         WoJEJhUexPRnABkElPICbvzjXRskN321/XNAg23r+B39jp80ez3MokGqdQQtJck9iZ4K
+         eDBDmVgYaewLCsen0tyj/lArm+ARV7m5VG2aIHI8EMdV0Uc3n+8AH0xeA/aGZgMCE5ZX
+         akdSIHJybpWhvQpgpUqrdqIkWcx8eSvPO/F/ZZlmP3zJwlAdQ0MD19iZhLapgnMd6/1J
+         jBibAJdg61wUlTdjjAhXqErmpEbjAkqwUYx7t/oPSCgh7YrB9JY3J2o5XKhWksFs0XNo
+         reFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc;
+        bh=EVBoyRWZigkccBsvB4uh5xlF3s1rJUHBaQVZeXyiy68=;
+        b=Nh6e6OC8Eqf4bSivnk6THqLiIQ+gTVnpoX3RP/EboLz8nJ/l8yIyk90logQmUzRAsD
+         ZYdDBrVBVFsDAWsdKW+b3HaN87l0/DkCNGGai3324UquslfhRGHM4/TZoJ/BwFIAw8vF
+         xMPir8oGoqrRzJ1OmNdKaoqLQ4q/iyOL6w9oJxCSN53X09UdLkPKTSyrdnvveCu81NZ6
+         FdxP4jDpQ1Q6o4p75FRJAEklnODsfVroug9Pmu8E6SVQnS2i/oYKDkyDSo3Du5HJkhEC
+         EJPg/RLAu3kdbseSVd4UjURaqMHXhRRzUOt9YOLRxWIUP7wfBxBFwnWSWdSKvgtmGEeq
+         Yi/A==
+X-Gm-Message-State: ACgBeo3bDUEGqmrnYnXDNtn2Cjh2PziDfOHFWdpjNSSZL4oaDcqiMnFz
+	cTVBgpB6zUW5IyFpHjA9AuQ=
+X-Google-Smtp-Source: AA6agR7aNyMg2Wo2Fkh9Ql/YgG/B+msUN4m1xsfJUklb5q1MqEExamxbZAzRou9ZYayAxJPO6Dikrw==
+X-Received: by 2002:a17:902:8502:b0:16c:c5c5:a198 with SMTP id bj2-20020a170902850200b0016cc5c5a198mr14528236plb.88.1659320725884;
+        Sun, 31 Jul 2022 19:25:25 -0700 (PDT)
+Received: from localhost.localdomain ([193.203.214.57])
+        by smtp.gmail.com with ESMTPSA id t3-20020a17090a950300b001f21a8f7f14sm7431098pjo.9.2022.07.31.19.25.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 31 Jul 2022 19:25:25 -0700 (PDT)
+From: cgel.zte@gmail.com
+X-Google-Original-From: ye.xingchen@zte.com.cn
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH linux-next] macintosh:adb:recordmcount:use !E in conditional statements
+Date: Mon,  1 Aug 2022 02:25:21 +0000
+Message-Id: <20220801022521.1594464-1-ye.xingchen@zte.com.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220731190646.97039-1-stephen@networkplumber.org>
-User-Agent: NeoMutt/20180716
-X-Mailman-Approved-At: Mon, 01 Aug 2022 05:55:30 +1000
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,25 +75,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "open list:NETFILTER" <netfilter-devel@vger.kernel.org>, "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>, Peter Zijlstra <peterz@infradead.org>, Nikolay Aleksandrov <razor@blackwall.org>, Petr Machata <petrm@nvidia.com>, Alexei Starovoitov <ast@kernel.org>, "open list:MIPS" <linux-mips@vger.kernel.org>, Wang Qing <wangqing@vivo.com>, Paul Gortmaker <paul.gortmaker@windriver.com>, Eric Dumazet <edumazet@google.com>, Paul Mackerras <paulus@samba.org>, Yajun Deng <yajun.deng@linux.dev>, Suma Hegde <suma.hegde@amd.com>, Paolo Abeni <pabeni@redhat.com>, Victor Erminpour <victor.erminpour@oracle.com>, Marc Kleine-Budde <mkl@pengutronix.de>, Soheil Hassas Yeganeh <soheil@google.com>, Menglong Dong <imagedong@tencent.com>, Xin Long <lucien.xin@gmail.com>, Chen Yu <yu.c.chen@intel.com>, Daniel Borkmann <daniel@iogearbox.net>, Jonathan Corbet <corbet@lwn.net>, Damien Le Moal <damien.lemoal@opensource.wdc.com>, Jozsef Kadlecsik <kadlec@netfilter.org>, Xie Yongji <xieyongji@bytedance.c
- om>, "open list:NETFILTER" <coreteam@netfilter.org>, Roopa Prabhu <roopa@nvidia.com>, Jakub Kicinski <kuba@kernel.org>, Borislav Petkov <bp@suse.de>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Pablo Neira Ayuso <pablo@netfilter.org>, Stefano Garzarella <sgarzare@redhat.com>, Jens Axboe <axboe@kernel.dk>, Kees Cook <keescook@chromium.org>, "Paul E. McKenney" <paulmck@kernel.org>, Benjamin Poirier <bpoirier@nvidia.com>, Yu Zhe <yuzhe@nfschina.com>, "GONG, Ruiqi" <gongruiqi1@huawei.com>, William Breathitt Gray <vilhelm.gray@gmail.com>, Scott Wood <oss@buserror.net>, Hans de Goede <hdegoede@redhat.com>, Kuniyuki Iwashima <kuniyu@amazon.com>, Shakeel Butt <shakeelb@google.com>, Alexandre Ghiti <alexandre.ghiti@canonical.com>, Yuwei Wang <wangyuweihx@gmail.com>, Juergen Gross <jgross@suse.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Akhmat Karakotov <hmukos@yandex-team.ru>, netdev@vger.kernel.org, Antoine Tenart <atenart@kernel.org>, Randy Dunlap <rdunlap@infradead.org>,
-  Florian Westphal <fw@strlen.de>, open list <linux-kernel@vger.kernel.org>, David Ahern <dsahern@kernel.org>, Chuck Lever <chuck.lever@oracle.com>, Arnd Bergmann <arnd@arndb.de>, Jeff Layton <jlayton@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, "open list:LINUX FOR POWERPC \(32-BIT AND 64-BIT\)" <linuxppc-dev@lists.ozlabs.org>, "David S. Miller" <davem@davemloft.net>
+Cc: ye xingchen <ye.xingchen@zte.com.cn>, Zeal Robot <zealci@zte.com.cn>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sunday 31 July 2022 12:06:10 Stephen Hemminger wrote:
-> diff --git a/Documentation/admin-guide/sysctl/net.rst b/Documentation/admin-guide/sysctl/net.rst
-> index 805f2281e000..299d9c3407d3 100644
-> --- a/Documentation/admin-guide/sysctl/net.rst
-> +++ b/Documentation/admin-guide/sysctl/net.rst
-> @@ -39,7 +39,6 @@ Table : Subdirectories in /proc/sys/net
->   802       E802 protocol         ax25       AX25
->   ethernet  Ethernet protocol     rose       X.25 PLP layer
->   ipv4      IP version 4          x25        X.25 protocol
-> - bridge    Bridging              decnet     DEC net
->   ipv6      IP version 6          tipc       TIPC
->   ========= =================== = ========== ==================
->  
+From: ye xingchen <ye.xingchen@zte.com.cn>
 
-Hello! You should remove only decnet from the list, not bridge.
-This is two columns table.
+Use !E to replace the type of x == 0. This change is just to 
+simplify the code, no actual functional changes.
+
+Reported-by: Zeal Robot <zealci@zte.com.cn>
+Signed-off-by: ye xingchen <ye.xingchen@zte.com.cn>
+---
+ drivers/macintosh/adb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/macintosh/adb.c b/drivers/macintosh/adb.c
+index 1bbb9ca08d40..368ab25db234 100644
+--- a/drivers/macintosh/adb.c
++++ b/drivers/macintosh/adb.c
+@@ -673,7 +673,7 @@ static int adb_open(struct inode *inode, struct file *file)
+ 		goto out;
+ 	}
+ 	state = kmalloc(sizeof(struct adbdev_state), GFP_KERNEL);
+-	if (state == 0) {
++	if (!state) {
+ 		ret = -ENOMEM;
+ 		goto out;
+ 	}
+-- 
+2.25.1
