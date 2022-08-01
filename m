@@ -1,56 +1,95 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4F6E5870E1
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Aug 2022 21:04:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B36585871A4
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Aug 2022 21:46:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LxSGY4hNJz3cCL
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Aug 2022 05:04:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LxTCT6TDJz3c1n
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Aug 2022 05:46:45 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BUlJw9kx;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cGQBHGG/;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nayna@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BUlJw9kx;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cGQBHGG/;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LxSF9530xz3c7K
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Aug 2022 05:03:09 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 06268611FE;
-	Mon,  1 Aug 2022 19:03:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BF74C433D7;
-	Mon,  1 Aug 2022 19:03:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1659380587;
-	bh=uJHMEQ/p9vxDrf88lSYBSMdt4WRsz6QhQJuyXjLLLfo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BUlJw9kxgj0ZowVNvEM7XpB08i66IlUZUW92AzhW1RYR7YV9lnfRdhqv63RCe8l4f
-	 6pJTl7gEfBZBet2Ekmv+Kgx7vdYvfnWi7qZk4PuxXUufQETqSalT2PxJOaGVJjei3C
-	 sJYdpH37G9FLGItTqEwXIuF5f9UN3pzGppd8R4+vRxglRrbxMc0phDTEbPD+RHO8Ae
-	 8Wy0B2ibcsKK0XoTTRzwoiI83QvJphCutd4gUyiu+1rFuFymi15PGXzDQZkuBP5rT5
-	 xbBnH95Jb9wX0Kt0pPN7zA+R6C9Nsx2KBtQ4nM6HIqGnrYFm16Mjyd9jLVYLjyY0bS
-	 8D7LWOFQYjsGg==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 2/7] powerpc/64s: Disable stack variable initialisation for prom_init
-Date: Mon,  1 Aug 2022 15:02:56 -0400
-Message-Id: <20220801190301.3819065-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220801190301.3819065-1-sashal@kernel.org>
-References: <20220801190301.3819065-1-sashal@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LxTBh1kktz2xRq
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Aug 2022 05:46:03 +1000 (AEST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 271JftBe029530;
+	Mon, 1 Aug 2022 19:45:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=iW79CqCDUqzydRd5v87euDMCXfRZtOiblsNH53VoKSs=;
+ b=cGQBHGG/kifoics0z4o9RRchxYvo8gNXA/p/m2fF25InUB69kdJpOWzqDc7DNSHqNf8u
+ tRDVmknZ5/413PFjS8+tAIqJLjwsgoH6KzYvw0bqWcKeuIwLe9AK0GC6nYn+nT977/f+
+ cxjU9dfmg62lpr2u6nJGnPfgQPuegLWtYUoqLIhNIDWb0Hh+RnFWNVK9zFsEDXo6OKnD
+ ecbukX2tXAZrWS5nioRKONUtM5Qz3QshESTYW3GAVJ8k+WxnSdfOGHt/oJXUMQXOdCzI
+ jx85FpNatxR4TWOLddIZvig+PSl5vT/PIefx+zfAoX8FXZBq/B9Xy05x/1tpNfJ95YUh yA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3hpn7bg2xs-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 01 Aug 2022 19:45:49 +0000
+Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 271JglXE003102;
+	Mon, 1 Aug 2022 19:45:49 GMT
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.11])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3hpn7bg2xf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 01 Aug 2022 19:45:49 +0000
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+	by ppma03dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 271Ja3pO027967;
+	Mon, 1 Aug 2022 19:45:48 GMT
+Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com [9.57.198.25])
+	by ppma03dal.us.ibm.com with ESMTP id 3hmv999awr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 01 Aug 2022 19:45:48 +0000
+Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com [9.57.199.111])
+	by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 271JjlgY64880976
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 1 Aug 2022 19:45:47 GMT
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3D810AC062;
+	Mon,  1 Aug 2022 19:45:47 +0000 (GMT)
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E3F35AC059;
+	Mon,  1 Aug 2022 19:45:45 +0000 (GMT)
+Received: from [9.211.133.43] (unknown [9.211.133.43])
+	by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
+	Mon,  1 Aug 2022 19:45:45 +0000 (GMT)
+Message-ID: <61ebf904-8ce1-eeac-888a-4040711e7903@linux.vnet.ibm.com>
+Date: Mon, 1 Aug 2022 15:45:45 -0400
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.0
+Subject: Re: [PATCH v3 1/2] lib: generic accessor functions for arch keystore
+Content-Language: en-US
+To: =?UTF-8?Q?Michal_Such=c3=a1nek?= <msuchanek@suse.de>
+References: <20220801123426.585801-1-gjoyce@linux.vnet.ibm.com>
+ <20220801123426.585801-2-gjoyce@linux.vnet.ibm.com>
+ <20220801134018.GY17705@kitsune.suse.cz>
+From: Nayna <nayna@linux.vnet.ibm.com>
+In-Reply-To: <20220801134018.GY17705@kitsune.suse.cz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: MZkIk_L72aOUv5iJ1rYAbAa2zfpPpVLU
+X-Proofpoint-ORIG-GUID: VvUDwBTybJDOcIEpe_2sH59i8Hjlz4zp
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-08-01_10,2022-08-01_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 clxscore=1011
+ suspectscore=0 mlxlogscore=999 spamscore=0 adultscore=0 mlxscore=0
+ phishscore=0 impostorscore=0 priorityscore=1501 malwarescore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2206140000 definitions=main-2208010096
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,57 +101,134 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, peterz@infradead.org, masahiroy@kernel.org, ast@kernel.org, npiggin@gmail.com, aneesh.kumar@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, Sudip Mukherjee <sudipm.mukherjee@gmail.com>, dja@axtens.net
+Cc: axboe@kernel.dk, Christophe Leroy <christophe.leroy@c-s.fr>, gjoyce@linux.vnet.ibm.com, nayna@linux.ibm.com, Nick Piggin <npiggin@gmail.com>, linux-block@vger.kernel.org, jonathan.derrick@linux.dev, brking@linux.vnet.ibm.com, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, gjoyce@ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit be640317a1d0b9cf42fedb2debc2887a7cfa38de ]
+On 8/1/22 09:40, Michal Suchánek wrote:
+> Hello,
+>
+> On Mon, Aug 01, 2022 at 07:34:25AM -0500, gjoyce@linux.vnet.ibm.com wrote:
+>> From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
+>>
+>> Generic kernel subsystems may rely on platform specific persistent
+>> KeyStore to store objects containing sensitive key material. In such case,
+>> they need to access architecture specific functions to perform read/write
+>> operations on these variables.
+>>
+>> Define the generic variable read/write prototypes to be implemented by
+>> architecture specific versions. The default(weak) implementations of
+>> these prototypes return -EOPNOTSUPP unless overridden by architecture
+>> versions.
+>>
+>> Signed-off-by: Greg Joyce <gjoyce@linux.vnet.ibm.com>
+>> ---
+>>   include/linux/arch_vars.h | 23 +++++++++++++++++++++++
+>>   lib/Makefile              |  2 +-
+>>   lib/arch_vars.c           | 25 +++++++++++++++++++++++++
+>>   3 files changed, 49 insertions(+), 1 deletion(-)
+>>   create mode 100644 include/linux/arch_vars.h
+>>   create mode 100644 lib/arch_vars.c
+>>
+>> diff --git a/include/linux/arch_vars.h b/include/linux/arch_vars.h
+>> new file mode 100644
+>> index 000000000000..9c280ff9432e
+>> --- /dev/null
+>> +++ b/include/linux/arch_vars.h
+>> @@ -0,0 +1,23 @@
+>> +/* SPDX-License-Identifier: GPL-2.0 */
+>> +/*
+>> + * Platform variable opearations.
+>> + *
+>> + * Copyright (C) 2022 IBM Corporation
+>> + *
+>> + * These are the accessor functions (read/write) for architecture specific
+>> + * variables. Specific architectures can provide overrides.
+>> + *
+>> + */
+>> +
+>> +#include <linux/kernel.h>
+>> +
+>> +enum arch_variable_type {
+>> +	ARCH_VAR_OPAL_KEY      = 0,     /* SED Opal Authentication Key */
+>> +	ARCH_VAR_OTHER         = 1,     /* Other type of variable */
+>> +	ARCH_VAR_MAX           = 1,     /* Maximum type value */
+>> +};
+>> +
+>> +int arch_read_variable(enum arch_variable_type type, char *varname,
+>> +		       void *varbuf, u_int *varlen);
+>> +int arch_write_variable(enum arch_variable_type type, char *varname,
+>> +			void *varbuf, u_int varlen);
+>> diff --git a/lib/Makefile b/lib/Makefile
+>> index f99bf61f8bbc..b90c4cb0dbbb 100644
+>> --- a/lib/Makefile
+>> +++ b/lib/Makefile
+>> @@ -48,7 +48,7 @@ obj-y += bcd.o sort.o parser.o debug_locks.o random32.o \
+>>   	 bsearch.o find_bit.o llist.o memweight.o kfifo.o \
+>>   	 percpu-refcount.o rhashtable.o \
+>>   	 once.o refcount.o usercopy.o errseq.o bucket_locks.o \
+>> -	 generic-radix-tree.o
+>> +	 generic-radix-tree.o arch_vars.o
+>>   obj-$(CONFIG_STRING_SELFTEST) += test_string.o
+>>   obj-y += string_helpers.o
+>>   obj-$(CONFIG_TEST_STRING_HELPERS) += test-string_helpers.o
+>> diff --git a/lib/arch_vars.c b/lib/arch_vars.c
+>> new file mode 100644
+>> index 000000000000..e6f16d7d09c1
+>> --- /dev/null
+>> +++ b/lib/arch_vars.c
+>> @@ -0,0 +1,25 @@
+>> +// SPDX-License-Identifier: GPL-2.0-only
+>> +/*
+>> + * Platform variable operations.
+>> + *
+>> + * Copyright (C) 2022 IBM Corporation
+>> + *
+>> + * These are the accessor functions (read/write) for architecture specific
+>> + * variables. Specific architectures can provide overrides.
+>> + *
+>> + */
+>> +
+>> +#include <linux/kernel.h>
+>> +#include <linux/arch_vars.h>
+>> +
+>> +int __weak arch_read_variable(enum arch_variable_type type, char *varname,
+>> +			      void *varbuf, u_int *varlen)
+>> +{
+>> +	return -EOPNOTSUPP;
+>> +}
+>> +
+>> +int __weak arch_write_variable(enum arch_variable_type type, char *varname,
+>> +			       void *varbuf, u_int varlen)
+>> +{
+>> +	return -EOPNOTSUPP;
+>> +}
+>> -- 
+> Doesn't EFI already have some variables?
+>
+> And even powernv?
+>
+> Shouldn't this generalize the already existing variables?
+>
+> Or move to powerpc and at least generalize the powerpc ones?
 
-With GCC 12 allmodconfig prom_init fails to build:
+Yes, EFI and PowerNV do have variables, but I am not exactly clear about 
+your reference to them in this context. What do you mean by generalize 
+already existing variables ?
 
-  Error: External symbol 'memset' referenced from prom_init.c
-  make[2]: *** [arch/powerpc/kernel/Makefile:204: arch/powerpc/kernel/prom_init_check] Error 1
+This interface is actually generalizing calls to access platform 
+specific keystores. It is explained in cover letter that this patch is 
+defining generic interface and these are default implementations which 
+needs to be overridden by arch specific versions.  For PowerVM PLPAR 
+Platform KeyStore, the arch specific version is implemented in Patch 2.
 
-The allmodconfig build enables KASAN, so all calls to memset in
-prom_init should be converted to __memset by the #ifdefs in
-asm/string.h, because prom_init must use the non-KASAN instrumented
-versions.
+Access to EFI variables should be implemented by EFI arch specific 
+interface and PowerNV will have to do the same if it needs to.
 
-The build failure happens because there's a call to memset that hasn't
-been caught by the pre-processor and converted to __memset. Typically
-that's because it's a memset generated by the compiler itself, and that
-is the case here.
+Hope it helps.
 
-With GCC 12, allmodconfig enables CONFIG_INIT_STACK_ALL_PATTERN, which
-causes the compiler to emit memset calls to initialise on-stack
-variables with a pattern.
+Thanks & Regards,
 
-Because prom_init is non-user-facing boot-time only code, as a
-workaround just disable stack variable initialisation to unbreak the
-build.
-
-Reported-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20220718134418.354114-1-mpe@ellerman.id.au
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/powerpc/kernel/Makefile | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
-index 376104c166fc..db2bdc4cec64 100644
---- a/arch/powerpc/kernel/Makefile
-+++ b/arch/powerpc/kernel/Makefile
-@@ -20,6 +20,7 @@ CFLAGS_prom.o += $(DISABLE_LATENT_ENTROPY_PLUGIN)
- CFLAGS_prom_init.o += -fno-stack-protector
- CFLAGS_prom_init.o += -DDISABLE_BRANCH_PROFILING
- CFLAGS_prom_init.o += -ffreestanding
-+CFLAGS_prom_init.o += $(call cc-option, -ftrivial-auto-var-init=uninitialized)
- 
- ifdef CONFIG_FUNCTION_TRACER
- # Do not trace early boot code
--- 
-2.35.1
+     - Nayna
 
