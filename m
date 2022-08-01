@@ -2,50 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E8B8586844
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Aug 2022 13:38:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0307586972
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Aug 2022 14:02:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LxGNC24wqz3bl6
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Aug 2022 21:38:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LxGw135Swz3053
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Aug 2022 22:02:41 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=oXSrEPe8;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=sCAF76C1;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LxGMY27Xzz2xRq
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Aug 2022 21:38:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LxGvR1nl6z2xGH
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Aug 2022 22:02:11 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=oXSrEPe8;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=sCAF76C1;
 	dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LxGMV6Ch9z4x1L;
-	Mon,  1 Aug 2022 21:37:58 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LxGvL0zpbz4x1S;
+	Mon,  1 Aug 2022 22:02:06 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1659353878;
-	bh=w12dusBQt5fyNiwiPfIJVhQfBDcNOiml2UvmkPRR2jE=;
-	h=From:To:Subject:Date:From;
-	b=oXSrEPe8SHxCJBMu2sa+ydm6ctqWZF0McVmw2l5cfFjh4JzL7xwy/Z3d6z/wm2Hsd
-	 erctqfNRpAF/2M9feKP0JkfrsxnHGNEm0dMNTVuIFPCH2TBObxeVqZ7HB6dF/OrHv9
-	 KrGimK+3U5NFpJRrk7sIWTcehil8Z7GJI5ria0Y5WJpO7GcP4JQBKcXPbZ92FcKay6
-	 2OjnZYz/Wnqm1lctDqhc8gc/fNdTvOcoCS9Cp4RaLhiz4SapUfUOuIeG+n++Xs1r7z
-	 zC55SgIx00hHNNlwpIISL3z7EfNwaCE6atM+uiX1bXjstIZOYJIVBVA45jaBJCJ2uk
-	 ZqszHykAbBY3A==
+	s=201909; t=1659355326;
+	bh=Vq9IA/cFesGB5Mx5eyRC2AhqzrsVyJfSsyWUHa5qg+0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=sCAF76C144IP1WmVfpfc5HyzOoPBq81zl/iqcJOzdHUDkWmiP42uwSWmr4bcbFLNB
+	 WqRlWqo9ioHsmwEy/cma4AM54+79JmYSYs5de2zcbClAnZgbcDOkQnFNuk7RRR3imd
+	 TkSWiq2b1Gl2SYqo4Bp2HWphJUxzfe2WLQ7YsfFOLyKoPe5D/n2YGLoF0qppLtnJXV
+	 ZieIlRdjbPhIcMc3rkmX0Cs0FreJT5AeRje1njEAGRcfnD9WrBlHFHCw9Sl/wjZC+u
+	 mItj323vIbkhx4zRjkmeUGGruD9YPimQcv/0rjClGYY1qqLSZ/uJnEvmaGTFd3hdD/
+	 9BvqimsH/UhKQ==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH] selftests/powerpc: Avoid GCC 12 uninitialised variable warning
-Date: Mon,  1 Aug 2022 21:37:46 +1000
-Message-Id: <20220801113746.802046-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.35.3
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 2/2] powerpc/64: poison __per_cpu_offset to catch
+ use-before-init
+In-Reply-To: <20220711030653.150950-2-npiggin@gmail.com>
+References: <20220711030653.150950-1-npiggin@gmail.com>
+ <20220711030653.150950-2-npiggin@gmail.com>
+Date: Mon, 01 Aug 2022 22:02:03 +1000
+Message-ID: <87bkt4b29w.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,36 +59,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Ganesh Goudar <ganeshgr@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-GCC 12 thinks that `actual` might be used uninitialised. It's not, the
-use is guarded by `bad_mmcr2` which is only set to true at the same
-point where `actual` is initialised.
+Nicholas Piggin <npiggin@gmail.com> writes:
+> If the boot CPU tries to access per-cpu data of other CPUs before
+> per cpu areas are set up, it will unexpectedly use offset 0.
+>
+> Try to catch such accesses by poisoning the __per_cpu_offset array.
 
-  cycles_with_mmcr2_test.c: In function ‘cycles_with_mmcr2’:
-  cycles_with_mmcr2_test.c:81:17: error: ‘actual’ may be used uninitialized [-Werror=maybe-uninitialized]
-     81 |                 printf("Bad MMCR2 value seen is 0x%lx\n", actual);
+I wasn't sure about this.
 
-Silence the warning by initialising `actual` to zero.
+On bare metal it's just an instant checkstop which is very user hostile.
 
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- tools/testing/selftests/powerpc/pmu/ebb/cycles_with_mmcr2_test.c | 1 +
- 1 file changed, 1 insertion(+)
+I worry it's just going to cause unusual configurations/options to crash
+for folks, like eg. booting with page_poison=1 did a while back.
 
-diff --git a/tools/testing/selftests/powerpc/pmu/ebb/cycles_with_mmcr2_test.c b/tools/testing/selftests/powerpc/pmu/ebb/cycles_with_mmcr2_test.c
-index 4b45a2e70f62..fc32187d483d 100644
---- a/tools/testing/selftests/powerpc/pmu/ebb/cycles_with_mmcr2_test.c
-+++ b/tools/testing/selftests/powerpc/pmu/ebb/cycles_with_mmcr2_test.c
-@@ -50,6 +50,7 @@ int cycles_with_mmcr2(void)
- 	expected[1] = MMCR2_EXPECTED_2;
- 	i = 0;
- 	bad_mmcr2 = false;
-+	actual = 0;
- 
- 	/* Make sure we loop until we take at least one EBB */
- 	while ((ebb_state.stats.ebb_count < 20 && !bad_mmcr2) ||
--- 
-2.35.3
+Can we put it behind a debug option? Maybe CONFIG_DEBUG_VM ?
 
+cheers
