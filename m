@@ -2,56 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E03E0588249
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Aug 2022 21:10:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5271D58841B
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Aug 2022 00:19:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ly4MS6GcJz3bYd
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Aug 2022 05:10:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ly8YS20n9z2xHM
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Aug 2022 08:19:40 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SAU3uYYY;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=gktGCgER;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.43; helo=mga05.intel.com; envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SAU3uYYY;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=gktGCgER;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ly4Ln1KHmz2xGq
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Aug 2022 05:10:09 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 0EBC361456;
-	Tue,  2 Aug 2022 19:10:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B6F1C433D6;
-	Tue,  2 Aug 2022 19:10:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1659467405;
-	bh=FjoeZzzk1IzB3OU/5rf9Bn7kBcKlBx8DdUOpNoI+29M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SAU3uYYYWc+Cvh90gsfebNVhmo0a903dG1YSM4Wmps4cLy6Ks5G2G5bDlwqqzpB7I
-	 +Zp03dcI8GcDKGyP6FHM5MnBy9j4OUBP/ZA1gNmNLz/zvK+ueJP8lOe9T8DYT4H80+
-	 vXyRDULeyI9aVi8PzR3soQ5peyjfVU/IT1eMdv9Vuk5LZDqapz/n6AnKW1hrOpa/Qp
-	 KVy1R7AT84C4ZZ9fiaacLJGNm5EiscZxq6d0IeJBZeGxacd1bhM9bAZapGO7eytmBk
-	 2H9lkgingWXOA7r4wtjeIBQo0I/VymM0GgzPLGK44Ke+HvQwPt7F6/buwLyyrZOL78
-	 Pdux2tg4v8yVg==
-Received: by pali.im (Postfix)
-	id 30CF7F81; Tue,  2 Aug 2022 21:10:02 +0200 (CEST)
-Date: Tue, 2 Aug 2022 21:10:02 +0200
-From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v1 1/3] powerpc: Fix eh field when calling lwarx on PPC32
-Message-ID: <20220802191002.h5pzq5goo34owqfv@pali>
-References: <a1176e19e627dd6a1b8d24c6c457a8ab874b7d12.1659430931.git.christophe.leroy@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ly8Xk36jtz2xGg
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Aug 2022 08:18:59 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1659478742; x=1691014742;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=46eujB+5/ILB4xpJ6ANIISZP2uck5Pj6UwNACvgbNjc=;
+  b=gktGCgER3dK21rJ4iOIYrqE68runBdxtrmWbiL7RJ+K8z3pcjqr/h6Tg
+   WyiJg/9WwZ4mTppk/h3mZMKG0hYEHjosV8TW3ZtgTSTm8x39N3So51l20
+   qMxt/ugZgZDqVmtEITkdtbHOyQk7WUm2luTwLhzEenIq/C542iXmZhIw0
+   8kPgHPyRh0I85k8GIt9J8uobnAQbF+THpyzgIUblFoP5vXaxbXIbIbZa2
+   uh88u87/eSn5tdaZF3NQCeTv1LWobCotbHlbgXHRHVSLuuocKxv/raIxV
+   xyEqNqnCOAqvyM04lLaX9dXm5ywb6PdSfFYbwN7oPCKmRIHBq58Ggtw79
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10427"; a="375831177"
+X-IronPort-AV: E=Sophos;i="5.93,212,1654585200"; 
+   d="scan'208";a="375831177"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Aug 2022 15:18:53 -0700
+X-IronPort-AV: E=Sophos;i="5.93,212,1654585200"; 
+   d="scan'208";a="692015304"
+Received: from lkeefe-mobl.amr.corp.intel.com (HELO [10.212.232.208]) ([10.212.232.208])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Aug 2022 15:18:53 -0700
+Message-ID: <6056c6cc-9861-9c29-8e36-48e0dd36c702@linux.intel.com>
+Date: Tue, 2 Aug 2022 15:18:53 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Firefox/91.0 Thunderbird/91.11.0
+Subject: Re: [PATCH v3] PCI/ERR: Use pcie_aer_is_native() to judge whether OS
+ owns AER
+Content-Language: en-US
+To: Zhuo Chen <chenzhuo.1@bytedance.com>
+References: <20220727035334.9997-1-chenzhuo.1@bytedance.com>
+ <b5c746db-f6a0-d89e-6db5-e4a206c9237a@linux.intel.com>
+ <cfd44d9c-453b-e498-2630-9057947cf3cd@bytedance.com>
+ <b54b068b-fe9a-8609-3e9f-170579affc27@bytedance.com>
+From: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <b54b068b-fe9a-8609-3e9f-170579affc27@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <a1176e19e627dd6a1b8d24c6c457a8ab874b7d12.1659430931.git.christophe.leroy@csgroup.eu>
-User-Agent: NeoMutt/20180716
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,101 +71,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: stable@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>
+Cc: jan.kiszka@siemens.com, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, lukas@wunner.de, oohall@gmail.com, stuart.w.hayes@gmail.com, bhelgaas@google.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tuesday 02 August 2022 11:02:36 Christophe Leroy wrote:
-> Commit 9401f4e46cf6 ("powerpc: Use lwarx/ldarx directly instead of
-> PPC_LWARX/LDARX macros") properly handled the eh field of lwarx
-> in asm/bitops.h but failed to clear it for PPC32 in
-> asm/simple_spinlock.h
-> 
-> So, do as in arch_atomic_try_cmpxchg_lock(), set it to 1 if PPC64
-> but set it to 0 if PPC32. For that use IS_ENABLED(CONFIG_PPC64) which
-> returns 1 when CONFIG_PPC64 is set and 0 otherwise.
-> 
-> Reported-by: Pali Rohár <pali@kernel.org>
-> Fixes: 9401f4e46cf6 ("powerpc: Use lwarx/ldarx directly instead of PPC_LWARX/LDARX macros")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-This fix works perfectly. Thanks!
 
-Tested-by: Pali Rohár <pali@kernel.org>
+On 7/27/22 2:37 AM, Zhuo Chen wrote:
+>>
+> Do you mean changing "if ((host->native_aer || pcie_ports_native) && aer)" into "if (pcie_aer_is_native(dev) && aer)" ?
+> I thought changing into "if (pcie_aer_is_native(dev))" before.
+> 
+> One another doubt. Not every pci device support aer. When dev->aer_cap is NULL and root->aer_cap is not NULL in aer_root_reset(), pcie_aer_is_native() will return false and OS cannot operate root register. It's different from just using "(host->native_aer || pcie_ports_native)".
+> 
+> Or we can change "if ((host->native_aer || pcie_ports_native) && aer)" into "if (pcie_aer_is_native(root))". But in this way, argument NULL pointer check should be added in pcie_aer_is_native().
 
-> ---
->  arch/powerpc/include/asm/simple_spinlock.h | 15 +++++++++------
->  1 file changed, 9 insertions(+), 6 deletions(-)
-> 
-> diff --git a/arch/powerpc/include/asm/simple_spinlock.h b/arch/powerpc/include/asm/simple_spinlock.h
-> index 7ae6aeef8464..5095c636a680 100644
-> --- a/arch/powerpc/include/asm/simple_spinlock.h
-> +++ b/arch/powerpc/include/asm/simple_spinlock.h
-> @@ -48,10 +48,11 @@ static inline int arch_spin_is_locked(arch_spinlock_t *lock)
->  static inline unsigned long __arch_spin_trylock(arch_spinlock_t *lock)
->  {
->  	unsigned long tmp, token;
-> +	unsigned int eh = IS_ENABLED(CONFIG_PPC64);
->  
->  	token = LOCK_TOKEN;
->  	__asm__ __volatile__(
-> -"1:	lwarx		%0,0,%2,1\n\
-> +"1:	lwarx		%0,0,%2,%3\n\
->  	cmpwi		0,%0,0\n\
->  	bne-		2f\n\
->  	stwcx.		%1,0,%2\n\
-> @@ -59,7 +60,7 @@ static inline unsigned long __arch_spin_trylock(arch_spinlock_t *lock)
->  	PPC_ACQUIRE_BARRIER
->  "2:"
->  	: "=&r" (tmp)
-> -	: "r" (token), "r" (&lock->slock)
-> +	: "r" (token), "r" (&lock->slock), "i" (eh)
->  	: "cr0", "memory");
->  
->  	return tmp;
-> @@ -156,9 +157,10 @@ static inline void arch_spin_unlock(arch_spinlock_t *lock)
->  static inline long __arch_read_trylock(arch_rwlock_t *rw)
->  {
->  	long tmp;
-> +	unsigned int eh = IS_ENABLED(CONFIG_PPC64);
->  
->  	__asm__ __volatile__(
-> -"1:	lwarx		%0,0,%1,1\n"
-> +"1:	lwarx		%0,0,%1,%2\n"
->  	__DO_SIGN_EXTEND
->  "	addic.		%0,%0,1\n\
->  	ble-		2f\n"
-> @@ -166,7 +168,7 @@ static inline long __arch_read_trylock(arch_rwlock_t *rw)
->  	bne-		1b\n"
->  	PPC_ACQUIRE_BARRIER
->  "2:"	: "=&r" (tmp)
-> -	: "r" (&rw->lock)
-> +	: "r" (&rw->lock), "i" (eh)
->  	: "cr0", "xer", "memory");
->  
->  	return tmp;
-> @@ -179,17 +181,18 @@ static inline long __arch_read_trylock(arch_rwlock_t *rw)
->  static inline long __arch_write_trylock(arch_rwlock_t *rw)
->  {
->  	long tmp, token;
-> +	unsigned int eh = IS_ENABLED(CONFIG_PPC64);
->  
->  	token = WRLOCK_TOKEN;
->  	__asm__ __volatile__(
-> -"1:	lwarx		%0,0,%2,1\n\
-> +"1:	lwarx		%0,0,%2,%3\n\
->  	cmpwi		0,%0,0\n\
->  	bne-		2f\n"
->  "	stwcx.		%1,0,%2\n\
->  	bne-		1b\n"
->  	PPC_ACQUIRE_BARRIER
->  "2:"	: "=&r" (tmp)
-> -	: "r" (token), "r" (&rw->lock)
-> +	: "r" (token), "r" (&rw->lock), "i" (eh)
->  	: "cr0", "memory");
->  
->  	return tmp;
-> -- 
-> 2.36.1
-> 
+Looking into it again, I think it is better to leave it as it is. Please ignore my comment.
+
+-- 
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
