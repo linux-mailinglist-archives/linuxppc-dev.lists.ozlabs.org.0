@@ -1,32 +1,32 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF02D587B4B
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Aug 2022 13:03:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D029587B51
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Aug 2022 13:04:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LxsYd4vw7z3f9G
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Aug 2022 21:03:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LxsZS21Zxz3fLY
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Aug 2022 21:04:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LxsXT6mbqz2xGd
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Aug 2022 21:02:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LxsXb3c0Kz3dst
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Aug 2022 21:02:55 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LxsXT61N1z4x1P;
-	Tue,  2 Aug 2022 21:02:49 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LxsXV2cdlz4x1T;
+	Tue,  2 Aug 2022 21:02:50 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org, Paul Mackerras <paulus@samba.org>, Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org, Jeremy Kerr <jk@ozlabs.org>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, Michael Ellerman <mpe@ellerman.id.au>, Miaoqian Lin <linmq006@gmail.com>
-In-Reply-To: <20220603121543.22884-1-linmq006@gmail.com>
-References: <20220603121543.22884-1-linmq006@gmail.com>
-Subject: Re: [PATCH] powerpc/spufs: Fix refcount leak in spufs_init_isolated_loader
-Message-Id: <165943814316.1061647.14222914569529823231.b4-ty@ellerman.id.au>
+To: linuxppc-dev@lists.ozlabs.org, Paul Mackerras <paulus@samba.org>, linux-kernel@vger.kernel.org, Nick Child <nick.child@ibm.com>, Christophe JAILLET <christophe.jaillet@wanadoo.fr>, Ammar Faizi <ammarfaizi2@gmail.com>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, Michael Ellerman <mpe@ellerman.id.au>, Miaoqian Lin <linmq006@gmail.com>, Cédric Le Goater <clg@kaod.org>, Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <20220605053225.56125-1-linmq006@gmail.com>
+References: <20220605053225.56125-1-linmq006@gmail.com>
+Subject: Re: [PATCH] powerpc/xive: Fix refcount leak in xive_get_max_prio
+Message-Id: <165943814388.1061647.13545644655699312974.b4-ty@ellerman.id.au>
 Date: Tue, 02 Aug 2022 21:02:23 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -45,8 +45,8 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 3 Jun 2022 16:15:42 +0400, Miaoqian Lin wrote:
-> of_find_node_by_path() returns remote device nodepointer with
+On Sun, 5 Jun 2022 09:32:23 +0400, Miaoqian Lin wrote:
+> of_find_node_by_path() returns a node pointer with
 > refcount incremented, we should use of_node_put() on it when done.
 > Add missing of_node_put() to avoid refcount leak.
 > 
@@ -54,7 +54,7 @@ On Fri, 3 Jun 2022 16:15:42 +0400, Miaoqian Lin wrote:
 
 Applied to powerpc/next.
 
-[1/1] powerpc/spufs: Fix refcount leak in spufs_init_isolated_loader
-      https://git.kernel.org/powerpc/c/6ac059dacffa8ab2f7798f20e4bd3333890c541c
+[1/1] powerpc/xive: Fix refcount leak in xive_get_max_prio
+      https://git.kernel.org/powerpc/c/255b650cbec6849443ce2e0cdd187fd5e61c218c
 
 cheers
