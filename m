@@ -1,68 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D484F5878FF
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Aug 2022 10:29:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53A8C58798B
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Aug 2022 11:04:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lxp7B0VTkz3cBj
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Aug 2022 18:29:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lxpvs1swcz3f0y
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Aug 2022 19:04:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=arndb.de (client-ip=212.227.17.10; helo=mout.kundenserver.de; envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.10])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lxp6n6fSkz2xHL
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Aug 2022 18:28:48 +1000 (AEST)
-Received: from mail-ej1-f52.google.com ([209.85.218.52]) by
- mrelayeu.kundenserver.de (mreue107 [213.165.67.113]) with ESMTPSA (Nemesis)
- id 1MCsDe-1o9xYx3txI-008omm for <linuxppc-dev@lists.ozlabs.org>; Tue, 02 Aug
- 2022 10:28:43 +0200
-Received: by mail-ej1-f52.google.com with SMTP id rq15so18624198ejc.10
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 02 Aug 2022 01:28:43 -0700 (PDT)
-X-Gm-Message-State: AJIora95crsI2qp8eTeZPN1o7AxuwasY3oUAMoyVjLDiG7ZaAVSZCS6J
-	OU1c08/hzS5Zj1bAuDSnRWuu/Rym26HEjTuR+5A=
-X-Google-Smtp-Source: AGRyM1sBgrA1UdcarZllVCRo42OFkmI9ilCikiNnJYMZ6OZZnO0W1vtMDHkMoPHBQLfE86HembsdnedooK68PmLoDLU=
-X-Received: by 2002:a17:906:dc89:b0:72f:1d4f:cea8 with SMTP id
- cs9-20020a170906dc8900b0072f1d4fcea8mr15821217ejc.654.1659428923342; Tue, 02
- Aug 2022 01:28:43 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lxptn73cjz3byL
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Aug 2022 19:03:29 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4LxptV28k5z9sj3;
+	Tue,  2 Aug 2022 11:03:14 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id mFijjTEZ17Rg; Tue,  2 Aug 2022 11:03:14 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4LxptS5BJ4z9sj8;
+	Tue,  2 Aug 2022 11:03:12 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id A07B88B778;
+	Tue,  2 Aug 2022 11:03:12 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id ewIY7rW_tppI; Tue,  2 Aug 2022 11:03:12 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.234.100])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 581DE8B774;
+	Tue,  2 Aug 2022 11:03:12 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 27292rda2260933
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 2 Aug 2022 11:02:53 +0200
+Received: (from chleroy@localhost)
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 27292qSv2260929;
+	Tue, 2 Aug 2022 11:02:52 +0200
+X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
+Subject: [PATCH v1 1/3] powerpc: Fix eh field when calling lwarx on PPC32
+Date: Tue,  2 Aug 2022 11:02:36 +0200
+Message-Id: <a1176e19e627dd6a1b8d24c6c457a8ab874b7d12.1659430931.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
-References: <20220722090929.mwhmxxdd7yioxqpz@pali> <6b227478-73b8-2a97-1c78-89570d928739@csgroup.eu>
- <20220723150702.jecerkhxhy65dgww@pali> <875yjld2oe.fsf@mpe.ellerman.id.au>
- <20220725125256.cg6su4d2ageylvp6@pali> <e2487668-b6d9-9ddb-1bb4-9f4d37fae1a7@csgroup.eu>
- <20220725201009.gwuchzswcqaxntrk@pali> <20220725215416.GV25951@gate.crashing.org>
- <20220726083406.tcjvny6d2di6q7ar@pali> <CAK8P3a2iM+RoySWEC2e0==rwBSVrZoRa8c4ADyFNB24JZM=hkw@mail.gmail.com>
- <20220726134405.GX25951@gate.crashing.org> <7e7feffd-1f22-83bf-1c74-4ec48d973514@csgroup.eu>
-In-Reply-To: <7e7feffd-1f22-83bf-1c74-4ec48d973514@csgroup.eu>
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Tue, 2 Aug 2022 10:28:27 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a0GFeWY-SuXsbP9z8CZa_8tL9FT+8Xx=VVUA2KhdTT6gA@mail.gmail.com>
-Message-ID: <CAK8P3a0GFeWY-SuXsbP9z8CZa_8tL9FT+8Xx=VVUA2KhdTT6gA@mail.gmail.com>
-Subject: Re: Regression: Linux v5.15+ does not boot on Freescale P2020
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:ad8Ijn6VbGNSK/kd5xSU4SARy8n8QaYfEMfoXpUet504y6P3wL9
- ADYnA7h7Pyn+jHo6+Er+0o+K4NjjJcIMEuCEAfUa0e5aJe2QBSxrITk+e+UEHXYl+OQ7EAe
- 6o2DkuoXl9gQGX1QfMHFY2MfVWZQDfwXxlTpmbtqVGchUwlZhTZ9FiQCmSxuG/OwFPOi6fn
- VHqWljE+bCkCtLKfX+lnA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:6UQ5kd2IJmg=:n0pkCGqy91BV9VKtd8RtDu
- 0w2CTfjyZT5jOZZdaoPgM5xRR/rrrWKfPU0JbKZOFyusoAup8+3ioztdy6MOmHpvgx1PQ746/
- UxQ8/S3TvaF1yPQuRMjdTAG/2f71iHCKlxabT2zhzWwtvwvYd6Rm0elsBb91mhmM0uR/Hm40T
- nAMNw8ciOEQVbv/qYMr8veloyTosKry50NLZppDyjtb4uAk3H9Zmkz4NNGxJXS3W7D/FgUps1
- 10dU8iP9OQsvyOEAcs7ZDmDVrW4zU8QEv52naVh0W8ZN4RJUAgwWMO7vImo/dUya7r1TedKYj
- Iw+NUT6UaFF3Vtxt6EUjVasFnuOeRQS4xP8MBzis4ioFiTyXFz4dMs03reY7r8hrxqlnP+93d
- MvngRHJmUixkjAgFby5gYXUfqaeLLCe6oyT1JHMV6D8CodkXqM3mdh8iSLoepVCdJibbEGGCQ
- n+o/z/Jaw1b2cwhpLS5ceuDuZUSU2aDdYkehm++6KXoqY3Mj57h+/lsertF4I8jFo6ss58dc+
- Fws39sEvoRQVGEDcviYUg0bxyPJmRSRRfZycOGC120OtFnnt+DlW+B/5GYyULdsNv0mICymqR
- 458gkzEElVEpFg79EJP9Ur19jvL3l8WJTyOSpr8iD1c6F3U5l1Fx3J7P1frs0FSAnQdDijlll
- uAsy1Le6qOPzGo/Yc6yGljC2aPaFnezXp+72qBa5vE6vGvHzl8mmqZuB6XI6X50yymy6dUOfY
- 2PI/MqyCuo6VCMNOEe3Vfl0+uIgV/U2yYqJDNXirx20x9+U6pK5hhHwmTDXZkCPE5Dd2+T+fr
- CY1TK336Y5gc3BOglEDx152vApkbE8PJ+OZnXHh4h9zv0yM4Inn6szW803/j3vMOD/ivh39YY
- XSVGIJTRB+A8f8SxNz2g==
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1659430956; l=2806; s=20211009; h=from:subject:message-id; bh=Ql4wH2IxjgIVSI9zEHRKkat7t+pnMzHPhHFvDfUw3aY=; b=yLvG/Xp8YRShPyqSNwp1ZA8JWW7AE6GXD+9lDgvJ52hzYqbFXAheDqpDEHDbA9IZLghG9vme77+P lbjSCEVvDtVntoszYgkRBpgLT8HG5GJboyaUz6g0xuzKne+rB396
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,35 +66,95 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Arnd Bergmann <arnd@arndb.de>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>, stable@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Aug 2, 2022 at 8:47 AM Christophe Leroy
-<christophe.leroy@csgroup.eu> wrote:
-> Le 26/07/2022 =C3=A0 15:44, Segher Boessenkool a =C3=A9crit :
-> > Whoops :-)  We need fixes for processor implementation bugs all the
-> > time of course, but this is a massive *design* bug.  I'm surprised this
-> > CPU still works as well as it does!
->
-> "Programming Environments Manual for 32-Bit Implementations of the
-> PowerPC=E2=84=A2 Architecture" =C2=A74.1.2.2.2 says: "Invalid forms resul=
-t when a bit
-> or operand is coded incorrectly, for example, or when a reserved bit
-> (shown as =E2=80=980=E2=80=99) is coded as =E2=80=981=E2=80=99."
-> >
-> > Also people using an SMP kernel on older cores should see the problem,
-> > no?  Or is that patched out?  Or does this use case never happen :-)
+Commit 9401f4e46cf6 ("powerpc: Use lwarx/ldarx directly instead of
+PPC_LWARX/LDARX macros") properly handled the eh field of lwarx
+in asm/bitops.h but failed to clear it for PPC32 in
+asm/simple_spinlock.h
 
-It doesn't get patched out, I think it's just not a combination that anyone
-tests on. The few defconfig files for SMP 85xx tend to be e500mc (which
-is incompatible with the older cores).
+So, do as in arch_atomic_try_cmpxchg_lock(), set it to 1 if PPC64
+but set it to 0 if PPC32. For that use IS_ENABLED(CONFIG_PPC64) which
+returns 1 when CONFIG_PPC64 is set and 0 otherwise.
 
-> Maybe unlike e500, older cores ignore the EH bit and don't mind when
-> it's set to 1 ?
+Reported-by: Pali Rohár <pali@kernel.org>
+Fixes: 9401f4e46cf6 ("powerpc: Use lwarx/ldarx directly instead of PPC_LWARX/LDARX macros")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/include/asm/simple_spinlock.h | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-Pretty sure this is the case. My interpretation is that Freescale and IBM
-just interpreted the spec differently at the time and were not even aware
-of the difference until it was too late.
+diff --git a/arch/powerpc/include/asm/simple_spinlock.h b/arch/powerpc/include/asm/simple_spinlock.h
+index 7ae6aeef8464..5095c636a680 100644
+--- a/arch/powerpc/include/asm/simple_spinlock.h
++++ b/arch/powerpc/include/asm/simple_spinlock.h
+@@ -48,10 +48,11 @@ static inline int arch_spin_is_locked(arch_spinlock_t *lock)
+ static inline unsigned long __arch_spin_trylock(arch_spinlock_t *lock)
+ {
+ 	unsigned long tmp, token;
++	unsigned int eh = IS_ENABLED(CONFIG_PPC64);
+ 
+ 	token = LOCK_TOKEN;
+ 	__asm__ __volatile__(
+-"1:	lwarx		%0,0,%2,1\n\
++"1:	lwarx		%0,0,%2,%3\n\
+ 	cmpwi		0,%0,0\n\
+ 	bne-		2f\n\
+ 	stwcx.		%1,0,%2\n\
+@@ -59,7 +60,7 @@ static inline unsigned long __arch_spin_trylock(arch_spinlock_t *lock)
+ 	PPC_ACQUIRE_BARRIER
+ "2:"
+ 	: "=&r" (tmp)
+-	: "r" (token), "r" (&lock->slock)
++	: "r" (token), "r" (&lock->slock), "i" (eh)
+ 	: "cr0", "memory");
+ 
+ 	return tmp;
+@@ -156,9 +157,10 @@ static inline void arch_spin_unlock(arch_spinlock_t *lock)
+ static inline long __arch_read_trylock(arch_rwlock_t *rw)
+ {
+ 	long tmp;
++	unsigned int eh = IS_ENABLED(CONFIG_PPC64);
+ 
+ 	__asm__ __volatile__(
+-"1:	lwarx		%0,0,%1,1\n"
++"1:	lwarx		%0,0,%1,%2\n"
+ 	__DO_SIGN_EXTEND
+ "	addic.		%0,%0,1\n\
+ 	ble-		2f\n"
+@@ -166,7 +168,7 @@ static inline long __arch_read_trylock(arch_rwlock_t *rw)
+ 	bne-		1b\n"
+ 	PPC_ACQUIRE_BARRIER
+ "2:"	: "=&r" (tmp)
+-	: "r" (&rw->lock)
++	: "r" (&rw->lock), "i" (eh)
+ 	: "cr0", "xer", "memory");
+ 
+ 	return tmp;
+@@ -179,17 +181,18 @@ static inline long __arch_read_trylock(arch_rwlock_t *rw)
+ static inline long __arch_write_trylock(arch_rwlock_t *rw)
+ {
+ 	long tmp, token;
++	unsigned int eh = IS_ENABLED(CONFIG_PPC64);
+ 
+ 	token = WRLOCK_TOKEN;
+ 	__asm__ __volatile__(
+-"1:	lwarx		%0,0,%2,1\n\
++"1:	lwarx		%0,0,%2,%3\n\
+ 	cmpwi		0,%0,0\n\
+ 	bne-		2f\n"
+ "	stwcx.		%1,0,%2\n\
+ 	bne-		1b\n"
+ 	PPC_ACQUIRE_BARRIER
+ "2:"	: "=&r" (tmp)
+-	: "r" (token), "r" (&rw->lock)
++	: "r" (token), "r" (&rw->lock), "i" (eh)
+ 	: "cr0", "memory");
+ 
+ 	return tmp;
+-- 
+2.36.1
 
-        Arnd
