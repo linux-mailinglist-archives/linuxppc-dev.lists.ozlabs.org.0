@@ -1,52 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E43DD587B6D
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Aug 2022 13:15:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8B4F587BA4
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Aug 2022 13:32:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LxsqQ5Yjcz3c4w
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Aug 2022 21:15:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LxtBC674Hz3bl4
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Aug 2022 21:32:03 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=OKnuybTA;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fRhktcCE;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lxspr1XKZz2xGf
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Aug 2022 21:15:16 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=OKnuybTA;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fRhktcCE;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Lxspq5mcDz4x1P;
-	Tue,  2 Aug 2022 21:15:15 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1659438916;
-	bh=QUd6PC2Si9JD8mo+JkMA5SafHzZ0731ZhqbEwcSaXJE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=OKnuybTApefW3m2zs2oGXCdRishriCtmSW4T2xlKbFjRyRvkkXlPz4XQu2L8O0DCn
-	 aAMr/nrOZLjsE29c2uHvHC8ohh9YbosZMpduZiwzQrkXSaQqOarrhv+vaHjEv8FU2V
-	 R+Y+UETZJBMYDbdAPusbFDS6hQTBrHAr2B2ztUdfd1a+jNIaugE/JLOE6dNaQirsVD
-	 P/eaFSzleC+g5qSR+FErP1Gj5mIQZlfEzAnq9DTuJyvesQ9//GGLJ3BaUWqpBAuSmv
-	 46gJgdOg4NdKl88iZknrEq8l30I2QPJEzqOb4kDEIwZirLlfq7EbJAiPubwuGNcEse
-	 mU0EriPxZC6yg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- linux-edac@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH] EDAC/ppc_4xx: Include required of_irq header directly
-In-Reply-To: <993f5a7da371458cb819b5f3f569073c78523b01.1659436180.git.christophe.leroy@csgroup.eu>
-References: <993f5a7da371458cb819b5f3f569073c78523b01.1659436180.git.christophe.leroy@csgroup.eu>
-Date: Tue, 02 Aug 2022 21:15:15 +1000
-Message-ID: <87zggmaocc.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lxt9b5y1Vz2xHQ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Aug 2022 21:31:31 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 21CAD611D9;
+	Tue,  2 Aug 2022 11:31:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58C69C433D6;
+	Tue,  2 Aug 2022 11:31:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1659439887;
+	bh=5eUBN1oDyS/mh3RPaTBceZGqPzXCSKcp0EmwAvpNVdY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fRhktcCEIU/R5xXhHYMsOW8l6lm+2oqyXtiEPoYdyOgKOerXzJZOUCb1KTAftfoeC
+	 oiFoWHQ7RVZGpT9VtwdAOciZHfKf4o7LkhcLgsXYo3OvVO7LThgnHdT0BSag1y/Vug
+	 FUxiBYqNqrLkTgVTRgVr8JPfIB55JkkIuXVjHY4TCvFudt+83PvQkEqyHys0KM1wlr
+	 BEUpbXP8FMr3NKq3KhMA4ajJRCeZv7y56iZChV1w9Pf++ELcvt51UyG18jDDNXRZPu
+	 Vdlyx/DdGBa+lbwCRX/XtVokUoJ787veXWSUpz8IfCXTioJMmIkalO8U3cYnKW8jpy
+	 j352tACN4TJfQ==
+Received: by pali.im (Postfix)
+	id 4AC66F81; Tue,  2 Aug 2022 13:31:24 +0200 (CEST)
+Date: Tue, 2 Aug 2022 13:31:24 +0200
+From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc/pci: Fix PHB numbering when using opal-phbid
+Message-ID: <20220802113124.ztbctjjz4sbo2mxo@pali>
+References: <20220802105723.1055178-1-mpe@ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220802105723.1055178-1-mpe@ellerman.id.au>
+User-Agent: NeoMutt/20180716
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,38 +63,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> Commit 4d5c5bad5193 ("powerpc: Remove asm/prom.h from asm/mpc52xx.h
-> and asm/pci.h") that cleans up powerpc's asm/prom.h leads to build
-> errors in ppc4xx_edac.c due to missing header. Include required
-> header directly to avoid the build failure.
->
-> Reported-by: kernel test robot <lkp@intel.com>
-> Fixes: 4d5c5bad5193 ("powerpc: Remove asm/prom.h from asm/mpc52xx.h and asm/pci.h")
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+On Tuesday 02 August 2022 20:57:23 Michael Ellerman wrote:
+> The recent change to the PHB numbering logic has a logic error in the
+> handling of "ibm,opal-phbid".
+> 
+> When an "ibm,opal-phbid" property is present, &prop is written to and
+> ret is set to zero.
+> 
+> The following call to of_alias_get_id() is skipped because ret == 0.
+> 
+> But then the if (ret >= 0) is true, and the body of that if statement
+> sets prop = ret which throws away the value that was just read from
+> "ibm,opal-phbid".
+
+Now I see, I wrote logic incorrectly.
+
+> Fix the logic by only doing the ret >= 0 check in the of_alias_get_id()
+> case.
+> 
+> Fixes: 0fe1e96fef0a ("powerpc/pci: Prefer PCI domain assignment via DT 'linux,pci-domain' and alias")
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+
+Your change should fix this issue, so:
+
+Reviewed-by: Pali Rohár <pali@kernel.org>
+
 > ---
->  drivers/edac/ppc4xx_edac.c | 1 +
->  1 file changed, 1 insertion(+)
-
-I'll pick this up as I merged the commit that broke it.
-
-cheers
-
-> diff --git a/drivers/edac/ppc4xx_edac.c b/drivers/edac/ppc4xx_edac.c
-> index 6793f6d799e7..0bc670778c99 100644
-> --- a/drivers/edac/ppc4xx_edac.c
-> +++ b/drivers/edac/ppc4xx_edac.c
-> @@ -11,6 +11,7 @@
->  #include <linux/mm.h>
->  #include <linux/module.h>
->  #include <linux/of_device.h>
-> +#include <linux/of_irq.h>
->  #include <linux/of_platform.h>
->  #include <linux/types.h>
->  
+>  arch/powerpc/kernel/pci-common.c | 10 ++++++----
+>  1 file changed, 6 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
+> index 8ce36aba42da..bdd3332200c5 100644
+> --- a/arch/powerpc/kernel/pci-common.c
+> +++ b/arch/powerpc/kernel/pci-common.c
+> @@ -91,11 +91,13 @@ static int get_phb_number(struct device_node *dn)
+>  	}
+>  	if (ret)
+>  		ret = of_property_read_u64(dn, "ibm,opal-phbid", &prop);
+> -	if (ret)
+> +
+> +	if (ret) {
+>  		ret = of_alias_get_id(dn, "pci");
+> -	if (ret >= 0) {
+> -		prop = ret;
+> -		ret = 0;
+> +		if (ret >= 0) {
+> +			prop = ret;
+> +			ret = 0;
+> +		}
+>  	}
+>  	if (ret) {
+>  		u32 prop_32;
 > -- 
-> 2.36.1
+> 2.35.3
+> 
