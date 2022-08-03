@@ -2,49 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F47A588767
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Aug 2022 08:33:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DFE6588876
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Aug 2022 10:07:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LyMVp3q1Sz3chb
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Aug 2022 16:33:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LyPbn3Zlkz3bXn
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Aug 2022 18:07:33 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Hjuww4pc;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=s7VdRk7u;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LyMV54vKKz3bnH
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Aug 2022 16:32:29 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Hjuww4pc;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=s7VdRk7u;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LyMV54BSMz4x1V;
-	Wed,  3 Aug 2022 16:32:29 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1659508349;
-	bh=FC2QLhoa0MaP65TetOS4RN4WmovBNmlkskF85I70Ajg=;
-	h=From:To:Subject:Date:From;
-	b=Hjuww4pcdqJMNQR9LxHkTPwZkFRMwQ/OsAL+UCSWQ9cLFlkuJRJ48MBFjywX03y/9
-	 VprppXo0YWBP3jTijCZbsy5tLruiYoO2d49P3VXuKmy9Ol8fyGVwfC7kPcz1Sygo8X
-	 VG7JZaNUQLW6ffF5tEjT5WLUenNnn2XCnlWg3ADISM54rjgVZ7tOj4m8C41pupqXPH
-	 EKJ2JMd0DFQ4cwsa6vFBI7IN4/s7ihC32gCtNmc2IYdFIYezJCM59j2B4AycHUM28D
-	 y93NDiJKCkwgNsbIMTqIvkIzCfQZmCbvI8hPHcK3yRvdDADMpZOSiG+I6+skW6EA2r
-	 M99XYCs8PqcdA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH] powerpc: Update ISA versions to mention e5500/e6500
-Date: Wed,  3 Aug 2022 16:32:28 +1000
-Message-Id: <20220803063228.1250030-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.35.3
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LyPb30V59z2xGS
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Aug 2022 18:06:54 +1000 (AEST)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2737CGgG005901;
+	Wed, 3 Aug 2022 08:06:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : subject :
+ to : cc : references : in-reply-to : mime-version : message-id :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=cD/HLOT1RCr5FLze4xYHuh82tvZmGK0k7ghWRsfmnMs=;
+ b=s7VdRk7u/VPgZX+3zRnI5WEBcaEr49EVC9har418PaXIytMUYVl3Z3KmOfxJIUmzvpnn
+ IZICnARoFMQEKx0JoHxtdFJMrWwRIYUrCUBwz/WICyuI+vdpRzGrV3ZZ6w9/oNpibLlJ
+ ubGoesRJ5TnWxAFJ1NucRrDjTfpbWQqvqgQQ5RLjd/vUyJoy+w2Egg0w2OetFbXcTSto
+ vLviHrZ1/Fs92jzv20jzTqK80h6LufA0ilQ7if22I32sGtQIdGJsulcRTz6qiGJCFUPn
+ S313xNuwe/0TzqQ6SxdZh9Ohihl/ERzr0/y/NRGcQE2UrUvlDG0CU2Ke6sWQVMgvcSDI EA== 
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3hqmdu1bx1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 03 Aug 2022 08:06:41 +0000
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+	by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 27386GEr017991;
+	Wed, 3 Aug 2022 08:06:39 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+	by ppma02fra.de.ibm.com with ESMTP id 3hmv98vgnq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 03 Aug 2022 08:06:39 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+	by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 27386qMM31326540
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 3 Aug 2022 08:06:52 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6E7DF42041;
+	Wed,  3 Aug 2022 08:06:36 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D93E84203F;
+	Wed,  3 Aug 2022 08:06:35 +0000 (GMT)
+Received: from localhost (unknown [9.43.94.156])
+	by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Wed,  3 Aug 2022 08:06:35 +0000 (GMT)
+Date: Wed, 03 Aug 2022 13:36:34 +0530
+From: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
+Subject: Re: [PATCH 2/3] powerpc/ppc-opcode: Define and use PPC_RAW_TRAP() and
+ PPC_RAW_TW()
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Christophe Leroy
+	<christophe.leroy@csgroup.eu>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Mackerras <paulus@samba.org>
+References: 	<b2d762191b095530789ac8b71b167c6740bb6aed.1657205708.git.christophe.leroy@csgroup.eu>
+	<52c7e522e56a38e3ff0363906919445920005a8f.1657205708.git.christophe.leroy@csgroup.eu>
+In-Reply-To: 	<52c7e522e56a38e3ff0363906919445920005a8f.1657205708.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: astroid/4d6b06ad (https://github.com/astroidmail/astroid)
+Message-Id: <1659513939.dxqqwb8mat.naveen@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 91osUYcya-v8DiiS0T0UMNk2AIlwaNzq
+X-Proofpoint-GUID: 91osUYcya-v8DiiS0T0UMNk2AIlwaNzq
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-08-03_03,2022-08-02_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 malwarescore=0
+ adultscore=0 suspectscore=0 phishscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=898 lowpriorityscore=0 spamscore=0 bulkscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2206140000 definitions=main-2208030037
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,57 +96,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add the NXP (nee Freescale) e5500 and e6500 to the ISA versions
-documentation.
+Christophe Leroy wrote:
+> Add and use PPC_RAW_TRAP() instead of opencoding.
+>=20
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> ---
+>  arch/powerpc/include/asm/ppc-opcode.h | 2 ++
+>  arch/powerpc/include/asm/probes.h     | 3 ++-
+>  arch/powerpc/xmon/xmon.c              | 2 +-
+>  3 files changed, 5 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/arch/powerpc/include/asm/ppc-opcode.h b/arch/powerpc/include=
+/asm/ppc-opcode.h
+> index 89beabf5325c..5527a955fb4a 100644
+> --- a/arch/powerpc/include/asm/ppc-opcode.h
+> +++ b/arch/powerpc/include/asm/ppc-opcode.h
+> @@ -581,6 +581,8 @@
+> =20
+>  #define PPC_RAW_BRANCH(offset)		(0x48000000 | PPC_LI(offset))
+>  #define PPC_RAW_BL(offset)		(0x48000001 | PPC_LI(offset))
+> +#define PPC_RAW_TW(t0, a, b)		(0x7f000008 | ___PPC_RS(t0) | ___PPC_RA(a)=
+ | ___PPC_RB(b))
 
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- Documentation/powerpc/isa-versions.rst | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Shouldn't that be 0x7c000008 ?
 
-diff --git a/Documentation/powerpc/isa-versions.rst b/Documentation/powerpc/isa-versions.rst
-index dfcb1097dce4..5592b8899a48 100644
---- a/Documentation/powerpc/isa-versions.rst
-+++ b/Documentation/powerpc/isa-versions.rst
-@@ -10,6 +10,8 @@ CPU       Architecture version
- Power10   Power ISA v3.1
- Power9    Power ISA v3.0B
- Power8    Power ISA v2.07
-+e6500     Power ISA v2.06 with some exceptions
-+e5500     Power ISA v2.06 with some exceptions, no Altivec
- Power7    Power ISA v2.06
- Power6    Power ISA v2.05
- PA6T      Power ISA v2.04
-@@ -36,6 +38,8 @@ CPU        VMX (aka. Altivec)
- Power10    Yes
- Power9     Yes
- Power8     Yes
-+e6500      Yes
-+e5500      No
- Power7     Yes
- Power6     Yes
- PA6T       Yes
-@@ -52,6 +56,8 @@ CPU        VSX
- Power10    Yes
- Power9     Yes
- Power8     Yes
-+e6500      No
-+e5500      No
- Power7     Yes
- Power6     No
- PA6T       No
-@@ -68,6 +74,8 @@ CPU        Transactional Memory
- Power10    No  (* see Power ISA v3.1, "Appendix A. Notes on the Removal of Transactional Memory from the Architecture")
- Power9     Yes (* see transactional_memory.txt)
- Power8     Yes
-+e6500      No
-+e5500      No
- Power7     No
- Power6     No
- PA6T       No
--- 
-2.35.3
+- Naveen
 
+
+> +#define PPC_RAW_TRAP()			PPC_RAW_TW(31, 0, 0)
+> =20
+>  /* Deal with instructions that older assemblers aren't aware of */
+>  #define	PPC_BCCTR_FLUSH		stringify_in_c(.long PPC_INST_BCCTR_FLUSH)
+> diff --git a/arch/powerpc/include/asm/probes.h b/arch/powerpc/include/asm=
+/probes.h
+> index 00634e3145e7..e77a2ed7d938 100644
+> --- a/arch/powerpc/include/asm/probes.h
+> +++ b/arch/powerpc/include/asm/probes.h
+> @@ -9,8 +9,9 @@
+>   */
+>  #include <linux/types.h>
+>  #include <asm/disassemble.h>
+> +#include <asm/ppc-opcode.h>
+> =20
+> -#define BREAKPOINT_INSTRUCTION	0x7fe00008	/* trap */
+> +#define BREAKPOINT_INSTRUCTION	PPC_RAW_TRAP()	/* trap */
+> =20
+>  /* Trap definitions per ISA */
+>  #define IS_TW(instr)		(((instr) & 0xfc0007fe) =3D=3D 0x7c000008)
+> diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
+> index f80c714f1d49..26ef3388c24c 100644
+> --- a/arch/powerpc/xmon/xmon.c
+> +++ b/arch/powerpc/xmon/xmon.c
+> @@ -116,7 +116,7 @@ struct bpt {
+>  static struct bpt bpts[NBPTS];
+>  static struct bpt dabr[HBP_NUM_MAX];
+>  static struct bpt *iabr;
+> -static unsigned bpinstr =3D 0x7fe00008;	/* trap */
+> +static unsigned int bpinstr =3D PPC_RAW_TRAP();
+> =20
+>  #define BP_NUM(bp)	((bp) - bpts + 1)
+> =20
+> --=20
+> 2.36.1
+>=20
+>=20
+>=20
