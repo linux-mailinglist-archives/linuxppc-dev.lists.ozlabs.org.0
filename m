@@ -2,89 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DFE6588876
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Aug 2022 10:07:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B00055888F2
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Aug 2022 10:58:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LyPbn3Zlkz3bXn
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Aug 2022 18:07:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LyQk94Z6zz3bc5
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Aug 2022 18:58:09 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=s7VdRk7u;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=AAXrNqkr;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=s7VdRk7u;
-	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LyPb30V59z2xGS
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Aug 2022 18:06:54 +1000 (AEST)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2737CGgG005901;
-	Wed, 3 Aug 2022 08:06:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : subject :
- to : cc : references : in-reply-to : mime-version : message-id :
- content-type : content-transfer-encoding; s=pp1;
- bh=cD/HLOT1RCr5FLze4xYHuh82tvZmGK0k7ghWRsfmnMs=;
- b=s7VdRk7u/VPgZX+3zRnI5WEBcaEr49EVC9har418PaXIytMUYVl3Z3KmOfxJIUmzvpnn
- IZICnARoFMQEKx0JoHxtdFJMrWwRIYUrCUBwz/WICyuI+vdpRzGrV3ZZ6w9/oNpibLlJ
- ubGoesRJ5TnWxAFJ1NucRrDjTfpbWQqvqgQQ5RLjd/vUyJoy+w2Egg0w2OetFbXcTSto
- vLviHrZ1/Fs92jzv20jzTqK80h6LufA0ilQ7if22I32sGtQIdGJsulcRTz6qiGJCFUPn
- S313xNuwe/0TzqQ6SxdZh9Ohihl/ERzr0/y/NRGcQE2UrUvlDG0CU2Ke6sWQVMgvcSDI EA== 
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3hqmdu1bx1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 03 Aug 2022 08:06:41 +0000
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
-	by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 27386GEr017991;
-	Wed, 3 Aug 2022 08:06:39 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
-	by ppma02fra.de.ibm.com with ESMTP id 3hmv98vgnq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 03 Aug 2022 08:06:39 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
-	by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 27386qMM31326540
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 3 Aug 2022 08:06:52 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6E7DF42041;
-	Wed,  3 Aug 2022 08:06:36 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D93E84203F;
-	Wed,  3 Aug 2022 08:06:35 +0000 (GMT)
-Received: from localhost (unknown [9.43.94.156])
-	by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Wed,  3 Aug 2022 08:06:35 +0000 (GMT)
-Date: Wed, 03 Aug 2022 13:36:34 +0530
-From: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
-Subject: Re: [PATCH 2/3] powerpc/ppc-opcode: Define and use PPC_RAW_TRAP() and
- PPC_RAW_TW()
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Christophe Leroy
-	<christophe.leroy@csgroup.eu>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>
-References: 	<b2d762191b095530789ac8b71b167c6740bb6aed.1657205708.git.christophe.leroy@csgroup.eu>
-	<52c7e522e56a38e3ff0363906919445920005a8f.1657205708.git.christophe.leroy@csgroup.eu>
-In-Reply-To: 	<52c7e522e56a38e3ff0363906919445920005a8f.1657205708.git.christophe.leroy@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LyQjY2psRz2xVt
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Aug 2022 18:57:37 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=AAXrNqkr;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LyQjY1hYpz4wgv;
+	Wed,  3 Aug 2022 18:57:37 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1659517057;
+	bh=k0W4ga7i71gmca1FEFWj49p6usSXkI5cZ7818QrvuP8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=AAXrNqkraydMcwbabSegJJl4BlL9VNTNMJuNDhsYgsZzhgqF+XSIDSxtTDvN/2FFW
+	 0PoMOlVkYH1NPPgmHHUNhIjeI+feM/2N8C8qNRTH8X4rJHmrKSB1wtWe/C/S0k6uNI
+	 bjjju0Alo8wcwItyoYQI+FWaAGcHKbiTSUr+0Npr5pZcDIH617ko1fTrg/lbKKWX9k
+	 s0d3anRaYSNJNCqFA5iyZfLpGjCLQyn75CM8CvNyIAZwPZ7HZzESMpkabzAoYOMsWq
+	 cYhugZeCqJ1th7LLbtQtoQxG3V6cQJ5Z7idBNNTMxbHwWMRySVyhyCJiMZjb1DvXix
+	 eBqz+WtHKxyyw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 1/2] powerpc/64s: POWER9 DD2.3 CPU feature flag fixes
+In-Reply-To: <20210726031730.729934-1-npiggin@gmail.com>
+References: <20210726031730.729934-1-npiggin@gmail.com>
+Date: Wed, 03 Aug 2022 18:57:32 +1000
+Message-ID: <87r11xaemb.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-User-Agent: astroid/4d6b06ad (https://github.com/astroidmail/astroid)
-Message-Id: <1659513939.dxqqwb8mat.naveen@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 91osUYcya-v8DiiS0T0UMNk2AIlwaNzq
-X-Proofpoint-GUID: 91osUYcya-v8DiiS0T0UMNk2AIlwaNzq
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-08-03_03,2022-08-02_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 malwarescore=0
- adultscore=0 suspectscore=0 phishscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=898 lowpriorityscore=0 spamscore=0 bulkscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2206140000 definitions=main-2208030037
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,72 +57,112 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy wrote:
-> Add and use PPC_RAW_TRAP() instead of opencoding.
->=20
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Nicholas Piggin <npiggin@gmail.com> writes:
+> DD2.3 missed out on getting its feature flag bits.
+>
+> This meant when booting with dt-cpu-ftrs, CPU_FTR_P9_TM_HV_ASSIST is
+> missing (unless the firmware contains it, which mine does not seem to).
+> And when booting without, CPU_FTR_P9_TM_XER_SO_BUG is set.
+>
+> In practice this doesn't make any difference to pseries guests, only
+> powernv.
+>
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->  arch/powerpc/include/asm/ppc-opcode.h | 2 ++
->  arch/powerpc/include/asm/probes.h     | 3 ++-
->  arch/powerpc/xmon/xmon.c              | 2 +-
->  3 files changed, 5 insertions(+), 2 deletions(-)
->=20
-> diff --git a/arch/powerpc/include/asm/ppc-opcode.h b/arch/powerpc/include=
-/asm/ppc-opcode.h
-> index 89beabf5325c..5527a955fb4a 100644
-> --- a/arch/powerpc/include/asm/ppc-opcode.h
-> +++ b/arch/powerpc/include/asm/ppc-opcode.h
-> @@ -581,6 +581,8 @@
-> =20
->  #define PPC_RAW_BRANCH(offset)		(0x48000000 | PPC_LI(offset))
->  #define PPC_RAW_BL(offset)		(0x48000001 | PPC_LI(offset))
-> +#define PPC_RAW_TW(t0, a, b)		(0x7f000008 | ___PPC_RS(t0) | ___PPC_RA(a)=
- | ___PPC_RB(b))
+>  arch/powerpc/include/asm/cputable.h |  2 ++
+>  arch/powerpc/kernel/cputable.c      | 22 ++++++++++++++++++++--
+>  arch/powerpc/kernel/dt_cpu_ftrs.c   | 14 +++++---------
+>  3 files changed, 27 insertions(+), 11 deletions(-)
+>
+> diff --git a/arch/powerpc/include/asm/cputable.h b/arch/powerpc/include/asm/cputable.h
+> index e85c849214a2..46bae9624784 100644
+> --- a/arch/powerpc/include/asm/cputable.h
+> +++ b/arch/powerpc/include/asm/cputable.h
+> @@ -440,6 +440,8 @@ static inline void cpu_feature_keys_init(void) { }
+>  #define CPU_FTRS_POWER9_DD2_2 (CPU_FTRS_POWER9 | CPU_FTR_POWER9_DD2_1 | \
+>  			       CPU_FTR_P9_TM_HV_ASSIST | \
+>  			       CPU_FTR_P9_TM_XER_SO_BUG)
+> +#define CPU_FTRS_POWER9_DD2_3 (CPU_FTRS_POWER9 | CPU_FTR_POWER9_DD2_1 | \
+> +			       CPU_FTR_P9_TM_HV_ASSIST)
+>  #define CPU_FTRS_POWER10 (CPU_FTR_LWSYNC | \
+>  	    CPU_FTR_PPCAS_ARCH_V2 | CPU_FTR_CTRL | CPU_FTR_ARCH_206 |\
+>  	    CPU_FTR_MMCRA | CPU_FTR_SMT | \
+> diff --git a/arch/powerpc/kernel/cputable.c b/arch/powerpc/kernel/cputable.c
+> index ae0fdef0ac11..9ab97d1fd5a2 100644
+> --- a/arch/powerpc/kernel/cputable.c
+> +++ b/arch/powerpc/kernel/cputable.c
+> @@ -487,11 +487,29 @@ static struct cpu_spec __initdata cpu_specs[] = {
+>  		.machine_check_early	= __machine_check_early_realmode_p9,
+>  		.platform		= "power9",
+>  	},
+> -	{	/* Power9 DD2.2 or later */
+> +	{	/* Power9 DD 2.2 */
+> +		.pvr_mask		= 0xffffefff,
+> +		.pvr_value		= 0x004e0202,
+> +		.cpu_name		= "POWER9 (raw)",
+> +		.cpu_features		= CPU_FTRS_POWER9_DD2_2,
+> +		.cpu_user_features	= COMMON_USER_POWER9,
+> +		.cpu_user_features2	= COMMON_USER2_POWER9,
+> +		.mmu_features		= MMU_FTRS_POWER9,
+> +		.icache_bsize		= 128,
+> +		.dcache_bsize		= 128,
+> +		.num_pmcs		= 6,
+> +		.pmc_type		= PPC_PMC_IBM,
+> +		.oprofile_cpu_type	= "ppc64/power9",
+> +		.cpu_setup		= __setup_cpu_power9,
+> +		.cpu_restore		= __restore_cpu_power9,
+> +		.machine_check_early	= __machine_check_early_realmode_p9,
+> +		.platform		= "power9",
+> +	},
+> +	{	/* Power9 DD 2.3 or later */
+>  		.pvr_mask		= 0xffff0000,
+>  		.pvr_value		= 0x004e0000,
+>  		.cpu_name		= "POWER9 (raw)",
+> -		.cpu_features		= CPU_FTRS_POWER9_DD2_2,
+> +		.cpu_features		= CPU_FTRS_POWER9_DD2_3,
+>  		.cpu_user_features	= COMMON_USER_POWER9,
+>  		.cpu_user_features2	= COMMON_USER2_POWER9,
+>  		.mmu_features		= MMU_FTRS_POWER9,
+> diff --git a/arch/powerpc/kernel/dt_cpu_ftrs.c b/arch/powerpc/kernel/dt_cpu_ftrs.c
+> index 358aee7c2d79..af95f337e54b 100644
+> --- a/arch/powerpc/kernel/dt_cpu_ftrs.c
+> +++ b/arch/powerpc/kernel/dt_cpu_ftrs.c
+> @@ -764,18 +764,14 @@ static __init void cpufeatures_cpu_quirks(void)
+>  	 * Not all quirks can be derived from the cpufeatures device tree.
+>  	 */
+>  	if ((version & 0xffffefff) == 0x004e0200) {
+> -		/* DD2.0 has no feature flag */
+> -		cur_cpu_spec->cpu_features |= CPU_FTR_P9_RADIX_PREFETCH_BUG;
+> +		cur_cpu_spec->cpu_features |= CPU_FTRS_POWER9_DD2_0;
+>  	} else if ((version & 0xffffefff) == 0x004e0201) {
+> -		cur_cpu_spec->cpu_features |= CPU_FTR_POWER9_DD2_1;
+> -		cur_cpu_spec->cpu_features |= CPU_FTR_P9_RADIX_PREFETCH_BUG;
+> +		cur_cpu_spec->cpu_features |= CPU_FTRS_POWER9_DD2_1;
+>  	} else if ((version & 0xffffefff) == 0x004e0202) {
+> -		cur_cpu_spec->cpu_features |= CPU_FTR_P9_TM_HV_ASSIST;
+> -		cur_cpu_spec->cpu_features |= CPU_FTR_P9_TM_XER_SO_BUG;
+> -		cur_cpu_spec->cpu_features |= CPU_FTR_POWER9_DD2_1;
+> +		cur_cpu_spec->cpu_features |= CPU_FTRS_POWER9_DD2_2;
+>  	} else if ((version & 0xffff0000) == 0x004e0000) {
+> -		/* DD2.1 and up have DD2_1 */
+> -		cur_cpu_spec->cpu_features |= CPU_FTR_POWER9_DD2_1;
+> +		/* DD2.3 and up */
+> +		cur_cpu_spec->cpu_features |= CPU_FTRS_POWER9_DD2_3;
+>  	}
 
-Shouldn't that be 0x7c000008 ?
+As we discussed on slack, this part is wrong.
 
-- Naveen
+Or'ing in the full CPU_FTRS_POWER9_DDx mask sets bits that may have been
+turned off, or never enabled, by the device tree CPU features.
 
+In particular it causes CPU_FTR_TM to be turned on (from
+CPU_FTRS_POWER9), even though the machine may not have TM enabled.
 
-> +#define PPC_RAW_TRAP()			PPC_RAW_TW(31, 0, 0)
-> =20
->  /* Deal with instructions that older assemblers aren't aware of */
->  #define	PPC_BCCTR_FLUSH		stringify_in_c(.long PPC_INST_BCCTR_FLUSH)
-> diff --git a/arch/powerpc/include/asm/probes.h b/arch/powerpc/include/asm=
-/probes.h
-> index 00634e3145e7..e77a2ed7d938 100644
-> --- a/arch/powerpc/include/asm/probes.h
-> +++ b/arch/powerpc/include/asm/probes.h
-> @@ -9,8 +9,9 @@
->   */
->  #include <linux/types.h>
->  #include <asm/disassemble.h>
-> +#include <asm/ppc-opcode.h>
-> =20
-> -#define BREAKPOINT_INSTRUCTION	0x7fe00008	/* trap */
-> +#define BREAKPOINT_INSTRUCTION	PPC_RAW_TRAP()	/* trap */
-> =20
->  /* Trap definitions per ISA */
->  #define IS_TW(instr)		(((instr) & 0xfc0007fe) =3D=3D 0x7c000008)
-> diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-> index f80c714f1d49..26ef3388c24c 100644
-> --- a/arch/powerpc/xmon/xmon.c
-> +++ b/arch/powerpc/xmon/xmon.c
-> @@ -116,7 +116,7 @@ struct bpt {
->  static struct bpt bpts[NBPTS];
->  static struct bpt dabr[HBP_NUM_MAX];
->  static struct bpt *iabr;
-> -static unsigned bpinstr =3D 0x7fe00008;	/* trap */
-> +static unsigned int bpinstr =3D PPC_RAW_TRAP();
-> =20
->  #define BP_NUM(bp)	((bp) - bpts + 1)
-> =20
-> --=20
-> 2.36.1
->=20
->=20
->=20
+We can probably just drop the dt_cpu_ftrs.c change, but if you don't
+mind I'll get you to test that and resubmit the series.
+
+cheers
