@@ -1,58 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29AF158A31B
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Aug 2022 00:12:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C80D658A31C
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Aug 2022 00:12:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LzNHm6kN5z3fGd
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Aug 2022 08:12:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LzNJY58rmz3fL4
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Aug 2022 08:12:45 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=KactuDJK;
+	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=Yofo/F+l;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=seco.com (client-ip=40.107.13.77; helo=eur01-he1-obe.outbound.protection.outlook.com; envelope-from=sean.anderson@seco.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=seco.com (client-ip=40.107.2.72; helo=eur02-ve1-obe.outbound.protection.outlook.com; envelope-from=sean.anderson@seco.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=KactuDJK;
+	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=Yofo/F+l;
 	dkim-atps=neutral
-Received: from EUR01-HE1-obe.outbound.protection.outlook.com (mail-eopbgr130077.outbound.protection.outlook.com [40.107.13.77])
+Received: from EUR02-VE1-obe.outbound.protection.outlook.com (mail-eopbgr20072.outbound.protection.outlook.com [40.107.2.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LzN9Z0S1Qz2xHD
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LzN9Z3bW7z2xGN
 	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Aug 2022 08:06:42 +1000 (AEST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=mJhNbKyeq26RvHxUM8Myfpupatk5aTo4IsUWHP7Ii65i+eYsYzk/AxK42kK/b8xH70hpU3/2XFRxs67McIi4Mp7bKaHfQ5EuWnATL2B+0ZAPC4qm2R9h/ewa/ZBMmCx3RVHqV0yJSI6YuYNlcUHyZlI54/XheH0aLpsJSVj+U+WkPbuXdBCAKjqRPnfiFraFmJye13VQq2ktDMJ3NYKBxJFKVOiPcDiVagYlZeePGaqUb1Y+WUcmFGXNkOQ43PnGk0q3I3ENy3tHIILyFECDnCUJv/VhiqJmENumVSAyv9/TqhSajUT3MyPgF3a7w0uagu2DCl4SU9hnqvT4bGfADg==
+ b=ObR15jMLuHDWYuE6brh0Hq9ZStYo2h+ZHYQ4nIFan7jm86cT0T5IPPEVfdwXDnmRgBJWOwNbZhHi2ia5YbFVzB2aQR91kDFACBmeUY/poLZGRJUREqFGbGxEezJF+urTciDn+TC+qKtaay/Zbz9eayxdEu2eqOt6oEwJKYW8GYwV2VwP9CG+ml5a+YXqxQVkkkNS7v+6tDjthvHlE7EPXZ99E2wCO2OjXzsuzebHqGTRKIqqxNTJlaKg3qnccAyWJPaHJWI8X5rsnM5BnO2t9HBMIamBTF6JTPBF211llLYd8WEOdGa4HtrgkkqDiJZ+BC+yx1tysCD9Ps5NO3lmnQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bvF+CPj/eLlyyZjf2Zzil/gKULCioBp37jPWZ6heAf4=;
- b=nshIkgR3QPmndD47KqHfbwu0QyB+huJ/A2wj2AAqRvPrSfoPfiOvSLkvvXlbM6wiOUekxhJHD81c8BwDIg3usUXqNcS2/GL8pDH+2+a/xtb+5JteTgyeQud8rW9EhL7dQvUU7Uf/zo+AIVLugpqfyNEX0R8kDbUIn6BzYBiaalJaK/QzIEFzayEwWI0Ns98Mbx8PT/k4RSLUESvzfzOfL+fTHJKQOUwveONVZcYnKcJJhp4bEkS8iAHg8uiWQIdv9UQidkKXb8CABe01r2bATH9Vnfu2GvfKrXBqms9OtRzSJVi96fwAdfskj1m4E0pXzUgs2ywrOrQkh71ZJpkagg==
+ bh=oqchtlTiHCYugeUEDYbtK9JXnNGq1U+Kw71k+Lbvo1s=;
+ b=M9ZCbWk1gIm7LDrN16TRwv7D0/LnyCmedBx5IIMrnsU5PewWH2h/BbsfvImaeL9VwAIrEOxgY5M7ihfZsNLy+UoF6ynYyysSgqxtL98jzB+K4m2xh7K0fq6tlqoeiooc92mq61xELSBZBpFCp1Uzvjd/Fjf6jM1e1Ahz3eKcr3/ZiNfElv24Z4qfRvUhv8i/bR62FgtGXkolz0NztVgxoA8t9oS0oJCkGSumsaFa+o6Ell9JIBMoH26EXr18bi7aPpoJHzIkSZGB/aWTPvJE/qfB5bt8o0xUvY9DqRfW79pjpUVczJRwUdW49umqCrD2RZ84gGOTkHM5+4QFJddwLQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=seco.com; dmarc=pass action=none header.from=seco.com;
  dkim=pass header.d=seco.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seco.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bvF+CPj/eLlyyZjf2Zzil/gKULCioBp37jPWZ6heAf4=;
- b=KactuDJKvpxl5s+HK4CA/4NxQfFViwkLgRZFVZ6zowQ3UrCZgaBUjhq7m0qssB3JimkHw3p1tMmGzyFSQQctd9wscICtqpuEwri5d4p/TxjPymn9pQYHeE8MlyFOw0NrJeQsp2rwdVr5HbzGLdlxYX3EU0HlWWqqZOjaugiqHuPy3gtYRsbeUMgCUmoces7dXKMNl08dh+dE+IlE6IaM0089G0D5HsjYSz89AI0aJ8r59lrtmF5MefS29zbbsbSR+UQVIE+l7bvoZvFb65ynowsp0EkmNJ/ckXonlYGnls2pPl2RqnHfIccmA2GREnbNDTLiOpeqRlwu1lGkTSj3Tg==
+ bh=oqchtlTiHCYugeUEDYbtK9JXnNGq1U+Kw71k+Lbvo1s=;
+ b=Yofo/F+lyQVN0d74jdrKrFaL8aoNHKl0TUMHyA73O++36iU/VTHgz8UXUasPkl5MTmJJpLTfPYw0VigIZUhAG4Rqnl8gst38H6B0gIw0DSqle96mJx5sMS3i/7imGqVu9mNjWlFLbIIPA79rPMLMhH5+iag9TdR7kLFgX/GV2ylZ4r+DEE1lpR1YCf6C+HTmEkyYgPbTeBwWgHHzZRTssnATJaMaULfEBDQVoi3t31ypEUOI2I95v26Vk/dJIUP3Z3aRpYLKbBEwgPIjHw4uftqDBpU8NvtCS6aHdZVnzeGaeWPsp5EDXa/5BRgNkby40QhCEK1vanbShmVjRtXbIw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=seco.com;
 Received: from DB7PR03MB4972.eurprd03.prod.outlook.com (2603:10a6:10:7d::22)
  by AS8PR03MB8419.eurprd03.prod.outlook.com (2603:10a6:20b:527::10) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5458.24; Thu, 4 Aug
- 2022 22:06:26 +0000
+ 2022 22:06:27 +0000
 Received: from DB7PR03MB4972.eurprd03.prod.outlook.com
  ([fe80::ecaa:a5a9:f0d5:27a2]) by DB7PR03MB4972.eurprd03.prod.outlook.com
  ([fe80::ecaa:a5a9:f0d5:27a2%4]) with mapi id 15.20.5504.014; Thu, 4 Aug 2022
- 22:06:26 +0000
+ 22:06:27 +0000
 From: Sean Anderson <sean.anderson@seco.com>
 To: Vinod Koul <vkoul@kernel.org>,
 	Kishon Vijay Abraham I <kishon@ti.com>,
 	linux-phy@lists.infradead.org
-Subject: [PATCH v4 7/8] arm64: dts: ls1046ardb: Add serdes bindings
-Date: Thu,  4 Aug 2022 18:06:01 -0400
-Message-Id: <20220804220602.477589-8-sean.anderson@seco.com>
+Subject: [PATCH v4 8/8] [WIP] arm64: dts: ls1088ardb: Add serdes bindings
+Date: Thu,  4 Aug 2022 18:06:02 -0400
+Message-Id: <20220804220602.477589-9-sean.anderson@seco.com>
 X-Mailer: git-send-email 2.35.1.1320.gc452695387.dirty
 In-Reply-To: <20220804220602.477589-1-sean.anderson@seco.com>
 References: <20220804220602.477589-1-sean.anderson@seco.com>
@@ -63,52 +63,52 @@ X-ClientProxiedBy: BLAPR03CA0097.namprd03.prod.outlook.com
  (2603:10a6:10:7d::22)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: a8e19e34-415d-4222-b6ff-08da76659351
+X-MS-Office365-Filtering-Correlation-Id: b566126f-5ff3-4c60-f736-08da76659438
 X-MS-TrafficTypeDiagnostic: AS8PR03MB8419:EE_
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	4hcC5eotmgVPADqx53FZZA7QQpvHnN6NxuDZ5S7W4H2Wfk3j9rvZt36/hrEJ8CXaZOd/+Yd1rIyyjysdT9szXGSDh0Wcrkv3eppJgkuEqVPAQ/y+cQuzBoj5RuTwq14lnqoYJ+1GUpBhAxn6ykm3UBlRW7h2KZZL1QPHtTBNyoOVBnAQZpSLYyMwVsdCfdkZ85MD0m2bTqnDm1sVkgS4JvgNPMxJZYqqgpMF5lqCCH9zkkFSflGfyDqK7/oU1p748Hb+5ufDU8tQ4SEDilqwlh6rXgGxsWk9cub4Cp9CdbfGDA6+kPqITxo0QTC+T/pQ38IUE8H/U7SBiIOTTAkkTkjnEX7bBdQM6EDhi0v3tNOhGbIdHg4pEFoiBUtVW5RvVfHbN2gnw42B+yOPz1WpJtk6Zt2ImRfum7PS+khxXvSO8pUknvjjUDehGWsQf5rEcsiVf7Gz+wT+k1mr4h9npq7OJjSIakl9iAfSiltyc+wKsv7jKkAHo0gjK7og8THawAr6Aq6B8C/Iz8PlVpQ9MB/Sv2O5jGlxCvueFH5w+82TMjpMxhUlk1+6P16q3myWPJBUT4N9TFd1Pk1FWUil+wq1r/aBPAW0ibsxYc6GdLF59D3HaNnBJFuKxZQnz3gmEHLXPr7mORqE9JNmUKfZl9gliz0fIyk327KOPVLBa57JqowRVnXF6F9B5jxh9HDAgh6x/Xlm8k9AylZu8l0hD3a+GWE70KDuM+Akv1HcrZxYerhov6oVoCN+7YFC17u4+32iceyoPihiG5UEFhbFHsbBQyoWjHoy4O3GLxpw+TRJQluGmiauLaDLExykpMaIXCz3EI2T2G+0fETTD8NRTQTzUprxPoM8TtjZhKeoe+A=
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB7PR03MB4972.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(366004)(396003)(376002)(136003)(39850400004)(346002)(6486002)(36756003)(110136005)(5660300002)(316002)(66556008)(54906003)(66476007)(4326008)(8676002)(66946007)(966005)(38350700002)(1076003)(6512007)(86362001)(2616005)(478600001)(186003)(83380400001)(8936002)(6666004)(38100700002)(41300700001)(7416002)(44832011)(6506007)(52116002)(2906002)(26005)(21314003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: 	yCg+FW97ZVMv9CsWWNYKXGX6grk9hMTHeK8rtTj+3q+phBqXIOsGjRTEFJQq06BsPAZjw90ym0QD2+KToExHITW60NK2h/YxDpvfVb/62ev90WacrOJMMrdG8HkITWQiQnehUvxjyXmTOTdy0NPV2jB3ckqkXoy4Mx7lOTejGPx3JhUCI9wizTMiig6iEIY6pdIjhACX6UzJ3Ipu0Qqhrfm0FS6ow/4SX0dDklvd8L03BcUnWT3Hb/T2mX8gIiaPg64zX2EvlLhRtxRtj4HkpBNlQPrxJ+rjHahlAIHSLvhLUd0xsth2G3PZsDa54V18Y5dVEeNvBiET7o5DuebX4GqO3OxVFYru13bB1u4td6yjT9jbqttsS2T+sjy9kBqtZfo1HyVT0dWjF1SyrXUqSbRbt4IevBR3XJX5stQwXXRwzJdP1nndzu2xk5WFxVDZ/OABYqEnh+AJUXdCY4yP1mPyvpHGMBiGgCfgBX1JxmhrBBT7C/jqQl4pCnN50AjsfNe1HY+77nn+uqOCHnm+NTWNEgcNg26V0RLBaBqBBwc6WtzYk54ciMJmbdrCLLl3J+6kgMbCSqeMZCs6fMQXj03oMKfS0zHHa8ggehDUmEM3fhKD9fd4YxNbi2drx8xSzewoS/5cj+/drORd+ZNxXFzt+uizLSR4gSPjnFmieVN6toCVX7jbovGDhk4rarh21DS1+vK00HLrtcjg4Lp5ip89d+6r19WYN/vl+kGPm0MUqGQyg4fn6JFA0q8eEEMM7Gzbv3Q0yQXKQUvz3NcAUgBy3trnbYlsACbVk/ikWLE=
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB7PR03MB4972.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(366004)(396003)(376002)(136003)(39850400004)(346002)(6486002)(36756003)(110136005)(5660300002)(316002)(66556008)(54906003)(66476007)(4326008)(8676002)(66946007)(38350700002)(1076003)(6512007)(86362001)(2616005)(478600001)(186003)(83380400001)(8936002)(6666004)(38100700002)(41300700001)(7416002)(44832011)(6506007)(52116002)(2906002)(26005);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?QcU5sBxYDJqIIiiaJqzj2PpwAtUrr9dyLqZ7wne7phjUUbRcFLSJ7pfuov4I?=
- =?us-ascii?Q?D91A4MNmKVrbkgGY8C+/1PFQ3IaLLP2Z603KNwCOpux0qHVjFEPK3a4oIPoc?=
- =?us-ascii?Q?zJU+k2H1glRqAAcWLyUxpAzHUdtHbfBpdVXB8naOq2mz8Shtt1KiZIcvuC40?=
- =?us-ascii?Q?3POfSGlgKsK0FF6Q2Y4lY3CJ/IMQumoat3on3YwDWwn0cuXxDQMZAmdoISx9?=
- =?us-ascii?Q?pVlzoPxP7iBPlrgGHoc+2KVQ1cVw+7rPsWuCZ97kzUzyrT5z5SvhBRYEmWku?=
- =?us-ascii?Q?7BVERLpIn6vffT/n16sxdTt0uXySYbJshfUQmxZSIo8ABqbSmzoj17Ds3F7T?=
- =?us-ascii?Q?Cz7+4V4PELfOupa+hW1Gn5pvmVzwXdzgbu2U1c3U4by4DR3Fq3aMkQgWiHHz?=
- =?us-ascii?Q?rm8JSUj+igVex47KLDyA6hp9ZpaPrhfp3VDZECXdP9T+NOdk+Ervb7exwSom?=
- =?us-ascii?Q?qSq7nRFmOM4nJjdKRVzKxxt8RaKz9hXYGggIIcPMLLGCobYnWeMR8bwQlP1w?=
- =?us-ascii?Q?K2aI9Cyuf79A0QkhBq+3yS+Ppr9W/scI+BnytSBofhWNUK+LswEPE1JiUwTi?=
- =?us-ascii?Q?A85KuFAo1INjIVhNkR3hNT6cABT8unQ89a2WKH7mxiF47t1dz3nEuIJxuMNr?=
- =?us-ascii?Q?tBIwUMPoZ7zUZ2Ct3wsg/sBVokJdwMPxfzQ6z3B0n3zgJHrqFlwpq5JervNb?=
- =?us-ascii?Q?1y7G9S7TQ/UuaXO3isjB10d5e2PXsj4gvro3qe0TwD2diEjOo9PK+IC90p1I?=
- =?us-ascii?Q?XRPkTI63jU0uERf5DZDvQwMVu6kzraOZZOO5okaILKbmW8T2snATYjBZa+ZW?=
- =?us-ascii?Q?uTMpwlT3kkR01GXAKUf+PhQNP+4YKqpX9BQhVWrsCUsU/eOUYNhHRzxKeXy2?=
- =?us-ascii?Q?kKCgk98ohFwbrMAmuVwW1kHrklf1XB+yQ6KjpMAxNqMFpyrVaaHrvUFCEsgK?=
- =?us-ascii?Q?1QPTEM8Im8JWgeuqHp5QQ8pYeSTGzGRo/d32ViCKSDrGuxr274vO1kaJaw0S?=
- =?us-ascii?Q?9QIpDXA7Ytk4rWqalxtXh0NzWiVE0aT4HOh9euNwDA9rQhsjipTe+2UJAzh9?=
- =?us-ascii?Q?w0XpAqt2RJfIWc0pKQykdugJ7/QTYelugJurtjjV9RxENBIdgvoVr7+9byKH?=
- =?us-ascii?Q?oaWQVncO11RcGaOdHTYUSP+K9eW8ozJC05L8seKdI47B1dcZRYJvKno4ecbZ?=
- =?us-ascii?Q?LHMm2Q1SPBtHPa0ZrkILv94m8UaZZn2JRUmeAwHReLCgANCWmHc+r60Mm+If?=
- =?us-ascii?Q?7OWgaqhPQkwhrRoGbmxmuHPtOa1lyNID+1sDhOi5Srqdzsj5ZP9WGS4SVhk2?=
- =?us-ascii?Q?Esrx3XC0M0+Cl3X96omM0BRugKxadZ+Hftg99MUZPbcRx8TUlfvGGAqOAx3y?=
- =?us-ascii?Q?26Px8EQBfgvz9lOS1crymGLvHsoOJfVvL8jIuQKJdP4dc2yz0TWFjmbAKqZC?=
- =?us-ascii?Q?kZ6Us19X9zccLSlpHWSblyr17jXEZZh4k5n0WisSfJl3D2OMxvZljAKPSJxI?=
- =?us-ascii?Q?eGlJHE81bGOkJW1DG9r7BI0TgM6g9qeb00pxmZjLHlg6DlHcKnmdMoTB4/2i?=
- =?us-ascii?Q?yxI0DjzA8t6bOfzTUwAQ8fAJHFDWkyVgEnKIOlzpahBDBj75e+lYiLoIbyzi?=
- =?us-ascii?Q?ng=3D=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?qOULPihdtXQs/jZXUiFTkESyv2VdRFK+68at8ktgUKWX3UbNtq1sjpqeVIxt?=
+ =?us-ascii?Q?NH/51ydU6TyEdWQXj1m7Kt2tARrmDZmedi5Ptntj0ps45MYY1T6eHJ9+m/Ft?=
+ =?us-ascii?Q?gZG5sePHwhlDEDJixfucLNwp0tGurkcW9lbMmJWlky6IL5rCPWLvQ9YIe9p0?=
+ =?us-ascii?Q?LNHUlgnGVplS60PFRWMF5ylbWG1KAtbtIGNuKRd9IqJKb/qca7WEN/NUDh9J?=
+ =?us-ascii?Q?gVZFMjC7gfsbvQUaNCNDNJwVFvECU35irlUHpOujw4suENUVkw18gx4rVodI?=
+ =?us-ascii?Q?Qg2tfN3HZi1ZB0dWXFjGulclg6faQkTyOWljkZUP6ZE2oN3nYltiHkSH8AKP?=
+ =?us-ascii?Q?DXymOr7Hnig0lgldYA7yI+36cB6fA47bccflN3osYoRbugWyTBQ2rNr2BoK9?=
+ =?us-ascii?Q?h8lu87p5unvb3UcAAd/s0uliBaPv6BFTkWLDA3Slm4SqB+g0F8DQToS2YYui?=
+ =?us-ascii?Q?im8uppf0fDEPnCLU3Yo2sU8/8OkMOIdw89M5jq/dJnBDh13yF2z93iYY2ec6?=
+ =?us-ascii?Q?hwcHcLDOsPECInKHeY8uhT0sAkaixbozyhBsmTMaghsgyj7P5jcECt9UAk3U?=
+ =?us-ascii?Q?npN7QaHmNUIy8rG2hcvaUa8Hxd58uuS5UJ8eftJWjzSHzPiS38n9fL0d/CsD?=
+ =?us-ascii?Q?VK7NrJM9jaEiZr2x1KB3kD/ySfGLNgiX7UNiCb3AJ50aRlxNytrawouADmnK?=
+ =?us-ascii?Q?djq4W8sLV/BAaLN1+MWFT3kR5sC+NV8sSWk5tmdpA48NhuKQuBSuXGNvfCNr?=
+ =?us-ascii?Q?beZTIFlGePqIV13xXud6J6QoZYftYj/uTIiEyItrni3I/R7EWrENXks0taDA?=
+ =?us-ascii?Q?FVfHKmpi+UNlxhPvGbnL1psPWGgwmOpf8oW8FaBoULxGmu70Ef0ObEkflM8w?=
+ =?us-ascii?Q?BU9S0QyMjOELFmPAvEw0hq9qL9xoFviGGWuXMZdNnQZJuwGUVCym1/Tq8NJN?=
+ =?us-ascii?Q?AnJifnN1dxzDlCHNWE0HiusFGDJCbXxQjZQjkI2hpoIxVmv6Ep6EoAVYc6Os?=
+ =?us-ascii?Q?7oDnQz2qzVpjG6MnO4TUQx6DasuNlZJ3/thfEHgMeH67QUiRlnDlUGPdUBfG?=
+ =?us-ascii?Q?3EKcMxgeURrCov3UdwonRkOMfrU1p+aKqEdeWD0srjE00kpzT+hmE2kHYUYJ?=
+ =?us-ascii?Q?t37SCdwJ3xl3upIDmlBnnHqYCvBadxnepD2NNvjecqO35EUlF4YPi8rAtWL7?=
+ =?us-ascii?Q?+baSxs56brIwEwaKMlgBUnCgkSkA5h9VIFFSV9jir+UgokkdY/o2ro4V2BhC?=
+ =?us-ascii?Q?rWGseLAhntOJAaY5A9YbXkItDb0mtQ3tgn4kBrv3u0ELFbds5tia3y/q+UbQ?=
+ =?us-ascii?Q?E2CHkfz6UyEf8nipdp0MueImZL5hGigUYCtmtOZQxf91gqrounv7UWo8YSB5?=
+ =?us-ascii?Q?WMKExqAZyoG9KF05wjsmT22BI6cHnHzokrdfVw5vSukKm9U/gOAVkAisCptR?=
+ =?us-ascii?Q?aFLgIasR6Q4GURrgLVup4v7U4ilNEi3/fxjwe8rbuqpFCvwut791SLKSbCwy?=
+ =?us-ascii?Q?4IXZzahorTC290wf0kUCSWXiL2+HRaHWR7Bhv+MReuKLvi6XqPs/8hgrODaB?=
+ =?us-ascii?Q?Kzfac1VajZa5S/zVf0YMvF6lXV8ydS4gl7epxtNdpORpQ8/ZSQ2rnopUnQ2R?=
+ =?us-ascii?Q?xA=3D=3D?=
 X-OriginatorOrg: seco.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a8e19e34-415d-4222-b6ff-08da76659351
+X-MS-Exchange-CrossTenant-Network-Message-Id: b566126f-5ff3-4c60-f736-08da76659438
 X-MS-Exchange-CrossTenant-AuthSource: DB7PR03MB4972.eurprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Aug 2022 22:06:26.2508
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Aug 2022 22:06:27.8288
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bebe97c3-6438-442e-ade3-ff17aa50e733
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: unOBdQccy9sXbnrEE2wqPQ6UtCa8RdpQZRJQtmmFlNxjprEQt22JF483nGSu1VEyU4PcZVxykHtkomJjueAgaQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: EOPewZsdbCNxVldkjs49hgCvPNegaoHwqofL6Lc0J4S96A+YJcbUG5KZy1bKwLhzoc5Y80Wlge8qiXeVzuRq9Q==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR03MB8419
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -125,52 +125,47 @@ Cc: devicetree@vger.kernel.org, Madalin Bucur <madalin.bucur@nxp.com>, Sean Ande
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This adds appropriate bindings for the macs which use the SerDes. The
-156.25MHz fixed clock is a crystal. The 100MHz clocks (there are
-actually 3) come from a Renesas 6V49205B at address 69 on i2c0. There is
-no driver for this device (and as far as I know all you can do with the
-100MHz clocks is gate them), so I have chosen to model it as a single
-fixed clock.
-
-Note: the SerDes1 lane numbering for the LS1046A is *reversed*.
-This means that Lane A (what the driver thinks is lane 0) uses pins
-SD1_TX3_P/N.
-
-Because this will break ethernet if the serdes is not enabled, enable
-the serdes driver by default on Layerscape.
+This is a first stab at adding serdes support on the LS1088A. Linux
+hangs around when the serdes is initialized if the si5341 is enabled, so
+it's commented out. The MC firmware needs to be fairly new (it must
+support DPAA2_MAC_FEATURE_PROTOCOL_CHANGE), and the DPC needs to set the
+macs to MAC_LINK_TYPE_BACKPLANE. For this reason, I think this will be
+difficult to do in a backwards-compatible manner. I have not really
+tested this, but hopefully it can be a good starting point.
 
 Signed-off-by: Sean Anderson <sean.anderson@seco.com>
----
-This depends on [1].
 
-[1] https://lore.kernel.org/netdev/20220804194705.459670-4-sean.anderson@seco.com/
+---
 
 Changes in v4:
 - Convert to new bindings
 
- .../boot/dts/freescale/fsl-ls1046a-rdb.dts    | 112 ++++++++++++++++++
- drivers/phy/freescale/Kconfig                 |   1 +
- 2 files changed, 113 insertions(+)
+ .../boot/dts/freescale/fsl-ls1088a-rdb.dts    | 161 ++++++++++++++++++
+ 1 file changed, 161 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1046a-rdb.dts b/arch/arm64/boot/dts/freescale/fsl-ls1046a-rdb.dts
-index 7025aad8ae89..a848556bd7db 100644
---- a/arch/arm64/boot/dts/freescale/fsl-ls1046a-rdb.dts
-+++ b/arch/arm64/boot/dts/freescale/fsl-ls1046a-rdb.dts
-@@ -10,6 +10,8 @@
+diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1088a-rdb.dts b/arch/arm64/boot/dts/freescale/fsl-ls1088a-rdb.dts
+index 1bfbce69cc8b..7279d914843c 100644
+--- a/arch/arm64/boot/dts/freescale/fsl-ls1088a-rdb.dts
++++ b/arch/arm64/boot/dts/freescale/fsl-ls1088a-rdb.dts
+@@ -10,17 +10,138 @@
  
  /dts-v1/;
  
 +#include <dt-bindings/phy/phy.h>
 +
- #include "fsl-ls1046a.dtsi"
+ #include "fsl-ls1088a.dtsi"
  
  / {
-@@ -26,8 +28,110 @@ aliases {
- 	chosen {
- 		stdout-path = "serial0:115200n8";
- 	};
+ 	model = "LS1088A RDB Board";
+ 	compatible = "fsl,ls1088a-rdb", "fsl,ls1088a";
 +
 +	clocks {
++		si5341_xtal: clock-48mhz {
++			compatible = "fixed-clock";
++			#clock-cells = <0>;
++			clock-frequency = <48000000>;
++		};
++
 +		clk_100mhz: clock-100mhz {
 +			compatible = "fixed-clock";
 +			#clock-cells = <0>;
@@ -183,78 +178,34 @@ index 7025aad8ae89..a848556bd7db 100644
 +			clock-frequency = <156250000>;
 +		};
 +	};
- };
- 
++
++	ovdd: regulator-1v8 {
++		compatible = "regulator-fixed";
++		regulator-name = "ovdd";
++		regulator-min-microvolt = <1800000>;
++		regulator-max-microvolt = <1800000>;
++	};
++
++	dvdd: regulator-3v3 {
++		compatible = "regulator-fixed";
++		regulator-name = "dvdd";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++	};
++
++};
++
 +&serdes1 {
++	//clocks = <&si5341 0 8>, <&si5341 0 9>;
 +	clocks = <&clk_100mhz>, <&clk_156mhz>;
 +	clock-names = "ref0", "ref1";
 +	status = "okay";
 +
-+	/*
-+	 * XXX: Lane A uses pins SD1_RX3_P/N! That is, the lane numbers and pin
-+	 * numbers are _reversed_. In addition, the PCCR documentation is
-+	 * _inconsistent_ in its usage of these terms!
-+	 *
-+	 * PCCR "Lane 0" refers to...
-+	 * ==== =====================
-+	 *    0 Lane A
-+	 *    2 Lane A
-+	 *    8 Lane A
-+	 *    9 Lane A
-+	 *    B Lane D!
-+	 */
 +	serdes1_0: phy@0 {
 +		#phy-cells = <0>;
 +		reg = <0>;
 +
-+		/* SGMII.6 */
-+		sgmii-0 {
-+			fsl,pccr = <0x8>;
-+			fsl,index = <0>;
-+			fsl,cfg = <0x1>;
-+			fsl,type = <PHY_TYPE_SGMII>;
-+		};
-+	};
-+
-+	serdes1_1: phy@1 {
-+		#phy-cells = <0>;
-+		reg = <1>;
-+
-+		/* SGMII.5 */
-+		sgmii-1 {
-+			fsl,pccr = <0x8>;
-+			fsl,index = <1>;
-+			fsl,cfg = <0x1>;
-+			fsl,type = <PHY_TYPE_2500BASEX>;
-+		};
-+	};
-+
-+	serdes1_2: phy@2 {
-+		#phy-cells = <0>;
-+		reg = <2>;
-+
-+		/* SGMII.10 */
-+		sgmii-2 {
-+			fsl,pccr = <0x8>;
-+			fsl,index = <2>;
-+			fsl,cfg = <0x1>;
-+			fsl,type = <PHY_TYPE_2500BASEX>;
-+		};
-+
-+		/* XFI.10 */
-+		xfi-0 {
-+			fsl,pccr = <0xb>;
-+			fsl,index = <0>;
-+			fsl,cfg = <0x2>;
-+			fsl,type = <PHY_TYPE_10GBASER>;
-+		};
-+	};
-+
-+	serdes1_3: phy@3 {
-+		#phy-cells = <0>;
-+		reg = <3>;
-+
-+		/* SGMII.9 */
++		/* SG2 */
 +		sgmii-3 {
 +			fsl,pccr = <0x8>;
 +			fsl,index = <3>;
@@ -262,62 +213,182 @@ index 7025aad8ae89..a848556bd7db 100644
 +			fsl,type = <PHY_TYPE_2500BASEX>;
 +		};
 +
-+		/* XGI.9 */
-+		xfi-9 {
++		/* XFI2 */
++		xfi-1 {
 +			fsl,pccr = <0xb>;
 +			fsl,index = <1>;
 +			fsl,cfg = <0x1>;
 +			fsl,type = <PHY_TYPE_10GBASER>;
 +		};
 +	};
++
++	serdes1_1: phy@1 {
++		#phy-cells = <0>;
++		reg = <1>;
++
++		/* SG1 */
++		sgmii-2 {
++			fsl,pccr = <0x8>;
++			fsl,index = <2>;
++			fsl,cfg = <0x1>;
++			fsl,type = <PHY_TYPE_2500BASEX>;
++		};
++
++		/*
++		 * XFI2
++		 * Table 23-1 and section 23.5.16.4 disagree; this reflects the
++		 * table.
++		 */
++		xfi-0 {
++			fsl,pccr = <0xb>;
++			fsl,index = <0>;
++			fsl,cfg = <0x1>;
++			fsl,type = <PHY_TYPE_10GBASER>;
++		};
++	};
++
++	serdes1_2: phy@2 {
++		#phy-cells = <0>;
++		reg = <2>;
++
++		/* QSGb */
++		qsgmii-1 {
++			fsl,pccr = <0x9>;
++			fsl,index = <1>;
++			fsl,cfg = <0x1>;
++			fsl,type = <PHY_TYPE_QSGMII>;
++		};
++	};
++
++	serdes1_3: phy@2 {
++		#phy-cells = <0>;
++		reg = <2>;
++
++		/* QSGa */
++		qsgmii-0 {
++			fsl,pccr = <0x9>;
++			fsl,index = <0>;
++			fsl,cfg = <0x1>;
++			fsl,type = <PHY_TYPE_QSGMII>;
++		};
++	};
 +};
 +
-+
- &duart0 {
- 	status = "okay";
++&dpmac1 {
++	phys = <&serdes1_1>;
  };
-@@ -140,21 +244,29 @@ ethernet@e6000 {
- 	ethernet@e8000 {
- 		phy-handle = <&sgmii_phy1>;
- 		phy-connection-type = "sgmii";
-+		phys = <&serdes1_1>;
-+		phy-names = "serdes";
- 	};
  
- 	ethernet@ea000 {
- 		phy-handle = <&sgmii_phy2>;
- 		phy-connection-type = "sgmii";
-+		phys = <&serdes1_0>;
-+		phy-names = "serdes";
- 	};
+ &dpmac2 {
+ 	phy-handle = <&mdio2_aquantia_phy>;
+ 	phy-connection-type = "10gbase-r";
+ 	pcs-handle = <&pcs2>;
++	phys = <&serdes1_0>;
+ };
  
- 	ethernet@f0000 { /* 10GEC1 */
- 		phy-handle = <&aqr106_phy>;
- 		phy-connection-type = "xgmii";
-+		phys = <&serdes1_3>;
-+		phy-names = "serdes";
- 	};
+ &dpmac3 {
+@@ -28,6 +149,7 @@ &dpmac3 {
+ 	phy-connection-type = "qsgmii";
+ 	managed = "in-band-status";
+ 	pcs-handle = <&pcs3_0>;
++	phys = <&serdes1_3>;
+ };
  
- 	ethernet@f2000 { /* 10GEC2 */
- 		fixed-link = <0 1 1000 0 0>;
- 		phy-connection-type = "xgmii";
-+		phys = <&serdes1_2>;
-+		phy-names = "serdes";
- 	};
+ &dpmac4 {
+@@ -35,6 +157,7 @@ &dpmac4 {
+ 	phy-connection-type = "qsgmii";
+ 	managed = "in-band-status";
+ 	pcs-handle = <&pcs3_1>;
++	phys = <&serdes1_3>;
+ };
  
- 	mdio@fc000 {
-diff --git a/drivers/phy/freescale/Kconfig b/drivers/phy/freescale/Kconfig
-index fe2a3efe0ba4..9595666213d0 100644
---- a/drivers/phy/freescale/Kconfig
-+++ b/drivers/phy/freescale/Kconfig
-@@ -43,6 +43,7 @@ config PHY_FSL_LYNX_10G
- 	tristate "Freescale Layerscale Lynx 10G SerDes support"
- 	select GENERIC_PHY
- 	select REGMAP_MMIO
-+	default y if ARCH_LAYERSCAPE
- 	help
- 	  This adds support for the Lynx "SerDes" devices found on various QorIQ
- 	  SoCs. There may be up to four SerDes devices on each SoC, and each
+ &dpmac5 {
+@@ -42,6 +165,7 @@ &dpmac5 {
+ 	phy-connection-type = "qsgmii";
+ 	managed = "in-band-status";
+ 	pcs-handle = <&pcs3_2>;
++	phys = <&serdes1_3>;
+ };
+ 
+ &dpmac6 {
+@@ -49,6 +173,7 @@ &dpmac6 {
+ 	phy-connection-type = "qsgmii";
+ 	managed = "in-band-status";
+ 	pcs-handle = <&pcs3_3>;
++	phys = <&serdes1_3>;
+ };
+ 
+ &dpmac7 {
+@@ -56,6 +181,7 @@ &dpmac7 {
+ 	phy-connection-type = "qsgmii";
+ 	managed = "in-band-status";
+ 	pcs-handle = <&pcs7_0>;
++	phys = <&serdes1_2>;
+ };
+ 
+ &dpmac8 {
+@@ -63,6 +189,7 @@ &dpmac8 {
+ 	phy-connection-type = "qsgmii";
+ 	managed = "in-band-status";
+ 	pcs-handle = <&pcs7_1>;
++	phys = <&serdes1_2>;
+ };
+ 
+ &dpmac9 {
+@@ -70,6 +197,7 @@ &dpmac9 {
+ 	phy-connection-type = "qsgmii";
+ 	managed = "in-band-status";
+ 	pcs-handle = <&pcs7_2>;
++	phys = <&serdes1_2>;
+ };
+ 
+ &dpmac10 {
+@@ -77,6 +205,7 @@ &dpmac10 {
+ 	phy-connection-type = "qsgmii";
+ 	managed = "in-band-status";
+ 	pcs-handle = <&pcs7_3>;
++	phys = <&serdes1_2>;
+ };
+ 
+ &emdio1 {
+@@ -142,6 +271,38 @@ i2c-switch@77 {
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+ 
++		i2c@1 {
++			#address-cells = <1>;
++			#size-cells = <0>;
++			reg = <0x1>;
++
++			si5341: clock-generator@74 {
++				#address-cells = <1>;
++				#clock-cells = <2>;
++				#size-cells = <0>;
++				compatible = "silabs,si5341";
++				reg = <0x74>;
++				clocks = <&si5341_xtal>;
++				clock-names = "xtal";
++				vdd-supply = <&ovdd>;
++				vdda-supply = <&dvdd>;
++				vddo8-supply = <&ovdd>;
++				vddo9-supply = <&ovdd>;
++				silabs,iovdd-33;
++				status = "disabled";
++
++				out@8 {
++					reg = <8>;
++					silabs,format = <1>;
++				};
++
++				out@9 {
++					reg = <9>;
++					silabs,format = <1>;
++				};
++			};
++		};
++
+ 		i2c@2 {
+ 			#address-cells = <1>;
+ 			#size-cells = <0>;
 -- 
 2.35.1.1320.gc452695387.dirty
 
