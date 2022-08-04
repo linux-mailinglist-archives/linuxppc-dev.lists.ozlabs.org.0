@@ -1,97 +1,115 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1273589EDA
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Aug 2022 17:42:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21EEC58A174
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Aug 2022 21:48:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LzCfP3lmRz3bYs
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Aug 2022 01:42:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LzK606zmmz3c6Q
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Aug 2022 05:48:24 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=d0Xm1l9f;
+	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=HC5TRkhL;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=gjoyce@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=seco.com (client-ip=40.107.13.81; helo=eur01-he1-obe.outbound.protection.outlook.com; envelope-from=sean.anderson@seco.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=d0Xm1l9f;
+	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=HC5TRkhL;
 	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from EUR01-HE1-obe.outbound.protection.outlook.com (mail-eopbgr130081.outbound.protection.outlook.com [40.107.13.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LzCcs657Kz3bZs
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Aug 2022 01:41:17 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 274FK09h029543;
-	Thu, 4 Aug 2022 15:41:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : reply-to : to : cc : date : in-reply-to : references : content-type
- : mime-version : content-transfer-encoding; s=pp1;
- bh=0dfLlUaaH/pDFo9lOjtq6szzQph2V5ujfWQe5XtnjVs=;
- b=d0Xm1l9fpQSt1Zssq/lGghHCy3jaBjP5L4r71FfyhHQp/hZJ04HZl7x0SdN+9/k2trQ1
- 74/Y7iLXJaFUd3KrgOl/XSsFZ72vMDenh0kasaFf8gmJcwUWQpu6YzGkyz1oZ1bfFh/0
- 4JEVhwtaM2moGwp0bq1x8Gg9oRzlxeCc7fVokep7Ham8N0hTWZhhi6qA31iezqoeQe4Z
- jJc5XJFPv3lE775Niz1bdy91QsuDsRyVs5Axsb9d7Tp38AXtNf0hIfVT9LpILnV+Jgl0
- nbiGMMYv2xZbfEuu4Q/xiGxFhZHkyDey/YFHdRQVoArfRQWEAfrf33/sNJj85UzbmS0o Qg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3hrgnh8rc0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 04 Aug 2022 15:41:04 +0000
-Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 274FKoSZ031759;
-	Thu, 4 Aug 2022 15:41:03 GMT
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com [169.53.41.122])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3hrgnh8rbg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 04 Aug 2022 15:41:03 +0000
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
-	by ppma04dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 274FLeHA025061;
-	Thu, 4 Aug 2022 15:41:02 GMT
-Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com [9.57.198.29])
-	by ppma04dal.us.ibm.com with ESMTP id 3hmv99y6ts-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 04 Aug 2022 15:41:02 +0000
-Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com [9.57.199.108])
-	by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 274Ff1iS1639048
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 4 Aug 2022 15:41:01 GMT
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9BD18B2066;
-	Thu,  4 Aug 2022 15:41:01 +0000 (GMT)
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D75D8B2065;
-	Thu,  4 Aug 2022 15:41:00 +0000 (GMT)
-Received: from sig-9-65-198-113.ibm.com (unknown [9.65.198.113])
-	by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
-	Thu,  4 Aug 2022 15:41:00 +0000 (GMT)
-Message-ID: <af674b14a965588aa687472c9c8c74e7e471df88.camel@linux.vnet.ibm.com>
-Subject: Re: [PATCH v3 1/2] lib: generic accessor functions for arch keystore
-From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
-To: Michal =?ISO-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>,
-        Nayna
-	 <nayna@linux.vnet.ibm.com>
-Date: Thu, 04 Aug 2022 10:41:00 -0500
-In-Reply-To: <20220801202401.GZ17705@kitsune.suse.cz>
-References: <20220801123426.585801-1-gjoyce@linux.vnet.ibm.com>
-	 <20220801123426.585801-2-gjoyce@linux.vnet.ibm.com>
-	 <20220801134018.GY17705@kitsune.suse.cz>
-	 <61ebf904-8ce1-eeac-888a-4040711e7903@linux.vnet.ibm.com>
-	 <20220801202401.GZ17705@kitsune.suse.cz>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
-Mime-Version: 1.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LzK5J24FSz3000
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Aug 2022 05:47:46 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=drcJis1A8rhoNlDKUT200t/WumLWDXp5QiKFCtsEQpaVcm1BBa403DEins35tY3z0DlgZCqjO2TRoiwRSsfHcSQpkT0tK6oJmT3N8m+fg0eO0Eg3YawEPjE3imtumuKtcxi0+bvcIdWTJlEzw3GlwUtYRBTwtNhSWTPAuZ/qsKfp7KV9wbEi5GXsU9j5Kkm2zf7XhxhxRpH8gY+vzB00RN477aubn8BjLFNE/sW5Ip9MXTf2gC9LlIUqKWXHFscRsaxCVfqzbjTjLCwsYJ9hbYYsPW53Xm/WNTUdaaAvniFC3A+v0AJSojqAmzlY970bEKm1+BPCE7KzBB9J/kmJ3Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cWtcyb16todd5BUAmtbdM+clRLLL8A7cQ0XyyurB1OY=;
+ b=XU/USYEKe3m5w1zql7zUgj2c+/I6nm+lgeufbqEkqSCpn2IaXTtw4kmeVmflyW9rr6AsbEMc2I1g7RnoEobJrug0EISvil+EkZCkQ282P4jcJvKkWeNiyfUNVZGt4LJsrR92FkfbdjLE+jiuF7PuOyU0rRO/qBh0pWDkeJvy9HnMGmvLXZs88uYvSyK+DMlBDwiilXnXd6aSPQB0IHLj+WI0MUnibwj4FfAW+o+uW5jgPzbdGcVPS6DGHt08O9bf/1TV0Xk4cLrM4Xol1ULHFQhJiJgu4alAxvnAJMd8ppBb2Odp2Hey3JtZXzQJsJMxHeVn1EYKFTNcIlW2ezWxew==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=seco.com; dmarc=pass action=none header.from=seco.com;
+ dkim=pass header.d=seco.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seco.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cWtcyb16todd5BUAmtbdM+clRLLL8A7cQ0XyyurB1OY=;
+ b=HC5TRkhLS4w0HBhux3ucGJNEyRvJ7ReCxymGw1RQ8PySlnLSB0/Ords6fAHMjNkPayY1ZjTE8NqTR3UBg4CjsL6yEG/WAwP8gGYWmT3I8m8Xm1/mvxsW2uX/51MwDZynxUmLl0n51RW+BKS4Lk/uHgpdtwRL7Arp+QuJScXW6fGpoWs9tIoZpiFdUp+keDXPIkzlLfrOOHS/2jnW0li84QycnBw/yCuHsrjnfWnjnmgEfN/XEDAquDJYqtljxm4ZiEXOXklOgo2ymH5MO4coeTu7Ey9H0GqUJw2NQ09nIwvQN6IUFaXuwoP0+yfiJ/ldJrLiRPcsHaqu2x5x0LL9Gw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=seco.com;
+Received: from DB7PR03MB4972.eurprd03.prod.outlook.com (2603:10a6:10:7d::22)
+ by HE1PR0301MB2297.eurprd03.prod.outlook.com (2603:10a6:3:25::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5504.14; Thu, 4 Aug
+ 2022 19:47:25 +0000
+Received: from DB7PR03MB4972.eurprd03.prod.outlook.com
+ ([fe80::ecaa:a5a9:f0d5:27a2]) by DB7PR03MB4972.eurprd03.prod.outlook.com
+ ([fe80::ecaa:a5a9:f0d5:27a2%4]) with mapi id 15.20.5504.014; Thu, 4 Aug 2022
+ 19:47:24 +0000
+From: Sean Anderson <sean.anderson@seco.com>
+To: "David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Madalin Bucur <madalin.bucur@nxp.com>,
+	Camelia Alexandra Groza <camelia.groza@nxp.com>,
+	netdev@vger.kernel.org
+Subject: [PATCH net-next v4 0/8] [RFT] net: dpaa: Convert to phylink
+Date: Thu,  4 Aug 2022 15:46:57 -0400
+Message-Id: <20220804194705.459670-1-sean.anderson@seco.com>
+X-Mailer: git-send-email 2.35.1.1320.gc452695387.dirty
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 6z-4g4SIpHIRfw7-g8Yx6urDN094nZ8k
-X-Proofpoint-ORIG-GUID: 7RhcMJWmEmt182qWqmrmYrQnpKGiju50
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-08-04_03,2022-08-04_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011
- lowpriorityscore=0 adultscore=0 malwarescore=0 impostorscore=0
- mlxlogscore=998 priorityscore=1501 mlxscore=0 bulkscore=0 phishscore=0
- suspectscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2206140000 definitions=main-2208040067
+Content-Type: text/plain
+X-ClientProxiedBy: BL1P223CA0012.NAMP223.PROD.OUTLOOK.COM
+ (2603:10b6:208:2c4::17) To DB7PR03MB4972.eurprd03.prod.outlook.com
+ (2603:10a6:10:7d::22)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 0fc50688-33f7-40c5-df86-08da7652276b
+X-MS-TrafficTypeDiagnostic: HE1PR0301MB2297:EE_
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	elbGVIz+0hsKH8xNubygsCgEw03FNXikrnbXIEPjiRYT0fdxP5uzOyoDgOEXWI1JARs7vOqNBYXRXiWMs5MN0fvgK8wWQoisfRQTCBWy2LFmesOilmpLQn5x2SyCgXxT4gwo9a9NS9xGwfNcaVG8AG2alAzceFMdM+R3tfwQxrD2GFxLAQYLXg8RQBXxT0pn2VFANRkoIt5Ei2uD1EZDo2gUTijdzpuSaruxf2vFt159jGDRb7gZtMfdp6l1oFgZogilswnEjbx3aHSnq7HTlwMlaAdhTKsBYmiH4myY1bI0TgOo+/14zIatYu5SnoV6sqRLOf3VuaqNT9VneyyeHYbQTSikQ7kIFFSBiupgcoAY/C0hTfguhCiyPHw2MKDF3KA2m6oEOzQDSYiQadZOP3R2LIsFGrFcVLrhnOrh4vd2ORx2NIqInl+WIhbqXYm9vxni+BBjHO4v/eqk31+dK5whPXUiaFQ6UTzMivX9vvV/+61eefQYK3OxrjGjtR2nAqF+enOOy5kYrsw2BaRR1kqckIjthkjOCr/dSwZQNAc3GMfzamsC4j8SS63WcvWAJRHNOUtnn0r48lgeDXbLOh2bIUizcEO/3dZ9HS5SAn06y3zeHyowE+ck4ZrreFB1W028uxoj461tzV4tzpimA5qnSNpoipKMJE/rKiz2yg6PX1bMpFOBZmbTZP1hNI9sn5NtU3egLY4f9ly+LKoie7j8Bm6FJMHyssENfs/s1N7xDdOBQo6TbNRsGIFQukxBma0lrP7lFaMGDT7BzLjGr3Q+ibiV6upPliwXoqgWIj1bAEUCp5IhZVnUGppOJ8Tn48VVTN0aV1r9TQ4xAvpozw==
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB7PR03MB4972.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(39850400004)(366004)(346002)(376002)(136003)(396003)(6486002)(478600001)(186003)(1076003)(26005)(966005)(7416002)(6506007)(6666004)(2906002)(6512007)(8936002)(83380400001)(44832011)(41300700001)(38350700002)(110136005)(38100700002)(86362001)(316002)(5660300002)(54906003)(8676002)(36756003)(66946007)(66556008)(4326008)(2616005)(66476007)(52116002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?FKnqtfKzbm8AQm98ICrDbSp431K6pXyF5WOQMD9o3kLxd03gycNMEVCv5vVU?=
+ =?us-ascii?Q?6odnka+O2NoA6n+N4RZ0xJHRVUCKWh5Ce4bQjD1P+uNQatlqthgsmUY7ce5w?=
+ =?us-ascii?Q?j0hLBf/euDo7HxwEqSMkMy4AegZ519HlgCagLAc/lCdJQU1DR0ua1MAOVQ1B?=
+ =?us-ascii?Q?pgThr7lby3ahtE4Ri+5f6DH739/M5UVJDYS02+XixYjMNSHzq9ZJhKmRPPfZ?=
+ =?us-ascii?Q?nj4s8mVZV+eCRrcTPoif0IBrvbP3g+AVcg8WhBY/Zl/9zcjncHWp783m6fFb?=
+ =?us-ascii?Q?+AGHAbkDyhHBX82e3k42p2C4tV+uGX+G80w0yYoD9hzvlZea6dU04DpEGXEm?=
+ =?us-ascii?Q?LzhTBISQKyDw9VRKWJc1M2RFPze3T6J6kph170paZ+X+Bkhvzu0Z6vci6GZy?=
+ =?us-ascii?Q?w6oYhDi6Fr8V8rrLx7w5gh6Iyxl3RrHHYaK2GQzzsJMyIDSwcAZtkzIKMgcy?=
+ =?us-ascii?Q?cGDIFkJLBHu5JEsrpR2pt8ghTxnjKWUMerKhHJq/FkSL/vaQybtYkZpR1Qkd?=
+ =?us-ascii?Q?321UGuQNzA2jIvimmBLc2p39vqRj0unDPxMZBA8w4S2GuW6nSBz6JNdSMrPp?=
+ =?us-ascii?Q?lVcTZvpz7BWVSdaGUM2P1ioJ1Q0w/gMBCJnaJS0KrfRf6FiIF8ENPqJRHWuZ?=
+ =?us-ascii?Q?vYPzdcfif7+WWA0tTbYwSNUO9Z79cO8MlAu5T7/u4gq9z4oYlWodzt4rNgF9?=
+ =?us-ascii?Q?V2ll/gd1VWvb+tuIr5A7238IKCtwjYpXW2zpzKMGr0JXgv68yYGKcOljzZS1?=
+ =?us-ascii?Q?N9twL5mz6X1/uLIydNg1GuTjYpCPvAGlbY7EbuBLdRXUVmfyH7gMyBUI87ZH?=
+ =?us-ascii?Q?rYvrwGxZ0/x131GAp1rP40KO85LcMt6iqs7fQ+1tu0Qo+vK8KB+oPW7KcjUC?=
+ =?us-ascii?Q?jFhaAa0BDGVCRm/Jc8EGcH2nt3egx+XZBUdVHRJ42vhMcPRO791Wq8c8W21Y?=
+ =?us-ascii?Q?TeFOUBtTzmz53+/osLbgbKH7+dqrdJIxiA/QjEULYbUjaSPo4Q42nOE3jh4U?=
+ =?us-ascii?Q?h1NEPvBX3qyMOY/57L0XDb5MqMh+etk8umPqE4DiTZ4XqXOVB0xVfM11H9+Z?=
+ =?us-ascii?Q?i3hQvOKS1b2gB6pwoo3THfOz7udVm2KqIrdxi/3zdd04+fqr9eAV2vIqSe4P?=
+ =?us-ascii?Q?2Fjz/LjQ70gPR8ThDm4XucxNMHnXvSz4xTtYtdPeM0x4p9DSm+aot8xfPr+X?=
+ =?us-ascii?Q?FVfxv97dhEYWovAnoFzVi64ET9sE4lkqKWpK8gNrcH+zBKBrZG992U8PL+qY?=
+ =?us-ascii?Q?le8I0Jz/8+0+KwR/SHSp2vpc4adZdpXdkBlmHv69A6PIVfJNjAdwSRePKd89?=
+ =?us-ascii?Q?QzCcH8ZaUPioBjyk5C6MuJz5VadwiqXeiNhAuemRiV3vkmfAFfw5PnZdcfS7?=
+ =?us-ascii?Q?ogA/HGm1NKIchCkVLhuAHZai+QLBLOGQpJZy1gxv/UgStxtWMXxM3oJM3t41?=
+ =?us-ascii?Q?F/8DFOJOq/Vh3mtciSCrHF6pldWnGY+5IU6IkgqTcKVCU2PExau4vh+pvtzj?=
+ =?us-ascii?Q?mEeld6DWnKqMuUXYTtX+zu5oX3YjZInnAuaZxv2jdAInhKtRA/EECX1jiBpe?=
+ =?us-ascii?Q?sEEy1hKaDs8N6rf9pwTSC4TlIz0xWkxdLqBAk551TtzgX4VwUqgsPNyuedE1?=
+ =?us-ascii?Q?yA=3D=3D?=
+X-OriginatorOrg: seco.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0fc50688-33f7-40c5-df86-08da7652276b
+X-MS-Exchange-CrossTenant-AuthSource: DB7PR03MB4972.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Aug 2022 19:47:24.9310
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bebe97c3-6438-442e-ade3-ff17aa50e733
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Je9Bcx+pKP4TZN4jonCcEvoJqh9UxccK8djp/NRxT8PPQVUqCBBtJ2R/chKaw10H+oQy1IYPG+TJpTXyQ24tzw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: HE1PR0301MB2297
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,75 +121,126 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: gjoyce@linux.vnet.ibm.com
-Cc: axboe@kernel.dk, Christophe Leroy <christophe.leroy@c-s.fr>, nayna@linux.ibm.com, Nick Piggin <npiggin@gmail.com>, linux-block@vger.kernel.org, jonathan.derrick@linux.dev, brking@linux.vnet.ibm.com, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, gjoyce@ibm.com
+Cc: devicetree@vger.kernel.org, Li Yang <leoyang.li@nxp.com>, Sean Anderson <sean.anderson@seco.com>, linux-kernel@vger.kernel.org, Russell King <linux@armlinux.org.uk>, Eric Dumazet <edumazet@google.com>, Rob Herring <robh+dt@kernel.org>, Paul Mackerras <paulus@samba.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Shawn Guo <shawnguo@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "linuxppc-dev @ lists . ozlabs . org" <linuxppc-dev@lists.ozlabs.org>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 2022-08-01 at 22:24 +0200, Michal Suchánek wrote:
-> > > > +
-> > > > +int __weak arch_read_variable(enum arch_variable_type type,
-> > > > char *varname,
-> > > > +			      void *varbuf, u_int *varlen)
-> > > > +{
-> > > > +	return -EOPNOTSUPP;
-> > > > +}
-> > > > +
-> > > > +int __weak arch_write_variable(enum arch_variable_type type,
-> > > > char *varname,
-> > > > +			       void *varbuf, u_int varlen)
-> > > > +{
-> > > > +	return -EOPNOTSUPP;
-> > > > +}
-> > > > -- 
-> > > Doesn't EFI already have some variables?
-> > > 
-> > > And even powernv?
-> > > 
-> > > Shouldn't this generalize the already existing variables?
-> > > 
-> > > Or move to powerpc and at least generalize the powerpc ones?
-> > 
-> > Yes, EFI and PowerNV do have variables, but I am not exactly clear
-> > about
-> > your reference to them in this context. What do you mean by
-> > generalize
-> > already existing variables ?
-> > 
-> > This interface is actually generalizing calls to access platform
-> > specific
-> > keystores. It is explained in cover letter that this patch is
-> > defining
-> > generic interface and these are default implementations which needs
-> > to be
-> > overridden by arch specific versions.  For PowerVM PLPAR Platform
-> > KeyStore,
-> > the arch specific version is implemented in Patch 2.
-> For powervm, not powernv.
-> 
-> If it's not generic enough to cover even powerpc-specific keystores
-> does
-> such generalization even need to exist?
+This series converts the DPAA driver to phylink.
 
-I believe that the interface is generic enough to cover most if not all
-keystores. However, we're just implementing a PowerVM version since
-that is our mandate. 
+I have tried to maintain backwards compatibility with existing device
+trees whereever possible. However, one area where I was unable to
+achieve this was with QSGMII. Please refer to patch 2 for details.
 
-> > Access to EFI variables should be implemented by EFI arch specific
-> > interface
-> > and PowerNV will have to do the same if it needs to.
-> 
-> If such generic interface is desirable it should cover the existing
-> architectures I think. Otherwise how can you tell if it's usable
-> there?
+All mac drivers have now been converted. I would greatly appreciate if
+anyone has T-series or P-series boards they can test/debug this series
+on. I only have an LS1046ARDB. Everything but QSGMII should work without
+breakage; QSGMII needs patches 7 and 8. For this reason, the last 4
+patches in this series should be applied together (and should not go
+through separate trees).
 
-Are you suggesting that we implement architecture specific
-implementations for every architecture supported by Linux? I'm afraid
-that we don't have the time (or skills) to do that. The intent is to
-provide the "weak" versions of the interface functions so that they can
-be overridden as folks have the time or inclination to provide them for
-other architectures.
+This series depends on [1] and [2].
 
--Greg
+[1] https://lore.kernel.org/netdev/20220725153730.2604096-1-sean.anderson@seco.com/
+[2] https://lore.kernel.org/netdev/20220725151039.2581576-1-sean.anderson@seco.com/
 
+Changes in v4:
+- Use pcs-handle-names instead of pcs-names, as discussed
+- Don't fail if phy support was not compiled in
+- Split off rate adaptation series
+- Split off DPAA "preparation" series
+- Split off Lynx 10G support
+- t208x: Mark MAC1 and MAC2 as 10G
+- Add XFI PCS for t208x MAC1/MAC2
+
+Changes in v3:
+- Expand pcs-handle to an array
+- Add vendor prefix 'fsl,' to rgmii and mii properties.
+- Set maxItems for pcs-names
+- Remove phy-* properties from example because dt-schema complains and I
+  can't be bothered to figure out how to make it work.
+- Add pcs-handle as a preferred version of pcsphy-handle
+- Deprecate pcsphy-handle
+- Remove mii/rmii properties
+- Put the PCS mdiodev only after we are done with it (since the PCS
+  does not perform a get itself).
+- Remove _return label from memac_initialization in favor of returning
+  directly
+- Fix grabbing the default PCS not checking for -ENODATA from
+  of_property_match_string
+- Set DTSEC_ECNTRL_R100M in dtsec_link_up instead of dtsec_mac_config
+- Remove rmii/mii properties
+- Replace 1000Base... with 1000BASE... to match IEEE capitalization
+- Add compatibles for QSGMII PCSs
+- Split arm and powerpcs dts updates
+
+Changes in v2:
+- Better document how we select which PCS to use in the default case
+- Move PCS_LYNX dependency to fman Kconfig
+- Remove unused variable slow_10g_if
+- Restrict valid link modes based on the phy interface. This is easier
+  to set up, and mostly captures what I intended to do the first time.
+  We now have a custom validate which restricts half-duplex for some SoCs
+  for RGMII, but generally just uses the default phylink validate.
+- Configure the SerDes in enable/disable
+- Properly implement all ethtool ops and ioctls. These were mostly
+  stubbed out just enough to compile last time.
+- Convert 10GEC and dTSEC as well
+- Fix capitalization of mEMAC in commit messages
+- Add nodes for QSGMII PCSs
+- Add nodes for QSGMII PCSs
+
+Sean Anderson (8):
+  dt-bindings: net: Expand pcs-handle to an array
+  dt-bindings: net: fman: Add additional interface properties
+  net: fman: memac: Add serdes support
+  net: fman: memac: Use lynx pcs driver
+  net: dpaa: Convert to phylink
+  powerpc: dts: t208x: Mark MAC1 and MAC2 as 10G
+  powerpc: dts: qoriq: Add nodes for QSGMII PCSs
+  arm64: dts: layerscape: Add nodes for QSGMII PCSs
+
+ .../bindings/net/dsa/renesas,rzn1-a5psw.yaml  |   1 +
+ .../bindings/net/ethernet-controller.yaml     |  10 +-
+ .../bindings/net/fsl,fman-dtsec.yaml          |  53 +-
+ .../bindings/net/fsl,qoriq-mc-dpmac.yaml      |   2 +-
+ .../devicetree/bindings/net/fsl-fman.txt      |   5 +-
+ .../boot/dts/freescale/fsl-ls1043-post.dtsi   |  24 +
+ .../boot/dts/freescale/fsl-ls1046-post.dtsi   |  25 +
+ .../fsl/qoriq-fman3-0-10g-0-best-effort.dtsi  |   3 +-
+ .../boot/dts/fsl/qoriq-fman3-0-10g-0.dtsi     |  10 +-
+ .../fsl/qoriq-fman3-0-10g-1-best-effort.dtsi  |  10 +-
+ .../boot/dts/fsl/qoriq-fman3-0-10g-1.dtsi     |  10 +-
+ .../boot/dts/fsl/qoriq-fman3-0-10g-2.dtsi     |  45 ++
+ .../boot/dts/fsl/qoriq-fman3-0-10g-3.dtsi     |  45 ++
+ .../boot/dts/fsl/qoriq-fman3-0-1g-0.dtsi      |   3 +-
+ .../boot/dts/fsl/qoriq-fman3-0-1g-1.dtsi      |  10 +-
+ .../boot/dts/fsl/qoriq-fman3-0-1g-2.dtsi      |  10 +-
+ .../boot/dts/fsl/qoriq-fman3-0-1g-3.dtsi      |  10 +-
+ .../boot/dts/fsl/qoriq-fman3-0-1g-4.dtsi      |   3 +-
+ .../boot/dts/fsl/qoriq-fman3-0-1g-5.dtsi      |  10 +-
+ .../boot/dts/fsl/qoriq-fman3-1-10g-0.dtsi     |  10 +-
+ .../boot/dts/fsl/qoriq-fman3-1-10g-1.dtsi     |  10 +-
+ .../boot/dts/fsl/qoriq-fman3-1-1g-0.dtsi      |   3 +-
+ .../boot/dts/fsl/qoriq-fman3-1-1g-1.dtsi      |  10 +-
+ .../boot/dts/fsl/qoriq-fman3-1-1g-2.dtsi      |  10 +-
+ .../boot/dts/fsl/qoriq-fman3-1-1g-3.dtsi      |  10 +-
+ .../boot/dts/fsl/qoriq-fman3-1-1g-4.dtsi      |   3 +-
+ .../boot/dts/fsl/qoriq-fman3-1-1g-5.dtsi      |  10 +-
+ arch/powerpc/boot/dts/fsl/t2081si-post.dtsi   |   4 +-
+ drivers/net/ethernet/freescale/dpaa/Kconfig   |   4 +-
+ .../net/ethernet/freescale/dpaa/dpaa_eth.c    |  89 +--
+ .../ethernet/freescale/dpaa/dpaa_ethtool.c    |  90 +--
+ drivers/net/ethernet/freescale/fman/Kconfig   |   4 +-
+ .../net/ethernet/freescale/fman/fman_dtsec.c  | 459 +++++------
+ .../net/ethernet/freescale/fman/fman_mac.h    |  10 -
+ .../net/ethernet/freescale/fman/fman_memac.c  | 746 +++++++++---------
+ .../net/ethernet/freescale/fman/fman_tgec.c   | 131 ++-
+ drivers/net/ethernet/freescale/fman/mac.c     | 168 +---
+ drivers/net/ethernet/freescale/fman/mac.h     |  23 +-
+ 38 files changed, 1033 insertions(+), 1050 deletions(-)
+ create mode 100644 arch/powerpc/boot/dts/fsl/qoriq-fman3-0-10g-2.dtsi
+ create mode 100644 arch/powerpc/boot/dts/fsl/qoriq-fman3-0-10g-3.dtsi
+
+-- 
+2.35.1.1320.gc452695387.dirty
 
