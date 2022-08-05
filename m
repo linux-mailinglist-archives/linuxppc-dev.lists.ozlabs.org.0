@@ -2,83 +2,83 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8DF558A497
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Aug 2022 03:56:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F339258A48D
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Aug 2022 03:49:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LzTGh4Gsqz3bhF
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Aug 2022 11:56:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LzT6s6lryz3btQ
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Aug 2022 11:49:41 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm1 header.b=hCaTlOjh;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=jhOgFziP;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fQR1znif;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=russell.cc (client-ip=64.147.123.20; helo=wout4-smtp.messagingengine.com; envelope-from=ruscur@russell.cc; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm1 header.b=hCaTlOjh;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=jhOgFziP;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fQR1znif;
 	dkim-atps=neutral
-X-Greylist: delayed 413 seconds by postgrey-1.36 at boromir; Fri, 05 Aug 2022 11:55:50 AEST
-Received: from wout4-smtp.messagingengine.com (wout4-smtp.messagingengine.com [64.147.123.20])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LzTFy5mFfz2xGy
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Aug 2022 11:55:50 +1000 (AEST)
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-	by mailout.west.internal (Postfix) with ESMTP id 61F8232005CA;
-	Thu,  4 Aug 2022 21:48:51 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute1.internal (MEProxy); Thu, 04 Aug 2022 21:48:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=cc
-	:cc:content-transfer-encoding:date:date:from:from:in-reply-to
-	:message-id:mime-version:reply-to:sender:subject:subject:to:to;
-	 s=fm1; t=1659664130; x=1659750530; bh=4bWYZAh0mJDLS7baSHABVd0oa
-	w8TqBTZWuT/M2jiYHU=; b=hCaTlOjhfpCsKSvJ97E29babSkOth+7cijhb5rc3i
-	rJKE9E9deIG2x+FZg/tXYN+4yk+j5t7lUYKge3b6+1mRbqPudqjkYPMBq9xWG/56
-	69iLIiIf6ab28Cl9MdqwfBO9FK9owNIh3ejDLbUtbl8fuj5Dpgu2oqQs3/fpoy0g
-	aZHHyVVjoOx8+sWSXo5WwW62aU6QpuSj7yjAJpVLXojykKWR1lx4YndSoSF2ZfGf
-	6bYdZja1CpS9Tcma3+fYie0HPunyN47bJAs+4BnGm7TOuDKBQDgVrcqhR2Oqjtn0
-	LWUro/9G4kjV7ZOFMGS3RJBfp3xaA+0ONX2iynpr9guWQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:message-id
-	:mime-version:reply-to:sender:subject:subject:to:to:x-me-proxy
-	:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1659664130; x=1659750530; bh=4bWYZAh0mJDLS7baSHABVd0oaw8TqBTZWuT
-	/M2jiYHU=; b=jhOgFziPPyGqn1cGsjpOSFgeQcQQyeR/FHz721pMetZeo8jZrrJ
-	wbWhGMxmgnaPxaT9Kk4adsMmo/IZDvT1ov59YRW+nVl4nrVnXuz7eRmHcXGI9PPs
-	JjWrvRP0UMH/qV/TPJhi0UlIYo9rq0cE4W+qVS3g5q5UxjqDmFTFVko4OdWTfaBe
-	bf+61LLJmwQ/XJ+OCX7bpIAsQcU+fb7HeNk7BnrQUfghpGBWGGCc/N3bZj1b+Alv
-	Q80QmXC54r/QCOyoG/NQv0YkuBvQ6BNeP9jtds7bKjx6Z04w2iKzXlD6V4lAZ/Em
-	rV86j1esVw8BiIvXwratDGFTS1iTmEQotaw==
-X-ME-Sender: <xms:AXfsYj7GiRIkL5eo46XL7YWAhlzBLkK8irDqsZMWs73_iWI3JpH-Ng>
-    <xme:AXfsYo4443lVnsfN_mvfKcGVenb3otIdu1kEF7-YpJgpYfP_NFsUzBRgj29PCLrw_
-    MhtunZXbqMGvKZheQ>
-X-ME-Received: <xmr:AXfsYqcA10i4qbuoIuAQN7UpGIH0Cxa_fcs0l1G2vLanNrL1nHYArH5SdTA4yzKn1hTxLJzFS8KwrQDH-kWo_QzbcTj8JVPp77q-15YLcy3Mxw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrvdeftddghedvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    gfrhhlucfvnfffucdludehmdenucfjughrpefhvfevufffkffoggfgsedtkeertdertddt
-    necuhfhrohhmpeftuhhsshgvlhhlucevuhhrrhgvhicuoehruhhstghurhesrhhushhsvg
-    hllhdrtggtqeenucggtffrrghtthgvrhhnpedvgeduteejgfevveevuddtieegleeuffev
-    hfefueehueffkefhffehgeehjefhtdenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
-    grmhepmhgrihhlfhhrohhmpehruhhstghurhesrhhushhsvghllhdrtggt
-X-ME-Proxy: <xmx:AnfsYkK9-N5aXc5Tk51dUScHcldlm6SQYjbDcTNPtVeI972G7FCj8A>
-    <xmx:AnfsYnKlDVtm5hZl23zwMiusBhcTWsrI0cXrrArC6iQqmuzWE4-gKw>
-    <xmx:AnfsYtx5cum1NB1uyfljXJG558WiHvPy2E-dB-ONNRvQpU7YJZFmvQ>
-    <xmx:AnfsYv2-5VcbD6fA2x-YQzXBQ8MARmVTmZaSMIJZEXGfTLffGfQyfw>
-Feedback-ID: i4421424f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 4 Aug 2022 21:48:48 -0400 (EDT)
-From: Russell Currey <ruscur@russell.cc>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] selftests/powerpc: Don't run spectre_v2 test by default
-Date: Fri,  5 Aug 2022 11:48:07 +1000
-Message-Id: <20220805014807.34913-1-ruscur@russell.cc>
-X-Mailer: git-send-email 2.37.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LzT666BCSz2xGy
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Aug 2022 11:49:02 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2751kguU020048;
+	Fri, 5 Aug 2022 01:48:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : content-type :
+ mime-version; s=pp1; bh=ol4G0vmzMSnL9B09OphGbj7QoMZ9cfy6iw3gE7vRes0=;
+ b=fQR1znifp0QguvsSxyu2lECrfthPgcHa8+5Uxp5khHVPf9Z0uxAhj+XmNXzGtaC4J9Ez
+ ZkIn89oTi5tQ1O1a/loUbCcvvHx9+OUX60sXhQ5lAZPTG2XAClx8IbjrybgtyarPozCT
+ /sru6YJ5qXsGKjCnfVjXuxiCyHviswhNS4915MFpExWlULYVkafsupIUYgqi33jCGx7b
+ 9zBr6yd4aH8/B9fMSOg65dYqTA1NFuDI7oQYCrh0+Ao3chb0yRBGWOQqWgqne6IKLoPo
+ ee6bwjlSYSj20MOvZ9r89A61BWChrdfzMlgsijqHjBiel9MPlxYV1ZPl6TV2+nuReTvX 0Q== 
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3hrsuer0vk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 05 Aug 2022 01:48:49 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+	by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2751anf0014144;
+	Fri, 5 Aug 2022 01:48:47 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+	by ppma04ams.nl.ibm.com with ESMTP id 3hmv98ptty-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 05 Aug 2022 01:48:47 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
+	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2751miBf25231686
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 5 Aug 2022 01:48:44 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 55916A4089;
+	Fri,  5 Aug 2022 01:48:44 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C35C2A4082;
+	Fri,  5 Aug 2022 01:48:40 +0000 (GMT)
+Received: from vajain21.in.ibm.com (unknown [9.43.113.245])
+	by d06av23.portsmouth.uk.ibm.com (Postfix) with SMTP;
+	Fri,  5 Aug 2022 01:48:40 +0000 (GMT)
+Received: by vajain21.in.ibm.com (sSMTP sendmail emulation); Fri, 05 Aug 2022 07:18:39 +0530
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
+To: Kajol Jain <kjain@linux.ibm.com>, mpe@ellerman.id.au,
+        linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v3] powerpc/papr_scm: Fix nvdimm event mappings
+In-Reply-To: <20220804074852.55157-1-kjain@linux.ibm.com>
+References: <20220804074852.55157-1-kjain@linux.ibm.com>
+Date: Fri, 05 Aug 2022 07:18:39 +0530
+Message-ID: <87wnbne9zc.fsf@vajain21.in.ibm.com>
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: ry3k1osunR8MCvRB6SUqtA6h0_0Iqtb4
+X-Proofpoint-ORIG-GUID: ry3k1osunR8MCvRB6SUqtA6h0_0Iqtb4
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-08-04_06,2022-08-04_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 phishscore=0 priorityscore=1501
+ suspectscore=0 malwarescore=0 bulkscore=0 spamscore=0 adultscore=0
+ impostorscore=0 mlxlogscore=999 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2206140000 definitions=main-2208050007
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,47 +90,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Eirik Fuller <efuller@redhat.com>, Russell Currey <ruscur@russell.cc>, david@gibson.dropbear.id.au
+Cc: nvdimm@lists.linux.dev, atrajeev@linux.vnet.ibm.com, rnsastry@linux.ibm.com, kjain@linux.ibm.com, maddy@linux.ibm.com, aneesh.kumar@linux.ibm.com, dan.j.williams@intel.com, disgoel@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The spectre_v2 selftest has issues that I'm unsure of how to resolve.
-It uses context to determine intended behaviour, but that context is
-unreliable - as an example, when running as a KVM guest, qemu can
-deliberately misreport mitigation status for compatibility purposes.
 
-As a result, the selftest is unreliable as a pass/fail test without
-the test runner knowing what they expect its behaviour to be.  I don't
-think the selftest is useless so we should keep it around, but we
-shouldn't have run_tests run it by default.
+Kajol Jain <kjain@linux.ibm.com> writes:
 
-Suggested-by: Eirik Fuller <efuller@redhat.com>
-Signed-off-by: Russell Currey <ruscur@russell.cc>
----
- tools/testing/selftests/powerpc/security/Makefile | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+> Commit 4c08d4bbc089 ("powerpc/papr_scm: Add perf interface support")
+> added performance monitoring support for papr-scm nvdimm devices via
+> perf interface. Commit also added an array in papr_scm_priv
+> structure called "nvdimm_events_map", which got filled based on the
+> result of H_SCM_PERFORMANCE_STATS hcall.
+>
+> Currently there is an assumption that the order of events in the
+> stats buffer, returned by the hypervisor is same. And order also
+> happens to matches with the events specified in nvdimm driver code.
+> But this assumption is not documented in Power Architecture
+> Platform Requirements (PAPR) document. Although the order
+> of events happens to be same on current generation od system, but
+> it might not be true in future generation systems. Fix the issue, by
+> adding a static mapping for nvdimm events to corresponding stat-id,
+> and removing the dynamic map from papr_scm_priv structure. Also
+> remove the function papr_scm_pmu_check_events from papr_scm.c file,
+> as we no longer need to copy stat-ids dynamically.
+>
+> Fixes: 4c08d4bbc089 ("powerpc/papr_scm: Add perf interface support")
+> Reported-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+> ---
+>  arch/powerpc/platforms/pseries/papr_scm.c | 88 +++++++----------------
+>  1 file changed, 27 insertions(+), 61 deletions(-)
+>
+> ---
+> Changelog:
+> v2 -> v3
+> - Remove function papr_scm_pmu_check_events() and replace the
+>   event checks in papr_scm_pmu_register() function with p->stat_buffer_len
+>   as suggested by Vaibhav Jain
+>   Link to the patch v2: https://lore.kernel.org/all/20220711034605.212683-1-kjain@linux.ibm.com/
 
-diff --git a/tools/testing/selftests/powerpc/security/Makefile b/tools/testing/selftests/powerpc/security/Makefile
-index 7488315fd847..c954d79aeb80 100644
---- a/tools/testing/selftests/powerpc/security/Makefile
-+++ b/tools/testing/selftests/powerpc/security/Makefile
-@@ -1,6 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0+
- 
--TEST_GEN_PROGS := rfi_flush entry_flush uaccess_flush spectre_v2
-+TEST_GEN_PROGS := rfi_flush entry_flush uaccess_flush
-+TEST_GEN_PROGS_EXTENDED := spectre_v2
- TEST_PROGS := mitigation-patching.sh
- 
- top_srcdir = ../../../../..
-@@ -10,6 +11,7 @@ CFLAGS += -I../../../../../usr/include
- include ../../lib.mk
- 
- $(TEST_GEN_PROGS): ../harness.c ../utils.c
-+$(TEST_GEN_PROGS_EXTENDED): ../harness.c ../utils.c
- 
- $(OUTPUT)/spectre_v2: CFLAGS += -m64
- $(OUTPUT)/spectre_v2: ../pmu/event.c branch_loops.S
+V3 patch looks good to me.
+
+Reviewed-by: Vaibhav Jain <vaibhav@linux.ibm.com>
 -- 
-2.37.1
-
+Cheers
+~ Vaibhav
