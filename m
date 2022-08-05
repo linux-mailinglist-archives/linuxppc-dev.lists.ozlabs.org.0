@@ -2,37 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFD4158A42B
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Aug 2022 02:29:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0C3258A433
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Aug 2022 02:35:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LzRLC4tcnz3cBK
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Aug 2022 10:29:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LzRTZ6TN4z3c8q
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Aug 2022 10:35:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=benh@kernel.crashing.org; receiver=<UNKNOWN>)
 Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LzRKp1PKMz2y2F
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Aug 2022 10:29:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LzRT91997z304J
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Aug 2022 10:35:24 +1000 (AEST)
 Received: from ip6-localhost (localhost.localdomain [127.0.0.1])
-	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 2750McTg009481;
-	Thu, 4 Aug 2022 19:22:39 -0500
-Message-ID: <a9822ef5fba5599ddcee5daa4dbd17d8aaca8390.camel@kernel.crashing.org>
-Subject: Re: [PATCH v2 09/10] drm/ofdrm: Add per-model device function
+	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 2750T200009896;
+	Thu, 4 Aug 2022 19:29:02 -0500
+Message-ID: <e92ea74fefd5110d2c1dbcea454d5ec8d2cadcf8.camel@kernel.crashing.org>
+Subject: Re: [PATCH v2 10/10] drm/ofdrm: Support color management
 From: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-To: Michal =?ISO-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>,
-        Javier
-	Martinez Canillas
-	 <javierm@redhat.com>
-Date: Fri, 05 Aug 2022 10:22:38 +1000
-In-Reply-To: <20220726144024.GP17705@kitsune.suse.cz>
+To: Thomas Zimmermann <tzimmermann@suse.de>,
+        Javier Martinez Canillas
+ <javierm@redhat.com>, airlied@linux.ie,
+        daniel@ffwll.ch, deller@gmx.de, maxime@cerno.tech, sam@ravnborg.org,
+        msuchanek@suse.de, mpe@ellerman.id.au, paulus@samba.org,
+        geert@linux-m68k.org, mark.cave-ayland@ilande.co.uk
+Date: Fri, 05 Aug 2022 10:29:01 +1000
+In-Reply-To: <05511c35-da46-aefd-3e03-364b7311284c@suse.de>
 References: <20220720142732.32041-1-tzimmermann@suse.de>
-	 <20220720142732.32041-10-tzimmermann@suse.de>
-	 <7b1a2807-59c7-d524-af8e-1ec634c740a7@redhat.com>
-	 <20220726144024.GP17705@kitsune.suse.cz>
+	 <20220720142732.32041-11-tzimmermann@suse.de>
+	 <abe3fa95-942b-6d2f-7167-83d0cea59444@redhat.com>
+	 <05511c35-da46-aefd-3e03-364b7311284c@suse.de>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.36.5-0ubuntu1 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -44,45 +46,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-fbdev@vger.kernel.org, Thomas Zimmermann <tzimmermann@suse.de>, airlied@linux.ie, deller@gmx.de, mark.cave-ayland@ilande.co.uk, linuxppc-dev@lists.ozlabs.org, dri-devel@lists.freedesktop.org, paulus@samba.org, maxime@cerno.tech, daniel@ffwll.ch, geert@linux-m68k.org, sam@ravnborg.org
+Cc: linux-fbdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, dri-devel@lists.freedesktop.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2022-07-26 at 16:40 +0200, Michal Suchánek wrote:
-> Hello,
+On Wed, 2022-07-27 at 10:41 +0200, Thomas Zimmermann wrote:
 > 
-> On Tue, Jul 26, 2022 at 03:38:37PM +0200, Javier Martinez Canillas wrote:
-> > On 7/20/22 16:27, Thomas Zimmermann wrote:
-> > > Add a per-model device-function structure in preparation of adding
-> > > color-management support. Detection of the individual models has been
-> > > taken from fbdev's offb.
-> > > 
-> > > Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> > > ---
-> > 
-> > Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-> > 
-> > [...]
-> > 
-> > > +static bool is_avivo(__be32 vendor, __be32 device)
+> > > +static void __iomem *ofdrm_mach64_cmap_ioremap(struct ofdrm_device *odev,
+> > > +					       struct device_node *of_node,
+> > > +					       u64 fb_base)
 > > > +{
-> > > +	/* This will match most R5xx */
-> > > +	return (vendor == 0x1002) &&
-> > > +	       ((device >= 0x7100 && device < 0x7800) || (device >= 0x9400));
-> > > +}
+> > > +	struct drm_device *dev = &odev->dev;
+> > > +	u64 address;
+> > > +	void __iomem *cmap_base;
+> > > +
+> > > +	address = fb_base & 0xff000000ul;
+> > > +	address += 0x7ff000;
+> > > +
 > > 
-> > Maybe add some constant macros to not have these magic numbers ?
+> > It would be good to know where these addresses are coming from. Maybe some
+> > constant macros or a comment ? Same for the other places where addresses
+> > and offsets are used.
 > 
-> This is based on the existing fbdev implementation's magic numbers:
-> 
-> drivers/video/fbdev/offb.c:                 ((*did >= 0x7100 && *did < 0x7800) ||
-> 
-> Of course, it would be great if somebody knowledgeable could clarify
-> those.
+> I have no idea where these values come from. I took them from offb. And 
+> I suspect that some of these CMAP helpers could be further merged if 
+> only it was clear where the numbers come from.  But as i don't have the 
+> equipment for testing, I took most of this literally as-is from offb.
 
-I don't think anybody remembers :-) Vendor 0x1002 is PCI_VENDOR_ID_ATI,
-but the rest is basically ranges of PCI IDs for which we don't have
-symbolic constants.
+Ancient black magic :-) Old ATI mach64 chips had the registers sitting
+at the end of the framebuffer. You can find an equivalent in
+drivers/video/aty/atyfb_base.c:atyfb_setup_generic():
+
+	raddr = addr + 0x7ff000UL;
 
 Cheers,
 Ben.
