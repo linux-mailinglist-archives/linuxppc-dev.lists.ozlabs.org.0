@@ -1,84 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F339258A48D
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Aug 2022 03:49:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E0D658A5D0
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Aug 2022 08:11:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LzT6s6lryz3btQ
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Aug 2022 11:49:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LzZwb0t75z3c6K
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Aug 2022 16:11:11 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fQR1znif;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=BfyWZLNA;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::132; helo=mail-lf1-x132.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fQR1znif;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=BfyWZLNA;
 	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LzT666BCSz2xGy
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Aug 2022 11:49:02 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2751kguU020048;
-	Fri, 5 Aug 2022 01:48:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : in-reply-to : references : date : message-id : content-type :
- mime-version; s=pp1; bh=ol4G0vmzMSnL9B09OphGbj7QoMZ9cfy6iw3gE7vRes0=;
- b=fQR1znifp0QguvsSxyu2lECrfthPgcHa8+5Uxp5khHVPf9Z0uxAhj+XmNXzGtaC4J9Ez
- ZkIn89oTi5tQ1O1a/loUbCcvvHx9+OUX60sXhQ5lAZPTG2XAClx8IbjrybgtyarPozCT
- /sru6YJ5qXsGKjCnfVjXuxiCyHviswhNS4915MFpExWlULYVkafsupIUYgqi33jCGx7b
- 9zBr6yd4aH8/B9fMSOg65dYqTA1NFuDI7oQYCrh0+Ao3chb0yRBGWOQqWgqne6IKLoPo
- ee6bwjlSYSj20MOvZ9r89A61BWChrdfzMlgsijqHjBiel9MPlxYV1ZPl6TV2+nuReTvX 0Q== 
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3hrsuer0vk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 05 Aug 2022 01:48:49 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-	by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2751anf0014144;
-	Fri, 5 Aug 2022 01:48:47 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
-	by ppma04ams.nl.ibm.com with ESMTP id 3hmv98ptty-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 05 Aug 2022 01:48:47 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
-	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2751miBf25231686
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 5 Aug 2022 01:48:44 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 55916A4089;
-	Fri,  5 Aug 2022 01:48:44 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C35C2A4082;
-	Fri,  5 Aug 2022 01:48:40 +0000 (GMT)
-Received: from vajain21.in.ibm.com (unknown [9.43.113.245])
-	by d06av23.portsmouth.uk.ibm.com (Postfix) with SMTP;
-	Fri,  5 Aug 2022 01:48:40 +0000 (GMT)
-Received: by vajain21.in.ibm.com (sSMTP sendmail emulation); Fri, 05 Aug 2022 07:18:39 +0530
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
-To: Kajol Jain <kjain@linux.ibm.com>, mpe@ellerman.id.au,
-        linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v3] powerpc/papr_scm: Fix nvdimm event mappings
-In-Reply-To: <20220804074852.55157-1-kjain@linux.ibm.com>
-References: <20220804074852.55157-1-kjain@linux.ibm.com>
-Date: Fri, 05 Aug 2022 07:18:39 +0530
-Message-ID: <87wnbne9zc.fsf@vajain21.in.ibm.com>
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: ry3k1osunR8MCvRB6SUqtA6h0_0Iqtb4
-X-Proofpoint-ORIG-GUID: ry3k1osunR8MCvRB6SUqtA6h0_0Iqtb4
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LzVs01S9xz2xGx
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Aug 2022 13:07:46 +1000 (AEST)
+Received: by mail-lf1-x132.google.com with SMTP id d14so1612640lfl.13
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Aug 2022 20:07:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=zRLrhdcOQ99bka6D1fOqnb8SZpDSCBPIHHf+1lVBXSM=;
+        b=BfyWZLNA0WA0wwe8aQmwrq46RWQdKrrLB7XyPlQeQqyFVErsZG1WvpkTCT31caCh8p
+         eS4iXl4wK2kGOigufJo9S6qacJG7Eeaa2Plgda6L4JEOntGA7+Ntl3onJjaYf3A0B9SW
+         1BkPF8lXNS0d2d+JZNp6gcv8k9AdMoBbj3pS2STf6GJMN4s43va/D1TBDg0KF1iK66d1
+         9TXiq1kkHRqa3CXqhTaWqGclcKM/BN3YWYEmrJvyYrqGjKy7yaUTA+Y0fJJE1QKzWi6s
+         tG5YslrcsH+AjecGEMiuFGWZW2nnqVBBdvqGW97jmSsm9rS5RsFQ8M+GSSlV1hgj4iNr
+         wNgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=zRLrhdcOQ99bka6D1fOqnb8SZpDSCBPIHHf+1lVBXSM=;
+        b=2Wfqt4wVrLnk63wHuhZQAcWQlStAN7WAmflVNY+BgkJwahSH8QAUQZxkXU/ziI3OSt
+         7VgPSaZAfY0U88HWg/vIuT/LVC2gzOvjK75TWpI1qTZ1MhULBy/np4GK3NfAt6SAyBbD
+         6dN/9d7hQUxqi8joX7z1zykgilysdHZqxyrCH56hmtkuPIjU250tn7SS/1T6jSm+r9EE
+         huL2+N+qpJjsZf5CiLAtx0oU2g4nEq2uCWR9O5yefA34gaI0YTgXKhb2mALJ87Nef+np
+         Q1FALcRKdJ6UvS53ZwFk5rD1Y77pPsoYHmQrR36bzhCbWJvJ4dceuhKzPcz55pkX4XTd
+         Fahw==
+X-Gm-Message-State: ACgBeo3R5TkposndnxPNORzKuK1NxrhXPYZHImq4HJbzSqZQv1AknvyZ
+	EF2yz2Q+KfquTrcMtLI68UEF8hfP/79Rmcdbp7c=
+X-Google-Smtp-Source: AA6agR7Qfp8bF/c/dF8zcpgjC+nUpj98cRP4PLX8RQikDQJwywgbYhLTmF+vMFugwMjtJr0FnROMW2IDC92kB8tr+ec=
+X-Received: by 2002:a05:6512:31ca:b0:48a:2e3:db41 with SMTP id
+ j10-20020a05651231ca00b0048a02e3db41mr1573570lfe.285.1659668862329; Thu, 04
+ Aug 2022 20:07:42 -0700 (PDT)
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-08-04_06,2022-08-04_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 phishscore=0 priorityscore=1501
- suspectscore=0 malwarescore=0 bulkscore=0 spamscore=0 adultscore=0
- impostorscore=0 mlxlogscore=999 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2206140000 definitions=main-2208050007
+References: <20220507123101.10938-1-pieterjan.camerlynck@gmail.com>
+In-Reply-To: <20220507123101.10938-1-pieterjan.camerlynck@gmail.com>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Fri, 5 Aug 2022 11:07:31 +0800
+Message-ID: <CAA+D8ANzaCGEAZUdZsCmKhuw+gXSXdHP7S0RW__xu7FYp+Rdcw@mail.gmail.com>
+Subject: Re: [PATCH] ASoC: fsl_sai: fix incorrect mclk number in error message
+To: Pieterjan Camerlynck <pieterjan.camerlynck@gmail.com>, Mark Brown <broonie@kernel.org>
+Content-Type: multipart/alternative; boundary="000000000000fbe73c05e575c460"
+X-Mailman-Approved-At: Fri, 05 Aug 2022 16:10:40 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,49 +73,102 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nvdimm@lists.linux.dev, atrajeev@linux.vnet.ibm.com, rnsastry@linux.ibm.com, kjain@linux.ibm.com, maddy@linux.ibm.com, aneesh.kumar@linux.ibm.com, dan.j.williams@intel.com, disgoel@linux.vnet.ibm.com
+Cc: alsa-devel@alsa-project.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-kernel <linux-kernel@vger.kernel.org>, Xiubo Li <Xiubo.Lee@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+--000000000000fbe73c05e575c460
+Content-Type: text/plain; charset="UTF-8"
 
-Kajol Jain <kjain@linux.ibm.com> writes:
+On Sat, May 7, 2022 at 8:31 PM Pieterjan Camerlynck <
+pieterjan.camerlynck@gmail.com> wrote:
 
-> Commit 4c08d4bbc089 ("powerpc/papr_scm: Add perf interface support")
-> added performance monitoring support for papr-scm nvdimm devices via
-> perf interface. Commit also added an array in papr_scm_priv
-> structure called "nvdimm_events_map", which got filled based on the
-> result of H_SCM_PERFORMANCE_STATS hcall.
+> In commit <c3ecef21c3f26> ("ASoC: fsl_sai: add sai master mode support")
+> the loop was changed to start iterating from 1 instead of 0. The error
+> message however was not updated, reporting the wrong clock to the user.
 >
-> Currently there is an assumption that the order of events in the
-> stats buffer, returned by the hypervisor is same. And order also
-> happens to matches with the events specified in nvdimm driver code.
-> But this assumption is not documented in Power Architecture
-> Platform Requirements (PAPR) document. Although the order
-> of events happens to be same on current generation od system, but
-> it might not be true in future generation systems. Fix the issue, by
-> adding a static mapping for nvdimm events to corresponding stat-id,
-> and removing the dynamic map from papr_scm_priv structure. Also
-> remove the function papr_scm_pmu_check_events from papr_scm.c file,
-> as we no longer need to copy stat-ids dynamically.
+> Signed-off-by: Pieterjan Camerlynck <pieterjan.camerlynck@gmail.com>
 >
-> Fixes: 4c08d4bbc089 ("powerpc/papr_scm: Add perf interface support")
-> Reported-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+
+Please resend it and cc Mark
+
+Best regards
+Wang shengjiu
+
 > ---
->  arch/powerpc/platforms/pseries/papr_scm.c | 88 +++++++----------------
->  1 file changed, 27 insertions(+), 61 deletions(-)
+>  sound/soc/fsl/fsl_sai.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> ---
-> Changelog:
-> v2 -> v3
-> - Remove function papr_scm_pmu_check_events() and replace the
->   event checks in papr_scm_pmu_register() function with p->stat_buffer_len
->   as suggested by Vaibhav Jain
->   Link to the patch v2: https://lore.kernel.org/all/20220711034605.212683-1-kjain@linux.ibm.com/
+> diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
+> index ffc24afb5a7a..f0602077b385 100644
+> --- a/sound/soc/fsl/fsl_sai.c
+> +++ b/sound/soc/fsl/fsl_sai.c
+> @@ -1054,7 +1054,7 @@ static int fsl_sai_probe(struct platform_device
+> *pdev)
+>                 sai->mclk_clk[i] = devm_clk_get(&pdev->dev, tmp);
+>                 if (IS_ERR(sai->mclk_clk[i])) {
+>                         dev_err(&pdev->dev, "failed to get mclk%d clock:
+> %ld\n",
+> -                                       i + 1, PTR_ERR(sai->mclk_clk[i]));
+> +                                       i, PTR_ERR(sai->mclk_clk[i]));
+>                         sai->mclk_clk[i] = NULL;
+>                 }
+>         }
+> --
+> 2.25.1
+>
+>
 
-V3 patch looks good to me.
+--000000000000fbe73c05e575c460
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Reviewed-by: Vaibhav Jain <vaibhav@linux.ibm.com>
--- 
-Cheers
-~ Vaibhav
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Sat, May 7, 2022 at 8:31 PM Pieter=
+jan Camerlynck &lt;<a href=3D"mailto:pieterjan.camerlynck@gmail.com">pieter=
+jan.camerlynck@gmail.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail=
+_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204=
+,204);padding-left:1ex">In commit &lt;c3ecef21c3f26&gt; (&quot;ASoC: fsl_sa=
+i: add sai master mode support&quot;)<br>
+the loop was changed to start iterating from 1 instead of 0. The error<br>
+message however was not updated, reporting the wrong clock to the user.<br>
+<br>
+Signed-off-by: Pieterjan Camerlynck &lt;<a href=3D"mailto:pieterjan.camerly=
+nck@gmail.com" target=3D"_blank">pieterjan.camerlynck@gmail.com</a>&gt;<br>=
+</blockquote><div><br></div><div>Please resend it and cc Mark</div><div><br=
+></div><div>Best regards</div><div>Wang shengjiu=C2=A0<br></div><blockquote=
+ class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px so=
+lid rgb(204,204,204);padding-left:1ex">
+---<br>
+=C2=A0sound/soc/fsl/fsl_sai.c | 2 +-<br>
+=C2=A01 file changed, 1 insertion(+), 1 deletion(-)<br>
+<br>
+diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c<br>
+index ffc24afb5a7a..f0602077b385 100644<br>
+--- a/sound/soc/fsl/fsl_sai.c<br>
++++ b/sound/soc/fsl/fsl_sai.c<br>
+@@ -1054,7 +1054,7 @@ static int fsl_sai_probe(struct platform_device *pdev=
+)<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 sai-&gt;mclk_clk[i]=
+ =3D devm_clk_get(&amp;pdev-&gt;dev, tmp);<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (IS_ERR(sai-&gt;=
+mclk_clk[i])) {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 dev_err(&amp;pdev-&gt;dev, &quot;failed to get mclk%d clock: %ld=
+\n&quot;,<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0i + 1, PT=
+R_ERR(sai-&gt;mclk_clk[i]));<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0i, PTR_ER=
+R(sai-&gt;mclk_clk[i]));<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 sai-&gt;mclk_clk[i] =3D NULL;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
+-- <br>
+2.25.1<br>
+<br>
+</blockquote></div></div>
+
+--000000000000fbe73c05e575c460--
