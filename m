@@ -2,47 +2,96 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C84BF58C1BC
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Aug 2022 04:42:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DB9D58C203
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Aug 2022 05:25:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M1L8k0gy6z2ypH
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Aug 2022 12:42:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M1M5r2Nhtz3bqv
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Aug 2022 13:25:20 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=vhGp/28L;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hHhAESbF;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hHhAESbF;
+	dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M1L7f0y3kz2xJ0
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Aug 2022 12:41:47 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=Fm2ENERu942wdlKdXWdAvKqUsF1f7AoQiPFqKkHP5RY=; b=vhGp/28L7DmmiQH3DU9HTzlGN8
-	amyA6brqU+0ebuC4jkX2oK21cGjHBxJSEdtkmZJeWIqMXBTY7A2KK2yQjCe86ZXvXyWda9vcTEYmx
-	kPz6m5dWSLV7trRqrsmnu1A3aqhVkkD7dsntNbJRyn5CPZuRFe5GQUPX4fld/c5wTXpbg3K6Wzf5K
-	dQoUBa1Ln+1pxFbHG7EoxCIYfPZ2RJZo67SKgTu8gnTuG7aP8ViMspPFOlGYhK8C9TWBdZziP+y5R
-	2JRg1oFQaG+2rQjhsI5lVhy1pwdhOnce3SG2EFtESFKV24zboSir9F57zaMew8fbqF4Q36t8wVlao
-	6xbB51hw==;
-Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oKshy-00DVSd-LB; Mon, 08 Aug 2022 02:41:34 +0000
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-To: linux-kernel@vger.kernel.org,
-	pmladek@suse.com,
-	Kent Overstreet <kent.overstreet@gmail.com>
-Subject: [PATCH v5 25/32] powerpc: Convert to printbuf
-Date: Mon,  8 Aug 2022 03:41:21 +0100
-Message-Id: <20220808024128.3219082-26-willy@infradead.org>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20220808024128.3219082-1-willy@infradead.org>
-References: <20220808024128.3219082-1-willy@infradead.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M1M575QZdz2xHb
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Aug 2022 13:24:43 +1000 (AEST)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2780rxvR004983
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 8 Aug 2022 03:24:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=kmtO20KHhqnslcTQSZ5mU67tJLBFXo001RHTzPWvhOo=;
+ b=hHhAESbFv5ZFOf35J/Xo784VjC9puXnzg7t8Y1CpEK+pGRMsUXIp/wGkCKytuJ5iVTHU
+ TiWiYN5Y5ivAEq8HNKg/Ef7b9cf599lpgSK0kG133FnKRTg+LtGm/XL3PrcBxplFpNXr
+ kTNYNIMCW6cnFq9sp1eUF8TUGtJE+rCL3qmMg6VThlvZBgXPp9G0tVNIdJm6pXbFNJnE
+ 2uPrlC8mjZR5rQX5N41G8KRFypvZPyB480cgSXj3Fv4RcMJc7rdCdAnbo4K1fisOQ1tM
+ 6CQkB10fdJneFHKeQv743mQ8pwghW99G3c5C400Uehvl8KxlWOtphPc60oMCQWnqfv8B eg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3htrbrtfqs-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 08 Aug 2022 03:24:37 +0000
+Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2782nvb6004951
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 8 Aug 2022 03:24:36 GMT
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3htrbrtfqg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 08 Aug 2022 03:24:36 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+	by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2783KAUU022971;
+	Mon, 8 Aug 2022 03:24:34 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+	by ppma04ams.nl.ibm.com with ESMTP id 3hsfx8sktu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 08 Aug 2022 03:24:34 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
+	by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2783OW3s23789884
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 8 Aug 2022 03:24:32 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 34BC642042;
+	Mon,  8 Aug 2022 03:24:32 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D2F6142041;
+	Mon,  8 Aug 2022 03:24:31 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Mon,  8 Aug 2022 03:24:31 +0000 (GMT)
+Received: from intelligence.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 5E9486012E;
+	Mon,  8 Aug 2022 13:24:26 +1000 (AEST)
+Message-ID: <e3e58df6fbc801ff53c3e5f5134f974412e27743.camel@linux.ibm.com>
+Subject: Re: [PATCH v2 03/14] powerpc: Remove direct call to mmap2 syscall
+ handlers
+From: Andrew Donnellan <ajd@linux.ibm.com>
+To: Rohan McLure <rmclure@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Date: Mon, 08 Aug 2022 13:24:19 +1000
+In-Reply-To: <20220725062558.118793-1-rmclure@linux.ibm.com>
+References: <20220725062558.118793-1-rmclure@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.3-1 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: I_9KoFsUSB43UMsUsIwAUpS0y632nDi4
+X-Proofpoint-GUID: pKTj6FaxwuEiQDYRTBBcxkAEEaP4R4vT
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-08-08_01,2022-08-05_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 adultscore=0
+ bulkscore=0 suspectscore=0 impostorscore=0 spamscore=0 phishscore=0
+ clxscore=1015 malwarescore=0 lowpriorityscore=0 mlxlogscore=636
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2206140000 definitions=main-2208080014
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,318 +103,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Kent Overstreet <kent.overstreet@gmail.com>
+On Mon, 2022-07-25 at 16:25 +1000, Rohan McLure wrote:
+> 
+> diff --git a/tools/perf/arch/powerpc/entry/syscalls/syscall.tbl
+> b/tools/perf/arch/powerpc/entry/syscalls/syscall.tbl
+> index 54bb5834785f..437066f5c4b2 100644
+> --- a/tools/perf/arch/powerpc/entry/syscalls/syscall.tbl
+> +++ b/tools/perf/arch/powerpc/entry/syscalls/syscall.tbl
+> @@ -243,7 +243,7 @@
+>  189    nospu   vfork                           sys_vfork
+>  190    common  ugetrlimit                      sys_getrlimit        
+>            compat_sys_getrlimit
+>  191    common  readahead                       sys_readahead        
+>            compat_sys_ppc_readahead
+> -
+> 192    32      mmap2                           sys_mmap2              
+>          compat_sys_ppc_mmap2
+> +192    32      mmap2                           sys_mmap2            
+>            compat_sys_mmap2
+>  193    32      truncate64                      sys_truncate64       
+>            compat_sys_ppc_truncate64
+>  194    32      ftruncate64                     sys_ftruncate64      
+>            compat_sys_ppc_ftruncate64
+>  195    32      stat64                          sys_stat64
+> @@ -391,7 +391,7 @@
+>  306    common  timerfd_create                  sys_timerfd_create
+>  307    common  eventfd                         sys_eventfd
+>  308    common  sync_file_range2                sys_sync_file_range2 
+>            compat_sys_ppc_sync_file_range2
+> -
+> 309    nospu   fallocate                       sys_fallocate          
+>          compat_sys_ppc_fallocate
+> +309    nospu   fallocate                       sys_fallocate        
+>            compat_sys_fallocate
 
-This converts from seq_buf to printbuf. We're using printbuf in external
-buffer mode, so it's a direct conversion, aside from some trivial
-refactoring in cpu_show_meltdown() to make the code more consistent.
+This should be in patch 5?
 
-Signed-off-by: Kent Overstreet <kent.overstreet@gmail.com>
-Cc: linuxppc-dev@lists.ozlabs.org
----
- arch/powerpc/kernel/process.c             | 16 +++--
- arch/powerpc/kernel/security.c            | 75 ++++++++++-------------
- arch/powerpc/platforms/pseries/papr_scm.c | 34 +++++-----
- 3 files changed, 57 insertions(+), 68 deletions(-)
+>  310    nospu   subpage_prot                    sys_subpage_prot
+>  311    32      timerfd_settime                 sys_timerfd_settime32
+>  311    64      timerfd_settime                 sys_timerfd_settime
 
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index 0fbda89cd1bb..05654dbeb2c4 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -37,7 +37,7 @@
- #include <linux/hw_breakpoint.h>
- #include <linux/uaccess.h>
- #include <linux/pkeys.h>
--#include <linux/seq_buf.h>
-+#include <linux/printbuf.h>
- 
- #include <asm/interrupt.h>
- #include <asm/io.h>
-@@ -1396,32 +1396,30 @@ void show_user_instructions(struct pt_regs *regs)
- {
- 	unsigned long pc;
- 	int n = NR_INSN_TO_PRINT;
--	struct seq_buf s;
- 	char buf[96]; /* enough for 8 times 9 + 2 chars */
-+	struct printbuf s = PRINTBUF_EXTERN(buf, sizeof(buf));
- 
- 	pc = regs->nip - (NR_INSN_TO_PRINT * 3 / 4 * sizeof(int));
- 
--	seq_buf_init(&s, buf, sizeof(buf));
--
- 	while (n) {
- 		int i;
- 
--		seq_buf_clear(&s);
-+		printbuf_reset(&s);
- 
- 		for (i = 0; i < 8 && n; i++, n--, pc += sizeof(int)) {
- 			int instr;
- 
- 			if (copy_from_user_nofault(&instr, (void __user *)pc,
- 					sizeof(instr))) {
--				seq_buf_printf(&s, "XXXXXXXX ");
-+				prt_printf(&s, "XXXXXXXX ");
- 				continue;
- 			}
--			seq_buf_printf(&s, regs->nip == pc ? "<%08x> " : "%08x ", instr);
-+			prt_printf(&s, regs->nip == pc ? "<%08x> " : "%08x ", instr);
- 		}
- 
--		if (!seq_buf_has_overflowed(&s))
-+		if (printbuf_remaining(&s))
- 			pr_info("%s[%d]: code: %s\n", current->comm,
--				current->pid, s.buffer);
-+				current->pid, s.buf);
- 	}
- }
- 
-diff --git a/arch/powerpc/kernel/security.c b/arch/powerpc/kernel/security.c
-index d96fd14bd7c9..b34de62e65ce 100644
---- a/arch/powerpc/kernel/security.c
-+++ b/arch/powerpc/kernel/security.c
-@@ -10,7 +10,7 @@
- #include <linux/memblock.h>
- #include <linux/nospec.h>
- #include <linux/prctl.h>
--#include <linux/seq_buf.h>
-+#include <linux/printbuf.h>
- #include <linux/debugfs.h>
- 
- #include <asm/asm-prototypes.h>
-@@ -144,31 +144,28 @@ void __init setup_spectre_v2(void)
- #ifdef CONFIG_PPC_BOOK3S_64
- ssize_t cpu_show_meltdown(struct device *dev, struct device_attribute *attr, char *buf)
- {
-+	struct printbuf s = PRINTBUF_EXTERN(buf, PAGE_SIZE);
- 	bool thread_priv;
- 
- 	thread_priv = security_ftr_enabled(SEC_FTR_L1D_THREAD_PRIV);
- 
- 	if (rfi_flush) {
--		struct seq_buf s;
--		seq_buf_init(&s, buf, PAGE_SIZE - 1);
- 
--		seq_buf_printf(&s, "Mitigation: RFI Flush");
-+		prt_printf(&s, "Mitigation: RFI Flush");
- 		if (thread_priv)
--			seq_buf_printf(&s, ", L1D private per thread");
--
--		seq_buf_printf(&s, "\n");
--
--		return s.len;
-+			prt_printf(&s, ", L1D private per thread");
-+
-+		prt_printf(&s, "\n");
-+	} else if (thread_priv) {
-+		prt_printf(&s, "Vulnerable: L1D private per thread\n");
-+	} else if (!security_ftr_enabled(SEC_FTR_L1D_FLUSH_HV) &&
-+		   !security_ftr_enabled(SEC_FTR_L1D_FLUSH_PR)) {
-+		prt_printf(&s, "Not affected\n");
-+	} else {
-+		prt_printf(&s, "Vulnerable\n");
- 	}
- 
--	if (thread_priv)
--		return sprintf(buf, "Vulnerable: L1D private per thread\n");
--
--	if (!security_ftr_enabled(SEC_FTR_L1D_FLUSH_HV) &&
--	    !security_ftr_enabled(SEC_FTR_L1D_FLUSH_PR))
--		return sprintf(buf, "Not affected\n");
--
--	return sprintf(buf, "Vulnerable\n");
-+	return printbuf_written(&s);
- }
- 
- ssize_t cpu_show_l1tf(struct device *dev, struct device_attribute *attr, char *buf)
-@@ -179,70 +176,66 @@ ssize_t cpu_show_l1tf(struct device *dev, struct device_attribute *attr, char *b
- 
- ssize_t cpu_show_spectre_v1(struct device *dev, struct device_attribute *attr, char *buf)
- {
--	struct seq_buf s;
--
--	seq_buf_init(&s, buf, PAGE_SIZE - 1);
-+	struct printbuf s = PRINTBUF_EXTERN(buf, PAGE_SIZE);
- 
- 	if (security_ftr_enabled(SEC_FTR_BNDS_CHK_SPEC_BAR)) {
- 		if (barrier_nospec_enabled)
--			seq_buf_printf(&s, "Mitigation: __user pointer sanitization");
-+			prt_printf(&s, "Mitigation: __user pointer sanitization");
- 		else
--			seq_buf_printf(&s, "Vulnerable");
-+			prt_printf(&s, "Vulnerable");
- 
- 		if (security_ftr_enabled(SEC_FTR_SPEC_BAR_ORI31))
--			seq_buf_printf(&s, ", ori31 speculation barrier enabled");
-+			prt_printf(&s, ", ori31 speculation barrier enabled");
- 
--		seq_buf_printf(&s, "\n");
-+		prt_printf(&s, "\n");
- 	} else
--		seq_buf_printf(&s, "Not affected\n");
-+		prt_printf(&s, "Not affected\n");
- 
--	return s.len;
-+	return printbuf_written(&s);
- }
- 
- ssize_t cpu_show_spectre_v2(struct device *dev, struct device_attribute *attr, char *buf)
- {
--	struct seq_buf s;
-+	struct printbuf s = PRINTBUF_EXTERN(buf, PAGE_SIZE);
- 	bool bcs, ccd;
- 
--	seq_buf_init(&s, buf, PAGE_SIZE - 1);
--
- 	bcs = security_ftr_enabled(SEC_FTR_BCCTRL_SERIALISED);
- 	ccd = security_ftr_enabled(SEC_FTR_COUNT_CACHE_DISABLED);
- 
- 	if (bcs || ccd) {
--		seq_buf_printf(&s, "Mitigation: ");
-+		prt_printf(&s, "Mitigation: ");
- 
- 		if (bcs)
--			seq_buf_printf(&s, "Indirect branch serialisation (kernel only)");
-+			prt_printf(&s, "Indirect branch serialisation (kernel only)");
- 
- 		if (bcs && ccd)
--			seq_buf_printf(&s, ", ");
-+			prt_printf(&s, ", ");
- 
- 		if (ccd)
--			seq_buf_printf(&s, "Indirect branch cache disabled");
-+			prt_printf(&s, "Indirect branch cache disabled");
- 
- 	} else if (count_cache_flush_type != BRANCH_CACHE_FLUSH_NONE) {
--		seq_buf_printf(&s, "Mitigation: Software count cache flush");
-+		prt_printf(&s, "Mitigation: Software count cache flush");
- 
- 		if (count_cache_flush_type == BRANCH_CACHE_FLUSH_HW)
--			seq_buf_printf(&s, " (hardware accelerated)");
-+			prt_printf(&s, " (hardware accelerated)");
- 
- 	} else if (btb_flush_enabled) {
--		seq_buf_printf(&s, "Mitigation: Branch predictor state flush");
-+		prt_printf(&s, "Mitigation: Branch predictor state flush");
- 	} else {
--		seq_buf_printf(&s, "Vulnerable");
-+		prt_printf(&s, "Vulnerable");
- 	}
- 
- 	if (bcs || ccd || count_cache_flush_type != BRANCH_CACHE_FLUSH_NONE) {
- 		if (link_stack_flush_type != BRANCH_CACHE_FLUSH_NONE)
--			seq_buf_printf(&s, ", Software link stack flush");
-+			prt_printf(&s, ", Software link stack flush");
- 		if (link_stack_flush_type == BRANCH_CACHE_FLUSH_HW)
--			seq_buf_printf(&s, " (hardware accelerated)");
-+			prt_printf(&s, " (hardware accelerated)");
- 	}
- 
--	seq_buf_printf(&s, "\n");
-+	prt_printf(&s, "\n");
- 
--	return s.len;
-+	return printbuf_written(&s);
- }
- 
- #ifdef CONFIG_PPC_BOOK3S_64
-diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-index 20f6ed813bff..a1fd25243c48 100644
---- a/arch/powerpc/platforms/pseries/papr_scm.c
-+++ b/arch/powerpc/platforms/pseries/papr_scm.c
-@@ -12,7 +12,7 @@
- #include <linux/libnvdimm.h>
- #include <linux/platform_device.h>
- #include <linux/delay.h>
--#include <linux/seq_buf.h>
-+#include <linux/printbuf.h>
- #include <linux/nd.h>
- 
- #include <asm/plpar_wrappers.h>
-@@ -1142,7 +1142,7 @@ static ssize_t perf_stats_show(struct device *dev,
- {
- 	int index;
- 	ssize_t rc;
--	struct seq_buf s;
-+	struct printbuf s = PRINTBUF_EXTERN(buf, PAGE_SIZE);
- 	struct papr_scm_perf_stat *stat;
- 	struct papr_scm_perf_stats *stats;
- 	struct nvdimm *dimm = to_nvdimm(dev);
-@@ -1165,18 +1165,17 @@ static ssize_t perf_stats_show(struct device *dev,
- 	 * values. Since stat_id is essentially a char string of
- 	 * 8 bytes, simply use the string format specifier to print it.
- 	 */
--	seq_buf_init(&s, buf, PAGE_SIZE);
- 	for (index = 0, stat = stats->scm_statistic;
- 	     index < be32_to_cpu(stats->num_statistics);
- 	     ++index, ++stat) {
--		seq_buf_printf(&s, "%.8s = 0x%016llX\n",
--			       stat->stat_id,
--			       be64_to_cpu(stat->stat_val));
-+		prt_printf(&s, "%.8s = 0x%016llX\n",
-+		       stat->stat_id,
-+		       be64_to_cpu(stat->stat_val));
- 	}
- 
- free_stats:
- 	kfree(stats);
--	return rc ? rc : (ssize_t)seq_buf_used(&s);
-+	return rc ?: printbuf_written(&s);
- }
- static DEVICE_ATTR_ADMIN_RO(perf_stats);
- 
-@@ -1185,7 +1184,7 @@ static ssize_t flags_show(struct device *dev,
- {
- 	struct nvdimm *dimm = to_nvdimm(dev);
- 	struct papr_scm_priv *p = nvdimm_provider_data(dimm);
--	struct seq_buf s;
-+	struct printbuf s = PRINTBUF_EXTERN(buf, PAGE_SIZE);
- 	u64 health;
- 	int rc;
- 
-@@ -1196,29 +1195,28 @@ static ssize_t flags_show(struct device *dev,
- 	/* Copy health_bitmap locally, check masks & update out buffer */
- 	health = READ_ONCE(p->health_bitmap);
- 
--	seq_buf_init(&s, buf, PAGE_SIZE);
- 	if (health & PAPR_PMEM_UNARMED_MASK)
--		seq_buf_printf(&s, "not_armed ");
-+		prt_printf(&s, "not_armed ");
- 
- 	if (health & PAPR_PMEM_BAD_SHUTDOWN_MASK)
--		seq_buf_printf(&s, "flush_fail ");
-+		prt_printf(&s, "flush_fail ");
- 
- 	if (health & PAPR_PMEM_BAD_RESTORE_MASK)
--		seq_buf_printf(&s, "restore_fail ");
-+		prt_printf(&s, "restore_fail ");
- 
- 	if (health & PAPR_PMEM_ENCRYPTED)
--		seq_buf_printf(&s, "encrypted ");
-+		prt_printf(&s, "encrypted ");
- 
- 	if (health & PAPR_PMEM_SMART_EVENT_MASK)
--		seq_buf_printf(&s, "smart_notify ");
-+		prt_printf(&s, "smart_notify ");
- 
- 	if (health & PAPR_PMEM_SCRUBBED_AND_LOCKED)
--		seq_buf_printf(&s, "scrubbed locked ");
-+		prt_printf(&s, "scrubbed locked ");
- 
--	if (seq_buf_used(&s))
--		seq_buf_printf(&s, "\n");
-+	if (printbuf_written(&s))
-+		prt_printf(&s, "\n");
- 
--	return seq_buf_used(&s);
-+	return printbuf_written(&s);
- }
- DEVICE_ATTR_RO(flags);
- 
 -- 
-2.35.1
+Andrew Donnellan    OzLabs, ADL Canberra
+ajd@linux.ibm.com   IBM Australia Limited
 
