@@ -2,83 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BE8E58C80D
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Aug 2022 14:00:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8C6458C81B
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Aug 2022 14:06:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M1ZXh30NVz3fgK
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Aug 2022 22:00:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M1Zfb58qDz3drR
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Aug 2022 22:05:59 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm2 header.b=K50qD1Q5;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=xn4EmiIr;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jdhSCn36;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=russell.cc (client-ip=64.147.123.25; helo=wout2-smtp.messagingengine.com; envelope-from=ruscur@russell.cc; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sv@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm2 header.b=K50qD1Q5;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=xn4EmiIr;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jdhSCn36;
 	dkim-atps=neutral
-Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com [64.147.123.25])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M1ZWN1JJHz2ywc
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Aug 2022 21:59:43 +1000 (AEST)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailout.west.internal (Postfix) with ESMTP id 9E54932009CB;
-	Mon,  8 Aug 2022 07:59:31 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute5.internal (MEProxy); Mon, 08 Aug 2022 07:59:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=cc
-	:cc:content-transfer-encoding:date:date:from:from:in-reply-to
-	:message-id:mime-version:reply-to:sender:subject:subject:to:to;
-	 s=fm2; t=1659959971; x=1660046371; bh=iZUlFRrjpi/9AIxf6zmPXT6Bg
-	lerPy7lLchcLGUzh3s=; b=K50qD1Q5qMW0S9TajIRWBooP10Q+DQ0PaX7jxz05I
-	20ZmW4zJsp1qGwWbe/UK/OSvcxGlU1Y16I6uMX+uXahQHstvugRvlrNM0gsdcjAL
-	C5soWXRl6nmmSNBB6UiXzN3dBr2fDijEMC3a1KRobNzhwgV0pb1FUbTU7O79j0pH
-	IDewh58tpmecylerAJk7DsVOzQqlny+heu5ro4NItGPIZSVE8ncAsGwVnrpDAR8z
-	wnRblxkbcr3f62rdr7/k6RrCUieV4LesBp9/qEgsg8A11Az70Gm4OYKOOtQQy9SV
-	6s+NgLefemWdBZU+J8HOQktQFgc4EUOc+BJQpUsjbK0eA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:message-id
-	:mime-version:reply-to:sender:subject:subject:to:to:x-me-proxy
-	:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1659959971; x=1660046371; bh=iZUlFRrjpi/9AIxf6zmPXT6BglerPy7lLch
-	cLGUzh3s=; b=xn4EmiIr35aE0fK/3wTXleS2AGthjEtjWS8+b3DeCg64hrOt2rY
-	xi0G0/PgxQMKucy8GS3xtf8NZZVoT5kaJRCFGcwnpW5mOZPVqUD006PHwzwHYPAB
-	vqehsYKoRrO036d8WjGPd6eSgHLDgy0Ycfea14IcL1UyxwRNKIgwQ4aR9xlzcdEN
-	T3SGQ2ERl83kBVH17JMRgVC0IUlqMg6ePgVAHSrWc9j9MlD4CpBo8y/D95Ajo+IX
-	5UZgjmOWTByfFKMpxnrEs7E/1d/89vkU4VlKfywryzLoWS1vbWFbExEUMY16drSZ
-	fNv8YEsY/S1saqn6pJW7e0OaeyTd7imCsHQ==
-X-ME-Sender: <xms:ovrwYsqnCwcFRK_Ub55eLTZ_lYaNTl5A5EAGMF-7Km6WueoIKG_9iw>
-    <xme:ovrwYioJ5JqQD6RlTv8hZZw-pY1g_5yHFIlqpq5dbV3eTZcR9ZFMTCgpsU3kA9xZg
-    5cq5JVCgscJTTe55Q>
-X-ME-Received: <xmr:ovrwYhP7a6nqq-FfJvT3aIjDvStOsjI5KOhTg-l2qFm3rtLw4NdR70MmZPizB2zK9sbBN90XwMy1p6anw1I48aAXxY8zfjVWsAUddfg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrvdefkedggeekucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucgfrhhlucfvnfffucdludehmdenucfjughrpefhvf
-    evufffkffoggfgsedtkeertdertddtnecuhfhrohhmpeftuhhsshgvlhhlucevuhhrrhgv
-    hicuoehruhhstghurhesrhhushhsvghllhdrtggtqeenucggtffrrghtthgvrhhnpeetgf
-    ejvddvjedufeekvefhudeltdejhefhueehffeggedtgffhteehffekgedvheenucffohhm
-    rghinhepghhithhhuhgsuhhsvghrtghonhhtvghnthdrtghomhenucevlhhushhtvghruf
-    hiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehruhhstghurhesrhhushhsvghl
-    lhdrtggt
-X-ME-Proxy: <xmx:o_rwYj5l9Fp5v7-r-Xk1BznbTNLJDtDhys2FK49b5jX6Okklwu3F2g>
-    <xmx:o_rwYr6TcKJ_RJe1qulNUrI_Ad04tNmfgkAGZvlp9QrdgmJBhNSSQw>
-    <xmx:o_rwYjg4usYG6w0bIA6xZT-PpXq1yK7onRe-VMrM1kgNBZPyrUdnaA>
-    <xmx:o_rwYu3t1BWf0vEBBU8EpIaVA7rmut74KZBrfDRLIvVrk8WkEO2uig>
-Feedback-ID: i4421424f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 8 Aug 2022 07:59:28 -0400 (EDT)
-From: Russell Currey <ruscur@russell.cc>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M1Zdr71mJz2xHL
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Aug 2022 22:05:20 +1000 (AEST)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 278BgGCY018224;
+	Mon, 8 Aug 2022 12:05:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=wVFGi029TLkR264XcZHJMDZLRJkyCLzwFQ4DcnksObU=;
+ b=jdhSCn36aQ+0FSsrNf3ISe9WoK7/+PEJRTJ6+OXD16DMZRXBrnkoOMkHF0D1ZHemndoi
+ NFx8L0G/Q6XII/hqHLzbxHp/vRDwLgPIvuaES7SodkOIOMGPVKu8NGuYcjZjktuTr969
+ 2CQ6TqtqnQLmrd96wZupNf/hKPuP+v7C1y0QnaKy/M1aI08VKkxLtgqUFnkqwVKdqvfO
+ Rx6QqShe59BI8WtC+eD31Wvt6xvIbgYyVbKexajsaAeYs3PEZXs9e7Kiktjiap9d2jyK
+ 4eQ5ef425patBHHfAO8EY7WrS0T510P+aXAKw5SieOotGOtSR3V/plwEZUinmKq399uR XA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3hu1ue8npu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 08 Aug 2022 12:05:06 +0000
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 278BvTem033926;
+	Mon, 8 Aug 2022 12:05:05 GMT
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3hu1ue8nn7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 08 Aug 2022 12:05:05 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+	by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 278Bd3RC006783;
+	Mon, 8 Aug 2022 11:49:58 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+	by ppma04ams.nl.ibm.com with ESMTP id 3hsfx8t4aw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 08 Aug 2022 11:49:57 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
+	by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 278BoCGG35062132
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 8 Aug 2022 11:50:12 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C02CF11C04C;
+	Mon,  8 Aug 2022 11:49:55 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C0E0011C04A;
+	Mon,  8 Aug 2022 11:49:51 +0000 (GMT)
+Received: from li-c3569c4c-1ef8-11b2-a85c-ee139cda3133.ibm.com.com (unknown [9.43.59.85])
+	by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Mon,  8 Aug 2022 11:49:51 +0000 (GMT)
+From: Sathvika Vasireddy <sv@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/mm: Support execute-only memory on the Radix MMU
-Date: Mon,  8 Aug 2022 21:58:28 +1000
-Message-Id: <20220808115828.20113-1-ruscur@russell.cc>
-X-Mailer: git-send-email 2.37.1
+Subject: [PATCH 07/16] powerpc: Skip objtool from running on VDSO files
+Date: Mon,  8 Aug 2022 17:18:59 +0530
+Message-Id: <20220808114908.240813-8-sv@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
+In-Reply-To: <20220808114908.240813-1-sv@linux.ibm.com>
+References: <20220808114908.240813-1-sv@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: CFLCCOxPx1eHtQMUUYS1_iowwQk2TtjZ
+X-Proofpoint-GUID: 8_m7ahHyhFqM15TEYn_upH7-IgdbyZd2
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-08-08_08,2022-08-05_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ malwarescore=0 phishscore=0 impostorscore=0 bulkscore=0 priorityscore=1501
+ adultscore=0 suspectscore=0 spamscore=0 mlxlogscore=991 clxscore=1015
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2206140000 definitions=main-2208080057
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,77 +96,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Russell Currey <ruscur@russell.cc>, ajd@linux.ibm.com, npiggin@gmail.com, aneesh.kumar@linux.ibm.com
+Cc: peterz@infradead.org, npiggin@gmail.com, linux-kernel@vger.kernel.org, aik@ozlabs.ru, mingo@redhat.com, sv@linux.ibm.com, rostedt@goodmis.org, jpoimboe@redhat.com, naveen.n.rao@linux.vnet.ibm.com, mbenes@suse.cz, chenzhongjin@huawei.com, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The Hash MMU already supports XOM (i.e. mmap with PROT_EXEC only)
-through the execute-only pkey.  A PROT_ONLY mapping will actually map to
-RX, and then the pkey will be applied on top of it.
+Do not run objtool on VDSO files, by using
+OBJECT_FILES_NON_STANDARD
 
-Radix doesn't have pkeys, but it does have execute permissions built-in
-to the MMU, so all we have to do to support XOM is expose it.
-
-Signed-off-by: Russell Currey <ruscur@russell.cc>
+Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Sathvika Vasireddy <sv@linux.ibm.com>
 ---
-quick test: https://raw.githubusercontent.com/ruscur/junkcode/main/mmap_test.c
-I can make it a selftest.
+ arch/powerpc/kernel/vdso/Makefile | 2 ++
+ 1 file changed, 2 insertions(+)
 
- arch/powerpc/include/asm/book3s/64/radix.h |  3 +++
- arch/powerpc/mm/book3s64/radix_pgtable.c   |  4 ++++
- arch/powerpc/mm/fault.c                    | 10 ++++++++++
- 3 files changed, 17 insertions(+)
-
-diff --git a/arch/powerpc/include/asm/book3s/64/radix.h b/arch/powerpc/include/asm/book3s/64/radix.h
-index 686001eda936..bf316b773d73 100644
---- a/arch/powerpc/include/asm/book3s/64/radix.h
-+++ b/arch/powerpc/include/asm/book3s/64/radix.h
-@@ -19,6 +19,9 @@
- #include <asm/cpu_has_feature.h>
- #endif
- 
-+/* Execute-only page protections, Hash can use RX + execute-only pkey */
-+#define PAGE_EXECONLY	__pgprot(_PAGE_BASE | _PAGE_EXEC)
+diff --git a/arch/powerpc/kernel/vdso/Makefile b/arch/powerpc/kernel/vdso/Makefile
+index 096b0bf1335f..a49a0d6a1c53 100644
+--- a/arch/powerpc/kernel/vdso/Makefile
++++ b/arch/powerpc/kernel/vdso/Makefile
+@@ -102,3 +102,5 @@ quiet_cmd_vdso64ld_and_check = VDSO64L $@
+       cmd_vdso64ld_and_check = $(VDSOCC) $(c_flags) $(CC64FLAGS) -o $@ -Wl,-T$(filter %.lds,$^) $(filter %.o,$^) ; $(cmd_vdso_check)
+ quiet_cmd_vdso64as = VDSO64A $@
+       cmd_vdso64as = $(VDSOCC) $(a_flags) $(CC64FLAGS) $(AS64FLAGS) -c -o $@ $<
 +
- /* An empty PTE can still have a R or C writeback */
- #define RADIX_PTE_NONE_MASK		(_PAGE_DIRTY | _PAGE_ACCESSED)
- 
-diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-index 698274109c91..2edb56169805 100644
---- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-+++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-@@ -617,6 +617,10 @@ void __init radix__early_init_mmu(void)
- 	__pmd_frag_nr = RADIX_PMD_FRAG_NR;
- 	__pmd_frag_size_shift = RADIX_PMD_FRAG_SIZE_SHIFT;
- 
-+	/* Radix directly supports execute-only page protections */
-+	protection_map[VM_EXEC] = PAGE_EXECONLY;
-+	protection_map[VM_EXEC | VM_SHARED] = PAGE_EXECONLY;
-+
- 	radix_init_pgtable();
- 
- 	if (!firmware_has_feature(FW_FEATURE_LPAR)) {
-diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
-index 014005428687..887c0cc45ca6 100644
---- a/arch/powerpc/mm/fault.c
-+++ b/arch/powerpc/mm/fault.c
-@@ -270,6 +270,16 @@ static bool access_error(bool is_write, bool is_exec, struct vm_area_struct *vma
- 		return false;
- 	}
- 
-+	if (unlikely(!(vma->vm_flags & VM_READ))) {
-+		/*
-+		 * If we're on Radix, then this could be a read attempt on
-+		 * execute-only memory.  On other MMUs, an "exec-only" page
-+		 * will be given RX flags, so this might be redundant.
-+		 */
-+		if (radix_enabled())
-+			return true;
-+	}
-+
- 	if (unlikely(!vma_is_accessible(vma)))
- 		return true;
- 	/*
++OBJECT_FILES_NON_STANDARD := y
 -- 
-2.37.1
+2.31.1
 
