@@ -2,68 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DEA258CC4A
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Aug 2022 18:43:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C89258CC5F
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Aug 2022 18:49:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M1hpP1pXHz3bxC
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Aug 2022 02:43:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M1hxr6t5Zz3byL
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Aug 2022 02:49:36 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=zwj8Pfj/;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=z8nffUQp;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZQ65wkIv;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=msuchanek@suse.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=nathan@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=zwj8Pfj/;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=z8nffUQp;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZQ65wkIv;
 	dkim-atps=neutral
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M1hnk4fjrz2xKj
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Aug 2022 02:42:34 +1000 (AEST)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-	by smtp-out1.suse.de (Postfix) with ESMTP id EBB9033957;
-	Mon,  8 Aug 2022 16:42:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1659976950; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eCEQGHVmNw/cgwCaF0zGm8frJ7CvTePwYOpj6ZdhHkU=;
-	b=zwj8Pfj/JakzPXURLrlS0ReAMfvX/5uASA/CF5HNZdC5sGir/BjvPZXAcV7AdGk+yC32/n
-	cvXBDjpZDCtNU9XAgmrvGW+51yXpNj29GHZS9Ml42at9pUxASVaAw1aCqHSF9al+fSS26T
-	0F0rYNXyeatXdSnA51/6pkrB4S0akuQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1659976950;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eCEQGHVmNw/cgwCaF0zGm8frJ7CvTePwYOpj6ZdhHkU=;
-	b=z8nffUQp/r84zWBn1rgTRX5povHS/YFZA55vtYHlDAQKli35GGtnLfE0orehHRiv8XVZ2O
-	nUrICPZT6Or4hUCQ==
-Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by relay2.suse.de (Postfix) with ESMTPS id 96D3A2C143;
-	Mon,  8 Aug 2022 16:42:30 +0000 (UTC)
-Date: Mon, 8 Aug 2022 18:42:29 +0200
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v3a 1/2] lib: generic accessor functions for arch keystore
-Message-ID: <20220808164229.GM17705@kitsune.suse.cz>
-References: <20220808154345.11240-1-gjoyce@linux.vnet.ibm.com>
- <20220808154345.11240-2-gjoyce@linux.vnet.ibm.com>
- <1d4338cc-d7ec-383f-b201-222140a813bd@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M1hxF33sDz2xJ8
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Aug 2022 02:49:05 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id F3A9D61126;
+	Mon,  8 Aug 2022 16:48:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 008A5C433D6;
+	Mon,  8 Aug 2022 16:48:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1659977337;
+	bh=QjoMGwvAumk6F/NuMDuub06x8V9Bz2KMBhW0pT5XZv0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZQ65wkIv2A4c1xdbtA05EyB3ZDyq4d5h9PtfC1eX5yL9l1sxQDr5jeT+FFh6Ab8yr
+	 +wrzmsOmV61BQNSkhRn1GIqHvWBP6LnLrF+ppFBa6S7zBOnpmAeN2JK0opxbFOnRok
+	 Y5WizNIyINRsaFgrpMsYXkJ//jiO4ik8ZWPLK7rhiX+/Q9TPpWkUWppK5E/Ha9olra
+	 FjhonN0BYQ3IBKgioD5PZyUpGIldL4MHnBbVOfA/EqtwrasJoolhadWoiMQjDo1+8O
+	 cLGa1eaCjoxKbWkod3/t8uQ0dpKjU32xpYhaHt/DNAncLKhgDvek92RAt2QaZgj5IG
+	 AG9nL2nuToaDA==
+Date: Mon, 8 Aug 2022 09:48:55 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Alexey Kardashevskiy <aik@ozlabs.ru>
+Subject: Re: [PATCH kernel v2] pseries/iommu/ddw: Fix kdump to work in
+ absence of ibm,dma-window
+Message-ID: <YvE+d7xcB77GODjc@dev-arch.thelio-3990X>
+References: <20220629060614.1680476-1-aik@ozlabs.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1d4338cc-d7ec-383f-b201-222140a813bd@csgroup.eu>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20220629060614.1680476-1-aik@ozlabs.ru>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,141 +60,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "axboe@kernel.dk" <axboe@kernel.dk>, "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>, "gjoyce@linux.vnet.ibm.com" <gjoyce@linux.vnet.ibm.com>, "nayna@linux.ibm.com" <nayna@linux.ibm.com>, "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>, "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>, "jonathan.derrick@linux.dev" <jonathan.derrick@linux.dev>, "brking@linux.vnet.ibm.com" <brking@linux.vnet.ibm.com>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: Leonardo Bras <leobras.c@gmail.com>, Andrew Donnellan <ajd@linux.ibm.com>, llvm@lists.linux.dev, Thiago Jung Bauermann <bauerman@linux.vnet.ibm.com>, Frederic Barrat <fbarrat@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Aug 08, 2022 at 04:31:06PM +0000, Christophe Leroy wrote:
-> 
-> 
-> Le 08/08/2022 à 17:43, gjoyce@linux.vnet.ibm.com a écrit :
-> > From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
-> > 
-> > Generic kernel subsystems may rely on platform specific persistent
-> > KeyStore to store objects containing sensitive key material. In such case,
-> > they need to access architecture specific functions to perform read/write
-> > operations on these variables.
-> > 
-> > Define the generic variable read/write prototypes to be implemented by
-> > architecture specific versions. The default(weak) implementations of
-> > these prototypes return -EOPNOTSUPP unless overridden by architecture
-> > versions.
-> > 
-> > Signed-off-by: Greg Joyce <gjoyce@linux.vnet.ibm.com>
-> > ---
-> >   include/linux/arch_vars.h | 23 +++++++++++++++++++++++
-> >   lib/Makefile              |  2 +-
-> >   lib/arch_vars.c           | 25 +++++++++++++++++++++++++
-> >   3 files changed, 49 insertions(+), 1 deletion(-)
-> >   create mode 100644 include/linux/arch_vars.h
-> >   create mode 100644 lib/arch_vars.c
-> > 
-> > diff --git a/include/linux/arch_vars.h b/include/linux/arch_vars.h
-> > new file mode 100644
-> > index 000000000000..9c280ff9432e
-> > --- /dev/null
-> > +++ b/include/linux/arch_vars.h
-> > @@ -0,0 +1,23 @@
-> > +/* SPDX-License-Identifier: GPL-2.0 */
-> > +/*
-> > + * Platform variable opearations.
-> 
-> Is it platform specific or architecture specific ?
-> 
-> > + *
-> > + * Copyright (C) 2022 IBM Corporation
-> > + *
-> > + * These are the accessor functions (read/write) for architecture specific
-> > + * variables. Specific architectures can provide overrides.
-> 
-> "variables" is a very generic word which I think doesn't match what you 
-> want to do.
-> 
-> For me "variables" are local variables and global variables in a C file. 
-> Here it seems to be something completely different hence the name is 
-> really meaningfull and misleading.
-> 
-> > + *
-> > + */
-> > +
-> > +#include <linux/kernel.h>
-> > +
-> > +enum arch_variable_type {
-> 
-> arch_variable_type ? What's that ? variable types are char, short, long, 
-> long long, etc ...
-> 
-> > +	ARCH_VAR_OPAL_KEY      = 0,     /* SED Opal Authentication Key */
-> > +	ARCH_VAR_OTHER         = 1,     /* Other type of variable */
-> > +	ARCH_VAR_MAX           = 1,     /* Maximum type value */
-> > +};
-> 
-> Why the hell do you need an enum for two values only ?
-> 
-> > +
-> > +int arch_read_variable(enum arch_variable_type type, char *varname,
-> > +		       void *varbuf, u_int *varlen);
-> > +int arch_write_variable(enum arch_variable_type type, char *varname,
-> > +			void *varbuf, u_int varlen);
-> > diff --git a/lib/Makefile b/lib/Makefile
-> > index f99bf61f8bbc..b90c4cb0dbbb 100644
-> > --- a/lib/Makefile
-> > +++ b/lib/Makefile
-> > @@ -48,7 +48,7 @@ obj-y += bcd.o sort.o parser.o debug_locks.o random32.o \
-> >   	 bsearch.o find_bit.o llist.o memweight.o kfifo.o \
-> >   	 percpu-refcount.o rhashtable.o \
-> >   	 once.o refcount.o usercopy.o errseq.o bucket_locks.o \
-> > -	 generic-radix-tree.o
-> > +	 generic-radix-tree.o arch_vars.o
-> >   obj-$(CONFIG_STRING_SELFTEST) += test_string.o
-> >   obj-y += string_helpers.o
-> >   obj-$(CONFIG_TEST_STRING_HELPERS) += test-string_helpers.o
-> > diff --git a/lib/arch_vars.c b/lib/arch_vars.c
-> > new file mode 100644
-> > index 000000000000..e6f16d7d09c1
-> > --- /dev/null
-> > +++ b/lib/arch_vars.c
-> 
-> The name is meaningless, too generic.
-> 
-> 
-> > @@ -0,0 +1,25 @@
-> > +// SPDX-License-Identifier: GPL-2.0-only
-> > +/*
-> > + * Platform variable operations.
-> 
-> platform versus architecture ?
-> 
-> > + *
-> > + * Copyright (C) 2022 IBM Corporation
-> > + *
-> > + * These are the accessor functions (read/write) for architecture specific
-> > + * variables. Specific architectures can provide overrides.
-> > + *
-> > + */
-> > +
-> > +#include <linux/kernel.h>
-> > +#include <linux/arch_vars.h>
-> > +
-> > +int __weak arch_read_variable(enum arch_variable_type type, char *varname,
-> > +			      void *varbuf, u_int *varlen)
-> 
-> Sorry, to read a variable, I use READ_ONCE or I read it directly.
+Hi Alexey,
 
-This is supposed to be used for things like the EFI variables and the
-already existing powernv secure variables.
+This change is now in mainline as commit b1fc44eaa9ba
+("pseries/iommu/ddw: Fix kdump to work in absence of ibm,dma-window").
 
-Nonetheless, without adding the plumbing for the existing
-implementations it is not clear what it's doing, and the interface is
-agruably meaningless.
+> diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
+> index b4981b651d9a..5d2c22aa34fb 100644
+> --- a/arch/powerpc/kexec/file_load_64.c
+> +++ b/arch/powerpc/kexec/file_load_64.c
+> @@ -1038,6 +1038,48 @@ static int update_cpus_node(void *fdt)
+>  	return ret;
+>  }
+>  
+> +static int copy_property(void *fdt, int node_offset, const struct device_node *dn,
+> +			 const char *propname)
+> +{
+> +	const void *prop, *fdtprop;
+> +	int len = 0, fdtlen = 0, ret;
+> +
+> +	prop = of_get_property(dn, propname, &len);
+> +	fdtprop = fdt_getprop(fdt, node_offset, propname, &fdtlen);
+> +
+> +	if (fdtprop && !prop)
+> +		ret = fdt_delprop(fdt, node_offset, propname);
+> +	else if (prop)
+> +		ret = fdt_setprop(fdt, node_offset, propname, prop, len);
+> +
+> +	return ret;
+> +}
 
-Hence I would either suggest to provide the plumbing necessary for
-existing (secure) variable implementations to make use of the interface,
-or use private implementations like all the existing platforms do
-without exposing the values in any generic way, and leave that to
-somebody who is comfortable with designing a working general inteface
-for this.
+clang now warns/errors:
 
-Thanks
+  arch/powerpc/kexec/file_load_64.c:1053:11: error: variable 'ret' is used uninitialized whenever 'if' condition is false [-Werror,-Wsometimes-uninitialized]
+          else if (prop)
+                  ^~~~
+  arch/powerpc/kexec/file_load_64.c:1056:9: note: uninitialized use occurs here
+          return ret;
+                ^~~
+  arch/powerpc/kexec/file_load_64.c:1053:7: note: remove the 'if' if its condition is always true
+          else if (prop)
+              ^~~~~~~~~
+  arch/powerpc/kexec/file_load_64.c:1046:30: note: initialize the variable 'ret' to silence this warning
+          int len = 0, fdtlen = 0, ret;
+                                      ^
+                                      = 0
+  1 error generated.
 
-Michal
+Is !fdtprop && !prop a concern? What should a sensible default for ret
+be?
+
+Cheers,
+Nathan
