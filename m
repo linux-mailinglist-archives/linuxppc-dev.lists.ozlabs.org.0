@@ -1,87 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D5FF58C8ED
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Aug 2022 15:02:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C22658C927
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Aug 2022 15:12:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M1bwG6dZfz3cd6
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Aug 2022 23:02:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M1c6w0HGXz3dws
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Aug 2022 23:12:08 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm2 header.b=QzcPL/dG;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=BZhdHmQA;
+	dkim=pass (1024-bit key; secure) header.d=gmx.net header.i=@gmx.net header.a=rsa-sha256 header.s=badeba3b8450 header.b=Yhhqd8gN;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=russell.cc (client-ip=66.111.4.29; helo=out5-smtp.messagingengine.com; envelope-from=ruscur@russell.cc; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmx.de (client-ip=212.227.15.15; helo=mout.gmx.net; envelope-from=deller@gmx.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm2 header.b=QzcPL/dG;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=BZhdHmQA;
+	dkim=pass (1024-bit key; secure) header.d=gmx.net header.i=@gmx.net header.a=rsa-sha256 header.s=badeba3b8450 header.b=Yhhqd8gN;
 	dkim-atps=neutral
-Received: from out5-smtp.messagingengine.com (out5-smtp.messagingengine.com [66.111.4.29])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M1btx4gCCz2xHb
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Aug 2022 23:01:45 +1000 (AEST)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-	by mailout.nyi.internal (Postfix) with ESMTP id 92AFD5C010F;
-	Mon,  8 Aug 2022 09:01:43 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute4.internal (MEProxy); Mon, 08 Aug 2022 09:01:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=cc
-	:cc:content-transfer-encoding:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:sender
-	:subject:subject:to:to; s=fm2; t=1659963703; x=1660050103; bh=XT
-	zkYp/ohy/3DoEWoEmvGh8s1ugeylCHf8upEgTzWb8=; b=QzcPL/dGt7nmwjlHjA
-	d/7pRHFLdb/2+0Cxub+K/5i/ZOZwdi4amyVH+9Q1NHmnL+GYeuUyB3G4MD3KmHYc
-	LBPXqZCz41RCpmccrUrZK4rlSNU+42ta8rAvKFXDvis+8PUPF7c6yxrMOmY8wOib
-	f0Gr8pqa4g4w5tfbmFGvueAAa75xsDhCjhRsENE0jczw0ZJm3CzsId75LaiyzDKb
-	OddqUQtBt0q3ew8H8qpr4x9FC6L9EEhO3XP93hIKYvD3yZsUeToBSKfWt3v1DT3p
-	Fvu/enCZ8UGtlszQMk6HXL/bTZunub/SxilFJhMW6BGrB3pBuVOvy4WTmjWECfCi
-	HsdQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:sender:subject
-	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-	:x-sasl-enc; s=fm1; t=1659963703; x=1660050103; bh=XTzkYp/ohy/3D
-	oEWoEmvGh8s1ugeylCHf8upEgTzWb8=; b=BZhdHmQAjGFoHOH1VZ/KNlUEGGyD0
-	E6imnGtTAzXusIv9Spx6gvxpiY2ZoWdzRzRQKFVp8qQPVgiEX68o400Kq3kK+bgJ
-	qSVuoedB9TvrSC04Kgc9Sd4on8Nq7r9Ehv8j4ucghzWaHG2QnUpc9UhZYUoehgSX
-	bWLU5hsdAua2oPB5O6+nYoEvpawFw0xpu7mK9mU88FXCpJ1upQwmWP/lXPiG/mij
-	G0BZ8pZsab3sitWQ3Dhj13nSP2mztchTXGB/yeH4gK7Yb2hjpbsAY5uE4ujWCZWT
-	ARBWvhD58CNFJuHkiutkixf1Cdbqf+y0vHOGs32vHGqBhmSsOkHl025nA==
-X-ME-Sender: <xms:NgnxYhv2v3cLIQudWLSIHUnDm0D-_B9ZeAyuHvoKk85Ml_YlrCU9sw>
-    <xme:NgnxYqcnsgZV9udXWBxJAs7aOeIJtCMz61H12ADZSYsVW9QNdOk57grm5mQQYOJh2
-    HGWsBhjNCIhsYBpvg>
-X-ME-Received: <xmr:NgnxYkxEz0BV9SF60bo_FntT1_a4wmHDq1W6NebxwYcwdJbEiYY1i33NbpXGiWGm6a7pP_DeK3bvsX9eE8XdttECr7n0j8NfdsEf-AQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrvdefkedgieduucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucgfrhhlucfvnfffucdludehmdenucfjughrpefhvf
-    evufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeftuhhsshgvlhhlucevuhhr
-    rhgvhicuoehruhhstghurhesrhhushhsvghllhdrtggtqeenucggtffrrghtthgvrhhnpe
-    eitdetkeduveetteeltedvveetfeefvdfggeehkeevkeehudehkeevvedvgfffgeenucff
-    ohhmrghinhepghhithhhuhgsuhhsvghrtghonhhtvghnthdrtghomhenucevlhhushhtvg
-    hrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehruhhstghurhesrhhushhs
-    vghllhdrtggt
-X-ME-Proxy: <xmx:NgnxYoPIj_KrB-j7Oee3-_VV78N-MRu54F1eK403XEy8OwSqEdui4g>
-    <xmx:NgnxYh_WZSRq5sM8lUjlbxmum7qgt-UP0mZjE8hwT6aSraN7rg6bJw>
-    <xmx:NgnxYoWhNsV26ggUyRHir0rPdsAoo--jjnEBw525pkxcOjrB6smn3g>
-    <xmx:NwnxYklCr77eOQDsDOgwSa7_BwP6ypZxzGnf-Nu2dYaX4hWtvIgMKQ>
-Feedback-ID: i4421424f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 8 Aug 2022 09:01:39 -0400 (EDT)
-From: Russell Currey <ruscur@russell.cc>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 2/2] powerpc/mm: Support execute-only memory on the Radix MMU
-Date: Mon,  8 Aug 2022 23:01:09 +1000
-Message-Id: <20220808130109.30738-2-ruscur@russell.cc>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M1c4N6X7Mz2xHS
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Aug 2022 23:09:56 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+	s=badeba3b8450; t=1659964158;
+	bh=aM64I3xT+nrAAK/BCGOu7rEdx/4nHtHx5JVVg4BjZUA=;
+	h=X-UI-Sender-Class:From:To:Subject:Date;
+	b=Yhhqd8gNlgo7WkmfXdoNiJLT5rGDDzerm7vNcQdF0WC3fY3jLTKPOnaS4Dd2/o89E
+	 uxV3tIAJBlPmf75Tt4tttgsxJrFwmeq+7am5xzYog9YODqjr2JOClwchIpus4BjujT
+	 3Z7F1zwZOh7SPl5IFCtBNm9NNoK33vXkUQ+4Awlk=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from p100.fritz.box ([92.116.169.184]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1N3KTo-1nMENI0sCY-010Q4h; Mon, 08
+ Aug 2022 15:09:18 +0200
+From: Helge Deller <deller@gmx.de>
+To: linux-s390@vger.kernel.org,
+	Josh Triplett <josh@joshtriplett.org>,
+	x86@kernel.org,
+	linux-snps-arc@lists.infradead.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-parisc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v3 0/4] Dump command line of faulting process to syslog
+Date: Mon,  8 Aug 2022 15:09:13 +0200
+Message-Id: <20220808130917.30760-1-deller@gmx.de>
 X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20220808130109.30738-1-ruscur@russell.cc>
-References: <20220808130109.30738-1-ruscur@russell.cc>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:84TWQbnNKsaSON1sxgzA8VMcCW1N9C9kjxeNROJetaoTlrwHyEJ
+ 4kLAo2nY0nBKJzTbYKeIFs0wsAhsUj400kCXTzFd1LBKOgRGmPhIDqCoKMQfbK1f02UFheV
+ T5pSHxSbW+FPInvGlRKQqW+uW/on0h1xD6YnsEiYHniWkmRAmTI8WGJknLpw6yJ+ky2f7sR
+ gQHsOTDFqQcj4xa5P6+Vg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:qkPkvFZxlQc=:l818vHvl4KYHXR/6nteSWt
+ Drrh+hI657zDwl8V1U3h+u1Z+pOM/EhP9IKv5hA7uLlCzTiO9h3pjn1v1K5w8gwcEAN73aD8b
+ xWcGgKdNy9u4vAX31e2esewWODiQTuMd29ETswYKbHPzvMcGj/2AhEau5TlRb7AjyeruQUbST
+ 2cRf63S+seosQS7tx5rFHOgu3vprnK2TI3nQFWP44C/hu88i4roi9lLh9g5IT5ImcxCpVNh6v
+ +Nnw9li6J7kmfxqO4imAqs5lpcU7HkrH4fObsgfpglMx5CY0oscIgV8vRJ4wNF9C4mKGjgdDq
+ EBCSvYTlBd0tu1Z4X2opkt9bIl1/07DxbhrcDHISOhhGZ8GjzP3WzCXXQfLF6YVSeDfJuBcbR
+ FrQYJPohyACh+I01hf1nqRGL0ckxXyILyaog2XfeBcXQXAbi/XzHzW2KoDSI125XRbe/GJ23e
+ BcwSDEHo8OcTLB48E06g4rRFjc4m4ACnM/wPOUfdpZDZEGTrgO7CR3rnx40SRU609Tyx0FoGQ
+ denhspTfCIzVcTbC+O7mWNIgm8YqPaDwQ+35V3VtMR+kvz6PN9w73BtcPwNKih913fyODePNX
+ fGJr2KYAz2bbSltbJxEMvuM0jl0807rCn+BrlBYHh7sIdqcIhy4wpm1m3nnvyyAe+r2ASxrzh
+ DZqXgVCrWJFT+gVejvEspBcZ+ewAldyBW/KmLrL+RyNM++W0utwU4ipQecY70fOyPIJceWkiY
+ cGNmmby290PdNv1o1QTDO5wrLsoK8m/SYdFwuadOLXpCUj9MYB2bG4o3RbliCeQbBrjfUoHKL
+ DzinenDxGpMs7IaMVBCCOw+VKKTm+DxclOVjjw5Kcdfkf2U0/gdjnM6DekiDxppmkdpH6t/xw
+ aM5XuAU8q52e2DgR9220p6fHhmXPB0hreFOHFArj/bizQDgwORqgpARBmRsNHSo60C0gegv3P
+ dOeLwa7YU5a+JMGUqXSQ9aTf/kM9MQ/YIZqOOg8w2mvCwDj27+luOGR7xO2S+yWzjEgit73GA
+ hPx6/S6bWrqRdNitUF8aDK7FSHU4/ZrznQUNKhkPBb3dOE1PPl7sFrovZ5fHvhUa1Dmanldv8
+ oL5QHd1A8QxrA2nBCkObPsYPUln4QFPUAdswWgSqiyGJqFcqOymz8uumA==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,114 +83,93 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ajd@linux.ibm.com, anshuman.khandual@arm.com, npiggin@gmail.com, aneesh.kumar@linux.ibm.com, Russell Currey <ruscur@russell.cc>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The Hash MMU already supports XOM (i.e. mmap with PROT_EXEC only)
-through the execute-only pkey.  A PROT_EXEC-only mapping will actually
-map to RX, and then the pkey will be applied on top of it.
+This patch series dumps the command line (including the program parameters=
+) of
+a faulting process to the syslog.
 
-Radix doesn't have pkeys, but it does have execute permissions built-in
-to the MMU, so all we have to do to support XOM is expose it.
+The motivation for this patch is that it's sometimes quite hard to find ou=
+t and
+annoying to not know which program *exactly* faulted when looking at the s=
+yslog.
 
-That's not possible with protection_map being const, so make it RO after
-init instead.
+For example, a dump on parisc shows:
+   do_page_fault() command=3D'cc1' type=3D15 address=3D0x00000000 in libc-=
+2.33.so[f6abb000+184000]
 
-Signed-off-by: Russell Currey <ruscur@russell.cc>
----
-v2: Make protection_map __ro_after_init and set it in an initcall
-(v1 didn't work, I tested before rebasing on Anshuman's patches)
+-> We see the "cc1" compiler crashed, but it would be useful to know which=
+ file was compiled.
+With this patch you will see that cc1 crashed while compiling some haskell=
+ code:
 
-basic test: https://raw.githubusercontent.com/ruscur/junkcode/main/mmap_test.c
+   cc1[13472] cmdline: /usr/lib/gcc/hppa-linux-gnu/12/cc1 -quiet @/tmp/ccR=
+kFSfY -imultilib . -imultiarch hppa-linux-gnu -D USE_MINIINTERPRETER -D NO=
+_REGS -D _HPUX_SOURCE -D NOSMP -D THREADED_RTS -include /build/ghc/ghc-9.0=
+.2/includes/dist-install/build/ghcversion.h -iquote compiler/GHC/Iface -qu=
+iet -dumpdir /tmp/ghc13413_0/ -dumpbase ghc_5.hc -dumpbase-ext .hc -O -Wim=
+plicit -fno-PIC -fwrapv -fno-builtin -fno-strict-aliasing -o /tmp/ghc13413=
+_0/ghc_5.s
 
- arch/powerpc/include/asm/book3s/64/radix.h |  3 +++
- arch/powerpc/include/asm/pgtable.h         |  1 -
- arch/powerpc/mm/fault.c                    | 10 ++++++++++
- arch/powerpc/mm/pgtable.c                  | 16 +++++++++++++++-
- 4 files changed, 28 insertions(+), 2 deletions(-)
+Another example are the glibc testcases which always segfault in "ld.so.1"=
+ with no other info:
 
-diff --git a/arch/powerpc/include/asm/book3s/64/radix.h b/arch/powerpc/include/asm/book3s/64/radix.h
-index 686001eda936..bf316b773d73 100644
---- a/arch/powerpc/include/asm/book3s/64/radix.h
-+++ b/arch/powerpc/include/asm/book3s/64/radix.h
-@@ -19,6 +19,9 @@
- #include <asm/cpu_has_feature.h>
- #endif
- 
-+/* Execute-only page protections, Hash can use RX + execute-only pkey */
-+#define PAGE_EXECONLY	__pgprot(_PAGE_BASE | _PAGE_EXEC)
-+
- /* An empty PTE can still have a R or C writeback */
- #define RADIX_PTE_NONE_MASK		(_PAGE_DIRTY | _PAGE_ACCESSED)
- 
-diff --git a/arch/powerpc/include/asm/pgtable.h b/arch/powerpc/include/asm/pgtable.h
-index 33f4bf8d22b0..3cbb6de20f9d 100644
---- a/arch/powerpc/include/asm/pgtable.h
-+++ b/arch/powerpc/include/asm/pgtable.h
-@@ -60,7 +60,6 @@ extern void paging_init(void);
- void poking_init(void);
- 
- extern unsigned long ioremap_bot;
--extern const pgprot_t protection_map[16];
- 
- /*
-  * kern_addr_valid is intended to indicate whether an address is a valid
-diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
-index 014005428687..887c0cc45ca6 100644
---- a/arch/powerpc/mm/fault.c
-+++ b/arch/powerpc/mm/fault.c
-@@ -270,6 +270,16 @@ static bool access_error(bool is_write, bool is_exec, struct vm_area_struct *vma
- 		return false;
- 	}
- 
-+	if (unlikely(!(vma->vm_flags & VM_READ))) {
-+		/*
-+		 * If we're on Radix, then this could be a read attempt on
-+		 * execute-only memory.  On other MMUs, an "exec-only" page
-+		 * will be given RX flags, so this might be redundant.
-+		 */
-+		if (radix_enabled())
-+			return true;
-+	}
-+
- 	if (unlikely(!vma_is_accessible(vma)))
- 		return true;
- 	/*
-diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
-index 0b2bbde5fb65..6e1a6a999c3c 100644
---- a/arch/powerpc/mm/pgtable.c
-+++ b/arch/powerpc/mm/pgtable.c
-@@ -475,7 +475,7 @@ pte_t *__find_linux_pte(pgd_t *pgdir, unsigned long ea,
- EXPORT_SYMBOL_GPL(__find_linux_pte);
- 
- /* Note due to the way vm flags are laid out, the bits are XWR */
--const pgprot_t protection_map[16] = {
-+static pgprot_t protection_map[16] __ro_after_init = {
- 	[VM_NONE]					= PAGE_NONE,
- 	[VM_READ]					= PAGE_READONLY,
- 	[VM_WRITE]					= PAGE_COPY,
-@@ -494,6 +494,20 @@ const pgprot_t protection_map[16] = {
- 	[VM_SHARED | VM_EXEC | VM_WRITE | VM_READ]	= PAGE_SHARED_X
- };
- 
-+#ifdef CONFIG_PPC_RADIX_MMU
-+static int __init radix_update_protection_map(void)
-+{
-+	if (early_radix_enabled()) {
-+		/* Radix directly supports execute-only page protections */
-+		protection_map[VM_EXEC] = PAGE_EXECONLY;
-+		protection_map[VM_EXEC | VM_SHARED] = PAGE_EXECONLY;
-+	}
-+
-+	return 0;
-+}
-+arch_initcall(radix_update_protection_map);
-+#endif /* CONFIG_PPC_RADIX_MMU */
-+
- #ifdef CONFIG_PPC_BOOK3S_64
- pgprot_t vm_get_page_prot(unsigned long vm_flags)
- {
--- 
+   do_page_fault() command=3D'ld.so.1' type=3D15 address=3D0x565921d8 in l=
+ibc.so[f7339000+1bb000]
+
+-> With the patch you can see it was the "tst-safe-linking-malloc-hugetlb1=
+" testcase:
+
+   ld.so.1[1151] cmdline: /home/gnu/glibc/objdir/elf/ld.so.1 --library-pat=
+h /home/gnu/glibc/objdir:/home/gnu/glibc/objdir/math:/home/gnu/
+        /home/gnu/glibc/objdir/malloc/tst-safe-linking-malloc-hugetlb1
+
+An example of a typical x86 fault shows up as:
+   crash[2326]: segfault at 0 ip 0000561a7969c12e sp 00007ffe97a05630 erro=
+r 6 in crash[561a7969c000+1000]
+   Code: 68 ff ff ff c6 05 19 2f 00 00 01 5d c3 0f 1f 80 00 00 00 00 c3 0f=
+ 1f 80 00 00 ...
+
+-> with this patch you now see the whole command line:
+   crash[2326] cmdline: ./crash test_write_to_page_0
+
+The patches are relatively small, and reuse functions which are used
+to create the output for the /proc/<pid>/cmdline files.
+
+The relevant changes are in patches #1 and #2.
+Patch #3 adds the cmdline dump on x86.
+Patch #4 drops code from arc which now becomes unnecessary as this is done=
+ by generic code.
+
+Helge
+
+=2D--
+
+Changes in v3:
+- require task to be locked by caller, noticed by kernel test robot
+- add parameter names in header files, noticed by kernel test robot
+
+Changes in v2:
+- Don't dump all or parts of the commandline depending on the
+  kptr_restrict sysctl value (suggested by Josh Triplett).
+- Patch sent to more arch mailing lists
+
+Helge Deller (4):
+  proc: Add get_task_cmdline_kernel() function
+  lib/dump_stack: Add dump_stack_print_cmdline() and wire up in
+    dump_stack_print_info()
+  x86/fault: Dump command line of faulting process to syslog
+  arc: Use generic dump_stack_print_cmdline() implementation
+
+ arch/arc/kernel/troubleshoot.c | 24 -----------
+ arch/x86/mm/fault.c            |  2 +
+ fs/proc/base.c                 | 74 +++++++++++++++++++++++-----------
+ include/linux/printk.h         |  5 +++
+ include/linux/proc_fs.h        |  5 +++
+ lib/dump_stack.c               | 34 ++++++++++++++++
+ 6 files changed, 97 insertions(+), 47 deletions(-)
+
+=2D-
 2.37.1
 
