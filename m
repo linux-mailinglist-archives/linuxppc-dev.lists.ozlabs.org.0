@@ -2,82 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8066E58D210
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Aug 2022 04:45:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 942F258D31C
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Aug 2022 07:22:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M1y9l3CZmz3btQ
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Aug 2022 12:45:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M21fp3VZZz3c17
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Aug 2022 15:22:42 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm2 header.b=HSVo8q1Z;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=n/PbKRUm;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=Q45jxuuC;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=russell.cc (client-ip=64.147.123.21; helo=wout5-smtp.messagingengine.com; envelope-from=ruscur@russell.cc; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::22b; helo=mail-lj1-x22b.google.com; envelope-from=krzysztof.kozlowski@linaro.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm2 header.b=HSVo8q1Z;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=n/PbKRUm;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=Q45jxuuC;
 	dkim-atps=neutral
-Received: from wout5-smtp.messagingengine.com (wout5-smtp.messagingengine.com [64.147.123.21])
+Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M1y931kL6z2xHC
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Aug 2022 12:45:10 +1000 (AEST)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-	by mailout.west.internal (Postfix) with ESMTP id 667243200911;
-	Mon,  8 Aug 2022 22:45:05 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute3.internal (MEProxy); Mon, 08 Aug 2022 22:45:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=cc
-	:cc:content-transfer-encoding:date:date:from:from:in-reply-to
-	:message-id:mime-version:reply-to:sender:subject:subject:to:to;
-	 s=fm2; t=1660013104; x=1660099504; bh=+h27m9j4U0O4lNS29/OuGeIDE
-	XTqDgqs45fl/9vYv1k=; b=HSVo8q1Zia047lfz9kMOIq73Xzm19Ke72aF8LRDOz
-	VobtqBmQQiKkoDM1XrFIBPvFJHGYY+9RdoppF65dTuTBAYkGAOR9DqXuXpre9F7q
-	CYgP2K8OwUv+j/uJvIF5DvO4w5R4sfX4vcEYJOyvB24XvlSC0Cq2KIYPYiLKqtQz
-	d93AHjbyrZOlxU1ah9HlQbqb4Yi/EzlvPW9tEPWGtFjAF9UlKrDR1T8Jb346FTPG
-	/lfzMzl9Tu4itYa4Zpoi4AaQRyYV6B+6dOUy0Q/r/8hN5qj9Yve9g/zV0yNuFpAd
-	Wy1WfmCLO8UZJ8azMNc8UfbH5D1dOcyrbox9jkmEyGNsA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:message-id
-	:mime-version:reply-to:sender:subject:subject:to:to:x-me-proxy
-	:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1660013104; x=1660099504; bh=+h27m9j4U0O4lNS29/OuGeIDEXTqDgqs45f
-	l/9vYv1k=; b=n/PbKRUm9+0NwVzM7jCAc9/BYFWCaWlP1MsbwGUZkf911az9yZv
-	cRw2FqiLFThWc+xnL17U4wbzAyF26xWjlH9miyLzPjyrJlHAhx5yp/3WA7MDTHfI
-	pfOqCGiAHmefxQ7tqSk361QYpw4QVHw1ueLCiqc+0EcFGdBgPkpezI5ArXVNlx7B
-	kGU4tpXuT+1+kk0JyiWtZtniXc5lldYJOGynGnuM1tlIB1eFaCXv0DXZ3T+Jn+B9
-	1XbC+koxc8GodQ6ve3fhZx7n20bIhDKtJ1u6e9Jhn46yQuQMy9NuGbU56rza8Cf8
-	M9kmmz9MSJ4+HUyY2FS+yZE6ldgDj6+KFrQ==
-X-ME-Sender: <xms:L8rxYtpac2Y5WNUnD4dBU5GWYX80W1hAcz_Bkn6uvHYYQU3qx2zzuA>
-    <xme:L8rxYvqmq1fHj1gt4jnkBH1iLAmu5dXeci_gLjc-kUdrzhw6wR2f6yefB9jBRfF5y
-    fqM4x07I0SeqYl_zQ>
-X-ME-Received: <xmr:L8rxYqMM8z08dUgTUZTNqshbn80k5R9WjYvgnwWu7DqNbFBL9MR3dRqj1j7COWbh_I9e0tVA34jFb4WOlOHRDDnX_ZoV2GgSPCev4luJt_XDtw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrvdefledgieefucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucgfrhhlucfvnfffucdludehmdenucfjughrpefhvf
-    evufffkffoggfgsedtkeertdertddtnecuhfhrohhmpeftuhhsshgvlhhlucevuhhrrhgv
-    hicuoehruhhstghurhesrhhushhsvghllhdrtggtqeenucggtffrrghtthgvrhhnpeevje
-    egieelueeijedvgffhjeevheehfffgjeevffeihedttdevveejffdttefgudenucffohhm
-    rghinhepghhithhhuhgsrdgtohhmnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
-    hmpehmrghilhhfrhhomheprhhushgtuhhrsehruhhsshgvlhhlrdgttg
-X-ME-Proxy: <xmx:MMrxYo4__gJjGG5C4-X1yBr9Zw8A8Y3SkSqmWi5L7HEFBJZ5s9UXJQ>
-    <xmx:MMrxYs5nhqpC068abzZBKcsJ20Tce-7TwCQqjySUidaZ6jfLZnvWFA>
-    <xmx:MMrxYgjjSzPZGzWMKbnkmJPjOBI8eZUzzpAPcMPzv0aZIJzsNhkSjg>
-    <xmx:MMrxYrbjlPUP0hvw5qbVLPsLym2d6Rn_vNgL_ilo63SQtiaxurZuSQ>
-Feedback-ID: i4421424f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 8 Aug 2022 22:45:01 -0400 (EDT)
-From: Russell Currey <ruscur@russell.cc>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3] powerpc/mm: Support execute-only memory on the Radix MMU
-Date: Tue,  9 Aug 2022 12:44:33 +1000
-Message-Id: <20220809024433.17644-1-ruscur@russell.cc>
-X-Mailer: git-send-email 2.37.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M21f75vgpz2xjr
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Aug 2022 15:22:05 +1000 (AEST)
+Received: by mail-lj1-x22b.google.com with SMTP id s9so11914103ljs.6
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 08 Aug 2022 22:22:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=w/IFf/K/9OkURHHOs9WHITZ5E+GducqFMehZENmcMms=;
+        b=Q45jxuuCA3JYTRwNdbj8vKCeun3j9XXgjpX+PbR9MLO9z73W9A+o+9UIympLc/+Yrw
+         awg9LkC1NBelWb+6zWghPSRUAM1OGNMqVnaHivQie203kYO6tgIw6ermK1m+ZNMp+dbK
+         CKvXXs0uDwNsMsufqOZo59ZZG5l7uXkk1QIjSRJmu3EkdB9kaA16qyy2HjtIVW7GRAE1
+         0g3XAjMaPKBOakKHQSfOGuD15dVATMVncTwRIj2Iuh831tepvdNcVjlpXkShKsy4D8kI
+         igb6EVvXurEZcPdc2kdPuo7M1yjdAYMZsvbnzNAgMHgFyXQU97gmFVpIMvmT/YDPM6ml
+         gLjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=w/IFf/K/9OkURHHOs9WHITZ5E+GducqFMehZENmcMms=;
+        b=1wb51CHhB5W/zWYc6yAJuJfoGaOamo6Sk9kXGyN2vhUdTya7RCETgXrtzSgRwa9zn+
+         yrqKXfc8q++694iukVuZOfsC/DLzMoPsEJI2GFkPWI5nYoF4pPj6tN6zBW3Y5MsuNNt8
+         cayT55YIQZNP8dELGn6ngBnTk6jpAKriR/AQ9NhjiiWj7tFYWfVZO/lC23Eie/w0KJ1F
+         8oRC+ltKo1mE6OsuRmjidA70K3R99eUcBJ2ySZ06+0vigdV5SFHbL9UarKCNWb2XkwVL
+         4n4Cdgq7tQ8v+w2pAR0zt0hGkjSOcAQjFibwOcv05hv8o6MFJT3jcJKRpqpIxJzMeMHi
+         O4ZQ==
+X-Gm-Message-State: ACgBeo1pqIclnMG6hSUQYpkjYYzJ2lSrwEUCK3DIcXzBrR09xqjkL64Z
+	pHyndJPLZzCaNn3bDN7r1helrw==
+X-Google-Smtp-Source: AA6agR4nyxXV6UENxnka0n+jYHLHQ8Snp/LpQLG2xkyn/vQhrsmbZO2MAsK8dD6JtMDOLbg2HkoREg==
+X-Received: by 2002:a2e:918d:0:b0:25e:c884:6a96 with SMTP id f13-20020a2e918d000000b0025ec8846a96mr4178935ljg.157.1660022516960;
+        Mon, 08 Aug 2022 22:21:56 -0700 (PDT)
+Received: from [192.168.1.39] ([83.146.140.105])
+        by smtp.gmail.com with ESMTPSA id cf40-20020a056512282800b0048a8f119e7esm1624381lfb.233.2022.08.08.22.21.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 08 Aug 2022 22:21:56 -0700 (PDT)
+Message-ID: <a387164a-d42c-fc1e-529c-6000aa2db33e@linaro.org>
+Date: Tue, 9 Aug 2022 08:21:54 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Subject: Re: [PATCH v4 3/8] dt-bindings: clock: Add ids for Lynx 10g PLLs
+Content-Language: en-US
+To: Sean Anderson <sean.anderson@seco.com>, Vinod Koul <vkoul@kernel.org>,
+ Kishon Vijay Abraham I <kishon@ti.com>, linux-phy@lists.infradead.org
+References: <20220804220602.477589-1-sean.anderson@seco.com>
+ <20220804220602.477589-4-sean.anderson@seco.com>
+ <bee3d724-1efb-d5c7-6698-c98a198e69fd@linaro.org>
+ <b97f113b-f429-c8c5-96ee-7f1a68e16117@seco.com>
+ <6aac8854-599e-c43f-0a49-0650fce91179@linaro.org>
+ <04b08e1c-4af2-581e-7be5-96c5b7b00ae5@seco.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <04b08e1c-4af2-581e-7be5-96c5b7b00ae5@seco.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,79 +86,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ajd@linux.ibm.com, anshuman.khandual@arm.com, Russell Currey <ruscur@russell.cc>, npiggin@gmail.com, aneesh.kumar@linux.ibm.com, linux-hardening@vger.kernel.org
+Cc: devicetree@vger.kernel.org, Madalin Bucur <madalin.bucur@nxp.com>, Stephen Boyd <sboyd@kernel.org>, Michael Turquette <mturquette@baylibre.com>, Rob Herring <robh+dt@kernel.org>, Camelia Alexandra Groza <camelia.groza@nxp.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Ioana Ciornei <ioana.ciornei@nxp.com>, linuxppc-dev@lists.ozlabs.org, linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The Hash MMU already supports XOM (i.e. mmap with PROT_EXEC only)
-through the execute-only pkey.  A PROT_EXEC-only mapping will actually
-map to RX, and then the pkey will be applied on top of it.
+On 08/08/2022 18:16, Sean Anderson wrote:
+> 
+>> This entry here is not
+>> parsed for any tools and only sometimes people look at it. The questions
+>> are directed via entry in maintainers file or via git history, so you
+>> can put company email just there.
+> 
+> As I understand it, the email is simply informative. There are literally
+> hundreds of examples of mixing a "personal" copyright with a company email.
+> It is easy to find if you grep. If you are so opposed to it, then I will
+> remove the email and simply use my name.
 
-Radix doesn't have pkeys, but it does have execute permissions built-in
-to the MMU, so all we have to do to support XOM is expose it.
+No, no problem for me.
 
-Signed-off-by: Russell Currey <ruscur@russell.cc>
----
-v3: Incorporate Aneesh's suggestions, leave protection_map untouched
-Basic test: https://github.com/ruscur/junkcode/blob/main/mmap_test.c
+> 
+>>>
+>>>>> + */
+>>>>> +
+>>>>> +#ifndef __DT_BINDINGS_CLK_LYNX_10G_H
+>>>>> +#define __DT_BINDINGS_CLK_LYNX_10G_H
+>>>>> +
+>>>>> +#define LYNX10G_CLKS_PER_PLL 2
+>>>>> +
+>>>>> +#define LYNX10G_PLLa(a)		((a) * LYNX10G_CLKS_PER_PLL)
+>>>>> +#define LYNX10G_PLLa_EX_DLY(a)	((a) * LYNX10G_CLKS_PER_PLL + 1)
+>>>>
+>>>> These do not look like proper IDs for clocks for bindings. Numbering
+>>>> starts from 0 or 1 and any "a" needs to be clearly explained. What do
+>>>> you bind here?
+>>>
+>>> This matches "a" is the index of the PLL. E.g. registers PLL1RSTCTL etc.
+>>> This matches the notation used in the reference manual.
+>>
+>> This is a file for bindings, not for storing register values. There is
+>> no single need to store register values (offsets, indexes) as bindings
+>> as it is not appropriate. Therefore if you do not use it as an ID, just
+>> remove the bindings header.
+> 
+> This *is* just for IDs, as stated in the commit message. The above example
+> was only to illustrate that the clock controlled via the PLL1RSTCTL register
+> (among others) would have an ID of LYNX10G_PLLa(0).
+> 
+> If you doubt it, review the driver.
 
- arch/powerpc/include/asm/book3s/64/pgtable.h |  2 ++
- arch/powerpc/mm/book3s64/pgtable.c           | 11 +++++++++--
- arch/powerpc/mm/fault.c                      |  6 +++++-
- 3 files changed, 16 insertions(+), 3 deletions(-)
+Indeed, thanks. Except the driver, where is the DTS user of these
+bindings? It's neither in bindings example, nor in the DTS patches.
 
-diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
-index 392ff48f77df..486902aff040 100644
---- a/arch/powerpc/include/asm/book3s/64/pgtable.h
-+++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
-@@ -151,6 +151,8 @@
- #define PAGE_COPY_X	__pgprot(_PAGE_BASE | _PAGE_READ | _PAGE_EXEC)
- #define PAGE_READONLY	__pgprot(_PAGE_BASE | _PAGE_READ)
- #define PAGE_READONLY_X	__pgprot(_PAGE_BASE | _PAGE_READ | _PAGE_EXEC)
-+/* Radix only, Hash uses PAGE_READONLY_X + execute-only pkey instead */
-+#define PAGE_EXECONLY	__pgprot(_PAGE_BASE | _PAGE_EXEC)
- 
- /* Permission masks used for kernel mappings */
- #define PAGE_KERNEL	__pgprot(_PAGE_BASE | _PAGE_KERNEL_RW)
-diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
-index 7b9966402b25..62f63d344596 100644
---- a/arch/powerpc/mm/book3s64/pgtable.c
-+++ b/arch/powerpc/mm/book3s64/pgtable.c
-@@ -553,8 +553,15 @@ EXPORT_SYMBOL_GPL(memremap_compat_align);
- 
- pgprot_t vm_get_page_prot(unsigned long vm_flags)
- {
--	unsigned long prot = pgprot_val(protection_map[vm_flags &
--					(VM_READ|VM_WRITE|VM_EXEC|VM_SHARED)]);
-+	unsigned long prot;
-+
-+	/* Radix supports execute-only, but protection_map maps X -> RX */
-+	if (radix_enabled() && ((vm_flags & (VM_READ|VM_WRITE|VM_EXEC)) == VM_EXEC)) {
-+		prot = pgprot_val(PAGE_EXECONLY);
-+	} else {
-+		prot = pgprot_val(protection_map[vm_flags &
-+				  (VM_READ|VM_WRITE|VM_EXEC|VM_SHARED)]);
-+	}
- 
- 	if (vm_flags & VM_SAO)
- 		prot |= _PAGE_SAO;
-diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
-index 014005428687..59e4cbcf3109 100644
---- a/arch/powerpc/mm/fault.c
-+++ b/arch/powerpc/mm/fault.c
-@@ -270,7 +270,11 @@ static bool access_error(bool is_write, bool is_exec, struct vm_area_struct *vma
- 		return false;
- 	}
- 
--	if (unlikely(!vma_is_accessible(vma)))
-+	/* On Radix, a read fault could be from PROT_NONE or PROT_EXEC */
-+	if (unlikely(radix_enabled() && !(vma->vm_flags & VM_READ)))
-+		return true;
-+	/* Check for a PROT_NONE fault on other MMUs */
-+	else if (unlikely(!vma_is_accessible(vma)))
- 		return true;
- 	/*
- 	 * We should ideally do the vma pkey access check here. But in the
--- 
-2.37.1
-
+Best regards,
+Krzysztof
