@@ -2,92 +2,86 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5796758D3C3
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Aug 2022 08:29:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90BDB58D6FE
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Aug 2022 12:00:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M237y22CTz3byL
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Aug 2022 16:29:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M27qT3XY3z3c17
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Aug 2022 20:00:37 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm2 header.b=YA5qru7B;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=nsxri0MG;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hlfs+ppM;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=russell.cc (client-ip=64.147.123.19; helo=wout3-smtp.messagingengine.com; envelope-from=ruscur@russell.cc; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm2 header.b=YA5qru7B;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=nsxri0MG;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hlfs+ppM;
 	dkim-atps=neutral
-Received: from wout3-smtp.messagingengine.com (wout3-smtp.messagingengine.com [64.147.123.19])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M237H6t6Kz2xrj
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Aug 2022 16:28:59 +1000 (AEST)
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-	by mailout.west.internal (Postfix) with ESMTP id 18897320091D;
-	Tue,  9 Aug 2022 02:28:54 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute1.internal (MEProxy); Tue, 09 Aug 2022 02:28:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=cc
-	:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:sender:subject:subject:to:to; s=fm2; t=1660026533; x=
-	1660112933; bh=rw5ohL1Fb7WRUvMikHG5znUujHZ0dzXHzZVKFG/zEMI=; b=Y
-	A5qru7B7rPnEr3NcWD7TTuMTPlTYizmUOWb9oZ/tU+CA2AhPmDH9kNYCpdbIIDmx
-	7B8PyXg3nGr2siao9djPrl55FkbPKuIOD4N/mvNuy1UHVCCoMt7q0XxlkyT1zfCm
-	xdD3N9g+LpXMfxE/FUwZF8XJP6Ipt7Ml7muEmY1fWINQRkL9398BxRf95boFNwc1
-	ronswjF4X7lUrPYqb/peK6fRLfGAopGiZK3U/oyj0sj7H0UsO1qWsorXM3s3Q/9x
-	S7SDf0yzVLF5Rjr5K2uYOzWy98A2dRHKfWpb2J+XbO0sJ+OzrpTbkHgZmutU5dzK
-	an+TVSwvoFphljRGVWwxg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1660026533; x=
-	1660112933; bh=rw5ohL1Fb7WRUvMikHG5znUujHZ0dzXHzZVKFG/zEMI=; b=n
-	sxri0MGfDjk8ndtrAVcH/tHdnaErGQqecMOFTpbSH1W1gg/2dNIL2BdSJ5Cz+2xh
-	EbCXu0s3RX3vQ70vans6YaY22TwD34PgO/EfStCEIP+/9ax1B5WgqjZqO9sIytNo
-	Li+MEaZwRczFc/7fHwKHkRmGiD4HwutQf5CH0PP7Tn1UC8bwD7D2PQxlOyNYEeET
-	hb24hPIO5pPJTzlxvG7UijE6yfM5XZ7KNf4enMsKMpdmUgAYl5IZSUlw4QiiSSVk
-	/2PgWgRwWo/Zr7dmQ7Nb6JTjMtSSJ4T3qR2xhZ92YauTO/BExOAZy32ksfQk6i7I
-	AOiKqW+9X0EZSRr0virkg==
-X-ME-Sender: <xms:pf7xYqNfyqkl_GYDmRU_V-OfaLYwLYBO0qC_8xP7LDJ6ktuUYoXD5A>
-    <xme:pf7xYo9GUemighTwD2rdAbKGJiO2qx91K8oFv8DC5sKcc6zPlAPR2IDo1alQNLye4
-    mcVflwmz-W-N-U2Cw>
-X-ME-Received: <xmr:pf7xYhTdM2J1Jm8zLOxCWTRtCCru3PuCGfqXRpq4EvJsJcjA0B5VGurqI_KnYE1GFM7jMYp61ngr1Qbgo81E5bLF_lOGqmNAIwqyCc-lcrUbIA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrvdefledguddtlecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enfghrlhcuvffnffculdduhedmnecujfgurhepkffuhffvveffjghftgfgfgggsehtqher
-    tddtreejnecuhfhrohhmpeftuhhsshgvlhhlucevuhhrrhgvhicuoehruhhstghurhesrh
-    hushhsvghllhdrtggtqeenucggtffrrghtthgvrhhnpeekuedtieffgefffeffffelkeeh
-    ffdtleeulefhieefhfdvtdekkeevtdelkeegueenucffohhmrghinhepghhithhhuhgsrd
-    gtohhmnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhep
-    rhhushgtuhhrsehruhhsshgvlhhlrdgttg
-X-ME-Proxy: <xmx:pf7xYquFCNTj6eyPwg61m5NDPF6bHOd8NPzHZe0FPIvKWpSgUOYtJQ>
-    <xmx:pf7xYidQoK-YuED2Kysbi7xtb5KWn2SMdiUIhrKFA_CWTM7uREfS-g>
-    <xmx:pf7xYu3GHwa9iBpuEUFnUesYNaL4mcdjLCseeKf3qn5sFdUk1Po-gg>
-    <xmx:pf7xYqTzatKPnsUoownHAGhOBbUxdAGIXfb5vBAt_i3vFs2rJyGhRg>
-Feedback-ID: i4421424f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 9 Aug 2022 02:28:50 -0400 (EDT)
-Message-ID: <b2533952bd8c23781fe62019a161a819fae4af71.camel@russell.cc>
-Subject: Re: [PATCH v3] powerpc/mm: Support execute-only memory on the Radix
- MMU
-From: Russell Currey <ruscur@russell.cc>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	"linuxppc-dev@lists.ozlabs.org"
-	 <linuxppc-dev@lists.ozlabs.org>
-Date: Tue, 09 Aug 2022 16:28:48 +1000
-In-Reply-To: <a92bd3e4-a351-02a4-12df-bb08d489327f@csgroup.eu>
-References: <20220809024433.17644-1-ruscur@russell.cc>
-	 <a92bd3e4-a351-02a4-12df-bb08d489327f@csgroup.eu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4 (3.44.4-1.fc36) 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M27pl3kxLz2xKf
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Aug 2022 19:59:58 +1000 (AEST)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2799AGdS018331;
+	Tue, 9 Aug 2022 09:59:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=A8bozjHr3yqsC2Dp/BQcPwvME2CwrFbox5vOuhfwRfg=;
+ b=hlfs+ppMEnwC1ZN0JIgTqxtKXjMRfkZ2/3EbhFmbKewCyTyZ4F2UreRpkG7Yvag0i3PZ
+ OjooWdFRnTO1zufymSmxklDMfDq9YN2LIbcP4nx9ddWTkNrG+aPzSENVVcR7CV47uPFt
+ FJ55wFOF5/7kvJRweZFpAQWnl9KInP0unOX3c0xF0BQiiKk416z16GTNvPZG+Mvaygbq
+ DsVKYKPce17rWy0n5JMVvyVwPadn0OtZlmBLnxgf9rDSyTYoQKyGybQh2rHjecELS4hX
+ VeeW/7KLnvX1l2jmsn60pw39HKX0zFO0m/wGxusrgr7B1azWifcqfxUPY5TjZTPp7Ion NA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3hukyead31-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 09 Aug 2022 09:59:40 +0000
+Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2799DtT5030353;
+	Tue, 9 Aug 2022 09:59:39 GMT
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3hukyead2e-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 09 Aug 2022 09:59:39 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+	by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2799pMej017568;
+	Tue, 9 Aug 2022 09:59:37 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+	by ppma06ams.nl.ibm.com with ESMTP id 3hu4rp8wdg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 09 Aug 2022 09:59:37 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+	by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2799v7F519661264
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 9 Aug 2022 09:57:07 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4274842045;
+	Tue,  9 Aug 2022 09:59:35 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7358F4203F;
+	Tue,  9 Aug 2022 09:59:33 +0000 (GMT)
+Received: from li-NotSettable.ibm.com.com (unknown [9.43.41.164])
+	by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Tue,  9 Aug 2022 09:59:33 +0000 (GMT)
+From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH] powerpc64/ftrace: Fix ftrace for clang builds
+Date: Tue,  9 Aug 2022 15:29:07 +0530
+Message-Id: <20220809095907.418764-1-naveen.n.rao@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: jS4ov5WaXGjJrLTc7RdkWG3-KsQCZvu1
+X-Proofpoint-GUID: QbZxPyp7-YKt7BuIPI_3i26laaMzAv2b
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-08-09_03,2022-08-09_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 impostorscore=0
+ bulkscore=0 lowpriorityscore=0 spamscore=0 clxscore=1015 suspectscore=0
+ mlxscore=0 priorityscore=1501 mlxlogscore=856 adultscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2206140000
+ definitions=main-2208090041
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,185 +93,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "ajd@linux.ibm.com" <ajd@linux.ibm.com>, "anshuman.khandual@arm.com" <anshuman.khandual@arm.com>, "npiggin@gmail.com" <npiggin@gmail.com>, "linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>, "aneesh.kumar@linux.ibm.com" <aneesh.kumar@linux.ibm.com>
+Cc: Nick Desaulniers <ndesaulniers@google.com>, llvm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, Ondrej Mosnacek <omosnacek@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2022-08-09 at 05:51 +0000, Christophe Leroy wrote:
-> Le 09/08/2022 =C3=A0 04:44, Russell Currey a =C3=A9crit=C2=A0:
-> > The Hash MMU already supports XOM (i.e. mmap with PROT_EXEC only)
-> > through the execute-only pkey.=C2=A0 A PROT_EXEC-only mapping will
-> > actually
-> > map to RX, and then the pkey will be applied on top of it.
->=20
-> I don't think XOM is a commonly understood accronym. Maybe the first=20
-> time you use it it'd be better to say something like:
->=20
-> The Hash MMU already supports execute-only memory (XOM)
+Clang doesn't support -mprofile-kernel ABI, so guard the checks against
+CONFIG_DYNAMIC_FTRACE_WITH_REGS, rather than the elf ABI version.
 
-Yes, that's better.
+Fixes: 23b44fc248f420 ("powerpc/ftrace: Make __ftrace_make_{nop/call}() common to PPC32 and PPC64")
+Reported-by: Nick Desaulniers <ndesaulniers@google.com>
+Reported-by: Ondrej Mosnacek <omosnacek@gmail.com>
+Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+---
+ arch/powerpc/kernel/trace/ftrace.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
->=20
-> When you say that Hash MMU supports it through the execute-only pkey,
-> does it mean that it is taken into account automatically at mmap
-> time,=20
-> or does the userspace app has to do something special to use the key
-> ?=20
-> If it is the second, it means that depending on whether you are radix
-> or=20
-> not, you must do something different ? Is that expected ?
+diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/trace/ftrace.c
+index cb158c32b50b99..7b85c3b460a3c0 100644
+--- a/arch/powerpc/kernel/trace/ftrace.c
++++ b/arch/powerpc/kernel/trace/ftrace.c
+@@ -393,11 +393,11 @@ int ftrace_make_nop(struct module *mod,
+  */
+ static bool expected_nop_sequence(void *ip, ppc_inst_t op0, ppc_inst_t op1)
+ {
+-	if (IS_ENABLED(CONFIG_PPC64_ELF_ABI_V1))
++	if (IS_ENABLED(CONFIG_DYNAMIC_FTRACE_WITH_REGS))
++		return ppc_inst_equal(op0, ppc_inst(PPC_RAW_NOP()));
++	else
+ 		return ppc_inst_equal(op0, ppc_inst(PPC_RAW_BRANCH(8))) &&
+ 		       ppc_inst_equal(op1, ppc_inst(PPC_INST_LD_TOC));
+-	else
+-		return ppc_inst_equal(op0, ppc_inst(PPC_RAW_NOP()));
+ }
+ 
+ static int
+@@ -412,7 +412,7 @@ __ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
+ 	if (copy_inst_from_kernel_nofault(op, ip))
+ 		return -EFAULT;
+ 
+-	if (IS_ENABLED(CONFIG_PPC64_ELF_ABI_V1) &&
++	if (!IS_ENABLED(CONFIG_DYNAMIC_FTRACE_WITH_REGS) &&
+ 	    copy_inst_from_kernel_nofault(op + 1, ip + 4))
+ 		return -EFAULT;
+ 
 
-It happens at mmap time, see do_mmap() in mm/mmap.c (and similar for
-mprotect).  That calls into execute_only_pkey() which can return
-something on x86 & Hash, and if it does that pkey gets used.  The
-userspace process doesn't have to do anything, it's transparent.  So
-there's no difference in program behaviour switching between Hash/Radix
-- at least in the basic cases I've tested.
+base-commit: ff1ed171e05c971652a0ede3d716997de8ee41c9
+-- 
+2.37.1
 
->=20
-> >=20
-> > Radix doesn't have pkeys, but it does have execute permissions
-> > built-in
-> > to the MMU, so all we have to do to support XOM is expose it.
-> >=20
-> > Signed-off-by: Russell Currey <ruscur@russell.cc>
-> > ---
-> > v3: Incorporate Aneesh's suggestions, leave protection_map
-> > untouched
-> > Basic test:
-> > https://github.com/ruscur/junkcode/blob/main/mmap_test.c
-> >=20
-> > =C2=A0 arch/powerpc/include/asm/book3s/64/pgtable.h |=C2=A0 2 ++
-> > =C2=A0 arch/powerpc/mm/book3s64/pgtable.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 11 +++++++++--
-> > =C2=A0 arch/powerpc/mm/fault.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 |=C2=A0 6 +++++-
-> > =C2=A0 3 files changed, 16 insertions(+), 3 deletions(-)
-> >=20
-> > diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h
-> > b/arch/powerpc/include/asm/book3s/64/pgtable.h
-> > index 392ff48f77df..486902aff040 100644
-> > --- a/arch/powerpc/include/asm/book3s/64/pgtable.h
-> > +++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
-> > @@ -151,6 +151,8 @@
-> > =C2=A0 #define PAGE_COPY_X=C2=A0=C2=A0=C2=A0__pgprot(_PAGE_BASE | _PAGE=
-_READ |
-> > _PAGE_EXEC)
-> > =C2=A0 #define PAGE_READONLY=C2=A0__pgprot(_PAGE_BASE | _PAGE_READ)
-> > =C2=A0 #define PAGE_READONLY_X=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0__pgprot(_PAGE_BASE | _PAGE_READ |
-> > _PAGE_EXEC)
-> > +/* Radix only, Hash uses PAGE_READONLY_X + execute-only pkey
-> > instead */
-> > +#define PAGE_EXECONLY=C2=A0=C2=A0__pgprot(_PAGE_BASE | _PAGE_EXEC)
-> > =C2=A0=20
-> > =C2=A0 /* Permission masks used for kernel mappings */
-> > =C2=A0 #define PAGE_KERNEL=C2=A0=C2=A0=C2=A0__pgprot(_PAGE_BASE | _PAGE=
-_KERNEL_RW)
-> > diff --git a/arch/powerpc/mm/book3s64/pgtable.c
-> > b/arch/powerpc/mm/book3s64/pgtable.c
-> > index 7b9966402b25..62f63d344596 100644
-> > --- a/arch/powerpc/mm/book3s64/pgtable.c
-> > +++ b/arch/powerpc/mm/book3s64/pgtable.c
-> > @@ -553,8 +553,15 @@ EXPORT_SYMBOL_GPL(memremap_compat_align);
-> > =C2=A0=20
-> > =C2=A0 pgprot_t vm_get_page_prot(unsigned long vm_flags)
-> > =C2=A0 {
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0unsigned long prot =3D pgpro=
-t_val(protection_map[vm_flags &
-> > -
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0(VM_READ|VM_WRITE|VM_EXEC|VM_
-> > SHARED)]);
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0unsigned long prot;
-> > +
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/* Radix supports execute-on=
-ly, but protection_map maps X -
-> > > RX */
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (radix_enabled() && ((vm_=
-flags &
-> > (VM_READ|VM_WRITE|VM_EXEC)) =3D=3D VM_EXEC)) {
->=20
-> Maybe use VM_ACCESS_FLAGS ?
-
-I was looking for something like that but only checked powerpc, thanks.
-
->=20
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0prot =3D pgprot_val(PAGE_EXECONLY);
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0} else {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0prot =3D pgprot_val(protection_map[vm_flags &
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
-> > (VM_READ|VM_WRITE|VM_EXEC|VM_SHARED)]);
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
-> > =C2=A0=20
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (vm_flags & VM_SAO)
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0prot |=3D _PAGE_SAO;
-> > diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
-> > index 014005428687..59e4cbcf3109 100644
-> > --- a/arch/powerpc/mm/fault.c
-> > +++ b/arch/powerpc/mm/fault.c
-> > @@ -270,7 +270,11 @@ static bool access_error(bool is_write, bool
-> > is_exec, struct vm_area_struct *vma
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0return false;
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
-> > =C2=A0=20
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (unlikely(!vma_is_accessi=
-ble(vma)))
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/* On Radix, a read fault co=
-uld be from PROT_NONE or
-> > PROT_EXEC */
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (unlikely(radix_enabled()=
- && !(vma->vm_flags &
-> > VM_READ)))
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0return true;
->=20
-> Why do you need the radix_enabled() here ?
-> Even if it doesn't fault directly, reading a non readable area is
-> still=20
-> an error and should be handled as such, even on hardware that will
-> not=20
-> generate a fault for it at the first place. So I'd just do:
->=20
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (!(vma->vm_flags & VM_=
-READ)))
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0return true;
->=20
-
-I don't think we need it, just concerned I might break something.  I
-can do that.
-
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/* Check for a PROT_NONE fau=
-lt on other MMUs */
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0else if (unlikely(!vma_is_ac=
-cessible(vma)))
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0return true;
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/*
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * We should ideally do=
- the vma pkey access check here. But
-> > in the
->=20
-> Don't use an if/else construct, there is no other 'else' in that=20
-> function, or in similar functions like bad_kernel_fault() for
-> instance.
->=20
-> So leave the !vma_is_accessible(vma) untouched and add your check as
-> a=20
-> standalone check before or after it.
-
-I think checking vma_is_accessible(vma) is redundant if we're checking
-for a read fault.  It doesn't satisfy the Radix exec-only case because
-PROT_EXEC will be set, but as far as I can tell other MMUs don't have a
-no-read mode other than PROT_NONE.  Unless I'm missing something,
-checking if PROT_READ is there should be enough.
