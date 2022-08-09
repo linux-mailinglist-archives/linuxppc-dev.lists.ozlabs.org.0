@@ -1,101 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDE9158D147
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Aug 2022 02:16:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5057258D186
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Aug 2022 02:55:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M1tsT6Bbhz3bpW
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Aug 2022 10:16:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M1vky0zXnz3c1n
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Aug 2022 10:55:54 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Bixvy6SZ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm2 header.b=CzGTGTgK;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=5L8V7bmU;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=rmclure@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=russell.cc (client-ip=64.147.123.21; helo=wout5-smtp.messagingengine.com; envelope-from=ruscur@russell.cc; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Bixvy6SZ;
+	dkim=pass (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm2 header.b=CzGTGTgK;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=5L8V7bmU;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from wout5-smtp.messagingengine.com (wout5-smtp.messagingengine.com [64.147.123.21])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M1trj3cCrz2xHH
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Aug 2022 10:15:48 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2790EIAb022147;
-	Tue, 9 Aug 2022 00:15:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
- mime-version : subject : from : in-reply-to : date : cc :
- content-transfer-encoding : message-id : references : to; s=pp1;
- bh=LQMQ8gLGcAPHuHclNQJxodSdscGpgrSIJRmqvc3L1VQ=;
- b=Bixvy6SZ0wuunxQNvplpc4QAKOU623MmUpd9EqlUJufs1VdXWaD8EItlNK7aeoDrc8wR
- y4ALBR+gkc4yBY0dHiJv7lRR9eq/d0p77vNbsXAGjwfdSfatU1jnwrWpeuirjBSG2Xij
- DVA6SWghWD5aggLb4NBbL7A4N5IUtV+STOmrV/sDcGadgrQlx2YgbPs061VqHngdXvdi
- 24GPLVgAuYE24LHwfjtM3wmz8aliN16dFETFHXkq4WIxujFNNON1qt8833J4VPCGFyGp
- BZ1DhtRhvC3sNZIMksSywqmo+KquS3gmNJzbMR4KaFveUJzK6DuEwmtju/IOqYqutdjC pA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3hucutg0tb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 09 Aug 2022 00:15:38 +0000
-Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2790FcRH028160;
-	Tue, 9 Aug 2022 00:15:38 GMT
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3hucutg0sd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 09 Aug 2022 00:15:38 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-	by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 27907BZ9023315;
-	Tue, 9 Aug 2022 00:15:36 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
-	by ppma04ams.nl.ibm.com with ESMTP id 3hsfx8trh2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 09 Aug 2022 00:15:36 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
-	by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2790FXA131261082
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 9 Aug 2022 00:15:33 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 95A7CA4060;
-	Tue,  9 Aug 2022 00:15:33 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3F8A8A405C;
-	Tue,  9 Aug 2022 00:15:33 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Tue,  9 Aug 2022 00:15:33 +0000 (GMT)
-Received: from smtpclient.apple (haven.au.ibm.com [9.192.254.114])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 0A491600EE;
-	Tue,  9 Aug 2022 10:15:30 +1000 (AEST)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.1\))
-Subject: Re: [PATCH v2 01/14] powerpc: Adopt SYSCALL_DEFINE for arch-specific
- syscall handlers
-From: Rohan McLure <rmclure@linux.ibm.com>
-In-Reply-To: <83ed398f-ce1b-029f-2788-a4e74af5ffa5@csgroup.eu>
-Date: Tue, 9 Aug 2022 10:15:29 +1000
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M1vkG4ZvWz2xGv
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Aug 2022 10:55:18 +1000 (AEST)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+	by mailout.west.internal (Postfix) with ESMTP id 04EED320091E;
+	Mon,  8 Aug 2022 20:55:15 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute2.internal (MEProxy); Mon, 08 Aug 2022 20:55:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=cc
+	:cc:content-transfer-encoding:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:sender:subject:subject:to:to; s=fm2; t=1660006515; x=
+	1660092915; bh=6xntsoaAiy5Smvdj0weA8UbmtSnD0dZE3iKSdHF1N4E=; b=C
+	zGTGTgKLC97pe8QZWEdtgaoYG14VzcA0ed6KrVtZxxVarLesCLFBzX2V4FlHY8Bm
+	q0qbuKCd+Kl6XBBqyFZ3HfHTO+6L4pZF4xVOVFtN4qQ8UC1NjKkJxG/AmMBo1LPG
+	YOYyOMJhco/b3NYY+M/zRY9kG8mF6K6WBX2Q7s61qXKEZS+H0JLOEUjFl5wLGDxk
+	CLBL4VICQ50ZDRbX8OR/1fH5Fq4wPpq+H9E6YmX3P0e8e0V0SfFnnoLF1xwUIuqa
+	kOINSwAh7IW6bVRQX5GmI0AvPt3UqQoK/+CMSFHXAMA60QGGpVoQxv5oUehg+cBK
+	xnXktVwerA+usLb/v84jA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1660006515; x=
+	1660092915; bh=6xntsoaAiy5Smvdj0weA8UbmtSnD0dZE3iKSdHF1N4E=; b=5
+	L8V7bmUoUASpiSNLahv1mVsT3FGOROxoQ//czkzYH9t1gjwZed7wru8gsLtrIOxY
+	CMZCnt/zTNSLG5xuQfFNJ9BN8DRXXUdR3s6KTNGn4qqq3zAaqOW7kTONgWqpJZnF
+	vj6lvtjMbivb7LqUpYAUzalyKmXRjLIzKleuHm+5eQa9BUbgFlDM1nDLHst20vUX
+	8EwOKiTqTeZRIxHy7qYPVKqXU3ERvxq4jRnJJ3LZ8rVjhDkGNy9OcL4RD1XvOcNT
+	huz/iJHlN50tNwNlNGwvgbNDqLVMqBE6Elit8gI7SEAOvn7NKThkDO3BWDikdaUF
+	ZzmDFHUnblUZLJtwY8lMA==
+X-ME-Sender: <xms:c7DxYuh9lZyGiWrIaWw60EEeKZBWo9idJluRno1zh0lAh41Rzb-iag>
+    <xme:c7DxYvAnm4QOqocaSKA4ZVjLEIbOEutetUz1KDca3t-zfVTGlRp2c5azU97rxL_jN
+    wkzpzZtCU492JCUXg>
+X-ME-Received: <xmr:c7DxYmH5kcQqPtsmn0-Jk73Ng2AuBae7E3arMwskbM6Us_gxIHgV3zynfsooA4859E3GJZDLb2Gbj3jT6C8MU3V2OBtCRvBd42ewjP7itErw4g>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrvdefledggeduucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    gfrhhlucfvnfffucdlfedtmdenucfjughrpefkuffhvfevffgjfhgtgfgfggesthhqredt
+    tderjeenucfhrhhomheptfhushhsvghllhcuvehurhhrvgihuceorhhushgtuhhrsehruh
+    hsshgvlhhlrdgttgeqnecuggftrfgrthhtvghrnheptefgieelhfeufeevvdekheeifeej
+    gfefgeehtedukeeigfduuddtueekteevleelnecuvehluhhsthgvrhfuihiivgeptdenuc
+    frrghrrghmpehmrghilhhfrhhomheprhhushgtuhhrsehruhhsshgvlhhlrdgttg
+X-ME-Proxy: <xmx:c7DxYnTAgyD4vUjr6sQIE88JYsVdIvswRDsUA5oUF3uzS8o5_Z1Ixg>
+    <xmx:c7DxYrztNHbbWlVUza8xMmDAQiQTXOeXmDJoK2981TA0uTPyEl0_-w>
+    <xmx:c7DxYl69VpQbspLaAuIZok870jCTGxp1mnFYRb9Mep354aXNmgizdw>
+    <xmx:c7DxYtv6yddSz-s8-jqWdCpjRb9ErD59ZyG8kQrgxZ6UXTWfe50WQA>
+Feedback-ID: i4421424f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 8 Aug 2022 20:55:13 -0400 (EDT)
+Message-ID: <4dcd228ceb2693c6159465fa6dbccf9d0682b19c.camel@russell.cc>
+Subject: Re: [PATCH v2 1/2] powerpc/mm: Move vm_get_page_prot() out of
+ book3s64 code
+From: Russell Currey <ruscur@russell.cc>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, 
+	"linuxppc-dev@lists.ozlabs.org"
+	 <linuxppc-dev@lists.ozlabs.org>
+Date: Tue, 09 Aug 2022 10:55:10 +1000
+In-Reply-To: <95e380d0-f681-4c6f-d70b-2b5fdf911fa8@csgroup.eu>
+References: <20220808130109.30738-1-ruscur@russell.cc>
+	 <95e380d0-f681-4c6f-d70b-2b5fdf911fa8@csgroup.eu>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <F42133C5-EB83-499B-9D0F-FB974669EDE9@linux.ibm.com>
-References: <20220725062420.118013-1-rmclure@linux.ibm.com>
- <34538d4b-2c44-a527-66c8-5049f0176877@csgroup.eu>
- <59FC80E2-27E0-43AD-854E-4F351E13E9E2@linux.ibm.com>
- <83ed398f-ce1b-029f-2788-a4e74af5ffa5@csgroup.eu>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-X-Mailer: Apple Mail (2.3696.120.41.1.1)
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: dpvLeozKkbw6Wq4yt0gBSdqvvUJH31_U
-X-Proofpoint-ORIG-GUID: jDKV7q0lVWKqRE-YqdINZELsEXLpGWRS
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-08-08_13,2022-08-08_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxscore=0
- bulkscore=0 impostorscore=0 lowpriorityscore=0 spamscore=0 suspectscore=0
- priorityscore=1501 phishscore=0 malwarescore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2206140000 definitions=main-2208080105
+User-Agent: Evolution 3.44.3 (3.44.3-1.fc36) 
+MIME-Version: 1.0
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,25 +98,118 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "npiggin@gmail.com" <npiggin@gmail.com>
+Cc: "aneesh.kumar@linux.ibm.com" <aneesh.kumar@linux.ibm.com>, "ajd@linux.ibm.com" <ajd@linux.ibm.com>, "npiggin@gmail.com" <npiggin@gmail.com>, "anshuman.khandual@arm.com" <anshuman.khandual@arm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> Well, of course we need the patch build, so SYSCALL_DEFINE and=20
-> COMPAT_SYSCALL_DEFINE have to go with the name changes, that's =
-obvious.
+On Mon, 2022-08-08 at 14:32 +0000, Christophe Leroy wrote:
 >=20
-> My comment was more related to changes like the renaming of=20
-> ppc64_personality() to do_ppc64_personality() and the creation of=20
-> sys_ppc64_personality() and compat_....
-> That could be a patch by itself.
 >=20
-> Also patch 4 could go up front in order to avoid renaming a function =
-you=20
-> are removing in a follow-up patch.
+> Le 08/08/2022 =C3=A0 15:01, Russell Currey a =C3=A9crit=C2=A0:
+> > protection_map is about to be __ro_after_init instead of const, so
+> > move
+> > the only non-local function that consumes it to the same file so it
+> > can
+> > at least be static.
 >=20
-> So as a summary, do all preparation up front of patch 1, in order to=20=
+> What's the advantage of doing that ? Why does it need to be static=C2=A0 =
+?
+>=20
+> Christophe
 
-> keep it as minimal.
+It doesn't need to be, I didn't like having it exposed unnecessarily.=20
+Aneesh's suggestion lets it stay const so I can drop this patch anyway.
 
-Thanks. I=E2=80=99ll split up this commit accordingly.=
+- Russell
+
+>=20
+> >=20
+> > Signed-off-by: Russell Currey <ruscur@russell.cc>
+> > ---
+> > v2: new
+> >=20
+> > =C2=A0 arch/powerpc/mm/book3s64/pgtable.c | 16 ----------------
+> > =C2=A0 arch/powerpc/mm/pgtable.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 | 21 +++++++++++++++++++--
+> > =C2=A0 2 files changed, 19 insertions(+), 18 deletions(-)
+> >=20
+> > diff --git a/arch/powerpc/mm/book3s64/pgtable.c
+> > b/arch/powerpc/mm/book3s64/pgtable.c
+> > index 7b9966402b25..e2a4ea5eb960 100644
+> > --- a/arch/powerpc/mm/book3s64/pgtable.c
+> > +++ b/arch/powerpc/mm/book3s64/pgtable.c
+> > @@ -550,19 +550,3 @@ unsigned long memremap_compat_align(void)
+> > =C2=A0 }
+> > =C2=A0 EXPORT_SYMBOL_GPL(memremap_compat_align);
+> > =C2=A0 #endif
+> > -
+> > -pgprot_t vm_get_page_prot(unsigned long vm_flags)
+> > -{
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0unsigned long prot =3D pgpro=
+t_val(protection_map[vm_flags &
+> > -
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0(VM_READ|VM_WRITE|VM_EXEC|VM_
+> > SHARED)]);
+> > -
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (vm_flags & VM_SAO)
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0prot |=3D _PAGE_SAO;
+> > -
+> > -#ifdef CONFIG_PPC_MEM_KEYS
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0prot |=3D vmflag_to_pte_pkey=
+_bits(vm_flags);
+> > -#endif
+> > -
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return __pgprot(prot);
+> > -}
+> > -EXPORT_SYMBOL(vm_get_page_prot);
+> > diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
+> > index cb2dcdb18f8e..0b2bbde5fb65 100644
+> > --- a/arch/powerpc/mm/pgtable.c
+> > +++ b/arch/powerpc/mm/pgtable.c
+> > @@ -27,6 +27,7 @@
+> > =C2=A0 #include <asm/tlb.h>
+> > =C2=A0 #include <asm/hugetlb.h>
+> > =C2=A0 #include <asm/pte-walk.h>
+> > +#include <asm/pkeys.h>
+> > =C2=A0=20
+> > =C2=A0 #ifdef CONFIG_PPC64
+> > =C2=A0 #define PGD_ALIGN (sizeof(pgd_t) * MAX_PTRS_PER_PGD)
+> > @@ -493,6 +494,22 @@ const pgprot_t protection_map[16] =3D {
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0[VM_SHARED | VM_EXEC | =
+VM_WRITE | VM_READ]=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=3D
+> > PAGE_SHARED_X
+> > =C2=A0 };
+> > =C2=A0=20
+> > -#ifndef CONFIG_PPC_BOOK3S_64
+> > -DECLARE_VM_GET_PAGE_PROT
+> > +#ifdef CONFIG_PPC_BOOK3S_64
+> > +pgprot_t vm_get_page_prot(unsigned long vm_flags)
+> > +{
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0unsigned long prot =3D pgpro=
+t_val(protection_map[vm_flags &
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0(VM_READ|VM_WRITE|VM_EXEC|V
+> > M_SHARED)]);
+> > +
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (vm_flags & VM_SAO)
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0prot |=3D _PAGE_SAO;
+> > +
+> > +#ifdef CONFIG_PPC_MEM_KEYS
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0prot |=3D vmflag_to_pte_pkey=
+_bits(vm_flags);
+> > =C2=A0 #endif
+> > +
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return __pgprot(prot);
+> > +}
+> > +EXPORT_SYMBOL(vm_get_page_prot);
+> > +#else
+> > +DECLARE_VM_GET_PAGE_PROT
+> > +#endif /* CONFIG_PPC_BOOK3S_64 */
+
