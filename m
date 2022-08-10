@@ -1,64 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9488158E3C3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Aug 2022 01:32:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0CDE58E4B6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Aug 2022 03:53:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M2Trl4B8Wz305W
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Aug 2022 09:32:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M2Xyq3lcbz3btQ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Aug 2022 11:53:23 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=PoLWbHiO;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=TVp4hTLO;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.43; helo=mga05.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52d; helo=mail-pg1-x52d.google.com; envelope-from=jniethe5@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=PoLWbHiO;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=TVp4hTLO;
 	dkim-atps=neutral
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com [IPv6:2607:f8b0:4864:20::52d])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M2Tr33ZtTz2xGt
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Aug 2022 09:32:14 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1660087939; x=1691623939;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=GnyjgHSWMN0s1QRaGr/yenGO/uA3yDht7mg4g98kpS4=;
-  b=PoLWbHiOLnovNB85pNzeyZP93aSCE2lD48u7NhpOgIxJEqNYQnkwp4Ki
-   dBiHnCNztLBzXVc9Wv6Cf4ieDnAv0WEyqmz9sq3475/81pDDKlyk550VX
-   RLhKxPUGgUE3byHvb8LyrXXmcKvutGm19orfLJzikJ3OofmRt3PX/4DK5
-   seA3hGAOThVIDU9SaC5UiCsKOWxmR5Qhwjm8N35S1HJ8t1MNiL/Sn5IHT
-   AvCBeU6xgO0mj4MwzuUIO2P2iUdOy0jikfO/krbmlUdaVK81QbTcbdc4c
-   N9ZvJHMTqVdck8XMcXRHqTeus5cJba2pwckxU8kE77PKWn9AB/tqRK9ql
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10434"; a="377248038"
-X-IronPort-AV: E=Sophos;i="5.93,225,1654585200"; 
-   d="scan'208";a="377248038"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Aug 2022 16:32:07 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.93,225,1654585200"; 
-   d="scan'208";a="781038055"
-Received: from lkp-server01.sh.intel.com (HELO e0eace57cfef) ([10.239.97.150])
-  by orsmga005.jf.intel.com with ESMTP; 09 Aug 2022 16:32:03 -0700
-Received: from kbuild by e0eace57cfef with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1oLYhe-000NLx-1n;
-	Tue, 09 Aug 2022 23:32:02 +0000
-Date: Wed, 10 Aug 2022 07:31:34 +0800
-From: kernel test robot <lkp@intel.com>
-To: Sathvika Vasireddy <sv@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 06/16] powerpc: Fix objtool unannotated intra-function
- call warnings on PPC32
-Message-ID: <202208100751.LiiKZjrx-lkp@intel.com>
-References: <20220808114908.240813-7-sv@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M2Xy85Ff8z2xGm
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Aug 2022 11:52:46 +1000 (AEST)
+Received: by mail-pg1-x52d.google.com with SMTP id d7so12986513pgc.13
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 Aug 2022 18:52:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:user-agent:references
+         :in-reply-to:date:to:from:subject:message-id:from:to:cc;
+        bh=uJ7GwENNd8S7JogVNXQkjFeXcZon4dSzrvy2NCKTjyo=;
+        b=TVp4hTLOYrSLO8reO48JuIZJTSTLi+o0wyhWtkWVzKzDI8p7rKZOXI6CYBKZ+a693D
+         67kShbLy6i5zSflpom/GzMOZby6Ia0UAYVB7qPlwgKqcJtZ5L979HrjVEL/9Q1kAnTsH
+         DOHi2Jc2F/2yGFpG22nKSlFBkWL4D4fDAGSEcLDX8nSynTyN27QPjgkxomJb22UQeFty
+         vb+bVoa2ZFOo6Qj4sM0SSGecNFZ3X94K8l9bKxrNWaqHpp58THCGqIerCkhSxbqVCbyT
+         1u2L2+AIkg/eCB45DOQ1crFkN5DtkjDmi9Uj0jB399QQ9+1kse8w7DFPOHmjjBpKBr66
+         teyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:user-agent:references
+         :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
+         :to:cc;
+        bh=uJ7GwENNd8S7JogVNXQkjFeXcZon4dSzrvy2NCKTjyo=;
+        b=wxUkeZ5SVsqLReckbCKmWs1xvJ+Iv9LunpnhK/mV+6wQ766XuIl+ZNRBE4RxPPFbmJ
+         Fke99UuEr+BYvQxWKmgZ0FPheMlfZTKwR9ZiVn39MXcMNNYimzgj6Oc5avVI3IaVg2EM
+         nxMvjbS7rbg4c6Mntc02/AVENbcP8V1pmYWm0BT1VeJMw10C4/F/J1pVtPUhoojTOn2L
+         9ZolWWI9Du6FqvS1UrlbPxQR9PuHp98cLt1NJCp/7bSrbvZFDuCyRXF51TL7fRm1VvAX
+         rvHmv+b0RXHi3UTgbKzc9kWawIGc71hSZyg2JN8vVfrNH/3cCSOX7v4Bqw8plBOVkWO0
+         qLNQ==
+X-Gm-Message-State: ACgBeo0n9qID8SlCn3p/b9bL6kLJEe6qHRC4X622kpOVYhvs+OFCtU8C
+	jv+i6BS9mSulaL6ZVKKLE2c=
+X-Google-Smtp-Source: AA6agR5KMxIQb3mKpS6FDRSB8hYboI4e3L5/gn04wTr9qQVT1KIeqA66A0Zx3TTmftvQ5m98IXrcBA==
+X-Received: by 2002:a63:4e25:0:b0:41c:62a2:ecc3 with SMTP id c37-20020a634e25000000b0041c62a2ecc3mr21548384pgb.596.1660096363741;
+        Tue, 09 Aug 2022 18:52:43 -0700 (PDT)
+Received: from tee480 (159-196-117-139.9fc475.syd.nbn.aussiebb.net. [159.196.117.139])
+        by smtp.googlemail.com with ESMTPSA id y202-20020a6264d3000000b0052f2bc783basm546297pfb.117.2022.08.09.18.52.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Aug 2022 18:52:42 -0700 (PDT)
+Message-ID: <0e3ea5733bd786a4dea43a53ebd59b93d97ad036.camel@gmail.com>
+Subject: Re: [PATCH 01/17] powerpc/qspinlock: powerpc qspinlock
+ implementation
+From: Jordan NIethe <jniethe5@gmail.com>
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Date: Wed, 10 Aug 2022 11:52:39 +1000
+In-Reply-To: <20220728063120.2867508-2-npiggin@gmail.com>
+References: <20220728063120.2867508-1-npiggin@gmail.com>
+	 <20220728063120.2867508-2-npiggin@gmail.com>
+Content-Type: text/plain; charset="UTF-7"
+User-Agent: Evolution 3.36.5-0ubuntu1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220808114908.240813-7-sv@linux.ibm.com>
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,45 +80,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kbuild-all@lists.01.org, peterz@infradead.org, llvm@lists.linux.dev, npiggin@gmail.com, linux-kernel@vger.kernel.org, aik@ozlabs.ru, mingo@redhat.com, sv@linux.ibm.com, rostedt@goodmis.org, jpoimboe@redhat.com, naveen.n.rao@linux.vnet.ibm.com, mbenes@suse.cz, chenzhongjin@huawei.com, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Sathvika,
+On Thu, 2022-07-28 at 16:31 +-1000, Nicholas Piggin wrote:
++ADw-snip+AD4
++AD4 -+ACM-define queued+AF8-spin+AF8-lock queued+AF8-spin+AF8-lock
++AD4  
++AD4 -static inline void queued+AF8-spin+AF8-unlock(struct qspinlock +ACo-lock)
++AD4 +-static +AF8AXw-always+AF8-inline int queued+AF8-spin+AF8-trylock(struct qspinlock +ACo-lock)
++AD4  +AHs
++AD4 -	if (+ACE-IS+AF8-ENABLED(CONFIG+AF8-PARAVIRT+AF8-SPINLOCKS) +AHwAfA +ACE-is+AF8-shared+AF8-processor())
++AD4 -		smp+AF8-store+AF8-release(+ACY-lock-+AD4-locked, 0)+ADs
++AD4 -	else
++AD4 -		+AF8AXw-pv+AF8-queued+AF8-spin+AF8-unlock(lock)+ADs
++AD4 +-	if (atomic+AF8-cmpxchg+AF8-acquire(+ACY-lock-+AD4-val, 0, 1) +AD0APQ 0)
++AD4 +-		return 1+ADs
++AD4 +-	return 0+ADs
 
-I love your patch! Yet something to improve:
+optional style nit: return (atomic+AF8-cmpxchg+AF8-acquire(+ACY-lock-+AD4-val, 0, 1) +AD0APQ 0)+ADs
 
-[auto build test ERROR on linus/master]
-[also build test ERROR on v5.19 next-20220809]
-[cannot apply to powerpc/next powerpc/topic/ppc-kvm masahiroy-kbuild/for-next]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Sathvika-Vasireddy/objtool-Enable-and-implement-mcount-option-on-powerpc/20220808-200702
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git 4e23eeebb2e57f5a28b36221aa776b5a1122dde5
-config: powerpc-randconfig-r024-20220808 (https://download.01.org/0day-ci/archive/20220810/202208100751.LiiKZjrx-lkp@intel.com/config)
-compiler: clang version 16.0.0 (https://github.com/llvm/llvm-project 5f1c7e2cc5a3c07cbc2412e851a7283c1841f520)
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # install powerpc cross compiling tool for clang build
-        # apt-get install binutils-powerpc-linux-gnu
-        # https://github.com/intel-lab-lkp/linux/commit/bcefd9c9f24358413a1b210aa591c8758f58b3a9
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Sathvika-Vasireddy/objtool-Enable-and-implement-mcount-option-on-powerpc/20220808-200702
-        git checkout bcefd9c9f24358413a1b210aa591c8758f58b3a9
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=powerpc SHELL=/bin/bash arch/powerpc/
-
-If you fix the issue, kindly add following tag where applicable
-Reported-by: kernel test robot <lkp@intel.com>
-
-All errors (new ones prefixed by >>):
-
->> <unknown>:0: error: symbol '__kuep_lock' is already defined
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
