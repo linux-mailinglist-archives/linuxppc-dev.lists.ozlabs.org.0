@@ -1,36 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B717258EDD7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Aug 2022 16:04:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02FCE58F09B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Aug 2022 18:44:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M2sB75TVtz3bln
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Aug 2022 00:04:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M2wkn4g01z3bk4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Aug 2022 02:44:17 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qzJbdgDe;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M2s9k3D9lz2xmn
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Aug 2022 00:03:53 +1000 (AEST)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
-	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 27ADuNcA006903;
-	Wed, 10 Aug 2022 08:56:23 -0500
-Received: (from segher@localhost)
-	by gate.crashing.org (8.14.1/8.14.1/Submit) id 27ADuLhX006902;
-	Wed, 10 Aug 2022 08:56:21 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
-Date: Wed, 10 Aug 2022 08:56:21 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Anders Roxell <anders.roxell@linaro.org>
-Subject: Re: [PATCHv3, resend] powerpc: mm: radix_tlb: rearrange the if-else block
-Message-ID: <20220810135621.GX25951@gate.crashing.org>
-References: <20220810114318.3220630-1-anders.roxell@linaro.org>
-Mime-Version: 1.0
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=nathan@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qzJbdgDe;
+	dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M2wk53mtLz2xHr
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Aug 2022 02:43:41 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 8865861286;
+	Wed, 10 Aug 2022 16:43:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2997C433C1;
+	Wed, 10 Aug 2022 16:43:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1660149817;
+	bh=oaHDCKmep8dN+8/hO9HR/EbTj8E7+7obmhxANTTMBXg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qzJbdgDejI+ssgG9fRM249kMyO6Zj8RM8O7837baTMJw4yxaXfQN6x6a6kF2qvfxV
+	 //5255GfiZ4B+iI1JKjsMAFuQ6iXwJVTdSLqdwoc4Om3b3Ps/cUvyfuOKmwdIQF1Tj
+	 SoXeotCNrUL+Vv4KZs1uzu9R7H4nQZGxXEV3OPx/NY+1nKL8WSfLxC/F9DTxHCuCr1
+	 og0/p4X3XjpP+PXS64ni23SLNIvvRpBOwd6d970dHT2aoyBMAx56Pu3DeYHgvNgbz+
+	 TomCyT273nEacM6E7JA3XgPDwdZmCrF/84Q0wt2nr8msgcmEu2M3sEgGDXauHGobB8
+	 E49Ccqu9lnRBA==
+Date: Wed, 10 Aug 2022 09:43:34 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Russell Currey <ruscur@russell.cc>
+Subject: Re: [PATCH v2] powerpc/kexec: Fix build failure from uninitialised
+ variable
+Message-ID: <YvPgNsl1RalFdPH+@dev-arch.thelio-3990X>
+References: <20220810054331.373761-1-ruscur@russell.cc>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220810114318.3220630-1-anders.roxell@linaro.org>
-User-Agent: Mutt/1.4.2.3i
+In-Reply-To: <20220810054331.373761-1-ruscur@russell.cc>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,33 +60,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@arndb.de>, llvm@lists.linux.dev, ndesaulniers@google.com, linux-kernel@vger.kernel.org, nathan@kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: aik@ozlabs.ru, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi!
-
-On Wed, Aug 10, 2022 at 01:43:18PM +0200, Anders Roxell wrote:
-> Clang warns:
+On Wed, Aug 10, 2022 at 03:43:31PM +1000, Russell Currey wrote:
+> clang 14 won't build because ret is uninitialised and can be returned if
+> both prop and fdtprop are NULL.  Drop the ret variable and return an
+> error in that failure case.
 > 
-> arch/powerpc/mm/book3s64/radix_tlb.c:1191:23: error: variable 'hstart' is uninitialized when used here [-Werror,-Wuninitialized]
->                                 __tlbiel_va_range(hstart, hend, pid,
->                                                   ^~~~~~
-> arch/powerpc/mm/book3s64/radix_tlb.c:1175:23: note: initialize the variable 'hstart' to silence this warning
+> Fixes: b1fc44eaa9ba ("pseries/iommu/ddw: Fix kdump to work in absence of ibm,dma-window")
+> Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Signed-off-by: Russell Currey <ruscur@russell.cc>
 
-This note often is bad advice: hiding problems instead of investigating
-and solving them.  Bah.
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
 
-If silencing warnings is your goal, look no further than "-w" :-)
+Thanks for the patch!
 
-> Rework the 'if (IS_ENABLE(CONFIG_TRANSPARENT_HUGEPAGE))' so hstart/hend
-> always gets initialized, this will silence the warnings. That will also
-> simplify the 'else' path. Clang is getting confused with these warnings,
-> but the warnings is a false-positive.
-
-If it is, please report that bug to clang?  It says "*is* uninitialized
-when used here", there can not be false positives to statements like
-that.  If the analysis was heutistical it should say "may be" or such.
-
-
-Segher
+> ---
+> v2: adopt Christophe's suggestion, which is better
+> 
+>  arch/powerpc/kexec/file_load_64.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
+> index 683462e4556b..349a781cea0b 100644
+> --- a/arch/powerpc/kexec/file_load_64.c
+> +++ b/arch/powerpc/kexec/file_load_64.c
+> @@ -1043,17 +1043,17 @@ static int copy_property(void *fdt, int node_offset, const struct device_node *d
+>  			 const char *propname)
+>  {
+>  	const void *prop, *fdtprop;
+> -	int len = 0, fdtlen = 0, ret;
+> +	int len = 0, fdtlen = 0;
+>  
+>  	prop = of_get_property(dn, propname, &len);
+>  	fdtprop = fdt_getprop(fdt, node_offset, propname, &fdtlen);
+>  
+>  	if (fdtprop && !prop)
+> -		ret = fdt_delprop(fdt, node_offset, propname);
+> +		return fdt_delprop(fdt, node_offset, propname);
+>  	else if (prop)
+> -		ret = fdt_setprop(fdt, node_offset, propname, prop, len);
+> -
+> -	return ret;
+> +		return fdt_setprop(fdt, node_offset, propname, prop, len);
+> +	else
+> +		return -FDT_ERR_NOTFOUND;
+>  }
+>  
+>  static int update_pci_dma_nodes(void *fdt, const char *dmapropname)
+> -- 
+> 2.37.1
+> 
