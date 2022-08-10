@@ -1,74 +1,98 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 553E058E6D0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Aug 2022 07:51:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5439758E6DE
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Aug 2022 07:58:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M2fFy1gjDz3bnM
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Aug 2022 15:51:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M2fP46J3Cz3bnj
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Aug 2022 15:58:00 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Acg8ifxx;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sLWr4oj6;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::536; helo=mail-pg1-x536.google.com; envelope-from=jniethe5@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Acg8ifxx;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sLWr4oj6;
 	dkim-atps=neutral
-Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com [IPv6:2607:f8b0:4864:20::536])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M2fFJ64hPz2xJL
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Aug 2022 15:51:14 +1000 (AEST)
-Received: by mail-pg1-x536.google.com with SMTP id 73so13426488pgb.9
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 Aug 2022 22:51:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:user-agent:references
-         :in-reply-to:date:to:from:subject:message-id:from:to:cc;
-        bh=5pLp9a35RHVVJW083AjSXtwFU3KvMTfpJnu6w1oW6Wc=;
-        b=Acg8ifxx50N/WFDgAzcx5xmnF8dSgqe7vIQA9l3j4kDICwpywFr7rhLh+M2vkSE0Mc
-         1ScENb7t41wuEqeDdECofuXp/TG2A49O5Aqt3Whw6/rS+QkNFeh5rv1QMIkV+VqQJwYC
-         AeUdUokA1f1nQZoAx/J9k/X3mYhVOUV0gxpnq3PTOCmcSevZVHvnVIp9KOyGxWvnsM8r
-         RyDIQRqVu5WFfI4obblS8YXNDH1c8gMurtRkx7eNoBg14evzKONKzzZ9S75JXrfIh8hk
-         nD4BD0gj6iN6aooNon3Zou/pOt3qVDP1Z3WwZwmuo90BW1Ie9LACA0DQgDJcldPdc1a7
-         0JiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:user-agent:references
-         :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
-         :to:cc;
-        bh=5pLp9a35RHVVJW083AjSXtwFU3KvMTfpJnu6w1oW6Wc=;
-        b=h1YGiDgD/1dCS5xgzRIAyR/Z17JG76mPDXechLJfrYohPQYOas/bXK5G8q/74mGO8j
-         +RwIZbESELrYLOhlPQqVBIdrz+nhRVRkL0fP+UdcF5C/w6+Au0Sqbqcnq3qOgdG0g+51
-         5KEe+tx5v1WTXu1T3vESYnf4GW20sTs/+KQQJrpej5L7P+Ca6WvJ3ofszWiK8AYOJTDT
-         8S48kHX1YgP4WCNLAXkOW/nLpnvxwInpzNdeMWMwtSbuch1pM2ZaSRgUr7iohr1aCtYu
-         JWUJHLi+0cDenqGHMgW2poeWZ+Vy2mOF1cHUNLAZfphzMKxyLw1ghZo9iIEitxXJBSQr
-         SwWw==
-X-Gm-Message-State: ACgBeo3mHmGO3gy42mZGBYo0MOQ1KCXpiJs0pnRcp4b4NsUGRspVQ50j
-	vZsTUztNtCwx3rTnPu12VOA=
-X-Google-Smtp-Source: AA6agR7T9GDc4Dso8RYmSkxO6f9HU9+zQSBUYXTkC3on2oUXXNInzhwCsr1k7YhGQ3wsAQ9La3NHHg==
-X-Received: by 2002:a63:88c8:0:b0:41d:260c:ea29 with SMTP id l191-20020a6388c8000000b0041d260cea29mr16419687pgd.284.1660110672771;
-        Tue, 09 Aug 2022 22:51:12 -0700 (PDT)
-Received: from [192.168.2.27] (159-196-117-139.9fc475.syd.nbn.aussiebb.net. [159.196.117.139])
-        by smtp.googlemail.com with ESMTPSA id iw18-20020a170903045200b0016d6d1b610fsm11846259plb.98.2022.08.09.22.51.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Aug 2022 22:51:12 -0700 (PDT)
-Message-ID: <eff017a9afff2477b04a7927d03217924e01f560.camel@gmail.com>
-Subject: Re: [PATCH 06/17] powerpc/qspinlock: theft prevention to control
- latency
-From: Jordan Niethe <jniethe5@gmail.com>
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Date: Wed, 10 Aug 2022 15:51:05 +1000
-In-Reply-To: <20220728063120.2867508-8-npiggin@gmail.com>
-References: <20220728063120.2867508-1-npiggin@gmail.com>
-	 <20220728063120.2867508-8-npiggin@gmail.com>
-Content-Type: text/plain; charset="UTF-7"
-User-Agent: Evolution 3.36.5-0ubuntu1 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M2fNL0GXWz2xJL
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Aug 2022 15:57:21 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27A5bAc0030902
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Aug 2022 05:57:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=KZh3cVMcDJxf041GJe7GP0zhoaEKRiS9Ibe00/rCv3Y=;
+ b=sLWr4oj6Zobz/4B0vxedy7hBfGmi4OVy5BnRIXOvAU8cuRTGR6yUGUZP6ReF3CkxWI0L
+ j9mvqqp33lftC1m3bTFDNme+f5KmJ5vtFT9SUhnU8GuFWzGOOKq/W2wIno4Mv6ig+jvk
+ it1RdJ+OlGRQlnsqIuk5DWKG+HcZ/rdX30o3ms6Zj8+ESipKYySWAQKuWpntFw5A0fE8
+ yYbUQOl2DogQAMahuMAk5crhx1kKtOI6f6b/e8u2sdP4qAekSpH516Y9A9IM8V57FjO3
+ UOEOM97w9IUP+UA6t3stDz3xNUvJyPTTQIJp/EtwrC3xWtcddtNieIRHcm68ERsV/KCh mA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3hv5r61snb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Aug 2022 05:57:18 +0000
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 27A5o8ib019156
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Aug 2022 05:57:17 GMT
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com [149.81.74.107])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3hv5r61smv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 10 Aug 2022 05:57:17 +0000
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+	by ppma03fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 27A5ZGUq004880;
+	Wed, 10 Aug 2022 05:57:16 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+	by ppma03fra.de.ibm.com with ESMTP id 3huwvfrayj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 10 Aug 2022 05:57:15 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
+	by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 27A5vDcL33948154
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 10 Aug 2022 05:57:13 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4996EA4051;
+	Wed, 10 Aug 2022 05:57:13 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E6E68A404D;
+	Wed, 10 Aug 2022 05:57:12 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Wed, 10 Aug 2022 05:57:12 +0000 (GMT)
+Received: from intelligence.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id A720F602C2;
+	Wed, 10 Aug 2022 15:57:09 +1000 (AEST)
+Message-ID: <0d0c1bde39b8129185f79d6ac93abde7ad08f2de.camel@linux.ibm.com>
+Subject: Re: [PATCH v2 06/14] powerpc: Include all arch-specific syscall
+ prototypes
+From: Andrew Donnellan <ajd@linux.ibm.com>
+To: Rohan McLure <rmclure@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Date: Wed, 10 Aug 2022 15:57:09 +1000
+In-Reply-To: <9109e768d3b7d141d1b0095773cd737bf9ae497c.camel@linux.ibm.com>
+References: <20220725062750.119476-1-rmclure@linux.ibm.com>
+	 <9109e768d3b7d141d1b0095773cd737bf9ae497c.camel@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.3-1 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 9X5CsmGnEzVmBcAMRJ-ntv4VO4Kh7nfg
+X-Proofpoint-ORIG-GUID: 0vO1JCWeFSGE9kmVQ-3tG4RPpZJjXNa7
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-08-10_01,2022-08-09_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 impostorscore=0
+ mlxscore=0 bulkscore=0 priorityscore=1501 spamscore=0 phishscore=0
+ mlxlogscore=662 suspectscore=0 lowpriorityscore=0 clxscore=1015
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2207270000 definitions=main-2208100016
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,168 +104,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 2022-07-28 at 16:31 +-1000, Nicholas Piggin wrote:
-+AD4 Give the queue head the ability to stop stealers. After a number of
-+AD4 spins without sucessfully acquiring the lock, the queue head employs
-+AD4 this, which will assure it is the next owner.
-+AD4 ---
-+AD4  arch/powerpc/include/asm/qspinlock+AF8-types.h +AHw 10 +-+-+--
-+AD4  arch/powerpc/lib/qspinlock.c               +AHw 56 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+--
-+AD4  2 files changed, 63 insertions(+-), 3 deletions(-)
-+AD4 
-+AD4 diff --git a/arch/powerpc/include/asm/qspinlock+AF8-types.h b/arch/powerpc/include/asm/qspinlock+AF8-types.h
-+AD4 index 210adf05b235..8b20f5e22bba 100644
-+AD4 --- a/arch/powerpc/include/asm/qspinlock+AF8-types.h
-+AD4 +-+-+- b/arch/powerpc/include/asm/qspinlock+AF8-types.h
-+AD4 +AEAAQA -29,7 +-29,8 +AEAAQA typedef struct qspinlock +AHs
-+AD4   +ACo Bitfields in the lock word:
-+AD4   +ACo
-+AD4   +ACo     0: locked bit
-+AD4 - +ACo 16-31: tail cpu (+-1)
-+AD4 +- +ACo    16: must queue bit
-+AD4 +- +ACo 17-31: tail cpu (+-1)
-+AD4   +ACo-/
-+AD4  +ACM-define	+AF8-Q+AF8-SET+AF8-MASK(type)	(((1U +ADwAPA +AF8-Q+AF8 +ACMAIw type +ACMAIw +AF8-BITS) - 1)+AFw
-+AD4  				      +ADwAPA +AF8-Q+AF8 +ACMAIw type +ACMAIw +AF8-OFFSET)
-+AD4 +AEAAQA -38,7 +-39,12 +AEAAQA typedef struct qspinlock +AHs
-+AD4  +ACM-define +AF8-Q+AF8-LOCKED+AF8-MASK		+AF8-Q+AF8-SET+AF8-MASK(LOCKED)
-+AD4  +ACM-define +AF8-Q+AF8-LOCKED+AF8-VAL		(1U +ADwAPA +AF8-Q+AF8-LOCKED+AF8-OFFSET)
-+AD4  
-+AD4 -+ACM-define +AF8-Q+AF8-TAIL+AF8-CPU+AF8-OFFSET	16
-+AD4 +-+ACM-define +AF8-Q+AF8-MUST+AF8-Q+AF8-OFFSET	16
-+AD4 +-+ACM-define +AF8-Q+AF8-MUST+AF8-Q+AF8-BITS		1
-+AD4 +-+ACM-define +AF8-Q+AF8-MUST+AF8-Q+AF8-MASK		+AF8-Q+AF8-SET+AF8-MASK(MUST+AF8-Q)
-+AD4 +-+ACM-define +AF8-Q+AF8-MUST+AF8-Q+AF8-VAL		(1U +ADwAPA +AF8-Q+AF8-MUST+AF8-Q+AF8-OFFSET)
-+AD4 +-
-+AD4 +-+ACM-define +AF8-Q+AF8-TAIL+AF8-CPU+AF8-OFFSET	17
-+AD4  +ACM-define +AF8-Q+AF8-TAIL+AF8-CPU+AF8-BITS	(32 - +AF8-Q+AF8-TAIL+AF8-CPU+AF8-OFFSET)
-+AD4  +ACM-define +AF8-Q+AF8-TAIL+AF8-CPU+AF8-MASK	+AF8-Q+AF8-SET+AF8-MASK(TAIL+AF8-CPU)
+On Mon, 2022-08-08 at 15:24 +1000, Andrew Donnellan wrote:
+> > diff --git a/arch/powerpc/include/asm/syscalls.h
+> > b/arch/powerpc/include/asm/syscalls.h
+> > index 025d4b877161..8b2757d7f423 100644
+> > --- a/arch/powerpc/include/asm/syscalls.h
+> > +++ b/arch/powerpc/include/asm/syscalls.h
+> > @@ -8,49 +8,93 @@
+> >  #include <linux/types.h>
+> >  #include <linux/compat.h>
+> >  
+> > +#ifdef CONFIG_PPC64
+> > +#include <asm/ppc32.h>
+> > +#endif
+> > +#include <asm/unistd.h>
+> > +#include <asm/ucontext.h>
+> > +
+> >  struct rtas_args;
+> >  
+> > -asmlinkage long sys_mmap(unsigned long addr, size_t len,
+> > -               unsigned long prot, unsigned long flags,
+> > -               unsigned long fd, off_t offset);
+> > -asmlinkage long sys_mmap2(unsigned long addr, size_t len,
+> > -               unsigned long prot, unsigned long flags,
+> > -               unsigned long fd, unsigned long pgoff);
+> > -asmlinkage long sys_ppc64_personality(unsigned long personality);
+> > +#ifndef CONFIG_ARCH_HAS_SYSCALL_WRAPPER
 
-Not a big deal but some of these values could be calculated like in the
-generic version. e.g.
+Introduce this ifdef once it starts mattering at patch 10, I think.
 
-	+ACM-define +AF8-Q+AF8-PENDING+AF8-OFFSET	(+AF8-Q+AF8-LOCKED+AF8-OFFSET +-+AF8-Q+AF8-LOCKED+AF8-BITS)
-
-+AD4  
-+AD4 diff --git a/arch/powerpc/lib/qspinlock.c b/arch/powerpc/lib/qspinlock.c
-+AD4 index 1625cce714b2..a906cc8f15fa 100644
-+AD4 --- a/arch/powerpc/lib/qspinlock.c
-+AD4 +-+-+- b/arch/powerpc/lib/qspinlock.c
-+AD4 +AEAAQA -22,6 +-22,7 +AEAAQA struct qnodes +AHs
-+AD4  /+ACo Tuning parameters +ACo-/
-+AD4  static int STEAL+AF8-SPINS +AF8AXw-read+AF8-mostly +AD0 (1+ADwAPA-5)+ADs
-+AD4  static bool MAYBE+AF8-STEALERS +AF8AXw-read+AF8-mostly +AD0 true+ADs
-+AD4 +-static int HEAD+AF8-SPINS +AF8AXw-read+AF8-mostly +AD0 (1+ADwAPA-8)+ADs
-+AD4  
-+AD4  static DEFINE+AF8-PER+AF8-CPU+AF8-ALIGNED(struct qnodes, qnodes)+ADs
-+AD4  
-+AD4 +AEAAQA -30,6 +-31,11 +AEAAQA static +AF8AXw-always+AF8-inline int get+AF8-steal+AF8-spins(void)
-+AD4  	return STEAL+AF8-SPINS+ADs
-+AD4  +AH0
-+AD4  
-+AD4 +-static +AF8AXw-always+AF8-inline int get+AF8-head+AF8-spins(void)
-+AD4 +-+AHs
-+AD4 +-	return HEAD+AF8-SPINS+ADs
-+AD4 +-+AH0
-+AD4 +-
-+AD4  static inline u32 encode+AF8-tail+AF8-cpu(void)
-+AD4  +AHs
-+AD4  	return (smp+AF8-processor+AF8-id() +- 1) +ADwAPA +AF8-Q+AF8-TAIL+AF8-CPU+AF8-OFFSET+ADs
-+AD4 +AEAAQA -142,6 +-148,23 +AEAAQA static +AF8AXw-always+AF8-inline u32 publish+AF8-tail+AF8-cpu(struct qspinlock +ACo-lock, u32 tail)
-+AD4  	return prev+ADs
-+AD4  +AH0
-+AD4  
-+AD4 +-static +AF8AXw-always+AF8-inline u32 lock+AF8-set+AF8-mustq(struct qspinlock +ACo-lock)
-+AD4 +-+AHs
-+AD4 +-	u32 new +AD0 +AF8-Q+AF8-MUST+AF8-Q+AF8-VAL+ADs
-+AD4 +-	u32 prev+ADs
-+AD4 +-
-+AD4 +-	asm volatile(
-+AD4 +-+ACI-1:	lwarx	+ACU-0,0,+ACU-1		+ACM lock+AF8-set+AF8-mustq			+AFw-n+ACI
-
-Is the EH bit not set because we don't hold the lock here?
-
-+AD4 +-+ACI	or	+ACU-0,+ACU-0,+ACU-2						+AFw-n+ACI
-+AD4 +-+ACI	stwcx.	+ACU-0,0,+ACU-1							+AFw-n+ACI
-+AD4 +-+ACI	bne-	1b							+AFw-n+ACI
-+AD4 +-	: +ACIAPQAm-r+ACI (prev)
-+AD4 +-	: +ACI-r+ACI (+ACY-lock-+AD4-val), +ACI-r+ACI (new)
-+AD4 +-	: +ACI-cr0+ACI, +ACI-memory+ACI)+ADs
-
-This is another usage close to the DEFINE+AF8-TESTOP() pattern.
-
-+AD4 +-
-+AD4 +-	return prev+ADs
-+AD4 +-+AH0
-+AD4 +-
-+AD4  static struct qnode +ACo-get+AF8-tail+AF8-qnode(struct qspinlock +ACo-lock, u32 val)
-+AD4  +AHs
-+AD4  	int cpu +AD0 get+AF8-tail+AF8-cpu(val)+ADs
-+AD4 +AEAAQA -165,6 +-188,9 +AEAAQA static inline bool try+AF8-to+AF8-steal+AF8-lock(struct qspinlock +ACo-lock)
-+AD4  	for (+ADsAOw) +AHs
-+AD4  		u32 val +AD0 READ+AF8-ONCE(lock-+AD4-val)+ADs
-+AD4  
-+AD4 +-		if (val +ACY +AF8-Q+AF8-MUST+AF8-Q+AF8-VAL)
-+AD4 +-			break+ADs
-+AD4 +-
-+AD4  		if (unlikely(+ACE(val +ACY +AF8-Q+AF8-LOCKED+AF8-VAL))) +AHs
-+AD4  			if (trylock+AF8-with+AF8-tail+AF8-cpu(lock, val))
-+AD4  				return true+ADs
-+AD4 +AEAAQA -246,11 +-272,22 +AEAAQA static inline void queued+AF8-spin+AF8-lock+AF8-mcs+AF8-queue(struct qspinlock +ACo-lock)
-+AD4  		/+ACo We must be the owner, just set the lock bit and acquire +ACo-/
-+AD4  		lock+AF8-set+AF8-locked(lock)+ADs
-+AD4  	+AH0 else +AHs
-+AD4 +-		int iters +AD0 0+ADs
-+AD4 +-		bool set+AF8-mustq +AD0 false+ADs
-+AD4 +-
-+AD4  again:
-+AD4  		/+ACo We're at the head of the waitqueue, wait for the lock. +ACo-/
-+AD4 -		while ((val +AD0 READ+AF8-ONCE(lock-+AD4-val)) +ACY +AF8-Q+AF8-LOCKED+AF8-VAL)
-+AD4 +-		while ((val +AD0 READ+AF8-ONCE(lock-+AD4-val)) +ACY +AF8-Q+AF8-LOCKED+AF8-VAL) +AHs
-+AD4  			cpu+AF8-relax()+ADs
-+AD4  
-+AD4 +-			iters+-+-+ADs
-
-It seems instead of using set+AF8-mustq, (val +ACY +AF8-Q+AF8-MUST+AF8-Q+AF8-VAL) could be checked?
-
-+AD4 +-			if (+ACE-set+AF8-mustq +ACYAJg iters +AD4APQ get+AF8-head+AF8-spins()) +AHs
-+AD4 +-				set+AF8-mustq +AD0 true+ADs
-+AD4 +-				lock+AF8-set+AF8-mustq(lock)+ADs
-+AD4 +-				val +AHwAPQ +AF8-Q+AF8-MUST+AF8-Q+AF8-VAL+ADs
-+AD4 +-			+AH0
-+AD4 +-		+AH0
-+AD4 +-
-+AD4  		/+ACo If we're the last queued, must clean up the tail. +ACo-/
-+AD4  		if ((val +ACY +AF8-Q+AF8-TAIL+AF8-CPU+AF8-MASK) +AD0APQ tail) +AHs
-+AD4  			if (trylock+AF8-clear+AF8-tail+AF8-cpu(lock, val))
-+AD4 +AEAAQA -329,9 +-366,26 +AEAAQA static int steal+AF8-spins+AF8-get(void +ACo-data, u64 +ACo-val)
-+AD4  
-+AD4  DEFINE+AF8-SIMPLE+AF8-ATTRIBUTE(fops+AF8-steal+AF8-spins, steal+AF8-spins+AF8-get, steal+AF8-spins+AF8-set, +ACIAJQ-llu+AFw-n+ACI)+ADs
-+AD4  
-+AD4 +-static int head+AF8-spins+AF8-set(void +ACo-data, u64 val)
-+AD4 +-+AHs
-+AD4 +-	HEAD+AF8-SPINS +AD0 val+ADs
-+AD4 +-
-+AD4 +-	return 0+ADs
-+AD4 +-+AH0
-+AD4 +-
-+AD4 +-static int head+AF8-spins+AF8-get(void +ACo-data, u64 +ACo-val)
-+AD4 +-+AHs
-+AD4 +-	+ACo-val +AD0 HEAD+AF8-SPINS+ADs
-+AD4 +-
-+AD4 +-	return 0+ADs
-+AD4 +-+AH0
-+AD4 +-
-+AD4 +-DEFINE+AF8-SIMPLE+AF8-ATTRIBUTE(fops+AF8-head+AF8-spins, head+AF8-spins+AF8-get, head+AF8-spins+AF8-set, +ACIAJQ-llu+AFw-n+ACI)+ADs
-+AD4 +-
-+AD4  static +AF8AXw-init int spinlock+AF8-debugfs+AF8-init(void)
-+AD4  +AHs
-+AD4  	debugfs+AF8-create+AF8-file(+ACI-qspl+AF8-steal+AF8-spins+ACI, 0600, arch+AF8-debugfs+AF8-dir, NULL, +ACY-fops+AF8-steal+AF8-spins)+ADs
-+AD4 +-	debugfs+AF8-create+AF8-file(+ACI-qspl+AF8-head+AF8-spins+ACI, 0600, arch+AF8-debugfs+AF8-dir, NULL, +ACY-fops+AF8-head+AF8-spins)+ADs
-+AD4  
-+AD4  	return 0+ADs
-+AD4  +AH0
+-- 
+Andrew Donnellan    OzLabs, ADL Canberra
+ajd@linux.ibm.com   IBM Australia Limited
 
