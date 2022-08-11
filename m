@@ -2,87 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B558858FD10
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Aug 2022 15:07:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3699B58FC69
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Aug 2022 14:36:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M3Rsj1kKHz3c5p
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Aug 2022 23:07:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M3R9q0dfFz3c8q
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Aug 2022 22:35:59 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YKbXM/vq;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YKbXM/vq;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=Ql5Tzwac;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=sgarzare@redhat.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::1029; helo=mail-pj1-x1029.google.com; envelope-from=anders.roxell@linaro.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YKbXM/vq;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YKbXM/vq;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=Ql5Tzwac;
 	dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M3N3g0wNYz2xXS
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Aug 2022 20:15:25 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1660212921;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AFT37D04zq4LQqw9OKWRNkU7ORSqHvfNUHywXUhX6hQ=;
-	b=YKbXM/vqxo2SWffcEXoNy36T4qt1pgsUAnF7q/mrW1qmHHPJ0JkY3Up2H1FD1P5zaZv3Pa
-	5Z/W8hvsUvHNjHJFPhzGxP9qNo3Oq2sfnpjhUbdf8qwlMz+hj1sQxKv0VpgXJJweWik0aK
-	j8YCYPCI868FPxpmRiUss4hS7GAC5fo=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1660212921;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AFT37D04zq4LQqw9OKWRNkU7ORSqHvfNUHywXUhX6hQ=;
-	b=YKbXM/vqxo2SWffcEXoNy36T4qt1pgsUAnF7q/mrW1qmHHPJ0JkY3Up2H1FD1P5zaZv3Pa
-	5Z/W8hvsUvHNjHJFPhzGxP9qNo3Oq2sfnpjhUbdf8qwlMz+hj1sQxKv0VpgXJJweWik0aK
-	j8YCYPCI868FPxpmRiUss4hS7GAC5fo=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-149-3r9tXyoNMV6VRsyGmq1IpA-1; Thu, 11 Aug 2022 06:15:19 -0400
-X-MC-Unique: 3r9tXyoNMV6VRsyGmq1IpA-1
-Received: by mail-lj1-f199.google.com with SMTP id u7-20020a2e2e07000000b0025e4fbba9f0so5310230lju.13
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Aug 2022 03:15:19 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M3R9860MTz2y2G
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Aug 2022 22:35:22 +1000 (AEST)
+Received: by mail-pj1-x1029.google.com with SMTP id p14-20020a17090a74ce00b001f4d04492faso4970066pjl.4
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Aug 2022 05:35:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=5w/KsvKeDQNB0nymQYwJO1nJhxYwskiJAdbQrcwrrws=;
+        b=Ql5TzwacX39R2Jd3F8nwCUw2umD0dCX30wm+NAMytxnOiFhjI29r2fh4KHIe8FbJA5
+         sYz4E0PDwIJi2YWeIZGBi2iV+Kzj0DYdKG+N+MawTLJhdefhUsUcV0ClrlBQcf1+CfbC
+         BhOcyvxJBYHt9jAR2olKMbE/rOdvH8kuymWFoAFCIdQ3O3rDei5TMFoybUL9zX6OoiC6
+         zSf7+O9WlFtOrgZpMoO4efq2+dLIYo4s6604mDZQ2A9zMsGb4t2OqoPcdUh7yyzAL4B5
+         4m2ConxAm3a5QZ2B5OUxbrnEPhFZedReRM5K3lF3hX3flUt9J1LLpTzaRYKOp4znfWwG
+         qROQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc;
-        bh=AFT37D04zq4LQqw9OKWRNkU7ORSqHvfNUHywXUhX6hQ=;
-        b=tkmpkBoYcvT/Dzp6dZPcWv7sVVJP609tfp3WMhIFnQCoCwKF1ctzWUa64ALJD5xbZg
-         9iKg60Y1PInmvc3o+d3428WDsi9+09kkUkFaxsILQW7SS1wBvDXVioYxNlIoWKdxmOy6
-         mufakZMdyec9pg9LeUWkU/MQqnga16dPuksU6JGv9P7joRovj5SehelQY13Clpc1zxYY
-         cYhHnKVjFWGkHc4ZmJOuJiIga3jhh5Og5Tijywfu1j2JFn7NvDhHKoYeD2Xt57OuRwtv
-         sBypCQK3HqPUzoJo4HVHDNxHFOdEyzsjH6yE9UXFYoY7KG2KWraxnWC4zwiuEdErNgQZ
-         kjVg==
-X-Gm-Message-State: ACgBeo0mvXr8o/CrK7Cf6goKtOvP+YSTlOfAnwadpA/ngbK1750foh9c
-	cz+lopJpcKUDrIWJysnQwH3Vq/3U49uTQCNIdXEk0zNNEeEo13BWAZM1d4FKxnvZRXqMz2sOIOm
-	kaLXxWixaQIsTwRkjsQ3rVvVjTBu71Hbm9twkBJUeyA==
-X-Received: by 2002:a05:6512:1189:b0:48b:26d2:b13e with SMTP id g9-20020a056512118900b0048b26d2b13emr11289027lfr.37.1660212918020;
-        Thu, 11 Aug 2022 03:15:18 -0700 (PDT)
-X-Google-Smtp-Source: AA6agR7jTPZzSZ4GMRnzcrTCRiqnNxYHvFdJA9ad1ZTevfiXyMPLqL0jmSkWGRT5NKQispK9XZF0wtoPDIyXonqfH/Q=
-X-Received: by 2002:a05:6512:1189:b0:48b:26d2:b13e with SMTP id
- g9-20020a056512118900b0048b26d2b13emr11289020lfr.37.1660212917822; Thu, 11
- Aug 2022 03:15:17 -0700 (PDT)
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=5w/KsvKeDQNB0nymQYwJO1nJhxYwskiJAdbQrcwrrws=;
+        b=opAnnJA0c65/gM1xCKvE/cCg48g5zQpiuaG3rciJREBCLxEo/dr0MfHOxU+KmnEnIP
+         PUbOIVgoNUMvmW2wA5XKI3UojWjH40/egtKj1OAeItlcpIS0QxagHqKhr5R+Va2EtczL
+         mgRI2atTvIukIhQJbgJZGd4h+hsx2cEo5IDg3LoLg3e6HVnEAonH0SMcUgidAzL6qREE
+         QN0KWqbk1kU3FH0aVov5M3H8aDDWUvhmvZoLmG3p+jqTNkYyO3wbHo7sxEq1+Q079zct
+         4063trYV/f1w8kCV0rS87XiacYnLBBJkxyThoZ4C2MciHMAdte68EDneiqWlJvgVstqm
+         cmCw==
+X-Gm-Message-State: ACgBeo3OT3zdBCd8uluTDw5GdMzlATctgQYmBO3wi2u8uOewLSV9zxjX
+	j/j6Trx4+fsw5G5M6V6EyW8Nl2M87pMKaHxheowXZA==
+X-Google-Smtp-Source: AA6agR7mxh4xlrHaACk8ACRbYeCnushTJX/xovc1OX340+zRR7qqgn2gIIKem8n7+e/FLEibg6QqXPbdXVxgjeL2ts4=
+X-Received: by 2002:a17:90b:3805:b0:1f4:ebfe:558b with SMTP id
+ mq5-20020a17090b380500b001f4ebfe558bmr8709936pjb.48.1660221318988; Thu, 11
+ Aug 2022 05:35:18 -0700 (PDT)
 MIME-Version: 1.0
-References: <A330513B-21C9-44D2-BA02-853327FC16CE@linux.ibm.com>
-In-Reply-To: <A330513B-21C9-44D2-BA02-853327FC16CE@linux.ibm.com>
-From: Stefano Garzarella <sgarzare@redhat.com>
-Date: Thu, 11 Aug 2022 12:15:06 +0200
-Message-ID: <CAGxU2F5V-qxurLSZhugvNLWkiDOM83tgKQrEUFB_PLd7=kTH3Q@mail.gmail.com>
-Subject: Re: [5.19.0-next-20220811] Build failure drivers/vdpa
-To: Sachin Sant <sachinp@linux.ibm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
+References: <20220810114318.3220630-1-anders.roxell@linaro.org> <87fsi3ce28.fsf@mpe.ellerman.id.au>
+In-Reply-To: <87fsi3ce28.fsf@mpe.ellerman.id.au>
+From: Anders Roxell <anders.roxell@linaro.org>
+Date: Thu, 11 Aug 2022 14:35:08 +0200
+Message-ID: <CADYN=9L_Sgd8HTkhtM5t0eoN7ict8zX6fRCJsVvYcgp9H_QsSg@mail.gmail.com>
+Subject: Re: [PATCHv3, resend] powerpc: mm: radix_tlb: rearrange the if-else block
+To: Michael Ellerman <mpe@ellerman.id.au>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Mailman-Approved-At: Thu, 11 Aug 2022 23:06:29 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,58 +72,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-next@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org
+Cc: Arnd Bergmann <arnd@arndb.de>, llvm@lists.linux.dev, ndesaulniers@google.com, linux-kernel@vger.kernel.org, nathan@kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Aug 11, 2022 at 12:06 PM Sachin Sant <sachinp@linux.ibm.com> wrote:
+On Thu, 11 Aug 2022 at 11:41, Michael Ellerman <mpe@ellerman.id.au> wrote:
 >
-> 5.19.0-next-20220811 linux-next fails to build on IBM Power with
-> following error:
+> Anders Roxell <anders.roxell@linaro.org> writes:
+> > Clang warns:
+> >
+> > arch/powerpc/mm/book3s64/radix_tlb.c:1191:23: error: variable 'hstart' is uninitialized when used here [-Werror,-Wuninitialized]
+> >                                 __tlbiel_va_range(hstart, hend, pid,
+> >                                                   ^~~~~~
+> > arch/powerpc/mm/book3s64/radix_tlb.c:1175:23: note: initialize the variable 'hstart' to silence this warning
+> >                 unsigned long hstart, hend;
+> >                                     ^
+> >                                      = 0
+> > arch/powerpc/mm/book3s64/radix_tlb.c:1191:31: error: variable 'hend' is uninitialized when used here [-Werror,-Wuninitialized]
+> >                                 __tlbiel_va_range(hstart, hend, pid,
+> >                                                           ^~~~
+> > arch/powerpc/mm/book3s64/radix_tlb.c:1175:29: note: initialize the variable 'hend' to silence this warning
+> >                 unsigned long hstart, hend;
+> >                                           ^
+> >                                            = 0
+> > 2 errors generated.
 >
-> drivers/vdpa/vdpa_sim/vdpa_sim_blk.c: In function 'vdpasim_blk_handle_req=
-':
-> drivers/vdpa/vdpa_sim/vdpa_sim_blk.c:201:3: error: a label can only be pa=
-rt of a statement and a declaration is not a statement
->    struct virtio_blk_discard_write_zeroes range;
->    ^~~~~~
-> drivers/vdpa/vdpa_sim/vdpa_sim_blk.c:202:3: error: expected expression be=
-fore 'u32'
->    u32 num_sectors, flags;
->    ^~~
-> drivers/vdpa/vdpa_sim/vdpa_sim_blk.c:224:3: error: 'num_sectors' undeclar=
-ed (first use in this function); did you mean 'bio_sectors'?
->    num_sectors =3D vdpasim32_to_cpu(vdpasim, range.num_sectors);
->    ^~~~~~~~~~~
->    bio_sectors
-> drivers/vdpa/vdpa_sim/vdpa_sim_blk.c:224:3: note: each undeclared identif=
-ier is reported only once for each function it appears in
-> drivers/vdpa/vdpa_sim/vdpa_sim_blk.c:225:3: error: 'flags' undeclared (fi=
-rst use in this function); did you mean 'class'?
->    flags =3D vdpasim32_to_cpu(vdpasim, range.flags);
->    ^~~~~
->    class
-> make[3]: *** [scripts/Makefile.build:250: drivers/vdpa/vdpa_sim/vdpa_sim_=
-blk.o] Error 1
-> make[2]: *** [scripts/Makefile.build:525: drivers/vdpa/vdpa_sim] Error 2
-> make[1]: *** [scripts/Makefile.build:525: drivers/vdpa] Error 2
-> make[1]: *** Waiting for unfinished jobs=E2=80=A6.
->
-> Git bisect points to the following patch
->
-> commit d79b32c2e4a4e66d5678410cd45815c1c2375196
-> Date:   Wed Aug 10 11:43:47 2022 +0200
->     vdpa_sim_blk: add support for discard and write-zeroes
->
+> Which version & config are you building?
 
-Thanks for the report, I already re-sent a new series with that patch fixed=
-:
-https://lore.kernel.org/virtualization/20220811083632.77525-1-sgarzare@redh=
-at.com/T/#t
+clang-13, clang-14 and clang-nightly, configs are cell_defconfig and
+maple_defconfig
 
-And it looks like it's already in Michael's tree:
-https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git linux-next
+I'm building with tuxmake [1] like this:
+$ tuxmake --runtime podman --target-arch powerpc --toolchain clang-14
+--kconfig cell_defconfig
 
-Thanks,
-Stefano
-
+Cheers,
+Anders
+[1] https://tuxmake.org/
