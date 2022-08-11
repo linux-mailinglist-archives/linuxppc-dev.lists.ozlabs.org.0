@@ -2,53 +2,95 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02FCE58F09B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Aug 2022 18:44:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C846158F59C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Aug 2022 03:43:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M2wkn4g01z3bk4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Aug 2022 02:44:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M38j66j60z3c2W
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Aug 2022 11:43:38 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qzJbdgDe;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rY3FLNCL;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=nathan@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=rmclure@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qzJbdgDe;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rY3FLNCL;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M2wk53mtLz2xHr
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Aug 2022 02:43:41 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M38hS0Rfrz2xG8
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Aug 2022 11:43:03 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27B0d5ZX003970;
+	Thu, 11 Aug 2022 01:42:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
+ mime-version : subject : from : in-reply-to : date : cc :
+ content-transfer-encoding : message-id : references : to; s=pp1;
+ bh=YifLhT4y6GWtpg5tz3UQtMVZWzjWhjMTPWnIMThuVXo=;
+ b=rY3FLNCLc3kHg2zHFOlVZZQIFaCeJg1vLj8iOKGwnPT9b2VSD3kgK+UBy2L6HeHb1t4G
+ wA8tEdKIlysJlDu0KLCRfu9Kg+JVbuuW+MC1rLheFO9PS+WcfjKQ0eb6gni5V8Vd2PuH
+ ctTFf5oSQ4mRT0tOry2gTLDJk9RddnN0YJj4Ox9JIWvhXWDN5JjZtHRB6NtMDlXYgdE4
+ HpVmsPdCftGNJHA2K4+YyCQ9VJiejVOzU4Y2T0uTw5S8w+BWSLJctp/a7JC6k6/X3bi8
+ mMOTMfO81zWlmm2s9OUkwLdYGw6Yy4mF33InI93xpgVAhnCBOxyih32h9FfI0QsG4cJ1 pQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3hvq40a9q5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 11 Aug 2022 01:42:58 +0000
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 27B1KbXi026796;
+	Thu, 11 Aug 2022 01:42:57 GMT
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3hvq40a9pm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 11 Aug 2022 01:42:57 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+	by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 27B1KlUh019445;
+	Thu, 11 Aug 2022 01:42:55 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+	by ppma04ams.nl.ibm.com with ESMTP id 3huww2hdea-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 11 Aug 2022 01:42:55 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
+	by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 27B1grVY31457766
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 11 Aug 2022 01:42:53 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 86A7552051;
+	Thu, 11 Aug 2022 01:42:53 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 2FFCE5204E;
+	Thu, 11 Aug 2022 01:42:53 +0000 (GMT)
+Received: from smtpclient.apple (haven.au.ibm.com [9.192.254.114])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 8865861286;
-	Wed, 10 Aug 2022 16:43:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2997C433C1;
-	Wed, 10 Aug 2022 16:43:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1660149817;
-	bh=oaHDCKmep8dN+8/hO9HR/EbTj8E7+7obmhxANTTMBXg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qzJbdgDejI+ssgG9fRM249kMyO6Zj8RM8O7837baTMJw4yxaXfQN6x6a6kF2qvfxV
-	 //5255GfiZ4B+iI1JKjsMAFuQ6iXwJVTdSLqdwoc4Om3b3Ps/cUvyfuOKmwdIQF1Tj
-	 SoXeotCNrUL+Vv4KZs1uzu9R7H4nQZGxXEV3OPx/NY+1nKL8WSfLxC/F9DTxHCuCr1
-	 og0/p4X3XjpP+PXS64ni23SLNIvvRpBOwd6d970dHT2aoyBMAx56Pu3DeYHgvNgbz+
-	 TomCyT273nEacM6E7JA3XgPDwdZmCrF/84Q0wt2nr8msgcmEu2M3sEgGDXauHGobB8
-	 E49Ccqu9lnRBA==
-Date: Wed, 10 Aug 2022 09:43:34 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Russell Currey <ruscur@russell.cc>
-Subject: Re: [PATCH v2] powerpc/kexec: Fix build failure from uninitialised
- variable
-Message-ID: <YvPgNsl1RalFdPH+@dev-arch.thelio-3990X>
-References: <20220810054331.373761-1-ruscur@russell.cc>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220810054331.373761-1-ruscur@russell.cc>
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id BC460600E5;
+	Thu, 11 Aug 2022 11:42:51 +1000 (AEST)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.1\))
+Subject: Re: [PATCH v2 13/14] powerpc/64s: Fix comment on interrupt handler
+ prologue
+From: Rohan McLure <rmclure@linux.ibm.com>
+In-Reply-To: <34233718-8fae-d18d-cb48-bf695a1f102e@csgroup.eu>
+Date: Thu, 11 Aug 2022 11:42:49 +1000
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <573D17EC-ED8A-463E-A032-6D6CF92B0260@linux.ibm.com>
+References: <20220725063156.121292-1-rmclure@linux.ibm.com>
+ <34233718-8fae-d18d-cb48-bf695a1f102e@csgroup.eu>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+X-Mailer: Apple Mail (2.3696.120.41.1.1)
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: dxkW9v3aVJ4HHXN7At1uV7SkqyS4kkL2
+X-Proofpoint-GUID: vt-OBaq2IT3O06U-PF4QlNMrQ8dFAnH-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-08-10_16,2022-08-10_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 spamscore=0
+ priorityscore=1501 phishscore=0 adultscore=0 clxscore=1015 bulkscore=0
+ suspectscore=0 mlxscore=0 impostorscore=0 lowpriorityscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2207270000 definitions=main-2208110002
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,56 +102,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aik@ozlabs.ru, linuxppc-dev@lists.ozlabs.org
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "npiggin@gmail.com" <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Aug 10, 2022 at 03:43:31PM +1000, Russell Currey wrote:
-> clang 14 won't build because ret is uninitialised and can be returned if
-> both prop and fdtprop are NULL.  Drop the ret variable and return an
-> error in that failure case.
-> 
-> Fixes: b1fc44eaa9ba ("pseries/iommu/ddw: Fix kdump to work in absence of ibm,dma-window")
-> Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Signed-off-by: Russell Currey <ruscur@russell.cc>
+> Maybe it would be interesting to know from which patch the error =
+comes.
 
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+It=E2=80=99s hard to attribute this to a single commit, but the distance =
+between r10=E2=80=99s save
+location and r11-r12=E2=80=99s save location has definitely grown over =
+time. The comment is
+introduced in commit 7180e3e636de
+("[POWERPC] force 64bit mode in fwnmi handlers to workaround firmware =
+bugs=E2=80=9D) way back in 2006.
 
-Thanks for the patch!
-
-> ---
-> v2: adopt Christophe's suggestion, which is better
-> 
->  arch/powerpc/kexec/file_load_64.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
-> 
-> diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
-> index 683462e4556b..349a781cea0b 100644
-> --- a/arch/powerpc/kexec/file_load_64.c
-> +++ b/arch/powerpc/kexec/file_load_64.c
-> @@ -1043,17 +1043,17 @@ static int copy_property(void *fdt, int node_offset, const struct device_node *d
->  			 const char *propname)
->  {
->  	const void *prop, *fdtprop;
-> -	int len = 0, fdtlen = 0, ret;
-> +	int len = 0, fdtlen = 0;
->  
->  	prop = of_get_property(dn, propname, &len);
->  	fdtprop = fdt_getprop(fdt, node_offset, propname, &fdtlen);
->  
->  	if (fdtprop && !prop)
-> -		ret = fdt_delprop(fdt, node_offset, propname);
-> +		return fdt_delprop(fdt, node_offset, propname);
->  	else if (prop)
-> -		ret = fdt_setprop(fdt, node_offset, propname, prop, len);
-> -
-> -	return ret;
-> +		return fdt_setprop(fdt, node_offset, propname, prop, len);
-> +	else
-> +		return -FDT_ERR_NOTFOUND;
->  }
->  
->  static int update_pci_dma_nodes(void *fdt, const char *dmapropname)
-> -- 
-> 2.37.1
-> 
+In v3 will insert another comment to better signal where r11-r12 are =
+saved.=
