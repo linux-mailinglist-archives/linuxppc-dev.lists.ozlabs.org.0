@@ -1,66 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B986558F83E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Aug 2022 09:20:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23C8858FA2E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Aug 2022 11:42:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M3J9x5Khsz3c6M
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Aug 2022 17:20:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M3MKG0Mxfz3bnM
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Aug 2022 19:42:10 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=OKKZBZtb;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=kEbdDLRB;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f2e; helo=mail-qv1-xf2e.google.com; envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=OKKZBZtb;
-	dkim-atps=neutral
-Received: from mail-qv1-xf2e.google.com (mail-qv1-xf2e.google.com [IPv6:2607:f8b0:4864:20::f2e])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M3J9H0TMdz2xtw
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Aug 2022 17:20:01 +1000 (AEST)
-Received: by mail-qv1-xf2e.google.com with SMTP id b7so12735949qvq.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Aug 2022 00:20:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc;
-        bh=h2MoL03lBkdgEsIuQqutH8cxN+Yd4x7ZcsieCTffkXk=;
-        b=OKKZBZtblln4astqy2YHb8FA49/KSI+mVt5AUXvViSuIkTNMR/R0wTKefOo7e8T61s
-         TuTufJbFxMz8giToczOxES3Sqf2WTprj97bAf2j/JxawDqlIrjsRUC627ViaZew1Aiqg
-         1AIGyRw81ixA9eX2X864CQzz2gyWU1qKqjvgjsPXIb0jPij+Xc7skUotKs+tHZpYrUe1
-         hqVwT5oIBc9MHh6Tge9Rkfvo2pAawU3TxAgUQ1UDCpMQkjbfjhI4ggKld15GK9nrPl1o
-         /m9W5K55vs+0Q5A+eR7TlPMgcnhDy83fjOkrBTPc+c/pNImKRzv2j/aSEuEfjK3WFH3+
-         wiJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=h2MoL03lBkdgEsIuQqutH8cxN+Yd4x7ZcsieCTffkXk=;
-        b=o/14cdX+6mKdGeWkpNURSiM1bRPvtPoZbn7HlA8emoKJMDwuNiE80oBQxswDHikfhi
-         fAXQC7KGSTcAX15u7eZHVzVWScmnaUTp9x9aWiy+4U92Gjxj4rP/FbbYYvMGHjUEBNac
-         ck5tM/8jLV59JzydGfnjuU0XhS4h6W/1n80p/Wz9ej08kzxSdm9BNTEjtFdyM5VZHi7D
-         Q6XQQhciUG+nmcaQjhurEJ8vHuQJ0fzkmczl7Hk33RRUnyv5x/0sHnwOSRxnZ3spDu8r
-         duoCsDtnkGYmWPrNXrvc0gbpmahrNlThuX+OQKCjUlV5x+swyxhZEpaqzGUBT0niBqyI
-         elmQ==
-X-Gm-Message-State: ACgBeo0arvPuXFUsI9cIxhihQ+5ZFEcWvGlp/59riGAOM20LUmVnuZMQ
-	gX/VhdSP+uPZsi5NeLk4vv5drp/pBvm2RkmnIWQ=
-X-Google-Smtp-Source: AA6agR7tQbBprz1To2uSkdhWrz3WsFgRTMHSY6HM/0OxOG18+HdvoQfeg+d30I0zQs0eJ1f9oKBzNzItoo8IGe7ytfY=
-X-Received: by 2002:ad4:5bed:0:b0:476:dbbe:f167 with SMTP id
- k13-20020ad45bed000000b00476dbbef167mr27343541qvc.100.1660202398215; Thu, 11
- Aug 2022 00:19:58 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M3MJg3TClz2xHC
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Aug 2022 19:41:39 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=kEbdDLRB;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4M3MJf6BgNz4x1K;
+	Thu, 11 Aug 2022 19:41:38 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1660210899;
+	bh=QvU3Ii0mNqZHfLnF6Zfdgva2T6Ppk7BMjH3eteu8YK0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=kEbdDLRB31+agt8BJ/TeC6VhWX4NEHL3dNzlAAHEaVglBt/IPlWyXaQbYxPzDNupK
+	 VN/OxNUYdRcFRQDTumj6IpYsWApJkiEfNpC+xnmIW800GnzemkKLeC69T1tQDdt8VF
+	 N7ZCOmwhsPZ/rEPktpKlVXB8XRLL1+e3e8xvPPtbPYv8B1cuKUJqti67ADjcR04r7/
+	 Y1outOTSoXOrmVjpBPII2/A3K4LG5K8L611udCZY904nczWqIKDMpdnIh2o61ChM2Z
+	 faTpKkkrkJqfZLzfaY+uD9NVhnVPIC956S7DAIQ5p6oSzyY80OGjQKaLQxpqU42AnZ
+	 LMao+0e4mYQHQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Anders Roxell <anders.roxell@linaro.org>, nathan@kernel.org,
+ ndesaulniers@google.com
+Subject: Re: [PATCHv3, resend] powerpc: mm: radix_tlb: rearrange the if-else
+ block
+In-Reply-To: <20220810114318.3220630-1-anders.roxell@linaro.org>
+References: <20220810114318.3220630-1-anders.roxell@linaro.org>
+Date: Thu, 11 Aug 2022 19:41:35 +1000
+Message-ID: <87fsi3ce28.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-References: <20220806085301.25142-1-ruscur@russell.cc> <87lervcn9o.fsf@mpe.ellerman.id.au>
-In-Reply-To: <87lervcn9o.fsf@mpe.ellerman.id.au>
-From: "Oliver O'Halloran" <oohall@gmail.com>
-Date: Thu, 11 Aug 2022 17:19:47 +1000
-Message-ID: <CAOSf1CHtmSPSbW-KiL7svks2sXO4KEx9hZteHJjRvvfqcb6YoQ@mail.gmail.com>
-Subject: Re: [PATCH] MAINTAINERS: Remove myself as EEH maintainer
-To: Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,30 +59,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, linux-pci <linux-pci@vger.kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Anders Roxell <anders.roxell@linaro.org>, Arnd Bergmann <arnd@arndb.de>, llvm@lists.linux.dev, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Aug 11, 2022 at 4:22 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
+Anders Roxell <anders.roxell@linaro.org> writes:
+> Clang warns:
 >
-> Russell Currey <ruscur@russell.cc> writes:
-> > I haven't touched EEH in a long time I don't have much knowledge of the
-> > subsystem at this point either, so it's misleading to have me as a
-> > maintainer.
->
-> Thank you for your service.
->
-> > I remain grateful to Oliver for picking up my slack over the years.
->
-> Ack.
->
-> But I wonder if he is still happy being listed as the only maintainer.
-> Given the status is "Supported" that means "Someone is actually paid to
-> look after this" - and I suspect Oracle are probably not paying him to
-> do that?
+> arch/powerpc/mm/book3s64/radix_tlb.c:1191:23: error: variable 'hstart' is uninitialized when used here [-Werror,-Wuninitialized]
+>                                 __tlbiel_va_range(hstart, hend, pid,
+>                                                   ^~~~~~
+> arch/powerpc/mm/book3s64/radix_tlb.c:1175:23: note: initialize the variable 'hstart' to silence this warning
+>                 unsigned long hstart, hend;
+>                                     ^
+>                                      = 0
+> arch/powerpc/mm/book3s64/radix_tlb.c:1191:31: error: variable 'hend' is uninitialized when used here [-Werror,-Wuninitialized]
+>                                 __tlbiel_va_range(hstart, hend, pid,
+>                                                           ^~~~
+> arch/powerpc/mm/book3s64/radix_tlb.c:1175:29: note: initialize the variable 'hend' to silence this warning
+>                 unsigned long hstart, hend;
+>                                           ^
+>                                            = 0
+> 2 errors generated.
 
-I'm still happy to field questions and/or give reviews occasionally if
-needed, but yeah I don't have the time, hardware, or inclination to do
-any actual maintenance. IIRC Mahesh was supposed to take over
-supporting EEH after I left IBM. If he's still around he should
-probably be listed as a maintainer.
+Which version & config are you building?
+
+I don't see this warning in my test builds.
+
+cheers
