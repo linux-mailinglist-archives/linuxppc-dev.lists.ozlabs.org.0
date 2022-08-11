@@ -2,51 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF14C590261
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Aug 2022 18:09:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78B71590270
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Aug 2022 18:10:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M3WwC5Pv0z3c5p
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Aug 2022 02:09:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M3Wxc2rPcz3bgh
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Aug 2022 02:10:44 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IYM73saQ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=I370Tn1y;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IYM73saQ;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=I370Tn1y;
 	dkim-atps=neutral
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M3Wvc4zXcz2xHG
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Aug 2022 02:09:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M3Wx21Hszz2xkP
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Aug 2022 02:10:14 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 0B0C861387;
-	Thu, 11 Aug 2022 16:08:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B333C433D6;
-	Thu, 11 Aug 2022 16:08:56 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 3DA4661474;
+	Thu, 11 Aug 2022 16:10:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9F3DC43140;
+	Thu, 11 Aug 2022 16:10:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1660234137;
-	bh=uKwMLGgnt8uS0p5ebOQ23qe32Pedis/Xf8xFcNBy+Dg=;
+	s=k20201202; t=1660234212;
+	bh=Pg+XfWgrtZFFlriEM+X/TBribzCudz9MXofwvQyATJA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IYM73saQCLgTZg+Wdfs+5Flx5PCPSXXAXTs29cIGD4phuY8U3mBHO+EnKZ4NMUThh
-	 qopFMLjBbcWqaxRCvEFusNyCUIT3oqnJ9cGXJr1XMBQ0we7vke6yNR2gK4AUUU1LWI
-	 ZMmwTAJ939MhjjdqAlxy6BTsq3nJzNetaSLPvI3y70qGLg4+PdKkpFwn9q3DjNvDBb
-	 kADHjdrMIXpLZUpH0Hs1Ukfa95tolLZaFKiqurqzHkh4wZLusxQLUCkmjMvgjKDgKT
-	 KSXBmvn3i5IJUZeoS7m+wpzlearPbLARywmZ/LcsMgiYnfZkW89Qr9Sv/pRcZg04bi
-	 sp3LosHsePGEQ==
+	b=I370Tn1yk+5CGUL3EnrFHbdMxySqVYhFxcDWUoaUcT0lb6+dfGKbn5kS8mjn8YRfM
+	 YKNuE3bLNnF2/Z1Qdk88Hr3ealrFBQFsSdkeZdqzlUIpnYsspSuECd/NtED1V2EH2P
+	 zG/zx0ctjb3juctoeKouwmbmmbXqtaRSQL07IWvUtu2gkYlrqNHnQwWd6usAazbVTz
+	 jdAazX4VdID/huDKRuoYgbSGWYtne7nISCvgTPsyX5UoxlCoAud2DFhe+kqFOCq9N9
+	 bEPFsgGYk61Az1w7cGuV5HpEYB8TV9C46mTAH0RGV3aydxpwUPZRxGAInTZWOidu6T
+	 fXjVwu1aQdf+A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 15/25] crypto: vmx - Fix warning on p8_ghash_alg
-Date: Thu, 11 Aug 2022 12:08:10 -0400
-Message-Id: <20220811160826.1541971-15-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 08/14] crypto: vmx - Fix warning on p8_ghash_alg
+Date: Thu, 11 Aug 2022 12:09:36 -0400
+Message-Id: <20220811160948.1542842-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220811160826.1541971-1-sashal@kernel.org>
-References: <20220811160826.1541971-1-sashal@kernel.org>
+In-Reply-To: <20220811160948.1542842-1-sashal@kernel.org>
+References: <20220811160948.1542842-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -83,17 +83,17 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+)
 
 diff --git a/drivers/crypto/vmx/ghash.c b/drivers/crypto/vmx/ghash.c
-index 14807ac2e3b9..e419be7381c9 100644
+index 2d1a8cd35509..b1b067203426 100644
 --- a/drivers/crypto/vmx/ghash.c
 +++ b/drivers/crypto/vmx/ghash.c
-@@ -23,6 +23,7 @@
+@@ -22,6 +22,7 @@
+ #include <crypto/scatterwalk.h>
  #include <crypto/internal/hash.h>
- #include <crypto/internal/simd.h>
  #include <crypto/b128ops.h>
 +#include "aesp8-ppc.h"
  
- void gcm_init_p8(u128 htable[16], const u64 Xi[2]);
- void gcm_gmult_p8(u64 Xi[2], const u128 htable[16]);
+ #define IN_INTERRUPT in_interrupt()
+ 
 -- 
 2.35.1
 
