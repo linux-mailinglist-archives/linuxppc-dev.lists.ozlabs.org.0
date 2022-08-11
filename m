@@ -1,97 +1,94 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A992558FA85
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Aug 2022 12:12:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDBE058FB90
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Aug 2022 13:45:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M3N0144r1z3bqv
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Aug 2022 20:12:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M3Q3T1ZVpz3c6X
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Aug 2022 21:45:25 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TUBOIeJO;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=N2cM+DWh;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sachinp@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TUBOIeJO;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=N2cM+DWh;
 	dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M3MzL0w1cz2yn3
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Aug 2022 20:11:41 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27BA8WSc017728
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Aug 2022 10:11:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=FaAHhLcypxjlRs0c2tqGVcPKrQX3H+KLXwjGXW07YZs=;
- b=TUBOIeJOEfEb02nFq1y9AMzqyT/0hNN6vrVVeevBU8HhXt1HN4ZeVl6gjDsPSSBkvOrN
- KwfdCSJ43eBLlAG2YMSkgeIrKFOEEWUROnS0Qql8tbrb2NfR2XdLAzunrKDJ7tX4sna9
- 6ZPL74cgA4RtaylYY+mYUyo6Hg7v8qfl754fGpLTBTrWmVqDPFhZCGiV4D4JPCMTXIg7
- zjTHtHOHPWt2o4rS1rsDt8iA6GT6kf33JY68HiK7p4NXfFv74TqtXT0005yxkfY85Egf
- Otj9SbjuxpZCObdtO+XI8/Qjs8PDnn9xILAJS+IqRvyJAQQ67yXbNjzL9cH+nb3AU6Dg fQ== 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M3Q2j2yqHz2xrj
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Aug 2022 21:44:44 +1000 (AEST)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27BBfwei001906;
+	Thu, 11 Aug 2022 11:44:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type : subject :
+ from : in-reply-to : date : cc : message-id : references : to :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=k8OxMey6CLg0GXntxVvBFhpJY5/zsW848Xv+A0GjS6s=;
+ b=N2cM+DWhRVUbq/fJTKxUHNeWzMwuC1VF/Cf5xLd72K5f8Q9BtYpEfpLiTzIaF1TgUmFH
+ RlTLBf+ZXw42RwJuIbBbTnkTZy8P6iQz9Jlp6hf9JkshETUbhLy7LxkJO6AjYWoSHdv3
+ 1sv1bDBUmQJyGCE9J89dWKLQEvEv5X+8uwDK/xagkBF1R+ScrjGCjXuCa2Ml6uxytMdh
+ FtXS5NCAjYiZWQGfcy4RxBLRKAk0SCgZinTPrtOWClqgGgoav4QKUC2fMLSXN3QqiOVD
+ PLgRmuW1ZH0+ekScsN4b6Qy6dnfVwsc8xG+4FIvsd2rGnv+ZOHm0yeiWhQeRuc2M2TJM zQ== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3hvx59tx00-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Aug 2022 10:11:39 +0000
-Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 27BA8Vln017552
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Aug 2022 10:11:38 GMT
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3hvx59twx0-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3hw14dr1x8-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 11 Aug 2022 10:11:38 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-	by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 27BA6nEC009842;
-	Thu, 11 Aug 2022 10:11:36 GMT
+	Thu, 11 Aug 2022 11:44:41 +0000
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 27BBgJO3002450;
+	Thu, 11 Aug 2022 11:44:41 GMT
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3hw14dr1w9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 11 Aug 2022 11:44:41 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+	by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 27BBZTgm017387;
+	Thu, 11 Aug 2022 11:44:38 GMT
 Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
-	by ppma04ams.nl.ibm.com with ESMTP id 3huww2hvkf-1
+	by ppma03ams.nl.ibm.com with ESMTP id 3huwvg1yra-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 11 Aug 2022 10:11:36 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
-	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 27BABYHe32637412
+	Thu, 11 Aug 2022 11:44:38 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
+	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 27BBiahf26280314
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 11 Aug 2022 10:11:34 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EDE8AAE053;
-	Thu, 11 Aug 2022 10:11:33 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4C632AE045;
-	Thu, 11 Aug 2022 10:11:33 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Thu, 11 Aug 2022 10:11:33 +0000 (GMT)
-Received: from intelligence.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 7F085600EE;
-	Thu, 11 Aug 2022 20:11:28 +1000 (AEST)
-Message-ID: <462e3fe47fbd4a6d63c568572342bf14fa010e2c.camel@linux.ibm.com>
-Subject: Re: [PATCH v2 11/14] powerpc/64s: Clear/restore caller gprs in
- syscall interrupt/return
-From: Andrew Donnellan <ajd@linux.ibm.com>
-To: Rohan McLure <rmclure@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Date: Thu, 11 Aug 2022 20:11:27 +1000
-In-Reply-To: <20220725063111.120926-1-rmclure@linux.ibm.com>
-References: <20220725063111.120926-1-rmclure@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.3-1 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	Thu, 11 Aug 2022 11:44:36 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7500B11C04A;
+	Thu, 11 Aug 2022 11:44:36 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 823CD11C050;
+	Thu, 11 Aug 2022 11:44:35 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.43.75.173])
+	by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Thu, 11 Aug 2022 11:44:35 +0000 (GMT)
+Content-Type: text/plain;
+	charset=us-ascii
+Subject: Re: [5.19.0-next-20220811] Build failure drivers/vdpa
+From: Sachin Sant <sachinp@linux.ibm.com>
+In-Reply-To: <CAGxU2F5V-qxurLSZhugvNLWkiDOM83tgKQrEUFB_PLd7=kTH3Q@mail.gmail.com>
+Date: Thu, 11 Aug 2022 17:14:34 +0530
+Message-Id: <7137A7BC-1036-49A3-885B-FEBC7985871F@linux.ibm.com>
+References: <A330513B-21C9-44D2-BA02-853327FC16CE@linux.ibm.com>
+ <CAGxU2F5V-qxurLSZhugvNLWkiDOM83tgKQrEUFB_PLd7=kTH3Q@mail.gmail.com>
+To: Stefano Garzarella <sgarzare@redhat.com>
+X-Mailer: Apple Mail (2.3696.120.41.1.1)
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Olgd9cydQ9QHMpAXPGdClhr2OxDfqHAW
-X-Proofpoint-GUID: lANHRiimKsf17Bqgi79ch_o6Z238V5Em
+X-Proofpoint-GUID: Qoq6gJZ-p24hQfcSx8c9YSWViWxLr7kO
+X-Proofpoint-ORIG-GUID: vn0zB7nDtYDwZaBLZs4PbZ8c3O9kA7fe
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
  definitions=2022-08-11_05,2022-08-11_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 clxscore=1015
- adultscore=0 bulkscore=0 mlxscore=0 malwarescore=0 priorityscore=1501
- impostorscore=0 phishscore=0 mlxlogscore=542 lowpriorityscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2207270000 definitions=main-2208110028
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ mlxlogscore=843 impostorscore=0 mlxscore=0 suspectscore=0 clxscore=1015
+ adultscore=0 bulkscore=0 phishscore=0 priorityscore=1501
+ lowpriorityscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2207270000 definitions=main-2208110034
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,122 +100,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: npiggin@gmail.com
+Cc: linux-next@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 2022-07-25 at 16:31 +1000, Rohan McLure wrote:
-> Clear user state in gprs (assign to zero) to reduce the influence of
-> user
-> registers on speculation within kernel syscall handlers. Clears occur
-> at the very beginning of the sc and scv 0 interrupt handlers, with
-> restores occurring following the execution of the syscall handler.
-> 
-> One function of syscall_exit_prepare is to determine when non-
-> volatile
-> regs must be restored, and it still serves that purpose on 32-bit.
-> Use
-> it now for determining where to find XER, CTR, CR.
 
-I'm not sure exactly how syscall_exit_prepare comes into this?
 
-> 
-> Signed-off-by: Rohan McLure <rmclure@linux.ibm.com>
-> ---
-> V1 -> V2: Update summary
-> ---
->  arch/powerpc/kernel/interrupt_64.S | 22 ++++++++++++++++++----
->  1 file changed, 18 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/powerpc/kernel/interrupt_64.S
-> b/arch/powerpc/kernel/interrupt_64.S
-> index 3e8a811e09c4..34167cfa5d60 100644
-> --- a/arch/powerpc/kernel/interrupt_64.S
-> +++ b/arch/powerpc/kernel/interrupt_64.S
-> @@ -70,7 +70,7 @@ _ASM_NOKPROBE_SYMBOL(system_call_vectored_\name)
->         ld      r2,PACATOC(r13)
->         mfcr    r12
->         li      r11,0
-> -       /* Can we avoid saving r3-r8 in common case? */
-> +       /* Save syscall parameters in r3-r8 */
->         std     r3,GPR3(r1)
->         std     r4,GPR4(r1)
->         std     r5,GPR5(r1)
-> @@ -108,6 +108,13 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
->          * but this is the best we can do.
->          */
->  
-> +       /*
-> +        * Zero user registers to prevent influencing speculative
-> execution
-> +        * state of kernel code.
-> +        */
-> +       NULLIFY_GPRS(5, 12)
-> +       NULLIFY_NVGPRS()
-> +
->         /* Calling convention has r3 = orig r0, r4 = regs */
->         mr      r3,r0
->         bl      system_call_exception
-> @@ -138,6 +145,7 @@ BEGIN_FTR_SECTION
->         HMT_MEDIUM_LOW
->  END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
->  
-> +       REST_NVGPRS(r1)
->         cmpdi   r3,0
->         bne     .Lsyscall_vectored_\name\()_restore_regs
->  
-> @@ -180,7 +188,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
->         ld      r4,_LINK(r1)
->         ld      r5,_XER(r1)
->  
-> -       REST_NVGPRS(r1)
->         ld      r0,GPR0(r1)
->         mtcr    r2
->         mtctr   r3
-> @@ -248,7 +255,7 @@ END_BTB_FLUSH_SECTION
->         ld      r2,PACATOC(r13)
->         mfcr    r12
->         li      r11,0
-> -       /* Can we avoid saving r3-r8 in common case? */
-> +       /* Save syscall parameters in r3-r8 */
->         std     r3,GPR3(r1)
->         std     r4,GPR4(r1)
->         std     r5,GPR5(r1)
-> @@ -298,6 +305,13 @@ END_BTB_FLUSH_SECTION
->         wrteei  1
->  #endif
->  
-> +       /*
-> +        * Zero user registers to prevent influencing speculative
-> execution
-> +        * state of kernel code.
-> +        */
-> +       NULLIFY_GPRS(5, 12)
-> +       NULLIFY_NVGPRS()
-> +
->         /* Calling convention has r3 = orig r0, r4 = regs */
->         mr      r3,r0
->         bl      system_call_exception
-> @@ -340,6 +354,7 @@ BEGIN_FTR_SECTION
->         stdcx.  r0,0,r1                 /* to clear the reservation
-> */
->  END_FTR_SECTION_IFCLR(CPU_FTR_STCX_CHECKS_ADDRESS)
->  
-> +       REST_NVGPRS(r1)
->         cmpdi   r3,0
->         bne     .Lsyscall_restore_regs
->         /* Zero volatile regs that may contain sensitive kernel data
-> */
-> @@ -367,7 +382,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
->  .Lsyscall_restore_regs:
->         ld      r3,_CTR(r1)
->         ld      r4,_XER(r1)
-> -       REST_NVGPRS(r1)
->         mtctr   r3
->         mtspr   SPRN_XER,r4
->         REST_GPR(0, r1)
+> On 11-Aug-2022, at 3:45 PM, Stefano Garzarella <sgarzare@redhat.com> wrot=
+e:
+>=20
+>> Date:   Wed Aug 10 11:43:47 2022 +0200
+>>    vdpa_sim_blk: add support for discard and write-zeroes
+>>=20
+>=20
+> Thanks for the report, I already re-sent a new series with that patch fix=
+ed:
+> https://lore.kernel.org/virtualization/20220811083632.77525-1-sgarzare@re=
+dhat.com/T/#t
 
--- 
-Andrew Donnellan    OzLabs, ADL Canberra
-ajd@linux.ibm.com   IBM Australia Limited
+Thanks. That patch works for me.
+
+- Sachin
 
