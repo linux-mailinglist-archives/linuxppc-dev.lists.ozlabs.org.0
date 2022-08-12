@@ -2,74 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5914590BA2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Aug 2022 07:55:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D6B9590C7B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Aug 2022 09:24:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M3tFb44H5z3bl3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Aug 2022 15:55:47 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=I2/tiLRG;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M3wCg2VPpz3cBP
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Aug 2022 17:24:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2001:4860:4864:20::33; helo=mail-oa1-x33.google.com; envelope-from=yury.norov@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=I2/tiLRG;
-	dkim-atps=neutral
-Received: from mail-oa1-x33.google.com (mail-oa1-x33.google.com [IPv6:2001:4860:4864:20::33])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com; envelope-from=tongtiangen@huawei.com; receiver=<UNKNOWN>)
+X-Greylist: delayed 1038 seconds by postgrey-1.36 at boromir; Fri, 12 Aug 2022 17:23:53 AEST
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M3tDy66mhz2xTj
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Aug 2022 15:55:12 +1000 (AEST)
-Received: by mail-oa1-x33.google.com with SMTP id 586e51a60fabf-10ea9ef5838so24046043fac.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Aug 2022 22:55:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc;
-        bh=vyDd5sdlW/fZbgb+P03HOQJNhHBEtM6dR0OmvEFJUas=;
-        b=I2/tiLRGP+vTpPDSKssy8o+Alz0OX7R/A3w9bOoDvAefBVZg2WUBaeodhnOr3hiGaA
-         C04lqW+K8FeMIotWwAYLyg8E5ojZ3X7V58PA3OGDkS2s5HXA8CcsfN8h3sjas6rIUleU
-         giqCAQ4zXY9ghm1tlpBs2gp+I3qBkz4zDQk4m/JU7vU9NM/7y7EGQcxs8Fq6rO21x9hU
-         mzqdGWg0Ru1JpXeTBq7fi3JBhZxeStXalldJLDMlITlqGE441bSs3GGUX7TISbU9juQh
-         tLVzG5erCe/QiDQMh/RfwLGgAqL5pl/2TO6UXqGZaMOthb9Dfl2EhnNVtaSEBi648iL9
-         EEtA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc;
-        bh=vyDd5sdlW/fZbgb+P03HOQJNhHBEtM6dR0OmvEFJUas=;
-        b=AJNaMHzEui935+6Xm8CGPhQlvbpbnpNtNkyr8o5d1x1h7tjCIxizqlGLONhlsjwgas
-         cVnFAKCVP+Ubxo104Y9YSLE/rObXHZz6gkYzi/+XnmJ7kSq7rl8jRVINkabC/c8mRXFf
-         3hDP5D+i5xPdBLdJk88EfU/cBFFyv2rZKU0uJJyY8h5ZQ5jPVJZ5nYU3WcgJipwF0lB5
-         s9DuChHA0vEuO1zN1ED+/3Z/dB0EcwMiL4u20ZAZkMJqygpc3B/49mAQD4C7gnwCyWrt
-         7PpJCW0nJSKUGHQhzRqu1D/HjA0A72LdCtoLBr86booQl8oYnlwTCzLCb0bFQUyk7kBP
-         eZhw==
-X-Gm-Message-State: ACgBeo3UrIKH5qbP53313KRr9Hby0BEMH+QWmJTPRCdoa9BJwHtmqcK1
-	oTxy+HhS2fWuMHWz+TZ6zrc=
-X-Google-Smtp-Source: AA6agR5aGXyyJ3+GJIotsDJnqcx75qV+eYnnEhlGhhbARGSbHE48VYmsi9Yyo1+DSijFHW4fZANiZA==
-X-Received: by 2002:a05:6870:220a:b0:113:fae9:18bf with SMTP id i10-20020a056870220a00b00113fae918bfmr4915811oaf.66.1660283708323;
-        Thu, 11 Aug 2022 22:55:08 -0700 (PDT)
-Received: from localhost ([12.97.180.36])
-        by smtp.gmail.com with ESMTPSA id h5-20020a05683040c500b00616d25dc933sm214380otu.69.2022.08.11.22.55.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Aug 2022 22:55:08 -0700 (PDT)
-From: Yury Norov <yury.norov@gmail.com>
-To: linux-kernel@vger.kernel.org,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	linuxppc-dev@lists.ozlabs.org,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-	Paul Mackerras <paulus@samba.org>,
-	Stephen Rothwell <sfr@canb.auug.org.au>
-Subject: [PATCH] lib: remove lib/nodemask.c
-Date: Thu, 11 Aug 2022 22:55:05 -0700
-Message-Id: <20220812055505.2502077-1-yury.norov@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M3wCF1NtKz2yjC
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Aug 2022 17:23:52 +1000 (AEST)
+Received: from dggemv711-chm.china.huawei.com (unknown [172.30.72.54])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4M3vmc2HHlzmV7n;
+	Fri, 12 Aug 2022 15:04:16 +0800 (CST)
+Received: from kwepemm600017.china.huawei.com (7.193.23.234) by
+ dggemv711-chm.china.huawei.com (10.1.198.66) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Fri, 12 Aug 2022 15:06:22 +0800
+Received: from localhost.localdomain (10.175.112.125) by
+ kwepemm600017.china.huawei.com (7.193.23.234) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Fri, 12 Aug 2022 15:06:20 +0800
+From: Tong Tiangen <tongtiangen@huawei.com>
+To: Mark Rutland <mark.rutland@arm.com>, James Morse <james.morse@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>, Thomas Gleixner
+	<tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+	<bp@alien8.de>, Robin Murphy <robin.murphy@arm.com>, Dave Hansen
+	<dave.hansen@linux.intel.com>, Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>,
+	Michael Ellerman <mpe@ellerman.id.au>, Benjamin Herrenschmidt
+	<benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>,
+	<x86@kernel.org>, "H . Peter Anvin" <hpa@zytor.com>
+Subject: [PATCH -next v7 0/4]arm64: add machine check safe support
+Date: Fri, 12 Aug 2022 07:05:53 +0000
+Message-ID: <20220812070557.1028499-1-tongtiangen@huawei.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.175.112.125]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ kwepemm600017.china.huawei.com (7.193.23.234)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,50 +59,104 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Linus Torvalds <torvalds@linux-foundation.org>, Yury Norov <yury.norov@gmail.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, Xie XiuQi <xiexiuqi@huawei.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Tong Tiangen <tongtiangen@huawei.com>, Guohanjun <guohanjun@huawei.com>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Commit 36d4b36b69590 (lib/nodemask: inline next_node_in() and
-node_random()) removed the lib/nodemask.c file, but the remove
-didn't happen when the patch was applied.
+With the increase of memory capacity and density, the probability of
+memory error increases. The increasing size and density of server RAM
+in the data center and cloud have shown increased uncorrectable memory
+errors.
 
-Reported-by: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Signed-off-by: Yury Norov <yury.norov@gmail.com>
----
- lib/nodemask.c | 23 -----------------------
- 1 file changed, 23 deletions(-)
- delete mode 100644 lib/nodemask.c
+Currently, the kernel has a mechanism to recover from hardware memory
+errors. This patchset provides an new recovery mechanism.
 
-diff --git a/lib/nodemask.c b/lib/nodemask.c
-deleted file mode 100644
-index b8a433d16b51..000000000000
---- a/lib/nodemask.c
-+++ /dev/null
-@@ -1,23 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--#include <linux/nodemask.h>
--#include <linux/module.h>
--#include <linux/random.h>
--
--EXPORT_SYMBOL(__next_node_in);
--
--#ifdef CONFIG_NUMA
--/*
-- * Return the bit number of a random bit set in the nodemask.
-- * (returns NUMA_NO_NODE if nodemask is empty)
-- */
--int node_random(const nodemask_t *maskp)
--{
--	int w, bit = NUMA_NO_NODE;
--
--	w = nodes_weight(*maskp);
--	if (w)
--		bit = bitmap_ord_to_pos(maskp->bits,
--			get_random_int() % w, MAX_NUMNODES);
--	return bit;
--}
--#endif
+For arm64, the hardware memory error handling is do_sea() which divided
+into two cases:
+ 1. The user state consumed the memory errors, the solution is kill the
+    user process and isolate the error page.
+ 2. The kernel state consumed the memory errors, the solution is panic.
+
+For case 2, Undifferentiated panic maybe not the optimal choice, it can be
+handled better, in some scenarios, we can avoid panic, such as uaccess, if the
+uaccess fails due to memory error, only the user process will be affected,
+kill the user process and isolate the user page with hardware memory errors
+is a better choice.
+
+Since V6:
+ Resend patches that are not merged into the mainline in V6.
+
+Since V5:
+ 1. Add patch2/3 to add uaccess assembly helpers.
+ 2. Optimize the implementation logic of arm64_do_kernel_sea() in patch8.
+ 3. Remove kernel access fixup in patch9.
+ All suggestion are from Mark. 
+
+Since V4:
+ 1. According Michael's suggestion, add patch5.
+ 2. According Mark's suggestiog, do some restructuring to arm64
+ extable, then a new adaptation of machine check safe support is made based
+ on this.
+ 3. According Mark's suggestion, support machine check safe in do_mte() in
+ cow scene.
+ 4. In V4, two patches have been merged into -next, so V5 not send these
+ two patches.
+
+Since V3:
+ 1. According to Robin's suggestion, direct modify user_ldst and
+ user_ldp in asm-uaccess.h and modify mte.S.
+ 2. Add new macro USER_MC in asm-uaccess.h, used in copy_from_user.S
+ and copy_to_user.S.
+ 3. According to Robin's suggestion, using micro in copy_page_mc.S to
+ simplify code.
+ 4. According to KeFeng's suggestion, modify powerpc code in patch1.
+ 5. According to KeFeng's suggestion, modify mm/extable.c and some code
+ optimization.
+
+Since V2:
+ 1. According to Mark's suggestion, all uaccess can be recovered due to
+    memory error.
+ 2. Scenario pagecache reading is also supported as part of uaccess
+    (copy_to_user()) and duplication code problem is also solved. 
+    Thanks for Robin's suggestion.
+ 3. According Mark's suggestion, update commit message of patch 2/5.
+ 4. According Borisllav's suggestion, update commit message of patch 1/5.
+
+Since V1:
+ 1.Consistent with PPC/x86, Using CONFIG_ARCH_HAS_COPY_MC instead of
+   ARM64_UCE_KERNEL_RECOVERY.
+ 2.Add two new scenes, cow and pagecache reading.
+ 3.Fix two small bug(the first two patch).
+
+V1 in here:
+https://lore.kernel.org/lkml/20220323033705.3966643-1-tongtiangen@huawei.com/
+
+Tong Tiangen (4):
+  uaccess: add generic fallback version of copy_mc_to_user()
+  arm64: add support for machine check error safe
+  arm64: add uaccess to machine check safe
+  arm64: add cow to machine check safe
+
+ arch/arm64/Kconfig                   |  1 +
+ arch/arm64/include/asm/asm-extable.h |  5 ++
+ arch/arm64/include/asm/assembler.h   |  4 ++
+ arch/arm64/include/asm/extable.h     |  1 +
+ arch/arm64/include/asm/mte.h         |  4 ++
+ arch/arm64/include/asm/page.h        | 10 ++++
+ arch/arm64/lib/Makefile              |  2 +
+ arch/arm64/lib/copy_page_mc.S        | 82 ++++++++++++++++++++++++++++
+ arch/arm64/lib/mte.S                 | 19 +++++++
+ arch/arm64/mm/copypage.c             | 37 +++++++++++--
+ arch/arm64/mm/extable.c              | 25 +++++++++
+ arch/arm64/mm/fault.c                | 29 +++++++++-
+ arch/powerpc/include/asm/uaccess.h   |  1 +
+ arch/x86/include/asm/uaccess.h       |  1 +
+ include/linux/highmem.h              |  8 +++
+ include/linux/uaccess.h              |  9 +++
+ mm/memory.c                          |  2 +-
+ 17 files changed, 233 insertions(+), 7 deletions(-)
+ create mode 100644 arch/arm64/lib/copy_page_mc.S
+
 -- 
-2.34.1
+2.25.1
 
