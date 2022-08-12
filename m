@@ -1,80 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33D88590E07
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Aug 2022 11:28:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14782590FDB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Aug 2022 12:59:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M3yym38Pmz3c0g
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Aug 2022 19:28:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M410370nYz3c7C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Aug 2022 20:59:31 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bytedance-com.20210112.gappssmtp.com header.i=@bytedance-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=oCrlkqT6;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mj/CsoAN;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bytedance.com (client-ip=2607:f8b0:4864:20::102f; helo=mail-pj1-x102f.google.com; envelope-from=chenzhuo.1@bytedance.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.93; helo=mga11.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bytedance-com.20210112.gappssmtp.com header.i=@bytedance-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=oCrlkqT6;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mj/CsoAN;
 	dkim-atps=neutral
-Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M3yy62LPCz2xmn
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Aug 2022 19:27:40 +1000 (AEST)
-Received: by mail-pj1-x102f.google.com with SMTP id o3-20020a17090a0a0300b001f7649cd317so7871517pjo.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Aug 2022 02:27:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance-com.20210112.gappssmtp.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc;
-        bh=LzSEVyCY0rVcjjfGUaDS5CrDNhUakD7W6pkaedXCK3M=;
-        b=oCrlkqT6QEgaGNjRK3uXf1a3edsqWHkyeNSIJ7B7AZlUTVJz0vJFXLsg9PDYbD9PQ0
-         zPYv1dWvc67zKrHY/O4Ygj/axQvYTd04weKewgFQMty1Cc6yHY/GNr/nyP/EKngQqiZE
-         d4vAKaJ5seUIQ9hdGKGurZYmfi0quA8+aAycI0/Ey5IAHd8U6jVOI9k5Fyn8YEhAy1zE
-         soaKHveguOvXckf/kra51veFM0eD0MOAAh2ijzPHM1lvVvmziI+irgm7o8pARCPtr3He
-         YFI0j7nwHc2TYI8YDmi2DajVxRC52TVYVjzly0wie+KkstHxh5ooH1chAZ6GAOW9p242
-         7o5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc;
-        bh=LzSEVyCY0rVcjjfGUaDS5CrDNhUakD7W6pkaedXCK3M=;
-        b=HjP82psz+1XHhP7fhdmqsR0SW2K3OgRbWy4iVTCaYnLUliRe1npxz9Zy4995AHsQuy
-         kmwT2ywxQLVooeE5tE7PRaQ49KKHHFiIeyj9h5VWa8U+932Yn3KaUaHQVL0HjC8I/Hp2
-         3HBuoStsyFWzuEf39PL8ZzycS0ZRW+0++pEaBOdxkCuPc9nSIUzTtEYTDTWBEeH1+5Lb
-         WMPnpQPqB9Sy9ix6IszdqzpwlytOKHGJu1m5nlWVF8kF1a8n9OeKL0tztB7E/7JF3q0R
-         CQP4ZQGad2nCZkxPGCcEHJ2QwWpeeln3OWOok6vdXgX57Kq5RhLGEtGQowKiJMRjaYat
-         O0Pw==
-X-Gm-Message-State: ACgBeo2BonwawWVokhrU2aulZCoYVaQkohIF8i02F05x2AAZ3JV3W0WJ
-	vH3gLhFwqcrlj8qdq0iZd1cUrw==
-X-Google-Smtp-Source: AA6agR548JNzF0k/wghBss2w8gS+i/8K9JWBwwU3cusnYsQeQ9eKg4O8qjzNC9Jjm3/R7fWU64098A==
-X-Received: by 2002:a17:903:11cf:b0:171:afc7:8936 with SMTP id q15-20020a17090311cf00b00171afc78936mr1017395plh.95.1660296455618;
-        Fri, 12 Aug 2022 02:27:35 -0700 (PDT)
-Received: from [10.2.223.68] ([61.120.150.75])
-        by smtp.gmail.com with ESMTPSA id w3-20020a170902d10300b0016d9b94ddfasm1181771plw.145.2022.08.12.02.27.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 12 Aug 2022 02:27:35 -0700 (PDT)
-Message-ID: <1e24242e-bb37-e15f-906a-abe5cd865a98@bytedance.com>
-Date: Fri, 12 Aug 2022 17:27:29 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M40zM0KFcz2ywl
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Aug 2022 20:58:47 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1660301935; x=1691837935;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=pjsECAg9GYqPKW7dPlVYry6RTRxn5cZygQq1l/idkQc=;
+  b=mj/CsoAN2nM2NjC4aFDsscPkR5Nuibs5MF0hPsEwQVT+PsqpmziZq9XM
+   KAeuchXxpDFq1B4k6y5qlcQvOltjFyhLYZeZe7JBIECPzxf2TzGbIGTYY
+   LKkOJ/31rHE/6rlmtrkt7FAIfv4c/8Xn5AipWlzCejKbNZvBGm8P4xXu0
+   9zyA0xAx7GVbhWgzqtdWtj36RohAqmQvKIOmHTK+sVfSfzDyD7M8lKXPf
+   zwtpDcw3oMooSLd8DS76MIoG9dLo1OCupPNNGYh3Qn7vbRHqtN4kC1NIW
+   XqBgivxK+5q1H+ASDIwzOA2iDXSn5RanxnevsMNeOX0Bd0136AuHNRn5d
+   Q==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10436"; a="289143294"
+X-IronPort-AV: E=Sophos;i="5.93,231,1654585200"; 
+   d="scan'208";a="289143294"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2022 03:58:43 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.93,231,1654585200"; 
+   d="scan'208";a="665781756"
+Received: from lkp-server02.sh.intel.com (HELO 8745164cafc7) ([10.239.97.151])
+  by fmsmga008.fm.intel.com with ESMTP; 12 Aug 2022 03:58:40 -0700
+Received: from kbuild by 8745164cafc7 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1oMSND-0000SG-1i;
+	Fri, 12 Aug 2022 10:58:39 +0000
+Date: Fri, 12 Aug 2022 18:58:07 +0800
+From: kernel test robot <lkp@intel.com>
+To: Sathvika Vasireddy <sv@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 14/16] objtool: Add arch specific function
+ arch_ftrace_match()
+Message-ID: <202208121847.XuEAqabf-lkp@intel.com>
+References: <20220808114908.240813-15-sv@linux.ibm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.1.0
-Subject: Re: [External] Re: [PATCH v3] PCI/ERR: Use pcie_aer_is_native() to
- judge whether OS owns AER
-Content-Language: en-US
-To: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
-References: <20220727035334.9997-1-chenzhuo.1@bytedance.com>
- <b5c746db-f6a0-d89e-6db5-e4a206c9237a@linux.intel.com>
- <cfd44d9c-453b-e498-2630-9057947cf3cd@bytedance.com>
- <b54b068b-fe9a-8609-3e9f-170579affc27@bytedance.com>
- <6056c6cc-9861-9c29-8e36-48e0dd36c702@linux.intel.com>
-From: Zhuo Chen <chenzhuo.1@bytedance.com>
-In-Reply-To: <6056c6cc-9861-9c29-8e36-48e0dd36c702@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220808114908.240813-15-sv@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,30 +70,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: jan.kiszka@siemens.com, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, lukas@wunner.de, oohall@gmail.com, stuart.w.hayes@gmail.com, bhelgaas@google.com, linuxppc-dev@lists.ozlabs.org
+Cc: kbuild-all@lists.01.org, peterz@infradead.org, npiggin@gmail.com, linux-kernel@vger.kernel.org, aik@ozlabs.ru, mingo@redhat.com, sv@linux.ibm.com, rostedt@goodmis.org, jpoimboe@redhat.com, naveen.n.rao@linux.vnet.ibm.com, mbenes@suse.cz, chenzhongjin@huawei.com, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi Sathvika,
 
+Thank you for the patch! Yet something to improve:
 
-On 8/3/22 6:18 AM, Sathyanarayanan Kuppuswamy wrote:
-> 
-> 
-> On 7/27/22 2:37 AM, Zhuo Chen wrote:
->>>
->> Do you mean changing "if ((host->native_aer || pcie_ports_native) && aer)" into "if (pcie_aer_is_native(dev) && aer)" ?
->> I thought changing into "if (pcie_aer_is_native(dev))" before.
->>
->> One another doubt. Not every pci device support aer. When dev->aer_cap is NULL and root->aer_cap is not NULL in aer_root_reset(), pcie_aer_is_native() will return false and OS cannot operate root register. It's different from just using "(host->native_aer || pcie_ports_native)".
->>
->> Or we can change "if ((host->native_aer || pcie_ports_native) && aer)" into "if (pcie_aer_is_native(root))". But in this way, argument NULL pointer check should be added in pcie_aer_is_native().
-> 
-> Looking into it again, I think it is better to leave it as it is. Please ignore my comment.
-> 
+[auto build test ERROR on linus/master]
+[also build test ERROR on v5.19 next-20220812]
+[cannot apply to powerpc/next powerpc/topic/ppc-kvm masahiroy-kbuild/for-next]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Thanks! Is there anything else to improve and what's next for
-the patch v3 ?
+url:    https://github.com/intel-lab-lkp/linux/commits/Sathvika-Vasireddy/objtool-Enable-and-implement-mcount-option-on-powerpc/20220808-200702
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git 4e23eeebb2e57f5a28b36221aa776b5a1122dde5
+config: x86_64-defconfig (https://download.01.org/0day-ci/archive/20220812/202208121847.XuEAqabf-lkp@intel.com/config)
+compiler: gcc-11 (Debian 11.3.0-3) 11.3.0
+reproduce (this is a W=1 build):
+        # https://github.com/intel-lab-lkp/linux/commit/2b03c8be7104e834933d2f5928e69828190e935c
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Sathvika-Vasireddy/objtool-Enable-and-implement-mcount-option-on-powerpc/20220808-200702
+        git checkout 2b03c8be7104e834933d2f5928e69828190e935c
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        make W=1 O=build_dir ARCH=x86_64 prepare
+
+If you fix the issue, kindly add following tag where applicable
+Reported-by: kernel test robot <lkp@intel.com>
+
+All errors (new ones prefixed by >>):
+
+   arch/x86/decode.c: In function 'arch_ftrace_match':
+>> arch/x86/decode.c:28:21: error: 'func' undeclared (first use in this function)
+      28 |         if (!strcmp(func->name, "__fentry__"))
+         |                     ^~~~
+   arch/x86/decode.c:28:21: note: each undeclared identifier is reported only once for each function it appears in
+   make[5]: *** [tools/build/Makefile.build:96: tools/objtool/arch/x86/decode.o] Error 1
+   make[4]: *** [tools/build/Makefile.build:139: arch/x86] Error 2
+   make[4]: *** Waiting for unfinished jobs....
+   make[3]: *** [Makefile:54: tools/objtool/objtool-in.o] Error 2
+   make[2]: *** [Makefile:73: objtool] Error 2
+   make[1]: *** [Makefile:1347: tools/objtool] Error 2
+   make[1]: Target 'prepare' not remade because of errors.
+   make: *** [Makefile:219: __sub-make] Error 2
+   make: Target 'prepare' not remade because of errors.
 
 -- 
-Thanks,
-Zhuo Chen
+0-DAY CI Kernel Test Service
+https://01.org/lkp
