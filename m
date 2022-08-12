@@ -2,63 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14782590FDB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Aug 2022 12:59:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1ABF5911B8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Aug 2022 15:50:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M410370nYz3c7C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Aug 2022 20:59:31 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mj/CsoAN;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M44nk53fcz3bly
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Aug 2022 23:50:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.93; helo=mga11.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mj/CsoAN;
-	dkim-atps=neutral
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.160.176; helo=mail-qt1-f176.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M40zM0KFcz2ywl
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Aug 2022 20:58:47 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1660301935; x=1691837935;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=pjsECAg9GYqPKW7dPlVYry6RTRxn5cZygQq1l/idkQc=;
-  b=mj/CsoAN2nM2NjC4aFDsscPkR5Nuibs5MF0hPsEwQVT+PsqpmziZq9XM
-   KAeuchXxpDFq1B4k6y5qlcQvOltjFyhLYZeZe7JBIECPzxf2TzGbIGTYY
-   LKkOJ/31rHE/6rlmtrkt7FAIfv4c/8Xn5AipWlzCejKbNZvBGm8P4xXu0
-   9zyA0xAx7GVbhWgzqtdWtj36RohAqmQvKIOmHTK+sVfSfzDyD7M8lKXPf
-   zwtpDcw3oMooSLd8DS76MIoG9dLo1OCupPNNGYh3Qn7vbRHqtN4kC1NIW
-   XqBgivxK+5q1H+ASDIwzOA2iDXSn5RanxnevsMNeOX0Bd0136AuHNRn5d
-   Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10436"; a="289143294"
-X-IronPort-AV: E=Sophos;i="5.93,231,1654585200"; 
-   d="scan'208";a="289143294"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2022 03:58:43 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.93,231,1654585200"; 
-   d="scan'208";a="665781756"
-Received: from lkp-server02.sh.intel.com (HELO 8745164cafc7) ([10.239.97.151])
-  by fmsmga008.fm.intel.com with ESMTP; 12 Aug 2022 03:58:40 -0700
-Received: from kbuild by 8745164cafc7 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1oMSND-0000SG-1i;
-	Fri, 12 Aug 2022 10:58:39 +0000
-Date: Fri, 12 Aug 2022 18:58:07 +0800
-From: kernel test robot <lkp@intel.com>
-To: Sathvika Vasireddy <sv@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 14/16] objtool: Add arch specific function
- arch_ftrace_match()
-Message-ID: <202208121847.XuEAqabf-lkp@intel.com>
-References: <20220808114908.240813-15-sv@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M44nJ2yrMz2xmn
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Aug 2022 23:50:27 +1000 (AEST)
+Received: by mail-qt1-f176.google.com with SMTP id cb8so802761qtb.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Aug 2022 06:50:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=d7r3RnctDfwx/VdWd1r6qoq8F6MrjhkzcAY+2hCxdkY=;
+        b=shI4dl7K3/QUGnbB7Bry1to01LvSdYiRPyM8/HAB+o5mXQ+dH69oFCq2dYFkVQiW/c
+         Gzpw7OedSwBYKihhjRtnYCxdgiTDUZ+0ESEekE0W4icuS962HtNLl5xSXnECR/i3tdmP
+         Vs5dtvxJJF6rULr3CVW5DMDVFUwCxJPWpe0td0qH3AczlkCEWg1qOp/1U33HMZNxNuya
+         JxsR+9sCcadneCDszUeWXyuNC+qGJAAipyTfzWylHs2V1Th7rys+iG8STwW+eum9Fvox
+         ITPyu25YLutxTN3n0HiImlLuzT3PxknfAmy0v+b1GfUZdPuueEr0NjCNHzeTyIqnTQY6
+         AnlA==
+X-Gm-Message-State: ACgBeo3gRiY0VgTFYaEtwtjrt5YXE4zeLQJePafwzSbGLbvBz1jzuqkR
+	h54/vG3i/KudSw/sTW49Oj/FhicOylr0IA==
+X-Google-Smtp-Source: AA6agR4janSW+QElxfnnCkgccVu5fBuEQ3AanVH6rEFl2CjVh5913T4PNkVD3FJ2n0hJ3M7r0vrrNg==
+X-Received: by 2002:ac8:5f0c:0:b0:31f:44f1:48cc with SMTP id x12-20020ac85f0c000000b0031f44f148ccmr3605532qta.640.1660312224273;
+        Fri, 12 Aug 2022 06:50:24 -0700 (PDT)
+Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com. [209.85.219.177])
+        by smtp.gmail.com with ESMTPSA id q6-20020a05620a0d8600b006b8cf08d37bsm1789293qkl.130.2022.08.12.06.50.21
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 12 Aug 2022 06:50:22 -0700 (PDT)
+Received: by mail-yb1-f177.google.com with SMTP id 21so1578202ybf.4
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Aug 2022 06:50:21 -0700 (PDT)
+X-Received: by 2002:a25:6890:0:b0:684:2c5c:1bd8 with SMTP id
+ d138-20020a256890000000b006842c5c1bd8mr850130ybc.604.1660312221067; Fri, 12
+ Aug 2022 06:50:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220808114908.240813-15-sv@linux.ibm.com>
+References: <20220706143521.459565-1-Jason@zx2c4.com> <20220708004032.733426-1-Jason@zx2c4.com>
+In-Reply-To: <20220708004032.733426-1-Jason@zx2c4.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Fri, 12 Aug 2022 15:50:09 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdXnF+ArtzgVH+rEKXgcujrwW2nfyMwaKB9UYf-GC3OT_w@mail.gmail.com>
+Message-ID: <CAMuHMdXnF+ArtzgVH+rEKXgcujrwW2nfyMwaKB9UYf-GC3OT_w@mail.gmail.com>
+Subject: Re: [PATCH v5] random: remove CONFIG_ARCH_RANDOM
+To: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,54 +65,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kbuild-all@lists.01.org, peterz@infradead.org, npiggin@gmail.com, linux-kernel@vger.kernel.org, aik@ozlabs.ru, mingo@redhat.com, sv@linux.ibm.com, rostedt@goodmis.org, jpoimboe@redhat.com, naveen.n.rao@linux.vnet.ibm.com, mbenes@suse.cz, chenzhongjin@huawei.com, linux-arm-kernel@lists.infradead.org
+Cc: linux-s390 <linux-s390@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>, Will Deacon <will@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Catalin Marinas <catalin.marinas@arm.com>, Heiko Carstens <hca@linux.ibm.com>, the arch/x86 maintainers <x86@kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>, Alexander Gordeev <agordeev@linux.ibm.com>, Borislav Petkov <bp@suse.de>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Thomas Gleixner <tglx@linutronix.de>, Linux ARM <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Sathvika,
+Hi Jason,
 
-Thank you for the patch! Yet something to improve:
+On Fri, Jul 8, 2022 at 2:44 AM Jason A. Donenfeld <Jason@zx2c4.com> wrote:
+> When RDRAND was introduced, there was much discussion on whether it
+> should be trusted and how the kernel should handle that. Initially, two
+> mechanisms cropped up, CONFIG_ARCH_RANDOM, a compile time switch, and
+> "nordrand", a boot-time switch.
+>
+> Later the thinking evolved. With a properly designed RNG, using RDRAND
+> values alone won't harm anything, even if the outputs are malicious.
+> Rather, the issue is whether those values are being *trusted* to be good
+> or not. And so a new set of options were introduced as the real
+> ones that people use -- CONFIG_RANDOM_TRUST_CPU and "random.trust_cpu".
+> With these options, RDRAND is used, but it's not always credited. So in
+> the worst case, it does nothing, and in the best case, maybe it helps.
+>
+> Along the way, CONFIG_ARCH_RANDOM's meaning got sort of pulled into the
+> center and became something certain platforms force-select.
+>
+> The old options don't really help with much, and it's a bit odd to have
+> special handling for these instructions when the kernel can deal fine
+> with the existence or untrusted existence or broken existence or
+> non-existence of that CPU capability.
+>
+> Simplify the situation by removing CONFIG_ARCH_RANDOM and using the
+> ordinary asm-generic fallback pattern instead, keeping the two options
+> that are actually used. For now it leaves "nordrand" for now, as the
+> removal of that will take a different route.
+>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: H. Peter Anvin <hpa@zytor.com>
+> Acked-by: Borislav Petkov <bp@suse.de>
+> Acked-by: Heiko Carstens <hca@linux.ibm.com>
+> Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
 
-[auto build test ERROR on linus/master]
-[also build test ERROR on v5.19 next-20220812]
-[cannot apply to powerpc/next powerpc/topic/ppc-kvm masahiroy-kbuild/for-next]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Thanks for your patch, which is now commit 9592eef7c16ec5fb ("random:
+remove CONFIG_ARCH_RANDOM") upstream.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Sathvika-Vasireddy/objtool-Enable-and-implement-mcount-option-on-powerpc/20220808-200702
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git 4e23eeebb2e57f5a28b36221aa776b5a1122dde5
-config: x86_64-defconfig (https://download.01.org/0day-ci/archive/20220812/202208121847.XuEAqabf-lkp@intel.com/config)
-compiler: gcc-11 (Debian 11.3.0-3) 11.3.0
-reproduce (this is a W=1 build):
-        # https://github.com/intel-lab-lkp/linux/commit/2b03c8be7104e834933d2f5928e69828190e935c
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Sathvika-Vasireddy/objtool-Enable-and-implement-mcount-option-on-powerpc/20220808-200702
-        git checkout 2b03c8be7104e834933d2f5928e69828190e935c
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        make W=1 O=build_dir ARCH=x86_64 prepare
+> --- a/drivers/char/Kconfig
+> +++ b/drivers/char/Kconfig
+> @@ -431,7 +431,6 @@ config ADI
+>  config RANDOM_TRUST_CPU
+>         bool "Initialize RNG using CPU RNG instructions"
+>         default y
+> -       depends on ARCH_RANDOM
+>         help
+>           Initialize the RNG using random numbers supplied by the CPU's
+>           RNG instructions (e.g. RDRAND), if supported and available. These
 
-If you fix the issue, kindly add following tag where applicable
-Reported-by: kernel test robot <lkp@intel.com>
+This change means everyone configuring a kernel will be asked this
+question, even when configuring for an architecture that does not
+support RNG instructions.
 
-All errors (new ones prefixed by >>):
+Perhaps this question should be hidden behind EXPERT?
 
-   arch/x86/decode.c: In function 'arch_ftrace_match':
->> arch/x86/decode.c:28:21: error: 'func' undeclared (first use in this function)
-      28 |         if (!strcmp(func->name, "__fentry__"))
-         |                     ^~~~
-   arch/x86/decode.c:28:21: note: each undeclared identifier is reported only once for each function it appears in
-   make[5]: *** [tools/build/Makefile.build:96: tools/objtool/arch/x86/decode.o] Error 1
-   make[4]: *** [tools/build/Makefile.build:139: arch/x86] Error 2
-   make[4]: *** Waiting for unfinished jobs....
-   make[3]: *** [Makefile:54: tools/objtool/objtool-in.o] Error 2
-   make[2]: *** [Makefile:73: objtool] Error 2
-   make[1]: *** [Makefile:1347: tools/objtool] Error 2
-   make[1]: Target 'prepare' not remade because of errors.
-   make: *** [Makefile:219: __sub-make] Error 2
-   make: Target 'prepare' not remade because of errors.
+Gr{oetje,eeting}s,
 
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
