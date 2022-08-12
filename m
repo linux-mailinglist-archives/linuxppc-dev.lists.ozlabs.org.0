@@ -2,73 +2,96 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F997590B50
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Aug 2022 06:49:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8F10590B6D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Aug 2022 07:18:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M3rnN6xWQz3c6V
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Aug 2022 14:49:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M3sQ1565Pz3blQ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Aug 2022 15:18:01 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=nY1vxam6;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gduafzJm;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1035; helo=mail-pj1-x1035.google.com; envelope-from=jniethe5@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=nY1vxam6;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gduafzJm;
 	dkim-atps=neutral
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M3rmn3fgWz2xHd
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Aug 2022 14:49:11 +1000 (AEST)
-Received: by mail-pj1-x1035.google.com with SMTP id h21-20020a17090aa89500b001f31a61b91dso7299779pjq.4
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Aug 2022 21:49:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:user-agent:references
-         :in-reply-to:date:to:from:subject:message-id:from:to:cc;
-        bh=rQi0IAfzgPLb/ioODMro4UXpbkDSpC8NEkROPfddAoY=;
-        b=nY1vxam6CFt0+0j6qSZMMLnt/Td1XNUXZ7l6MdHqLzX5iv3eKBMxcSIbLV1aFr++L6
-         H7avSwOlZb6dYRsX8WIm1ef/UqnSyxbjZMPTmSo2Vv3IBENzHEpkk4hEzQ8bRF8387hA
-         +3c+vsWqtiesSK/vVx7EbqwPeMFScMmH8HorWX34HVY5e+bbCkmkjM9WNXLOvW9foESL
-         38AW5DZ3ZEY44u8zDzpdRnhpLO1h96woSh4YbpQUMQ2xnzjE1X9aeG5RwEuqxBewsSq8
-         7sL2sGV8ye4tGmgtbpl5ihvXMlWqTE5YiBy7/nY/s8SHsZXgd51O8nuzHrEEcxHzbfJV
-         wcqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:user-agent:references
-         :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
-         :to:cc;
-        bh=rQi0IAfzgPLb/ioODMro4UXpbkDSpC8NEkROPfddAoY=;
-        b=QhhF2+qtXow6P3ftv0YLfhaZF07HkuPOd9WPX6DAqtndRC/deH+bWWp4UQ3Org+3PJ
-         yMQSjP4l+E03optZe0bkRkPlVRrdjV5yZd9KDpmS2ceD88FKo86T4K3IJJ3Xhys7u/4Q
-         /VZxH8SxbqG3dYAVj9yvvbDcr4PHZxdqTeI5MeKnd0ei0UrAcDAhGSHhjDVFChVWGxta
-         J97WzMJSKUiuDpVrSGdrk7SggWPPkwPbxWMwNbRq+wWiJfM0PieFuZKrWJHvQDjZhk+r
-         Vxh6fwIGOUJy4Eo+pBBLS7pGQ9Tpo54aecKXOoDVK5ykl/ORl+skt/2jiP0pKGGPvD7S
-         23FA==
-X-Gm-Message-State: ACgBeo0KnD2RXDkEhQ3hSItdZucC91SrJjSGcvhilt/yM5XfygBQEnaN
-	Yu/6N5ZwbZGz+hr0iYDwWZW8sfQVX+A=
-X-Google-Smtp-Source: AA6agR5kj8ZrKeUUFZsquR+Qq+oLRPxJh5ul+yxmApePxvH4x4cBb2jS54QS2+Qi5UO3lSWZWxKDIQ==
-X-Received: by 2002:a17:902:f30c:b0:16d:a79c:4aed with SMTP id c12-20020a170902f30c00b0016da79c4aedmr2304528ple.23.1660279748457;
-        Thu, 11 Aug 2022 21:49:08 -0700 (PDT)
-Received: from tee480.ozlabs.ibm.com (110-175-254-242.static.tpgi.com.au. [110.175.254.242])
-        by smtp.googlemail.com with ESMTPSA id 12-20020a170902c20c00b0015e8d4eb219sm583878pll.99.2022.08.11.21.49.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Aug 2022 21:49:07 -0700 (PDT)
-Message-ID: <7ae36b6ba44b3deb5c0890466a4110437d91cae7.camel@gmail.com>
-Subject: Re: [PATCH 16/17] powerpc/qspinlock: allow indefinite spinning on a
- preempted owner
-From: Jordan Niethe <jniethe5@gmail.com>
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Date: Fri, 12 Aug 2022 14:49:04 +1000
-In-Reply-To: <20220728063120.2867508-18-npiggin@gmail.com>
-References: <20220728063120.2867508-1-npiggin@gmail.com>
-	 <20220728063120.2867508-18-npiggin@gmail.com>
-Content-Type: text/plain; charset="UTF-7"
-User-Agent: Evolution 3.36.5-0ubuntu1 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M3sPG3yN3z2xHY
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Aug 2022 15:17:22 +1000 (AEST)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27C59ljA016231;
+	Fri, 12 Aug 2022 05:17:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=131XI9ovrZitKqkC7KwlSKSEJrUNTkpNLUvP93QYz6Y=;
+ b=gduafzJmtrWC+HAHESBQZEtRu9impveEf7j7GJOunJJ88R5766MU7aGYD8Es1/5PxhlZ
+ vy5EZa0+P24drxXxXvYCydNcYotyLq8ghxOrdzT0bTH0Pq712BPxW0xzm6dH8/GeZPzx
+ MuDdBECHcxCBzUwSpB/fsU3AJUwMfwKkUKg1+nRfj0FjX2kxMZJ7wOnv7crBfuYmE4Gi
+ TGesQUlGN2c0x9M8YavaHfSBiXRPFsQWxSQDUfsK/srRqmXsViAlf2X48Ft71Qt2ZfCF
+ U47n4X5SSgkKNn6h0eVGIMTs6amHyTkmuLpNzLYrd9YYOgokCaSoZ831gaV0uJndIrLY HA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3hwg2p0p7g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 12 Aug 2022 05:17:05 +0000
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 27C5A7vh019491;
+	Fri, 12 Aug 2022 05:17:05 GMT
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com [169.63.121.186])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3hwg2p0p6y-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 12 Aug 2022 05:17:05 +0000
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+	by ppma03wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 27C5D7si016861;
+	Fri, 12 Aug 2022 05:17:04 GMT
+Received: from b03cxnp07028.gho.boulder.ibm.com (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
+	by ppma03wdc.us.ibm.com with ESMTP id 3huww6f7wu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 12 Aug 2022 05:17:04 +0000
+Received: from b03ledav005.gho.boulder.ibm.com (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
+	by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 27C5H3v066126324
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 12 Aug 2022 05:17:03 GMT
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2E965BE056;
+	Fri, 12 Aug 2022 05:17:03 +0000 (GMT)
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 42218BE051;
+	Fri, 12 Aug 2022 05:17:00 +0000 (GMT)
+Received: from skywalker.linux.ibm.com (unknown [9.43.116.179])
+	by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
+	Fri, 12 Aug 2022 05:16:59 +0000 (GMT)
+X-Mailer: emacs 29.0.50 (via feedmail 11-beta-1 I)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: Yury Norov <yury.norov@gmail.com>, linux-kernel@vger.kernel.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Stephen Rothwell <sfr@canb.auug.org.au>
+Subject: Re: [RESEND PATCH 2/2] lib/nodemask: inline next_node_in() and
+ node_random()
+In-Reply-To: <20220723214537.2054208-3-yury.norov@gmail.com>
+References: <20220723214537.2054208-1-yury.norov@gmail.com>
+ <20220723214537.2054208-3-yury.norov@gmail.com>
+Date: Fri, 12 Aug 2022 10:46:57 +0530
+Message-ID: <87o7wqkpme.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: cWUuknHOZVTa5K0zwF78-zCcvprFdnaK
+X-Proofpoint-ORIG-GUID: 9teZ_uOpdBiVgc_xxIGvvxtT4kK5ekKt
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-08-12_04,2022-08-11_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
+ malwarescore=0 phishscore=0 priorityscore=1501 bulkscore=0 suspectscore=0
+ clxscore=1011 adultscore=0 lowpriorityscore=0 spamscore=0 impostorscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2207270000 definitions=main-2208120014
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,206 +103,149 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Yury Norov <yury.norov@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 2022-07-28 at 16:31 +-1000, Nicholas Piggin wrote:
-+AD4 Provide an option that holds off queueing indefinitely while the lock
-+AD4 owner is preempted. This could reduce queueing latencies for very
-+AD4 overcommitted vcpu situations.
-+AD4 
-+AD4 This is disabled by default.
-+AD4 ---
-+AD4  arch/powerpc/lib/qspinlock.c +AHw 91 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+------
-+AD4  1 file changed, 79 insertions(+-), 12 deletions(-)
-+AD4 
-+AD4 diff --git a/arch/powerpc/lib/qspinlock.c b/arch/powerpc/lib/qspinlock.c
-+AD4 index 24f68bd71e2b..5cfd69931e31 100644
-+AD4 --- a/arch/powerpc/lib/qspinlock.c
-+AD4 +-+-+- b/arch/powerpc/lib/qspinlock.c
-+AD4 +AEAAQA -35,6 +-35,7 +AEAAQA static int HEAD+AF8-SPINS +AF8AXw-read+AF8-mostly +AD0 (1+ADwAPA-8)+ADs
-+AD4  
-+AD4  static bool pv+AF8-yield+AF8-owner +AF8AXw-read+AF8-mostly +AD0 true+ADs
-+AD4  static bool pv+AF8-yield+AF8-allow+AF8-steal +AF8AXw-read+AF8-mostly +AD0 false+ADs
-+AD4 +-static bool pv+AF8-spin+AF8-on+AF8-preempted+AF8-owner +AF8AXw-read+AF8-mostly +AD0 false+ADs
-+AD4  static bool pv+AF8-yield+AF8-prev +AF8AXw-read+AF8-mostly +AD0 true+ADs
-+AD4  static bool pv+AF8-yield+AF8-propagate+AF8-owner +AF8AXw-read+AF8-mostly +AD0 true+ADs
-+AD4  static bool pv+AF8-prod+AF8-head +AF8AXw-read+AF8-mostly +AD0 false+ADs
-+AD4 +AEAAQA -220,13 +-221,15 +AEAAQA static struct qnode +ACo-get+AF8-tail+AF8-qnode(struct qspinlock +ACo-lock, u32 val)
-+AD4  	BUG()+ADs
-+AD4  +AH0
-+AD4  
-+AD4 -static +AF8AXw-always+AF8-inline void +AF8AXw-yield+AF8-to+AF8-locked+AF8-owner(struct qspinlock +ACo-lock, u32 val, bool paravirt, bool clear+AF8-mustq)
-+AD4 +-static +AF8AXw-always+AF8-inline void +AF8AXw-yield+AF8-to+AF8-locked+AF8-owner(struct qspinlock +ACo-lock, u32 val, bool paravirt, bool clear+AF8-mustq, bool +ACo-preempted)
-+AD4  +AHs
-+AD4  	int owner+ADs
-+AD4  	u32 yield+AF8-count+ADs
-+AD4  
-+AD4  	BUG+AF8-ON(+ACE(val +ACY +AF8-Q+AF8-LOCKED+AF8-VAL))+ADs
-+AD4  
-+AD4 +-	+ACo-preempted +AD0 false+ADs
-+AD4 +-
-+AD4  	if (+ACE-paravirt)
-+AD4  		goto relax+ADs
-+AD4  
-+AD4 +AEAAQA -241,6 +-244,8 +AEAAQA static +AF8AXw-always+AF8-inline void +AF8AXw-yield+AF8-to+AF8-locked+AF8-owner(struct qspinlock +ACo-lock, u32
-+AD4  
-+AD4  	spin+AF8-end()+ADs
-+AD4  
-+AD4 +-	+ACo-preempted +AD0 true+ADs
-+AD4 +-
-+AD4  	/+ACo
-+AD4  	 +ACo Read the lock word after sampling the yield count. On the other side
-+AD4  	 +ACo there may a wmb because the yield count update is done by the
-+AD4 +AEAAQA -265,14 +-270,14 +AEAAQA static +AF8AXw-always+AF8-inline void +AF8AXw-yield+AF8-to+AF8-locked+AF8-owner(struct qspinlock +ACo-lock, u32
-+AD4  	spin+AF8-cpu+AF8-relax()+ADs
-+AD4  +AH0
-+AD4  
-+AD4 -static +AF8AXw-always+AF8-inline void yield+AF8-to+AF8-locked+AF8-owner(struct qspinlock +ACo-lock, u32 val, bool paravirt)
-+AD4 +-static +AF8AXw-always+AF8-inline void yield+AF8-to+AF8-locked+AF8-owner(struct qspinlock +ACo-lock, u32 val, bool paravirt, bool +ACo-preempted)
+Yury Norov <yury.norov@gmail.com> writes:
 
-It seems like preempted parameter could be the return value of
-yield+AF8-to+AF8-locked+AF8-owner(). Then callers that don't use the value returned in
-preempted don't need to create an unnecessary variable to pass in.
+> The functions are pretty thin wrappers around find_bit engine, and
+> keeping them in c-file prevents compiler from small_const_nbits()
+> optimization, which must take place for all systems with MAX_NUMNODES
+> less than BITS_PER_LONG (default is 16 for me).
+>
+> Moving them to header file doesn't blow up the kernel size:
+> add/remove: 1/2 grow/shrink: 9/5 up/down: 968/-88 (880)
+>
+> CC: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> CC: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+> Signed-off-by: Yury Norov <yury.norov@gmail.com>
+> ---
+>  MAINTAINERS              |  1 -
+>  include/linux/nodemask.h | 27 ++++++++++++++++++++++-----
+>  lib/Makefile             |  2 +-
+>  lib/nodemask.c           | 30 ------------------------------
+>  4 files changed, 23 insertions(+), 37 deletions(-)
+>  delete mode 100644 lib/nodemask.c
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 7c0b8f28aa25..19c8d0ef1177 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -3540,7 +3540,6 @@ F:	lib/bitmap.c
+>  F:	lib/cpumask.c
+>  F:	lib/find_bit.c
+>  F:	lib/find_bit_benchmark.c
+> -F:	lib/nodemask.c
+>  F:	lib/test_bitmap.c
+>  F:	tools/include/linux/bitmap.h
+>  F:	tools/include/linux/find.h
+> diff --git a/include/linux/nodemask.h b/include/linux/nodemask.h
+> index 0f233b76c9ce..48ebe4007955 100644
+> --- a/include/linux/nodemask.h
+> +++ b/include/linux/nodemask.h
+> @@ -94,6 +94,7 @@
+>  #include <linux/bitmap.h>
+>  #include <linux/minmax.h>
+>  #include <linux/numa.h>
+> +#include <linux/random.h>
+>  
+>  typedef struct { DECLARE_BITMAP(bits, MAX_NUMNODES); } nodemask_t;
+>  extern nodemask_t _unused_nodemask_arg_;
+> @@ -276,7 +277,14 @@ static inline unsigned int __next_node(int n, const nodemask_t *srcp)
+>   * the first node in src if needed.  Returns MAX_NUMNODES if src is empty.
+>   */
+>  #define next_node_in(n, src) __next_node_in((n), &(src))
+> -unsigned int __next_node_in(int node, const nodemask_t *srcp);
+> +static inline unsigned int __next_node_in(int node, const nodemask_t *srcp)
+> +{
+> +	unsigned int ret = __next_node(node, srcp);
+> +
+> +	if (ret == MAX_NUMNODES)
+> +		ret = __first_node(srcp);
+> +	return ret;
+> +}
+>  
+>  static inline void init_nodemask_of_node(nodemask_t *mask, int node)
+>  {
+> @@ -493,14 +501,23 @@ static inline int num_node_state(enum node_states state)
+>  
+>  #endif
+>  
+> +/*
+> + * Return the bit number of a random bit set in the nodemask.
+> + * (returns NUMA_NO_NODE if nodemask is empty)
+> + */
+> +static inline int node_random(const nodemask_t *maskp)
+> +{
+>  #if defined(CONFIG_NUMA) && (MAX_NUMNODES > 1)
+> -extern int node_random(const nodemask_t *maskp);
+> +	int w, bit = NUMA_NO_NODE;
+> +
+> +	w = nodes_weight(*maskp);
+> +	if (w)
+> +		bit = find_nth_bit(maskp->bits, MAX_NUMNODES, get_random_int() % w);
+> +	return bit;
+>  #else
+> -static inline int node_random(const nodemask_t *mask)
+> -{
+>  	return 0;
+> -}
+>  #endif
+> +}
+>  
+>  #define node_online_map 	node_states[N_ONLINE]
+>  #define node_possible_map 	node_states[N_POSSIBLE]
+> diff --git a/lib/Makefile b/lib/Makefile
+> index f99bf61f8bbc..731cea0342d1 100644
+> --- a/lib/Makefile
+> +++ b/lib/Makefile
+> @@ -33,7 +33,7 @@ lib-y := ctype.o string.o vsprintf.o cmdline.o \
+>  	 flex_proportions.o ratelimit.o show_mem.o \
+>  	 is_single_threaded.o plist.o decompress.o kobject_uevent.o \
+>  	 earlycpio.o seq_buf.o siphash.o dec_and_lock.o \
+> -	 nmi_backtrace.o nodemask.o win_minmax.o memcat_p.o \
+> +	 nmi_backtrace.o win_minmax.o memcat_p.o \
+>  	 buildid.o
+>  
+>  lib-$(CONFIG_PRINTK) += dump_stack.o
+> diff --git a/lib/nodemask.c b/lib/nodemask.c
+> deleted file mode 100644
+> index 7dad4ce8ff59..000000000000
+> --- a/lib/nodemask.c
+> +++ /dev/null
+> @@ -1,30 +0,0 @@
+> -// SPDX-License-Identifier: GPL-2.0
+> -#include <linux/nodemask.h>
+> -#include <linux/module.h>
+> -#include <linux/random.h>
+> -
+> -unsigned int __next_node_in(int node, const nodemask_t *srcp)
+> -{
+> -	unsigned int ret = __next_node(node, srcp);
+> -
+> -	if (ret == MAX_NUMNODES)
+> -		ret = __first_node(srcp);
+> -	return ret;
+> -}
+> -EXPORT_SYMBOL(__next_node_in);
+> -
+> -#ifdef CONFIG_NUMA
+> -/*
+> - * Return the bit number of a random bit set in the nodemask.
+> - * (returns NUMA_NO_NODE if nodemask is empty)
+> - */
+> -int node_random(const nodemask_t *maskp)
+> -{
+> -	int w, bit = NUMA_NO_NODE;
+> -
+> -	w = nodes_weight(*maskp);
+> -	if (w)
+> -		bit = find_nth_bit(maskp->bits, MAX_NUMNODES, get_random_int() % w);
+> -	return bit;
+> -}
+> -#endif
+> -- 
+> 2.34.1
 
-+AD4  +AHs
-+AD4 -	+AF8AXw-yield+AF8-to+AF8-locked+AF8-owner(lock, val, paravirt, false)+ADs
-+AD4 +-	+AF8AXw-yield+AF8-to+AF8-locked+AF8-owner(lock, val, paravirt, false, preempted)+ADs
-+AD4  +AH0
-+AD4  
-+AD4 -static +AF8AXw-always+AF8-inline void yield+AF8-head+AF8-to+AF8-locked+AF8-owner(struct qspinlock +ACo-lock, u32 val, bool paravirt, bool clear+AF8-mustq)
-+AD4 +-static +AF8AXw-always+AF8-inline void yield+AF8-head+AF8-to+AF8-locked+AF8-owner(struct qspinlock +ACo-lock, u32 val, bool paravirt, bool clear+AF8-mustq, bool +ACo-preempted)
-+AD4  +AHs
-+AD4 -	+AF8AXw-yield+AF8-to+AF8-locked+AF8-owner(lock, val, paravirt, clear+AF8-mustq)+ADs
-+AD4 +-	+AF8AXw-yield+AF8-to+AF8-locked+AF8-owner(lock, val, paravirt, clear+AF8-mustq, preempted)+ADs
-+AD4  +AH0
-+AD4  
-+AD4  static +AF8AXw-always+AF8-inline void propagate+AF8-yield+AF8-cpu(struct qnode +ACo-node, u32 val, int +ACo-set+AF8-yield+AF8-cpu, bool paravirt)
-+AD4 +AEAAQA -364,12 +-369,33 +AEAAQA static +AF8AXw-always+AF8-inline void yield+AF8-to+AF8-prev(struct qspinlock +ACo-lock, struct qnode +ACo
-+AD4  
-+AD4  static +AF8AXw-always+AF8-inline bool try+AF8-to+AF8-steal+AF8-lock(struct qspinlock +ACo-lock, bool paravirt)
-+AD4  +AHs
-+AD4 -	int iters+ADs
-+AD4 +-	int iters +AD0 0+ADs
-+AD4 +-
-+AD4 +-	if (+ACE-STEAL+AF8-SPINS) +AHs
-+AD4 +-		if (paravirt +ACYAJg pv+AF8-spin+AF8-on+AF8-preempted+AF8-owner) +AHs
-+AD4 +-			spin+AF8-begin()+ADs
-+AD4 +-			for (+ADsAOw) +AHs
-+AD4 +-				u32 val +AD0 READ+AF8-ONCE(lock-+AD4-val)+ADs
-+AD4 +-				bool preempted+ADs
-+AD4 +-
-+AD4 +-				if (val +ACY +AF8-Q+AF8-MUST+AF8-Q+AF8-VAL)
-+AD4 +-					break+ADs
-+AD4 +-				if (+ACE(val +ACY +AF8-Q+AF8-LOCKED+AF8-VAL))
-+AD4 +-					break+ADs
-+AD4 +-				if (+ACE-vcpu+AF8-is+AF8-preempted(get+AF8-owner+AF8-cpu(val)))
-+AD4 +-					break+ADs
-+AD4 +-				yield+AF8-to+AF8-locked+AF8-owner(lock, val, paravirt, +ACY-preempted)+ADs
-+AD4 +-			+AH0
-+AD4 +-			spin+AF8-end()+ADs
-+AD4 +-		+AH0
-+AD4 +-		return false+ADs
-+AD4 +-	+AH0
-+AD4  
-+AD4  	/+ACo Attempt to steal the lock +ACo-/
-+AD4  	spin+AF8-begin()+ADs
-+AD4  	for (+ADsAOw) +AHs
-+AD4  		u32 val +AD0 READ+AF8-ONCE(lock-+AD4-val)+ADs
-+AD4 +-		bool preempted+ADs
-+AD4  
-+AD4  		if (val +ACY +AF8-Q+AF8-MUST+AF8-Q+AF8-VAL)
-+AD4  			break+ADs
-+AD4 +AEAAQA -382,9 +-408,22 +AEAAQA static +AF8AXw-always+AF8-inline bool try+AF8-to+AF8-steal+AF8-lock(struct qspinlock +ACo-lock, bool parav
-+AD4  			continue+ADs
-+AD4  		+AH0
-+AD4  
-+AD4 -		yield+AF8-to+AF8-locked+AF8-owner(lock, val, paravirt)+ADs
-+AD4 -
-+AD4 -		iters+-+-+ADs
-+AD4 +-		yield+AF8-to+AF8-locked+AF8-owner(lock, val, paravirt, +ACY-preempted)+ADs
-+AD4 +-
-+AD4 +-		if (paravirt +ACYAJg preempted) +AHs
-+AD4 +-			if (+ACE-pv+AF8-spin+AF8-on+AF8-preempted+AF8-owner)
-+AD4 +-				iters+-+-+ADs
-+AD4 +-			/+ACo
-+AD4 +-			 +ACo pv+AF8-spin+AF8-on+AF8-preempted+AF8-owner don't increase iters
-+AD4 +-			 +ACo while the owner is preempted -- we won't interfere
-+AD4 +-			 +ACo with it by definition. This could introduce some
-+AD4 +-			 +ACo latency issue if we continually observe preempted
-+AD4 +-			 +ACo owners, but hopefully that's a rare corner case of
-+AD4 +-			 +ACo a badly oversubscribed system.
-+AD4 +-			 +ACo-/
-+AD4 +-		+AH0 else +AHs
-+AD4 +-			iters+-+-+ADs
-+AD4 +-		+AH0
-+AD4  
-+AD4  		if (iters +AD4APQ get+AF8-steal+AF8-spins(paravirt, false))
-+AD4  			break+ADs
-+AD4 +AEAAQA -463,8 +-502,10 +AEAAQA static +AF8AXw-always+AF8-inline void queued+AF8-spin+AF8-lock+AF8-mcs+AF8-queue(struct qspinlock +ACo-lock, b
-+AD4  		/+ACo We're at the head of the waitqueue, wait for the lock. +ACo-/
-+AD4  		spin+AF8-begin()+ADs
-+AD4  		while ((val +AD0 READ+AF8-ONCE(lock-+AD4-val)) +ACY +AF8-Q+AF8-LOCKED+AF8-VAL) +AHs
-+AD4 +-			bool preempted+ADs
-+AD4 +-
-+AD4  			propagate+AF8-yield+AF8-cpu(node, val, +ACY-set+AF8-yield+AF8-cpu, paravirt)+ADs
-+AD4 -			yield+AF8-head+AF8-to+AF8-locked+AF8-owner(lock, val, paravirt, false)+ADs
-+AD4 +-			yield+AF8-head+AF8-to+AF8-locked+AF8-owner(lock, val, paravirt, false, +ACY-preempted)+ADs
-+AD4  		+AH0
-+AD4  		spin+AF8-end()+ADs
-+AD4  
-+AD4 +AEAAQA -486,11 +-527,20 +AEAAQA static +AF8AXw-always+AF8-inline void queued+AF8-spin+AF8-lock+AF8-mcs+AF8-queue(struct qspinlock +ACo-lock, b
-+AD4  		/+ACo We're at the head of the waitqueue, wait for the lock. +ACo-/
-+AD4  		spin+AF8-begin()+ADs
-+AD4  		while ((val +AD0 READ+AF8-ONCE(lock-+AD4-val)) +ACY +AF8-Q+AF8-LOCKED+AF8-VAL) +AHs
-+AD4 +-			bool preempted+ADs
-+AD4 +-
-+AD4  			propagate+AF8-yield+AF8-cpu(node, val, +ACY-set+AF8-yield+AF8-cpu, paravirt)+ADs
-+AD4  			yield+AF8-head+AF8-to+AF8-locked+AF8-owner(lock, val, paravirt,
-+AD4 -					pv+AF8-yield+AF8-allow+AF8-steal +ACYAJg set+AF8-mustq)+ADs
-+AD4 +-					pv+AF8-yield+AF8-allow+AF8-steal +ACYAJg set+AF8-mustq,
-+AD4 +-					+ACY-preempted)+ADs
-+AD4 +-
-+AD4 +-			if (paravirt +ACYAJg preempted) +AHs
-+AD4 +-				if (+ACE-pv+AF8-spin+AF8-on+AF8-preempted+AF8-owner)
-+AD4 +-					iters+-+-+ADs
-+AD4 +-			+AH0 else +AHs
-+AD4 +-				iters+-+-+ADs
-+AD4 +-			+AH0
-+AD4  
-+AD4 -			iters+-+-+ADs
-+AD4  			if (+ACE-set+AF8-mustq +ACYAJg iters +AD4APQ get+AF8-head+AF8-spins(paravirt)) +AHs
-+AD4  				set+AF8-mustq +AD0 true+ADs
-+AD4  				lock+AF8-set+AF8-mustq(lock)+ADs
-+AD4 +AEAAQA -663,6 +-713,22 +AEAAQA static int pv+AF8-yield+AF8-allow+AF8-steal+AF8-get(void +ACo-data, u64 +ACo-val)
-+AD4  
-+AD4  DEFINE+AF8-SIMPLE+AF8-ATTRIBUTE(fops+AF8-pv+AF8-yield+AF8-allow+AF8-steal, pv+AF8-yield+AF8-allow+AF8-steal+AF8-get, pv+AF8-yield+AF8-allow+AF8-steal+AF8-set, +ACIAJQ-llu+AFw-n+ACI)+ADs
-+AD4  
-+AD4 +-static int pv+AF8-spin+AF8-on+AF8-preempted+AF8-owner+AF8-set(void +ACo-data, u64 val)
-+AD4 +-+AHs
-+AD4 +-	pv+AF8-spin+AF8-on+AF8-preempted+AF8-owner +AD0 +ACEAIQ-val+ADs
-+AD4 +-
-+AD4 +-	return 0+ADs
-+AD4 +-+AH0
-+AD4 +-
-+AD4 +-static int pv+AF8-spin+AF8-on+AF8-preempted+AF8-owner+AF8-get(void +ACo-data, u64 +ACo-val)
-+AD4 +-+AHs
-+AD4 +-	+ACo-val +AD0 pv+AF8-spin+AF8-on+AF8-preempted+AF8-owner+ADs
-+AD4 +-
-+AD4 +-	return 0+ADs
-+AD4 +-+AH0
-+AD4 +-
-+AD4 +-DEFINE+AF8-SIMPLE+AF8-ATTRIBUTE(fops+AF8-pv+AF8-spin+AF8-on+AF8-preempted+AF8-owner, pv+AF8-spin+AF8-on+AF8-preempted+AF8-owner+AF8-get, pv+AF8-spin+AF8-on+AF8-preempted+AF8-owner+AF8-set, +ACIAJQ-llu+AFw-n+ACI)+ADs
-+AD4 +-
-+AD4  static int pv+AF8-yield+AF8-prev+AF8-set(void +ACo-data, u64 val)
-+AD4  +AHs
-+AD4  	pv+AF8-yield+AF8-prev +AD0 +ACEAIQ-val+ADs
-+AD4 +AEAAQA -719,6 +-785,7 +AEAAQA static +AF8AXw-init int spinlock+AF8-debugfs+AF8-init(void)
-+AD4  	if (is+AF8-shared+AF8-processor()) +AHs
-+AD4  		debugfs+AF8-create+AF8-file(+ACI-qspl+AF8-pv+AF8-yield+AF8-owner+ACI, 0600, arch+AF8-debugfs+AF8-dir, NULL, +ACY-fops+AF8-pv+AF8-yield+AF8-owner)+ADs
-+AD4  		debugfs+AF8-create+AF8-file(+ACI-qspl+AF8-pv+AF8-yield+AF8-allow+AF8-steal+ACI, 0600, arch+AF8-debugfs+AF8-dir, NULL, +ACY-fops+AF8-pv+AF8-yield+AF8-allow+AF8-steal)+ADs
-+AD4 +-		debugfs+AF8-create+AF8-file(+ACI-qspl+AF8-pv+AF8-spin+AF8-on+AF8-preempted+AF8-owner+ACI, 0600, arch+AF8-debugfs+AF8-dir, NULL, +ACY-fops+AF8-pv+AF8-spin+AF8-on+AF8-preempted+AF8-owner)+ADs
-+AD4  		debugfs+AF8-create+AF8-file(+ACI-qspl+AF8-pv+AF8-yield+AF8-prev+ACI, 0600, arch+AF8-debugfs+AF8-dir, NULL, +ACY-fops+AF8-pv+AF8-yield+AF8-prev)+ADs
-+AD4  		debugfs+AF8-create+AF8-file(+ACI-qspl+AF8-pv+AF8-yield+AF8-propagate+AF8-owner+ACI, 0600, arch+AF8-debugfs+AF8-dir, NULL, +ACY-fops+AF8-pv+AF8-yield+AF8-propagate+AF8-owner)+ADs
-+AD4  		debugfs+AF8-create+AF8-file(+ACI-qspl+AF8-pv+AF8-prod+AF8-head+ACI, 0600, arch+AF8-debugfs+AF8-dir, NULL, +ACY-fops+AF8-pv+AF8-prod+AF8-head)+ADs
-
+The patch that got merged (36d4b36b69590fed99356a4426c940a253a93800) still have lib/nodemask.c
