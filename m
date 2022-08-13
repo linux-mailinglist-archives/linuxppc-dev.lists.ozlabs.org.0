@@ -2,52 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2853591A1B
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Aug 2022 14:12:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C458591AC6
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Aug 2022 15:49:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M4fYn32Lvz3c69
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Aug 2022 22:12:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M4hjL2y9Pz3bqY
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Aug 2022 23:49:10 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=Vi0hzY9u;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MqN/FUif;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=126.com (client-ip=220.181.15.50; helo=m1550.mail.126.com; envelope-from=windhl@126.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.93; helo=mga11.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=Vi0hzY9u;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MqN/FUif;
 	dkim-atps=neutral
-Received: from m1550.mail.126.com (m1550.mail.126.com [220.181.15.50])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M4XRg1w0Gz2xJ8
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Aug 2022 17:36:41 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=Date:From:Subject:MIME-Version:Message-ID; bh=tE9T9
-	FqtSALUnvs7sFV0mc1d2rem4MJ916ywgLtADRk=; b=Vi0hzY9uAK9cTE2Qy2OwC
-	eruOkHeveR3IsAN0jiqoKd1c2U+qn8xUW/q3oC6jgDZ4wwD7ZzZaiQyW4KpHrYOz
-	NDyYoua3aLjSBDjEwOMGEY+pwyXtt3ClculcQPFIcub+qakDL6oNpXNU33P0sqtH
-	+vE6Mdoxi9WtEGE8NvUHWE=
-Received: from windhl$126.com ( [124.16.139.61] ) by ajax-webmail-wmsvr50
- (Coremail) ; Sat, 13 Aug 2022 15:36:07 +0800 (CST)
-X-Originating-IP: [124.16.139.61]
-Date: Sat, 13 Aug 2022 15:36:07 +0800 (CST)
-From: "Liang He" <windhl@126.com>
-To: "Benjamin Herrenschmidt" <benh@kernel.crashing.org>
-Subject: Re:Re: [PATCH] powerpc/powermac/pfunc_base: Fix refcount leak bug
- in macio_gpio_init_one()
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.13 build 20220113(9671e152)
- Copyright (c) 2002-2022 www.mailtech.cn 126com
-In-Reply-To: <2c9150f2af2147bb7c40c646de51f46620ddb8b9.camel@kernel.crashing.org>
-References: <20220716073111.539739-1-windhl@126.com>
- <2c9150f2af2147bb7c40c646de51f46620ddb8b9.camel@kernel.crashing.org>
-Content-Type: multipart/alternative; 
-	boundary="----=_Part_19856_2023912772.1660376167097"
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M4hhh4DNBz2xGD
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Aug 2022 23:48:28 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1660398516; x=1691934516;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=IaNOV5ULcqrPGIPFKhOxGOt/yH1/fsN9Oo9GiVQq6HQ=;
+  b=MqN/FUifsrfOVSm1+edDbYjuqVliqRUr+Fonm3Ze/G3xlQr3Yk4GyBvK
+   2UCw8BZ73EHPD/eJgraqL9HUOXrwXw94XL1VVbHHN5tA2XLBNglLiqNmN
+   43DWwOTtGOlXS639sDqVI2oZr4/lgugMC8+YWHmaH1R4At4/wG1F7GooR
+   qnoYryTer24z5VBbf2zDwcMZ++OyAVa70Ml2vOT3cCmI6Xy97lZ32eRSC
+   iEmCNJ85VkDo0kSyxR1P587uHqFqFEJMDtyObkximEBDaAMXl9/ynBrLx
+   bdE06HTiOyN5nFw6V31zfSUWz0mDMqgqMzdbMJwWRqM3AziuPyX2TpAYx
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10437"; a="289322800"
+X-IronPort-AV: E=Sophos;i="5.93,235,1654585200"; 
+   d="scan'208";a="289322800"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2022 06:48:24 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.93,235,1654585200"; 
+   d="scan'208";a="634974321"
+Received: from lkp-server02.sh.intel.com (HELO 8745164cafc7) ([10.239.97.151])
+  by orsmga008.jf.intel.com with ESMTP; 13 Aug 2022 06:48:19 -0700
+Received: from kbuild by 8745164cafc7 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1oMrUx-0001j4-0B;
+	Sat, 13 Aug 2022 13:48:19 +0000
+Date: Sat, 13 Aug 2022 21:48:17 +0800
+From: kernel test robot <lkp@intel.com>
+To: Sathvika Vasireddy <sv@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 14/16] objtool: Add arch specific function
+ arch_ftrace_match()
+Message-ID: <202208132139.WhghhLpC-lkp@intel.com>
+References: <20220808114908.240813-15-sv@linux.ibm.com>
 MIME-Version: 1.0
-Message-ID: <3fcf0d48.1529.1829621b2b9.Coremail.windhl@126.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID: MsqowAAHXfFnVPdiJGtaAA--.24881W
-X-CM-SenderInfo: hzlqvxbo6rjloofrz/xtbBGgdcF1-HZqokwAAAsm
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
-X-Mailman-Approved-At: Sat, 13 Aug 2022 22:11:58 +1000
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220808114908.240813-15-sv@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,77 +70,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: paulus@samba.org, linuxppc-dev@lists.ozlabs.org
+Cc: kbuild-all@lists.01.org, peterz@infradead.org, llvm@lists.linux.dev, npiggin@gmail.com, linux-kernel@vger.kernel.org, aik@ozlabs.ru, mingo@redhat.com, sv@linux.ibm.com, rostedt@goodmis.org, jpoimboe@redhat.com, naveen.n.rao@linux.vnet.ibm.com, mbenes@suse.cz, chenzhongjin@huawei.com, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-------=_Part_19856_2023912772.1660376167097
-Content-Type: text/plain; charset=GBK
-Content-Transfer-Encoding: base64
+Hi Sathvika,
 
-CgoKQXQgMjAyMi0wOC0wMiAxMjo1MTowOCwgIkJlbmphbWluIEhlcnJlbnNjaG1pZHQiIDxiZW5o
-QGtlcm5lbC5jcmFzaGluZy5vcmc+IHdyb3RlOgo+T24gU2F0LCAyMDIyLTA3LTE2IGF0IDE1OjMx
-ICswODAwLCBMaWFuZyBIZSB3cm90ZToKPj4gV2Ugc2hvdWxkIGNhbGwgb2Zfbm9kZV9wdXQoKSBm
-b3IgdGhlIHJlZmVyZW5jZSAnZ3BhcmVudCcgZXNjYXBlZAo+PiBvdXQgb2YgdGhlIGZvcl9lYWNo
-X2NoaWxkX29mX25vZGUoKSBhcyBpdCBoYXMgaW5jcmVhc2VkIHRoZSByZWZjb3VudC4KPgo+U2Ft
-ZSBjb21tZW50IGFzIGJlZm9yZS4gVGhhdCBzdHVmZiBoYXBwZW5zIG9uY2UgYXQgYm9vdCwgdGhl
-cmUncyBuZXZlcgo+YW55IGR5bmFtaWMgYWxsb2NhdGlvbi9kZWFsbG9jYXRpb24gb2YgdGhlc2Us
-IHRoZXkganVzdCBkb24ndCBtYXR0ZXIsCj5idXQgZmVlbCBmcmVlIC4uLi4gOi0pCgo+CgoKVGhh
-bmtzIGZvciB5b3VyIHJlcGx5LCB0aGlzIGlzIGEgdmFsdWFibGUgbGVzc29uIGZvciBtZS4KSSB3
-aWxsIG5vdyBiZWdpbiB0byBsZWFybiB0aGUgZGV0YWlsZWQgZGlmZmVyZW5jZSBvZiBkeW5hbWlj
-IGFuZCBzdGF0aWMgYWxsb2NhdGlvbi4KCgpUaGFua3MsCkxpYW5nCgoKPj4gRml4ZXM6IDViOWNh
-NTI2OTE3YiAoIltQQVRDSF0gMy81IHBvd2VycGM6IEFkZCBwbGF0Zm9ybSBmdW5jdGlvbnMKPj4g
-aW50ZXJwcmV0ZXIiKQo+PiBTaWduZWQtb2ZmLWJ5OiBMaWFuZyBIZSA8d2luZGhsQDEyNi5jb20+
-Cj4+IC0tLQo+PiAgYXJjaC9wb3dlcnBjL3BsYXRmb3Jtcy9wb3dlcm1hYy9wZnVuY19iYXNlLmMg
-fCAyICsrCj4+ICAxIGZpbGUgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspCj4+IAo+PiBkaWZmIC0t
-Z2l0IGEvYXJjaC9wb3dlcnBjL3BsYXRmb3Jtcy9wb3dlcm1hYy9wZnVuY19iYXNlLmMKPj4gYi9h
-cmNoL3Bvd2VycGMvcGxhdGZvcm1zL3Bvd2VybWFjL3BmdW5jX2Jhc2UuYwo+PiBpbmRleCA5YzI5
-NDdhM2VkZDUuLjA4NWUwYWQyMGViYSAxMDA2NDQKPj4gLS0tIGEvYXJjaC9wb3dlcnBjL3BsYXRm
-b3Jtcy9wb3dlcm1hYy9wZnVuY19iYXNlLmMKPj4gKysrIGIvYXJjaC9wb3dlcnBjL3BsYXRmb3Jt
-cy9wb3dlcm1hYy9wZnVuY19iYXNlLmMKPj4gQEAgLTEzNiw2ICsxMzYsOCBAQCBzdGF0aWMgdm9p
-ZCBfX2luaXQgbWFjaW9fZ3Bpb19pbml0X29uZShzdHJ1Y3QKPj4gbWFjaW9fY2hpcCAqbWFjaW8p
-Cj4+ICAJZm9yX2VhY2hfY2hpbGRfb2Zfbm9kZShncGFyZW50LCBncCkKPj4gIAkJcG1mX2RvX2Z1
-bmN0aW9ucyhncCwgTlVMTCwgMCwgUE1GX0ZMQUdTX09OX0lOSVQsIE5VTEwpOwo+PiAgCj4+ICsJ
-b2Zfbm9kZV9wdXQoZ3BhcmVudCk7Cj4+ICsKPj4gIAkvKiBOb3RlOiBXZSBkbyBub3QgYXQgdGhp
-cyBwb2ludCBpbXBsZW1lbnQgdGhlICJhdCBzbGVlcCIgb3IKPj4gImF0IHdha2UiCj4+ICAJICog
-ZnVuY3Rpb25zLiBJIHlldCB0byBmaW5kIGFueSBmb3IgR1BJT3MgYW55d2F5Cj4+ICAJICovCg==
+Thank you for the patch! Yet something to improve:
 
-------=_Part_19856_2023912772.1660376167097
-Content-Type: text/html; charset=GBK
-Content-Transfer-Encoding: base64
+[auto build test ERROR on linus/master]
+[also build test ERROR on v5.19 next-20220812]
+[cannot apply to powerpc/next powerpc/topic/ppc-kvm masahiroy-kbuild/for-next]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-PGRpdiBzdHlsZT0ibGluZS1oZWlnaHQ6MS43O2NvbG9yOiMwMDAwMDA7Zm9udC1zaXplOjE0cHg7
-Zm9udC1mYW1pbHk6QXJpYWwiPjxwIHN0eWxlPSJtYXJnaW46IDA7Ij48YnI+PC9wPjxwcmU+QXQg
-MjAyMi0wOC0wMiAxMjo1MTowOCwgIkJlbmphbWluIEhlcnJlbnNjaG1pZHQiICZsdDtiZW5oQGtl
-cm5lbC5jcmFzaGluZy5vcmcmZ3Q7IHdyb3RlOgomZ3Q7T24gU2F0LCAyMDIyLTA3LTE2IGF0IDE1
-OjMxICswODAwLCBMaWFuZyBIZSB3cm90ZToKJmd0OyZndDsgV2Ugc2hvdWxkIGNhbGwgb2Zfbm9k
-ZV9wdXQoKSBmb3IgdGhlIHJlZmVyZW5jZSAnZ3BhcmVudCcgZXNjYXBlZAomZ3Q7Jmd0OyBvdXQg
-b2YgdGhlIGZvcl9lYWNoX2NoaWxkX29mX25vZGUoKSBhcyBpdCBoYXMgaW5jcmVhc2VkIHRoZSBy
-ZWZjb3VudC4KJmd0OwomZ3Q7U2FtZSBjb21tZW50IGFzIGJlZm9yZS4gVGhhdCBzdHVmZiBoYXBw
-ZW5zIG9uY2UgYXQgYm9vdCwgdGhlcmUncyBuZXZlcgomZ3Q7YW55IGR5bmFtaWMgYWxsb2NhdGlv
-bi9kZWFsbG9jYXRpb24gb2YgdGhlc2UsIHRoZXkganVzdCBkb24ndCBtYXR0ZXIsCiZndDtidXQg
-ZmVlbCBmcmVlIC4uLi4gOi0pCjxkaXY+Jmd0OzwvZGl2PjxkaXY+PGJyPjwvZGl2PjxkaXY+VGhh
-bmtzIGZvciB5b3VyIHJlcGx5LCB0aGlzIGlzIGEgdmFsdWFibGUgbGVzc29uIGZvciBtZS48L2Rp
-dj48ZGl2Pkkgd2lsbCBub3cgYmVnaW4gdG8gbGVhcm4gdGhlIGRldGFpbGVkIGRpZmZlcmVuY2Ug
-b2YgZHluYW1pYyBhbmQgc3RhdGljIGFsbG9jYXRpb24uPC9kaXY+PGRpdj48YnI+PC9kaXY+PGRp
-dj5UaGFua3MsPC9kaXY+PGRpdj5MaWFuZzwvZGl2PjxkaXY+PGJyPjwvZGl2PiZndDsmZ3Q7IEZp
-eGVzOiA1YjljYTUyNjkxN2IgKCJbUEFUQ0hdIDMvNSBwb3dlcnBjOiBBZGQgcGxhdGZvcm0gZnVu
-Y3Rpb25zCiZndDsmZ3Q7IGludGVycHJldGVyIikKJmd0OyZndDsgU2lnbmVkLW9mZi1ieTogTGlh
-bmcgSGUgJmx0O3dpbmRobEAxMjYuY29tJmd0OwomZ3Q7Jmd0OyAtLS0KJmd0OyZndDsgIGFyY2gv
-cG93ZXJwYy9wbGF0Zm9ybXMvcG93ZXJtYWMvcGZ1bmNfYmFzZS5jIHwgMiArKwomZ3Q7Jmd0OyAg
-MSBmaWxlIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKQomZ3Q7Jmd0OyAKJmd0OyZndDsgZGlmZiAt
-LWdpdCBhL2FyY2gvcG93ZXJwYy9wbGF0Zm9ybXMvcG93ZXJtYWMvcGZ1bmNfYmFzZS5jCiZndDsm
-Z3Q7IGIvYXJjaC9wb3dlcnBjL3BsYXRmb3Jtcy9wb3dlcm1hYy9wZnVuY19iYXNlLmMKJmd0OyZn
-dDsgaW5kZXggOWMyOTQ3YTNlZGQ1Li4wODVlMGFkMjBlYmEgMTAwNjQ0CiZndDsmZ3Q7IC0tLSBh
-L2FyY2gvcG93ZXJwYy9wbGF0Zm9ybXMvcG93ZXJtYWMvcGZ1bmNfYmFzZS5jCiZndDsmZ3Q7ICsr
-KyBiL2FyY2gvcG93ZXJwYy9wbGF0Zm9ybXMvcG93ZXJtYWMvcGZ1bmNfYmFzZS5jCiZndDsmZ3Q7
-IEBAIC0xMzYsNiArMTM2LDggQEAgc3RhdGljIHZvaWQgX19pbml0IG1hY2lvX2dwaW9faW5pdF9v
-bmUoc3RydWN0CiZndDsmZ3Q7IG1hY2lvX2NoaXAgKm1hY2lvKQomZ3Q7Jmd0OyAgCWZvcl9lYWNo
-X2NoaWxkX29mX25vZGUoZ3BhcmVudCwgZ3ApCiZndDsmZ3Q7ICAJCXBtZl9kb19mdW5jdGlvbnMo
-Z3AsIE5VTEwsIDAsIFBNRl9GTEFHU19PTl9JTklULCBOVUxMKTsKJmd0OyZndDsgIAomZ3Q7Jmd0
-OyArCW9mX25vZGVfcHV0KGdwYXJlbnQpOwomZ3Q7Jmd0OyArCiZndDsmZ3Q7ICAJLyogTm90ZTog
-V2UgZG8gbm90IGF0IHRoaXMgcG9pbnQgaW1wbGVtZW50IHRoZSAiYXQgc2xlZXAiIG9yCiZndDsm
-Z3Q7ICJhdCB3YWtlIgomZ3Q7Jmd0OyAgCSAqIGZ1bmN0aW9ucy4gSSB5ZXQgdG8gZmluZCBhbnkg
-Zm9yIEdQSU9zIGFueXdheQomZ3Q7Jmd0OyAgCSAqLwo8L3ByZT48L2Rpdj4=
-------=_Part_19856_2023912772.1660376167097--
+url:    https://github.com/intel-lab-lkp/linux/commits/Sathvika-Vasireddy/objtool-Enable-and-implement-mcount-option-on-powerpc/20220808-200702
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git 4e23eeebb2e57f5a28b36221aa776b5a1122dde5
+config: x86_64-randconfig-a005 (https://download.01.org/0day-ci/archive/20220813/202208132139.WhghhLpC-lkp@intel.com/config)
+compiler: clang version 16.0.0 (https://github.com/llvm/llvm-project 5f1c7e2cc5a3c07cbc2412e851a7283c1841f520)
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/2b03c8be7104e834933d2f5928e69828190e935c
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Sathvika-Vasireddy/objtool-Enable-and-implement-mcount-option-on-powerpc/20220808-200702
+        git checkout 2b03c8be7104e834933d2f5928e69828190e935c
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=x86_64 prepare
 
+If you fix the issue, kindly add following tag where applicable
+Reported-by: kernel test robot <lkp@intel.com>
+
+All errors (new ones prefixed by >>):
+
+   error: write on a pipe with no reader
+   error: write on a pipe with no reader
+   error: write on a pipe with no reader
+>> arch/x86/decode.c:28:14: error: use of undeclared identifier 'func'
+           if (!strcmp(func->name, "__fentry__"))
+                       ^
+   1 error generated.
+   make[5]: *** [tools/build/Makefile.build:96: tools/objtool/arch/x86/decode.o] Error 1
+   make[4]: *** [tools/build/Makefile.build:139: arch/x86] Error 2
+   make[4]: *** Waiting for unfinished jobs....
+   make[3]: *** [Makefile:54: tools/objtool/objtool-in.o] Error 2
+   make[2]: *** [Makefile:73: objtool] Error 2
+   make[1]: *** [Makefile:1347: tools/objtool] Error 2
+   make[1]: Target 'prepare' not remade because of errors.
+   make: *** [Makefile:219: __sub-make] Error 2
+   make: Target 'prepare' not remade because of errors.
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
