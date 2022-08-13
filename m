@@ -1,54 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58FDB591C3D
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Aug 2022 20:17:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABF2B591CF0
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Aug 2022 00:01:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M4pfY2LNVz3c38
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Aug 2022 04:17:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M4vdL38Dlz3blF
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Aug 2022 08:01:26 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hGzpmnjU;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.216.49; helo=mail-pj1-f49.google.com; envelope-from=kswilczynski@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.31; helo=mga06.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hGzpmnjU;
+	dkim-atps=neutral
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M4pf46Rsnz2xH3
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Aug 2022 04:16:42 +1000 (AEST)
-Received: by mail-pj1-f49.google.com with SMTP id p14-20020a17090a74ce00b001f4d04492faso3545041pjl.4
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Aug 2022 11:16:42 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
-        bh=AmRTB/8gR2ig8PJCGq+w2ZIymDcFBpWMH5rqLXrLQn4=;
-        b=CCMU9NHnHSpgXg63UR2rMs+nw8p3pCOlUvkUNoKRjJUW1IHVgIJMKBJp07R08k56Hj
-         lL2Qr1JjPlXVHYdlsLILPPBcxKjdQymqCQ6OVKnNQaG40HzA6YC0q62YK9tdicikWiDy
-         djBjuiEF8c3cFAyNKthCQZiFscTfNR56yiLq/dBtNPJ1+H75dLPMOMBI0a03E3devkXA
-         Wxsk2e8MkmX72GjfQgSZZjjhdHxEg52vqUGDT92QLCPZKo1MBxjtqhICBERmtx3uB1nj
-         oYfnQr9zb6V6qnqa0L0ik2o+uDEeGozq78BCWGLCvg1ojZjFc9SeGefdDyQxm4N+kqGN
-         DVGw==
-X-Gm-Message-State: ACgBeo1rIQTQUt9iS+Jv9V6X8c9je4/4ParvP4BBjbTkohHPucocOfHm
-	BAd9UNa/vUT0vaBoffhVoG4=
-X-Google-Smtp-Source: AA6agR5wQaJRK0e7xQm9qfm5QxyEBBSxIl2hjDwXZPh/g0UE2k/bZWhgmYX7mgkf4jyndvNnGQFXOg==
-X-Received: by 2002:a17:90a:b007:b0:1f1:d31e:4914 with SMTP id x7-20020a17090ab00700b001f1d31e4914mr19876174pjq.36.1660414599266;
-        Sat, 13 Aug 2022 11:16:39 -0700 (PDT)
-Received: from rocinante (fpd11144dd.ap.nuro.jp. [209.17.68.221])
-        by smtp.gmail.com with ESMTPSA id t7-20020a634607000000b0041b5b929664sm3250038pga.24.2022.08.13.11.16.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 13 Aug 2022 11:16:38 -0700 (PDT)
-Date: Sun, 14 Aug 2022 03:16:33 +0900
-From: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
-To: Zhuo Chen <chenzhuo.1@bytedance.com>
-Subject: Re: [PATCH v4] PCI/ERR: Use pcie_aer_is_native() to judge whether OS
- owns AER
-Message-ID: <YvfqgWB9h+7Xj1tH@rocinante>
-References: <20220802040830.28514-1-chenzhuo.1@bytedance.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M4vch2z9Xz2xD3
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Aug 2022 08:00:46 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1660428052; x=1691964052;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=J2stkkYmPik2bQMds1PPTKQFWYY4K6w3/+pjsawBn4I=;
+  b=hGzpmnjU6yWxsmzBX/Ep6DF2js/pTy7SM6I2ZrH+0Fkuu4aaFsgCsniN
+   6CoVOybiXqx9/db9jfjkvmf4TQw4ODR3pxhYLdwMd21mR0FyxEJ1wpZke
+   fySJ8pKXOSWRGoQEPpCRbORadcKjnCz7oZeTOdZjElzNezJVDp7ZsnM9R
+   1GI1xWVTUwOzR6lu00qsCgRohPkeZwuXFv3sGCyJePBiYdkjbvwq92jEc
+   7vwYSh6sbYNpBME+mhYpsOMTOpR/Ac1en4bche6C4xQl9/p/lbsCbLc3G
+   oSYZKLfcJ3SE8Rvfrq/AswzLHFvHUZ6gmrrnFGAsA3RHi9q7qe2Btbm8a
+   Q==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10437"; a="353522230"
+X-IronPort-AV: E=Sophos;i="5.93,236,1654585200"; 
+   d="scan'208";a="353522230"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2022 15:00:42 -0700
+X-IronPort-AV: E=Sophos;i="5.93,236,1654585200"; 
+   d="scan'208";a="635047705"
+Received: from tsaiyinl-mobl1.amr.corp.intel.com (HELO localhost) ([10.209.125.19])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2022 15:00:40 -0700
+From: ira.weiny@intel.com
+To: Andy Whitcroft <apw@canonical.com>,
+	Joe Perches <joe@perches.com>
+Subject: [PATCH] checkpatch: Add kmap and kmap_atomic to the deprecated list
+Date: Sat, 13 Aug 2022 15:00:34 -0700
+Message-Id: <20220813220034.806698-1-ira.weiny@intel.com>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20220802040830.28514-1-chenzhuo.1@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,40 +64,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sathyanarayanan.kuppuswamy@linux.intel.com, jan.kiszka@siemens.com, stuart.w.hayes@gmail.com, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, lukas@wunner.de, oohall@gmail.com, bhelgaas@google.com, linuxppc-dev@lists.ozlabs.org
+Cc: nvdimm@lists.linux.dev, kvm@vger.kernel.org, linux-sh@vger.kernel.org, kgdb-bugreport@lists.sourceforge.net, dri-devel@lists.freedesktop.org, linux-mips@vger.kernel.org, linux-ide@vger.kernel.org, dm-devel@redhat.com, keyrings@vger.kernel.org, linux-mtd@lists.infradead.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linux1394-devel@lists.sourceforge.net, Ira Weiny <ira.weiny@intel.com>, linux-scsi@vger.kernel.org, linux-rdma@vger.kernel.org, x86@kernel.org, linux-csky@vger.kernel.org, iommu@lists.linux.dev, linux-snps-arc@lists.infradead.org, "Fabio M . De Francesco" <fmdefrancesco@gmail.com>, linux-media@vger.kernel.org, linux-xtensa@linux-xtensa.org, linux-um@lists.infradead.org, linux-block@vger.kernel.org, linux-nvme@lists.infradead.org, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, virtualization@lists.linux-foundation.org, bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-edac@vger.kernel.org, linux-raid@vger.kernel.org, n
+ etdev@vger.kernel.org, linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org, linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello Zhuo,
+From: Ira Weiny <ira.weiny@intel.com>
 
-> Use pcie_aer_is_native() in place of "host->native_aer ||
-> pcie_ports_native" to judge whether OS has native control of AER
-> in aer_root_reset() and pcie_do_recovery().
-> 
-> Replace "dev->aer_cap && (pcie_ports_native || host->native_aer)" in
-> get_port_device_capability() with pcie_aer_is_native(), which has no
-> functional changes.
-> 
-> Signed-off-by: Zhuo Chen <chenzhuo.1@bytedance.com>
-> ---
-> Changelog:
-> v4:
-> - Use pcie_aer_is_native() instead in aer_root_reset().
-> v3:
-> - Simplify why we use pcie_aer_is_native().
-> - Revert modification of pci_aer_clear_nonfatal_status() and comments.
-> v2:
-> - Add details and note in commit log.
-[...]
+kmap() and kmap_atomic() are being deprecated in favor of
+kmap_local_page().
 
-A similar change has been proposed in the past, and back then, Bjorn had
-a few questions and concerns.  Have a look at the entire discussion:
+There are two main problems with kmap(): (1) It comes with an overhead
+as mapping space is restricted and protected by a global lock for
+synchronization and (2) it also requires global TLB invalidation when
+the kmap’s pool wraps and it might block when the mapping space is fully
+utilized until a slot becomes available.
 
-  https://lore.kernel.org/linux-pci/1612490648-44817-1-git-send-email-tanxiaofei@huawei.com/
+kmap_local_page() is safe from any context and is therefore redundant
+with kmap_atomic() with the exception of any pagefault or preemption
+disable requirements.  However, using kmap_atomic() for these side
+effects makes the code less clear.  So any requirement for pagefault or
+preemption disable should be made explicitly.
 
-If you think that the proposed changes are fine and can address some of
-Bjorn's concerns, then it would be great.
+With kmap_local_page() the mappings are per thread, CPU local, can take
+page faults, and can be called from any context (including interrupts).
+It is faster than kmap() in kernels with HIGHMEM enabled. Furthermore,
+the tasks can be preempted and, when they are scheduled to run again,
+the kernel virtual addresses are restored.
 
-Thank you in advance!
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Suggested-by: Fabio M. De Francesco <fmdefrancesco@gmail.com>
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 
-	Krzysztof
+---
+Suggested by credits.
+	Thomas: Idea to keep from growing more kmap/kmap_atomic calls.
+	Fabio: Stole some of his boiler plate commit message.
+
+Notes on tree-wide conversions:
+
+I've cc'ed mailing lists for subsystems which currently contains either kmap()
+or kmap_atomic() calls.  As some of you already know Fabio and I have been
+working through converting kmap() calls to kmap_local_page().  But there is a
+lot more work to be done.  Help from the community is always welcome,
+especially with kmap_atomic() conversions.  To keep from stepping on each
+others toes I've created a spreadsheet of the current calls[1].  Please let me
+or Fabio know if you plan on tacking one of the conversions so we can mark it
+off the list.
+
+[1] https://docs.google.com/spreadsheets/d/1i_ckZ10p90bH_CkxD2bYNi05S2Qz84E2OFPv8zq__0w/edit#gid=1679714357
+
+---
+ scripts/checkpatch.pl | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+index 79e759aac543..9ff219e0a9d5 100755
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -807,6 +807,8 @@ our %deprecated_apis = (
+ 	"rcu_barrier_sched"			=> "rcu_barrier",
+ 	"get_state_synchronize_sched"		=> "get_state_synchronize_rcu",
+ 	"cond_synchronize_sched"		=> "cond_synchronize_rcu",
++	"kmap"					=> "kmap_local_page",
++	"kmap_atomic"				=> "kmap_local_page",
+ );
+ 
+ #Create a search pattern for all these strings to speed up a loop below
+
+base-commit: 4a9350597aff50bbd0f4b80ccf49d2e02d1111f5
+-- 
+2.35.3
+
