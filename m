@@ -2,55 +2,97 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D760A592624
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Aug 2022 21:17:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8369592703
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Aug 2022 02:00:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M5Rxl3vrYz3bnH
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Aug 2022 05:17:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M5ZCj4PBcz3c6P
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Aug 2022 10:00:01 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nylAgkXu;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tHbIvVV6;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=rmclure@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nylAgkXu;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tHbIvVV6;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M5Rx84qCCz2xHY
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Aug 2022 05:17:00 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M5ZBy4MYYz2ypC
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Aug 2022 09:59:21 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27ELgp3i009571;
+	Sun, 14 Aug 2022 23:59:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
+ mime-version : subject : from : in-reply-to : date : cc :
+ content-transfer-encoding : message-id : references : to; s=pp1;
+ bh=c3bNm4Y8pbpFteWBh8CmSIraoSrg0qqIHfqidAg5pK8=;
+ b=tHbIvVV6GUCGwbi/tnkK7JYJx8L2C7dIbhv9L76sJ4OWYD/oRkMq5n2YmyvIyiuDud/f
+ HkaaFaVIAdXZJE4nujO6e+og0UPnAohF48XUwCJi9bgZXLEP5vvada1M05TX0DCog+yp
+ VlzTPxoVZd87wbyRTInbKEwZDzhd6j8OeYjdRAioaCpk9+SHDrzJoWkje3lSWQDOgaF5
+ Q4+6nSkX5VkhrGGM8U/iOg1TiiMYNkD+4iLrh4FO7UP+GcAFooxLYxjDAh4qREeSt+k/
+ tvenKRAQf+GvCsW7q5h9a9UTLywo0TPu+O7M0LUvYdMhsh0BrS400VWY2RntkbUf/Pjb UQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3hy972a11m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 14 Aug 2022 23:59:12 +0000
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 27ENfhhH016302;
+	Sun, 14 Aug 2022 23:59:12 GMT
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com [149.81.74.106])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3hy972a111-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 14 Aug 2022 23:59:12 +0000
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+	by ppma04fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 27ENpHDQ003821;
+	Sun, 14 Aug 2022 23:59:09 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+	by ppma04fra.de.ibm.com with ESMTP id 3hx3k8s2er-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 14 Aug 2022 23:59:09 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
+	by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 27ENuRZj32178634
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sun, 14 Aug 2022 23:56:27 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 35A6D5204F;
+	Sun, 14 Aug 2022 23:59:07 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id D38D95204E;
+	Sun, 14 Aug 2022 23:59:06 +0000 (GMT)
+Received: from smtpclient.apple (haven.au.ibm.com [9.192.254.114])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id B441260ED5;
-	Sun, 14 Aug 2022 19:16:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9520AC433C1;
-	Sun, 14 Aug 2022 19:16:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1660504616;
-	bh=jXGXWUSCHco+uG0TEBKUEdSh9Q2Y7oyb8AgXQgtxY9U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nylAgkXuJ5wjCLoC0NnGX6CK8RHio2kFy7s8xCrHsg4coWe00B0eRSWThqc2FeoAX
-	 HdExUUxrGLXqt2Dbe+4IvCGCAVCr6d0ox2aFHDjSYJR7QuiQyvDsl4WSBk5yxz8DOI
-	 Q66TqlTcZe7/fSdvZobOEwsJ5v/MrXV4f1pyG+jIkjttNCguC8kH1nS3EK3Z10VYum
-	 DqHQYOFbOD9YRnqvqpsmj7TVEn2HPNsWHDz+RkDBw9+ZKuK1nbqaQSuNtKNXEw9v/7
-	 RCavVhknwXamQj+NQSwSazcgtqgdZMHUyo8rWIjAMU+0UoAOx/KL146RcnoizklXGz
-	 fevWSwoppTVqg==
-Date: Sun, 14 Aug 2022 22:16:53 +0300
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Stefan Berger <stefanb@linux.ibm.com>
-Subject: Re: [PATCH v7 4/6] tpm: of: Make of-tree specific function commonly
- available
-Message-ID: <YvlKJeVSR+05VtVr@kernel.org>
-References: <20220812164305.2056641-1-stefanb@linux.ibm.com>
- <20220812164305.2056641-5-stefanb@linux.ibm.com>
- <YvlJ9T+a0b18rRos@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YvlJ9T+a0b18rRos@kernel.org>
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id CBA35600A8;
+	Mon, 15 Aug 2022 09:59:01 +1000 (AEST)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.1\))
+Subject: Re: [PATCH v2 11/14] powerpc/64s: Clear/restore caller gprs in
+ syscall interrupt/return
+From: Rohan McLure <rmclure@linux.ibm.com>
+In-Reply-To: <20220811154751.GG25951@gate.crashing.org>
+Date: Mon, 15 Aug 2022 09:59:01 +1000
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <D85E8A64-456B-4334-9C97-29A56936E22A@linux.ibm.com>
+References: <20220725063111.120926-1-rmclure@linux.ibm.com>
+ <20220811151302.GF25951@gate.crashing.org>
+ <cd3f5a35-dfda-ef2e-dd13-93d5c4011f16@csgroup.eu>
+ <20220811154751.GG25951@gate.crashing.org>
+To: Segher Boessenkool <segher@kernel.crashing.org>
+X-Mailer: Apple Mail (2.3696.120.41.1.1)
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: v7kpAWt-Sg9f8vI63YXBsYtAaSXUMJ17
+X-Proofpoint-GUID: PCqyZyClRJaIf7V2jOI95rZjBDcGZs_S
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-08-14_15,2022-08-11_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
+ lowpriorityscore=0 malwarescore=0 mlxscore=0 mlxlogscore=999 phishscore=0
+ impostorscore=0 bulkscore=0 clxscore=1015 suspectscore=0
+ priorityscore=1501 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2207270000 definitions=main-2208140101
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,150 +104,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, Frank Rowand <frowand.list@gmail.com>, Nageswara R Sastry <rnsastry@linux.ibm.com>, nayna@linux.ibm.com, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>, Rob Herring <robh+dt@kernel.org>, nasastry@in.ibm.com, linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "npiggin@gmail.com" <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Aug 14, 2022 at 10:16:09PM +0300, Jarkko Sakkinen wrote:
-> On Fri, Aug 12, 2022 at 12:43:03PM -0400, Stefan Berger wrote:
-> > Simplify tpm_read_log_of() by moving reusable parts of the code into
-> > an inline function that makes it commonly available so it can be
-> > used also for kexec support. Call the new of_tpm_get_sml_parameters()
-> > function from the TPM Open Firmware driver.
-> > 
-> > Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
-> > Cc: Jarkko Sakkinen <jarkko@kernel.org>
-> > Cc: Jason Gunthorpe <jgg@ziepe.ca>
-> > Cc: Rob Herring <robh+dt@kernel.org>
-> > Cc: Frank Rowand <frowand.list@gmail.com>
-> > Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
-> > Tested-by: Nageswara R Sastry <rnsastry@linux.ibm.com>
-> > 
-> > ---
-> > v7:
-> >  - Added original comment back into inlined function
-> > 
-> > v4:
-> >  - converted to inline function
-> > ---
-> >  drivers/char/tpm/eventlog/of.c | 31 +++++------------------------
-> >  include/linux/tpm.h            | 36 ++++++++++++++++++++++++++++++++++
-> >  2 files changed, 41 insertions(+), 26 deletions(-)
-> > 
-> > diff --git a/drivers/char/tpm/eventlog/of.c b/drivers/char/tpm/eventlog/of.c
-> > index a9ce66d09a75..f9462d19632e 100644
-> > --- a/drivers/char/tpm/eventlog/of.c
-> > +++ b/drivers/char/tpm/eventlog/of.c
-> > @@ -12,6 +12,7 @@
-> >  
-> >  #include <linux/slab.h>
-> >  #include <linux/of.h>
-> > +#include <linux/tpm.h>
-> >  #include <linux/tpm_eventlog.h>
-> >  
-> >  #include "../tpm.h"
-> > @@ -20,11 +21,10 @@
-> >  int tpm_read_log_of(struct tpm_chip *chip)
-> >  {
-> >  	struct device_node *np;
-> > -	const u32 *sizep;
-> > -	const u64 *basep;
-> >  	struct tpm_bios_log *log;
-> >  	u32 size;
-> >  	u64 base;
-> > +	int ret;
-> >  
-> >  	log = &chip->log;
-> >  	if (chip->dev.parent && chip->dev.parent->of_node)
-> > @@ -35,30 +35,9 @@ int tpm_read_log_of(struct tpm_chip *chip)
-> >  	if (of_property_read_bool(np, "powered-while-suspended"))
-> >  		chip->flags |= TPM_CHIP_FLAG_ALWAYS_POWERED;
-> >  
-> > -	sizep = of_get_property(np, "linux,sml-size", NULL);
-> > -	basep = of_get_property(np, "linux,sml-base", NULL);
-> > -	if (sizep == NULL && basep == NULL)
-> > -		return -ENODEV;
-> > -	if (sizep == NULL || basep == NULL)
-> > -		return -EIO;
-> > -
-> > -	/*
-> > -	 * For both vtpm/tpm, firmware has log addr and log size in big
-> > -	 * endian format. But in case of vtpm, there is a method called
-> > -	 * sml-handover which is run during kernel init even before
-> > -	 * device tree is setup. This sml-handover function takes care
-> > -	 * of endianness and writes to sml-base and sml-size in little
-> > -	 * endian format. For this reason, vtpm doesn't need conversion
-> > -	 * but physical tpm needs the conversion.
-> > -	 */
-> > -	if (of_property_match_string(np, "compatible", "IBM,vtpm") < 0 &&
-> > -	    of_property_match_string(np, "compatible", "IBM,vtpm20") < 0) {
-> > -		size = be32_to_cpup((__force __be32 *)sizep);
-> > -		base = be64_to_cpup((__force __be64 *)basep);
-> > -	} else {
-> > -		size = *sizep;
-> > -		base = *basep;
-> > -	}
-> > +	ret = of_tpm_get_sml_parameters(np, &base, &size);
-> > +	if (ret < 0)
-> > +		return ret;
-> >  
-> >  	if (size == 0) {
-> >  		dev_warn(&chip->dev, "%s: Event log area empty\n", __func__);
-> > diff --git a/include/linux/tpm.h b/include/linux/tpm.h
-> > index dfeb25a0362d..6356baaa1393 100644
-> > --- a/include/linux/tpm.h
-> > +++ b/include/linux/tpm.h
-> > @@ -460,4 +460,40 @@ static inline struct tpm_chip *tpm_default_chip(void)
-> >  	return NULL;
-> >  }
-> >  #endif
-> > +
-> > +#ifdef CONFIG_OF
-> > +static inline int of_tpm_get_sml_parameters(struct device_node *np,
-> > +					    u64 *base, u32 *size)
-> > +{
-> > +	const u32 *sizep;
-> > +	const u64 *basep;
-> > +
-> > +	sizep = of_get_property(np, "linux,sml-size", NULL);
-> > +	basep = of_get_property(np, "linux,sml-base", NULL);
-> > +	if (sizep == NULL && basep == NULL)
-> > +		return -ENODEV;
-> > +	if (sizep == NULL || basep == NULL)
-> > +		return -EIO;
-> > +
-> > +	/*
-> > +	 * For both vtpm/tpm, firmware has log addr and log size in big
-> > +	 * endian format. But in case of vtpm, there is a method called
-> > +	 * sml-handover which is run during kernel init even before
-> > +	 * device tree is setup. This sml-handover function takes care
-> > +	 * of endianness and writes to sml-base and sml-size in little
-> > +	 * endian format. For this reason, vtpm doesn't need conversion
-> > +	 * but physical tpm needs the conversion.
-> > +	 */
-> > +	if (of_property_match_string(np, "compatible", "IBM,vtpm") < 0 &&
-> > +	    of_property_match_string(np, "compatible", "IBM,vtpm20") < 0) {
-> > +		*size = be32_to_cpup((__force __be32 *)sizep);
-> > +		*base = be64_to_cpup((__force __be64 *)basep);
-> > +	} else {
-> > +		*size = *sizep;
-> > +		*base = *basep;
-> > +	}
-> > +	return 0;
-> > +}
-> > +#endif
-> > +
-> >  #endif
-> > -- 
-> > 2.35.1
-> > 
-> 
-> Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-> 
-> BR, Jarkkko
+>>> "Nullify" means "invalidate", which is not what this does or is for =
+:-(
+>>=20
+>> Would "Zeroise" be more appropriate ?
+>=20
+> That is probably a good compromise, yes.  It obviously is a verb, its
+> meaning is clear and unamiguous, and there is precedent for it even =
+:-)
 
-Should I pick this or will the full patch set be picked
-by someone?
+Zeroise it is. The =E2=80=98zeroize=E2=80=99 spelling exists already in =
+the kernel so I=E2=80=99ll use that.
 
-BR, Jarkko
-
+Rohan=
