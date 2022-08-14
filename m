@@ -1,52 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8BF2592182
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Aug 2022 17:37:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 007E8592196
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Aug 2022 17:38:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M5M3y3SDgz3f4j
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Aug 2022 01:37:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M5M4c6Xttz3dy1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Aug 2022 01:38:08 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hvSW7P18;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JDUNVzpa;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hvSW7P18;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JDUNVzpa;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M5M371tYLz3dym
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Aug 2022 01:36:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M5M3P036fz3f1C
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Aug 2022 01:37:04 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id C7FF0B80B48;
-	Sun, 14 Aug 2022 15:36:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAB35C433B5;
-	Sun, 14 Aug 2022 15:36:47 +0000 (UTC)
+	by ams.source.kernel.org (Postfix) with ESMTPS id A8BC3B80B43;
+	Sun, 14 Aug 2022 15:37:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 940CBC433D7;
+	Sun, 14 Aug 2022 15:37:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1660491408;
-	bh=BvpZ9+z3PwhwVDxWUyHfXYsBLSq0+ghAeah0uQ9gcoE=;
+	s=k20201202; t=1660491421;
+	bh=VF22Iro7UbCbbWGEW7D3ybbI3jXsNuduTGF1qQpb4YA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hvSW7P18gxB/XXvz+9h3mxy9Coich4QoX17+DxaE4nkxCMPc/SVFwYj0P8eMQ+fJs
-	 Xyyro6KT7fy2Y+Gm/+/q9wtQGCdxrUZFtdW55v5xXLdviVcB3x3MF+jCuIWnuA5Fdy
-	 sExNmnXWZ8LRb/NCCJ4yA0gRyP8jctb/+6J93seNii2/AXEpMobqkZ43cNRJSdKsLF
-	 9++jJFycGswaY0ZC1BVIUCrHcQcWRF9iy4il5nMb2eV/v9F7cAAHrQA208X46bHgQ7
-	 qlhZsXcjDK6A3lsBYy1yXp3gLMSZbRycXFUIg4Y4jb7qjBF+0QudZ9/tc2U6D5xq29
-	 oJ8j7rrAxQn0w==
+	b=JDUNVzpaBfLb8aiv/v0FO056kXea5JzncrFPGpNqhfJMwAu1BUD2bm7zRygfSRhIQ
+	 ikjtqfR6hpzCGcUw0tyf+NhEV4M1yZprBfP2lVmx0jNZoLW44Z7B0CAR/AKQB1dGxy
+	 mCt78/IHPgytu5ezipWPOFB2Ey1lsgf+OOWM/6518Nn+yPNLnvXquxRf0GSrJj+ZVP
+	 IM16EqxtRTBBmgz3Jfff8V4/fDn+2pUhC0mFsw54foVCbSowB4IyMXCm8swRNwGh19
+	 VkQyHFIYVNx0ykNLxpEm+NVcUXDfpp8gHHG3G4Dhizxx+5GloPZddNP422t0f+S6fw
+	 abiG54xrAInjg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 6/9] cxl: Fix a memory leak in an error handling path
-Date: Sun, 14 Aug 2022 11:36:33 -0400
-Message-Id: <20220814153637.2380406-6-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 4/7] cxl: Fix a memory leak in an error handling path
+Date: Sun, 14 Aug 2022 11:36:49 -0400
+Message-Id: <20220814153652.2380549-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220814153637.2380406-1-sashal@kernel.org>
-References: <20220814153637.2380406-1-sashal@kernel.org>
+In-Reply-To: <20220814153652.2380549-1-sashal@kernel.org>
+References: <20220814153652.2380549-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -83,10 +83,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+)
 
 diff --git a/drivers/misc/cxl/irq.c b/drivers/misc/cxl/irq.c
-index ce08a9f22308..0dbe78383f8f 100644
+index dec60f58a767..99e2bd65825f 100644
 --- a/drivers/misc/cxl/irq.c
 +++ b/drivers/misc/cxl/irq.c
-@@ -353,6 +353,7 @@ int afu_allocate_irqs(struct cxl_context *ctx, u32 count)
+@@ -302,6 +302,7 @@ int afu_allocate_irqs(struct cxl_context *ctx, u32 count)
  
  out:
  	cxl_ops->release_irq_ranges(&ctx->irqs, ctx->afu->adapter);
