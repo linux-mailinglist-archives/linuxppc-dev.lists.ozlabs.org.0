@@ -2,52 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7544E592498
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Aug 2022 18:34:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 795585924AB
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Aug 2022 18:34:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M5NKG20xVz3fK0
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Aug 2022 02:34:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M5NKv5wFZz3g53
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Aug 2022 02:34:43 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=W5m+VlI1;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iG36Bsw4;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=W5m+VlI1;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iG36Bsw4;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M5N9v1FBhz3fJr
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Aug 2022 02:27:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M5NBM25V4z3fLv
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Aug 2022 02:28:11 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id D8EE9B80B84;
-	Sun, 14 Aug 2022 16:27:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4DC8C433B5;
-	Sun, 14 Aug 2022 16:27:42 +0000 (UTC)
+	by ams.source.kernel.org (Postfix) with ESMTPS id C106DB80B79;
+	Sun, 14 Aug 2022 16:28:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43214C433D6;
+	Sun, 14 Aug 2022 16:28:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1660494463;
-	bh=H6UKRo4fZU5TbBWywQodFTRoIUfFUhzsV6K5s9BhEjY=;
+	s=k20201202; t=1660494487;
+	bh=fyLsniPtbkvhrz7Aktr8PJkpKS/Iw4SVc6NcDeoroHE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W5m+VlI1NwCnMbpZq2V4Dk8XHoMJ6T0V8wZLdjjQCgzkT0pv5/07gQJKbxEqh2SK+
-	 kLkFxfOV0YP7AWRqXEfxMh+HmUIHKjHKK/ujOy7fvd+PWG6ig1OCPUWF3c6nw+JbPI
-	 8momaeCjcPwRYTyOXlqEU5ZAYy1u2eo8B2/bozLn4C/smXNrDMuP+wvkEj5JGjvCPS
-	 zHE4eZ+D+MfI5/IAJ/kycuPKrZflnmAJn9IyTCWnOIS5qTb7oSRgJBVpH8n9TmOzeV
-	 zcID86CLIOtzO5Nk0NOie+JYXudRorxXEb+WY5T4Tf9B1B8WTiCwASbdh1Upop44IV
-	 XwEO+wNSeng3w==
+	b=iG36Bsw4aqnnjS7e/0SfiR4dpgzPACIq3jfsCBGx3qyXRiOtQ/1Cp7mJ1fzHp39//
+	 OpgaOD4aUNbhLneAG4NbLrQVkDsFCTHubnO2x6VLSDuGJME2aNu6QMpIBWN0Yrj8Cl
+	 z5G37GHSc25oN3v/3hL1dD55prvRFKguLuZn4/7u5ON7uifY0n9o9HfKJXwifNWe5E
+	 a7bMB6J4ndkRyhQB5pPMXt87hopsAaWr2Uqj3aLX4bZcJgewhg4S5hlWaW4TizX7+Q
+	 0kslmkTCtB+2TKrUiMrGiul+lrnolunFFVeiB5qoyQJfwVNMwZn96RIeGsZR2pVU3m
+	 NiwZVxJAaEqqA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 02/19] tty: serial: Fix refcount leak bug in ucc_uart.c
-Date: Sun, 14 Aug 2022 12:27:21 -0400
-Message-Id: <20220814162739.2398217-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 10/19] powerpc/32: Don't always pass -mcpu=powerpc to the compiler
+Date: Sun, 14 Aug 2022 12:27:29 -0400
+Message-Id: <20220814162739.2398217-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220814162739.2398217-1-sashal@kernel.org>
 References: <20220814162739.2398217-1-sashal@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
@@ -62,40 +63,150 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Liang He <windhl@126.com>, Timur Tabi <timur@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linuxppc-dev@lists.ozlabs.org, linux-serial@vger.kernel.org, jirislaby@kernel.org
+Cc: Sasha Levin <sashal@kernel.org>, Arnd Bergmann <arnd@arndb.de>, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, lukas.bulwahn@gmail.com, =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Liang He <windhl@126.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit d24d7bb2cd947676f9b71fb944d045e09b8b282f ]
+[ Upstream commit 446cda1b21d9a6b3697fe399c6a3a00ff4a285f5 ]
 
-In soc_info(), of_find_node_by_type() will return a node pointer
-with refcount incremented. We should use of_node_put() when it is
-not used anymore.
+Since commit 4bf4f42a2feb ("powerpc/kbuild: Set default generic
+machine type for 32-bit compile"), when building a 32 bits kernel
+with a bi-arch version of GCC, or when building a book3s/32 kernel,
+the option -mcpu=powerpc is passed to GCC at all time, relying on it
+being eventually overriden by a subsequent -mcpu=xxxx.
 
-Acked-by: Timur Tabi <timur@kernel.org>
-Signed-off-by: Liang He <windhl@126.com>
-Link: https://lore.kernel.org/r/20220618060850.4058525-1-windhl@126.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+But when building the same kernel with a 32 bits only version of GCC,
+that is not done, relying on gcc being built with the expected default
+CPU.
+
+This logic has two problems. First, it is a bit fragile to rely on
+whether the GCC version is bi-arch or not, because today we can have
+bi-arch versions of GCC configured with a 32 bits default. Second,
+there are some versions of GCC which don't support -mcpu=powerpc,
+for instance for e500 SPE-only versions.
+
+So, stop relying on this approximative logic and allow the user to
+decide whether he/she wants to use the toolchain's default CPU or if
+he/she wants to set one, and allow only possible CPUs based on the
+selected target.
+
+Reported-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Tested-by: Pali Rohár <pali@kernel.org>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Segher Boessenkool <segher@kernel.crashing.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/d4df724691351531bf46d685d654689e5dfa0d74.1657549153.git.christophe.leroy@csgroup.eu
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/ucc_uart.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/powerpc/Makefile                  | 26 +-------------------------
+ arch/powerpc/platforms/Kconfig.cputype | 21 ++++++++++++++++++---
+ 2 files changed, 19 insertions(+), 28 deletions(-)
 
-diff --git a/drivers/tty/serial/ucc_uart.c b/drivers/tty/serial/ucc_uart.c
-index d6a8604157ab..d1fecc88330e 100644
---- a/drivers/tty/serial/ucc_uart.c
-+++ b/drivers/tty/serial/ucc_uart.c
-@@ -1137,6 +1137,8 @@ static unsigned int soc_info(unsigned int *rev_h, unsigned int *rev_l)
- 		/* No compatible property, so try the name. */
- 		soc_string = np->name;
+diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
+index 7a96cdefbd4e..59175651f0b9 100644
+--- a/arch/powerpc/Makefile
++++ b/arch/powerpc/Makefile
+@@ -17,23 +17,6 @@ HAS_BIARCH	:= $(call cc-option-yn, -m32)
+ # Set default 32 bits cross compilers for vdso and boot wrapper
+ CROSS32_COMPILE ?=
  
-+	of_node_put(np);
+-ifeq ($(HAS_BIARCH),y)
+-ifeq ($(CROSS32_COMPILE),)
+-ifdef CONFIG_PPC32
+-# These options will be overridden by any -mcpu option that the CPU
+-# or platform code sets later on the command line, but they are needed
+-# to set a sane 32-bit cpu target for the 64-bit cross compiler which
+-# may default to the wrong ISA.
+-KBUILD_CFLAGS		+= -mcpu=powerpc
+-KBUILD_AFLAGS		+= -mcpu=powerpc
+-endif
+-endif
+-endif
+-
+-ifdef CONFIG_PPC_BOOK3S_32
+-KBUILD_CFLAGS		+= -mcpu=powerpc
+-endif
+-
+ # If we're on a ppc/ppc64/ppc64le machine use that defconfig, otherwise just use
+ # ppc64_defconfig because we have nothing better to go on.
+ uname := $(shell uname -m)
+@@ -190,6 +173,7 @@ endif
+ endif
+ 
+ CFLAGS-$(CONFIG_TARGET_CPU_BOOL) += $(call cc-option,-mcpu=$(CONFIG_TARGET_CPU))
++AFLAGS-$(CONFIG_TARGET_CPU_BOOL) += $(call cc-option,-mcpu=$(CONFIG_TARGET_CPU))
+ 
+ # Altivec option not allowed with e500mc64 in GCC.
+ ifdef CONFIG_ALTIVEC
+@@ -200,14 +184,6 @@ endif
+ CFLAGS-$(CONFIG_E5500_CPU) += $(E5500_CPU)
+ CFLAGS-$(CONFIG_E6500_CPU) += $(call cc-option,-mcpu=e6500,$(E5500_CPU))
+ 
+-ifdef CONFIG_PPC32
+-ifdef CONFIG_PPC_E500MC
+-CFLAGS-y += $(call cc-option,-mcpu=e500mc,-mcpu=powerpc)
+-else
+-CFLAGS-$(CONFIG_E500) += $(call cc-option,-mcpu=8540 -msoft-float,-mcpu=powerpc)
+-endif
+-endif
+-
+ asinstr := $(call as-instr,lis 9$(comma)foo@high,-DHAVE_AS_ATHIGH=1)
+ 
+ KBUILD_CPPFLAGS	+= -I $(srctree)/arch/$(ARCH) $(asinstr)
+diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
+index 32a9c4c09b98..24e3d427bce5 100644
+--- a/arch/powerpc/platforms/Kconfig.cputype
++++ b/arch/powerpc/platforms/Kconfig.cputype
+@@ -119,9 +119,9 @@ config GENERIC_CPU
+ 	depends on PPC64 && CPU_LITTLE_ENDIAN
+ 	select ARCH_HAS_FAST_MULTIPLIER
+ 
+-config GENERIC_CPU
++config POWERPC_CPU
+ 	bool "Generic 32 bits powerpc"
+-	depends on PPC32 && !PPC_8xx
++	depends on PPC32 && !PPC_8xx && !PPC_85xx
+ 
+ config CELL_CPU
+ 	bool "Cell Broadband Engine"
+@@ -175,11 +175,23 @@ config G4_CPU
+ 	depends on PPC_BOOK3S_32
+ 	select ALTIVEC
+ 
++config E500_CPU
++	bool "e500 (8540)"
++	depends on PPC_85xx && !PPC_E500MC
 +
- 	/* Extract the SOC number from the "PowerPC," string */
- 	if ((sscanf(soc_string, "PowerPC,%u", &soc) != 1) || !soc)
- 		return 0;
++config E500MC_CPU
++	bool "e500mc"
++	depends on PPC_85xx && PPC_E500MC
++
++config TOOLCHAIN_DEFAULT_CPU
++	bool "Rely on the toolchain's implicit default CPU"
++	depends on PPC32
++
+ endchoice
+ 
+ config TARGET_CPU_BOOL
+ 	bool
+-	default !GENERIC_CPU
++	default !GENERIC_CPU && !TOOLCHAIN_DEFAULT_CPU
+ 
+ config TARGET_CPU
+ 	string
+@@ -194,6 +206,9 @@ config TARGET_CPU
+ 	default "e300c2" if E300C2_CPU
+ 	default "e300c3" if E300C3_CPU
+ 	default "G4" if G4_CPU
++	default "8540" if E500_CPU
++	default "e500mc" if E500MC_CPU
++	default "powerpc" if POWERPC_CPU
+ 
+ config PPC_BOOK3S
+ 	def_bool y
 -- 
 2.35.1
 
