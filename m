@@ -1,54 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 795585924AB
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Aug 2022 18:34:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A700B5924AC
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Aug 2022 18:35:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M5NKv5wFZz3g53
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Aug 2022 02:34:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M5NLd414gz3fMl
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Aug 2022 02:35:21 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iG36Bsw4;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=F0eeSmxc;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iG36Bsw4;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=F0eeSmxc;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M5NBM25V4z3fLv
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Aug 2022 02:28:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M5NBd0VXTz3fM0
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Aug 2022 02:28:25 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id C106DB80B79;
-	Sun, 14 Aug 2022 16:28:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43214C433D6;
-	Sun, 14 Aug 2022 16:28:06 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 612E460FC5;
+	Sun, 14 Aug 2022 16:28:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEC65C433D6;
+	Sun, 14 Aug 2022 16:28:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1660494487;
-	bh=fyLsniPtbkvhrz7Aktr8PJkpKS/Iw4SVc6NcDeoroHE=;
+	s=k20201202; t=1660494503;
+	bh=EuZaGYluLH1sBfX+LwCyGdBsOg1V0gcuWQeFvYE1Lew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iG36Bsw4aqnnjS7e/0SfiR4dpgzPACIq3jfsCBGx3qyXRiOtQ/1Cp7mJ1fzHp39//
-	 OpgaOD4aUNbhLneAG4NbLrQVkDsFCTHubnO2x6VLSDuGJME2aNu6QMpIBWN0Yrj8Cl
-	 z5G37GHSc25oN3v/3hL1dD55prvRFKguLuZn4/7u5ON7uifY0n9o9HfKJXwifNWe5E
-	 a7bMB6J4ndkRyhQB5pPMXt87hopsAaWr2Uqj3aLX4bZcJgewhg4S5hlWaW4TizX7+Q
-	 0kslmkTCtB+2TKrUiMrGiul+lrnolunFFVeiB5qoyQJfwVNMwZn96RIeGsZR2pVU3m
-	 NiwZVxJAaEqqA==
+	b=F0eeSmxcdxQN5uPqmbrPwdQ49QZYlb65jrlJEQu1t0UBrfcau+hMfBvMoM6GF72VW
+	 rfi5fUP5T+3bfMKqPlegucsf5D94PDQ+3yzyoIcuRFB25bmB/XXlYbYWpMZg+cd6fj
+	 EYrwhSQEDX9uHS2Hhtq3iPJRQjIjJvvTAs7E5hg3ZHlWAJynW5lrFtA7V4juAS+RMD
+	 +XsYKY5jxST5zS60wVqG8ib55z1us8jODX/LGcYetKGn21hA3AdQPZcdifDmAhQKIS
+	 2rQKnYZPS9Q0CQtWm5zXpXOSliT9qKvS7a7ZC9+uwU5eYwcTcxEZ4/AffZzAhoVOUo
+	 7tOsKNkXIiluw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 10/19] powerpc/32: Don't always pass -mcpu=powerpc to the compiler
-Date: Sun, 14 Aug 2022 12:27:29 -0400
-Message-Id: <20220814162739.2398217-10-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 17/19] powerpc/64: Init jump labels before parse_early_param()
+Date: Sun, 14 Aug 2022 12:27:36 -0400
+Message-Id: <20220814162739.2398217-17-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220814162739.2398217-1-sashal@kernel.org>
 References: <20220814162739.2398217-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
@@ -63,150 +62,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Arnd Bergmann <arnd@arndb.de>, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, lukas.bulwahn@gmail.com, =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>, dja@axtens.net
+Cc: Sasha Levin <sashal@kernel.org>, robh@kernel.org, nick.child@ibm.com, Zhouyi Zhou <zhouzhouyi@gmail.com>, masahiroy@kernel.org, clg@kaod.org, linuxppc-dev@lists.ozlabs.org, frank.rowand@sony.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Zhouyi Zhou <zhouzhouyi@gmail.com>
 
-[ Upstream commit 446cda1b21d9a6b3697fe399c6a3a00ff4a285f5 ]
+[ Upstream commit ca829e05d3d4f728810cc5e4b468d9ebc7745eb3 ]
 
-Since commit 4bf4f42a2feb ("powerpc/kbuild: Set default generic
-machine type for 32-bit compile"), when building a 32 bits kernel
-with a bi-arch version of GCC, or when building a book3s/32 kernel,
-the option -mcpu=powerpc is passed to GCC at all time, relying on it
-being eventually overriden by a subsequent -mcpu=xxxx.
+On 64-bit, calling jump_label_init() in setup_feature_keys() is too
+late because static keys may be used in subroutines of
+parse_early_param() which is again subroutine of early_init_devtree().
 
-But when building the same kernel with a 32 bits only version of GCC,
-that is not done, relying on gcc being built with the expected default
-CPU.
+For example booting with "threadirqs":
 
-This logic has two problems. First, it is a bit fragile to rely on
-whether the GCC version is bi-arch or not, because today we can have
-bi-arch versions of GCC configured with a 32 bits default. Second,
-there are some versions of GCC which don't support -mcpu=powerpc,
-for instance for e500 SPE-only versions.
+  static_key_enable_cpuslocked(): static key '0xc000000002953260' used before call to jump_label_init()
+  WARNING: CPU: 0 PID: 0 at kernel/jump_label.c:166 static_key_enable_cpuslocked+0xfc/0x120
+  ...
+  NIP static_key_enable_cpuslocked+0xfc/0x120
+  LR  static_key_enable_cpuslocked+0xf8/0x120
+  Call Trace:
+    static_key_enable_cpuslocked+0xf8/0x120 (unreliable)
+    static_key_enable+0x30/0x50
+    setup_forced_irqthreads+0x28/0x40
+    do_early_param+0xa0/0x108
+    parse_args+0x290/0x4e0
+    parse_early_options+0x48/0x5c
+    parse_early_param+0x58/0x84
+    early_init_devtree+0xd4/0x518
+    early_setup+0xb4/0x214
 
-So, stop relying on this approximative logic and allow the user to
-decide whether he/she wants to use the toolchain's default CPU or if
-he/she wants to set one, and allow only possible CPUs based on the
-selected target.
+So call jump_label_init() just before parse_early_param() in
+early_init_devtree().
 
-Reported-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Tested-by: Pali Rohár <pali@kernel.org>
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Segher Boessenkool <segher@kernel.crashing.org>
+Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Zhouyi Zhou <zhouzhouyi@gmail.com>
+[mpe: Add call trace to change log and minor wording edits.]
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/d4df724691351531bf46d685d654689e5dfa0d74.1657549153.git.christophe.leroy@csgroup.eu
+Link: https://lore.kernel.org/r/20220726015747.11754-1-zhouzhouyi@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/Makefile                  | 26 +-------------------------
- arch/powerpc/platforms/Kconfig.cputype | 21 ++++++++++++++++++---
- 2 files changed, 19 insertions(+), 28 deletions(-)
+ arch/powerpc/kernel/prom.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-index 7a96cdefbd4e..59175651f0b9 100644
---- a/arch/powerpc/Makefile
-+++ b/arch/powerpc/Makefile
-@@ -17,23 +17,6 @@ HAS_BIARCH	:= $(call cc-option-yn, -m32)
- # Set default 32 bits cross compilers for vdso and boot wrapper
- CROSS32_COMPILE ?=
+diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
+index 7a14a094be8a..1dfb4c213fea 100644
+--- a/arch/powerpc/kernel/prom.c
++++ b/arch/powerpc/kernel/prom.c
+@@ -750,6 +750,13 @@ void __init early_init_devtree(void *params)
+ 	of_scan_flat_dt(early_init_dt_scan_root, NULL);
+ 	of_scan_flat_dt(early_init_dt_scan_memory_ppc, NULL);
  
--ifeq ($(HAS_BIARCH),y)
--ifeq ($(CROSS32_COMPILE),)
--ifdef CONFIG_PPC32
--# These options will be overridden by any -mcpu option that the CPU
--# or platform code sets later on the command line, but they are needed
--# to set a sane 32-bit cpu target for the 64-bit cross compiler which
--# may default to the wrong ISA.
--KBUILD_CFLAGS		+= -mcpu=powerpc
--KBUILD_AFLAGS		+= -mcpu=powerpc
--endif
--endif
--endif
--
--ifdef CONFIG_PPC_BOOK3S_32
--KBUILD_CFLAGS		+= -mcpu=powerpc
--endif
--
- # If we're on a ppc/ppc64/ppc64le machine use that defconfig, otherwise just use
- # ppc64_defconfig because we have nothing better to go on.
- uname := $(shell uname -m)
-@@ -190,6 +173,7 @@ endif
- endif
++	/*
++	 * As generic code authors expect to be able to use static keys
++	 * in early_param() handlers, we initialize the static keys just
++	 * before parsing early params (it's fine to call jump_label_init()
++	 * more than once).
++	 */
++	jump_label_init();
+ 	parse_early_param();
  
- CFLAGS-$(CONFIG_TARGET_CPU_BOOL) += $(call cc-option,-mcpu=$(CONFIG_TARGET_CPU))
-+AFLAGS-$(CONFIG_TARGET_CPU_BOOL) += $(call cc-option,-mcpu=$(CONFIG_TARGET_CPU))
- 
- # Altivec option not allowed with e500mc64 in GCC.
- ifdef CONFIG_ALTIVEC
-@@ -200,14 +184,6 @@ endif
- CFLAGS-$(CONFIG_E5500_CPU) += $(E5500_CPU)
- CFLAGS-$(CONFIG_E6500_CPU) += $(call cc-option,-mcpu=e6500,$(E5500_CPU))
- 
--ifdef CONFIG_PPC32
--ifdef CONFIG_PPC_E500MC
--CFLAGS-y += $(call cc-option,-mcpu=e500mc,-mcpu=powerpc)
--else
--CFLAGS-$(CONFIG_E500) += $(call cc-option,-mcpu=8540 -msoft-float,-mcpu=powerpc)
--endif
--endif
--
- asinstr := $(call as-instr,lis 9$(comma)foo@high,-DHAVE_AS_ATHIGH=1)
- 
- KBUILD_CPPFLAGS	+= -I $(srctree)/arch/$(ARCH) $(asinstr)
-diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
-index 32a9c4c09b98..24e3d427bce5 100644
---- a/arch/powerpc/platforms/Kconfig.cputype
-+++ b/arch/powerpc/platforms/Kconfig.cputype
-@@ -119,9 +119,9 @@ config GENERIC_CPU
- 	depends on PPC64 && CPU_LITTLE_ENDIAN
- 	select ARCH_HAS_FAST_MULTIPLIER
- 
--config GENERIC_CPU
-+config POWERPC_CPU
- 	bool "Generic 32 bits powerpc"
--	depends on PPC32 && !PPC_8xx
-+	depends on PPC32 && !PPC_8xx && !PPC_85xx
- 
- config CELL_CPU
- 	bool "Cell Broadband Engine"
-@@ -175,11 +175,23 @@ config G4_CPU
- 	depends on PPC_BOOK3S_32
- 	select ALTIVEC
- 
-+config E500_CPU
-+	bool "e500 (8540)"
-+	depends on PPC_85xx && !PPC_E500MC
-+
-+config E500MC_CPU
-+	bool "e500mc"
-+	depends on PPC_85xx && PPC_E500MC
-+
-+config TOOLCHAIN_DEFAULT_CPU
-+	bool "Rely on the toolchain's implicit default CPU"
-+	depends on PPC32
-+
- endchoice
- 
- config TARGET_CPU_BOOL
- 	bool
--	default !GENERIC_CPU
-+	default !GENERIC_CPU && !TOOLCHAIN_DEFAULT_CPU
- 
- config TARGET_CPU
- 	string
-@@ -194,6 +206,9 @@ config TARGET_CPU
- 	default "e300c2" if E300C2_CPU
- 	default "e300c3" if E300C3_CPU
- 	default "G4" if G4_CPU
-+	default "8540" if E500_CPU
-+	default "e500mc" if E500MC_CPU
-+	default "powerpc" if POWERPC_CPU
- 
- config PPC_BOOK3S
- 	def_bool y
+ 	/* make sure we've parsed cmdline for mem= before this */
 -- 
 2.35.1
 
