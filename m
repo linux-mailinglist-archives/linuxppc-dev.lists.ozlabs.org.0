@@ -1,49 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BECD55923C5
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Aug 2022 18:25:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 255855923CC
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Aug 2022 18:25:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M5N6f4zv1z3f2q
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Aug 2022 02:24:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M5N7M6mHwz3f5d
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Aug 2022 02:25:35 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DsDeSRuq;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=FVZVWZ51;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DsDeSRuq;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=FVZVWZ51;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M5N411WwCz3c6P
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Aug 2022 02:22:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M5N4c0cFcz3cdt
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Aug 2022 02:23:12 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id DAB32B80B7F;
-	Sun, 14 Aug 2022 16:22:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63E5FC433C1;
-	Sun, 14 Aug 2022 16:22:36 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 6127860F3D;
+	Sun, 14 Aug 2022 16:23:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97821C433D7;
+	Sun, 14 Aug 2022 16:23:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1660494157;
-	bh=t0TSqAFuhyH1+CMJ7UbBnSE+KHqu5QO/EWY90mPSeHY=;
+	s=k20201202; t=1660494189;
+	bh=Ufu0YQ4jl5NNJVHMzR49EucjoyZ1trfx8HRK1GTs8OQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DsDeSRuqTgrZ13QVuVlWlk3NfV4OoWpnNwI9A3DY3YOVkbMcXOizPGNmjtanrqypA
-	 pEJGg1qCm+B2SnBL49g7VDNewhQnKMY6f8IwVXHyHTQLASp3xS7Vq6P2xngm+HFukp
-	 hfLIxOIYQ8vbCCNk4rdqQQ10Zhgv+nxkJzSY0tYCjEUfouMdgk22tpf7E/z9MeS/oG
-	 QPf6gt4ntBvc/lUySPurWWhJeuwnbLftXqP2fGp0PiwZiajsfU/I29lTOkjun9x/r4
-	 LiBhwT1RgQeNR/Fw7UBEmx0aj9JGceLUbP5awwIIgB2I+OTQY4fb06diJNkA1hgSpa
-	 qHGOWJLI4pjXw==
+	b=FVZVWZ516ILnGyDuQUowp6jTqku6ljM++XV7s01ahxG2I77Fq0AFpypt9ShkL5Jxj
+	 OehBQF1m7VUCVkMRpXVQRoFtmhTyy1NqGuCvJ91KND+H9YqivVTJ41IpD5OSPZdAbr
+	 Hk82rUUXC36DXGdkemCV+CxZBgommlfIehONrjv8nX32tp37jP7sw4GWj0gnagun+Q
+	 KvVL5C2pzfwbuhYR68ASbKuUMV9jELri5QvqqpvZBNwUQlZdZEQKzwA8MbTvcLCwH4
+	 W43R37th6lRrMP+b/ybwdDQ48e5sh5BBkjPSuGdeGAtpbK5z6qMTg/KcMzFNI2qIQb
+	 gHitF2FCm77FA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.19 35/48] powerpc/ioda/iommu/debugfs: Generate unique debugfs entries
-Date: Sun, 14 Aug 2022 12:19:28 -0400
-Message-Id: <20220814161943.2394452-35-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.19 43/48] powerpc/64: Init jump labels before parse_early_param()
+Date: Sun, 14 Aug 2022 12:19:36 -0400
+Message-Id: <20220814161943.2394452-43-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220814161943.2394452-1-sashal@kernel.org>
 References: <20220814161943.2394452-1-sashal@kernel.org>
@@ -62,50 +62,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Alexey Kardashevskiy <aik@ozlabs.ru>, nick.child@ibm.com, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, tglx@linutronix.de, rppt@kernel.org
+Cc: Sasha Levin <sashal@kernel.org>, robh@kernel.org, nick.child@ibm.com, Zhouyi Zhou <zhouzhouyi@gmail.com>, masahiroy@kernel.org, clg@kaod.org, linuxppc-dev@lists.ozlabs.org, frank.rowand@sony.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
+From: Zhouyi Zhou <zhouzhouyi@gmail.com>
 
-[ Upstream commit d73b46c3c1449bf27f793b9d9ee86ed70c7a7163 ]
+[ Upstream commit ca829e05d3d4f728810cc5e4b468d9ebc7745eb3 ]
 
-The iommu_table::it_index is a LIOBN which is not initialized on PowerNV
-as it is not used except IOMMU debugfs where it is used for a node name.
+On 64-bit, calling jump_label_init() in setup_feature_keys() is too
+late because static keys may be used in subroutines of
+parse_early_param() which is again subroutine of early_init_devtree().
 
-This initializes it_index witn a unique number to avoid warnings and
-have a node for every iommu_table.
+For example booting with "threadirqs":
 
-This should not cause any behavioral change without CONFIG_IOMMU_DEBUGFS.
+  static_key_enable_cpuslocked(): static key '0xc000000002953260' used before call to jump_label_init()
+  WARNING: CPU: 0 PID: 0 at kernel/jump_label.c:166 static_key_enable_cpuslocked+0xfc/0x120
+  ...
+  NIP static_key_enable_cpuslocked+0xfc/0x120
+  LR  static_key_enable_cpuslocked+0xf8/0x120
+  Call Trace:
+    static_key_enable_cpuslocked+0xf8/0x120 (unreliable)
+    static_key_enable+0x30/0x50
+    setup_forced_irqthreads+0x28/0x40
+    do_early_param+0xa0/0x108
+    parse_args+0x290/0x4e0
+    parse_early_options+0x48/0x5c
+    parse_early_param+0x58/0x84
+    early_init_devtree+0xd4/0x518
+    early_setup+0xb4/0x214
 
-Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+So call jump_label_init() just before parse_early_param() in
+early_init_devtree().
+
+Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Zhouyi Zhou <zhouzhouyi@gmail.com>
+[mpe: Add call trace to change log and minor wording edits.]
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20220714080800.3712998-1-aik@ozlabs.ru
+Link: https://lore.kernel.org/r/20220726015747.11754-1-zhouzhouyi@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/powernv/pci-ioda.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/powerpc/kernel/prom.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-index c8cf2728031a..9de9b2fb163d 100644
---- a/arch/powerpc/platforms/powernv/pci-ioda.c
-+++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-@@ -1609,6 +1609,7 @@ static void pnv_pci_ioda1_setup_dma_pe(struct pnv_phb *phb,
- 	tbl->it_ops = &pnv_ioda1_iommu_ops;
- 	pe->table_group.tce32_start = tbl->it_offset << tbl->it_page_shift;
- 	pe->table_group.tce32_size = tbl->it_size << tbl->it_page_shift;
-+	tbl->it_index = (phb->hose->global_number << 16) | pe->pe_number;
- 	if (!iommu_init_table(tbl, phb->hose->node, 0, 0))
- 		panic("Failed to initialize iommu table");
+diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
+index feae8509b59c..b64c3f06c069 100644
+--- a/arch/powerpc/kernel/prom.c
++++ b/arch/powerpc/kernel/prom.c
+@@ -751,6 +751,13 @@ void __init early_init_devtree(void *params)
+ 	early_init_dt_scan_root();
+ 	early_init_dt_scan_memory_ppc();
  
-@@ -1779,6 +1780,7 @@ static long pnv_pci_ioda2_setup_default_config(struct pnv_ioda_pe *pe)
- 		res_end = min(window_size, SZ_4G) >> tbl->it_page_shift;
- 	}
++	/*
++	 * As generic code authors expect to be able to use static keys
++	 * in early_param() handlers, we initialize the static keys just
++	 * before parsing early params (it's fine to call jump_label_init()
++	 * more than once).
++	 */
++	jump_label_init();
+ 	parse_early_param();
  
-+	tbl->it_index = (pe->phb->hose->global_number << 16) | pe->pe_number;
- 	if (iommu_init_table(tbl, pe->phb->hose->node, res_start, res_end))
- 		rc = pnv_pci_ioda2_set_window(&pe->table_group, 0, tbl);
- 	else
+ 	/* make sure we've parsed cmdline for mem= before this */
 -- 
 2.35.1
 
