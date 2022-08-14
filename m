@@ -2,51 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 007E8592196
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Aug 2022 17:38:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6F0D592362
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Aug 2022 18:20:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M5M4c6Xttz3dy1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Aug 2022 01:38:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M5N1H4rqSz3c6w
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Aug 2022 02:20:19 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JDUNVzpa;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uy+YxFit;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JDUNVzpa;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uy+YxFit;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M5M3P036fz3f1C
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Aug 2022 01:37:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M5N0l54cZz2xG6
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Aug 2022 02:19:51 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id A8BC3B80B43;
-	Sun, 14 Aug 2022 15:37:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 940CBC433D7;
-	Sun, 14 Aug 2022 15:37:00 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id A51DE60F4A;
+	Sun, 14 Aug 2022 16:19:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0600FC43470;
+	Sun, 14 Aug 2022 16:19:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1660491421;
-	bh=VF22Iro7UbCbbWGEW7D3ybbI3jXsNuduTGF1qQpb4YA=;
+	s=k20201202; t=1660493989;
+	bh=wL+I1X6OYqaa+s1yOlsuInujXPWsQqoekriR1F0yces=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JDUNVzpaBfLb8aiv/v0FO056kXea5JzncrFPGpNqhfJMwAu1BUD2bm7zRygfSRhIQ
-	 ikjtqfR6hpzCGcUw0tyf+NhEV4M1yZprBfP2lVmx0jNZoLW44Z7B0CAR/AKQB1dGxy
-	 mCt78/IHPgytu5ezipWPOFB2Ey1lsgf+OOWM/6518Nn+yPNLnvXquxRf0GSrJj+ZVP
-	 IM16EqxtRTBBmgz3Jfff8V4/fDn+2pUhC0mFsw54foVCbSowB4IyMXCm8swRNwGh19
-	 VkQyHFIYVNx0ykNLxpEm+NVcUXDfpp8gHHG3G4Dhizxx+5GloPZddNP422t0f+S6fw
-	 abiG54xrAInjg==
+	b=uy+YxFitHk4Zqa9eB8LlUakKmy5dZtZKWFJeW1vSKOewQT8XUV9oWYpJJgFzQAADg
+	 WXV62Gzix4rqLYyGZ57yZ7xlhBtPSB0e3urdPFwz+0YqZdNsCsQmYpygBFYBNjFQOY
+	 GKraiBkZj/ldUtlu7pGQi1kbqzhvaxyBp+NpRDqLgHJikMfMAddSeAiMJ7pwfYfzTX
+	 EksbTzEi9/g5eeC4i2y2HARbSXyH0YioadW6oYa9z/rwls2qOFYKSFNiT47qVlAdRp
+	 Yqks+K0qizk7XWsQ/4LDketIhrakz/mqWMubgrgSdLKj0stJFxsH/vlAAhOLLyJYrg
+	 dwx8pJAjKt/+A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 4/7] cxl: Fix a memory leak in an error handling path
-Date: Sun, 14 Aug 2022 11:36:49 -0400
-Message-Id: <20220814153652.2380549-4-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.19 03/48] tty: serial: Fix refcount leak bug in ucc_uart.c
+Date: Sun, 14 Aug 2022 12:18:56 -0400
+Message-Id: <20220814161943.2394452-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220814153652.2380549-1-sashal@kernel.org>
-References: <20220814153652.2380549-1-sashal@kernel.org>
+In-Reply-To: <20220814161943.2394452-1-sashal@kernel.org>
+References: <20220814161943.2394452-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -62,38 +62,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Andrew Donnellan <ajd@linux.ibm.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Christophe JAILLET <christophe.jaillet@wanadoo.fr>, fbarrat@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>, Liang He <windhl@126.com>, Timur Tabi <timur@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linuxppc-dev@lists.ozlabs.org, linux-serial@vger.kernel.org, jirislaby@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Liang He <windhl@126.com>
 
-[ Upstream commit 3a15b45b5454da862376b5d69a4967f5c6fa1368 ]
+[ Upstream commit d24d7bb2cd947676f9b71fb944d045e09b8b282f ]
 
-A bitmap_zalloc() must be balanced by a corresponding bitmap_free() in the
-error handling path of afu_allocate_irqs().
+In soc_info(), of_find_node_by_type() will return a node pointer
+with refcount incremented. We should use of_node_put() when it is
+not used anymore.
 
-Acked-by: Andrew Donnellan <ajd@linux.ibm.com>
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://lore.kernel.org/r/ce5869418f5838187946eb6b11a52715a93ece3d.1657566849.git.christophe.jaillet@wanadoo.fr
+Acked-by: Timur Tabi <timur@kernel.org>
+Signed-off-by: Liang He <windhl@126.com>
+Link: https://lore.kernel.org/r/20220618060850.4058525-1-windhl@126.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/cxl/irq.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/tty/serial/ucc_uart.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/misc/cxl/irq.c b/drivers/misc/cxl/irq.c
-index dec60f58a767..99e2bd65825f 100644
---- a/drivers/misc/cxl/irq.c
-+++ b/drivers/misc/cxl/irq.c
-@@ -302,6 +302,7 @@ int afu_allocate_irqs(struct cxl_context *ctx, u32 count)
+diff --git a/drivers/tty/serial/ucc_uart.c b/drivers/tty/serial/ucc_uart.c
+index 6000853973c1..3cc9ef08455c 100644
+--- a/drivers/tty/serial/ucc_uart.c
++++ b/drivers/tty/serial/ucc_uart.c
+@@ -1137,6 +1137,8 @@ static unsigned int soc_info(unsigned int *rev_h, unsigned int *rev_l)
+ 		/* No compatible property, so try the name. */
+ 		soc_string = np->name;
  
- out:
- 	cxl_ops->release_irq_ranges(&ctx->irqs, ctx->afu->adapter);
-+	bitmap_free(ctx->irq_bitmap);
- 	afu_irq_name_free(ctx);
- 	return -ENOMEM;
- }
++	of_node_put(np);
++
+ 	/* Extract the SOC number from the "PowerPC," string */
+ 	if ((sscanf(soc_string, "PowerPC,%u", &soc) != 1) || !soc)
+ 		return 0;
 -- 
 2.35.1
 
