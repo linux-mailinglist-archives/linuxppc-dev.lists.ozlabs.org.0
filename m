@@ -1,50 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3D0B591D25
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Aug 2022 01:28:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AEE3591D59
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Aug 2022 02:47:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M4xYV2GtTz3bvZ
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Aug 2022 09:28:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M4zK83r3hz3c6b
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Aug 2022 10:47:40 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=nreNZxcW;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=P41/CsUx;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M4xXs2ZlCz2xGR
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Aug 2022 09:27:41 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::635; helo=mail-ej1-x635.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=nreNZxcW;
+	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=P41/CsUx;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4M4xXr5zhKz4x7X;
-	Sun, 14 Aug 2022 09:27:40 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1660433261;
-	bh=3bMlnbRQz38t2Byc7ysO1exjnYukUjyd4Vns0CgnFpo=;
-	h=From:To:Cc:Subject:Date:From;
-	b=nreNZxcW1pAzZmg9kAm6s+7+A3xMa6q+RTayh70SgYI8/Abjn96KSfP7DH0xOyHuU
-	 U0G7CVaYSr3ODkxQqcbcd9r63N9hS2eGhOgtBQo/q/EZ5Fz+3E77ux4hICUNCvPHKm
-	 1dXx6Drc9wFdC6tbF9VgKsRDQq81e4HJgvcw7r46TLlAOqeLzbO3YTWsPCqPqqsgBi
-	 /Q0IWsu9khhbcH2uMwoXbnSUl4Z7x011SwzYep8uTt3FiueMbnaa/5+dvKF7y+a2wQ
-	 qUr9g9Xuq7OWz0vTBuFpLGtGZoUNaONfvkM5PeRc5eQnfswWVrQpcYxJEnsgWneYhZ
-	 m58KufsLdMVqQ==
-From: mpe@ellerman.id.au
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-6.0-2 tag
-Date: Sun, 14 Aug 2022 09:27:37 +1000
-Message-ID: <87czd3d8ra.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M4zJT44BYz2xGR
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Aug 2022 10:47:03 +1000 (AEST)
+Received: by mail-ej1-x635.google.com with SMTP id i14so7913212ejg.6
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Aug 2022 17:47:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=x2TJWb9VPxfS4WbEMgi+9muxipCHahNie+FBh69toFk=;
+        b=P41/CsUxUsIATZkpcMv7hdU0X8HMf8UCtVaJc7H8Q8F2QNKlOWLaIFBPC6yPc3vg1i
+         a7Uk1CF19oMNKx3AYrY2X8JAB2w5R3MtuWbQzl3X+6aEhHMXM1ZVZ0UOwc/mpV4JX1jb
+         YmsL38vP2Ozuut9ebAJlYTOg4L4aWsVdFPa1w=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=x2TJWb9VPxfS4WbEMgi+9muxipCHahNie+FBh69toFk=;
+        b=h3/gWprJdU0Q1KEtauXmIFWqXnrD+KKTOKGZaZey3d4NmtmfEatUrAokArKE2qShkh
+         aoG7N4oVenWdwUTVIYMfPnZAzLksnPYcBt38Tc0+aMX2JK2Br+XjfCltWrjcHW3kbc/9
+         0StiOGQQ4WpinNKE2ArnUn9N+DyBEKX42Lzp1UNQX32dQ+cahDrAxU2AuxyKNmQHpVCt
+         38lme6YvB9gv0LfXRI/q+bkpsBobMzCc8jxHovdRGhspR1vvGZOtHtdOSyui6y32DS5N
+         a+invXF0RJu75e7wd7LL4vwde+Q8eIrRl9r6kEbAWvUpw71W5cp1XpbgWels5ubN5Ssq
+         ZnlQ==
+X-Gm-Message-State: ACgBeo2jNn8g1N9JG/EpZHkniHig+pM/sTTHnTM7T+7CGmN8dLIA5a0f
+	szE4aiyj0PA9C1N6kgnPomOE7LPyd9VeqqnC
+X-Google-Smtp-Source: AA6agR69G7VsYCqKZNPdt74bsQpk9cS+X8wU4EBjRtiCh52cvEgA6Sd3PBKk5I8gpM/3j3xeRmzWVQ==
+X-Received: by 2002:a17:906:4fd6:b0:70c:9284:cc01 with SMTP id i22-20020a1709064fd600b0070c9284cc01mr6631767ejw.553.1660438014274;
+        Sat, 13 Aug 2022 17:46:54 -0700 (PDT)
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com. [209.85.221.51])
+        by smtp.gmail.com with ESMTPSA id u9-20020a1709060ec900b0072ed9efc9dfsm2436837eji.48.2022.08.13.17.46.53
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 13 Aug 2022 17:46:53 -0700 (PDT)
+Received: by mail-wr1-f51.google.com with SMTP id e27so363268wra.11
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Aug 2022 17:46:53 -0700 (PDT)
+X-Received: by 2002:a5d:638b:0:b0:220:6e1a:8794 with SMTP id
+ p11-20020a5d638b000000b002206e1a8794mr5340552wru.193.1660438013290; Sat, 13
+ Aug 2022 17:46:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+References: <87czd3d8ra.fsf@mpe.ellerman.id.au>
+In-Reply-To: <87czd3d8ra.fsf@mpe.ellerman.id.au>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Sat, 13 Aug 2022 17:46:37 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wiLWWteYdVgXuLv9TA3aGsUaKV8gS3WxBo+NHHn5ZHkPw@mail.gmail.com>
+Message-ID: <CAHk-=wiLWWteYdVgXuLv9TA3aGsUaKV8gS3WxBo+NHHn5ZHkPw@mail.gmail.com>
+Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-6.0-2 tag
+To: mpe@ellerman.id.au
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,78 +83,17 @@ Cc: ndesaulniers@google.com, linux-kernel@vger.kernel.org, naveen.n.rao@linux.vn
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA256
+On Sat, Aug 13, 2022 at 4:27 PM <mpe@ellerman.id.au> wrote:
+> [..]
 
-Hi Linus,
+Btw, could you please fix whatever your email setup is, so that you
+have a proper name?
 
-Please pull some powerpc fixes for 6.0:
+Seeing that 'mpe' as a source in my inbox just makes me think it's
+spam and not real mail.
 
-The following changes since commit cae4199f9319f42534ee2e2e4aadf183b9bb7f73:
+My search for "git pull" will find it, so it's not a huge problem in
+practice, it's more of a "what is that garbage in my inbox - ooh, it's
+Michael Ellerman's badly configured email again"
 
-  Merge tag 'powerpc-6.0-1' of git://git.kernel.org/pub/scm/linux/kernel/gi=
-t/powerpc/linux (2022-08-06 16:38:17 -0700)
-
-are available in the git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/po=
-werpc-6.0-2
-
-for you to fetch changes up to 83ee9f23763a432a4077bf20624ee35de87bce99:
-
-  powerpc/kexec: Fix build failure from uninitialised variable (2022-08-10 =
-15:55:20 +1000)
-
-- ------------------------------------------------------------------
-powerpc fixes for 6.0 #2
-
- - Ensure we never emit lwarx with EH=3D1 on 32-bit, because some 32-bit CP=
-Us trap on it
-   rather than ignoring it as they should.
-
- - Fix ftrace when building with clang, which was broken by some refactorin=
-g.
-
- - A couple of other minor fixes.
-
-Thanks to: Christophe Leroy, Naveen N. Rao, Nick Desaulniers, Ondrej Mosnac=
-ek, Pali Roh=C3=A1r,
-Russell Currey Segher Boessenkool.
-
-- ------------------------------------------------------------------
-Christophe Leroy (4):
-      powerpc: Fix eh field when calling lwarx on PPC32
-      powerpc: Don't hide eh field of lwarx behind a macro
-      powerpc: Make eh value more explicit when using lwarx
-      powerpc/ppc-opcode: Fix PPC_RAW_TW()
-
-Naveen N. Rao (1):
-      powerpc64/ftrace: Fix ftrace for clang builds
-
-Russell Currey (1):
-      powerpc/kexec: Fix build failure from uninitialised variable
-
-
- arch/powerpc/include/asm/atomic.h          |  5 +++--
- arch/powerpc/include/asm/bitops.h          |  4 ++--
- arch/powerpc/include/asm/ppc-opcode.h      | 13 ++-----------
- arch/powerpc/include/asm/simple_spinlock.h | 15 +++++++++------
- arch/powerpc/kernel/trace/ftrace.c         |  8 ++++----
- arch/powerpc/kexec/file_load_64.c          | 10 +++++-----
- 6 files changed, 25 insertions(+), 30 deletions(-)
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAmL4MxcACgkQUevqPMjh
-pYAbQg//Y2KdKueTxPGMVN2/jCSDU6QEcCfZzmGWuCSQgdC1ufsf4hc8Maao0wOa
-nX2FzVF5F23MJM0oOtgdmC0p4QADSsR6OP3E0sST2snXBQf+FQPtIp4kjzCYP1zi
-x9paoBV1cBS54DI8bpdzp5FRLqmxxQ4PKM7iru6VYOC9EOZuwvg71W/+s90racdW
-J9Igz6yleFp2YsJYUWZNTNk7qJ9J5dhTRNrEK0MyOAmrcwXhQAq4QU6WqV3upUMa
-i4w8yqIi4e+dkRk1YjuZUVyqi7HgUE27gzH2yZT2w1SNMjodydv5P2ghgRP75s7y
-V4l/iuqfeWtw8tfEHzl+0rw3twhe1Y54ay4uFSfUOI2m9u6dJjjnXDJUai/vyytX
-CT4cRow8HP5eIULuj5jFrgPjkH1sBRUBdXVwZrDTOrynKXiEC5nbNTE5LTjbvYzj
-snzMRM8jEZpG/t1wA5tmGgMson37260qo/aqX9wIIEc0LhhJZdvMr7RD6pnX1D6I
-88mI/zxmitJU9bENQyenAOZn7Y6ybXBv8tEvHBr/xq0jKL0O7MKsdim4fUUZa7p/
-yAUwnMb88fbg10M5xWybbDJ2Ej4x+KD4pbWVN80qvApG6z85hbeRZVqx8JX0qS78
-TZMIWs4qPNwH/P8SM0Ez+/5kXxzkN6S0UXs99ViCxtYEIskWv4g=3D
-=3DnY/A
------END PGP SIGNATURE-----
+               Linus
