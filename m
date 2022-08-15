@@ -2,50 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99D3759330A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Aug 2022 18:23:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED683593310
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Aug 2022 18:24:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M602T54HKz3c38
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Aug 2022 02:23:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M603G5jn7z3cjC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Aug 2022 02:24:10 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Xkl3G4VV;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UQzwbZro;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Xkl3G4VV;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UQzwbZro;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M601v1L68z2yn3
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Aug 2022 02:22:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M60263dnzz3bpW
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Aug 2022 02:23:10 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id A9544611BF;
-	Mon, 15 Aug 2022 16:22:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E38C0C433D6;
-	Mon, 15 Aug 2022 16:22:52 +0000 (UTC)
+	by ams.source.kernel.org (Postfix) with ESMTPS id B920BB80EA5;
+	Mon, 15 Aug 2022 16:23:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EDF5C433D7;
+	Mon, 15 Aug 2022 16:23:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1660580575;
-	bh=/jQptsa4xgzWZEvnJ9uvP+IDUVWRoipnTaZOjbWZetQ=;
+	s=k20201202; t=1660580584;
+	bh=YipuA8xpMD2cZk8ply93QvmLbz3xg3Y7+lnuxBQXklI=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=Xkl3G4VVfMhFwfVmfm1WItZg6fbzw8NGA3p7MNJexkuVZ0yiz00YqqiL7qvWkySN3
-	 +bHtQe5pGw7GIiNro5BqEpk5X+ul121rFXYixCzFncS3xHVI1dJFtfGARhS2jBhnll
-	 IzfCnXPVXUaoUspb24Wr8JpKbH79NqkV0PgrJGYtreeTlkpVUYozX06w4zgtlnQIQa
-	 H3pqVDZ7mi5hp8LRYpV1HCQQ0YoPQX3GYG1mMrp8gafSO5r2yQJVUoI+pcaKNsRsDv
-	 3VB5zxhAqP9lViRQatxvXI2V7SJK55WHD9r9uLKOQeo1AgXPWxLO1H38XEivizzhyX
-	 PQGOlQrRReaAQ==
+	b=UQzwbZrooVjpbDPace0kLOhxBm3O3DWQtQW7YGvpCe+OBpnNQI6Uu3D7FCGAFtnQf
+	 7VTWS2+uph5eR43mbHEIK8Li/bJGBYONAgjpTJZnMhETjzwrgD9L0fcl58QZQa5Eeo
+	 FrSjI2I7BHLaJxOsHOF+qyFOhajKha8bumoQUWoiTjiwi6ZF2khOBv834iXtl6ADKp
+	 OmC7lsD1L32zfD8RLhlhv0jHGvtwuumkNqwKB4TNL0CjSqxOCNfHcrsBRYuGrbPs+p
+	 yJymnvCQHRo1rlWLCbZhJV4TVpIE2wpCeI7Qy6P25GnQK13VrwLW5gzxRYbSxOUThK
+	 RlkaJWCMdPVgw==
 From: Mark Brown <broonie@kernel.org>
-To: lgirdwood@gmail.com, nicoleotsuka@gmail.com, shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com,
- alsa-devel@alsa-project.org, tiwai@suse.com, festevam@gmail.com, Shengjiu Wang <shengjiu.wang@nxp.com>, perex@perex.cz
-In-Reply-To: <1659356773-8315-1-git-send-email-shengjiu.wang@nxp.com>
-References: <1659356773-8315-1-git-send-email-shengjiu.wang@nxp.com>
-Subject: Re: [PATCH] ASoC: imx-rpmsg: Support configure sysclk for codec dai
-Message-Id: <166058057263.769843.18204053953176733855.b4-ty@kernel.org>
-Date: Mon, 15 Aug 2022 17:22:52 +0100
+To: lgirdwood@gmail.com, nicoleotsuka@gmail.com, shengjiu.wang@gmail.com, alsa-devel@alsa-project.org,
+ Xiubo.Lee@gmail.com, tiwai@suse.com, festevam@gmail.com, Shengjiu Wang <shengjiu.wang@nxp.com>, perex@perex.cz
+In-Reply-To: <1659495748-10876-1-git-send-email-shengjiu.wang@nxp.com>
+References: <1659495748-10876-1-git-send-email-shengjiu.wang@nxp.com>
+Subject: Re: [PATCH v2] ASoC: imx-rpmsg: Support configure sysclk for codec dai
+Message-Id: <166058058210.769843.13008464133060260888.b4-ty@kernel.org>
+Date: Mon, 15 Aug 2022 17:23:02 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -65,7 +65,7 @@ Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 1 Aug 2022 20:26:13 +0800, Shengjiu Wang wrote:
+On Wed, 3 Aug 2022 11:02:28 +0800, Shengjiu Wang wrote:
 > Some codecs need to configure the sysclk even with slave
 > mode, otherwise it may not work properly with some case.
 > 
