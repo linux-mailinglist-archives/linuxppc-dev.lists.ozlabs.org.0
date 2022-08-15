@@ -2,69 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AFC8593A8B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Aug 2022 22:01:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D76AC5942BA
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Aug 2022 00:00:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M64tR2hVrz3bPP
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Aug 2022 06:01:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M67WN5LgBz3c7V
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Aug 2022 08:00:32 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=pCMF7N7I;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=hYkT2mwt;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::632; helo=mail-pl1-x632.google.com; envelope-from=groeck7@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=94.23.1.103; helo=out0.migadu.com; envelope-from=kent.overstreet@linux.dev; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=pCMF7N7I;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=hYkT2mwt;
 	dkim-atps=neutral
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
+X-Greylist: delayed 380 seconds by postgrey-1.36 at boromir; Tue, 16 Aug 2022 03:32:52 AEST
+Received: from out0.migadu.com (out0.migadu.com [94.23.1.103])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M64sq6Tkcz2xJ7
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Aug 2022 06:01:19 +1000 (AEST)
-Received: by mail-pl1-x632.google.com with SMTP id 13so7244988plo.12
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Aug 2022 13:01:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc;
-        bh=6dVv+H63DtoIdCRQZLuHzbkHiwYkHdDFz0Z0p4iyls4=;
-        b=pCMF7N7IM+OfCaXakWNqUvzqQo47YHutXg38xDbRxHvLAw46XZlj93HJO4XixcO588
-         A0w1kZ0YivIhZkB4v0jOLtgepsWwsX25mV9D5oxiCrrT//hwJNg0lyjeeyJozerfVgNh
-         5HddCqyQDiWLFUMbZNtVA3kV+hLvuQVmQ6TF0DxcDQQTNjkGZ+CExyp5CGr+/xzMjBK5
-         pQCcxLn15Ei5r6ZKUo00TiRnqDE8NuRy8AV/BVZLnQf5OV+9AwZ8c4V1aZlU+t1Kt/y6
-         E4MDWEeVOON7aLea4TCiaZ/y49CjUnJkzXf90C3Oxcc0KagnIDbH46OpPORIUefi7jBT
-         3XaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc;
-        bh=6dVv+H63DtoIdCRQZLuHzbkHiwYkHdDFz0Z0p4iyls4=;
-        b=7/yAbDRInYZYe6Of0bCH5TmEgqinwkSXy0ekDdgmZexv1rYumoLevSbCqlsb62pjq5
-         jDXVpWuDHZfheY/hBIzAMj8lsaGdSG0aZStTerYDEoOwN+JiZ8dwcd2FDF8A1Y7xYfc1
-         l0fQLd/1aasf59AgYrY7ivkA4cu2E+TbXIEyd/bG7XGeKmrpViEUMtGOeQepAGXv4y2H
-         C3R7ropby6hTJN4PZT1dLCPVyJWroHczG4L2gj1N/oA9PtKyjcvIcjj/qhP7eHydoup9
-         giS6SyQKfIeI/9Bd9kZNZklfdqmM9EFa7fwsI6K3+xhzbZrmi54wyBo6Ke9FYZaPbBzK
-         tErg==
-X-Gm-Message-State: ACgBeo22FgqGHFWRs/cqWTC/ymysMo3n+SWjbn3ZS3PPMHiB6zeFcEhz
-	zzXqKUZ9vo3ekKdrBPm1QG8=
-X-Google-Smtp-Source: AA6agR5L7KbqpMu4buBwYeiPANM2K8S5fRdQ++PD0Lv38ssHa06i0JtXa2XtKYCgSrc2v8fjzed54g==
-X-Received: by 2002:a17:90b:4a07:b0:1f5:1aff:4af with SMTP id kk7-20020a17090b4a0700b001f51aff04afmr19805527pjb.124.1660593676006;
-        Mon, 15 Aug 2022 13:01:16 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id y22-20020a170902b49600b0016ee4b0bd60sm7324943plr.166.2022.08.15.13.01.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Aug 2022 13:01:14 -0700 (PDT)
-Date: Mon, 15 Aug 2022 13:01:13 -0700
-From: Guenter Roeck <linux@roeck-us.net>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/pci: Fix get_phb_number() locking
-Message-ID: <20220815200113.GA340585@roeck-us.net>
-References: <20220815065550.1303620-1-mpe@ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M61ZX66mqz304J
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Aug 2022 03:32:52 +1000 (AEST)
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1660584385;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cAF9K0B15Mg9PXoNhljhPMrq2h3hanygoptxnBRwP88=;
+	b=hYkT2mwtEHl/Dmni1fV8tRpNeajYKpl855tPfZMOFMDFiYBD3s8Wg9UuXHO000/2jR53Ip
+	iCqTru9P+eCI04wbgEHOm6lPKdwvIIQXavnHhbS75JLTwDIIzeXQgbKab/BcNHq7kGf6og
+	Dn4b4scGRiBuekijB+oPUSran8bojyE=
+From: Kent Overstreet <kent.overstreet@linux.dev>
+To: akpm@linux-foundation.org
+Subject: [PATCH 04/11] powerpc: Convert to printbuf
+Date: Mon, 15 Aug 2022 13:26:06 -0400
+Message-Id: <20220815172613.621627-5-kent.overstreet@linux.dev>
+In-Reply-To: <20220815172613.621627-1-kent.overstreet@linux.dev>
+References: <20220815172613.621627-1-kent.overstreet@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220815065550.1303620-1-mpe@ellerman.id.au>
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Migadu-Auth-User: linux.dev
+X-Mailman-Approved-At: Tue, 16 Aug 2022 08:00:01 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,54 +57,318 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: pali@kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Kent Overstreet <kent.overstreet@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Aug 15, 2022 at 04:55:50PM +1000, Michael Ellerman wrote:
-> The recent change to get_phb_number() causes a DEBUG_ATOMIC_SLEEP
-> warning on some systems:
-> 
->   BUG: sleeping function called from invalid context at kernel/locking/mutex.c:580
->   in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 1, name: swapper
->   preempt_count: 1, expected: 0
->   RCU nest depth: 0, expected: 0
->   1 lock held by swapper/1:
->    #0: c157efb0 (hose_spinlock){+.+.}-{2:2}, at: pcibios_alloc_controller+0x64/0x220
->   Preemption disabled at:
->   [<00000000>] 0x0
->   CPU: 0 PID: 1 Comm: swapper Not tainted 5.19.0-yocto-standard+ #1
->   Call Trace:
->   [d101dc90] [c073b264] dump_stack_lvl+0x50/0x8c (unreliable)
->   [d101dcb0] [c0093b70] __might_resched+0x258/0x2a8
->   [d101dcd0] [c0d3e634] __mutex_lock+0x6c/0x6ec
->   [d101dd50] [c0a84174] of_alias_get_id+0x50/0xf4
->   [d101dd80] [c002ec78] pcibios_alloc_controller+0x1b8/0x220
->   [d101ddd0] [c140c9dc] pmac_pci_init+0x198/0x784
->   [d101de50] [c140852c] discover_phbs+0x30/0x4c
->   [d101de60] [c0007fd4] do_one_initcall+0x94/0x344
->   [d101ded0] [c1403b40] kernel_init_freeable+0x1a8/0x22c
->   [d101df10] [c00086e0] kernel_init+0x34/0x160
->   [d101df30] [c001b334] ret_from_kernel_thread+0x5c/0x64
-> 
-> This is because pcibios_alloc_controller() holds hose_spinlock but
-> of_alias_get_id() takes of_mutex which can sleep.
-> 
-> The hose_spinlock protects the phb_bitmap, and also the hose_list, but
-> it doesn't need to be held while get_phb_number() calls the OF routines,
-> because those are only looking up information in the device tree.
-> 
-> So fix it by having get_phb_number() take the hose_spinlock itself, only
-> where required, and then dropping the lock before returning.
-> pcibios_alloc_controller() then needs to take the lock again before the
-> list_add() but that's safe, the order of the list is not important.
-> 
-> Fixes: 0fe1e96fef0a ("powerpc/pci: Prefer PCI domain assignment via DT 'linux,pci-domain' and alias")
-> Reported-by: Guenter Roeck <linux@roeck-us.net>
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+From: Kent Overstreet <kent.overstreet@gmail.com>
 
-The problem is no longer seen with this patch applied.
+This converts from seq_buf to printbuf. We're using printbuf in external
+buffer mode, so it's a direct conversion, aside from some trivial
+refactoring in cpu_show_meltdown() to make the code more consistent.
 
-Tested-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Kent Overstreet <kent.overstreet@gmail.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+---
+ arch/powerpc/kernel/process.c             | 16 +++--
+ arch/powerpc/kernel/security.c            | 75 ++++++++++-------------
+ arch/powerpc/platforms/pseries/papr_scm.c | 34 +++++-----
+ 3 files changed, 57 insertions(+), 68 deletions(-)
 
-Guenter
+diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
+index 0fbda89cd1..05654dbeb2 100644
+--- a/arch/powerpc/kernel/process.c
++++ b/arch/powerpc/kernel/process.c
+@@ -37,7 +37,7 @@
+ #include <linux/hw_breakpoint.h>
+ #include <linux/uaccess.h>
+ #include <linux/pkeys.h>
+-#include <linux/seq_buf.h>
++#include <linux/printbuf.h>
+ 
+ #include <asm/interrupt.h>
+ #include <asm/io.h>
+@@ -1396,32 +1396,30 @@ void show_user_instructions(struct pt_regs *regs)
+ {
+ 	unsigned long pc;
+ 	int n = NR_INSN_TO_PRINT;
+-	struct seq_buf s;
+ 	char buf[96]; /* enough for 8 times 9 + 2 chars */
++	struct printbuf s = PRINTBUF_EXTERN(buf, sizeof(buf));
+ 
+ 	pc = regs->nip - (NR_INSN_TO_PRINT * 3 / 4 * sizeof(int));
+ 
+-	seq_buf_init(&s, buf, sizeof(buf));
+-
+ 	while (n) {
+ 		int i;
+ 
+-		seq_buf_clear(&s);
++		printbuf_reset(&s);
+ 
+ 		for (i = 0; i < 8 && n; i++, n--, pc += sizeof(int)) {
+ 			int instr;
+ 
+ 			if (copy_from_user_nofault(&instr, (void __user *)pc,
+ 					sizeof(instr))) {
+-				seq_buf_printf(&s, "XXXXXXXX ");
++				prt_printf(&s, "XXXXXXXX ");
+ 				continue;
+ 			}
+-			seq_buf_printf(&s, regs->nip == pc ? "<%08x> " : "%08x ", instr);
++			prt_printf(&s, regs->nip == pc ? "<%08x> " : "%08x ", instr);
+ 		}
+ 
+-		if (!seq_buf_has_overflowed(&s))
++		if (printbuf_remaining(&s))
+ 			pr_info("%s[%d]: code: %s\n", current->comm,
+-				current->pid, s.buffer);
++				current->pid, s.buf);
+ 	}
+ }
+ 
+diff --git a/arch/powerpc/kernel/security.c b/arch/powerpc/kernel/security.c
+index d96fd14bd7..b34de62e65 100644
+--- a/arch/powerpc/kernel/security.c
++++ b/arch/powerpc/kernel/security.c
+@@ -10,7 +10,7 @@
+ #include <linux/memblock.h>
+ #include <linux/nospec.h>
+ #include <linux/prctl.h>
+-#include <linux/seq_buf.h>
++#include <linux/printbuf.h>
+ #include <linux/debugfs.h>
+ 
+ #include <asm/asm-prototypes.h>
+@@ -144,31 +144,28 @@ void __init setup_spectre_v2(void)
+ #ifdef CONFIG_PPC_BOOK3S_64
+ ssize_t cpu_show_meltdown(struct device *dev, struct device_attribute *attr, char *buf)
+ {
++	struct printbuf s = PRINTBUF_EXTERN(buf, PAGE_SIZE);
+ 	bool thread_priv;
+ 
+ 	thread_priv = security_ftr_enabled(SEC_FTR_L1D_THREAD_PRIV);
+ 
+ 	if (rfi_flush) {
+-		struct seq_buf s;
+-		seq_buf_init(&s, buf, PAGE_SIZE - 1);
+ 
+-		seq_buf_printf(&s, "Mitigation: RFI Flush");
++		prt_printf(&s, "Mitigation: RFI Flush");
+ 		if (thread_priv)
+-			seq_buf_printf(&s, ", L1D private per thread");
+-
+-		seq_buf_printf(&s, "\n");
+-
+-		return s.len;
++			prt_printf(&s, ", L1D private per thread");
++
++		prt_printf(&s, "\n");
++	} else if (thread_priv) {
++		prt_printf(&s, "Vulnerable: L1D private per thread\n");
++	} else if (!security_ftr_enabled(SEC_FTR_L1D_FLUSH_HV) &&
++		   !security_ftr_enabled(SEC_FTR_L1D_FLUSH_PR)) {
++		prt_printf(&s, "Not affected\n");
++	} else {
++		prt_printf(&s, "Vulnerable\n");
+ 	}
+ 
+-	if (thread_priv)
+-		return sprintf(buf, "Vulnerable: L1D private per thread\n");
+-
+-	if (!security_ftr_enabled(SEC_FTR_L1D_FLUSH_HV) &&
+-	    !security_ftr_enabled(SEC_FTR_L1D_FLUSH_PR))
+-		return sprintf(buf, "Not affected\n");
+-
+-	return sprintf(buf, "Vulnerable\n");
++	return printbuf_written(&s);
+ }
+ 
+ ssize_t cpu_show_l1tf(struct device *dev, struct device_attribute *attr, char *buf)
+@@ -179,70 +176,66 @@ ssize_t cpu_show_l1tf(struct device *dev, struct device_attribute *attr, char *b
+ 
+ ssize_t cpu_show_spectre_v1(struct device *dev, struct device_attribute *attr, char *buf)
+ {
+-	struct seq_buf s;
+-
+-	seq_buf_init(&s, buf, PAGE_SIZE - 1);
++	struct printbuf s = PRINTBUF_EXTERN(buf, PAGE_SIZE);
+ 
+ 	if (security_ftr_enabled(SEC_FTR_BNDS_CHK_SPEC_BAR)) {
+ 		if (barrier_nospec_enabled)
+-			seq_buf_printf(&s, "Mitigation: __user pointer sanitization");
++			prt_printf(&s, "Mitigation: __user pointer sanitization");
+ 		else
+-			seq_buf_printf(&s, "Vulnerable");
++			prt_printf(&s, "Vulnerable");
+ 
+ 		if (security_ftr_enabled(SEC_FTR_SPEC_BAR_ORI31))
+-			seq_buf_printf(&s, ", ori31 speculation barrier enabled");
++			prt_printf(&s, ", ori31 speculation barrier enabled");
+ 
+-		seq_buf_printf(&s, "\n");
++		prt_printf(&s, "\n");
+ 	} else
+-		seq_buf_printf(&s, "Not affected\n");
++		prt_printf(&s, "Not affected\n");
+ 
+-	return s.len;
++	return printbuf_written(&s);
+ }
+ 
+ ssize_t cpu_show_spectre_v2(struct device *dev, struct device_attribute *attr, char *buf)
+ {
+-	struct seq_buf s;
++	struct printbuf s = PRINTBUF_EXTERN(buf, PAGE_SIZE);
+ 	bool bcs, ccd;
+ 
+-	seq_buf_init(&s, buf, PAGE_SIZE - 1);
+-
+ 	bcs = security_ftr_enabled(SEC_FTR_BCCTRL_SERIALISED);
+ 	ccd = security_ftr_enabled(SEC_FTR_COUNT_CACHE_DISABLED);
+ 
+ 	if (bcs || ccd) {
+-		seq_buf_printf(&s, "Mitigation: ");
++		prt_printf(&s, "Mitigation: ");
+ 
+ 		if (bcs)
+-			seq_buf_printf(&s, "Indirect branch serialisation (kernel only)");
++			prt_printf(&s, "Indirect branch serialisation (kernel only)");
+ 
+ 		if (bcs && ccd)
+-			seq_buf_printf(&s, ", ");
++			prt_printf(&s, ", ");
+ 
+ 		if (ccd)
+-			seq_buf_printf(&s, "Indirect branch cache disabled");
++			prt_printf(&s, "Indirect branch cache disabled");
+ 
+ 	} else if (count_cache_flush_type != BRANCH_CACHE_FLUSH_NONE) {
+-		seq_buf_printf(&s, "Mitigation: Software count cache flush");
++		prt_printf(&s, "Mitigation: Software count cache flush");
+ 
+ 		if (count_cache_flush_type == BRANCH_CACHE_FLUSH_HW)
+-			seq_buf_printf(&s, " (hardware accelerated)");
++			prt_printf(&s, " (hardware accelerated)");
+ 
+ 	} else if (btb_flush_enabled) {
+-		seq_buf_printf(&s, "Mitigation: Branch predictor state flush");
++		prt_printf(&s, "Mitigation: Branch predictor state flush");
+ 	} else {
+-		seq_buf_printf(&s, "Vulnerable");
++		prt_printf(&s, "Vulnerable");
+ 	}
+ 
+ 	if (bcs || ccd || count_cache_flush_type != BRANCH_CACHE_FLUSH_NONE) {
+ 		if (link_stack_flush_type != BRANCH_CACHE_FLUSH_NONE)
+-			seq_buf_printf(&s, ", Software link stack flush");
++			prt_printf(&s, ", Software link stack flush");
+ 		if (link_stack_flush_type == BRANCH_CACHE_FLUSH_HW)
+-			seq_buf_printf(&s, " (hardware accelerated)");
++			prt_printf(&s, " (hardware accelerated)");
+ 	}
+ 
+-	seq_buf_printf(&s, "\n");
++	prt_printf(&s, "\n");
+ 
+-	return s.len;
++	return printbuf_written(&s);
+ }
+ 
+ #ifdef CONFIG_PPC_BOOK3S_64
+diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+index 20f6ed813b..a1fd25243c 100644
+--- a/arch/powerpc/platforms/pseries/papr_scm.c
++++ b/arch/powerpc/platforms/pseries/papr_scm.c
+@@ -12,7 +12,7 @@
+ #include <linux/libnvdimm.h>
+ #include <linux/platform_device.h>
+ #include <linux/delay.h>
+-#include <linux/seq_buf.h>
++#include <linux/printbuf.h>
+ #include <linux/nd.h>
+ 
+ #include <asm/plpar_wrappers.h>
+@@ -1142,7 +1142,7 @@ static ssize_t perf_stats_show(struct device *dev,
+ {
+ 	int index;
+ 	ssize_t rc;
+-	struct seq_buf s;
++	struct printbuf s = PRINTBUF_EXTERN(buf, PAGE_SIZE);
+ 	struct papr_scm_perf_stat *stat;
+ 	struct papr_scm_perf_stats *stats;
+ 	struct nvdimm *dimm = to_nvdimm(dev);
+@@ -1165,18 +1165,17 @@ static ssize_t perf_stats_show(struct device *dev,
+ 	 * values. Since stat_id is essentially a char string of
+ 	 * 8 bytes, simply use the string format specifier to print it.
+ 	 */
+-	seq_buf_init(&s, buf, PAGE_SIZE);
+ 	for (index = 0, stat = stats->scm_statistic;
+ 	     index < be32_to_cpu(stats->num_statistics);
+ 	     ++index, ++stat) {
+-		seq_buf_printf(&s, "%.8s = 0x%016llX\n",
+-			       stat->stat_id,
+-			       be64_to_cpu(stat->stat_val));
++		prt_printf(&s, "%.8s = 0x%016llX\n",
++		       stat->stat_id,
++		       be64_to_cpu(stat->stat_val));
+ 	}
+ 
+ free_stats:
+ 	kfree(stats);
+-	return rc ? rc : (ssize_t)seq_buf_used(&s);
++	return rc ?: printbuf_written(&s);
+ }
+ static DEVICE_ATTR_ADMIN_RO(perf_stats);
+ 
+@@ -1185,7 +1184,7 @@ static ssize_t flags_show(struct device *dev,
+ {
+ 	struct nvdimm *dimm = to_nvdimm(dev);
+ 	struct papr_scm_priv *p = nvdimm_provider_data(dimm);
+-	struct seq_buf s;
++	struct printbuf s = PRINTBUF_EXTERN(buf, PAGE_SIZE);
+ 	u64 health;
+ 	int rc;
+ 
+@@ -1196,29 +1195,28 @@ static ssize_t flags_show(struct device *dev,
+ 	/* Copy health_bitmap locally, check masks & update out buffer */
+ 	health = READ_ONCE(p->health_bitmap);
+ 
+-	seq_buf_init(&s, buf, PAGE_SIZE);
+ 	if (health & PAPR_PMEM_UNARMED_MASK)
+-		seq_buf_printf(&s, "not_armed ");
++		prt_printf(&s, "not_armed ");
+ 
+ 	if (health & PAPR_PMEM_BAD_SHUTDOWN_MASK)
+-		seq_buf_printf(&s, "flush_fail ");
++		prt_printf(&s, "flush_fail ");
+ 
+ 	if (health & PAPR_PMEM_BAD_RESTORE_MASK)
+-		seq_buf_printf(&s, "restore_fail ");
++		prt_printf(&s, "restore_fail ");
+ 
+ 	if (health & PAPR_PMEM_ENCRYPTED)
+-		seq_buf_printf(&s, "encrypted ");
++		prt_printf(&s, "encrypted ");
+ 
+ 	if (health & PAPR_PMEM_SMART_EVENT_MASK)
+-		seq_buf_printf(&s, "smart_notify ");
++		prt_printf(&s, "smart_notify ");
+ 
+ 	if (health & PAPR_PMEM_SCRUBBED_AND_LOCKED)
+-		seq_buf_printf(&s, "scrubbed locked ");
++		prt_printf(&s, "scrubbed locked ");
+ 
+-	if (seq_buf_used(&s))
+-		seq_buf_printf(&s, "\n");
++	if (printbuf_written(&s))
++		prt_printf(&s, "\n");
+ 
+-	return seq_buf_used(&s);
++	return printbuf_written(&s);
+ }
+ DEVICE_ATTR_RO(flags);
+ 
+-- 
+2.36.1
+
