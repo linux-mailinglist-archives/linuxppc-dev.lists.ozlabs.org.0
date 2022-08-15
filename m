@@ -2,90 +2,43 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6AC6592B07
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Aug 2022 10:49:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA2D8592B44
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Aug 2022 11:44:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M5nz36TYwz3cMr
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Aug 2022 18:49:51 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TgRUC6WR;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TgRUC6WR;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M5q9h5bgzz3cB7
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Aug 2022 19:44:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=coxu@redhat.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TgRUC6WR;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TgRUC6WR;
-	dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=92.121.34.13; helo=inva020.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M5lRP6Vzyz2xJG
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Aug 2022 16:55:45 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1660546543;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=s27ZkPXAKFlLDtakqNA0q70iNz46u3nf8VUdJxUpsDw=;
-	b=TgRUC6WRq1zc0FwtNFq/RCysKoczEOiTKab4LxoI02V76iEAHI9oSSBd/EIDdnPQCBo12X
-	EybE0A0QvWF85f+g+EHWCxR6/tkjCfkyAcGj57CqhIZ+35gmotRV9kItR+UFoEYeqGzTA4
-	VzkHJnfZlBHIeOS679E6oTcaOWSLKOY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1660546543;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=s27ZkPXAKFlLDtakqNA0q70iNz46u3nf8VUdJxUpsDw=;
-	b=TgRUC6WRq1zc0FwtNFq/RCysKoczEOiTKab4LxoI02V76iEAHI9oSSBd/EIDdnPQCBo12X
-	EybE0A0QvWF85f+g+EHWCxR6/tkjCfkyAcGj57CqhIZ+35gmotRV9kItR+UFoEYeqGzTA4
-	VzkHJnfZlBHIeOS679E6oTcaOWSLKOY=
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
- [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-81-ieKdgLWeNnGX2vLMLSpE1A-1; Mon, 15 Aug 2022 02:55:39 -0400
-X-MC-Unique: ieKdgLWeNnGX2vLMLSpE1A-1
-Received: by mail-pg1-f198.google.com with SMTP id h7-20020a636c07000000b0042971e3dc0cso425076pgc.0
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Aug 2022 23:55:39 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
-        bh=s27ZkPXAKFlLDtakqNA0q70iNz46u3nf8VUdJxUpsDw=;
-        b=3jGeNguOE4X3Kk2YszVYbq00IJEbmWzmulQkQy+gpYeCZzvuBn84xq6t9e6gv2FXoQ
-         onof83KJWHep4PJ0mxKT6n2aLxDLEFYbnsW6M8vysg7dwLHI73Nv4IJNX1PdTIkZH4/o
-         3860D/Xl5/hECXyb5HEO7Mxp5D5l4LQyuTT9vPKeoYOB1jfnSX5FePHmatnsBq5YhQzD
-         wMHRXhP2RoN1auVNbblmAKjbRDosbGmWjiiCPi6zoXajhVePqxvxra5ivFo8Bz6K5AJV
-         3YHJhX8xJQ9nC4WHzSfuIg5o79QbsoFsXX6E83/9mLJZqpSWjc9stOCeqOrHBP5ALzH7
-         OEgw==
-X-Gm-Message-State: ACgBeo1DX9hzY80EtjeMWQwkFvn6sgYuHEIW7ctIlgu/A2kjSqtRsb+b
-	Y2D5IMSgmlcvjhAf22h3A2AkieVF0WuQsLHl03dKfbPtpYATPsNeKPPKOVfp+Qmjx5g0CI8VrWC
-	UlRvEGJfrKy4DBw5IF0msG9++rA==
-X-Received: by 2002:a17:90a:5888:b0:1f5:f1d2:54bb with SMTP id j8-20020a17090a588800b001f5f1d254bbmr25854871pji.178.1660546538523;
-        Sun, 14 Aug 2022 23:55:38 -0700 (PDT)
-X-Google-Smtp-Source: AA6agR5gSneUL2Qdvf4jY+Km6lnQKEAMNgjtedDGxytTE89P2b0LLUeE3NqKVwS7DQzMiYmV23B6Fg==
-X-Received: by 2002:a17:90a:5888:b0:1f5:f1d2:54bb with SMTP id j8-20020a17090a588800b001f5f1d254bbmr25854861pji.178.1660546538288;
-        Sun, 14 Aug 2022 23:55:38 -0700 (PDT)
-Received: from localhost ([240e:3a1:2ea:acc0:8cff:e01c:2dbf:2ae8])
-        by smtp.gmail.com with ESMTPSA id l20-20020a17090b079400b001f89383d587sm4015601pjz.56.2022.08.14.23.55.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 14 Aug 2022 23:55:37 -0700 (PDT)
-Date: Mon, 15 Aug 2022 14:53:25 +0800
-From: Coiby Xu <coxu@redhat.com>
-To: Stefan Berger <stefanb@linux.ibm.com>
-Subject: Re: [PATCH v7 0/6] tpm: Preserve TPM measurement log across kexec
- (ppc64)
-Message-ID: <20220815065325.h3t3igr6nogf7h23@Rk>
-References: <20220812164305.2056641-1-stefanb@linux.ibm.com>
- <20220815064813.77g6icbkygrbmapa@Rk>
-MIME-Version: 1.0
-In-Reply-To: <20220815064813.77g6icbkygrbmapa@Rk>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-X-Mailman-Approved-At: Mon, 15 Aug 2022 18:48:38 +1000
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M5q9F1QLrz2xjh
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Aug 2022 19:43:43 +1000 (AEST)
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 059F11A1915;
+	Mon, 15 Aug 2022 11:43:39 +0200 (CEST)
+Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 99B4D1A191B;
+	Mon, 15 Aug 2022 11:43:38 +0200 (CEST)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 2ACE4180031A;
+	Mon, 15 Aug 2022 17:43:37 +0800 (+08)
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: nicoleotsuka@gmail.com,
+	Xiubo.Lee@gmail.com,
+	festevam@gmail.com,
+	shengjiu.wang@gmail.com,
+	lgirdwood@gmail.com,
+	broonie@kernel.org,
+	perex@perex.cz,
+	tiwai@suse.com,
+	alsa-devel@alsa-project.org
+Subject: [PATCH] ASoC: fsl_sai: Add support multi fifo sdma script
+Date: Mon, 15 Aug 2022 17:25:46 +0800
+Message-Id: <1660555546-24223-1-git-send-email-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,25 +50,133 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, nayna@linux.ibm.com, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, nasastry@in.ibm.com, linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Aug 15, 2022 at 02:48:13PM +0800, Coiby Xu wrote:
->I can confirm this patch set fixes an issue that guest kdump kernel
->crashes on POWER9 host by applying it to 5.19.1 (there is a conflict
->when applying this patch set to latest kernel i.e. 6.0.0-rc1).
+With disabling combine mode, the multiple successive
+FIFO registers or non successive FIFO registers of SAI module
+can work with the sdma multi fifo script.
 
-FYI, here's the error of applying it to 6.0.0-rc1,
+This patch is to configure the necessary information to
+the SDMA engine driver for support multi fifo script.
 
-[root@localhost linux]# git am ../v7_tpm_log.mbox 
-Applying: of: check previous kernel's ima-kexec-buffer against memory bounds
-error: patch failed: drivers/of/kexec.c:126
-error: drivers/of/kexec.c: patch does not apply
-Patch failed at 0001 of: check previous kernel's ima-kexec-buffer against memory bounds
-hint: Use 'git am --show-current-patch=diff' to see the failed patch
+'words_per_fifo' is the channels for each dataline
+'n_fifos_src' and 'n_fifos_dst' are the fifo number
+'stride_fifos_src' and 'stride_fifos_dst' are the stride
+between enable FIFOs
+'maxburst' is the multiply of datalines
 
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+---
+ sound/soc/fsl/fsl_sai.c | 37 ++++++++++++++++++++++++++++++++++++-
+ sound/soc/fsl/fsl_sai.h |  3 +++
+ 2 files changed, 39 insertions(+), 1 deletion(-)
+
+diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
+index acf76ea21138..a2b375e2b56c 100644
+--- a/sound/soc/fsl/fsl_sai.c
++++ b/sound/soc/fsl/fsl_sai.c
+@@ -533,6 +533,7 @@ static int fsl_sai_hw_params(struct snd_pcm_substream *substream,
+ 	u32 slot_width = word_width;
+ 	int adir = tx ? RX : TX;
+ 	u32 pins, bclk;
++	u32 watermark;
+ 	int ret, i;
+ 
+ 	if (sai->slot_width)
+@@ -627,7 +628,15 @@ static int fsl_sai_hw_params(struct snd_pcm_substream *substream,
+ 				   FSL_SAI_CR5_FBT_MASK, val_cr5);
+ 	}
+ 
+-	if (hweight8(dl_cfg[dl_cfg_idx].mask[tx]) <= 1)
++	/*
++	 * Combine mode has limation:
++	 * - Can't used for singel dataline/FIFO case except the FIFO0
++	 * - Can't used for multi dataline/FIFO case except the enabled FIFOs
++	 *   are successive and start from FIFO0
++	 *
++	 * So for common usage, all multi fifo case disable the combine mode.
++	 */
++	if (hweight8(dl_cfg[dl_cfg_idx].mask[tx]) <= 1 || sai->is_multi_fifo_dma)
+ 		regmap_update_bits(sai->regmap, FSL_SAI_xCR4(tx, ofs),
+ 				   FSL_SAI_CR4_FCOMB_MASK, 0);
+ 	else
+@@ -638,6 +647,26 @@ static int fsl_sai_hw_params(struct snd_pcm_substream *substream,
+ 	dma_params->addr = sai->res->start + FSL_SAI_xDR0(tx) +
+ 			   dl_cfg[dl_cfg_idx].start_off[tx] * 0x4;
+ 
++	if (sai->is_multi_fifo_dma) {
++		sai->audio_config[tx].words_per_fifo = min(slots, channels);
++		if (tx) {
++			sai->audio_config[tx].n_fifos_dst = pins;
++			sai->audio_config[tx].stride_fifos_dst = dl_cfg[dl_cfg_idx].next_off[tx];
++		} else {
++			sai->audio_config[tx].n_fifos_src = pins;
++			sai->audio_config[tx].stride_fifos_src = dl_cfg[dl_cfg_idx].next_off[tx];
++		}
++		dma_params->maxburst = sai->audio_config[tx].words_per_fifo * pins;
++		dma_params->peripheral_config = &sai->audio_config[tx];
++		dma_params->peripheral_size = sizeof(sai->audio_config[tx]);
++
++		watermark = tx ? (sai->soc_data->fifo_depth - dma_params->maxburst) :
++				 (dma_params->maxburst - 1);
++		regmap_update_bits(sai->regmap, FSL_SAI_xCR1(tx, ofs),
++				   FSL_SAI_CR1_RFW_MASK(sai->soc_data->fifo_depth),
++				   watermark);
++	}
++
+ 	/* Find a proper tcre setting */
+ 	for (i = 0; i < sai->soc_data->pins; i++) {
+ 		trce_mask = (1 << (i + 1)) - 1;
+@@ -1265,6 +1294,7 @@ static int fsl_sai_probe(struct platform_device *pdev)
+ 	char tmp[8];
+ 	int irq, ret, i;
+ 	int index;
++	u32 dmas[4];
+ 
+ 	sai = devm_kzalloc(dev, sizeof(*sai), GFP_KERNEL);
+ 	if (!sai)
+@@ -1321,6 +1351,11 @@ static int fsl_sai_probe(struct platform_device *pdev)
+ 	fsl_asoc_get_pll_clocks(&pdev->dev, &sai->pll8k_clk,
+ 				&sai->pll11k_clk);
+ 
++	/* Use Multi FIFO mode depending on the support from SDMA script */
++	ret = of_property_read_u32_array(np, "dmas", dmas, 4);
++	if (!sai->soc_data->use_edma && !ret && dmas[2] == IMX_DMATYPE_MULTI_SAI)
++		sai->is_multi_fifo_dma = true;
++
+ 	/* read dataline mask for rx and tx*/
+ 	ret = fsl_sai_read_dlcfg(sai);
+ 	if (ret < 0) {
+diff --git a/sound/soc/fsl/fsl_sai.h b/sound/soc/fsl/fsl_sai.h
+index 17956b5731dc..697f6690068c 100644
+--- a/sound/soc/fsl/fsl_sai.h
++++ b/sound/soc/fsl/fsl_sai.h
+@@ -6,6 +6,7 @@
+ #ifndef __FSL_SAI_H
+ #define __FSL_SAI_H
+ 
++#include <linux/dma/imx-dma.h>
+ #include <sound/dmaengine_pcm.h>
+ 
+ #define FSL_SAI_FORMATS (SNDRV_PCM_FMTBIT_S16_LE |\
+@@ -281,6 +282,7 @@ struct fsl_sai {
+ 	bool is_lsb_first;
+ 	bool is_dsp_mode;
+ 	bool is_pdm_mode;
++	bool is_multi_fifo_dma;
+ 	bool synchronous[2];
+ 	struct fsl_sai_dl_cfg *dl_cfg;
+ 	unsigned int dl_cfg_cnt;
+@@ -300,6 +302,7 @@ struct fsl_sai {
+ 	struct pm_qos_request pm_qos_req;
+ 	struct pinctrl *pinctrl;
+ 	struct pinctrl_state *pins_state;
++	struct sdma_peripheral_config audio_config[2];
+ };
+ 
+ #define TX 1
 -- 
-Best regards,
-Coiby
+2.17.1
 
