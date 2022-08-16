@@ -1,94 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D56FB5960CF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Aug 2022 19:06:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09CCF596317
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Aug 2022 21:26:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M6cxy1GK3z3c4Q
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Aug 2022 03:06:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M6h2q03fPz3bry
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Aug 2022 05:26:11 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YL3OJlfJ;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=Il9X/STp;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::531; helo=mail-pg1-x531.google.com; envelope-from=keescook@chromium.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YL3OJlfJ;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=Il9X/STp;
 	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com [IPv6:2607:f8b0:4864:20::531])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M6cxB2p08z3bZ2
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Aug 2022 03:06:05 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27GGiLUQ005227;
-	Tue, 16 Aug 2022 17:05:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : subject :
- to : cc : references : in-reply-to : message-id : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=GjjxBkmOT7kfjjNUvdcUnZZdNAdgE5EWLferPMUXAnA=;
- b=YL3OJlfJ14C/KPkJRH8fKhPKtxIOlqOJCCgFbLlBfYmMkMVlPwl1iHQEcGvVjiGMJsXo
- yO9JGi5Mip9t30SQtzLm7bG2lseHrj967Kdgd5+z0DoVUkLuqBmERm+owzOgze1gPTci
- bUn1XWIJ9+3/wtPDjt2/OWXJvXD9bqeKpK6XqSYRKn9RYfPr+FHHd9GtLEj0/1pnHNdW
- ml8JmcSALUfRyXMglrSbQtCMj56n2OeR9UImqhMG3DmpdYe8g0/D75pGT7LWK1sOYczT
- pUwR1/hJD7YS1iTDHzA1y/2gDaQ+rWpgipepo4Qcf1UO35BDDeUoiK/tMe4XbTh9Bd7J Ag== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3j0f0y0kd0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Aug 2022 17:05:41 +0000
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 27GGjE2Q008425;
-	Tue, 16 Aug 2022 17:05:41 GMT
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3j0f0y0kc1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Aug 2022 17:05:40 +0000
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
-	by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 27GH5LZN002388;
-	Tue, 16 Aug 2022 17:05:38 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
-	by ppma06ams.nl.ibm.com with ESMTP id 3hx37jbgk9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Aug 2022 17:05:38 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
-	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 27GH5a8b26608022
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 16 Aug 2022 17:05:36 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5780611C04A;
-	Tue, 16 Aug 2022 17:05:36 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E38E011C04C;
-	Tue, 16 Aug 2022 17:05:35 +0000 (GMT)
-Received: from localhost (unknown [9.43.58.12])
-	by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Tue, 16 Aug 2022 17:05:35 +0000 (GMT)
-Date: Tue, 16 Aug 2022 22:35:34 +0530
-From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: [PATCH 0/2] ftrace/recordmcount: Handle object files without
- section symbols
-To: Steven Rostedt <rostedt@goodmis.org>
-References: <cover.1651047542.git.naveen.n.rao@linux.vnet.ibm.com>
-	<20220816100423.5ee2e17c@gandalf.local.home>
-In-Reply-To: <20220816100423.5ee2e17c@gandalf.local.home>
-User-Agent: astroid/4d6b06ad (https://github.com/astroidmail/astroid)
-Message-Id: <1660668823.oegvwl2214.naveen@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: OzR97rxPfkN_j2hNnQzGXDMJE-1aixqM
-X-Proofpoint-ORIG-GUID: PYoTJVUk2zunDwCz72cxwia_qgxH99mO
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M6h245JWdz2yjC
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Aug 2022 05:25:30 +1000 (AEST)
+Received: by mail-pg1-x531.google.com with SMTP id 24so10097142pgr.7
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Aug 2022 12:25:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc;
+        bh=a5SjQ9AEC/AYbATxtS93Zgv94cT2xe13yj4SFSKvsIA=;
+        b=Il9X/STp6V9jcUaGx2WOrl/2yrZHrsz8cT7ebvlampboepQs9dAGad0VvgT4Olatjk
+         OlDXwGxAQgmZiUQHOpJeM8neJBE8yN5R1PrOofZJcNJ1sDP2dSicGonwkrMYrdOqqmsW
+         p1Ly68BgWg5AoIE0+KzMypl+WrEopij9J65M4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc;
+        bh=a5SjQ9AEC/AYbATxtS93Zgv94cT2xe13yj4SFSKvsIA=;
+        b=ICrbCb01zfyRaaEdiFsfruMI08AqDJ68W3fD04t2Vcp7BlOPSMMnPuXeo9sUuB10EL
+         reO731q2pLq6GvoiWSDNk8qY7F6IN6YBpqo9BEN/l+cgS2xev4/h5fr3xFK+KJjMhgU7
+         sxgJX7LvZwU+SOp9meg15Ln4WBwHQ3NHYKuKC8FLSvVZGHsCfWMh14T+gs0xkdYNpQn1
+         AiYn9RMOWAFOHMTg3tLCfRM7FAKd/FmME4eUOe1cgreqysygV5ZV+doTpHWYcLpLNJ10
+         6gB8hDnBM3EY3Q4hgWDm7JBngrTjGQS3GhyKP8HfhISSR21Sl0w5e4FuQU6rRQqO+Wd/
+         LZSw==
+X-Gm-Message-State: ACgBeo2rvHbhQWM77Uu83T4tUuNNAWLeJ62vgZYWcGb2D9P+yeEReAs5
+	+buJ6+4dMpPy191Jn2FlDySr8g==
+X-Google-Smtp-Source: AA6agR6WWo3/u3APAWhN8/0GZ1YW43LvZbtp82A+6RH1w8ZWfwDxYgvZvBY+tvcaBAYnXQRFDompUw==
+X-Received: by 2002:a05:6a00:189d:b0:52d:d4ae:d9f7 with SMTP id x29-20020a056a00189d00b0052dd4aed9f7mr22322238pfh.18.1660677926802;
+        Tue, 16 Aug 2022 12:25:26 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id m9-20020a17090ade0900b001f3162e4e55sm6643744pjv.35.2022.08.16.12.25.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Aug 2022 12:25:26 -0700 (PDT)
+From: Kees Cook <keescook@chromium.org>
+To: linuxppc-dev@lists.ozlabs.org,
+	linux-hardening@vger.kernel.org,
+	ajd@linux.ibm.com
+Subject: Re: [PATCH] gcc-plugins: Undefine LATENT_ENTROPY_PLUGIN when plugin disabled for a file
+Date: Tue, 16 Aug 2022 12:25:08 -0700
+Message-Id: <166067790682.7084.237943534143309650.b4-ty@chromium.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20220816051720.44108-1-ajd@linux.ibm.com>
+References: <20220816051720.44108-1-ajd@linux.ibm.com>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-08-16_08,2022-08-16_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- lowpriorityscore=0 phishscore=0 mlxlogscore=999 clxscore=1015
- priorityscore=1501 malwarescore=0 spamscore=0 mlxscore=0 impostorscore=0
- adultscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2207270000 definitions=main-2208160065
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,73 +76,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: llvm@lists.linux.dev, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>, linuxppc-dev@lists.ozlabs.org
+Cc: erhard_f@mailbox.org, Kees Cook <keescook@chromium.org>, yury.norov@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Steven,
+On Tue, 16 Aug 2022 15:17:20 +1000, Andrew Donnellan wrote:
+> Commit 36d4b36b6959 ("lib/nodemask: inline next_node_in() and
+> node_random()") refactored some code by moving node_random() from
+> lib/nodemask.c to include/linux/nodemask.h, thus requiring nodemask.h to
+> include random.h, which conditionally defines add_latent_entropy()
+> depending on whether the macro LATENT_ENTROPY_PLUGIN is defined.
+> 
+> This broke the build on powerpc, where nodemask.h is indirectly included
+> in arch/powerpc/kernel/prom_init.c, part of the early boot machinery that
+> is excluded from the latent entropy plugin using
+> DISABLE_LATENT_ENTROPY_PLUGIN. It turns out that while we add a gcc flag
+> to disable the actual plugin, we don't undefine LATENT_ENTROPY_PLUGIN.
+> 
+> [...]
 
-Steven Rostedt wrote:
-> On Wed, 27 Apr 2022 15:01:20 +0530
-> "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com> wrote:
->=20
->> This solves a build issue on powerpc with binutils v2.36 and newer [1].
->> Since commit d1bcae833b32f1 ("ELF: Don't generate unused section
->> symbols") [2], binutils started dropping section symbols that it thought
->> were unused. Due to this, in certain scenarios, recordmcount is unable=20
->> to find a non-weak symbol to generate a relocation record against.
->>=20
->> Clang integrated assembler is also aggressive in dropping section=20
->> symbols [3].
->>=20
->> In the past, there have been various workarounds to address this. See=20
->> commits 55d5b7dd6451b5 ("initramfs: fix clang build failure") and=20
->> 6e7b64b9dd6d96 ("elfcore: fix building with clang") and a recent patch:
->> https://lore.kernel.org/linuxppc-dev/20220425174128.11455-1-naveen.n.rao=
-@linux.vnet.ibm.com/T/#u
->>=20
->> Fix this issue by using the weak symbol in the relocation record. This=20
->> can result in duplicate locations in the mcount table if those weak=20
->> functions are overridden, so have ftrace skip dupicate entries.
->>=20
->> Objtool already follows this approach, so patch 2 updates recordmcount=20
->> to do the same. Patch 1 updates ftrace to skip duplicate entries.
->>=20
->> - Naveen
->>=20
->>=20
->> [1] https://github.com/linuxppc/issues/issues/388
->> [2] https://sourceware.org/git/?p=3Dbinutils-gdb.git;a=3Dcommit;h=3Dd1bc=
-ae833b32f1
->> [3] https://github.com/ClangBuiltLinux/linux/issues/981
->>=20
->>
->=20
-> There's been work to handle weak functions, but I'm not sure that work
-> handled the issues here. Are these patches still needed, or was there
-> another workaround to handle the problems this addressed?
+Applied to for-next/hardening, thanks!
 
-I'm afraid these patches are still needed to address issues in=20
-recordmcount.
+[1/1] gcc-plugins: Undefine LATENT_ENTROPY_PLUGIN when plugin disabled for a file
+      https://git.kernel.org/kees/c/2d08c71d2c79
 
-I submitted patches to remove use of weak functions in the kexec=20
-subsystem, but those have only enabled building ppc64le defconfig=20
-without errors:
-https://lore.kernel.org/all/20220519091237.676736-1-naveen.n.rao@linux.vnet=
-.ibm.com/
-https://lore.kernel.org/all/cover.1656659357.git.naveen.n.rao@linux.vnet.ib=
-m.com/
+-- 
+Kees Cook
 
-The patch adding support for FTRACE_MCOUNT_MAX_OFFSET to powerpc only=20
-helps ignore weak functions during runtime:
-https://lore.kernel.org/all/20220809105425.424045-1-naveen.n.rao@linux.vnet=
-.ibm.com/
-
-We still see errors from recordmcount when trying to build certain=20
-powerpc configs.
-
-We are pursuing support for objtool, which doesn't have the same issues:
-https://lore.kernel.org/all/20220808114908.240813-1-sv@linux.ibm.com/
-
-
-- Naveen
