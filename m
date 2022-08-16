@@ -1,47 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EA535964E2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Aug 2022 23:49:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34C585964E4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Aug 2022 23:49:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M6lCc1kWgz3cfN
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Aug 2022 07:49:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M6lDF0w2xz3brF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Aug 2022 07:49:33 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NSg1bKhy;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=virtuozzo.com (client-ip=130.117.225.111; helo=relay.virtuozzo.com; envelope-from=alexander.atanasov@virtuozzo.com; receiver=<UNKNOWN>)
-X-Greylist: delayed 950 seconds by postgrey-1.36 at boromir; Tue, 16 Aug 2022 19:59:16 AEST
-Received: from relay.virtuozzo.com (relay.virtuozzo.com [130.117.225.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=chenhuacai@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NSg1bKhy;
+	dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M6RSj00CHz2yMk
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Aug 2022 19:59:12 +1000 (AEST)
-Received: from dev011.ch-qa.sw.ru ([172.29.1.16])
-	by relay.virtuozzo.com with esmtp (Exim 4.95)
-	(envelope-from <alexander.atanasov@virtuozzo.com>)
-	id 1oNt3k-00FxfB-0V;
-	Tue, 16 Aug 2022 11:41:39 +0200
-From: Alexander Atanasov <alexander.atanasov@virtuozzo.com>
-To: Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Nadav Amit <namit@vmware.com>,
-	VMware PV-Drivers Reviewers <pv-drivers@vmware.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	David Hildenbrand <david@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v2 1/4] Make place for common balloon code
-Date: Tue, 16 Aug 2022 12:41:14 +0300
-Message-Id: <20220816094117.3144881-2-alexander.atanasov@virtuozzo.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20220816094117.3144881-1-alexander.atanasov@virtuozzo.com>
-References: <20220816094117.3144881-1-alexander.atanasov@virtuozzo.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M6Szr1gFRz3bZC
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Aug 2022 21:07:52 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id EAA696114B
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Aug 2022 11:07:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 545E9C4347C
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Aug 2022 11:07:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1660648069;
+	bh=4MGnUkOgJK43wRliQHo1gFwCDv8iRH3dd6NYX9GNPIw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=NSg1bKhyRbmEl4xQCkeeQMXefbzYn7Fu6+yGnneTCy/Nzz6KwdPE/LppcquhYPsEC
+	 /bnFkzijA2uGVC2L1WLNFVfeTiaG47nTM2mBwhDa5dkHxDhNEf/e+5AD+Pt32bExac
+	 bjg0X6BhxmWeNwCjmjE66y2fzNBSo6oGRwSBj0ERZGW5WqqKKIFvMZBTV94rxf+cfp
+	 cgutExjGb0R1Guj66JL73DY4pMNJlVUhUKDA9LgU/J6gvlllp8K6yxAQzN5fMDFCD1
+	 z+VIBmqs3zZnMYpUQJaYqkXe07E4Nr2n54ety4NwO8ULnVzThTh4P05/qsJufqiyox
+	 qwzgPq0mW2W+g==
+Received: by mail-pl1-f181.google.com with SMTP id p18so8885354plr.8
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Aug 2022 04:07:49 -0700 (PDT)
+X-Gm-Message-State: ACgBeo2C59qdfBAseeVg4Nj67x9HWrQ1O/iPNnJRSdsuBbB63GDNcGpl
+	LMhVF+CT0th3kzl5JcwyHrrKZayFAB63V3T3wag=
+X-Google-Smtp-Source: AA6agR6jPSaNNOF5k9aH9Wvt0lAB54bLIxg5uSvrINyZxUK1+FmKqYfk1bSdzRgwlPgw75Neoa0irEIOwci8GPjPWYs=
+X-Received: by 2002:a05:6102:b14:b0:38a:88dd:c169 with SMTP id
+ b20-20020a0561020b1400b0038a88ddc169mr8394631vst.84.1660648058275; Tue, 16
+ Aug 2022 04:07:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20220815143959.1511278-1-zi.yan@sent.com> <Yvtxv2jywm3+Q3ut@arm.com>
+In-Reply-To: <Yvtxv2jywm3+Q3ut@arm.com>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Tue, 16 Aug 2022 19:07:24 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H6Np=L9JcrGjh8zy1Kxb8b9f_dzD00kgV6odzZV-L5pbA@mail.gmail.com>
+Message-ID: <CAAhV-H6Np=L9JcrGjh8zy1Kxb8b9f_dzD00kgV6odzZV-L5pbA@mail.gmail.com>
+Subject: Re: [PATCH] arch: mm: rename FORCE_MAX_ZONEORDER to ARCH_FORCE_MAX_ORDER
+To: Catalin Marinas <catalin.marinas@arm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Mailman-Approved-At: Wed, 17 Aug 2022 07:48:41 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -54,161 +68,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexander Atanasov <alexander.atanasov@virtuozzo.com>, linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org, linux-mm@kvack.org, kernel@openvz.org, linuxppc-dev@lists.ozlabs.org
+Cc: James Houghton <jthoughton@google.com>, linux-ia64@vger.kernel.org, David Hildenbrand <david@redhat.com>, Yang Shi <shy828301@gmail.com>, "open list:MIPS" <linux-mips@vger.kernel.org>, Linux-MM <linux-mm@kvack.org>, Guo Ren <guoren@kernel.org>, sparclinux@vger.kernel.org, Ley Foon Tan <ley.foon.tan@intel.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, Linux-sh list <linux-sh@vger.kernel.org>, Neil Armstrong <narmstrong@baylibre.com>, Matthew Wilcox <willy@infradead.org>, Mike Rapoport <rppt@linux.ibm.com>, Geert Uytterhoeven <geert@linux-m68k.org>, NXP Linux Team <linux-imx@nxp.com>, Zi Yan <ziy@nvidia.com>, David Rientjes <rientjes@google.com>, linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>, Chris Zankel <chris@zankel.net>, John Hubbard <jhubbard@nvidia.com>, linuxppc-dev@lists.ozlabs.org, linux-m68k <linux-m68k@lists.linux-m68k.org>, linux-csky@vger.kernel.org, loongarch@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>, linu
+ x-arm-kernel <linux-arm-kernel@lists.infradead.org>, Qin Jian <qinjian@cqplus1.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Taichi Sugaya <sugaya.taichi@socionext.com>, Vineet Gupta <vgupta@synopsys.com>, LKML <linux-kernel@vger.kernel.org>, Dinh Nguyen <dinguyen@kernel.org>, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, Andrew Morton <akpm@linux-foundation.org>, linux-oxnas@groups.io, Shawn Guo <shawnguo@kernel.org>, "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-File already contains code that is common along balloon
-drivers so rename it to reflect its contents.
-mm/balloon_compaction.c -> mm/balloon_common.c
+For LoongArch:
 
-Signed-off-by: Alexander Atanasov <alexander.atanasov@virtuozzo.com>
----
- MAINTAINERS                                              | 4 ++--
- arch/powerpc/platforms/pseries/cmm.c                     | 2 +-
- drivers/misc/vmw_balloon.c                               | 2 +-
- drivers/virtio/virtio_balloon.c                          | 2 +-
- include/linux/{balloon_compaction.h => balloon_common.h} | 2 +-
- mm/Makefile                                              | 2 +-
- mm/{balloon_compaction.c => balloon_common.c}            | 4 ++--
- mm/migrate.c                                             | 2 +-
- mm/vmscan.c                                              | 2 +-
- 9 files changed, 11 insertions(+), 11 deletions(-)
- rename include/linux/{balloon_compaction.h => balloon_common.h} (99%)
- rename mm/{balloon_compaction.c => balloon_common.c} (99%)
+Acked-by: Huacai Chen <chenhuacai@kernel.org>
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 8a5012ba6ff9..1b94bf3eb95d 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -21493,8 +21493,8 @@ L:	virtualization@lists.linux-foundation.org
- S:	Maintained
- F:	drivers/virtio/virtio_balloon.c
- F:	include/uapi/linux/virtio_balloon.h
--F:	include/linux/balloon_compaction.h
--F:	mm/balloon_compaction.c
-+F:	include/linux/balloon_common.h
-+F:	mm/balloon_common.c
- 
- VIRTIO CRYPTO DRIVER
- M:	Gonglei <arei.gonglei@huawei.com>
-diff --git a/arch/powerpc/platforms/pseries/cmm.c b/arch/powerpc/platforms/pseries/cmm.c
-index 5f4037c1d7fe..3beb109c7e44 100644
---- a/arch/powerpc/platforms/pseries/cmm.c
-+++ b/arch/powerpc/platforms/pseries/cmm.c
-@@ -19,7 +19,7 @@
- #include <linux/stringify.h>
- #include <linux/swap.h>
- #include <linux/device.h>
--#include <linux/balloon_compaction.h>
-+#include <linux/balloon_common.h>
- #include <asm/firmware.h>
- #include <asm/hvcall.h>
- #include <asm/mmu.h>
-diff --git a/drivers/misc/vmw_balloon.c b/drivers/misc/vmw_balloon.c
-index 61a2be712bf7..6c6d24783548 100644
---- a/drivers/misc/vmw_balloon.c
-+++ b/drivers/misc/vmw_balloon.c
-@@ -29,7 +29,7 @@
- #include <linux/rwsem.h>
- #include <linux/slab.h>
- #include <linux/spinlock.h>
--#include <linux/balloon_compaction.h>
-+#include <linux/balloon_common.h>
- #include <linux/vmw_vmci_defs.h>
- #include <linux/vmw_vmci_api.h>
- #include <asm/hypervisor.h>
-diff --git a/drivers/virtio/virtio_balloon.c b/drivers/virtio/virtio_balloon.c
-index 3f78a3a1eb75..6f69e483d98a 100644
---- a/drivers/virtio/virtio_balloon.c
-+++ b/drivers/virtio/virtio_balloon.c
-@@ -13,7 +13,7 @@
- #include <linux/delay.h>
- #include <linux/slab.h>
- #include <linux/module.h>
--#include <linux/balloon_compaction.h>
-+#include <linux/balloon_common.h>
- #include <linux/oom.h>
- #include <linux/wait.h>
- #include <linux/mm.h>
-diff --git a/include/linux/balloon_compaction.h b/include/linux/balloon_common.h
-similarity index 99%
-rename from include/linux/balloon_compaction.h
-rename to include/linux/balloon_common.h
-index 5ca2d5699620..a45e9fd76235 100644
---- a/include/linux/balloon_compaction.h
-+++ b/include/linux/balloon_common.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0 */
- /*
-- * include/linux/balloon_compaction.h
-+ * include/linux/balloon_common.h
-  *
-  * Common interface definitions for making balloon pages movable by compaction.
-  *
-diff --git a/mm/Makefile b/mm/Makefile
-index 9a564f836403..a3390f255b82 100644
---- a/mm/Makefile
-+++ b/mm/Makefile
-@@ -112,7 +112,7 @@ obj-$(CONFIG_ZSMALLOC)	+= zsmalloc.o
- obj-$(CONFIG_Z3FOLD)	+= z3fold.o
- obj-$(CONFIG_GENERIC_EARLY_IOREMAP) += early_ioremap.o
- obj-$(CONFIG_CMA)	+= cma.o
--obj-$(CONFIG_MEMORY_BALLOON) += balloon_compaction.o
-+obj-$(CONFIG_MEMORY_BALLOON) += balloon_common.o
- obj-$(CONFIG_PAGE_EXTENSION) += page_ext.o
- obj-$(CONFIG_PAGE_TABLE_CHECK) += page_table_check.o
- obj-$(CONFIG_CMA_DEBUGFS) += cma_debug.o
-diff --git a/mm/balloon_compaction.c b/mm/balloon_common.c
-similarity index 99%
-rename from mm/balloon_compaction.c
-rename to mm/balloon_common.c
-index 22c96fed70b5..54ed98653c78 100644
---- a/mm/balloon_compaction.c
-+++ b/mm/balloon_common.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0-only
- /*
-- * mm/balloon_compaction.c
-+ * mm/balloon_common.c
-  *
-  * Common interface for making balloon pages movable by compaction.
-  *
-@@ -9,7 +9,7 @@
- #include <linux/mm.h>
- #include <linux/slab.h>
- #include <linux/export.h>
--#include <linux/balloon_compaction.h>
-+#include <linux/balloon_common.h>
- 
- static void balloon_page_enqueue_one(struct balloon_dev_info *b_dev_info,
- 				     struct page *page)
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 6a1597c92261..a6df467a250a 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -41,7 +41,7 @@
- #include <linux/pfn_t.h>
- #include <linux/memremap.h>
- #include <linux/userfaultfd_k.h>
--#include <linux/balloon_compaction.h>
-+#include <linux/balloon_common.h>
- #include <linux/page_idle.h>
- #include <linux/page_owner.h>
- #include <linux/sched/mm.h>
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index b2b1431352dc..4732f8c24264 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -54,7 +54,7 @@
- #include <asm/div64.h>
- 
- #include <linux/swapops.h>
--#include <linux/balloon_compaction.h>
-+#include <linux/balloon_common.h>
- #include <linux/sched/sysctl.h>
- 
- #include "internal.h"
--- 
-2.31.1
-
+On Tue, Aug 16, 2022 at 6:30 PM Catalin Marinas <catalin.marinas@arm.com> wrote:
+>
+> On Mon, Aug 15, 2022 at 10:39:59AM -0400, Zi Yan wrote:
+> > diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> > index 571cc234d0b3..c6fcd8746f60 100644
+> > --- a/arch/arm64/Kconfig
+> > +++ b/arch/arm64/Kconfig
+> > @@ -1401,7 +1401,7 @@ config XEN
+> >       help
+> >         Say Y if you want to run Linux in a Virtual Machine on Xen on ARM64.
+> >
+> > -config FORCE_MAX_ZONEORDER
+> > +config ARCH_FORCE_MAX_ORDER
+> >       int
+> >       default "14" if ARM64_64K_PAGES
+> >       default "12" if ARM64_16K_PAGES
+>
+> For arm64:
+>
+> Acked-by: Catalin Marinas <catalin.marinas@arm.com>
