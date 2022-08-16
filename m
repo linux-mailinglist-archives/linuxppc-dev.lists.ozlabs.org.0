@@ -1,67 +1,38 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92B96595E23
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Aug 2022 16:13:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AF8D595E3B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Aug 2022 16:23:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M6Y5t5C6Nz3bxp
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Aug 2022 00:13:22 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=fDj6Fopp;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M6YKL1wymz3cdm
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Aug 2022 00:23:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::112a; helo=mail-yw1-x112a.google.com; envelope-from=elver@google.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=fDj6Fopp;
-	dkim-atps=neutral
-Received: from mail-yw1-x112a.google.com (mail-yw1-x112a.google.com [IPv6:2607:f8b0:4864:20::112a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=srs0=mgjk=yu=goodmis.org=rostedt@kernel.org; receiver=<UNKNOWN>)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M6Y5H4RKxz3bXy
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Aug 2022 00:12:50 +1000 (AEST)
-Received: by mail-yw1-x112a.google.com with SMTP id 00721157ae682-333b049f231so42557807b3.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Aug 2022 07:12:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc;
-        bh=Vyh7nX6aNSNUE119qdiIIT/EoXittiyqJ3KmpoRb3JU=;
-        b=fDj6FoppCemEAwso3o7LaD74WUC1I9oEzmYzOiTRD1OOS+4Bh/MPtP7m5uo8mLYe8C
-         zjiVBUaPQ3d7zM+BHkTObTgsVSBd9aM9wKIW8UUHuYI2CXJkxy+j0lvwAbiMhmbKWwl4
-         a16VohoYwhqmH4juBAj0nl6EkhgDKPGuuylgPjsCBy90RROWdi4K+AERKW55Swmsat7e
-         gnR7lOcShMaxofH2EhqaBVQcfGs2vhqk4kVv+35th/mz8bcupB5rEqa7i56L72oV8VbK
-         VzJx+/RwAFTqDU3LqTCDymIJPC5R6KkqcOySUiJTzF/kKwXNS+QpJMPFKemJ/d79x23F
-         eiQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=Vyh7nX6aNSNUE119qdiIIT/EoXittiyqJ3KmpoRb3JU=;
-        b=0ckiLGsPseIFBvtnablqtUmkQF5SO9IRSK4DXxLwnUqQ1x385BuAzp+9mD+G0W/omJ
-         /hVQ5kWjm+iVx9azYcEdgF42soIb2C01c6zHGTVtVv9vJ7Sh1JwbNDsieAH9i/2qyrf5
-         cy0GoQbr2FUXvMfO7X0rnQh9mxQy+YI/jA5vwipRJ3QVRkdALmB+h5q+yzMgqxE74esN
-         2Z8jFlA0RgU9z5wo1gtA7fb/uO7nr1ulUeydPCGoNL2F5W7d0U/Q+1D1TO2H8RBonvAq
-         bEhInBeyCGqSFx0tVWtKW9vEEGFIUwf6zD9wztchY3kfnd0DZnqtBl06pn7Q93tnKG+A
-         Xf5A==
-X-Gm-Message-State: ACgBeo2pAks6+XycabRfPH6JhxhnkDuq+jjj4py78aSKV/sGmC9PPcLy
-	3IUDRbJFr6Ag05lksp40z/2NkWokLFQMNmiT04NOfg==
-X-Google-Smtp-Source: AA6agR6Cj7c7hUVt8CtUfA7vQh2q4zez305SpvmX/WRPpgHJLs/Mntp/ap6raCDGqlCGO9HtoAnpVoiUF1QjmGuI+uU=
-X-Received: by 2002:a25:490:0:b0:67c:22be:65db with SMTP id
- 138-20020a250490000000b0067c22be65dbmr15094214ybe.16.1660659166737; Tue, 16
- Aug 2022 07:12:46 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M6YJt5m3Fz3bXy
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Aug 2022 00:22:54 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id B1F2961019;
+	Tue, 16 Aug 2022 14:22:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94BA2C433C1;
+	Tue, 16 Aug 2022 14:22:50 +0000 (UTC)
+Date: Tue, 16 Aug 2022 10:22:58 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: [PATCH] powerpc/ftrace: Ignore weak functions
+Message-ID: <20220816102258.34d09229@gandalf.local.home>
+In-Reply-To: <20220809105425.424045-1-naveen.n.rao@linux.vnet.ibm.com>
+References: <20220809105425.424045-1-naveen.n.rao@linux.vnet.ibm.com>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-References: <20220704150514.48816-1-elver@google.com> <CANpmjNP0hPuhXmZmkX1ytCDh56LOAmxJjf7RyfxOvoaem=2d8Q@mail.gmail.com>
- <CAP-5=fXgYWuHKkfAxxTeAzTuq7PLwMd6UvBu+J+6tnqHwraSCA@mail.gmail.com>
-In-Reply-To: <CAP-5=fXgYWuHKkfAxxTeAzTuq7PLwMd6UvBu+J+6tnqHwraSCA@mail.gmail.com>
-From: Marco Elver <elver@google.com>
-Date: Tue, 16 Aug 2022 16:12:10 +0200
-Message-ID: <CANpmjNOnRNKUTeSB9+LBTjG=2+BC=ox20ain1F8T1krS+ah9HA@mail.gmail.com>
-Subject: Re: [PATCH v3 00/14] perf/hw_breakpoint: Optimize for thousands of tasks
-To: Peter Zijlstra <peterz@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,49 +44,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Ian Rogers <irogers@google.com>, linux-sh@vger.kernel.org, Alexander Shishkin <alexander.shishkin@linux.intel.com>, Frederic Weisbecker <frederic@kernel.org>, x86@kernel.org, linuxppc-dev@lists.ozlabs.org, Arnaldo Carvalho de Melo <acme@kernel.org>, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, kasan-dev@googlegroups.com, Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Jiri Olsa <jolsa@redhat.com>, Ingo Molnar <mingo@kernel.org>, Dmitry Vyukov <dvyukov@google.com>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 20 Jul 2022 at 17:47, Ian Rogers <irogers@google.com> wrote:
-> On Tue, Jul 12, 2022 at 6:41 AM Marco Elver <elver@google.com> wrote:
-> > On Mon, 4 Jul 2022 at 17:05, Marco Elver <elver@google.com> wrote:
-> > > The hw_breakpoint subsystem's code has seen little change in over 10
-> > > years. In that time, systems with >100s of CPUs have become common,
-> > > along with improvements to the perf subsystem: using breakpoints on
-> > > thousands of concurrent tasks should be a supported usecase.
-> > [...]
-> > > Marco Elver (14):
-> > >   perf/hw_breakpoint: Add KUnit test for constraints accounting
-> > >   perf/hw_breakpoint: Provide hw_breakpoint_is_used() and use in test
-> > >   perf/hw_breakpoint: Clean up headers
-> > >   perf/hw_breakpoint: Optimize list of per-task breakpoints
-> > >   perf/hw_breakpoint: Mark data __ro_after_init
-> > >   perf/hw_breakpoint: Optimize constant number of breakpoint slots
-> > >   perf/hw_breakpoint: Make hw_breakpoint_weight() inlinable
-> > >   perf/hw_breakpoint: Remove useless code related to flexible
-> > >     breakpoints
-> > >   powerpc/hw_breakpoint: Avoid relying on caller synchronization
-> > >   locking/percpu-rwsem: Add percpu_is_write_locked() and
-> > >     percpu_is_read_locked()
-> > >   perf/hw_breakpoint: Reduce contention with large number of tasks
-> > >   perf/hw_breakpoint: Introduce bp_slots_histogram
-> > >   perf/hw_breakpoint: Optimize max_bp_pinned_slots() for CPU-independent
-> > >     task targets
-> > >   perf/hw_breakpoint: Optimize toggle_bp_slot() for CPU-independent task
-> > >     targets
-> > [...]
-> >
-> > This is ready from our side, and given the silence, assume it's ready
-> > to pick up and/or have a maintainer take a look. Since this is mostly
-> > kernel/events, would -tip/perf/core be appropriate?
->
-> These are awesome improvements, I've added my acked-by to every
-> change. I hope we can pull these changes, as you say, into tip.git
-> perf/core and get them into 5.20.
+On Tue,  9 Aug 2022 16:24:25 +0530
+"Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com> wrote:
 
-These still apply cleanly to 6.0-rc1 and the test passes, but let me
-know if I shall send a rebased version.
+> Extend commit b39181f7c6907d ("ftrace: Add FTRACE_MCOUNT_MAX_OFFSET to
+> avoid adding weak function") to ppc32 and ppc64 -mprofile-kernel by
+> defining FTRACE_MCOUNT_MAX_OFFSET.
+> 
+> For ppc64 -mprofile-kernel ABI, we can have two instructions at function
+> entry for TOC setup followed by 'mflr r0' and 'bl _mcount'. So, the
+> mcount location is at most the 4th instruction in a function. For ppc32,
+> mcount location is always the 3rd instruction in a function, preceded by
+> 'mflr r0' and 'stw r0,4(r1)'.
+> 
+> With this patch, and with ppc64le_guest_defconfig and some ftrace/bpf
+> config items enabled:
+>   # grep __ftrace_invalid_address available_filter_functions | wc -l
+>   79
 
-Thanks
--- Marco
+I wonder if this patch answers the question to my last email. ;-)
+
+Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+
+-- Steve
+
+> 
+> Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+> ---
+>  arch/powerpc/include/asm/ftrace.h | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/arch/powerpc/include/asm/ftrace.h b/arch/powerpc/include/asm/ftrace.h
+> index 3cee7115441b41..ade406dc6504e3 100644
+> --- a/arch/powerpc/include/asm/ftrace.h
+> +++ b/arch/powerpc/include/asm/ftrace.h
+> @@ -10,6 +10,13 @@
+>  
+>  #define HAVE_FUNCTION_GRAPH_RET_ADDR_PTR
+>  
+> +/* Ignore unused weak functions which will have larger offsets */
+> +#ifdef CONFIG_MPROFILE_KERNEL
+> +#define FTRACE_MCOUNT_MAX_OFFSET	12
+> +#elif defined(CONFIG_PPC32)
+> +#define FTRACE_MCOUNT_MAX_OFFSET	8
+> +#endif
+> +
+>  #ifndef __ASSEMBLY__
+>  extern void _mcount(void);
+>  
+> 
+> base-commit: ff1ed171e05c971652a0ede3d716997de8ee41c9
+
