@@ -1,82 +1,94 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43ED3595FC6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Aug 2022 18:02:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D56FB5960CF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Aug 2022 19:06:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M6bWz4vgVz3cDG
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Aug 2022 02:02:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M6cxy1GK3z3c4Q
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Aug 2022 03:06:46 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Q5ZKmEkq;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YL3OJlfJ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sachinp@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Q5ZKmEkq;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YL3OJlfJ;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M6bWF0MhTz30MQ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Aug 2022 02:02:00 +1000 (AEST)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27GFklZN011853
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Aug 2022 16:01:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : content-type :
- content-transfer-encoding : mime-version : subject : message-id : date :
- cc : to; s=pp1; bh=+h4IjrNvLx1csnVHfMSToZ29rEQ/vMJugtEoz6DQe7s=;
- b=Q5ZKmEkqmPDtZzlHK9YbF5XsmEnRlOKKCSPEaiio6eddboJIg4pszBeodppm1M4e15x/
- iOJaNLQbbb9jSGd4HJZRlUlFttZEpC99fqYQFFPzBxJnTBpPeHccxNDY4+OLal8s6ZAv
- zKLdoAHDdplVFfHuVreZKcLqGFbhSq5c+yh7iXA66KgmC0/18nLqcwhvB4+4nwF6WM8e
- ZwWtQRlT4YGboOI68Duitr32UeJCg0mPviE/l2k7o4lfokwBFkNt9NKZuetAtk0yQNFJ
- QkUt1yQGs3Db7+UXTu/mWrRq/JxIEJkOJNKzzvLgpeYzFY6kWWsO07LZxlGiYXeWRJyh jQ== 
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3j0e66ges0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Aug 2022 16:01:56 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
-	by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 27GFoKhl032131
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Aug 2022 16:01:54 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
-	by ppma03ams.nl.ibm.com with ESMTP id 3hx3k8ue7d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Aug 2022 16:01:53 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
-	by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 27GG1pU932768450
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M6cxB2p08z3bZ2
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Aug 2022 03:06:05 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27GGiLUQ005227;
+	Tue, 16 Aug 2022 17:05:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : subject :
+ to : cc : references : in-reply-to : message-id : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=GjjxBkmOT7kfjjNUvdcUnZZdNAdgE5EWLferPMUXAnA=;
+ b=YL3OJlfJ14C/KPkJRH8fKhPKtxIOlqOJCCgFbLlBfYmMkMVlPwl1iHQEcGvVjiGMJsXo
+ yO9JGi5Mip9t30SQtzLm7bG2lseHrj967Kdgd5+z0DoVUkLuqBmERm+owzOgze1gPTci
+ bUn1XWIJ9+3/wtPDjt2/OWXJvXD9bqeKpK6XqSYRKn9RYfPr+FHHd9GtLEj0/1pnHNdW
+ ml8JmcSALUfRyXMglrSbQtCMj56n2OeR9UImqhMG3DmpdYe8g0/D75pGT7LWK1sOYczT
+ pUwR1/hJD7YS1iTDHzA1y/2gDaQ+rWpgipepo4Qcf1UO35BDDeUoiK/tMe4XbTh9Bd7J Ag== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3j0f0y0kd0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Aug 2022 17:05:41 +0000
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 27GGjE2Q008425;
+	Tue, 16 Aug 2022 17:05:41 GMT
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3j0f0y0kc1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Aug 2022 17:05:40 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+	by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 27GH5LZN002388;
+	Tue, 16 Aug 2022 17:05:38 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+	by ppma06ams.nl.ibm.com with ESMTP id 3hx37jbgk9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Aug 2022 17:05:38 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
+	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 27GH5a8b26608022
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 16 Aug 2022 16:01:51 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E8949A405F;
-	Tue, 16 Aug 2022 16:01:50 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 50281A405B;
-	Tue, 16 Aug 2022 16:01:50 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.43.6.158])
-	by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Tue, 16 Aug 2022 16:01:50 +0000 (GMT)
-From: Sachin Sant <sachinp@linux.ibm.com>
-Content-Type: text/plain;
-	charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.1\))
-Subject: [6.0-rc1] Kernel crash while running MCE tests
-Message-Id: <2BF30341-AD39-4949-9489-86C75A6F4513@linux.ibm.com>
-Date: Tue, 16 Aug 2022 21:31:49 +0530
-To: linuxppc-dev@lists.ozlabs.org
-X-Mailer: Apple Mail (2.3696.120.41.1.1)
+	Tue, 16 Aug 2022 17:05:36 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5780611C04A;
+	Tue, 16 Aug 2022 17:05:36 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E38E011C04C;
+	Tue, 16 Aug 2022 17:05:35 +0000 (GMT)
+Received: from localhost (unknown [9.43.58.12])
+	by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Tue, 16 Aug 2022 17:05:35 +0000 (GMT)
+Date: Tue, 16 Aug 2022 22:35:34 +0530
+From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: [PATCH 0/2] ftrace/recordmcount: Handle object files without
+ section symbols
+To: Steven Rostedt <rostedt@goodmis.org>
+References: <cover.1651047542.git.naveen.n.rao@linux.vnet.ibm.com>
+	<20220816100423.5ee2e17c@gandalf.local.home>
+In-Reply-To: <20220816100423.5ee2e17c@gandalf.local.home>
+User-Agent: astroid/4d6b06ad (https://github.com/astroidmail/astroid)
+Message-Id: <1660668823.oegvwl2214.naveen@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: toITlT6o-v9iNhPDLiIkIDQhL68p0ols
-X-Proofpoint-GUID: toITlT6o-v9iNhPDLiIkIDQhL68p0ols
+X-Proofpoint-GUID: OzR97rxPfkN_j2hNnQzGXDMJE-1aixqM
+X-Proofpoint-ORIG-GUID: PYoTJVUk2zunDwCz72cxwia_qgxH99mO
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
  definitions=2022-08-16_08,2022-08-16_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 bulkscore=0
- lowpriorityscore=0 suspectscore=0 impostorscore=0 mlxlogscore=717
- spamscore=0 malwarescore=0 priorityscore=1501 adultscore=0 mlxscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2207270000 definitions=main-2208160061
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ lowpriorityscore=0 phishscore=0 mlxlogscore=999 clxscore=1015
+ priorityscore=1501 malwarescore=0 spamscore=0 mlxscore=0 impostorscore=0
+ adultscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2207270000 definitions=main-2208160065
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,131 +100,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mahesh@linux.ibm.com
+Cc: llvm@lists.linux.dev, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Following crash is seen while running powerpc/mce subtest on
-a Power10 LPAR.=20
+Hi Steven,
 
-1..1
-# selftests: powerpc/mce: inject-ra-err
-[  155.240591] BUG: Unable to handle kernel data access on read at =
-0xc00e00022d55b503
-[  155.240618] Faulting instruction address: 0xc0000000006f1f0c
-[  155.240627] Oops: Kernel access of bad area, sig: 11 [#1]
-[  155.240633] LE PAGE_SIZE=3D64K MMU=3DRadix SMP NR_CPUS=3D2048 NUMA =
-pSeries
-[  155.240642] Modules linked in: dm_mod mptcp_diag xsk_diag tcp_diag =
-udp_diag raw_diag inet_diag unix_diag af_packet_diag netlink_diag =
-nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet =
-nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat =
-nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 bonding rfkill tls ip_set =
-nf_tables nfnetlink sunrpc binfmt_misc pseries_rng drm =
-drm_panel_orientation_quirks xfs libcrc32c sd_mod t10_pi sr_mod =
-crc64_rocksoft_generic cdrom crc64_rocksoft crc64 sg ibmvscsi ibmveth =
-scsi_transport_srp xts vmx_crypto fuse
-[  155.240750] CPU: 4 PID: 3645 Comm: inject-ra-err Not tainted =
-6.0.0-rc1 #2
-[  155.240761] NIP:  c0000000006f1f0c LR: c0000000000630d0 CTR: =
-0000000000000000
-[  155.240768] REGS: c0000000ff887890 TRAP: 0300   Not tainted  =
-(6.0.0-rc1)
-[  155.240776] MSR:  8000000000001003 <SF,ME,RI,LE>  CR: 48002828  XER: =
-00000000
-[  155.240792] CFAR: c0000000000630cc DAR: c00e00022d55b503 DSISR: =
-40000000 IRQMASK: 3=20
-[  155.240792] GPR00: c0000000000630d0 c0000000ff887b30 c0000000044afe00 =
-c00000116aada818=20
-[  155.240792] GPR04: 0000000000004d43 0000000000000008 c0000000000630d0 =
-004d424900000000=20
-[  155.240792] GPR08: 0000000000000001 180000022d55b503 a80e000000000000 =
-0000000003000048=20
-[  155.240792] GPR12: 0000000000000000 c0000000ffffb700 0000000000000000 =
-0000000000000000=20
-[  155.240792] GPR16: 0000000000000000 0000000000000000 0000000000000000 =
-0000000000000000=20
-[  155.240792] GPR20: 0000000000000000 0000000000000000 0000000000000000 =
-0000000010000b30=20
-[  155.240792] GPR24: 00007fff8dad0000 00007fff8dacf6d8 00007fffd1551e98 =
-000000001001fce8=20
-[  155.240792] GPR28: c00000116aada888 c00000116aada800 0000000000004d43 =
-c00000116aada818=20
-[  155.240885] NIP [c0000000006f1f0c] __asan_load2+0x5c/0xe0
-[  155.240898] LR [c0000000000630d0] pseries_errorlog_id+0x20/0x40
-[  155.240910] Call Trace:
-[  155.240914] [c0000000ff887b50] [c0000000000630d0] =
-pseries_errorlog_id+0x20/0x40
-[  155.240925] [c0000000ff887b80] [c0000000015595c8] =
-get_pseries_errorlog+0xa8/0x110
-[  155.240937] [c0000000ff887bc0] [c00000000014e080] =
-pseries_machine_check_realmode+0x140/0x2d0
-[  155.240949] [c0000000ff887ca0] [c00000000005e5b8] =
-machine_check_early+0x68/0xc0
-[  155.240959] [c0000000ff887cf0] [c000000000008364] =
-machine_check_early_common+0x134/0x1f8
-[  155.240971] --- interrupt: 200 at 0x10000e48
-[  155.240978] NIP:  0000000010000e48 LR: 0000000010000e40 CTR: =
-0000000000000000
-[  155.240984] REGS: c0000000ff887d60 TRAP: 0200   Not tainted  =
-(6.0.0-rc1)
-[  155.240991] MSR:  8000000002a0f033 =
-<SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 82002822  XER: 00000000
-[  155.241015] CFAR: 000000000000021c DAR: 00007fff8da30000 DSISR: =
-02000008 IRQMASK: 0=20
-[  155.241015] GPR00: 0000000010000e40 00007fffd15517b0 0000000010027f00 =
-00007fff8da30000=20
-[  155.241015] GPR04: 0000000000001000 0000000000000003 0000000000000001 =
-0000000000000005=20
-[  155.241015] GPR08: 0000000000000000 fffffffffffff000 0000000000000000 =
-0000000000000000=20
-[  155.241015] GPR12: 0000000000000000 00007fff8dada5e0 0000000000000000 =
-0000000000000000=20
-[  155.241015] GPR16: 0000000000000000 0000000000000000 0000000000000000 =
-0000000000000000=20
-[  155.241015] GPR20: 0000000000000000 0000000000000000 0000000000000000 =
-0000000010000b30=20
-[  155.241015] GPR24: 00007fff8dad0000 00007fff8dacf6d8 00007fffd1551e98 =
-000000001001fce8=20
-[  155.241015] GPR28: 00007fffd1552020 0000000000000001 0000000000000005 =
-0000000000000000=20
-[  155.241104] NIP [0000000010000e48] 0x10000e48
-[  155.241109] LR [0000000010000e40] 0x10000e40
-[  155.241115] --- interrupt: 200
-[  155.241119] Instruction dump:
-[  155.241125] 6129ffff 792907c6 6529ffff 6129ffff 7c234840 40810058 =
-39230001 71280007=20
-[  155.241141] 41820034 3d40a80e 7929e8c2 794a07c6 <7d2950ae> 7d290775 =
-4082006c 38210020=20
-[  155.241160] ---[ end trace 0000000000000000 ]---
-[  155.247904]=20
+Steven Rostedt wrote:
+> On Wed, 27 Apr 2022 15:01:20 +0530
+> "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com> wrote:
+>=20
+>> This solves a build issue on powerpc with binutils v2.36 and newer [1].
+>> Since commit d1bcae833b32f1 ("ELF: Don't generate unused section
+>> symbols") [2], binutils started dropping section symbols that it thought
+>> were unused. Due to this, in certain scenarios, recordmcount is unable=20
+>> to find a non-weak symbol to generate a relocation record against.
+>>=20
+>> Clang integrated assembler is also aggressive in dropping section=20
+>> symbols [3].
+>>=20
+>> In the past, there have been various workarounds to address this. See=20
+>> commits 55d5b7dd6451b5 ("initramfs: fix clang build failure") and=20
+>> 6e7b64b9dd6d96 ("elfcore: fix building with clang") and a recent patch:
+>> https://lore.kernel.org/linuxppc-dev/20220425174128.11455-1-naveen.n.rao=
+@linux.vnet.ibm.com/T/#u
+>>=20
+>> Fix this issue by using the weak symbol in the relocation record. This=20
+>> can result in duplicate locations in the mcount table if those weak=20
+>> functions are overridden, so have ftrace skip dupicate entries.
+>>=20
+>> Objtool already follows this approach, so patch 2 updates recordmcount=20
+>> to do the same. Patch 1 updates ftrace to skip duplicate entries.
+>>=20
+>> - Naveen
+>>=20
+>>=20
+>> [1] https://github.com/linuxppc/issues/issues/388
+>> [2] https://sourceware.org/git/?p=3Dbinutils-gdb.git;a=3Dcommit;h=3Dd1bc=
+ae833b32f1
+>> [3] https://github.com/ClangBuiltLinux/linux/issues/981
+>>=20
+>>
+>=20
+> There's been work to handle weak functions, but I'm not sure that work
+> handled the issues here. Are these patches still needed, or was there
+> another workaround to handle the problems this addressed?
 
-The crash is seen only with CONFIG_KASAN enabled.
+I'm afraid these patches are still needed to address issues in=20
+recordmcount.
 
-After disabling KASAN the test runs to completion.
+I submitted patches to remove use of weak functions in the kexec=20
+subsystem, but those have only enabled building ppc64le defconfig=20
+without errors:
+https://lore.kernel.org/all/20220519091237.676736-1-naveen.n.rao@linux.vnet=
+.ibm.com/
+https://lore.kernel.org/all/cover.1656659357.git.naveen.n.rao@linux.vnet.ib=
+m.com/
 
-# cat .config | grep KASAN
-CONFIG_HAVE_ARCH_KASAN=3Dy
-CONFIG_HAVE_ARCH_KASAN_VMALLOC=3Dy
-CONFIG_ARCH_DISABLE_KASAN_INLINE=3Dy
-CONFIG_CC_HAS_KASAN_GENERIC=3Dy
-# CONFIG_KASAN is not set
-#
+The patch adding support for FTRACE_MCOUNT_MAX_OFFSET to powerpc only=20
+helps ignore weak functions during runtime:
+https://lore.kernel.org/all/20220809105425.424045-1-naveen.n.rao@linux.vnet=
+.ibm.com/
 
-1..1
-# selftests: powerpc/mce: inject-ra-err
-[   42.777173] Disabling lock debugging due to kernel taint
-[   42.777195] MCE: CPU2: machine check (Severe)  Real address =
-Load/Store (foreign/control memory) [Not recovered]
-[   42.777203] MCE: CPU2: PID: 2920 Comm: inject-ra-err NIP: =
-[0000000010000e48]
-[   42.777208] MCE: CPU2: Initiator CPU
-[   42.777210] MCE: CPU2: Unknown
-# test: inject-ra-err
-# tags: git_version:v6.0-rc1-0-g568035b01cfb
-# success: inject-ra-err
-ok 1 selftests: powerpc/mce: inject-ra-err
+We still see errors from recordmcount when trying to build certain=20
+powerpc configs.
 
-Same problem is seen with 5.19 as well.
+We are pursuing support for objtool, which doesn't have the same issues:
+https://lore.kernel.org/all/20220808114908.240813-1-sv@linux.ibm.com/
 
-- Sachin=
+
+- Naveen
