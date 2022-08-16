@@ -1,49 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D0EE594919
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Aug 2022 02:11:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5F7B59495D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Aug 2022 02:11:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M6BQ21FrZz3cdq
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Aug 2022 10:11:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M6BQw48tHz3dsb
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Aug 2022 10:11:52 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eiLcRcck;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bIp4WSqw;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eiLcRcck;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bIp4WSqw;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M6BPF6PjGz3c6w
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Aug 2022 10:10:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M6BPk72NFz3c52
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Aug 2022 10:10:50 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 20CE860B64
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Aug 2022 00:10:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id E3D5FC433C1
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Aug 2022 00:10:22 +0000 (UTC)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 5204FB80CFB
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Aug 2022 00:10:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 15366C433D6
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Aug 2022 00:10:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1660608622;
-	bh=e+TPYo4Fpq1p6XLIGVtaFRwwsGBCeyzb709KuN6vE3k=;
+	s=k20201202; t=1660608647;
+	bh=nO2IIv/OrxuSU4K2Nf+2MzSFt7rWQkelYbIMK6NN6FU=;
 	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=eiLcRcckrTjQulq1mlJrSPnrek38GC1Erg+3Pv6ogpioooVWcPT66sDET7tNN8gCB
-	 +2zzhhbrC+EmHYIe+RQaCwCNtZbovMKQzBb8bzU7UulmaXvpjEmrJTUy5gLEROUj8f
-	 yh+vcWm2LAJilf+1s7cHRT4uzWG0xjmHZ2+i939xyFqAZHcePia4QFZq2Yn2YtfhrF
-	 +glBn+JfI/Fk9kdtZmWUKQQPSV2uXZjPHWLI3KKGpgnLla31SJcd/frdGW1QAOzRS7
-	 LMdq54jQya6VyGw2ViNrB2Mylx5/jvN1rMreSlMVycNSGYK3yjH2i2S4z29yKEFRvL
-	 t1sj4RH7KbB0A==
+	b=bIp4WSqwuDxMB7ZWi7JxeVCyzXU8rdrjOBzLUUWpIYrfCcJCRITyq9toyZn8Oaz/l
+	 Qx6s61wpYCLZAgOX+RAL/1/a41I+ObbQnV5XotBPuVLsIV74v7CedEzluhL41KKDJo
+	 2BU6jdIjYHmpa0a8cVVBrCJEpJU+vAeN0Xs+kqpITNVFR4y+dwtGtnkmw1AE9n7SAJ
+	 zRdbSpZgN3FUhkvxg52KLr+0ZApVsVRGbCsGxW8t3HY2fs8gcU9D9RpduOnHkwuSiX
+	 5HQTOqMuyPguNBk3FNph/j+pqacmsLw3HiMLlbWpu6+wHEtmSZWtax0o/WUX5LX7A7
+	 cszgH2uoBLYhA==
 Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id D39FFC433E6; Tue, 16 Aug 2022 00:10:22 +0000 (UTC)
+	id 0216CC433E6; Tue, 16 Aug 2022 00:10:47 +0000 (UTC)
 From: bugzilla-daemon@kernel.org
 To: linuxppc-dev@lists.ozlabs.org
 Subject: [Bug 216368] do_IRQ: stack overflow at boot on a PowerMac G5 11,2
-Date: Tue, 16 Aug 2022 00:10:22 +0000
+Date: Tue, 16 Aug 2022 00:10:46 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
@@ -59,7 +59,7 @@ X-Bugzilla-Priority: P1
 X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
 X-Bugzilla-Changed-Fields: attachments.created
-Message-ID: <bug-216368-206035-dOs9YuDBDD@https.bugzilla.kernel.org/>
+Message-ID: <bug-216368-206035-AImgtQtCeT@https.bugzilla.kernel.org/>
 In-Reply-To: <bug-216368-206035@https.bugzilla.kernel.org/>
 References: <bug-216368-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
@@ -83,10 +83,10 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 https://bugzilla.kernel.org/show_bug.cgi?id=3D216368
 
---- Comment #1 from Erhard F. (erhard_f@mailbox.org) ---
-Created attachment 301579
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D301579&action=3Dedit
-dmesg (kernel 6.0-rc1, PowerMac G5 11,2), 2nd time
+--- Comment #2 from Erhard F. (erhard_f@mailbox.org) ---
+Created attachment 301580
+  --> https://bugzilla.kernel.org/attachment.cgi?id=3D301580&action=3Dedit
+kernel .config (kernel 6.0-rc1, PowerMac G5 11,2)
 
 --=20
 You may reply to this email to add a comment.
