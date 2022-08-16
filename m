@@ -1,89 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBF095963BF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Aug 2022 22:35:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48F23596574
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Aug 2022 00:26:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M6jbG4vmyz3cD7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Aug 2022 06:35:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M6m2T1fZlz3c9m
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Aug 2022 08:26:09 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=emKok07g;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=emKok07g;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hlccLVEA;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=farosas@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=emKok07g;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=emKok07g;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hlccLVEA;
 	dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M6jZX3vLSz3bVt
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Aug 2022 06:35:14 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1660682110;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8qNWq56WcsAjV+d0DPWCWS43jEIePhWAAvwxxzNI+Yo=;
-	b=emKok07gEvfJwSe/wpjLGYPDE8+1mCvDFPOOx/qX7FlYAW68rqT6ZgdAM+bJsaIygd4qeU
-	eyXpi0jCNAnDJA79hG0rb3na5M/qClBsPtc3McqAjqlEUYrKtrwVSEvX8tIQMeAfGzyu8x
-	GJDxFH8qMibTDZ8BRbYtKua/qbsx7Bs=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1660682110;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8qNWq56WcsAjV+d0DPWCWS43jEIePhWAAvwxxzNI+Yo=;
-	b=emKok07gEvfJwSe/wpjLGYPDE8+1mCvDFPOOx/qX7FlYAW68rqT6ZgdAM+bJsaIygd4qeU
-	eyXpi0jCNAnDJA79hG0rb3na5M/qClBsPtc3McqAjqlEUYrKtrwVSEvX8tIQMeAfGzyu8x
-	GJDxFH8qMibTDZ8BRbYtKua/qbsx7Bs=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-260-FSDxaqNYP2uT-N-J9U_7Bg-1; Tue, 16 Aug 2022 16:35:07 -0400
-X-MC-Unique: FSDxaqNYP2uT-N-J9U_7Bg-1
-Received: by mail-qk1-f199.google.com with SMTP id n15-20020a05620a294f00b006b5768a0ed0so10036573qkp.7
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Aug 2022 13:35:07 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
-        bh=8qNWq56WcsAjV+d0DPWCWS43jEIePhWAAvwxxzNI+Yo=;
-        b=tRcwv3eGBf2FzuZe61ansv2uV52pqKBIOaMOEvfPF3wCsJsRloyFJx8x+Mk8Fx7/2a
-         LDElpvA5sTjkr6UMditNsKRDAdUgZ6NZa7Dfw6hKPwIAMStQM8VYvFgMFE3SabKDxIie
-         hKWrLFPoBff/6xcqG8WQwfJrS6lWofl3flqpFghxZlD0GQJkyJbodasHbdu4aAM528UJ
-         PQ0vwlKVK5Ow8/c5y0dnOImgQ9mq3Ra71//wBnoeWF5juZKw/Tu3RIrZGHiaiQAWtJ1S
-         ASpwQfzXJMGE9quOKFDDKfKVfNtcc6wgK46cSj7AT3mY8WSe6H+gDK8y8iy/Y6mzn5ei
-         ep/g==
-X-Gm-Message-State: ACgBeo3LtvLoWrpsDJoM78U1u+jJT/zRBFiQpVEL7xI535u2RmZJ/KYk
-	wzpYZQlOuAU4NDHRItR9GyM3SbM/umuw2+mFGJfabgFSaE/nHfM4U+1cuU1YkVqEhZqnWa2iwdi
-	uQqWFVaUmpsGugNJq04gmMKQKNg==
-X-Received: by 2002:a05:6214:2aa2:b0:477:1882:3dc with SMTP id js2-20020a0562142aa200b00477188203dcmr19064872qvb.11.1660682106683;
-        Tue, 16 Aug 2022 13:35:06 -0700 (PDT)
-X-Google-Smtp-Source: AA6agR6sxNDlfRThn/rIz3JOnzmI+jYq7VbHmqoYMTVRKckqHUaSQxZWhXW5hA43Dz2DbrziOS2X+w==
-X-Received: by 2002:a05:6214:2aa2:b0:477:1882:3dc with SMTP id js2-20020a0562142aa200b00477188203dcmr19064852qvb.11.1660682106470;
-        Tue, 16 Aug 2022 13:35:06 -0700 (PDT)
-Received: from xz-m1.local (bras-base-aurron9127w-grc-35-70-27-3-10.dsl.bell.ca. [70.27.3.10])
-        by smtp.gmail.com with ESMTPSA id l1-20020a05620a28c100b006b958c34bf1sm3222130qkp.10.2022.08.16.13.35.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Aug 2022 13:35:05 -0700 (PDT)
-Date: Tue, 16 Aug 2022 16:35:04 -0400
-From: Peter Xu <peterx@redhat.com>
-To: huang ying <huang.ying.caritas@gmail.com>
-Subject: Re: [PATCH v2 1/2] mm/migrate_device.c: Copy pte dirty bit to page
-Message-ID: <Yvv/eGfi3LW8WxPZ@xz-m1.local>
-References: <6e77914685ede036c419fa65b6adc27f25a6c3e9.1660635033.git-series.apopple@nvidia.com>
- <CAC=cRTPGiXWjk=CYnCrhJnLx3mdkGDXZpvApo6yTbeW7+ZGajA@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M6m1k3WHjz2xkP
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Aug 2022 08:25:29 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27GMLY9r009541;
+	Tue, 16 Aug 2022 22:25:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=nxNtjvPEZphHAz0DmUAfW3aXtPU4aSS/vH72JfF0q+Y=;
+ b=hlccLVEACCjjSeR9gY7rtz3z5DIvh6rg5YSloi1/yWamOiIxNiEMemCfPyOKovQzdd0Z
+ LlRKz7MnCITkNRk7i1diEmD1qbLPYHOhar22RftJWFAafNRfRzuyfzTIjVbycSpnpSd/
+ PWPIuYfWgBlnKfwASaw9eG/yvcqr5iOw6kqbgTgi/2yAZ3g4HlfJb62VP1SCf1UI5oWY
+ zuVvaVQjgHuFpSgrZGiYHbiFFNFpb9bOCFnUUJvXtKlzGMu/vbD7rR8YkCuE1QHL6fhC
+ zzqgNvy+xZHZ9Ok+bGFbaxmTKc9g+eyEJ4jkeMEiwdQEluFgVjLdIQjNNXZ+bkVRGaX5 zw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3j0ky9r2cv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Aug 2022 22:25:22 +0000
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 27GMLvFC010189;
+	Tue, 16 Aug 2022 22:25:21 GMT
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com [169.63.121.186])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3j0ky9r2cm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Aug 2022 22:25:21 +0000
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+	by ppma03wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 27GML5Wj015678;
+	Tue, 16 Aug 2022 22:25:21 GMT
+Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com [9.57.198.29])
+	by ppma03wdc.us.ibm.com with ESMTP id 3j0byfjdw6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Aug 2022 22:25:21 +0000
+Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com [9.57.199.109])
+	by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 27GMPKri63176978
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 16 Aug 2022 22:25:20 GMT
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9CE43112063;
+	Tue, 16 Aug 2022 22:25:20 +0000 (GMT)
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 91D75112061;
+	Tue, 16 Aug 2022 22:25:19 +0000 (GMT)
+Received: from li-4707e44c-227d-11b2-a85c-f336a85283d9.ibm.com.com (unknown [9.160.184.30])
+	by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
+	Tue, 16 Aug 2022 22:25:19 +0000 (GMT)
+From: Fabiano Rosas <farosas@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] KVM: PPC: Book3S HV: Fix decrementer migration
+Date: Tue, 16 Aug 2022 19:25:17 -0300
+Message-Id: <20220816222517.1916391-1-farosas@linux.ibm.com>
+X-Mailer: git-send-email 2.35.3
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: rATaNNSObxVJIk7bOuDizzIk2Me9jy-v
+X-Proofpoint-ORIG-GUID: 781lHB4SqGvjlQW4-c2joIPRIMv8q3RR
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-In-Reply-To: <CAC=cRTPGiXWjk=CYnCrhJnLx3mdkGDXZpvApo6yTbeW7+ZGajA@mail.gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-08-16_08,2022-08-16_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 bulkscore=0
+ clxscore=1011 impostorscore=0 mlxscore=0 spamscore=0 suspectscore=0
+ lowpriorityscore=0 phishscore=0 mlxlogscore=999 priorityscore=1501
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2207270000 definitions=main-2208160080
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,32 +94,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Sierra Guiza, Alejandro \(Alex\)" <alex.sierra@amd.com>, Ralph Campbell <rcampbell@nvidia.com>, linuxppc-dev@lists.ozlabs.org, Lyude Paul <lyude@redhat.com>, Karol Herbst <kherbst@redhat.com>, David Hildenbrand <david@redhat.com>, John Hubbard <jhubbard@nvidia.com>, Felix Kuehling <Felix.Kuehling@amd.com>, Alistair Popple <apopple@nvidia.com>, linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org, Ben Skeggs <bskeggs@redhat.com>, Jason Gunthorpe <jgg@nvidia.com>, Huang Ying <ying.huang@intel.com>, stable@vger.kernel.org, akpm@linux-foundation.org, Logan Gunthorpe <logang@deltatee.com>
+Cc: npiggin@gmail.com, kvm-ppc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Aug 16, 2022 at 04:10:29PM +0800, huang ying wrote:
-> > @@ -193,11 +194,10 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
-> >                         bool anon_exclusive;
-> >                         pte_t swp_pte;
-> >
-> > +                       flush_cache_page(vma, addr, pte_pfn(*ptep));
-> > +                       pte = ptep_clear_flush(vma, addr, ptep);
-> 
-> Although I think it's possible to batch the TLB flushing just before
-> unlocking PTL.  The current code looks correct.
+We used to have a workaround[1] for a hang during migration that was
+made ineffective when we converted the decrementer expiry to be
+relative to guest timebase.
 
-If we're with unconditionally ptep_clear_flush(), does it mean we should
-probably drop the "unmapped" and the last flush_tlb_range() already since
-they'll be redundant?
+The point of the workaround was that in the absence of an explicit
+decrementer expiry value provided by userspace during migration, KVM
+needs to initialize dec_expires to a value that will result in an
+expired decrementer after subtracting the current guest timebase. That
+stops the vcpu from hanging after migration due to a decrementer
+that's too large.
 
-If that'll need to be dropped, it looks indeed better to still keep the
-batch to me but just move it earlier (before unlock iiuc then it'll be
-safe), then we can keep using ptep_get_and_clear() afaiu but keep "pte"
-updated.
+If the dec_expires is now relative to guest timebase, its
+initialization needs to be guest timebase-relative as well, otherwise
+we end up with a decrementer expiry that is still larger than the
+guest timebase.
 
-Thanks,
+1- https://git.kernel.org/torvalds/c/5855564c8ab2
 
+Fixes: 3c1a4322bba7 ("KVM: PPC: Book3S HV: Change dec_expires to be relative to guest timebase")
+Signed-off-by: Fabiano Rosas <farosas@linux.ibm.com>
+---
+ arch/powerpc/kvm/book3s_hv.c | 18 ++++++++++++++++--
+ arch/powerpc/kvm/powerpc.c   |  1 -
+ 2 files changed, 16 insertions(+), 3 deletions(-)
+
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index 57d0835e56fd..917abda9e5ce 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -2517,10 +2517,24 @@ static int kvmppc_set_one_reg_hv(struct kvm_vcpu *vcpu, u64 id,
+ 		r = set_vpa(vcpu, &vcpu->arch.dtl, addr, len);
+ 		break;
+ 	case KVM_REG_PPC_TB_OFFSET:
++	{
+ 		/* round up to multiple of 2^24 */
+-		vcpu->arch.vcore->tb_offset =
+-			ALIGN(set_reg_val(id, *val), 1UL << 24);
++		u64 tb_offset = ALIGN(set_reg_val(id, *val), 1UL << 24);
++
++		/*
++		 * Now that we know the timebase offset, update the
++		 * decrementer expiry with a guest timebase value. If
++		 * the userspace does not set DEC_EXPIRY, this ensures
++		 * a migrated vcpu at least starts with an expired
++		 * decrementer, which is better than a large one that
++		 * causes a hang.
++		 */
++		if (!vcpu->arch.dec_expires && tb_offset)
++			vcpu->arch.dec_expires = get_tb() + tb_offset;
++
++		vcpu->arch.vcore->tb_offset = tb_offset;
+ 		break;
++	}
+ 	case KVM_REG_PPC_LPCR:
+ 		kvmppc_set_lpcr(vcpu, set_reg_val(id, *val), true);
+ 		break;
+diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+index fb1490761c87..757491dd6b7b 100644
+--- a/arch/powerpc/kvm/powerpc.c
++++ b/arch/powerpc/kvm/powerpc.c
+@@ -786,7 +786,6 @@ int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu)
+ 
+ 	hrtimer_init(&vcpu->arch.dec_timer, CLOCK_REALTIME, HRTIMER_MODE_ABS);
+ 	vcpu->arch.dec_timer.function = kvmppc_decrementer_wakeup;
+-	vcpu->arch.dec_expires = get_tb();
+ 
+ #ifdef CONFIG_KVM_EXIT_TIMING
+ 	mutex_init(&vcpu->arch.exit_timing_lock);
 -- 
-Peter Xu
+2.35.3
 
