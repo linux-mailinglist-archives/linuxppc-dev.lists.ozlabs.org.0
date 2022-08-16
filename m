@@ -2,72 +2,37 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9E8A5957C6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Aug 2022 12:15:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74E13595843
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Aug 2022 12:31:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M6RqP4d9bz3cB1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Aug 2022 20:15:29 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=isTfzcik;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M6S9L366Pz3c7N
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Aug 2022 20:31:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=isTfzcik;
-	dkim-atps=neutral
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=<UNKNOWN>)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M6Rpj3J1gz2xrD
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Aug 2022 20:14:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M6S8t5D2Qz3bXg
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Aug 2022 20:30:38 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.source.kernel.org (Postfix) with ESMTPS id D8919CE1717
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Aug 2022 10:14:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 4BF71C433C1
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Aug 2022 10:14:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1660644888;
-	bh=5jOb+2G84+eXcDkbL6BUp41JxXcThL18ORLW9U6eFD8=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=isTfzcikjUub+RMTvcsLnSaAAveRzjo0UJ26hbuUejgOWd+7DmX81BUWCeIZJnUWt
-	 eg/T2sk4D43xIER4SS1VOudeVT2ldr9noz8c3I5iQE4pYBTVzBuyPrpRkwnO2zBEhN
-	 FtUp7ZIDrq+R/ZJDt7vUEptlyqG5M+B4Jwpl94ss5BHP+Aggaz4J9q5r3aN71k+m5b
-	 Fj2qLoEiiLuOL7g5rvgB8Txb1HuJ+C4flTk8JA121TZevifMgvqlNIp4nDBscfB1LA
-	 WcVio7XYESLW+uv+AJs5ph0h+bsYLnL9+CCpyF7whhoiqOqqgP9t7LorUbDypli+As
-	 nuDLPzr36okpA==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id 0716FC433E6; Tue, 16 Aug 2022 10:14:47 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 216367] Kernel 6.0-rc1 fails to build with
- GCC_PLUGIN_LATENT_ENTROPY=y (PowerMac G5 11,2)
-Date: Tue, 16 Aug 2022 10:14:47 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-64
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: erhard_f@mailbox.org
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-216367-206035-7lYYWSuwwA@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-216367-206035@https.bugzilla.kernel.org/>
-References: <bug-216367-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+	by dfw.source.kernel.org (Postfix) with ESMTPS id D3D9260989;
+	Tue, 16 Aug 2022 10:30:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB9BDC433C1;
+	Tue, 16 Aug 2022 10:30:27 +0000 (UTC)
+Date: Tue, 16 Aug 2022 11:30:23 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Zi Yan <ziy@nvidia.com>
+Subject: Re: [PATCH] arch: mm: rename FORCE_MAX_ZONEORDER to
+ ARCH_FORCE_MAX_ORDER
+Message-ID: <Yvtxv2jywm3+Q3ut@arm.com>
+References: <20220815143959.1511278-1-zi.yan@sent.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220815143959.1511278-1-zi.yan@sent.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,23 +44,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: James Houghton <jthoughton@google.com>, linux-ia64@vger.kernel.org, David Hildenbrand <david@redhat.com>, Yang Shi <shy828301@gmail.com>, linux-mips@vger.kernel.org, linux-mm@kvack.org, Guo Ren <guoren@kernel.org>, sparclinux@vger.kernel.org, Ley Foon Tan <ley.foon.tan@intel.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, linux-sh@vger.kernel.org, Neil Armstrong <narmstrong@baylibre.com>, Matthew Wilcox <willy@infradead.org>, Mike Rapoport <rppt@linux.ibm.com>, Geert Uytterhoeven <geert@linux-m68k.org>, NXP Linux Team <linux-imx@nxp.com>, David Rientjes <rientjes@google.com>, linux-snps-arc@lists.infradead.org, Huacai Chen <chenhuacai@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Chris Zankel <chris@zankel.net>, John Hubbard <jhubbard@nvidia.com>, linux-xtensa@linux-xtensa.org, linuxppc-dev@lists.ozlabs.org, linux-m68k@lists.linux-m68k.org, linux-csky@vger.kernel.org, loongarch@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>, linux-arm-kernel@lists.infradead.org, Qin Jian <qin
+ jian@cqplus1.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Taichi Sugaya <sugaya.taichi@socionext.com>, Vineet Gupta <vgupta@synopsys.com>, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, Andrew Morton <akpm@linux-foundation.org>, linux-oxnas@groups.io, Shawn Guo <shawnguo@kernel.org>, "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D216367
+On Mon, Aug 15, 2022 at 10:39:59AM -0400, Zi Yan wrote:
+> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> index 571cc234d0b3..c6fcd8746f60 100644
+> --- a/arch/arm64/Kconfig
+> +++ b/arch/arm64/Kconfig
+> @@ -1401,7 +1401,7 @@ config XEN
+>  	help
+>  	  Say Y if you want to run Linux in a Virtual Machine on Xen on ARM64.
+>  
+> -config FORCE_MAX_ZONEORDER
+> +config ARCH_FORCE_MAX_ORDER
+>  	int
+>  	default "14" if ARM64_64K_PAGES
+>  	default "12" if ARM64_16K_PAGES
 
---- Comment #2 from Erhard F. (erhard_f@mailbox.org) ---
-(In reply to Andrew Donnellan from comment #1)
-> I've sent a patch:
-> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20220816051720.44=
-108-
-> 1-ajd@linux.ibm.com/
->=20
-> Please let me know if it works for you.
-Applied it on top of v6.0-rc1 and it works fine. Many thanks!
+For arm64:
 
---=20
-You may reply to this email to add a comment.
-
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
