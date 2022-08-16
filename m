@@ -2,37 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74E13595843
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Aug 2022 12:31:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9430595AFC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Aug 2022 13:57:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M6S9L366Pz3c7N
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Aug 2022 20:31:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M6V4m6DhFz3bhF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Aug 2022 21:57:12 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=v8PP2Y7z;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=<UNKNOWN>)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=v8PP2Y7z;
+	dkim-atps=neutral
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M6S8t5D2Qz3bXg
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Aug 2022 20:30:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M6V4C0V5Hz3bbQ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Aug 2022 21:56:41 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id D3D9260989;
-	Tue, 16 Aug 2022 10:30:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB9BDC433C1;
-	Tue, 16 Aug 2022 10:30:27 +0000 (UTC)
-Date: Tue, 16 Aug 2022 11:30:23 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Zi Yan <ziy@nvidia.com>
-Subject: Re: [PATCH] arch: mm: rename FORCE_MAX_ZONEORDER to
- ARCH_FORCE_MAX_ORDER
-Message-ID: <Yvtxv2jywm3+Q3ut@arm.com>
-References: <20220815143959.1511278-1-zi.yan@sent.com>
+	by ams.source.kernel.org (Postfix) with ESMTPS id 8D263B816AA;
+	Tue, 16 Aug 2022 11:56:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AACE5C433D6;
+	Tue, 16 Aug 2022 11:56:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1660650995;
+	bh=FVUSKZvyxeYHla7DAI1S7uQ9b45W1lFMmWt54ll5JlA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=v8PP2Y7zNU+FVQizPga9MODb0WFzHKVad+1VohxTjTDc+95kRo6+FlTlwZiET+gOj
+	 rI3kpk1WipL/kLv/6gv0XXNK+NrFFcDJFwt2vngBa+mVLRX7m5i+DafP+blpINyKqM
+	 iF0Qnt+XnOywNTiwwOBU918gkxWz6UVgzOTVIBMA=
+Date: Tue, 16 Aug 2022 13:56:32 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Alexander Atanasov <alexander.atanasov@virtuozzo.com>
+Subject: Re: [PATCH v2 1/4] Make place for common balloon code
+Message-ID: <YvuF8CsP0M1TAK1a@kroah.com>
+References: <20220816094117.3144881-1-alexander.atanasov@virtuozzo.com>
+ <20220816094117.3144881-2-alexander.atanasov@virtuozzo.com>
+ <YvtoDxvefWUJBfAS@kroah.com>
+ <f88fe469-d4a4-3240-b325-a745255bf01c@virtuozzo.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220815143959.1511278-1-zi.yan@sent.com>
+In-Reply-To: <f88fe469-d4a4-3240-b325-a745255bf01c@virtuozzo.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -44,26 +59,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: James Houghton <jthoughton@google.com>, linux-ia64@vger.kernel.org, David Hildenbrand <david@redhat.com>, Yang Shi <shy828301@gmail.com>, linux-mips@vger.kernel.org, linux-mm@kvack.org, Guo Ren <guoren@kernel.org>, sparclinux@vger.kernel.org, Ley Foon Tan <ley.foon.tan@intel.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, linux-sh@vger.kernel.org, Neil Armstrong <narmstrong@baylibre.com>, Matthew Wilcox <willy@infradead.org>, Mike Rapoport <rppt@linux.ibm.com>, Geert Uytterhoeven <geert@linux-m68k.org>, NXP Linux Team <linux-imx@nxp.com>, David Rientjes <rientjes@google.com>, linux-snps-arc@lists.infradead.org, Huacai Chen <chenhuacai@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Chris Zankel <chris@zankel.net>, John Hubbard <jhubbard@nvidia.com>, linux-xtensa@linux-xtensa.org, linuxppc-dev@lists.ozlabs.org, linux-m68k@lists.linux-m68k.org, linux-csky@vger.kernel.org, loongarch@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>, linux-arm-kernel@lists.infradead.org, Qin Jian <qin
- jian@cqplus1.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Taichi Sugaya <sugaya.taichi@socionext.com>, Vineet Gupta <vgupta@synopsys.com>, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, Andrew Morton <akpm@linux-foundation.org>, linux-oxnas@groups.io, Shawn Guo <shawnguo@kernel.org>, "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Arnd Bergmann <arnd@arndb.de>, "Michael S. Tsirkin" <mst@redhat.com>, VMware PV-Drivers Reviewers <pv-drivers@vmware.com>, Jason Wang <jasowang@redhat.com>, David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org, linux-mm@kvack.org, Nadav Amit <namit@vmware.com>, Nicholas Piggin <npiggin@gmail.com>, kernel@openvz.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Aug 15, 2022 at 10:39:59AM -0400, Zi Yan wrote:
-> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-> index 571cc234d0b3..c6fcd8746f60 100644
-> --- a/arch/arm64/Kconfig
-> +++ b/arch/arm64/Kconfig
-> @@ -1401,7 +1401,7 @@ config XEN
->  	help
->  	  Say Y if you want to run Linux in a Virtual Machine on Xen on ARM64.
->  
-> -config FORCE_MAX_ZONEORDER
-> +config ARCH_FORCE_MAX_ORDER
->  	int
->  	default "14" if ARM64_64K_PAGES
->  	default "12" if ARM64_16K_PAGES
+On Tue, Aug 16, 2022 at 02:47:22PM +0300, Alexander Atanasov wrote:
+> Hello,
+> 
+> On 16.08.22 12:49, Greg Kroah-Hartman wrote:
+> > On Tue, Aug 16, 2022 at 12:41:14PM +0300, Alexander Atanasov wrote:
+> 
+> > >   rename include/linux/{balloon_compaction.h => balloon_common.h} (99%)
+> > 
+> > Why rename the .h file?  It still handles the "balloon compaction"
+> > logic.
+> 
+> File contains code that is common to balloon drivers,
+> compaction is only part of it. Series add more code to it.
+> Since it was suggested to use it for such common code.
+> I find that common becomes a better name for it so the rename.
+> I can drop the rename easy on next iteration if you suggest to.
 
-For arm64:
+"balloon_common.h" is very vague, you should only need one balloon.h
+file in the include/linux/ directory, right, so of course it is "common"
+:)
 
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+thanks,
+
+greg "naming is hard" k-h
