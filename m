@@ -1,52 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0582859699C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Aug 2022 08:37:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4B68596A22
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Aug 2022 09:16:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M6yxd69KLz3c6m
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Aug 2022 16:37:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M6zpv6GFFz3c72
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Aug 2022 17:16:55 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=V5KRJdow;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=JZduA1nV;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M6yx439TBz2xHd
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Aug 2022 16:37:12 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::732; helo=mail-qk1-x732.google.com; envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=V5KRJdow;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=JZduA1nV;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+Received: from mail-qk1-x732.google.com (mail-qk1-x732.google.com [IPv6:2607:f8b0:4864:20::732])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4M6ywr2Fflz4x3w;
-	Wed, 17 Aug 2022 16:36:59 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1660718232;
-	bh=5lvMCowArwqyA9jSE0Pt5Ze40kYbuyRJPhxadHGIwKI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=V5KRJdowJmJQRJnS7vKpdn3ZRXD54gk+olJ2P9NPfjmi7kMUASVQ2UXCdDQyrJ2l4
-	 iCeFUua0EzB2yY0V/Z2I6yNQvrzfQPnJW1W5hxs27Vmfkv+k2UjzPlcs8lpiwhfw0s
-	 rXEgyRzix9FElmstXFR+laxsxOuSRDwwsndo9tYxJEmh/ZBPqWv8VEb8et3MiTTUHN
-	 x10j5udzl/wNVZu2HvSBSJ+AMCucLU+aGNDpNcmlYlO+lqwPbmi66mdTVNq3+seiCv
-	 ALvJpMs3moLPQf8qL2I07gi/1+uKcpDS0UK8SnIKfeX71p9KEinWWl/Ojv6Y5XtZQh
-	 hNA8dcj2NpgRA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Zi Yan <zi.yan@sent.com>, linux-mm@kvack.org
-Subject: Re: [PATCH] arch: mm: rename FORCE_MAX_ZONEORDER to
- ARCH_FORCE_MAX_ORDER
-In-Reply-To: <20220815143959.1511278-1-zi.yan@sent.com>
-References: <20220815143959.1511278-1-zi.yan@sent.com>
-Date: Wed, 17 Aug 2022 16:36:57 +1000
-Message-ID: <87tu6bv0ja.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M6zpJ6RBLz2xrK
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Aug 2022 17:16:23 +1000 (AEST)
+Received: by mail-qk1-x732.google.com with SMTP id t11so9793112qkt.6
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Aug 2022 00:16:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=nryQoqe6AewwF8xwvBN1jKdcFTmimDx7mWsg7uD2NRQ=;
+        b=JZduA1nVMbuA4+YyhCBobJ5zFWs3v09E2z7tBb1t77Dq4mNd8zTsOhO7e3qC07Ze+2
+         S1X95SF1O9p6wXlfVgyw/VOcY9UVpiPmnF/ndTtGqiZdgah9JkXDrAPwyT0Rvstg4mK2
+         Ki1m2NiIo2KdLrd2uJu60p2J9J5IBfWNPGb6EXcpopRrFrhWL8TGOLv5W+yc3xqNAkJI
+         WEvLT+zA/HfrM+KeNpoK4TU1KYAESsgQlbzX5t5o3MJB86AtgPiZ3nhXtAvWvtmqQP4c
+         x67sn3nOIfUFFE5Dvfkk7tH6aPV2ZEz2GxJ75RXeuXayxBhFrtln/SS+DfyC+cyUxvXb
+         oIgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=nryQoqe6AewwF8xwvBN1jKdcFTmimDx7mWsg7uD2NRQ=;
+        b=jVO64+gBH019ablmSMESEL4ieytCzFi0Qu/80mci0IaNiFqtnFgk6zeuvL3bl+cdW9
+         PBw32ZyDMN7DycXbdZFM013AyKc/Y6kl3Oy/tj3JlPX2Vr/GCg7awR/FeEAL8c3+T2yB
+         YII2TDH5/GsQpFEEWK3o4wVVesysxYj1rLMROtOUtWjx4yzXhgWHW0FeZVH8/HeNeU6M
+         eQHBm0/RkfyQS3U+kpssnd70FDL13K9MGT2IQqGSW81Yt86TRZ0af7ZntyVzOzZz8sUP
+         hVxl55TVtTPdvD+lcjurmy1+9orczXHWOxmwz0CmaiC9lC5/Fj5eHa8Zms+LVqqT6jCB
+         LvZg==
+X-Gm-Message-State: ACgBeo0QYJ9w8Lv3jR/q0eHi1Pisp/DAgQlweRQGxHXf2Ly/+Qyh1r59
+	u+1ZRbaSlQE/azPf0jFeXhLT3E0haiw59O4yheU=
+X-Google-Smtp-Source: AA6agR5uFGoyzhZLSVSLbVilcNzhQ8epECEWPw6QT42rEfVGBmwZXjl/zbGmjgU0gROMAp6OMyt7yUcNfKGSYaJ/eJ8=
+X-Received: by 2002:a05:620a:4706:b0:6bb:7e1b:5f0c with SMTP id
+ bs6-20020a05620a470600b006bb7e1b5f0cmr3241534qkb.340.1660720580111; Wed, 17
+ Aug 2022 00:16:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20220816032716.108297-1-ganeshgr@linux.ibm.com>
+In-Reply-To: <20220816032716.108297-1-ganeshgr@linux.ibm.com>
+From: "Oliver O'Halloran" <oohall@gmail.com>
+Date: Wed, 17 Aug 2022 17:16:09 +1000
+Message-ID: <CAOSf1CHicPi6B_tGZ64xEknkfCSUmERTLVq_92XHHmh6-gxYHw@mail.gmail.com>
+Subject: Re: [RFC 0/3] Asynchronous EEH recovery
+To: Ganesh Goudar <ganeshgr@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,25 +72,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: James Houghton <jthoughton@google.com>, linux-ia64@vger.kernel.org, David Hildenbrand <david@redhat.com>, Catalin Marinas <catalin.marinas@arm.com>, Yang Shi <shy828301@gmail.com>, linux-mips@vger.kernel.org, Guo Ren <guoren@kernel.org>, sparclinux@vger.kernel.org, Ley Foon Tan <ley.foon.tan@intel.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, linux-sh@vger.kernel.org, Neil Armstrong <narmstrong@baylibre.com>, Matthew Wilcox <willy@infradead.org>, Mike Rapoport <rppt@linux.ibm.com>, Geert Uytterhoeven <geert@linux-m68k.org>, NXP Linux Team <linux-imx@nxp.com>, Zi Yan <ziy@nvidia.com>, David Rientjes <rientjes@google.com>, linux-snps-arc@lists.infradead.org, Huacai Chen <chenhuacai@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Chris Zankel <chris@zankel.net>, John Hubbard <jhubbard@nvidia.com>, linux-xtensa@linux-xtensa.org, linuxppc-dev@lists.ozlabs.org, linux-m68k@lists.linux-m68k.org, linux-csky@vger.kernel.org, loongarch@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>, lin
- ux-arm-kernel@lists.infradead.org, Qin Jian <qinjian@cqplus1.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Taichi Sugaya <sugaya.taichi@socionext.com>, Vineet Gupta <vgupta@synopsys.com>, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, "Kirill A
- . Shutemov" <kirill.shutemov@linux.intel.com>, Andrew Morton <akpm@linux-foundation.org>, linux-oxnas@groups.io, Shawn Guo <shawnguo@kernel.org>, "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Zi Yan <zi.yan@sent.com> writes:
-> From: Zi Yan <ziy@nvidia.com>
+On Tue, Aug 16, 2022 at 1:29 PM Ganesh Goudar <ganeshgr@linux.ibm.com> wrote:
 >
-> This Kconfig option is used by individual arch to set its desired
-> MAX_ORDER. Rename it to reflect its actual use.
+> Hi,
 >
-> Acked-by: Mike Rapoport <rppt@linux.ibm.com>
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-...
->  arch/powerpc/Kconfig                         | 2 +-
->  arch/powerpc/configs/85xx/ge_imp3a_defconfig | 2 +-
->  arch/powerpc/configs/fsl-emb-nonhw.config    | 2 +-
+> EEH reocvery is currently serialized and these patches shorten
+> the time taken for EEH recovery by making the recovery to run
+> in parallel. The original author of these patches is Sam Bobroff,
+> I have rebased and tested these patches.
+>
+> On powervm with 64 VFs and I see approximately 48% reduction
+> in time taken in EEH recovery,
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+Can you elaborate on how you're testing this? A VM with 64 separate
+VFs on 64 separate PHBs I guess? How are you injecting errors?
 
-cheers
+> Yet to be tested on powernv.
+
+If you're not testing on powernv you might as well not be testing. EEH
+support on pseries is relatively straightforward since managing PCI
+bridges, etc is all hidden away in the hypervisor. Most of the things
+about EEH which give me headaches simply don't happen on pseries since
+the PCI topology seen by the guest is flat.
+
+> These patches were originally posted as separate RFCs, I think
+> posting them as single series would be more helpful, I know the
+> patches are too big, I will try to logically divide in next
+> iterations.
+>
+> Thanks
+>
+> Ganesh Goudar (3):
+>   powerpc/eeh: Synchronization for safety
+
+I didn't pick that patch up after Sam left for a reason. I don't
+recall the exact details, but I think I decided that the lock being
+added had the same (or mostly the same) scope as the pci rescan lock.
+All modifications to the EEH PE tree have to occur with the rescan
+lock held since the per-device EEH setup occurs while configuring the
+pci_dev (similarly the teardown happens when we remove the pci_dev
+from its bus). I don't think that was true when Same wrote the patch
+originally though since it pre-dates my big EEH init re-work.
+
+It's possible (probable even!) I got that wrong, or that it was
+something I was trying to make true through re-works rather than an
+accurate assessment of the current state of things. I'll try page some
+of this back into my brain later. I think I left some comments on
+Sam's original RFC patch which might still be valid.
+
+>   powerpc/eeh: Asynchronous recovery
+
+I remember not hating the idea, but I think the implementation leaves
+a lot to be desired. If you only really care about pseries then just
+moving to a model where each PHB has its own recovery thread would get
+you most of the benefit without needing to turn the already
+complicated recovery path into an async trainwreck. IIRC Sam's
+motivation for that patch was to make recovery faster for powernv
+systems when an error was injected on a PF with a lot of child VFs.
+Certain drivers took forever to recover each VF (might have been mlx5)
+so doing it in parallel would have sped things up considerably.
+
+Oliver
