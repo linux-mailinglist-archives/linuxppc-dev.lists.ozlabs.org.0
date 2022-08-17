@@ -2,63 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4D445971A8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Aug 2022 16:46:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EBEC5972BB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Aug 2022 17:14:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M79n566f8z3drn
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Aug 2022 00:46:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M7BPc3d1dz3c2M
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Aug 2022 01:14:12 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=QylPRZ7p;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=arndb.de (client-ip=217.72.192.74; helo=mout.kundenserver.de; envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
-X-Greylist: delayed 308 seconds by postgrey-1.36 at boromir; Thu, 18 Aug 2022 00:45:40 AEST
-Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.74])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::134; helo=mail-il1-x134.google.com; envelope-from=miguel.ojeda.sandonis@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=QylPRZ7p;
+	dkim-atps=neutral
+Received: from mail-il1-x134.google.com (mail-il1-x134.google.com [IPv6:2607:f8b0:4864:20::134])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M79mh22Gbz3bTZ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Aug 2022 00:45:39 +1000 (AEST)
-Received: from mail-lj1-f172.google.com ([209.85.208.172]) by
- mrelayeu.kundenserver.de (mreue106 [213.165.67.113]) with ESMTPSA (Nemesis)
- id 1MwgKC-1nRFRa2ecM-00yDXt for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Aug
- 2022 16:40:24 +0200
-Received: by mail-lj1-f172.google.com with SMTP id s9so13756492ljs.6
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Aug 2022 07:40:24 -0700 (PDT)
-X-Gm-Message-State: ACgBeo1HXihVwRS/Ge5HPlYkKdxv8JDergWjmkS8S7/WALk0z6lS9KFa
-	QMyqQsW8/d1nJt4SyVkJ6QqO8O5mjZfMb8yAWRs=
-X-Google-Smtp-Source: AA6agR7iG7b/sKnfv3rtR0wMkiNVbuKu4gohq2MlJovs7t4zv9/h1/ech5e7m293ULb6jtgNsC4wsmH5KCjGWqjMolI=
-X-Received: by 2002:a17:907:6da8:b0:730:8ed5:2df8 with SMTP id
- sb40-20020a1709076da800b007308ed52df8mr16850681ejc.75.1660747213344; Wed, 17
- Aug 2022 07:40:13 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M7BP231xdz2yn5
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Aug 2022 01:13:40 +1000 (AEST)
+Received: by mail-il1-x134.google.com with SMTP id w8so3785933ilj.5
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Aug 2022 08:13:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=1Aw1dSa3JPytcA6jepz8LxW98jZGIVvGrbA5oXW6cF4=;
+        b=QylPRZ7po85CmoykNUCyneM7mjy0jfxW6cm0tMG76VU+SEJs1TOHYjvUgCyJ5X34Ah
+         29R7oZJhhLUIaE/wB+fpvInm0t+Qtil2d7DsxFJO50ROSKqBTc4hrnQGXwMIq6mca6hs
+         54+kXi+r5dpmDFccUSfnuFBS3sWyt6leP9lY9G9/jXs02kwOe+87RXKykgBUvBdu+VxK
+         zgC40tcbIxY+/ARk2CL5sgZZPmfoBBvLljwObz/HD90zb/2wCmgAigALmX3sUAZMaM6/
+         yYvXO5L6d8RGEEhjCx/i99yVgYsx0VSd+Ea2XG0jsxBYGj9nUTR57UcZ9Som18Y15zyH
+         eUjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=1Aw1dSa3JPytcA6jepz8LxW98jZGIVvGrbA5oXW6cF4=;
+        b=MHL+gJfLBzUWrLrELT7vYAhBSyAe2DGWqJyX3D+MA2rR/14ooO5odNtbcrrxdvOseN
+         1ACyZEXCTJBAOSjg5QJPqSbehCnHgoGDsBg6CsVShM3dJ9gziaD25o+2aHyfj+b3Hctw
+         jiynjtU2tPOIAx/IzbgGC6SYLj41Tw2SNtnb/XqxE6Y8K3XIl1tFkPaNXPwBtVl6AKep
+         ZkPM3KBc2DyNupvZivsrz/9ogSqOLi286ONXKy9mkAsF4j4IQJcW99ybN6lDbEiuPULJ
+         kn7irn4t/o3H1EdSEQrC5MT7WP0nZkOhAdrYejR3SOAlV7QxtStmI+450cEmetjf7DFg
+         Jlvw==
+X-Gm-Message-State: ACgBeo2C96Wq1dCSbtQCd+6oLJ3FbwW7dILu1Qt0FHnVS9vNOvfFR1Kb
+	BZRStCMhQ6cjue1XVuiuVHD5Wt1eiHWVXdlwUdo=
+X-Google-Smtp-Source: AA6agR76oTCoP2K9omiY3xisTcRhkl/VGb6FFCKu/kjjdtf4CwkBwADBK/ZOKLvdnvOPta40wh5R8EYE/TiRBIyFijg=
+X-Received: by 2002:a05:6e02:1522:b0:2e5:9e3c:a7c8 with SMTP id
+ i2-20020a056e02152200b002e59e3ca7c8mr8021588ilu.237.1660749216849; Wed, 17
+ Aug 2022 08:13:36 -0700 (PDT)
 MIME-Version: 1.0
 References: <20220802015052.10452-1-ojeda@kernel.org> <20220802015052.10452-28-ojeda@kernel.org>
-In-Reply-To: <20220802015052.10452-28-ojeda@kernel.org>
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Wed, 17 Aug 2022 16:39:57 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a0jqhGY9E85VC9gNem5q6-dWeq0H6-7bhJopinMnLtOKQ@mail.gmail.com>
-Message-ID: <CAK8P3a0jqhGY9E85VC9gNem5q6-dWeq0H6-7bhJopinMnLtOKQ@mail.gmail.com>
+ <CAK8P3a0jqhGY9E85VC9gNem5q6-dWeq0H6-7bhJopinMnLtOKQ@mail.gmail.com>
+In-Reply-To: <CAK8P3a0jqhGY9E85VC9gNem5q6-dWeq0H6-7bhJopinMnLtOKQ@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 17 Aug 2022 17:13:25 +0200
+Message-ID: <CANiq72nNucEhXAXkXSujnGkpQrkv3-Pcn7ua8N=2XB-suAjs9w@mail.gmail.com>
 Subject: Re: [PATCH v8 27/31] Kbuild: add Rust support
-To: Miguel Ojeda <ojeda@kernel.org>
+To: Arnd Bergmann <arnd@arndb.de>
 Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:T0sfSR/k0axbNhiFizyJpQmLAbgkjK4qJQiu9DQg66V1nXI3fTk
- Kylb4SArsBKi3hCbMTxodmypWe88MpO241apYyUUXxQgbr6ui8eE5wchcV4w4DbuRhDuoPd
- dO1dGWdmZ6weEc/tlbaO1Mi3fyaXyNdmRYQri/TbGTb6oHya0fhJYpm++wZuqIq4bI+3DOi
- Iq1y61dJP5dAhFt6x6smg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:przmRNX0Zso=:Hzs+d/cJ7ZxChFr6tlLUiS
- Itvm3dewd7dJaarawQ9FnzpmTxeWJUtcUJRLeacrEEaQPx6MnlkFQl29DcpWuaBu3vdyytpRg
- 4GS5MwpIoq8GussBDv1MySSABPIyJC8yyCk1aahhMpVCAOIgq0vdzrImm5w/skbBNJkzRRV5g
- ly1G3SatpHiKyYVFP/074srf7xA5uSFQalY7aiApluCN/zQBWTyyXjWw0V4L33VHslNs3AISc
- ZsiaRFp1+auhgwFl51V1sGbq5bavQFBR9FO89PQP4jUwpYvupfBbbEPd9qAbTM+rMuhwCcKfP
- 4yMKmCNr4K0n5GALONvWLqzYHxlXHPj/Ce9URNq45nqxsSocbEnfbKy7KXBT90SQ0puEoaXtA
- nKSTDbZX/gJf18RI4tSZtunleDtDtQE5xiY3VIhnNovqap+KWy0mHKZqXu9B8HK/ie3cdmk41
- zGBHMAiZmK+FO/GjIDbVqeRGAYbSEc4pjmUnwQPvJoOMt/S3e2JdzTsQu8vAncHzXhjMDjhHX
- 2xMoLWNmbl8uon08inRYDFwJYwnB80P3iTPHsCyXFPomRPRnPbfHj3AVsAiUHpK/xrc/Vh2R8
- crP5xnMB8o3pw/i2hyNlsR7Jm1ncSIirq3jRvub5EB84JdjgmB+B7YFe9zpRP8NlF0oSUmSzy
- oN3DFkmh6cx4Ve3XDmMaYcwrvf/Hw7BScpsabJmcRRccAdbS7R/3prUnj00W2knbM6abXeptC
- sr/enZiujUHRfIfXPmOm0a3IZGBtMLaauZyxUAYE+Kt7IG4lVbkZDawyACStjZtOYpUyPqdL7
- nlwr7FxSCtEI7lTufxc075VfIIucrlqBak6/aFFJrrBMgnU686MEyV0IBuhCdqtQzMB5XAd+t
- VjuiVJyL1Ndh+3N6ZOi1NpayYvi90/3QAxPVQ7usLxofJuDZynFNTdcLPXshF3nU88VJB4Jiv
- 5lvFSfthXkwPILPtg+nWRGKwHmLNyGHqwOpqYp0i49GNEEtKlnybO
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,66 +73,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sven Van Asbroeck <thesven73@gmail.com>, Catalin Marinas <catalin.marinas@arm.com>, "H. Peter Anvin" <hpa@zytor.com>, Miguel Cano <macanroj@gmail.com>, Albert Ou <aou@eecs.berkeley.edu>, Paul Mackerras <paulus@samba.org>, Gary Guo <gary@garyguo.net>, Douglas Su <d0u9.su@outlook.com>, linux-riscv@lists.infradead.org, Finn Behrens <me@kloenk.de>, Will Deacon <will@kernel.org>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, Richard Weinberger <richard@nod.at>, Masahiro Yamada <masahiroy@kernel.org>, x86@kernel.org, Russell King <linux@armlinux.org.uk>, Ingo Molnar <mingo@redhat.com>, Wedson Almeida Filho <wedsonaf@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, Antonio Terceiro <antonio.terceiro@linaro.org>, Palmer Dabbelt <palmer@dabbelt.com>, Adam Bratschi-Kaye <ark.email@gmail.com>, Dave Hansen <dave.hansen@linux.intel.com>, rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org, Boqun Feng <boqun.feng@gmail.com>, linux-um@
- lists.infradead.org, linuxppc-dev@lists.ozlabs.org, =?UTF-8?Q?Bj=C3=83B_6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Tiago Lam <tiagolam@gmail.com>, Borislav Petkov <bp@alien8.de>, David Gow <davidgow@google.com>, Paul Walmsley <paul.walmsley@sifive.com>, Dariusz Sosnowski <dsosnowski@dsosnowski.pl>, linux-arm-kernel@lists.infradead.org, Michal Marek <michal.lkml@markovi.net>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, Boris-Chengbiao Zhou <bobo1239@web.de>, Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, Johannes Berg <johannes@sipsolutions.net>, Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Sven Van Asbroeck <thesven73@gmail.com>, Philip Herron <philip.herron@embecosm.com>, Catalin Marinas <catalin.marinas@arm.com>, "H. Peter Anvin" <hpa@zytor.com>, Miguel Cano <macanroj@gmail.com>, Albert Ou <aou@eecs.berkeley.edu>, Paul Mackerras <paulus@samba.org>, Gary Guo <gary@garyguo.net>, Douglas Su <d0u9.su@outlook.com>, linux-riscv@lists.infradead.org, Finn Behrens <me@kloenk.de>, Will Deacon <will@kernel.org>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, Richard Weinberger <richard@nod.at>, Masahiro Yamada <masahiroy@kernel.org>, x86@kernel.org, Russell King <linux@armlinux.org.uk>, Arthur Cohen <arthur.cohen@embecosm.com>, Ingo Molnar <mingo@redhat.com>, Wedson Almeida Filho <wedsonaf@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, Antonio Terceiro <antonio.terceiro@linaro.org>, Miguel Ojeda <ojeda@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Adam Bratschi-Kaye <ark.email@gmail.com>, Dave Hansen <dave.hansen@linux
+ .intel.com>, rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org, Boqun Feng <boqun.feng@gmail.com>, linux-um@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, =?UTF-8?Q?Bj=C3=83B_6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Tiago Lam <tiagolam@gmail.com>, Borislav Petkov <bp@alien8.de>, David Gow <davidgow@google.com>, Paul Walmsley <paul.walmsley@sifive.com>, Dariusz Sosnowski <dsosnowski@dsosnowski.pl>, linux-arm-kernel@lists.infradead.org, Michal Marek <michal.lkml@markovi.net>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, Boris-Chengbiao Zhou <bobo1239@web.de>, Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, Johannes Berg <johannes@sipsolutions.net>, Linus Torvalds <torvalds@linux-foundation.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Aug 2, 2022 at 3:50 AM Miguel Ojeda <ojeda@kernel.org> wrote:
+Hi Arnd,
+
+On Wed, Aug 17, 2022 at 4:40 PM Arnd Bergmann <arnd@arndb.de> wrote:
 >
-> +# These flags apply to all Rust code in the tree, including the kernel and
-> +# host programs.
-> +export rust_common_flags := --edition=2021 \
-> +                           -Zbinary_dep_depinfo=y \
-> +                           -Dunsafe_op_in_unsafe_fn -Drust_2018_idioms \
-> +                           -Dunreachable_pub -Dnon_ascii_idents \
-> +                           -Wmissing_docs \
-> +                           -Drustdoc::missing_crate_level_docs \
-> +                           -Dclippy::correctness -Dclippy::style \
-> +                           -Dclippy::suspicious -Dclippy::complexity \
-> +                           -Dclippy::perf \
-> +                           -Dclippy::let_unit_value -Dclippy::mut_mut \
-> +                           -Dclippy::needless_bitwise_bool \
-> +                           -Dclippy::needless_continue \
-> +                           -Wclippy::dbg_macro
+> Hi Miguel,
+>
+> I tried enabling rust support in the gcc builds I provide at
+> https://mirrors.edge.kernel.org/pub/tools/crosstool/files/bin/arm64/12.1.0/
 
-Hi Miguel,
+Thanks for giving it a go!
 
-I tried enabling rust support in the gcc builds I provide at
-https://mirrors.edge.kernel.org/pub/tools/crosstool/files/bin/arm64/12.1.0/
-to make this more accessible, but it appears that the command line
-options here are not portable:
+> to make this more accessible, but it appears that the command line
+> options here are not portable:
+>
+>  /home/arnd/cross/x86_64/gcc-12.1.0+rust-nolibc/x86_64-linux/bin/x86_64-linux-gccrs
 
- /home/arnd/cross/x86_64/gcc-12.1.0+rust-nolibc/x86_64-linux/bin/x86_64-linux-gccrs
---edition=2021 -Zbinary_dep_depinfo=y -Dunsafe_op_in_unsafe_fn
--Drust_2018_idioms -Dunreachable_pub -Dnon_ascii_idents -Wmissing_docs
--Drustdoc::missing_crate_level_docs -Dclippy::correctness
--Dclippy::style -Dclippy::suspicious -Dclippy::complexity
--Dclippy::perf -Dclippy::let_unit_value -Dclippy::mut_mut
--Dclippy::needless_bitwise_bool -Dclippy::needless_continue
--Wclippy::dbg_macro -O -Cstrip=debuginfo -Zallow-features=
---emit=dep-info,link --out-dir=scripts/
-/git/arm-soc/scripts/generate_rust_target.rs; mv
-scripts/generate_rust_target.d scripts/.generate_rust_target.d; sed -i
-'/^#/d' scripts/.generate_rust_target.d
-x86_64-linux-gccrs: error: unrecognized command-line option
-'--edition=2021'; did you mean '-frust-edition=2021'?
-x86_64-linux-gccrs: error: unrecognized command-line option
-'-Zbinary_dep_depinfo=y'
-x86_64-linux-gccrs: error: unrecognized command-line option
-'-Wmissing_docs'; did you mean '-Wmissing-braces'?
-x86_64-linux-gccrs: error: unrecognized command-line option
-'-Wclippy::dbg_macro'
-x86_64-linux-gccrs: error: unrecognized command-line option '-Cstrip=debuginfo'
-x86_64-linux-gccrs: error: unrecognized command-line option '-Zallow-features='
-x86_64-linux-gccrs: error: unrecognized command-line option
-'--emit=dep-info,link'
-x86_64-linux-gccrs: error: unrecognized command-line option '--out-dir=scripts/'
-make[3]: *** [/git/arm-soc/scripts/Makefile.host:157:
-scripts/generate_rust_target] Error 1
+So you mean with GCC Rust, right? (i.e. we have "GCC builds" working,
+via compiling the Rust side with LLVM and linking with the GCC C side,
+but it is not intended for production or to be supported, even if we
+cover it in our CI, test it boots and loads modules etc.).
 
-I guess nobody has tried this so far. Would you think that fixing this is only
-a matter for fixing the build system to pass the correct flags depending on the
-compiler, or is this broken in a more fundamental way?
+Indeed, `gccrs` does not support `rustc` flags yet. I am not sure if
+the GCC Rust team will eventually provide a driver for those like
+clang does for e.g. `cl` -- I would hope they do, since many projects
+would benefit from it, but maybe they plan to start simply by
+modifying Cargo to call them as they need instead.
 
-         Arnd
+If they don't support it, we will have to map the flags on our side --
+it should not be a big problem. However, see below...
+
+> I guess nobody has tried this so far. Would you think that fixing this is only
+> a matter for fixing the build system to pass the correct flags depending on the
+> compiler, or is this broken in a more fundamental way?
+
+If you meant GCC Rust, then it is a bit too early for the compiler. As
+far as I now, they are working on compiling the `core` crate and
+supporting more stable language features. They are also researching
+the integration of the borrow checker, though we wouldn't need that
+for "only" compiling the kernel.
+
+Now, if they decided to focus on supporting Rust for Linux early on
+(which would be great), they would still need to work on the delta
+between what what they target now and what we use (which includes both
+stable and some unstable features), plus I assume infrastructure bits
+like the platform (target spec) support, the flags / `rustc` driver
+(though I would be happy to do as much as possible on our side to
+help), etc.
+
+(We privately talked about possible timelines for all that if they
+were to focus on Rust for Linux etc., but I let them comment or not on
+that... Cc'ing them! :)
+
+Cheers,
+Miguel
