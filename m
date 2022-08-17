@@ -1,114 +1,91 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A00A759670F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Aug 2022 03:55:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6FD9596783
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Aug 2022 04:46:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M6rhD47C8z3bhK
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Aug 2022 11:55:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M6spg4lB0z3cDt
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Aug 2022 12:46:19 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=WkbJtlHE;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=igBR8u9I;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=igBR8u9I;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=40.107.237.51; helo=nam12-bn8-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=WkbJtlHE;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=igBR8u9I;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=igBR8u9I;
 	dkim-atps=neutral
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2051.outbound.protection.outlook.com [40.107.237.51])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M6rgS5xmwz2ynh
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Aug 2022 11:54:58 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=lBcehth33uE01Ka0UznRj+3zoRaLIClPESQjV8rA8Ku81eB1Pqc95a+wGz9WDUy4x3ND64l7UaMkHo1t/2/E6OnuULNugc7nKWO5ratMUhWea5IyIiIgICn+w0PGoCWJZqpdkiKF7fnP7wUKuy1NBTRfhFhrZaOY2g7VmP9KAarHc31PhPtF9O1vyVLBcIREFzl6tlP+zS9E+pPThrmvbvX8DwMWik2tPoE5IE4CjEx0UOb4GKAcucriJWr2VaH9gbUIlVS04lXugRju3vxSWggRYixmhI0rTd1e+bflBPJOgkKea9zDS6xQ/e6hobpAYSAqR+fDFKpQuunBggp8Rg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4JwzRzTZo/bTe7fhmMmGaM33C/G34Zu6E6yMW8E2QnQ=;
- b=g9vkpo1bgMh3lgIWZ1tTUVt63aX2xv7dxp4OeTVyZqJjTxEGE9IQqEW0qhMK/E7vnTPMrhOVWNtZ7GO3UgM5Xp7DjGe0FI5NX1tKVzbyYN7dW8lpCY9tlef9QJrKrkTrT+GbNlWNDUd4soFAq8l7Ox0bzD65Ze6ENC+vkiG1jNjtBc+pVd0tVrvY/ix+tuf58EDSQdIm0Pc8SKsYHED80wBraDXMtGPKbTf0/KBWxgVDc/OP3EeFTCJQHHs84Xl/LFJzC1AghXp3+RU4g7PI4HQnOFo+zxZGMYL//Ay6U/ahzjVRSIHkYS4Gf3z8cFYvKcvRguDfpk8sXoxMB57vNw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4JwzRzTZo/bTe7fhmMmGaM33C/G34Zu6E6yMW8E2QnQ=;
- b=WkbJtlHEeE7iqXI9m9B5RNO7YOsaaYeFkP/GNmnh6mJC2XA+H9JwsYye5EtN8DiNJ2uoAG5QoeECqnvNvXVaqIcUJwR5MAlnuhCxPc9+yEW7BM/cB6GAF8ufeJgwe6cZvEGUUYK0cPEYQZtLaoMNJRiZ8R/LOTOHriL+COoqgO35MPGBdSchS7vLDu5lry0TBrOW/2uREH+httCh00iHR/b78gfodzvVOgo8mhyb5Ozd+8WXGKsdtG3kg3LOoWkxvT+svZrYhwxSPUFu5uB2U5QI0L5L/6ID9KDRHWEjGt5ln9Ie4QS8EgNmmWTAXGoQwHHxqfgYH6AJTZUNlGrduw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from BYAPR12MB3176.namprd12.prod.outlook.com (2603:10b6:a03:134::26)
- by BY5PR12MB4276.namprd12.prod.outlook.com (2603:10b6:a03:20f::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5525.11; Wed, 17 Aug
- 2022 01:54:39 +0000
-Received: from BYAPR12MB3176.namprd12.prod.outlook.com
- ([fe80::eca6:a4a7:e2b2:27e7]) by BYAPR12MB3176.namprd12.prod.outlook.com
- ([fe80::eca6:a4a7:e2b2:27e7%5]) with mapi id 15.20.5504.027; Wed, 17 Aug 2022
- 01:54:39 +0000
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M6sp174PBz2xn8
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Aug 2022 12:45:44 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1660704341;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sFFVgLR/Ut+q9B0hkN4LXK9LXiRNRRxKcE0ZSUfZXQc=;
+	b=igBR8u9IhUYcHwo5l1rjuJfd2rcU5ceZRs3Qp1ncSYfPTyixtv34Ch0k2xoMln+3l+R28N
+	D31pbiAHOaXoKgMS3UVUbxJ42LFMZALnE2ySckpRILTsKugI8yMHPTxFrEEVQzt8jaVMeU
+	WjvsMmQ/UqDcpZKSSQWEMcbOeqz+Vqk=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1660704341;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sFFVgLR/Ut+q9B0hkN4LXK9LXiRNRRxKcE0ZSUfZXQc=;
+	b=igBR8u9IhUYcHwo5l1rjuJfd2rcU5ceZRs3Qp1ncSYfPTyixtv34Ch0k2xoMln+3l+R28N
+	D31pbiAHOaXoKgMS3UVUbxJ42LFMZALnE2ySckpRILTsKugI8yMHPTxFrEEVQzt8jaVMeU
+	WjvsMmQ/UqDcpZKSSQWEMcbOeqz+Vqk=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-442-irBBVxYOOe-TQHZfp6Rmbw-1; Tue, 16 Aug 2022 22:45:40 -0400
+X-MC-Unique: irBBVxYOOe-TQHZfp6Rmbw-1
+Received: by mail-qv1-f70.google.com with SMTP id oh2-20020a056214438200b0047bd798af75so5415642qvb.6
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Aug 2022 19:45:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
+        bh=sFFVgLR/Ut+q9B0hkN4LXK9LXiRNRRxKcE0ZSUfZXQc=;
+        b=U2A9HQmGBUtUcAhADgtmTOMOKASgYz4etgv3Vy7EZpTmifBgiPbSnVYorFORzJhP/6
+         /caAtXf14Og99DINX1c/qfhtc4wu7NuNqsXG/pM6g0GtUa1tgOuTGiVK2nlc0TcF5qLV
+         MA/5Q5QAKLl6CktpkaVzJSEqJxcJD9JYmiO2H2VQgqZImPbUmypRy4t2HNQQwwL3IkGa
+         CcVxu8fqNMKc5Unsl2XX/nWoIGsN/hI8Q7wA/O6HBuDHzClwmvVXd/bjL7P3HhUhi9ox
+         tQHXebd4IMk1J8tVHv2HCim1TADl+CAwEXjHLGtISTr0hUIxHdcHu1jZDb0u0Al0X861
+         6Y4w==
+X-Gm-Message-State: ACgBeo1pAH7Wsh1iyNddTO88vort5DW+ykR2Jh1Y6yy0ndYkE/4lWK83
+	/9kviRL+pR2YOROWAXb5zeEf7dDvJ4SZrc9dH+IeJrv5CMpu2tmyrjwkCAmvIHKwtnStVL7A5Mh
+	Nx3z/wrmjQpuzEkXd3d+9FH9Q4Q==
+X-Received: by 2002:a37:64c3:0:b0:6ba:f404:8ff2 with SMTP id y186-20020a3764c3000000b006baf4048ff2mr12451585qkb.397.1660704339586;
+        Tue, 16 Aug 2022 19:45:39 -0700 (PDT)
+X-Google-Smtp-Source: AA6agR5ynDdWHuXl7m7xK2zUJirotuz+hRQv269GrLiXRjE8J+k1PvWsa2cxvxjorZ2Ww5yhRCP3kw==
+X-Received: by 2002:a37:64c3:0:b0:6ba:f404:8ff2 with SMTP id y186-20020a3764c3000000b006baf4048ff2mr12451556qkb.397.1660704339333;
+        Tue, 16 Aug 2022 19:45:39 -0700 (PDT)
+Received: from xz-m1.local (bras-base-aurron9127w-grc-35-70-27-3-10.dsl.bell.ca. [70.27.3.10])
+        by smtp.gmail.com with ESMTPSA id w17-20020a05620a0e9100b006bb568016easm4148710qkm.116.2022.08.16.19.45.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Aug 2022 19:45:38 -0700 (PDT)
+Date: Tue, 16 Aug 2022 22:45:37 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Alistair Popple <apopple@nvidia.com>
+Subject: Re: [PATCH v2 1/2] mm/migrate_device.c: Copy pte dirty bit to page
+Message-ID: <YvxWUY9eafFJ27ef@xz-m1.local>
 References: <6e77914685ede036c419fa65b6adc27f25a6c3e9.1660635033.git-series.apopple@nvidia.com>
  <CAC=cRTPGiXWjk=CYnCrhJnLx3mdkGDXZpvApo6yTbeW7+ZGajA@mail.gmail.com>
  <Yvv/eGfi3LW8WxPZ@xz-m1.local>
-User-agent: mu4e 1.6.9; emacs 27.1
-From: Alistair Popple <apopple@nvidia.com>
-To: Peter Xu <peterx@redhat.com>
-Subject: Re: [PATCH v2 1/2] mm/migrate_device.c: Copy pte dirty bit to page
-Date: Wed, 17 Aug 2022 11:49:03 +1000
-In-reply-to: <Yvv/eGfi3LW8WxPZ@xz-m1.local>
-Message-ID: <871qtfvdlw.fsf@nvdebian.thelocal>
-Content-Type: text/plain
-X-ClientProxiedBy: BYAPR11CA0067.namprd11.prod.outlook.com
- (2603:10b6:a03:80::44) To BYAPR12MB3176.namprd12.prod.outlook.com
- (2603:10b6:a03:134::26)
+ <871qtfvdlw.fsf@nvdebian.thelocal>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 079f6b67-3404-4939-748c-08da7ff3720e
-X-MS-TrafficTypeDiagnostic: BY5PR12MB4276:EE_
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	FJoXUaCSEGsayOjZr060UkboC968klLIUWGf1ltT9GuTSaHyinfO6mfY/3CE4o/vPtbyVuXyiHcO3bKZpq0GL5c/nO3+lzNNL77LpwVp0uILY0u4vm6QkUF1o3bUXNaF2IrMO1Yfi9nsbEgsRKDcX9IstmzyiJ/tw/NfLZm0N4+CU0v98m2IWDrcaUefYl1qy9y6ir1EE+WuL1WJd3/BR1KLs1rwozgzKsMMXYS1xtnsjT/uH1ETISNraRTdi77NZ06X/zY3c7Ef0QAGVqBwa7d7TXCshTAlgo5WwvA2E/zDQJ2AGeNKjNyGBRFp1MidFVoWaQUfM04ghhJ4B6n0jVgynu1GqvButZs9rCpbyYYZgEypzknyKfkB2CykeqxVZcHgC0YFO7ZysSFc8lm4FgK7BkDtBN/v3C5M4I+7B/7j7XevChsjn9OOut6EkHn/jQBfdcns4Xj1Dxq343rL+4d4xeuKJHT3tvABLQDtLJKnS4By938BuQ8Tog4oyqykphBswjeUMZOD+ZJyVVDHoQdZkCqMp0o0tUl67oPflD2EgS/rGfN4EVenpp8AgtpCh3O7POtG99o9kKlp05cwpQ6+w4qsLcCe0DnlfOECt2FprBb8oqyCqXLqPZHmcLjne8VFARGnPiGzDN1fxUimOMEQaWy8mJVEp1t1HOgIvEC3NtJFhiBwvlkAoUIs/K3L5VoB3Cz4vpah4iRsZszENSuVPIdH0xvCT4d9GQwI2juVgMD7VZmD3RKLH0jzmT9M7N+rQ4mReEOZQdVibKQObVTOlqIU6sSdX1K/MryHQFE=
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB3176.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(4636009)(39860400002)(376002)(346002)(366004)(136003)(396003)(86362001)(186003)(83380400001)(9686003)(6512007)(6506007)(6666004)(316002)(54906003)(478600001)(41300700001)(66476007)(66556008)(8936002)(7416002)(66946007)(8676002)(5660300002)(2906002)(26005)(6916009)(38100700002)(6486002)(4326008)(14143004);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?wsAn2SVxSqGIKJ9LCMnCHs1bTNFoawLOStQIgOQHbdXPVZsQhVXJymH60gga?=
- =?us-ascii?Q?+dgvKgwAHnzc7mNPiixj8oTtJ7Jc+Ivd/Jut7hkNeAgSioWUxAzdIVHea9i9?=
- =?us-ascii?Q?kDDjrUzbprdazSzq9zl0vNzJKaAo6W3iJTqvImmd9SSQ/pCa8iEMkykN0aZ4?=
- =?us-ascii?Q?jpemoX5XQ5MM+AgIxvUe/VJY9gKXWch14nYd3FC7P/A8r8Ja5ZavQW/+M1we?=
- =?us-ascii?Q?ZjI5NoPHvGNwIMSk0oqE+LoMqrfsHDJfaiVfhPeMw+xnUwOaFU6sWON8ACaW?=
- =?us-ascii?Q?X2Z8aKBjcIZnO/aEBBVBWH7EPQDLy0u32FwAFZ5Hsvu9w+6DsPe2AIS5k3c9?=
- =?us-ascii?Q?4kJ5+RdNssaa5lSvEtz7TmUj0G+H5YroWlSjvLLo7SQ1F+EFX+Qr9/i2WuNc?=
- =?us-ascii?Q?nx5Up/gvaIc3UAkbdlGMTsaCdel3ERMaTp5A9YNzBSCMmhC01A+QM0jIUH0Z?=
- =?us-ascii?Q?41/f5fKTZqq5VA5Z1fLH1OuVwkVEy95O7Thw/7Sqxd0jRa6hVGuc7adq3G0f?=
- =?us-ascii?Q?k3HiRxRisEJ/Tw+WF/FKXWZmiHBL0sdxf+wgPvoa17rdsPk7Aay/wRfIlv0Z?=
- =?us-ascii?Q?mu59zucgR+HuamDKPpOofoP6pw7qpQ2wgRDkXC6CjX81jm6qr3TXxdjmITwA?=
- =?us-ascii?Q?0Lx9cXAzt1+FTdmBw7tO9dSZtF7ugfQMVkWFUuT1/hW9lc/OdXoyesRy4i88?=
- =?us-ascii?Q?UQETfahgDTbYX6KIVEA3YbsEyqZ39WT49nH9AEARtXMT0YF8eZePLAKhBl2G?=
- =?us-ascii?Q?4Fm80+o7frSqjLJHZGNwmApu/bF2h1eyrAcLeAVdlcLUSegLmPumb4KokWtS?=
- =?us-ascii?Q?K2HWgHKkihw1vp/OgOQfuNDKRz+MUcBTGM+yWWDjmU6AjOcQ/gcONTGQ/LhA?=
- =?us-ascii?Q?02qzDE3oKwnNXsu/xMinbnN6UUXZ81ch+tBL6OjIkbbj+1Bm196zrLF68wt2?=
- =?us-ascii?Q?YWzq96CAfsX62GFsGGgtKNAknaDz0CVkP5oe/5yHEH48nI32D01G62DIeDy+?=
- =?us-ascii?Q?e9OxH03a+M8IHXS9zG5xRtZAOFMgGY7r3L+V8OMFcbbPtcp/hVxwTzm4W63z?=
- =?us-ascii?Q?yycJUfaPZO4ODsgCqVvDIPpj0JLprz5Pr/96k7BF3qndynYxLOpd1+QbBnq4?=
- =?us-ascii?Q?A6U+SHYz2zrWzwH8WnGQLB01o7cqnuF01nCkQENK091uoanf5Ej7Bz5On5Ao?=
- =?us-ascii?Q?kx0OMT+eX+seWPX3iA6Kf0t55QK84uogOSl5OAhVg61ht4Dn6eS0SpaoFfJ1?=
- =?us-ascii?Q?/KEBLvVYQG+hYyInhzijSDnET0JDLJSm/nidLMoQcs35RYcRNnphZkKdcONL?=
- =?us-ascii?Q?OWRmPoz9nJeCBaxntRbt14zwICia6z4VqHARWdQ9ZyGoIVnoUg7okGfEgIhc?=
- =?us-ascii?Q?+SGBiPdXVud8XwY93egqxRTiotz8oraht2aLQoY+O2nBKuOVLDGjEH/4Mxp/?=
- =?us-ascii?Q?j0rPEFByU4vTgNnfJCGdqI8yp8PDX399YxIKtklCXYIdDEtWeKHVqdD2Tl4i?=
- =?us-ascii?Q?f6R8G0BUQIjCHUYtVYCtTdFbM1lGhO2nVZvZPTgq812IRqShT7Gj1SnEmjxn?=
- =?us-ascii?Q?/wuGOsxVF3zl5yYeCUF02GD99PrwXouKLmiHYPUE?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 079f6b67-3404-4939-748c-08da7ff3720e
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR12MB3176.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Aug 2022 01:54:39.5239
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6ERdGm4UwuXUO4du3bOsaXbD/0m2/jxM9wZ6IGnHvDS0g1iO1qVb8gUKn4/jCnwLQNWw1BIQpSvPw4eMnW1+vw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4276
+In-Reply-To: <871qtfvdlw.fsf@nvdebian.thelocal>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -120,55 +97,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Sierra Guiza,
- Alejandro \(Alex\)" <alex.sierra@amd.com>, Ralph Campbell <rcampbell@nvidia.com>, Lyude Paul <lyude@redhat.com>, Karol Herbst <kherbst@redhat.com>, David Hildenbrand <david@redhat.com>, John Hubbard <jhubbard@nvidia.com>, Felix Kuehling <Felix.Kuehling@amd.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org, Logan Gunthorpe <logang@deltatee.com>, Ben Skeggs <bskeggs@redhat.com>, Jason Gunthorpe <jgg@nvidia.com>, Huang Ying <ying.huang@intel.com>, stable@vger.kernel.org, akpm@linux-foundation.org, huang ying <huang.ying.caritas@gmail.com>
+Cc: "Sierra Guiza, Alejandro \(Alex\)" <alex.sierra@amd.com>, Ralph Campbell <rcampbell@nvidia.com>, Lyude Paul <lyude@redhat.com>, Karol Herbst <kherbst@redhat.com>, David Hildenbrand <david@redhat.com>, John Hubbard <jhubbard@nvidia.com>, Felix Kuehling <Felix.Kuehling@amd.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org, Logan Gunthorpe <logang@deltatee.com>, Ben Skeggs <bskeggs@redhat.com>, Jason Gunthorpe <jgg@nvidia.com>, Huang Ying <ying.huang@intel.com>, stable@vger.kernel.org, akpm@linux-foundation.org, huang ying <huang.ying.caritas@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Wed, Aug 17, 2022 at 11:49:03AM +1000, Alistair Popple wrote:
+> 
+> Peter Xu <peterx@redhat.com> writes:
+> 
+> > On Tue, Aug 16, 2022 at 04:10:29PM +0800, huang ying wrote:
+> >> > @@ -193,11 +194,10 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
+> >> >                         bool anon_exclusive;
+> >> >                         pte_t swp_pte;
+> >> >
+> >> > +                       flush_cache_page(vma, addr, pte_pfn(*ptep));
+> >> > +                       pte = ptep_clear_flush(vma, addr, ptep);
+> >>
+> >> Although I think it's possible to batch the TLB flushing just before
+> >> unlocking PTL.  The current code looks correct.
+> >
+> > If we're with unconditionally ptep_clear_flush(), does it mean we should
+> > probably drop the "unmapped" and the last flush_tlb_range() already since
+> > they'll be redundant?
+> 
+> This patch does that, unless I missed something?
 
-Peter Xu <peterx@redhat.com> writes:
+Yes it does.  Somehow I didn't read into the real v2 patch, sorry!
 
-> On Tue, Aug 16, 2022 at 04:10:29PM +0800, huang ying wrote:
->> > @@ -193,11 +194,10 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
->> >                         bool anon_exclusive;
->> >                         pte_t swp_pte;
->> >
->> > +                       flush_cache_page(vma, addr, pte_pfn(*ptep));
->> > +                       pte = ptep_clear_flush(vma, addr, ptep);
->>
->> Although I think it's possible to batch the TLB flushing just before
->> unlocking PTL.  The current code looks correct.
->
-> If we're with unconditionally ptep_clear_flush(), does it mean we should
-> probably drop the "unmapped" and the last flush_tlb_range() already since
-> they'll be redundant?
+> 
+> > If that'll need to be dropped, it looks indeed better to still keep the
+> > batch to me but just move it earlier (before unlock iiuc then it'll be
+> > safe), then we can keep using ptep_get_and_clear() afaiu but keep "pte"
+> > updated.
+> 
+> I think we would also need to check should_defer_flush(). Looking at
+> try_to_unmap_one() there is this comment:
+> 
+> 			if (should_defer_flush(mm, flags) && !anon_exclusive) {
+> 				/*
+> 				 * We clear the PTE but do not flush so potentially
+> 				 * a remote CPU could still be writing to the folio.
+> 				 * If the entry was previously clean then the
+> 				 * architecture must guarantee that a clear->dirty
+> 				 * transition on a cached TLB entry is written through
+> 				 * and traps if the PTE is unmapped.
+> 				 */
+> 
+> And as I understand it we'd need the same guarantee here. Given
+> try_to_migrate_one() doesn't do batched TLB flushes either I'd rather
+> keep the code as consistent as possible between
+> migrate_vma_collect_pmd() and try_to_migrate_one(). I could look at
+> introducing TLB flushing for both in some future patch series.
 
-This patch does that, unless I missed something?
+should_defer_flush() is TTU-specific code?
 
-> If that'll need to be dropped, it looks indeed better to still keep the
-> batch to me but just move it earlier (before unlock iiuc then it'll be
-> safe), then we can keep using ptep_get_and_clear() afaiu but keep "pte"
-> updated.
+IIUC the caller sets TTU_BATCH_FLUSH showing that tlb can be omitted since
+the caller will be responsible for doing it.  In migrate_vma_collect_pmd()
+iiuc we don't need that hint because it'll be flushed within the same
+function but just only after the loop of modifying the ptes.  Also it'll be
+with the pgtable lock held.
 
-I think we would also need to check should_defer_flush(). Looking at
-try_to_unmap_one() there is this comment:
+Indeed try_to_migrate_one() doesn't do batching either, but IMHO it's just
+harder to do due to using the vma walker (e.g., the lock is released in
+not_found() implicitly so iiuc it's hard to do tlb flush batching safely in
+the loop of page_vma_mapped_walk).  Also that's less a concern since the
+loop will only operate upon >1 ptes only if it's a thp page mapped in ptes.
+OTOH migrate_vma_collect_pmd() operates on all ptes on a pmd always.
 
-			if (should_defer_flush(mm, flags) && !anon_exclusive) {
-				/*
-				 * We clear the PTE but do not flush so potentially
-				 * a remote CPU could still be writing to the folio.
-				 * If the entry was previously clean then the
-				 * architecture must guarantee that a clear->dirty
-				 * transition on a cached TLB entry is written through
-				 * and traps if the PTE is unmapped.
-				 */
+No strong opinion anyway, it's just a bit of a pity because fundamentally
+this patch is removing the batching tlb flush.  I also don't know whether
+there'll be observe-able perf degrade for migrate_vma_collect_pmd(),
+especially on large machines.
 
-And as I understand it we'd need the same guarantee here. Given
-try_to_migrate_one() doesn't do batched TLB flushes either I'd rather
-keep the code as consistent as possible between
-migrate_vma_collect_pmd() and try_to_migrate_one(). I could look at
-introducing TLB flushing for both in some future patch series.
+Thanks,
 
- - Alistair
+-- 
+Peter Xu
 
-> Thanks,
