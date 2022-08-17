@@ -1,115 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 543B259696F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Aug 2022 08:21:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29536596934
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Aug 2022 08:16:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M6yQg2n3Yz3cKB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Aug 2022 16:14:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M6ySf0jhQz3c3B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Aug 2022 16:16:02 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=hxtN/Ml4;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=YlYJWJE/;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=40.107.92.72; helo=nam10-bn7-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::436; helo=mail-pf1-x436.google.com; envelope-from=jniethe5@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=hxtN/Ml4;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=YlYJWJE/;
 	dkim-atps=neutral
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2072.outbound.protection.outlook.com [40.107.92.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M6yPs46NKz30hw
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Aug 2022 16:13:34 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=OIqvSv2lPpjsrZ8P2sZYQE5TFqgXMvxnju/QdSaMSSAoPlmCNheoOy/DUArdQ8gsy/7JAAComwJwZMq87qYWK8eXQcTH+3ajmGZocVjdqeQBGoAtCTruJ5tjd+gKn7ANCZn4ffN5oJRj4NgZUIknlM4yBMRxmpKdwwKqFTFQ7gqQhId/gGkpWYks3rOQogy6Ph79pu/Hp4CYlaVZo/sr/tLuqfJaZzgvjnKWLAE0sDv0DDW0a7YUzSC018aNLafoBd83kYs+t7tArHYKapHNPMPGLkey6WB5aCSDBbdc6lnmdjDIoaLIeEdLWQ4AMQIzhZHNjWOLRjJW7PqUV6RMGw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Wj6O6kTlZvpwkrJz7YV6nBkdksswDezQWAHfkpAdnbw=;
- b=IOCUzcPMeSm0SQm4AzZUUTBG46uBTSapz0HN2ljM87JLdfgJHxqkXePxtAjq8ZJFquUYXVyX0IDcfAJFccpZR2LmoZDP/0rHCvRH1KeGaOTn0GQCAagY/O/aDBVQZKQn38XQm7wnT1/Z0rPEaV0QZPjDWbwnO6BHVVO/UsCcQJJkCo/oFiNhz/td1LSjjO7lcz30uDNWXt2zNb6kf/kqhLJWlbP7GBuNK6smqRyqNNsf6cjw7Dk524Y/W4XOFcXKNvDc4CPcd5xGwybTKpsAGqQybV7jsOFCTUaAiExpCKjYPU5MZr0Gc6rLhc7t6pt1M5sH5KQZB6avC3f0r3pXeg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Wj6O6kTlZvpwkrJz7YV6nBkdksswDezQWAHfkpAdnbw=;
- b=hxtN/Ml4fDT87s8BmTqWhuAjkLy6hgWNvSsw8kemjZsjIyHxK122PUH9O6BKDMDbxb/5uSuVGUqZfA2Ij7vPdnj8DLyQA/Rdldvb+zqWvQhJAhPuF33uUFHyCUFsvp0GWb9xI1PuUf4Do97cbqb8r9UGiA6pyyXQKn2gDem9qpd3P0v9XvO9QFToEnSjchiaxR3zqrOwmWkWCpFigDVnZudBJRrfi60j8htPFQyV3CwMsvPLq9FWLaVVgFagYz9dojiFItm610C02BkSrjAqhcmlIVv41qJXxPOzZFdF1i7LdRQCPyTKyxflxBnCy116iMnII0pRprBilEgMMvP3uw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from BYAPR12MB3176.namprd12.prod.outlook.com (2603:10b6:a03:134::26)
- by LV2PR12MB5944.namprd12.prod.outlook.com (2603:10b6:408:14f::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5504.28; Wed, 17 Aug
- 2022 06:13:14 +0000
-Received: from BYAPR12MB3176.namprd12.prod.outlook.com
- ([fe80::eca6:a4a7:e2b2:27e7]) by BYAPR12MB3176.namprd12.prod.outlook.com
- ([fe80::eca6:a4a7:e2b2:27e7%5]) with mapi id 15.20.5504.027; Wed, 17 Aug 2022
- 06:13:14 +0000
-References: <6e77914685ede036c419fa65b6adc27f25a6c3e9.1660635033.git-series.apopple@nvidia.com>
- <CAC=cRTPGiXWjk=CYnCrhJnLx3mdkGDXZpvApo6yTbeW7+ZGajA@mail.gmail.com>
- <Yvv/eGfi3LW8WxPZ@xz-m1.local> <871qtfvdlw.fsf@nvdebian.thelocal>
- <YvxWUY9eafFJ27ef@xz-m1.local>
-User-agent: mu4e 1.6.9; emacs 27.1
-From: Alistair Popple <apopple@nvidia.com>
-To: Peter Xu <peterx@redhat.com>
-Subject: Re: [PATCH v2 1/2] mm/migrate_device.c: Copy pte dirty bit to page
-Date: Wed, 17 Aug 2022 15:41:16 +1000
-In-reply-to: <YvxWUY9eafFJ27ef@xz-m1.local>
-Message-ID: <87o7wjtn2g.fsf@nvdebian.thelocal>
-Content-Type: text/plain
-X-ClientProxiedBy: BY3PR05CA0039.namprd05.prod.outlook.com
- (2603:10b6:a03:39b::14) To BYAPR12MB3176.namprd12.prod.outlook.com
- (2603:10b6:a03:134::26)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M6yS05pGnz3bY8
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Aug 2022 16:15:28 +1000 (AEST)
+Received: by mail-pf1-x436.google.com with SMTP id u133so11246547pfc.10
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Aug 2022 23:15:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:user-agent:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc;
+        bh=V/WWAglTMLKqDnCjeLq46a4fbo9tCoelyGe1SAfOR/k=;
+        b=YlYJWJE/PCNViHtIOZW4O1+R2iJAm9NkOWcITR7ggRW5tiqhBwZNDcRjEcx3ChBhSD
+         kPn3/A04CfrTNbDj2GJjMNOWFoXwD/lyUhkrhOf6Tt/J0t+SwFognBlHV+xVwzF4Nyd9
+         ItO+V0T1neUEzD4FcveLrcPLfzl+ZJJQmdP6RQDDMYcivbuXVIvdmHZSWgNTZYGVOScP
+         7gX/DXkKpGBJ85OqXK+XVReXwNDW0FOHR4uHKjfJP/qJxB40w3B5fOY0ozloCmIRdLwz
+         0IjqD25m22r9mEcCypIHh88WmktzVXQwnBh7r5mC/GwwC8wItNaurUwejBqHekH3pVhk
+         MxMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:user-agent:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc;
+        bh=V/WWAglTMLKqDnCjeLq46a4fbo9tCoelyGe1SAfOR/k=;
+        b=m3VqEZGbgZTaUJRCwSF+4VlkyI0KY9bjF5IMO4KfN3VIl3MPCEBXHvE5f2gLKGUuA2
+         RhehiOTcKtEI6yJ7sYjoePOFk7PmfVoxF6A6E3Ykywg+mV2F2DH7Vs1fsEroQaWvdcgN
+         8983u1QBubTkCCRRRUD/m0ZAmsPH+rzwna7edIHUgSAJz/jahtasoby8HCRQXTSkGD+w
+         6GiyIcEtRyYGkzLnhNEAbp/O2h1+upCkpV9YGGEc469wFi7h+LXzJaqpDGTpz7iWUgux
+         a+bRL20H5foKRSZafyHR1YrltbIAIfEVY97faA9na82cJaSyiUb/l9HmPzVuUoXVo0I8
+         xwpg==
+X-Gm-Message-State: ACgBeo1OfUUmumSkhBxNeUbTT6euqdRYqRCc7/tiBy2pvcIkDYgASePB
+	wnjQQ5TlefeUgYxwHYRz8ys=
+X-Google-Smtp-Source: AA6agR4fnFRb2kKnWaHcGEdnVjMuoIdfuJUH/ni4C3A7/FlJUUXsv0mCe2GW1oXaSmt3y8wyLliXNQ==
+X-Received: by 2002:a63:f14c:0:b0:41a:b83d:a636 with SMTP id o12-20020a63f14c000000b0041ab83da636mr20445300pgk.361.1660716925100;
+        Tue, 16 Aug 2022 23:15:25 -0700 (PDT)
+Received: from tee480.ozlabs.ibm.com (110-175-254-242.static.tpgi.com.au. [110.175.254.242])
+        by smtp.googlemail.com with ESMTPSA id d20-20020aa797b4000000b00517c84fd24asm9842553pfq.172.2022.08.16.23.15.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Aug 2022 23:15:24 -0700 (PDT)
+Message-ID: <faa82449f058e4d57372dc4e7b5ca2dc091cb454.camel@gmail.com>
+Subject: Re: [PATCH v4 2/2] selftests/powerpc: Add a test for execute-only
+ memory
+From: Jordan Niethe <jniethe5@gmail.com>
+To: Russell Currey <ruscur@russell.cc>, linuxppc-dev@lists.ozlabs.org
+Date: Wed, 17 Aug 2022 16:15:19 +1000
+In-Reply-To: <20220817050640.406017-2-ruscur@russell.cc>
+References: <20220817050640.406017-1-ruscur@russell.cc>
+	 <20220817050640.406017-2-ruscur@russell.cc>
+Content-Type: text/plain; charset="UTF-7"
+User-Agent: Evolution 3.36.5-0ubuntu1 
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: cd77fadf-1ae9-4220-08e6-08da801791d3
-X-MS-TrafficTypeDiagnostic: LV2PR12MB5944:EE_
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	RK+Crj00aVCHeLE/+0n3v1vGcRXvmUb3kT0rIqW5coI9M4tsHm014z/VmD/NWVtGHksQz1MrenC00/aRax5objuTgeUzXSBFDXURSBn91zmIrsJfGHc0xoaO/WiV5KCR/ept/OVzIKhR0N2JnnP9Dup6/ixOGaFIfQBwKn6BnjnHblmkwQdy/y+VYh3JciEffiN7p1y07PIuoln+17Wjrg7PT9SvnLxX+UMXcrlJnrYc/sgq7EoyFxucETliiV2RmFlhEt3Su5jNEFj0+CAxmAn5XyLHTmh1sizlJ3Jx3l0IQMF4cNTeMsZKYZ53myJ0FE4rFNbuEyvMsiMDzwDtp86IYryoy3Ft0JizEomVVZDGmZvkcK11srEDv/T0nKH+II2mDqnNsRCktzF69SgxAvJvseB9vAwyG3IIkdF4Yw1KycyOjLOX5bvOEy3k2mMq5mHBdQS/9MszA86tTJc6/l2EzYqeR42yPJTb60jAjcseRaPq+Uhm3nVDcRoJ03hiP4I2m75uNyL6fcSqcMG8E2v3Q+rlJ6xFNykFRQysBiTOXIBDMi34rk5/4KDbsVAqOWFmGqowzN/YfDp6a1VQH5v2+ISvcdCBSFtUebIonBgY0pgDQ6kLrlyvtGeGz0hDhMpJfYuj2mMuz4HJI+slKqgoLKbrtdBlzpIlRW5VPdLh+mkzB08VaarJL69gC9W/ijqExTkwMYWy31xzaMBlUWimGSmK3ty0cXLanaxGYtGNmcVAE9iiJWgCfeHObaIUkpnUSDPIiz9ZC5V9b1b5UxHq7ouziFT80eWjNIaQLAU=
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB3176.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(4636009)(366004)(376002)(39860400002)(396003)(346002)(136003)(66556008)(66476007)(9686003)(66946007)(8676002)(2906002)(4326008)(316002)(478600001)(7416002)(6506007)(41300700001)(26005)(8936002)(86362001)(6512007)(186003)(83380400001)(6486002)(5660300002)(38100700002)(6916009)(54906003)(14143004);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?XoMQ7aTm7tF2gUnUY2jGFv5CLvy6wE7bgCXugapuyw/uJEF7gVpkpdFEzFya?=
- =?us-ascii?Q?CnMOx1Q7Wi/ii4HgPNh9mSrDPWGGjKj9ocG5J3xL9ePsgj9eBDG8o+bjNvJp?=
- =?us-ascii?Q?+7HIbxaKuMaaMMW8XSdWe38Yuo4YkeLX3OlBuLhsnDQa9K2uuCf6bVK7cLht?=
- =?us-ascii?Q?zDfF4unlR5R+xpO9lTLQOjofzwHQh0/rhk8lhLWRuDR6CBZuMLoUysHXf+Gq?=
- =?us-ascii?Q?mYzOYQNSaiRIYd3R8IHuuyV6LyqpvXlP2kRBtd1+9G38BazJhMfcDVRD3KtI?=
- =?us-ascii?Q?o5gZ/wIZnD0UUySSgu7FiXWGnxLe9N4Cue/vCqKDrgM22rR/jPVMiTG9s0y/?=
- =?us-ascii?Q?a1BPoPjaGngzO0TPjFKsYNfNi2W5gx8bSt7IBVTSCQ+pgWsodsrGkviy4vQW?=
- =?us-ascii?Q?sQWwga+xEdJHDYlxnGK6xEFMCv88HUwdvFhlWuWjS1b0SSl6/9c5dDfJ/sM8?=
- =?us-ascii?Q?NJwScKLTcbAgD7nqIqKD1kbeyEKm7z/f2TUGfuDQPi20pDqCyy8sUpB3dTMg?=
- =?us-ascii?Q?ckeklUTORxDtf+baX1bt6+bgQg/He3zblzvNxnayZPmeITYkm7uoqIW5y3Lx?=
- =?us-ascii?Q?nuMNeKoKrSOyc9YQ7eVklBZVpp6c48Zj7TiQMwVrT2RsbNbj79HYyh4DKvZw?=
- =?us-ascii?Q?fa7bclp33g8eU73KnJtkd7I/MrHVeqAP/Uv+XZSDpFg3KeFcHB+4Cm6ahRSs?=
- =?us-ascii?Q?I8P7XlDlsUKatJzSzEkfKv6ii1yHHL8KGov7sJbWVcTBHbfyZFLuzCjlUVjX?=
- =?us-ascii?Q?Qu5WqQGJKyS6YMGiTZtazULwX3HBMF/4/bwnKKP2bUGtM6KTT3rYp+IHYnB3?=
- =?us-ascii?Q?/DffqnO/d94WyMe+woCOx7VC/gpb1A7ZDgWd2JDNlt7HkpW6kRBdyQzo6pvM?=
- =?us-ascii?Q?sWfx9PkzXFwKF8VPvfQApML04lTQ71g5m+1k8b8tHYnnwrKJlqEns1y7VqcB?=
- =?us-ascii?Q?LrweflIHJOkEd7I3+Gemvs5AqXg7KGuAIy0OgERcJPGuPR6Vn0DpRRrTgAvY?=
- =?us-ascii?Q?NJON5mtmRuNsOEsK5Fxh4VxpgLyIso/6+gi7JspLNHXnRd5cPjL7sVax5Iih?=
- =?us-ascii?Q?tjsP3941jmFR1bgBotxZFy2fMdhUyuI37rviHM31SBcRBCFCaspHv2eLGXtr?=
- =?us-ascii?Q?m9ilRjn7+39FLaeVJbOnTuO5FvMjFnHbCk0h9DwukYY8698yIFvfNkkm3Y3P?=
- =?us-ascii?Q?IGkUJP4WA27D1VpL2/EAKaeK72raPzLyXAoCkFeNPCNMJaLG/cdFje5l4NvL?=
- =?us-ascii?Q?jlUlQkv8OD+dt+rFGZnwTb46F4uPSMTCN/NdwS7jLLchS7e0vXnJF0OoYzwB?=
- =?us-ascii?Q?lLpp1GUeBY4SynGE4EOKCVmCj1zUkxgF/6QHcL6RLcv11JlOA9Z773ZKL6mA?=
- =?us-ascii?Q?ZH+9K+B8sliPhw+oC5fDPwqclvQMvy+woej5X/1uL/TahQ36GixtxWoPSNyc?=
- =?us-ascii?Q?y31+Y8MI0JsOEkU4eF/9IAPTxu1hch/ptqYR8kUvjAuzVFeY0cOaIErJKJyA?=
- =?us-ascii?Q?HtyJdyJE31lTbuu3HrOARQvpwjf63d5PwQez0R95gzwtls4/COtXR+4C5dih?=
- =?us-ascii?Q?ZIHbVDh77eCqioq4xK/A6VySJt+LqUf1cxl/nsOh?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cd77fadf-1ae9-4220-08e6-08da801791d3
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR12MB3176.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Aug 2022 06:13:14.7194
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SEhIvMM1282l2Rh3WRSm+/rJmNAX6ivK6zBQI/cg+A+NvUjdARPO8IR9KRuLNaWXYkpMkF6Okkqg4TcfC7Tvpw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB5944
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -121,106 +80,288 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Sierra Guiza,
- Alejandro \(Alex\)" <alex.sierra@amd.com>, Ralph Campbell <rcampbell@nvidia.com>, Lyude Paul <lyude@redhat.com>, Karol Herbst <kherbst@redhat.com>, David Hildenbrand <david@redhat.com>, John Hubbard <jhubbard@nvidia.com>, Felix Kuehling <Felix.Kuehling@amd.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org, Logan Gunthorpe <logang@deltatee.com>, Ben Skeggs <bskeggs@redhat.com>, Jason Gunthorpe <jgg@nvidia.com>, Huang Ying <ying.huang@intel.com>, stable@vger.kernel.org, akpm@linux-foundation.org, huang ying <huang.ying.caritas@gmail.com>
+Cc: ajd@linux.ibm.com, anshuman.khandual@arm.com, aneesh.kumar@linux.ibm.com, npiggin@gmail.com, linux-hardening@vger.kernel.org, nicholas@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Wed, 2022-08-17 at 15:06 +-1000, Russell Currey wrote:
++AD4 From: Nicholas Miehlbradt +ADw-nicholas+AEA-linux.ibm.com+AD4
++AD4 
++AD4 This selftest is designed to cover execute-only protections
++AD4 on the Radix MMU but will also work with Hash.
++AD4 
++AD4 The tests are based on those found in pkey+AF8-exec+AF8-test with modifications
++AD4 to use the generic mprotect() instead of the pkey variants.
 
-Peter Xu <peterx@redhat.com> writes:
+Would it make sense to rename pkey+AF8-exec+AF8-test to exec+AF8-test and have this test be apart of that?
 
-> On Wed, Aug 17, 2022 at 11:49:03AM +1000, Alistair Popple wrote:
->>
->> Peter Xu <peterx@redhat.com> writes:
->>
->> > On Tue, Aug 16, 2022 at 04:10:29PM +0800, huang ying wrote:
->> >> > @@ -193,11 +194,10 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
->> >> >                         bool anon_exclusive;
->> >> >                         pte_t swp_pte;
->> >> >
->> >> > +                       flush_cache_page(vma, addr, pte_pfn(*ptep));
->> >> > +                       pte = ptep_clear_flush(vma, addr, ptep);
->> >>
->> >> Although I think it's possible to batch the TLB flushing just before
->> >> unlocking PTL.  The current code looks correct.
->> >
->> > If we're with unconditionally ptep_clear_flush(), does it mean we should
->> > probably drop the "unmapped" and the last flush_tlb_range() already since
->> > they'll be redundant?
->>
->> This patch does that, unless I missed something?
->
-> Yes it does.  Somehow I didn't read into the real v2 patch, sorry!
->
->>
->> > If that'll need to be dropped, it looks indeed better to still keep the
->> > batch to me but just move it earlier (before unlock iiuc then it'll be
->> > safe), then we can keep using ptep_get_and_clear() afaiu but keep "pte"
->> > updated.
->>
->> I think we would also need to check should_defer_flush(). Looking at
->> try_to_unmap_one() there is this comment:
->>
->> 			if (should_defer_flush(mm, flags) && !anon_exclusive) {
->> 				/*
->> 				 * We clear the PTE but do not flush so potentially
->> 				 * a remote CPU could still be writing to the folio.
->> 				 * If the entry was previously clean then the
->> 				 * architecture must guarantee that a clear->dirty
->> 				 * transition on a cached TLB entry is written through
->> 				 * and traps if the PTE is unmapped.
->> 				 */
->>
->> And as I understand it we'd need the same guarantee here. Given
->> try_to_migrate_one() doesn't do batched TLB flushes either I'd rather
->> keep the code as consistent as possible between
->> migrate_vma_collect_pmd() and try_to_migrate_one(). I could look at
->> introducing TLB flushing for both in some future patch series.
->
-> should_defer_flush() is TTU-specific code?
++AD4 
++AD4 Signed-off-by: Nicholas Miehlbradt +ADw-nicholas+AEA-linux.ibm.com+AD4
++AD4 Signed-off-by: Russell Currey +ADw-ruscur+AEA-russell.cc+AD4
++AD4 ---
++AD4 v4: new
++AD4 
++AD4  tools/testing/selftests/powerpc/mm/Makefile   +AHw   3 +--
++AD4  .../testing/selftests/powerpc/mm/exec+AF8-prot.c  +AHw 231 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
++AD4  2 files changed, 233 insertions(+-), 1 deletion(-)
++AD4  create mode 100644 tools/testing/selftests/powerpc/mm/exec+AF8-prot.c
++AD4 
++AD4 diff --git a/tools/testing/selftests/powerpc/mm/Makefile b/tools/testing/selftests/powerpc/mm/Makefile
++AD4 index 27dc09d0bfee..19dd0b2ea397 100644
++AD4 --- a/tools/testing/selftests/powerpc/mm/Makefile
++AD4 +-+-+- b/tools/testing/selftests/powerpc/mm/Makefile
++AD4 +AEAAQA -3,7 +-3,7 +AEAAQA noarg:
++AD4  	+ACQ(MAKE) -C ../
++AD4  
++AD4  TEST+AF8-GEN+AF8-PROGS :+AD0 hugetlb+AF8-vs+AF8-thp+AF8-test subpage+AF8-prot prot+AF8-sao segv+AF8-errors wild+AF8-bctr +AFw
++AD4 -		  large+AF8-vm+AF8-fork+AF8-separation bad+AF8-accesses pkey+AF8-exec+AF8-prot +AFw
++AD4 +-		  large+AF8-vm+AF8-fork+AF8-separation bad+AF8-accesses exec+AF8-prot pkey+AF8-exec+AF8-prot +AFw
++AD4  		  pkey+AF8-siginfo stack+AF8-expansion+AF8-signal stack+AF8-expansion+AF8-ldst +AFw
++AD4  		  large+AF8-vm+AF8-gpr+AF8-corruption
++AD4  TEST+AF8-PROGS :+AD0 stress+AF8-code+AF8-patching.sh
++AD4 +AEAAQA -22,6 +-22,7 +AEAAQA +ACQ(OUTPUT)/wild+AF8-bctr: CFLAGS +-+AD0 -m64
++AD4  +ACQ(OUTPUT)/large+AF8-vm+AF8-fork+AF8-separation: CFLAGS +-+AD0 -m64
++AD4  +ACQ(OUTPUT)/large+AF8-vm+AF8-gpr+AF8-corruption: CFLAGS +-+AD0 -m64
++AD4  +ACQ(OUTPUT)/bad+AF8-accesses: CFLAGS +-+AD0 -m64
++AD4 +-+ACQ(OUTPUT)/exec+AF8-prot: CFLAGS +-+AD0 -m64
++AD4  +ACQ(OUTPUT)/pkey+AF8-exec+AF8-prot: CFLAGS +-+AD0 -m64
++AD4  +ACQ(OUTPUT)/pkey+AF8-siginfo: CFLAGS +-+AD0 -m64
++AD4  
++AD4 diff --git a/tools/testing/selftests/powerpc/mm/exec+AF8-prot.c b/tools/testing/selftests/powerpc/mm/exec+AF8-prot.c
++AD4 new file mode 100644
++AD4 index 000000000000..db75b2225de1
++AD4 --- /dev/null
++AD4 +-+-+- b/tools/testing/selftests/powerpc/mm/exec+AF8-prot.c
++AD4 +AEAAQA -0,0 +-1,231 +AEAAQA
++AD4 +-// SPDX-License-Identifier: GPL-2.0
++AD4 +-
++AD4 +-/+ACo
++AD4 +- +ACo Copyright 2022, Nicholas Miehlbradt, IBM Corporation
++AD4 +- +ACo based on pkey+AF8-exec+AF8-prot.c
++AD4 +- +ACo
++AD4 +- +ACo Test if applying execute protection on pages works as expected.
++AD4 +- +ACo-/
++AD4 +-
++AD4 +-+ACM-define +AF8-GNU+AF8-SOURCE
++AD4 +-+ACM-include +ADw-stdio.h+AD4
++AD4 +-+ACM-include +ADw-stdlib.h+AD4
++AD4 +-+ACM-include +ADw-string.h+AD4
++AD4 +-+ACM-include +ADw-signal.h+AD4
++AD4 +-
++AD4 +-+ACM-include +ADw-unistd.h+AD4
++AD4 +-+ACM-include +ADw-sys/mman.h+AD4
++AD4 +-
++AD4 +-+ACM-include +ACI-pkeys.h+ACI
++AD4 +-
++AD4 +-
++AD4 +-+ACM-define PPC+AF8-INST+AF8-NOP	0x60000000
++AD4 +-+ACM-define PPC+AF8-INST+AF8-TRAP	0x7fe00008
++AD4 +-+ACM-define PPC+AF8-INST+AF8-BLR	0x4e800020
++AD4 +-
++AD4 +-static volatile sig+AF8-atomic+AF8-t fault+AF8-code+ADs
++AD4 +-static volatile sig+AF8-atomic+AF8-t remaining+AF8-faults+ADs
++AD4 +-static volatile unsigned int +ACo-fault+AF8-addr+ADs
++AD4 +-static unsigned long pgsize, numinsns+ADs
++AD4 +-static unsigned int +ACo-insns+ADs
++AD4 +-static bool pkeys+AF8-supported+ADs
++AD4 +-
++AD4 +-static bool is+AF8-fault+AF8-expected(int fault+AF8-code)
++AD4 +-+AHs
++AD4 +-	if (fault+AF8-code +AD0APQ SEGV+AF8-ACCERR)
++AD4 +-		return true+ADs
++AD4 +-
++AD4 +-	/+ACo Assume any pkey error is fine since pkey+AF8-exec+AF8-prot test covers them +ACo-/
++AD4 +-	if (fault+AF8-code +AD0APQ SEGV+AF8-PKUERR +ACYAJg pkeys+AF8-supported)
++AD4 +-		return true+ADs
++AD4 +-
++AD4 +-	return false+ADs
++AD4 +-+AH0
++AD4 +-
++AD4 +-static void trap+AF8-handler(int signum, siginfo+AF8-t +ACo-sinfo, void +ACo-ctx)
++AD4 +-+AHs
++AD4 +-	/+ACo Check if this fault originated from the expected address +ACo-/
++AD4 +-	if (sinfo-+AD4-si+AF8-addr +ACEAPQ (void +ACo)fault+AF8-addr)
++AD4 +-		sigsafe+AF8-err(+ACI-got a fault for an unexpected address+AFw-n+ACI)+ADs
++AD4 +-
++AD4 +-	+AF8-exit(1)+ADs
++AD4 +-+AH0
++AD4 +-
++AD4 +-static void segv+AF8-handler(int signum, siginfo+AF8-t +ACo-sinfo, void +ACo-ctx)
++AD4 +-+AHs
++AD4 +-	fault+AF8-code +AD0 sinfo-+AD4-si+AF8-code+ADs
++AD4 +-
++AD4 +-	/+ACo Check if this fault originated from the expected address +ACo-/
++AD4 +-	if (sinfo-+AD4-si+AF8-addr +ACEAPQ (void +ACo)fault+AF8-addr) +AHs
++AD4 +-		sigsafe+AF8-err(+ACI-got a fault for an unexpected address+AFw-n+ACI)+ADs
++AD4 +-		+AF8-exit(1)+ADs
++AD4 +-	+AH0
++AD4 +-
++AD4 +-	/+ACo Check if too many faults have occurred for a single test case +ACo-/
++AD4 +-	if (+ACE-remaining+AF8-faults) +AHs
++AD4 +-		sigsafe+AF8-err(+ACI-got too many faults for the same address+AFw-n+ACI)+ADs
++AD4 +-		+AF8-exit(1)+ADs
++AD4 +-	+AH0
++AD4 +-
++AD4 +-
++AD4 +-	/+ACo Restore permissions in order to continue +ACo-/
++AD4 +-	if (is+AF8-fault+AF8-expected(fault+AF8-code)) +AHs
++AD4 +-		if (mprotect(insns, pgsize, PROT+AF8-READ +AHw PROT+AF8-WRITE +AHw PROT+AF8-EXEC)) +AHs
++AD4 +-			sigsafe+AF8-err(+ACI-failed to set access permissions+AFw-n+ACI)+ADs
++AD4 +-			+AF8-exit(1)+ADs
++AD4 +-		+AH0
++AD4 +-	+AH0 else +AHs
++AD4 +-		sigsafe+AF8-err(+ACI-got a fault with an unexpected code+AFw-n+ACI)+ADs
++AD4 +-		+AF8-exit(1)+ADs
++AD4 +-	+AH0
++AD4 +-
++AD4 +-	remaining+AF8-faults--+ADs
++AD4 +-+AH0
++AD4 +-
++AD4 +-static int check+AF8-exec+AF8-fault(int rights)
++AD4 +-+AHs
++AD4 +-	/+ACo
++AD4 +-	 +ACo Jump to the executable region.
++AD4 +-	 +ACo
++AD4 +-	 +ACo The first iteration also checks if the overwrite of the
++AD4 +-	 +ACo first instruction word from a trap to a no-op succeeded.
++AD4 +-	 +ACo-/
++AD4 +-	fault+AF8-code +AD0 -1+ADs
++AD4 +-	remaining+AF8-faults +AD0 0+ADs
++AD4 +-	if (+ACE(rights +ACY PROT+AF8-EXEC))
++AD4 +-		remaining+AF8-faults +AD0 1+ADs
++AD4 +-
++AD4 +-	FAIL+AF8-IF(mprotect(insns, pgsize, rights) +ACEAPQ 0)+ADs
++AD4 +-	asm volatile(+ACI-mtctr	+ACU-0+ADs bctrl+ACI : : +ACI-r+ACI(insns))+ADs
++AD4 +-
++AD4 +-	FAIL+AF8-IF(remaining+AF8-faults +ACEAPQ 0)+ADs
++AD4 +-	if (+ACE(rights +ACY PROT+AF8-EXEC))
++AD4 +-		FAIL+AF8-IF(+ACE-is+AF8-fault+AF8-expected(fault+AF8-code))+ADs
++AD4 +-
++AD4 +-	return 0+ADs
++AD4 +-+AH0
++AD4 +-
++AD4 +-static int test(void)
++AD4 +-+AHs
++AD4 +-	struct sigaction segv+AF8-act, trap+AF8-act+ADs
++AD4 +-	int i+ADs
++AD4 +-
++AD4 +-	/+ACo Skip the test if the CPU doesn't support Radix +ACo-/
++AD4 +-	SKIP+AF8-IF(+ACE-have+AF8-hwcap2(PPC+AF8-FEATURE2+AF8-ARCH+AF8-3+AF8-00))+ADs
++AD4 +-
++AD4 +-	/+ACo Check if pkeys are supported +ACo-/
++AD4 +-	pkeys+AF8-supported +AD0 pkeys+AF8-unsupported() +AD0APQ 0+ADs
++AD4 +-
++AD4 +-	/+ACo Setup SIGSEGV handler +ACo-/
++AD4 +-	segv+AF8-act.sa+AF8-handler +AD0 0+ADs
++AD4 +-	segv+AF8-act.sa+AF8-sigaction +AD0 segv+AF8-handler+ADs
++AD4 +-	FAIL+AF8-IF(sigprocmask(SIG+AF8-SETMASK, 0, +ACY-segv+AF8-act.sa+AF8-mask) +ACEAPQ 0)+ADs
++AD4 +-	segv+AF8-act.sa+AF8-flags +AD0 SA+AF8-SIGINFO+ADs
++AD4 +-	segv+AF8-act.sa+AF8-restorer +AD0 0+ADs
++AD4 +-	FAIL+AF8-IF(sigaction(SIGSEGV, +ACY-segv+AF8-act, NULL) +ACEAPQ 0)+ADs
++AD4 +-
++AD4 +-	/+ACo Setup SIGTRAP handler +ACo-/
++AD4 +-	trap+AF8-act.sa+AF8-handler +AD0 0+ADs
++AD4 +-	trap+AF8-act.sa+AF8-sigaction +AD0 trap+AF8-handler+ADs
++AD4 +-	FAIL+AF8-IF(sigprocmask(SIG+AF8-SETMASK, 0, +ACY-trap+AF8-act.sa+AF8-mask) +ACEAPQ 0)+ADs
++AD4 +-	trap+AF8-act.sa+AF8-flags +AD0 SA+AF8-SIGINFO+ADs
++AD4 +-	trap+AF8-act.sa+AF8-restorer +AD0 0+ADs
++AD4 +-	FAIL+AF8-IF(sigaction(SIGTRAP, +ACY-trap+AF8-act, NULL) +ACEAPQ 0)+ADs
++AD4 +-
++AD4 +-	/+ACo Setup executable region +ACo-/
++AD4 +-	pgsize +AD0 getpagesize()+ADs
++AD4 +-	numinsns +AD0 pgsize / sizeof(unsigned int)+ADs
++AD4 +-	insns +AD0 (unsigned int +ACo)mmap(NULL, pgsize, PROT+AF8-READ +AHw PROT+AF8-WRITE,
++AD4 +-				      MAP+AF8-PRIVATE +AHw MAP+AF8-ANONYMOUS, -1, 0)+ADs
++AD4 +-	FAIL+AF8-IF(insns +AD0APQ MAP+AF8-FAILED)+ADs
++AD4 +-
++AD4 +-	/+ACo Write the instruction words +ACo-/
++AD4 +-	for (i +AD0 1+ADs i +ADw numinsns - 1+ADs i+-+-)
++AD4 +-		insns+AFs-i+AF0 +AD0 PPC+AF8-INST+AF8-NOP+ADs
++AD4 +-
++AD4 +-	/+ACo
++AD4 +-	 +ACo Set the first instruction as an unconditional trap. If
++AD4 +-	 +ACo the last write to this address succeeds, this should
++AD4 +-	 +ACo get overwritten by a no-op.
++AD4 +-	 +ACo-/
++AD4 +-	insns+AFs-0+AF0 +AD0 PPC+AF8-INST+AF8-TRAP+ADs
++AD4 +-
++AD4 +-	/+ACo
++AD4 +-	 +ACo Later, to jump to the executable region, we use a branch
++AD4 +-	 +ACo and link instruction (bctrl) which sets the return address
++AD4 +-	 +ACo automatically in LR. Use that to return back.
++AD4 +-	 +ACo-/
++AD4 +-	insns+AFs-numinsns - 1+AF0 +AD0 PPC+AF8-INST+AF8-BLR+ADs
++AD4 +-
++AD4 +-	/+ACo
++AD4 +-	 +ACo Pick the first instruction's address from the executable
++AD4 +-	 +ACo region.
++AD4 +-	 +ACo-/
++AD4 +-	fault+AF8-addr +AD0 insns+ADs
++AD4 +-
++AD4 +-	/+ACo
++AD4 +-	 +ACo Read an instruction word from the address when the page
++AD4 +-	 +ACo is execute only. This should generate an access fault.
++AD4 +-	 +ACo-/
++AD4 +-	fault+AF8-code +AD0 -1+ADs
++AD4 +-	remaining+AF8-faults +AD0 1+ADs
++AD4 +-	printf(+ACI-Testing read on --x, should fault...+ACI)+ADs
++AD4 +-	FAIL+AF8-IF(mprotect(insns, pgsize, PROT+AF8-EXEC) +ACEAPQ 0)+ADs
++AD4 +-	i +AD0 +ACo-fault+AF8-addr+ADs
++AD4 +-	FAIL+AF8-IF(remaining+AF8-faults +ACEAPQ 0 +AHwAfA +ACE-is+AF8-fault+AF8-expected(fault+AF8-code))+ADs
++AD4 +-	printf(+ACI-ok+ACEAXA-n+ACI)+ADs
++AD4 +-
++AD4 +-	/+ACo
++AD4 +-	 +ACo Write an instruction word to the address when the page
++AD4 +-	 +ACo execute only. This should also generate an access fault.
++AD4 +-	 +ACo-/
++AD4 +-	fault+AF8-code +AD0 -1+ADs
++AD4 +-	remaining+AF8-faults +AD0 1+ADs
++AD4 +-	printf(+ACI-Testing write on --x, should fault...+ACI)+ADs
++AD4 +-	FAIL+AF8-IF(mprotect(insns, pgsize, PROT+AF8-EXEC) +ACEAPQ 0)+ADs
++AD4 +-	+ACo-fault+AF8-addr +AD0 PPC+AF8-INST+AF8-NOP+ADs
++AD4 +-	FAIL+AF8-IF(remaining+AF8-faults +ACEAPQ 0 +AHwAfA +ACE-is+AF8-fault+AF8-expected(fault+AF8-code))+ADs
++AD4 +-	printf(+ACI-ok+ACEAXA-n+ACI)+ADs
++AD4 +-
++AD4 +-	printf(+ACI-Testing exec on ---, should fault...+ACI)+ADs
++AD4 +-	FAIL+AF8-IF(check+AF8-exec+AF8-fault(PROT+AF8-NONE))+ADs
++AD4 +-	printf(+ACI-ok+ACEAXA-n+ACI)+ADs
++AD4 +-
++AD4 +-	printf(+ACI-Testing exec on r--, should fault...+ACI)+ADs
++AD4 +-	FAIL+AF8-IF(check+AF8-exec+AF8-fault(PROT+AF8-READ))+ADs
++AD4 +-	printf(+ACI-ok+ACEAXA-n+ACI)+ADs
++AD4 +-
++AD4 +-	printf(+ACI-Testing exec on -w-, should fault...+ACI)+ADs
++AD4 +-	FAIL+AF8-IF(check+AF8-exec+AF8-fault(PROT+AF8-WRITE))+ADs
++AD4 +-	printf(+ACI-ok+ACEAXA-n+ACI)+ADs
++AD4 +-
++AD4 +-	printf(+ACI-Testing exec on rw-, should fault...+ACI)+ADs
++AD4 +-	FAIL+AF8-IF(check+AF8-exec+AF8-fault(PROT+AF8-READ +AHw PROT+AF8-WRITE))+ADs
++AD4 +-	printf(+ACI-ok+ACEAXA-n+ACI)+ADs
++AD4 +-
++AD4 +-	printf(+ACI-Testing exec on --x, should succeed...+ACI)+ADs
++AD4 +-	FAIL+AF8-IF(check+AF8-exec+AF8-fault(PROT+AF8-EXEC))+ADs
++AD4 +-	printf(+ACI-ok+ACEAXA-n+ACI)+ADs
++AD4 +-
++AD4 +-	printf(+ACI-Testing exec on r-x, should succeed...+ACI)+ADs
++AD4 +-	FAIL+AF8-IF(check+AF8-exec+AF8-fault(PROT+AF8-READ +AHw PROT+AF8-EXEC))+ADs
++AD4 +-	printf(+ACI-ok+ACEAXA-n+ACI)+ADs
++AD4 +-
++AD4 +-	printf(+ACI-Testing exec on -wx, should succeed...+ACI)+ADs
++AD4 +-	FAIL+AF8-IF(check+AF8-exec+AF8-fault(PROT+AF8-WRITE +AHw PROT+AF8-EXEC))+ADs
++AD4 +-	printf(+ACI-ok+ACEAXA-n+ACI)+ADs
++AD4 +-
++AD4 +-	printf(+ACI-Testing exec on rwx, should succeed...+ACI)+ADs
++AD4 +-	FAIL+AF8-IF(check+AF8-exec+AF8-fault(PROT+AF8-READ +AHw PROT+AF8-WRITE +AHw PROT+AF8-EXEC))+ADs
++AD4 +-	printf(+ACI-ok+ACEAXA-n+ACI)+ADs
++AD4 +-
++AD4 +-	/+ACo Cleanup +ACo-/
++AD4 +-	FAIL+AF8-IF(munmap((void +ACo)insns, pgsize))+ADs
++AD4 +-
++AD4 +-	return 0+ADs
++AD4 +-+AH0
++AD4 +-
++AD4 +-int main(void)
++AD4 +-+AHs
++AD4 +-	return test+AF8-harness(test, +ACI-exec+AF8-prot+ACI)+ADs
++AD4 +-+AH0
 
-I'm not sure, but I think we need the same guarantee here as mentioned
-in the comment otherwise we wouldn't see a subsequent CPU write that
-could dirty the PTE after we have cleared it but before the TLB flush.
-
-My assumption was should_defer_flush() would ensure we have that
-guarantee from the architecture, but maybe there are alternate/better
-ways of enforcing that?
-
-> IIUC the caller sets TTU_BATCH_FLUSH showing that tlb can be omitted since
-> the caller will be responsible for doing it.  In migrate_vma_collect_pmd()
-> iiuc we don't need that hint because it'll be flushed within the same
-> function but just only after the loop of modifying the ptes.  Also it'll be
-> with the pgtable lock held.
-
-Right, but the pgtable lock doesn't protect against HW PTE changes such
-as setting the dirty bit so we need to ensure the HW does the right
-thing here and I don't know if all HW does.
-
-> Indeed try_to_migrate_one() doesn't do batching either, but IMHO it's just
-> harder to do due to using the vma walker (e.g., the lock is released in
-> not_found() implicitly so iiuc it's hard to do tlb flush batching safely in
-> the loop of page_vma_mapped_walk).  Also that's less a concern since the
-> loop will only operate upon >1 ptes only if it's a thp page mapped in ptes.
-> OTOH migrate_vma_collect_pmd() operates on all ptes on a pmd always.
-
-Yes, I had forgotten we loop over multiple ptes under the same PTL so
-didn't think removing the batching/range flush would cause all that much
-of a problem.
-
-> No strong opinion anyway, it's just a bit of a pity because fundamentally
-> this patch is removing the batching tlb flush.  I also don't know whether
-> there'll be observe-able perf degrade for migrate_vma_collect_pmd(),
-> especially on large machines.
-
-I agree it's a pity. OTOH the original code isn't correct, and it's not
-entirely clear to me that just moving it under the PTL is entirely
-correct either. So unless someone is confident and can convince me that
-just moving it under the PTL is fine I'd rather stick with this fix
-which we all agree is at least correct.
-
-My primary concern with batching is ensuring a CPU write after clearing
-a clean PTE but before flushing the TLB does the "right thing" (ie. faults
-if the PTE is not present).
-
-> Thanks,
