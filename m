@@ -1,81 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9C2B59685A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Aug 2022 07:08:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6BC759685C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Aug 2022 07:09:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M6wyx5NNdz3bhF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Aug 2022 15:08:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M6wzn1hJFz3dsS
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Aug 2022 15:09:25 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm2 header.b=Qc2b6+8O;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=LkNWjiLC;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm2 header.b=WyT6XZbE;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=wE6bl26p;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=russell.cc (client-ip=66.111.4.28; helo=out4-smtp.messagingengine.com; envelope-from=ruscur@russell.cc; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm2 header.b=Qc2b6+8O;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=LkNWjiLC;
+	dkim=pass (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm2 header.b=WyT6XZbE;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=wE6bl26p;
 	dkim-atps=neutral
 Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com [66.111.4.28])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M6wyD3Q1mz30Qc
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Aug 2022 15:08:03 +1000 (AEST)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-	by mailout.nyi.internal (Postfix) with ESMTP id 047D85C012D;
-	Wed, 17 Aug 2022 01:07:58 -0400 (EDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M6wyS6t4Bz3c1p
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Aug 2022 15:08:16 +1000 (AEST)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+	by mailout.nyi.internal (Postfix) with ESMTP id D6A645C0135;
+	Wed, 17 Aug 2022 01:08:14 -0400 (EDT)
 Received: from mailfrontend2 ([10.202.2.163])
-  by compute4.internal (MEProxy); Wed, 17 Aug 2022 01:07:58 -0400
+  by compute1.internal (MEProxy); Wed, 17 Aug 2022 01:08:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=cc
 	:cc:content-transfer-encoding:date:date:from:from:in-reply-to
-	:message-id:mime-version:reply-to:sender:subject:subject:to:to;
-	 s=fm2; t=1660712877; x=1660799277; bh=U+StPTdWwzIpuPliBQJoSII+s
-	wR2EU+LlrpyJjND3ds=; b=Qc2b6+8Os2pXQf2sSHHWRGv2L3maQR6uJe4XoXKr2
-	F/EckCZ2N0agTlRYTBf6OE+vJRj5MNyt59trylyakxrEK8QOUF2QBOPSiSA1xWtj
-	rnHPM3PZGzvzq6ldT8CuQA1rm3PctAChXhNwMEASpf6x/D2OBpKyTn+z2Y+aGlrU
-	9lxuh9jjv6HC+2SsY7KXqLvEcv8Ako83CLYsa1R3/AMcd0s22PELv6FlO7bRsBTR
-	lT7g616eUTUP/TrgeTdQenB3MK+oCJhoYWOETnZxp9l8Alx37MwRefSYO4lwF2A1
-	/EsiUPVhoMmeD0oVTBL3bmaBgqP+fwTDA7EnvppUzvB5Q==
+	:in-reply-to:message-id:mime-version:references:reply-to:sender
+	:subject:subject:to:to; s=fm2; t=1660712894; x=1660799294; bh=kJ
+	um6qEmtx3/0cosns7E2T5qaz2Pzaa0sjeSv0wEteY=; b=WyT6XZbEo/V71bt8LK
+	KatRRSt0+z5rAeUq1DcoDq0we5YHkDEeG1HWJbg7yUnzvwp8wr8V1/k0WmcmVfEo
+	mdYhWCeJ5AAreULIOi/wmjb5NwLZhqQITsCjFZN9Rop6N/f8HU9od7I6l0n1wN3I
+	rIz13oTg51eYWOJB+Qj/LS3TAnNx3d7x8lxIrac47D00CvKOkWf8mqvsV20BH1DC
+	Phw2ajXZjHWgcUJstQwqlGIWswe6PZ8J1uFx1arlbXIs1DkInrsY45T8x0RquPcW
+	ucS7WvcnD6VSK1DAqv6HYBmSIRUqXSoUnS0UzbrBMPnpVrxgQtr4tLe8/eniYnFZ
+	bnrw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:message-id
-	:mime-version:reply-to:sender:subject:subject:to:to:x-me-proxy
-	:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1660712877; x=1660799277; bh=U+StPTdWwzIpuPliBQJoSII+swR2EU+Llrp
-	yJjND3ds=; b=LkNWjiLCBo11VsUiJnHTRZJCW8iDNg/2sdU3ZDrZzpEnnVXZP6d
-	nASWQDT71sEnxhkvDnB2rYLfwOC7EJiO0aW0w6ypNrfoVGJwY2oS/IWYqHZI/8/v
-	O+GOFefrhDDt4juTOo+OYXMeuLSTtO86GXTPkSNc01Rx91t8HLncywnepKl2IgMs
-	3BwLerzx+FLyUt7murjg1Vos3EwWZ+8Nv7M8tRISZYBAGBPlQdJ0wv/IRgWwvn/y
-	ck5Prz0+8zYEHAbftUPA1WIoXzWGFB03cWiqN8aSKKq72ZoLkp5AYGolp1jOsmlV
-	XWDg8DX5kRx9oVI+I5uTqA/pZ+eG45OdpvA==
-X-ME-Sender: <xms:rXf8Ysf056DxbVUwrg8Wfj-ttXpjVxRIBMrlfhbOGfHa2EpTATL6Cg>
-    <xme:rXf8YuMeGGoTLgDAgsSpAYPKpSMFhy5s7cWp7zFbFjhuDkl9LfORhBr5vMQBNZKdO
-    5c4tkEYXyLfqWBNmQ>
-X-ME-Received: <xmr:rXf8YthwqSIJvi9XticTdtOjftpL5FkKcaotGo1yiLJuHANVeD4ndTp_Jt_MKUgedjwUmpEIkedkzSmlc3Y6qI6LAA4Wh8CmdNykcda2C-zb7A>
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:sender:subject
+	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+	:x-sasl-enc; s=fm1; t=1660712894; x=1660799294; bh=kJum6qEmtx3/0
+	cosns7E2T5qaz2Pzaa0sjeSv0wEteY=; b=wE6bl26pX64K1L9qy83BHsMYtAxkS
+	oExi/3yhQ+S3gkG6UCnIgtUgEIfK3nA7tlbNWSuXVfaTX0ErH770doG+oTcIcV6G
+	5LQmza3MfGLU6q7+zIYswfbPK/mqsMfVZgde8t/Tydy1jK7QJ+GzK73YdhnUWMc+
+	Qs9acazWYw9V3jpl0K/r6YEtas91DCsS8fZzhxapHzTVdYdZhyOCz2CoKu/EoQ0L
+	CBsw0j2/0M5bBquVXB92jajqw8Ihyr32TwpoimI10VjoOgiVB06QsYYF/wtZ+/Pa
+	Qhb9SAqeusGawWBpSp5Z9IS8tFTchp+lsn44mCUyRXbf+PlRRShRytPuA==
+X-ME-Sender: <xms:vXf8YvJuob0UED-MkwtjNKjg3tIuIyPN6sIRa-spRcNCqdCFi9x64g>
+    <xme:vXf8YjLFdzIGKK2x4AVfyUWJx_lV6TQ_pPFkO-c-Jrc1s3PZQUnJCGoo9TVVXEljp
+    9ZS1L3yW3JOjgHt5w>
+X-ME-Received: <xmr:vXf8Yns6ojWk9iDYf3RjNgty63t2ECuJnAaOogfrQYfy9oT5u2WnUYvwB_tPmMnHpyZZcF7GhULDG44nRCVIRNpT4arb5dcsN2zULjUg8LjEEQ>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrvdehhedgledvucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucgfrhhlucfvnfffucdlfedtmdenucfjughrpefhvf
-    evufffkffoggfgsedtkeertdertddtnecuhfhrohhmpeftuhhsshgvlhhlucevuhhrrhgv
-    hicuoehruhhstghurhesrhhushhsvghllhdrtggtqeenucggtffrrghtthgvrhhnpedvge
-    duteejgfevveevuddtieegleeuffevhfefueehueffkefhffehgeehjefhtdenucevlhhu
-    shhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehruhhstghurhesrh
-    hushhsvghllhdrtggt
-X-ME-Proxy: <xmx:rXf8Yh-Iipn2-MNaI7mwJA1LF_kQweyuZ1Rf7MN7wYwmsXKs8eEubw>
-    <xmx:rXf8YouTH3HYFCUmZhisuhuYbJW7M7cG5xKrco6icJHuIElEg9HV5w>
-    <xmx:rXf8YoFQC5iBFQEOPfY4DTkbN45ai591Zju47bGD8FeuaiOSCsC-FA>
-    <xmx:rXf8YmA_dnlTicWphm30glWUkn9CkcYrz8lefhVMoYEm3uATnOsZaQ>
+    uceurghilhhouhhtmecufedttdenucgfrhhlucfvnfffucdludehmdenucfjughrpefhvf
+    evufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeftuhhsshgvlhhlucevuhhr
+    rhgvhicuoehruhhstghurhesrhhushhsvghllhdrtggtqeenucggtffrrghtthgvrhhnpe
+    fhvdeugfdtvdeiieegffefffekieegvdfgiedtjeetffevfefhtdehjeffieeivdenucev
+    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehruhhstghurh
+    esrhhushhsvghllhdrtggt
+X-ME-Proxy: <xmx:vXf8YobU5G6kW3b59x6zJAikYhx2QmBltqF3k3zTKjSGU4JYoFIg6w>
+    <xmx:vXf8YmalKip2D3KsSpsatKVbxoqFuo9i2iLwFb6pwaivpD2C_gtQTg>
+    <xmx:vXf8YsCssLN7fG_hOxZb42lK3QjP9KNEUr0NPIROtSiETzARal0aCQ>
+    <xmx:vnf8YsO3ELr9Tf1JOi6QUFettFD93fGm13szrZy9K8vAcBUxfGNV5w>
 Feedback-ID: i4421424f:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 17 Aug 2022 01:07:54 -0400 (EDT)
+ 17 Aug 2022 01:08:10 -0400 (EDT)
 From: Russell Currey <ruscur@russell.cc>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v4 1/2] powerpc/mm: Support execute-only memory on the Radix MMU
-Date: Wed, 17 Aug 2022 15:06:39 +1000
-Message-Id: <20220817050640.406017-1-ruscur@russell.cc>
+Subject: [PATCH v4 2/2] selftests/powerpc: Add a test for execute-only memory
+Date: Wed, 17 Aug 2022 15:06:40 +1000
+Message-Id: <20220817050640.406017-2-ruscur@russell.cc>
 X-Mailer: git-send-email 2.37.2
+In-Reply-To: <20220817050640.406017-1-ruscur@russell.cc>
+References: <20220817050640.406017-1-ruscur@russell.cc>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -93,84 +96,282 @@ Cc: ajd@linux.ibm.com, anshuman.khandual@arm.com, Russell Currey <ruscur@russell
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add support for execute-only memory (XOM) for the Radix MMU by using an
-execute-only mapping, as opposed to the RX mapping used by powerpc's
-other MMUs.
+From: Nicholas Miehlbradt <nicholas@linux.ibm.com>
 
-The Hash MMU already supports XOM through the execute-only pkey,
-which is a separate mechanism shared with x86.  A PROT_EXEC-only mapping
-will map to RX, and then the pkey will be applied on top of it.
+This selftest is designed to cover execute-only protections
+on the Radix MMU but will also work with Hash.
 
-mmap() and mprotect() consumers in userspace should observe the same
-behaviour on Hash and Radix despite the differences in implementation.
+The tests are based on those found in pkey_exec_test with modifications
+to use the generic mprotect() instead of the pkey variants.
 
-Replacing the vma_is_accessible() check in access_error() with a read
-check should be functionally equivalent for non-Radix MMUs, since it
-follows write and execute checks.  For Radix, the change enables
-detecting faults on execute-only mappings where vma_is_accessible() would
-return true.
-
+Signed-off-by: Nicholas Miehlbradt <nicholas@linux.ibm.com>
 Signed-off-by: Russell Currey <ruscur@russell.cc>
 ---
-v4: Reword commit message, add changes suggested by Christophe and Aneesh
+v4: new
 
- arch/powerpc/include/asm/book3s/64/pgtable.h |  2 ++
- arch/powerpc/mm/book3s64/pgtable.c           | 11 +++++++++--
- arch/powerpc/mm/fault.c                      |  6 +++++-
- 3 files changed, 16 insertions(+), 3 deletions(-)
+ tools/testing/selftests/powerpc/mm/Makefile   |   3 +-
+ .../testing/selftests/powerpc/mm/exec_prot.c  | 231 ++++++++++++++++++
+ 2 files changed, 233 insertions(+), 1 deletion(-)
+ create mode 100644 tools/testing/selftests/powerpc/mm/exec_prot.c
 
-diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
-index 392ff48f77df..486902aff040 100644
---- a/arch/powerpc/include/asm/book3s/64/pgtable.h
-+++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
-@@ -151,6 +151,8 @@
- #define PAGE_COPY_X	__pgprot(_PAGE_BASE | _PAGE_READ | _PAGE_EXEC)
- #define PAGE_READONLY	__pgprot(_PAGE_BASE | _PAGE_READ)
- #define PAGE_READONLY_X	__pgprot(_PAGE_BASE | _PAGE_READ | _PAGE_EXEC)
-+/* Radix only, Hash uses PAGE_READONLY_X + execute-only pkey instead */
-+#define PAGE_EXECONLY	__pgprot(_PAGE_BASE | _PAGE_EXEC)
+diff --git a/tools/testing/selftests/powerpc/mm/Makefile b/tools/testing/selftests/powerpc/mm/Makefile
+index 27dc09d0bfee..19dd0b2ea397 100644
+--- a/tools/testing/selftests/powerpc/mm/Makefile
++++ b/tools/testing/selftests/powerpc/mm/Makefile
+@@ -3,7 +3,7 @@ noarg:
+ 	$(MAKE) -C ../
  
- /* Permission masks used for kernel mappings */
- #define PAGE_KERNEL	__pgprot(_PAGE_BASE | _PAGE_KERNEL_RW)
-diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
-index 7b9966402b25..f6151a589298 100644
---- a/arch/powerpc/mm/book3s64/pgtable.c
-+++ b/arch/powerpc/mm/book3s64/pgtable.c
-@@ -553,8 +553,15 @@ EXPORT_SYMBOL_GPL(memremap_compat_align);
+ TEST_GEN_PROGS := hugetlb_vs_thp_test subpage_prot prot_sao segv_errors wild_bctr \
+-		  large_vm_fork_separation bad_accesses pkey_exec_prot \
++		  large_vm_fork_separation bad_accesses exec_prot pkey_exec_prot \
+ 		  pkey_siginfo stack_expansion_signal stack_expansion_ldst \
+ 		  large_vm_gpr_corruption
+ TEST_PROGS := stress_code_patching.sh
+@@ -22,6 +22,7 @@ $(OUTPUT)/wild_bctr: CFLAGS += -m64
+ $(OUTPUT)/large_vm_fork_separation: CFLAGS += -m64
+ $(OUTPUT)/large_vm_gpr_corruption: CFLAGS += -m64
+ $(OUTPUT)/bad_accesses: CFLAGS += -m64
++$(OUTPUT)/exec_prot: CFLAGS += -m64
+ $(OUTPUT)/pkey_exec_prot: CFLAGS += -m64
+ $(OUTPUT)/pkey_siginfo: CFLAGS += -m64
  
- pgprot_t vm_get_page_prot(unsigned long vm_flags)
- {
--	unsigned long prot = pgprot_val(protection_map[vm_flags &
--					(VM_READ|VM_WRITE|VM_EXEC|VM_SHARED)]);
-+	unsigned long prot;
+diff --git a/tools/testing/selftests/powerpc/mm/exec_prot.c b/tools/testing/selftests/powerpc/mm/exec_prot.c
+new file mode 100644
+index 000000000000..db75b2225de1
+--- /dev/null
++++ b/tools/testing/selftests/powerpc/mm/exec_prot.c
+@@ -0,0 +1,231 @@
++// SPDX-License-Identifier: GPL-2.0
 +
-+	/* Radix supports execute-only, but protection_map maps X -> RX */
-+	if (radix_enabled() && ((vm_flags & VM_ACCESS_FLAGS) == VM_EXEC)) {
-+		prot = pgprot_val(PAGE_EXECONLY);
-+	} else {
-+		prot = pgprot_val(protection_map[vm_flags &
-+						 (VM_ACCESS_FLAGS | VM_SHARED)]);
++/*
++ * Copyright 2022, Nicholas Miehlbradt, IBM Corporation
++ * based on pkey_exec_prot.c
++ *
++ * Test if applying execute protection on pages works as expected.
++ */
++
++#define _GNU_SOURCE
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <signal.h>
++
++#include <unistd.h>
++#include <sys/mman.h>
++
++#include "pkeys.h"
++
++
++#define PPC_INST_NOP	0x60000000
++#define PPC_INST_TRAP	0x7fe00008
++#define PPC_INST_BLR	0x4e800020
++
++static volatile sig_atomic_t fault_code;
++static volatile sig_atomic_t remaining_faults;
++static volatile unsigned int *fault_addr;
++static unsigned long pgsize, numinsns;
++static unsigned int *insns;
++static bool pkeys_supported;
++
++static bool is_fault_expected(int fault_code)
++{
++	if (fault_code == SEGV_ACCERR)
++		return true;
++
++	/* Assume any pkey error is fine since pkey_exec_prot test covers them */
++	if (fault_code == SEGV_PKUERR && pkeys_supported)
++		return true;
++
++	return false;
++}
++
++static void trap_handler(int signum, siginfo_t *sinfo, void *ctx)
++{
++	/* Check if this fault originated from the expected address */
++	if (sinfo->si_addr != (void *)fault_addr)
++		sigsafe_err("got a fault for an unexpected address\n");
++
++	_exit(1);
++}
++
++static void segv_handler(int signum, siginfo_t *sinfo, void *ctx)
++{
++	fault_code = sinfo->si_code;
++
++	/* Check if this fault originated from the expected address */
++	if (sinfo->si_addr != (void *)fault_addr) {
++		sigsafe_err("got a fault for an unexpected address\n");
++		_exit(1);
 +	}
- 
- 	if (vm_flags & VM_SAO)
- 		prot |= _PAGE_SAO;
-diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
-index 014005428687..1566804e4b3d 100644
---- a/arch/powerpc/mm/fault.c
-+++ b/arch/powerpc/mm/fault.c
-@@ -270,7 +270,11 @@ static bool access_error(bool is_write, bool is_exec, struct vm_area_struct *vma
- 		return false;
- 	}
- 
--	if (unlikely(!vma_is_accessible(vma)))
++
++	/* Check if too many faults have occurred for a single test case */
++	if (!remaining_faults) {
++		sigsafe_err("got too many faults for the same address\n");
++		_exit(1);
++	}
++
++
++	/* Restore permissions in order to continue */
++	if (is_fault_expected(fault_code)) {
++		if (mprotect(insns, pgsize, PROT_READ | PROT_WRITE | PROT_EXEC)) {
++			sigsafe_err("failed to set access permissions\n");
++			_exit(1);
++		}
++	} else {
++		sigsafe_err("got a fault with an unexpected code\n");
++		_exit(1);
++	}
++
++	remaining_faults--;
++}
++
++static int check_exec_fault(int rights)
++{
 +	/*
-+	 * Check for a read fault.  This could be caused by a read on an
-+	 * inaccessible page (i.e. PROT_NONE), or a Radix MMU execute-only page.
++	 * Jump to the executable region.
++	 *
++	 * The first iteration also checks if the overwrite of the
++	 * first instruction word from a trap to a no-op succeeded.
 +	 */
-+	if (unlikely(!(vma->vm_flags & VM_READ)))
- 		return true;
- 	/*
- 	 * We should ideally do the vma pkey access check here. But in the
++	fault_code = -1;
++	remaining_faults = 0;
++	if (!(rights & PROT_EXEC))
++		remaining_faults = 1;
++
++	FAIL_IF(mprotect(insns, pgsize, rights) != 0);
++	asm volatile("mtctr	%0; bctrl" : : "r"(insns));
++
++	FAIL_IF(remaining_faults != 0);
++	if (!(rights & PROT_EXEC))
++		FAIL_IF(!is_fault_expected(fault_code));
++
++	return 0;
++}
++
++static int test(void)
++{
++	struct sigaction segv_act, trap_act;
++	int i;
++
++	/* Skip the test if the CPU doesn't support Radix */
++	SKIP_IF(!have_hwcap2(PPC_FEATURE2_ARCH_3_00));
++
++	/* Check if pkeys are supported */
++	pkeys_supported = pkeys_unsupported() == 0;
++
++	/* Setup SIGSEGV handler */
++	segv_act.sa_handler = 0;
++	segv_act.sa_sigaction = segv_handler;
++	FAIL_IF(sigprocmask(SIG_SETMASK, 0, &segv_act.sa_mask) != 0);
++	segv_act.sa_flags = SA_SIGINFO;
++	segv_act.sa_restorer = 0;
++	FAIL_IF(sigaction(SIGSEGV, &segv_act, NULL) != 0);
++
++	/* Setup SIGTRAP handler */
++	trap_act.sa_handler = 0;
++	trap_act.sa_sigaction = trap_handler;
++	FAIL_IF(sigprocmask(SIG_SETMASK, 0, &trap_act.sa_mask) != 0);
++	trap_act.sa_flags = SA_SIGINFO;
++	trap_act.sa_restorer = 0;
++	FAIL_IF(sigaction(SIGTRAP, &trap_act, NULL) != 0);
++
++	/* Setup executable region */
++	pgsize = getpagesize();
++	numinsns = pgsize / sizeof(unsigned int);
++	insns = (unsigned int *)mmap(NULL, pgsize, PROT_READ | PROT_WRITE,
++				      MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
++	FAIL_IF(insns == MAP_FAILED);
++
++	/* Write the instruction words */
++	for (i = 1; i < numinsns - 1; i++)
++		insns[i] = PPC_INST_NOP;
++
++	/*
++	 * Set the first instruction as an unconditional trap. If
++	 * the last write to this address succeeds, this should
++	 * get overwritten by a no-op.
++	 */
++	insns[0] = PPC_INST_TRAP;
++
++	/*
++	 * Later, to jump to the executable region, we use a branch
++	 * and link instruction (bctrl) which sets the return address
++	 * automatically in LR. Use that to return back.
++	 */
++	insns[numinsns - 1] = PPC_INST_BLR;
++
++	/*
++	 * Pick the first instruction's address from the executable
++	 * region.
++	 */
++	fault_addr = insns;
++
++	/*
++	 * Read an instruction word from the address when the page
++	 * is execute only. This should generate an access fault.
++	 */
++	fault_code = -1;
++	remaining_faults = 1;
++	printf("Testing read on --x, should fault...");
++	FAIL_IF(mprotect(insns, pgsize, PROT_EXEC) != 0);
++	i = *fault_addr;
++	FAIL_IF(remaining_faults != 0 || !is_fault_expected(fault_code));
++	printf("ok!\n");
++
++	/*
++	 * Write an instruction word to the address when the page
++	 * execute only. This should also generate an access fault.
++	 */
++	fault_code = -1;
++	remaining_faults = 1;
++	printf("Testing write on --x, should fault...");
++	FAIL_IF(mprotect(insns, pgsize, PROT_EXEC) != 0);
++	*fault_addr = PPC_INST_NOP;
++	FAIL_IF(remaining_faults != 0 || !is_fault_expected(fault_code));
++	printf("ok!\n");
++
++	printf("Testing exec on ---, should fault...");
++	FAIL_IF(check_exec_fault(PROT_NONE));
++	printf("ok!\n");
++
++	printf("Testing exec on r--, should fault...");
++	FAIL_IF(check_exec_fault(PROT_READ));
++	printf("ok!\n");
++
++	printf("Testing exec on -w-, should fault...");
++	FAIL_IF(check_exec_fault(PROT_WRITE));
++	printf("ok!\n");
++
++	printf("Testing exec on rw-, should fault...");
++	FAIL_IF(check_exec_fault(PROT_READ | PROT_WRITE));
++	printf("ok!\n");
++
++	printf("Testing exec on --x, should succeed...");
++	FAIL_IF(check_exec_fault(PROT_EXEC));
++	printf("ok!\n");
++
++	printf("Testing exec on r-x, should succeed...");
++	FAIL_IF(check_exec_fault(PROT_READ | PROT_EXEC));
++	printf("ok!\n");
++
++	printf("Testing exec on -wx, should succeed...");
++	FAIL_IF(check_exec_fault(PROT_WRITE | PROT_EXEC));
++	printf("ok!\n");
++
++	printf("Testing exec on rwx, should succeed...");
++	FAIL_IF(check_exec_fault(PROT_READ | PROT_WRITE | PROT_EXEC));
++	printf("ok!\n");
++
++	/* Cleanup */
++	FAIL_IF(munmap((void *)insns, pgsize));
++
++	return 0;
++}
++
++int main(void)
++{
++	return test_harness(test, "exec_prot");
++}
 -- 
 2.37.2
 
