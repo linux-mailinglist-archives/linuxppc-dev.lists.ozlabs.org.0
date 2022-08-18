@@ -2,41 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBE50598E8C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Aug 2022 23:03:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3155A598E8D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Aug 2022 23:04:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M7y5y4189z3dtZ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Aug 2022 07:03:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M7y6k0tNHz3c2M
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Aug 2022 07:03:58 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=NofV1yNb;
+	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=L1HL/xfC;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mail.zeus03.de (client-ip=194.117.254.33; helo=mail.zeus03.de; envelope-from=wsa+renesas@sang-engineering.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=NofV1yNb;
+	dkim=pass (1024-bit key; secure) header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=L1HL/xfC;
 	dkim-atps=neutral
 Received: from mail.zeus03.de (www.zeus03.de [194.117.254.33])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M7y5M0c8tz2xGR
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Aug 2022 07:02:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M7y5R1tN9z3cD8
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Aug 2022 07:02:51 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
 	from:to:cc:subject:date:message-id:mime-version
-	:content-transfer-encoding; s=k1; bh=3TP1gG7UOdc00qReG5bjM/13z6b
-	tPOhK216TtQbZhKY=; b=NofV1yNb0R/b4tU+QET4FxklCK2rb6NWtIxxz13UlhK
-	iZ7Tu8MYLFuWMQiXJQBX/imheGNud7UgH1SztF1hiS4J4SI0Q5Z4BZmxLvXZ4Mz5
-	dh5IgKmyyaglgctB7qjPu7rTy8EWF8mCc2iuUG/ESM2cg2VCRZ96HzQNVJlKiIRI
+	:content-transfer-encoding; s=k1; bh=B3m/xuzWYlZO9505wbaZ6suOtie
+	tmTguhBShSHJbFfA=; b=L1HL/xfCrrumc/6gVa8z7U4MI/IqPEmJlDM9kwI7ASm
+	dPs58deFxXDcobf0alNTA3IPRuAD1gT6mpw59embYAn5sGkhaw7xdduHS+/0BlwC
+	rcyrZPTBqJZImSwQgSBMDeyV06xVpdmz4VFZteARwWQcwyW5+WuVnEfKn8lOblEQ
 	=
-Received: (qmail 3961373 invoked from network); 18 Aug 2022 23:01:05 +0200
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 18 Aug 2022 23:01:05 +0200
-X-UD-Smtp-Session: l3s3148p1@1X+fR4rmo+Uucref
+Received: (qmail 3961428 invoked from network); 18 Aug 2022 23:01:07 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 18 Aug 2022 23:01:07 +0200
+X-UD-Smtp-Session: l3s3148p1@buO0R4rmAMsucref
 From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH] scsi: move from strlcpy with unused retval to strscpy
-Date: Thu, 18 Aug 2022 23:01:03 +0200
-Message-Id: <20220818210104.7325-1-wsa+renesas@sang-engineering.com>
+Subject: [PATCH] soc: move from strlcpy with unused retval to strscpy
+Date: Thu, 18 Aug 2022 23:01:06 +0200
+Message-Id: <20220818210106.7349-1-wsa+renesas@sang-engineering.com>
 X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -51,7 +51,7 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, Wolfram Sang <wsa+renesas@sang-engineering.com>, Sudarsana Kalluru <sudarsana.kalluru@qlogic.com>, Manish Rangankar <mrangankar@marvell.com>, James Smart <james.smart@broadcom.com>, Matthew Wilcox <willy@infradead.org>, Nilesh Javali <njavali@marvell.com>, Dick Kennedy <dick.kennedy@broadcom.com>, "James E.J. Bottomley" <jejb@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Adam Radford <aradford@gmail.com>, Hannes Reinecke <hare@suse.de>, storagedev@microchip.com, Adaptec OEM Raid Solutions <aacraid@microsemi.com>, linux-scsi@vger.kernel.org, "Martin K. Petersen" <martin.petersen@oracle.com>, linuxppc-dev@lists.ozlabs.org, Anil Gurumurthy <anil.gurumurthy@qlogic.com>, GR-QLogic-Storage-Upstream@marvell.com, Don Brace <don.brace@microchip.com>
+Cc: linux-arm-msm@vger.kernel.org, Konrad Dybcio <konrad.dybcio@somainline.org>, Li Yang <leoyang.li@nxp.com>, Wolfram Sang <wsa+renesas@sang-engineering.com>, Andy Gross <agross@kernel.org>, Bjorn Andersson <bjorn.andersson@linaro.org>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, Qiang Zhao <qiang.zhao@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
@@ -62,564 +62,45 @@ Generated by a coccinelle script.
 Link: https://lore.kernel.org/r/CAHk-=wgfRnXz0W3D37d01q3JFkr_i_uTL=V6A6G1oUZcprmknw@mail.gmail.com/
 Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 ---
- drivers/scsi/3w-9xxx.c                |  2 +-
- drivers/scsi/aacraid/aachba.c         |  2 +-
- drivers/scsi/bfa/bfa_fcbuild.c        |  4 ++--
- drivers/scsi/bfa/bfa_fcs.c            |  4 ++--
- drivers/scsi/bfa/bfa_fcs_lport.c      | 20 ++++++++++----------
- drivers/scsi/bfa/bfa_ioc.c            |  2 +-
- drivers/scsi/bfa/bfa_svc.c            |  2 +-
- drivers/scsi/bfa/bfad.c               | 10 +++++-----
- drivers/scsi/bfa/bfad_attr.c          |  2 +-
- drivers/scsi/bfa/bfad_bsg.c           |  4 ++--
- drivers/scsi/bfa/bfad_im.c            |  2 +-
- drivers/scsi/bnx2i/bnx2i_init.c       |  2 +-
- drivers/scsi/fcoe/fcoe_transport.c    |  2 +-
- drivers/scsi/ibmvscsi/ibmvscsi.c      |  6 +++---
- drivers/scsi/lpfc/lpfc_hbadisc.c      |  2 +-
- drivers/scsi/ncr53c8xx.c              |  2 +-
- drivers/scsi/qedi/qedi_main.c         |  2 +-
- drivers/scsi/qla2xxx/qla_init.c       |  8 ++++----
- drivers/scsi/qla2xxx/qla_mr.c         | 20 ++++++++++----------
- drivers/scsi/qla4xxx/ql4_mbx.c        |  8 ++++----
- drivers/scsi/qla4xxx/ql4_os.c         | 14 +++++++-------
- drivers/scsi/smartpqi/smartpqi_init.c |  2 +-
- drivers/scsi/sym53c8xx_2/sym_glue.c   |  2 +-
- 23 files changed, 62 insertions(+), 62 deletions(-)
+ drivers/soc/fsl/qe/qe.c  | 4 ++--
+ drivers/soc/qcom/smp2p.c | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/scsi/3w-9xxx.c b/drivers/scsi/3w-9xxx.c
-index cd823ff5deab..3769cb0e596a 100644
---- a/drivers/scsi/3w-9xxx.c
-+++ b/drivers/scsi/3w-9xxx.c
-@@ -617,7 +617,7 @@ static int twa_check_srl(TW_Device_Extension *tw_dev, int *flashed)
- 	}
- 
- 	/* Load rest of compatibility struct */
--	strlcpy(tw_dev->tw_compat_info.driver_version, TW_DRIVER_VERSION,
-+	strscpy(tw_dev->tw_compat_info.driver_version, TW_DRIVER_VERSION,
- 		sizeof(tw_dev->tw_compat_info.driver_version));
- 	tw_dev->tw_compat_info.driver_srl_high = TW_CURRENT_DRIVER_SRL;
- 	tw_dev->tw_compat_info.driver_branch_high = TW_CURRENT_DRIVER_BRANCH;
-diff --git a/drivers/scsi/aacraid/aachba.c b/drivers/scsi/aacraid/aachba.c
-index 4d4cb47b3846..c2503e48977c 100644
---- a/drivers/scsi/aacraid/aachba.c
-+++ b/drivers/scsi/aacraid/aachba.c
-@@ -3288,7 +3288,7 @@ static int query_disk(struct aac_dev *dev, void __user *arg)
- 	else
- 		qd.unmapped = 0;
- 
--	strlcpy(qd.name, fsa_dev_ptr[qd.cnum].devname,
-+	strscpy(qd.name, fsa_dev_ptr[qd.cnum].devname,
- 	  min(sizeof(qd.name), sizeof(fsa_dev_ptr[qd.cnum].devname) + 1));
- 
- 	if (copy_to_user(arg, &qd, sizeof (struct aac_query_disk)))
-diff --git a/drivers/scsi/bfa/bfa_fcbuild.c b/drivers/scsi/bfa/bfa_fcbuild.c
-index df18d9d2af53..773c84af784c 100644
---- a/drivers/scsi/bfa/bfa_fcbuild.c
-+++ b/drivers/scsi/bfa/bfa_fcbuild.c
-@@ -1134,7 +1134,7 @@ fc_rspnid_build(struct fchs_s *fchs, void *pyld, u32 s_id, u16 ox_id,
- 	memset(rspnid, 0, sizeof(struct fcgs_rspnid_req_s));
- 
- 	rspnid->dap = s_id;
--	strlcpy(rspnid->spn, name, sizeof(rspnid->spn));
-+	strscpy(rspnid->spn, name, sizeof(rspnid->spn));
- 	rspnid->spn_len = (u8) strlen(rspnid->spn);
- 
- 	return sizeof(struct fcgs_rspnid_req_s) + sizeof(struct ct_hdr_s);
-@@ -1155,7 +1155,7 @@ fc_rsnn_nn_build(struct fchs_s *fchs, void *pyld, u32 s_id,
- 	memset(rsnn_nn, 0, sizeof(struct fcgs_rsnn_nn_req_s));
- 
- 	rsnn_nn->node_name = node_name;
--	strlcpy(rsnn_nn->snn, name, sizeof(rsnn_nn->snn));
-+	strscpy(rsnn_nn->snn, name, sizeof(rsnn_nn->snn));
- 	rsnn_nn->snn_len = (u8) strlen(rsnn_nn->snn);
- 
- 	return sizeof(struct fcgs_rsnn_nn_req_s) + sizeof(struct ct_hdr_s);
-diff --git a/drivers/scsi/bfa/bfa_fcs.c b/drivers/scsi/bfa/bfa_fcs.c
-index d2d396ca0e9a..5023c0ab4277 100644
---- a/drivers/scsi/bfa/bfa_fcs.c
-+++ b/drivers/scsi/bfa/bfa_fcs.c
-@@ -761,7 +761,7 @@ bfa_fcs_fabric_psymb_init(struct bfa_fcs_fabric_s *fabric)
- 	bfa_ioc_get_adapter_model(&fabric->fcs->bfa->ioc, model);
- 
- 	/* Model name/number */
--	strlcpy(port_cfg->sym_name.symname, model,
-+	strscpy(port_cfg->sym_name.symname, model,
- 		BFA_SYMNAME_MAXLEN);
- 	strlcat(port_cfg->sym_name.symname, BFA_FCS_PORT_SYMBNAME_SEPARATOR,
- 		BFA_SYMNAME_MAXLEN);
-@@ -822,7 +822,7 @@ bfa_fcs_fabric_nsymb_init(struct bfa_fcs_fabric_s *fabric)
- 	bfa_ioc_get_adapter_model(&fabric->fcs->bfa->ioc, model);
- 
- 	/* Model name/number */
--	strlcpy(port_cfg->node_sym_name.symname, model,
-+	strscpy(port_cfg->node_sym_name.symname, model,
- 		BFA_SYMNAME_MAXLEN);
- 	strlcat(port_cfg->node_sym_name.symname,
- 			BFA_FCS_PORT_SYMBNAME_SEPARATOR,
-diff --git a/drivers/scsi/bfa/bfa_fcs_lport.c b/drivers/scsi/bfa/bfa_fcs_lport.c
-index b12afcc4b189..008afd817087 100644
---- a/drivers/scsi/bfa/bfa_fcs_lport.c
-+++ b/drivers/scsi/bfa/bfa_fcs_lport.c
-@@ -2642,10 +2642,10 @@ bfa_fcs_fdmi_get_hbaattr(struct bfa_fcs_lport_fdmi_s *fdmi,
- 	bfa_ioc_get_adapter_fw_ver(&port->fcs->bfa->ioc,
- 					hba_attr->fw_version);
- 
--	strlcpy(hba_attr->driver_version, (char *)driver_info->version,
-+	strscpy(hba_attr->driver_version, (char *)driver_info->version,
- 		sizeof(hba_attr->driver_version));
- 
--	strlcpy(hba_attr->os_name, driver_info->host_os_name,
-+	strscpy(hba_attr->os_name, driver_info->host_os_name,
- 		sizeof(hba_attr->os_name));
- 
- 	/*
-@@ -2663,13 +2663,13 @@ bfa_fcs_fdmi_get_hbaattr(struct bfa_fcs_lport_fdmi_s *fdmi,
- 	bfa_fcs_fdmi_get_portattr(fdmi, &fcs_port_attr);
- 	hba_attr->max_ct_pyld = fcs_port_attr.max_frm_size;
- 
--	strlcpy(hba_attr->node_sym_name.symname,
-+	strscpy(hba_attr->node_sym_name.symname,
- 		port->port_cfg.node_sym_name.symname, BFA_SYMNAME_MAXLEN);
- 	strcpy(hba_attr->vendor_info, "QLogic");
- 	hba_attr->num_ports =
- 		cpu_to_be32(bfa_ioc_get_nports(&port->fcs->bfa->ioc));
- 	hba_attr->fabric_name = port->fabric->lps->pr_nwwn;
--	strlcpy(hba_attr->bios_ver, hba_attr->option_rom_ver, BFA_VERSION_LEN);
-+	strscpy(hba_attr->bios_ver, hba_attr->option_rom_ver, BFA_VERSION_LEN);
- 
- }
- 
-@@ -2736,19 +2736,19 @@ bfa_fcs_fdmi_get_portattr(struct bfa_fcs_lport_fdmi_s *fdmi,
- 	/*
- 	 * OS device Name
+diff --git a/drivers/soc/fsl/qe/qe.c b/drivers/soc/fsl/qe/qe.c
+index b3c226eb5292..58746e570d14 100644
+--- a/drivers/soc/fsl/qe/qe.c
++++ b/drivers/soc/fsl/qe/qe.c
+@@ -524,7 +524,7 @@ int qe_upload_firmware(const struct qe_firmware *firmware)
+ 	 * saved microcode information and put in the new.
  	 */
--	strlcpy(port_attr->os_device_name, driver_info->os_device_name,
-+	strscpy(port_attr->os_device_name, driver_info->os_device_name,
- 		sizeof(port_attr->os_device_name));
+ 	memset(&qe_firmware_info, 0, sizeof(qe_firmware_info));
+-	strlcpy(qe_firmware_info.id, firmware->id, sizeof(qe_firmware_info.id));
++	strscpy(qe_firmware_info.id, firmware->id, sizeof(qe_firmware_info.id));
+ 	qe_firmware_info.extended_modes = be64_to_cpu(firmware->extended_modes);
+ 	memcpy(qe_firmware_info.vtraps, firmware->vtraps,
+ 		sizeof(firmware->vtraps));
+@@ -599,7 +599,7 @@ struct qe_firmware_info *qe_get_firmware_info(void)
+ 	/* Copy the data into qe_firmware_info*/
+ 	sprop = of_get_property(fw, "id", NULL);
+ 	if (sprop)
+-		strlcpy(qe_firmware_info.id, sprop,
++		strscpy(qe_firmware_info.id, sprop,
+ 			sizeof(qe_firmware_info.id));
  
- 	/*
- 	 * Host name
- 	 */
--	strlcpy(port_attr->host_name, driver_info->host_machine_name,
-+	strscpy(port_attr->host_name, driver_info->host_machine_name,
- 		sizeof(port_attr->host_name));
+ 	of_property_read_u64(fw, "extended-modes",
+diff --git a/drivers/soc/qcom/smp2p.c b/drivers/soc/qcom/smp2p.c
+index d9c28a8a7cbf..e9c8030d50ee 100644
+--- a/drivers/soc/qcom/smp2p.c
++++ b/drivers/soc/qcom/smp2p.c
+@@ -422,7 +422,7 @@ static int qcom_smp2p_outbound_entry(struct qcom_smp2p *smp2p,
+ 	char buf[SMP2P_MAX_ENTRY_NAME] = {};
  
- 	port_attr->node_name = bfa_fcs_lport_get_nwwn(port);
- 	port_attr->port_name = bfa_fcs_lport_get_pwwn(port);
+ 	/* Allocate an entry from the smem item */
+-	strlcpy(buf, entry->name, SMP2P_MAX_ENTRY_NAME);
++	strscpy(buf, entry->name, SMP2P_MAX_ENTRY_NAME);
+ 	memcpy(out->entries[out->valid_entries].name, buf, SMP2P_MAX_ENTRY_NAME);
  
--	strlcpy(port_attr->port_sym_name.symname,
-+	strscpy(port_attr->port_sym_name.symname,
- 		bfa_fcs_lport_get_psym_name(port).symname, BFA_SYMNAME_MAXLEN);
- 	bfa_fcs_lport_get_attr(port, &lport_attr);
- 	port_attr->port_type = cpu_to_be32(lport_attr.port_type);
-@@ -3229,7 +3229,7 @@ bfa_fcs_lport_ms_gmal_response(void *fcsarg, struct bfa_fcxp_s *fcxp,
- 					rsp_str[gmal_entry->len-1] = 0;
- 
- 				/* copy IP Address to fabric */
--				strlcpy(bfa_fcs_lport_get_fabric_ipaddr(port),
-+				strscpy(bfa_fcs_lport_get_fabric_ipaddr(port),
- 					gmal_entry->ip_addr,
- 					BFA_FCS_FABRIC_IPADDR_SZ);
- 				break;
-@@ -4667,7 +4667,7 @@ bfa_fcs_lport_ns_send_rspn_id(void *ns_cbarg, struct bfa_fcxp_s *fcxp_alloced)
- 		 * to that of the base port.
- 		 */
- 
--		strlcpy(symbl,
-+		strscpy(symbl,
- 			(char *)&(bfa_fcs_lport_get_psym_name
- 			 (bfa_fcs_get_base_port(port->fcs))),
- 			sizeof(symbl));
-@@ -5194,7 +5194,7 @@ bfa_fcs_lport_ns_util_send_rspn_id(void *cbarg, struct bfa_fcxp_s *fcxp_alloced)
- 		 * For Vports, we append the vport's port symbolic name
- 		 * to that of the base port.
- 		 */
--		strlcpy(symbl, (char *)&(bfa_fcs_lport_get_psym_name
-+		strscpy(symbl, (char *)&(bfa_fcs_lport_get_psym_name
- 			(bfa_fcs_get_base_port(port->fcs))),
- 			sizeof(symbl));
- 
-diff --git a/drivers/scsi/bfa/bfa_ioc.c b/drivers/scsi/bfa/bfa_ioc.c
-index 5740302d83ac..e1ed1424fddb 100644
---- a/drivers/scsi/bfa/bfa_ioc.c
-+++ b/drivers/scsi/bfa/bfa_ioc.c
-@@ -2788,7 +2788,7 @@ void
- bfa_ioc_get_adapter_manufacturer(struct bfa_ioc_s *ioc, char *manufacturer)
- {
- 	memset((void *)manufacturer, 0, BFA_ADAPTER_MFG_NAME_LEN);
--	strlcpy(manufacturer, BFA_MFG_NAME, BFA_ADAPTER_MFG_NAME_LEN);
-+	strscpy(manufacturer, BFA_MFG_NAME, BFA_ADAPTER_MFG_NAME_LEN);
- }
- 
- void
-diff --git a/drivers/scsi/bfa/bfa_svc.c b/drivers/scsi/bfa/bfa_svc.c
-index 4e3cef02f10f..c9745c0b4eee 100644
---- a/drivers/scsi/bfa/bfa_svc.c
-+++ b/drivers/scsi/bfa/bfa_svc.c
-@@ -330,7 +330,7 @@ bfa_plog_str(struct bfa_plog_s *plog, enum bfa_plog_mid mid,
- 		lp.eid = event;
- 		lp.log_type = BFA_PL_LOG_TYPE_STRING;
- 		lp.misc = misc;
--		strlcpy(lp.log_entry.string_log, log_str,
-+		strscpy(lp.log_entry.string_log, log_str,
- 			BFA_PL_STRING_LOG_SZ);
- 		lp.log_entry.string_log[BFA_PL_STRING_LOG_SZ - 1] = '\0';
- 		bfa_plog_add(plog, &lp);
-diff --git a/drivers/scsi/bfa/bfad.c b/drivers/scsi/bfa/bfad.c
-index e5aa982ffedc..51781e5b736e 100644
---- a/drivers/scsi/bfa/bfad.c
-+++ b/drivers/scsi/bfa/bfad.c
-@@ -970,19 +970,19 @@ bfad_start_ops(struct bfad_s *bfad) {
- 
- 	/* Fill the driver_info info to fcs*/
- 	memset(&driver_info, 0, sizeof(driver_info));
--	strlcpy(driver_info.version, BFAD_DRIVER_VERSION,
-+	strscpy(driver_info.version, BFAD_DRIVER_VERSION,
- 		sizeof(driver_info.version));
- 	if (host_name)
--		strlcpy(driver_info.host_machine_name, host_name,
-+		strscpy(driver_info.host_machine_name, host_name,
- 			sizeof(driver_info.host_machine_name));
- 	if (os_name)
--		strlcpy(driver_info.host_os_name, os_name,
-+		strscpy(driver_info.host_os_name, os_name,
- 			sizeof(driver_info.host_os_name));
- 	if (os_patch)
--		strlcpy(driver_info.host_os_patch, os_patch,
-+		strscpy(driver_info.host_os_patch, os_patch,
- 			sizeof(driver_info.host_os_patch));
- 
--	strlcpy(driver_info.os_device_name, bfad->pci_name,
-+	strscpy(driver_info.os_device_name, bfad->pci_name,
- 		sizeof(driver_info.os_device_name));
- 
- 	/* FCS driver info init */
-diff --git a/drivers/scsi/bfa/bfad_attr.c b/drivers/scsi/bfa/bfad_attr.c
-index 5a85401e9e2d..e96e4b6df265 100644
---- a/drivers/scsi/bfa/bfad_attr.c
-+++ b/drivers/scsi/bfa/bfad_attr.c
-@@ -834,7 +834,7 @@ bfad_im_symbolic_name_show(struct device *dev, struct device_attribute *attr,
- 	char symname[BFA_SYMNAME_MAXLEN];
- 
- 	bfa_fcs_lport_get_attr(&bfad->bfa_fcs.fabric.bport, &port_attr);
--	strlcpy(symname, port_attr.port_cfg.sym_name.symname,
-+	strscpy(symname, port_attr.port_cfg.sym_name.symname,
- 			BFA_SYMNAME_MAXLEN);
- 	return sysfs_emit(buf, "%s\n", symname);
- }
-diff --git a/drivers/scsi/bfa/bfad_bsg.c b/drivers/scsi/bfa/bfad_bsg.c
-index be8dfbe13e90..a78fd7f1e6a1 100644
---- a/drivers/scsi/bfa/bfad_bsg.c
-+++ b/drivers/scsi/bfa/bfad_bsg.c
-@@ -119,7 +119,7 @@ bfad_iocmd_ioc_get_attr(struct bfad_s *bfad, void *cmd)
- 
- 	/* fill in driver attr info */
- 	strcpy(iocmd->ioc_attr.driver_attr.driver, BFAD_DRIVER_NAME);
--	strlcpy(iocmd->ioc_attr.driver_attr.driver_ver,
-+	strscpy(iocmd->ioc_attr.driver_attr.driver_ver,
- 		BFAD_DRIVER_VERSION, BFA_VERSION_LEN);
- 	strcpy(iocmd->ioc_attr.driver_attr.fw_ver,
- 		iocmd->ioc_attr.adapter_attr.fw_ver);
-@@ -307,7 +307,7 @@ bfad_iocmd_port_get_attr(struct bfad_s *bfad, void *cmd)
- 	iocmd->attr.port_type = port_attr.port_type;
- 	iocmd->attr.loopback = port_attr.loopback;
- 	iocmd->attr.authfail = port_attr.authfail;
--	strlcpy(iocmd->attr.port_symname.symname,
-+	strscpy(iocmd->attr.port_symname.symname,
- 		port_attr.port_cfg.sym_name.symname,
- 		sizeof(iocmd->attr.port_symname.symname));
- 
-diff --git a/drivers/scsi/bfa/bfad_im.c b/drivers/scsi/bfa/bfad_im.c
-index c335f7a188d2..a9d3d8562d3c 100644
---- a/drivers/scsi/bfa/bfad_im.c
-+++ b/drivers/scsi/bfa/bfad_im.c
-@@ -1046,7 +1046,7 @@ bfad_fc_host_init(struct bfad_im_port_s *im_port)
- 	/* For fibre channel services type 0x20 */
- 	fc_host_supported_fc4s(host)[7] = 1;
- 
--	strlcpy(symname, bfad->bfa_fcs.fabric.bport.port_cfg.sym_name.symname,
-+	strscpy(symname, bfad->bfa_fcs.fabric.bport.port_cfg.sym_name.symname,
- 		BFA_SYMNAME_MAXLEN);
- 	sprintf(fc_host_symbolic_name(host), "%s", symname);
- 
-diff --git a/drivers/scsi/bnx2i/bnx2i_init.c b/drivers/scsi/bnx2i/bnx2i_init.c
-index 2b3f0c10478e..872ad37e2a6e 100644
---- a/drivers/scsi/bnx2i/bnx2i_init.c
-+++ b/drivers/scsi/bnx2i/bnx2i_init.c
-@@ -383,7 +383,7 @@ int bnx2i_get_stats(void *handle)
- 	if (!stats)
- 		return -ENOMEM;
- 
--	strlcpy(stats->version, DRV_MODULE_VERSION, sizeof(stats->version));
-+	strscpy(stats->version, DRV_MODULE_VERSION, sizeof(stats->version));
- 	memcpy(stats->mac_add1 + 2, hba->cnic->mac_addr, ETH_ALEN);
- 
- 	stats->max_frame_size = hba->netdev->mtu;
-diff --git a/drivers/scsi/fcoe/fcoe_transport.c b/drivers/scsi/fcoe/fcoe_transport.c
-index 62341c6353a7..d8011c8709b4 100644
---- a/drivers/scsi/fcoe/fcoe_transport.c
-+++ b/drivers/scsi/fcoe/fcoe_transport.c
-@@ -711,7 +711,7 @@ static struct net_device *fcoe_if_to_netdev(const char *buffer)
- 	char ifname[IFNAMSIZ + 2];
- 
- 	if (buffer) {
--		strlcpy(ifname, buffer, IFNAMSIZ);
-+		strscpy(ifname, buffer, IFNAMSIZ);
- 		cp = ifname + strlen(ifname);
- 		while (--cp >= ifname && *cp == '\n')
- 			*cp = '\0';
-diff --git a/drivers/scsi/ibmvscsi/ibmvscsi.c b/drivers/scsi/ibmvscsi/ibmvscsi.c
-index 63f32f843e75..59599299615d 100644
---- a/drivers/scsi/ibmvscsi/ibmvscsi.c
-+++ b/drivers/scsi/ibmvscsi/ibmvscsi.c
-@@ -250,7 +250,7 @@ static void gather_partition_info(void)
- 
- 	ppartition_name = of_get_property(of_root, "ibm,partition-name", NULL);
- 	if (ppartition_name)
--		strlcpy(partition_name, ppartition_name,
-+		strscpy(partition_name, ppartition_name,
- 				sizeof(partition_name));
- 	p_number_ptr = of_get_property(of_root, "ibm,partition-no", NULL);
- 	if (p_number_ptr)
-@@ -1282,12 +1282,12 @@ static void send_mad_capabilities(struct ibmvscsi_host_data *hostdata)
- 	if (hostdata->client_migrated)
- 		hostdata->caps.flags |= cpu_to_be32(CLIENT_MIGRATED);
- 
--	strlcpy(hostdata->caps.name, dev_name(&hostdata->host->shost_gendev),
-+	strscpy(hostdata->caps.name, dev_name(&hostdata->host->shost_gendev),
- 		sizeof(hostdata->caps.name));
- 
- 	location = of_get_property(of_node, "ibm,loc-code", NULL);
- 	location = location ? location : dev_name(hostdata->dev);
--	strlcpy(hostdata->caps.loc, location, sizeof(hostdata->caps.loc));
-+	strscpy(hostdata->caps.loc, location, sizeof(hostdata->caps.loc));
- 
- 	req->common.type = cpu_to_be32(VIOSRP_CAPABILITIES_TYPE);
- 	req->buffer = cpu_to_be64(hostdata->caps_addr);
-diff --git a/drivers/scsi/lpfc/lpfc_hbadisc.c b/drivers/scsi/lpfc/lpfc_hbadisc.c
-index 2645def612e6..0292baaf70e0 100644
---- a/drivers/scsi/lpfc/lpfc_hbadisc.c
-+++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
-@@ -4838,7 +4838,7 @@ lpfc_nlp_state_name(char *buffer, size_t size, int state)
- 	};
- 
- 	if (state < NLP_STE_MAX_STATE && states[state])
--		strlcpy(buffer, states[state], size);
-+		strscpy(buffer, states[state], size);
- 	else
- 		snprintf(buffer, size, "unknown (%d)", state);
- 	return buffer;
-diff --git a/drivers/scsi/ncr53c8xx.c b/drivers/scsi/ncr53c8xx.c
-index 4458449c960b..35869b4f9329 100644
---- a/drivers/scsi/ncr53c8xx.c
-+++ b/drivers/scsi/ncr53c8xx.c
-@@ -4555,7 +4555,7 @@ static void ncr_detach(struct ncb *np)
- 	char inst_name[16];
- 
- 	/* Local copy so we don't access np after freeing it! */
--	strlcpy(inst_name, ncr_name(np), sizeof(inst_name));
-+	strscpy(inst_name, ncr_name(np), sizeof(inst_name));
- 
- 	printk("%s: releasing host resources\n", ncr_name(np));
- 
-diff --git a/drivers/scsi/qedi/qedi_main.c b/drivers/scsi/qedi/qedi_main.c
-index cecfb2cb4c7b..0f47245baa06 100644
---- a/drivers/scsi/qedi/qedi_main.c
-+++ b/drivers/scsi/qedi/qedi_main.c
-@@ -2590,7 +2590,7 @@ static int __qedi_probe(struct pci_dev *pdev, int mode)
- 	sp_params.drv_minor = QEDI_DRIVER_MINOR_VER;
- 	sp_params.drv_rev = QEDI_DRIVER_REV_VER;
- 	sp_params.drv_eng = QEDI_DRIVER_ENG_VER;
--	strlcpy(sp_params.name, "qedi iSCSI", QED_DRV_VER_STR_SIZE);
-+	strscpy(sp_params.name, "qedi iSCSI", QED_DRV_VER_STR_SIZE);
- 	rc = qedi_ops->common->slowpath_start(qedi->cdev, &sp_params);
- 	if (rc) {
- 		QEDI_ERR(&qedi->dbg_ctx, "Cannot start slowpath\n");
-diff --git a/drivers/scsi/qla2xxx/qla_init.c b/drivers/scsi/qla2xxx/qla_init.c
-index e7fe0e52c11d..cf6aa45f153f 100644
---- a/drivers/scsi/qla2xxx/qla_init.c
-+++ b/drivers/scsi/qla2xxx/qla_init.c
-@@ -4845,7 +4845,7 @@ qla2x00_set_model_info(scsi_qla_host_t *vha, uint8_t *model, size_t len,
- 		if (use_tbl &&
- 		    ha->pdev->subsystem_vendor == PCI_VENDOR_ID_QLOGIC &&
- 		    index < QLA_MODEL_NAMES)
--			strlcpy(ha->model_desc,
-+			strscpy(ha->model_desc,
- 			    qla2x00_model_name[index * 2 + 1],
- 			    sizeof(ha->model_desc));
- 	} else {
-@@ -4853,14 +4853,14 @@ qla2x00_set_model_info(scsi_qla_host_t *vha, uint8_t *model, size_t len,
- 		if (use_tbl &&
- 		    ha->pdev->subsystem_vendor == PCI_VENDOR_ID_QLOGIC &&
- 		    index < QLA_MODEL_NAMES) {
--			strlcpy(ha->model_number,
-+			strscpy(ha->model_number,
- 				qla2x00_model_name[index * 2],
- 				sizeof(ha->model_number));
--			strlcpy(ha->model_desc,
-+			strscpy(ha->model_desc,
- 			    qla2x00_model_name[index * 2 + 1],
- 			    sizeof(ha->model_desc));
- 		} else {
--			strlcpy(ha->model_number, def,
-+			strscpy(ha->model_number, def,
- 				sizeof(ha->model_number));
- 		}
- 	}
-diff --git a/drivers/scsi/qla2xxx/qla_mr.c b/drivers/scsi/qla2xxx/qla_mr.c
-index f726eb8449c5..083f94e43fba 100644
---- a/drivers/scsi/qla2xxx/qla_mr.c
-+++ b/drivers/scsi/qla2xxx/qla_mr.c
-@@ -691,7 +691,7 @@ qlafx00_pci_info_str(struct scsi_qla_host *vha, char *str, size_t str_len)
- 	struct qla_hw_data *ha = vha->hw;
- 
- 	if (pci_is_pcie(ha->pdev))
--		strlcpy(str, "PCIe iSA", str_len);
-+		strscpy(str, "PCIe iSA", str_len);
- 	return str;
- }
- 
-@@ -1850,21 +1850,21 @@ qlafx00_fx_disc(scsi_qla_host_t *vha, fc_port_t *fcport, uint16_t fx_type)
- 			phost_info = &preg_hsi->hsi;
- 			memset(preg_hsi, 0, sizeof(struct register_host_info));
- 			phost_info->os_type = OS_TYPE_LINUX;
--			strlcpy(phost_info->sysname, p_sysid->sysname,
-+			strscpy(phost_info->sysname, p_sysid->sysname,
- 				sizeof(phost_info->sysname));
--			strlcpy(phost_info->nodename, p_sysid->nodename,
-+			strscpy(phost_info->nodename, p_sysid->nodename,
- 				sizeof(phost_info->nodename));
- 			if (!strcmp(phost_info->nodename, "(none)"))
- 				ha->mr.host_info_resend = true;
--			strlcpy(phost_info->release, p_sysid->release,
-+			strscpy(phost_info->release, p_sysid->release,
- 				sizeof(phost_info->release));
--			strlcpy(phost_info->version, p_sysid->version,
-+			strscpy(phost_info->version, p_sysid->version,
- 				sizeof(phost_info->version));
--			strlcpy(phost_info->machine, p_sysid->machine,
-+			strscpy(phost_info->machine, p_sysid->machine,
- 				sizeof(phost_info->machine));
--			strlcpy(phost_info->domainname, p_sysid->domainname,
-+			strscpy(phost_info->domainname, p_sysid->domainname,
- 				sizeof(phost_info->domainname));
--			strlcpy(phost_info->hostdriver, QLA2XXX_VERSION,
-+			strscpy(phost_info->hostdriver, QLA2XXX_VERSION,
- 				sizeof(phost_info->hostdriver));
- 			preg_hsi->utc = (uint64_t)ktime_get_real_seconds();
- 			ql_dbg(ql_dbg_init, vha, 0x0149,
-@@ -1909,9 +1909,9 @@ qlafx00_fx_disc(scsi_qla_host_t *vha, fc_port_t *fcport, uint16_t fx_type)
- 	if (fx_type == FXDISC_GET_CONFIG_INFO) {
- 		struct config_info_data *pinfo =
- 		    (struct config_info_data *) fdisc->u.fxiocb.rsp_addr;
--		strlcpy(vha->hw->model_number, pinfo->model_num,
-+		strscpy(vha->hw->model_number, pinfo->model_num,
- 			ARRAY_SIZE(vha->hw->model_number));
--		strlcpy(vha->hw->model_desc, pinfo->model_description,
-+		strscpy(vha->hw->model_desc, pinfo->model_description,
- 			ARRAY_SIZE(vha->hw->model_desc));
- 		memcpy(&vha->hw->mr.symbolic_name, pinfo->symbolic_name,
- 		    sizeof(vha->hw->mr.symbolic_name));
-diff --git a/drivers/scsi/qla4xxx/ql4_mbx.c b/drivers/scsi/qla4xxx/ql4_mbx.c
-index cd71074f3abe..249f1d7021d4 100644
---- a/drivers/scsi/qla4xxx/ql4_mbx.c
-+++ b/drivers/scsi/qla4xxx/ql4_mbx.c
-@@ -1611,8 +1611,8 @@ int qla4xxx_get_chap(struct scsi_qla_host *ha, char *username, char *password,
- 		goto exit_get_chap;
- 	}
- 
--	strlcpy(password, chap_table->secret, QL4_CHAP_MAX_SECRET_LEN);
--	strlcpy(username, chap_table->name, QL4_CHAP_MAX_NAME_LEN);
-+	strscpy(password, chap_table->secret, QL4_CHAP_MAX_SECRET_LEN);
-+	strscpy(username, chap_table->name, QL4_CHAP_MAX_NAME_LEN);
- 	chap_table->cookie = cpu_to_le16(CHAP_VALID_COOKIE);
- 
- exit_get_chap:
-@@ -1732,8 +1732,8 @@ int qla4xxx_get_uni_chap_at_index(struct scsi_qla_host *ha, char *username,
- 		goto exit_unlock_uni_chap;
- 	}
- 
--	strlcpy(password, chap_table->secret, MAX_CHAP_SECRET_LEN);
--	strlcpy(username, chap_table->name, MAX_CHAP_NAME_LEN);
-+	strscpy(password, chap_table->secret, MAX_CHAP_SECRET_LEN);
-+	strscpy(username, chap_table->name, MAX_CHAP_NAME_LEN);
- 
- 	rval = QLA_SUCCESS;
- 
-diff --git a/drivers/scsi/qla4xxx/ql4_os.c b/drivers/scsi/qla4xxx/ql4_os.c
-index 9e849f6b0d0f..445cb6304c67 100644
---- a/drivers/scsi/qla4xxx/ql4_os.c
-+++ b/drivers/scsi/qla4xxx/ql4_os.c
-@@ -798,9 +798,9 @@ static int qla4xxx_get_chap_list(struct Scsi_Host *shost, uint16_t chap_tbl_idx,
- 			continue;
- 
- 		chap_rec->chap_tbl_idx = i;
--		strlcpy(chap_rec->username, chap_table->name,
-+		strscpy(chap_rec->username, chap_table->name,
- 			ISCSI_CHAP_AUTH_NAME_MAX_LEN);
--		strlcpy(chap_rec->password, chap_table->secret,
-+		strscpy(chap_rec->password, chap_table->secret,
- 			QL4_CHAP_MAX_SECRET_LEN);
- 		chap_rec->password_length = chap_table->secret_len;
- 
-@@ -6052,8 +6052,8 @@ static int qla4xxx_get_bidi_chap(struct scsi_qla_host *ha, char *username,
- 		if (!(chap_table->flags & BIT_6)) /* Not BIDI */
- 			continue;
- 
--		strlcpy(password, chap_table->secret, QL4_CHAP_MAX_SECRET_LEN);
--		strlcpy(username, chap_table->name, QL4_CHAP_MAX_NAME_LEN);
-+		strscpy(password, chap_table->secret, QL4_CHAP_MAX_SECRET_LEN);
-+		strscpy(username, chap_table->name, QL4_CHAP_MAX_NAME_LEN);
- 		ret = 0;
- 		break;
- 	}
-@@ -6281,8 +6281,8 @@ static void qla4xxx_get_param_ddb(struct ddb_entry *ddb_entry,
- 
- 	tddb->tpgt = sess->tpgt;
- 	tddb->port = conn->persistent_port;
--	strlcpy(tddb->iscsi_name, sess->targetname, ISCSI_NAME_SIZE);
--	strlcpy(tddb->ip_addr, conn->persistent_address, DDB_IPADDR_LEN);
-+	strscpy(tddb->iscsi_name, sess->targetname, ISCSI_NAME_SIZE);
-+	strscpy(tddb->ip_addr, conn->persistent_address, DDB_IPADDR_LEN);
- }
- 
- static void qla4xxx_convert_param_ddb(struct dev_db_entry *fw_ddb_entry,
-@@ -7781,7 +7781,7 @@ static int qla4xxx_sysfs_ddb_logout(struct iscsi_bus_flash_session *fnode_sess,
- 		goto exit_ddb_logout;
- 	}
- 
--	strlcpy(flash_tddb->iscsi_name, fnode_sess->targetname,
-+	strscpy(flash_tddb->iscsi_name, fnode_sess->targetname,
- 		ISCSI_NAME_SIZE);
- 
- 	if (!strncmp(fnode_sess->portal_type, PORTAL_TYPE_IPV6, 4))
-diff --git a/drivers/scsi/smartpqi/smartpqi_init.c b/drivers/scsi/smartpqi/smartpqi_init.c
-index 7a8c2c75acba..6b40a95a51ca 100644
---- a/drivers/scsi/smartpqi/smartpqi_init.c
-+++ b/drivers/scsi/smartpqi/smartpqi_init.c
-@@ -6869,7 +6869,7 @@ static ssize_t pqi_lockup_action_store(struct device *dev,
- 	char *action_name;
- 	char action_name_buffer[32];
- 
--	strlcpy(action_name_buffer, buffer, sizeof(action_name_buffer));
-+	strscpy(action_name_buffer, buffer, sizeof(action_name_buffer));
- 	action_name = strstrip(action_name_buffer);
- 
- 	for (i = 0; i < ARRAY_SIZE(pqi_lockup_actions); i++) {
-diff --git a/drivers/scsi/sym53c8xx_2/sym_glue.c b/drivers/scsi/sym53c8xx_2/sym_glue.c
-index 2e2852bd5860..711a5261ea59 100644
---- a/drivers/scsi/sym53c8xx_2/sym_glue.c
-+++ b/drivers/scsi/sym53c8xx_2/sym_glue.c
-@@ -1286,7 +1286,7 @@ static struct Scsi_Host *sym_attach(struct scsi_host_template *tpnt, int unit,
- 	/*
- 	 *  Edit its name.
- 	 */
--	strlcpy(np->s.chip_name, dev->chip.name, sizeof(np->s.chip_name));
-+	strscpy(np->s.chip_name, dev->chip.name, sizeof(np->s.chip_name));
- 	sprintf(np->s.inst_name, "sym%d", np->s.unit);
- 
- 	if ((SYM_CONF_DMA_ADDRESSING_MODE > 0) && (np->features & FE_DAC) &&
+ 	/* Make the logical entry reference the physical value */
 -- 
 2.35.1
 
