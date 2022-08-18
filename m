@@ -1,76 +1,96 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E94D598245
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Aug 2022 13:32:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AD6C598196
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Aug 2022 12:47:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M7jRC3ZZ8z3cdk
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Aug 2022 21:32:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M7hRm2mSMz3drQ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Aug 2022 20:47:48 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=blackwall-org.20210112.gappssmtp.com header.i=@blackwall-org.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=8WejKLL+;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aNjepu+Q;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=blackwall.org (client-ip=2a00:1450:4864:20::62d; helo=mail-ej1-x62d.google.com; envelope-from=razor@blackwall.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=blackwall-org.20210112.gappssmtp.com header.i=@blackwall-org.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=8WejKLL+;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aNjepu+Q;
 	dkim-atps=neutral
-Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M7bbT3bXkz2xrW
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Aug 2022 17:09:09 +1000 (AEST)
-Received: by mail-ej1-x62d.google.com with SMTP id uj29so1674075ejc.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Aug 2022 00:09:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall-org.20210112.gappssmtp.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc;
-        bh=uB1dny6tZXinATmuz0fIf4H2QaK3MjZ8vYEWovRHfu4=;
-        b=8WejKLL+aMqLWC0O3FQnTQmsIGmJCsnGHI2BDlBU8o4VWw/LcfeBgWzHmX3qQ0kNdP
-         i2wsCNg8dEG2PeAx3BljZBM7q9E11q3FuTEevJM6v/fsy6yCCds3XLZ0KNJgMEwickhT
-         5pX++joOCNvyGmso9a/ojzehd7Cu+02vF5ZdH+w627ZOLQGf12vEwqgwdFkq2GSxyk3o
-         qKVx23t5WYxxqDzVDlUxryvOZHIM45E9l9h0uZxMmePvFva3B4rfwF+trq833C+5x8YJ
-         SqjNNHj/sd925+/MH11H9yWzWNmxhAGk+W5tp0j6FKddjOmqYwdrEqQ2VLWtuHStlIh3
-         ns3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc;
-        bh=uB1dny6tZXinATmuz0fIf4H2QaK3MjZ8vYEWovRHfu4=;
-        b=dydUOJyQwFm6+raHjnUD1MYCpEx7HXaZQr2qyM7rXljb7LLGOw1+FIZGLithA3rx0x
-         0il99NYUHTD8bU2KvWiIM08wCn8GDW4wZTojkv+dLPjjtsBwZ8t+ufZtKLiOAk2rZ1Gq
-         vKkB610jnNNH/CNdPoUB7YkY0EFsuwkKGbgqoUAsySDK4PDSenF5UT7/6JdeNmf1eSIV
-         mzDdVLCyOAa2czKqCSWUQ1GKndfPBzX9BubEqC8U00VESiwh25Z6BgoimbFYupjdVhxI
-         ngYzPLkUXoTS+DsTIL1dRFDXRZeJwGJnAAMGu+fJeJjdRO7j9Peuv5tub2/1dH3XCFRB
-         E0eg==
-X-Gm-Message-State: ACgBeo3lTomTW178Y382wqwzW3JCMTckdrYXRP4q8lNWMLZaPtHFWnDx
-	OlUZ27+S/IdDG492msVPo+AflA==
-X-Google-Smtp-Source: AA6agR6L6Nq587p/lJCgXhHMIohS0fuUSvnisu370SwFRdqGr62Y3rWmL+GZ/dHscdaOTusJwrlmKQ==
-X-Received: by 2002:a17:906:6a2a:b0:730:a3f1:aee with SMTP id qw42-20020a1709066a2a00b00730a3f10aeemr1105108ejc.387.1660806544983;
-        Thu, 18 Aug 2022 00:09:04 -0700 (PDT)
-Received: from [192.168.0.111] (87-243-81-1.ip.btc-net.bg. [87.243.81.1])
-        by smtp.gmail.com with ESMTPSA id f28-20020a056402329c00b004418c7d633bsm594454eda.18.2022.08.18.00.09.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 18 Aug 2022 00:09:04 -0700 (PDT)
-Message-ID: <10091e35-491a-c10f-35ec-044357f09e3e@blackwall.org>
-Date: Thu, 18 Aug 2022 10:09:00 +0300
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M7hQz2HLBz2xGg
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Aug 2022 20:47:06 +1000 (AEST)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27IAeNHk018974;
+	Thu, 18 Aug 2022 10:46:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : subject :
+ to : cc : references : in-reply-to : mime-version : message-id :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=6A6aTCMp7D4cmQcxzVK5B0Tgk1o4eQLyKzzRt1Ei1D8=;
+ b=aNjepu+QJt70jAINZ2vYWHA5ImlmG9lfJRV+49wdt/bFlLTfb/1RPsCHZCEOkaoq6Ztg
+ 32oaFvfHRNI8Fcxc276smJvhx6W88Ne95ANxSllMwHx4KboW8vo1AwMdqRv7KxVDTRpk
+ koQnp7HtM08352eXkGlSPTV91q2v0FZebeC5oY7LTpKHSyKWNr9k2NZ4bMnnMJnMcf7P
+ RTBLejkOIWenWVSKxgaAJmV6zkdAYbCsMsSAz9tdZM2maLl/zq/m7Z4r70q0HmQj4vJ2
+ kc7x8exBaJxuVF10LFKQX5nZRa2HQ0ptTiIWfKCxLTnIcRWYfkw4OLM/q9uJtkYy80TB sA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3j1kkr0j0d-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 18 Aug 2022 10:46:39 +0000
+Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 27IAh3ix031886;
+	Thu, 18 Aug 2022 10:46:39 GMT
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3j1kkr0hy2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 18 Aug 2022 10:46:39 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+	by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 27IAbEG5022884;
+	Thu, 18 Aug 2022 10:46:37 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+	by ppma03ams.nl.ibm.com with ESMTP id 3hx3k8wr1f-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 18 Aug 2022 10:46:36 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
+	by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 27IAkYpo36897042
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 18 Aug 2022 10:46:34 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9E4EAA4051;
+	Thu, 18 Aug 2022 10:46:34 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 31FF8A404D;
+	Thu, 18 Aug 2022 10:46:34 +0000 (GMT)
+Received: from localhost (unknown [9.43.73.112])
+	by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Thu, 18 Aug 2022 10:46:34 +0000 (GMT)
+Date: Thu, 18 Aug 2022 16:16:32 +0530
+From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: [PATCH 01/16] powerpc: Replace unreachable() with it's builtin
+ variant in WARN_ON()
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        Sathvika Vasireddy <sv@linux.ibm.com>
+References: <20220808114908.240813-1-sv@linux.ibm.com>
+	<20220808114908.240813-2-sv@linux.ibm.com>
+	<82eec792-b71f-17cc-d905-368fd5ca62f2@csgroup.eu>
+In-Reply-To: <82eec792-b71f-17cc-d905-368fd5ca62f2@csgroup.eu>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH net-next] Remove DECnet support from kernel
-Content-Language: en-US
-To: Stephen Hemminger <stephen@networkplumber.org>, netdev@vger.kernel.org
-References: <20220818004357.375695-1-stephen@networkplumber.org>
-From: Nikolay Aleksandrov <razor@blackwall.org>
-In-Reply-To: <20220818004357.375695-1-stephen@networkplumber.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Mailman-Approved-At: Thu, 18 Aug 2022 21:31:51 +1000
+User-Agent: astroid/4d6b06ad (https://github.com/astroidmail/astroid)
+Message-Id: <1660817468.4x4re2ul0k.naveen@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: pSUNmMYB0aU1d43EEUgjWiXA_doZGrCD
+X-Proofpoint-ORIG-GUID: bkaD2RFH1edI5RbUM9CkUCLOn9hGqb8y
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-08-18_02,2022-08-18_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 malwarescore=0
+ spamscore=0 suspectscore=0 impostorscore=0 phishscore=0 priorityscore=1501
+ adultscore=0 mlxscore=0 bulkscore=0 lowpriorityscore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2207270000
+ definitions=main-2208180036
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,38 +102,98 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>, Jeff Layton <jlayton@kernel.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, "open list:MIPS" <linux-mips@vger.kernel.org>, Wang Qing <wangqing@vivo.com>, Paul Gortmaker <paul.gortmaker@windriver.com>, Eric Dumazet <edumazet@google.com>, Nathan Fontenot <nathan.fontenot@amd.com>, Suma Hegde <suma.hegde@amd.com>, Paolo Abeni <pabeni@redhat.com>, Neeraj Upadhyay <quic_neeraju@quicinc.com>, Menglong Dong <imagedong@tencent.com>, Florian Fainelli <f.fainelli@gmail.com>, Xin Long <lucien.xin@gmail.com>, Chen Yu <yu.c.chen@intel.com>, Daniel Borkmann <daniel@iogearbox.net>, Jonathan Corbet <corbet@lwn.net>, Damien Le Moal <damien.lemoal@opensource.wdc.com>, Jozsef Kadlecsik <kadlec@netfilter.org>, Xie Yongji <xieyongji@bytedance.com>, "open list:NETFILTER" <coreteam@netfilter.org>, Roopa Prabhu <roopa@nvidia.com>, Jakub Kicinski <kuba@kernel.org>, Borislav Petkov <bp@suse.de>, "open list:NETFILTER" <netfilter-devel@vger.ker
- nel.org>, Pablo Neira Ayuso <pablo@netfilter.org>, Stefano Garzarella <sgarzare@redhat.com>, Petr Machata <petrm@nvidia.com>, Kees Cook <keescook@chromium.org>, "Paul E. McKenney" <paulmck@kernel.org>, Yu Zhe <yuzhe@nfschina.com>, William Breathitt Gray <vilhelm.gray@gmail.com>, Nicholas Piggin <npiggin@gmail.com>, Hans de Goede <hdegoede@redhat.com>, Kuniyuki Iwashima <kuniyu@amazon.com>, Shakeel Butt <shakeelb@google.com>, Muchun Song <songmuchun@bytedance.com>, Alexandre Ghiti <alexandre.ghiti@canonical.com>, Yuwei Wang <wangyuweihx@gmail.com>, Juergen Gross <jgross@suse.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Akhmat Karakotov <hmukos@yandex-team.ru>, "Martin K. Petersen" <martin.petersen@oracle.com>, "open list:LINUX FOR POWERPC \(32-BIT AND 64-BIT\)" <linuxppc-dev@lists.ozlabs.org>, David Ahern <dsahern@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, Florian Westphal <fw@strlen.de>, open list <linux-kernel@vger.kernel.org>, "David S. Miller" <davem@davemloft.n
- et>, Chuck Lever <chuck.lever@oracle.com>, Arnd Bergmann <arnd@arndb.de>, Andrew Morton <akpm@linux-foundation.org>, =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali@kernel.org>, Antoine Tenart <atenart@kernel.org>
+Cc: "aik@ozlabs.ru" <aik@ozlabs.ru>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "npiggin@gmail.com" <npiggin@gmail.com>, "peterz@infradead.org" <peterz@infradead.org>, "mingo@redhat.com" <mingo@redhat.com>, "rostedt@goodmis.org" <rostedt@goodmis.org>, "jpoimboe@redhat.com" <jpoimboe@redhat.com>, "mbenes@suse.cz" <mbenes@suse.cz>, "chenzhongjin@huawei.com" <chenzhongjin@huawei.com>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 18/08/2022 03:43, Stephen Hemminger wrote:
-> DECnet is an obsolete network protocol that receives more attention
-> from kernel janitors than users. It belongs in computer protocol
-> history museum not in Linux kernel.
-> 
-> It has been "Orphaned" in kernel since 2010. The iproute2 support
-> for DECnet was dropped in 5.0 release. The documentation link on
-> Sourceforge says it is abandoned there as well.
-> 
-> Leave the UAPI alone to keep userspace programs compiling.
-> This means that there is still an empty neighbour table
-> for AF_DECNET.
-> 
-> The table of /proc/sys/net entries was updated to match
-> current directories and reformatted to be alphabetical.
-> 
-> Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
-> Acked-by: David Ahern <dsahern@kernel.org>
-> ---
-> 
-> Incorporates feedback from the initial RFC.
-> The MPLS neighbour table to family table is left alone.
-> 
+Christophe Leroy wrote:
+>=20
+>=20
+> Le 08/08/2022 =C3=A0 13:48, Sathvika Vasireddy a =C3=A9crit=C2=A0:
+>> objtool is throwing *unannotated intra-function call*
+>> warnings with a few instructions that are marked
+>> unreachable. Replace unreachable() with __builtin_unreachable()
+>> to fix these warnings, as the codegen remains same
+>> with unreachable() and __builtin_unreachable().
+>=20
+> I think it is necessary to explain why using unreachable() is not=20
+> necessary for powerpc, or even why using unreachable() is wrong.
+>=20
+> Allthough we are getting rid of the problem here by replacing=20
+> unreachable() by __builtin_unreachable(), it might still be a problem in=20
+> core parts of kernel which still use unreachable.
 
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+I did a kernel build with this series applied, with a variant of=20
+ppc64le_defconfig. I then did another build with the same config, but=20
+with the below hunk to disable objtool:
+
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 6be2e68fa9eb64..4c466acdc70d4c 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -237,8 +237,6 @@ config PPC
+        select HAVE_MOD_ARCH_SPECIFIC
+        select HAVE_NMI                         if PERF_EVENTS || (PPC64 &&=
+ PPC_BOOK3S)
+        select HAVE_OPTPROBES
+-       select HAVE_OBJTOOL                     if PPC32 || MPROFILE_KERNEL
+-       select HAVE_OBJTOOL_MCOUNT              if HAVE_OBJTOOL
+        select HAVE_PERF_EVENTS
+        select HAVE_PERF_EVENTS_NMI             if PPC64
+        select HAVE_PERF_REGS
+
+This has the effect of disabling annotations for unreachable().
+
+When I compared the resulting object files, I did not see changes in=20
+codegen relating to the annotation, like we do with using unreachable()=20
+in __WARN_FLAGS().
+
+More specifically, arch/powerpc/kvm/book3s.o:kvmppc_h_logical_ci_load()=20
+uses BUG(), and the generated code remains the same with/without the=20
+unreachable() annotation.
+
+This suggests that the bad codegen we are seeing with the annotation in=20
+unreachable() is limited to its use in __WARN_FLAGS(), which I suspect=20
+is due to an interaction with the use of asm_volatile_goto() for=20
+WARN_ENTRY().
+
+If I revert this patch (patch 01/16), gcc seems to add a label 8 bytes=20
+before _some_ function in this object file, which happens to hold a=20
+relocation against .TOC., and emits a bl to that symbol. Otherwise, gcc=20
+either emits no new instruction for the annotation, or a 'nop' in some=20
+cases.
+
+If I add a 'nop' between WARN_ENTRY() and unreachable() in=20
+__WARN_FLAGS(), or convert WARN_ENTRY to BUG_ENTRY thereby removing use=20
+of asm_volatile_goto(), the problem goes away and no bl is emitted:
+
+diff --git a/arch/powerpc/include/asm/bug.h b/arch/powerpc/include/asm/bug.=
+h
+index 61a4736355c244..88e0027c20ba5c 100644
+--- a/arch/powerpc/include/asm/bug.h
++++ b/arch/powerpc/include/asm/bug.h
+@@ -99,6 +99,7 @@
+        __label__ __label_warn_on;                              \
+                                                                \
+        WARN_ENTRY("twi 31, 0, 0", BUGFLAG_WARNING | (flags), __label_warn_=
+on); \
++       __asm__ __volatile__("nop");                            \
+        unreachable();                                          \
+                                                                \
+ __label_warn_on:
 
 
+In summary, I think the annotation itself is fine and we are only seeing=20
+an issue with its usage after WARN_ENTRY() due to use of=20
+asm_volatile_goto. Other uses of unreachable() don't seem to exhibit=20
+this problem.
 
+As such, I think this patch is appropriate for this series, though I=20
+think we should capture some of this information in the changelog.
+
+Note also that if and when we start utlizing the annotation, if we=20
+classify twui as INSN_BUG, this change will continue to be appropriate.
+
+
+- Naveen
 
