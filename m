@@ -1,42 +1,42 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9858B598ED4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Aug 2022 23:08:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4522598ED5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Aug 2022 23:09:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M7yCS5VLsz3dxN
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Aug 2022 07:08:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M7yDb5LzFz3f7Q
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Aug 2022 07:09:03 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=li9exWJe;
+	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=h2TiK6e3;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mail.zeus03.de (client-ip=194.117.254.33; helo=mail.zeus03.de; envelope-from=wsa+renesas@sang-engineering.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=li9exWJe;
+	dkim=pass (1024-bit key; secure) header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=h2TiK6e3;
 	dkim-atps=neutral
 Received: from mail.zeus03.de (www.zeus03.de [194.117.254.33])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M7yBm3jnsz3f16
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Aug 2022 07:07:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M7yD20Q3Dz2xHC
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Aug 2022 07:08:33 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
 	from:to:cc:subject:date:message-id:mime-version
-	:content-transfer-encoding; s=k1; bh=3bhGjXlunu1Ky50yLFmozK7YmVk
-	5YkPEAtEsl/6IeWY=; b=li9exWJenzm6pNVt5A1UhRIb0f76EoAO3KlaZNLXem5
-	zxpg9xPErofGBr1h/ZY5muLrR1jWp21zTf6ElwUkDbR7BLTTp07ZQYH8nuDYwVp5
-	pXMOayprPkTQWWFjrAyB/P1UWY6XWlAfCqmd5z2HjND2ahG92Jl0mzhrzcILAt7E
+	:content-transfer-encoding; s=k1; bh=p3KjBh2GuMxKuV+zV4/xlW3Kr9O
+	T27FzWty6UH3vDWU=; b=h2TiK6e3Uygc4QOtV5xG6yXKBlxxJ9RCUmyG3iY0ROm
+	/xeLTo+MN5x6xgr4eIt1S8ejNspH2+X9h98YjrrmlGDspjf/KrW4gLjhmvSZ8ZZQ
+	q4c4EQSwP8X1Biy7Zq8nx1EeRrSx0U5Mrn+sD6XDgQ4xdy8Jt0ergoINXWXJlaoE
 	=
-Received: (qmail 3959703 invoked from network); 18 Aug 2022 23:00:02 +0200
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 18 Aug 2022 23:00:02 +0200
-X-UD-Smtp-Session: l3s3148p1@ZV7gQ4rm5ZEucref
+Received: (qmail 3960481 invoked from network); 18 Aug 2022 23:00:26 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 18 Aug 2022 23:00:26 +0200
+X-UD-Smtp-Session: l3s3148p1@Ti1QRYrmS7Mucref
 From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH] cpuidle: move from strlcpy with unused retval to strscpy
-Date: Thu, 18 Aug 2022 23:00:01 +0200
-Message-Id: <20220818210002.6624-1-wsa+renesas@sang-engineering.com>
+Subject: [PATCH] macintosh: move from strlcpy with unused retval to strscpy
+Date: Thu, 18 Aug 2022 23:00:26 +0200
+Message-Id: <20220818210026.6940-1-wsa+renesas@sang-engineering.com>
 X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -51,7 +51,7 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, linux-pm@vger.kernel.org, Daniel Lezcano <daniel.lezcano@linaro.org>, Wolfram Sang <wsa+renesas@sang-engineering.com>, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
@@ -62,24 +62,31 @@ Generated by a coccinelle script.
 Link: https://lore.kernel.org/r/CAHk-=wgfRnXz0W3D37d01q3JFkr_i_uTL=V6A6G1oUZcprmknw@mail.gmail.com/
 Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 ---
- drivers/cpuidle/cpuidle-powernv.c | 4 ++--
+ drivers/macintosh/therm_windtunnel.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/cpuidle/cpuidle-powernv.c b/drivers/cpuidle/cpuidle-powernv.c
-index c32c600b3cf8..0b5461b3d7dd 100644
---- a/drivers/cpuidle/cpuidle-powernv.c
-+++ b/drivers/cpuidle/cpuidle-powernv.c
-@@ -233,8 +233,8 @@ static inline void add_powernv_state(int index, const char *name,
- 				     unsigned int exit_latency,
- 				     u64 psscr_val, u64 psscr_mask)
- {
--	strlcpy(powernv_states[index].name, name, CPUIDLE_NAME_LEN);
--	strlcpy(powernv_states[index].desc, name, CPUIDLE_NAME_LEN);
-+	strscpy(powernv_states[index].name, name, CPUIDLE_NAME_LEN);
-+	strscpy(powernv_states[index].desc, name, CPUIDLE_NAME_LEN);
- 	powernv_states[index].flags = flags;
- 	powernv_states[index].target_residency = target_residency;
- 	powernv_states[index].exit_latency = exit_latency;
+diff --git a/drivers/macintosh/therm_windtunnel.c b/drivers/macintosh/therm_windtunnel.c
+index 9226b74fa08f..091278240baa 100644
+--- a/drivers/macintosh/therm_windtunnel.c
++++ b/drivers/macintosh/therm_windtunnel.c
+@@ -321,7 +321,7 @@ static void do_attach(struct i2c_adapter *adapter)
+ 	if (np) {
+ 		of_node_put(np);
+ 	} else {
+-		strlcpy(info.type, "MAC,ds1775", I2C_NAME_SIZE);
++		strscpy(info.type, "MAC,ds1775", I2C_NAME_SIZE);
+ 		i2c_new_scanned_device(adapter, &info, scan_ds1775, NULL);
+ 	}
+ 
+@@ -329,7 +329,7 @@ static void do_attach(struct i2c_adapter *adapter)
+ 	if (np) {
+ 		of_node_put(np);
+ 	} else {
+-		strlcpy(info.type, "MAC,adm1030", I2C_NAME_SIZE);
++		strscpy(info.type, "MAC,adm1030", I2C_NAME_SIZE);
+ 		i2c_new_scanned_device(adapter, &info, scan_adm1030, NULL);
+ 	}
+ }
 -- 
 2.35.1
 
