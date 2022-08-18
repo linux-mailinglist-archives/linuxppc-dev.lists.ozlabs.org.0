@@ -2,41 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3155A598E8D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Aug 2022 23:04:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F53A598E8E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Aug 2022 23:04:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M7y6k0tNHz3c2M
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Aug 2022 07:03:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M7y7L300sz3f3j
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Aug 2022 07:04:30 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=L1HL/xfC;
+	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=BNaD9E04;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mail.zeus03.de (client-ip=194.117.254.33; helo=mail.zeus03.de; envelope-from=wsa+renesas@sang-engineering.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=L1HL/xfC;
+	dkim=pass (1024-bit key; secure) header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=BNaD9E04;
 	dkim-atps=neutral
 Received: from mail.zeus03.de (www.zeus03.de [194.117.254.33])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M7y5R1tN9z3cD8
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Aug 2022 07:02:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M7y5l4RNqz3drZ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Aug 2022 07:03:07 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
 	from:to:cc:subject:date:message-id:mime-version
-	:content-transfer-encoding; s=k1; bh=B3m/xuzWYlZO9505wbaZ6suOtie
-	tmTguhBShSHJbFfA=; b=L1HL/xfCrrumc/6gVa8z7U4MI/IqPEmJlDM9kwI7ASm
-	dPs58deFxXDcobf0alNTA3IPRuAD1gT6mpw59embYAn5sGkhaw7xdduHS+/0BlwC
-	rcyrZPTBqJZImSwQgSBMDeyV06xVpdmz4VFZteARwWQcwyW5+WuVnEfKn8lOblEQ
+	:content-transfer-encoding; s=k1; bh=5u5k4vzlov+GUrj+0PwOSdEzosh
+	g8bGFzvUgPqOtae0=; b=BNaD9E04oGprhC6A1g29ULmFRfHirfZ4swMOgxVvqYz
+	r++eldM5QvJNnrqvQqh8/yh7oW1/tIiJIWW8DxtV+J7ygu9OKrmK5JeXKlcZfBNi
+	Ly7kaYu19vzx5nZNwRVlOMq2G/Sn9lXMB2AWFhH1qDAwH5yRIe49k0nYbrc8Cr/U
 	=
-Received: (qmail 3961428 invoked from network); 18 Aug 2022 23:01:07 +0200
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 18 Aug 2022 23:01:07 +0200
-X-UD-Smtp-Session: l3s3148p1@buO0R4rmAMsucref
+Received: (qmail 3961618 invoked from network); 18 Aug 2022 23:01:13 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 18 Aug 2022 23:01:13 +0200
+X-UD-Smtp-Session: l3s3148p1@P6MbSIrm6dgucref
 From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH] soc: move from strlcpy with unused retval to strscpy
-Date: Thu, 18 Aug 2022 23:01:06 +0200
-Message-Id: <20220818210106.7349-1-wsa+renesas@sang-engineering.com>
+Subject: [PATCH] tty: move from strlcpy with unused retval to strscpy
+Date: Thu, 18 Aug 2022 23:01:12 +0200
+Message-Id: <20220818210113.7469-1-wsa+renesas@sang-engineering.com>
 X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -51,7 +51,7 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arm-msm@vger.kernel.org, Konrad Dybcio <konrad.dybcio@somainline.org>, Li Yang <leoyang.li@nxp.com>, Wolfram Sang <wsa+renesas@sang-engineering.com>, Andy Gross <agross@kernel.org>, Bjorn Andersson <bjorn.andersson@linaro.org>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, Qiang Zhao <qiang.zhao@nxp.com>
+Cc: Jiri Slaby <jirislaby@kernel.org>, Wolfram Sang <wsa+renesas@sang-engineering.com>, linux-serial@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
@@ -62,45 +62,112 @@ Generated by a coccinelle script.
 Link: https://lore.kernel.org/r/CAHk-=wgfRnXz0W3D37d01q3JFkr_i_uTL=V6A6G1oUZcprmknw@mail.gmail.com/
 Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 ---
- drivers/soc/fsl/qe/qe.c  | 4 ++--
- drivers/soc/qcom/smp2p.c | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/tty/hvc/hvcs.c           | 2 +-
+ drivers/tty/serial/earlycon.c    | 6 +++---
+ drivers/tty/serial/serial_core.c | 2 +-
+ drivers/tty/serial/sunsu.c       | 6 +++---
+ drivers/tty/serial/sunzilog.c    | 6 +++---
+ 5 files changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/soc/fsl/qe/qe.c b/drivers/soc/fsl/qe/qe.c
-index b3c226eb5292..58746e570d14 100644
---- a/drivers/soc/fsl/qe/qe.c
-+++ b/drivers/soc/fsl/qe/qe.c
-@@ -524,7 +524,7 @@ int qe_upload_firmware(const struct qe_firmware *firmware)
- 	 * saved microcode information and put in the new.
- 	 */
- 	memset(&qe_firmware_info, 0, sizeof(qe_firmware_info));
--	strlcpy(qe_firmware_info.id, firmware->id, sizeof(qe_firmware_info.id));
-+	strscpy(qe_firmware_info.id, firmware->id, sizeof(qe_firmware_info.id));
- 	qe_firmware_info.extended_modes = be64_to_cpu(firmware->extended_modes);
- 	memcpy(qe_firmware_info.vtraps, firmware->vtraps,
- 		sizeof(firmware->vtraps));
-@@ -599,7 +599,7 @@ struct qe_firmware_info *qe_get_firmware_info(void)
- 	/* Copy the data into qe_firmware_info*/
- 	sprop = of_get_property(fw, "id", NULL);
- 	if (sprop)
--		strlcpy(qe_firmware_info.id, sprop,
-+		strscpy(qe_firmware_info.id, sprop,
- 			sizeof(qe_firmware_info.id));
+diff --git a/drivers/tty/hvc/hvcs.c b/drivers/tty/hvc/hvcs.c
+index 9b7e8246a464..b79ce8d34f11 100644
+--- a/drivers/tty/hvc/hvcs.c
++++ b/drivers/tty/hvc/hvcs.c
+@@ -839,7 +839,7 @@ static void hvcs_set_pi(struct hvcs_partner_info *pi, struct hvcs_struct *hvcsd)
+ 	hvcsd->p_partition_ID  = pi->partition_ID;
  
- 	of_property_read_u64(fw, "extended-modes",
-diff --git a/drivers/soc/qcom/smp2p.c b/drivers/soc/qcom/smp2p.c
-index d9c28a8a7cbf..e9c8030d50ee 100644
---- a/drivers/soc/qcom/smp2p.c
-+++ b/drivers/soc/qcom/smp2p.c
-@@ -422,7 +422,7 @@ static int qcom_smp2p_outbound_entry(struct qcom_smp2p *smp2p,
- 	char buf[SMP2P_MAX_ENTRY_NAME] = {};
+ 	/* copy the null-term char too */
+-	strlcpy(hvcsd->p_location_code, pi->location_code,
++	strscpy(hvcsd->p_location_code, pi->location_code,
+ 		sizeof(hvcsd->p_location_code));
+ }
  
- 	/* Allocate an entry from the smem item */
--	strlcpy(buf, entry->name, SMP2P_MAX_ENTRY_NAME);
-+	strscpy(buf, entry->name, SMP2P_MAX_ENTRY_NAME);
- 	memcpy(out->entries[out->valid_entries].name, buf, SMP2P_MAX_ENTRY_NAME);
+diff --git a/drivers/tty/serial/earlycon.c b/drivers/tty/serial/earlycon.c
+index 88d08ba1ca83..a5f380584cda 100644
+--- a/drivers/tty/serial/earlycon.c
++++ b/drivers/tty/serial/earlycon.c
+@@ -67,7 +67,7 @@ static void __init earlycon_init(struct earlycon_device *device,
+ 	if (*s)
+ 		earlycon->index = simple_strtoul(s, NULL, 10);
+ 	len = s - name;
+-	strlcpy(earlycon->name, name, min(len + 1, sizeof(earlycon->name)));
++	strscpy(earlycon->name, name, min(len + 1, sizeof(earlycon->name)));
+ 	earlycon->data = &early_console_dev;
+ }
  
- 	/* Make the logical entry reference the physical value */
+@@ -123,7 +123,7 @@ static int __init parse_options(struct earlycon_device *device, char *options)
+ 		device->baud = simple_strtoul(options, NULL, 0);
+ 		length = min(strcspn(options, " ") + 1,
+ 			     (size_t)(sizeof(device->options)));
+-		strlcpy(device->options, options, length);
++		strscpy(device->options, options, length);
+ 	}
+ 
+ 	return 0;
+@@ -304,7 +304,7 @@ int __init of_setup_earlycon(const struct earlycon_id *match,
+ 
+ 	if (options) {
+ 		early_console_dev.baud = simple_strtoul(options, NULL, 0);
+-		strlcpy(early_console_dev.options, options,
++		strscpy(early_console_dev.options, options,
+ 			sizeof(early_console_dev.options));
+ 	}
+ 	earlycon_init(&early_console_dev, match->name);
+diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
+index 12c87cd201a7..3561a160cbd5 100644
+--- a/drivers/tty/serial/serial_core.c
++++ b/drivers/tty/serial/serial_core.c
+@@ -2497,7 +2497,7 @@ uart_report_port(struct uart_driver *drv, struct uart_port *port)
+ 			 "MMIO 0x%llx", (unsigned long long)port->mapbase);
+ 		break;
+ 	default:
+-		strlcpy(address, "*unknown*", sizeof(address));
++		strscpy(address, "*unknown*", sizeof(address));
+ 		break;
+ 	}
+ 
+diff --git a/drivers/tty/serial/sunsu.c b/drivers/tty/serial/sunsu.c
+index 84d545e5a8c7..d5dcb612804e 100644
+--- a/drivers/tty/serial/sunsu.c
++++ b/drivers/tty/serial/sunsu.c
+@@ -1217,13 +1217,13 @@ static int sunsu_kbd_ms_init(struct uart_sunsu_port *up)
+ 	serio->id.type = SERIO_RS232;
+ 	if (up->su_type == SU_PORT_KBD) {
+ 		serio->id.proto = SERIO_SUNKBD;
+-		strlcpy(serio->name, "sukbd", sizeof(serio->name));
++		strscpy(serio->name, "sukbd", sizeof(serio->name));
+ 	} else {
+ 		serio->id.proto = SERIO_SUN;
+ 		serio->id.extra = 1;
+-		strlcpy(serio->name, "sums", sizeof(serio->name));
++		strscpy(serio->name, "sums", sizeof(serio->name));
+ 	}
+-	strlcpy(serio->phys,
++	strscpy(serio->phys,
+ 		(!(up->port.line & 1) ? "su/serio0" : "su/serio1"),
+ 		sizeof(serio->phys));
+ 
+diff --git a/drivers/tty/serial/sunzilog.c b/drivers/tty/serial/sunzilog.c
+index c14275d83b0b..c44cf613ff1a 100644
+--- a/drivers/tty/serial/sunzilog.c
++++ b/drivers/tty/serial/sunzilog.c
+@@ -1307,13 +1307,13 @@ static void sunzilog_register_serio(struct uart_sunzilog_port *up)
+ 	serio->id.type = SERIO_RS232;
+ 	if (up->flags & SUNZILOG_FLAG_CONS_KEYB) {
+ 		serio->id.proto = SERIO_SUNKBD;
+-		strlcpy(serio->name, "zskbd", sizeof(serio->name));
++		strscpy(serio->name, "zskbd", sizeof(serio->name));
+ 	} else {
+ 		serio->id.proto = SERIO_SUN;
+ 		serio->id.extra = 1;
+-		strlcpy(serio->name, "zsms", sizeof(serio->name));
++		strscpy(serio->name, "zsms", sizeof(serio->name));
+ 	}
+-	strlcpy(serio->phys,
++	strscpy(serio->phys,
+ 		((up->flags & SUNZILOG_FLAG_CONS_KEYB) ?
+ 		 "zs/serio0" : "zs/serio1"),
+ 		sizeof(serio->phys));
 -- 
 2.35.1
 
