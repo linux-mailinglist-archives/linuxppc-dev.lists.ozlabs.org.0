@@ -2,58 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B00C6598A74
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Aug 2022 19:32:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B049598AAD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Aug 2022 19:47:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M7sQT3kKVz3drl
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Aug 2022 03:32:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M7slq0CCXz3dsM
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Aug 2022 03:47:19 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Tx55BSJy;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Tx55BSJy;
+	dkim-atps=neutral
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M7sQ15QnWz2xHC
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Aug 2022 03:31:51 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4M7sPv4Jg5z9sgY;
-	Thu, 18 Aug 2022 19:31:47 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id zZe8s5pfT7-t; Thu, 18 Aug 2022 19:31:47 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4M7sPv35YDz9sgX;
-	Thu, 18 Aug 2022 19:31:47 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 5ADAF8B767;
-	Thu, 18 Aug 2022 19:31:47 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id Xc826FIAeJiJ; Thu, 18 Aug 2022 19:31:47 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.235.236])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 24DD68B763;
-	Thu, 18 Aug 2022 19:31:47 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 27IHVbbt2052476
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 18 Aug 2022 19:31:37 +0200
-Received: (from chleroy@localhost)
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 27IHVZd02052471;
-	Thu, 18 Aug 2022 19:31:35 +0200
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
-Subject: [PATCH] powerpc/vdso: Don't map VDSO at a fixed address on PPC32
-Date: Thu, 18 Aug 2022 19:31:25 +0200
-Message-Id: <cba76f5a5b01fcc49415e632d92c11c1c5998cab.1660843877.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.37.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M7sl85Gxmz2ypC
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Aug 2022 03:46:44 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 3A5BEB8239D;
+	Thu, 18 Aug 2022 17:46:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2D27C433D7;
+	Thu, 18 Aug 2022 17:46:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1660844797;
+	bh=jIxGaTBdcFMXEIeR82RMZMrQKs34LT+64kA5X48aaMw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Tx55BSJyXHEzf2EF+m5yjFgaajJ1e7uDdT58lCfd/w1pi5D6KhZCHh2bBJdA7q+YW
+	 5d3YeR87e+gm/8Wtw69WxfppgGO0scVgMVEKXW+hlQ9ovnCNfgK6wcbrFD3U7KBsoE
+	 PR/i2lrNQWqyCYapWpKPUVQZOqLDh2x5L6M+nmdbgm7TYZ6U56QcBCoyF+ZoGvFVwC
+	 45tiYeH7r1Qe8i4jhMHJ8nLxzJ3LLeyCBiB7Z/MfTm755alq/QJXUKqPqXpDpjUg78
+	 Q2UGhTFvN6IUkN2qfZEsvtJHZUqMBgcofEAUMecB0tTRS6w7BLbUglsQcVwYcNbkmf
+	 hekEJ5SWco1Ig==
+Received: by pali.im (Postfix)
+	id A85E4622; Thu, 18 Aug 2022 19:46:34 +0200 (CEST)
+Date: Thu, 18 Aug 2022 19:46:34 +0200
+From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v1 2/5] powerpc/32: Don't always pass -mcpu=powerpc to
+ the compiler
+Message-ID: <20220818174634.6nkzcztzn6uqcrzg@pali>
+References: <8abab4888da69ff78b73a56f64d9678a7bf684e9.1657549153.git.christophe.leroy@csgroup.eu>
+ <d4df724691351531bf46d685d654689e5dfa0d74.1657549153.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1660843884; l=2296; s=20211009; h=from:subject:message-id; bh=hyN+Cekjwhv6w4forXDxgFeHYyRixzXym2N4NX5o8kY=; b=X0mS0tn9tr2VkijrzyuEzAy5sxXf3adu47I90pPCErAtd+yhL5ssrp0+u4Vco7ibWTR+EfZlNWuD x8fwBgkqAn3wxHv7vpk8lvlFVgmvgcctTzngRc8GIiBq7NwbQbgM
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <d4df724691351531bf46d685d654689e5dfa0d74.1657549153.git.christophe.leroy@csgroup.eu>
+User-Agent: NeoMutt/20180716
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,74 +65,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-PPC64 removed default mapping address from VDSO in
-commit 30d0b3682887 ("powerpc: Move 64bit VDSO to improve context
-switch performance").
+On Monday 11 July 2022 16:19:30 Christophe Leroy wrote:
+> Since commit 4bf4f42a2feb ("powerpc/kbuild: Set default generic
+> machine type for 32-bit compile"), when building a 32 bits kernel
+> with a bi-arch version of GCC, or when building a book3s/32 kernel,
+> the option -mcpu=powerpc is passed to GCC at all time, relying on it
+> being eventually overriden by a subsequent -mcpu=xxxx.
+> 
+> But when building the same kernel with a 32 bits only version of GCC,
+> that is not done, relying on gcc being built with the expected default
+> CPU.
+> 
+> This logic has two problems. First, it is a bit fragile to rely on
+> whether the GCC version is bi-arch or not, because today we can have
+> bi-arch versions of GCC configured with a 32 bits default. Second,
+> there are some versions of GCC which don't support -mcpu=powerpc,
+> for instance for e500 SPE-only versions.
+> 
+> So, stop relying on this approximative logic and allow the user to
+> decide whether he/she wants to use the toolchain's default CPU or if
+> he/she wants to set one, and allow only possible CPUs based on the
+> selected target.
 
-Do like PPC64 and let get_unmapped_area() place the VDSO mapping
-at the address it wants, don't force a default address.
+Hello! Exactly same issue is still in file arch/powerpc/boot/Makefile:
 
-This allows randomisation of VDSO address.
+  ifdef CONFIG_PPC64_BOOT_WRAPPER
+  ifdef CONFIG_CPU_LITTLE_ENDIAN
+  BOOTCFLAGS	+= -m64 -mcpu=powerpc64le
+  else
+  BOOTCFLAGS	+= -m64 -mcpu=powerpc64
+  endif
+  else
+  BOOTCFLAGS	+= -m32 -mcpu=powerpc
+  endif
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/include/asm/vdso.h |  3 ---
- arch/powerpc/kernel/vdso.c      | 13 ++-----------
- 2 files changed, 2 insertions(+), 14 deletions(-)
+It cause compile error:
 
-diff --git a/arch/powerpc/include/asm/vdso.h b/arch/powerpc/include/asm/vdso.h
-index 8542e9bbeead..7650b6ce14c8 100644
---- a/arch/powerpc/include/asm/vdso.h
-+++ b/arch/powerpc/include/asm/vdso.h
-@@ -2,9 +2,6 @@
- #ifndef _ASM_POWERPC_VDSO_H
- #define _ASM_POWERPC_VDSO_H
- 
--/* Default map addresses for 32bit vDSO */
--#define VDSO32_MBASE	0x100000
--
- #define VDSO_VERSION_STRING	LINUX_2.6.15
- 
- #ifndef __ASSEMBLY__
-diff --git a/arch/powerpc/kernel/vdso.c b/arch/powerpc/kernel/vdso.c
-index 0da287544054..bf9574ec26ce 100644
---- a/arch/powerpc/kernel/vdso.c
-+++ b/arch/powerpc/kernel/vdso.c
-@@ -200,28 +200,19 @@ static int __arch_setup_additional_pages(struct linux_binprm *bprm, int uses_int
- 	if (is_32bit_task()) {
- 		vdso_spec = &vdso32_spec;
- 		vdso_size = &vdso32_end - &vdso32_start;
--		vdso_base = VDSO32_MBASE;
- 	} else {
- 		vdso_spec = &vdso64_spec;
- 		vdso_size = &vdso64_end - &vdso64_start;
--		/*
--		 * On 64bit we don't have a preferred map address. This
--		 * allows get_unmapped_area to find an area near other mmaps
--		 * and most likely share a SLB entry.
--		 */
--		vdso_base = 0;
- 	}
- 
- 	mappings_size = vdso_size + vvar_size;
- 	mappings_size += (VDSO_ALIGNMENT - 1) & PAGE_MASK;
- 
- 	/*
--	 * pick a base address for the vDSO in process space. We try to put it
--	 * at vdso_base which is the "natural" base for it, but we might fail
--	 * and end up putting it elsewhere.
-+	 * Pick a base address for the vDSO in process space.
- 	 * Add enough to the size so that the result can be aligned.
- 	 */
--	vdso_base = get_unmapped_area(NULL, vdso_base, mappings_size, 0, 0);
-+	vdso_base = get_unmapped_area(NULL, 0, mappings_size, 0, 0);
- 	if (IS_ERR_VALUE(vdso_base))
- 		return vdso_base;
- 
--- 
-2.37.1
+  make ARCH=powerpc CROSS_COMPILE=powerpc-linux-gnuspe- mpc85xx_smp_defconfig uImage
+  ...
+    BOOTAS  arch/powerpc/boot/crt0.o
+  powerpc-linux-gnuspe-gcc: error: unrecognized argument in option ‘-mcpu=powerpc’
+  powerpc-linux-gnuspe-gcc: note: valid arguments to ‘-mcpu=’ are: 8540 8548 native
+  make[1]: *** [arch/powerpc/boot/Makefile:231: arch/powerpc/boot/crt0.o] Error 1
 
+> Reported-by: Pali Rohár <pali@kernel.org>
+> Tested-by: Pali Rohár <pali@kernel.org>
+> Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+> Cc: Segher Boessenkool <segher@kernel.crashing.org>
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> ---
+>  arch/powerpc/Makefile                  | 26 +-------------------------
+>  arch/powerpc/platforms/Kconfig.cputype | 21 ++++++++++++++++++---
+>  2 files changed, 19 insertions(+), 28 deletions(-)
