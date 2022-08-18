@@ -2,41 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A17E598EB8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Aug 2022 23:07:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46CB8598ED2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Aug 2022 23:07:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M7yBC1CLcz3dw4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Aug 2022 07:06:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M7yBr1W95z3f1T
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Aug 2022 07:07:32 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=h8vRB2WI;
+	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=3ucEsOmN;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mail.zeus03.de (client-ip=194.117.254.33; helo=mail.zeus03.de; envelope-from=wsa+renesas@sang-engineering.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=h8vRB2WI;
+	dkim=pass (1024-bit key; secure) header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=3ucEsOmN;
 	dkim-atps=neutral
 Received: from mail.zeus03.de (www.zeus03.de [194.117.254.33])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M7y9d6wprz2xHC
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Aug 2022 07:06:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M7y9v2xQTz3dsP
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Aug 2022 07:06:43 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
 	from:to:cc:subject:date:message-id:mime-version
-	:content-transfer-encoding; s=k1; bh=a1uq3IAVqNdMxVx460/qsDjibf6
-	3TtX9yX7IPslHHi4=; b=h8vRB2WIIzibS7zMbhTkU5PXibtv5cJ8ybDZburEULt
-	v6YUZurB1P8or9FUB+CjqLysY9ypFqo1/Mf3q1FXFePUOTjW+xYZisdlVe92msL8
-	pauoDFRDhiKbhUFAptik78jy0R3dt7pQ+AGrpDMDURB4CdlDbi8GY7eH5NDbgZH8
+	:content-transfer-encoding; s=k1; bh=qDmf4Bsrxo6BfokqhIhswvHdmlz
+	bGFO97gi1JjH+g84=; b=3ucEsOmN++mJRNj7FiDelgxQnlSibfh7rztOzEuGLXe
+	SsZZjIvrf4smV4yTX+r8FnqqmWfisBc7MjGt2NKVdGkkNELc1FMgzwP9oi3vnab2
+	2/Vgmtq6Shz1953l38O3SRsYc2PRQddfuFKfWN7lM+gVJFVeHa0hH6RxjPg/Hrz8
 	=
-Received: (qmail 3959127 invoked from network); 18 Aug 2022 22:59:47 +0200
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 18 Aug 2022 22:59:47 +0200
-X-UD-Smtp-Session: l3s3148p1@WdT2Qormkuwucref
+Received: (qmail 3959462 invoked from network); 18 Aug 2022 22:59:58 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 18 Aug 2022 22:59:58 +0200
+X-UD-Smtp-Session: l3s3148p1@Qf2lQ4rmc7Iucref
 From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH] powerpc: move from strlcpy with unused retval to strscpy
-Date: Thu, 18 Aug 2022 22:59:46 +0200
-Message-Id: <20220818205946.6336-1-wsa+renesas@sang-engineering.com>
+Subject: [PATCH] block: move from strlcpy with unused retval to strscpy
+Date: Thu, 18 Aug 2022 22:59:57 +0200
+Message-Id: <20220818205958.6552-1-wsa+renesas@sang-engineering.com>
 X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -51,7 +51,7 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>, linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
+Cc: Jens Axboe <axboe@kernel.dk>, linuxppc-dev@lists.ozlabs.org, =?UTF-8?q?Christoph=20B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>, Geoff Levand <geoff@infradead.org>, Minchan Kim <minchan@kernel.org>, Philipp Reisner <philipp.reisner@linbit.com>, Jim Paris <jim@jtan.com>, linux-block@vger.kernel.org, Wolfram Sang <wsa+renesas@sang-engineering.com>, Nicholas Piggin <npiggin@gmail.com>, Lars Ellenberg <lars.ellenberg@linbit.com>, Sergey Senozhatsky <senozhatsky@chromium.org>, Nitin Gupta <ngupta@vflare.org>, drbd-dev@lists.linbit.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
@@ -62,64 +62,123 @@ Generated by a coccinelle script.
 Link: https://lore.kernel.org/r/CAHk-=wgfRnXz0W3D37d01q3JFkr_i_uTL=V6A6G1oUZcprmknw@mail.gmail.com/
 Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 ---
- arch/powerpc/kernel/dt_cpu_ftrs.c          | 2 +-
- arch/powerpc/platforms/powernv/idle.c      | 2 +-
- arch/powerpc/platforms/powernv/pci-ioda.c  | 2 +-
- arch/powerpc/platforms/pseries/hvcserver.c | 2 +-
- 4 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/block/brd.c               |  2 +-
+ drivers/block/drbd/drbd_nl.c      |  2 +-
+ drivers/block/mtip32xx/mtip32xx.c | 12 ++++++------
+ drivers/block/ps3vram.c           |  2 +-
+ drivers/block/zram/zram_drv.c     |  6 +++---
+ 5 files changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/arch/powerpc/kernel/dt_cpu_ftrs.c b/arch/powerpc/kernel/dt_cpu_ftrs.c
-index fc800a9fb2c4..c3fb9fdf5bd7 100644
---- a/arch/powerpc/kernel/dt_cpu_ftrs.c
-+++ b/arch/powerpc/kernel/dt_cpu_ftrs.c
-@@ -1099,7 +1099,7 @@ static int __init dt_cpu_ftrs_scan_callback(unsigned long node, const char
+diff --git a/drivers/block/brd.c b/drivers/block/brd.c
+index 859499cd1ff8..20acc4a1fd6d 100644
+--- a/drivers/block/brd.c
++++ b/drivers/block/brd.c
+@@ -397,7 +397,7 @@ static int brd_alloc(int i)
+ 	disk->minors		= max_part;
+ 	disk->fops		= &brd_fops;
+ 	disk->private_data	= brd;
+-	strlcpy(disk->disk_name, buf, DISK_NAME_LEN);
++	strscpy(disk->disk_name, buf, DISK_NAME_LEN);
+ 	set_capacity(disk, rd_size * 2);
+ 	
+ 	/*
+diff --git a/drivers/block/drbd/drbd_nl.c b/drivers/block/drbd/drbd_nl.c
+index 013d355a2033..864c98e74875 100644
+--- a/drivers/block/drbd/drbd_nl.c
++++ b/drivers/block/drbd/drbd_nl.c
+@@ -4752,7 +4752,7 @@ void notify_helper(enum drbd_notification_type type,
+ 	struct drbd_genlmsghdr *dh;
+ 	int err;
  
- 	prop = of_get_flat_dt_prop(node, "display-name", NULL);
- 	if (prop && strlen((char *)prop) != 0) {
--		strlcpy(dt_cpu_name, (char *)prop, sizeof(dt_cpu_name));
-+		strscpy(dt_cpu_name, (char *)prop, sizeof(dt_cpu_name));
- 		cur_cpu_spec->cpu_name = dt_cpu_name;
+-	strlcpy(helper_info.helper_name, name, sizeof(helper_info.helper_name));
++	strscpy(helper_info.helper_name, name, sizeof(helper_info.helper_name));
+ 	helper_info.helper_name_len = min(strlen(name), sizeof(helper_info.helper_name));
+ 	helper_info.helper_status = status;
+ 
+diff --git a/drivers/block/mtip32xx/mtip32xx.c b/drivers/block/mtip32xx/mtip32xx.c
+index 562725d222a7..815d77ba6381 100644
+--- a/drivers/block/mtip32xx/mtip32xx.c
++++ b/drivers/block/mtip32xx/mtip32xx.c
+@@ -1397,15 +1397,15 @@ static void mtip_dump_identify(struct mtip_port *port)
+ 	if (!port->identify_valid)
+ 		return;
+ 
+-	strlcpy(cbuf, (char *)(port->identify+10), 21);
++	strscpy(cbuf, (char *)(port->identify + 10), 21);
+ 	dev_info(&port->dd->pdev->dev,
+ 		"Serial No.: %s\n", cbuf);
+ 
+-	strlcpy(cbuf, (char *)(port->identify+23), 9);
++	strscpy(cbuf, (char *)(port->identify + 23), 9);
+ 	dev_info(&port->dd->pdev->dev,
+ 		"Firmware Ver.: %s\n", cbuf);
+ 
+-	strlcpy(cbuf, (char *)(port->identify+27), 41);
++	strscpy(cbuf, (char *)(port->identify + 27), 41);
+ 	dev_info(&port->dd->pdev->dev, "Model: %s\n", cbuf);
+ 
+ 	dev_info(&port->dd->pdev->dev, "Security: %04x %s\n",
+@@ -1421,13 +1421,13 @@ static void mtip_dump_identify(struct mtip_port *port)
+ 	pci_read_config_word(port->dd->pdev, PCI_REVISION_ID, &revid);
+ 	switch (revid & 0xFF) {
+ 	case 0x1:
+-		strlcpy(cbuf, "A0", 3);
++		strscpy(cbuf, "A0", 3);
+ 		break;
+ 	case 0x3:
+-		strlcpy(cbuf, "A2", 3);
++		strscpy(cbuf, "A2", 3);
+ 		break;
+ 	default:
+-		strlcpy(cbuf, "?", 2);
++		strscpy(cbuf, "?", 2);
+ 		break;
  	}
- 
-diff --git a/arch/powerpc/platforms/powernv/idle.c b/arch/powerpc/platforms/powernv/idle.c
-index 6f94b808dd39..6e6b3bd9c92f 100644
---- a/arch/powerpc/platforms/powernv/idle.c
-+++ b/arch/powerpc/platforms/powernv/idle.c
-@@ -1411,7 +1411,7 @@ static int __init pnv_parse_cpuidle_dt(void)
+ 	dev_info(&port->dd->pdev->dev,
+diff --git a/drivers/block/ps3vram.c b/drivers/block/ps3vram.c
+index e1d080f680ed..c76e0148eada 100644
+--- a/drivers/block/ps3vram.c
++++ b/drivers/block/ps3vram.c
+@@ -745,7 +745,7 @@ static int ps3vram_probe(struct ps3_system_bus_device *dev)
+ 	gendisk->flags |= GENHD_FL_NO_PART;
+ 	gendisk->fops = &ps3vram_fops;
+ 	gendisk->private_data = dev;
+-	strlcpy(gendisk->disk_name, DEVICE_NAME, sizeof(gendisk->disk_name));
++	strscpy(gendisk->disk_name, DEVICE_NAME, sizeof(gendisk->disk_name));
+ 	set_capacity(gendisk, priv->size >> 9);
+ 	blk_queue_max_segments(gendisk->queue, BLK_MAX_SEGMENTS);
+ 	blk_queue_max_segment_size(gendisk->queue, BLK_MAX_SEGMENT_SIZE);
+diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+index 92cb929a45b7..be435304af29 100644
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -499,7 +499,7 @@ static ssize_t backing_dev_store(struct device *dev,
  		goto out;
  	}
- 	for (i = 0; i < nr_idle_states; i++)
--		strlcpy(pnv_idle_states[i].name, temp_string[i],
-+		strscpy(pnv_idle_states[i].name, temp_string[i],
- 			PNV_IDLE_NAME_LEN);
- 	nr_pnv_idle_states = nr_idle_states;
- 	rc = 0;
-diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-index 9de9b2fb163d..5c144c05cbfd 100644
---- a/arch/powerpc/platforms/powernv/pci-ioda.c
-+++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-@@ -67,7 +67,7 @@ void pe_level_printk(const struct pnv_ioda_pe *pe, const char *level,
- 	vaf.va = &args;
  
- 	if (pe->flags & PNV_IODA_PE_DEV)
--		strlcpy(pfix, dev_name(&pe->pdev->dev), sizeof(pfix));
-+		strscpy(pfix, dev_name(&pe->pdev->dev), sizeof(pfix));
- 	else if (pe->flags & (PNV_IODA_PE_BUS | PNV_IODA_PE_BUS_ALL))
- 		sprintf(pfix, "%04x:%02x     ",
- 			pci_domain_nr(pe->pbus), pe->pbus->number);
-diff --git a/arch/powerpc/platforms/pseries/hvcserver.c b/arch/powerpc/platforms/pseries/hvcserver.c
-index 96e18d3b2fcf..d48c9c7ce10f 100644
---- a/arch/powerpc/platforms/pseries/hvcserver.c
-+++ b/arch/powerpc/platforms/pseries/hvcserver.c
-@@ -176,7 +176,7 @@ int hvcs_get_partner_info(uint32_t unit_address, struct list_head *head,
- 			= (unsigned int)last_p_partition_ID;
+-	strlcpy(file_name, buf, PATH_MAX);
++	strscpy(file_name, buf, PATH_MAX);
+ 	/* ignore trailing newline */
+ 	sz = strlen(file_name);
+ 	if (sz > 0 && file_name[sz - 1] == '\n')
+@@ -1031,7 +1031,7 @@ static ssize_t comp_algorithm_store(struct device *dev,
+ 	char compressor[ARRAY_SIZE(zram->compressor)];
+ 	size_t sz;
  
- 		/* copy the Null-term char too */
--		strlcpy(&next_partner_info->location_code[0],
-+		strscpy(&next_partner_info->location_code[0],
- 			(char *)&pi_buff[2],
- 			sizeof(next_partner_info->location_code));
+-	strlcpy(compressor, buf, sizeof(compressor));
++	strscpy(compressor, buf, sizeof(compressor));
+ 	/* ignore trailing newline */
+ 	sz = strlen(compressor);
+ 	if (sz > 0 && compressor[sz - 1] == '\n')
+@@ -1952,7 +1952,7 @@ static int zram_add(void)
+ 	if (ret)
+ 		goto out_cleanup_disk;
  
+-	strlcpy(zram->compressor, default_compressor, sizeof(zram->compressor));
++	strscpy(zram->compressor, default_compressor, sizeof(zram->compressor));
+ 
+ 	zram_debugfs_register(zram);
+ 	pr_info("Added device: %s\n", zram->disk->disk_name);
 -- 
 2.35.1
 
