@@ -2,70 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4019A597DA4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Aug 2022 06:42:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0872A597DD2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Aug 2022 07:07:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M7XKn10WZz3cFB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Aug 2022 14:42:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M7XvN6vjyz3cdk
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Aug 2022 15:07:44 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=UCQPCkZx;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=LUrbeEVa;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52b; helo=mail-pg1-x52b.google.com; envelope-from=ritesh.list@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=UCQPCkZx;
-	dkim-atps=neutral
-Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com [IPv6:2607:f8b0:4864:20::52b])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M7XK92PZJz2yMK
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Aug 2022 14:41:31 +1000 (AEST)
-Received: by mail-pg1-x52b.google.com with SMTP id l64so429651pge.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Aug 2022 21:41:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc;
-        bh=vBRqm9P3PucMWPQft7rdPQr1jzE78rWkm5My0QOmYqo=;
-        b=UCQPCkZxgSVgVfRvBD0lBiCJunMG+AZUrfKK6u3u6vnAu8eN28E04dT7SORQZDT/VM
-         geGH1MvNA8tLwbmpRVGFoYKnjvPZwZC5qqcwyGIc9K4Qur/gDNaayEpYMhGFdnxYfWxF
-         eQ/VY6GbHcM2BV3Zl1TwZFSNOAWDstV+t2e3HMxeSbbtAQYAAIC6gWlk8t7RX+H8MKWq
-         AjuvHOKJO/KH9jqWv1uwDRKFw6yCvW/qsEjgb3Kcri68s4VYK664rvNBFtgAubzsUut+
-         QoD4UyyjK+RFDsMPOokQ2YSz4OnQ9a7r/9/G7bAil8/StmX0pYp8aLW5CnHvmbOSTxZN
-         t+jA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
-        bh=vBRqm9P3PucMWPQft7rdPQr1jzE78rWkm5My0QOmYqo=;
-        b=FtP5jdLJuZnogRR2hCMyMs5CssubxB6jjgvZE/TaNXM+PtuZDfnz4LT/Tq0UviELx7
-         8fMjXOQh1oOQCAcWLBfihfQ+Mhj3WacEWytPapoG1reJavGXmc0WcwYSoaqK2yvoRPjo
-         Eq0J080DoB4RNlNAkfCI8OxSzPhlN+UWm7dZZCHWKMBh1jCQ5vpaNGtyR627rxmoOFj4
-         oWwx4oI+y0fZo2bOGUub78/jXvrpvLxWvuKcJafvy63mkM7ykvEqQweN5OkdAleDJXsD
-         p38570tVpgUgj5JXoYxzbxrb1Kq8zqByBwTNbnz/7YPGdEMgD4f26sE9SLRZHG4Q8472
-         3ODg==
-X-Gm-Message-State: ACgBeo04oJC5LajfZMx9LnNc8jpUOILnPYFTedeVaQjxXDVWArx4qGkp
-	xfBEa5C+i/MimoEM0J6feRCITsG+8zs=
-X-Google-Smtp-Source: AA6agR7ueq3jiFzDIJuD4hrbZTfz4hqe2+zWTcQBHHHcnXdOG0+5px+2XucU7nxCfUvB3L77RDBKfQ==
-X-Received: by 2002:a63:6b81:0:b0:41c:3a8c:b4fe with SMTP id g123-20020a636b81000000b0041c3a8cb4femr1186114pgc.84.1660797689286;
-        Wed, 17 Aug 2022 21:41:29 -0700 (PDT)
-Received: from localhost ([2406:7400:63:e947:599c:6cd1:507f:801e])
-        by smtp.gmail.com with ESMTPSA id r12-20020aa7962c000000b0052e988c1630sm411044pfg.138.2022.08.17.21.41.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Aug 2022 21:41:28 -0700 (PDT)
-Date: Thu, 18 Aug 2022 10:11:23 +0530
-From: Ritesh Harjani <ritesh.list@gmail.com>
-To: Alexander Atanasov <alexander.atanasov@virtuozzo.com>
-Subject: Re: [PATCH v2 1/4] Make place for common balloon code
-Message-ID: <20220818044123.q5yzdaszcxl7mcl6@riteshh-domain>
-References: <20220816094117.3144881-1-alexander.atanasov@virtuozzo.com>
- <20220816094117.3144881-2-alexander.atanasov@virtuozzo.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M7Xtj65K0z2xGv
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Aug 2022 15:07:09 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=LUrbeEVa;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4M7Xtf59hVz4x1d;
+	Thu, 18 Aug 2022 15:07:06 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1660799226;
+	bh=5Vov1fmvbGTMUL1OdaxriLrJnUsQ8nyZWUrX5z7TPsI=;
+	h=From:To:Subject:Date:From;
+	b=LUrbeEVaPpih+VQTKIwCpifPmMmi/rWQyUBH+QsO3pp8tg5qyin9kYS/C+xZzg7s3
+	 H1f9MBjvcPdeD0+gVdy9lUCYyk9co2lX1FVNsC9fLrGzEdkN3uy/qJAsA/Omw60id+
+	 Mbd3JTYlXylRy+Y/EeJer9+xw1eeckUyEkCFL0NWs1vI7xiVZAUpXDNZmnxY5nP2Lf
+	 sGBsQAkUGOm/XPRIKDeZNqMdGrJb2I5Y5n0CNNpLwa9hQuiXx8tk77a3X/Wl9Agg3q
+	 Yi7cwSnyLwSJ6xQKlVYhsRZwgedS2m7r3aFARQw620NCSQZNUXvNwEw5rbeC+8fjEa
+	 hIZUgsCMKkZyw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: <linuxppc-dev@lists.ozlabs.org>
+Subject: [PATCH] powerpc: Move patch sites out of asm-prototypes.h
+Date: Thu, 18 Aug 2022 15:06:59 +1000
+Message-Id: <20220818050659.187181-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.37.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220816094117.3144881-2-alexander.atanasov@virtuozzo.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,47 +56,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@arndb.de>, "Michael S. Tsirkin" <mst@redhat.com>, VMware PV-Drivers Reviewers <pv-drivers@vmware.com>, Jason Wang <jasowang@redhat.com>, David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org, linux-mm@kvack.org, Nadav Amit <namit@vmware.com>, Nicholas Piggin <npiggin@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, kernel@openvz.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 22/08/16 12:41PM, Alexander Atanasov wrote:
-> File already contains code that is common along balloon
-> drivers so rename it to reflect its contents.
-> mm/balloon_compaction.c -> mm/balloon_common.c
->
-> Signed-off-by: Alexander Atanasov <alexander.atanasov@virtuozzo.com>
-> ---
->  MAINTAINERS                                              | 4 ++--
->  arch/powerpc/platforms/pseries/cmm.c                     | 2 +-
->  drivers/misc/vmw_balloon.c                               | 2 +-
->  drivers/virtio/virtio_balloon.c                          | 2 +-
->  include/linux/{balloon_compaction.h => balloon_common.h} | 2 +-
->  mm/Makefile                                              | 2 +-
->  mm/{balloon_compaction.c => balloon_common.c}            | 4 ++--
+The definitions for the patch sites etc. don't belong in
+asm-prototypes.h, they are not EXPORT'ed asm symbols.
 
->  mm/migrate.c                                             | 2 +-
->  mm/vmscan.c                                              | 2 +-
-I think we don't need balloon headers in above two files at all.
-I don't see any references of balloon functions in them.
+Move them into sections.h which is traditionally used for asm symbols.
 
-I guess this commit removed it -
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/include/asm/asm-prototypes.h | 13 -------------
+ arch/powerpc/include/asm/sections.h       | 13 +++++++++++++
+ arch/powerpc/kernel/security.c            |  1 +
+ 3 files changed, 14 insertions(+), 13 deletions(-)
 
-commit b1123ea6d3b3da25af5c8a9d843bd07ab63213f4
-Author: Minchan Kim <minchan@kernel.org>
-Date:   Tue Jul 26 15:23:09 2016 -0700
+diff --git a/arch/powerpc/include/asm/asm-prototypes.h b/arch/powerpc/include/asm/asm-prototypes.h
+index 81631e64dbeb..e1b3e90eec94 100644
+--- a/arch/powerpc/include/asm/asm-prototypes.h
++++ b/arch/powerpc/include/asm/asm-prototypes.h
+@@ -55,19 +55,6 @@ struct kvm_vcpu;
+ void _kvmppc_restore_tm_pr(struct kvm_vcpu *vcpu, u64 guest_msr);
+ void _kvmppc_save_tm_pr(struct kvm_vcpu *vcpu, u64 guest_msr);
+ 
+-/* Patch sites */
+-extern s32 patch__call_flush_branch_caches1;
+-extern s32 patch__call_flush_branch_caches2;
+-extern s32 patch__call_flush_branch_caches3;
+-extern s32 patch__flush_count_cache_return;
+-extern s32 patch__flush_link_stack_return;
+-extern s32 patch__call_kvm_flush_link_stack;
+-extern s32 patch__call_kvm_flush_link_stack_p9;
+-extern s32 patch__memset_nocache, patch__memcpy_nocache;
+-
+-extern long flush_branch_caches;
+-extern long kvm_flush_link_stack;
+-
+ #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+ void kvmppc_save_tm_hv(struct kvm_vcpu *vcpu, u64 msr, bool preserve_nv);
+ void kvmppc_restore_tm_hv(struct kvm_vcpu *vcpu, u64 msr, bool preserve_nv);
+diff --git a/arch/powerpc/include/asm/sections.h b/arch/powerpc/include/asm/sections.h
+index 8be2c491c733..183e6b8af392 100644
+--- a/arch/powerpc/include/asm/sections.h
++++ b/arch/powerpc/include/asm/sections.h
+@@ -14,6 +14,19 @@ typedef struct func_desc func_desc_t;
+ 
+ extern char __head_end[];
+ 
++/* Patch sites */
++extern s32 patch__call_flush_branch_caches1;
++extern s32 patch__call_flush_branch_caches2;
++extern s32 patch__call_flush_branch_caches3;
++extern s32 patch__flush_count_cache_return;
++extern s32 patch__flush_link_stack_return;
++extern s32 patch__call_kvm_flush_link_stack;
++extern s32 patch__call_kvm_flush_link_stack_p9;
++extern s32 patch__memset_nocache, patch__memcpy_nocache;
++
++extern long flush_branch_caches;
++extern long kvm_flush_link_stack;
++
+ #ifdef __powerpc64__
+ 
+ extern char __start_interrupts[];
+diff --git a/arch/powerpc/kernel/security.c b/arch/powerpc/kernel/security.c
+index d96fd14bd7c9..b562a1d2c750 100644
+--- a/arch/powerpc/kernel/security.c
++++ b/arch/powerpc/kernel/security.c
+@@ -16,6 +16,7 @@
+ #include <asm/asm-prototypes.h>
+ #include <asm/code-patching.h>
+ #include <asm/security_features.h>
++#include <asm/sections.h>
+ #include <asm/setup.h>
+ #include <asm/inst.h>
+ 
+-- 
+2.37.1
 
-    mm: balloon: use general non-lru movable page feature
-
-    Now, VM has a feature to migrate non-lru movable pages so balloon
-    doesn't need custom migration hooks in migrate.c and compaction.c.
-
-    Instead, this patch implements the page->mapping->a_ops->
-    {isolate|migrate|putback} functions.
-
-    With that, we could remove hooks for ballooning in general migration
-    functions and make balloon compaction simple.
-
-Since I don't often look into this side of code, it's better to confirm :)
-
--ritesh
