@@ -1,42 +1,42 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46CB8598ED2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Aug 2022 23:07:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9858B598ED4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Aug 2022 23:08:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M7yBr1W95z3f1T
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Aug 2022 07:07:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M7yCS5VLsz3dxN
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Aug 2022 07:08:04 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=3ucEsOmN;
+	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=li9exWJe;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mail.zeus03.de (client-ip=194.117.254.33; helo=mail.zeus03.de; envelope-from=wsa+renesas@sang-engineering.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=3ucEsOmN;
+	dkim=pass (1024-bit key; secure) header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=li9exWJe;
 	dkim-atps=neutral
 Received: from mail.zeus03.de (www.zeus03.de [194.117.254.33])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M7y9v2xQTz3dsP
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Aug 2022 07:06:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M7yBm3jnsz3f16
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Aug 2022 07:07:28 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
 	from:to:cc:subject:date:message-id:mime-version
-	:content-transfer-encoding; s=k1; bh=qDmf4Bsrxo6BfokqhIhswvHdmlz
-	bGFO97gi1JjH+g84=; b=3ucEsOmN++mJRNj7FiDelgxQnlSibfh7rztOzEuGLXe
-	SsZZjIvrf4smV4yTX+r8FnqqmWfisBc7MjGt2NKVdGkkNELc1FMgzwP9oi3vnab2
-	2/Vgmtq6Shz1953l38O3SRsYc2PRQddfuFKfWN7lM+gVJFVeHa0hH6RxjPg/Hrz8
+	:content-transfer-encoding; s=k1; bh=3bhGjXlunu1Ky50yLFmozK7YmVk
+	5YkPEAtEsl/6IeWY=; b=li9exWJenzm6pNVt5A1UhRIb0f76EoAO3KlaZNLXem5
+	zxpg9xPErofGBr1h/ZY5muLrR1jWp21zTf6ElwUkDbR7BLTTp07ZQYH8nuDYwVp5
+	pXMOayprPkTQWWFjrAyB/P1UWY6XWlAfCqmd5z2HjND2ahG92Jl0mzhrzcILAt7E
 	=
-Received: (qmail 3959462 invoked from network); 18 Aug 2022 22:59:58 +0200
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 18 Aug 2022 22:59:58 +0200
-X-UD-Smtp-Session: l3s3148p1@Qf2lQ4rmc7Iucref
+Received: (qmail 3959703 invoked from network); 18 Aug 2022 23:00:02 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 18 Aug 2022 23:00:02 +0200
+X-UD-Smtp-Session: l3s3148p1@ZV7gQ4rm5ZEucref
 From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH] block: move from strlcpy with unused retval to strscpy
-Date: Thu, 18 Aug 2022 22:59:57 +0200
-Message-Id: <20220818205958.6552-1-wsa+renesas@sang-engineering.com>
+Subject: [PATCH] cpuidle: move from strlcpy with unused retval to strscpy
+Date: Thu, 18 Aug 2022 23:00:01 +0200
+Message-Id: <20220818210002.6624-1-wsa+renesas@sang-engineering.com>
 X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -51,7 +51,7 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jens Axboe <axboe@kernel.dk>, linuxppc-dev@lists.ozlabs.org, =?UTF-8?q?Christoph=20B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>, Geoff Levand <geoff@infradead.org>, Minchan Kim <minchan@kernel.org>, Philipp Reisner <philipp.reisner@linbit.com>, Jim Paris <jim@jtan.com>, linux-block@vger.kernel.org, Wolfram Sang <wsa+renesas@sang-engineering.com>, Nicholas Piggin <npiggin@gmail.com>, Lars Ellenberg <lars.ellenberg@linbit.com>, Sergey Senozhatsky <senozhatsky@chromium.org>, Nitin Gupta <ngupta@vflare.org>, drbd-dev@lists.linbit.com
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, linux-pm@vger.kernel.org, Daniel Lezcano <daniel.lezcano@linaro.org>, Wolfram Sang <wsa+renesas@sang-engineering.com>, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
@@ -62,123 +62,24 @@ Generated by a coccinelle script.
 Link: https://lore.kernel.org/r/CAHk-=wgfRnXz0W3D37d01q3JFkr_i_uTL=V6A6G1oUZcprmknw@mail.gmail.com/
 Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 ---
- drivers/block/brd.c               |  2 +-
- drivers/block/drbd/drbd_nl.c      |  2 +-
- drivers/block/mtip32xx/mtip32xx.c | 12 ++++++------
- drivers/block/ps3vram.c           |  2 +-
- drivers/block/zram/zram_drv.c     |  6 +++---
- 5 files changed, 12 insertions(+), 12 deletions(-)
+ drivers/cpuidle/cpuidle-powernv.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/block/brd.c b/drivers/block/brd.c
-index 859499cd1ff8..20acc4a1fd6d 100644
---- a/drivers/block/brd.c
-+++ b/drivers/block/brd.c
-@@ -397,7 +397,7 @@ static int brd_alloc(int i)
- 	disk->minors		= max_part;
- 	disk->fops		= &brd_fops;
- 	disk->private_data	= brd;
--	strlcpy(disk->disk_name, buf, DISK_NAME_LEN);
-+	strscpy(disk->disk_name, buf, DISK_NAME_LEN);
- 	set_capacity(disk, rd_size * 2);
- 	
- 	/*
-diff --git a/drivers/block/drbd/drbd_nl.c b/drivers/block/drbd/drbd_nl.c
-index 013d355a2033..864c98e74875 100644
---- a/drivers/block/drbd/drbd_nl.c
-+++ b/drivers/block/drbd/drbd_nl.c
-@@ -4752,7 +4752,7 @@ void notify_helper(enum drbd_notification_type type,
- 	struct drbd_genlmsghdr *dh;
- 	int err;
- 
--	strlcpy(helper_info.helper_name, name, sizeof(helper_info.helper_name));
-+	strscpy(helper_info.helper_name, name, sizeof(helper_info.helper_name));
- 	helper_info.helper_name_len = min(strlen(name), sizeof(helper_info.helper_name));
- 	helper_info.helper_status = status;
- 
-diff --git a/drivers/block/mtip32xx/mtip32xx.c b/drivers/block/mtip32xx/mtip32xx.c
-index 562725d222a7..815d77ba6381 100644
---- a/drivers/block/mtip32xx/mtip32xx.c
-+++ b/drivers/block/mtip32xx/mtip32xx.c
-@@ -1397,15 +1397,15 @@ static void mtip_dump_identify(struct mtip_port *port)
- 	if (!port->identify_valid)
- 		return;
- 
--	strlcpy(cbuf, (char *)(port->identify+10), 21);
-+	strscpy(cbuf, (char *)(port->identify + 10), 21);
- 	dev_info(&port->dd->pdev->dev,
- 		"Serial No.: %s\n", cbuf);
- 
--	strlcpy(cbuf, (char *)(port->identify+23), 9);
-+	strscpy(cbuf, (char *)(port->identify + 23), 9);
- 	dev_info(&port->dd->pdev->dev,
- 		"Firmware Ver.: %s\n", cbuf);
- 
--	strlcpy(cbuf, (char *)(port->identify+27), 41);
-+	strscpy(cbuf, (char *)(port->identify + 27), 41);
- 	dev_info(&port->dd->pdev->dev, "Model: %s\n", cbuf);
- 
- 	dev_info(&port->dd->pdev->dev, "Security: %04x %s\n",
-@@ -1421,13 +1421,13 @@ static void mtip_dump_identify(struct mtip_port *port)
- 	pci_read_config_word(port->dd->pdev, PCI_REVISION_ID, &revid);
- 	switch (revid & 0xFF) {
- 	case 0x1:
--		strlcpy(cbuf, "A0", 3);
-+		strscpy(cbuf, "A0", 3);
- 		break;
- 	case 0x3:
--		strlcpy(cbuf, "A2", 3);
-+		strscpy(cbuf, "A2", 3);
- 		break;
- 	default:
--		strlcpy(cbuf, "?", 2);
-+		strscpy(cbuf, "?", 2);
- 		break;
- 	}
- 	dev_info(&port->dd->pdev->dev,
-diff --git a/drivers/block/ps3vram.c b/drivers/block/ps3vram.c
-index e1d080f680ed..c76e0148eada 100644
---- a/drivers/block/ps3vram.c
-+++ b/drivers/block/ps3vram.c
-@@ -745,7 +745,7 @@ static int ps3vram_probe(struct ps3_system_bus_device *dev)
- 	gendisk->flags |= GENHD_FL_NO_PART;
- 	gendisk->fops = &ps3vram_fops;
- 	gendisk->private_data = dev;
--	strlcpy(gendisk->disk_name, DEVICE_NAME, sizeof(gendisk->disk_name));
-+	strscpy(gendisk->disk_name, DEVICE_NAME, sizeof(gendisk->disk_name));
- 	set_capacity(gendisk, priv->size >> 9);
- 	blk_queue_max_segments(gendisk->queue, BLK_MAX_SEGMENTS);
- 	blk_queue_max_segment_size(gendisk->queue, BLK_MAX_SEGMENT_SIZE);
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index 92cb929a45b7..be435304af29 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -499,7 +499,7 @@ static ssize_t backing_dev_store(struct device *dev,
- 		goto out;
- 	}
- 
--	strlcpy(file_name, buf, PATH_MAX);
-+	strscpy(file_name, buf, PATH_MAX);
- 	/* ignore trailing newline */
- 	sz = strlen(file_name);
- 	if (sz > 0 && file_name[sz - 1] == '\n')
-@@ -1031,7 +1031,7 @@ static ssize_t comp_algorithm_store(struct device *dev,
- 	char compressor[ARRAY_SIZE(zram->compressor)];
- 	size_t sz;
- 
--	strlcpy(compressor, buf, sizeof(compressor));
-+	strscpy(compressor, buf, sizeof(compressor));
- 	/* ignore trailing newline */
- 	sz = strlen(compressor);
- 	if (sz > 0 && compressor[sz - 1] == '\n')
-@@ -1952,7 +1952,7 @@ static int zram_add(void)
- 	if (ret)
- 		goto out_cleanup_disk;
- 
--	strlcpy(zram->compressor, default_compressor, sizeof(zram->compressor));
-+	strscpy(zram->compressor, default_compressor, sizeof(zram->compressor));
- 
- 	zram_debugfs_register(zram);
- 	pr_info("Added device: %s\n", zram->disk->disk_name);
+diff --git a/drivers/cpuidle/cpuidle-powernv.c b/drivers/cpuidle/cpuidle-powernv.c
+index c32c600b3cf8..0b5461b3d7dd 100644
+--- a/drivers/cpuidle/cpuidle-powernv.c
++++ b/drivers/cpuidle/cpuidle-powernv.c
+@@ -233,8 +233,8 @@ static inline void add_powernv_state(int index, const char *name,
+ 				     unsigned int exit_latency,
+ 				     u64 psscr_val, u64 psscr_mask)
+ {
+-	strlcpy(powernv_states[index].name, name, CPUIDLE_NAME_LEN);
+-	strlcpy(powernv_states[index].desc, name, CPUIDLE_NAME_LEN);
++	strscpy(powernv_states[index].name, name, CPUIDLE_NAME_LEN);
++	strscpy(powernv_states[index].desc, name, CPUIDLE_NAME_LEN);
+ 	powernv_states[index].flags = flags;
+ 	powernv_states[index].target_residency = target_residency;
+ 	powernv_states[index].exit_latency = exit_latency;
 -- 
 2.35.1
 
