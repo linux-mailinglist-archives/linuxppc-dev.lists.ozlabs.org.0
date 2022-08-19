@@ -1,59 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56E01599D70
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Aug 2022 16:27:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FC5A599E1C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Aug 2022 17:24:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M8PGy22gCz3dtV
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Aug 2022 00:27:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M8QXD0psbz3dtL
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Aug 2022 01:24:12 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=Q5keVqP0;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=geoff@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=Q5keVqP0;
+	dkim-atps=neutral
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M8PGZ0lztz2xJN
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Aug 2022 00:27:17 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4M8PGT4wqQz9shj;
-	Fri, 19 Aug 2022 16:27:13 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id HSF6PGJSbxdw; Fri, 19 Aug 2022 16:27:13 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4M8PGT3vmVz9shX;
-	Fri, 19 Aug 2022 16:27:13 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 6CA168B77C;
-	Fri, 19 Aug 2022 16:27:13 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id VR3B-w3mshBH; Fri, 19 Aug 2022 16:27:13 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.4.22])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 363C28B763;
-	Fri, 19 Aug 2022 16:27:13 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 27JER0s52215678
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 19 Aug 2022 16:27:00 +0200
-Received: (from chleroy@localhost)
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 27JER07u2215676;
-	Fri, 19 Aug 2022 16:27:00 +0200
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
-Subject: [PATCH] powerpc/fsl_booke: Make calc_cam_sz() static
-Date: Fri, 19 Aug 2022 16:26:49 +0200
-Message-Id: <a7469848371b2cf5e8f654ec79800e209d88595e.1660919200.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.37.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M8QWT5Yklz3bYG
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Aug 2022 01:23:33 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description;
+	bh=tb0EOcj/cP/ZuwLYxWcP43h5C3E6flLzxmX2a1wEjWs=; b=Q5keVqP0r9w7d9aLb3DgGx7Ytw
+	5UBgPFlT3NnvngRx82tAQhpQmKXgysZ3PFvV1gDsRBGB2a+s9IBjZsvS8fMKv2tanvmNoj619SOil
+	CouctGihln6nnZfiOtGIhl0rEVKsFC5VmZPyoGAOSEvzjTsJQmCrVxAQCu7viSwktTwFbZJjB13K/
+	BcUKVoyTWq1DpTsP6/Z6pCwJ3fsu1RcTSossiXXHE1a4KGo+omusLuRZBROtlerIoeYSREp9fkQa/
+	SgjARaqLNZhtzbBl3rBx6AyCS3M9juEwPlF3jm+xR7WmYgPPvV7xoMw39jsnlEKo1TuyEjw8xJXyl
+	PZQYEHzg==;
+Received: from [2600:1702:3c30:6ca0:77cd:43b1:3d69:dd7b]
+	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1oP3ow-00BHmH-Fb; Fri, 19 Aug 2022 15:22:02 +0000
+Message-ID: <66f8a3a6-22d5-8a1b-e011-c50de8e19e6c@infradead.org>
+Date: Fri, 19 Aug 2022 08:21:56 -0700
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1660919208; l=1525; s=20211009; h=from:subject:message-id; bh=L++ineN4VN9rQJojH00UC9wJeQDuvg5jehPZxtCRR14=; b=44Ckq1p6dYPBPH9yh/gW7H9Bedd744QkOwzzcd3CYSxrEL6+7gS/yQbuz3WlTrewkshhvRouORv4 WjTlGF2rAN2YQrcVzO/5RMnqklqKz1fh7JxnjZ8HSDRHqaVsQPBL
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH] block: move from strlcpy with unused retval to strscpy
+Content-Language: en-US
+To: Wolfram Sang <wsa+renesas@sang-engineering.com>,
+ linux-kernel@vger.kernel.org
+References: <20220818205958.6552-1-wsa+renesas@sang-engineering.com>
+From: Geoff Levand <geoff@infradead.org>
+In-Reply-To: <20220818205958.6552-1-wsa+renesas@sang-engineering.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,46 +60,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Jens Axboe <axboe@kernel.dk>, Minchan Kim <minchan@kernel.org>, linuxppc-dev@lists.ozlabs.org, Philipp Reisner <philipp.reisner@linbit.com>, Jim Paris <jim@jtan.com>, linux-block@vger.kernel.org, =?UTF-8?Q?Christoph_B=c3=b6hmwalder?= <christoph.boehmwalder@linbit.com>, Nicholas Piggin <npiggin@gmail.com>, Lars Ellenberg <lars.ellenberg@linbit.com>, Sergey Senozhatsky <senozhatsky@chromium.org>, Nitin Gupta <ngupta@vflare.org>, drbd-dev@lists.linbit.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-calc_cam_sz() is used only in fsl_book3e.c, make it static.
+On 8/18/22 13:59, Wolfram Sang wrote:
+> Follow the advice of the below link and prefer 'strscpy' in this
+> subsystem. Conversion is 1:1 because the return value is not used.
+> Generated by a coccinelle script.
+> 
+> Link: https://lore.kernel.org/r/CAHk-=wgfRnXz0W3D37d01q3JFkr_i_uTL=V6A6G1oUZcprmknw@mail.gmail.com/
+> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+> ---
+...
+> diff --git a/drivers/block/ps3vram.c b/drivers/block/ps3vram.c
+> index e1d080f680ed..c76e0148eada 100644
+> --- a/drivers/block/ps3vram.c
+> +++ b/drivers/block/ps3vram.c
+> @@ -745,7 +745,7 @@ static int ps3vram_probe(struct ps3_system_bus_device *dev)
+>  	gendisk->flags |= GENHD_FL_NO_PART;
+>  	gendisk->fops = &ps3vram_fops;
+>  	gendisk->private_data = dev;
+> -	strlcpy(gendisk->disk_name, DEVICE_NAME, sizeof(gendisk->disk_name));
+> +	strscpy(gendisk->disk_name, DEVICE_NAME, sizeof(gendisk->disk_name));
+>  	set_capacity(gendisk, priv->size >> 9);
+>  	blk_queue_max_segments(gendisk->queue, BLK_MAX_SEGMENTS);
+>  	blk_queue_max_segment_size(gendisk->queue, BLK_MAX_SEGMENT_SIZE);
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/mm/mmu_decl.h          | 2 --
- arch/powerpc/mm/nohash/fsl_book3e.c | 4 ++--
- 2 files changed, 2 insertions(+), 4 deletions(-)
+Seems OK for ps3vram.
 
-diff --git a/arch/powerpc/mm/mmu_decl.h b/arch/powerpc/mm/mmu_decl.h
-index 8f5afad1b6af..6dd4744cc56a 100644
---- a/arch/powerpc/mm/mmu_decl.h
-+++ b/arch/powerpc/mm/mmu_decl.h
-@@ -122,8 +122,6 @@ unsigned long mmu_mapin_ram(unsigned long base, unsigned long top);
- #ifdef CONFIG_PPC_FSL_BOOK3E
- extern unsigned long map_mem_in_cams(unsigned long ram, int max_cam_idx,
- 				     bool dryrun, bool init);
--extern unsigned long calc_cam_sz(unsigned long ram, unsigned long virt,
--				 phys_addr_t phys);
- #ifdef CONFIG_PPC32
- extern void adjust_total_lowmem(void);
- extern int switch_to_as1(void);
-diff --git a/arch/powerpc/mm/nohash/fsl_book3e.c b/arch/powerpc/mm/nohash/fsl_book3e.c
-index b8ae6c08c06f..c1ad173de318 100644
---- a/arch/powerpc/mm/nohash/fsl_book3e.c
-+++ b/arch/powerpc/mm/nohash/fsl_book3e.c
-@@ -135,8 +135,8 @@ static void settlbcam(int index, unsigned long virt, phys_addr_t phys,
- 	tlbcam_addrs[index].phys = phys;
- }
- 
--unsigned long calc_cam_sz(unsigned long ram, unsigned long virt,
--			  phys_addr_t phys)
-+static unsigned long calc_cam_sz(unsigned long ram, unsigned long virt,
-+				 phys_addr_t phys)
- {
- 	unsigned int camsize = __ilog2(ram);
- 	unsigned int align = __ffs(virt | phys);
--- 
-2.37.1
+Acked-by: Geoff Levand <geoff@infradead.org>
 
