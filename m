@@ -1,36 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EE5B599AD4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Aug 2022 13:29:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71C37599AD8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Aug 2022 13:31:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M8KKY69z7z3dy3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Aug 2022 21:29:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M8KMd1ys0z3f03
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Aug 2022 21:31:25 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=L2w4AjTk;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=L2w4AjTk;
+	dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M8KKB6Qmzz3cFd
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Aug 2022 21:29:18 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M8KM24ZPFz3cFl
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Aug 2022 21:30:54 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4M8KKB5Ttpz4x1N;
-	Fri, 19 Aug 2022 21:29:18 +1000 (AEST)
-From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-In-Reply-To: <20220815065550.1303620-1-mpe@ellerman.id.au>
-References: <20220815065550.1303620-1-mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/pci: Fix get_phb_number() locking
-Message-Id: <166090854459.441873.16971335069896983225.b4-ty@ellerman.id.au>
-Date: Fri, 19 Aug 2022 21:29:04 +1000
+	by dfw.source.kernel.org (Postfix) with ESMTPS id D438B617A2;
+	Fri, 19 Aug 2022 11:30:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9FBEC433C1;
+	Fri, 19 Aug 2022 11:30:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1660908650;
+	bh=2wmzVDjvgJ9VN/rNXBeeXF8n+o7D9JOizsre5p5+uGw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=L2w4AjTk+kdoYlFopZXjM6Zh5xTFyJ57Yxc5gKmNGCQ7/EK5SCMgLo1ZgO+AvLE2o
+	 iY6aGASGPF56WPCAWvoXTxvnz7CdOmN8XFqAV0QKb2wSt/qsWFsZJn/6O+fXAgZYJM
+	 I95oR8pNyrn6p0yen97Q/wX0vzvjiIlc3vAZLs9E=
+Date: Fri, 19 Aug 2022 13:30:47 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc/boot: Convert more files to use SPDX tags
+Message-ID: <Yv90ZxeQbf7smJCH@kroah.com>
+References: <20220819110430.433984-1-mpe@ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220819110430.433984-1-mpe@ellerman.id.au>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,41 +56,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: pali@kernel.org, linux@roeck-us.net
+Cc: linux-spdx@vger.kernel.org, tglx@linutronix.de, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 15 Aug 2022 16:55:50 +1000, Michael Ellerman wrote:
-> The recent change to get_phb_number() causes a DEBUG_ATOMIC_SLEEP
-> warning on some systems:
+On Fri, Aug 19, 2022 at 09:04:30PM +1000, Michael Ellerman wrote:
+> These files are all plain GPL 2.0, with a second sentence about being
+> licensed as-is.
 > 
->   BUG: sleeping function called from invalid context at kernel/locking/mutex.c:580
->   in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 1, name: swapper
->   preempt_count: 1, expected: 0
->   RCU nest depth: 0, expected: 0
->   1 lock held by swapper/1:
->    #0: c157efb0 (hose_spinlock){+.+.}-{2:2}, at: pcibios_alloc_controller+0x64/0x220
->   Preemption disabled at:
->   [<00000000>] 0x0
->   CPU: 0 PID: 1 Comm: swapper Not tainted 5.19.0-yocto-standard+ #1
->   Call Trace:
->   [d101dc90] [c073b264] dump_stack_lvl+0x50/0x8c (unreliable)
->   [d101dcb0] [c0093b70] __might_resched+0x258/0x2a8
->   [d101dcd0] [c0d3e634] __mutex_lock+0x6c/0x6ec
->   [d101dd50] [c0a84174] of_alias_get_id+0x50/0xf4
->   [d101dd80] [c002ec78] pcibios_alloc_controller+0x1b8/0x220
->   [d101ddd0] [c140c9dc] pmac_pci_init+0x198/0x784
->   [d101de50] [c140852c] discover_phbs+0x30/0x4c
->   [d101de60] [c0007fd4] do_one_initcall+0x94/0x344
->   [d101ded0] [c1403b40] kernel_init_freeable+0x1a8/0x22c
->   [d101df10] [c00086e0] kernel_init+0x34/0x160
->   [d101df30] [c001b334] ret_from_kernel_thread+0x5c/0x64
+> Similar to the rule in commit 577b61cee5b2 ("treewide: Replace GPLv2
+> boilerplate/reference with SPDX - gpl-2.0_398.RULE").
 > 
-> [...]
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> ---
+>  arch/powerpc/boot/44x.h          | 5 +----
+>  arch/powerpc/boot/4xx.h          | 5 +----
+>  arch/powerpc/boot/ops.h          | 6 ++----
+>  arch/powerpc/boot/serial.c       | 6 ++----
+>  arch/powerpc/boot/simple_alloc.c | 6 ++----
+>  5 files changed, 8 insertions(+), 20 deletions(-)
 
-Applied to powerpc/fixes.
 
-[1/1] powerpc/pci: Fix get_phb_number() locking
-      https://git.kernel.org/powerpc/c/8d48562a2729742f767b0fdd994d6b2a56a49c63
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-cheers
+Do you want this to go through the SPDX tree, or will you route it
+through the normal ppc tree?  Either is fine with me, just let me know
+if you want me to take it in the SPDX tree.
+
+thanks,
+
+greg k-h
