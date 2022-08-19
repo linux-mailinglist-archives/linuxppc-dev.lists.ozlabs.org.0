@@ -2,67 +2,123 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1EB659A972
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Aug 2022 01:30:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B5D159A819
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Aug 2022 00:15:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M8dKH5wkbz3fKx
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Aug 2022 09:30:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M8bgF2Ctgz3dx5
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Aug 2022 08:15:53 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=semihalf.com header.i=@semihalf.com header.a=rsa-sha256 header.s=google header.b=QofUb7DJ;
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=B4mGVAGu;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=semihalf.com (client-ip=2001:4860:4864:20::33; helo=mail-oa1-x33.google.com; envelope-from=mw@semihalf.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=amd.com (client-ip=40.107.94.49; helo=nam10-mw2-obe.outbound.protection.outlook.com; envelope-from=felix.kuehling@amd.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=semihalf.com header.i=@semihalf.com header.a=rsa-sha256 header.s=google header.b=QofUb7DJ;
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=B4mGVAGu;
 	dkim-atps=neutral
-Received: from mail-oa1-x33.google.com (mail-oa1-x33.google.com [IPv6:2001:4860:4864:20::33])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2049.outbound.protection.outlook.com [40.107.94.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M8RTP04Smz3c7y
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Aug 2022 02:06:46 +1000 (AEST)
-Received: by mail-oa1-x33.google.com with SMTP id 586e51a60fabf-f2a4c51c45so5692143fac.9
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Aug 2022 09:06:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=semihalf.com; s=google;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc;
-        bh=C/VkUkLDlA7UTo6eTiCDZwcwtLETboqa7t425d7cVFs=;
-        b=QofUb7DJOdTcBKkHtRs4SbBflrFzOCIw2B9e+j2rPfVm3+DTUrJWEO4p4eDZy8jLZk
-         opsdXQiUJ9WXgMaU1sxZmlc+wuYRoW1/xU68v5GngopvGwxsby5sDbM+TAAkskyyYVbJ
-         v0/8DXCGDQYfB2r+7xmBiYCbNMDUeutJGNtIMunNcf4ImRmfm9wTwpQn2yZcEE6A3vN7
-         qogadHylDWza51m4clAc74N/Ll8Gd4wv74ESdXlTG0n3xSP3k774PL52ShWjIF3wvopM
-         uW6U6tKls0ZmmFGkjaspYpaTtF500g0bFsCrWBdvelWGz+7nuVgbOwF88CUVfE/Y3CHd
-         rblA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc;
-        bh=C/VkUkLDlA7UTo6eTiCDZwcwtLETboqa7t425d7cVFs=;
-        b=z0YFQpv0vCCuZARHk37nqWtG9F3EkxTSFQ0f1/DbqQIlE1JO3t0Y8cUEi6HHN5J/1t
-         hn5OTpJ200FPse2iKoKIOaPX6BpYzBG2pmGF2KF0ZGDK606A6oHu6Gy+xj3a4ukQn+d8
-         G46/3o3x8QzA6tR3hj5NLC0UWoGeI/CDguLT2qziUwu3y+8AfTXJ1fHGEkTiCzxxf+aD
-         qr+I2l66ENfJtJW3jgJqbsL8jbttAR2v2Owh97TBI+JtT9qEDppsTSrd6/HLD1cxVyCf
-         TFCAv0xaFRENdF3KhkpeGHFuT+op5s7IJm9Si8Edry0Ek87+Tdj8ipUu83DWQycphRS0
-         6W4g==
-X-Gm-Message-State: ACgBeo0FtdFw3i0J3ExjAx6LNeDMEqN5okZIM7JP6jpBMmSvBribof+b
-	NB+eJSGBRbcMAVyKxKvObwQzAAGNyaRHTDG3mo2dfQ==
-X-Google-Smtp-Source: AA6agR6Uut65noEds9DTEAIq4MQRn9wvqo20AqeK6lgjbB1e71ZoXHSsYUO7cMA7xG1TwfyTBeH7dfiOL39FELxWe+4=
-X-Received: by 2002:a05:6870:a184:b0:116:bd39:7f94 with SMTP id
- a4-20020a056870a18400b00116bd397f94mr7002666oaf.5.1660925202008; Fri, 19 Aug
- 2022 09:06:42 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M8bfW2MWqz3bY8
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Aug 2022 08:15:11 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=C/RQJLGTVe38geDW2woV8pz9WVPkpxYdYbGR2seuDwymvmzCP8sFM6oqhk9AVjfmDsAI34WSUD8jFsXdJ8vs62D7xkt+az/nFtS4Z3Zn/tqAEjm1rUqxW1R/osFD2kTYxlBmMB/SWZVBor0PmkN7zHUMT2aVSTzQkN57gjrQg3v43Sl11ACDdvMbY+uvY5JLdZ2aoqUTKN2V7bDIOk+5XNbCgMr5wFVbdVBOXspNUPxBRFpNeTlZYjryEQIvB1rGLX22NwfItDPR/WnclMWORma3Na3prgz9kTsYZCibyxc1VTtaQ1n15zy/QBZLaPnJy0uiKb/iRdAiQhzlXWz9UA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cfKhgoPnJdztvV4ulo+0DCVJiyfyWY9zEn1lbQd2K6M=;
+ b=jWfzFRgOtB73mBp69eNbNJhg/8coFqYK43t66/y7bS/kXRx7bggiG4wGUOIAL8outPKyFAIBn/R6L0iMfFRFAY+WMf3hfojuSl/fqgm0g0bU6h7Vz94nc2NJZJG1CNqLU6Jrs99dCSAzOCzsXRCn5swI3MHs5OGDe0BNzGElvTUmBb8rLIBDxh0HunwnJXwAgsJbxwo/Z+VvrXnIQeMBdvKAO91/Xj3WjW4PuSswzObu3fIKJxtO0NgWGwuj01QcFEj4navQK2JRHWMaSjzWqNUknfRVdeRdit/+WJlxpY8f+NIaeqhglNCLxX1RvVAOH8nVw6DipGp0cTfbMDmpig==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cfKhgoPnJdztvV4ulo+0DCVJiyfyWY9zEn1lbQd2K6M=;
+ b=B4mGVAGumUQOr0RrgxBoWp5dJfEp7DmVDh0XfiSgN59HKxfpx20Qe2nDggoi48fKFJLBBZ5ediP8GmkbifF/OqHdaTTshoqhgDfvRgINsJLOO0YlUlVlTbCySD31rJGv96ajNBuk4YqgyqyEoyzoR4mtxGRtJoj/L+26K2Etz58=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BN9PR12MB5115.namprd12.prod.outlook.com (2603:10b6:408:118::14)
+ by SN1PR12MB2527.namprd12.prod.outlook.com (2603:10b6:802:23::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5504.17; Fri, 19 Aug
+ 2022 22:14:51 +0000
+Received: from BN9PR12MB5115.namprd12.prod.outlook.com
+ ([fe80::406d:afb5:d2d7:8115]) by BN9PR12MB5115.namprd12.prod.outlook.com
+ ([fe80::406d:afb5:d2d7:8115%5]) with mapi id 15.20.5525.019; Fri, 19 Aug 2022
+ 22:14:51 +0000
+Message-ID: <20b88926-3252-cc70-a39e-9fa76a6f49c9@amd.com>
+Date: Fri, 19 Aug 2022 18:14:49 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH] powerpc: export cpu_smallcore_map for modules
+Content-Language: en-US
+To: Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org
+References: <20220819210112.7924-1-rdunlap@infradead.org>
+From: Felix Kuehling <felix.kuehling@amd.com>
+Organization: AMD Inc.
+In-Reply-To: <20220819210112.7924-1-rdunlap@infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: CH0PR13CA0040.namprd13.prod.outlook.com
+ (2603:10b6:610:b2::15) To BN9PR12MB5115.namprd12.prod.outlook.com
+ (2603:10b6:408:118::14)
 MIME-Version: 1.0
-References: <20220818210050.7108-1-wsa+renesas@sang-engineering.com>
-In-Reply-To: <20220818210050.7108-1-wsa+renesas@sang-engineering.com>
-From: Marcin Wojtas <mw@semihalf.com>
-Date: Fri, 19 Aug 2022 18:06:29 +0200
-Message-ID: <CAPv3WKe2oxyjdyBrkDWwpSFKY21OtB4XEHz8YoWZ0LwhcLkNVw@mail.gmail.com>
-Subject: Re: [PATCH] net: move from strlcpy with unused retval to strscpy
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Mailman-Approved-At: Sat, 20 Aug 2022 09:27:17 +1000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: d29d9d66-ff1e-4fd2-5287-08da82303c67
+X-MS-TrafficTypeDiagnostic: SN1PR12MB2527:EE_
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	a8m4b0+wcv6TMnVY/f63WZDeQfHXCzhRk34v7ZIREGgwjBaKs/NYJc2q+qQsA2CJwvHKsrWtirRbt3HmHPc8hn1S4UEFyC/QIJQAQb4bia3N2SXhps4tA1HOAmAPeoC+fmdpDMPrE5lJ3Dtz8NVdU0we8RWYZUNVMMjxD1P3MUFVSTwcGVIZt4DajsiaOX4WoM7yhGUlctq3es+BRWg7ze1lVd76H8xsmX6OfNbowAMzVYJ2IMYO7emEnq9P122T3f/XlxHmdoO86Sd0RKV8OHtzyzYcJwqTdWNRSMxwwZ+2UwtlB1IWPIU1sY50r37brXtPZur8ThNpoylUjeq5WBu6+q6OupRqg6IckIEsmeJwWJaIndvmb5liTafkM9m+M4EWBcnvYAe5JRZabzj9oB0EAdzzEBQ/nhNH/q/enfk2w/gYfuF0t6rzsAu/VPhJdNWIxq3bgFQGPgj1lpoWnJD6rghuuAFjTeENvPdmWyvMwSI/GfwrXcowZTfCVd2eAcvVMkS9343+I+kAo60PZQnhM6pQAcwwJqvX98Zh+6d3SBN9QgNkuEFqfLAj61aEzhxkWhBNkG1fPPrEkE61GXuINZAnQ2SHQmT/zGeQOOvXA052vPji+MKqPFPqIN9b4CZ1HCqiqwHkON2E7lVdBy7HQRUX2OQtjCSF0OyGv236wA9drQtxu4AKUXEZMCPrFZcQeGHfn7x2LmKzguJ4wus0Pz/Ekuh996KoEcL149XqjxFD8KnlUV7VUcUW0qDhk0dmDTKGsrh9PqHGHkWOHTa1AcGLW+dqTRoXzL/haxU=
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR12MB5115.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(4636009)(366004)(346002)(396003)(39860400002)(376002)(136003)(44832011)(41300700001)(6512007)(26005)(6506007)(2906002)(36916002)(53546011)(186003)(66574015)(83380400001)(2616005)(38100700002)(54906003)(6486002)(36756003)(66556008)(4326008)(66946007)(86362001)(478600001)(8676002)(31696002)(31686004)(316002)(66476007)(5660300002)(8936002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?utf-8?B?Z29hdTF4eCt0dENyYXpjazd0bUNCcUFpYkRjaUJTRjR0bEMxK2lRVExlbnZY?=
+ =?utf-8?B?S0pRUEYwa3R1OVllVGR3SkR2WHlBSUhGMFFpZlM1ZlNaV0xZbEdaL0xOeFFN?=
+ =?utf-8?B?bnExOVU4V3NxUy93UkV1amx4dHh0SmRhenBTSnB5Q1M4REwrbGo2VlpFcHNq?=
+ =?utf-8?B?M2hrd2FRR1NsS1FidFpHV1lCYVZ3aE01THFxYkZocW1pTHhtZUZzMG1jUW0v?=
+ =?utf-8?B?dGgxU3BsYVI4Rkk5K0cxb2xuVDY1MnZlYzRpTnpCYklTU2ovbVdrZGhHNUdU?=
+ =?utf-8?B?QmNXY1o2UGpHMzBieFV3RUZLYllrUzg5dFFMOEdHVy94WmpFK0VveURqeGxC?=
+ =?utf-8?B?bUdZSjFMQk5tbWxRK2pCRXAxbHMwOUpDOVRlUDIvcThONkZRa1VJSEFjMXV0?=
+ =?utf-8?B?Mi9xc1lkVC9LVWR4Qy9yL0V3dEhjWnJGbFNjTXR2K28vTlBmenBic051QzJ1?=
+ =?utf-8?B?aGRzVmEzTUFta29xL0c5Z1JBVWgydkpwWnI4bTJ3ckFVVWVQUURwVjhXc0JJ?=
+ =?utf-8?B?ZjMyYzNXMWs2UnpjZWtMdXdpZGx0ZmErc1ArSkl1OEhweDhWV21SSlQzUW0w?=
+ =?utf-8?B?L3JKbTZLTElQQkVGOGlIWnZVeVBjNCs1dFd3Z1BIZzhXNmczOXEzcmI2UkYy?=
+ =?utf-8?B?WWFTZTJqUTVnbGhFb0pkK08yazB2bE1FK0lpK0s1d1JINHFjNWduZG5DU3hz?=
+ =?utf-8?B?cXFoaHRkVXdwY2xzSXBMb1ZHTEk1QWJMdVA4OW00aU9qbHk3Zyt2MXRLVVJN?=
+ =?utf-8?B?RFBUWmNyTmxIR0o0aDR0ekZpVHZsMzZ1MmQybVhXZFpUZmJUTkpJQzhFd09T?=
+ =?utf-8?B?Q1owQmc2Y3Y3RVlDU3VlRU42VkJCSFpLZUg0TDFMb09NNlJ4Zy9uZUJuR0NW?=
+ =?utf-8?B?VzRycDA0OEJrNkJIMEx1cjh0RWYyeVhwQWMvZW5mOEFkWk4wWlhxV0J4UFQ4?=
+ =?utf-8?B?Si8xM1BWTTBuNGZMem1KZmZIMkpZMUpxK1lqcFhlV2RXclQxZEFtODN2cWxv?=
+ =?utf-8?B?NXk3eGFPZ1RPTit1OEk3OXI1MUVSbW42SFVOdjB5bmVUV2dBTnVPVGFzcDUw?=
+ =?utf-8?B?MHNiTEhXSmZWT3RKMlUxeVBySnRmQTlMZjNuUWtMaTk3amNOZm01cmdSODd6?=
+ =?utf-8?B?S0tQKzA4bGFRY1pWeEJKVnhyUWttS2NSVEY0V3hVRVRZeWNwNGhLNGJ0d0dX?=
+ =?utf-8?B?UmtHQXJoMDRUdkczdGxzbnFHeVVBaUlzeWJxOHY0cy8xVUlkNEdkQTN2OUta?=
+ =?utf-8?B?eElIMXhlU3g5MnoxYWkwZGYrK25LcUJ5SUN0K1Y0K09ENlhRdWtHd2VVWnJ2?=
+ =?utf-8?B?Tlp6aUdyZTA3M0xZQWJ3QVJqNXZsZDFnaEIrTFU4Q0FmUUoxYWhQK3RkVVdl?=
+ =?utf-8?B?eFBmeTRhdzM1QTIvK0ViNVp1VER4QzBnTG9DWVdkcTZFRGU0bWZRdkdIQ2Rs?=
+ =?utf-8?B?eVU3Z0NhTGt4d0wwYS9sZXo1VXZReC9kWS9VWlNsS0Q0ZW1TWFRMVnE4cDJ5?=
+ =?utf-8?B?Rm9mQm93Q3E4YnRlUkFBL2UvTm5URk16Nm5OOVlWVFUxOXU3Q2p4VXZYanpo?=
+ =?utf-8?B?ZUNBUWI3RFV6S2dEMmcxOFJSaXd2d2NldlN5V0ZzRTNEZUp0MlFrNEd0RXVa?=
+ =?utf-8?B?U3Vpb0dtTmRmQjgvWm5LcTBqcDhxSDJsQ2wzeGw5azQzRzN4Z1FseTBzVmZT?=
+ =?utf-8?B?ZFY5dTE0QUc1MkJzMy8yblZBQkNMeTZpM0ZxeHRndGRwM3AyM2YyMVRFaDZM?=
+ =?utf-8?B?cWU1d2dUM0x4cGo0K3dMY1R5QTN2VEtFSllSU3Btc0s0eXBVMVJjOUJLc2U2?=
+ =?utf-8?B?djFnTmdZUkYyUXIrdE1jdlA0cy9qWVR2Zjd5RFdFa2ZDSk5QUFlML3EzMU9j?=
+ =?utf-8?B?ZkViaGFmZmF0S2hCWk1vZE1WZFM3UktKdWxZN0pBMjN6dmpuUktSQnloSER0?=
+ =?utf-8?B?QllEVHR6ejVvWmhRaTZ5b09jbHBYc0hOL0E1alpQM3hab3E1ak5wR0NzWG50?=
+ =?utf-8?B?L1FJTTFoU1I2Uy8wS1ZkbTUweExiQi9tWGdBUS9lQVNWbzdtNFdGK2VNMVIw?=
+ =?utf-8?B?a3c3YWRLRXBFaGVzTE05U2dNVXBEYTBDN2dxeGRlZXkxNktkQ2Rld2VaVFln?=
+ =?utf-8?Q?Ahv44/c51LdDI2j0+1d4J2y/f?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d29d9d66-ff1e-4fd2-5287-08da82303c67
+X-MS-Exchange-CrossTenant-AuthSource: BN9PR12MB5115.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2022 22:14:51.0885
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7DPayuRARk8S1FGVaG5hC8tmlm5WKPhwUw8bb88zKetw/n3jZtc0CUyfpDE92Fl4F0vNugnv4gjI99CuojDl8g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN1PR12MB2527
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,141 +130,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, Shyam Sundar S K <Shyam-sundar.S-k@amd.com>, Igor Russkikh <irusskikh@marvell.com>, Kevin Brace <kevinbrace@bracecomputerlab.com>, David Dillow <dave@thedillows.org>, Somnath Kotur <somnath.kotur@broadcom.com>, =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>, "K. Y. Srinivasan" <kys@microsoft.com>, linux-stm32@st-md-mailman.stormreply.com, Andy Gospodarek <andy@greyhouse.net>, Wei Liu <wei.liu@kernel.org>, Manish Chopra <manishc@marvell.com>, Samuel Holland <samuel@sholland.org>, Madalin Bucur <madalin.bucur@nxp.com>, Christian Lamparter <chunkeey@googlemail.com>, Michal Simek <michal.simek@xilinx.com>, Jose Abreu <joabreu@synopsys.com>, Radhey Shyam Pandey <radhey.shyam.pandey@xilinx.com>, Franky Lin <franky.lin@broadcom.com>, Mark Lee <Mark-MC.Lee@mediatek.com>, Chris Lee <christopher.lee@cspi.com>, Nick Child <nnac123@linux.ibm.com>, Jiri Pirko <jiri@resnulli.us>, Jay Vosburgh <j.vosburgh@gmail.com>, Vinay Kumar Yadav <vinay.yadav@chelsio.com>
- , Arend van Spriel <aspriel@gmail.com>, Nicholas Piggin <npiggin@gmail.com>, Igor Mitsyanko <imitsyanko@quantenna.com>, Krzysztof Halasa <khalasa@piap.pl>, Shay Agroskin <shayagr@amazon.com>, linux-omap@vger.kernel.org, Petr Machata <petrm@nvidia.com>, libertas-dev@lists.infradead.org, Rasesh Mody <rmody@marvell.com>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, Douglas Miller <dougmill@linux.ibm.com>, Joakim Zhang <qiangqing.zhang@nxp.com>, Ralf Baechle <ralf@linux-mips.org>, Vivien Didelot <vivien.didelot@gmail.com>, Ion Badulescu <ionut@badula.org>, Hartley Sweeten <hsweeten@visionengravers.com>, Stanislav Yakovlev <stas.yakovlev@gmail.com>, Jon Mason <jdmason@kudzu.us>, Vladimir Oltean <olteanv@gmail.com>, Claudiu Beznea <claudiu.beznea@microchip.com>, Christian Benvenuti <benve@cisco.com>, Samuel Chessman <chessman@tux.org>, linux-usb@vger.kernel.org, Ronak Doshi <doshir@vmware.com>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, Chris Snook <chris.snook@gmail.com>, Deni
- s Kirjanov <kda@linux-powerpc.org>, Prashant Sreedharan <prashant@broadcom.com>, linux-kernel@vger.kernel.org, Daniele Venzano <venza@brownhat.org>, Eric Dumazet <edumazet@google.com>, Zhu Yanjun <zyjzyj2000@gmail.com>, Tony Nguyen <anthony.l.nguyen@intel.com>, Arthur Kiyanovski <akiyano@amazon.com>, Leon Romanovsky <leon@kernel.org>, "David S. Miller" <davem@davemloft.net>, Sergey Matyukevich <geomatsi@gmail.com>, Jesse Brandeburg <jesse.brandeburg@intel.com>, Rain River <rain.1986.08.12@gmail.com>, Veaceslav Falico <vfalico@gmail.com>, Martin Habets <habetsm.xilinx@gmail.com>, Yisen Zhuang <yisen.zhuang@huawei.com>, Wolfgang Grandegger <wg@grandegger.com>, Steve Glendinning <steve.glendinning@shawell.net>, Tom Lendacky <thomas.lendacky@amd.com>, Michael Hennerich <michael.hennerich@analog.com>, Ido Schimmel <idosch@nvidia.com>, Sean Wang <sean.wang@mediatek.com>, linuxppc-dev@lists.ozlabs.org, linux-can@vger.kernel.org, Siva Reddy Kallam <siva.kallam@broadcom.com>, Claudiu Manoil 
- <claudiu.manoil@nxp.com>, Doug Berger <opendmb@gmail.com>, Simon Kelley <simon@thekelleys.org.uk>, Giuseppe Cavallaro <peppe.cavallaro@st.com>, linux-arm-kernel@lists.infradead.org, Mirko Lindner <mlindner@marvell.com>, Sriharsha Basavapatna <sriharsha.basavapatna@broadcom.com>, Nicolas Pitre <nico@fluxnic.net>, David Arinzon <darinzon@amazon.com>, Rohit Maheshwari <rohitm@chelsio.com>, Tariq Toukan <tariqt@nvidia.com>, Sudarsana Kalluru <skalluru@marvell.com>, Taras Chornyi <tchornyi@marvell.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, linux-mediatek@lists.infradead.org, Heiner Kallweit <hkallweit1@gmail.com>, linux-wireless@vger.kernel.org, Ajit Khaparde <ajit.khaparde@broadcom.com>, Petko Manolov <petkan@nucleusys.com>, Andreas Larsson <andreas@gaisler.com>, Jason Wang <jasowang@redhat.com>, Kurt Kanzenbach <kurt@linutronix.de>, linux-hyperv@vger.kernel.org, oss-drivers@corigine.com, netdev@vger.kernel.org, Subbaraya Sundeep <sbhatta@marvell.com>, Hin-Tak Leung <htl10@users
- .sourceforge.net>, Jassi Brar <jaswinder.singh@linaro.org>, Noam Dagan <ndagan@amazon.com>, Stanislaw Gruszka <stf_xl@wp.pl>, Ajay Singh <ajay.kathat@microchip.com>, Florian Fainelli <f.fainelli@gmail.com>, Dave Jiang <dave.jiang@intel.com>, linux-rdma@vger.kernel.org, Guo-Fu Tseng <cooldavid@cooldavid.org>, Dexuan Cui <decui@microsoft.com>, Jernej Skrabec <jernej.skrabec@gmail.com>, Chen-Yu Tsai <wens@csie.org>, Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, b43-dev@lists.infradead.org, Simon Horman <simon.horman@corigine.com>, Paolo Abeni <pabeni@redhat.com>, Allen Hubbe <allenbh@gmail.com>, Shahed Shaikh <shshaikh@marvell.com>, Grygorii Strashko <grygorii.strashko@ti.com>, Byungho An <bh74.an@samsung.com>, Haiyang Zhang <haiyangz@microsoft.com>, Francois Romieu <romieu@fr.zoreil.com>, Hante Meuleman <hante.meuleman@broadcom.com>, Vladimir Zapolskiy <vz@mleia.com>, Don Fry <pcnet32@frontier.com>, John Crispin <john@phrozen.org>, Michael Chan <michael
- .chan@broadcom.com>, virtualization@lists.linux-foundation.org, Salil Mehta <salil.mehta@huawei.com>, GR-Linux-NIC-Dev@marvell.com, linux-parisc@vger.kernel.org, Geoff Levand <geoff@infradead.org>, linux-sunxi@lists.linux.dev, Edward Cree <ecree.xilinx@gmail.com>, Bryan Whitehead <bryan.whitehead@microchip.com>, Saeed Bishara <saeedb@amazon.com>, Mark Einon <mark.einon@gmail.com>, Geetha sowjanya <gakula@marvell.com>, Oliver Neukum <oneukum@suse.com>, "Michael S. Tsirkin" <mst@redhat.com>, VMware PV-Drivers Reviewers <pv-drivers@vmware.com>, Ioana Ciornei <ioana.ciornei@nxp.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, Govindarajulu Varadarajan <_govind@gmx.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Ayush Sawal <ayush.sawal@chelsio.com>, UNGLinuxDriver@microchip.com, linux-acenic@sunsite.dk, Herton Ronaldo Krzesinski <herton@canonical.com>, Rahul Verma <rahulv@marvell.com>, Russell King <linux@armlinux.org.uk>, SHA-cyfmac-dev-list@infineon.com, Lino Sanfilippo <
- LinoSanfilippo@gmx.de>, intel-wired-lan@lists.osuosl.org, Jakub Kicinski <kuba@kernel.org>, Steffen Klassert <klassert@kernel.org>, Sunil Goutham <sgoutham@marvell.com>, Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Jes Sorensen <jes@trained-monkey.org>, nic_swsd@realtek.com, Ariel Elior <aelior@marvell.com>, Jouni Malinen <j@w1.fi>, Kalle Valo <kvalo@kernel.org>, Marc Kleine-Budde <mkl@pengutronix.de>, Matthias Brugger <matthias.bgg@gmail.com>, brcm80211-dev-list.pdl@broadcom.com, Sridhar Samudrala <sridhar.samudrala@intel.com>, David Ahern <dsahern@kernel.org>, linux-mips@vger.kernel.org, Li Yang <leoyang.li@nxp.com>, Stephen Hemminger <stephen@networkplumber.org>, hariprasad <hkelam@marvell.com>, ntb@lists.linux.dev, Raju Rangoju <rajur@chelsio.com>, Larry Finger <Larry.Finger@lwfinger.net>, Saeed Mahameed <saeedm@nvidia.com>, Felix Fietkau <nbd@nbd.name>
+Cc: "Gautham R . Shenoy" <ego@linux.vnet.ibm.com>, "Pan, Xinhui" <Xinhui.Pan@amd.com>, Nicholas Piggin <npiggin@gmail.com>, amd-gfx@lists.freedesktop.org, Alex Deucher <alexander.deucher@amd.com>, linuxppc-dev@lists.ozlabs.org, =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-czw., 18 sie 2022 o 23:01 Wolfram Sang
-<wsa+renesas@sang-engineering.com> napisa=C5=82(a):
+
+On 2022-08-19 17:01, Randy Dunlap wrote:
+> Fix build error when CONFIG_DRM_AMDGPU=m:
 >
-> Follow the advice of the below link and prefer 'strscpy' in this
-> subsystem. Conversion is 1:1 because the return value is not used.
-> Generated by a coccinelle script.
+> ERROR: modpost: "cpu_smallcore_map" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
 >
-> Link: https://lore.kernel.org/r/CAHk-=3DwgfRnXz0W3D37d01q3JFkr_i_uTL=3DV6=
-A6G1oUZcprmknw@mail.gmail.com/
-> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+> by exporting 'cpu_smallcore_map' just as other per_cpu
+> symbols are exported.
+>
+> drivers/gpu/drm/amd/amdkfd/kfd_device.c calls cpu_smt_mask().
+> This is an inline function on powerpc which references
+> cpu_smallcore_map.
+>
+> Fixes: 425752c63b6f ("powerpc: Detect the presence of big-cores via "ibm, thread-groups"")
+> Fixes: 7bc913085765 ("drm/amdkfd: Try to schedule bottom half on same core")
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> Cc: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Nicholas Piggin <npiggin@gmail.com>
+> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: amd-gfx@lists.freedesktop.org
+> Cc: Felix Kuehling <Felix.Kuehling@amd.com>
+> Cc: Alex Deucher <alexander.deucher@amd.com>
+> Cc: Christian König <christian.koenig@amd.com>
+> Cc: "Pan, Xinhui" <Xinhui.Pan@amd.com>
+
+Acked-by: Felix Kuehling <Felix.Kuehling@amd.com>
+
+
 > ---
->  drivers/net/Space.c                              |  2 +-
->  drivers/net/bonding/bond_main.c                  |  2 +-
->  drivers/net/can/sja1000/peak_pcmcia.c            |  2 +-
->  drivers/net/can/usb/peak_usb/pcan_usb_core.c     |  2 +-
->  drivers/net/dsa/b53/b53_common.c                 |  2 +-
->  drivers/net/dsa/bcm_sf2_cfp.c                    |  2 +-
->  drivers/net/dsa/hirschmann/hellcreek.c           |  2 +-
->  drivers/net/dsa/mv88e6xxx/chip.c                 |  2 +-
->  drivers/net/dummy.c                              |  2 +-
->  drivers/net/ethernet/3com/3c509.c                |  2 +-
->  drivers/net/ethernet/3com/3c515.c                |  2 +-
->  drivers/net/ethernet/3com/3c589_cs.c             |  2 +-
->  drivers/net/ethernet/3com/3c59x.c                |  6 +++---
->  drivers/net/ethernet/3com/typhoon.c              |  8 ++++----
->  drivers/net/ethernet/8390/ax88796.c              |  6 +++---
->  drivers/net/ethernet/8390/etherh.c               |  6 +++---
->  drivers/net/ethernet/adaptec/starfire.c          |  4 ++--
->  drivers/net/ethernet/aeroflex/greth.c            |  4 ++--
->  drivers/net/ethernet/agere/et131x.c              |  4 ++--
->  drivers/net/ethernet/alacritech/slicoss.c        |  4 ++--
->  drivers/net/ethernet/allwinner/sun4i-emac.c      |  4 ++--
->  drivers/net/ethernet/alteon/acenic.c             |  4 ++--
->  drivers/net/ethernet/amazon/ena/ena_ethtool.c    |  4 ++--
->  drivers/net/ethernet/amazon/ena/ena_netdev.c     |  2 +-
->  drivers/net/ethernet/amd/amd8111e.c              |  4 ++--
->  drivers/net/ethernet/amd/au1000_eth.c            |  2 +-
->  drivers/net/ethernet/amd/nmclan_cs.c             |  2 +-
->  drivers/net/ethernet/amd/pcnet32.c               |  4 ++--
->  drivers/net/ethernet/amd/sunlance.c              |  2 +-
->  drivers/net/ethernet/amd/xgbe/xgbe-ethtool.c     |  4 ++--
->  .../net/ethernet/aquantia/atlantic/aq_ethtool.c  |  2 +-
->  drivers/net/ethernet/arc/emac_main.c             |  2 +-
->  drivers/net/ethernet/atheros/ag71xx.c            |  4 ++--
->  .../net/ethernet/atheros/atl1c/atl1c_ethtool.c   |  4 ++--
->  .../net/ethernet/atheros/atl1e/atl1e_ethtool.c   |  6 +++---
->  drivers/net/ethernet/atheros/atlx/atl1.c         |  4 ++--
->  drivers/net/ethernet/atheros/atlx/atl2.c         |  6 +++---
->  drivers/net/ethernet/broadcom/b44.c              |  6 +++---
->  drivers/net/ethernet/broadcom/bcm63xx_enet.c     |  4 ++--
->  drivers/net/ethernet/broadcom/bcmsysport.c       |  4 ++--
->  drivers/net/ethernet/broadcom/bgmac.c            |  6 +++---
->  drivers/net/ethernet/broadcom/bnx2.c             |  6 +++---
->  drivers/net/ethernet/broadcom/bnx2x/bnx2x_cmn.c  |  2 +-
->  .../net/ethernet/broadcom/bnx2x/bnx2x_ethtool.c  |  6 +++---
->  drivers/net/ethernet/broadcom/bnx2x/bnx2x_main.c |  2 +-
->  .../net/ethernet/broadcom/bnx2x/bnx2x_sriov.h    |  2 +-
->  drivers/net/ethernet/broadcom/bnx2x/bnx2x_vfpf.c |  2 +-
->  .../net/ethernet/broadcom/bnxt/bnxt_ethtool.c    |  8 ++++----
->  drivers/net/ethernet/broadcom/bnxt/bnxt_vfr.c    |  2 +-
->  drivers/net/ethernet/broadcom/genet/bcmgenet.c   |  2 +-
->  drivers/net/ethernet/broadcom/tg3.c              |  6 +++---
->  drivers/net/ethernet/brocade/bna/bnad_ethtool.c  |  6 +++---
->  drivers/net/ethernet/cavium/octeon/octeon_mgmt.c |  2 +-
->  .../net/ethernet/cavium/thunder/nicvf_ethtool.c  |  4 ++--
->  drivers/net/ethernet/chelsio/cxgb/cxgb2.c        |  4 ++--
->  drivers/net/ethernet/chelsio/cxgb3/cxgb3_main.c  |  4 ++--
->  .../net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c   |  4 ++--
->  drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c  |  4 ++--
->  .../net/ethernet/chelsio/cxgb4vf/cxgb4vf_main.c  |  4 ++--
->  .../chelsio/inline_crypto/chtls/chtls_main.c     |  2 +-
->  drivers/net/ethernet/cirrus/ep93xx_eth.c         |  2 +-
->  drivers/net/ethernet/cisco/enic/enic_ethtool.c   |  6 +++---
->  drivers/net/ethernet/davicom/dm9000.c            |  4 ++--
->  drivers/net/ethernet/dec/tulip/de2104x.c         |  4 ++--
->  drivers/net/ethernet/dec/tulip/dmfe.c            |  4 ++--
->  drivers/net/ethernet/dec/tulip/tulip_core.c      |  4 ++--
->  drivers/net/ethernet/dec/tulip/uli526x.c         |  4 ++--
->  drivers/net/ethernet/dec/tulip/winbond-840.c     |  4 ++--
->  drivers/net/ethernet/dlink/dl2k.c                |  4 ++--
->  drivers/net/ethernet/dlink/sundance.c            |  4 ++--
->  drivers/net/ethernet/dnet.c                      |  4 ++--
->  drivers/net/ethernet/emulex/benet/be_cmds.c      | 12 ++++++------
->  drivers/net/ethernet/emulex/benet/be_ethtool.c   |  6 +++---
->  drivers/net/ethernet/faraday/ftgmac100.c         |  4 ++--
->  drivers/net/ethernet/faraday/ftmac100.c          |  4 ++--
->  drivers/net/ethernet/fealnx.c                    |  4 ++--
->  .../net/ethernet/freescale/dpaa/dpaa_ethtool.c   |  4 ++--
->  drivers/net/ethernet/freescale/dpaa2/dpaa2-mac.c |  2 +-
->  .../net/ethernet/freescale/enetc/enetc_ethtool.c |  4 ++--
->  drivers/net/ethernet/freescale/fec_main.c        |  8 ++++----
->  drivers/net/ethernet/freescale/fec_ptp.c         |  2 +-
->  .../ethernet/freescale/fs_enet/fs_enet-main.c    |  2 +-
->  drivers/net/ethernet/freescale/gianfar_ethtool.c |  2 +-
->  .../net/ethernet/freescale/ucc_geth_ethtool.c    |  4 ++--
->  drivers/net/ethernet/fujitsu/fmvj18x_cs.c        |  4 ++--
->  drivers/net/ethernet/hisilicon/hip04_eth.c       |  4 ++--
->  drivers/net/ethernet/ibm/ehea/ehea_ethtool.c     |  4 ++--
->  drivers/net/ethernet/ibm/emac/core.c             |  4 ++--
->  drivers/net/ethernet/ibm/ibmveth.c               |  4 ++--
->  drivers/net/ethernet/intel/e100.c                |  4 ++--
->  drivers/net/ethernet/intel/e1000/e1000_ethtool.c |  4 ++--
->  drivers/net/ethernet/intel/e1000e/ethtool.c      |  4 ++--
->  drivers/net/ethernet/intel/e1000e/netdev.c       |  6 +++---
->  drivers/net/ethernet/intel/i40e/i40e_ethtool.c   |  6 +++---
->  drivers/net/ethernet/intel/i40e/i40e_main.c      | 16 ++++++++--------
->  drivers/net/ethernet/intel/i40e/i40e_ptp.c       |  2 +-
->  drivers/net/ethernet/intel/iavf/iavf_ethtool.c   |  6 +++---
->  drivers/net/ethernet/intel/igb/igb_ethtool.c     |  6 +++---
->  drivers/net/ethernet/intel/igb/igb_main.c        |  2 +-
->  drivers/net/ethernet/intel/igbvf/ethtool.c       |  4 ++--
->  drivers/net/ethernet/intel/ixgb/ixgb_ethtool.c   |  4 ++--
->  drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c |  6 +++---
->  drivers/net/ethernet/intel/ixgbe/ixgbe_fcoe.c    |  2 +-
->  drivers/net/ethernet/intel/ixgbe/ixgbe_main.c    |  4 ++--
->  drivers/net/ethernet/intel/ixgbevf/ethtool.c     |  4 ++--
->  drivers/net/ethernet/jme.c                       |  6 +++---
->  drivers/net/ethernet/korina.c                    |  6 +++---
->  drivers/net/ethernet/marvell/mv643xx_eth.c       |  8 ++++----
->  drivers/net/ethernet/marvell/mvneta.c            |  6 +++---
->  drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c  |  6 +++---
-
-For: drivers/net/ethernet/marvell/mvpp2
-
-Acked-by: Marcin Wojtas <mw@semihalf.com>
-
-Thanks,
-Marcin
+>   arch/powerpc/kernel/smp.c |    1 +
+>   1 file changed, 1 insertion(+)
+>
+> --- a/arch/powerpc/kernel/smp.c
+> +++ b/arch/powerpc/kernel/smp.c
+> @@ -86,6 +86,7 @@ DEFINE_PER_CPU(cpumask_var_t, cpu_core_m
+>   static DEFINE_PER_CPU(cpumask_var_t, cpu_coregroup_map);
+>   
+>   EXPORT_PER_CPU_SYMBOL(cpu_sibling_map);
+> +EXPORT_PER_CPU_SYMBOL(cpu_smallcore_map);
+>   EXPORT_PER_CPU_SYMBOL(cpu_l2_cache_map);
+>   EXPORT_PER_CPU_SYMBOL(cpu_core_map);
+>   EXPORT_SYMBOL_GPL(has_big_cores);
