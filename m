@@ -2,51 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14C5559A6F1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Aug 2022 22:20:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6BF759A75D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Aug 2022 23:02:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M8Y6909d1z3dy9
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Aug 2022 06:20:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M8Z254vykz3dxW
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Aug 2022 07:02:05 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GbKvB1fj;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=ElWWJTFF;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GbKvB1fj;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=ElWWJTFF;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M8Y5X1brnz3cCW
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Aug 2022 06:19:59 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 4963A612AF;
-	Fri, 19 Aug 2022 20:19:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E914C433D6;
-	Fri, 19 Aug 2022 20:19:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1660940396;
-	bh=olPohxwuB8nScx7nJ7uyU6IDjTcA7hHC2u3+ajo7ux4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=GbKvB1fj75mIAXCJYa4PXJtLbhHltip+GDS6Vdt7samXxjTaaBqrEXtlW5S7z44rE
-	 VVHBKCTlhovnkeWyF5b0QSXXW2cCNJ8f5+eeYvaDXkEQBbQ/nhACFZw8W4SHzjQN5X
-	 xsPcS1VhvyDbJaEluAfXp2esCybyo31LXlJ0cIGebsEjh2g2bq9CmwFD2r+67eP/+g
-	 Y0OVwjSMyNAqp4i5s9F76TYiU8wUXYNjl3ni1XEOUXr5tT0hxX44l+bWOiM6+DAn0Q
-	 rPcoY5lRYmyhRgO4Xmh1TPz+MbmxLNb6A2NHU8K8hozuqYQc0DQS6uzwNDLGj5Rgic
-	 s69uMqWY3meUg==
-Date: Fri, 19 Aug 2022 15:19:55 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Russell Currey <ruscur@russell.cc>
-Subject: Re: [PATCH] MAINTAINERS: Remove myself as EEH maintainer
-Message-ID: <20220819201955.GA2503063@bhelgaas>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M8Z1T6cqvz3cdn
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Aug 2022 07:01:33 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=PAcBO42BylxKVptePXYg0sDhCMDFOaqId5YBR1i2H60=; b=ElWWJTFFs7kCRoKeWdUnDYRBYa
+	s1nXu3QEAdQutXkJjt9dns3Y7GiyGn9FfA4SrzkuE+t1lgu0ygS1XMrHldXXz+ZyMMt5TtO1eK4Ql
+	XGpZrWl5wSKolkWHANKzJ3P3AdQTP7cUgTdWiEqgXLjYfKPX4Rt9Yq9/5l3QNC+38qhlvUKF2aIB7
+	ullgyfHIehIb7UairHAs9IwvNm/0aKWtb3CaVQf67oErzbTJPUvoQmoxsFNuqGBezMHhyFaA4PWrF
+	3UpFV/sdMDQKag3P+L5IT327wl7BToVSazCU3o0jU1sy00X44lD9yIwfURJFsDzLIfbWinaNL2tHx
+	kfXhAaHg==;
+Received: from [2601:1c0:6280:3f0::a6b3] (helo=casper.infradead.org)
+	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1oP97H-00BbKA-DH; Fri, 19 Aug 2022 21:01:19 +0000
+From: Randy Dunlap <rdunlap@infradead.org>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH] powerpc: export cpu_smallcore_map for modules
+Date: Fri, 19 Aug 2022 14:01:12 -0700
+Message-Id: <20220819210112.7924-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220806085301.25142-1-ruscur@russell.cc>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,71 +55,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: oohall@gmail.com, linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org
+Cc: "Gautham R . Shenoy" <ego@linux.vnet.ibm.com>, amd-gfx@lists.freedesktop.org, Felix Kuehling <Felix.Kuehling@amd.com>, Randy Dunlap <rdunlap@infradead.org>, "Pan, Xinhui" <Xinhui.Pan@amd.com>, Nicholas Piggin <npiggin@gmail.com>, Alex Deucher <alexander.deucher@amd.com>, linuxppc-dev@lists.ozlabs.org, =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Aug 06, 2022 at 06:53:01PM +1000, Russell Currey wrote:
-> I haven't touched EEH in a long time I don't have much knowledge of the
-> subsystem at this point either, so it's misleading to have me as a
-> maintainer.
-> 
-> I remain grateful to Oliver for picking up my slack over the years.
-> 
-> Signed-off-by: Russell Currey <ruscur@russell.cc>
-> ---
->  MAINTAINERS | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index a9f77648c107..dfe6081fa0b3 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -15639,7 +15639,6 @@ F:	drivers/pci/endpoint/
->  F:	tools/pci/
->  
->  PCI ENHANCED ERROR HANDLING (EEH) FOR POWERPC
-> -M:	Russell Currey <ruscur@russell.cc>
->  M:	Oliver O'Halloran <oohall@gmail.com>
->  L:	linuxppc-dev@lists.ozlabs.org
->  S:	Supported
+Fix build error when CONFIG_DRM_AMDGPU=m:
 
-I was thinking along these lines, but if you want to take this,
-Michael, I'll drop it:
+ERROR: modpost: "cpu_smallcore_map" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
 
+by exporting 'cpu_smallcore_map' just as other per_cpu
+symbols are exported.
 
-commit 92ea781689d1 ("MAINTAINERS: Add Mahesh J Salgaonkar as EEH maintainer")
-Author: Russell Currey <ruscur@russell.cc>
-Date:   Sat Aug 6 18:53:01 2022 +1000
+drivers/gpu/drm/amd/amdkfd/kfd_device.c calls cpu_smt_mask().
+This is an inline function on powerpc which references
+cpu_smallcore_map.
 
-    MAINTAINERS: Add Mahesh J Salgaonkar as EEH maintainer
-    
-    Update EEH entry:
-    
-      - Russell: lacks time to maintain EEH.
-    
-      - Oliver: lacks time & hardware to do actual maintenance, but happy to
-        field questions and review things.
-    
-      - Mahesh: glad to take over EEH maintenance.
-    
-    [bhelgaas: commit log, add Mahesh, make Oliver reviewer]
-    Link: https://lore.kernel.org/r/20220806085301.25142-1-ruscur@russell.cc
-    Signed-off-by: Russell Currey <ruscur@russell.cc>
-    Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Fixes: 425752c63b6f ("powerpc: Detect the presence of big-cores via "ibm, thread-groups"")
+Fixes: 7bc913085765 ("drm/amdkfd: Try to schedule bottom half on same core")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: amd-gfx@lists.freedesktop.org
+Cc: Felix Kuehling <Felix.Kuehling@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: "Pan, Xinhui" <Xinhui.Pan@amd.com>
+---
+ arch/powerpc/kernel/smp.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index f60dfac7661c..51def5ac9462 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -15696,8 +15696,8 @@ F:	drivers/pci/endpoint/
- F:	tools/pci/
+--- a/arch/powerpc/kernel/smp.c
++++ b/arch/powerpc/kernel/smp.c
+@@ -86,6 +86,7 @@ DEFINE_PER_CPU(cpumask_var_t, cpu_core_m
+ static DEFINE_PER_CPU(cpumask_var_t, cpu_coregroup_map);
  
- PCI ENHANCED ERROR HANDLING (EEH) FOR POWERPC
--M:	Russell Currey <ruscur@russell.cc>
--M:	Oliver O'Halloran <oohall@gmail.com>
-+M:	Mahesh J Salgaonkar <mahesh@linux.ibm.com>
-+R:	Oliver O'Halloran <oohall@gmail.com>
- L:	linuxppc-dev@lists.ozlabs.org
- S:	Supported
- F:	Documentation/PCI/pci-error-recovery.rst
+ EXPORT_PER_CPU_SYMBOL(cpu_sibling_map);
++EXPORT_PER_CPU_SYMBOL(cpu_smallcore_map);
+ EXPORT_PER_CPU_SYMBOL(cpu_l2_cache_map);
+ EXPORT_PER_CPU_SYMBOL(cpu_core_map);
+ EXPORT_SYMBOL_GPL(has_big_cores);
