@@ -2,50 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB1F159B0F0
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Aug 2022 01:56:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D1E759B11F
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Aug 2022 03:01:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M9Frn5M9vz3cdC
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Aug 2022 09:56:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M9HHs6p2Cz3dB4
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Aug 2022 11:01:29 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=protonmail.com header.i=@protonmail.com header.a=rsa-sha256 header.s=protonmail3 header.b=ktXC7QeL;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=AXPnI89T;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=protonmail.com (client-ip=185.70.43.27; helo=mail-4327.protonmail.ch; envelope-from=povik@protonmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::434; helo=mail-wr1-x434.google.com; envelope-from=zhouzhouyi@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=protonmail.com header.i=@protonmail.com header.a=rsa-sha256 header.s=protonmail3 header.b=ktXC7QeL;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=AXPnI89T;
 	dkim-atps=neutral
-X-Greylist: delayed 431 seconds by postgrey-1.36 at boromir; Sun, 21 Aug 2022 06:24:55 AEST
-Received: from mail-4327.protonmail.ch (mail-4327.protonmail.ch [185.70.43.27])
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M998l3ttNz3br0
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 21 Aug 2022 06:24:55 +1000 (AEST)
-Date: Sat, 20 Aug 2022 20:17:23 +0000
-Authentication-Results: mail-4321.protonmail.ch;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="ktXC7QeL"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1661026648; x=1661285848;
-	bh=KKmlMdBATxrw1fYuo6BKMHqUBdbBm2ifnz68GwDN770=;
-	h=Date:To:From:Cc:Reply-To:Subject:Message-ID:Feedback-ID:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID;
-	b=ktXC7QeLApdlEuX8E4i5TioL2jUXuiPm1YNPiqPqZY+vvwFhCi6VCubuGbIrCBCas
-	 Szbhy0cwhZzpAimnhkMp88ncd54Mw4dfxZ0pqnarq/0WNsZ4wIhLEJfA70oHfn7fqM
-	 Xgnkof8cizyehXgeJ1Kt3Q40igXvNdrl4JfCoIug0lef0sLq7S3JH4oGVUl7ikvee1
-	 YWwS2YGiU3huLpUhsnw9Rk35IeGyIQF63xgiH7TVKaj94FWNF3Uwj2KyNzFtg3ne5Q
-	 JXb/oKV/iKvlcF9m57Vk/CKJshGcZQ6Eiza2rXDYOWXErmV8SN/7UT9V9oE1ZrHw4h
-	 XlTgvInkGZ2NQ==
-To: Arminder Singh <arminders208@outlook.com>
-From: =?utf-8?Q?Martin_Povi=C5=A1er?= <povik@protonmail.com>
-Subject: Re: [PATCH] i2c: pasemi: Add IRQ support for Apple Silicon
-Message-ID: <8387D093-6220-4849-9E09-D856A4362E97@protonmail.com>
-Feedback-ID: 6533334:user:proton
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M9HHD1bc0z3bdN
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 21 Aug 2022 11:00:54 +1000 (AEST)
+Received: by mail-wr1-x434.google.com with SMTP id r16so9179545wrm.6
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Aug 2022 18:00:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc;
+        bh=a4jNHFHiClDdq/v49nsMbA8I7HwKAy8R6hrK4YLcETg=;
+        b=AXPnI89Txz85BoWVYAFCMtMPbQcGFSRW9UnKTu6iScu4HS0WqlGWSD9JtoSlTj70EP
+         mZiagAyiMBkanQ7JZ7mBCJueCAvdX0+/UkZ5D5VPGYEnOaqT1tXH7H/xw0T3hQwXlC4b
+         vl3orITND69HNkgeXNp56lMh5QVGVWA5jAYDKERihJAGkVIx2trU73w2i7dh/BNDJG82
+         Ep9cwajpDz7iBIOmLCm7ODT7JtrbCTr+rduE9jiQ8cfpX/PEGHjP6Aai1P6VFTImcO66
+         kcYtnqjcC7Pzq/JWMdynbGRSoowQgEZszBEltfRK6NHhRu5PdcmWfqmcUQpXi9TGhooV
+         Wu4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc;
+        bh=a4jNHFHiClDdq/v49nsMbA8I7HwKAy8R6hrK4YLcETg=;
+        b=BF/fiCPaPpK53wNBdKHR01S5YHCj+16HvdyZ/xJgrNY575OCqFIEeLOXQjj65q0plN
+         kdgE5Z8UuPaLIOzOeCBErhXq0jjzUmQuzAoEvv4B2zvcZilLK0MTxl7wqv8qWrphnSlV
+         46xYDdVk+XWJKyqC66NWR28vKifsX+IVIQLLDTkm3GkLp4aEX+8HSOswTQmqis/fyhu9
+         1cSdAu7ANNWSfBL1hRFRyGVSGEZiRKNrcNDaVfTnJyTVqL4Qa33gLPsxsGdr3Btw1Is5
+         orW+pbqWM0nF2nkAobvbcMdYKOjxYp6y0O0kl/Z3PKykkZr47jXprno98CyTkWnOroWN
+         rAcw==
+X-Gm-Message-State: ACgBeo11P1AizoM0ZiA+MKfVoQV1GgEUC4bVUQnDfnigCbR7yZuPcpoW
+	8FJrromraBf5sPtJqkrY2xI=
+X-Google-Smtp-Source: AA6agR5zLE9kQ65fXHG6rjjR2ZpdPg7mUbxbgX8Wf/KmxTkJHk+7GWOjEPvnFelVMh/hMofl4rxKbg==
+X-Received: by 2002:adf:f208:0:b0:225:25e6:c964 with SMTP id p8-20020adff208000000b0022525e6c964mr7555213wro.531.1661043647749;
+        Sat, 20 Aug 2022 18:00:47 -0700 (PDT)
+Received: from localhost.localdomain ([185.192.68.223])
+        by smtp.gmail.com with ESMTPSA id r38-20020a05600c322600b003a2e92edeccsm12148515wmp.46.2022.08.20.18.00.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 20 Aug 2022 18:00:44 -0700 (PDT)
+From: Zhouyi Zhou <zhouzhouyi@gmail.com>
+To: mpe@ellerman.id.au,
+	npiggin@gmail.com,
+	christophe.leroy@csgroup.eu,
+	atrajeev@linux.vnet.ibm.com,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	lance@osuosl.org,
+	paulmck@kernel.org,
+	rcu@vger.kernel.org
+Subject: [PATCH linux-next] powerpc: disable sanitizer in irq_soft_mask_set
+Date: Sun, 21 Aug 2022 09:00:30 +0800
+Message-Id: <20220821010030.97539-1-zhouzhouyi@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Mailman-Approved-At: Sun, 21 Aug 2022 09:54:35 +1000
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,96 +82,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: =?utf-8?Q?Martin_Povi=C5=A1er?= <povik@protonmail.com>
-Cc: Sven Peter <sven@svenpeter.dev>, Hector Martin <marcan@marcan.st>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Paul Mackerras <paulus@samba.org>, linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, Alyssa Rosenzweig <alyssa@rosenzweig.io>, linux-i2c@vger.kernel.org
+Cc: Zhouyi Zhou <zhouzhouyi@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+In ppc, compiler based sanitizer will generate instrument instructions
+around statement WRITE_ONCE(local_paca->irq_soft_mask, mask):
 
-> On 20. 8. 2022, at 21:45, Arminder Singh <arminders208@outlook.com> wrote=
-:
->
-> This is the first time I'm interacting with the Linux mailing lists, so
-> please don't eviscerate me *too much* if I get the formatting wrong.
-> Of course I'm always willing to take criticism and improve my formatting
-> in the future.
->
-> This patch adds support for IRQs to the PASemi I2C controller driver.
-> This will allow for faster performing I2C transactions on Apple Silicon
-> hardware, as previously, the driver was forced to poll the SMSTA register
-> for a set amount of time.
->
-> With this patchset the driver on Apple silicon hardware will instead wait
-> for an interrupt which will signal the completion of the I2C transaction.
-> The timeout value for this completion will be the same as the current
-> amount of time the I2C driver polls for.
->
-> This will result in some performance improvement since the driver will be
-> waiting for less time than it does right now on Apple Silicon hardware.
->
-> The patch right now will only enable IRQs for Apple Silicon I2C chips,
-> and only if it's able to successfully request the IRQ from the kernel.
->
-> =3D=3D=3D Testing =3D=3D=3D
->
-> This patch has been tested on both the mainline Linux kernel tree and
-> the Asahi branch (https://github.com/AsahiLinux/linux.git) on both an
-> M1 and M2 MacBook Air, and it compiles successfully as both a module and
-> built-in to the kernel itself. The patch in both trees successfully boots
-> to userspace without any hitch.
->
-> I do not have PASemi hardware on hand unfortunately, so I'm unable to tes=
-t
-> the impact of this patch on old PASemi hardware. This is also why I've
-> elected to do the IRQ request and enablement on the Apple platform driver
-> and not in the common file, as I'm not sure if PASemi hardware supports
-> IRQs.
->
-> I also fixed a quick checkpatch warning on line 303. "i ++" is now "i++".
->
-> Any and all critiques of the patch would be well appreciated.
->
->
->
->
-> Signed-off-by: Arminder Singh <arminders208@outlook.com>
+   0xc000000000295cb0 <+0>:	addis   r2,r12,774
+   0xc000000000295cb4 <+4>:	addi    r2,r2,16464
+   0xc000000000295cb8 <+8>:	mflr    r0
+   0xc000000000295cbc <+12>:	bl      0xc00000000008bb4c <mcount>
+   0xc000000000295cc0 <+16>:	mflr    r0
+   0xc000000000295cc4 <+20>:	std     r31,-8(r1)
+   0xc000000000295cc8 <+24>:	addi    r3,r13,2354
+   0xc000000000295ccc <+28>:	mr      r31,r13
+   0xc000000000295cd0 <+32>:	std     r0,16(r1)
+   0xc000000000295cd4 <+36>:	stdu    r1,-48(r1)
+   0xc000000000295cd8 <+40>:	bl      0xc000000000609b98 <__asan_store1+8>
+   0xc000000000295cdc <+44>:	nop
+   0xc000000000295ce0 <+48>:	li      r9,1
+   0xc000000000295ce4 <+52>:	stb     r9,2354(r31)
+   0xc000000000295ce8 <+56>:	addi    r1,r1,48
+   0xc000000000295cec <+60>:	ld      r0,16(r1)
+   0xc000000000295cf0 <+64>:	ld      r31,-8(r1)
+   0xc000000000295cf4 <+68>:	mtlr    r0
 
-Thanks for the patch!
+If there is a context switch before "stb     r9,2354(r31)", r31 may
+not equal to r13, in such case, irq soft mask will not work.
 
-Tested-by: Martin Povi=C5=A1er <povik+lin@cutebit.org>
+This patch disable sanitizer in irq_soft_mask_set.
 
-on Mac mini (2020) with M1, with in-kernel WIP sound drivers.
+Signed-off-by: Zhouyi Zhou <zhouzhouyi@gmail.com>
+---
+Dear PPC developers
 
-Some timing comparison on boot logs follows, three runs with
-and without the patch.
+I found this bug when trying to do rcutorture tests in ppc VM of
+Open Source Lab of Oregon State University following Paul E. McKenny's guidance.
 
-With:
+console.log report following bug:
 
-[    0.631034] ALSA device list:
-[    0.631403]   #0: Mac mini J274 integrated audio
+[  346.527467][  T100] BUG: using smp_processor_id() in preemptible [00000000] code: rcu_torture_rea/100^M
+[  346.529416][  T100] caller is rcu_preempt_deferred_qs_irqrestore+0x74/0xed0^M
+[  346.531157][  T100] CPU: 4 PID: 100 Comm: rcu_torture_rea Tainted: G        W          5.19.0-rc5-next-20220708-dirty #253^M
+[  346.533620][  T100] Call Trace:^M
+[  346.534449][  T100] [c0000000094876c0] [c000000000ce2b68] dump_stack_lvl+0xbc/0x108 (unreliable)^M
+[  346.536632][  T100] [c000000009487710] [c000000001712954] check_preemption_disabled+0x154/0x160^M
+[  346.538665][  T100] [c0000000094877a0] [c0000000002ce2d4] rcu_preempt_deferred_qs_irqrestore+0x74/0xed0^M
+[  346.540830][  T100] [c0000000094878b0] [c0000000002cf3c0] __rcu_read_unlock+0x290/0x3b0^M
+[  346.542746][  T100] [c000000009487910] [c0000000002bb330] rcu_torture_read_unlock+0x30/0xb0^M
+[  346.544779][  T100] [c000000009487930] [c0000000002b7ff8] rcutorture_one_extend+0x198/0x810^M
+[  346.546851][  T100] [c000000009487a10] [c0000000002b8bfc] rcu_torture_one_read+0x58c/0xc90^M
+[  346.548844][  T100] [c000000009487ca0] [c0000000002b942c] rcu_torture_reader+0x12c/0x360^M
+[  346.550784][  T100] [c000000009487db0] [c0000000001de978] kthread+0x1e8/0x220^M
+[  346.552555][  T100] [c000000009487e10] [c00000000000cd54] ret_from_kernel_thread+0x5c/0x64^M
 
-[    0.625559] ALSA device list:
-[    0.625997]   #0: Mac mini J274 integrated audio
+After 12 days debugging, I finally narrow the problem to irq_soft_mask_set.
 
-[    0.624561] ALSA device list:
-[    0.624913]   #0: Mac mini J274 integrated audio
+I am a beginner, hope I can be of some beneficial to the community ;-)
 
-Without:
+Thanks
+Zhouyi
+--
+ arch/powerpc/include/asm/hw_irq.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-[    0.681599] ALSA device list:
-[    0.682051]   #0: Mac mini J274 integrated audio
-
-[    0.677538] ALSA device list:
-[    0.677968]   #0: Mac mini J274 integrated audio
-
-[    0.686037] ALSA device list:
-[    0.686400]   #0: Mac mini J274 integrated audio
-
-(After I collected these I realised I don=E2=80=99t know to what exactly
-the timing of the print is anchored, but anyway it still suggests
-there is speed-up.)
-
-Best,
-Martin
-
+diff --git a/arch/powerpc/include/asm/hw_irq.h b/arch/powerpc/include/asm/hw_irq.h
+index 26ede09c521d..a5ae8d82cc9d 100644
+--- a/arch/powerpc/include/asm/hw_irq.h
++++ b/arch/powerpc/include/asm/hw_irq.h
+@@ -121,7 +121,7 @@ static inline notrace unsigned long irq_soft_mask_return(void)
+  * for the critical section and as a clobber because
+  * we changed paca->irq_soft_mask
+  */
+-static inline notrace void irq_soft_mask_set(unsigned long mask)
++static inline notrace __no_kcsan __no_sanitize_address void irq_soft_mask_set(unsigned long mask)
+ {
+ 	/*
+ 	 * The irq mask must always include the STD bit if any are set.
+-- 
+2.34.1
 
