@@ -1,88 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D67D659B306
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Aug 2022 12:01:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F61B59B3C8
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Aug 2022 14:40:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M9WHF4Q3Sz3bfH
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Aug 2022 20:01:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M9Zpq0jM2z3c6F
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Aug 2022 22:40:51 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=svenpeter.dev header.i=@svenpeter.dev header.a=rsa-sha256 header.s=fm1 header.b=VocTPO+K;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=vcLkpYev;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=h2mT+V1f;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=svenpeter.dev (client-ip=64.147.123.25; helo=wout2-smtp.messagingengine.com; envelope-from=sven@svenpeter.dev; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=leon@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=svenpeter.dev header.i=@svenpeter.dev header.a=rsa-sha256 header.s=fm1 header.b=VocTPO+K;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=vcLkpYev;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=h2mT+V1f;
 	dkim-atps=neutral
-X-Greylist: delayed 313 seconds by postgrey-1.36 at boromir; Sun, 21 Aug 2022 20:01:05 AEST
-Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com [64.147.123.25])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M9WGT6L6gz3bPP
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 21 Aug 2022 20:01:05 +1000 (AEST)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailout.west.internal (Postfix) with ESMTP id 4AD8232001FF;
-	Sun, 21 Aug 2022 05:55:45 -0400 (EDT)
-Received: from imap47 ([10.202.2.97])
-  by compute2.internal (MEProxy); Sun, 21 Aug 2022 05:55:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=svenpeter.dev;
-	 h=cc:cc:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:sender
-	:subject:subject:to:to; s=fm1; t=1661075744; x=1661162144; bh=g+
-	4U3HxtmMgKd0ZTdEPPndvyzAVWKCpEbJzi3SzZ3R8=; b=VocTPO+KaoksbBV5gq
-	BydTNLf3EozosHtoeO64NFZkk/4q8HKVS2Jhj1lQdk4aYkkD1ipFgfZhKZiez8OG
-	oMTAgMpF6qwk7ZolqujcD8KWypEgVywYkX7PyVKWn6vcO23xLft5wlY8qbxBjbRX
-	1L9xuw8SqCggPcIkLhwfDL4dqJ01ShqgLzbq5FyVUJYYyaEgojbpW8d07m3Yow7m
-	zXRRM0qiXdV0eyRdvG3A0i//IVuf++n2qbqgXX42WWveZoZ+IlDvW1h7QCuMlXy5
-	CpHe/M8PjTZkhyTlhN/XxKxJ8R9TGG/RcVz9YaE2PviFMqHQlCGUSIaG+D134a56
-	fkdg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-	:feedback-id:from:from:in-reply-to:in-reply-to:message-id
-	:mime-version:references:reply-to:sender:subject:subject:to:to
-	:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm1; t=1661075744; x=1661162144; bh=g+4U3HxtmMgKd0ZTdEPPndvyzAVW
-	KCpEbJzi3SzZ3R8=; b=vcLkpYev5z2JjfwPLbYTbP5Fruw5KhTeYwL2o+snWPHy
-	lls8vSlwnGaCaEY8H24h0yrk3Bt9kd+RX3JeSQliaHfvgW0nnNDhheJhiyF6Cl9y
-	HO8AphNKGKWbWrOr8hh/rOjyUbb26qujaFAJo2WuHY0GNx0IV3RuiajijpvPXhik
-	qB7KXCfc6/XkEXMUNfqyLcLXkTvzIHMrlvXMX7is990snTsP8SxiyyEPCZWNCoLJ
-	GXAuGY+iDRqHSPrdvA8fZNhZVwRg8p5wuNUVszjEMO9HKF5kQUbv4w7eh/XnLBcK
-	EnNb9f7qAEHP94QV1qjVWMWm+i5kW3E73TyEbr9d1w==
-X-ME-Sender: <xms:HwECY_N33eWnObpNU8IsYln5nO4pIuZzNzLkzr3q3-yzoW7iKWZohQ>
-    <xme:HwECY5-ACm8wVZjATPcq3rpE5PbcLB1NGVrbmwrYfVibanzOsgvTGx0a0-NqKkzOr
-    IA0IvDacoOInmZFX6Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrvdeihedgvddvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedfufhv
-    vghnucfrvghtvghrfdcuoehsvhgvnhesshhvvghnphgvthgvrhdruggvvheqnecuggftrf
-    grthhtvghrnhepgeegkeektdejveeiteffvddugffggeeuudehvdfgtddvudfgjedtuedu
-    vdevueevnecuffhomhgrihhnpehgihhthhhusgdrtghomhenucevlhhushhtvghrufhiii
-    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehsvhgvnhesshhvvghnphgvthgvrhdr
-    uggvvh
-X-ME-Proxy: <xmx:HwECY-T1-yLJ-FoybaQw-CEfcAAgsKzPFok33ybaLGP7XZ5p1CoIbg>
-    <xmx:HwECYzv2Re_oy1KdasbRuYg2g4kvCg2-SUqBG0H0rEGeOajzWMrLaQ>
-    <xmx:HwECY3edqiBARecogNKQyipnufOSJ0Mq5fp_KfEYX3KnSxQ8Tot4gg>
-    <xmx:IAECY5twISE0izCruAtV9zRWyTRV5CSzbVufS8B3WdX_UbVHDG-ebQ>
-Feedback-ID: i51094778:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 8CAFDA6007C; Sun, 21 Aug 2022 05:55:43 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.7.0-alpha0-841-g7899e99a45-fm-20220811.002-g7899e99a
-Mime-Version: 1.0
-Message-Id: <8985e799-64b5-44e6-9da3-f8817f8744e6@www.fastmail.com>
-In-Reply-To:  <MN2PR01MB535838492432C910F2381F929F6F9@MN2PR01MB5358.prod.exchangelabs.com>
-References:  <MN2PR01MB535838492432C910F2381F929F6F9@MN2PR01MB5358.prod.exchangelabs.com>
-Date: Sun, 21 Aug 2022 11:55:23 +0200
-From: "Sven Peter" <sven@svenpeter.dev>
-To: "Arminder Singh" <arminders208@outlook.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] i2c: pasemi: Add IRQ support for Apple Silicon
-Content-Type: text/plain
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M9YRh2zrRz3bVt
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 21 Aug 2022 21:39:12 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id B806DB80CAD;
+	Sun, 21 Aug 2022 11:39:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16F82C433C1;
+	Sun, 21 Aug 2022 11:39:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1661081946;
+	bh=XskdzOo4d6sQ470cDvLPNQUn3vWKINLbams0NyYkyHs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=h2mT+V1f1lnbZkkGAhFAY/FsV+M1AF9PcfNeRDvNZKCJy57DaoMtr9s0psqD3Q1mO
+	 lbDhmNpKNvV/MR3fm6StN1mxNxpQJUC8tyMYcQcHpyiP/DrWCMjJuOVjw/fDkS+Jbx
+	 q48H/NylIMORBfw8L2CaoJxyCseFOceSz7e8e7zajZorpFMEhY5H7KErwdtQ0xCEA5
+	 hvyLFOsrJINBQhAU2H/quZ7hJS+vJsR04M2CqzO5yYMTToisG1GuzCWaEmeBmvQMOw
+	 uIVl8tgoxsIPMIJR37nelEvAqkJqxypMLHMFaQaclZNgvWJYRb3CySjpqDkfgWXLC6
+	 zNIdvXH7Xnd5w==
+Date: Sun, 21 Aug 2022 14:39:01 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Subject: Re: [PATCH] net: move from strlcpy with unused retval to strscpy
+Message-ID: <YwIZVfRUhwevWN62@unreal>
+References: <20220818210050.7108-1-wsa+renesas@sang-engineering.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220818210050.7108-1-wsa+renesas@sang-engineering.com>
+X-Mailman-Approved-At: Sun, 21 Aug 2022 22:40:22 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,213 +60,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Hector Martin <marcan@marcan.st>, Paul Mackerras <paulus@samba.org>, Alyssa Rosenzweig <alyssa@rosenzweig.io>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-arm-kernel@lists.infradead.org, linux-i2c@vger.kernel.org
+Cc: Andrew Lunn <andrew@lunn.ch>, Shyam Sundar S K <Shyam-sundar.S-k@amd.com>, Igor Russkikh <irusskikh@marvell.com>, Kevin Brace <kevinbrace@bracecomputerlab.com>, David Dillow <dave@thedillows.org>, Somnath Kotur <somnath.kotur@broadcom.com>, =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>, "K. Y. Srinivasan" <kys@microsoft.com>, linux-stm32@st-md-mailman.stormreply.com, Andy Gospodarek <andy@greyhouse.net>, Wei Liu <wei.liu@kernel.org>, Manish Chopra <manishc@marvell.com>, Samuel Holland <samuel@sholland.org>, Madalin Bucur <madalin.bucur@nxp.com>, Christian Lamparter <chunkeey@googlemail.com>, Michal Simek <michal.simek@xilinx.com>, Jose Abreu <joabreu@synopsys.com>, Radhey Shyam Pandey <radhey.shyam.pandey@xilinx.com>, Franky Lin <franky.lin@broadcom.com>, Mark Lee <Mark-MC.Lee@mediatek.com>, Chris Lee <christopher.lee@cspi.com>, Nick Child <nnac123@linux.ibm.com>, Jiri Pirko <jiri@resnulli.us>, Jay Vosburgh <j.vosburgh@gmail.com>, Vinay Kumar Yadav <vinay.yadav@chelsio.com>
+ , Arend van Spriel <aspriel@gmail.com>, Nicholas Piggin <npiggin@gmail.com>, Igor Mitsyanko <imitsyanko@quantenna.com>, Krzysztof Halasa <khalasa@piap.pl>, Shay Agroskin <shayagr@amazon.com>, linux-omap@vger.kernel.org, Petr Machata <petrm@nvidia.com>, libertas-dev@lists.infradead.org, Rasesh Mody <rmody@marvell.com>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, Douglas Miller <dougmill@linux.ibm.com>, Joakim Zhang <qiangqing.zhang@nxp.com>, Ralf Baechle <ralf@linux-mips.org>, Vivien Didelot <vivien.didelot@gmail.com>, Ion Badulescu <ionut@badula.org>, Hartley Sweeten <hsweeten@visionengravers.com>, Stanislav Yakovlev <stas.yakovlev@gmail.com>, Jon Mason <jdmason@kudzu.us>, Vladimir Oltean <olteanv@gmail.com>, Claudiu Beznea <claudiu.beznea@microchip.com>, Christian Benvenuti <benve@cisco.com>, Samuel Chessman <chessman@tux.org>, linux-usb@vger.kernel.org, Ronak Doshi <doshir@vmware.com>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, Chris Snook <chris.snook@gmail.com>, Deni
+ s Kirjanov <kda@linux-powerpc.org>, Prashant Sreedharan <prashant@broadcom.com>, linux-kernel@vger.kernel.org, Daniele Venzano <venza@brownhat.org>, Eric Dumazet <edumazet@google.com>, Zhu Yanjun <zyjzyj2000@gmail.com>, Tony Nguyen <anthony.l.nguyen@intel.com>, Arthur Kiyanovski <akiyano@amazon.com>, "David S. Miller" <davem@davemloft.net>, Sergey Matyukevich <geomatsi@gmail.com>, Jesse Brandeburg <jesse.brandeburg@intel.com>, Rain River <rain.1986.08.12@gmail.com>, Veaceslav Falico <vfalico@gmail.com>, Martin Habets <habetsm.xilinx@gmail.com>, Yisen Zhuang <yisen.zhuang@huawei.com>, Wolfgang Grandegger <wg@grandegger.com>, Steve Glendinning <steve.glendinning@shawell.net>, Tom Lendacky <thomas.lendacky@amd.com>, Michael Hennerich <michael.hennerich@analog.com>, Ido Schimmel <idosch@nvidia.com>, Sean Wang <sean.wang@mediatek.com>, linuxppc-dev@lists.ozlabs.org, linux-can@vger.kernel.org, Siva Reddy Kallam <siva.kallam@broadcom.com>, Claudiu Manoil <claudiu.manoil@nxp.com>, Doug Berg
+ er <opendmb@gmail.com>, Simon Kelley <simon@thekelleys.org.uk>, Giuseppe Cavallaro <peppe.cavallaro@st.com>, linux-arm-kernel@lists.infradead.org, Mirko Lindner <mlindner@marvell.com>, Sriharsha Basavapatna <sriharsha.basavapatna@broadcom.com>, Nicolas Pitre <nico@fluxnic.net>, David Arinzon <darinzon@amazon.com>, Rohit Maheshwari <rohitm@chelsio.com>, Tariq Toukan <tariqt@nvidia.com>, Sudarsana Kalluru <skalluru@marvell.com>, Taras Chornyi <tchornyi@marvell.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, linux-mediatek@lists.infradead.org, Heiner Kallweit <hkallweit1@gmail.com>, linux-wireless@vger.kernel.org, Ajit Khaparde <ajit.khaparde@broadcom.com>, Petko Manolov <petkan@nucleusys.com>, Andreas Larsson <andreas@gaisler.com>, Jason Wang <jasowang@redhat.com>, Kurt Kanzenbach <kurt@linutronix.de>, linux-hyperv@vger.kernel.org, oss-drivers@corigine.com, netdev@vger.kernel.org, Subbaraya Sundeep <sbhatta@marvell.com>, Hin-Tak Leung <htl10@users.sourceforge.net>, Jassi Brar <jasw
+ inder.singh@linaro.org>, Noam Dagan <ndagan@amazon.com>, Stanislaw Gruszka <stf_xl@wp.pl>, Ajay Singh <ajay.kathat@microchip.com>, Florian Fainelli <f.fainelli@gmail.com>, Dave Jiang <dave.jiang@intel.com>, linux-rdma@vger.kernel.org, Guo-Fu Tseng <cooldavid@cooldavid.org>, Dexuan Cui <decui@microsoft.com>, Jernej Skrabec <jernej.skrabec@gmail.com>, Chen-Yu Tsai <wens@csie.org>, Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, b43-dev@lists.infradead.org, Simon Horman <simon.horman@corigine.com>, Paolo Abeni <pabeni@redhat.com>, Allen Hubbe <allenbh@gmail.com>, Shahed Shaikh <shshaikh@marvell.com>, Grygorii Strashko <grygorii.strashko@ti.com>, Byungho An <bh74.an@samsung.com>, Haiyang Zhang <haiyangz@microsoft.com>, Francois Romieu <romieu@fr.zoreil.com>, Hante Meuleman <hante.meuleman@broadcom.com>, Vladimir Zapolskiy <vz@mleia.com>, Don Fry <pcnet32@frontier.com>, John Crispin <john@phrozen.org>, Michael Chan <michael.chan@broadcom.com>, virtualization
+ @lists.linux-foundation.org, Salil Mehta <salil.mehta@huawei.com>, GR-Linux-NIC-Dev@marvell.com, linux-parisc@vger.kernel.org, Geoff Levand <geoff@infradead.org>, linux-sunxi@lists.linux.dev, Edward Cree <ecree.xilinx@gmail.com>, Bryan Whitehead <bryan.whitehead@microchip.com>, Saeed Bishara <saeedb@amazon.com>, Mark Einon <mark.einon@gmail.com>, Geetha sowjanya <gakula@marvell.com>, Oliver Neukum <oneukum@suse.com>, "Michael S. Tsirkin" <mst@redhat.com>, VMware PV-Drivers Reviewers <pv-drivers@vmware.com>, Ioana Ciornei <ioana.ciornei@nxp.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, Govindarajulu Varadarajan <_govind@gmx.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Ayush Sawal <ayush.sawal@chelsio.com>, UNGLinuxDriver@microchip.com, linux-acenic@sunsite.dk, Herton Ronaldo Krzesinski <herton@canonical.com>, Rahul Verma <rahulv@marvell.com>, Russell King <linux@armlinux.org.uk>, SHA-cyfmac-dev-list@infineon.com, Lino Sanfilippo <LinoSanfilippo@gmx.de>, intel-wired
+ -lan@lists.osuosl.org, Jakub Kicinski <kuba@kernel.org>, Steffen Klassert <klassert@kernel.org>, Sunil Goutham <sgoutham@marvell.com>, Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Jes Sorensen <jes@trained-monkey.org>, nic_swsd@realtek.com, Ariel Elior <aelior@marvell.com>, Jouni Malinen <j@w1.fi>, Kalle Valo <kvalo@kernel.org>, Marc Kleine-Budde <mkl@pengutronix.de>, Matthias Brugger <matthias.bgg@gmail.com>, Marcin Wojtas <mw@semihalf.com>, brcm80211-dev-list.pdl@broadcom.com, Sridhar Samudrala <sridhar.samudrala@intel.com>, David Ahern <dsahern@kernel.org>, linux-mips@vger.kernel.org, Li Yang <leoyang.li@nxp.com>, Stephen Hemminger <stephen@networkplumber.org>, hariprasad <hkelam@marvell.com>, ntb@lists.linux.dev, Raju Rangoju <rajur@chelsio.com>, Larry Finger <Larry.Finger@lwfinger.net>, Saeed Mahameed <saeedm@nvidia.com>, Felix Fietkau <nbd@nbd.name>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
-
-Thanks for the patch! Some additional comments:
-
-On Sat, Aug 20, 2022, at 21:45, Arminder Singh wrote:
-> This is the first time I'm interacting with the Linux mailing lists, so 
-> please don't eviscerate me *too much* if I get the formatting wrong.
-> Of course I'm always willing to take criticism and improve my formatting 
-> in the future.
->
-> This patch adds support for IRQs to the PASemi I2C controller driver.
-> This will allow for faster performing I2C transactions on Apple Silicon
-> hardware, as previously, the driver was forced to poll the SMSTA register
-> for a set amount of time.
->
-> With this patchset the driver on Apple silicon hardware will instead wait
-> for an interrupt which will signal the completion of the I2C transaction.
-> The timeout value for this completion will be the same as the current
-> amount of time the I2C driver polls for.
->
-> This will result in some performance improvement since the driver will be
-> waiting for less time than it does right now on Apple Silicon hardware.
->
-> The patch right now will only enable IRQs for Apple Silicon I2C chips,
-> and only if it's able to successfully request the IRQ from the kernel.
->
-> === Testing ===
->
-> This patch has been tested on both the mainline Linux kernel tree and
-> the Asahi branch (https://github.com/AsahiLinux/linux.git) on both an
-> M1 and M2 MacBook Air, and it compiles successfully as both a module and
-> built-in to the kernel itself. The patch in both trees successfully boots
-> to userspace without any hitch.
->
-> I do not have PASemi hardware on hand unfortunately, so I'm unable to test
-> the impact of this patch on old PASemi hardware. This is also why I've
-> elected to do the IRQ request and enablement on the Apple platform driver
-> and not in the common file, as I'm not sure if PASemi hardware supports
-> IRQs.
->
-> I also fixed a quick checkpatch warning on line 303. "i ++" is now "i++".
->
-> Any and all critiques of the patch would be well appreciated.
->
->
->
->
-> Signed-off-by: Arminder Singh <arminders208@outlook.com>
+On Thu, Aug 18, 2022 at 11:00:34PM +0200, Wolfram Sang wrote:
+> Follow the advice of the below link and prefer 'strscpy' in this
+> subsystem. Conversion is 1:1 because the return value is not used.
+> Generated by a coccinelle script.
+> 
+> Link: https://lore.kernel.org/r/CAHk-=wgfRnXz0W3D37d01q3JFkr_i_uTL=V6A6G1oUZcprmknw@mail.gmail.com/
+> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 > ---
->  drivers/i2c/busses/i2c-pasemi-core.c     | 29 ++++++++++++++++++++----
->  drivers/i2c/busses/i2c-pasemi-core.h     |  5 ++++
->  drivers/i2c/busses/i2c-pasemi-platform.c |  8 +++++++
->  3 files changed, 37 insertions(+), 5 deletions(-)
->
-> diff --git a/drivers/i2c/busses/i2c-pasemi-core.c 
-> b/drivers/i2c/busses/i2c-pasemi-core.c
-> index 9028ffb58cc0..375aa9528233 100644
-> --- a/drivers/i2c/busses/i2c-pasemi-core.c
-> +++ b/drivers/i2c/busses/i2c-pasemi-core.c
-> @@ -21,6 +21,7 @@
->  #define REG_MTXFIFO	0x00
->  #define REG_MRXFIFO	0x04
->  #define REG_SMSTA	0x14
-> +#define REG_IMASK   0x18
->  #define REG_CTL		0x1c
->  #define REG_REV		0x28
-> 
-> @@ -80,14 +81,21 @@ static int pasemi_smb_waitready(struct pasemi_smbus *smbus)
->  {
->  	int timeout = 10;
->  	unsigned int status;
-> +	unsigned int bitmask = SMSTA_XEN | SMSTA_MTN;
-> 
-> -	status = reg_read(smbus, REG_SMSTA);
-> -
-> -	while (!(status & SMSTA_XEN) && timeout--) {
-> -		msleep(1);
-> +	if (smbus->use_irq) {
-> +		reinit_completion(&smbus->irq_completion);
-> +		reg_write(smbus, REG_IMASK, bitmask);
 
-s/bitmask/SMSTA_XEN | SMSTA_MTN/ and then you can just drop the bitmask
-variable which isn't used anywhere else.
+<...>
 
-> +		wait_for_completion_timeout(&smbus->irq_completion, msecs_to_jiffies(10));
->  		status = reg_read(smbus, REG_SMSTA);
+>  drivers/net/ethernet/mellanox/mlx4/en_ethtool.c  |  6 +++---
+>  drivers/net/ethernet/mellanox/mlx4/fw.c          |  2 +-
+>  .../net/ethernet/mellanox/mlx5/core/en_ethtool.c |  4 ++--
+>  drivers/net/ethernet/mellanox/mlx5/core/en_rep.c |  2 +-
+>  .../ethernet/mellanox/mlx5/core/ipoib/ethtool.c  |  2 +-
 
-If the irq hasn't fired and wait_for_completion_timeout timed out the irq
-is still enabled here. I'd put a reg_write(smbus, REG_IMASK, 0); here
-to be safe.
-
-> +	} else {
-
-You also need status = reg_read(smbus, REG_SMSTA); here.
-
-> +		while (!(status & SMSTA_XEN) && timeout--) {
-> +			msleep(1);
-> +			status = reg_read(smbus, REG_SMSTA);
-> +		}
->  	}
-> 
-> +
->  	/* Got NACK? */
->  	if (status & SMSTA_MTN)
->  		return -ENXIO;
-> @@ -300,7 +308,7 @@ static int pasemi_smb_xfer(struct i2c_adapter *adapter,
->  	case I2C_SMBUS_BLOCK_DATA:
->  	case I2C_SMBUS_BLOCK_PROC_CALL:
->  		data->block[0] = len;
-> -		for (i = 1; i <= len; i ++) {
-> +		for (i = 1; i <= len; i++) {
->  			rd = RXFIFO_RD(smbus);
->  			if (rd & MRXFIFO_EMPTY) {
->  				err = -ENODATA;
-> @@ -348,6 +356,8 @@ int pasemi_i2c_common_probe(struct pasemi_smbus *smbus)
->  	if (smbus->hw_rev != PASEMI_HW_REV_PCI)
->  		smbus->hw_rev = reg_read(smbus, REG_REV);
-> 
-> +	reg_write(smbus, REG_IMASK, 0);
-> +
->  	pasemi_reset(smbus);
-> 
->  	error = devm_i2c_add_adapter(smbus->dev, &smbus->adapter);
-> @@ -356,3 +366,12 @@ int pasemi_i2c_common_probe(struct pasemi_smbus *smbus)
-> 
->  	return 0;
->  }
-> +
-> +irqreturn_t pasemi_irq_handler(int irq, void *dev_id)
-> +{
-> +	struct pasemi_smbus *smbus = (struct pasemi_smbus *)dev_id;
-> +
-> +	reg_write(smbus, REG_IMASK, 0);
-> +	complete(&smbus->irq_completion);
-> +	return IRQ_HANDLED;
-> +}
-> diff --git a/drivers/i2c/busses/i2c-pasemi-core.h 
-> b/drivers/i2c/busses/i2c-pasemi-core.h
-> index 4655124a37f3..045e4a9a3d13 100644
-> --- a/drivers/i2c/busses/i2c-pasemi-core.h
-> +++ b/drivers/i2c/busses/i2c-pasemi-core.h
-> @@ -7,6 +7,7 @@
->  #include <linux/i2c-smbus.h>
->  #include <linux/io.h>
->  #include <linux/kernel.h>
-> +#include <linux/completion.h>
-> 
->  #define PASEMI_HW_REV_PCI -1
-> 
-> @@ -16,6 +17,10 @@ struct pasemi_smbus {
->  	void __iomem		*ioaddr;
->  	unsigned int		 clk_div;
->  	int			 hw_rev;
-> +	int          use_irq;
-> +	struct completion irq_completion;
->  };
-> 
->  int pasemi_i2c_common_probe(struct pasemi_smbus *smbus);
-> +
-> +irqreturn_t pasemi_irq_handler(int irq, void *dev_id);
-> diff --git a/drivers/i2c/busses/i2c-pasemi-platform.c 
-> b/drivers/i2c/busses/i2c-pasemi-platform.c
-> index 88a54aaf7e3c..ee1c84e7734b 100644
-> --- a/drivers/i2c/busses/i2c-pasemi-platform.c
-> +++ b/drivers/i2c/busses/i2c-pasemi-platform.c
-> @@ -49,6 +49,7 @@ static int pasemi_platform_i2c_probe(struct 
-> platform_device *pdev)
->  	struct pasemi_smbus *smbus;
->  	u32 frequency;
->  	int error;
-> +	int irq_num;
-> 
->  	data = devm_kzalloc(dev, sizeof(struct pasemi_platform_i2c_data),
->  			    GFP_KERNEL);
-> @@ -82,6 +83,13 @@ static int pasemi_platform_i2c_probe(struct 
-> platform_device *pdev)
->  	if (error)
->  		goto out_clk_disable;
-> 
-> +	smbus->use_irq = 0;
-> +	init_completion(&smbus->irq_completion);
-
-I'd move this into the common probe function. If someone eventually wants
-to add irq support to the PASemi boards it'll be required there as well.
-
-> +	irq_num = platform_get_irq(pdev, 0);
-> +	error = request_irq(irq_num, pasemi_irq_handler, 0, 
-> "pasemi_apple_i2c", (void *)smbus);
-
-If you use request_irq here you'll have to add a remove function and
-call free_irq there. I'd just use devm_request_irq which takes care of
-that automatically.
-
-> +
-> +	if (!error)
-> +		smbus->use_irq = 1;
->  	platform_set_drvdata(pdev, data);
-> 
->  	return 0;
-> -- 
-> 2.34.1
-
-Best,
-
-
-Sven
+Thanks,
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
