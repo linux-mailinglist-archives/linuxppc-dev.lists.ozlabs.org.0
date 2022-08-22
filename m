@@ -1,59 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC5CC59C645
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Aug 2022 20:31:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1A3659C6D4
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Aug 2022 20:43:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MBLXs6QyHz3cdw
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Aug 2022 04:31:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MBLqH1pfPz3cDh
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Aug 2022 04:43:55 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=M7AO1nBK;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=PaKSl4zR;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.115; helo=mga14.intel.com; envelope-from=pierre-louis.bossart@linux.intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=M7AO1nBK;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=PaKSl4zR;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MBLXB6gdbz302S
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Aug 2022 04:30:50 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id F2C35B81257;
-	Mon, 22 Aug 2022 18:30:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65407C433C1;
-	Mon, 22 Aug 2022 18:30:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1661193043;
-	bh=OoTba3ydHbqkNB71cUiP4uky5w7voNgWy8VPUNjG+KI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=M7AO1nBKtRpjLwZAcfu3G3zEiXPS6YHJnnZnepO6S2YOr1eJHx3OXmRXeOOOoIfF5
-	 s5xZ9MWWQSHPD5zT9oTn66n+h+1T1z00iXRXWvSmfFw6MRjul/AhG5y8Ml+SHlsTDv
-	 eQc+MI/J17X1T+HdAXaX5yaOKKF1B+riE3rhTjeqI6TFH3U1pubpPLW/Sz5A3bbDT0
-	 pIqBc2GMAlXklZF4dx+X21nYORgVM2aJsKoN3KyREKeu/AFU9CctSichWE+u+Nbu2i
-	 WhFnap504LZOq32O0AkLm4PXkDM/83Oq0i+N14ReZzuqFU4JSyOqM5I6j4CGfopjvg
-	 eftOcZKkj9m7g==
-Received: by pali.im (Postfix)
-	id 1D03E97B; Mon, 22 Aug 2022 20:30:40 +0200 (CEST)
-Date: Mon, 22 Aug 2022 20:30:39 +0200
-From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH] powerpc/85xx: DTS: Add CPLD definitions for P1021RDB
- Combo Board CPL Design
-Message-ID: <20220822183039.sfpupym236ubkeio@pali>
-References: <20220819084433.26011-1-pali@kernel.org>
- <20220822170056.GA4135542-robh@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MBLpf3rYFz2xKf
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Aug 2022 04:43:21 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1661193802; x=1692729802;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=Ka7WextPfjZOGGLuRueSjo/vpJj3kZ8OnGhm3O3GFNo=;
+  b=PaKSl4zRO1eQI7MxTtlHQtRBWMkJ/X9oq+1Zs8EaKVfSLw6Ru8OvqRZW
+   STQ+zTXsOmw9YTWA1I7ybGspyNhd5GTtUt0ehgdz9EbOHmP40FsZvD8yu
+   epyzOCn8abQolO5xVJJuiNkLlZJq84DCBoXP2/9lbomsvy4AfQ7tHo8AG
+   pwOZFGFVO9lKZ2EaA+K4MS8Z00QZFmwgkF2oNQxYxYxYabJWwzNP+hKC2
+   S7MwRmp/N62o7M9W4YWqz1/le/H47IdcnDzkYSY2tqxjsAONmeeFxrCO6
+   qZkTK1IBQiM8Y+Ay8d+gZmhy60+EOZrVRQsOdr/ykqrHDqvWkK9lSWCtt
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10447"; a="293489004"
+X-IronPort-AV: E=Sophos;i="5.93,255,1654585200"; 
+   d="scan'208";a="293489004"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Aug 2022 11:43:18 -0700
+X-IronPort-AV: E=Sophos;i="5.93,255,1654585200"; 
+   d="scan'208";a="669671108"
+Received: from apascali-mobl2.ger.corp.intel.com (HELO pbossart-mobl3.home) ([10.252.42.21])
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Aug 2022 11:43:14 -0700
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+To: alsa-devel@alsa-project.org
+Subject: [PATCH 4/5] ASoC: fsl: fsl-utils: remove useless assignment
+Date: Mon, 22 Aug 2022 20:42:38 +0200
+Message-Id: <20220822184239.169757-5-pierre-louis.bossart@linux.intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20220822184239.169757-1-pierre-louis.bossart@linux.intel.com>
+References: <20220822184239.169757-1-pierre-louis.bossart@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220822170056.GA4135542-robh@kernel.org>
-User-Agent: NeoMutt/20180716
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,101 +64,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, devicetree@vger.kernel.org
+Cc: "open list:FREESCALE SOC SOUND DRIVERS" <linuxppc-dev@lists.ozlabs.org>, Kai Vehmanen <kai.vehmanen@linux.intel.com>, Xiubo Li <Xiubo.Lee@gmail.com>, tiwai@suse.de, Shengjiu Wang <shengjiu.wang@gmail.com>, Takashi Iwai <tiwai@suse.com>, Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>, Liam Girdwood <lgirdwood@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>, broonie@kernel.org, Fabio Estevam <festevam@gmail.com>, Chao Song <chao.song@intel.com>, Jaroslav Kysela <perex@perex.cz>, Bard Liao <yung-chuan.liao@linux.intel.com>, open list <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Monday 22 August 2022 12:00:56 Rob Herring wrote:
-> On Fri, Aug 19, 2022 at 10:44:33AM +0200, Pali Rohár wrote:
-> > P1021RDB Combo Board CPLD Design is used on following Freescale boards:
-> > P1021RDB-PC, P1020RDB-PD, P1020MBG-PC, P1020UTM-PC and P2020RDB-PCA.
-> > 
-> > Add CPLD definitions for all these boards for which already exist DTS file.
-> > 
-> > CPLD has bank size 128kB, it is connected via CS3 on LBC and mapped to
-> > memory range 0xFFA00000~0xFFA1FFFF.
-> > 
-> > As CPLD firmware is common on all these boards, use just one compatible
-> > string "fsl,p1021rdb-pc-cpld".
-> > 
-> > In some DTS files is CPLD already defined, but definition is either
-> > incomplete or wrong. So fix it.
-> > 
-> > All these boards have via CPLD connected max6370 watchdog at offset 0x2
-> > with GPIO 11, status led at offset 0x8 and reset controller at offset 0xd.
-> > Additionally P1020MBG-PC and P1020RDB-PD boards have FXO led at offset 0x9
-> > and FXS leds at offset 0xa.
-> > 
-> > Signed-off-by: Pali Rohár <pali@kernel.org>
-> > ---
-> >  arch/powerpc/boot/dts/fsl/p1020mbg-pc.dtsi    | 92 +++++++++++++++++++
-> >  arch/powerpc/boot/dts/fsl/p1020mbg-pc_32b.dts |  6 +-
-> >  arch/powerpc/boot/dts/fsl/p1020mbg-pc_36b.dts |  6 +-
-> >  arch/powerpc/boot/dts/fsl/p1020rdb-pd.dts     | 44 +++++++--
-> >  arch/powerpc/boot/dts/fsl/p1020utm-pc.dtsi    | 37 ++++++++
-> >  arch/powerpc/boot/dts/fsl/p1020utm-pc_32b.dts |  4 +-
-> >  arch/powerpc/boot/dts/fsl/p1020utm-pc_36b.dts |  4 +-
-> >  arch/powerpc/boot/dts/fsl/p1021rdb-pc.dtsi    | 37 ++++++++
-> >  arch/powerpc/boot/dts/fsl/p1021rdb-pc_32b.dts |  5 +-
-> >  arch/powerpc/boot/dts/fsl/p1021rdb-pc_36b.dts |  5 +-
-> >  arch/powerpc/boot/dts/fsl/p2020rdb-pc.dtsi    | 33 ++++++-
-> >  11 files changed, 251 insertions(+), 22 deletions(-)
-> > 
-> > diff --git a/arch/powerpc/boot/dts/fsl/p1020mbg-pc.dtsi b/arch/powerpc/boot/dts/fsl/p1020mbg-pc.dtsi
-> > index a24699cfea9c..c73996dcd809 100644
-> > --- a/arch/powerpc/boot/dts/fsl/p1020mbg-pc.dtsi
-> > +++ b/arch/powerpc/boot/dts/fsl/p1020mbg-pc.dtsi
-> > @@ -83,6 +83,95 @@
-> >  		compatible = "vitesse-7385";
-> >  		reg = <0x2 0x0 0x20000>;
-> >  	};
-> > +
-> > +	cpld@3,0 {
-> > +		#address-cells = <1>;
-> > +		#size-cells = <1>;
-> > +		compatible = "fsl,p1021rdb-pc-cpld", "simple-bus", "syscon";
-> > +		reg = <0x3 0x0 0x20000>;
-> > +		ranges = <0x0 0x3 0x0 0x20000>;
-> > +
-> > +		watchdog@2 {
-> > +			compatible = "maxim,max6370";
-> > +			reg = <0x2 0x1>;
-> > +			gpios = <&gpio 11 1>;
-> > +		};
-> > +
-> > +		led@8 {
-> 
-> The register-bit-led schema says this should be 'led@8,0'. Did you 
-> run 'dtbs_check'? 
+cppcheck warning:
 
-No, it does not work and I lost interest to trying setup machine for it again.
+sound/soc/fsl/fsl_utils.c:127:10: style: Variable 'ret' is assigned a
+value that is never used. [unreadVariable]
+ int ret = 0;
+         ^
 
-> But that's going to conflict with what simple-bus schema says.
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Reviewed-by: Chao Song <chao.song@intel.com>
+---
+ sound/soc/fsl/fsl_utils.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Another reason why not try it again. Lot of schemas says that are in
-conflict, nobody understand it and when I ask how to do it, I just get
-silence or answer which does not work on the real hw. And if there is
-some schema error message then it looks like it was generated by random
-word generator.
+diff --git a/sound/soc/fsl/fsl_utils.c b/sound/soc/fsl/fsl_utils.c
+index d0fc430f7033d..a5ab27c2f711c 100644
+--- a/sound/soc/fsl/fsl_utils.c
++++ b/sound/soc/fsl/fsl_utils.c
+@@ -124,7 +124,7 @@ void fsl_asoc_reparent_pll_clocks(struct device *dev, struct clk *clk,
+ {
+ 	struct clk *p, *pll = NULL, *npll = NULL;
+ 	bool reparent = false;
+-	int ret = 0;
++	int ret;
+ 
+ 	if (!clk || !pll8k_clk || !pll11k_clk)
+ 		return;
+-- 
+2.34.1
 
-> I don't 
-> know that 'simple-bus' is really appropriate here. The CPLD isn't really 
-> just a bus. 'simple-mfd' is what's more commonly used with 'syscon'.
-
-Sorry, I do not understand those schemas anymore. And based on previous
-failures, I'm not going to try it again.
-
-It is a _bus_ and it was tested that it works as a bus with more
-existing drivers.
-
-> > +			compatible = "register-bit-led";
-> > +			reg = <0x8 0x1>;
-> > +			offset = <0x8>;
-> > +			mask = <0x1>;
-> > +			active-low;
-> > +			default-state = "keep";
-> > +			label = "status";
-> > +			function = "status";
-> > +			color = <6>; /* LED_COLOR_ID_YELLOW */
-> > +		};
-> 
