@@ -2,50 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8725259B7CE
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Aug 2022 04:59:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2A9159B80F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Aug 2022 05:41:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4M9xsX4pY9z3c3L
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Aug 2022 12:59:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4M9ynN74kMz3cFN
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Aug 2022 13:40:56 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Je1l+Xpf;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com; envelope-from=chenzhongjin@huawei.com; receiver=<UNKNOWN>)
-X-Greylist: delayed 973 seconds by postgrey-1.36 at boromir; Mon, 22 Aug 2022 12:59:07 AEST
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4M9xs72dt3z2xrC
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Aug 2022 12:59:04 +1000 (AEST)
-Received: from dggpemm500023.china.huawei.com (unknown [172.30.72.56])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4M9xR22bXzznTX2;
-	Mon, 22 Aug 2022 10:39:58 +0800 (CST)
-Received: from dggpemm500013.china.huawei.com (7.185.36.172) by
- dggpemm500023.china.huawei.com (7.185.36.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Mon, 22 Aug 2022 10:42:15 +0800
-Received: from [127.0.0.1] (10.67.108.67) by dggpemm500013.china.huawei.com
- (7.185.36.172) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Mon, 22 Aug
- 2022 10:42:14 +0800
-Message-ID: <5003880a-0b0a-27d4-9fa0-3c6a4c75a9a1@huawei.com>
-Date: Mon, 22 Aug 2022 10:42:11 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4M9ymq3MjFz3bkH
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Aug 2022 13:40:27 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Je1l+Xpf;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4M9ymm08WXz4wgn;
+	Mon, 22 Aug 2022 13:40:23 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1661139625;
+	bh=VKTUo2W4RNc2LDslDMcLOnHhdlFBjvbL0BUKEgnwbho=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=Je1l+Xpf0IQX7/cqLqeVKhTFzln629PFhZPHnimgYEZfZglpmJOAXo6zZ3qqLhZaf
+	 pTCMCKJNyh1BWnCZeF0hO5SpcKNefkyzqjvwSQSbB0Q9p4wyY4mxq13vFYf00xpcbr
+	 xzuVuyPEnHozay6S9HX2w6LkAycpVJvPeR7oLAITkfkdIucCbL9dApvTjnXqw0Xk73
+	 7cI6LYa6l3ecozrENJFNG4Kt7ornODrTsmYmlmdbec7ns7F8/FpSHkUiBLALBeb+7m
+	 8ZXm3JZUDtz306E+p2oj6x37piBTa3oKoIdFKPIktfSUup6WZ2toUR+qoAlwz7y2Qs
+	 AO9ZaxnMzKH8g==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] powerpc: export cpu_smallcore_map for modules
+In-Reply-To: <20220819210112.7924-1-rdunlap@infradead.org>
+References: <20220819210112.7924-1-rdunlap@infradead.org>
+Date: Mon, 22 Aug 2022 13:40:23 +1000
+Message-ID: <87o7wdkkt4.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.0
-Subject: Fwd: [PATCH -next] objtool: use arch_jump_destination in
- read_intra_function_calls
-References: <20220818014553.220261-1-chenzhongjin@huawei.com>
-Content-Language: en-US
-To: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-From: Chen Zhongjin <chenzhongjin@huawei.com>
-In-Reply-To: <20220818014553.220261-1-chenzhongjin@huawei.com>
-X-Forwarded-Message-Id: <20220818014553.220261-1-chenzhongjin@huawei.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.67.108.67]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- dggpemm500013.china.huawei.com (7.185.36.172)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,51 +57,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>, Sathvika Vasireddy <sv@linux.ibm.com>
+Cc: "Gautham R . Shenoy" <ego@linux.vnet.ibm.com>, "Pan, Xinhui" <Xinhui.Pan@amd.com>, Felix Kuehling <Felix.Kuehling@amd.com>, Randy Dunlap <rdunlap@infradead.org>, Nicholas Piggin <npiggin@gmail.com>, amd-gfx@lists.freedesktop.org, Alex Deucher <alexander.deucher@amd.com>, linuxppc-dev@lists.ozlabs.org, Christian =?utf-8?Q?K=C3=B6nig?= <christian.koenig@amd.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Sorry that forgot to CC ppc.
+Randy Dunlap <rdunlap@infradead.org> writes:
+> Fix build error when CONFIG_DRM_AMDGPU=m:
+>
+> ERROR: modpost: "cpu_smallcore_map" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
+>
+> by exporting 'cpu_smallcore_map' just as other per_cpu
+> symbols are exported.
+>
+> drivers/gpu/drm/amd/amdkfd/kfd_device.c calls cpu_smt_mask().
+> This is an inline function on powerpc which references
+> cpu_smallcore_map.
+>
+> Fixes: 425752c63b6f ("powerpc: Detect the presence of big-cores via "ibm, thread-groups"")
+> Fixes: 7bc913085765 ("drm/amdkfd: Try to schedule bottom half on same core")
 
-Maybe this is related to your intra-function call warnings problem?
-Just a guess.
+That 2nd commit is not in mainline, only linux-next.
 
--------- Forwarded Message --------
-Subject: 	[PATCH -next] objtool: use arch_jump_destination in 
-read_intra_function_calls
-Date: 	Thu, 18 Aug 2022 09:45:53 +0800
-From: 	Chen Zhongjin <chenzhongjin@huawei.com>
-To: 	linux-kernel@vger.kernel.org
-CC: 	jpoimboe@kernel.org, peterz@infradead.org, chenzhongjin@huawei.com
+I don't mind merging this fix preemptively, but is that SHA stable?
 
-
-
-arch_jump_destination() is used instead of offset + len + immediate
-for jump destination.
-But in read_intra_function_calls it didn't get changed.
-It can make trouble for other arches development such as arm or ppc.
-Fix it.
-
-Signed-off-by: Chen Zhongjin <chenzhongjin@huawei.com>
----
-tools/objtool/check.c | 2 +-
-1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 0cec74da7ffe..b012d987a658 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -2233,7 +2233,7 @@ static int read_intra_function_calls(struct 
-objtool_file *file)
-*/
-insn->type = INSN_JUMP_UNCONDITIONAL;
-- dest_off = insn->offset + insn->len + insn->immediate;
-+ dest_off = arch_jump_destination(insn);
-insn->jump_dest = find_insn(file, insn->sec, dest_off);
-if (!insn->jump_dest) {
-WARN_FUNC("can't find call dest at %s+0x%lx",
-
--- 
-2.17.1
-
-
+cheers
