@@ -2,56 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4704759C54E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Aug 2022 19:46:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C46959C59B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Aug 2022 19:59:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MBKXz3qzMz3chs
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Aug 2022 03:46:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MBKrQ14MVz3chX
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Aug 2022 03:59:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.167.178; helo=mail-oi1-f178.google.com; envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.167.169; helo=mail-oi1-f169.google.com; envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MBKXX5pRPz3bsy
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Aug 2022 03:46:03 +1000 (AEST)
-Received: by mail-oi1-f178.google.com with SMTP id t140so4226635oie.8
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Aug 2022 10:46:03 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MBKr25BGLz3blf
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Aug 2022 03:59:28 +1000 (AEST)
+Received: by mail-oi1-f169.google.com with SMTP id j5so13109910oih.6
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Aug 2022 10:59:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
-        bh=ifHDFxdQQ4rKGhhjDb2X0gYbrmGOuiotWdJhKeoht1I=;
-        b=tZYGMapUT87KF3e2a+f7H1sR6QbWynnWoSisXSgLV56Gd0qup3QuujIl1qqRM5tWVo
-         E7NsdPS7P8KqWG1+ldSHI6JFA6FcAy9Bh6IdLOoyOheFQ5gLVk8thAoinln/V+wAp8GB
-         5CecGAbxznRkgO2M0nOMDJ9mnZLsXZ+MCmdMvfQ+l6TLlo0K10aZMgzoZnRVZoTHIS7i
-         OIikKdGF0T8gmgpIXws20GQusGDow6TbpDFnfbOZrvBDNshQKRoD64boKfiseWSI1htL
-         9OCedfEoMwze9NzXCx7hJIvdj51lAV4mTf3+Wd/FpQWriSEqpi2iS8cu+1So6Kx90ie0
-         ZRRQ==
-X-Gm-Message-State: ACgBeo3EVLbS1CmDhWtfIy5dfSdSPIfG0WbseO02OIrMPouFO+QEKe5G
-	q76tlSZyXYh6BE8eGag0Zw==
-X-Google-Smtp-Source: AA6agR5QsREs07ny8eIvz2gV/Ar/7vPkMTzYP+oipTqEbuZIqX+RuZlDjP55UFVzlilAKJUOEVqv8w==
-X-Received: by 2002:aca:5bc3:0:b0:345:30a2:89da with SMTP id p186-20020aca5bc3000000b0034530a289damr6755128oib.3.1661190360670;
-        Mon, 22 Aug 2022 10:46:00 -0700 (PDT)
+        bh=3TuVf54GgPydYoGd51XaXL3tfz0KadvwC9z8/Fy+sls=;
+        b=tvijujW8bHhMgScE9YhJ0kT3Uj0hLTITCJUBkgMjLzeFdmYcbOqi3OKlVs7vDBNG37
+         YF3i1JSRlCDpTB24C/z3+C5tNQ/KFoCgDPHdtmSfmBvmMnMSMwV1kNluRG+xSlIYi7dk
+         qAqMjaE3ibKXlknzsdFi/o3IdLye2jfLQgMbQzyh3KQbdFu40Ejr7u48HEaRaITGaV3w
+         JsVuw6oupoOS8kFQ04i0cDa6VsWBEuUqZVXASN9cIrYAzeh1YVnG1PLeTGB7cyvIiRpk
+         4sUQah9TZBBPN8rN+Cb8TB5o4uyzF6/0uWX25hn8OzYnRE3ecSZGYJf5tnHhr9t/i244
+         gSKg==
+X-Gm-Message-State: ACgBeo3byxBjImGzyRpfygJq0HSRYHCJki1znL11cQZlxtHv+P31HHRW
+	WwDzjfOMxR987VBnfceIxiiCzWCZGg==
+X-Google-Smtp-Source: AA6agR602WMERbYZ3uSCPQSQ/AhC9EWTsVLdvnnS5HXY696Jr8IN6ZBdolcGmNue7hlW5WqBeaMdnQ==
+X-Received: by 2002:a05:6808:302b:b0:2f9:eeef:f03 with SMTP id ay43-20020a056808302b00b002f9eeef0f03mr11736503oib.128.1661191166666;
+        Mon, 22 Aug 2022 10:59:26 -0700 (PDT)
 Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id k188-20020a4a4ac5000000b0042859bebfebsm2605613oob.45.2022.08.22.10.45.59
+        by smtp.gmail.com with ESMTPSA id r11-20020a4a964b000000b0041b49c19a00sm2478019ooi.18.2022.08.22.10.59.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Aug 2022 10:46:00 -0700 (PDT)
-Received: (nullmailer pid 39462 invoked by uid 1000);
-	Mon, 22 Aug 2022 17:45:59 -0000
-Date: Mon, 22 Aug 2022 12:45:59 -0500
+        Mon, 22 Aug 2022 10:59:26 -0700 (PDT)
+Received: (nullmailer pid 62586 invoked by uid 1000);
+	Mon, 22 Aug 2022 17:59:24 -0000
+Date: Mon, 22 Aug 2022 12:59:24 -0500
 From: Rob Herring <robh@kernel.org>
-To: Sean Anderson <sean.anderson@seco.com>
-Subject: Re: [PATCH net-next v4 2/8] dt-bindings: net: fman: Add additional
- interface properties
-Message-ID: <20220822174559.GA39398-robh@kernel.org>
-References: <20220804194705.459670-1-sean.anderson@seco.com>
- <20220804194705.459670-3-sean.anderson@seco.com>
+To: Stefan Berger <stefanb@linux.ibm.com>
+Subject: Re: [PATCH v7 6/6] tpm/kexec: Duplicate TPM measurement log in
+ of-tree for kexec
+Message-ID: <20220822175924.GA62553-robh@kernel.org>
+References: <20220812164305.2056641-1-stefanb@linux.ibm.com>
+ <20220812164305.2056641-7-stefanb@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220804194705.459670-3-sean.anderson@seco.com>
+In-Reply-To: <20220812164305.2056641-7-stefanb@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,58 +63,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, Madalin Bucur <madalin.bucur@nxp.com>, netdev@vger.kernel.org, Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>, Rob Herring <robh+dt@kernel.org>, Camelia Alexandra Groza <camelia.groza@nxp.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "linuxppc-dev @ lists . ozlabs . org" <linuxppc-dev@lists.ozlabs.org>, "David S . Miller" <davem@davemloft.net>, linux-arm-kernel@lists.infradead.org
+Cc: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Nageswara R Sastry <rnsastry@linux.ibm.com>, nayna@linux.ibm.com, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>, nasastry@in.ibm.com, Eric Biederman <ebiederm@xmission.com>, linux-integrity@vger.kernel.org, Frank Rowand <frowand.list@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 04 Aug 2022 15:46:59 -0400, Sean Anderson wrote:
-> At the moment, mEMACs are configured almost completely based on the
-> phy-connection-type. That is, if the phy interface is RGMII, it assumed
-> that RGMII is supported. For some interfaces, it is assumed that the
-> RCW/bootloader has set up the SerDes properly. This is generally OK, but
-> restricts runtime reconfiguration. The actual link state is never
-> reported.
+On Fri, 12 Aug 2022 12:43:05 -0400, Stefan Berger wrote:
+> The memory area of the TPM measurement log is currently not properly
+> duplicated for carrying it across kexec when an Open Firmware
+> Devicetree is used. Therefore, the contents of the log get corrupted.
+> Fix this for the kexec_file_load() syscall by allocating a buffer and
+> copying the contents of the existing log into it. The new buffer is
+> preserved across the kexec and a pointer to it is available when the new
+> kernel is started. To achieve this, store the allocated buffer's address
+> in the flattened device tree (fdt) under the name linux,tpm-kexec-buffer
+> and search for this entry early in the kernel startup before the TPM
+> subsystem starts up. Adjust the pointer in the of-tree stored under
+> linux,sml-base to point to this buffer holding the preserved log. The TPM
+> driver can then read the base address from this entry when making the log
+> available. Invalidate the log by removing 'linux,sml-base' from the
+> devicetree if anything goes wrong with updating the buffer.
 > 
-> To address these shortcomings, the driver will need additional
-> information. First, it needs to know how to access the PCS/PMAs (in
-> order to configure them and get the link status). The SGMII PCS/PMA is
-> the only currently-described PCS/PMA. Add the XFI and QSGMII PCS/PMAs as
-> well. The XFI (and 10GBASE-KR) PCS/PMA is a c45 "phy" which sits on the
-> same MDIO bus as SGMII PCS/PMA. By default they will have conflicting
-> addresses, but they are also not enabled at the same time by default.
-> Therefore, we can let the XFI PCS/PMA be the default when
-> phy-connection-type is xgmii. This will allow for
-> backwards-compatibility.
+> Use subsys_initcall() to call the function to restore the buffer even if
+> the TPM subsystem or driver are not used. This allows the buffer to be
+> carried across the next kexec without involvement of the TPM subsystem
+> and ensures a valid buffer pointed to by the of-tree.
 > 
-> QSGMII, however, cannot work with the current binding. This is because
-> the QSGMII PCS/PMAs are only present on one MAC's MDIO bus. At the
-> moment this is worked around by having every MAC write to the PCS/PMA
-> addresses (without checking if they are present). This only works if
-> each MAC has the same configuration, and only if we don't need to know
-> the status. Because the QSGMII PCS/PMA will typically be located on a
-> different MDIO bus than the MAC's SGMII PCS/PMA, there is no fallback
-> for the QSGMII PCS/PMA.
+> Use the subsys_initcall(), rather than an ealier initcall, since
+> page_is_ram() in get_kexec_buffer() only starts working at this stage.
 > 
-> Signed-off-by: Sean Anderson <sean.anderson@seco.com>
+> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+> Cc: Rob Herring <robh+dt@kernel.org>
+> Cc: Frank Rowand <frowand.list@gmail.com>
+> Cc: Eric Biederman <ebiederm@xmission.com>
+> Tested-by: Nageswara R Sastry <rnsastry@linux.ibm.com>
+> 
 > ---
+> v6:
+>  - Define prototype for tpm_add_kexec_buffer under same config options
+>    as drivers/of/kexec.c is compiled, provide inline function otherwise.
+>    (kernel test robot)
 > 
-> (no changes since v3)
-> 
-> Changes in v3:
-> - Add vendor prefix 'fsl,' to rgmii and mii properties.
-> - Set maxItems for pcs-names
-> - Remove phy-* properties from example because dt-schema complains and I
->   can't be bothered to figure out how to make it work.
-> - Add pcs-handle as a preferred version of pcsphy-handle
-> - Deprecate pcsphy-handle
-> - Remove mii/rmii properties
-> 
-> Changes in v2:
-> - Better document how we select which PCS to use in the default case
-> 
->  .../bindings/net/fsl,fman-dtsec.yaml          | 53 ++++++++++++++-----
->  .../devicetree/bindings/net/fsl-fman.txt      |  5 +-
->  2 files changed, 43 insertions(+), 15 deletions(-)
+> v4:
+>  - Added #include <linux/vmalloc.h> due to parisc
+>  - Use phys_addr_t for physical address rather than void *
+>  - Remove linux,sml-base if the buffer cannot be updated after a kexec
+>  - Added __init to functions where possible
+> ---
+>  drivers/of/kexec.c    | 216 +++++++++++++++++++++++++++++++++++++++++-
+>  include/linux/kexec.h |   6 ++
+>  include/linux/of.h    |   9 +-
+>  kernel/kexec_file.c   |   6 ++
+>  4 files changed, 234 insertions(+), 3 deletions(-)
 > 
 
 Reviewed-by: Rob Herring <robh@kernel.org>
