@@ -2,45 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4328A59BEAB
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Aug 2022 13:40:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 992F859BFB0
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Aug 2022 14:47:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MB9QJ4fv3z3bvd
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Aug 2022 21:40:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MBBwT2c0rz3chQ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Aug 2022 22:47:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=virtuozzo.com (client-ip=130.117.225.111; helo=relay.virtuozzo.com; envelope-from=alexander.atanasov@virtuozzo.com; receiver=<UNKNOWN>)
-Received: from relay.virtuozzo.com (relay.virtuozzo.com [130.117.225.111])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.210.48; helo=mail-ot1-f48.google.com; envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MB9Pw40DHz3bsy
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Aug 2022 21:39:45 +1000 (AEST)
-Received: from dev011.ch-qa.sw.ru ([172.29.1.16])
-	by relay.virtuozzo.com with esmtp (Exim 4.95)
-	(envelope-from <alexander.atanasov@virtuozzo.com>)
-	id 1oQ5jS-00Gyo9-4U;
-	Mon, 22 Aug 2022 13:38:01 +0200
-From: Alexander Atanasov <alexander.atanasov@virtuozzo.com>
-To: Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Nadav Amit <namit@vmware.com>,
-	VMware PV-Drivers Reviewers <pv-drivers@vmware.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	David Hildenbrand <david@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v3 1/4] Make place for common balloon code
-Date: Mon, 22 Aug 2022 14:37:44 +0300
-Message-Id: <20220822113747.3630776-2-alexander.atanasov@virtuozzo.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20220822113747.3630776-1-alexander.atanasov@virtuozzo.com>
-References: <20220822113747.3630776-1-alexander.atanasov@virtuozzo.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MBBw438t2z3bq5
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Aug 2022 22:47:31 +1000 (AEST)
+Received: by mail-ot1-f48.google.com with SMTP id br15-20020a056830390f00b0061c9d73b8bdso7599559otb.6
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Aug 2022 05:47:31 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc;
+        bh=7cbjI0WaZhQTvZlNz7q5LmNIlRjDT3q4dyHallkLrTo=;
+        b=0mIiSgJhLzPOCCPGHfVVQICE7mdf7QXptYf7uyE2mBjVRFp/0hlnUBb5o9FZvwMVd9
+         9MrsotR9LE5Ay3cqz5JYYJo8VCxI6cGTpWTAYk1ceJFcXZ7HuY95m/ns+4EgE5+Oq0ML
+         NOD7hZg6Zg6obs57J/0+tfg556rk4aaPfRUWm1Aa25apZDm2p+YVa1cWAznohE63o6qD
+         971ucbgRqTndMR3CotnO1VjvtRGxXM53rdXyF8Ac6x2obeAB1EyssFvx9E4/unR2q5Zd
+         2hi9Oa/usYaz5K7E417JOQ18jA33PCu0UXCr0wdtHINzwlXIwzoOHaGsDc3Z9bCDoFfH
+         uQOw==
+X-Gm-Message-State: ACgBeo0Q5v7Pmac95KFrxPjCw/kUER6dFP6zIJeHvoWKOepleuKCEjAl
+	7S7E1ikGkwQW1VdElZBZGg==
+X-Google-Smtp-Source: AA6agR6HuU3nFQ4lGlufxXNkmmzngtFFlaInk7mDi0EkehJepEpbode3NOBV0cAGi7IkodNWlHOamA==
+X-Received: by 2002:a05:6830:310d:b0:637:1b6c:6647 with SMTP id b13-20020a056830310d00b006371b6c6647mr7668149ots.170.1661172448975;
+        Mon, 22 Aug 2022 05:47:28 -0700 (PDT)
+Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id k4-20020a056870570400b0010f07647598sm2978471oap.7.2022.08.22.05.47.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Aug 2022 05:47:28 -0700 (PDT)
+Received: (nullmailer pid 3653297 invoked by uid 1000);
+	Mon, 22 Aug 2022 12:47:28 -0000
+Date: Mon, 22 Aug 2022 07:47:28 -0500
+From: Rob Herring <robh@kernel.org>
+To: Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>
+Subject: Re: [PATCH 1/3] dt-bindings: reset: syscon-reboot: Add priority
+ property
+Message-ID: <20220822124728.GA3641041-robh@kernel.org>
+References: <20220820102925.29476-1-pali@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220820102925.29476-1-pali@kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,182 +64,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexander Atanasov <alexander.atanasov@virtuozzo.com>, linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org, linux-mm@kvack.org, kernel@openvz.org, linuxppc-dev@lists.ozlabs.org
+Cc: Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>, devicetree@vger.kernel.org, linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-mm/balloon_compaction.c -> mm/balloon.c
-File already contains code that is common along balloon
-drivers so rename it to reflect its contents.
+On Sat, Aug 20, 2022 at 12:29:23PM +0200, Pali Rohár wrote:
+> This new optional priority property allows to specify custom priority level
+> of reset device. Default level was always 192.
 
-include/linux/balloon_compaction.h -> include/linux/balloon.h
-Remove it from files which do not actually use it.
-Drop externs from function delcarations.
+Why do we need/want this? What problem does it solve?
 
-Signed-off-by: Alexander Atanasov <alexander.atanasov@virtuozzo.com>
----
- MAINTAINERS                                       |  4 ++--
- arch/powerpc/platforms/pseries/cmm.c              |  2 +-
- drivers/misc/vmw_balloon.c                        |  2 +-
- drivers/virtio/virtio_balloon.c                   |  2 +-
- include/linux/{balloon_compaction.h => balloon.h} | 12 +++++-------
- mm/Makefile                                       |  2 +-
- mm/{balloon_compaction.c => balloon.c}            |  4 +---
- mm/migrate.c                                      |  1 -
- mm/vmscan.c                                       |  1 -
- 9 files changed, 12 insertions(+), 18 deletions(-)
- rename include/linux/{balloon_compaction.h => balloon.h} (93%)
- rename mm/{balloon_compaction.c => balloon.c} (99%)
+> Signed-off-by: Pali Rohár <pali@kernel.org>
+> ---
+>  .../devicetree/bindings/power/reset/syscon-reboot.yaml        | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/power/reset/syscon-reboot.yaml b/Documentation/devicetree/bindings/power/reset/syscon-reboot.yaml
+> index da2509724812..d905133aab27 100644
+> --- a/Documentation/devicetree/bindings/power/reset/syscon-reboot.yaml
+> +++ b/Documentation/devicetree/bindings/power/reset/syscon-reboot.yaml
+> @@ -42,6 +42,10 @@ properties:
+>      $ref: /schemas/types.yaml#/definitions/uint32
+>      description: The reset value written to the reboot register (32 bit access).
+>  
+> +  priority:
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 9d7f64dc0efe..98d6ff5f226d 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -21494,8 +21494,8 @@ L:	virtualization@lists.linux-foundation.org
- S:	Maintained
- F:	drivers/virtio/virtio_balloon.c
- F:	include/uapi/linux/virtio_balloon.h
--F:	include/linux/balloon_compaction.h
--F:	mm/balloon_compaction.c
-+F:	include/linux/balloon.h
-+F:	mm/balloon.c
- 
- VIRTIO CRYPTO DRIVER
- M:	Gonglei <arei.gonglei@huawei.com>
-diff --git a/arch/powerpc/platforms/pseries/cmm.c b/arch/powerpc/platforms/pseries/cmm.c
-index 5f4037c1d7fe..1d40f6416d6a 100644
---- a/arch/powerpc/platforms/pseries/cmm.c
-+++ b/arch/powerpc/platforms/pseries/cmm.c
-@@ -19,7 +19,7 @@
- #include <linux/stringify.h>
- #include <linux/swap.h>
- #include <linux/device.h>
--#include <linux/balloon_compaction.h>
-+#include <linux/balloon.h>
- #include <asm/firmware.h>
- #include <asm/hvcall.h>
- #include <asm/mmu.h>
-diff --git a/drivers/misc/vmw_balloon.c b/drivers/misc/vmw_balloon.c
-index 61a2be712bf7..91d4d2a285c5 100644
---- a/drivers/misc/vmw_balloon.c
-+++ b/drivers/misc/vmw_balloon.c
-@@ -29,7 +29,7 @@
- #include <linux/rwsem.h>
- #include <linux/slab.h>
- #include <linux/spinlock.h>
--#include <linux/balloon_compaction.h>
-+#include <linux/balloon.h>
- #include <linux/vmw_vmci_defs.h>
- #include <linux/vmw_vmci_api.h>
- #include <asm/hypervisor.h>
-diff --git a/drivers/virtio/virtio_balloon.c b/drivers/virtio/virtio_balloon.c
-index 3f78a3a1eb75..d0c27c680721 100644
---- a/drivers/virtio/virtio_balloon.c
-+++ b/drivers/virtio/virtio_balloon.c
-@@ -13,7 +13,7 @@
- #include <linux/delay.h>
- #include <linux/slab.h>
- #include <linux/module.h>
--#include <linux/balloon_compaction.h>
-+#include <linux/balloon.h>
- #include <linux/oom.h>
- #include <linux/wait.h>
- #include <linux/mm.h>
-diff --git a/include/linux/balloon_compaction.h b/include/linux/balloon.h
-similarity index 93%
-rename from include/linux/balloon_compaction.h
-rename to include/linux/balloon.h
-index 5ca2d5699620..46ac8f61f607 100644
---- a/include/linux/balloon_compaction.h
-+++ b/include/linux/balloon.h
-@@ -1,7 +1,5 @@
- /* SPDX-License-Identifier: GPL-2.0 */
- /*
-- * include/linux/balloon_compaction.h
-- *
-  * Common interface definitions for making balloon pages movable by compaction.
-  *
-  * Balloon page migration makes use of the general non-lru movable page
-@@ -59,13 +57,13 @@ struct balloon_dev_info {
- 			struct page *page, enum migrate_mode mode);
- };
- 
--extern struct page *balloon_page_alloc(void);
--extern void balloon_page_enqueue(struct balloon_dev_info *b_dev_info,
-+struct page *balloon_page_alloc(void);
-+void balloon_page_enqueue(struct balloon_dev_info *b_dev_info,
- 				 struct page *page);
--extern struct page *balloon_page_dequeue(struct balloon_dev_info *b_dev_info);
--extern size_t balloon_page_list_enqueue(struct balloon_dev_info *b_dev_info,
-+struct page *balloon_page_dequeue(struct balloon_dev_info *b_dev_info);
-+size_t balloon_page_list_enqueue(struct balloon_dev_info *b_dev_info,
- 				      struct list_head *pages);
--extern size_t balloon_page_list_dequeue(struct balloon_dev_info *b_dev_info,
-+size_t balloon_page_list_dequeue(struct balloon_dev_info *b_dev_info,
- 				     struct list_head *pages, size_t n_req_pages);
- 
- static inline void balloon_devinfo_init(struct balloon_dev_info *balloon)
-diff --git a/mm/Makefile b/mm/Makefile
-index 9a564f836403..550cb0663f50 100644
---- a/mm/Makefile
-+++ b/mm/Makefile
-@@ -112,7 +112,7 @@ obj-$(CONFIG_ZSMALLOC)	+= zsmalloc.o
- obj-$(CONFIG_Z3FOLD)	+= z3fold.o
- obj-$(CONFIG_GENERIC_EARLY_IOREMAP) += early_ioremap.o
- obj-$(CONFIG_CMA)	+= cma.o
--obj-$(CONFIG_MEMORY_BALLOON) += balloon_compaction.o
-+obj-$(CONFIG_MEMORY_BALLOON) += balloon.o
- obj-$(CONFIG_PAGE_EXTENSION) += page_ext.o
- obj-$(CONFIG_PAGE_TABLE_CHECK) += page_table_check.o
- obj-$(CONFIG_CMA_DEBUGFS) += cma_debug.o
-diff --git a/mm/balloon_compaction.c b/mm/balloon.c
-similarity index 99%
-rename from mm/balloon_compaction.c
-rename to mm/balloon.c
-index 22c96fed70b5..22b3e876bc78 100644
---- a/mm/balloon_compaction.c
-+++ b/mm/balloon.c
-@@ -1,7 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0-only
- /*
-- * mm/balloon_compaction.c
-- *
-  * Common interface for making balloon pages movable by compaction.
-  *
-  * Copyright (C) 2012, Red Hat, Inc.  Rafael Aquini <aquini@redhat.com>
-@@ -9,7 +7,7 @@
- #include <linux/mm.h>
- #include <linux/slab.h>
- #include <linux/export.h>
--#include <linux/balloon_compaction.h>
-+#include <linux/balloon.h>
- 
- static void balloon_page_enqueue_one(struct balloon_dev_info *b_dev_info,
- 				     struct page *page)
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 6a1597c92261..a4c8bb334dde 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -41,7 +41,6 @@
- #include <linux/pfn_t.h>
- #include <linux/memremap.h>
- #include <linux/userfaultfd_k.h>
--#include <linux/balloon_compaction.h>
- #include <linux/page_idle.h>
- #include <linux/page_owner.h>
- #include <linux/sched/mm.h>
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index b2b1431352dc..f21d65b0d2e2 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -54,7 +54,6 @@
- #include <asm/div64.h>
- 
- #include <linux/swapops.h>
--#include <linux/balloon_compaction.h>
- #include <linux/sched/sysctl.h>
- 
- #include "internal.h"
--- 
-2.31.1
+A bit too generic for the name.
 
+> +    $ref: /schemas/types.yaml#/definitions/sint32
+> +    description: Priority level of this syscon reset device. Default 192.
+
+default: 192
+
+
+Though I'm not really sure about the whole concept of this in DT. Where 
+does 192 come from? Presumably if we have more than 1 reset device, then 
+'priority' is needed in multiple places. So you need a common schema 
+defining the property (as property types should be defined exactly 
+once) which this schema can reference.
+
+Rob
