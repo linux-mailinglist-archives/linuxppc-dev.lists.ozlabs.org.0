@@ -1,119 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAC9959C391
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Aug 2022 18:00:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26E2A59C3F9
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Aug 2022 18:22:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MBHB30BH3z3c5D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Aug 2022 01:59:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MBHgf0hZtz3cdt
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Aug 2022 02:22:06 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=vmware.com header.i=@vmware.com header.a=rsa-sha256 header.s=selector2 header.b=jImNE5fm;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=iram.es header.i=@iram.es header.a=rsa-sha256 header.s=DKIM header.b=OyMQyYGz;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=vmware.com (client-ip=2a01:111:f403:c100::1; helo=na01-obe.outbound.protection.outlook.com; envelope-from=namit@vmware.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=iram.es (client-ip=130.206.19.140; helo=mx01.puc.rediris.es; envelope-from=paubert@iram.es; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=vmware.com header.i=@vmware.com header.a=rsa-sha256 header.s=selector2 header.b=jImNE5fm;
+	dkim=pass (2048-bit key; unprotected) header.d=iram.es header.i=@iram.es header.a=rsa-sha256 header.s=DKIM header.b=OyMQyYGz;
 	dkim-atps=neutral
-Received: from na01-obe.outbound.protection.outlook.com (mail-eastusazlp170100001.outbound.protection.outlook.com [IPv6:2a01:111:f403:c100::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mx01.puc.rediris.es (outbound2mad.lav.puc.rediris.es [130.206.19.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MBH9D44Pdz3bk0
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Aug 2022 01:59:10 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=UmetKVAQu1LGAqEXvKXb/63ug8qR5aHYcjg5wrNHlqh++WxGQ7td+iBApzC5xXo8h8E0Eeb7aZ38QnxEhH3SNkEQpLawzTX0GRl2UYtpuHydXKW0bydub6JS7wJDSGLFzo3xzhXSweEjchyiQB/jY2AMMin8CDyq5TfIBMdiFR+HBICPUhiCdykPO2QCeyMimgA3QZCrj6ALwxJBXBtIjW2zl4rWETc5fccTVkaqb1M0KINIGyp6ymdjD2AzSAcvEXKfIuWEA0G+/mDNjMM9Wx9Pc+hZNtayBz3/26JHCsL6VRF+VJjW7MMn67SztC76EGbKFo/wdYXb6W8Cg06Qgw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4UD7YVNI+KLftqKKS09Y/6FtAAIvWF92eRiyhdXUMms=;
- b=XRnYSMMbPg0Took6AZ9wZoa34Wbpy0tq98c5D+VPWDvFvps4QBD15uUdaAETKQufvVl4GVX0o4bOamMDoiNKEvyYrWz1Sm2LuHeZBKNsa3e2jnHEQuzWdk15rS9TP0Wd/nNIvLduFubysCPTFia3pkXdVZBTTTOQO9rlURF24MqwRCPEM4+RdkESXoS2KpL/JjxNSEKCNPZfKRqAgVi21zrHtAWbLsvhGZJP0uFFiPHSWSMwgCqescD/u7UK8Sfb0ySK7XUUEgNYEQA8m018XmqPvz+ScGhLi6ur387IGBH/VGQmZmD6TjaTiilCUVdM+qNMIYgjk59UwOjdrAQjQg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vmware.com; dmarc=pass action=none header.from=vmware.com;
- dkim=pass header.d=vmware.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vmware.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4UD7YVNI+KLftqKKS09Y/6FtAAIvWF92eRiyhdXUMms=;
- b=jImNE5fmhrJVLbKfeMhs4+6KjZTNvQGarJ3jfPU3ui4Ym8Kh7l1GhcxkfsjeG5MIMGr798RZdlng4vDmtCs8UC1uiE4FIO7IfyRw+3I+0/tGDme6mp/dayPIk3AMeGGFS6tRht0YSOH1Z18fERWy83gqS+wYFT+5pNdLh6z99fg=
-Received: from BY3PR05MB8531.namprd05.prod.outlook.com (2603:10b6:a03:3ce::6)
- by DM6PR05MB4972.namprd05.prod.outlook.com (2603:10b6:5:30::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5566.4; Mon, 22 Aug
- 2022 15:58:46 +0000
-Received: from BY3PR05MB8531.namprd05.prod.outlook.com
- ([fe80::d813:9300:4877:39d0]) by BY3PR05MB8531.namprd05.prod.outlook.com
- ([fe80::d813:9300:4877:39d0%9]) with mapi id 15.20.5566.014; Mon, 22 Aug 2022
- 15:58:46 +0000
-From: Nadav Amit <namit@vmware.com>
-To: Alexander Atanasov <alexander.atanasov@virtuozzo.com>
-Subject: Re: [PATCH v3 1/4] Make place for common balloon code
-Thread-Topic: [PATCH v3 1/4] Make place for common balloon code
-Thread-Index: AQHYthvc5W82hOyqH0GkebcfYZVFV627E+WA
-Date: Mon, 22 Aug 2022 15:58:46 +0000
-Message-ID: <6B5E68C7-EDDA-4F39-B406-BF2556577890@vmware.com>
-References: <20220822113747.3630776-1-alexander.atanasov@virtuozzo.com>
- <20220822113747.3630776-2-alexander.atanasov@virtuozzo.com>
-In-Reply-To: <20220822113747.3630776-2-alexander.atanasov@virtuozzo.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-mailer: Apple Mail (2.3696.120.41.1.1)
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=vmware.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: ef768716-9cdc-4364-71ac-08da8457323c
-x-ms-traffictypediagnostic: DM6PR05MB4972:EE_
-x-ld-processed: b39138ca-3cee-4b4a-a4d6-cd83d9dd62f0,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  R0LD6Kjj4/ZJNjiNe5azKaIJKCBtgY+TcwyE6lhSqDVeU7snH78iEbDvQ+JwwPwWl8tOzF49zRrC+Hg6321ra2OYX9FtuAxwWE6mJVRjb+z29KMmkmmp60TqcEMiHbHQmUn1b/lsz4GDXig0N/mDBFC7sPJ4HdBAranPdS2AeTlI9fIAtREtN3NxysLjPo/XkJeD9GMJunyxlAY+XOM2udu0us8tvNOeUvlQwBfutwS8eSvLol1EU+K3yVTAZ/WJUU9ikoiWYgU8Ah7pSNOrvbBZk0FTTom/+NS1mZ8wcsHacnt7X6uqcDy0DSDOSS4pkcQWtXIz7j3oKCf5CwtdXlwAvuHhlPLR7CPKaVVxOTPKt2LcyQk3mVNfxhcYZL1KAs99N2fABHKd9oO1wZrCf6Uhj8ngEoXmE8o9pVYR5LgqYlXQO8X6WZ/V/RiohiBbxv3hLyH3trRDPn2uXPI9AAPW6caqPlp+5dUFV2sJKZKFAjI6A1PnJoFl4bdSxM7LprT6kWsqs3auMGqunjEt3lh5zq8Q/CK7vZNwqReeieQAK7lgt7Elmq4msxOU5hMTPPWB1edh6zIyxxZ9y8bNTqSByhQj8vJ6ULHKOZStmMbP0f61+2YXqbPAn+sWLjrnWCrVtG8E6RgsXmwwQcRiKfJeECW8jq5eZItlzZq6jNzXJBV/lKM4K0qjBAJhCNQ6oWBzygDPbSnP+ZKp0DKGaCDT+XvmgKdYKdL2s5RnKHCPEB3gD+0ItZlyzKRAezXorrqEgTE3v5FaRPHoR15OK+xJrltUWBF9ycYYo2Xgge2g4RnH1rwP7aK4WmXlM8p7n1THXwV3yXEOi+baNn+a5zjsiyi5MClAf2AzMKaYuFM=
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY3PR05MB8531.namprd05.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(4636009)(136003)(346002)(376002)(366004)(396003)(39860400002)(26005)(66446008)(122000001)(6506007)(38100700002)(53546011)(6512007)(186003)(64756008)(4326008)(66476007)(71200400001)(8936002)(5660300002)(4744005)(66556008)(8676002)(76116006)(7416002)(2906002)(6486002)(2616005)(66946007)(38070700005)(316002)(478600001)(41300700001)(54906003)(33656002)(36756003)(6916009)(86362001)(45980500001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?us-ascii?Q?ez8QEj0urOZNcVzPbILPsNHrNu5EM4Bs/q5vSZKXUu783CWrBzaLsKYTUmQM?=
- =?us-ascii?Q?h40r6GPM3z04yynC59miRIrmeSJSLwIjyLizh0N/44U8zRznWlxBcGEEKk1o?=
- =?us-ascii?Q?nHv4BGJFVe4UyvbYSim7XUfFyJEtpmuQHGeJkuyqqyzjP3fAZGMwkbymtdXJ?=
- =?us-ascii?Q?XrZy8G+RE1M5AmYJqchCVQgOu6MjL06XsBGt2Lg2QWez+VwZyg6DxtTdeBUO?=
- =?us-ascii?Q?vtcpHq+/MaSLq/4ZiusJ97E51/2w3mra6c+tHXoY/vOiJyYTIUtTVGSe7Uvw?=
- =?us-ascii?Q?hW8aCcCd6Zg3gORHbduBnEiZc4Wtyo+CGd/ruHQLo5JQvH44oUGXRuYZqgYM?=
- =?us-ascii?Q?838bAjRlHAU5EYwYCCUwikcg8+XNx8g7Q2kGHfqAoD0FpNHmy3LQjfp2TwIL?=
- =?us-ascii?Q?fTMFaIn1oqB+o626zpSw4ZdYmCVdwUH4O1UupbYvr5ic72h2FonZkbVpG2t+?=
- =?us-ascii?Q?qZS25LyYxO4oOBCJdy+VhbN0h+hkFRjcOKyknmvKuTs41CgiJgkeUsPTgvIm?=
- =?us-ascii?Q?X1nL+bOjtfx3rMqx4uMuGq6r8Rr4UDWNLyZ4sYnlKFlbZbs9jrtYdMrCv+Hn?=
- =?us-ascii?Q?FRUf2FwFFAnLkN2Cws77awRyoSuxAqswLhDUvG2amJteF1QQ5gbiXEcX6EmI?=
- =?us-ascii?Q?f8F3VAlSPnn+BA9DLKDwXrQ5KDMqZQgWrk06L3zANb1kJrdwxT/WxvdMK6MR?=
- =?us-ascii?Q?6/hKkzNW9sRmJC+on1qwFlexHSCMJ7rS5YEy0dhtJrSnhlgV11zY5WmP0e5+?=
- =?us-ascii?Q?j/nqS6XATMal0ckaFtYWCVNMPp3cHGcaoi5DWWBQzJtLO60rPFjjsFAtdSPV?=
- =?us-ascii?Q?Yso0C0aIjeq/HAJ4QWy4YbIo0AGBiy509lLELq7wthM496BE66opvca/g0Or?=
- =?us-ascii?Q?Esycnampvqz1a/dGoKGCnDzO+HLX3X3YiPnb2pj5BtylffPSW7Wo8C8JkaL7?=
- =?us-ascii?Q?TIDCo7qWtLQbWCSJm2vgRHEuzfBbwUVipjLN0u513Am9zPB3Dj9olgS6v+Bc?=
- =?us-ascii?Q?ilY1PqLckOjbcKbZviMYVbPOf54AfPIFgCDfH/ByWiXGjdNeqExU5Vgo+/BH?=
- =?us-ascii?Q?sTGxyfC3hdvjtFedsoUuUT7zB8UC+4ZyIMWw6FzHCrtym4lkPqbCRoCGBJY3?=
- =?us-ascii?Q?Of9IHQBNnKdMYGv/YBZsqOy26vsivHV616pIA200Vh96NLl1OOXPXRBaPCAh?=
- =?us-ascii?Q?cXAc6pQUosM+5uiSEI5HVuYP8g3/kAr1PlEw9zANMAgcYcYV71+tAEYEq/t1?=
- =?us-ascii?Q?sLuM/mY3ZFoJhCLw1GKiRIM8vpsXslHXnqp/HcG3XTE5C3i6USZ1NKWR7myL?=
- =?us-ascii?Q?tmAWa618wGpAQdDRMbBhurvg8yPQ6XsTzeJzcmmSHEEw+83KKMgUbtKwwiNc?=
- =?us-ascii?Q?MG8U+OVmLcDLRnP3GnbANBGiJ4b1El34Tj5qNxhSynrD8i/W+gELpPPbHm9n?=
- =?us-ascii?Q?IAURWbG+aNEfkZzz2tTDQVirs3TiEo0vDv8J18szlhJ7yxCVdZ2nUcwEU2EX?=
- =?us-ascii?Q?Unrrvt5tkHzEMt2nRmfNEitpPJjGZF8Fl9uJCudTM8zTj0eLK0pujembVcUE?=
- =?us-ascii?Q?sl2Mi2gHLnLvF0myjvjOY6rQ4Etp7w9b/hz3hFMG?=
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <EB7CC2F096B4CE44834D427A719BA854@namprd05.prod.outlook.com>
-Content-Transfer-Encoding: quoted-printable
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MBHfx4CKPz3bwr
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Aug 2022 02:21:27 +1000 (AEST)
+Received: from mta-out03.sim.rediris.es (mta-out03.sim.rediris.es [130.206.24.45])
+	by mx01.puc.rediris.es  with ESMTP id 27MGL5av008437-27MGL5ax008437
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
+	Mon, 22 Aug 2022 18:21:05 +0200
+Received: from mta-out03.sim.rediris.es (localhost.localdomain [127.0.0.1])
+	by mta-out03.sim.rediris.es (Postfix) with ESMTPS id A76F0302A8C5;
+	Mon, 22 Aug 2022 18:21:05 +0200 (CEST)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mta-out03.sim.rediris.es (Postfix) with ESMTP id 932C63049C41;
+	Mon, 22 Aug 2022 18:21:05 +0200 (CEST)
+X-Amavis-Modified: Mail body modified (using disclaimer) -
+	mta-out03.sim.rediris.es
+Received: from mta-out03.sim.rediris.es ([127.0.0.1])
+	by localhost (mta-out03.sim.rediris.es [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id LBajIlpnifdK; Mon, 22 Aug 2022 18:21:05 +0200 (CEST)
+Received: from lt-gp.iram.es (haproxy02.sim.rediris.es [130.206.24.70])
+	by mta-out03.sim.rediris.es (Postfix) with ESMTPA id DD52C302A8C5;
+	Mon, 22 Aug 2022 18:21:04 +0200 (CEST)
+Date: Mon, 22 Aug 2022 18:21:00 +0200
+From: Gabriel Paubert <paubert@iram.es>
+To: Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>
+Subject: Re: [PATCH] powerpc: Add support for early debugging via Serial
+ 16550 console
+Message-ID: <YwOs7LxpyDubCSyF@lt-gp.iram.es>
+References: <20220819211254.22192-1-pali@kernel.org>
+ <b23ecdd1-fe34-f0f7-be7f-da8624096447@csgroup.eu>
+ <20220822153335.v5gc26jfbbqyj3et@pali>
 MIME-Version: 1.0
-X-OriginatorOrg: vmware.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BY3PR05MB8531.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ef768716-9cdc-4364-71ac-08da8457323c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Aug 2022 15:58:46.5564
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: b39138ca-3cee-4b4a-a4d6-cd83d9dd62f0
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 43MgqFBD8J1seLrVHiMYHHQBAeWJMCjgT2mAutsyVome+orjXnS+PW2VkrL/kjk730hPgCJNca9rzaJ/3C9Hqg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR05MB4972
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <20220822153335.v5gc26jfbbqyj3et@pali>
+Content-Transfer-Encoding: quoted-printable
+X-FE-Policy-ID: 23:8:0:SYSTEM
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; d=iram.es; s=DKIM; c=relaxed/relaxed;
+ h=date:from:to:cc:subject:message-id:references:mime-version:content-type;
+ bh=P7Z6k3A8poRGgY/r2fVngWTDGFg6NAUY66Qf9n627IU=;
+ b=OyMQyYGzrjUYNUmcunzhWkDUU5JjJFTOsKqT+SUVtt2g3UnIhxWU+iwHp0FTD8lRwEuEnymDs9vF
+	8EK3OI7gFDHC36L1qm6HHO4WcA93SesWX2QJvzkglm+3lguFSpQPiQ/+Q62vIoM4/X54Mzo7HMaw
+	lZj1G7AVI8jASBE3EV0QpsKmpXVxys1JksNuF3CyKd2LLcYdMXRpmwQXrcnvKqhd8sYuLbRuhLMi
+	j8N0Ncfrv2sdTd3NWghjMxUBNRu4gF4S03hGWZPLXFxrnpzXwxK0ZoT1WSW3MM3/Tn7tBb+4xRYj
+	YRELdnG9Xm3v9zgH1rh48s36yf1JxyqSDiZGwg==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -125,25 +74,212 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@arndb.de>, "Michael S. Tsirkin" <mst@redhat.com>, Pv-drivers <Pv-drivers@vmware.com>, Jason Wang <jasowang@redhat.com>, David Hildenbrand <david@redhat.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "virtualization@lists.linux-foundation.org" <virtualization@lists.linux-foundation.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "kernel@openvz.org" <kernel@openvz.org>, Nicholas Piggin <npiggin@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Andrew Morton <akpm@linux-foundation.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: Nick Child <nick.child@ibm.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Paul Mackerras <paulus@samba.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Aug 22, 2022, at 4:37 AM, Alexander Atanasov <alexander.atanasov@virtuoz=
-zo.com> wrote:
-
-> mm/balloon_compaction.c -> mm/balloon.c
-> File already contains code that is common along balloon
-> drivers so rename it to reflect its contents.
+On Mon, Aug 22, 2022 at 05:33:35PM +0200, Pali Roh=E1r wrote:
+> On Monday 22 August 2022 14:25:57 Christophe Leroy wrote:
+> > Le 19/08/2022 =E0 23:12, Pali Roh=E1r a =E9crit=A0:
+> > > Currently powerpc early debugging contains lot of platform specific
+> > > options, but does not support standard UART / serial 16550 console.
+> > >=20
+> > > Later legacy_serial.c code supports registering UART as early debug=
+ console
+> > > from device tree but it is not early during booting, but rather lat=
+er after
+> > > machine description code finishes.
+> > >=20
+> > > So for real early debugging via UART is current code unsuitable.
+> > >=20
+> > > Add support for new early debugging option CONFIG_PPC_EARLY_DEBUG_1=
+6550
+> > > which enable Serial 16550 console on address defined by new option
+> > > CONFIG_PPC_EARLY_DEBUG_16550_PHYSADDR and by stride by option
+> > > CONFIG_PPC_EARLY_DEBUG_16550_STRIDE.
+> > >=20
+> > > With this change it is possible to debug powerpc machine descriptor=
+ code.
+> > > For example this early debugging code can print on serial console a=
+lso
+> > > "No suitable machine description found" error which is done before
+> > > legacy_serial.c code.
+> > >=20
+> > > Signed-off-by: Pali Roh=E1r <pali@kernel.org>
+> > > ---
+> > > Tested on P2020 board. It allowed me do debug and implement this pa=
+tch series:
+> > > https://lore.kernel.org/linuxppc-dev/20220819191557.28116-1-pali@ke=
+rnel.org/
+> >=20
+> > Build failure if I select it on mpc885_ads_defconfig :
+> >=20
+> >    LD      vmlinux.o
+> >    MODPOST vmlinux.symvers
+> >    MODINFO modules.builtin.modinfo
+> >    GEN     modules.builtin
+> >    CC      .vmlinux.export.o
+> >    LD      .tmp_vmlinux.kallsyms1
+> > powerpc64-linux-ld: arch/powerpc/kernel/udbg.o: in function=20
+> > `udbg_early_init':
+> > /home/chleroy/linux-powerpc/arch/powerpc/kernel/udbg.c:71: undefined=20
+> > reference to `udbg_init_debug_16550'
+> >=20
+> >=20
+> >=20
+> > > ---
+> > >   arch/powerpc/Kconfig.debug       | 14 ++++++++++++++
+> > >   arch/powerpc/include/asm/udbg.h  |  1 +
+> > >   arch/powerpc/kernel/udbg.c       |  2 ++
+> > >   arch/powerpc/kernel/udbg_16550.c | 33 +++++++++++++++++++++++++++=
++++++
+> > >   4 files changed, 50 insertions(+)
+> > >=20
+> > > diff --git a/arch/powerpc/Kconfig.debug b/arch/powerpc/Kconfig.debu=
+g
+> > > index 9f363c143d86..a4e7d90a45d2 100644
+> > > --- a/arch/powerpc/Kconfig.debug
+> > > +++ b/arch/powerpc/Kconfig.debug
+> > > @@ -276,6 +276,11 @@ config PPC_EARLY_DEBUG_OPAL_HVSI
+> > >   	  Select this to enable early debugging for the PowerNV platform
+> > >   	  using an "hvsi" console
+> > >  =20
+> > > +config PPC_EARLY_DEBUG_16550
+> > > +	bool "Serial 16550"
+> > > +	help
+> > > +	  Select this to enable early debugging via Serial 16550 console
+> > > +
+> >=20
+> > Putting it before EARLY_DEBUG_MEMCONS means that configs that were=20
+> > previously selectiong EARLY_DEBUG_MEMCONS will now select=20
+> > EARLY_DEBUG_16550 instead.
+> >=20
+> > Add a dependency to PPC_UDBG_16550 to avoid the build failure I menti=
+onned ?
 >=20
-> include/linux/balloon_compaction.h -> include/linux/balloon.h
-> Remove it from files which do not actually use it.
-> Drop externs from function delcarations.
+> Yea, there is really missing dependency. I will fix it.
 >=20
-> Signed-off-by: Alexander Atanasov <alexander.atanasov@virtuozzo.com>
+> > >   config PPC_EARLY_DEBUG_MEMCONS
+> > >   	bool "In memory console"
+> > >   	help
+> > > @@ -355,6 +360,15 @@ config PPC_EARLY_DEBUG_CPM_ADDR
+> > >   	  platform probing is done, all platforms selected must
+> > >   	  share the same address.
+> > >  =20
+> > > +config PPC_EARLY_DEBUG_16550_PHYSADDR
+> > > +	hex "Early debug Serial 16550 physical address"
+> > > +	depends on PPC_EARLY_DEBUG_16550
+> >=20
+> > A default value is necessary here to avoid prompts during defconfig b=
+uilds.
+> >=20
+> > > +
+> > > +config PPC_EARLY_DEBUG_16550_STRIDE
+> > > +	int "Early debug Serial 16550 stride"
+> > > +	depends on PPC_EARLY_DEBUG_16550
+> > > +	default 1
+> > > +
+> > >   config FAIL_IOMMU
+> > >   	bool "Fault-injection capability for IOMMU"
+> > >   	depends on FAULT_INJECTION
+> > > diff --git a/arch/powerpc/include/asm/udbg.h b/arch/powerpc/include=
+/asm/udbg.h
+> > > index b4aa0d88ce2c..20b5a37ab772 100644
+> > > --- a/arch/powerpc/include/asm/udbg.h
+> > > +++ b/arch/powerpc/include/asm/udbg.h
+> > > @@ -53,6 +53,7 @@ extern void __init udbg_init_ehv_bc(void);
+> > >   extern void __init udbg_init_ps3gelic(void);
+> > >   extern void __init udbg_init_debug_opal_raw(void);
+> > >   extern void __init udbg_init_debug_opal_hvsi(void);
+> > > +extern void __init udbg_init_debug_16550(void);
+> >=20
+> > 'extern' keywork is pointless and deprecated for function prototypes,=
+=20
+> > please don't add new ones.
+>=20
+> I used extern keyword to follow existing coding style.
 
-Makes so much sense.
+In this case it's better to remove existing extern specifications in the
+surrounding lines. Increasing a bit the footprint of the patch is
+justified, and does not significantly increase the risk of conflicts
+with other patches, unlike the gratuitous churn we see sometimes.
 
-Acked-by: Nadav Amit <namit@vmware.com>
-
+	Gabriel
+>=20
+> > Checkpatch reports:
+> >=20
+> > CHECK: extern prototypes should be avoided in .h files
+> > #77: FILE: arch/powerpc/include/asm/udbg.h:56:
+> > +extern void __init udbg_init_debug_16550(void);
+> >=20
+> >=20
+> > >  =20
+> > >   #endif /* __KERNEL__ */
+> > >   #endif /* _ASM_POWERPC_UDBG_H */
+> > > diff --git a/arch/powerpc/kernel/udbg.c b/arch/powerpc/kernel/udbg.=
+c
+> > > index b1544b2f6321..92b3fc258d11 100644
+> > > --- a/arch/powerpc/kernel/udbg.c
+> > > +++ b/arch/powerpc/kernel/udbg.c
+> > > @@ -67,6 +67,8 @@ void __init udbg_early_init(void)
+> > >   	udbg_init_debug_opal_raw();
+> > >   #elif defined(CONFIG_PPC_EARLY_DEBUG_OPAL_HVSI)
+> > >   	udbg_init_debug_opal_hvsi();
+> > > +#elif defined(CONFIG_PPC_EARLY_DEBUG_16550)
+> > > +	udbg_init_debug_16550();
+> > >   #endif
+> > >  =20
+> > >   #ifdef CONFIG_PPC_EARLY_DEBUG
+> > > diff --git a/arch/powerpc/kernel/udbg_16550.c b/arch/powerpc/kernel=
+/udbg_16550.c
+> > > index d3942de254c6..46f2d831d7c9 100644
+> > > --- a/arch/powerpc/kernel/udbg_16550.c
+> > > +++ b/arch/powerpc/kernel/udbg_16550.c
+> > > @@ -8,6 +8,7 @@
+> > >   #include <asm/udbg.h>
+> > >   #include <asm/io.h>
+> > >   #include <asm/reg_a2.h>
+> > > +#include <asm/early_ioremap.h>
+> > >  =20
+> > >   extern u8 real_readb(volatile u8 __iomem  *addr);
+> > >   extern void real_writeb(u8 data, volatile u8 __iomem *addr);
+> > > @@ -335,3 +336,35 @@ void __init udbg_init_debug_microwatt(void)
+> > >   }
+> > >  =20
+> > >   #endif /* CONFIG_PPC_EARLY_DEBUG_MICROWATT */
+> > > +
+> > > +#ifdef CONFIG_PPC_EARLY_DEBUG_16550
+> > > +
+> > > +static void __iomem *udbg_uart_early_addr;
+> > > +
+> > > +void __init udbg_init_debug_16550(void)
+> > > +{
+> > > +	udbg_uart_early_addr =3D early_ioremap(CONFIG_PPC_EARLY_DEBUG_165=
+50_PHYSADDR, 0x1000);
+> > > +	udbg_uart_init_mmio(udbg_uart_early_addr, CONFIG_PPC_EARLY_DEBUG_=
+16550_STRIDE);
+> > > +}
+> > > +
+> > > +static int __init udbg_init_debug_16550_ioremap(void)
+> > > +{
+> > > +	void __iomem *addr;
+> > > +
+> > > +	if (!udbg_uart_early_addr)
+> > > +		return 0;
+> > > +
+> > > +	addr =3D ioremap(CONFIG_PPC_EARLY_DEBUG_16550_PHYSADDR, 0x1000);
+> > > +	if (WARN_ON(!addr))
+> > > +		return -ENOMEM;
+> > > +
+> > > +	udbg_uart_init_mmio(addr, CONFIG_PPC_EARLY_DEBUG_16550_STRIDE);
+> > > +	early_iounmap(udbg_uart_early_addr, 0x1000);
+> > > +	udbg_uart_early_addr =3D NULL;
+> > > +
+> > > +	return 0;
+> > > +}
+> > > +
+> > > +early_initcall(udbg_init_debug_16550_ioremap);
+> > > +
+> > > +#endif /* CONFIG_PPC_EARLY_DEBUG_16550 */
+ 
 
