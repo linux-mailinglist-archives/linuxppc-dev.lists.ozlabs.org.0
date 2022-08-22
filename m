@@ -2,66 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F72A59C0A0
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Aug 2022 15:32:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3F8F59C0FD
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Aug 2022 15:51:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MBCvk05Bkz3cfL
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Aug 2022 23:32:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MBDKr1094z3cdw
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Aug 2022 23:51:28 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=oAGzPeST;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pVEGPBuX;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::22e; helo=mail-oi1-x22e.google.com; envelope-from=alexdeucher@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=oAGzPeST;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pVEGPBuX;
 	dkim-atps=neutral
-Received: from mail-oi1-x22e.google.com (mail-oi1-x22e.google.com [IPv6:2607:f8b0:4864:20::22e])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MBCv82HNrz2ypC
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Aug 2022 23:31:46 +1000 (AEST)
-Received: by mail-oi1-x22e.google.com with SMTP id bb16so12173920oib.11
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Aug 2022 06:31:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc;
-        bh=6WVjOrRJCECWMxjcl8nSD1ItRBPOEa+Itaj/XCvb2go=;
-        b=oAGzPeSTZ0vxyJxjypstEFq2wlDSFbqy4W20nT26f4IonPW2btsHWwoI6TFovQKtPH
-         OVt0yKLAzY8ARGBubtDDx784QNp0bnfaQ5A7omPby/nVq0RAYC4O2m6qo+sNnDzyV/EF
-         ZbMR5HZWcC5IxJ/NHIOlo55BXThBNYjTLXxUuDXCLVm2KCd2vmcIML7uF2CuwVqvMpx5
-         PGWBdLdq95Y+GINSqToObZG5MY9yQv9MidDw4sH88GN1vK1y8Mr1pH+EyASoC6hGi6fm
-         CkGXP7qMVDbz+MA5+Dt2pVfOiYYxaA6k3Mi6ex+jHIBZeCR9E5Jl7AHHkVhXYpNpVNGB
-         nXaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=6WVjOrRJCECWMxjcl8nSD1ItRBPOEa+Itaj/XCvb2go=;
-        b=ckYDKrnck9fwDOPlvwyHGEJT33W49cmC0W3OmvKEpdeulbpDAGkz+wMWH6usAZb28Z
-         /UpYkgB4GA1LVXyJjTxd3TuenycxlHVXs8LD7YHyKsQTUX2p4ZH0139wnk5cIVwpFM4e
-         q5a3Bb/lP+5cnNiZEhOMIqI72FnAJe1R1RwWm6tRr+yUYTXTHCzPXRn0NvagygKXix6W
-         deVVU3PeQqgxQIvADCEEraqZf6Z5ufmPwcYjGe547DNFBw4q6kNoscioRfpGyLF0tBqt
-         QEkKHpdhKYRkEVbm7OtSQF85u2jFH1ngYt9jcUs4AAX7olcFU7aR6/Za7ffYvtJMQo98
-         UgRg==
-X-Gm-Message-State: ACgBeo1P8rhqwi//d8z5Ys8t6Q9h4Qs4sV3TdVcdawhcfRlpPAW6D96q
-	dRD7K4s/Oq/1zNda7XM72B0sUKsHEh40+19VydU=
-X-Google-Smtp-Source: AA6agR6Cwk55gcuoQgIgnKhgffJRYAliThwIfgR7aCZCIUD7OUGPbbQunhOd6bmeVuKzHCAom2dWtNzACZFk33vO/JA=
-X-Received: by 2002:a05:6808:ecb:b0:33a:3b54:37f9 with SMTP id
- q11-20020a0568080ecb00b0033a3b5437f9mr8913358oiv.33.1661175101159; Mon, 22
- Aug 2022 06:31:41 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MBDKG1Gt4z3086
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Aug 2022 23:50:58 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id D110A611A8;
+	Mon, 22 Aug 2022 13:50:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18269C433D6;
+	Mon, 22 Aug 2022 13:50:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1661176254;
+	bh=/cAXDlxfdqXtNq2EiSdHceUvcnPaNa0w0mmKBDRxaTM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pVEGPBuXI1lIaWb0vZ7AbB8Bh4pFVa8uYcmwTmCuZYzZ8XlOhFz2AscRUCUHgjY01
+	 WxwWLAALdKtnt9/PV9aDGvcwj2fr0LOoORwyZFZv8Ds0hpCyDisbvuEIlw8NH3L3id
+	 Wu4UhnjHyB+oDNU2hlqRCA0bgLgaknVTNRL0VTRFNSc4m2p4UgCosm5NhgmZMBVPVq
+	 JR6U4v8fvwlTjZKNeXaH5G/6m/lAJqz4lhY1cRI5OEDU7gJQNNchC5cCcTzlUNE1gP
+	 4fFuxExY5MwhTgZUWfBVJcMLXONUyn2OsmqdAP5mtTQ1KU2vWZX9qUyY3G6qrwKXdU
+	 ChE3GCV7L2oYw==
+Received: by pali.im (Postfix)
+	id CB05697B; Mon, 22 Aug 2022 15:50:50 +0200 (CEST)
+Date: Mon, 22 Aug 2022 15:50:50 +0200
+From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
+To: Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH 1/3] dt-bindings: reset: syscon-reboot: Add priority
+ property
+Message-ID: <20220822135050.o4a4bw3dqkmhtjgb@pali>
+References: <20220820102925.29476-1-pali@kernel.org>
+ <20220822124728.GA3641041-robh@kernel.org>
 MIME-Version: 1.0
-References: <20220819210112.7924-1-rdunlap@infradead.org> <87o7wdkkt4.fsf@mpe.ellerman.id.au>
- <YwNovfuf3pDBh2Zk@infradead.org>
-In-Reply-To: <YwNovfuf3pDBh2Zk@infradead.org>
-From: Alex Deucher <alexdeucher@gmail.com>
-Date: Mon, 22 Aug 2022 09:31:30 -0400
-Message-ID: <CADnq5_NOedr2TGH0W9wVAPkrJyyJ_+eAkEUORbYvShY4UW90sw@mail.gmail.com>
-Subject: Re: [PATCH] powerpc: export cpu_smallcore_map for modules
-To: Christoph Hellwig <hch@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220822124728.GA3641041-robh@kernel.org>
+User-Agent: NeoMutt/20180716
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,35 +65,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Gautham R . Shenoy" <ego@linux.vnet.ibm.com>, Randy Dunlap <rdunlap@infradead.org>, Felix Kuehling <Felix.Kuehling@amd.com>, "Pan, Xinhui" <Xinhui.Pan@amd.com>, Lai Jiangshan <jiangshanlai@gmail.com>, linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org, Alex Deucher <alexander.deucher@amd.com>, Nicholas Piggin <npiggin@gmail.com>, Tejun Heo <tj@kernel.org>, linuxppc-dev@lists.ozlabs.org, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+Cc: Marek =?utf-8?B?QmVow7pu?= <kabel@kernel.org>, devicetree@vger.kernel.org, linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Aug 22, 2022 at 9:16 AM Christoph Hellwig <hch@infradead.org> wrote:
->
-> On Mon, Aug 22, 2022 at 01:40:23PM +1000, Michael Ellerman wrote:
-> > Randy Dunlap <rdunlap@infradead.org> writes:
-> > > drivers/gpu/drm/amd/amdkfd/kfd_device.c calls cpu_smt_mask().
-> > > This is an inline function on powerpc which references
-> > > cpu_smallcore_map.
-> > >
-> > > Fixes: 425752c63b6f ("powerpc: Detect the presence of big-cores via "ibm, thread-groups"")
-> > > Fixes: 7bc913085765 ("drm/amdkfd: Try to schedule bottom half on same core")
-> >
-> > That 2nd commit is not in mainline, only linux-next.
-> >
-> > I don't mind merging this fix preemptively, but is that SHA stable?
->
-> I really do not think this has any business being exported at all.
->
-> kfd_queue_work is not something that should be done in a driver.
-> Something like this belongs into the workqueue core, not in an
-> underdocumented helper in a random driver.
->
-> Drm guys:  once again, please please work with the maintainers instead
-> of just making up random stuff in the drivers.
+On Monday 22 August 2022 07:47:28 Rob Herring wrote:
+> On Sat, Aug 20, 2022 at 12:29:23PM +0200, Pali Rohár wrote:
+> > This new optional priority property allows to specify custom priority level
+> > of reset device. Default level was always 192.
+> 
+> Why do we need/want this? What problem does it solve?
 
-Discussions are already ongoing with the workqueue folks.  I'll drop
-this for now.
+See patch 3/3.
 
-Alex
+> > Signed-off-by: Pali Rohár <pali@kernel.org>
+> > ---
+> >  .../devicetree/bindings/power/reset/syscon-reboot.yaml        | 4 ++++
+> >  1 file changed, 4 insertions(+)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/power/reset/syscon-reboot.yaml b/Documentation/devicetree/bindings/power/reset/syscon-reboot.yaml
+> > index da2509724812..d905133aab27 100644
+> > --- a/Documentation/devicetree/bindings/power/reset/syscon-reboot.yaml
+> > +++ b/Documentation/devicetree/bindings/power/reset/syscon-reboot.yaml
+> > @@ -42,6 +42,10 @@ properties:
+> >      $ref: /schemas/types.yaml#/definitions/uint32
+> >      description: The reset value written to the reboot register (32 bit access).
+> >  
+> > +  priority:
+> 
+> A bit too generic for the name.
+> 
+> > +    $ref: /schemas/types.yaml#/definitions/sint32
+> > +    description: Priority level of this syscon reset device. Default 192.
+> 
+> default: 192
+> 
+> 
+> Though I'm not really sure about the whole concept of this in DT. Where 
+> does 192 come from?
+
+Implicitly from the current implementation and how it is used.
+
+> Presumably if we have more than 1 reset device, then 
+> 'priority' is needed in multiple places. So you need a common schema 
+> defining the property (as property types should be defined exactly 
+> once) which this schema can reference.
+> 
+> Rob
+
+Sorry, I do not understand.
