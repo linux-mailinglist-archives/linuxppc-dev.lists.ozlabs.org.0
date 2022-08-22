@@ -2,54 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 519E759C024
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Aug 2022 15:07:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F72A59C0A0
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Aug 2022 15:32:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MBCMP1kkdz3cdS
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Aug 2022 23:07:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MBCvk05Bkz3cfL
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Aug 2022 23:32:18 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UWbhguo6;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=oAGzPeST;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::22e; helo=mail-oi1-x22e.google.com; envelope-from=alexdeucher@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UWbhguo6;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=oAGzPeST;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-x22e.google.com (mail-oi1-x22e.google.com [IPv6:2607:f8b0:4864:20::22e])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MBCLl1r8Qz2xKf
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Aug 2022 23:07:11 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id EEE20B81193;
-	Mon, 22 Aug 2022 13:07:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A786C433D6;
-	Mon, 22 Aug 2022 13:07:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1661173624;
-	bh=tc+H2IZAZYCcsk+W/qTN/Gurc56MzvlVN7bbGRvcG/8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UWbhguo6slX2gCkBvkQDKi4z6EJRsxjArA7HDElXkjZM/QcrN7bJXNogEVMDwzfhR
-	 wT8xkpFbn/8v1NhEkjj091LbJjSYthE2j7m8R/BjYJuFa+C0sl1ltXbzaP9ozJwKi1
-	 9W/TlWvxIuY/U3bG8AT8l30zQ4WdyM1ZOcngH8lb3MsczRS7ulh5FimlfTtUZV3oUb
-	 afQzRsua+Mnsll8h/6ETgCYdNO7/g1legmMBODv1HG6ex5WoQIYHZk7CujwjgG+fU/
-	 1a9jy4qoQUyQZOqJt+E7gfllyZl8FTgviAzqdMb7LhkdSq5Cq6wOGXIvZSoaj23Nip
-	 8sPWCHgEN8+uA==
-Date: Mon, 22 Aug 2022 14:06:59 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Subject: Re: [PATCH] ASoC: fsl_sai: Add support multi fifo sdma script
-Message-ID: <YwN/c0Q8ooBCIB1z@sirena.org.uk>
-References: <1660555546-24223-1-git-send-email-shengjiu.wang@nxp.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MBCv82HNrz2ypC
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Aug 2022 23:31:46 +1000 (AEST)
+Received: by mail-oi1-x22e.google.com with SMTP id bb16so12173920oib.11
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Aug 2022 06:31:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=6WVjOrRJCECWMxjcl8nSD1ItRBPOEa+Itaj/XCvb2go=;
+        b=oAGzPeSTZ0vxyJxjypstEFq2wlDSFbqy4W20nT26f4IonPW2btsHWwoI6TFovQKtPH
+         OVt0yKLAzY8ARGBubtDDx784QNp0bnfaQ5A7omPby/nVq0RAYC4O2m6qo+sNnDzyV/EF
+         ZbMR5HZWcC5IxJ/NHIOlo55BXThBNYjTLXxUuDXCLVm2KCd2vmcIML7uF2CuwVqvMpx5
+         PGWBdLdq95Y+GINSqToObZG5MY9yQv9MidDw4sH88GN1vK1y8Mr1pH+EyASoC6hGi6fm
+         CkGXP7qMVDbz+MA5+Dt2pVfOiYYxaA6k3Mi6ex+jHIBZeCR9E5Jl7AHHkVhXYpNpVNGB
+         nXaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=6WVjOrRJCECWMxjcl8nSD1ItRBPOEa+Itaj/XCvb2go=;
+        b=ckYDKrnck9fwDOPlvwyHGEJT33W49cmC0W3OmvKEpdeulbpDAGkz+wMWH6usAZb28Z
+         /UpYkgB4GA1LVXyJjTxd3TuenycxlHVXs8LD7YHyKsQTUX2p4ZH0139wnk5cIVwpFM4e
+         q5a3Bb/lP+5cnNiZEhOMIqI72FnAJe1R1RwWm6tRr+yUYTXTHCzPXRn0NvagygKXix6W
+         deVVU3PeQqgxQIvADCEEraqZf6Z5ufmPwcYjGe547DNFBw4q6kNoscioRfpGyLF0tBqt
+         QEkKHpdhKYRkEVbm7OtSQF85u2jFH1ngYt9jcUs4AAX7olcFU7aR6/Za7ffYvtJMQo98
+         UgRg==
+X-Gm-Message-State: ACgBeo1P8rhqwi//d8z5Ys8t6Q9h4Qs4sV3TdVcdawhcfRlpPAW6D96q
+	dRD7K4s/Oq/1zNda7XM72B0sUKsHEh40+19VydU=
+X-Google-Smtp-Source: AA6agR6Cwk55gcuoQgIgnKhgffJRYAliThwIfgR7aCZCIUD7OUGPbbQunhOd6bmeVuKzHCAom2dWtNzACZFk33vO/JA=
+X-Received: by 2002:a05:6808:ecb:b0:33a:3b54:37f9 with SMTP id
+ q11-20020a0568080ecb00b0033a3b5437f9mr8913358oiv.33.1661175101159; Mon, 22
+ Aug 2022 06:31:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="u43b6UwMPrtGu+8T"
-Content-Disposition: inline
-In-Reply-To: <1660555546-24223-1-git-send-email-shengjiu.wang@nxp.com>
-X-Cookie: Am I SHOPLIFTING?
+References: <20220819210112.7924-1-rdunlap@infradead.org> <87o7wdkkt4.fsf@mpe.ellerman.id.au>
+ <YwNovfuf3pDBh2Zk@infradead.org>
+In-Reply-To: <YwNovfuf3pDBh2Zk@infradead.org>
+From: Alex Deucher <alexdeucher@gmail.com>
+Date: Mon, 22 Aug 2022 09:31:30 -0400
+Message-ID: <CADnq5_NOedr2TGH0W9wVAPkrJyyJ_+eAkEUORbYvShY4UW90sw@mail.gmail.com>
+Subject: Re: [PATCH] powerpc: export cpu_smallcore_map for modules
+To: Christoph Hellwig <hch@infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,35 +73,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, Xiubo.Lee@gmail.com, festevam@gmail.com, tiwai@suse.com, lgirdwood@gmail.com, perex@perex.cz, nicoleotsuka@gmail.com, shengjiu.wang@gmail.com, linux-kernel@vger.kernel.org
+Cc: "Gautham R . Shenoy" <ego@linux.vnet.ibm.com>, Randy Dunlap <rdunlap@infradead.org>, Felix Kuehling <Felix.Kuehling@amd.com>, "Pan, Xinhui" <Xinhui.Pan@amd.com>, Lai Jiangshan <jiangshanlai@gmail.com>, linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org, Alex Deucher <alexander.deucher@amd.com>, Nicholas Piggin <npiggin@gmail.com>, Tejun Heo <tj@kernel.org>, linuxppc-dev@lists.ozlabs.org, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Mon, Aug 22, 2022 at 9:16 AM Christoph Hellwig <hch@infradead.org> wrote:
+>
+> On Mon, Aug 22, 2022 at 01:40:23PM +1000, Michael Ellerman wrote:
+> > Randy Dunlap <rdunlap@infradead.org> writes:
+> > > drivers/gpu/drm/amd/amdkfd/kfd_device.c calls cpu_smt_mask().
+> > > This is an inline function on powerpc which references
+> > > cpu_smallcore_map.
+> > >
+> > > Fixes: 425752c63b6f ("powerpc: Detect the presence of big-cores via "ibm, thread-groups"")
+> > > Fixes: 7bc913085765 ("drm/amdkfd: Try to schedule bottom half on same core")
+> >
+> > That 2nd commit is not in mainline, only linux-next.
+> >
+> > I don't mind merging this fix preemptively, but is that SHA stable?
+>
+> I really do not think this has any business being exported at all.
+>
+> kfd_queue_work is not something that should be done in a driver.
+> Something like this belongs into the workqueue core, not in an
+> underdocumented helper in a random driver.
+>
+> Drm guys:  once again, please please work with the maintainers instead
+> of just making up random stuff in the drivers.
 
---u43b6UwMPrtGu+8T
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Discussions are already ongoing with the workqueue folks.  I'll drop
+this for now.
 
-On Mon, Aug 15, 2022 at 05:25:46PM +0800, Shengjiu Wang wrote:
-> With disabling combine mode, the multiple successive
-> FIFO registers or non successive FIFO registers of SAI module
-> can work with the sdma multi fifo script.
-
-This doesn't apply against current code, please check and resend.
-
---u43b6UwMPrtGu+8T
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmMDf3IACgkQJNaLcl1U
-h9BAlQf+L5kP4l9lQLSb9J7A0IJngh/vpXFA7wuR/7oW6SzHZxsyamK1IEPXVijQ
-6Is+lGT3ObIPZydx36IzJS+qkTOCIbuNTjeAl12SM/qCOQX4wZzhn80eKO3SKtvK
-9PVvmTaFFWvn+ANBeNWDKOXtdawBfBK5K+yLhiTNifOqQZ+8e0kL0TmnOhdecYEw
-//MgiNAkSEQV3c8F+u6JmXReT/9J7LLSGKbxTzu2Il8rXRPPbEfrfTxTF9V5BH3L
-XAYQYUTdrQ9/1rPXEW8/jAPJxvEOljTT4Q6iFAN5KF2xslmGD7pCuM5FW9ClHuCm
-rFKX5gZWGOaQn33E+zDa8HWh+usyVA==
-=BNOe
------END PGP SIGNATURE-----
-
---u43b6UwMPrtGu+8T--
+Alex
