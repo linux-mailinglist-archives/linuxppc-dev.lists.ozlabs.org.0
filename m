@@ -2,51 +2,42 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA12959DB11
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Aug 2022 14:01:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0911C59E489
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Aug 2022 15:35:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MBnr42wYcz3cfY
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Aug 2022 22:01:08 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=jXl2P/yp;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MBqxN6PC4z3c8B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Aug 2022 23:35:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com; envelope-from=chenzhongjin@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MBnpt5j9Wz2xHT
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Aug 2022 22:00:06 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=jXl2P/yp;
-	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4MBnpr22Kjz4yMs;
-	Tue, 23 Aug 2022 22:00:04 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1661256004;
-	bh=BM2OoX1X5/M1PL3XwCFSoUUGkRwpuN+iuxXEa1u1kZU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jXl2P/ypnA2XrYYHmvy1aqbWqbIm17EX99l910SLUQnRiR45a0GdG/pQgsooyQwFR
-	 cML5RbPav7aZS1bUZb+hCLn3oZf72tzxyaPyY0WN29a5q3gucwi4y8jIdSK/AXPW3M
-	 ca07y+biMnvR8GQQD1hU6o+KQi4IBhHBJFMzZ6YzLTIzhPZXlPCl9LyNgkTVa7ETxv
-	 vKIOUzzsJVeoAmDZukP1lOLcku4k1BQ0iYqlpHU0kQ+uBE7WXbjC0pR3dfaKjgAlGK
-	 +gpfOXXOGW0SywjaYf1lpsk82fbdpxxWjDxsU3n/Gw32MwAgva75v/bbs3rXb7kfcN
-	 kMaNlfji6FU+g==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH 2/2] powerpc/rtas: Fix RTAS MSR[HV] handling for Cell
-Date: Tue, 23 Aug 2022 21:59:52 +1000
-Message-Id: <20220823115952.1203106-2-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20220823115952.1203106-1-mpe@ellerman.id.au>
-References: <20220823115952.1203106-1-mpe@ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MBqwx2Dh3z2xJD
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Aug 2022 23:35:26 +1000 (AEST)
+Received: from dggpemm500022.china.huawei.com (unknown [172.30.72.55])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4MBqr81mPrzkWSD;
+	Tue, 23 Aug 2022 21:31:20 +0800 (CST)
+Received: from dggpemm500013.china.huawei.com (7.185.36.172) by
+ dggpemm500022.china.huawei.com (7.185.36.162) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Tue, 23 Aug 2022 21:34:49 +0800
+Received: from ubuntu1804.huawei.com (10.67.175.36) by
+ dggpemm500013.china.huawei.com (7.185.36.172) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Tue, 23 Aug 2022 21:34:35 +0800
+From: Chen Zhongjin <chenzhongjin@huawei.com>
+To: <linux-kernel@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>
+Subject: [PATCH] objtool: replace _ASM_PTR with quad in macros
+Date: Tue, 23 Aug 2022 21:31:24 +0800
+Message-ID: <20220823133124.55914-1-chenzhongjin@huawei.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.67.175.36]
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ dggpemm500013.china.huawei.com (7.185.36.172)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,71 +49,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: rmclure@linux.ibm.com, ldufour@linux.ibm.com, npiggin@gmail.com
+Cc: peterz@infradead.org, sv@linux.ibm.com, mhiramat@kernel.org, naveen.n.rao@linux.vnet.ibm.com, bp@suse.de, chenzhongjin@huawei.com, jpoimboe@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The semi-recent changes to MSR handling when entering RTAS (firmware)
-cause crashes on IBM Cell machines. An example trace:
+Macros STACK_FRAME_NON_STANDARD and ANNOTATE_NOENDBR uses
+_ASM_PTR. It switch between .long and .quad based on 32bit
+or 64bit. However objtool doesn't work for 32bit, so _ASM_PTR
+makes no sense.
 
-  kernel tried to execute user page (2fff01a8) - exploit attempt? (uid: 0)
-  BUG: Unable to handle kernel instruction fetch
-  Faulting instruction address: 0x2fff01a8
-  Oops: Kernel access of bad area, sig: 11 [#1]
-  BE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=4 NUMA Cell
-  Modules linked in:
-  CPU: 0 PID: 0 Comm: swapper/0 Tainted: G        W          6.0.0-rc2-00433-gede0a8d3307a #207
-  NIP:  000000002fff01a8 LR: 0000000000032608 CTR: 0000000000000000
-  REGS: c0000000015236b0 TRAP: 0400   Tainted: G        W           (6.0.0-rc2-00433-gede0a8d3307a)
-  MSR:  0000000008001002 <ME,RI>  CR: 00000000  XER: 20000000
-  ...
-  NIP 0x2fff01a8
-  LR  0x32608
-  Call Trace:
-    0xc00000000143c5f8 (unreliable)
-    .rtas_call+0x224/0x320
-    .rtas_get_boot_time+0x70/0x150
-    .read_persistent_clock64+0x114/0x140
-    .read_persistent_wall_and_boot_offset+0x24/0x80
-    .timekeeping_init+0x40/0x29c
-    .start_kernel+0x674/0x8f0
-    start_here_common+0x1c/0x50
+Considering that _ASM_PTR comes from asm.h, which is x86
+specific head file, while objtool.h is generic. Replace
+_ASM_PTR with quad and remove asm.h reference.
 
-Unlike PAPR platforms where RTAS is only used in guests, on the IBM Cell
-machines Linux runs with MSR[HV] set but also uses RTAS, provided by
-SLOF.
-
-Fix it by copying the MSR[HV] bit from the MSR value we've just read
-using mfmsr into the value used for RTAS.
-
-It seems like we could also fix it using an #ifdef CELL to set MSR[HV],
-but that doesn't work because it's possible to build a single kernel
-image that runs on both Cell native and pseries.
-
-Fixes: b6b1c3ce06ca ("powerpc/rtas: Keep MSR[RI] set when calling RTAS")
-Cc: stable@vger.kernel.org # v5.19+
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Chen Zhongjin <chenzhongjin@huawei.com>
 ---
- arch/powerpc/kernel/rtas_entry.S | 4 ++++
- 1 file changed, 4 insertions(+)
+ include/linux/objtool.h       | 6 ++----
+ tools/include/linux/objtool.h | 6 ++----
+ 2 files changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/arch/powerpc/kernel/rtas_entry.S b/arch/powerpc/kernel/rtas_entry.S
-index 9a434d42e660..6ce95ddadbcd 100644
---- a/arch/powerpc/kernel/rtas_entry.S
-+++ b/arch/powerpc/kernel/rtas_entry.S
-@@ -109,8 +109,12 @@ _GLOBAL(enter_rtas)
- 	 * its critical regions (as specified in PAPR+ section 7.2.1). MSR[S]
- 	 * is not impacted by RFI_TO_KERNEL (only urfid can unset it). So if
- 	 * MSR[S] is set, it will remain when entering RTAS.
-+	 * If we're in HV mode, RTAS must also run in HV mode, so extract MSR_HV
-+	 * from the saved MSR value and insert into the value RTAS will use.
- 	 */
-+	extrdi	r0, r6, 1, 63 - MSR_HV_LG
- 	LOAD_REG_IMMEDIATE(r6, MSR_ME | MSR_RI)
-+	insrdi	r6, r0, 1, 63 - MSR_HV_LG
+diff --git a/include/linux/objtool.h b/include/linux/objtool.h
+index 62c54ffbeeaa..d2413cb78037 100644
+--- a/include/linux/objtool.h
++++ b/include/linux/objtool.h
+@@ -45,8 +45,6 @@ struct unwind_hint {
  
- 	li      r0,0
- 	mtmsrd  r0,1                    /* disable RI before using SRR0/1 */
+ #ifdef CONFIG_OBJTOOL
+ 
+-#include <asm/asm.h>
+-
+ #ifndef __ASSEMBLY__
+ 
+ #define UNWIND_HINT(sp_reg, sp_offset, type, end)		\
+@@ -87,7 +85,7 @@ struct unwind_hint {
+ #define ANNOTATE_NOENDBR					\
+ 	"986: \n\t"						\
+ 	".pushsection .discard.noendbr\n\t"			\
+-	_ASM_PTR " 986b\n\t"					\
++	".quad 986b\n\t"					\
+ 	".popsection\n\t"
+ 
+ #define ASM_REACHABLE							\
+@@ -144,7 +142,7 @@ struct unwind_hint {
+ 
+ .macro STACK_FRAME_NON_STANDARD func:req
+ 	.pushsection .discard.func_stack_frame_non_standard, "aw"
+-	_ASM_PTR \func
++	.quad \func
+ 	.popsection
+ .endm
+ 
+diff --git a/tools/include/linux/objtool.h b/tools/include/linux/objtool.h
+index 62c54ffbeeaa..d2413cb78037 100644
+--- a/tools/include/linux/objtool.h
++++ b/tools/include/linux/objtool.h
+@@ -45,8 +45,6 @@ struct unwind_hint {
+ 
+ #ifdef CONFIG_OBJTOOL
+ 
+-#include <asm/asm.h>
+-
+ #ifndef __ASSEMBLY__
+ 
+ #define UNWIND_HINT(sp_reg, sp_offset, type, end)		\
+@@ -87,7 +85,7 @@ struct unwind_hint {
+ #define ANNOTATE_NOENDBR					\
+ 	"986: \n\t"						\
+ 	".pushsection .discard.noendbr\n\t"			\
+-	_ASM_PTR " 986b\n\t"					\
++	".quad 986b\n\t"					\
+ 	".popsection\n\t"
+ 
+ #define ASM_REACHABLE							\
+@@ -144,7 +142,7 @@ struct unwind_hint {
+ 
+ .macro STACK_FRAME_NON_STANDARD func:req
+ 	.pushsection .discard.func_stack_frame_non_standard, "aw"
+-	_ASM_PTR \func
++	.quad \func
+ 	.popsection
+ .endm
+ 
 -- 
-2.37.1
+2.17.1
 
