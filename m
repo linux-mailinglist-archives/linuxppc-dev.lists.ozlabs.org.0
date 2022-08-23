@@ -2,50 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60A6759EB65
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Aug 2022 20:50:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E57EE59EB69
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Aug 2022 20:51:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MBywS3Vh1z3bXy
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Aug 2022 04:50:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MByx4628rz3cdQ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Aug 2022 04:51:04 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XxThZNV7;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=vAcy88Zb;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XxThZNV7;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=vAcy88Zb;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MByvt56Wtz2xH8
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Aug 2022 04:50:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MByvy2zpgz2yn3
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Aug 2022 04:50:06 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 78EEEB82024;
-	Tue, 23 Aug 2022 18:49:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AE5BC433D6;
-	Tue, 23 Aug 2022 18:49:54 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 0E9766170E;
+	Tue, 23 Aug 2022 18:50:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EA23C433D7;
+	Tue, 23 Aug 2022 18:50:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1661280597;
-	bh=v2a8Ab0aNwJGMtkb8CZSGaqdXiDRPqmdyQ81ECzRFqI=;
+	s=k20201202; t=1661280602;
+	bh=fNT/ML6CsNqu6evXVhQ1GENE4bqQBehy5fIvG9sMLLI=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=XxThZNV7CNxQQ4gy14LjOHq7t/s/iALnFiqL9xctkg98k2uPtKgE7Bkz2spzwGOfq
-	 S19z/tm3liyJ9yhuGi2av3SccJ72F64Kch/fH12LmS1YKB2tkjZ/6bDJsWFL7OOqU8
-	 5eu9ToycKziVe08GHd5bI305SVDUte5nuvtmIWAuMG4j1LRXfag5vstTspsbIY2rxi
-	 KhaXhNKTPOie0omIGFDtDPx+y/M9WwUcd9EH0y/uoYJFYkcWqpTVKHlhkf5t4+aVC9
-	 QVu/9D1GR9yLqblpBXq+rX9hODHQMLLWvNltXbOKRjnVU8xZpxG/WFPIu9bPcbZux6
-	 QVjyvdoHQ5AxQ==
+	b=vAcy88Zbsbm73QG9RIBN7kLheKv9zuhvbQlRaY7AIi5FEIXCshoGeECGld6vuQkAY
+	 JmT92EdCP5kYMFzPBE/2Bekz1REZJwBuLdTvusoJJv1wRln5cQkXR3wC2NgwKXBx1D
+	 pyFyPB8IDBVWU8XRQKXBcD+pbHW+As9qsWwsyQEEfpWW/LqfnbZQVCMaJ/DeU1c6Pt
+	 yfhCKb250jG3LHHYURi4HiQU+Wkg3CWVFs4mtAnPCgjD/TGnKpQJNtmtDEZuDv0Zzh
+	 ddKlSjcQV8wjpaWD/td+90Vxa3CZuJ9bdtvwrPl0II4b0CMojmeMfWPTvm5pM0RW+t
+	 TJnFTafdyU06w==
 From: Mark Brown <broonie@kernel.org>
 To: tiwai@suse.com, shengjiu.wang@gmail.com, lgirdwood@gmail.com, Xiubo.Lee@gmail.com, perex@perex.cz,
  alsa-devel@alsa-project.org, Shengjiu Wang <shengjiu.wang@nxp.com>, nicoleotsuka@gmail.com, festevam@gmail.com
-In-Reply-To: <1660555546-24223-1-git-send-email-shengjiu.wang@nxp.com>
-References: <1660555546-24223-1-git-send-email-shengjiu.wang@nxp.com>
-Subject: Re: [PATCH] ASoC: fsl_sai: Add support multi fifo sdma script
-Message-Id: <166128059487.1031684.18152206941376913913.b4-ty@kernel.org>
-Date: Tue, 23 Aug 2022 19:49:54 +0100
+In-Reply-To: <1661218573-2154-1-git-send-email-shengjiu.wang@nxp.com>
+References: <1661218573-2154-1-git-send-email-shengjiu.wang@nxp.com>
+Subject: Re: [RESEND PATCH] ASoC: fsl_sai: Add support multi fifo sdma script
+Message-Id: <166128060004.1031684.56373454264278530.b4-ty@kernel.org>
+Date: Tue, 23 Aug 2022 19:50:00 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -65,7 +65,7 @@ Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 15 Aug 2022 17:25:46 +0800, Shengjiu Wang wrote:
+On Tue, 23 Aug 2022 09:36:13 +0800, Shengjiu Wang wrote:
 > With disabling combine mode, the multiple successive
 > FIFO registers or non successive FIFO registers of SAI module
 > can work with the sdma multi fifo script.
