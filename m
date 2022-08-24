@@ -1,59 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEBD559F8F8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Aug 2022 14:03:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 930D859F8FD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Aug 2022 14:05:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MCPrM45HDz30LC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Aug 2022 22:03:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MCPtJ3s9Lz3bnj
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Aug 2022 22:05:12 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jPSj97YF;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=OLrsQWl/;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MCPsk3zgGz2yQg
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Aug 2022 22:04:42 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jPSj97YF;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=OLrsQWl/;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MCPqn1nXYz2xHk
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Aug 2022 22:03:01 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id EBD45B8239E;
-	Wed, 24 Aug 2022 12:02:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76575C433D6;
-	Wed, 24 Aug 2022 12:02:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1661342576;
-	bh=JZ3hXAPlKWzmEXJh2Gr2Tdgic81AafQsDP5tJ7ywKaA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jPSj97YFr/FIN1QoDh+6vvTSKDgm6HE3BUroNwFr4hK8naAlEHAKUm4dCaAmaf+zq
-	 1cH1EB+AEea5guwSOTSo54sz8pqXG44rJnoUUMqYXUflTHbRBD6UWKpOl9V9bGc6Pg
-	 bIQcpRoF4yaZdLxo5NiTYu7OlIG0g+KxjJgetpiqTOQcbKiU+v7VnIuU2poovb292G
-	 de2sJb1hYbj5KW34wNlJjn3yHi2icnswUdOyR5iwQtyhL90JzpIMqwjSroj7WFNJvz
-	 r8L8nXXcbdoFCzotzh+HFiHk+/np6DoL2REpmo2FkVFcsYpRLEG7h2V67wUb6+OQfL
-	 2mq6duJD5gGYQ==
-Received: by pali.im (Postfix)
-	id 570A07DA; Wed, 24 Aug 2022 14:02:53 +0200 (CEST)
-Date: Wed, 24 Aug 2022 14:02:53 +0200
-From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] powerpc/boot: Fix compilation of uImage for e500
- platforms
-Message-ID: <20220824120253.ba46id2n765udzlo@pali>
-References: <20220820105200.30425-1-pali@kernel.org>
- <a70bd394-7f44-3129-801c-6dfd2d8a5a00@csgroup.eu>
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4MCPsc3cdHz4xD1;
+	Wed, 24 Aug 2022 22:04:36 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1661342676;
+	bh=WM428CE5s0U9r/O9GiOUsKwL6c25jSBrRzJHiPzj84A=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=OLrsQWl/n2ijlRvq/291/832WLT445D/N7i44+XgW+IFjuqSvzv4k0ft7iRsRf5A7
+	 g4Mib5ewxlxd5AMexZ+uUwm52vn/hHRznbMV6rG8we+Z1kDhE5OpjYcTMBVpMGb8rx
+	 bz0+juDMjvv/iHC8LvMu2SDFawuGcb2rAcnA2BlsIuPHgFj0EjCPuII6lIC2C2x3mr
+	 dZ7fVkJizgsh1Q1HjT9VbeVzuKeXxIH5P0maaUfaGFvCRmDERfliW2gSJIjAX42H6A
+	 JK1FIfV3d1klbNw8XzwNxG0ASBkJipF08X073iB01Bey9044EBaOYayuJqjuZRWsAA
+	 TnfPI8DBFLiEQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Jordan Niethe <jniethe5@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 2/2] powerpc/rtas: Fix RTAS MSR[HV] handling for Cell
+In-Reply-To: <ae28ea837d733d5bdb86c9c2e44c74808fa5ee8b.camel@gmail.com>
+References: <20220823115952.1203106-1-mpe@ellerman.id.au>
+ <20220823115952.1203106-2-mpe@ellerman.id.au>
+ <ae28ea837d733d5bdb86c9c2e44c74808fa5ee8b.camel@gmail.com>
+Date: Wed, 24 Aug 2022 22:04:30 +1000
+Message-ID: <87bks9luep.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <a70bd394-7f44-3129-801c-6dfd2d8a5a00@csgroup.eu>
-User-Agent: NeoMutt/20180716
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,89 +59,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Paul Mackerras <paulus@samba.org>, Joel Stanley <joel@jms.id.au>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: rmclure@linux.ibm.com, ldufour@linux.ibm.com, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tuesday 23 August 2022 16:57:34 Christophe Leroy wrote:
-> Le 20/08/2022 à 12:52, Pali Rohár a écrit :
-> > Commit 40a75584e526 ("powerpc/boot: Build wrapper for an appropriate CPU")
-> > broke compilation of uImage target for mpc85xx platforms by powerpc e500
-> > SPE capable cross compilers. After that commit build process throws error:
-> > 
-> >      BOOTAS  arch/powerpc/boot/crt0.o
-> >    powerpc-linux-gnuspe-gcc: error: unrecognized argument in option ‘-mcpu=powerpc’
-> >    powerpc-linux-gnuspe-gcc: note: valid arguments to ‘-mcpu=’ are: 8540 8548 native
-> >    make[1]: *** [arch/powerpc/boot/Makefile:231: arch/powerpc/boot/crt0.o] Error 1
-> > 
-> > Fix this issue by checking for CONFIG_PPC_E500MC / CONFIG_E500 options and
-> > applying appropriate -mcpu options for building uImage boot code.
-> 
-> This is very specific to e500, could you instead do something using 
-> CONFIG_TARGET_CPU, just like commit 446cda1b21d9 ("powerpc/32: Don't 
-> always pass -mcpu=powerpc to the compiler")
+Jordan Niethe <jniethe5@gmail.com> writes:
+> On Tue, 2022-08-23 at 21:59 +1000, Michael Ellerman wrote:
+>> The semi-recent changes to MSR handling when entering RTAS (firmware)
+>> cause crashes on IBM Cell machines. An example trace:
+...
+>> diff --git a/arch/powerpc/kernel/rtas_entry.S b/arch/powerpc/kernel/rtas_entry.S
+>> index 9a434d42e660..6ce95ddadbcd 100644
+>> --- a/arch/powerpc/kernel/rtas_entry.S
+>> +++ b/arch/powerpc/kernel/rtas_entry.S
+>> @@ -109,8 +109,12 @@ _GLOBAL(enter_rtas)
+>>  	 * its critical regions (as specified in PAPR+ section 7.2.1). MSR[S]
+>>  	 * is not impacted by RFI_TO_KERNEL (only urfid can unset it). So if
+>>  	 * MSR[S] is set, it will remain when entering RTAS.
+>> +	 * If we're in HV mode, RTAS must also run in HV mode, so extract MSR_HV
+>> +	 * from the saved MSR value and insert into the value RTAS will use.
+>>  	 */
+>
+> Interestingly it looks like these are the first uses of these extended
+> mnemonics in the kernel?
 
-Ok, What about this change?
+We used to have at least one use I know of in TM code, but it's since
+been converted to C.
 
-diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
-index a9cd2ea4a861..2247374c4e70 100644
---- a/arch/powerpc/boot/Makefile
-+++ b/arch/powerpc/boot/Makefile
-@@ -34,6 +34,7 @@ endif
- 
- BOOTCFLAGS    := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
- 		 -fno-strict-aliasing -O2 -msoft-float -mno-altivec -mno-vsx \
-+		 $(call cc-option,-mno-spe) $(call cc-option,-mspe=no) \
- 		 -pipe -fomit-frame-pointer -fno-builtin -fPIC -nostdinc \
- 		 $(LINUXINCLUDE)
- 
-@@ -44,8 +45,16 @@ else
- BOOTCFLAGS	+= -m64 -mcpu=powerpc64
- endif
- else
-+ifdef CONFIG_PPC32
-+ifdef CONFIG_TARGET_CPU_BOOL
-+BOOTCFLAGS	+= -m32 -mcpu=$(CONFIG_TARGET_CPU)
-+else
-+BOOTCFLAGS	+= -m32 -mcpu=powerpc
-+endif
-+else
- BOOTCFLAGS	+= -m32 -mcpu=powerpc
- endif
-+endif
- 
- BOOTCFLAGS	+= -isystem $(shell $(BOOTCC) -print-file-name=include)
- 
+>> +	extrdi	r0, r6, 1, 63 - MSR_HV_LG
+>
+> Or in non-mnemonic form...
+> rldicl  r0, r6, 64 - MSR_HV_LG, 63
 
+It's rldicl all the way down.
 
-> Thanks
-> Christophe
-> 
-> 
-> > 
-> > Fixes: 40a75584e526 ("powerpc/boot: Build wrapper for an appropriate CPU")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Pali Rohár <pali@kernel.org>
-> > ---
-> >   arch/powerpc/boot/Makefile | 6 ++++++
-> >   1 file changed, 6 insertions(+)
-> > 
-> > diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
-> > index a9cd2ea4a861..d7cf5d87e4bc 100644
-> > --- a/arch/powerpc/boot/Makefile
-> > +++ b/arch/powerpc/boot/Makefile
-> > @@ -44,8 +44,14 @@ else
-> >   BOOTCFLAGS	+= -m64 -mcpu=powerpc64
-> >   endif
-> >   else
-> > +ifdef CONFIG_PPC_E500MC
-> > +BOOTCFLAGS	+= -m32 $(call cc-option,-mcpu=e500mc,-mcpu=powerpc)
-> > +else ifdef CONFIG_E500
-> > +BOOTCFLAGS	+= -m32 $(call cc-option,-mcpu=8540 -msoft-float,-mcpu=powerpc)
-> > +else
-> >   BOOTCFLAGS	+= -m32 -mcpu=powerpc
-> >   endif
-> > +endif
-> >   
-> >   BOOTCFLAGS	+= -isystem $(shell $(BOOTCC) -print-file-name=include)
-> >   
+>>  	LOAD_REG_IMMEDIATE(r6, MSR_ME | MSR_RI)
+>> +	insrdi	r6, r0, 1, 63 - MSR_HV_LG
+>
+> Or in non-mnemonic form...
+> rldimi	r6, r0, MSR_HV_LG, 63 - MSR_HV_LG
+
+I think the extended mnemonics are slightly more readable than the
+open-coded versions?
+
+> It is ok to use r0 as a scratch register as it is loaded with 0 afterwards anyway.
+
+I originally used r7, but r0 is more obviously safe.
+
+>>
+>>  	li      r0,0
+>>  	mtmsrd  r0,1                    /* disable RI before using SRR0/1 */
+>
+> Reviewed-by: Jordan Niethe <jniethe5@gmail.com>
+
+Thanks.
+
+cheers
