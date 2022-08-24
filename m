@@ -1,55 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1689559F3B9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Aug 2022 08:44:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD8C059F519
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Aug 2022 10:22:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MCGmh0Bhvz3c8c
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Aug 2022 16:44:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MCJxj0c8jz3cfP
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Aug 2022 18:22:49 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=YjWlbqTL;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com; envelope-from=tongtiangen@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mail.zeus03.de (client-ip=194.117.254.33; helo=mail.zeus03.de; envelope-from=wsa+renesas@sang-engineering.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; secure) header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=YjWlbqTL;
+	dkim-atps=neutral
+Received: from mail.zeus03.de (www.zeus03.de [194.117.254.33])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MCGmB0KnRz2xmm
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Aug 2022 16:44:22 +1000 (AEST)
-Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.56])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4MCGg16b93zXdVC;
-	Wed, 24 Aug 2022 14:39:57 +0800 (CST)
-Received: from kwepemm600017.china.huawei.com (7.193.23.234) by
- dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Wed, 24 Aug 2022 14:44:11 +0800
-Received: from [10.174.179.234] (10.174.179.234) by
- kwepemm600017.china.huawei.com (7.193.23.234) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Wed, 24 Aug 2022 14:44:09 +0800
-Message-ID: <98f73fd6-1fe7-0760-167b-fd958154c91f@huawei.com>
-Date: Wed, 24 Aug 2022 14:44:09 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MCJwP2FCgz2yn3
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Aug 2022 18:21:38 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding; s=k1; bh=QZSYy9ZOyYNn4Sbj+9d4hyd/rRC
+	F0R9pMJ4odvD5koQ=; b=YjWlbqTLtYbUvEIgtlAow9FBUx0ubdew9ifp0+2omMx
+	FhVJfSolrADooA0wev9GAqSeQvf0h1vL9Qw0sk6rhYMzYf8MEkeFpg5xZJ8w17Oc
+	9zrhSfi3HRJ4MNe0KSQV6cuA7P9KPPtoejQ4CLkAHtfzSsk9WSW30CEEv2LvW2aQ
+	=
+Received: (qmail 2131763 invoked from network); 24 Aug 2022 10:21:31 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 24 Aug 2022 10:21:31 +0200
+X-UD-Smtp-Session: l3s3148p1@jehDXvjm1OcgAwDPXxw3AFlguiwjsjwa
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: linux-spi@vger.kernel.org
+Subject: [PATCH 0/2] spi: remove "spidev" nodes from DTs
+Date: Wed, 24 Aug 2022 10:21:27 +0200
+Message-Id: <20220824082130.21934-1-wsa+renesas@sang-engineering.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH -next v7 0/4]arm64: add machine check safe support
-To: Mark Rutland <mark.rutland@arm.com>, James Morse <james.morse@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>, Thomas Gleixner
-	<tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
-	<bp@alien8.de>, Robin Murphy <robin.murphy@arm.com>, Dave Hansen
-	<dave.hansen@linux.intel.com>, Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>,
-	Michael Ellerman <mpe@ellerman.id.au>, Benjamin Herrenschmidt
-	<benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>,
-	<x86@kernel.org>, "H . Peter Anvin" <hpa@zytor.com>
-References: <20220812070557.1028499-1-tongtiangen@huawei.com>
-From: Tong Tiangen <tongtiangen@huawei.com>
-In-Reply-To: <20220812070557.1028499-1-tongtiangen@huawei.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.179.234]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- kwepemm600017.china.huawei.com (7.193.23.234)
-X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,108 +51,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, Xie XiuQi <xiexiuqi@huawei.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Guohanjun <guohanjun@huawei.com>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, Wolfram Sang <wsa+renesas@sang-engineering.com>, linuxppc-dev@lists.ozlabs.org, linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Mark & Catalin & Will:
-	Kindly ping...
+There were two DTs left specifying "spidev" directly. Remove them.
 
-Thanks,
-Tong.
+Wolfram Sang (2):
+  ARM: dts: stm32: argon: remove spidev node
+  powerpc/82xx: remove spidev node from mgcoge
 
-在 2022/8/12 15:05, Tong Tiangen 写道:
-> With the increase of memory capacity and density, the probability of
-> memory error increases. The increasing size and density of server RAM
-> in the data center and cloud have shown increased uncorrectable memory
-> errors.
-> 
-> Currently, the kernel has a mechanism to recover from hardware memory
-> errors. This patchset provides an new recovery mechanism.
-> 
-> For arm64, the hardware memory error handling is do_sea() which divided
-> into two cases:
->   1. The user state consumed the memory errors, the solution is kill the
->      user process and isolate the error page.
->   2. The kernel state consumed the memory errors, the solution is panic.
-> 
-> For case 2, Undifferentiated panic maybe not the optimal choice, it can be
-> handled better, in some scenarios, we can avoid panic, such as uaccess, if the
-> uaccess fails due to memory error, only the user process will be affected,
-> kill the user process and isolate the user page with hardware memory errors
-> is a better choice.
-> 
-> Since V6:
->   Resend patches that are not merged into the mainline in V6.
-> 
-> Since V5:
->   1. Add patch2/3 to add uaccess assembly helpers.
->   2. Optimize the implementation logic of arm64_do_kernel_sea() in patch8.
->   3. Remove kernel access fixup in patch9.
->   All suggestion are from Mark.
-> 
-> Since V4:
->   1. According Michael's suggestion, add patch5.
->   2. According Mark's suggestiog, do some restructuring to arm64
->   extable, then a new adaptation of machine check safe support is made based
->   on this.
->   3. According Mark's suggestion, support machine check safe in do_mte() in
->   cow scene.
->   4. In V4, two patches have been merged into -next, so V5 not send these
->   two patches.
-> 
-> Since V3:
->   1. According to Robin's suggestion, direct modify user_ldst and
->   user_ldp in asm-uaccess.h and modify mte.S.
->   2. Add new macro USER_MC in asm-uaccess.h, used in copy_from_user.S
->   and copy_to_user.S.
->   3. According to Robin's suggestion, using micro in copy_page_mc.S to
->   simplify code.
->   4. According to KeFeng's suggestion, modify powerpc code in patch1.
->   5. According to KeFeng's suggestion, modify mm/extable.c and some code
->   optimization.
-> 
-> Since V2:
->   1. According to Mark's suggestion, all uaccess can be recovered due to
->      memory error.
->   2. Scenario pagecache reading is also supported as part of uaccess
->      (copy_to_user()) and duplication code problem is also solved.
->      Thanks for Robin's suggestion.
->   3. According Mark's suggestion, update commit message of patch 2/5.
->   4. According Borisllav's suggestion, update commit message of patch 1/5.
-> 
-> Since V1:
->   1.Consistent with PPC/x86, Using CONFIG_ARCH_HAS_COPY_MC instead of
->     ARM64_UCE_KERNEL_RECOVERY.
->   2.Add two new scenes, cow and pagecache reading.
->   3.Fix two small bug(the first two patch).
-> 
-> V1 in here:
-> https://lore.kernel.org/lkml/20220323033705.3966643-1-tongtiangen@huawei.com/
-> 
-> Tong Tiangen (4):
->    uaccess: add generic fallback version of copy_mc_to_user()
->    arm64: add support for machine check error safe
->    arm64: add uaccess to machine check safe
->    arm64: add cow to machine check safe
-> 
->   arch/arm64/Kconfig                   |  1 +
->   arch/arm64/include/asm/asm-extable.h |  5 ++
->   arch/arm64/include/asm/assembler.h   |  4 ++
->   arch/arm64/include/asm/extable.h     |  1 +
->   arch/arm64/include/asm/mte.h         |  4 ++
->   arch/arm64/include/asm/page.h        | 10 ++++
->   arch/arm64/lib/Makefile              |  2 +
->   arch/arm64/lib/copy_page_mc.S        | 82 ++++++++++++++++++++++++++++
->   arch/arm64/lib/mte.S                 | 19 +++++++
->   arch/arm64/mm/copypage.c             | 37 +++++++++++--
->   arch/arm64/mm/extable.c              | 25 +++++++++
->   arch/arm64/mm/fault.c                | 29 +++++++++-
->   arch/powerpc/include/asm/uaccess.h   |  1 +
->   arch/x86/include/asm/uaccess.h       |  1 +
->   include/linux/highmem.h              |  8 +++
->   include/linux/uaccess.h              |  9 +++
->   mm/memory.c                          |  2 +-
->   17 files changed, 233 insertions(+), 7 deletions(-)
->   create mode 100644 arch/arm64/lib/copy_page_mc.S
-> 
+ arch/arm/boot/dts/stm32mp157c-emstamp-argon.dtsi | 6 ------
+ arch/powerpc/boot/dts/mgcoge.dts                 | 7 -------
+ 2 files changed, 13 deletions(-)
+
+-- 
+2.35.1
+
