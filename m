@@ -1,73 +1,121 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9540D59F123
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Aug 2022 03:51:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A95E559F162
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Aug 2022 04:21:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MC8Fr5pGpz3c6N
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Aug 2022 11:51:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MC8wx445rz3fxx
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Aug 2022 12:21:37 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=YAaktP1N;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=QWOxPO9Z;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1035; helo=mail-pj1-x1035.google.com; envelope-from=jniethe5@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=40.107.236.40; helo=nam11-bn8-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=YAaktP1N;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=QWOxPO9Z;
 	dkim-atps=neutral
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2040.outbound.protection.outlook.com [40.107.236.40])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MC8FB3sDNz2xGy
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Aug 2022 11:50:37 +1000 (AEST)
-Received: by mail-pj1-x1035.google.com with SMTP id e19so14435100pju.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Aug 2022 18:50:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:user-agent:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc;
-        bh=L7NGZhsdEddaVVBOrdKk8HCVjkHqDc2Mpm5jQDhHOGY=;
-        b=YAaktP1NNPWVFKvRtKwrrwi7fLjIva09QrEEdJP8GA4E97d1+2EMVlRupiXVupMJVI
-         wvjDEiRhlckpSX7gTqSUaA7QbrztFKe4g/xHbNIodHQ9aX2e6W4in0mVQKblCZtRd2o8
-         EYFl+ar12z8btgiIdGIAjwzIBfUiTJ/gB0DPV2ImhWckNiW3mY1m5clv/rTHSk2D50ar
-         i+5Vxude2LD6jiHukL5EIn8rx2kj3DvWxd/wK+BDZxmSEXfU1FlxCRusD9QXZxj2qtkG
-         eL1KYprxEzST/Om2nflzdxCcySevHCK7BvMJ6imY0iwXOKJ9PT1p6QE9t2V0QochAwO1
-         VFDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:user-agent:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc;
-        bh=L7NGZhsdEddaVVBOrdKk8HCVjkHqDc2Mpm5jQDhHOGY=;
-        b=TU5Ty1ls5BIB9gvmCJfDzaFUdOP7PtSxnhxDos+66bf3rFuFXVDLMo+xoh+5Jeo7Dg
-         7PkN8hUAQeoQwVk3lzb5Lw+zKBtH1Xfwm/SSjm16UpJ0cmxW7L1iQRmsxP6NBpqnlJHz
-         Y3BN9Pa89OJ6dd08OvYCKpxe2Im2ar7CpIUgpdf8eUs3y+iVxhb1KWApvwPj5d6vYpkm
-         qcuXIQZ06Vp26VjR4BJ4kHxm/Ie1C5gd8qx+63XEKVWzmJSg0sbemWAHqOVM/5i55Ngj
-         SNLg/oc8IivsUHvUhQA/Wb2OmGSoLGEdZ8blPxRcAHovNSgMXQtMWVFXZ1eqHwjTr+oz
-         /2eg==
-X-Gm-Message-State: ACgBeo38O5i8FAnYnxlvgyD2aW4xVRD9NbWZBc3GGnsLLfEKgdnQTJ6b
-	PEQ5di5IX9sIcMxyOAZ3ig0=
-X-Google-Smtp-Source: AA6agR4q+d8YDZ2hzBnwMIiPDeYJhQpinjKbHKe0nKnr/rKYKHsBppsuUkqqjAoroQmSrhLMmco6sQ==
-X-Received: by 2002:a17:902:ebc2:b0:172:94f7:1b5e with SMTP id p2-20020a170902ebc200b0017294f71b5emr27989848plg.131.1661305834244;
-        Tue, 23 Aug 2022 18:50:34 -0700 (PDT)
-Received: from tee480.ozlabs.ibm.com (110-175-254-242.static.tpgi.com.au. [110.175.254.242])
-        by smtp.googlemail.com with ESMTPSA id a3-20020a170902710300b00172e19c2fa9sm5858317pll.9.2022.08.23.18.50.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Aug 2022 18:50:31 -0700 (PDT)
-Message-ID: <ae28ea837d733d5bdb86c9c2e44c74808fa5ee8b.camel@gmail.com>
-Subject: Re: [PATCH 2/2] powerpc/rtas: Fix RTAS MSR[HV] handling for Cell
-From: Jordan Niethe <jniethe5@gmail.com>
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-Date: Wed, 24 Aug 2022 11:50:26 +1000
-In-Reply-To: <20220823115952.1203106-2-mpe@ellerman.id.au>
-References: <20220823115952.1203106-1-mpe@ellerman.id.au>
-	 <20220823115952.1203106-2-mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-7"
-User-Agent: Evolution 3.36.5-0ubuntu1 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MC8d80DH1z3c7B
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Aug 2022 12:07:53 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=BW0HOr41CDsV/wGrunk2Lm/J85BAU40eEviEHRs5HMkeP/sEftGmpDq3jpPFAZoATKUIRb+aDlxf4/oANzS05JhunIQtgPPct0ut54CyS0gHR1nNmDas1oBgjPRe5xm8QOlb0EREAQ/FL6HZh3hhAZLVEbPkbB1iSwZ6+L2TZHxIP/o19HZyki1wWgsuDT+BnMqPbwmioR/KTCCyQKRSCkgsFYjyK7npbTjNGj+W7ObCYniAU1bLSMMONx4HU97gHc02svu3BvB2Boq549aJSK1JlkF6ToLt5jONjiTSV/8/wdPLtZoTK3U7UPlv0h0L0MUvHLUrikWaxHOwkYmXvw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/EsHsBSpkl01Xgx6E992Gm8GA/HDYoWLZnjRlByMO6c=;
+ b=i/Pb4VlzU5vTjxaaqGRkwEPTK7M3uHrfzzF2un4WZk0DwVr3VueGmNPwgdj9YzvEGNuKUqbpS1KO/iU3NvPmL/0lmcmB4PVVR11ELFZXrso41NOyz3NJXoZmx1cONlLuVwW3EZTclhr4UQzBwciV/OGLrje2XqLrnJi7dQrU8TCQHgF/400q1qd+bVR99cnslBs3JFPL2LsRKJRU4LbYfK0QRAXnOORS5KREjy7JBn45l4ErO78CuOWF9fvcrusi91At+UlOlb6eY/4uLwqvxJqlGyE9mIoqmkR+0ZdogXAcw5rewccsdcnFb55L+TqgnHSyme3j3NK5LeMkN0auuw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/EsHsBSpkl01Xgx6E992Gm8GA/HDYoWLZnjRlByMO6c=;
+ b=QWOxPO9Z2UDNra3ELXopKNR8DJ4hwzrnvL6BevAQlnbwv0irnyb7EBFGFvZylVGQIJoEyggjmXxsNxw20HivdHUkyS5BAQAnYDpA1B/w3NmV/7oX1HD2sRqwEeuTXUZxGGXjfLMxp5HR7+Vm7PNfV0x6gNbnbnwJcgBmZCmWhEy3Te0j6wO8OQ7MRw0sRSkX2BMts7IGJUc6tEI+S9ex/0xhxFN7mrmRSTnCgosTAtDiNHJKUeXh9XMv2esPTbJA8akB8ZE5ya6doyob6WXDT+xgw0RbHggp1XCjVar2SvtXvAEJ7vnMnQnQIbe+7YnGOL5gz/wF8I3uEpPtixfBaQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from BYAPR12MB3176.namprd12.prod.outlook.com (2603:10b6:a03:134::26)
+ by BY5PR12MB4918.namprd12.prod.outlook.com (2603:10b6:a03:1df::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5546.18; Wed, 24 Aug
+ 2022 02:07:34 +0000
+Received: from BYAPR12MB3176.namprd12.prod.outlook.com
+ ([fe80::7432:2749:aa27:722c]) by BYAPR12MB3176.namprd12.prod.outlook.com
+ ([fe80::7432:2749:aa27:722c%7]) with mapi id 15.20.5546.022; Wed, 24 Aug 2022
+ 02:07:33 +0000
+References: <6e77914685ede036c419fa65b6adc27f25a6c3e9.1660635033.git-series.apopple@nvidia.com>
+ <CAC=cRTPGiXWjk=CYnCrhJnLx3mdkGDXZpvApo6yTbeW7+ZGajA@mail.gmail.com>
+ <Yvv/eGfi3LW8WxPZ@xz-m1.local> <871qtfvdlw.fsf@nvdebian.thelocal>
+ <YvxWUY9eafFJ27ef@xz-m1.local> <87o7wjtn2g.fsf@nvdebian.thelocal>
+ <87tu6bbaq7.fsf@yhuang6-desk2.ccr.corp.intel.com>
+ <1D2FB37E-831B-445E-ADDC-C1D3FF0425C1@gmail.com>
+ <Yv1BJKb5he3dOHdC@xz-m1.local>
+ <87czcyawl6.fsf@yhuang6-desk2.ccr.corp.intel.com>
+ <Yv5QXkS4Bm9pTBeG@xz-m1.local>
+ <874jy9aqts.fsf@yhuang6-desk2.ccr.corp.intel.com>
+User-agent: mu4e 1.6.9; emacs 27.1
+From: Alistair Popple <apopple@nvidia.com>
+To: "Huang, Ying" <ying.huang@intel.com>
+Subject: Re: [PATCH v2 1/2] mm/migrate_device.c: Copy pte dirty bit to page
+Date: Wed, 24 Aug 2022 11:56:25 +1000
+In-reply-to: <874jy9aqts.fsf@yhuang6-desk2.ccr.corp.intel.com>
+Message-ID: <87czcqiecd.fsf@nvdebian.thelocal>
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR03CA0191.namprd03.prod.outlook.com
+ (2603:10b6:a03:2ef::16) To BYAPR12MB3176.namprd12.prod.outlook.com
+ (2603:10b6:a03:134::26)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: a5fc7fcf-eb26-4461-e1d3-08da85756851
+X-MS-TrafficTypeDiagnostic: BY5PR12MB4918:EE_
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	AZ0ERyiZQbgOuusr6wIrkirtipLx3fxd0p93qmdogTeS0jvGNpoLpsdSxunIB5vtIlsxyPB4EO8IU75QXFPJ6b0AwYgx6MIG+l/f5r6WMU3jDZEzaU7Drq9CclGy2Tk72Rd+SSkOxryOkoAVISfIrBHpHP6dRwClvawmf4sZplj84FaaljpYGXAjsZa0+8VQosUSy3XALE9AtQMNzNLmoMVVBj6ILkYoubbjDES0FIVIhmtZttE9NHHpbTmyH0C3cXE/nBlVHMNKdGJznrvCS7Yf0oaQJI1WxM/nBx4JKkxuqR80CkE24+TILt1Wtdm/5TdHUdQCas75LexjYOwEhv3i7WZUCKpOOVty2kHgH8alXAx2Om0Q6EkJuGg7/Sagem+uSR19Vxrn27V7rRQimwAMHoV0fh8gww9WbBbT3Fe1py+ydTA+H6XNcSHmHi8jfepA7sswCGHr4FhFgvN2m9g1qrzm46OjQp15bXo66n590EziaGIJHR8AhW1rhhDSP6LK4RWwdCuAFVImswFLeUQ5EdVXTesn6+xttXffiNPybNBESKD6ZnPE3V+663uuQ1rtqghHaMedu2WWaTwnNulzUrgd/WpyqMnaQJPlWlDylUn6ENIUoED8e5ugKE+THbJquGJ2AoQ8NHEpH51Y87roGj1SQ1oUh04ZIQNngVT1zGVOKhI8tgBH56atp7DizeI4oDJSkmePn3Ajzcpd0dcw2RdTzaGyN9QCCaQ/Hh4GZXdm1rI9MB8eHz5fGovG
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB3176.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(4636009)(396003)(39860400002)(136003)(376002)(366004)(346002)(26005)(2906002)(86362001)(6506007)(6512007)(9686003)(186003)(38100700002)(83380400001)(54906003)(6916009)(8936002)(316002)(4326008)(66476007)(6666004)(66946007)(8676002)(66556008)(478600001)(6486002)(7416002)(5660300002)(41300700001)(14143004);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?/6fK4Tc8EN+t3UKDjkLLwN1vrOkj2LEFVherEZU190HpKJL6++AEvqw4HDTp?=
+ =?us-ascii?Q?iZ+iWnPK7wppbWZqIQnoU7C4BTlYp1qmOs7wHh76T3LohfX+g0stMN9NIZ84?=
+ =?us-ascii?Q?cP6/6k/bcOP7FT2LF6tatb5d0to5GFXGy3dkYC6AnPr8qe7MrUfwvsCjAxC5?=
+ =?us-ascii?Q?Oq6H56XWBGB6MNHf2UAB5/WIHZ2LQg04rGnTbtsrfvz8xRicSS21DUOoul8j?=
+ =?us-ascii?Q?xM7U4asLqVbnfH2284H+gz1ilvDyEmu1c5zQq6lM/EB259W+Z6Y2/JkN7rHw?=
+ =?us-ascii?Q?/ULtweEd9eXNFhliL8E762OzesWYiXoeG/6DCH05SOrfido0dEm7dS44EdP+?=
+ =?us-ascii?Q?jdBNRwep+oTmu9i+AqIdEulCin+Umd6qJThNyDx4lDAbFR62XiKBD4QwHMYY?=
+ =?us-ascii?Q?iAsyvNZCY2SZiWo6yng2TaR94SlHb2ehUGDUhtKTK3Udd3b7ronbiWJyYHzM?=
+ =?us-ascii?Q?OkccaHwqL8RL9+z80w39i4zRmYrmfyJ2BiVfwlif5nFv281SuRjNXIt+PWiK?=
+ =?us-ascii?Q?QPAVjksGT7xhWgPExRa0dsKcO6TZUUCsZ+rxFlBxnfY5wgSamBdaUgJxh91G?=
+ =?us-ascii?Q?s5I0y/E4xl2mG9+sjmRVcULOh6p1Yy+CLZu0Vh3zOOGJNkho8wCGaRtSqJBv?=
+ =?us-ascii?Q?JHLSu/1rZLDdGqQTOAr59+pBtR3ySzaghM6X2CgLqgedkA9BomViZAMFNSfg?=
+ =?us-ascii?Q?H4xzOdk0uvYtZcG3B3gIaFCy+JbMVJqnQ0SUFYDoxVvO4uqZ3dsWfd3UhUZp?=
+ =?us-ascii?Q?vnQ7cZpfPD6Z59h7KP2ohSEIyF9OYbt1cRhgtc/FHYwMd9H+1KQ/4k/Sk0Tg?=
+ =?us-ascii?Q?AoIB0yyFe01P5wgbkp+A27ZYDYXapmnffZpgXaMyCViFUxSfjVk/NWNauJNb?=
+ =?us-ascii?Q?xRpw/w77h8MsAGBD3RG2QJW0sAnZwGOwgdGP4EcH75UOdEw7Oznuh74evVtw?=
+ =?us-ascii?Q?aCe3IsELi2mPCxQtBuXiBFgB2Dlt6iLxarWCwNpZAcJWTyH3DmA1D5348GqM?=
+ =?us-ascii?Q?/bW+9NZ4PQzxHQ7OqDpd2Cuiv2cVKbHSw3MV8yc9pr2WzwLSENW0n2BsHGtS?=
+ =?us-ascii?Q?iEubZqKQ0JNRmT/TTIwlfcuTJ+25E3a2cO/5wOdqT9MWw3HIAMuO64lqWcVF?=
+ =?us-ascii?Q?xxJCFp8RbBWqZUtavLRXY8B4KMOC0n6Ot+IR6dss67dfEUoVaVnjCzXFkRRy?=
+ =?us-ascii?Q?QeyYcizh0xcoNj5qBFuOT1kgAY+I2eP/Xra7Yvkn8glp1F1xlLC+XYCqXy21?=
+ =?us-ascii?Q?WNoORWc0Bij5x7+hL53yT/LFfXMURNJD+oDH5dQSCcOvmbRoeYM+l5GgoGgl?=
+ =?us-ascii?Q?0VK+rJ67WzStwmzCr9bYZXxDQa5EgRZQLEJPGXKMAJn7TpnnPiHJHkMK+Hkm?=
+ =?us-ascii?Q?s5bWhEVXqhxnQ8dW0jefgCzAGAKklOr+W8jl6qzUxYlDJxlplhH8GoBHq4nR?=
+ =?us-ascii?Q?wq7TWpaDW4tqoyDGeEmJX7HVkl9MxvcsjlJSkydbMSdCfzuvzsAPXG93ieGN?=
+ =?us-ascii?Q?gykzrgcmX6uooBSacv6Plqy4XYHDCRnERaae/Roq9CPJErxquzm5FodoISU1?=
+ =?us-ascii?Q?D1TrxP02fMPG3Xu0QnZheLrY3NVIrp9wVpTbOt48?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a5fc7fcf-eb26-4461-e1d3-08da85756851
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR12MB3176.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Aug 2022 02:07:33.7335
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: RQXgCX74IYU1+4DNPdhzNTO0u8EKAa7l7w1vu6iXDq717ms42rJt/KrnrRLj8KRJmYEBHogq/6UIbtFMZC8l6Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4918
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,86 +127,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: rmclure@linux.ibm.com, ldufour@linux.ibm.com, npiggin@gmail.com
+Cc: "Sierra Guiza, Alejandro \(Alex\)" <alex.sierra@amd.com>, Ralph Campbell <rcampbell@nvidia.com>, Lyude Paul <lyude@redhat.com>, Karol Herbst <kherbst@redhat.com>, David Hildenbrand <david@redhat.com>, Nadav Amit <nadav.amit@gmail.com>, Felix Kuehling <Felix.Kuehling@amd.com>, linuxppc-dev@lists.ozlabs.org, LKML <linux-kernel@vger.kernel.org>, Peter Xu <peterx@redhat.com>, Linux MM <linux-mm@kvack.org>, Logan Gunthorpe <logang@deltatee.com>, Matthew Wilcox <willy@infradead.org>, Jason Gunthorpe <jgg@nvidia.com>, John Hubbard <jhubbard@nvidia.com>, stable@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, huang ying <huang.ying.caritas@gmail.com>, Ben Skeggs <bskeggs@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2022-08-23 at 21:59 +-1000, Michael Ellerman wrote:
-+AD4 The semi-recent changes to MSR handling when entering RTAS (firmware)
-+AD4 cause crashes on IBM Cell machines. An example trace:
-+AD4 
-+AD4   kernel tried to execute user page (2fff01a8) - exploit attempt? (uid: 0)
-+AD4   BUG: Unable to handle kernel instruction fetch
-+AD4   Faulting instruction address: 0x2fff01a8
-+AD4   Oops: Kernel access of bad area, sig: 11 +AFsAIw-1+AF0
-+AD4   BE PAGE+AF8-SIZE+AD0-64K MMU+AD0-Hash SMP NR+AF8-CPUS+AD0-4 NUMA Cell
-+AD4   Modules linked in:
-+AD4   CPU: 0 PID: 0 Comm: swapper/0 Tainted: G        W          6.0.0-rc2-00433-gede0a8d3307a +ACM-207
-+AD4   NIP:  000000002fff01a8 LR: 0000000000032608 CTR: 0000000000000000
-+AD4   REGS: c0000000015236b0 TRAP: 0400   Tainted: G        W           (6.0.0-rc2-00433-gede0a8d3307a)
-+AD4   MSR:  0000000008001002 +ADw-ME,RI+AD4  CR: 00000000  XER: 20000000
-+AD4   ...
-+AD4   NIP 0x2fff01a8
-+AD4   LR  0x32608
-+AD4   Call Trace:
-+AD4     0xc00000000143c5f8 (unreliable)
-+AD4     .rtas+AF8-call+-0x224/0x320
-+AD4     .rtas+AF8-get+AF8-boot+AF8-time+-0x70/0x150
-+AD4     .read+AF8-persistent+AF8-clock64+-0x114/0x140
-+AD4     .read+AF8-persistent+AF8-wall+AF8-and+AF8-boot+AF8-offset+-0x24/0x80
-+AD4     .timekeeping+AF8-init+-0x40/0x29c
-+AD4     .start+AF8-kernel+-0x674/0x8f0
-+AD4     start+AF8-here+AF8-common+-0x1c/0x50
-+AD4 
-+AD4 Unlike PAPR platforms where RTAS is only used in guests, on the IBM Cell
-+AD4 machines Linux runs with MSR+AFs-HV+AF0 set but also uses RTAS, provided by
-+AD4 SLOF.
-+AD4 
-+AD4 Fix it by copying the MSR+AFs-HV+AF0 bit from the MSR value we've just read
-+AD4 using mfmsr into the value used for RTAS.
-+AD4 
-+AD4 It seems like we could also fix it using an +ACM-ifdef CELL to set MSR+AFs-HV+AF0,
-+AD4 but that doesn't work because it's possible to build a single kernel
-+AD4 image that runs on both Cell native and pseries.
-+AD4 
-+AD4 Fixes: b6b1c3ce06ca (+ACI-powerpc/rtas: Keep MSR+AFs-RI+AF0 set when calling RTAS+ACI)
-+AD4 Cc: stable+AEA-vger.kernel.org +ACM v5.19+-
-+AD4 Signed-off-by: Michael Ellerman +ADw-mpe+AEA-ellerman.id.au+AD4
-+AD4 ---
-+AD4  arch/powerpc/kernel/rtas+AF8-entry.S +AHw 4 +-+-+-+-
-+AD4  1 file changed, 4 insertions(+-)
-+AD4 
-+AD4 diff --git a/arch/powerpc/kernel/rtas+AF8-entry.S b/arch/powerpc/kernel/rtas+AF8-entry.S
-+AD4 index 9a434d42e660..6ce95ddadbcd 100644
-+AD4 --- a/arch/powerpc/kernel/rtas+AF8-entry.S
-+AD4 +-+-+- b/arch/powerpc/kernel/rtas+AF8-entry.S
-+AD4 +AEAAQA -109,8 +-109,12 +AEAAQA +AF8-GLOBAL(enter+AF8-rtas)
-+AD4  	 +ACo its critical regions (as specified in PAPR+- section 7.2.1). MSR+AFs-S+AF0
-+AD4  	 +ACo is not impacted by RFI+AF8-TO+AF8-KERNEL (only urfid can unset it). So if
-+AD4  	 +ACo MSR+AFs-S+AF0 is set, it will remain when entering RTAS.
-+AD4 +-	 +ACo If we're in HV mode, RTAS must also run in HV mode, so extract MSR+AF8-HV
-+AD4 +-	 +ACo from the saved MSR value and insert into the value RTAS will use.
-+AD4  	 +ACo-/
 
-Interestingly it looks like these are the first uses of these extended
-mnemonics in the kernel?
+"Huang, Ying" <ying.huang@intel.com> writes:
 
-+AD4 +-	extrdi	r0, r6, 1, 63 - MSR+AF8-HV+AF8-LG
+> Peter Xu <peterx@redhat.com> writes:
+>
+>> On Thu, Aug 18, 2022 at 02:34:45PM +0800, Huang, Ying wrote:
+>>> > In this specific case, the only way to do safe tlb batching in my mind is:
+>>> >
+>>> > 	pte_offset_map_lock();
+>>> > 	arch_enter_lazy_mmu_mode();
+>>> >         // If any pending tlb, do it now
+>>> >         if (mm_tlb_flush_pending())
+>>> > 		flush_tlb_range(vma, start, end);
+>>> >         else
+>>> >                 flush_tlb_batched_pending();
+>>>
+>>> I don't think we need the above 4 lines.  Because we will flush TLB
+>>> before we access the pages.
 
-Or in non-mnemonic form...
-rldicl  r0, r6, 64 - MSR+AF8-HV+AF8-LG, 63
+I agree. For migration the TLB flush is only important if the PTE is
+present, and in that case we do a TLB flush anyway.
 
-+AD4  	LOAD+AF8-REG+AF8-IMMEDIATE(r6, MSR+AF8-ME +AHw MSR+AF8-RI)
-+AD4 +-	insrdi	r6, r0, 1, 63 - MSR+AF8-HV+AF8-LG
+>> Could you elaborate?
+>
+> As you have said below, we don't use non-present PTEs and flush present
+> PTEs before we access the pages.
+>
+>>> Can you find any issue if we don't use the above 4 lines?
+>>
+>> It seems okay to me to leave stall tlb at least within the scope of this
+>> function. It only collects present ptes and flush propoerly for them.  I
+>> don't quickly see any other implications to other not touched ptes - unlike
+>> e.g. mprotect(), there's a strong barrier of not allowing further write
+>> after mprotect() returns.
+>
+> Yes.  I think so too.
+>
+>> Still I don't know whether there'll be any side effect of having stall tlbs
+>> in !present ptes because I'm not familiar enough with the private dev swap
+>> migration code.  But I think having them will be safe, even if redundant.
 
-Or in non-mnemonic form...
-rldimi	r6, r0, MSR+AF8-HV+AF8-LG, 63 - MSR+AF8-HV+AF8-LG
+What side-effect were you thinking of? I don't see any issue with not
+TLB flushing stale device-private TLBs prior to the migration because
+they're not accessible anyway and shouldn't be in any TLB.
 
-It is ok to use r0 as a scratch register as it is loaded with 0 afterwards anyway.
+> I don't think it's a good idea to be redundant.  That may hide the real
+> issue.
+>
+> Best Regards,
+> Huang, Ying
 
-+AD4  
-+AD4  	li      r0,0
-+AD4  	mtmsrd  r0,1                    /+ACo disable RI before using SRR0/1 +ACo-/
+Thanks all for the discussion. Having done some more reading I agree
+that it's safe to assume HW dirty bits are write-through, so will remove
+the ptep_clear_flush() and use ptep_get_and_clear() instead. Will split
+out the TLB flushing fix into a separate patch in this series.
 
-Reviewed-by: Jordan Niethe +ADw-jniethe5+AEA-gmail.com+AD4
-
+ - Alistair
