@@ -2,92 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B1D259F0DA
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Aug 2022 03:25:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A421359F0DE
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Aug 2022 03:26:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MC7hc1QYYz3c5x
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Aug 2022 11:25:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MC7jR3zgNz3cBL
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Aug 2022 11:26:35 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QgMbDAoh;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=dpb/yMlo;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=rmclure@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::630; helo=mail-pl1-x630.google.com; envelope-from=zhouzhouyi@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QgMbDAoh;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=dpb/yMlo;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MC7gw06Ggz2yHc
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Aug 2022 11:25:15 +1000 (AEST)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27O1IbTG000434;
-	Wed, 24 Aug 2022 01:25:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
- mime-version : subject : from : in-reply-to : date : cc :
- content-transfer-encoding : message-id : references : to; s=pp1;
- bh=ISw/n/vi6jJYTtUVP8BxYUtE1wQYI+YYzvcXcFiddQk=;
- b=QgMbDAohSPlTLBCWwVCjdoxqh3mvnk48cEzrFhVHVW6oeC30krUZYChqEuuOCJ7OZUGj
- 1+2yyLul7zSqpHzxQwpVsyHiXQjUbT855IBZMf/cT1YxlUEyHydMRWJz7Mk1WWs4RWu/
- qvDpBXhYSFroPvPZMqexmRB8RAVxQtdUssGoYO4oKHFYkpKaGIxKf4dt78lzEEn1YT8M
- yzWA6vd7qlTf1P5mmNEtpk+W1419JNIpiWN9VOvHn/Xm60jbPAmi1HsAPyGHaxYpS+9k
- MQQ5/3LdmVO+ooO/4KD9LGp1khp5ZUjfRWIkP+ne0UMNrWk2nK25hX5LO/aDNwnZthez gw== 
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3j5a7ar3jh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 24 Aug 2022 01:25:09 +0000
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
-	by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 27O1KmSk003305;
-	Wed, 24 Aug 2022 01:25:07 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
-	by ppma02fra.de.ibm.com with ESMTP id 3j2q88u8su-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 24 Aug 2022 01:25:07 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
-	by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 27O1P3kh23331322
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 24 Aug 2022 01:25:04 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E34CC11C052;
-	Wed, 24 Aug 2022 01:25:03 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8D46111C04C;
-	Wed, 24 Aug 2022 01:25:03 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Wed, 24 Aug 2022 01:25:03 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.177.18.116])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id AE76960151;
-	Wed, 24 Aug 2022 11:24:58 +1000 (AEST)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.1\))
-Subject: Re: [PATCH v3 18/18] powerpc/64s: Clear gprs on interrupt routine
- entry
-From: Rohan McLure <rmclure@linux.ibm.com>
-In-Reply-To: <ad40b56f-7a0d-9619-53e9-6ca8a8ae9b84@csgroup.eu>
-Date: Wed, 24 Aug 2022 11:24:53 +1000
-Content-Transfer-Encoding: 7bit
-Message-Id: <91C7009B-3A97-4053-9153-23C19B279499@linux.ibm.com>
-References: <20220819033806.162054-1-rmclure@linux.ibm.com>
- <20220819033806.162054-19-rmclure@linux.ibm.com>
- <ad40b56f-7a0d-9619-53e9-6ca8a8ae9b84@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MC7hm28RTz2yZc
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Aug 2022 11:25:59 +1000 (AEST)
+Received: by mail-pl1-x630.google.com with SMTP id c2so14367296plo.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Aug 2022 18:25:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc;
+        bh=uUmdHBpzbriSuoiotw31C+sqS36Q04kPztFqTxJQriw=;
+        b=dpb/yMlot+zmKLKXIjN6Lvob6LhNAAMCj/+/Os1pajANbCivi3fer2r0Fmqkba5q5j
+         mbVtDCeEkBqAxJA3Jwlcnmc1UGiPMfco0NiKCUraZVvrh30cMjKwZxOY9GGgVhthe9Ba
+         9YnAbqk5d/0N1mR8i2cUsV7gh4GHg62DdyrbY8WR+VFMR8zadMzS98Xqp6+Rt14tDot6
+         pPYnphfWLxgQrJveBRXJbcJ65Cl48WyQilgLXE7j4egkKdSNlm0kFrmVKaakvi1wWVxf
+         fPS6XZsZsSycgRBMgX8F1jZmlqbGON/rJYkPsA+k23m1N6Yq7vijy6NkAS6mIBkCqrXR
+         D+0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc;
+        bh=uUmdHBpzbriSuoiotw31C+sqS36Q04kPztFqTxJQriw=;
+        b=maV88MnW146udzTM2eUBJxPcLhxtaEP5U3qzkFRcdOXUsIrjo3u4YC0msUIsNcUGZS
+         hIrjWYQKHMMHc1V2BaBhWAHAeav0lByDGalkBWQ7SSX19DGA0WAGUU0asmmZstdNxRi+
+         0Dk5mBPZW4O0NcLSn9GAcRcGtBiTM24ooH0l1ALhAS7Cp4paeM2vXY33RK0JCxjFce6l
+         S8JBKfkHKmdRQgBMedVZkXlU60n2UwvHGYRU4um2tpgFLaFFHD2DWjn6o2gjI4mfOjEO
+         LjT5XX0i2a0h5eM3PuCpDvXia9Qc2WA0sVI1gIiGaFC+WRxhEbADhaZZNOVl5OajzUum
+         dD2Q==
+X-Gm-Message-State: ACgBeo3fc6XZlklvt/ZEcVd+lvAaTjhcsNE5sOcWssjwqd81QYZkovuD
+	cP69OECEKscAVy5ejinBqRyT5EHg2McG6NJiaSTbcRC0
+X-Google-Smtp-Source: AA6agR7xbfLJ1Uo0SN1Sc8YyuIhlZnLymcTgcuHc3xIKaCc5l2Col+H8uCrdOb9eDMMna3TkYDUkhhZNCNjnMhaqWsU=
+X-Received: by 2002:a17:90b:4a05:b0:1f5:62d5:4155 with SMTP id
+ kk5-20020a17090b4a0500b001f562d54155mr6063079pjb.6.1661304356632; Tue, 23 Aug
+ 2022 18:25:56 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220821010030.97539-1-zhouzhouyi@gmail.com> <87edx7l5px.fsf@mpe.ellerman.id.au>
+ <0d7b55bc-4dd2-7de1-8ca5-353b1a044caf@csgroup.eu> <3756ad84-a5b0-b404-7962-86f77d6f38b3@csgroup.eu>
+In-Reply-To: <3756ad84-a5b0-b404-7962-86f77d6f38b3@csgroup.eu>
+From: Zhouyi Zhou <zhouzhouyi@gmail.com>
+Date: Wed, 24 Aug 2022 09:25:45 +0800
+Message-ID: <CAABZP2w5zOWwLknAEY4UoEQZraOn29TqpaaZxmZKpqS2GhT_yQ@mail.gmail.com>
+Subject: Re: [PATCH linux-next] powerpc: disable sanitizer in irq_soft_mask_set
 To: Christophe Leroy <christophe.leroy@csgroup.eu>
-X-Mailer: Apple Mail (2.3696.120.41.1.1)
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 5fIbkjBptYYeZ_izay2du8d5hVI0ko0X
-X-Proofpoint-ORIG-GUID: 5fIbkjBptYYeZ_izay2du8d5hVI0ko0X
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-08-23_10,2022-08-22_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501 mlxscore=0
- lowpriorityscore=0 clxscore=1015 mlxlogscore=862 phishscore=0
- impostorscore=0 adultscore=0 malwarescore=0 bulkscore=0 suspectscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2207270000 definitions=main-2208240001
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,18 +74,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: atrajeev@linux.vnet.ibm.com, "Paul E. McKenney" <paulmck@kernel.org>, linux-kernel <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>, rcu <rcu@vger.kernel.org>, lance@osuosl.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> What about arch/powerpc/kernel/exceptions-64e.S, no change required 
-> inside it ? As interru_64.S applies to both 64s and 64e, I would have 
-> expected changes in exceptions_64e too.
+On Wed, Aug 24, 2022 at 12:50 AM Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
+>
+>
+>
+> Le 23/08/2022 =C3=A0 10:47, Christophe Leroy a =C3=A9crit :
+> >
+> >
+> > Le 23/08/2022 =C3=A0 10:33, Michael Ellerman a =C3=A9crit :
+> >> Zhouyi Zhou <zhouzhouyi@gmail.com> writes:
+> >>
+> >> My worry is that this will force irq_soft_mask_set() out of line, whic=
+h
+> >> we would rather avoid. It's meant to be a fast path.
+> >>
+> >> In fact with this applied I see nearly 300 out-of-line copies of the
+> >> function when building a defconfig, and ~1700 calls to it.
+> >>
+> >> Normally it is inlined at every call site.
+> >>
+> >>
+> >> So I think I'm inclined to revert ef5b570d3700 ("powerpc/irq: Don't op=
+en
+> >> code irq_soft_mask helpers").
+> >
+> > Could you revert it only partially ? In extenso, revert the
+> > READ/WRITE_ONCE and bring back the inline asm in irq_soft_mask_return()
+> >   and irq_soft_mask_set(), but keep other changes.
+>
+> I sent a patch doing that.
+Thank Christophe for the fix. I am very glad to be of benefit to the
+community ;-)
+Also thank Michael and Paul for your constant encouragement and
+guidance, I learned to use objdump to count the number of failed
+inline function calls today ;-)
 
-As it stands the changes in interrupt_64.S cause non-volatiles to be
-unconditionally restored. This may lead to a performance regression on
-Book3E, as previously interrupt_return_srr would restore non-volatiles
-only after handling a signal, otherwise assuming nvgprs to be intact.
+By the way, from my experiments, both gcc-11 and clang-14 behave the
+same as Michael has described.
 
-As some Book3E systems do feature speculation, it makes sense to perform
-the same mitigation on these systems as performed on Book3S systems.
+Cheers
+Zhouyi
+>
+> Christophe
