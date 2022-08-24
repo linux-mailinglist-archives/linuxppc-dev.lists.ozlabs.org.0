@@ -1,114 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9047259F1D5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Aug 2022 05:06:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6612659F2FB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Aug 2022 07:08:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MC9wG2lBxz3cjD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Aug 2022 13:06:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MCDdn2Yf7z3c6j
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Aug 2022 15:08:45 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=N9r3BBev;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=ammrl+ff;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=40.107.237.83; helo=nam12-bn8-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::1136; helo=mail-yw1-x1136.google.com; envelope-from=saravanak@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=N9r3BBev;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=ammrl+ff;
 	dkim-atps=neutral
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2083.outbound.protection.outlook.com [40.107.237.83])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-x1136.google.com (mail-yw1-x1136.google.com [IPv6:2607:f8b0:4864:20::1136])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MC9t057bBz2xKX
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Aug 2022 13:04:08 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=B/E+l+T6Q4YzJKTWUeeeofNAz8wQeEil8WUM19cgy7Z59WFbQEsc2YYIwbamIknnkwvQgRmj7H5jvDNLju2wvlnPXrnsF/mxb9hM+P8BdH0h7TA6/GISrKNo90rnVNLWmNnGY49a7v5uqx3ofhpBcCILeMKJBmkEfOH1YfBUVzbFFOd3ZDIYB9jdq/0V7L/zhtYDHMso2c0XXuC8wRsUB6FCwEjSjO6GyVuwGzovCVlOjg2wu5maK35tNuIUZkhitaFwIlfYV1nbm7feRts7ZaKKFIhqUi2MkLQtXNZnmp0Jsi8UUrr1y1iR17ViLAxeuA0YcFvu1UEdd/glJBMy3Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=snVPulbAKBAi9Wd3KFPYZ5rYVHb8mY3ptG8l5yLntdE=;
- b=Vs5Pu9sDiwrhW3JeGDZv5wZj7aIHscwNUD+B1yFaENCF9lLTEC3xliYgbdEw40ocd/Be73XLialRLem8PKYa/nY5si97kPAUWG5lAlOExL+0WI6cFUXemGWY6vHwK7H90tsiF5FzdoPKH66I3EQ+aLwWDdQ1R0zgmXxdS26+57vRJ2/KSAKX+6PPHerOj5KgfUvo4B2qYLgKNHJdmUxbnMz+R9Cirqvcw7/r1ZQIxC4egBZ5cUiU7GQTIEOpJNADHgvSD1Dt/Bs5TsVOYsmjX1bEkVVOnH/iATWxXbffjeuQ9MD+vpSswVlXQqgZhhUHQLFeo3L7tRM5vZAJF/EG6g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=snVPulbAKBAi9Wd3KFPYZ5rYVHb8mY3ptG8l5yLntdE=;
- b=N9r3BBevrOsLQ8P5gSvHSSuOS0fUYjYp8SiyuvUIpmAok3JdCAHK3STK6cCQpRn9ZefzOFMIMNU8AQYXALt+G2u/eq3zWc/7yrvaA9aQIlM++g8a/J4A3mcd+nTmyMN4dOlk+k2O6nkFSwb4l2ZN6pa3LTte5lKnLNbv3c4ZITIcXY3XSFjYL+tfpPprsdzmHwz+DTb0GSLEgBqeGT+pesKU9hW5wdorbxpiBTHfrXKpobjK36arsI+fOHS64rAhfKyM1eibU0BFnym4lpno7gtlFBzePNFpBJ47RBkLcxo00SFy03CDETS0jrm2+Pz5+Ix1v5aoSBkBkTpnNuWGjA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from BYAPR12MB3176.namprd12.prod.outlook.com (2603:10b6:a03:134::26)
- by LV2PR12MB5774.namprd12.prod.outlook.com (2603:10b6:408:17a::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5546.23; Wed, 24 Aug
- 2022 03:03:50 +0000
-Received: from BYAPR12MB3176.namprd12.prod.outlook.com
- ([fe80::7432:2749:aa27:722c]) by BYAPR12MB3176.namprd12.prod.outlook.com
- ([fe80::7432:2749:aa27:722c%7]) with mapi id 15.20.5546.022; Wed, 24 Aug 2022
- 03:03:50 +0000
-From: Alistair Popple <apopple@nvidia.com>
-To: linux-mm@kvack.org,
-	akpm@linux-foundation.org
-Subject: [PATCH v3 3/3] selftests/hmm-tests: Add test for dirty bits
-Date: Wed, 24 Aug 2022 13:03:39 +1000
-Message-Id: <8e425a8ec191682fa2036260c575f065eeb56a53.1661309831.git-series.apopple@nvidia.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <3b01af093515ce2960ac39bb16ff77473150d179.1661309831.git-series.apopple@nvidia.com>
-References: <3b01af093515ce2960ac39bb16ff77473150d179.1661309831.git-series.apopple@nvidia.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR05CA0113.namprd05.prod.outlook.com
- (2603:10b6:a03:334::28) To BYAPR12MB3176.namprd12.prod.outlook.com
- (2603:10b6:a03:134::26)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MC7sn61JQz2xGn
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Aug 2022 11:33:48 +1000 (AEST)
+Received: by mail-yw1-x1136.google.com with SMTP id 00721157ae682-333b049f231so424825067b3.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Aug 2022 18:33:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=15+zFGICN73u7PZkuVftuGFAaRqO2hNiuUPbcuB/iDw=;
+        b=ammrl+ffQIbxpXELKnFxaurs3Fbe2bx9R/IRI2+J5pQAM/wfjFh1aSFzyWG/E1RD5I
+         rshOZlmvK+Bt4a2MNbUFbSpkCeSrrxRT3zaVTQqLRUMz4elzDZb4CyvIvtQzq4jGwi+1
+         HBILJXTenmBL8ezDV/XzSltMyRVW8N5pGLVc6ZMhlIDEvl+mrwxpUc5n+db5z5Pfve4k
+         jWbqAzYB3Hyg5oa2ZHgXfW73ElDNxOwcp7mMt28pojnFNBEyD2+0HttoLOb68bdPn3gz
+         h+F5uqyOw5Q9oI+0N52Nr3XEpZ0TzyQMzlW05rWkdP3Hj3nW89n+8r+x6EjcJTcjYaCu
+         dSgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=15+zFGICN73u7PZkuVftuGFAaRqO2hNiuUPbcuB/iDw=;
+        b=CMdcIjn1TwqtC6LVUTPbJy3mtTYvNkgAYc+qQyXMts0ENfbllbPL5SoBG2/Gqt8mRI
+         PLDs7sGqxiQk8D5+oJlYpJFJGtvJ8qC/eSAZmkaz//Gu4aDYbV9yRizAGGr5xu3iLma4
+         SNiGsRuAWX/TpBZ081t3mK+DlW8Lc0Ip/SQJ+jvuQhrzKdqmXYPGBp5A1n9E3wfX0JEc
+         eBV33FB9X4l7rsU/d6MVUtEesy4oukIaCB73K5EPk1yxW5vaM91HXHBmiwEBCeBxdX9l
+         97Mu/fjWhhv/dScQeiGtUsLw3UtVoR6U0fUQ3j5JYEHhRIANsTDTw2Om0vYKnMM7l8dX
+         FXVQ==
+X-Gm-Message-State: ACgBeo08Q2rLY587uP87IlsjZHVKH1wNCZLRaxe/G7APHue1DDRMZrnc
+	THdg0/wAz89XsHuFhhwfT/+H0sL0OuNJ1XrSgvNQKg==
+X-Google-Smtp-Source: AA6agR5VUVZnLczkpHKFOKrnd+Tscg/SlOlcCZoOHfOkTvdY9LhPO1gaSJJ+tW/v5A56NSwT8mnZVrMApq5J4jdaQcY=
+X-Received: by 2002:a25:1546:0:b0:68f:8758:7348 with SMTP id
+ 67-20020a251546000000b0068f87587348mr24825887ybv.563.1661304824786; Tue, 23
+ Aug 2022 18:33:44 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 8f693d62-88fc-4a34-6fc3-08da857d451b
-X-MS-TrafficTypeDiagnostic: LV2PR12MB5774:EE_
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	bZmzRAFqR2cu83C/EuVCfmxhlHyqrLyPS3M/bUwnQHD7qdvSTkAEUdKNJpogGeDWjDfedcmOYikq5zwy6aMTRlXQoHIxRlwj7naji0D2vkFNFV0OtP585OWdzC7Q4cafdDfxd333+ZzmLxkgRM61z/RUouKMGRGXlqxo896/Ye6GQrz0jeSUC7RxJbEttijST2jzoL/tLNkYQM8N29TwKHbjLZdXxlJeONGptHdqhBxH4+tqHQ8TNlpc89l6hLqXri6cqJpvTn6QQpGqnFxIM94loQER7E8Ynus/a8uiuslJxyiKyE86q0cZ/8nK2JXVOCrXA6ahO/SyCMhcDZa3yblZfSSRdvLCMm/k2j3sl9rzydZHv4tKgtkLxLXxEtnoob1hzqNZkmoQfSbW6yxsbsQEGBhjejPerch6KmWZY994cUOBhhidVu8tmMrVUJ52rGl+GvD68qJ3qZhV0xAFTApW1pvmgodj3UXhXBR3+gz66Ig/fISAyEFoWoG+6HFR21DyXGzCA0sFbj1X2zsmVcZPJHQVN2IhgXM0JF7KZJBKC710Hs/Wbaq7JiB1jfuMXRVlFEd9uv5rK12jrPHr0Mk3rxhqawxF3/NFf6Sw96OwBSog6TSq7c9toF1jv/C7OJKufrXypKA3zvg/aPuOVztLLypxNxkB7Ed20WzQ9qI3DuJFH3BhdFWXk2p7fupBkkaYB6W2a3WhseK2p/Q2tz7vjz8USrZdJ8xEj1Qai1MON1X38ZvF1TjNlN+XRP3XQXOpN8yx5P6iYgYOZYmldA==
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB3176.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(4636009)(366004)(376002)(136003)(396003)(346002)(39860400002)(83380400001)(478600001)(66556008)(66476007)(66946007)(2616005)(4326008)(186003)(8676002)(36756003)(8936002)(41300700001)(6666004)(6512007)(2906002)(6486002)(6506007)(26005)(86362001)(7416002)(5660300002)(316002)(54906003)(38100700002)(14143004);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?Vi06MaBhg7VPeMAIg2aX3mngHgnPkB/9LTIrlWZfM2I61oFXUT5Qxwneylgt?=
- =?us-ascii?Q?vQOHI26GDs03DoRAxeYCQqfdV8oiN0elQAynVxAlhR0ZfP7Mq2gw5MskwJsx?=
- =?us-ascii?Q?/9hsDyO14zSv6tlfrjgfRbmNpZYNxz5BCtDr27mVkkpHpUkRBL/hNsQGXSnc?=
- =?us-ascii?Q?9qHxtyMnUJcPu4Di/g9corFfcjTKUAeEVeVcHQ5pNRd72CKt/Fh4tB0zDylG?=
- =?us-ascii?Q?uFLLOMzmNaq4rzS9nxWWBoHtEZqR+R7s5rEH1Xn52JR7rKO8nDj8b8+DpEUp?=
- =?us-ascii?Q?CYIiwMRsfi88Dsb6pcXnEeSxxOIc+ZAgDbIi9eJLFuAVCULlhGe+3GpFeKw/?=
- =?us-ascii?Q?2RE+0sB4s6R+miTqdNi7zIViI0TBccUVNdc7W9YOQyTpMaWzzMnJek4okLhm?=
- =?us-ascii?Q?SuiZyrv/Wr4hNKE5fdQE8/gVrZPAjPhXaxtV/ZMSc5BpGWu7SKs8tM0//KDk?=
- =?us-ascii?Q?kHnmEwXzf+nVEr43uRwlRsmA+FmnYw5UIPjEhu1a/YMn8ssWaAv4h2ryvQDo?=
- =?us-ascii?Q?uucv2MzNEyc5h/rx/P5CJ2sr2y1LZoV+V8k6epyDp+gj1Wo1ECL9s7Sk+T++?=
- =?us-ascii?Q?HsajAauEkhXofJ3AfE+ykgHeIczKKg2mUFkzn73Bny4VfAKPOCiA7N+MjTXq?=
- =?us-ascii?Q?w1/ev8YD8zvqx6+eFp6PeMjCQIprDUrvLc8h1ODdmXpmzfilLAz2AboHZwFl?=
- =?us-ascii?Q?U1Nw3bActgE8hWzinbZRmnDbiezJXniJlfooca5xpknf5ZZAGqBSUzsOgbUs?=
- =?us-ascii?Q?UdgfKr6nYtSBMiTQRCEGg2jnV8UnKqvbUTmbG/NigXER/TCsZuNmxByKxRi0?=
- =?us-ascii?Q?FetJ+ET0aBCregDzahMhBmxQASbVmP8SDW4FWjsR0ifkdNHeAjNBVIDBeawm?=
- =?us-ascii?Q?Ul4nAGr0Z2v55DnqdN1s9aP86POBepwVkcliVQD/N249QtPJuKZKm6kgJ0zV?=
- =?us-ascii?Q?5uGDt9O2+6hUPWxpNYJolnQEnhCqRUGrGe1uQIwTETsJXDOTBK9FV+G7r+Ik?=
- =?us-ascii?Q?W+B5IBCNxP8MlR4Iemk1Ybzc36ldSpNP1KLIHaSzMxvR0LviymXHU9gZrHbS?=
- =?us-ascii?Q?y0l9wEe4sT5NR++E1+nVpTAbdNYcUG2jX6jmt1wdZy7kWAQSeOQIGcwoY6HO?=
- =?us-ascii?Q?d5TQoHtuQH/3QW/YyphoMnjzSC9422rvoiNkhzMyw9VA9ZLyZXzbEkkTve0O?=
- =?us-ascii?Q?7zQ82tBo68szMjbfFVerbkRGHuDqwHIXzwYJY8Hi0bMPPSp6H+u13PBskjt1?=
- =?us-ascii?Q?r08mGDYO69T6JWflk++7pMsJKpwQB5rcDw9FzF/KI5131/99FwXuUcyVxGfv?=
- =?us-ascii?Q?j0LGJq5ukSrBfeVQRpbg3eKSf7DSpxV43yrXxIzR9Hjl0Zr2RwBRfCgJPCeL?=
- =?us-ascii?Q?ULMqpNy4baYvBIjF0tkE1AEFBP0ayVFKHXF5UlJjl6ekvx8n7Xkzz+s8HcfC?=
- =?us-ascii?Q?G2E2uHFJYEbh3es2czSnVunpFSxd369pdIejGa/LBa9weTRgaltTm7veA5Ky?=
- =?us-ascii?Q?rXgKyjFRmJ8sm8N+A1G6lLV4GeulZ+v0H7DKr0ZIYEfEYN2fpfh0p0sA1PsU?=
- =?us-ascii?Q?38ay9/KDVe+/bDzUixb9TFx5l7tnx+sKBrBUo5J5?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8f693d62-88fc-4a34-6fc3-08da857d451b
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR12MB3176.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Aug 2022 03:03:50.4741
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: F4qkStYyDB6rG+wwdhwWs4iDxmijQGEFtsaBY1wyFVB+h2S0kyyU7Z/4rJw97hh2qranG7Ql0XPPfljL+Ea2YQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB5774
+References: <20220701012647.2007122-1-saravanak@google.com> <YwS5J3effuHQJRZ5@kroah.com>
+In-Reply-To: <YwS5J3effuHQJRZ5@kroah.com>
+From: Saravana Kannan <saravanak@google.com>
+Date: Tue, 23 Aug 2022 18:33:07 -0700
+Message-ID: <CAGETcx8C_Hw588J_DsDELp2rS-UNnezpqqqvUixqGR7m2wDKaA@mail.gmail.com>
+Subject: Re: [PATCH v2 0/2] Fix console probe delay when stdout-path isn't set
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailman-Approved-At: Wed, 24 Aug 2022 15:08:16 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -120,153 +73,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Sierra Guiza, Alejandro \(Alex\)" <alex.sierra@amd.com>, Ralph Campbell <rcampbell@nvidia.com>, linuxppc-dev@lists.ozlabs.org, Lyude Paul <lyude@redhat.com>, Karol Herbst <kherbst@redhat.com>, David Hildenbrand <david@redhat.com>, Nadav Amit <nadav.amit@gmail.com>, Felix Kuehling <Felix.Kuehling@amd.com>, Alistair Popple <apopple@nvidia.com>, LKML <linux-kernel@vger.kernel.org>, Peter Xu <peterx@redhat.com>, Logan Gunthorpe <logang@deltatee.com>, Matthew Wilcox <willy@infradead.org>, Jason Gunthorpe <jgg@nvidia.com>, John Hubbard <jhubbard@nvidia.com>, stable@vger.kernel.org, huang ying <huang.ying.caritas@gmail.com>, Ben Skeggs <bskeggs@redhat.com>
+Cc: andrew lunn <andrew@lunn.ch>, peng fan <peng.fan@nxp.com>, "Rafael J. Wysocki" <rafael@kernel.org>, linus walleij <linus.walleij@linaro.org>, Paul Mackerras <paulus@samba.org>, Alim Akhtar <alim.akhtar@samsung.com>, Peter Korsgaard <jacmet@sunsite.dk>, linux-stm32@st-md-mailman.stormreply.com, Karol Gugala <kgugala@antmicro.com>, Jerome Brunet <jbrunet@baylibre.com>, linux-samsung-soc@vger.kernel.org, Michal Simek <michal.simek@xilinx.com>, Hammer Hsieh <hammerh0314@gmail.com>, NXP Linux Team <linux-imx@nxp.com>, Vineet Gupta <vgupta@kernel.org>, len brown <len.brown@intel.com>, Nicolas Saenz Julienne <nsaenz@kernel.org>, linux-pm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, linux-unisoc@lists.infradead.org, Scott Branden <sbranden@broadcom.com>, Andrew Jeffery <andrew@aj.id.au>, linux-kernel@vger.kernel.org, Richard Genoud <richard.genoud@gmail.com>, Masami Hiramatsu <mhiramat@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Claudiu Beznea <claudiu.beznea
+ @microchip.com>, Alexandre Belloni <alexandre.belloni@bootlin.com>, pavel machek <pavel@ucw.cz>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, eric dumazet <edumazet@google.com>, Thierry Reding <thierry.reding@gmail.com>, sascha hauer <sha@pengutronix.de>, Chunyan Zhang <zhang.lyra@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, Gabriel Somlo <gsomlo@gmail.com>, Tobias Klauser <tklauser@distanz.ch>, linux-mips@vger.kernel.org, kernel-team@android.com, Martin Blumenstingl <martin.blumenstingl@googlemail.com>, linux-arm-msm@vger.kernel.org, linux-actions@lists.infradead.org, linux-gpio@vger.kernel.org, linux-rpi-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org, linux-arm-kernel@lists.infradead.org, Andreas Farber <afaerber@suse.de>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Kevin Hilman <khilman@baylibre.com>, Pali Rohar <pali@kernel.org>, heiner kallweit <hkallweit1@gmail.com>, ulf hansson <ulf.hansson@linaro.org>, Neil Armstrong <narmstrong@baylibre.com>, Lo
+ renzo Pieralisi <lpieralisi@kernel.org>, Al Cooper <alcooperx@gmail.com>, linux-tegra@vger.kernel.org, Jiri Slaby <jirislaby@kernel.org>, linux-aspeed@lists.ozlabs.org, Rob Herring <robh@kernel.org>, Florian Fainelli <f.fainelli@gmail.com>, Mateusz Holenko <mholenko@antmicro.com>, Alexander Shiyan <shc_work@mail.ru>, kevin hilman <khilman@kernel.org>, Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Joel Stanley <joel@jms.id.au>, Orson Zhai <orsonzhai@gmail.com>, paolo abeni <pabeni@redhat.com>, Patrice Chotard <patrice.chotard@foss.st.com>, Ray Jui <rjui@broadcom.com>, Vladimir Zapolskiy <vz@mleia.com>, linux-snps-arc@lists.infradead.org, Timur Tabi <timur@kernel.org>, hideaki yoshifuji <yoshfuji@linux-ipv6.org>, iommu@lists.linux-foundation.org, Laxman Dewangan <ldewangan@nvidia.com>, Sudeep Holla <sudeep.holla@arm.com>, Baolin Wang <baolin.wang7@gmail.com>, Shawn Guo <shawnguo@kernel.org>, "David S. Miller" <davem@davemloft.net>, Baruch Siach <baruch@
+ tkos.co.il>, Liviu Dudau <liviu.dudau@arm.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, Bjorn Andersson <bjorn.andersson@linaro.org>, Paul Cercueil <paul@crapouillou.net>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, joerg roedel <joro@8bytes.org>, Russell King <linux@armlinux.org.uk>, Andy Gross <agross@kernel.org>, linux-serial@vger.kernel.org, jakub kicinski <kuba@kernel.org>, will deacon <will@kernel.org>, Manivannan Sadhasivam <mani@kernel.org>, linux-mediatek@lists.infradead.org, Fabio Estevam <festevam@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>, Matthias Brugger <matthias.bgg@gmail.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Laurentiu Tudor <laurentiu.tudor@nxp.com>, Taichi Sugaya <sugaya.taichi@socionext.com>, netdev@vger.kernel.org, david ahern <dsahern@kernel.org>, Nicolas Ferre <nicolas.ferre@microchip.com>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Palmer Dabbelt <palmer@dabbelt.com>, Takao Orito <orito.takao@
+ socionext.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-We were not correctly copying PTE dirty bits to pages during
-migrate_vma_setup() calls. This could potentially lead to data loss, so
-add a test for this.
+On Tue, Aug 23, 2022 at 4:25 AM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Thu, Jun 30, 2022 at 06:26:38PM -0700, Saravana Kannan wrote:
+> > These patches are on top of driver-core-next.
+> >
+> > Even if stdout-path isn't set in DT, this patch should take console
+> > probe times back to how they were before the deferred_probe_timeout
+> > clean up series[1].
+>
+> Now dropped from my queue due to lack of a response to other reviewer's
+> questions.
 
-Signed-off-by: Alistair Popple <apopple@nvidia.com>
----
- tools/testing/selftests/vm/hmm-tests.c | 124 ++++++++++++++++++++++++++-
- 1 file changed, 124 insertions(+)
+Sorry, I somehow missed those emails. I'll respond later today/tomorrow.
 
-diff --git a/tools/testing/selftests/vm/hmm-tests.c b/tools/testing/selftests/vm/hmm-tests.c
-index 529f53b..70fdb49 100644
---- a/tools/testing/selftests/vm/hmm-tests.c
-+++ b/tools/testing/selftests/vm/hmm-tests.c
-@@ -1200,6 +1200,130 @@ TEST_F(hmm, migrate_multiple)
- 	}
- }
- 
-+static char cgroup[] = "/sys/fs/cgroup/hmm-test-XXXXXX";
-+static int write_cgroup_param(char *cgroup_path, char *param, long value)
-+{
-+	int ret;
-+	FILE *f;
-+	char *filename;
-+
-+	if (asprintf(&filename, "%s/%s", cgroup_path, param) < 0)
-+		return -1;
-+
-+	f = fopen(filename, "w");
-+	if (!f) {
-+		ret = -1;
-+		goto out;
-+	}
-+
-+	ret = fprintf(f, "%ld\n", value);
-+	if (ret < 0)
-+		goto out1;
-+
-+	ret = 0;
-+
-+out1:
-+	fclose(f);
-+out:
-+	free(filename);
-+
-+	return ret;
-+}
-+
-+static int setup_cgroup(void)
-+{
-+	pid_t pid = getpid();
-+	int ret;
-+
-+	if (!mkdtemp(cgroup))
-+		return -1;
-+
-+	ret = write_cgroup_param(cgroup, "cgroup.procs", pid);
-+	if (ret)
-+		return ret;
-+
-+	return 0;
-+}
-+
-+static int destroy_cgroup(void)
-+{
-+	pid_t pid = getpid();
-+	int ret;
-+
-+	ret = write_cgroup_param("/sys/fs/cgroup/cgroup.procs",
-+				"cgroup.proc", pid);
-+	if (ret)
-+		return ret;
-+
-+	if (rmdir(cgroup))
-+		return -1;
-+
-+	return 0;
-+}
-+
-+/*
-+ * Try and migrate a dirty page that has previously been swapped to disk. This
-+ * checks that we don't loose dirty bits.
-+ */
-+TEST_F(hmm, migrate_dirty_page)
-+{
-+	struct hmm_buffer *buffer;
-+	unsigned long npages;
-+	unsigned long size;
-+	unsigned long i;
-+	int *ptr;
-+	int tmp = 0;
-+
-+	npages = ALIGN(HMM_BUFFER_SIZE, self->page_size) >> self->page_shift;
-+	ASSERT_NE(npages, 0);
-+	size = npages << self->page_shift;
-+
-+	buffer = malloc(sizeof(*buffer));
-+	ASSERT_NE(buffer, NULL);
-+
-+	buffer->fd = -1;
-+	buffer->size = size;
-+	buffer->mirror = malloc(size);
-+	ASSERT_NE(buffer->mirror, NULL);
-+
-+	ASSERT_EQ(setup_cgroup(), 0);
-+
-+	buffer->ptr = mmap(NULL, size,
-+			   PROT_READ | PROT_WRITE,
-+			   MAP_PRIVATE | MAP_ANONYMOUS,
-+			   buffer->fd, 0);
-+	ASSERT_NE(buffer->ptr, MAP_FAILED);
-+
-+	/* Initialize buffer in system memory. */
-+	for (i = 0, ptr = buffer->ptr; i < size / sizeof(*ptr); ++i)
-+		ptr[i] = 0;
-+
-+	ASSERT_FALSE(write_cgroup_param(cgroup, "memory.reclaim", 1UL<<30));
-+
-+	/* Fault pages back in from swap as clean pages */
-+	for (i = 0, ptr = buffer->ptr; i < size / sizeof(*ptr); ++i)
-+		tmp += ptr[i];
-+
-+	/* Dirty the pte */
-+	for (i = 0, ptr = buffer->ptr; i < size / sizeof(*ptr); ++i)
-+		ptr[i] = i;
-+
-+	/*
-+	 * Attempt to migrate memory to device, which should fail because
-+	 * hopefully some pages are backed by swap storage.
-+	 */
-+	ASSERT_TRUE(hmm_migrate_sys_to_dev(self->fd, buffer, npages));
-+
-+	ASSERT_FALSE(write_cgroup_param(cgroup, "memory.reclaim", 1UL<<30));
-+
-+	/* Check we still see the updated data after restoring from swap. */
-+	for (i = 0, ptr = buffer->ptr; i < size / sizeof(*ptr); ++i)
-+		ASSERT_EQ(ptr[i], i);
-+
-+	hmm_buffer_free(buffer);
-+	destroy_cgroup();
-+}
-+
- /*
-  * Read anonymous memory multiple times.
-  */
--- 
-git-series 0.9.1
+-Saravana
