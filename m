@@ -2,66 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6612659F2FB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Aug 2022 07:08:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1689559F3B9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Aug 2022 08:44:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MCDdn2Yf7z3c6j
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Aug 2022 15:08:45 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=ammrl+ff;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MCGmh0Bhvz3c8c
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Aug 2022 16:44:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::1136; helo=mail-yw1-x1136.google.com; envelope-from=saravanak@google.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=ammrl+ff;
-	dkim-atps=neutral
-Received: from mail-yw1-x1136.google.com (mail-yw1-x1136.google.com [IPv6:2607:f8b0:4864:20::1136])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com; envelope-from=tongtiangen@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MC7sn61JQz2xGn
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Aug 2022 11:33:48 +1000 (AEST)
-Received: by mail-yw1-x1136.google.com with SMTP id 00721157ae682-333b049f231so424825067b3.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Aug 2022 18:33:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc;
-        bh=15+zFGICN73u7PZkuVftuGFAaRqO2hNiuUPbcuB/iDw=;
-        b=ammrl+ffQIbxpXELKnFxaurs3Fbe2bx9R/IRI2+J5pQAM/wfjFh1aSFzyWG/E1RD5I
-         rshOZlmvK+Bt4a2MNbUFbSpkCeSrrxRT3zaVTQqLRUMz4elzDZb4CyvIvtQzq4jGwi+1
-         HBILJXTenmBL8ezDV/XzSltMyRVW8N5pGLVc6ZMhlIDEvl+mrwxpUc5n+db5z5Pfve4k
-         jWbqAzYB3Hyg5oa2ZHgXfW73ElDNxOwcp7mMt28pojnFNBEyD2+0HttoLOb68bdPn3gz
-         h+F5uqyOw5Q9oI+0N52Nr3XEpZ0TzyQMzlW05rWkdP3Hj3nW89n+8r+x6EjcJTcjYaCu
-         dSgA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=15+zFGICN73u7PZkuVftuGFAaRqO2hNiuUPbcuB/iDw=;
-        b=CMdcIjn1TwqtC6LVUTPbJy3mtTYvNkgAYc+qQyXMts0ENfbllbPL5SoBG2/Gqt8mRI
-         PLDs7sGqxiQk8D5+oJlYpJFJGtvJ8qC/eSAZmkaz//Gu4aDYbV9yRizAGGr5xu3iLma4
-         SNiGsRuAWX/TpBZ081t3mK+DlW8Lc0Ip/SQJ+jvuQhrzKdqmXYPGBp5A1n9E3wfX0JEc
-         eBV33FB9X4l7rsU/d6MVUtEesy4oukIaCB73K5EPk1yxW5vaM91HXHBmiwEBCeBxdX9l
-         97Mu/fjWhhv/dScQeiGtUsLw3UtVoR6U0fUQ3j5JYEHhRIANsTDTw2Om0vYKnMM7l8dX
-         FXVQ==
-X-Gm-Message-State: ACgBeo08Q2rLY587uP87IlsjZHVKH1wNCZLRaxe/G7APHue1DDRMZrnc
-	THdg0/wAz89XsHuFhhwfT/+H0sL0OuNJ1XrSgvNQKg==
-X-Google-Smtp-Source: AA6agR5VUVZnLczkpHKFOKrnd+Tscg/SlOlcCZoOHfOkTvdY9LhPO1gaSJJ+tW/v5A56NSwT8mnZVrMApq5J4jdaQcY=
-X-Received: by 2002:a25:1546:0:b0:68f:8758:7348 with SMTP id
- 67-20020a251546000000b0068f87587348mr24825887ybv.563.1661304824786; Tue, 23
- Aug 2022 18:33:44 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MCGmB0KnRz2xmm
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Aug 2022 16:44:22 +1000 (AEST)
+Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.56])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4MCGg16b93zXdVC;
+	Wed, 24 Aug 2022 14:39:57 +0800 (CST)
+Received: from kwepemm600017.china.huawei.com (7.193.23.234) by
+ dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Wed, 24 Aug 2022 14:44:11 +0800
+Received: from [10.174.179.234] (10.174.179.234) by
+ kwepemm600017.china.huawei.com (7.193.23.234) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Wed, 24 Aug 2022 14:44:09 +0800
+Message-ID: <98f73fd6-1fe7-0760-167b-fd958154c91f@huawei.com>
+Date: Wed, 24 Aug 2022 14:44:09 +0800
 MIME-Version: 1.0
-References: <20220701012647.2007122-1-saravanak@google.com> <YwS5J3effuHQJRZ5@kroah.com>
-In-Reply-To: <YwS5J3effuHQJRZ5@kroah.com>
-From: Saravana Kannan <saravanak@google.com>
-Date: Tue, 23 Aug 2022 18:33:07 -0700
-Message-ID: <CAGETcx8C_Hw588J_DsDELp2rS-UNnezpqqqvUixqGR7m2wDKaA@mail.gmail.com>
-Subject: Re: [PATCH v2 0/2] Fix console probe delay when stdout-path isn't set
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailman-Approved-At: Wed, 24 Aug 2022 15:08:16 +1000
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Subject: Re: [PATCH -next v7 0/4]arm64: add machine check safe support
+To: Mark Rutland <mark.rutland@arm.com>, James Morse <james.morse@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>, Thomas Gleixner
+	<tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+	<bp@alien8.de>, Robin Murphy <robin.murphy@arm.com>, Dave Hansen
+	<dave.hansen@linux.intel.com>, Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>,
+	Michael Ellerman <mpe@ellerman.id.au>, Benjamin Herrenschmidt
+	<benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>,
+	<x86@kernel.org>, "H . Peter Anvin" <hpa@zytor.com>
+References: <20220812070557.1028499-1-tongtiangen@huawei.com>
+From: Tong Tiangen <tongtiangen@huawei.com>
+In-Reply-To: <20220812070557.1028499-1-tongtiangen@huawei.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.179.234]
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ kwepemm600017.china.huawei.com (7.193.23.234)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,27 +61,108 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: andrew lunn <andrew@lunn.ch>, peng fan <peng.fan@nxp.com>, "Rafael J. Wysocki" <rafael@kernel.org>, linus walleij <linus.walleij@linaro.org>, Paul Mackerras <paulus@samba.org>, Alim Akhtar <alim.akhtar@samsung.com>, Peter Korsgaard <jacmet@sunsite.dk>, linux-stm32@st-md-mailman.stormreply.com, Karol Gugala <kgugala@antmicro.com>, Jerome Brunet <jbrunet@baylibre.com>, linux-samsung-soc@vger.kernel.org, Michal Simek <michal.simek@xilinx.com>, Hammer Hsieh <hammerh0314@gmail.com>, NXP Linux Team <linux-imx@nxp.com>, Vineet Gupta <vgupta@kernel.org>, len brown <len.brown@intel.com>, Nicolas Saenz Julienne <nsaenz@kernel.org>, linux-pm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, linux-unisoc@lists.infradead.org, Scott Branden <sbranden@broadcom.com>, Andrew Jeffery <andrew@aj.id.au>, linux-kernel@vger.kernel.org, Richard Genoud <richard.genoud@gmail.com>, Masami Hiramatsu <mhiramat@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Claudiu Beznea <claudiu.beznea
- @microchip.com>, Alexandre Belloni <alexandre.belloni@bootlin.com>, pavel machek <pavel@ucw.cz>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, eric dumazet <edumazet@google.com>, Thierry Reding <thierry.reding@gmail.com>, sascha hauer <sha@pengutronix.de>, Chunyan Zhang <zhang.lyra@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, Gabriel Somlo <gsomlo@gmail.com>, Tobias Klauser <tklauser@distanz.ch>, linux-mips@vger.kernel.org, kernel-team@android.com, Martin Blumenstingl <martin.blumenstingl@googlemail.com>, linux-arm-msm@vger.kernel.org, linux-actions@lists.infradead.org, linux-gpio@vger.kernel.org, linux-rpi-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org, linux-arm-kernel@lists.infradead.org, Andreas Farber <afaerber@suse.de>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Kevin Hilman <khilman@baylibre.com>, Pali Rohar <pali@kernel.org>, heiner kallweit <hkallweit1@gmail.com>, ulf hansson <ulf.hansson@linaro.org>, Neil Armstrong <narmstrong@baylibre.com>, Lo
- renzo Pieralisi <lpieralisi@kernel.org>, Al Cooper <alcooperx@gmail.com>, linux-tegra@vger.kernel.org, Jiri Slaby <jirislaby@kernel.org>, linux-aspeed@lists.ozlabs.org, Rob Herring <robh@kernel.org>, Florian Fainelli <f.fainelli@gmail.com>, Mateusz Holenko <mholenko@antmicro.com>, Alexander Shiyan <shc_work@mail.ru>, kevin hilman <khilman@kernel.org>, Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Joel Stanley <joel@jms.id.au>, Orson Zhai <orsonzhai@gmail.com>, paolo abeni <pabeni@redhat.com>, Patrice Chotard <patrice.chotard@foss.st.com>, Ray Jui <rjui@broadcom.com>, Vladimir Zapolskiy <vz@mleia.com>, linux-snps-arc@lists.infradead.org, Timur Tabi <timur@kernel.org>, hideaki yoshifuji <yoshfuji@linux-ipv6.org>, iommu@lists.linux-foundation.org, Laxman Dewangan <ldewangan@nvidia.com>, Sudeep Holla <sudeep.holla@arm.com>, Baolin Wang <baolin.wang7@gmail.com>, Shawn Guo <shawnguo@kernel.org>, "David S. Miller" <davem@davemloft.net>, Baruch Siach <baruch@
- tkos.co.il>, Liviu Dudau <liviu.dudau@arm.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, Bjorn Andersson <bjorn.andersson@linaro.org>, Paul Cercueil <paul@crapouillou.net>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, joerg roedel <joro@8bytes.org>, Russell King <linux@armlinux.org.uk>, Andy Gross <agross@kernel.org>, linux-serial@vger.kernel.org, jakub kicinski <kuba@kernel.org>, will deacon <will@kernel.org>, Manivannan Sadhasivam <mani@kernel.org>, linux-mediatek@lists.infradead.org, Fabio Estevam <festevam@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>, Matthias Brugger <matthias.bgg@gmail.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Laurentiu Tudor <laurentiu.tudor@nxp.com>, Taichi Sugaya <sugaya.taichi@socionext.com>, netdev@vger.kernel.org, david ahern <dsahern@kernel.org>, Nicolas Ferre <nicolas.ferre@microchip.com>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Palmer Dabbelt <palmer@dabbelt.com>, Takao Orito <orito.takao@
- socionext.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, Xie XiuQi <xiexiuqi@huawei.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Guohanjun <guohanjun@huawei.com>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Aug 23, 2022 at 4:25 AM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Thu, Jun 30, 2022 at 06:26:38PM -0700, Saravana Kannan wrote:
-> > These patches are on top of driver-core-next.
-> >
-> > Even if stdout-path isn't set in DT, this patch should take console
-> > probe times back to how they were before the deferred_probe_timeout
-> > clean up series[1].
->
-> Now dropped from my queue due to lack of a response to other reviewer's
-> questions.
+Hi Mark & Catalin & Will:
+	Kindly ping...
 
-Sorry, I somehow missed those emails. I'll respond later today/tomorrow.
+Thanks,
+Tong.
 
--Saravana
+在 2022/8/12 15:05, Tong Tiangen 写道:
+> With the increase of memory capacity and density, the probability of
+> memory error increases. The increasing size and density of server RAM
+> in the data center and cloud have shown increased uncorrectable memory
+> errors.
+> 
+> Currently, the kernel has a mechanism to recover from hardware memory
+> errors. This patchset provides an new recovery mechanism.
+> 
+> For arm64, the hardware memory error handling is do_sea() which divided
+> into two cases:
+>   1. The user state consumed the memory errors, the solution is kill the
+>      user process and isolate the error page.
+>   2. The kernel state consumed the memory errors, the solution is panic.
+> 
+> For case 2, Undifferentiated panic maybe not the optimal choice, it can be
+> handled better, in some scenarios, we can avoid panic, such as uaccess, if the
+> uaccess fails due to memory error, only the user process will be affected,
+> kill the user process and isolate the user page with hardware memory errors
+> is a better choice.
+> 
+> Since V6:
+>   Resend patches that are not merged into the mainline in V6.
+> 
+> Since V5:
+>   1. Add patch2/3 to add uaccess assembly helpers.
+>   2. Optimize the implementation logic of arm64_do_kernel_sea() in patch8.
+>   3. Remove kernel access fixup in patch9.
+>   All suggestion are from Mark.
+> 
+> Since V4:
+>   1. According Michael's suggestion, add patch5.
+>   2. According Mark's suggestiog, do some restructuring to arm64
+>   extable, then a new adaptation of machine check safe support is made based
+>   on this.
+>   3. According Mark's suggestion, support machine check safe in do_mte() in
+>   cow scene.
+>   4. In V4, two patches have been merged into -next, so V5 not send these
+>   two patches.
+> 
+> Since V3:
+>   1. According to Robin's suggestion, direct modify user_ldst and
+>   user_ldp in asm-uaccess.h and modify mte.S.
+>   2. Add new macro USER_MC in asm-uaccess.h, used in copy_from_user.S
+>   and copy_to_user.S.
+>   3. According to Robin's suggestion, using micro in copy_page_mc.S to
+>   simplify code.
+>   4. According to KeFeng's suggestion, modify powerpc code in patch1.
+>   5. According to KeFeng's suggestion, modify mm/extable.c and some code
+>   optimization.
+> 
+> Since V2:
+>   1. According to Mark's suggestion, all uaccess can be recovered due to
+>      memory error.
+>   2. Scenario pagecache reading is also supported as part of uaccess
+>      (copy_to_user()) and duplication code problem is also solved.
+>      Thanks for Robin's suggestion.
+>   3. According Mark's suggestion, update commit message of patch 2/5.
+>   4. According Borisllav's suggestion, update commit message of patch 1/5.
+> 
+> Since V1:
+>   1.Consistent with PPC/x86, Using CONFIG_ARCH_HAS_COPY_MC instead of
+>     ARM64_UCE_KERNEL_RECOVERY.
+>   2.Add two new scenes, cow and pagecache reading.
+>   3.Fix two small bug(the first two patch).
+> 
+> V1 in here:
+> https://lore.kernel.org/lkml/20220323033705.3966643-1-tongtiangen@huawei.com/
+> 
+> Tong Tiangen (4):
+>    uaccess: add generic fallback version of copy_mc_to_user()
+>    arm64: add support for machine check error safe
+>    arm64: add uaccess to machine check safe
+>    arm64: add cow to machine check safe
+> 
+>   arch/arm64/Kconfig                   |  1 +
+>   arch/arm64/include/asm/asm-extable.h |  5 ++
+>   arch/arm64/include/asm/assembler.h   |  4 ++
+>   arch/arm64/include/asm/extable.h     |  1 +
+>   arch/arm64/include/asm/mte.h         |  4 ++
+>   arch/arm64/include/asm/page.h        | 10 ++++
+>   arch/arm64/lib/Makefile              |  2 +
+>   arch/arm64/lib/copy_page_mc.S        | 82 ++++++++++++++++++++++++++++
+>   arch/arm64/lib/mte.S                 | 19 +++++++
+>   arch/arm64/mm/copypage.c             | 37 +++++++++++--
+>   arch/arm64/mm/extable.c              | 25 +++++++++
+>   arch/arm64/mm/fault.c                | 29 +++++++++-
+>   arch/powerpc/include/asm/uaccess.h   |  1 +
+>   arch/x86/include/asm/uaccess.h       |  1 +
+>   include/linux/highmem.h              |  8 +++
+>   include/linux/uaccess.h              |  9 +++
+>   mm/memory.c                          |  2 +-
+>   17 files changed, 233 insertions(+), 7 deletions(-)
+>   create mode 100644 arch/arm64/lib/copy_page_mc.S
+> 
