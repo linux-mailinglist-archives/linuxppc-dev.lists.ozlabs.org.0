@@ -1,90 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05CBE59FE82
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Aug 2022 17:40:05 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CACE5A00D6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Aug 2022 19:57:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MCVfB6Pj3z3bcv
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Aug 2022 01:40:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MCYhJ5QKsz3bqx
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Aug 2022 03:57:04 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RaieSkTP;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RaieSkTP;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=I5iWTIsi;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RaieSkTP;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RaieSkTP;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=I5iWTIsi;
 	dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MCVdP0H1Bz30DP
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Aug 2022 01:39:18 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1661355556;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4YDz+MpPZkiheMede1adKNb3LxgK1j3sRTyEv4HMpL0=;
-	b=RaieSkTP/iLRgo2CPANS4528Brz6Z+98pB0KGlHVYnrU9MlFCO2epS62+gA2LCaem025GU
-	dRHvaTKcyZI1UL7v5PMdFE9+nz/Vt0fsTmM8a1r2m4XpdBNWXj3QplFpmg6abx1anxHnBK
-	/AbOXcVFPSu+1c+fIGKpdSlxvotFu8k=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1661355556;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4YDz+MpPZkiheMede1adKNb3LxgK1j3sRTyEv4HMpL0=;
-	b=RaieSkTP/iLRgo2CPANS4528Brz6Z+98pB0KGlHVYnrU9MlFCO2epS62+gA2LCaem025GU
-	dRHvaTKcyZI1UL7v5PMdFE9+nz/Vt0fsTmM8a1r2m4XpdBNWXj3QplFpmg6abx1anxHnBK
-	/AbOXcVFPSu+1c+fIGKpdSlxvotFu8k=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-130-Buwjgs0xO5-w_7SBLZ_6qQ-1; Wed, 24 Aug 2022 11:39:14 -0400
-X-MC-Unique: Buwjgs0xO5-w_7SBLZ_6qQ-1
-Received: by mail-qk1-f197.google.com with SMTP id s9-20020a05620a254900b006b54dd4d6deso14931140qko.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Aug 2022 08:39:14 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
-        bh=4YDz+MpPZkiheMede1adKNb3LxgK1j3sRTyEv4HMpL0=;
-        b=Dn/C1AbyHZ4eF4IRMjZgn1xF0QQZA3nP1yGFUTCZi3NEmCK0vfxBVbkZxMG1AveViR
-         0cSrX7VqOUi5lJRWjxxalvdPLkM0W4Al/zCucKEhB0kqGVaPQ7F3berPLUfwaQt/gXjs
-         tZZLkCYqqjfvraI/371TFMLUxQr3Gj44Xb2VMw9h7Q5OlHpb11xlwQKyxC4WcieUA/Z+
-         OTSVFOYAjiGA7WsZ9sHEp5kOYGdjBSYL1hr7SsD0/KFJk3yZy1HWdcw3LSKNbp/gFqWB
-         XMuGvcO3XjPBQOrpD8y8a6v6/tvE2173V5eGd6paxL5lzDKCItFtjBibiqTDu5dolW4W
-         JRDg==
-X-Gm-Message-State: ACgBeo0aUtRQYqay2pYoXfcjOj0zycSWOjpwlW0dATzBCICTmHzfMMI6
-	5bBmF/l9b0v92j+L4rKJeQ3Rb88NFvrwJQfFJL9J2HNabDJRWncpWvIkUYZf/+CiNOQ1TDuwRDs
-	udB5XePk7FzOHgFIkryYuC2j3VA==
-X-Received: by 2002:ad4:5ae8:0:b0:496:f1c9:7bd with SMTP id c8-20020ad45ae8000000b00496f1c907bdmr10727638qvh.125.1661355554379;
-        Wed, 24 Aug 2022 08:39:14 -0700 (PDT)
-X-Google-Smtp-Source: AA6agR6lRAWqwQD0sX2sud09VmJ+0QpTsPmTlUS5jZn09b1qgoiwGEQmQlz8zOomOo+cNaaUWHVmfg==
-X-Received: by 2002:ad4:5ae8:0:b0:496:f1c9:7bd with SMTP id c8-20020ad45ae8000000b00496f1c907bdmr10727612qvh.125.1661355554146;
-        Wed, 24 Aug 2022 08:39:14 -0700 (PDT)
-Received: from xz-m1.local (bras-base-aurron9127w-grc-35-70-27-3-10.dsl.bell.ca. [70.27.3.10])
-        by smtp.gmail.com with ESMTPSA id h4-20020ac87764000000b0034355a352d1sm12681683qtu.92.2022.08.24.08.39.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Aug 2022 08:39:13 -0700 (PDT)
-Date: Wed, 24 Aug 2022 11:39:11 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Alistair Popple <apopple@nvidia.com>
-Subject: Re: [PATCH v3 2/3] mm/migrate_device.c: Copy pte dirty bit to page
-Message-ID: <YwZGHyYJiJ+CGLn2@xz-m1.local>
-References: <3b01af093515ce2960ac39bb16ff77473150d179.1661309831.git-series.apopple@nvidia.com>
- <ffbc824af5daa2c44b91c66834a341894fba4ce6.1661309831.git-series.apopple@nvidia.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MCYgX46pqz2yn3
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Aug 2022 03:56:24 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 617AA61703
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Aug 2022 17:56:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id BF085C433C1
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Aug 2022 17:56:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1661363778;
+	bh=Bhsy6Lvbn2BRiXXWg8HXe7dZ6sY3HO3PGQl33UQDuaA=;
+	h=From:To:Subject:Date:From;
+	b=I5iWTIsi2v2OWZjna2SLEUsrQb7mxh/SYk99KRA42IkQ41VKGgqrPaAiaWATnxUSh
+	 elLzofT8VfkGkaEZnz1/2nlUaJk2ZIg7qsl6TfDgIywXlZrAzTsyq2K4KlxgQfBBZM
+	 zCfsHRVaOnrSH/M3Lj6WmXGR+DV5I4DjWbG7NL5lnqX4+oeuysi/0xLNluzxsbA6Rj
+	 TpZZt5aHMizzGepkvK6/LLTCiUCHD2OgOT3p5uM5M/bhzfR2etHpq8veApn5A1ZRjE
+	 Q59f077nTVdXX1V1YWoaj31yxU+jK8sIrIy1T6JNOC+0fxjpvxlxzAVPNfLzlrt5sj
+	 t1nAPjajPrhbA==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
+	id AA594C433E4; Wed, 24 Aug 2022 17:56:18 +0000 (UTC)
+From: bugzilla-daemon@kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 216407] New: OF: unittest fails some tests on ppc and ppc64
+ (### dt-test ### end of unittest - 266 passed, 6 failed)
+Date: Wed, 24 Aug 2022 17:56:18 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: new
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-64
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: erhard_f@mailbox.org
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: bug_id short_desc product version
+ cf_kernel_version rep_platform op_sys cf_tree bug_status bug_severity
+ priority component assigned_to reporter cc cf_regression attachments.created
+Message-ID: <bug-216407-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-In-Reply-To: <ffbc824af5daa2c44b91c66834a341894fba4ce6.1661309831.git-series.apopple@nvidia.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,106 +79,115 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Sierra Guiza, Alejandro \(Alex\)" <alex.sierra@amd.com>, Huang Ying <ying.huang@intel.com>, Ralph Campbell <rcampbell@nvidia.com>, Lyude Paul <lyude@redhat.com>, Karol Herbst <kherbst@redhat.com>, David Hildenbrand <david@redhat.com>, Nadav Amit <nadav.amit@gmail.com>, Felix Kuehling <Felix.Kuehling@amd.com>, linuxppc-dev@lists.ozlabs.org, LKML <linux-kernel@vger.kernel.org>, Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org, Logan Gunthorpe <logang@deltatee.com>, Ben Skeggs <bskeggs@redhat.com>, Jason Gunthorpe <jgg@nvidia.com>, John Hubbard <jhubbard@nvidia.com>, stable@vger.kernel.org, akpm@linux-foundation.org, huang ying <huang.ying.caritas@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Aug 24, 2022 at 01:03:38PM +1000, Alistair Popple wrote:
-> migrate_vma_setup() has a fast path in migrate_vma_collect_pmd() that
-> installs migration entries directly if it can lock the migrating page.
-> When removing a dirty pte the dirty bit is supposed to be carried over
-> to the underlying page to prevent it being lost.
-> 
-> Currently migrate_vma_*() can only be used for private anonymous
-> mappings. That means loss of the dirty bit usually doesn't result in
-> data loss because these pages are typically not file-backed. However
-> pages may be backed by swap storage which can result in data loss if an
-> attempt is made to migrate a dirty page that doesn't yet have the
-> PageDirty flag set.
-> 
-> In this case migration will fail due to unexpected references but the
-> dirty pte bit will be lost. If the page is subsequently reclaimed data
-> won't be written back to swap storage as it is considered uptodate,
-> resulting in data loss if the page is subsequently accessed.
-> 
-> Prevent this by copying the dirty bit to the page when removing the pte
-> to match what try_to_migrate_one() does.
-> 
-> Signed-off-by: Alistair Popple <apopple@nvidia.com>
-> Acked-by: Peter Xu <peterx@redhat.com>
-> Reported-by: Huang Ying <ying.huang@intel.com>
-> Fixes: 8c3328f1f36a ("mm/migrate: migrate_vma() unmap page from vma while collecting pages")
-> Cc: stable@vger.kernel.org
-> 
-> ---
-> 
-> Changes for v3:
-> 
->  - Defer TLB flushing
->  - Split a TLB flushing fix into a separate change.
-> 
-> Changes for v2:
-> 
->  - Fixed up Reported-by tag.
->  - Added Peter's Acked-by.
->  - Atomically read and clear the pte to prevent the dirty bit getting
->    set after reading it.
->  - Added fixes tag
-> ---
->  mm/migrate_device.c |  9 +++++++--
->  1 file changed, 7 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-> index 6a5ef9f..51d9afa 100644
-> --- a/mm/migrate_device.c
-> +++ b/mm/migrate_device.c
-> @@ -7,6 +7,7 @@
->  #include <linux/export.h>
->  #include <linux/memremap.h>
->  #include <linux/migrate.h>
-> +#include <linux/mm.h>
->  #include <linux/mm_inline.h>
->  #include <linux/mmu_notifier.h>
->  #include <linux/oom.h>
-> @@ -196,7 +197,7 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
->  			anon_exclusive = PageAnon(page) && PageAnonExclusive(page);
->  			if (anon_exclusive) {
->  				flush_cache_page(vma, addr, pte_pfn(*ptep));
-> -				ptep_clear_flush(vma, addr, ptep);
-> +				pte = ptep_clear_flush(vma, addr, ptep);
->  
->  				if (page_try_share_anon_rmap(page)) {
->  					set_pte_at(mm, addr, ptep, pte);
-> @@ -206,11 +207,15 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
->  					goto next;
->  				}
->  			} else {
-> -				ptep_get_and_clear(mm, addr, ptep);
-> +				pte = ptep_get_and_clear(mm, addr, ptep);
->  			}
+https://bugzilla.kernel.org/show_bug.cgi?id=3D216407
 
-I remember that in v2 both flush_cache_page() and ptep_get_and_clear() are
-moved above the condition check so they're called unconditionally.  Could
-you explain the rational on why it's changed back (since I think v2 was the
-correct approach)?
+            Bug ID: 216407
+           Summary: OF: unittest fails some tests on ppc and ppc64 (###
+                    dt-test ### end of unittest - 266 passed, 6 failed)
+           Product: Platform Specific/Hardware
+           Version: 2.5
+    Kernel Version: 6.0-rc2
+          Hardware: PPC-64
+                OS: Linux
+              Tree: Mainline
+            Status: NEW
+          Severity: normal
+          Priority: P1
+         Component: PPC-64
+          Assignee: platform_ppc-64@kernel-bugs.osdl.org
+          Reporter: erhard_f@mailbox.org
+                CC: frank.rowand@am.sony.com
+        Regression: No
 
-The other question is if we want to split the patch, would it be better to
-move the tlb changes to patch 1, and leave the dirty bit fix in patch 2?
+Created attachment 301645
+  --> https://bugzilla.kernel.org/attachment.cgi?id=3D301645&action=3Dedit
+dmesg (kernel 6.0-rc2, Talos II
 
->  
->  			migrate->cpages++;
->  
-> +			/* Set the dirty flag on the folio now the pte is gone. */
-> +			if (pte_dirty(pte))
-> +				folio_mark_dirty(page_folio(page));
-> +
->  			/* Setup special migration page table entry */
->  			if (mpfn & MIGRATE_PFN_WRITE)
->  				entry = make_writable_migration_entry(
-> -- 
-> git-series 0.9.1
-> 
+[...]
+### dt-test ### end of unittest - 266 passed, 6 failed
 
--- 
-Peter Xu
+Failing tests on my Talos II are:
+### dt-test ### FAIL of_unittest_dma_ranges_one():927 of_dma_get_range: wro=
+ng
+phys addr 0x0000000000000000 (expecting 20000000) on node
+/testcase-data/address-tests/device@70000000
+### dt-test ### FAIL of_unittest_dma_ranges_one():930 of_dma_get_range: wro=
+ng
+DMA addr 0x0000000020000000 (expecting 0) on node
+/testcase-data/address-tests/device@70000000
+### dt-test ### FAIL of_unittest_dma_ranges_one():927 of_dma_get_range: wro=
+ng
+phys addr 0x0000000100000000 (expecting 20000000) on node
+/testcase-data/address-tests/bus@80000000/device@1000
+### dt-test ### FAIL of_unittest_dma_ranges_one():930 of_dma_get_range: wro=
+ng
+DMA addr 0x0000000020000000 (expecting 100000000) on node
+/testcase-data/address-tests/bus@80000000/device@1000
+### dt-test ### FAIL of_unittest_dma_ranges_one():927 of_dma_get_range: wro=
+ng
+phys addr 0x0000000080000000 (expecting 20000000) on node
+/testcase-data/address-tests/pci@90000000
+### dt-test ### FAIL of_unittest_dma_ranges_one():930 of_dma_get_range: wro=
+ng
+DMA addr 0x0000000020000000 (expecting 80000000) on node
+/testcase-data/address-tests/pci@90000000
 
+Failing tests on my PowerMac G4 MDD are:
+### dt-test ### FAIL of_unittest_dma_ranges_one():927 of_dma_get_range: wro=
+ng
+phys addr 0x00000000 (expecting 20000000) on node
+/testcase-data/address-tests/device@70000000
+### dt-test ### FAIL of_unittest_dma_ranges_one():930 of_dma_get_range: wro=
+ng
+DMA addr 0x20000000 (expecting 0) on node
+/testcase-data/address-tests/device@70000000
+### dt-test ### FAIL of_unittest_dma_ranges_one():927 of_dma_get_range: wro=
+ng
+phys addr 0x80000000 (expecting 20000000) on node
+/testcase-data/address-tests/pci@90000000
+### dt-test ### FAIL of_unittest_dma_ranges_one():930 of_dma_get_range: wro=
+ng
+DMA addr 0x20000000 (expecting 80000000) on node
+/testcase-data/address-tests/pci@90000000
+
+Devices on my Talos II:
+ # lspci=20
+0000:00:00.0 PCI bridge: IBM POWER9 Host Bridge (PHB4)
+0000:01:00.0 VGA compatible controller: Advanced Micro Devices, Inc. [AMD/A=
+TI]
+Turks XT [Radeon HD 6670/7670]
+0000:01:00.1 Audio device: Advanced Micro Devices, Inc. [AMD/ATI] Turks HDMI
+Audio [Radeon HD 6500/6600 / 6700M Series]
+0001:00:00.0 PCI bridge: IBM POWER9 Host Bridge (PHB4)
+0001:01:00.0 Non-Volatile memory controller: Phison Electronics Corporation
+Device 5008 (rev 01)
+0002:00:00.0 PCI bridge: IBM POWER9 Host Bridge (PHB4)
+0003:00:00.0 PCI bridge: IBM POWER9 Host Bridge (PHB4)
+0003:01:00.0 USB controller: Texas Instruments TUSB73x0 SuperSpeed USB 3.0 =
+xHCI
+Host Controller (rev 02)
+0004:00:00.0 PCI bridge: IBM POWER9 Host Bridge (PHB4)
+0004:01:00.0 Ethernet controller: Broadcom Inc. and subsidiaries NetXtreme
+BCM5719 Gigabit Ethernet PCIe (rev 01)
+0004:01:00.1 Ethernet controller: Broadcom Inc. and subsidiaries NetXtreme
+BCM5719 Gigabit Ethernet PCIe (rev 01)
+0005:00:00.0 PCI bridge: IBM POWER9 Host Bridge (PHB4)
+0005:01:00.0 PCI bridge: ASPEED Technology, Inc. AST1150 PCI-to-PCI Bridge =
+(rev
+04)
+0005:02:00.0 VGA compatible controller: ASPEED Technology, Inc. ASPEED Grap=
+hics
+Family (rev 41)
+0030:00:00.0 PCI bridge: IBM POWER9 Host Bridge (PHB4)
+0031:00:00.0 PCI bridge: IBM POWER9 Host Bridge (PHB4)
+0032:00:00.0 PCI bridge: IBM POWER9 Host Bridge (PHB4)
+0033:00:00.0 PCI bridge: IBM POWER9 Host Bridge (PHB4)
+
+--=20
+You may reply to this email to add a comment.
+
+You are receiving this mail because:
+You are watching the assignee of the bug.=
