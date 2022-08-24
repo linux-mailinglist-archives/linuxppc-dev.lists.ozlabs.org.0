@@ -2,93 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 545A759F69E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Aug 2022 11:43:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A5C659F6AB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Aug 2022 11:44:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MCLl468Qqz3c5p
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Aug 2022 19:43:44 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=lp9t9d9V;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MCLlZ12nkz3bhQ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Aug 2022 19:44:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=lp9t9d9V;
-	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.189; helo=szxga03-in.huawei.com; envelope-from=wangkefeng.wang@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MCLkL2RPbz2xk5
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Aug 2022 19:43:05 +1000 (AEST)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27O9QaLR016738;
-	Wed, 24 Aug 2022 09:42:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=vtVu45q7UBsFx+ttMQc+rAnZaXT2Yh6MubCvCgSvT2M=;
- b=lp9t9d9V9x814f7OahPcTFsFZP9IZQDf+AQ4Tfg7bnh6EBR8BOMy5fkS4ZoHS0poUr/5
- aQz9UKY7iN72tOnFLProwTmBrLrwxxDYlfh5Gqh/8+6vYeb3fm08Pux7lyKrHtbaPnuw
- PpKoEiL7vyMljbvPTcZ9X2Fdc5vh5kVwvlMN4hRDDFKwps/+yzsgA5F8fgpYuR7OOHfC
- LDVmEViOQICMnwkuaFYrmHWj5UO61TayhsrR1n/Hxka8RdrTAqnduCY5/2gPh2unD7+i
- pu+2xmEvvc9ApdQOQmVnqDnRdYb/C2yy2r1Z+70+tXs2CK02KylMkeRGTu8f6GlJHgbe 8A== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3j5hbq8fre-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 24 Aug 2022 09:42:43 +0000
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 27O9RoGe019937;
-	Wed, 24 Aug 2022 09:42:43 GMT
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3j5hbq8fqc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 24 Aug 2022 09:42:43 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
-	by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 27O9ZfJn026002;
-	Wed, 24 Aug 2022 09:42:40 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
-	by ppma03ams.nl.ibm.com with ESMTP id 3j2q88vx25-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 24 Aug 2022 09:42:40 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
-	by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 27O9gcjT13369836
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 24 Aug 2022 09:42:38 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 68A1042041;
-	Wed, 24 Aug 2022 09:42:38 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 850574203F;
-	Wed, 24 Aug 2022 09:42:37 +0000 (GMT)
-Received: from [9.171.36.149] (unknown [9.171.36.149])
-	by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Wed, 24 Aug 2022 09:42:37 +0000 (GMT)
-Message-ID: <0ee42968-f742-56dd-78c3-b70a1c9c40af@linux.ibm.com>
-Date: Wed, 24 Aug 2022 11:42:37 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MCLkM5QDnz2xk5
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Aug 2022 19:43:07 +1000 (AEST)
+Received: from dggpemm500023.china.huawei.com (unknown [172.30.72.53])
+	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4MCLhM2jttzGpnB;
+	Wed, 24 Aug 2022 17:41:23 +0800 (CST)
+Received: from dggpemm500001.china.huawei.com (7.185.36.107) by
+ dggpemm500023.china.huawei.com (7.185.36.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Wed, 24 Aug 2022 17:43:03 +0800
+Received: from [10.174.177.243] (10.174.177.243) by
+ dggpemm500001.china.huawei.com (7.185.36.107) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Wed, 24 Aug 2022 17:43:01 +0800
+Message-ID: <ec787d70-8d8a-c601-3282-a34329b078c4@huawei.com>
+Date: Wed, 24 Aug 2022 17:43:01 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [PATCH] misc: ocxl: fix possible refcount leak in afu_ioctl()
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH v3 3/4] mm: rmap: Extend tlbbatch APIs to fit new
+ platforms
 Content-Language: en-US
-To: Hangyu Hua <hbh25y@gmail.com>, ajd@linux.ibm.com, arnd@arndb.de,
-        gregkh@linuxfoundation.org, alastair@d-silva.org, mpe@ellerman.id.au
-References: <20220824082600.36159-1-hbh25y@gmail.com>
-From: Frederic Barrat <fbarrat@linux.ibm.com>
-In-Reply-To: <20220824082600.36159-1-hbh25y@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: Yicong Yang <yangyicong@huawei.com>, <akpm@linux-foundation.org>,
+	<linux-mm@kvack.org>, <linux-arm-kernel@lists.infradead.org>,
+	<x86@kernel.org>, <catalin.marinas@arm.com>, <will@kernel.org>,
+	<linux-doc@vger.kernel.org>
+References: <20220822082120.8347-1-yangyicong@huawei.com>
+ <20220822082120.8347-4-yangyicong@huawei.com>
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+In-Reply-To: <20220822082120.8347-4-yangyicong@huawei.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: fFKkhTTeSbOuNNj1vQ8BXYXZjMmnj8PE
-X-Proofpoint-ORIG-GUID: U4vYSp9hB9GUtz-TIk2-x4CGPSwVbTBz
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-08-24_05,2022-08-22_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 mlxlogscore=999
- phishscore=0 bulkscore=0 suspectscore=0 adultscore=0 impostorscore=0
- lowpriorityscore=0 priorityscore=1501 malwarescore=0 clxscore=1011
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2207270000 definitions=main-2208240036
+X-Originating-IP: [10.174.177.243]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ dggpemm500001.china.huawei.com (7.185.36.107)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,41 +59,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: darren@os.amperecomputing.com, peterz@infradead.org, Dave Hansen <dave.hansen@linux.intel.com>, yangyicong@hisilicon.com, Nadav Amit <namit@vmware.com>, "H. Peter
+ Anvin" <hpa@zytor.com>, guojian@oppo.com, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, zhangshiming@oppo.com, lipeifeng@oppo.com, corbet@lwn.net, anshuman.khandual@arm.com, Barry Song <21cnbao@gmail.com>, Ingo Molnar <mingo@redhat.com>, Mel Gorman <mgorman@suse.de>, linux-mips@vger.kernel.org, arnd@arndb.de, realmz6@gmail.com, Barry Song <v-songbaohua@oppo.com>, openrisc@lists.librecores.org, Borislav
+ Petkov <bp@alien8.de>, prime.zeng@hisilicon.com, Thomas
+ Gleixner <tglx@linutronix.de>, xhao@linux.alibaba.com, linux-kernel@vger.kernel.org, huzhanyuan@oppo.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
-
-On 24/08/2022 10:26, Hangyu Hua wrote:
-> eventfd_ctx_put need to be called to put the refcount that gotten by
-> eventfd_ctx_fdget when ocxl_irq_set_handler fails.
-> 
-> Fixes: 060146614643 ("ocxl: move event_fd handling to frontend")
-> Signed-off-by: Hangyu Hua <hbh25y@gmail.com>
+On 2022/8/22 16:21, Yicong Yang wrote:
+> From: Barry Song <v-songbaohua@oppo.com>
+>
+> Add uaddr to tlbbatch APIs so that platforms like ARM64 are
+> able to apply this on their specific hardware features. For
+> ARM64, this could be sending tlbi into hardware queues for
+> the page with this particular uaddr.
+>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Borislav Petkov <bp@alien8.de>
+> Cc: Dave Hansen <dave.hansen@linux.intel.com>
+> Cc: "H. Peter Anvin" <hpa@zytor.com>
+> Cc: Nadav Amit <namit@vmware.com>
+> Cc: Mel Gorman <mgorman@suse.de>
+> Tested-by: Xin Hao <xhao@linux.alibaba.com>
+> Signed-off-by: Barry Song <v-songbaohua@oppo.com>
+> Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
 > ---
-
-
-Thanks for fixing it! LGTM
-
-Acked-by: Frederic Barrat <fbarrat@linux.ibm.com>
-
-   Fred
-
-
->   drivers/misc/ocxl/file.c | 2 ++
->   1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/misc/ocxl/file.c b/drivers/misc/ocxl/file.c
-> index 6777c419a8da..d46dba2df5a1 100644
-> --- a/drivers/misc/ocxl/file.c
-> +++ b/drivers/misc/ocxl/file.c
-> @@ -257,6 +257,8 @@ static long afu_ioctl(struct file *file, unsigned int cmd,
->   		if (IS_ERR(ev_ctx))
->   			return PTR_ERR(ev_ctx);
->   		rc = ocxl_irq_set_handler(ctx, irq_id, irq_handler, irq_free, ev_ctx);
-> +		if (rc)
-> +			eventfd_ctx_put(ev_ctx);
->   		break;
+>   arch/x86/include/asm/tlbflush.h |  3 ++-
+>   mm/rmap.c                       | 10 ++++++----
+>   2 files changed, 8 insertions(+), 5 deletions(-)
+>
+> diff --git a/arch/x86/include/asm/tlbflush.h b/arch/x86/include/asm/tlbflush.h
+> index 8a497d902c16..5bd78ae55cd4 100644
+> --- a/arch/x86/include/asm/tlbflush.h
+> +++ b/arch/x86/include/asm/tlbflush.h
+> @@ -264,7 +264,8 @@ static inline u64 inc_mm_tlb_gen(struct mm_struct *mm)
+>   }
 >   
->   	case OCXL_IOCTL_GET_METADATA:
+>   static inline void arch_tlbbatch_add_mm(struct arch_tlbflush_unmap_batch *batch,
+> -					struct mm_struct *mm)
+> +					struct mm_struct *mm,
+> +					unsigned long uaddr)
+>   {
+>   	inc_mm_tlb_gen(mm);
+>   	cpumask_or(&batch->cpumask, &batch->cpumask, mm_cpumask(mm));
+> diff --git a/mm/rmap.c b/mm/rmap.c
+> index a17a004550c6..7187a72b63b1 100644
+> --- a/mm/rmap.c
+> +++ b/mm/rmap.c
+> @@ -642,12 +642,13 @@ void try_to_unmap_flush_dirty(void)
+>   #define TLB_FLUSH_BATCH_PENDING_LARGE			\
+>   	(TLB_FLUSH_BATCH_PENDING_MASK / 2)
+>   
+> -static void set_tlb_ubc_flush_pending(struct mm_struct *mm, bool writable)
+> +static void set_tlb_ubc_flush_pending(struct mm_struct *mm, bool writable,
+> +				      unsigned long uaddr)
+>   {
+>   	struct tlbflush_unmap_batch *tlb_ubc = &current->tlb_ubc;
+>   	int batch, nbatch;
+>   
+> -	arch_tlbbatch_add_mm(&tlb_ubc->arch, mm);
+> +	arch_tlbbatch_add_mm(&tlb_ubc->arch, mm, uaddr);
+>   	tlb_ubc->flush_required = true;
+>   
+>   	/*
+> @@ -725,7 +726,8 @@ void flush_tlb_batched_pending(struct mm_struct *mm)
+>   	}
+>   }
+>   #else
+> -static void set_tlb_ubc_flush_pending(struct mm_struct *mm, bool writable)
+> +static void set_tlb_ubc_flush_pending(struct mm_struct *mm, bool writable,
+> +				      unsigned long uaddr)
+>   {
+>   }
+>   
+> @@ -1587,7 +1589,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+>   				 */
+>   				pteval = ptep_get_and_clear(mm, address, pvmw.pte);
+>   
+> -				set_tlb_ubc_flush_pending(mm, pte_dirty(pteval));
+> +				set_tlb_ubc_flush_pending(mm, pte_dirty(pteval), address);
+>   			} else {
+>   				pteval = ptep_clear_flush(vma, address, pvmw.pte);
+>   			}
