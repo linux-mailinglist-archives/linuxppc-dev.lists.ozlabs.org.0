@@ -1,121 +1,86 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A95E559F162
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Aug 2022 04:21:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C7D359F14E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Aug 2022 04:12:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MC8wx445rz3fxx
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Aug 2022 12:21:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MC8kH0XlMz3fFk
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Aug 2022 12:12:23 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=QWOxPO9Z;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TG3WT65W;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=40.107.236.40; helo=nam11-bn8-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=rmclure@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=QWOxPO9Z;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TG3WT65W;
 	dkim-atps=neutral
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2040.outbound.protection.outlook.com [40.107.236.40])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MC8d80DH1z3c7B
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Aug 2022 12:07:53 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=BW0HOr41CDsV/wGrunk2Lm/J85BAU40eEviEHRs5HMkeP/sEftGmpDq3jpPFAZoATKUIRb+aDlxf4/oANzS05JhunIQtgPPct0ut54CyS0gHR1nNmDas1oBgjPRe5xm8QOlb0EREAQ/FL6HZh3hhAZLVEbPkbB1iSwZ6+L2TZHxIP/o19HZyki1wWgsuDT+BnMqPbwmioR/KTCCyQKRSCkgsFYjyK7npbTjNGj+W7ObCYniAU1bLSMMONx4HU97gHc02svu3BvB2Boq549aJSK1JlkF6ToLt5jONjiTSV/8/wdPLtZoTK3U7UPlv0h0L0MUvHLUrikWaxHOwkYmXvw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/EsHsBSpkl01Xgx6E992Gm8GA/HDYoWLZnjRlByMO6c=;
- b=i/Pb4VlzU5vTjxaaqGRkwEPTK7M3uHrfzzF2un4WZk0DwVr3VueGmNPwgdj9YzvEGNuKUqbpS1KO/iU3NvPmL/0lmcmB4PVVR11ELFZXrso41NOyz3NJXoZmx1cONlLuVwW3EZTclhr4UQzBwciV/OGLrje2XqLrnJi7dQrU8TCQHgF/400q1qd+bVR99cnslBs3JFPL2LsRKJRU4LbYfK0QRAXnOORS5KREjy7JBn45l4ErO78CuOWF9fvcrusi91At+UlOlb6eY/4uLwqvxJqlGyE9mIoqmkR+0ZdogXAcw5rewccsdcnFb55L+TqgnHSyme3j3NK5LeMkN0auuw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/EsHsBSpkl01Xgx6E992Gm8GA/HDYoWLZnjRlByMO6c=;
- b=QWOxPO9Z2UDNra3ELXopKNR8DJ4hwzrnvL6BevAQlnbwv0irnyb7EBFGFvZylVGQIJoEyggjmXxsNxw20HivdHUkyS5BAQAnYDpA1B/w3NmV/7oX1HD2sRqwEeuTXUZxGGXjfLMxp5HR7+Vm7PNfV0x6gNbnbnwJcgBmZCmWhEy3Te0j6wO8OQ7MRw0sRSkX2BMts7IGJUc6tEI+S9ex/0xhxFN7mrmRSTnCgosTAtDiNHJKUeXh9XMv2esPTbJA8akB8ZE5ya6doyob6WXDT+xgw0RbHggp1XCjVar2SvtXvAEJ7vnMnQnQIbe+7YnGOL5gz/wF8I3uEpPtixfBaQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from BYAPR12MB3176.namprd12.prod.outlook.com (2603:10b6:a03:134::26)
- by BY5PR12MB4918.namprd12.prod.outlook.com (2603:10b6:a03:1df::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5546.18; Wed, 24 Aug
- 2022 02:07:34 +0000
-Received: from BYAPR12MB3176.namprd12.prod.outlook.com
- ([fe80::7432:2749:aa27:722c]) by BYAPR12MB3176.namprd12.prod.outlook.com
- ([fe80::7432:2749:aa27:722c%7]) with mapi id 15.20.5546.022; Wed, 24 Aug 2022
- 02:07:33 +0000
-References: <6e77914685ede036c419fa65b6adc27f25a6c3e9.1660635033.git-series.apopple@nvidia.com>
- <CAC=cRTPGiXWjk=CYnCrhJnLx3mdkGDXZpvApo6yTbeW7+ZGajA@mail.gmail.com>
- <Yvv/eGfi3LW8WxPZ@xz-m1.local> <871qtfvdlw.fsf@nvdebian.thelocal>
- <YvxWUY9eafFJ27ef@xz-m1.local> <87o7wjtn2g.fsf@nvdebian.thelocal>
- <87tu6bbaq7.fsf@yhuang6-desk2.ccr.corp.intel.com>
- <1D2FB37E-831B-445E-ADDC-C1D3FF0425C1@gmail.com>
- <Yv1BJKb5he3dOHdC@xz-m1.local>
- <87czcyawl6.fsf@yhuang6-desk2.ccr.corp.intel.com>
- <Yv5QXkS4Bm9pTBeG@xz-m1.local>
- <874jy9aqts.fsf@yhuang6-desk2.ccr.corp.intel.com>
-User-agent: mu4e 1.6.9; emacs 27.1
-From: Alistair Popple <apopple@nvidia.com>
-To: "Huang, Ying" <ying.huang@intel.com>
-Subject: Re: [PATCH v2 1/2] mm/migrate_device.c: Copy pte dirty bit to page
-Date: Wed, 24 Aug 2022 11:56:25 +1000
-In-reply-to: <874jy9aqts.fsf@yhuang6-desk2.ccr.corp.intel.com>
-Message-ID: <87czcqiecd.fsf@nvdebian.thelocal>
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR03CA0191.namprd03.prod.outlook.com
- (2603:10b6:a03:2ef::16) To BYAPR12MB3176.namprd12.prod.outlook.com
- (2603:10b6:a03:134::26)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MC8c52nTwz3c2s
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Aug 2022 12:07:00 +1000 (AEST)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27O22Ifu014073;
+	Wed, 24 Aug 2022 02:06:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=CSjwLn7MHRt1K6idFNpkHW4o9YMdsOKemrY/MvXSL9A=;
+ b=TG3WT65W0GDcjuOozaqV+VBaWvciLNWc5vo9NK7sRLhgQz3jwgSsELgiLbrewVHCUMwF
+ XJknFAj1otoWyDrAQxgqRJG/1rxF4RJ6XX6HGPz83MMXiZia8af5dbWCkkI+Ekgxu/4Y
+ hLAr78zazLjSoQ6AOp41+5BANUhh4+KGKHStZ03OQpYFP6VdAIdVHcqhS/yAJgbO8ku8
+ tbKmMD8+H6TGrHAHWbllUaO1EJuGRe4/yk+uXkJ8Um71ENk0UK8gAReCLJqHib9jMPpz
+ gqZvUCEln+YpzyRT9Sp4zIin5DhWyhYq6TJlNjkLDkhptxgABeZgp6fSYu4dW2Ab6Ros ZA== 
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com [149.81.74.107])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3j5ausr3dw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 24 Aug 2022 02:06:38 +0000
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+	by ppma03fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 27O26SAK020567;
+	Wed, 24 Aug 2022 02:06:36 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+	by ppma03fra.de.ibm.com with ESMTP id 3j2q8939dt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 24 Aug 2022 02:06:36 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
+	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 27O26Xjx18743590
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 24 Aug 2022 02:06:34 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C0B50A4059;
+	Wed, 24 Aug 2022 02:06:33 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2045CA4053;
+	Wed, 24 Aug 2022 02:06:33 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Wed, 24 Aug 2022 02:06:33 +0000 (GMT)
+Received: from civic.. (unknown [9.177.18.116])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 9A3D0600A7;
+	Wed, 24 Aug 2022 12:06:23 +1000 (AEST)
+From: Rohan McLure <rmclure@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v4 00/20] powerpc: Syscall wrapper and register clearing
+Date: Wed, 24 Aug 2022 12:05:28 +1000
+Message-Id: <20220824020548.62625-1-rmclure@linux.ibm.com>
+X-Mailer: git-send-email 2.34.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: HqyluymLeGErbie9CSCgFHoLkYf1bmiQ
+X-Proofpoint-ORIG-GUID: HqyluymLeGErbie9CSCgFHoLkYf1bmiQ
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: a5fc7fcf-eb26-4461-e1d3-08da85756851
-X-MS-TrafficTypeDiagnostic: BY5PR12MB4918:EE_
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	AZ0ERyiZQbgOuusr6wIrkirtipLx3fxd0p93qmdogTeS0jvGNpoLpsdSxunIB5vtIlsxyPB4EO8IU75QXFPJ6b0AwYgx6MIG+l/f5r6WMU3jDZEzaU7Drq9CclGy2Tk72Rd+SSkOxryOkoAVISfIrBHpHP6dRwClvawmf4sZplj84FaaljpYGXAjsZa0+8VQosUSy3XALE9AtQMNzNLmoMVVBj6ILkYoubbjDES0FIVIhmtZttE9NHHpbTmyH0C3cXE/nBlVHMNKdGJznrvCS7Yf0oaQJI1WxM/nBx4JKkxuqR80CkE24+TILt1Wtdm/5TdHUdQCas75LexjYOwEhv3i7WZUCKpOOVty2kHgH8alXAx2Om0Q6EkJuGg7/Sagem+uSR19Vxrn27V7rRQimwAMHoV0fh8gww9WbBbT3Fe1py+ydTA+H6XNcSHmHi8jfepA7sswCGHr4FhFgvN2m9g1qrzm46OjQp15bXo66n590EziaGIJHR8AhW1rhhDSP6LK4RWwdCuAFVImswFLeUQ5EdVXTesn6+xttXffiNPybNBESKD6ZnPE3V+663uuQ1rtqghHaMedu2WWaTwnNulzUrgd/WpyqMnaQJPlWlDylUn6ENIUoED8e5ugKE+THbJquGJ2AoQ8NHEpH51Y87roGj1SQ1oUh04ZIQNngVT1zGVOKhI8tgBH56atp7DizeI4oDJSkmePn3Ajzcpd0dcw2RdTzaGyN9QCCaQ/Hh4GZXdm1rI9MB8eHz5fGovG
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB3176.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(4636009)(396003)(39860400002)(136003)(376002)(366004)(346002)(26005)(2906002)(86362001)(6506007)(6512007)(9686003)(186003)(38100700002)(83380400001)(54906003)(6916009)(8936002)(316002)(4326008)(66476007)(6666004)(66946007)(8676002)(66556008)(478600001)(6486002)(7416002)(5660300002)(41300700001)(14143004);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?/6fK4Tc8EN+t3UKDjkLLwN1vrOkj2LEFVherEZU190HpKJL6++AEvqw4HDTp?=
- =?us-ascii?Q?iZ+iWnPK7wppbWZqIQnoU7C4BTlYp1qmOs7wHh76T3LohfX+g0stMN9NIZ84?=
- =?us-ascii?Q?cP6/6k/bcOP7FT2LF6tatb5d0to5GFXGy3dkYC6AnPr8qe7MrUfwvsCjAxC5?=
- =?us-ascii?Q?Oq6H56XWBGB6MNHf2UAB5/WIHZ2LQg04rGnTbtsrfvz8xRicSS21DUOoul8j?=
- =?us-ascii?Q?xM7U4asLqVbnfH2284H+gz1ilvDyEmu1c5zQq6lM/EB259W+Z6Y2/JkN7rHw?=
- =?us-ascii?Q?/ULtweEd9eXNFhliL8E762OzesWYiXoeG/6DCH05SOrfido0dEm7dS44EdP+?=
- =?us-ascii?Q?jdBNRwep+oTmu9i+AqIdEulCin+Umd6qJThNyDx4lDAbFR62XiKBD4QwHMYY?=
- =?us-ascii?Q?iAsyvNZCY2SZiWo6yng2TaR94SlHb2ehUGDUhtKTK3Udd3b7ronbiWJyYHzM?=
- =?us-ascii?Q?OkccaHwqL8RL9+z80w39i4zRmYrmfyJ2BiVfwlif5nFv281SuRjNXIt+PWiK?=
- =?us-ascii?Q?QPAVjksGT7xhWgPExRa0dsKcO6TZUUCsZ+rxFlBxnfY5wgSamBdaUgJxh91G?=
- =?us-ascii?Q?s5I0y/E4xl2mG9+sjmRVcULOh6p1Yy+CLZu0Vh3zOOGJNkho8wCGaRtSqJBv?=
- =?us-ascii?Q?JHLSu/1rZLDdGqQTOAr59+pBtR3ySzaghM6X2CgLqgedkA9BomViZAMFNSfg?=
- =?us-ascii?Q?H4xzOdk0uvYtZcG3B3gIaFCy+JbMVJqnQ0SUFYDoxVvO4uqZ3dsWfd3UhUZp?=
- =?us-ascii?Q?vnQ7cZpfPD6Z59h7KP2ohSEIyF9OYbt1cRhgtc/FHYwMd9H+1KQ/4k/Sk0Tg?=
- =?us-ascii?Q?AoIB0yyFe01P5wgbkp+A27ZYDYXapmnffZpgXaMyCViFUxSfjVk/NWNauJNb?=
- =?us-ascii?Q?xRpw/w77h8MsAGBD3RG2QJW0sAnZwGOwgdGP4EcH75UOdEw7Oznuh74evVtw?=
- =?us-ascii?Q?aCe3IsELi2mPCxQtBuXiBFgB2Dlt6iLxarWCwNpZAcJWTyH3DmA1D5348GqM?=
- =?us-ascii?Q?/bW+9NZ4PQzxHQ7OqDpd2Cuiv2cVKbHSw3MV8yc9pr2WzwLSENW0n2BsHGtS?=
- =?us-ascii?Q?iEubZqKQ0JNRmT/TTIwlfcuTJ+25E3a2cO/5wOdqT9MWw3HIAMuO64lqWcVF?=
- =?us-ascii?Q?xxJCFp8RbBWqZUtavLRXY8B4KMOC0n6Ot+IR6dss67dfEUoVaVnjCzXFkRRy?=
- =?us-ascii?Q?QeyYcizh0xcoNj5qBFuOT1kgAY+I2eP/Xra7Yvkn8glp1F1xlLC+XYCqXy21?=
- =?us-ascii?Q?WNoORWc0Bij5x7+hL53yT/LFfXMURNJD+oDH5dQSCcOvmbRoeYM+l5GgoGgl?=
- =?us-ascii?Q?0VK+rJ67WzStwmzCr9bYZXxDQa5EgRZQLEJPGXKMAJn7TpnnPiHJHkMK+Hkm?=
- =?us-ascii?Q?s5bWhEVXqhxnQ8dW0jefgCzAGAKklOr+W8jl6qzUxYlDJxlplhH8GoBHq4nR?=
- =?us-ascii?Q?wq7TWpaDW4tqoyDGeEmJX7HVkl9MxvcsjlJSkydbMSdCfzuvzsAPXG93ieGN?=
- =?us-ascii?Q?gykzrgcmX6uooBSacv6Plqy4XYHDCRnERaae/Roq9CPJErxquzm5FodoISU1?=
- =?us-ascii?Q?D1TrxP02fMPG3Xu0QnZheLrY3NVIrp9wVpTbOt48?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a5fc7fcf-eb26-4461-e1d3-08da85756851
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR12MB3176.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Aug 2022 02:07:33.7335
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: RQXgCX74IYU1+4DNPdhzNTO0u8EKAa7l7w1vu6iXDq717ms42rJt/KrnrRLj8KRJmYEBHogq/6UIbtFMZC8l6Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4918
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-08-23_10,2022-08-22_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ spamscore=0 suspectscore=0 priorityscore=1501 bulkscore=0 phishscore=0
+ clxscore=1015 malwarescore=0 impostorscore=0 mlxscore=0 mlxlogscore=251
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2207270000 definitions=main-2208240005
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -127,64 +92,129 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Sierra Guiza, Alejandro \(Alex\)" <alex.sierra@amd.com>, Ralph Campbell <rcampbell@nvidia.com>, Lyude Paul <lyude@redhat.com>, Karol Herbst <kherbst@redhat.com>, David Hildenbrand <david@redhat.com>, Nadav Amit <nadav.amit@gmail.com>, Felix Kuehling <Felix.Kuehling@amd.com>, linuxppc-dev@lists.ozlabs.org, LKML <linux-kernel@vger.kernel.org>, Peter Xu <peterx@redhat.com>, Linux MM <linux-mm@kvack.org>, Logan Gunthorpe <logang@deltatee.com>, Matthew Wilcox <willy@infradead.org>, Jason Gunthorpe <jgg@nvidia.com>, John Hubbard <jhubbard@nvidia.com>, stable@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, huang ying <huang.ying.caritas@gmail.com>, Ben Skeggs <bskeggs@redhat.com>
+Cc: Rohan McLure <rmclure@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+V3 available here:
 
-"Huang, Ying" <ying.huang@intel.com> writes:
+Link: https://lore.kernel.org/all/4C3A8815-67FF-41EB-A703-981920CA1201@linux.ibm.com/T/
 
-> Peter Xu <peterx@redhat.com> writes:
->
->> On Thu, Aug 18, 2022 at 02:34:45PM +0800, Huang, Ying wrote:
->>> > In this specific case, the only way to do safe tlb batching in my mind is:
->>> >
->>> > 	pte_offset_map_lock();
->>> > 	arch_enter_lazy_mmu_mode();
->>> >         // If any pending tlb, do it now
->>> >         if (mm_tlb_flush_pending())
->>> > 		flush_tlb_range(vma, start, end);
->>> >         else
->>> >                 flush_tlb_batched_pending();
->>>
->>> I don't think we need the above 4 lines.  Because we will flush TLB
->>> before we access the pages.
+Implement a syscall wrapper, causing arguments to handlers to be passed
+via a struct pt_regs on the stack. The syscall wrapper is implemented
+for all platforms other than the Cell processor, from which SPUs expect
+the ability to directly call syscall handler symbols with the regular
+in-register calling convention.
 
-I agree. For migration the TLB flush is only important if the PTE is
-present, and in that case we do a TLB flush anyway.
+Adopting syscall wrappers requires redefinition of architecture-specific
+syscalls and compatibility syscalls to use the SYSCALL_DEFINE and
+COMPAT_SYSCALL_DEFINE macros, as well as removal of direct-references to
+the emitted syscall-handler symbols from within the kernel. This work
+lead to the following modernisations of powerpc's syscall handlers:
 
->> Could you elaborate?
->
-> As you have said below, we don't use non-present PTEs and flush present
-> PTEs before we access the pages.
->
->>> Can you find any issue if we don't use the above 4 lines?
->>
->> It seems okay to me to leave stall tlb at least within the scope of this
->> function. It only collects present ptes and flush propoerly for them.  I
->> don't quickly see any other implications to other not touched ptes - unlike
->> e.g. mprotect(), there's a strong barrier of not allowing further write
->> after mprotect() returns.
->
-> Yes.  I think so too.
->
->> Still I don't know whether there'll be any side effect of having stall tlbs
->> in !present ptes because I'm not familiar enough with the private dev swap
->> migration code.  But I think having them will be safe, even if redundant.
+ - Replace syscall 82 semantics with sys_old_select and remove
+   ppc_select handler, which features direct call to both sys_old_select
+   and sys_select.
+ - Use a generic fallocate compatibility syscall
 
-What side-effect were you thinking of? I don't see any issue with not
-TLB flushing stale device-private TLBs prior to the migration because
-they're not accessible anyway and shouldn't be in any TLB.
+Replace asm implementation of syscall table with C implementation for
+more compile-time checks.
 
-> I don't think it's a good idea to be redundant.  That may hide the real
-> issue.
->
-> Best Regards,
-> Huang, Ying
+Many compatibility syscalls are candidates to be removed in favour of
+generically defined handlers, but exhibit different parameter orderings
+and numberings due to 32-bit ABI support for 64-bit parameters. The
+parameter reorderings are however consistent with arm. A future patch
+series will serve to modernise syscalls by providing generic
+implementations featuring these reorderings.
 
-Thanks all for the discussion. Having done some more reading I agree
-that it's safe to assume HW dirty bits are write-through, so will remove
-the ptep_clear_flush() and use ptep_get_and_clear() instead. Will split
-out the TLB flushing fix into a separate patch in this series.
+The design of this syscall is very similar to the s390, x86 and arm64
+implementations. See also Commit 4378a7d4be30 (arm64: implement syscall wrappers).
+The motivation for this change is that it allows for the clearing of
+register state when entering the kernel via through interrupt handlers
+on 64-bit servers. This serves to reduce the influence of values in
+registers carried over from the interrupted process, e.g. syscall
+parameters from user space, or user state at the site of a pagefault.
+All values in registers are saved and zeroized at the entry to an
+interrupt handler and restored afterward. While this may sound like a
+heavy-weight mitigation, many gprs are already saved and restored on
+handling of an interrupt, and the mmap_bench benchmark on Power 9 guest,
+repeatedly invoking the pagefault handler suggests at most ~0.8%
+regression in performance. Realistic workloads are not constantly
+producing interrupts, and so this does not indicate realistic slowdown.
 
- - Alistair
+Using wrapped syscalls yields to a performance improvement of ~5.6% on
+the null_syscall benchmark on pseries guests, by removing the need for
+system_call_exception to allocate its own stack frame. This amortises
+the additional costs of saving and restoring non-volatile registers
+(register clearing is cheap on super scalar platforms), and so the
+final mitigation actually yields a net performance improvement of ~0.6%
+on the null_syscall benchmark.
+
+Patch Changelog:
+
+ - Fix instances where NULLIFY_GPRS were still present
+ - Minimise unrecoverable windows in entry_32.S between SRR0/1 restores
+   and RFI
+ - Remove all references to syscall symbols prior to introducing syscall
+   wrapper.
+ - Remove unnecessary duplication of syscall handlers with sys_... and
+   powerpc_sys_... symbols.
+ - Clear non-volatile registers on Book3E systems, as some of these
+   systems feature hardware speculation, and we already unconditionally
+   restore NVGPRS.
+
+Rohan McLure (20):
+  powerpc: Remove asmlinkage from syscall handler definitions
+  powerpc: Use generic fallocate compatibility syscall
+  powerpc/32: Remove powerpc select specialisation
+  powerpc: Provide do_ppc64_personality helper
+  powerpc: Remove direct call to personality syscall handler
+  powerpc: Remove direct call to mmap2 syscall handlers
+  powerpc: Adopt SYSCALL_DEFINE for arch-specific syscall handlers
+  powerpc: Include all arch-specific syscall prototypes
+  powerpc: Enable compile-time check for syscall handlers
+  powerpc: Use common syscall handler type
+  powerpc: Add ZEROIZE_GPRS macros for register clears
+  Revert "powerpc/syscall: Save r3 in regs->orig_r3"
+  powerpc: Provide syscall wrapper
+  powerpc/64s: Clear/restore caller gprs in syscall interrupt/return
+  powerpc/64s: Use {ZEROIZE,SAVE,REST}_GPRS macros in sc, scv 0 handlers
+  powerpc/32: Clarify interrupt restores with REST_GPR macro in
+    entry_32.S
+  powerpc/64e: Clarify register saves and clears with
+    {SAVE,ZEROIZE}_GPRS
+  powerpc/64s: Fix comment on interrupt handler prologue
+  powerpc/64s: Clear gprs on interrupt routine entry in Book3S
+  powerpc/64e: Clear gprs on interrupt routine entry
+
+ arch/powerpc/Kconfig                         |   1 +
+ arch/powerpc/include/asm/compat.h            |   5 +
+ arch/powerpc/include/asm/interrupt.h         |   3 +-
+ arch/powerpc/include/asm/ppc_asm.h           |  22 +++
+ arch/powerpc/include/asm/syscall.h           |  11 +-
+ arch/powerpc/include/asm/syscall_wrapper.h   |  84 +++++++++++
+ arch/powerpc/include/asm/syscalls.h          | 128 +++++++++++++----
+ .../ppc32.h => include/asm/syscalls_32.h}    |   0
+ arch/powerpc/include/asm/unistd.h            |   1 +
+ arch/powerpc/kernel/entry_32.S               |  40 +++---
+ arch/powerpc/kernel/exceptions-64e.S         |  31 ++--
+ arch/powerpc/kernel/exceptions-64s.S         |  25 ++--
+ arch/powerpc/kernel/interrupt_64.S           |  92 +++++-------
+ arch/powerpc/kernel/signal_32.c              |   2 +-
+ arch/powerpc/kernel/sys_ppc32.c              |  54 ++++---
+ arch/powerpc/kernel/syscall.c                |  32 ++---
+ arch/powerpc/kernel/syscalls.c               |  51 ++++---
+ arch/powerpc/kernel/syscalls/syscall.tbl     |  24 ++--
+ arch/powerpc/kernel/{systbl.S => systbl.c}   |  29 ++--
+ arch/powerpc/kernel/vdso.c                   |   6 +-
+ arch/powerpc/perf/callchain_32.c             |   2 +-
+ arch/powerpc/platforms/cell/spu_callbacks.c  |   6 +-
+ .../arch/powerpc/entry/syscalls/syscall.tbl  |  24 ++--
+ 23 files changed, 415 insertions(+), 258 deletions(-)
+ create mode 100644 arch/powerpc/include/asm/syscall_wrapper.h
+ rename arch/powerpc/{kernel/ppc32.h => include/asm/syscalls_32.h} (100%)
+ rename arch/powerpc/kernel/{systbl.S => systbl.c} (55%)
+
+-- 
+2.34.1
+
