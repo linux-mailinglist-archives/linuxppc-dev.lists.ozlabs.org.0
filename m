@@ -2,72 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4054B59F535
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Aug 2022 10:27:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82CEC59F6FF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Aug 2022 11:59:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MCK370zKDz3c7L
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Aug 2022 18:27:31 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Q3GPPLyi;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MCM5N3QCRz308b
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Aug 2022 19:59:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::644; helo=mail-pl1-x644.google.com; envelope-from=hbh25y@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Q3GPPLyi;
-	dkim-atps=neutral
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com [IPv6:2607:f8b0:4864:20::644])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com; envelope-from=wangkefeng.wang@huawei.com; receiver=<UNKNOWN>)
+X-Greylist: delayed 1094 seconds by postgrey-1.36 at boromir; Wed, 24 Aug 2022 19:59:11 AEST
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MCK2T6zW3z2xjv
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Aug 2022 18:26:55 +1000 (AEST)
-Received: by mail-pl1-x644.google.com with SMTP id g8so11151177plq.11
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Aug 2022 01:26:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc;
-        bh=pVHDk8dc6T3BiOa+xYG3swZFhJjca5Kjxb1hfTc+TEc=;
-        b=Q3GPPLyiwudZ2b2XZVmbavLluOlWBfjAouSoJ4Cte3KY5okWZrlxhWnPCAl1u/tSlQ
-         L+DggB6EdMBpYOIE+bK6F1ojgDZ1KUeVLaxoRAdTgvwa+3XImVVQOffZ+QIEVG3tF0Ih
-         TyI3ivOxrfVvfTM2PZcm7GHkKagDsUoa8irSToBbHNDnWrGyKv+tYJEdDAxFWHY731gR
-         g9OGKQR5cGZSdnVK/yPpTY/nZ8j7OK6GdBV05RJwHunDpmMZIAp9inzskJSpR+4iJ4t/
-         4I2xcGWFPqSlvENVXLXh44CJllvjvxdSl+okfAmiJTl/Wt8dusV2EAeDr71/EuLgUc6b
-         o98Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc;
-        bh=pVHDk8dc6T3BiOa+xYG3swZFhJjca5Kjxb1hfTc+TEc=;
-        b=bNWsA/hoo9XEya64rZa9bbF09ZPwj+W6Lh8C0ieEMl3H4e9B60vEof3uMWL/ovBd5P
-         w09axrM57B/FkGAMPqLd3MHvLdTqE6hj/a03zxJNgF0oYkkS3XC+D0vOuUnVbhEBe/0L
-         Kkl4aZQGWMaA3rM0ok6CKq+ML5Z7xthMff6/gVAwIwBOdITVeQREq7P+mheE4Rw+Eesn
-         hIxSK00xoBvAyO9FS27DKTvOPaURvE1D7tWeBjYYQXcUl9hkvQpzjleNgHDJ7raKs4FS
-         vYomvu132z7N/teFML8pk1tu0wLKho3LfG9Rc7YSziJ6v0l1U9z+t3CP4oBYkI5DYUtf
-         GRgw==
-X-Gm-Message-State: ACgBeo3dF35tSg9lhuYwYUqmKTHMhf3VyZBCRNsD1Al4GhUgNoc0IAH1
-	5ow2K0RSpLr58i5OfcEFDbw=
-X-Google-Smtp-Source: AA6agR4YO6ClsUu0eyqsC+HCg7B+A/ucv/i2Jl2W/FK+PGq6TxbzzhpbSEG/XuJQx8wy7PkB4kBSmQ==
-X-Received: by 2002:a17:902:ecd2:b0:16e:d87f:d19e with SMTP id a18-20020a170902ecd200b0016ed87fd19emr27986829plh.75.1661329612214;
-        Wed, 24 Aug 2022 01:26:52 -0700 (PDT)
-Received: from localhost.localdomain ([129.227.150.140])
-        by smtp.gmail.com with ESMTPSA id y3-20020aa793c3000000b00536562f4c03sm8515027pff.146.2022.08.24.01.26.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Aug 2022 01:26:51 -0700 (PDT)
-From: Hangyu Hua <hbh25y@gmail.com>
-To: fbarrat@linux.ibm.com,
-	ajd@linux.ibm.com,
-	arnd@arndb.de,
-	gregkh@linuxfoundation.org,
-	alastair@d-silva.org,
-	mpe@ellerman.id.au
-Subject: [PATCH] misc: ocxl: fix possible refcount leak in afu_ioctl()
-Date: Wed, 24 Aug 2022 16:26:00 +0800
-Message-Id: <20220824082600.36159-1-hbh25y@gmail.com>
-X-Mailer: git-send-email 2.25.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MCM4v0ZWPz2xGy
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Aug 2022 19:59:06 +1000 (AEST)
+Received: from dggpemm500021.china.huawei.com (unknown [172.30.72.54])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4MCLcR2060znTkv;
+	Wed, 24 Aug 2022 17:37:59 +0800 (CST)
+Received: from dggpemm500001.china.huawei.com (7.185.36.107) by
+ dggpemm500021.china.huawei.com (7.185.36.109) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Wed, 24 Aug 2022 17:40:08 +0800
+Received: from [10.174.177.243] (10.174.177.243) by
+ dggpemm500001.china.huawei.com (7.185.36.107) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Wed, 24 Aug 2022 17:40:06 +0800
+Message-ID: <0dc19773-81f7-84c2-2bc7-7d8d987b24b7@huawei.com>
+Date: Wed, 24 Aug 2022 17:40:06 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH v3 2/4] mm/tlbbatch: Introduce
+ arch_tlbbatch_should_defer()
+Content-Language: en-US
+To: Yicong Yang <yangyicong@huawei.com>, <akpm@linux-foundation.org>,
+	<linux-mm@kvack.org>, <linux-arm-kernel@lists.infradead.org>,
+	<x86@kernel.org>, <catalin.marinas@arm.com>, <will@kernel.org>,
+	<linux-doc@vger.kernel.org>
+References: <20220822082120.8347-1-yangyicong@huawei.com>
+ <20220822082120.8347-3-yangyicong@huawei.com>
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+In-Reply-To: <20220822082120.8347-3-yangyicong@huawei.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.177.243]
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ dggpemm500001.china.huawei.com (7.185.36.107)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,32 +60,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Hangyu Hua <hbh25y@gmail.com>
+Cc: linux-s390@vger.kernel.org, zhangshiming@oppo.com, lipeifeng@oppo.com, prime.zeng@hisilicon.com, arnd@arndb.de, corbet@lwn.net, peterz@infradead.org, Anshuman Khandual <khandual@linux.vnet.ibm.com>, realmz6@gmail.com, Barry Song <21cnbao@gmail.com>, linux-kernel@vger.kernel.org, yangyicong@hisilicon.com, openrisc@lists.librecores.org, xhao@linux.alibaba.com, darren@os.amperecomputing.com, huzhanyuan@oppo.com, guojian@oppo.com, linux-riscv@lists.infradead.org, linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, anshuman.khandual@arm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-eventfd_ctx_put need to be called to put the refcount that gotten by
-eventfd_ctx_fdget when ocxl_irq_set_handler fails.
 
-Fixes: 060146614643 ("ocxl: move event_fd handling to frontend")
-Signed-off-by: Hangyu Hua <hbh25y@gmail.com>
----
- drivers/misc/ocxl/file.c | 2 ++
- 1 file changed, 2 insertions(+)
+On 2022/8/22 16:21, Yicong Yang wrote:
+> From: Anshuman Khandual <khandual@linux.vnet.ibm.com>
+>
+> The entire scheme of deferred TLB flush in reclaim path rests on the
+> fact that the cost to refill TLB entries is less than flushing out
+> individual entries by sending IPI to remote CPUs. But architecture
+> can have different ways to evaluate that. Hence apart from checking
+> TTU_BATCH_FLUSH in the TTU flags, rest of the decision should be
+> architecture specific.
+>
+> Signed-off-by: Anshuman Khandual <khandual@linux.vnet.ibm.com>
+> [https://lore.kernel.org/linuxppc-dev/20171101101735.2318-2-khandual@linux.vnet.ibm.com/]
+> Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+> [Rebase and fix incorrect return value type]
 
-diff --git a/drivers/misc/ocxl/file.c b/drivers/misc/ocxl/file.c
-index 6777c419a8da..d46dba2df5a1 100644
---- a/drivers/misc/ocxl/file.c
-+++ b/drivers/misc/ocxl/file.c
-@@ -257,6 +257,8 @@ static long afu_ioctl(struct file *file, unsigned int cmd,
- 		if (IS_ERR(ev_ctx))
- 			return PTR_ERR(ev_ctx);
- 		rc = ocxl_irq_set_handler(ctx, irq_id, irq_handler, irq_free, ev_ctx);
-+		if (rc)
-+			eventfd_ctx_put(ev_ctx);
- 		break;
- 
- 	case OCXL_IOCTL_GET_METADATA:
--- 
-2.25.1
+Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
 
+> ---
+>   arch/x86/include/asm/tlbflush.h | 12 ++++++++++++
+>   mm/rmap.c                       |  9 +--------
+>   2 files changed, 13 insertions(+), 8 deletions(-)
+>
+> diff --git a/arch/x86/include/asm/tlbflush.h b/arch/x86/include/asm/tlbflush.h
+> index cda3118f3b27..8a497d902c16 100644
+> --- a/arch/x86/include/asm/tlbflush.h
+> +++ b/arch/x86/include/asm/tlbflush.h
+> @@ -240,6 +240,18 @@ static inline void flush_tlb_page(struct vm_area_struct *vma, unsigned long a)
+>   	flush_tlb_mm_range(vma->vm_mm, a, a + PAGE_SIZE, PAGE_SHIFT, false);
+>   }
+>   
+> +static inline bool arch_tlbbatch_should_defer(struct mm_struct *mm)
+> +{
+> +	bool should_defer = false;
+> +
+> +	/* If remote CPUs need to be flushed then defer batch the flush */
+> +	if (cpumask_any_but(mm_cpumask(mm), get_cpu()) < nr_cpu_ids)
+> +		should_defer = true;
+> +	put_cpu();
+> +
+> +	return should_defer;
+> +}
+> +
+>   static inline u64 inc_mm_tlb_gen(struct mm_struct *mm)
+>   {
+>   	/*
+> diff --git a/mm/rmap.c b/mm/rmap.c
+> index edc06c52bc82..a17a004550c6 100644
+> --- a/mm/rmap.c
+> +++ b/mm/rmap.c
+> @@ -687,17 +687,10 @@ static void set_tlb_ubc_flush_pending(struct mm_struct *mm, bool writable)
+>    */
+>   static bool should_defer_flush(struct mm_struct *mm, enum ttu_flags flags)
+>   {
+> -	bool should_defer = false;
+> -
+>   	if (!(flags & TTU_BATCH_FLUSH))
+>   		return false;
+>   
+> -	/* If remote CPUs need to be flushed then defer batch the flush */
+> -	if (cpumask_any_but(mm_cpumask(mm), get_cpu()) < nr_cpu_ids)
+> -		should_defer = true;
+> -	put_cpu();
+> -
+> -	return should_defer;
+> +	return arch_tlbbatch_should_defer(mm);
+>   }
+>   
+>   /*
