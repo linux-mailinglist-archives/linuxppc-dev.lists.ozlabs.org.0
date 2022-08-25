@@ -1,69 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30BFA5A0A32
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Aug 2022 09:27:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAF695A0AB2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Aug 2022 09:50:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MCvgf1yThz3bmW
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Aug 2022 17:27:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MCw9S0CQsz3c6w
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Aug 2022 17:50:04 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=kctbTtHy;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=DccTqgAE;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::531; helo=mail-pg1-x531.google.com; envelope-from=cgel.zte@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=kctbTtHy;
-	dkim-atps=neutral
-Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com [IPv6:2607:f8b0:4864:20::531])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MCvg00mH0z2xGR
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Aug 2022 17:27:05 +1000 (AEST)
-Received: by mail-pg1-x531.google.com with SMTP id q9so8087300pgq.6
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Aug 2022 00:27:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc;
-        bh=DeOoCBmYTbzbWF96BhTxAeOzrBznw/YqVHZq/NamK7c=;
-        b=kctbTtHyHjVSHiLzpfNpZkNeUVECwQpwgeNOukjxiT4oiTxjYQKUUeGgGWTsEM26GL
-         inkf/8v1m4y0j6kTO+4V8eh5eDXjLXOetrTrIWbjEAtz/URG3nTaYDFp2QkCw05LEp/D
-         nYpNbrHq/EyqaYoq3REJe4le8AS+L5sPy9vyCHW1co7zS/1FgJ3LH3Wbbg8ZCtVhiC5w
-         e98xW0gA7ZxtFw5R2OhkX1k67CyDPZgNtIWQ7s1m/C9PfocD32YoYXwV8ebWYi6VVwN8
-         YCm3v/H88abUYYkMBSJECOUjrPhiRvUshpx1xCF4F+SMWN72MOp5K+8h/2wVFLrPX0zN
-         0LKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc;
-        bh=DeOoCBmYTbzbWF96BhTxAeOzrBznw/YqVHZq/NamK7c=;
-        b=y1UQ+V4YhA4sBu5UHEYTTM1Ol3eR1bZUIjH6+k1TM+HnFE6VSaGWYWGOGAASwU7ZWa
-         akDp/7+WUQ5LPn/j3Mr/1D2cWRptvDF7fUxlCx80pB1yd+dWU0AGBjyWixzMfxPg+DOk
-         619VOOUP9TTIKGKi5SywYlE8+TkYjlexlih51h6kwsX4WOatNtVF4t5YjDV8hAIubOj4
-         71JUs0FC3srGpBJZSiiO5cZD/zX0gDEl3TrrvAyjwnH25mBr8HY6ELasYkcJ882FnJ1x
-         YBVLcA+zGQDQQOHRY/C0EMUUZO3/DFNHDMXrE0/OdVeel/ce0WvhruHh1467vwsRDGl5
-         /8sw==
-X-Gm-Message-State: ACgBeo30YvJPnddHcLUK7dbSiHjsYDkpSPhu0kot6flfAwQryBh4q0se
-	HJGXhQKEws6yx6OwxqYAyyk=
-X-Google-Smtp-Source: AA6agR6MH3KeKxwOkT2brR7yFR2ml8cTVD19uCi8UCGmAoH6KDDMnzxwF4Cqs2OCYj+qSqKlNT39TA==
-X-Received: by 2002:a65:4d0e:0:b0:42a:88f7:d723 with SMTP id i14-20020a654d0e000000b0042a88f7d723mr2241789pgt.400.1661412422988;
-        Thu, 25 Aug 2022 00:27:02 -0700 (PDT)
-Received: from localhost.localdomain ([193.203.214.57])
-        by smtp.gmail.com with ESMTPSA id z124-20020a633382000000b0042aca53b4cesm6004732pgz.70.2022.08.25.00.27.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Aug 2022 00:27:02 -0700 (PDT)
-From: cgel.zte@gmail.com
-X-Google-Original-From: ye.xingchen@zte.com.cn
-To: mpe@ellerman.id.au
-Subject: [PATCH linux-next] powerpc/pseries/vas: Remove the unneeded result variable
-Date: Thu, 25 Aug 2022 07:26:57 +0000
-Message-Id: <20220825072657.229168-1-ye.xingchen@zte.com.cn>
-X-Mailer: git-send-email 2.25.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MCw8s5qC8z2xGv
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Aug 2022 17:49:33 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=DccTqgAE;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4MCw8s2Q2rz4xV7;
+	Thu, 25 Aug 2022 17:49:33 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1661413773;
+	bh=k/K7Js7dK6dxOfVTDaXcqeIh7AqfvCWAPYJNJN8qsTQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=DccTqgAEj8cQsbTwecf0Jayd3dBrvqd6U8m1Lt7V86aEL++OLOLr5xIxGu99atBxI
+	 8Op6ppf0sepvXsD0m6OkdhzaHfgImYUmJPGiLiq3nJiq3ntzUck+GTN3FvFJV27GEU
+	 4w0hN5KCHxMDg62pj4Q+gPJPSNhBdDSy7LVx3iHwYtaZaFf76dZGxLlkVEdYTsuVes
+	 cPfKQfSYwJCazV/Fwg8Wr1BfDBHuNGe+IzPBEfhXpzHVzAtNwu/5Xk0J6aE7z/Syo7
+	 WRJmfyOLeFBd2IapKcyLn3WNadQqoAlge4tptmNzYmzmPjrBmjIwoZb83LvI3srdMO
+	 Qu38O06uVNhzg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Pali =?utf-8?Q?Roh=C3=A1r?= <pali@kernel.org>, Benjamin Herrenschmidt
+ <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>
+Subject: Re: [PATCH] powerpc/pci: Enable PCI domains in /proc when PCI bus
+ numbers are not unique
+In-Reply-To: <20220820115113.30581-1-pali@kernel.org>
+References: <20220820115113.30581-1-pali@kernel.org>
+Date: Thu, 25 Aug 2022 17:49:28 +1000
+Message-ID: <878rnclq47.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,40 +60,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nathanl@linux.ibm.com, nick.child@ibm.com, ye xingchen <ye.xingchen@zte.com.cn>, Zeal Robot <zealci@zte.com.cn>, haren@linux.ibm.com, linux-kernel@vger.kernel.org, wangborong@cdjrlc.com, Julia.Lawall@inria.fr, npiggin@gmail.com, linuxppc-dev@lists.ozlabs.org
+Cc: linux-pci@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: ye xingchen <ye.xingchen@zte.com.cn>
+Pali Roh=C3=A1r <pali@kernel.org> writes:
+> On 32-bit powerpc systems with more PCIe controllers and more PCI domains,
+> where on more PCI domains are same PCI numbers, when kernel is compiled
+> with CONFIG_PROC_FS=3Dy and CONFIG_PPC_PCI_BUS_NUM_DOMAIN_DEPENDENT=3Dy
+> options, kernel prints "proc_dir_entry 'pci/01' already registered" error
+> message.
 
-Return the value vas_register_coproc_api() directly instead of storing it
-in another redundant variable.
+Thanks, I'll pick this up.
 
-Reported-by: Zeal Robot <zealci@zte.com.cn>
-Signed-off-by: ye xingchen <ye.xingchen@zte.com.cn>
----
- arch/powerpc/platforms/pseries/vas.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+> This regression started appearing after commit 566356813082 ("powerpc/pci:
+> Add config option for using all 256 PCI buses") in case in each mPCIe slot
+> is connected PCIe card and therefore PCI bus 1 is populated in for every
+> PCIe controller / PCI domain.
+>
+> The reason is that PCI procfs code expects that when PCI bus numbers are
+> not unique across all PCI domains, function pci_proc_domain() returns true
+> for domain dependent buses.
+>
+> Fix this issue by setting PCI_ENABLE_PROC_DOMAINS and PCI_COMPAT_DOMAIN_0
+> flags for 32-bit powerpc code when CONFIG_PPC_PCI_BUS_NUM_DOMAIN_DEPENDENT
+> is enabled. Same approach is already implemented for 64-bit powerpc code
+> (where PCI bus numbers are always domain dependent).
 
-diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platforms/pseries/vas.c
-index 7e6e6dd2e33e..46ea4e252f97 100644
---- a/arch/powerpc/platforms/pseries/vas.c
-+++ b/arch/powerpc/platforms/pseries/vas.c
-@@ -501,14 +501,10 @@ static const struct vas_user_win_ops vops_pseries = {
- int vas_register_api_pseries(struct module *mod, enum vas_cop_type cop_type,
- 			     const char *name)
- {
--	int rc;
--
- 	if (!copypaste_feat)
- 		return -ENOTSUPP;
- 
--	rc = vas_register_coproc_api(mod, cop_type, name, &vops_pseries);
--
--	return rc;
-+	return vas_register_coproc_api(mod, cop_type, name, &vops_pseries);
- }
- EXPORT_SYMBOL_GPL(vas_register_api_pseries);
- 
--- 
-2.25.1
+We also have the same in ppc4xx_pci_find_bridges().
+
+And if we can eventually make CONFIG_PPC_PCI_BUS_NUM_DOMAIN_DEPENDENT
+the standard behaviour on 32-bit then everything would behave the same
+and we could simplify pci_proc_domain() to match what other arches do.
+
+cheers
+
+
+> Fixes: 566356813082 ("powerpc/pci: Add config option for using all 256 PC=
+I buses")
+> Signed-off-by: Pali Roh=C3=A1r <pali@kernel.org>
+> ---
+>  arch/powerpc/kernel/pci_32.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+>
+> diff --git a/arch/powerpc/kernel/pci_32.c b/arch/powerpc/kernel/pci_32.c
+> index ffc4e1928c80..8acbc9592ebb 100644
+> --- a/arch/powerpc/kernel/pci_32.c
+> +++ b/arch/powerpc/kernel/pci_32.c
+> @@ -249,6 +249,15 @@ static int __init pcibios_init(void)
+>=20=20
+>  	printk(KERN_INFO "PCI: Probing PCI hardware\n");
+>=20=20
+> +#ifdef CONFIG_PPC_PCI_BUS_NUM_DOMAIN_DEPENDENT
+> +	/*
+> +	 * Enable PCI domains in /proc when PCI bus numbers are not unique
+> +	 * across all PCI domains to prevent conflicts. And keep PCI domain 0
+> +	 * backward compatible in /proc for video cards.
+> +	 */
+> +	pci_add_flags(PCI_ENABLE_PROC_DOMAINS | PCI_COMPAT_DOMAIN_0);
+> +#endif
+> +
+>  	if (pci_has_flag(PCI_REASSIGN_ALL_BUS))
+>  		pci_assign_all_buses =3D 1;
+>=20=20
+> --=20
+> 2.20.1
