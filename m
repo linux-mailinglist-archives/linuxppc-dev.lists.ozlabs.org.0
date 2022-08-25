@@ -1,91 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (unknown [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 807C55A0974
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Aug 2022 09:05:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30BFA5A0A32
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Aug 2022 09:27:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MCv9X69zWz3bqx
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Aug 2022 17:05:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MCvgf1yThz3bmW
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Aug 2022 17:27:42 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cjfRXYwq;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=kctbTtHy;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::531; helo=mail-pg1-x531.google.com; envelope-from=cgel.zte@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cjfRXYwq;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=kctbTtHy;
 	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com [IPv6:2607:f8b0:4864:20::531])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MCv8p4tChz2xHX
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Aug 2022 17:04:25 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27P6ikse015190
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Aug 2022 07:04:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : date : in-reply-to : references : content-type : mime-version
- : content-transfer-encoding; s=pp1;
- bh=5+Xfu2sqB0t+oiekHiRmmVCX7rGczCCqolNbd+asQmw=;
- b=cjfRXYwq2geBYTo3t23jOuaXMltayXXnpWswaXKnF+M8Gq9+pvw9RE6a7nB0ganmyAj7
- G/IDYBohCqGHs3kK8CjLPhCCTthLKXiQ3NR76pvV2CkCBxmhyP4uQuwhsqC95U0kxRPk
- gBwa2nm41rGgf74qRgmJDvDRKZM05pv5SoKhCzdV8nhC0DIkcAm6pXFUB2acjLUnFzKJ
- Mh7L1Wv22rmca1O4exYllLlR2DSQu+A6r5imGL8kRv5gNWaerqu0TH0yTRt4ghOZh/Gj
- dDfjQENgYCJygK5lnvs4gHWUhIVykMYkmFdgaiWmSH8+8LiO4JUv4Ci4/uTVM8w2uhZU qg== 
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3j6434gtt2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Aug 2022 07:04:21 +0000
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
-	by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 27P6p7Sm023397
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Aug 2022 07:04:20 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
-	by ppma01fra.de.ibm.com with ESMTP id 3j2q88vevy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Aug 2022 07:04:19 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
-	by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 27P74Hbx19530114
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Aug 2022 07:04:17 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AB72CA404D
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Aug 2022 07:04:17 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0A3D4A4040
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Aug 2022 07:04:17 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Aug 2022 07:04:16 +0000 (GMT)
-Received: from [9.43.185.18] (unknown [9.43.185.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id BA71B60151;
-	Thu, 25 Aug 2022 17:04:14 +1000 (AEST)
-Message-ID: <93da4237b16e49b1f34659ac1bf930569f6756b7.camel@linux.ibm.com>
-Subject: Re: [PATCH v4 01/20] powerpc: Remove asmlinkage from syscall
- handler definitions
-From: Andrew Donnellan <ajd@linux.ibm.com>
-To: Rohan McLure <rmclure@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Date: Thu, 25 Aug 2022 17:04:11 +1000
-In-Reply-To: <20220824020548.62625-2-rmclure@linux.ibm.com>
-References: <20220824020548.62625-1-rmclure@linux.ibm.com>
-	 <20220824020548.62625-2-rmclure@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.3-1 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MCvg00mH0z2xGR
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Aug 2022 17:27:05 +1000 (AEST)
+Received: by mail-pg1-x531.google.com with SMTP id q9so8087300pgq.6
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Aug 2022 00:27:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc;
+        bh=DeOoCBmYTbzbWF96BhTxAeOzrBznw/YqVHZq/NamK7c=;
+        b=kctbTtHyHjVSHiLzpfNpZkNeUVECwQpwgeNOukjxiT4oiTxjYQKUUeGgGWTsEM26GL
+         inkf/8v1m4y0j6kTO+4V8eh5eDXjLXOetrTrIWbjEAtz/URG3nTaYDFp2QkCw05LEp/D
+         nYpNbrHq/EyqaYoq3REJe4le8AS+L5sPy9vyCHW1co7zS/1FgJ3LH3Wbbg8ZCtVhiC5w
+         e98xW0gA7ZxtFw5R2OhkX1k67CyDPZgNtIWQ7s1m/C9PfocD32YoYXwV8ebWYi6VVwN8
+         YCm3v/H88abUYYkMBSJECOUjrPhiRvUshpx1xCF4F+SMWN72MOp5K+8h/2wVFLrPX0zN
+         0LKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc;
+        bh=DeOoCBmYTbzbWF96BhTxAeOzrBznw/YqVHZq/NamK7c=;
+        b=y1UQ+V4YhA4sBu5UHEYTTM1Ol3eR1bZUIjH6+k1TM+HnFE6VSaGWYWGOGAASwU7ZWa
+         akDp/7+WUQ5LPn/j3Mr/1D2cWRptvDF7fUxlCx80pB1yd+dWU0AGBjyWixzMfxPg+DOk
+         619VOOUP9TTIKGKi5SywYlE8+TkYjlexlih51h6kwsX4WOatNtVF4t5YjDV8hAIubOj4
+         71JUs0FC3srGpBJZSiiO5cZD/zX0gDEl3TrrvAyjwnH25mBr8HY6ELasYkcJ882FnJ1x
+         YBVLcA+zGQDQQOHRY/C0EMUUZO3/DFNHDMXrE0/OdVeel/ce0WvhruHh1467vwsRDGl5
+         /8sw==
+X-Gm-Message-State: ACgBeo30YvJPnddHcLUK7dbSiHjsYDkpSPhu0kot6flfAwQryBh4q0se
+	HJGXhQKEws6yx6OwxqYAyyk=
+X-Google-Smtp-Source: AA6agR6MH3KeKxwOkT2brR7yFR2ml8cTVD19uCi8UCGmAoH6KDDMnzxwF4Cqs2OCYj+qSqKlNT39TA==
+X-Received: by 2002:a65:4d0e:0:b0:42a:88f7:d723 with SMTP id i14-20020a654d0e000000b0042a88f7d723mr2241789pgt.400.1661412422988;
+        Thu, 25 Aug 2022 00:27:02 -0700 (PDT)
+Received: from localhost.localdomain ([193.203.214.57])
+        by smtp.gmail.com with ESMTPSA id z124-20020a633382000000b0042aca53b4cesm6004732pgz.70.2022.08.25.00.27.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 25 Aug 2022 00:27:02 -0700 (PDT)
+From: cgel.zte@gmail.com
+X-Google-Original-From: ye.xingchen@zte.com.cn
+To: mpe@ellerman.id.au
+Subject: [PATCH linux-next] powerpc/pseries/vas: Remove the unneeded result variable
+Date: Thu, 25 Aug 2022 07:26:57 +0000
+Message-Id: <20220825072657.229168-1-ye.xingchen@zte.com.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: fnTqe00cV7lZGcKpQ1VUAagAKFf_QwV3
-X-Proofpoint-ORIG-GUID: fnTqe00cV7lZGcKpQ1VUAagAKFf_QwV3
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-08-25_03,2022-08-22_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- lowpriorityscore=0 suspectscore=0 priorityscore=1501 spamscore=0
- phishscore=0 clxscore=1015 adultscore=0 mlxscore=0 mlxlogscore=643
- bulkscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2207270000 definitions=main-2208250024
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,120 +75,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: nathanl@linux.ibm.com, nick.child@ibm.com, ye xingchen <ye.xingchen@zte.com.cn>, Zeal Robot <zealci@zte.com.cn>, haren@linux.ibm.com, linux-kernel@vger.kernel.org, wangborong@cdjrlc.com, Julia.Lawall@inria.fr, npiggin@gmail.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2022-08-24 at 12:05 +1000, Rohan McLure wrote:
-> The asmlinkage macro has no special meaning in powerpc, and prior to
-> this patch is used sporadically on some syscall handler definitions.
-> On
-> architectures that do not define asmlinkage, it resolves to extern
-> "C"
-> for C++ compilers and a nop otherwise. The current invocations of
-> asmlinkage provide far from complete support for C++ toolchains, and
-> so
-> the macro serves no purpose in powerpc.
-> 
-> Remove all invocations of asmlinkage in arch/powerpc. These
-> incidentally
-> only occur in syscall definitions and prototypes.
-> 
-> Signed-off-by: Rohan McLure <rmclure@linux.ibm.com>
+From: ye xingchen <ye.xingchen@zte.com.cn>
 
-This does indeed get rid of every reference to asmlinkage in
-arch/powerpc.
+Return the value vas_register_coproc_api() directly instead of storing it
+in another redundant variable.
 
-Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
+Reported-by: Zeal Robot <zealci@zte.com.cn>
+Signed-off-by: ye xingchen <ye.xingchen@zte.com.cn>
+---
+ arch/powerpc/platforms/pseries/vas.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-> ---
-> V2 -> V3: new patch
-> ---
->  arch/powerpc/include/asm/syscalls.h | 16 ++++++++--------
->  arch/powerpc/kernel/sys_ppc32.c     |  8 ++++----
->  2 files changed, 12 insertions(+), 12 deletions(-)
-> 
-> diff --git a/arch/powerpc/include/asm/syscalls.h
-> b/arch/powerpc/include/asm/syscalls.h
-> index a2b13e55254f..21c2faaa2957 100644
-> --- a/arch/powerpc/include/asm/syscalls.h
-> +++ b/arch/powerpc/include/asm/syscalls.h
-> @@ -10,14 +10,14 @@
->  
->  struct rtas_args;
->  
-> -asmlinkage long sys_mmap(unsigned long addr, size_t len,
-> -               unsigned long prot, unsigned long flags,
-> -               unsigned long fd, off_t offset);
-> -asmlinkage long sys_mmap2(unsigned long addr, size_t len,
-> -               unsigned long prot, unsigned long flags,
-> -               unsigned long fd, unsigned long pgoff);
-> -asmlinkage long ppc64_personality(unsigned long personality);
-> -asmlinkage long sys_rtas(struct rtas_args __user *uargs);
-> +long sys_mmap(unsigned long addr, size_t len,
-> +             unsigned long prot, unsigned long flags,
-> +             unsigned long fd, off_t offset);
-> +long sys_mmap2(unsigned long addr, size_t len,
-> +              unsigned long prot, unsigned long flags,
-> +              unsigned long fd, unsigned long pgoff);
-> +long ppc64_personality(unsigned long personality);
-> +long sys_rtas(struct rtas_args __user *uargs);
->  int ppc_select(int n, fd_set __user *inp, fd_set __user *outp,
->                fd_set __user *exp, struct __kernel_old_timeval __user
-> *tvp);
->  long ppc_fadvise64_64(int fd, int advice, u32 offset_high, u32
-> offset_low,
-> diff --git a/arch/powerpc/kernel/sys_ppc32.c
-> b/arch/powerpc/kernel/sys_ppc32.c
-> index 16ff0399a257..f4edcc9489fb 100644
-> --- a/arch/powerpc/kernel/sys_ppc32.c
-> +++ b/arch/powerpc/kernel/sys_ppc32.c
-> @@ -85,20 +85,20 @@ compat_ssize_t compat_sys_readahead(int fd, u32
-> r4, u32 offset1, u32 offset2, u3
->         return ksys_readahead(fd, merge_64(offset1, offset2), count);
->  }
->  
-> -asmlinkage int compat_sys_truncate64(const char __user * path, u32
-> reg4,
-> +int compat_sys_truncate64(const char __user * path, u32 reg4,
->                                 unsigned long len1, unsigned long
-> len2)
->  {
->         return ksys_truncate(path, merge_64(len1, len2));
->  }
->  
-> -asmlinkage long compat_sys_fallocate(int fd, int mode, u32 offset1,
-> u32 offset2,
-> +long compat_sys_fallocate(int fd, int mode, u32 offset1, u32
-> offset2,
->                                      u32 len1, u32 len2)
->  {
->         return ksys_fallocate(fd, mode, ((loff_t)offset1 << 32) |
-> offset2,
->                              merge_64(len1, len2));
->  }
->  
-> -asmlinkage int compat_sys_ftruncate64(unsigned int fd, u32 reg4,
-> unsigned long len1,
-> +int compat_sys_ftruncate64(unsigned int fd, u32 reg4, unsigned long
-> len1,
->                                  unsigned long len2)
->  {
->         return ksys_ftruncate(fd, merge_64(len1, len2));
-> @@ -111,7 +111,7 @@ long ppc32_fadvise64(int fd, u32 unused, u32
-> offset1, u32 offset2,
->                                  advice);
->  }
->  
-> -asmlinkage long compat_sys_sync_file_range2(int fd, unsigned int
-> flags,
-> +long compat_sys_sync_file_range2(int fd, unsigned int flags,
->                                    unsigned offset1, unsigned
-> offset2,
->                                    unsigned nbytes1, unsigned
-> nbytes2)
->  {
-
+diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platforms/pseries/vas.c
+index 7e6e6dd2e33e..46ea4e252f97 100644
+--- a/arch/powerpc/platforms/pseries/vas.c
++++ b/arch/powerpc/platforms/pseries/vas.c
+@@ -501,14 +501,10 @@ static const struct vas_user_win_ops vops_pseries = {
+ int vas_register_api_pseries(struct module *mod, enum vas_cop_type cop_type,
+ 			     const char *name)
+ {
+-	int rc;
+-
+ 	if (!copypaste_feat)
+ 		return -ENOTSUPP;
+ 
+-	rc = vas_register_coproc_api(mod, cop_type, name, &vops_pseries);
+-
+-	return rc;
++	return vas_register_coproc_api(mod, cop_type, name, &vops_pseries);
+ }
+ EXPORT_SYMBOL_GPL(vas_register_api_pseries);
+ 
 -- 
-Andrew Donnellan    OzLabs, ADL Canberra
-ajd@linux.ibm.com   IBM Australia Limited
-
+2.25.1
