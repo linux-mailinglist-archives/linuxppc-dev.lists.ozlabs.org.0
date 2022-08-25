@@ -1,70 +1,119 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F3C95A1D45
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Aug 2022 01:42:11 +0200 (CEST)
+Received: from lists.ozlabs.org (unknown [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 007C95A1C1B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Aug 2022 00:19:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MDKJ12Yq1z3bkn
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Aug 2022 09:42:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MDHT23QX9z3c6q
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Aug 2022 08:19:50 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=conchuod.ie header.i=@conchuod.ie header.a=rsa-sha256 header.s=google header.b=SJaPKdEK;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=GoKVwjgR;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=conchuod.ie (client-ip=2a00:1450:4864:20::430; helo=mail-wr1-x430.google.com; envelope-from=mail@conchuod.ie; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=40.107.92.88; helo=nam10-bn7-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=conchuod.ie header.i=@conchuod.ie header.a=rsa-sha256 header.s=google header.b=SJaPKdEK;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=GoKVwjgR;
 	dkim-atps=neutral
-Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2088.outbound.protection.outlook.com [40.107.92.88])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MDFkm577kz2xJL
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Aug 2022 07:01:33 +1000 (AEST)
-Received: by mail-wr1-x430.google.com with SMTP id az27so6062354wrb.6
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Aug 2022 14:01:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=conchuod.ie; s=google;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc;
-        bh=Z63zwi7cGAuKiNoBIs10Ekj9CC9KQ4p8G+KukTWva3I=;
-        b=SJaPKdEKD3cZ4U2ILmGJ7YYl8jrjkW+umstaVhULXfth/8eB87EBEKn/1mLbA1W76X
-         PzwduEhBRnRX4YqA+aiPXjDTcwdjcfx/3gAU9DBS4WBTJpRmqny0NPSmw9G9ochTOInu
-         2WeWfYenhoC74R53yv/Z0OwTJEtmrKUx6FM/amJ0sZsda7+BI8NV+YKEpXHvhWWUIQjL
-         jIvX/rug3aVUgMdrWNpc6nGPjyF4/U1BUWb17IFkiyO/CnXUmbpjEQXfrqIv9bH9Ityb
-         Jo9HX3MLhnjEaryWcsPgu/zFHTD87Za/Foj2KTeWLFsfxj4oLiPHVvekJWAPqw55D4IJ
-         wP5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc;
-        bh=Z63zwi7cGAuKiNoBIs10Ekj9CC9KQ4p8G+KukTWva3I=;
-        b=Z1mrt10wz9FD9wWKymohXnpuw+Wf5ZMpOhxyXd7ly3iuSIHq5e5A4R+yOhq4Ioj9Bj
-         AZBIEveaK18xkVgRpZ88n2Rcd9qMXrBKJeJ5Sw8s73vSsLMW1qNWq06UY12j3Z4fWzTC
-         9ZD2sje8mQdMHcbkp7PQdfz0GdY5ZnaS5iMRUS3Xzh4r7HrI8fprmBjUGsiCkP8Mcafi
-         AEu4iH9QTNuGduxn1uPKeGU/5OYbmG08oekVfoAZhgoZripyb6Ck/di8MQ9gOascyBGa
-         gbaDwpuqge2qUC3qJ1XNdJSOsIGfw2BI7zQZzenjEH5KdEGbVPc4oKzNFGhW+AikZPP5
-         5fgQ==
-X-Gm-Message-State: ACgBeo0XHUk8jMOlPWVbNyEYpEdliara1RwSk+UH+AF3R1+iWyjW9jQ1
-	p2H/AjGmrJVJw8GGzGsOrKsM7A==
-X-Google-Smtp-Source: AA6agR6CHzaozIjR/7Q20mq4qiXqh3OzKi41CUQLkIeloF4Lpy2xCkUYlbFCvfPNRwRzxYHUk2X5VA==
-X-Received: by 2002:a5d:5b19:0:b0:225:3ed4:ff64 with SMTP id bx25-20020a5d5b19000000b002253ed4ff64mr3336331wrb.537.1661461285500;
-        Thu, 25 Aug 2022 14:01:25 -0700 (PDT)
-Received: from henark71.. ([51.37.149.245])
-        by smtp.gmail.com with ESMTPSA id i14-20020adffdce000000b00225213fd4a9sm220877wrs.33.2022.08.25.14.01.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Aug 2022 14:01:24 -0700 (PDT)
-From: Conor Dooley <mail@conchuod.ie>
-To: arnd@arndb.de,
-	linux-arch@vger.kernel.org
-Subject: [PATCH v2] include/linux: declare cpuinfo_op in processor.h
-Date: Thu, 25 Aug 2022 21:59:43 +0100
-Message-Id: <20220825205942.1713914-1-mail@conchuod.ie>
-X-Mailer: git-send-email 2.37.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MDHSK52gGz2xG7
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Aug 2022 08:19:10 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Xc/PwzyMDFgp8+o0VbTSdQOhTbG6l9wxevnX+sDWN9GMngnV/pl1OZNtr0PnMVAzRM2Sog/XagZyI2CNtzHye4bj40xQF0ec6X+Wsb4j4inlY5eM2maLf7KxNqq7KeheoLir7eC2BrB/+uE3fwn1AIh2O3+eJvcxfGNbALo3sE49eZxYwKDqC4prgf6boTOKfl58kk2IYs2Uu5yl9Jt9r4tHp95e0uquwdfLGonegwo9HpYqzIjS9Cxawk3oYvOpXUdvUpsc34zQE6u0qGhVqYwN6nFl1SC0MufnKtZwXcN6t+N+sU0lR0j8VA0nOjTJCWaQW2j5ID+tx4dXq5UV2w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=XTLjAYJ2VHe85atSfY1n09uCICnlvOz5N5spgDcZHCE=;
+ b=P1Ma8A6ECTn1SrltX26BT1gkQGmgroAqq8VoIUgc4xZKq/i+vKWxFQJYNaIrGe2IRfhEN5ukyuLeyzhfI7ITkpx239X6vIaQz08IDt6nXaEJu1OHzGg4tUQqKUhhWdlg8dQKSPnQ3WWBFgjaM5HdbOo/7mRbQcmriH4ABusTEnD9n2LJn0kXwGx4+Ph4C7Ve3/BFgYbNsUuIqAhjJFPLmkda0XVMx+u+aNGpH9f585azhrURTLbErRS4+0BbZWrpveUvNv36lR+Esnqp+sc0RpQbjWqrtdBvpVJc+HlH9T3cQP3nauUOdgkVK/d5FEfvZ4b5z3P9BL4dC5+Ckl5IqQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=XTLjAYJ2VHe85atSfY1n09uCICnlvOz5N5spgDcZHCE=;
+ b=GoKVwjgRLJ6qGnOownEXrvJ5csSflVdY1g/Lo4lP+/8CTxH4byEbClbM76I8SbTU05Le4qfnrL7N6qV7EwBjCARXv/0cQS8G2FzX2nbq5MF68dzvAKnW0osVL7Aze9raJNd70Qxuv90PhvN3Xi/9XDi6uSGRyNnzpoWa3g6fzFpq3MtMWMXV++tri98P961f4jfd6/w3fwXcjBy+Gr4fqCSAm4gMFS1KLqlvw5DHm8A7K11mfGGVRtYBRHMvEQB8ZbuoixdBMdejfKS7BoswSEHkZT/fpjKNvw0UlwCQzYGjaaDWBga9kHp66Wu4t/HUTJxRz0l0lCWHMLPS2kXLKA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from BYAPR12MB3176.namprd12.prod.outlook.com (2603:10b6:a03:134::26)
+ by BL3PR12MB6547.namprd12.prod.outlook.com (2603:10b6:208:38e::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5566.15; Thu, 25 Aug
+ 2022 22:18:50 +0000
+Received: from BYAPR12MB3176.namprd12.prod.outlook.com
+ ([fe80::7432:2749:aa27:722c]) by BYAPR12MB3176.namprd12.prod.outlook.com
+ ([fe80::7432:2749:aa27:722c%7]) with mapi id 15.20.5546.022; Thu, 25 Aug 2022
+ 22:18:49 +0000
+References: <1D2FB37E-831B-445E-ADDC-C1D3FF0425C1@gmail.com>
+ <Yv1BJKb5he3dOHdC@xz-m1.local>
+ <87czcyawl6.fsf@yhuang6-desk2.ccr.corp.intel.com>
+ <Yv5QXkS4Bm9pTBeG@xz-m1.local>
+ <874jy9aqts.fsf@yhuang6-desk2.ccr.corp.intel.com>
+ <87czcqiecd.fsf@nvdebian.thelocal> <YwaJSBnp2eyMlkjw@xz-m1.local>
+ <YwaOpj54/qUb5fXa@xz-m1.local> <87o7w9f7dp.fsf@nvdebian.thelocal>
+ <87k06xf70l.fsf@nvdebian.thelocal> <YwePm5lMSU2tsW6f@xz-m1.local>
+User-agent: mu4e 1.6.9; emacs 27.1
+From: Alistair Popple <apopple@nvidia.com>
+To: Peter Xu <peterx@redhat.com>
+Subject: Re: [PATCH v2 1/2] mm/migrate_device.c: Copy pte dirty bit to page
+Date: Fri, 26 Aug 2022 08:09:28 +1000
+In-reply-to: <YwePm5lMSU2tsW6f@xz-m1.local>
+Message-ID: <877d2wezll.fsf@nvdebian.thelocal>
+Content-Type: text/plain
+X-ClientProxiedBy: BY5PR17CA0064.namprd17.prod.outlook.com
+ (2603:10b6:a03:167::41) To BYAPR12MB3176.namprd12.prod.outlook.com
+ (2603:10b6:a03:134::26)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Fri, 26 Aug 2022 09:41:36 +1000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 6e68454b-54fb-461a-886a-08da86e7c8e4
+X-MS-TrafficTypeDiagnostic: BL3PR12MB6547:EE_
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	OPijzWMSrwdL0h3IhIsMOkn0rFeG8AyBJI22/eOg29snSS3urYPMdXI72sBC1/IqQarRkxpnkGHpzQ/SCh+YqWc8sceyJXBwaTpljyMNRpcIsYKZpfg66QLNPg7cLko7TqLEWjeu0Nm9Se+v2BkhZK+tkAowat7LJmLQ+gVd0o5x9+2WA0a13e7A33226/obPcsSBP6XwddzOv3rpsbj2f6XKKKQfEPfyHe46mm0R5FC2m6WQiKNLMFmFVJCs5NzbLH/PYHcMWFrUuOoKXjqGcNBkL16cnLPPn0taYaMAsBh8GK6ZYEuswgUveF3tU3Ah/8Pxgrli0/gwFpsM2mVZBOtCxwVYD1U/2yMwvnPGg7F931PblOQlmwiI42yjKL5NBbNjf9yo8MCRo02I7FNi1g9iKBDrJXbMlxKKwbeWKapRHncTGAdZYE84X/M3kgwSkUxhNKc5Ac0A48J2uEc/MfARNbIWDxawgow9AVLImGURnb0Wbrc84TJCndvChb9Qo8zK/sNs+KPRm148W75SFeRJhLFTIZ2mrqiNhyEFz1jjyaKGDLu5w4OfwMrizcTelBwuOA1E//RmcwFo00mv1eiO3JsFhe+fPreQJEreusmyiUWUrkW+XBEXkGn/BJikiiEjl9RQ7Y8dIILIK7uAntPbwTujqHNf77fim/UwLG+Vgh07WAEU+9ke3jAPuFk4wc66Q17keIG/w6OuJdf9KuymgjGNZQBThAlttxtU5VP2ggKlzB4jMsoppmxNYgZ
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB3176.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(4636009)(346002)(396003)(366004)(136003)(376002)(39860400002)(2906002)(7416002)(5660300002)(8936002)(316002)(9686003)(6486002)(6916009)(6666004)(478600001)(6506007)(54906003)(41300700001)(6512007)(26005)(186003)(86362001)(8676002)(83380400001)(66476007)(66556008)(38100700002)(66946007)(4326008)(14143004);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?2Oo7K8cttmrBFloqTD5+BbX1LHRnvHPbhRQVNm9JSsVBHK/ZqJd9DVWxeu4C?=
+ =?us-ascii?Q?g3KcXEnwH/NvHhMCOmlxLbn7Z+m9J1vLK9BXX76+Da4pcQLTVsRvjPJ4Yce9?=
+ =?us-ascii?Q?C29iV2kEqVPRHqgwOqM4KwukUuDxOLx0xFIuHOo7qAFFQNERQH4+s61DCNL6?=
+ =?us-ascii?Q?rPXe6Q1gxw11W1i9MDof51TmN7zFWlnbNRvC9/+vlTmTrdQbcG66k65/6Z0Y?=
+ =?us-ascii?Q?h3/Rex2w7mk+AnjO3HmOlQ9in+cziBolHFemctP8e2ghP/ugFx3I8dljCQG7?=
+ =?us-ascii?Q?X5UqMscJjZ4+IBriKqMVVevIkph+XslsxaAjQtawtk7UZwwjfZ/IcbOWkaBL?=
+ =?us-ascii?Q?W09qMAptJPNuMNqxALpbR05xmpkCoIg269e2z0AlraDNau+h7uoRDEhHf/P8?=
+ =?us-ascii?Q?ietB+nKED3zn9UOjbP9CDksjq9LfC4QxHZXUv6rtpFsHIT0nWr9w3HcB9r2s?=
+ =?us-ascii?Q?3x0BSWbLN+VqQSS23pTtnTKuHyxEFozBepesXZ6l69FIfqpnTU0uQb3qEAkH?=
+ =?us-ascii?Q?+4NcTp8AZY53o1crT6stzSlpOzqCzbrzB74KicIDcW8MAZDjZPyQmqGBkaUQ?=
+ =?us-ascii?Q?Sq+XF/bgFYhihLF3PkC2V4hpc1Jm38XbsV49sA5gLz0nmC27SKCzgOnetAd7?=
+ =?us-ascii?Q?sgOGGjZ5BlbTfI6vWIHY+V29zeJbQx2seW/fJPW2zm1jBpW7wU95BHHw7AGG?=
+ =?us-ascii?Q?MgtoFN3HHll+03PA2KtDXyPJfmiEx3xlW9PVHbT17ETv/m6316FGzNVvgaDt?=
+ =?us-ascii?Q?l+Q5/bCFY6dFlXmv6EAcbW+w/6bgMXCm6oS3GWBcN10FwYQUryvIC0vVdjT4?=
+ =?us-ascii?Q?iST5shS5nIS7dH4rBXaL7EdM8a4SXaDb5g7jJV50ZbaEKyJbm6AeoxUJFZQ6?=
+ =?us-ascii?Q?DimMl23lUvOXohmTv+ZJVgJ2A0nSKTbG9igGuc246Uo/EPY/F4ubpiQHsHvq?=
+ =?us-ascii?Q?Bzrbnkx1c+Sv6XtWbq1iA9GdwyYlCCTAkyUMpqqpNi0E45Vf7GgzpTHaLLjd?=
+ =?us-ascii?Q?qTnxEagJnJnGjJQIrcx0RLgtHneYUUQoi2Qp+3YlyxzddiZzS/XO3qGgBETr?=
+ =?us-ascii?Q?0uPht4SFxfLQl5+h05Kd5fykI4VGQSo7W9oRix7Cnoz9jdS86LW8Ygsk78iC?=
+ =?us-ascii?Q?s8TAJt7huIhGkZnnK/3WcONq381nkQ+l/knL3/jtAEo2BVuwyY5jMRyU3dxR?=
+ =?us-ascii?Q?XPM49GYIt9O1R656EUkza9LbNJFmALtz71SypJu4CjwExBhJiBNKUkSS9GSK?=
+ =?us-ascii?Q?vmMgf6iJDAuuAAxpWu5NAtJTa86SyF7UPa+4ak85k3H2E7eQLlGDc5pR+yi7?=
+ =?us-ascii?Q?jR8+UDFG6rj+v1Q6uoRcAj6GBd5+sT+kAT3oSUZzQCzh76SXphJ6v/fJ8Kgw?=
+ =?us-ascii?Q?Z4LFxFpTCVmHxyci6wGiC9NU7n/RWbrXCkMjUZDrmKUxecBx5xtHlvI77mvU?=
+ =?us-ascii?Q?x7tpb1Rk8vMFA9XMkQbdVC11aeRXplwkjRzgJAOY9RAZymoFE3JtZB+uD/GQ?=
+ =?us-ascii?Q?46zhU7HUm3NEBpo0KigzYseJhTUcxKUc6ZAahPqfQH4aED+gHMyDx5gdv4Oz?=
+ =?us-ascii?Q?JLipZgyEKCXiNhHB6SWepgXKVw6CATxtxNSEnz0v?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6e68454b-54fb-461a-886a-08da86e7c8e4
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR12MB3176.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Aug 2022 22:18:49.6240
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: cGSs6fZeTPCP1f8sIVq9O1px3mtZUafSei4fd0MObMmSv57NLGZGsAfplnsk3jUbMxxmg3IDJy0k0VNNOKA3pA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6547
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,441 +125,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dalias@libc.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, catalin.marinas@arm.com, x86@kernel.org, linux-mips@vger.kernel.org, jcmvbkbc@gmail.com, Conor Dooley <conor.dooley@microchip.com>, guoren@kernel.org, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org, will@kernel.org, gerg@linux-m68k.org, linux-s390@vger.kernel.org, ysato@users.sourceforge.jp, deller@gmx.de, chenhuacai@kernel.org, linux@armlinux.org.uk, linux-csky@vger.kernel.org, geert@linux-m68k.org, vgupta@kernel.org, mattst88@gmail.com, linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org, linux-um@lists.infradead.org, hca@linux.ibm.com, linux-alpha@vger.kernel.org, richard.henderson@linaro.org, linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org, loongarch@lists.linux.dev, shorne@gmail.com, linux-arm-kernel@lists.infradead.org, bcain@quicinc.com, monstr@monstr.eu, tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, linux-kernel@vger.ke
- rnel.org, dinguyen@kernel.org, palmer@dabbelt.com, richard@nod.at, linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
+Cc: "Sierra Guiza, Alejandro \(Alex\)" <alex.sierra@amd.com>, Ralph Campbell <rcampbell@nvidia.com>, Lyude Paul <lyude@redhat.com>, Karol Herbst <kherbst@redhat.com>, John Hubbard <jhubbard@nvidia.com>, David Hildenbrand <david@redhat.com>, Nadav Amit <nadav.amit@gmail.com>, Felix Kuehling <Felix.Kuehling@amd.com>, linuxppc-dev@lists.ozlabs.org, LKML <linux-kernel@vger.kernel.org>, Matthew Wilcox <willy@infradead.org>, Linux MM <linux-mm@kvack.org>, Logan Gunthorpe <logang@deltatee.com>, Ben Skeggs <bskeggs@redhat.com>, Jason Gunthorpe <jgg@nvidia.com>, "Huang, Ying" <ying.huang@intel.com>, stable@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, huang ying <huang.ying.caritas@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Conor Dooley <conor.dooley@microchip.com>
 
-RISC-V is missing a prototype for cpuinfo_op, triggering complaints
-from sparse. Rather than adding yet another `extern const struct
-seq_operations cpuinfo_op;` to an arch specific header file, create a
-generic variant and include it across the board.
+Peter Xu <peterx@redhat.com> writes:
 
-Several archs already have a declaration in asm/processor.h - migrate
-these to include linux/processor.h instead. Most archs do not declare
-cpuinfo_op so one sparse complaint off their books.
+> On Thu, Aug 25, 2022 at 11:24:03AM +1000, Alistair Popple wrote:
+>> By the way it's still an optimisation because in most cases we can avoid
+>> calling try_to_migrate() and walking the rmap altogether if we install
+>> the migration entries here. But I agree the comment is misleading.
+>
+> There's one follow up question I forgot to ask on the trylock thing.  I
+> figured maybe I should ask out loud since we're at it.
+>
+> Since migrate_vma_setup() always only use trylock (even if before dropping
+> the prepare() code), does it mean that it can randomly fail?
 
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
----
-Changes since v1:
-- Per Geert, use linux/processor.h & include it on all archs &
-- Squash to a single patch
+Yes, migration is always best effort and can randomly fail. For example
+it can also fail because there are unexpected page references or pins.
 
-I pushed it out for LKP to take a look at, and was all good there.
-Only added one person per arch & the mailing lists to stay within a
-1024 character CC list. Please scream if I picked the wrong person.
----
- arch/alpha/kernel/setup.c               | 1 +
- arch/arc/kernel/setup.c                 | 1 +
- arch/arm/kernel/setup.c                 | 1 +
- arch/arm64/kernel/cpuinfo.c             | 1 +
- arch/csky/kernel/cpu-probe.c            | 1 +
- arch/hexagon/kernel/setup.c             | 1 +
- arch/ia64/kernel/setup.c                | 1 +
- arch/loongarch/kernel/proc.c            | 1 +
- arch/m68k/kernel/setup_mm.c             | 1 +
- arch/m68k/kernel/setup_no.c             | 1 +
- arch/microblaze/include/asm/processor.h | 2 --
- arch/microblaze/kernel/cpu/mb.c         | 1 +
- arch/mips/kernel/proc.c                 | 1 +
- arch/nios2/kernel/cpuinfo.c             | 1 +
- arch/openrisc/kernel/setup.c            | 1 +
- arch/parisc/kernel/setup.c              | 1 +
- arch/powerpc/kernel/setup-common.c      | 1 +
- arch/riscv/kernel/cpu.c                 | 3 ++-
- arch/s390/include/asm/processor.h       | 2 +-
- arch/s390/kernel/processor.c            | 1 +
- arch/sh/include/asm/processor.h         | 1 -
- arch/sh/kernel/cpu/proc.c               | 1 +
- arch/sparc/include/asm/cpudata.h        | 2 --
- arch/sparc/kernel/cpu.c                 | 1 +
- arch/um/kernel/um_arch.c                | 1 +
- arch/x86/include/asm/processor.h        | 2 --
- arch/x86/kernel/cpu/proc.c              | 1 +
- arch/xtensa/kernel/setup.c              | 1 +
- fs/proc/cpuinfo.c                       | 3 +--
- include/linux/processor.h               | 2 ++
- 30 files changed, 28 insertions(+), 11 deletions(-)
+> I looked at some of the callers, it seems not all of them are ready to
+> handle that (__kvmppc_svm_page_out() or svm_migrate_vma_to_vram()).  Is it
+> safe?  Do the callers need to always properly handle that (unless the
+> migration is only a best-effort, but it seems not always the case).
 
-diff --git a/arch/alpha/kernel/setup.c b/arch/alpha/kernel/setup.c
-index b4fbbba30aa2..d2c2546e9b1a 100644
---- a/arch/alpha/kernel/setup.c
-+++ b/arch/alpha/kernel/setup.c
-@@ -46,6 +46,7 @@
- #include <asm/io.h>
- #include <linux/log2.h>
- #include <linux/export.h>
-+#include <linux/processor.h>
- 
- static int alpha_panic_event(struct notifier_block *, unsigned long, void *);
- static struct notifier_block alpha_panic_block = {
-diff --git a/arch/arc/kernel/setup.c b/arch/arc/kernel/setup.c
-index 41f07b3e594e..b681bdd21a0c 100644
---- a/arch/arc/kernel/setup.c
-+++ b/arch/arc/kernel/setup.c
-@@ -17,6 +17,7 @@
- #include <linux/of_fdt.h>
- #include <linux/of.h>
- #include <linux/cache.h>
-+#include <linux/processor.h>
- #include <uapi/linux/mount.h>
- #include <asm/sections.h>
- #include <asm/arcregs.h>
-diff --git a/arch/arm/kernel/setup.c b/arch/arm/kernel/setup.c
-index 1e8a50a97edf..83240c3c0463 100644
---- a/arch/arm/kernel/setup.c
-+++ b/arch/arm/kernel/setup.c
-@@ -29,6 +29,7 @@
- #include <linux/compiler.h>
- #include <linux/sort.h>
- #include <linux/psci.h>
-+#include <linux/processor.h>
- 
- #include <asm/unified.h>
- #include <asm/cp15.h>
-diff --git a/arch/arm64/kernel/cpuinfo.c b/arch/arm64/kernel/cpuinfo.c
-index d7702f39b4d3..4c1b12918aed 100644
---- a/arch/arm64/kernel/cpuinfo.c
-+++ b/arch/arm64/kernel/cpuinfo.c
-@@ -20,6 +20,7 @@
- #include <linux/personality.h>
- #include <linux/preempt.h>
- #include <linux/printk.h>
-+#include <linux/processor.h>
- #include <linux/seq_file.h>
- #include <linux/sched.h>
- #include <linux/smp.h>
-diff --git a/arch/csky/kernel/cpu-probe.c b/arch/csky/kernel/cpu-probe.c
-index 5f15ca31d3e8..62580f5d0d74 100644
---- a/arch/csky/kernel/cpu-probe.c
-+++ b/arch/csky/kernel/cpu-probe.c
-@@ -5,6 +5,7 @@
- #include <linux/init.h>
- #include <linux/seq_file.h>
- #include <linux/memblock.h>
-+#include <linux/processor.h>
- 
- #include <abi/reg_ops.h>
- 
-diff --git a/arch/hexagon/kernel/setup.c b/arch/hexagon/kernel/setup.c
-index 1880d9beaf2b..395d2930dbd1 100644
---- a/arch/hexagon/kernel/setup.c
-+++ b/arch/hexagon/kernel/setup.c
-@@ -13,6 +13,7 @@
- #include <linux/seq_file.h>
- #include <linux/console.h>
- #include <linux/of_fdt.h>
-+#include <linux/processor.h>
- #include <asm/io.h>
- #include <asm/sections.h>
- #include <asm/setup.h>
-diff --git a/arch/ia64/kernel/setup.c b/arch/ia64/kernel/setup.c
-index fd6301eafa9d..973725c4ce1e 100644
---- a/arch/ia64/kernel/setup.c
-+++ b/arch/ia64/kernel/setup.c
-@@ -52,6 +52,7 @@
- #include <linux/cpufreq.h>
- #include <linux/kexec.h>
- #include <linux/crash_dump.h>
-+#include <linux/processor.h>
- 
- #include <asm/mca.h>
- #include <asm/meminit.h>
-diff --git a/arch/loongarch/kernel/proc.c b/arch/loongarch/kernel/proc.c
-index 5c67cc4fd56d..a8cbebe839e2 100644
---- a/arch/loongarch/kernel/proc.c
-+++ b/arch/loongarch/kernel/proc.c
-@@ -6,6 +6,7 @@
- #include <linux/kernel.h>
- #include <linux/sched.h>
- #include <linux/seq_file.h>
-+#include <linux/processor.h>
- #include <asm/bootinfo.h>
- #include <asm/cpu.h>
- #include <asm/cpu-features.h>
-diff --git a/arch/m68k/kernel/setup_mm.c b/arch/m68k/kernel/setup_mm.c
-index e62fa8f2149b..45d82a4839fc 100644
---- a/arch/m68k/kernel/setup_mm.c
-+++ b/arch/m68k/kernel/setup_mm.c
-@@ -25,6 +25,7 @@
- #include <linux/module.h>
- #include <linux/nvram.h>
- #include <linux/initrd.h>
-+#include <linux/processor.h>
- 
- #include <asm/bootinfo.h>
- #include <asm/byteorder.h>
-diff --git a/arch/m68k/kernel/setup_no.c b/arch/m68k/kernel/setup_no.c
-index cb6def585851..86dd4b47ff43 100644
---- a/arch/m68k/kernel/setup_no.c
-+++ b/arch/m68k/kernel/setup_no.c
-@@ -33,6 +33,7 @@
- #include <linux/initrd.h>
- #include <linux/root_dev.h>
- #include <linux/rtc.h>
-+#include <linux/processor.h>
- 
- #include <asm/setup.h>
- #include <asm/bootinfo.h>
-diff --git a/arch/microblaze/include/asm/processor.h b/arch/microblaze/include/asm/processor.h
-index 7e9e92670df3..c5877c91116a 100644
---- a/arch/microblaze/include/asm/processor.h
-+++ b/arch/microblaze/include/asm/processor.h
-@@ -15,8 +15,6 @@
- #include <asm/current.h>
- 
- # ifndef __ASSEMBLY__
--/* from kernel/cpu/mb.c */
--extern const struct seq_operations cpuinfo_op;
- 
- # define cpu_relax()		barrier()
- 
-diff --git a/arch/microblaze/kernel/cpu/mb.c b/arch/microblaze/kernel/cpu/mb.c
-index 9581d194d9e4..33f5be916121 100644
---- a/arch/microblaze/kernel/cpu/mb.c
-+++ b/arch/microblaze/kernel/cpu/mb.c
-@@ -14,6 +14,7 @@
- #include <linux/seq_file.h>
- #include <linux/cpu.h>
- #include <linux/initrd.h>
-+#include <linux/processor.h>
- 
- #include <linux/bug.h>
- #include <asm/cpuinfo.h>
-diff --git a/arch/mips/kernel/proc.c b/arch/mips/kernel/proc.c
-index 8eba5a1ed664..54a4226cff84 100644
---- a/arch/mips/kernel/proc.c
-+++ b/arch/mips/kernel/proc.c
-@@ -8,6 +8,7 @@
- #include <linux/kernel.h>
- #include <linux/sched.h>
- #include <linux/seq_file.h>
-+#include <linux/processor.h>
- #include <asm/bootinfo.h>
- #include <asm/cpu.h>
- #include <asm/cpu-features.h>
-diff --git a/arch/nios2/kernel/cpuinfo.c b/arch/nios2/kernel/cpuinfo.c
-index 203870c4b86d..9641ca55377e 100644
---- a/arch/nios2/kernel/cpuinfo.c
-+++ b/arch/nios2/kernel/cpuinfo.c
-@@ -12,6 +12,7 @@
- #include <linux/seq_file.h>
- #include <linux/string.h>
- #include <linux/of.h>
-+#include <linux/processor.h>
- #include <asm/cpuinfo.h>
- 
- struct cpuinfo cpuinfo;
-diff --git a/arch/openrisc/kernel/setup.c b/arch/openrisc/kernel/setup.c
-index 0cd04d936a7a..a628c928941b 100644
---- a/arch/openrisc/kernel/setup.c
-+++ b/arch/openrisc/kernel/setup.c
-@@ -33,6 +33,7 @@
- #include <linux/of_fdt.h>
- #include <linux/of.h>
- #include <linux/device.h>
-+#include <linux/processor.h>
- 
- #include <asm/sections.h>
- #include <asm/types.h>
-diff --git a/arch/parisc/kernel/setup.c b/arch/parisc/kernel/setup.c
-index f005ddedb50e..d00488507f49 100644
---- a/arch/parisc/kernel/setup.c
-+++ b/arch/parisc/kernel/setup.c
-@@ -25,6 +25,7 @@
- #include <linux/sched.h>
- #include <linux/sched/clock.h>
- #include <linux/start_kernel.h>
-+#include <linux/processor.h>
- 
- #include <asm/cacheflush.h>
- #include <asm/processor.h>
-diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
-index dd98f43bd685..12ddcb1401be 100644
---- a/arch/powerpc/kernel/setup-common.c
-+++ b/arch/powerpc/kernel/setup-common.c
-@@ -34,6 +34,7 @@
- #include <linux/of_platform.h>
- #include <linux/hugetlb.h>
- #include <linux/pgtable.h>
-+#include <linux/processor.h>
- #include <asm/io.h>
- #include <asm/paca.h>
- #include <asm/processor.h>
-diff --git a/arch/riscv/kernel/cpu.c b/arch/riscv/kernel/cpu.c
-index 0be8a2403212..f28ec528d54a 100644
---- a/arch/riscv/kernel/cpu.c
-+++ b/arch/riscv/kernel/cpu.c
-@@ -4,8 +4,9 @@
-  */
- 
- #include <linux/init.h>
--#include <linux/seq_file.h>
- #include <linux/of.h>
-+#include <linux/processor.h>
-+#include <linux/seq_file.h>
- #include <asm/hwcap.h>
- #include <asm/smp.h>
- #include <asm/pgtable.h>
-diff --git a/arch/s390/include/asm/processor.h b/arch/s390/include/asm/processor.h
-index bd66f8e34949..55fbb4f7f7f6 100644
---- a/arch/s390/include/asm/processor.h
-+++ b/arch/s390/include/asm/processor.h
-@@ -33,6 +33,7 @@
- #include <linux/cpumask.h>
- #include <linux/linkage.h>
- #include <linux/irqflags.h>
-+#include <linux/processor.h>
- #include <asm/cpu.h>
- #include <asm/page.h>
- #include <asm/ptrace.h>
-@@ -80,7 +81,6 @@ void s390_adjust_jiffies(void);
- void s390_update_cpu_mhz(void);
- void cpu_detect_mhz_feature(void);
- 
--extern const struct seq_operations cpuinfo_op;
- extern void execve_tail(void);
- extern void __bpon(void);
- unsigned long vdso_size(void);
-diff --git a/arch/s390/kernel/processor.c b/arch/s390/kernel/processor.c
-index a194611ba88c..267886605902 100644
---- a/arch/s390/kernel/processor.c
-+++ b/arch/s390/kernel/processor.c
-@@ -17,6 +17,7 @@
- #include <linux/mm_types.h>
- #include <linux/delay.h>
- #include <linux/cpu.h>
-+#include <linux/processor.h>
- 
- #include <asm/diag.h>
- #include <asm/facility.h>
-diff --git a/arch/sh/include/asm/processor.h b/arch/sh/include/asm/processor.h
-index 85a6c1c3c16e..10c4b4b9af46 100644
---- a/arch/sh/include/asm/processor.h
-+++ b/arch/sh/include/asm/processor.h
-@@ -123,7 +123,6 @@ extern unsigned int mem_init_done;
- 
- /* arch/sh/kernel/setup.c */
- const char *get_cpu_subtype(struct sh_cpuinfo *c);
--extern const struct seq_operations cpuinfo_op;
- 
- /* thread_struct flags */
- #define SH_THREAD_UAC_NOPRINT	(1 << 0)
-diff --git a/arch/sh/kernel/cpu/proc.c b/arch/sh/kernel/cpu/proc.c
-index a306bcd6b341..f373a21c6705 100644
---- a/arch/sh/kernel/cpu/proc.c
-+++ b/arch/sh/kernel/cpu/proc.c
-@@ -2,6 +2,7 @@
- #include <linux/seq_file.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-+#include <linux/processor.h>
- #include <asm/machvec.h>
- #include <asm/processor.h>
- 
-diff --git a/arch/sparc/include/asm/cpudata.h b/arch/sparc/include/asm/cpudata.h
-index d213165ee713..f7e690a7860b 100644
---- a/arch/sparc/include/asm/cpudata.h
-+++ b/arch/sparc/include/asm/cpudata.h
-@@ -7,8 +7,6 @@
- #include <linux/threads.h>
- #include <linux/percpu.h>
- 
--extern const struct seq_operations cpuinfo_op;
--
- #endif /* !(__ASSEMBLY__) */
- 
- #if defined(__sparc__) && defined(__arch64__)
-diff --git a/arch/sparc/kernel/cpu.c b/arch/sparc/kernel/cpu.c
-index 79cd6ccfeac0..ffdc7a825b80 100644
---- a/arch/sparc/kernel/cpu.c
-+++ b/arch/sparc/kernel/cpu.c
-@@ -12,6 +12,7 @@
- #include <linux/smp.h>
- #include <linux/threads.h>
- #include <linux/pgtable.h>
-+#include <linux/processor.h>
- 
- #include <asm/spitfire.h>
- #include <asm/oplib.h>
-diff --git a/arch/um/kernel/um_arch.c b/arch/um/kernel/um_arch.c
-index e0de60e503b9..4034f5b959f7 100644
---- a/arch/um/kernel/um_arch.c
-+++ b/arch/um/kernel/um_arch.c
-@@ -9,6 +9,7 @@
- #include <linux/ctype.h>
- #include <linux/module.h>
- #include <linux/panic_notifier.h>
-+#include <linux/processor.h>
- #include <linux/seq_file.h>
- #include <linux/string.h>
- #include <linux/utsname.h>
-diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
-index 356308c73951..08ccd453ec4f 100644
---- a/arch/x86/include/asm/processor.h
-+++ b/arch/x86/include/asm/processor.h
-@@ -188,8 +188,6 @@ DECLARE_PER_CPU_READ_MOSTLY(struct cpuinfo_x86, cpu_info);
- #define cpu_data(cpu)		boot_cpu_data
- #endif
- 
--extern const struct seq_operations cpuinfo_op;
--
- #define cache_line_size()	(boot_cpu_data.x86_cache_alignment)
- 
- extern void cpu_detect(struct cpuinfo_x86 *c);
-diff --git a/arch/x86/kernel/cpu/proc.c b/arch/x86/kernel/cpu/proc.c
-index 099b6f0d96bd..5a0699d9ff7d 100644
---- a/arch/x86/kernel/cpu/proc.c
-+++ b/arch/x86/kernel/cpu/proc.c
-@@ -4,6 +4,7 @@
- #include <linux/string.h>
- #include <linux/seq_file.h>
- #include <linux/cpufreq.h>
-+#include <linux/processor.h>
- 
- #include "cpu.h"
- 
-diff --git a/arch/xtensa/kernel/setup.c b/arch/xtensa/kernel/setup.c
-index 9191738f9941..d4417a174887 100644
---- a/arch/xtensa/kernel/setup.c
-+++ b/arch/xtensa/kernel/setup.c
-@@ -25,6 +25,7 @@
- #include <linux/cpu.h>
- #include <linux/of.h>
- #include <linux/of_fdt.h>
-+#include <linux/processor.h>
- 
- #if defined(CONFIG_VGA_CONSOLE) || defined(CONFIG_DUMMY_CONSOLE)
- # include <linux/console.h>
-diff --git a/fs/proc/cpuinfo.c b/fs/proc/cpuinfo.c
-index f38bda5b83ec..ca3065dfecd9 100644
---- a/fs/proc/cpuinfo.c
-+++ b/fs/proc/cpuinfo.c
-@@ -3,10 +3,9 @@
- #include <linux/fs.h>
- #include <linux/init.h>
- #include <linux/proc_fs.h>
-+#include <linux/processor.h>
- #include <linux/seq_file.h>
- 
--extern const struct seq_operations cpuinfo_op;
--
- static int cpuinfo_open(struct inode *inode, struct file *file)
- {
- 	return seq_open(file, &cpuinfo_op);
-diff --git a/include/linux/processor.h b/include/linux/processor.h
-index dc78bdc7079a..71bdf8626874 100644
---- a/include/linux/processor.h
-+++ b/include/linux/processor.h
-@@ -59,4 +59,6 @@ do {								\
- 
- #endif
- 
-+extern const struct seq_operations cpuinfo_op;
-+
- #endif /* _LINUX_PROCESSOR_H */
--- 
-2.37.1
+Migration is always best effort. Callers need to be prepared to handle
+failure of a particular page to migrate, but I could believe not all of
+them are.
 
+> Besides, since I read the old code of prepare(), I saw this comment:
+>
+> -		if (!(migrate->src[i] & MIGRATE_PFN_LOCKED)) {
+> -			/*
+> -			 * Because we are migrating several pages there can be
+> -			 * a deadlock between 2 concurrent migration where each
+> -			 * are waiting on each other page lock.
+> -			 *
+> -			 * Make migrate_vma() a best effort thing and backoff
+> -			 * for any page we can not lock right away.
+> -			 */
+> -			if (!trylock_page(page)) {
+> -				migrate->src[i] = 0;
+> -				migrate->cpages--;
+> -				put_page(page);
+> -				continue;
+> -			}
+> -			remap = false;
+> -			migrate->src[i] |= MIGRATE_PFN_LOCKED;
+> -		}
+>
+> I'm a bit curious whether that deadlock mentioned in the comment is
+> observed in reality?
+>
+> If the page was scanned in the same address space, logically the lock order
+> should be guaranteed (if both page A&B, both threads should lock in order).
+> I think the order can be changed if explicitly did so (e.g. fork() plus
+> mremap() for anonymous here) but I just want to make sure I get the whole
+> point of it.
+
+You seem to have the point of it. The trylock_page() is to avoid
+deadlock, and failure is always an option for migration. Drivers can
+always retry if they really need the page to migrate, although success
+is never guaranteed. For example the page might be pinned (or have
+swap-cache allocated to it, but I'm hoping to at least get that fixed).
+
+> Thanks,
