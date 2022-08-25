@@ -1,114 +1,113 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CC405A1C74
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Aug 2022 00:33:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C03125A1C95
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Aug 2022 00:42:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MDHn617Bbz3bmW
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Aug 2022 08:33:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MDHyz0y15z2yn5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Aug 2022 08:42:19 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=NlK7RPc+;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=ook0gwfr;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=40.107.101.45; helo=nam04-mw2-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=40.107.237.55; helo=nam12-bn8-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=NlK7RPc+;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=ook0gwfr;
 	dkim-atps=neutral
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2045.outbound.protection.outlook.com [40.107.101.45])
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2055.outbound.protection.outlook.com [40.107.237.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MDHmL6h6bz2xGJ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Aug 2022 08:33:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MDHyF6PnCz2xH6
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Aug 2022 08:41:39 +1000 (AEST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=m/uq88gTbDDROC4Kr3RrNQMSaJTA6kBZXsWxN0/pLp6lSX1v+S8K40Q1Q3F63jZUD7GF/TdGpDp/pgcq/+9MRvegmklJsr2Qsw1rK3HJyf+HOegaF108cCQnOVFjCB9MGjRWyr3mnMIA2v3xiLwW9/5asBnZTrzyGMccsiU3H5W+FvqJ3pCTRXwPlvfDqjPT15U2QIEv7KcW82DxOfp5k4hJmHbNizn9tqrTf7SGVJppnYgy10b8lWNQQaXriBWJrK1+hgXh3dmFnWJG/NVvH8diFxV28DMfoq2f2GbSm8wj5D4x9g/BjD2uUR79zKHULmaY5J54hXFr+/z/izjshg==
+ b=KcEYXVO5Vre9dIk+gq6Ih37L8zZLpY1Il5NHSkY6WwgTbdzfG53pxmvG3zzM1pLglnnt4NG51wuT7QMwZdoEbCkc/6Z8xE8Yr6GDeBdf/h3tcgGAqlRUVeTsdGBtbU6V+mwCyPPK8Jcq1jHZOhsEjrl3Q7q+3mOOPUk/+9BmVBeNs0VogMyHwlrEOYWgBp1vdRl7YuPbf/q/TxqA7LmplKRgFKI29dvqAmmtEZeIxT33WX20CQmN6gC7hGc7boUSjL2oMaYyvstm/bDntGJCawIwhC8TkGDXni825iMVZGvthHn+txljOhixLOKrK9415zTAZ/yDsg64hv+ggAfvEQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ziMC0qCBgdNVn5q+E4uF89/5eUGzQr5+ydXPVJ805ew=;
- b=ecIv0GIO5Vcas3qAlWzrjb2T/zdB0JHsZEOndmT6YW6hgytFfYMC/WSY9PvcQw6ZgQnOptZtP4RpSG/o7xV/cwkj9Z84m5j6k6kfNQkY4agPNO5ub6LHGE6SFFJIcnOhwyoUfp1s7b10hVBZ3TF2decD5Y4UpbKU+redPRcPOyCjoaS4yNHbVKe6HudpUAU3grbJfjXjjWn4LEzR/pv77fBVnzTzyHbzqv9xPmlBKspUf7FkSZ/4xQr14iR2nxsEBKc9nxo9p6zFzDq8tqAlmrw38WQJs/Q0CiO471ePdJJZf/WMZzo51oeZ1oAbGsAxjKnmzazdZbhVKYxeO0KqmQ==
+ bh=2CIN6DAWYQ9C+JYmfYGAD/VPgDKboMHGBef1MQTeg3g=;
+ b=TLwhB19n8WKZC9pI9YcpPdA7umMpSofRQUd04NAqJdvymzZVwpFmnxRBpDHYuERWLRsFMEptKK5/5ZT1h1Ual+xDSqMicyoZi0iD4Cx7jrzGRb1x4Iy97aB/Itbmm4pGGINnHN+aTqxlHIWYTEuyfX3A51paxC2Oz5KEx/wRQtlBwJB518s1C+b4oUW4lTz0TVqfbeTSUdys3/En3MgWki7aUkTDFTzL3qRUsk2WrpCobrC3GvC7UPruuTU2p5K3XGiFlIvOnJjyQhebH9w+64v5c737jAo/RTSmAepOzq2sdyev0XUfwQnY34DzIBFCf4/MLPtbaBsCN9cEZHmp7A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ziMC0qCBgdNVn5q+E4uF89/5eUGzQr5+ydXPVJ805ew=;
- b=NlK7RPc+GFQonHtML2thMQFpcbH4o3/JqaT4W3h5eSr9IeBb2XUlp1QNeK5MEJZnSZujxH9jKOD+3psN5cL58LOmpP07gWN1f9mBWL/teWKY1utJl+xatxnfJb0JpLxRQy49srh1lWmDLY8cUvyw8LjhMXXK2YA0FMJzfAd89VDeqBWliZEhxHjmwKAAvKzrGS7ltTkZfy+41TxdxKExUjZ253h7Ip2HSdGwQe57UMuvZjFcYr5wS+pHQZRZGlEzr/DApIL4Fn5DePdLKX0kVglTMR2p2zLVE7YieH4jp3MIhAIHOW3Z5wP05cZnSyI7SybLviubbfbPH316jC+D3Q==
+ bh=2CIN6DAWYQ9C+JYmfYGAD/VPgDKboMHGBef1MQTeg3g=;
+ b=ook0gwfruuFSCvRA5mF48POqpHEXNGsSNl1dFJiVRCuoaTO0QDmQcOZypplldFy8rBYZhxVPiNHFmW0F6IPQWThl3+N6o4YtdBSX6h6RyCjl0NBNt5mBE7uLdmVZo6aKS1dejJCYEv34IEKqxL1pu5uG/ynxTobaiF0vQbEYfFb5KRB8xzqSuE+dFmZ6BCdVk2BhEk9HaBC5ZjZ3C9Cz9wO/zboT4X8Wj3sAq6KojLoiMKW60U79lBNfJ14N/MKlE/3bvCQsZaAuWbfntC2sh4p/bINQNiAJQPw05H1SIObjngXWhSXKAiMF4a8JHZ1moU34b8wHqZ7j4qxkZzJwqg==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from BYAPR12MB3176.namprd12.prod.outlook.com (2603:10b6:a03:134::26)
- by SN1PR12MB2512.namprd12.prod.outlook.com (2603:10b6:802:31::14) with
+ by IA1PR12MB6260.namprd12.prod.outlook.com (2603:10b6:208:3e4::17) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5546.16; Thu, 25 Aug
- 2022 22:32:43 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5566.15; Thu, 25 Aug
+ 2022 22:41:16 +0000
 Received: from BYAPR12MB3176.namprd12.prod.outlook.com
  ([fe80::7432:2749:aa27:722c]) by BYAPR12MB3176.namprd12.prod.outlook.com
  ([fe80::7432:2749:aa27:722c%7]) with mapi id 15.20.5546.022; Thu, 25 Aug 2022
- 22:32:42 +0000
+ 22:41:15 +0000
 References: <3b01af093515ce2960ac39bb16ff77473150d179.1661309831.git-series.apopple@nvidia.com>
- <ffbc824af5daa2c44b91c66834a341894fba4ce6.1661309831.git-series.apopple@nvidia.com>
- <YwZGHyYJiJ+CGLn2@xz-m1.local>
+ <87sfll2jfc.fsf@yhuang6-desk2.ccr.corp.intel.com>
 User-agent: mu4e 1.6.9; emacs 27.1
 From: Alistair Popple <apopple@nvidia.com>
-To: Peter Xu <peterx@redhat.com>
-Subject: Re: [PATCH v3 2/3] mm/migrate_device.c: Copy pte dirty bit to page
-Date: Fri, 26 Aug 2022 08:21:44 +1000
-In-reply-to: <YwZGHyYJiJ+CGLn2@xz-m1.local>
-Message-ID: <8735dkeyyg.fsf@nvdebian.thelocal>
+To: "Huang, Ying" <ying.huang@intel.com>
+Subject: Re: [PATCH v3 1/3] mm/migrate_device.c: Flush TLB while holding PTL
+Date: Fri, 26 Aug 2022 08:35:17 +1000
+In-reply-to: <87sfll2jfc.fsf@yhuang6-desk2.ccr.corp.intel.com>
+Message-ID: <87y1vcdjzs.fsf@nvdebian.thelocal>
 Content-Type: text/plain
-X-ClientProxiedBy: SJ0P220CA0013.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:a03:41b::20) To BYAPR12MB3176.namprd12.prod.outlook.com
+X-ClientProxiedBy: BY5PR17CA0032.namprd17.prod.outlook.com
+ (2603:10b6:a03:1b8::45) To BYAPR12MB3176.namprd12.prod.outlook.com
  (2603:10b6:a03:134::26)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 1f6800b6-7b04-4304-6c0d-08da86e9b987
-X-MS-TrafficTypeDiagnostic: SN1PR12MB2512:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3a622565-6fb0-4c48-2d9e-08da86eaeb10
+X-MS-TrafficTypeDiagnostic: IA1PR12MB6260:EE_
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	c3bAfEkdX6FoiTUnFv6JVDg4x2ElBr0D6GpaYpfrFQBZl8fzkWJyeWvKzy3pIrGwsYJecjsi1lDbI0PTpk0y6pVQR9Wb/X+YwxCCYgFv4dc3JTz6QCqnTxo3p6czHuiQcQenHtMKSOZbRWkF20x5sfZb1PpB8gy68NWP3YfQ3lGFfdw9xkUDLUR7nKGq+yK+wHL53sA2XzGDw5IpcwU5KkDq6r/e2SYroZcFnCY/koxOjI0HSg+0c7zD64Abg7AZ4/I081Lm5gNpfU3cdpuy4ybE1u7LRcvYebYKlW5jBBG0AQzAFu0ZBMXWw9cikqdr8c7Fr0KGxN0tObIuX6olNwspJb233kmNh3VHu6+TUP88VfCGRT9U64pfBjhb11M/aVhDUD5wJHQUqWu8yr6k75TCZY+MJHgt43mBiG//+CV775OPRgZAqCovWTmDMbAoezfMLaeXwlsHv6fLEMREOpS/4L+1jVIbBQmbvTutniYs2STO3cs7gXyQDRtJ3w5YyeXBEUINeQCsKXtfXMeKfhE9HScoPpBBZGVmnaGxtcsfgIlPh4bvvAZjSlhdZFKNWaMwz6xGMcFQFvxQqBGPu2BM4GGpSvWHFonKRG25YxDbhjHY0Jz8EgZWjEoq/9QCh24s16dbaGxG1qwIUrCS6QRHpaR2FtSNsfvHddZ1KDHgKPqRJEkzxX9ZufVKQmr0Fn24vsduaIAwGLJcwtNdIpJLgK0REItzs7GaOQtu6MS5DUbVAFZPZbhJoEEe/qy1
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB3176.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(4636009)(396003)(366004)(39860400002)(376002)(136003)(346002)(66946007)(2906002)(66556008)(5660300002)(7416002)(8936002)(4326008)(8676002)(9686003)(316002)(41300700001)(186003)(86362001)(54906003)(26005)(6512007)(6916009)(6486002)(83380400001)(38100700002)(66476007)(478600001)(6506007)(14143004);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: 	siqsX9Ci/wJ0E1aSrSFI/ZVBgN3qbW0+tB0GtpWpOckH+jxtnm/aiDD8SxKSY0h/yrqezQ1iPak9lvTVxMOKh4dFrveSKi/R7neVKOLYa4lxyAqSgwiuHlZssuxQkxb8eBaFdc9Ufaa2kwmZkZB8AL2E6fDk3qUCIaR4/r+FQ15Qd42KRKJ6cgvpkApCwTVoLrWIvHLsck4uMMYxSSoBt4pD8HHdqtIGTGHJ/4DOquH0kFLfR8PCwNjM1BeFCiy3ntPIeQHaoLy3C33i/UCbFQ9vOoWfHp62MR+K6FkSFQhDLabXoSr0mrO63oBYkizbxkOLIc24VkEs1PzHS72h8BE9bBzHOgazrD3mb4Ixez3SbncFOkEnQgacLNufG073QCPU6jqoYOokFBO8Dbq5u95OUMjIQrN3BoIUOf1sQBB77alIPR7EHQIrY2q3DjKDyj8ghtisLCDwENMDSiaNxNIHqPL9HUXQYrGtSA8UokNN4lrn+M+yutoTm3ioqMeKtpCHZRmE5wJatlBCQEo7Bg8oN1DDrq0RqXXNLZt5Xt+MF17ynYbM4w6P/nQ6LBrcQA0wXSPtTFl0rZ9P2la9XIlGz0hmzmgn/vjUc80xNy3ee8yrGRXJH3hHnoEEe6yQuoR05a75gHYNK6G5wBrf/+iRVnCDGDH2Ez+QRv9dTifFrSynA4GsSKwOvY4JA8KhVKDtl+UtrH7/eVIR18gXpw==
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB3176.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(4636009)(346002)(396003)(366004)(136003)(39860400002)(376002)(38100700002)(9686003)(6512007)(2906002)(26005)(316002)(54906003)(6916009)(478600001)(8936002)(66476007)(7416002)(6506007)(41300700001)(5660300002)(8676002)(4326008)(6486002)(66946007)(66556008)(83380400001)(186003)(86362001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?0yy1SiHHLlkMwvsKFTCwuE15jRufQq+uqOdWBfsH/perbl4u0kEevjwZ75Rw?=
- =?us-ascii?Q?znyMv8jCOI+kMr3EH6RVEKBR0mUv2MVXJ+bqQKqcwl/6DGRERiLxc1LbVh/M?=
- =?us-ascii?Q?OsLfAJc+oiuke5Yti80dFroT7L4G+de0AhRXS7d5z9SCq/osFD3IIH44lEKs?=
- =?us-ascii?Q?G1ppZ0tgrOT1dDCTNx667q06OPHNF7uT5zrN3shLWwlhaIASdaGfJ/BPpFMd?=
- =?us-ascii?Q?k6D7n1nusZdSaETiGvbKG4N4pQlrBGVoz5GhH8OE7eYpZeVy1ozWZ4M79OPt?=
- =?us-ascii?Q?2oBdsJSF9PBkvdaeVFxFhFjfAgb6Hjz+s84t9QOoOWXoVn2p6Llscqp2x3AD?=
- =?us-ascii?Q?ji9efmNXzNTtJEQIOUKpNDMaTpDo6T367s812dtI7Wwtx/aCgM9PeREfBTVI?=
- =?us-ascii?Q?DgbhfhyUdavJVcfziata9B2Ucjb/N8bfkbW25vdZFFjAG/fvpavzxQY9RGq8?=
- =?us-ascii?Q?xGsVvtt1J2aN26JzBBumsxiv3uBqp1JQ9CKiu4T98r78wTb4PWzowaiikFu8?=
- =?us-ascii?Q?+LY6ejQ5OR/Tb7PB6wEmELWc6LO2IZ7RgkcluVitdEyE46R7MfVtPgwf1vIZ?=
- =?us-ascii?Q?UI6zXb4RjV62taubbmc1XU19ma9zWko0ytNV6XRsCTLC+ikJCJESI0s+0/YU?=
- =?us-ascii?Q?kPUuRjAU8xODbNsT/f4pQ/J1f8RX6PNdWqjLWJdp6+i9hL4Aa/eh2TbF4b8v?=
- =?us-ascii?Q?7qJzw5rE5+ex0JBM9BH9PFI49czZTfx22XRGLcptWnp4LxJW3TmW67UWdid+?=
- =?us-ascii?Q?HlwF+zpJHRTCIcTadMqn0yWEiBcnpO8wWcGQ27rb3SJQz1jpmzPFGISqpDe0?=
- =?us-ascii?Q?4fEEECIUU8vkVt26P4j5szzCYiWxCeVZIEZiAGW9MTrRjaYSWvwaeRopeBZl?=
- =?us-ascii?Q?4BNN7zT8NPf6WfOssrH/OF2j4R+sdI+M+DQoZpZGBRB2jQS/hQN3bcSXlgVa?=
- =?us-ascii?Q?BrAN2XjN1+89BmtU35Lk9LfOvncneMhGmDAlp9u77he9PD0704AYmGRJSHj4?=
- =?us-ascii?Q?IVVdxjWdPcPSIAB8VxGuBRcjKnQjKbyKrnn98foBXYHaM+MBBpvT0EhLwroT?=
- =?us-ascii?Q?5wKIgM6CKS8riYCkT+O62H/DygGTHjSphU6lSbkVPdMaJHwVYj8JD9MNej9l?=
- =?us-ascii?Q?e7FP9DyKq5xi7jq8AeLrZgv3hJ7avpekk1YOr4Q/mPFtndRs9Nvc4IY7A3dE?=
- =?us-ascii?Q?gUpyKfEpKavydnRp8DmQWw1XKf7Y/b5oRHLCi8LP/gqNKW9C/aCse2Ahspdh?=
- =?us-ascii?Q?8IcJ5CZBgKSZDmhvy7NGahOoYFFBy7eeWyH4jY9hjBrt5zTZBhJJupGTIE4d?=
- =?us-ascii?Q?A37M9AIKRxrjbtzCArUPTJ9FlR4ABwoQ2SwAkIbQ8WpmKq7Dn24POmpReNmF?=
- =?us-ascii?Q?gkek4IFy+YKSh0SqXco4bQD8Iz9U8+8KMyjMSViP2ajB6GDidyOor/BS+6Yl?=
- =?us-ascii?Q?u19ddwFvkOv5uOvVNE56mJlmQtdSuidXPX8XsnuA31hgxIYK+itjsQCFMZr9?=
- =?us-ascii?Q?DyIMnleT2t3CEOojLUbq40Gj6EnBlZ9FZccqKFmpciLvD9fDrUvsL42vB6uE?=
- =?us-ascii?Q?0+BPMfUS62hApep1221ZJ+KdZ7+Tp42u1Pi9RToX?=
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?r893OG9ygKNzN2up24zbhYc8RInHvN2H7wU9DSFms5L3An8jdj7k2IyleZ5J?=
+ =?us-ascii?Q?gv+kh5alLwdqnmPoMyzxDskJi2ErVc60dehoc1ISMxvGOVLSLKaH5awXkJO3?=
+ =?us-ascii?Q?i0Yc0GYP8ljBjAR1Uj8NsTKUnzAZuuP4HmwCDNRX2nj7gXbhPGDHw6FMioTi?=
+ =?us-ascii?Q?AK4bQsteq9vv+bZFRCPiPBhIHcJEDpQfv60/GeUmHs7qv0hnKqqF3f2JtzqA?=
+ =?us-ascii?Q?kMWV2r+Nqu+oHTqjfKl8UgWKm4lkcXQnvbHt+9iGclelHLbbhTGDVaORoyqt?=
+ =?us-ascii?Q?Bs2425H4DFyKv3a+Cja4KEcB6OZKrWbQXgzdvnZ/Pz4+GHC/F+Z8kJk88Wy8?=
+ =?us-ascii?Q?AgxG+7e1WOgz1n/nJn5b+Z8DYnGN9iExi0iLGN59mSYod4jkiFS3a/mbjuvb?=
+ =?us-ascii?Q?Ku+LuNOjMDr5f1UjE0p6Giejfaf1K94I+3gvw9fBYK9LCeWnVlN55ZZTl2dU?=
+ =?us-ascii?Q?mj+zWThegAydK2SSlnPsYZDeY6qcS7BnDKfUO2C9yKLmCxLWd45KqkFkl3Av?=
+ =?us-ascii?Q?l2YyA+K/iDF+/uDyA8K6grqr1PShymCcJU05PyBWAzBBkutI11fcFtEwBRW0?=
+ =?us-ascii?Q?wml3a1cGYYFRNpinA4Q6HVOaouqu10JLezZmhcHKbvCzU/pwjBp63S8ixdO3?=
+ =?us-ascii?Q?kBl88I4AGvEnJ5iB7h3qzB/4F1KalMq4lKLKGN3fg4RvFmWgaAEL1qjVc9Mp?=
+ =?us-ascii?Q?3T0kfLpTduUC/r0CY4SliwdjjYLZgVdVzxGQ+agQhlVXgZrJhvGyIhw6DibF?=
+ =?us-ascii?Q?0FanOExcwuQKbaW1LBI4kvBGZDrCBqdoZwznhlB0b9Dm5xHH7e1KKSeWqYer?=
+ =?us-ascii?Q?oGP5AU5pD/0yWsdO79f+5jZas44+CIBZUuWuFuzwsNDbHwUsW7XbK1fKB4sh?=
+ =?us-ascii?Q?EiAomwPeUmwo+NAGznQWQZoOXF7gQrYkGbET5w15+V+u1Iha6FZPQ+CTXUlT?=
+ =?us-ascii?Q?SCgUdFJ1/q+u1y0jXXnP5h1t0RE9l5/SBpppGiL7OlhMaXVc8P1DYPqMXEvy?=
+ =?us-ascii?Q?as73wwpyahy35RuMfz93c0xkDDeYcmd/XqE9oOXAFVa/QInpZnnoKSzivLwA?=
+ =?us-ascii?Q?CAW8Wi9G1nMmoxHRlzWV/XQIawiPa8PHw6r31aboLvmjPvJiKphhO6+vF2X/?=
+ =?us-ascii?Q?acwtlaLFhq6nB/8dCK2TqY+aMjnN79BbWxwS3d4CIWAocxHiqsQuIOZO2iLv?=
+ =?us-ascii?Q?rrCUMAwDqN29fi83RVSPJ9YXyhybw5XWSQfrktlazCpcekJKOTOw0VlWwq2s?=
+ =?us-ascii?Q?wq5pTMUuYABZSRdxMG2sxlA0VakidILJyJvYOrYR+/A6u0In1ZhD2K1YOzWj?=
+ =?us-ascii?Q?y9x1YmLM/kGEuf5G5FvnqGGw9Df2PazNGnt7jGWet6gKdE51E6zmd7NoGELF?=
+ =?us-ascii?Q?Wb+rlYQ9JtZuJ7vZHTbdERxp4S7jvcJy86WURJ90668nDhP2vRoByG8zPPp5?=
+ =?us-ascii?Q?+Gyx4/p8hhrXp0Q0970e7C/D9NSGKWCpoWgTPvTsJUVwupaCMYTnd672vnEf?=
+ =?us-ascii?Q?hQO45MLwH+gO5Jk0K5uhB1G2IAPWa47t82CIN2OVkaIKG3NkI2dok/oFQs0n?=
+ =?us-ascii?Q?gDf3RqxLepKrPcLv3PlPSO2dnyW/VJRCpr122+Au?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1f6800b6-7b04-4304-6c0d-08da86e9b987
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3a622565-6fb0-4c48-2d9e-08da86eaeb10
 X-MS-Exchange-CrossTenant-AuthSource: BYAPR12MB3176.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Aug 2022 22:32:42.7789
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Aug 2022 22:41:15.4896
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Vz73pxQJFLuv4xLUqao+n7xyMLwi+md3/kc871FN/31+9ADN3BQ6+uqsITTTn+Z/DYPyf1/aObjvntyRhJHVcQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN1PR12MB2512
+X-MS-Exchange-CrossTenant-UserPrincipalName: hmqGuo5IQY/6Kbecx+DeOq6YMKU7xro6BJgjwxiZnvOgaUGrnezMDjXcUtfSpxP0cWGFz13vh8lhtoiyymwV4Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6260
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -120,37 +119,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Sierra Guiza, Alejandro \(Alex\)" <alex.sierra@amd.com>, Huang Ying <ying.huang@intel.com>, Ralph Campbell <rcampbell@nvidia.com>, Lyude Paul <lyude@redhat.com>, Karol Herbst <kherbst@redhat.com>, David Hildenbrand <david@redhat.com>, Nadav Amit <nadav.amit@gmail.com>, Felix Kuehling <Felix.Kuehling@amd.com>, linuxppc-dev@lists.ozlabs.org, LKML <linux-kernel@vger.kernel.org>, Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org, Logan Gunthorpe <logang@deltatee.com>, Ben Skeggs <bskeggs@redhat.com>, Jason Gunthorpe <jgg@nvidia.com>, John Hubbard <jhubbard@nvidia.com>, stable@vger.kernel.org, akpm@linux-foundation.org, huang ying <huang.ying.caritas@gmail.com>
+Cc: "Sierra Guiza, Alejandro \(Alex\)" <alex.sierra@amd.com>, Ralph Campbell <rcampbell@nvidia.com>, Lyude Paul <lyude@redhat.com>, Karol Herbst <kherbst@redhat.com>, David Hildenbrand <david@redhat.com>, Nadav Amit <nadav.amit@gmail.com>, Felix Kuehling <Felix.Kuehling@amd.com>, linuxppc-dev@lists.ozlabs.org, LKML <linux-kernel@vger.kernel.org>, Peter Xu <peterx@redhat.com>, linux-mm@kvack.org, Logan Gunthorpe <logang@deltatee.com>, Matthew Wilcox <willy@infradead.org>, Jason Gunthorpe <jgg@nvidia.com>, John Hubbard <jhubbard@nvidia.com>, stable@vger.kernel.org, akpm@linux-foundation.org, huang ying <huang.ying.caritas@gmail.com>, Ben Skeggs <bskeggs@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
-Peter Xu <peterx@redhat.com> writes:
+"Huang, Ying" <ying.huang@intel.com> writes:
 
-> On Wed, Aug 24, 2022 at 01:03:38PM +1000, Alistair Popple wrote:
->> migrate_vma_setup() has a fast path in migrate_vma_collect_pmd() that
->> installs migration entries directly if it can lock the migrating page.
->> When removing a dirty pte the dirty bit is supposed to be carried over
->> to the underlying page to prevent it being lost.
+> Alistair Popple <apopple@nvidia.com> writes:
+>
+>> When clearing a PTE the TLB should be flushed whilst still holding the
+>> PTL to avoid a potential race with madvise/munmap/etc. For example
+>> consider the following sequence:
 >>
->> Currently migrate_vma_*() can only be used for private anonymous
->> mappings. That means loss of the dirty bit usually doesn't result in
->> data loss because these pages are typically not file-backed. However
->> pages may be backed by swap storage which can result in data loss if an
->> attempt is made to migrate a dirty page that doesn't yet have the
->> PageDirty flag set.
+>>   CPU0                          CPU1
+>>   ----                          ----
 >>
->> In this case migration will fail due to unexpected references but the
->> dirty pte bit will be lost. If the page is subsequently reclaimed data
->> won't be written back to swap storage as it is considered uptodate,
->> resulting in data loss if the page is subsequently accessed.
+>>   migrate_vma_collect_pmd()
+>>   pte_unmap_unlock()
+>>                                 madvise(MADV_DONTNEED)
+>>                                 -> zap_pte_range()
+>>                                 pte_offset_map_lock()
+>>                                 [ PTE not present, TLB not flushed ]
+>>                                 pte_unmap_unlock()
+>>                                 [ page is still accessible via stale TLB ]
+>>   flush_tlb_range()
 >>
->> Prevent this by copying the dirty bit to the page when removing the pte
->> to match what try_to_migrate_one() does.
+>> In this case the page may still be accessed via the stale TLB entry
+>> after madvise returns. Fix this by flushing the TLB while holding the
+>> PTL.
 >>
 >> Signed-off-by: Alistair Popple <apopple@nvidia.com>
->> Acked-by: Peter Xu <peterx@redhat.com>
->> Reported-by: Huang Ying <ying.huang@intel.com>
+>> Reported-by: Nadav Amit <nadav.amit@gmail.com>
 >> Fixes: 8c3328f1f36a ("mm/migrate: migrate_vma() unmap page from vma while collecting pages")
 >> Cc: stable@vger.kernel.org
 >>
@@ -158,77 +158,46 @@ Peter Xu <peterx@redhat.com> writes:
 >>
 >> Changes for v3:
 >>
->>  - Defer TLB flushing
->>  - Split a TLB flushing fix into a separate change.
->>
->> Changes for v2:
->>
->>  - Fixed up Reported-by tag.
->>  - Added Peter's Acked-by.
->>  - Atomically read and clear the pte to prevent the dirty bit getting
->>    set after reading it.
->>  - Added fixes tag
+>>  - New for v3
 >> ---
->>  mm/migrate_device.c |  9 +++++++--
->>  1 file changed, 7 insertions(+), 2 deletions(-)
+>>  mm/migrate_device.c | 5 +++--
+>>  1 file changed, 3 insertions(+), 2 deletions(-)
 >>
 >> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
->> index 6a5ef9f..51d9afa 100644
+>> index 27fb37d..6a5ef9f 100644
 >> --- a/mm/migrate_device.c
 >> +++ b/mm/migrate_device.c
->> @@ -7,6 +7,7 @@
->>  #include <linux/export.h>
->>  #include <linux/memremap.h>
->>  #include <linux/migrate.h>
->> +#include <linux/mm.h>
->>  #include <linux/mm_inline.h>
->>  #include <linux/mmu_notifier.h>
->>  #include <linux/oom.h>
->> @@ -196,7 +197,7 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
->>  			anon_exclusive = PageAnon(page) && PageAnonExclusive(page);
->>  			if (anon_exclusive) {
->>  				flush_cache_page(vma, addr, pte_pfn(*ptep));
->> -				ptep_clear_flush(vma, addr, ptep);
->> +				pte = ptep_clear_flush(vma, addr, ptep);
+>> @@ -254,13 +254,14 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
+>>  		migrate->dst[migrate->npages] = 0;
+>>  		migrate->src[migrate->npages++] = mpfn;
+>>  	}
+>> -	arch_leave_lazy_mmu_mode();
+>> -	pte_unmap_unlock(ptep - 1, ptl);
 >>
->>  				if (page_try_share_anon_rmap(page)) {
->>  					set_pte_at(mm, addr, ptep, pte);
->> @@ -206,11 +207,15 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
->>  					goto next;
->>  				}
->>  			} else {
->> -				ptep_get_and_clear(mm, addr, ptep);
->> +				pte = ptep_get_and_clear(mm, addr, ptep);
->>  			}
+>>  	/* Only flush the TLB if we actually modified any entries */
+>>  	if (unmapped)
+>>  		flush_tlb_range(walk->vma, start, end);
 >
-> I remember that in v2 both flush_cache_page() and ptep_get_and_clear() are
-> moved above the condition check so they're called unconditionally.  Could
-> you explain the rational on why it's changed back (since I think v2 was the
-> correct approach)?
+> It appears that we can increase "unmapped" only if ptep_get_and_clear()
+> is used?
 
-Mainly because I agree with your original comments, that it would be
-better to keep the batching of TLB flushing if possible. After the
-discussion I don't think there is any issues with HW pte dirty bits
-here. There are already other cases where HW needs to get that right
-anyway (eg. zap_pte_range).
+In other words you mean we only need to increase unmapped if pte_present
+&& !anon_exclusive?
 
-> The other question is if we want to split the patch, would it be better to
-> move the tlb changes to patch 1, and leave the dirty bit fix in patch 2?
+Agree, that's a good optimisation to make. However I'm just trying to
+solve a data corruption issue (not dirtying the page) here, so will post
+that as a separate optimisation patch. Thanks.
 
-Isn't that already the case? Patch 1 moves the TLB flush before the PTL
-as suggested, patch 2 atomically copies the dirty bit without changing
-any TLB flushing.
+ - Alistair
 
->>
->>  			migrate->cpages++;
->>
->> +			/* Set the dirty flag on the folio now the pte is gone. */
->> +			if (pte_dirty(pte))
->> +				folio_mark_dirty(page_folio(page));
+> Best Regards,
+> Huang, Ying
+>
+>> +	arch_leave_lazy_mmu_mode();
+>> +	pte_unmap_unlock(ptep - 1, ptl);
 >> +
->>  			/* Setup special migration page table entry */
->>  			if (mpfn & MIGRATE_PFN_WRITE)
->>  				entry = make_writable_migration_entry(
->> --
->> git-series 0.9.1
+>>  	return 0;
+>>  }
 >>
+>>
+>> base-commit: ffcf9c5700e49c0aee42dcba9a12ba21338e8136
