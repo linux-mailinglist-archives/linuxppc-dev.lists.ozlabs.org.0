@@ -1,67 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E1A55A1112
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Aug 2022 14:51:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C7385A108F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Aug 2022 14:32:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MD2sJ1pcdz3c6f
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Aug 2022 22:51:32 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=fg9Qio/M;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MD2Rn0cgYz3c6n
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Aug 2022 22:32:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f31; helo=mail-qv1-xf31.google.com; envelope-from=ubizjak@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=fg9Qio/M;
-	dkim-atps=neutral
-Received: from mail-qv1-xf31.google.com (mail-qv1-xf31.google.com [IPv6:2607:f8b0:4864:20::f31])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=cdjrlc.com (client-ip=43.155.67.158; helo=bg5.exmail.qq.com; envelope-from=yuanjilin@cdjrlc.com; receiver=<UNKNOWN>)
+X-Greylist: delayed 437 seconds by postgrey-1.36 at boromir; Thu, 25 Aug 2022 22:32:32 AEST
+Received: from bg5.exmail.qq.com (bg4.exmail.qq.com [43.155.67.158])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MD18b4337z2xBV
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Aug 2022 21:34:38 +1000 (AEST)
-Received: by mail-qv1-xf31.google.com with SMTP id q8so15078079qvr.9
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Aug 2022 04:34:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc;
-        bh=dqjoE029ZvFL7U2E4uqFs8h8zgLuCK5PNlmRfywX58k=;
-        b=fg9Qio/ML3BXQTKdTI8VUXfiLtt55uwkZmKPwtm11zO3xnzhg0a8UrtL8pJXi70uvH
-         a9154pTbCFtNAOIeACcVytIRJpR0UbkFmlFbotbE3gvI0a8Gv11xPnJsZJRvrAHOdvg1
-         R47VY9xc1swlmOesnRo44Ux+jyBfbvInbqoOzAYx3xKKxibGeEKwcgemqaVXfeq3mmWl
-         J9MyIB8hU1b6tKKqUBqNOLtOWqgcFFpln1R2H9VUXqMlwnB/lAHr6fUaBF4nYql/KFlH
-         2qav11hKWlwH+s2kVRhFQBKsWi6ZUYRDTAEfbp4BIwHVeC7C21fv9fcOuUCSmAu/3wOv
-         eu/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=dqjoE029ZvFL7U2E4uqFs8h8zgLuCK5PNlmRfywX58k=;
-        b=dEG6gIGdwSRbdHS4q3T1PH3KcoARvPhiulDdlnzrdY43ocdVKp2Txgis8WVpsUhuvG
-         OZqfKHweshiadoWmcrZhxRGr77gkyAHuOhE1ywuIINSFoKeHRLunyw1zKsUsXt4kwI7x
-         RwVNrsS15IziD18Px7ZK1xSnhhLqeHzJ+v+xxF4tl9apXbs7bLH5VrqQQciKj0tuVmbc
-         ScGSqtOtClJw8CPGOlga18l76xLNyb2HIR3o0OlE3L1Bm5qHQgA3FvBSERm9iAIH06ax
-         CuTYuV+SX3NTWjJD+znjfpo6kiIDyfguFEcu4FthJTjiwlQ89HX9qb9R8if89dnkjK1d
-         W9+A==
-X-Gm-Message-State: ACgBeo3vlmAdGrHVTHmgna5TWLzJ3xnIY8yM5dq3V9EApkRkgto9KkJS
-	haWKZQf74nfhVU4b5Jte5uEN+xzvhv0b2G8vUgY=
-X-Google-Smtp-Source: AA6agR6/MRpSGWUTrYfzP1RnQ5Sqo0olutO6cmdBph6qdwoVLqO1RmUTIsI4ZaJOXo/6Qq8WfGjZkaSE7Qab2ghr2rc=
-X-Received: by 2002:a0c:da87:0:b0:496:cc8f:c072 with SMTP id
- z7-20020a0cda87000000b00496cc8fc072mr3065884qvj.31.1661427273349; Thu, 25 Aug
- 2022 04:34:33 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MD2RN5bTkz2ypD
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Aug 2022 22:32:32 +1000 (AEST)
+X-QQ-mid: bizesmtp67t1661430267tcyqppkd
+Received: from localhost.localdomain ( [182.148.14.124])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Thu, 25 Aug 2022 20:24:26 +0800 (CST)
+X-QQ-SSF: 01000000002000C0E000B00A0000000
+X-QQ-FEAT: iBxuBmNAXy06zdryGGJHuEeVxHvs3CqEDaPaA1fC8U8EcVcJHjOs0ualjkxAB
+	8xVtmhWiI2fDfJSBHwyHWgsKqNdKjG4Nu0IYM9Id22RMylifHMgfLY41mOPMMzN2xUqoFNV
+	y2PF4wFF1I4sX1tY0l2OJ0MirpFyNlivftj7q5B7pWQs+mulLnWfRCdbzgTwJWsauA8VKt+
+	/4yA7YjtbqbntDq3J/RqUze7iZuqGRbMMF365fiJovBYVzTXRbyxLCq9VD7E5ozr8p9hn7A
+	ref76jtkLP0RshPum5N0KaJZpCKdsuUbBfQgtjAq8KSGimW93oenf3hLnaVeN5sRlL+PfVj
+	VA6mZGpu/uTXKhIJz46EWwJKW6cNNfBViIyECGm6Ej1UwFgxpoU4B8nLjcCOQ==
+X-QQ-GoodBg: 0
+From: Jilin Yuan <yuanjilin@cdjrlc.com>
+To: Roy.Pledge@nxp.com,
+	leoyang.li@nxp.com
+Subject: [PATCH] fsl/dpio: fix repeated words in comments
+Date: Thu, 25 Aug 2022 20:24:18 +0800
+Message-Id: <20220825122418.24508-1-yuanjilin@cdjrlc.com>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
-References: <20220624141412.72274-1-ubizjak@gmail.com> <1661422971.cqtahfm22j.naveen@linux.ibm.com>
-In-Reply-To: <1661422971.cqtahfm22j.naveen@linux.ibm.com>
-From: Uros Bizjak <ubizjak@gmail.com>
-Date: Thu, 25 Aug 2022 13:34:22 +0200
-Message-ID: <CAFULd4Zh3Hw+hy-8YFxSNgmPpk4ahM=8ycRgF_fwqJ6AoaTcug@mail.gmail.com>
-Subject: Re: [PATCH] compiler-gcc.h: Remove ancient workaround for gcc PR 58670
-To: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailman-Approved-At: Thu, 25 Aug 2022 22:51:01 +1000
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:cdjrlc.com:qybglogicsvr:qybglogicsvr4
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,103 +50,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org, sv@linux.ibm.com, linux-kernel@vger.kernel.org
+Cc: Jilin Yuan <yuanjilin@cdjrlc.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Aug 25, 2022 at 12:30 PM Naveen N. Rao
-<naveen.n.rao@linux.ibm.com> wrote:
->
-> Uros Bizjak wrote:
-> > The workaround for 'asm goto' miscompilation introduces a compiler
-> > barrier quirk that inhibits many useful compiler optimizations. For
-> > example, __try_cmpxchg_user compiles to:
-> >
-> >    11375:     41 8b 4d 00             mov    0x0(%r13),%ecx
-> >    11379:     41 8b 02                mov    (%r10),%eax
-> >    1137c:     f0 0f b1 0a             lock cmpxchg %ecx,(%rdx)
-> >    11380:     0f 94 c2                sete   %dl
-> >    11383:     84 d2                   test   %dl,%dl
-> >    11385:     75 c4                   jne    1134b <...>
-> >    11387:     41 89 02                mov    %eax,(%r10)
-> >
-> > where the barrier inhibits flags propagation from asm when
-> > compiled with gcc-12.
-> >
-> > When the mentioned quirk is removed, the following code is generated:
-> >
-> >    11553:     41 8b 4d 00             mov    0x0(%r13),%ecx
-> >    11557:     41 8b 02                mov    (%r10),%eax
-> >    1155a:     f0 0f b1 0a             lock cmpxchg %ecx,(%rdx)
-> >    1155e:     74 c9                   je     11529 <...>
-> >    11560:     41 89 02                mov    %eax,(%r10)
-> >
-> > The refered compiler bug:
-> >
-> > http://gcc.gnu.org/bugzilla/show_bug.cgi?id=58670
-> >
-> > was fixed for gcc-4.8.2.
-> >
-> > Current minimum required version of GCC is version 5.1 which has
-> > the above 'asm goto' miscompilation fixed, so remove the workaround.
-> >
-> > Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
-> > Cc: Andrew Morton <akpm@linux-foundation.org>
-> > ---
-> >  include/linux/compiler-gcc.h | 11 -----------
-> >  1 file changed, 11 deletions(-)
-> >
-> > diff --git a/include/linux/compiler-gcc.h b/include/linux/compiler-gcc.h
-> > index a0c55eeaeaf1..9b157b71036f 100644
-> > --- a/include/linux/compiler-gcc.h
-> > +++ b/include/linux/compiler-gcc.h
-> > @@ -66,17 +66,6 @@
-> >               __builtin_unreachable();        \
-> >       } while (0)
-> >
-> > -/*
-> > - * GCC 'asm goto' miscompiles certain code sequences:
-> > - *
-> > - *   http://gcc.gnu.org/bugzilla/show_bug.cgi?id=58670
-> > - *
-> > - * Work it around via a compiler barrier quirk suggested by Jakub Jelinek.
-> > - *
-> > - * (asm goto is automatically volatile - the naming reflects this.)
-> > - */
-> > -#define asm_volatile_goto(x...)      do { asm goto(x); asm (""); } while (0)
-> > -
-> >  #if defined(CONFIG_ARCH_USE_BUILTIN_BSWAP)
-> >  #define __HAVE_BUILTIN_BSWAP32__
-> >  #define __HAVE_BUILTIN_BSWAP64__
->
-> This is causing a build issue on ppc64le with a new patch replacing use
-> of unreachable() with __builtin_unreachable() in __WARN_FLAGS():
-> https://lore.kernel.org/linuxppc-dev/20220808114908.240813-2-sv@linux.ibm.com/
->
-> during RTL pass: combine
-> In file included from /linux/kernel/locking/rtmutex_api.c:9:
-> /linux/kernel/locking/rtmutex.c: In function '__rt_mutex_slowlock.constprop':
-> /linux/kernel/locking/rtmutex.c:1612:1: internal compiler error: in purge_dead_edges, at cfgrtl.c:3369
->  1612 | }
->       | ^
-> 0x142817c internal_error(char const*, ...)
->         ???:0
-> 0x5c8a1b fancy_abort(char const*, int, char const*)
->         ???:0
-> 0x72017f purge_all_dead_edges()
->         ???:0
-> Please submit a full bug report,
-> with preprocessed source if appropriate.
-> Please include the complete backtrace with any bug report.
-> See <file:///usr/share/doc/gcc-11/README.Bugs> for instructions.
->
->
-> So, it looks like gcc still has issues with certain uses of asm goto.
+ Delete the redundant word 'to'.
 
-This looks like a powerpc specific bug, and has nothing to do with
-PR58560 (asm goto miscompilation). If this is indeed a target specific
-bug, it should be worked around in
-arch/powerpc/include/asm/compiler.h, but please also report it to the
-GCC bugzilla.
+Signed-off-by: Jilin Yuan <yuanjilin@cdjrlc.com>
+---
+ drivers/soc/fsl/dpio/dpio-service.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Uros.
+diff --git a/drivers/soc/fsl/dpio/dpio-service.c b/drivers/soc/fsl/dpio/dpio-service.c
+index 1d2b27e3ea63..5315e01624c7 100644
+--- a/drivers/soc/fsl/dpio/dpio-service.c
++++ b/drivers/soc/fsl/dpio/dpio-service.c
+@@ -331,7 +331,7 @@ EXPORT_SYMBOL_GPL(dpaa2_io_service_register);
+  * @dev: the device that requests to be deregistered
+  *
+  * This function should be called only after sending the MC command to
+- * to detach the notification-producing device from the DPIO.
++ * detach the notification-producing device from the DPIO.
+  */
+ void dpaa2_io_service_deregister(struct dpaa2_io *service,
+ 				 struct dpaa2_io_notification_ctx *ctx,
+-- 
+2.36.1
+
