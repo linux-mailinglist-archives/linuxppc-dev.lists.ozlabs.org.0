@@ -2,62 +2,82 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E8B75A337D
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Aug 2022 03:35:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCF535A3512
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Aug 2022 08:40:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MDzm40Cr8z3c6p
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Aug 2022 11:35:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MF6Xd0zvYz3c5w
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Aug 2022 16:40:49 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=KZYXRIHQ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm2 header.b=WuvjrSLG;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=WAttMf3n;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.20; helo=mga02.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=russell.cc (client-ip=64.147.123.19; helo=wout3-smtp.messagingengine.com; envelope-from=ruscur@russell.cc; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=KZYXRIHQ;
+	dkim=pass (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm2 header.b=WuvjrSLG;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=WAttMf3n;
 	dkim-atps=neutral
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from wout3-smtp.messagingengine.com (wout3-smtp.messagingengine.com [64.147.123.19])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MDzlV3Qt6z2xHX
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Aug 2022 11:34:45 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1661564087; x=1693100087;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=WiQLwPxsLd9IqDWnuou7wNVDGNmx/O5WKvgujzzilvg=;
-  b=KZYXRIHQoc+i3eNBgiK7+agcAmr5qzPdm9AjC9VupqcIJyaFCwGYnmxi
-   Frgbv/mA7XeFmZp1FJhehA2YgyPqcnGqxQL8JNudRYAgQGrs4QoiDlzq7
-   TSPYYD/MZPTBW3iwJrKe32i0vEXwG1HpoZ0D9PDWbtcURSNSKYu4otWGZ
-   BY/0hj/NADXB6ytggv54kWR+KPv2sCCwT/CsYNxW2l142BB0ajaVepmDe
-   Ubb8FES6PnDBN0EbVr9ghs9FOEcuq/BPu4FVnvCp+EH3UB3sSFN85gcbT
-   qANqEirITW/7DCHm5655htn6D3UFUsbD8xUnViZ7DZ6AhiqFQnyRkIoIV
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10451"; a="281593537"
-X-IronPort-AV: E=Sophos;i="5.93,267,1654585200"; 
-   d="scan'208";a="281593537"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2022 18:34:33 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.93,267,1654585200"; 
-   d="scan'208";a="753060096"
-Received: from lkp-server01.sh.intel.com (HELO 71b0d3b5b1bc) ([10.239.97.150])
-  by fmsmga001.fm.intel.com with ESMTP; 26 Aug 2022 18:34:31 -0700
-Received: from kbuild by 71b0d3b5b1bc with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1oRkiV-0000qB-12;
-	Sat, 27 Aug 2022 01:34:31 +0000
-Date: Sat, 27 Aug 2022 09:33:31 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:fixes-test] BUILD SUCCESS
- 91926d8b7e71aaf5f84f0cf208fc5a8b7a761050
-Message-ID: <6309746b.SYdoXCcJw6HQFcN+%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MF6Ww5BkKz2xHY
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Aug 2022 16:40:11 +1000 (AEST)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+	by mailout.west.internal (Postfix) with ESMTP id 71103320091B;
+	Sat, 27 Aug 2022 02:40:06 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute2.internal (MEProxy); Sat, 27 Aug 2022 02:40:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=cc
+	:cc:content-transfer-encoding:date:date:from:from:in-reply-to
+	:message-id:mime-version:reply-to:sender:subject:subject:to:to;
+	 s=fm2; t=1661582405; x=1661668805; bh=QDkYxF39cwQWGm2LweFlE2621
+	iU114WCwi1dojAaaTc=; b=WuvjrSLG6VV13v6xOpyjEmVEzrwcTgfVc5g+XydAp
+	iPQSC2PLtOqBV3HFY+GcgSp6OqXFMj6fRGho30ywm0fypkwFYexoOJoZnAD1z6SI
+	MEhDJ2OD/qQCnb7pN4kysl1OtwyXMx+3SV3Ks+euMgWr8PkpO9wlkqed8Z2JqqOm
+	E2hHkYtS5I0nPZOcr1ESonPG6I22J0aZj5QV7DteeY6+YQ9qWx82LMpnZ+NzEDgc
+	Q8RUcPBtXfoxt3FlGyhg097QLQdyaQADj8Uf5sU55bksdcSTN4bIv8x0NCFzLbzB
+	YF+VSUCI0yyBiCO/smEI8YtYsuoqJdFSM1VL1I/8HjZ0w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:message-id
+	:mime-version:reply-to:sender:subject:subject:to:to:x-me-proxy
+	:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1661582405; x=1661668805; bh=QDkYxF39cwQWGm2LweFlE2621iU114WCwi1
+	dojAaaTc=; b=WAttMf3ngKOrc0UwLlGFdQK/1j2PV5sE3R2Uh7tpsfpeJ7y/lre
+	QgRKH1r/jpFJ/xgq8aw3DcTSALgaqHilyBsUDuFL0Bs5XER1plYd1fB9BPki2HLF
+	JQXN15kfbCZEOgrzVOqLbORkcIGBXH3U5YyVvHGhJmhuTKKgZ2L9zmsRfFdngzb0
+	/EZ3xkOsyU2jukWsXzRvWWwg1BpIGRrcwyt4sw7Bslk5mJc87R5h1Tg6ca+SkqmV
+	Oerivf/VOP6zYem/LmpDYOxkiqA0ZjbyQNJkTMnA/fkHkzJkE8c0iMSLLvcSIMF1
+	ZvWEC3qhJAnjPTqnWaw5LLWDv9poJW71Ihw==
+X-ME-Sender: <xms:RbwJY_hM8yRZ854ZFq4bZmjJ8kO0BLRHxv68juiyVDTCo8Jt-yv0nQ>
+    <xme:RbwJY8CxVJ-KfuCenr-SI5JCSV9uId7qs_-QBmW7BzS7wgIRKZW6OyS3ZCE_B0eJA
+    Z5nvpEQf5YtS44srg>
+X-ME-Received: <xmr:RbwJY_GGIkPYTJRw8kNzsmc9y-Tk02dIk_jzw8Bwye_oKVMew-Y3g7UIiKjNPex9vxur1eHxSRkoXIF_6Xls5iTeSe7T>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrvdejiedguddufecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecufghrlhcuvffnffculdeftddmnecujfgurhephf
+    fvvefufffkofgggfestdekredtredttdenucfhrhhomheptfhushhsvghllhcuvehurhhr
+    vgihuceorhhushgtuhhrsehruhhsshgvlhhlrdgttgeqnecuggftrfgrthhtvghrnhepvd
+    egudetjefgveevvedutdeigeelueffvefhfeeuheeuffekhfffheegheejhfdtnecuvehl
+    uhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprhhushgtuhhrse
+    hruhhsshgvlhhlrdgttg
+X-ME-Proxy: <xmx:RbwJY8Rm_0NNZ_EXsPLKdtT4lpW7fMbAgpocxtcfiurlY0VCKHZ7tQ>
+    <xmx:RbwJY8ydBlsxGWyfqZH95RZvhSx6xTZ0_d0rOX2Z5I-vrqfHRNrh8A>
+    <xmx:RbwJYy4UjZRs082CoUjE_38D7g5s9LL2KEDeVsYnVeQJ6QiV5v7a0Q>
+    <xmx:RbwJYyYxZXHUSkcPeUtewyiVe8kWJd9T-RN6cnZoaD1J3qBUjdmwRA>
+Feedback-ID: i4421424f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
+ 27 Aug 2022 02:40:03 -0400 (EDT)
+From: Russell Currey <ruscur@russell.cc>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/pasemi: Use strscpy instead of strlcpy
+Date: Sat, 27 Aug 2022 16:39:46 +1000
+Message-Id: <20220827063946.9073-1-ruscur@russell.cc>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,121 +89,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Russell Currey <ruscur@russell.cc>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
-branch HEAD: 91926d8b7e71aaf5f84f0cf208fc5a8b7a761050  powerpc/rtas: Fix RTAS MSR[HV] handling for Cell
+find_i2c_driver() contained the last usage of strlcpy() in arch/powerpc.
+The return value was used to check if strlen(src) >= n, for which
+strscpy() returns -E2BIG.
 
-elapsed time: 730m
+Signed-off-by: Russell Currey <ruscur@russell.cc>
+---
+ arch/powerpc/platforms/pasemi/misc.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-configs tested: 96
-configs skipped: 129
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-powerpc                           allnoconfig
-powerpc                          allmodconfig
-x86_64                           rhel-8.3-kvm
-x86_64                          rhel-8.3-func
-x86_64                           rhel-8.3-syz
-x86_64                    rhel-8.3-kselftests
-x86_64                         rhel-8.3-kunit
-loongarch                           defconfig
-loongarch                         allnoconfig
-um                           x86_64_defconfig
-um                             i386_defconfig
-i386                                defconfig
-s390                                defconfig
-s390                             allmodconfig
-arc                                 defconfig
-alpha                               defconfig
-s390                             allyesconfig
-x86_64                        randconfig-a006
-x86_64                        randconfig-a004
-x86_64                        randconfig-a002
-i386                          randconfig-a012
-i386                          randconfig-a014
-i386                          randconfig-a016
-x86_64                              defconfig
-x86_64                               rhel-8.3
-m68k                             allyesconfig
-m68k                             allmodconfig
-arc                              allyesconfig
-alpha                            allyesconfig
-arm64                            allyesconfig
-powerpc                          allyesconfig
-nios2                            allyesconfig
-nios2                               defconfig
-parisc                              defconfig
-parisc64                            defconfig
-parisc                           allyesconfig
-i386                          debian-10.3-kvm
-i386                        debian-10.3-kunit
-i386                         debian-10.3-func
-csky                              allnoconfig
-alpha                             allnoconfig
-arc                               allnoconfig
-riscv                             allnoconfig
-i386                          randconfig-c001
-riscv                    nommu_virt_defconfig
-riscv                          rv32_defconfig
-riscv                    nommu_k210_defconfig
-riscv                               defconfig
-riscv                            allmodconfig
-riscv                            allyesconfig
-sh                          landisk_defconfig
-arm                                 defconfig
-arm                              allyesconfig
-i386                             allyesconfig
-x86_64                           allyesconfig
-sparc                               defconfig
-csky                                defconfig
-sparc                            allyesconfig
-x86_64                                  kexec
-s390                       zfcpdump_defconfig
-xtensa                           allyesconfig
-sh                ecovec24-romimage_defconfig
-powerpc                 mpc8540_ads_defconfig
-arm                           sama5_defconfig
-i386                   debian-10.3-kselftests
-i386                              debian-10.3
-sh                           se7206_defconfig
-sh                               j2_defconfig
-powerpc                     mpc83xx_defconfig
-alpha                            alldefconfig
-mips                          rb532_defconfig
-
-clang tested configs:
-x86_64                        randconfig-a012
-x86_64                        randconfig-a014
-x86_64                        randconfig-a016
-hexagon              randconfig-r045-20220827
-riscv                randconfig-r042-20220827
-hexagon              randconfig-r041-20220827
-s390                 randconfig-r044-20220827
-i386                          randconfig-a002
-i386                          randconfig-a006
-i386                          randconfig-a004
-x86_64                        randconfig-a003
-x86_64                        randconfig-a001
-hexagon              randconfig-r045-20220825
-hexagon              randconfig-r045-20220823
-riscv                randconfig-r042-20220823
-riscv                randconfig-r042-20220825
-hexagon              randconfig-r041-20220823
-hexagon              randconfig-r041-20220825
-s390                 randconfig-r044-20220825
-s390                 randconfig-r044-20220823
-x86_64                        randconfig-k001
-powerpc                  mpc885_ads_defconfig
-i386                          randconfig-a013
-i386                          randconfig-a015
-x86_64                        randconfig-a005
-
+diff --git a/arch/powerpc/platforms/pasemi/misc.c b/arch/powerpc/platforms/pasemi/misc.c
+index f859ada29074..9e9a7e46288a 100644
+--- a/arch/powerpc/platforms/pasemi/misc.c
++++ b/arch/powerpc/platforms/pasemi/misc.c
+@@ -36,8 +36,7 @@ static int __init find_i2c_driver(struct device_node *node,
+ 	for (i = 0; i < ARRAY_SIZE(i2c_devices); i++) {
+ 		if (!of_device_is_compatible(node, i2c_devices[i].of_device))
+ 			continue;
+-		if (strlcpy(info->type, i2c_devices[i].i2c_type,
+-			    I2C_NAME_SIZE) >= I2C_NAME_SIZE)
++		if (strscpy(info->type, i2c_devices[i].i2c_type, I2C_NAME_SIZE) < 0)
+ 			return -ENOMEM;
+ 		return 0;
+ 	}
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.37.2
+
