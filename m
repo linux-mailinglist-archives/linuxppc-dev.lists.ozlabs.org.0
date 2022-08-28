@@ -2,139 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B4655A3C84
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Aug 2022 09:34:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC2265A3CFC
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Aug 2022 11:20:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MFlgf4p2rz3blQ
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Aug 2022 17:34:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MFp2H1s5Xz3c6j
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Aug 2022 19:20:23 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=gnh+DsZq;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=j2EfubT1;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=40.107.9.84; helo=fra01-mr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=gnh+DsZq;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=j2EfubT1;
 	dkim-atps=neutral
-Received: from FRA01-MR2-obe.outbound.protection.outlook.com (mail-eopbgr90084.outbound.protection.outlook.com [40.107.9.84])
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MFlfw2MlJz2xB1
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Aug 2022 17:33:27 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=YCxcx7LBklcSYGHGsSRjBcQYEHSrS//eIBS/qJOaPYrdcqCuqVp5nfI3ADFEbtIglIvU6bZVBSeE2+NnqjCFHu8CZKEXkdlwca1Bo7ZTMecwkiyWgXJIYty9bCwY1v0f+NfBDcDmEoIrSHZSo8B45jq0Gb10u6kDSgSkS2XpGRHMGxaiqboUasqKARgZ4edn33bPlz6NUeEQXCTWDzyagPtk7WlAMpQxsN9R2GEwyJAdiLOvmLyCQ5Q6jy4F/VgrKaCUEbnvPNtdcycjq2SeBP/EMuLTsCDGWD9S3fN4LDMIGXY5sr7VQXlF1hAoU4dT7ElGLQe1kceS97R/mExZWw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NnJ5L5YZ6k/S0c6wa6r1+SrDvNyj1DNecfYjz2LOoPE=;
- b=G1XQFBG/bfiagXtrEd7oz7vPta7NEGLzwe82fzGY2NCeWu5n2RUZhlBGL7kXMwT5apYH5lvx3aXskXc5s6fxVBo1MV5gAq/Q9ACIrJkQKyGom2zd6kN+n5dtD8h9GpYeMB+DBVVe7R2zpwA9Xx2aOdI6zQS43TnPCLY0Cgt3yAq87xkhwScENCESoYYtQ48PvaDVJ2gyhuDYgZHl+XE4hCUf0RAENkI5inoGpImQ5ID7emQPj2bq984iK1vxFQslppNQ+PQbsnNgaG9jH+D4QD/vvw7GeproAggjfKu0HYtJceG0E+P5rnXFCU3bLIq37u73jzzLaK0h+5nSv5A1MA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NnJ5L5YZ6k/S0c6wa6r1+SrDvNyj1DNecfYjz2LOoPE=;
- b=gnh+DsZqc4HrvKP6hGvB6QyWjaaNEF/pYY5H15Nzq0JKcaX24shzpLiuO8Vlx9LiDXoymConPXJSVeohf+fNIUO4V/tnJIendVqTgQfIYAauEhqqe5C2fShvIjx7NSzTKU1uwh04yAsH7UjnbLST1jqMBufqH2aV/BTWbrQar4D7+WrnjclKBvhT4IYr6+xQk4gZQjV7lZqoEPR/0MNX3AJaQfCKM7ptAkkK6kcZM1tLKB+opG8f4SqT9PZ0KRExQGwF3V+VabE5qWUwZzAPljztWQQ7/aKobsKW7qtswPzC6UHTx1lAdJXXosTZssMOZRRhJpJPeasjd2Lu0s0VyQ==
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by PR1P264MB4149.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:254::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5566.15; Sun, 28 Aug
- 2022 07:33:08 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::382a:ed3b:83d6:e5d8]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::382a:ed3b:83d6:e5d8%4]) with mapi id 15.20.5566.021; Sun, 28 Aug 2022
- 07:33:07 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: "Elliott, Robert (Servers)" <elliott@hpe.com>, Nayna
-	<nayna@linux.vnet.ibm.com>, Andrew Donnellan <ajd@linux.ibm.com>
-Subject: Re: [PATCH v2 00/10] crypto: Kconfig - simplify menus and help text
-Thread-Topic: [PATCH v2 00/10] crypto: Kconfig - simplify menus and help text
-Thread-Index:  AQHYspAas1zqUQZbRU+OYz0CGvi/xa2z0aMAgAAZ/PCADAxdAIAAF/qggAFxSoCAAAd/sIAABvOAgAAHS4CAAH+M8IABDWTAgADXxgA=
-Date: Sun, 28 Aug 2022 07:33:07 +0000
-Message-ID: <1e9a46d4-5511-5b89-28ef-582231a94562@csgroup.eu>
-References: <20220815190608.47182-9-elliott@hpe.com>
- <20220817232057.73643-1-elliott@hpe.com>
- <e6e99e33-4279-690d-88b8-9e732551c17c@linux.vnet.ibm.com>
- <MW5PR84MB1842E554A4677FA177D73E23AB6D9@MW5PR84MB1842.NAMPRD84.PROD.OUTLOOK.COM>
- <1eb670ab-b238-8406-510d-c8dad46a2fb5@linux.vnet.ibm.com>
- <MW5PR84MB18421D567F8CA4E5AC99B7C3AB729@MW5PR84MB1842.NAMPRD84.PROD.OUTLOOK.COM>
- <018a65de-60ce-1906-c461-44dc95353ab9@linux.vnet.ibm.com>
- <MW5PR84MB1842FE1C4B5218959C2608F4AB759@MW5PR84MB1842.NAMPRD84.PROD.OUTLOOK.COM>
- <c45efdf7-a677-acb7-84c1-b64284d414a4@linux.vnet.ibm.com>
- <MW5PR84MB184208ECF216DD025CE9D35BAB759@MW5PR84MB1842.NAMPRD84.PROD.OUTLOOK.COM>
- <MW5PR84MB1842263C39734FD662F991E2AB749@MW5PR84MB1842.NAMPRD84.PROD.OUTLOOK.COM>
- <MW5PR84MB184220E67A8141565A8D04CCAB749@MW5PR84MB1842.NAMPRD84.PROD.OUTLOOK.COM>
-In-Reply-To:  <MW5PR84MB184220E67A8141565A8D04CCAB749@MW5PR84MB1842.NAMPRD84.PROD.OUTLOOK.COM>
-Accept-Language: fr-FR, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 1f288e67-d4fc-4355-4a52-08da88c78d48
-x-ms-traffictypediagnostic: PR1P264MB4149:EE_
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  q9j02x8JiF15wmRW0dlEBdBrXR8taTWBPvKrbhx/LqFPNqiT8uDN+wzGjeokGVwgBoULDoaX8XaDe6rRYnnDDravzl8qRmq0t6piyuaOfEwhVxDWYnrhD3IIRaPT//4sYkfS/PU8K3aG2Xb61O7ydSniykaq0ti5ZQJckMP03aLrr0U+N/NKVA3cR24Q0FstZQt0NQGixOymjr+A6mwC6fU+PsZVsMDIyPOvz2onQy69vfeFUvNiFEdUxUmtuaWAqDRB/CnpHIKhRfy8ealpkZU7ExUc4l30VFe/ZA7FktYagSbv0cCYCOjNglxlrK+hoOiRTxyXGw1CFvtOUkYbe3AALopLPMGMWtT20IXhIcCjuEZznN2viNRLy0caZFGO41JWSQB3ZN5P+Woj3EOuJoiiVJJrC5M6JO2pWW0ruJzQ5GqS8HfYaZe69oLAgoN7/d+KRgz0gvk1M2Wdn4IKIBucEuGGpTTsGtWlcqVFENvgJX5R2aYu3XsLhzCUE9jPm811M5U4fjsRVZH9tD4OgfqQJkWFMDmNlo6e5ZFZYbLv2Gz3dT3h9ON7avlNuxD9l2rajBWzgUoWf9Ip/UClhMqHoAAKH9kEgaoeC1bBj7OIDMZL0k6udkU2sdhyCQ/h6/MhfD323VfDAsScYmVtFt/1nloTqpMj/iNXfhy4diA+MRHSBNmXD0/uv2q/ZSKdD9FA2wUtlkvYH+HY8Lo1fJGx5Wzk4ipIwlD+cNcku0ESJDJS0YsZqxazfDSZzN6HfqTi6d8NbkKmz1dqbfNwAiaWmL5Lwg2PTINpy/Bvs9VBqhHG78eY5X5d/B+1y3csP38JmAg3GOypg58thA4kAg==
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230016)(4636009)(396003)(376002)(39840400004)(366004)(136003)(346002)(6512007)(86362001)(26005)(31696002)(71200400001)(6486002)(478600001)(6506007)(41300700001)(122000001)(38100700002)(38070700005)(186003)(83380400001)(2616005)(66574015)(2906002)(66446008)(64756008)(110136005)(66476007)(8936002)(66946007)(5660300002)(66556008)(4326008)(8676002)(296002)(31686004)(316002)(36756003)(4744005)(44832011)(91956017)(76116006)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?TDIvelF2ZVl3T0RUWnEwTHlHTGp0VDhlRkdIYm0vUTZhY01Rd0JFMUlpU0pI?=
- =?utf-8?B?bGs1dnBBN3hjWEw0V2I1ZzZvTURWWHpneGdCV3FqbE1QY1NKSkF6dVloeEk3?=
- =?utf-8?B?akF1VFZVei94RHBFYjJaeUduZncxNjZYSzlqL0FjQXAwTTZxUkZDYnRhbTc4?=
- =?utf-8?B?b3dzT0NQcnpXM0FjeVAwaTdVdUVZSldQTHRxSlUyai8vNzZXK2Q3Nncrd1FB?=
- =?utf-8?B?VG5HQkVBRjJjM0FhaHVMYlMvNUx2Rlc5VVVua01YMURYRzFOcnJNb1NSQXNs?=
- =?utf-8?B?SklIeHR3OVM3cG1PanF2aFFLaE93M0lNWFRRRHI0T3FTWTdxdFd6SzhMMGJY?=
- =?utf-8?B?LzlwNHAzUlhwZzUrZWdGcVVWWHlQaEtpeENIQUFBaGh3NkZ1L1ZJMDB0VnV1?=
- =?utf-8?B?MFJib3ZjNDFMcWpDYjB1T1pER09JQ3kzOVF4YkNsdXNMUTNFMUpOWVZSTTVj?=
- =?utf-8?B?OU1qZDhFdEhDOFpNa2VkQUxGT1liUEg3SCtUNWdoZ1owdjVXOURYbFNjNklv?=
- =?utf-8?B?b0l0WmQyN1grcmVpakRYMzR2TnNndGZQc2tXMEY2NGJyT041SGdyN3VmV2Zy?=
- =?utf-8?B?em5DVm1tWG5nKzEzMDRmM2NzN0tNeGtPdGIvZDdRQkljVUVNRnFnRElKak10?=
- =?utf-8?B?Z2c5YzNORDNBODJJYjZtMEk5c3pjSHdtb2tlaTF3V1pic0VHSFcwQmNTVzFG?=
- =?utf-8?B?Vm1FS1VOR0hEalpaeVNRVE5WNGdpQTMxTytLYVcwVjV1NWVUd3AxeHNpVGpj?=
- =?utf-8?B?M2M1U1JqSlpVaGhMaTBmUWN3TXk2ZEVZN3lpMm1jSnNhT1pEUTVhK2FxbWRK?=
- =?utf-8?B?TXJ4YmdvSStvT0tjLzJwV0daelZVTEdKWTBzOEZIZTlaUFJhQmNzNjZlWVNr?=
- =?utf-8?B?bmJidm8xR284SHRZM2dnOU9NaUZGU0lyREwvS0JrN0dSdHJieHZNQjVlUm02?=
- =?utf-8?B?T2JKWTR0MzJ0TnlmcGFJMXBLR1RyNmFOeHQvYUJiY0Uya1VsSEZ0dXoyNWVE?=
- =?utf-8?B?RzRvTVE1aHBNNjkwNm84aXJvUXhRSXRGV3lJOHdQSEltWHIzY3pSejZQN281?=
- =?utf-8?B?MmFiZXZkU0prdmtjSHFmVElmOFlZYkhiSkVBQjFYaVcrWmpIUHR5aTBSKy9j?=
- =?utf-8?B?MTRkNlJLRUhwWVZWb2hnZ2dGZUpWeTVtK2hKY1RVYVJXUHQ5dEt1U1dyakxI?=
- =?utf-8?B?M2c4eEk2QkVHSDhoMGh2MSt1V1NpOHJ6Z2hlQitOUGtxbmlvLzVGSXgzMlA1?=
- =?utf-8?B?NXdQRENwMFZpaGplbUxYZE1zT0ZURWpSOFJxaVVHREdUUGFwd3lsTHRuQUxv?=
- =?utf-8?B?dHY2cVc4SGxEekt2UTNVMmJSd1NaaTlBTWZmSEtKM0VRNVlDOVFOZW96OFdC?=
- =?utf-8?B?VEJ6eFA3cXlUWFZ5NzY4c2diREJySlNONWdURjFZdHJ3T29lTk9VUGgvcCt4?=
- =?utf-8?B?SkhKU29JbExZbEpHWnpZYkxnODFrYko2UkZrMEZIWkpKcTQ5Qld6NkZPYk84?=
- =?utf-8?B?MWZMMWo3N1BCV1pBUHgxU25tNVpGOWNiNXRUZlcwbkZ5U0VjMFV3WDF3Z0Zu?=
- =?utf-8?B?blFadHVHY2ljaEkrRXZXNW1TWHpHdzJkU2F0ZmRlbFQzYXNBdnQ1V20xdlJl?=
- =?utf-8?B?WjhHNWJCalhUNzlwSHZyMDBQbjJKdDNpbTFiekxhQ2ZOeXNtaW1HZkNpTSsy?=
- =?utf-8?B?VjY5NmxNY0Y2MHgyYk5MY3hDZWZoLzllVXF1QUo4aTIxTE5uUUlvTlRjazBn?=
- =?utf-8?B?VHhGY09PWWRqV0tBcDdBVWhGUERIcWF2Z09zN25rS2Z3MS9YWU5wTlpUUm1S?=
- =?utf-8?B?OFByWnRscHViTVpYbE14YTc1byttQzhMbG8reUlsbFgxZlcycnNCN0Ryb1ZJ?=
- =?utf-8?B?WkliazZsSVUzQVRhbEhjV0dKNnJhclJVTllUY3U5OHdiOTlOa0RZY1N5K2M2?=
- =?utf-8?B?WjJobGk3cmxjQ1RiWng5c1dkbTNjUzJreFFUKzZ3T2tOOWJXeEdzaUNyRUlF?=
- =?utf-8?B?UlcxZGx2cHZ0VjZRNDRBK1d4TS9EeE9zSm9CQ0drN0g5dklMNVdZUUR4SHU4?=
- =?utf-8?B?bUl4bnlUVXhLVkYxcVdOTk9oYzh4Rnc1R0ZFV3BDb3BDT0EwbkU2ZDR2T1l4?=
- =?utf-8?B?cHBaTUZudVhjWnc3aXRlU2dUdkZZajZpOUlRVkRNVzR5dGo4THFWK0JNU1ZY?=
- =?utf-8?Q?bCg4JrYDYsto5IPPKvKDzkU=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <49224F046AF49D43885F624A9FEC8AC6@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MFp1d15v1z2xHH
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Aug 2022 19:19:48 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 0C1FEB80B19;
+	Sun, 28 Aug 2022 09:19:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24059C433C1;
+	Sun, 28 Aug 2022 09:19:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1661678383;
+	bh=oApmKSX4H6cNKM8J5+LxhC/SD9XsY8VAQGSgWRshmjY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=j2EfubT14d2tQirJD51qcr7B8rN1N5ma334NSUuBaQT71y5jHn1Ay08mSElUyivGf
+	 ejFhWoyKFdrm+vVCVKb89HcChOb5eBxXI0i5psHH+spnce4KlyOtfH4Ts9KemJrbpl
+	 tILZXhHImyRL9+fCnbgDIuvt9ejo1LrIdEC1Rt3tgj7ZJCafx4u7MAkJ7erXXoMJGp
+	 dPNE+xWoSCy1BJyqAP2Zij4256NCTh931GOnZ/4IaHAORzMGYNBwogxhj/USFFfRHl
+	 UtdTactv5OZxVUvYmAWJp7lD5lAR3mwHkouYs+gmo1tXJLKNsnMEGtBWjFs490wCe4
+	 1oNGdu4fTyR8w==
+Received: by pali.im (Postfix)
+	id C00817B3; Sun, 28 Aug 2022 11:19:39 +0200 (CEST)
+Date: Sun, 28 Aug 2022 11:19:39 +0200
+From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v2] powerpc/boot: Don't always pass -mcpu=powerpc when
+ building 32-bit uImage
+Message-ID: <20220828091939.b2ntaaoxg7h2gcuf@pali>
+References: <20220820105200.30425-1-pali@kernel.org>
+ <20220827133900.16634-1-pali@kernel.org>
+ <63f4bce4-7965-9bc6-2104-42e26acd0208@csgroup.eu>
+ <20220827173610.7bdp7zychwu2u5i6@pali>
+ <1da78077-a050-a391-a002-9e25eabc89d1@csgroup.eu>
+ <20220827183608.ezljs2houkd32764@pali>
+ <20220827190013.c3odakqxqnqgkzxm@pali>
+ <6bf326c6-0c48-fb53-bb5a-3a4c4f45f6d0@csgroup.eu>
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1f288e67-d4fc-4355-4a52-08da88c78d48
-X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Aug 2022 07:33:07.6072
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Rua9czntK51x6rtPxWeSZF6/iBnAvA7Jrcha+y6mUchw95c6z8MjBAEd3AUIBhA+W568hVnqdTMQiFwM1MOHMrUmIdpgCP3THLPzwLZVP6A=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR1P264MB4149
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <6bf326c6-0c48-fb53-bb5a-3a4c4f45f6d0@csgroup.eu>
+User-Agent: NeoMutt/20180716
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -146,21 +71,103 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Paul Mackerras <paulus@samba.org>, Joel Stanley <joel@jms.id.au>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-SGksDQoNCkxlIDI3LzA4LzIwMjIgw6AgMjI6MDYsIEVsbGlvdHQsIFJvYmVydCAoU2VydmVycykg
-YSDDqWNyaXTCoDoNCj4gKGFkZGluZyBDaHJpc3RvcGhlLCBwZXINCj4gYmJhNDk2NjU2YTczZmMx
-ICgicG93ZXJwYy8zMjogRml4IGJvb3QgZmFpbHVyZSB3aXRoIEdDQyBsYXRlbnQgZW50cm9weSBw
-bHVnaW4iKQ0KPiANCj4gDQo+IEFkZGluZyBsaWJtcGMtZGV2ZWwgZ2V0cyBhbGwgdGhlIGFyY2hp
-dGVjdHVyZXMgYnVpbGRpbmcgZXhjZXB0IHBvd2VycGMuDQo+IA0KPiAoSSBhbHNvIGluc3RhbGxl
-ZCBnY2MtcGx1Z2lucy1kZXZlbCB0byBnZXQgdGhlIG5hdGl2ZSB4ODYNCj4gYnVpbGQgdG8gZGV0
-ZWN0IHBsdWdpbnMuKQ0KPiANCj4gSG93ZXZlciwgcG93ZXJwYyBzdGlsbCBmYWlscyB0byBidWls
-ZC4gU2V2ZXJhbCBvZiB0aGUgTGludXggc3RhbmRhcmQNCj4gaW5jbHVkZSBmaWxlcyBlbmQgdXAg
-aW5jbHVkaW5nIG5vZGVtYXNrLmgsIHdoaWNoIGluY2x1ZGVzIHJhbmRvbS5oLA0KPiB3aGljaCBo
-YXMgYSBwcm9ibGVtIGZpbmRpbmcgYSBnbG9iYWwgY2FsbGVkIGxhdGVudF9lbnRyb3B5IHdoaWxl
-DQo+IGJ1aWxkaW5nIGluaXQvbWFpbi5vOg0KDQpJc24ndCBpdCBmaXhlZCBpbiBtYWlubGluZSBi
-eSBjb21taXQgMDEyZThkMjAzNGYxICgiZ2NjLXBsdWdpbnM6IA0KVW5kZWZpbmUgTEFURU5UX0VO
-VFJPUFlfUExVR0lOIHdoZW4gcGx1Z2luIGRpc2FibGVkIGZvciBhIGZpbGUiKSA/DQoNCkNocmlz
-dG9waGU=
+On Sunday 28 August 2022 07:23:39 Christophe Leroy wrote:
+> Le 27/08/2022 à 21:00, Pali Rohár a écrit :
+> > On Saturday 27 August 2022 20:36:08 Pali Rohár wrote:
+> >> On Saturday 27 August 2022 18:32:42 Christophe Leroy wrote:
+> >>> Le 27/08/2022 à 19:36, Pali Rohár a écrit :
+> >>>> On Saturday 27 August 2022 17:31:10 Christophe Leroy wrote:
+> >>>>> Le 27/08/2022 à 15:39, Pali Rohár a écrit :
+> >>>>>> For 32-bit uImage try to use CONFIG_TARGET_CPU option for -mcpu. This fixes
+> >>>>>> following compiler error when building kernel with powerpc e500 SPE capable
+> >>>>>> cross compilers:
+> >>>>>>
+> >>>>>>        BOOTAS  arch/powerpc/boot/crt0.o
+> >>>>>>      powerpc-linux-gnuspe-gcc: error: unrecognized argument in option ‘-mcpu=powerpc’
+> >>>>>>      powerpc-linux-gnuspe-gcc: note: valid arguments to ‘-mcpu=’ are: 8540 8548 native
+> >>>>>>      make[1]: *** [arch/powerpc/boot/Makefile:231: arch/powerpc/boot/crt0.o] Error 1
+> >>>>>>
+> >>>>>> For 64-bit uImage and 64-bit kernels with 32-bit uImage wrapper there is no
+> >>>>>> change.
+> >>>>>>
+> >>>>>> Similar change was already introduced for the main powerpc Makefile in
+> >>>>>> commit 446cda1b21d9 ("powerpc/32: Don't always pass -mcpu=powerpc to the
+> >>>>>> compiler").
+> >>>>>>
+> >>>>>> Fixes: 40a75584e526 ("powerpc/boot: Build wrapper for an appropriate CPU")
+> >>>>>> Cc: stable@vger.kernel.org
+> >>>>>> Signed-off-by: Pali Rohár <pali@kernel.org>
+> >>>>>> ---
+> >>>>>>     arch/powerpc/boot/Makefile | 8 ++++++++
+> >>>>>>     1 file changed, 8 insertions(+)
+> >>>>>>
+> >>>>>> diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
+> >>>>>> index a9cd2ea4a861..f56a5f90a5d8 100644
+> >>>>>> --- a/arch/powerpc/boot/Makefile
+> >>>>>> +++ b/arch/powerpc/boot/Makefile
+> >>>>>> @@ -44,8 +44,16 @@ else
+> >>>>>>     BOOTCFLAGS	+= -m64 -mcpu=powerpc64
+> >>>>>>     endif
+> >>>>>>     else
+> >>>>>> +ifdef CONFIG_PPC32
+> >>>>>> +ifdef CONFIG_TARGET_CPU_BOOL
+> >>>>>> +BOOTCFLAGS	+= -m32 -mcpu=$(CONFIG_TARGET_CPU)
+> >>>>>> +else
+> >>>>>> +BOOTCFLAGS	+= -m32 -mcpu=powerpc
+> >>>>>
+> >>>>> You can't do that. You get here only if user has selected
+> >>>>> TOOLCHAIN_DEFAULT_CPU, in which case you don't want to for -mcpu=powerpc.
+> >>>>
+> >>>> So do I understand it correctly that in this branch I should omit -mcpu=powerpc?
+> >>>
+> >>> Correct.
+> >>
+> >> Ok, I will fix it in v3.
+> >>
+> >>>>
+> >>>>> -mcpu=powerpc is set when user selects CONFIG_POWERPC_CPU, in which case
+> >>>>> CONFIG_TARGET_CPU_BOOL is set as well.
+> >>>>>
+> >>>>>> +endif
+> >>>>>> +else
+> >>>>>>     BOOTCFLAGS	+= -m32 -mcpu=powerpc
+> >>>>>
+> >>>>> Same, for PPC64 I think you don't want that either, unless the
+> >>>>> CONFIG_GENERIC_CPU has been selected in which case
+> >>>>> CONFIG_TARGET_CPU_BOOL is not set.
+> >>>>>
+> >>>>> When CONFIG_TARGET_CPU_BOOL is set for PPC64 you also want
+> >>>>> -mcpu=$(CONFIG_TARGET_CPU)
+> >>>>
+> >>>> I understand that this branch is called for PPC64 build with 32-bit
+> >>>> uImage wrapper. So in this case should not be used TARGET_CPU as it
+> >>>> would be 64-bit and not 32-bit as requited for 32-bit uImage wrapper.
+> >>>
+> >>> Why ?
+> >>>
+> >>> -mcpu=e6500 -m32 works as far as I can see.
+> >>
+> >> Hm... I did not know that. Ok, if you want I will put it into
+> >> -m32 -mcpu=$(CONFIG_TARGET_CPU) branch too.
+> > 
+> > And when CONFIG_TARGET_CPU_BOOL is not set but CONFIG_PPC64_BOOT_WRAPPER
+> > is, should be -mcpu=powerpc64le or -mcpu=powerpc64 still passed?
+> 
+> Not sure, so keep it like that, will change later if needed.
+
+Ok! Will prepare new version.
+
+> > 
+> >>>>
+> >>>> Anyway, in this change I'm touching only PPC32 build, so all PPC64 stay
+> >>>> as it was before.
+> >>>>
+> >>>>>>     endif
+> >>>>>> +endif
+> >>>>>>     
+> >>>>>>     BOOTCFLAGS	+= -isystem $(shell $(BOOTCC) -print-file-name=include)
+> >>>>>>     
