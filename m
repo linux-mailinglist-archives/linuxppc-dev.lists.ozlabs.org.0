@@ -1,48 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 506BA5A5793
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Aug 2022 01:29:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0C395A57B0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Aug 2022 01:41:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MGmr11FlGz3cFD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Aug 2022 09:29:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MGn50454wz3c1p
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Aug 2022 09:41:08 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=ut5VdAQS;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256 header.s=201707 header.b=ArosEJjF;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=ut5VdAQS;
-	dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MGmqN4HMDz3bYd
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Aug 2022 09:29:20 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=OaZc2la47vx8E0FS0qsEMIEXDCE3CBk13gYUqXeqdYY=; b=ut5VdAQSCW20WwiX52cz5GLV5l
-	SagE5RRhTnCV0D/O5DxwlcDcnxMWTZv3uZMH0/mnlOHfc+mj1eLiIbpuspuL9w953JqEpGUudalQ0
-	MA8YHCzoydg94IFvq4Y2bDheKbZhQYlNzpfbgtSslHmINXVPXyhjGuZYJuETFyUksDQ9zGC28wsue
-	u7BSHeWYz1lhb9VK58gU9ZPyAj7faA1w/bhfb5IcR+vhlQHsJ9qtwn3/duz//nWLvTW/iT/XlhDqk
-	iz+/buwKg2+DCnEF7onNWO71fH+GKTevKBv13ya83gqS2cbLFq0RR2uTJlTELIgdqcu0w7y8vFwV+
-	0BNqBKvQ==;
-Received: from [2601:1c0:6280:3f0::a6b3] (helo=casper.infradead.org)
-	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oSoBt-003V9R-LQ; Mon, 29 Aug 2022 23:29:14 +0000
-From: Randy Dunlap <rdunlap@infradead.org>
-To: linux-doc@vger.kernel.org
-Subject: [PATCH] Documentation: spufs: correct a duplicate word typo
-Date: Mon, 29 Aug 2022 16:29:08 -0700
-Message-Id: <20220829232908.32437-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.37.2
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MGn4M5VFwz2xGD
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Aug 2022 09:40:35 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256 header.s=201707 header.b=ArosEJjF;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4MGn4G5VpBz4x3w;
+	Tue, 30 Aug 2022 09:40:30 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlabs.org;
+	s=201707; t=1661816431;
+	bh=kD9DT1iOOQycVbjPgR5ddjhaq7eIsg081yQ+aUUl9UE=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=ArosEJjFSvmrQqbI0FCPipkYSeCJqhCAuXeMbFuvIFnAGMTeFixxRZjlgtQd20vdc
+	 DIpc51GwcbDp0vgTyRK+GSjrdLNQMI/Pf5myeacSaETio82kcCwj7qFNX5ocWUzSWd
+	 IfB19atNBoCS03zZRO0zOZK/R5JnI7+DuoH4mjNFRiVF+6LSPRi+7IuvEn+TCedsTC
+	 I6z4wYj31mYgsDW+PlcBr0P5S74Iw48HJWdeSuyNYanJodEmuyh8ExJ0KqGGg04HOi
+	 1kCSEF+nNCQwZyrPx8uJ8rGhZknvzb80ITaQpaf27ROAH7nj4x5WqJi5Cs/M366ncH
+	 0nVEIbUlace7w==
+Message-ID: <bc95ca95965e69aa434454b5f9fd02c378e35b1e.camel@ozlabs.org>
+Subject: Re: [PATCH] Documentation: spufs: correct a duplicate word typo
+From: Jeremy Kerr <jk@ozlabs.org>
+To: Randy Dunlap <rdunlap@infradead.org>, linux-doc@vger.kernel.org
+Date: Tue, 30 Aug 2022 07:40:28 +0800
+In-Reply-To: <20220829232908.32437-1-rdunlap@infradead.org>
+References: <20220829232908.32437-1-rdunlap@infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.3-2 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,29 +59,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Randy Dunlap <rdunlap@infradead.org>, linuxppc-dev@lists.ozlabs.org, Jeremy Kerr <jk@ozlabs.org>, Arnd Bergmann <arnd@arndb.de>, Jonathan Corbet <corbet@lwn.net>
+Cc: linuxppc-dev@lists.ozlabs.org, Arnd Bergmann <arnd@arndb.de>, Jonathan Corbet <corbet@lwn.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Fix a typo of "or" which should be "of".
+Hi Randy,
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Jeremy Kerr <jk@ozlabs.org>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: Jonathan Corbet <corbet@lwn.net>
----
- Documentation/filesystems/spufs/spufs.rst |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> Fix a typo of "or" which should be "of".
 
---- a/Documentation/filesystems/spufs/spufs.rst
-+++ b/Documentation/filesystems/spufs/spufs.rst
-@@ -227,7 +227,7 @@ Files
-               from the data buffer, updating the value of the specified signal
-               notification register.  The signal  notification  register  will
-               either be replaced with the input data or will be updated to the
--              bitwise OR or the old value and the input data, depending on the
-+              bitwise OR of the old value and the input data, depending on the
-               contents  of  the  signal1_type,  or  signal2_type respectively,
-               file.
- 
+Nice, people are still reading the spufs docs! :D
+
+Looks good to me, thanks for the patch.
+
+Reviewed-by: Jeremy Kerr <jk@ozlabs.org>
+
+Cheers,
+
+
+Jeremy
