@@ -2,97 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 920545A4286
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Aug 2022 07:48:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 909A45A42AC
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Aug 2022 07:54:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MGKGp3bYTz3bgR
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Aug 2022 15:48:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MGKPv3SNdz2xGf
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Aug 2022 15:54:11 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=g+9gXMC/;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DJiHn9+t;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sv@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sv@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=g+9gXMC/;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DJiHn9+t;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MGKG22Xg1z2xGf
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Aug 2022 15:47:21 +1000 (AEST)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27T3nkUC019437;
-	Mon, 29 Aug 2022 05:46:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=HnBwohWacgYEuPKS+IFdY3Wh7/m18PjVGtUqNP2tyuo=;
- b=g+9gXMC/IGmVeQ9uq2llE0Pj3UzOmtHZUTTqs7cCNFxwgODSuzj9O4mrWZXUivZUkLxm
- ZeZiiNn9L1MPMpkccpjMRdTRpUfqdKBblg9xVJao+c/g59JL5mLTUc+h6ZBApc3r9kLt
- 9cXyoXq7Le0vR0d2eyZNI16UoFQvWWeNHUy9GK9SoljMTL0pQMVzyf6SAPDsh35QEfyR
- jC9c2c4K8UNaqOBkmNycs+9kx1QB4RmB+bhmDfqFbpXC2qQlONXylVRAIWrJk/SJOIdh
- KN3zntzb9pMjYqLmg/A+w6kujk+MRqm41clGFuElxPsJpeFUf68ox9SerGrVBMCdzIoe 7g== 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MGKNd4wNsz30Bl
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Aug 2022 15:53:05 +1000 (AEST)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27T5lDUX013184;
+	Mon, 29 Aug 2022 05:52:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=Uo8tbwp7ij90nFvjChZAfRVufnJKWWQeztKyXEiiz+U=;
+ b=DJiHn9+tHEWVF65CclwnEQL5+dveFSoRsY3i336z42P6ZiUI5flMJzwhkM6QoY1ysAse
+ 8HFD+43dMkNvoY7VblBkirl1TUMLyc5UmsVdUkjoxrrLGJBuWkWjuPX4iMh+JdNvxUL3
+ GAm5hhuQl1WuKkvHQJlZ9PWNP1IVBoACyN0ExAKHmWdlRulz7xHSOpzKuCjxaH4JgYku
+ dxwCS9yMZtN0NThL4pzdYeIrjKCTvN5QPDlLCFrD13EShOCAMMXZiJ7hJHyQkW/tbPKa
+ LENwXxuiouU3DmKol6ypPX6ZsxfpYeyR88v1kaGsO1cm91clEVBSPOQmV9BbE+e4qKdS bw== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3j8nw0t658-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3j8qm702aq-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 29 Aug 2022 05:46:54 +0000
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 27T5d0tD033093;
-	Mon, 29 Aug 2022 05:46:54 GMT
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3j8nw0t64e-1
+	Mon, 29 Aug 2022 05:52:36 +0000
+Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 27T5leXc014448;
+	Mon, 29 Aug 2022 05:52:36 GMT
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3j8qm702a5-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 29 Aug 2022 05:46:53 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
-	by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 27T5ZYm5026918;
-	Mon, 29 Aug 2022 05:46:51 GMT
+	Mon, 29 Aug 2022 05:52:35 +0000
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+	by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 27T5puPM009536;
+	Mon, 29 Aug 2022 05:52:34 GMT
 Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
-	by ppma03ams.nl.ibm.com with ESMTP id 3j7aw91uue-1
+	by ppma01fra.de.ibm.com with ESMTP id 3j8hka86x8-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 29 Aug 2022 05:46:51 +0000
+	Mon, 29 Aug 2022 05:52:33 +0000
 Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
-	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 27T5kmhG36307308
+	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 27T5qV4k42271146
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 29 Aug 2022 05:46:48 GMT
+	Mon, 29 Aug 2022 05:52:31 GMT
 Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D46C54C044;
-	Mon, 29 Aug 2022 05:46:48 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 929E54C046;
+	Mon, 29 Aug 2022 05:52:31 +0000 (GMT)
 Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0BCAB4C040;
-	Mon, 29 Aug 2022 05:46:44 +0000 (GMT)
-Received: from [9.43.67.34] (unknown [9.43.67.34])
+	by IMSVA (Postfix) with ESMTP id AD0B84C040;
+	Mon, 29 Aug 2022 05:52:27 +0000 (GMT)
+Received: from li-c3569c4c-1ef8-11b2-a85c-ee139cda3133.ibm.com.com (unknown [9.43.67.34])
 	by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Mon, 29 Aug 2022 05:46:43 +0000 (GMT)
-Message-ID: <8c185fe0-cc43-1cd9-ea1d-0e0f34ad1828@linux.vnet.ibm.com>
-Date: Mon, 29 Aug 2022 11:16:37 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [PATCH 01/16] powerpc: Replace unreachable() with it's builtin
- variant in WARN_ON()
-Content-Language: en-US
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Sathvika Vasireddy <sv@linux.ibm.com>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-References: <20220808114908.240813-1-sv@linux.ibm.com>
- <20220808114908.240813-2-sv@linux.ibm.com>
- <43a23349-3356-3347-f395-ba31db8c6978@csgroup.eu>
-From: Sathvika Vasireddy <sv@linux.vnet.ibm.com>
-In-Reply-To: <43a23349-3356-3347-f395-ba31db8c6978@csgroup.eu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Oi5FODQRRJuBCQ0cChU3-zr7qxLHKnvx
-X-Proofpoint-GUID: vwuxdR0fMFD4vVq1ltBJW9O5nqe8AWly
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	Mon, 29 Aug 2022 05:52:27 +0000 (GMT)
+From: Sathvika Vasireddy <sv@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2 00/16] objtool: Enable and implement --mcount option on powerpc
+Date: Mon, 29 Aug 2022 11:22:07 +0530
+Message-Id: <20220829055223.24767-1-sv@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: e4ZwkF20jI6M2zVyrPhE58K0VvzxXEfb
+X-Proofpoint-GUID: nm5AHvrHtI9w8Si6VHMFK0pXKSbcEQuY
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.517,FMLib:17.11.122.1
  definitions=2022-08-29_02,2022-08-25_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxlogscore=999
- priorityscore=1501 bulkscore=0 lowpriorityscore=0 clxscore=1015
- adultscore=0 impostorscore=0 spamscore=0 suspectscore=0 mlxscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ lowpriorityscore=0 mlxscore=0 bulkscore=0 clxscore=1011 adultscore=0
+ malwarescore=0 spamscore=0 phishscore=0 priorityscore=1501 mlxlogscore=999
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2207270000 definitions=main-2208290026
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -105,49 +93,99 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "peterz@infradead.org" <peterz@infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "rostedt@goodmis.org" <rostedt@goodmis.org>, "aik@ozlabs.ru" <aik@ozlabs.ru>, "mingo@redhat.com" <mingo@redhat.com>, "npiggin@gmail.com" <npiggin@gmail.com>, "jpoimboe@redhat.com" <jpoimboe@redhat.com>, "naveen.n.rao@linux.vnet.ibm.com" <naveen.n.rao@linux.vnet.ibm.com>, "mbenes@suse.cz" <mbenes@suse.cz>, "chenzhongjin@huawei.com" <chenzhongjin@huawei.com>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Cc: peterz@infradead.org, npiggin@gmail.com, linux-kernel@vger.kernel.org, aik@ozlabs.ru, mingo@redhat.com, sv@linux.ibm.com, rostedt@goodmis.org, jpoimboe@redhat.com, naveen.n.rao@linux.vnet.ibm.com, mbenes@suse.cz, chenzhongjin@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Christophe,
+This patchset enables and implements objtool --mcount
+option on powerpc. This applies atop powerpc/merge branch.
 
-On 26/08/22 15:48, Christophe Leroy wrote:
->
-> Le 08/08/2022 à 13:48, Sathvika Vasireddy a écrit :
->> objtool is throwing *unannotated intra-function call*
->> warnings with a few instructions that are marked
->> unreachable. Replace unreachable() with __builtin_unreachable()
->> to fix these warnings, as the codegen remains same
->> with unreachable() and __builtin_unreachable().
->>
->> Signed-off-by: Sathvika Vasireddy <sv@linux.ibm.com>
->> ---
->>    arch/powerpc/include/asm/bug.h | 2 +-
->>    1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/arch/powerpc/include/asm/bug.h b/arch/powerpc/include/asm/bug.h
->> index 61a4736355c2..074be1a78c56 100644
->> --- a/arch/powerpc/include/asm/bug.h
->> +++ b/arch/powerpc/include/asm/bug.h
->> @@ -99,7 +99,7 @@
->>    	__label__ __label_warn_on;				\
->>    								\
->>    	WARN_ENTRY("twi 31, 0, 0", BUGFLAG_WARNING | (flags), __label_warn_on); \
->> -	unreachable();						\
->> +	__builtin_unreachable();				\
-> Should you add barrier_before_unreachable() before
-> __builtin_unreachable() to avoid stack bombs ?
->
-> See commit 173a3efd3edb ("bug.h: work around GCC PR82365 in BUG()")
+Changelog:
 
-Yes, adding barrier_before_unreachable() before __builtin_unreachable()
+v2:
 
-works around the build issues reported at 
-https://lkml.org/lkml/2022/8/25/418.
+* Change subject of patch 01/16
+* As suggested by Christophe Leroy, add barrier_before_unreachable()
+before __builtin_unreachable() to work around a gcc problem.
+* Fix issues reported by Kernel Test Robot.
+* Include suggestions from Christophe Leroy, and change commit 
+messages for patches 01/16, 02/16, 03/16, 05/16.
 
-I'll post a v2 with this change.
+Christophe Leroy (4):
+  objtool: Fix SEGFAULT
+  objtool: Use target file endianness instead of a compiled constant
+  objtool: Use target file class size instead of a compiled constant
+  powerpc: Fix objtool unannotated intra-function call warnings on PPC32
 
-Thanks for the suggestion!
+Sathvika Vasireddy (12):
+  powerpc: Replace unreachable() with it's builtin variant in __WARN_FLAGS()
+  powerpc: override __ALIGN() and __ALIGN_STR() macros
+  powerpc: Fix objtool unannotated intra-function call warnings
+  powerpc: curb objtool unannotated intra-function call warnings
+  powerpc: Skip objtool from running on drivers/crypto/vmx/aesp8-ppc.o
+  powerpc: Skip objtool from running on VDSO files
+  objtool: Add --mnop as an option to --mcount
+  objtool: Read special sections with alts only when specific options are selected
+  objtool: Use macros to define arch specific reloc types
+  objtool: Add arch specific function arch_ftrace_match()
+  objtool/powerpc: Enable objtool to be built on ppc
+  objtool/powerpc: Add --mcount specific implementation
 
-- Sathvika
+ Makefile                                      |  4 +-
+ arch/powerpc/Kconfig                          |  2 +
+ arch/powerpc/include/asm/asm.h                |  7 ++
+ arch/powerpc/include/asm/bug.h                |  3 +-
+ arch/powerpc/include/asm/linkage.h            |  4 +
+ arch/powerpc/kernel/cpu_setup_6xx.S           | 26 +++--
+ arch/powerpc/kernel/cpu_setup_fsl_booke.S     |  8 +-
+ arch/powerpc/kernel/entry_32.S                |  9 +-
+ arch/powerpc/kernel/entry_64.S                |  2 +
+ arch/powerpc/kernel/exceptions-64s.S          |  7 +-
+ arch/powerpc/kernel/head_40x.S                |  5 +-
+ arch/powerpc/kernel/head_64.S                 |  7 +-
+ arch/powerpc/kernel/head_8xx.S                |  5 +-
+ arch/powerpc/kernel/head_book3s_32.S          | 29 ++++--
+ arch/powerpc/kernel/head_fsl_booke.S          |  5 +-
+ arch/powerpc/kernel/misc_64.S                 |  4 +-
+ arch/powerpc/kernel/swsusp_32.S               |  5 +-
+ arch/powerpc/kernel/vdso/Makefile             |  2 +
+ arch/powerpc/kernel/vector.S                  |  4 +-
+ arch/powerpc/kvm/book3s_hv_interrupts.S       |  4 +-
+ arch/powerpc/kvm/book3s_hv_rmhandlers.S       | 25 +++--
+ arch/powerpc/kvm/fpu.S                        | 17 +++-
+ arch/powerpc/platforms/52xx/lite5200_sleep.S  | 15 ++-
+ arch/x86/Kconfig                              |  1 +
+ drivers/crypto/vmx/Makefile                   |  2 +
+ scripts/Makefile.lib                          |  1 +
+ tools/objtool/arch/powerpc/Build              |  2 +
+ tools/objtool/arch/powerpc/decode.c           | 96 +++++++++++++++++++
+ .../arch/powerpc/include/arch/cfi_regs.h      | 11 +++
+ tools/objtool/arch/powerpc/include/arch/elf.h | 10 ++
+ .../arch/powerpc/include/arch/special.h       | 21 ++++
+ tools/objtool/arch/powerpc/special.c          | 19 ++++
+ tools/objtool/arch/x86/decode.c               |  8 ++
+ tools/objtool/arch/x86/include/arch/elf.h     |  2 +
+ .../arch/x86/include/arch/endianness.h        |  9 --
+ tools/objtool/builtin-check.c                 | 14 +++
+ tools/objtool/check.c                         | 51 +++++-----
+ tools/objtool/elf.c                           |  8 +-
+ tools/objtool/include/objtool/arch.h          |  2 +
+ tools/objtool/include/objtool/builtin.h       |  1 +
+ tools/objtool/include/objtool/elf.h           |  8 ++
+ tools/objtool/include/objtool/endianness.h    | 32 +++----
+ tools/objtool/orc_dump.c                      | 11 ++-
+ tools/objtool/orc_gen.c                       |  4 +-
+ tools/objtool/special.c                       |  3 +-
+ 45 files changed, 409 insertions(+), 106 deletions(-)
+ create mode 100644 arch/powerpc/include/asm/asm.h
+ create mode 100644 tools/objtool/arch/powerpc/Build
+ create mode 100644 tools/objtool/arch/powerpc/decode.c
+ create mode 100644 tools/objtool/arch/powerpc/include/arch/cfi_regs.h
+ create mode 100644 tools/objtool/arch/powerpc/include/arch/elf.h
+ create mode 100644 tools/objtool/arch/powerpc/include/arch/special.h
+ create mode 100644 tools/objtool/arch/powerpc/special.c
+ delete mode 100644 tools/objtool/arch/x86/include/arch/endianness.h
+
+-- 
+2.31.1
 
