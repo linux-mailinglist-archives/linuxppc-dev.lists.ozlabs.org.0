@@ -2,79 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D2165A441A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Aug 2022 09:46:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E67925A454E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Aug 2022 10:39:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MGMvF1cMvz3c6f
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Aug 2022 17:46:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MGP4p6K2pz3c6h
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Aug 2022 18:39:38 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=mJW7zBQk;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=VnpBQLFt;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ganeshgr@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=mJW7zBQk;
-	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MGMtX53THz2xHZ
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Aug 2022 17:45:40 +1000 (AEST)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27T6x0SR024968;
-	Mon, 29 Aug 2022 07:45:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=3VpCha95x2STe2fr12KWkH9iLCsGIQ6+EVvr+ndljUU=;
- b=mJW7zBQkNdZBeG5CYPSSBaaIVNhFsjv/D655xOQClnieldcQDvcsWGqa8Hn0vJ1c4h12
- F9SAQDl9A7k96mjvi53OCFgcCLBo7oyiQgR7hSF/onjSMscKQGUuTaeSjB/V/xJNnDdK
- UiIwsyPm+9VM9PJ8+glCLpzq2yT60KmzePNioeXADU/JJbrQ54Es1FmWoiaoH0sj+eRf
- aQBgfxqJwoJOSc6eDmH/eoPh41lVgQBwupLEwDtXFuyVvCWU/aZf6j/Fe8FTlVDsYAGc
- YTxnISjOeOnOz2k0yAYCrRZI7XJ4M4H94tGOHBCxsw9Lbf6wI4btbXcwEOrfKEG5Uvb9 PQ== 
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com [149.81.74.106])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3j8rnr96mc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 29 Aug 2022 07:45:35 +0000
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
-	by ppma04fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 27T7aJsZ023728;
-	Mon, 29 Aug 2022 07:45:32 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
-	by ppma04fra.de.ibm.com with ESMTP id 3j7aw99euq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 29 Aug 2022 07:45:32 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
-	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 27T7jTRh29819368
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 29 Aug 2022 07:45:29 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 256D6AE04D;
-	Mon, 29 Aug 2022 07:45:29 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2B816AE056;
-	Mon, 29 Aug 2022 07:45:27 +0000 (GMT)
-Received: from li-c7b85bcc-2727-11b2-a85c-a9ba7f3a2193.ibm.com.domain.name (unknown [9.43.39.209])
-	by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Mon, 29 Aug 2022 07:45:26 +0000 (GMT)
-From: Ganesh Goudar <ganeshgr@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: [PATCH] powerpc/pseries/mce: Avoid instrumentation in realmode
-Date: Mon, 29 Aug 2022 13:15:22 +0530
-Message-Id: <20220829074522.443439-1-ganeshgr@linux.ibm.com>
-X-Mailer: git-send-email 2.37.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MGP4705gTz30Bl
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Aug 2022 18:39:02 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=enW5V6g2WX8qHIsfLn2eVhcqKoAKV5YXSn+3ybsOepY=; b=VnpBQLFtOs+d1Mk1xzNicv6GHH
+	1XXYkxcTGTMvu4i/PhfHDfa4gYaMWhytusRDeWmzGqwH510EOxaBr9SH448WYvQeRHaFYUSKtNJjy
+	k82tW1bgPcjCvPNQhrVMwsm6qzYkRJnJuuZ7JgFtkrrZbLzIcC0WC9okARak/SdAL6EBp0JxqWdZd
+	FyaEeAUG5zUTjLP1/+OrqfBF3TYy1hI109Xw3Fs0y6tFejWbLo/tSBVPLyS+9Okz/sMFHDJlEas3g
+	XjEhoohLZjsY0lWJnze9mBVJ3ZVpoBzdY8gz45bY79ukjf/c9sT17BGlINSzwu8OOt6c+7aSYeKFv
+	bc3iYkKw==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1oSaI2-007RqX-4b; Mon, 29 Aug 2022 08:38:38 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
+	(Client did not present a certificate)
+	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 529D3300137;
+	Mon, 29 Aug 2022 10:38:35 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 0F059202547D2; Mon, 29 Aug 2022 10:38:35 +0200 (CEST)
+Date: Mon, 29 Aug 2022 10:38:34 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Marco Elver <elver@google.com>
+Subject: Re: [PATCH v3 11/14] perf/hw_breakpoint: Reduce contention with
+ large number of tasks
+Message-ID: <Ywx7CmbG+f+wg04z@hirez.programming.kicks-ass.net>
+References: <20220704150514.48816-1-elver@google.com>
+ <20220704150514.48816-12-elver@google.com>
+ <YvznKYgRKjDRSMkT@worktop.programming.kicks-ass.net>
+ <CANpmjNN1vv9oDpm1_c99tQKgWVVtXza++u1xcBVeb5mhx5eUHw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Mv4dUpynuP8hpCz_gzPs8TQC3gC1O0d4
-X-Proofpoint-ORIG-GUID: Mv4dUpynuP8hpCz_gzPs8TQC3gC1O0d4
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-08-29_03,2022-08-25_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- malwarescore=0 mlxlogscore=329 bulkscore=0 phishscore=0 lowpriorityscore=0
- adultscore=0 priorityscore=1501 mlxscore=0 spamscore=0 suspectscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2207270000 definitions=main-2208290037
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANpmjNN1vv9oDpm1_c99tQKgWVVtXza++u1xcBVeb5mhx5eUHw@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,80 +65,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ganesh Goudar <ganeshgr@linux.ibm.com>, mahesh@linux.ibm.com, sachinp@linux.ibm.com
+Cc: Mark Rutland <mark.rutland@arm.com>, linux-sh@vger.kernel.org, Alexander Shishkin <alexander.shishkin@linux.intel.com>, Frederic Weisbecker <frederic@kernel.org>, x86@kernel.org, linuxppc-dev@lists.ozlabs.org, Arnaldo Carvalho de Melo <acme@kernel.org>, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, kasan-dev@googlegroups.com, Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Jiri Olsa <jolsa@redhat.com>, Ingo Molnar <mingo@kernel.org>, Dmitry Vyukov <dvyukov@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Part of machine check error handling is done in realmode,
-As of now instrumentation is not possible for any code that
-runs in realmode.
-When MCE is injected on KASAN enabled kernel, crash is
-observed, Hence force inline or mark no instrumentation
-for functions which can run in realmode to avoid KASAN
-instrumentation.
+On Wed, Aug 17, 2022 at 03:14:54PM +0200, Marco Elver wrote:
+> On Wed, 17 Aug 2022 at 15:03, Peter Zijlstra <peterz@infradead.org> wrote:
+> >
+> > On Mon, Jul 04, 2022 at 05:05:11PM +0200, Marco Elver wrote:
+> > > +static bool bp_constraints_is_locked(struct perf_event *bp)
+> > > +{
+> > > +     struct mutex *tsk_mtx = get_task_bps_mutex(bp);
+> > > +
+> > > +     return percpu_is_write_locked(&bp_cpuinfo_sem) ||
+> > > +            (tsk_mtx ? mutex_is_locked(tsk_mtx) :
+> > > +                       percpu_is_read_locked(&bp_cpuinfo_sem));
+> > > +}
+> >
+> > > @@ -426,18 +521,28 @@ static int modify_bp_slot(struct perf_event *bp, u64 old_type, u64 new_type)
+> > >   */
+> > >  int dbg_reserve_bp_slot(struct perf_event *bp)
+> > >  {
+> > > -     if (mutex_is_locked(&nr_bp_mutex))
+> > > +     int ret;
+> > > +
+> > > +     if (bp_constraints_is_locked(bp))
+> > >               return -1;
+> > >
+> > > -     return __reserve_bp_slot(bp, bp->attr.bp_type);
+> > > +     /* Locks aren't held; disable lockdep assert checking. */
+> > > +     lockdep_off();
+> > > +     ret = __reserve_bp_slot(bp, bp->attr.bp_type);
+> > > +     lockdep_on();
+> > > +
+> > > +     return ret;
+> > >  }
+> > >
+> > >  int dbg_release_bp_slot(struct perf_event *bp)
+> > >  {
+> > > -     if (mutex_is_locked(&nr_bp_mutex))
+> > > +     if (bp_constraints_is_locked(bp))
+> > >               return -1;
+> > >
+> > > +     /* Locks aren't held; disable lockdep assert checking. */
+> > > +     lockdep_off();
+> > >       __release_bp_slot(bp, bp->attr.bp_type);
+> > > +     lockdep_on();
+> > >
+> > >       return 0;
+> > >  }
+> >
+> > Urggghhhh... this is horrible crap. That is, the current code is that
+> > and this makes it worse :/
+> 
+> Heh, yes and when I looked at it I really wanted to see if it can
+> change. But from what I can tell, when the kernel debugger is being
+> attached, the kernel does stop everything it does and we need the
+> horrible thing above to not deadlock. And these dbg_ functions are not
+> normally used, so I decided to leave it as-is. Suggestions?
 
-Signed-off-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
----
- arch/powerpc/include/asm/interrupt.h | 2 +-
- arch/powerpc/include/asm/rtas.h      | 4 ++--
- arch/powerpc/kernel/rtas.c           | 4 ++--
- 3 files changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/asm/interrupt.h
-index 8069dbc4b8d1..090895051712 100644
---- a/arch/powerpc/include/asm/interrupt.h
-+++ b/arch/powerpc/include/asm/interrupt.h
-@@ -92,7 +92,7 @@ static inline bool is_implicit_soft_masked(struct pt_regs *regs)
- 	return search_kernel_soft_mask_table(regs->nip);
- }
- 
--static inline void srr_regs_clobbered(void)
-+static __always_inline void srr_regs_clobbered(void)
- {
- 	local_paca->srr_valid = 0;
- 	local_paca->hsrr_valid = 0;
-diff --git a/arch/powerpc/include/asm/rtas.h b/arch/powerpc/include/asm/rtas.h
-index 00531af17ce0..52d29d664fdf 100644
---- a/arch/powerpc/include/asm/rtas.h
-+++ b/arch/powerpc/include/asm/rtas.h
-@@ -201,13 +201,13 @@ inline uint32_t rtas_ext_event_company_id(struct rtas_ext_event_log_v6 *ext_log)
- #define PSERIES_ELOG_SECT_ID_MCE		(('M' << 8) | 'C')
- 
- static
--inline uint16_t pseries_errorlog_id(struct pseries_errorlog *sect)
-+__always_inline uint16_t pseries_errorlog_id(struct pseries_errorlog *sect)
- {
- 	return be16_to_cpu(sect->id);
- }
- 
- static
--inline uint16_t pseries_errorlog_length(struct pseries_errorlog *sect)
-+__always_inline uint16_t pseries_errorlog_length(struct pseries_errorlog *sect)
- {
- 	return be16_to_cpu(sect->length);
- }
-diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-index 693133972294..f9d78245c0e8 100644
---- a/arch/powerpc/kernel/rtas.c
-+++ b/arch/powerpc/kernel/rtas.c
-@@ -48,7 +48,7 @@
- /* This is here deliberately so it's only used in this file */
- void enter_rtas(unsigned long);
- 
--static inline void do_enter_rtas(unsigned long args)
-+static __always_inline void do_enter_rtas(unsigned long args)
- {
- 	unsigned long msr;
- 
-@@ -435,7 +435,7 @@ static char *__fetch_rtas_last_error(char *altbuf)
- #endif
- 
- 
--static void
-+noinstr static void
- va_rtas_call_unlocked(struct rtas_args *args, int token, int nargs, int nret,
- 		      va_list list)
- {
--- 
-2.37.1
-
+What context is this ran in? NMI should already have lockdep disabled.
