@@ -1,58 +1,86 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20C5E5A4B02
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Aug 2022 14:05:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 837AA5A4C2D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Aug 2022 14:45:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MGTfY1p5Tz3c4B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Aug 2022 22:05:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MGVX93Rd3z3c6W
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Aug 2022 22:45:13 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=eHd2QHsK;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=WLHXn67k;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sachinp@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=eHd2QHsK;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=WLHXn67k;
 	dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MGTdr6Wn0z3bYk
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Aug 2022 22:05:04 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=qcOOGcUR+Q47tfc7ZQUsunuQSihKNR/YxuJlx8zxYMI=; b=eHd2QHsK8dfIVJ5r+QNtVVQPkH
-	oqFlf9a9fWdDPCXSn7g7aVnwrNDPzUAnqC9EZquRyFPItExfd/d+RYfnOUS3WgkurtCKVAKDhZRI9
-	59Ts7WhPLbpu5gK/OkXTr3DTnsIPiwBBBK/FPUgXfRwbe26LSUWrFC6TFXi+CS0uxa0L+J2IzPFBy
-	FWNSoqp6ziWeIvIOihGWJKh5sgbwSgMcEvshuPFkLI25/uwcePeGFopw1jf9SYLuSMTGFZ+KgEvOH
-	LFFdjw1I7Bz/kSoeQTWtWV6/O1IKnGJB77atySc0cJc9yd3jlB0xeraP+q48fn5mB4wiHj3kGsgdY
-	TMhDfvBw==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oSdVM-0034ba-RJ; Mon, 29 Aug 2022 12:04:36 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
-	(Client did not present a certificate)
-	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id E8BCA3002FE;
-	Mon, 29 Aug 2022 14:04:33 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-	id CE6E020715121; Mon, 29 Aug 2022 14:04:33 +0200 (CEST)
-Date: Mon, 29 Aug 2022 14:04:33 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Ravi Bangoria <ravi.bangoria@amd.com>
-Subject: Re: [PATCH] perf: Rewrite core context handling
-Message-ID: <YwyrUYS30gVbxc2D@hirez.programming.kicks-ass.net>
-References: <20220829113347.295-1-ravi.bangoria@amd.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220829113347.295-1-ravi.bangoria@amd.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MGVWS2rYVz2xHL
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Aug 2022 22:44:35 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27TCf31X008952
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Aug 2022 12:44:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
+ mime-version : subject : from : in-reply-to : date : cc :
+ content-transfer-encoding : message-id : references : to; s=pp1;
+ bh=LRPoQcQ3qh2VftveYwY8G5c0TRyS967pDiIyPglUmAk=;
+ b=WLHXn67kJDGAEtqAyB4YCI2xh2jlNEAE1k2enm4vCFIYaQqnEkWqidNW2PGLkzRSuiKW
+ gagsULFecTJ1aB9O7HNqxLY2I0iufKFDBwymuZO3QAabN16ZJ3hA+eRrYhNkYoL7G/tu
+ DSxa4GohvIPnsPYrdnYBohQYSgWoleHKm3kHMOxpSwHSc5nh/5GbqzaJzL9zz/1ZyIAQ
+ qbHPBycPI2QlqDBUu4wqQSQT2Km2GNKGoAxqPFnWSAHTMkLdupxKzZYofkADErCkNvbs
+ ALzE8a/uJW1xWIAD6nIbfW4Ype6b9WTlanMUgAKtEO9BhVrrwSnVxcA+yqJ3TKgWX+7c 2w== 
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3j8wg484xa-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Aug 2022 12:44:32 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+	by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 27TCZSeK009718
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Aug 2022 12:44:29 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+	by ppma04ams.nl.ibm.com with ESMTP id 3j7aw8tam3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Aug 2022 12:44:29 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
+	by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 27TCfFJx43254080
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 29 Aug 2022 12:41:15 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6375111C050;
+	Mon, 29 Aug 2022 12:44:26 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9039511C04A;
+	Mon, 29 Aug 2022 12:44:25 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.43.92.230])
+	by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Mon, 29 Aug 2022 12:44:25 +0000 (GMT)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.1\))
+Subject: Re: [PATCH] powerpc/pseries/mce: Avoid instrumentation in realmode
+From: Sachin Sant <sachinp@linux.ibm.com>
+In-Reply-To: <65A5D2E6-96A7-44E8-8418-B4B5D566D676@linux.ibm.com>
+Date: Mon, 29 Aug 2022 18:14:24 +0530
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <CEDCF8E6-AE84-4B34-82E1-A88B3C1871B0@linux.ibm.com>
+References: <20220829074522.443439-1-ganeshgr@linux.ibm.com>
+ <65A5D2E6-96A7-44E8-8418-B4B5D566D676@linux.ibm.com>
+To: Ganesh Goudar <ganeshgr@linux.ibm.com>
+X-Mailer: Apple Mail (2.3696.120.41.1.1)
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 01k4dUro4JkOgIdzk-FUccIhLIVtd19Q
+X-Proofpoint-ORIG-GUID: 01k4dUro4JkOgIdzk-FUccIhLIVtd19Q
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-08-29_07,2022-08-25_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 adultscore=0
+ lowpriorityscore=0 impostorscore=0 phishscore=0 malwarescore=0
+ suspectscore=0 clxscore=1015 spamscore=0 mlxscore=0 mlxlogscore=470
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2207270000 definitions=main-2208290058
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,26 +92,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, irogers@google.com, songliubraving@fb.com, sandipan.das@amd.com, alexander.shishkin@linux.intel.com, catalin.marinas@arm.com, eranian@google.com, kim.phillips@amd.com, will@kernel.org, robh@kernel.org, ak@linux.intel.com, jolsa@redhat.com, mingo@redhat.com, linux-s390@vger.kernel.org, frederic@kernel.org, acme@kernel.org, maddy@linux.ibm.com, namhyung@kernel.org, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, ananth.narayan@amd.com, linuxppc-dev@lists.ozlabs.org, santosh.shukla@amd.com
+Cc: linuxppc-dev@lists.ozlabs.org, mahesh@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Aug 29, 2022 at 05:03:47PM +0530, Ravi Bangoria wrote:
-> @@ -12598,6 +12590,7 @@ EXPORT_SYMBOL_GPL(perf_event_create_kernel_counter);
->  
->  void perf_pmu_migrate_context(struct pmu *pmu, int src_cpu, int dst_cpu)
->  {
-> +#if 0 // XXX buggered - cpu hotplug, who cares
->  	struct perf_event_context *src_ctx;
->  	struct perf_event_context *dst_ctx;
->  	struct perf_event *event, *tmp;
-> @@ -12658,6 +12651,7 @@ void perf_pmu_migrate_context(struct pmu *pmu, int src_cpu, int dst_cpu)
->  	}
->  	mutex_unlock(&dst_ctx->mutex);
->  	mutex_unlock(&src_ctx->mutex);
-> +#endif
->  }
->  EXPORT_SYMBOL_GPL(perf_pmu_migrate_context);
->  
 
-Note to self; fix this :-) I'll see if I have time for that later today.
+
+> On 29-Aug-2022, at 5:02 PM, Sachin Sant <sachinp@linux.ibm.com> wrote:
+>=20
+>=20
+>=20
+>> On 29-Aug-2022, at 1:15 PM, Ganesh Goudar <ganeshgr@linux.ibm.com> =
+wrote:
+>>=20
+>> Part of machine check error handling is done in realmode,
+>> As of now instrumentation is not possible for any code that
+>> runs in realmode.
+>> When MCE is injected on KASAN enabled kernel, crash is
+>> observed, Hence force inline or mark no instrumentation
+>> for functions which can run in realmode to avoid KASAN
+>> instrumentation.
+>>=20
+>> Signed-off-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
+>> ---
+>> arch/powerpc/include/asm/interrupt.h | 2 +-
+>> arch/powerpc/include/asm/rtas.h      | 4 ++--
+>> arch/powerpc/kernel/rtas.c           | 4 ++--
+>> 3 files changed, 5 insertions(+), 5 deletions(-)
+>=20
+> Thanks for the patch. I tested it on top of 6.0.0-rc3. It proceeds =
+further but
+> eventually crashes after arch_local_save_flags
+>=20
+
+Seems like following functions also should be marked as __always_inline
+
+arch_local_save_flags
+irq_soft_mask_return
+irq_soft_mask_set_return
+irq_soft_mask_set
+
+With these additional changes the test successfully runs to completion.
+
+- Sachin=
