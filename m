@@ -1,65 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77E885A56E2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Aug 2022 00:15:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A762A5A56E6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Aug 2022 00:15:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MGl9Z3Df0z3fvQ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Aug 2022 08:14:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MGlBC3k0Kz3gKM
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Aug 2022 08:15:31 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=CptXAEbT;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=WuXmy7sp;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--surenb.bounces.google.com (client-ip=2607:f8b0:4864:20::64a; helo=mail-pl1-x64a.google.com; envelope-from=3-c4nywykdkkbdanwkpxxpun.lxvurwdgyyl-mneurbcb.xiujkb.xap@flex--surenb.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--surenb.bounces.google.com (client-ip=2607:f8b0:4864:20::549; helo=mail-pg1-x549.google.com; envelope-from=3-s4nywykdkoceboxlqyyqvo.mywvsxehzzm-nofvscdc.yjvklc.ybq@flex--surenb.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=CptXAEbT;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=WuXmy7sp;
 	dkim-atps=neutral
-Received: from mail-pl1-x64a.google.com (mail-pl1-x64a.google.com [IPv6:2607:f8b0:4864:20::64a])
+Received: from mail-pg1-x549.google.com (mail-pg1-x549.google.com [IPv6:2607:f8b0:4864:20::549])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MGk5Q0Cy2z3blw
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Aug 2022 07:26:18 +1000 (AEST)
-Received: by mail-pl1-x64a.google.com with SMTP id b9-20020a170903228900b001730a0e11e5so6798379plh.19
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Aug 2022 14:26:17 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MGk5R3Z7Wz3bnM
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Aug 2022 07:26:19 +1000 (AEST)
+Received: by mail-pg1-x549.google.com with SMTP id q193-20020a632aca000000b0041d95d7ee81so4543649pgq.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Aug 2022 14:26:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc;
-        bh=2fd/wGll+ATU6BJRTn7wtpRUT69Ps19K4L9NuJFwTCo=;
-        b=CptXAEbTEIrjcI1hpAhqMGzwstwkcEJJxmfb7we2Tkw33BFQo0d25Vl71IxE1hgwCE
-         +/zdjUxBz/kfwlykJ2mpRLD2ASHh0Jx/8NPF+GvmOj+OIPDuJ9h8tJ0qgl8jIPnA0gyY
-         HL/K18g+JnPGw8ocd38eG5KHL97qZgAE2vHMSq8EmM7kYFzwJqKpJAdVhwHK8rQ0CEUk
-         zlwtiJI41bKlNxlGW7NWWuuvJOTrejKhLXTonY1HBOreH+6SF0a8TMKsBr5d7H138Lnw
-         MYC4Krs42a4eoKPM77oYkjvTzwtNbqixe2Jty6RY0Tg1xXxoDrCaGfCoHKiNRbMG4ac9
-         6NkA==
+        bh=3FeDd/uESQnEyJqRWNnPK+iT++ObIkcBX2+m7Yxyetk=;
+        b=WuXmy7spYby6FKlYZxVkneAX6CYLeedEW25AaCdm5U/xwDtXPaTsukbnW+BREr3wmK
+         Yp+DdB6epKs/SB7JvycD5yPQfOWs3SBJlayjVM1bzBPF4xDdscUUlmQ491HoasCmixWz
+         EDQApyvlKJ0m9j6IZ5Bl5eAvYAMUvQ5PzTt+MmJPi2OMUuj7wlttfCVr1jtd4buEfno/
+         mHPpjk9OptKM0QuTB8OPa5JPYvPxCHU8q8PlG/PC9yFoVmLZ3eeWZBp1XntU6iG84/rA
+         BgcQG1UC8Z471LrYLx/b3SNnNzdfHV9f4k2uE0RZvNOL2F/Wod5mOLtISQc7G5F1GR1Y
+         7dZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc;
-        bh=2fd/wGll+ATU6BJRTn7wtpRUT69Ps19K4L9NuJFwTCo=;
-        b=nkUJB1E8tbx4dKdy+RAX3KKF6AUnq5crGTwg+z3wcFunaCEjhIOyx1tf1eRgw1AZ21
-         cOZO9dUzm2Tc79w5Plfo3EFhyGl85RH9+3wV+yBjmVP3I65o+9SLuDkvSbeOSS2+ZzKs
-         iZU3Nr5jQJvf/HWJu5OXpqUK/k0g0XhD2+o6b+EiingAhufPLILdKeuEnR4aV+4lr0Ym
-         qriLDhhPMOftGgFR2y2e+Q5Qzd5WM43CMSIF5fA1oLD190eD4hEA0Hv+M6/uM2XjhALH
-         DxeJjDu1CvEJn8r4s96TaBtcqyE36wM6FlBjET3yCAfnVHQe4Ha7saAqC5gFi2qQPnEi
-         l9xg==
-X-Gm-Message-State: ACgBeo2HZ0GQyTUFuCqvONMzojcIBv2LVOyiY2SalUOZrpI8AuJprbSJ
-	x7kiFzurR++P/3ecV/xypOV4A6KaTDE=
-X-Google-Smtp-Source: AA6agR5QjqhJOQoDiATaLtKSN9vwads3L2SWpCSYlmwHfKycrJZLy9F13OZO0MNqEBq8/z8yofCbHCaZE68=
+        bh=3FeDd/uESQnEyJqRWNnPK+iT++ObIkcBX2+m7Yxyetk=;
+        b=Rk+E0QeRExQtWVqis+K1yJWcLwDEKH+y+bsy9mHQSiXztkl8OmRl7K/sGpj7MIB4jK
+         lQB52XZ82tTpbYmlhIYxYfgzqjWmBPTF3lfO8JKg5al+L+0NKrauw5eqj/r6EJ6bFoHS
+         BEPA2Pboyt/TG7w4jkreqsU0FpRUBtWxFCkDKMWZ06RxWdlYiMuhiPeyB0wLv/z23p7s
+         2I/A38I2RWl0PV9vCVS6qxNhk4ahuMXDcKuGV96Z7v94j5ChKAgzuaNTIx/DiSW2wa10
+         R3zguXCbu2BX4cjO1JwPY5o4tVrVF0TkugWClcI+FQhS9KUK/xVXxulTaDVbhaGYjyCH
+         U6pQ==
+X-Gm-Message-State: ACgBeo0G4FH3DfQbzZpgJdoKBxv61BH2LqxgFwJIlZQF7T2A8sBErPKO
+	E7iw5DLzCUUnQupD01O1vY9bLOb4dcI=
+X-Google-Smtp-Source: AA6agR65SMIHezE5eUhR7FLJy4sKjKwDRErJ8crUMropZEJrhJg/maBEVhsE6eunhKdLtoV+/pEsLbtUb5g=
 X-Received: from surenb-spec.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:3e30])
- (user=surenb job=sendgmr) by 2002:a17:902:d54b:b0:174:af35:4ba0 with SMTP id
- z11-20020a170902d54b00b00174af354ba0mr7860599plf.74.1661808376452; Mon, 29
- Aug 2022 14:26:16 -0700 (PDT)
-Date: Mon, 29 Aug 2022 21:25:26 +0000
+ (user=surenb job=sendgmr) by 2002:a62:b519:0:b0:537:9723:5cf2 with SMTP id
+ y25-20020a62b519000000b0053797235cf2mr18436343pfe.15.1661808377917; Mon, 29
+ Aug 2022 14:26:17 -0700 (PDT)
+Date: Mon, 29 Aug 2022 21:25:27 +0000
 In-Reply-To: <20220829212531.3184856-1-surenb@google.com>
 Mime-Version: 1.0
 References: <20220829212531.3184856-1-surenb@google.com>
 X-Mailer: git-send-email 2.37.2.672.g94769d06f0-goog
-Message-ID: <20220829212531.3184856-24-surenb@google.com>
-Subject: [RFC PATCH 23/28] x86/mm: define ARCH_SUPPORTS_PER_VMA_LOCK
+Message-ID: <20220829212531.3184856-25-surenb@google.com>
+Subject: [RFC PATCH 24/28] arm64/mm: try VMA lock-based page fault handling first
 From: Suren Baghdasaryan <surenb@google.com>
 To: akpm@linux-foundation.org
 Content-Type: text/plain; charset="UTF-8"
@@ -79,26 +79,75 @@ Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Set ARCH_SUPPORTS_PER_VMA_LOCK so that the per-VMA lock support can be
-compiled on this architecture.
+Attempt VMA lock-based page fault handling first, and fall back to the
+existing mmap_lock-based handling if that fails.
 
 Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 ---
- arch/x86/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/mm/fault.c | 36 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index f9920f1341c8..ee19de020b27 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -27,6 +27,7 @@ config X86_64
- 	# Options that are inherently 64-bit kernel only:
- 	select ARCH_HAS_GIGANTIC_PAGE
- 	select ARCH_SUPPORTS_INT128 if CC_HAS_INT128
-+	select ARCH_SUPPORTS_PER_VMA_LOCK
- 	select ARCH_USE_CMPXCHG_LOCKREF
- 	select HAVE_ARCH_SOFT_DIRTY
- 	select MODULES_USE_ELF_RELA
+diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+index c33f1fad2745..f05ce40ff32b 100644
+--- a/arch/arm64/mm/fault.c
++++ b/arch/arm64/mm/fault.c
+@@ -525,6 +525,9 @@ static int __kprobes do_page_fault(unsigned long far, unsigned long esr,
+ 	unsigned long vm_flags;
+ 	unsigned int mm_flags = FAULT_FLAG_DEFAULT;
+ 	unsigned long addr = untagged_addr(far);
++#ifdef CONFIG_PER_VMA_LOCK
++	struct vm_area_struct *vma;
++#endif
+ 
+ 	if (kprobe_page_fault(regs, esr))
+ 		return 0;
+@@ -575,6 +578,36 @@ static int __kprobes do_page_fault(unsigned long far, unsigned long esr,
+ 
+ 	perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS, 1, regs, addr);
+ 
++#ifdef CONFIG_PER_VMA_LOCK
++	if (!(mm_flags & FAULT_FLAG_USER) || atomic_read(&mm->mm_users) == 1)
++		goto lock_mmap;
++
++	vma = find_and_lock_anon_vma(mm, addr);
++	if (!vma)
++		goto lock_mmap;
++
++	if (!(vma->vm_flags & vm_flags)) {
++		vma_read_unlock(vma);
++		goto lock_mmap;
++	}
++	fault = handle_mm_fault(vma, addr & PAGE_MASK,
++				mm_flags | FAULT_FLAG_VMA_LOCK, regs);
++	vma_read_unlock(vma);
++
++	if (!(fault & VM_FAULT_RETRY)) {
++		count_vm_vma_lock_event(VMA_LOCK_SUCCESS);
++		goto done;
++	}
++	count_vm_vma_lock_event(VMA_LOCK_RETRY);
++
++	/* Quick path to respond to signals */
++	if (fault_signal_pending(fault, regs)) {
++		if (!user_mode(regs))
++			goto no_context;
++		return 0;
++	}
++lock_mmap:
++#endif /* CONFIG_PER_VMA_LOCK */
+ 	/*
+ 	 * As per x86, we may deadlock here. However, since the kernel only
+ 	 * validly references user space from well defined areas of the code,
+@@ -618,6 +651,9 @@ static int __kprobes do_page_fault(unsigned long far, unsigned long esr,
+ 	}
+ 	mmap_read_unlock(mm);
+ 
++#ifdef CONFIG_PER_VMA_LOCK
++done:
++#endif
+ 	/*
+ 	 * Handle the "normal" (no error) case first.
+ 	 */
 -- 
 2.37.2.672.g94769d06f0-goog
 
