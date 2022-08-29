@@ -1,66 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FB805A56D8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Aug 2022 00:13:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BAD95A56DC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Aug 2022 00:14:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MGl8H2LL5z3gBr
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Aug 2022 08:13:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MGl8w021Wz3gGT
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Aug 2022 08:14:24 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=WI+iAkKY;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=O7Fq7HWZ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--surenb.bounces.google.com (client-ip=2607:f8b0:4864:20::64a; helo=mail-pl1-x64a.google.com; envelope-from=39s4nywykdkyyaxkthmuumrk.iusrotadvvi-jkbroyzy.ufrghy.uxm@flex--surenb.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--surenb.bounces.google.com (client-ip=2607:f8b0:4864:20::649; helo=mail-pl1-x649.google.com; envelope-from=39i4nywykdkczbyluinvvnsl.jvtspubewwj-klcspzaz.vgshiz.vyn@flex--surenb.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=WI+iAkKY;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=O7Fq7HWZ;
 	dkim-atps=neutral
-Received: from mail-pl1-x64a.google.com (mail-pl1-x64a.google.com [IPv6:2607:f8b0:4864:20::64a])
+Received: from mail-pl1-x649.google.com (mail-pl1-x649.google.com [IPv6:2607:f8b0:4864:20::649])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MGk5M3G6Lz3blw
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Aug 2022 07:26:15 +1000 (AEST)
-Received: by mail-pl1-x64a.google.com with SMTP id p8-20020a170902e74800b0017307429ca3so6840328plf.17
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Aug 2022 14:26:15 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MGk5N4LGLz3bnr
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Aug 2022 07:26:16 +1000 (AEST)
+Received: by mail-pl1-x649.google.com with SMTP id h12-20020a170902f54c00b0016f8858ce9bso6764273plf.9
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Aug 2022 14:26:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc;
-        bh=TAH5MnJT3oUowhISL8bra7V0NlPN+Gm7GlObU5EM5DA=;
-        b=WI+iAkKYdp/dw+q+sE6vVFwD5mLSWBWMhRHboF9Ttbardy/unLndkxHVrzFVqulr1A
-         yPcJLa3Ur0z+PJer1B1IamGoCGgxEpMLeAxgWf9CgasGK7cypr9FW+usqow4Tv90c3k6
-         hSoUgkPn+GgzurgQcPzRD2rwA/PJHxIAlhRbX6toXLNmtMd1EOWFLhXluJKlLDk1UBbT
-         O0I6rKmCm2uwsJ4JnyJZiGAk3wWQ6Qh6RctA9jkOKMvzLM+0NSmJ3ovBUaPQyVoGm6YI
-         JXf6mvqPKdqWiUAL/+XE2dov1V39lipJcNcZcI/t4fYcyAX1GpBk//UErawM2Q1iWoKr
-         uzug==
+        bh=plnLK4otWaGxR+W8sd3fBxFm06LW87+WFj6YX7JmKJI=;
+        b=O7Fq7HWZ7z8n2j/HcxIFYSMFkVCbPksq++2+VIS66vXRQwbI7dU8JTklRI8MPiby2e
+         edzsUySG6IImo6mrh8ENCQ2+wxA6BfMFPfkVn5AwXOsZupGcnzhGGSKXttVqFe7CqMCi
+         1h3acQOuI10/ig3PP8xkKsm4NtzNbHGpaQpLwoGjKN2BSoc/HFLvkEbHUIkKXG5J3g9z
+         9q6Jpb0Ph5QlVq/4hF27NyIuM3/V2/KAkuHoouSJodEv2dWsfVfE58VeJPPY/+QOUQfz
+         r+QwUf2vpfx2TV1s2fbWWB8eIKopRLMSEdWWEDiBiVoTpxt/dnwqSCw7tnlmHUsJj3fT
+         5A2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc;
-        bh=TAH5MnJT3oUowhISL8bra7V0NlPN+Gm7GlObU5EM5DA=;
-        b=ic0bc9V7L35D9EMUR0RpJC+e0qoIH+dFhyJdNcw4WSQVgJCUFefnA5yQB/3wW8JlUI
-         xvsY/5ojkVQRsB1GaexZlbXC3GwVyDqdcBhSOht0lJr9uUXuxppJi7U8YCMk7JCpcpuh
-         ge52kWhnZ1Sy9DyCV4MVwdQZDqk3zG9aqU81D+wgWGk9r0kpOamX5lXTG2P/qPZ5mGzs
-         9u8Lv43ayo0VzCOZRJfYPhRFhI45Nzz+NtswgAZ88ns8DXz7V3JecZeinfPOBiarR48/
-         PIN+7nJZ+nHZNVdori40hcn7ufVs76nIGFTFw8ZBE678eWlaU0lb4K+s/1XPxsYeSWLg
-         i5jg==
-X-Gm-Message-State: ACgBeo0k1Z78xY1K5YA2m6NF4Erl8t9x99knRXQGgPg16q/3w/MyCYjN
-	slh1mLwdc8S0uQReE/LViYyC2SGSKkQ=
-X-Google-Smtp-Source: AA6agR5aic644PZ0OuL1YK8O5lnv8GmzPsmAclgLgLZvZKPuRUB75AtHpFEjRVbtgx264YmpiRiioO9wBJc=
+        bh=plnLK4otWaGxR+W8sd3fBxFm06LW87+WFj6YX7JmKJI=;
+        b=wzBUoV+lu2ZZtLhYCqHSjIV/82S0C+zuuOgv7RyAvxXGHw/bV95DL8i5GHrtJOebcH
+         35mK+CeQhJCAOwHwmyLht2oiuSBEGwAKGgfz6SPJcMgGVugP6ASRhTxtLiRxnDIqZUQj
+         b6gasje3L0029+NM+od9gn6ngz0yhqhbpKatAh7V2u4F9cnIFqHLngnhDe8lvehFI/gE
+         yQcOwruV5bhaFefExwKYeQsJSC1awqR4zR++RM+QKeUKg2JIXqefWGqqgO7brdm+TtEj
+         o6KQ7uh5bCdjdIcIYNhFUMTXw1bbKbp13Ky2LcBZ0OYWxmwYQPdlWGRXAYF13Y+YURv0
+         nlEg==
+X-Gm-Message-State: ACgBeo24jTQrWuUdXeWEuXq4/vpbYYVZ2EkUSx0r4bZ/BnefEdSQp9fQ
+	T4x4hVOwYGakPuesvu7RuxIVrSJc/lE=
+X-Google-Smtp-Source: AA6agR6koDuvaTUSC7OU/WlAja75jS99jSayBh5syt6ErVM0PHA+biyxUvs5Ar838YXdhWnvkXm6gonES4M=
 X-Received: from surenb-spec.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:3e30])
- (user=surenb job=sendgmr) by 2002:a17:90a:249:b0:1e0:a8a3:3c6c with SMTP id
- t9-20020a17090a024900b001e0a8a33c6cmr21187pje.0.1661808373054; Mon, 29 Aug
- 2022 14:26:13 -0700 (PDT)
-Date: Mon, 29 Aug 2022 21:25:24 +0000
+ (user=surenb job=sendgmr) by 2002:a05:6a00:14c7:b0:52e:efb7:bd05 with SMTP id
+ w7-20020a056a0014c700b0052eefb7bd05mr17908102pfu.24.1661808374985; Mon, 29
+ Aug 2022 14:26:14 -0700 (PDT)
+Date: Mon, 29 Aug 2022 21:25:25 +0000
 In-Reply-To: <20220829212531.3184856-1-surenb@google.com>
 Mime-Version: 1.0
 References: <20220829212531.3184856-1-surenb@google.com>
 X-Mailer: git-send-email 2.37.2.672.g94769d06f0-goog
-Message-ID: <20220829212531.3184856-22-surenb@google.com>
-Subject: [RFC PATCH 21/28] mm: introduce find_and_lock_anon_vma to be used
- from arch-specific code
+Message-ID: <20220829212531.3184856-23-surenb@google.com>
+Subject: [RFC PATCH 22/28] x86/mm: try VMA lock-based page fault handling first
 From: Suren Baghdasaryan <surenb@google.com>
 To: akpm@linux-foundation.org
 Content-Type: text/plain; charset="UTF-8"
@@ -80,89 +79,75 @@ Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Introduce find_and_lock_anon_vma function to lookup and lock an anonymous
-VMA during page fault handling. When VMA is not found, can't be locked
-or changes after being locked, the function returns NULL. The lookup is
-performed under RCU protection to prevent the found VMA from being
-destroyed before the VMA lock is acquired. VMA lock statistics are
-updated according to the results.
+Attempt VMA lock-based page fault handling first, and fall back to the
+existing mmap_lock-based handling if that fails.
 
 Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 ---
- include/linux/mm.h |  3 +++
- mm/memory.c        | 45 +++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 48 insertions(+)
+ arch/x86/mm/fault.c | 36 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 7c3190eaabd7..a3cbaa7b9119 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -684,6 +684,9 @@ static inline void vma_assert_no_reader(struct vm_area_struct *vma)
- 		      vma);
- }
+diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
+index fa71a5d12e87..35e74e3dc2c1 100644
+--- a/arch/x86/mm/fault.c
++++ b/arch/x86/mm/fault.c
+@@ -19,6 +19,7 @@
+ #include <linux/uaccess.h>		/* faulthandler_disabled()	*/
+ #include <linux/efi.h>			/* efi_crash_gracefully_on_page_fault()*/
+ #include <linux/mm_types.h>
++#include <linux/mm.h>			/* find_and_lock_vma() */
  
-+struct vm_area_struct *find_and_lock_anon_vma(struct mm_struct *mm,
-+					      unsigned long address);
-+
- #else /* CONFIG_PER_VMA_LOCK */
- 
- static inline void vma_init_lock(struct vm_area_struct *vma) {}
-diff --git a/mm/memory.c b/mm/memory.c
-index 29d2f49f922a..bf557f7056de 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -5183,6 +5183,51 @@ vm_fault_t handle_mm_fault(struct vm_area_struct *vma, unsigned long address,
- }
- EXPORT_SYMBOL_GPL(handle_mm_fault);
+ #include <asm/cpufeature.h>		/* boot_cpu_has, ...		*/
+ #include <asm/traps.h>			/* dotraplinkage, ...		*/
+@@ -1323,6 +1324,38 @@ void do_user_addr_fault(struct pt_regs *regs,
+ 	}
+ #endif
  
 +#ifdef CONFIG_PER_VMA_LOCK
-+static inline struct vm_area_struct *find_vma_under_rcu(struct mm_struct *mm,
-+							unsigned long address)
-+{
-+	struct vm_area_struct *vma = __find_vma(mm, address);
++	if (!(flags & FAULT_FLAG_USER) || atomic_read(&mm->mm_users) == 1)
++		goto lock_mmap;
 +
-+	if (!vma || vma->vm_start > address)
-+		return NULL;
++	vma = find_and_lock_anon_vma(mm, address);
++	if (!vma)
++		goto lock_mmap;
 +
-+	if (!vma_is_anonymous(vma))
-+		return NULL;
-+
-+	if (!vma_read_trylock(vma)) {
-+		count_vm_vma_lock_event(VMA_LOCK_ABORT);
-+		return NULL;
-+	}
-+
-+	/* Check if the VMA got isolated after we found it */
-+	if (RB_EMPTY_NODE(&vma->vm_rb)) {
++	if (unlikely(access_error(error_code, vma))) {
 +		vma_read_unlock(vma);
-+		count_vm_vma_lock_event(VMA_LOCK_MISS);
-+		return NULL;
++		goto lock_mmap;
 +	}
++	fault = handle_mm_fault(vma, address, flags | FAULT_FLAG_VMA_LOCK, regs);
++	vma_read_unlock(vma);
 +
-+	return vma;
-+}
++	if (!(fault & VM_FAULT_RETRY)) {
++		count_vm_vma_lock_event(VMA_LOCK_SUCCESS);
++		goto done;
++	}
++	count_vm_vma_lock_event(VMA_LOCK_RETRY);
 +
-+/*
-+ * Lookup and lock and anonymous VMA. Returned VMA is guaranteed to be stable
-+ * and not isolated. If the VMA is not found of is being modified the function
-+ * returns NULL.
-+ */
-+struct vm_area_struct *find_and_lock_anon_vma(struct mm_struct *mm,
-+					      unsigned long address)
-+{
-+	struct vm_area_struct *vma;
-+
-+	rcu_read_lock();
-+	vma = find_vma_under_rcu(mm, address);
-+	rcu_read_unlock();
-+
-+	return vma;
-+}
++	/* Quick path to respond to signals */
++	if (fault_signal_pending(fault, regs)) {
++		if (!user_mode(regs))
++			kernelmode_fixup_or_oops(regs, error_code, address,
++						 SIGBUS, BUS_ADRERR,
++						 ARCH_DEFAULT_PKEY);
++		return;
++	}
++lock_mmap:
 +#endif /* CONFIG_PER_VMA_LOCK */
 +
- #ifndef __PAGETABLE_P4D_FOLDED
- /*
-  * Allocate p4d page table.
+ 	/*
+ 	 * Kernel-mode access to the user address space should only occur
+ 	 * on well-defined single instructions listed in the exception
+@@ -1423,6 +1456,9 @@ void do_user_addr_fault(struct pt_regs *regs,
+ 	}
+ 
+ 	mmap_read_unlock(mm);
++#ifdef CONFIG_PER_VMA_LOCK
++done:
++#endif
+ 	if (likely(!(fault & VM_FAULT_ERROR)))
+ 		return;
+ 
 -- 
 2.37.2.672.g94769d06f0-goog
 
