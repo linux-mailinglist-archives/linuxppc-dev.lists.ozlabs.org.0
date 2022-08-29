@@ -2,84 +2,123 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 723965A4A18
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Aug 2022 13:33:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 588605A4B88
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Aug 2022 14:22:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MGSxB4pPcz3c23
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Aug 2022 21:33:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MGV1x3Kq9z3bnV
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Aug 2022 22:22:29 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TgIucK2F;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=DGDRD7JI;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sachinp@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=40.107.21.70; helo=eur05-vi1-obe.outbound.protection.outlook.com; envelope-from=chancel.liu@nxp.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TgIucK2F;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=DGDRD7JI;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2070.outbound.protection.outlook.com [40.107.21.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MGSwR48BHz3bd6
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Aug 2022 21:32:39 +1000 (AEST)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27TBAc4X008210;
-	Mon, 29 Aug 2022 11:32:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
- mime-version : subject : from : in-reply-to : date : cc :
- content-transfer-encoding : message-id : references : to; s=pp1;
- bh=ylcZLCxBaQI7dD6pBBoV6/4Udaf91hLHQyQSDw/2xT8=;
- b=TgIucK2Fitc9OmBqqd4PMlVipII/Tck/ymnlBSnH8ArY0lSNYw8plPrE8aG/2VzL1rT7
- B1sKMjTNqHDmZPeqdqCw4TgrecMaoM3okNtTvh3KMDIIhJFsSUVJz0dm/csVx/4PIMWe
- lykGHa9ZxxX+ZOH3ijQ9+XbvHmCzOsQjpUBQ2ADq/V02WDpLUxQq9/ZUZ4lzMByRFMzu
- V5EwJ16ODv796sQDiIW4WcIaNS1DlF2e/LqoE0Vuipg1TNz9wUuAcECjrS+37TxVpFv6
- 9MHeq9Yf8vgBR8bl5uYfctUqnUvvXtrdCAf6AjglqhNNVs6j8CHtQlqBYgu6xgBQSxp+ Bg== 
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3j8v0m0vht-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 29 Aug 2022 11:32:32 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-	by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 27TBLfNn015374;
-	Mon, 29 Aug 2022 11:32:29 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
-	by ppma04ams.nl.ibm.com with ESMTP id 3j7aw8t87m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 29 Aug 2022 11:32:29 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
-	by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 27TBWl4S43385304
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 29 Aug 2022 11:32:47 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1F7AF11C04A;
-	Mon, 29 Aug 2022 11:32:26 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 209C111C050;
-	Mon, 29 Aug 2022 11:32:25 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.43.92.230])
-	by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Mon, 29 Aug 2022 11:32:24 +0000 (GMT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.1\))
-Subject: Re: [PATCH] powerpc/pseries/mce: Avoid instrumentation in realmode
-From: Sachin Sant <sachinp@linux.ibm.com>
-In-Reply-To: <20220829074522.443439-1-ganeshgr@linux.ibm.com>
-Date: Mon, 29 Aug 2022 17:02:23 +0530
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <65A5D2E6-96A7-44E8-8418-B4B5D566D676@linux.ibm.com>
-References: <20220829074522.443439-1-ganeshgr@linux.ibm.com>
-To: Ganesh Goudar <ganeshgr@linux.ibm.com>
-X-Mailer: Apple Mail (2.3696.120.41.1.1)
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: nQbawgwip3khyYyXRmHOe6LcLyRKJWhk
-X-Proofpoint-ORIG-GUID: nQbawgwip3khyYyXRmHOe6LcLyRKJWhk
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-08-29_05,2022-08-25_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 impostorscore=0
- spamscore=0 lowpriorityscore=0 phishscore=0 mlxlogscore=720 adultscore=0
- priorityscore=1501 clxscore=1015 malwarescore=0 mlxscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2207270000
- definitions=main-2208290055
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MGN6k6ZwSz3bY5
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Aug 2022 17:56:12 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=G7XBzdXNZkAag/qGc07a3Ou9YX6v2bNA0XvSyNm5SjZEYQLtJCNzzzxW3BJ1fEHehhxM7EElzNH8enPhYv2juiGZDnPPD8rrLH5KITDZU9EiqY9wbmMuYkinzhitBg9+heWsKZAmlKBUBSCcrL0xljNpDbQw+KXwAZpc7ZpoKxs5Ktcr8XoNm90jlJlHB8hyZ+9BgvcR6sKqZb5m+DxqXjoiV56g5G8QNTyrvPy3qdrqBRJiq8V6oSUacA6OhEVFJCN89Grdxd6HkhMZkHSp1TLFcWAlguIxc+9IKasFolyGKbSWqztbzPfDgL49gt49z+gwToUGK4AtrOijv8Qmjw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=JVuBw52pC0wM0ynQfdfQ75zsf3a8DcBHIpsVIwVQkTE=;
+ b=XTJd2yI2govGyAfDazZNpkSO7HAtapNhaEYmUzfYqHXW3fgDENYz46u7pIHeRAKt2AOjmG40Pxrcd1vyYmgK6YE4OI2yJEZmwNNqod2n8e8tx81CHHyNYoAVaj3KRP49j2OR+vBjCHo/udFWrft0qd9El1znsLRjyH1K0unIXcTX3sh/jPBUX+Hrv0VRmmIEI4STbw4Vr6sc2w5KNyuJXxMaBzKGFBXsZHO+l6onXNt1shxwPKtXmJsZpz5vDATylKf0Z+x5TCErEeSA0c9/FKkIqZ5GXUgKVVDX0iH5y1KBykzYUAuTFsXWOYaoHi7k4Lvi3OITZAZXi0WP7bzbtw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JVuBw52pC0wM0ynQfdfQ75zsf3a8DcBHIpsVIwVQkTE=;
+ b=DGDRD7JIRE12hw/H3DHNee4rUOLxD4YoTUTTPmBWmYJCV2WLr3h4n54DfcKLQ8D+CwLv23I8oGKK9gpKKnbQq6B1tXcWtzRCKK/wo8C83ooT7xcouKWn0kzlvljV4W2v0mIS4OnN8Iazdk28X/2QGouXDqvHOPQmVcta5S6Ty/o=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from VI1PR04MB4222.eurprd04.prod.outlook.com (2603:10a6:803:46::19)
+ by PR3PR04MB7482.eurprd04.prod.outlook.com (2603:10a6:102:8f::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5566.21; Mon, 29 Aug
+ 2022 07:55:53 +0000
+Received: from VI1PR04MB4222.eurprd04.prod.outlook.com
+ ([fe80::3139:70b4:6648:bd32]) by VI1PR04MB4222.eurprd04.prod.outlook.com
+ ([fe80::3139:70b4:6648:bd32%4]) with mapi id 15.20.5566.021; Mon, 29 Aug 2022
+ 07:55:53 +0000
+From: Chancel Liu <chancel.liu@nxp.com>
+To: lgirdwood@gmail.com,
+	broonie@kernel.org,
+	perex@perex.cz,
+	tiwai@suse.com,
+	alsa-devel@alsa-project.org,
+	linux-kernel@vger.kernel.org,
+	robh+dt@kernel.org,
+	devicetree@vger.kernel.org,
+	krzysztof.kozlowski+dt@linaro.org,
+	shengjiu.wang@nxp.com,
+	Xiubo.Lee@gmail.com,
+	festevam@gmail.com,
+	nicoleotsuka@gmail.com,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 0/5] Create a new sound card to access MICFIL based on rpmsg channel
+Date: Mon, 29 Aug 2022 15:51:39 +0800
+Message-Id: <20220829075144.2405000-1-chancel.liu@nxp.com>
+X-Mailer: git-send-email 2.25.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR06CA0012.apcprd06.prod.outlook.com
+ (2603:1096:4:186::13) To VI1PR04MB4222.eurprd04.prod.outlook.com
+ (2603:10a6:803:46::19)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 45b6a89b-30a0-4e36-0c92-08da8993e577
+X-MS-TrafficTypeDiagnostic: PR3PR04MB7482:EE_
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	VgE8hGf73FMjvzg6L5YfJXhz8yuIc+w4vzk7YUPbQbEodUYe00lndtYf4PlRv/u8gKEqtqDRcdd/E5WsVi9kuQNl9HHiImuxP+zXkAIL/azqsJFRt/mSCIy9lsxjdpVq4ShZR4HMz7yL0pN9NHJ3l3mLPvvn3w65bERBj69NJkjKIGcYG477iIGOQDxsxYEv+OcyYH6HM62SKoOOfbou2ZH17gIzIRnOQVD/wOPQPyACZU5DpgbnZEBRp6BX5s3jSybyjdPIdPUiueKRRSP3E7Knb57o0FzQVYVdRsO62nT5uDtlMMFk4SYiEU6hDABcxXD/ph3n+4wL+Au7EpCz+Z5kwcJSoUxlQOMwdlprUkI6mrHQ1cy86ipkDuNI7s+uchF+pAwQYreOmIeAq3tPvWK43rX1xwj31dxQ/QwU9mTaOg/bVOReSxyMSsKpNwaJ2bPGxhnvA4Iw1Iv2qKry1uEFoa8cPqBQYIKJQQyUZidPlaIkeL5xwt/1IVDYxMRVCT1y21aWJITUXYEhvbBhw1n89daK6XSMmiSROLx1Nec79fZBN4SVAs474obqcgrvkw7A0epKMdChhFD4PdUCxKnGw6KIjh5i6TzTZny8NzvVabTqCeF9eM1yKlMyQ5uT0AhEdbc7Ct/4cQQ/p+J2y/flx9zSeYCJtSpAIKxNYa8BT9Pjf9SleB24cL6rNzweLJ2x/LPk4pgd97DUaW8rLMMUhhYK9INwKZUJEUPqty6wkvwUUKk8IgQSddDXv73H+eRPJzkS79qRu+fLF9tXQA==
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR04MB4222.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(4636009)(376002)(346002)(366004)(39860400002)(136003)(396003)(7416002)(5660300002)(8936002)(41300700001)(186003)(6506007)(2616005)(6512007)(86362001)(1076003)(6666004)(44832011)(52116002)(2906002)(26005)(38350700002)(316002)(36756003)(66476007)(83380400001)(478600001)(38100700002)(921005)(4326008)(6486002)(66556008)(8676002)(66946007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?ZJWI92TsNCnjPLKuPto27fDw1BTpz2jwFUHWz94Ens8eZXsBiu/LH9JKvsjG?=
+ =?us-ascii?Q?nEcSxk+PReMQbnprebIocPn9SIK2KbNJN4V9RHQ0GR4MBY0tcVpFF866w0y3?=
+ =?us-ascii?Q?4iVTBYbv4ILrzKZF/yv7aTnSlzCG4d/HIlo690bMFIB3PgTkMxhBC+vQhsAo?=
+ =?us-ascii?Q?UFOXN2FaQOby7wh/HWqyWOZoQF4cCen2ZcGUojtMo9EAuyjEd6S5lmWdlRE9?=
+ =?us-ascii?Q?CEAM6OE2CLXWg923Jh/jMhfKf+Rp+oK5l0ixpKyn3Rg1h1UrANEE3vHKs48d?=
+ =?us-ascii?Q?BpcE1Bu2C00mGMHNWnLEPjJxAbAx2pc5rOUgZz9nlmVkksJiWBthDOZGgZui?=
+ =?us-ascii?Q?QAuCg43QLwa2DJnP8pRouqcmOgvZmVi+hoQ1iZTyEqI2tYkE3JIvnJVstDje?=
+ =?us-ascii?Q?Ui9OnC/9F5AAEYs58ePnvXzPzDGniVH4kaEcUfTqpWNmLFwIo0lbTLBQHvLJ?=
+ =?us-ascii?Q?hRGUksaVfLrp4QQMv79Aq+FpjENFWU45S9bvJE5IikNAKGjTrWSKOdJ9BkcD?=
+ =?us-ascii?Q?nMeZfx3m3kOwdbmnJQrC2Gicei4IMwPL/1C8g0JOXq1txY5DRfDou2+OWmmL?=
+ =?us-ascii?Q?lO3/Uoxm7zfWvMAX2UCsB75yvyb+3bm472vtYMYE4aIqNRz2BpiRFR2Dv8OC?=
+ =?us-ascii?Q?PogcbZ5y8F0a0b1SZaKH/eiXW2SfEgmkv1WOuqAgw6qe6ixITsLdhsenSdYC?=
+ =?us-ascii?Q?s/nYSiHSptUf/Xff9112prrMzedJeZRDVcp9k7SeKrA4azONexWJq/FI9IiG?=
+ =?us-ascii?Q?Nyx7sg4mP692SCAqJ5VnODbLRHHtrlVDGfzlHefnaRQAWQq975+bITv4CHo9?=
+ =?us-ascii?Q?ksuPzGjFZ4+rnoSCpCKRnRF/l83JJT85gyMkc0OG9YdNtce2Aq1c1SAHHHVo?=
+ =?us-ascii?Q?KfdafV8IuA4/RkajnlYLPDubU/DAiC7ignlebVCiA6rPxTvRDiCos/ao92zo?=
+ =?us-ascii?Q?x/o63R9e15pNYa+bWeuTrNkavrwGzGI0tzkMaVDMlwrbzODmWm/HqiIHWacq?=
+ =?us-ascii?Q?+oIy4godCxZIcekCA8r3AE4w4t+hsF/Rd1M+XlGbF8DMsVDD+nIYpZCKI24/?=
+ =?us-ascii?Q?LSOWlU97tlo3L4BgzPnVhIejoOkz8LCKNwMWEoq7XjFg7rcAQe9D+VVVflug?=
+ =?us-ascii?Q?12LlEydrfDP+/vWnrAaiq//P/QEEIHB3KjYMKiuBPSWnmt1AZ6pgfs6MX/iC?=
+ =?us-ascii?Q?83FeLTEpwdazl6uolEl3P4mHPofraRufLPzVwwPG1guJTPSnJnfNm8OCLnEm?=
+ =?us-ascii?Q?/IPyoC/dChJnzloN+oyi2YdbxBWGxYoCpS7nrFQtW/KMddLtYiCIF78ucc2V?=
+ =?us-ascii?Q?8Ishw4VhdIPklnFox34tN2GkvjaLQsBR/0RCX7nIntWh4C0LOyhT4hc4uipg?=
+ =?us-ascii?Q?3goU1zuPmsOPC232TiMBEHd1ZYbf7YzCNemR1QTLsHlOr+HEulhX3r50iCvH?=
+ =?us-ascii?Q?t30BmiQZAYss1lAsP6x0B1D0rw/cRYS+X5Mz8FBbZaI+3dE/pj13x4tDFPsd?=
+ =?us-ascii?Q?lPb7VZ5PzT+/qB5TbjSrUJDZXbX0V6HLl6W+RhWOwKoWO0FFQF0yhiwOBrlb?=
+ =?us-ascii?Q?u3N7zvox7JJ5CN1nSNIErbIkkfK+RXhFpIELm9cf?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 45b6a89b-30a0-4e36-0c92-08da8993e577
+X-MS-Exchange-CrossTenant-AuthSource: VI1PR04MB4222.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Aug 2022 07:55:53.1828
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: iOTs4L9UGsza2Q3tdJEmv1IDQzrUWZCwhnRyU693HMnpg7eXMF1fgEu9k1YCjFsxXfpBeGA3X9SY6MxSMPO49Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR04MB7482
+X-Mailman-Approved-At: Mon, 29 Aug 2022 22:21:55 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,126 +130,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, mahesh@linux.ibm.com
+Cc: Chancel Liu <chancel.liu@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+At a previous time, we have successfully created a virtual sound card
+based on rpmsg. The sound card works under this mechanism Cortex-A core
+tells the Cortex-M core the format, rate, channel, .etc configuration
+of the PCM parameters and Cortex-M controls real hardware devices such
+as SAI and DMA. From the view of Linux side, the sound card is bound to
+a rpmsg channel through which it can access SAI.
 
+Here these patches are introduced to create a new virtual sound card to
+access MICFIL based on a new created rpmsg channel. It's easy to create
+a new rpmsg channel for MICFIL through rpmsg name service announcment.
+Also the other ASoC components bound to this rpmsg MICFIL sound card
+will be registered with these patches.
 
-> On 29-Aug-2022, at 1:15 PM, Ganesh Goudar <ganeshgr@linux.ibm.com> =
-wrote:
->=20
-> Part of machine check error handling is done in realmode,
-> As of now instrumentation is not possible for any code that
-> runs in realmode.
-> When MCE is injected on KASAN enabled kernel, crash is
-> observed, Hence force inline or mark no instrumentation
-> for functions which can run in realmode to avoid KASAN
-> instrumentation.
->=20
-> Signed-off-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
-> ---
-> arch/powerpc/include/asm/interrupt.h | 2 +-
-> arch/powerpc/include/asm/rtas.h      | 4 ++--
-> arch/powerpc/kernel/rtas.c           | 4 ++--
-> 3 files changed, 5 insertions(+), 5 deletions(-)
+If other sound cards using different hardware devices needs to be
+created over rpmsg in the future, these patches can be referred.
 
-Thanks for the patch. I tested it on top of 6.0.0-rc3. It proceeds =
-further but
-eventually crashes after arch_local_save_flags
+Chancel Liu (5):
+  ASoC: dt-bindings: fsl_rpmsg: Add a property to assign platform driver
+    name
+  ASoC: imx-audio-rpmsg: Create rpmsg channel for MICFIL
+  ASoC: imx-pcm-rpmsg: Register different platform drivers
+  ASoC: fsl_rpmsg: Register different CPU DAI drivers
+  ASoC: imx-rpmsg: Assign platform driver used by machine driver to link
+    with
 
+ .../devicetree/bindings/sound/fsl,rpmsg.yaml  | 34 +++++++++++++++++--
+ sound/soc/fsl/fsl_rpmsg.c                     |  2 +-
+ sound/soc/fsl/imx-audio-rpmsg.c               |  3 +-
+ sound/soc/fsl/imx-pcm-rpmsg.c                 | 10 ++++--
+ sound/soc/fsl/imx-rpmsg.c                     |  6 +++-
+ 5 files changed, 47 insertions(+), 8 deletions(-)
 
-# selftests: powerpc/mce: inject-ra-err
-[  111.183705] BUG: Unable to handle kernel data access on read at =
-0xc00e00027fffe706
-[  111.183735] Faulting instruction address: 0xc0000000006b724c
-[  111.183744] Oops: Kernel access of bad area, sig: 11 [#1]
-[  111.183750] LE PAGE_SIZE=3D64K MMU=3DRadix SMP NR_CPUS=3D2048 NUMA =
-pSeries
-[  111.183761] Modules linked in: rpadlpar_io(E) rpaphp(E) dm_mod(E) =
-xsk_diag(E) nft_fib_inet(E) nft_fib_ipv4(E) nft_fib_ipv6(E) nft_fib(E) =
-nft_reject_inet(E) nf_reject_ipv4(E) nf_reject_ipv6(E) nft_reject(E) =
-nft_ct(E) nft_chain_nat(E) nf_nat(E) nf_conntrack(E) nf_defrag_ipv6(E) =
-nf_defrag_ipv4(E) bonding(E) rfkill(E) ip_set(E) tls(E) nf_tables(E) =
-nfnetlink(E) sunrpc(E) binfmt_misc(E) pseries_rng(E) drm(E) =
-drm_panel_orientation_quirks(E) xfs(E) libcrc32c(E) sd_mod(E) t10_pi(E) =
-sr_mod(E) crc64_rocksoft_generic(E) cdrom(E) crc64_rocksoft(E) crc64(E) =
-sg(E) ibmvscsi(E) ibmveth(E) scsi_transport_srp(E) vmx_crypto(E) fuse(E)
-[  111.183872] CPU: 16 PID: 6290 Comm: inject-ra-err Tainted: G          =
-  E      6.0.0-rc3-dirty #1
-[  111.183883] NIP:  c0000000006b724c LR: c00000000004f674 CTR: =
-0000000000000000
-[  111.183890] REGS: c0000000ff7f7880 TRAP: 0300   Tainted: G            =
-E       (6.0.0-rc3-dirty)
-[  111.183899] MSR:  8000000000001003 <SF,ME,RI,LE>  CR: 48002828  XER: =
-00000000
-[  111.183916] CFAR: c00000000004f670 DAR: c00e00027fffe706 DSISR: =
-40000000 IRQMASK: 3=20
-[  111.183916] GPR00: c00000000004f674 c0000000ff7f7b20 c0000000034ad200 =
-c0000013ffff3832=20
-[  111.183916] GPR04: 0000000000000031 0000000000000000 c00000000004f674 =
-000000000000000c=20
-[  111.183916] GPR08: 0000000000000000 a80e000000000000 180000027fffe706 =
-0000000000000000=20
-[  111.183916] GPR12: c0000013ffff2f00 c0000013ffff2f00 0000000000000000 =
-0000000000000000=20
-[  111.183916] GPR16: 0000000000000000 0000000000000000 0000000000000000 =
-0000000000000000=20
-[  111.183916] GPR20: 0000000000000000 0000000000000000 0000000000000000 =
-0000000010000b30=20
-[  111.183916] GPR24: 00007fffbc8b0000 00007fffbc8af6d8 00007fffc0604158 =
-000000001001fce8=20
-[  111.183916] GPR28: c00000116aae0868 0000000000000002 00000000ff7f7c20 =
-c0000013ffff2f00=20
-[  111.184008] NIP [c0000000006b724c] __asan_load1+0x4c/0xa0
-[  111.184023] LR [c00000000004f674] arch_local_save_flags+0x24/0x40
-[  111.184033] Call Trace:
-[  111.184037] [c0000000ff7f7b40] [c00000000004f674] =
-arch_local_save_flags+0x24/0x40
-[  111.184048] [c0000000ff7f7b70] [c0000000014d42ac] =
-va_rtas_call_unlocked+0x13c/0x1d0
-[  111.184062] [c0000000ff7f7ba0] [c000000000051c54] =
-rtas_call_unlocked+0x34/0x50
-[  111.184072] [c0000000ff7f7bc0] [c00000000012edc8] =
-pseries_machine_check_realmode+0x188/0x2c0
-[  111.184085] [c0000000ff7f7ca0] [c00000000004b128] =
-machine_check_early+0x68/0xc0
-[  111.184095] [c0000000ff7f7cf0] [c000000000008364] =
-machine_check_early_common+0x134/0x1f8
-[  111.184107] --- interrupt: 200 at 0x10000e48
-[  111.184115] NIP:  0000000010000e48 LR: 0000000010000e40 CTR: =
-0000000000000000
-[  111.184121] REGS: c0000000ff7f7d60 TRAP: 0200   Tainted: G            =
-E       (6.0.0-rc3-dirty)
-[  111.184129] MSR:  8000000002a0f033 =
-<SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 82002822  XER: 00000000
-[  111.184152] CFAR: 000000000000021c DAR: 00007fffbc810000 DSISR: =
-02000008 IRQMASK: 0=20
-[  111.184152] GPR00: 0000000010000e40 00007fffc0603a70 0000000010027f00 =
-00007fffbc810000=20
-[  111.184152] GPR04: 0000000000001000 0000000000000003 0000000000000001 =
-0000000000000005=20
-[  111.184152] GPR08: 0000000000000000 fffffffffffff000 0000000000000000 =
-0000000000000000=20
-[  111.184152] GPR12: 0000000000000000 00007fffbc8ba5e0 0000000000000000 =
-0000000000000000=20
-[  111.184152] GPR16: 0000000000000000 0000000000000000 0000000000000000 =
-0000000000000000=20
-[  111.184152] GPR20: 0000000000000000 0000000000000000 0000000000000000 =
-0000000010000b30=20
-[  111.184152] GPR24: 00007fffbc8b0000 00007fffbc8af6d8 00007fffc0604158 =
-000000001001fce8=20
-[  111.184152] GPR28: 00007fffc06042e0 0000000000000001 0000000000000005 =
-0000000000000000=20
-[  111.184241] NIP [0000000010000e48] 0x10000e48
-[  111.184247] LR [0000000010000e40] 0x10000e40
-[  111.184252] --- interrupt: 200
-[  111.184256] Instruction dump:
-[  111.184261] 7cc802a6 4182005c 3d20bfff 6129ffff 792907c6 6529ffff =
-6129ffff 7c234840=20
-[  111.184278] 40810040 3d20a80e 786ae8c2 792907c6 <7d2a48ae> 7d290775 =
-4082001c 38210020=20
-[  111.184297] ---[ end trace 0000000000000000 ]=E2=80=94
-
-- Sachin
+--
+2.25.1
 
