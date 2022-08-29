@@ -2,65 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80C535A4C53
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Aug 2022 14:49:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68B825A4C5E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Aug 2022 14:50:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MGVdD3pJSz3c8c
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Aug 2022 22:49:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MGVfX1jZcz3f4V
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Aug 2022 22:50:44 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=LRs6v78+;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=aoWdQSkd;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--elver.bounces.google.com (client-ip=2a00:1450:4864:20::64a; helo=mail-ej1-x64a.google.com; envelope-from=3hlumywukdeehoyhujrrjoh.frpolqx0ssf-ghyolvwv.r2odev.ruj@flex--elver.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--elver.bounces.google.com (client-ip=2a00:1450:4864:20::549; helo=mail-ed1-x549.google.com; envelope-from=3hrumywukdemjq0jwlttlqj.htrqnsz2uuh-ij0qnxyx.t4qfgx.twl@flex--elver.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=LRs6v78+;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=aoWdQSkd;
 	dkim-atps=neutral
-Received: from mail-ej1-x64a.google.com (mail-ej1-x64a.google.com [IPv6:2a00:1450:4864:20::64a])
+Received: from mail-ed1-x549.google.com (mail-ed1-x549.google.com [IPv6:2a00:1450:4864:20::549])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MGVbW3blFz2xbC
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Aug 2022 22:48:07 +1000 (AEST)
-Received: by mail-ej1-x64a.google.com with SMTP id gn30-20020a1709070d1e00b0074144af99d1so1436734ejc.17
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Aug 2022 05:48:07 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MGVbZ1l8Wz3blw
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Aug 2022 22:48:09 +1000 (AEST)
+Received: by mail-ed1-x549.google.com with SMTP id x21-20020a05640226d500b0044856301c62so2360023edd.12
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Aug 2022 05:48:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc;
-        bh=1tERDk4Y7XiUFi7foUICKHh8rrNwWwU5I8SMJsHxX4c=;
-        b=LRs6v78+5zV31XmPhiGFaI8d9smXBgIGVT6nVR89fc5UTZbqJpASCbp8OzqwdJo0WN
-         X50HlNQTkBztzM8bMAfsxW3ZMbXKbNqWzzhCmWXRtGLVM510jCvBX7oLyzzVuARxpNHm
-         9AonX8Qd10NaBeiwtbKaFe5cBQckgAKnxEE71EwpUZFx/aNS5vw1FonUbiF01IytjObS
-         n8Dh1GNK3dBickyio3mTRV1yiaGNRQ1VMvwcGi/v7qpfhZBgl6yuTCbsFZhh4yT5ilJo
-         7vS+0TPd+ThWiAMA/rfOsW7qFg2fd7fhGjlipPHc/6KEppO4C/f7SNI637VFT7wvXhPX
-         7UMQ==
+        bh=Xnrbr4NWXpH3ILMfaL+Hqy6Mh/173nAe6Rh4Ql+SwwA=;
+        b=aoWdQSkdpteyXmYAo1c6eiVE2udp1iPCkTbGD3cqc5tyTEc5w9TDE5eQ2pH/aC5ONx
+         wvITjNHuqGva9IIaS4Jy/kRGfM87daq+ZT24dKaI5knatHyVNPce7SKxJrvTIxK+jpRV
+         T+oUK6JwmqGiqfWOw+qZfCjfKSncTUyCL/rTKrD/R/uwr1cZQDo2BiYCLIVtBSK8KpsZ
+         CLE54Tvl9hptOey0GrB4CQxeXWFE0oHlZwm2u/7tiypSnfTXu/PJqf5/FBc4ceMvlGJj
+         bS8z75PhngVBIBAZf6h+e4wkxi/WQq7RrV8yo3ue7h3N/zwN5y8SZVpJk5+wDM79X8yf
+         2pgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc;
-        bh=1tERDk4Y7XiUFi7foUICKHh8rrNwWwU5I8SMJsHxX4c=;
-        b=SdUIeIHO53kHhr6b84Et94AXM3myu/8y/p8RI64Yn9HoGVOGU6L2VRau07fsoiPmgZ
-         WtnTe3fsEofuoIE6EVbnxnvkFZXvkRIWkM7rRJQffx8TAo0ojRVdi6X2IR4CT47oirQm
-         gxHswccBXRRlxw+d/BiQOeccJQ79miba588g1M7ePb8cmPSD5ZnIaNvC/2nFvrCjBgzS
-         95DzW9VGENScBavP4SR2OY5uSfitVXCuBnYpgdXLinO3aL8BgNxBJX6cSGopckBBJXjc
-         2XWlaWGyuZV/b3i43HDKjrROTVKdODgioJdl83O8aMAiShlq0mB0JueuS89wjeT5WVRN
-         1z5w==
-X-Gm-Message-State: ACgBeo1Sm8pW5WrUDiWaXcV/YaibnYLkeKbEA9kbI9HAW/PZpaUFB5IQ
-	3bl2HgnUIHezd2XKY4mllYQ0qmgqaQ==
-X-Google-Smtp-Source: AA6agR4xS4MVvlQxXwy93Y+GTWrZcSFKD+wMhZ6QqWvQdPyWAiU+olMFbA+DUyOWg5RwEscoM50Yu8cu3A==
+        bh=Xnrbr4NWXpH3ILMfaL+Hqy6Mh/173nAe6Rh4Ql+SwwA=;
+        b=1aFay4kVgMolKVON+yBD1wikasUdhs9w0diVTKr8BooN4DJBvL9iWniEY6QH/4VmiI
+         DbwPq3gpHvFW5zZiTKr1gfH/7915xzHoReExJuv82LmlTgmqPr87ccx+84bfUEtPfG0j
+         dV7a/22smL3UWIKr3zFVI5kQRv3s1hMj3U5ni+M1oHYTHmLPAzrCIB9boHO8JEBspy/V
+         m5PdlJntbL7QmPstSOKZn21p1iPHZfn5zrrUKdNUDXLuYvrADtba7kYKF8TDRuijdYmV
+         mg+lvBsuqaT3bh2RHQ1yuqrfVcfH31LSy9lOW7SxMgyWYybY023v+sVTGIzZ9TSbLqja
+         ghGA==
+X-Gm-Message-State: ACgBeo0AgdCcbzBE4RddB/EKEZC9cF5U8pHW4bwZnAHmTuh64uMHTwFb
+	dOnCe1bTsSo+1p2W42bo+av1r+yWvw==
+X-Google-Smtp-Source: AA6agR42dMVaiS+cJuLOtzyugHi3iaDb9VrUvxxRA/60qGgLveidvAmI7LaoSF8LrpwtVNgvbP26lurGuA==
 X-Received: from elver.muc.corp.google.com ([2a00:79e0:9c:201:196d:4fc7:fa9c:62e3])
- (user=elver job=sendgmr) by 2002:a05:6402:2707:b0:448:ad8e:39c1 with SMTP id
- y7-20020a056402270700b00448ad8e39c1mr265466edd.315.1661777284113; Mon, 29 Aug
- 2022 05:48:04 -0700 (PDT)
-Date: Mon, 29 Aug 2022 14:47:07 +0200
+ (user=elver job=sendgmr) by 2002:aa7:c946:0:b0:43d:3038:1381 with SMTP id
+ h6-20020aa7c946000000b0043d30381381mr16380942edt.354.1661777286713; Mon, 29
+ Aug 2022 05:48:06 -0700 (PDT)
+Date: Mon, 29 Aug 2022 14:47:08 +0200
 In-Reply-To: <20220829124719.675715-1-elver@google.com>
 Mime-Version: 1.0
 References: <20220829124719.675715-1-elver@google.com>
 X-Mailer: git-send-email 2.37.2.672.g94769d06f0-goog
-Message-ID: <20220829124719.675715-3-elver@google.com>
-Subject: [PATCH v4 02/14] perf/hw_breakpoint: Provide hw_breakpoint_is_used()
- and use in test
+Message-ID: <20220829124719.675715-4-elver@google.com>
+Subject: [PATCH v4 03/14] perf/hw_breakpoint: Clean up headers
 From: Marco Elver <elver@google.com>
 To: elver@google.com, Peter Zijlstra <peterz@infradead.org>, 
 	Frederic Weisbecker <frederic@kernel.org>, Ingo Molnar <mingo@kernel.org>
@@ -80,115 +79,71 @@ Cc: Mark Rutland <mark.rutland@arm.com>, Ian Rogers <irogers@google.com>, linux-
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Provide hw_breakpoint_is_used() to check if breakpoints are in use on
-the system.
+Clean up headers:
 
-Use it in the KUnit test to verify the global state before and after a
-test case.
+ - Remove unused <linux/kallsyms.h>
+
+ - Remove unused <linux/kprobes.h>
+
+ - Remove unused <linux/module.h>
+
+ - Remove unused <linux/smp.h>
+
+ - Add <linux/export.h> for EXPORT_SYMBOL_GPL().
+
+ - Add <linux/mutex.h> for mutex.
+
+ - Sort alphabetically.
+
+ - Move <linux/hw_breakpoint.h> to top to test it compiles on its own.
 
 Signed-off-by: Marco Elver <elver@google.com>
-Reviewed-by: Dmitry Vyukov <dvyukov@google.com>
+Acked-by: Dmitry Vyukov <dvyukov@google.com>
 Acked-by: Ian Rogers <irogers@google.com>
 ---
-v3:
-* New patch.
+v2:
+* Move to start of series.
 ---
- include/linux/hw_breakpoint.h      |  3 +++
- kernel/events/hw_breakpoint.c      | 29 +++++++++++++++++++++++++++++
- kernel/events/hw_breakpoint_test.c | 12 +++++++++++-
- 3 files changed, 43 insertions(+), 1 deletion(-)
+ kernel/events/hw_breakpoint.c | 19 +++++++++----------
+ 1 file changed, 9 insertions(+), 10 deletions(-)
 
-diff --git a/include/linux/hw_breakpoint.h b/include/linux/hw_breakpoint.h
-index 78dd7035d1e5..a3fb846705eb 100644
---- a/include/linux/hw_breakpoint.h
-+++ b/include/linux/hw_breakpoint.h
-@@ -74,6 +74,7 @@ register_wide_hw_breakpoint(struct perf_event_attr *attr,
- extern int register_perf_hw_breakpoint(struct perf_event *bp);
- extern void unregister_hw_breakpoint(struct perf_event *bp);
- extern void unregister_wide_hw_breakpoint(struct perf_event * __percpu *cpu_events);
-+extern bool hw_breakpoint_is_used(void);
- 
- extern int dbg_reserve_bp_slot(struct perf_event *bp);
- extern int dbg_release_bp_slot(struct perf_event *bp);
-@@ -121,6 +122,8 @@ register_perf_hw_breakpoint(struct perf_event *bp)	{ return -ENOSYS; }
- static inline void unregister_hw_breakpoint(struct perf_event *bp)	{ }
- static inline void
- unregister_wide_hw_breakpoint(struct perf_event * __percpu *cpu_events)	{ }
-+static inline bool hw_breakpoint_is_used(void)		{ return false; }
-+
- static inline int
- reserve_bp_slot(struct perf_event *bp)			{return -ENOSYS; }
- static inline void release_bp_slot(struct perf_event *bp) 		{ }
 diff --git a/kernel/events/hw_breakpoint.c b/kernel/events/hw_breakpoint.c
-index f32320ac02fd..fd5cd1f9e7fc 100644
+index fd5cd1f9e7fc..6076c6346291 100644
 --- a/kernel/events/hw_breakpoint.c
 +++ b/kernel/events/hw_breakpoint.c
-@@ -604,6 +604,35 @@ void unregister_wide_hw_breakpoint(struct perf_event * __percpu *cpu_events)
- }
- EXPORT_SYMBOL_GPL(unregister_wide_hw_breakpoint);
+@@ -17,23 +17,22 @@
+  * This file contains the arch-independent routines.
+  */
  
-+/**
-+ * hw_breakpoint_is_used - check if breakpoints are currently used
-+ *
-+ * Returns: true if breakpoints are used, false otherwise.
-+ */
-+bool hw_breakpoint_is_used(void)
-+{
-+	int cpu;
++#include <linux/hw_breakpoint.h>
 +
-+	if (!constraints_initialized)
-+		return false;
-+
-+	for_each_possible_cpu(cpu) {
-+		for (int type = 0; type < TYPE_MAX; ++type) {
-+			struct bp_cpuinfo *info = get_bp_info(cpu, type);
-+
-+			if (info->cpu_pinned)
-+				return true;
-+
-+			for (int slot = 0; slot < nr_slots[type]; ++slot) {
-+				if (info->tsk_pinned[slot])
-+					return true;
-+			}
-+		}
-+	}
-+
-+	return false;
-+}
-+
- static struct notifier_block hw_breakpoint_exceptions_nb = {
- 	.notifier_call = hw_breakpoint_exceptions_notify,
- 	/* we need to be notified first */
-diff --git a/kernel/events/hw_breakpoint_test.c b/kernel/events/hw_breakpoint_test.c
-index 433c5c45e2a5..5ced822df788 100644
---- a/kernel/events/hw_breakpoint_test.c
-+++ b/kernel/events/hw_breakpoint_test.c
-@@ -294,7 +294,14 @@ static struct kunit_case hw_breakpoint_test_cases[] = {
- static int test_init(struct kunit *test)
- {
- 	/* Most test cases want 2 distinct CPUs. */
--	return num_online_cpus() < 2 ? -EINVAL : 0;
-+	if (num_online_cpus() < 2)
-+		return -EINVAL;
-+
-+	/* Want the system to not use breakpoints elsewhere. */
-+	if (hw_breakpoint_is_used())
-+		return -EBUSY;
-+
-+	return 0;
- }
++#include <linux/bug.h>
++#include <linux/cpu.h>
++#include <linux/export.h>
++#include <linux/init.h>
+ #include <linux/irqflags.h>
+-#include <linux/kallsyms.h>
+-#include <linux/notifier.h>
+-#include <linux/kprobes.h>
+ #include <linux/kdebug.h>
+ #include <linux/kernel.h>
+-#include <linux/module.h>
++#include <linux/list.h>
++#include <linux/mutex.h>
++#include <linux/notifier.h>
+ #include <linux/percpu.h>
+ #include <linux/sched.h>
+-#include <linux/init.h>
+ #include <linux/slab.h>
+-#include <linux/list.h>
+-#include <linux/cpu.h>
+-#include <linux/smp.h>
+-#include <linux/bug.h>
  
- static void test_exit(struct kunit *test)
-@@ -308,6 +315,9 @@ static void test_exit(struct kunit *test)
- 		kthread_stop(__other_task);
- 		__other_task = NULL;
- 	}
-+
-+	/* Verify that internal state agrees that no breakpoints are in use. */
-+	KUNIT_EXPECT_FALSE(test, hw_breakpoint_is_used());
- }
- 
- static struct kunit_suite hw_breakpoint_test_suite = {
+-#include <linux/hw_breakpoint.h>
+ /*
+  * Constraints data
+  */
 -- 
 2.37.2.672.g94769d06f0-goog
 
