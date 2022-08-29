@@ -2,65 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A078C5A56D6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Aug 2022 00:12:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2574C5A56D7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Aug 2022 00:13:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MGl6z3YK9z3fw3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Aug 2022 08:12:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MGl7d09Nbz3f9P
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Aug 2022 08:13:17 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=f8ZHy6Ci;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=R4f3AmhY;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--surenb.bounces.google.com (client-ip=2607:f8b0:4864:20::649; helo=mail-pl1-x649.google.com; envelope-from=38i4nywykdkmvxuhqejrrjoh.frpolqxassf-ghyolvwv.rcodev.ruj@flex--surenb.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--surenb.bounces.google.com (client-ip=2607:f8b0:4864:20::64a; helo=mail-pl1-x64a.google.com; envelope-from=38y4nywykdkqwyvirfksskpi.gsqpmrybttg-hizpmwxw.sdpefw.svk@flex--surenb.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=f8ZHy6Ci;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=R4f3AmhY;
 	dkim-atps=neutral
-Received: from mail-pl1-x649.google.com (mail-pl1-x649.google.com [IPv6:2607:f8b0:4864:20::649])
+Received: from mail-pl1-x64a.google.com (mail-pl1-x64a.google.com [IPv6:2607:f8b0:4864:20::64a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MGk5H5mZSz3blf
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Aug 2022 07:26:11 +1000 (AEST)
-Received: by mail-pl1-x649.google.com with SMTP id z14-20020a170903018e00b00174fff57d17so978960plg.14
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Aug 2022 14:26:11 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MGk5K2qTyz3blf
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Aug 2022 07:26:13 +1000 (AEST)
+Received: by mail-pl1-x64a.google.com with SMTP id y9-20020a17090322c900b00174c881abaeso2531556plg.6
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Aug 2022 14:26:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc;
-        bh=K93TFWAb7JwQdWCvuFbBF/NwLgqzppA/TxAstG/QPvU=;
-        b=f8ZHy6CiTcDXROb3pFMLfetBSV+kFVTeZws7OjDiiohYptMrJjGynWZ4jN+J/j3SJj
-         dCEDPAmPkmnX5B3X46hqeY2mb8ZvMpLB7j64gw3uDHSYMAUM2B6ucp8KKPug6MxLnEu7
-         BmebG6DC6czjsVXnb7ENc9u7p9QGYJElvc7qRNsIMqXvgjewnR2ulhT9EyPiZ2zz1B9D
-         56/cpf1MfCjBxFK5vFsjvAIH2zjjfVoYxcmJWgmvbc3eCKVdp1qhJM+tuigQjNUJJMgZ
-         jrHBPRDF7lp+rxYzH8zskIPXprMRBcWxeh9qo4POOeyeUnThUPILDVIwum49CxVeKLEs
-         T9zA==
+        bh=bUksEMWzQ2sQtj6CAseSDP7Wnd3Y9YWuXlHuoAiHS/w=;
+        b=R4f3AmhYQvfrJmCukv/e3Nij13PuVUa8k8O646df0PoObwBnO/xDcemk6+SqKXvVGr
+         hJkm2649shhdYcclI4xYPbiKHXEe7XEvjq6ebwkp6YZFsZtQX3MH5xTV757BPS7Zeyib
+         IALyiqYSG4f0kCJDHQ3+fMXa5F0OzkQKlh2EgahzIDAp6HMSPtfd8qN17COdyNthUkyK
+         vH/w1n6XgnYHxRHIzAjyfQH31twkRddq+jpJViGP9dMWFd2ba2cwGPVTVH8mdAvdjCY4
+         84OD9xZ4r8HlzIfM65gveSjGxaILhsxn9vJXDz/VODVoOMzJt9RI4cwlcbKnFfX3PjSN
+         BY7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc;
-        bh=K93TFWAb7JwQdWCvuFbBF/NwLgqzppA/TxAstG/QPvU=;
-        b=1jywps87+x5BS9WQvXJ/tivOCuOUsNOt0sEQlZ9judOyRT9WI3uJ1RkxfolHV72y1H
-         8n6VEW+5D9LZ4gyoGAS1ikhSJB2wFeWP9d45WtHHNF0lexUPRn1UzAPqV/nIme9pGrMk
-         9ovv22Is0cQDenjN+pnGslNie3tPCRGOD2O+lm5qCOInt2dnVFhezb0IXq6GaM+UCpjJ
-         gaDLkxVMjerY/VUzjtamlMiEc48Cz0e1l7q7TIVprgTw6MBYFCb9FF+TJYvhmQobVJUx
-         S0/NMBcygOZ+2FX2DNVKQLTO6Cz2hh/80TV4AffUd6hCkFhiXiBlT/fl6Jpt9+ncKpCD
-         ZrrQ==
-X-Gm-Message-State: ACgBeo2sUj5OlcZehQ+XKddxdUM0+87uJI+ASjAmMwhHtvw9UsEdpoUo
-	W0rVIRgolSE7pyLa1zQrYxVevndnRpU=
-X-Google-Smtp-Source: AA6agR7nf9+ItGZZ0+7hqrcNY7xNhTop6ny3nOph/OxIOFh5WmAm4Kp1l2Jp+ca/L6EEvcmkimt0snMwAs0=
+        bh=bUksEMWzQ2sQtj6CAseSDP7Wnd3Y9YWuXlHuoAiHS/w=;
+        b=MxyG1LPPPVnUno7UZqjzUGUw/H4WONtaDHDv7uY8eAbfp2JVLyZshmLYNIRDwp5Psc
+         kG272KCnQmxlPaebH4mhqoa/LS7qK07fKcUYZMo8Z5zuYgftjpnMSYPfDOueSwCeypQ8
+         sr255jBHLWH/7rNNOYa5TH+XG5EBAjE/aRLArtzzZLe3EO5FV0NFJoEGQYr1k56nV8rE
+         o3zeJRPYB3OZ4HmFZkY4ljMcl+ZORKalkwt2xYU/TL2RP26UfyvL+769JtHe3XWT5ueN
+         ijTa4mEDt2aioGxHPRwTcecsMjQCESwLQwCY4t9cZVSlRRUT7n6kP26yN+lL+RDHtVHP
+         6cXQ==
+X-Gm-Message-State: ACgBeo3X54UF2XvAZ4lkccI1zCn9bYY6H2/iq4B2+ZGGIYPGDEqWlE8Q
+	kKUCHZxWF80jOE3m9/A2AnUvhi2WS2c=
+X-Google-Smtp-Source: AA6agR4CSgZfYughTw1oP2TGtJ/Gx4qpWPKVumSGbjZh4UG9V5skHPeijnTVviS5CargVPsvloUs2cN/SRk=
 X-Received: from surenb-spec.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:3e30])
- (user=surenb job=sendgmr) by 2002:a17:902:b094:b0:173:12d1:4ece with SMTP id
- p20-20020a170902b09400b0017312d14ecemr18383730plr.117.1661808370030; Mon, 29
- Aug 2022 14:26:10 -0700 (PDT)
-Date: Mon, 29 Aug 2022 21:25:22 +0000
+ (user=surenb job=sendgmr) by 2002:a17:90b:2c11:b0:1fd:e56c:79de with SMTP id
+ rv17-20020a17090b2c1100b001fde56c79demr4481996pjb.201.1661808371494; Mon, 29
+ Aug 2022 14:26:11 -0700 (PDT)
+Date: Mon, 29 Aug 2022 21:25:23 +0000
 In-Reply-To: <20220829212531.3184856-1-surenb@google.com>
 Mime-Version: 1.0
 References: <20220829212531.3184856-1-surenb@google.com>
 X-Mailer: git-send-email 2.37.2.672.g94769d06f0-goog
-Message-ID: <20220829212531.3184856-20-surenb@google.com>
-Subject: [RFC PATCH 19/28] mm: disallow do_swap_page to handle page faults
- under VMA lock
+Message-ID: <20220829212531.3184856-21-surenb@google.com>
+Subject: [RFC PATCH 20/28] mm: introduce per-VMA lock statistics
 From: Suren Baghdasaryan <surenb@google.com>
 To: akpm@linux-foundation.org
 Content-Type: text/plain; charset="UTF-8"
@@ -80,31 +79,84 @@ Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Due to the possibility of do_swap_page dropping mmap_lock, abort fault
-handling under VMA lock and retry holding mmap_lock. This can be handled
-more gracefully in the future.
+Add a new CONFIG_PER_VMA_LOCK_STATS config option to dump extra
+statistics about handling page fault under VMA lock.
 
 Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 ---
- mm/memory.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ include/linux/vm_event_item.h | 6 ++++++
+ include/linux/vmstat.h        | 6 ++++++
+ mm/Kconfig.debug              | 8 ++++++++
+ mm/vmstat.c                   | 6 ++++++
+ 4 files changed, 26 insertions(+)
 
-diff --git a/mm/memory.c b/mm/memory.c
-index 9ac9944e8c62..29d2f49f922a 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -3738,6 +3738,11 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
- 	vm_fault_t ret = 0;
- 	void *shadow = NULL;
+diff --git a/include/linux/vm_event_item.h b/include/linux/vm_event_item.h
+index f3fc36cd2276..a325783ed05d 100644
+--- a/include/linux/vm_event_item.h
++++ b/include/linux/vm_event_item.h
+@@ -150,6 +150,12 @@ enum vm_event_item { PGPGIN, PGPGOUT, PSWPIN, PSWPOUT,
+ #ifdef CONFIG_X86
+ 		DIRECT_MAP_LEVEL2_SPLIT,
+ 		DIRECT_MAP_LEVEL3_SPLIT,
++#endif
++#ifdef CONFIG_PER_VMA_LOCK_STATS
++		VMA_LOCK_SUCCESS,
++		VMA_LOCK_ABORT,
++		VMA_LOCK_RETRY,
++		VMA_LOCK_MISS,
+ #endif
+ 		NR_VM_EVENT_ITEMS
+ };
+diff --git a/include/linux/vmstat.h b/include/linux/vmstat.h
+index bfe38869498d..0c2611899cfc 100644
+--- a/include/linux/vmstat.h
++++ b/include/linux/vmstat.h
+@@ -131,6 +131,12 @@ static inline void vm_events_fold_cpu(int cpu)
+ #define count_vm_vmacache_event(x) do {} while (0)
+ #endif
  
-+	if (vmf->flags & FAULT_FLAG_VMA_LOCK) {
-+		ret = VM_FAULT_RETRY;
-+		goto out;
-+	}
++#ifdef CONFIG_PER_VMA_LOCK_STATS
++#define count_vm_vma_lock_event(x) count_vm_event(x)
++#else
++#define count_vm_vma_lock_event(x) do {} while (0)
++#endif
 +
- 	if (!pte_unmap_same(vmf))
- 		goto out;
+ #define __count_zid_vm_events(item, zid, delta) \
+ 	__count_vm_events(item##_NORMAL - ZONE_NORMAL + zid, delta)
  
+diff --git a/mm/Kconfig.debug b/mm/Kconfig.debug
+index ce8dded36de9..075642763a03 100644
+--- a/mm/Kconfig.debug
++++ b/mm/Kconfig.debug
+@@ -207,3 +207,11 @@ config PTDUMP_DEBUGFS
+ 	  kernel.
+ 
+ 	  If in doubt, say N.
++
++
++config PER_VMA_LOCK_STATS
++	bool "Statistics for per-vma locks"
++	depends on PER_VMA_LOCK
++	help
++	  Statistics for per-vma locks.
++	  If in doubt, say N.
+diff --git a/mm/vmstat.c b/mm/vmstat.c
+index 90af9a8572f5..3f3804c846a6 100644
+--- a/mm/vmstat.c
++++ b/mm/vmstat.c
+@@ -1411,6 +1411,12 @@ const char * const vmstat_text[] = {
+ 	"direct_map_level2_splits",
+ 	"direct_map_level3_splits",
+ #endif
++#ifdef CONFIG_PER_VMA_LOCK_STATS
++	"vma_lock_success",
++	"vma_lock_abort",
++	"vma_lock_retry",
++	"vma_lock_miss",
++#endif
+ #endif /* CONFIG_VM_EVENT_COUNTERS || CONFIG_MEMCG */
+ };
+ #endif /* CONFIG_PROC_FS || CONFIG_SYSFS || CONFIG_NUMA || CONFIG_MEMCG */
 -- 
 2.37.2.672.g94769d06f0-goog
 
