@@ -2,82 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 204BB5A5F6A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Aug 2022 11:29:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4CE65A60FD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Aug 2022 12:44:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MH27f06Dyz3c4c
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Aug 2022 19:29:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MH3pS58Pkz3c5D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Aug 2022 20:44:32 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=l/RBizF6;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=fVf/5xnC;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::12f; helo=mail-lf1-x12f.google.com; envelope-from=krzysztof.kozlowski@linaro.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=l/RBizF6;
-	dkim-atps=neutral
-Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MH26y4BxYz2xkr
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Aug 2022 19:28:39 +1000 (AEST)
-Received: by mail-lf1-x12f.google.com with SMTP id m7so5771504lfq.8
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Aug 2022 02:28:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc;
-        bh=FmzIDD4Pa7+MmcfVJAwljvGaSQDMssbd6GqQpiHG2xs=;
-        b=l/RBizF6kzePEfcYyZqRb6nMeIozE3Plc6MK0BE1z9FSW6eEoTADB7lH50rjVtKVQq
-         aTqmCKBtnm6wV5Kxht5W+Ewwq+uFCzHlcHlgGiTPkWOJdSETsWYLh61oYlnGg5owVOt4
-         gTgRcao62+Di9UQGpr8ywKs/U7T16LOlJPS3gfiRUCGgQ1t+mGhWOrabo3LCkRdrlRhV
-         LGOm4OsQsPsCD1yoyrc1650LghtiO8wVRy/t2PRKP/bbZ8GUCFO4sCcWknY7m03qo9ei
-         zhMZEP9GT1iqij0GtA82IvCC+xLVClsJgUcZzL92rTS+HteejrYHKWXXwNnafYTLpewu
-         Yppg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc;
-        bh=FmzIDD4Pa7+MmcfVJAwljvGaSQDMssbd6GqQpiHG2xs=;
-        b=m8lzxqZ56OMkN1FbAymCYn55fpWaWIGRh2EtdjX2ORjOQJl5b7WTq2qm1VooVSLfXJ
-         U+z+Vdn94IYfIVI/vsLRsYYyA2vuy39fPTR55hBN2+co6WBlt4zSmvBsGFXgBOuMrn7U
-         64DuYEz50A62ex5VMaLlGOVVhfsIWpW0v5BoEua/lv1DVPXy9S6EvgdgO2sed7wASwjg
-         xIXrCqGGrDTxg4mrrC7QSapKiDhwqZ5D0oCoq4nmvw3rTZMSxBIKWx7fKmc779aH/v/O
-         NoWqDHd3JFJ9GL6KqlAn7UfyH/5GmmajbwG6OeHGuBthgyDQ5ixhcnwHjXonby6COpIh
-         SixA==
-X-Gm-Message-State: ACgBeo0Se0v5ecLHlhXqZ8JNu+EJYOc88aS7uah0j2L9bsCK6ETGlAPZ
-	oVMUSV1hpwS9Odo0PM/1GACoTg==
-X-Google-Smtp-Source: AA6agR4+KSqYDLnziLnnQeT1r6I0LXNAxazi5IGv/j87wuVt+YLGrV9a67iwU0YcX+hsxrZFnxmBBw==
-X-Received: by 2002:a05:6512:10d4:b0:492:ede1:ec75 with SMTP id k20-20020a05651210d400b00492ede1ec75mr7014503lfg.146.1661851713946;
-        Tue, 30 Aug 2022 02:28:33 -0700 (PDT)
-Received: from [192.168.28.124] (balticom-73-99-134.balticom.lv. [109.73.99.134])
-        by smtp.gmail.com with ESMTPSA id t28-20020a056512031c00b00492e4c97ca3sm85446lfp.246.2022.08.30.02.28.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 Aug 2022 02:28:33 -0700 (PDT)
-Message-ID: <f614f968-baf4-6b4d-507e-29221e1469bc@linaro.org>
-Date: Tue, 30 Aug 2022 12:28:32 +0300
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MH3ns4L9qz3bcc
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Aug 2022 20:44:01 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=fVf/5xnC;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4MH3nr5wnlz4xG6;
+	Tue, 30 Aug 2022 20:44:00 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1661856241;
+	bh=7FFszpKAwHkUcxfIIXTrsjmWHYTLLEAcEncl3AbzgmY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=fVf/5xnChhmP5DNHOSS9QSyyCN2N3VX7gGKy3eglqlHvJuahftMSqb1BlXSI9rrDX
+	 6DP3LrXiQXRsB05renWOiocFqYxY6u+JvWhyAgxQMcFdeoBKSj2pDJ+7uM2dZbBiRO
+	 SrkQFagFwarD+ForSxKLf234yS6ScXJQQJjah00n8cFUjgFncZ8ZfzWyst8FL6Uwon
+	 F9NbMQUnA6MHgi+jMKkSDYjde0gnDgZSLiCKDJu/LsUAp8pPtme9dzAmdrmmWMcbeY
+	 zfH3AaHP1JvZm+QsJljRKHTVELGAUWcEsC1jQOE0VRBTjrt3dkJIityRWZ2OMwN3e4
+	 Ybf3KFKj11ciw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Masahiro Yamada
+ <masahiroy@kernel.org>
+Subject: Re: [PATCH] powerpc: clean up binutils version check
+In-Reply-To: <7daf34ca-ed5e-90ea-8ccc-6821127cbd96@csgroup.eu>
+References: <20220827164056.3365356-1-masahiroy@kernel.org>
+ <58a90319-668f-7c87-4168-e0df10644aa7@csgroup.eu>
+ <CAK7LNATJiQc5HMdsct1S5z15-b1fzc5-Y2xtBs6oT17Na79H_w@mail.gmail.com>
+ <7daf34ca-ed5e-90ea-8ccc-6821127cbd96@csgroup.eu>
+Date: Tue, 30 Aug 2022 20:43:56 +1000
+Message-ID: <87o7w2j9jn.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.0
-Subject: Re: [PATCH 1/5] ASoC: dt-bindings: fsl_rpmsg: Add a property to
- assign platform driver name
-Content-Language: en-US
-To: Chancel Liu <chancel.liu@nxp.com>, lgirdwood@gmail.com,
- broonie@kernel.org, perex@perex.cz, tiwai@suse.com,
- alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
- robh+dt@kernel.org, devicetree@vger.kernel.org,
- krzysztof.kozlowski+dt@linaro.org, shengjiu.wang@nxp.com,
- Xiubo.Lee@gmail.com, festevam@gmail.com, nicoleotsuka@gmail.com,
- linuxppc-dev@lists.ozlabs.org
-References: <20220829075144.2405000-1-chancel.liu@nxp.com>
- <20220829075144.2405000-2-chancel.liu@nxp.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220829075144.2405000-2-chancel.liu@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,72 +62,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Michal Marek <michal.lkml@markovi.net>, Kees Cook <keescook@chromium.org>, "linux-kbuild@vger.kernel.org" <linux-kbuild@vger.kernel.org>, Heiko Carstens <hca@linux.ibm.com>, Nick Desaulniers <ndesaulniers@google.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Alexey Dobriyan <adobriyan@gmail.com>, Nathan Chancellor <nathan@kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Ard Biesheuvel <ardb@kernel.org>, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 29/08/2022 10:51, Chancel Liu wrote:
-> Add a string property to assign ASoC platform driver name. It also
-> represents the rpmsg channel this sound card sits on. This property
-> can be omitted if there is only one sound card and it sits on
-> "rpmsg-audio-channel".
-> 
-> Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
-> ---
->  .../devicetree/bindings/sound/fsl,rpmsg.yaml  | 34 +++++++++++++++++--
->  1 file changed, 32 insertions(+), 2 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/sound/fsl,rpmsg.yaml b/Documentation/devicetree/bindings/sound/fsl,rpmsg.yaml
-> index d370c98a62c7..35e3cb9f768b 100644
-> --- a/Documentation/devicetree/bindings/sound/fsl,rpmsg.yaml
-> +++ b/Documentation/devicetree/bindings/sound/fsl,rpmsg.yaml
-> @@ -11,8 +11,11 @@ maintainers:
->  
->  description: |
->    fsl_rpmsg is a virtual audio device. Mapping to real hardware devices
-> -  are SAI, DMA controlled by Cortex M core. What we see from Linux
-> -  side is a device which provides audio service by rpmsg channel.
-> +  are SAI, MICFIL, DMA controlled by Cortex M core. What we see from
-> +  Linux side is a device which provides audio service by rpmsg channel.
-> +  We can create different sound cards which access different hardwares
-> +  such as SAI, MICFIL, .etc through building rpmsg channels between
-> +  Cortex-A and Cortex-M.
->  
->  properties:
->    compatible:
-> @@ -85,6 +88,14 @@ properties:
->        This is a boolean property. If present, the receiving function
->        will be enabled.
->  
-> +  fsl,platform:
-> +    $ref: /schemas/types.yaml#/definitions/string
-> +    description: |
-> +      A string property to assign ASoC platform driver name. 
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> Le 27/08/2022 =C3=A0 20:03, Masahiro Yamada a =C3=A9crit=C2=A0:
+>> On Sun, Aug 28, 2022 at 2:37 AM Christophe Leroy
+>> <christophe.leroy@csgroup.eu> wrote:
+>>> Le 27/08/2022 =C3=A0 18:40, Masahiro Yamada a =C3=A9crit :
+>>>> The checkbin in arch/powerpc/Makefile errors out if ld <=3D 2.24.
+>>>> So, the requirement on PPC is binutils >=3D 2.25. It is cleaner to
+>>>> specify it in scripts/min-tool-version.sh. If binutils < 2.25 is
+>>>> used, the toolchain check will fail in the Kconfig stage going
+>>>> forward.
+>>>>
+>>>> Since binutils >=3D 2.25 is already required, another version test
+>>>> for --save-restore-funcs on PPC64 is always met.
+...
+>>>> diff --git a/scripts/min-tool-version.sh b/scripts/min-tool-version.sh
+>>>> index 250925aab101..7df9f2150ea1 100755
+>>>> --- a/scripts/min-tool-version.sh
+>>>> +++ b/scripts/min-tool-version.sh
+>>>> @@ -14,7 +14,13 @@ fi
+>>>>
+>>>>    case "$1" in
+>>>>    binutils)
+>>>> -     echo 2.23.0
+>>>> +     if [ "$SRCARCH" =3D powerpc ]; then
+>>>
+>>> Isn't this limitation only for ppc64le ?
+>>>
+>>> Refer commit 60e065f70bdb ("powerpc: Reject binutils 2.24 when building
+>>> little endian")
+>>=20
+>> I do not see any CONFIG check in the current checkbin.
+>>=20
+>> Refer commit a3ad84da0760 ("powerpc/toc: Future proof
+>> kernel toc")
+>
+> That's odd. There is no toc on PPC32.
 
-No, this is not a property of hardware. Naming of some drivers in some
-systems does not fit DTS and bindings.
+I think that's just a bug in a3ad84da0760.
 
-> It also
-> +      represents the rpmsg channel this sound card sits on. This property
-> +      can be omitted if there is only one sound card and it sits on
-> +      "rpmsg-audio-channel".
-> +
->  required:
->    - compatible
->    - model
-> @@ -107,3 +118,22 @@ examples:
->                   <&clk IMX8MN_AUDIO_PLL2_OUT>;
->          clock-names = "ipg", "mclk", "dma", "pll8k", "pll11k";
->      };
-> +
-> +  - |
-> +    #include <dt-bindings/clock/imx8mm-clock.h>
-> +
-> +    rpmsg_micfil: rpmsg_micfil {
+But that means we inadvertantly dropped support for 2.24 about 8 months
+ago, and no one noticed.
 
-Node names should be generic.
-https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
+Let's see what the responses are to Nick's proposal to increase the
+minimum to 2.25.1.
 
-Also: no underscores in node names.
-
-Best regards,
-Krzysztof
+cheers
