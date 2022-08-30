@@ -2,57 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 678B85A5CD6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Aug 2022 09:23:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F19DD5A5E96
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Aug 2022 10:50:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MGzLl2BNgz3cBV
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Aug 2022 17:23:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MH1Gx6JN6z3c87
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Aug 2022 18:50:33 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HdPne+/o;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.208.41; helo=mail-ed1-f41.google.com; envelope-from=jirislaby@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.43; helo=mga05.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HdPne+/o;
+	dkim-atps=neutral
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MGzLL4Y60z2xBV
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Aug 2022 17:23:22 +1000 (AEST)
-Received: by mail-ed1-f41.google.com with SMTP id a36so9190480edf.5
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Aug 2022 00:23:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc;
-        bh=h92OFoHcscLoVZdNmDKj0YVmJDx8MKtyLOQI76zzz+M=;
-        b=ho+poF5pDlV0PzKfgrKO3EfTNOpTnEEBcy6rzY2KFpD8UC9kRewovgSRY3atk5pt7P
-         Vu3ObvzhnulblV0mRcJSW/g63HZ2HOL64Y8H07QaeNdUczStteWsiKddwW+21/et/XfA
-         mrvlDjdy9zLKkQWt+clFrW9foPcZMS3aqbx1sTnNaCcwryyydcPvq/YXduievnnD4Xbj
-         5ntdFfiRYN89LpZorg/cbGY0L6d+DnHnYcDWAvLCWVsgXCyIAFTTfyneg+8vYF/ZeDGm
-         5ui5sKWJu+XK3D9q62bCfkIO7cBExpZJ2FqsG3qhGSy1peuyxKwG2oeLQFp0l7MAFp2K
-         /Byw==
-X-Gm-Message-State: ACgBeo2Mfnoej8FlwkfpTa/KuI6d8/KtNxztsorFTqUvOC1VdiTaoxOW
-	FuIvLCIC7Gc5V9pAJntW8aU=
-X-Google-Smtp-Source: AA6agR6GdO78X7ShA7eIwVF55Gd83NZLVU+aV19Oza8mJ9lSkrZ242TTINijF+n3YBED4WKcswXFwA==
-X-Received: by 2002:a05:6402:451:b0:446:7349:f9e8 with SMTP id p17-20020a056402045100b004467349f9e8mr19853745edw.180.1661844197211;
-        Tue, 30 Aug 2022 00:23:17 -0700 (PDT)
-Received: from ?IPV6:2a0b:e7c0:0:107::70f? ([2a0b:e7c0:0:107::70f])
-        by smtp.gmail.com with ESMTPSA id p23-20020a056402045700b00447c646ad1asm6907975edw.57.2022.08.30.00.23.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 Aug 2022 00:23:16 -0700 (PDT)
-Message-ID: <5df0c2fb-0eb4-e0fd-a517-b7ea1d4a8f4e@kernel.org>
-Date: Tue, 30 Aug 2022 09:23:15 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MH1GD0BLCz3bNj
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Aug 2022 18:49:54 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1661849396; x=1693385396;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=QY5pcFaRk9Pil+zQdIFM0ph2NdnnrO8rptdre2dGddM=;
+  b=HdPne+/owTbAFGdwij1KkT+DiSxKL1q+85nHGg0mcybiNzu0lxOhrYiB
+   cexnu7Np3LvNmnbZH1GuHdbJwnDjYSNYC6W3WJoFMZEba7uvLGS9geSew
+   N/AlvjMfZjaHIZ8VO6JEw6rfvAS2g0cGexh1hY3qS4JgE6Lw2fvD6EvEL
+   eE/oXvaFEW++WFFhL4Ng14lRl5+CvrrZpNgTtDYqLxcStkmcwy65yxlzv
+   ANvO4FeTZcFrZpwegD/DgNGgzmovBQx+6LspAnS2pFLZN6+vConw9UGUE
+   I7oPKf5mWAmqcKOCqSDfhZo3EQcEkb2Z3iK+2zo4OA8q9XLt4TjPRokbU
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10454"; a="381418844"
+X-IronPort-AV: E=Sophos;i="5.93,274,1654585200"; 
+   d="scan'208";a="381418844"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2022 01:49:49 -0700
+X-IronPort-AV: E=Sophos;i="5.93,274,1654585200"; 
+   d="scan'208";a="672761845"
+Received: from arnesgom-mobl.ger.corp.intel.com (HELO ijarvine-MOBL2.ger.corp.intel.com) ([10.252.54.235])
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2022 01:49:44 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	linux-serial@vger.kernel.org,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Timur Tabi <timur@kernel.org>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 1/5] serial: ucc_uart: Remove custom frame size calculation
+Date: Tue, 30 Aug 2022 11:49:21 +0300
+Message-Id: <20220830084925.5608-2-ilpo.jarvinen@linux.intel.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20220830084925.5608-1-ilpo.jarvinen@linux.intel.com>
+References: <20220830084925.5608-1-ilpo.jarvinen@linux.intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.0
-Subject: Re: [PATCH] tty: move from strlcpy with unused retval to strscpy
-Content-Language: en-US
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>,
- linux-kernel@vger.kernel.org
-References: <20220818210113.7469-1-wsa+renesas@sang-engineering.com>
-From: Jiri Slaby <jirislaby@kernel.org>
-In-Reply-To: <20220818210113.7469-1-wsa+renesas@sang-engineering.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,128 +71,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sparclinux@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, linux-serial@vger.kernel.org
+Cc: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, Andy Shevchenko <andy.shevchenko@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 18. 08. 22, 23:01, Wolfram Sang wrote:
-> Follow the advice of the below link and prefer 'strscpy' in this
-> subsystem. Conversion is 1:1 because the return value is not used.
-> Generated by a coccinelle script.
+The number of bits can be calculated using tty_get_frame_size(), no
+need for the driver to do it on its own.
 
-Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
+Also remove a comment on number of bits that doesn't match the code nor
+the comment on ucc_uart_pram's rx_length ("minus 1" part differs). That
+comment seems a verbatim copy of that in cpm_uart/cpm_uart_core.c
+anyway so perhaps it was just copied over w/o much thinking.
 
-> Link: https://lore.kernel.org/r/CAHk-=wgfRnXz0W3D37d01q3JFkr_i_uTL=V6A6G1oUZcprmknw@mail.gmail.com/
-> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-> ---
->   drivers/tty/hvc/hvcs.c           | 2 +-
->   drivers/tty/serial/earlycon.c    | 6 +++---
->   drivers/tty/serial/serial_core.c | 2 +-
->   drivers/tty/serial/sunsu.c       | 6 +++---
->   drivers/tty/serial/sunzilog.c    | 6 +++---
->   5 files changed, 11 insertions(+), 11 deletions(-)
-> 
-> diff --git a/drivers/tty/hvc/hvcs.c b/drivers/tty/hvc/hvcs.c
-> index 9b7e8246a464..b79ce8d34f11 100644
-> --- a/drivers/tty/hvc/hvcs.c
-> +++ b/drivers/tty/hvc/hvcs.c
-> @@ -839,7 +839,7 @@ static void hvcs_set_pi(struct hvcs_partner_info *pi, struct hvcs_struct *hvcsd)
->   	hvcsd->p_partition_ID  = pi->partition_ID;
->   
->   	/* copy the null-term char too */
-> -	strlcpy(hvcsd->p_location_code, pi->location_code,
-> +	strscpy(hvcsd->p_location_code, pi->location_code,
->   		sizeof(hvcsd->p_location_code));
->   }
->   
-> diff --git a/drivers/tty/serial/earlycon.c b/drivers/tty/serial/earlycon.c
-> index 88d08ba1ca83..a5f380584cda 100644
-> --- a/drivers/tty/serial/earlycon.c
-> +++ b/drivers/tty/serial/earlycon.c
-> @@ -67,7 +67,7 @@ static void __init earlycon_init(struct earlycon_device *device,
->   	if (*s)
->   		earlycon->index = simple_strtoul(s, NULL, 10);
->   	len = s - name;
-> -	strlcpy(earlycon->name, name, min(len + 1, sizeof(earlycon->name)));
-> +	strscpy(earlycon->name, name, min(len + 1, sizeof(earlycon->name)));
->   	earlycon->data = &early_console_dev;
->   }
->   
-> @@ -123,7 +123,7 @@ static int __init parse_options(struct earlycon_device *device, char *options)
->   		device->baud = simple_strtoul(options, NULL, 0);
->   		length = min(strcspn(options, " ") + 1,
->   			     (size_t)(sizeof(device->options)));
-> -		strlcpy(device->options, options, length);
-> +		strscpy(device->options, options, length);
->   	}
->   
->   	return 0;
-> @@ -304,7 +304,7 @@ int __init of_setup_earlycon(const struct earlycon_id *match,
->   
->   	if (options) {
->   		early_console_dev.baud = simple_strtoul(options, NULL, 0);
-> -		strlcpy(early_console_dev.options, options,
-> +		strscpy(early_console_dev.options, options,
->   			sizeof(early_console_dev.options));
->   	}
->   	earlycon_init(&early_console_dev, match->name);
-> diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
-> index 12c87cd201a7..3561a160cbd5 100644
-> --- a/drivers/tty/serial/serial_core.c
-> +++ b/drivers/tty/serial/serial_core.c
-> @@ -2497,7 +2497,7 @@ uart_report_port(struct uart_driver *drv, struct uart_port *port)
->   			 "MMIO 0x%llx", (unsigned long long)port->mapbase);
->   		break;
->   	default:
-> -		strlcpy(address, "*unknown*", sizeof(address));
-> +		strscpy(address, "*unknown*", sizeof(address));
->   		break;
->   	}
->   
-> diff --git a/drivers/tty/serial/sunsu.c b/drivers/tty/serial/sunsu.c
-> index 84d545e5a8c7..d5dcb612804e 100644
-> --- a/drivers/tty/serial/sunsu.c
-> +++ b/drivers/tty/serial/sunsu.c
-> @@ -1217,13 +1217,13 @@ static int sunsu_kbd_ms_init(struct uart_sunsu_port *up)
->   	serio->id.type = SERIO_RS232;
->   	if (up->su_type == SU_PORT_KBD) {
->   		serio->id.proto = SERIO_SUNKBD;
-> -		strlcpy(serio->name, "sukbd", sizeof(serio->name));
-> +		strscpy(serio->name, "sukbd", sizeof(serio->name));
->   	} else {
->   		serio->id.proto = SERIO_SUN;
->   		serio->id.extra = 1;
-> -		strlcpy(serio->name, "sums", sizeof(serio->name));
-> +		strscpy(serio->name, "sums", sizeof(serio->name));
->   	}
-> -	strlcpy(serio->phys,
-> +	strscpy(serio->phys,
->   		(!(up->port.line & 1) ? "su/serio0" : "su/serio1"),
->   		sizeof(serio->phys));
->   
-> diff --git a/drivers/tty/serial/sunzilog.c b/drivers/tty/serial/sunzilog.c
-> index c14275d83b0b..c44cf613ff1a 100644
-> --- a/drivers/tty/serial/sunzilog.c
-> +++ b/drivers/tty/serial/sunzilog.c
-> @@ -1307,13 +1307,13 @@ static void sunzilog_register_serio(struct uart_sunzilog_port *up)
->   	serio->id.type = SERIO_RS232;
->   	if (up->flags & SUNZILOG_FLAG_CONS_KEYB) {
->   		serio->id.proto = SERIO_SUNKBD;
-> -		strlcpy(serio->name, "zskbd", sizeof(serio->name));
-> +		strscpy(serio->name, "zskbd", sizeof(serio->name));
->   	} else {
->   		serio->id.proto = SERIO_SUN;
->   		serio->id.extra = 1;
-> -		strlcpy(serio->name, "zsms", sizeof(serio->name));
-> +		strscpy(serio->name, "zsms", sizeof(serio->name));
->   	}
-> -	strlcpy(serio->phys,
-> +	strscpy(serio->phys,
->   		((up->flags & SUNZILOG_FLAG_CONS_KEYB) ?
->   		 "zs/serio0" : "zs/serio1"),
->   		sizeof(serio->phys));
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+---
+ drivers/tty/serial/ucc_uart.c | 15 +--------------
+ 1 file changed, 1 insertion(+), 14 deletions(-)
 
+diff --git a/drivers/tty/serial/ucc_uart.c b/drivers/tty/serial/ucc_uart.c
+index 3cc9ef08455c..7331964163c5 100644
+--- a/drivers/tty/serial/ucc_uart.c
++++ b/drivers/tty/serial/ucc_uart.c
+@@ -853,13 +853,6 @@ static void qe_uart_set_termios(struct uart_port *port,
+ 	u16 upsmr = ioread16be(&uccp->upsmr);
+ 	struct ucc_uart_pram __iomem *uccup = qe_port->uccup;
+ 	u16 supsmr = ioread16be(&uccup->supsmr);
+-	u8 char_length = 2; /* 1 + CL + PEN + 1 + SL */
+-
+-	/* Character length programmed into the mode register is the
+-	 * sum of: 1 start bit, number of data bits, 0 or 1 parity bit,
+-	 * 1 or 2 stop bits, minus 1.
+-	 * The value 'bits' counts this for us.
+-	 */
+ 
+ 	/* byte size */
+ 	upsmr &= UCC_UART_UPSMR_CL_MASK;
+@@ -869,22 +862,18 @@ static void qe_uart_set_termios(struct uart_port *port,
+ 	case CS5:
+ 		upsmr |= UCC_UART_UPSMR_CL_5;
+ 		supsmr |= UCC_UART_SUPSMR_CL_5;
+-		char_length += 5;
+ 		break;
+ 	case CS6:
+ 		upsmr |= UCC_UART_UPSMR_CL_6;
+ 		supsmr |= UCC_UART_SUPSMR_CL_6;
+-		char_length += 6;
+ 		break;
+ 	case CS7:
+ 		upsmr |= UCC_UART_UPSMR_CL_7;
+ 		supsmr |= UCC_UART_SUPSMR_CL_7;
+-		char_length += 7;
+ 		break;
+ 	default:	/* case CS8 */
+ 		upsmr |= UCC_UART_UPSMR_CL_8;
+ 		supsmr |= UCC_UART_SUPSMR_CL_8;
+-		char_length += 8;
+ 		break;
+ 	}
+ 
+@@ -892,13 +881,11 @@ static void qe_uart_set_termios(struct uart_port *port,
+ 	if (termios->c_cflag & CSTOPB) {
+ 		upsmr |= UCC_UART_UPSMR_SL;
+ 		supsmr |= UCC_UART_SUPSMR_SL;
+-		char_length++;  /* + SL */
+ 	}
+ 
+ 	if (termios->c_cflag & PARENB) {
+ 		upsmr |= UCC_UART_UPSMR_PEN;
+ 		supsmr |= UCC_UART_SUPSMR_PEN;
+-		char_length++;  /* + PEN */
+ 
+ 		if (!(termios->c_cflag & PARODD)) {
+ 			upsmr &= ~(UCC_UART_UPSMR_RPM_MASK |
+@@ -953,7 +940,7 @@ static void qe_uart_set_termios(struct uart_port *port,
+ 	iowrite16be(upsmr, &uccp->upsmr);
+ 	if (soft_uart) {
+ 		iowrite16be(supsmr, &uccup->supsmr);
+-		iowrite8(char_length, &uccup->rx_length);
++		iowrite8(tty_get_frame_size(termios->c_cflag), &uccup->rx_length);
+ 
+ 		/* Soft-UART requires a 1X multiplier for TX */
+ 		qe_setbrg(qe_port->us_info.rx_clock, baud, 16);
 -- 
-js
-suse labs
+2.30.2
 
