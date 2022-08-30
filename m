@@ -2,50 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E289E5A7131
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Aug 2022 00:56:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FC605A714E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Aug 2022 01:01:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MHN2y5KcYz3c96
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Aug 2022 08:56:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MHN8L0bVrz3cB1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Aug 2022 09:01:06 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OipFgRsY;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rpGy/AMt;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OipFgRsY;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rpGy/AMt;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MHN2H4mYZz2xGK
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Aug 2022 08:55:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MHN7l01c0z2xGS
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Aug 2022 09:00:34 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 22CC5614CB;
-	Tue, 30 Aug 2022 22:55:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62D86C433D7;
-	Tue, 30 Aug 2022 22:55:46 +0000 (UTC)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 841B4B81CCF;
+	Tue, 30 Aug 2022 23:00:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05FC2C433B5;
+	Tue, 30 Aug 2022 23:00:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1661900146;
-	bh=dmBMU10Cnw8oAmaoJBci0czuI1FsIM74P4Qly19Szk8=;
-	h=From:To:Cc:Subject:Date:From;
-	b=OipFgRsYU258ug8u2T8Pa48/9qqcaBUlU/SGCXR7cHm5lpgj00XrcMe9qUeTpbwpj
-	 djsrOjN4Dmhuvq1YoxfR3JnvTU8NL2pVAv+mM1fgvpCXga4ZchjwDhD5KBEKrM3hNa
-	 Zqbq0wXNls9eAc9D+c3GDgzM7lQ7JLR5xbySvypoyl2hMm6lIbLvIc/JqkBchSv9+i
-	 i1+BqzAH7Or9SIY06zV05wubPHeIDmP4DDe5GZI+2hcEtL3erkpdwTfR93u6gGytga
-	 6CB22SY6ym4M311jI8aDZTfq3TWnh6LXjNyVPNQl2qn9GIyAAnuhFGUlTCakq7f0H4
-	 TXDtPtj/MYRYg==
+	s=k20201202; t=1661900429;
+	bh=0mF3WeREdxfLanSbcau1tiUcnV31EVHGqWeXuYMj6NM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=rpGy/AMtSAn+HdVaQW3eBPtP3Er2o0Zb7De0VP4AiuCrElIzbDKGU/KYT9JayRNvX
+	 UT8+r8Lw3vUb1kpeMceP+hqEq9aCZPMbu3uK5cK4eFae9nyyoNNNKJqUoe8JlBpBq4
+	 40QGjDe+g1TlTYRdZKQLhNvvBc5GcCP0nm3Snjp44TsyRSGk3k8M8MlGjhfKCQ0I1F
+	 jadGksW0lC5pftJgOflyC05imd/RgKy8BMs5ikrJAttRcQr4T2TLMwj72bKMuEhAqx
+	 NGTdb4wvQX6TNFl684MKN8DWcNelpkU+3Nn0eHgRCgsoowe2MsbbeB9JSTbNFptq2K
+	 7jZISz8ODLd6g==
 Received: by pali.im (Postfix)
-	id 5094A834; Wed, 31 Aug 2022 00:55:43 +0200 (CEST)
+	id 3CD7F834; Wed, 31 Aug 2022 01:00:26 +0200 (CEST)
 From: =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH] powerpc: dts: turris1x.dts: Fix NOR partitions labels
-Date: Wed, 31 Aug 2022 00:55:00 +0200
-Message-Id: <20220830225500.8856-1-pali@kernel.org>
+To: Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH v2 1/3] dt-bindings: reset: syscon-reboot: Add priority property
+Date: Wed, 31 Aug 2022 01:00:10 +0200
+Message-Id: <20220830230012.9429-1-pali@kernel.org>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20220820102925.29476-1-pali@kernel.org>
+References: <20220820102925.29476-1-pali@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -60,54 +64,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: =?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>, devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Partition partition@20000 contains generic kernel image and it does not
-have to be used only for rescue purposes. Partition partition@1c0000
-contains bootable rescue system and partition partition@340000 contains
-factory image/data for restoring to NAND. So change partition labels to
-better fit their purpose by removing possible misleading substring "rootfs"
-from these labels.
+This new optional priority property allows to specify custom priority level
+of reset device. Default level was always 192.
 
-Fixes: 54c15ec3b738 ("powerpc: dts: Add DTS file for CZ.NIC Turris 1.x routers")
 Signed-off-by: Pali Rohár <pali@kernel.org>
----
- arch/powerpc/boot/dts/turris1x.dts | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/arch/powerpc/boot/dts/turris1x.dts b/arch/powerpc/boot/dts/turris1x.dts
-index b7635f0b87a9..64c0dd733e40 100644
---- a/arch/powerpc/boot/dts/turris1x.dts
-+++ b/arch/powerpc/boot/dts/turris1x.dts
-@@ -263,21 +263,21 @@
- 				};
+---
+Changes in v2:
+* Change sint32 to int32
+* Add default
+---
+ .../devicetree/bindings/power/reset/syscon-reboot.yaml       | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/power/reset/syscon-reboot.yaml b/Documentation/devicetree/bindings/power/reset/syscon-reboot.yaml
+index da2509724812..4c8b0d0a0111 100644
+--- a/Documentation/devicetree/bindings/power/reset/syscon-reboot.yaml
++++ b/Documentation/devicetree/bindings/power/reset/syscon-reboot.yaml
+@@ -42,6 +42,11 @@ properties:
+     $ref: /schemas/types.yaml#/definitions/uint32
+     description: The reset value written to the reboot register (32 bit access).
  
- 				partition@20000 {
--					/* 1.7 MB for Rescue Linux Kernel Image */
-+					/* 1.7 MB for Linux Kernel Image */
- 					reg = <0x00020000 0x001a0000>;
--					label = "rescue-kernel";
-+					label = "kernel";
- 				};
- 
- 				partition@1c0000 {
- 					/* 1.5 MB for Rescue JFFS2 Root File System */
- 					reg = <0x001c0000 0x00180000>;
--					label = "rescue-rootfs";
-+					label = "rescue";
- 				};
- 
- 				partition@340000 {
--					/* 11 MB for TAR.XZ Backup with content of NAND Root File System */
-+					/* 11 MB for TAR.XZ Archive with Factory content of NAND Root File System */
- 					reg = <0x00340000 0x00b00000>;
--					label = "backup-rootfs";
-+					label = "factory";
- 				};
- 
- 				partition@e40000 {
++  priority:
++    $ref: /schemas/types.yaml#/definitions/int32
++    description: Priority level of this syscon reset device.
++    default: 192
++
+ required:
+   - compatible
+   - offset
 -- 
 2.20.1
 
