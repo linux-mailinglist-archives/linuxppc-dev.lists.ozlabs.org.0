@@ -1,51 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2CD85A6710
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Aug 2022 17:13:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7E675A67D6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Aug 2022 18:03:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MH9n952mBz3c99
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Aug 2022 01:13:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MHBtC04p4z3cCL
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Aug 2022 02:03:15 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fK9cBnGK;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=ot8Tg+6/;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=nathan@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=softfail (domain owner discourages use of this host) smtp.mailfrom=kernel.org (client-ip=210.131.2.91; helo=conssluserg-06.nifty.com; envelope-from=masahiroy@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fK9cBnGK;
+	dkim=pass (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=ot8Tg+6/;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Received: from conssluserg-06.nifty.com (conssluserg-06.nifty.com [210.131.2.91])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MH9mX0Mccz3bkR
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Aug 2022 01:13:15 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 01490B81C55;
-	Tue, 30 Aug 2022 15:13:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F28E1C433D6;
-	Tue, 30 Aug 2022 15:13:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1661872389;
-	bh=Pgu0YF4oBMGHXYWgr2TFEwahMVgu94xHlgw22WwIyBU=;
-	h=From:To:Cc:Subject:Date:From;
-	b=fK9cBnGKjoVCbzqeVmKWBzw9/2/Tladl+REU5tEVU0MW5DMA2JK+EICuWAEaD3Ekg
-	 jOLXpOo3PRDVzImqYVz0IC6i5iGXps49kYZ+sSoTo9lzF0ySMEw6Ort7P4x+fk2TeP
-	 EXDJF1zCuBd6ZdEogQGN/ld1wXA34gYZTaaqC7H/klPGdivESDnFv6zcd8R8cRFCSG
-	 Jqe4FYD/xS3/r9s+1jM+ayvQVEj+jJH5Rx0PAqF/d/wVls4vorBfXzepWbs0s52tAP
-	 n4Xk+N96K8Ob/VnVgGAlbRG3ttWXFEdAUzD+8JV81vx2d92wBxemEnhckcFN3v4HBv
-	 3mFu13UZGu/PA==
-From: Nathan Chancellor <nathan@kernel.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH] powerpc/papr_scm: Ensure rc is always initialized in papr_scm_pmu_register()
-Date: Tue, 30 Aug 2022 08:12:56 -0700
-Message-Id: <20220830151256.1473169-1-nathan@kernel.org>
-X-Mailer: git-send-email 2.37.2
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MHBsZ2575z3bkh
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Aug 2022 02:02:41 +1000 (AEST)
+Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42]) (authenticated)
+	by conssluserg-06.nifty.com with ESMTP id 27UG2Ji8011018
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Aug 2022 01:02:20 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-06.nifty.com 27UG2Ji8011018
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+	s=dec2015msa; t=1661875340;
+	bh=H2q6GsBXBNOWOoYdMHQTssZI3S7WHvmPpJBukTaedbs=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ot8Tg+6/1s1kmiJLw1ydznab3YOfSiNXdCuw44p+8JjqI2khZ0fujC+26zRSDhwWe
+	 DriNnvPcUk8ZlxIwtzCJJTdzcfp1ikChCPhVm/QlpNc1URRYswQsxeFvz5Y0qsraMP
+	 mRYwQADHO0SyShIr1WqN8KD2TMDqPbWQh1GNhTUmGsblS/tgNY0MijCVFg6p3111gU
+	 wRjbSA8tvEKeD4emv1i5AmDFdHLz+rOxkLH6z7nPhgTmoH3VbBtN1+G4F3L05FzzDm
+	 OfKjq5LyGqtgjxTxAV0M3OFc0698u7R1tn7uq7E9V4GsqZZBw2ddZKaChAlqfY6RKf
+	 1WgBF7+vpczlw==
+X-Nifty-SrcIP: [209.85.160.42]
+Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-11ba6e79dd1so17728975fac.12
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Aug 2022 09:02:19 -0700 (PDT)
+X-Gm-Message-State: ACgBeo2qDggNCSGd2ebEn7I4dV7PPCpSXvHGdJo9IaJ5ZAUB8qoaH2zi
+	ZnfIW+VteGUp4wDzZYJosl51Jwhj/PYd0Naq/jk=
+X-Google-Smtp-Source: AA6agR6MoD4lCTIAFc8q3Sk8P7vy+Sb/2h4auKZ7ZeB5eFyZj15pT1A0AmZO39Wc+iLf5CYwY4KHo8nucUreL/XP98k=
+X-Received: by 2002:a05:6870:c58b:b0:10b:d21d:ad5e with SMTP id
+ ba11-20020a056870c58b00b0010bd21dad5emr10217645oab.287.1661875338862; Tue, 30
+ Aug 2022 09:02:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20220827164056.3365356-1-masahiroy@kernel.org>
+ <58a90319-668f-7c87-4168-e0df10644aa7@csgroup.eu> <CAK7LNATJiQc5HMdsct1S5z15-b1fzc5-Y2xtBs6oT17Na79H_w@mail.gmail.com>
+ <7daf34ca-ed5e-90ea-8ccc-6821127cbd96@csgroup.eu> <87o7w2j9jn.fsf@mpe.ellerman.id.au>
+In-Reply-To: <87o7w2j9jn.fsf@mpe.ellerman.id.au>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Wed, 31 Aug 2022 01:01:25 +0900
+X-Gmail-Original-Message-ID: <CAK7LNASshE1zomfsvJf61YrAWH-AfFzx8y_NBey5MWH+3G4gvQ@mail.gmail.com>
+Message-ID: <CAK7LNASshE1zomfsvJf61YrAWH-AfFzx8y_NBey5MWH+3G4gvQ@mail.gmail.com>
+Subject: Re: [PATCH] powerpc: clean up binutils version check
+To: Michael Ellerman <mpe@ellerman.id.au>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,63 +68,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tom Rix <trix@redhat.com>, llvm@lists.linux.dev, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, patches@lists.linux.dev, Nathan Chancellor <nathan@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Kajol Jain <kjain@linux.ibm.com>, Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Michal Marek <michal.lkml@markovi.net>, Kees Cook <keescook@chromium.org>, "linux-kbuild@vger.kernel.org" <linux-kbuild@vger.kernel.org>, Heiko Carstens <hca@linux.ibm.com>, Nick Desaulniers <ndesaulniers@google.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Ard Biesheuvel <ardb@kernel.org>, Nathan Chancellor <nathan@kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Alexey Dobriyan <adobriyan@gmail.com>, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Clang warns:
+On Tue, Aug 30, 2022 at 7:44 PM Michael Ellerman <mpe@ellerman.id.au> wrote=
+:
+>
+> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> > Le 27/08/2022 =C3=A0 20:03, Masahiro Yamada a =C3=A9crit :
+> >> On Sun, Aug 28, 2022 at 2:37 AM Christophe Leroy
+> >> <christophe.leroy@csgroup.eu> wrote:
+> >>> Le 27/08/2022 =C3=A0 18:40, Masahiro Yamada a =C3=A9crit :
+> >>>> The checkbin in arch/powerpc/Makefile errors out if ld <=3D 2.24.
+> >>>> So, the requirement on PPC is binutils >=3D 2.25. It is cleaner to
+> >>>> specify it in scripts/min-tool-version.sh. If binutils < 2.25 is
+> >>>> used, the toolchain check will fail in the Kconfig stage going
+> >>>> forward.
+> >>>>
+> >>>> Since binutils >=3D 2.25 is already required, another version test
+> >>>> for --save-restore-funcs on PPC64 is always met.
+> ...
+> >>>> diff --git a/scripts/min-tool-version.sh b/scripts/min-tool-version.=
+sh
+> >>>> index 250925aab101..7df9f2150ea1 100755
+> >>>> --- a/scripts/min-tool-version.sh
+> >>>> +++ b/scripts/min-tool-version.sh
+> >>>> @@ -14,7 +14,13 @@ fi
+> >>>>
+> >>>>    case "$1" in
+> >>>>    binutils)
+> >>>> -     echo 2.23.0
+> >>>> +     if [ "$SRCARCH" =3D powerpc ]; then
+> >>>
+> >>> Isn't this limitation only for ppc64le ?
+> >>>
+> >>> Refer commit 60e065f70bdb ("powerpc: Reject binutils 2.24 when buildi=
+ng
+> >>> little endian")
+> >>
+> >> I do not see any CONFIG check in the current checkbin.
+> >>
+> >> Refer commit a3ad84da0760 ("powerpc/toc: Future proof
+> >> kernel toc")
+> >
+> > That's odd. There is no toc on PPC32.
+>
+> I think that's just a bug in a3ad84da0760.
+>
+> But that means we inadvertantly dropped support for 2.24 about 8 months
+> ago, and no one noticed.
+>
+> Let's see what the responses are to Nick's proposal to increase the
+> minimum to 2.25.1.
+>
+> cheers
 
-  arch/powerpc/platforms/pseries/papr_scm.c:492:6: warning: variable 'rc' is used uninitialized whenever 'if' condition is true [-Wsometimes-uninitialized]
-          if (!p->stat_buffer_len)
-              ^~~~~~~~~~~~~~~~~~~
-  arch/powerpc/platforms/pseries/papr_scm.c:523:64: note: uninitialized use occurs here
-          dev_info(&p->pdev->dev, "nvdimm pmu didn't register rc=%d\n", rc);
-                                                                        ^~
-  include/linux/dev_printk.h:150:67: note: expanded from macro 'dev_info'
-          dev_printk_index_wrap(_dev_info, KERN_INFO, dev, dev_fmt(fmt), ##__VA_ARGS__)
-                                                                          ^~~~~~~~~~~
-  include/linux/dev_printk.h:110:23: note: expanded from macro 'dev_printk_index_wrap'
-                  _p_func(dev, fmt, ##__VA_ARGS__);                       \
-                                      ^~~~~~~~~~~
-  arch/powerpc/platforms/pseries/papr_scm.c:492:2: note: remove the 'if' if its condition is always false
-          if (!p->stat_buffer_len)
-          ^~~~~~~~~~~~~~~~~~~~~~~~
-  arch/powerpc/platforms/pseries/papr_scm.c:484:8: note: initialize the variable 'rc' to silence this warning
-          int rc, nodeid;
-                ^
-                = 0
-  1 warning generated.
 
-The call to papr_scm_pmu_check_events() was eliminated but a return code
-was not added to the if statement. Add the same return code from
-papr_scm_pmu_check_events() for this condition so there is no more
-warning.
 
-Fixes: 9b1ac04698a4 ("powerpc/papr_scm: Fix nvdimm event mappings")
-Link: https://github.com/ClangBuiltLinux/linux/issues/1701
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
----
- arch/powerpc/platforms/pseries/papr_scm.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Either way is fine with me, but in that case,
+do I need to get a higher-level Ack from Linus?
 
-diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-index 54740af21557..2f8385523a13 100644
---- a/arch/powerpc/platforms/pseries/papr_scm.c
-+++ b/arch/powerpc/platforms/pseries/papr_scm.c
-@@ -489,8 +489,10 @@ static void papr_scm_pmu_register(struct papr_scm_priv *p)
- 		goto pmu_err_print;
- 	}
- 
--	if (!p->stat_buffer_len)
-+	if (!p->stat_buffer_len) {
-+		rc = -ENOENT;
- 		goto pmu_check_events_err;
-+	}
- 
- 	nd_pmu->pmu.task_ctx_nr = perf_invalid_context;
- 	nd_pmu->pmu.name = nvdimm_name(p->nvdimm);
+The current one can go to the ppc tree
+since apparently it does not affect any other arches.
 
-base-commit: 91926d8b7e71aaf5f84f0cf208fc5a8b7a761050
--- 
-2.37.2
-
+--=20
+Best Regards
+Masahiro Yamada
