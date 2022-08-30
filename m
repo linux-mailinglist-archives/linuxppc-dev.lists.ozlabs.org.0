@@ -1,62 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C2445A6927
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Aug 2022 19:03:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 390015A6CAE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Aug 2022 21:02:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MHDC431Nvz3c7k
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Aug 2022 03:02:56 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rMMt+yf0;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MHGrQ0tWGz3cFW
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Aug 2022 05:01:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=timur@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rMMt+yf0;
-	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=fb.com (client-ip=67.231.145.42; helo=mx0a-00082601.pphosted.com; envelope-from=prvs=0241303b9a=songliubraving@fb.com; receiver=<UNKNOWN>)
+X-Greylist: delayed 320 seconds by postgrey-1.36 at boromir; Wed, 31 Aug 2022 05:01:34 AEST
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MHDBP6l2jz2xjj
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Aug 2022 03:02:21 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 05F78B80EF4
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Aug 2022 17:02:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9E21C433D6
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Aug 2022 17:02:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1661878935;
-	bh=zuE5tGcx5l76KiYALJlcPI3yxgrWlUht/PYPUm0d3Pc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=rMMt+yf0YcS4YEGrBZB3F8AKE8BCcZVzmWFFz5+lOWh5M6+cnzxTA/5Ilr29ggpTd
-	 LTm988Wa1stViNGxb3TSbRxMaU52eIyctqWYLZMWqtWNugkSZ+eCqdjwCkbbYYnUC3
-	 FNym7noYDd09zQb/M0pWXTnT1+JCbkTWwgPkxWkcZEcOoeoEv5qMNvLu/adXRKJMFZ
-	 2wefNSf3OAKwz1WBKSYA0MecFVgpkes/qc2riKV40RTnuaF4q4BaKXAJWjEwunPw8+
-	 g16VRLATLmKPNQDaoAxu+JtNKgVC0Jt3ia4/ubETBpdjZCAz3dAe8W6/dMBVMBYLQ/
-	 3ekIe/uXwGWTA==
-Received: by mail-ot1-f51.google.com with SMTP id l5-20020a05683004a500b0063707ff8244so8485666otd.12
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Aug 2022 10:02:15 -0700 (PDT)
-X-Gm-Message-State: ACgBeo3ztKsdOqtO9EVVdaZK1YYUQeygPFPmFOpAqS1ajj6SCkI2WTm8
-	aTPDHM99zbgWi6pEcE9F8r5LMoKcWnNRcVFhKQI=
-X-Google-Smtp-Source: AA6agR6f59zdB8lJJrFAGXPCZn/Rpe0ho5wIpCSfjqQnPjR+27z8ENLOP8XFp8/Lw2qT/IwjRESPQOWObdDrjOI8nmU=
-X-Received: by 2002:a05:6830:b85:b0:605:4e76:f077 with SMTP id
- a5-20020a0568300b8500b006054e76f077mr8547324otv.211.1661878934868; Tue, 30
- Aug 2022 10:02:14 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220830084925.5608-1-ilpo.jarvinen@linux.intel.com> <20220830084925.5608-2-ilpo.jarvinen@linux.intel.com>
-In-Reply-To: <20220830084925.5608-2-ilpo.jarvinen@linux.intel.com>
-From: Timur Tabi <timur@kernel.org>
-Date: Tue, 30 Aug 2022 12:01:37 -0500
-X-Gmail-Original-Message-ID: <CAOZdJXXDaqG5uR-A3gC4qrFBwtbm7ZwFp0oXwUYGVDU=Ru-gPQ@mail.gmail.com>
-Message-ID: <CAOZdJXXDaqG5uR-A3gC4qrFBwtbm7ZwFp0oXwUYGVDU=Ru-gPQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/5] serial: ucc_uart: Remove custom frame size calculation
-To: =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MHGqy5hDdz3bl4
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Aug 2022 05:01:33 +1000 (AEST)
+Received: from pps.filterd (m0044012.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27UFxlwV022436
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Aug 2022 11:56:10 -0700
+Received: from mail.thefacebook.com ([163.114.132.120])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 3j9a6j4pvy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Aug 2022 11:56:10 -0700
+Received: from twshared29104.24.frc3.facebook.com (2620:10d:c085:208::f) by
+ mail.thefacebook.com (2620:10d:c085:21d::6) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Tue, 30 Aug 2022 11:56:07 -0700
+Received: by devbig932.frc1.facebook.com (Postfix, from userid 4523)
+	id DA586C3FD850; Tue, 30 Aug 2022 11:53:14 -0700 (PDT)
+From: Song Liu <song@kernel.org>
+To: <live-patching@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH v5] livepatch: Clear relocation targets on a module removal
+Date: Tue, 30 Aug 2022 11:53:13 -0700
+Message-ID: <20220830185313.76402-1-song@kernel.org>
+X-Mailer: git-send-email 2.30.2
+X-FB-Internal: Safe
+Content-Type: text/plain
+X-Proofpoint-ORIG-GUID: sdOS1GqxRJ8tYTq6crtmINCYGxsXw5fh
+X-Proofpoint-GUID: sdOS1GqxRJ8tYTq6crtmINCYGxsXw5fh
 Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-08-30_10,2022-08-30_01,2022-06-22_01
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,22 +56,398 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Timur Tabi <timur@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, PowerPC Mailing List <linuxppc-dev@lists.ozlabs.org>, lkml <linux-kernel@vger.kernel.org>, Andy Shevchenko <andy.shevchenko@gmail.com>, linux-serial@vger.kernel.org, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Jiri Slaby <jirislaby@kernel.org>
+Cc: pmladek@suse.com, jikos@kernel.org, x86@kernel.org, Song Liu <song@kernel.org>, joe.lawrence@redhat.com, Josh Poimboeuf <jpoimboe@redhat.com>, mbenes@suse.cz, linuxppc-dev@lists.ozlabs.org, jpoimboe@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Aug 30, 2022 at 3:49 AM Ilpo J=C3=A4rvinen
-<ilpo.jarvinen@linux.intel.com> wrote:
->
-> The number of bits can be calculated using tty_get_frame_size(), no
-> need for the driver to do it on its own.
->
-> Also remove a comment on number of bits that doesn't match the code nor
-> the comment on ucc_uart_pram's rx_length ("minus 1" part differs). That
-> comment seems a verbatim copy of that in cpm_uart/cpm_uart_core.c
-> anyway so perhaps it was just copied over w/o much thinking.
->
-> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> Signed-off-by: Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.intel.com>
+From: Miroslav Benes <mbenes@suse.cz>
 
-Acked-by: Timur Tabi <timur@kernel.org>
+Josh reported a bug:
+
+  When the object to be patched is a module, and that module is
+  rmmod'ed and reloaded, it fails to load with:
+
+  module: x86/modules: Skipping invalid relocation target, existing value i=
+s nonzero for type 2, loc 00000000ba0302e9, val ffffffffa03e293c
+  livepatch: failed to initialize patch 'livepatch_nfsd' for module 'nfsd' =
+(-8)
+  livepatch: patch 'livepatch_nfsd' failed for module 'nfsd', refusing to l=
+oad module 'nfsd'
+
+  The livepatch module has a relocation which references a symbol
+  in the _previous_ loading of nfsd. When apply_relocate_add()
+  tries to replace the old relocation with a new one, it sees that
+  the previous one is nonzero and it errors out.
+
+  On ppc64le, we have a similar issue:
+
+  module_64: livepatch_nfsd: Expected nop after call, got e8410018 at e_sho=
+w+0x60/0x548 [livepatch_nfsd]
+  livepatch: failed to initialize patch 'livepatch_nfsd' for module 'nfsd' =
+(-8)
+  livepatch: patch 'livepatch_nfsd' failed for module 'nfsd', refusing to l=
+oad module 'nfsd'
+
+He also proposed three different solutions. We could remove the error
+check in apply_relocate_add() introduced by commit eda9cec4c9a1
+("x86/module: Detect and skip invalid relocations"). However the check
+is useful for detecting corrupted modules.
+
+We could also deny the patched modules to be removed. If it proved to be
+a major drawback for users, we could still implement a different
+approach. The solution would also complicate the existing code a lot.
+
+We thus decided to reverse the relocation patching (clear all relocation
+targets on x86_64). The solution is not
+universal and is too much arch-specific, but it may prove to be simpler
+in the end.
+
+Reported-by: Josh Poimboeuf <jpoimboe@redhat.com>
+Signed-off-by: Miroslav Benes <mbenes@suse.cz>
+Signed-off-by: Song Liu <song@kernel.org>
+
+---
+
+NOTE: powerpc code has not be tested.
+
+Changes v4 =3D v5:
+1. Fix compile with powerpc.
+
+Changes v3 =3D v4:
+1. Reuse __apply_relocate_add to make it more reliable in long term.
+   (Josh Poimboeuf)
+2. Add back ppc64 logic from v2, with changes to match current code.
+   (Josh Poimboeuf)
+
+Changes v2 =3D> v3:
+1. Rewrite x86 changes to match current code style.
+2. Remove powerpc changes as there is no test coverage in v3.
+3. Only keep 1/3 of v2.
+
+v2: https://lore.kernel.org/all/20190905124514.8944-1-mbenes@suse.cz/T/#u
+---
+ arch/powerpc/kernel/module_64.c |  49 +++++++++++++++
+ arch/s390/kernel/module.c       |   8 +++
+ arch/x86/kernel/module.c        | 102 +++++++++++++++++++++++---------
+ include/linux/moduleloader.h    |   7 +++
+ kernel/livepatch/core.c         |  41 ++++++++++++-
+ 5 files changed, 179 insertions(+), 28 deletions(-)
+
+diff --git a/arch/powerpc/kernel/module_64.c b/arch/powerpc/kernel/module_6=
+4.c
+index 7e45dc98df8a..6aaf5720070d 100644
+--- a/arch/powerpc/kernel/module_64.c
++++ b/arch/powerpc/kernel/module_64.c
+@@ -739,6 +739,55 @@ int apply_relocate_add(Elf64_Shdr *sechdrs,
+ 	return 0;
+ }
+=20
++#ifdef CONFIG_LIVEPATCH
++void clear_relocate_add(Elf64_Shdr *sechdrs,
++		       const char *strtab,
++		       unsigned int symindex,
++		       unsigned int relsec,
++		       struct module *me)
++{
++	unsigned int i;
++	Elf64_Rela *rela =3D (void *)sechdrs[relsec].sh_addr;
++	Elf64_Sym *sym;
++	unsigned long *location;
++	const char *symname;
++	u32 *instruction;
++
++	pr_debug("Clearing ADD relocate section %u to %u\n", relsec,
++		 sechdrs[relsec].sh_info);
++
++	for (i =3D 0; i < sechdrs[relsec].sh_size / sizeof(*rela); i++) {
++		location =3D (void *)sechdrs[sechdrs[relsec].sh_info].sh_addr
++			+ rela[i].r_offset;
++		sym =3D (Elf64_Sym *)sechdrs[symindex].sh_addr
++			+ ELF64_R_SYM(rela[i].r_info);
++		symname =3D me->core_kallsyms.strtab
++			+ sym->st_name;
++
++		if (ELF64_R_TYPE(rela[i].r_info) !=3D R_PPC_REL24)
++			continue;
++		/*
++		 * reverse the operations in apply_relocate_add() for case
++		 * R_PPC_REL24.
++		 */
++		if (sym->st_shndx !=3D SHN_UNDEF &&
++		    sym->st_shndx !=3D SHN_LIVEPATCH)
++			continue;
++
++		instruction =3D (u32 *)location;
++		if (is_mprofile_ftrace_call(symname))
++			continue;
++
++		if (!instr_is_relative_link_branch(ppc_inst(*instruction)))
++			continue;
++
++		instruction +=3D 1;
++		*instruction =3D PPC_RAW_NOP();
++	}
++
++}
++#endif
++
+ #ifdef CONFIG_DYNAMIC_FTRACE
+ int module_trampoline_target(struct module *mod, unsigned long addr,
+ 			     unsigned long *target)
+diff --git a/arch/s390/kernel/module.c b/arch/s390/kernel/module.c
+index 2d159b32885b..cc6784fbc1ac 100644
+--- a/arch/s390/kernel/module.c
++++ b/arch/s390/kernel/module.c
+@@ -500,6 +500,14 @@ static int module_alloc_ftrace_hotpatch_trampolines(st=
+ruct module *me,
+ }
+ #endif /* CONFIG_FUNCTION_TRACER */
+=20
++#ifdef CONFIG_LIVEPATCH
++void clear_relocate_add(Elf64_Shdr *sechdrs, const char *strtab,
++			unsigned int symindex, unsigned int relsec,
++			struct module *me)
++{
++}
++#endif
++
+ int module_finalize(const Elf_Ehdr *hdr,
+ 		    const Elf_Shdr *sechdrs,
+ 		    struct module *me)
+diff --git a/arch/x86/kernel/module.c b/arch/x86/kernel/module.c
+index b1abf663417c..f9632afbb84c 100644
+--- a/arch/x86/kernel/module.c
++++ b/arch/x86/kernel/module.c
+@@ -128,18 +128,20 @@ int apply_relocate(Elf32_Shdr *sechdrs,
+ 	return 0;
+ }
+ #else /*X86_64*/
+-static int __apply_relocate_add(Elf64_Shdr *sechdrs,
++static int __apply_clear_relocate_add(Elf64_Shdr *sechdrs,
+ 		   const char *strtab,
+ 		   unsigned int symindex,
+ 		   unsigned int relsec,
+ 		   struct module *me,
+-		   void *(*write)(void *dest, const void *src, size_t len))
++		   void *(*write)(void *dest, const void *src, size_t len),
++		   bool clear)
+ {
+ 	unsigned int i;
+ 	Elf64_Rela *rel =3D (void *)sechdrs[relsec].sh_addr;
+ 	Elf64_Sym *sym;
+ 	void *loc;
+ 	u64 val;
++	u64 zero =3D 0ULL;
+=20
+ 	DEBUGP("Applying relocate section %u to %u\n",
+ 	       relsec, sechdrs[relsec].sh_info);
+@@ -163,40 +165,60 @@ static int __apply_relocate_add(Elf64_Shdr *sechdrs,
+ 		case R_X86_64_NONE:
+ 			break;
+ 		case R_X86_64_64:
+-			if (*(u64 *)loc !=3D 0)
+-				goto invalid_relocation;
+-			write(loc, &val, 8);
++			if (!clear) {
++				if (*(u64 *)loc !=3D 0)
++					goto invalid_relocation;
++				write(loc, &val, 8);
++			} else {
++				write(loc, &zero, 8);
++			}
+ 			break;
+ 		case R_X86_64_32:
+-			if (*(u32 *)loc !=3D 0)
+-				goto invalid_relocation;
+-			write(loc, &val, 4);
+-			if (val !=3D *(u32 *)loc)
+-				goto overflow;
++			if (!clear) {
++				if (*(u32 *)loc !=3D 0)
++					goto invalid_relocation;
++				write(loc, &val, 4);
++				if (val !=3D *(u32 *)loc)
++					goto overflow;
++			} else {
++				write(loc, &zero, 4);
++			}
+ 			break;
+ 		case R_X86_64_32S:
+-			if (*(s32 *)loc !=3D 0)
+-				goto invalid_relocation;
+-			write(loc, &val, 4);
+-			if ((s64)val !=3D *(s32 *)loc)
+-				goto overflow;
++			if (!clear) {
++				if (*(s32 *)loc !=3D 0)
++					goto invalid_relocation;
++				write(loc, &val, 4);
++				if ((s64)val !=3D *(s32 *)loc)
++					goto overflow;
++			} else {
++				write(loc, &zero, 4);
++			}
+ 			break;
+ 		case R_X86_64_PC32:
+ 		case R_X86_64_PLT32:
+-			if (*(u32 *)loc !=3D 0)
+-				goto invalid_relocation;
+-			val -=3D (u64)loc;
+-			write(loc, &val, 4);
++			if (!clear) {
++				if (*(u32 *)loc !=3D 0)
++					goto invalid_relocation;
++				val -=3D (u64)loc;
++				write(loc, &val, 4);
+ #if 0
+-			if ((s64)val !=3D *(s32 *)loc)
+-				goto overflow;
++				if ((s64)val !=3D *(s32 *)loc)
++					goto overflow;
+ #endif
++			} else {
++				write(loc, &zero, 4);
++			}
+ 			break;
+ 		case R_X86_64_PC64:
+-			if (*(u64 *)loc !=3D 0)
+-				goto invalid_relocation;
+-			val -=3D (u64)loc;
+-			write(loc, &val, 8);
++			if (!clear) {
++				if (*(u64 *)loc !=3D 0)
++					goto invalid_relocation;
++				val -=3D (u64)loc;
++				write(loc, &val, 8);
++			} else {
++				write(loc, &zero, 8);
++			}
+ 			break;
+ 		default:
+ 			pr_err("%s: Unknown rela relocation: %llu\n",
+@@ -234,8 +256,8 @@ int apply_relocate_add(Elf64_Shdr *sechdrs,
+ 		mutex_lock(&text_mutex);
+ 	}
+=20
+-	ret =3D __apply_relocate_add(sechdrs, strtab, symindex, relsec, me,
+-				   write);
++	ret =3D __apply_clear_relocate_add(sechdrs, strtab, symindex, relsec, me,
++					 write, false /* clear */);
+=20
+ 	if (!early) {
+ 		text_poke_sync();
+@@ -245,6 +267,32 @@ int apply_relocate_add(Elf64_Shdr *sechdrs,
+ 	return ret;
+ }
+=20
++#ifdef CONFIG_LIVEPATCH
++
++void clear_relocate_add(Elf64_Shdr *sechdrs,
++			const char *strtab,
++			unsigned int symindex,
++			unsigned int relsec,
++			struct module *me)
++{
++	bool early =3D me->state =3D=3D MODULE_STATE_UNFORMED;
++	void *(*write)(void *, const void *, size_t) =3D memcpy;
++
++	if (!early) {
++		write =3D text_poke;
++		mutex_lock(&text_mutex);
++	}
++
++	__apply_clear_relocate_add(sechdrs, strtab, symindex, relsec, me,
++				   write, true /* clear */);
++
++	if (!early) {
++		text_poke_sync();
++		mutex_unlock(&text_mutex);
++	}
++}
++#endif
++
+ #endif
+=20
+ int module_finalize(const Elf_Ehdr *hdr,
+diff --git a/include/linux/moduleloader.h b/include/linux/moduleloader.h
+index 9e09d11ffe5b..d22b36b84b4b 100644
+--- a/include/linux/moduleloader.h
++++ b/include/linux/moduleloader.h
+@@ -72,6 +72,13 @@ int apply_relocate_add(Elf_Shdr *sechdrs,
+ 		       unsigned int symindex,
+ 		       unsigned int relsec,
+ 		       struct module *mod);
++#ifdef CONFIG_LIVEPATCH
++void clear_relocate_add(Elf64_Shdr *sechdrs,
++		   const char *strtab,
++		   unsigned int symindex,
++		   unsigned int relsec,
++		   struct module *me);
++#endif
+ #else
+ static inline int apply_relocate_add(Elf_Shdr *sechdrs,
+ 				     const char *strtab,
+diff --git a/kernel/livepatch/core.c b/kernel/livepatch/core.c
+index bc475e62279d..5c0d8a4eba13 100644
+--- a/kernel/livepatch/core.c
++++ b/kernel/livepatch/core.c
+@@ -316,6 +316,45 @@ int klp_apply_section_relocs(struct module *pmod, Elf_=
+Shdr *sechdrs,
+ 	return apply_relocate_add(sechdrs, strtab, symndx, secndx, pmod);
+ }
+=20
++static void klp_clear_object_relocations(struct module *pmod,
++					struct klp_object *obj)
++{
++	int i, cnt;
++	const char *objname, *secname;
++	char sec_objname[MODULE_NAME_LEN];
++	Elf_Shdr *sec;
++
++	objname =3D klp_is_module(obj) ? obj->name : "vmlinux";
++
++	/* For each klp relocation section */
++	for (i =3D 1; i < pmod->klp_info->hdr.e_shnum; i++) {
++		sec =3D pmod->klp_info->sechdrs + i;
++		secname =3D pmod->klp_info->secstrings + sec->sh_name;
++		if (!(sec->sh_flags & SHF_RELA_LIVEPATCH))
++			continue;
++
++		/*
++		 * Format: .klp.rela.sec_objname.section_name
++		 * See comment in klp_resolve_symbols() for an explanation
++		 * of the selected field width value.
++		 */
++		secname =3D pmod->klp_info->secstrings + sec->sh_name;
++		cnt =3D sscanf(secname, ".klp.rela.%55[^.]", sec_objname);
++		if (cnt !=3D 1) {
++			pr_err("section %s has an incorrectly formatted name\n",
++			       secname);
++			continue;
++		}
++
++		if (strcmp(objname, sec_objname))
++			continue;
++
++		clear_relocate_add(pmod->klp_info->sechdrs,
++				   pmod->core_kallsyms.strtab,
++				   pmod->klp_info->symndx, i, pmod);
++	}
++}
++
+ /*
+  * Sysfs Interface
+  *
+@@ -1154,7 +1193,7 @@ static void klp_cleanup_module_patches_limited(struct=
+ module *mod,
+ 			klp_unpatch_object(obj);
+=20
+ 			klp_post_unpatch_callback(obj);
+-
++			klp_clear_object_relocations(patch->mod, obj);
+ 			klp_free_object_loaded(obj);
+ 			break;
+ 		}
+--=20
+2.30.2
+
