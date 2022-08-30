@@ -2,64 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F19DD5A5E96
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Aug 2022 10:50:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B79705A5ED4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Aug 2022 11:02:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MH1Gx6JN6z3c87
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Aug 2022 18:50:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MH1XX574qz3c1S
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Aug 2022 19:02:20 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HdPne+/o;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ksrEMwGo;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.43; helo=mga05.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::630; helo=mail-pl1-x630.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HdPne+/o;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ksrEMwGo;
 	dkim-atps=neutral
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MH1GD0BLCz3bNj
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Aug 2022 18:49:54 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1661849396; x=1693385396;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=QY5pcFaRk9Pil+zQdIFM0ph2NdnnrO8rptdre2dGddM=;
-  b=HdPne+/owTbAFGdwij1KkT+DiSxKL1q+85nHGg0mcybiNzu0lxOhrYiB
-   cexnu7Np3LvNmnbZH1GuHdbJwnDjYSNYC6W3WJoFMZEba7uvLGS9geSew
-   N/AlvjMfZjaHIZ8VO6JEw6rfvAS2g0cGexh1hY3qS4JgE6Lw2fvD6EvEL
-   eE/oXvaFEW++WFFhL4Ng14lRl5+CvrrZpNgTtDYqLxcStkmcwy65yxlzv
-   ANvO4FeTZcFrZpwegD/DgNGgzmovBQx+6LspAnS2pFLZN6+vConw9UGUE
-   I7oPKf5mWAmqcKOCqSDfhZo3EQcEkb2Z3iK+2zo4OA8q9XLt4TjPRokbU
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10454"; a="381418844"
-X-IronPort-AV: E=Sophos;i="5.93,274,1654585200"; 
-   d="scan'208";a="381418844"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2022 01:49:49 -0700
-X-IronPort-AV: E=Sophos;i="5.93,274,1654585200"; 
-   d="scan'208";a="672761845"
-Received: from arnesgom-mobl.ger.corp.intel.com (HELO ijarvine-MOBL2.ger.corp.intel.com) ([10.252.54.235])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2022 01:49:44 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	linux-serial@vger.kernel.org,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Timur Tabi <timur@kernel.org>,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 1/5] serial: ucc_uart: Remove custom frame size calculation
-Date: Tue, 30 Aug 2022 11:49:21 +0300
-Message-Id: <20220830084925.5608-2-ilpo.jarvinen@linux.intel.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220830084925.5608-1-ilpo.jarvinen@linux.intel.com>
-References: <20220830084925.5608-1-ilpo.jarvinen@linux.intel.com>
-MIME-Version: 1.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MH1Wx0wrDz3bd4
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Aug 2022 19:01:48 +1000 (AEST)
+Received: by mail-pl1-x630.google.com with SMTP id v5so4266136plo.9
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Aug 2022 02:01:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc;
+        bh=ZsM+Pubh86dNJZPbNsb1xubr5PluY9cW5aAlTnyyxiM=;
+        b=ksrEMwGox/KdS8tnvTJL1LuPVoMIKREyu/DU/fJRvdnheYItSIfp/iQzhq338blCNr
+         eNRkBd60PyxI4prFnqg1qvB6eb8MU1U2tvgwskptoNmSL2oZGs22/tJmLIWeUJu8h8gl
+         yMN5FHBHPyewwbe5irx28Cq7oN3zpeUMtvwR+YCpEaM1Gja/OG7QHDfaLxmqd14JDN0h
+         XwR0xnKYyXP10vrC4ofLR/aUACg2Hr6GuJ/6hnEPe3YvTNS1DYrd5kkQh8Wi6HsW15kC
+         94Ok8a1MnYr8aBjMZU7S2c9sRXzPorWr8pD9RBk9CqwOG7gIVrVq94t1gMUuBFNo5T2I
+         erKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc;
+        bh=ZsM+Pubh86dNJZPbNsb1xubr5PluY9cW5aAlTnyyxiM=;
+        b=7SwqZppQ8/FxJOO9HhIJiXMzXURwD9jQz63lQxvHsJP6UBFT4NGmMPuY1buHV4M4e4
+         ZTNPmY1nE4UdZs02pzoU7VOfZWqVjoKyVGBpv9bDO3rXvSGagmbrnDGMu8WZqjQ74Jfe
+         H7h4rjA/L8XLguIDxxa56hVUQcn2Wn6y2FKV0CLbzbTnGOVTf0hCAMVTz/jjgwYeilZz
+         +8d3cvuAYWYahaSxMEC2z+ygMoeyt2WlwRV/7SBKCtF/jUTRHRhNwZaSEWufNtUQb6ol
+         Dr9jcRRdxI3pOAuRir42mdmNiOcoa+a1zZ26Vg7lrH/+ga1vC6vkT3EhIYcFlhuCdu+l
+         D9aw==
+X-Gm-Message-State: ACgBeo351u7bpW2IFiWBnqSeqxJ6/1ey0YDC5jbdK0XlgQ/kK/nU3uR2
+	rTcvJQMkECp6bLjxHoY81kA=
+X-Google-Smtp-Source: AA6agR6DLFbyWQ/quE3yh/lHCixblbHmTVBpnk7eHKlpzdJgcFTirVtyqhxEuQ4sJvCN7xrr9cHreg==
+X-Received: by 2002:a17:902:70c6:b0:173:c64:c03b with SMTP id l6-20020a17090270c600b001730c64c03bmr19752192plt.34.1661850105106;
+        Tue, 30 Aug 2022 02:01:45 -0700 (PDT)
+Received: from localhost (110-175-65-113.tpgi.com.au. [110.175.65.113])
+        by smtp.gmail.com with ESMTPSA id a13-20020a170902b58d00b00172f4835f60sm8974438pls.189.2022.08.30.02.01.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 30 Aug 2022 02:01:44 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Date: Tue, 30 Aug 2022 19:01:39 +1000
+Message-Id: <CMJ8P06JA9OY.1S8VDV2XRU3W5@bobo>
+Subject: Re: [PATCH v2] powerpc: Fix irq_soft_mask_set() and
+ irq_soft_mask_return() with sanitizer
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Christophe Leroy" <christophe.leroy@csgroup.eu>, "Michael Ellerman"
+ <mpe@ellerman.id.au>, "Segher Boessenkool" <segher@kernel.crashing.org>
+X-Mailer: aerc 0.11.0
+References: <c0b486e782b6695092dcdb2cd340a3d44c8c266d.1661272738.git.christophe.leroy@csgroup.eu> <CMJ3VICKD1CI.SVFJOKYJPKZQ@bobo> <e022754d-b4d3-bc9f-cc79-2cf556180459@csgroup.eu>
+In-Reply-To: <e022754d-b4d3-bc9f-cc79-2cf556180459@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,88 +80,108 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Zhouyi
+ Zhou <zhouzhouyi@gmail.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The number of bits can be calculated using tty_get_frame_size(), no
-need for the driver to do it on its own.
+On Tue Aug 30, 2022 at 3:24 PM AEST, Christophe Leroy wrote:
+>
+>
+> Le 30/08/2022 =C3=A0 07:15, Nicholas Piggin a =C3=A9crit=C2=A0:
+> > On Wed Aug 24, 2022 at 2:39 AM AEST, Christophe Leroy wrote:
+> >> In ppc, compiler based sanitizer will generate instrument instructions
+> >> around statement WRITE_ONCE(local_paca->irq_soft_mask, mask):
+> >>
+>
+> [...]
+>
+> >>
+> >> If there is a context switch before "stb     r9,2354(r31)", r31 may
+> >> not equal to r13, in such case, irq soft mask will not work.
+> >>
+> >> The same problem occurs in irq_soft_mask_return() with
+> >> READ_ONCE(local_paca->irq_soft_mask).
+> >=20
+> > WRITE_ONCE doesn't require address generation to be atomic with the
+> > store so this is a bug without sanitizer too. I have seen gcc put r13
+> > into a nvgpr before.
+> >=20
+> > READ_ONCE maybe could be argued is safe in this case because data
+> > could be stale when you use it anyway, but pointless and risky
+> > in some cases (imagine cpu offline -> store poison value to irq soft
+> > mask.
+> >=20
+> >> This patch partially reverts commit ef5b570d3700 ("powerpc/irq: Don't
+> >> open code irq_soft_mask helpers") with a more modern inline assembly.
+> >>
+> >> Reported-by: Zhouyi Zhou <zhouzhouyi@gmail.com>
+> >> Fixes: ef5b570d3700 ("powerpc/irq: Don't open code irq_soft_mask helpe=
+rs")
+> >> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> >> ---
+> >> v2: Use =3Dm constraint for stb instead of m constraint
+> >> ---
+> >>   arch/powerpc/include/asm/hw_irq.h | 9 ++++++---
+> >>   1 file changed, 6 insertions(+), 3 deletions(-)
+> >>
+> >> diff --git a/arch/powerpc/include/asm/hw_irq.h b/arch/powerpc/include/=
+asm/hw_irq.h
+> >> index 26ede09c521d..815420988ef3 100644
+> >> --- a/arch/powerpc/include/asm/hw_irq.h
+> >> +++ b/arch/powerpc/include/asm/hw_irq.h
+> >> @@ -113,7 +113,11 @@ static inline void __hard_RI_enable(void)
+> >>  =20
+> >>   static inline notrace unsigned long irq_soft_mask_return(void)
+> >>   {
+> >> -	return READ_ONCE(local_paca->irq_soft_mask);
+> >> +	unsigned long flags;
+> >> +
+> >> +	asm volatile("lbz%X1 %0,%1" : "=3Dr" (flags) : "m" (local_paca->irq_=
+soft_mask));
+> >> +
+> >> +	return flags;
+> >>   }
+> >>  =20
+> >>   /*
+> >> @@ -140,8 +144,7 @@ static inline notrace void irq_soft_mask_set(unsig=
+ned long mask)
+> >>   	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
+> >>   		WARN_ON(mask && !(mask & IRQS_DISABLED));
+> >>  =20
+> >> -	WRITE_ONCE(local_paca->irq_soft_mask, mask);
+> >> -	barrier();
+> >> +	asm volatile("stb%X0 %1,%0" : "=3Dm" (local_paca->irq_soft_mask) : "=
+r" (mask) : "memory");
+> >=20
+> > This is still slightly concerning to me. Is there any guarantee that th=
+e
+> > compiler would not use a different sequence for the address here?
+> >=20
+> > Maybe explicit r13 is required.
+> >=20
+>
+> local_paca is defined as:
+>
+> 	register struct paca_struct *local_paca asm("r13");
+>
+> Why would the compiler use another register ?
 
-Also remove a comment on number of bits that doesn't match the code nor
-the comment on ucc_uart_pram's rx_length ("minus 1" part differs). That
-comment seems a verbatim copy of that in cpm_uart/cpm_uart_core.c
-anyway so perhaps it was just copied over w/o much thinking.
+Hopefully it doesn't. Is it guaranteed that it won't?
 
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
----
- drivers/tty/serial/ucc_uart.c | 15 +--------------
- 1 file changed, 1 insertion(+), 14 deletions(-)
+> If so, do we also have an=20
+> issue with the use of current_stack_pointer in irq.c ?
 
-diff --git a/drivers/tty/serial/ucc_uart.c b/drivers/tty/serial/ucc_uart.c
-index 3cc9ef08455c..7331964163c5 100644
---- a/drivers/tty/serial/ucc_uart.c
-+++ b/drivers/tty/serial/ucc_uart.c
-@@ -853,13 +853,6 @@ static void qe_uart_set_termios(struct uart_port *port,
- 	u16 upsmr = ioread16be(&uccp->upsmr);
- 	struct ucc_uart_pram __iomem *uccup = qe_port->uccup;
- 	u16 supsmr = ioread16be(&uccup->supsmr);
--	u8 char_length = 2; /* 1 + CL + PEN + 1 + SL */
--
--	/* Character length programmed into the mode register is the
--	 * sum of: 1 start bit, number of data bits, 0 or 1 parity bit,
--	 * 1 or 2 stop bits, minus 1.
--	 * The value 'bits' counts this for us.
--	 */
- 
- 	/* byte size */
- 	upsmr &= UCC_UART_UPSMR_CL_MASK;
-@@ -869,22 +862,18 @@ static void qe_uart_set_termios(struct uart_port *port,
- 	case CS5:
- 		upsmr |= UCC_UART_UPSMR_CL_5;
- 		supsmr |= UCC_UART_SUPSMR_CL_5;
--		char_length += 5;
- 		break;
- 	case CS6:
- 		upsmr |= UCC_UART_UPSMR_CL_6;
- 		supsmr |= UCC_UART_SUPSMR_CL_6;
--		char_length += 6;
- 		break;
- 	case CS7:
- 		upsmr |= UCC_UART_UPSMR_CL_7;
- 		supsmr |= UCC_UART_SUPSMR_CL_7;
--		char_length += 7;
- 		break;
- 	default:	/* case CS8 */
- 		upsmr |= UCC_UART_UPSMR_CL_8;
- 		supsmr |= UCC_UART_SUPSMR_CL_8;
--		char_length += 8;
- 		break;
- 	}
- 
-@@ -892,13 +881,11 @@ static void qe_uart_set_termios(struct uart_port *port,
- 	if (termios->c_cflag & CSTOPB) {
- 		upsmr |= UCC_UART_UPSMR_SL;
- 		supsmr |= UCC_UART_SUPSMR_SL;
--		char_length++;  /* + SL */
- 	}
- 
- 	if (termios->c_cflag & PARENB) {
- 		upsmr |= UCC_UART_UPSMR_PEN;
- 		supsmr |= UCC_UART_SUPSMR_PEN;
--		char_length++;  /* + PEN */
- 
- 		if (!(termios->c_cflag & PARODD)) {
- 			upsmr &= ~(UCC_UART_UPSMR_RPM_MASK |
-@@ -953,7 +940,7 @@ static void qe_uart_set_termios(struct uart_port *port,
- 	iowrite16be(upsmr, &uccp->upsmr);
- 	if (soft_uart) {
- 		iowrite16be(supsmr, &uccup->supsmr);
--		iowrite8(char_length, &uccup->rx_length);
-+		iowrite8(tty_get_frame_size(termios->c_cflag), &uccup->rx_length);
- 
- 		/* Soft-UART requires a 1X multiplier for TX */
- 		qe_setbrg(qe_port->us_info.rx_clock, baud, 16);
--- 
-2.30.2
+What problems do you think it might have?  I think it may be okay
+because we're only using it to check what stack we are using so doesn't
+really matter what value it is when we sample it.
 
+The overflow check similarly probably doesn't matter the exact value.
+
+> Segher ?
+
+I'm sure Segher will be delighted with the creative asm in __do_IRQ
+and call_do_irq :) *Grabs popcorn*
+
+Thanks,
+Nick
