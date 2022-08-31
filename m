@@ -1,33 +1,33 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0C995A7E85
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Aug 2022 15:19:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FAC65A7E7A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Aug 2022 15:16:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MHlBL3qycz3fbs
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Aug 2022 23:19:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MHl7j3s98z3f9N
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Aug 2022 23:16:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MHl6J5RB6z3c4Q
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Aug 2022 23:15:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MHl6D5sZXz2xJ5
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Aug 2022 23:15:32 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4MHl6J4RS1z4xGQ;
-	Wed, 31 Aug 2022 23:15:36 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4MHl6D4rznz4xGG;
+	Wed, 31 Aug 2022 23:15:32 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-In-Reply-To: <20220803063228.1250030-1-mpe@ellerman.id.au>
-References: <20220803063228.1250030-1-mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc: Update ISA versions to mention e5500/e6500
-Message-Id: <166195163385.45984.14490697089422295885.b4-ty@ellerman.id.au>
-Date: Wed, 31 Aug 2022 23:13:53 +1000
+To: Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <a821e8397dd56b8177ecc04966d3b3a7c4bda6d4.1660919016.git.christophe.leroy@csgroup.eu>
+References: <a821e8397dd56b8177ecc04966d3b3a7c4bda6d4.1660919016.git.christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] powerpc: Remove stale declarations in mmu_decl.h
+Message-Id: <166195163497.45984.6671089422607210922.b4-ty@ellerman.id.au>
+Date: Wed, 31 Aug 2022 23:13:54 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -42,18 +42,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 3 Aug 2022 16:32:28 +1000, Michael Ellerman wrote:
-> Add the NXP (nee Freescale) e5500 and e6500 to the ISA versions
-> documentation.
+On Fri, 19 Aug 2022 16:23:43 +0200, Christophe Leroy wrote:
+> rtas_size and rtas_data are not used anymore since at least
+> commit 7c8c6b9776fb ("powerpc: Merge lmb.c and make MM initialization
+> use it.")
 > 
+> Remove them.
 > 
+> Since commit 4b74a35fc7e9 ("powerpc/32s: Make Hash var static")
+> the forward declaration of struct hash_pte is unneeded.
+> 
+> [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc: Update ISA versions to mention e5500/e6500
-      https://git.kernel.org/powerpc/c/9e1b45fdf25caed521d6851136a0e3213c676656
+[1/1] powerpc: Remove stale declarations in mmu_decl.h
+      https://git.kernel.org/powerpc/c/e38cd72c17fa7d7710088365251feb6c52b501c8
 
 cheers
