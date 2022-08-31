@@ -2,50 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B422D5A811E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Aug 2022 17:22:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B09195A83FC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Aug 2022 19:06:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MHnwX546pz3c4S
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Sep 2022 01:22:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MHrDv3L9Hz3c2s
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Sep 2022 03:06:39 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uXMTB1pz;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=B7vY/F8x;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=nathan@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=song@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uXMTB1pz;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=B7vY/F8x;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MHnvs03fFz3bdy
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Sep 2022 01:21:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MHrD944d9z3bdy
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Sep 2022 03:06:01 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 86637B821AD;
-	Wed, 31 Aug 2022 15:21:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89678C433C1;
-	Wed, 31 Aug 2022 15:21:37 +0000 (UTC)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 6CEB4B821EC
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Aug 2022 17:05:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32336C433B5
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Aug 2022 17:05:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1661959298;
-	bh=DTL+LV2yF2EH+15dxhJXJ7zmzomlghacq3fufP//T8g=;
-	h=From:To:Cc:Subject:Date:From;
-	b=uXMTB1pzQhVDzse2eYe/8fReXNqRMnQhKSVL2CIhKlqloRVvQDRTOewBE7hor/JOx
-	 d/aUvJZzk9oOiwH1rnRAuSiZxyCYYnjYaAT5jGThcsse21w1aulO8aykX5M27CyXQd
-	 mGY1POf0PmgNFhpHCnYtEdDXjim59m3G4gHxRyPn0Nj7eOHZNHFVGeETdKnw5rlXDp
-	 rCz4IsOUdTy235EpZoMo88pmu2v66QVenNSHBrOmOXoeGz4T59FkekGj6XoTNlK7v+
-	 y6NCuqG5j114iAEwU0jGIHlOuoDQlW0EDyRoZtTncI9XQwb+Adh+R+ck7m15a1Wrzc
-	 AC7kEk7O3SbwA==
-From: Nathan Chancellor <nathan@kernel.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH] powerpc/math_emu/efp: Include module.h
-Date: Wed, 31 Aug 2022 08:20:15 -0700
-Message-Id: <20220831152014.3501664-1-nathan@kernel.org>
-X-Mailer: git-send-email 2.37.3
+	s=k20201202; t=1661965555;
+	bh=HuGW1hSSVAPjEisKjw59q6nkqtevfdLZpMwCppQtTd8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=B7vY/F8xyXnKysxxG9PZ8WHr+F4fwQZ7BYS2YHnxZyUwzilk52CI6McWYhD8MYQQ/
+	 fSc4knwuaMgLSePw8f/P+BsS1G5BEj3UshoJ2ZFpYUaMNgQETv1VAbi76ZkLQoP2Ft
+	 ZQDlDlTpyuDEk86MWbfJYb7JaAPGqVgTTAbuWn1qRVw62hUckPcKhfqYdvNjUEl5UR
+	 WCivZP2p/zt+4sFzZMebOWpCM+aRp44MN0vPYT3kobAKvB540dwsMtW0UEmLcuNeBr
+	 aDW0nrhwDKhir3zAaudZz2LD1XNfNtNdVseRlK1lAx7jW5M96UZ72j6+0ZM4KWhT1m
+	 qvUyiaUy3vQDQ==
+Received: by mail-yb1-f175.google.com with SMTP id g5so5073549ybg.11
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Aug 2022 10:05:55 -0700 (PDT)
+X-Gm-Message-State: ACgBeo0UIRJA9zBgktyMARTGyzjZ2NV4bodXMsJzeC4oHDujThyXOd55
+	WWOO2ucnP8+r2oczW47u9Yv3wtN6PcphVYVnw8s=
+X-Google-Smtp-Source: AA6agR4bobILNbJYZC0H+86bLGzUJiLjvZiUZhLgobPIgSRQ3gUSeJpmA60cFitX3rIuJtSQfNtS0Od9XKLRv4vptuo=
+X-Received: by 2002:a25:2357:0:b0:696:56f4:356e with SMTP id
+ j84-20020a252357000000b0069656f4356emr15007563ybj.449.1661965554181; Wed, 31
+ Aug 2022 10:05:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20220830185313.76402-1-song@kernel.org> <aee99fcf-9352-d2cd-5f67-fb9d4b9a15f4@csgroup.eu>
+In-Reply-To: <aee99fcf-9352-d2cd-5f67-fb9d4b9a15f4@csgroup.eu>
+From: Song Liu <song@kernel.org>
+Date: Wed, 31 Aug 2022 10:05:43 -0700
+X-Gmail-Original-Message-ID: <CAPhsuW6CwQoU0GsXj0YhxngFfNMgD1mu6AjwqiZumTyWL84i1g@mail.gmail.com>
+Message-ID: <CAPhsuW6CwQoU0GsXj0YhxngFfNMgD1mu6AjwqiZumTyWL84i1g@mail.gmail.com>
+Subject: Re: [PATCH v5] livepatch: Clear relocation targets on a module removal
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,52 +68,118 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel test robot <lkp@intel.com>, Arnd Bergmann <arnd@arndb.de>, Tom Rix <trix@redhat.com>, llvm@lists.linux.dev, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, patches@lists.linux.dev, Nathan Chancellor <nathan@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Cc: "pmladek@suse.com" <pmladek@suse.com>, "jikos@kernel.org" <jikos@kernel.org>, "x86@kernel.org" <x86@kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "joe.lawrence@redhat.com" <joe.lawrence@redhat.com>, Josh Poimboeuf <jpoimboe@redhat.com>, "live-patching@vger.kernel.org" <live-patching@vger.kernel.org>, "mbenes@suse.cz" <mbenes@suse.cz>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "jpoimboe@kernel.org" <jpoimboe@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When building with a recent version of clang, there are a couple of
-errors around the call to module_init():
+On Wed, Aug 31, 2022 at 1:01 AM Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
+>
+>
+>
+> Le 30/08/2022 =C3=A0 20:53, Song Liu a =C3=A9crit :
+> > From: Miroslav Benes <mbenes@suse.cz>
+> >
+> > Josh reported a bug:
+> >
+> >    When the object to be patched is a module, and that module is
+> >    rmmod'ed and reloaded, it fails to load with:
+> >
+> >    module: x86/modules: Skipping invalid relocation target, existing va=
+lue is nonzero for type 2, loc 00000000ba0302e9, val ffffffffa03e293c
+> >    livepatch: failed to initialize patch 'livepatch_nfsd' for module 'n=
+fsd' (-8)
+> >    livepatch: patch 'livepatch_nfsd' failed for module 'nfsd', refusing=
+ to load module 'nfsd'
+> >
+> >    The livepatch module has a relocation which references a symbol
+> >    in the _previous_ loading of nfsd. When apply_relocate_add()
+> >    tries to replace the old relocation with a new one, it sees that
+> >    the previous one is nonzero and it errors out.
+> >
+> >    On ppc64le, we have a similar issue:
+> >
+> >    module_64: livepatch_nfsd: Expected nop after call, got e8410018 at =
+e_show+0x60/0x548 [livepatch_nfsd]
+> >    livepatch: failed to initialize patch 'livepatch_nfsd' for module 'n=
+fsd' (-8)
+> >    livepatch: patch 'livepatch_nfsd' failed for module 'nfsd', refusing=
+ to load module 'nfsd'
+> >
+> > He also proposed three different solutions. We could remove the error
+> > check in apply_relocate_add() introduced by commit eda9cec4c9a1
+> > ("x86/module: Detect and skip invalid relocations"). However the check
+> > is useful for detecting corrupted modules.
+> >
+> > We could also deny the patched modules to be removed. If it proved to b=
+e
+> > a major drawback for users, we could still implement a different
+> > approach. The solution would also complicate the existing code a lot.
+> >
+> > We thus decided to reverse the relocation patching (clear all relocatio=
+n
+> > targets on x86_64). The solution is not
+> > universal and is too much arch-specific, but it may prove to be simpler
+> > in the end.
+> >
+> > Reported-by: Josh Poimboeuf <jpoimboe@redhat.com>
+> > Signed-off-by: Miroslav Benes <mbenes@suse.cz>
+> > Signed-off-by: Song Liu <song@kernel.org>
+> >
+> > ---
+> >
+> > NOTE: powerpc code has not be tested.
+> >
+> > Changes v4 =3D v5:
+> > 1. Fix compile with powerpc.
+>
+> Not completely it seems.
+>
+>    CC      kernel/livepatch/core.o
+> kernel/livepatch/core.c: In function 'klp_clear_object_relocations':
+> kernel/livepatch/core.c:352:50: error: passing argument 1 of
+> 'clear_relocate_add' from incompatible pointer type
+> [-Werror=3Dincompatible-pointer-types]
+>    352 |                 clear_relocate_add(pmod->klp_info->sechdrs,
+>        |                                    ~~~~~~~~~~~~~~^~~~~~~~~
+>        |                                                  |
+>        |                                                  Elf32_Shdr *
+> {aka struct elf32_shdr *}
+> In file included from kernel/livepatch/core.c:19:
+> ./include/linux/moduleloader.h:76:37: note: expected 'Elf64_Shdr *' {aka
+> 'struct elf64_shdr *'} but argument is of type 'Elf32_Shdr *' {aka
+> 'struct elf32_shdr *'}
+>     76 | void clear_relocate_add(Elf64_Shdr *sechdrs,
+>        |                         ~~~~~~~~~~~~^~~~~~~
+> cc1: some warnings being treated as errors
+>
+>
+> Fixup:
+>
+> diff --git a/include/linux/moduleloader.h b/include/linux/moduleloader.h
+> index d22b36b84b4b..958e6da7f475 100644
+> --- a/include/linux/moduleloader.h
+> +++ b/include/linux/moduleloader.h
+> @@ -73,7 +73,7 @@ int apply_relocate_add(Elf_Shdr *sechdrs,
+>                        unsigned int relsec,
+>                        struct module *mod);
+>   #ifdef CONFIG_LIVEPATCH
+> -void clear_relocate_add(Elf64_Shdr *sechdrs,
+> +void clear_relocate_add(Elf_Shdr *sechdrs,
+>                    const char *strtab,
+>                    unsigned int symindex,
+>                    unsigned int relsec,
+>
+>
+> But then the link fails.
+>
+>    LD      .tmp_vmlinux.kallsyms1
+> powerpc64-linux-ld: kernel/livepatch/core.o: in function
+> `klp_cleanup_module_patches_limited':
+> core.c:(.text+0xdb4): undefined reference to `clear_relocate_add'
 
-  arch/powerpc/math-emu/math_efp.c:927:1: error: type specifier missing, defaults to 'int'; ISO C99 and later do not support implicit int [-Wimplicit-int]
-  module_init(spe_mathemu_init);
-  ^
-  int
-  arch/powerpc/math-emu/math_efp.c:927:13: error: a parameter list without types is only allowed in a function definition
-  module_init(spe_mathemu_init);
-              ^
-  2 errors generated.
+Hmm.. I am not seeing either error. Could you please share your .config fil=
+e?
 
-module_init() is a macro, which is not getting expanded because module.h
-is not included in this file. Add the include so that the macro can
-expand properly, clearing up the build failure.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
----
-
-No Fixes tag because it seems likely that this is a transient include
-issue (the code builds with GCC). The robot blamed commit e8c07082a810
-("Kbuild: move to -std=gnu11") but I think that just exposed these
-errors, not caused them.
-
- arch/powerpc/math-emu/math_efp.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/powerpc/math-emu/math_efp.c b/arch/powerpc/math-emu/math_efp.c
-index 39b84e7452e1..aa3bb8da1cb9 100644
---- a/arch/powerpc/math-emu/math_efp.c
-+++ b/arch/powerpc/math-emu/math_efp.c
-@@ -17,6 +17,7 @@
- 
- #include <linux/types.h>
- #include <linux/prctl.h>
-+#include <linux/module.h>
- 
- #include <linux/uaccess.h>
- #include <asm/reg.h>
-
-base-commit: dcf8e5633e2e69ad60b730ab5905608b756a032f
--- 
-2.37.3
-
+Thanks,
+Song
