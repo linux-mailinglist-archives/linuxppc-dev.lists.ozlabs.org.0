@@ -2,88 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 377945A7797
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Aug 2022 09:36:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 692E95A778B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Aug 2022 09:32:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MHbbB4RM9z3c8h
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Aug 2022 17:36:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MHbTx2Gphz3c4K
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Aug 2022 17:32:05 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=nR4RDBmt;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=i56a14606.fm1 header.b=L8StyYpb;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=eDUHucZH;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=66.111.4.230; helo=new4-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::22b; helo=mail-lj1-x22b.google.com; envelope-from=krzysztof.kozlowski@linaro.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=nR4RDBmt;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=i56a14606.fm1 header.b=L8StyYpb;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=eDUHucZH;
 	dkim-atps=neutral
-X-Greylist: delayed 554 seconds by postgrey-1.36 at boromir; Wed, 31 Aug 2022 17:35:56 AEST
-Received: from new4-smtp.messagingengine.com (new4-smtp.messagingengine.com [66.111.4.230])
+Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MHbZN5VqTz2xn5
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Aug 2022 17:35:56 +1000 (AEST)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-	by mailnew.nyi.internal (Postfix) with ESMTP id 22188580551
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Aug 2022 03:26:38 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute3.internal (MEProxy); Wed, 31 Aug 2022 03:26:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:sender:subject:subject:to:to; s=fm1; t=1661930798; x=
-	1661934398; bh=SpmvgAZmShrF0l7gD6cdrt516aXO97qP2DhvL2kbjew=; b=n
-	R4RDBmtiT22kKeY4+hkrxH7/rOTmWVq+AnBcrvmzBpbwrUcGFZ1ytoAGVAyViql4
-	DDSoq23/TmGWfj9hoYFxBSShGIW63I97yQ2+OyN8hInhBekNZJqiLMkxOtVbzVNM
-	IuMtRGUUnug6ZEE58ML4IQmm7spwL8sFtZXKzaxsBGRuT6/9fkbdLe0S7pIGVAfo
-	mbR1YV8roGjehUyigvXeOEm+yOyaNn6Rp8OhQLtwRI7y3GZxQgVxZLuABp9oPa9B
-	JszTFAtg9Fsx7tqmUHQTkrv7jHCPhrH4e+LS0moBcHRaBQchh3xNftZRAd6UGSbk
-	5KGOOhY7UyoTgeZvXINxA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:content-transfer-encoding:content-type
-	:date:date:feedback-id:feedback-id:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:sender
-	:subject:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=i56a14606.fm1; t=1661930798; x=
-	1661934398; bh=SpmvgAZmShrF0l7gD6cdrt516aXO97qP2DhvL2kbjew=; b=L
-	8StyYpbaCCUVBeIjtA5FOXmCPVd9bqMEzqLudd6N2f6BmsP/Kr6k2RmKd/PyXVxJ
-	XtxnElNsjknRXxusN+5b2uGQv25a3UNtZ2GZRVc8kJSsrY323Hx1wabDjCfm/wib
-	sbyN6nHlMLZqdzyBEK3pqiHaQJQxwd1RqSp5ENwwwe+4iLzv63IMm54rmmov3A0a
-	JcbXF7dzd/F5nREz5l3+WHtVscXVCOx8OgCv6/YAjdiQ1i2LxFmLS68DCBiERTkQ
-	sLbiVW7y3JV5R7Jdza/7jWUQbNO9HqCNqzyCanJTxhke99Cc09s1EQuuUQhZJyue
-	/ii28FYxP++5uSsmq2v7Q==
-X-ME-Sender: <xms:LQ0PY25AgkvZhdBl4UCDkM_4--caDFmS8q0UkwAoSllLmK2nr46f-A>
-    <xme:LQ0PY_5etj21fLWA2qgpnWQXWPjFGsX3rNKjQu8g-RsFyeoJGyzpjoectxmxnNH8N
-    J1zeRNva4cLa552HrU>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrvdekgedguddvfecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecunecujfgurhepofgfggfkjghffffhvffutgfgse
-    htqhertderreejnecuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgu
-    segrrhhnuggsrdguvgeqnecuggftrfgrthhtvghrnhepjeeghfeutdejjeehudevgeehve
-    duffejkefhveefgfettdehgeeiledufeeuvdfhnecuvehluhhsthgvrhfuihiivgeptden
-    ucfrrghrrghmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:LQ0PY1f-hu1PHLPlzKkYlBcpT9OD-X5Gvq4tBpaMvpGmqJjL_bg3IQ>
-    <xmx:LQ0PYzLhE5rR5eozADMB_BeYEbnAzjEuZwpvpYnBppWzy5VROSFjNw>
-    <xmx:LQ0PY6KSJakDkX8fhG4zWNMrVBOH33PzwJ3ElpyKzzkczMHIR6Y1TA>
-    <xmx:LQ0PY_UKBdBeYHaCQVI7zrI-9XRmf9DWKWZxhhE0ZqlFIBAYxJAR5Q>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id B0878B60083; Wed, 31 Aug 2022 03:26:37 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.7.0-alpha0-841-g7899e99a45-fm-20220811.002-g7899e99a
-Mime-Version: 1.0
-Message-Id: <a5d148c1-70c1-4e86-a50c-7dc6da45ff2f@www.fastmail.com>
-In-Reply-To: <20220830230012.9429-1-pali@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MHbTG5Gdfz2xG6
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Aug 2022 17:31:29 +1000 (AEST)
+Received: by mail-lj1-x22b.google.com with SMTP id b26so6791592ljk.12
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Aug 2022 00:31:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc;
+        bh=SowT+GgtM4rpf2Tm7Xdg2PLTWLyEuq4YWLGVJCfBBo4=;
+        b=eDUHucZHmNWPS4dcTDAvSB+3Gf6B84OpnmrxcPBg31ZikUd8NxfnOhl5KSqS8dqwTH
+         By91LHkdLFJWxuU3BZip5eaLMrQ3CxsdmPbKI+MBD5j0nW1JUI4YzW3nktfZKPaQBcHx
+         KtZG8TaSTS9srPQOsqMP85vqWbBerDKMiFGow/qtjx4HobjfONZP21xmc1c5FfT+xX+j
+         nIg8aDpdTtf7gCUwKdLU6g4jzLSvaiPTv8zA9dKiV3jUY+6cVOhIcxEpmKsLBKokL/TW
+         zbez57XmSuj33sarUwUCCEpvsSsp5xK9z8nlhK8VXyG0a1y862EP0dyou+0fo27AGZu0
+         Oc8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc;
+        bh=SowT+GgtM4rpf2Tm7Xdg2PLTWLyEuq4YWLGVJCfBBo4=;
+        b=Yb8PDcuvesPYxt92lo8JH4Mp5ORa5+cQd14n8gp/RKp2NxSRGwKTU1zUIicWfYmaKZ
+         vgE7+h99cpgiHME+g9GPROFzl3SGBV8DT6rjvUkaPmhG4CF3xDnKmK7N0EgTQ7iKvk6I
+         ThUN2BdKbflZi8f34JN4ZBUS2S7IosXDtv4EpR+IL4F/woH6HL8A5WC2QnwIU1JOOI1T
+         e1QsW7SHHbQbLpC1zFcRGdpV3rsvT5RbSdfqnjeJXE13DZvEzT9gS6/etHgteRIj5N4i
+         X8+qv1MoCsyTtk+Ufxpd7jWFdVPIE2PiL7ypvaBKA2QroXyYOwyixqylBskERZCe+yF8
+         2Ihg==
+X-Gm-Message-State: ACgBeo22mwcqXfgMBHlap6XN/IYD9bJCWLsGvM8+uaWefAxCh/YypVG1
+	YaT9ALP+DryOKC6J7OLicZxzoA==
+X-Google-Smtp-Source: AA6agR4/QCHMtUzdlfGAL1xvdig57DJ6Ktw8Nv3Fk/1Sl/NMSIE1w3emriDGwD5pekMf0VCiwhuuGw==
+X-Received: by 2002:a05:651c:199f:b0:261:d789:cd6c with SMTP id bx31-20020a05651c199f00b00261d789cd6cmr8281851ljb.450.1661931083551;
+        Wed, 31 Aug 2022 00:31:23 -0700 (PDT)
+Received: from [192.168.28.124] (balticom-73-99-134.balticom.lv. [109.73.99.134])
+        by smtp.gmail.com with ESMTPSA id c7-20020a056512104700b0049468f9e697sm1135488lfb.236.2022.08.31.00.31.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 31 Aug 2022 00:31:23 -0700 (PDT)
+Message-ID: <373fdedb-447e-b552-df83-737267068296@linaro.org>
+Date: Wed, 31 Aug 2022 10:31:22 +0300
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.13.0
+Subject: Re: [PATCH v2 1/3] dt-bindings: reset: syscon-reboot: Add priority
+ property
+Content-Language: en-US
+To: =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali@kernel.org>,
+ Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Michael Ellerman <mpe@ellerman.id.au>
 References: <20220820102925.29476-1-pali@kernel.org>
  <20220830230012.9429-1-pali@kernel.org>
-Date: Wed, 31 Aug 2022 09:26:17 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v2 1/3] dt-bindings: reset: syscon-reboot: Add priority property
-Content-Type: text/plain;charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220830230012.9429-1-pali@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,35 +86,17 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: =?UTF-8?Q?Marek_Beh=c3=ban?= <kabel@kernel.org>, devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Aug 31, 2022, at 1:00 AM, Pali Roh=C3=A1r wrote:
-> a/Documentation/devicetree/bindings/power/reset/syscon-reboot.yaml=20
-> b/Documentation/devicetree/bindings/power/reset/syscon-reboot.yaml
-> index da2509724812..4c8b0d0a0111 100644
-> --- a/Documentation/devicetree/bindings/power/reset/syscon-reboot.yaml
-> +++ b/Documentation/devicetree/bindings/power/reset/syscon-reboot.yaml
-> @@ -42,6 +42,11 @@ properties:
->      $ref: /schemas/types.yaml#/definitions/uint32
->      description: The reset value written to the reboot register (32=20
-> bit access).
->=20
-> +  priority:
-> +    $ref: /schemas/types.yaml#/definitions/int32
-> +    description: Priority level of this syscon reset device.
-> +    default: 192
-> +
+On 31/08/2022 02:00, Pali Rohár wrote:
+> This new optional priority property allows to specify custom priority level
+> of reset device. Default level was always 192.
 
-My first thought was that this is looks very Linux specific and
-probably should be documented as such. However I see there is
-already precedent in
-Documentation/devicetree/bindings/power/reset/gpio-restart.yaml,
-which defines the same thing with a more detailed description.
+You still did not explain why do we need this. You only explained what
+you did here, which is obvious and visible from the diff. What you
+should explain is why you are doing it, what problem you are solving.
 
-Since this is an optional property for both, and it has the
-same meaning here, is it possible to move the description
-to a common place where it either gets included from both,
-or from all reboot bindings?
-
-       Arnd
+Best regards,
+Krzysztof
