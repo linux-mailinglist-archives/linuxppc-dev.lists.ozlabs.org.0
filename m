@@ -1,37 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F3015A84CF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Aug 2022 19:54:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 485D55A8676
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Aug 2022 21:11:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MHsJc41f4z3cCk
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Sep 2022 03:54:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MHv181lh4z3c4Q
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Sep 2022 05:11:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MHsJ757y5z2xBF
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Sep 2022 03:54:30 +1000 (AEST)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
-	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 27VHp22H007556;
-	Wed, 31 Aug 2022 12:51:02 -0500
-Received: (from segher@localhost)
-	by gate.crashing.org (8.14.1/8.14.1/Submit) id 27VHp1O9007550;
-	Wed, 31 Aug 2022 12:51:01 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
-Date: Wed, 31 Aug 2022 12:51:00 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v2 16/16] objtool/powerpc: Add --mcount specific implementation
-Message-ID: <20220831175100.GS25951@gate.crashing.org>
-References: <20220829055223.24767-1-sv@linux.ibm.com> <20220829055223.24767-17-sv@linux.ibm.com> <5da86617-53f1-d899-336a-53fe691e76ae@csgroup.eu>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <5da86617-53f1-d899-336a-53fe691e76ae@csgroup.eu>
-User-Agent: Mutt/1.4.2.3i
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.219.179; helo=mail-yb1-f179.google.com; envelope-from=rjwysocki@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MHv0h4T99z2xjw
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Sep 2022 05:11:14 +1000 (AEST)
+Received: by mail-yb1-f179.google.com with SMTP id l196so5559367ybl.12
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Aug 2022 12:11:14 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=URbpXJ4q66/lNagKlH7vANsFH1a/wXrZe4dE+Lnpq0g=;
+        b=3LCyzpHz/Pbv9wqqnxovE6ygPF/ub/V6WLScUMagbZLb/v3dulRLBYdjzl20jmKxjj
+         t11IBaZaWRpGsZNL6Z8qEzcqQelsoSmaXk8Ajcr2wpbwrXaevGmuP8h/bVZqHv8lxMgJ
+         V0deNlbdrYdm9uEPtotiSTW+Qb/GPrsrtns4NiCqeBhmc2YIb+nAatSKV7eo8C1R+U/t
+         ScC6gDjG/L8om1nF+ZWwK9L8GAqH7haVqxEbikwXxyVLA+ZKQI4LbPSDjO3YCe1Cx1/+
+         0r/ArSSMKrbXTgVoDTI6R5kYzlJp+l4eH5++OWUcoZDvNMT9QTSQ0zw7N7NkWeS3UD1R
+         Qazw==
+X-Gm-Message-State: ACgBeo0GrG7Qmx/D0IGriL1ZgpWV1ndfOL6UmNa+HXO9n3fO6aNc7ORW
+	GbFr/pHJZVSMsLJzRgdXux1BxZwVqh/T9Ba/l/w=
+X-Google-Smtp-Source: AA6agR5JeancUPtatg6WllmkxPT2/jaJqxc7/49bPElDDAL1Els6SYlMy87a+ivHYpvG5kIgUOa7xLcazAHaJej0b28=
+X-Received: by 2002:a25:8204:0:b0:69e:3b25:273 with SMTP id
+ q4-20020a258204000000b0069e3b250273mr2338645ybk.482.1661973071716; Wed, 31
+ Aug 2022 12:11:11 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220818210002.6624-1-wsa+renesas@sang-engineering.com>
+In-Reply-To: <20220818210002.6624-1-wsa+renesas@sang-engineering.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 31 Aug 2022 21:11:00 +0200
+Message-ID: <CAJZ5v0hOi8q65wz4FSjW0s9cWQhjUdNqiV=5n-Ef5hQKiJjB8w@mail.gmail.com>
+Subject: Re: [PATCH] cpuidle: move from strlcpy with unused retval to strscpy
+To: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -43,39 +55,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "peterz@infradead.org" <peterz@infradead.org>, "chenzhongjin@huawei.com" <chenzhongjin@huawei.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "rostedt@goodmis.org" <rostedt@goodmis.org>, "aik@ozlabs.ru" <aik@ozlabs.ru>, "mingo@redhat.com" <mingo@redhat.com>, Sathvika Vasireddy <sv@linux.ibm.com>, "npiggin@gmail.com" <npiggin@gmail.com>, "jpoimboe@redhat.com" <jpoimboe@redhat.com>, "naveen.n.rao@linux.vnet.ibm.com" <naveen.n.rao@linux.vnet.ibm.com>, "mbenes@suse.cz" <mbenes@suse.cz>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Linux PM <linux-pm@vger.kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Aug 31, 2022 at 12:50:07PM +0000, Christophe Leroy wrote:
-> Le 29/08/2022 à 07:52, Sathvika Vasireddy a écrit :
-> > +	opcode = insn >> 26;
-> > +
-> > +	switch (opcode) {
-> > +	case 18: /* bl */
-> 
-> case 18 is more than 'bl', it includes also 'b'.
-> In both cases, the calculation of *immediate is the same.
+On Thu, Aug 18, 2022 at 11:00 PM Wolfram Sang
+<wsa+renesas@sang-engineering.com> wrote:
+>
+> Follow the advice of the below link and prefer 'strscpy' in this
+> subsystem. Conversion is 1:1 because the return value is not used.
+> Generated by a coccinelle script.
+>
+> Link: https://lore.kernel.org/r/CAHk-=wgfRnXz0W3D37d01q3JFkr_i_uTL=V6A6G1oUZcprmknw@mail.gmail.com/
+> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+> ---
+>  drivers/cpuidle/cpuidle-powernv.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/cpuidle/cpuidle-powernv.c b/drivers/cpuidle/cpuidle-powernv.c
+> index c32c600b3cf8..0b5461b3d7dd 100644
+> --- a/drivers/cpuidle/cpuidle-powernv.c
+> +++ b/drivers/cpuidle/cpuidle-powernv.c
+> @@ -233,8 +233,8 @@ static inline void add_powernv_state(int index, const char *name,
+>                                      unsigned int exit_latency,
+>                                      u64 psscr_val, u64 psscr_mask)
+>  {
+> -       strlcpy(powernv_states[index].name, name, CPUIDLE_NAME_LEN);
+> -       strlcpy(powernv_states[index].desc, name, CPUIDLE_NAME_LEN);
+> +       strscpy(powernv_states[index].name, name, CPUIDLE_NAME_LEN);
+> +       strscpy(powernv_states[index].desc, name, CPUIDLE_NAME_LEN);
+>         powernv_states[index].flags = flags;
+>         powernv_states[index].target_residency = target_residency;
+>         powernv_states[index].exit_latency = exit_latency;
+> --
 
-It also is "ba" and "bla", sometimes written as "b[l][a]".
-
-> It would therefore be more correct to perform the calculation and setup 
-> of *immediate outside the 'if ((insn & 3) == 1)', that would avoid 
-> unnecessary churn the day we add support for branches without link.
-> 
-> > +		if ((insn & 3) == 1) {
-> > +			*type = INSN_CALL;
-> > +			*immediate = insn & 0x3fffffc;
-> > +			if (*immediate & 0x2000000)
-> > +				*immediate -= 0x4000000;
-> > +		}
-> > +		break;
-> > +	}
-
-Does this handle AA=1 correctly at all?  That is valid both with and
-without relocations, just like AA=0.  Same for AA=1 LK=0 btw.
-
-If you only handle AA=0, the code should explicitly test for that.
-
-
-Segher
+Applied as 6.1 material, thanks!
