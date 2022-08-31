@@ -1,59 +1,43 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D25A75A7151
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Aug 2022 01:02:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B8655A72E3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Aug 2022 02:46:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MHN9Z4XNJz3dwK
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Aug 2022 09:02:10 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hVHEzCTx;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MHQTG57m9z3cDF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Aug 2022 10:45:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hVHEzCTx;
-	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=cdjrlc.com (client-ip=43.155.67.158; helo=bg4.exmail.qq.com; envelope-from=yuanjilin@cdjrlc.com; receiver=<UNKNOWN>)
+Received: from bg4.exmail.qq.com (bg4.exmail.qq.com [43.155.67.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MHN7n73Slz2xGS
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Aug 2022 09:00:37 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 4FA6F61627;
-	Tue, 30 Aug 2022 23:00:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 857A6C433D6;
-	Tue, 30 Aug 2022 23:00:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1661900435;
-	bh=t182bdU7U0dEHPhdYXFdbvLZ9arqgWMZzee1Mf+ZirY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hVHEzCTx1vfsL5No6e64f9sD8YRfWm+grVLiy3uxPtvkSx0h55ACTzzRJWYPsbjG0
-	 VzHmfG+stwfgv7Y0PgUjpwUfRE8E4NsseluknbE7GjmJ1xjGndM1+Ybrq4Kqhq1ZVc
-	 XUUVPbnhDOsmDs3+qDLTRonw0YRLAfnni3a/JcSDQdvqRnSF9e+csG3CZWS0K5M4Tz
-	 nYeDxEullW4l7y3ib1VrjAH6MLIMAvZnAPmFeld/A2/5pTKqMBk+1daOPPWuL1h5bk
-	 2o8+ajQzMax8iVEzhXdaNJhMPa84rePwhGhkssz7P+We6LuSg6QZ6nrnGsP/2kqSWP
-	 b+jClHfuQtkdQ==
-Received: by pali.im (Postfix)
-	id 3DEEA1A76; Wed, 31 Aug 2022 01:00:33 +0200 (CEST)
-From: =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>
-To: Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v2 3/3] powerpc: dts: turris1x.dts: Set lower priority for CPLD syscon-reboot
-Date: Wed, 31 Aug 2022 01:00:12 +0200
-Message-Id: <20220830230012.9429-3-pali@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20220830230012.9429-1-pali@kernel.org>
-References: <20220820102925.29476-1-pali@kernel.org>
- <20220830230012.9429-1-pali@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MHQSn31FFz3bc8
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Aug 2022 10:45:20 +1000 (AEST)
+X-QQ-mid: bizesmtp89t1661906702tacmp2wv
+Received: from localhost.localdomain ( [182.148.13.26])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Wed, 31 Aug 2022 08:45:01 +0800 (CST)
+X-QQ-SSF: 01000000000000D0E000000A0000000
+X-QQ-FEAT: ILHsT53NKPgLPSHQc+3alBEDo3E+b66UsNeloFQYZyjTsUQP+GBcWJ8GsC2+T
+	3uoK1s805FksAjqgfvKZEXtbX+6opyFPYfV69z/8hI0gfMbV4U7+vpUSaUBRWrmeGdfgaJW
+	0xWPnsEl+EDQ6M551sw0XhWBok3eDSAne2LBrrlSA+mrOOnPwr2pQnbKRIITbwIXErk/PxC
+	UFCpg9RAZlTrilqS39yQVgTkXBGRWIB4C4DAu93UYPIeEBHNwoUXXNSNaYygrzPGxyGd2at
+	rDzMQfXO6Hp41IsXd/kxasNcKnFdRIwLcR/PXC7M1OOiWjka6kC5hNOZ9uyc5OvCGJ6K+1g
+	rpVt5c/GpSO+mP5HtI=
+X-QQ-GoodBg: 0
+From: Jilin Yuan <yuanjilin@cdjrlc.com>
+To: mpe@ellerman.id.au,
+	npiggin@gmail.com
+Subject: [PATCH] KVM: fix repeated words in comments
+Date: Wed, 31 Aug 2022 08:44:54 +0800
+Message-Id: <20220831004454.33921-1-yuanjilin@cdjrlc.com>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:cdjrlc.com:qybglogicsvr:qybglogicsvr4
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,60 +49,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: =?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>, devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
+Cc: Jilin Yuan <yuanjilin@cdjrlc.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Due to CPLD firmware bugs, set CPLD syscon-reboot priority level to 64
-(between rstcr and watchdog) to ensure that rstcr's global-utilities reset
-method which is preferred stay as default one, and to ensure that CPLD
-syscon-reboot is more preferred than watchdog reset method.
+Delete the redundant word 'that'.
 
-Fixes: 0531a4abd1c6 ("powerpc: dts: turris1x.dts: Add CPLD reboot node")
-Signed-off-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Jilin Yuan <yuanjilin@cdjrlc.com>
 ---
- arch/powerpc/boot/dts/turris1x.dts | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ arch/powerpc/kvm/book3s_64_mmu_hv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/boot/dts/turris1x.dts b/arch/powerpc/boot/dts/turris1x.dts
-index 69c38ed8a3a5..c189293d5a1e 100644
---- a/arch/powerpc/boot/dts/turris1x.dts
-+++ b/arch/powerpc/boot/dts/turris1x.dts
-@@ -353,11 +353,34 @@
- 			};
+diff --git a/arch/powerpc/kvm/book3s_64_mmu_hv.c b/arch/powerpc/kvm/book3s_64_mmu_hv.c
+index e9744b41a226..8e4b42b5f37f 100644
+--- a/arch/powerpc/kvm/book3s_64_mmu_hv.c
++++ b/arch/powerpc/kvm/book3s_64_mmu_hv.c
+@@ -1601,7 +1601,7 @@ long kvm_vm_ioctl_resize_hpt_commit(struct kvm *kvm,
+  * is valid, it is written to the HPT as if an H_ENTER with the
+  * exact flag set was done.  When the invalid count is non-zero
+  * in the header written to the stream, the kernel will make
+- * sure that that many HPTEs are invalid, and invalidate them
++ * sure that many HPTEs are invalid, and invalidate them
+  * if not.
+  */
  
- 			reboot@d {
-+				/*
-+				 * CPLD firmware which manages system reset and
-+				 * watchdog registers has bugs. It does not
-+				 * autoclear system reset register after change
-+				 * and watchdog ignores reset line on immediate
-+				 * succeeding reset cycle triggered by watchdog.
-+				 * These bugs have to be workarounded in U-Boot
-+				 * bootloader. So use system reset via syscon as
-+				 * a last resort because older U-Boot versions
-+				 * do not have workaround for watchdog.
-+				 *
-+				 * Reset method via rstcr's global-utilities
-+				 * (the preferred one) has priority level 128,
-+				 * watchdog has priority level 0 and default
-+				 * syscon-reboot priority level is 192.
-+				 *
-+				 * So define syscon-reboot with custom priority
-+				 * level 64 (between rstcr and watchdog) because
-+				 * rstcr should stay as default preferred reset
-+				 * method and reset via watchdog is more broken
-+				 * than system reset via syscon.
-+				 */
- 				compatible = "syscon-reboot";
- 				reg = <0x0d 0x01>;
- 				offset = <0x0d>;
- 				mask = <0x01>;
- 				value = <0x01>;
-+				priority = <64>;
- 			};
- 
- 			led-controller@13 {
 -- 
-2.20.1
+2.36.1
 
