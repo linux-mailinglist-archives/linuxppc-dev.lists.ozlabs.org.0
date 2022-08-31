@@ -2,73 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 893B55A8714
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Aug 2022 21:55:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BFCD5A8736
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Aug 2022 22:07:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MHvzc3htYz3c8V
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Sep 2022 05:55:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MHwFP3CmXz3cCm
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Sep 2022 06:07:21 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gA+K0ka4;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gA+K0ka4;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=c8McsmIE;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=c8McsmIE;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=rgb@redhat.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=joe.lawrence@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gA+K0ka4;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gA+K0ka4;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=c8McsmIE;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=c8McsmIE;
 	dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MHvyz307Vz2xHZ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Sep 2022 05:54:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MHwDl2Sznz308b
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Sep 2022 06:06:46 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1661975687;
+	s=mimecast20190719; t=1661976401;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=svDOqsVD4qeIC1aKtCh3SbdYv27RpwGCDoSktV2RiVw=;
-	b=gA+K0ka48FBH0qCK6w/oSKZON7FJEaJIDslNJ/usDkuBKWweg8Ta0RcSWXC6NGTzO6Lo+5
-	CCXU2cfavE8T9tt/uHQmQyv15RIM6u7oSinoNLAFN1w9t4ROM+atcpibX5aQjPOGEdcA3G
-	9b0xxfAyiw/5JlErQquICKnEJhEbuLI=
+	bh=r8Nlq9zif2fq3bbnp4BvyqOxlH6TzAD6XgndQmzpQAs=;
+	b=c8McsmIEGC8v/2Pr1l2zWgaKSsi+CNTLD8mgQM4yH+d7Q+W+gslxRkY1rp3dELXZivnDDm
+	gc6t5g1M1uber1LSGFgEkvD9UaHolCRIaRW9prxhnWIXzoBO1g/91XL8egr0wzBlwaFX7w
+	1VGohntdJHFaeizZf//8Tc7gbF1gJCM=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1661975687;
+	s=mimecast20190719; t=1661976401;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=svDOqsVD4qeIC1aKtCh3SbdYv27RpwGCDoSktV2RiVw=;
-	b=gA+K0ka48FBH0qCK6w/oSKZON7FJEaJIDslNJ/usDkuBKWweg8Ta0RcSWXC6NGTzO6Lo+5
-	CCXU2cfavE8T9tt/uHQmQyv15RIM6u7oSinoNLAFN1w9t4ROM+atcpibX5aQjPOGEdcA3G
-	9b0xxfAyiw/5JlErQquICKnEJhEbuLI=
+	bh=r8Nlq9zif2fq3bbnp4BvyqOxlH6TzAD6XgndQmzpQAs=;
+	b=c8McsmIEGC8v/2Pr1l2zWgaKSsi+CNTLD8mgQM4yH+d7Q+W+gslxRkY1rp3dELXZivnDDm
+	gc6t5g1M1uber1LSGFgEkvD9UaHolCRIaRW9prxhnWIXzoBO1g/91XL8egr0wzBlwaFX7w
+	1VGohntdJHFaeizZf//8Tc7gbF1gJCM=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-336-3zdW1BcFPr6Lb_vvtYX_nQ-1; Wed, 31 Aug 2022 15:54:44 -0400
-X-MC-Unique: 3zdW1BcFPr6Lb_vvtYX_nQ-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
+ us-mta-47-qbPjvfqnMcab3ym6Nz1UkA-1; Wed, 31 Aug 2022 16:06:36 -0400
+X-MC-Unique: qbPjvfqnMcab3ym6Nz1UkA-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
 	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A13EF101A54E;
-	Wed, 31 Aug 2022 19:54:43 +0000 (UTC)
-Received: from madcap2.tricolour.ca (unknown [10.22.48.5])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id 269B61415117;
-	Wed, 31 Aug 2022 19:54:41 +0000 (UTC)
-Date: Wed, 31 Aug 2022 15:54:38 -0400
-From: Richard Guy Briggs <rgb@redhat.com>
-To: Christian =?iso-8859-1?Q?G=F6ttsche?= <cgzones@googlemail.com>
-Subject: Re: [RFC PATCH 2/2] fs/xattr: wire up syscalls
-Message-ID: <Yw+8fo3k1tIuscoR@madcap2.tricolour.ca>
-References: <20220830152858.14866-1-cgzones@googlemail.com>
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 363188037AF;
+	Wed, 31 Aug 2022 20:06:36 +0000 (UTC)
+Received: from redhat.com (unknown [10.22.32.220])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 3A4B2492C3B;
+	Wed, 31 Aug 2022 20:06:35 +0000 (UTC)
+Date: Wed, 31 Aug 2022 16:06:33 -0400
+From: Joe Lawrence <joe.lawrence@redhat.com>
+To: Song Liu <song@kernel.org>
+Subject: Re: [PATCH v5] livepatch: Clear relocation targets on a module
+ removal
+Message-ID: <Yw+/SXhh5puipgmo@redhat.com>
+References: <20220830185313.76402-1-song@kernel.org>
+ <aee99fcf-9352-d2cd-5f67-fb9d4b9a15f4@csgroup.eu>
+ <CAPhsuW6CwQoU0GsXj0YhxngFfNMgD1mu6AjwqiZumTyWL84i1g@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220830152858.14866-1-cgzones@googlemail.com>
-X-Scanned-By: MIMEDefang 2.85 on 10.11.54.7
+In-Reply-To: <CAPhsuW6CwQoU0GsXj0YhxngFfNMgD1mu6AjwqiZumTyWL84i1g@mail.gmail.com>
+X-Scanned-By: MIMEDefang 2.85 on 10.11.54.9
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,363 +83,127 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org, selinux@vger.kernel.org, linux-api@vger.kernel.org, linux-xtensa@linux-xtensa.org, linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-audit@redhat.com, linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: "pmladek@suse.com" <pmladek@suse.com>, "jikos@kernel.org" <jikos@kernel.org>, "x86@kernel.org" <x86@kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Josh Poimboeuf <jpoimboe@redhat.com>, "live-patching@vger.kernel.org" <live-patching@vger.kernel.org>, "mbenes@suse.cz" <mbenes@suse.cz>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "jpoimboe@kernel.org" <jpoimboe@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2022-08-30 17:28, Christian Göttsche wrote:
-> Enable the new added extended attribute related syscalls.
+On Wed, Aug 31, 2022 at 10:05:43AM -0700, Song Liu wrote:
+> On Wed, Aug 31, 2022 at 1:01 AM Christophe Leroy
+> <christophe.leroy@csgroup.eu> wrote:
+> >
+> >
+> >
+> > Le 30/08/2022 à 20:53, Song Liu a écrit :
+> > > From: Miroslav Benes <mbenes@suse.cz>
+> > >
+> > > Josh reported a bug:
+> > >
+> > >    When the object to be patched is a module, and that module is
+> > >    rmmod'ed and reloaded, it fails to load with:
+> > >
+> > >    module: x86/modules: Skipping invalid relocation target, existing value is nonzero for type 2, loc 00000000ba0302e9, val ffffffffa03e293c
+> > >    livepatch: failed to initialize patch 'livepatch_nfsd' for module 'nfsd' (-8)
+> > >    livepatch: patch 'livepatch_nfsd' failed for module 'nfsd', refusing to load module 'nfsd'
+> > >
+> > >    The livepatch module has a relocation which references a symbol
+> > >    in the _previous_ loading of nfsd. When apply_relocate_add()
+> > >    tries to replace the old relocation with a new one, it sees that
+> > >    the previous one is nonzero and it errors out.
+> > >
+> > >    On ppc64le, we have a similar issue:
+> > >
+> > >    module_64: livepatch_nfsd: Expected nop after call, got e8410018 at e_show+0x60/0x548 [livepatch_nfsd]
+> > >    livepatch: failed to initialize patch 'livepatch_nfsd' for module 'nfsd' (-8)
+> > >    livepatch: patch 'livepatch_nfsd' failed for module 'nfsd', refusing to load module 'nfsd'
+> > >
+> > > He also proposed three different solutions. We could remove the error
+> > > check in apply_relocate_add() introduced by commit eda9cec4c9a1
+> > > ("x86/module: Detect and skip invalid relocations"). However the check
+> > > is useful for detecting corrupted modules.
+> > >
+> > > We could also deny the patched modules to be removed. If it proved to be
+> > > a major drawback for users, we could still implement a different
+> > > approach. The solution would also complicate the existing code a lot.
+> > >
+> > > We thus decided to reverse the relocation patching (clear all relocation
+> > > targets on x86_64). The solution is not
+> > > universal and is too much arch-specific, but it may prove to be simpler
+> > > in the end.
+> > >
+> > > Reported-by: Josh Poimboeuf <jpoimboe@redhat.com>
+> > > Signed-off-by: Miroslav Benes <mbenes@suse.cz>
+> > > Signed-off-by: Song Liu <song@kernel.org>
+> > >
+> > > ---
+> > >
+> > > NOTE: powerpc code has not be tested.
+> > >
+> > > Changes v4 = v5:
+> > > 1. Fix compile with powerpc.
+> >
+> > Not completely it seems.
+> >
+> >    CC      kernel/livepatch/core.o
+> > kernel/livepatch/core.c: In function 'klp_clear_object_relocations':
+> > kernel/livepatch/core.c:352:50: error: passing argument 1 of
+> > 'clear_relocate_add' from incompatible pointer type
+> > [-Werror=incompatible-pointer-types]
+> >    352 |                 clear_relocate_add(pmod->klp_info->sechdrs,
+> >        |                                    ~~~~~~~~~~~~~~^~~~~~~~~
+> >        |                                                  |
+> >        |                                                  Elf32_Shdr *
+> > {aka struct elf32_shdr *}
+> > In file included from kernel/livepatch/core.c:19:
+> > ./include/linux/moduleloader.h:76:37: note: expected 'Elf64_Shdr *' {aka
+> > 'struct elf64_shdr *'} but argument is of type 'Elf32_Shdr *' {aka
+> > 'struct elf32_shdr *'}
+> >     76 | void clear_relocate_add(Elf64_Shdr *sechdrs,
+> >        |                         ~~~~~~~~~~~~^~~~~~~
+> > cc1: some warnings being treated as errors
+> >
+> >
+> > Fixup:
+> >
+> > diff --git a/include/linux/moduleloader.h b/include/linux/moduleloader.h
+> > index d22b36b84b4b..958e6da7f475 100644
+> > --- a/include/linux/moduleloader.h
+> > +++ b/include/linux/moduleloader.h
+> > @@ -73,7 +73,7 @@ int apply_relocate_add(Elf_Shdr *sechdrs,
+> >                        unsigned int relsec,
+> >                        struct module *mod);
+> >   #ifdef CONFIG_LIVEPATCH
+> > -void clear_relocate_add(Elf64_Shdr *sechdrs,
+> > +void clear_relocate_add(Elf_Shdr *sechdrs,
+> >                    const char *strtab,
+> >                    unsigned int symindex,
+> >                    unsigned int relsec,
+> >
+> >
+> > But then the link fails.
+> >
+> >    LD      .tmp_vmlinux.kallsyms1
+> > powerpc64-linux-ld: kernel/livepatch/core.o: in function
+> > `klp_cleanup_module_patches_limited':
+> > core.c:(.text+0xdb4): undefined reference to `clear_relocate_add'
 > 
-> Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
-
-I can't speak to the completeness of the arch list, but I'm glad to see
-the audit attr change bits in there.
-
-> ---
-> TODO:
->   - deprecate traditional syscalls (setxattr, ...)?
->   - resolve possible conflicts with proposed readfile syscall
-> ---
->  arch/alpha/kernel/syscalls/syscall.tbl      |  4 ++++
->  arch/arm/tools/syscall.tbl                  |  4 ++++
->  arch/arm64/include/asm/unistd.h             |  2 +-
->  arch/arm64/include/asm/unistd32.h           |  8 ++++++++
->  arch/ia64/kernel/syscalls/syscall.tbl       |  4 ++++
->  arch/m68k/kernel/syscalls/syscall.tbl       |  4 ++++
->  arch/microblaze/kernel/syscalls/syscall.tbl |  4 ++++
->  arch/mips/kernel/syscalls/syscall_n32.tbl   |  4 ++++
->  arch/mips/kernel/syscalls/syscall_n64.tbl   |  4 ++++
->  arch/mips/kernel/syscalls/syscall_o32.tbl   |  4 ++++
->  arch/parisc/kernel/syscalls/syscall.tbl     |  4 ++++
->  arch/powerpc/kernel/syscalls/syscall.tbl    |  4 ++++
->  arch/s390/kernel/syscalls/syscall.tbl       |  4 ++++
->  arch/sh/kernel/syscalls/syscall.tbl         |  4 ++++
->  arch/sparc/kernel/syscalls/syscall.tbl      |  4 ++++
->  arch/x86/entry/syscalls/syscall_32.tbl      |  4 ++++
->  arch/x86/entry/syscalls/syscall_64.tbl      |  4 ++++
->  arch/xtensa/kernel/syscalls/syscall.tbl     |  4 ++++
->  include/asm-generic/audit_change_attr.h     |  6 ++++++
->  include/linux/syscalls.h                    |  8 ++++++++
->  include/uapi/asm-generic/unistd.h           | 12 +++++++++++-
->  21 files changed, 98 insertions(+), 2 deletions(-)
+> Hmm.. I am not seeing either error. Could you please share your .config file?
 > 
-> diff --git a/arch/alpha/kernel/syscalls/syscall.tbl b/arch/alpha/kernel/syscalls/syscall.tbl
-> index 3515bc4f16a4..826a8a36da81 100644
-> --- a/arch/alpha/kernel/syscalls/syscall.tbl
-> +++ b/arch/alpha/kernel/syscalls/syscall.tbl
-> @@ -490,3 +490,7 @@
->  558	common	process_mrelease		sys_process_mrelease
->  559	common  futex_waitv                     sys_futex_waitv
->  560	common	set_mempolicy_home_node		sys_ni_syscall
-> +561	common	setxattrat			sys_setxattrat
-> +562	common	getxattrat			sys_getxattrat
-> +563	common	listxattrat			sys_listxattrat
-> +564	common	removexattrat			sys_removexattrat
-> diff --git a/arch/arm/tools/syscall.tbl b/arch/arm/tools/syscall.tbl
-> index ac964612d8b0..f0e9d9d487f0 100644
-> --- a/arch/arm/tools/syscall.tbl
-> +++ b/arch/arm/tools/syscall.tbl
-> @@ -464,3 +464,7 @@
->  448	common	process_mrelease		sys_process_mrelease
->  449	common	futex_waitv			sys_futex_waitv
->  450	common	set_mempolicy_home_node		sys_set_mempolicy_home_node
-> +451	common	setxattrat			sys_setxattrat
-> +452	common	getxattrat			sys_getxattrat
-> +453	common	listxattrat			sys_listxattrat
-> +454	common	removexattrat			sys_removexattrat
-> diff --git a/arch/arm64/include/asm/unistd.h b/arch/arm64/include/asm/unistd.h
-> index 037feba03a51..63a8a9c4abc1 100644
-> --- a/arch/arm64/include/asm/unistd.h
-> +++ b/arch/arm64/include/asm/unistd.h
-> @@ -39,7 +39,7 @@
->  #define __ARM_NR_compat_set_tls		(__ARM_NR_COMPAT_BASE + 5)
->  #define __ARM_NR_COMPAT_END		(__ARM_NR_COMPAT_BASE + 0x800)
->  
-> -#define __NR_compat_syscalls		451
-> +#define __NR_compat_syscalls		455
->  #endif
->  
->  #define __ARCH_WANT_SYS_CLONE
-> diff --git a/arch/arm64/include/asm/unistd32.h b/arch/arm64/include/asm/unistd32.h
-> index 604a2053d006..cd6ac63376d1 100644
-> --- a/arch/arm64/include/asm/unistd32.h
-> +++ b/arch/arm64/include/asm/unistd32.h
-> @@ -907,6 +907,14 @@ __SYSCALL(__NR_process_mrelease, sys_process_mrelease)
->  __SYSCALL(__NR_futex_waitv, sys_futex_waitv)
->  #define __NR_set_mempolicy_home_node 450
->  __SYSCALL(__NR_set_mempolicy_home_node, sys_set_mempolicy_home_node)
-> +#define __NR_setxattrat 451
-> +__SYSCALL(__NR_setxattrat, sys_setxattrat)
-> +#define __NR_getxattrat 452
-> +__SYSCALL(__NR_getxattrat, sys_getxattrat)
-> +#define __NR_listxattrat 453
-> +__SYSCALL(__NR_listxattrat, sys_listxattrat)
-> +#define __NR_removexattrat 454
-> +__SYSCALL(__NR_removexattrat, sys_removexattrat)
->  
->  /*
->   * Please add new compat syscalls above this comment and update
-> diff --git a/arch/ia64/kernel/syscalls/syscall.tbl b/arch/ia64/kernel/syscalls/syscall.tbl
-> index 78b1d03e86e1..6e942a935a27 100644
-> --- a/arch/ia64/kernel/syscalls/syscall.tbl
-> +++ b/arch/ia64/kernel/syscalls/syscall.tbl
-> @@ -371,3 +371,7 @@
->  448	common	process_mrelease		sys_process_mrelease
->  449	common  futex_waitv                     sys_futex_waitv
->  450	common	set_mempolicy_home_node		sys_set_mempolicy_home_node
-> +451	common	setxattrat			sys_setxattrat
-> +452	common	getxattrat			sys_getxattrat
-> +453	common	listxattrat			sys_listxattrat
-> +454	common	removexattrat			sys_removexattrat
-> diff --git a/arch/m68k/kernel/syscalls/syscall.tbl b/arch/m68k/kernel/syscalls/syscall.tbl
-> index b1f3940bc298..0847efdee734 100644
-> --- a/arch/m68k/kernel/syscalls/syscall.tbl
-> +++ b/arch/m68k/kernel/syscalls/syscall.tbl
-> @@ -450,3 +450,7 @@
->  448	common	process_mrelease		sys_process_mrelease
->  449	common  futex_waitv                     sys_futex_waitv
->  450	common	set_mempolicy_home_node		sys_set_mempolicy_home_node
-> +451	common	setxattrat			sys_setxattrat
-> +452	common	getxattrat			sys_getxattrat
-> +453	common	listxattrat			sys_listxattrat
-> +454	common	removexattrat			sys_removexattrat
-> diff --git a/arch/microblaze/kernel/syscalls/syscall.tbl b/arch/microblaze/kernel/syscalls/syscall.tbl
-> index 820145e47350..7f619bbc718d 100644
-> --- a/arch/microblaze/kernel/syscalls/syscall.tbl
-> +++ b/arch/microblaze/kernel/syscalls/syscall.tbl
-> @@ -456,3 +456,7 @@
->  448	common	process_mrelease		sys_process_mrelease
->  449	common  futex_waitv                     sys_futex_waitv
->  450	common	set_mempolicy_home_node		sys_set_mempolicy_home_node
-> +451	common	setxattrat			sys_setxattrat
-> +452	common	getxattrat			sys_getxattrat
-> +453	common	listxattrat			sys_listxattrat
-> +454	common	removexattrat			sys_removexattrat
-> diff --git a/arch/mips/kernel/syscalls/syscall_n32.tbl b/arch/mips/kernel/syscalls/syscall_n32.tbl
-> index 253ff994ed2e..5e4206c0aede 100644
-> --- a/arch/mips/kernel/syscalls/syscall_n32.tbl
-> +++ b/arch/mips/kernel/syscalls/syscall_n32.tbl
-> @@ -389,3 +389,7 @@
->  448	n32	process_mrelease		sys_process_mrelease
->  449	n32	futex_waitv			sys_futex_waitv
->  450	n32	set_mempolicy_home_node		sys_set_mempolicy_home_node
-> +451	n32	setxattrat			sys_setxattrat
-> +452	n32	getxattrat			sys_getxattrat
-> +453	n32	listxattrat			sys_listxattrat
-> +454	n32	removexattrat			sys_removexattrat
-> diff --git a/arch/mips/kernel/syscalls/syscall_n64.tbl b/arch/mips/kernel/syscalls/syscall_n64.tbl
-> index 3f1886ad9d80..df0f053e76cd 100644
-> --- a/arch/mips/kernel/syscalls/syscall_n64.tbl
-> +++ b/arch/mips/kernel/syscalls/syscall_n64.tbl
-> @@ -365,3 +365,7 @@
->  448	n64	process_mrelease		sys_process_mrelease
->  449	n64	futex_waitv			sys_futex_waitv
->  450	common	set_mempolicy_home_node		sys_set_mempolicy_home_node
-> +451	n64	setxattrat			sys_setxattrat
-> +452	n64	getxattrat			sys_getxattrat
-> +453	n64	listxattrat			sys_listxattrat
-> +454	n64	removexattrat			sys_removexattrat
-> diff --git a/arch/mips/kernel/syscalls/syscall_o32.tbl b/arch/mips/kernel/syscalls/syscall_o32.tbl
-> index 8f243e35a7b2..09ec31ad475f 100644
-> --- a/arch/mips/kernel/syscalls/syscall_o32.tbl
-> +++ b/arch/mips/kernel/syscalls/syscall_o32.tbl
-> @@ -438,3 +438,7 @@
->  448	o32	process_mrelease		sys_process_mrelease
->  449	o32	futex_waitv			sys_futex_waitv
->  450	o32	set_mempolicy_home_node		sys_set_mempolicy_home_node
-> +451	o32	setxattrat			sys_setxattrat
-> +452	o32	getxattrat			sys_getxattrat
-> +453	o32	listxattrat			sys_listxattrat
-> +454	o32	removexattrat			sys_removexattrat
-> diff --git a/arch/parisc/kernel/syscalls/syscall.tbl b/arch/parisc/kernel/syscalls/syscall.tbl
-> index 8a99c998da9b..fe3f4f41aee6 100644
-> --- a/arch/parisc/kernel/syscalls/syscall.tbl
-> +++ b/arch/parisc/kernel/syscalls/syscall.tbl
-> @@ -448,3 +448,7 @@
->  448	common	process_mrelease		sys_process_mrelease
->  449	common	futex_waitv			sys_futex_waitv
->  450	common	set_mempolicy_home_node		sys_set_mempolicy_home_node
-> +451	common	setxattrat			sys_setxattrat
-> +452	common	getxattrat			sys_getxattrat
-> +453	common	listxattrat			sys_listxattrat
-> +454	common	removexattrat			sys_removexattrat
-> diff --git a/arch/powerpc/kernel/syscalls/syscall.tbl b/arch/powerpc/kernel/syscalls/syscall.tbl
-> index 2600b4237292..bee27f650397 100644
-> --- a/arch/powerpc/kernel/syscalls/syscall.tbl
-> +++ b/arch/powerpc/kernel/syscalls/syscall.tbl
-> @@ -530,3 +530,7 @@
->  448	common	process_mrelease		sys_process_mrelease
->  449	common  futex_waitv                     sys_futex_waitv
->  450 	nospu	set_mempolicy_home_node		sys_set_mempolicy_home_node
-> +451	common	setxattrat			sys_setxattrat
-> +452	common	getxattrat			sys_getxattrat
-> +453	common	listxattrat			sys_listxattrat
-> +454	common	removexattrat			sys_removexattrat
-> diff --git a/arch/s390/kernel/syscalls/syscall.tbl b/arch/s390/kernel/syscalls/syscall.tbl
-> index 799147658dee..d1fbad4b7864 100644
-> --- a/arch/s390/kernel/syscalls/syscall.tbl
-> +++ b/arch/s390/kernel/syscalls/syscall.tbl
-> @@ -453,3 +453,7 @@
->  448  common	process_mrelease	sys_process_mrelease		sys_process_mrelease
->  449  common	futex_waitv		sys_futex_waitv			sys_futex_waitv
->  450  common	set_mempolicy_home_node	sys_set_mempolicy_home_node	sys_set_mempolicy_home_node
-> +451  common	setxattrat		sys_setxattrat			sys_setxattrat
-> +452  common	getxattrat		sys_getxattrat			sys_getxattrat
-> +453  common	listxattrat		sys_listxattrat			sys_listxattrat
-> +454  common	removexattrat		sys_removexattrat		sys_removexattrat
-> diff --git a/arch/sh/kernel/syscalls/syscall.tbl b/arch/sh/kernel/syscalls/syscall.tbl
-> index 2de85c977f54..d4daa8afe45c 100644
-> --- a/arch/sh/kernel/syscalls/syscall.tbl
-> +++ b/arch/sh/kernel/syscalls/syscall.tbl
-> @@ -453,3 +453,7 @@
->  448	common	process_mrelease		sys_process_mrelease
->  449	common  futex_waitv                     sys_futex_waitv
->  450	common	set_mempolicy_home_node		sys_set_mempolicy_home_node
-> +451	common	setxattrat			sys_setxattrat
-> +452	common	getxattrat			sys_getxattrat
-> +453	common	listxattrat			sys_listxattrat
-> +454	common	removexattrat			sys_removexattrat
-> diff --git a/arch/sparc/kernel/syscalls/syscall.tbl b/arch/sparc/kernel/syscalls/syscall.tbl
-> index 4398cc6fb68d..510d5175f80a 100644
-> --- a/arch/sparc/kernel/syscalls/syscall.tbl
-> +++ b/arch/sparc/kernel/syscalls/syscall.tbl
-> @@ -496,3 +496,7 @@
->  448	common	process_mrelease		sys_process_mrelease
->  449	common  futex_waitv                     sys_futex_waitv
->  450	common	set_mempolicy_home_node		sys_set_mempolicy_home_node
-> +451	common	setxattrat			sys_setxattrat
-> +452	common	getxattrat			sys_getxattrat
-> +453	common	listxattrat			sys_listxattrat
-> +454	common	removexattrat			sys_removexattrat
-> diff --git a/arch/x86/entry/syscalls/syscall_32.tbl b/arch/x86/entry/syscalls/syscall_32.tbl
-> index 320480a8db4f..8488cc157fe0 100644
-> --- a/arch/x86/entry/syscalls/syscall_32.tbl
-> +++ b/arch/x86/entry/syscalls/syscall_32.tbl
-> @@ -455,3 +455,7 @@
->  448	i386	process_mrelease	sys_process_mrelease
->  449	i386	futex_waitv		sys_futex_waitv
->  450	i386	set_mempolicy_home_node		sys_set_mempolicy_home_node
-> +451	i386	setxattrat		sys_setxattrat
-> +452	i386	getxattrat		sys_getxattrat
-> +453	i386	listxattrat		sys_listxattrat
-> +454	i386	removexattrat		sys_removexattrat
-> diff --git a/arch/x86/entry/syscalls/syscall_64.tbl b/arch/x86/entry/syscalls/syscall_64.tbl
-> index c84d12608cd2..f45d723d5a30 100644
-> --- a/arch/x86/entry/syscalls/syscall_64.tbl
-> +++ b/arch/x86/entry/syscalls/syscall_64.tbl
-> @@ -372,6 +372,10 @@
->  448	common	process_mrelease	sys_process_mrelease
->  449	common	futex_waitv		sys_futex_waitv
->  450	common	set_mempolicy_home_node	sys_set_mempolicy_home_node
-> +451	common	setxattrat		sys_setxattrat
-> +452	common	getxattrat		sys_getxattrat
-> +453	common	listxattrat		sys_listxattrat
-> +454	common	removexattrat		sys_removexattrat
->  
->  #
->  # Due to a historical design error, certain syscalls are numbered differently
-> diff --git a/arch/xtensa/kernel/syscalls/syscall.tbl b/arch/xtensa/kernel/syscalls/syscall.tbl
-> index 52c94ab5c205..dbafe441a83f 100644
-> --- a/arch/xtensa/kernel/syscalls/syscall.tbl
-> +++ b/arch/xtensa/kernel/syscalls/syscall.tbl
-> @@ -421,3 +421,7 @@
->  448	common	process_mrelease		sys_process_mrelease
->  449	common  futex_waitv                     sys_futex_waitv
->  450	common	set_mempolicy_home_node		sys_set_mempolicy_home_node
-> +451	common	setxattrat			sys_setxattrat
-> +452	common	getxattrat			sys_getxattrat
-> +453	common	listxattrat			sys_listxattrat
-> +454	common	removexattrat			sys_removexattrat
-> diff --git a/include/asm-generic/audit_change_attr.h b/include/asm-generic/audit_change_attr.h
-> index 331670807cf0..cc840537885f 100644
-> --- a/include/asm-generic/audit_change_attr.h
-> +++ b/include/asm-generic/audit_change_attr.h
-> @@ -11,9 +11,15 @@ __NR_lchown,
->  __NR_fchown,
->  #endif
->  __NR_setxattr,
-> +#ifdef __NR_setxattrat
-> +__NR_setxattrat,
-> +#endif
->  __NR_lsetxattr,
->  __NR_fsetxattr,
->  __NR_removexattr,
-> +#ifdef __NR_removexattrat
-> +__NR_removexattrat,
-> +#endif
->  __NR_lremovexattr,
->  __NR_fremovexattr,
->  #ifdef __NR_fchownat
-> diff --git a/include/linux/syscalls.h b/include/linux/syscalls.h
-> index a34b0f9a9972..090b9b5229a0 100644
-> --- a/include/linux/syscalls.h
-> +++ b/include/linux/syscalls.h
-> @@ -348,23 +348,31 @@ asmlinkage long sys_io_uring_register(unsigned int fd, unsigned int op,
->  /* fs/xattr.c */
->  asmlinkage long sys_setxattr(const char __user *path, const char __user *name,
->  			     const void __user *value, size_t size, int flags);
-> +asmlinkage long sys_setxattrat(int dfd, const char __user *path, const char __user *name,
-> +			     const void __user *value, size_t size, int flags);
->  asmlinkage long sys_lsetxattr(const char __user *path, const char __user *name,
->  			      const void __user *value, size_t size, int flags);
->  asmlinkage long sys_fsetxattr(int fd, const char __user *name,
->  			      const void __user *value, size_t size, int flags);
->  asmlinkage long sys_getxattr(const char __user *path, const char __user *name,
->  			     void __user *value, size_t size);
-> +asmlinkage long sys_getxattrat(int dfd, const char __user *path, const char __user *name,
-> +			     void __user *value, size_t size, int flags);
->  asmlinkage long sys_lgetxattr(const char __user *path, const char __user *name,
->  			      void __user *value, size_t size);
->  asmlinkage long sys_fgetxattr(int fd, const char __user *name,
->  			      void __user *value, size_t size);
->  asmlinkage long sys_listxattr(const char __user *path, char __user *list,
->  			      size_t size);
-> +asmlinkage long sys_listxattrat(int dfd, const char __user *path, char __user *list,
-> +			      size_t size, int flags);
->  asmlinkage long sys_llistxattr(const char __user *path, char __user *list,
->  			       size_t size);
->  asmlinkage long sys_flistxattr(int fd, char __user *list, size_t size);
->  asmlinkage long sys_removexattr(const char __user *path,
->  				const char __user *name);
-> +asmlinkage long sys_removexattrat(int dfd, const char __user *path,
-> +				const char __user *name, int flags);
->  asmlinkage long sys_lremovexattr(const char __user *path,
->  				 const char __user *name);
->  asmlinkage long sys_fremovexattr(int fd, const char __user *name);
-> diff --git a/include/uapi/asm-generic/unistd.h b/include/uapi/asm-generic/unistd.h
-> index 45fa180cc56a..4fcc71612b7a 100644
-> --- a/include/uapi/asm-generic/unistd.h
-> +++ b/include/uapi/asm-generic/unistd.h
-> @@ -886,8 +886,18 @@ __SYSCALL(__NR_futex_waitv, sys_futex_waitv)
->  #define __NR_set_mempolicy_home_node 450
->  __SYSCALL(__NR_set_mempolicy_home_node, sys_set_mempolicy_home_node)
->  
-> +/* fs/xattr.c */
-> +#define __NR_setxattrat 451
-> +__SYSCALL(__NR_setxattrat, sys_setxattrat)
-> +#define __NR_getxattrat 452
-> +__SYSCALL(__NR_getxattrat, sys_getxattrat)
-> +#define __NR_listxattrat 453
-> +__SYSCALL(__NR_listxattrat, sys_listxattrat)
-> +#define __NR_removexattrat 454
-> +__SYSCALL(__NR_removexattrat, sys_removexattrat)
-> +
->  #undef __NR_syscalls
-> -#define __NR_syscalls 451
-> +#define __NR_syscalls 455
->  
->  /*
->   * 32 bit systems traditionally used different
-> -- 
-> 2.37.2
+> Thanks,
+> Song
 > 
 
-- RGB
+If it's any help, I see the same build error Christophe reported using
+the 'cross-dev' script that's in my klp-convert-tree [1].
 
---
-Richard Guy Briggs <rgb@redhat.com>
-Sr. S/W Engineer, Kernel Security, Base Operating Systems
-Remote, Ottawa, Red Hat Canada
-IRC: rgb, SunRaycer
-Voice: +1.647.777.2635, Internal: (81) 32635
+  $ BUILD_ARCHES="ppc32" ./cross-dev config
+  $ BUILD_ARCHES="ppc32" ./cross-dev build -j$(nproc)
+
+(The kernel will be built in /tmp/klp-convert-ppc32 btw.)
+
+Applying the header file fix results in the same linker error, too.
+
+
+[1] https://github.com/joe-lawrence/klp-convert-tree/tree/klp-convert-v7-devel+song
+
+-- Joe
 
