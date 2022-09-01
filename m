@@ -1,66 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A2E85A9E5F
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Sep 2022 19:45:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA46F5A9E65
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Sep 2022 19:45:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MJT2t0lnhz3fXw
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Sep 2022 03:45:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MJT3W4Lykz3ffx
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Sep 2022 03:45:43 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=TCOmQuZ0;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=pbMRwoSF;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--surenb.bounces.google.com (client-ip=2607:f8b0:4864:20::649; helo=mail-pl1-x649.google.com; envelope-from=3ge0qywykdl4wyvirfksskpi.gsqpmry1ttg-hizpmwxw.s3pefw.svk@flex--surenb.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--surenb.bounces.google.com (client-ip=2607:f8b0:4864:20::104a; helo=mail-pj1-x104a.google.com; envelope-from=3g-0qywykdmay0xkthmuumrk.iusrot03vvi-jk1royzy.u5rghy.uxm@flex--surenb.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=TCOmQuZ0;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=pbMRwoSF;
 	dkim-atps=neutral
-Received: from mail-pl1-x649.google.com (mail-pl1-x649.google.com [IPv6:2607:f8b0:4864:20::649])
+Received: from mail-pj1-x104a.google.com (mail-pj1-x104a.google.com [IPv6:2607:f8b0:4864:20::104a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MJSrN1qWCz2y84
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Sep 2022 03:36:03 +1000 (AEST)
-Received: by mail-pl1-x649.google.com with SMTP id m5-20020a170902f64500b0016d313f3ce7so12311746plg.23
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Sep 2022 10:36:03 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MJSrQ5SKDz2yYj
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Sep 2022 03:36:06 +1000 (AEST)
+Received: by mail-pj1-x104a.google.com with SMTP id x8-20020a17090a1f8800b001faa9857ef2so1648891pja.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Sep 2022 10:36:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date;
-        bh=jyHdLFPHMbjXGLnwUzIxKnvlA/GbLLDhxKEqR7mLfqg=;
-        b=TCOmQuZ0ealmr2rj6cwh5S5dr2tHdE6kJbl5yIAByz1pqanqNTRiefLGtYBY7Bfwis
-         HCiC64ttZOFWEgwG30yQXn+Yd1NgQ1aDGCJSNFZhazZq9lt7mplm3W+aibX2RLK/lLN0
-         uAX/ZCVxAoOvxpbxeS81kOPFHzixGFCJRTo1WJXrfNWNtHfKZEdnfDSt0EcuBcHbmrUl
-         KJFv/JkMarGz2fGZyZ6GmZqZcaDNiv8ls/HHTwoDoMD28NmijZHaa+6d5o2vJqrlXSFO
-         lKUsBOqEBkv1O0j454aqLOLj6gi+Hg3Qlj1nIC3dhAGDngGkgQrOdGW8W2dVGnwocfag
-         do3w==
+        bh=VpPGH26B3JaNkIfQAA8lk0M2gmgFVNCTIjkTHyeGjq0=;
+        b=pbMRwoSFwQraZzGGZr7x5dEEGoBSSezJwWCkFmGpQHOK/gJ9jZl7heInRLvxfZubEx
+         Wj7mEqLcXRU9xxWHf3t+7qSl6CnhQuuJSVxfC2zOp1biHU7QYf19J34qbstjhGHRGexS
+         HGkcltAazUrmNYZt5EcV0prllxXaFrscwVZ4MeMfR5YBnXhADmsl05WrPEXFggi7Gjas
+         iHFv8bsKjSzXGdd4TTCY9kFoj2NTn7nIEkBcfDuEl9YbNXUKLbiljFvk9VYo3diziCwb
+         KLzO8tBeRwrd5fwSMEAfN7AuoAZXQe3a89hFtIYEbzmUJ/R7GnSkDta2dkqtwJ/Rto29
+         WT6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date;
-        bh=jyHdLFPHMbjXGLnwUzIxKnvlA/GbLLDhxKEqR7mLfqg=;
-        b=HuqhZTwmre70PZroK9h6tUJrEXKyBX0mFwMWB7SX9XHEUFP/ihUcSoWqk3osqxNkN6
-         XgJya7EIevByt1ng6kd1Y4JAGjU+4mQJ9Z0eY7r18f4lP7VaYDraeW1oRQJubaH7ZWDd
-         x0z5T/cKcndlcylYFEt8JAfNoSul8w6Oi3F3WH5kTbNBeP2KYBQmsDzMND9WkZiHA3km
-         RiV9okdf05gOBi9Hn4AHj+KGKkhFAacvLdHeO2u79DqEj1BriNoJePQ11Wim554dOqM4
-         DDPSQTZZouIKEgdxVH9YCbuUVXvs8VuoGg2ICtgVNgNFRfhiA33e49xhXBOEApqJtLbP
-         csSw==
-X-Gm-Message-State: ACgBeo07wTKK19CRmD3LLD+FSVYM7HYgJuwRxIGLIXmnt4QQ2w8HRvSJ
-	Ga6EHP/1oepT2lH8SsCeTQTAJC7McOo=
-X-Google-Smtp-Source: AA6agR4mIrBI+VqdmK9XxquJrzUivZu8ctMQy2Mh5DPiMdzbr+5VMUvdiKSOqW1XRdAe5w+IQuXOVrbXRFY=
+        bh=VpPGH26B3JaNkIfQAA8lk0M2gmgFVNCTIjkTHyeGjq0=;
+        b=goiOewzW7Y06vSBa+slQWKDI9X4nVagZir1F02Qm1H9mtwBHPAUFccT/ZzW6fEPJ8e
+         RqGe9fZVHz4rZFQTMzuOUHskeAz7+3irzzPXYHz1m9Q6zxC0NeKnNc+nRz0tEYIauJwq
+         y2PT7vdwByvz2RyqTxW5BY9RrVpNtKpSaBBZaBkIYc2+naT6SFkKtoebrMRnft8xBrrI
+         Z4yG3uwirbi8BhDpMHTzLQmVOoSJsZoUitPw/sW5xSmcZSSDf+84ldJa/7j90wUvhh+u
+         KxnTjVhkI1jEcyFrK9kOGAiE6qaaL06NkfuFu79URMvhy/seSr60xDheM5zER+o1rDvg
+         VSwA==
+X-Gm-Message-State: ACgBeo22sMBmwv/a+VPtosS2f+Gfhqoin+rMYSUPLumDaz1xAFZwvlRp
+	YjNNxIftTapXZD3uOEm07VOjSHGbGsY=
+X-Google-Smtp-Source: AA6agR5wOS2QTAVmPmwy5O8cxRkpTpms/e+UYL0OyAuyLY0hN8kJNMUzvy3oLdSFlDJRhvwngVhT3DguUUM=
 X-Received: from surenb-desktop.mtv.corp.google.com ([2620:15c:211:200:1bfc:e7ee:6530:4449])
- (user=surenb job=sendgmr) by 2002:a63:2cc2:0:b0:41c:681d:60d2 with SMTP id
- s185-20020a632cc2000000b0041c681d60d2mr26204273pgs.502.1662053761168; Thu, 01
- Sep 2022 10:36:01 -0700 (PDT)
-Date: Thu,  1 Sep 2022 10:35:03 -0700
+ (user=surenb job=sendgmr) by 2002:a63:b250:0:b0:422:e3a6:47f2 with SMTP id
+ t16-20020a63b250000000b00422e3a647f2mr4539554pgo.478.1662053763882; Thu, 01
+ Sep 2022 10:36:03 -0700 (PDT)
+Date: Thu,  1 Sep 2022 10:35:04 -0700
 In-Reply-To: <20220901173516.702122-1-surenb@google.com>
 Mime-Version: 1.0
 References: <20220901173516.702122-1-surenb@google.com>
 X-Mailer: git-send-email 2.37.2.789.g6183377224-goog
-Message-ID: <20220901173516.702122-16-surenb@google.com>
-Subject: [RFC PATCH RESEND 15/28] mm/mmap: mark adjacent VMAs as locked if
- they can grow into unmapped area
+Message-ID: <20220901173516.702122-17-surenb@google.com>
+Subject: [RFC PATCH RESEND 16/28] kernel/fork: assert no VMA readers during
+ its destruction
 From: Suren Baghdasaryan <surenb@google.com>
 To: akpm@linux-foundation.org
 Content-Type: text/plain; charset="UTF-8"
@@ -79,36 +79,54 @@ Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-While unmapping VMAs, adjacent VMAs might be able to grow into the area
-being unmapped. In such cases mark adjacent VMAs as locked to prevent
-this growth.
+Assert there are no holders of VMA lock for reading when it is about to be
+destroyed.
 
 Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 ---
- mm/mmap.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ include/linux/mm.h | 8 ++++++++
+ kernel/fork.c      | 2 ++
+ 2 files changed, 10 insertions(+)
 
-diff --git a/mm/mmap.c b/mm/mmap.c
-index b0d78bdc0de0..b31cc97c2803 100644
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -2680,10 +2680,14 @@ detach_vmas_to_be_unmapped(struct mm_struct *mm, struct vm_area_struct *vma,
- 	 * VM_GROWSUP VMA. Such VMAs can change their size under
- 	 * down_read(mmap_lock) and collide with the VMA we are about to unmap.
- 	 */
--	if (vma && (vma->vm_flags & VM_GROWSDOWN))
-+	if (vma && (vma->vm_flags & VM_GROWSDOWN)) {
-+		vma_mark_locked(vma);
- 		return false;
--	if (prev && (prev->vm_flags & VM_GROWSUP))
-+	}
-+	if (prev && (prev->vm_flags & VM_GROWSUP)) {
-+		vma_mark_locked(prev);
- 		return false;
-+	}
- 	return true;
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index dc72be923e5b..0d9c1563c354 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -676,6 +676,13 @@ static inline void vma_assert_write_locked(struct vm_area_struct *vma, int pos)
+ 	VM_BUG_ON_VMA(vma->vm_lock_seq != READ_ONCE(vma->vm_mm->mm_lock_seq), vma);
  }
  
++static inline void vma_assert_no_reader(struct vm_area_struct *vma)
++{
++	VM_BUG_ON_VMA(rwsem_is_locked(&vma->lock) &&
++		      vma->vm_lock_seq != READ_ONCE(vma->vm_mm->mm_lock_seq),
++		      vma);
++}
++
+ #else /* CONFIG_PER_VMA_LOCK */
+ 
+ static inline void vma_init_lock(struct vm_area_struct *vma) {}
+@@ -685,6 +692,7 @@ static inline bool vma_read_trylock(struct vm_area_struct *vma)
+ static inline void vma_read_unlock(struct vm_area_struct *vma) {}
+ static inline void vma_assert_locked(struct vm_area_struct *vma) {}
+ static inline void vma_assert_write_locked(struct vm_area_struct *vma, int pos) {}
++static inline void vma_assert_no_reader(struct vm_area_struct *vma) {}
+ 
+ #endif /* CONFIG_PER_VMA_LOCK */
+ 
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 1872ad549fed..b443ba3a247a 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -487,6 +487,8 @@ static void __vm_area_free(struct rcu_head *head)
+ {
+ 	struct vm_area_struct *vma = container_of(head, struct vm_area_struct,
+ 						  vm_rcu);
++	/* The vma should either have no lock holders or be write-locked. */
++	vma_assert_no_reader(vma);
+ 	kmem_cache_free(vm_area_cachep, vma);
+ }
+ #endif
 -- 
 2.37.2.789.g6183377224-goog
 
