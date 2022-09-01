@@ -1,125 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECE5B5A94C3
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Sep 2022 12:37:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A6025A9551
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Sep 2022 13:04:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MJHY355gJz2yyd
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Sep 2022 20:37:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MJJ8W4DwGz2xxx
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Sep 2022 21:04:27 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=GtS6Ryls;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=E/h6gMx0;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=amd.com (client-ip=40.107.100.57; helo=nam04-bn8-obe.outbound.protection.outlook.com; envelope-from=ravi.bangoria@amd.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::434; helo=mail-pf1-x434.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=GtS6Ryls;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=E/h6gMx0;
 	dkim-atps=neutral
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2057.outbound.protection.outlook.com [40.107.100.57])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MJHXG0FDGz2xZ4
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Sep 2022 20:36:26 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=CfxaWdes4PUs+oPZDs8VZyzYdw1VjpI6EpsE0tRKBdhfYGQWARDqwseyl1c8GjRRPHxc1M+iHa6KoxZYKakDUNoFeCQTINOt/YjNBQ2vmTIQXWKjCVOuXOsx/apLQVtdftJ68hIGrMpaxo2oDhbiLQ1+AFTR9o9cIGmo4rZ4caXkjGb+B++c03fu/Fy/Yzv7G4QVD5qUk0zqaafsCQ/1xho7E+KCF1ezU3f6XNJl/feKkSaim2nvSyRexGB09lTl7d7DMn6MVD7Zbpo9t9qWihdN5ws92sBN9+9MjkAIGUM0/mNzKLMRLvHRXt6nsZLlB3aDe68k5aV4J97iY0FT0w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nH92cuMwS6n/ybagev9dAYT5CUWIIHJy5czEC6iAMTQ=;
- b=VLkbLxfoLcH3/19S2WpFYn9WocbYS3c/GolCKDXA6KvNLd+mDgwoht0Dq2TIC5X8SwgONskHu2SDisS4a/x/gKnuDgJ7Lz4ElMt3k2dh4IUR1exNfVUht898WNKYaj5QkvVMsoZH7EiN3wrRxqVw4xRbIQkQXUjd78mkcLLsq63G5qL1UNnObOiJ/IGMFrFtXNoBO+V0jWmsZ2ewfGds5813RcnzssAOBMwzbHhpoTUrJQIY1YL4Z3ZCl8mlAfCiebYTxTQAJzs7pi/kVAaYX/Tae07nrFbpKOAU+XkmemLAPKiOTL04msNrWCg5D2FDWlHrTW8irkdnsgBBIbEcmw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nH92cuMwS6n/ybagev9dAYT5CUWIIHJy5czEC6iAMTQ=;
- b=GtS6RylsV7rn+rxiDiF7irjqGW8fxQqXUzytMZuXB/GNZ7jrQNJnxacaLTStNEN1sP9+Mecf8F1MHIUszidqlOfbiJYC/Ml420FhtJonWKwSeeKF3HJryC3na/QlU+4hhhL46fg4RucZU4EMvzLRVpH/35TzQCTgN9GuAgAr5KY=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB6588.namprd12.prod.outlook.com (2603:10b6:510:210::10)
- by IA1PR12MB6627.namprd12.prod.outlook.com (2603:10b6:208:3a1::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5566.15; Thu, 1 Sep
- 2022 10:36:06 +0000
-Received: from PH7PR12MB6588.namprd12.prod.outlook.com
- ([fe80::d058:d925:c09b:de2]) by PH7PR12MB6588.namprd12.prod.outlook.com
- ([fe80::d058:d925:c09b:de2%5]) with mapi id 15.20.5588.010; Thu, 1 Sep 2022
- 10:36:06 +0000
-Message-ID: <c5a6aea9-4f3a-495e-78fa-e426de9b0496@amd.com>
-Date: Thu, 1 Sep 2022 16:05:53 +0530
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCH] perf: Rewrite core context handling
-Content-Language: en-US
-To: Peter Zijlstra <peterz@infradead.org>
-References: <20220829113347.295-1-ravi.bangoria@amd.com>
- <YwyrUYS30gVbxc2D@hirez.programming.kicks-ass.net>
- <YwzP+AFWCx4Ni/kx@hirez.programming.kicks-ass.net>
-From: Ravi Bangoria <ravi.bangoria@amd.com>
-In-Reply-To: <YwzP+AFWCx4Ni/kx@hirez.programming.kicks-ass.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PN3PR01CA0002.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:95::22) To PH7PR12MB6588.namprd12.prod.outlook.com
- (2603:10b6:510:210::10)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MJJ7s00yjz2xJB
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Sep 2022 21:03:50 +1000 (AEST)
+Received: by mail-pf1-x434.google.com with SMTP id z187so17112973pfb.12
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Sep 2022 04:03:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc;
+        bh=HTZLdr7U8DvhvTwmyrHj97AKaaH3aLBKGPWr2Mu1m+g=;
+        b=E/h6gMx0/RqMKYQhobh5A+HF/bd5GWPcfnxngpEH16yl9ekf71iQUKkSv/SdKsBSx9
+         akYDvQu2Vy/8rSlq2TikkCWvjvCFX4YoeWhQEBV8RrFUiz/CCtcDP6FUcC1eZlL6z91h
+         8j5eWkkdMtpnexhnmRanW8YoOyn76L1EjjNIZUDfT5cCfAFTYVqB0SgOcx2wI1GSvq8w
+         xYAdkmTP+BPrcSoLUHMdL3qtnByUzfFzmnD5PjWUrCoVZ1ioNb4cJFnWWnUAjgZ7DIay
+         JbeiHdaInPW2JjLpfbAD72gj3lOP/oe2NSIPaTUBNc3Wv5vkRPa43iXpRDWIRYk8R2Op
+         94FA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc;
+        bh=HTZLdr7U8DvhvTwmyrHj97AKaaH3aLBKGPWr2Mu1m+g=;
+        b=fLIG8uGG0ugJKZjah5wTW27M/r+hkLfQyDfIdHxwMSMysbOvPSHR9fT6lU6QQ4Uhfn
+         88V19Uv7sK4I7i0ZugGweDVKIzHyG+7DiGA9EGuiui18lAJOiOM6UeXUCgTfSph7p4Jj
+         HOo27QQKI0qvQzc/YfmMlrETK6WQnbKsjs8dy8Dqmq91COw3zKmhTkLok0B2rqfZAfPZ
+         JXOpwm/2GRp2tH550GcCXLQVG5SPG2zEKgwXi8SKnIxC05BFhyXqfmccUglaL7R4L3Gs
+         +IFSn1udbIHOyeith/pXbZSFKkePCI7/CmB0YMVv1zDuqFXPV4Tm/58xru7b71g4XqCw
+         e8Mg==
+X-Gm-Message-State: ACgBeo02ZKmcM3D5+bsMQDz0sH/16M9Go2U/2stJB5JXHS6nDclEtWCa
+	/otIn0TrADu+Kmvqik3ice2rFss7WEw58A==
+X-Google-Smtp-Source: AA6agR46PPaSlIOr9vGXTTkMzBPBm+HwQbMbW6G+D86wDSZfpuVZGVUngg8DHJIguOT7Pmx6vOMKCg==
+X-Received: by 2002:a63:5f4c:0:b0:42b:f6bd:47dd with SMTP id t73-20020a635f4c000000b0042bf6bd47ddmr17245148pgb.578.1662030225104;
+        Thu, 01 Sep 2022 04:03:45 -0700 (PDT)
+Received: from bobo.ozlabs.ibm.com ([124.170.18.239])
+        by smtp.gmail.com with ESMTPSA id j18-20020a635952000000b0042b5b036da4sm4972523pgm.68.2022.09.01.04.03.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 01 Sep 2022 04:03:44 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2] powerpc/64s: add pte_needs_flush and huge_pmd_needs_flush
+Date: Thu,  1 Sep 2022 21:03:34 +1000
+Message-Id: <20220901110334.1618913-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 9820242a-ec4c-45c0-324f-08da8c05c6a5
-X-MS-TrafficTypeDiagnostic: IA1PR12MB6627:EE_
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	DxNvT0ZbL46OdXy17Cs7f7+Cdf0Sto6jdvhgd2RBDb6QSiSktiRT2s+ZXEFQlc/3vH+fgGugAdMR3wQ5URwk9WNZ/4/JH4/GSgBOZkJdyRiEE8Ys0Gr0DfXLVI9x9jA6vrJT9IJjgyIitgiVM0SZtprKS6d0boOz9k69UvMJeHQFUpLHMuIr0Z/BkdFZDA7+W/ZWzD8dQ4wAlt2KMq9TVt1jJL70xjWh+hXwPNiVvLeH6sTl5uTsqGmNs5iznm8g967kCe07GJCBm7UIZLrMGDzFTyCtYX9A+Nyz43N94LCdJ8JuLGa+j0hzobcik+0xculLhu7HAhKBPqOXJapIejfRLLFZGk6gAcVroI3dltuhTFZ8XchAMupIAnZYOzMhv6ozwQUsDp3/zCImIDBMejxjlEO4mrr6vs1Sr0ximsUkxhNlbMWzB0ShAIjdWNcivL35CnO7jNOwcjAP/GVmDuFdHJtMcCFvFohHbb2bnYc89TEyhzh8nSFNgegcycn0QzpXFsxyfHg7wGyNAkr3YTc61veDZgAcR+5yTEBSgS0UhAbGte4OVge7JDt3y4LqVUume0j1vlcS980C/L8rwVpGoZwGYErMRr9ny3xjlfYMhkX3ZpJ2ylwCVggjvzNWTCgDXjV0xHGHduLPgllg6Wh+dEkwNtVv2SyLWaksji0Hwu9wjRLsoHDTN3kIYKFY5pBbYrBLt6E0L7RxLuUfQHhYFcXGwDLlxQklr6N1eGTt65coJWdeOwAnMrgQFuyI4xmPXU96C03LfVa+66UnjsoSWX5h1HkfiDhKRkMSkudNsz/ilDhar6D003EVXvVp
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB6588.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(4636009)(396003)(39860400002)(136003)(376002)(346002)(366004)(8936002)(53546011)(6506007)(186003)(41300700001)(478600001)(6916009)(83380400001)(6512007)(5660300002)(2616005)(6666004)(7416002)(2906002)(44832011)(316002)(8676002)(4326008)(38100700002)(31696002)(66946007)(26005)(66556008)(6486002)(66476007)(36756003)(31686004)(4744005)(86362001)(21314003)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?utf-8?B?L1d6QUNweEtJVFRiRU1MZERtZ3ZyUElLVVZEL1o4NzRJellleGZkaVhmaU91?=
- =?utf-8?B?aWtMVDdpQmhyVHB6YUxRQk5vVEphQ1ROVjE1SW5UVUdaUWJLNnkvdHdNTHpp?=
- =?utf-8?B?L3JlMlpqQ1VHMG8xdDhCcTJJSTBLWFlWWWtGZmRhbGFlNnd4SG41L0hxM2dE?=
- =?utf-8?B?alN4bnM1WTRaZ04vNlN1YXJrUm9EVzJiSVV5ZzUvaHZERHpSamRvMEQ5MVcv?=
- =?utf-8?B?bFJ6c0crZnRCL0RnSnhLQUFrdnk5TXVuaHFyc0VxdXpnR0FnV2R3MkRCcDls?=
- =?utf-8?B?OFpnSTdWcXY0dVNiVlpMZG1nbUl4MnQxbTNSZWtzZDRPVWliOFJXdjI4QVp2?=
- =?utf-8?B?aEMzV2pXbW9yM2ZEQ3ZUVzlGakdIMytNbjJVM3pPQ1pMRm9uSmtOM1pxOWN1?=
- =?utf-8?B?SU4rMDQxYkdiSFhQVXN6cFlEVWI5WkdmWUNleUZTNE9IYTF4UElLQ0djWFpI?=
- =?utf-8?B?T1VUNXk2eEhMZXpUM2tRa2t0aS81VjVOblgxTDUvamNJSng1NDl3OVZHWGR3?=
- =?utf-8?B?S1BUeEkrVG9FbVliSGxCRTZyeGRzaEtVMmpwU2lTQURxWDYvMUhkK3ZQdG1a?=
- =?utf-8?B?dmZzSUhsbmg0TFBMRCtCSHNHSmxPVyt5U3dvQ2VBWmFXSHp3a0FnQWJacGVP?=
- =?utf-8?B?OHZSR2FibW13MGZWY3FDbFRIVDNYcnJDbkNZVzNBMEkyWFRvSTBMLzcwZUR2?=
- =?utf-8?B?MDN3ZVVYQzFlcCtEeDZDaFJIUkM0VVVPUE1XZWhHT01rKy9FQ3N5WGMvUk9K?=
- =?utf-8?B?b2ovM3JRenhZV3pKdEJaRWZwc2tIcmFjakJWOHRNcDVvd2EyU25KanFCaDY3?=
- =?utf-8?B?WDI1RmxlSDZtaU51eGlmKzBxR1dUMUY0d3pyK00wTHgwVEhNZ2JlRDYwT2dw?=
- =?utf-8?B?akRlY3RjWVg4WjZ3VHF3VG9OblRDMno2VDhUb2Nvc1RVYzBLMi9YdkJDRkRj?=
- =?utf-8?B?UEUwcmRFZWpSRExxSXc2anA0TVV0V1FWbEZkaDhtUnUwYnZBZ3lqZ3RyZTh5?=
- =?utf-8?B?ZmV6MUlCOC9hNWJUK2ZIMTJLZzhENHFXc2E4dXMwUUx4R2FReUM4TzZHSDhX?=
- =?utf-8?B?M0dGZzlxaDROWForY1FnUjlSOThOUmNSRnJObnhXME5taDZhRWZUVTI5QVlw?=
- =?utf-8?B?UktXYlRmSExVS0NBUG9xVTJ1VU1ZNkIxRlE2ZWJIczlBN08vdmJYbnRqM1Bx?=
- =?utf-8?B?S2M0SW4xVHpCM3ZqK2N0ampiWjFscHhXNjRrcVRIRmg1b3NKb1RTYk5HSXdk?=
- =?utf-8?B?UWRHaU5pRWZPcTJ2VXUrZGpWZ1RoMnF5cys0NjlXcWRaZjlKOWQxUk1ocWd2?=
- =?utf-8?B?bmQvMUVFY01YeTVHc1U0RGM5bVJYYTZtYVRqL3RjbnJpazlLWWlwUUE0a2Js?=
- =?utf-8?B?WU1BN2VxalpVeUtsd2JNb0RUK0d1SVJ6LzNIMWRQL2FrZHhKOEJjZnBpSUtB?=
- =?utf-8?B?NlNHVG92K04yU1d4ZDNCdXRwbXBIdk5CY1FmbWM1U3diY2F4UW1jc1dVeDNZ?=
- =?utf-8?B?dmdRU25tdjdVRkJTN0dkcjBtNkl5QnRLS0J0NXdONkY5YUEyT29ob1dsK3JP?=
- =?utf-8?B?N2owSHZaNm5vcVo0aFp3UytqN2JTQU8xUmJ6ZHdvVmdzMmZrM0NEY1pMSjdw?=
- =?utf-8?B?a2FwRVE2UG9IdUdWZ3UxMUJuUWNhdy9za2EvQmRoUUppOGVqMUR4SE54Q0lv?=
- =?utf-8?B?MUNHZnprRTBNbnNQOSt6eXhlQU91bUQvb1NwWkxCNkYydS9Fa2lJa1ZvRk5x?=
- =?utf-8?B?eTVWT2hFZjJVcEM4emZxSGtya2Jrd2syVDhkaXBFajRFekljZDJEbWZmZFBP?=
- =?utf-8?B?Q3JZL0xyUGI4UmVsaENMdnk0VisxWkVrZDF2SFNnWTJNNnBiNmZQM2lWdTNB?=
- =?utf-8?B?OEUra1pFZ2MwTUMrWi9uUzVBeDUzWG5tbzJQWkJXWWZvcGdoQk5xMUE2Y05o?=
- =?utf-8?B?WnowcndrWk0wSFlWMEh2cldGSm1uVU0vSDFqYzRYWjVRb2JaWnAzK1hPS2tj?=
- =?utf-8?B?eVpKTXhMemVkaWV2TnFzY0ovdWxZR3FJTkpHeUsrdWlZRXBzS2U3RUdNMjBE?=
- =?utf-8?B?L25ocnp2SWlMU3FpczRpY1dVZ0RHTGNEUktJN3JndXUrWldJNjN0U1BGVHdk?=
- =?utf-8?Q?sOSMKVuFuPuaRdFwyANqOocRp?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9820242a-ec4c-45c0-324f-08da8c05c6a5
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB6588.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Sep 2022 10:36:06.5848
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: l3dzTv12C+49+QVg52kTGhInCHr30ol5JLdW++VHzCBozPrYzkmd0PkLttTguFVkOJeDKOhPZn2CHTMaPAYt3w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6627
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -131,36 +74,118 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, irogers@google.com, songliubraving@fb.com, sandipan.das@amd.com, alexander.shishkin@linux.intel.com, catalin.marinas@arm.com, eranian@google.com, kim.phillips@amd.com, will@kernel.org, robh@kernel.org, ak@linux.intel.com, jolsa@redhat.com, mingo@redhat.com, linux-s390@vger.kernel.org, frederic@kernel.org, acme@kernel.org, maddy@linux.ibm.com, namhyung@kernel.org, linux-arm-kernel@lists.infradead.org, ravi.bangoria@amd.com, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, ananth.narayan@amd.com, linuxppc-dev@lists.ozlabs.org, santosh.shukla@amd.com
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 29-Aug-22 8:10 PM, Peter Zijlstra wrote:
-> On Mon, Aug 29, 2022 at 02:04:33PM +0200, Peter Zijlstra wrote:
->> On Mon, Aug 29, 2022 at 05:03:47PM +0530, Ravi Bangoria wrote:
->>> @@ -12598,6 +12590,7 @@ EXPORT_SYMBOL_GPL(perf_event_create_kernel_counter);
->>>  
->>>  void perf_pmu_migrate_context(struct pmu *pmu, int src_cpu, int dst_cpu)
->>>  {
->>> +#if 0 // XXX buggered - cpu hotplug, who cares
->>>  	struct perf_event_context *src_ctx;
->>>  	struct perf_event_context *dst_ctx;
->>>  	struct perf_event *event, *tmp;
->>> @@ -12658,6 +12651,7 @@ void perf_pmu_migrate_context(struct pmu *pmu, int src_cpu, int dst_cpu)
->>>  	}
->>>  	mutex_unlock(&dst_ctx->mutex);
->>>  	mutex_unlock(&src_ctx->mutex);
->>> +#endif
->>>  }
->>>  EXPORT_SYMBOL_GPL(perf_pmu_migrate_context);
->>>  
->>
->> Note to self; fix this :-) I'll see if I have time for that later today.
-> 
-> Urgh, while going through that it appears the whole refcounting thing
-> isn't fully done either.
+Allow PTE changes to avoid flushing the TLB when access permissions are
+being relaxed, the dirty bit is being set, and the accessed bit is being
+changed.
 
-Not sure I follow. Can you please elaborate.
+Relaxing access permissions and setting dirty and accessed bits do not
+require a flush because the MMU will re-load the PTE and notice the
+updates (it may also cause a spurious fault).
 
-Thanks,
-Ravi
+Clearing the accessed bit does not require a flush because of the
+imprecise PTE accessed bit accounting that is already performed, as
+documented in ptep_clear_flush_young().
+
+This reduces TLB flushing for some mprotect(2) calls.
+
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+Changes in v2:
+- Change VM_BUG_ON to VM_WARN_ON (Christophe)
+- Remove ifndef guard around helper defines (Christophe)
+- Adjust comments slightly.
+
+ arch/powerpc/include/asm/book3s/64/pgtable.h  |  3 +
+ arch/powerpc/include/asm/book3s/64/tlbflush.h | 56 +++++++++++++++++++
+ arch/powerpc/mm/book3s64/hash_tlb.c           |  1 +
+ arch/powerpc/mm/book3s64/pgtable.c            |  1 +
+ 4 files changed, 61 insertions(+)
+
+diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
+index cb9d5fd39d7f..a5042bb9a30c 100644
+--- a/arch/powerpc/include/asm/book3s/64/pgtable.h
++++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
+@@ -411,6 +411,9 @@ static inline int __ptep_test_and_clear_young(struct mm_struct *mm,
+  * event of it not getting flushed for a long time the delay
+  * shouldn't really matter because there's no real memory
+  * pressure for swapout to react to. ]
++ *
++ * Note: this optimisation also exists in pte_needs_flush() and
++ * huge_pmd_needs_flush().
+  */
+ #define __HAVE_ARCH_PTEP_CLEAR_YOUNG_FLUSH
+ #define ptep_clear_flush_young ptep_test_and_clear_young
+diff --git a/arch/powerpc/include/asm/book3s/64/tlbflush.h b/arch/powerpc/include/asm/book3s/64/tlbflush.h
+index d2e80f178b6d..66b0de0ce601 100644
+--- a/arch/powerpc/include/asm/book3s/64/tlbflush.h
++++ b/arch/powerpc/include/asm/book3s/64/tlbflush.h
+@@ -143,6 +143,62 @@ static inline void flush_tlb_fix_spurious_fault(struct vm_area_struct *vma,
+ 		flush_tlb_page(vma, address);
+ }
+ 
++static inline bool __pte_flags_need_flush(unsigned long oldval,
++					  unsigned long newval)
++{
++	unsigned long delta = oldval ^ newval;
++
++	/*
++	 * The return value of this function doesn't matter for hash,
++	 * ptep_modify_prot_start() does a pte_update() which does or schedules
++	 * any necessary hash table update and flush.
++	 */
++	if (!radix_enabled())
++		return true;
++
++	/*
++	 * We do not expect kernel mappings or non-PTEs or not-present PTEs.
++	 */
++	VM_WARN_ON_ONCE(oldval & _PAGE_PRIVILEGED);
++	VM_WARN_ON_ONCE(newval & _PAGE_PRIVILEGED);
++	VM_WARN_ON_ONCE(!(oldval & _PAGE_PTE));
++	VM_WARN_ON_ONCE(!(newval & _PAGE_PTE));
++	VM_WARN_ON_ONCE(!(oldval & _PAGE_PRESENT));
++	VM_WARN_ON_ONCE(!(newval & _PAGE_PRESENT));
++
++	/*
++	*  Must flush on any change except READ, WRITE, EXEC, DIRTY, ACCESSED.
++	*
++	 * In theory, some changed software bits could be tolerated, in
++	 * practice those should rarely if ever matter.
++	 */
++
++	if (delta & ~(_PAGE_RWX | _PAGE_DIRTY | _PAGE_ACCESSED))
++		return true;
++
++	/*
++	 * If any of the above was present in old but cleared in new, flush.
++	 * With the exception of _PAGE_ACCESSED, don't worry about flushing
++	 * if that was cleared (see the comment in ptep_clear_flush_young()).
++	 */
++	if ((delta & ~_PAGE_ACCESSED) & oldval)
++		return true;
++
++	return false;
++}
++
++static inline bool pte_needs_flush(pte_t oldpte, pte_t newpte)
++{
++	return __pte_flags_need_flush(pte_val(oldpte), pte_val(newpte));
++}
++#define pte_needs_flush pte_needs_flush
++
++static inline bool huge_pmd_needs_flush(pmd_t oldpmd, pmd_t newpmd)
++{
++	return __pte_flags_need_flush(pmd_val(oldpmd), pmd_val(newpmd));
++}
++#define huge_pmd_needs_flush huge_pmd_needs_flush
++
+ extern bool tlbie_capable;
+ extern bool tlbie_enabled;
+ 
+-- 
+2.37.2
+
