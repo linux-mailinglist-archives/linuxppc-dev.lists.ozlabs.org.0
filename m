@@ -2,64 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEFE35AA39E
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Sep 2022 01:18:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EAF65AA3A1
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Sep 2022 01:19:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MJcRN5FGnz2yx2
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Sep 2022 09:18:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MJcS22brzz3bk4
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Sep 2022 09:18:58 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=E800dH7P;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=miInjSJE;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b29; helo=mail-yb1-xb29.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::112a; helo=mail-yw1-x112a.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=E800dH7P;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=miInjSJE;
 	dkim-atps=neutral
-Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
+Received: from mail-yw1-x112a.google.com (mail-yw1-x112a.google.com [IPv6:2607:f8b0:4864:20::112a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MJcQj5q5sz2y6M
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Sep 2022 09:17:48 +1000 (AEST)
-Received: by mail-yb1-xb29.google.com with SMTP id y197so857755yby.13
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Sep 2022 16:17:48 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MJcRG6g59z3bWm
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Sep 2022 09:18:18 +1000 (AEST)
+Received: by mail-yw1-x112a.google.com with SMTP id 00721157ae682-324ec5a9e97so1947867b3.7
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Sep 2022 16:18:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date;
-        bh=LLe4P0CDKZNu2y/iLQFOmqm2xVCa1+xC0+/2UAKABJs=;
-        b=E800dH7PG7qGduh6oSah7WQAwmrsM+wQmDZjjqdBAR60RvrxBZHO23f04n2iXHj6B6
-         JP4sBRMEb5m0iPCXbYazGmBCzu7qChwl/ipzAmIhLadRiKX3Y0zySsPNlYd0h+LcoxL8
-         5FNxATVqNyLa1BoYf6Cxlq+XP5qZplVJPHSMPHn1kfsbAjFzQxAMb9VoJYRqdqVYgEwr
-         U+TKjEqBLNEszFZU9PUc/x9OXZ/4B2ib6Q/EZSxGRaxVsTNJo0XeGgkfBjLjXtDUFglC
-         Q2eTqe1FllFFqOAiwsRUf4TETNOa1mHZ6WH7dmCthCaB5IO6/fwVnji8K+vdyqp3MbuZ
-         tFcA==
+        bh=rjiF9dcJ/mORZlmNTO18kEduhbATdpbM6SHMK6U+ruY=;
+        b=miInjSJE+fzo5gS/eKt5cfKejZWjk/URgt0UsOF5yFYhBi4SW0mjlLLL/BxcWNS7q1
+         ZbX9dW3k1PQz07RhMq4TY0IKX8uDz5gqWib15fn/ENu8F4BQEoeMpBqRR4aXJyehSLYL
+         rlX+s6DOoRRQDDNJOyrdh0XgYf16gCuBQ8/5nYMEbXay2V4G5ElxQsF4iKh7ls3v0nku
+         D6GH4AzNn0lGwU6+bKnN6gfpnyUHAp3BKdNloRCyIKDJYsKSeK4d/tInEIryGNWiC42i
+         SC0dR4U7pJvq0mNT8d7KhoSD0pTCfW3Ka8zPz/CWyWvVkBglY+I9aRF6ESuk5tijxW2i
+         1vog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=LLe4P0CDKZNu2y/iLQFOmqm2xVCa1+xC0+/2UAKABJs=;
-        b=2iotqUcgelyFhdqthrF5NnZ6ZyU43rSmOcHKdZ+VrgSicdy2Yiak5JGDMJbZkPURNb
-         xN1uQItx9rPxXxrMxDDpLT39V5panpNNVV8XxfLEWOBcZ6GNTH0P30cjKqwEWGKkR4kC
-         Dq+skYO8sEAsxVXdAiLj2mfIOZdpWBuB24MQ/Fd47cXSkRRPqNUckvxKLDCGDb0Askwk
-         +GeoABT5541KXRWMFS7dUpS6WRgpQ6Th0xV7ZchVZw9dkFzfhB4n4F7ROZsZOdBlsJLr
-         fyeFYI4G9b7ErF2Rsf4TDrrPy3YNKPh4OISKi2g9IssrtnIsINFFz2zmNqkiUvO+YdN4
-         B1bg==
-X-Gm-Message-State: ACgBeo2dnYBk3a7bmNuefkiDfOWErh6TuZFLFuTiWKRbsuXLVjo22oSh
-	sT2VDEp8K5XiFjtui7hR/ddfOpStFK8LRiPNaNk87w==
-X-Google-Smtp-Source: AA6agR6jFuUOVZTVV0+XfDd0He4Hrb9XV2PsfvVugkFPyYicaO90qEw/qesq5yP63n03v6KmDubjqCQiaNOXXMGy9zw=
-X-Received: by 2002:a05:6902:705:b0:695:b3b9:41bc with SMTP id
- k5-20020a056902070500b00695b3b941bcmr21131741ybt.426.1662074264903; Thu, 01
- Sep 2022 16:17:44 -0700 (PDT)
+        bh=rjiF9dcJ/mORZlmNTO18kEduhbATdpbM6SHMK6U+ruY=;
+        b=5aPgDd4YuXntUI6hyI9AHm5yQ9ZklLGkvJ+Nfk3+ji1109uiTbgMFKiRBWPMlQm3IP
+         2uYeEVAR1xZbG7BJpRBotug5Lir2pBknI6or5jfMMLZx0PpfVOM+4P5eJxOkiuc2B6Bw
+         +UdBkz2SNBiDn7FtQ0FKsU0CCVUh6kgWOlzZlX8RrNgNIm+yNScfQtGNSz93pcbVT2zB
+         pKXa3NRyc4CEWOlvfVPx0bWgQN3iP1MOzoZtD7FD3ebjuObgawqw8RI/JYsZ4bUCDFWj
+         SlLM33srfmeJBMDtksVy5tBCFBcwza9ZAPI8WEb4Pmj6nfwoGmbYgo4ZrFKddvoCVhCS
+         LTww==
+X-Gm-Message-State: ACgBeo1z37lHru3HOaaSOzq4BXoCn6pPCH6aAuu8llQPOfXKqSxDHBTU
+	aC00gkG8dvxh+2qDk3B2dUSLPAWJesWHo42Z3UZP/A==
+X-Google-Smtp-Source: AA6agR6m7scNwFemz6Af1WoGTDIcSPP5pnTPi8sC0t6BGCdPYrcUbrHz9JxtFN2qOLjSTkeI4M1Lodd/jngX9vslX64=
+X-Received: by 2002:a0d:c981:0:b0:330:dc03:7387 with SMTP id
+ l123-20020a0dc981000000b00330dc037387mr25164956ywd.380.1662074295806; Thu, 01
+ Sep 2022 16:18:15 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220901173516.702122-1-surenb@google.com> <20220901173516.702122-24-surenb@google.com>
- <20220901202052.xfaeuhmosheml2gz@moria.home.lan>
-In-Reply-To: <20220901202052.xfaeuhmosheml2gz@moria.home.lan>
+References: <20220901173516.702122-1-surenb@google.com> <20220901173516.702122-4-surenb@google.com>
+ <20220901202239.tnnzlbermiyvkmih@moria.home.lan>
+In-Reply-To: <20220901202239.tnnzlbermiyvkmih@moria.home.lan>
 From: Suren Baghdasaryan <surenb@google.com>
-Date: Thu, 1 Sep 2022 16:17:33 -0700
-Message-ID: <CAJuCfpEJxxm17fFJ1YVkOTBJbP5ce9ey90q_mCk_pkyTdHkrUg@mail.gmail.com>
-Subject: Re: [RFC PATCH RESEND 23/28] x86/mm: define ARCH_SUPPORTS_PER_VMA_LOCK
+Date: Thu, 1 Sep 2022 16:18:04 -0700
+Message-ID: <CAJuCfpFqK+Gfd100C8s8jnJci+UCt9y6dqsn=eqYin6g-VVx6Q@mail.gmail.com>
+Subject: Re: [RFC PATCH RESEND 03/28] mm: introduce __find_vma to be used
+ without mmap_lock protection
 To: Kent Overstreet <kent.overstreet@linux.dev>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -78,33 +79,28 @@ Cc: Michel Lespinasse <michel@lespinasse.org>, Joel Fernandes <joelaf@google.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Sep 1, 2022 at 1:21 PM Kent Overstreet
+On Thu, Sep 1, 2022 at 1:22 PM Kent Overstreet
 <kent.overstreet@linux.dev> wrote:
 >
-> On Thu, Sep 01, 2022 at 10:35:11AM -0700, Suren Baghdasaryan wrote:
-> > Set ARCH_SUPPORTS_PER_VMA_LOCK so that the per-VMA lock support can be
-> > compiled on this architecture.
-> >
-> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > ---
-> >  arch/x86/Kconfig | 1 +
-> >  1 file changed, 1 insertion(+)
-> >
-> > diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-> > index f9920f1341c8..ee19de020b27 100644
-> > --- a/arch/x86/Kconfig
-> > +++ b/arch/x86/Kconfig
-> > @@ -27,6 +27,7 @@ config X86_64
-> >       # Options that are inherently 64-bit kernel only:
-> >       select ARCH_HAS_GIGANTIC_PAGE
-> >       select ARCH_SUPPORTS_INT128 if CC_HAS_INT128
-> > +     select ARCH_SUPPORTS_PER_VMA_LOCK
-> >       select ARCH_USE_CMPXCHG_LOCKREF
-> >       select HAVE_ARCH_SOFT_DIRTY
-> >       select MODULES_USE_ELF_RELA
+> On Thu, Sep 01, 2022 at 10:34:51AM -0700, Suren Baghdasaryan wrote:
+> > Add __find_vma function to be used for VMA lookup under rcu protection.
 >
-> I think you could combine this with the previous path (and similarly on other
-> architectures) - they logically go together.
+> So it was news to me that the rb tree code can be used for lockless lookups -
+> not having looked at lib/rbtree.c in over 10 years :) - I still think it should
+> be mentioned in the commit message that that's what you're doing and why it's
+> safe, because it's not exactly common knowledge and lockless stuff deserves
+> extra scrutiny.
+>
+> Probably worth a comment, too.
 
-Thanks for the feedback! I see no downside to that, so unless there
-are objections I will combine them in the next version.
+Ack.
+
+>
+> Reviewed-by: Kent Overstreet <kent.overstreet@linux.dev>
+
+Thanks!
+
+>
+> --
+> To unsubscribe from this group and stop receiving emails from it, send an email to kernel-team+unsubscribe@android.com.
+>
