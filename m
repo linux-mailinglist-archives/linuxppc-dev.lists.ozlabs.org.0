@@ -2,127 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBBEA5A9D6D
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Sep 2022 18:47:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 350035A9DAE
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Sep 2022 19:04:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MJRmV4vDHz2yRS
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Sep 2022 02:47:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MJS8962N2z3bXy
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Sep 2022 03:04:41 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=ayZ4mn52;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DIQ/LoTb;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=40.107.9.78; helo=fra01-mr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=song@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=ayZ4mn52;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DIQ/LoTb;
 	dkim-atps=neutral
-Received: from FRA01-MR2-obe.outbound.protection.outlook.com (mail-eopbgr90078.outbound.protection.outlook.com [40.107.9.78])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MJRll4pKkz2xB1
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Sep 2022 02:46:59 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=aDwqz0w+GGu7queUIGFWRBJmF/VNQInDi9BRG7oKMgXvHeLR1QXYCYfQCCNLgtYGVF3dZN49p5KbwNsMnfKvBk4dmHRM87BXBZlDi/+gn4i6d3mdacxndM/yZDhGTsN87GkWhX2ZEFRxcPLRJT15OeWC9grVS0DBq84/3jFV4qnplTUzsEUeVsVFjVu2+cKg8cduSSBDyP5It7t0lidP3R3VrLD84yNSjWVd9efgwWLS2C7NQhwWRt2wybK3H1NBJuteXMc2Od5dP+PH/UmZisI0MCiU/KzdO4im/mkWfoO+kQ2qssg945qQnOnI/Mh6t9D9oBfdP01tqV/wWw9rpw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pbUULbKqPbjbEsIjxCFaoozqOeActmaiAu4CTrqGPdI=;
- b=nILNP9UpEiGtJYDyKHPo3Dnuc4NmkZ8D1h19eNsOjUvCv8Oq37ksi0eJcNFGXDkfMyktyzK7ILQP0+dHjmrRKa7oSY6Au90D/mz5epp3+IBH4cs/pjuk+9vVKU7ENB3nBWAruL8t+xKaOvZXZAWgjwX+iSnVlk/hcSy8t02aUvf5BqPxBXUBJS7PA2HpiDbYL5EN9D9WfaBwqv3nm28n7X/Yg+agflLD0lfA50GjqIPct/vWcLZQwTn/KGzK/53hFI8GcDDvvwmrFhoQPtE8O1nsyKI3z7ehLNZxxtm6qzzVHjj1Yi/Cf3AgUFijld10a8vUHyOag7jdDEX8HfocGQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pbUULbKqPbjbEsIjxCFaoozqOeActmaiAu4CTrqGPdI=;
- b=ayZ4mn52dWi8yNz1rQTd9e7nGPJW/Ck0S4mlRjvt7VXlHJrsywu4aevgEq+rAQh7JNbPVogNJxCiw7xgCcmmL1ytZ/1LJL5nkax3SVbPBKTMuLbmIo+2M00KCzZMv/CafDonj6B8WAAMgBmTLkkdCsxUd5EyR5KJeXAIr38yIZ3e0R9kfqmLh1fLlpnPePWYgd3shcLDDVl9DlZbMvtfDwFe2MnZKTFQXWyNSWyIdI7H+K3PfW3drjKu0XIAt+mC4uUEQSI8Urtoj1HxFUioCPXzHFuGn6V1tM9MO34Rdz9K36bjzunj/Xa+r6xfH7CoZ8BASHywB5jDqfMMQ7CQLw==
-Received: from MR1P264MB2980.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:3d::7) by
- MR1P264MB2020.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:13::14) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.5588.10; Thu, 1 Sep 2022 16:46:40 +0000
-Received: from MR1P264MB2980.FRAP264.PROD.OUTLOOK.COM
- ([fe80::fdc6:a1de:d9e8:cb45]) by MR1P264MB2980.FRAP264.PROD.OUTLOOK.COM
- ([fe80::fdc6:a1de:d9e8:cb45%3]) with mapi id 15.20.5588.011; Thu, 1 Sep 2022
- 16:46:40 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Ard Biesheuvel <ardb@kernel.org>
-Subject: Re: [PATCH v2 0/7] Implement inline static calls on PPC32 - v2
-Thread-Topic: [PATCH v2 0/7] Implement inline static calls on PPC32 - v2
-Thread-Index: AQHYkvCn1ZX8CT7LUUOpHA8ZAimGXa11mwyAgFWD4QA=
-Date: Thu, 1 Sep 2022 16:46:40 +0000
-Message-ID: <d35a2039-1755-b0be-6733-bb7ec19b2ea8@csgroup.eu>
-References: <cover.1657301423.git.christophe.leroy@csgroup.eu>
- <CAMj1kXFqs=YAbTDJOgzpse9ZkggSxPNNJJphEA=J94FQzF55qg@mail.gmail.com>
-In-Reply-To:  <CAMj1kXFqs=YAbTDJOgzpse9ZkggSxPNNJJphEA=J94FQzF55qg@mail.gmail.com>
-Accept-Language: fr-FR, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.0
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 3b696838-541f-4b93-9563-08da8c398b32
-x-ms-traffictypediagnostic: MR1P264MB2020:EE_
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  BjYGG1kI5b/Uc3QdE+i/n6mrYxWIWoCbDpRNCuOyUevhJW5HnGh/bpX+q2SL4pe9a6+NnEoHqZrp7e8GBT2t+WwC3j3Dkqb8ZcwlArFroaa0wDWn1pWLKgUvlblD3XyXB4r0BruQz3fWiZm7pfM8pBkMuUsMh32kAScBnxCMZXREctahN1iTt3Ing/JHsOJemDrj6b2JepObQCUKMlWIJs/wznzSHnmCA70soCzXR6xSfV6mAdDC+6WBq4FzsFi/A2JoaLpSmZfRbor0Fth0oR7k83kEuNpks6m0H9wV+Wz13iogcnHw5XahPkp3MsIK0gVTL14k3sFEf82pn6RiNhXitArNf75YIBlSPPZrYp5QjFvRBFlqsEHvwLFvIAWmO3ykgiNdrBNOPJnqc4pmFQm5EPzSdtnonRYvpWIaGhQiLC4rHdL40J08WUPU8XAMHPw6Vb+UYk7froXQ9rVMoDjCanWpc42I9t9f0ukoiF3LIWWI5rfZFsMkUeDOZepMmncAT4tBT05ogBa/IzwwQS0f8+j1UTkRBiilcL8u1yQIa/PtuUh3RLJ1NfEdMZpNztp03uMtGoo6+IbWsho4sePukU0F9VnVIOqT+U00S1xjywQgpb3vYCn19SgntLbR9kGbXzN43N1s9/VeuVgucoaAytq+KIicETw/wPcVwIQz1rBoM9V2RpzfCaJ+jyGOtxrYwSLe3oTG5+E7wt+Vh6BPiHdhT5LmtNuL3ETXnaBAjriNgHWJDzFZf3TmBX0wORyeoTiio2idShFprEpVzUEFmozj0qRzauPfpCeq02JSEmBNjA+CnGgQFjNEqgJ5ZpUmutjRfsp/S3wZJzj8w+kwsIOxFj8joQEeu4Y8qVs=
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MR1P264MB2980.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230016)(4636009)(136003)(39850400004)(366004)(396003)(346002)(376002)(316002)(7416002)(54906003)(6916009)(66574015)(66446008)(8676002)(76116006)(66946007)(2906002)(4326008)(91956017)(5660300002)(44832011)(8936002)(31686004)(66476007)(66556008)(36756003)(64756008)(6486002)(966005)(478600001)(41300700001)(6506007)(71200400001)(6512007)(122000001)(26005)(86362001)(31696002)(2616005)(83380400001)(186003)(38070700005)(38100700002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?UmVnS09LbEhaKzVhUytrbHNWTnFkRTBBMkN1eEVQeU9hQ1hKREwrNndtZkJD?=
- =?utf-8?B?L3JnZHZBN3ArM01QS1VWa0Y1QTlBdGFPdlRkcmYrdmpZOUN4eFJxQllmclhx?=
- =?utf-8?B?YU1Ldk5leWlxeDJHL3psczBocDdiLzZPdzF6L0pjR1pVTVRvYzFxN3hqcVk1?=
- =?utf-8?B?YUptdkprTkVyUXRvMSt2ZVFIYVdIQWt6ZUNQSVBIY1JXbm9BblFWNTZpeEhz?=
- =?utf-8?B?cWovalk5YjgwdkNHWHJ4dnFrM2xEWHN5ZXVRQ1JtTDd4dkdYRjlKeU1EQWNK?=
- =?utf-8?B?d25kY2Z3dXkraVZlaFdCeElaTHJZRmQ1YmNBMTNBeTNnTjc3ZzFyT2lVcmFx?=
- =?utf-8?B?NmdYYml4dmF0SjZUL3BiT24rRk9idXZrUzhFM0Ewa1h5ODQ2bTFFK1FYWE1B?=
- =?utf-8?B?S1QxbHJDRWg1R3RvNDlNUkxsV0t2alkxZ0hXOFAvN2ZjWVJHd1NEekJkUldi?=
- =?utf-8?B?bzQ5RmVacnQ1VXB2MWxhcDJuYzByVjd5dGY3S0lweWdrWXpTWFR2UFFCUnNk?=
- =?utf-8?B?eGlNSjlIMm1SRGZNeWdUbVZkc1o1MjN0NGQ5dlZDRmVxTDFZa3l6aEc1eUZH?=
- =?utf-8?B?NDRMOFRCVUZUMU5mOENQWWl6ZldpMnBpOFY2UmIrcE1OVnBiOVFwYVRjRHJn?=
- =?utf-8?B?MDJ0QVVzY1EvTHQrTVlDTkFrQTRYcmFMWlJkU25VbENkZEFlblNQK21BVUYz?=
- =?utf-8?B?K2Z3WThIVFprVE5oQk1DMitDQko2L0pBRHV5N1p5QnhuckpmOEZEMVBJL25W?=
- =?utf-8?B?YkQxZWlOK1d0aE5zRDdTSG1mNjJjMmJxNVA2cUlpK3JpczFvTS9FUHBSNXFS?=
- =?utf-8?B?eUo0WUIxZXFCdXd1QmFGQU44SjVrcWkwMzFZbHp1VlFOSEtCYU5FYjZqMnZx?=
- =?utf-8?B?VGxHbUdaRHY0Uk5iOTFjWlE3b0l0Y3g2bVJwbnV0Y1NOS0hicGJSWGxjZWhL?=
- =?utf-8?B?UDNQTmVWWnBYZ2tHTnlMSjBFWnZlVWd6TFFUNDR5bWc5S0NLL0dSaUFUMlpQ?=
- =?utf-8?B?QjFocGxwckM1TGYwbVhMME5qMVhaSk9zRlVOMDFNZ1EzVHlvTmtMK0UxWXJP?=
- =?utf-8?B?dU1BbTY4NGN4ejB4TXVscmVoNTQ5YUVhZXMxbGVsVGFlWTdVeUJsMEZQU294?=
- =?utf-8?B?UFNyYzRSaStaRmJDSWJFRjJWeWt5d3JXRFNTcmx4Mlp6R2FzMW5nSC9tVE15?=
- =?utf-8?B?YXN3eEpuQUdNQklmQy9sSWFlYmVqcnYvbFRIVGJFYm10SVBxano3bStYOVhS?=
- =?utf-8?B?a3dNSGRWQ3JWN3pwU2VoUThCNFBmZTZTN2ZYVmFBVVBIbjAxc0xVQ2g3VFho?=
- =?utf-8?B?Z3dYMUxsME54Y20wakVCY1ZwMndTTU01Vk40S0VoMVRFcmF5NzArMitWTkFZ?=
- =?utf-8?B?Tko4NHBwRVBGeEdUTFJ6NTFWbTJ0N0FHcXRhekJnMEZtd2dLZ0pQaVc3OFVZ?=
- =?utf-8?B?SGJoTW5PUEhkVnJZZDkxZlJMZjc0Sms5aGlXc1B5MGNLQ3pYbS9CeUJDTmJP?=
- =?utf-8?B?ZjVvSlVlcHZMOHZGU0pST1Y3dmZhVWNUbXF0NGF2dFJCclBOZXdJb0lmL1ND?=
- =?utf-8?B?V1NkOFBGeW5GNjlFWEVYaGhYVjNJZVVsV1VoUFUxWDdNZ2pDZCt2WjF2SFRi?=
- =?utf-8?B?ZEJ5RGk1WXR4TkpFV01odWpqWWw0NDFERHlLUVUwR3MzMG5OMlE5VEVYYnpC?=
- =?utf-8?B?dm5IY0svZlM0QXJnQVB5MHAvMUZUUXhWVHY4QXBLeHZaR1JYY1E3dVcwZzZO?=
- =?utf-8?B?am1VUjV1bWNPSGlXcmFvd1ZYYk5RRWpsWXUyd0o4ci9wOHB5RjBGUTdJUGtS?=
- =?utf-8?B?NTU2dW5CanY3WlpvUVF1VE84aEk1aFA1cXcybHl3RmNUNkp4YWNpNlBRcFAv?=
- =?utf-8?B?aDFxc3dteXI1ZURlN1lhU0VsZlpKS281SkZ3NEdOV20rKzdxNmdnMkR1d3l3?=
- =?utf-8?B?eitYOGxDY25WTEk5RUZmbjBKMHVqTXUrWnQvTFUwSC9uT1NwTWNFeXZOZCtN?=
- =?utf-8?B?cUdLSGZFRERoSWF5eW0rdFYvT253QlJMbnNaUDhCL2FJTEgrVlhqcndzMEtX?=
- =?utf-8?B?S21YTDJEcWEyaGw0dVVpZ3h0TVEwMEkwTG1ickxtS0hDekxUbUJ0dDBtVFdN?=
- =?utf-8?B?OWJiRXU2V3g2Ukd1Uk5vY251M1daek4rdFV4Tm1aZjBXYytTVkNpVW4zTm44?=
- =?utf-8?Q?bjfmFLu1zq0Zg7bmzzrbaBs=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <2398900A528FB547A6539DF81437AEF4@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MJS7W0fyhz2xGS
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Sep 2022 03:04:06 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id AC4E761FDB
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Sep 2022 17:04:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9406DC43470
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Sep 2022 17:04:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1662051841;
+	bh=XZ3UT/ai1g/A0Mxg5uxB2BOBvBvT/K62KbOaoZI3Og4=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=DIQ/LoTbM8FGDCqsP/m43kPs4b5lZaAJf+8xPhGcMOfI5ao6GFqKpmF1Qi2AjAAWJ
+	 FoD/zwknzzDjcK2drHDWeD9Peiwk1OgmAPgwtWYmL5p1CRbD1vs+vhDyOeKUUY5Gio
+	 SJ11C/Bp0apqmg76s4maHYYmWQY9QJl5uEVPq0AZU/5QhUeXUZaZaxAtPIsfzEJamf
+	 dwHAk17j6v4vqHFjqcjxDVPoHQHPrEFpezb6AcBgeOq9u19JfqgjrR204cgXhedh2i
+	 VWhdk8MPF6f11UZJcnXR5HV1m3y/HyswH1Ah8PMDrRT62Dy2aEf8I+kTjjoxuNlRA6
+	 C6Hac64Gjq4XQ==
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-3321c2a8d4cso343447447b3.5
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Sep 2022 10:04:01 -0700 (PDT)
+X-Gm-Message-State: ACgBeo1PNRsRD7nonTwdyM8qCwaeCE6z1pk9YoSWtR59BczzSWKvhLsS
+	fjQiFgX4gKIdr+R/fuHdG4Rsmgv/O8Q9EJxmYpI=
+X-Google-Smtp-Source: AA6agR7E5i5VB7ZqrkYTS4hz3CF9tWyZnlcocXJinjqNeR3ZHMhGnghVCs2C07OCz7vrabGuPdPzLP2gN0rkza2Z+HU=
+X-Received: by 2002:a81:6143:0:b0:335:3076:168e with SMTP id
+ v64-20020a816143000000b003353076168emr23230516ywb.460.1662051840515; Thu, 01
+ Sep 2022 10:04:00 -0700 (PDT)
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MR1P264MB2980.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3b696838-541f-4b93-9563-08da8c398b32
-X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Sep 2022 16:46:40.2562
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Rq7Dib0gniykca2A39wYW8DrBVw+pvCwd7jHafCIakerLg30RKmU9jWuruMh2uPk9TieY+ME/kzs3p30ry+5JCuk8qs9+bdDwjT4BX7pxgU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MR1P264MB2020
+References: <20220830185313.76402-1-song@kernel.org> <Yw+4xxiONngOTqin@redhat.com>
+ <875yi8uju3.fsf@mpe.ellerman.id.au> <CAPhsuW7aZwXyuZAv23xDXsxCJc0mJNms+HegqkZqukVqT0cfZA@mail.gmail.com>
+ <YxATT0lpgVndnc0z@redhat.com>
+In-Reply-To: <YxATT0lpgVndnc0z@redhat.com>
+From: Song Liu <song@kernel.org>
+Date: Thu, 1 Sep 2022 10:03:49 -0700
+X-Gmail-Original-Message-ID: <CAPhsuW74ATv=WMy9DBp3HMibjpbQ4XKzRw_gFeBLY1bPyC8huA@mail.gmail.com>
+Message-ID: <CAPhsuW74ATv=WMy9DBp3HMibjpbQ4XKzRw_gFeBLY1bPyC8huA@mail.gmail.com>
+Subject: Re: [PATCH v5] livepatch: Clear relocation targets on a module removal
+To: Joe Lawrence <joe.lawrence@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -134,117 +70,288 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: X86 ML <x86@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Chen Zhongjin <chenzhongjin@huawei.com>, Dave Hansen <dave.hansen@linux.intel.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Jason Baron <jbaron@akamai.com>, Ingo Molnar <mingo@redhat.com>, "sv@linux.ibm.com" <sv@linux.ibm.com>, "Steven Rostedt
- \(VMware\)" <rostedt@goodmis.org>, "H. Peter Anvin" <hpa@zytor.com>, Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>, "agust@denx.de" <agust@denx.de>, "open list:LINUX FOR POWERPC
- \(32-BIT AND 64-BIT\)" <linuxppc-dev@lists.ozlabs.org>, Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: Petr Mladek <pmladek@suse.com>, X86 ML <x86@kernel.org>, Jiri Kosina <jikos@kernel.org>, open list <linux-kernel@vger.kernel.org>, Josh Poimboeuf <jpoimboe@redhat.com>, live-patching@vger.kernel.org, Miroslav Benes <mbenes@suse.cz>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Josh Poimboeuf <jpoimboe@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCkxlIDA5LzA3LzIwMjIgw6AgMDg6NTIsIEFyZCBCaWVzaGV1dmVsIGEgw6ljcml0wqA6DQo+
-IEhlbGxvIENocmlzdG9waGUsDQo+IA0KPiBPbiBGcmksIDggSnVsIDIwMjIgYXQgMTk6MzIsIENo
-cmlzdG9waGUgTGVyb3kNCj4gPGNocmlzdG9waGUubGVyb3lAY3Nncm91cC5ldT4gd3JvdGU6DQo+
-Pg0KPj4gVGhpcyBzZXJpZXMgYXBwbGllcyBvbiB0b3Agb2YgdGhlIHNlcmllcyB2MyAib2JqdG9v
-bDogRW5hYmxlIGFuZA0KPj4gaW1wbGVtZW50IC0tbWNvdW50IG9wdGlvbiBvbiBwb3dlcnBjIiBb
-MV0gcmViYXNlZCBvbiBwb3dlcnBjLW5leHQgYnJhbmNoDQo+Pg0KPj4gQSBmZXcgbW9kaWZpY2F0
-aW9ucyBhcmUgZG9uZSB0byBjb3JlIHBhcnRzIHRvIGVuYWJsZSBwb3dlcnBjDQo+PiBpbXBsZW1l
-bnRhdGlvbjoNCj4+IC0gUl9YODZfNjRfUEMzMiBpcyBhYnN0cmFjdGVkIHRvIFJfUkVMMzIgc28g
-dGhhdCBpdCBjYW4gdGhlbiBiZQ0KPj4gcmVkZWZpbmVkIGFzIFJfUFBDX1JFTDMyLg0KPj4gLSBB
-IGNhbGwgdG8gc3RhdGljX2NhbGxfaW5pdCgpIGlzIGFkZGVkIHRvIHN0YXJ0X2tlcm5lbCgpIHRv
-IGF2b2lkDQo+PiBldmVyeSBhcmNoaXRlY3R1cmUgdG8gaGF2ZSB0byBjYWxsIGl0DQo+PiAtIFRy
-YW1wb2xpbmUgYWRkcmVzcyBpcyBwcm92aWRlZCB0byBhcmNoX3N0YXRpY19jYWxsX3RyYW5zZm9y
-bSgpIGV2ZW4NCj4+IHdoZW4gc2V0dGluZyBhIHNpdGUgdG8gZmFsbGJhY2sgb24gYSBjYWxsIHRv
-IHRoZSB0cmFtcG9saW5lIHdoZW4gdGhlDQo+PiB0YXJnZXQgaXMgdG9vIGZhci4NCj4+DQo+PiBb
-MV0gaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvbGttbC83MGI2ZDA4ZC1hY2VkLTdmNGUtYjk1OC1h
-M2M3YWUxYTkzMTlAY3Nncm91cC5ldS9ULyNyYjNhMDczYzU0YWJhNTYzYTEzNWZiYTg5MWUwYzM0
-YzQ2ZTQ3YmVlZg0KPj4NCj4+IENocmlzdG9waGUgTGVyb3kgKDcpOg0KPj4gICAgcG93ZXJwYzog
-QWRkIG1pc3NpbmcgYXNtL2FzbS5oIGZvciBvYmp0b29sDQo+PiAgICBvYmp0b29sL3Bvd2VycGM6
-IEFjdGl2YXRlIG9ianRvb2wgb24gUFBDMzINCj4+ICAgIG9ianRvb2w6IEFkZCBhcmNoaXRlY3R1
-cmUgc3BlY2lmaWMgUl9SRUwzMiBtYWNybw0KPj4gICAgb2JqdG9vbC9wb3dlcnBjOiBBZGQgbmVj
-ZXNzYXJ5IHN1cHBvcnQgZm9yIGlubGluZSBzdGF0aWMgY2FsbHMNCj4+ICAgIGluaXQ6IENhbGwg
-c3RhdGljX2NhbGxfaW5pdCgpIGZyb20gc3RhcnRfa2VybmVsKCkNCj4+ICAgIHN0YXRpY19jYWxs
-X2lubGluZTogUHJvdmlkZSB0cmFtcG9saW5lIGFkZHJlc3Mgd2hlbiB1cGRhdGluZyBzaXRlcw0K
-Pj4gICAgcG93ZXJwYy9zdGF0aWNfY2FsbDogSW1wbGVtZW50IGlubGluZSBzdGF0aWMgY2FsbHMN
-Cj4+DQo+IA0KPiBDb3VsZCB5b3UgcXVhbnRpZnkgdGhlIHBlcmZvcm1hbmNlIGdhaW5zIG9mIG1v
-dmluZyBmcm9tIG91dC1vZi1saW5lLA0KPiBwYXRjaGVkIHRhaWwtY2FsbCBicmFuY2ggaW5zdHJ1
-Y3Rpb25zIHRvIGZ1bGwtZmxlZGdlZCBpbmxpbmUgc3RhdGljDQo+IGNhbGxzPyBPbiB4ODYsIHRo
-ZSByZXRwb2xpbmUgcHJvYmxlbSBtYWtlcyB0aGlzIGdsYXJpbmdseSBvYnZpb3VzLCBidXQNCj4g
-b24gb3RoZXIgYXJjaGl0ZWN0dXJlcywgdGhlIGNvbXBsZXhpdHkgb2Ygc3VwcG9ydGluZyB0aGlz
-IG1vZGVsIG1heQ0KPiBvdXR3ZWlnaCB0aGUgcGVyZm9ybWFuY2UgYWR2YW50YWdlcy4NCg0KU3Vy
-cHJpc2luZ2x5LCBJIGdldCB3b3JzdCBwZXJmb3JtYW5jZSB3aXRoIGlubGluZSBzdGF0aWMgY2Fs
-bCB0aGFuIHdpdGggDQpvdXQgb2YgbGluZSBzdGF0aWMgY2FsbDoNCg0KTm8gc3RhdGljIGNhbGw6
-DQoNCnJvb3RAdmdvaXA6fiMgcGVyZiBzdGF0IC1yIDEwIC4vaGFja2JlbmNoIDENClJ1bm5pbmcg
-d2l0aCAxKjQwICg9PSA0MCkgdGFza3MuDQpUaW1lOiAxNy4xODYNClJ1bm5pbmcgd2l0aCAxKjQw
-ICg9PSA0MCkgdGFza3MuDQpUaW1lOiAxNi43MzgNClJ1bm5pbmcgd2l0aCAxKjQwICg9PSA0MCkg
-dGFza3MuDQpUaW1lOiAxNi41NzkNClJ1bm5pbmcgd2l0aCAxKjQwICg9PSA0MCkgdGFza3MuDQpU
-aW1lOiAxNi44MzgNClJ1bm5pbmcgd2l0aCAxKjQwICg9PSA0MCkgdGFza3MuDQpUaW1lOiAxNi42
-NTINClJ1bm5pbmcgd2l0aCAxKjQwICg9PSA0MCkgdGFza3MuDQpUaW1lOiAxNy4zODANClJ1bm5p
-bmcgd2l0aCAxKjQwICg9PSA0MCkgdGFza3MuDQpUaW1lOiAxNi42MzANClJ1bm5pbmcgd2l0aCAx
-KjQwICg9PSA0MCkgdGFza3MuDQpUaW1lOiAxNi44NTANClJ1bm5pbmcgd2l0aCAxKjQwICg9PSA0
-MCkgdGFza3MuDQpUaW1lOiAxNy4xNjENClJ1bm5pbmcgd2l0aCAxKjQwICg9PSA0MCkgdGFza3Mu
-DQpUaW1lOiAxNi43MjINCg0KICBQZXJmb3JtYW5jZSBjb3VudGVyIHN0YXRzIGZvciAnLi9oYWNr
-YmVuY2ggMScgKDEwIHJ1bnMpOg0KDQogICAgICAgICAgIDE3MDE5LjU1IG1zZWMgdGFzay1jbG9j
-ayAgICAgICAgICAgICAgICAjICAgIDAuOTgwIENQVXMgDQp1dGlsaXplZCAgICAgICAgICAgICgg
-Ky0gIDAuNTElICkNCiAgICAgICAgICAgICAgIDQ4NDcgICAgICBjb250ZXh0LXN3aXRjaGVzICAg
-ICAgICAgICMgIDI4Mi4yODAgL3NlYyANCiAgICAgICAgICAgICAgICggKy0gIDYuMzIlICkNCiAg
-ICAgICAgICAgICAgICAgIDAgICAgICBjcHUtbWlncmF0aW9ucyAgICAgICAgICAgICMgICAgMC4w
-MDAgL3NlYw0KICAgICAgICAgICAgICAgMTI0OSAgICAgIHBhZ2UtZmF1bHRzICAgICAgICAgICAg
-ICAgIyAgIDcyLjczOSAvc2VjIA0KICAgICAgICAgICAgICAgKCArLSAgMC40OSUgKQ0KICAgICAg
-ICAgMjI0NTM0NDk3NiAgICAgIGN5Y2xlcyAgICAgICAgICAgICAgICAgICAgIyAgICAwLjEzMSBH
-SHogDQogICAgICAgICAgICAgICAoICstICAwLjUxJSApDQogICAgICAgICAgNzI3NDM3MDcyICAg
-ICAgaW5zdHJ1Y3Rpb25zICAgICAgICAgICAgICAjICAgIDAuMzIgIGluc24gcGVyIA0KY3ljbGUg
-ICAgICAgICAgICggKy0gIDAuNDAlICkNCiAgICA8bm90IHN1cHBvcnRlZD4gICAgICBicmFuY2hl
-cw0KICAgIDxub3Qgc3VwcG9ydGVkPiAgICAgIGJyYW5jaC1taXNzZXMNCg0KICAgICAgICAgICAg
-MTcuMzU4NSArLSAwLjA5MDkgc2Vjb25kcyB0aW1lIGVsYXBzZWQgICggKy0gIDAuNTIlICkNCg0K
-DQpPdXRsaW5lIHN0YXRpYyBjYWxsOg0KDQpyb290QHZnb2lwOn4jIHBlcmYgc3RhdCAtciAxMCAu
-L2hhY2tiZW5jaCAxDQpSdW5uaW5nIHdpdGggMSo0MCAoPT0gNDApIHRhc2tzLg0KVGltZTogMTUu
-ODkyDQpSdW5uaW5nIHdpdGggMSo0MCAoPT0gNDApIHRhc2tzLg0KVGltZTogMTUuNzMxDQpSdW5u
-aW5nIHdpdGggMSo0MCAoPT0gNDApIHRhc2tzLg0KVGltZTogMTUuNTA3DQpSdW5uaW5nIHdpdGgg
-MSo0MCAoPT0gNDApIHRhc2tzLg0KVGltZTogMTYuMjY5DQpSdW5uaW5nIHdpdGggMSo0MCAoPT0g
-NDApIHRhc2tzLg0KVGltZTogMTUuOTM0DQpSdW5uaW5nIHdpdGggMSo0MCAoPT0gNDApIHRhc2tz
-Lg0KVGltZTogMTYuMDQ4DQpSdW5uaW5nIHdpdGggMSo0MCAoPT0gNDApIHRhc2tzLg0KVGltZTog
-MTUuNzAwDQpSdW5uaW5nIHdpdGggMSo0MCAoPT0gNDApIHRhc2tzLg0KVGltZTogMTYuMDYzDQpS
-dW5uaW5nIHdpdGggMSo0MCAoPT0gNDApIHRhc2tzLg0KVGltZTogMTUuODUyDQpSdW5uaW5nIHdp
-dGggMSo0MCAoPT0gNDApIHRhc2tzLg0KVGltZTogMTUuOTQxDQoNCiAgUGVyZm9ybWFuY2UgY291
-bnRlciBzdGF0cyBmb3IgJy4vaGFja2JlbmNoIDEnICgxMCBydW5zKToNCg0KICAgICAgICAgICAx
-NjIyNy4zMiBtc2VjIHRhc2stY2xvY2sgICAgICAgICAgICAgICAgIyAgICAwLjk5MiBDUFVzIA0K
-dXRpbGl6ZWQgICAgICAgICAgICAoICstICAwLjQyJSApDQogICAgICAgICAgICAgICAzNzMyICAg
-ICAgY29udGV4dC1zd2l0Y2hlcyAgICAgICAgICAjICAyMzAuNTI1IC9zZWMgDQogICAgICAgICAg
-ICAgICAoICstICA2LjQyJSApDQogICAgICAgICAgICAgICAgICAwICAgICAgY3B1LW1pZ3JhdGlv
-bnMgICAgICAgICAgICAjICAgIDAuMDAwIC9zZWMNCiAgICAgICAgICAgICAgIDEyNDQgICAgICBw
-YWdlLWZhdWx0cyAgICAgICAgICAgICAgICMgICA3Ni44NDIgL3NlYyANCiAgICAgICAgICAgICAg
-ICggKy0gIDAuMTElICkNCiAgICAgICAgIDIxNDEwOTQyODggICAgICBjeWNsZXMgICAgICAgICAg
-ICAgICAgICAgICMgICAgMC4xMzIgR0h6IA0KICAgICAgICAgICAgICAgKCArLSAgMC40MiUgKQ0K
-ICAgICAgICAgIDcxMjU5ODQ0MSAgICAgIGluc3RydWN0aW9ucyAgICAgICAgICAgICAgIyAgICAw
-LjMzICBpbnNuIHBlciANCmN5Y2xlICAgICAgICAgICAoICstICAwLjI5JSApDQogICAgPG5vdCBz
-dXBwb3J0ZWQ+ICAgICAgYnJhbmNoZXMNCiAgICA8bm90IHN1cHBvcnRlZD4gICAgICBicmFuY2gt
-bWlzc2VzDQoNCiAgICAgICAgICAgIDE2LjM1MzkgKy0gMC4wNjc1IHNlY29uZHMgdGltZSBlbGFw
-c2VkICAoICstICAwLjQxJSApDQoNCg0KSW5saW5lIHN0YXRpYyBjYWxsOg0KDQpyb290QHZnb2lw
-On4jIHBlcmYgc3RhdCAtciAxMCAuL2hhY2tiZW5jaCAxDQpSdW5uaW5nIHdpdGggMSo0MCAoPT0g
-NDApIHRhc2tzLg0KVGltZTogMTcuNTEyDQpSdW5uaW5nIHdpdGggMSo0MCAoPT0gNDApIHRhc2tz
-Lg0KVGltZTogMTcuMjQwDQpSdW5uaW5nIHdpdGggMSo0MCAoPT0gNDApIHRhc2tzLg0KVGltZTog
-MTYuOTAxDQpSdW5uaW5nIHdpdGggMSo0MCAoPT0gNDApIHRhc2tzLg0KVGltZTogMTcuMTI1DQpS
-dW5uaW5nIHdpdGggMSo0MCAoPT0gNDApIHRhc2tzLg0KVGltZTogMTcuMjYyDQpSdW5uaW5nIHdp
-dGggMSo0MCAoPT0gNDApIHRhc2tzLg0KVGltZTogMTcuMjk4DQpSdW5uaW5nIHdpdGggMSo0MCAo
-PT0gNDApIHRhc2tzLg0KVGltZTogMTcuMTgyDQpSdW5uaW5nIHdpdGggMSo0MCAoPT0gNDApIHRh
-c2tzLg0KVGltZTogMTYuOTg4DQpSdW5uaW5nIHdpdGggMSo0MCAoPT0gNDApIHRhc2tzLg0KVGlt
-ZTogMTcuMTAyDQpSdW5uaW5nIHdpdGggMSo0MCAoPT0gNDApIHRhc2tzLg0KVGltZTogMTYuNjY5
-DQoNCiAgUGVyZm9ybWFuY2UgY291bnRlciBzdGF0cyBmb3IgJy4vaGFja2JlbmNoIDEnICgxMCBy
-dW5zKToNCg0KICAgICAgICAgICAxNjk3Ni43NiBtc2VjIHRhc2stY2xvY2sgICAgICAgICAgICAg
-ICAgIyAgICAwLjk2NCBDUFVzIA0KdXRpbGl6ZWQgICAgICAgICAgICAoICstICAwLjQ0JSApDQog
-ICAgICAgICAgICAgICA0NzYwICAgICAgY29udGV4dC1zd2l0Y2hlcyAgICAgICAgICAjICAyNzMu
-MDA3IC9zZWMgDQogICAgICAgICAgICAgICAoICstICA0LjkzJSApDQogICAgICAgICAgICAgICAg
-ICAwICAgICAgY3B1LW1pZ3JhdGlvbnMgICAgICAgICAgICAjICAgIDAuMDAwIC9zZWMNCiAgICAg
-ICAgICAgICAgIDEyNTIgICAgICBwYWdlLWZhdWx0cyAgICAgICAgICAgICAgICMgICA3MS44MDgg
-L3NlYyANCiAgICAgICAgICAgICAgICggKy0gIDAuMzUlICkNCiAgICAgICAgIDIyMzk5ODYxMTIg
-ICAgICBjeWNsZXMgICAgICAgICAgICAgICAgICAgICMgICAgMC4xMjggR0h6IA0KICAgICAgICAg
-ICAgICAgKCArLSAgMC40NCUgKQ0KICAgICAgICAgIDcyMTU0MDE4NCAgICAgIGluc3RydWN0aW9u
-cyAgICAgICAgICAgICAgIyAgICAwLjMxICBpbnNuIHBlciANCmN5Y2xlICAgICAgICAgICAoICst
-ICAwLjMxJSApDQogICAgPG5vdCBzdXBwb3J0ZWQ+ICAgICAgYnJhbmNoZXMNCiAgICA8bm90IHN1
-cHBvcnRlZD4gICAgICBicmFuY2gtbWlzc2VzDQoNCiAgICAgICAgICAgIDE3LjYxMjYgKy0gMC4w
-NzYyIHNlY29uZHMgdGltZSBlbGFwc2VkICAoICstICAwLjQzJSApDQoNCg0KU3VtbWFyeToNCg0K
-Tm8gc3RhdGljIGNhbGxzOg0KICAgICAgICAgICAgMTcuMzU4NSArLSAwLjA5MDkgc2Vjb25kcyB0
-aW1lIGVsYXBzZWQgICggKy0gIDAuNTIlICkNCk91dC1vZi1saW5lIHN0YXRpYyBjYWxsczoNCiAg
-ICAgICAgICAgIDE2LjM1MzkgKy0gMC4wNjc1IHNlY29uZHMgdGltZSBlbGFwc2VkICAoICstICAw
-LjQxJSApDQpJbmxpbmUgc3RhdGljIGNhbGxzOg0KICAgICAgICAgICAgMTcuNjEyNiArLSAwLjA3
-NjIgc2Vjb25kcyB0aW1lIGVsYXBzZWQgICggKy0gIDAuNDMlICkNCg0KSXMgdGhlcmUgYW55dGhp
-bmcgd3Jvbmcgd2l0aCBpbmxpbmUgc3RhdGljYSBjYWxscyA/DQoNCkNocmlzdG9waGU=
+On Wed, Aug 31, 2022 at 7:05 PM Joe Lawrence <joe.lawrence@redhat.com> wrot=
+e:
+>
+> On Wed, Aug 31, 2022 at 03:48:26PM -0700, Song Liu wrote:
+> > On Wed, Aug 31, 2022 at 3:30 PM Michael Ellerman <mpe@ellerman.id.au> w=
+rote:
+> > >
+> > > Joe Lawrence <joe.lawrence@redhat.com> writes:
+> > > > On Tue, Aug 30, 2022 at 11:53:13AM -0700, Song Liu wrote:
+> > > >> From: Miroslav Benes <mbenes@suse.cz>
+> > > >>
+> > > >> Josh reported a bug:
+> > > >>
+> > > >>   When the object to be patched is a module, and that module is
+> > > >>   rmmod'ed and reloaded, it fails to load with:
+> > > >>
+> > > >>   module: x86/modules: Skipping invalid relocation target, existin=
+g value is nonzero for type 2, loc 00000000ba0302e9, val ffffffffa03e293c
+> > > >>   livepatch: failed to initialize patch 'livepatch_nfsd' for modul=
+e 'nfsd' (-8)
+> > > >>   livepatch: patch 'livepatch_nfsd' failed for module 'nfsd', refu=
+sing to load module 'nfsd'
+> > > >>
+> > > >>   The livepatch module has a relocation which references a symbol
+> > > >>   in the _previous_ loading of nfsd. When apply_relocate_add()
+> > > >>   tries to replace the old relocation with a new one, it sees that
+> > > >>   the previous one is nonzero and it errors out.
+> > > >>
+> > > >>   On ppc64le, we have a similar issue:
+> > > >>
+> > > >>   module_64: livepatch_nfsd: Expected nop after call, got e8410018=
+ at e_show+0x60/0x548 [livepatch_nfsd]
+> > > >>   livepatch: failed to initialize patch 'livepatch_nfsd' for modul=
+e 'nfsd' (-8)
+> > > >>   livepatch: patch 'livepatch_nfsd' failed for module 'nfsd', refu=
+sing to load module 'nfsd'
+> > > ...
+> > > >>
+> > > >
+> > > > Hi Song,
+> > > >
+> > > > Applying your patch on top of my latest klp-convert-tree branch [1]=
+, I
+> > > > modified a few of its late module patching tests
+> > > > (tools/testing/selftests/livepatch/test-song.sh) such that:
+> > > >
+> > > >  1 - A livepatch module is loaded
+> > > >    - this module contains klp-relocations to objects in (2)
+> > > >  2 - A target test module is loaded
+> > > >  3 - Unload the test target module
+> > > >    - Clear klp-relocations in (1)
+> > > >  4 - Repeat target module load (2) / unload (3) a few times
+> > > >  5 - Unload livepatch module
+> > >
+> > > If you push that test code somewhere I could test it on ppc64le.
+> > >
+> > > > The results:
+> > > >
+> > > >  x86_64  : pass
+> > > >  s390x   : pass
+> > > >  ppc64le : crash
+> > > >
+> > > > I suspect Power 32-bit would suffer the same fate, but I don't have
+> > > > hardware to verify.  See the kernel log from the crash below...
+> > > >
+> > > >
+> > > > =3D=3D=3D=3D=3D TEST: klp-convert symbols (late module patching) =
+=3D=3D=3D=3D=3D
+> > > > % modprobe test_klp_convert1
+> > > > test_klp_convert1: tainting kernel with TAINT_LIVEPATCH
+> > > > livepatch: enabling patch 'test_klp_convert1'
+> > > > livepatch: 'test_klp_convert1': starting patching transition
+> > > > livepatch: 'test_klp_convert1': patching complete
+> > > > % modprobe test_klp_convert_mod
+> > > > livepatch: applying patch 'test_klp_convert1' to loading module 'te=
+st_klp_convert_mod'
+> > > > test_klp_convert1: saved_command_line, 0: BOOT_IMAGE=3D(ieee1275//v=
+device/v-scsi@30000003/disk@8100000000000000,msdos2)/vmlinuz-5.19.0+ root=
+=3D/dev/mapper/rhel_ibm--p9z--18--lp7-root ro crashkernel=3D2G-4G:384M,4G-1=
+6G:512M,16G-64G:1G,64G-128G:2G,128G-:4G rd.lvm.lv=3Drhel_ibm-p9z-18-lp7/roo=
+t rd.lvm.lv=3Drhel_ibm-p9z-18-lp7/swap
+> > > > test_klp_convert1: driver_name, 0: test_klp_convert_mod
+> > > > test_klp_convert1: test_klp_get_driver_name(), 0: test_klp_convert_=
+mod
+> > > > test_klp_convert1: homonym_string, 1: homonym string A
+> > > > test_klp_convert1: get_homonym_string(), 1: homonym string A
+> > > > test_klp_convert1: klp_string.12345 =3D lib/livepatch/test_klp_conv=
+ert_mod_a.c static string
+> > > > test_klp_convert1: klp_string.67890 =3D lib/livepatch/test_klp_conv=
+ert_mod_b.c static string
+> > > > % rmmod test_klp_convert_mod
+> > > > livepatch: reverting patch 'test_klp_convert1' on unloading module =
+'test_klp_convert_mod'
+> > > > module_64: Clearing ADD relocate section 48 to 6
+> > > > BUG: Unable to handle kernel data access on write at 0xc00800000214=
+0150
+> > > > Faulting instruction address: 0xc00000000005659c
+> > > > Oops: Kernel access of bad area, sig: 11 [#1]
+> > > > LE PAGE_SIZE=3D64K MMU=3DHash SMP NR_CPUS=3D2048 NUMA pSeries
+> > > > Modules linked in: test_klp_convert_mod(-) test_klp_convert1(K) bon=
+ding tls rfkill pseries_rng drm fuse drm_panel_orientation_quirks xfs libcr=
+c32c sd_mod t10_pi sg ibmvscsi ibmveth scsi_transport_srp vmx_crypto dm_mir=
+ror dm_region_hash dm_log dm_mod
+> > > > CPU: 6 PID: 4766 Comm: rmmod Kdump: loaded Tainted: G              =
+K   5.19.0+ #1
+> > > > NIP:  c00000000005659c LR: c000000000056590 CTR: 0000000000000024
+> > > > REGS: c000000007223840 TRAP: 0300   Tainted: G              K    (5=
+.19.0+)
+> > > > MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE>  CR: 48008282  XER: 0=
+000000a
+> > > > CFAR: c0000000000a87e0 DAR: c008000002140150 DSISR: 0a000000 IRQMAS=
+K: 0
+> > >
+> > > This is saying you don't have permissions to write at that address.
+> > >
+> > > > GPR00: c000000000056568 c000000007223ae0 c000000002a68a00 000000000=
+0000001
+> > > > GPR04: c0080000021706f0 000000000000002d 0000000000000000 000000000=
+0000000
+> > > > GPR08: 0000000000000066 0000001200000010 0000000000000000 000000000=
+0008000
+> > > > GPR12: 0000000000000000 c00000000ffca080 0000000000000000 000000000=
+0000000
+> > > > GPR16: 0000010005bf1810 000000010c0f7370 c0000000011b7e50 c00000000=
+11b7e68
+> > > > GPR20: c0080000021501c8 c008000002150228 0000000000000030 000000006=
+0000000
+> > > > GPR24: c008000002160380 c000000056b43000 000000000000ff20 c00000005=
+6b43c00
+> > > > GPR28: aaaaaaaaaaaaaaab c000000056b43b40 0000000000000000 c00800000=
+214014c
+> > > > NIP [c00000000005659c] clear_relocate_add+0x11c/0x1c0
+> > > > LR [c000000000056590] clear_relocate_add+0x110/0x1c0
+> > > > Call Trace:
+> > > > [c000000007223ae0] [ffffffffffffffff] 0xffffffffffffffff (unreliabl=
+e)
+> > > > [c000000007223ba0] [c00000000021e3a8] klp_cleanup_module_patches_li=
+mited+0x448/0x480
+> > > > [c000000007223cb0] [c000000000220278] klp_module_going+0x68/0x94
+> > > > [c000000007223ce0] [c00000000022f480] __do_sys_delete_module.constp=
+rop.0+0x1d0/0x390
+> > > > [c000000007223db0] [c00000000002f004] system_call_exception+0x164/0=
+x340
+> > > > [c000000007223e10] [c00000000000be68] system_call_vectored_common+0=
+xe8/0x278
+> > > > --- interrupt: 3000 at 0x7fffa178fb6c
+> > > > NIP:  00007fffa178fb6c LR: 0000000000000000 CTR: 0000000000000000
+> > > > REGS: c000000007223e80 TRAP: 3000   Tainted: G              K    (5=
+.19.0+)
+> > > > MSR:  800000000280f033 <SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 48=
+002482  XER: 00000000
+> > > > IRQMASK: 0
+> > > > GPR00: 0000000000000081 00007ffff2d1b720 00007fffa1887200 000001000=
+5bf1878
+> > > > GPR04: 0000000000000800 000000000000000a 0000000000000000 000000000=
+00000da
+> > > > GPR08: 0000000000000000 0000000000000000 0000000000000000 000000000=
+0000000
+> > > > GPR12: 0000000000000000 00007fffa201c540 0000000000000000 000000000=
+0000000
+> > > > GPR16: 0000010005bf1810 000000010c0f7370 000000010c0f8090 000000010=
+c0f8078
+> > > > GPR20: 000000010c0f8050 000000010c0f80a8 000000010c0f7518 000000010=
+c0f80d0
+> > > > GPR24: 00007ffff2d1b830 00007ffff2d1efbb 0000000000000000 000001000=
+5bf02a0
+> > > > GPR28: 00007ffff2d1be50 0000000000000000 0000010005bf1810 000000000=
+0100000
+> > > > NIP [00007fffa178fb6c] 0x7fffa178fb6c
+> > > > LR [0000000000000000] 0x0
+> > > > --- interrupt: 3000
+> > > > Instruction dump:
+> > > > 40820044 813b002c 7ff5f82a 79293664 7d394a14 e9290010 7c69f82e 7fe9=
+fa14
+> > > > 48052235 60000000 2c030000 41820008 <92ff0004> eadb0020 60000000 60=
+000000
+> > > > ---[ end trace 0000000000000000 ]---
+> > > >
+> > > > $ addr2line 0xc00000000005659c -e vmlinux
+> > > > /root/klp-convert-tree/arch/powerpc/kernel/module_64.c:785
+> > > >
+> > > > 743 void clear_relocate_add(Elf64_Shdr *sechdrs,
+> > > > 744                        const char *strtab,
+> > > > 745                        unsigned int symindex,
+> > > > 746                        unsigned int relsec,
+> > > > 747                        struct module *me)
+> > > > 748 {
+> > > > ...
+> > > > 759         for (i =3D 0; i < sechdrs[relsec].sh_size / sizeof(*rel=
+a); i++) {
+> > > > ...
+> > > > 785                 *instruction =3D PPC_RAW_NOP();
+> > > > 786         }
+> > >
+> > > Has the module text been marked RW prior to this? I suspect not?
+> > >
+> > > In which case you need to use patch_instruction() here.
+> > >
+> > > cheers
+> >
+> > Thanks folks!
+> >
+> > I guess something like this would fix compile for ppc32 and fix crash f=
+or ppc64.
+> >
+> > I also pushed it to
+> >
+> > https://git.kernel.org/pub/scm/linux/kernel/git/song/linux.git/log/?h=
+=3Dklp-module-reload
+> >
+> > This includes Joe's klp-convert patches and this patch.
+> >
+> > Thanks!
+> > Song
+> >
+> >
+> >
+> > diff --git a/arch/powerpc/kernel/module_32.c b/arch/powerpc/kernel/modu=
+le_32.c
+> > index ea6536171778..e3c312770453 100644
+> > --- a/arch/powerpc/kernel/module_32.c
+> > +++ b/arch/powerpc/kernel/module_32.c
+> > @@ -285,6 +285,16 @@ int apply_relocate_add(Elf32_Shdr *sechdrs,
+> >         return 0;
+> >  }
+> >
+> > +#ifdef CONFIG_LIVEPATCH
+> > +void clear_relocate_add(Elf32_Shdr *sechdrs,
+> > +                  const char *strtab,
+> > +                  unsigned int symindex,
+> > +                  unsigned int relsec,
+> > +                  struct module *me)
+> > +{
+> > +}
+> > +#endif
+> > +
+> >  #ifdef CONFIG_DYNAMIC_FTRACE
+> >  notrace int module_trampoline_target(struct module *mod, unsigned long=
+ addr,
+> >                                      unsigned long *target)
+> > diff --git a/arch/powerpc/kernel/module_64.c b/arch/powerpc/kernel/modu=
+le_64.c
+> > index 6aaf5720070d..4d55f0e52704 100644
+> > --- a/arch/powerpc/kernel/module_64.c
+> > +++ b/arch/powerpc/kernel/module_64.c
+> > @@ -782,7 +782,7 @@ void clear_relocate_add(Elf64_Shdr *sechdrs,
+> >                         continue;
+> >
+> >                 instruction +=3D 1;
+> > -               *instruction =3D PPC_RAW_NOP();
+> > +               patch_instruction(instruction, PPC_RAW_NOP());
+>
+> Close.  I believe PPC_RAW_NOP() needs to be passed to ppc_inst() like:
+>
+> diff --git a/arch/powerpc/kernel/module_64.c b/arch/powerpc/kernel/module=
+_64.c
+> index 4d55f0e52..514951f97 100644
+> --- a/arch/powerpc/kernel/module_64.c
+> +++ b/arch/powerpc/kernel/module_64.c
+> @@ -782,7 +782,7 @@ void clear_relocate_add(Elf64_Shdr *sechdrs,
+>                         continue;
+>
+>                 instruction +=3D 1;
+> -               patch_instruction(instruction, PPC_RAW_NOP());
+> +               patch_instruction(instruction, ppc_inst(PPC_RAW_NOP()));
+>         }
+>
+>  }
+>
+> And with that tweak, new result:
+>
+>  ppc64le : pass
+>
+> Tested-by: Joe Lawrence <joe.lawrence@redhat.com> # x86_64, s390x, ppc64l=
+e
+
+Thanks!
+
+I will fold this in and send v6.
+
+Song
