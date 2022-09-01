@@ -1,66 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 152705A9E2A
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Sep 2022 19:38:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0655E5A9E38
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Sep 2022 19:38:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MJStd05cfz3dpK
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Sep 2022 03:38:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MJSvH0Mw8z3drs
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Sep 2022 03:38:35 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=l1V4yVON;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=IEnDpG3Y;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--surenb.bounces.google.com (client-ip=2607:f8b0:4864:20::114a; helo=mail-yw1-x114a.google.com; envelope-from=3ye0qywykdj4qspcl9emmejc.amkjglsvnna-bctjgqrq.mxj89q.mpe@flex--surenb.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--surenb.bounces.google.com (client-ip=2607:f8b0:4864:20::114a; helo=mail-yw1-x114a.google.com; envelope-from=3y-0qywykdkasurenbgoogle.comlinuxppc-devlists.ozlabs.org@flex--surenb.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=l1V4yVON;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=IEnDpG3Y;
 	dkim-atps=neutral
 Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MJSql3GHTz2xZw
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Sep 2022 03:35:31 +1000 (AEST)
-Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-3449870f0e4so11664367b3.6
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Sep 2022 10:35:31 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MJSqm2dBQz2xrX
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Sep 2022 03:35:32 +1000 (AEST)
+Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-33ef3e5faeeso228800377b3.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Sep 2022 10:35:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date;
-        bh=LVrV0vnZTvQ/veouCVIJ2VKTA1Jw28r4MCl6DiRcaDY=;
-        b=l1V4yVONtNOUfesG20Bnq72dRtkCeRcz+SXGtADVXwnLsewU/bV2Wj+5K0ek8rbJL5
-         /VnIb4yjvzQAA64ppyeiv2tN7SgqNypFCNDrFPFTIYKrt4K6WTB+yC3yHFvMB+ausBHt
-         SSGrmorbtqBk+v9sXJa+cknHYK7SdsAdZfIlHKdNs08dvIfwUr5y5G+bCOuk9GDx3jZe
-         o3Fb422GusB/mLwU2fWqp5J3gMNLaE1B/UaEPdikTdaz6ywBZryiSPL/0bdT3F8UE3iA
-         1RBsfylmTB6McidRxeHwpl546i9VITPOIoqZ/5tnno4M6ww922Mvm4adk4fXxTHJ359z
-         mtIA==
+        bh=SmLlv5S95s1SYD/hq46yY1KSJ7CCwWbvNekA+AzNinI=;
+        b=IEnDpG3YZTPCaLyxObjk7amCPTURBOnqU7bJ+HMdi+ub5B49wgcvI5S5rtmD90rv2Q
+         AZvqZR25+q4mnRP5jUchvAffVc/FzpkmhNDkv4FRnlMM4OlY6itcjxw3UZXpfpnem++C
+         EJWIMKaiqyYuCH4R4X9b15IgDB9xODniSPpGeOsiXfRmLSll0Bi1jUHU15lpXlXRSc5J
+         +CLYoEdfwTQrLCZejly8sqYsr7A+RsOmJlAwK6fhbCZlwscLc4WTaIF87eXTXBY8BoJB
+         i633PKqUr/jul5ZT9UiyTCl07dJq2r9+I6Xxo/FEUAli95MNIWyATvVTZ7NKsjxM0gu/
+         3dZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date;
-        bh=LVrV0vnZTvQ/veouCVIJ2VKTA1Jw28r4MCl6DiRcaDY=;
-        b=7qy1sNedEsNG8GjCtSjxNf3MasrzEvPaaCRn7JZpW63hmL2I1YULLYWwhg6+C251zx
-         5oV1rw4Kh+YR4MXo4n28nQegjo3nGVyIo2u9oOzGGIMvnRuQsjVh6+VZqh15LmB8BlPT
-         RhNTN0CzM+dQNd5+hJL0QUEKIroX+9fsSgNltlaXKPwh5titV9IWxs3z7dWBaNqERpyh
-         GZxgwclY9qhEK++oCiePQH90cMTHsuqzLfCjsHa022q/27MkWY+NexnDbPpgTgsHG6ih
-         cyEx/fqiDd3RxmnRC6pAuiQUh1U1OMFxgbnHR+MVUeTyxOtr10UQBsW3tCq6ndl3xmi3
-         TYFg==
-X-Gm-Message-State: ACgBeo3vRxJ0ygpu6j0pAnpcWauEhcQq+k5qtPPP303x9S8lbo7aq+7K
-	iADGY9jP7qyRd0PS99Pk20hjtX5gJSU=
-X-Google-Smtp-Source: AA6agR5xL9cSC69c+1y/uWKTqLFokWxQZenGw3Ln10dS2nyve2acvx9iJCiS8dOE4h1muByL940MlpUFLCY=
+        bh=SmLlv5S95s1SYD/hq46yY1KSJ7CCwWbvNekA+AzNinI=;
+        b=fNSuXqdSjehjGvCXx9Fch+JB9Zocf8QT7j+y80vfXvkLck4BdKOIt6OGlaII1gObos
+         uODcyCk5xj6xDv9bDPrIbypIgfVs9+GQA/L55s1eFwz/3+MGgwdOe1NNET8MHSmkr+82
+         FylyFkVnS86e15/kebCTtRHALbpfv8JqLNxDEZywZ4jimnAALi4O7jU/h4I1lC1AFQoA
+         zzy721HuNghLgI4ASoIIVtpZC89NT1uhOzVP/VVy3qR1Yp3JKSv16h8GovilSJXXBvT6
+         MjHnH2NX5TVF7dIP+e9vMtzlxZmQruk0tuF0m0xaTQE+Fu6hnDGLmfO0lvO3E9PhVISa
+         KatQ==
+X-Gm-Message-State: ACgBeo3dUZskUyHGOUDHGwwNAgXNKBHPHtOBohbQ2JwBYt4V+s0U6RlH
+	RzaAxOqtbTuQuciavNSQ62KoOUMFANY=
+X-Google-Smtp-Source: AA6agR7LHtl/RnUFMM8Ba/UDLwcr+KKZqP3s3F3o0L7ZSX4nHIA8V0azyARB9tbw+yLexNRTedxLJOpzAXk=
 X-Received: from surenb-desktop.mtv.corp.google.com ([2620:15c:211:200:1bfc:e7ee:6530:4449])
- (user=surenb job=sendgmr) by 2002:a25:25cf:0:b0:6a2:fe22:657 with SMTP id
- l198-20020a2525cf000000b006a2fe220657mr784117ybl.481.1662053729233; Thu, 01
- Sep 2022 10:35:29 -0700 (PDT)
-Date: Thu,  1 Sep 2022 10:34:51 -0700
+ (user=surenb job=sendgmr) by 2002:a05:6902:1366:b0:691:4335:455b with SMTP id
+ bt6-20020a056902136600b006914335455bmr19454643ybb.282.1662053731874; Thu, 01
+ Sep 2022 10:35:31 -0700 (PDT)
+Date: Thu,  1 Sep 2022 10:34:52 -0700
 In-Reply-To: <20220901173516.702122-1-surenb@google.com>
 Mime-Version: 1.0
 References: <20220901173516.702122-1-surenb@google.com>
 X-Mailer: git-send-email 2.37.2.789.g6183377224-goog
-Message-ID: <20220901173516.702122-4-surenb@google.com>
-Subject: [RFC PATCH RESEND 03/28] mm: introduce __find_vma to be used without
- mmap_lock protection
+Message-ID: <20220901173516.702122-5-surenb@google.com>
+Subject: [RFC PATCH RESEND 04/28] mm: move mmap_lock assert function definitions
 From: Suren Baghdasaryan <surenb@google.com>
 To: akpm@linux-foundation.org
 Content-Type: text/plain; charset="UTF-8"
@@ -79,85 +78,56 @@ Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add __find_vma function to be used for VMA lookup under rcu protection.
+Move mmap_lock assert function definitions up so that they can be used
+by other mmap_lock routines.
 
 Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 ---
- drivers/gpu/drm/i915/i915_gpu_error.c | 4 ++--
- include/linux/mm.h                    | 9 ++++++++-
- mm/mmap.c                             | 6 ++----
- 3 files changed, 12 insertions(+), 7 deletions(-)
+ include/linux/mmap_lock.h | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_gpu_error.c b/drivers/gpu/drm/i915/i915_gpu_error.c
-index 32e92651ef7c..fc94985c95c8 100644
---- a/drivers/gpu/drm/i915/i915_gpu_error.c
-+++ b/drivers/gpu/drm/i915/i915_gpu_error.c
-@@ -507,7 +507,7 @@ static void error_print_context(struct drm_i915_error_state_buf *m,
- }
+diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
+index 96e113e23d04..e49ba91bb1f0 100644
+--- a/include/linux/mmap_lock.h
++++ b/include/linux/mmap_lock.h
+@@ -60,6 +60,18 @@ static inline void __mmap_lock_trace_released(struct mm_struct *mm, bool write)
  
- static struct i915_vma_coredump *
--__find_vma(struct i915_vma_coredump *vma, const char *name)
-+__i915_find_vma(struct i915_vma_coredump *vma, const char *name)
- {
- 	while (vma) {
- 		if (strcmp(vma->name, name) == 0)
-@@ -521,7 +521,7 @@ __find_vma(struct i915_vma_coredump *vma, const char *name)
- struct i915_vma_coredump *
- intel_gpu_error_find_batch(const struct intel_engine_coredump *ee)
- {
--	return __find_vma(ee->vma, "batch");
-+	return __i915_find_vma(ee->vma, "batch");
- }
+ #endif /* CONFIG_TRACING */
  
- static void error_print_engine(struct drm_i915_error_state_buf *m,
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 21f8b27bd9fd..7d322a979455 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2712,7 +2712,14 @@ extern int expand_upwards(struct vm_area_struct *vma, unsigned long address);
- #endif
- 
- /* Look up the first VMA which satisfies  addr < vm_end,  NULL if none. */
--extern struct vm_area_struct * find_vma(struct mm_struct * mm, unsigned long addr);
-+extern struct vm_area_struct *__find_vma(struct mm_struct *mm, unsigned long addr);
-+static inline
-+struct vm_area_struct *find_vma(struct mm_struct *mm, unsigned long addr)
++static inline void mmap_assert_locked(struct mm_struct *mm)
 +{
-+	mmap_assert_locked(mm);
-+	return __find_vma(mm, addr);
++	lockdep_assert_held(&mm->mmap_lock);
++	VM_BUG_ON_MM(!rwsem_is_locked(&mm->mmap_lock), mm);
 +}
 +
- extern struct vm_area_struct * find_vma_prev(struct mm_struct * mm, unsigned long addr,
- 					     struct vm_area_struct **pprev);
- 
-diff --git a/mm/mmap.c b/mm/mmap.c
-index 9d780f415be3..693e6776be39 100644
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -2250,12 +2250,11 @@ get_unmapped_area(struct file *file, unsigned long addr, unsigned long len,
- EXPORT_SYMBOL(get_unmapped_area);
- 
- /* Look up the first VMA which satisfies  addr < vm_end,  NULL if none. */
--struct vm_area_struct *find_vma(struct mm_struct *mm, unsigned long addr)
-+struct vm_area_struct *__find_vma(struct mm_struct *mm, unsigned long addr)
++static inline void mmap_assert_write_locked(struct mm_struct *mm)
++{
++	lockdep_assert_held_write(&mm->mmap_lock);
++	VM_BUG_ON_MM(!rwsem_is_locked(&mm->mmap_lock), mm);
++}
++
+ static inline void mmap_init_lock(struct mm_struct *mm)
  {
- 	struct rb_node *rb_node;
- 	struct vm_area_struct *vma;
- 
--	mmap_assert_locked(mm);
- 	/* Check the cache first. */
- 	vma = vmacache_find(mm, addr);
- 	if (likely(vma))
-@@ -2281,8 +2280,7 @@ struct vm_area_struct *find_vma(struct mm_struct *mm, unsigned long addr)
- 		vmacache_update(addr, vma);
- 	return vma;
+ 	init_rwsem(&mm->mmap_lock);
+@@ -150,18 +162,6 @@ static inline void mmap_read_unlock_non_owner(struct mm_struct *mm)
+ 	up_read_non_owner(&mm->mmap_lock);
  }
--
--EXPORT_SYMBOL(find_vma);
-+EXPORT_SYMBOL(__find_vma);
  
- /*
-  * Same as find_vma, but also return a pointer to the previous VMA in *pprev.
+-static inline void mmap_assert_locked(struct mm_struct *mm)
+-{
+-	lockdep_assert_held(&mm->mmap_lock);
+-	VM_BUG_ON_MM(!rwsem_is_locked(&mm->mmap_lock), mm);
+-}
+-
+-static inline void mmap_assert_write_locked(struct mm_struct *mm)
+-{
+-	lockdep_assert_held_write(&mm->mmap_lock);
+-	VM_BUG_ON_MM(!rwsem_is_locked(&mm->mmap_lock), mm);
+-}
+-
+ static inline int mmap_lock_is_contended(struct mm_struct *mm)
+ {
+ 	return rwsem_is_contended(&mm->mmap_lock);
 -- 
 2.37.2.789.g6183377224-goog
 
