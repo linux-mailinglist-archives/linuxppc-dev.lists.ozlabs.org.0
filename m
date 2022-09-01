@@ -2,70 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 369BD5A9E3A
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Sep 2022 19:39:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C3675A9E3B
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Sep 2022 19:39:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MJSvy1hZmz3f3B
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Sep 2022 03:39:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MJSwl4GvJz3f72
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Sep 2022 03:39:51 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=OULzLK//;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=KO0CCoeJ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--surenb.bounces.google.com (client-ip=2607:f8b0:4864:20::b49; helo=mail-yb1-xb49.google.com; envelope-from=3zu0qywykdkmvxuhqejrrjoh.frpolqxassf-ghyolvwv.rcodev.ruj@flex--surenb.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--surenb.bounces.google.com (client-ip=2607:f8b0:4864:20::1149; helo=mail-yw1-x1149.google.com; envelope-from=3ae0qywykdkyyaxkthmuumrk.iusrotadvvi-jkbroyzy.ufrghy.uxm@flex--surenb.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=OULzLK//;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=KO0CCoeJ;
 	dkim-atps=neutral
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MJSqs1wTkz3015
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Sep 2022 03:35:36 +1000 (AEST)
-Received: by mail-yb1-xb49.google.com with SMTP id v8-20020a258488000000b00695847496a4so4934328ybk.19
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Sep 2022 10:35:36 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MJSqv6z0Tz2xyD
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Sep 2022 03:35:39 +1000 (AEST)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-32a115757b6so236802087b3.13
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Sep 2022 10:35:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date;
-        bh=eIMt0K4Dq/+E4lj9SQ/fnMIDQQYvNY/8MPu6+maRPr0=;
-        b=OULzLK//lObTRMGAKryDz/AAItdyiK5yqhZqIIxu+sL1Dieokt2jidmnz3C7/IkvFZ
-         m9XlR/LP/dWBo2UxnXyYn7qdVCzxgLbSFD2CG9EOYY1gruRvre30gd8M27oZrFHurKvO
-         KqLi6QjNq7f2EcLrXhJZo+HJMeLkP9RVRxlBnBeo9kXpz7L5PtGPdJWGZy8ptDnDibsD
-         BU++Zg9dqZVio0ctwQpkNxICzBLOlMkeBzfVJBfO5ajkBVunOWr6F+myD0p5P9YWiss6
-         hO75UDowCTjrDDdzDEi22CFFlp+R1gx4mTcBiehvp3OGDbyQbHz6/QfMRzJJk1Rc6B1v
-         GPRQ==
+        bh=OSuAy3hdf+ZsQNxs3kxuMbhy9QBzPPm6GtoQo3aB3NA=;
+        b=KO0CCoeJjfr6uQrGAGyvNgiswHns8WtW+vNCGbmb+v3lgrTdGqCfv4Q0htUhCqi7L8
+         NjudqvxWt3vJ1U4f4TaUrpiWDGDkYHTslXKwJR5AqzCzKMPyrwODeBVbDXy2W3OJ+0AJ
+         32abPt60ZQu7g2dOidue0bSh6Xh6XjE19T0FxDLe4AuFdEJaS9z9AXmzzaZHqpBfL4WP
+         CC3bKhkCnU66eINFmY1rA50iR0WfFedon1RB2Q6DxPGeP1j32wzMpXKoaqT2OAwWSdUJ
+         2Dr+2H3hwJpx9s6tPPyXHohy9BSbHgL+aey4lgZu/S9fAtQBjK/jZiqIlpp1Ch7Jebxy
+         Blpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date;
-        bh=eIMt0K4Dq/+E4lj9SQ/fnMIDQQYvNY/8MPu6+maRPr0=;
-        b=lSGUJxH5WjaKgRJmIVff9l1niV8Sle0ERTjKLFKfm3AjYvhUuXxk6aBgwxUOxLrq1d
-         +2OLeK/ZBbBr8qKjFajO6w+zdx5bJVkeKgWq/upYgit1Z9VAA/K75rP834vJcTC4Rf29
-         PaPV07NVEKjwUKVkV+j569mW7Y90t3oKy2GeUwZxYZkx3z3lbaD2YJDVsyvSoHq9DpPX
-         3R5Q/dWT67+MnaSlVBFeB6WHvSUB4hypEWorh5oUFdSH9uQ73oRquGX6Yevn1w97g9qz
-         HhfAw16ZumlFYqwwE4oKtoKySSiPChHmRYKthjYJMwkQO5y6YBSlrmF8byDwXTaT9XxU
-         GRLA==
-X-Gm-Message-State: ACgBeo302HflEqUPHaLjLaXDxGcj4JKMqYuMdnuW4AJ9Un94z8/1W2jy
-	47FPJBx4CMIJU/kndyMReNnpu3lDXtISRStVdGrOK+GkFItg03Cg4XzD5Bb7SpyHQqPvaBxFIvT
-	Mx0YrhXgkAGVdMOgXcTxcTw==
-X-Google-Smtp-Source: AA6agR57KkNIgUFHWPdFiQWyoY7oyjG1ZvVgnOFqYQ9kJCo94JBJEo43qz2wa5ev7XB45jgLE1aOSNe2TR4=
+        bh=OSuAy3hdf+ZsQNxs3kxuMbhy9QBzPPm6GtoQo3aB3NA=;
+        b=spsSGqAD/Olbbrry1jRfstSrHDRUU0scU6XLPTE4oOjTUXBcfJmjqsS83TEtt/if7q
+         +7sVPpt7CMjDUHYPDh4a+lCh4PRhA+rP1YAZ+r+yqVK2efHGBRXTY/SwUREGfR9RH81f
+         352J2GhKh+damY7dhgnDdj6i7lveSNWRMEPwVEsWC/j5rvkFBdP2WJCeFaUIbAFRRLpF
+         yvBRyj2q1l8dAPCcM7BxM2OhmThoLjZVduDFWJOfzPELqWKJXC836kSS013owzu1SU5z
+         CLte3C9SGQ2kVxYw1V8RTarK3nNkyprW27DpoqBo6aw7fwn7OjGY8A2j6uzcIxcrQ6R4
+         2ItA==
+X-Gm-Message-State: ACgBeo0IW3dgcbErO5jjI1JBRYSPPUeCwcjDFEVid3iWapaa+hlzhLf4
+	cXqViQWBavzzoIHnSh7eW4YuW0MssD4=
+X-Google-Smtp-Source: AA6agR5mOhnOZ5TXGA7QbMyhBcTFpfMYAPy+7Q1nZkdORl1Ru4vF2e+A26u5Wht4tIYfxlBv6SIkkjkdNGw=
 X-Received: from surenb-desktop.mtv.corp.google.com ([2620:15c:211:200:1bfc:e7ee:6530:4449])
- (user=surenb job=sendgmr) by 2002:a0d:ff86:0:b0:341:5844:5527 with SMTP id
- p128-20020a0dff86000000b0034158445527mr14770867ywf.504.1662053734514; Thu, 01
- Sep 2022 10:35:34 -0700 (PDT)
-Date: Thu,  1 Sep 2022 10:34:53 -0700
+ (user=surenb job=sendgmr) by 2002:a0d:edc2:0:b0:338:957:a719 with SMTP id
+ w185-20020a0dedc2000000b003380957a719mr24916063ywe.132.1662053737185; Thu, 01
+ Sep 2022 10:35:37 -0700 (PDT)
+Date: Thu,  1 Sep 2022 10:34:54 -0700
 In-Reply-To: <20220901173516.702122-1-surenb@google.com>
 Mime-Version: 1.0
 References: <20220901173516.702122-1-surenb@google.com>
 X-Mailer: git-send-email 2.37.2.789.g6183377224-goog
-Message-ID: <20220901173516.702122-6-surenb@google.com>
-Subject: [RFC PATCH RESEND 05/28] mm: add per-VMA lock and helper functions to
- control it
+Message-ID: <20220901173516.702122-7-surenb@google.com>
+Subject: [RFC PATCH RESEND 06/28] mm: mark VMA as locked whenever
+ vma->vm_flags are modified
 From: Suren Baghdasaryan <surenb@google.com>
 To: akpm@linux-foundation.org
 Content-Type: text/plain; charset="UTF-8"
-X-ccpol: medium
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,218 +79,139 @@ Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Introduce a per-VMA rw_semaphore to be used during page fault handling
-instead of mmap_lock. Because there are cases when multiple VMAs need
-to be exclusively locked during VMA tree modifications, instead of the
-usual lock/unlock patter we mark a VMA as locked by taking per-VMA lock
-exclusively and setting vma->lock_seq to the current mm->lock_seq. When
-mmap_write_lock holder is done with all modifications and drops mmap_lock,
-it will increment mm->lock_seq, effectively unlocking all VMAs marked as
-locked.
+VMA flag modifications should be done under VMA lock to prevent concurrent
+page fault handling in that area.
 
 Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 ---
- include/linux/mm.h        | 78 +++++++++++++++++++++++++++++++++++++++
- include/linux/mm_types.h  |  7 ++++
- include/linux/mmap_lock.h | 13 +++++++
- kernel/fork.c             |  4 ++
- mm/init-mm.c              |  3 ++
- 5 files changed, 105 insertions(+)
+ fs/proc/task_mmu.c | 1 +
+ fs/userfaultfd.c   | 6 ++++++
+ mm/madvise.c       | 1 +
+ mm/mlock.c         | 2 ++
+ mm/mmap.c          | 1 +
+ mm/mprotect.c      | 1 +
+ 6 files changed, 12 insertions(+)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 7d322a979455..476bf936c5f0 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -611,6 +611,83 @@ struct vm_operations_struct {
- 					  unsigned long addr);
- };
+diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+index 4e0023643f8b..ceffa5c2c650 100644
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -1285,6 +1285,7 @@ static ssize_t clear_refs_write(struct file *file, const char __user *buf,
+ 			for (vma = mm->mmap; vma; vma = vma->vm_next) {
+ 				if (!(vma->vm_flags & VM_SOFTDIRTY))
+ 					continue;
++				vma_mark_locked(vma);
+ 				vma->vm_flags &= ~VM_SOFTDIRTY;
+ 				vma_set_page_prot(vma);
+ 			}
+diff --git a/fs/userfaultfd.c b/fs/userfaultfd.c
+index 175de70e3adf..fe557b3d1c07 100644
+--- a/fs/userfaultfd.c
++++ b/fs/userfaultfd.c
+@@ -620,6 +620,7 @@ static void userfaultfd_event_wait_completion(struct userfaultfd_ctx *ctx,
+ 		mmap_write_lock(mm);
+ 		for (vma = mm->mmap; vma; vma = vma->vm_next)
+ 			if (vma->vm_userfaultfd_ctx.ctx == release_new_ctx) {
++				vma_mark_locked(vma);
+ 				vma->vm_userfaultfd_ctx = NULL_VM_UFFD_CTX;
+ 				vma->vm_flags &= ~__VM_UFFD_FLAGS;
+ 			}
+@@ -653,6 +654,7 @@ int dup_userfaultfd(struct vm_area_struct *vma, struct list_head *fcs)
  
-+#ifdef CONFIG_PER_VMA_LOCK
-+static inline void vma_init_lock(struct vm_area_struct *vma)
-+{
-+	init_rwsem(&vma->lock);
-+	vma->vm_lock_seq = -1;
-+}
-+
-+static inline void vma_mark_locked(struct vm_area_struct *vma)
-+{
-+	int mm_lock_seq;
-+
-+	mmap_assert_write_locked(vma->vm_mm);
-+
-+	/*
-+	 * current task is holding mmap_write_lock, both vma->vm_lock_seq and
-+	 * mm->mm_lock_seq can't be concurrently modified.
-+	 */
-+	mm_lock_seq = READ_ONCE(vma->vm_mm->mm_lock_seq);
-+	if (vma->vm_lock_seq == mm_lock_seq)
-+		return;
-+
-+	down_write(&vma->lock);
-+	vma->vm_lock_seq = mm_lock_seq;
-+	up_write(&vma->lock);
-+}
-+
-+static inline bool vma_read_trylock(struct vm_area_struct *vma)
-+{
-+	if (unlikely(down_read_trylock(&vma->lock) == 0))
-+		return false;
-+
-+	/*
-+	 * Overflow might produce false locked result but it's not critical.
-+	 * False unlocked result is critical but is impossible because we
-+	 * modify and check vma->vm_lock_seq under vma->lock protection and
-+	 * mm->mm_lock_seq modification invalidates all existing locks.
-+	 */
-+	if (vma->vm_lock_seq == READ_ONCE(vma->vm_mm->mm_lock_seq)) {
-+		up_read(&vma->lock);
-+		return false;
-+	}
-+	return true;
-+}
-+
-+static inline void vma_read_unlock(struct vm_area_struct *vma)
-+{
-+	up_read(&vma->lock);
-+}
-+
-+static inline void vma_assert_locked(struct vm_area_struct *vma)
-+{
-+	lockdep_assert_held(&vma->lock);
-+	VM_BUG_ON_VMA(!rwsem_is_locked(&vma->lock), vma);
-+}
-+
-+static inline void vma_assert_write_locked(struct vm_area_struct *vma, int pos)
-+{
-+	mmap_assert_write_locked(vma->vm_mm);
-+	/*
-+	 * current task is holding mmap_write_lock, both vma->vm_lock_seq and
-+	 * mm->mm_lock_seq can't be concurrently modified.
-+	 */
-+	VM_BUG_ON_VMA(vma->vm_lock_seq != READ_ONCE(vma->vm_mm->mm_lock_seq), vma);
-+}
-+
-+#else /* CONFIG_PER_VMA_LOCK */
-+
-+static inline void vma_init_lock(struct vm_area_struct *vma) {}
-+static inline void vma_mark_locked(struct vm_area_struct *vma) {}
-+static inline bool vma_read_trylock(struct vm_area_struct *vma)
-+		{ return false; }
-+static inline void vma_read_unlock(struct vm_area_struct *vma) {}
-+static inline void vma_assert_locked(struct vm_area_struct *vma) {}
-+static inline void vma_assert_write_locked(struct vm_area_struct *vma, int pos) {}
-+
-+#endif /* CONFIG_PER_VMA_LOCK */
-+
- static inline void vma_init(struct vm_area_struct *vma, struct mm_struct *mm)
- {
- 	static const struct vm_operations_struct dummy_vm_ops = {};
-@@ -619,6 +696,7 @@ static inline void vma_init(struct vm_area_struct *vma, struct mm_struct *mm)
- 	vma->vm_mm = mm;
- 	vma->vm_ops = &dummy_vm_ops;
- 	INIT_LIST_HEAD(&vma->anon_vma_chain);
-+	vma_init_lock(vma);
- }
- 
- static inline void vma_set_anonymous(struct vm_area_struct *vma)
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index bed25ef7c994..6a03f59c1e78 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -486,6 +486,10 @@ struct vm_area_struct {
- 	struct mempolicy *vm_policy;	/* NUMA policy for the VMA */
- #endif
- 	struct vm_userfaultfd_ctx vm_userfaultfd_ctx;
-+#ifdef CONFIG_PER_VMA_LOCK
-+	struct rw_semaphore lock;
-+	int vm_lock_seq;
-+#endif
- } __randomize_layout;
- 
- struct kioctx_table;
-@@ -567,6 +571,9 @@ struct mm_struct {
- 					  * init_mm.mmlist, and are protected
- 					  * by mmlist_lock
- 					  */
-+#ifdef CONFIG_PER_VMA_LOCK
-+		int mm_lock_seq;
-+#endif
- 
- 
- 		unsigned long hiwater_rss; /* High-watermark of RSS usage */
-diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
-index e49ba91bb1f0..a391ae226564 100644
---- a/include/linux/mmap_lock.h
-+++ b/include/linux/mmap_lock.h
-@@ -72,6 +72,17 @@ static inline void mmap_assert_write_locked(struct mm_struct *mm)
- 	VM_BUG_ON_MM(!rwsem_is_locked(&mm->mmap_lock), mm);
- }
- 
-+#ifdef CONFIG_PER_VMA_LOCK
-+static inline void vma_mark_unlocked_all(struct mm_struct *mm)
-+{
-+	mmap_assert_write_locked(mm);
-+	/* No races during update due to exclusive mmap_lock being held */
-+	WRITE_ONCE(mm->mm_lock_seq, mm->mm_lock_seq + 1);
-+}
-+#else
-+static inline void vma_mark_unlocked_all(struct mm_struct *mm) {}
-+#endif
-+
- static inline void mmap_init_lock(struct mm_struct *mm)
- {
- 	init_rwsem(&mm->mmap_lock);
-@@ -114,12 +125,14 @@ static inline bool mmap_write_trylock(struct mm_struct *mm)
- static inline void mmap_write_unlock(struct mm_struct *mm)
- {
- 	__mmap_lock_trace_released(mm, true);
-+	vma_mark_unlocked_all(mm);
- 	up_write(&mm->mmap_lock);
- }
- 
- static inline void mmap_write_downgrade(struct mm_struct *mm)
- {
- 	__mmap_lock_trace_acquire_returned(mm, false, true);
-+	vma_mark_unlocked_all(mm);
- 	downgrade_write(&mm->mmap_lock);
- }
- 
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 614872438393..bfab31ecd11e 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -475,6 +475,7 @@ struct vm_area_struct *vm_area_dup(struct vm_area_struct *orig)
- 		 */
- 		*new = data_race(*orig);
- 		INIT_LIST_HEAD(&new->anon_vma_chain);
-+		vma_init_lock(new);
- 		new->vm_next = new->vm_prev = NULL;
- 		dup_anon_vma_name(orig, new);
+ 	octx = vma->vm_userfaultfd_ctx.ctx;
+ 	if (!octx || !(octx->features & UFFD_FEATURE_EVENT_FORK)) {
++		vma_mark_locked(vma);
+ 		vma->vm_userfaultfd_ctx = NULL_VM_UFFD_CTX;
+ 		vma->vm_flags &= ~__VM_UFFD_FLAGS;
+ 		return 0;
+@@ -734,6 +736,7 @@ void mremap_userfaultfd_prep(struct vm_area_struct *vma,
+ 		atomic_inc(&ctx->mmap_changing);
+ 	} else {
+ 		/* Drop uffd context if remap feature not enabled */
++		vma_mark_locked(vma);
+ 		vma->vm_userfaultfd_ctx = NULL_VM_UFFD_CTX;
+ 		vma->vm_flags &= ~__VM_UFFD_FLAGS;
  	}
-@@ -1130,6 +1131,9 @@ static struct mm_struct *mm_init(struct mm_struct *mm, struct task_struct *p,
- 	seqcount_init(&mm->write_protect_seq);
- 	mmap_init_lock(mm);
- 	INIT_LIST_HEAD(&mm->mmlist);
-+#ifdef CONFIG_PER_VMA_LOCK
-+	WRITE_ONCE(mm->mm_lock_seq, 0);
-+#endif
- 	mm_pgtables_bytes_init(mm);
- 	mm->map_count = 0;
- 	mm->locked_vm = 0;
-diff --git a/mm/init-mm.c b/mm/init-mm.c
-index fbe7844d0912..8399f90d631c 100644
---- a/mm/init-mm.c
-+++ b/mm/init-mm.c
-@@ -37,6 +37,9 @@ struct mm_struct init_mm = {
- 	.page_table_lock =  __SPIN_LOCK_UNLOCKED(init_mm.page_table_lock),
- 	.arg_lock	=  __SPIN_LOCK_UNLOCKED(init_mm.arg_lock),
- 	.mmlist		= LIST_HEAD_INIT(init_mm.mmlist),
-+#ifdef CONFIG_PER_VMA_LOCK
-+	.mm_lock_seq	= 0,
-+#endif
- 	.user_ns	= &init_user_ns,
- 	.cpu_bitmap	= CPU_BITS_NONE,
- #ifdef CONFIG_IOMMU_SVA
+@@ -891,6 +894,7 @@ static int userfaultfd_release(struct inode *inode, struct file *file)
+ 			vma = prev;
+ 		else
+ 			prev = vma;
++		vma_mark_locked(vma);
+ 		vma->vm_flags = new_flags;
+ 		vma->vm_userfaultfd_ctx = NULL_VM_UFFD_CTX;
+ 	}
+@@ -1449,6 +1453,7 @@ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
+ 		 * the next vma was merged into the current one and
+ 		 * the current one has not been updated yet.
+ 		 */
++		vma_mark_locked(vma);
+ 		vma->vm_flags = new_flags;
+ 		vma->vm_userfaultfd_ctx.ctx = ctx;
+ 
+@@ -1630,6 +1635,7 @@ static int userfaultfd_unregister(struct userfaultfd_ctx *ctx,
+ 		 * the next vma was merged into the current one and
+ 		 * the current one has not been updated yet.
+ 		 */
++		vma_mark_locked(vma);
+ 		vma->vm_flags = new_flags;
+ 		vma->vm_userfaultfd_ctx = NULL_VM_UFFD_CTX;
+ 
+diff --git a/mm/madvise.c b/mm/madvise.c
+index 5f0f0948a50e..a173f0025abd 100644
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -181,6 +181,7 @@ static int madvise_update_vma(struct vm_area_struct *vma,
+ 	/*
+ 	 * vm_flags is protected by the mmap_lock held in write mode.
+ 	 */
++	vma_mark_locked(vma);
+ 	vma->vm_flags = new_flags;
+ 	if (!vma->vm_file) {
+ 		error = replace_anon_vma_name(vma, anon_name);
+diff --git a/mm/mlock.c b/mm/mlock.c
+index b14e929084cc..f62e1a4d05f2 100644
+--- a/mm/mlock.c
++++ b/mm/mlock.c
+@@ -380,6 +380,7 @@ static void mlock_vma_pages_range(struct vm_area_struct *vma,
+ 	 */
+ 	if (newflags & VM_LOCKED)
+ 		newflags |= VM_IO;
++	vma_mark_locked(vma);
+ 	WRITE_ONCE(vma->vm_flags, newflags);
+ 
+ 	lru_add_drain();
+@@ -456,6 +457,7 @@ static int mlock_fixup(struct vm_area_struct *vma, struct vm_area_struct **prev,
+ 
+ 	if ((newflags & VM_LOCKED) && (oldflags & VM_LOCKED)) {
+ 		/* No work to do, and mlocking twice would be wrong */
++		vma_mark_locked(vma);
+ 		vma->vm_flags = newflags;
+ 	} else {
+ 		mlock_vma_pages_range(vma, start, end, newflags);
+diff --git a/mm/mmap.c b/mm/mmap.c
+index 693e6776be39..f89c9b058105 100644
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -1818,6 +1818,7 @@ unsigned long mmap_region(struct file *file, unsigned long addr,
+ out:
+ 	perf_event_mmap(vma);
+ 
++	vma_mark_locked(vma);
+ 	vm_stat_account(mm, vm_flags, len >> PAGE_SHIFT);
+ 	if (vm_flags & VM_LOCKED) {
+ 		if ((vm_flags & VM_SPECIAL) || vma_is_dax(vma) ||
+diff --git a/mm/mprotect.c b/mm/mprotect.c
+index bc6bddd156ca..df47fc21b0e4 100644
+--- a/mm/mprotect.c
++++ b/mm/mprotect.c
+@@ -621,6 +621,7 @@ mprotect_fixup(struct mmu_gather *tlb, struct vm_area_struct *vma,
+ 	 * vm_flags and vm_page_prot are protected by the mmap_lock
+ 	 * held in write mode.
+ 	 */
++	vma_mark_locked(vma);
+ 	vma->vm_flags = newflags;
+ 	/*
+ 	 * We want to check manually if we can change individual PTEs writable
 -- 
 2.37.2.789.g6183377224-goog
 
