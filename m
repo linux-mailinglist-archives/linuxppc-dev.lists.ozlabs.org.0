@@ -1,65 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BF695A9E5E
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Sep 2022 19:44:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A2E85A9E5F
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Sep 2022 19:45:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MJT273PLyz3f7M
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Sep 2022 03:44:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MJT2t0lnhz3fXw
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Sep 2022 03:45:10 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=RQU4Av3G;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=TCOmQuZ0;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--surenb.bounces.google.com (client-ip=2607:f8b0:4864:20::b49; helo=mail-yb1-xb49.google.com; envelope-from=3fu0qywykdlstvsfochpphmf.dpnmjovyqqd-efwmjtut.p0mbct.psh@flex--surenb.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--surenb.bounces.google.com (client-ip=2607:f8b0:4864:20::649; helo=mail-pl1-x649.google.com; envelope-from=3ge0qywykdl4wyvirfksskpi.gsqpmry1ttg-hizpmwxw.s3pefw.svk@flex--surenb.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=RQU4Av3G;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=TCOmQuZ0;
 	dkim-atps=neutral
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+Received: from mail-pl1-x649.google.com (mail-pl1-x649.google.com [IPv6:2607:f8b0:4864:20::649])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MJSrK0sCrz3bxp
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Sep 2022 03:36:00 +1000 (AEST)
-Received: by mail-yb1-xb49.google.com with SMTP id bu13-20020a056902090d00b00671743601f1so4875265ybb.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Sep 2022 10:36:00 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MJSrN1qWCz2y84
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Sep 2022 03:36:03 +1000 (AEST)
+Received: by mail-pl1-x649.google.com with SMTP id m5-20020a170902f64500b0016d313f3ce7so12311746plg.23
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Sep 2022 10:36:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date;
-        bh=CVmSMjmLYwB9FBtpYSNLJ0EV++HpteWYtmAikuEnyj8=;
-        b=RQU4Av3GuaGnYpE9oeVZ2Qc2D9oyD+ip4sYivAtlCkyS2/hNn9rv0v8p2M0NIGYJND
-         Yf8x5cX18al4RtSO4Q1PhkVmfw1aU1Ab/Cll55dcKrRpQKauqrB7xyNC80pmZ6bW9bAC
-         e95UH0jr+QtsvW6E0Yi+7Q29f7LTJtJy2OM2cQAlA/mMmKe3iC7olC3Rgqr7kYyQ1CJQ
-         Co86J6JNei7V+ykfhNyFAPymL77cyA2ZQroFaHENAEs99CXDu6wa2X/Gpfr/HBQQdv4H
-         QNCI3+GHYcOaSG+P0vp/Qcr7DGv7/3qUpIL4nQqbN3ksWTquAWAHtimY4d22gaOesNyT
-         C0Uw==
+        bh=jyHdLFPHMbjXGLnwUzIxKnvlA/GbLLDhxKEqR7mLfqg=;
+        b=TCOmQuZ0ealmr2rj6cwh5S5dr2tHdE6kJbl5yIAByz1pqanqNTRiefLGtYBY7Bfwis
+         HCiC64ttZOFWEgwG30yQXn+Yd1NgQ1aDGCJSNFZhazZq9lt7mplm3W+aibX2RLK/lLN0
+         uAX/ZCVxAoOvxpbxeS81kOPFHzixGFCJRTo1WJXrfNWNtHfKZEdnfDSt0EcuBcHbmrUl
+         KJFv/JkMarGz2fGZyZ6GmZqZcaDNiv8ls/HHTwoDoMD28NmijZHaa+6d5o2vJqrlXSFO
+         lKUsBOqEBkv1O0j454aqLOLj6gi+Hg3Qlj1nIC3dhAGDngGkgQrOdGW8W2dVGnwocfag
+         do3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date;
-        bh=CVmSMjmLYwB9FBtpYSNLJ0EV++HpteWYtmAikuEnyj8=;
-        b=19wULD39AS4L9V9CRWYwDuIgiVYiGVbyEde+kBQXu5Ubt3blz6IrEAbN61q5I8dT8z
-         Wf0GNLpgDjHxHbUkgVxv+DpTy7UK9nHHn6lnRnXID/Xg4NpsA8dzqUQ46D0N56XDPZxy
-         pBDGQKzVM9lx58vJDj3UW//qKvKqGlKB8rsptazrmN0iuXYWMa0roqMVotY6MJNuRjij
-         irBu91JMQ2eF1I0GhRJ0BFrJMaGHj23GMAH3JQ+pBMjptXpqdi7skZOKSfD8ktGCA5vQ
-         RePTaV/u6GQO/oWXquv0uG7pDdXCsVyEhYD4xi7fcTB5FMKjcQz7Mj5S0byMw3X7FqU8
-         YYTQ==
-X-Gm-Message-State: ACgBeo2Sd/yWAZUZup1f+DhzCwc+1rlfWa5BcMdTWGrvHs1BQ2h3PnWL
-	GjkDDd98UXoRrglf7x8pekKN2PlMhag=
-X-Google-Smtp-Source: AA6agR571otBJ73SV6fz6quBhFyvEDhG9tsbvxbf3EGsugmeaIr00wfh/qpDUZrPhQkoYyC6wjg4lFM6a0U=
+        bh=jyHdLFPHMbjXGLnwUzIxKnvlA/GbLLDhxKEqR7mLfqg=;
+        b=HuqhZTwmre70PZroK9h6tUJrEXKyBX0mFwMWB7SX9XHEUFP/ihUcSoWqk3osqxNkN6
+         XgJya7EIevByt1ng6kd1Y4JAGjU+4mQJ9Z0eY7r18f4lP7VaYDraeW1oRQJubaH7ZWDd
+         x0z5T/cKcndlcylYFEt8JAfNoSul8w6Oi3F3WH5kTbNBeP2KYBQmsDzMND9WkZiHA3km
+         RiV9okdf05gOBi9Hn4AHj+KGKkhFAacvLdHeO2u79DqEj1BriNoJePQ11Wim554dOqM4
+         DDPSQTZZouIKEgdxVH9YCbuUVXvs8VuoGg2ICtgVNgNFRfhiA33e49xhXBOEApqJtLbP
+         csSw==
+X-Gm-Message-State: ACgBeo07wTKK19CRmD3LLD+FSVYM7HYgJuwRxIGLIXmnt4QQ2w8HRvSJ
+	Ga6EHP/1oepT2lH8SsCeTQTAJC7McOo=
+X-Google-Smtp-Source: AA6agR4mIrBI+VqdmK9XxquJrzUivZu8ctMQy2Mh5DPiMdzbr+5VMUvdiKSOqW1XRdAe5w+IQuXOVrbXRFY=
 X-Received: from surenb-desktop.mtv.corp.google.com ([2620:15c:211:200:1bfc:e7ee:6530:4449])
- (user=surenb job=sendgmr) by 2002:a25:1c3:0:b0:6a2:2d4e:6bf8 with SMTP id
- 186-20020a2501c3000000b006a22d4e6bf8mr1787307ybb.564.1662053758377; Thu, 01
- Sep 2022 10:35:58 -0700 (PDT)
-Date: Thu,  1 Sep 2022 10:35:02 -0700
+ (user=surenb job=sendgmr) by 2002:a63:2cc2:0:b0:41c:681d:60d2 with SMTP id
+ s185-20020a632cc2000000b0041c681d60d2mr26204273pgs.502.1662053761168; Thu, 01
+ Sep 2022 10:36:01 -0700 (PDT)
+Date: Thu,  1 Sep 2022 10:35:03 -0700
 In-Reply-To: <20220901173516.702122-1-surenb@google.com>
 Mime-Version: 1.0
 References: <20220901173516.702122-1-surenb@google.com>
 X-Mailer: git-send-email 2.37.2.789.g6183377224-goog
-Message-ID: <20220901173516.702122-15-surenb@google.com>
-Subject: [RFC PATCH RESEND 14/28] mm: mark VMAs as locked before isolating them
+Message-ID: <20220901173516.702122-16-surenb@google.com>
+Subject: [RFC PATCH RESEND 15/28] mm/mmap: mark adjacent VMAs as locked if
+ they can grow into unmapped area
 From: Suren Baghdasaryan <surenb@google.com>
 To: akpm@linux-foundation.org
 Content-Type: text/plain; charset="UTF-8"
@@ -78,57 +79,36 @@ Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Mark VMAs as locked before isolating them and clear their tree node so
-that isolated VMAs are easily identifiable. In the later patches page
-fault handlers will try locking the found VMA and will check whether
-the VMA was isolated. Locking VMAs before isolating them ensures that
-page fault handlers don't operate on isolated VMAs.
+While unmapping VMAs, adjacent VMAs might be able to grow into the area
+being unmapped. In such cases mark adjacent VMAs as locked to prevent
+this growth.
 
 Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 ---
- mm/mmap.c  | 2 ++
- mm/nommu.c | 2 ++
- 2 files changed, 4 insertions(+)
+ mm/mmap.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/mm/mmap.c b/mm/mmap.c
-index 094678b4434b..b0d78bdc0de0 100644
+index b0d78bdc0de0..b31cc97c2803 100644
 --- a/mm/mmap.c
 +++ b/mm/mmap.c
-@@ -421,12 +421,14 @@ static inline void vma_rb_insert(struct vm_area_struct *vma,
- 
- static void __vma_rb_erase(struct vm_area_struct *vma, struct rb_root *root)
- {
-+	vma_mark_locked(vma);
- 	/*
- 	 * Note rb_erase_augmented is a fairly large inline function,
- 	 * so make sure we instantiate it only once with our desired
- 	 * augmented rbtree callbacks.
+@@ -2680,10 +2680,14 @@ detach_vmas_to_be_unmapped(struct mm_struct *mm, struct vm_area_struct *vma,
+ 	 * VM_GROWSUP VMA. Such VMAs can change their size under
+ 	 * down_read(mmap_lock) and collide with the VMA we are about to unmap.
  	 */
- 	rb_erase_augmented(&vma->vm_rb, root, &vma_gap_callbacks);
-+	RB_CLEAR_NODE(&vma->vm_rb);
+-	if (vma && (vma->vm_flags & VM_GROWSDOWN))
++	if (vma && (vma->vm_flags & VM_GROWSDOWN)) {
++		vma_mark_locked(vma);
+ 		return false;
+-	if (prev && (prev->vm_flags & VM_GROWSUP))
++	}
++	if (prev && (prev->vm_flags & VM_GROWSUP)) {
++		vma_mark_locked(prev);
+ 		return false;
++	}
+ 	return true;
  }
  
- static __always_inline void vma_rb_erase_ignore(struct vm_area_struct *vma,
-diff --git a/mm/nommu.c b/mm/nommu.c
-index e819cbc21b39..ff9933e57501 100644
---- a/mm/nommu.c
-+++ b/mm/nommu.c
-@@ -622,6 +622,7 @@ static void delete_vma_from_mm(struct vm_area_struct *vma)
- 	struct mm_struct *mm = vma->vm_mm;
- 	struct task_struct *curr = current;
- 
-+	vma_mark_locked(vma);
- 	mm->map_count--;
- 	for (i = 0; i < VMACACHE_SIZE; i++) {
- 		/* if the vma is cached, invalidate the entire cache */
-@@ -644,6 +645,7 @@ static void delete_vma_from_mm(struct vm_area_struct *vma)
- 
- 	/* remove from the MM's tree and list */
- 	rb_erase(&vma->vm_rb, &mm->mm_rb);
-+	RB_CLEAR_NODE(&vma->vm_rb);
- 
- 	__vma_unlink_list(mm, vma);
- }
 -- 
 2.37.2.789.g6183377224-goog
 
