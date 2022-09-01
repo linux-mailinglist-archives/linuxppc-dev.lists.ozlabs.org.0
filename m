@@ -1,66 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E6225A9E4B
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Sep 2022 19:41:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B37A5A9E4D
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Sep 2022 19:42:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MJSyh2CpXz3fHB
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Sep 2022 03:41:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MJSzL1TRyz3c25
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Sep 2022 03:42:06 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=osN5P5u2;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=kNx38Jhq;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--surenb.bounces.google.com (client-ip=2607:f8b0:4864:20::64a; helo=mail-pl1-x64a.google.com; envelope-from=3ce0qywykdk4gifsbpuccuzs.qcazwbilddq-rsjzwghg.cnzopg.cfu@flex--surenb.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--surenb.bounces.google.com (client-ip=2607:f8b0:4864:20::114a; helo=mail-yw1-x114a.google.com; envelope-from=3do0qywykdlejlivesxffxcv.tfdczeloggt-uvmczjkj.fqcrsj.fix@flex--surenb.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=osN5P5u2;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=kNx38Jhq;
 	dkim-atps=neutral
-Received: from mail-pl1-x64a.google.com (mail-pl1-x64a.google.com [IPv6:2607:f8b0:4864:20::64a])
+Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MJSr40FHjz30NS
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Sep 2022 03:35:47 +1000 (AEST)
-Received: by mail-pl1-x64a.google.com with SMTP id p2-20020a170902e74200b001755a859b3aso1831017plf.17
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Sep 2022 10:35:47 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MJSr65Cz2z2yZS
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Sep 2022 03:35:50 +1000 (AEST)
+Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-343a77f2129so37854867b3.15
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Sep 2022 10:35:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date;
-        bh=f3HBd//8MTEjGtUKjIJ6VlUao66B8ATA87dRitXKN6o=;
-        b=osN5P5u2gNPNqCUBvTG+Zi66behXZjVMeiTYran173d3bK7x/C4pNezlQHCFvkYQk7
-         qOQqzQeCFbXQDX9e+QRzeVBdZKr22OFya12CKF/BNucIJ15gJeM6CJ6xJtVhkJ86JMIW
-         z0BrEcSFGRuuGzZ7AIa/XsKdDh+JkQT9DWUmeCCWJ5VsR1VGSIBZmgZx0ZCJYBHl+XPj
-         GoCI/RFibFsonWSqgiZwplWva8pXUgT5urz+18AucAe/seeiQYlfr5LWvUC2qg96tyno
-         slrVqaBJlR1Fm38ZmASWvylf1J3rbhYM8n7OsiK4uazMHDS7+qFeKWZULOPVqfmGOKH5
-         n3ag==
+        bh=DiVLSVAVO410fRJcvWWuX+r6LjGy2i2DyacaHp6fzuc=;
+        b=kNx38Jhqjx9XlmKxOVsRKukj17KeQAoUkvOgezSjJcI7qDa8s6siy6+ZCSn18LnVHi
+         n4QLcTPTYnWQedOp2NOA065emr+I7/FhDV/20btA2UJprNGZCfJvY2fzU6JS3rffkIEf
+         2FurYAnF0+QmVLyL1XlOy/6eS9/B08Rzb+EHT4ihXLuAM0YGViLuLR9Pls5xzIb0RA++
+         peqVg5K5+yJOyniQSXXLxLw8N9e7jk4WJ8bD01w4ADM9IUXJZsw/A2NPWpCJiNE61osh
+         1/9xE4X1j0QNkz0GiHjK4YBUmosqgJkbBEuUlP/cGGRjR6eOLhrxcNhT+yoJZX8wCM9W
+         ZvhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date;
-        bh=f3HBd//8MTEjGtUKjIJ6VlUao66B8ATA87dRitXKN6o=;
-        b=01sdyVLn4Nf21tDWwRA+NLWElyU4eQI/6GZLPt7CuMPh6xPTv6twva9+2ckbtYUtVx
-         0Lgz5o0ZRUP1earjbNIRBsIEv+mk59TixSq7UxSZDkM59gVd8QwWv/gffStFzvxlLhy0
-         0wGPIeOzrYopRQo8dMZY7EOL9Ob5Uepfo+Nbx357xBU9gAgwiT+PIpEw+p5S3V93MKpV
-         m93O9DKLDbVl4ivNNzRHMcRm+Mh+X8lC/MebS+h8gkaW/5Vk4MQlQ9dKF/nKFVl5SOZf
-         1t8v791fyjvnSv5p5ZHy8bHbNzTnJDVVyHMjvWEQlNxpqJgMwP6VUILwsMa12VcIumbf
-         uLGQ==
-X-Gm-Message-State: ACgBeo23X6eF6RhoGJeYrAuH6bfkvAdz+6QAWoXkbIYoEOdGzCzNLHdn
-	jQ/WVOfxU0XomZXkpyKaIXu4+KKdLa4=
-X-Google-Smtp-Source: AA6agR6Q3wPydZYjoco/mRjMkhmNWxJo3Xdi/ebZ3ovzfa+ebF5iWZWFhqHdfMvubIqW+qGVzpwNqTYAd9U=
+        bh=DiVLSVAVO410fRJcvWWuX+r6LjGy2i2DyacaHp6fzuc=;
+        b=BOb2wIqiohQ7B9GQ4nbgdPCKg50MCQ3tQrsS5Jg0ecdlkPgWS217vwXG4Nka1Lmi3G
+         n4AepBXRNyywBaGTAF4hI5NPAG/HP5XBEiLKpOxYYpY6ehleNyE2WAY5hnuL9QMG9358
+         FR4k1Ib68B+LHLKgQIHI7f23eJqVkJcd/vNFr6o4sXxsofCwN7+OsmLnu66S7FOSYY49
+         F/JD63B0Kwyn0Venw0EE9zrp6IFi+nCDKZ7cporH98UOPS18veMBA9SY8LP3YsVQb3At
+         EcdZHSeNxuUbyp+uGHRHgJgZ+QNS2yPCX4qXocR6Q9GXEnweuQF3A/LGqBOi2uQMXjoS
+         atBQ==
+X-Gm-Message-State: ACgBeo2ax9x2s0HZsgfd1qEDOWgRp1OQGYxtfSRqLv3aJnBhklyHq9K7
+	rz1YPMJiliRf56U8TvV11wC2MRAxars=
+X-Google-Smtp-Source: AA6agR4qMG/7UuuiqhHhvohWNal3nFjDJKXC1X/Q7rlLCDCvl4ZyXaMMKRMmizmDLQF7LDsGfEt+/G6N4D4=
 X-Received: from surenb-desktop.mtv.corp.google.com ([2620:15c:211:200:1bfc:e7ee:6530:4449])
- (user=surenb job=sendgmr) by 2002:a17:903:2351:b0:175:58b8:cdef with SMTP id
- c17-20020a170903235100b0017558b8cdefmr4890777plh.30.1662053745409; Thu, 01
- Sep 2022 10:35:45 -0700 (PDT)
-Date: Thu,  1 Sep 2022 10:34:57 -0700
+ (user=surenb job=sendgmr) by 2002:a25:bf92:0:b0:695:8d8f:2af4 with SMTP id
+ l18-20020a25bf92000000b006958d8f2af4mr20427159ybk.200.1662053748060; Thu, 01
+ Sep 2022 10:35:48 -0700 (PDT)
+Date: Thu,  1 Sep 2022 10:34:58 -0700
 In-Reply-To: <20220901173516.702122-1-surenb@google.com>
 Mime-Version: 1.0
 References: <20220901173516.702122-1-surenb@google.com>
 X-Mailer: git-send-email 2.37.2.789.g6183377224-goog
-Message-ID: <20220901173516.702122-10-surenb@google.com>
-Subject: [RFC PATCH RESEND 09/28] mm/mempolicy: mark VMA as locked when
- changing protection policy
+Message-ID: <20220901173516.702122-11-surenb@google.com>
+Subject: [RFC PATCH RESEND 10/28] mm/mmap: mark VMAs as locked in vma_adjust
 From: Suren Baghdasaryan <surenb@google.com>
 To: akpm@linux-foundation.org
 Content-Type: text/plain; charset="UTF-8"
@@ -79,46 +78,51 @@ Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Protect VMA from concurrent page fault handler while performing VMA
-protection policy changes.
+vma_adjust modifies a VMA and possibly its neighbors. Mark them as locked
+before making the modifications.
 
 Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 ---
- mm/mempolicy.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ mm/mmap.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index b73d3248d976..6be1e5c75556 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -383,8 +383,10 @@ void mpol_rebind_mm(struct mm_struct *mm, nodemask_t *new)
- 	struct vm_area_struct *vma;
- 
- 	mmap_write_lock(mm);
--	for (vma = mm->mmap; vma; vma = vma->vm_next)
-+	for (vma = mm->mmap; vma; vma = vma->vm_next) {
-+		vma_mark_locked(vma);
- 		mpol_rebind_policy(vma->vm_policy, new);
-+	}
- 	mmap_write_unlock(mm);
- }
- 
-@@ -632,6 +634,7 @@ unsigned long change_prot_numa(struct vm_area_struct *vma,
- 	struct mmu_gather tlb;
- 	int nr_updated;
+diff --git a/mm/mmap.c b/mm/mmap.c
+index f89c9b058105..ed58cf0689b2 100644
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -710,6 +710,10 @@ int __vma_adjust(struct vm_area_struct *vma, unsigned long start,
+ 	long adjust_next = 0;
+ 	int remove_next = 0;
  
 +	vma_mark_locked(vma);
- 	tlb_gather_mmu(&tlb, vma->vm_mm);
++	if (next)
++		vma_mark_locked(next);
++
+ 	if (next && !insert) {
+ 		struct vm_area_struct *exporter = NULL, *importer = NULL;
  
- 	nr_updated = change_protection(&tlb, vma, addr, end, PAGE_NONE,
-@@ -765,6 +768,7 @@ static int vma_replace_policy(struct vm_area_struct *vma,
- 	if (IS_ERR(new))
- 		return PTR_ERR(new);
+@@ -754,8 +758,11 @@ int __vma_adjust(struct vm_area_struct *vma, unsigned long start,
+ 			 * If next doesn't have anon_vma, import from vma after
+ 			 * next, if the vma overlaps with it.
+ 			 */
+-			if (remove_next == 2 && !next->anon_vma)
++			if (remove_next == 2 && !next->anon_vma) {
+ 				exporter = next->vm_next;
++				if (exporter)
++					vma_mark_locked(exporter);
++			}
  
-+	vma_mark_locked(vma);
- 	if (vma->vm_ops && vma->vm_ops->set_policy) {
- 		err = vma->vm_ops->set_policy(vma, new);
- 		if (err)
+ 		} else if (end > next->vm_start) {
+ 			/*
+@@ -931,6 +938,8 @@ int __vma_adjust(struct vm_area_struct *vma, unsigned long start,
+ 			 * "vma->vm_next" gap must be updated.
+ 			 */
+ 			next = vma->vm_next;
++			if (next)
++				vma_mark_locked(next);
+ 		} else {
+ 			/*
+ 			 * For the scope of the comment "next" and
 -- 
 2.37.2.789.g6183377224-goog
 
