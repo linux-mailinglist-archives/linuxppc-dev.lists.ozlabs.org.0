@@ -2,65 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 607ED5AAAA7
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Sep 2022 10:54:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 172405AAAAA
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Sep 2022 10:54:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MJsCX2M14z3bpn
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Sep 2022 18:54:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MJsDD0d82z3c6t
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Sep 2022 18:54:36 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ljgQSdF1;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Fyeb5HKe;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::433; helo=mail-pf1-x433.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::431; helo=mail-pf1-x431.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ljgQSdF1;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Fyeb5HKe;
 	dkim-atps=neutral
-Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MJsBy38fdz2yMk
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Sep 2022 18:53:28 +1000 (AEST)
-Received: by mail-pf1-x433.google.com with SMTP id y127so1259074pfy.5
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 02 Sep 2022 01:53:28 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MJsBz2ffPz2yMk
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Sep 2022 18:53:30 +1000 (AEST)
+Received: by mail-pf1-x431.google.com with SMTP id z187so1226950pfb.12
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 02 Sep 2022 01:53:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date;
-        bh=z1Gm/v5SxpZdJzIKq5SAIMmz4ylGwhcwvpaiYBJU4yE=;
-        b=ljgQSdF1Z1/gcD63pbtUvMhzvl93CBdRaWABw63Qk+lTAKMAyrTWBuSCMpBL8HWup6
-         VPjNThAIIFDuKoB2hCo1abCrQf+qW6gS+qn5tbgBH3poQ6T7MbpzrNIyDLJ8CsDk+1Vc
-         IWhgQSFJqXKPaOSDq0R9pUChaT1x5JG+z5Bdz0IPriRA+7lCK6UJ5m738UiUMflnHaOA
-         etZeqZcT+0ArfdcTazAG2QuYN8LcKxplkB+9HST1bK2jw5n0wtSygdp5sgijlhvYNSQN
-         vZbCIWRY2eVGRsF8P7eD2VQBMzDlSNT28qkXyfDyywfvJXWQ2MyFH5NHIVYOSlXEU2Mo
-         Ij4w==
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date;
+        bh=yQ5q39OTBMi5TQEbz2z1PxqFvL6ZGx9KNvxZc2/zNwc=;
+        b=Fyeb5HKeCLWeAClrcV+fo0uATPj1e0Wi0Q5rNhqT6hIzCwIlUuVDHT1BtFeUkay49e
+         Agz2JAUj201/Yr+o4YzjXrmZPUD4R7H17zqQgkWyWa8yJKXE/mHdV3i+4IvhNBL4G/dk
+         kwMdrfyry9vaCiIyuDylQ3LDhg52pESELkDMI6xPLzu15Xq2QJ/c57ETSx5kkPCLm51p
+         BaBN9XgL2RSrhJGFHDgCJN91Kbg32UguYWhZG4GjAspzpUcjEA0wiwhRrzUlV9sa2mzR
+         bl5WjQofmPiWce/OL+U5WEmCFLnZ9Pme5XQVPrf1v37BbZ4yurRC2IbbSq6inBdXOApq
+         gw7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date;
-        bh=z1Gm/v5SxpZdJzIKq5SAIMmz4ylGwhcwvpaiYBJU4yE=;
-        b=5NSeezwgmsCtJ7sWHZQpjbDt99dEsyQw7cMhwCZiF3PN6ihwkn+p8l92fObeMOAGck
-         y4zha7lr99B8hvRqQv0g6XlUb8Q3Yw9nr/Z7XnXB8tZvs+JWSyCz9tlDSJC2p/z9pM/z
-         T6SvUNlRQwSmArFgdgRb3aWHiE9fNcv+DZyt4BAyboy0Zuhv+Mq5zSR7sfw/JYmD+1Bk
-         SQMPN/CL8PH3BpEmQSkXk2CapiJ0l9lzTKaCCPZ6nNgFXE0ZaV8/E8HGiyJzkWKWPxh5
-         bbroCdUcifQLjL89vmxC8xwkpO7kJaq1FQjIjLmO/CZ+0cEXghL2oSO0+9B/qlqv/Ru8
-         Oqew==
-X-Gm-Message-State: ACgBeo01oloRO5BIY2yxib5aLAfiE8JO8SVXvhu0tbfmeaAHN9+PD1+6
-	nHJwwx8XDbCnvoTomlEo/M0U3q+uQM0=
-X-Google-Smtp-Source: AA6agR7G4q2GM60qxPCUHfHw38C/r3XqdyLzdqdGxWPoP8iq5NBZC26RKRE96ngqf4Qax5MIX8vRCg==
-X-Received: by 2002:a63:1555:0:b0:42c:146a:6722 with SMTP id 21-20020a631555000000b0042c146a6722mr19768202pgv.605.1662108805901;
-        Fri, 02 Sep 2022 01:53:25 -0700 (PDT)
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date;
+        bh=yQ5q39OTBMi5TQEbz2z1PxqFvL6ZGx9KNvxZc2/zNwc=;
+        b=yoCUYtbUg7KF5mun6lcaDbrxetUO/irt3rNnhEbuqgU7TouVkivzt+BQSIdqiJ/MlF
+         jM0E0/EONhaFil7TT4OQfozGSBjyup+BpUXiKNJoARXogenIw2SN8maOyBmmCre7tIR8
+         8zxdIxcMonMSau0Xr4ZLRItVGOjMR4qakoWH9q/vBFbHcGEmcgVyiNeRtaiHLZCihxGc
+         x7GSUneqBh5xjOVKxN/8Y6BOuK+gF8QIM6Aos5jwD7SQq7faoa6qTjEcvChOzUZobJpB
+         WGCNkPu5WcQHVlZpqIbb1EU7f/+22Leiw+zp1PRGZG6G5dX/Toz/H6/HFvgmPpg/TYeZ
+         ptCA==
+X-Gm-Message-State: ACgBeo10V1Q2Jg+1qBuOsNZgulBh7qE9UluuH/IBSwYk9ObnjHHhYZe0
+	q8+qF7zvIHv0YSuwUtVajFubuvG5mm0=
+X-Google-Smtp-Source: AA6agR7L4gGP75L+pBF6RNjr+J2gwj8XvjEDkcv9ciQK1U6UDR2BIPgXDenwWZIq2hn7mdRNlyCekA==
+X-Received: by 2002:a05:6a00:1a14:b0:52d:5fee:d46b with SMTP id g20-20020a056a001a1400b0052d5feed46bmr35375453pfv.82.1662108808845;
+        Fri, 02 Sep 2022 01:53:28 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com ([124.170.18.239])
-        by smtp.gmail.com with ESMTPSA id y4-20020a17090322c400b001750b31faabsm1039130plg.262.2022.09.02.01.53.23
+        by smtp.gmail.com with ESMTPSA id y4-20020a17090322c400b001750b31faabsm1039130plg.262.2022.09.02.01.53.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Sep 2022 01:53:25 -0700 (PDT)
+        Fri, 02 Sep 2022 01:53:28 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 0/4] powerpc: stolen time accounting for VIRT_CPU_ACCOUNTING_GEN
-Date: Fri,  2 Sep 2022 18:53:12 +1000
-Message-Id: <20220902085316.2071519-1-npiggin@gmail.com>
+Subject: [PATCH v2 1/4] powerpc/pseries: Add wait interval counter definitions to struct lppaca
+Date: Fri,  2 Sep 2022 18:53:13 +1000
+Message-Id: <20220902085316.2071519-2-npiggin@gmail.com>
 X-Mailer: git-send-email 2.37.2
+In-Reply-To: <20220902085316.2071519-1-npiggin@gmail.com>
+References: <20220902085316.2071519-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -74,53 +77,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>, Fabiano Rosas <farosas@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-pseries provides stolen time accounting when VIRT_CPU_ACCOUNTING_NATIVE
-is selected, but not when VIRT_CPU_ACCOUNTING_GEN is. We like GEN
-because it's less code in arch/powerpc, allows full nohz, and distros
-have moved to it, so this series adds stolen time accounting for GEN,
-and moves our pseries configs over to it.
+The hypervisor exposes accumulated partition scheduling interval times
+in the VPA (lppaca). These can be used to implement a simple stolen time
+in the guest without complex and costly dtl scanning.
 
-Thanks,
-Nick
+Reviewed-by: Fabiano Rosas <farosas@linux.ibm.com>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ arch/powerpc/include/asm/lppaca.h | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-Since v1:
-- Move the KVM patches out of this series to make it smaller.
-  I'll post them separately.
-- Fix compilation bug in patch 2 due to missing header in patch.
-- Add defconfig changes to patch 3.
-- Add tidy up patch 4.
-- Improve changelogs.
-
-Nicholas Piggin (4):
-  powerpc/pseries: Add wait interval counter definitions to struct
-    lppaca
-  powerpc/pseries: Implement CONFIG_PARAVIRT_TIME_ACCOUNTING
-  powerpc/64: Remove PPC64 special case for cputime accounting default
-  powerpc/pseries: Move dtl scanning and steal time accounting to
-    pseries platform
-
- .../admin-guide/kernel-parameters.txt         |  6 +-
- arch/powerpc/configs/ppc64_defconfig          |  2 +
- arch/powerpc/configs/pseries_defconfig        |  2 +
- arch/powerpc/include/asm/cputime.h            |  2 +-
- arch/powerpc/include/asm/dtl.h                |  8 --
- arch/powerpc/include/asm/lppaca.h             | 10 +-
- arch/powerpc/include/asm/paravirt.h           | 12 +++
- arch/powerpc/include/asm/paravirt_api_clock.h |  1 +
- arch/powerpc/include/asm/time.h               |  5 +-
- arch/powerpc/kernel/time.c                    | 92 +------------------
- arch/powerpc/platforms/pseries/Kconfig        |  8 ++
- arch/powerpc/platforms/pseries/dtl.c          | 81 ++++++++++++++++
- arch/powerpc/platforms/pseries/lpar.c         | 11 +++
- arch/powerpc/platforms/pseries/setup.c        | 19 ++++
- init/Kconfig                                  |  3 +-
- 15 files changed, 156 insertions(+), 106 deletions(-)
- create mode 100644 arch/powerpc/include/asm/paravirt_api_clock.h
-
+diff --git a/arch/powerpc/include/asm/lppaca.h b/arch/powerpc/include/asm/lppaca.h
+index c390ec377bae..34d44cb17c87 100644
+--- a/arch/powerpc/include/asm/lppaca.h
++++ b/arch/powerpc/include/asm/lppaca.h
+@@ -104,14 +104,18 @@ struct lppaca {
+ 	volatile __be32 dispersion_count; /* dispatch changed physical cpu */
+ 	volatile __be64 cmo_faults;	/* CMO page fault count */
+ 	volatile __be64 cmo_fault_time;	/* CMO page fault time */
+-	u8	reserved10[104];
++	u8	reserved10[64];		/* [S]PURR expropriated/donated */
++	volatile __be64 enqueue_dispatch_tb; /* Total TB enqueue->dispatch */
++	volatile __be64 ready_enqueue_tb; /* Total TB ready->enqueue */
++	volatile __be64 wait_ready_tb;	/* Total TB wait->ready */
++	u8	reserved11[16];
+ 
+ 	/* cacheline 4-5 */
+ 
+ 	__be32	page_ins;		/* CMO Hint - # page ins by OS */
+-	u8	reserved11[148];
++	u8	reserved12[148];
+ 	volatile __be64 dtl_idx;	/* Dispatch Trace Log head index */
+-	u8	reserved12[96];
++	u8	reserved13[96];
+ } ____cacheline_aligned;
+ 
+ #define lppaca_of(cpu)	(*paca_ptrs[cpu]->lppaca_ptr)
 -- 
 2.37.2
 
