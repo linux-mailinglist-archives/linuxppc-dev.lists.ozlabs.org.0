@@ -2,54 +2,99 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A2435AB55F
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Sep 2022 17:38:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6706E5AB614
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Sep 2022 17:58:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MK29p6xzNz3bmP
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Sep 2022 01:38:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MK2d62C91z3bcl
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Sep 2022 01:58:18 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=C9I/BnEE;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qSOI7PIx;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=nathan@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=bergner@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=C9I/BnEE;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qSOI7PIx;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MK29643Knz2xHC
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  3 Sep 2022 01:37:30 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id A6A96B82C49;
-	Fri,  2 Sep 2022 15:37:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B224C433D6;
-	Fri,  2 Sep 2022 15:37:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1662133045;
-	bh=b9T6gmVfxUcmggAVoTJ1ih3AzAqwEhHfPrMFlv0/fKg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=C9I/BnEE77x7Oc0mRjjkTHjhJmKh7uf4I1Bg4nTpZMgbfMwQnJrcW2HseXCa9Ebpn
-	 LCD74IhfnspSxYC1QZZCz3WMt5MBIBUVWSdZc+XgzizkYo+8wXw+PvAjDRXib3nA1C
-	 gQ5X4YhvW2dmG9nhSEyuEBaWY3Fy/IhDo9aBX0ctgnvlOxvi7I9XeAyje3wyxjjMOg
-	 rG96lDdEcqq5VEk8dH/TlAjNiRf/U4R14VMza6qJig1aZhxTO/4NQDZhINIjQqHxSY
-	 X9+ZpIvLaTwCLrdkUqGrIyF3sntqLKWqY7Rcjb1GHW2/7llZj0YlVR31OAvbcitUcH
-	 O2GdRA0EYeNTQ==
-Date: Fri, 2 Sep 2022 08:37:23 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v2 2/2] powerpc/math-emu: Remove -w build flag and fix
- warnings
-Message-ID: <YxIjM/jdLajq4dFk@dev-arch.thelio-3990X>
-References: <a7384eafc6a27aea15bdc9e8f9a12aac593fccb7.1662113301.git.christophe.leroy@csgroup.eu>
- <35c86b7ca823954c6cd593acc3690dc3748da9b1.1662113301.git.christophe.leroy@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MK2cL50XMz2y6K
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  3 Sep 2022 01:57:38 +1000 (AEST)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 282FdtSl031873;
+	Fri, 2 Sep 2022 15:57:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=0mvmDMVhyGMIVvf5BMrTUAWm3XE+DsGJspCi2lHjows=;
+ b=qSOI7PIxu6ap7Exf64mUAMArl1f/x/GZaRD1eVOM5yc8GL2iEoZWZx50N+jx6dfS/MQE
+ KcyZz7VDQ96+a+xXj6VGNtxs8B3p3Td6AQfVCMQl34Qz/zDj7Dt2wFuJdzRfHI8V71SC
+ YZXa22Adrf28xXVFTr2DT1XqpeLX2uDVdjjH27U5u/y3Q1Ktl1df2dQcdKE92BwlPCt0
+ 3X8sIdVu4X8+J25h0BK0zZsiFywIBDJv2bxTRtFeLWXyzg9dsZeMPjZ6zVc0mIQx/tqw
+ xHrqpVbDtfYWrZZSOqXhqBb4VBtO3R0wc+gHk9XpjJdsr8mugqa5y368YCsfszWXYvg+ Ng== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jbktna4kd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 02 Sep 2022 15:57:31 +0000
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 282FfvnQ039252;
+	Fri, 2 Sep 2022 15:57:31 GMT
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com [169.53.41.122])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jbktna4jv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 02 Sep 2022 15:57:31 +0000
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+	by ppma04dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 282FpMDZ014946;
+	Fri, 2 Sep 2022 15:57:30 GMT
+Received: from b03cxnp07028.gho.boulder.ibm.com (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
+	by ppma04dal.us.ibm.com with ESMTP id 3j7awak35v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 02 Sep 2022 15:57:30 +0000
+Received: from b03ledav001.gho.boulder.ibm.com (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
+	by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 282FvTrI2228842
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 2 Sep 2022 15:57:29 GMT
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 00E636E04E;
+	Fri,  2 Sep 2022 15:57:29 +0000 (GMT)
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 557866E052;
+	Fri,  2 Sep 2022 15:57:28 +0000 (GMT)
+Received: from [9.160.4.32] (unknown [9.160.4.32])
+	by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
+	Fri,  2 Sep 2022 15:57:28 +0000 (GMT)
+Message-ID: <bd00d8c2-663d-cb35-c1c3-4fa9bd4cb4ad@linux.ibm.com>
+Date: Fri, 2 Sep 2022 10:57:27 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <35c86b7ca823954c6cd593acc3690dc3748da9b1.1662113301.git.christophe.leroy@csgroup.eu>
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.12.0
+Subject: Re: [PATCH v2] powerpc: Fix irq_soft_mask_set() and
+ irq_soft_mask_return() with sanitizer
+Content-Language: en-US
+To: Segher Boessenkool <segher@kernel.crashing.org>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>
+References: <c0b486e782b6695092dcdb2cd340a3d44c8c266d.1661272738.git.christophe.leroy@csgroup.eu>
+ <CMJ3VICKD1CI.SVFJOKYJPKZQ@bobo>
+ <e022754d-b4d3-bc9f-cc79-2cf556180459@csgroup.eu>
+ <CMJ8P06JA9OY.1S8VDV2XRU3W5@bobo>
+ <7c11b659-5b8e-256c-508e-39395041fccb@csgroup.eu>
+ <20220831224522.GX25951@gate.crashing.org>
+From: Peter Bergner <bergner@linux.ibm.com>
+In-Reply-To: <20220831224522.GX25951@gate.crashing.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: _rSV0gIVuPIbtjpJ7Du-bHcjWwQ7uKN0
+X-Proofpoint-GUID: UBGcX1hz4BlM_pnzF4WS-nu94GRexmLY
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-09-02_03,2022-08-31_03,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011
+ lowpriorityscore=0 bulkscore=0 priorityscore=1501 spamscore=0 phishscore=0
+ mlxlogscore=999 impostorscore=0 suspectscore=0 malwarescore=0 mlxscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2207270000 definitions=main-2209020075
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,253 +106,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>
+Cc: Zhouyi Zhou <zhouzhouyi@gmail.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Christophe,
-
-On Fri, Sep 02, 2022 at 12:08:55PM +0200, Christophe Leroy wrote:
-> As reported by Nathan, the module_init() macro was not taken into
-> account because the header was missing. That means spe_mathemu_init()
-> was never called.
+On 8/31/22 5:45 PM, Segher Boessenkool wrote:
+> On Tue, Aug 30, 2022 at 09:10:02AM +0000, Christophe Leroy wrote:
+>> Le 30/08/2022 à 11:01, Nicholas Piggin a écrit :
+>>> On Tue Aug 30, 2022 at 3:24 PM AEST, Christophe Leroy wrote:
+>>>>> This is still slightly concerning to me. Is there any guarantee that the
+>>>>> compiler would not use a different sequence for the address here?
+>>>>>
+>>>>> Maybe explicit r13 is required.
+>>>>>
+>>>>
+>>>> local_paca is defined as:
+>>>>
+>>>> 	register struct paca_struct *local_paca asm("r13");
 > 
-> This should have been detected by gcc at build time, but due to
-> '-w' flag it went undetected.
+> And this is in global scope, making it a global register variable.
 > 
-> Removing that flag leads to many warnings hence errors.
+>>>> Why would the compiler use another register ?
+>>>
+>>> Hopefully it doesn't. Is it guaranteed that it won't?
 > 
-> Fix those warnings then remove the -w flag.
-> 
-> Reported-by: Nathan Chancellor <nathan@kernel.org>
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Yes, this is guaranteed.
 
-Thanks for figuring out what was going on here! I took this patch for a
-spin with clang and it has a few more errors around
--Wimplicit-fallthrough:
+Agree with Segher here.  That said, there was a gcc bug a looooong time
+ago where gcc copied r13 into a temporary register and used it from there.
+That's ok (correctness wise, but not ideal) from user land standpoint,
+but we took a context switch after the reg copy and it was restarted on
+a different cpu, so differnt local_paca and r13 value.  We went boom
+because the copy wasn't pointing to the correct local_paca anymore.
+So it is very important the compiler always use r13 when accessing
+the local_paca.
 
-    arch/powerpc/math-emu/fctiw.c:18:2: error: unannotated fall-through between switch labels [-Werror,-Wimplicit-fallthrough]
-            FP_TO_INT_D(r, B, 32, 1);
-            ^
-    ./include/math-emu/double.h:120:34: note: expanded from macro 'FP_TO_INT_D'
-    #define FP_TO_INT_D(r,X,rsz,rsg)        _FP_TO_INT(D,2,r,X,rsz,rsg)
-                                            ^
-    ./include/math-emu/op-common.h:665:4: note: expanded from macro '_FP_TO_INT'
-              case FP_CLS_ZERO:                                                     \
-              ^
-    arch/powerpc/math-emu/fctiw.c:18:2: error: unannotated fall-through between switch labels [-Werror,-Wimplicit-fallthrough]
-    ./include/math-emu/double.h:120:34: note: expanded from macro 'FP_TO_INT_D'
-    #define FP_TO_INT_D(r,X,rsz,rsg)        _FP_TO_INT(D,2,r,X,rsz,rsg)
-                                            ^
-    ./include/math-emu/op-common.h:671:4: note: expanded from macro '_FP_TO_INT'
-              case FP_CLS_NAN:                                                      \
-              ^
-    2 errors generated.
-    arch/powerpc/math-emu/fctiwz.c:23:2: error: unannotated fall-through between switch labels [-Werror,-Wimplicit-fallthrough]
-            FP_TO_INT_D(r, B, 32, 1);
-            ^
-    ./include/math-emu/double.h:120:34: note: expanded from macro 'FP_TO_INT_D'
-    #define FP_TO_INT_D(r,X,rsz,rsg)        _FP_TO_INT(D,2,r,X,rsz,rsg)
-                                            ^
-    ./include/math-emu/op-common.h:665:4: note: expanded from macro '_FP_TO_INT'
-              case FP_CLS_ZERO:                                                     \
-              ^
-    arch/powerpc/math-emu/fctiwz.c:23:2: error: unannotated fall-through between switch labels [-Werror,-Wimplicit-fallthrough]
-    ./include/math-emu/double.h:120:34: note: expanded from macro 'FP_TO_INT_D'
-    #define FP_TO_INT_D(r,X,rsz,rsg)        _FP_TO_INT(D,2,r,X,rsz,rsg)
-                                            ^
-    ./include/math-emu/op-common.h:671:4: note: expanded from macro '_FP_TO_INT'
-              case FP_CLS_NAN:                                                      \
-              ^
-    2 errors generated.
-    make[3]: *** [scripts/Makefile.build:249: arch/powerpc/math-emu/fctiw.o] Error 1
-    make[3]: *** [scripts/Makefile.build:249: arch/powerpc/math-emu/fctiwz.o] Error 1
-    arch/powerpc/math-emu/math_efp.c:282:5: error: unannotated fall-through between switch labels [-Werror,-Wimplicit-fallthrough]
-                                    FP_TO_INT_ROUND_S(vc.wp[1], SB, 32,
-                                    ^
-    ./include/math-emu/single.h:110:40: note: expanded from macro 'FP_TO_INT_ROUND_S'
-    #define FP_TO_INT_ROUND_S(r,X,rsz,rsg)  _FP_TO_INT_ROUND(S,1,r,X,rsz,rsg)
-                                            ^
-    ./include/math-emu/op-common.h:770:4: note: expanded from macro '_FP_TO_INT_ROUND'
-              case FP_CLS_NAN:                                                      \
-              ^
-    arch/powerpc/math-emu/math_efp.c:305:5: error: unannotated fall-through between switch labels [-Werror,-Wimplicit-fallthrough]
-                                    FP_TO_INT_ROUND_S(vc.wp[1], SB, 32,
-                                    ^
-    ./include/math-emu/single.h:110:40: note: expanded from macro 'FP_TO_INT_ROUND_S'
-    #define FP_TO_INT_ROUND_S(r,X,rsz,rsg)  _FP_TO_INT_ROUND(S,1,r,X,rsz,rsg)
-                                            ^
-    ./include/math-emu/op-common.h:770:4: note: expanded from macro '_FP_TO_INT_ROUND'
-              case FP_CLS_NAN:                                                      \
-              ^
-    arch/powerpc/math-emu/math_efp.c:316:5: error: unannotated fall-through between switch labels [-Werror,-Wimplicit-fallthrough]
-                                    FP_TO_INT_S(vc.wp[1], SB, 32,
-                                    ^
-    ./include/math-emu/single.h:109:34: note: expanded from macro 'FP_TO_INT_S'
-    #define FP_TO_INT_S(r,X,rsz,rsg)        _FP_TO_INT(S,1,r,X,rsz,rsg)
-                                            ^
-    ./include/math-emu/op-common.h:665:4: note: expanded from macro '_FP_TO_INT'
-              case FP_CLS_ZERO:                                                     \
-              ^
-    arch/powerpc/math-emu/math_efp.c:316:5: error: unannotated fall-through between switch labels [-Werror,-Wimplicit-fallthrough]
-    ./include/math-emu/single.h:109:34: note: expanded from macro 'FP_TO_INT_S'
-    #define FP_TO_INT_S(r,X,rsz,rsg)        _FP_TO_INT(S,1,r,X,rsz,rsg)
-                                            ^
-    ./include/math-emu/op-common.h:671:4: note: expanded from macro '_FP_TO_INT'
-              case FP_CLS_NAN:                                                      \
-              ^
-    arch/powerpc/math-emu/math_efp.c:413:5: error: unannotated fall-through between switch labels [-Werror,-Wimplicit-fallthrough]
-                                    FP_TO_INT_ROUND_D(vc.wp[1], DB, 32,
-                                    ^
-    ./include/math-emu/double.h:121:40: note: expanded from macro 'FP_TO_INT_ROUND_D'
-    #define FP_TO_INT_ROUND_D(r,X,rsz,rsg)  _FP_TO_INT_ROUND(D,2,r,X,rsz,rsg)
-                                            ^
-    ./include/math-emu/op-common.h:770:4: note: expanded from macro '_FP_TO_INT_ROUND'
-              case FP_CLS_NAN:                                                      \
-              ^
-    arch/powerpc/math-emu/math_efp.c:436:5: error: unannotated fall-through between switch labels [-Werror,-Wimplicit-fallthrough]
-                                    FP_TO_INT_D(vc.dp[0], DB, 64,
-                                    ^
-    ./include/math-emu/double.h:120:34: note: expanded from macro 'FP_TO_INT_D'
-    #define FP_TO_INT_D(r,X,rsz,rsg)        _FP_TO_INT(D,2,r,X,rsz,rsg)
-                                            ^
-    ./include/math-emu/op-common.h:665:4: note: expanded from macro '_FP_TO_INT'
-              case FP_CLS_ZERO:                                                     \
-              ^
-    arch/powerpc/math-emu/math_efp.c:436:5: error: unannotated fall-through between switch labels [-Werror,-Wimplicit-fallthrough]
-    ./include/math-emu/double.h:120:34: note: expanded from macro 'FP_TO_INT_D'
-    #define FP_TO_INT_D(r,X,rsz,rsg)        _FP_TO_INT(D,2,r,X,rsz,rsg)
-                                            ^
-    ./include/math-emu/op-common.h:671:4: note: expanded from macro '_FP_TO_INT'
-              case FP_CLS_NAN:                                                      \
-              ^
-    arch/powerpc/math-emu/math_efp.c:447:5: error: unannotated fall-through between switch labels [-Werror,-Wimplicit-fallthrough]
-                                    FP_TO_INT_ROUND_D(vc.wp[1], DB, 32,
-                                    ^
-    ./include/math-emu/double.h:121:40: note: expanded from macro 'FP_TO_INT_ROUND_D'
-    #define FP_TO_INT_ROUND_D(r,X,rsz,rsg)  _FP_TO_INT_ROUND(D,2,r,X,rsz,rsg)
-                                            ^
-    ./include/math-emu/op-common.h:770:4: note: expanded from macro '_FP_TO_INT_ROUND'
-              case FP_CLS_NAN:                                                      \
-              ^
-    arch/powerpc/math-emu/math_efp.c:458:5: error: unannotated fall-through between switch labels [-Werror,-Wimplicit-fallthrough]
-                                    FP_TO_INT_D(vc.wp[1], DB, 32,
-                                    ^
-    ./include/math-emu/double.h:120:34: note: expanded from macro 'FP_TO_INT_D'
-    #define FP_TO_INT_D(r,X,rsz,rsg)        _FP_TO_INT(D,2,r,X,rsz,rsg)
-                                            ^
-    ./include/math-emu/op-common.h:665:4: note: expanded from macro '_FP_TO_INT'
-              case FP_CLS_ZERO:                                                     \
-              ^
-    arch/powerpc/math-emu/math_efp.c:458:5: error: unannotated fall-through between switch labels [-Werror,-Wimplicit-fallthrough]
-    ./include/math-emu/double.h:120:34: note: expanded from macro 'FP_TO_INT_D'
-    #define FP_TO_INT_D(r,X,rsz,rsg)        _FP_TO_INT(D,2,r,X,rsz,rsg)
-                                            ^
-    ./include/math-emu/op-common.h:671:4: note: expanded from macro '_FP_TO_INT'
-              case FP_CLS_NAN:                                                      \
-              ^
-    arch/powerpc/math-emu/math_efp.c:573:5: error: unannotated fall-through between switch labels [-Werror,-Wimplicit-fallthrough]
-                                    FP_TO_INT_ROUND_S(vc.wp[0], SB0, 32,
-                                    ^
-    ./include/math-emu/single.h:110:40: note: expanded from macro 'FP_TO_INT_ROUND_S'
-    #define FP_TO_INT_ROUND_S(r,X,rsz,rsg)  _FP_TO_INT_ROUND(S,1,r,X,rsz,rsg)
-                                            ^
-    ./include/math-emu/op-common.h:770:4: note: expanded from macro '_FP_TO_INT_ROUND'
-              case FP_CLS_NAN:                                                      \
-              ^
-    arch/powerpc/math-emu/math_efp.c:581:5: error: unannotated fall-through between switch labels [-Werror,-Wimplicit-fallthrough]
-                                    FP_TO_INT_ROUND_S(vc.wp[1], SB1, 32,
-                                    ^
-    ./include/math-emu/single.h:110:40: note: expanded from macro 'FP_TO_INT_ROUND_S'
-    #define FP_TO_INT_ROUND_S(r,X,rsz,rsg)  _FP_TO_INT_ROUND(S,1,r,X,rsz,rsg)
-                                            ^
-    ./include/math-emu/op-common.h:770:4: note: expanded from macro '_FP_TO_INT_ROUND'
-              case FP_CLS_NAN:                                                      \
-              ^
-    arch/powerpc/math-emu/math_efp.c:592:5: error: unannotated fall-through between switch labels [-Werror,-Wimplicit-fallthrough]
-                                    FP_TO_INT_ROUND_S(vc.wp[0], SB0, 32,
-                                    ^
-    ./include/math-emu/single.h:110:40: note: expanded from macro 'FP_TO_INT_ROUND_S'
-    #define FP_TO_INT_ROUND_S(r,X,rsz,rsg)  _FP_TO_INT_ROUND(S,1,r,X,rsz,rsg)
-                                            ^
-    ./include/math-emu/op-common.h:770:4: note: expanded from macro '_FP_TO_INT_ROUND'
-              case FP_CLS_NAN:                                                      \
-              ^
-    arch/powerpc/math-emu/math_efp.c:599:5: error: unannotated fall-through between switch labels [-Werror,-Wimplicit-fallthrough]
-                                    FP_TO_INT_ROUND_S(vc.wp[1], SB1, 32,
-                                    ^
-    ./include/math-emu/single.h:110:40: note: expanded from macro 'FP_TO_INT_ROUND_S'
-    #define FP_TO_INT_ROUND_S(r,X,rsz,rsg)  _FP_TO_INT_ROUND(S,1,r,X,rsz,rsg)
-                                            ^
-    ./include/math-emu/op-common.h:770:4: note: expanded from macro '_FP_TO_INT_ROUND'
-              case FP_CLS_NAN:                                                      \
-              ^
-    arch/powerpc/math-emu/math_efp.c:610:5: error: unannotated fall-through between switch labels [-Werror,-Wimplicit-fallthrough]
-                                    FP_TO_INT_S(vc.wp[0], SB0, 32,
-                                    ^
-    ./include/math-emu/single.h:109:34: note: expanded from macro 'FP_TO_INT_S'
-    #define FP_TO_INT_S(r,X,rsz,rsg)        _FP_TO_INT(S,1,r,X,rsz,rsg)
-                                            ^
-    ./include/math-emu/op-common.h:665:4: note: expanded from macro '_FP_TO_INT'
-              case FP_CLS_ZERO:                                                     \
-              ^
-    arch/powerpc/math-emu/math_efp.c:610:5: error: unannotated fall-through between switch labels [-Werror,-Wimplicit-fallthrough]
-    ./include/math-emu/single.h:109:34: note: expanded from macro 'FP_TO_INT_S'
-    #define FP_TO_INT_S(r,X,rsz,rsg)        _FP_TO_INT(S,1,r,X,rsz,rsg)
-                                            ^
-    ./include/math-emu/op-common.h:671:4: note: expanded from macro '_FP_TO_INT'
-              case FP_CLS_NAN:                                                      \
-              ^
-    arch/powerpc/math-emu/math_efp.c:617:5: error: unannotated fall-through between switch labels [-Werror,-Wimplicit-fallthrough]
-                                    FP_TO_INT_S(vc.wp[1], SB1, 32,
-                                    ^
-    ./include/math-emu/single.h:109:34: note: expanded from macro 'FP_TO_INT_S'
-    #define FP_TO_INT_S(r,X,rsz,rsg)        _FP_TO_INT(S,1,r,X,rsz,rsg)
-                                            ^
-    ./include/math-emu/op-common.h:665:4: note: expanded from macro '_FP_TO_INT'
-              case FP_CLS_ZERO:                                                     \
-              ^
-    arch/powerpc/math-emu/math_efp.c:617:5: error: unannotated fall-through between switch labels [-Werror,-Wimplicit-fallthrough]
-    ./include/math-emu/single.h:109:34: note: expanded from macro 'FP_TO_INT_S'
-    #define FP_TO_INT_S(r,X,rsz,rsg)        _FP_TO_INT(S,1,r,X,rsz,rsg)
-                                            ^
-    ./include/math-emu/op-common.h:671:4: note: expanded from macro '_FP_TO_INT'
-              case FP_CLS_NAN:                                                      \
-              ^
-    18 errors generated.
+Peter
 
-The following diff resolves it and does not introduce any new issues
-with GCC. Would you mind squashing it in for a v2? With that:
 
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
 
-Cheers,
-Nathan
-
-diff --git a/include/math-emu/op-common.h b/include/math-emu/op-common.h
-index 4b57bbba588a..ae73a30bf1a0 100644
---- a/include/math-emu/op-common.h
-+++ b/include/math-emu/op-common.h
-@@ -662,12 +662,14 @@ do {									\
- 	if (X##_e < 0)								\
- 	  {									\
- 	    FP_SET_EXCEPTION(FP_EX_INEXACT);					\
-+	    fallthrough;							\
- 	  case FP_CLS_ZERO:							\
- 	    r = 0;								\
- 	  }									\
- 	else if (X##_e >= rsize - (rsigned > 0 || X##_s)			\
- 		 || (!rsigned && X##_s))					\
- 	  {	/* overflow */							\
-+	  fallthrough;								\
- 	  case FP_CLS_NAN:                                                      \
- 	  case FP_CLS_INF:							\
- 	    if (rsigned == 2)							\
-@@ -767,6 +769,7 @@ do {									\
- 	if (X##_e >= rsize - (rsigned > 0 || X##_s)				\
- 	    || (!rsigned && X##_s))						\
- 	  {	/* overflow */							\
-+	  fallthrough;								\
- 	  case FP_CLS_NAN:                                                      \
- 	  case FP_CLS_INF:							\
- 	    if (!rsigned)							\
