@@ -1,54 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 357155AA8DC
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Sep 2022 09:41:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9185B5AA909
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Sep 2022 09:44:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MJqbH0Xl3z3bkx
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Sep 2022 17:40:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MJqfv3XGVz301Y
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Sep 2022 17:44:07 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=MHJKQ5Gf;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=PnZijlpR;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MJqZh6Dymz2yZS
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Sep 2022 17:40:28 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=MHJKQ5Gf;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=PnZijlpR;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4MJqZd3SdQz4xD3;
-	Fri,  2 Sep 2022 17:40:25 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1662104428;
-	bh=NeXxW+9N3skjzMTPgfxhJL+s6krkN3MaKG4hR660B9I=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=MHJKQ5Gf3tD/Q0iRbZUR791dPvFcchhyDYV0jW4eUA5CgfJfqEi8c4W+LkBrjKYKm
-	 Z6qUzfVyde6/yg1ZSq6uq/B7sw95CECvhvmQMls0b3KSucxlYYpW4AODGdTm8oAsg7
-	 8YpQyASHlKdtSoj1JhDVZeTdWrBJzVvCTTeLfyAg1Mx8vrYoDLPJrj8hmAhqj7FP4a
-	 QRoD1IBnPdviiQQ0udUQW5B6NUCRVXhKgXtNE2XYlEBKHVt5IxkraTkxGjS+zcTvEa
-	 txTDdC9VpA3LgQTj/ZH7ZLYogv06GbRmXQqUmpHvnfTGYVbCjT4S0LWC0AimKVlc2I
-	 5wENMGMy0f6XA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Peter Zijlstra <peterz@infradead.org>, Sathvika Vasireddy
- <sv@linux.ibm.com>
-Subject: Re: [PATCH v2 07/16] powerpc: Skip objtool from running on VDSO files
-In-Reply-To: <YxEFxJk+2fog+oRx@hirez.programming.kicks-ass.net>
-References: <20220829055223.24767-1-sv@linux.ibm.com>
- <20220829055223.24767-8-sv@linux.ibm.com>
- <YxEFxJk+2fog+oRx@hirez.programming.kicks-ass.net>
-Date: Fri, 02 Sep 2022 17:40:24 +1000
-Message-ID: <87r10uteaf.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MJqfF2DMRz2y6M
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Sep 2022 17:43:32 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=OTkZ6uS66u1w+Hbm6TtejxpZoX4M4S5NPkBcQcAWCKc=; b=PnZijlpR1pOR1iufsipFUsPYmX
+	wbuCNPHruLPvnd9YD9OGZaAbljCpwQ375yyM4LxLPNodHP7yyl8nCBECEYTFiQVqc4YVxSJ/V2dlh
+	O/8jbSYyMnq7pIMy+I3eQIfZaErVmTLPipUltIDJnf+p51iDa+Z64wSxdGbbuLpDZVmryFk/FF5GN
+	cP5Tu6T2zNfa688WKGMlX+v33GIJwYaMwjVzwszIeAy17yanlRL0xUsMQD41ZBgPm/IX3evr0bd8h
+	t52Sf3vBachUsH2aTamhLXAmPGIVVmxbsmm6eJm2OoDfb4u1z/Ab3fdh7EznyK7iKAahKesRs1Ztw
+	16OOfd2w==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1oU1KH-008c53-Ly; Fri, 02 Sep 2022 07:42:55 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
+	(Client did not present a certificate)
+	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 9BFA230010B;
+	Fri,  2 Sep 2022 09:42:51 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 793AE2B89F172; Fri,  2 Sep 2022 09:42:51 +0200 (CEST)
+Date: Fri, 2 Sep 2022 09:42:51 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Suren Baghdasaryan <surenb@google.com>
+Subject: Re: [RFC PATCH RESEND 00/28] per-VMA locks proposal
+Message-ID: <YxGz+3TT/J7u6H81@hirez.programming.kicks-ass.net>
+References: <20220901173516.702122-1-surenb@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220901173516.702122-1-surenb@google.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,37 +65,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aik@ozlabs.ru, chenzhongjin@huawei.com, npiggin@gmail.com, linux-kernel@vger.kernel.org, mingo@redhat.com, rostedt@goodmis.org, jpoimboe@redhat.com, naveen.n.rao@linux.vnet.ibm.com, mbenes@suse.cz, linuxppc-dev@lists.ozlabs.org
+Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse.com, david@redhat.com, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, jglisse@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, willy@infradead.org, laurent.dufour@fr.ibm.com, mgorman@suse.de, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, paulmck@kernel.org, liam.howlett@oracle.com, luto@kernel.org, ldufour@linux.ibm.com, vbabka@suse.cz, linux-arm-kernel@lists.infradead.org, kent.overstreet@linux.dev, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Peter Zijlstra <peterz@infradead.org> writes:
-> On Mon, Aug 29, 2022 at 11:22:14AM +0530, Sathvika Vasireddy wrote:
->> Do not run objtool on VDSO files, by using
->> OBJECT_FILES_NON_STANDARD
->> 
->> Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->> Signed-off-by: Sathvika Vasireddy <sv@linux.ibm.com>
->> ---
->>  arch/powerpc/kernel/vdso/Makefile | 2 ++
->>  1 file changed, 2 insertions(+)
->> 
->> diff --git a/arch/powerpc/kernel/vdso/Makefile b/arch/powerpc/kernel/vdso/Makefile
->> index 096b0bf1335f..a49a0d6a1c53 100644
->> --- a/arch/powerpc/kernel/vdso/Makefile
->> +++ b/arch/powerpc/kernel/vdso/Makefile
->> @@ -102,3 +102,5 @@ quiet_cmd_vdso64ld_and_check = VDSO64L $@
->>        cmd_vdso64ld_and_check = $(VDSOCC) $(c_flags) $(CC64FLAGS) -o $@ -Wl,-T$(filter %.lds,$^) $(filter %.o,$^) ; $(cmd_vdso_check)
->>  quiet_cmd_vdso64as = VDSO64A $@
->>        cmd_vdso64as = $(VDSOCC) $(a_flags) $(CC64FLAGS) $(AS64FLAGS) -c -o $@ $<
->> +
->> +OBJECT_FILES_NON_STANDARD := y
->
-> Just to clarify; your linker script will place the VDSO in .rodata or a
-> similar !.text section, right?
+On Thu, Sep 01, 2022 at 10:34:48AM -0700, Suren Baghdasaryan wrote:
+> This is a proof of concept for per-vma locks idea that was discussed
+> during SPF [1] discussion at LSF/MM this year [2], which concluded with
+> suggestion that “a reader/writer semaphore could be put into the VMA
+> itself; that would have the effect of using the VMA as a sort of range
+> lock. There would still be contention at the VMA level, but it would be an
+> improvement.” This patchset implements this suggested approach.
 
-Not the linker script, but we incbin it into .data.
+The whole reason I started the SPF thing waay back when was because one
+of the primary reporters at the time had very large VMAs and a per-vma
+lock wouldn't actually help anything at all.
 
-See arch/powerpc/kernel/vdso64_wrapper.S
+IIRC it was either scientific code initializing a huge matrix or a
+database with a giant table; I'm sure the archives have better memory
+than me.
 
-cheers
