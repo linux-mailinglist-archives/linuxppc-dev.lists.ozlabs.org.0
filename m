@@ -1,63 +1,134 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 192195AB622
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Sep 2022 18:01:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ADF05AB64E
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Sep 2022 18:12:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MK2hZ0m0bz3c7P
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Sep 2022 02:01:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MK2xY6sf2z305v
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Sep 2022 02:12:33 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=SehtCIAb;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=40.107.12.49; helo=fra01-pr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=SehtCIAb;
+	dkim-atps=neutral
+Received: from FRA01-PR2-obe.outbound.protection.outlook.com (mail-eopbgr120049.outbound.protection.outlook.com [40.107.12.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MK2gr3ct5z30FQ
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  3 Sep 2022 02:00:40 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4MK2gh20VLz9sm9;
-	Fri,  2 Sep 2022 18:00:32 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id YNJVilXel6gn; Fri,  2 Sep 2022 18:00:32 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4MK2gg3ygYz9sn8;
-	Fri,  2 Sep 2022 18:00:31 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 65BA58B787;
-	Fri,  2 Sep 2022 18:00:31 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id dk69SktskfzF; Fri,  2 Sep 2022 18:00:31 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.232.39])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 10DB28B764;
-	Fri,  2 Sep 2022 18:00:31 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 282G0KMD2222677
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 2 Sep 2022 18:00:20 +0200
-Received: (from chleroy@localhost)
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 282G0KuP2222676;
-	Fri, 2 Sep 2022 18:00:20 +0200
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MK2wn4z3fz2xvr
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  3 Sep 2022 02:11:52 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Yxfi2F0pXnbmlqb+mtXfL1fFv1UQ7VML0G/LoP2zOFb0GO8s5mKFy8vc1kb66hqp0Yv47u4R8iHICOkQ2JKI7je2GPE/7+7lJLnF22kh5RaJL7XYjoeknhalDsYq/80kksZiBNn9t7ek6hZ1DF3bV/eoEIKY47RDvWaiXa/GQCuLfKxG/ty7XaD2z1ELnUN8xApJur29o8lpjjvAB9C8yd4zQK9PeZ4cYuEN7FNduGkDgiZcV/6wNn66GD8RVfmQxDLLyIMDtrRFx8CwQj/feAoZhm16S1uHMqV93CHwVCcGdaQrGosNIyg1NyOljgLnSbvplkgVH4YOHbHgofO2kQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=flIbVd3RBd3r/+Go/FKKwjkBtN+KyKzD++EGRLk1Q38=;
+ b=nK+SMwvkqDoRgUYyuQJDIv/eYxVC9tMDPT4i0UzdusZ6J5k3KWwkwK+2NKCbCTn+iqmHPEekh0hgPJELmLShc/8McS76BDNCr3Wn5/w6t1hme2wtMqN/RioZ+RmOQPqhP13lAcWG6BFDiAywPV9MVwfzAzjDA7G2H4jnugOhlhc8vt/eWO06dzIBdDdgOEsStra5viagCphTpAhsWNWa1qsqsiNIFAWXdVp+BEUC5hxTSnsOJMXbYIucBnqs0Iy81c5FRuSnbQ64+2Mabmf8BUd3Q4cgbwH4aU15FUrRtZq0seTq0rfmwFz1UV655ZmwKNNQARGwgl6f8l5ayhfICw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
+ dkim=pass header.d=csgroup.eu; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=flIbVd3RBd3r/+Go/FKKwjkBtN+KyKzD++EGRLk1Q38=;
+ b=SehtCIAbNRSDaKvLzWg/O/jK1wUyq7CWlFAPs+2pv+lFD2ZbY2ul3NEMoWBFI4pb1l0dDPRvEVvC8WBkg5kUCfrvMJOsbUIreY08AMfm4G81TM5wLNgnMnKt26BIKS6ObwZSdTHpieZH6wjOoaOpk58nakSg5uBaJURcUMh29GMlcvEdNaQhml66GJIRMrImazxHeuPRmyf0CkYxJQRnsDyaSEbSrmW3OVX3b3iQFeTjHoDZaBncSYwkahpWADHRJiSgaZbCDn53rMSJvjwQh/z9v8DE3YuFtC7yIwu8tF+NjywuK1CKOxidonSOA7wI/OeERdWE7rfGki2AFS+Hvg==
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
+ by MRZP264MB2055.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:9::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5588.11; Fri, 2 Sep
+ 2022 16:11:33 +0000
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::382a:ed3b:83d6:e5d8]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::382a:ed3b:83d6:e5d8%4]) with mapi id 15.20.5588.014; Fri, 2 Sep 2022
+ 16:11:33 +0000
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>
-Subject: [PATCH v2 2/2] powerpc/math-emu: Remove -w build flag and fix warnings
-Date: Fri,  2 Sep 2022 18:00:09 +0200
-Message-Id: <2663961738a46073713786d4efeb53100ca156e7.1662134272.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <8403854a4c187459b2f4da3537f51227b70b9223.1662134272.git.christophe.leroy@csgroup.eu>
-References: <8403854a4c187459b2f4da3537f51227b70b9223.1662134272.git.christophe.leroy@csgroup.eu>
+To: Segher Boessenkool <segher@kernel.crashing.org>, Nathan Chancellor
+	<nathan@kernel.org>
+Subject: Re: [PATCH v2 2/2] powerpc/math-emu: Remove -w build flag and fix
+ warnings
+Thread-Topic: [PATCH v2 2/2] powerpc/math-emu: Remove -w build flag and fix
+ warnings
+Thread-Index: AQHYvrQQ+S0EhS3hjkeplqlJfSj6Ca3MRmKAgAAGSgCAAANAAA==
+Date: Fri, 2 Sep 2022 16:11:33 +0000
+Message-ID: <c8fccaf2-9153-8cec-c683-870e52735e68@csgroup.eu>
+References:  <a7384eafc6a27aea15bdc9e8f9a12aac593fccb7.1662113301.git.christophe.leroy@csgroup.eu>
+ <35c86b7ca823954c6cd593acc3690dc3748da9b1.1662113301.git.christophe.leroy@csgroup.eu>
+ <YxIjM/jdLajq4dFk@dev-arch.thelio-3990X>
+ <20220902155954.GP25951@gate.crashing.org>
+In-Reply-To: <20220902155954.GP25951@gate.crashing.org>
+Accept-Language: fr-FR, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.0
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=csgroup.eu;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: f0ade7a5-642e-4aef-e091-08da8cfdcdbf
+x-ms-traffictypediagnostic: MRZP264MB2055:EE_
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:  zyZ8Io3d+u7oLohTA+UlD6hhyb/fJGo7jbvpW02ry+vWKyZ5LXxUpSGrE9qmUfYEOxo4t3+RLee77GkEY78+/E0C7friAvV2y0j21VuPnAKzU/D6M08qO7zrXhMatPnudbjdxa8F/DtN0Om87yzkDrBgIcUAmNCnOJMSOPiY31XE1IuOkpgTfOPHvygdfzFgTgw32Y3GyoUUix9lpZEu863pzs3fKP9ppxFfuVIPpUEvmhWLpunWL7BUCD1/z/TX1R/aaw6Mw6almlKUjJGhTsGXMqPMc4icgRItAQBxD51ifjU4SAGus18CAUZeuPCVPS+WVqw+82wKvAy9/kJmJohDh93XBCRZoGRSuUhXIEVclah7raQ3is3mX4/kRwNiV2I7Oz1U882QjQ8ImRUzMQ4EbAsRjuoFYzr7fjxVISHoafhPep6oSjfHYbvje0v8XzxbZwAqDKCrsYKhvSzEpid1N79y88rX1CSNFjjacInk/NXuFKYIBWmEr/ufhihEbxNwAlBitzLLMdUy5Qu+etoqhv+guYvsNzNgAIgk4d+gboQ2NvppHRflLAYo0pR19G8h7KRh+mmBKw42wOcWlLgViGCpMildEK5bMGctblfqAl2IZdVXv9jQfGAG4Az3QzhrIAy8rQGavJiMx9vtdET9GKWTnT/m+Bs4GW+aYDpsYpX3C9vqyhK9wCxFuY0aGKKVOoEEpwRsjpN66mu/T0fZcBRBGrPyWZymJ3qVgB+FfiCNrzRksgRVZpX0R8Wa9lIFpOPSQxWHZOhj1sbsETWpEd9423Wa4GlH06EyFb6BcH1zVE+oV4dSLVkN4Kvcbg6hsxWP0R6a8r+ffbL9YA==
+x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230016)(4636009)(396003)(346002)(39860400002)(366004)(136003)(376002)(122000001)(2616005)(26005)(186003)(71200400001)(36756003)(8936002)(44832011)(31686004)(478600001)(5660300002)(2906002)(6486002)(4744005)(31696002)(66556008)(64756008)(8676002)(66446008)(4326008)(91956017)(86362001)(76116006)(66946007)(38100700002)(66476007)(41300700001)(66574015)(83380400001)(54906003)(38070700005)(6512007)(6506007)(316002)(110136005)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?TUNSamNYcTBIcnpVVlB4OVdJdXZxQm1aSlRIZzZyNWxjVmZJczBTNTJhdldk?=
+ =?utf-8?B?N3VoOUl6NEt3bUVuOGp4VVZRU2VBYjZuWmx1STgveEJRQlNZVzQxZmJVL3BW?=
+ =?utf-8?B?Q0FUbkdNR3pvQ1F1L25rUm9tR2p1NzdDTEpOZjBpRVRDUUNCMG1OUDBkZzAw?=
+ =?utf-8?B?R0lmVkxnelZTbG5LTnZwckRIVTl4QUVXZjRVMUpWV2RoL0Z5RWpUSXJVTG1z?=
+ =?utf-8?B?bkQwOHhIZEZwVi8ycjkwQ3NDRDVkWm9na0wzU1NnbXkyd2l5NFQwaGpBRGpT?=
+ =?utf-8?B?aDhUaExlcm5zejdYNTlvV1JrU3ppTjJZTkZjV1ZZbjNWL3pYS3dCSG40b1FC?=
+ =?utf-8?B?V0pJNVBPZ3ZzclVyWVFSWitIUW9xWDNVMGNCTEt1R0ZlVkZXR0ovejlXZ0lN?=
+ =?utf-8?B?eHhhRFNqczJmdnBGcVVaR21kbFM1OXVNSlc2U1N0Sndsa0oxZXNFV25KdWEz?=
+ =?utf-8?B?OEY1cVQwOWkzVDZZemV1TmNPU1czbUtnN1hMaG00cFNMUUEyQjlldEZqR2Zk?=
+ =?utf-8?B?RkIyc1VnRG9vamJmQnMveU5wSG8wdzFweVp5NDc0eWtPUlVOYzJDWE9VcVIx?=
+ =?utf-8?B?cjVSb2UwRFl1SU9YNHR4UWE0dk4zdTg1aE1EekV4MWhHamMzck9XYUhEcXdV?=
+ =?utf-8?B?TElVR3A4L005VmRmWkZUQVRHSG54TStxUGN3a2pORmd5TmRxdmlaZ0tWS0N3?=
+ =?utf-8?B?TlpNU1EwS2FKVHRpTUxySGV2T2VvMksvWFAwZm1lRjkvVDhubEJUVk9rUFFM?=
+ =?utf-8?B?bDRXeEQwUnJvaDA1aDlCRDdDTW1BeENNSmtDSDNjNDA4dTgyNHdqbHFBenBD?=
+ =?utf-8?B?WlZZMC9ybTU5bVg3dE9xdzhqUFZYbzNtVm1sd3ZQMFBUa0FVeGtzUmcvbDJO?=
+ =?utf-8?B?cFcvK1hpbjU3Zkl4RzhBNjh1WTVkbmd2bm05Z1E0b1UyTDNKNUJTSmp5SW1S?=
+ =?utf-8?B?YkpISkNoQStNRUhCK1p5bmtOVnAzWkdET1lpNnEyRzNXSGQ5TXhLU3YxTzZu?=
+ =?utf-8?B?S1FCWXRnc1RJS2JBZk81cHB1MWNFN042akUwZWc0ZENuOUE1KzZOUlFOSlVD?=
+ =?utf-8?B?Ymw1dHdsb0dpbTlXNUFvVm53dWF6RUJZMytQdFluWHZSYWVxcjZzYnJPUUlz?=
+ =?utf-8?B?bnJHU0VxNnA2dlZmdHdsUC9ld0o5WGVha1c3cEcvZTlWY2xHR0RhWS82UW5r?=
+ =?utf-8?B?cDRpeVFUb0JHdEZBVUZBWUh3T2ZYc25QMmEvcFNWZEU0SmhBcGxQVUU5N3JQ?=
+ =?utf-8?B?SG12bHZYSWlaMnpMOXFTQ3RZa3FadDU5ZUhYTHRnWkl4ZjNvelZtbmVVdDhO?=
+ =?utf-8?B?NDZhcWo2T3hEQW4xQTRFWTdOS01FaXdtTVBsQ0JjcWo0ZTcwc2M0bCs2V2VW?=
+ =?utf-8?B?TGlCUnZMeEtQYTJreGRwaXl4VTlvK1A4aWJ1WiszSlFaYlVEcXZEU0Fzc0o0?=
+ =?utf-8?B?MGdacTYweUpPWGk4bjNqbEZJZzN2ZWpic0NseXRjN2hSTFR5TWFHMzk5aGZN?=
+ =?utf-8?B?TTlGanNGU2UzVlM3aFZpbEdsZERWeG5GT21hTFFRZ0pnVkVHMUg2bko1aWFI?=
+ =?utf-8?B?MjRtZEtyZ25UQS9aZjNxaHdOOEN5ZlU0RHdQV0R4QnBnWnlGeTNjM1hDWnpv?=
+ =?utf-8?B?enFGK3NnbzFxckVxTFR4WU9jNVN6ZTRqZEE5RmVkYlVwcHlkTlVJcXlpTENi?=
+ =?utf-8?B?Nm1WYU40ZnJpNTFyQ1UzcXU2aGVDRlI2Qk9tSXBrL09qWW51THkvZDV4c3ZI?=
+ =?utf-8?B?amlZU0hqcXZPbU9PTkMzUW4wZkplR29uMHVTaS9FRXc2eUc0T2lNMHNWcnQr?=
+ =?utf-8?B?MG9mTSthYi9sWGtXU0tQSUZFd00vZjFUTElNaWJoaTBDd3N5ZGdrVG5aMURj?=
+ =?utf-8?B?NWYvNFVzTDR3cGhHZHhUNlFwVzNmNGxURjc3WmdvRjBpdFNGZDBWMTdpa084?=
+ =?utf-8?B?aWlMaGdSNzRxaUpMWmk2QjhFck5RRStab1lhWXRTdEl4WWF4MkpoTUVrUk13?=
+ =?utf-8?B?RWYweE1tblVYWFRPNGttL1E3Y0JsRTVKZnVqNlVsMlBGOG13NkVlZ2wwdXVm?=
+ =?utf-8?B?Y2o0ZXR3cmZrbksrc3BGZFY4S1FDTkRqbFZwU1d5bXY4L3ZJZ1ZMRjVBUmpa?=
+ =?utf-8?B?NWZSVjFTd1ovUVlMckhDdTljNWhjUGk4YzV6N1lyRHJCTDRVcUorVjJsZTVT?=
+ =?utf-8?Q?ule+xWRdiGjjDdtY9TsqqK4=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <71EE4330CE7A094CB723260F8EE14BB6@FRAP264.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1662134391; l=10716; s=20211009; h=from:subject:message-id; bh=9BKDKnTYRn9z/fD81I7/jaKkCtvDR5jkuKtW17NTf74=; b=4rsKsUuEqQ0gWJ6plPSBabasErVHGA5UIV2av+sNnUWzgJh+Qj5IIGsEFHLkYGHmTUAdStcx0ksY iaY/ignZDLy/WUOBc1DswNtYoyI2t2LqEA9r0w21EdegYRCNkiAa
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: csgroup.eu
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: f0ade7a5-642e-4aef-e091-08da8cfdcdbf
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Sep 2022 16:11:33.2396
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: DPZoumMn2sWCnsDnVUYmt/6m6I4bqGu0O28AOq1yybbu1s05ktj96WGaNHO1u/jcmvBcbfzSzYlk9Xp29ANghPmSsNDhAVLYPsELVdWnc1c=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRZP264MB2055
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,354 +140,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Chancellor <nathan@kernel.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-As reported by Nathan, the module_init() macro was not taken into
-account because the header was missing. That means spe_mathemu_init()
-was never called.
-
-This should have been detected by gcc at build time, but due to
-'-w' flag it went undetected.
-
-Removing that flag leads to many warnings hence errors.
-
-Fix those warnings then remove the -w flag.
-
-Reported-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
----
-v2: Added 3 fallthrough; in include/math-emu/op-common.h for the sake of CLANG.
----
- arch/powerpc/math-emu/Makefile   |  2 --
- arch/powerpc/math-emu/math.c     | 18 +++++-----
- arch/powerpc/math-emu/math_efp.c | 57 +++++++++++++++++---------------
- include/math-emu/op-common.h     |  3 ++
- 4 files changed, 42 insertions(+), 38 deletions(-)
-
-diff --git a/arch/powerpc/math-emu/Makefile b/arch/powerpc/math-emu/Makefile
-index a8794032f15f..26fef2e5672e 100644
---- a/arch/powerpc/math-emu/Makefile
-+++ b/arch/powerpc/math-emu/Makefile
-@@ -16,5 +16,3 @@ obj-$(CONFIG_SPE)		+= math_efp.o
- 
- CFLAGS_fabs.o = -fno-builtin-fabs
- CFLAGS_math.o = -fno-builtin-fabs
--
--ccflags-y = -w
-diff --git a/arch/powerpc/math-emu/math.c b/arch/powerpc/math-emu/math.c
-index 36761bd00f38..936a9a149037 100644
---- a/arch/powerpc/math-emu/math.c
-+++ b/arch/powerpc/math-emu/math.c
-@@ -24,9 +24,9 @@ FLOATFUNC(mtfsf);
- FLOATFUNC(mtfsfi);
- 
- #ifdef CONFIG_MATH_EMULATION_HW_UNIMPLEMENTED
--#undef FLOATFUNC(x)
-+#undef FLOATFUNC
- #define FLOATFUNC(x)	static inline int x(void *op1, void *op2, void *op3, \
--						 void *op4) { }
-+						 void *op4) { return 0; }
- #endif
- 
- FLOATFUNC(fadd);
-@@ -396,28 +396,28 @@ do_mathemu(struct pt_regs *regs)
- 
- 	case XCR:
- 		op0 = (void *)&regs->ccr;
--		op1 = (void *)((insn >> 23) & 0x7);
-+		op1 = (void *)(long)((insn >> 23) & 0x7);
- 		op2 = (void *)&current->thread.TS_FPR((insn >> 16) & 0x1f);
- 		op3 = (void *)&current->thread.TS_FPR((insn >> 11) & 0x1f);
- 		break;
- 
- 	case XCRL:
- 		op0 = (void *)&regs->ccr;
--		op1 = (void *)((insn >> 23) & 0x7);
--		op2 = (void *)((insn >> 18) & 0x7);
-+		op1 = (void *)(long)((insn >> 23) & 0x7);
-+		op2 = (void *)(long)((insn >> 18) & 0x7);
- 		break;
- 
- 	case XCRB:
--		op0 = (void *)((insn >> 21) & 0x1f);
-+		op0 = (void *)(long)((insn >> 21) & 0x1f);
- 		break;
- 
- 	case XCRI:
--		op0 = (void *)((insn >> 23) & 0x7);
--		op1 = (void *)((insn >> 12) & 0xf);
-+		op0 = (void *)(long)((insn >> 23) & 0x7);
-+		op1 = (void *)(long)((insn >> 12) & 0xf);
- 		break;
- 
- 	case XFLB:
--		op0 = (void *)((insn >> 17) & 0xff);
-+		op0 = (void *)(long)((insn >> 17) & 0xff);
- 		op1 = (void *)&current->thread.TS_FPR((insn >> 11) & 0x1f);
- 		break;
- 
-diff --git a/arch/powerpc/math-emu/math_efp.c b/arch/powerpc/math-emu/math_efp.c
-index aa3bb8da1cb9..f01e3475f689 100644
---- a/arch/powerpc/math-emu/math_efp.c
-+++ b/arch/powerpc/math-emu/math_efp.c
-@@ -219,6 +219,7 @@ int do_spe_mathemu(struct pt_regs *regs)
- 		case AB:
- 		case XCR:
- 			FP_UNPACK_SP(SA, va.wp + 1);
-+			fallthrough;
- 		case XB:
- 			FP_UNPACK_SP(SB, vb.wp + 1);
- 			break;
-@@ -227,8 +228,8 @@ int do_spe_mathemu(struct pt_regs *regs)
- 			break;
- 		}
- 
--		pr_debug("SA: %ld %08lx %ld (%ld)\n", SA_s, SA_f, SA_e, SA_c);
--		pr_debug("SB: %ld %08lx %ld (%ld)\n", SB_s, SB_f, SB_e, SB_c);
-+		pr_debug("SA: %d %08x %d (%d)\n", SA_s, SA_f, SA_e, SA_c);
-+		pr_debug("SB: %d %08x %d (%d)\n", SB_s, SB_f, SB_e, SB_c);
- 
- 		switch (func) {
- 		case EFSABS:
-@@ -279,7 +280,7 @@ int do_spe_mathemu(struct pt_regs *regs)
- 			} else {
- 				SB_e += (func == EFSCTSF ? 31 : 32);
- 				FP_TO_INT_ROUND_S(vc.wp[1], SB, 32,
--						(func == EFSCTSF));
-+						(func == EFSCTSF) ? 1 : 0);
- 			}
- 			goto update_regs;
- 
-@@ -288,7 +289,7 @@ int do_spe_mathemu(struct pt_regs *regs)
- 			FP_CLEAR_EXCEPTIONS;
- 			FP_UNPACK_DP(DB, vb.dp);
- 
--			pr_debug("DB: %ld %08lx %08lx %ld (%ld)\n",
-+			pr_debug("DB: %d %08x %08x %d (%d)\n",
- 					DB_s, DB_f1, DB_f0, DB_e, DB_c);
- 
- 			FP_CONV(S, D, 1, 2, SR, DB);
-@@ -302,7 +303,7 @@ int do_spe_mathemu(struct pt_regs *regs)
- 				FP_SET_EXCEPTION(FP_EX_INVALID);
- 			} else {
- 				FP_TO_INT_ROUND_S(vc.wp[1], SB, 32,
--						((func & 0x3) != 0));
-+						((func & 0x3) != 0) ? 1 : 0);
- 			}
- 			goto update_regs;
- 
-@@ -313,7 +314,7 @@ int do_spe_mathemu(struct pt_regs *regs)
- 				FP_SET_EXCEPTION(FP_EX_INVALID);
- 			} else {
- 				FP_TO_INT_S(vc.wp[1], SB, 32,
--						((func & 0x3) != 0));
-+						((func & 0x3) != 0) ? 1 : 0);
- 			}
- 			goto update_regs;
- 
-@@ -323,7 +324,7 @@ int do_spe_mathemu(struct pt_regs *regs)
- 		break;
- 
- pack_s:
--		pr_debug("SR: %ld %08lx %ld (%ld)\n", SR_s, SR_f, SR_e, SR_c);
-+		pr_debug("SR: %d %08x %d (%d)\n", SR_s, SR_f, SR_e, SR_c);
- 
- 		FP_PACK_SP(vc.wp + 1, SR);
- 		goto update_regs;
-@@ -347,6 +348,7 @@ int do_spe_mathemu(struct pt_regs *regs)
- 		case AB:
- 		case XCR:
- 			FP_UNPACK_DP(DA, va.dp);
-+			fallthrough;
- 		case XB:
- 			FP_UNPACK_DP(DB, vb.dp);
- 			break;
-@@ -355,9 +357,9 @@ int do_spe_mathemu(struct pt_regs *regs)
- 			break;
- 		}
- 
--		pr_debug("DA: %ld %08lx %08lx %ld (%ld)\n",
-+		pr_debug("DA: %d %08x %08x %d (%d)\n",
- 				DA_s, DA_f1, DA_f0, DA_e, DA_c);
--		pr_debug("DB: %ld %08lx %08lx %ld (%ld)\n",
-+		pr_debug("DB: %d %08x %08x %d (%d)\n",
- 				DB_s, DB_f1, DB_f0, DB_e, DB_c);
- 
- 		switch (func) {
-@@ -409,7 +411,7 @@ int do_spe_mathemu(struct pt_regs *regs)
- 			} else {
- 				DB_e += (func == EFDCTSF ? 31 : 32);
- 				FP_TO_INT_ROUND_D(vc.wp[1], DB, 32,
--						(func == EFDCTSF));
-+						(func == EFDCTSF) ? 1 : 0);
- 			}
- 			goto update_regs;
- 
-@@ -418,7 +420,7 @@ int do_spe_mathemu(struct pt_regs *regs)
- 			FP_CLEAR_EXCEPTIONS;
- 			FP_UNPACK_SP(SB, vb.wp + 1);
- 
--			pr_debug("SB: %ld %08lx %ld (%ld)\n",
-+			pr_debug("SB: %d %08x %d (%d)\n",
- 					SB_s, SB_f, SB_e, SB_c);
- 
- 			FP_CONV(D, S, 2, 1, DR, SB);
-@@ -432,7 +434,7 @@ int do_spe_mathemu(struct pt_regs *regs)
- 				FP_SET_EXCEPTION(FP_EX_INVALID);
- 			} else {
- 				FP_TO_INT_D(vc.dp[0], DB, 64,
--						((func & 0x1) == 0));
-+						((func & 0x1) == 0) ? 1 : 0);
- 			}
- 			goto update_regs;
- 
-@@ -443,7 +445,7 @@ int do_spe_mathemu(struct pt_regs *regs)
- 				FP_SET_EXCEPTION(FP_EX_INVALID);
- 			} else {
- 				FP_TO_INT_ROUND_D(vc.wp[1], DB, 32,
--						((func & 0x3) != 0));
-+						((func & 0x3) != 0) ? 1 : 0);
- 			}
- 			goto update_regs;
- 
-@@ -454,7 +456,7 @@ int do_spe_mathemu(struct pt_regs *regs)
- 				FP_SET_EXCEPTION(FP_EX_INVALID);
- 			} else {
- 				FP_TO_INT_D(vc.wp[1], DB, 32,
--						((func & 0x3) != 0));
-+						((func & 0x3) != 0) ? 1 : 0);
- 			}
- 			goto update_regs;
- 
-@@ -464,7 +466,7 @@ int do_spe_mathemu(struct pt_regs *regs)
- 		break;
- 
- pack_d:
--		pr_debug("DR: %ld %08lx %08lx %ld (%ld)\n",
-+		pr_debug("DR: %d %08x %08x %d (%d)\n",
- 				DR_s, DR_f1, DR_f0, DR_e, DR_c);
- 
- 		FP_PACK_DP(vc.dp, DR);
-@@ -493,6 +495,7 @@ int do_spe_mathemu(struct pt_regs *regs)
- 		case XCR:
- 			FP_UNPACK_SP(SA0, va.wp);
- 			FP_UNPACK_SP(SA1, va.wp + 1);
-+			fallthrough;
- 		case XB:
- 			FP_UNPACK_SP(SB0, vb.wp);
- 			FP_UNPACK_SP(SB1, vb.wp + 1);
-@@ -503,13 +506,13 @@ int do_spe_mathemu(struct pt_regs *regs)
- 			break;
- 		}
- 
--		pr_debug("SA0: %ld %08lx %ld (%ld)\n",
-+		pr_debug("SA0: %d %08x %d (%d)\n",
- 				SA0_s, SA0_f, SA0_e, SA0_c);
--		pr_debug("SA1: %ld %08lx %ld (%ld)\n",
-+		pr_debug("SA1: %d %08x %d (%d)\n",
- 				SA1_s, SA1_f, SA1_e, SA1_c);
--		pr_debug("SB0: %ld %08lx %ld (%ld)\n",
-+		pr_debug("SB0: %d %08x %d (%d)\n",
- 				SB0_s, SB0_f, SB0_e, SB0_c);
--		pr_debug("SB1: %ld %08lx %ld (%ld)\n",
-+		pr_debug("SB1: %d %08x %d (%d)\n",
- 				SB1_s, SB1_f, SB1_e, SB1_c);
- 
- 		switch (func) {
-@@ -568,7 +571,7 @@ int do_spe_mathemu(struct pt_regs *regs)
- 			} else {
- 				SB0_e += (func == EVFSCTSF ? 31 : 32);
- 				FP_TO_INT_ROUND_S(vc.wp[0], SB0, 32,
--						(func == EVFSCTSF));
-+						(func == EVFSCTSF) ? 1 : 0);
- 			}
- 			if (SB1_c == FP_CLS_NAN) {
- 				vc.wp[1] = 0;
-@@ -576,7 +579,7 @@ int do_spe_mathemu(struct pt_regs *regs)
- 			} else {
- 				SB1_e += (func == EVFSCTSF ? 31 : 32);
- 				FP_TO_INT_ROUND_S(vc.wp[1], SB1, 32,
--						(func == EVFSCTSF));
-+						(func == EVFSCTSF) ? 1 : 0);
- 			}
- 			goto update_regs;
- 
-@@ -587,14 +590,14 @@ int do_spe_mathemu(struct pt_regs *regs)
- 				FP_SET_EXCEPTION(FP_EX_INVALID);
- 			} else {
- 				FP_TO_INT_ROUND_S(vc.wp[0], SB0, 32,
--						((func & 0x3) != 0));
-+						((func & 0x3) != 0) ? 1 : 0);
- 			}
- 			if (SB1_c == FP_CLS_NAN) {
- 				vc.wp[1] = 0;
- 				FP_SET_EXCEPTION(FP_EX_INVALID);
- 			} else {
- 				FP_TO_INT_ROUND_S(vc.wp[1], SB1, 32,
--						((func & 0x3) != 0));
-+						((func & 0x3) != 0) ? 1 : 0);
- 			}
- 			goto update_regs;
- 
-@@ -605,14 +608,14 @@ int do_spe_mathemu(struct pt_regs *regs)
- 				FP_SET_EXCEPTION(FP_EX_INVALID);
- 			} else {
- 				FP_TO_INT_S(vc.wp[0], SB0, 32,
--						((func & 0x3) != 0));
-+						((func & 0x3) != 0) ? 1 : 0);
- 			}
- 			if (SB1_c == FP_CLS_NAN) {
- 				vc.wp[1] = 0;
- 				FP_SET_EXCEPTION(FP_EX_INVALID);
- 			} else {
- 				FP_TO_INT_S(vc.wp[1], SB1, 32,
--						((func & 0x3) != 0));
-+						((func & 0x3) != 0) ? 1 : 0);
- 			}
- 			goto update_regs;
- 
-@@ -622,9 +625,9 @@ int do_spe_mathemu(struct pt_regs *regs)
- 		break;
- 
- pack_vs:
--		pr_debug("SR0: %ld %08lx %ld (%ld)\n",
-+		pr_debug("SR0: %d %08x %d (%d)\n",
- 				SR0_s, SR0_f, SR0_e, SR0_c);
--		pr_debug("SR1: %ld %08lx %ld (%ld)\n",
-+		pr_debug("SR1: %d %08x %d (%d)\n",
- 				SR1_s, SR1_f, SR1_e, SR1_c);
- 
- 		FP_PACK_SP(vc.wp, SR0);
-diff --git a/include/math-emu/op-common.h b/include/math-emu/op-common.h
-index 4b57bbba588a..8ce066c035cf 100644
---- a/include/math-emu/op-common.h
-+++ b/include/math-emu/op-common.h
-@@ -662,12 +662,14 @@ do {									\
- 	if (X##_e < 0)								\
- 	  {									\
- 	    FP_SET_EXCEPTION(FP_EX_INEXACT);					\
-+	    fallthrough;							\
- 	  case FP_CLS_ZERO:							\
- 	    r = 0;								\
- 	  }									\
- 	else if (X##_e >= rsize - (rsigned > 0 || X##_s)			\
- 		 || (!rsigned && X##_s))					\
- 	  {	/* overflow */							\
-+	    fallthrough;							\
- 	  case FP_CLS_NAN:                                                      \
- 	  case FP_CLS_INF:							\
- 	    if (rsigned == 2)							\
-@@ -767,6 +769,7 @@ do {									\
- 	if (X##_e >= rsize - (rsigned > 0 || X##_s)				\
- 	    || (!rsigned && X##_s))						\
- 	  {	/* overflow */							\
-+	    fallthrough;							\
- 	  case FP_CLS_NAN:                                                      \
- 	  case FP_CLS_INF:							\
- 	    if (!rsigned)							\
--- 
-2.37.1
-
+DQoNCkxlIDAyLzA5LzIwMjIgw6AgMTc6NTksIFNlZ2hlciBCb2Vzc2Vua29vbCBhIMOpY3JpdMKg
+Og0KPiBPbiBGcmksIFNlcCAwMiwgMjAyMiBhdCAwODozNzoyM0FNIC0wNzAwLCBOYXRoYW4gQ2hh
+bmNlbGxvciB3cm90ZToNCj4+IE9uIEZyaSwgU2VwIDAyLCAyMDIyIGF0IDEyOjA4OjU1UE0gKzAy
+MDAsIENocmlzdG9waGUgTGVyb3kgd3JvdGU6DQo+Pj4gVGhpcyBzaG91bGQgaGF2ZSBiZWVuIGRl
+dGVjdGVkIGJ5IGdjYyBhdCBidWlsZCB0aW1lLCBidXQgZHVlIHRvDQo+Pj4gJy13JyBmbGFnIGl0
+IHdlbnQgdW5kZXRlY3RlZC4NCj4+Pg0KPj4+IFJlbW92aW5nIHRoYXQgZmxhZyBsZWFkcyB0byBt
+YW55IHdhcm5pbmdzIGhlbmNlIGVycm9ycy4NCj4gDQo+PiBUaGFua3MgZm9yIGZpZ3VyaW5nIG91
+dCB3aGF0IHdhcyBnb2luZyBvbiBoZXJlISBJIHRvb2sgdGhpcyBwYXRjaCBmb3IgYQ0KPj4gc3Bp
+biB3aXRoIGNsYW5nIGFuZCBpdCBoYXMgYSBmZXcgbW9yZSBlcnJvcnMgYXJvdW5kDQo+PiAtV2lt
+cGxpY2l0LWZhbGx0aHJvdWdoOg0KPiANCj4gTWF5YmUgYWRkIC1Xbm8taW1wbGljaXQtZmFsbHRo
+cm91Z2g/ICBUaGlzIGNvZGUgaXMgYSBjb3B5IGZyb20gb3V0c2lkZQ0KPiB0aGUga2VybmVsLCBu
+byBvbmUgaGFzIGV2ZXIgd2FudGVkIHRvIG1haW50YWluIGl0LCBpZiBub3RoaW5nIGVsc2UgKHRo
+ZQ0KPiBtb3JlIHBvbGl0aWNhbGx5IGNvcnJlY3QgZm9ybXVsYXRpb24gaXMgIndlIGNhbm5vdCBh
+cyBlYXNpbHkgcGljayB1cA0KPiBpbXByb3ZlbWVudHMgZnJvbSB1cHN0cmVhbSBpZiB3ZSBtb2Rp
+Znkgc3R1ZmYiKS4NCj4gDQoNClRoZXJlIGFyZSBhbHJlYWR5IHN1Y2ggY2hhbmdlcyBpbiB0aGF0
+IGNvbW1vbiBmaWxlLCBzZWUgZm9yIGluc3RhbmNlIA0KY29tbWl0IGYzMzZhMDA5ZjhlMyAoIm1h
+dGgtZW11OiBGaXggZmFsbC10aHJvdWdoIHdhcm5pbmciKSwgd2FzIGluIEp1bHkgDQoyMDIxLg0K
+DQpDaHJpc3RvcGhl
