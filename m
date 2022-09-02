@@ -2,32 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF8FA5AADA7
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Sep 2022 13:31:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F09B25AADBD
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Sep 2022 13:32:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MJwjV5tPRz3bWB
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Sep 2022 21:31:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MJwkm5Y7Hz3f2M
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Sep 2022 21:32:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MJwj23BzKz2yZ4
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Sep 2022 21:31:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MJwk86tTyz3byL
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Sep 2022 21:32:16 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4MJwj03fP1z4xG6;
-	Fri,  2 Sep 2022 21:31:16 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4MJwk85ytmz4wgr;
+	Fri,  2 Sep 2022 21:32:16 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
-In-Reply-To: <20220831131052.42250-1-mpe@ellerman.id.au>
-References: <20220831131052.42250-1-mpe@ellerman.id.au>
-Subject: Re: [PATCH] Revert "powerpc/irq: Don't open code irq_soft_mask helpers"
-Message-Id: <166211825329.554590.8228191731474663031.b4-ty@ellerman.id.au>
-Date: Fri, 02 Sep 2022 21:30:53 +1000
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20220815114840.1468656-1-mpe@ellerman.id.au>
+References: <20220815114840.1468656-1-mpe@ellerman.id.au>
+Subject: Re: [PATCH v3] powerpc/code-patching: Speed up page mapping/unmapping
+Message-Id: <166211832579.555339.11284897477664030047.b4-ty@ellerman.id.au>
+Date: Fri, 02 Sep 2022 21:32:05 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -42,36 +42,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: zhouzhouyi@gmail.com, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 31 Aug 2022 23:10:52 +1000, Michael Ellerman wrote:
-> This reverts commit ef5b570d3700fbb8628a58da0487486ceeb713cd.
+On Mon, 15 Aug 2022 21:48:40 +1000, Michael Ellerman wrote:
+> From: Christophe Leroy <christophe.leroy@csgroup.eu>
 > 
-> Zhouyi reported that commit is causing crashes when running rcutorture
-> with KASAN enabled:
+> Since commit 591b4b268435 ("powerpc/code-patching: Pre-map patch area")
+> the patch area is premapped so intermediate page tables are already
+> allocated.
 > 
->   BUG: using smp_processor_id() in preemptible [00000000] code: rcu_torture_rea/100
->   caller is rcu_preempt_deferred_qs_irqrestore+0x74/0xed0
->   CPU: 4 PID: 100 Comm: rcu_torture_rea Tainted: G        W          5.19.0-rc5-next-20220708-dirty #253
->   Call Trace:
->     dump_stack_lvl+0xbc/0x108 (unreliable)
->     check_preemption_disabled+0x154/0x160
->     rcu_preempt_deferred_qs_irqrestore+0x74/0xed0
->     __rcu_read_unlock+0x290/0x3b0
->     rcu_torture_read_unlock+0x30/0xb0
->     rcutorture_one_extend+0x198/0x810
->     rcu_torture_one_read+0x58c/0xc90
->     rcu_torture_reader+0x12c/0x360
->     kthread+0x1e8/0x220
->     ret_from_kernel_thread+0x5c/0x64
+> Use __set_pte_at() directly instead of the heavy map_kernel_page(),
+> at for unmapping just do a pte_clear() followed by a flush.
 > 
 > [...]
 
-Applied to powerpc/fixes.
+Applied to powerpc/next.
 
-[1/1] Revert "powerpc/irq: Don't open code irq_soft_mask helpers"
-      https://git.kernel.org/powerpc/c/684c68d92e2e1b97fa2f31c35c1b0f7671a8618a
+[1/1] powerpc/code-patching: Speed up page mapping/unmapping
+      https://git.kernel.org/powerpc/c/8b4bb0ad00cb347f62e76a636ce08eb179c843fc
 
 cheers
