@@ -2,59 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EBF55AB980
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Sep 2022 22:37:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3D385AB986
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Sep 2022 22:39:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MK8qc2pHpz3c6X
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Sep 2022 06:37:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MK8sz5Flsz3c25
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Sep 2022 06:39:51 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=izfspim2;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=izfspim2;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.160.48; helo=mail-oa1-f48.google.com; envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-oa1-f48.google.com (mail-oa1-f48.google.com [209.85.160.48])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=izfspim2;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=izfspim2;
+	dkim-atps=neutral
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MK8qB0Jnzz2yS0
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  3 Sep 2022 06:37:25 +1000 (AEST)
-Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-11f4e634072so7492876fac.13
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 02 Sep 2022 13:37:25 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MK8sF1XBrz2yS0
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  3 Sep 2022 06:39:12 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1662151150;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xJ0Qu9XWFO4UUk4rWqs9r8O8v+oRQvUvbXP0h2FgBJE=;
+	b=izfspim21vDPLupFqueqrPW667+f/C6/3ewkOm4ko9xHknZytG2H/QejfgaWNKf833ASvO
+	AFtZsAvlUqo6XA7Kgf87/aC9NXhUSLI55nEeBrHiTUzNiwzgD8yPhgUQtWy76xktQL7G5A
+	EEVpkGYe2ER9J4qGetvKSHNPk10/17c=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1662151150;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xJ0Qu9XWFO4UUk4rWqs9r8O8v+oRQvUvbXP0h2FgBJE=;
+	b=izfspim21vDPLupFqueqrPW667+f/C6/3ewkOm4ko9xHknZytG2H/QejfgaWNKf833ASvO
+	AFtZsAvlUqo6XA7Kgf87/aC9NXhUSLI55nEeBrHiTUzNiwzgD8yPhgUQtWy76xktQL7G5A
+	EEVpkGYe2ER9J4qGetvKSHNPk10/17c=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-104-AqjhXBqrOFy6_38CXp6Uiw-1; Fri, 02 Sep 2022 16:39:07 -0400
+X-MC-Unique: AqjhXBqrOFy6_38CXp6Uiw-1
+Received: by mail-qt1-f198.google.com with SMTP id z6-20020ac875c6000000b0034454b14c91so2387925qtq.15
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 02 Sep 2022 13:39:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=D5I2FegB0/865hyvFadrtO3KVuPLcvZSOcVWjIZiMYE=;
-        b=VwYk4zwXn2O++jnKJaBmIzvq1EV5QIhm1Su0yjqSgq3dmEbas2Eu8YZhA7Tv3T1SWs
-         JywI+XyY+PDXyUdjhKPFmRwRXu9/cTx/bg0DkoPOPowukY1hOniPjskQLu3Y4y66rRVU
-         +m9sc2YeDS+8OZOA9pt4rKgzDbdhgY1aNl68NLfFmoz8HEjnuHUdLQ7mgDLtqpk9Jd4q
-         pL2N5spt6HVCFxt/bG0rzix7OIZdl9dZGbyWRDiNVtdVVAXD39fcvsWjJGRr4eQDfISZ
-         PczQaPEdVmF/crhHyiD9j4Mxa27ev8N9gl421ZVJSfuJbMKrn4VlFurGEjePIsFrCIn8
-         26nw==
-X-Gm-Message-State: ACgBeo2VcAeVtlEu66EhE+yJ63y3Ggh3jCXbgTT9ds1wkL+NuxchYZ7n
-	bmtln2o60o0PF2NaOgWLSw==
-X-Google-Smtp-Source: AA6agR74vMjIV6E6x7glZrZm9SKfzRvLDhnq5sddCSsKFOxouv32JrJa1HCse/8QJkatK6iljKePLQ==
-X-Received: by 2002:a05:6870:d7a5:b0:11d:a0b:f62b with SMTP id bd37-20020a056870d7a500b0011d0a0bf62bmr3000832oab.190.1662151042314;
-        Fri, 02 Sep 2022 13:37:22 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id e28-20020a544f1c000000b003436fa2c23bsm1408427oiy.7.2022.09.02.13.37.21
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
+        bh=xJ0Qu9XWFO4UUk4rWqs9r8O8v+oRQvUvbXP0h2FgBJE=;
+        b=BMkxiUbn2wdxS9ReWpu1U7JSGpkwKbOgnfE8cwOjwUvwU3X//saxIGjkN0JWYKbMsA
+         BbU8Tsxmgl6UP3ahAiALemlOuUENPIR7Cu6sylQQilLErbigXQtY1OGqCatJN+N+vEVe
+         WoA6Bv72HBXc6v4vxWViS4D80n7zM7tjcfZWmjNdWZUtcUI1dRElWSYZCkxAsHyJnIWc
+         D7gzUa3Mxv6+6II9CCuPEy2LlpAQMu3yLQf0Oaot1v+UjgxqFdT5kdOyyhFEjRIlHLrK
+         XImzGNh2D+jswhWOLQPdEiGXvVZlY204YUaTqLTh/ato4PRlOUoxNTF8a5nv/c7ijERw
+         Ve9w==
+X-Gm-Message-State: ACgBeo0ybM2Qcdh9WK+g2pjBNdUa8LY83vi/e6t5szex/HnVqnRd/g2o
+	wfFvipgSUpzJhzjxl77i8Ake991qi05X6aTtZQCo0a0RYpxcbXeeqbIMsoFS1UvuFrBa1mZUNEg
+	hFHgPk3pyCbY5wj+QVf43eCoDCQ==
+X-Received: by 2002:a05:6214:4005:b0:474:3c94:cdc2 with SMTP id kd5-20020a056214400500b004743c94cdc2mr30020621qvb.17.1662151147439;
+        Fri, 02 Sep 2022 13:39:07 -0700 (PDT)
+X-Google-Smtp-Source: AA6agR7YMrtikm013gR4JTLQQoN5gVOE4hUudLnV6FSgJBznRd/8l8hCsLr/ALJPQCQnci+l7e2+tQ==
+X-Received: by 2002:a05:6214:4005:b0:474:3c94:cdc2 with SMTP id kd5-20020a056214400500b004743c94cdc2mr30020592qvb.17.1662151147191;
+        Fri, 02 Sep 2022 13:39:07 -0700 (PDT)
+Received: from xz-m1.local (bras-base-aurron9127w-grc-35-70-27-3-10.dsl.bell.ca. [70.27.3.10])
+        by smtp.gmail.com with ESMTPSA id l3-20020ac80783000000b00342fcdc2d46sm1725995qth.56.2022.09.02.13.39.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Sep 2022 13:37:21 -0700 (PDT)
-Received: (nullmailer pid 372769 invoked by uid 1000);
-	Fri, 02 Sep 2022 20:37:21 -0000
-Date: Fri, 2 Sep 2022 15:37:21 -0500
-From: Rob Herring <robh@kernel.org>
-To: Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>
-Subject: Re: [PATCH 1/3] dt-bindings: reset: syscon-reboot: Add priority
- property
-Message-ID: <20220902203721.GA356619-robh@kernel.org>
-References: <20220820102925.29476-1-pali@kernel.org>
- <20220822124728.GA3641041-robh@kernel.org>
- <20220822135050.o4a4bw3dqkmhtjgb@pali>
+        Fri, 02 Sep 2022 13:39:06 -0700 (PDT)
+Date: Fri, 2 Sep 2022 16:39:04 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Alistair Popple <apopple@nvidia.com>
+Subject: Re: [PATCH v4 2/4] mm/migrate_device.c: Add missing
+ flush_cache_page()
+Message-ID: <YxJp6GiGjHZ+ehyf@xz-m1.local>
+References: <9f801e9d8d830408f2ca27821f606e09aa856899.1662078528.git-series.apopple@nvidia.com>
+ <5676f30436ab71d1a587ac73f835ed8bd2113ff5.1662078528.git-series.apopple@nvidia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+In-Reply-To: <5676f30436ab71d1a587ac73f835ed8bd2113ff5.1662078528.git-series.apopple@nvidia.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220822135050.o4a4bw3dqkmhtjgb@pali>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,66 +97,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>, devicetree@vger.kernel.org, linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, linuxppc-dev@lists.ozlabs.org
+Cc: "Sierra Guiza, Alejandro \(Alex\)" <alex.sierra@amd.com>, Ralph Campbell <rcampbell@nvidia.com>, Lyude Paul <lyude@redhat.com>, Karol Herbst <kherbst@redhat.com>, David Hildenbrand <david@redhat.com>, Nadav Amit <nadav.amit@gmail.com>, Felix Kuehling <Felix.Kuehling@amd.com>, linuxppc-dev@lists.ozlabs.org, LKML <linux-kernel@vger.kernel.org>, Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org, Logan Gunthorpe <logang@deltatee.com>, Ben Skeggs <bskeggs@redhat.com>, Jason Gunthorpe <jgg@nvidia.com>, John Hubbard <jhubbard@nvidia.com>, stable@vger.kernel.org, akpm@linux-foundation.org, huang ying <huang.ying.caritas@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Aug 22, 2022 at 03:50:50PM +0200, Pali Rohár wrote:
-> On Monday 22 August 2022 07:47:28 Rob Herring wrote:
-> > On Sat, Aug 20, 2022 at 12:29:23PM +0200, Pali Rohár wrote:
-> > > This new optional priority property allows to specify custom priority level
-> > > of reset device. Default level was always 192.
-> > 
-> > Why do we need/want this? What problem does it solve?
+On Fri, Sep 02, 2022 at 10:35:52AM +1000, Alistair Popple wrote:
+> Currently we only call flush_cache_page() for the anon_exclusive case,
+> however in both cases we clear the pte so should flush the cache.
 > 
-> See patch 3/3.
+> Signed-off-by: Alistair Popple <apopple@nvidia.com>
+> Fixes: 8c3328f1f36a ("mm/migrate: migrate_vma() unmap page from vma while collecting pages")
+> Cc: stable@vger.kernel.org
+
+This is the patch to start collide with David's.
+
+David's patch has also unified both paths with ptep_get_and_clear(), but
+this patch itself is also correct to me.
+
+It'll probably just become no-diff after rebase, though.. I'm not sure how
+the ordering would be at last, but anyway I think this patch stands as its
+own too..
+
+Acked-by: Peter Xu <peterx@redhat.com>
+
+Thanks for tolerant with my nitpickings,
+
 > 
-> > > Signed-off-by: Pali Rohár <pali@kernel.org>
-> > > ---
-> > >  .../devicetree/bindings/power/reset/syscon-reboot.yaml        | 4 ++++
-> > >  1 file changed, 4 insertions(+)
-> > > 
-> > > diff --git a/Documentation/devicetree/bindings/power/reset/syscon-reboot.yaml b/Documentation/devicetree/bindings/power/reset/syscon-reboot.yaml
-> > > index da2509724812..d905133aab27 100644
-> > > --- a/Documentation/devicetree/bindings/power/reset/syscon-reboot.yaml
-> > > +++ b/Documentation/devicetree/bindings/power/reset/syscon-reboot.yaml
-> > > @@ -42,6 +42,10 @@ properties:
-> > >      $ref: /schemas/types.yaml#/definitions/uint32
-> > >      description: The reset value written to the reboot register (32 bit access).
-> > >  
-> > > +  priority:
-> > 
-> > A bit too generic for the name.
-> > 
-> > > +    $ref: /schemas/types.yaml#/definitions/sint32
-> > > +    description: Priority level of this syscon reset device. Default 192.
-> > 
-> > default: 192
-> > 
-> > 
-> > Though I'm not really sure about the whole concept of this in DT. Where 
-> > does 192 come from?
+> ---
 > 
-> Implicitly from the current implementation and how it is used.
-
-Implementation of what? u-boot? BSD? robOS?
-
-> > Presumably if we have more than 1 reset device, then 
-> > 'priority' is needed in multiple places. So you need a common schema 
-> > defining the property (as property types should be defined exactly 
-> > once) which this schema can reference.
-> > 
-> > Rob
+> New for v4
+> ---
+>  mm/migrate_device.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> Sorry, I do not understand.
+> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+> index 6a5ef9f..4cc849c 100644
+> --- a/mm/migrate_device.c
+> +++ b/mm/migrate_device.c
+> @@ -193,9 +193,9 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
+>  			bool anon_exclusive;
+>  			pte_t swp_pte;
+>  
+> +			flush_cache_page(vma, addr, pte_pfn(*ptep));
+>  			anon_exclusive = PageAnon(page) && PageAnonExclusive(page);
+>  			if (anon_exclusive) {
+> -				flush_cache_page(vma, addr, pte_pfn(*ptep));
+>  				ptep_clear_flush(vma, addr, ptep);
+>  
+>  				if (page_try_share_anon_rmap(page)) {
+> -- 
+> git-series 0.9.1
+> 
 
-So just keep sending new versions instead?
+-- 
+Peter Xu
 
-syscon-reboot is not the only binding for a system reset device, right? 
-So those others reset devices will need 'priority' too. For a given 
-property, there should only be one schema definition defining the type 
-for the property. Otherwise, there might be conflicts. So you need a 
-common schema doing that. And here you would just have 'priority: true' 
-or possibly some binding specific constraints.
-
-Rob
