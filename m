@@ -2,129 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 869315ABF78
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Sep 2022 17:12:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7249E5ABF85
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Sep 2022 17:25:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MKdYw3WN3z30Ly
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Sep 2022 01:12:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MKdrq1nM6z3bpn
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Sep 2022 01:25:31 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=GwAeuZbl;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=TjibKFNr;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=40.107.9.50; helo=fra01-mr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Two or more type TXT spf records found.) smtp.mailfrom=intel.com (client-ip=134.134.136.20; helo=mga02.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=GwAeuZbl;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=TjibKFNr;
 	dkim-atps=neutral
-Received: from FRA01-MR2-obe.outbound.protection.outlook.com (mail-eopbgr90050.outbound.protection.outlook.com [40.107.9.50])
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MKdY55DjRz2yHc
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  4 Sep 2022 01:11:53 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Eeh1TY+H4KiQkH75Y5qcsWNH0QsRBHyfyyCaFlNIIqyBXoyeQRdDAImkuXbDjHkwLnLl6SyMOhW5I4Zo8iOJoi5IMJrvENPM+C6eMS11Dn/XgVxID5Ii1atf33gVgm2GzGHmld3WF6Mi/L6D9WlcIicEowcYUn8aQzw3I69vxkzbmxL4/PPrycGtArv7OuSHA6OC3ShpKw4cR+CVVI41OzuoVYAsIM68mLWTjnQXMPdr1E3fFGz094x4ncYGeP8QZ7OUD7HjdC3ex5Df1S/pua6WcASDv+kMFO8ictbbnv2/+mBVOzuO1GnokYksnLDKktWyPZsLRbqGu/o3WLG2mA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FfGx8cp1wNMTNPqR8Yh9hVGFlYkLQW3m4nY295onUfc=;
- b=izwvY5GGBG0nurUQjuGbX6ZVHoROsT++VbZKOyb3DAet8yZ5x6YzoQjZOq0ibKimUizEJlLtBNkkQmheqw4iqICQW4xi9rP2U3krQh/CcHau08RawmXAkZopKVXmOzZ96Zmka10RBmTggBo0zDIN32iWlAQ8Bk8w0U2eaX9SxZdNMhZWIBGrhnK0T+DOEmjUwxx6BlT4r+nXZEG0aqE1DJxGw0u/zQAnzI1oezs04q8thRyFz7uLr4HgWLyM1+b5Cwf0+j6nKxLQGWT/Dvh5xxrKL4rnxaQicK8GAWlR9EuAaX0a05nHp6vpz38hmQ3t6jZTSgmYkCqjiRPaYXwuPA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FfGx8cp1wNMTNPqR8Yh9hVGFlYkLQW3m4nY295onUfc=;
- b=GwAeuZblMl1+NeyJdLbGroNN1SABSlXB8kj+WgdYA3WIsnNSvA3hOX/W4LX7fRqD+BatllQ0PysrNRMy4S8c1nTpr8UCTwKyYfwMdzBDcS1oaZodf+kVn4GjwaYmELmuPpjx2yMv18Lq+urilJc/t25L+5p+4UeEcX6n08JIyV22VQNeq0xC1R9b43HtvirV/Y2zA1HUa+0yaipMXeDNYt1tRZa4ZkDcWFRv60EvL551sqAHj7b4fUW+oa1zPr31yMAuA5j3ieYRltVRSKKJKM/IauUqrq4Uv1CWApJJlCZ7EFfPK48+E+BrvKRt/Dx1T7Uu557G/uE6dfqV6Einwg==
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by PR0P264MB1914.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:16b::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5588.10; Sat, 3 Sep
- 2022 15:11:34 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::382a:ed3b:83d6:e5d8]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::382a:ed3b:83d6:e5d8%4]) with mapi id 15.20.5588.017; Sat, 3 Sep 2022
- 15:11:34 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Michael Ellerman <mpe@ellerman.id.au>, "linuxppc-dev@lists.ozlabs.org"
-	<linuxppc-dev@lists.ozlabs.org>
-Subject: Re: [PATCH 2/2] powerpc/mm/64s: Drop p4d_leaf()
-Thread-Topic: [PATCH 2/2] powerpc/mm/64s: Drop p4d_leaf()
-Thread-Index: AQHYv5HcjEm2kHPuo0OTQ8XJPugmMK3Nz8OA
-Date: Sat, 3 Sep 2022 15:11:34 +0000
-Message-ID: <4c607d70-6b1e-46d1-72f2-8bbf0fc40949@csgroup.eu>
-References: <20220903123640.719846-1-mpe@ellerman.id.au>
- <20220903123640.719846-2-mpe@ellerman.id.au>
-In-Reply-To: <20220903123640.719846-2-mpe@ellerman.id.au>
-Accept-Language: fr-FR, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.0
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 2e5ed2d7-193b-4a46-b004-08da8dbe9729
-x-ms-traffictypediagnostic: PR0P264MB1914:EE_
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  VbsIY97oCjh30WiPYPgqqyMREOGFielifUHCMQ1T8S4r0eIpa6mR/dsyNOTXEeuQjc3OZwN3khnIuPkvBZToFeIerHjrYdUX8StQDwtKPaiC2ucq1sQZehMzmWZD7tkHTAzijbaasroLAKK9+ZUYkvrYdPEYCM5ub4zyLbJ1db0qMETEXhW4/sTEUDQQuRrU8OJJcW5duxGtp5N5difZk2MRbTfwWMtKZmb4aDJhndImBs21Oq8LDtcp1lN5JHfdu9VdiV2z/7tXnL1Rvh+7AiBKWqVYwu4j7UJbl+2qXUnrlYIYj6eU2AoXYfUKpC+CAAMBwLbdLTiGxslaBqxLhZbKxZL5M8n2UfT4Aea6G6o5v79/8+kQ/LHKwGGBpeRZY2V1JkPAp5gi79ps3aRz43lZcCt/I+ChPl90WonFmqjRo51IJCbGsegItx2UwYh2IRb7sQ5UgPXFyGA1J06pjoO1eCBhCjfvE3gmZihWJ2NWSR+3ZI6IIJDMqgLNxBnXJg8DwtEjENyzQwve9J9twGc3MRMNVC8jeQ3N61jU8Pctgd5FoSNzLWst+M+2C3DxWJx2npD3csSfTuvyLWRK4WDDm+CiRiMcty9AIBz988P6LBpmNtaktaMxmMJulVvje0y+E+aX9QgvW7zpwAfrQjiGm8V3CEhcmnYMfCUaijE3mPOcok2U2UAyetlW82drxAY1R5juhPbX9s3/mo2riYargZhBCaN/xnSt2IiNnzXVQg/URxvBXB0fftpOu6zBeTeMYiT5yWhKHSjMcJ5AjPWTuK7Q9BGIzr1dfQ8TnudiKzClMnJdhmrfFe3wE80kS/FyFplOtf8fq8SqRnK6KA==
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230016)(4636009)(376002)(346002)(396003)(136003)(39850400004)(366004)(478600001)(26005)(6512007)(2906002)(91956017)(66946007)(76116006)(66476007)(66446008)(8676002)(66556008)(4326008)(64756008)(44832011)(6486002)(8936002)(36756003)(41300700001)(6506007)(31696002)(2616005)(186003)(86362001)(38070700005)(316002)(38100700002)(31686004)(122000001)(110136005)(54906003)(71200400001)(5660300002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?SzlXdThGUFREYkRZSmZtVWo1ZDEwWW5sNytUZ25HcmpUL085c21iT296dFNx?=
- =?utf-8?B?bkJuaGVzc2V6c2N1dS9VMGdQR2poUWQ2MG1GN0hDd3FuVlZRTTlsbDhzRFhS?=
- =?utf-8?B?NGIrY2t4dEdpN2w0N2h3QlJqSDVOVzNrQkJuTU14d3N1dnMwZ2QwcFBEU2hl?=
- =?utf-8?B?cFRjdEt3ZndUNmIvbjVHMk01Zm5PNkVNSHZPdCs3KzA4ZDgwZENaU1Vsclhq?=
- =?utf-8?B?V081dVc0UURQazVmaWlaMVp3T1VTSllwVWJ2Z3czYzRrQTZaSnp3Wi9ueVlY?=
- =?utf-8?B?ek5QVUF1T3k5SEd3ODR2Vys3UGUydzhxMkc2TUhURGFzZXhSaFpiNUhTVlBk?=
- =?utf-8?B?REU0dDNyN1M3WkZFcFNXNlRxYk0yNG05U1Q0VnNZNGJMdk9IMVZvUldhc1Ru?=
- =?utf-8?B?c3BucEJNTHpwYzBhTmZnWnFTL1lhY0g2bFVONWJxQmVOd2llTG9EUWUvQ093?=
- =?utf-8?B?UVkwc1lVVzJCdTZrTk10NmlobGNseWlKZWFEWVNueFVxNitMRFVZeU1zdEFx?=
- =?utf-8?B?dUo2U2ptbmtHODBCYTVISWNPRDhUb1lYaDVGSS9wQnlZUFFhbUNwWDVoV3FE?=
- =?utf-8?B?UzVHY3ViQXlZR1k5YUdFTCtHTTR2cmxXSlR6cVZQNk53YjlWZ2p1bzd3bUFl?=
- =?utf-8?B?L1BYdGF5em5FUUFsbVBPNU1xY3YrTWx2bUY2RmNUVzBYS3FjamExZEZmUVpU?=
- =?utf-8?B?RFp3UjNPbTMwTnZuUk0zSzdhWjNCSzJVbmN4eWRWSjkxNG1qQ085c2FJN3hE?=
- =?utf-8?B?VjdSMUk5aUZhMGJiUnJwSjBHcGZsUmluSEdKNnRBVEhKUmdXWVVSZDJKR1RX?=
- =?utf-8?B?QVltK2ZWRkF2SHpLVzlWNWE0U2h5UlpOSksvZWJLeXpMK1lleExIaFpGWlVl?=
- =?utf-8?B?aEdMdDhlUFQ3dGtJTkdrMTFydGtNMVRmQVVGTGF4dWtJN3ZIdWtTM3Z5SVM3?=
- =?utf-8?B?UXBzaHMyTVcwWHV4UW5aUzVkZ25DaEExbzJhM0dvZld2b1JMVW1aZ0tNQVA0?=
- =?utf-8?B?WlRaOGh2aDRFenh2K292ZmcycTgrRVZ0YldEME9XUFZDZ2UvSzl0dS84ZTZR?=
- =?utf-8?B?MjFJcW1BaWRoUm5iUlU2MVFyRjFteTRpWVAweERtcTdia2lybVF4TmxIZk9Y?=
- =?utf-8?B?eDhQMUtZM2tiUmdUVHBUSTZXdy9iK0tpM1ZjaFpaK3lNRTE5RHU4Y0dZWTJk?=
- =?utf-8?B?RjljMDJ3M3p1SjRqZEYxSHo5b2wzOFpNeUc1bGt4a0N4NzRHZkdIVGtzVDM2?=
- =?utf-8?B?cE9md1RlUGtoS0srYXRaR3gvcFVrZWxtaWN6L2Fibk1Xcm90UUcwWTYxRGh0?=
- =?utf-8?B?V3Q4ZjRSUTBYUHQwcGhJTU13T2wrcmpIemRUK0tHRDNSWXViT0E3ZkJRWDNa?=
- =?utf-8?B?TzdJUnMyTzdrMXF5MERDeEVjUktrQ0d3dXVqaHNWNHF3bmhhN2I3MHBNS21a?=
- =?utf-8?B?TEZCRVE5cTZHRkVqUWQvTFhBRVVUZnZ6OFJtQUh3c1ZBQ2hLNXNZbFEzdTV6?=
- =?utf-8?B?M2c3OWNyN3pmZGR6enZidVAvWXJqSU1FakRHSFlQMUJleUh5UXc1K0lBUVhl?=
- =?utf-8?B?OWlSenhjMlhxNjhIZFEyUUpDVHNFOVN1LzV4M012UUNkVVV1ekV2eHU2cjNW?=
- =?utf-8?B?OG90c1owd0c2NzlrOWtnQk1aSUNBQlM3QlFxMUZHS09IWHQ2Q21rOWVmSTJC?=
- =?utf-8?B?Z2txOUFsODNUMld3OGtod01CRGc2Y0NuQThLVUc0UlIxcEY1ZTI1NHRwblVh?=
- =?utf-8?B?TDNBWXVTZkc5MWh3bXNWY2Q5NWsyaG9STG8xZjRNUnk5azBtMEF1TjlZS3Nu?=
- =?utf-8?B?SWY2RGJ3aG1yYjZvNHRoaDV0TVpBNmNjM29waFpkSDZpRkduZmNjU2VkN0ht?=
- =?utf-8?B?elFUcHVxaVhLalB0elhGYXNUd2JhT2FoSTA2Z2VxeFlITGIvYW40eFdGTG9E?=
- =?utf-8?B?OW10OWo1dnhrNmlFSlhoNlpIVDJRVGJyKytpWVVNcUdjTlhxWFF6clh0MjEv?=
- =?utf-8?B?WGdVeGJxZUhRNGJZRGdtNmQ0Njk1U04wTm5RcWdrUHFhRXN4eERQMWlRMzVW?=
- =?utf-8?B?QzV6Z2ZSa2pYQTZpdmJuMTNmWkUvengwaWpxQ1hkTU9PNnRTVmFpblFhVUhn?=
- =?utf-8?B?NWsxT0lxRUR6OGt5Zkw0RDA0clcrSXB3KzZEZkZ3elV0V1BadFB6L1kzU2Z6?=
- =?utf-8?Q?81sUIAhOiXEQuR5pdolZWt4=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <A9EEA635D770454FA6F1F65F81E170E3@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MKdr85Hp2z2y84
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  4 Sep 2022 01:24:51 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1662218697; x=1693754697;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=OUU011FZbdLoXmMTaSzRBkmckoLbRAk09nLoSqxKOnY=;
+  b=TjibKFNr8ANViIvNvPZ4iXE8/f+D8GmC38RXJIqdiUP3NeiDrEgxKrrw
+   GIUFknIFigdBUmqGPan2yDUlSK7bQKTqg625zRyx0PgkA+WhBftxZuX/p
+   tjaF7zVvHThpeXASsK06c5AoYqV2pInYkjwTjrNOLFnGD5lNTW8l8PkZo
+   X7i/NomfiO2KHj/IgGjwLFJcGAiutAuzJyKzWyc+aI7twmN9yoshRrLmY
+   fyPFqHxy0plOJLGgDPX+7cwVCzOMZielHGsZMuwElhs3Ex6+OghVC5XqC
+   LJcYKe5e5j/d5cOnbZO8c/uaC7cU6yfl/4SMOoVhGSp5MHZiyGwX3S+X5
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10459"; a="283155757"
+X-IronPort-AV: E=Sophos;i="5.93,287,1654585200"; 
+   d="scan'208";a="283155757"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2022 08:24:48 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.93,287,1654585200"; 
+   d="scan'208";a="609267503"
+Received: from lkp-server02.sh.intel.com (HELO 95dfd251caa2) ([10.239.97.151])
+  by orsmga007.jf.intel.com with ESMTP; 03 Sep 2022 08:24:43 -0700
+Received: from kbuild by 95dfd251caa2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1oUV0l-0001p9-0u;
+	Sat, 03 Sep 2022 15:24:43 +0000
+Date: Sat, 3 Sep 2022 23:23:44 +0800
+From: kernel test robot <lkp@intel.com>
+To: Sean Anderson <sean.anderson@seco.com>, Vinod Koul <vkoul@kernel.org>,
+	Kishon Vijay Abraham I <kishon@ti.com>,
+	linux-phy@lists.infradead.org
+Subject: Re: [PATCH v5 4/8] phy: fsl: Add Lynx 10G SerDes driver
+Message-ID: <202209032301.fWPibuKq-lkp@intel.com>
+References: <20220902213721.946138-5-sean.anderson@seco.com>
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2e5ed2d7-193b-4a46-b004-08da8dbe9729
-X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Sep 2022 15:11:34.5585
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: BV3bT1/dayag8MBYAQZznMO8905sTz+rNOYigzn6HJ93xFZPdCB26l8s+DlSi/92sBH87e7OmKzUjEi0wCbNfjkSjqigqegPNQvsIgCKIaU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR0P264MB1914
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220902213721.946138-5-sean.anderson@seco.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -136,27 +71,160 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-mm@kvack.org" <linux-mm@kvack.org>, "aneesh.kumar@linux.ibm.com" <aneesh.kumar@linux.ibm.com>, "mike.kravetz@oracle.com" <mike.kravetz@oracle.com>
+Cc: devicetree@vger.kernel.org, kbuild-all@lists.01.org, Madalin Bucur <madalin.bucur@nxp.com>, Sean Anderson <sean.anderson@seco.com>, Michael Turquette <mturquette@baylibre.com>, Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org, Krzysztof Kozlowski <krzk@kernel.org>, Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh+dt@kernel.org>, Camelia Alexandra Groza <camelia.groza@nxp.com>, Ioana Ciornei <ioana.ciornei@nxp.com>, linuxppc-dev@lists.ozlabs.org, linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCkxlIDAzLzA5LzIwMjIgw6AgMTQ6MzYsIE1pY2hhZWwgRWxsZXJtYW4gYSDDqWNyaXTCoDoN
-Cj4gQmVjYXVzZSA2NC1iaXQgQm9vazNTIHVzZXMgcGd0YWJsZS1ub3A0ZC5oLCB0aGUgUDREIGlz
-IGZvbGRlZCBpbnRvIHRoZQ0KPiBQR0QuIFNvIFA0RCBlbnRyaWVzIGFyZSBhY3R1YWxseSBQR0Qg
-ZW50cmllcywgb3IgdmljZSB2ZXJzYS4NCj4gDQo+IFRoZSBvdGhlciB3YXkgdG8gdGhpbmsgb2Yg
-aXQgaXMgdGhhdCB0aGUgUDREIGlzIGEgc2luZ2xlIGVudHJ5IHBhZ2UNCj4gdGFibGUgYmVsb3cg
-dGhlIFBHRC4gWmVybyBiaXRzIG9mIHRoZSBhZGRyZXNzIGFyZSBuZWVkZWQgdG8gaW5kZXggaW50
-bw0KPiB0aGUgUDRELCB0aGVyZWZvcmUgYSBQNEQgZW50cnkgbWFwcyB0aGUgc2FtZSBzaXplIGFk
-ZHJlc3Mgc3BhY2UgYXMgYSBQR0QNCj4gZW50cnkuDQo+IA0KPiBBcyBleHBsYWluZWQgaW4gdGhl
-IHByZXZpb3VzIGNvbW1pdCwgdGhlcmUgYXJlIG5vIGh1Z2UgcGFnZSBzaXplcw0KPiBzdXBwb3J0
-ZWQgZGlyZWN0bHkgYXQgdGhlIFBHRCBsZXZlbCBvbiA2NC1iaXQgQm9vazNTLCBzbyB0aGVyZSBh
-cmUgYWxzbw0KPiBubyBodWdlIHBhZ2Ugc2l6ZXMgc3VwcG9ydGVkIGF0IHRoZSBQNEQgbGV2ZWwu
-DQo+IA0KPiBUaGVyZWZvcmUgcDRkX2lzX2xlYWYoKSBjYW4gbmV2ZXIgYmUgdHJ1ZSwgc28gZHJv
-cCB0aGUgZGVmaW5pdGlvbiBhbmQNCj4gZmFsbGJhY2sgdG8gdGhlIGRlZmF1bHQgaW1wbGVtZW50
-YXRpb24gdGhhdCBhbHdheXMgcmV0dXJucyBmYWxzZS4NCg0KVGhlbiBoZXJlIGFzIHdlbGwsIHlv
-dSBhcmUgcmVtb3ZpbmcgdGhlIG9ubHkgYXJjaGl0ZWN0dXJlIHdoaWNoIA0KaW1wbGVtZW50cyBh
-IG5vbiAnYWx3YXlzIGZhbHNlJyB2ZXJzaW9uIG9mIHA0ZF9sZWFmKCkuDQoNCng4NiBoYXMgb24g
-dGhhdCBpcyBhbHdheXMgZmFsc2U6DQoNCiNkZWZpbmUgcDRkX2xlYWYJcDRkX2xhcmdlDQpzdGF0
-aWMgaW5saW5lIGludCBwNGRfbGFyZ2UocDRkX3QgcDRkKQ0Kew0KCS8qIE5vIDUxMiBHaUIgcGFn
-ZXMgeWV0ICovDQoJcmV0dXJuIDA7DQp9DQoNClNvLCBzaG91bGQgaXQgYmUgZHJvcHBlZCBhcyB3
-ZWxsIGFuZCBhbGwgdXNlcyByZW1vdmVkIGZyb20gY29yZSBtbSA/DQoNCkNocmlzdG9waGU=
+Hi Sean,
+
+I love your patch! Yet something to improve:
+
+[auto build test ERROR on shawnguo/for-next]
+[also build test ERROR on robh/for-next clk/clk-next arm/for-next arm64/for-next/core rockchip/for-next soc/for-next linus/master v6.0-rc3]
+[cannot apply to xilinx-xlnx/master next-20220901]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Sean-Anderson/phy-Add-support-for-Lynx-10G-SerDes/20220903-053840
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git for-next
+config: arc-allyesconfig (https://download.01.org/0day-ci/archive/20220903/202209032301.fWPibuKq-lkp@intel.com/config)
+compiler: arceb-elf-gcc (GCC) 12.1.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/cbfe9294ef583cc8dffd9cebf9ff325bbcdb4cef
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Sean-Anderson/phy-Add-support-for-Lynx-10G-SerDes/20220903-053840
+        git checkout cbfe9294ef583cc8dffd9cebf9ff325bbcdb4cef
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=arc SHELL=/bin/bash
+
+If you fix the issue, kindly add following tag where applicable
+Reported-by: kernel test robot <lkp@intel.com>
+
+All errors (new ones prefixed by >>):
+
+   drivers/phy/freescale/phy-fsl-lynx-10g-clk.c: In function 'lynx_pll_recalc_rate':
+>> drivers/phy/freescale/phy-fsl-lynx-10g-clk.c:255:25: error: implicit declaration of function 'FIELD_GET' [-Werror=implicit-function-declaration]
+     255 |         u32 frate_sel = FIELD_GET(PLLaCR0_FRATE_SEL, cr0);
+         |                         ^~~~~~~~~
+   drivers/phy/freescale/phy-fsl-lynx-10g-clk.c: In function 'lynx_pll_set_rate':
+>> drivers/phy/freescale/phy-fsl-lynx-10g-clk.c:340:16: error: implicit declaration of function 'FIELD_PREP' [-Werror=implicit-function-declaration]
+     340 |         cr0 |= FIELD_PREP(PLLaCR0_RFCLK_SEL, rfclk_sel);
+         |                ^~~~~~~~~~
+   drivers/phy/freescale/phy-fsl-lynx-10g-clk.c: In function 'lynx_clk_init':
+>> drivers/phy/freescale/phy-fsl-lynx-10g-clk.c:466:9: error: implicit declaration of function 'kfree'; did you mean 'vfree'? [-Werror=implicit-function-declaration]
+     466 |         kfree(ref_name);
+         |         ^~~~~
+         |         vfree
+   cc1: some warnings being treated as errors
+
+
+vim +/FIELD_GET +255 drivers/phy/freescale/phy-fsl-lynx-10g-clk.c
+
+   249	
+   250	static unsigned long lynx_pll_recalc_rate(struct clk_hw *hw,
+   251						  unsigned long parent_rate)
+   252	{
+   253		struct lynx_clk *clk = lynx_pll_to_clk(hw);
+   254		u32 cr0 = lynx_read(clk, PLLaCR0(clk->idx));
+ > 255		u32 frate_sel = FIELD_GET(PLLaCR0_FRATE_SEL, cr0);
+   256		u32 rfclk_sel = FIELD_GET(PLLaCR0_RFCLK_SEL, cr0);
+   257		u32 ratio = lynx_pll_ratio(frate_sel, rfclk_sel);
+   258		unsigned long ret;
+   259	
+   260		/* Ensure that the parent matches our rfclk selector */
+   261		if (rfclk_sel == lynx_rfclk_to_sel(parent_rate))
+   262			ret = mult_frac(parent_rate, ratio, HZ_PER_KHZ);
+   263		else
+   264			ret = 0;
+   265	
+   266		dev_dbg(clk->dev, "recalc pll%d new=%llu parent=%lu\n", clk->idx,
+   267			(u64)ret * HZ_PER_KHZ, parent_rate);
+   268		return ret;
+   269	}
+   270	
+   271	static long lynx_pll_round_rate(struct clk_hw *hw, unsigned long rate_khz,
+   272					unsigned long *parent_rate)
+   273	{
+   274		int frate_sel, rfclk_sel;
+   275		struct lynx_clk *clk = lynx_pll_to_clk(hw);
+   276		u32 ratio;
+   277	
+   278		dev_dbg(clk->dev, "round pll%d new=%llu parent=%lu\n", clk->idx,
+   279			(u64)rate_khz * HZ_PER_KHZ, *parent_rate);
+   280	
+   281		frate_sel = lynx_frate_to_sel(rate_khz);
+   282		if (frate_sel < 0)
+   283			return frate_sel;
+   284	
+   285		/* Try the current parent rate */
+   286		rfclk_sel = lynx_rfclk_to_sel(*parent_rate);
+   287		if (rfclk_sel >= 0) {
+   288			ratio = lynx_pll_ratio(frate_sel, rfclk_sel);
+   289			if (ratio)
+   290				return mult_frac(*parent_rate, ratio, HZ_PER_KHZ);
+   291		}
+   292	
+   293		/* Try all possible parent rates */
+   294		for (rfclk_sel = 0;
+   295		     rfclk_sel < ARRAY_SIZE(rfclk_sel_map);
+   296		     rfclk_sel++) {
+   297			unsigned long new_parent_rate;
+   298	
+   299			ratio = lynx_pll_ratio(frate_sel, rfclk_sel);
+   300			if (!ratio)
+   301				continue;
+   302	
+   303			/* Ensure the reference clock can produce this rate */
+   304			new_parent_rate = rfclk_sel_map[rfclk_sel];
+   305			new_parent_rate = clk_hw_round_rate(clk->ref, new_parent_rate);
+   306			if (rfclk_sel != lynx_rfclk_to_sel(new_parent_rate))
+   307				continue;
+   308	
+   309			*parent_rate = new_parent_rate;
+   310			return mult_frac(new_parent_rate, ratio, HZ_PER_KHZ);
+   311		}
+   312	
+   313		return -EINVAL;
+   314	}
+   315	
+   316	static int lynx_pll_set_rate(struct clk_hw *hw, unsigned long rate_khz,
+   317				   unsigned long parent_rate)
+   318	{
+   319		int frate_sel, rfclk_sel;
+   320		struct lynx_clk *clk = lynx_pll_to_clk(hw);
+   321		u32 ratio, cr0 = lynx_read(clk, PLLaCR0(clk->idx));
+   322	
+   323		dev_dbg(clk->dev, "set rate pll%d new=%llu parent=%lu\n", clk->idx,
+   324			(u64)rate_khz * HZ_PER_KHZ, parent_rate);
+   325	
+   326		frate_sel = lynx_frate_to_sel(rate_khz);
+   327		if (frate_sel < 0)
+   328			return frate_sel;
+   329	
+   330		rfclk_sel = lynx_rfclk_to_sel(parent_rate);
+   331		if (rfclk_sel < 0)
+   332			return rfclk_sel;
+   333	
+   334		ratio = lynx_pll_ratio(frate_sel, rfclk_sel);
+   335		if (!ratio)
+   336			return -EINVAL;
+   337	
+   338		lynx_pll_stop(clk);
+   339		cr0 &= ~(PLLaCR0_RFCLK_SEL | PLLaCR0_FRATE_SEL);
+ > 340		cr0 |= FIELD_PREP(PLLaCR0_RFCLK_SEL, rfclk_sel);
+   341		cr0 |= FIELD_PREP(PLLaCR0_FRATE_SEL, frate_sel);
+   342		lynx_write(clk, cr0, PLLaCR0(clk->idx));
+   343		/* Don't bother resetting if it's off */
+   344		if (cr0 & PLLaCR0_POFF)
+   345			return 0;
+   346		return lynx_pll_reset(clk);
+   347	}
+   348	
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
