@@ -1,50 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F6DF5AC44C
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Sep 2022 14:37:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 045BC5AC589
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Sep 2022 18:58:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MLB4C6NVDz3bmK
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Sep 2022 22:37:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MLHsC6wzTz3blY
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Sep 2022 02:58:07 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Bl2umHW2;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XZSK/o5y;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MLB3b43ccz2xJL
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  4 Sep 2022 22:36:43 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Bl2umHW2;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XZSK/o5y;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4MLB3Z0VRMz4x7X;
-	Sun,  4 Sep 2022 22:36:42 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1662295002;
-	bh=H+KEsahWTtHRKpMd36IjmCM/6vqd9S1NJOfa2HWcW8Y=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Bl2umHW2VCQdQeA5FBP2RLoYNkk303KJGrDPOSbqLHc7FBPvMbWrW1lswFAoyYGj/
-	 xt5QNpoN3ziTxFRxRtbgn8om0SbWb4L/WN2/Vl6OCWPUAHEvyL1iI5XLQtur9B8K2C
-	 rdFrXdA1kWGS4OJXI8uGFRsuvEuETc2IXkDGhnx5ivGOltU3N0jCX69QETafkPpny4
-	 Ur4tOQpUEmwSKki5G7Z27TuYFSufSyhFo9ta1O8ORQwveT/EnQkkSz14URn/uX9tnK
-	 ILW4xcdxZzmIfKCPqJUqTnhZQ8o9xJ2+LHL+ABB5btun7ZGnSBWp1i6cPhPXiUu7f7
-	 qrIbXe277b2tg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-6.0-4 tag
-Date: Sun, 04 Sep 2022 22:36:31 +1000
-Message-ID: <87fsh7tiy8.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MLHrS4yrJz2xHw
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Sep 2022 02:57:27 +1000 (AEST)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 284GN2mi021856;
+	Sun, 4 Sep 2022 16:57:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=YfNxwyPi16+FUS5Y5zzU9QkpeeP1B3L48uY4NJ8juLc=;
+ b=XZSK/o5y+QXg24S7GDwRTWsv9GvetVXr+mSAw8qnzPZIg2zUTbnVTJsIJAA4OjHrVQ5h
+ wgUfO+BB9oiqlAAOz7em2eIs+IUHT/zVf0kw29bvYQHcJA+/KNAkDSQrFICdSU+Za4+u
+ gdzdwTAj2WuYi+QHrkiy6ImNOu+uB2a/QmBOM33LEdq97eUE6nHOCDR5ESGMDIRng293
+ wA2AzgSLxK4eDcpf+NSWZbTclTep5sM/6Gtlll8dsql9pfjuE7F7jOgCgkFLw1901yW6
+ teGx/nXLtFOqAHmpXMquSKAgsTmdcyCAQPE7oJTa4cauC4qlQwQTh17P+mdyunUxm/09 YA== 
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.11])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3jcyg8re6b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 04 Sep 2022 16:57:18 +0000
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+	by ppma03dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 284GoRhT015418;
+	Sun, 4 Sep 2022 16:57:18 GMT
+Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com [9.57.198.26])
+	by ppma03dal.us.ibm.com with ESMTP id 3jbxj9jcpq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 04 Sep 2022 16:57:18 +0000
+Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com [9.57.199.111])
+	by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 284GvHrx12780032
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sun, 4 Sep 2022 16:57:17 GMT
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 504F1AC05E;
+	Sun,  4 Sep 2022 16:57:17 +0000 (GMT)
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8D819AC059;
+	Sun,  4 Sep 2022 16:57:15 +0000 (GMT)
+Received: from skywalker.linux.ibm.com (unknown [9.43.81.44])
+	by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
+	Sun,  4 Sep 2022 16:57:15 +0000 (GMT)
+X-Mailer: emacs 29.0.50 (via feedmail 11-beta-1 I)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 1/2] powerpc/mm/64s: Drop pgd_huge()
+In-Reply-To: <20220903123640.719846-1-mpe@ellerman.id.au>
+References: <20220903123640.719846-1-mpe@ellerman.id.au>
+Date: Sun, 04 Sep 2022 22:27:11 +0530
+Message-ID: <877d2jaxi0.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: jFBbwKC4s2WG0HAZgKF7JE1Uw0M247ru
+X-Proofpoint-GUID: jFBbwKC4s2WG0HAZgKF7JE1Uw0M247ru
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-09-04_02,2022-08-31_03,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 suspectscore=0
+ malwarescore=0 bulkscore=0 spamscore=0 impostorscore=0 phishscore=0
+ clxscore=1015 adultscore=0 lowpriorityscore=0 priorityscore=1501
+ mlxlogscore=845 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2207270000 definitions=main-2209040084
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,103 +88,115 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: pali@kernel.org, kjain@linux.ibm.com, masahiroy@kernel.org, linux-kernel@vger.kernel.org, nathan@kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: linux-mm@kvack.org, mike.kravetz@oracle.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA256
+Michael Ellerman <mpe@ellerman.id.au> writes:
 
-Hi Linus,
+>
+> On powerpc there are two ways for huge pages to be represented in the
+> top level page table, aka PGD (Page Global Directory).
+>
+> If the address space mapped by an individual PGD entry does not
+> correspond to a given huge page size, then the PGD entry points to a
+> non-standard page table, known as a "hugepd" (Huge Page Directory).
+> The hugepd contains some number of huge page PTEs sufficient to map the
+> address space with the given huge page size.
+>
+> On the other hand, if the address space mapped by an individual PGD
+> entry does correspond exactly to a given huge page size, that PGD entry
+> is used to directly encode the huge page PTE in place. In this case the
+> pgd_huge() wrapper indicates to generic code that the PGD entry is
+> actually a huge page PTE.
+>
+> This commit deals with the pgd_huge() case only, it does nothing with
+> respect to the hugepd case.
+>
+> Over time the size of the virtual address space supported on powerpc has
+> increased several times, which means the location at which huge pages
+> can sit in the tree has also changed. There have also been new huge page
+> sizes added, with the introduction of the Radix MMU.
+>
+> On Power9 and later with the Radix MMU, the largest huge page size in
+> any implementation is 1GB.
+>
+> Since the introduction of Radix, 1GB entries have been supported at the
+> PUD level, with both 4K and 64K base page size. Radix has never had a
+> supported huge page size at the PGD level.
+>
+> On Power8 or earlier, which uses the Hash MMU, or Power9 or later with
+> the Hash MMU enabled, the largest huge page size is 16GB.
+>
+> Using the Hash MMU and a base page size of 4K, 16GB has never been a
+> supported huge page size at the PGD level, due to the geometry being
+> incompatible. The two supported huge page sizes (16M & 16GB) both use
+> the hugepd format.
+>
+> Using the Hash MMU and a base page size of 64K, 16GB pages were
+> supported in the past at the PGD level.
+>
+> However in commit ba95b5d03596 ("powerpc/mm/book3s/64: Rework page table
+> geometry for lower memory usage") the page table layout was reworked to
+> shrink the size of the PGD.
+>
+> As a result the 16GB page size now fits at the PUD level when using 64K
+> base page size.
+>
+> Therefore there are no longer any supported configurations where
+> pgd_huge() can be true, so drop the definitions for pgd_huge(), and
+> fallback to the generic definition which is always false.
+>
 
-Please pull some more powerpc fixes for 6.0:
+Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 
-The following changes since commit 1c23f9e627a7b412978b4e852793c5e3c3efc555:
-
-  Linux 6.0-rc2 (2022-08-21 17:32:54 -0700)
-
-are available in the git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/po=
-werpc-6.0-4
-
-for you to fetch changes up to 6cf07810e9ef8535d60160d13bf0fd05f2af38e7:
-
-  powerpc/papr_scm: Ensure rc is always initialized in papr_scm_pmu_registe=
-r() (2022-09-02 18:55:11 +1000)
-
-- ------------------------------------------------------------------
-powerpc fixes for 6.0 #4
-
- - Fix handling of PCI domains in /proc on 32-bit systems using the recentl=
-y added support
-   for numbering buses from zero for each domain.
-
- - A fix and a revert for some changes to use READ/WRITE_ONCE() which cause=
-d problems with
-   KASAN enabled due to sanitisation calls being introduced in low-level pa=
-ths that can't
-   cope with it.
-
- - Fix build errors on 32-bit caused by the syscall table being misaligned =
-sometimes.
-
- - Two fixes to get IBM Cell native machines booting again, which had bit-r=
-otted while my
-   QS22 was temporarily out of action.
-
- - Fix the papr_scm driver to not assume the order of events returned by th=
-e hypervisor is
-   stable, and a related compile fix.
-
-Thanks to: Aneesh Kumar K.V, Christophe Leroy, Jordan Niethe, Kajol Jain, M=
-asahiro Yamada,
-Nathan Chancellor, Pali Roh=C3=A1r, Vaibhav Jain, Zhouyi Zhou.
-
-- ------------------------------------------------------------------
-Christophe Leroy (1):
-      powerpc: Fix hard_irq_disable() with sanitizer
-
-Kajol Jain (1):
-      powerpc/papr_scm: Fix nvdimm event mappings
-
-Masahiro Yamada (1):
-      powerpc: align syscall table for ppc32
-
-Michael Ellerman (3):
-      Revert "powerpc: Remove unused FW_FEATURE_NATIVE references"
-      powerpc/rtas: Fix RTAS MSR[HV] handling for Cell
-      Revert "powerpc/irq: Don't open code irq_soft_mask helpers"
-
-Nathan Chancellor (1):
-      powerpc/papr_scm: Ensure rc is always initialized in papr_scm_pmu_reg=
-ister()
-
-Pali Roh=C3=A1r (1):
-      powerpc/pci: Enable PCI domains in /proc when PCI bus numbers are not=
- unique
-
-
- arch/powerpc/include/asm/firmware.h       |  8 ++
- arch/powerpc/include/asm/hw_irq.h         | 46 ++++++++--
- arch/powerpc/kernel/pci_32.c              |  9 ++
- arch/powerpc/kernel/rtas_entry.S          |  4 +
- arch/powerpc/kernel/systbl.S              |  1 +
- arch/powerpc/platforms/pseries/papr_scm.c | 90 +++++++-------------
- 6 files changed, 89 insertions(+), 69 deletions(-)
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAmMUm5QACgkQUevqPMjh
-pYAfxA//ZxJ628HdOELmRQJ1d5jGza0ijHDT5gEH2w7KlJ0AfxiHQ+QEs90V0X4c
-Kv8SPmjwp+j/u1374qsLhwpn4v92mri8hA7mZyFtF5rECr2glYWd1G8bhEoqznMS
-A0o51vaREzwuuZ/8Yy2zERm5oBUMNyg3Xt7JJBlDAs927D039UezWKbUHsIrD8SS
-8NWX9bUWNCuzzr66OD8fF8AT7zv3u1mDYeOqph14Lf6RVoJi0q/RLa7+PIsVxOpJ
-sq0CsbdZ7cc/FAYKY92y5eDcYK6FLEr1LLeb4ZmXwEIAoe9jzI5X6vykFJXoL8JD
-YmwZNXA9FFTWRN+X9RhBp+DJSnHY57kHn6es4Xgv5juroeP9YnnA/LmgPDrt6W15
-jB7xkupxDhexZSMF/X+6Q67IY07mTw5Hrb6c/Kfkqk+KF75ryJKjQf35LY1fnRJP
-yMIzVubN/fngIlup//C8YzP7OdwJRqEJNfphR+zMF8+5xBJbP9X1AiBVQm1N7eeM
-NzrtvgZy/zAueErRyGR4OoaM8OP3eIayAQCFACiI8a9IjT5OGMDluxpfX9Uf08SX
-7w6k31Q8namY8HrUT04mo2tXTcUHkjibCCY73q2YFV/2jygJp8UdbpYxmVTAe1PB
-oWNanRelqN7cBnw46NrTDRDYEZcqj2iBCWeDlOZVH1/wcDT07g0=3D
-=3DSjDB
------END PGP SIGNATURE-----
+> Fixes: ba95b5d03596 ("powerpc/mm/book3s/64: Rework page table geometry for lower memory usage")
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> ---
+>  arch/powerpc/include/asm/book3s/64/pgtable-4k.h  | 10 ----------
+>  arch/powerpc/include/asm/book3s/64/pgtable-64k.h |  9 ---------
+>  2 files changed, 19 deletions(-)
+>
+> diff --git a/arch/powerpc/include/asm/book3s/64/pgtable-4k.h b/arch/powerpc/include/asm/book3s/64/pgtable-4k.h
+> index 4e697bc2f4cd..48f21820afe2 100644
+> --- a/arch/powerpc/include/asm/book3s/64/pgtable-4k.h
+> +++ b/arch/powerpc/include/asm/book3s/64/pgtable-4k.h
+> @@ -26,16 +26,6 @@ static inline int pud_huge(pud_t pud)
+>  	return 0;
+>  }
+>  
+> -static inline int pgd_huge(pgd_t pgd)
+> -{
+> -	/*
+> -	 * leaf pte for huge page
+> -	 */
+> -	if (radix_enabled())
+> -		return !!(pgd_raw(pgd) & cpu_to_be64(_PAGE_PTE));
+> -	return 0;
+> -}
+> -#define pgd_huge pgd_huge
+>  /*
+>   * With radix , we have hugepage ptes in the pud and pmd entries. We don't
+>   * need to setup hugepage directory for them. Our pte and page directory format
+> diff --git a/arch/powerpc/include/asm/book3s/64/pgtable-64k.h b/arch/powerpc/include/asm/book3s/64/pgtable-64k.h
+> index 34d1018896b3..2fce3498b000 100644
+> --- a/arch/powerpc/include/asm/book3s/64/pgtable-64k.h
+> +++ b/arch/powerpc/include/asm/book3s/64/pgtable-64k.h
+> @@ -30,15 +30,6 @@ static inline int pud_huge(pud_t pud)
+>  	return !!(pud_raw(pud) & cpu_to_be64(_PAGE_PTE));
+>  }
+>  
+> -static inline int pgd_huge(pgd_t pgd)
+> -{
+> -	/*
+> -	 * leaf pte for huge page
+> -	 */
+> -	return !!(pgd_raw(pgd) & cpu_to_be64(_PAGE_PTE));
+> -}
+> -#define pgd_huge pgd_huge
+> -
+>  /*
+>   * With 64k page size, we have hugepage ptes in the pgd and pmd entries. We don't
+>   * need to setup hugepage directory for them. Our pte and page directory format
+> -- 
+> 2.37.2
