@@ -2,56 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D2085AD421
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Sep 2022 15:40:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E86395AD4A5
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Sep 2022 16:21:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MLqR81GS2z3blS
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Sep 2022 23:40:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MLrKV6Drmz3c73
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Sep 2022 00:21:02 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Sh4RtzZv;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=h00m5mDR;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=patchwork-bot+netdevbpf@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Sh4RtzZv;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=h00m5mDR;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MLqQb3tPWz2xGB
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Sep 2022 23:40:23 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id F27CE611B7;
-	Mon,  5 Sep 2022 13:40:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 7B63CC43140;
-	Mon,  5 Sep 2022 13:40:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1662385218;
-	bh=6OkNTRmZgp9w9Gp+m6vHUoevwgIKFYL8Zii/ZwPojUY=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Sh4RtzZvi+GizYPg7PV2g9FMRtjd+Mkk4Q/0HelEX+759PzbasbrSubnRiIZ9BO1P
-	 Dn32m3gt2GWkXsVTk3iLvvT5zQXXhxMsMxwOEHFq0DodysCkMEfI9NgEFOC5yoU0NU
-	 jep/Qy9f5R2ThWeCT5kzfEbj2QcPVyRkGQ0LdMz6RlhbnUafWaH9JXdj/6GGtAM8dT
-	 kl7GyN5Fn1+YXK1wiULWOe4K1F4W7+SHyU84Pm8s4kvqxMVLUZ1FfnlL2vCgc3esWS
-	 z/ITpd4I22zVSHNucY2vySajmO/UABY1KOOgoE96FpUPhyRlE8ciMYSJZEQjDoupva
-	 miZhTHv3m7fmg==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 5F17FC73FE0;
-	Mon,  5 Sep 2022 13:40:18 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MLrJ571gSz2yZS
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Sep 2022 00:19:49 +1000 (AEST)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 285D0ceM011284;
+	Mon, 5 Sep 2022 14:19:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=FraiXt2QxafFMXEBwYIVY6B6bOaa1PFeujW1/oKLjsQ=;
+ b=h00m5mDRVjJc94qvtT3YyCPs/FYSkyu9RHo4PP6aoqfXa0b8ugBokFVgG17cp6qRmDnT
+ pUJMcQtG1aRlNmq4YxrQr+MOybxhOhcp99BlG38uUZWqsiUDuRA2G4a3DAMF3nR39Zd8
+ 07LQ59xMnS3kBPjb1jK8Olc+8Lav6GODOleL2cRYu4LVCdmnQDhHjfsVrNp325AOvWIz
+ qy28jq4APaUpdwBa3bufPgI5je4tHX5tLiayyMqCq7YMwyfz4+/wPbLNte19a1cOgpIp
+ zYObo6OZg/vXswk/uLf13OaKQ//D9G+Ag8pl1vrDlGQGQU1bwg4xE3mqpjwB+KL8jVWO Kg== 
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3jdhm5affh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 05 Sep 2022 14:19:38 +0000
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+	by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 285E85hw001848;
+	Mon, 5 Sep 2022 14:19:37 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+	by ppma01fra.de.ibm.com with ESMTP id 3jbxj8svd7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 05 Sep 2022 14:19:36 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
+	by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 285EJX6430736716
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 5 Sep 2022 14:19:33 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8E982AE04D;
+	Mon,  5 Sep 2022 14:19:33 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8D1DCAE045;
+	Mon,  5 Sep 2022 14:19:31 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.43.39.18])
+	by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Mon,  5 Sep 2022 14:19:31 +0000 (GMT)
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+To: acme@kernel.org, jolsa@kernel.org
+Subject: [PATCH V2 1/2] tools/perf: Fix out of bound access to affinity "sched_cpus"
+Date: Mon,  5 Sep 2022 19:49:28 +0530
+Message-Id: <20220905141929.7171-1-atrajeev@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v5 00/14] net: dpaa: Cleanups in preparation for
- phylink conversion (part 2)
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id:  <166238521838.32478.17433933785506172537.git-patchwork-notify@kernel.org>
-Date: Mon, 05 Sep 2022 13:40:18 +0000
-References: <20220902215737.981341-1-sean.anderson@seco.com>
-In-Reply-To: <20220902215737.981341-1-sean.anderson@seco.com>
-To: Sean Anderson <sean.anderson@seco.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: -bf6OPbPgPdRbus08R138QXWKuHYfxlk
+X-Proofpoint-ORIG-GUID: -bf6OPbPgPdRbus08R138QXWKuHYfxlk
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
+ definitions=2022-09-05_09,2022-09-05_03,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ phishscore=0 mlxlogscore=999 spamscore=0 suspectscore=0 impostorscore=0
+ lowpriorityscore=0 malwarescore=0 clxscore=1015 adultscore=0 mlxscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2207270000 definitions=main-2209050067
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,62 +86,83 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: madalin.bucur@nxp.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, leoyang.li@nxp.com, edumazet@google.com, camelia.groza@nxp.com, kuba@kernel.org, pabeni@redhat.com, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net, linux-arm-kernel@lists.infradead.org
+Cc: maddy@linux.vnet.ibm.com, rnsastry@linux.ibm.com, linux-perf-users@vger.kernel.org, kjain@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello:
+The affinity code in "affinity_set" function access array
+named "sched_cpus". The size for this array is allocated in
+affinity_setup function which is nothing but value from
+get_cpu_set_size. This is used to contain the cpumask value
+for each cpu. While setting bit for each cpu, it calls
+"set_bit" function which access index in sched_cpus array.
+If we provide a command-line option to -C which is more than
+the number of CPU's present in the system, the set_bit could
+access an array member which is out-of the array size. This
+is because currently, there is no boundary check for the CPU.
+This will result in seg fault:
 
-This series was applied to netdev/net-next.git (master)
-by David S. Miller <davem@davemloft.net>:
+<<>>
+ ./perf stat -C 12323431 ls
+Perf can support 2048 CPUs. Consider raising MAX_NR_CPUS
+Segmentation fault (core dumped)
+<<>>
 
-On Fri,  2 Sep 2022 17:57:22 -0400 you wrote:
-> This series contains several cleanup patches for dpaa/fman. While they
-> are intended to prepare for a phylink conversion, they stand on their
-> own. This series was originally submitted as part of [1].
-> 
-> [1] https://lore.kernel.org/netdev/20220715215954.1449214-1-sean.anderson@seco.com
-> 
-> Changes in v5:
-> - Reduce line length of tgec_config
-> - Reduce line length of qman_update_cgr_safe
-> - Rebase onto net-next/master
-> 
-> [...]
+Fix this by adding boundary check for the array.
 
-Here is the summary with links:
-  - [net-next,v5,01/14] net: fman: Move initialization to mac-specific files
-    https://git.kernel.org/netdev/net-next/c/302376feec1d
-  - [net-next,v5,02/14] net: fman: Mark mac methods static
-    https://git.kernel.org/netdev/net-next/c/1257c9623deb
-  - [net-next,v5,03/14] net: fman: Inline several functions into initialization
-    (no matching commit)
-  - [net-next,v5,04/14] net: fman: Remove internal_phy_node from params
-    https://git.kernel.org/netdev/net-next/c/45fa34bfaa52
-  - [net-next,v5,05/14] net: fman: Map the base address once
-    https://git.kernel.org/netdev/net-next/c/262f2b782e25
-  - [net-next,v5,06/14] net: fman: Pass params directly to mac init
-    (no matching commit)
-  - [net-next,v5,07/14] net: fman: Use mac_dev for some params
-    https://git.kernel.org/netdev/net-next/c/19c788b144e2
-  - [net-next,v5,08/14] net: fman: Specify type of mac_dev for exception_cb
-    https://git.kernel.org/netdev/net-next/c/5b6acb554065
-  - [net-next,v5,09/14] net: fman: Clean up error handling
-    https://git.kernel.org/netdev/net-next/c/aedbeb4e597e
-  - [net-next,v5,10/14] net: fman: Change return type of disable to void
-    https://git.kernel.org/netdev/net-next/c/901bdff2f529
-  - [net-next,v5,11/14] net: dpaa: Use mac_dev variable in dpaa_netdev_init
-    https://git.kernel.org/netdev/net-next/c/fca4804f68cf
-  - [net-next,v5,12/14] soc: fsl: qbman: Add helper for sanity checking cgr ops
-    https://git.kernel.org/netdev/net-next/c/d0e17a4653ce
-  - [net-next,v5,13/14] soc: fsl: qbman: Add CGR update function
-    https://git.kernel.org/netdev/net-next/c/914f8b228ede
-  - [net-next,v5,14/14] net: dpaa: Adjust queue depth on rate change
-    https://git.kernel.org/netdev/net-next/c/ef2a8d5478b9
+After the fix from powerpc system:
 
-You are awesome, thank you!
+<<>>
+./perf stat -C 12323431 ls 1>out
+Perf can support 2048 CPUs. Consider raising MAX_NR_CPUS
+
+ Performance counter stats for 'CPU(s) 12323431':
+
+   <not supported> msec cpu-clock
+   <not supported>      context-switches
+   <not supported>      cpu-migrations
+   <not supported>      page-faults
+   <not supported>      cycles
+   <not supported>      instructions
+   <not supported>      branches
+   <not supported>      branch-misses
+
+       0.001192373 seconds time elapsed
+<<>>
+
+Reported-by: Nageswara Sastry <rnsastry@linux.ibm.com>
+Tested-by: Nageswara Sastry <rnsastry@linux.ibm.com>
+Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+---
+Changelog:
+ From v1 -> v2:
+ Addressed review comment from Jiri Olsa by changing condition
+ check to directly use "cpu_set_size * 8" for comparing with the
+ cpu number.
+
+ tools/perf/util/affinity.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/tools/perf/util/affinity.c b/tools/perf/util/affinity.c
+index 4d216c0dc425..4ee96b3c755b 100644
+--- a/tools/perf/util/affinity.c
++++ b/tools/perf/util/affinity.c
+@@ -49,8 +49,14 @@ void affinity__set(struct affinity *a, int cpu)
+ {
+ 	int cpu_set_size = get_cpu_set_size();
+ 
+-	if (cpu == -1)
++	/*
++	 * Return:
++	 * - if cpu is -1
++	 * - restrict out of bound access to sched_cpus
++	 */
++	if (cpu == -1 || ((cpu >= (cpu_set_size * 8))))
+ 		return;
++
+ 	a->changed = true;
+ 	set_bit(cpu, a->sched_cpus);
+ 	/*
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.35.1
 
