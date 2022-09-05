@@ -2,96 +2,96 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14D3F5AD049
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Sep 2022 12:40:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C39DD5AD072
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Sep 2022 12:46:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MLlQW6MBnz30M2
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Sep 2022 20:40:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MLlYY4dSYz3bWM
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Sep 2022 20:46:09 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=B/aniOiv;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Wk/PdXZQ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=B/aniOiv;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Wk/PdXZQ;
 	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MLlPm6czDz2xG6
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Sep 2022 20:39:24 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2858uIq9028977;
-	Mon, 5 Sep 2022 10:38:02 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MLlXv1FVMz2xGH
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Sep 2022 20:45:34 +1000 (AEST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 285ACOXd024607;
+	Mon, 5 Sep 2022 10:45:14 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : subject :
- to : cc : references : in-reply-to : message-id : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=GBTY4FYcuHfI5ueJVBWzYH7Pdxgm9BwW83RFqwxuwTM=;
- b=B/aniOivLHgu+Gt43dEPhqyrNK0eExt7f+Bfswv7tYF09LJWiSI6ocEq5taoGZfyZW2X
- CC2CscMXFaLppEALKf4Ctqt4miTp34L7nuTqD1usNYW6fQEpU8JX6TVafBUaxuxUHQYK
- pSy+pKnu+gmkV/cNFuC66g9qzHyCk6vm0+Z8c3KX6JKjbVnWzDnE4/CLpKycH9cOy0i3
- +0xwFi3IBAj5IeQUmr8HqRW5vlQcF9qgoHcHyebc6aji/G4EagT8i6ZuLq8CCxcAMPp5
- /Z75U2SYHWsIy6Sf5ypUTtVW4dVKcDICEbpRQQGPa1yRgYQATK7Cju7yoIA/jqqi+k/r mw== 
+ to : cc : references : in-reply-to : mime-version : message-id :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=hsEqYXYozBFki59VxB0JOwy/pXo0nUvqVI5a/CKBHLc=;
+ b=Wk/PdXZQnsVhmCeSihV43GpwnY+qiQYY7CdwQj3dkUfBwAipvn5iGbGtjniqBrxqjn80
+ s8pObKCKWsY582SZdZkdR6q8RAcAl+FG49V8Myev8kaATGqBoLPAcjoaIJJEjRHyiLbn
+ uRy9VOUgzPbKhMR2/H0+bG+F1owu8NLaNG2TrNxw3HbBppWJsaydx7yIuP2kUCmuTluG
+ fiVMWM4DbvIYxU4a0TXsqTpTG1ZrVlSP+IvbEPz+i+XE9gaufNwnhTB0BwfVwHiOHSxr
+ armsBZChGl4SmW1cD3/jfzxpqs2XbQQ4uOqDLVogz/kyyK5BDlKl2L4WgWW2Z7X4k+Qh mw== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jde1sb5dg-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jdf5a10as-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 05 Sep 2022 10:38:02 +0000
-Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2859pIaZ026973;
-	Mon, 5 Sep 2022 10:38:02 GMT
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jde1sb5c2-1
+	Mon, 05 Sep 2022 10:45:14 +0000
+Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 285AaojN017948;
+	Mon, 5 Sep 2022 10:45:14 GMT
+Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com [149.81.74.108])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jdf5a109q-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 05 Sep 2022 10:38:01 +0000
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
-	by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 285Aa3Ma030440;
-	Mon, 5 Sep 2022 10:38:00 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
-	by ppma01fra.de.ibm.com with ESMTP id 3jbxj8spn4-1
+	Mon, 05 Sep 2022 10:45:13 +0000
+Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
+	by ppma05fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 285AYTSY003083;
+	Mon, 5 Sep 2022 10:45:11 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+	by ppma05fra.de.ibm.com with ESMTP id 3jbxj8sq47-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 05 Sep 2022 10:37:59 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
-	by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 285AYVtT38601170
+	Mon, 05 Sep 2022 10:45:11 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
+	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 285Aj85Y37749096
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 5 Sep 2022 10:34:31 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5A7A0A405B;
-	Mon,  5 Sep 2022 10:37:57 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E5AEBA4059;
-	Mon,  5 Sep 2022 10:37:56 +0000 (GMT)
+	Mon, 5 Sep 2022 10:45:08 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B693442045;
+	Mon,  5 Sep 2022 10:45:08 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4D81C42042;
+	Mon,  5 Sep 2022 10:45:08 +0000 (GMT)
 Received: from localhost (unknown [9.43.114.209])
-	by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Mon,  5 Sep 2022 10:37:56 +0000 (GMT)
-Date: Mon, 05 Sep 2022 16:07:55 +0530
+	by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Mon,  5 Sep 2022 10:45:08 +0000 (GMT)
+Date: Mon, 05 Sep 2022 16:15:07 +0530
 From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: [PATCH v2 15/16] objtool/powerpc: Enable objtool to be built on
- ppc
+Subject: Re: [PATCH v2 16/16] objtool/powerpc: Add --mcount specific
+ implementation
 To: Christophe Leroy <christophe.leroy@csgroup.eu>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        Sathvika Vasireddy <sv@linux.ibm.com>
+        Segher Boessenkool
+	<segher@kernel.crashing.org>
 References: <20220829055223.24767-1-sv@linux.ibm.com>
-	<20220829055223.24767-16-sv@linux.ibm.com>
-	<33924523-5437-eb9a-116a-8e249ce99bd2@csgroup.eu>
-In-Reply-To: <33924523-5437-eb9a-116a-8e249ce99bd2@csgroup.eu>
-User-Agent: astroid/4d6b06ad (https://github.com/astroidmail/astroid)
-Message-Id: <1662373828.xrnduc1uco.naveen@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: jgjlZb4ObY8iiB9fAnBgAt3jhZYYSwtD
-X-Proofpoint-GUID: iF1ZGt_6bnuxfTVL8qnCUkP4fSCCh0Tv
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	<20220829055223.24767-17-sv@linux.ibm.com>
+	<5da86617-53f1-d899-336a-53fe691e76ae@csgroup.eu>
+	<20220831175100.GS25951@gate.crashing.org>
+In-Reply-To: <20220831175100.GS25951@gate.crashing.org>
 MIME-Version: 1.0
+User-Agent: astroid/4d6b06ad (https://github.com/astroidmail/astroid)
+Message-Id: <1662374555.7eoowv9twf.naveen@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: Pci5B8yIr6t-GG208DxYCozmG78g4Uae
+X-Proofpoint-ORIG-GUID: skE3UL6uvpeUC6OrMnVkcV6rUxXUTHBF
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.517,FMLib:17.11.122.1
  definitions=2022-09-05_07,2022-09-05_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxlogscore=939
- adultscore=0 clxscore=1011 mlxscore=0 lowpriorityscore=0 suspectscore=0
- malwarescore=0 spamscore=0 priorityscore=1501 bulkscore=0 impostorscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2207270000
- definitions=main-2209050051
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 suspectscore=0 impostorscore=0 bulkscore=0
+ mlxlogscore=853 malwarescore=0 phishscore=0 adultscore=0 mlxscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2207270000 definitions=main-2209050051
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,38 +103,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "aik@ozlabs.ru" <aik@ozlabs.ru>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "npiggin@gmail.com" <npiggin@gmail.com>, "peterz@infradead.org" <peterz@infradead.org>, "mingo@redhat.com" <mingo@redhat.com>, "rostedt@goodmis.org" <rostedt@goodmis.org>, "jpoimboe@redhat.com" <jpoimboe@redhat.com>, "mbenes@suse.cz" <mbenes@suse.cz>, "chenzhongjin@huawei.com" <chenzhongjin@huawei.com>, "Elliott, Robert \(Servers\)" <elliott@hpe.com>
+Cc: "aik@ozlabs.ru" <aik@ozlabs.ru>, "chenzhongjin@huawei.com" <chenzhongjin@huawei.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "npiggin@gmail.com" <npiggin@gmail.com>, "peterz@infradead.org" <peterz@infradead.org>, "mingo@redhat.com" <mingo@redhat.com>, Sathvika Vasireddy <sv@linux.ibm.com>, "rostedt@goodmis.org" <rostedt@goodmis.org>, "jpoimboe@redhat.com" <jpoimboe@redhat.com>, "mbenes@suse.cz" <mbenes@suse.cz>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy wrote:
->=20
->=20
-> Le 29/08/2022 =C3=A0 07:52, Sathvika Vasireddy a =C3=A9crit=C2=A0:
+Segher Boessenkool wrote:
+> On Wed, Aug 31, 2022 at 12:50:07PM +0000, Christophe Leroy wrote:
+>> Le 29/08/2022 =C3=A0 07:52, Sathvika Vasireddy a =C3=A9crit=C2=A0:
+>> > +	opcode =3D insn >> 26;
+>> > +
+>> > +	switch (opcode) {
+>> > +	case 18: /* bl */
 >>=20
->> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
->> index 4c466acdc70d..dc05cd23c233 100644
->> --- a/arch/powerpc/Kconfig
->> +++ b/arch/powerpc/Kconfig
->> @@ -237,6 +237,7 @@ config PPC
->>   	select HAVE_MOD_ARCH_SPECIFIC
->>   	select HAVE_NMI				if PERF_EVENTS || (PPC64 && PPC_BOOK3S)
->>   	select HAVE_OPTPROBES
->> +	select HAVE_OBJTOOL			if PPC32 || MPROFILE_KERNEL
+>> case 18 is more than 'bl', it includes also 'b'.
+>> In both cases, the calculation of *immediate is the same.
 >=20
-> Why restrict it to MPROFILE_KERNEL ? In your RFC it was for all PPC64.
+> It also is "ba" and "bla", sometimes written as "b[l][a]".
 >=20
-> Recent discussion on the list shows new problem with recordmcount, see=20
-> https://lore.kernel.org/all/MW5PR84MB184250EA1CAE04497C1E7CE9AB769@MW5PR8=
-4MB1842.NAMPRD84.PROD.OUTLOOK.COM/
->=20
-> Those ones are with ppc64 big endian, so objtool would be welcome here=20
-> as well.
+>> It would therefore be more correct to perform the calculation and setup=20
+>> of *immediate outside the 'if ((insn & 3) =3D=3D 1)', that would avoid=20
+>> unnecessary churn the day we add support for branches without link.
 
-I don't think adding support for objtool on ppc64 elfv1 is a good idea.=20
-While it might solve the immediate issue with recordmcount, I worry that=20
-the function descriptors and dot symbols in ppc64 elfv1 might throw up=20
-issues in the future causing maintenance overhead.
+Yeah, and probably move the comments around:
+
++	case 18: /* b[l][a] */
++		if ((insn & 3) =3D=3D 1) { /* bl */
+
+>>=20
+>> > +		if ((insn & 3) =3D=3D 1) {
+>> > +			*type =3D INSN_CALL;
+>> > +			*immediate =3D insn & 0x3fffffc;
+>> > +			if (*immediate & 0x2000000)
+>> > +				*immediate -=3D 0x4000000;
+>> > +		}
+>> > +		break;
+>> > +	}
+>=20
+> Does this handle AA=3D1 correctly at all?  That is valid both with and
+> without relocations, just like AA=3D0.  Same for AA=3D1 LK=3D0 btw.
+>=20
+> If you only handle AA=3D0, the code should explicitly test for that.
+
+The code does test for AA=3D0 LK=3D1 with the if statement there?
 
 
 - Naveen
