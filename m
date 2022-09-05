@@ -1,61 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EF3D5AD295
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Sep 2022 14:32:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 768225AD39B
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Sep 2022 15:16:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MLnwP5tfmz30Dp
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Sep 2022 22:32:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MLptr2vshz3bmP
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Sep 2022 23:16:20 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=AlkQM6um;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=F1x+ph1o;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=mhocko@suse.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::42c; helo=mail-wr1-x42c.google.com; envelope-from=nicoleotsuka@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=AlkQM6um;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=F1x+ph1o;
 	dkim-atps=neutral
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MLnvq4695z2xJL
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Sep 2022 22:32:05 +1000 (AEST)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 254AF38867;
-	Mon,  5 Sep 2022 12:32:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1662381121; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OxQfDCqBUCjwjZQ5n2rijS/hjypOhZZuZ+okmIcJ/2A=;
-	b=AlkQM6umPwfsH0PGp4EF4xqR5lVdpV4ECAW4x2XCI8bXLr1pCNgeO4zdD0zPtyuQBnOAlB
-	ZvNU0aL5Bdwh02P8JjPLXxxZSATtsCJY1POuvDVD1lTMNvHN7mJaTpQi5ymcGoSoflVRy9
-	rdmmUP87fAa/pI85DU1Jvdlyr42kwmM=
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id F231E13A66;
-	Mon,  5 Sep 2022 12:32:00 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id fCGsOkDsFWMtBQAAMHmgww
-	(envelope-from <mhocko@suse.com>); Mon, 05 Sep 2022 12:32:00 +0000
-Date: Mon, 5 Sep 2022 14:32:00 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Suren Baghdasaryan <surenb@google.com>
-Subject: Re: [RFC PATCH RESEND 00/28] per-VMA locks proposal
-Message-ID: <YxXsQKoQ0URIRuKi@dhcp22.suse.cz>
-References: <20220901173516.702122-1-surenb@google.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MLptC0Ptsz2xgN
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Sep 2022 23:15:45 +1000 (AEST)
+Received: by mail-wr1-x42c.google.com with SMTP id t7so6297024wrm.10
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 05 Sep 2022 06:15:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=x+z5fbgK5rWlFLrQ0q/oa0BmwbXh9sKksymdTFC7GMQ=;
+        b=F1x+ph1oLUQWORqFZ+6iU5G/jt2WQgwrWWWyebsIQKcW+9UOxdsIIUQypDzGGRcoMi
+         j05s3YxGptvw40x7s2JOAozNSdraSyG7GmWotGKU+PpHVJr8IqIsmxfo8jrHiwA3SH2U
+         kPhrec/LkEbAmsOxdyGzXrm5disk9kaS4ChhnspXR6U4QEPRGUaqpx7lAXEnA54apaK8
+         obP2VMs9Gisccz6V84XLu+YYfLp3yTHNAx8tO1JDXd/vYBqcGQWYbQVji33jodksCizB
+         elU37YU0TvQb4NnWJjOV6PWYh7cyuOlx/bHenFczAjoU7wkT9kiJ67sAnF4TNIdW/281
+         DsJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=x+z5fbgK5rWlFLrQ0q/oa0BmwbXh9sKksymdTFC7GMQ=;
+        b=H49JnvT0NsUlwyDXkX1OERgYcvV7yZ23SefEH+uhQEzkI/QdxIiplz+wIffWmt/tgl
+         8IRLLiU09YXGiN5ExpV2FfzFS9GkTF8VUoSJGAY6qm4kAc3hPky2W2cjJvmecylXj33M
+         CHvEABPgcUq46Z54ydzOjPRjqMvF+GBfFIhIzG7H5POFy/WK8xJzKXaT5e77rS/BElH4
+         WPXdW6YZBDMGII53i08qj2ntQ/4PKipZedOY4sNI833iKU5RtJympKJd1x/OXgN3qKP5
+         tBRcetCc2GCfc4t5y2kAS+jjpvEHzLAfPAyT5IRLGk9tu2073YHsuo0GkdhrSp0hSAi7
+         4mmw==
+X-Gm-Message-State: ACgBeo3APuZ0Q9WlIRAp/l+IHM3I1L8aG3yr/EliqsFG4IRM8a7iIPP1
+	qwgcIefLtEzPzuB0fUmPy2FeLJFXfsYyM84itTU=
+X-Google-Smtp-Source: AA6agR4OHk0dWrF3EDRI1FChnBvUyFqcofwqBz5m92F++Rw8GkiS+bAka5b6ma0tgWR/0cMK4A50cXKDzEYmb3n1lV0=
+X-Received: by 2002:a5d:6388:0:b0:228:c792:aabe with SMTP id
+ p8-20020a5d6388000000b00228c792aabemr1064303wru.689.1662383738519; Mon, 05
+ Sep 2022 06:15:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220901173516.702122-1-surenb@google.com>
+References: <1662373788-19561-1-git-send-email-shengjiu.wang@nxp.com>
+In-Reply-To: <1662373788-19561-1-git-send-email-shengjiu.wang@nxp.com>
+From: Nicolin Chen <nicoleotsuka@gmail.com>
+Date: Mon, 5 Sep 2022 06:15:27 -0700
+Message-ID: <CAGoOwPQomcnO5dhkT9DBynwJo8LfVvuuwj5AYNpv0KhAGSWLEw@mail.gmail.com>
+Subject: Re: [PATCH] ASoC: fsl_asrc: Add initialization finishing check in
+ runtime resume
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,27 +73,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, jglisse@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, willy@infradead.org, laurent.dufour@fr.ibm.com, mgorman@suse.de, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, paulmck@kernel.org, liam.howlett@oracle.com, luto@kernel.org, ldufour@linux.ibm.com, vbabka@suse.cz, linux-arm-kernel@lists.infradead.org, kent.overstreet@linux.dev, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
+Cc: alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, Xiubo.Lee@gmail.com, festevam@gmail.com, tiwai@suse.com, lgirdwood@gmail.com, perex@perex.cz, broonie@kernel.org, shengjiu.wang@gmail.com, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Unless I am missing something, this is not based on the Maple tree
-rewrite, right? Does the change in the data structure makes any
-difference to the approach? I remember discussions at LSFMM where it has
-been pointed out that some issues with the vma tree are considerably
-simpler to handle with the maple tree.
+On Mon, Sep 5, 2022 at 3:47 AM Shengjiu Wang <shengjiu.wang@nxp.com> wrote:
+> @@ -1295,6 +1301,17 @@ static int fsl_asrc_runtime_resume(struct device *dev)
+>         regmap_update_bits(asrc->regmap, REG_ASRCTR,
+>                            ASRCTR_ASRCEi_ALL_MASK, asrctr);
+>
+> +       /* Wait for status of initialization for every enabled pairs */
+> +       do {
+> +               udelay(5);
+> +               regmap_read(asrc->regmap, REG_ASRCFG, &reg);
+> +               reg = (reg >> ASRCFG_INIRQi_SHIFT(0)) & 0x7;
+> +       } while ((reg != ((asrctr >> ASRCTR_ASRCEi_SHIFT(0)) & 0x7)) && --retry);
+> +
+> +       /* FIXME: Doesn't treat initialization timeout as error */
+> +       if (!retry)
+> +               dev_warn(dev, "initialization isn't finished\n");
 
-On Thu 01-09-22 10:34:48, Suren Baghdasaryan wrote:
-[...]
-> One notable way the implementation deviates from the proposal is the way
-> VMAs are marked as locked. Because during some of mm updates multiple
-> VMAs need to be locked until the end of the update (e.g. vma_merge,
-> split_vma, etc).
-
-I think it would be really helpful to spell out those issues in a greater
-detail. Not everybody is aware of those vma related subtleties.
-
-Thanks for working on this Suren!
--- 
-Michal Hocko
-SUSE Labs
+Any reason why not just dev_err?
