@@ -1,73 +1,97 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 850EF5AD070
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Sep 2022 12:45:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B1BE5ACFC2
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Sep 2022 12:19:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MLlXC2VWpz3bY3
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Sep 2022 20:44:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MLkzC142xz3bfC
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Sep 2022 20:19:51 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=H/hTbYQS;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=r2RzpUec;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::62f; helo=mail-ej1-x62f.google.com; envelope-from=olsajiri@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=H/hTbYQS;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=r2RzpUec;
 	dkim-atps=neutral
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MLkY42t08z2xHk
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Sep 2022 20:00:40 +1000 (AEST)
-Received: by mail-ej1-x62f.google.com with SMTP id og21so16031060ejc.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 05 Sep 2022 03:00:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date;
-        bh=FGeyGBvucY/aPj3BEw9X/LWihxhqIvfD/NBugB957bA=;
-        b=H/hTbYQSHdwbnWR9mV8ud8JBChSBuhYyDa12FaFxABykHpKIZZmWg3se1irtGnuu2K
-         Ay7GzBm2LCeCVhzBAc7203HYGwzJDWlD7B18qLHhy4gA54y0xdG4ktr1BACYNca5xdKX
-         im6fo5UtBbUHYTbQ7GyW62AbV6ipXVVZ6GGagofXnM+gkZ9eVkyL66Pqm7t2zXn+7Crr
-         QCca6a8wOqzwI/94Ym//GUoInMVjhCqtUqRRDasHPitvNV97i35bmTp7tj/ZqznuYWVA
-         s3KpJEyIuqRGfkgLTEQFKwpsBOGwLH6JUtAHVM3OGW0dAWfXxeDJrYm5oQKs5WNXug6p
-         MI0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date;
-        bh=FGeyGBvucY/aPj3BEw9X/LWihxhqIvfD/NBugB957bA=;
-        b=QN5X1hyAL78M0d89EL5Jqm1cVrpRiITkqG3kTmEYax/kmxKcR5VbjQ2DuIV0/M1b3o
-         ReMbf5e9gcu/tFhQ4bX/Uf7gUBT1GzaJds01sLRVNa8tsu+YFBxjmcQdiDL7VxqjUEyj
-         yFvgOdFy9SeXgUi/2LFkMWdE/6giRmiKLEY6zn0LhOHWcUazLHE+HRMeW4EhWk0uOIbH
-         CHnNsEkWJjsplvwezP47IF6YstiqnXX4l5XNDfvLWPt1a2wHebPWpdWdQInMhur30Df/
-         slDMJAxOuodQfRqCi4DCH/ik15SvRHpZBp57zNN55BiSk0hQhdYF49pU5/jyp+nMHOKI
-         an6Q==
-X-Gm-Message-State: ACgBeo1rL6er1GWcEaX1l2vpc4X0r9YLDeMFAphhoXbdQ6nENqg7t2CH
-	WoBaQ5SfbrVay3S2G8H1MbU=
-X-Google-Smtp-Source: AA6agR5wieRoEMZ8F6+Gf9jOtOXCaCA+40fqoAKwE2wzhNsMTzLAfxRtUrwnBrrJdXSsbPBiRropJQ==
-X-Received: by 2002:a17:907:1c89:b0:741:4453:75be with SMTP id nb9-20020a1709071c8900b00741445375bemr29532218ejc.208.1662372033137;
-        Mon, 05 Sep 2022 03:00:33 -0700 (PDT)
-Received: from krava ([193.85.244.190])
-        by smtp.gmail.com with ESMTPSA id v2-20020a170906292200b0073ddff7e432sm4928786ejd.14.2022.09.05.03.00.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Sep 2022 03:00:32 -0700 (PDT)
-From: Jiri Olsa <olsajiri@gmail.com>
-X-Google-Original-From: Jiri Olsa <jolsa@kernel.org>
-Date: Mon, 5 Sep 2022 12:00:30 +0200
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Subject: Re: [PATCH 1/2] tools/perf: Fix out of bound access to affinity
- "sched_cpus"
-Message-ID: <YxXIvno0W1UeiH8K@krava>
-References: <20220905045441.1643-1-atrajeev@linux.vnet.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MLkyS0LS0z2xHC
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Sep 2022 20:19:11 +1000 (AEST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 285ACLot024394;
+	Mon, 5 Sep 2022 10:18:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : subject :
+ to : cc : references : in-reply-to : message-id : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=btaVH9OQcx7BCrtzm3XydRFhyIlKk41EWfxdYrOinOo=;
+ b=r2RzpUecMzlz6CG2DBR+DKXveeZPMAi5jFQmmMBZCxDOvJkhHY9TT3JwX9rRjrzTImJR
+ ImGEh8S7rsloQXXN18iL6dpJot+XQh5tG1RPHRIYxFu/qalEMTujeGzpvH/cyY657xuO
+ /uFX+eFNgaCSQa5oE8VW0wvWuZmcteKHVvsE356sAU24Y/jz9F+E/rACTZcOQBuR/7YV
+ GyH0NFZyX4qnHnXL/Nll2WvsHJkOk8qmNOggS4NuYWKOCN9Lrf+MudszAXQURcTEroJf
+ wcAB8my5k6+gNiFmhTaqhuthr3QHUceCI1VTRXVoU6EXFhhEYprAh5ZnxylrxlzkNCDf /Q== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jdf5a0757-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 05 Sep 2022 10:18:38 +0000
+Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 285AFRu3011957;
+	Mon, 5 Sep 2022 10:18:38 GMT
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jdf5a073m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 05 Sep 2022 10:18:38 +0000
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+	by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 285A64bd007209;
+	Mon, 5 Sep 2022 10:18:35 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+	by ppma01fra.de.ibm.com with ESMTP id 3jbxj8sp38-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 05 Sep 2022 10:18:35 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
+	by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 285AIXMq35258628
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 5 Sep 2022 10:18:33 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 11E9E11C04C;
+	Mon,  5 Sep 2022 10:18:33 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9C2BD11C04A;
+	Mon,  5 Sep 2022 10:18:32 +0000 (GMT)
+Received: from localhost (unknown [9.43.114.209])
+	by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Mon,  5 Sep 2022 10:18:32 +0000 (GMT)
+Date: Mon, 05 Sep 2022 15:48:31 +0530
+From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: [PATCH v2 01/16] powerpc: Replace unreachable() with it's builtin
+ variant in __WARN_FLAGS()
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        Sathvika Vasireddy <sv@linux.ibm.com>
+References: <20220829055223.24767-1-sv@linux.ibm.com>
+	<20220829055223.24767-2-sv@linux.ibm.com>
+	<a3fc4685-9e8d-ebf6-62ca-2e9028753ce8@csgroup.eu>
+In-Reply-To: <a3fc4685-9e8d-ebf6-62ca-2e9028753ce8@csgroup.eu>
+User-Agent: astroid/4d6b06ad (https://github.com/astroidmail/astroid)
+Message-Id: <1662371888.dwl4kym6qm.naveen@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: SzWtnuS6KRkJ1NEfHqdw-fEnbxjV4Fnk
+X-Proofpoint-ORIG-GUID: _tw5pt4nqnGPDZXar8khWp2o4RTJj_oQ
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220905045441.1643-1-atrajeev@linux.vnet.ibm.com>
-X-Mailman-Approved-At: Mon, 05 Sep 2022 20:44:26 +1000
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-09-05_07,2022-09-05_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 suspectscore=0 impostorscore=0 bulkscore=0
+ mlxlogscore=999 malwarescore=0 phishscore=0 adultscore=0 mlxscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2207270000 definitions=main-2209050048
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,87 +103,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: maddy@linux.vnet.ibm.com, rnsastry@linux.ibm.com, acme@kernel.org, linux-perf-users@vger.kernel.org, kjain@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: "aik@ozlabs.ru" <aik@ozlabs.ru>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "npiggin@gmail.com" <npiggin@gmail.com>, "peterz@infradead.org" <peterz@infradead.org>, "mingo@redhat.com" <mingo@redhat.com>, "rostedt@goodmis.org" <rostedt@goodmis.org>, "jpoimboe@redhat.com" <jpoimboe@redhat.com>, "mbenes@suse.cz" <mbenes@suse.cz>, "chenzhongjin@huawei.com" <chenzhongjin@huawei.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Sep 05, 2022 at 10:24:40AM +0530, Athira Rajeev wrote:
-> The affinity code in "affinity_set" function access array
-> named "sched_cpus". The size for this array is allocated in
-> affinity_setup function which is nothing but value from
-> get_cpu_set_size. This is used to contain the cpumask value
-> for each cpu. While setting bit for each cpu, it calls
-> "set_bit" function which access index in sched_cpus array.
-> If we provide a command-line option to -C which is more than
-> the number of CPU's present in the system, the set_bit could
-> access an array member which is out-of the array size. This
-> is because currently, there is no boundary check for the CPU.
-> This will result in seg fault:
-> 
-> <<>>
->  ./perf stat -C 12323431 ls
-> Perf can support 2048 CPUs. Consider raising MAX_NR_CPUS
-> Segmentation fault (core dumped)
-> <<>>
-> 
-> Fix this by adding boundary check for the array.
-> 
-> After the fix from powerpc system:
-> 
-> <<>>
-> ./perf stat -C 12323431 ls 1>out
-> Perf can support 2048 CPUs. Consider raising MAX_NR_CPUS
-> 
->  Performance counter stats for 'CPU(s) 12323431':
-> 
->    <not supported> msec cpu-clock
->    <not supported>      context-switches
->    <not supported>      cpu-migrations
->    <not supported>      page-faults
->    <not supported>      cycles
->    <not supported>      instructions
->    <not supported>      branches
->    <not supported>      branch-misses
-> 
->        0.001192373 seconds time elapsed
-> <<>>
-> 
-> Reported-by: Nageswara Sastry <rnsastry@linux.ibm.com>
-> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-> ---
->  tools/perf/util/affinity.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tools/perf/util/affinity.c b/tools/perf/util/affinity.c
-> index 4d216c0dc425..a1dd37347abc 100644
-> --- a/tools/perf/util/affinity.c
-> +++ b/tools/perf/util/affinity.c
-> @@ -49,8 +49,14 @@ void affinity__set(struct affinity *a, int cpu)
->  {
->  	int cpu_set_size = get_cpu_set_size();
->  
-> -	if (cpu == -1)
-> +	/*
-> +	 * Return:
-> +	 * - if cpu is -1
-> +	 * - restrict out of bound access to sched_cpus
-> +	 */
-> +	if (cpu == -1 || ((cpu / __BITS_PER_LONG) >= (cpu_set_size / 8)))
+Christophe Leroy wrote:
+>=20
+>=20
+> Le 29/08/2022 =C3=A0 07:52, Sathvika Vasireddy a =C3=A9crit=C2=A0:
+>> objtool is throwing *unannotated intra-function call* warnings in
+>> .c files with a few instructions that are marked unreachable. The
+>> problem comes from the annotate_unreachable() macro that is
+>> called by unreachable(). This annotation is adding a call to a
+>> function with size 0, and objtool does not add such symbols
+>> to the rbtree. Due to this reason, find_call_destination() function
+>> is not able to find the destination symbol for that call.
+>>=20
+>> With the annotation (annotate_unreachable()), gcc seems to
+>> generate a 'bl' to unreachable symbol with size 0. But with
+>> the builtin variant of unreachable (__builtin_unreachable()),
+>> gcc does not emit calls to such symbols and the warnings
+>> go away. Given that the codegen remains same, and that
+>> there are no 'bl' instructions to such symbols emitted, fix
+>> these warnings by replacing unreachable() with it's builtin
+>> variant in __WARN_FLAGS().
+>=20
+> How can you say that the codegen remains the same if with the original=20
+> you get stale 'bl' instructions and with the alternative you don't ?
 
-hm, there's __BITS_PER_LONG in one case, but then there's hardcoded 8
+I guess the reference to codegen remaining the same is more to do with=20
+unreachable vs. __builtin_unreachable() in the absence of=20
+CONFIG_OBJTOOL. But yeah, the changelog needs to be reworked to clarify=20
+that.
 
-would this be simpler:
+>=20
+>>=20
+>> Also, add barrier_before_unreachable() before __builtin_unreachable()
+>> to work around a gcc bug [1], for the problem reported at [2].
+>=20
+> Here my comment was not related to the gcc bug [1] but to gcc bug=20
+> https://gcc.gnu.org/bugzilla/show_bug.cgi?id=3D82365 , which was worked=20
+> around by commit 173a3efd3edb ("bug.h: work around GCC PR82365 in BUG()")
+>=20
+> By chance it also solve the problem [1] as you mention.
 
-	if (cpu == -1 || ((cpu >= (cpu_set_size * 8))))
-		return;
+That's a good commit to reference, but please also retain a link to the=20
+new PR.
 
-jirka
 
->  		return;
-> +
->  	a->changed = true;
->  	set_bit(cpu, a->sched_cpus);
->  	/*
-> -- 
-> 2.35.1
-> 
+- Naveen
+
