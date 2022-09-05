@@ -1,88 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 433985ACB86
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Sep 2022 08:58:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCF695ACC0E
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Sep 2022 09:17:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MLfVS0WRFz3c6M
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Sep 2022 16:58:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MLfwn4sZkz2yy6
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Sep 2022 17:17:29 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VjM6P3tD;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=MRHsWs7B;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=rnsastry@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=126.com (client-ip=220.181.15.50; helo=m1550.mail.126.com; envelope-from=windhl@126.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VjM6P3tD;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=MRHsWs7B;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MLfTN6DZ8z305d
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Sep 2022 16:57:12 +1000 (AEST)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2855ILvH025773;
-	Mon, 5 Sep 2022 06:57:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=Ttmy3J8ey3lYUSrfNnutszvkGUWefnqFAcAqXwKgejs=;
- b=VjM6P3tDJzRXDwUczITSH1S3ibuc0vPxzjOiDfqoIQWySvdq3nas8+H4/SSQWlv9QlJO
- g1CM69l9KPLzoyK6o7IHob+tGM42VvA1Ckq1I/yjZVjpyEokHYRV3PULOnyCVWQ6S2a4
- rPTJBdTneNRZ1IztONvQxtpeYF1SgsmswmL44/Gx29xECCG3RKOu3PwDJEQU3daTMwSu
- LVa9SDbWAFMDozEBbdl4twnINY+/ezLtZQJms3FPL0OgCR3WIBB2wwHPy8KedMuxtTMy
- me5QZ6we03VDXt/Df8z7VGFccaN+dmqOnsRgbmMhiM/ZaVRpMkIdpQKzQcDXtPP7SVp2 NQ== 
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jdaunj8qr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 05 Sep 2022 06:57:06 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
-	by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2856oGqv011715;
-	Mon, 5 Sep 2022 06:57:04 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
-	by ppma03ams.nl.ibm.com with ESMTP id 3jbxj8t20t-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 05 Sep 2022 06:57:04 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
-	by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2856ralA42140062
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 5 Sep 2022 06:53:36 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D4D7811C052;
-	Mon,  5 Sep 2022 06:57:01 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0B21911C04A;
-	Mon,  5 Sep 2022 06:57:00 +0000 (GMT)
-Received: from [9.43.20.7] (unknown [9.43.20.7])
-	by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
-	Mon,  5 Sep 2022 06:56:59 +0000 (GMT)
-Message-ID: <fd2d1a4f-2304-017e-3040-175b547a8838@linux.ibm.com>
-Date: Mon, 5 Sep 2022 12:26:58 +0530
+Received: from m1550.mail.126.com (m1550.mail.126.com [220.181.15.50])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MLfw45MzQz2xkc
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Sep 2022 17:16:48 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=Date:From:Subject:MIME-Version:Message-ID; bh=fXjWj
+	frN4VnAcZC8vVdmQxIHdCa6zxfOcfzDKl5wfjI=; b=MRHsWs7BB/SkYfAAVCV3x
+	b/l3OlQSzneQNQEqrPXgPNt0SBp50A0i9HFzcxfnthtGNGfJZ3/JckRKe4lqJqBM
+	CA0dgsU/i3RQ4dNPH/xB/t80wIHhpRD9Z6zmb1s9mtznJD7WgjQuD11wA4sI5ScQ
+	4IsM4uVjTUU6WP+SG849gA=
+Received: from windhl$126.com ( [124.16.139.61] ) by ajax-webmail-wmsvr50
+ (Coremail) ; Mon, 5 Sep 2022 15:16:21 +0800 (CST)
+X-Originating-IP: [124.16.139.61]
+Date: Mon, 5 Sep 2022 15:16:21 +0800 (CST)
+From: "Liang He" <windhl@126.com>
+To: "Michael Ellerman" <mpe@ellerman.id.au>
+Subject: Re:Re: [PATCH v2] powerpc: kernel: legacy_serial: Fix missing
+ of_node_put() in add_legacy_soc_port()
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version XT5.0.13 build 20220113(9671e152)
+ Copyright (c) 2002-2022 www.mailtech.cn 126com
+In-Reply-To: <87czcatsct.fsf@mpe.ellerman.id.au>
+References: <20220702013714.263614-1-windhl@126.com>
+ <87czcatsct.fsf@mpe.ellerman.id.au>
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=GBK
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.12.0
-Subject: Re: [PATCH 2/2] tools/perf: Fix out of bound access to cpu mask array
-Content-Language: en-US
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, acme@kernel.org,
-        jolsa@kernel.org
-References: <20220905045441.1643-1-atrajeev@linux.vnet.ibm.com>
- <20220905045441.1643-2-atrajeev@linux.vnet.ibm.com>
-From: R Nageswara Sastry <rnsastry@linux.ibm.com>
-In-Reply-To: <20220905045441.1643-2-atrajeev@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: lW90AT9GsSwnam4DTYWvLgEnLh97l0DR
-X-Proofpoint-ORIG-GUID: lW90AT9GsSwnam4DTYWvLgEnLh97l0DR
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-09-05_04,2022-09-05_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- priorityscore=1501 mlxlogscore=999 impostorscore=0 adultscore=0
- clxscore=1015 bulkscore=0 suspectscore=0 malwarescore=0 mlxscore=0
- spamscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2207270000 definitions=main-2209050031
+Message-ID: <7c043670.4bc1.1830c81ddeb.Coremail.windhl@126.com>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID: MsqowABnvfFGohVjr25nAA--.22721W
+X-CM-SenderInfo: hzlqvxbo6rjloofrz/1tbi3BdzF1pEENSN3wABsm
+X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,133 +58,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-perf-users@vger.kernel.org, maddy@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, kjain@linux.ibm.com
+Cc: paulus@samba.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 05/09/22 10:24 am, Athira Rajeev wrote:
-> The cpu mask init code in "record__mmap_cpu_mask_init"
-> function access "bits" array part of "struct mmap_cpu_mask".
-> The size of this array is the value from cpu__max_cpu().cpu.
-> This array is used to contain the cpumask value for each
-> cpu. While setting bit for each cpu, it calls "set_bit" function
-> which access index in "bits" array. If we provide a command
-> line option to -C which is greater than the number of CPU's
-> present in the system, the set_bit could access an array
-> member which is out-of the array size. This is because
-> currently, there is no boundary check for the CPU. This will
-> result in seg fault:
-> 
-> <<>>
-> ./perf record -C 12341234 ls
-> Perf can support 2048 CPUs. Consider raising MAX_NR_CPUS
-> Segmentation fault (core dumped)
-> <<>>
-> 
-> Debugging with gdb, points to function flow as below:
-> 
-> <<>>
-> set_bit
-> record__mmap_cpu_mask_init
-> record__init_thread_default_masks
-> record__init_thread_masks
-> cmd_record
-> <<>>
-> 
-> Fix this by adding boundary check for the array.
-> 
-> After the patch:
-> <<>>
-> ./perf record -C 12341234 ls
-> Perf can support 2048 CPUs. Consider raising MAX_NR_CPUS
-> Failed to initialize parallel data streaming masks
-> <<>>
-> 
-> With this fix, if -C is given a non-exsiting CPU, perf
-> record will fail with:
-> 
-> <<>>
->   ./perf record -C 50 ls
-> Failed to initialize parallel data streaming masks
-> <<>>
-> 
-> Reported-by: Nageswara Sastry <rnsastry@linux.ibm.com>
-
-Tested-by: Nageswara Sastry <rnsastry@linux.ibm.com>
-
-> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-> ---
->   tools/perf/builtin-record.c | 26 ++++++++++++++++++++------
->   1 file changed, 20 insertions(+), 6 deletions(-)
-> 
-> diff --git a/tools/perf/builtin-record.c b/tools/perf/builtin-record.c
-> index 4713f0f3a6cf..09b68d76bbdc 100644
-> --- a/tools/perf/builtin-record.c
-> +++ b/tools/perf/builtin-record.c
-> @@ -3358,16 +3358,22 @@ static struct option __record_options[] = {
->   
->   struct option *record_options = __record_options;
->   
-> -static void record__mmap_cpu_mask_init(struct mmap_cpu_mask *mask, struct perf_cpu_map *cpus)
-> +static int record__mmap_cpu_mask_init(struct mmap_cpu_mask *mask, struct perf_cpu_map *cpus)
->   {
->   	struct perf_cpu cpu;
->   	int idx;
->   
->   	if (cpu_map__is_dummy(cpus))
-> -		return;
-> +		return 0;
->   
-> -	perf_cpu_map__for_each_cpu(cpu, idx, cpus)
-> +	perf_cpu_map__for_each_cpu(cpu, idx, cpus) {
-> +		/* Return ENODEV is input cpu is greater than max cpu */
-> +		if ((unsigned long)cpu.cpu > mask->nbits)
-> +			return -ENODEV;
->   		set_bit(cpu.cpu, mask->bits);
-> +	}
-> +
-> +	return 0;
->   }
->   
->   static int record__mmap_cpu_mask_init_spec(struct mmap_cpu_mask *mask, const char *mask_spec)
-> @@ -3379,7 +3385,9 @@ static int record__mmap_cpu_mask_init_spec(struct mmap_cpu_mask *mask, const cha
->   		return -ENOMEM;
->   
->   	bitmap_zero(mask->bits, mask->nbits);
-> -	record__mmap_cpu_mask_init(mask, cpus);
-> +	if (record__mmap_cpu_mask_init(mask, cpus))
-> +		return -ENODEV;
-> +
->   	perf_cpu_map__put(cpus);
->   
->   	return 0;
-> @@ -3461,7 +3469,12 @@ static int record__init_thread_masks_spec(struct record *rec, struct perf_cpu_ma
->   		pr_err("Failed to allocate CPUs mask\n");
->   		return ret;
->   	}
-> -	record__mmap_cpu_mask_init(&cpus_mask, cpus);
-> +
-> +	ret = record__mmap_cpu_mask_init(&cpus_mask, cpus);
-> +	if (ret) {
-> +		pr_err("Failed to init cpu mask\n");
-> +		goto out_free_cpu_mask;
-> +	}
->   
->   	ret = record__thread_mask_alloc(&full_mask, cpu__max_cpu().cpu);
->   	if (ret) {
-> @@ -3702,7 +3715,8 @@ static int record__init_thread_default_masks(struct record *rec, struct perf_cpu
->   	if (ret)
->   		return ret;
->   
-> -	record__mmap_cpu_mask_init(&rec->thread_masks->maps, cpus);
-> +	if (record__mmap_cpu_mask_init(&rec->thread_masks->maps, cpus))
-> +		return -ENODEV;
->   
->   	rec->nr_threads = 1;
->   
-
--- 
-Thanks and Regards
-R.Nageswara Sastry
+CgoKQXQgMjAyMi0wOS0wNSAxMToyNTozOCwgIk1pY2hhZWwgRWxsZXJtYW4iIDxtcGVAZWxsZXJt
+YW4uaWQuYXU+IHdyb3RlOgo+TGlhbmcgSGUgPHdpbmRobEAxMjYuY29tPiB3cml0ZXM6Cj4+IFdl
+IHNob3VsZCBjYWxsIG9mX25vZGVfcHV0KCkgZm9yIHRoZSByZWZlcmVuY2UgJ3RzaScgcmV0dXJu
+ZWQgYnkKPj4gb2ZfZ2V0X3BhcmVudCgpIHdoaWNoIHdpbGwgaW5jcmVhc2UgdGhlIHJlZmNvdW50
+Lgo+Pgo+PiBTaWduZWQtb2ZmLWJ5OiBMaWFuZyBIZSA8d2luZGhsQDEyNi5jb20+Cj4+IC0tLQo+
+PiAgY2hhbmdlbG9nOgo+Pgo+PiAgdjI6IHVzZSBtb3JlIGNvbnNlcnZhdGl2ZSB3YXkgdG8gY2Fs
+bCBvZl9ub2RlX3B1dCgpCj4+ICB2MTogbW92ICdvZl9ub2RlX3B1dCgpJyBpbnRvIHRoZSAnaWYn
+IGNvbmRpdGlvbgo+Pgo+PiAgdjEgTGluazogaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvYWxsLzIw
+MjIwNzAxMTMwMjAzLjI0MDAyMy0xLXdpbmRobEAxMjYuY29tLwo+Pgo+PiAgYXJjaC9wb3dlcnBj
+L2tlcm5lbC9sZWdhY3lfc2VyaWFsLmMgfCAxMSArKysrKysrKy0tLQo+PiAgMSBmaWxlIGNoYW5n
+ZWQsIDggaW5zZXJ0aW9ucygrKSwgMyBkZWxldGlvbnMoLSkKPj4KPj4gZGlmZiAtLWdpdCBhL2Fy
+Y2gvcG93ZXJwYy9rZXJuZWwvbGVnYWN5X3NlcmlhbC5jIGIvYXJjaC9wb3dlcnBjL2tlcm5lbC9s
+ZWdhY3lfc2VyaWFsLmMKPj4gaW5kZXggZjA0OGM0MjRjNTI1Li5jY2E3MjA4MWI4NjQgMTAwNjQ0
+Cj4+IC0tLSBhL2FyY2gvcG93ZXJwYy9rZXJuZWwvbGVnYWN5X3NlcmlhbC5jCj4+ICsrKyBiL2Fy
+Y2gvcG93ZXJwYy9rZXJuZWwvbGVnYWN5X3NlcmlhbC5jCj4+IEBAIC0xNjYsNyArMTY2LDcgQEAg
+c3RhdGljIGludCBfX2luaXQgYWRkX2xlZ2FjeV9zb2NfcG9ydChzdHJ1Y3QgZGV2aWNlX25vZGUg
+Km5wLAo+PiAgewo+PiAgCXU2NCBhZGRyOwo+PiAgCWNvbnN0IF9fYmUzMiAqYWRkcnA7Cj4+IC0J
+c3RydWN0IGRldmljZV9ub2RlICp0c2kgPSBvZl9nZXRfcGFyZW50KG5wKTsKPj4gKwlzdHJ1Y3Qg
+ZGV2aWNlX25vZGUgKnRzaTsKPj4gIAo+PiAgCS8qIFdlIG9ubHkgc3VwcG9ydCBwb3J0cyB0aGF0
+IGhhdmUgYSBjbG9jayBmcmVxdWVuY3kgcHJvcGVybHkKPj4gIAkgKiBlbmNvZGVkIGluIHRoZSBk
+ZXZpY2UtdHJlZS4KPj4gQEAgLTE5NCwxMiArMTk0LDE3IEBAIHN0YXRpYyBpbnQgX19pbml0IGFk
+ZF9sZWdhY3lfc29jX3BvcnQoc3RydWN0IGRldmljZV9ub2RlICpucCwKPj4gIAkvKiBBZGQgcG9y
+dCwgaXJxIHdpbGwgYmUgZGVhbHQgd2l0aCBsYXRlci4gV2UgcGFzc2VkIGEgdHJhbnNsYXRlZAo+
+PiAgCSAqIElPIHBvcnQgdmFsdWUuIEl0IHdpbGwgYmUgZml4ZWQgdXAgbGF0ZXIgYWxvbmcgd2l0
+aCB0aGUgaXJxCj4+ICAJICovCj4+IC0JaWYgKG9mX25vZGVfaXNfdHlwZSh0c2ksICJ0c2ktYnJp
+ZGdlIikpCj4+ICsJdHNpID0gb2ZfZ2V0X3BhcmVudChucCk7Cj4+ICsJaWYgKG9mX25vZGVfaXNf
+dHlwZSh0c2ksICJ0c2ktYnJpZGdlIikpIHsKPj4gKwkJb2Zfbm9kZV9wdXQodHNpKTsKPj4gIAkJ
+cmV0dXJuIGFkZF9sZWdhY3lfcG9ydChucCwgLTEsIFVQSU9fVFNJLCBhZGRyLCBhZGRyLAo+PiAg
+CQkJCSAgICAgICAwLCBsZWdhY3lfcG9ydF9mbGFncywgMCk7Cj4+IC0JZWxzZQo+PiArCX0KPj4g
+KwllbHNlIHsKPj4gKwkJb2Zfbm9kZV9wdXQodHNpKTsKPj4gIAkJcmV0dXJuIGFkZF9sZWdhY3lf
+cG9ydChucCwgLTEsIFVQSU9fTUVNLCBhZGRyLCBhZGRyLAo+PiAgCQkJCSAgICAgICAwLCBsZWdh
+Y3lfcG9ydF9mbGFncywgMCk7Cj4+ICsJfQo+PiAgfQo+Cj5UaGUgdHdvIGxlZ3Mgb2YgdGhlIGVs
+c2UgZW5kIHVwIHdpdGggZHVwbGljYXRlZCBjb2RlIGV4Y2VwdCBmb3IgYSBzaW5nbGUKPnBhcmFt
+ZXRlciB0byBhZGRfbGVnYWN5X3BvcnQoKS4KPgo+QmV0dGVyIHdvdWxkIGJlOgo+Cj57Cj4JaW50
+IGlvdHlwZTsKPiAgICAgICAgLi4uCj4KPgl0c2kgPSBvZl9nZXRfcGFyZW50KG5wKTsKPglpZiAo
+b2Zfbm9kZV9pc190eXBlKHRzaSwgInRzaS1icmlkZ2UiKSkKPgkJaW90eXBlID0gVVBJT19UU0k7
+Cj4JZWxzZQo+CQlpb3R5cGUgPSBVUElPX01FTTsKPgo+CW9mX25vZGVfcHV0KHRzaSk7Cj4gICAg
+ICAgIHJldHVybiBhZGRfbGVnYWN5X3BvcnQobnAsIC0xLCBpb3R5cGUsIGFkZHIsIGFkZHIsIDAs
+IGxlZ2FjeV9wb3J0X2ZsYWdzLCAwKTsKPn0KPgo+Cj5jaGVlcnMKClRoYW5rcywgCkkgd2lsbCBn
+aXZlIGFub3RoZXIgdmVyc2lvbiBvZiB0aGlzIHBhdGNoLgoKTGlhbmcK
