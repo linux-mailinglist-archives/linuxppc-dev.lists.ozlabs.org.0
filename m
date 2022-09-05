@@ -1,94 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A64AB5AD0EE
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Sep 2022 13:04:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 561DF5AD0EC
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Sep 2022 13:03:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MLlyY65G4z3c6k
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Sep 2022 21:04:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MLlxj1ydVz2yy7
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Sep 2022 21:03:37 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qz7YOdoR;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=BENQB3G5;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qz7YOdoR;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=BENQB3G5;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MLlxV6M41z3bc3
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Sep 2022 21:03:26 +1000 (AEST)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 285AgjQf000480;
-	Mon, 5 Sep 2022 11:03:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
- mime-version : subject : from : in-reply-to : date : cc :
- content-transfer-encoding : message-id : references : to; s=pp1;
- bh=jPUTA1sjFk5Qua0mKUp7vBqpeV9RlgMsBbWUAkEGzjA=;
- b=qz7YOdoRoZFytApz8EMZFLbV6UszrgTfeXz0MUNv+ZOpWuSKbuw20OSsUzLF/wwHHpGI
- KreE1D+oMqxEtLPKHESM0b+LfEGMSQe0aoeL2+j2NVQTbMTLeqSA5VU3fG0/xIp0sTnt
- srFiSO5IMdXSlOse5NJCN2p42BJqR4Mtdi5L6kG7jUtyAk5vDaUA2SnjD9Yb7W6q1VmY
- FAvx1qeaHap9py+qooD6C/6kJWSPj6tYdBvdqsDhdLQwTC5ZxGp/sNPDPVii0SUyJDRO
- PIFANK0We2sCdcxKM2tEvBOgYHLHRStSBhgbdXOKeZ/8BZCaPzpre5aDpoeUUtTHKuhA oQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jdfkerg80-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 05 Sep 2022 11:03:19 +0000
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 285AjaU0011652;
-	Mon, 5 Sep 2022 11:03:15 GMT
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jdfkerf4q-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 05 Sep 2022 11:03:13 +0000
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
-	by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 285Aq00F014234;
-	Mon, 5 Sep 2022 11:01:39 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
-	by ppma06ams.nl.ibm.com with ESMTP id 3jbx6hjbkh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 05 Sep 2022 11:01:39 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
-	by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 285B1aHj39387556
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 5 Sep 2022 11:01:36 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 91FF24205F;
-	Mon,  5 Sep 2022 11:01:36 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BDDE242059;
-	Mon,  5 Sep 2022 11:01:34 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.43.39.18])
-	by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
-	Mon,  5 Sep 2022 11:01:34 +0000 (GMT)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.1\))
-Subject: Re: [PATCH 1/2] tools/perf: Fix out of bound access to affinity
- "sched_cpus"
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-In-Reply-To: <YxXIvno0W1UeiH8K@krava>
-Date: Mon, 5 Sep 2022 16:31:32 +0530
-Content-Transfer-Encoding: 7bit
-Message-Id: <F14D7769-52B0-4B0E-A30C-9282A31035D9@linux.vnet.ibm.com>
-References: <20220905045441.1643-1-atrajeev@linux.vnet.ibm.com>
- <YxXIvno0W1UeiH8K@krava>
-To: Jiri Olsa <olsajiri@gmail.com>
-X-Mailer: Apple Mail (2.3696.120.41.1.1)
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: dxToyjVPiwqOyLj3M1L_Gw_kdo3tTcgP
-X-Proofpoint-ORIG-GUID: SyKYqfVVmivwvYRHhoUX_qTtVEYdvN69
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-09-05_08,2022-09-05_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0
- priorityscore=1501 mlxscore=0 lowpriorityscore=0 bulkscore=0 phishscore=0
- suspectscore=0 clxscore=1015 impostorscore=0 malwarescore=0 spamscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2207270000 definitions=main-2209050053
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MLlx52hVlz2x9L
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Sep 2022 21:03:04 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=ypM18Z5ljJUiQQttcJrsZfaN7kkbHtJv44yfmv2Mtt0=; b=BENQB3G5Jz7YBveRI3zDczVV82
+	5SudM98HuTo1DTgHCf2OgaBQ0F6k4ydXadwlenZMNJmJLXy0DjRF7qcTUQEedmETyKOCr8A14uTsf
+	qjJOHFBtcYbvLl0D5b4payMCzWduyM2y+U6ALkF5NaZHnqL7j9Ro99zstihU6o/qxf1L5yc72YJ2a
+	WCYPy7oKerwMe8MWbnvgdBGTe7uIq6ym9uJ19wxb3FdUjBDM+i8pL7+Zg8kZG6FiLc2Y+5bsoTtZu
+	THYM/VnMhxeBbTGSxsEJBtjEi4e2lbU92fPYZgbnPSg2qC9bjiKB4oUzmKNniMsngLAthH9hSQ0Jq
+	it+2RAEQ==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1oV9s4-009Pra-Vc; Mon, 05 Sep 2022 11:02:29 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id D53513002A3;
+	Mon,  5 Sep 2022 13:02:23 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 8F0BC209EC608; Mon,  5 Sep 2022 13:02:23 +0200 (CEST)
+Date: Mon, 5 Sep 2022 13:02:23 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Sathvika Vasireddy <sv@linux.ibm.com>
+Subject: Re: [PATCH v2 03/16] powerpc: Fix objtool unannotated intra-function
+ call warnings
+Message-ID: <YxXXP+s7qe6vbWPX@hirez.programming.kicks-ass.net>
+References: <20220829055223.24767-1-sv@linux.ibm.com>
+ <20220829055223.24767-4-sv@linux.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220829055223.24767-4-sv@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,98 +66,16 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: maddy@linux.vnet.ibm.com, Nageswara Sastry <rnsastry@linux.ibm.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, linux-perf-users@vger.kernel.org, kjain@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: aik@ozlabs.ru, chenzhongjin@huawei.com, npiggin@gmail.com, linux-kernel@vger.kernel.org, mingo@redhat.com, rostedt@goodmis.org, jpoimboe@redhat.com, naveen.n.rao@linux.vnet.ibm.com, mbenes@suse.cz, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Mon, Aug 29, 2022 at 11:22:10AM +0530, Sathvika Vasireddy wrote:
 
+> objtool does not add STT_NOTYPE symbols with size 0 to the
 
-> On 05-Sep-2022, at 3:30 PM, Jiri Olsa <olsajiri@gmail.com> wrote:
-> 
-> On Mon, Sep 05, 2022 at 10:24:40AM +0530, Athira Rajeev wrote:
->> The affinity code in "affinity_set" function access array
->> named "sched_cpus". The size for this array is allocated in
->> affinity_setup function which is nothing but value from
->> get_cpu_set_size. This is used to contain the cpumask value
->> for each cpu. While setting bit for each cpu, it calls
->> "set_bit" function which access index in sched_cpus array.
->> If we provide a command-line option to -C which is more than
->> the number of CPU's present in the system, the set_bit could
->> access an array member which is out-of the array size. This
->> is because currently, there is no boundary check for the CPU.
->> This will result in seg fault:
->> 
->> <<>>
->> ./perf stat -C 12323431 ls
->> Perf can support 2048 CPUs. Consider raising MAX_NR_CPUS
->> Segmentation fault (core dumped)
->> <<>>
->> 
->> Fix this by adding boundary check for the array.
->> 
->> After the fix from powerpc system:
->> 
->> <<>>
->> ./perf stat -C 12323431 ls 1>out
->> Perf can support 2048 CPUs. Consider raising MAX_NR_CPUS
->> 
->> Performance counter stats for 'CPU(s) 12323431':
->> 
->>   <not supported> msec cpu-clock
->>   <not supported>      context-switches
->>   <not supported>      cpu-migrations
->>   <not supported>      page-faults
->>   <not supported>      cycles
->>   <not supported>      instructions
->>   <not supported>      branches
->>   <not supported>      branch-misses
->> 
->>       0.001192373 seconds time elapsed
->> <<>>
->> 
->> Reported-by: Nageswara Sastry <rnsastry@linux.ibm.com>
->> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
->> ---
->> tools/perf/util/affinity.c | 8 +++++++-
->> 1 file changed, 7 insertions(+), 1 deletion(-)
->> 
->> diff --git a/tools/perf/util/affinity.c b/tools/perf/util/affinity.c
->> index 4d216c0dc425..a1dd37347abc 100644
->> --- a/tools/perf/util/affinity.c
->> +++ b/tools/perf/util/affinity.c
->> @@ -49,8 +49,14 @@ void affinity__set(struct affinity *a, int cpu)
->> {
->> 	int cpu_set_size = get_cpu_set_size();
->> 
->> -	if (cpu == -1)
->> +	/*
->> +	 * Return:
->> +	 * - if cpu is -1
->> +	 * - restrict out of bound access to sched_cpus
->> +	 */
->> +	if (cpu == -1 || ((cpu / __BITS_PER_LONG) >= (cpu_set_size / 8)))
-> 
-> hm, there's __BITS_PER_LONG in one case, but then there's hardcoded 8
-> 
-> would this be simpler:
-> 
-> 	if (cpu == -1 || ((cpu >= (cpu_set_size * 8))))
-> 		return;
-> 
-> jirka
+I suspect we can fix that once:
 
-Hi Jiri,
+  https://lkml.kernel.org/r/20220902130949.789826745@infradead.org
 
-Thanks for the review. I will post a V2 with this change
-
-Athira
-
-> 
->> 		return;
->> +
->> 	a->changed = true;
->> 	set_bit(cpu, a->sched_cpus);
->> 	/*
->> -- 
->> 2.35.1
-
+lands.
