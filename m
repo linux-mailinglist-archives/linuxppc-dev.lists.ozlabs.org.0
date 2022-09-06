@@ -2,147 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F8525AF219
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Sep 2022 19:14:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92EFD5AF25C
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Sep 2022 19:25:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MMX7P2bsFz3bZC
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Sep 2022 03:14:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MMXMf32xPz30L5
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Sep 2022 03:25:18 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2022-7-12 header.b=DTVzmDTL;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=OuDhdhMq;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=heO9Twwq;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=oracle.com (client-ip=205.220.177.32; helo=mx0b-00069f02.pphosted.com; envelope-from=mike.kravetz@oracle.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::d2d; helo=mail-io1-xd2d.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2022-7-12 header.b=DTVzmDTL;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=OuDhdhMq;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=heO9Twwq;
 	dkim-atps=neutral
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-xd2d.google.com (mail-io1-xd2d.google.com [IPv6:2607:f8b0:4864:20::d2d])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MMX6Y27hXz2xG9
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Sep 2022 03:13:54 +1000 (AEST)
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 286GO3SV004368;
-	Tue, 6 Sep 2022 17:13:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : content-type :
- content-transfer-encoding : in-reply-to : mime-version; s=corp-2022-7-12;
- bh=UelA/A0PFMSO7fqB0d1yBlOX2x44YtgFxS3fmqUFivY=;
- b=DTVzmDTLEpSLcyQResurNOdDdjOZsR7Xbx0Ntae/wQt80lOpVLerfzZIfC8tK7SVhVZV
- P9gqsrgrGCKXuAd7v7uoOGbR6VycVEepyTYEnU34g5KMOebTap1YjPgFvl/SXo+t/pvq
- CXe4plakKxOftnYMT1AuuljyXaVHAueE5F4WIjg0uKbyIfxgaWUydvoRVVWkJDISp2la
- TOB5GPmrnj3RjvSYZRsq4TtTdfPtXPs94jIhCijW7ErSn7DaDbrtGJm2b9hLrMB62bgu
- g0iHSs46Hp3XWCK7lEcNk5VQtN5ccGa4rne6I78aF7hCRq1kYIXFTp1R5C+9CSYPPSc3 rQ== 
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3jbwbc6fcf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 06 Sep 2022 17:13:29 +0000
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.5/8.17.1.5) with ESMTP id 286H4HER023869;
-	Tue, 6 Sep 2022 17:13:28 GMT
-Received: from nam10-dm6-obe.outbound.protection.outlook.com (mail-dm6nam10lp2104.outbound.protection.outlook.com [104.47.58.104])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3jbwc9eg8m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 06 Sep 2022 17:13:28 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=LO7Nwv+PbGSkvhapXii/tSwDLWMs16yV32uob25oF/qFVujccyIztf8C3YbBBpKHufvd2MkpRK0pwlTspMhMz94ZF7Iw9BBj9CaOZd1wGGQgsdGBF6Ne73lCiEunFECC5uWKx32ShrjTlfwNiiieX0H30l2IyFQYZ20In0vmLI9r0tbdXCKFy51OaUoQTsw4qWY71tLNqX4V9AZfa972VZoY2+dDRTyub5ss3hPuDMyBGZaugHtJQrKsaUATgM4vSwIErQgu8VOd6cwUwIdbpYVGanfrkx5/sCuyC315eKrEdd1H+vtOPdisBKmeDBsZ4eHYq9+6dy8s7hiTSrAy9g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=c6bD0+bwChXin7IA9xG1wTkqkY21Au9WJuz/xsUNUyw=;
- b=lfyoC3IGUNfN0xuuz39CVzT7Ntz0H7zO0shuJbR1I7y/cTx/pWaxmmdtxdIIYJLToiczb87PedjUMzcCVyrPU9C+AtTyuKSi55gvEe9hcIrJ/L6ujqTfkIOp5Qrusm0FeBXqngJwM66aw2TlrxWi0uk1wsBJ2SJPhSvUtSKk1iP++mnjEnfiMS6cYHDdisLJNQGcwfDufGjSgrksgAGBkpCNSPZNBJ7rNOlf85JbmQcYa0NJY+xeRlnIBg2YuJQO9GH7FsAsWq2RL018bixBtZZEmh4+emQRMp64AqLGseKxnj8KmQSxRRI5yotKqtl9IY7BL5In8zRIzAfPIrCp8w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MMXM13pjVz2xGS
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Sep 2022 03:24:44 +1000 (AEST)
+Received: by mail-io1-xd2d.google.com with SMTP id 62so9485998iov.5
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Sep 2022 10:24:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=c6bD0+bwChXin7IA9xG1wTkqkY21Au9WJuz/xsUNUyw=;
- b=OuDhdhMqveBvkyj5CFen8kpqaAuEqjO/+2+M82I81bYROybdIZn3CDTopcpLxQUnC24TPa1mgKYIeSKhlhhXW0FVkqC1R9ZnkMyKyTOVXDj/6goQ0mad1SHskeG88W8nZcrMgERCgHObZVE/3Xq0wBz8Os7k7kJBXr5FWIEsZ5U=
-Received: from BY5PR10MB4196.namprd10.prod.outlook.com (2603:10b6:a03:20d::23)
- by MW4PR10MB5773.namprd10.prod.outlook.com (2603:10b6:303:18d::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5588.17; Tue, 6 Sep
- 2022 17:13:26 +0000
-Received: from BY5PR10MB4196.namprd10.prod.outlook.com
- ([fe80::e9d2:a804:e53a:779a]) by BY5PR10MB4196.namprd10.prod.outlook.com
- ([fe80::e9d2:a804:e53a:779a%6]) with mapi id 15.20.5588.018; Tue, 6 Sep 2022
- 17:13:26 +0000
-Date: Tue, 6 Sep 2022 10:13:24 -0700
-From: Mike Kravetz <mike.kravetz@oracle.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v2] hugetlb: simplify hugetlb handling in follow_page_mask
-Message-ID: <Yxd/tE4EnIqhfd9s@monkey>
-References: <20220902190357.469512-1-mike.kravetz@oracle.com>
- <3a65e455-ce68-30e2-6e1b-fb8a1917b40d@csgroup.eu>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <3a65e455-ce68-30e2-6e1b-fb8a1917b40d@csgroup.eu>
-X-ClientProxiedBy: MW4PR04CA0184.namprd04.prod.outlook.com
- (2603:10b6:303:86::9) To BY5PR10MB4196.namprd10.prod.outlook.com
- (2603:10b6:a03:20d::23)
+        d=google.com; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date;
+        bh=Ld2JxcymypOPOgywLT44PW2Ikbrb1VzeoM48fRlHsTI=;
+        b=heO9Twwqp33yzFcE5GLSFZY/U8zaJZ4J28uFyeewexljvXECNpeJ2YeThC56sC2T1Z
+         FSkdQqIVbh/cqsKT5Y0t8iIePnxPuCevJ8ZrOfdNvQiWBmPcnuOTAMMzUWnWFRjh069U
+         2SXZ6m6FQBjFi6mdlCo7dKjS53jGhfxzzRBbp3o0goQTVEZefTtFJinepqc7gwdA76Zn
+         wWWp4f8k5XGZje2LlOIKk4oVmjduAoZAwWtXy3GPKeN4mt5BZrcg7cPtj/js/QvqGJHf
+         DTscr+is3SnIENf6zzTDVRxrFNZQ12O+RxDP9vtCrN8voGYy2HMXqkCLYp+loBr1u5fW
+         yK6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date;
+        bh=Ld2JxcymypOPOgywLT44PW2Ikbrb1VzeoM48fRlHsTI=;
+        b=i9lFM/gRdfFAKF7gghYPXzN3STEAB9lZu69x8zm9TRpFmAuAEa8kmTIi6vgN9cnNXU
+         oQYgqkS1K2pRZIuw/v0s3xYBx98kF9Arkx4G5heLNtlaRX6DGNPwlreVHqCqagCqxte7
+         w98SpFuGLhgQeI/xmjjHxLJRPt2pOxkYhT6TGAGkWfuxtA+OVI5OKViyeeRq8HGG48+3
+         uukI5obD+61XeK/PdataopEqLa5LKPsQTlJG6TvqrPYx2/+299eDMBI77HLcNs9Im0oc
+         p49nmS69ilqhhvFfAoZEmIaM+KVi4bQyF9bIf4f2R+3o3pBFBid0+SRtaYIAgo3vZH1r
+         U0AA==
+X-Gm-Message-State: ACgBeo1ECswJNpsDTzZmCpxPfFbeMOP0PBcda0YUG635bdIZoLzIYpnW
+	KTX+7EZPq84sTFTzc0ePoli7FI/2xUL3Z+w78HqzPO50dtGR+GVwZNJM7gkPCEovusbop1T1NRB
+	pJNblQ+8MEoRZA2In4MJNyfdU+Foy5cFv
+X-Google-Smtp-Source: AA6agR44YTmLzCV+I+JaNpT4N0gLu2+UsZktpd1YNE7QssF1dAl8b+3/7PUu8k7UutO/GpnVhbMgZRcHYblP//qHDQY=
+X-Received: by 2002:a02:740b:0:b0:349:bcdd:ca20 with SMTP id
+ o11-20020a02740b000000b00349bcddca20mr30908418jac.110.1662485080617; Tue, 06
+ Sep 2022 10:24:40 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: f411987c-d537-4a49-e335-08da902b1c9e
-X-MS-TrafficTypeDiagnostic: MW4PR10MB5773:EE_
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	5aJaskHP1E+k3Gp2mzr+d5zmwXY3ybdMRb9Sf4fZsLmRiFW8OuJWnlYklYDwN27dUNB5q9y5JXIDvnx00g3S9J5qLGy//qUAmAFOybIJWDQs/ekwYABLtNz75H4sN3JPSdk0uQ/7ppzXsOctimsl+f1+LaN99ioHNfZLYTGGQ+42W8lTY2RE7ss6P8rKOWSqIhXWnVDoCJZm2qgipfKgip2KgMDqmBTa58tSBOvZTwGB9EoJR4+p7NcPbnPfApGEu9XSw45zXZqcuCEqVbaR642B/6u7pqFjVapbJui5C/VJShlHCvWrI0lOKMHmHL/jGykEnZscy+XixTxpwc+pBhz6225U9fDYMqpxanAGNpF6RAK98/fsI37kEWWv4YxMv4dR82mJjBbtVIVrdujKPSQaFT465/BHwzU3Tc+UT57W8tpjXbbwyRZBU8bfMU6biMoksZsZ0TDkXnPmH6L2SmYXZEZIY2bZeYfyaepX0ugfVfES47N8Qs4+T1UyhP0YtOCTaBclQvk8+xaLvp5rMHb2IhkpdpipdtoJJuK1S8X/HtnRFERAwIqDc0K/hKXTL8gkoBQkzBBFVWfuJ75+BOucTVQe5PS/1M9ldNW8onE1k/or7tMN55G1iItGpUQZL/E74BT5D0X2neNQeBl943GHfxbpqCRY5MYhq5KnKrSW4AzuIqUC7HX9fs1FPMkOPG6/iKLfkM4lnY4gAybpaA==
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR10MB4196.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(7916004)(346002)(39860400002)(396003)(366004)(376002)(136003)(2906002)(186003)(44832011)(5660300002)(8936002)(86362001)(53546011)(7416002)(33716001)(8676002)(6506007)(4326008)(41300700001)(38100700002)(66946007)(66476007)(26005)(66556008)(6512007)(478600001)(9686003)(54906003)(316002)(6916009)(6486002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?iso-8859-1?Q?l+yiffAkrvOJOI2DHXIEcRNmduMgL5WOF75sad17j764x52Vx9xk7mc7SX?=
- =?iso-8859-1?Q?EGazWTKzcl004IxohmVMvlTquQnLp/Ez+65+CPJSuCdgMC+7NOIuU4S89a?=
- =?iso-8859-1?Q?SEypKE1adJu9yDg326D4RcRB6XVmdq/1qqEILYtH0YkvudoqfjS5gnosm7?=
- =?iso-8859-1?Q?AUjM7OXXpl8tEi0/63W8ek+mHRKvLQmVFt60FsfRwzqi4FCCwXwqWNtF5T?=
- =?iso-8859-1?Q?UiiriuHnrXUI93TuU7gD5EWtolv1TK/rBVi4eehWBWCFenUqU00elJTR/q?=
- =?iso-8859-1?Q?bee3BFEY/pqdLxNmWl0HyjkVWqDQjDtto96FHSSEjhJUjzYY0gIBxZF/7f?=
- =?iso-8859-1?Q?MvgZy8kbLDy8bEGvubFVCIvP0MOyHzxGWIXAVL4g3hrKdTuzkW8zvURbNQ?=
- =?iso-8859-1?Q?uaj80BoZespVu7ttWUqS8pD16b5V6KXImusBWyFxAHHika5DRkuLg6Ymgr?=
- =?iso-8859-1?Q?Qy3Y20UVSsyykO0s8f6uSfwmepReGxKvd2+CCc20jxVa/IgHo5nmPvu0Z5?=
- =?iso-8859-1?Q?5hFNXNNAs9JLzNNKSRpQU96KXNUJrnNIwEwMvfhQC8zm/Fz3ykA94wuWMA?=
- =?iso-8859-1?Q?xAc3Oims+wqO/tHwCN0oOL7OBFgyI5aGHdWgX43CbuwXo9pZJC79UvzoaC?=
- =?iso-8859-1?Q?/cNYIjdL9vBHR78gcDQwDTbkQGe/1gSdxz5PrMxMnWPQn1D1MSoD8uwkf8?=
- =?iso-8859-1?Q?qs8XFVg+EIgFfrqoynsPUjbV7jQUzGvznJpS96f1d5RLmQGZnKa7oorG9l?=
- =?iso-8859-1?Q?3W+uJvA+h/Oc9HrOFY3IChHBIPfM8YjFMqVNbZdiYeYmnkYpVjlhRCDcX6?=
- =?iso-8859-1?Q?JYZeZu9EYBSA2W8d8vBiiHwaqH+0X2o79s3ySkZ07QYpm+iHNgCsPD7co8?=
- =?iso-8859-1?Q?A8a+ESHWVlqoS5JfCsi9Q8eQULxDoKQ1/OLkpk63m2oRPM28hgPMJEYggh?=
- =?iso-8859-1?Q?fdoGRo3RoEQzGD2bNfjxKOs+pW1Mpc8RIlU133i0xkZJKKeRdg/3c7oJNd?=
- =?iso-8859-1?Q?YNheR7JUcUWYitVlNXieWnLI87tgRQTFTowpk0AnafCvQ1XtN3q4g2SF4D?=
- =?iso-8859-1?Q?B3yL93AdvPdD0oK2kiKP5VdK59wtKnxviHTjSuRZDMlIbUyAScEeMtaGXE?=
- =?iso-8859-1?Q?p96paJruePj7ZxaWtohjmgE8Uf6cxuua/smjZr61Y4nieMBOXMmjqYuLSw?=
- =?iso-8859-1?Q?9yrGIknhnGN8D8ZwioFA3NbfeU2/PWuh3lSoeSGmdYEAtco0Vz2GtuEb/v?=
- =?iso-8859-1?Q?w03/va3V801IJTrYOeKRZwP3AeUrfFurY3g3r6p3r/qmAR2/1tgxF5DGud?=
- =?iso-8859-1?Q?lQxKWozuf6wvD36D1V52qMJU7lqOaJsPraH+ykQgFgsZNr39s1LIQzJobG?=
- =?iso-8859-1?Q?NmrhOtsg3C3cM29FghoPl8ymxauZSmkr3iS0GE8r4twUlc5cgTnanVHydT?=
- =?iso-8859-1?Q?mEqk6OEh4HicYQzm3sjU24wHZOqy1MWo0fJh/DKlKLhrGSRzGCw21kJjRg?=
- =?iso-8859-1?Q?gPDO0Yd3Nr++nwnIFyB7QvZJzkYZUU+yPv9XPf3GJTl+UBarTWgqu9rsGx?=
- =?iso-8859-1?Q?sl1a8Z+GxJnmnS9DCl9fHkBnTFw45LAcJtJ1F/UFuhOKAOLnjrxL3LQDQ1?=
- =?iso-8859-1?Q?Cqx/ZczuT+bRCzLz49sHgHR8x4OHj29vsRDy7lGklGfUHpSoEWpUioXg?=
- =?iso-8859-1?Q?=3D=3D?=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f411987c-d537-4a49-e335-08da902b1c9e
-X-MS-Exchange-CrossTenant-AuthSource: BY5PR10MB4196.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Sep 2022 17:13:26.7482
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Q+fam7ZgAyLIri0UBUo7D8yypIgko3Zwtz/F6ToEW1b/n24h2TMpZ73unMWyB0yJr2r61+JXDl66/PSFfcJd5A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR10MB5773
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
- definitions=2022-09-06_09,2022-09-06_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 mlxscore=0 adultscore=0
- malwarescore=0 mlxlogscore=999 bulkscore=0 suspectscore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2207270000
- definitions=main-2209060079
-X-Proofpoint-ORIG-GUID: 8D8V_Z8GXYNRqCkff_EyEPBlYC1R42Uk
-X-Proofpoint-GUID: 8D8V_Z8GXYNRqCkff_EyEPBlYC1R42Uk
+References: <20220901173516.702122-1-surenb@google.com> <20220901173516.702122-6-surenb@google.com>
+ <c84136d3-703a-0e57-20ce-59f6b5823999@linux.ibm.com>
+In-Reply-To: <c84136d3-703a-0e57-20ce-59f6b5823999@linux.ibm.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 6 Sep 2022 10:24:29 -0700
+Message-ID: <CAJuCfpFZ_E0wuA+0Xsavk+hnGDA-H0SdcZGUr31_u-cXyR6b7Q@mail.gmail.com>
+Subject: Re: [RFC PATCH RESEND 05/28] mm: add per-VMA lock and helper
+ functions to control it
+To: Laurent Dufour <ldufour@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-ccpol: medium
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -154,45 +78,267 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Naoya Horiguchi <naoya.horiguchi@linux.dev>, "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>, David Hildenbrand <david@redhat.com>, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Muchun Song <songmuchun@bytedance.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: Michel Lespinasse <michel@lespinasse.org>, Joel Fernandes <joelaf@google.com>, Song Liu <songliubraving@fb.com>, Michal Hocko <mhocko@suse.com>, David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Peter Xu <peterx@redhat.com>, dhowells@redhat.com, linux-mm <linux-mm@kvack.org>, Jerome Glisse <jglisse@google.com>, Davidlohr Bueso <dave@stgolabs.net>, Minchan Kim <minchan@google.com>, x86@kernel.org, Hugh Dickins <hughd@google.com>, Matthew Wilcox <willy@infradead.org>, Laurent Dufour <laurent.dufour@fr.ibm.com>, Mel Gorman <mgorman@suse.de>, David Rientjes <rientjes@google.com>, Axel Rasmussen <axelrasmussen@google.com>, kernel-team <kernel-team@android.com>, "Paul E . McKenney" <paulmck@kernel.org>, "Liam R. Howlett" <liam.howlett@oracle.com>, Andy Lutomirski <luto@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, linux-arm-kernel@lists.infradead.org, Kent Overstreet <kent.overstreet@linux.dev>, LKML <linux-
+ kernel@vger.kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 09/05/22 06:34, Christophe Leroy wrote:
-> 
-> 
-> Le 02/09/2022 à 21:03, Mike Kravetz a écrit :
-> > diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-> > index fe4944f89d34..275e554dd365 100644
-> > --- a/include/linux/hugetlb.h
-> > +++ b/include/linux/hugetlb.h
-> > @@ -264,6 +255,13 @@ static inline void adjust_range_if_pmd_sharing_possible(
-> >   {
-> >   }
-> >   
-> > +static inline struct page *hugetlb_follow_page_mask(struct vm_area_struct *vma,
-> > +				unsigned long address, unsigned int flags)
+On Tue, Sep 6, 2022 at 6:47 AM Laurent Dufour <ldufour@linux.ibm.com> wrote=
+:
+>
+> Le 01/09/2022 =C3=A0 19:34, Suren Baghdasaryan a =C3=A9crit :
+> > Introduce a per-VMA rw_semaphore to be used during page fault handling
+> > instead of mmap_lock. Because there are cases when multiple VMAs need
+> > to be exclusively locked during VMA tree modifications, instead of the
+> > usual lock/unlock patter we mark a VMA as locked by taking per-VMA lock
+> > exclusively and setting vma->lock_seq to the current mm->lock_seq. When
+> > mmap_write_lock holder is done with all modifications and drops mmap_lo=
+ck,
+> > it will increment mm->lock_seq, effectively unlocking all VMAs marked a=
+s
+> > locked.
+> >
+> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> Despite a minor comment below,
+>
+> Reviewed-by: Laurent Dufour <laurent.dufour@fr.ibm.com>
+
+Thanks for the reviews Laurent! I'll need some time to double-check
+all the VMA locking locations that you spotted as potentially
+unnecessary. Admittedly I was a bit paranoid when writing this
+patchset and trying not to miss any potential race, so some of them
+might indeed be unnecessary. Will reply to each of your comments once
+I confirm the need for locking in each case.
+Thanks,
+Suren.
+
+>
+> > ---
+> >  include/linux/mm.h        | 78 +++++++++++++++++++++++++++++++++++++++
+> >  include/linux/mm_types.h  |  7 ++++
+> >  include/linux/mmap_lock.h | 13 +++++++
+> >  kernel/fork.c             |  4 ++
+> >  mm/init-mm.c              |  3 ++
+> >  5 files changed, 105 insertions(+)
+> >
+> > diff --git a/include/linux/mm.h b/include/linux/mm.h
+> > index 7d322a979455..476bf936c5f0 100644
+> > --- a/include/linux/mm.h
+> > +++ b/include/linux/mm.h
+> > @@ -611,6 +611,83 @@ struct vm_operations_struct {
+> >                                         unsigned long addr);
+> >  };
+> >
+> > +#ifdef CONFIG_PER_VMA_LOCK
+> > +static inline void vma_init_lock(struct vm_area_struct *vma)
 > > +{
-> > +	WARN_ON_ONCE(1); /* should never be called if !CONFIG_HUGETLB_PAGE*/
-> > +	return ERR_PTR(-EINVAL);
-> 
-> This function is called only when is_vm_hugetlb_page() is true.
-> 
-> When !CONFIG_HUGETLB_PAGE is_vm_hugetlb_page() always returns false, so 
-> the call to hugetlb_follow_page_mask() should never be compiled in.
-> 
-> Use BUILD_BUG() to catch it at buildtime.
-> 
-
-Yes.  My bad as David suggested this previously.
-How about we just leave out the function in the !CONFIG_HUGETLB_PAGE case?
-We will get build errors without the need for a BUILD_BUG().
-
+> > +     init_rwsem(&vma->lock);
+> > +     vma->vm_lock_seq =3D -1;
 > > +}
 > > +
-> >   static inline long follow_hugetlb_page(struct mm_struct *mm,
-> >   			struct vm_area_struct *vma, struct page **pages,
-> >   			struct vm_area_struct **vmas, unsigned long *position,
+> > +static inline void vma_mark_locked(struct vm_area_struct *vma)
+> > +{
+> > +     int mm_lock_seq;
+> > +
+> > +     mmap_assert_write_locked(vma->vm_mm);
+> > +
+> > +     /*
+> > +      * current task is holding mmap_write_lock, both vma->vm_lock_seq=
+ and
+> > +      * mm->mm_lock_seq can't be concurrently modified.
+> > +      */
+> > +     mm_lock_seq =3D READ_ONCE(vma->vm_mm->mm_lock_seq);
+> > +     if (vma->vm_lock_seq =3D=3D mm_lock_seq)
+> > +             return;
+> > +
+> > +     down_write(&vma->lock);
+> > +     vma->vm_lock_seq =3D mm_lock_seq;
+> > +     up_write(&vma->lock);
+> > +}
+> > +
+> > +static inline bool vma_read_trylock(struct vm_area_struct *vma)
+> > +{
+> > +     if (unlikely(down_read_trylock(&vma->lock) =3D=3D 0))
+> > +             return false;
+> > +
+> > +     /*
+> > +      * Overflow might produce false locked result but it's not critic=
+al.
+>
+> It might be good to precise here that in the case of false locked, the
+> caller is assumed to fallback read locking the mm entirely before doing i=
+ts
+> change relative to that VMA.
 
--- 
-Mike Kravetz
+Ack.
+
+>
+> > +      * False unlocked result is critical but is impossible because we
+> > +      * modify and check vma->vm_lock_seq under vma->lock protection a=
+nd
+> > +      * mm->mm_lock_seq modification invalidates all existing locks.
+> > +      */
+> > +     if (vma->vm_lock_seq =3D=3D READ_ONCE(vma->vm_mm->mm_lock_seq)) {
+> > +             up_read(&vma->lock);
+> > +             return false;
+> > +     }
+> > +     return true;
+> > +}
+> > +
+> > +static inline void vma_read_unlock(struct vm_area_struct *vma)
+> > +{
+> > +     up_read(&vma->lock);
+> > +}
+> > +
+> > +static inline void vma_assert_locked(struct vm_area_struct *vma)
+> > +{
+> > +     lockdep_assert_held(&vma->lock);
+> > +     VM_BUG_ON_VMA(!rwsem_is_locked(&vma->lock), vma);
+> > +}
+> > +
+> > +static inline void vma_assert_write_locked(struct vm_area_struct *vma,=
+ int pos)
+> > +{
+> > +     mmap_assert_write_locked(vma->vm_mm);
+> > +     /*
+> > +      * current task is holding mmap_write_lock, both vma->vm_lock_seq=
+ and
+> > +      * mm->mm_lock_seq can't be concurrently modified.
+> > +      */
+> > +     VM_BUG_ON_VMA(vma->vm_lock_seq !=3D READ_ONCE(vma->vm_mm->mm_lock=
+_seq), vma);
+> > +}
+> > +
+> > +#else /* CONFIG_PER_VMA_LOCK */
+> > +
+> > +static inline void vma_init_lock(struct vm_area_struct *vma) {}
+> > +static inline void vma_mark_locked(struct vm_area_struct *vma) {}
+> > +static inline bool vma_read_trylock(struct vm_area_struct *vma)
+> > +             { return false; }
+> > +static inline void vma_read_unlock(struct vm_area_struct *vma) {}
+> > +static inline void vma_assert_locked(struct vm_area_struct *vma) {}
+> > +static inline void vma_assert_write_locked(struct vm_area_struct *vma,=
+ int pos) {}
+> > +
+> > +#endif /* CONFIG_PER_VMA_LOCK */
+> > +
+> >  static inline void vma_init(struct vm_area_struct *vma, struct mm_stru=
+ct *mm)
+> >  {
+> >       static const struct vm_operations_struct dummy_vm_ops =3D {};
+> > @@ -619,6 +696,7 @@ static inline void vma_init(struct vm_area_struct *=
+vma, struct mm_struct *mm)
+> >       vma->vm_mm =3D mm;
+> >       vma->vm_ops =3D &dummy_vm_ops;
+> >       INIT_LIST_HEAD(&vma->anon_vma_chain);
+> > +     vma_init_lock(vma);
+> >  }
+> >
+> >  static inline void vma_set_anonymous(struct vm_area_struct *vma)
+> > diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+> > index bed25ef7c994..6a03f59c1e78 100644
+> > --- a/include/linux/mm_types.h
+> > +++ b/include/linux/mm_types.h
+> > @@ -486,6 +486,10 @@ struct vm_area_struct {
+> >       struct mempolicy *vm_policy;    /* NUMA policy for the VMA */
+> >  #endif
+> >       struct vm_userfaultfd_ctx vm_userfaultfd_ctx;
+> > +#ifdef CONFIG_PER_VMA_LOCK
+> > +     struct rw_semaphore lock;
+> > +     int vm_lock_seq;
+> > +#endif
+> >  } __randomize_layout;
+> >
+> >  struct kioctx_table;
+> > @@ -567,6 +571,9 @@ struct mm_struct {
+> >                                         * init_mm.mmlist, and are prote=
+cted
+> >                                         * by mmlist_lock
+> >                                         */
+> > +#ifdef CONFIG_PER_VMA_LOCK
+> > +             int mm_lock_seq;
+> > +#endif
+> >
+> >
+> >               unsigned long hiwater_rss; /* High-watermark of RSS usage=
+ */
+> > diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
+> > index e49ba91bb1f0..a391ae226564 100644
+> > --- a/include/linux/mmap_lock.h
+> > +++ b/include/linux/mmap_lock.h
+> > @@ -72,6 +72,17 @@ static inline void mmap_assert_write_locked(struct m=
+m_struct *mm)
+> >       VM_BUG_ON_MM(!rwsem_is_locked(&mm->mmap_lock), mm);
+> >  }
+> >
+> > +#ifdef CONFIG_PER_VMA_LOCK
+> > +static inline void vma_mark_unlocked_all(struct mm_struct *mm)
+> > +{
+> > +     mmap_assert_write_locked(mm);
+> > +     /* No races during update due to exclusive mmap_lock being held *=
+/
+> > +     WRITE_ONCE(mm->mm_lock_seq, mm->mm_lock_seq + 1);
+> > +}
+> > +#else
+> > +static inline void vma_mark_unlocked_all(struct mm_struct *mm) {}
+> > +#endif
+> > +
+> >  static inline void mmap_init_lock(struct mm_struct *mm)
+> >  {
+> >       init_rwsem(&mm->mmap_lock);
+> > @@ -114,12 +125,14 @@ static inline bool mmap_write_trylock(struct mm_s=
+truct *mm)
+> >  static inline void mmap_write_unlock(struct mm_struct *mm)
+> >  {
+> >       __mmap_lock_trace_released(mm, true);
+> > +     vma_mark_unlocked_all(mm);
+> >       up_write(&mm->mmap_lock);
+> >  }
+> >
+> >  static inline void mmap_write_downgrade(struct mm_struct *mm)
+> >  {
+> >       __mmap_lock_trace_acquire_returned(mm, false, true);
+> > +     vma_mark_unlocked_all(mm);
+> >       downgrade_write(&mm->mmap_lock);
+> >  }
+> >
+> > diff --git a/kernel/fork.c b/kernel/fork.c
+> > index 614872438393..bfab31ecd11e 100644
+> > --- a/kernel/fork.c
+> > +++ b/kernel/fork.c
+> > @@ -475,6 +475,7 @@ struct vm_area_struct *vm_area_dup(struct vm_area_s=
+truct *orig)
+> >                */
+> >               *new =3D data_race(*orig);
+> >               INIT_LIST_HEAD(&new->anon_vma_chain);
+> > +             vma_init_lock(new);
+> >               new->vm_next =3D new->vm_prev =3D NULL;
+> >               dup_anon_vma_name(orig, new);
+> >       }
+> > @@ -1130,6 +1131,9 @@ static struct mm_struct *mm_init(struct mm_struct=
+ *mm, struct task_struct *p,
+> >       seqcount_init(&mm->write_protect_seq);
+> >       mmap_init_lock(mm);
+> >       INIT_LIST_HEAD(&mm->mmlist);
+> > +#ifdef CONFIG_PER_VMA_LOCK
+> > +     WRITE_ONCE(mm->mm_lock_seq, 0);
+> > +#endif
+> >       mm_pgtables_bytes_init(mm);
+> >       mm->map_count =3D 0;
+> >       mm->locked_vm =3D 0;
+> > diff --git a/mm/init-mm.c b/mm/init-mm.c
+> > index fbe7844d0912..8399f90d631c 100644
+> > --- a/mm/init-mm.c
+> > +++ b/mm/init-mm.c
+> > @@ -37,6 +37,9 @@ struct mm_struct init_mm =3D {
+> >       .page_table_lock =3D  __SPIN_LOCK_UNLOCKED(init_mm.page_table_loc=
+k),
+> >       .arg_lock       =3D  __SPIN_LOCK_UNLOCKED(init_mm.arg_lock),
+> >       .mmlist         =3D LIST_HEAD_INIT(init_mm.mmlist),
+> > +#ifdef CONFIG_PER_VMA_LOCK
+> > +     .mm_lock_seq    =3D 0,
+> > +#endif
+> >       .user_ns        =3D &init_user_ns,
+> >       .cpu_bitmap     =3D CPU_BITS_NONE,
+> >  #ifdef CONFIG_IOMMU_SVA
+>
