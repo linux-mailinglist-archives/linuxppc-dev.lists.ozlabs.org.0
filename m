@@ -1,58 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF8235AF360
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Sep 2022 20:10:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE6ED5AF406
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Sep 2022 21:01:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MMYMW5lvKz3c3L
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Sep 2022 04:10:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MMZVq61t5z3bXG
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Sep 2022 05:01:39 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=ZGD1qkfO;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=IJClkJZA;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=softfail (domain owner discourages use of this host) smtp.mailfrom=kernel.org (client-ip=210.131.2.91; helo=conssluserg-06.nifty.com; envelope-from=masahiroy@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::d31; helo=mail-io1-xd31.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=ZGD1qkfO;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=IJClkJZA;
 	dkim-atps=neutral
-Received: from conssluserg-06.nifty.com (conssluserg-06.nifty.com [210.131.2.91])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-xd31.google.com (mail-io1-xd31.google.com [IPv6:2607:f8b0:4864:20::d31])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MMYLs5jXqz2xCd
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Sep 2022 04:09:41 +1000 (AEST)
-Received: from mail-oa1-f50.google.com (mail-oa1-f50.google.com [209.85.160.50]) (authenticated)
-	by conssluserg-06.nifty.com with ESMTP id 286I9NGY029651
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 7 Sep 2022 03:09:24 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-06.nifty.com 286I9NGY029651
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-	s=dec2015msa; t=1662487764;
-	bh=XoFOHD9hbfQLitaVdmtOBiY1QAcAg6OYZ0EoW2xUSHA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ZGD1qkfOZB3mvpQdCDzOFOAElkTaO4PaPaAlPwkOGZeswdEKKWDKXGvUZU19OTnzN
-	 kI4Lqzl2aWPg2uCtrq2xBvWb3cjVInEsjTzAi3Rf4YG5y9/LblmloX7qnT+SezYZVP
-	 dmG+zEZAVxE+l/P5j9X8uI5mbuXzpVOOjco1luwJfnz7ClBnyYSFVGyILEjRvJMY9M
-	 oEqHz2POEjG51ru3WyLmIXcAkOS1/761PQoDttDR5Cx4+sGA3i+AhLPYBlTCLeAPS5
-	 I+P9+R/2+oFrTgEMh7Aa9eThY2hOa5FgLy2CtYLMSE4o7xQ6FFZduTdrcYLufub2YO
-	 RCfeNoN83q/0A==
-X-Nifty-SrcIP: [209.85.160.50]
-Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-1225219ee46so30244887fac.2
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Sep 2022 11:09:24 -0700 (PDT)
-X-Gm-Message-State: ACgBeo3bSpKw5iGcTY2X05zZkpnIiyvzkILmPb6eNxgjJBXwJCtBxnpU
-	phOrKwCaNTL7vBYbgQxbyfWI9Zh1z/XogNQICiA=
-X-Google-Smtp-Source: AA6agR67hGgf/nFls5Uj5NNQqrAJqhoj1q8j3XR+NtYCIBRN/6y6H7r8K0+yijxj8XiOimNwtU619t+k+s5yxf+KSSk=
-X-Received: by 2002:a05:6870:f626:b0:10d:a798:f3aa with SMTP id
- ek38-20020a056870f62600b0010da798f3aamr12376388oab.194.1662487752576; Tue, 06
- Sep 2022 11:09:12 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MMZV90Nxlz2xHM
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Sep 2022 05:01:03 +1000 (AEST)
+Received: by mail-io1-xd31.google.com with SMTP id n202so9688576iod.6
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Sep 2022 12:01:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date;
+        bh=VZWfKkBjgWu+gLzzTMPZReTUPnxocF2s2gADqtxYuc4=;
+        b=IJClkJZA2ci9X9YudNpotHQ2jHP9kri5ddYGJUdBbxArAYAFuAVNpwyi0s3x2GDssE
+         wKlyoqG+UBUO81USH5es0irAMzX6EFRrghUs1JE+MnRT/e+EpqHnfVk4E9YlsCNYKSZR
+         Xl/zBXPiLh9E3zBsrJo+zynSOWH0uE160CEF9eobQTk+DSbznkbFMDIZX6ryEvldAITQ
+         rGd7A4QdHAe65SeKpekqDuZxrEzMMNC8Uh0XEMVhqGWbIum8wwMgpRB0uFJeatcHhbst
+         7ZYGUBjpSVmToOuJcW+bSV+1ks9AULpHqc28iGBCjEreYwuWq9VPoAmFhemRoaSqPBCN
+         1QYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date;
+        bh=VZWfKkBjgWu+gLzzTMPZReTUPnxocF2s2gADqtxYuc4=;
+        b=mZqT7b6MFKI/Yj0xVt+BjHadh6HqEdwW32UTOOXdYAMcfp7BCoDFlt4RT5dPnhBNU8
+         B2xHmWiZz8Xd1uLmE2H5aI6Onqu2kMSsj9Bsg3A+HR+2Asr894SbeZSEUAhJJ6ydsife
+         SA/i0TB0Lak1okLbKCu6yo5ypSQIUbdSCPfh5KXLQQ8EjXs+ZtvdaXs5cPqVaixIm9wb
+         BrEts1HJu0oeljJ8qh2fatpLLPxRFuZhYckPGVLWWl+Kc1NNy67bREdMdefOWUXC0zOz
+         iwuYCh54H6ODlxNGd+auK5jRT5PsCG/Tf5vrSx0BK9Rel4M9KXxhi8Wedz/2kqF5U+pt
+         IIRg==
+X-Gm-Message-State: ACgBeo2i7vssQ4k4C5tazZTMpcitj6BjT2CcdEJNboSR5hhiMuhvrxnB
+	f6UY+/9Xeowe/6KGt1AquoY71YsYM+WNjw4qn3uKDg==
+X-Google-Smtp-Source: AA6agR7xDh5HT5Y9eMResmshIM/DOvn/mOOq2ia7QJOQf/o2UTiVbl/Ns26hFBPH0Ki7mcr19c0jix+nJSfeWWZE0GE=
+X-Received: by 2002:a6b:2a88:0:b0:68a:e898:2822 with SMTP id
+ q130-20020a6b2a88000000b0068ae8982822mr24499577ioq.75.1662490858786; Tue, 06
+ Sep 2022 12:00:58 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220802015052.10452-1-ojeda@kernel.org> <20220802015052.10452-28-ojeda@kernel.org>
-In-Reply-To: <20220802015052.10452-28-ojeda@kernel.org>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Wed, 7 Sep 2022 03:08:36 +0900
-X-Gmail-Original-Message-ID: <CAK7LNARTX+2Z=pnGbbUepxskE+KZ1f5YsfQukJ88ijPBQt9_GA@mail.gmail.com>
-Message-ID: <CAK7LNARTX+2Z=pnGbbUepxskE+KZ1f5YsfQukJ88ijPBQt9_GA@mail.gmail.com>
-Subject: Re: [PATCH v8 27/31] Kbuild: add Rust support
-To: Miguel Ojeda <ojeda@kernel.org>
+References: <20220901173516.702122-1-surenb@google.com> <20220901173516.702122-7-surenb@google.com>
+ <1624be86-4c17-46e5-fafc-eb8afb7b9b4a@linux.ibm.com>
+In-Reply-To: <1624be86-4c17-46e5-fafc-eb8afb7b9b4a@linux.ibm.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 6 Sep 2022 12:00:47 -0700
+Message-ID: <CAJuCfpFi07ZpAuSLwADGO0mfu2Hon9jWb0hsCytorchQ=cgK3Q@mail.gmail.com>
+Subject: Re: [RFC PATCH RESEND 06/28] mm: mark VMA as locked whenever
+ vma->vm_flags are modified
+To: Laurent Dufour <ldufour@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -66,177 +76,204 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sven Van Asbroeck <thesven73@gmail.com>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, Miguel Cano <macanroj@gmail.com>, Paul Mackerras <paulus@samba.org>, Gary Guo <gary@garyguo.net>, Douglas Su <d0u9.su@outlook.com>, Borislav Petkov <bp@alien8.de>, "open list:SIFIVE DRIVERS" <linux-riscv@lists.infradead.org>, Will Deacon <will@kernel.org>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, "H. Peter Anvin" <hpa@zytor.com>, X86 ML <x86@kernel.org>, Russell King <linux@armlinux.org.uk>, Ingo Molnar <mingo@redhat.com>, Wedson Almeida Filho <wedsonaf@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, Antonio Terceiro <antonio.terceiro@linaro.org>, Adam Bratschi-Kaye <ark.email@gmail.com>, Albert Ou <aou@eecs.berkeley.edu>, rust-for-linux@vger.kernel.org, Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>, Boqun Feng <boqun.feng@gmail.com>, linux-um@lists.infradead.org, linuxppc-dev <linuxppc-d
- ev@lists.ozlabs.org>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Michal Marek <michal.lkml@markovi.net>, Daniel Xu <dxu@dxuuu.xyz>, David Gow <davidgow@google.com>, Paul Walmsley <paul.walmsley@sifive.com>, Dariusz Sosnowski <dsosnowski@dsosnowski.pl>, linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, Tiago Lam <tiagolam@gmail.com>, Thomas Gleixner <tglx@linutronix.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Nick Desaulniers <ndesaulniers@google.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Boris-Chengbiao Zhou <bobo1239@web.de>, Jarkko Sakkinen <jarkko@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Richard Weinberger <richard@nod.at>, Finn Behrens <me@kloenk.de>, Johannes Berg <johannes@sipsolutions.net>, Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Michel Lespinasse <michel@lespinasse.org>, Joel Fernandes <joelaf@google.com>, Song Liu <songliubraving@fb.com>, Michal Hocko <mhocko@suse.com>, David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Peter Xu <peterx@redhat.com>, dhowells@redhat.com, linux-mm <linux-mm@kvack.org>, Jerome Glisse <jglisse@google.com>, Davidlohr Bueso <dave@stgolabs.net>, Minchan Kim <minchan@google.com>, x86@kernel.org, Hugh Dickins <hughd@google.com>, Matthew Wilcox <willy@infradead.org>, Laurent Dufour <laurent.dufour@fr.ibm.com>, Mel Gorman <mgorman@suse.de>, David Rientjes <rientjes@google.com>, Axel Rasmussen <axelrasmussen@google.com>, kernel-team <kernel-team@android.com>, "Paul E . McKenney" <paulmck@kernel.org>, "Liam R. Howlett" <liam.howlett@oracle.com>, Andy Lutomirski <luto@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, linux-arm-kernel@lists.infradead.org, Kent Overstreet <kent.overstreet@linux.dev>, LKML <linux-
+ kernel@vger.kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Aug 2, 2022 at 10:53 AM Miguel Ojeda <ojeda@kernel.org> wrote:
+On Tue, Sep 6, 2022 at 7:27 AM Laurent Dufour <ldufour@linux.ibm.com> wrote=
+:
 >
-> Having all the new files in place, we now enable Rust support
-> in the build system, including `Kconfig` entries related to Rust,
-> the Rust configuration printer, the target specification
-> generation script, the version detection script and a few
-> other bits.
+> Le 01/09/2022 =C3=A0 19:34, Suren Baghdasaryan a =C3=A9crit :
+> > VMA flag modifications should be done under VMA lock to prevent concurr=
+ent
+> > page fault handling in that area.
+> >
+> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> > ---
+> >  fs/proc/task_mmu.c | 1 +
+> >  fs/userfaultfd.c   | 6 ++++++
+> >  mm/madvise.c       | 1 +
+> >  mm/mlock.c         | 2 ++
+> >  mm/mmap.c          | 1 +
+> >  mm/mprotect.c      | 1 +
+> >  6 files changed, 12 insertions(+)
 >
-> Co-developed-by: Alex Gaynor <alex.gaynor@gmail.com>
-> Signed-off-by: Alex Gaynor <alex.gaynor@gmail.com>
-> Co-developed-by: Finn Behrens <me@kloenk.de>
-> Signed-off-by: Finn Behrens <me@kloenk.de>
-> Co-developed-by: Adam Bratschi-Kaye <ark.email@gmail.com>
-> Signed-off-by: Adam Bratschi-Kaye <ark.email@gmail.com>
-> Co-developed-by: Wedson Almeida Filho <wedsonaf@google.com>
-> Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
-> Co-developed-by: Michael Ellerman <mpe@ellerman.id.au>
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-> Co-developed-by: Sven Van Asbroeck <thesven73@gmail.com>
-> Signed-off-by: Sven Van Asbroeck <thesven73@gmail.com>
-> Co-developed-by: Gary Guo <gary@garyguo.net>
-> Signed-off-by: Gary Guo <gary@garyguo.net>
-> Co-developed-by: Boris-Chengbiao Zhou <bobo1239@web.de>
-> Signed-off-by: Boris-Chengbiao Zhou <bobo1239@web.de>
-> Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> Co-developed-by: Douglas Su <d0u9.su@outlook.com>
-> Signed-off-by: Douglas Su <d0u9.su@outlook.com>
-> Co-developed-by: Dariusz Sosnowski <dsosnowski@dsosnowski.pl>
-> Signed-off-by: Dariusz Sosnowski <dsosnowski@dsosnowski.pl>
-> Co-developed-by: Antonio Terceiro <antonio.terceiro@linaro.org>
-> Signed-off-by: Antonio Terceiro <antonio.terceiro@linaro.org>
-> Co-developed-by: Daniel Xu <dxu@dxuuu.xyz>
-> Signed-off-by: Daniel Xu <dxu@dxuuu.xyz>
-> Co-developed-by: Miguel Cano <macanroj@gmail.com>
-> Signed-off-by: Miguel Cano <macanroj@gmail.com>
-> Co-developed-by: David Gow <davidgow@google.com>
-> Signed-off-by: David Gow <davidgow@google.com>
-> Co-developed-by: Tiago Lam <tiagolam@gmail.com>
-> Signed-off-by: Tiago Lam <tiagolam@gmail.com>
-> Co-developed-by: Bj=C3=B6rn Roy Baron <bjorn3_gh@protonmail.com>
-> Signed-off-by: Bj=C3=B6rn Roy Baron <bjorn3_gh@protonmail.com>
-> Co-developed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-> Signed-off-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> ---
->  .gitignore                                   |   6 +
->  .rustfmt.toml                                |  12 +
->  Makefile                                     | 172 +++++++-
->  arch/Kconfig                                 |   6 +
->  arch/arm/Kconfig                             |   1 +
->  arch/arm64/Kconfig                           |   1 +
->  arch/powerpc/Kconfig                         |   1 +
->  arch/riscv/Kconfig                           |   1 +
->  arch/riscv/Makefile                          |   5 +
->  arch/um/Kconfig                              |   1 +
->  arch/x86/Kconfig                             |   1 +
->  arch/x86/Makefile                            |  10 +
->  include/linux/compiler_types.h               |   6 +-
->  init/Kconfig                                 |  46 +-
->  lib/Kconfig.debug                            |  82 ++++
->  rust/.gitignore                              |  10 +
->  rust/Makefile                                | 415 +++++++++++++++++++
->  rust/bindgen_parameters                      |  21 +
->  scripts/.gitignore                           |   1 +
->  scripts/Kconfig.include                      |   6 +-
->  scripts/Makefile                             |   3 +
->  scripts/Makefile.build                       |  60 +++
->  scripts/Makefile.debug                       |  10 +
->  scripts/Makefile.host                        |  34 +-
->  scripts/Makefile.lib                         |  12 +
->  scripts/Makefile.modfinal                    |   8 +-
->  scripts/cc-version.sh                        |  12 +-
->  scripts/generate_rust_target.rs              | 232 +++++++++++
->  scripts/is_rust_module.sh                    |  16 +
->  scripts/kconfig/confdata.c                   |  75 ++++
->  scripts/min-tool-version.sh                  |   6 +
->  scripts/rust-is-available-bindgen-libclang.h |   2 +
->  scripts/rust-is-available.sh                 | 160 +++++++
->  33 files changed, 1408 insertions(+), 26 deletions(-)
->  create mode 100644 .rustfmt.toml
->  create mode 100644 rust/.gitignore
->  create mode 100644 rust/Makefile
->  create mode 100644 rust/bindgen_parameters
->  create mode 100644 scripts/generate_rust_target.rs
->  create mode 100755 scripts/is_rust_module.sh
->  create mode 100644 scripts/rust-is-available-bindgen-libclang.h
->  create mode 100755 scripts/rust-is-available.sh
+> There are few changes also done in the driver's space, for instance:
 >
-
-
-
-
-
-
-> @@ -151,7 +162,8 @@ config WERROR
->         default COMPILE_TEST
->         help
->           A kernel build should not cause any compiler warnings, and this
-> -         enables the '-Werror' flag to enforce that rule by default.
-> +         enables the '-Werror' (for C) and '-Dwarnings' (for Rust) flags
-> +         to enforce that rule by default.
+> *** arch/x86/kernel/cpu/sgx/driver.c:
+> sgx_mmap[98]                   vma->vm_flags |=3D VM_PFNMAP | VM_DONTEXPA=
+ND |
+> VM_DONTDUMP | VM_IO;
+> *** arch/x86/kernel/cpu/sgx/virt.c:
+> sgx_vepc_mmap[108]             vma->vm_flags |=3D VM_PFNMAP | VM_IO |
+> VM_DONTDUMP | VM_DONTCOPY;
+> *** drivers/dax/device.c:
+> dax_mmap[311]                  vma->vm_flags |=3D VM_HUGEPAGE;
 >
->           However, if you have a new (or very old) compiler with odd and
->           unusual warnings, or you have some architecture with problems,
-> @@ -1898,6 +1910,38 @@ config PROFILING
->           Say Y here to enable the extended profiling support mechanisms =
-used
->           by profilers.
+> I guess these changes to vm_flags should be protected as well, or to be
+> checked one by one.
+
+Thanks for noting these! I'll add necessary locking here and will look
+for other places I might have missed.
+
 >
-> +config RUST
-> +       bool "Rust support"
-> +       depends on HAVE_RUST
-> +       depends on RUST_IS_AVAILABLE
-> +       depends on !MODVERSIONS
-> +       depends on !GCC_PLUGINS
-> +       depends on !RANDSTRUCT
-> +       depends on !DEBUG_INFO_BTF
-> +       select CONSTRUCTORS
-> +       help
-> +         Enables Rust support in the kernel.
-> +
-> +         This allows other Rust-related options, like drivers written in=
- Rust,
-> +         to be selected.
-> +
-> +         It is also required to be able to load external kernel modules
-> +         written in Rust.
-> +
-> +         See Documentation/rust/ for more information.
-> +
-> +         If unsure, say N.
-> +
-> +config RUSTC_VERSION_TEXT
-> +       string
-> +       depends on RUST
-> +       default $(shell,command -v $(RUSTC) >/dev/null 2>&1 && $(RUSTC) -=
--version || echo n)
-> +
-> +config BINDGEN_VERSION_TEXT
-> +       string
-> +       depends on RUST
-> +       default $(shell,command -v $(BINDGEN) >/dev/null 2>&1 && $(BINDGE=
-N) --version || echo n)
-> +
-
-
-
-Where are these config options used?
-
-
-I grep'ed but no hit.
-
-
-masahiro@zoe:~/ref/linux-next$ git grep RUSTC_VERSION_TEXT
-init/Kconfig:config RUSTC_VERSION_TEXT
-masahiro@zoe:~/ref/linux-next$ git grep BINDGEN_VERSION_TEXT
-init/Kconfig:config BINDGEN_VERSION_TEXT
-
-
-
-> --
-> 2.37.1
+> >
+> > diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+> > index 4e0023643f8b..ceffa5c2c650 100644
+> > --- a/fs/proc/task_mmu.c
+> > +++ b/fs/proc/task_mmu.c
+> > @@ -1285,6 +1285,7 @@ static ssize_t clear_refs_write(struct file *file=
+, const char __user *buf,
+> >                       for (vma =3D mm->mmap; vma; vma =3D vma->vm_next)=
+ {
+> >                               if (!(vma->vm_flags & VM_SOFTDIRTY))
+> >                                       continue;
+> > +                             vma_mark_locked(vma);
+> >                               vma->vm_flags &=3D ~VM_SOFTDIRTY;
+> >                               vma_set_page_prot(vma);
+> >                       }
+> > diff --git a/fs/userfaultfd.c b/fs/userfaultfd.c
+> > index 175de70e3adf..fe557b3d1c07 100644
+> > --- a/fs/userfaultfd.c
+> > +++ b/fs/userfaultfd.c
+> > @@ -620,6 +620,7 @@ static void userfaultfd_event_wait_completion(struc=
+t userfaultfd_ctx *ctx,
+> >               mmap_write_lock(mm);
+> >               for (vma =3D mm->mmap; vma; vma =3D vma->vm_next)
+> >                       if (vma->vm_userfaultfd_ctx.ctx =3D=3D release_ne=
+w_ctx) {
+> > +                             vma_mark_locked(vma);
+> >                               vma->vm_userfaultfd_ctx =3D NULL_VM_UFFD_=
+CTX;
+> >                               vma->vm_flags &=3D ~__VM_UFFD_FLAGS;
+> >                       }
+> > @@ -653,6 +654,7 @@ int dup_userfaultfd(struct vm_area_struct *vma, str=
+uct list_head *fcs)
+> >
+> >       octx =3D vma->vm_userfaultfd_ctx.ctx;
+> >       if (!octx || !(octx->features & UFFD_FEATURE_EVENT_FORK)) {
+> > +             vma_mark_locked(vma);
+> >               vma->vm_userfaultfd_ctx =3D NULL_VM_UFFD_CTX;
+> >               vma->vm_flags &=3D ~__VM_UFFD_FLAGS;
+> >               return 0;
+> > @@ -734,6 +736,7 @@ void mremap_userfaultfd_prep(struct vm_area_struct =
+*vma,
+> >               atomic_inc(&ctx->mmap_changing);
+> >       } else {
+> >               /* Drop uffd context if remap feature not enabled */
+> > +             vma_mark_locked(vma);
+> >               vma->vm_userfaultfd_ctx =3D NULL_VM_UFFD_CTX;
+> >               vma->vm_flags &=3D ~__VM_UFFD_FLAGS;
+> >       }
+> > @@ -891,6 +894,7 @@ static int userfaultfd_release(struct inode *inode,=
+ struct file *file)
+> >                       vma =3D prev;
+> >               else
+> >                       prev =3D vma;
+> > +             vma_mark_locked(vma);
+> >               vma->vm_flags =3D new_flags;
+> >               vma->vm_userfaultfd_ctx =3D NULL_VM_UFFD_CTX;
+> >       }
+> > @@ -1449,6 +1453,7 @@ static int userfaultfd_register(struct userfaultf=
+d_ctx *ctx,
+> >                * the next vma was merged into the current one and
+> >                * the current one has not been updated yet.
+> >                */
+> > +             vma_mark_locked(vma);
+> >               vma->vm_flags =3D new_flags;
+> >               vma->vm_userfaultfd_ctx.ctx =3D ctx;
+> >
+> > @@ -1630,6 +1635,7 @@ static int userfaultfd_unregister(struct userfaul=
+tfd_ctx *ctx,
+> >                * the next vma was merged into the current one and
+> >                * the current one has not been updated yet.
+> >                */
+> > +             vma_mark_locked(vma);
+> >               vma->vm_flags =3D new_flags;
+> >               vma->vm_userfaultfd_ctx =3D NULL_VM_UFFD_CTX;
+> >
+> > diff --git a/mm/madvise.c b/mm/madvise.c
+> > index 5f0f0948a50e..a173f0025abd 100644
+> > --- a/mm/madvise.c
+> > +++ b/mm/madvise.c
+> > @@ -181,6 +181,7 @@ static int madvise_update_vma(struct vm_area_struct=
+ *vma,
+> >       /*
+> >        * vm_flags is protected by the mmap_lock held in write mode.
+> >        */
+> > +     vma_mark_locked(vma);
+> >       vma->vm_flags =3D new_flags;
+> >       if (!vma->vm_file) {
+> >               error =3D replace_anon_vma_name(vma, anon_name);
+> > diff --git a/mm/mlock.c b/mm/mlock.c
+> > index b14e929084cc..f62e1a4d05f2 100644
+> > --- a/mm/mlock.c
+> > +++ b/mm/mlock.c
+> > @@ -380,6 +380,7 @@ static void mlock_vma_pages_range(struct vm_area_st=
+ruct *vma,
+> >        */
+> >       if (newflags & VM_LOCKED)
+> >               newflags |=3D VM_IO;
+> > +     vma_mark_locked(vma);
+> >       WRITE_ONCE(vma->vm_flags, newflags);
+> >
+> >       lru_add_drain();
+> > @@ -456,6 +457,7 @@ static int mlock_fixup(struct vm_area_struct *vma, =
+struct vm_area_struct **prev,
+> >
+> >       if ((newflags & VM_LOCKED) && (oldflags & VM_LOCKED)) {
+> >               /* No work to do, and mlocking twice would be wrong */
+> > +             vma_mark_locked(vma);
+> >               vma->vm_flags =3D newflags;
+> >       } else {
+> >               mlock_vma_pages_range(vma, start, end, newflags);
+> > diff --git a/mm/mmap.c b/mm/mmap.c
+> > index 693e6776be39..f89c9b058105 100644
+> > --- a/mm/mmap.c
+> > +++ b/mm/mmap.c
+> > @@ -1818,6 +1818,7 @@ unsigned long mmap_region(struct file *file, unsi=
+gned long addr,
+> >  out:
+> >       perf_event_mmap(vma);
+> >
+> > +     vma_mark_locked(vma);
+> >       vm_stat_account(mm, vm_flags, len >> PAGE_SHIFT);
+> >       if (vm_flags & VM_LOCKED) {
+> >               if ((vm_flags & VM_SPECIAL) || vma_is_dax(vma) ||
 >
-
-
---
-Best Regards
-Masahiro Yamada
+> I guess, this doesn't really impact, but the call to vma_mark_locked(vma)
+> may be done only in the case the vm_flags field is touched.
+> Something like this:
+>
+>         vm_stat_account(mm, vm_flags, len >> PAGE_SHIFT);
+>         if (vm_flags & VM_LOCKED) {
+>                 if ((vm_flags & VM_SPECIAL) || vma_is_dax(vma) ||
+>                                         is_vm_hugetlb_page(vma) ||
+> -                                       vma =3D=3D get_gate_vma(current->=
+mm))
+> +                                       vma =3D=3D get_gate_vma(current->=
+mm)) {
+> +                       vma_mark_locked(vma);
+>                         vma->vm_flags &=3D VM_LOCKED_CLEAR_MASK;
+> -               else
+> +               } else
+>                         mm->locked_vm +=3D (len >> PAGE_SHIFT);
+>         }
+>
+>
+> > diff --git a/mm/mprotect.c b/mm/mprotect.c
+> > index bc6bddd156ca..df47fc21b0e4 100644
+> > --- a/mm/mprotect.c
+> > +++ b/mm/mprotect.c
+> > @@ -621,6 +621,7 @@ mprotect_fixup(struct mmu_gather *tlb, struct vm_ar=
+ea_struct *vma,
+> >        * vm_flags and vm_page_prot are protected by the mmap_lock
+> >        * held in write mode.
+> >        */
+> > +     vma_mark_locked(vma);
+> >       vma->vm_flags =3D newflags;
+> >       /*
+> >        * We want to check manually if we can change individual PTEs wri=
+table
+>
