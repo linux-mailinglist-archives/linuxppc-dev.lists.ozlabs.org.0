@@ -2,66 +2,94 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 777FB5AEF3F
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Sep 2022 17:47:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F89A5AEFFB
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Sep 2022 18:10:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MMVBY3BDFz3c2s
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Sep 2022 01:47:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MMVjc0wpYz3bVB
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Sep 2022 02:10:44 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=o7ZUoR1k;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=J6ORDL5a;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::d33; helo=mail-io1-xd33.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=o7ZUoR1k;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=J6ORDL5a;
 	dkim-atps=neutral
-Received: from mail-io1-xd33.google.com (mail-io1-xd33.google.com [IPv6:2607:f8b0:4864:20::d33])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MMV9x2NCfz2yp5
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Sep 2022 01:46:44 +1000 (AEST)
-Received: by mail-io1-xd33.google.com with SMTP id 62so9244330iov.5
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Sep 2022 08:46:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=01CsnEEQfLK1uOpVQ+HH6686vEI9WQZhnhn7tltGMc4=;
-        b=o7ZUoR1kIbCZSNNyLbvrwwtPxnTYEllaZY9cFNDDCCA7TAcp0hkIs2NMKLazX0j/Wb
-         AWxxBk+k5G23dVl64yevMX+VdSw/FzkljOCmS/xASd595atoUnaTjkJmrmR9WjiCsxKE
-         VuyYGhKnfagDzQZ6sGO0kr/wninknslufsnoLThmyJZSuYTU38KSG2qsTZT0WtI8/TFp
-         LX/qK2c50VdG2SVsnEj1+xTC+UMWubZMyMO7uNilERQu9uv4D2aQqwP7+M8bGR8KWyFm
-         OnnkvtEInWpmkIYk4qBKTNg02wGwVlJLJMtpY5HIQ1/Z8WKMbLgAbK2PJvysrvsqnBR+
-         epoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=01CsnEEQfLK1uOpVQ+HH6686vEI9WQZhnhn7tltGMc4=;
-        b=WxJiPDcAiyUEWPQvaNBvp5e6eEdcMnw4L1csP3R//WylSZe+J5UCvsCJe/0elKdnjD
-         m77/iTK/bJE5pK3jypq5lcyZdRE7xJL6vC7X5ZFq6WVNjGxBjNtgqzJ2wiG6X06d9OK4
-         PJ3fliCrT2sGezgy/bl21RGE0LUca9FEF/eSnB83cC0rAdV4j3f25EyPG+JPPKY1u2CS
-         X5CAAxj0HbdAC3FTD2xD7qS4uLyYXLEW4rDg6d+S5EDhtrS4aI5bgGhm2pW5na5Py3mu
-         OBF4nq5s1Tx4tafcFhW/zxxXzpVZULjG9AabH+7VfAjVV2h9lCI4E2qsMZol1UQ6dvIJ
-         Z5VA==
-X-Gm-Message-State: ACgBeo2JGgyM2UwvpCbHx4hniIaiMu3/sqwwYgeJn7jhxSgHIbUG37oh
-	+G2sD+9F2LfAX+zAzogKzPaB77TudeuwfNDN1qcCVg==
-X-Google-Smtp-Source: AA6agR4npg7xYhO3jV9bPgCe/qZLaBiwpkb5NlSVTaZJNdUAJnVvwtlRJpA1bjafBWAWUuAzLEiUFw/4MgDT30cQhzs=
-X-Received: by 2002:a05:6638:1492:b0:34c:d42:ac2f with SMTP id
- j18-20020a056638149200b0034c0d42ac2fmr16182031jak.305.1662479199238; Tue, 06
- Sep 2022 08:46:39 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MMVhr6WK3z2yp5
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Sep 2022 02:10:04 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 286G1ULN030020;
+	Tue, 6 Sep 2022 16:09:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=x38S2qQ4OwHVoHKSoYPnjgP27uumdmjd+TeYzCUlyRA=;
+ b=J6ORDL5aCGIvEfcLxDfhTr7/+RF+0/LvREsL2V3CZkcCLtE/+mWalEpUqOC94iUOauQi
+ Ys1/EZ7bq95YbsPik+EnE431aEf2UqSdDESpnQk1ZvCz6UGoQner634/J6Se2XbFnJdY
+ CP0dUn0NNrJjSKVeC6tsg2PmkxCB87MTyDXzP3XD2YfrmcUlLGzUiQgPyRD4ByjwetEe
+ umvc3onc8yB20pXsZ9Xr+jaWEyBCnziRa3HTlL8RTCeQDOhhIW0rbjIb4dCY23XuMfo/
+ S9SdOC8N9MWb8SPa1J8pGPAi7PnwuU2yqevhLpqgnkcQFj8TFzYiiOpgHGIac+hNG9jn 3Q== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3je9c5gbx1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 06 Sep 2022 16:09:42 +0000
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 286G2L7R002212;
+	Tue, 6 Sep 2022 16:09:41 GMT
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3je9c5gbv1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 06 Sep 2022 16:09:41 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+	by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 286Fq3eq001998;
+	Tue, 6 Sep 2022 16:09:38 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+	by ppma06ams.nl.ibm.com with ESMTP id 3jbx6hm0mb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 06 Sep 2022 16:09:38 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+	by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 286G9x2A46072286
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 6 Sep 2022 16:09:59 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E2DCCA405C;
+	Tue,  6 Sep 2022 16:09:35 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 81C3AA4054;
+	Tue,  6 Sep 2022 16:09:34 +0000 (GMT)
+Received: from [9.101.4.33] (unknown [9.101.4.33])
+	by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Tue,  6 Sep 2022 16:09:34 +0000 (GMT)
+Message-ID: <68e2fb35-141d-5505-766f-29afe0d61435@linux.ibm.com>
+Date: Tue, 6 Sep 2022 18:09:34 +0200
 MIME-Version: 1.0
-References: <20220901173516.702122-1-surenb@google.com> <YxXsQKoQ0URIRuKi@dhcp22.suse.cz>
- <CAJuCfpG3bMLzNhP5wt8my8j7_9wW=darLegd6WPV6tddtCKGAA@mail.gmail.com> <20220905203503.tqtr36fsfg4guk4j@moria.home.lan>
-In-Reply-To: <20220905203503.tqtr36fsfg4guk4j@moria.home.lan>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Tue, 6 Sep 2022 08:46:28 -0700
-Message-ID: <CAJuCfpF+mmDSsUT87HmXNhpoN=dzpxxx6S9RF8H6uz12hc2bJg@mail.gmail.com>
-Subject: Re: [RFC PATCH RESEND 00/28] per-VMA locks proposal
-To: Kent Overstreet <kent.overstreet@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.2.0
+Subject: Re: [RFC PATCH RESEND 12/28] mm/mremap: mark VMA as locked while
+ remapping it to a new address range
+Content-Language: fr
+To: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org
+References: <20220901173516.702122-1-surenb@google.com>
+ <20220901173516.702122-13-surenb@google.com>
+From: Laurent Dufour <ldufour@linux.ibm.com>
+In-Reply-To: <20220901173516.702122-13-surenb@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: u6aNfVLDHk7RSiY37OWL7z-spns9hXvc
+X-Proofpoint-ORIG-GUID: FacK01iKrdQFaKH9Z6N8UXyqjBDgIbFI
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
+ definitions=2022-09-06_07,2022-09-06_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxscore=0
+ clxscore=1015 mlxlogscore=999 malwarescore=0 spamscore=0 impostorscore=0
+ phishscore=0 lowpriorityscore=0 adultscore=0 suspectscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2207270000 definitions=main-2209060075
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,77 +101,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michel Lespinasse <michel@lespinasse.org>, Joel Fernandes <joelaf@google.com>, Song Liu <songliubraving@fb.com>, Michal Hocko <mhocko@suse.com>, David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Peter Xu <peterx@redhat.com>, dhowells@redhat.com, linux-mm <linux-mm@kvack.org>, Jerome Glisse <jglisse@google.com>, Davidlohr Bueso <dave@stgolabs.net>, Minchan Kim <minchan@google.com>, x86@kernel.org, Hugh Dickins <hughd@google.com>, Matthew Wilcox <willy@infradead.org>, Laurent Dufour <laurent.dufour@fr.ibm.com>, Mel Gorman <mgorman@suse.de>, David Rientjes <rientjes@google.com>, Axel Rasmussen <axelrasmussen@google.com>, kernel-team <kernel-team@android.com>, "Paul E . McKenney" <paulmck@kernel.org>, "Liam R. Howlett" <liam.howlett@oracle.com>, Andy Lutomirski <luto@kernel.org>, Laurent Dufour <ldufour@linux.ibm.com>, Vlastimil Babka <vbabka@suse.cz>, linux-arm-kernel@lists.infradead.org, LKML <linux-kerne
- l@vger.kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, jglisse@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, willy@infradead.org, laurent.dufour@fr.ibm.com, mgorman@suse.de, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, paulmck@kernel.org, liam.howlett@oracle.com, luto@kernel.org, vbabka@suse.cz, linux-arm-kernel@lists.infradead.org, kent.overstreet@linux.dev, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Sep 5, 2022 at 1:35 PM Kent Overstreet
-<kent.overstreet@linux.dev> wrote:
->
-> On Mon, Sep 05, 2022 at 11:32:48AM -0700, Suren Baghdasaryan wrote:
-> > On Mon, Sep 5, 2022 at 5:32 AM 'Michal Hocko' via kernel-team
-> > <kernel-team@android.com> wrote:
-> > >
-> > > Unless I am missing something, this is not based on the Maple tree
-> > > rewrite, right? Does the change in the data structure makes any
-> > > difference to the approach? I remember discussions at LSFMM where it has
-> > > been pointed out that some issues with the vma tree are considerably
-> > > simpler to handle with the maple tree.
-> >
-> > Correct, this does not use the Maple tree yet but once Maple tree
-> > transition happens and it supports RCU-safe lookups, my code in
-> > find_vma_under_rcu() becomes really simple.
-> >
-> > >
-> > > On Thu 01-09-22 10:34:48, Suren Baghdasaryan wrote:
-> > > [...]
-> > > > One notable way the implementation deviates from the proposal is the way
-> > > > VMAs are marked as locked. Because during some of mm updates multiple
-> > > > VMAs need to be locked until the end of the update (e.g. vma_merge,
-> > > > split_vma, etc).
-> > >
-> > > I think it would be really helpful to spell out those issues in a greater
-> > > detail. Not everybody is aware of those vma related subtleties.
-> >
-> > Ack. I'll expand the description of the cases when multiple VMAs need
-> > to be locked in the same update. The main difficulties are:
-> > 1. Multiple VMAs might need to be locked within one
-> > mmap_write_lock/mmap_write_unlock session (will call it an update
-> > transaction).
-> > 2. Figuring out when it's safe to unlock a previously locked VMA is
-> > tricky because that might be happening in different functions and at
-> > different call levels.
-> >
-> > So, instead of the usual lock/unlock pattern, the proposed solution
-> > marks a VMA as locked and provides an efficient way to:
-> > 1. Identify locked VMAs.
-> > 2. Unlock all locked VMAs in bulk.
-> >
-> > We also postpone unlocking the locked VMAs until the end of the update
-> > transaction, when we do mmap_write_unlock. Potentially this keeps a
-> > VMA locked for longer than is absolutely necessary but it results in a
-> > big reduction of code complexity.
->
-> Correct me if I'm wrong, but it looks like any time multiple VMAs need to be
-> locked we need mmap_lock anyways, which is what makes your approach so sweet.
+Le 01/09/2022 à 19:35, Suren Baghdasaryan a écrit :
+> Mark VMA as locked before copying it and when copy_vma produces a new VMA.
+> 
+> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> ---
+>  mm/mmap.c   | 1 +
+>  mm/mremap.c | 1 +
+>  2 files changed, 2 insertions(+)
+> 
+> diff --git a/mm/mmap.c b/mm/mmap.c
+> index ade3909c89b4..121544fd90de 100644
+> --- a/mm/mmap.c
+> +++ b/mm/mmap.c
+> @@ -3248,6 +3248,7 @@ struct vm_area_struct *copy_vma(struct vm_area_struct **vmap,
+>  			get_file(new_vma->vm_file);
+>  		if (new_vma->vm_ops && new_vma->vm_ops->open)
+>  			new_vma->vm_ops->open(new_vma);
+> +		vma_mark_locked(new_vma);
+>  		vma_link(mm, new_vma, prev, rb_link, rb_parent);
+>  		*need_rmap_locks = false;
+>  	}
 
-That is correct. Anytime we need to take VMA's write lock we have to
-be holding the write side of the mmap_lock as well. That's what allows
-me to skip locking in cases like checking if the VMA is already
-locked.
+Sounds good in the both case the returned new_vma is locked, either in
+copy_vma() or in vma_merge().
 
->
-> If however we ever want to lock multiple VMAs without taking mmap_lock, then
-> deadlock avoidance algorithms aren't that bad - there's the ww_mutex approach,
-> which is simple and works well when there isn't much expected contention (the
-> advantage of the ww_mutex approach is that it doesn't have to track all held
-> locks). I've also written full cycle detection; that approcah gets you fewer
-> restarts, at the cost of needing a list of all currently held locks.
+> diff --git a/mm/mremap.c b/mm/mremap.c
+> index b522cd0259a0..bdbf96254e43 100644
+> --- a/mm/mremap.c
+> +++ b/mm/mremap.c
+> @@ -620,6 +620,7 @@ static unsigned long move_vma(struct vm_area_struct *vma,
+>  			return -ENOMEM;
+>  	}
+>  
+> +	vma_mark_locked(vma);
+>  	new_pgoff = vma->vm_pgoff + ((old_addr - vma->vm_start) >> PAGE_SHIFT);
+>  	new_vma = copy_vma(&vma, new_addr, new_len, new_pgoff,
+>  			   &need_rmap_locks);
 
-Thanks for the tip! I'll take a closer look at ww_mutex.
-
->
-> --
-> To unsubscribe from this group and stop receiving emails from it, send an email to kernel-team+unsubscribe@android.com.
->
+Reviewed-by: Laurent Dufour <laurent.dufour@fr.ibm.com>
