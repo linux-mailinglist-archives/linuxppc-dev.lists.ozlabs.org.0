@@ -2,71 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92EFD5AF25C
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Sep 2022 19:25:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF8235AF360
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Sep 2022 20:10:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MMXMf32xPz30L5
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Sep 2022 03:25:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MMYMW5lvKz3c3L
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Sep 2022 04:10:15 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=heO9Twwq;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=ZGD1qkfO;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::d2d; helo=mail-io1-xd2d.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=softfail (domain owner discourages use of this host) smtp.mailfrom=kernel.org (client-ip=210.131.2.91; helo=conssluserg-06.nifty.com; envelope-from=masahiroy@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=heO9Twwq;
+	dkim=pass (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=ZGD1qkfO;
 	dkim-atps=neutral
-Received: from mail-io1-xd2d.google.com (mail-io1-xd2d.google.com [IPv6:2607:f8b0:4864:20::d2d])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from conssluserg-06.nifty.com (conssluserg-06.nifty.com [210.131.2.91])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MMXM13pjVz2xGS
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Sep 2022 03:24:44 +1000 (AEST)
-Received: by mail-io1-xd2d.google.com with SMTP id 62so9485998iov.5
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Sep 2022 10:24:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date;
-        bh=Ld2JxcymypOPOgywLT44PW2Ikbrb1VzeoM48fRlHsTI=;
-        b=heO9Twwqp33yzFcE5GLSFZY/U8zaJZ4J28uFyeewexljvXECNpeJ2YeThC56sC2T1Z
-         FSkdQqIVbh/cqsKT5Y0t8iIePnxPuCevJ8ZrOfdNvQiWBmPcnuOTAMMzUWnWFRjh069U
-         2SXZ6m6FQBjFi6mdlCo7dKjS53jGhfxzzRBbp3o0goQTVEZefTtFJinepqc7gwdA76Zn
-         wWWp4f8k5XGZje2LlOIKk4oVmjduAoZAwWtXy3GPKeN4mt5BZrcg7cPtj/js/QvqGJHf
-         DTscr+is3SnIENf6zzTDVRxrFNZQ12O+RxDP9vtCrN8voGYy2HMXqkCLYp+loBr1u5fW
-         yK6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date;
-        bh=Ld2JxcymypOPOgywLT44PW2Ikbrb1VzeoM48fRlHsTI=;
-        b=i9lFM/gRdfFAKF7gghYPXzN3STEAB9lZu69x8zm9TRpFmAuAEa8kmTIi6vgN9cnNXU
-         oQYgqkS1K2pRZIuw/v0s3xYBx98kF9Arkx4G5heLNtlaRX6DGNPwlreVHqCqagCqxte7
-         w98SpFuGLhgQeI/xmjjHxLJRPt2pOxkYhT6TGAGkWfuxtA+OVI5OKViyeeRq8HGG48+3
-         uukI5obD+61XeK/PdataopEqLa5LKPsQTlJG6TvqrPYx2/+299eDMBI77HLcNs9Im0oc
-         p49nmS69ilqhhvFfAoZEmIaM+KVi4bQyF9bIf4f2R+3o3pBFBid0+SRtaYIAgo3vZH1r
-         U0AA==
-X-Gm-Message-State: ACgBeo1ECswJNpsDTzZmCpxPfFbeMOP0PBcda0YUG635bdIZoLzIYpnW
-	KTX+7EZPq84sTFTzc0ePoli7FI/2xUL3Z+w78HqzPO50dtGR+GVwZNJM7gkPCEovusbop1T1NRB
-	pJNblQ+8MEoRZA2In4MJNyfdU+Foy5cFv
-X-Google-Smtp-Source: AA6agR44YTmLzCV+I+JaNpT4N0gLu2+UsZktpd1YNE7QssF1dAl8b+3/7PUu8k7UutO/GpnVhbMgZRcHYblP//qHDQY=
-X-Received: by 2002:a02:740b:0:b0:349:bcdd:ca20 with SMTP id
- o11-20020a02740b000000b00349bcddca20mr30908418jac.110.1662485080617; Tue, 06
- Sep 2022 10:24:40 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MMYLs5jXqz2xCd
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Sep 2022 04:09:41 +1000 (AEST)
+Received: from mail-oa1-f50.google.com (mail-oa1-f50.google.com [209.85.160.50]) (authenticated)
+	by conssluserg-06.nifty.com with ESMTP id 286I9NGY029651
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 7 Sep 2022 03:09:24 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-06.nifty.com 286I9NGY029651
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+	s=dec2015msa; t=1662487764;
+	bh=XoFOHD9hbfQLitaVdmtOBiY1QAcAg6OYZ0EoW2xUSHA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ZGD1qkfOZB3mvpQdCDzOFOAElkTaO4PaPaAlPwkOGZeswdEKKWDKXGvUZU19OTnzN
+	 kI4Lqzl2aWPg2uCtrq2xBvWb3cjVInEsjTzAi3Rf4YG5y9/LblmloX7qnT+SezYZVP
+	 dmG+zEZAVxE+l/P5j9X8uI5mbuXzpVOOjco1luwJfnz7ClBnyYSFVGyILEjRvJMY9M
+	 oEqHz2POEjG51ru3WyLmIXcAkOS1/761PQoDttDR5Cx4+sGA3i+AhLPYBlTCLeAPS5
+	 I+P9+R/2+oFrTgEMh7Aa9eThY2hOa5FgLy2CtYLMSE4o7xQ6FFZduTdrcYLufub2YO
+	 RCfeNoN83q/0A==
+X-Nifty-SrcIP: [209.85.160.50]
+Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-1225219ee46so30244887fac.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Sep 2022 11:09:24 -0700 (PDT)
+X-Gm-Message-State: ACgBeo3bSpKw5iGcTY2X05zZkpnIiyvzkILmPb6eNxgjJBXwJCtBxnpU
+	phOrKwCaNTL7vBYbgQxbyfWI9Zh1z/XogNQICiA=
+X-Google-Smtp-Source: AA6agR67hGgf/nFls5Uj5NNQqrAJqhoj1q8j3XR+NtYCIBRN/6y6H7r8K0+yijxj8XiOimNwtU619t+k+s5yxf+KSSk=
+X-Received: by 2002:a05:6870:f626:b0:10d:a798:f3aa with SMTP id
+ ek38-20020a056870f62600b0010da798f3aamr12376388oab.194.1662487752576; Tue, 06
+ Sep 2022 11:09:12 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220901173516.702122-1-surenb@google.com> <20220901173516.702122-6-surenb@google.com>
- <c84136d3-703a-0e57-20ce-59f6b5823999@linux.ibm.com>
-In-Reply-To: <c84136d3-703a-0e57-20ce-59f6b5823999@linux.ibm.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Tue, 6 Sep 2022 10:24:29 -0700
-Message-ID: <CAJuCfpFZ_E0wuA+0Xsavk+hnGDA-H0SdcZGUr31_u-cXyR6b7Q@mail.gmail.com>
-Subject: Re: [RFC PATCH RESEND 05/28] mm: add per-VMA lock and helper
- functions to control it
-To: Laurent Dufour <ldufour@linux.ibm.com>
+References: <20220802015052.10452-1-ojeda@kernel.org> <20220802015052.10452-28-ojeda@kernel.org>
+In-Reply-To: <20220802015052.10452-28-ojeda@kernel.org>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Wed, 7 Sep 2022 03:08:36 +0900
+X-Gmail-Original-Message-ID: <CAK7LNARTX+2Z=pnGbbUepxskE+KZ1f5YsfQukJ88ijPBQt9_GA@mail.gmail.com>
+Message-ID: <CAK7LNARTX+2Z=pnGbbUepxskE+KZ1f5YsfQukJ88ijPBQt9_GA@mail.gmail.com>
+Subject: Re: [PATCH v8 27/31] Kbuild: add Rust support
+To: Miguel Ojeda <ojeda@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-ccpol: medium
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,267 +66,177 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michel Lespinasse <michel@lespinasse.org>, Joel Fernandes <joelaf@google.com>, Song Liu <songliubraving@fb.com>, Michal Hocko <mhocko@suse.com>, David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Peter Xu <peterx@redhat.com>, dhowells@redhat.com, linux-mm <linux-mm@kvack.org>, Jerome Glisse <jglisse@google.com>, Davidlohr Bueso <dave@stgolabs.net>, Minchan Kim <minchan@google.com>, x86@kernel.org, Hugh Dickins <hughd@google.com>, Matthew Wilcox <willy@infradead.org>, Laurent Dufour <laurent.dufour@fr.ibm.com>, Mel Gorman <mgorman@suse.de>, David Rientjes <rientjes@google.com>, Axel Rasmussen <axelrasmussen@google.com>, kernel-team <kernel-team@android.com>, "Paul E . McKenney" <paulmck@kernel.org>, "Liam R. Howlett" <liam.howlett@oracle.com>, Andy Lutomirski <luto@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, linux-arm-kernel@lists.infradead.org, Kent Overstreet <kent.overstreet@linux.dev>, LKML <linux-
- kernel@vger.kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Sven Van Asbroeck <thesven73@gmail.com>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, Miguel Cano <macanroj@gmail.com>, Paul Mackerras <paulus@samba.org>, Gary Guo <gary@garyguo.net>, Douglas Su <d0u9.su@outlook.com>, Borislav Petkov <bp@alien8.de>, "open list:SIFIVE DRIVERS" <linux-riscv@lists.infradead.org>, Will Deacon <will@kernel.org>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, "H. Peter Anvin" <hpa@zytor.com>, X86 ML <x86@kernel.org>, Russell King <linux@armlinux.org.uk>, Ingo Molnar <mingo@redhat.com>, Wedson Almeida Filho <wedsonaf@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, Antonio Terceiro <antonio.terceiro@linaro.org>, Adam Bratschi-Kaye <ark.email@gmail.com>, Albert Ou <aou@eecs.berkeley.edu>, rust-for-linux@vger.kernel.org, Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>, Boqun Feng <boqun.feng@gmail.com>, linux-um@lists.infradead.org, linuxppc-dev <linuxppc-d
+ ev@lists.ozlabs.org>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Michal Marek <michal.lkml@markovi.net>, Daniel Xu <dxu@dxuuu.xyz>, David Gow <davidgow@google.com>, Paul Walmsley <paul.walmsley@sifive.com>, Dariusz Sosnowski <dsosnowski@dsosnowski.pl>, linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, Tiago Lam <tiagolam@gmail.com>, Thomas Gleixner <tglx@linutronix.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Nick Desaulniers <ndesaulniers@google.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Boris-Chengbiao Zhou <bobo1239@web.de>, Jarkko Sakkinen <jarkko@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Richard Weinberger <richard@nod.at>, Finn Behrens <me@kloenk.de>, Johannes Berg <johannes@sipsolutions.net>, Linus Torvalds <torvalds@linux-foundation.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Sep 6, 2022 at 6:47 AM Laurent Dufour <ldufour@linux.ibm.com> wrote=
-:
+On Tue, Aug 2, 2022 at 10:53 AM Miguel Ojeda <ojeda@kernel.org> wrote:
 >
-> Le 01/09/2022 =C3=A0 19:34, Suren Baghdasaryan a =C3=A9crit :
-> > Introduce a per-VMA rw_semaphore to be used during page fault handling
-> > instead of mmap_lock. Because there are cases when multiple VMAs need
-> > to be exclusively locked during VMA tree modifications, instead of the
-> > usual lock/unlock patter we mark a VMA as locked by taking per-VMA lock
-> > exclusively and setting vma->lock_seq to the current mm->lock_seq. When
-> > mmap_write_lock holder is done with all modifications and drops mmap_lo=
-ck,
-> > it will increment mm->lock_seq, effectively unlocking all VMAs marked a=
-s
-> > locked.
-> >
-> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> Despite a minor comment below,
+> Having all the new files in place, we now enable Rust support
+> in the build system, including `Kconfig` entries related to Rust,
+> the Rust configuration printer, the target specification
+> generation script, the version detection script and a few
+> other bits.
 >
-> Reviewed-by: Laurent Dufour <laurent.dufour@fr.ibm.com>
+> Co-developed-by: Alex Gaynor <alex.gaynor@gmail.com>
+> Signed-off-by: Alex Gaynor <alex.gaynor@gmail.com>
+> Co-developed-by: Finn Behrens <me@kloenk.de>
+> Signed-off-by: Finn Behrens <me@kloenk.de>
+> Co-developed-by: Adam Bratschi-Kaye <ark.email@gmail.com>
+> Signed-off-by: Adam Bratschi-Kaye <ark.email@gmail.com>
+> Co-developed-by: Wedson Almeida Filho <wedsonaf@google.com>
+> Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
+> Co-developed-by: Michael Ellerman <mpe@ellerman.id.au>
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> Co-developed-by: Sven Van Asbroeck <thesven73@gmail.com>
+> Signed-off-by: Sven Van Asbroeck <thesven73@gmail.com>
+> Co-developed-by: Gary Guo <gary@garyguo.net>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
+> Co-developed-by: Boris-Chengbiao Zhou <bobo1239@web.de>
+> Signed-off-by: Boris-Chengbiao Zhou <bobo1239@web.de>
+> Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> Co-developed-by: Douglas Su <d0u9.su@outlook.com>
+> Signed-off-by: Douglas Su <d0u9.su@outlook.com>
+> Co-developed-by: Dariusz Sosnowski <dsosnowski@dsosnowski.pl>
+> Signed-off-by: Dariusz Sosnowski <dsosnowski@dsosnowski.pl>
+> Co-developed-by: Antonio Terceiro <antonio.terceiro@linaro.org>
+> Signed-off-by: Antonio Terceiro <antonio.terceiro@linaro.org>
+> Co-developed-by: Daniel Xu <dxu@dxuuu.xyz>
+> Signed-off-by: Daniel Xu <dxu@dxuuu.xyz>
+> Co-developed-by: Miguel Cano <macanroj@gmail.com>
+> Signed-off-by: Miguel Cano <macanroj@gmail.com>
+> Co-developed-by: David Gow <davidgow@google.com>
+> Signed-off-by: David Gow <davidgow@google.com>
+> Co-developed-by: Tiago Lam <tiagolam@gmail.com>
+> Signed-off-by: Tiago Lam <tiagolam@gmail.com>
+> Co-developed-by: Bj=C3=B6rn Roy Baron <bjorn3_gh@protonmail.com>
+> Signed-off-by: Bj=C3=B6rn Roy Baron <bjorn3_gh@protonmail.com>
+> Co-developed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+> Signed-off-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> ---
+>  .gitignore                                   |   6 +
+>  .rustfmt.toml                                |  12 +
+>  Makefile                                     | 172 +++++++-
+>  arch/Kconfig                                 |   6 +
+>  arch/arm/Kconfig                             |   1 +
+>  arch/arm64/Kconfig                           |   1 +
+>  arch/powerpc/Kconfig                         |   1 +
+>  arch/riscv/Kconfig                           |   1 +
+>  arch/riscv/Makefile                          |   5 +
+>  arch/um/Kconfig                              |   1 +
+>  arch/x86/Kconfig                             |   1 +
+>  arch/x86/Makefile                            |  10 +
+>  include/linux/compiler_types.h               |   6 +-
+>  init/Kconfig                                 |  46 +-
+>  lib/Kconfig.debug                            |  82 ++++
+>  rust/.gitignore                              |  10 +
+>  rust/Makefile                                | 415 +++++++++++++++++++
+>  rust/bindgen_parameters                      |  21 +
+>  scripts/.gitignore                           |   1 +
+>  scripts/Kconfig.include                      |   6 +-
+>  scripts/Makefile                             |   3 +
+>  scripts/Makefile.build                       |  60 +++
+>  scripts/Makefile.debug                       |  10 +
+>  scripts/Makefile.host                        |  34 +-
+>  scripts/Makefile.lib                         |  12 +
+>  scripts/Makefile.modfinal                    |   8 +-
+>  scripts/cc-version.sh                        |  12 +-
+>  scripts/generate_rust_target.rs              | 232 +++++++++++
+>  scripts/is_rust_module.sh                    |  16 +
+>  scripts/kconfig/confdata.c                   |  75 ++++
+>  scripts/min-tool-version.sh                  |   6 +
+>  scripts/rust-is-available-bindgen-libclang.h |   2 +
+>  scripts/rust-is-available.sh                 | 160 +++++++
+>  33 files changed, 1408 insertions(+), 26 deletions(-)
+>  create mode 100644 .rustfmt.toml
+>  create mode 100644 rust/.gitignore
+>  create mode 100644 rust/Makefile
+>  create mode 100644 rust/bindgen_parameters
+>  create mode 100644 scripts/generate_rust_target.rs
+>  create mode 100755 scripts/is_rust_module.sh
+>  create mode 100644 scripts/rust-is-available-bindgen-libclang.h
+>  create mode 100755 scripts/rust-is-available.sh
+>
 
-Thanks for the reviews Laurent! I'll need some time to double-check
-all the VMA locking locations that you spotted as potentially
-unnecessary. Admittedly I was a bit paranoid when writing this
-patchset and trying not to miss any potential race, so some of them
-might indeed be unnecessary. Will reply to each of your comments once
-I confirm the need for locking in each case.
-Thanks,
-Suren.
 
->
-> > ---
-> >  include/linux/mm.h        | 78 +++++++++++++++++++++++++++++++++++++++
-> >  include/linux/mm_types.h  |  7 ++++
-> >  include/linux/mmap_lock.h | 13 +++++++
-> >  kernel/fork.c             |  4 ++
-> >  mm/init-mm.c              |  3 ++
-> >  5 files changed, 105 insertions(+)
-> >
-> > diff --git a/include/linux/mm.h b/include/linux/mm.h
-> > index 7d322a979455..476bf936c5f0 100644
-> > --- a/include/linux/mm.h
-> > +++ b/include/linux/mm.h
-> > @@ -611,6 +611,83 @@ struct vm_operations_struct {
-> >                                         unsigned long addr);
-> >  };
-> >
-> > +#ifdef CONFIG_PER_VMA_LOCK
-> > +static inline void vma_init_lock(struct vm_area_struct *vma)
-> > +{
-> > +     init_rwsem(&vma->lock);
-> > +     vma->vm_lock_seq =3D -1;
-> > +}
-> > +
-> > +static inline void vma_mark_locked(struct vm_area_struct *vma)
-> > +{
-> > +     int mm_lock_seq;
-> > +
-> > +     mmap_assert_write_locked(vma->vm_mm);
-> > +
-> > +     /*
-> > +      * current task is holding mmap_write_lock, both vma->vm_lock_seq=
- and
-> > +      * mm->mm_lock_seq can't be concurrently modified.
-> > +      */
-> > +     mm_lock_seq =3D READ_ONCE(vma->vm_mm->mm_lock_seq);
-> > +     if (vma->vm_lock_seq =3D=3D mm_lock_seq)
-> > +             return;
-> > +
-> > +     down_write(&vma->lock);
-> > +     vma->vm_lock_seq =3D mm_lock_seq;
-> > +     up_write(&vma->lock);
-> > +}
-> > +
-> > +static inline bool vma_read_trylock(struct vm_area_struct *vma)
-> > +{
-> > +     if (unlikely(down_read_trylock(&vma->lock) =3D=3D 0))
-> > +             return false;
-> > +
-> > +     /*
-> > +      * Overflow might produce false locked result but it's not critic=
-al.
->
-> It might be good to precise here that in the case of false locked, the
-> caller is assumed to fallback read locking the mm entirely before doing i=
-ts
-> change relative to that VMA.
 
-Ack.
 
+
+
+> @@ -151,7 +162,8 @@ config WERROR
+>         default COMPILE_TEST
+>         help
+>           A kernel build should not cause any compiler warnings, and this
+> -         enables the '-Werror' flag to enforce that rule by default.
+> +         enables the '-Werror' (for C) and '-Dwarnings' (for Rust) flags
+> +         to enforce that rule by default.
 >
-> > +      * False unlocked result is critical but is impossible because we
-> > +      * modify and check vma->vm_lock_seq under vma->lock protection a=
-nd
-> > +      * mm->mm_lock_seq modification invalidates all existing locks.
-> > +      */
-> > +     if (vma->vm_lock_seq =3D=3D READ_ONCE(vma->vm_mm->mm_lock_seq)) {
-> > +             up_read(&vma->lock);
-> > +             return false;
-> > +     }
-> > +     return true;
-> > +}
-> > +
-> > +static inline void vma_read_unlock(struct vm_area_struct *vma)
-> > +{
-> > +     up_read(&vma->lock);
-> > +}
-> > +
-> > +static inline void vma_assert_locked(struct vm_area_struct *vma)
-> > +{
-> > +     lockdep_assert_held(&vma->lock);
-> > +     VM_BUG_ON_VMA(!rwsem_is_locked(&vma->lock), vma);
-> > +}
-> > +
-> > +static inline void vma_assert_write_locked(struct vm_area_struct *vma,=
- int pos)
-> > +{
-> > +     mmap_assert_write_locked(vma->vm_mm);
-> > +     /*
-> > +      * current task is holding mmap_write_lock, both vma->vm_lock_seq=
- and
-> > +      * mm->mm_lock_seq can't be concurrently modified.
-> > +      */
-> > +     VM_BUG_ON_VMA(vma->vm_lock_seq !=3D READ_ONCE(vma->vm_mm->mm_lock=
-_seq), vma);
-> > +}
-> > +
-> > +#else /* CONFIG_PER_VMA_LOCK */
-> > +
-> > +static inline void vma_init_lock(struct vm_area_struct *vma) {}
-> > +static inline void vma_mark_locked(struct vm_area_struct *vma) {}
-> > +static inline bool vma_read_trylock(struct vm_area_struct *vma)
-> > +             { return false; }
-> > +static inline void vma_read_unlock(struct vm_area_struct *vma) {}
-> > +static inline void vma_assert_locked(struct vm_area_struct *vma) {}
-> > +static inline void vma_assert_write_locked(struct vm_area_struct *vma,=
- int pos) {}
-> > +
-> > +#endif /* CONFIG_PER_VMA_LOCK */
-> > +
-> >  static inline void vma_init(struct vm_area_struct *vma, struct mm_stru=
-ct *mm)
-> >  {
-> >       static const struct vm_operations_struct dummy_vm_ops =3D {};
-> > @@ -619,6 +696,7 @@ static inline void vma_init(struct vm_area_struct *=
-vma, struct mm_struct *mm)
-> >       vma->vm_mm =3D mm;
-> >       vma->vm_ops =3D &dummy_vm_ops;
-> >       INIT_LIST_HEAD(&vma->anon_vma_chain);
-> > +     vma_init_lock(vma);
-> >  }
-> >
-> >  static inline void vma_set_anonymous(struct vm_area_struct *vma)
-> > diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-> > index bed25ef7c994..6a03f59c1e78 100644
-> > --- a/include/linux/mm_types.h
-> > +++ b/include/linux/mm_types.h
-> > @@ -486,6 +486,10 @@ struct vm_area_struct {
-> >       struct mempolicy *vm_policy;    /* NUMA policy for the VMA */
-> >  #endif
-> >       struct vm_userfaultfd_ctx vm_userfaultfd_ctx;
-> > +#ifdef CONFIG_PER_VMA_LOCK
-> > +     struct rw_semaphore lock;
-> > +     int vm_lock_seq;
-> > +#endif
-> >  } __randomize_layout;
-> >
-> >  struct kioctx_table;
-> > @@ -567,6 +571,9 @@ struct mm_struct {
-> >                                         * init_mm.mmlist, and are prote=
-cted
-> >                                         * by mmlist_lock
-> >                                         */
-> > +#ifdef CONFIG_PER_VMA_LOCK
-> > +             int mm_lock_seq;
-> > +#endif
-> >
-> >
-> >               unsigned long hiwater_rss; /* High-watermark of RSS usage=
- */
-> > diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
-> > index e49ba91bb1f0..a391ae226564 100644
-> > --- a/include/linux/mmap_lock.h
-> > +++ b/include/linux/mmap_lock.h
-> > @@ -72,6 +72,17 @@ static inline void mmap_assert_write_locked(struct m=
-m_struct *mm)
-> >       VM_BUG_ON_MM(!rwsem_is_locked(&mm->mmap_lock), mm);
-> >  }
-> >
-> > +#ifdef CONFIG_PER_VMA_LOCK
-> > +static inline void vma_mark_unlocked_all(struct mm_struct *mm)
-> > +{
-> > +     mmap_assert_write_locked(mm);
-> > +     /* No races during update due to exclusive mmap_lock being held *=
-/
-> > +     WRITE_ONCE(mm->mm_lock_seq, mm->mm_lock_seq + 1);
-> > +}
-> > +#else
-> > +static inline void vma_mark_unlocked_all(struct mm_struct *mm) {}
-> > +#endif
-> > +
-> >  static inline void mmap_init_lock(struct mm_struct *mm)
-> >  {
-> >       init_rwsem(&mm->mmap_lock);
-> > @@ -114,12 +125,14 @@ static inline bool mmap_write_trylock(struct mm_s=
-truct *mm)
-> >  static inline void mmap_write_unlock(struct mm_struct *mm)
-> >  {
-> >       __mmap_lock_trace_released(mm, true);
-> > +     vma_mark_unlocked_all(mm);
-> >       up_write(&mm->mmap_lock);
-> >  }
-> >
-> >  static inline void mmap_write_downgrade(struct mm_struct *mm)
-> >  {
-> >       __mmap_lock_trace_acquire_returned(mm, false, true);
-> > +     vma_mark_unlocked_all(mm);
-> >       downgrade_write(&mm->mmap_lock);
-> >  }
-> >
-> > diff --git a/kernel/fork.c b/kernel/fork.c
-> > index 614872438393..bfab31ecd11e 100644
-> > --- a/kernel/fork.c
-> > +++ b/kernel/fork.c
-> > @@ -475,6 +475,7 @@ struct vm_area_struct *vm_area_dup(struct vm_area_s=
-truct *orig)
-> >                */
-> >               *new =3D data_race(*orig);
-> >               INIT_LIST_HEAD(&new->anon_vma_chain);
-> > +             vma_init_lock(new);
-> >               new->vm_next =3D new->vm_prev =3D NULL;
-> >               dup_anon_vma_name(orig, new);
-> >       }
-> > @@ -1130,6 +1131,9 @@ static struct mm_struct *mm_init(struct mm_struct=
- *mm, struct task_struct *p,
-> >       seqcount_init(&mm->write_protect_seq);
-> >       mmap_init_lock(mm);
-> >       INIT_LIST_HEAD(&mm->mmlist);
-> > +#ifdef CONFIG_PER_VMA_LOCK
-> > +     WRITE_ONCE(mm->mm_lock_seq, 0);
-> > +#endif
-> >       mm_pgtables_bytes_init(mm);
-> >       mm->map_count =3D 0;
-> >       mm->locked_vm =3D 0;
-> > diff --git a/mm/init-mm.c b/mm/init-mm.c
-> > index fbe7844d0912..8399f90d631c 100644
-> > --- a/mm/init-mm.c
-> > +++ b/mm/init-mm.c
-> > @@ -37,6 +37,9 @@ struct mm_struct init_mm =3D {
-> >       .page_table_lock =3D  __SPIN_LOCK_UNLOCKED(init_mm.page_table_loc=
-k),
-> >       .arg_lock       =3D  __SPIN_LOCK_UNLOCKED(init_mm.arg_lock),
-> >       .mmlist         =3D LIST_HEAD_INIT(init_mm.mmlist),
-> > +#ifdef CONFIG_PER_VMA_LOCK
-> > +     .mm_lock_seq    =3D 0,
-> > +#endif
-> >       .user_ns        =3D &init_user_ns,
-> >       .cpu_bitmap     =3D CPU_BITS_NONE,
-> >  #ifdef CONFIG_IOMMU_SVA
+>           However, if you have a new (or very old) compiler with odd and
+>           unusual warnings, or you have some architecture with problems,
+> @@ -1898,6 +1910,38 @@ config PROFILING
+>           Say Y here to enable the extended profiling support mechanisms =
+used
+>           by profilers.
 >
+> +config RUST
+> +       bool "Rust support"
+> +       depends on HAVE_RUST
+> +       depends on RUST_IS_AVAILABLE
+> +       depends on !MODVERSIONS
+> +       depends on !GCC_PLUGINS
+> +       depends on !RANDSTRUCT
+> +       depends on !DEBUG_INFO_BTF
+> +       select CONSTRUCTORS
+> +       help
+> +         Enables Rust support in the kernel.
+> +
+> +         This allows other Rust-related options, like drivers written in=
+ Rust,
+> +         to be selected.
+> +
+> +         It is also required to be able to load external kernel modules
+> +         written in Rust.
+> +
+> +         See Documentation/rust/ for more information.
+> +
+> +         If unsure, say N.
+> +
+> +config RUSTC_VERSION_TEXT
+> +       string
+> +       depends on RUST
+> +       default $(shell,command -v $(RUSTC) >/dev/null 2>&1 && $(RUSTC) -=
+-version || echo n)
+> +
+> +config BINDGEN_VERSION_TEXT
+> +       string
+> +       depends on RUST
+> +       default $(shell,command -v $(BINDGEN) >/dev/null 2>&1 && $(BINDGE=
+N) --version || echo n)
+> +
+
+
+
+Where are these config options used?
+
+
+I grep'ed but no hit.
+
+
+masahiro@zoe:~/ref/linux-next$ git grep RUSTC_VERSION_TEXT
+init/Kconfig:config RUSTC_VERSION_TEXT
+masahiro@zoe:~/ref/linux-next$ git grep BINDGEN_VERSION_TEXT
+init/Kconfig:config BINDGEN_VERSION_TEXT
+
+
+
+> --
+> 2.37.1
+>
+
+
+--
+Best Regards
+Masahiro Yamada
