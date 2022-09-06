@@ -1,79 +1,91 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C5F45AF44F
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Sep 2022 21:17:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FC055AF485
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Sep 2022 21:40:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MMZsG5wz0z3c3W
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Sep 2022 05:17:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MMbMv1zypz3blJ
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Sep 2022 05:40:43 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=ffwll.ch header.i=@ffwll.ch header.a=rsa-sha256 header.s=google header.b=cdseVbcC;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fkVb6eK7;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fkVb6eK7;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=ffwll.ch (client-ip=2a00:1450:4864:20::32f; helo=mail-wm1-x32f.google.com; envelope-from=daniel@ffwll.ch; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=ffwll.ch header.i=@ffwll.ch header.a=rsa-sha256 header.s=google header.b=cdseVbcC;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fkVb6eK7;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fkVb6eK7;
 	dkim-atps=neutral
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MMZrc1Hkhz2yxc
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Sep 2022 05:17:02 +1000 (AEST)
-Received: by mail-wm1-x32f.google.com with SMTP id n17-20020a05600c501100b003a84bf9b68bso8016734wmr.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Sep 2022 12:17:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date;
-        bh=JEvsSrJgYklFhGk6ahEcCPzEIfyEDAvxEZnTiVWC9eA=;
-        b=cdseVbcCEW+0adnYE1ZJVO9jG5brWhQdSFqN3fOdlrEMZH5usP0dx1z/CJ0XD0J0RL
-         bAkiZpqCPSjVrxFM44dQKbC/U98L530af+pqaLl1etXUF0NmN9x37EU2WVo8cMWKcIDI
-         7lb6E97Ia78hjxUPcO4toxnqlaOGHpwjpM0oU=
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MMbM75C6bz2xjd
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Sep 2022 05:40:01 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1662493197;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ipDmQ48fSdnKUDgmzFqHXYya44lh/1wuhiABbNwvM7Y=;
+	b=fkVb6eK7o2pqwScSpO2ePg521/b9HhEOLGxN4rCB9W/75tQawHxT5Lk3EKCYFOQkwWPgUJ
+	q1jI9Wh2+cdzZ7k5Wna7Wk6tis12C7EV/o4uDRkuLMJv8PpK2dSVW+6Bb1otzfWW3N6zKx
+	uIuFOf/BqEznJXavw4WdJTik/yoq9CE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1662493197;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ipDmQ48fSdnKUDgmzFqHXYya44lh/1wuhiABbNwvM7Y=;
+	b=fkVb6eK7o2pqwScSpO2ePg521/b9HhEOLGxN4rCB9W/75tQawHxT5Lk3EKCYFOQkwWPgUJ
+	q1jI9Wh2+cdzZ7k5Wna7Wk6tis12C7EV/o4uDRkuLMJv8PpK2dSVW+6Bb1otzfWW3N6zKx
+	uIuFOf/BqEznJXavw4WdJTik/yoq9CE=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-157-TiyOAArVPhGoXMhtSoWFJg-1; Tue, 06 Sep 2022 15:39:55 -0400
+X-MC-Unique: TiyOAArVPhGoXMhtSoWFJg-1
+Received: by mail-qk1-f200.google.com with SMTP id f1-20020a05620a280100b006bc4966f463so10070261qkp.4
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Sep 2022 12:39:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=JEvsSrJgYklFhGk6ahEcCPzEIfyEDAvxEZnTiVWC9eA=;
-        b=f7OvPuH/5CXddY5MiYZkSU5eBPAUOesEeBmpbSapLB+/2pU7T23R6+QJL12qFufGHE
-         od/aJl0Oucw+D1MHj8pclNkQnDrQoHJQiInHD/js2s1XlOpCMEa0D4+AVlFWEEKkUPLj
-         JH10oYvS/4GwHlA9i/yuZddiMdtpZyr79e+ggP1/JtC9x+z7o+LIJYxnOwIHIV5jQ/xz
-         JfyWt/DB63QHdwIZe5hGduSAzLToRO4k95nSL2II4C9IAqcYE+pHDBZs/LjjwGKtwc0X
-         Eat7Hu2MAm6MmAVs6ibj9CO/C1gA/C0WH9bH2HeODP99y+c6s0x5rEpwyDlsoIXqBEkh
-         mbSQ==
-X-Gm-Message-State: ACgBeo2Jx0YyRvuKJvaX+MXNqifJ4laKYQe12FKDj69lADa7Ogz9Uhng
-	Gmv31PepvzH+RMsP45AUWKVFCw==
-X-Google-Smtp-Source: AA6agR6OuHVb2pFJPiq3+DrxkjfxbowfIdQDMa1KkVrRU9rkHXQXlViPuHiqyxK7ZR4ooN7yTicD5Q==
-X-Received: by 2002:a05:600c:2e03:b0:3a5:3928:7958 with SMTP id o3-20020a05600c2e0300b003a539287958mr2411wmf.77.1662491817741;
-        Tue, 06 Sep 2022 12:16:57 -0700 (PDT)
-Received: from phenom.ffwll.local (212-51-149-33.fiber7.init7.net. [212.51.149.33])
-        by smtp.gmail.com with ESMTPSA id i14-20020a05600c354e00b003a5dde32e4bsm23272538wmq.37.2022.09.06.12.16.56
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
+        bh=ipDmQ48fSdnKUDgmzFqHXYya44lh/1wuhiABbNwvM7Y=;
+        b=RuPUlhvcTUppqGgZIF9zRGJ6jXqc6My4BIv5JMVifjXB+mOblegxLwS/B7Be81HhAZ
+         vxxFjyJuO02OwyUaT5eEnInuMXOR1sqsrQx1OjqVOEocisL49kyZSIBwxAwmG3dLzzgP
+         JjdpEOMYsX3kIG5j7PO2WJU9LZ2x3oF6iwmJESJGVaJxpPzwwlZ2yEhurXiud2/32Fme
+         4pART2YTqyElLsHIuWgyOq1uvJHlUrWGiSdjaRB8JGiWlrmDCmCw15UAIHA8OhLVwZA6
+         hxTqIQNq0/DMYj59W1WmcNGvg8QgLlzy60VH7ssVF6gGy6jLutudL80rtyVbMPteGVb2
+         piEg==
+X-Gm-Message-State: ACgBeo3oKtvBqKNJ/WeEvBQL5tKD7O/o3S38ORpdFzIhh7nmtcyayTHk
+	7BLhx7p4fJhdF6cjaDEiSEKEgvwwjpGfW3bqQv6D5GagIZQghvuz75Eds1w6kykTnceMf70WZiy
+	gnLl7CWmabUPWJLQspQ3PdzMXeA==
+X-Received: by 2002:a05:620a:2591:b0:6c9:cc85:87e3 with SMTP id x17-20020a05620a259100b006c9cc8587e3mr165306qko.577.1662493195375;
+        Tue, 06 Sep 2022 12:39:55 -0700 (PDT)
+X-Google-Smtp-Source: AA6agR7ttYQWiRMBv+iRAUF0TI1KrYDEUj4oUMahpKt92mQKBQU68PcCAvUwsnwEAqRUP4s0fa6Zng==
+X-Received: by 2002:a05:620a:2591:b0:6c9:cc85:87e3 with SMTP id x17-20020a05620a259100b006c9cc8587e3mr165268qko.577.1662493195065;
+        Tue, 06 Sep 2022 12:39:55 -0700 (PDT)
+Received: from xz-m1.local (bras-base-aurron9127w-grc-35-70-27-3-10.dsl.bell.ca. [70.27.3.10])
+        by smtp.gmail.com with ESMTPSA id bk22-20020a05620a1a1600b006b9c9b7db8bsm12167528qkb.82.2022.09.06.12.39.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Sep 2022 12:16:56 -0700 (PDT)
-Date: Tue, 6 Sep 2022 21:16:54 +0200
-From: Daniel Vetter <daniel@ffwll.ch>
-To: Thomas Zimmermann <tzimmermann@suse.de>
-Subject: Re: [PATCH v2 04/10] drm/simpledrm: Compute framebuffer stride if
- not set
-Message-ID: <YxecprE8c8pwy5PB@phenom.ffwll.local>
-References: <20220720142732.32041-1-tzimmermann@suse.de>
- <20220720142732.32041-5-tzimmermann@suse.de>
- <CAMuHMdWEah62Ho4C8NQr-qwz62pKQiJiTi8Fa4KcXNRzo7ySJA@mail.gmail.com>
- <4a7c2c1d-2bf9-84e7-9257-41fcfd66ab9d@redhat.com>
- <20f4e5e6-2ff2-af21-1f85-70a545d147bc@suse.de>
- <CAKMK7uGr_SbHAm7r5VNWgpM2cPMFYpCmyE_Aq8TYc84rOAtJpA@mail.gmail.com>
- <33ce5744-5d41-2501-6105-2585529820d2@suse.de>
- <b22b363c-187b-0783-32ab-f9683af2e20a@suse.de>
+        Tue, 06 Sep 2022 12:39:54 -0700 (PDT)
+Date: Tue, 6 Sep 2022 15:39:51 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Suren Baghdasaryan <surenb@google.com>
+Subject: Re: [RFC PATCH RESEND 19/28] mm: disallow do_swap_page to handle
+ page faults under VMA lock
+Message-ID: <YxeiB2la/9fZEzLO@xz-m1.local>
+References: <20220901173516.702122-1-surenb@google.com>
+ <20220901173516.702122-20-surenb@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+In-Reply-To: <20220901173516.702122-20-surenb@google.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <b22b363c-187b-0783-32ab-f9683af2e20a@suse.de>
-X-Operating-System: Linux phenom 5.18.0-4-amd64 
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,127 +97,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Fbdev development list <linux-fbdev@vger.kernel.org>, David Airlie <airlied@linux.ie>, Helge Deller <deller@gmx.de>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, Javier Martinez Canillas <javierm@redhat.com>, DRI Development <dri-devel@lists.freedesktop.org>, Geert Uytterhoeven <geert@linux-m68k.org>, Maxime Ripard <maxime@cerno.tech>, Daniel Vetter <daniel@ffwll.ch>, Paul Mackerras <paulus@samba.org>, Michal Suchanek <msuchanek@suse.de>, Sam Ravnborg <sam@ravnborg.org>
+Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, dhowells@redhat.com, linux-mm@kvack.org, jglisse@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, willy@infradead.org, laurent.dufour@fr.ibm.com, mgorman@suse.de, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, paulmck@kernel.org, liam.howlett@oracle.com, luto@kernel.org, ldufour@linux.ibm.com, vbabka@suse.cz, linux-arm-kernel@lists.infradead.org, kent.overstreet@linux.dev, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Aug 11, 2022 at 08:27:42PM +0200, Thomas Zimmermann wrote:
+On Thu, Sep 01, 2022 at 10:35:07AM -0700, Suren Baghdasaryan wrote:
+> Due to the possibility of do_swap_page dropping mmap_lock, abort fault
+> handling under VMA lock and retry holding mmap_lock. This can be handled
+> more gracefully in the future.
 > 
+> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> ---
+>  mm/memory.c | 5 +++++
+>  1 file changed, 5 insertions(+)
 > 
-> Am 11.08.22 um 20:26 schrieb Thomas Zimmermann:
-> > Hi Daniel
-> > 
-> > Am 11.08.22 um 19:23 schrieb Daniel Vetter:
-> > > On Wed, 27 Jul 2022 at 09:53, Thomas Zimmermann
-> > > <tzimmermann@suse.de> wrote:
-> > > > 
-> > > > Hi
-> > > > 
-> > > > Am 25.07.22 um 17:13 schrieb Javier Martinez Canillas:
-> > > > > Hello Geert,
-> > > > > 
-> > > > > On 7/21/22 16:46, Geert Uytterhoeven wrote:
-> > > > > > Hi Thomas,
-> > > > > > 
-> > > > > > On Wed, Jul 20, 2022 at 4:27 PM Thomas Zimmermann
-> > > > > > <tzimmermann@suse.de> wrote:
-> > > > > > > Compute the framebuffer's scanline stride length if not given by
-> > > > > > > the simplefb data.
-> > > > > > > 
-> > > > > > > Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> > > > > > 
-> > > > > > Thanks for your patch!
-> > > > > > 
-> > > > > > > --- a/drivers/gpu/drm/tiny/simpledrm.c
-> > > > > > > +++ b/drivers/gpu/drm/tiny/simpledrm.c
-> > > > > > > @@ -743,6 +743,9 @@ static struct simpledrm_device
-> > > > > > > *simpledrm_device_create(struct drm_driver *drv,
-> > > > > > >                   drm_err(dev, "no simplefb configuration found\n");
-> > > > > > >                   return ERR_PTR(-ENODEV);
-> > > > > > >           }
-> > > > > > > +       if (!stride)
-> > > > > > > +               stride = format->cpp[0] * width;
-> > > > > > 
-> > > > > > DIV_ROUND_UP(drm_format_info_bpp(format) * width, 8)
-> > > > > > 
-> > > > > 
-> > > > > I think you meant here:
-> > > > > 
-> > > > > DIV_ROUND_UP(drm_format_info_bpp(format, 0) * width, 8) ?
-> > > > 
-> > > > I guess, that's the right function. My original code is correct, but cpp
-> > > > is also deprecated.
-> > > 
-> > > You all mean drm_format_info_min_pitch().
-> > 
-> > Thanks a lot. I wasn't even aware of this function, but I had almost
-> > written my own implementation of it.  I'll update the patch accordingly.
-> 
-> Arghh, too late. I merged that patch already.
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 9ac9944e8c62..29d2f49f922a 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -3738,6 +3738,11 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+>  	vm_fault_t ret = 0;
+>  	void *shadow = NULL;
+>  
+> +	if (vmf->flags & FAULT_FLAG_VMA_LOCK) {
+> +		ret = VM_FAULT_RETRY;
+> +		goto out;
+> +	}
+> +
 
-Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-
-Preemptively, if you can do the fixup patch (and it's not yet merged)?
--Daniel
-
-> 
-> > 
-> > Best regards
-> > Thomas
-> > 
-> > > 
-> > > I really don't want drivers to go grab any of the legacy format info
-> > > fields like bpp or depth. switch() statements on the fourcc code for
-> > > programming registers, or one of the real helper functions in
-> > > drm_fourcc.c (there might be some gaps), but not ever going through
-> > > legacy concepts. Anything else just leads to subtle bugs when new
-> > > formats get added and oops suddenly the assumptions don't hold.
-> > > 
-> > > Those should be strictly limited to legacy (i.e. not drm_fourcc aware)
-> > > interfaces. Heck I think even fbdev emulation should completely switch
-> > > over to drm_fourcc/drm_format_info, but alas that's a pile of work and
-> > > not much payoff.
-> > > 
-> > > I'm trying to volunteer Same to add a legacy_bpp tag to the above
-> > > helper and appropriately limit it, I think limiting to formats with
-> > > depth!=0 is probably the right thing. And then we should probably
-> > > remove a pile of the cargo-culted depth!=0 entries too.
-> > > -Daniel
-> > > 
-> > > > 
-> > > > Best regards
-> > > > Thomas
-> > > > 
-> > > > > 
-> > > > > With that change,
-> > > > > 
-> > > > > Acked-by: Javier Martinez Canillas <javierm@redhat.com>
-> > > > > 
-> > > > 
-> > > > -- 
-> > > > Thomas Zimmermann
-> > > > Graphics Driver Developer
-> > > > SUSE Software Solutions Germany GmbH
-> > > > Maxfeldstr. 5, 90409 Nürnberg, Germany
-> > > > (HRB 36809, AG Nürnberg)
-> > > > Geschäftsführer: Ivo Totev
-> > > 
-> > > 
-> > > 
-> > 
-> 
-> -- 
-> Thomas Zimmermann
-> Graphics Driver Developer
-> SUSE Software Solutions Germany GmbH
-> Maxfeldstr. 5, 90409 Nürnberg, Germany
-> (HRB 36809, AG Nürnberg)
-> Geschäftsführer: Ivo Totev
-
-
-
+May want to fail early similarly for handle_userfault() too for similar
+reason.  Thanks,
 
 -- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+Peter Xu
+
