@@ -2,49 +2,95 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36E4E5AFCDC
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Sep 2022 08:51:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AB175AFDA2
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Sep 2022 09:35:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MMtG00mP8z3bsy
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Sep 2022 16:51:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MMvF74wQRz3bZ2
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Sep 2022 17:35:55 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=eP7QwmyY;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=X9sMmUXb;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MMtFK58Zsz3bfH
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Sep 2022 16:51:01 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=eP7QwmyY;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=X9sMmUXb;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4MMtFK43kJz4x1T;
-	Wed,  7 Sep 2022 16:51:01 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1662533461;
-	bh=LXUy2xFnX+RIesyI1swZ7HpnqnHarr5QZ8Lv5ayXjkc=;
-	h=From:To:Cc:Subject:Date:From;
-	b=eP7QwmyYbcheoy95VXRAK3bRLRMiXX+H/INJNIZLH4i12j/sPEpwgQ6mKDX1GQFyj
-	 n8KbaDcMKz0uMvCykCLvAuQJIxgNZ+M91aQZe0VLm5B67w36P5AhzXuMd6gjfUh6dH
-	 GFXHRq5iNCoKwNM2VbuK9PHdiw+r4iOGTlAWlrBOexBRdtPQw+bXyO9F03YuuJ/aDK
-	 4Wl1YUuLjNJLq3OJSlPWAfBy44OoI7Vzd2rBgkYYXks7uEffbjuNGgPzYiZSfOMzWn
-	 ThM0yUD/gnhbaCd5G15EjBdz+vMZQR9ybDiRL01K/Q9CQENV+4E+y6K03dzyQEl5sT
-	 nalGaAOsHskwQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH] powerpc/pseries: Fix plpks crash on non-pseries
-Date: Wed,  7 Sep 2022 16:50:38 +1000
-Message-Id: <20220907065038.1604504-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.37.2
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MMvDP35pKz2y8J
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Sep 2022 17:35:16 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2876NbP8026200;
+	Wed, 7 Sep 2022 07:35:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=WPWMtIvGpQnxPLV6mOT1LP/qsbfR3oGYV9JqlZPkNx4=;
+ b=X9sMmUXbqNAOAk31d7JkgeVPafmELhngilZrcrH6ZI5EQN1gEsggXdoe+SJVeAisg3Ii
+ h4rPuDcR+d9Lk51oujUHPp0l63W+DqJ3SM5FC+k0j/gmZo1JSv+cYqYlVK/Nbt5VeiHM
+ /DWYmMdZPwPjfuXJ7kxigsax7C2hnMvzUT3adzbyLrl5TJjl4WlV9P/SmhuHd3udHDe9
+ 5c0dLkP5JqyaQMgz2xQPNBvtgZEAfBXMViDxwBfbLDezeG6EN+73I211spaqu07vpvu/
+ B6cUMX7xB3oejYux7WsWvV79CRj0rMnO0V04yWmq2Zw9yTmY+Cbwqazqs8Lm6OaMMEux LA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jep08a0wp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 07 Sep 2022 07:35:07 +0000
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2877RRLt031889;
+	Wed, 7 Sep 2022 07:35:07 GMT
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com [149.81.74.106])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jep08a0tj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 07 Sep 2022 07:35:06 +0000
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+	by ppma04fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2877KO7q002396;
+	Wed, 7 Sep 2022 07:35:04 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+	by ppma04fra.de.ibm.com with ESMTP id 3jbxj8khj4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 07 Sep 2022 07:35:04 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
+	by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2877Z2EN35520938
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 7 Sep 2022 07:35:02 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 002BFAE045;
+	Wed,  7 Sep 2022 07:35:02 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9E4ACAE055;
+	Wed,  7 Sep 2022 07:35:01 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Wed,  7 Sep 2022 07:35:01 +0000 (GMT)
+Received: from intelligence.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id EB5CD600A6;
+	Wed,  7 Sep 2022 17:34:50 +1000 (AEST)
+Message-ID: <744e04b545ed8f9a87c9728041169bb9b55edfad.camel@linux.ibm.com>
+Subject: Re: [PATCH linux-next] ocxl: Remove the unneeded result variable
+From: Andrew Donnellan <ajd@linux.ibm.com>
+To: cgel.zte@gmail.com, fbarrat@linux.ibm.com
+Date: Wed, 07 Sep 2022 17:34:43 +1000
+In-Reply-To: <20220906072006.337099-1-ye.xingchen@zte.com.cn>
+References: <20220906072006.337099-1-ye.xingchen@zte.com.cn>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.3-1 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: mieZ9fv_Ehh8vtpj8Z4aaVLoScdr0XZm
+X-Proofpoint-ORIG-GUID: 5Yms27kvnICqZOSTtzg2GeVTPJ4Tb07s
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
+ definitions=2022-09-07_04,2022-09-06_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0
+ lowpriorityscore=0 mlxscore=0 phishscore=0 impostorscore=0 suspectscore=0
+ clxscore=1011 bulkscore=0 malwarescore=0 priorityscore=1501 spamscore=0
+ mlxlogscore=815 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2207270000 definitions=main-2209070031
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,65 +102,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nathan@kernel.org
+Cc: ye xingchen <ye.xingchen@zte.com.cn>, Zeal Robot <zealci@zte.com.cn>, linux-kernel@vger.kernel.org, npiggin@gmail.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-As reported[1] by Nathan, the recently added plpks driver will crash if
-it's built into the kernel and booted on a non-pseries machine, eg
-powernv:
+On Tue, 2022-09-06 at 07:20 +0000, cgel.zte@gmail.com wrote:
+> From: ye xingchen <ye.xingchen@zte.com.cn>
+> 
+> Return the value opal_npu_spa_clear_cache() directly instead of
+> storing
+> it in another redundant variable.
+> 
+> Reported-by: Zeal Robot <zealci@zte.com.cn>
+> Signed-off-by: ye xingchen <ye.xingchen@zte.com.cn>
 
-  kernel BUG at arch/powerpc/kernel/syscall.c:39!
-  Oops: Exception in kernel mode, sig: 5 [#1]
-  LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA PowerNV
-  ...
-  NIP system_call_exception+0x90/0x3d0
-  LR  system_call_common+0xec/0x250
-  Call Trace:
-    0xc0000000035c3e10 (unreliable)
-    system_call_common+0xec/0x250
-  --- interrupt: c00 at plpar_hcall+0x38/0x60
-  NIP:  c0000000000e4300 LR: c00000000202945c CTR: 0000000000000000
-  REGS: c0000000035c3e80 TRAP: 0c00   Not tainted  (6.0.0-rc4)
-  MSR:  9000000002009033 <SF,HV,VEC,EE,ME,IR,DR,RI,LE>  CR: 28000284  XER: 00000000
-  ...
-  NIP plpar_hcall+0x38/0x60
-  LR  pseries_plpks_init+0x64/0x23c
-  --- interrupt: c00
+Acked-by: Andrew Donnellan <ajd@linux.ibm.com>
 
-On powernv Linux is the hypervisor, so a hypercall just ends up going to
-the syscall path, which BUGs if the syscall (hypercall) didn't come from
-userspace.
+> ---
+>  arch/powerpc/platforms/powernv/ocxl.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+> 
+> diff --git a/arch/powerpc/platforms/powernv/ocxl.c
+> b/arch/powerpc/platforms/powernv/ocxl.c
+> index 27c936075031..629067781cec 100644
+> --- a/arch/powerpc/platforms/powernv/ocxl.c
+> +++ b/arch/powerpc/platforms/powernv/ocxl.c
+> @@ -478,10 +478,8 @@ EXPORT_SYMBOL_GPL(pnv_ocxl_spa_release);
+>  int pnv_ocxl_spa_remove_pe_from_cache(void *platform_data, int
+> pe_handle)
+>  {
+>         struct spa_data *data = (struct spa_data *) platform_data;
+> -       int rc;
+>  
+> -       rc = opal_npu_spa_clear_cache(data->phb_opal_id, data->bdfn,
+> pe_handle);
+> -       return rc;
+> +       return opal_npu_spa_clear_cache(data->phb_opal_id, data-
+> >bdfn, pe_handle);
+>  }
+>  EXPORT_SYMBOL_GPL(pnv_ocxl_spa_remove_pe_from_cache);
+>  
 
-The fix is simply to not probe the plpks driver on non-pseries machines.
-
-[1] https://lore.kernel.org/linuxppc-dev/Yxe06fbq18Wv9y3W@dev-arch.thelio-3990X/
-
-Fixes: 2454a7af0f2a ("powerpc/pseries: define driver for Platform KeyStore")
-Reported-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- arch/powerpc/platforms/pseries/plpks.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/platforms/pseries/plpks.c b/arch/powerpc/platforms/pseries/plpks.c
-index 52aaa2894606..f4b5b5a64db3 100644
---- a/arch/powerpc/platforms/pseries/plpks.c
-+++ b/arch/powerpc/platforms/pseries/plpks.c
-@@ -17,6 +17,7 @@
- #include <linux/string.h>
- #include <linux/types.h>
- #include <asm/hvcall.h>
-+#include <asm/machdep.h>
- 
- #include "plpks.h"
- 
-@@ -457,4 +458,4 @@ static __init int pseries_plpks_init(void)
- 
- 	return rc;
- }
--arch_initcall(pseries_plpks_init);
-+machine_arch_initcall(pseries, pseries_plpks_init);
 -- 
-2.37.2
+Andrew Donnellan    OzLabs, ADL Canberra
+ajd@linux.ibm.com   IBM Australia Limited
 
