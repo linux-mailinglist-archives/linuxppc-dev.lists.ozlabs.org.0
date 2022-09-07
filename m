@@ -1,107 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9DDC5B0F68
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Sep 2022 23:46:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 225655B0FA6
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Sep 2022 00:02:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MNG6t580Fz3blb
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Sep 2022 07:46:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MNGSP0Q0lz3c6N
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Sep 2022 08:01:57 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=nafPuG88;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=CDdcvdP6;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=40.107.237.44; helo=nam12-bn8-obe.outbound.protection.outlook.com; envelope-from=jhubbard@nvidia.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=nafPuG88;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=CDdcvdP6;
 	dkim-atps=neutral
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2044.outbound.protection.outlook.com [40.107.237.44])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MNG666Ylxz3bNj
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Sep 2022 07:46:04 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=NqV3T+foJg7c/9MFbNfDC0QHA4s+0NJvBRG8l/9ajpyKjTxd7tXsnp7y9K5PRzUXR1ptXVICQtfxSX73xw3qLd1Z8qf9p/b7pJle92PLPPrM/kUzlxoB0vLxbmchr8G2BhsF4K4oof9HmXiXmMGBf7QNwmGM2ZPauKBVP5mzofYuCC9lLIDd2xk1cDeChkJcYPcstkKxzHdgFBRRABIQDdhEWQK8cqCLzCaDWwSQu+Fci4Xq3fQR2haHfmCnEjepxEXbbM/ILT8zADGlrO6Khq3654zTrR6ERKmSHf0g/6qIDDFBE2TVaXxUlq4KvHRgkJg0QKxtydXEq9ZnSl0I/w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vElcluAh52dAlYvKgXW0zWoTlNL963JlXOVuOP/r8Bc=;
- b=L2qcar0eMCNizbJ2aAQBxHmU6Nue0Pfm9+pFWEJanGFyKabqiHB9Bj/OVq6Iw7dJfhiTyoijQa53l6a1hhZQesAvZnZusjuJJNjKIMo+Tagc+CbiIPZCZgWgEYQQUSSkY33+iFGPBnzXSsrsU1mOt1MeRM16gxxp2dmf36OHW2rSbg6qb67CEoI41b7g4kio1uwjmtnl0vfvZoC6AKm9hOaIAkaqfB+rWHFHviJPEEzampAyLBjuSgHdQZCoxajm1Cg7Sz6078kW8PTbwsblzZpoycBL2jFrkNU8pjLWZ8gdsL1O1hpohlMph2H0HMBxgdgMuceKuMkPGfzyxiFTHg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 12.22.5.234) smtp.rcpttodomain=gmail.com smtp.mailfrom=nvidia.com; dmarc=pass
- (p=reject sp=reject pct=100) action=none header.from=nvidia.com; dkim=none
- (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vElcluAh52dAlYvKgXW0zWoTlNL963JlXOVuOP/r8Bc=;
- b=nafPuG88/FUBqCyR26mb/FZ8vmZmnGcwS5cFvI5DGu+07cEWUFViOwiIZ3Ton5tIkZaAISbMNpucOHsYnsXGMA690iG7SG7TK12cv32SqYneqKQH1nvDavfPgb1vpClTSrLhoTixsFKJgurnUeTeTljmXR97ALAFT21rJYzvlTspEDMXWWnmD1417Jq0RTOJBMoQ0y8IPdKujWANhthHWcZWDW0HjFNehH9w5DwmfmEsMR4AQWgCYJgkwieFqJpMKI0yZdZBCoBifCym3hp5bwRyNxStrLwr5yd7E19mj8UW18L7cbAof4QsqLv1NGVIbAlk51xkbLGnN1t17Nq29Q==
-Received: from BN9PR03CA0362.namprd03.prod.outlook.com (2603:10b6:408:f7::7)
- by IA1PR12MB7494.namprd12.prod.outlook.com (2603:10b6:208:41a::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5588.18; Wed, 7 Sep
- 2022 21:45:44 +0000
-Received: from BN8NAM11FT097.eop-nam11.prod.protection.outlook.com
- (2603:10b6:408:f7:cafe::94) by BN9PR03CA0362.outlook.office365.com
- (2603:10b6:408:f7::7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5612.15 via Frontend
- Transport; Wed, 7 Sep 2022 21:45:44 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 12.22.5.234)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 12.22.5.234 as permitted sender) receiver=protection.outlook.com;
- client-ip=12.22.5.234; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (12.22.5.234) by
- BN8NAM11FT097.mail.protection.outlook.com (10.13.176.147) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.20.5612.13 via Frontend Transport; Wed, 7 Sep 2022 21:45:44 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by DRHQMAIL101.nvidia.com
- (10.27.9.10) with Microsoft SMTP Server (TLS) id 15.0.1497.38; Wed, 7 Sep
- 2022 21:45:43 +0000
-Received: from [10.110.48.28] (10.126.231.35) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Wed, 7 Sep 2022
- 14:45:42 -0700
-Message-ID: <90a0441e-47ad-007f-06c1-b30e5f7bb692@nvidia.com>
-Date: Wed, 7 Sep 2022 14:48:52 -0700
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MNGRd2VYkz2xH6
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Sep 2022 08:01:16 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 287KEc1W017669
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 7 Sep 2022 22:01:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=YukS6lrDOsmPaDBlJkTPQQO3Mv+rZc4Fx54x4c5SbRM=;
+ b=CDdcvdP63Y6S+Lt+yr3KiI3YV6sDSmp4pPvwbMXCQAirqA9p4VXE6BZwy47f1cZNPitU
+ tlPJqB5Nkgi1PXY3NWywuijV86XKx0vI3O5pRIoSrUzH1S2M8+JKDR9/SVKDC8JQMLAo
+ AZmQNQ2ggSd+6/jxuEf9f5AS9uXYz6ZzokZhpLyq17qukFsSXB3dGD9dEYmja2NPC3Bk
+ BvYo44Q8iQDNLBxWMyuuwLI7BoXKs6aesg82F62gkSpf3ACxmQ0qEeJ8aZihKf2B09KT
+ NiXPisHzGUyik7caw9LH6N+U0S2JUGULoT05ri8r/CpQAKN/2YM7cWAgv4sN5e9HaHZi EQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jf25u2y0v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Sep 2022 22:01:14 +0000
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 287KEb0T017623
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 7 Sep 2022 22:01:13 GMT
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com [169.53.41.122])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jf25u2y06-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 07 Sep 2022 22:01:13 +0000
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+	by ppma04dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 287LLZnO025531;
+	Wed, 7 Sep 2022 22:01:13 GMT
+Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com [9.57.198.27])
+	by ppma04dal.us.ibm.com with ESMTP id 3jbxja3f39-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 07 Sep 2022 22:01:13 +0000
+Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com [9.57.199.108])
+	by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 287M1BJk62783976
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 7 Sep 2022 22:01:12 GMT
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D5C15B2066;
+	Wed,  7 Sep 2022 22:01:11 +0000 (GMT)
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B2ED2B205F;
+	Wed,  7 Sep 2022 22:01:11 +0000 (GMT)
+Received: from localhost (unknown [9.41.178.242])
+	by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
+	Wed,  7 Sep 2022 22:01:11 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] Revert "powerpc/rtas: Implement reentrant rtas call"
+Date: Wed,  7 Sep 2022 17:01:11 -0500
+Message-Id: <20220907220111.223267-1-nathanl@linux.ibm.com>
+X-Mailer: git-send-email 2.37.2
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: kOh6ENKte7_iEZwhXtN-BBYhLrX1YV_L
+X-Proofpoint-GUID: GllZWDVONMSG_V0JpisnVquErnm7q_Pw
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.0
-Subject: Re: [PATCH v4 4/4] selftests/hmm-tests: Add test for dirty bits
-To: Alistair Popple <apopple@nvidia.com>
-References: <9f801e9d8d830408f2ca27821f606e09aa856899.1662078528.git-series.apopple@nvidia.com>
- <68cf1d70f3fb8ce4e3c1a4899c19df4f6c382a13.1662078528.git-series.apopple@nvidia.com>
- <f81f6f90-81ad-7b77-a74d-e9d5d6e3bc94@nvidia.com>
- <87mtbb5soy.fsf@nvdebian.thelocal>
-Content-Language: en-US
-From: John Hubbard <jhubbard@nvidia.com>
-In-Reply-To: <87mtbb5soy.fsf@nvdebian.thelocal>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.126.231.35]
-X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN8NAM11FT097:EE_|IA1PR12MB7494:EE_
-X-MS-Office365-Filtering-Correlation-Id: 81a2fe45-ac9a-4885-29aa-08da911a516b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	DiG++JZyJjdRl08kVlAHcuTNGQnrQhrdlcseKjJxyKZWwsoTyTl7K8i6z7z6iExYy6iLf7fPkCji5Q1T+dNGl0D2IrCOqZsQxSVUEtDr0k2fb9rCKD8hS+b53Ob1RD3WlBhE8/pABsgsyNVhwXd5sWZyTGieE1JSJUppb8+ae0D0I4V6XTXFt4sGnrNZ3N6EAaM4i2Aipi/Ck1wm/Q87mSomfSAYEnrsIG9sv9sva25pqy2Zk99KLCF2NE7s+I9mlYehbFIYXP6hcCyV5o7glYtd0VdY1oC6J9rkCpVsJWeoytQgkCcwDzWyhbq5jhVacJz74PN8Akj8KmnDyO0Tn2DaWh3qkXdmHpgwgQyXWa5Tjq3zqMztU/DW7VdVhqGx9DwLpW/kGl6kQTbGhtctN3Q6FjWo96fA4bz4bqpl+lHvhTXEFBGY7HEwL7212hJvdpBhNQztEW0ECE5HMF6a34ZEoPL30Jxa8cwUbzoR/C+owBPeeLYM8J+atTEcZ0cGPnBMp2S3zdv4Hj0Qx25G0GiBU79AKag7zgZksx1jArO3XZ356a1nO256KXYJ7Sz7lBufVqvxShck45AZH6XlKa/RHZ8EBvwPFlDIBWjyZ9zwZdG5O58YxZb/8iL0BV0TFHNWAAZ93k3K++yHZjLEyalv0+ZBN/F9l0lBMp5gjdO+PLnZIcB5P8Z52/dJaAcdh+3kqnvfT+Qfiltqz7/YgdOY6uFp26Kskb/hGAYopZTUg7I8AlRvN1Wxu3vQKRZJ8XXOH5dNhLE28TgezIyLx9G25EfWkT3NsgzgpNybjLCKTT6vrQfFiz0TDEwJyszALuuNx+kNVP+U0y/CckqNLwRXMSXij/MJf1EP552MmBc=
-X-Forefront-Antispam-Report: 	CIP:12.22.5.234;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:InfoNoRecords;CAT:NONE;SFS:(13230016)(4636009)(39860400002)(376002)(346002)(136003)(396003)(46966006)(36840700001)(40470700004)(40480700001)(86362001)(37006003)(356005)(31696002)(316002)(81166007)(54906003)(41300700001)(40460700003)(16576012)(478600001)(47076005)(83380400001)(2616005)(426003)(36860700001)(186003)(16526019)(336012)(6636002)(53546011)(6666004)(82740400003)(26005)(6862004)(2906002)(82310400005)(7416002)(5660300002)(36756003)(8936002)(31686004)(70206006)(4326008)(8676002)(70586007)(14143004)(36900700001)(43740500002);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Sep 2022 21:45:44.5626
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 81a2fe45-ac9a-4885-29aa-08da911a516b
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[12.22.5.234];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: 	BN8NAM11FT097.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB7494
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
+ definitions=2022-09-07_10,2022-09-07_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ priorityscore=1501 suspectscore=0 mlxscore=0 clxscore=1011 spamscore=0
+ bulkscore=0 mlxlogscore=999 adultscore=0 lowpriorityscore=0
+ impostorscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2207270000 definitions=main-2209070081
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -113,54 +94,286 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Sierra
- Guiza, Alejandro \(Alex\)" <alex.sierra@amd.com>, Ralph Campbell <rcampbell@nvidia.com>, Lyude Paul <lyude@redhat.com>, Karol Herbst <kherbst@redhat.com>, David Hildenbrand <david@redhat.com>, Nadav Amit <nadav.amit@gmail.com>, Felix Kuehling <Felix.Kuehling@amd.com>, linuxppc-dev@lists.ozlabs.org, LKML <linux-kernel@vger.kernel.org>, Peter Xu <peterx@redhat.com>, linux-mm@kvack.org, Logan Gunthorpe <logang@deltatee.com>, Matthew Wilcox <willy@infradead.org>, Jason Gunthorpe <jgg@nvidia.com>, akpm@linux-foundation.org, huang ying <huang.ying.caritas@gmail.com>, Ben Skeggs <bskeggs@redhat.com>
+Cc: leobras.c@gmail.com, ldufour@linux.ibm.com, haren@linux.ibm.com, tyreld@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 9/7/22 04:13, Alistair Popple wrote:
->>> +	/*
->>> +	 * Attempt to migrate memory to device, which should fail because
->>> +	 * hopefully some pages are backed by swap storage.
->>> +	 */
->>> +	ASSERT_TRUE(hmm_migrate_sys_to_dev(self->fd, buffer, npages));
->>
->> Are you really sure that you want to assert on that? Because doing so
->> guarantees a test failure if and when we every upgrade the kernel to
->> be able to migrate swap-backed pages. And I seem to recall that this
->> current inability to migrate swap-backed pages is considered a flaw
->> to be fixed, right?
-> 
-> Right, that's a good point. I was using failure (ASSERT_TRUE) here as a
-> way of detecting that at least some pages are swap-backed, because if no
-> pages end up being swap-backed the test is invalid.
+At the time this was submitted by Leonardo, I confirmed -- or thought
+I had confirmed -- with PowerVM partition firmware development that
+the following RTAS functions:
 
-Yes. But "invalid" or "waived" is a much different test result than
-"failed".
+- ibm,get-xive
+- ibm,int-off
+- ibm,int-on
+- ibm,set-xive
 
-> 
-> I'm not really sure what to do about it though. It's likely the fix for
+were safe to call on multiple CPUs simultaneously, not only with
+respect to themselves as indicated by PAPR, but with arbitrary other
+RTAS calls:
 
-Remove the assert. If the test framework allows and you prefer, you
-can print a warning.
+https://lore.kernel.org/linuxppc-dev/875zcy2v8o.fsf@linux.ibm.com/
 
-> swap-backed migration may make this bug impossible to hit anyway,
-> because the obvious fix is to just drop the pages from the swapcache
-> during migration which would force writeback during subsequent reclaim.
-> 
-> So I'm inclined to leave this here even if it only serves to remind us
-> about it when we do fix migration of swap-backed pages, because we will
-> of course run hmm-tests before submitting that fix :-) We can then
-> either fix the test or drop it if we think it's no longer possible to
-> hit.
+Recent discussion with firmware development makes it clear that this
+is not true, and that the code in commit b664db8e3f97 ("powerpc/rtas:
+Implement reentrant rtas call") is unsafe, likely explaining several
+strange bugs we've seen in internal testing involving DLPAR and
+LPM. These scenarios use ibm,configure-connector, whose internal state
+can be corrupted by the concurrent use of the "reentrant" functions,
+leading to symptoms like endless busy statuses from RTAS.
 
-Oh no no no, please. This is not how to do tests. If you want a TODO
-list somewhere, there are other ways. But tests that require maintenance
-when you change something are an anti-pattern.
+Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+Fixes: b664db8e3f97 ("powerpc/rtas: Implement reentrant rtas call")
+Cc: stable@vger.kernel.org
+---
+ arch/powerpc/include/asm/paca.h     |  1 -
+ arch/powerpc/include/asm/rtas.h     |  1 -
+ arch/powerpc/kernel/paca.c          | 32 -----------------
+ arch/powerpc/kernel/rtas.c          | 54 -----------------------------
+ arch/powerpc/sysdev/xics/ics-rtas.c | 22 ++++++------
+ 5 files changed, 11 insertions(+), 99 deletions(-)
 
-
-thanks,
+diff --git a/arch/powerpc/include/asm/paca.h b/arch/powerpc/include/asm/paca.h
+index 4d7aaab82702..3537b0500f4d 100644
+--- a/arch/powerpc/include/asm/paca.h
++++ b/arch/powerpc/include/asm/paca.h
+@@ -263,7 +263,6 @@ struct paca_struct {
+ 	u64 l1d_flush_size;
+ #endif
+ #ifdef CONFIG_PPC_PSERIES
+-	struct rtas_args *rtas_args_reentrant;
+ 	u8 *mce_data_buf;		/* buffer to hold per cpu rtas errlog */
+ #endif /* CONFIG_PPC_PSERIES */
+ 
+diff --git a/arch/powerpc/include/asm/rtas.h b/arch/powerpc/include/asm/rtas.h
+index 00531af17ce0..56319aea646e 100644
+--- a/arch/powerpc/include/asm/rtas.h
++++ b/arch/powerpc/include/asm/rtas.h
+@@ -240,7 +240,6 @@ extern struct rtas_t rtas;
+ extern int rtas_token(const char *service);
+ extern int rtas_service_present(const char *service);
+ extern int rtas_call(int token, int, int, int *, ...);
+-int rtas_call_reentrant(int token, int nargs, int nret, int *outputs, ...);
+ void rtas_call_unlocked(struct rtas_args *args, int token, int nargs,
+ 			int nret, ...);
+ extern void __noreturn rtas_restart(char *cmd);
+diff --git a/arch/powerpc/kernel/paca.c b/arch/powerpc/kernel/paca.c
+index ba593fd60124..dfd097b79160 100644
+--- a/arch/powerpc/kernel/paca.c
++++ b/arch/powerpc/kernel/paca.c
+@@ -16,7 +16,6 @@
+ #include <asm/kexec.h>
+ #include <asm/svm.h>
+ #include <asm/ultravisor.h>
+-#include <asm/rtas.h>
+ 
+ #include "setup.h"
+ 
+@@ -170,30 +169,6 @@ static struct slb_shadow * __init new_slb_shadow(int cpu, unsigned long limit)
+ }
+ #endif /* CONFIG_PPC_64S_HASH_MMU */
+ 
+-#ifdef CONFIG_PPC_PSERIES
+-/**
+- * new_rtas_args() - Allocates rtas args
+- * @cpu:	CPU number
+- * @limit:	Memory limit for this allocation
+- *
+- * Allocates a struct rtas_args and return it's pointer,
+- * if not in Hypervisor mode
+- *
+- * Return:	Pointer to allocated rtas_args
+- *		NULL if CPU in Hypervisor Mode
+- */
+-static struct rtas_args * __init new_rtas_args(int cpu, unsigned long limit)
+-{
+-	limit = min_t(unsigned long, limit, RTAS_INSTANTIATE_MAX);
+-
+-	if (early_cpu_has_feature(CPU_FTR_HVMODE))
+-		return NULL;
+-
+-	return alloc_paca_data(sizeof(struct rtas_args), L1_CACHE_BYTES,
+-			       limit, cpu);
+-}
+-#endif /* CONFIG_PPC_PSERIES */
+-
+ /* The Paca is an array with one entry per processor.  Each contains an
+  * lppaca, which contains the information shared between the
+  * hypervisor and Linux.
+@@ -232,10 +207,6 @@ void __init initialise_paca(struct paca_struct *new_paca, int cpu)
+ 	/* For now -- if we have threads this will be adjusted later */
+ 	new_paca->tcd_ptr = &new_paca->tcd;
+ #endif
+-
+-#ifdef CONFIG_PPC_PSERIES
+-	new_paca->rtas_args_reentrant = NULL;
+-#endif
+ }
+ 
+ /* Put the paca pointer into r13 and SPRG_PACA */
+@@ -307,9 +278,6 @@ void __init allocate_paca(int cpu)
+ #endif
+ #ifdef CONFIG_PPC_64S_HASH_MMU
+ 	paca->slb_shadow_ptr = new_slb_shadow(cpu, limit);
+-#endif
+-#ifdef CONFIG_PPC_PSERIES
+-	paca->rtas_args_reentrant = new_rtas_args(cpu, limit);
+ #endif
+ 	paca_struct_size += sizeof(struct paca_struct);
+ }
+diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
+index 693133972294..0b8a858aa847 100644
+--- a/arch/powerpc/kernel/rtas.c
++++ b/arch/powerpc/kernel/rtas.c
+@@ -43,7 +43,6 @@
+ #include <asm/time.h>
+ #include <asm/mmu.h>
+ #include <asm/topology.h>
+-#include <asm/paca.h>
+ 
+ /* This is here deliberately so it's only used in this file */
+ void enter_rtas(unsigned long);
+@@ -932,59 +931,6 @@ void rtas_activate_firmware(void)
+ 		pr_err("ibm,activate-firmware failed (%i)\n", fwrc);
+ }
+ 
+-#ifdef CONFIG_PPC_PSERIES
+-/**
+- * rtas_call_reentrant() - Used for reentrant rtas calls
+- * @token:	Token for desired reentrant RTAS call
+- * @nargs:	Number of Input Parameters
+- * @nret:	Number of Output Parameters
+- * @outputs:	Array of outputs
+- * @...:	Inputs for desired RTAS call
+- *
+- * According to LoPAR documentation, only "ibm,int-on", "ibm,int-off",
+- * "ibm,get-xive" and "ibm,set-xive" are currently reentrant.
+- * Reentrant calls need their own rtas_args buffer, so not using rtas.args, but
+- * PACA one instead.
+- *
+- * Return:	-1 on error,
+- *		First output value of RTAS call if (nret > 0),
+- *		0 otherwise,
+- */
+-int rtas_call_reentrant(int token, int nargs, int nret, int *outputs, ...)
+-{
+-	va_list list;
+-	struct rtas_args *args;
+-	unsigned long flags;
+-	int i, ret = 0;
+-
+-	if (!rtas.entry || token == RTAS_UNKNOWN_SERVICE)
+-		return -1;
+-
+-	local_irq_save(flags);
+-	preempt_disable();
+-
+-	/* We use the per-cpu (PACA) rtas args buffer */
+-	args = local_paca->rtas_args_reentrant;
+-
+-	va_start(list, outputs);
+-	va_rtas_call_unlocked(args, token, nargs, nret, list);
+-	va_end(list);
+-
+-	if (nret > 1 && outputs)
+-		for (i = 0; i < nret - 1; ++i)
+-			outputs[i] = be32_to_cpu(args->rets[i + 1]);
+-
+-	if (nret > 0)
+-		ret = be32_to_cpu(args->rets[0]);
+-
+-	local_irq_restore(flags);
+-	preempt_enable();
+-
+-	return ret;
+-}
+-
+-#endif /* CONFIG_PPC_PSERIES */
+-
+ /**
+  * get_pseries_errorlog() - Find a specific pseries error log in an RTAS
+  *                          extended event log.
+diff --git a/arch/powerpc/sysdev/xics/ics-rtas.c b/arch/powerpc/sysdev/xics/ics-rtas.c
+index 9e7007f9aca5..f8320f8e5bc7 100644
+--- a/arch/powerpc/sysdev/xics/ics-rtas.c
++++ b/arch/powerpc/sysdev/xics/ics-rtas.c
+@@ -36,8 +36,8 @@ static void ics_rtas_unmask_irq(struct irq_data *d)
+ 
+ 	server = xics_get_irq_server(d->irq, irq_data_get_affinity_mask(d), 0);
+ 
+-	call_status = rtas_call_reentrant(ibm_set_xive, 3, 1, NULL, hw_irq,
+-					  server, DEFAULT_PRIORITY);
++	call_status = rtas_call(ibm_set_xive, 3, 1, NULL, hw_irq, server,
++				DEFAULT_PRIORITY);
+ 	if (call_status != 0) {
+ 		printk(KERN_ERR
+ 			"%s: ibm_set_xive irq %u server %x returned %d\n",
+@@ -46,7 +46,7 @@ static void ics_rtas_unmask_irq(struct irq_data *d)
+ 	}
+ 
+ 	/* Now unmask the interrupt (often a no-op) */
+-	call_status = rtas_call_reentrant(ibm_int_on, 1, 1, NULL, hw_irq);
++	call_status = rtas_call(ibm_int_on, 1, 1, NULL, hw_irq);
+ 	if (call_status != 0) {
+ 		printk(KERN_ERR "%s: ibm_int_on irq=%u returned %d\n",
+ 			__func__, hw_irq, call_status);
+@@ -68,7 +68,7 @@ static void ics_rtas_mask_real_irq(unsigned int hw_irq)
+ 	if (hw_irq == XICS_IPI)
+ 		return;
+ 
+-	call_status = rtas_call_reentrant(ibm_int_off, 1, 1, NULL, hw_irq);
++	call_status = rtas_call(ibm_int_off, 1, 1, NULL, hw_irq);
+ 	if (call_status != 0) {
+ 		printk(KERN_ERR "%s: ibm_int_off irq=%u returned %d\n",
+ 			__func__, hw_irq, call_status);
+@@ -76,8 +76,8 @@ static void ics_rtas_mask_real_irq(unsigned int hw_irq)
+ 	}
+ 
+ 	/* Have to set XIVE to 0xff to be able to remove a slot */
+-	call_status = rtas_call_reentrant(ibm_set_xive, 3, 1, NULL, hw_irq,
+-					  xics_default_server, 0xff);
++	call_status = rtas_call(ibm_set_xive, 3, 1, NULL, hw_irq,
++				xics_default_server, 0xff);
+ 	if (call_status != 0) {
+ 		printk(KERN_ERR "%s: ibm_set_xive(0xff) irq=%u returned %d\n",
+ 			__func__, hw_irq, call_status);
+@@ -108,7 +108,7 @@ static int ics_rtas_set_affinity(struct irq_data *d,
+ 	if (hw_irq == XICS_IPI || hw_irq == XICS_IRQ_SPURIOUS)
+ 		return -1;
+ 
+-	status = rtas_call_reentrant(ibm_get_xive, 1, 3, xics_status, hw_irq);
++	status = rtas_call(ibm_get_xive, 1, 3, xics_status, hw_irq);
+ 
+ 	if (status) {
+ 		printk(KERN_ERR "%s: ibm,get-xive irq=%u returns %d\n",
+@@ -126,8 +126,8 @@ static int ics_rtas_set_affinity(struct irq_data *d,
+ 	pr_debug("%s: irq %d [hw 0x%x] server: 0x%x\n", __func__, d->irq,
+ 		 hw_irq, irq_server);
+ 
+-	status = rtas_call_reentrant(ibm_set_xive, 3, 1, NULL,
+-				     hw_irq, irq_server, xics_status[1]);
++	status = rtas_call(ibm_set_xive, 3, 1, NULL,
++			   hw_irq, irq_server, xics_status[1]);
+ 
+ 	if (status) {
+ 		printk(KERN_ERR "%s: ibm,set-xive irq=%u returns %d\n",
+@@ -158,7 +158,7 @@ static int ics_rtas_check(struct ics *ics, unsigned int hw_irq)
+ 		return -EINVAL;
+ 
+ 	/* Check if RTAS knows about this interrupt */
+-	rc = rtas_call_reentrant(ibm_get_xive, 1, 3, status, hw_irq);
++	rc = rtas_call(ibm_get_xive, 1, 3, status, hw_irq);
+ 	if (rc)
+ 		return -ENXIO;
+ 
+@@ -174,7 +174,7 @@ static long ics_rtas_get_server(struct ics *ics, unsigned long vec)
+ {
+ 	int rc, status[2];
+ 
+-	rc = rtas_call_reentrant(ibm_get_xive, 1, 3, status, vec);
++	rc = rtas_call(ibm_get_xive, 1, 3, status, vec);
+ 	if (rc)
+ 		return -1;
+ 	return status[0];
 -- 
-John Hubbard
-NVIDIA
+2.37.2
 
