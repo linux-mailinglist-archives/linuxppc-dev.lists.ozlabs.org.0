@@ -1,96 +1,129 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A1155AFB6B
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Sep 2022 06:52:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F6A95AFBC9
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Sep 2022 07:34:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MMqbw4kNZz3c3m
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Sep 2022 14:51:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MMrXY03qYz3bq5
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Sep 2022 15:34:05 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YpjTPO1i;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=fgZDLspw;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=40.107.9.43; helo=fra01-mr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YpjTPO1i;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=fgZDLspw;
 	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from FRA01-MR2-obe.outbound.protection.outlook.com (mail-eopbgr90043.outbound.protection.outlook.com [40.107.9.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MMqb82GnBz2xKN
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Sep 2022 14:51:15 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2874mt7w015380;
-	Wed, 7 Sep 2022 04:51:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=vndKWlxQYj9qgYpLvjZBBlckEdMAz+1Rb02b7fDNByo=;
- b=YpjTPO1iwLwZIEPjdrEcEpnFUywihEfLH0TIvt/X9Gtzr5fXyITovyjn+dzOscCsRFl8
- JSaL9zlGhpoNMI4i6Y6iwWb6k/RYi7s+8HhiR8rUbK59/MZ4lBWSyPJcJ/DJQshIG1oq
- 3MA1OnjU+OK2oKUhXxCMguTGL7gajBt0nlYiPY1a0rdzCQ1OPcHB/KllCRl7zTCCMku0
- hNHvhvMsEcptrWLx3coGc8HTn7F1Vw3dPHIBY4ahyuDZwFqRo1htuM0SH5W+eiTHgw8V
- G+0i0Uo3Bh76Std0u27kXzCIrv20z9MlWokzPZ1HlxsdtrCwvaLes+d6dsVM3HZ0Q0ig 3w== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jemkjr0u1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 07 Sep 2022 04:51:01 +0000
-Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2874nf0l018976;
-	Wed, 7 Sep 2022 04:51:01 GMT
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jemkjr0td-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 07 Sep 2022 04:51:01 +0000
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
-	by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2874a9OI029407;
-	Wed, 7 Sep 2022 04:50:59 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
-	by ppma02fra.de.ibm.com with ESMTP id 3jbxj8ud2y-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 07 Sep 2022 04:50:59 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
-	by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2874ouZP38928790
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 7 Sep 2022 04:50:56 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D02FB5204E;
-	Wed,  7 Sep 2022 04:50:56 +0000 (GMT)
-Received: from [9.43.98.238] (unknown [9.43.98.238])
-	by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id E3DDD52051;
-	Wed,  7 Sep 2022 04:50:53 +0000 (GMT)
-Message-ID: <92fe7b10-cbcf-6fdb-af23-4cb2f314e612@linux.ibm.com>
-Date: Wed, 7 Sep 2022 10:20:52 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.0
-Subject: Re: [PATCH] mm: gup: fix the fast GUP race against THP collapse
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MMrWk5C7Bz2y8J
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Sep 2022 15:33:20 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=THpbXgeJek2Vzi1q7gWFP4Ke7wTKlrtPpies88Hba1NDuheZSYQgIArMZ/98AoD3g7KS7RFSVFeyQuFkmvtqritWYXr96UbEQbH1WHlZCeCSNF1Dq0vmb+lp4Hku0ls7osNYTf/32uQmkfU5z9kfeAQvgWWLMD9PxUsqqu5aFFmFjhvz2uTRpWGVuWAc9onfHxjMUY0Vlq1xW45Gs8o7COxk5DF4XFgLRnJFTaFp/SINkjhZ/J/PuyvUQpMbNgw/QwuM2i64HYMO80Fj7XAcLyWoyAbf8uIfPO1lSOQmISPuH1fhsSgEpByHsSQPITt8548ZK2bF7f9dJS6RaBgjFQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hK32BsJrF381XfgkEvurDdP0rAf1UBdmy1x8q7SeRB4=;
+ b=Ha4jpvlr4og/XLDJCaNHWtcWyIw75MAf0VLPqntJfTnUClvNzIslPxtG/9Hcdk9v1rYqg2TLQ51iwgfkbPxDZFlZwjyb65LrzLLpN43B9VzCABb1f0JGb43UIBzVpmBV1ArZaQRclIQUi00BF2g8AmR1KbFjLywL1Zks4j7AfWV2KyEOKqB8vA0KkK0pSzXXX7YMB0OWV8MC9AiTS+4BDA+4iI+0GCHK+LLAiWyXigPbm+3o3B0yVxbLX/ArS8wQiLqICfwZqh0ZVCMF62ZUVYexQA8LPu6pTwOthNbBdjQgEOv2vhijk0vLc+BQjW4Fw73PW37Lavo6mU0xU9VjYg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
+ dkim=pass header.d=csgroup.eu; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=hK32BsJrF381XfgkEvurDdP0rAf1UBdmy1x8q7SeRB4=;
+ b=fgZDLspwSiHcO67vzDhRD768Ty4tjH3/BvDSsLMgsB0giibWwkqjrx+KV9UsYfQNJ9Nlioh5he4JxfJ8o1wuvbK+txhLfi4Zjjz6EI/LPXlcR++X/cTWu5DuuuE2hyTEgPx0a05vK9hBwG+qPSdNMl2OmNxauva3kqm10jQiERFfKr/bCpxlmKw+jMAqmMMF0e5emh0jqr6DELIWRh8V9SJzDUaju6GaFUEMWNy7C2MHoaEnTFVqOT5DIFnIeHiRpcd8sOQx41PbmRjWreyZI0O0M3JjzqGPVbX+yk8HQGVW7v/1JZRkVRQ7RcauS8Z5kJUAFqBzwEzaR9UeXxAi0A==
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
+ by PR0P264MB3032.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:1d7::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5588.11; Wed, 7 Sep
+ 2022 05:33:00 +0000
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::382a:ed3b:83d6:e5d8]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::382a:ed3b:83d6:e5d8%4]) with mapi id 15.20.5588.018; Wed, 7 Sep 2022
+ 05:33:00 +0000
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH v2] powerpc/vdso: link with -z noexecstack
+Thread-Topic: [PATCH v2] powerpc/vdso: link with -z noexecstack
+Thread-Index: AQHYvuBFITegECW2Q0Op93BLfBI7R63TaQGAgAAP1AA=
+Date: Wed, 7 Sep 2022 05:33:00 +0000
+Message-ID: <73866ab0-a5d8-7afb-2e57-a12789617b64@csgroup.eu>
+References:  <b95f2e3216a574837dd61208444e9515c3423da4.1662132312.git.christophe.leroy@csgroup.eu>
+ <CMPW28H38HE0.W6BB976O6ULP@bobo>
+In-Reply-To: <CMPW28H38HE0.W6BB976O6ULP@bobo>
+Accept-Language: fr-FR, en-US
 Content-Language: en-US
-To: Yang Shi <shy828301@gmail.com>
-References: <20220901222707.477402-1-shy828301@gmail.com>
- <YxE/vuQlWJCJMuG2@xz-m1.local>
- <CAHbLzkqjZ_UhUbJ_f9Br7WCAgQvjrm5bMPRsKYvaFc2bzSuzrw@mail.gmail.com>
- <YxIofPiI8jvGzcjC@xz-m1.local>
- <CAHbLzkqGdnwY4P8jKQR0ojm6QV6b3dBi5pwrC1UJ4dqi3EqS4w@mail.gmail.com>
- <87ilm2jj4t.fsf@linux.ibm.com>
- <CAHbLzkohKvOFyfsVr=ry8Goi6kgxh9ig84FX0+pY4qzL4i0xWg@mail.gmail.com>
-From: Aneesh Kumar K V <aneesh.kumar@linux.ibm.com>
-In-Reply-To: <CAHbLzkohKvOFyfsVr=ry8Goi6kgxh9ig84FX0+pY4qzL4i0xWg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: R6no5A1uwDxNieytBvb7dfUyKxJpvrQX
-X-Proofpoint-ORIG-GUID: FtC2oqDJ3IeOedeIl4dVhqvDYT8dTLy5
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
- definitions=2022-09-07_02,2022-09-06_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 malwarescore=0
- adultscore=0 phishscore=0 suspectscore=0 clxscore=1015 impostorscore=0
- lowpriorityscore=0 mlxlogscore=759 mlxscore=0 spamscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2207270000 definitions=main-2209070017
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.0
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=csgroup.eu;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: e6a4d0c0-d839-41ea-9693-08da90926dcb
+x-ms-traffictypediagnostic: PR0P264MB3032:EE_
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:  6hFURMrg4sIFXi08SrImwCwthA0Hfhcxu7xGy48q5YcOrgjlKxSHPEP97+vFKsmZuMdijPCdquI5AV1dOO+y4aS/oXkN8lFXfyx4wJoH4Q4uVgM3R9SH4c0QH3rxTkPsgN8baDE88RDkW3c69/UNL49hPgfnu1o8t02wwTaVRW3RwNffRMGM1Kxdx+KaCJq9bqKhaLaa0O9GKthKgO4EjsuAwTNifku4vHNthx7Tqx4v9p6hyJEKhhp/xWp58DmKon1nCgPqRSS+jY/2S4/Yu3cKloiaiRYxps4Nm7ZSmZsXdqF53TbLJLWcdFa/du8MvDJIyDLrDo7Or1cH+lorUKgDs4v1L/1biBATDtarPm+/HBQXplrFfPgG41w+4FxgyEKOSkDjYyrwWYsc8Bv7plPkEA91czIrdligWJeNEUqTb0lnk3bwN/3hVpuqqH0xBQbg0VWKHie9JedgFyKA0eisP33CiaSgmoLmP8SljXi4d/eGLTb4ipA/brQsUtd/iu0GYkiVdOSUrjPMUmspTdHFiGZbWAZetO8rGaC1uxVRyGxbu0vIzFq/p/yqY7zoqeeQkWzmWNJc/Kv0Oh88jQDs1lltgjpKk8cNQK96V0JQ6KqwZjamD9+50qhO0J6Sw4Uua/02GwoHgDciFBeXfhX5Bh9L0/tF3GspDKwOyeVMB+AzRoEBjrPB1UQQp4psCu81cztTI+NEYL6Y0LQcUg1QrW89ovzQ6orE46i2fIx0N2H7FbK64DEczK1mQSwH+Dx4CsDIUbJ8EwHY0s3bTEsrFkT9XPdGFGIkFYfYlPF3L8upq3GcNMoTLfbBJRTUP7fxODz1zAH6D9j98rM79w==
+x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230016)(4636009)(376002)(396003)(366004)(346002)(136003)(39860400002)(38070700005)(2906002)(66946007)(38100700002)(83380400001)(122000001)(8676002)(66476007)(316002)(76116006)(66556008)(64756008)(66446008)(91956017)(54906003)(4326008)(110136005)(44832011)(66574015)(26005)(186003)(2616005)(5660300002)(6512007)(6506007)(41300700001)(71200400001)(6486002)(478600001)(8936002)(86362001)(31696002)(31686004)(36756003)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?RkwySVFZN1htTkNrYUd2KzI1TS9LdW1UU21abmJleFJ3QWpJMzNLdlFPUk5P?=
+ =?utf-8?B?cDhoT29teURDTFFZRGUwQ0QrTFN2OWlINUREeWdvTVBONlZiN0VwMndvS1Vu?=
+ =?utf-8?B?QXFFdWxWcEF1ZTFIMVpYUmk0NTlDcUUyTmdmZXpPQnR6Q2k3V281eWNqaDZw?=
+ =?utf-8?B?ZzYxeTJ2NFpWVmZuU1Aybnc4TU5oOVMrT2pHbjJDZW1rbEszbDlua1hpZ3U3?=
+ =?utf-8?B?RDgxNGxoYmIxV0hpSUJUNHpoblB0blpGeHNiZkdZZHZwNXlYZHZYaVd0MFdm?=
+ =?utf-8?B?S1o4R3oza3JMSExDZ21kbWt6RWRYQnhoTnRWS2NxVGdrQjV3bkFESWRKZUk1?=
+ =?utf-8?B?ektWUXVQU1hodEZGZndINnY1UGlDSlRBSnFtZEpaZEN2emJEL2ZoNWtIOHk4?=
+ =?utf-8?B?NjBMaGtGcnk3bzBpa0s5emljZG9Xeng5RnYzNzhnUHA5WldRa2VLby9sQ3pG?=
+ =?utf-8?B?UlAzT011SVVxd2VTOTMxanRFbzFyMjNFWURoSGNDVkFXQnkwZ1JHVjZ1UWNx?=
+ =?utf-8?B?TDZIZnNJbmphZ3Izblhvc3pjWVYwUEJ2Vkp0TVpIcjFrMFJFdlNzZlBLMjJa?=
+ =?utf-8?B?V0FVS3NsdDBqaHVzZHhsdGM3QUF4dW1Id2hPelVXNldtU3dLWmc3Uk1LYlRI?=
+ =?utf-8?B?a1J4eWgydWR4Vmx6U0tUQmd2N1JRYUcrQXR2cGh3Z2o2RGxhN2xCUGxiK3R3?=
+ =?utf-8?B?UlR0dU9NOFBzbzFHVUp3L1Fic0E1cEJUZ0RXTDA3NERoOFhXaHRiVm5BWG9V?=
+ =?utf-8?B?Uk5qa2wyNCtlbGhCTnhuRUkvbWJJR0U1ZUpOdE1NQkVHZVlFUEpZaVZXeHFj?=
+ =?utf-8?B?Q0NDcS9ZZTJrem9vZjFPV2s0SFV1MjFKbkJCZnI5eVJNUWVTL1EzMTFLN0ZT?=
+ =?utf-8?B?NzhDc2xBcnVoQ0RUa2paNzJBcGxzRXRVbFVqVTg4bWwxVmk5UlVqd3ZrNlkz?=
+ =?utf-8?B?NklvUzZNR1Y5bWN2NVpaZDdGSHFaRTZsMFFuN2paaDN5MVhmYVZLRGpvcXRZ?=
+ =?utf-8?B?Mmx4K2hmV21CUExtcHplWHEzSlhZMWhiNXMzaENYRUFDbWl5NWJmTTFpSGQ1?=
+ =?utf-8?B?YWtyRHJzRkJvM08xYlpkcFhnWWhKbWxIUWpPTWpHN0IvamNPeGZrZWR1Q1ZQ?=
+ =?utf-8?B?RjZWdkNqYjNIK3FnNVludmNzbERGSVNORjlHcG9VOFd5U0tzYmFhQmFFRGtR?=
+ =?utf-8?B?WjhqTDdZRTdVTTIrVlF1V2VaZklQOExQV1g2cUVjMFZnUFRwWjBVZUNyTURy?=
+ =?utf-8?B?TVQ3UGxUVElaWDcxeW0ybCswY3g3WWF3WDJFenZaOUpQUUttQUhPcXluVXk1?=
+ =?utf-8?B?Y2taRCtCajZWTFR1NmJ5OEVSR2wvRWxiMVU0UXp2c1oxSWFEQWVUNGJnQjFq?=
+ =?utf-8?B?M0hlOUFtVVRUaklRWEF4N3pqcWNUTXkwMjY5dWFRRUZWcnZQNXZZY1Y3dUEv?=
+ =?utf-8?B?REx0Y2NzY0t1a0dTUGNud1p5aVVvNXBCRTVXNndZYlRIRnhvc1BRaHlDUnA1?=
+ =?utf-8?B?dkxXaE5NZHVzc1NqVFBrTDdaOFFkK3cvWlFJaUNqNFdnNk5ZRERuWW5OUmZl?=
+ =?utf-8?B?M2tpc0VLeHRra29DbnRiQTdyYUlsRVdPNlkwMU1yeHF5eWpucFpFbHRSaFl3?=
+ =?utf-8?B?eUhCWWRHV0hJZ2wvMnFiRGFvUGlXQUIrbkE0OE9rYUFsVjZLZHdNUm5WUEF5?=
+ =?utf-8?B?UGlpRmYrVVJ1a0k2RUZqb1ZQTkZtaDVCUE1rUHMwVEg5cW5RaENxQ1dCNUhp?=
+ =?utf-8?B?di9odnovYnNpU2FFdTNXdkxCZHVvenBoOVNyT0tDN1FVaTIrd0RXcDJyRitt?=
+ =?utf-8?B?dTVmUzZ5SS9mZXlKRGpETWxpNk90TmUwMVdidk9jSURTRnFCOW5TL3B0K1A4?=
+ =?utf-8?B?VkxVNWNDVlBXa0JDakVjOEhlT0VTT0ZyT3hCY1hTNHJ1OElFQ2FQc2tyM3VF?=
+ =?utf-8?B?bWhVbE9HL0d2U0JxNWN2dzFlQk1RMFVoYkpMRG1nZnViYXpld2cveGZCZ1N1?=
+ =?utf-8?B?d0I3c29SSHdHRW1nbHUyVGE1akN3R1BjcHNBYm9GanhyY1JxOVBTb1JWNDFU?=
+ =?utf-8?B?Uld3MDRpSjVnRGUwZUlpMFBIOW9hRXFKYnZKUnErNUszdVd5N3AyS1hPYjE3?=
+ =?utf-8?B?UTIwQmhYZDEwM2RlY2xhbWYwa0dqTFlubzdmRGI0bThTMDBndS9TUmVVUmxv?=
+ =?utf-8?Q?oqj7OSnkgBGdh8dhtSoxVuk=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <B1DC837D7E02B346BB046DF801B046B0@FRAP264.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-OriginatorOrg: csgroup.eu
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: e6a4d0c0-d839-41ea-9693-08da90926dcb
+X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Sep 2022 05:33:00.7562
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Bk+KjPpLMZNugl9KPsdpsV5/9KDIyscDQ18oZ1zZqaEm2UO8zmI4SxEnOKjfR3y2DEQ9O4ams0FxOoKXP8C0Q9bCsMAOMdskZS5OZWa0p3Y=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR0P264MB3032
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,189 +135,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: david@redhat.com, jhubbard@nvidia.com, hughd@google.com, linux-kernel@vger.kernel.org, Peter Xu <peterx@redhat.com>, linux-mm@kvack.org, jgg@nvidia.com, akpm@linux-foundation.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, kirill.shutemov@linux.intel.com
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 9/7/22 12:37 AM, Yang Shi wrote:
-> On Mon, Sep 5, 2022 at 1:56 AM Aneesh Kumar K.V
-> <aneesh.kumar@linux.ibm.com> wrote:
->>
->> Yang Shi <shy828301@gmail.com> writes:
->>
->>>
->>> On Fri, Sep 2, 2022 at 9:00 AM Peter Xu <peterx@redhat.com> wrote:
->>>>
->>>> On Thu, Sep 01, 2022 at 04:50:45PM -0700, Yang Shi wrote:
->>>>> On Thu, Sep 1, 2022 at 4:26 PM Peter Xu <peterx@redhat.com> wrote:
->>>>>>
->>>>>> Hi, Yang,
->>>>>>
->>>>>> On Thu, Sep 01, 2022 at 03:27:07PM -0700, Yang Shi wrote:
->>>>>>> Since general RCU GUP fast was introduced in commit 2667f50e8b81 ("mm:
->>>>>>> introduce a general RCU get_user_pages_fast()"), a TLB flush is no longer
->>>>>>> sufficient to handle concurrent GUP-fast in all cases, it only handles
->>>>>>> traditional IPI-based GUP-fast correctly.
->>>>>>
->>>>>> If TLB flush (or, IPI broadcasts) used to work to protect against gup-fast,
->>>>>> I'm kind of confused why it's not sufficient even if with RCU gup?  Isn't
->>>>>> that'll keep working as long as interrupt disabled (which current fast-gup
->>>>>> will still do)?
->>>>>
->>>>> Actually the wording was copied from David's commit log for his
->>>>> PageAnonExclusive fix. My understanding is the IPI broadcast still
->>>>> works, but it may not be supported by all architectures and not
->>>>> preferred anymore. So we should avoid depending on IPI broadcast IIUC.
->>>>>
->>>>>>
->>>>>> IIUC the issue is you suspect not all archs correctly implemented
->>>>>> pmdp_collapse_flush(), or am I wrong?
->>>>>
->>>>> This is a possible fix, please see below for details.
->>>>>
->>>>>>
->>>>>>> On architectures that send
->>>>>>> an IPI broadcast on TLB flush, it works as expected.  But on the
->>>>>>> architectures that do not use IPI to broadcast TLB flush, it may have
->>>>>>> the below race:
->>>>>>>
->>>>>>>    CPU A                                          CPU B
->>>>>>> THP collapse                                     fast GUP
->>>>>>>                                               gup_pmd_range() <-- see valid pmd
->>>>>>>                                                   gup_pte_range() <-- work on pte
->>>>>>> pmdp_collapse_flush() <-- clear pmd and flush
->>>>>>> __collapse_huge_page_isolate()
->>>>>>>     check page pinned <-- before GUP bump refcount
->>>>>>>                                                       pin the page
->>>>>>>                                                       check PTE <-- no change
->>>>>>> __collapse_huge_page_copy()
->>>>>>>     copy data to huge page
->>>>>>>     ptep_clear()
->>>>>>> install huge pmd for the huge page
->>>>>>>                                                       return the stale page
->>>>>>> discard the stale page
->>>>>>>
->>>>>>> The race could be fixed by checking whether PMD is changed or not after
->>>>>>> taking the page pin in fast GUP, just like what it does for PTE.  If the
->>>>>>> PMD is changed it means there may be parallel THP collapse, so GUP
->>>>>>> should back off.
->>>>>>
->>>>>> Could the race also be fixed by impl pmdp_collapse_flush() correctly for
->>>>>> the archs that are missing? Do you know which arch(s) is broken with it?
->>>>>
->>>>> Yes, and this was suggested by me in the first place, but per the
->>>>> suggestion from John and David, this is not the preferred way. I think
->>>>> it is because:
->>>>>
->>>>> Firstly, using IPI to serialize against fast GUP is not recommended
->>>>> anymore since fast GUP does check PTE then back off so we should avoid
->>>>> it.
->>>>> Secondly, if checking PMD then backing off could solve the problem,
->>>>> why do we still need broadcast IPI? It doesn't sound performant.
->>>>>
->>>>>>
->>>>>> It's just not clear to me whether this patch is an optimization or a fix,
->>>>>> if it's a fix whether the IPI broadcast in ppc pmdp_collapse_flush() would
->>>>>> still be needed.
->>>>>
->>>>> It is a fix and the fix will make IPI broadcast not useful anymore.
->>>>
->>>> How about another patch to remove the ppc impl too?  Then it can be a two
->>>> patches series.
->>>
->>> BTW, I don't think we could remove the ppc implementation since it is
->>> different from the generic pmdp_collapse_flush(), particularly for the
->>> hash part IIUC.
->>>
->>> The generic version calls flush_tlb_range() -> hash__flush_tlb_range()
->>> for hash, but the hash call is actually no-op. The ppc version calls
->>> hash__pmdp_collapse_flush() -> flush_tlb_pmd_range(), which does
->>> something useful.
->>>
->>
->> We should actually rename flush_tlb_pmd_range(). It actually flush the
->> hash page table entries.
->>
->> I will do the below patch for ppc64 to clarify this better
-> 
-> Thanks, Aneesh. It looks more readable. A follow-up question, I think
-> we could remove serialize_against_pte_lookup(), which just issues IPI
-> broadcast to run a dummy function. This IPI should not be needed
-> anymore with my patch. Of course, we need to keep the memory barrier.
-> 
-
-
-For radix translation yes. For hash we still need that. W.r.t memory barrier,
-radix do use radix__flush_tlb_collapsed_pmd() which does a tlb invalidate.
-IIUC that will enfocre the required memory barrier there. So you should be able
-to just remove 
-
-modified   arch/powerpc/mm/book3s64/radix_pgtable.c
-@@ -937,15 +937,6 @@ pmd_t radix__pmdp_collapse_flush(struct vm_area_struct *vma, unsigned long addre
- 	pmd = *pmdp;
- 	pmd_clear(pmdp);
- 
--	/*
--	 * pmdp collapse_flush need to ensure that there are no parallel gup
--	 * walk after this call. This is needed so that we can have stable
--	 * page ref count when collapsing a page. We don't allow a collapse page
--	 * if we have gup taken on the page. We can ensure that by sending IPI
--	 * because gup walk happens with IRQ disabled.
--	 */
--	serialize_against_pte_lookup(vma->vm_mm);
--
- 	radix__flush_tlb_collapsed_pmd(vma->vm_mm, address);
- 
- 	return pmd;
-
-in your patch. This will also consolidate all the related changes together.
-
->>
->> diff --git a/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h b/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
->> index 8b762f282190..fd30fa20c392 100644
->> --- a/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
->> +++ b/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
->> @@ -112,13 +112,12 @@ static inline void hash__flush_tlb_kernel_range(unsigned long start,
->>
->>  struct mmu_gather;
->>  extern void hash__tlb_flush(struct mmu_gather *tlb);
->> -void flush_tlb_pmd_range(struct mm_struct *mm, pmd_t *pmd, unsigned long addr);
->>
->>  #ifdef CONFIG_PPC_64S_HASH_MMU
->>  /* Private function for use by PCI IO mapping code */
->>  extern void __flush_hash_table_range(unsigned long start, unsigned long end);
->> -extern void flush_tlb_pmd_range(struct mm_struct *mm, pmd_t *pmd,
->> -                               unsigned long addr);
->> +extern void flush_hash_table_pmd_range(struct mm_struct *mm, pmd_t *pmd,
->> +                                      unsigned long addr);
->>  #else
->>  static inline void __flush_hash_table_range(unsigned long start, unsigned long end) { }
->>  #endif
->> diff --git a/arch/powerpc/mm/book3s64/hash_pgtable.c b/arch/powerpc/mm/book3s64/hash_pgtable.c
->> index ae008b9df0e6..f30131933a01 100644
->> --- a/arch/powerpc/mm/book3s64/hash_pgtable.c
->> +++ b/arch/powerpc/mm/book3s64/hash_pgtable.c
->> @@ -256,7 +256,7 @@ pmd_t hash__pmdp_collapse_flush(struct vm_area_struct *vma, unsigned long addres
->>          * the __collapse_huge_page_copy can result in copying
->>          * the old content.
->>          */
->> -       flush_tlb_pmd_range(vma->vm_mm, &pmd, address);
->> +       flush_hash_table_pmd_range(vma->vm_mm, &pmd, address);
->>         return pmd;
->>  }
->>
->> diff --git a/arch/powerpc/mm/book3s64/hash_tlb.c b/arch/powerpc/mm/book3s64/hash_tlb.c
->> index eb0bccaf221e..a64ea0a7ef96 100644
->> --- a/arch/powerpc/mm/book3s64/hash_tlb.c
->> +++ b/arch/powerpc/mm/book3s64/hash_tlb.c
->> @@ -221,7 +221,7 @@ void __flush_hash_table_range(unsigned long start, unsigned long end)
->>         local_irq_restore(flags);
->>  }
->>
->> -void flush_tlb_pmd_range(struct mm_struct *mm, pmd_t *pmd, unsigned long addr)
->> +void flush_hash_table_pmd_range(struct mm_struct *mm, pmd_t *pmd, unsigned long addr)
->>  {
->>         pte_t *pte;
->>         pte_t *start_pte;
->>
-
+DQoNCkxlIDA3LzA5LzIwMjIgw6AgMDY6MzYsIE5pY2hvbGFzIFBpZ2dpbiBhIMOpY3JpdMKgOg0K
+PiBPbiBTYXQgU2VwIDMsIDIwMjIgYXQgMToyNSBBTSBBRVNULCBDaHJpc3RvcGhlIExlcm95IHdy
+b3RlOg0KPj4gV2l0aCByZWNlbnQgYmludXRpbHMsIHRoZSBmb2xsb3dpbmcgd2FybmluZyBhcHBl
+YXJzOg0KPj4NCj4+ICAgIFZEU08zMkwgYXJjaC9wb3dlcnBjL2tlcm5lbC92ZHNvL3Zkc28zMi5z
+by5kYmcNCj4+IC9vcHQvZ2NjLTEyLjIuMC1ub2xpYmMvcG93ZXJwYzY0LWxpbnV4L2Jpbi8uLi9s
+aWIvZ2NjL3Bvd2VycGM2NC1saW51eC8xMi4yLjAvLi4vLi4vLi4vLi4vcG93ZXJwYzY0LWxpbnV4
+L2Jpbi9sZDogd2FybmluZzogYXJjaC9wb3dlcnBjL2tlcm5lbC92ZHNvL2dldGNwdS0zMi5vOiBt
+aXNzaW5nIC5ub3RlLkdOVS1zdGFjayBzZWN0aW9uIGltcGxpZXMgZXhlY3V0YWJsZSBzdGFjaw0K
+Pj4gL29wdC9nY2MtMTIuMi4wLW5vbGliYy9wb3dlcnBjNjQtbGludXgvYmluLy4uL2xpYi9nY2Mv
+cG93ZXJwYzY0LWxpbnV4LzEyLjIuMC8uLi8uLi8uLi8uLi9wb3dlcnBjNjQtbGludXgvYmluL2xk
+OiBOT1RFOiBUaGlzIGJlaGF2aW91ciBpcyBkZXByZWNhdGVkIGFuZCB3aWxsIGJlIHJlbW92ZWQg
+aW4gYSBmdXR1cmUgdmVyc2lvbiBvZiB0aGUgbGlua2VyDQo+Pg0KPj4gVG8gYXZvaWQgdGhhdCwg
+ZXhwbGljaXRlbHkgdGVsbCB0aGUgbGlua2VyIHdlIGRvbid0DQo+PiB3YW50IGV4ZWN1dGFibGUg
+c3RhY2suDQo+Pg0KPj4gRm9yIG1vcmUgZXhwbGFuYXRpb25zLCBzZWUgY29tbWl0IGZmY2Y5YzU3
+MDBlNCAoIng4NjogbGluayB2ZHNvDQo+PiBhbmQgYm9vdCB3aXRoIC16IG5vZXhlY3N0YWNrIC0t
+bm8td2Fybi1yd3gtc2VnbWVudHMiKQ0KPj4NCj4+IFNpZ25lZC1vZmYtYnk6IENocmlzdG9waGUg
+TGVyb3kgPGNocmlzdG9waGUubGVyb3lAY3Nncm91cC5ldT4NCj4+IC0tLQ0KPj4gdjI6IFJlbW92
+ZWQgdW5yZWxhdGVkIGNoYW5nZSBpbiBhcmNoL3Bvd2VycGMva2VybmVsL01ha2VmaWxlDQo+IA0K
+PiBTZWVtcyBva2F5LiBIZXJlIHRvbywgY29tbWl0IDBkMzYyYmU1YjE0MjAgKCJNYWtlZmlsZTog
+bGluayB3aXRoIC16DQo+IG5vZXhlY3N0YWNrIC0tbm8td2Fybi1yd3gtc2VnbWVudHMiKS4gQ29y
+ZSBhbmQgeDg2IGFyZSB1c2luZw0KPiBuby13YXJuLXJ3eC1zZWdtZW50cyBhcyB3ZWxsLCBzaG91
+bGQgd2UgaGF2ZSB0aGF0IGp1c3QgdG8gbWF0Y2gNCj4gdG9vPw0KDQpJIHRoaW5rIHRoZSBSV1gg
+c2VnbWVudCBzdHVmZiBpbiB1bnJlbGF0ZWQgdG8gVkRTTy4gRm9yIFZEU08geDg2IG9ubHkgDQpk
+b2VzIG5vZXhlY3N0YWNrLCByZWZlciBjb21taXQgZmZjZjljNTcwMGU0ICgieDg2OiBsaW5rIHZk
+c28gYW5kIGJvb3QgDQp3aXRoIC16IG5vZXhlY3N0YWNrIC0tbm8td2Fybi1yd3gtc2VnbWVudHMi
+KQ0KDQpBbmQgYXMgbm8td2Fybi1yd3gtc2VnbWVudHMgaXMgaW4gdGhlIHRvcCBsZXZlbCBNYWtl
+ZmlsZSwgSSBkb24ndCB0aGluayANCmFyY2hpdGVjdHVyZXMgbmVlZCBpdCwgZG8gdGhleSA/DQp4
+ODYgaGF2ZSBpdCBvbmx5IGluIGFyY2gveDg2L2Jvb3QvY29tcHJlc3NlZC9NYWtlZmlsZSwgbWF5
+YmUgcG93ZXJwYyANCm5lZWRzIGl0IGluIGFyY2gvcG93ZXJwYy9ib290LyA/IEFueXdheSB0aGF0
+IHdvdWxkIGJlIGFub3RoZXIgcGF0Y2guDQoNCkNocmlzdG9waGUNCg0KPiANCj4gUmV2aWV3ZWQt
+Ynk6IE5pY2hvbGFzIFBpZ2dpbiA8bnBpZ2dpbkBnbWFpbC5jb20+DQo+IA0KPj4gLS0tDQo+PiAg
+IGFyY2gvcG93ZXJwYy9rZXJuZWwvdmRzby9NYWtlZmlsZSB8IDQgKystLQ0KPj4gICAxIGZpbGUg
+Y2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQ0KPj4NCj4+IGRpZmYgLS1n
+aXQgYS9hcmNoL3Bvd2VycGMva2VybmVsL3Zkc28vTWFrZWZpbGUgYi9hcmNoL3Bvd2VycGMva2Vy
+bmVsL3Zkc28vTWFrZWZpbGUNCj4+IGluZGV4IDA5NmIwYmYxMzM1Zi4uYTJlN2IwY2U1YjE5IDEw
+MDY0NA0KPj4gLS0tIGEvYXJjaC9wb3dlcnBjL2tlcm5lbC92ZHNvL01ha2VmaWxlDQo+PiArKysg
+Yi9hcmNoL3Bvd2VycGMva2VybmVsL3Zkc28vTWFrZWZpbGUNCj4+IEBAIC05MiwxMyArOTIsMTMg
+QEAgaW5jbHVkZS9nZW5lcmF0ZWQvdmRzbzY0LW9mZnNldHMuaDogJChvYmopL3Zkc282NC5zby5k
+YmcgRk9SQ0UNCj4+ICAgDQo+PiAgICMgYWN0dWFsIGJ1aWxkIGNvbW1hbmRzDQo+PiAgIHF1aWV0
+X2NtZF92ZHNvMzJsZF9hbmRfY2hlY2sgPSBWRFNPMzJMICRADQo+PiAtICAgICAgY21kX3Zkc28z
+MmxkX2FuZF9jaGVjayA9ICQoVkRTT0NDKSAkKGNfZmxhZ3MpICQoQ0MzMkZMQUdTKSAtbyAkQCAt
+V2wsLVQkKGZpbHRlciAlLmxkcywkXikgJChmaWx0ZXIgJS5vLCReKSA7ICQoY21kX3Zkc29fY2hl
+Y2spDQo+PiArICAgICAgY21kX3Zkc28zMmxkX2FuZF9jaGVjayA9ICQoVkRTT0NDKSAkKGNfZmxh
+Z3MpICQoQ0MzMkZMQUdTKSAtbyAkQCAtV2wsLVQkKGZpbHRlciAlLmxkcywkXikgJChmaWx0ZXIg
+JS5vLCReKSAteiBub2V4ZWNzdGFjayA7ICQoY21kX3Zkc29fY2hlY2spDQo+PiAgIHF1aWV0X2Nt
+ZF92ZHNvMzJhcyA9IFZEU08zMkEgJEANCj4+ICAgICAgICAgY21kX3Zkc28zMmFzID0gJChWRFNP
+Q0MpICQoYV9mbGFncykgJChDQzMyRkxBR1MpICQoQVMzMkZMQUdTKSAtYyAtbyAkQCAkPA0KPj4g
+ICBxdWlldF9jbWRfdmRzbzMyY2MgPSBWRFNPMzJDICRADQo+PiAgICAgICAgIGNtZF92ZHNvMzJj
+YyA9ICQoVkRTT0NDKSAkKGNfZmxhZ3MpICQoQ0MzMkZMQUdTKSAtYyAtbyAkQCAkPA0KPj4gICAN
+Cj4+ICAgcXVpZXRfY21kX3Zkc282NGxkX2FuZF9jaGVjayA9IFZEU082NEwgJEANCj4+IC0gICAg
+ICBjbWRfdmRzbzY0bGRfYW5kX2NoZWNrID0gJChWRFNPQ0MpICQoY19mbGFncykgJChDQzY0RkxB
+R1MpIC1vICRAIC1XbCwtVCQoZmlsdGVyICUubGRzLCReKSAkKGZpbHRlciAlLm8sJF4pIDsgJChj
+bWRfdmRzb19jaGVjaykNCj4+ICsgICAgICBjbWRfdmRzbzY0bGRfYW5kX2NoZWNrID0gJChWRFNP
+Q0MpICQoY19mbGFncykgJChDQzY0RkxBR1MpIC1vICRAIC1XbCwtVCQoZmlsdGVyICUubGRzLCRe
+KSAkKGZpbHRlciAlLm8sJF4pIC16IG5vZXhlY3N0YWNrIDsgJChjbWRfdmRzb19jaGVjaykNCj4+
+ICAgcXVpZXRfY21kX3Zkc282NGFzID0gVkRTTzY0QSAkQA0KPj4gICAgICAgICBjbWRfdmRzbzY0
+YXMgPSAkKFZEU09DQykgJChhX2ZsYWdzKSAkKENDNjRGTEFHUykgJChBUzY0RkxBR1MpIC1jIC1v
+ICRAICQ8DQo+PiAtLSANCj4+IDIuMzcuMQ0KPiA=
