@@ -1,63 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 647C25AF8DC
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Sep 2022 02:10:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEEB05AF946
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Sep 2022 02:59:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MMjML06nnz3bqv
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Sep 2022 10:10:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MMkRJ5B26z3c6M
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Sep 2022 10:59:08 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=W16AaxYj;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=EAkdAoJF;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Two or more type TXT spf records found.) smtp.mailfrom=intel.com (client-ip=192.55.52.136; helo=mga12.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b2b; helo=mail-yb1-xb2b.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=W16AaxYj;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=EAkdAoJF;
 	dkim-atps=neutral
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com [IPv6:2607:f8b0:4864:20::b2b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MMjLg0Pc2z2xJD
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Sep 2022 10:09:57 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1662509403; x=1694045403;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=h9zKEDTpIHgZPoufnLRdNUlOfPwoMNldZEhVgitJKSc=;
-  b=W16AaxYjJqXIbkon306b1pnPSq/d0p4JlYB5Y3S3SxwigU9+p4qcrxPR
-   y4wq6VXn86+PlDYyovc57xEF42nE3ejR6bWs2o+pvHSzqWvUeZaKfwyIK
-   vJKQNNKwNSaN4vsEwQc/UOhFm+8leyOmv9TOcNmOy8qbloJs5fd/MnhwB
-   enTQ4LtaKogktCrWxOb5uR3TaomN6gzjm63K4Cd20IK+LtI8sK48GxpbB
-   UZ4ng0yQLNew42DrAvIUQdkPVY9YFpg1v3lBpVNooqWs5bd3GBNzHbCsP
-   NVYzTjKCm0vebNUgrrpcnENUZczKQs+jKBfAHVIA8KsCJYxQMkTvD6rPt
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10462"; a="276480247"
-X-IronPort-AV: E=Sophos;i="5.93,295,1654585200"; 
-   d="scan'208";a="276480247"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Sep 2022 17:09:54 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.93,295,1654585200"; 
-   d="scan'208";a="644382454"
-Received: from lkp-server02.sh.intel.com (HELO 95dfd251caa2) ([10.239.97.151])
-  by orsmga008.jf.intel.com with ESMTP; 06 Sep 2022 17:09:52 -0700
-Received: from kbuild by 95dfd251caa2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1oVidc-0005oT-0q;
-	Wed, 07 Sep 2022 00:09:52 +0000
-Date: Wed, 07 Sep 2022 08:09:35 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:merge] BUILD SUCCESS
- 33a92cf0fa6e2f07c1d1a0338abc86d85803f630
-Message-ID: <6317e13f.cbl8f1i29Rg/oQ6k%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MMkQf1pzfz2xn5
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Sep 2022 10:58:32 +1000 (AEST)
+Received: by mail-yb1-xb2b.google.com with SMTP id y82so11153448yby.6
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Sep 2022 17:58:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=UjaiWINnbTXgT+URtVXx1fGemLW7KAjAuDjBEcKQcpw=;
+        b=EAkdAoJF93b/9wVcZWS/8Z33Wh8Eq7xG8wCxKPHNm0Lldc4C5bChxoQDfIHIPRDYax
+         E+7oO+L2O6scu7V+5fNLALkC2gSW3KtuP3tfNpYEXGlOWDD2sTiTX6OWgeeJAcpYfcqc
+         A7KFsvQIqZJC3pSoupGeVX3b2h2lXfNqXDDwmhewWl9SZYpSIQb+K3ijuHEHBKnlI5iN
+         5YTs4xJNgeAVeEvcjs3kD0qLdfQNKm1QP8zoW0R448XpFNwDG9J12DbqDl3vZ1zKXm72
+         +HSPLoCsmPAhUhpPj99b2yJIbwOsGllYC7rvCmcvKG+KcIcU1HoAeaosy/7TBlwl5auu
+         e43Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=UjaiWINnbTXgT+URtVXx1fGemLW7KAjAuDjBEcKQcpw=;
+        b=RCu1RwoEgsrc+aJe0DmpCB2No++/Ja2+4PkjCWjEyrm59bxT2WC+awD0xLOOkDRPV1
+         AfG0gobe7PWaiWIGjsclikruUHmpzu1cjj8nsOqypZuUB81tdV78d9UmX9fdooLNo46d
+         Douf9782JGGNx3+8B2ZzoFIQ1NmgGo2BYFsxzi+TGa16+l/MIteUZu1TudeASbl9Cl0W
+         M8H3XqBRgZDy3f2HlPQbzrI8gRk5iOZyBbDj9jGRsYzw+om737UuIWmAcCybC7Lg5JiB
+         acqd6V83ZmPksd8B32OVJyeJKghfrmCFaSf3cJXjaRzwTKuNHEj4jeHgiS40EoeSzfIQ
+         r0qg==
+X-Gm-Message-State: ACgBeo2LVyK+6Dhi3FzVWFcAOyBvSV3Wf2PjCUhcQUQwS7HzQI9B6yn6
+	rfH1KaQomMoP/+/y7oTfS3paNlWquXp5CX2Z6pXNIA==
+X-Google-Smtp-Source: AA6agR7/aESfD9/NDPsDFtQ7YKYMRNuKLSwT1FUjw+G1bf9VJ00olfdLIYvwBbmvvuSYroc7vvTiDT6ZBY0OsHmp1Qc=
+X-Received: by 2002:a25:9781:0:b0:6a9:561a:c143 with SMTP id
+ i1-20020a259781000000b006a9561ac143mr995480ybo.59.1662512309570; Tue, 06 Sep
+ 2022 17:58:29 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+References: <20220901173516.702122-1-surenb@google.com> <20220901173516.702122-20-surenb@google.com>
+ <YxeiB2la/9fZEzLO@xz-m1.local> <CAJuCfpHkjHAAmKAJH=cxhFmwMawUDQJccwKa8k=xXNZZ1knT7g@mail.gmail.com>
+ <YxesBqZ+L+oeQv5e@xz-m1.local>
+In-Reply-To: <YxesBqZ+L+oeQv5e@xz-m1.local>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 6 Sep 2022 17:58:18 -0700
+Message-ID: <CAJuCfpFpOT3KOBCjcnTo9D3AWq_GT9bKNyQ4xcwLJh1UPF6FFA@mail.gmail.com>
+Subject: Re: [RFC PATCH RESEND 19/28] mm: disallow do_swap_page to handle page
+ faults under VMA lock
+To: Peter Xu <peterx@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,78 +75,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Michel Lespinasse <michel@lespinasse.org>, Joel Fernandes <joelaf@google.com>, Song Liu <songliubraving@fb.com>, Michal Hocko <mhocko@suse.com>, David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, dhowells@redhat.com, linux-mm <linux-mm@kvack.org>, Jerome Glisse <jglisse@google.com>, Davidlohr Bueso <dave@stgolabs.net>, Minchan Kim <minchan@google.com>, x86@kernel.org, Hugh Dickins <hughd@google.com>, Matthew Wilcox <willy@infradead.org>, Laurent Dufour <laurent.dufour@fr.ibm.com>, Mel Gorman <mgorman@suse.de>, David Rientjes <rientjes@google.com>, Axel Rasmussen <axelrasmussen@google.com>, kernel-team <kernel-team@android.com>, "Paul E . McKenney" <paulmck@kernel.org>, "Liam R. Howlett" <liam.howlett@oracle.com>, Andy Lutomirski <luto@kernel.org>, Laurent Dufour <ldufour@linux.ibm.com>, Vlastimil Babka <vbabka@suse.cz>, linux-arm-kernel@lists.infradead.org, Kent Overstreet <kent.overstreet@linux.dev>, LK
+ ML <linux-kernel@vger.kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
-branch HEAD: 33a92cf0fa6e2f07c1d1a0338abc86d85803f630  Automatic merge of 'master' into merge (2022-09-05 10:06)
+On Tue, Sep 6, 2022 at 1:22 PM Peter Xu <peterx@redhat.com> wrote:
+>
+> On Tue, Sep 06, 2022 at 01:08:10PM -0700, Suren Baghdasaryan wrote:
+> > On Tue, Sep 6, 2022 at 12:39 PM Peter Xu <peterx@redhat.com> wrote:
+> > >
+> > > On Thu, Sep 01, 2022 at 10:35:07AM -0700, Suren Baghdasaryan wrote:
+> > > > Due to the possibility of do_swap_page dropping mmap_lock, abort fault
+> > > > handling under VMA lock and retry holding mmap_lock. This can be handled
+> > > > more gracefully in the future.
+> > > >
+> > > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> > > > ---
+> > > >  mm/memory.c | 5 +++++
+> > > >  1 file changed, 5 insertions(+)
+> > > >
+> > > > diff --git a/mm/memory.c b/mm/memory.c
+> > > > index 9ac9944e8c62..29d2f49f922a 100644
+> > > > --- a/mm/memory.c
+> > > > +++ b/mm/memory.c
+> > > > @@ -3738,6 +3738,11 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+> > > >       vm_fault_t ret = 0;
+> > > >       void *shadow = NULL;
+> > > >
+> > > > +     if (vmf->flags & FAULT_FLAG_VMA_LOCK) {
+> > > > +             ret = VM_FAULT_RETRY;
+> > > > +             goto out;
+> > > > +     }
+> > > > +
+> > >
+> > > May want to fail early similarly for handle_userfault() too for similar
+> > > reason.  Thanks,
+> >
+> > I wasn't aware of a similar issue there. Will have a closer look. Thanks!
+>
+> Sure.
+>
+> Just in case this would be anything helpful - handle_userfault() will both
+> assert at the entry (mmap_assert_locked) and will in most cases release
+> read lock along the way when waiting for page fault resolutions.
+>
+> And userfaultfd should work on anonymous memory for either missing mode or
+> write protect mode.
 
-elapsed time: 734m
+Got it. Thanks for the explanation. It definitely helps!
 
-configs tested: 53
-configs skipped: 2
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-um                             i386_defconfig
-um                           x86_64_defconfig
-arc                  randconfig-r043-20220906
-riscv                randconfig-r042-20220906
-powerpc                           allnoconfig
-s390                 randconfig-r044-20220906
-i386                                defconfig
-x86_64                              defconfig
-alpha                            allyesconfig
-arc                              allyesconfig
-m68k                             allmodconfig
-x86_64                               rhel-8.3
-sh                               allmodconfig
-m68k                             allyesconfig
-x86_64                        randconfig-a013
-x86_64                        randconfig-a011
-mips                             allyesconfig
-i386                          randconfig-a001
-powerpc                          allmodconfig
-i386                          randconfig-a003
-x86_64                           allyesconfig
-x86_64                        randconfig-a015
-i386                          randconfig-a005
-i386                          randconfig-a014
-x86_64                          rhel-8.3-func
-i386                          randconfig-a012
-x86_64                         rhel-8.3-kunit
-i386                          randconfig-a016
-x86_64                        randconfig-a004
-x86_64                           rhel-8.3-kvm
-x86_64                        randconfig-a002
-x86_64                    rhel-8.3-kselftests
-i386                             allyesconfig
-x86_64                           rhel-8.3-syz
-arm                                 defconfig
-x86_64                        randconfig-a006
-arm64                            allyesconfig
-arm                              allyesconfig
-ia64                             allmodconfig
-
-clang tested configs:
-hexagon              randconfig-r041-20220906
-hexagon              randconfig-r045-20220906
-x86_64                        randconfig-a014
-x86_64                        randconfig-a012
-x86_64                        randconfig-a016
-i386                          randconfig-a002
-i386                          randconfig-a004
-i386                          randconfig-a006
-i386                          randconfig-a013
-i386                          randconfig-a011
-i386                          randconfig-a015
-x86_64                        randconfig-a001
-x86_64                        randconfig-a003
-x86_64                        randconfig-a005
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+>
+> Thanks,
+>
+> --
+> Peter Xu
+>
+> --
+> To unsubscribe from this group and stop receiving emails from it, send an email to kernel-team+unsubscribe@android.com.
+>
