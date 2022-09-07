@@ -1,61 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 153F95B0C06
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Sep 2022 20:02:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E42165B0C0F
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Sep 2022 20:03:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MN97z6Gmpz3c6R
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Sep 2022 04:02:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MN98f1mYDz3c5v
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Sep 2022 04:02:58 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=GtwBMc6E;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Doko71dt;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102f; helo=mail-pj1-x102f.google.com; envelope-from=shy828301@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1031; helo=mail-pj1-x1031.google.com; envelope-from=shy828301@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=GtwBMc6E;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Doko71dt;
 	dkim-atps=neutral
-Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MN97P1C9Tz2xJD
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Sep 2022 04:01:52 +1000 (AEST)
-Received: by mail-pj1-x102f.google.com with SMTP id m3so4701908pjo.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MN97P1Zs3z2xrk
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Sep 2022 04:01:51 +1000 (AEST)
+Received: by mail-pj1-x1031.google.com with SMTP id pj10so4873588pjb.2
         for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Sep 2022 11:01:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date;
-        bh=eU/KWFZN5UecQ8lbzprnvq1q98iyrbbNqlvylwkyiHU=;
-        b=GtwBMc6EL/iXg66DLvtx19O/9lfPfRbzA8mc4+Xi+LrbcSCdAPV5vLH4lpomv4ciNM
-         fIYzkt3IS2BPGL2ih6bmDimjFB5SB4q2SuKHQwAlcbzYHpoVNaDYxuZdsVuFFX/3T/Uc
-         YXF7Rny2ZEEGby9c57HmCFy9pg3z5r8m4VTNcZVG97Uv8KyUzy/Bnxo5Um52ZTTyeAVW
-         G0qCz8OCaLUh7ICyMGSrI1Jh/Jswa1I086oJypMirhyA+vvor74uUAxXhbsk+gINCKbU
-         HC9fT6qRKh58VoKTe1FnhEu84oA7FZip2zriqLGw9iKZGl+voSYJs7XVmVRxS1swZU7R
-         JKYw==
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date;
+        bh=UHYrwEcXPbGBhfii4X3ydQ5bpddbyvYjPSHAsGv/lH4=;
+        b=Doko71dtNVKu/BhyMmGhby+5UUD7eQNqxwNLK82EUfGX5hRVsaHhveHIiLbtb455zC
+         5uQiezT061WGQLtnac/5oxTDVM2pExBgYyuIce4gXxFM4emRXhvHbHtg0mHipn7ADiq6
+         +Vu5BgfJSWzgqC/tK9ekDstxD8caurkZlnJ7oyYh0MWUXOTS5xdxMwCo3/vLM0UL0hF1
+         ljoxl+9/DhCrjm1Ou72naIcIWhli5dUKKQp7XGpExD/rL3JFasi1izq2tUiB8ML8tQSa
+         nkZZWQ8I4b3C/kYqqPSJhkPdB8icbFAZ/XNlARpcMUsOp4CJCZ6ZeHfO+oroBOA3TtLN
+         atmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date;
-        bh=eU/KWFZN5UecQ8lbzprnvq1q98iyrbbNqlvylwkyiHU=;
-        b=YXjx6GbQnWFHR//ssR/Rt/+YbtUwnAc03wwPMaeDg+bBcmOD8r/8T0rkTzjqSI23a/
-         /Rp+NS8ZJcElFiyPnOnRva375l+cAM+Otii6hnQvxYhxipvd4dEMXCQTCMKcFLIyHrSo
-         1kV5AulPMikZpBjb2gepDsvvllJQK+gA+lF3uLMFG6QeCRQca9BYGQiHUXmCVi4IvG9T
-         tbR1BwCOcCLf85orgG6RA8MFxrW+tEQRA7bDLebeSK/B9ZqZ48UOogyr7KgwrQ2vPT7X
-         b0EitnUTyUV3wWn28OHD0t1Oo4nRNsESugdcE9/KJ53rjgUJkEt8mQHjzhfLqnQaQa9a
-         sEew==
-X-Gm-Message-State: ACgBeo1NMZLyTDcXyLYMUOrRIX9u2GGPT/h++jaqaMCUBXyMNKfCMPwX
-	u3KvtOOExOHzVquqZX6Zb1g=
-X-Google-Smtp-Source: AA6agR4jQu9kTFMCgKbNUddUbVeBrjOtp6VteymiGZOmYpTK0JnXVpNi96p1AWx0nYhR3UmigAXkAQ==
-X-Received: by 2002:a17:90a:d150:b0:1fd:9336:5db3 with SMTP id t16-20020a17090ad15000b001fd93365db3mr5322933pjw.242.1662573709955;
-        Wed, 07 Sep 2022 11:01:49 -0700 (PDT)
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date;
+        bh=UHYrwEcXPbGBhfii4X3ydQ5bpddbyvYjPSHAsGv/lH4=;
+        b=DTg3XTdlIFQaabvKuMxAab0P/NbeDNi0/6rx4cXKEvcXxW74kl4cWkNdDDB8/H4HB8
+         Rns7qKRVuGqrOGxJjqrs36H5NF+f4gGlxRiMxbPZYdmpIm2mQSagm1pQLVSSmSRD6TnM
+         3MXmqp4NjeHDIr7qjAqYv2l40FlEHLwU1qQSNBrbQzIVo15nzM7JBaNueGLAuYQSwDYe
+         4AMS04T8egXaQfwQNmFrDMW0+x8ccX06PF3jm3y0d61Q8XgG9AUFah2yxnLSYgHe3ZMY
+         Ew3y1z3IXTVQuJmDOBEVZBgN9II+HXYIe8uIRTPhyO68s1YukGCzakidErqWHjaVl3gl
+         qKEw==
+X-Gm-Message-State: ACgBeo2gJMvXTSVY932Z71ma92p6MACislIaVa1yfe7ccSBUNBi5QkYC
+	6BZsZ8G5rfAI1SLHL+Fqhsg=
+X-Google-Smtp-Source: AA6agR6+7Dm7eIkNWnpZLwRV6pSc8CxeNaPaeJzHXSnuuWgT/UX831Yvo6fd3ymvW7WSe7CjhGk3uQ==
+X-Received: by 2002:a17:90b:4a4b:b0:202:5bbb:b7b6 with SMTP id lb11-20020a17090b4a4b00b002025bbbb7b6mr1513741pjb.161.1662573708142;
+        Wed, 07 Sep 2022 11:01:48 -0700 (PDT)
 Received: from localhost.localdomain (c-67-174-241-145.hsd1.ca.comcast.net. [67.174.241.145])
-        by smtp.gmail.com with ESMTPSA id t17-20020a170902e85100b0017312bfca95sm12801664plg.253.2022.09.07.11.01.48
+        by smtp.gmail.com with ESMTPSA id t17-20020a170902e85100b0017312bfca95sm12801664plg.253.2022.09.07.11.01.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Sep 2022 11:01:49 -0700 (PDT)
+        Wed, 07 Sep 2022 11:01:46 -0700 (PDT)
 From: Yang Shi <shy828301@gmail.com>
 To: david@redhat.com,
 	peterx@redhat.com,
@@ -65,12 +64,10 @@ To: david@redhat.com,
 	hughd@google.com,
 	akpm@linux-foundation.org,
 	aneesh.kumar@linux.ibm.com
-Subject: [v2 PATCH 2/2] powerpc/64s/radix: don't need to broadcast IPI for radix pmd collapse flush
-Date: Wed,  7 Sep 2022 11:01:44 -0700
-Message-Id: <20220907180144.555485-2-shy828301@gmail.com>
+Subject: [v2 PATCH 1/2] mm: gup: fix the fast GUP race against THP collapse
+Date: Wed,  7 Sep 2022 11:01:43 -0700
+Message-Id: <20220907180144.555485-1-shy828301@gmail.com>
 X-Mailer: git-send-email 2.26.3
-In-Reply-To: <20220907180144.555485-1-shy828301@gmail.com>
-References: <20220907180144.555485-1-shy828301@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -88,41 +85,139 @@ Cc: linux-mm@kvack.org, shy828301@gmail.com, linuxppc-dev@lists.ozlabs.org, linu
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The IPI broadcast is used to serialize against fast-GUP, but fast-GUP
-will move to use RCU instead of disabling local interrupts in fast-GUP.
-Using an IPI is the old-styled way of serializing against fast-GUP
-although it still works as expected now.
+Since general RCU GUP fast was introduced in commit 2667f50e8b81 ("mm:
+introduce a general RCU get_user_pages_fast()"), a TLB flush is no longer
+sufficient to handle concurrent GUP-fast in all cases, it only handles
+traditional IPI-based GUP-fast correctly.  On architectures that send
+an IPI broadcast on TLB flush, it works as expected.  But on the
+architectures that do not use IPI to broadcast TLB flush, it may have
+the below race:
 
-And fast-GUP now fixed the potential race with THP collapse by checking
-whether PMD is changed or not.  So IPI broadcast in radix pmd collapse
-flush is not necessary anymore.  But it is still needed for hash TLB.
+   CPU A                                          CPU B
+THP collapse                                     fast GUP
+                                              gup_pmd_range() <-- see valid pmd
+                                                  gup_pte_range() <-- work on pte
+pmdp_collapse_flush() <-- clear pmd and flush
+__collapse_huge_page_isolate()
+    check page pinned <-- before GUP bump refcount
+                                                      pin the page
+                                                      check PTE <-- no change
+__collapse_huge_page_copy()
+    copy data to huge page
+    ptep_clear()
+install huge pmd for the huge page
+                                                      return the stale page
+discard the stale page
 
-Suggested-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+The race could be fixed by checking whether PMD is changed or not after
+taking the page pin in fast GUP, just like what it does for PTE.  If the
+PMD is changed it means there may be parallel THP collapse, so GUP
+should back off.
+
+Also update the stale comment about serializing against fast GUP in
+khugepaged.
+
+Fixes: 2667f50e8b81 ("mm: introduce a general RCU get_user_pages_fast()")
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Yang Shi <shy828301@gmail.com>
 ---
- arch/powerpc/mm/book3s64/radix_pgtable.c | 9 ---------
- 1 file changed, 9 deletions(-)
+v2: * Incorporated the comment from Peter about the comment.
+    * Moved the comment right before gup_pte_range() instead of in the
+      body of the function, per John.
+    * Added patch 2/2 per Aneesh.
 
-diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-index 698274109c91..e712f80fe189 100644
---- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-+++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-@@ -937,15 +937,6 @@ pmd_t radix__pmdp_collapse_flush(struct vm_area_struct *vma, unsigned long addre
- 	pmd = *pmdp;
- 	pmd_clear(pmdp);
+ mm/gup.c        | 34 ++++++++++++++++++++++++++++------
+ mm/khugepaged.c | 10 ++++++----
+ 2 files changed, 34 insertions(+), 10 deletions(-)
+
+diff --git a/mm/gup.c b/mm/gup.c
+index f3fc1f08d90c..40aa1c937212 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -2380,8 +2380,28 @@ static void __maybe_unused undo_dev_pagemap(int *nr, int nr_start,
+ }
  
--	/*
--	 * pmdp collapse_flush need to ensure that there are no parallel gup
--	 * walk after this call. This is needed so that we can have stable
--	 * page ref count when collapsing a page. We don't allow a collapse page
--	 * if we have gup taken on the page. We can ensure that by sending IPI
--	 * because gup walk happens with IRQ disabled.
--	 */
--	serialize_against_pte_lookup(vma->vm_mm);
--
- 	radix__flush_tlb_collapsed_pmd(vma->vm_mm, address);
+ #ifdef CONFIG_ARCH_HAS_PTE_SPECIAL
+-static int gup_pte_range(pmd_t pmd, unsigned long addr, unsigned long end,
+-			 unsigned int flags, struct page **pages, int *nr)
++/*
++ * Fast-gup relies on pte change detection to avoid concurrent pgtable
++ * operations.
++ *
++ * To pin the page, fast-gup needs to do below in order:
++ * (1) pin the page (by prefetching pte), then (2) check pte not changed.
++ *
++ * For the rest of pgtable operations where pgtable updates can be racy
++ * with fast-gup, we need to do (1) clear pte, then (2) check whether page
++ * is pinned.
++ *
++ * Above will work for all pte-level operations, including THP split.
++ *
++ * For THP collapse, it's a bit more complicated because fast-gup may be
++ * walking a pgtable page that is being freed (pte is still valid but pmd
++ * can be cleared already).  To avoid race in such condition, we need to
++ * also check pmd here to make sure pmd doesn't change (corresponds to
++ * pmdp_collapse_flush() in the THP collapse code path).
++ */
++static int gup_pte_range(pmd_t pmd, pmd_t *pmdp, unsigned long addr,
++			 unsigned long end, unsigned int flags,
++			 struct page **pages, int *nr)
+ {
+ 	struct dev_pagemap *pgmap = NULL;
+ 	int nr_start = *nr, ret = 0;
+@@ -2423,7 +2443,8 @@ static int gup_pte_range(pmd_t pmd, unsigned long addr, unsigned long end,
+ 			goto pte_unmap;
+ 		}
  
- 	return pmd;
+-		if (unlikely(pte_val(pte) != pte_val(*ptep))) {
++		if (unlikely(pmd_val(pmd) != pmd_val(*pmdp)) ||
++		    unlikely(pte_val(pte) != pte_val(*ptep))) {
+ 			gup_put_folio(folio, 1, flags);
+ 			goto pte_unmap;
+ 		}
+@@ -2470,8 +2491,9 @@ static int gup_pte_range(pmd_t pmd, unsigned long addr, unsigned long end,
+  * get_user_pages_fast_only implementation that can pin pages. Thus it's still
+  * useful to have gup_huge_pmd even if we can't operate on ptes.
+  */
+-static int gup_pte_range(pmd_t pmd, unsigned long addr, unsigned long end,
+-			 unsigned int flags, struct page **pages, int *nr)
++static int gup_pte_range(pmd_t pmd, pmd_t *pmdp, unsigned long addr,
++			 unsigned long end, unsigned int flags,
++			 struct page **pages, int *nr)
+ {
+ 	return 0;
+ }
+@@ -2791,7 +2813,7 @@ static int gup_pmd_range(pud_t *pudp, pud_t pud, unsigned long addr, unsigned lo
+ 			if (!gup_huge_pd(__hugepd(pmd_val(pmd)), addr,
+ 					 PMD_SHIFT, next, flags, pages, nr))
+ 				return 0;
+-		} else if (!gup_pte_range(pmd, addr, next, flags, pages, nr))
++		} else if (!gup_pte_range(pmd, pmdp, addr, next, flags, pages, nr))
+ 			return 0;
+ 	} while (pmdp++, addr = next, addr != end);
+ 
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 2d74cf01f694..518b49095db3 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -1049,10 +1049,12 @@ static int collapse_huge_page(struct mm_struct *mm, unsigned long address,
+ 
+ 	pmd_ptl = pmd_lock(mm, pmd); /* probably unnecessary */
+ 	/*
+-	 * After this gup_fast can't run anymore. This also removes
+-	 * any huge TLB entry from the CPU so we won't allow
+-	 * huge and small TLB entries for the same virtual address
+-	 * to avoid the risk of CPU bugs in that area.
++	 * This removes any huge TLB entry from the CPU so we won't allow
++	 * huge and small TLB entries for the same virtual address to
++	 * avoid the risk of CPU bugs in that area.
++	 *
++	 * Parallel fast GUP is fine since fast GUP will back off when
++	 * it detects PMD is changed.
+ 	 */
+ 	_pmd = pmdp_collapse_flush(vma, address, pmd);
+ 	spin_unlock(pmd_ptl);
 -- 
 2.26.3
 
