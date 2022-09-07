@@ -2,55 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 267FA5AFF52
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Sep 2022 10:40:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 846485B0095
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Sep 2022 11:35:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MMwg55nrYz3c96
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Sep 2022 18:40:01 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=l8YXm+fh;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MMxvQ3HBBz3cBh
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Sep 2022 19:35:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MMwfV5MSjz2yS0
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Sep 2022 18:39:30 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=l8YXm+fh;
-	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4MMwfP3sR6z4x1d;
-	Wed,  7 Sep 2022 18:39:25 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1662539966;
-	bh=LMFv2xGBamlZNgdv82LnID2YJO0solc/CaQWjo6B/ik=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=l8YXm+fhEcXxAR7xSOQ7WDnZo9SvZoackLkm8QdgjfiQZ/quhef6Q5trfceRSeqGm
-	 q8cna6u93u2gigVMhvWh4vLHdD2Ww3huEHwYpVXraw6UU/gMUnnM10r0DZqNJ3ROmk
-	 79f2D7tDyFe4Ur1wNBodcE5ZDcaSFNtN9A/3ByT0GCdsDRRn38XLOqQ047OT+G9a9F
-	 kuSET98nMrmPPWMGuC/mKnIb7yJCJhWCUqYyh1+RKKl5mpbUagKEW3izQuvjKASvHw
-	 LErhOz/e/TfolFNe1nbPiK9rF5fJdt65KUT7uK8NMvchlORTgp9qyFXpifblAlCw45
-	 /fVZT4J/Qt8Mw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Nathan Chancellor <nathan@kernel.org>
-Subject: Re: [PATCH v2 1/3] powerpc/pseries: define driver for Platform
- KeyStore
-In-Reply-To: <YxfYnLw6R30pvZ8l@dev-arch.thelio-3990X>
-References: <20220723113048.521744-1-nayna@linux.ibm.com>
- <20220723113048.521744-2-nayna@linux.ibm.com>
- <Yxe06fbq18Wv9y3W@dev-arch.thelio-3990X>
- <875yi0t7e1.fsf@mpe.ellerman.id.au>
- <YxfYnLw6R30pvZ8l@dev-arch.thelio-3990X>
-Date: Wed, 07 Sep 2022 18:39:17 +1000
-Message-ID: <871qsnfuiy.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MMxv06HR5z2xdQ
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Sep 2022 19:35:21 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4MMxtt44QYz9skZ;
+	Wed,  7 Sep 2022 11:35:18 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id VlyXDmNoZbuc; Wed,  7 Sep 2022 11:35:18 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4MMxtt3KZRz9sg4;
+	Wed,  7 Sep 2022 11:35:18 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 608858B78C;
+	Wed,  7 Sep 2022 11:35:18 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id 8hy77BlcPQU0; Wed,  7 Sep 2022 11:35:18 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [172.25.230.108])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 3E7928B78B;
+	Wed,  7 Sep 2022 11:35:18 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 2879Z8bw3152067
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 7 Sep 2022 11:35:08 +0200
+Received: (from chleroy@localhost)
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 2879Z7QH3152050;
+	Wed, 7 Sep 2022 11:35:07 +0200
+X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: "linux-mm @ kvack . org" <linux-mm@kvack.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>
+Subject: [PATCH 1/2] powerpc/nohash: Remove pgd_huge() stub
+Date: Wed,  7 Sep 2022 11:34:44 +0200
+Message-Id: <ae6aa7fce84f7abcbf67f534271a4a6dd7949b0d.1662543243.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.37.1
 MIME-Version: 1.0
-Content-Type: text/plain
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1662543257; l=1234; s=20211009; h=from:subject:message-id; bh=7hDMBtrmK2il7u822eIO2Bp0mXg/gfrXU8aF6TWndos=; b=BMYlbIFFzP5sia0vweR4QpmNJYuREFL5Mi+U5XOjobiPP6RFIje5ZG4CrMIU4ngpKxoGPnbDGSV6 qvJnwRA/ADLW/6gIgDBdn7cf+kWnK5MvAKMiIyfX2Wj7JeUceDjO
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,55 +67,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: bjking1@us.ibm.com, gjoyce@linux.vnet.ibm.com, erichte@linux.ibm.com, Nayna Jain <nayna@linux.ibm.com>, npiggin@gmail.com, muriloo@linux.ibm.com, George Wilson <gcwilson@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nathan Chancellor <nathan@kernel.org> writes:
-> On Wed, Sep 07, 2022 at 09:23:02AM +1000, Michael Ellerman wrote:
->> Nathan Chancellor <nathan@kernel.org> writes:
->> > On Sat, Jul 23, 2022 at 07:30:46AM -0400, Nayna Jain wrote:
->> >> PowerVM provides an isolated Platform Keystore(PKS) storage allocation
->> >> for each LPAR with individually managed access controls to store
->> >> sensitive information securely. It provides a new set of hypervisor
->> >> calls for Linux kernel to access PKS storage.
->> >> 
->> >> Define POWER LPAR Platform KeyStore(PLPKS) driver using H_CALL interface
->> >> to access PKS storage.
->> >> 
->> >> Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
->> >
->> > This commit is now in mainline as commit 2454a7af0f2a ("powerpc/pseries:
->> > define driver for Platform KeyStore") and I just bisected a crash while
->> > boot testing Fedora's configuration [1] in QEMU to it. I initially
->> > noticed this in ClangBuiltLinux's CI but this doesn't appear to be clang
->> > specific since I can reproduce with GCC 12.2.1 from Fedora. I can
->> > reproduce with just powernv_defconfig + CONFIG_PPC_PSERIES=y +
->> > CONFIG_PSERIES_PLPKS=y. Our firmware and rootfs are available in our
->> > boot-utils repository [2].
->> 
->> Thanks, classic bug I should have spotted.
->> 
->> I didn't catch it in my testing because PLPKS isn't enabled in
->> our defconfigs.
->> 
->> Does your CI enable new options by default? Or are you booting
->> allyesconfig?
->
-> Neither actually. We just test a bunch of in-tree and distribution
-> configurations. The distribution configurations are fetched straight
-> from their URLs on gitweb so we get any updates that they do, which is
-> how we noticed this (CONFIG_PSERIES_PLPKS was recently enabled in
-> Fedora):
->
-> https://src.fedoraproject.org/rpms/kernel/c/a73f6858a2cbd16bbcc6d305d6c43aab6f59d0b1
+linux/hugetlb.h has a fallback pgd_huge() macro for when
+pgd_huge is not defined.
 
-Aha, neat trick.
+Remove the powerpc redundant definitions.
 
->> I'll send a fix.
->
-> Thanks for the quick response!
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/include/asm/nohash/pgtable.h | 6 ------
+ arch/powerpc/include/asm/page.h           | 1 -
+ 2 files changed, 7 deletions(-)
 
-Thanks for the bug report :)
+diff --git a/arch/powerpc/include/asm/nohash/pgtable.h b/arch/powerpc/include/asm/nohash/pgtable.h
+index b499da6c1a99..08429c612cdf 100644
+--- a/arch/powerpc/include/asm/nohash/pgtable.h
++++ b/arch/powerpc/include/asm/nohash/pgtable.h
+@@ -277,12 +277,6 @@ static inline int pud_huge(pud_t pud)
+ 	return 0;
+ }
+ 
+-static inline int pgd_huge(pgd_t pgd)
+-{
+-	return 0;
+-}
+-#define pgd_huge		pgd_huge
+-
+ #define is_hugepd(hpd)		(hugepd_ok(hpd))
+ #endif
+ 
+diff --git a/arch/powerpc/include/asm/page.h b/arch/powerpc/include/asm/page.h
+index e5f75c70eda8..c67eb9531a3f 100644
+--- a/arch/powerpc/include/asm/page.h
++++ b/arch/powerpc/include/asm/page.h
+@@ -311,7 +311,6 @@ static inline bool pfn_valid(unsigned long pfn)
+ 
+ #ifndef CONFIG_HUGETLB_PAGE
+ #define is_hugepd(pdep)		(0)
+-#define pgd_huge(pgd)		(0)
+ #endif /* CONFIG_HUGETLB_PAGE */
+ 
+ struct page;
+-- 
+2.37.1
 
-cheers
