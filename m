@@ -2,70 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D3F55B038E
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Sep 2022 14:04:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90D085B03E9
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Sep 2022 14:27:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MN1C72nw9z3bgQ
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Sep 2022 22:04:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MN1jv2GMYz3c4W
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Sep 2022 22:27:47 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=arQHzWD1;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=yPYIySVy;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42f; helo=mail-pf1-x42f.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::135; helo=mail-lf1-x135.google.com; envelope-from=krzysztof.kozlowski@linaro.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=arQHzWD1;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=yPYIySVy;
 	dkim-atps=neutral
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MN1BV471Nz2xk6
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Sep 2022 22:04:02 +1000 (AEST)
-Received: by mail-pf1-x42f.google.com with SMTP id o126so5404084pfb.6
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Sep 2022 05:04:02 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MN1jH4b7rz2yyT
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Sep 2022 22:27:14 +1000 (AEST)
+Received: by mail-lf1-x135.google.com with SMTP id z25so22196627lfr.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Sep 2022 05:27:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date;
-        bh=MYDXvHWVqlFaxJDDMXiyCj4gN/S0APV5VGQxUE3ephc=;
-        b=arQHzWD1LAH4Fc4wNBAJwf5Cu3KwReNulExfQn6kfdTBLOkQYlKbEzq78TRTpnECmZ
-         4XyejyLYMCzmOWHz+v5REY53OYSG7seuhjzBZ5xes8+/m4LTujeVR0yi+5zsZ6H4UvVD
-         gmAxnncGByPrnSYxQuruJU+YsljvhsBBWn1r1sfNTMLDiWLPPPNucT5uuBMnm2v81sQ7
-         sG+Cypj8fgRqUd2R04MlgEG+Aixj/UOsUEsUr7ghGxEt2ScOOeSaxxrsTbsspQ3tKMxn
-         vq6yRgX+THSHvTDLRbBioz5ZrXpuMe29iG5eq2c++RV8eGigLWW9zxdeCxtLuDGzbv+c
-         cL3Q==
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date;
+        bh=hkt5H36L3OARQPXUWShQgmKb8uHcR0j2cY0iuaSsFjs=;
+        b=yPYIySVyJlG1GoCJFTwPifoRfXI5LWpYm6hMpU5UYf7BsA9LJAV+AxQVwh6nDNAcKJ
+         bidDdQ5G2HlmY0LIWXg8DJ/WuWcLG7KgnMcPFtODGVEm9MkqA+Ah0asKYkGerMqtXoE3
+         zsasQiw7Ymkfi5diqwV7aUgO36YU8wP5V0m0RrBMS3ieMUwU6tdo5NrEGZ86gVdgkrMh
+         YOi9qBUzcY1QkVlFlS3fIZEAvoo3eOF+2lUjseWhJD+hIVl0n+EUC55lWAUX3tSBsJia
+         EHevE59bxBbeZhm5w3i4eeuLHRCGMhdaJdl/EcTifT10Vs6IvgaX1g47CGli4hKi1GJN
+         qXVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date;
-        bh=MYDXvHWVqlFaxJDDMXiyCj4gN/S0APV5VGQxUE3ephc=;
-        b=qmZLkHEEorxNfZqY+rej9HTfQ+fUCtLexCHP/m6SquDc8a6ktss3qrr0BbwZc2lFbD
-         MVIfds319062yrp31zYLGJV6aB1EhMTAyOO6CZwZ1wd5i0jzZcskWZ+EQ96T8gbJWy6j
-         WGHhUa7W0VmYvGel7mE+SPlvm+HzcINFuT6OxMyH63H+XcIeQGbHcARGjSb0EDQOICNV
-         LdY7QIEZIEPSyoTw1RSSclO8Df0gsGRtvws3QQrNggQL5nlpluaG5Bi35MWuL6/NdXe/
-         KYsjln7AhdpG8tw5GDJNB3vRI8+m1ffC8LETbbYzcTHI7sCT8e+qVPHNG1ntkPljgEbj
-         Jdkg==
-X-Gm-Message-State: ACgBeo2UmcpxuTFG1gw6K8QOsRrRfQ26RRq6OaYsGupVU7RmAtS6O3EM
-	ddpvBCGW3nOP9GiOSoV8r88iPxlfB8I=
-X-Google-Smtp-Source: AA6agR4dgHuRw556gfm766ybOcHQtEw0UFyBiJ1pRsoz26LGKflY8gWOoG30ge/25/X2vQS0rSPFGg==
-X-Received: by 2002:a63:ee55:0:b0:429:88cf:78df with SMTP id n21-20020a63ee55000000b0042988cf78dfmr3044764pgk.301.1662552239428;
-        Wed, 07 Sep 2022 05:03:59 -0700 (PDT)
-Received: from bobo.ibm.com ([124.170.18.239])
-        by smtp.gmail.com with ESMTPSA id h10-20020a17090acf0a00b0020061f4c907sm6320212pju.7.2022.09.07.05.03.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Sep 2022 05:03:58 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 2/2] powerpc/64/irq: tidy soft-masked irq replay and improve documentation
-Date: Wed,  7 Sep 2022 22:03:47 +1000
-Message-Id: <20220907120347.3684283-3-npiggin@gmail.com>
-X-Mailer: git-send-email 2.37.2
-In-Reply-To: <20220907120347.3684283-1-npiggin@gmail.com>
-References: <20220907120347.3684283-1-npiggin@gmail.com>
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=hkt5H36L3OARQPXUWShQgmKb8uHcR0j2cY0iuaSsFjs=;
+        b=mtqW9aXOb0jUMRITcS/zYg7roZ+KQM3J+1s0AVY0GK9wkSVLjwDvxSBSzUR7keV6jZ
+         peXWOzQn/pWK9+pj+Vo0Wmd1lGg5rv+bQmq2SdqE2wt4eKPcftb0vXfYzMgrcwQgjxai
+         UPzGtBQKKoOvchcn1rLLuErAx/Q/ZLNKYHnoxTq1hM6AKUOLM5TldFDgOpSHStGF3CeQ
+         JqE0oqgnPhIch146J3p1m56M9TpzvXSZ07jRrsw6mYoA9/rwuWZeS+iJciZbxGDEQrfC
+         htw5Frov+EFOXsFboz0N4BUj+66RD9v1lbsHjQr69284iTBuCHw/303Delm3Fa2NIKMg
+         nYgw==
+X-Gm-Message-State: ACgBeo3vWEg22VMdjtWKCDLkNdAoiGZE6PGEkwcg62gYnF8z8lHvGXda
+	aBIEl/+Lg/l2FrGf9zDmv5UdDg==
+X-Google-Smtp-Source: AA6agR5gM5S1o4Rffv0N/rKle5mJ0G+VWZe+TicMZ4aaD1YM7lDKNIOMPR+gGy7M4hewgiNGl46L1w==
+X-Received: by 2002:a05:6512:169c:b0:492:ca5c:eb23 with SMTP id bu28-20020a056512169c00b00492ca5ceb23mr1098925lfb.646.1662553628486;
+        Wed, 07 Sep 2022 05:27:08 -0700 (PDT)
+Received: from [192.168.0.21] (78-11-189-27.static.ip.netia.com.pl. [78.11.189.27])
+        by smtp.gmail.com with ESMTPSA id q14-20020a2eb4ae000000b0026ab199e137sm1040840ljm.48.2022.09.07.05.27.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 07 Sep 2022 05:27:07 -0700 (PDT)
+Message-ID: <8fe93da3-f768-16ae-7025-1cfa97a42b27@linaro.org>
+Date: Wed, 7 Sep 2022 14:27:06 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.13.0
+Subject: Re: [PATCH 1/3] dt-bindings: reset: syscon-reboot: Add priority
+ property
+Content-Language: en-US
+To: Rob Herring <robh@kernel.org>, =?UTF-8?Q?Pali_Roh=c3=a1r?=
+ <pali@kernel.org>
+References: <20220820102925.29476-1-pali@kernel.org>
+ <20220822124728.GA3641041-robh@kernel.org>
+ <20220822135050.o4a4bw3dqkmhtjgb@pali>
+ <20220902203721.GA356619-robh@kernel.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220902203721.GA356619-robh@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,187 +86,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: =?UTF-8?Q?Marek_Beh=c3=ban?= <kabel@kernel.org>, devicetree@vger.kernel.org, linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-irq replay is quite complicated because of softirq processing which
-itself enables and disables irqs. Several considerations need to be
-accounted for due to this, and they are not clearly documented.
+On 02/09/2022 22:37, Rob Herring wrote:
+>>
+>> Sorry, I do not understand.
+> 
+> So just keep sending new versions instead?
+> 
+> syscon-reboot is not the only binding for a system reset device, right? 
+> So those others reset devices will need 'priority' too. For a given 
+> property, there should only be one schema definition defining the type 
+> for the property. Otherwise, there might be conflicts. So you need a 
+> common schema doing that. And here you would just have 'priority: true' 
+> or possibly some binding specific constraints.
 
-Refactor the irq replay code a bit to tidy and deduplicate some common
-functions. Add comments, debug checks.
+I'll propose a patch for this.
 
-This has a minor functional change that irq tracing enable/disable is
-done after each interrupt replayed, rather than after a batch. It also
-re-sets state to IRQS_ALL_DISABLED after an interrupt, which doesn't
-matter much because interrupts are hard disabled at this point, but it
-is more consistent with how interrupt handlers are called.
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/kernel/irq_64.c | 93 +++++++++++++++++++++++-------------
- 1 file changed, 61 insertions(+), 32 deletions(-)
-
-diff --git a/arch/powerpc/kernel/irq_64.c b/arch/powerpc/kernel/irq_64.c
-index 01645e03e9f0..eb2b380e52a0 100644
---- a/arch/powerpc/kernel/irq_64.c
-+++ b/arch/powerpc/kernel/irq_64.c
-@@ -68,6 +68,35 @@
- 
- int distribute_irqs = 1;
- 
-+static inline void next_interrupt(struct pt_regs *regs)
-+{
-+	/*
-+	 * Softirq processing can enable/disable irqs, which will leave
-+	 * MSR[EE] enabled and the soft mask set to IRQS_DISABLED. Fix
-+	 * this up.
-+	 */
-+	if (!(local_paca->irq_happened & PACA_IRQ_HARD_DIS))
-+		hard_irq_disable();
-+	else
-+		irq_soft_mask_set(IRQS_ALL_DISABLED);
-+
-+	/*
-+	 * We are responding to the next interrupt, so interrupt-off
-+	 * latencies should be reset here.
-+	 */
-+	trace_hardirqs_on();
-+	trace_hardirqs_off();
-+}
-+
-+static inline bool irq_happened_test_and_clear(u8 irq)
-+{
-+	if (local_paca->irq_happened & irq) {
-+		local_paca->irq_happened &= ~irq;
-+		return true;
-+	}
-+	return false;
-+}
-+
- void replay_soft_interrupts(void)
- {
- 	struct pt_regs regs;
-@@ -79,18 +108,25 @@ void replay_soft_interrupts(void)
- 	 * recurse into this function. Don't keep any state across
- 	 * interrupt handler calls which may change underneath us.
- 	 *
-+	 * Softirqs can not be disabled over replay to stop this recursion
-+	 * because interrupts taken in idle code may require RCU softirq
-+	 * to run in the irq RCU tracking context. This is a hard problem
-+	 * to fix without changes to the softirq or idle layer.
-+	 *
- 	 * We use local_paca rather than get_paca() to avoid all the
- 	 * debug_smp_processor_id() business in this low level function.
- 	 */
- 
-+	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG)) {
-+		WARN_ON_ONCE(mfmsr() & MSR_EE);
-+		WARN_ON(!(local_paca->irq_happened & PACA_IRQ_HARD_DIS));
-+	}
-+
- 	ppc_save_regs(&regs);
- 	regs.softe = IRQS_ENABLED;
- 	regs.msr |= MSR_EE;
- 
- again:
--	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
--		WARN_ON_ONCE(mfmsr() & MSR_EE);
--
- 	/*
- 	 * Force the delivery of pending soft-disabled interrupts on PS3.
- 	 * Any HV call will have this side effect.
-@@ -105,56 +141,47 @@ void replay_soft_interrupts(void)
- 	 * This is a higher priority interrupt than the others, so
- 	 * replay it first.
- 	 */
--	if (IS_ENABLED(CONFIG_PPC_BOOK3S) && (local_paca->irq_happened & PACA_IRQ_HMI)) {
--		local_paca->irq_happened &= ~PACA_IRQ_HMI;
-+	if (IS_ENABLED(CONFIG_PPC_BOOK3S) &&
-+	    irq_happened_test_and_clear(PACA_IRQ_HMI)) {
- 		regs.trap = INTERRUPT_HMI;
- 		handle_hmi_exception(&regs);
--		if (!(local_paca->irq_happened & PACA_IRQ_HARD_DIS))
--			hard_irq_disable();
-+		next_interrupt(&regs);
- 	}
- 
--	if (local_paca->irq_happened & PACA_IRQ_DEC) {
--		local_paca->irq_happened &= ~PACA_IRQ_DEC;
-+	if (irq_happened_test_and_clear(PACA_IRQ_DEC)) {
- 		regs.trap = INTERRUPT_DECREMENTER;
- 		timer_interrupt(&regs);
--		if (!(local_paca->irq_happened & PACA_IRQ_HARD_DIS))
--			hard_irq_disable();
-+		next_interrupt(&regs);
- 	}
- 
--	if (local_paca->irq_happened & PACA_IRQ_EE) {
--		local_paca->irq_happened &= ~PACA_IRQ_EE;
-+	if (irq_happened_test_and_clear(PACA_IRQ_EE)) {
- 		regs.trap = INTERRUPT_EXTERNAL;
- 		do_IRQ(&regs);
--		if (!(local_paca->irq_happened & PACA_IRQ_HARD_DIS))
--			hard_irq_disable();
-+		next_interrupt(&regs);
- 	}
- 
--	if (IS_ENABLED(CONFIG_PPC_DOORBELL) && (local_paca->irq_happened & PACA_IRQ_DBELL)) {
--		local_paca->irq_happened &= ~PACA_IRQ_DBELL;
-+	if (IS_ENABLED(CONFIG_PPC_DOORBELL) &&
-+	    irq_happened_test_and_clear(PACA_IRQ_DBELL)) {
- 		regs.trap = INTERRUPT_DOORBELL;
- 		doorbell_exception(&regs);
--		if (!(local_paca->irq_happened & PACA_IRQ_HARD_DIS))
--			hard_irq_disable();
-+		next_interrupt(&regs);
- 	}
- 
- 	/* Book3E does not support soft-masking PMI interrupts */
--	if (IS_ENABLED(CONFIG_PPC_BOOK3S) && (local_paca->irq_happened & PACA_IRQ_PMI)) {
--		local_paca->irq_happened &= ~PACA_IRQ_PMI;
-+	if (IS_ENABLED(CONFIG_PPC_BOOK3S) &&
-+	    irq_happened_test_and_clear(PACA_IRQ_PMI)) {
- 		regs.trap = INTERRUPT_PERFMON;
- 		performance_monitor_exception(&regs);
--		if (!(local_paca->irq_happened & PACA_IRQ_HARD_DIS))
--			hard_irq_disable();
-+		next_interrupt(&regs);
- 	}
- 
--	if (local_paca->irq_happened & ~PACA_IRQ_HARD_DIS) {
--		/*
--		 * We are responding to the next interrupt, so interrupt-off
--		 * latencies should be reset here.
--		 */
--		trace_hardirqs_on();
--		trace_hardirqs_off();
-+	/*
-+	 * Softirq processing can enable and disable interrupts, which can
-+	 * result in new irqs becoming pending. Must keep looping until we
-+	 * have cleared out all pending interrupts.
-+	 */
-+	if (local_paca->irq_happened & ~PACA_IRQ_HARD_DIS)
- 		goto again;
--	}
- }
- 
- #if defined(CONFIG_PPC_BOOK3S_64) && defined(CONFIG_PPC_KUAP)
-@@ -270,10 +297,12 @@ notrace void arch_local_irq_restore(unsigned long mask)
- 	trace_hardirqs_off();
- 
- 	replay_soft_interrupts_irqrestore();
--	local_paca->irq_happened = 0;
- 
- 	trace_hardirqs_on();
- 	irq_soft_mask_set(IRQS_ENABLED);
-+	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
-+		WARN_ON(local_paca->irq_happened != PACA_IRQ_HARD_DIS);
-+	local_paca->irq_happened = 0;
- 	__hard_irq_enable();
- 	preempt_enable();
- }
--- 
-2.37.2
-
+Best regards,
+Krzysztof
