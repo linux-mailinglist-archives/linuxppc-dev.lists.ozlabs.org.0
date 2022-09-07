@@ -2,52 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 527115AF86F
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Sep 2022 01:35:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 647C25AF8DC
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Sep 2022 02:10:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MMhZc13mQz3cB3
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Sep 2022 09:35:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MMjML06nnz3bqv
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Sep 2022 10:10:38 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=VE9G55kF;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=W16AaxYj;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MMhZ3300lz2ysx
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Sep 2022 09:34:51 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Two or more type TXT spf records found.) smtp.mailfrom=intel.com (client-ip=192.55.52.136; helo=mga12.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=VE9G55kF;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=W16AaxYj;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4MMhYq38SZz4xD3;
-	Wed,  7 Sep 2022 09:34:39 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1662507291;
-	bh=4US3THlCO1EMb1gSb9ztork5wBimNJa/nZMcdS+Fg/M=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=VE9G55kF0YvBPTmfEKRNLaOLD928FpPFqAcNpL+f8KrrJ98Z6/s7Ls4ACxDbQLjiz
-	 E4hCICN6PrT1JV2Doci74i6u8iUELHz6WKa8weEmztx+WhmmFKzJcxoPtF0rjggIKm
-	 BxWXqa3X6MefPexoJt+3HkCQG+lj0E3/25I9+R69dkW0ybhEIbZYoAeJYlfHpx/47O
-	 +OsAyVQq2IrWk3kDEj8NBKVhMDl9QoQPtrUhII0czRT5IizvjFTt7liWxxkcoVacqF
-	 jNKoxW2w8uKB9ovSNUnPneATOBtcgGJn4FyjeS4nZe4Px07FEr1ktrhp2CX3Vu8dGP
-	 TTu5Vt4Ozw+Sg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Masahiro Yamada <masahiroy@kernel.org>, Miguel Ojeda <ojeda@kernel.org>
-Subject: Re: [PATCH v8 27/31] Kbuild: add Rust support
-In-Reply-To: <CAK7LNARTX+2Z=pnGbbUepxskE+KZ1f5YsfQukJ88ijPBQt9_GA@mail.gmail.com>
-References: <20220802015052.10452-1-ojeda@kernel.org>
- <20220802015052.10452-28-ojeda@kernel.org>
- <CAK7LNARTX+2Z=pnGbbUepxskE+KZ1f5YsfQukJ88ijPBQt9_GA@mail.gmail.com>
-Date: Wed, 07 Sep 2022 09:34:38 +1000
-Message-ID: <8735d4t6up.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MMjLg0Pc2z2xJD
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Sep 2022 10:09:57 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1662509403; x=1694045403;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=h9zKEDTpIHgZPoufnLRdNUlOfPwoMNldZEhVgitJKSc=;
+  b=W16AaxYjJqXIbkon306b1pnPSq/d0p4JlYB5Y3S3SxwigU9+p4qcrxPR
+   y4wq6VXn86+PlDYyovc57xEF42nE3ejR6bWs2o+pvHSzqWvUeZaKfwyIK
+   vJKQNNKwNSaN4vsEwQc/UOhFm+8leyOmv9TOcNmOy8qbloJs5fd/MnhwB
+   enTQ4LtaKogktCrWxOb5uR3TaomN6gzjm63K4Cd20IK+LtI8sK48GxpbB
+   UZ4ng0yQLNew42DrAvIUQdkPVY9YFpg1v3lBpVNooqWs5bd3GBNzHbCsP
+   NVYzTjKCm0vebNUgrrpcnENUZczKQs+jKBfAHVIA8KsCJYxQMkTvD6rPt
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10462"; a="276480247"
+X-IronPort-AV: E=Sophos;i="5.93,295,1654585200"; 
+   d="scan'208";a="276480247"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Sep 2022 17:09:54 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.93,295,1654585200"; 
+   d="scan'208";a="644382454"
+Received: from lkp-server02.sh.intel.com (HELO 95dfd251caa2) ([10.239.97.151])
+  by orsmga008.jf.intel.com with ESMTP; 06 Sep 2022 17:09:52 -0700
+Received: from kbuild by 95dfd251caa2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1oVidc-0005oT-0q;
+	Wed, 07 Sep 2022 00:09:52 +0000
+Date: Wed, 07 Sep 2022 08:09:35 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:merge] BUILD SUCCESS
+ 33a92cf0fa6e2f07c1d1a0338abc86d85803f630
+Message-ID: <6317e13f.cbl8f1i29Rg/oQ6k%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,52 +69,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sven Van Asbroeck <thesven73@gmail.com>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, Miguel Cano <macanroj@gmail.com>, Paul Mackerras <paulus@samba.org>, Gary Guo <gary@garyguo.net>, Douglas Su <d0u9.su@outlook.com>, Borislav Petkov <bp@alien8.de>, "open list:SIFIVE DRIVERS" <linux-riscv@lists.infradead.org>, Will Deacon <will@kernel.org>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, "H. Peter Anvin" <hpa@zytor.com>, Richard Weinberger <richard@nod.at>, X86 ML <x86@kernel.org>, Russell King <linux@armlinux.org.uk>, Ingo Molnar <mingo@redhat.com>, Wedson Almeida Filho <wedsonaf@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, Antonio Terceiro <antonio.terceiro@linaro.org>, Adam Bratschi-Kaye <ark.email@gmail.com>, Albert Ou <aou@eecs.berkeley.edu>, rust-for-linux@vger.kernel.org, Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>, Boqun Feng <boqun.feng@gmail.com>, linux-um@lists.in
- fradead.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>, Michal Marek <michal.lkml@markovi.net>, Daniel Xu <dxu@dxuuu.xyz>, David Gow <davidgow@google.com>, Paul Walmsley <paul.walmsley@sifive.com>, Dariusz Sosnowski <dsosnowski@dsosnowski.pl>, linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, Tiago Lam <tiagolam@gmail.com>, Thomas Gleixner <tglx@linutronix.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Nick Desaulniers <ndesaulniers@google.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Boris-Chengbiao Zhou <bobo1239@web.de>, Jarkko Sakkinen <jarkko@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Finn Behrens <me@kloenk.de>, Johannes Berg <johannes@sipsolutions.net>, Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Masahiro Yamada <masahiroy@kernel.org> writes:
-> On Tue, Aug 2, 2022 at 10:53 AM Miguel Ojeda <ojeda@kernel.org> wrote:
->>
->> Having all the new files in place, we now enable Rust support
->> in the build system, including `Kconfig` entries related to Rust,
->> the Rust configuration printer, the target specification
->> generation script, the version detection script and a few
->> other bits.
-...
->> +
->> +config RUSTC_VERSION_TEXT
->> +       string
->> +       depends on RUST
->> +       default $(shell,command -v $(RUSTC) >/dev/null 2>&1 && $(RUSTC) --version || echo n)
->> +
->> +config BINDGEN_VERSION_TEXT
->> +       string
->> +       depends on RUST
->> +       default $(shell,command -v $(BINDGEN) >/dev/null 2>&1 && $(BINDGEN) --version || echo n)
->> +
->
-> Where are these config options used?
->
-> I grep'ed but no hit.
->
-> masahiro@zoe:~/ref/linux-next$ git grep RUSTC_VERSION_TEXT
-> init/Kconfig:config RUSTC_VERSION_TEXT
-> masahiro@zoe:~/ref/linux-next$ git grep BINDGEN_VERSION_TEXT
-> init/Kconfig:config BINDGEN_VERSION_TEXT
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
+branch HEAD: 33a92cf0fa6e2f07c1d1a0338abc86d85803f630  Automatic merge of 'master' into merge (2022-09-05 10:06)
 
-That came up before in a review by Nick:
+elapsed time: 734m
 
-Miguel wrote:
-> Nick wrote:
-> > Are these two kconfigs used anywhere?
-> 
-> Not for the moment, but it could still be useful when getting
-> `.config` reports (and we could add it to `LINUX_COMPILER` etc. in the
-> future).
+configs tested: 53
+configs skipped: 2
 
-https://lore.kernel.org/all/CANiq72n2bU3LSGu-4v66nif_95EVq--z2X_F2V7JBPU8v=h8EA@mail.gmail.com/
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
+gcc tested configs:
+um                             i386_defconfig
+um                           x86_64_defconfig
+arc                  randconfig-r043-20220906
+riscv                randconfig-r042-20220906
+powerpc                           allnoconfig
+s390                 randconfig-r044-20220906
+i386                                defconfig
+x86_64                              defconfig
+alpha                            allyesconfig
+arc                              allyesconfig
+m68k                             allmodconfig
+x86_64                               rhel-8.3
+sh                               allmodconfig
+m68k                             allyesconfig
+x86_64                        randconfig-a013
+x86_64                        randconfig-a011
+mips                             allyesconfig
+i386                          randconfig-a001
+powerpc                          allmodconfig
+i386                          randconfig-a003
+x86_64                           allyesconfig
+x86_64                        randconfig-a015
+i386                          randconfig-a005
+i386                          randconfig-a014
+x86_64                          rhel-8.3-func
+i386                          randconfig-a012
+x86_64                         rhel-8.3-kunit
+i386                          randconfig-a016
+x86_64                        randconfig-a004
+x86_64                           rhel-8.3-kvm
+x86_64                        randconfig-a002
+x86_64                    rhel-8.3-kselftests
+i386                             allyesconfig
+x86_64                           rhel-8.3-syz
+arm                                 defconfig
+x86_64                        randconfig-a006
+arm64                            allyesconfig
+arm                              allyesconfig
+ia64                             allmodconfig
 
-cheers
+clang tested configs:
+hexagon              randconfig-r041-20220906
+hexagon              randconfig-r045-20220906
+x86_64                        randconfig-a014
+x86_64                        randconfig-a012
+x86_64                        randconfig-a016
+i386                          randconfig-a002
+i386                          randconfig-a004
+i386                          randconfig-a006
+i386                          randconfig-a013
+i386                          randconfig-a011
+i386                          randconfig-a015
+x86_64                        randconfig-a001
+x86_64                        randconfig-a003
+x86_64                        randconfig-a005
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
