@@ -2,43 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9956E5AFA86
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Sep 2022 05:20:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 406EF5AFAF4
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Sep 2022 06:05:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MMnZT3yy1z3bqj
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Sep 2022 13:20:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MMpZm1TXYz3c61
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Sep 2022 14:05:52 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=LnxWcEP9;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=92.121.34.13; helo=inva020.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Two or more type TXT spf records found.) smtp.mailfrom=intel.com (client-ip=134.134.136.65; helo=mga03.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=LnxWcEP9;
+	dkim-atps=neutral
+X-Greylist: delayed 64 seconds by postgrey-1.36 at boromir; Wed, 07 Sep 2022 14:05:16 AEST
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MMnYy2kGTz2xk6
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Sep 2022 13:20:05 +1000 (AEST)
-Received: from inva020.nxp.com (localhost [127.0.0.1])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 7C8B61A0365;
-	Wed,  7 Sep 2022 05:20:00 +0200 (CEST)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 4F19A1A03B2;
-	Wed,  7 Sep 2022 05:20:00 +0200 (CEST)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id D24CE180031F;
-	Wed,  7 Sep 2022 11:19:58 +0800 (+08)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: nicoleotsuka@gmail.com,
-	Xiubo.Lee@gmail.com,
-	festevam@gmail.com,
-	shengjiu.wang@gmail.com,
-	lgirdwood@gmail.com,
-	broonie@kernel.org,
-	perex@perex.cz,
-	tiwai@suse.com,
-	alsa-devel@alsa-project.org
-Subject: [PATCH v2] ASoC: fsl_asrc: Add initialization finishing check in runtime resume
-Date: Wed,  7 Sep 2022 11:01:55 +0800
-Message-Id: <1662519715-21891-1-git-send-email-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-X-Virus-Scanned: ClamAV using ClamSMTP
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MMpZ40FlFz2ypV
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Sep 2022 14:05:15 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1662523516; x=1694059516;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=O/j+bThOni03aQH6nzxkBw+ZlHEKIJMxCdI91qZq0Rs=;
+  b=LnxWcEP9qyQSjjFPMo72420thgJ79Mq/dH1tHN5iOvuuH4Fu+bgpquSX
+   TDHmRo4YludmQaN0YDglRPiFsPwxfg4FzdDIjKSq8rahH46s41U5905D1
+   UBo5sTd7NHLzzrj5xE22INc6rL/JI+Tde7kAhPs2MzL+ryDH8m7yHNISh
+   qLJVFRQFxO+8wbEO9wekysYM6P87gqzWIhvQytwRyk31u1VDa5tiSkAtk
+   mK57np//QxltF9g/3/P+4ERdXctDViR0lcyEytOZvlDM8kzKqZ5ZLoYZE
+   6fCFWAdhdE3cCy2o9f+SlgaTsggHwLeT3lkVymK/bzyaf4YdaMnoN+NdV
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10462"; a="298088091"
+X-IronPort-AV: E=Sophos;i="5.93,295,1654585200"; 
+   d="scan'208";a="298088091"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Sep 2022 21:04:03 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.93,295,1654585200"; 
+   d="scan'208";a="789912724"
+Received: from lkp-server02.sh.intel.com (HELO 95dfd251caa2) ([10.239.97.151])
+  by orsmga005.jf.intel.com with ESMTP; 06 Sep 2022 21:04:01 -0700
+Received: from kbuild by 95dfd251caa2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1oVmID-00065J-0v;
+	Wed, 07 Sep 2022 04:04:01 +0000
+Date: Wed, 07 Sep 2022 12:03:43 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:next-test] BUILD REGRESSION
+ 7611de9cd7806a9c41426d12b98cf8867263a05f
+Message-ID: <6318181f.V0GF6IzP179fns2h%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,86 +70,242 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-If the initialization is not finished, then filling input data to
-the FIFO may fail. So it is better to add initialization finishing
-check in the runtime resume for suspend & resume case.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
+branch HEAD: 7611de9cd7806a9c41426d12b98cf8867263a05f  powerpc/64s: add pte_needs_flush and huge_pmd_needs_flush
 
-And consider the case of three instances working in parallel,
-increase the retry times to 50 for more initialization time.
+Error/Warning reports:
 
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
----
-changes in v2:
-- update comments.
+https://lore.kernel.org/linuxppc-dev/202209070030.PX7JcwtO-lkp@intel.com
 
- sound/soc/fsl/fsl_asrc.c | 22 +++++++++++++++++++++-
- 1 file changed, 21 insertions(+), 1 deletion(-)
+Error/Warning: (recently discovered and may have been fixed)
 
-diff --git a/sound/soc/fsl/fsl_asrc.c b/sound/soc/fsl/fsl_asrc.c
-index aa5edf32d988..b394b762025d 100644
---- a/sound/soc/fsl/fsl_asrc.c
-+++ b/sound/soc/fsl/fsl_asrc.c
-@@ -20,6 +20,7 @@
- 
- #define IDEAL_RATIO_DECIMAL_DEPTH 26
- #define DIVIDER_NUM  64
-+#define INIT_TRY_NUM 50
- 
- #define pair_err(fmt, ...) \
- 	dev_err(&asrc->pdev->dev, "Pair %c: " fmt, 'A' + index, ##__VA_ARGS__)
-@@ -579,7 +580,7 @@ static void fsl_asrc_start_pair(struct fsl_asrc_pair *pair)
- {
- 	struct fsl_asrc *asrc = pair->asrc;
- 	enum asrc_pair_index index = pair->index;
--	int reg, retry = 10, i;
-+	int reg, retry = INIT_TRY_NUM, i;
- 
- 	/* Enable the current pair */
- 	regmap_update_bits(asrc->regmap, REG_ASRCTR,
-@@ -592,6 +593,10 @@ static void fsl_asrc_start_pair(struct fsl_asrc_pair *pair)
- 		reg &= ASRCFG_INIRQi_MASK(index);
- 	} while (!reg && --retry);
- 
-+	/* NOTE: Doesn't treat initialization timeout as error */
-+	if (!retry)
-+		dev_warn(&asrc->pdev->dev, "initialization isn't finished\n");
-+
- 	/* Make the input fifo to ASRC STALL level */
- 	regmap_read(asrc->regmap, REG_ASRCNCR, &reg);
- 	for (i = 0; i < pair->channels * 4; i++)
-@@ -1257,6 +1262,7 @@ static int fsl_asrc_runtime_resume(struct device *dev)
- {
- 	struct fsl_asrc *asrc = dev_get_drvdata(dev);
- 	struct fsl_asrc_priv *asrc_priv = asrc->private;
-+	int reg, retry = INIT_TRY_NUM;
- 	int i, ret;
- 	u32 asrctr;
- 
-@@ -1295,6 +1301,20 @@ static int fsl_asrc_runtime_resume(struct device *dev)
- 	regmap_update_bits(asrc->regmap, REG_ASRCTR,
- 			   ASRCTR_ASRCEi_ALL_MASK, asrctr);
- 
-+	/* Wait for status of initialization for every enabled pairs */
-+	do {
-+		udelay(5);
-+		regmap_read(asrc->regmap, REG_ASRCFG, &reg);
-+		reg = (reg >> ASRCFG_INIRQi_SHIFT(0)) & 0x7;
-+	} while ((reg != ((asrctr >> ASRCTR_ASRCEi_SHIFT(0)) & 0x7)) && --retry);
-+
-+	/*
-+	 * NOTE: Doesn't treat initialization timeout as error
-+	 * Some of pair maybe success, then still can continue.
-+	 */
-+	if (!retry)
-+		dev_warn(dev, "initialization isn't finished\n");
-+
- 	return 0;
- 
- disable_asrck_clk:
+arch/powerpc/math-emu/fabs.c:7:1: error: no previous prototype for 'fabs' [-Werror=missing-prototypes]
+arch/powerpc/math-emu/fadd.c:11:1: error: no previous prototype for 'fadd' [-Werror=missing-prototypes]
+arch/powerpc/math-emu/fadds.c:12:1: error: no previous prototype for 'fadds' [-Werror=missing-prototypes]
+arch/powerpc/math-emu/fcmpo.c:11:1: error: no previous prototype for 'fcmpo' [-Werror=missing-prototypes]
+arch/powerpc/math-emu/fcmpu.c:11:1: error: no previous prototype for 'fcmpu' [-Werror=missing-prototypes]
+arch/powerpc/math-emu/fcmpu.c:13:19: error: variable 'A_c' set but not used [-Werror=unused-but-set-variable]
+arch/powerpc/math-emu/fcmpu.c:14:19: error: variable 'B_c' set but not used [-Werror=unused-but-set-variable]
+arch/powerpc/math-emu/fctiw.c:11:1: error: no previous prototype for 'fctiw' [-Werror=missing-prototypes]
+arch/powerpc/math-emu/fctiwz.c:11:1: error: no previous prototype for 'fctiwz' [-Werror=missing-prototypes]
+arch/powerpc/math-emu/fdiv.c:11:1: error: no previous prototype for 'fdiv' [-Werror=missing-prototypes]
+arch/powerpc/math-emu/fdivs.c:12:1: error: no previous prototype for 'fdivs' [-Werror=missing-prototypes]
+arch/powerpc/math-emu/fmadd.c:11:1: error: no previous prototype for 'fmadd' [-Werror=missing-prototypes]
+arch/powerpc/math-emu/fmadds.c:12:1: error: no previous prototype for 'fmadds' [-Werror=missing-prototypes]
+arch/powerpc/math-emu/fmr.c:7:1: error: no previous prototype for 'fmr' [-Werror=missing-prototypes]
+arch/powerpc/math-emu/fmsub.c:11:1: error: no previous prototype for 'fmsub' [-Werror=missing-prototypes]
+arch/powerpc/math-emu/fmsubs.c:12:1: error: no previous prototype for 'fmsubs' [-Werror=missing-prototypes]
+arch/powerpc/math-emu/fmul.c:11:1: error: no previous prototype for 'fmul' [-Werror=missing-prototypes]
+arch/powerpc/math-emu/fmuls.c:12:1: error: no previous prototype for 'fmuls' [-Werror=missing-prototypes]
+arch/powerpc/math-emu/fnabs.c:7:1: error: no previous prototype for 'fnabs' [-Werror=missing-prototypes]
+arch/powerpc/math-emu/fneg.c:7:1: error: no previous prototype for 'fneg' [-Werror=missing-prototypes]
+arch/powerpc/math-emu/fnmadd.c:11:1: error: no previous prototype for 'fnmadd' [-Werror=missing-prototypes]
+arch/powerpc/math-emu/fnmadds.c:12:1: error: no previous prototype for 'fnmadds' [-Werror=missing-prototypes]
+arch/powerpc/math-emu/fnmsub.c:11:1: error: no previous prototype for 'fnmsub' [-Werror=missing-prototypes]
+arch/powerpc/math-emu/fnmsubs.c:12:1: error: no previous prototype for 'fnmsubs' [-Werror=missing-prototypes]
+arch/powerpc/math-emu/fre.c:6:5: error: no previous prototype for 'fre' [-Werror=missing-prototypes]
+arch/powerpc/math-emu/fres.c:7:1: error: no previous prototype for 'fres' [-Werror=missing-prototypes]
+arch/powerpc/math-emu/frsp.c:12:1: error: no previous prototype for 'frsp' [-Werror=missing-prototypes]
+arch/powerpc/math-emu/frsqrte.c:7:1: error: no previous prototype for 'frsqrte' [-Werror=missing-prototypes]
+arch/powerpc/math-emu/frsqrtes.c:6:5: error: no previous prototype for 'frsqrtes' [-Werror=missing-prototypes]
+arch/powerpc/math-emu/fsel.c:11:1: error: no previous prototype for 'fsel' [-Werror=missing-prototypes]
+arch/powerpc/math-emu/fsqrt.c:11:1: error: no previous prototype for 'fsqrt' [-Werror=missing-prototypes]
+arch/powerpc/math-emu/fsqrts.c:12:1: error: no previous prototype for 'fsqrts' [-Werror=missing-prototypes]
+arch/powerpc/math-emu/fsub.c:11:1: error: no previous prototype for 'fsub' [-Werror=missing-prototypes]
+arch/powerpc/math-emu/fsubs.c:12:1: error: no previous prototype for 'fsubs' [-Werror=missing-prototypes]
+arch/powerpc/math-emu/lfd.c:10:1: error: no previous prototype for 'lfd' [-Werror=missing-prototypes]
+arch/powerpc/math-emu/lfs.c:12:1: error: no previous prototype for 'lfs' [-Werror=missing-prototypes]
+arch/powerpc/math-emu/math_efp.c:177:5: error: no previous prototype for 'do_spe_mathemu' [-Werror=missing-prototypes]
+arch/powerpc/math-emu/math_efp.c:726:5: error: no previous prototype for 'speround_handler' [-Werror=missing-prototypes]
+arch/powerpc/math-emu/math_efp.c:893:12: error: no previous prototype for 'spe_mathemu_init' [-Werror=missing-prototypes]
+arch/powerpc/math-emu/mcrfs.c:10:1: error: no previous prototype for 'mcrfs' [-Werror=missing-prototypes]
+arch/powerpc/math-emu/mffs.c:10:1: error: no previous prototype for 'mffs' [-Werror=missing-prototypes]
+arch/powerpc/math-emu/mtfsb0.c:10:1: error: no previous prototype for 'mtfsb0' [-Werror=missing-prototypes]
+arch/powerpc/math-emu/mtfsb1.c:10:1: error: no previous prototype for 'mtfsb1' [-Werror=missing-prototypes]
+arch/powerpc/math-emu/mtfsf.c:10:1: error: no previous prototype for 'mtfsf' [-Werror=missing-prototypes]
+arch/powerpc/math-emu/mtfsfi.c:10:1: error: no previous prototype for 'mtfsfi' [-Werror=missing-prototypes]
+arch/powerpc/math-emu/stfd.c:7:1: error: no previous prototype for 'stfd' [-Werror=missing-prototypes]
+arch/powerpc/math-emu/stfiwx.c:7:1: error: no previous prototype for 'stfiwx' [-Werror=missing-prototypes]
+arch/powerpc/math-emu/stfs.c:12:1: error: no previous prototype for 'stfs' [-Werror=missing-prototypes]
+
+Error/Warning ids grouped by kconfigs:
+
+gcc_recent_errors
+|-- powerpc-buildonly-randconfig-r003-20220906
+|   |-- arch-powerpc-math-emu-fre.c:error:no-previous-prototype-for-fre
+|   |-- arch-powerpc-math-emu-frsqrtes.c:error:no-previous-prototype-for-frsqrtes
+|   |-- arch-powerpc-math-emu-fsqrt.c:error:no-previous-prototype-for-fsqrt
+|   |-- arch-powerpc-math-emu-fsqrts.c:error:no-previous-prototype-for-fsqrts
+|   |-- arch-powerpc-math-emu-mtfsf.c:error:no-previous-prototype-for-mtfsf
+|   `-- arch-powerpc-math-emu-mtfsfi.c:error:no-previous-prototype-for-mtfsfi
+|-- powerpc-currituck_defconfig
+|   |-- arch-powerpc-math-emu-fabs.c:error:no-previous-prototype-for-fabs
+|   |-- arch-powerpc-math-emu-fadd.c:error:no-previous-prototype-for-fadd
+|   |-- arch-powerpc-math-emu-fadds.c:error:no-previous-prototype-for-fadds
+|   |-- arch-powerpc-math-emu-fcmpo.c:error:no-previous-prototype-for-fcmpo
+|   |-- arch-powerpc-math-emu-fcmpu.c:error:no-previous-prototype-for-fcmpu
+|   |-- arch-powerpc-math-emu-fcmpu.c:error:variable-A_c-set-but-not-used
+|   |-- arch-powerpc-math-emu-fcmpu.c:error:variable-B_c-set-but-not-used
+|   |-- arch-powerpc-math-emu-fctiw.c:error:no-previous-prototype-for-fctiw
+|   |-- arch-powerpc-math-emu-fctiwz.c:error:no-previous-prototype-for-fctiwz
+|   |-- arch-powerpc-math-emu-fdiv.c:error:no-previous-prototype-for-fdiv
+|   |-- arch-powerpc-math-emu-fdivs.c:error:no-previous-prototype-for-fdivs
+|   |-- arch-powerpc-math-emu-fmadd.c:error:no-previous-prototype-for-fmadd
+|   |-- arch-powerpc-math-emu-fmadds.c:error:no-previous-prototype-for-fmadds
+|   |-- arch-powerpc-math-emu-fmr.c:error:no-previous-prototype-for-fmr
+|   |-- arch-powerpc-math-emu-fmsub.c:error:no-previous-prototype-for-fmsub
+|   |-- arch-powerpc-math-emu-fmsubs.c:error:no-previous-prototype-for-fmsubs
+|   |-- arch-powerpc-math-emu-fmul.c:error:no-previous-prototype-for-fmul
+|   |-- arch-powerpc-math-emu-fmuls.c:error:no-previous-prototype-for-fmuls
+|   |-- arch-powerpc-math-emu-fnabs.c:error:no-previous-prototype-for-fnabs
+|   |-- arch-powerpc-math-emu-fneg.c:error:no-previous-prototype-for-fneg
+|   |-- arch-powerpc-math-emu-fnmadd.c:error:no-previous-prototype-for-fnmadd
+|   |-- arch-powerpc-math-emu-fnmadds.c:error:no-previous-prototype-for-fnmadds
+|   |-- arch-powerpc-math-emu-fnmsub.c:error:no-previous-prototype-for-fnmsub
+|   |-- arch-powerpc-math-emu-fnmsubs.c:error:no-previous-prototype-for-fnmsubs
+|   |-- arch-powerpc-math-emu-fre.c:error:no-previous-prototype-for-fre
+|   |-- arch-powerpc-math-emu-fres.c:error:no-previous-prototype-for-fres
+|   |-- arch-powerpc-math-emu-frsp.c:error:no-previous-prototype-for-frsp
+|   |-- arch-powerpc-math-emu-frsqrte.c:error:no-previous-prototype-for-frsqrte
+|   |-- arch-powerpc-math-emu-frsqrtes.c:error:no-previous-prototype-for-frsqrtes
+|   |-- arch-powerpc-math-emu-fsel.c:error:no-previous-prototype-for-fsel
+|   |-- arch-powerpc-math-emu-fsqrt.c:error:no-previous-prototype-for-fsqrt
+|   |-- arch-powerpc-math-emu-fsqrts.c:error:no-previous-prototype-for-fsqrts
+|   |-- arch-powerpc-math-emu-fsub.c:error:no-previous-prototype-for-fsub
+|   |-- arch-powerpc-math-emu-fsubs.c:error:no-previous-prototype-for-fsubs
+|   |-- arch-powerpc-math-emu-lfd.c:error:no-previous-prototype-for-lfd
+|   |-- arch-powerpc-math-emu-lfs.c:error:no-previous-prototype-for-lfs
+|   |-- arch-powerpc-math-emu-mcrfs.c:error:no-previous-prototype-for-mcrfs
+|   |-- arch-powerpc-math-emu-mffs.c:error:no-previous-prototype-for-mffs
+|   |-- arch-powerpc-math-emu-mtfsb0.c:error:no-previous-prototype-for-mtfsb0
+|   |-- arch-powerpc-math-emu-mtfsb1.c:error:no-previous-prototype-for-mtfsb1
+|   |-- arch-powerpc-math-emu-mtfsf.c:error:no-previous-prototype-for-mtfsf
+|   |-- arch-powerpc-math-emu-mtfsfi.c:error:no-previous-prototype-for-mtfsfi
+
+elapsed time: 966m
+
+configs tested: 111
+configs skipped: 2
+
+gcc tested configs:
+um                           x86_64_defconfig
+um                             i386_defconfig
+i386                             allyesconfig
+i386                                defconfig
+x86_64                              defconfig
+x86_64                           allyesconfig
+x86_64                               rhel-8.3
+powerpc                           allnoconfig
+mips                             allyesconfig
+powerpc                          allmodconfig
+sh                               allmodconfig
+i386                          randconfig-a012
+i386                          randconfig-a014
+i386                          randconfig-a016
+riscv                randconfig-r042-20220906
+arc                  randconfig-r043-20220906
+s390                 randconfig-r044-20220906
+x86_64                           rhel-8.3-kvm
+x86_64                          rhel-8.3-func
+x86_64                           rhel-8.3-syz
+x86_64                    rhel-8.3-kselftests
+x86_64                         rhel-8.3-kunit
+csky                              allnoconfig
+alpha                             allnoconfig
+arc                               allnoconfig
+riscv                             allnoconfig
+arm64                            allyesconfig
+arm                                 defconfig
+arm                              allyesconfig
+sh                               j2_defconfig
+arm                       aspeed_g5_defconfig
+m68k                          multi_defconfig
+m68k                             allyesconfig
+m68k                             allmodconfig
+arc                              allyesconfig
+alpha                            allyesconfig
+x86_64                        randconfig-a011
+x86_64                        randconfig-a013
+x86_64                        randconfig-a015
+sh                           se7780_defconfig
+mips                           xway_defconfig
+powerpc                       holly_defconfig
+sparc64                             defconfig
+parisc                generic-32bit_defconfig
+arc                         haps_hs_defconfig
+x86_64                        randconfig-a006
+x86_64                        randconfig-a004
+x86_64                        randconfig-a002
+arm                           tegra_defconfig
+arm                          gemini_defconfig
+sh                         ecovec24_defconfig
+xtensa                generic_kc705_defconfig
+i386                          randconfig-c001
+sh                          polaris_defconfig
+sh                   sh7770_generic_defconfig
+ia64                                defconfig
+powerpc                    klondike_defconfig
+ia64                            zx1_defconfig
+sh                          r7780mp_defconfig
+sparc                       sparc64_defconfig
+parisc64                            defconfig
+powerpc                 canyonlands_defconfig
+arm                           viper_defconfig
+powerpc                    adder875_defconfig
+sh                        dreamcast_defconfig
+sh                          lboxre2_defconfig
+powerpc                      bamboo_defconfig
+powerpc                      makalu_defconfig
+csky                             alldefconfig
+m68k                                defconfig
+powerpc                     pq2fads_defconfig
+xtensa                          iss_defconfig
+powerpc                    amigaone_defconfig
+arm                        cerfcube_defconfig
+sparc                            allyesconfig
+sh                           se7705_defconfig
+nios2                            allyesconfig
+nios2                               defconfig
+parisc                              defconfig
+parisc                           allyesconfig
+x86_64                        randconfig-c001
+arm                  randconfig-c002-20220906
+sparc                               defconfig
+xtensa                           allyesconfig
+csky                                defconfig
+x86_64                                  kexec
+s390                                defconfig
+s390                             allmodconfig
+arc                                 defconfig
+alpha                               defconfig
+s390                             allyesconfig
+ia64                             allmodconfig
+
+clang tested configs:
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+x86_64                        randconfig-a016
+i386                          randconfig-a002
+i386                          randconfig-a006
+i386                          randconfig-a004
+x86_64                        randconfig-a005
+x86_64                        randconfig-a003
+x86_64                        randconfig-a001
+powerpc                    mvme5100_defconfig
+arm                             mxs_defconfig
+powerpc                 mpc8313_rdb_defconfig
+arm                            mmp2_defconfig
+powerpc                      acadia_defconfig
+powerpc                     pseries_defconfig
+arm                        neponset_defconfig
+hexagon              randconfig-r041-20220906
+hexagon              randconfig-r045-20220906
+powerpc                     kilauea_defconfig
+
 -- 
-2.34.1
-
+0-DAY CI Kernel Test Service
+https://01.org/lkp
