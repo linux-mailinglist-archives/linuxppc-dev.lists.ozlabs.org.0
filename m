@@ -1,131 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 895E55B2656
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Sep 2022 20:57:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2052B5B278B
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Sep 2022 22:17:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MNpJT2h2rz3c3Z
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 04:56:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MNr5j0Qqbz3c69
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 06:17:45 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=qkhsMhmc;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PQvUlIRm;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=40.107.9.52; helo=fra01-mr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=qkhsMhmc;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PQvUlIRm;
 	dkim-atps=neutral
-Received: from FRA01-MR2-obe.outbound.protection.outlook.com (mail-eopbgr90052.outbound.protection.outlook.com [40.107.9.52])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MNpHh2w63z2yxF
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Sep 2022 04:56:14 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kBIq1J5sgP9FdGcxTVKgYnxsfb7CJ46AI/2C8NxVfUorSMtOLZvsph6HZx9JwH0IP8RhW4xh6QIaGbnqn348RJJbDpE3Nn+vVIYOdg6nUpTZCduvS/7eoMIoXCe9SiEa5czt7fEH8usSsPxNmUL+/D1Gon+RO3zxJmnLn3XaiBw8SBrrawIGTGCS0gXihBpk+BPZpTwboTczXk/TVJNLAwsJ9r/ZRTvsuCR0mHtDvcEhs9b1GWb+ukBMFI27whYm8+mlxlroLCh52JYDMT+LFWLAgMrQxCpdnepeOEs+8eDjlbAfRlmFf1t84Dy4KdjN/dcez7f+lmSgB9ZTySvvQw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vwAYlFITmF0AzvEx4uxsXiVTLG4s1GEWBofg67TMU14=;
- b=Fan7ZduerCWd+dTOTj35g3UAFR7qFDHX0Fkbu06sXa1/6XvztnT1IZpg2ObeCJ7/YrVZuhRBc0vUL52Xj5rVrKX0y0Nl5MgIX6M0jpYScVs2iWhj1r6C4H/9LY0DFHF+mJe8B19L+XTX68yq7d5K7FaHfEH03Owm+1shkx2YE8fl3/xvKmxaA3IxF+ACYPPW0/6yxXhEeCP6ttWFK8N0PaC7h3axMfpbKhpc4IVmfxMD/yT8tg8YyI8b6AkE8isI6j1PZvYEcZrjlOBgK5J62yPYYns7xblFicXYvmiB+itSzGZY/ZVYWeNeiKBd68SXbSvlz7u1SOngZz6he41Xsw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vwAYlFITmF0AzvEx4uxsXiVTLG4s1GEWBofg67TMU14=;
- b=qkhsMhmcRzSWs5pksu6l1LFJbLkGqpgEbF+RojLKDuaFw8hn69w5+x4fxXxf6TVnZ1PjR8eeY7xjHm9khtYwv2HN5CFkL3SFvrKP+gcOURHv5Pi75cGNSMg5UkVLu1/Jb4o3ucYybdMBAzylT7NiPszJA7YzuzwXHFMAT3+itcGlJ9P915ODZIijiMJbVZG+upkMoyvpKmq40igPrjXR+tCutGlbkYgX6rqhfXy9hOmpr8CFbbaBF6MOXsVjvdmmwviZh1qR0aXGzzvNXbfpXSLbVRVl8GDw9SEIrtkFdC1gCl8yU49hYeuf9E00o4bxD6q7/BcROgtGjg9dxoWW2w==
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by PR1P264MB1662.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:1b3::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5612.14; Thu, 8 Sep
- 2022 18:55:53 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::382a:ed3b:83d6:e5d8]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::382a:ed3b:83d6:e5d8%4]) with mapi id 15.20.5588.018; Thu, 8 Sep 2022
- 18:55:53 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>,
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-	"mpe@ellerman.id.au" <mpe@ellerman.id.au>, "npiggin@gmail.com"
-	<npiggin@gmail.com>
-Subject: Re: [PATCH] powerpc/mm: Fix UBSAN warning reported on hugetlb
-Thread-Topic: [PATCH] powerpc/mm: Fix UBSAN warning reported on hugetlb
-Thread-Index: AQHYw1Qi0Yy8A+JN3USltCONScznhq3V4pSA
-Date: Thu, 8 Sep 2022 18:55:53 +0000
-Message-ID: <640e5283-ba37-2934-4a4a-f57042e23efd@csgroup.eu>
-References: <20220908072440.258301-1-aneesh.kumar@linux.ibm.com>
-In-Reply-To: <20220908072440.258301-1-aneesh.kumar@linux.ibm.com>
-Accept-Language: fr-FR, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.0
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: c75b4927-e179-4400-7626-08da91cbc194
-x-ms-traffictypediagnostic: PR1P264MB1662:EE_
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  01PzL8e0nZ3CfWGiY7FxjZQKH6lA/3qE0Z+OhS2tUFvqjJkFlyY0kvDO/wGxlcbSXPTJXE11kY3P+caMI+xdeZ1af2zcmprUnIM6/Ow8rvJG2c+fvoUs1trJHfy2Jiq+t+6yLIr+qbocZ2cquP+3nV7zq7wPl7wpmq1itNBlQ37BCE+D1KO2T62A5LN1GT3fqTovb1qoSZlWZ4ln7KE1d154OzFn+6xDzw8rLtB2YQ8WBaE2EqNbdr0/vY2zGwYpVRvuaumAa9Y1pM0UZp7TllXwHopHvmdOtjDv6BIU1Ze+lSKoALCnnLV+muAMlcTqkd/i8dZy4y/ei/jzV3+REX6GyNzCPP4t65LuPZcgeI2iOiVpJqvVKxIyeSCGwKBW1ebYKAtqo6VZvjrrHxZfPQkY819XrtlKViGRQfObQhhgWX2W2HwouK5pBRLXbYA2m87TCfPulRpepJ5JnnounDrmnNpRIJ16DAIUIlOJJhnr5bxN5KPb4S6gkB/VqR+iOYjRxuWI0cAXoWnac9E+OwymWeNByjCH6Li/zHkgTMch76h43IFjXEH3/dTzly4O3WCmhrjQ08dXp8QUi8OJuatR8zX8aG5lYFa51sKQAPqGnWd/MVDYkuz4GjqWfJYrYxzTtiv2dxV89GECogW34dXZ/AJkO+EDLdQSNDv57hhhT0nRWBJf7R5jkaHr1T5yfb07CFVuLHS5aPiXcujXOwRS1DQqdVRcniEJ2DGsDeJrvqMnPPQOJpf6VgANYhZdnkM5OwMfVyEi6YPeL72RQPVyCS5jVP3EnxwBbAsN31Iw75nnA77GhCTCjlAH+gC+ZyOml+fkTPF52tCe5y2ZGQ==
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230016)(4636009)(136003)(366004)(396003)(39860400002)(346002)(376002)(66574015)(122000001)(38070700005)(186003)(6486002)(66446008)(66476007)(36756003)(66946007)(31686004)(91956017)(71200400001)(76116006)(66556008)(110136005)(64756008)(316002)(478600001)(8676002)(83380400001)(54906003)(2906002)(6512007)(26005)(5660300002)(4326008)(41300700001)(8936002)(2616005)(86362001)(31696002)(38100700002)(6506007)(44832011)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?RW53RjF1OGVtbGR4aFMzcnFmV2lWMTJEV0k2ZXhOdWcrUUk5VFJGOFF1elox?=
- =?utf-8?B?RHFTd1pUREd0R3pxSkJ3cWVrNHFkcjVlU25QTjhyaCtCNmJiUzhnRUtXOFEy?=
- =?utf-8?B?eFJqY0hIZnI1YnZWRkIwdklJczNyKzlxT2hwMkJhVlErbytRUkxGOVVkWEdL?=
- =?utf-8?B?VytXUm80ckI4UjAwV241UWFaMEV6d0x3RlpVUFlEWlgzazlVZUhNTmZlOEdV?=
- =?utf-8?B?UzRpRWxTTmNERm16UmhIRVc3L1pGa2NZd0ozY2R2OVdVTDBJSm8vakVYTllG?=
- =?utf-8?B?L0tzZ0tPbWd3bDVvQ3g1ZFROT2NrRk8zMnBIcStRbnA1MTlSTkRkK2pFQVpo?=
- =?utf-8?B?aGVXd0ladWNROEE5Mit4RVZuby9QWStrTDNsOVNHVFVkdmNhT09tNU1lZ01L?=
- =?utf-8?B?Nytya3B4R250b1pDUFhxa3FpQnhvMlRQNzFETEZSQ0R6dXR6L0p3WVN6WkNj?=
- =?utf-8?B?ZWVFQ0JFVkNBWmR5RXl4SmVKaFpqTER3T3l4Z1dsdnpQUFIzSzR4OHlxZ091?=
- =?utf-8?B?V2xqTktSU0dOR0VpYU9PNnQyTEluT29LM1ZIVXBlelFwY3FKUlByUGdVd1V6?=
- =?utf-8?B?bmVaWTAwenExYXUrc0h4MXRXSGR1cDBkYlZvL2Y4QzRQQU9GY3E3cnFuVlF0?=
- =?utf-8?B?UjNxclNNa1U5U1VqNFlFNmdqZ3IzMjVPekl5RnEzakUwNUxhNnVLYXdBSkwv?=
- =?utf-8?B?L0Qzc3hBZDdkMjVOMnJQZFp3MHUrbVQwM05DSjRIdmtiM0xYRXZxVEJIcytT?=
- =?utf-8?B?TWRDVFd1U2UxRlZBTkJVdXNxM3JRY1V3WE8yN1pMV1drdXA0OGhadDBsd013?=
- =?utf-8?B?T1YyRHA5TXhjdDBnUTRvL240K3VSNjV6WEFlQU5uR09Jc3J6QzRTZkNsSHhm?=
- =?utf-8?B?b1Vnbmwza1NrOGFQak91SlZyUWQrank3cklRT2NScFFvVHF4V1VBbHNFeE1x?=
- =?utf-8?B?VDlhWXUvRGhSa3UxZm1SbVV0QmFiRTBkQW1RRkE0WEYzckZyRElyRDZzbE9F?=
- =?utf-8?B?RVc3ekR6N0tKZTQvWU10cnpNaE5BWUc1MHFmRmpNV0ltQnd5ODB4YjhxclA1?=
- =?utf-8?B?M1k2S3VJa0NlbnJkajBKTmNOUDZ4ODc3RFRJU1A4Q3R6aFBmVXh4N2ltbnRm?=
- =?utf-8?B?ejdLUHVmcmRDMkNaVXhyanNqaVdPOFhyNnBYMGt3ZGVkNXFzcEJBN25uckN6?=
- =?utf-8?B?UTB0bDZ3Z2x4SzdkdEIzT1dXR241MUdBTmZDbHhVRTYrYW1NdlZON0IvQ2hV?=
- =?utf-8?B?dS9ldlFoell4K0RIK3ZpbEIrVGpXUlFIeTJWY2w4REJsRmZWdGxsdDc1aG1M?=
- =?utf-8?B?eWEzZC9sa2dOVUJpeVFVTVlraGhHVjRzRXZvTExBb3NFbDhXWmhiSUMyTkNB?=
- =?utf-8?B?YklJc0RVdUtGeGd0NnhubTEwLzkxUXlJcnJkdVVlbXNQRHlEWkZRVU55WDFJ?=
- =?utf-8?B?TkRNWGgycFl6SndtbFE4UHJZTFhtZ1dKeWZNM0ZPNlJrdFVQUnpRTHZjSGU3?=
- =?utf-8?B?bWRERUpJc2ROdWlacFFWZVJ2SldkQWpScVlwYmZpVmhEZFl2TFpSallyV0J2?=
- =?utf-8?B?UWRWT1Y5K3Ywc2ZCdWF6SzFXOFp2TE5sN0dBZGN0VHQ3ZzY1am1QaC9Lci81?=
- =?utf-8?B?RGl1SVUwK0hFRWw0c0xETnFVTXEySTNZZ3FQOU8wT3RkZnVCS1lqZk1BRkdP?=
- =?utf-8?B?MjdUK2VRenhoQ2ZHQ2NRczlTMWJVTG53bWVVRFVwTHBQSjVOSzZ2REs0eFpl?=
- =?utf-8?B?U1ZPN2RSOGNLaDhPRkJscjJaWitRR0p3Q3FsNjltYll2eUNYUkt0T1hwOExI?=
- =?utf-8?B?a1lMUkZEQWRXVVNEVjhPR2NvT2diR25kZVZUbmdTVit1ckxBd2wvTGpiVUlR?=
- =?utf-8?B?UEU5TEhlWHRYakcyWXh2aWRMaEUycGtKNEpRcGZWT3dTOU1GNU1Za3NpK0tK?=
- =?utf-8?B?MGUzYzQ0aENpaUdrRTFlOUdRRGdJN1NhWHpNOXljK0tzN0hRWWIrbnBkT1p2?=
- =?utf-8?B?UlVpYm82UEVtNk9xeGJVU2YrRDFqQUdxQTkyS2pwVTgrSk9kZHM2RkJmU2wx?=
- =?utf-8?B?YW5pYWo5cFN2UkFTYzVsYVRGblRhUHpTcThxcDh4SkJGWmFWNko4dWJKcDZX?=
- =?utf-8?B?Ti9tYnhvQms2Q25QMnNlR29DMFRCam5BWWdNZjgyZ3NBODQrd2o5RkVkSTRW?=
- =?utf-8?Q?m+r5qNIUJugb6rqlYqVYq6A=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <A58C6C04CE65DA478B965545123860DB@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MNr5144HWz2yxF
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Sep 2022 06:17:09 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 9EECA61E17;
+	Thu,  8 Sep 2022 20:17:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2710C433D6;
+	Thu,  8 Sep 2022 20:17:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1662668225;
+	bh=UnYylULOkHR7QFL6Y7S5gK3b4PS/zmUGT3UUGNRBfRs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PQvUlIRmg97i9Op09dMWk1YoAo8E+LWs1yxnta49h3wbF5FnyXJNlCF0CMda3AJbj
+	 STvwqKVBhd8YYbZX85rh11uBMxgOX4IdT0Ky6rln6bTr4B1yIGGY8Qnd4lLNQiTJhR
+	 cA5sddYaI17OXCq5k2tm4IYz99YHo1v9rNNkKIwybCSVzBmRVsGFNG57SQp/CEEA91
+	 yNXoSeBxCMKvsSAYlvuUM4SCVh3y2KCpHg15lQ1nEf04jVbdUe+4VWF01ceH4nBL86
+	 JunmobmWD5CI/OZ6p3TitEcuOqtr/7C6BFnv5M8aFXCfaM9cNx046sUXLuy3/MRAAR
+	 0axTiR1x5Xa6w==
+Received: by pali.im (Postfix)
+	id 8CB997EF; Thu,  8 Sep 2022 22:17:01 +0200 (CEST)
+Date: Thu, 8 Sep 2022 22:17:01 +0200
+From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Fragmented physical memory on powerpc/32
+Message-ID: <20220908201701.sd3zqn5hfixmjvhh@pali>
+References: <20220302044406.63401-12-ash@heyquark.com>
+ <20220513224353.n56qg5fhstbaqhfz@pali>
+ <d84e4d24-f350-80fc-6c31-b7e7f8d429f4@heyquark.com>
+ <20220520080454.c3cqodsdbfbkmg56@pali>
+ <935b426a-6c64-beb0-907f-8c3f0a089ab7@heyquark.com>
+ <20220520123002.rd46p5ty6wumi7cc@pali>
+ <20220609222420.ponpoodiqmaqtwht@pali>
+ <20220808184034.lskqrk6z3gb5q76r@pali>
+ <219cda7b-da4b-7a5a-9809-0878e0fc02ba@csgroup.eu>
+ <20220908153511.57ceunyusziqfcav@pali>
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: c75b4927-e179-4400-7626-08da91cbc194
-X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Sep 2022 18:55:53.7323
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: N3g/Re6F4AI9JVFWPjTcLp7kS/YROOYyKuUSFkSx19/MRMPB4VqvJA/lTLbsbhFQRlvUlqs35B2Lc2tc3el+3AUb14j0QZlrrNACCX0k9uY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR1P264MB1662
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220908153511.57ceunyusziqfcav@pali>
+User-Agent: NeoMutt/20180716
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -137,62 +72,118 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-mm@kvack.org" <linux-mm@kvack.org>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "robh+dt@kernel.org" <robh+dt@kernel.org>, "paulus@samba.org" <paulus@samba.org>, Ash Logan <ash@heyquark.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "j.ne@posteo.net" <j.ne@posteo.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCkxlIDA4LzA5LzIwMjIgw6AgMDk6MjQsIEFuZWVzaCBLdW1hciBLLlYgYSDDqWNyaXTCoDoN
-Cj4gUG93ZXJwYyBhcmNoaXRlY3R1cmUgc3VwcG9ydHMgMTZHQiBodWdldGxiIHBhZ2VzIHdpdGgg
-aGFzaCB0cmFuc2xhdGlvbi4gRm9yIDRLDQo+IHBhZ2Ugc2l6ZSwgdGhpcyBpcyBpbXBsZW1lbnRl
-ZCBhcyBhIGh1Z2VwYWdlIGRpcmVjdG9yeSBlbnRyeSBhdCBQR0QgbGV2ZWwgYW5kDQo+IGZvciA2
-NEsgaXQgaXMgaW1wbGVtZW50ZWQgYXMgYSBodWdlIHBhZ2UgcHRlIGF0IFBVRCBsZXZlbA0KPiAN
-Cj4gV2l0aCAxNkdCIGh1Z2V0bGIgc2l6ZSwgb2Zmc2V0IHdpdGhpbiBhIHBhZ2UgaXMgZ3JlYXRl
-ciB0aGFuIDMyIGJpdHMuIEhlbmNlDQo+IHN3aXRjaCB0byB1c2UgdW5zaWduZWQgbG9uZyB0eXBl
-IHdoZW4gdXNpbmcgaHVnZXBkX3NoaWZ0Lg0KPiANCj4gSW5vcmRlciB0byBrZWVwIHRoaW5ncyBz
-aW1wbGVyLCB3ZSBtYWtlIHN1cmUgd2UgYWx3YXlzIHVzZSB1bnNpZ25lZCBsb25nIHR5cGUNCj4g
-d2hlbiB1c2luZyBodWdlcGRfc2hpZnQoKSBldmVuIHRob3VnaCBhbGwgdGhlIGh1Z2V0bGIgcGFn
-ZSBzaXplIHdvbid0IHJlcXVpcmUNCj4gdGhhdC4NCj4gDQo+IFRoZSB3YWxrX2h1Z2VwZF9yYW5n
-ZSBjaGFuZ2Ugd29uJ3QgaGF2ZSBhbnkgaW1wYWN0IGJlY2F1c2Ugd2UgZG9uJ3QgdXNlIHRoYXQg
-Zm9yDQo+IHRoZSBodWdldGxiIHdhbGsuIFRoYXQgY29kZSBpcyBuZWVkZWQgdG8gc3VwcG9ydCBo
-dWdlcGQgb24gaW5pdF9tbSB3aXRoIFBQQ184WFgNCj4gYW5kIDhNIHBhZ2UuIEV2ZW4gdGhvdWdo
-IDhNIHBhZ2Ugc2l6ZSB3b24ndCByZXN1bHQgaW4gYW55IHJlYWwgaXNzdWUsIHdlIHVwZGF0ZQ0K
-PiB0aGF0IHRvIGtlZXAgaXQgc2ltcGxlci4NCj4gDQo+IFRoZSBodWdldGxiX2ZyZWVfcCpkX3Jh
-bmdlIGNoYW5nZXMgYXJlIGFsbCByZWxhdGVkIHRvIG5vaGFzaCB1c2FnZSB3aGVyZSB3ZSBjYW4N
-Cj4gaGF2ZSBtdWx0aXBsZSBwZ2QgZW50cmllcyBwb2ludGluZyB0byB0aGUgc2FtZSBodWdlcGQg
-ZW50cmllcy4gSGVuY2Ugb24gYm9vazNzNjQNCj4gd2hlcmUgd2UgY2FuIGhhdmUgPiA0R0IgaHVn
-ZXRsYiBwYWdlIHNpemUgd2Ugd2lsbCBhbHdheXMgZmluZCBtb3JlIDwgbmV4dCBldmVuDQo+IGlm
-IHdlIGNvbXB1dGUgdGhlIHZhbHVlIG9mIG1vcmUgY29ycmVjdGx5Lg0KPiANCj4gSGVuY2UgdGhl
-cmUgaXMgbm8gZnVuY3Rpb25hbCBjaGFuZ2UgaW4gdGhpcyBwYXRjaCBleGNlcHQgdGhhdCBpdCBm
-aXhlcyB0aGUgYmVsb3cNCj4gd2FybmluZy4NCj4gDQo+ICAgVUJTQU46IHNoaWZ0LW91dC1vZi1i
-b3VuZHMgaW4gYXJjaC9wb3dlcnBjL21tL2h1Z2V0bGJwYWdlLmM6NDk5OjIxDQo+ICAgc2hpZnQg
-ZXhwb25lbnQgMzQgaXMgdG9vIGxhcmdlIGZvciAzMi1iaXQgdHlwZSAnaW50Jw0KPiAgIENQVTog
-MzkgUElEOiAxNjczIENvbW06IGEub3V0IE5vdCB0YWludGVkIDYuMC4wLXJjMi0wMDMyNy1nZWU4
-OGE1NmU4NTE3LWRpcnR5ICMxDQo+ICAgQ2FsbCBUcmFjZToNCj4gICBbYzAwMDAwMDAyY2NiMzcy
-MF0gW2MwMDAwMDAwMDBjYjIxZTRdIGR1bXBfc3RhY2tfbHZsKzB4OTgvMHhlMCAodW5yZWxpYWJs
-ZSkNCj4gICBbYzAwMDAwMDAyY2NiMzc2MF0gW2MwMDAwMDAwMDBjYWNmNjBdIHVic2FuX2VwaWxv
-Z3VlKzB4MTgvMHg3MA0KPiAgIFtjMDAwMDAwMDJjY2IzN2MwXSBbYzAwMDAwMDAwMGNhYzQ0Y10g
-X191YnNhbl9oYW5kbGVfc2hpZnRfb3V0X29mX2JvdW5kcysweDFiYy8weDM5MA0KPiAgIFtjMDAw
-MDAwMDJjY2IzOGMwXSBbYzAwMDAwMDAwMDBkNmY3OF0gaHVnZXRsYl9mcmVlX3BnZF9yYW5nZSsw
-eDVkOC8weDYwMA0KPiAgIFtjMDAwMDAwMDJjY2IzOWYwXSBbYzAwMDAwMDAwMDU1MGU5NF0gZnJl
-ZV9wZ3RhYmxlcysweDExNC8weDI5MA0KPiAgIFtjMDAwMDAwMDJjY2IzYWMwXSBbYzAwMDAwMDAw
-MDU2Y2JlMF0gZXhpdF9tbWFwKzB4MTUwLzB4NTUwDQo+ICAgW2MwMDAwMDAwMmNjYjNiZTBdIFtj
-MDAwMDAwMDAwMTdiZjBjXSBtbXB1dCsweGNjLzB4MjEwDQo+ICAgW2MwMDAwMDAwMmNjYjNjMjBd
-IFtjMDAwMDAwMDAwMThmMTgwXSBkb19leGl0KzB4NDIwLzB4ZGQwDQo+ICAgW2MwMDAwMDAwMmNj
-YjNjZjBdIFtjMDAwMDAwMDAwMThmY2RjXSBkb19ncm91cF9leGl0KzB4NGMvMHhkMA0KPiAgIFtj
-MDAwMDAwMDJjY2IzZDMwXSBbYzAwMDAwMDAwMDE4ZmQ4NF0gc3lzX2V4aXRfZ3JvdXArMHgyNC8w
-eDMwDQo+ICAgW2MwMDAwMDAwMmNjYjNkNTBdIFtjMDAwMDAwMDAwMDNjZGUwXSBzeXN0ZW1fY2Fs
-bF9leGNlcHRpb24rMHgyNTAvMHg2MDANCj4gICBbYzAwMDAwMDAyY2NiM2UxMF0gW2MwMDAwMDAw
-MDAwMGMzYmNdIHN5c3RlbV9jYWxsX2NvbW1vbisweGVjLzB4MjUwDQo+IA0KPiBTaWduZWQtb2Zm
-LWJ5OiBBbmVlc2ggS3VtYXIgSy5WIDxhbmVlc2gua3VtYXJAbGludXguaWJtLmNvbT4NCj4gLS0t
-DQo+ICAgYXJjaC9wb3dlcnBjL21tL2h1Z2V0bGJwYWdlLmMgfCA2ICsrKy0tLQ0KPiAgIG1tL3Bh
-Z2V3YWxrLmMgICAgICAgICAgICAgICAgIHwgMiArLQ0KPiAgIDIgZmlsZXMgY2hhbmdlZCwgNCBp
-bnNlcnRpb25zKCspLCA0IGRlbGV0aW9ucygtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL21tL3BhZ2V3
-YWxrLmMgYi9tbS9wYWdld2Fsay5jDQo+IGluZGV4IGZhN2EzZDIxYTc1MS4uZTIxMGI3Mzc2NThj
-IDEwMDY0NA0KPiAtLS0gYS9tbS9wYWdld2Fsay5jDQo+ICsrKyBiL21tL3BhZ2V3YWxrLmMNCj4g
-QEAgLTY1LDcgKzY1LDcgQEAgc3RhdGljIGludCB3YWxrX2h1Z2VwZF9yYW5nZShodWdlcGRfdCAq
-cGhwZCwgdW5zaWduZWQgbG9uZyBhZGRyLA0KPiAgIAlpbnQgZXJyID0gMDsNCj4gICAJY29uc3Qg
-c3RydWN0IG1tX3dhbGtfb3BzICpvcHMgPSB3YWxrLT5vcHM7DQo+ICAgCWludCBzaGlmdCA9IGh1
-Z2VwZF9zaGlmdCgqcGhwZCk7DQo+IC0JaW50IHBhZ2Vfc2l6ZSA9IDEgPDwgc2hpZnQ7DQo+ICsJ
-bG9uZyBwYWdlX3NpemUgPSAxVUwgPDwgc2hpZnQ7DQoNCjFVTCBtZWFucyBfdW5zaWduZWRfIGxv
-bmcuIFNob3VsZCBwYWdlX3NpemUgYmUgdW5zaWduZWQgPw0KDQo+ICAgDQo+ICAgCWlmICghb3Bz
-LT5wdGVfZW50cnkpDQo+ICAgCQlyZXR1cm4gMDs=
+On Thursday 08 September 2022 17:35:11 Pali Rohár wrote:
+> On Thursday 08 September 2022 15:25:14 Christophe Leroy wrote:
+> > Le 08/08/2022 à 20:40, Pali Rohár a écrit :
+> > > On Friday 10 June 2022 00:24:20 Pali Rohár wrote:
+> > >> On Friday 20 May 2022 14:30:02 Pali Rohár wrote:
+> > >>> + linux-mm
+> > >>>
+> > >>> Do you know what are requirements for kernel to support non-contiguous
+> > >>> memory support and what is needed to enable it for 32-bit powerpc?
+> > >>
+> > >> Any hints?
+> > > 
+> > > PING?
+> > > 
+> > 
+> > The tree following patches landed in powerpc/next branch, so they should 
+> > soon be visible in linux-next too:
+> > 
+> > fc06755e2562 ("powerpc/32: Drop a stale comment about reservation of 
+> > gigantic pages")
+> > b0e0d68b1c52 ("powerpc/32: Allow fragmented physical memory")
+> > 0115953dcebe ("powerpc/32: Remove wii_memory_fixups()")
+> 
+> Ou, nice! I will try to test it if it allows me to access more than 2GB
+> of RAM from 4GB DDR3 module with 32-bit addressing mode on P2020 CPU.
+
+Hello! Ok, I have tried it from powerpc/next branch, but seems it does
+not work. I'm getting just early kernel crash.
+
+[    0.000000] CPU maps initialized for 1 thread per core
+[    0.000000]  (thread shift is 0)
+[    0.000000] -----------------------------------------------------
+[    0.000000] phys_mem_size     = 0xbe500000
+[    0.000000] dcache_bsize      = 0x20
+[    0.000000] icache_bsize      = 0x20
+[    0.000000] cpu_features      = 0x0000000010010108
+[    0.000000]   possible        = 0x0000000010010108
+[    0.000000]   always          = 0x0000000010010108
+[    0.000000] cpu_user_features = 0x84e08000 0x08000000
+[    0.000000] mmu_features      = 0x00020010
+[    0.000000] -----------------------------------------------------
+mpc85xx_rdb_setup_arch()
+[    0.000000] ioremap() called early from of_iomap+0x48/0x80. Use early_ioremap() instead
+[    0.000000] MPC85xx RDB board from Freescale Semiconductor
+[    0.000000] barrier-nospec: using isync; sync as speculation barrier
+[    0.000000] barrier-nospec: patched 182 locations
+[    0.000000] Top of RAM: 0xff700000, Total RAM: 0xbe500000
+[    0.000000] Memory hole size: 1042MB
+[    0.000000] Zone ranges:
+[    0.000000]   Normal   [mem 0x0000000000000000-0x000000002fffffff]
+[    0.000000]   HighMem  [mem 0x0000000030000000-0x00000000ff6fffff]
+[    0.000000] Movable zone start for each node
+[    0.000000] Early memory node ranges
+[    0.000000]   node   0: [mem 0x0000000000000000-0x000000007fffffff]
+[    0.000000]   node   0: [mem 0x00000000c0200000-0x00000000eeffffff]
+[    0.000000]   node   0: [mem 0x00000000f0000000-0x00000000ff6fffff]
+[    0.000000] Initmem setup node 0 [mem 0x0000000000000000-0x00000000ff6fffff]
+[    0.000000] MMU: Allocated 1088 bytes of context maps for 255 contexts
+[    0.000000] percpu: Embedded 11 pages/cpu s14196 r8192 d22668 u45056
+[    0.000000] pcpu-alloc: s14196 r8192 d22668 u45056 alloc=11*4096
+[    0.000000] pcpu-alloc: [0] 0 [0] 1
+[    0.000000] Built 1 zonelists, mobility grouping on.  Total pages: 777792
+[    0.000000] Kernel command line: root=ubi0:rootfs rootfstype=ubifs ubi.mtd=rootfs,2048 rootflags=chk_data_crc rw console=ttyS0,115200
+[    0.000000] Dentry cache hash table entries: 131072 (order: 7, 524288 bytes, linear)
+[    0.000000] Inode-cache hash table entries: 65536 (order: 6, 262144 bytes, linear)
+[    0.000000] mem auto-init: stack:off, heap alloc:off, heap free:off
+[    0.000000] Kernel attempted to read user page (7df58) - exploit attempt? (uid: 0)
+[    0.000000] BUG: Unable to handle kernel data access on read at 0x0007df58
+[    0.000000] Faulting instruction address: 0xc01c8348
+[    0.000000] Oops: Kernel access of bad area, sig: 11 [#1]
+[    0.000000] BE PAGE_SIZE=4K SMP NR_CPUS=2 P2020RDB-PC
+[    0.000000] Modules linked in:
+[    0.000000] CPU: 0 PID: 0 Comm: swapper Not tainted 6.0.0-rc2-0caacb197b677410bdac81bc34f05235+ #121
+[    0.000000] NIP:  c01c8348 LR: c01cb2bc CTR: 0000000a
+[    0.000000] REGS: c10d7e20 TRAP: 0300   Not tainted  (6.0.0-rc2-0caacb197b677410bdac81bc34f05235+)
+[    0.000000] MSR:  00021000 <CE,ME>  CR: 48044224  XER: 00000000
+[    0.000000] DEAR: 0007df58 ESR: 00000000
+[    0.000000] GPR00: c01cb294 c10d7f10 c1045340 00000001 00000004 c112bcc0 00000015 eedf1000
+[    0.000000] GPR08: 00000003 0007df58 00000000 f0000000 28044228 00000200 00000000 00000000
+[    0.000000] GPR16: 00000000 00000000 00000000 0275cb7a c0000000 00000001 0000075f 00000000
+[    0.000000] GPR24: c1031004 00000000 00000000 00000001 c10f0000 eedf1000 00080000 00080000
+[    0.000000] NIP [c01c8348] free_unref_page_prepare.part.93+0x48/0x60
+[    0.000000] LR [c01cb2bc] free_unref_page+0x84/0x4b8
+[    0.000000] Call Trace:
+[    0.000000] [c10d7f10] [eedf1000] 0xeedf1000 (unreliable)
+[    0.000000] [c10d7f20] [c01cb294] free_unref_page+0x5c/0x4b8
+[    0.000000] [c10d7f70] [c1007644] mem_init+0xd0/0x194
+[    0.000000] [c10d7fa0] [c1000e4c] start_kernel+0x4c0/0x6d0
+[    0.000000] [c10d7ff0] [c00003e0] set_ivor+0x13c/0x178
+[    0.000000] Instruction dump:
+[    0.000000] 552817be 5509103a 7d294214 55293830 7d4a4a14 812a003c 814a0038 5529002a
+[    0.000000] 7c892050 5484c23a 5489eafa 548406fe <7d2a482e> 7d242430 5484077e 90870010
+[    0.000000] ---[ end trace 0000000000000000 ]---
+[    0.000000]
+[    0.000000] Kernel panic - not syncing: Fatal exception
+[    0.000000] Rebooting in 1 seconds..
+[    0.000000] System Halted, OK to turn off power
+
+4GB DDR3 SODIMM module is set via Freescale LBC to the whole 4 GB
+address range. And on ranges:
+0x0000_0000 - 0x7fff_ffff
+0xc020_0000 - 0xeeff_ffff
+0xf000_0000 - 0xff6f_ffff
+there is no peripheral device, they are free for DRAM. Between these
+physical ranges are mapped peripheral devices (PCIe and NOR).
+
+Any idea if I'm doing something wrong or there can be a bug in memory code?
+
+Quite suspicious is that "Initmem setup node 0" prints one range where
+are also peripherals, not just DRAM. Crash is on address 0xc01c8348
+which belongs to PCIe.
