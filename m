@@ -2,87 +2,78 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 739595B1590
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Sep 2022 09:26:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7DE25B159F
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Sep 2022 09:27:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MNVzD48t0z3bvZ
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Sep 2022 17:26:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MNW0z2dWxz3c25
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Sep 2022 17:27:31 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Q02pxcTu;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=NL7EBP7s;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::236; helo=mail-lj1-x236.google.com; envelope-from=krzysztof.kozlowski@linaro.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Q02pxcTu;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=NL7EBP7s;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MNVyW4wd5z2yxF
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Sep 2022 17:25:23 +1000 (AEST)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2887LmTZ000370;
-	Thu, 8 Sep 2022 07:25:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=eo1nB3wQR4aM3QuwAhAABgkjSVASYjD8+z8OeeqpH6Q=;
- b=Q02pxcTuHlbhdVsv8hzr9DyhU58wFeNyF87PNQ+Y+zfDoSxXFjYJ0zLvHCRxVdTcyHMX
- Oi+pkmwUxRPIsK5W957PPtABlHtUPU7Yz+xvmDIIZ/5VKZHxXCjAC2VrM+Cc8Wka0yTr
- fVxi9kSFpbnFsiTneyQbHCqtK1zYyM200EP/4+cyqB8Pf2ywQqsE0XP2RYg9qkkivEDW
- XO3VyeeIkht4UCkZcAPV4Bn5Q4ih6bc06tgZnFhkdV5D5nDRD2kmtkCQrkt+JY7hBHTq
- S53AvwktL2V22zS6IP+u8owvnPbeHZvAhLi8lde1cpIixI29UXazxxbwYfV9YWPQlmPY +Q== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jfbxj838x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 08 Sep 2022 07:25:09 +0000
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2887MJMT003815;
-	Thu, 8 Sep 2022 07:25:08 GMT
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com [169.47.144.26])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jfbxj8382-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 08 Sep 2022 07:25:08 +0000
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
-	by ppma04wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2887LgpG019330;
-	Thu, 8 Sep 2022 07:25:07 GMT
-Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com [9.57.198.28])
-	by ppma04wdc.us.ibm.com with ESMTP id 3jbxj9xtpp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 08 Sep 2022 07:25:07 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com [9.57.199.111])
-	by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2887P7UV5636708
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 8 Sep 2022 07:25:07 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2089AAC059;
-	Thu,  8 Sep 2022 07:25:07 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6FF77AC05E;
-	Thu,  8 Sep 2022 07:25:04 +0000 (GMT)
-Received: from skywalker.ibmuc.com (unknown [9.43.97.195])
-	by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
-	Thu,  8 Sep 2022 07:25:04 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au, npiggin@gmail.com,
-        christophe.leroy@csgroup.eu
-Subject: [PATCH] powerpc/mm: Fix UBSAN warning reported on hugetlb
-Date: Thu,  8 Sep 2022 12:54:40 +0530
-Message-Id: <20220908072440.258301-1-aneesh.kumar@linux.ibm.com>
-X-Mailer: git-send-email 2.37.3
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MNW0L6bLDz2yHR
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Sep 2022 17:26:57 +1000 (AEST)
+Received: by mail-lj1-x236.google.com with SMTP id l12so10394226ljg.9
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Sep 2022 00:26:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date;
+        bh=LF14xoV7ofKttTcBdi+LKav8yvezlrH+J2rWTVvf/OQ=;
+        b=NL7EBP7scniC5110h6lbEQucc1DlCz/xzdp65hnzWd0E1PsiQGhbG1lY7cAWfpbt9B
+         qkK8BkSq03YvbYWxA47Tol7OhUcAwjwhDLcmA4jWJ8hHxYbk1lwkjzQwIQtHHiiB5DXI
+         Fm9VctCVAnXJKfCUu7zPUDJ5guq+fh9lw6UsJuxB3DhOPDcti6gqoyyonUY5uTr9nN3i
+         wfL+ZXMcByJJtVYzf8fzM5exZrseMJjQ+g5Fo93s9smufA+u16LTK/Hng4wbUBzBSxNw
+         BrhG+c0e3B4T2ZYhxgHFXT7/Fss1AGB61jTCOKOJjTKhBmxjDnytgjARymuuL4cHEdl1
+         fiwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=LF14xoV7ofKttTcBdi+LKav8yvezlrH+J2rWTVvf/OQ=;
+        b=JLLGEQ3fLWzABpL0GH44NPpF1Mw+GC5t70X28lM1HiBjVjiam0ftwvde4RwNg/p9/O
+         c69I2I1mJIezZ7vzZ6hmwfyzblQiGxlZN97wMznrGaJ7oUhbIjTjaJKQ3QNIORg5fp+G
+         Pi1Jjbl+x2ieQw8tgFSHXQXLY+/zY0tOejjJex391bvYg0Np/qWyydcorwFS+siTAYTs
+         EztFLBc8ytM8H7lquiWHEOoBzWoLoivV1qfZkZ6mrdXT44v1ihblkwZ1PqhEkbx0hEL3
+         FSPPBKnmB+nm6Y40nxGD3fjqD+iHgmCm8l8xSny+WFcJ3ujvCdCKjUWKtDHfI0a6TNrx
+         vo8A==
+X-Gm-Message-State: ACgBeo1mY++bocaA6cLkOC2ivm6WnvY+ogmnUouA3pNp0Zbz6qehUb03
+	zddUNhwBPVSHDuyX5BTKKapBjA==
+X-Google-Smtp-Source: AA6agR4GpbjANjRRB/mggPAAMnjTCBrBoQ3zs7xDo36rYSrtHcx43GjsfBpcNuT6ZlDcZ53RODXr4g==
+X-Received: by 2002:a2e:9a97:0:b0:26b:3f4f:cb90 with SMTP id p23-20020a2e9a97000000b0026b3f4fcb90mr807088lji.137.1662622009507;
+        Thu, 08 Sep 2022 00:26:49 -0700 (PDT)
+Received: from [192.168.0.21] (78-11-189-27.static.ip.netia.com.pl. [78.11.189.27])
+        by smtp.gmail.com with ESMTPSA id u10-20020ac258ca000000b0048b0975ac7asm262844lfo.151.2022.09.08.00.26.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 08 Sep 2022 00:26:49 -0700 (PDT)
+Message-ID: <37b21772-c128-36bb-dbc1-5047b2a82773@linaro.org>
+Date: Thu, 8 Sep 2022 09:26:48 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.13.0
+Subject: Re: [PATCH v3 1/3] dt-bindings: reset: syscon-reboot: Add priority
+ property
+Content-Language: en-US
+To: =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali@kernel.org>
+References: <20220820102925.29476-1-pali@kernel.org>
+ <20220831081715.14673-1-pali@kernel.org>
+ <9a71a2f3-97f6-f3ac-8852-1d3da1a50370@linaro.org>
+ <20220907163331.zoumcdmmarnbkmm5@pali>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220907163331.zoumcdmmarnbkmm5@pali>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: rBj1vJeVVNSw8fZKXtnAGWLEnSIuDt1A
-X-Proofpoint-GUID: -Fs7kPVnkQVzbSkptSZbVmO1PPhuW_nO
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
- definitions=2022-09-08_04,2022-09-07_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- clxscore=1011 malwarescore=0 spamscore=0 lowpriorityscore=0 mlxscore=0
- impostorscore=0 adultscore=0 bulkscore=0 suspectscore=0 mlxlogscore=999
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2207270000 definitions=main-2209080025
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,101 +85,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: =?UTF-8?Q?Marek_Beh=c3=ban?= <kabel@kernel.org>, devicetree@vger.kernel.org, linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Powerpc architecture supports 16GB hugetlb pages with hash translation. For 4K
-page size, this is implemented as a hugepage directory entry at PGD level and
-for 64K it is implemented as a huge page pte at PUD level
+On 07/09/2022 18:33, Pali Rohár wrote:
+> On Wednesday 07 September 2022 14:38:42 Krzysztof Kozlowski wrote:
+>> On 31/08/2022 10:17, Pali Rohár wrote:
+>>> This new optional priority property allows to specify custom priority level
+>>> of reset device. Prior this change priority level was hardcoded to 192 and
+>>> not possible to specify or change. Specifying other value is needed for
+>>> some boards. Default level when not specified stays at 192 as before.
+>>>
+>>> Signed-off-by: Pali Rohár <pali@kernel.org>
+>>
+>> Thanks for the changes. Explanation looks good.
+>>
+>> I sent a patch adding the common schema with priority. If it gets
+>> ack/review from Rob and Sebastian, please kindly rebase on top of it and
+>> use same way as I did for gpio-restart.yaml
+>>
+>> Best regards,
+>> Krzysztof
+> 
+> Ok, so just by adding "allOf: - $ref: restart-handler.yaml#" right?
 
-With 16GB hugetlb size, offset within a page is greater than 32 bits. Hence
-switch to use unsigned long type when using hugepd_shift.
+Yes.
 
-Inorder to keep things simpler, we make sure we always use unsigned long type
-when using hugepd_shift() even though all the hugetlb page size won't require
-that.
-
-The walk_hugepd_range change won't have any impact because we don't use that for
-the hugetlb walk. That code is needed to support hugepd on init_mm with PPC_8XX
-and 8M page. Even though 8M page size won't result in any real issue, we update
-that to keep it simpler.
-
-The hugetlb_free_p*d_range changes are all related to nohash usage where we can
-have multiple pgd entries pointing to the same hugepd entries. Hence on book3s64
-where we can have > 4GB hugetlb page size we will always find more < next even
-if we compute the value of more correctly.
-
-Hence there is no functional change in this patch except that it fixes the below
-warning.
-
- UBSAN: shift-out-of-bounds in arch/powerpc/mm/hugetlbpage.c:499:21
- shift exponent 34 is too large for 32-bit type 'int'
- CPU: 39 PID: 1673 Comm: a.out Not tainted 6.0.0-rc2-00327-gee88a56e8517-dirty #1
- Call Trace:
- [c00000002ccb3720] [c000000000cb21e4] dump_stack_lvl+0x98/0xe0 (unreliable)
- [c00000002ccb3760] [c000000000cacf60] ubsan_epilogue+0x18/0x70
- [c00000002ccb37c0] [c000000000cac44c] __ubsan_handle_shift_out_of_bounds+0x1bc/0x390
- [c00000002ccb38c0] [c0000000000d6f78] hugetlb_free_pgd_range+0x5d8/0x600
- [c00000002ccb39f0] [c000000000550e94] free_pgtables+0x114/0x290
- [c00000002ccb3ac0] [c00000000056cbe0] exit_mmap+0x150/0x550
- [c00000002ccb3be0] [c00000000017bf0c] mmput+0xcc/0x210
- [c00000002ccb3c20] [c00000000018f180] do_exit+0x420/0xdd0
- [c00000002ccb3cf0] [c00000000018fcdc] do_group_exit+0x4c/0xd0
- [c00000002ccb3d30] [c00000000018fd84] sys_exit_group+0x24/0x30
- [c00000002ccb3d50] [c00000000003cde0] system_call_exception+0x250/0x600
- [c00000002ccb3e10] [c00000000000c3bc] system_call_common+0xec/0x250
-
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
----
- arch/powerpc/mm/hugetlbpage.c | 6 +++---
- mm/pagewalk.c                 | 2 +-
- 2 files changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/arch/powerpc/mm/hugetlbpage.c b/arch/powerpc/mm/hugetlbpage.c
-index bc84a594ca62..d1af03db6181 100644
---- a/arch/powerpc/mm/hugetlbpage.c
-+++ b/arch/powerpc/mm/hugetlbpage.c
-@@ -392,7 +392,7 @@ static void hugetlb_free_pmd_range(struct mmu_gather *tlb, pud_t *pud,
- 		 * single hugepage, but all of them point to
- 		 * the same kmem cache that holds the hugepte.
- 		 */
--		more = addr + (1 << hugepd_shift(*(hugepd_t *)pmd));
-+		more = addr + (1UL << hugepd_shift(*(hugepd_t *)pmd));
- 		if (more > next)
- 			next = more;
- 
-@@ -434,7 +434,7 @@ static void hugetlb_free_pud_range(struct mmu_gather *tlb, p4d_t *p4d,
- 			 * single hugepage, but all of them point to
- 			 * the same kmem cache that holds the hugepte.
- 			 */
--			more = addr + (1 << hugepd_shift(*(hugepd_t *)pud));
-+			more = addr + (1UL << hugepd_shift(*(hugepd_t *)pud));
- 			if (more > next)
- 				next = more;
- 
-@@ -496,7 +496,7 @@ void hugetlb_free_pgd_range(struct mmu_gather *tlb,
- 			 * for a single hugepage, but all of them point to the
- 			 * same kmem cache that holds the hugepte.
- 			 */
--			more = addr + (1 << hugepd_shift(*(hugepd_t *)pgd));
-+			more = addr + (1ULL << hugepd_shift(*(hugepd_t *)pgd));
- 			if (more > next)
- 				next = more;
- 
-diff --git a/mm/pagewalk.c b/mm/pagewalk.c
-index fa7a3d21a751..e210b737658c 100644
---- a/mm/pagewalk.c
-+++ b/mm/pagewalk.c
-@@ -65,7 +65,7 @@ static int walk_hugepd_range(hugepd_t *phpd, unsigned long addr,
- 	int err = 0;
- 	const struct mm_walk_ops *ops = walk->ops;
- 	int shift = hugepd_shift(*phpd);
--	int page_size = 1 << shift;
-+	long page_size = 1UL << shift;
- 
- 	if (!ops->pte_entry)
- 		return 0;
--- 
-2.37.3
-
+Best regards,
+Krzysztof
