@@ -1,66 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A079C5B2278
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Sep 2022 17:35:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 039175B2402
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Sep 2022 18:54:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MNjrQ4yCxz3br9
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 01:35:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MNlbF6b7mz3c6K
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 02:54:33 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jtuXUldp;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=kNBPUJoY;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jtuXUldp;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=kNBPUJoY;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MNjqq2wDwz30Qt
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Sep 2022 01:35:19 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 5640CB8214A;
-	Thu,  8 Sep 2022 15:35:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9F05C433C1;
-	Thu,  8 Sep 2022 15:35:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1662651315;
-	bh=1HH8dtHniEemIyqgAOVQ7bA85JJUJ7y9/44WJRBwSCQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jtuXUldpXq4AZ4gbzvBqJ+hUY8LnvKeFDn3wTlDvP0la8BqO1YRLKBeORZnIZrrEn
-	 FE/FbCvMREQD+mWPp2gf9mlDIkJKt+hB3Y8wdqZqUseL42cje7fqAcvZFxADT7z0om
-	 b+PY3woI5hLvo32l218UiRAa5U9Gr5sCJ4LAWQUzM1EveQX8YOhxkmWpoht+fnsfgc
-	 SlhVW/dONbhlgA5EPEg1laTajQe/ctgQNlW6yjrcufj73gj9S+BXnW2UDv8jCgNIrM
-	 M216TK7W3S5ZsU98BNrYM1m5hq6qH5vqIihxVQA7Pq+J7YQLLn3hW/eBN/zOtyVNi0
-	 Qq8zT2+i7ewmA==
-Received: by pali.im (Postfix)
-	id 104B47EF; Thu,  8 Sep 2022 17:35:12 +0200 (CEST)
-Date: Thu, 8 Sep 2022 17:35:11 +0200
-From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH 11/12] powerpc: wiiu: don't enforce flat memory
-Message-ID: <20220908153511.57ceunyusziqfcav@pali>
-References: <20220302044406.63401-1-ash@heyquark.com>
- <20220302044406.63401-12-ash@heyquark.com>
- <20220513224353.n56qg5fhstbaqhfz@pali>
- <d84e4d24-f350-80fc-6c31-b7e7f8d429f4@heyquark.com>
- <20220520080454.c3cqodsdbfbkmg56@pali>
- <935b426a-6c64-beb0-907f-8c3f0a089ab7@heyquark.com>
- <20220520123002.rd46p5ty6wumi7cc@pali>
- <20220609222420.ponpoodiqmaqtwht@pali>
- <20220808184034.lskqrk6z3gb5q76r@pali>
- <219cda7b-da4b-7a5a-9809-0878e0fc02ba@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MNlZY2bcDz2xmw
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Sep 2022 02:53:54 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=Wbmln1kNR8hccItKJCnaBOvzDTVXLhiF2eeXL7RfOdI=; b=kNBPUJoYroA5CfTIFh1rNg8JFg
+	zvLWUK9xW6DknydoZv0ZcuDLCxx6OVKDkzFzsJ3O31nnfOApNaKIKoniPycWmIj7V9R68Lrck5ocI
+	z02G3Kbb+maqNEAj/Drn9u6GGvvG8nuoUZlEMnPvOSVGk+Pt2w3u7tOLfNmqQzWRTSn1qkELxrDbB
+	HR7hM7o6IgwIClt7nXDgK9wqY8ZcOuD857XMNUxEFbOpDy0KLaTdq520qith2gdKh4KyURGg+PlVj
+	63j0OML/QTh4q7ZWc3etjWlvfzVweV3yLhLrwIaSnQQjtZ0J/GjguY2kw8ZCtCGWvB+W4qHfcryOx
+	KMyRAYYg==;
+Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1oWKmb-00CVbD-Tc; Thu, 08 Sep 2022 16:53:41 +0000
+Date: Thu, 8 Sep 2022 17:53:41 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Subject: Re: [RFC PATCH] fs/hugetlb: Fix UBSAN warning reported on hugetlb
+Message-ID: <YxoeFUW5HFP/3/s1@casper.infradead.org>
+References: <20220908072659.259324-1-aneesh.kumar@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <219cda7b-da4b-7a5a-9809-0878e0fc02ba@csgroup.eu>
-User-Agent: NeoMutt/20180716
+In-Reply-To: <20220908072659.259324-1-aneesh.kumar@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,31 +55,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "robh+dt@kernel.org" <robh+dt@kernel.org>, "paulus@samba.org" <paulus@samba.org>, Ash Logan <ash@heyquark.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "j.ne@posteo.net" <j.ne@posteo.net>
+Cc: David Howells <dhowells@redhat.com>, linux-mm@kvack.org, npiggin@gmail.com, linux-fsdevel@vger.kernel.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, Al Viro <viro@zeniv.linux.org.uk>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thursday 08 September 2022 15:25:14 Christophe Leroy wrote:
-> Le 08/08/2022 à 20:40, Pali Rohár a écrit :
-> > On Friday 10 June 2022 00:24:20 Pali Rohár wrote:
-> >> On Friday 20 May 2022 14:30:02 Pali Rohár wrote:
-> >>> + linux-mm
-> >>>
-> >>> Do you know what are requirements for kernel to support non-contiguous
-> >>> memory support and what is needed to enable it for 32-bit powerpc?
-> >>
-> >> Any hints?
-> > 
-> > PING?
-> > 
-> 
-> The tree following patches landed in powerpc/next branch, so they should 
-> soon be visible in linux-next too:
-> 
-> fc06755e2562 ("powerpc/32: Drop a stale comment about reservation of 
-> gigantic pages")
-> b0e0d68b1c52 ("powerpc/32: Allow fragmented physical memory")
-> 0115953dcebe ("powerpc/32: Remove wii_memory_fixups()")
+On Thu, Sep 08, 2022 at 12:56:59PM +0530, Aneesh Kumar K.V wrote:
+> +++ b/fs/dax.c
+> @@ -1304,7 +1304,7 @@ EXPORT_SYMBOL_GPL(dax_zero_range);
+>  int dax_truncate_page(struct inode *inode, loff_t pos, bool *did_zero,
+>  		const struct iomap_ops *ops)
+>  {
+> -	unsigned int blocksize = i_blocksize(inode);
+> +	size_t blocksize = i_blocksize(inode);
+>  	unsigned int off = pos & (blocksize - 1);
 
-Ou, nice! I will try to test it if it allows me to access more than 2GB
-of RAM from 4GB DDR3 module with 32-bit addressing mode on P2020 CPU.
+If blocksize is larger than 4GB, then off also needs to be size_t.
+
+> +++ b/fs/iomap/buffered-io.c
+> @@ -955,7 +955,7 @@ int
+>  iomap_truncate_page(struct inode *inode, loff_t pos, bool *did_zero,
+>  		const struct iomap_ops *ops)
+>  {
+> -	unsigned int blocksize = i_blocksize(inode);
+> +	size_t blocksize = i_blocksize(inode);
+>  	unsigned int off = pos & (blocksize - 1);
+
+Ditto.
+
+(maybe there are others; I didn't check closely)
