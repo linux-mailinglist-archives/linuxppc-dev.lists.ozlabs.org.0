@@ -2,87 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94BEA5B15A0
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Sep 2022 09:28:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AAC195B1611
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Sep 2022 09:57:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MNW1j2K3Hz3c95
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Sep 2022 17:28:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MNWg3308nz3br9
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Sep 2022 17:57:03 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=eedXkseo;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=OWxp6Vyp;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=eedXkseo;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=OWxp6Vyp;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MNW0m10bwz3bmK
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Sep 2022 17:27:19 +1000 (AEST)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2887Ln54000407;
-	Thu, 8 Sep 2022 07:27:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=8dT6JU8X8lswFiawJLkJacIDxINQ68pgKvHg/rE22Vs=;
- b=eedXkseorNqvaSDA3luDnDEs/XyrpJybJsSBA9OPJx6zH4dZ7ERyt9fkVA1gt4yzlI9J
- tOLVRTkvPX5M1aBgllfFlvNBChFgMSjvMahCgi8y7DaOuGG0gFmj6lVlIt2LIn0BYRJ+
- mf1eTgrQUBvJLIwlRYydOaKfWobLdKUuJj853hpQswdwCGMLum9C9I3fEtiDxMc1bpmv
- fPz9u9FAc7ynk7n+3dKGGHXagWjhn5XQUiD+7HIJ2PDqS33jORJk/b2JZbIcq9OZO+yC
- 7LJKw+7dMJKcp6ilVh7gGlumcPdc/xbu6j2bVX9djR9Dl7g+lbAJgKT4jwp2X07A1K83 YQ== 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MNWfH5Cwlz2ywc
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Sep 2022 17:56:23 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2887Kq93005834
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 8 Sep 2022 07:56:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=SoJ5sYA/H6D9Vt3aoi1EqOdj3AFQkYJnTxFkMmetMhg=;
+ b=OWxp6VypA3Md53SWgA9csMhVegD3XyQMDerqRa0MxjdFBsFwX3lQ10kxh3q+IaNSLQhq
+ DZK1vCCGtvRF04JOBBLLfYn3CBN1TSSvhHggWPVvjjy6ZAzFbFx51hNflAZYK45bDj3J
+ v8YbdKP0+R0VUk5jNmfP17eZ2zBWV+SLcissZiYD1LOXMN5PovixoY1wCAEf/47n0v0v
+ +WN8VaoJ4FPt++0IBNID4eqGAbsLrdlJk0R80vmC0QOBMzkXZ55EjPGkSXIpMkqaJbeo
+ rrCO800Pdwi/q8oc+fUwiUEmBpsy2zlsqY7PGloMtzEMh97JcvinOdl0TXPdHECgQhzH PQ== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jfbxj85dg-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jfbx4920d-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Sep 2022 07:56:19 +0000
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2887MqeV013498
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 8 Sep 2022 07:56:19 GMT
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jfbx491yx-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 08 Sep 2022 07:27:11 +0000
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2887MVMb004390;
-	Thu, 8 Sep 2022 07:27:11 GMT
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com [169.63.121.186])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jfbxj85cs-1
+	Thu, 08 Sep 2022 07:56:19 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+	by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2887oC2T016293;
+	Thu, 8 Sep 2022 07:56:17 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+	by ppma04ams.nl.ibm.com with ESMTP id 3jbxj8x7w2-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 08 Sep 2022 07:27:10 +0000
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
-	by ppma03wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2887M8mD014033;
-	Thu, 8 Sep 2022 07:27:09 GMT
-Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com [9.57.198.28])
-	by ppma03wdc.us.ibm.com with ESMTP id 3jbxj9puk5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 08 Sep 2022 07:27:09 +0000
-Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com [9.57.199.107])
-	by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2887R9nx63308194
+	Thu, 08 Sep 2022 07:56:17 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
+	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2887uEpi34996674
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 8 Sep 2022 07:27:09 GMT
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F3968124054;
-	Thu,  8 Sep 2022 07:27:08 +0000 (GMT)
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 783F9124053;
-	Thu,  8 Sep 2022 07:27:05 +0000 (GMT)
-Received: from skywalker.ibmuc.com (unknown [9.43.97.195])
-	by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
-	Thu,  8 Sep 2022 07:27:05 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au, npiggin@gmail.com,
-        christophe.leroy@csgroup.eu
-Subject: [RFC PATCH] fs/hugetlb: Fix UBSAN warning reported on hugetlb
-Date: Thu,  8 Sep 2022 12:56:59 +0530
-Message-Id: <20220908072659.259324-1-aneesh.kumar@linux.ibm.com>
-X-Mailer: git-send-email 2.37.3
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	Thu, 8 Sep 2022 07:56:14 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 035DD5204F;
+	Thu,  8 Sep 2022 07:56:14 +0000 (GMT)
+Received: from [9.145.9.202] (unknown [9.145.9.202])
+	by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id C1A6E52051;
+	Thu,  8 Sep 2022 07:56:13 +0000 (GMT)
+Message-ID: <429708cd-7ae9-10e7-cbb9-3261ac339c8f@linux.ibm.com>
+Date: Thu, 8 Sep 2022 09:56:13 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.2.1
+Subject: Re: [PATCH] Revert "powerpc/rtas: Implement reentrant rtas call"
+To: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+References: <20220907220111.223267-1-nathanl@linux.ibm.com>
+Content-Language: fr
+From: Laurent Dufour <ldufour@linux.ibm.com>
+In-Reply-To: <20220907220111.223267-1-nathanl@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Jl0EUJKsoYb-AZ90GWCjvaDaxr7FVNNy
-X-Proofpoint-GUID: 5D3XfS1LjGF-GCgz95So2Fvsho8nHAkL
+X-Proofpoint-ORIG-GUID: l1L8yoHFXcD0uerAWYuXixMvSfLvAtv0
+X-Proofpoint-GUID: P7p54zNBQwhCGcKW3Hs5QyZ1yWtLxLdk
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
  definitions=2022-09-08_04,2022-09-07_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- clxscore=1011 malwarescore=0 spamscore=0 lowpriorityscore=0 mlxscore=0
- impostorscore=0 adultscore=0 bulkscore=0 suspectscore=0 mlxlogscore=978
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2207270000 definitions=main-2209080025
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxlogscore=999
+ impostorscore=0 adultscore=0 priorityscore=1501 clxscore=1015 mlxscore=0
+ lowpriorityscore=0 spamscore=0 phishscore=0 malwarescore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2207270000
+ definitions=main-2209080026
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,223 +97,291 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, David Howells <dhowells@redhat.com>, linux-mm@kvack.org, Al Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org, akpm@linux-foundation.org
+Cc: leobras.c@gmail.com, haren@linux.ibm.com, tyreld@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Powerpc architecture supports 16GB hugetlb pages with hash translation. For 4K
-page size, this is implemented as a hugepage directory entry at the PGD level
-and for 64K it is implemented as a huge page pte at the PUD level
+Le 08/09/2022 à 00:01, Nathan Lynch a écrit :
+> At the time this was submitted by Leonardo, I confirmed -- or thought
+> I had confirmed -- with PowerVM partition firmware development that
+> the following RTAS functions:
+> 
+> - ibm,get-xive
+> - ibm,int-off
+> - ibm,int-on
+> - ibm,set-xive
+> 
+> were safe to call on multiple CPUs simultaneously, not only with
+> respect to themselves as indicated by PAPR, but with arbitrary other
+> RTAS calls:
+> 
+> https://lore.kernel.org/linuxppc-dev/875zcy2v8o.fsf@linux.ibm.com/
+> 
+> Recent discussion with firmware development makes it clear that this
+> is not true, and that the code in commit b664db8e3f97 ("powerpc/rtas:
+> Implement reentrant rtas call") is unsafe, likely explaining several
+> strange bugs we've seen in internal testing involving DLPAR and
+> LPM. These scenarios use ibm,configure-connector, whose internal state
+> can be corrupted by the concurrent use of the "reentrant" functions,
+> leading to symptoms like endless busy statuses from RTAS.
 
-Hugetlbfs sets up file system blocksize same as page size and this patch
-switches blocks size usage with 16GB hugetlb to use size_t type.
+Thanks, Nathan,
+T
+his is fixing LPAR hangs I was facing when doing some migration tests.
 
-We only change generic code and hugetlbfs related usage of i_blocksize(). Other
-fs specific usage is left unchanged in this patch. A large part of this change
-is not relevant to hugetlb, but it is changed to make sure we track block size
-using size_t in generic code.
+Reviewed-by: Laurent Dufour <laurent.dufour@fr.ibm.com>
 
-Only functionality w.r.t getattr is observed to be impacted by this change.
-
-The below test shows the user-visible change.
-
- struct stat a;
- stat("/mnt/a", &a);
- printf("st_blksize = %ld\n", a.st_blksize);
-
-Without patch
- # ./a.out  /mnt/a
- st_blksize = 0
- #
-
-With patch
- # ./a.out /mnt/a
- st_blksize = 17179869184
- #
-
-Statx still has the problem
-
- # stat /mnt/a
-   File: /mnt/a
-   Size: 0               Blocks: 0          IO Block: 512    regular empty file
- Device: 2eh/46d Inode: 74584       Links: 1
- Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)
- Context: unconfined_u:object_r:hugetlbfs_t:s0
- Access: 2022-09-07 11:42:14.620239084 -0500
- Modify: 2022-09-07 11:42:14.620239084 -0500
- Change: 2022-09-07 11:42:14.620239084 -0500
-  Birth: -
-
-because it uses __u32 stx_blksize in uapi.
-
-struct statx {
-	/* 0x00 */
-	__u32	stx_mask;	/* What results were written [uncond] */
-	__u32	stx_blksize;	/* Preferred general I/O size [uncond] */
-
-Fixing statx requires a syscall change where we add STATX_64BLOCKSIZE.
-
-The change also fixes the below report warning.
-
- UBSAN: shift-out-of-bounds in ./include/linux/fs.h:709:12
- shift exponent 34 is too large for 32-bit type 'int'
- CPU: 67 PID: 1632 Comm: bash Not tainted 6.0.0-rc2-00327-gee88a56e8517-dirty #1
- Call Trace:
- [c000000021517990] [c000000000cb21e4] dump_stack_lvl+0x98/0xe0 (unreliable)
- [c0000000215179d0] [c000000000cacf60] ubsan_epilogue+0x18/0x70
- [c000000021517a30] [c000000000cac44c] __ubsan_handle_shift_out_of_bounds+0x1bc/0x390
- [c000000021517b30] [c00000000067e5b8] generic_fillattr+0x1b8/0x1d0
- [c000000021517b70] [c00000000067e6ec] vfs_getattr_nosec+0x11c/0x140
- [c000000021517bb0] [c00000000067e888] vfs_statx+0xd8/0x1d0
- [c000000021517c30] [c00000000067f658] vfs_fstatat+0x88/0xd0
- [c000000021517c80] [c00000000067f6e0] __do_sys_newstat+0x40/0x90
- [c000000021517d50] [c00000000003cde0] system_call_exception+0x250/0x600
- [c000000021517e10] [c00000000000c3bc] system_call_common+0xec/0x250
-
-Cc: David Howells <dhowells@redhat.com>
-Cc: linux-fsdevel@vger.kernel.org
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
----
- fs/buffer.c            | 6 +++---
- fs/dax.c               | 2 +-
- fs/iomap/buffered-io.c | 6 +++---
- fs/iomap/direct-io.c   | 2 +-
- include/linux/fs.h     | 4 ++--
- include/linux/stat.h   | 2 +-
- mm/truncate.c          | 2 +-
- 7 files changed, 12 insertions(+), 12 deletions(-)
-
-diff --git a/fs/buffer.c b/fs/buffer.c
-index 55e762a58eb6..15def791325e 100644
---- a/fs/buffer.c
-+++ b/fs/buffer.c
-@@ -2376,7 +2376,7 @@ static int cont_expand_zero(struct file *file, struct address_space *mapping,
- {
- 	struct inode *inode = mapping->host;
- 	const struct address_space_operations *aops = mapping->a_ops;
--	unsigned int blocksize = i_blocksize(inode);
-+	size_t blocksize = i_blocksize(inode);
- 	struct page *page;
- 	void *fsdata;
- 	pgoff_t index, curidx;
-@@ -2454,7 +2454,7 @@ int cont_write_begin(struct file *file, struct address_space *mapping,
- 			get_block_t *get_block, loff_t *bytes)
- {
- 	struct inode *inode = mapping->host;
--	unsigned int blocksize = i_blocksize(inode);
-+	size_t blocksize = i_blocksize(inode);
- 	unsigned int zerofrom;
- 	int err;
- 
-@@ -2542,7 +2542,7 @@ int block_truncate_page(struct address_space *mapping,
- {
- 	pgoff_t index = from >> PAGE_SHIFT;
- 	unsigned offset = from & (PAGE_SIZE-1);
--	unsigned blocksize;
-+	size_t blocksize;
- 	sector_t iblock;
- 	unsigned length, pos;
- 	struct inode *inode = mapping->host;
-diff --git a/fs/dax.c b/fs/dax.c
-index c440dcef4b1b..66673ef56695 100644
---- a/fs/dax.c
-+++ b/fs/dax.c
-@@ -1304,7 +1304,7 @@ EXPORT_SYMBOL_GPL(dax_zero_range);
- int dax_truncate_page(struct inode *inode, loff_t pos, bool *did_zero,
- 		const struct iomap_ops *ops)
- {
--	unsigned int blocksize = i_blocksize(inode);
-+	size_t blocksize = i_blocksize(inode);
- 	unsigned int off = pos & (blocksize - 1);
- 
- 	/* Block boundary? Nothing to do */
-diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-index ca5c62901541..4b67018c6e71 100644
---- a/fs/iomap/buffered-io.c
-+++ b/fs/iomap/buffered-io.c
-@@ -955,7 +955,7 @@ int
- iomap_truncate_page(struct inode *inode, loff_t pos, bool *did_zero,
- 		const struct iomap_ops *ops)
- {
--	unsigned int blocksize = i_blocksize(inode);
-+	size_t blocksize = i_blocksize(inode);
- 	unsigned int off = pos & (blocksize - 1);
- 
- 	/* Block boundary? Nothing to do */
-@@ -1297,7 +1297,7 @@ iomap_add_to_ioend(struct inode *inode, loff_t pos, struct folio *folio,
- 		struct writeback_control *wbc, struct list_head *iolist)
- {
- 	sector_t sector = iomap_sector(&wpc->iomap, pos);
--	unsigned len = i_blocksize(inode);
-+	size_t len = i_blocksize(inode);
- 	size_t poff = offset_in_folio(folio, pos);
- 
- 	if (!wpc->ioend || !iomap_can_add_to_ioend(wpc, pos, sector)) {
-@@ -1340,7 +1340,7 @@ iomap_writepage_map(struct iomap_writepage_ctx *wpc,
- {
- 	struct iomap_page *iop = iomap_page_create(inode, folio, 0);
- 	struct iomap_ioend *ioend, *next;
--	unsigned len = i_blocksize(inode);
-+	size_t len = i_blocksize(inode);
- 	unsigned nblocks = i_blocks_per_folio(inode, folio);
- 	u64 pos = folio_pos(folio);
- 	int error = 0, count = 0, i;
-diff --git a/fs/iomap/direct-io.c b/fs/iomap/direct-io.c
-index 4eb559a16c9e..d17d9e11cd35 100644
---- a/fs/iomap/direct-io.c
-+++ b/fs/iomap/direct-io.c
-@@ -241,7 +241,7 @@ static loff_t iomap_dio_bio_iter(const struct iomap_iter *iter,
- 	const struct iomap *iomap = &iter->iomap;
- 	struct inode *inode = iter->inode;
- 	unsigned int blkbits = blksize_bits(bdev_logical_block_size(iomap->bdev));
--	unsigned int fs_block_size = i_blocksize(inode), pad;
-+	size_t fs_block_size = i_blocksize(inode), pad;
- 	loff_t length = iomap_length(iter);
- 	loff_t pos = iter->pos;
- 	blk_opf_t bio_opf;
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index 9eced4cc286e..7fedf9dbcac3 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -704,9 +704,9 @@ struct inode {
- 
- struct timespec64 timestamp_truncate(struct timespec64 t, struct inode *inode);
- 
--static inline unsigned int i_blocksize(const struct inode *node)
-+static inline size_t i_blocksize(const struct inode *node)
- {
--	return (1 << node->i_blkbits);
-+	return (1UL << node->i_blkbits);
- }
- 
- static inline int inode_unhashed(struct inode *inode)
-diff --git a/include/linux/stat.h b/include/linux/stat.h
-index 7df06931f25d..f362a8d1af0c 100644
---- a/include/linux/stat.h
-+++ b/include/linux/stat.h
-@@ -23,7 +23,7 @@ struct kstat {
- 	u32		result_mask;	/* What fields the user got */
- 	umode_t		mode;
- 	unsigned int	nlink;
--	uint32_t	blksize;	/* Preferred I/O size */
-+	size_t		blksize;	/* Preferred I/O size */
- 	u64		attributes;
- 	u64		attributes_mask;
- #define KSTAT_ATTR_FS_IOC_FLAGS				\
-diff --git a/mm/truncate.c b/mm/truncate.c
-index 0b0708bf935f..9d4b298d4f83 100644
---- a/mm/truncate.c
-+++ b/mm/truncate.c
-@@ -800,7 +800,7 @@ EXPORT_SYMBOL(truncate_setsize);
-  */
- void pagecache_isize_extended(struct inode *inode, loff_t from, loff_t to)
- {
--	int bsize = i_blocksize(inode);
-+	size_t bsize = i_blocksize(inode);
- 	loff_t rounded_from;
- 	struct page *page;
- 	pgoff_t index;
--- 
-2.37.3
+> Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+> Fixes: b664db8e3f97 ("powerpc/rtas: Implement reentrant rtas call")
+> Cc: stable@vger.kernel.org
+> ---
+>  arch/powerpc/include/asm/paca.h     |  1 -
+>  arch/powerpc/include/asm/rtas.h     |  1 -
+>  arch/powerpc/kernel/paca.c          | 32 -----------------
+>  arch/powerpc/kernel/rtas.c          | 54 -----------------------------
+>  arch/powerpc/sysdev/xics/ics-rtas.c | 22 ++++++------
+>  5 files changed, 11 insertions(+), 99 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/paca.h b/arch/powerpc/include/asm/paca.h
+> index 4d7aaab82702..3537b0500f4d 100644
+> --- a/arch/powerpc/include/asm/paca.h
+> +++ b/arch/powerpc/include/asm/paca.h
+> @@ -263,7 +263,6 @@ struct paca_struct {
+>  	u64 l1d_flush_size;
+>  #endif
+>  #ifdef CONFIG_PPC_PSERIES
+> -	struct rtas_args *rtas_args_reentrant;
+>  	u8 *mce_data_buf;		/* buffer to hold per cpu rtas errlog */
+>  #endif /* CONFIG_PPC_PSERIES */
+>  
+> diff --git a/arch/powerpc/include/asm/rtas.h b/arch/powerpc/include/asm/rtas.h
+> index 00531af17ce0..56319aea646e 100644
+> --- a/arch/powerpc/include/asm/rtas.h
+> +++ b/arch/powerpc/include/asm/rtas.h
+> @@ -240,7 +240,6 @@ extern struct rtas_t rtas;
+>  extern int rtas_token(const char *service);
+>  extern int rtas_service_present(const char *service);
+>  extern int rtas_call(int token, int, int, int *, ...);
+> -int rtas_call_reentrant(int token, int nargs, int nret, int *outputs, ...);
+>  void rtas_call_unlocked(struct rtas_args *args, int token, int nargs,
+>  			int nret, ...);
+>  extern void __noreturn rtas_restart(char *cmd);
+> diff --git a/arch/powerpc/kernel/paca.c b/arch/powerpc/kernel/paca.c
+> index ba593fd60124..dfd097b79160 100644
+> --- a/arch/powerpc/kernel/paca.c
+> +++ b/arch/powerpc/kernel/paca.c
+> @@ -16,7 +16,6 @@
+>  #include <asm/kexec.h>
+>  #include <asm/svm.h>
+>  #include <asm/ultravisor.h>
+> -#include <asm/rtas.h>
+>  
+>  #include "setup.h"
+>  
+> @@ -170,30 +169,6 @@ static struct slb_shadow * __init new_slb_shadow(int cpu, unsigned long limit)
+>  }
+>  #endif /* CONFIG_PPC_64S_HASH_MMU */
+>  
+> -#ifdef CONFIG_PPC_PSERIES
+> -/**
+> - * new_rtas_args() - Allocates rtas args
+> - * @cpu:	CPU number
+> - * @limit:	Memory limit for this allocation
+> - *
+> - * Allocates a struct rtas_args and return it's pointer,
+> - * if not in Hypervisor mode
+> - *
+> - * Return:	Pointer to allocated rtas_args
+> - *		NULL if CPU in Hypervisor Mode
+> - */
+> -static struct rtas_args * __init new_rtas_args(int cpu, unsigned long limit)
+> -{
+> -	limit = min_t(unsigned long, limit, RTAS_INSTANTIATE_MAX);
+> -
+> -	if (early_cpu_has_feature(CPU_FTR_HVMODE))
+> -		return NULL;
+> -
+> -	return alloc_paca_data(sizeof(struct rtas_args), L1_CACHE_BYTES,
+> -			       limit, cpu);
+> -}
+> -#endif /* CONFIG_PPC_PSERIES */
+> -
+>  /* The Paca is an array with one entry per processor.  Each contains an
+>   * lppaca, which contains the information shared between the
+>   * hypervisor and Linux.
+> @@ -232,10 +207,6 @@ void __init initialise_paca(struct paca_struct *new_paca, int cpu)
+>  	/* For now -- if we have threads this will be adjusted later */
+>  	new_paca->tcd_ptr = &new_paca->tcd;
+>  #endif
+> -
+> -#ifdef CONFIG_PPC_PSERIES
+> -	new_paca->rtas_args_reentrant = NULL;
+> -#endif
+>  }
+>  
+>  /* Put the paca pointer into r13 and SPRG_PACA */
+> @@ -307,9 +278,6 @@ void __init allocate_paca(int cpu)
+>  #endif
+>  #ifdef CONFIG_PPC_64S_HASH_MMU
+>  	paca->slb_shadow_ptr = new_slb_shadow(cpu, limit);
+> -#endif
+> -#ifdef CONFIG_PPC_PSERIES
+> -	paca->rtas_args_reentrant = new_rtas_args(cpu, limit);
+>  #endif
+>  	paca_struct_size += sizeof(struct paca_struct);
+>  }
+> diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
+> index 693133972294..0b8a858aa847 100644
+> --- a/arch/powerpc/kernel/rtas.c
+> +++ b/arch/powerpc/kernel/rtas.c
+> @@ -43,7 +43,6 @@
+>  #include <asm/time.h>
+>  #include <asm/mmu.h>
+>  #include <asm/topology.h>
+> -#include <asm/paca.h>
+>  
+>  /* This is here deliberately so it's only used in this file */
+>  void enter_rtas(unsigned long);
+> @@ -932,59 +931,6 @@ void rtas_activate_firmware(void)
+>  		pr_err("ibm,activate-firmware failed (%i)\n", fwrc);
+>  }
+>  
+> -#ifdef CONFIG_PPC_PSERIES
+> -/**
+> - * rtas_call_reentrant() - Used for reentrant rtas calls
+> - * @token:	Token for desired reentrant RTAS call
+> - * @nargs:	Number of Input Parameters
+> - * @nret:	Number of Output Parameters
+> - * @outputs:	Array of outputs
+> - * @...:	Inputs for desired RTAS call
+> - *
+> - * According to LoPAR documentation, only "ibm,int-on", "ibm,int-off",
+> - * "ibm,get-xive" and "ibm,set-xive" are currently reentrant.
+> - * Reentrant calls need their own rtas_args buffer, so not using rtas.args, but
+> - * PACA one instead.
+> - *
+> - * Return:	-1 on error,
+> - *		First output value of RTAS call if (nret > 0),
+> - *		0 otherwise,
+> - */
+> -int rtas_call_reentrant(int token, int nargs, int nret, int *outputs, ...)
+> -{
+> -	va_list list;
+> -	struct rtas_args *args;
+> -	unsigned long flags;
+> -	int i, ret = 0;
+> -
+> -	if (!rtas.entry || token == RTAS_UNKNOWN_SERVICE)
+> -		return -1;
+> -
+> -	local_irq_save(flags);
+> -	preempt_disable();
+> -
+> -	/* We use the per-cpu (PACA) rtas args buffer */
+> -	args = local_paca->rtas_args_reentrant;
+> -
+> -	va_start(list, outputs);
+> -	va_rtas_call_unlocked(args, token, nargs, nret, list);
+> -	va_end(list);
+> -
+> -	if (nret > 1 && outputs)
+> -		for (i = 0; i < nret - 1; ++i)
+> -			outputs[i] = be32_to_cpu(args->rets[i + 1]);
+> -
+> -	if (nret > 0)
+> -		ret = be32_to_cpu(args->rets[0]);
+> -
+> -	local_irq_restore(flags);
+> -	preempt_enable();
+> -
+> -	return ret;
+> -}
+> -
+> -#endif /* CONFIG_PPC_PSERIES */
+> -
+>  /**
+>   * get_pseries_errorlog() - Find a specific pseries error log in an RTAS
+>   *                          extended event log.
+> diff --git a/arch/powerpc/sysdev/xics/ics-rtas.c b/arch/powerpc/sysdev/xics/ics-rtas.c
+> index 9e7007f9aca5..f8320f8e5bc7 100644
+> --- a/arch/powerpc/sysdev/xics/ics-rtas.c
+> +++ b/arch/powerpc/sysdev/xics/ics-rtas.c
+> @@ -36,8 +36,8 @@ static void ics_rtas_unmask_irq(struct irq_data *d)
+>  
+>  	server = xics_get_irq_server(d->irq, irq_data_get_affinity_mask(d), 0);
+>  
+> -	call_status = rtas_call_reentrant(ibm_set_xive, 3, 1, NULL, hw_irq,
+> -					  server, DEFAULT_PRIORITY);
+> +	call_status = rtas_call(ibm_set_xive, 3, 1, NULL, hw_irq, server,
+> +				DEFAULT_PRIORITY);
+>  	if (call_status != 0) {
+>  		printk(KERN_ERR
+>  			"%s: ibm_set_xive irq %u server %x returned %d\n",
+> @@ -46,7 +46,7 @@ static void ics_rtas_unmask_irq(struct irq_data *d)
+>  	}
+>  
+>  	/* Now unmask the interrupt (often a no-op) */
+> -	call_status = rtas_call_reentrant(ibm_int_on, 1, 1, NULL, hw_irq);
+> +	call_status = rtas_call(ibm_int_on, 1, 1, NULL, hw_irq);
+>  	if (call_status != 0) {
+>  		printk(KERN_ERR "%s: ibm_int_on irq=%u returned %d\n",
+>  			__func__, hw_irq, call_status);
+> @@ -68,7 +68,7 @@ static void ics_rtas_mask_real_irq(unsigned int hw_irq)
+>  	if (hw_irq == XICS_IPI)
+>  		return;
+>  
+> -	call_status = rtas_call_reentrant(ibm_int_off, 1, 1, NULL, hw_irq);
+> +	call_status = rtas_call(ibm_int_off, 1, 1, NULL, hw_irq);
+>  	if (call_status != 0) {
+>  		printk(KERN_ERR "%s: ibm_int_off irq=%u returned %d\n",
+>  			__func__, hw_irq, call_status);
+> @@ -76,8 +76,8 @@ static void ics_rtas_mask_real_irq(unsigned int hw_irq)
+>  	}
+>  
+>  	/* Have to set XIVE to 0xff to be able to remove a slot */
+> -	call_status = rtas_call_reentrant(ibm_set_xive, 3, 1, NULL, hw_irq,
+> -					  xics_default_server, 0xff);
+> +	call_status = rtas_call(ibm_set_xive, 3, 1, NULL, hw_irq,
+> +				xics_default_server, 0xff);
+>  	if (call_status != 0) {
+>  		printk(KERN_ERR "%s: ibm_set_xive(0xff) irq=%u returned %d\n",
+>  			__func__, hw_irq, call_status);
+> @@ -108,7 +108,7 @@ static int ics_rtas_set_affinity(struct irq_data *d,
+>  	if (hw_irq == XICS_IPI || hw_irq == XICS_IRQ_SPURIOUS)
+>  		return -1;
+>  
+> -	status = rtas_call_reentrant(ibm_get_xive, 1, 3, xics_status, hw_irq);
+> +	status = rtas_call(ibm_get_xive, 1, 3, xics_status, hw_irq);
+>  
+>  	if (status) {
+>  		printk(KERN_ERR "%s: ibm,get-xive irq=%u returns %d\n",
+> @@ -126,8 +126,8 @@ static int ics_rtas_set_affinity(struct irq_data *d,
+>  	pr_debug("%s: irq %d [hw 0x%x] server: 0x%x\n", __func__, d->irq,
+>  		 hw_irq, irq_server);
+>  
+> -	status = rtas_call_reentrant(ibm_set_xive, 3, 1, NULL,
+> -				     hw_irq, irq_server, xics_status[1]);
+> +	status = rtas_call(ibm_set_xive, 3, 1, NULL,
+> +			   hw_irq, irq_server, xics_status[1]);
+>  
+>  	if (status) {
+>  		printk(KERN_ERR "%s: ibm,set-xive irq=%u returns %d\n",
+> @@ -158,7 +158,7 @@ static int ics_rtas_check(struct ics *ics, unsigned int hw_irq)
+>  		return -EINVAL;
+>  
+>  	/* Check if RTAS knows about this interrupt */
+> -	rc = rtas_call_reentrant(ibm_get_xive, 1, 3, status, hw_irq);
+> +	rc = rtas_call(ibm_get_xive, 1, 3, status, hw_irq);
+>  	if (rc)
+>  		return -ENXIO;
+>  
+> @@ -174,7 +174,7 @@ static long ics_rtas_get_server(struct ics *ics, unsigned long vec)
+>  {
+>  	int rc, status[2];
+>  
+> -	rc = rtas_call_reentrant(ibm_get_xive, 1, 3, status, vec);
+> +	rc = rtas_call(ibm_get_xive, 1, 3, status, vec);
+>  	if (rc)
+>  		return -1;
+>  	return status[0];
 
