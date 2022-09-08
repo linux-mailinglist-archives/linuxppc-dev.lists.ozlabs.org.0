@@ -2,55 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85B8A5B1497
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Sep 2022 08:23:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A0825B14E1
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Sep 2022 08:43:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MNTbH43pcz3c5B
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Sep 2022 16:23:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MNV1l2Dzhz3c6B
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Sep 2022 16:43:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MNTZs62pkz2xJS
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Sep 2022 16:23:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MNV1L5KkZz2xrk
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Sep 2022 16:42:44 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4MNTZk44fPz9shS;
-	Thu,  8 Sep 2022 08:23:10 +0200 (CEST)
+	by localhost (Postfix) with ESMTP id 4MNV1F3G4Zz9shS;
+	Thu,  8 Sep 2022 08:42:41 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
 	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id tHoH0HldHIAZ; Thu,  8 Sep 2022 08:23:10 +0200 (CEST)
+	with ESMTP id GZRoIOsfxZ4l; Thu,  8 Sep 2022 08:42:41 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4MNTZk2zXtz9sfJ;
-	Thu,  8 Sep 2022 08:23:10 +0200 (CEST)
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4MNV1F2Fwbz9sfJ;
+	Thu,  8 Sep 2022 08:42:41 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 510528B78B;
-	Thu,  8 Sep 2022 08:23:10 +0200 (CEST)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 36F248B78B;
+	Thu,  8 Sep 2022 08:42:41 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id jdKROmnRdIVA; Thu,  8 Sep 2022 08:23:10 +0200 (CEST)
+	with ESMTP id 7M4xRQDFRu1Q; Thu,  8 Sep 2022 08:42:41 +0200 (CEST)
 Received: from [192.168.232.247] (unknown [192.168.232.247])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id B26C98B763;
-	Thu,  8 Sep 2022 08:23:09 +0200 (CEST)
-Message-ID: <f60e0a73-f608-b25c-358e-f4dcb09d8923@csgroup.eu>
-Date: Thu, 8 Sep 2022 08:23:10 +0200
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id D4E0E8B763;
+	Thu,  8 Sep 2022 08:42:40 +0200 (CEST)
+Message-ID: <65b3c3f4-78ba-8051-b5d9-12fe7081a6ed@csgroup.eu>
+Date: Thu, 8 Sep 2022 08:42:41 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.2.0
-Subject: Re: [PATCH] powerpc/chrp: Revert "Move PHB discovery" and "Make
- hydra_init() static"
+Subject: Re: [PATCH 1/1] arch/powerpc: Don't assume start_text & head_end
+ align
 Content-Language: fr-FR
-To: Oliver O'Halloran <oohall@gmail.com>, Guenter Roeck <linux@roeck-us.net>
-References: <20210716221159.3587039-1-linux@roeck-us.net>
- <20210717175750.Horde.TLZWyADKWFGAyFWIYtmglA2@messagerie.c-s.fr>
- <20210717162359.GA3130272@roeck-us.net>
- <CAOSf1CGxp2xuEgR=Fb2AL+Ra5owqdN5=MtK6o_MCYqp=+P9arw@mail.gmail.com>
+To: Alastair D'Silva <alastair@au1.ibm.com>, Nick Piggin <npiggin@gmail.com>
+References: <20190313033852.13028-1-alastair@au1.ibm.com>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <CAOSf1CGxp2xuEgR=Fb2AL+Ra5owqdN5=MtK6o_MCYqp=+P9arw@mail.gmail.com>
+In-Reply-To: <20190313033852.13028-1-alastair@au1.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -64,106 +61,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: linuxppc-dev@lists.ozlabs.org, Paul Mackerras <paulus@samba.org>, linux-kernel@vger.kernel.org, Alastair D'Silva <alastair@d-silva.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi All,
-
-Le 18/07/2021 à 18:09, Oliver O'Halloran a écrit :
-> On Sun, Jul 18, 2021 at 2:24 AM Guenter Roeck <linux@roeck-us.net> wrote:
->>
->> On Sat, Jul 17, 2021 at 05:57:50PM +0200, Christophe Leroy wrote:
->>> Guenter Roeck <linux@roeck-us.net> a écrit :
->>>
->>>> This patch reverts commit 407d418f2fd4 ("powerpc/chrp: Move PHB
->>>> discovery") and commit 9634afa67bfd ("powerpc/chrp: Make hydra_init()
->>>> static").
->>>>
->>>> Running the upstream kernel on Qemu's brand new "pegasos2" emulation
->>>> results in a variety of backtraces such as
->>>>
->>>> Kernel attempted to write user page (a1) - exploit attempt? (uid: 0)
->>>> ------------[ cut here ]------------
->>>> Bug: Write fault blocked by KUAP!
->>>> WARNING: CPU: 0 PID: 0 at arch/powerpc/mm/fault.c:230
->>>> do_page_fault+0x4f4/0x920
->>>> CPU: 0 PID: 0 Comm: swapper Not tainted 5.13.2 #40
->>>> NIP:  c0021824 LR: c0021824 CTR: 00000000
->>>> REGS: c1085d50 TRAP: 0700   Not tainted  (5.13.2)
->>>> MSR:  00021032 <ME,IR,DR,RI>  CR: 24042254  XER: 00000000
->>>>
->>>> GPR00: c0021824 c1085e10 c0f8c520 00000021 3fffefff c1085c60 c1085c58
->>>> 00000000
->>>> GPR08: 00001032 00000000 00000000 c0ffb3ec 44042254 00000000 00000000
->>>> 00000004
->>>> GPR16: 00000000 ffffffff 000000c4 000000d0 0188c6e0 01006000 00000001
->>>> 40b14000
->>>> GPR24: c0ec000c 00000300 02000000 00000000 42000000 000000a1 00000000
->>>> c1085e60
->>>> NIP [c0021824] do_page_fault+0x4f4/0x920
->>>> LR [c0021824] do_page_fault+0x4f4/0x920
->>>> Call Trace:
->>>> [c1085e10] [c0021824] do_page_fault+0x4f4/0x920 (unreliable)
->>>> [c1085e50] [c0004254] DataAccess_virt+0xd4/0xe4
->>>>
->>>> and the system fails to boot. Bisect points to commit 407d418f2fd4
->>>> ("powerpc/chrp: Move PHB discovery"). Reverting this patch together with
->>>> commit 9634afa67bfd ("powerpc/chrp: Make hydra_init() static") fixes
->>>> the problem.
->>>
->>> Isn't there more than that in the backtrace ? If there is a fault blocked by
->>> Kuap, it means there is a fault. It should be visible in the traces.
->>>
->>> Should we fix the problem instead of reverting the commit that made the
->>> problem visible ?
->>>
->>
->> I do not think the patch reverted here made the problem visible. I am
->> quite sure that it introduced it. AFAIS the problem is that the new code
->> initializes and remaps PCI much later, after it is being used.
-> 
-> Right. The bug is that on 32bit platforms the PHB setup also maps one
-> of the PHB's IO space as "ISA IO space" as a side effect. There's a
-> handful of platforms (pegasos2 is one) which use an i8259 interrupt
-> controller and configuring that requires access to IO / ISA space. The
-> KUAP faults we're setting are because isa_io_base is still set to zero
-> so outb() and friends are accessing the zero page.
-> 
-> I don't think there's any real reason why we need to have PCI fully
-> set up to handle that situation. A few platforms already have early
-> fixup code which parses the DT directly rather than using the fields
-> of pci_controller (which are parsed from the DT anyway) and I'm pretty
-> sure we can do something similar.
-> 
->> Also, the
->> patch introducing the problem was never tested on real hardware (it even
->> says so in the patch comments). That by itself seems to be quite
->> problematic for such an invasive patch, and makes me wonder if some of
->> the other PHB discovery related patches introduced similar problems.
-> 
-> The legacy platforms are maintained on a best-effort basis. Ellerman's
-> CI farm covers most of the powerpc CPU types, but there's no real way
-> to test the bulk of the platforms in the tree since most of the
-> hardware is currently in landfill.
-> 
->> Anyway, I do not use or have that hardware. I was just playing with the
->> latest version of qemu and ended up tracking down why its brand new
->> pegasos2 emulation no longer boots with the latest Linux kernel.
->> I personally don't care too much if ppc/chrp support is broken in the
->> upstream kernel or not. Please take this patch as problem report,
->> and feel free to do with it whatever you like, including ignoring it.
-> 
-> Problem reports are fine and appreciated. I'd be less cranky if you
-> included the kernel config you used in the initial report since I
-> wasted an hour of my saturday trying to replicate it with various
-> kernel configs that had SMP enabled since that's what the
-> chrp_defconfig uses.
-> 
 
 
-What is the status now ? I see this revert patch is still hanging around 
-in patchwork, is there still a problem ?
+Le 13/03/2019 à 04:38, Alastair D'Silva a écrit :
+> From: Alastair D'Silva <alastair@d-silva.org>
+> 
+> When building LTO kernels, the start_text symbol is not guaranteed to mark
+> the end of the head section.
+> 
+> Instead, look explicitly for __head_end.
+
+Could you please give more details ?
+
+Have you encountered a problem ?
+
+ From commit c494adefef9f ("powerpc/64: Tool to check head sections 
+location sanity"), I understand that we want to make sure text_start is 
+where it is, not that __head_end is.
 
 Thanks
 Christophe
+
+
+> 
+> Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
+> ---
+>   arch/powerpc/tools/head_check.sh | 10 +++++-----
+>   1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/arch/powerpc/tools/head_check.sh b/arch/powerpc/tools/head_check.sh
+> index ad9e57209aa4..1b0f634038c3 100644
+> --- a/arch/powerpc/tools/head_check.sh
+> +++ b/arch/powerpc/tools/head_check.sh
+> @@ -44,7 +44,7 @@ nm="$1"
+>   vmlinux="$2"
+>   
+>   # gcc-4.6-era toolchain make _stext an A (absolute) symbol rather than T
+> -$nm "$vmlinux" | grep -e " [TA] _stext$" -e " t start_first_256B$" -e " a text_start$" -e " t start_text$" -m4 > .tmp_symbols.txt
+> +$nm "$vmlinux" | grep -e " [TA] _stext$" -e " t start_first_256B$" -e " a text_start$" -e " T __head_end$" -m4 > .tmp_symbols.txt
+>   
+>   
+>   vma=$(cat .tmp_symbols.txt | grep -e " [TA] _stext$" | cut -d' ' -f1)
+> @@ -63,12 +63,12 @@ fi
+>   
+>   top_vma=$(echo $vma | cut -d'0' -f1)
+>   
+> -expected_start_text_addr=$(cat .tmp_symbols.txt | grep " a text_start$" | cut -d' ' -f1 | sed "s/^0/$top_vma/")
+> +expected_head_end_addr=$(cat .tmp_symbols.txt | grep " a text_start$" | cut -d' ' -f1 | sed "s/^0/$top_vma/")
+>   
+> -start_text_addr=$(cat .tmp_symbols.txt | grep " t start_text$" | cut -d' ' -f1)
+> +head_end_addr=$(cat .tmp_symbols.txt | grep " T __head_end$" | cut -d' ' -f1)
+>   
+> -if [ "$start_text_addr" != "$expected_start_text_addr" ]; then
+> -	echo "ERROR: start_text address is $start_text_addr, should be $expected_start_text_addr"
+> +if [ "$head_end_addr" != "$expected_head_end_addr" ]; then
+> +	echo "ERROR: __head_end address is $head_end_addr, should be $expected_head_end_addr"
+>   	echo "ERROR: try to enable LD_HEAD_STUB_CATCH config option"
+>   	echo "ERROR: see comments in arch/powerpc/tools/head_check.sh"
+>   
