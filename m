@@ -2,65 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB60C5B2A7D
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 01:39:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A248E5B2AB2
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 01:58:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MNwZD6PJPz3c4W
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 09:39:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MNx0242Z9z3c3w
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 09:58:10 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=iRYSYfVr;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=eex6cV74;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.65; helo=mga03.intel.com; envelope-from=isaku.yamahata@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b30; helo=mail-yb1-xb30.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=iRYSYfVr;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=eex6cV74;
 	dkim-atps=neutral
-X-Greylist: delayed 64 seconds by postgrey-1.36 at boromir; Fri, 09 Sep 2022 09:27:28 AEST
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MNwJc5QRdz2xfS
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Sep 2022 09:27:28 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1662679649; x=1694215649;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=jWuQBoK0q0gfpKRVUiGWH6TTCqtzESEI7BQKtOCQK/A=;
-  b=iRYSYfVr0xvy/5APSuAHio1NVxasmGbtcvhQjVRl2/adhTXpPNApNcS9
-   1OLXbmyMGneNtG6tUbo/1TrQnk/A74S52B3SyVoMW+Ox4FFlZpLCuGhVm
-   WJpY+kcvLgajpVhzSbl7inAvOogFVrMhq8xc1A//7xVLD8ckK9HDHjnJj
-   /k+ZKV8ZxHNNEuNI4QBrl7NMkpqoixaaXHWhwWWByLwdDDcfX6V99PZEy
-   hasfDepTpCN2zJQmE6/X7He2HZPtLEZ6qZLqw+Qm/YYUQAvpRyToBj17P
-   7u6a4wLcbl/YcI/qpVsI8BPHxalO/ugPdu/JL9NWAX7ngO9FjAuqK9z1W
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10464"; a="298687047"
-X-IronPort-AV: E=Sophos;i="5.93,300,1654585200"; 
-   d="scan'208";a="298687047"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2022 16:26:16 -0700
-X-IronPort-AV: E=Sophos;i="5.93,300,1654585200"; 
-   d="scan'208";a="610863281"
-Received: from ls.sc.intel.com (HELO localhost) ([143.183.96.54])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2022 16:26:15 -0700
-From: isaku.yamahata@intel.com
-To: linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Yuan Yao <yuan.yao@linux.intel.com>
-Subject: [PATCH v4 23/26] RFC: KVM: powerpc: Move processor compatibility check to hardware setup
-Date: Thu,  8 Sep 2022 16:25:39 -0700
-Message-Id: <b348201517333f52c570f359e0d94bc9d5afc4f2.1662679124.git.isaku.yamahata@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1662679124.git.isaku.yamahata@intel.com>
-References: <cover.1662679124.git.isaku.yamahata@intel.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MNwzM2gjdz2xJJ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Sep 2022 09:57:34 +1000 (AEST)
+Received: by mail-yb1-xb30.google.com with SMTP id g5so321061ybg.11
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Sep 2022 16:57:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date;
+        bh=fjRx/Lr4rWG8FdNjepWfPwinvttFV+7WLgO00cFoqzc=;
+        b=eex6cV74s4M8HeKkMm8twe1wMmlZy8xPylfXxTCwczLvM6rjy9aZnLRWAV94lwFweL
+         wAYpV8vwszuecJPQnwFpuZcAWGq+gpGawG4NDhdV/gC5fkudZU59f9HbpteQ+lQOcY0I
+         GAuQhYX7csyCScbjD5jgdN/lxX0hV5690Tcj8OCWTWHOdxz1phA0WKGeiTCECkVAzaLw
+         sEfntZDZ1/grg22e7rWeAYxWauW5E1ZRZA2dGh5d7M8MUfKjS+PoLz8YplH1AxLv4mjU
+         xBy4gnrkKgV0FDBrrfwV2xX69XGlTUWccShysi4f6ykbn3u/y4iOr6sGj4cHuPbiwDv6
+         bZNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date;
+        bh=fjRx/Lr4rWG8FdNjepWfPwinvttFV+7WLgO00cFoqzc=;
+        b=dCJ5Y6iqBCBKy525TJSqEKGwiqKuAbdYxK80ew0yVtKNFiV2MmLiUYTwmeUAKbsMRz
+         xJJM66wXKuGmYIVSptPBqreQliUbX75x7ydG+XBCy8qfB49bHwZ8F7poqWug0fMoYVcf
+         PAW2AvjfDSUKCj215r9IrNn0cA0hXa2yU2oebq0EQsShAHYbSZOK6ttK8bI2c/OZBtnO
+         iagDwlkVUhCS2Req6lDpW8CuaO2zcwdPwgEXQ+/S/v9Cp0QKapLl3i0HlT27haLI6qyP
+         9vv8gC/940exgVCb3PRywtgcUjCSyzRR0fK1mq+rfEuuf16vTj4sJZbFc6pWsRR70h1g
+         /BJA==
+X-Gm-Message-State: ACgBeo0Vsny51wCZDvpcHD/IRSPcqjTN0BD83yjpufdSA7LZ9C2tXF4S
+	EHJr+5+QVIER5cXTV81JGV6FzedZQvwszy62D7TB7g==
+X-Google-Smtp-Source: AA6agR5z3AebbL5Azy4sNoMfTt0gW01VpIp+qr6/rNEQLn3rNpaHhq14wg8Eeh+706sD3nPJeGD6bnyLQT+FGI+FElY=
+X-Received: by 2002:a05:6902:2d0:b0:694:d257:4c4b with SMTP id
+ w16-20020a05690202d000b00694d2574c4bmr9669475ybh.316.1662681449064; Thu, 08
+ Sep 2022 16:57:29 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Fri, 09 Sep 2022 09:38:46 +1000
+References: <20220901173516.702122-1-surenb@google.com> <20220901173516.702122-8-surenb@google.com>
+ <a072fd10-ee7e-469f-c203-978cd7da566c@linux.ibm.com>
+In-Reply-To: <a072fd10-ee7e-469f-c203-978cd7da566c@linux.ibm.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Thu, 8 Sep 2022 16:57:17 -0700
+Message-ID: <CAJuCfpFDFzCB7zuOGyd-gqovyhwvcQaUMOUS0E8+1QxLqD-Gdg@mail.gmail.com>
+Subject: Re: [RFC PATCH RESEND 07/28] kernel/fork: mark VMAs as locked before
+ copying pages during fork
+To: Laurent Dufour <ldufour@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,53 +76,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: isaku.yamahata@intel.com, Huang Ying <ying.huang@intel.com>, Daniel Lezcano <daniel.lezcano@linaro.org>, Fabiano Rosas <farosas@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, John Garry <john.garry@huawei.com>, Shaokun Zhang <zhangshaokun@hisilicon.com>, Kai Huang <kai.huang@intel.com>, Atish Patra <atishp@atishpatra.org>, Huacai Chen <chenhuacai@kernel.org>, Qi Liu <liuqi115@huawei.com>, isaku.yamahata@gmail.com, Chao Gao <chao.gao@intel.com>
+Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, jglisse@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, willy@infradead.org, laurent.dufour@fr.ibm.com, mgorman@suse.de, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, paulmck@kernel.org, liam.howlett@oracle.com, luto@kernel.org, vbabka@suse.cz, linux-arm-kernel@lists.infradead.org, kent.overstreet@linux.dev, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Isaku Yamahata <isaku.yamahata@intel.com>
+On Tue, Sep 6, 2022 at 7:38 AM Laurent Dufour <ldufour@linux.ibm.com> wrote=
+:
+>
+> Le 01/09/2022 =C3=A0 19:34, Suren Baghdasaryan a =C3=A9crit :
+> > Protect VMAs from concurrent page fault handler while performing
+> > copy_page_range for VMAs having VM_WIPEONFORK flag set.
+>
+> I'm wondering why is that necessary.
+> The copied mm is write locked, and the destination one is not reachable.
+> If any other readers are using the VMA, this is only for page fault handl=
+ing.
 
-Move processor compatibility check from kvm_arch_processor_compat() into
-kvm_arch_hardware_setup().  The check does model name comparison with a
-global variable, cur_cpu_spec.  There is no point to check it at run time
-on all processors.
+Correct, this is done to prevent page faulting in the VMA being
+duplicated. I assume we want to prevent the pages in that VMA from
+changing when we are calling copy_page_range(). Am I wrong?
 
-Suggested-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: Fabiano Rosas <farosas@linux.ibm.com>
----
- arch/powerpc/kvm/powerpc.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
-
-diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
-index 7b56d6ccfdfb..7e3a6659f107 100644
---- a/arch/powerpc/kvm/powerpc.c
-+++ b/arch/powerpc/kvm/powerpc.c
-@@ -444,12 +444,21 @@ int kvm_arch_hardware_enable(void)
- 
- int kvm_arch_hardware_setup(void *opaque)
- {
--	return 0;
-+	/*
-+	 * kvmppc_core_check_processor_compat() checks the global variable.
-+	 * No point to check on all processors or at runtime.
-+	 * arch/powerpc/kvm/book3s.c: return 0
-+	 * arch/powerpc/kvm/e500.c: strcmp(cur_cpu_spec->cpu_name, "e500v2")
-+	 * arch/powerpc/kvm/e500mc.c: strcmp(cur_cpu_spec->cpu_name, "e500mc")
-+	 *                            strcmp(cur_cpu_spec->cpu_name, "e5500")
-+	 *                            strcmp(cur_cpu_spec->cpu_name, "e6500")
-+	 */
-+	return kvmppc_core_check_processor_compat();
- }
- 
- int kvm_arch_check_processor_compat(void)
- {
--	return kvmppc_core_check_processor_compat();
-+	return 0;
- }
- 
- int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
--- 
-2.25.1
-
+> I should have miss something because I can't see any need to mark the loc=
+k
+> VMA here.
+>
+> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> > ---
+> >  kernel/fork.c | 4 +++-
+> >  1 file changed, 3 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/kernel/fork.c b/kernel/fork.c
+> > index bfab31ecd11e..1872ad549fed 100644
+> > --- a/kernel/fork.c
+> > +++ b/kernel/fork.c
+> > @@ -709,8 +709,10 @@ static __latent_entropy int dup_mmap(struct mm_str=
+uct *mm,
+> >               rb_parent =3D &tmp->vm_rb;
+> >
+> >               mm->map_count++;
+> > -             if (!(tmp->vm_flags & VM_WIPEONFORK))
+> > +             if (!(tmp->vm_flags & VM_WIPEONFORK)) {
+> > +                     vma_mark_locked(mpnt);
+> >                       retval =3D copy_page_range(tmp, mpnt);
+> > +             }
+> >
+> >               if (tmp->vm_ops && tmp->vm_ops->open)
+> >                       tmp->vm_ops->open(tmp);
+>
