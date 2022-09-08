@@ -1,54 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B64EF5B1116
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Sep 2022 02:28:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 564ED5B11EE
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Sep 2022 03:12:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MNKhz31Jwz3c3m
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Sep 2022 10:28:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MNLhD1YdLz3c5D
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Sep 2022 11:12:28 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=IXhfa81v;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=IhbvUOCD;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MNKhJ6ydfz2y8J
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Sep 2022 10:27:28 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Two or more type TXT spf records found.) smtp.mailfrom=intel.com (client-ip=192.55.52.93; helo=mga11.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=IXhfa81v;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=IhbvUOCD;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4MNKhC0m8Vz4xGG;
-	Thu,  8 Sep 2022 10:27:22 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1662596844;
-	bh=5ove+5VwWAQ5AMLZQbbF24PafDZgzxX6ZGM0226lFkY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=IXhfa81v7lWARgyj9MztAPbvgQz9Pn3u0Xdy4UYJ0UAU66a4cUX91jR/A5/cdLCBn
-	 sVOv/0cFvrcQ5XCgp2qktd6GFd33ErdPhcvYV3iKnKtfRpujukJR5lgZMIp0+cGijU
-	 8sU1F3/JcsvjEb/GPH7kNqsGsSxoDYIkD2feul2+5dgorxPliCDlyLKAOVSoM+RENw
-	 pfRtYJr6gO2z7mPT7TUWrchJ9vQe+y07ew6kVNG6MPlJlboc9yYME8QVGZn4p3KHkw
-	 FSBoZ7ujJj1ry7YldiAbw2vrIoKu/TZWuP6z9p7OlNUHXhGp53H1ZhJyeEOBzph9oM
-	 uLOwn13/NEl1g==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Mathieu Malaterre
- <malat@debian.org>, Nick Desaulniers <ndesaulniers@google.com>
-Subject: Re: [PATCH] powerpc/lib/xor_vmx: Relax frame size for clang
-In-Reply-To: <7cb1285a-42e6-2b67-664f-7d206bc9fd80@csgroup.eu>
-References: <20190621085822.1527-1-malat@debian.org>
- <7cb1285a-42e6-2b67-664f-7d206bc9fd80@csgroup.eu>
-Date: Thu, 08 Sep 2022 10:27:19 +1000
-Message-ID: <87v8pyemmw.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MNLgX1NDzz2xJF
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Sep 2022 11:11:47 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1662599512; x=1694135512;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=0eagfYImLscdif0xe1cmYSy4j5skJGh+krCOMoUyNMc=;
+  b=IhbvUOCDMo7o5qpM3J/ZBslE5DrrRBh01b27WcQCX1/ttxfJgOYKYCC0
+   uYW3lTZgm20F+J2cUCBg6WK6EPwtRpVgCmY8V4XKfZVghvWtKmp8EWy2n
+   6gbWpGW3LRcYoFlDfVgkJdG1LaQL7O0vy9C2tLnT74ghqZZmXdFk8O4bV
+   pPJU7SCbeX5T/HTj/8GkkrvRxf198dD7frjb/wWS1KHd4zuZjPSfaH9oq
+   j97x6vtg8oOIBJoL5B1fpW/mVEUs2NIIPd/SqMwrPgTbbWmClo9ziokJQ
+   KEjv0q2R2Q11L2pB5DER/Yl4T5z/ePd9/2sJz4jpjOY+DsyneWpeVpVuU
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10463"; a="294619281"
+X-IronPort-AV: E=Sophos;i="5.93,298,1654585200"; 
+   d="scan'208";a="294619281"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2022 18:11:43 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.93,298,1654585200"; 
+   d="scan'208";a="683033784"
+Received: from lkp-server02.sh.intel.com (HELO 95dfd251caa2) ([10.239.97.151])
+  by fmsmga004.fm.intel.com with ESMTP; 07 Sep 2022 18:11:41 -0700
+Received: from kbuild by 95dfd251caa2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1oW64z-0007Bp-0y;
+	Thu, 08 Sep 2022 01:11:41 +0000
+Date: Thu, 08 Sep 2022 09:11:30 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:fixes-test] BUILD SUCCESS
+ 5f22270db76e8f1726b4287f6c0032d2ad1b9c52
+Message-ID: <63194142.XPJGX2O/zPnWY31D%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,55 +69,137 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Paul Mackerras <paulus@samba.org>, linux-kernel@vger.kernel.org, Joel Stanley <joel@jms.id.au>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> Le 21/06/2019 =C3=A0 10:58, Mathieu Malaterre a =C3=A9crit=C2=A0:
->> When building with clang-8 the frame size limit is hit:
->>=20
->>    ../arch/powerpc/lib/xor_vmx.c:119:6: error: stack frame size of 1200 =
-bytes in function '__xor_altivec_5' [-Werror,-Wframe-larger-than=3D]
->>=20
->> Follow the same approach as commit 9c87156cce5a ("powerpc/xmon: Relax
->> frame size for clang") until a proper fix is implemented upstream in
->> clang and relax requirement for clang.
->
-> With Clang 14 I get the following errors, but only with KASAN selected.
->
->    CC      arch/powerpc/lib/xor_vmx.o
-> arch/powerpc/lib/xor_vmx.c:95:6: error: stack frame size (1040) exceeds=20
-> limit (1024) in '__xor_altivec_4' [-Werror,-Wframe-larger-than]
-> void __xor_altivec_4(unsigned long bytes,
->       ^
-> arch/powerpc/lib/xor_vmx.c:124:6: error: stack frame size (1312) exceeds=
-=20
-> limit (1024) in '__xor_altivec_5' [-Werror,-Wframe-larger-than]
-> void __xor_altivec_5(unsigned long bytes,
->       ^
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
+branch HEAD: 5f22270db76e8f1726b4287f6c0032d2ad1b9c52  powerpc/pseries: Fix plpks crash on non-pseries
 
-That's a 32-bit build?
+elapsed time: 729m
 
-> Is this patch still relevant ?
+configs tested: 112
+configs skipped: 107
 
-The clang issue was closed because a different change fixed the issue:
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-  https://github.com/ClangBuiltLinux/linux/issues/563
+gcc tested configs:
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                              defconfig
+x86_64                           allyesconfig
+x86_64                               rhel-8.3
+csky                              allnoconfig
+alpha                             allnoconfig
+arc                               allnoconfig
+riscv                             allnoconfig
+x86_64                           rhel-8.3-kvm
+x86_64                          rhel-8.3-func
+x86_64                           rhel-8.3-syz
+x86_64                    rhel-8.3-kselftests
+x86_64                         rhel-8.3-kunit
+m68k                             allyesconfig
+m68k                             allmodconfig
+arc                              allyesconfig
+alpha                            allyesconfig
+i386                             allyesconfig
+i386                                defconfig
+powerpc                           allnoconfig
+mips                             allyesconfig
+powerpc                          allmodconfig
+sh                               allmodconfig
+powerpc                    sam440ep_defconfig
+m68k                          amiga_defconfig
+powerpc                      tqm8xx_defconfig
+m68k                        stmark2_defconfig
+i386                          randconfig-a012
+i386                          randconfig-a014
+i386                          randconfig-a016
+arm64                            allyesconfig
+arm                                 defconfig
+arm                              allyesconfig
+xtensa                         virt_defconfig
+ia64                         bigsur_defconfig
+arm                        keystone_defconfig
+sh                  sh7785lcr_32bit_defconfig
+m68k                          multi_defconfig
+arm                             pxa_defconfig
+arc                          axs103_defconfig
+mips                           gcw0_defconfig
+parisc64                         alldefconfig
+sparc                               defconfig
+sh                     sh7710voipgw_defconfig
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+riscv                    nommu_k210_defconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+sparc                             allnoconfig
+arm                        cerfcube_defconfig
+powerpc                      arches_defconfig
+openrisc                 simple_smp_defconfig
+powerpc                     asp8347_defconfig
+sparc                            alldefconfig
+i386                             alldefconfig
+powerpc                     ep8248e_defconfig
+m68k                          hp300_defconfig
+m68k                        m5272c3_defconfig
+arm                          exynos_defconfig
+arm                          pxa3xx_defconfig
+arm                         s3c6400_defconfig
+powerpc                     stx_gp3_defconfig
+arm64                            alldefconfig
+sh                           se7722_defconfig
+x86_64                        randconfig-a006
+x86_64                        randconfig-a004
+x86_64                        randconfig-a002
+sh                             sh03_defconfig
+sh                           se7750_defconfig
+s390                             allmodconfig
+xtensa                       common_defconfig
+i386                          randconfig-c001
+sh                          r7785rp_defconfig
+arm                          iop32x_defconfig
+powerpc                     mpc83xx_defconfig
+xtensa                generic_kc705_defconfig
+csky                                defconfig
+um                                  defconfig
+sh                            titan_defconfig
+arm                            mps2_defconfig
+loongarch                           defconfig
+loongarch                         allnoconfig
+sh                          r7780mp_defconfig
+arm                            qcom_defconfig
+ia64                          tiger_defconfig
+arc                              alldefconfig
+x86_64                        randconfig-a011
+x86_64                        randconfig-a013
+x86_64                        randconfig-a015
 
-> Or should frame size be relaxed when KASAN is selected ? After all the=20
-> stack size is multiplied by 2 when we have KASAN, so maybe the warning=20
-> limit should be increased as well ?
+clang tested configs:
+x86_64                        randconfig-a005
+x86_64                        randconfig-a003
+x86_64                        randconfig-a001
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+x86_64                        randconfig-a016
+riscv                randconfig-r042-20220907
+hexagon              randconfig-r041-20220907
+hexagon              randconfig-r045-20220907
+s390                 randconfig-r044-20220907
+i386                          randconfig-a002
+i386                          randconfig-a006
+i386                          randconfig-a004
+x86_64                        randconfig-k001
+powerpc                     tqm8540_defconfig
+arm                           spitz_defconfig
+powerpc                 mpc8315_rdb_defconfig
+mips                           ip22_defconfig
+i386                          randconfig-a011
+i386                          randconfig-a013
+i386                          randconfig-a015
 
-Yeah that would make some sense.
-
-On 64-bit the largest frame in that file is 1424, which is below the
-default 2048 byte limit.
-
-So maybe just increase it for 32-bit && KASAN.
-
-What would be nice is if the FRAME_WARN value could be calculated as a
-percentage of the THREAD_SHIFT, but that's not easily doable with the
-way things are structured in Kconfig.
-
-cheers
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
