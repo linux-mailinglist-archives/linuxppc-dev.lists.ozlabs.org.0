@@ -1,67 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23EA95B27BF
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Sep 2022 22:33:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 940595B289C
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Sep 2022 23:37:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MNrRq0sWRz3c6X
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 06:33:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MNssT3R1Tz3c6B
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 07:37:17 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=lCAHHHtG;
+	dkim=pass (2048-bit key; unprotected) header.d=datazap-net.20210112.gappssmtp.com header.i=@datazap-net.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=jCXamfp9;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::42d; helo=mail-wr1-x42d.google.com; envelope-from=nicoleotsuka@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=datazap.net (client-ip=2607:f8b0:4864:20::661; helo=mail-pl1-x661.google.com; envelope-from=al@datazap.net; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=lCAHHHtG;
+	dkim=pass (2048-bit key; unprotected) header.d=datazap-net.20210112.gappssmtp.com header.i=@datazap-net.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=jCXamfp9;
 	dkim-atps=neutral
-Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
+Received: from mail-pl1-x661.google.com (mail-pl1-x661.google.com [IPv6:2607:f8b0:4864:20::661])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MNrR90RqRz2yS0
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Sep 2022 06:32:51 +1000 (AEST)
-Received: by mail-wr1-x42d.google.com with SMTP id o25so3542839wrf.9
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Sep 2022 13:32:50 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MNsrn2BMgz2yQH
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Sep 2022 07:36:40 +1000 (AEST)
+Received: by mail-pl1-x661.google.com with SMTP id d12so19183830plr.6
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Sep 2022 14:36:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=vaR+PRR/c8VGDxG3pWSaeOmzf/CHklELeimE/+fWPMY=;
-        b=lCAHHHtGrq9cNEZkhFfMbtPxHscDK7s0S4yHqSiFF3nde/Kclq1HENHQQhVHeUt9Yj
-         D/9+fdKfsyfKL3ZSZntsRfDnls3ySehyrEFIyUYVB5xt7JACTP/dkpVza+mmKUvv2FKq
-         oPDBxtsu1GQFlk0Rt+PqICrAQ1shTZq0nXN24wPlw6Aum6LGRiGShk3pLvhytTx2Y1fz
-         UXLNaDng7ZEiYEUBVwbARxTMEvShiKmkHJ0DjHqynta2OncqVGAGUomZZYvL2B4KxOS0
-         5JC1hJkVwLq/cwbHpzgru3X55StUYRb9OEezfeaoevF5Ba8NAaF7CiEn9cppS4+T/Na/
-         KuBw==
+        d=datazap-net.20210112.gappssmtp.com; s=20210112;
+        h=content-language:content-transfer-encoding:mime-version:user-agent
+         :date:message-id:subject:from:to:from:to:cc:subject:date;
+        bh=necEDBETSaSr9/l7G4QumyIT6nB6UPhHzVoURQAI9PE=;
+        b=jCXamfp9eQI79/PZllM0K7mv/XVZliBEcItkJYlOEyXti5yurLd+XwPZC2VTXOGeWi
+         RlW1oHqw9nT9aHZvYdn/My4BzwzowoRSKOK2ueQXIPwIya7E5z+ru4z6vTWuM3gF4FQ5
+         tttLwiQBXljiKtsO5ThSmtiT1dA0pLfoGCgziM7wH75CBOUBagLccx0dBwovPrxcBvvX
+         zywygvOQoBwZN1LOMZ+eDC8xHkj+mYiYJn7xkslvPJU/XQhqwwkGQS+2F62HSvo1SiPa
+         HM3+W9OTz1Llisw7QfF9VQDiE7Hc7PKYaRX/uBWQLgpAI3yobkDBKWeGK4fvBB4mamEh
+         nS7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=vaR+PRR/c8VGDxG3pWSaeOmzf/CHklELeimE/+fWPMY=;
-        b=jD4v4+fk6RgsCrAoAEOwtt/0PqhLBUHQ9spqIaPt2gGQjrYUGuPoKy2lS0KNyj/I2f
-         l7GDtY0uaG3qZYHqoXwqfx0GP8NOky8x2vPfwAki29YlEydS6p1/BnnJCnCZGNbqCdp3
-         Z/q1V43IGJ7aQcbFSNaMSx8Q//9xfZQmVpcRRhGZQLXiUZbp8F1DNGZgsn0JkYsOwXFL
-         yScCFv82+HD4ryv+Q9mpI9RS3UeTkCNrR7KjguCLTnapVMPuwVj6F9J9/0mAcDdGqi6v
-         PDPsUNNFaSvW/cPAx6HGsI1gJ4nxxhH+Xxad7pS4Io6o0p9shzrXnMh2lKSdJGoKv5B2
-         dn1Q==
-X-Gm-Message-State: ACgBeo2jxZrK8MzqN7COcS59AC8OQc11Y77qm62FM5aXnz3ymlxfuQ2V
-	maH99XFbKk9yr1H4YJEC05RwI2R4epuhyRT/TzI=
-X-Google-Smtp-Source: AA6agR7lafh5iFDYSngDCJLO1yWQBBaEIcCgTmgJJZt1Q4q1I7mTv9rD219dWAKV0aSj6u6/8XmjvrSPmjTKI+DJsZU=
-X-Received: by 2002:a05:6000:168e:b0:220:87da:c3e4 with SMTP id
- y14-20020a056000168e00b0022087dac3e4mr6000203wrd.559.1662669163591; Thu, 08
- Sep 2022 13:32:43 -0700 (PDT)
+        h=content-language:content-transfer-encoding:mime-version:user-agent
+         :date:message-id:subject:from:to:x-gm-message-state:from:to:cc
+         :subject:date;
+        bh=necEDBETSaSr9/l7G4QumyIT6nB6UPhHzVoURQAI9PE=;
+        b=NbKw0aaEgUdvgrDh2BG0+j1DqZcIagFcErh35Xsouer/mz3qCyK5kQk6uENmFD6s4U
+         yPQ9bMyaLAQE3zJQuMN/RXJxxbXMCOJjjSyNe990FJfJRA+bDzyQXiwxvQbMqcX8y0S/
+         8fSlPjAQNS096l0lhRVknF+VLIotYZc3g7GoBACYXzZH3n+/R+NIKQxt64JwHz93dMnz
+         Cwk9qtI7p/93hHxs9ntrSzgooLMTIr1RnKDql4Tz90XMEFuU3dzXEDd9DHppk5JUBTNP
+         Z/2EbAGBqFqYULe77LzwIAtEIiRNTUjHm9G8iw8P0fgTMVuX7FeuIkbRueo03AIXTpIz
+         91Uw==
+X-Gm-Message-State: ACgBeo09Ak1+z3nZHM9VlnC6X/0EL0pCvdOwxInhbEugsaebXUW1ceEX
+	XTeMLnBJk0mKLwTn56hV22ggsTA9TfPWVWJLKa2+GaQ5uf7RLg==
+X-Google-Smtp-Source: AA6agR53yMPiShAxEqkBbyNmIBH2FJbyQWqajurD0bD+/47R0uBi7AJBP8vS0IzjJhObQaDJ/Sk0d01shNB7
+X-Received: by 2002:a17:90b:4b8f:b0:1fb:10e2:5c99 with SMTP id lr15-20020a17090b4b8f00b001fb10e25c99mr6174660pjb.194.1662672997646;
+        Thu, 08 Sep 2022 14:36:37 -0700 (PDT)
+Received: from agnus.datazap.net (agnus.datazap.net. [209.160.40.35])
+        by smtp-relay.gmail.com with ESMTP id b5-20020a170902d40500b001713e8cceecsm680640ple.121.2022.09.08.14.36.37
+        for <linuxppc-dev@lists.ozlabs.org>;
+        Thu, 08 Sep 2022 14:36:37 -0700 (PDT)
+X-Relaying-Domain: datazap.net
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	by agnus.datazap.net (Postfix) with ESMTP id 2CAD5B794B
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Sep 2022 17:36:32 -0400 (EDT)
+To: linuxppc-dev@lists.ozlabs.org
+From: Al <al@datazap.net>
+Subject: OT: LSI mps driver on Big Endian Linux
+Message-ID: <46f27c59-8561-ebc2-444c-78edb2e24d5c@datazap.net>
+Date: Thu, 8 Sep 2022 16:36:32 -0500
+User-Agent: Mozilla/5.0 (X11; Linux ppc64; rv:60.9) Goanna/4.1
+ SpiderMail/52.9.2
 MIME-Version: 1.0
-References: <1662519715-21891-1-git-send-email-shengjiu.wang@nxp.com>
-In-Reply-To: <1662519715-21891-1-git-send-email-shengjiu.wang@nxp.com>
-From: Nicolin Chen <nicoleotsuka@gmail.com>
-Date: Thu, 8 Sep 2022 13:32:32 -0700
-Message-ID: <CAGoOwPSCQF9WC=jhV79wnqDQ-puL+=yuF1u1oEpomZU9FRzBbA@mail.gmail.com>
-Subject: Re: [PATCH v2] ASoC: fsl_asrc: Add initialization finishing check in
- runtime resume
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,72 +82,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, Xiubo.Lee@gmail.com, festevam@gmail.com, tiwai@suse.com, lgirdwood@gmail.com, perex@perex.cz, broonie@kernel.org, shengjiu.wang@gmail.com, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Sep 6, 2022 at 8:20 PM Shengjiu Wang <shengjiu.wang@nxp.com> wrote:
->
-> If the initialization is not finished, then filling input data to
-> the FIFO may fail. So it is better to add initialization finishing
-> check in the runtime resume for suspend & resume case.
->
-> And consider the case of three instances working in parallel,
-> increase the retry times to 50 for more initialization time.
->
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Hi,
 
-Some nitpicks inline.
+I am not sure if this is off topic for this list, but I am not sure 
+where else to ask. I google this and could not find anything. Googled 
+Big Endian Linux and it took me to link that lead me to this list.
 
-Otherwise,
-Reviewed-by: Nicolin Chen <nicolinc@gmail.com>
+I am looking for an LSI driver that was rewritten for big endian Linux. 
+I have trying to get working an LSI 9211-4i card because it is one of 
+the only cards that I can find that is PCIe 4x that I can find(most 
+cards require an 8x slot). I was using the Ubuntu remix, but have 
+recently switched to Fienix. What is interesting is that with the LSI 
+9211-4i installed the Ubuntu remix boots fine, but Fienix doesn't see 
+any of the other cards after the LSI card. I think there must be a 
+solution. I am not 100% sure what is the best big endian Linux to use. I 
+am running on an X5000.
 
-> @@ -20,6 +20,7 @@
->
->  #define IDEAL_RATIO_DECIMAL_DEPTH 26
->  #define DIVIDER_NUM  64
-> +#define INIT_TRY_NUM 50
+Kind Regards,
+Al
 
-s/TRY/RETRY
-
-> @@ -592,6 +593,10 @@ static void fsl_asrc_start_pair(struct fsl_asrc_pair *pair)
->                 reg &= ASRCFG_INIRQi_MASK(index);
->         } while (!reg && --retry);
->
-> +       /* NOTE: Doesn't treat initialization timeout as error */
-
-s/as error/as an error
-
-> +       if (!retry)
-> +               dev_warn(&asrc->pdev->dev, "initialization isn't finished\n");
-
-Could print which pair; or perhaps pair_warn?
-
-> @@ -1295,6 +1301,20 @@ static int fsl_asrc_runtime_resume(struct device *dev)
->         regmap_update_bits(asrc->regmap, REG_ASRCTR,
->                            ASRCTR_ASRCEi_ALL_MASK, asrctr);
->
-> +       /* Wait for status of initialization for every enabled pairs */
-
-s/every/all
-
-> +       do {
-> +               udelay(5);
-> +               regmap_read(asrc->regmap, REG_ASRCFG, &reg);
-> +               reg = (reg >> ASRCFG_INIRQi_SHIFT(0)) & 0x7;
-> +       } while ((reg != ((asrctr >> ASRCTR_ASRCEi_SHIFT(0)) & 0x7)) && --retry);
-> +
-> +       /*
-> +        * NOTE: Doesn't treat initialization timeout as error
-
-s/as error/as an error/
-
-> +        * Some of pair maybe success, then still can continue.
-
-+        * Some of the pairs may succeed, then still can continue.
-
-> +        */
-> +       if (!retry)
-> +               dev_warn(dev, "initialization isn't finished\n");
-
-Could print which pair.
