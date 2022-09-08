@@ -2,89 +2,134 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD91C5B219A
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Sep 2022 17:08:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BBAB5B2214
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Sep 2022 17:26:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MNjDt2xfPz3c4w
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 01:08:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MNjdN2prKz3btQ
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 01:26:16 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=rIFVjjRe;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=FNeGymq0;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=arxwqhFv;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=66.111.4.230; helo=new4-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=40.107.9.40; helo=fra01-mr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=rIFVjjRe;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=FNeGymq0;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=arxwqhFv;
 	dkim-atps=neutral
-Received: from new4-smtp.messagingengine.com (new4-smtp.messagingengine.com [66.111.4.230])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from FRA01-MR2-obe.outbound.protection.outlook.com (mail-eopbgr90040.outbound.protection.outlook.com [40.107.9.40])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MNjD66zB3z303T
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Sep 2022 01:07:49 +1000 (AEST)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-	by mailnew.nyi.internal (Postfix) with ESMTP id 7B535580C03;
-	Thu,  8 Sep 2022 11:07:46 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute3.internal (MEProxy); Thu, 08 Sep 2022 11:07:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:date:date:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:sender:subject
-	:subject:to:to; s=fm1; t=1662649666; x=1662653266; bh=jBH1raHOU+
-	zAoGN37kydJN2v9pqHvn8WmSNpPSnMW4c=; b=rIFVjjReo1OGRqliFHle7QCLpq
-	q3wRDEDFtl5QjVGT0sAh87+/OlCz3x4E3i8WBWNFEKOOrxHtfNOgMjifOiMeYLo5
-	KSAqrnm30tCJIBVRiKV7LbRS0s2Qjh8+Sxp6U+YxSphy4qGRisM0myGtP7QvNRda
-	IPy3OOBX4e52KM0qGyzzUJB9Dlad50VE4rxGc4CBvHh7Nu9R1UMCtJ3X2ZMgz79W
-	Vg6UMKDdm7hB4eNM5VLaI08kmj/w6qYcFdQlkW3QkK+6n6u9rokEhjckiy0DDu2T
-	7oSYrJUl5YUZUmOHaqERa5E2Pgpa8WqYX8mrJ7orliirKP1uP4FjSehfhO/g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-	:feedback-id:from:from:in-reply-to:in-reply-to:message-id
-	:mime-version:references:reply-to:sender:subject:subject:to:to
-	:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1662649666; x=1662653266; bh=jBH1raHOU+zAoGN37kydJN2v9pqH
-	vn8WmSNpPSnMW4c=; b=FNeGymq0w4fqIhVj7Pbf8C63hXMmN8clA1RmFg0R7jgV
-	VAM6KWNnM89cO8XbJg+niB7/1cK7sSay4IB1ikeDAwIVQBcNzHj62qAxb/zjj89Z
-	kcKBdHnO8wUh0r6Oxys2UddJhJaNl9HiI98nSL/9od91Muat+kkPETrD13URHdCS
-	SDliEP0SLUF4Lfar3UFCuEw9He+/kvgY3NzigPoyPAa3iOjagM535BBCPrPd8rYW
-	rCQ8HRSv6C+RDXRtJAjm4SeTiDEfBrjd2NXGXNmnUaWB+cMzCpLltjIOkmvomrc9
-	Q+2BcOMN4hENXQQ8xhj9mKemgpjgQrtXHEoR8549WQ==
-X-ME-Sender: <xms:QAUaY5xIYDmQWxvzwodUbbYWyn_GcmQdyFFABmpa1NZ9jTTGxzVpGg>
-    <xme:QAUaY5QuAW83debL8aZWVKxeADtSEcvq0pcve0NaLNIut77fsV32X4SR-Zx5dkkhP
-    d0hW_ToAyzJEQfadYk>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfedtfedgvdehucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:QQUaYzUlKpOnlayN8LwvKL93CvETYdk4kmficl08fYJbguSRYUfxXA>
-    <xmx:QQUaY7jhHg7QR4gyJa-V0UkVs_gV5BtSE_JFE0iL6p5XL361GT5lnA>
-    <xmx:QQUaY7Av1aP0O8XjOxRs8A7rTgt3wrDbxMKLGNsqhPb5y_zU-toaVw>
-    <xmx:QQUaY90MIWSHe9BRRIJaO-e-Hm41zov9DfZ-aubVDj4RgQEihYno_g>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id C85ADB60083; Thu,  8 Sep 2022 11:07:44 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.7.0-alpha0-927-gf4c98c8499-fm-20220826.002-gf4c98c84
-Mime-Version: 1.0
-Message-Id: <8afc110f-641e-40f0-9bf9-b7b2ca3df6a1@www.fastmail.com>
-In-Reply-To: <87v8pyemmw.fsf@mpe.ellerman.id.au>
-References: <20190621085822.1527-1-malat@debian.org>
- <7cb1285a-42e6-2b67-664f-7d206bc9fd80@csgroup.eu>
- <87v8pyemmw.fsf@mpe.ellerman.id.au>
-Date: Thu, 08 Sep 2022 17:07:24 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Michael Ellerman" <mpe@ellerman.id.au>,
- "Christophe Leroy" <christophe.leroy@csgroup.eu>,
- "Mathieu Malaterre" <malat@debian.org>,
- "Nick Desaulniers" <ndesaulniers@google.com>
-Subject: Re: [PATCH] powerpc/lib/xor_vmx: Relax frame size for clang
-Content-Type: text/plain
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MNjcc0Bspz30NS
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Sep 2022 01:25:34 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=AOM9b9EVxw9EphTMtEnZkQJCfKrNILiFu6vHpx29ysz/9YhK+n1pA4q853U5iI2x2PxaEKBIPIzhdYp+Hqa/imsWUhEmqjx1v3j1Vryi4QaBYzxtIP5fyv1Jc1UA5BD2mskXDneYM1w8bG1ptFYIqnX71kT6ScnCC/+kOACUxrQOnntY+GnwrrNywSCuK4ZHnI5OxOnaQaj1Skcr2wP011SBsfkI57zIZRdfRx6zBg5FcFYI6+dIjBDtTdhrfEyIbdmgqJswsi+kJOHkqBASSOfDXnI6sE45byaWxCoVYSet+AdD12BNugKxbTfJ2sULRRqKP3M2sKU4bxMiVJq6OA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=80KKzFhPCIKfZdn3CP44fmshs60OJSQQbS4jX1YP/Pw=;
+ b=Uyb0vmDgDTPMWJUyPo3tOOXNLjwQapW8ZVfbLpYmo8PlVIwieHfQH2/OaKuVxnOdaUGp6m3F/Ap+Zd5+K8Vn6X47V25ETBWdJv3nGRWbionau/QsvDfAoQp27aI0JhYAtJOxQxxJSLNDqZll2ol5UhnEc1HOMByugAqcPqA2TZsE3RpKbDghorm6ivMGS+lOirMoE2q3EfZHq9+YCJnLvIUrsk5IpYOb2N4Vnfqvlijjfpc83g17MBPwJb3PdDVrKK9S0BFE0DcLujxNmR2TP+eleOVoaTuDYK10cE5XeyWGPKG26TnkuhGk6SGdcc1mayOpuKNiKcNR+gcsnjRjRg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
+ dkim=pass header.d=csgroup.eu; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=80KKzFhPCIKfZdn3CP44fmshs60OJSQQbS4jX1YP/Pw=;
+ b=arxwqhFv0wggQ7TUFP7hllXjp1a9DCq4mvzQJgTWSbVEQSO9Ms7dGG+kSCFMtkCpisoIS2ciJlT5ezbNf+HkeNWC1E2wFLqaz4TRL+kETyu2zetl9Zb9vllhZLIku5NPNyq6bpKRvUN+aq47ihmcZs844vuCB4o5AwGrEMnvR4mmDsxMCyJAUslJuG/PfBL5Q0oPOI/XzCd+HUnyiGTWGr2upnA7bilkxKtuZ61igBXrqH1bJQS8akt23KOVY7Up1O93YptAmHUDFqpMf9OY+mbHASLT29r0aY71UocxGBHDd8EAvkBMWXrjf7r8jvhzdtzqvnBkC1rgtvRBsAmKcw==
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
+ by PR1P264MB2222.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:1b7::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5612.14; Thu, 8 Sep
+ 2022 15:25:14 +0000
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::382a:ed3b:83d6:e5d8]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::382a:ed3b:83d6:e5d8%4]) with mapi id 15.20.5588.018; Thu, 8 Sep 2022
+ 15:25:14 +0000
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: =?utf-8?B?UGFsaSBSb2jDoXI=?= <pali@kernel.org>
+Subject: Re: [PATCH 11/12] powerpc: wiiu: don't enforce flat memory
+Thread-Topic: [PATCH 11/12] powerpc: wiiu: don't enforce flat memory
+Thread-Index:  AQHYLfBPgVzA0P7gY0+HKTq6SVYdAK0d2faAgAnBBgCAAEm2AIAALHkAgAAdmwCAIBSsAIBeDV0AgDCBsYA=
+Date: Thu, 8 Sep 2022 15:25:14 +0000
+Message-ID: <219cda7b-da4b-7a5a-9809-0878e0fc02ba@csgroup.eu>
+References: <20220302044406.63401-1-ash@heyquark.com>
+ <20220302044406.63401-12-ash@heyquark.com>
+ <20220513224353.n56qg5fhstbaqhfz@pali>
+ <d84e4d24-f350-80fc-6c31-b7e7f8d429f4@heyquark.com>
+ <20220520080454.c3cqodsdbfbkmg56@pali>
+ <935b426a-6c64-beb0-907f-8c3f0a089ab7@heyquark.com>
+ <20220520123002.rd46p5ty6wumi7cc@pali> <20220609222420.ponpoodiqmaqtwht@pali>
+ <20220808184034.lskqrk6z3gb5q76r@pali>
+In-Reply-To: <20220808184034.lskqrk6z3gb5q76r@pali>
+Accept-Language: fr-FR, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.0
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=csgroup.eu;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: eb1a5116-ab1a-40c9-3dc1-08da91ae53c4
+x-ms-traffictypediagnostic: PR1P264MB2222:EE_
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:  X5Es+A8HBVbkcZLv0X9cOsMRE1zvxsRw/FMj2PX1NFPIyoSkO3FMLscU5OT3uWQAhOhX6cQmgVRsEqIGnvVAMePkTqb4zOJUM8LF+FVzQ4VmVVhWTIhRqt1ZOrzpUh3oL1GgkrtrQFpphi82D+uV3f024gr7bi9F11CByoRTutTPq+/qQ5I1tOH7AI2p70ve1VC2k0EQs8AJysBUDpJemUblE5udY9sDCx6rQCD540PddyQTMPvMazwgrWAUzQEd4/hYDbCa+GnJFWOFmjEGVmIv6X45svmAyaLWK+lsiqZhtnsq1wMtg1VOux39UmnyrU87zyVCDGLr2Rd1F2iPxuDnZYTiGeZcvysgyA4uqRNL3PKfybsw4P1Zy+ZQm/h5pVuo7ccxrfQMkmJNpkd45+xpjW2TyP3VphMJSa9dbvy2mZa7vDC0HCnc2IyOrlGRADDZryP/tsNMUItLJO6qX+KPkDexQUZleESeg731rNS0jR3H0rXidXc41vg9w1dNWU6H8oLPW+FYvTYm+jep5aHtCUC0Lm+uFRpFRbzGfPSFP2f+IfCZbtguTKKd4hP7vOEgw1h3bX2N9o91UbALvBvab/mMxuiHcLWlwy849el+57nNoTsGDzlbIW73vMoOuqQKnyL9C50RX69Btjj6XWPz0K3O95FORP46kO7yb7CUI2jgyjnpiH0/lj/I0fmTm5maYliFShD5o7nTAcWSD44914p13gYoNlk9ejK0J8QspApUPuAZOq22d8zc87GkrQBoCoAU3WOKLP13jj1tfJF4EQhOQtgKaRpSPq1llm75E3sSKsTF7DITs945YTh5HPrvQ780Vm8rz+Fd2wDDqA==
+x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230016)(4636009)(396003)(136003)(366004)(39860400002)(376002)(346002)(6506007)(86362001)(6486002)(4744005)(4326008)(76116006)(64756008)(8676002)(66946007)(186003)(31696002)(66476007)(66556008)(91956017)(478600001)(66446008)(44832011)(2616005)(8936002)(7416002)(5660300002)(31686004)(2906002)(71200400001)(36756003)(41300700001)(6916009)(316002)(6512007)(38070700005)(122000001)(26005)(54906003)(38100700002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?L2R3SU42aEVmR0wvOWNCeUJKNGttdCtqNGh4R1FrUHN6Vyt5YnVGbnFHS2Iv?=
+ =?utf-8?B?THk3VWx5cmZORE1GL3dEZ0MxbGpJaWRpTVA4YmlQOUFyNmVqM25VSGwwdUhL?=
+ =?utf-8?B?OTVCY1RqTnIrSmZuOWdlWFhBZmxSRGRYSW5HYkcyeWxwV3RTbWJMS1dtdjRj?=
+ =?utf-8?B?ZGVJTGZ2ckVSak9xMmQxRkVDblc3UmNLUlhuaTQyZGd2cDlqNDNrRFRkMStY?=
+ =?utf-8?B?emRlek1haWxyWWM3Zmw4T1M5YURKa0pZTjVuelBZKzkyMFF2NHhOd29wdlYv?=
+ =?utf-8?B?dVd6VmM2cjZLZGtJMGlHSHV4NkcrTUp3VUdyY1pHazlDNHpYR3h0ZTRNcmN2?=
+ =?utf-8?B?eEVqd2h5QjBkMlZhemRvQ1Rzc3h4bm9SZVhmUm9LTmVXNkJFWHp2K1VWS1NE?=
+ =?utf-8?B?bWVVa0h1elFMeUpNWmpsbVpkTGtqajVuMVUxdXkxeWJYaXBneHR5ZVBDbUhP?=
+ =?utf-8?B?Z2pKMG1oeXN5elVoam1LemRHY0pDZGNkQlBMZ2RacVAvWVI2WEJ2UHBMM2ZP?=
+ =?utf-8?B?bnl5YUdpeGU2VUVnbVNYNzcvU09ld2hnem1HSDdkWi9IQWtxV0hFS3pxWHln?=
+ =?utf-8?B?d1lzamZMOCtPMmg2a05Rcmxyb3U4Y0FBa3FyVjMvR0xuaWRmM081QUJUN2ha?=
+ =?utf-8?B?aGxObHhlQnFEVnBwTEN3QnJZbnBPYUt2R2UvKzJNd0l0dmV1Q1BVa04xaDZu?=
+ =?utf-8?B?THhBSkRtejAwdTdhclNQWng2ZFBnUE5TMzE0SnhZTHhtZHlLMU11M002ZVNC?=
+ =?utf-8?B?dDdSU3YrNzR4ZDZaN243UWtOamNrc2l3aXdObU5waUNFMVhDLzdGc2ZNKzFx?=
+ =?utf-8?B?VFprcm1xckM4RkFES2drTXhlYXpqWWZuWjNpNHBmYkFTMkcvM1pKQWg5Rys5?=
+ =?utf-8?B?K0ErNWNxZTlmU25ZOEh6WlEyKzVSQnZEV1FKdEhvODdZV2tVOUtNMktLa1Nh?=
+ =?utf-8?B?U1NydE1uWXdMajBEM095Y0NNNFBSQlgwSm9JRS9QWHFiNXJaZG9NSDgxa0cv?=
+ =?utf-8?B?Q3RYaGFoZXE3dmcwTDYvNTlsb3ArdUdBbHdCbDUxRFQ5eFoxQUtVL0tlQmR2?=
+ =?utf-8?B?cDErOTVTdk94TnhpK2VIS0hqbGwxNzVKYm1kU1NhTVlEK3BSUmJBeUxIU2JW?=
+ =?utf-8?B?WHJnZ01jdUNPSHlOQ3pQMHJlTmczSWpYalllNDJrYXJsWkRveHRUOXNtVzFX?=
+ =?utf-8?B?RUFjTWVxOTNlTWRwdEt6b0xvaFFLUW0zektmeTkrQkpqeUx1ZktlUGVRT2kx?=
+ =?utf-8?B?Qy9Mek9HczQxTmdCclY4WWdRTFRCakJFRFhCMHoyZjJEeXRGTDJ2dEVpQ2tQ?=
+ =?utf-8?B?aGthWkZRZEFlWkxoVEI0SkI0dGQ4U3l3eVBKQ0kyM1NaeEpKQllzNThrMVlU?=
+ =?utf-8?B?czdENHFOeUhGR0tFZGtMaDZacmt5aFJaWC80cHp2SStGbjBEN0Vra1BIREJu?=
+ =?utf-8?B?UjFUQXl6VUFnZ3h3aENaL0M3UGdPVHdGTUZzeFhqOGZKRFB3bmVlNjFjN1ZX?=
+ =?utf-8?B?b0loWHBJU0RqOGpMMjlyYVJ1a0RSOXFrdXFpNm5oNzdVREYvdkhxY3FORFR4?=
+ =?utf-8?B?ay8vampvd1RkaTNSQTJzREM3ZkpFZElvNlJtSDVNWktxVDczUmFyME5vT1Ju?=
+ =?utf-8?B?cHNBcWY5S3lYOStJN1Ywbms3akp1WmY5dGlwNzhMbkNDQzgyLzRIQkhpanVH?=
+ =?utf-8?B?UFJVVlZ0UTAzQ2VzdDlQbE1SS3orRTdzRmE0ejZPK2REbG5aM1RqQzRQc05n?=
+ =?utf-8?B?TlkrSTdIeVdHcG5uK21qeUY3N3JCcTdObnA2ZTVBRlJ4dE5qZ0ZmVklRK08w?=
+ =?utf-8?B?ZFlNakJ4RDJqSWpRZWxoRUF3MnhoOXlQQUp6SnZhS0ZrTXdlT2RVUm82c0dn?=
+ =?utf-8?B?V0J6QXBYakY4VXlyVXE5U0x1NXczekhtTnQ5WW5MUFNzMjlyZXcwNTRBNFR3?=
+ =?utf-8?B?cEtzTEpwQmg5REl6a3JYT0EreGNMczZXUUJXY1RRclk0RjlOcWpPaTgwRy9m?=
+ =?utf-8?B?b2Q4ZHFFTWM3NjV2NFYwMjhreXZKSGFNV2tZd1B3aGo0b0h3N2hRM2JFc21R?=
+ =?utf-8?B?Tm1maGtPNi9sb2JxcmlwYk00elgwNVE2YXFXS3dNVnJ5ZHBTNk04L2xHaXVI?=
+ =?utf-8?B?MUFEK2JHZGZzT0ZDOWtXU0swTjlkazFYeHNpTkVIY2RoV050NS9SQjRPTktS?=
+ =?utf-8?Q?KPf30bHNOhuX7MXn82/FaHk=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <64F2AAF1D5A84C45A15A4CCDF5C9BAD2@FRAP264.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-OriginatorOrg: csgroup.eu
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: eb1a5116-ab1a-40c9-3dc1-08da91ae53c4
+X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Sep 2022 15:25:14.1417
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: nrM+FD6GuSAKkE6MbZOSdrKUXfEv4rzhjOOXMYdNY4NKSnvzGtTprkuP1jqlbfY6cj5AzCi8p9V3plTypntFj6xrjm0RvQVnVQdK22A4oP8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR1P264MB2222
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,48 +141,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Mackerras <paulus@samba.org>, llvm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Joel Stanley <joel@jms.id.au>
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "robh+dt@kernel.org" <robh+dt@kernel.org>, "paulus@samba.org" <paulus@samba.org>, Ash Logan <ash@heyquark.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "j.ne@posteo.net" <j.ne@posteo.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Sep 8, 2022, at 2:27 AM, Michael Ellerman wrote:
-> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
->
-> Yeah that would make some sense.
->
-> On 64-bit the largest frame in that file is 1424, which is below the
-> default 2048 byte limit.
->
-> So maybe just increase it for 32-bit && KASAN.
->
-> What would be nice is if the FRAME_WARN value could be calculated as a
-> percentage of the THREAD_SHIFT, but that's not easily doable with the
-> way things are structured in Kconfig.
->
-
-Increasing the warning limit slightly for 32-bit with
-CONFIG_KASAN_STACK makes sense, but there are a lot of
-related concerns:
-
-- I was hoping to still stay under 1280 bytes for the warning
-  limit, so that even with KASAN_STACK enabled, we are able to
-  catch warnings in functions that use a stupid amount of
-  local variables, without getting too many false positives.
-
-- if the XOR code has its frame size explode like this, it's
-  probably an indication of the compiler doing something wrong,
-  not the kernel code. The result is likely that the "optimized"
-  XOR implementation is slower than the default version as a
-  result, and the kernel will pick the other one at boot time.
-  This needs to be confirmed of course, but an easier workaround
-  for this instance might be to just disable the xor_vmx module
-  when KASAN_STACK is set.
-
-- The warning limit on 32-bit is actually 2028 bytes when
-  GCC_PLUGIN_LATENT_ENTROPY is set. I think this is a mistake
-  and we should lower /that/ limit instead, but a side-effect
-  here is that an allmodconfig kernel build with gcc will fail
-  to warn about bugs that exist both with gcc and clang, while
-  clang complains about it.
-
-      Arnd
+DQoNCkxlIDA4LzA4LzIwMjIgw6AgMjA6NDAsIFBhbGkgUm9ow6FyIGEgw6ljcml0wqA6DQo+IE9u
+IEZyaWRheSAxMCBKdW5lIDIwMjIgMDA6MjQ6MjAgUGFsaSBSb2jDoXIgd3JvdGU6DQo+PiBPbiBG
+cmlkYXkgMjAgTWF5IDIwMjIgMTQ6MzA6MDIgUGFsaSBSb2jDoXIgd3JvdGU6DQo+Pj4gKyBsaW51
+eC1tbQ0KPj4+DQo+Pj4gRG8geW91IGtub3cgd2hhdCBhcmUgcmVxdWlyZW1lbnRzIGZvciBrZXJu
+ZWwgdG8gc3VwcG9ydCBub24tY29udGlndW91cw0KPj4+IG1lbW9yeSBzdXBwb3J0IGFuZCB3aGF0
+IGlzIG5lZWRlZCB0byBlbmFibGUgaXQgZm9yIDMyLWJpdCBwb3dlcnBjPw0KPj4NCj4+IEFueSBo
+aW50cz8NCj4gDQo+IFBJTkc/DQo+IA0KDQpUaGUgdHJlZSBmb2xsb3dpbmcgcGF0Y2hlcyBsYW5k
+ZWQgaW4gcG93ZXJwYy9uZXh0IGJyYW5jaCwgc28gdGhleSBzaG91bGQgDQpzb29uIGJlIHZpc2li
+bGUgaW4gbGludXgtbmV4dCB0b286DQoNCmZjMDY3NTVlMjU2MiAoInBvd2VycGMvMzI6IERyb3Ag
+YSBzdGFsZSBjb21tZW50IGFib3V0IHJlc2VydmF0aW9uIG9mIA0KZ2lnYW50aWMgcGFnZXMiKQ0K
+YjBlMGQ2OGIxYzUyICgicG93ZXJwYy8zMjogQWxsb3cgZnJhZ21lbnRlZCBwaHlzaWNhbCBtZW1v
+cnkiKQ0KMDExNTk1M2RjZWJlICgicG93ZXJwYy8zMjogUmVtb3ZlIHdpaV9tZW1vcnlfZml4dXBz
+KCkiKQ0K
