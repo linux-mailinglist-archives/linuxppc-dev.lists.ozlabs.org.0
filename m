@@ -2,66 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23B845B3C92
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 18:02:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B2205B3CB1
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 18:10:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MPLP31JXvz3c8W
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Sep 2022 02:02:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MPLZR1Gw5z3c5B
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Sep 2022 02:10:55 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=ZGrlqpty;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=BiyE3pbF;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b2a; helo=mail-yb1-xb2a.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b29; helo=mail-yb1-xb29.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=ZGrlqpty;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=BiyE3pbF;
 	dkim-atps=neutral
-Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
+Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MPLNS26K4z2xYy
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Sep 2022 02:02:15 +1000 (AEST)
-Received: by mail-yb1-xb2a.google.com with SMTP id b136so3360679yba.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 09 Sep 2022 09:02:15 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MPLYq6mT2z30FQ
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Sep 2022 02:10:22 +1000 (AEST)
+Received: by mail-yb1-xb29.google.com with SMTP id p200so3404393yba.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 09 Sep 2022 09:10:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date;
-        bh=DQbTmUrdrgDTvMmvyU9EuQQznosHCNDpYSf+XCcrSrw=;
-        b=ZGrlqpty6dTHcA0AGjeGbNjw2MRTqt5szBBhpVQ4dkAsz27E+xJBinSUjpum6sOJ74
-         KUZIDyDTlEwKWlVEOqzVoPwsgYo6xRs2omL0jr9x673C7t9bWdmM231kaPxOkEpsERNk
-         sUlQeM1/QWZrA4nzRANgMA3UJkLeBZnQOHmgqtekadzWeed3VlEw+rQY6cYq9FkJGlyk
-         eS/uEeop/qmLnkiU9Ys8shAx2VjqIgYTIQI6dvC+LcponoNKz/e7KU3mEKjps86U/s0V
-         EW2m8zRsZ3OQ1M1GTcpCTPJF6NkaKVoEl9GprcuZylB1npUnqKSwkuU5ir52s1OYBMdH
-         XORw==
+        bh=f+8N/y8y23UZcEEw+aQnyU3DKfX0ieX6O82IRCC4HdM=;
+        b=BiyE3pbFzAwYEbflQaZphZUwAl6tFqEKoxOSeraxpHXAycNAP3ER6hKVN7zFxfnZYI
+         dmbHBcE6XaXCDmJB0eURxyjOS/LYAdTSVJQQgbSxedvGxksEGEwo8bnxbUL8mqNSiS0I
+         HQyjMm7qR28Cy5F5ljGna6zDh1IiUsm0e6MqXa3HuxfjplJN7dSZ/Qs1dLgbietr0qPm
+         aaeYBKFqiZMof8mnns8VIkOIM2RsE/1SOEkhSnGyg23sOandSiJu5QHwmXR0GZ62ahYH
+         XGvfGR0+GC7EgWkb3KjP0ya0ZAmSu88fnl+kiUpJwLjqxUD63YfqwYHj3h/U+xX2yvGr
+         3QZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date;
-        bh=DQbTmUrdrgDTvMmvyU9EuQQznosHCNDpYSf+XCcrSrw=;
-        b=zRTGPLEOXceU8m/VZ3HVrzza6YXuMRvc5a4wUUfZdMbTod8LKtZMsxDgyR5hDMPV6p
-         w9q6u23SR1+coszxbHEvjtOz22j7aY3PTyDMzsJTlAnsZyd91L1alpppxnlhDF0zBs7+
-         g+r1VbMBy9k/4dT3pw3UO+MUCtthPh8pgnr3QCejZ64dpNI8RjsiQxOESnRyLXNNhtNo
-         EPOVsTcCqCW3wKqgDvYE56huLNzUZY+vJC8TIBdPzsKW8JWdilXx5fRRUrsDbo/MVpDl
-         qa7ev6Qde2I3Ycyz3veweWbrjDl1QMOtEO4LoIG+VpFeCbqVmrwr40jQZ7IP2RAQU5Dq
-         eYzQ==
-X-Gm-Message-State: ACgBeo2olYVt+jBuhMQjVRw98omfoS5TsLaLo3rXC1dSA/NGaWMZo7ow
-	qUC0wmHvUu6e5NvrNVxc5F2KeXCcwDWuGWbWak346g==
-X-Google-Smtp-Source: AA6agR5Nq64ZM2y3FbQ4HLpbzNHvKJZ/Snb2eh+Dl0Jr1a7cLwUO5zAkkKuGlWLxpWXb/VD567UKIjM3qf4+35Bz7gg=
-X-Received: by 2002:a25:cc8d:0:b0:6a8:40cb:d730 with SMTP id
- l135-20020a25cc8d000000b006a840cbd730mr12446545ybf.119.1662739332705; Fri, 09
- Sep 2022 09:02:12 -0700 (PDT)
+        bh=f+8N/y8y23UZcEEw+aQnyU3DKfX0ieX6O82IRCC4HdM=;
+        b=aE2VrUNdPDXHDiRTqVtyF7gZu7NG1XCmDfAuaiRsbrQthIkhx/59NGii22A4sSNkWx
+         o0Mt24xDoJlT5xcElIiTmzPfy+NgSNb4RbbPAuHdwAgqktZMn8iPcmA1yE5pZVKEg4c9
+         400j9M1JTn1PxLWDbx1MMYPHh6f6PfbyScjXIPyiJ8+/voVve3NStm2h5+VrcFwP7WqK
+         58Qpxh+zEvvsQqvIkEcIKR9Z906lTpOLlVIdtzunAseFwcXPjrmZKbMF+k0JxpN/mqN+
+         mNAQldtQiYWwdBdfjojtfzgL21SBvU4WlaEC5x75iTGxnAAZ0Te+pIWPXrTkIZ48Sz7Y
+         bNbg==
+X-Gm-Message-State: ACgBeo2p3UIU6FHzjHBCvHvTVRV3tPZ9KhPUbuAN6ZVgBROlkzDlwLM7
+	dLNzKlF9FenrwYDITbl9tEcONIm5QTeKA2mbBl3WDw==
+X-Google-Smtp-Source: AA6agR5mnVSQ1qQ+aIdXXXGAhOTMvHt8B37xrRYeRcCRdY1CnsLY6FiKvNQ4vPY3G6eYgyMHbEmwJurPorP8bkXzM8s=
+X-Received: by 2002:a25:424a:0:b0:6a9:2954:87fd with SMTP id
+ p71-20020a25424a000000b006a9295487fdmr12075530yba.340.1662739819203; Fri, 09
+ Sep 2022 09:10:19 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220901173516.702122-1-surenb@google.com> <20220901173516.702122-29-surenb@google.com>
- <34dd5656-dc3c-6a20-5390-04d05c619fdc@linux.ibm.com>
-In-Reply-To: <34dd5656-dc3c-6a20-5390-04d05c619fdc@linux.ibm.com>
+References: <20220901173516.702122-1-surenb@google.com> <20220901173516.702122-22-surenb@google.com>
+ <630714df-dec1-4a41-6af3-380181d11669@linux.ibm.com>
+In-Reply-To: <630714df-dec1-4a41-6af3-380181d11669@linux.ibm.com>
 From: Suren Baghdasaryan <surenb@google.com>
-Date: Fri, 9 Sep 2022 09:02:01 -0700
-Message-ID: <CAJuCfpGn=Xhc3SnrK2ei1WPoFPaW00xZkS9MebN9Zxfv9joPoA@mail.gmail.com>
-Subject: Re: [RFC PATCH RESEND 28/28] kernel/fork: throttle call_rcu() calls
- in vm_area_free
+Date: Fri, 9 Sep 2022 09:10:08 -0700
+Message-ID: <CAJuCfpFtsP6s+pgus4RjFdwasg69hQ-LOSOL8XV4zUMey0zS9g@mail.gmail.com>
+Subject: Re: [RFC PATCH RESEND 21/28] mm: introduce find_and_lock_anon_vma to
+ be used from arch-specific code
 To: Laurent Dufour <ldufour@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -80,209 +80,108 @@ Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Sep 9, 2022 at 8:19 AM Laurent Dufour <ldufour@linux.ibm.com> wrote=
+On Fri, Sep 9, 2022 at 7:38 AM Laurent Dufour <ldufour@linux.ibm.com> wrote=
 :
 >
 > Le 01/09/2022 =C3=A0 19:35, Suren Baghdasaryan a =C3=A9crit :
-> > call_rcu() can take a long time when callback offloading is enabled.
-> > Its use in the vm_area_free can cause regressions in the exit path when
-> > multiple VMAs are being freed. To minimize that impact, place VMAs into
-> > a list and free them in groups using one call_rcu() call per group.
+> > Introduce find_and_lock_anon_vma function to lookup and lock an anonymo=
+us
+> > VMA during page fault handling. When VMA is not found, can't be locked
+> > or changes after being locked, the function returns NULL. The lookup is
+> > performed under RCU protection to prevent the found VMA from being
+> > destroyed before the VMA lock is acquired. VMA lock statistics are
+> > updated according to the results.
 > >
 > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 > > ---
-> >  include/linux/mm.h       |  1 +
-> >  include/linux/mm_types.h | 11 ++++++-
-> >  kernel/fork.c            | 68 +++++++++++++++++++++++++++++++++++-----
-> >  mm/init-mm.c             |  3 ++
-> >  mm/mmap.c                |  1 +
-> >  5 files changed, 75 insertions(+), 9 deletions(-)
+> >  include/linux/mm.h |  3 +++
+> >  mm/memory.c        | 45 +++++++++++++++++++++++++++++++++++++++++++++
+> >  2 files changed, 48 insertions(+)
 > >
 > > diff --git a/include/linux/mm.h b/include/linux/mm.h
-> > index a3cbaa7b9119..81dff694ac14 100644
+> > index 7c3190eaabd7..a3cbaa7b9119 100644
 > > --- a/include/linux/mm.h
 > > +++ b/include/linux/mm.h
-> > @@ -249,6 +249,7 @@ void setup_initial_init_mm(void *start_code, void *=
-end_code,
-> >  struct vm_area_struct *vm_area_alloc(struct mm_struct *);
-> >  struct vm_area_struct *vm_area_dup(struct vm_area_struct *);
-> >  void vm_area_free(struct vm_area_struct *);
-> > +void drain_free_vmas(struct mm_struct *mm);
-> >
-> >  #ifndef CONFIG_MMU
-> >  extern struct rb_root nommu_region_tree;
-> > diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-> > index 36562e702baf..6f3effc493b1 100644
-> > --- a/include/linux/mm_types.h
-> > +++ b/include/linux/mm_types.h
-> > @@ -412,7 +412,11 @@ struct vm_area_struct {
-> >                       struct vm_area_struct *vm_next, *vm_prev;
-> >               };
-> >  #ifdef CONFIG_PER_VMA_LOCK
-> > -             struct rcu_head vm_rcu; /* Used for deferred freeing. */
-> > +             struct {
-> > +                     struct list_head vm_free_list;
-> > +                     /* Used for deferred freeing. */
-> > +                     struct rcu_head vm_rcu;
-> > +             };
-> >  #endif
-> >       };
-> >
-> > @@ -573,6 +577,11 @@ struct mm_struct {
-> >                                         */
-> >  #ifdef CONFIG_PER_VMA_LOCK
-> >               int mm_lock_seq;
-> > +             struct {
-> > +                     struct list_head head;
-> > +                     spinlock_t lock;
-> > +                     int size;
-> > +             } vma_free_list;
-> >  #endif
-> >
-> >
-> > diff --git a/kernel/fork.c b/kernel/fork.c
-> > index b443ba3a247a..7c88710aed72 100644
-> > --- a/kernel/fork.c
-> > +++ b/kernel/fork.c
-> > @@ -483,26 +483,75 @@ struct vm_area_struct *vm_area_dup(struct vm_area=
-_struct *orig)
+> > @@ -684,6 +684,9 @@ static inline void vma_assert_no_reader(struct vm_a=
+rea_struct *vma)
+> >                     vma);
 > >  }
 > >
-> >  #ifdef CONFIG_PER_VMA_LOCK
-> > -static void __vm_area_free(struct rcu_head *head)
-> > +static inline void __vm_area_free(struct vm_area_struct *vma)
-> >  {
-> > -     struct vm_area_struct *vma =3D container_of(head, struct vm_area_=
-struct,
-> > -                                               vm_rcu);
-> >       /* The vma should either have no lock holders or be write-locked.=
- */
-> >       vma_assert_no_reader(vma);
-> >       kmem_cache_free(vm_area_cachep, vma);
-> >  }
-> > -#endif
+> > +struct vm_area_struct *find_and_lock_anon_vma(struct mm_struct *mm,
+> > +                                           unsigned long address);
 > > +
-> > +static void vma_free_rcu_callback(struct rcu_head *head)
+> >  #else /* CONFIG_PER_VMA_LOCK */
+> >
+> >  static inline void vma_init_lock(struct vm_area_struct *vma) {}
+> > diff --git a/mm/memory.c b/mm/memory.c
+> > index 29d2f49f922a..bf557f7056de 100644
+> > --- a/mm/memory.c
+> > +++ b/mm/memory.c
+> > @@ -5183,6 +5183,51 @@ vm_fault_t handle_mm_fault(struct vm_area_struct=
+ *vma, unsigned long address,
+> >  }
+> >  EXPORT_SYMBOL_GPL(handle_mm_fault);
+> >
+> > +#ifdef CONFIG_PER_VMA_LOCK
+> > +static inline struct vm_area_struct *find_vma_under_rcu(struct mm_stru=
+ct *mm,
+> > +                                                     unsigned long add=
+ress)
 > > +{
-> > +     struct vm_area_struct *first_vma;
-> > +     struct vm_area_struct *vma, *vma2;
+> > +     struct vm_area_struct *vma =3D __find_vma(mm, address);
 > > +
-> > +     first_vma =3D container_of(head, struct vm_area_struct, vm_rcu);
-> > +     list_for_each_entry_safe(vma, vma2, &first_vma->vm_free_list, vm_=
-free_list)
+> > +     if (!vma || vma->vm_start > address)
+> > +             return NULL;
+> > +
+> > +     if (!vma_is_anonymous(vma))
+> > +             return NULL;
+> > +
 >
-> Is that safe to walk the list against concurrent calls to
-> list_splice_init(), or list_add()?
+> It looks to me more natural to first check that the VMA is part of the RB
+> tree before try read locking it.
 
-I think it is. drain_free_vmas() moves the to-be-destroyed and already
-isolated VMAs from mm->vma_free_list into to_destroy list and then
-passes that list to vma_free_rcu_callback(). At this point the list of
-VMAs passed to vma_free_rcu_callback() is not accessible either from
-mm (VMAs were isolated before vm_area_free() was called) or from
-drain_free_vmas() since they were already removed from
-mm->vma_free_list. Does that make sense?
+I think we want to check that the VMA is still part of the mm _after_
+we locked it. Otherwise we might pass the check, then some other
+thread does (lock->isolate->unlock) and then we lock the VMA. We would
+end up with a VMA that is not part of mm anymore but we assume it is.
 
 >
-> > +             __vm_area_free(vma);
-> > +     __vm_area_free(first_vma);
+> > +     if (!vma_read_trylock(vma)) {
+> > +             count_vm_vma_lock_event(VMA_LOCK_ABORT);
+> > +             return NULL;
+> > +     }
+> > +
+> > +     /* Check if the VMA got isolated after we found it */
+> > +     if (RB_EMPTY_NODE(&vma->vm_rb)) {
+> > +             vma_read_unlock(vma);
+> > +             count_vm_vma_lock_event(VMA_LOCK_MISS);
+> > +             return NULL;
+> > +     }
+> > +
+> > +     return vma;
 > > +}
 > > +
-> > +void drain_free_vmas(struct mm_struct *mm)
+> > +/*
+> > + * Lookup and lock and anonymous VMA. Returned VMA is guaranteed to be=
+ stable
+> > + * and not isolated. If the VMA is not found of is being modified the =
+function
+> > + * returns NULL.
+> > + */
+> > +struct vm_area_struct *find_and_lock_anon_vma(struct mm_struct *mm,
+> > +                                           unsigned long address)
 > > +{
-> > +     struct vm_area_struct *first_vma;
-> > +     LIST_HEAD(to_destroy);
+> > +     struct vm_area_struct *vma;
 > > +
-> > +     spin_lock(&mm->vma_free_list.lock);
-> > +     list_splice_init(&mm->vma_free_list.head, &to_destroy);
-> > +     mm->vma_free_list.size =3D 0;
-> > +     spin_unlock(&mm->vma_free_list.lock);
+> > +     rcu_read_lock();
+> > +     vma =3D find_vma_under_rcu(mm, address);
+> > +     rcu_read_unlock();
 > > +
-> > +     if (list_empty(&to_destroy))
-> > +             return;
-> > +
-> > +     first_vma =3D list_first_entry(&to_destroy, struct vm_area_struct=
-, vm_free_list);
-> > +     /* Remove the head which is allocated on the stack */
-> > +     list_del(&to_destroy);
-> > +
-> > +     call_rcu(&first_vma->vm_rcu, vma_free_rcu_callback);
+> > +     return vma;
 > > +}
-> > +
-> > +#define VM_AREA_FREE_LIST_MAX        32
-> > +
-> > +void vm_area_free(struct vm_area_struct *vma)
-> > +{
-> > +     struct mm_struct *mm =3D vma->vm_mm;
-> > +     bool drain;
-> > +
-> > +     free_anon_vma_name(vma);
-> > +
-> > +     spin_lock(&mm->vma_free_list.lock);
-> > +     list_add(&vma->vm_free_list, &mm->vma_free_list.head);
-> > +     mm->vma_free_list.size++;
-> > +     drain =3D mm->vma_free_list.size > VM_AREA_FREE_LIST_MAX;
-> > +     spin_unlock(&mm->vma_free_list.lock);
-> > +
-> > +     if (drain)
-> > +             drain_free_vmas(mm);
-> > +}
-> > +
-> > +#else /* CONFIG_PER_VMA_LOCK */
-> > +
-> > +void drain_free_vmas(struct mm_struct *mm) {}
-> >
-> >  void vm_area_free(struct vm_area_struct *vma)
-> >  {
-> >       free_anon_vma_name(vma);
-> > -#ifdef CONFIG_PER_VMA_LOCK
-> > -     call_rcu(&vma->vm_rcu, __vm_area_free);
-> > -#else
-> >       kmem_cache_free(vm_area_cachep, vma);
-> > -#endif
-> >  }
-> >
 > > +#endif /* CONFIG_PER_VMA_LOCK */
 > > +
-> >  static void account_kernel_stack(struct task_struct *tsk, int account)
-> >  {
-> >       if (IS_ENABLED(CONFIG_VMAP_STACK)) {
-> > @@ -1137,6 +1186,9 @@ static struct mm_struct *mm_init(struct mm_struct=
- *mm, struct task_struct *p,
-> >       INIT_LIST_HEAD(&mm->mmlist);
-> >  #ifdef CONFIG_PER_VMA_LOCK
-> >       WRITE_ONCE(mm->mm_lock_seq, 0);
-> > +     INIT_LIST_HEAD(&mm->vma_free_list.head);
-> > +     spin_lock_init(&mm->vma_free_list.lock);
-> > +     mm->vma_free_list.size =3D 0;
-> >  #endif
-> >       mm_pgtables_bytes_init(mm);
-> >       mm->map_count =3D 0;
-> > diff --git a/mm/init-mm.c b/mm/init-mm.c
-> > index 8399f90d631c..7b6d2460545f 100644
-> > --- a/mm/init-mm.c
-> > +++ b/mm/init-mm.c
-> > @@ -39,6 +39,9 @@ struct mm_struct init_mm =3D {
-> >       .mmlist         =3D LIST_HEAD_INIT(init_mm.mmlist),
-> >  #ifdef CONFIG_PER_VMA_LOCK
-> >       .mm_lock_seq    =3D 0,
-> > +     .vma_free_list.head =3D LIST_HEAD_INIT(init_mm.vma_free_list.head=
-),
-> > +     .vma_free_list.lock =3D  __SPIN_LOCK_UNLOCKED(init_mm.vma_free_li=
-st.lock),
-> > +     .vma_free_list.size =3D 0,
-> >  #endif
-> >       .user_ns        =3D &init_user_ns,
-> >       .cpu_bitmap     =3D CPU_BITS_NONE,
-> > diff --git a/mm/mmap.c b/mm/mmap.c
-> > index 1edfcd384f5e..d61b7ef84ba6 100644
-> > --- a/mm/mmap.c
-> > +++ b/mm/mmap.c
-> > @@ -3149,6 +3149,7 @@ void exit_mmap(struct mm_struct *mm)
-> >       }
-> >       mm->mmap =3D NULL;
-> >       mmap_write_unlock(mm);
-> > +     drain_free_vmas(mm);
-> >       vm_unacct_memory(nr_accounted);
-> >  }
-> >
+> >  #ifndef __PAGETABLE_P4D_FOLDED
+> >  /*
+> >   * Allocate p4d page table.
 >
