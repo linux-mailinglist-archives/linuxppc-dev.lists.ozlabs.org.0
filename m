@@ -1,67 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A248E5B2AB2
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 01:58:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF7375B2AF0
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 02:16:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MNx0242Z9z3c3w
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 09:58:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MNxP14KZsz3c46
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 10:16:21 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=eex6cV74;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=oBDufWXf;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b30; helo=mail-yb1-xb30.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::112d; helo=mail-yw1-x112d.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=eex6cV74;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=oBDufWXf;
 	dkim-atps=neutral
-Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
+Received: from mail-yw1-x112d.google.com (mail-yw1-x112d.google.com [IPv6:2607:f8b0:4864:20::112d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MNwzM2gjdz2xJJ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Sep 2022 09:57:34 +1000 (AEST)
-Received: by mail-yb1-xb30.google.com with SMTP id g5so321061ybg.11
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Sep 2022 16:57:34 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MNxNL5tnXz2xJJ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Sep 2022 10:15:45 +1000 (AEST)
+Received: by mail-yw1-x112d.google.com with SMTP id 00721157ae682-3454e58fe53so2121707b3.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Sep 2022 17:15:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date;
-        bh=fjRx/Lr4rWG8FdNjepWfPwinvttFV+7WLgO00cFoqzc=;
-        b=eex6cV74s4M8HeKkMm8twe1wMmlZy8xPylfXxTCwczLvM6rjy9aZnLRWAV94lwFweL
-         wAYpV8vwszuecJPQnwFpuZcAWGq+gpGawG4NDhdV/gC5fkudZU59f9HbpteQ+lQOcY0I
-         GAuQhYX7csyCScbjD5jgdN/lxX0hV5690Tcj8OCWTWHOdxz1phA0WKGeiTCECkVAzaLw
-         sEfntZDZ1/grg22e7rWeAYxWauW5E1ZRZA2dGh5d7M8MUfKjS+PoLz8YplH1AxLv4mjU
-         xBy4gnrkKgV0FDBrrfwV2xX69XGlTUWccShysi4f6ykbn3u/y4iOr6sGj4cHuPbiwDv6
-         bZNg==
+        bh=hqY5A7Q3sRIg+0suDoUYAY9ycBZxq0iP/o3p4lTPQtw=;
+        b=oBDufWXfW+Av/lwxqv0a/EmqwgX3S9/bXbt6VPEO7NL873V6R8oQZDcLwtycRTOpXd
+         ETEjULXGw4a08PRJMrQ0Nm5rozdANb4QWO+80W8Mflqxsz2iKlb84+RJB/TmEhy3p43o
+         p4R41uJlGA49hCYO16U/nbK5AfKp/LocXCNl5xvBp0ILImSEpasSy1IvxO6+UJaGSIcl
+         YLsP7TlWAHeAYCI4A+RRC+n1yvSdbLnsaNWmEhuIXbEMmMGUmPmSZZTRN+8g19QX4YyS
+         aYOqOsPfivibr4WSH7pE+0/NSWF4MCgHB5gjaRwq/g7jkpOCAn94Vsh+Zd8qJFI5KMqh
+         TLLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date;
-        bh=fjRx/Lr4rWG8FdNjepWfPwinvttFV+7WLgO00cFoqzc=;
-        b=dCJ5Y6iqBCBKy525TJSqEKGwiqKuAbdYxK80ew0yVtKNFiV2MmLiUYTwmeUAKbsMRz
-         xJJM66wXKuGmYIVSptPBqreQliUbX75x7ydG+XBCy8qfB49bHwZ8F7poqWug0fMoYVcf
-         PAW2AvjfDSUKCj215r9IrNn0cA0hXa2yU2oebq0EQsShAHYbSZOK6ttK8bI2c/OZBtnO
-         iagDwlkVUhCS2Req6lDpW8CuaO2zcwdPwgEXQ+/S/v9Cp0QKapLl3i0HlT27haLI6qyP
-         9vv8gC/940exgVCb3PRywtgcUjCSyzRR0fK1mq+rfEuuf16vTj4sJZbFc6pWsRR70h1g
-         /BJA==
-X-Gm-Message-State: ACgBeo0Vsny51wCZDvpcHD/IRSPcqjTN0BD83yjpufdSA7LZ9C2tXF4S
-	EHJr+5+QVIER5cXTV81JGV6FzedZQvwszy62D7TB7g==
-X-Google-Smtp-Source: AA6agR5z3AebbL5Azy4sNoMfTt0gW01VpIp+qr6/rNEQLn3rNpaHhq14wg8Eeh+706sD3nPJeGD6bnyLQT+FGI+FElY=
-X-Received: by 2002:a05:6902:2d0:b0:694:d257:4c4b with SMTP id
- w16-20020a05690202d000b00694d2574c4bmr9669475ybh.316.1662681449064; Thu, 08
- Sep 2022 16:57:29 -0700 (PDT)
+        bh=hqY5A7Q3sRIg+0suDoUYAY9ycBZxq0iP/o3p4lTPQtw=;
+        b=d0B0JUEqq+q7MBiwM37iGh9IPjT4cTzWP6/x48GITyzpcFGkXYYLPoaLY6bnJST0wt
+         w6/zYE7MW0FQnxc86JRkpH+jCjB/8UxJW2zHONnP+NMN78gnAfJRA63/1dHnH3w4fzXK
+         6RS+2AaYMqCsP4QxbTeEy7Fz76ePN/RXKSSOd2Vhrp1v4IQ3rbBuNo3SlvDFDrg3BwXx
+         6hBEMumtHlvQTY50PL4aurYK0RMoLQmeOKd50ZpulaTw1KwT8rcxtwjdA8Oz7628lVJC
+         OS2qMMOgdATeEKZB9LVrOuiwTaAgEBQ4kJei1DNkrMGFjxvt0JTWIVXPfvhGOZamusxD
+         nvWw==
+X-Gm-Message-State: ACgBeo0e1vUbODciyuDRMRYFZSB4wZfN3v4E46gXRqvU6KF5dxlzu9nj
+	OsgLpQ5T872ESl+HL3hgV3zNjlBgI+nqn4K4tjC88g==
+X-Google-Smtp-Source: AA6agR62K1l39S/fz8ik5C68GuNknlfDBZR1zBzGcquAcYVnBiWDcbx92wi2JBC2nOolf2zZJxL60pxpYTaDIxhQc9o=
+X-Received: by 2002:a81:a002:0:b0:345:55c5:9c6e with SMTP id
+ x2-20020a81a002000000b0034555c59c6emr9844670ywg.218.1662682542238; Thu, 08
+ Sep 2022 17:15:42 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220901173516.702122-1-surenb@google.com> <20220901173516.702122-8-surenb@google.com>
- <a072fd10-ee7e-469f-c203-978cd7da566c@linux.ibm.com>
-In-Reply-To: <a072fd10-ee7e-469f-c203-978cd7da566c@linux.ibm.com>
+References: <20220901173516.702122-1-surenb@google.com> <20220901173516.702122-9-surenb@google.com>
+ <dcefc6dd-f8eb-945e-37ab-3c0c4e4e20f2@linux.ibm.com>
+In-Reply-To: <dcefc6dd-f8eb-945e-37ab-3c0c4e4e20f2@linux.ibm.com>
 From: Suren Baghdasaryan <surenb@google.com>
-Date: Thu, 8 Sep 2022 16:57:17 -0700
-Message-ID: <CAJuCfpFDFzCB7zuOGyd-gqovyhwvcQaUMOUS0E8+1QxLqD-Gdg@mail.gmail.com>
-Subject: Re: [RFC PATCH RESEND 07/28] kernel/fork: mark VMAs as locked before
- copying pages during fork
+Date: Thu, 8 Sep 2022 17:15:31 -0700
+Message-ID: <CAJuCfpHSVS1O=V5+gjm8bboG0FJzZtxo1UYrjoU0+r57o-4zYg@mail.gmail.com>
+Subject: Re: [RFC PATCH RESEND 08/28] mm/khugepaged: mark VMA as locked while
+ collapsing a hugepage
 To: Laurent Dufour <ldufour@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -80,46 +80,40 @@ Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Sep 6, 2022 at 7:38 AM Laurent Dufour <ldufour@linux.ibm.com> wrote=
+On Tue, Sep 6, 2022 at 7:43 AM Laurent Dufour <ldufour@linux.ibm.com> wrote=
 :
 >
 > Le 01/09/2022 =C3=A0 19:34, Suren Baghdasaryan a =C3=A9crit :
-> > Protect VMAs from concurrent page fault handler while performing
-> > copy_page_range for VMAs having VM_WIPEONFORK flag set.
+> > Protect VMA from concurrent page fault handler while modifying it in
+> > collapse_huge_page.
 >
-> I'm wondering why is that necessary.
-> The copied mm is write locked, and the destination one is not reachable.
-> If any other readers are using the VMA, this is only for page fault handl=
-ing.
-
-Correct, this is done to prevent page faulting in the VMA being
-duplicated. I assume we want to prevent the pages in that VMA from
-changing when we are calling copy_page_range(). Am I wrong?
-
-> I should have miss something because I can't see any need to mark the loc=
-k
-> VMA here.
+> Is the goal to protect changes in the anon_vma structure?
 >
+> AFAICS, the vma it self is not impacted here, only the anon_vma and the
+> PMD/PTE are touched, and they have their own protection mechanism, isn't =
+it?
+
+Yes, I think you are right about not needing to lock VMA here as all
+modified components are already protected. Thanks!
+
+>
+> >
 > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 > > ---
-> >  kernel/fork.c | 4 +++-
-> >  1 file changed, 3 insertions(+), 1 deletion(-)
+> >  mm/khugepaged.c | 1 +
+> >  1 file changed, 1 insertion(+)
 > >
-> > diff --git a/kernel/fork.c b/kernel/fork.c
-> > index bfab31ecd11e..1872ad549fed 100644
-> > --- a/kernel/fork.c
-> > +++ b/kernel/fork.c
-> > @@ -709,8 +709,10 @@ static __latent_entropy int dup_mmap(struct mm_str=
-uct *mm,
-> >               rb_parent =3D &tmp->vm_rb;
+> > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> > index 01f71786d530..030680633989 100644
+> > --- a/mm/khugepaged.c
+> > +++ b/mm/khugepaged.c
+> > @@ -1072,6 +1072,7 @@ static void collapse_huge_page(struct mm_struct *=
+mm,
+> >       if (mm_find_pmd(mm, address) !=3D pmd)
+> >               goto out_up_write;
 > >
-> >               mm->map_count++;
-> > -             if (!(tmp->vm_flags & VM_WIPEONFORK))
-> > +             if (!(tmp->vm_flags & VM_WIPEONFORK)) {
-> > +                     vma_mark_locked(mpnt);
-> >                       retval =3D copy_page_range(tmp, mpnt);
-> > +             }
+> > +     vma_mark_locked(vma);
+> >       anon_vma_lock_write(vma->anon_vma);
 > >
-> >               if (tmp->vm_ops && tmp->vm_ops->open)
-> >                       tmp->vm_ops->open(tmp);
+> >       mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, NULL, mm,
 >
