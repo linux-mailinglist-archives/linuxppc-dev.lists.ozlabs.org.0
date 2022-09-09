@@ -1,94 +1,93 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90CDF5B3AAE
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 16:27:47 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E4925B3AB2
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 16:30:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MPJHP1YC7z3cBt
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Sep 2022 00:27:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MPJL20YBDz3c4c
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Sep 2022 00:30:02 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JHmFLR4/;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=S3R03Eh+;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JHmFLR4/;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=S3R03Eh+;
 	dkim-atps=neutral
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MPJGV546Sz3blb
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Sep 2022 00:26:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MPJKH5gSzz309f
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Sep 2022 00:29:23 +1000 (AEST)
 Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 289DNv2j011076;
-	Fri, 9 Sep 2022 14:26:42 GMT
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 289DNr7e010893;
+	Fri, 9 Sep 2022 14:29:07 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
  mime-version : subject : to : cc : references : from : in-reply-to :
  content-type : content-transfer-encoding; s=pp1;
- bh=Y7BsX2EYzelZfjnhFjQsPPG0kf7OX1RAsnfqWH3D0UQ=;
- b=JHmFLR4/3d9ATDjwCkkpjCVmA+K3ocu5p0ZbedmWlxAIKWUljlOikDw+3Z8i1imVwWzz
- zIS7rWNBVQlhbbzA4lhDcol7LBP+QtT20VwjP0SgDaQL2miurNuAdat4cjAiNGoFlw1P
- MtldPeKxwTjWG4Hry3axuDloExMuy3xpHXxLi+p2UdS96XoNeqhTr71sSHJOd39uXBVY
- 4FSoN9psDAwdnkZKtTcetvdrvgr01JQEGj0t7PsYFs0NTr9GZcj8NX532Un0/Ood+1gD
- Db5Uvnw/CJU+Ru4VjdjNqSyRiIEjj61FoDs4Iv+woIg7nqYh4f7aUXBnuFbh71zAHeTD lw== 
+ bh=wZxReJ3Ffmz159YEIahngqp4tyxSHVA2tQes+OfDn3Y=;
+ b=S3R03Eh+oQUqH89dcva+uO6wyDXU8EnCNGkz2tiFihH+JQwhCxdu0iEajoDTQPR3JZWC
+ j1gaGUUlzeapFCdTcqfEM+UcIGOkXI5dbOs3w0rJSGpxDOJkenxDtpoHnLLEVkvcHCfe
+ 14UhddCOumx92QMUIB0bGyQPMwnla+rCMAymz54RDU7Tl2EMcD9q/1ZYxKKQ2f45wIGJ
+ r7vh0BDkoRj2yI9k5IWrGmhgXlUoD6njRGMsD/ddPOgXeVVFlGPWnOco191oMU5q5d0q
+ yNXq3/95c8O4pmCFRyJyFjokUp1jLMPXVwYCsdT7JrF2r7PXijkjbdE0qdy61MxIl7RC BQ== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jg6b4t014-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jg6b4t2ct-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 09 Sep 2022 14:26:41 +0000
+	Fri, 09 Sep 2022 14:29:06 +0000
 Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 289DOB3K012866;
-	Fri, 9 Sep 2022 14:26:41 GMT
-Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com [149.81.74.107])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jg6b4t00c-1
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 289DOJQY013289;
+	Fri, 9 Sep 2022 14:29:06 GMT
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jg6b4t2bd-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 09 Sep 2022 14:26:40 +0000
-Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
-	by ppma03fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 289EMstD006756;
-	Fri, 9 Sep 2022 14:26:38 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
-	by ppma03fra.de.ibm.com with ESMTP id 3jbxj8x0vs-1
+	Fri, 09 Sep 2022 14:29:05 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+	by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 289EKAbG024750;
+	Fri, 9 Sep 2022 14:29:03 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+	by ppma06ams.nl.ibm.com with ESMTP id 3jbx6hr48f-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 09 Sep 2022 14:26:38 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
-	by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 289EN1bL42795372
+	Fri, 09 Sep 2022 14:29:03 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+	by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 289ET1Hv40370576
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 9 Sep 2022 14:23:01 GMT
+	Fri, 9 Sep 2022 14:29:01 GMT
 Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 60D3042041;
-	Fri,  9 Sep 2022 14:26:36 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 57CAD42042;
+	Fri,  9 Sep 2022 14:29:01 +0000 (GMT)
 Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 530024203F;
-	Fri,  9 Sep 2022 14:26:35 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 484234203F;
+	Fri,  9 Sep 2022 14:29:00 +0000 (GMT)
 Received: from [9.145.83.17] (unknown [9.145.83.17])
 	by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Fri,  9 Sep 2022 14:26:35 +0000 (GMT)
-Message-ID: <5e086349-e12b-0e8f-6100-1814e0c185fe@linux.ibm.com>
-Date: Fri, 9 Sep 2022 16:26:34 +0200
+	Fri,  9 Sep 2022 14:29:00 +0000 (GMT)
+Message-ID: <54df2224-feca-52ed-567b-a82bb9d711da@linux.ibm.com>
+Date: Fri, 9 Sep 2022 16:28:59 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.2.1
-Subject: Re: [RFC PATCH RESEND 19/28] mm: disallow do_swap_page to handle page
- faults under VMA lock
+Subject: Re: [RFC PATCH RESEND 20/28] mm: introduce per-VMA lock statistics
 Content-Language: fr
 To: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org
 References: <20220901173516.702122-1-surenb@google.com>
- <20220901173516.702122-20-surenb@google.com>
+ <20220901173516.702122-21-surenb@google.com>
 From: Laurent Dufour <ldufour@linux.ibm.com>
-In-Reply-To: <20220901173516.702122-20-surenb@google.com>
+In-Reply-To: <20220901173516.702122-21-surenb@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: qXaBsnlFWkc8htuvnjQoZRrtArrrpv5u
-X-Proofpoint-GUID: l_-h7mrIGvq8aOTQrkDf7U1hncHr9B85
+X-Proofpoint-ORIG-GUID: kvYuLStn_uQ1uNl81BCuqtUnrzGOXhxS
+X-Proofpoint-GUID: I5PdrQNOrZt0oie58OYFreJ7Ngfr0ULC
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
  definitions=2022-09-09_08,2022-09-09_01,2022-06-22_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
  impostorscore=0 malwarescore=0 spamscore=0 adultscore=0 mlxscore=0
  suspectscore=0 bulkscore=0 lowpriorityscore=0 clxscore=1015 phishscore=0
- mlxlogscore=906 classifier=spam adjust=0 reason=mlx scancount=1
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2207270000 definitions=main-2209090049
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -106,32 +105,85 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 Le 01/09/2022 à 19:35, Suren Baghdasaryan a écrit :
-> Due to the possibility of do_swap_page dropping mmap_lock, abort fault
-> handling under VMA lock and retry holding mmap_lock. This can be handled
-> more gracefully in the future.
+> Add a new CONFIG_PER_VMA_LOCK_STATS config option to dump extra
+> statistics about handling page fault under VMA lock.
 > 
+
+Why not making this a default when per VMA lock are enabled?
+
 > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-
-Reviewed-by: Laurent Dufour <laurent.dufour@fr.ibm.com>
-
 > ---
->  mm/memory.c | 5 +++++
->  1 file changed, 5 insertions(+)
+>  include/linux/vm_event_item.h | 6 ++++++
+>  include/linux/vmstat.h        | 6 ++++++
+>  mm/Kconfig.debug              | 8 ++++++++
+>  mm/vmstat.c                   | 6 ++++++
+>  4 files changed, 26 insertions(+)
 > 
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 9ac9944e8c62..29d2f49f922a 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -3738,6 +3738,11 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
->  	vm_fault_t ret = 0;
->  	void *shadow = NULL;
+> diff --git a/include/linux/vm_event_item.h b/include/linux/vm_event_item.h
+> index f3fc36cd2276..a325783ed05d 100644
+> --- a/include/linux/vm_event_item.h
+> +++ b/include/linux/vm_event_item.h
+> @@ -150,6 +150,12 @@ enum vm_event_item { PGPGIN, PGPGOUT, PSWPIN, PSWPOUT,
+>  #ifdef CONFIG_X86
+>  		DIRECT_MAP_LEVEL2_SPLIT,
+>  		DIRECT_MAP_LEVEL3_SPLIT,
+> +#endif
+> +#ifdef CONFIG_PER_VMA_LOCK_STATS
+> +		VMA_LOCK_SUCCESS,
+> +		VMA_LOCK_ABORT,
+> +		VMA_LOCK_RETRY,
+> +		VMA_LOCK_MISS,
+>  #endif
+>  		NR_VM_EVENT_ITEMS
+>  };
+> diff --git a/include/linux/vmstat.h b/include/linux/vmstat.h
+> index bfe38869498d..0c2611899cfc 100644
+> --- a/include/linux/vmstat.h
+> +++ b/include/linux/vmstat.h
+> @@ -131,6 +131,12 @@ static inline void vm_events_fold_cpu(int cpu)
+>  #define count_vm_vmacache_event(x) do {} while (0)
+>  #endif
 >  
-> +	if (vmf->flags & FAULT_FLAG_VMA_LOCK) {
-> +		ret = VM_FAULT_RETRY;
-> +		goto out;
-> +	}
+> +#ifdef CONFIG_PER_VMA_LOCK_STATS
+> +#define count_vm_vma_lock_event(x) count_vm_event(x)
+> +#else
+> +#define count_vm_vma_lock_event(x) do {} while (0)
+> +#endif
 > +
->  	if (!pte_unmap_same(vmf))
->  		goto out;
+>  #define __count_zid_vm_events(item, zid, delta) \
+>  	__count_vm_events(item##_NORMAL - ZONE_NORMAL + zid, delta)
 >  
+> diff --git a/mm/Kconfig.debug b/mm/Kconfig.debug
+> index ce8dded36de9..075642763a03 100644
+> --- a/mm/Kconfig.debug
+> +++ b/mm/Kconfig.debug
+> @@ -207,3 +207,11 @@ config PTDUMP_DEBUGFS
+>  	  kernel.
+>  
+>  	  If in doubt, say N.
+> +
+> +
+> +config PER_VMA_LOCK_STATS
+> +	bool "Statistics for per-vma locks"
+> +	depends on PER_VMA_LOCK
+> +	help
+> +	  Statistics for per-vma locks.
+> +	  If in doubt, say N.
+> diff --git a/mm/vmstat.c b/mm/vmstat.c
+> index 90af9a8572f5..3f3804c846a6 100644
+> --- a/mm/vmstat.c
+> +++ b/mm/vmstat.c
+> @@ -1411,6 +1411,12 @@ const char * const vmstat_text[] = {
+>  	"direct_map_level2_splits",
+>  	"direct_map_level3_splits",
+>  #endif
+> +#ifdef CONFIG_PER_VMA_LOCK_STATS
+> +	"vma_lock_success",
+> +	"vma_lock_abort",
+> +	"vma_lock_retry",
+> +	"vma_lock_miss",
+> +#endif
+>  #endif /* CONFIG_VM_EVENT_COUNTERS || CONFIG_MEMCG */
+>  };
+>  #endif /* CONFIG_PROC_FS || CONFIG_SYSFS || CONFIG_NUMA || CONFIG_MEMCG */
 
