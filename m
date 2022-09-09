@@ -2,76 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6DED5B3E15
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 19:41:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46BFE5B3E8E
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 20:07:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MPNb04xFhz3c6N
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Sep 2022 03:41:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MPP9N25Bcz3brF
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Sep 2022 04:07:52 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DDc/Z4ey;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jee/xnQy;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=jpoimboe@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DDc/Z4ey;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jee/xnQy;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MPNZK335kz3bWm
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Sep 2022 03:40:56 +1000 (AEST)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 289HL7p2031674;
-	Fri, 9 Sep 2022 17:40:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=TPcuhxnks6PYWHdEmLKwIjk95a9bKSNng35UZE4RwpE=;
- b=DDc/Z4eyJb3OtYWeTezPt3k5a7YhDHgvhyErdz+HwQFUU1MDsNXPW5HQtBEHgB7gy0HZ
- HHRzpUB/eM3KhuiwUASfUNc9zcEnjA+qBbWCRJ70IgQyVPJoaQSGdI/MdIFWqQ6dME/Z
- gbhFA5bkFgnPTDqbn5+gT1VTleSRBKL9+NfdbAL8xYrncKvj0CbU6D2pd47pnNQWkJ0D
- gEnfvnneP4VdXsZYWiMflXqVhnwmUE0YMJEgEx/vrvdM93EB5IPogxmV1XUiApJhyL2A
- dXVJ0LiKMHByz4Iu1sPmID/QIXxXeG28vt3Xg1sfKx7getqEHhenkxNJNpRFYryoJIHS Iw== 
-Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com [149.81.74.107])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jg9t7gf7t-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 09 Sep 2022 17:40:49 +0000
-Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
-	by ppma03fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 289HJZPl011747;
-	Fri, 9 Sep 2022 17:40:47 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
-	by ppma03fra.de.ibm.com with ESMTP id 3jbxj8x542-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 09 Sep 2022 17:40:47 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
-	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 289HeiFl43450744
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 9 Sep 2022 17:40:44 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 85E435204F;
-	Fri,  9 Sep 2022 17:40:44 +0000 (GMT)
-Received: from hbathini-workstation.ibm.com.com (unknown [9.65.105.173])
-	by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 2530A5204E;
-	Fri,  9 Sep 2022 17:40:41 +0000 (GMT)
-From: Hari Bathini <hbathini@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH] ppc64/kdump: Limit kdump base to 512MB
-Date: Fri,  9 Sep 2022 23:10:34 +0530
-Message-Id: <20220909174034.34086-1-hbathini@linux.ibm.com>
-X-Mailer: git-send-email 2.37.3
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MPP8f0g4vz3bSX
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Sep 2022 04:07:14 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 7D4DBB82608;
+	Fri,  9 Sep 2022 18:07:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BB15C433C1;
+	Fri,  9 Sep 2022 18:07:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1662746827;
+	bh=pf+MkFLWJgD9sdFlaDtSVC4UtcaGGPaQQ4xQWTkp2YA=;
+	h=Date:From:To:Cc:Subject:From;
+	b=jee/xnQyv2hknTpmqBgcmiaHSiptpKQQlBiFBYY1zADL9dnmjY4hVytWp5t95+lDU
+	 lAwMwmmVkmvEVsI4qLbLsLn66jkwrV2hYIFdrYIeHJI8NcC3IESptUt8MkVMgLcLwh
+	 xSoBWHzM6p0kKopzlIAoPL/TgLWDilUiDnxERZywDHWm46Tfxwzvvd8u8XPQrg9Lnp
+	 IosJRW4W1/gJVo0mGvap/J3U1jbN/n6HPasUykdMP4iPbSkTA2ZpTylTQ213b//sqP
+	 hOQXkYEbxCzNpLfA/MtfZEoHmrOPX/r1z1ngaPSIDSJTh/jLqWzN3pBMjxQ077pxTa
+	 h0LudLk0O23cw==
+Date: Fri, 9 Sep 2022 11:07:04 -0700
+From: Josh Poimboeuf <jpoimboe@kernel.org>
+To: linux-toolchains@vger.kernel.org
+Subject: [RFC] Objtool toolchain proposal: -fannotate-{jump-table,noreturn}
+Message-ID: <20220909180704.jwwed4zhwvin7uyi@treble>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Aqzs-O4C7LLv4_Kf0XGAgzmeRXPCHGLG
-X-Proofpoint-ORIG-GUID: Aqzs-O4C7LLv4_Kf0XGAgzmeRXPCHGLG
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
- definitions=2022-09-09_08,2022-09-09_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxscore=0
- priorityscore=1501 impostorscore=0 malwarescore=0 adultscore=0
- lowpriorityscore=0 clxscore=1011 suspectscore=0 mlxlogscore=999
- bulkscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2207270000 definitions=main-2209090061
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,46 +57,155 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Sourabh Jain <sourabhjain@linux.ibm.com>
+Cc: Mark Rutland <mark.rutland@arm.com>, Peter Zijlstra <peterz@infradead.org>, linuxppc-dev@lists.ozlabs.org, Chen Zhongjin <chenzhongjin@huawei.com>, x86@kernel.org, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>, Sathvika Vasireddy <sv@linux.ibm.com>, Indu Bhagat <indu.bhagat@oracle.com>, live-patching@vger.kernel.org, Miroslav Benes <mbenes@suse.cz>, Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, linux-arm-kernel@lists.infradead.org, "Jose E. Marchesi" <jemarch@gnu.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Since commit e641eb03ab2b0 ("powerpc: Fix up the kdump base cap to
-128M") memory for kdump kernel has been reserved at an offset of
-128MB. This held up well for a long time before running into boot
-failure on LPARs having a lot of cores. Commit 7c5ed82b800d8
-("powerpc: Set crashkernel offset to mid of RMA region") fixed this
-boot failure by moving the offset to mid of RMA region. Limit this
-offset to 512MB to avoid running into boot failures, during kdump
-kernel boot, due RTAS or other allocation restrictions.
+Hi,
 
-Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
----
- arch/powerpc/kexec/core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Here's a preview of what I'm planning to discuss at the LPC toolchains
+microconference.  Feel free to start the discussion early :-)
 
-diff --git a/arch/powerpc/kexec/core.c b/arch/powerpc/kexec/core.c
-index cf84bfe9e27e..c2cbfcf81cea 100644
---- a/arch/powerpc/kexec/core.c
-+++ b/arch/powerpc/kexec/core.c
-@@ -136,7 +136,7 @@ void __init reserve_crashkernel(void)
- #ifdef CONFIG_PPC64
- 		/*
- 		 * On the LPAR platform place the crash kernel to mid of
--		 * RMA size (512MB or more) to ensure the crash kernel
-+		 * RMA size (max. of 512MB) to ensure the crash kernel
- 		 * gets enough space to place itself and some stack to be
- 		 * in the first segment. At the same time normal kernel
- 		 * also get enough space to allocate memory for essential
-@@ -144,7 +144,7 @@ void __init reserve_crashkernel(void)
- 		 * kernel starts at 128MB offset on other platforms.
- 		 */
- 		if (firmware_has_feature(FW_FEATURE_LPAR))
--			crashk_res.start = ppc64_rma_size / 2;
-+			crashk_res.start = min(0x20000000ULL, (ppc64_rma_size / 2));
- 		else
- 			crashk_res.start = min(0x8000000ULL, (ppc64_rma_size / 2));
- #else
+This is a proposal for some new minor GCC/Clang features which would
+help objtool greatly.
+
+
+Background
+----------
+
+Objtool is a kernel-specific tool which reverse engineers the control
+flow graph (CFG) of compiled objects.  It then performs various
+validations, annotations, and modifications, mostly with the goal of
+improving robustness and security of the kernel.
+
+Objtool features which use the CFG include include:
+validation/generation of unwinding metadata; validation of Intel SMAP
+rules; and validation of kernel "noinstr" rules (preventing compiler
+instrumentation in certain critical sections).
+
+In general it's not feasible for the traditional toolchain to do any of
+this work, because the kernel has a lot of "blind spots" which the
+toolchain doesn't have visibility to, notably asm and inline asm.
+Manual .cfi annotations are very difficult to maintain and even more
+difficult to ensure correctness.  Also, due to kernel live patching, the
+kernel relies on 100% correctness of unwinding metadata, whereas the
+toolchain treats it as a best effort.
+
+
+Challenges
+----------
+
+Reverse engineering the control flow graph is mostly quite
+straightforward, with two notable exceptions:
+
+1) Jump tables (e.g., switch statements):
+
+   Depending on the architecture, it's somewhere between difficult and
+   impossible to reliabily identify which indirect jumps correspond to
+   jump tables, and what are their corresponding intra-function jump
+   destinations.
+
+2) Noreturn functions:
+   
+   There's no reliable way to determine which functions are designated
+   by the compiler to be noreturn (either explictly via function
+   attribute, or implicitly via a static function which is a wrapper
+   around a noreturn function.)  This information is needed because the
+   code after the call to such a function is optimized out as
+   unreachable and objtool has no way of knowing that.
+
+
+Proposal
+--------
+
+Add the following new compiler flags which create non-allocatable ELF
+sections which "annotate" control flow:
+
+(Note this is purely hypothetical, intended for starting a discussion.
+I'm not a compiler person and I haven't written any compiler code.)
+
+
+1) -fannotate-jump-table
+
+Create an .annotate.jump_table section which is an array of the
+following variable-length structure:
+
+  struct annotate_jump_table {
+	void *indirect_jmp;
+	long num_targets;
+	void *targets[];
+  };
+
+
+For example, given the following switch statement code:
+
+  .Lswitch_jmp:
+	// %rax is .Lcase_1 or .Lcase_2
+	jmp %rax
+
+  .Lcase_1:
+	...
+  .Lcase_2:
+	...
+
+
+Add the following code:
+
+  .pushsection .annotate.jump_table
+	// indirect JMP address
+	.quad .Lswitch_jmp
+
+	// num jump targets
+	.quad 2
+
+	// indirect JMP target addresses
+	.quad .Lcase_1
+	.quad .Lcase_2
+  .popsection
+
+
+2) -fannotate-noreturn
+
+Create an .annotate.noreturn section which is an array of pointers to
+noreturn functions (both explicit/implicit and defined/undefined).
+
+
+For example, given the following three noreturn functions:
+
+  // explicit noreturn:
+  __attribute__((__noreturn__)) void func1(void)
+  {
+	exit(1);
+  }
+
+  // explicit noreturn (extern):
+  extern __attribute__((__noreturn__)) void func2(void);
+
+  // implicit noreturn:
+  static void func3(void)
+  {
+  	// call noreturn function
+	func2();
+  }
+
+
+Add the following code:
+
+  .pushsection .annotate.noreturn
+	.quad func1
+	.quad func2
+	.quad func3
+  .popsection
+
+
+Alternatives
+------------
+
+Another idea which has been floated in the past is for objtool to read
+DWARF (or .eh_frame) to help it figure out the control flow.  That
+hasn't been tried yet, but would be considerably more difficult and
+fragile IMO.
+
+
 -- 
-2.37.3
-
+Josh
