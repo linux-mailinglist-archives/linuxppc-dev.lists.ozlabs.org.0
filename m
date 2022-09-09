@@ -1,69 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91ECC5B2B3E
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 02:52:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF52F5B2C2F
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 04:36:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MNyBP1TS4z3c4j
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 10:52:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MP0Vj71Q7z3c6B
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 12:36:29 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=L4r1/zM0;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=JpKBfFDr;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b34; helo=mail-yb1-xb34.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.126; helo=mga18.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=L4r1/zM0;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=JpKBfFDr;
 	dkim-atps=neutral
-Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MNy9k4dDYz2yyT
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Sep 2022 10:51:37 +1000 (AEST)
-Received: by mail-yb1-xb34.google.com with SMTP id 130so459479ybz.9
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Sep 2022 17:51:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date;
-        bh=LBNHsgANfOuYwqoZHaxODMzZ7UA+U8+5hufwxCbYv44=;
-        b=L4r1/zM0OJVEeznCxkFeDmzDJp0IcMmbKN2OvdW9zrSpQ1s5Kdty/1rkvqWo33TMhT
-         xWV4jNGh+PbGvXm0RJQ/3GpSL8k3kkDWsQF1guPOx0QIt2B1p6UW/G2dGSAhnz6g0J3G
-         aCbemhwYTPosRuwZH2Cn9ZVgTqZfSGP+OkF8xPq4LUSXcNwj3wBeXn3dSPUF2TrfIRpN
-         JQVL/x1hFZ6eG+8WyfHTfUzx9yazN5pP/4MU/Ug9tlPrBw51u68/InTGeJUXAmTQ46F7
-         6ZwC93ANh6AAupdl3kfj2t2GfNBg9A4jCF4ximO4iROdJ/9dV1Q4vF+NqMLn6BAhU5rt
-         CPow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date;
-        bh=LBNHsgANfOuYwqoZHaxODMzZ7UA+U8+5hufwxCbYv44=;
-        b=0bRl0IfEiT9hETSYX0ltetGTVlb9JUB15NCurnFBS1pIBIBwn9gZADs9DcNci4nCQT
-         GC7xmA9Djisbgi2iw4E50PA3Suzj+m+NReGJBPMKCWi8sQc1/6kaTygIGB+SncTaUq+M
-         7V7FhTWauxfS2af68Z5712XQG2vwv9xMCyx1n3nT6ET3YC97PLRtU2K5JU7yNwhONF14
-         YU5CSbNaY22KMw0i4gmSlEdwZEbTu5VDInuaII1CouLLf6U7OqsZ2u70a0sGzYqB00l3
-         +RuUr7r2ESgkHp8hbB7vPoR/7tJlT0tDs79Wv+oHVHBIthGuqLhe3JA6DH5F3X4phO4h
-         0WGw==
-X-Gm-Message-State: ACgBeo1MxG89mAHuKv/7E5n1eW5pzggnjCCy7agbVnMyiMfZqktRtG1/
-	YgQJP7gFpoUnl8LW6N4L70s83mgV9TxoOIpGOnkezQ==
-X-Google-Smtp-Source: AA6agR5aiD/mHNLJf/uZTrUlH+sUk3m6QYGueoAr4dyZUEHwTfC+FSD4X8APTDBjLx4o2R6CQUyPXRoAsWEaWYZ1kA0=
-X-Received: by 2002:a25:d209:0:b0:6a8:e5f1:f179 with SMTP id
- j9-20020a25d209000000b006a8e5f1f179mr9413490ybg.380.1662684694045; Thu, 08
- Sep 2022 17:51:34 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MP0V23rLcz2yWl
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Sep 2022 12:35:48 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1662690954; x=1694226954;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=U1hSfds/0CHqbUVcqtbT2D1gvOsodINiriQZ+MVT87w=;
+  b=JpKBfFDrlU8pvpmt236vhJQdA+qmgJ+M46k/znJBgdkPyIBOlzfTMbeA
+   ClRl7sr1Q7OezCJbdCU4DRfP6C7IYtfjbe7v0pxI4pr/6mqoL8RJxeAtn
+   2u4h5PKxZFBIU669oJHjpcGyjmUIKxbAKkC6N0uVHoEl2mk498PPcZbIZ
+   qiwnkd2YfALeou2kV+86MAuoGeRszH7swE3sUMTJdJXRkkXsW7Z6MAoAQ
+   CTctPDB7NMV6iIz1ydGOnRbl1tZUPZZGI4ra3i1jNf/ZGDtxQmJZj13M1
+   uycmzyw0gkT9N88uJ3iFEID1P1XWQa83Lovzp+Rzz3VUs7pROlpppi2VL
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10464"; a="280405057"
+X-IronPort-AV: E=Sophos;i="5.93,300,1654585200"; 
+   d="scan'208";a="280405057"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2022 19:35:45 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.93,300,1654585200"; 
+   d="scan'208";a="592436885"
+Received: from lkp-server02.sh.intel.com (HELO b2938d2e5c5a) ([10.239.97.151])
+  by orsmga006.jf.intel.com with ESMTP; 08 Sep 2022 19:35:43 -0700
+Received: from kbuild by b2938d2e5c5a with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1oWTrq-0000bb-1n;
+	Fri, 09 Sep 2022 02:35:42 +0000
+Date: Fri, 9 Sep 2022 10:35:17 +0800
+From: kernel test robot <lkp@intel.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v1 19/19] powerpc: Remove impossible mmu_psize_defs[] on
+ nohash
+Message-ID: <202209091055.Tq3tkK5a-lkp@intel.com>
+References: <304d1442c5caa276c87c2caa615fcb6eed96c30c.1662658653.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-References: <20220901173516.702122-1-surenb@google.com> <20220901173516.702122-11-surenb@google.com>
- <bb5e3ab8-9c47-7d01-cdaa-1b4231312f67@linux.ibm.com>
-In-Reply-To: <bb5e3ab8-9c47-7d01-cdaa-1b4231312f67@linux.ibm.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Thu, 8 Sep 2022 17:51:23 -0700
-Message-ID: <CAJuCfpFm8irJyhzn-22QR+_4BmU+yDZM97T4S8pPKotxZUmjBg@mail.gmail.com>
-Subject: Re: [RFC PATCH RESEND 10/28] mm/mmap: mark VMAs as locked in vma_adjust
-To: Laurent Dufour <ldufour@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <304d1442c5caa276c87c2caa615fcb6eed96c30c.1662658653.git.christophe.leroy@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,91 +72,183 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, jglisse@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, willy@infradead.org, laurent.dufour@fr.ibm.com, mgorman@suse.de, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, paulmck@kernel.org, liam.howlett@oracle.com, luto@kernel.org, vbabka@suse.cz, linux-arm-kernel@lists.infradead.org, kent.overstreet@linux.dev, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, llvm@lists.linux.dev, kbuild-all@lists.01.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Sep 6, 2022 at 8:35 AM Laurent Dufour <ldufour@linux.ibm.com> wrote=
-:
->
-> Le 01/09/2022 =C3=A0 19:34, Suren Baghdasaryan a =C3=A9crit :
-> > vma_adjust modifies a VMA and possibly its neighbors. Mark them as lock=
-ed
-> > before making the modifications.
-> >
-> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > ---
-> >  mm/mmap.c | 11 ++++++++++-
-> >  1 file changed, 10 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/mm/mmap.c b/mm/mmap.c
-> > index f89c9b058105..ed58cf0689b2 100644
-> > --- a/mm/mmap.c
-> > +++ b/mm/mmap.c
-> > @@ -710,6 +710,10 @@ int __vma_adjust(struct vm_area_struct *vma, unsig=
-ned long start,
-> >       long adjust_next =3D 0;
-> >       int remove_next =3D 0;
-> >
-> > +     vma_mark_locked(vma);
-> > +     if (next)
-> > +             vma_mark_locked(next);
-> > +
->
-> I was wondering if the VMAs insert and expand should be locked too.
->
-> For expand, I can't see any valid reason, but for insert, I'm puzzled.
-> I would think that it is better to lock the VMA to be inserted but I can'=
-t
-> really justify that.
->
-> It may be nice to detail why this is not need to lock insert and expand h=
-ere.
+Hi Christophe,
 
-'expand' is always locked before it's passed to __vma_adjust() by
-vma_merge(). It has to be locked before we decide "Can it merge with
-the predecessor?" here
-https://elixir.bootlin.com/linux/latest/source/mm/mmap.c#L1201 because
-a change in VMA can affect that decision. I spent many hours tracking
-the issue caused by not locking the VMA before making this decision.
-It might be good to add a comment about this...
+I love your patch! Yet something to improve:
 
-AFAIKT 'insert' is only used by __split_vma() and it's always a brand
-new VMA which is not yet linked into mm->mmap. Any reason
-__vma_adjust() should lock it?
+[auto build test ERROR on powerpc/next]
+[also build test ERROR on powerpc/topic/ppc-kvm linus/master v6.0-rc4 next-20220908]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
->
-> >       if (next && !insert) {
-> >               struct vm_area_struct *exporter =3D NULL, *importer =3D N=
-ULL;
-> >
-> > @@ -754,8 +758,11 @@ int __vma_adjust(struct vm_area_struct *vma, unsig=
-ned long start,
-> >                        * If next doesn't have anon_vma, import from vma=
- after
-> >                        * next, if the vma overlaps with it.
-> >                        */
-> > -                     if (remove_next =3D=3D 2 && !next->anon_vma)
-> > +                     if (remove_next =3D=3D 2 && !next->anon_vma) {
-> >                               exporter =3D next->vm_next;
-> > +                             if (exporter)
-> > +                                     vma_mark_locked(exporter);
-> > +                     }
-> >
-> >               } else if (end > next->vm_start) {
-> >                       /*
-> > @@ -931,6 +938,8 @@ int __vma_adjust(struct vm_area_struct *vma, unsign=
-ed long start,
-> >                        * "vma->vm_next" gap must be updated.
-> >                        */
-> >                       next =3D vma->vm_next;
-> > +                     if (next)
-> > +                             vma_mark_locked(next);
-> >               } else {
-> >                       /*
-> >                        * For the scope of the comment "next" and
->
-> --
-> To unsubscribe from this group and stop receiving emails from it, send an=
- email to kernel-team+unsubscribe@android.com.
->
+url:    https://github.com/intel-lab-lkp/linux/commits/Christophe-Leroy/powerpc-Kconfig-Fix-non-existing-CONFIG_PPC_FSL_BOOKE/20220909-014729
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+config: powerpc-fsp2_defconfig (https://download.01.org/0day-ci/archive/20220909/202209091055.Tq3tkK5a-lkp@intel.com/config)
+compiler: clang version 16.0.0 (https://github.com/llvm/llvm-project 1546df49f5a6d09df78f569e4137ddb365a3e827)
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # install powerpc cross compiling tool for clang build
+        # apt-get install binutils-powerpc-linux-gnu
+        # https://github.com/intel-lab-lkp/linux/commit/452a31e5ede29b8b06cd0db37bf68959ce3d753a
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Christophe-Leroy/powerpc-Kconfig-Fix-non-existing-CONFIG_PPC_FSL_BOOKE/20220909-014729
+        git checkout 452a31e5ede29b8b06cd0db37bf68959ce3d753a
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=powerpc SHELL=/bin/bash
+
+If you fix the issue, kindly add following tag where applicable
+Reported-by: kernel test robot <lkp@intel.com>
+
+All errors (new ones prefixed by >>):
+
+   __do_insb
+   ^
+   arch/powerpc/include/asm/io.h:577:56: note: expanded from macro '__do_insb'
+   #define __do_insb(p, b, n)      readsb((PCI_IO_ADDR)_IO_BASE+(p), (b), (n))
+                                          ~~~~~~~~~~~~~~~~~~~~~^
+   In file included from arch/powerpc/mm/nohash/tlb.c:29:
+   In file included from include/linux/highmem.h:11:
+   In file included from include/linux/hardirq.h:11:
+   In file included from arch/powerpc/include/asm/hardirq.h:6:
+   In file included from include/linux/irq.h:20:
+   In file included from include/linux/io.h:13:
+   In file included from arch/powerpc/include/asm/io.h:640:
+   arch/powerpc/include/asm/io-defs.h:45:1: error: performing pointer arithmetic on a null pointer has undefined behavior [-Werror,-Wnull-pointer-arithmetic]
+   DEF_PCI_AC_NORET(insw, (unsigned long p, void *b, unsigned long c),
+   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   arch/powerpc/include/asm/io.h:637:3: note: expanded from macro 'DEF_PCI_AC_NORET'
+                   __do_##name al;                                 \
+                   ^~~~~~~~~~~~~~
+   <scratch space>:224:1: note: expanded from here
+   __do_insw
+   ^
+   arch/powerpc/include/asm/io.h:578:56: note: expanded from macro '__do_insw'
+   #define __do_insw(p, b, n)      readsw((PCI_IO_ADDR)_IO_BASE+(p), (b), (n))
+                                          ~~~~~~~~~~~~~~~~~~~~~^
+   In file included from arch/powerpc/mm/nohash/tlb.c:29:
+   In file included from include/linux/highmem.h:11:
+   In file included from include/linux/hardirq.h:11:
+   In file included from arch/powerpc/include/asm/hardirq.h:6:
+   In file included from include/linux/irq.h:20:
+   In file included from include/linux/io.h:13:
+   In file included from arch/powerpc/include/asm/io.h:640:
+   arch/powerpc/include/asm/io-defs.h:47:1: error: performing pointer arithmetic on a null pointer has undefined behavior [-Werror,-Wnull-pointer-arithmetic]
+   DEF_PCI_AC_NORET(insl, (unsigned long p, void *b, unsigned long c),
+   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   arch/powerpc/include/asm/io.h:637:3: note: expanded from macro 'DEF_PCI_AC_NORET'
+                   __do_##name al;                                 \
+                   ^~~~~~~~~~~~~~
+   <scratch space>:226:1: note: expanded from here
+   __do_insl
+   ^
+   arch/powerpc/include/asm/io.h:579:56: note: expanded from macro '__do_insl'
+   #define __do_insl(p, b, n)      readsl((PCI_IO_ADDR)_IO_BASE+(p), (b), (n))
+                                          ~~~~~~~~~~~~~~~~~~~~~^
+   In file included from arch/powerpc/mm/nohash/tlb.c:29:
+   In file included from include/linux/highmem.h:11:
+   In file included from include/linux/hardirq.h:11:
+   In file included from arch/powerpc/include/asm/hardirq.h:6:
+   In file included from include/linux/irq.h:20:
+   In file included from include/linux/io.h:13:
+   In file included from arch/powerpc/include/asm/io.h:640:
+   arch/powerpc/include/asm/io-defs.h:49:1: error: performing pointer arithmetic on a null pointer has undefined behavior [-Werror,-Wnull-pointer-arithmetic]
+   DEF_PCI_AC_NORET(outsb, (unsigned long p, const void *b, unsigned long c),
+   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   arch/powerpc/include/asm/io.h:637:3: note: expanded from macro 'DEF_PCI_AC_NORET'
+                   __do_##name al;                                 \
+                   ^~~~~~~~~~~~~~
+   <scratch space>:228:1: note: expanded from here
+   __do_outsb
+   ^
+   arch/powerpc/include/asm/io.h:580:58: note: expanded from macro '__do_outsb'
+   #define __do_outsb(p, b, n)     writesb((PCI_IO_ADDR)_IO_BASE+(p),(b),(n))
+                                           ~~~~~~~~~~~~~~~~~~~~~^
+   In file included from arch/powerpc/mm/nohash/tlb.c:29:
+   In file included from include/linux/highmem.h:11:
+   In file included from include/linux/hardirq.h:11:
+   In file included from arch/powerpc/include/asm/hardirq.h:6:
+   In file included from include/linux/irq.h:20:
+   In file included from include/linux/io.h:13:
+   In file included from arch/powerpc/include/asm/io.h:640:
+   arch/powerpc/include/asm/io-defs.h:51:1: error: performing pointer arithmetic on a null pointer has undefined behavior [-Werror,-Wnull-pointer-arithmetic]
+   DEF_PCI_AC_NORET(outsw, (unsigned long p, const void *b, unsigned long c),
+   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   arch/powerpc/include/asm/io.h:637:3: note: expanded from macro 'DEF_PCI_AC_NORET'
+                   __do_##name al;                                 \
+                   ^~~~~~~~~~~~~~
+   <scratch space>:230:1: note: expanded from here
+   __do_outsw
+   ^
+   arch/powerpc/include/asm/io.h:581:58: note: expanded from macro '__do_outsw'
+   #define __do_outsw(p, b, n)     writesw((PCI_IO_ADDR)_IO_BASE+(p),(b),(n))
+                                           ~~~~~~~~~~~~~~~~~~~~~^
+   In file included from arch/powerpc/mm/nohash/tlb.c:29:
+   In file included from include/linux/highmem.h:11:
+   In file included from include/linux/hardirq.h:11:
+   In file included from arch/powerpc/include/asm/hardirq.h:6:
+   In file included from include/linux/irq.h:20:
+   In file included from include/linux/io.h:13:
+   In file included from arch/powerpc/include/asm/io.h:640:
+   arch/powerpc/include/asm/io-defs.h:53:1: error: performing pointer arithmetic on a null pointer has undefined behavior [-Werror,-Wnull-pointer-arithmetic]
+   DEF_PCI_AC_NORET(outsl, (unsigned long p, const void *b, unsigned long c),
+   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   arch/powerpc/include/asm/io.h:637:3: note: expanded from macro 'DEF_PCI_AC_NORET'
+                   __do_##name al;                                 \
+                   ^~~~~~~~~~~~~~
+   <scratch space>:232:1: note: expanded from here
+   __do_outsl
+   ^
+   arch/powerpc/include/asm/io.h:582:58: note: expanded from macro '__do_outsl'
+   #define __do_outsl(p, b, n)     writesl((PCI_IO_ADDR)_IO_BASE+(p),(b),(n))
+                                           ~~~~~~~~~~~~~~~~~~~~~^
+>> arch/powerpc/mm/nohash/tlb.c:104:9: error: use of undeclared identifier 'mmu_psize_defs'
+           return mmu_psize_defs[psize].enc;
+                  ^
+>> arch/powerpc/mm/nohash/tlb.c:106:2: error: #else without #if
+   #else
+    ^
+>> arch/powerpc/mm/nohash/tlb.c:107:19: error: redefinition of 'mmu_get_tsize'
+   static inline int mmu_get_tsize(int psize)
+                     ^
+   arch/powerpc/mm/nohash/tlb.c:102:19: note: previous definition is here
+   static inline int mmu_get_tsize(int psize)
+                     ^
+>> arch/powerpc/mm/nohash/tlb.c:112:2: error: #endif without #if
+   #endif /* CONFIG_PPC_E500 */
+    ^
+   arch/powerpc/mm/nohash/tlb.c:315:13: error: no previous prototype for function 'early_init_mmu_47x' [-Werror,-Wmissing-prototypes]
+   void __init early_init_mmu_47x(void)
+               ^
+   arch/powerpc/mm/nohash/tlb.c:315:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
+   void __init early_init_mmu_47x(void)
+   ^
+   static 
+   11 errors generated.
+
+
+vim +/mmu_psize_defs +104 arch/powerpc/mm/nohash/tlb.c
+
+41151e77a4d96e arch/powerpc/mm/tlb_nohash.c Becky Bruce            2011-06-28  101  
+25d21ad6e799cc arch/powerpc/mm/tlb_nohash.c Benjamin Herrenschmidt 2009-07-23  102  static inline int mmu_get_tsize(int psize)
+25d21ad6e799cc arch/powerpc/mm/tlb_nohash.c Benjamin Herrenschmidt 2009-07-23  103  {
+25d21ad6e799cc arch/powerpc/mm/tlb_nohash.c Benjamin Herrenschmidt 2009-07-23 @104  	return mmu_psize_defs[psize].enc;
+25d21ad6e799cc arch/powerpc/mm/tlb_nohash.c Benjamin Herrenschmidt 2009-07-23  105  }
+25d21ad6e799cc arch/powerpc/mm/tlb_nohash.c Benjamin Herrenschmidt 2009-07-23 @106  #else
+25d21ad6e799cc arch/powerpc/mm/tlb_nohash.c Benjamin Herrenschmidt 2009-07-23 @107  static inline int mmu_get_tsize(int psize)
+25d21ad6e799cc arch/powerpc/mm/tlb_nohash.c Benjamin Herrenschmidt 2009-07-23  108  {
+25d21ad6e799cc arch/powerpc/mm/tlb_nohash.c Benjamin Herrenschmidt 2009-07-23  109  	/* This isn't used on !Book3E for now */
+25d21ad6e799cc arch/powerpc/mm/tlb_nohash.c Benjamin Herrenschmidt 2009-07-23  110  	return 0;
+25d21ad6e799cc arch/powerpc/mm/tlb_nohash.c Benjamin Herrenschmidt 2009-07-23  111  }
+823ee1119f6e4c arch/powerpc/mm/nohash/tlb.c Christophe Leroy       2022-09-08 @112  #endif /* CONFIG_PPC_E500 */
+25d21ad6e799cc arch/powerpc/mm/tlb_nohash.c Benjamin Herrenschmidt 2009-07-23  113  
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
