@@ -2,43 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEFEE5B2D37
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 06:03:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E5AA5B2D56
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 06:24:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MP2RN5rL8z3bxY
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 14:03:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MP2vh5K7Kz3c8Z
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 14:24:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=92.121.34.21; helo=inva021.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MP2R006WJz2xYy
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Sep 2022 14:03:22 +1000 (AEST)
-Received: from inva021.nxp.com (localhost [127.0.0.1])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 1B81A203AC1;
-	Fri,  9 Sep 2022 06:03:18 +0200 (CEST)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id C51E4203AD3;
-	Fri,  9 Sep 2022 06:03:17 +0200 (CEST)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 17D9D1820F59;
-	Fri,  9 Sep 2022 12:03:16 +0800 (+08)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: nicoleotsuka@gmail.com,
-	Xiubo.Lee@gmail.com,
-	festevam@gmail.com,
-	shengjiu.wang@gmail.com,
-	lgirdwood@gmail.com,
-	broonie@kernel.org,
-	perex@perex.cz,
-	tiwai@suse.com,
-	alsa-devel@alsa-project.org
-Subject: [PATCH v3] ASoC: fsl_asrc: Add initialization finishing check in runtime resume
-Date: Fri,  9 Sep 2022 11:44:58 +0800
-Message-Id: <1662695098-24602-1-git-send-email-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-X-Virus-Scanned: ClamAV using ClamSMTP
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+X-Greylist: delayed 451 seconds by postgrey-1.36 at boromir; Fri, 09 Sep 2022 14:24:25 AEST
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MP2vF3qDcz2xBl
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Sep 2022 14:24:24 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 09453153B;
+	Thu,  8 Sep 2022 21:16:23 -0700 (PDT)
+Received: from [10.162.41.8] (unknown [10.162.41.8])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F33023F71A;
+	Thu,  8 Sep 2022 21:16:07 -0700 (PDT)
+Message-ID: <46b8a713-64bf-9c00-9001-3196238d1482@arm.com>
+Date: Fri, 9 Sep 2022 09:46:04 +0530
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+Subject: Re: [PATCH v3 2/4] mm/tlbbatch: Introduce
+ arch_tlbbatch_should_defer()
+To: Yicong Yang <yangyicong@huawei.com>, akpm@linux-foundation.org,
+ linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org, x86@kernel.org,
+ catalin.marinas@arm.com, will@kernel.org, linux-doc@vger.kernel.org
+References: <20220822082120.8347-1-yangyicong@huawei.com>
+ <20220822082120.8347-3-yangyicong@huawei.com>
+Content-Language: en-US
+In-Reply-To: <20220822082120.8347-3-yangyicong@huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,104 +48,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linux-s390@vger.kernel.org, wangkefeng.wang@huawei.com, zhangshiming@oppo.com, lipeifeng@oppo.com, prime.zeng@hisilicon.com, arnd@arndb.de, corbet@lwn.net, peterz@infradead.org, realmz6@gmail.com, Barry Song <21cnbao@gmail.com>, linux-kernel@vger.kernel.org, yangyicong@hisilicon.com, openrisc@lists.librecores.org, xhao@linux.alibaba.com, darren@os.amperecomputing.com, huzhanyuan@oppo.com, guojian@oppo.com, linux-riscv@lists.infradead.org, linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Anshuman Khandual <khandual@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-If the initialization is not finished, then filling input data to
-the FIFO may fail. So it is better to add initialization finishing
-check in the runtime resume for suspend & resume case.
+On 8/22/22 13:51, Yicong Yang wrote:
+> From: Anshuman Khandual <khandual@linux.vnet.ibm.com>
+> 
+> The entire scheme of deferred TLB flush in reclaim path rests on the
+> fact that the cost to refill TLB entries is less than flushing out
+> individual entries by sending IPI to remote CPUs. But architecture
+> can have different ways to evaluate that. Hence apart from checking
+> TTU_BATCH_FLUSH in the TTU flags, rest of the decision should be
+> architecture specific.
+> 
+> Signed-off-by: Anshuman Khandual <khandual@linux.vnet.ibm.com>
+> [https://lore.kernel.org/linuxppc-dev/20171101101735.2318-2-khandual@linux.vnet.ibm.com/]
+> Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+> [Rebase and fix incorrect return value type]
 
-And consider the case of three instances working in parallel,
-increase the retry times to 50 for more initialization time.
+From semantics perspective, this patch still makes sense, even on its own.
 
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Reviewed-by: Nicolin Chen <nicolinc@gmail.com>
----
-changes in v3:
-- update warning message.
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
 
-changes in v2:
-- update comments.
-
- sound/soc/fsl/fsl_asrc.c | 29 ++++++++++++++++++++++++++++-
- 1 file changed, 28 insertions(+), 1 deletion(-)
-
-diff --git a/sound/soc/fsl/fsl_asrc.c b/sound/soc/fsl/fsl_asrc.c
-index aa5edf32d988..936aef5d2767 100644
---- a/sound/soc/fsl/fsl_asrc.c
-+++ b/sound/soc/fsl/fsl_asrc.c
-@@ -20,6 +20,7 @@
- 
- #define IDEAL_RATIO_DECIMAL_DEPTH 26
- #define DIVIDER_NUM  64
-+#define INIT_RETRY_NUM 50
- 
- #define pair_err(fmt, ...) \
- 	dev_err(&asrc->pdev->dev, "Pair %c: " fmt, 'A' + index, ##__VA_ARGS__)
-@@ -27,6 +28,9 @@
- #define pair_dbg(fmt, ...) \
- 	dev_dbg(&asrc->pdev->dev, "Pair %c: " fmt, 'A' + index, ##__VA_ARGS__)
- 
-+#define pair_warn(fmt, ...) \
-+	dev_warn(&asrc->pdev->dev, "Pair %c: " fmt, 'A' + index, ##__VA_ARGS__)
-+
- /* Corresponding to process_option */
- static unsigned int supported_asrc_rate[] = {
- 	5512, 8000, 11025, 12000, 16000, 22050, 24000, 32000, 44100, 48000,
-@@ -579,7 +583,7 @@ static void fsl_asrc_start_pair(struct fsl_asrc_pair *pair)
- {
- 	struct fsl_asrc *asrc = pair->asrc;
- 	enum asrc_pair_index index = pair->index;
--	int reg, retry = 10, i;
-+	int reg, retry = INIT_RETRY_NUM, i;
- 
- 	/* Enable the current pair */
- 	regmap_update_bits(asrc->regmap, REG_ASRCTR,
-@@ -592,6 +596,10 @@ static void fsl_asrc_start_pair(struct fsl_asrc_pair *pair)
- 		reg &= ASRCFG_INIRQi_MASK(index);
- 	} while (!reg && --retry);
- 
-+	/* NOTE: Doesn't treat initialization timeout as an error */
-+	if (!retry)
-+		pair_warn("initialization isn't finished\n");
-+
- 	/* Make the input fifo to ASRC STALL level */
- 	regmap_read(asrc->regmap, REG_ASRCNCR, &reg);
- 	for (i = 0; i < pair->channels * 4; i++)
-@@ -1257,6 +1265,7 @@ static int fsl_asrc_runtime_resume(struct device *dev)
- {
- 	struct fsl_asrc *asrc = dev_get_drvdata(dev);
- 	struct fsl_asrc_priv *asrc_priv = asrc->private;
-+	int reg, retry = INIT_RETRY_NUM;
- 	int i, ret;
- 	u32 asrctr;
- 
-@@ -1295,6 +1304,24 @@ static int fsl_asrc_runtime_resume(struct device *dev)
- 	regmap_update_bits(asrc->regmap, REG_ASRCTR,
- 			   ASRCTR_ASRCEi_ALL_MASK, asrctr);
- 
-+	/* Wait for status of initialization for all enabled pairs */
-+	do {
-+		udelay(5);
-+		regmap_read(asrc->regmap, REG_ASRCFG, &reg);
-+		reg = (reg >> ASRCFG_INIRQi_SHIFT(0)) & 0x7;
-+	} while ((reg != ((asrctr >> ASRCTR_ASRCEi_SHIFT(0)) & 0x7)) && --retry);
-+
-+	/*
-+	 * NOTE: Doesn't treat initialization timeout as an error
-+	 * Some of the pairs may success, then still can continue.
-+	 */
-+	if (!retry) {
-+		for (i = ASRC_PAIR_A; i < ASRC_PAIR_MAX_NUM; i++) {
-+			if ((asrctr & ASRCTR_ASRCEi_MASK(i)) && !(reg & (1 << i)))
-+				dev_warn(dev, "Pair %c initialization isn't finished\n", 'A' + i);
-+		}
-+	}
-+
- 	return 0;
- 
- disable_asrck_clk:
--- 
-2.34.1
-
+> ---
+>  arch/x86/include/asm/tlbflush.h | 12 ++++++++++++
+>  mm/rmap.c                       |  9 +--------
+>  2 files changed, 13 insertions(+), 8 deletions(-)
+> 
+> diff --git a/arch/x86/include/asm/tlbflush.h b/arch/x86/include/asm/tlbflush.h
+> index cda3118f3b27..8a497d902c16 100644
+> --- a/arch/x86/include/asm/tlbflush.h
+> +++ b/arch/x86/include/asm/tlbflush.h
+> @@ -240,6 +240,18 @@ static inline void flush_tlb_page(struct vm_area_struct *vma, unsigned long a)
+>  	flush_tlb_mm_range(vma->vm_mm, a, a + PAGE_SIZE, PAGE_SHIFT, false);
+>  }
+>  
+> +static inline bool arch_tlbbatch_should_defer(struct mm_struct *mm)
+> +{
+> +	bool should_defer = false;
+> +
+> +	/* If remote CPUs need to be flushed then defer batch the flush */
+> +	if (cpumask_any_but(mm_cpumask(mm), get_cpu()) < nr_cpu_ids)
+> +		should_defer = true;
+> +	put_cpu();
+> +
+> +	return should_defer;
+> +}
+> +
+>  static inline u64 inc_mm_tlb_gen(struct mm_struct *mm)
+>  {
+>  	/*
+> diff --git a/mm/rmap.c b/mm/rmap.c
+> index edc06c52bc82..a17a004550c6 100644
+> --- a/mm/rmap.c
+> +++ b/mm/rmap.c
+> @@ -687,17 +687,10 @@ static void set_tlb_ubc_flush_pending(struct mm_struct *mm, bool writable)
+>   */
+>  static bool should_defer_flush(struct mm_struct *mm, enum ttu_flags flags)
+>  {
+> -	bool should_defer = false;
+> -
+>  	if (!(flags & TTU_BATCH_FLUSH))
+>  		return false;
+>  
+> -	/* If remote CPUs need to be flushed then defer batch the flush */
+> -	if (cpumask_any_but(mm_cpumask(mm), get_cpu()) < nr_cpu_ids)
+> -		should_defer = true;
+> -	put_cpu();
+> -
+> -	return should_defer;
+> +	return arch_tlbbatch_should_defer(mm);
+>  }
+>  
+>  /*
