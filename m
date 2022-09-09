@@ -1,67 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36FE85B2B1A
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 02:27:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91ECC5B2B3E
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 02:52:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MNxfN0D1Vz3c4B
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 10:27:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MNyBP1TS4z3c4j
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 10:52:13 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=crQ36UMH;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=L4r1/zM0;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b2c; helo=mail-yb1-xb2c.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b34; helo=mail-yb1-xb34.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=crQ36UMH;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=L4r1/zM0;
 	dkim-atps=neutral
-Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
+Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MNxdk3MNdz2xfS
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Sep 2022 10:27:21 +1000 (AEST)
-Received: by mail-yb1-xb2c.google.com with SMTP id a67so441133ybb.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Sep 2022 17:27:21 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MNy9k4dDYz2yyT
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Sep 2022 10:51:37 +1000 (AEST)
+Received: by mail-yb1-xb34.google.com with SMTP id 130so459479ybz.9
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Sep 2022 17:51:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date;
-        bh=KtLw4C6VhVX+NvaGxIgELiy/zqMzxZXxqnnlbY2OKmo=;
-        b=crQ36UMHUqt61smHrlkBEpUd9i45+PgLY5J9fqfxhS5xFt+dCvkP4on4PdtNki3lCz
-         jM3i4We244MxzTcElsXWAr4ziy26d4HtGs1NYCrV4xa+QMChQpVMk4+s4kWhnDii1Pkq
-         yYzeKV/nWRkdftx9rY3IB4MT+wQ9wCh094Kp0vVZXw/48yA0cwlfWhLtGuaSLY8c5re5
-         9AGxg9RjHE2y5qcsqP3sIfonr94qxE4z65S4RNPfz7z+epLJQ9CDfp8pOawXS7ODD5Rs
-         kWyWoTv5WYqA6M7n+wk8eECV/QUIZsewZkXxm5axMe5CRivTrrka1Y3sdLZZWgIumVtu
-         oYrg==
+        bh=LBNHsgANfOuYwqoZHaxODMzZ7UA+U8+5hufwxCbYv44=;
+        b=L4r1/zM0OJVEeznCxkFeDmzDJp0IcMmbKN2OvdW9zrSpQ1s5Kdty/1rkvqWo33TMhT
+         xWV4jNGh+PbGvXm0RJQ/3GpSL8k3kkDWsQF1guPOx0QIt2B1p6UW/G2dGSAhnz6g0J3G
+         aCbemhwYTPosRuwZH2Cn9ZVgTqZfSGP+OkF8xPq4LUSXcNwj3wBeXn3dSPUF2TrfIRpN
+         JQVL/x1hFZ6eG+8WyfHTfUzx9yazN5pP/4MU/Ug9tlPrBw51u68/InTGeJUXAmTQ46F7
+         6ZwC93ANh6AAupdl3kfj2t2GfNBg9A4jCF4ximO4iROdJ/9dV1Q4vF+NqMLn6BAhU5rt
+         CPow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date;
-        bh=KtLw4C6VhVX+NvaGxIgELiy/zqMzxZXxqnnlbY2OKmo=;
-        b=QhJcUIfmJ1KH8+HrkiRuvoiJCkLGzyDVq7NZqpuOXDChopztRUqeE8nm5I99nK8LPm
-         IMAkmGG6ZY+f++iOffIa0ahMyGW5cGxigybhbEGHFc3dj+6yo0cZGNAMUZONl0FDJovW
-         IAadUuErBLy/e8iRbf/9vbzczS4pba8XmDbd23CvgA25nYEh+1guRu+gEsDOXh+Acxqm
-         tjZtKqAge/AUM7uBcIpNu/9nPE+d3m1raEAoWKo3Rlbp5ttCpTChyqCJn3j+zK38zuLJ
-         J0f3yuxPYuwI+rgXBI+rS0KKXiZC7zWWPMb5Ro/XeChv+YR/iKmyZHB7Pc8KMG9a3yI2
-         hAoQ==
-X-Gm-Message-State: ACgBeo2YCmgPaWQIzpE+QHdVe+CRkCTlNmSLlewpNmsgjkAMEbltu4+l
-	1A1tLKYIsja+r6cpTO0lX5R533bPRSAn2ZAvK4haYQ==
-X-Google-Smtp-Source: AA6agR6FKEIXt4Le+vLLG6frjvQmxHhi7IpkWph1Sqqg5DDpP37KZzCFD7SHe2MzUi799BfLdccL/mK6LPn2rgcWHb8=
-X-Received: by 2002:a05:6902:2d0:b0:694:d257:4c4b with SMTP id
- w16-20020a05690202d000b00694d2574c4bmr9751150ybh.316.1662683237776; Thu, 08
- Sep 2022 17:27:17 -0700 (PDT)
+        bh=LBNHsgANfOuYwqoZHaxODMzZ7UA+U8+5hufwxCbYv44=;
+        b=0bRl0IfEiT9hETSYX0ltetGTVlb9JUB15NCurnFBS1pIBIBwn9gZADs9DcNci4nCQT
+         GC7xmA9Djisbgi2iw4E50PA3Suzj+m+NReGJBPMKCWi8sQc1/6kaTygIGB+SncTaUq+M
+         7V7FhTWauxfS2af68Z5712XQG2vwv9xMCyx1n3nT6ET3YC97PLRtU2K5JU7yNwhONF14
+         YU5CSbNaY22KMw0i4gmSlEdwZEbTu5VDInuaII1CouLLf6U7OqsZ2u70a0sGzYqB00l3
+         +RuUr7r2ESgkHp8hbB7vPoR/7tJlT0tDs79Wv+oHVHBIthGuqLhe3JA6DH5F3X4phO4h
+         0WGw==
+X-Gm-Message-State: ACgBeo1MxG89mAHuKv/7E5n1eW5pzggnjCCy7agbVnMyiMfZqktRtG1/
+	YgQJP7gFpoUnl8LW6N4L70s83mgV9TxoOIpGOnkezQ==
+X-Google-Smtp-Source: AA6agR5aiD/mHNLJf/uZTrUlH+sUk3m6QYGueoAr4dyZUEHwTfC+FSD4X8APTDBjLx4o2R6CQUyPXRoAsWEaWYZ1kA0=
+X-Received: by 2002:a25:d209:0:b0:6a8:e5f1:f179 with SMTP id
+ j9-20020a25d209000000b006a8e5f1f179mr9413490ybg.380.1662684694045; Thu, 08
+ Sep 2022 17:51:34 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220901173516.702122-1-surenb@google.com> <20220901173516.702122-10-surenb@google.com>
- <98d5f462-c4dc-a967-0ab0-f24dd3e37dff@linux.ibm.com>
-In-Reply-To: <98d5f462-c4dc-a967-0ab0-f24dd3e37dff@linux.ibm.com>
+References: <20220901173516.702122-1-surenb@google.com> <20220901173516.702122-11-surenb@google.com>
+ <bb5e3ab8-9c47-7d01-cdaa-1b4231312f67@linux.ibm.com>
+In-Reply-To: <bb5e3ab8-9c47-7d01-cdaa-1b4231312f67@linux.ibm.com>
 From: Suren Baghdasaryan <surenb@google.com>
-Date: Thu, 8 Sep 2022 17:27:06 -0700
-Message-ID: <CAJuCfpFoJmiGYXBLwOjW36iB302=V2_vvbRwQbftr_ix_92uuQ@mail.gmail.com>
-Subject: Re: [RFC PATCH RESEND 09/28] mm/mempolicy: mark VMA as locked when
- changing protection policy
+Date: Thu, 8 Sep 2022 17:51:23 -0700
+Message-ID: <CAJuCfpFm8irJyhzn-22QR+_4BmU+yDZM97T4S8pPKotxZUmjBg@mail.gmail.com>
+Subject: Re: [RFC PATCH RESEND 10/28] mm/mmap: mark VMAs as locked in vma_adjust
 To: Laurent Dufour <ldufour@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -80,64 +79,87 @@ Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Sep 6, 2022 at 7:48 AM Laurent Dufour <ldufour@linux.ibm.com> wrote=
+On Tue, Sep 6, 2022 at 8:35 AM Laurent Dufour <ldufour@linux.ibm.com> wrote=
 :
 >
 > Le 01/09/2022 =C3=A0 19:34, Suren Baghdasaryan a =C3=A9crit :
-> > Protect VMA from concurrent page fault handler while performing VMA
-> > protection policy changes.
+> > vma_adjust modifies a VMA and possibly its neighbors. Mark them as lock=
+ed
+> > before making the modifications.
 > >
 > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 > > ---
-> >  mm/mempolicy.c | 6 +++++-
-> >  1 file changed, 5 insertions(+), 1 deletion(-)
+> >  mm/mmap.c | 11 ++++++++++-
+> >  1 file changed, 10 insertions(+), 1 deletion(-)
 > >
-> > diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-> > index b73d3248d976..6be1e5c75556 100644
-> > --- a/mm/mempolicy.c
-> > +++ b/mm/mempolicy.c
-> > @@ -383,8 +383,10 @@ void mpol_rebind_mm(struct mm_struct *mm, nodemask=
-_t *new)
-> >       struct vm_area_struct *vma;
-> >
-> >       mmap_write_lock(mm);
-> > -     for (vma =3D mm->mmap; vma; vma =3D vma->vm_next)
-> > +     for (vma =3D mm->mmap; vma; vma =3D vma->vm_next) {
-> > +             vma_mark_locked(vma);
-> >               mpol_rebind_policy(vma->vm_policy, new);
-> > +     }
-> >       mmap_write_unlock(mm);
-> >  }
-> >
-> > @@ -632,6 +634,7 @@ unsigned long change_prot_numa(struct vm_area_struc=
-t *vma,
-> >       struct mmu_gather tlb;
-> >       int nr_updated;
+> > diff --git a/mm/mmap.c b/mm/mmap.c
+> > index f89c9b058105..ed58cf0689b2 100644
+> > --- a/mm/mmap.c
+> > +++ b/mm/mmap.c
+> > @@ -710,6 +710,10 @@ int __vma_adjust(struct vm_area_struct *vma, unsig=
+ned long start,
+> >       long adjust_next =3D 0;
+> >       int remove_next =3D 0;
 > >
 > > +     vma_mark_locked(vma);
+> > +     if (next)
+> > +             vma_mark_locked(next);
+> > +
 >
-> If I understand that corretly, the VMA itself is not impacted, only the
-> PMDs/PTEs, and they are protected using the page table locks.
+> I was wondering if the VMAs insert and expand should be locked too.
 >
-> Am I missing something?
+> For expand, I can't see any valid reason, but for insert, I'm puzzled.
+> I would think that it is better to lock the VMA to be inserted but I can'=
+t
+> really justify that.
+>
+> It may be nice to detail why this is not need to lock insert and expand h=
+ere.
 
-I thought we would not want pages faulting in the VMA for which we are
-changing the protection. However I think what you are saying is that
-page table locks would already provide a more granular synchronization
-with page fault handlers, which makes sense to me. Sounds like we can
-skip locking the VMA here as well. Nice!
+'expand' is always locked before it's passed to __vma_adjust() by
+vma_merge(). It has to be locked before we decide "Can it merge with
+the predecessor?" here
+https://elixir.bootlin.com/linux/latest/source/mm/mmap.c#L1201 because
+a change in VMA can affect that decision. I spent many hours tracking
+the issue caused by not locking the VMA before making this decision.
+It might be good to add a comment about this...
+
+AFAIKT 'insert' is only used by __split_vma() and it's always a brand
+new VMA which is not yet linked into mm->mmap. Any reason
+__vma_adjust() should lock it?
 
 >
-> >       tlb_gather_mmu(&tlb, vma->vm_mm);
+> >       if (next && !insert) {
+> >               struct vm_area_struct *exporter =3D NULL, *importer =3D N=
+ULL;
 > >
-> >       nr_updated =3D change_protection(&tlb, vma, addr, end, PAGE_NONE,
-> > @@ -765,6 +768,7 @@ static int vma_replace_policy(struct vm_area_struct=
- *vma,
-> >       if (IS_ERR(new))
-> >               return PTR_ERR(new);
+> > @@ -754,8 +758,11 @@ int __vma_adjust(struct vm_area_struct *vma, unsig=
+ned long start,
+> >                        * If next doesn't have anon_vma, import from vma=
+ after
+> >                        * next, if the vma overlaps with it.
+> >                        */
+> > -                     if (remove_next =3D=3D 2 && !next->anon_vma)
+> > +                     if (remove_next =3D=3D 2 && !next->anon_vma) {
+> >                               exporter =3D next->vm_next;
+> > +                             if (exporter)
+> > +                                     vma_mark_locked(exporter);
+> > +                     }
 > >
-> > +     vma_mark_locked(vma);
-> >       if (vma->vm_ops && vma->vm_ops->set_policy) {
-> >               err =3D vma->vm_ops->set_policy(vma, new);
-> >               if (err)
+> >               } else if (end > next->vm_start) {
+> >                       /*
+> > @@ -931,6 +938,8 @@ int __vma_adjust(struct vm_area_struct *vma, unsign=
+ed long start,
+> >                        * "vma->vm_next" gap must be updated.
+> >                        */
+> >                       next =3D vma->vm_next;
+> > +                     if (next)
+> > +                             vma_mark_locked(next);
+> >               } else {
+> >                       /*
+> >                        * For the scope of the comment "next" and
+>
+> --
+> To unsubscribe from this group and stop receiving emails from it, send an=
+ email to kernel-team+unsubscribe@android.com.
 >
