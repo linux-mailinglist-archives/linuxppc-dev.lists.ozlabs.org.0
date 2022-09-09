@@ -2,67 +2,40 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9003F5B2E02
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 07:24:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B51F35B2E0B
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 07:25:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MP4Cz32yMz3c5D
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 15:23:59 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=hPwgMYgP;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MP4Fj2fvJz3c2h
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 15:25:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::431; helo=mail-pf1-x431.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=hPwgMYgP;
-	dkim-atps=neutral
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MP4CJ75HDz302x
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Sep 2022 15:23:24 +1000 (AEST)
-Received: by mail-pf1-x431.google.com with SMTP id 65so674707pfx.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Sep 2022 22:23:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date;
-        bh=2ylGxyYf++Fa4Bhw3uiX8YAM9/WQ7qUcSJq/lAMSMXs=;
-        b=hPwgMYgPD58xEKI0u54YMFpCEURryMl2N/SBSmCWEvdaURmj6SIbP9tbrJdAPFKIz9
-         WlBrvXTy5RK3jHrMAQJHZ9FM810bd4h8I0XJP0dqqctsbYxhKt3wm3iEqiBX9VMSiMK3
-         9uj6IyWtS5nB484q2wsI0M8MP9efwObr3oAkJ/nOTjjANnicFZqOlUDF8mUmWhJJ0QFk
-         MDOOwS7dPZughoI2LXM7fpl4wVEAGZxa9ouhhOmHWMUCNMuhcUaN0NkH8yefmIHMi+tq
-         g375hzlVZHtxrnv6sI/XaaL/XRQbMzbVn7JbqMFOeEf18AHZo/FIc9KyVVaOPKI2nXDI
-         ESMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date;
-        bh=2ylGxyYf++Fa4Bhw3uiX8YAM9/WQ7qUcSJq/lAMSMXs=;
-        b=XrqUNtU5Y7nZSOOzdxz6FE0V3DWM6qwOcyWw5Egn+zH1EisMcXVjVl253ZIVNyN8yp
-         n7KsaWtb+BTHSGm+dQym9iL3Iuo5kHEouKsz7KsnIKsNoiyq2l3nIWV2GxEuU2uJVG1E
-         YkBtbdHWhl7zukiJbkPHfyUSI8JlGWfnv4KmZ1vUZLD57PRM5T8d84DKJGsI83Xt41KG
-         zfgVZGbML+I3YzIagKeJsz5UPNRjKE92JwwKuGSs02X8XLPJDeenKNncmUbxPMAwiNJm
-         nhThlKLKtebnNSGKdxEqSaUOPN04X6BiEQGD//wlS5EEwTyUIzRIM/4oj8ewOMQluG1H
-         /CFw==
-X-Gm-Message-State: ACgBeo1o6e3tvgdKv7DCHXQK+tRNBYUKvKuwU9R8mWkd+tGaTnB+0QTn
-	4j70So8GwNkPnRwuJof8jcUGgsIXb1Y=
-X-Google-Smtp-Source: AA6agR5l/oCm7K8VaLYisEkCRbABhTo+qszKScX9thd69FV4deHeMqlTW83hPIEVwg8CHGR9OEUk3A==
-X-Received: by 2002:a05:6a00:a04:b0:534:d8a6:40ce with SMTP id p4-20020a056a000a0400b00534d8a640cemr12609354pfh.15.1662701000481;
-        Thu, 08 Sep 2022 22:23:20 -0700 (PDT)
-Received: from bobo.ozlabs.ibm.com ([193.114.109.49])
-        by smtp.gmail.com with ESMTPSA id z30-20020aa79e5e000000b0053b9e5d365bsm587989pfq.216.2022.09.08.22.23.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Sep 2022 22:23:19 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3] powerpc: add compile-time support for lbarx, lharx
-Date: Fri,  9 Sep 2022 15:23:12 +1000
-Message-Id: <20220909052312.63916-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.37.2
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MP4FG4bSKz2xH8
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Sep 2022 15:25:04 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 53433153B;
+	Thu,  8 Sep 2022 22:24:37 -0700 (PDT)
+Received: from [10.162.41.8] (unknown [10.162.41.8])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AEF913F73D;
+	Thu,  8 Sep 2022 22:24:49 -0700 (PDT)
+Message-ID: <1e8642d5-0e2d-5747-d0d2-5aa0817ea4af@arm.com>
+Date: Fri, 9 Sep 2022 10:54:18 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH v3 4/4] arm64: support batched/deferred tlb shootdown
+ during page reclamation
+Content-Language: en-US
+To: Yicong Yang <yangyicong@huawei.com>, akpm@linux-foundation.org,
+ linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org, x86@kernel.org,
+ catalin.marinas@arm.com, will@kernel.org, linux-doc@vger.kernel.org
+References: <20220822082120.8347-1-yangyicong@huawei.com>
+ <20220822082120.8347-5-yangyicong@huawei.com>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <20220822082120.8347-5-yangyicong@huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,393 +47,239 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: wangkefeng.wang@huawei.com, darren@os.amperecomputing.com, peterz@infradead.org, yangyicong@hisilicon.com, Nadav Amit <namit@vmware.com>, guojian@oppo.com, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, zhangshiming@oppo.com, lipeifeng@oppo.com, corbet@lwn.net, Barry Song <21cnbao@gmail.com>, Mel Gorman <mgorman@suse.de>, linux-mips@vger.kernel.org, arnd@arndb.de, realmz6@gmail.com, Barry Song <v-songbaohua@oppo.com>, openrisc@lists.librecores.org, prime.zeng@hisilicon.com, xhao@linux.alibaba.com, linux-kernel@vger.kernel.org, huzhanyuan@oppo.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-ISA v2.06 (POWER7 and up) as well as e6500 support lbarx and lharx.
-Add a compile option that allows code to use it, and add support in
-cmpxchg and xchg 8 and 16 bit values without shifting and masking.
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
-v2: Fixed lwarx->lharx typo, switched to PPC_HAS_
-v3: Rebase, tidy asm slightly.
 
-My powernv_defconfig build has a grand total of one call site, xchg on
-16-bit value in kernel/locking/qspinlock.o
+On 8/22/22 13:51, Yicong Yang wrote:
+> From: Barry Song <v-songbaohua@oppo.com>
+> 
+> on x86, batched and deferred tlb shootdown has lead to 90%
+> performance increase on tlb shootdown. on arm64, HW can do
+> tlb shootdown without software IPI. But sync tlbi is still
+> quite expensive.
+> 
+> Even running a simplest program which requires swapout can
+> prove this is true,
+>  #include <sys/types.h>
+>  #include <unistd.h>
+>  #include <sys/mman.h>
+>  #include <string.h>
+> 
+>  int main()
+>  {
+>  #define SIZE (1 * 1024 * 1024)
+>          volatile unsigned char *p = mmap(NULL, SIZE, PROT_READ | PROT_WRITE,
+>                                           MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+> 
+>          memset(p, 0x88, SIZE);
+> 
+>          for (int k = 0; k < 10000; k++) {
+>                  /* swap in */
+>                  for (int i = 0; i < SIZE; i += 4096) {
+>                          (void)p[i];
+>                  }
+> 
+>                  /* swap out */
+>                  madvise(p, SIZE, MADV_PAGEOUT);
+>          }
+>  }
+> 
+> Perf result on snapdragon 888 with 8 cores by using zRAM
+> as the swap block device.
+> 
+>  ~ # perf record taskset -c 4 ./a.out
+>  [ perf record: Woken up 10 times to write data ]
+>  [ perf record: Captured and wrote 2.297 MB perf.data (60084 samples) ]
+>  ~ # perf report
+>  # To display the perf.data header info, please use --header/--header-only options.
+>  # To display the perf.data header info, please use --header/--header-only options.
+>  #
+>  #
+>  # Total Lost Samples: 0
+>  #
+>  # Samples: 60K of event 'cycles'
+>  # Event count (approx.): 35706225414
+>  #
+>  # Overhead  Command  Shared Object      Symbol
+>  # ........  .......  .................  .............................................................................
+>  #
+>     21.07%  a.out    [kernel.kallsyms]  [k] _raw_spin_unlock_irq
+>      8.23%  a.out    [kernel.kallsyms]  [k] _raw_spin_unlock_irqrestore
+>      6.67%  a.out    [kernel.kallsyms]  [k] filemap_map_pages
+>      6.16%  a.out    [kernel.kallsyms]  [k] __zram_bvec_write
+>      5.36%  a.out    [kernel.kallsyms]  [k] ptep_clear_flush
+>      3.71%  a.out    [kernel.kallsyms]  [k] _raw_spin_lock
+>      3.49%  a.out    [kernel.kallsyms]  [k] memset64
+>      1.63%  a.out    [kernel.kallsyms]  [k] clear_page
+>      1.42%  a.out    [kernel.kallsyms]  [k] _raw_spin_unlock
+>      1.26%  a.out    [kernel.kallsyms]  [k] mod_zone_state.llvm.8525150236079521930
+>      1.23%  a.out    [kernel.kallsyms]  [k] xas_load
+>      1.15%  a.out    [kernel.kallsyms]  [k] zram_slot_lock
+> 
+> ptep_clear_flush() takes 5.36% CPU in the micro-benchmark
+> swapping in/out a page mapped by only one process. If the
+> page is mapped by multiple processes, typically, like more
+> than 100 on a phone, the overhead would be much higher as
+> we have to run tlb flush 100 times for one single page.
+> Plus, tlb flush overhead will increase with the number
+> of CPU cores due to the bad scalability of tlb shootdown
+> in HW, so those ARM64 servers should expect much higher
+> overhead.
+> 
+> Further perf annonate shows 95% cpu time of ptep_clear_flush
+> is actually used by the final dsb() to wait for the completion
+> of tlb flush. This provides us a very good chance to leverage
+> the existing batched tlb in kernel. The minimum modification
+> is that we only send async tlbi in the first stage and we send
+> dsb while we have to sync in the second stage.
+> 
+> With the above simplest micro benchmark, collapsed time to
+> finish the program decreases around 5%.
+> 
+> Typical collapsed time w/o patch:
+>  ~ # time taskset -c 4 ./a.out
+>  0.21user 14.34system 0:14.69elapsed
+> w/ patch:
+>  ~ # time taskset -c 4 ./a.out
+>  0.22user 13.45system 0:13.80elapsed
+> 
+> Also, Yicong Yang added the following observation.
+> 	Tested with benchmark in the commit on Kunpeng920 arm64 server,
+> 	observed an improvement around 12.5% with command
+> 	`time ./swap_bench`.
+> 		w/o		w/
+> 	real	0m13.460s	0m11.771s
+> 	user	0m0.248s	0m0.279s
+> 	sys	0m12.039s	0m11.458s
+> 
+> 	Originally it's noticed a 16.99% overhead of ptep_clear_flush()
+> 	which has been eliminated by this patch:
+> 
+> 	[root@localhost yang]# perf record -- ./swap_bench && perf report
+> 	[...]
+> 	16.99%  swap_bench  [kernel.kallsyms]  [k] ptep_clear_flush
+> 
+> Cc: Jonathan Corbet <corbet@lwn.net>
+> Cc: Nadav Amit <namit@vmware.com>
+> Cc: Mel Gorman <mgorman@suse.de>
+> Tested-by: Yicong Yang <yangyicong@hisilicon.com>
+> Tested-by: Xin Hao <xhao@linux.alibaba.com>
+> Signed-off-by: Barry Song <v-songbaohua@oppo.com>
+> Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+> ---
+>  .../features/vm/TLB/arch-support.txt          |  2 +-
+>  arch/arm64/Kconfig                            |  1 +
+>  arch/arm64/include/asm/tlbbatch.h             | 12 ++++++++
+>  arch/arm64/include/asm/tlbflush.h             | 28 +++++++++++++++++--
+>  4 files changed, 40 insertions(+), 3 deletions(-)
+>  create mode 100644 arch/arm64/include/asm/tlbbatch.h
+> 
+> diff --git a/Documentation/features/vm/TLB/arch-support.txt b/Documentation/features/vm/TLB/arch-support.txt
+> index 1c009312b9c1..2caf815d7c6c 100644
+> --- a/Documentation/features/vm/TLB/arch-support.txt
+> +++ b/Documentation/features/vm/TLB/arch-support.txt
+> @@ -9,7 +9,7 @@
+>      |       alpha: | TODO |
+>      |         arc: | TODO |
+>      |         arm: | TODO |
+> -    |       arm64: | TODO |
+> +    |       arm64: |  ok  |
+>      |        csky: | TODO |
+>      |     hexagon: | TODO |
+>      |        ia64: | TODO |
+> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> index 571cc234d0b3..09d45cd6d665 100644
+> --- a/arch/arm64/Kconfig
+> +++ b/arch/arm64/Kconfig
+> @@ -93,6 +93,7 @@ config ARM64
+>  	select ARCH_SUPPORTS_INT128 if CC_HAS_INT128
+>  	select ARCH_SUPPORTS_NUMA_BALANCING
+>  	select ARCH_SUPPORTS_PAGE_TABLE_CHECK
+> +	select ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH
+>  	select ARCH_WANT_COMPAT_IPC_PARSE_VERSION if COMPAT
+>  	select ARCH_WANT_DEFAULT_BPF_JIT
+>  	select ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT
+> diff --git a/arch/arm64/include/asm/tlbbatch.h b/arch/arm64/include/asm/tlbbatch.h
+> new file mode 100644
+> index 000000000000..fedb0b87b8db
+> --- /dev/null
+> +++ b/arch/arm64/include/asm/tlbbatch.h
+> @@ -0,0 +1,12 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef _ARCH_ARM64_TLBBATCH_H
+> +#define _ARCH_ARM64_TLBBATCH_H
+> +
+> +struct arch_tlbflush_unmap_batch {
+> +	/*
+> +	 * For arm64, HW can do tlb shootdown, so we don't
+> +	 * need to record cpumask for sending IPI
+> +	 */
+> +};
+> +
+> +#endif /* _ARCH_ARM64_TLBBATCH_H */
+> diff --git a/arch/arm64/include/asm/tlbflush.h b/arch/arm64/include/asm/tlbflush.h
+> index 412a3b9a3c25..23cbc987321a 100644
+> --- a/arch/arm64/include/asm/tlbflush.h
+> +++ b/arch/arm64/include/asm/tlbflush.h
+> @@ -254,17 +254,24 @@ static inline void flush_tlb_mm(struct mm_struct *mm)
+>  	dsb(ish);
+>  }
+>  
+> -static inline void flush_tlb_page_nosync(struct vm_area_struct *vma,
+> +
+> +static inline void __flush_tlb_page_nosync(struct mm_struct *mm,
+>  					 unsigned long uaddr)
+>  {
+>  	unsigned long addr;
+>  
+>  	dsb(ishst);
+> -	addr = __TLBI_VADDR(uaddr, ASID(vma->vm_mm));
+> +	addr = __TLBI_VADDR(uaddr, ASID(mm));
+>  	__tlbi(vale1is, addr);
+>  	__tlbi_user(vale1is, addr);
+>  }
+>  
+> +static inline void flush_tlb_page_nosync(struct vm_area_struct *vma,
+> +					 unsigned long uaddr)
+> +{
+> +	return __flush_tlb_page_nosync(vma->vm_mm, uaddr);
+> +}
+> +
+>  static inline void flush_tlb_page(struct vm_area_struct *vma,
+>  				  unsigned long uaddr)
+>  {
+> @@ -272,6 +279,23 @@ static inline void flush_tlb_page(struct vm_area_struct *vma,
+>  	dsb(ish);
+>  }
+>  
+> +static inline bool arch_tlbbatch_should_defer(struct mm_struct *mm)
+> +{
+> +	return true;
+> +}
 
- arch/powerpc/Kconfig                   |   3 +
- arch/powerpc/include/asm/cmpxchg.h     | 231 ++++++++++++++++++++++++-
- arch/powerpc/lib/sstep.c               |  21 +--
- arch/powerpc/platforms/Kconfig.cputype |   5 +
- 4 files changed, 249 insertions(+), 11 deletions(-)
+Always defer and batch up TLB flush, unconditionally ?
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 4c466acdc70d..a2540b201ff3 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -292,6 +292,9 @@ config PPC_BARRIER_NOSPEC
- 	default y
- 	depends on PPC_BOOK3S_64 || PPC_FSL_BOOK3E
- 
-+config PPC_HAS_LBARX_LHARX
-+	bool
-+
- config EARLY_PRINTK
- 	bool
- 	default y
-diff --git a/arch/powerpc/include/asm/cmpxchg.h b/arch/powerpc/include/asm/cmpxchg.h
-index 05f246c0e36e..d0ea0571e79a 100644
---- a/arch/powerpc/include/asm/cmpxchg.h
-+++ b/arch/powerpc/include/asm/cmpxchg.h
-@@ -77,10 +77,76 @@ u32 __cmpxchg_##type##sfx(volatile void *p, u32 old, u32 new)	\
-  * the previous value stored there.
-  */
- 
-+#ifndef CONFIG_PPC_HAS_LBARX_LHARX
- XCHG_GEN(u8, _local, "memory");
- XCHG_GEN(u8, _relaxed, "cc");
- XCHG_GEN(u16, _local, "memory");
- XCHG_GEN(u16, _relaxed, "cc");
-+#else
-+static __always_inline unsigned long
-+__xchg_u8_local(volatile void *p, unsigned long val)
-+{
-+	unsigned long prev;
-+
-+	__asm__ __volatile__(
-+"1:	lbarx	%0,0,%2		# __xchg_u8_local\n"
-+"	stbcx.	%3,0,%2 \n"
-+"	bne-	1b"
-+	: "=&r" (prev), "+m" (*(volatile unsigned char *)p)
-+	: "r" (p), "r" (val)
-+	: "cc", "memory");
-+
-+	return prev;
-+}
-+
-+static __always_inline unsigned long
-+__xchg_u8_relaxed(u8 *p, unsigned long val)
-+{
-+	unsigned long prev;
-+
-+	__asm__ __volatile__(
-+"1:	lbarx	%0,0,%2		# __xchg_u8_relaxed\n"
-+"	stbcx.	%3,0,%2\n"
-+"	bne-	1b"
-+	: "=&r" (prev), "+m" (*p)
-+	: "r" (p), "r" (val)
-+	: "cc");
-+
-+	return prev;
-+}
-+
-+static __always_inline unsigned long
-+__xchg_u16_local(volatile void *p, unsigned long val)
-+{
-+	unsigned long prev;
-+
-+	__asm__ __volatile__(
-+"1:	lharx	%0,0,%2		# __xchg_u16_local\n"
-+"	sthcx.	%3,0,%2\n"
-+"	bne-	1b"
-+	: "=&r" (prev), "+m" (*(volatile unsigned short *)p)
-+	: "r" (p), "r" (val)
-+	: "cc", "memory");
-+
-+	return prev;
-+}
-+
-+static __always_inline unsigned long
-+__xchg_u16_relaxed(u16 *p, unsigned long val)
-+{
-+	unsigned long prev;
-+
-+	__asm__ __volatile__(
-+"1:	lharx	%0,0,%2		# __xchg_u16_relaxed\n"
-+"	sthcx.	%3,0,%2\n"
-+"	bne-	1b"
-+	: "=&r" (prev), "+m" (*p)
-+	: "r" (p), "r" (val)
-+	: "cc");
-+
-+	return prev;
-+}
-+#endif
- 
- static __always_inline unsigned long
- __xchg_u32_local(volatile void *p, unsigned long val)
-@@ -198,11 +264,12 @@ __xchg_relaxed(void *ptr, unsigned long x, unsigned int size)
- 	(__typeof__(*(ptr))) __xchg_relaxed((ptr),			\
- 			(unsigned long)_x_, sizeof(*(ptr)));		\
- })
-+
- /*
-  * Compare and exchange - if *p == old, set it to new,
-  * and return the old value of *p.
-  */
--
-+#ifndef CONFIG_PPC_HAS_LBARX_LHARX
- CMPXCHG_GEN(u8, , PPC_ATOMIC_ENTRY_BARRIER, PPC_ATOMIC_EXIT_BARRIER, "memory");
- CMPXCHG_GEN(u8, _local, , , "memory");
- CMPXCHG_GEN(u8, _acquire, , PPC_ACQUIRE_BARRIER, "memory");
-@@ -211,6 +278,168 @@ CMPXCHG_GEN(u16, , PPC_ATOMIC_ENTRY_BARRIER, PPC_ATOMIC_EXIT_BARRIER, "memory");
- CMPXCHG_GEN(u16, _local, , , "memory");
- CMPXCHG_GEN(u16, _acquire, , PPC_ACQUIRE_BARRIER, "memory");
- CMPXCHG_GEN(u16, _relaxed, , , "cc");
-+#else
-+static __always_inline unsigned long
-+__cmpxchg_u8(volatile unsigned char *p, unsigned long old, unsigned long new)
-+{
-+	unsigned int prev;
-+
-+	__asm__ __volatile__ (
-+	PPC_ATOMIC_ENTRY_BARRIER
-+"1:	lbarx	%0,0,%2		# __cmpxchg_u8\n"
-+"	cmpw	0,%0,%3\n"
-+"	bne-	2f\n"
-+"	stbcx.	%4,0,%2\n"
-+"	bne-	1b"
-+	PPC_ATOMIC_EXIT_BARRIER
-+	"\n\
-+2:"
-+	: "=&r" (prev), "+m" (*p)
-+	: "r" (p), "r" (old), "r" (new)
-+	: "cc", "memory");
-+
-+	return prev;
-+}
-+
-+static __always_inline unsigned long
-+__cmpxchg_u8_local(volatile unsigned char *p, unsigned long old,
-+			unsigned long new)
-+{
-+	unsigned int prev;
-+
-+	__asm__ __volatile__ (
-+"1:	lbarx	%0,0,%2		# __cmpxchg_u8_local\n"
-+"	cmpw	0,%0,%3\n"
-+"	bne-	2f\n"
-+"	stbcx.	%4,0,%2\n"
-+"	bne-	1b\n"
-+"2:"
-+	: "=&r" (prev), "+m" (*p)
-+	: "r" (p), "r" (old), "r" (new)
-+	: "cc", "memory");
-+
-+	return prev;
-+}
-+
-+static __always_inline unsigned long
-+__cmpxchg_u8_relaxed(u8 *p, unsigned long old, unsigned long new)
-+{
-+	unsigned long prev;
-+
-+	__asm__ __volatile__ (
-+"1:	lbarx	%0,0,%2		# __cmpxchg_u8_relaxed\n"
-+"	cmpw	0,%0,%3\n"
-+"	bne-	2f\n"
-+"	stbcx.	%4,0,%2\n"
-+"	bne-	1b\n"
-+"2:"
-+	: "=&r" (prev), "+m" (*p)
-+	: "r" (p), "r" (old), "r" (new)
-+	: "cc");
-+
-+	return prev;
-+}
-+
-+static __always_inline unsigned long
-+__cmpxchg_u8_acquire(u8 *p, unsigned long old, unsigned long new)
-+{
-+	unsigned long prev;
-+
-+	__asm__ __volatile__ (
-+"1:	lbarx	%0,0,%2		# __cmpxchg_u8_acquire\n"
-+"	cmpw	0,%0,%3\n"
-+"	bne-	2f\n"
-+"	stbcx.	%4,0,%2\n"
-+"	bne-	1b\n"
-+	PPC_ACQUIRE_BARRIER
-+"2:"
-+	: "=&r" (prev), "+m" (*p)
-+	: "r" (p), "r" (old), "r" (new)
-+	: "cc", "memory");
-+
-+	return prev;
-+}
-+
-+static __always_inline unsigned long
-+__cmpxchg_u16(volatile unsigned short *p, unsigned long old, unsigned long new)
-+{
-+	unsigned int prev;
-+
-+	__asm__ __volatile__ (
-+	PPC_ATOMIC_ENTRY_BARRIER
-+"1:	lharx	%0,0,%2		# __cmpxchg_u16\n"
-+"	cmpw	0,%0,%3\n"
-+"	bne-	2f\n"
-+"	sthcx.	%4,0,%2\n"
-+"	bne-	1b\n"
-+	PPC_ATOMIC_EXIT_BARRIER
-+"2:"
-+	: "=&r" (prev), "+m" (*p)
-+	: "r" (p), "r" (old), "r" (new)
-+	: "cc", "memory");
-+
-+	return prev;
-+}
-+
-+static __always_inline unsigned long
-+__cmpxchg_u16_local(volatile unsigned short *p, unsigned long old,
-+			unsigned long new)
-+{
-+	unsigned int prev;
-+
-+	__asm__ __volatile__ (
-+"1:	lharx	%0,0,%2		# __cmpxchg_u16_local\n"
-+"	cmpw	0,%0,%3\n"
-+"	bne-	2f\n"
-+"	sthcx.	%4,0,%2\n"
-+"	bne-	1b"
-+"2:"
-+	: "=&r" (prev), "+m" (*p)
-+	: "r" (p), "r" (old), "r" (new)
-+	: "cc", "memory");
-+
-+	return prev;
-+}
-+
-+static __always_inline unsigned long
-+__cmpxchg_u16_relaxed(u16 *p, unsigned long old, unsigned long new)
-+{
-+	unsigned long prev;
-+
-+	__asm__ __volatile__ (
-+"1:	lharx	%0,0,%2		# __cmpxchg_u16_relaxed\n"
-+"	cmpw	0,%0,%3\n"
-+"	bne-	2f\n"
-+"	sthcx.	%4,0,%2\n"
-+"	bne-	1b\n"
-+"2:"
-+	: "=&r" (prev), "+m" (*p)
-+	: "r" (p), "r" (old), "r" (new)
-+	: "cc");
-+
-+	return prev;
-+}
-+
-+static __always_inline unsigned long
-+__cmpxchg_u16_acquire(u16 *p, unsigned long old, unsigned long new)
-+{
-+	unsigned long prev;
-+
-+	__asm__ __volatile__ (
-+"1:	lharx	%0,0,%2		# __cmpxchg_u16_acquire\n"
-+"	cmpw	0,%0,%3\n"
-+"	bne-	2f\n"
-+"	sthcx.	%4,0,%2\n"
-+"	bne-	1b\n"
-+	PPC_ACQUIRE_BARRIER
-+"2:"
-+	: "=&r" (prev), "+m" (*p)
-+	: "r" (p), "r" (old), "r" (new)
-+	: "cc", "memory");
-+
-+	return prev;
-+}
-+#endif
- 
- static __always_inline unsigned long
- __cmpxchg_u32(volatile unsigned int *p, unsigned long old, unsigned long new)
-diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
-index 398b5694aeb7..38158b77a801 100644
---- a/arch/powerpc/lib/sstep.c
-+++ b/arch/powerpc/lib/sstep.c
-@@ -2284,15 +2284,7 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
- 			op->type = MKOP(STCX, 0, 4);
- 			break;
- 
--#ifdef __powerpc64__
--		case 84:	/* ldarx */
--			op->type = MKOP(LARX, 0, 8);
--			break;
--
--		case 214:	/* stdcx. */
--			op->type = MKOP(STCX, 0, 8);
--			break;
--
-+#ifdef CONFIG_PPC_HAS_LBARX_LHARX
- 		case 52:	/* lbarx */
- 			op->type = MKOP(LARX, 0, 1);
- 			break;
-@@ -2308,6 +2300,15 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
- 		case 726:	/* sthcx. */
- 			op->type = MKOP(STCX, 0, 2);
- 			break;
-+#endif
-+#ifdef __powerpc64__
-+		case 84:	/* ldarx */
-+			op->type = MKOP(LARX, 0, 8);
-+			break;
-+
-+		case 214:	/* stdcx. */
-+			op->type = MKOP(STCX, 0, 8);
-+			break;
- 
- 		case 276:	/* lqarx */
- 			if (!((rd & 1) || rd == ra || rd == rb))
-@@ -3334,7 +3335,7 @@ int emulate_loadstore(struct pt_regs *regs, struct instruction_op *op)
- 		err = 0;
- 		val = 0;
- 		switch (size) {
--#ifdef __powerpc64__
-+#ifdef CONFIG_PPC_HAS_LBARX_LHARX
- 		case 1:
- 			__get_user_asmx(val, ea, err, "lbarx");
- 			break;
-diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
-index 5185d942b455..625a3a8dc698 100644
---- a/arch/powerpc/platforms/Kconfig.cputype
-+++ b/arch/powerpc/platforms/Kconfig.cputype
-@@ -134,6 +134,7 @@ config GENERIC_CPU
- 	depends on PPC_BOOK3S_64 && CPU_LITTLE_ENDIAN
- 	select ARCH_HAS_FAST_MULTIPLIER
- 	select PPC_64S_HASH_MMU
-+	select PPC_HAS_LBARX_LHARX
- 
- config POWERPC_CPU
- 	bool "Generic 32 bits powerpc"
-@@ -159,17 +160,20 @@ config POWER7_CPU
- 	depends on PPC_BOOK3S_64
- 	select ARCH_HAS_FAST_MULTIPLIER
- 	select PPC_64S_HASH_MMU
-+	select PPC_HAS_LBARX_LHARX
- 
- config POWER8_CPU
- 	bool "POWER8"
- 	depends on PPC_BOOK3S_64
- 	select ARCH_HAS_FAST_MULTIPLIER
- 	select PPC_64S_HASH_MMU
-+	select PPC_HAS_LBARX_LHARX
- 
- config POWER9_CPU
- 	bool "POWER9"
- 	depends on PPC_BOOK3S_64
- 	select ARCH_HAS_FAST_MULTIPLIER
-+	select PPC_HAS_LBARX_LHARX
- 
- config E5500_CPU
- 	bool "Freescale e5500"
-@@ -178,6 +182,7 @@ config E5500_CPU
- config E6500_CPU
- 	bool "Freescale e6500"
- 	depends on PPC64 && E500
-+	select PPC_HAS_LBARX_LHARX
- 
- config 405_CPU
- 	bool "40x family"
--- 
-2.37.2
+> +
+> +static inline void arch_tlbbatch_add_mm(struct arch_tlbflush_unmap_batch *batch,
+> +					struct mm_struct *mm,
+> +					unsigned long uaddr)
+> +{
+> +	__flush_tlb_page_nosync(mm, uaddr);
+> +}
+> +
+> +static inline void arch_tlbbatch_flush(struct arch_tlbflush_unmap_batch *batch)
+> +{
+> +	dsb(ish);
+> +}
 
+Adding up __flush_tlb_page_nosync() without a corresponding dsb(ish) and
+then doing once via arch_tlbbatch_flush() will have the same effect from
+an architecture perspective ?
+
+> +
+>  /*
+>   * This is meant to avoid soft lock-ups on large TLB flushing ranges and not
+>   * necessarily a performance improvement.
