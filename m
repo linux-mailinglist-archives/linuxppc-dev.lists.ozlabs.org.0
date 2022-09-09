@@ -1,33 +1,33 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2726B5B36FB
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 14:11:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D79AA5B3745
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 14:12:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MPFFz1Qt0z3f6D
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 22:11:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MPFHD45XDz3fJy
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 22:12:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MPFDY6Dg4z2yWl
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Sep 2022 22:10:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MPFDb4wlvz2xBl
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Sep 2022 22:10:07 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4MPFDW14byz4xG8;
-	Fri,  9 Sep 2022 22:10:03 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4MPFDb1sZnz4xZV;
+	Fri,  9 Sep 2022 22:10:07 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Michael Ellerman <mpe@ellerman.id.au>, Christophe Leroy <christophe.leroy@csgroup.eu>, Nicholas Piggin <npiggin@gmail.com>
-In-Reply-To: <959d77be630b9b46a7458f0fbd41dc3a94ec811a.1661938317.git.christophe.leroy@csgroup.eu>
-References: <959d77be630b9b46a7458f0fbd41dc3a94ec811a.1661938317.git.christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH 1/3] powerpc/32: Drop a stale comment about reservation of gigantic pages
-Message-Id: <166272520935.2076816.18378317029543943017.b4-ty@ellerman.id.au>
-Date: Fri, 09 Sep 2022 22:06:49 +1000
+To: Nathan Chancellor <nathan@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>
+In-Reply-To: <20220831152014.3501664-1-nathan@kernel.org>
+References: <20220831152014.3501664-1-nathan@kernel.org>
+Subject: Re: [PATCH] powerpc/math_emu/efp: Include module.h
+Message-Id: <166272521027.2076816.11203146069625170939.b4-ty@ellerman.id.au>
+Date: Fri, 09 Sep 2022 22:06:50 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -42,27 +42,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: kernel test robot <lkp@intel.com>, Arnd Bergmann <arnd@arndb.de>, Tom Rix <trix@redhat.com>, llvm@lists.linux.dev, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, patches@lists.linux.dev, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 31 Aug 2022 11:32:07 +0200, Christophe Leroy wrote:
-> A comment about the reservation of gigantic pages was left in MMU_init()
-> after commit 79cc38ded1e1 ("powerpc/mm/hugetlb: Add support for
-> reserving gigantic huge pages via kernel command line")
+On Wed, 31 Aug 2022 08:20:15 -0700, Nathan Chancellor wrote:
+> When building with a recent version of clang, there are a couple of
+> errors around the call to module_init():
 > 
-> Remove it.
-> 
+>   arch/powerpc/math-emu/math_efp.c:927:1: error: type specifier missing, defaults to 'int'; ISO C99 and later do not support implicit int [-Wimplicit-int]
+>   module_init(spe_mathemu_init);
+>   ^
+>   int
+>   arch/powerpc/math-emu/math_efp.c:927:13: error: a parameter list without types is only allowed in a function definition
+>   module_init(spe_mathemu_init);
+>               ^
+>   2 errors generated.
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/3] powerpc/32: Drop a stale comment about reservation of gigantic pages
-      https://git.kernel.org/powerpc/c/fc06755e25628ce215e9f75c1207250242dadf42
-[2/3] powerpc/32: Allow fragmented physical memory
-      https://git.kernel.org/powerpc/c/b0e0d68b1c52cb2c46e513011fdd53815cffefb7
-[3/3] powerpc/32: Remove wii_memory_fixups()
-      https://git.kernel.org/powerpc/c/0115953dcebe8858ba3d9997ba48328ebdca593f
+[1/1] powerpc/math_emu/efp: Include module.h
+      https://git.kernel.org/powerpc/c/cfe0d370e0788625ce0df3239aad07a2506c1796
 
 cheers
