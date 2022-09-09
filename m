@@ -1,63 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BF205B3440
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 11:43:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8462C5B3449
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 11:44:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MP9zw33SJz30Ck
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 19:43:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MPB0Y6yccz3c2g
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 19:44:29 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Wdb6x0hG;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=BWmld3IT;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::112b; helo=mail-yw1-x112b.google.com; envelope-from=lukas.bulwahn@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1132; helo=mail-yw1-x1132.google.com; envelope-from=lukas.bulwahn@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Wdb6x0hG;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=BWmld3IT;
 	dkim-atps=neutral
-Received: from mail-yw1-x112b.google.com (mail-yw1-x112b.google.com [IPv6:2607:f8b0:4864:20::112b])
+Received: from mail-yw1-x1132.google.com (mail-yw1-x1132.google.com [IPv6:2607:f8b0:4864:20::1132])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MP9zD5zpYz2yZ4
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Sep 2022 19:43:19 +1000 (AEST)
-Received: by mail-yw1-x112b.google.com with SMTP id 00721157ae682-3454e58fe53so12847837b3.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 09 Sep 2022 02:43:19 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MP9zX4bvHz3bkk
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Sep 2022 19:43:36 +1000 (AEST)
+Received: by mail-yw1-x1132.google.com with SMTP id 00721157ae682-333a4a5d495so12492707b3.10
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 09 Sep 2022 02:43:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date;
-        bh=CjOr/xVdCatVWvrfBKrHvrf5/qwfqa22a/dV5JbB6Ns=;
-        b=Wdb6x0hGfcz3f+ab9h93qPN15RUgQQOKVi2aFt+pDNe0fL0DvMs6qxRm/afiQ0zHms
-         GuHo+QHZDfWCwP3x5Nhw2KtErCDmCFGD+Ev7WiFgzoU/lsin2IQViX0UW9n5lMSDAwxy
-         Cc/xODhSz68S8kGpdq8vfRyxiYl+0hmK36cqqJt4K+oPIrs7/7flOmqVlzaq4x0fOeOR
-         2ZiFyzHdxqeYxvn/Lspa9cikJuXK91RfxdLAnT9+cFw5YJkBN3ApsZyCxfNct7Tto7/d
-         q3dFPx4BWvjN1uF+rGiWafmwO26m1yV7vi02ykBoH6Ox9jwdr+mW2/A+VZz3/WP7PmHj
-         BwHQ==
+        bh=7ZB/vFj1LBEvoFTPtCpwJzQSMMS3bz1eErTDvpmrofs=;
+        b=BWmld3ITX+giHZRWkJWwbcDCiOUpMOxQyqf6WsoI7BqlMauyRaz/ygBKpHYYcBNO+X
+         tUxzbx0oJP2PdXRc4UssH4YzjbKa/tcZH7uuybjb+cmvR5GjcY7cZ/Xsbyy+i1O+eVY/
+         5/eT+SZULnxNPSVsQc5sDf7lQCC7IoTjd1fArydNSxtxWzw2iE/Fln6qxNRm4kefwf37
+         4M6EC6OUSjfjZqTc+UWWlYsyNA3Oed/L+1/CNdtZ3ENyEEc/cmVDMI1zpmkJNfkxuGYp
+         yxVvAV/1WQPtYBsUTCvuAEcN+S8yvFEBQZDSt5Fkb86VT+ZJwOTRpUJOP8tNS5jFDDd2
+         qt1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=CjOr/xVdCatVWvrfBKrHvrf5/qwfqa22a/dV5JbB6Ns=;
-        b=jEal948l/64DC3FcmFj49de2GHswGMBqIkeNu2pdfZfq9dWUN2Ki7Rx0OH5U0v7is8
-         LA/0w+wEFPotdhLHsP5/tS7mH3g8dlZBhMt7A6sX/1HsGxOq5Gs0mZkKJWMPfH3o7sDh
-         qu0losU1yWvSkKYBoLdfcZz1aFoy8+W38UHuKrZAjT7ewKCPRx4FXs1MYY9WgwUCDqwN
-         csRgXkiqIRYFz24+nVSyL5HOQmASsM8mHO5vJmW6VSZB4Evnf8NkaLEtcHT7zFKCM766
-         AwGyJa6+RkPB8EhHnizQnlJt7ESKOzd+UkaKDAr++qO1P8jfTJHOIh1MveKSv8viHmzH
-         RIPQ==
-X-Gm-Message-State: ACgBeo2S8GMo/BrQVlz9xZYd0I3+wFTLBa+pLEObBAM7Aa9gQ5x+Onr3
-	I6UAhlFyjFzSqEij1JDUgfn66h/5gIBNtwgR6eY=
-X-Google-Smtp-Source: AA6agR6rVJh6TPlfqtSjbFfxwPrDCj6n15t/wcCkrItZvLKXf3DDre4zvFAl//4/COVWHFsukMwmkRQPTc4zgSco0pI=
-X-Received: by 2002:a0d:f701:0:b0:32a:17d3:d189 with SMTP id
- h1-20020a0df701000000b0032a17d3d189mr11100556ywf.401.1662716594449; Fri, 09
- Sep 2022 02:43:14 -0700 (PDT)
+        bh=7ZB/vFj1LBEvoFTPtCpwJzQSMMS3bz1eErTDvpmrofs=;
+        b=njoUP+dKrxz5E7b9hxKT4ePLllM1Oiy+VZsaePeIXYx6qTgOLNfOfSGBF+st9uM9jx
+         NNzcb3VJpfo1Z3W8MktHQkjmP48OMLfNF832BQmbs6pbKr6GVimGaJ+UL+tZjBxRCkD2
+         nqZ/wxOvFQAwel6rfXVzMj2dFB1S3nMowdgqr5IEuO9dfsjfFSQyfOeG6wWPGo61lsDu
+         T72CwLokBY0fo/XiWupTfSxsg0EPJ3INJ2sDNJ2iowuvCMt1Z26/zpC6lLvliooZgl64
+         W8MGWWK88iNpITqnUFxHuswFpQiD41VqFFm6EZ9ARHfiFSlkFO9tFajESK5RgNlxp5u0
+         t2zA==
+X-Gm-Message-State: ACgBeo34iM6rjmh8bwQ891S+YOiYI2NH8zRb/qIjIfatlFDv2lNdqWOy
+	ypQeJU4wNQhh4spJdnlSYyBfgxEhaZmW7+uQzWA=
+X-Google-Smtp-Source: AA6agR5jda4a3EcM5GDvNbwnprqfr/4CFDLarXT4mFEldLG0qPusFNe2TD+NpCjCIUQz5j77+wo6CNsqhSjzPuzhyYc=
+X-Received: by 2002:a81:7702:0:b0:328:297a:fdcb with SMTP id
+ s2-20020a817702000000b00328297afdcbmr11117970ywc.335.1662716613820; Fri, 09
+ Sep 2022 02:43:33 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220909085505.15536-1-lukas.bulwahn@gmail.com>
-In-Reply-To: <20220909085505.15536-1-lukas.bulwahn@gmail.com>
+References: <20220909090343.21886-1-lukas.bulwahn@gmail.com> <20220909090343.21886-2-lukas.bulwahn@gmail.com>
+In-Reply-To: <20220909090343.21886-2-lukas.bulwahn@gmail.com>
 From: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Date: Fri, 9 Sep 2022 11:43:03 +0200
-Message-ID: <CAKXUXMzuwzE4bSmq7okPo3Y2h6q_83NeERm8P9yQ1i393vyNBg@mail.gmail.com>
+Date: Fri, 9 Sep 2022 11:43:23 +0200
+Message-ID: <CAKXUXMyDON2ys_bxNi07h_BOYkjd1Gidi6qTHXQ-=L5Vsu9kxA@mail.gmail.com>
 Subject: Re: [PATCH] ppc: select HAVE_PATA_PLATFORM in PPC instead of creating
  a PPC dependency
 To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
@@ -80,7 +80,7 @@ Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Sep 9, 2022 at 10:55 AM Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
+On Fri, Sep 9, 2022 at 11:04 AM Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
 >
 > Commit cc18e0fea790 ("LIBATA: Add HAVE_PATA_PLATFORM to select
 > PATA_PLATFORM driver") introduces config HAVE_PATA_PLATFORM, and expects
