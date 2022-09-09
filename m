@@ -1,70 +1,97 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1B665B3CBD
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 18:13:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A170F5B3CC5
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 18:15:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MPLcy5QbPz3cCY
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Sep 2022 02:13:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MPLgk37F0z3btQ
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Sep 2022 02:15:30 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=Qz+PTfYU;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MJPeh9aK;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b35; helo=mail-yb1-xb35.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=Qz+PTfYU;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MJPeh9aK;
 	dkim-atps=neutral
-Received: from mail-yb1-xb35.google.com (mail-yb1-xb35.google.com [IPv6:2607:f8b0:4864:20::b35])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MPLcJ0q45z30FQ
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Sep 2022 02:12:32 +1000 (AEST)
-Received: by mail-yb1-xb35.google.com with SMTP id 11so3448483ybu.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 09 Sep 2022 09:12:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date;
-        bh=4hh2G7MdxNZ+MNcmp102ZgutWolekJca53oozXb1sk4=;
-        b=Qz+PTfYUZ79Xk4WnkdDqNZ4LLUCR8EFVYsF/0fY0lUuEsl2IZGJVTFFrd89L26Oz5t
-         tviGlyIdWFrik28BaRuFfzuXznzHhsJl5HOMC66jw2DryGYXp1mIyshHHWoUXqpWPJN+
-         /6x0NDeafG1PPSym6XJ8bPSiGtE2517SAMZZ9AnTxspCwwhQcdA6k843LDIw/8yFsNcZ
-         a5Rnaiqj1Zbr1RtrNT1Mk2NmNRgK+ybLbCflE2Htc/OZZ1CtP2ZKVyOagC0vKUQgde1Z
-         SYvIrJRQRBevTglXhJiI4YfodtdB1WWv2cIrSQpWLFxSnK/0hooiuIgLalhL8RZnZ6T5
-         kXxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date;
-        bh=4hh2G7MdxNZ+MNcmp102ZgutWolekJca53oozXb1sk4=;
-        b=TwUreSTKgA6uIWHaA3EkywrweeKdNZialYyjp698XR6k2y1XCHeKxyr3q5ikT/4XlJ
-         MXbz9qA5iB63qllpLWb5AayNl4igIo35jON2+Juqh3ZxPozYrpxtsOfVDkC9ipVzrcu+
-         zGBMDX8QU+jyM3L840zLH/es4lxdOG9sPQsT4JXrNwLYY1opviMXHDjXU+ng7+5QFG4X
-         8oeii9zH8AOXAk4To5lTBRe5UzyJ0HiwUwclviS/NQwcn6UCaL2WY5lQJq7uurt6+pU/
-         /A4vluGfxzKAZUtkLGx8fJqciclVBq6VGlsa861C1c03G2+rUnN6bfvKulbSY8lemgMh
-         sWzg==
-X-Gm-Message-State: ACgBeo042QMm8eEkOm9MGgelXVmLbyIEwlqyicITjMNpo9CMbAZuKem/
-	9CCkZ1UQWtUaZ+PmhcmMmFyRvkgi2E9Jo9MVeYzdaA==
-X-Google-Smtp-Source: AA6agR6D9Q1KW4KNYp0SHpJ/6Fcy2IRN04G63Erd6aJSK5K6Qex+RENoU//CqGiMsVMEqkzoAOqqrGTYWrT4sPeb+8g=
-X-Received: by 2002:a25:cc8d:0:b0:6a8:40cb:d730 with SMTP id
- l135-20020a25cc8d000000b006a840cbd730mr12492178ybf.119.1662739948562; Fri, 09
- Sep 2022 09:12:28 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MPLg32jJ7z30hw
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Sep 2022 02:14:54 +1000 (AEST)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 289Fg5Kt008607;
+	Fri, 9 Sep 2022 16:14:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=HiA9/EshoLMONGQxGC9d36ntpKwVpjf2jBKwwWHfYq0=;
+ b=MJPeh9aKk8zX+yATPmsmrj11owUejLoEESfKGoZwNsSbbEiXRsYrKqilUC7MV3bLiNYT
+ kHTNmiZe/ugcqVHnbsoJXvq0CB78+mNDBKDnY4cCDRNGfyQj2FmunJP4zlGN7ekVsPrP
+ kIuYdpkslswgGPysaspcuzCKPhWRl921QLonEwZFTOm0ntHcXAtd+VRC+mET6+F0gA29
+ 6zRTzlhNxTdykN7keWy3auk9rtnfTJAAuEXgj/9jElCsLtRFB0LLeIMdFOxL9J+0/FvZ
+ J292hHnPWuNJ/4OIfHynFPJ/t/E0ggA8UIkb4HVrfHRu1tlzGZ1N1EGgjIoHRIeX3gCx Rw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jg8bvs06s-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 09 Sep 2022 16:14:30 +0000
+Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 289FgF0U009010;
+	Fri, 9 Sep 2022 16:14:30 GMT
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jg8bvs05f-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 09 Sep 2022 16:14:30 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+	by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 289FoSj9032599;
+	Fri, 9 Sep 2022 16:14:27 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+	by ppma04ams.nl.ibm.com with ESMTP id 3jbxj907nk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 09 Sep 2022 16:14:27 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 289GEPJO38404386
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 9 Sep 2022 16:14:25 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 196D142045;
+	Fri,  9 Sep 2022 16:14:25 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E56EB4203F;
+	Fri,  9 Sep 2022 16:14:23 +0000 (GMT)
+Received: from [9.145.83.17] (unknown [9.145.83.17])
+	by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Fri,  9 Sep 2022 16:14:23 +0000 (GMT)
+Message-ID: <e75586a4-7afd-f498-8dc4-02191dea4c3a@linux.ibm.com>
+Date: Fri, 9 Sep 2022 18:14:23 +0200
 MIME-Version: 1.0
-References: <20220901173516.702122-1-surenb@google.com> <20220901173516.702122-18-surenb@google.com>
- <70a7d9cd-e64b-db49-e418-b4de7fcf8692@linux.ibm.com>
-In-Reply-To: <70a7d9cd-e64b-db49-e418-b4de7fcf8692@linux.ibm.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Fri, 9 Sep 2022 09:12:17 -0700
-Message-ID: <CAJuCfpGAt3K51JfaEZxUtJc_h5c5Nj6XYQvdF4x+SbC6teFS0g@mail.gmail.com>
-Subject: Re: [RFC PATCH RESEND 17/28] mm/mmap: prevent pagefault handler from
- racing with mmu_notifier registration
-To: Laurent Dufour <ldufour@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.2.1
+Subject: Re: [RFC PATCH RESEND 28/28] kernel/fork: throttle call_rcu() calls
+ in vm_area_free
+Content-Language: fr
+To: Suren Baghdasaryan <surenb@google.com>
+References: <20220901173516.702122-1-surenb@google.com>
+ <20220901173516.702122-29-surenb@google.com>
+ <34dd5656-dc3c-6a20-5390-04d05c619fdc@linux.ibm.com>
+ <CAJuCfpGn=Xhc3SnrK2ei1WPoFPaW00xZkS9MebN9Zxfv9joPoA@mail.gmail.com>
+From: Laurent Dufour <ldufour@linux.ibm.com>
+In-Reply-To: <CAJuCfpGn=Xhc3SnrK2ei1WPoFPaW00xZkS9MebN9Zxfv9joPoA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: qwuw3hRuJlbQGJ2HSHJdlFKbsPcb7JBI
+X-Proofpoint-GUID: wp0areCKBz6NfJIj93C1qkPqh1OyJO6x
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
+ definitions=2022-09-09_08,2022-09-09_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ phishscore=0 clxscore=1015 malwarescore=0 priorityscore=1501
+ mlxlogscore=999 suspectscore=0 adultscore=0 bulkscore=0 impostorscore=0
+ mlxscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2207270000 definitions=main-2209090055
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,61 +107,205 @@ Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Sep 9, 2022 at 7:20 AM Laurent Dufour <ldufour@linux.ibm.com> wrote=
-:
->
-> Le 01/09/2022 =C3=A0 19:35, Suren Baghdasaryan a =C3=A9crit :
-> > Pagefault handlers might need to fire MMU notifications while a new
-> > notifier is being registered. Modify mm_take_all_locks to mark all VMAs
-> > as locked and prevent this race with fault handlers that would hold VMA
-> > locks.
-> >
-> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > ---
-> >  mm/mmap.c | 3 +++
-> >  1 file changed, 3 insertions(+)
-> >
-> > diff --git a/mm/mmap.c b/mm/mmap.c
-> > index b31cc97c2803..1edfcd384f5e 100644
-> > --- a/mm/mmap.c
-> > +++ b/mm/mmap.c
-> > @@ -3538,6 +3538,7 @@ static void vm_lock_mapping(struct mm_struct *mm,=
- struct address_space *mapping)
-> >   *     hugetlb mapping);
-> >   *   - all i_mmap_rwsem locks;
-> >   *   - all anon_vma->rwseml
-> > + *   - all vmas marked locked
->
-> IIRC, the anon_vma may be locked during the page fault handling, and this
-> happens after the VMA is read lock. I think the same applies to
-> i_mmap_rwsem lock.
->
-> Thus, the VMA should be marked locked first.
+Le 09/09/2022 à 18:02, Suren Baghdasaryan a écrit :
+> On Fri, Sep 9, 2022 at 8:19 AM Laurent Dufour <ldufour@linux.ibm.com> wrote:
+>>
+>> Le 01/09/2022 à 19:35, Suren Baghdasaryan a écrit :
+>>> call_rcu() can take a long time when callback offloading is enabled.
+>>> Its use in the vm_area_free can cause regressions in the exit path when
+>>> multiple VMAs are being freed. To minimize that impact, place VMAs into
+>>> a list and free them in groups using one call_rcu() call per group.
+>>>
+>>> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+>>> ---
+>>>  include/linux/mm.h       |  1 +
+>>>  include/linux/mm_types.h | 11 ++++++-
+>>>  kernel/fork.c            | 68 +++++++++++++++++++++++++++++++++++-----
+>>>  mm/init-mm.c             |  3 ++
+>>>  mm/mmap.c                |  1 +
+>>>  5 files changed, 75 insertions(+), 9 deletions(-)
+>>>
+>>> diff --git a/include/linux/mm.h b/include/linux/mm.h
+>>> index a3cbaa7b9119..81dff694ac14 100644
+>>> --- a/include/linux/mm.h
+>>> +++ b/include/linux/mm.h
+>>> @@ -249,6 +249,7 @@ void setup_initial_init_mm(void *start_code, void *end_code,
+>>>  struct vm_area_struct *vm_area_alloc(struct mm_struct *);
+>>>  struct vm_area_struct *vm_area_dup(struct vm_area_struct *);
+>>>  void vm_area_free(struct vm_area_struct *);
+>>> +void drain_free_vmas(struct mm_struct *mm);
+>>>
+>>>  #ifndef CONFIG_MMU
+>>>  extern struct rb_root nommu_region_tree;
+>>> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+>>> index 36562e702baf..6f3effc493b1 100644
+>>> --- a/include/linux/mm_types.h
+>>> +++ b/include/linux/mm_types.h
+>>> @@ -412,7 +412,11 @@ struct vm_area_struct {
+>>>                       struct vm_area_struct *vm_next, *vm_prev;
+>>>               };
+>>>  #ifdef CONFIG_PER_VMA_LOCK
+>>> -             struct rcu_head vm_rcu; /* Used for deferred freeing. */
+>>> +             struct {
+>>> +                     struct list_head vm_free_list;
+>>> +                     /* Used for deferred freeing. */
+>>> +                     struct rcu_head vm_rcu;
+>>> +             };
+>>>  #endif
+>>>       };
+>>>
+>>> @@ -573,6 +577,11 @@ struct mm_struct {
+>>>                                         */
+>>>  #ifdef CONFIG_PER_VMA_LOCK
+>>>               int mm_lock_seq;
+>>> +             struct {
+>>> +                     struct list_head head;
+>>> +                     spinlock_t lock;
+>>> +                     int size;
+>>> +             } vma_free_list;
+>>>  #endif
+>>>
+>>>
+>>> diff --git a/kernel/fork.c b/kernel/fork.c
+>>> index b443ba3a247a..7c88710aed72 100644
+>>> --- a/kernel/fork.c
+>>> +++ b/kernel/fork.c
+>>> @@ -483,26 +483,75 @@ struct vm_area_struct *vm_area_dup(struct vm_area_struct *orig)
+>>>  }
+>>>
+>>>  #ifdef CONFIG_PER_VMA_LOCK
+>>> -static void __vm_area_free(struct rcu_head *head)
+>>> +static inline void __vm_area_free(struct vm_area_struct *vma)
+>>>  {
+>>> -     struct vm_area_struct *vma = container_of(head, struct vm_area_struct,
+>>> -                                               vm_rcu);
+>>>       /* The vma should either have no lock holders or be write-locked. */
+>>>       vma_assert_no_reader(vma);
+>>>       kmem_cache_free(vm_area_cachep, vma);
+>>>  }
+>>> -#endif
+>>> +
+>>> +static void vma_free_rcu_callback(struct rcu_head *head)
+>>> +{
+>>> +     struct vm_area_struct *first_vma;
+>>> +     struct vm_area_struct *vma, *vma2;
+>>> +
+>>> +     first_vma = container_of(head, struct vm_area_struct, vm_rcu);
+>>> +     list_for_each_entry_safe(vma, vma2, &first_vma->vm_free_list, vm_free_list)
+>>
+>> Is that safe to walk the list against concurrent calls to
+>> list_splice_init(), or list_add()?
+> 
+> I think it is. drain_free_vmas() moves the to-be-destroyed and already
+> isolated VMAs from mm->vma_free_list into to_destroy list and then
+> passes that list to vma_free_rcu_callback(). At this point the list of
+> VMAs passed to vma_free_rcu_callback() is not accessible either from
+> mm (VMAs were isolated before vm_area_free() was called) or from
+> drain_free_vmas() since they were already removed from
+> mm->vma_free_list. Does that make sense?
 
-I see. I'll double check and move the locking order. Thanks!
+Got it!
+Thanks for the explanation.
 
->
-> >   *
-> >   * We can take all locks within these types randomly because the VM co=
-de
-> >   * doesn't nest them and we protected from parallel mm_take_all_locks(=
-) by
-> > @@ -3579,6 +3580,7 @@ int mm_take_all_locks(struct mm_struct *mm)
-> >               if (vma->anon_vma)
-> >                       list_for_each_entry(avc, &vma->anon_vma_chain, sa=
-me_vma)
-> >                               vm_lock_anon_vma(mm, avc->anon_vma);
-> > +             vma_mark_locked(vma);
-> >       }
-> >
-> >       return 0;
-> > @@ -3636,6 +3638,7 @@ void mm_drop_all_locks(struct mm_struct *mm)
-> >       mmap_assert_write_locked(mm);
-> >       BUG_ON(!mutex_is_locked(&mm_all_locks_mutex));
-> >
-> > +     vma_mark_unlocked_all(mm);
-> >       for (vma =3D mm->mmap; vma; vma =3D vma->vm_next) {
-> >               if (vma->anon_vma)
-> >                       list_for_each_entry(avc, &vma->anon_vma_chain, sa=
-me_vma)
->
+> 
+>>
+>>> +             __vm_area_free(vma);
+>>> +     __vm_area_free(first_vma);
+>>> +}
+>>> +
+>>> +void drain_free_vmas(struct mm_struct *mm)
+>>> +{
+>>> +     struct vm_area_struct *first_vma;
+>>> +     LIST_HEAD(to_destroy);
+>>> +
+>>> +     spin_lock(&mm->vma_free_list.lock);
+>>> +     list_splice_init(&mm->vma_free_list.head, &to_destroy);
+>>> +     mm->vma_free_list.size = 0;
+>>> +     spin_unlock(&mm->vma_free_list.lock);
+>>> +
+>>> +     if (list_empty(&to_destroy))
+>>> +             return;
+>>> +
+>>> +     first_vma = list_first_entry(&to_destroy, struct vm_area_struct, vm_free_list);
+>>> +     /* Remove the head which is allocated on the stack */
+>>> +     list_del(&to_destroy);
+>>> +
+>>> +     call_rcu(&first_vma->vm_rcu, vma_free_rcu_callback);
+>>> +}
+>>> +
+>>> +#define VM_AREA_FREE_LIST_MAX        32
+>>> +
+>>> +void vm_area_free(struct vm_area_struct *vma)
+>>> +{
+>>> +     struct mm_struct *mm = vma->vm_mm;
+>>> +     bool drain;
+>>> +
+>>> +     free_anon_vma_name(vma);
+>>> +
+>>> +     spin_lock(&mm->vma_free_list.lock);
+>>> +     list_add(&vma->vm_free_list, &mm->vma_free_list.head);
+>>> +     mm->vma_free_list.size++;
+>>> +     drain = mm->vma_free_list.size > VM_AREA_FREE_LIST_MAX;
+>>> +     spin_unlock(&mm->vma_free_list.lock);
+>>> +
+>>> +     if (drain)
+>>> +             drain_free_vmas(mm);
+>>> +}
+>>> +
+>>> +#else /* CONFIG_PER_VMA_LOCK */
+>>> +
+>>> +void drain_free_vmas(struct mm_struct *mm) {}
+>>>
+>>>  void vm_area_free(struct vm_area_struct *vma)
+>>>  {
+>>>       free_anon_vma_name(vma);
+>>> -#ifdef CONFIG_PER_VMA_LOCK
+>>> -     call_rcu(&vma->vm_rcu, __vm_area_free);
+>>> -#else
+>>>       kmem_cache_free(vm_area_cachep, vma);
+>>> -#endif
+>>>  }
+>>>
+>>> +#endif /* CONFIG_PER_VMA_LOCK */
+>>> +
+>>>  static void account_kernel_stack(struct task_struct *tsk, int account)
+>>>  {
+>>>       if (IS_ENABLED(CONFIG_VMAP_STACK)) {
+>>> @@ -1137,6 +1186,9 @@ static struct mm_struct *mm_init(struct mm_struct *mm, struct task_struct *p,
+>>>       INIT_LIST_HEAD(&mm->mmlist);
+>>>  #ifdef CONFIG_PER_VMA_LOCK
+>>>       WRITE_ONCE(mm->mm_lock_seq, 0);
+>>> +     INIT_LIST_HEAD(&mm->vma_free_list.head);
+>>> +     spin_lock_init(&mm->vma_free_list.lock);
+>>> +     mm->vma_free_list.size = 0;
+>>>  #endif
+>>>       mm_pgtables_bytes_init(mm);
+>>>       mm->map_count = 0;
+>>> diff --git a/mm/init-mm.c b/mm/init-mm.c
+>>> index 8399f90d631c..7b6d2460545f 100644
+>>> --- a/mm/init-mm.c
+>>> +++ b/mm/init-mm.c
+>>> @@ -39,6 +39,9 @@ struct mm_struct init_mm = {
+>>>       .mmlist         = LIST_HEAD_INIT(init_mm.mmlist),
+>>>  #ifdef CONFIG_PER_VMA_LOCK
+>>>       .mm_lock_seq    = 0,
+>>> +     .vma_free_list.head = LIST_HEAD_INIT(init_mm.vma_free_list.head),
+>>> +     .vma_free_list.lock =  __SPIN_LOCK_UNLOCKED(init_mm.vma_free_list.lock),
+>>> +     .vma_free_list.size = 0,
+>>>  #endif
+>>>       .user_ns        = &init_user_ns,
+>>>       .cpu_bitmap     = CPU_BITS_NONE,
+>>> diff --git a/mm/mmap.c b/mm/mmap.c
+>>> index 1edfcd384f5e..d61b7ef84ba6 100644
+>>> --- a/mm/mmap.c
+>>> +++ b/mm/mmap.c
+>>> @@ -3149,6 +3149,7 @@ void exit_mmap(struct mm_struct *mm)
+>>>       }
+>>>       mm->mmap = NULL;
+>>>       mmap_write_unlock(mm);
+>>> +     drain_free_vmas(mm);
+>>>       vm_unacct_memory(nr_accounted);
+>>>  }
+>>>
+>>
+
