@@ -1,56 +1,97 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8414D5B37FF
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 14:40:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D39DB5B38FB
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 15:28:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MPFvJ27yxz3f8D
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 22:40:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MPGzX5gW0z3blJ
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 23:28:56 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Y5dl+LtK;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Oc2dEpgx;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MPFtl49nSz2xBF
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Sep 2022 22:39:43 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Y5dl+LtK;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Oc2dEpgx;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4MPFtd6LZsz4xPB;
-	Fri,  9 Sep 2022 22:39:37 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1662727178;
-	bh=gdgKruRzyKjPVi5bAZLzebsCGCDJal29o5ykCf7Y6Z4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Y5dl+LtKR/dieSR3wubP1gZfKdgCpr11hX6e3Oybcj8d7Yhx7Vqu7s1yfrM1fTBIx
-	 GE0owCOm73VbeM/AkRr8nNdF9HyX8zHQgSaYL8NcstoTr4vLeQIJdEAbEhNoiKuizE
-	 njk0dh1Hsuz1F/CvIM278pc7TwvSrqeilltWE8ue1Cw4p7T17xsxM1UlLLQBhqp91p
-	 3MCIG/vPXJoC19/zomhB3cTDW7zZN8ikUiiBRopGZSXKTeY/iDopRr6QO+e6Snc4Wl
-	 EznaIQwAJAq2Rlw6BRto2lofB4BzLXEt/hLva5c85QGBDhTgFgVL9SCSQyu7TLtoCQ
-	 ysjt59wWanoJg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Nicholas Piggin
- <npiggin@gmail.com>
-Subject: Re: [PATCH v1 02/19] powerpc/64e: Tie PPC_BOOK3E_64 to PPC_E500MC
-In-Reply-To: <e60c6e97-f73e-5a5e-9ddf-8956e9a5b950@csgroup.eu>
-References: <4e7e6259e5af0e0e171f19ee1f85ab5b2553723f.1662658653.git.christophe.leroy@csgroup.eu>
- <f2d30eb7fadcfd89f7ac3784cb0b4a4b47d47db1.1662658653.git.christophe.leroy@csgroup.eu>
- <87r10ldrk2.fsf@mpe.ellerman.id.au>
- <e60c6e97-f73e-5a5e-9ddf-8956e9a5b950@csgroup.eu>
-Date: Fri, 09 Sep 2022 22:39:37 +1000
-Message-ID: <87k06cen7a.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MPGyn5rGJz2xJD
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Sep 2022 23:28:17 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 289DC0J7020496;
+	Fri, 9 Sep 2022 13:27:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=xGWZBcP7Vjjt0ne0dV570vSeEqDuHKwNy1/7aKUyKxk=;
+ b=Oc2dEpgxnslVIg0nuXQJTu0mYsSNNfCZdEPdgqnf44ZzwNFf5rfyGVSJJ4lfiVOQ+hDb
+ r2BwmVUe0lsGbIwUDN5sGlpSA/vfWO85w7P5pIEnJdB6IJE26i1yKWa8u41SG99gEE70
+ HhX0foDFQMIYn6ZaPrWI8W4y5LcEz5bQpK60sxw9GhnpCJHsc/HhH1oVFMqnEQbgNhjJ
+ N2z8IbFkOoTcR1f8Pa7IbC+o7HekL8a43AwEalRa6TwVuD0BwSoKUlCqWgUheNfB7CaU
+ VTVRrsFG9LDLGf9tubkJKlGH5EgtKs/QItlSA8ggvXEteKsKcwkw3FriHYyP6dAFKzAl Zw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jg65j0gfy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 09 Sep 2022 13:27:38 +0000
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 289DCiY4026580;
+	Fri, 9 Sep 2022 13:27:37 GMT
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jg65j0gec-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 09 Sep 2022 13:27:37 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+	by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 289DKFtx009042;
+	Fri, 9 Sep 2022 13:27:34 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+	by ppma04ams.nl.ibm.com with ESMTP id 3jbxj901mt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 09 Sep 2022 13:27:34 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+	by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 289DRW1Z40501602
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 9 Sep 2022 13:27:32 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 22BB742045;
+	Fri,  9 Sep 2022 13:27:32 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A234742041;
+	Fri,  9 Sep 2022 13:27:30 +0000 (GMT)
+Received: from [9.145.83.17] (unknown [9.145.83.17])
+	by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Fri,  9 Sep 2022 13:27:30 +0000 (GMT)
+Message-ID: <fa73db62-560f-87c4-2b0f-bbba57eed8a7@linux.ibm.com>
+Date: Fri, 9 Sep 2022 15:27:30 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.2.1
+Subject: Re: [RFC PATCH RESEND 07/28] kernel/fork: mark VMAs as locked before
+ copying pages during fork
+Content-Language: fr
+To: Suren Baghdasaryan <surenb@google.com>
+References: <20220901173516.702122-1-surenb@google.com>
+ <20220901173516.702122-8-surenb@google.com>
+ <a072fd10-ee7e-469f-c203-978cd7da566c@linux.ibm.com>
+ <CAJuCfpFDFzCB7zuOGyd-gqovyhwvcQaUMOUS0E8+1QxLqD-Gdg@mail.gmail.com>
+From: Laurent Dufour <ldufour@linux.ibm.com>
+In-Reply-To: <CAJuCfpFDFzCB7zuOGyd-gqovyhwvcQaUMOUS0E8+1QxLqD-Gdg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: AKENId9QRksp4m3H-lE_THCmMHniIzD8
+X-Proofpoint-GUID: CFGeekGWSpIQRCVQ4AE9GyYndL5KhzSD
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
+ definitions=2022-09-09_08,2022-09-09_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 suspectscore=0
+ adultscore=0 clxscore=1015 priorityscore=1501 mlxlogscore=999 spamscore=0
+ phishscore=0 impostorscore=0 bulkscore=0 lowpriorityscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2207270000
+ definitions=main-2209090045
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,97 +103,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, jglisse@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, willy@infradead.org, laurent.dufour@fr.ibm.com, mgorman@suse.de, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, paulmck@kernel.org, liam.howlett@oracle.com, luto@kernel.org, vbabka@suse.cz, linux-arm-kernel@lists.infradead.org, kent.overstreet@linux.dev, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> Le 09/09/2022 =C3=A0 07:50, Michael Ellerman a =C3=A9crit=C2=A0:
->> Hi Christophe,
->>=20
->> Thanks for trying to clean up this tangled mess.
->>=20
->> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
->>> The only 64-bit Book3E CPUs we support is the e500mc.
->>=20
->> AFAIK the e500mc is 32-bit?
->
-> Yes it seems.
->
->>=20
->> We support e5500 and e6500 which are 64-bit Book3E.
->>=20
->> They're derivatives of the e500mc AIUI.
->>=20
->> So CONFIG_PPC_E500MC actually means e500mc *and later derivatives*.
->>=20
->> You can see that with eg:
->>=20
->> config SPE_POSSIBLE
->> 	def_bool y
->> 	depends on E500 && !PPC_E500MC
->>=20
->> Because e500mc dropped SPE, and so therefore e5500 and e6500 don't have
->> it either.
->>=20
->> And eg:
->>=20
->> #ifdef CONFIG_PPC_E500MC
->> _GLOBAL(__setup_cpu_e6500)
->> 	mflr	r6
->>=20
->>=20
->>> However our Kconfig allows configurating a kernel that has 64-bit
->>> Book3E support, but no e500mc support enabled. Such a kernel
->>> would never boot, it doesn't know about any CPUs.
->>=20
->> That is true.
->>=20
->>> To fix this, force e500mc to be selected whenever we are
->>> building a 64-bit Book3E kernel.
->>=20
->> I think that's a reasonable fix, just it's important to differentiate
->> between CONFIG_PPC_E500MC (the symbol) and e500mc (the CPU).
->
-> Ok, I'll see how I can make it more explicit.
->
->>=20
->>> And add a test to detect futur situations where cpu_specs is empty.
->>                             future
->>>
->>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Le 09/09/2022 à 01:57, Suren Baghdasaryan a écrit :
+> On Tue, Sep 6, 2022 at 7:38 AM Laurent Dufour <ldufour@linux.ibm.com> wrote:
+>>
+>> Le 01/09/2022 à 19:34, Suren Baghdasaryan a écrit :
+>>> Protect VMAs from concurrent page fault handler while performing
+>>> copy_page_range for VMAs having VM_WIPEONFORK flag set.
+>>
+>> I'm wondering why is that necessary.
+>> The copied mm is write locked, and the destination one is not reachable.
+>> If any other readers are using the VMA, this is only for page fault handling.
+> 
+> Correct, this is done to prevent page faulting in the VMA being
+> duplicated. I assume we want to prevent the pages in that VMA from
+> changing when we are calling copy_page_range(). Am I wrong?
+
+If a page is faulted while copy_page_range() is in progress, the page may
+not be backed on the child side (PTE lock should protect the copy, isn't it).
+Is that a real problem? It will be backed later if accessed on the child side.
+Maybe the per process pages accounting could be incorrect...
+
+> 
+>> I should have miss something because I can't see any need to mark the lock
+>> VMA here.
+>>
+>>> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 >>> ---
->>>   arch/powerpc/kernel/cputable.c         | 2 ++
->>>   arch/powerpc/platforms/Kconfig.cputype | 2 ++
->>>   2 files changed, 4 insertions(+)
+>>>  kernel/fork.c | 4 +++-
+>>>  1 file changed, 3 insertions(+), 1 deletion(-)
 >>>
->> ..
->>> diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/plat=
-forms/Kconfig.cputype
->>> index 5185d942b455..19fd95a06352 100644
->>> --- a/arch/powerpc/platforms/Kconfig.cputype
->>> +++ b/arch/powerpc/platforms/Kconfig.cputype
->>> @@ -108,6 +108,8 @@ config PPC_BOOK3S_64
->>>   config PPC_BOOK3E_64
->>>   	bool "Embedded processors"
->>>   	select PPC_FSL_BOOK3E
->>> +	select E500
->>> +	select PPC_E500MC
->>>   	select PPC_FPU # Make it a choice ?
->>>   	select PPC_SMP_MUXED_IPI
->>>   	select PPC_DOORBELL
->>=20
->> I think that makes the select of PPC_E500MC below redundant:
->>=20
->> config PPC_QEMU_E500
->> 	bool "QEMU generic e500 platform"
->> 	select DEFAULT_UIMAGE
->> 	select E500
->> 	select PPC_E500MC if PPC64
->
-> That's handled in  [v1,10/19] powerpc: Remove redundant selection of=20
-> E500 and E500MC. Should I reorder patches ?
+>>> diff --git a/kernel/fork.c b/kernel/fork.c
+>>> index bfab31ecd11e..1872ad549fed 100644
+>>> --- a/kernel/fork.c
+>>> +++ b/kernel/fork.c
+>>> @@ -709,8 +709,10 @@ static __latent_entropy int dup_mmap(struct mm_struct *mm,
+>>>               rb_parent = &tmp->vm_rb;
+>>>
+>>>               mm->map_count++;
+>>> -             if (!(tmp->vm_flags & VM_WIPEONFORK))
+>>> +             if (!(tmp->vm_flags & VM_WIPEONFORK)) {
+>>> +                     vma_mark_locked(mpnt);
+>>>                       retval = copy_page_range(tmp, mpnt);
+>>> +             }
+>>>
+>>>               if (tmp->vm_ops && tmp->vm_ops->open)
+>>>                       tmp->vm_ops->open(tmp);
+>>
 
-No that's fine the way it is, I hadn't looked at patch 10 when I replied.
-
-cheers
