@@ -2,32 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D79AA5B3745
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 14:12:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 412205B36FC
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 14:11:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MPFHD45XDz3fJy
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 22:12:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MPFGP02zKz3f7j
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 22:11:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MPFDb4wlvz2xBl
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Sep 2022 22:10:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MPFDZ2Xlpz2xBl
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Sep 2022 22:10:06 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4MPFDb1sZnz4xZV;
-	Fri,  9 Sep 2022 22:10:07 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4MPFDZ1syJz4xFt;
+	Fri,  9 Sep 2022 22:10:06 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Nathan Chancellor <nathan@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>
-In-Reply-To: <20220831152014.3501664-1-nathan@kernel.org>
-References: <20220831152014.3501664-1-nathan@kernel.org>
-Subject: Re: [PATCH] powerpc/math_emu/efp: Include module.h
-Message-Id: <166272521027.2076816.11203146069625170939.b4-ty@ellerman.id.au>
-Date: Fri, 09 Sep 2022 22:06:50 +1000
+To: linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
+In-Reply-To: <20220901014253.252927-1-mpe@ellerman.id.au>
+References: <20220901014253.252927-1-mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc/configs: Properly enable PAPR_SCM in pseries_defconfig
+Message-Id: <166272521128.2076816.765769894015076256.b4-ty@ellerman.id.au>
+Date: Fri, 09 Sep 2022 22:06:51 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -42,28 +42,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel test robot <lkp@intel.com>, Arnd Bergmann <arnd@arndb.de>, Tom Rix <trix@redhat.com>, llvm@lists.linux.dev, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, patches@lists.linux.dev, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 31 Aug 2022 08:20:15 -0700, Nathan Chancellor wrote:
-> When building with a recent version of clang, there are a couple of
-> errors around the call to module_init():
+On Thu, 1 Sep 2022 11:42:53 +1000, Michael Ellerman wrote:
+> My commit to add PAPR_SCM to pseries_defconfig failed to add the
+> required dependencies, meaning the driver doesn't get built.
 > 
->   arch/powerpc/math-emu/math_efp.c:927:1: error: type specifier missing, defaults to 'int'; ISO C99 and later do not support implicit int [-Wimplicit-int]
->   module_init(spe_mathemu_init);
->   ^
->   int
->   arch/powerpc/math-emu/math_efp.c:927:13: error: a parameter list without types is only allowed in a function definition
->   module_init(spe_mathemu_init);
->               ^
->   2 errors generated.
+> Add the required LIBNVDIMM=m.
 > 
-> [...]
+> 
 
 Applied to powerpc/next.
 
-[1/1] powerpc/math_emu/efp: Include module.h
-      https://git.kernel.org/powerpc/c/cfe0d370e0788625ce0df3239aad07a2506c1796
+[1/1] powerpc/configs: Properly enable PAPR_SCM in pseries_defconfig
+      https://git.kernel.org/powerpc/c/aa398d88aea4ec863bd7aea35d5035a37096dc59
 
 cheers
