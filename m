@@ -1,67 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF7375B2AF0
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 02:16:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36FE85B2B1A
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 02:27:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MNxP14KZsz3c46
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 10:16:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MNxfN0D1Vz3c4B
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Sep 2022 10:27:56 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=oBDufWXf;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=crQ36UMH;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::112d; helo=mail-yw1-x112d.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b2c; helo=mail-yb1-xb2c.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=oBDufWXf;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=crQ36UMH;
 	dkim-atps=neutral
-Received: from mail-yw1-x112d.google.com (mail-yw1-x112d.google.com [IPv6:2607:f8b0:4864:20::112d])
+Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MNxNL5tnXz2xJJ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Sep 2022 10:15:45 +1000 (AEST)
-Received: by mail-yw1-x112d.google.com with SMTP id 00721157ae682-3454e58fe53so2121707b3.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Sep 2022 17:15:45 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MNxdk3MNdz2xfS
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Sep 2022 10:27:21 +1000 (AEST)
+Received: by mail-yb1-xb2c.google.com with SMTP id a67so441133ybb.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Sep 2022 17:27:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date;
-        bh=hqY5A7Q3sRIg+0suDoUYAY9ycBZxq0iP/o3p4lTPQtw=;
-        b=oBDufWXfW+Av/lwxqv0a/EmqwgX3S9/bXbt6VPEO7NL873V6R8oQZDcLwtycRTOpXd
-         ETEjULXGw4a08PRJMrQ0Nm5rozdANb4QWO+80W8Mflqxsz2iKlb84+RJB/TmEhy3p43o
-         p4R41uJlGA49hCYO16U/nbK5AfKp/LocXCNl5xvBp0ILImSEpasSy1IvxO6+UJaGSIcl
-         YLsP7TlWAHeAYCI4A+RRC+n1yvSdbLnsaNWmEhuIXbEMmMGUmPmSZZTRN+8g19QX4YyS
-         aYOqOsPfivibr4WSH7pE+0/NSWF4MCgHB5gjaRwq/g7jkpOCAn94Vsh+Zd8qJFI5KMqh
-         TLLQ==
+        bh=KtLw4C6VhVX+NvaGxIgELiy/zqMzxZXxqnnlbY2OKmo=;
+        b=crQ36UMHUqt61smHrlkBEpUd9i45+PgLY5J9fqfxhS5xFt+dCvkP4on4PdtNki3lCz
+         jM3i4We244MxzTcElsXWAr4ziy26d4HtGs1NYCrV4xa+QMChQpVMk4+s4kWhnDii1Pkq
+         yYzeKV/nWRkdftx9rY3IB4MT+wQ9wCh094Kp0vVZXw/48yA0cwlfWhLtGuaSLY8c5re5
+         9AGxg9RjHE2y5qcsqP3sIfonr94qxE4z65S4RNPfz7z+epLJQ9CDfp8pOawXS7ODD5Rs
+         kWyWoTv5WYqA6M7n+wk8eECV/QUIZsewZkXxm5axMe5CRivTrrka1Y3sdLZZWgIumVtu
+         oYrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date;
-        bh=hqY5A7Q3sRIg+0suDoUYAY9ycBZxq0iP/o3p4lTPQtw=;
-        b=d0B0JUEqq+q7MBiwM37iGh9IPjT4cTzWP6/x48GITyzpcFGkXYYLPoaLY6bnJST0wt
-         w6/zYE7MW0FQnxc86JRkpH+jCjB/8UxJW2zHONnP+NMN78gnAfJRA63/1dHnH3w4fzXK
-         6RS+2AaYMqCsP4QxbTeEy7Fz76ePN/RXKSSOd2Vhrp1v4IQ3rbBuNo3SlvDFDrg3BwXx
-         6hBEMumtHlvQTY50PL4aurYK0RMoLQmeOKd50ZpulaTw1KwT8rcxtwjdA8Oz7628lVJC
-         OS2qMMOgdATeEKZB9LVrOuiwTaAgEBQ4kJei1DNkrMGFjxvt0JTWIVXPfvhGOZamusxD
-         nvWw==
-X-Gm-Message-State: ACgBeo0e1vUbODciyuDRMRYFZSB4wZfN3v4E46gXRqvU6KF5dxlzu9nj
-	OsgLpQ5T872ESl+HL3hgV3zNjlBgI+nqn4K4tjC88g==
-X-Google-Smtp-Source: AA6agR62K1l39S/fz8ik5C68GuNknlfDBZR1zBzGcquAcYVnBiWDcbx92wi2JBC2nOolf2zZJxL60pxpYTaDIxhQc9o=
-X-Received: by 2002:a81:a002:0:b0:345:55c5:9c6e with SMTP id
- x2-20020a81a002000000b0034555c59c6emr9844670ywg.218.1662682542238; Thu, 08
- Sep 2022 17:15:42 -0700 (PDT)
+        bh=KtLw4C6VhVX+NvaGxIgELiy/zqMzxZXxqnnlbY2OKmo=;
+        b=QhJcUIfmJ1KH8+HrkiRuvoiJCkLGzyDVq7NZqpuOXDChopztRUqeE8nm5I99nK8LPm
+         IMAkmGG6ZY+f++iOffIa0ahMyGW5cGxigybhbEGHFc3dj+6yo0cZGNAMUZONl0FDJovW
+         IAadUuErBLy/e8iRbf/9vbzczS4pba8XmDbd23CvgA25nYEh+1guRu+gEsDOXh+Acxqm
+         tjZtKqAge/AUM7uBcIpNu/9nPE+d3m1raEAoWKo3Rlbp5ttCpTChyqCJn3j+zK38zuLJ
+         J0f3yuxPYuwI+rgXBI+rS0KKXiZC7zWWPMb5Ro/XeChv+YR/iKmyZHB7Pc8KMG9a3yI2
+         hAoQ==
+X-Gm-Message-State: ACgBeo2YCmgPaWQIzpE+QHdVe+CRkCTlNmSLlewpNmsgjkAMEbltu4+l
+	1A1tLKYIsja+r6cpTO0lX5R533bPRSAn2ZAvK4haYQ==
+X-Google-Smtp-Source: AA6agR6FKEIXt4Le+vLLG6frjvQmxHhi7IpkWph1Sqqg5DDpP37KZzCFD7SHe2MzUi799BfLdccL/mK6LPn2rgcWHb8=
+X-Received: by 2002:a05:6902:2d0:b0:694:d257:4c4b with SMTP id
+ w16-20020a05690202d000b00694d2574c4bmr9751150ybh.316.1662683237776; Thu, 08
+ Sep 2022 17:27:17 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220901173516.702122-1-surenb@google.com> <20220901173516.702122-9-surenb@google.com>
- <dcefc6dd-f8eb-945e-37ab-3c0c4e4e20f2@linux.ibm.com>
-In-Reply-To: <dcefc6dd-f8eb-945e-37ab-3c0c4e4e20f2@linux.ibm.com>
+References: <20220901173516.702122-1-surenb@google.com> <20220901173516.702122-10-surenb@google.com>
+ <98d5f462-c4dc-a967-0ab0-f24dd3e37dff@linux.ibm.com>
+In-Reply-To: <98d5f462-c4dc-a967-0ab0-f24dd3e37dff@linux.ibm.com>
 From: Suren Baghdasaryan <surenb@google.com>
-Date: Thu, 8 Sep 2022 17:15:31 -0700
-Message-ID: <CAJuCfpHSVS1O=V5+gjm8bboG0FJzZtxo1UYrjoU0+r57o-4zYg@mail.gmail.com>
-Subject: Re: [RFC PATCH RESEND 08/28] mm/khugepaged: mark VMA as locked while
- collapsing a hugepage
+Date: Thu, 8 Sep 2022 17:27:06 -0700
+Message-ID: <CAJuCfpFoJmiGYXBLwOjW36iB302=V2_vvbRwQbftr_ix_92uuQ@mail.gmail.com>
+Subject: Re: [RFC PATCH RESEND 09/28] mm/mempolicy: mark VMA as locked when
+ changing protection policy
 To: Laurent Dufour <ldufour@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -80,40 +80,64 @@ Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Sep 6, 2022 at 7:43 AM Laurent Dufour <ldufour@linux.ibm.com> wrote=
+On Tue, Sep 6, 2022 at 7:48 AM Laurent Dufour <ldufour@linux.ibm.com> wrote=
 :
 >
 > Le 01/09/2022 =C3=A0 19:34, Suren Baghdasaryan a =C3=A9crit :
-> > Protect VMA from concurrent page fault handler while modifying it in
-> > collapse_huge_page.
->
-> Is the goal to protect changes in the anon_vma structure?
->
-> AFAICS, the vma it self is not impacted here, only the anon_vma and the
-> PMD/PTE are touched, and they have their own protection mechanism, isn't =
-it?
-
-Yes, I think you are right about not needing to lock VMA here as all
-modified components are already protected. Thanks!
-
->
+> > Protect VMA from concurrent page fault handler while performing VMA
+> > protection policy changes.
 > >
 > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 > > ---
-> >  mm/khugepaged.c | 1 +
-> >  1 file changed, 1 insertion(+)
+> >  mm/mempolicy.c | 6 +++++-
+> >  1 file changed, 5 insertions(+), 1 deletion(-)
 > >
-> > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> > index 01f71786d530..030680633989 100644
-> > --- a/mm/khugepaged.c
-> > +++ b/mm/khugepaged.c
-> > @@ -1072,6 +1072,7 @@ static void collapse_huge_page(struct mm_struct *=
-mm,
-> >       if (mm_find_pmd(mm, address) !=3D pmd)
-> >               goto out_up_write;
+> > diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+> > index b73d3248d976..6be1e5c75556 100644
+> > --- a/mm/mempolicy.c
+> > +++ b/mm/mempolicy.c
+> > @@ -383,8 +383,10 @@ void mpol_rebind_mm(struct mm_struct *mm, nodemask=
+_t *new)
+> >       struct vm_area_struct *vma;
+> >
+> >       mmap_write_lock(mm);
+> > -     for (vma =3D mm->mmap; vma; vma =3D vma->vm_next)
+> > +     for (vma =3D mm->mmap; vma; vma =3D vma->vm_next) {
+> > +             vma_mark_locked(vma);
+> >               mpol_rebind_policy(vma->vm_policy, new);
+> > +     }
+> >       mmap_write_unlock(mm);
+> >  }
+> >
+> > @@ -632,6 +634,7 @@ unsigned long change_prot_numa(struct vm_area_struc=
+t *vma,
+> >       struct mmu_gather tlb;
+> >       int nr_updated;
 > >
 > > +     vma_mark_locked(vma);
-> >       anon_vma_lock_write(vma->anon_vma);
+>
+> If I understand that corretly, the VMA itself is not impacted, only the
+> PMDs/PTEs, and they are protected using the page table locks.
+>
+> Am I missing something?
+
+I thought we would not want pages faulting in the VMA for which we are
+changing the protection. However I think what you are saying is that
+page table locks would already provide a more granular synchronization
+with page fault handlers, which makes sense to me. Sounds like we can
+skip locking the VMA here as well. Nice!
+
+>
+> >       tlb_gather_mmu(&tlb, vma->vm_mm);
 > >
-> >       mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, NULL, mm,
+> >       nr_updated =3D change_protection(&tlb, vma, addr, end, PAGE_NONE,
+> > @@ -765,6 +768,7 @@ static int vma_replace_policy(struct vm_area_struct=
+ *vma,
+> >       if (IS_ERR(new))
+> >               return PTR_ERR(new);
+> >
+> > +     vma_mark_locked(vma);
+> >       if (vma->vm_ops && vma->vm_ops->set_policy) {
+> >               err =3D vma->vm_ops->set_policy(vma, new);
+> >               if (err)
 >
