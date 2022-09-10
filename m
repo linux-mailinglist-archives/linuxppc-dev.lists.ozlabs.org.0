@@ -2,62 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B0005B43B7
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Sep 2022 04:09:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B2B95B442D
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Sep 2022 06:52:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MPbs20FXjz3c6N
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Sep 2022 12:09:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MPgTD0v7Jz3bls
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Sep 2022 14:52:32 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VufQErAY;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=oYfb1vg+;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.24; helo=mga09.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::630; helo=mail-pl1-x630.google.com; envelope-from=isaku.yamahata@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VufQErAY;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=oYfb1vg+;
 	dkim-atps=neutral
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MPbrM3P79z2xB5
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Sep 2022 12:08:45 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1662775731; x=1694311731;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=MZte7nuC/t4BNBmNFqKoRny8+G/qGHFI71lNA6qj+rE=;
-  b=VufQErAYO5aHhSNOgABdHeyzKrVUf88OfU8Sm620qlZHCbW8Th9va6dJ
-   4IlmqG0iVJnUDqMrw2J5ND3ui5t7wpkrC4Onu1E2nnj2IzR2IEtCWqog8
-   0DtLgXPeqN622umNVnc+n9E44un2bofSINvOuOkzNw5chzi7SgQTsa6iI
-   Kwph7V4hheAUyuCvO25EWfhUuvj0XUJImEj1fQnCcIZ7fNswI464AmEnc
-   i1fYQI0YWwIv4XRznJ3GM5GMFJKuJLvdlstx/B/QdGLWLWrtZ9z4Igzy/
-   i/HT5Oik5kOjyzj41rsVsVUCJpkPtDwCVAtVMGPHu2emQnfbArV15S6af
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10465"; a="298404912"
-X-IronPort-AV: E=Sophos;i="5.93,304,1654585200"; 
-   d="scan'208";a="298404912"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2022 19:08:42 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.93,304,1654585200"; 
-   d="scan'208";a="645761395"
-Received: from lkp-server02.sh.intel.com (HELO b2938d2e5c5a) ([10.239.97.151])
-  by orsmga008.jf.intel.com with ESMTP; 09 Sep 2022 19:08:38 -0700
-Received: from kbuild by b2938d2e5c5a with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1oWpuw-000201-2X;
-	Sat, 10 Sep 2022 02:08:22 +0000
-Date: Sat, 10 Sep 2022 10:08:05 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next-test] BUILD SUCCESS
- 71a92e99c47900cc164620948b3863382cec4f1a
-Message-ID: <631bf185.OAV5yiFf4D9VEm5G%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MPbBk67pXz2ypV
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Sep 2022 11:39:40 +1000 (AEST)
+Received: by mail-pl1-x630.google.com with SMTP id d12so3336340plr.6
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 09 Sep 2022 18:39:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date;
+        bh=+HyY6MoZcN0FsKJ3qyqHucj5l+tGou55KVTzAQ3Bdi8=;
+        b=oYfb1vg+Kct23PhbzI75hD7wq0paEq8bOjhP7a39L3EHazFeRyHJdcOXIAqxCEsMvA
+         8PxFjgViFtOxjlQcHRC3NW7z3rO81TfLCVEbRJk/Kr55PCDZcjoPZkzC4OdpfkbXb7nj
+         cQgkdRqQYPWte2dIA8jQUFYWrm/jHWOyrE4kJQexSc0WO2hlU8+11LwohMJNbWhY3Cur
+         Vw6KdvjKfOwJPiUYfWJ5p+pOOdQc+zs23J0sodSQCKivoJ4+I0NSxBam9yHej9t/kbVh
+         V6AYVCQrdoQUC15Tr58FdCocNJHPkNQf30U6Xxr0b9A1YVvdATGDJ7DaTrbvIVdZxQV6
+         /1iQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=+HyY6MoZcN0FsKJ3qyqHucj5l+tGou55KVTzAQ3Bdi8=;
+        b=zxAu+jMDvn5iZ6wsKHo6Zn4ahwitNmX/Ng/lK6WexHvPZWKx9CoZxRMhsj/N899DH5
+         s6ZXhhnCh/R7zKDS64+4i+OklBkXJ529FTvpwl9F0CrJBtDx0ffiG3AUnBnh1A5FND7a
+         YuRyP7MLfWTvYwIrQWpgHs1rJr1F+40mCF+7+rlh/QwMn/ypj1gjkFyPaggvtjUoI1KC
+         W+QSz/2IVKdgMNqQ93u2rEFM4ZwzkaBba3JfQMOeTOHXZOC21/fjMco6Ru5ZnFJR+D5h
+         NTI9+uu0VcBi7AbY3JaheEqsmbSwL4D8cxtRXqBwSQ8UW8Re1hcJfRZuT539fXJXYNnT
+         jelA==
+X-Gm-Message-State: ACgBeo2HVko1r0ZP4nYsBsvO2r3Mo0IoJb0/pFOqoQE/ej3GtHrY1Hy4
+	jFhutXJhfjFHXD0nXogk8tU=
+X-Google-Smtp-Source: AA6agR6lRSG1wvLOOC+rgQ59lwfkWh29IBcT8P0r1RooVwxOiv+zbZOqCwoOHzL0TLU/D2WrTFA+2A==
+X-Received: by 2002:a17:90a:1f49:b0:202:7a55:558f with SMTP id y9-20020a17090a1f4900b002027a55558fmr8501511pjy.108.1662773977401;
+        Fri, 09 Sep 2022 18:39:37 -0700 (PDT)
+Received: from localhost ([192.55.55.56])
+        by smtp.gmail.com with ESMTPSA id n10-20020a65488a000000b0041a6638b357sm1149185pgs.72.2022.09.09.18.39.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Sep 2022 18:39:36 -0700 (PDT)
+Date: Fri, 9 Sep 2022 18:39:35 -0700
+From: Isaku Yamahata <isaku.yamahata@gmail.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v4 23/26] RFC: KVM: powerpc: Move processor compatibility
+ check to hardware setup
+Message-ID: <20220910013935.GA699006@ls.amr.corp.intel.com>
+References: <cover.1662679124.git.isaku.yamahata@intel.com>
+ <b348201517333f52c570f359e0d94bc9d5afc4f2.1662679124.git.isaku.yamahata@intel.com>
+ <ee18616b-e657-7c10-5224-d9b18dbb9ea7@csgroup.eu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ee18616b-e657-7c10-5224-d9b18dbb9ea7@csgroup.eu>
+X-Mailman-Approved-At: Sat, 10 Sep 2022 14:51:59 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,125 +83,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: "isaku.yamahata@intel.com" <isaku.yamahata@intel.com>, Huacai Chen <chenhuacai@kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>, Atish Patra <atishp@atishpatra.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, Fabiano Rosas <farosas@linux.ibm.com>, Marc Zyngier <maz@kernel.org>, Huang Ying <ying.huang@intel.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Qi Liu <liuqi115@huawei.com>, Shaokun Zhang <zhangshaokun@hisilicon.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Kai Huang <kai.huang@intel.com>, Yuan Yao <yuan.yao@linux.intel.com>, Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, John Garry <john.garry@huawei.com>, Will Deacon <will@kernel.org>, "isaku.yamahata@gmail.com" <isaku.yamahata@gmail.com>, Chao Gao <chao.gao@intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
-branch HEAD: 71a92e99c47900cc164620948b3863382cec4f1a  powerpc/powernv: add missing of_node_put() in opal_export_attrs()
+On Fri, Sep 09, 2022 at 05:55:14AM +0000,
+Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
 
-elapsed time: 875m
+> 
+> 
+> Le 09/09/2022 à 01:25, isaku.yamahata@intel.com a écrit :
+> > [Vous ne recevez pas souvent de courriers de isaku.yamahata@intel.com. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
+> > 
+> > From: Isaku Yamahata <isaku.yamahata@intel.com>
+> > 
+> > Move processor compatibility check from kvm_arch_processor_compat() into
+> > kvm_arch_hardware_setup().  The check does model name comparison with a
+> > global variable, cur_cpu_spec.  There is no point to check it at run time
+> > on all processors.
+> > 
+> > Suggested-by: Sean Christopherson <seanjc@google.com>
+> > Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
+> > Cc: linuxppc-dev@lists.ozlabs.org
+> > Cc: Fabiano Rosas <farosas@linux.ibm.com>
+> > ---
+> >   arch/powerpc/kvm/powerpc.c | 13 +++++++++++--
+> >   1 file changed, 11 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+> > index 7b56d6ccfdfb..7e3a6659f107 100644
+> > --- a/arch/powerpc/kvm/powerpc.c
+> > +++ b/arch/powerpc/kvm/powerpc.c
+> > @@ -444,12 +444,21 @@ int kvm_arch_hardware_enable(void)
+> > 
+> >   int kvm_arch_hardware_setup(void *opaque)
+> >   {
+> > -       return 0;
+> > +       /*
+> > +        * kvmppc_core_check_processor_compat() checks the global variable.
+> > +        * No point to check on all processors or at runtime.
+> > +        * arch/powerpc/kvm/book3s.c: return 0
+> > +        * arch/powerpc/kvm/e500.c: strcmp(cur_cpu_spec->cpu_name, "e500v2")
+> > +        * arch/powerpc/kvm/e500mc.c: strcmp(cur_cpu_spec->cpu_name, "e500mc")
+> > +        *                            strcmp(cur_cpu_spec->cpu_name, "e5500")
+> > +        *                            strcmp(cur_cpu_spec->cpu_name, "e6500")
+> > +        */
+> 
+> This explanation shouldn't be in the code. The content of other file may 
+> change in the future, the files may be renamed or deleted, new files may 
+> be added. And there is no added value with that comment.
+> 
+> That detailed explanation should go in the commit message.
 
-configs tested: 100
-configs skipped: 2
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                              defconfig
-x86_64                               rhel-8.3
-m68k                             allmodconfig
-powerpc                           allnoconfig
-powerpc                          allmodconfig
-arc                              allyesconfig
-mips                             allyesconfig
-x86_64                           allyesconfig
-alpha                            allyesconfig
-m68k                             allyesconfig
-sh                               allmodconfig
-arc                  randconfig-r043-20220907
-i386                                defconfig
-x86_64                          rhel-8.3-func
-x86_64                         rhel-8.3-kunit
-x86_64                    rhel-8.3-kselftests
-x86_64                        randconfig-a013
-x86_64                           rhel-8.3-kvm
-x86_64                        randconfig-a011
-x86_64                           rhel-8.3-syz
-x86_64                        randconfig-a015
-i386                          randconfig-a001
-x86_64                        randconfig-a004
-i386                          randconfig-a003
-x86_64                        randconfig-a002
-arm                                 defconfig
-x86_64                        randconfig-a006
-i386                          randconfig-a005
-arm64                            allyesconfig
-arm                              allyesconfig
-i386                          randconfig-a014
-i386                          randconfig-a012
-i386                          randconfig-a016
-i386                             allyesconfig
-sh                             espt_defconfig
-riscv             nommu_k210_sdcard_defconfig
-arm                            mps2_defconfig
-csky                              allnoconfig
-alpha                             allnoconfig
-arc                               allnoconfig
-riscv                             allnoconfig
-powerpc                      ppc40x_defconfig
-arm                         axm55xx_defconfig
-mips                         db1xxx_defconfig
-arm                            zeus_defconfig
-parisc                              defconfig
-sh                     sh7710voipgw_defconfig
-arm                        keystone_defconfig
-x86_64                           alldefconfig
-xtensa                    xip_kc705_defconfig
-mips                    maltaup_xpa_defconfig
-mips                      maltasmvp_defconfig
-i386                          randconfig-c001
-m68k                        m5407c3_defconfig
-nios2                         3c120_defconfig
-loongarch                           defconfig
-loongarch                         allnoconfig
-arm                         cm_x300_defconfig
-powerpc                    klondike_defconfig
-arm                          badge4_defconfig
-mips                      fuloong2e_defconfig
-s390                       zfcpdump_defconfig
-mips                        bcm47xx_defconfig
-arm                            pleb_defconfig
-riscv                               defconfig
-nios2                         10m50_defconfig
-powerpc                 mpc837x_rdb_defconfig
-arc                              alldefconfig
-sh                              ul2_defconfig
-arm                           sunxi_defconfig
-arm                          exynos_defconfig
-sh                   secureedge5410_defconfig
-arm                         lubbock_defconfig
-sh                          rsk7264_defconfig
-ia64                             allmodconfig
-
-clang tested configs:
-hexagon              randconfig-r041-20220907
-s390                 randconfig-r044-20220907
-hexagon              randconfig-r045-20220907
-riscv                randconfig-r042-20220907
-x86_64                        randconfig-a012
-x86_64                        randconfig-a016
-x86_64                        randconfig-a014
-x86_64                        randconfig-a001
-i386                          randconfig-a004
-i386                          randconfig-a002
-x86_64                        randconfig-a003
-x86_64                        randconfig-a005
-i386                          randconfig-a006
-i386                          randconfig-a013
-i386                          randconfig-a011
-i386                          randconfig-a015
-riscv                randconfig-r042-20220909
-hexagon              randconfig-r041-20220909
-hexagon              randconfig-r045-20220909
-s390                 randconfig-r044-20220909
-x86_64                        randconfig-k001
-hexagon              randconfig-r041-20220908
-hexagon              randconfig-r045-20220908
-
+Ok, will move the comment into the commit message.
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+Isaku Yamahata <isaku.yamahata@gmail.com>
