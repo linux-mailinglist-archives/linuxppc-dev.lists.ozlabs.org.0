@@ -2,110 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96D275B4F6B
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Sep 2022 16:20:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCADF5B4FA2
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Sep 2022 17:27:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MQX2J6qJJz3bqW
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Sep 2022 00:20:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MQYWh3CSFz3bsS
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Sep 2022 01:27:44 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=wdc.com header.i=@wdc.com header.a=rsa-sha256 header.s=dkim.wdc.com header.b=MlnzI02B;
-	dkim=pass (2048-bit key; unprotected) header.d=opensource.wdc.com header.i=@opensource.wdc.com header.a=rsa-sha256 header.s=dkim header.b=kdSlI7Jf;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=OG6BVIJB;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=opensource.wdc.com (client-ip=68.232.143.124; helo=esa2.hgst.iphmx.com; envelope-from=prvs=2461b4889=damien.lemoal@opensource.wdc.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=wdc.com header.i=@wdc.com header.a=rsa-sha256 header.s=dkim.wdc.com header.b=MlnzI02B;
-	dkim=pass (2048-bit key; unprotected) header.d=opensource.wdc.com header.i=@opensource.wdc.com header.a=rsa-sha256 header.s=dkim header.b=kdSlI7Jf;
-	dkim-atps=neutral
-X-Greylist: delayed 63 seconds by postgrey-1.36 at boromir; Mon, 12 Sep 2022 00:19:59 AEST
-Received: from esa2.hgst.iphmx.com (esa2.hgst.iphmx.com [68.232.143.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MQX1W6QHkz2xGH
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Sep 2022 00:19:59 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1662905999; x=1694441999;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=1ZeosKCdRqJre/8DiboNXUF0h0xy40H1IiMlnXbs1ts=;
-  b=MlnzI02Bhp+0+V0YT73CX3YxAJRuLxK0yaPz1qk5y0DyURHu+UiD5hi2
-   KZfwZycAV+WoQluPGiwoSh1zzN12ho8xAPhP/ZWk/CMzZ9xFITpqUSNWg
-   rzDKlmqc4RPM2esI6A7v3RdUFEIG/0UPf3qpLjsZlbQsOrOKQGnVFM7jy
-   vPYn6mGB7Gj/espwQKpK0zKqb/2KAM4HjAPlgrqOZx8wxr/4MpBwTzA1l
-   0veFBF7jgUe7B/DpygWVRjUoHxDgBjVk3Cg/s9Mp5sSLpaMMGTUvGmxlj
-   UqPAFEFB+Tl4VB9cTKsbBBxtxKgUltHtIVZEo9AMtV0ytHSCHokvKF5da
-   g==;
-X-IronPort-AV: E=Sophos;i="5.93,307,1654531200"; 
-   d="scan'208";a="315342048"
-Received: from uls-op-cesaip01.wdc.com (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
-  by ob1.hgst.iphmx.com with ESMTP; 11 Sep 2022 22:18:47 +0800
-IronPort-SDR: athynTdSGO/ayMxB8S/uzbj7H+IZz+Dvxkk9F9wg1jRcCrkawWd4UM97yslrydjLcbN6X4VkQS
- B5niI2feqAcGTQ+/B0lypVI1OwN7gxYB0+c6fJkBI+BYfJmun8uG3Dt4VmpMeSzDJvupcmfx2h
- ANzNgk2eUahR3/o81I+vmU7kk9ICBfuCoYj6Pb7xsH+Fdh1JcaZLitHMAr90NKng/93Ajp8N9j
- KkAa6uCU70Rg7dBxWqgyjGp+5OYw78e0nvQwI9MSW+QRrdTXhfhB7K2HYfDVVs5E0JgJ0nLmuZ
- HO29c/p9XZbIW9ao8OGQf77P
-Received: from uls-op-cesaip02.wdc.com ([10.248.3.37])
-  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 11 Sep 2022 06:39:03 -0700
-IronPort-SDR: Oh3byTZwVTvvZii2Mieyiwomk850Z+WYsx1bkxte1JkLVuOe8LSzVv83h3RQovjwQxquO4tiVg
- NwtWCpRDuCLI3K5VqVpbWcopygdbD17S52sBwzC55NeuT2s7D+0BwFZvIezj+4m1jzKxqCI8wX
- 2KmkYMCAecXOih5tF0iA57KVoWHac6WZV/t2yf1nfotd8eR7B98t2ObDf+Q2kK8F9uBiMiBCD8
- R7tS6KoWKo7I+BCsXlUKHMxbcgBpcztstPIaX9j3jvJHLi6YDUgeqCr4ed98dfy6/ZDfd27BZT
- exQ=
-WDCIronportException: Internal
-Received: from usg-ed-osssrv.wdc.com ([10.3.10.180])
-  by uls-op-cesaip02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 11 Sep 2022 07:18:46 -0700
-Received: from usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1])
-	by usg-ed-osssrv.wdc.com (Postfix) with ESMTP id 4MQX064fbjz1Rwt8
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Sep 2022 07:18:46 -0700 (PDT)
-Authentication-Results: usg-ed-osssrv.wdc.com (amavisd-new); dkim=pass
-	reason="pass (just generated, assumed good)"
-	header.d=opensource.wdc.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=
-	opensource.wdc.com; h=content-transfer-encoding:content-type
-	:in-reply-to:organization:from:references:to:content-language
-	:subject:user-agent:mime-version:date:message-id; s=dkim; t=
-	1662905926; x=1665497927; bh=1ZeosKCdRqJre/8DiboNXUF0h0xy40H1IiM
-	lnXbs1ts=; b=kdSlI7JfbyNofSBTMTKFN6RtIxo1BV8rLcx+MwPlgcLnZz6eg2Y
-	QEEDd7Ld4w9xSFBXMfgd62zaobXpdJr5/p9V0wdugxPhMdWaqFYQ9sKtZKOkE2Ow
-	ZRQCeh7q6MllILQyLuMtoHpbskyN9pA+3oRVhRJr8oKhZd9fv67b+mggdVO9o4Q8
-	EZrW4l8m4dAWZeBY9ucTg/UKhpMJjwdvU9XYg7ADuFMYGZHrldLsNfAwOVzcKdgs
-	FDBSZlNu9+coEGMgHAPdUpjzUCLLD0eukFrfd8aqig+3NTNIYdn+2BywadIXTwvi
-	ND6JTFxc/atNoyfkTWVJNj/uFKG6VWuyhfw==
-X-Virus-Scanned: amavisd-new at usg-ed-osssrv.wdc.com
-Received: from usg-ed-osssrv.wdc.com ([127.0.0.1])
-	by usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id xv8gfb6WrcJi for <linuxppc-dev@lists.ozlabs.org>;
-	Sun, 11 Sep 2022 07:18:46 -0700 (PDT)
-Received: from [10.225.1.43] (unknown [10.225.1.43])
-	by usg-ed-osssrv.wdc.com (Postfix) with ESMTPSA id 4MQX024lcsz1RvLy;
-	Sun, 11 Sep 2022 07:18:42 -0700 (PDT)
-Message-ID: <99d7c533-f19e-a52a-e532-2a07cd78e9b9@opensource.wdc.com>
-Date: Sun, 11 Sep 2022 23:18:40 +0900
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MQYVz0T1tz2xjj
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Sep 2022 01:27:03 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=dA4KVJ9n+xFH+aRdTmGiWAtvnpKz/8BixrIpwCUxjkc=; b=OG6BVIJB3q4yCM/NV+izRXyJ0q
+	99gfi9l91m0kKaaSLo2cgsOK8Z5HjaKHAYH1h/5TTrdLQwPzb7H3iOZHTUSQEAf23oiUFiLc2e4aP
+	NnrSBGBfcAiCUYl6BMaN9BeaGaV0Ihx2lwfguVQ6OLR/dECX+C5xicUpuPz1y5VKZATM90hHHyXxS
+	qLRYbz90DMY+9MEPiGsU/vKcdgNBG87EOhGBxQ8Qwmna9GtL7PVEGEkcpz8nyzlu3ywVU267V0mu7
+	Uv+pZBF8a2hKkIgV0jita7HVD8Q6/qhWJKn6WhHQ7vlKWMVgIeuG/kWID7ROjFI7Lw3tBtqrZ5cKD
+	QFKs5rbg==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1oXOqj-00Bbqh-3b; Sun, 11 Sep 2022 15:26:21 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
+	(Client did not present a certificate)
+	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 831F030008D;
+	Sun, 11 Sep 2022 17:26:18 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 5CEEE2B16575A; Sun, 11 Sep 2022 17:26:18 +0200 (CEST)
+Date: Sun, 11 Sep 2022 17:26:18 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Josh Poimboeuf <jpoimboe@kernel.org>
+Subject: Re: [RFC] Objtool toolchain proposal:
+ -fannotate-{jump-table,noreturn}
+Message-ID: <Yx3+GpHakZZYLM1N@hirez.programming.kicks-ass.net>
+References: <20220909180704.jwwed4zhwvin7uyi@treble>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.2.2
-Subject: Re: [PATCH v2] powerpc: select HAVE_PATA_PLATFORM in PPC instead of
- creating a PPC dependency
-Content-Language: en-US
-To: Arnd Bergmann <arnd@arndb.de>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Lukas Bulwahn <lukas.bulwahn@gmail.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-ide@vger.kernel.org" <linux-ide@vger.kernel.org>
-References: <20220909090343.21886-1-lukas.bulwahn@gmail.com>
- <21359abe-c3c9-4aa8-8ebf-75ff64cb1935@www.fastmail.com>
- <2379456e-4f18-d619-10bf-022327de0463@csgroup.eu>
- <4b33bffc-2b6d-46b4-9f1d-d18e55975a5a@www.fastmail.com>
- <0ad5f339-de31-2849-34a1-928ae65cc696@opensource.wdc.com>
- <c4f3d527-7e70-4077-b40b-129144d79374@www.fastmail.com>
-From: Damien Le Moal <damien.lemoal@opensource.wdc.com>
-Organization: Western Digital Research
-In-Reply-To: <c4f3d527-7e70-4077-b40b-129144d79374@www.fastmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220909180704.jwwed4zhwvin7uyi@treble>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -117,44 +62,22 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>, linuxppc-dev@lists.ozlabs.org, Chen Zhongjin <chenzhongjin@huawei.com>, x86@kernel.org, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>, Sathvika Vasireddy <sv@linux.ibm.com>, linux-toolchains@vger.kernel.org, Indu Bhagat <indu.bhagat@oracle.com>, live-patching@vger.kernel.org, Miroslav Benes <mbenes@suse.cz>, Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, linux-arm-kernel@lists.infradead.org, "Jose E. Marchesi" <jemarch@gnu.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2022/09/11 21:41, Arnd Bergmann wrote:
-> On Sun, Sep 11, 2022, at 1:54 PM, Damien Le Moal wrote:
->> On 2022/09/09 20:31, Arnd Bergmann wrote:
->>>  
->>>  config PATA_PLATFORM
->>> -	tristate "Generic platform device PATA support"
->>> -	depends on EXPERT || PPC || HAVE_PATA_PLATFORM
->>> +	tristate "Generic platform device PATA support" if EXPERT || HAVE_PATA_PLATFORM
->>
->> Shouldn't this be:
->>
->> 	tristate "Generic platform device PATA support" if EXPERT || PPC
->>
->> ?
->>
->> And while at it, it would be nice to add "|| COMPILE_TEST" too.
+On Fri, Sep 09, 2022 at 11:07:04AM -0700, Josh Poimboeuf wrote:
+> Alternatives
+> ------------
 > 
-> The idea was that this can be selected by CONFIG_PATA_OF_PLATFORM
-> in any configuration that has CONFIG_OF enabled. Since PPC
-> has CONFIG_OF enabled unconditionally, there is no need to
-> make this option visible separately.
-> 
-> Same for compile-testing: since CONFIG_OF can be enabled on
-> any architecture, PATA_OF_PLATFORM is already covered by
-> allmodconfig builds anywhere. The separate HAVE_PATA_PLATFORM
-> is only needed for machines that want the non-OF pata-platform
-> module (sh, m68k-mac, mips-sibyte arm-s3c-simtec).
+> Another idea which has been floated in the past is for objtool to read
+> DWARF (or .eh_frame) to help it figure out the control flow.  That
+> hasn't been tried yet, but would be considerably more difficult and
+> fragile IMO.
 
-Got it. Thanks for the details.
+I though Ard played around with that a bit on ARM64. And yes, given that
+most toolchains consider DWARF itself best-effort, I'm not holding my
+breath there.
 
-> 
->        Arnd
-
--- 
-Damien Le Moal
-Western Digital Research
-
+On top of that, building a kernel with DWARFs on is just so much
+slower..
