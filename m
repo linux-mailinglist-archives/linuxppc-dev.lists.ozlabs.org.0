@@ -1,79 +1,109 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E54DA5B4D0C
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Sep 2022 11:36:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 777C55B4E9C
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Sep 2022 13:56:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MQPkC6C6vz3c23
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Sep 2022 19:36:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MQSrD3RHgz3bqx
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Sep 2022 21:56:44 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=MaJLVWPQ;
-	dkim=fail reason="signature verification failed" header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=8akfSuHi;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=wdc.com header.i=@wdc.com header.a=rsa-sha256 header.s=dkim.wdc.com header.b=kRNRfHJl;
+	dkim=pass (2048-bit key; unprotected) header.d=opensource.wdc.com header.i=@opensource.wdc.com header.a=rsa-sha256 header.s=dkim header.b=Phn8NHzC;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=vbabka@suse.cz; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=opensource.wdc.com (client-ip=216.71.153.144; helo=esa5.hgst.iphmx.com; envelope-from=prvs=2461b4889=damien.lemoal@opensource.wdc.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=MaJLVWPQ;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=8akfSuHi;
+	dkim=pass (2048-bit key; unprotected) header.d=wdc.com header.i=@wdc.com header.a=rsa-sha256 header.s=dkim.wdc.com header.b=kRNRfHJl;
+	dkim=pass (2048-bit key; unprotected) header.d=opensource.wdc.com header.i=@opensource.wdc.com header.a=rsa-sha256 header.s=dkim header.b=Phn8NHzC;
 	dkim-atps=neutral
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+X-Greylist: delayed 64 seconds by postgrey-1.36 at boromir; Sun, 11 Sep 2022 21:56:04 AEST
+Received: from esa5.hgst.iphmx.com (esa5.hgst.iphmx.com [216.71.153.144])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MQPjW3xr6z2ysx
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Sep 2022 19:35:42 +1000 (AEST)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id A7F7521E99;
-	Sun, 11 Sep 2022 09:35:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1662888938; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9Lc3vR3minJtB/44lBRTyQejWooVRYylPWrQ2JvEp1c=;
-	b=MaJLVWPQsh71YKDB3HnJgYZcoRFq3u90TGLqyadSycRXOfbpdLNOhF7jYJ7wCymnlaOQfy
-	tQ9Y98dwJx0BjGNKItq1K2MZZWqZ7VjFqT/UMwLPtJBlcJA4fTEPB3DeUWXQySouftTEmC
-	Ky8YnNCvqPf8JLLUmYNl5CYA/YY/50M=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1662888938;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9Lc3vR3minJtB/44lBRTyQejWooVRYylPWrQ2JvEp1c=;
-	b=8akfSuHi78TNqxzhhYCqjW2GfEzFez7f2C0WbZ30IncNuZEB6firo2r44VOcgN+jYzwA67
-	5vTZ6qN3UH8IbODA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 41DC6133E6;
-	Sun, 11 Sep 2022 09:35:38 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id Jd4fD+qrHWN3VwAAMHmgww
-	(envelope-from <vbabka@suse.cz>); Sun, 11 Sep 2022 09:35:38 +0000
-Message-ID: <b5db3353-8aae-22d8-9598-eaa5eeb77cfc@suse.cz>
-Date: Sun, 11 Sep 2022 11:35:37 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MQSqS2vThz2yZd
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Sep 2022 21:56:04 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
+  t=1662897363; x=1694433363;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=nEn8hKjiKoJTls+Eq+dMQFIVcEgOZT1PN3pCw0YzqBA=;
+  b=kRNRfHJl01YUZ+QgVpgz9BXMMVGJmDq+R8Fjr4LJxDWCZtlbZuiT2o48
+   uvWcbDvrQwnUb84ToXD8lFgs3YTSbf7UD966aDgjF41p8w+8mZtV/wCeJ
+   Uo6QD5MsDbawsZWSme8LGv7BiQL/bq8UV3P1obxd7N+88DifyGRgBkBZQ
+   0cN0TnKlfsDwkGJJ/jl/A6vOhNXRJppAoTQAq31LdChbAOPAJelHn2jck
+   vUpnQIvO2/0BxAgsYj+lDbJJhWbJLRZUd06nvHmO2CKNvq5lp4cgF+jJr
+   SJxQlqN5OeAKXlnZs1Yl+19+F4nhbVVoYE7QGVosylLHi9CkST6j68+ls
+   w==;
+X-IronPort-AV: E=Sophos;i="5.93,307,1654531200"; 
+   d="scan'208";a="211048245"
+Received: from uls-op-cesaip01.wdc.com (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
+  by ob1.hgst.iphmx.com with ESMTP; 11 Sep 2022 19:54:52 +0800
+IronPort-SDR: hA6L1UYDiS9a/vbK5MSnn2RfbqV41/eu0Kj5D+ZWul4lRuKHk1ptr/zf8hfxR09u9cMX+WovQF
+ DgLoI7pXfczdcOwtpHLu5CHLrEhRonfeJfrUGKuds1FqAy3U/fJ4mCrkKxiTd6HqoGbQ6LpJHy
+ 9ze/VinoRztsIvPfiXql0VwqvAhTqMK9DpG0ufHDV1ngBdzXP42Ax+x8w7p9rDSU8LN22JBQEq
+ e5oHX8yAvjzV8TdvwGyk4Ls/F+QxLWpv0li0deo06Dh3iQ8Qy4kouyS5jooUPQesPDE2SLM3Cm
+ tdV4WJAFjH8eNq9baIR7Wmnl
+Received: from uls-op-cesaip01.wdc.com ([10.248.3.36])
+  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 11 Sep 2022 04:15:09 -0700
+IronPort-SDR: PlTAipSITDAT4jx3iFLCFNsEiVqt3thcTjTF2HwP2PCOlXZDOvgGNOCJGvnetuG/IIfSwarn7K
+ aUiuuRiqzVhX+CN7YiTnfzs3J63BnOG/V+aMhKeAofaQ/18bKwLMNJYmQDjfIWSO8goQR6uVbU
+ pwjVANVgHQkX6hKqD7qpdKI3o4UsWtUGgbu5DavZ84tTN9K7zZ9J4EfOBSQx8G9fzr/OTrt1GI
+ 0ewBHV0+hA524munmvBHvCPyVpTBoJq6qBG7gIzSyXKwxL9q2tvN4Pf2RGJzxkW6Uoi5fgQQo0
+ cI4=
+WDCIronportException: Internal
+Received: from usg-ed-osssrv.wdc.com ([10.3.10.180])
+  by uls-op-cesaip01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 11 Sep 2022 04:54:54 -0700
+Received: from usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1])
+	by usg-ed-osssrv.wdc.com (Postfix) with ESMTP id 4MQSp44fpSz1RwtC
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Sep 2022 04:54:52 -0700 (PDT)
+Authentication-Results: usg-ed-osssrv.wdc.com (amavisd-new); dkim=pass
+	reason="pass (just generated, assumed good)"
+	header.d=opensource.wdc.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=
+	opensource.wdc.com; h=content-transfer-encoding:content-type
+	:in-reply-to:organization:from:content-language:references:to
+	:subject:user-agent:mime-version:date:message-id; s=dkim; t=
+	1662897292; x=1665489293; bh=nEn8hKjiKoJTls+Eq+dMQFIVcEgOZT1PN3p
+	Cw0YzqBA=; b=Phn8NHzCVfC888VMss519H6IwE3DTWbgDyXVEF31yHEEC+V89Vy
+	z81rsp9YwkUEa5nTv4Mh0d27glMQIOVnN+9pIo5D0YCgyGFZwtdpj+isyBnfm081
+	oaElCELBKb4chgdmhSWuoN2/dg+0LNBpNywHx33jW9h5atJSRG4eZ8KezufVOx8B
+	5XXWz/drbpS38IKLF1N9Ph5OnkdEBgu8oGkO91AI1rrJl2/8esRLchGdVrQ29/a7
+	mgAH3eR33hd2LV6td64dH7bH13gzFrglpumHzrQ2i543naPiyabu+Fy2f/FQALn0
+	r59rtgodlZ+nSD0+qPXadz0g8Y1XruC66qQ==
+X-Virus-Scanned: amavisd-new at usg-ed-osssrv.wdc.com
+Received: from usg-ed-osssrv.wdc.com ([127.0.0.1])
+	by usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id TvmlmVh4n0JU for <linuxppc-dev@lists.ozlabs.org>;
+	Sun, 11 Sep 2022 04:54:52 -0700 (PDT)
+Received: from [10.225.1.43] (unknown [10.225.1.43])
+	by usg-ed-osssrv.wdc.com (Postfix) with ESMTPSA id 4MQSp04Wlsz1RvLy;
+	Sun, 11 Sep 2022 04:54:48 -0700 (PDT)
+Message-ID: <0ad5f339-de31-2849-34a1-928ae65cc696@opensource.wdc.com>
+Date: Sun, 11 Sep 2022 20:54:46 +0900
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.1
-Subject: Re: [RFC PATCH RESEND 00/28] per-VMA locks proposal
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.2.2
+Subject: Re: [PATCH v2] powerpc: select HAVE_PATA_PLATFORM in PPC instead of
+ creating a PPC dependency
+To: Arnd Bergmann <arnd@arndb.de>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-ide@vger.kernel.org" <linux-ide@vger.kernel.org>
+References: <20220909090343.21886-1-lukas.bulwahn@gmail.com>
+ <21359abe-c3c9-4aa8-8ebf-75ff64cb1935@www.fastmail.com>
+ <2379456e-4f18-d619-10bf-022327de0463@csgroup.eu>
+ <4b33bffc-2b6d-46b4-9f1d-d18e55975a5a@www.fastmail.com>
 Content-Language: en-US
-To: Suren Baghdasaryan <surenb@google.com>,
- Kent Overstreet <kent.overstreet@linux.dev>
-References: <20220901173516.702122-1-surenb@google.com>
- <20220901205819.emxnnschszqv4ahy@moria.home.lan>
- <CAJuCfpGNcZovncozo+Uxfhjwqh3BtGXsws+4QeT6Zy1mcQRJbQ@mail.gmail.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-In-Reply-To: <CAJuCfpGNcZovncozo+Uxfhjwqh3BtGXsws+4QeT6Zy1mcQRJbQ@mail.gmail.com>
+From: Damien Le Moal <damien.lemoal@opensource.wdc.com>
+Organization: Western Digital Research
+In-Reply-To: <4b33bffc-2b6d-46b4-9f1d-d18e55975a5a@www.fastmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,68 +115,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michel Lespinasse <michel@lespinasse.org>, Joel Fernandes <joelaf@google.com>, Song Liu <songliubraving@fb.com>, Michal Hocko <mhocko@suse.com>, David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>, bigeasy@linutronix.de, Peter Xu <peterx@redhat.com>, dhowells@redhat.com, linux-mm <linux-mm@kvack.org>, Jerome Glisse <jglisse@google.com>, Davidlohr Bueso <dave@stgolabs.net>, Minchan Kim <minchan@google.com>, x86@kernel.org, Hugh Dickins <hughd@google.com>, Matthew Wilcox <willy@infradead.org>, Laurent Dufour <laurent.dufour@fr.ibm.com>, Mel Gorman <mgorman@suse.de>, David Rientjes <rientjes@google.com>, Axel Rasmussen <axelrasmussen@google.com>, kernel-team <kernel-team@android.com>, "Paul E . McKenney" <paulmck@kernel.org>, "Liam R. Howlett" <liam.howlett@oracle.com>, Andy Lutomirski <luto@kernel.org>, Laurent Dufour <ldufour@linux.ibm.com>, linux-arm-kernel@lists.infradead.org, LKML <linux-kernel@vger.kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, Andr
- ew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 9/2/22 01:26, Suren Baghdasaryan wrote:
-> On Thu, Sep 1, 2022 at 1:58 PM Kent Overstreet
-> <kent.overstreet@linux.dev> wrote:
+On 2022/09/09 20:31, Arnd Bergmann wrote:
+> On Fri, Sep 9, 2022, at 1:19 PM, Christophe Leroy wrote:
+>> Le 09/09/2022 =C3=A0 13:09, Arnd Bergmann a =C3=A9crit=C2=A0:
+>>> On Fri, Sep 9, 2022, at 11:03 AM, Lukas Bulwahn wrote:
+>>>
+>>> I don't see a single powerpc machine that creates a
+>>>   name=3D"pata_platform" platform_device. I suspect this was
+>>> only needed bwfore 2007 commit 9cd55be4d223 ("[POWERPC] pasemi:
+>>> Move electra-ide to pata_of_platform"), so the "|| PPC"
+>>> bit should just get removed without adding the HAVE_PATA_PLATFORM
+>>> bit.
 >>
->> On Thu, Sep 01, 2022 at 10:34:48AM -0700, Suren Baghdasaryan wrote:
->> > Resending to fix the issue with the In-Reply-To tag in the original
->> > submission at [4].
->> >
->> > This is a proof of concept for per-vma locks idea that was discussed
->> > during SPF [1] discussion at LSF/MM this year [2], which concluded with
->> > suggestion that “a reader/writer semaphore could be put into the VMA
->> > itself; that would have the effect of using the VMA as a sort of range
->> > lock. There would still be contention at the VMA level, but it would be an
->> > improvement.” This patchset implements this suggested approach.
->> >
->> > When handling page faults we lookup the VMA that contains the faulting
->> > page under RCU protection and try to acquire its lock. If that fails we
->> > fall back to using mmap_lock, similar to how SPF handled this situation.
->> >
->> > One notable way the implementation deviates from the proposal is the way
->> > VMAs are marked as locked. Because during some of mm updates multiple
->> > VMAs need to be locked until the end of the update (e.g. vma_merge,
->> > split_vma, etc). Tracking all the locked VMAs, avoiding recursive locks
->> > and other complications would make the code more complex. Therefore we
->> > provide a way to "mark" VMAs as locked and then unmark all locked VMAs
->> > all at once. This is done using two sequence numbers - one in the
->> > vm_area_struct and one in the mm_struct. VMA is considered locked when
->> > these sequence numbers are equal. To mark a VMA as locked we set the
->> > sequence number in vm_area_struct to be equal to the sequence number
->> > in mm_struct. To unlock all VMAs we increment mm_struct's seq number.
->> > This allows for an efficient way to track locked VMAs and to drop the
->> > locks on all VMAs at the end of the update.
->>
->> I like it - the sequence numbers are a stroke of genuius. For what it's doing
->> the patchset seems almost small.
-> 
-> Thanks for reviewing it!
-> 
->>
->> Two complaints so far:
->>  - I don't like the vma_mark_locked() name. To me it says that the caller
->>    already took or is taking the lock and this function is just marking that
->>    we're holding the lock, but it's really taking a different type of lock. But
->>    this function can block, it really is taking a lock, so it should say that.
->>
->>    This is AFAIK a new concept, not sure I'm going to have anything good either,
->>    but perhaps vma_lock_multiple()?
-> 
-> I'm open to name suggestions but vma_lock_multiple() is a bit
-> confusing to me. Will wait for more suggestions.
+>> But that was added in 2008 by commit 61f7162117d4 ("libata:=20
+>> pata_of_platform: OF-Platform PATA device driver")
+>=20
+> Ah, I see. In that case, I think we should probably just always
+> allow PATA_OF_PLATFORM to be enabled regardless of
+> HAVE_PATA_PLATFORM, something like
+>=20
+> diff --git a/drivers/ata/Kconfig b/drivers/ata/Kconfig
+> index 1c9f4fb2595d..c93d97455744 100644
+> --- a/drivers/ata/Kconfig
+> +++ b/drivers/ata/Kconfig
+> @@ -1102,8 +1102,7 @@ config PATA_PCMCIA
+>  	  If unsure, say N.
+> =20
+>  config PATA_PLATFORM
+> -	tristate "Generic platform device PATA support"
+> -	depends on EXPERT || PPC || HAVE_PATA_PLATFORM
+> +	tristate "Generic platform device PATA support" if EXPERT || HAVE_PAT=
+A_PLATFORM
 
-Well, it does act like a vma_write_lock(), no? So why not that name. The
-checking function for it is even called vma_assert_write_locked().
+Shouldn't this be:
 
-We just don't provide a single vma_write_unlock(), but a
-vma_mark_unlocked_all(), that could be instead named e.g.
-vma_write_unlock_all().
-But it's called on a mm, so maybe e.g. mm_vma_write_unlock_all()?
+	tristate "Generic platform device PATA support" if EXPERT || PPC
 
+?
+
+And while at it, it would be nice to add "|| COMPILE_TEST" too.
+
+>  	help
+>  	  This option enables support for generic directly connected ATA
+>  	  devices commonly found on embedded systems.
+> @@ -1112,7 +1111,8 @@ config PATA_PLATFORM
+> =20
+>  config PATA_OF_PLATFORM
+>  	tristate "OpenFirmware platform device PATA support"
+> -	depends on PATA_PLATFORM && OF
+> +	depends on OF
+> +	select PATA_PLATFORM
+>  	help
+>  	  This option enables support for generic directly connected ATA
+>  	  devices commonly found on embedded systems with OpenFirmware
+>=20
+> and then also drop the "select HAVE_PATA_PLATFORM" from
+> arm64 and arm/versatile.
+>=20
+> Or we can go one step further, and either split out the
+> 'pata_platform_driver' into a separate file from
+> '__pata_platform_probe', or merge pata_of_platform.c
+> back into pata_platform.c.
+>=20
+>       Arnd
+
+--=20
+Damien Le Moal
+Western Digital Research
 
