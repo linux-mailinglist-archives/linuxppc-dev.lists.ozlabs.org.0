@@ -1,63 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BD085B5CA0
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Sep 2022 16:48:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 175025B5D0E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Sep 2022 17:24:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MR8cN1qJSz3c6J
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Sep 2022 00:48:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MR9Ns6LYzz3chc
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Sep 2022 01:23:57 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kbDi4c3X;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=jrQtweWg;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::436; helo=mail-wr1-x436.google.com; envelope-from=leobras.c@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kbDi4c3X;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=jrQtweWg;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MR8bh2vd8z2yS0
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Sep 2022 00:48:16 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 65224611EA;
-	Mon, 12 Sep 2022 14:48:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86172C433C1;
-	Mon, 12 Sep 2022 14:48:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1662994091;
-	bh=OczXXt2JNIRl+b/y4vpwym4Uymlf17H9nX4/vsmsGvE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kbDi4c3XgYkTgHBIcWDHwlxRvy/KYwSBhWS232DTLYe0LIrC6ZyCMBcMT5NyMihmK
-	 pli0Qe3Fj1UzS/MnpDjT4uw8vZOFNzLNEYup/tMi0N/W/jltttzPENWlfbY8IpHQsu
-	 Oq3bZP4Kbqx2zHtlOuhj8g2/P6KRdO8Psv9QXW+QsDCkSTIAa2Vz+Obur08QWhfQ3o
-	 GRxaP6hKiFUTKVoCM0hGxAH4vXA0baIfTM7mzXmSjXYbmU/DNw8r7KzS1/mtzXHkmg
-	 raxAnkwX3VfJI/oLnnX/ddQ8oRjOxXKKh/zOqV662GVB2J68aXQdi//aUxrqBx7mBq
-	 63cYMr0LlLrzw==
-Date: Mon, 12 Sep 2022 15:48:05 +0100
-From: Mike Rapoport <rppt@kernel.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: Fragmented physical memory on powerpc/32
-Message-ID: <Yx9GpV1XT8r2a++R@kernel.org>
-References: <d84e4d24-f350-80fc-6c31-b7e7f8d429f4@heyquark.com>
- <20220520080454.c3cqodsdbfbkmg56@pali>
- <935b426a-6c64-beb0-907f-8c3f0a089ab7@heyquark.com>
- <20220520123002.rd46p5ty6wumi7cc@pali>
- <20220609222420.ponpoodiqmaqtwht@pali>
- <20220808184034.lskqrk6z3gb5q76r@pali>
- <219cda7b-da4b-7a5a-9809-0878e0fc02ba@csgroup.eu>
- <20220908153511.57ceunyusziqfcav@pali>
- <20220908201701.sd3zqn5hfixmjvhh@pali>
- <9fbc5338-5e10-032a-8f55-e080bd93f74b@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MR9Lt69VVz3bkx
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Sep 2022 01:22:13 +1000 (AEST)
+Received: by mail-wr1-x436.google.com with SMTP id h8so8944440wrf.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Sep 2022 08:22:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date;
+        bh=O8G6dPX3Y+xOXwYbrMKuwoBIXB9JjS8djjszRlHc9C4=;
+        b=jrQtweWgR9yIjX8oAAat+A6oMGWvw2MKGOLbXW1hag3gl1UfkIDpZbFy0RkezHpMC9
+         7hMqKiHaDgdc/CvL8V/2ApSdiUJyuic62kXcPbezFB6mVAfYJKDBw+5o06139k4BjES2
+         by6WoZP0p5auUsWDaCRNIvk7CsUNch4W/RTEPEL+LpLxBSNgYaiNWLIbOBAUF7AS3RX1
+         ohUF/tQvSeCnU6xraFh816r3JfdoNm1KgQYPDLj3HaTULcz2Xy1jtJkeqta6KLVmC94y
+         JBeyieOzHzmCE5cVc3iQrcGLeTZzWpPvMYhwfrnG89U9RdtDtiXd24PnF58drV5Ohyu8
+         yMOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date;
+        bh=O8G6dPX3Y+xOXwYbrMKuwoBIXB9JjS8djjszRlHc9C4=;
+        b=smk7my1okmKi0qte/0y2osJQLJWoNtHaY0CR1bO1HrI9T3G0W07n89rUUiTShfoOjs
+         yj38xx+/4aPHWiVUTd3O1Vkzk89hW2hlkJoTRb3EBzA0/Nqv8XG3/1iU5Soi23ilX2j8
+         RyP3oHCI/Rqr1S/bPqltSpAjEoLD/Gpl1K0VdTFnPDCM5fI2Qzg8t5es6BEcIPcTDVEH
+         5mwr0VvVaxyP/t9VD0BMKa1J6kqZQDMOWFZpOga/Ol9+IawRTOakGKoKvgpmV/KajG3v
+         6pAiQwfN233Sti1+QxOOWjV4lnJkvdEo5esXAfA7XcHJ2qm7vd673BGCVA6rsBkep9I6
+         isfA==
+X-Gm-Message-State: ACgBeo142vFFIgZiKRrzVo06KMBfFzA41XHUrI28P5RgvImlXdB6HzRB
+	xt7o9xMcEBv6cmj9Ci0wBGU=
+X-Google-Smtp-Source: AA6agR7kpCmsjqzpauqT/6uA/d7ctIsy6G8Fthr1mZvV281BNKbyCmlfxS1AFcL9eMmzt4xOCpDC3w==
+X-Received: by 2002:a5d:5848:0:b0:228:47af:caf3 with SMTP id i8-20020a5d5848000000b0022847afcaf3mr16404945wrf.336.1662996129761;
+        Mon, 12 Sep 2022 08:22:09 -0700 (PDT)
+Received: from [10.119.19.98] ([89.101.193.68])
+        by smtp.gmail.com with ESMTPSA id b5-20020a05600c150500b003a60f0f34b7sm9626121wmg.40.2022.09.12.08.22.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Sep 2022 08:22:09 -0700 (PDT)
+Message-ID: <cf845311ca7fcc0fded8db153499d9394f2add4e.camel@gmail.com>
+Subject: Re: [PATCH] Revert "powerpc/rtas: Implement reentrant rtas call"
+From: Leonardo =?ISO-8859-1?Q?Br=E1s?= <leobras.c@gmail.com>
+To: Nathan Lynch <nathanl@linux.ibm.com>
+Date: Mon, 12 Sep 2022 12:22:03 -0300
+In-Reply-To: <871qskve2f.fsf@linux.ibm.com>
+References: <20220907220111.223267-1-nathanl@linux.ibm.com>
+	 <1d76891ee052112ee1547a4027e358d5cbcac23d.camel@gmail.com>
+	 <871qskve2f.fsf@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <9fbc5338-5e10-032a-8f55-e080bd93f74b@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,150 +81,150 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "robh+dt@kernel.org" <robh+dt@kernel.org>, "paulus@samba.org" <paulus@samba.org>, Ash Logan <ash@heyquark.com>, Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>, "j.ne@posteo.net" <j.ne@posteo.net>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Sep 10, 2022 at 09:39:20AM +0000, Christophe Leroy wrote:
-> + Adding Mike who might help if the problem is around memblock.
-> 
-> Le 08/09/2022 à 22:17, Pali Rohár a écrit :
-> > On Thursday 08 September 2022 17:35:11 Pali Rohár wrote:
-> >> On Thursday 08 September 2022 15:25:14 Christophe Leroy wrote:
-> >>> Le 08/08/2022 à 20:40, Pali Rohár a écrit :
-> >>>> On Friday 10 June 2022 00:24:20 Pali Rohár wrote:
-> >>>>> On Friday 20 May 2022 14:30:02 Pali Rohár wrote:
-> >>>>>> + linux-mm
-> >>>>>>
-> >>>>>> Do you know what are requirements for kernel to support non-contiguous
-> >>>>>> memory support and what is needed to enable it for 32-bit powerpc?
-> >>>>>
-> >>>>> Any hints?
-> >>>>
-> >>>> PING?
-> >>>>
-> >>>
-> >>> The tree following patches landed in powerpc/next branch, so they should
-> >>> soon be visible in linux-next too:
-> >>>
-> >>> fc06755e2562 ("powerpc/32: Drop a stale comment about reservation of
-> >>> gigantic pages")
-> >>> b0e0d68b1c52 ("powerpc/32: Allow fragmented physical memory")
-> >>> 0115953dcebe ("powerpc/32: Remove wii_memory_fixups()")
-> >>
-> >> Ou, nice! I will try to test it if it allows me to access more than 2GB
-> >> of RAM from 4GB DDR3 module with 32-bit addressing mode on P2020 CPU.
-> > 
-> > Hello! Ok, I have tried it from powerpc/next branch, but seems it does
-> > not work. I'm getting just early kernel crash.
-> > 
-> > [    0.000000] CPU maps initialized for 1 thread per core
-> > [    0.000000]  (thread shift is 0)
-> > [    0.000000] -----------------------------------------------------
-> > [    0.000000] phys_mem_size     = 0xbe500000
-> > [    0.000000] dcache_bsize      = 0x20
-> > [    0.000000] icache_bsize      = 0x20
-> > [    0.000000] cpu_features      = 0x0000000010010108
-> > [    0.000000]   possible        = 0x0000000010010108
-> > [    0.000000]   always          = 0x0000000010010108
-> > [    0.000000] cpu_user_features = 0x84e08000 0x08000000
-> > [    0.000000] mmu_features      = 0x00020010
-> > [    0.000000] -----------------------------------------------------
-> > mpc85xx_rdb_setup_arch()
-> > [    0.000000] ioremap() called early from of_iomap+0x48/0x80. Use early_ioremap() instead
-> > [    0.000000] MPC85xx RDB board from Freescale Semiconductor
-> > [    0.000000] barrier-nospec: using isync; sync as speculation barrier
-> > [    0.000000] barrier-nospec: patched 182 locations
-> > [    0.000000] Top of RAM: 0xff700000, Total RAM: 0xbe500000
-> > [    0.000000] Memory hole size: 1042MB
-> > [    0.000000] Zone ranges:
-> > [    0.000000]   Normal   [mem 0x0000000000000000-0x000000002fffffff]
-> > [    0.000000]   HighMem  [mem 0x0000000030000000-0x00000000ff6fffff]
-> > [    0.000000] Movable zone start for each node
-> > [    0.000000] Early memory node ranges
-> > [    0.000000]   node   0: [mem 0x0000000000000000-0x000000007fffffff]
-> > [    0.000000]   node   0: [mem 0x00000000c0200000-0x00000000eeffffff]
-> > [    0.000000]   node   0: [mem 0x00000000f0000000-0x00000000ff6fffff]
-> > [    0.000000] Initmem setup node 0 [mem 0x0000000000000000-0x00000000ff6fffff]
-> > [    0.000000] MMU: Allocated 1088 bytes of context maps for 255 contexts
-> > [    0.000000] percpu: Embedded 11 pages/cpu s14196 r8192 d22668 u45056
-> > [    0.000000] pcpu-alloc: s14196 r8192 d22668 u45056 alloc=11*4096
-> > [    0.000000] pcpu-alloc: [0] 0 [0] 1
-> > [    0.000000] Built 1 zonelists, mobility grouping on.  Total pages: 777792
-> > [    0.000000] Kernel command line: root=ubi0:rootfs rootfstype=ubifs ubi.mtd=rootfs,2048 rootflags=chk_data_crc rw console=ttyS0,115200
-> > [    0.000000] Dentry cache hash table entries: 131072 (order: 7, 524288 bytes, linear)
-> > [    0.000000] Inode-cache hash table entries: 65536 (order: 6, 262144 bytes, linear)
-> > [    0.000000] mem auto-init: stack:off, heap alloc:off, heap free:off
-> > [    0.000000] Kernel attempted to read user page (7df58) - exploit attempt? (uid: 0)
-> > [    0.000000] BUG: Unable to handle kernel data access on read at 0x0007df58
-> > [    0.000000] Faulting instruction address: 0xc01c8348
-> > [    0.000000] Oops: Kernel access of bad area, sig: 11 [#1]
-> > [    0.000000] BE PAGE_SIZE=4K SMP NR_CPUS=2 P2020RDB-PC
-> > [    0.000000] Modules linked in:
-> > [    0.000000] CPU: 0 PID: 0 Comm: swapper Not tainted 6.0.0-rc2-0caacb197b677410bdac81bc34f05235+ #121
-> > [    0.000000] NIP:  c01c8348 LR: c01cb2bc CTR: 0000000a
-> > [    0.000000] REGS: c10d7e20 TRAP: 0300   Not tainted  (6.0.0-rc2-0caacb197b677410bdac81bc34f05235+)
-> > [    0.000000] MSR:  00021000 <CE,ME>  CR: 48044224  XER: 00000000
-> > [    0.000000] DEAR: 0007df58 ESR: 00000000
-> > [    0.000000] GPR00: c01cb294 c10d7f10 c1045340 00000001 00000004 c112bcc0 00000015 eedf1000
-> > [    0.000000] GPR08: 00000003 0007df58 00000000 f0000000 28044228 00000200 00000000 00000000
-> > [    0.000000] GPR16: 00000000 00000000 00000000 0275cb7a c0000000 00000001 0000075f 00000000
-> > [    0.000000] GPR24: c1031004 00000000 00000000 00000001 c10f0000 eedf1000 00080000 00080000
-> > [    0.000000] NIP [c01c8348] free_unref_page_prepare.part.93+0x48/0x60
-> > [    0.000000] LR [c01cb2bc] free_unref_page+0x84/0x4b8
-> > [    0.000000] Call Trace:
-> > [    0.000000] [c10d7f10] [eedf1000] 0xeedf1000 (unreliable)
-> > [    0.000000] [c10d7f20] [c01cb294] free_unref_page+0x5c/0x4b8
-> > [    0.000000] [c10d7f70] [c1007644] mem_init+0xd0/0x194
-> > [    0.000000] [c10d7fa0] [c1000e4c] start_kernel+0x4c0/0x6d0
-> > [    0.000000] [c10d7ff0] [c00003e0] set_ivor+0x13c/0x178
-> > [    0.000000] Instruction dump:
-> > [    0.000000] 552817be 5509103a 7d294214 55293830 7d4a4a14 812a003c 814a0038 5529002a
-> > [    0.000000] 7c892050 5484c23a 5489eafa 548406fe <7d2a482e> 7d242430 5484077e 90870010
-> > [    0.000000] ---[ end trace 0000000000000000 ]---
-> > [    0.000000]
-> > [    0.000000] Kernel panic - not syncing: Fatal exception
-> > [    0.000000] Rebooting in 1 seconds..
-> > [    0.000000] System Halted, OK to turn off power
-> > 
-> > 4GB DDR3 SODIMM module is set via Freescale LBC to the whole 4 GB
-> > address range. And on ranges:
-> > 0x0000_0000 - 0x7fff_ffff
-> > 0xc020_0000 - 0xeeff_ffff
-> > 0xf000_0000 - 0xff6f_ffff
-> > there is no peripheral device, they are free for DRAM. Between these
-> > physical ranges are mapped peripheral devices (PCIe and NOR).
-> > 
-> > Any idea if I'm doing something wrong or there can be a bug in memory code?
-> > 
-> > Quite suspicious is that "Initmem setup node 0" prints one range where
-> > are also peripherals, not just DRAM. Crash is on address 0xc01c8348
-> > which belongs to PCIe.
-> > 
-> 
-> Yes I also find that "Initmem setup node 0" suspicious.
-> 
-> However the crash address 0xc01c8348 is valid kernel address. That's a 
-> virtual address, not a physical address, so that's not PCIe. That's 
-> kernel linear mapping, so that's likely physical address 0x001c8348 
-> offseted by PAGE_OFFSET which is 0xc0000000.
+On Fri, 2022-09-09 at 09:04 -0500, Nathan Lynch wrote:
+> Hi Leonardo,
+>=20
+> (restoring the list to the cc, hope that's ok)
+>=20
 
-If I read the dump correctly, 0xc01c8348 is the PC of the instruction that
-crashed and the access was to 0x0007df58 which seem to well inside
-0x0000_0000 - 0x7fff_ffff range.
+Sure, thanks for doing that.=C2=A0
+I probably had some mail composer issue here.
 
-And the "Early memory node ranges" look consistent with the memory layout
-above.
+> Leonardo Br=C3=A1s <leobras.c@gmail.com> writes:
+> > On Wed, 2022-09-07 at 17:01 -0500, Nathan Lynch wrote:
+> > > At the time this was submitted by Leonardo, I confirmed -- or thought
+> > > I had confirmed -- with PowerVM partition firmware development that
+> > > the following RTAS functions:
+> > >=20
+> > > - ibm,get-xive
+> > > - ibm,int-off
+> > > - ibm,int-on
+> > > - ibm,set-xive
+> > >=20
+> > > were safe to call on multiple CPUs simultaneously, not only with
+> > > respect to themselves as indicated by PAPR, but with arbitrary other
+> > > RTAS calls:
+> > >=20
+> > > https://lore.kernel.org/linuxppc-dev/875zcy2v8o.fsf@linux.ibm.com/
+> > >=20
+> > > Recent discussion with firmware development makes it clear that this
+> > > is not true, and that the code in commit b664db8e3f97 ("powerpc/rtas:
+> > > Implement reentrant rtas call") is unsafe, likely explaining several
+> > > strange bugs we've seen in internal testing involving DLPAR and
+> > > LPM. These scenarios use ibm,configure-connector, whose internal stat=
+e
+> > > can be corrupted by the concurrent use of the "reentrant" functions,
+> > > leading to symptoms like endless busy statuses from RTAS.
+> >=20
+> > Oh, does not it means PowerVM is not compliant to the PAPR specs?
+>=20
+> No, it means the premise of commit b664db8e3f97 ("powerpc/rtas:
+> Implement reentrant rtas call") change is incorrect. The "reentrant"
+> property described in the spec applies only to the individual RTAS
+> functions. The OS can invoke (for example) ibm,set-xive on multiple CPUs
+> simultaneously, but it must adhere to the more general requirement to
+> serialize with other RTAS functions.
+>=20
 
-My guess would be that something went wrong in the linear map setup, but it
-won't hurt running with "memblock=debug" added to the kernel command line
-to see if there is anything suspicious there.
- 
-> Do you have a way to reproduce this problem under QEMU ?
-> 
-> Thanks
-> Christophe
+I see. Thanks for explaining that part!
+I agree: reentrant calls that way don't look as useful on Linux than I
+previously thought.
 
--- 
-Sincerely yours,
-Mike.
+OTOH, I think that instead of reverting the change, we could make use of th=
+e
+correct information and fix the current implementation. (This could help wh=
+en we
+do the same rtas call in multiple cpus)
+
+I have an idea of a patch to fix this.=20
+Do you think it would be ok if I sent that, to prospect being an alternativ=
+e to
+this reversion?
+
+
+> I don't claim that this is a useful property, at least not for
+> Linux. Maybe other OSes are better able to exploit it.
+>=20
+> I apologize for my role in the confusion here. When reviewing the
+> original change, I talked to firmware development about the reentrant
+> property and how we wanted to use it. I've since reviewed that
+> conversation and concluded that I didn't communicate clearly, and that I
+> interpreted their responses too eagerly.
+
+No problem. Thanks for even talking to firmware people during original chan=
+ge!
+
+
+>=20
+> In the future, when we (pseries Linux developers at IBM) want to go
+> beyond the language of the spec, we probably should initiate an
+> architecture change to make the PAPR eventually align with our
+> implementation choices.
+
+Yeah, it makes sense.
+
+>=20
+> > I mentioned this in the original Commit, and it's still true to the las=
+t LoPAR:
+> >=20
+> > ###
+> > For "ibm,int-on", "ibm,int-off",ibm,get-xive" and  "ibm,set-xive".
+> >=20
+> > On LoPAPR Version 1.1 (March 24, 2016), from 7.3.10.1 to 7.3.10.4,
+> > items 2 and 3 say:
+> >=20
+> > 2 - For the PowerPC External Interrupt option: The * call must be
+> > reentrant to the number of processors on the platform.
+> > 3 - For the PowerPC External Interrupt option: The * argument call
+> > buffer for each simultaneous call must be physically unique.
+> >=20
+> > ###=20
+> >=20
+> > Other than that, IIRC, this change was used to avoid issues that were h=
+appening
+> > on kdump/kexec:=C2=A0
+> > If another thread was holding the rtas lock, kdump/kexec would get stuc=
+k waiting
+> > for the lock forever and never finish the process, often causing a bug
+> > reproduction's kdump to not get collected.=20
+> >=20
+> > Is there any other fix for the above bug?=C2=A0
+>=20
+> Not that I'm aware of, but if this is a common failure mode for kdump,
+> then perhaps rtas_call() or related code should be made to ignore the
+> lock in the crash path, as a more general mitigation.
+
+It was the first idea at the time (bust the rtas lock), but I thought it co=
+uld
+raise some issues. Reentrant rtas calls seemed like a better solution at th=
+e
+time.
+
+>=20
+> Then again, maybe it's not that urgent? Only XICS mode guests are
+> potentially affected. Do we even have this problem with
+> firmware-assisted dumps on PowerVM?
+
+It's been a lot of time, I don't recall all the details on that.
+
+>=20
+> > Or is that a bug which is acceptable to have back, compared to the new
+> > one?
+>=20
+> It was not acceptable to regress existing functions (DLPAR, LPM) in
+> exchange for making the crash path more robust. Reverting the change is
+> the correct tradeoff, unfortunately.
+
+I was talking about the kdump bug being acceptable, which by the previous
+comment it is, or can be solved in other ways (busting rtas lock, as previo=
+usly
+mentioned).
+
+Thanks Nathan!
+
+Best regars,=20
+Leo
