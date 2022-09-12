@@ -1,74 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 721AC5B5897
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Sep 2022 12:43:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04DA55B58EE
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Sep 2022 13:01:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MR38x199Qz3c2R
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Sep 2022 20:43:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MR3Yk6thVz3c7N
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Sep 2022 21:01:14 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=eG++1Myb;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=dkim header.b=GAA4f6zA;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::635; helo=mail-pl1-x635.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=alien8.de (client-ip=2a01:4f8:190:11c2::b:1457; helo=mail.skyhub.de; envelope-from=bp@alien8.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=eG++1Myb;
+	dkim=pass (1024-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=dkim header.b=GAA4f6zA;
 	dkim-atps=neutral
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+X-Greylist: delayed 469 seconds by postgrey-1.36 at boromir; Mon, 12 Sep 2022 21:00:42 AEST
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MR38K341Jz2xHX
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Sep 2022 20:42:39 +1000 (AEST)
-Received: by mail-pl1-x635.google.com with SMTP id b21so8172146plz.7
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Sep 2022 03:42:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date;
-        bh=e8i3AEXWk+a/KfQ+pkaBKZPSaucmrJXCXprCtbpwRd8=;
-        b=eG++1MybL2CNZl5UfHC5yEODotFrPC7b2BZQSE437o/iaJ9DuiMnAfqzxqRapeWXat
-         ExPYH2Rf/iaSwtIH5+gEz8bfCGPvTxl5aUYGNyDmVaGq7caxdZv7Ketq8X9H343Qa18W
-         FexJIjzsl/s0pCi+OJgXd4lQGfIVGQRDPPUPcgTVPwXvHmp8PXh72gQbdKuMLtvYFMVq
-         +0cb0rYk9qqD43+yN6eF9axng2woXxiQUFSczOSMwdCDqgXPIBbQNTxiquBrEFcY6omT
-         eV+c7OWT2/pS/naOw/4TFmc1edd2CEr2oIJc8d8ywapg8zaXJMHmdia1JoAkcW/Q5Nth
-         9jag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date;
-        bh=e8i3AEXWk+a/KfQ+pkaBKZPSaucmrJXCXprCtbpwRd8=;
-        b=PAbwvdL2Oo+eD8d1YzJE8nxe2frZVhQA+56HNnxxfScv87hnf6OJLnMQb0h84pyrjy
-         btl08eX4JsG2k6TOlOoxOZ08XIo4CpYwZF9OCD2qE8g+E3JC4gKvNXZbQ0iMOb8Ug1yf
-         muXORPv2eWFBn3rd5spJeBzIL1uwxx7BjbBpgcy2g4EpRFa3il6C/j0knFPK7ccwhZVc
-         /fAhbXn9PKSzZ7Me+ly2APujjsIGxvJtWRTpf3nmB7Oxk2N4uNbN+lP9tqts9axVEO/U
-         3eak5sqxagKFNwbipqq8N5wMx5yAuXg8hqQiHg4fPma9Ujx4RY/VgxvOFB3sGiaQfgLv
-         Yw3g==
-X-Gm-Message-State: ACgBeo36su5A8edN6y9pHoIluA5n98d5et60XVJHwah+OVMXKa15T60D
-	6UZbZrCQJ60UzkJdtTKZfLk=
-X-Google-Smtp-Source: AA6agR5ik6YJ1txxOmsGJtPROAhvRGk5JjVWXpifJ5B3s5E0rx7jwSZbkqvLBfE0iU/UsDuZ/zMmkQ==
-X-Received: by 2002:a17:902:d512:b0:178:2898:8099 with SMTP id b18-20020a170902d51200b0017828988099mr7375096plg.131.1662979357586;
-        Mon, 12 Sep 2022 03:42:37 -0700 (PDT)
-Received: from localhost ([118.210.107.131])
-        by smtp.gmail.com with ESMTPSA id ij9-20020a170902ab4900b0016ee4b0bd60sm5603618plb.166.2022.09.12.03.42.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 12 Sep 2022 03:42:37 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 12 Sep 2022 20:42:32 +1000
-Message-Id: <CMUCZC1TQBYV.T5VOLUARFB7C@bobo>
-Subject: Re: [PATCH v4 09/20] powerpc: Enable compile-time check for syscall
- handlers
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Rohan McLure" <rmclure@linux.ibm.com>, <linuxppc-dev@lists.ozlabs.org>
-X-Mailer: aerc 0.11.0
-References: <20220824020548.62625-1-rmclure@linux.ibm.com>
- <20220824020548.62625-10-rmclure@linux.ibm.com>
-In-Reply-To: <20220824020548.62625-10-rmclure@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MR3Y66p3Cz2xmm
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Sep 2022 21:00:42 +1000 (AEST)
+Received: from nazgul.tnic (unknown [185.122.133.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 642B61EC04F0;
+	Mon, 12 Sep 2022 12:52:21 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1662979941;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=FgvRemfYbKJ8Gn7+wP5vaCT+FhTTeor282QL7mPb06M=;
+	b=GAA4f6zA1Q6IHDz2IsvfdeVTJQZIyGU+2XcK84evnx9QsQFTVuUiQn8z6Hj17Tykekb7cI
+	KGL7zUPl0vo7bMDpyNUoacP25QtdXp5YI3Ib2B7rPxYMA+YZJPmfxBdgjrD87xox95Nomk
+	ZN+TjlNyCYIXoPN/StONY8ThF7Sv9ME=
+Date: Mon, 12 Sep 2022 12:52:34 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Josh Poimboeuf <jpoimboe@kernel.org>, Michael Matz <matz@suse.de>
+Subject: Re: [RFC] Objtool toolchain proposal:
+ -fannotate-{jump-table,noreturn}
+Message-ID: <Yx8PcldkdOLN8eaw@nazgul.tnic>
+References: <20220909180704.jwwed4zhwvin7uyi@treble>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20220909180704.jwwed4zhwvin7uyi@treble>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,93 +58,168 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Mark Rutland <mark.rutland@arm.com>, Peter Zijlstra <peterz@infradead.org>, linuxppc-dev@lists.ozlabs.org, Chen Zhongjin <chenzhongjin@huawei.com>, x86@kernel.org, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>, Sathvika Vasireddy <sv@linux.ibm.com>, linux-toolchains@vger.kernel.org, Indu Bhagat <indu.bhagat@oracle.com>, live-patching@vger.kernel.org, Miroslav Benes <mbenes@suse.cz>, Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, linux-arm-kernel@lists.infradead.org, "Jose E. Marchesi" <jemarch@gnu.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed Aug 24, 2022 at 12:05 PM AEST, Rohan McLure wrote:
-> The table of syscall handlers and registered compatibility syscall
-> handlers has in past been produced using assembly, with function
-> references resolved at link time. This moves link-time errors to
-> compile-time, by rewriting systbl.S in C, and including the
-> linux/syscalls.h, linux/compat.h and asm/syscalls.h headers for
-> prototypes.
++ matz.
 
-Well this is pretty cool.
+Micha, any opinions on the below are appreciated.
 
-Unrelated, but since commit ab66dcc76d6a, is
-arch/powerpc/kernel/systbl_chk.sh unused in the tree?
+Thx.
 
->
-> Reported-by: Arnd Bergmann <arnd@arndb.de>
-> Signed-off-by: Rohan McLure <rmclure@linux.ibm.com>
-> ---
-> V1 -> V2: New patch.
-> ---
->  arch/powerpc/kernel/{systbl.S =3D> systbl.c} | 27 ++++++++++----------
->  1 file changed, 14 insertions(+), 13 deletions(-)
->
-> diff --git a/arch/powerpc/kernel/systbl.S b/arch/powerpc/kernel/systbl.c
-> similarity index 59%
-> rename from arch/powerpc/kernel/systbl.S
-> rename to arch/powerpc/kernel/systbl.c
-> index cb3358886203..99ffdfef6b9c 100644
-> --- a/arch/powerpc/kernel/systbl.S
-> +++ b/arch/powerpc/kernel/systbl.c
-> @@ -10,31 +10,32 @@
->   * PPC64 updates by Dave Engebretsen (engebret@us.ibm.com)=20
->   */
-> =20
-> -#include <asm/ppc_asm.h>
-> +#include <linux/syscalls.h>
-> +#include <linux/compat.h>
-> +#include <asm/unistd.h>
-> +#include <asm/syscalls.h>
-> =20
-> -.section .rodata,"a"
-> +#define __SYSCALL_WITH_COMPAT(nr, entry, compat) __SYSCALL(nr, entry)
-> =20
-> -#ifdef CONFIG_PPC64
-> -	.p2align	3
-> -#define __SYSCALL(nr, entry)	.8byte entry
-> +#ifdef CONFIG_ARCH_HAS_SYSCALL_WRAPPER
-> +#define __SYSCALL(nr, entry) [nr] =3D __powerpc_##entry,
-> +#define __powerpc_sys_ni_syscall	sys_ni_syscall
->  #else
-> -#define __SYSCALL(nr, entry)	.long entry
-> +#define __SYSCALL(nr, entry) [nr] =3D entry,
->  #endif
-> =20
-> -#define __SYSCALL_WITH_COMPAT(nr, native, compat)	__SYSCALL(nr, native)
-> -.globl sys_call_table
-> -sys_call_table:
-> +void *sys_call_table[] =3D {
+On Fri, Sep 09, 2022 at 11:07:04AM -0700, Josh Poimboeuf wrote:
+> Hi,
+> 
+> Here's a preview of what I'm planning to discuss at the LPC toolchains
+> microconference.  Feel free to start the discussion early :-)
+> 
+> This is a proposal for some new minor GCC/Clang features which would
+> help objtool greatly.
+> 
+> 
+> Background
+> ----------
+> 
+> Objtool is a kernel-specific tool which reverse engineers the control
+> flow graph (CFG) of compiled objects.  It then performs various
+> validations, annotations, and modifications, mostly with the goal of
+> improving robustness and security of the kernel.
+> 
+> Objtool features which use the CFG include include:
+> validation/generation of unwinding metadata; validation of Intel SMAP
+> rules; and validation of kernel "noinstr" rules (preventing compiler
+> instrumentation in certain critical sections).
+> 
+> In general it's not feasible for the traditional toolchain to do any of
+> this work, because the kernel has a lot of "blind spots" which the
+> toolchain doesn't have visibility to, notably asm and inline asm.
+> Manual .cfi annotations are very difficult to maintain and even more
+> difficult to ensure correctness.  Also, due to kernel live patching, the
+> kernel relies on 100% correctness of unwinding metadata, whereas the
+> toolchain treats it as a best effort.
+> 
+> 
+> Challenges
+> ----------
+> 
+> Reverse engineering the control flow graph is mostly quite
+> straightforward, with two notable exceptions:
+> 
+> 1) Jump tables (e.g., switch statements):
+> 
+>    Depending on the architecture, it's somewhere between difficult and
+>    impossible to reliabily identify which indirect jumps correspond to
+>    jump tables, and what are their corresponding intra-function jump
+>    destinations.
+> 
+> 2) Noreturn functions:
+>    
+>    There's no reliable way to determine which functions are designated
+>    by the compiler to be noreturn (either explictly via function
+>    attribute, or implicitly via a static function which is a wrapper
+>    around a noreturn function.)  This information is needed because the
+>    code after the call to such a function is optimized out as
+>    unreachable and objtool has no way of knowing that.
+> 
+> 
+> Proposal
+> --------
+> 
+> Add the following new compiler flags which create non-allocatable ELF
+> sections which "annotate" control flow:
+> 
+> (Note this is purely hypothetical, intended for starting a discussion.
+> I'm not a compiler person and I haven't written any compiler code.)
+> 
+> 
+> 1) -fannotate-jump-table
+> 
+> Create an .annotate.jump_table section which is an array of the
+> following variable-length structure:
+> 
+>   struct annotate_jump_table {
+> 	void *indirect_jmp;
+> 	long num_targets;
+> 	void *targets[];
+>   };
+> 
+> 
+> For example, given the following switch statement code:
+> 
+>   .Lswitch_jmp:
+> 	// %rax is .Lcase_1 or .Lcase_2
+> 	jmp %rax
+> 
+>   .Lcase_1:
+> 	...
+>   .Lcase_2:
+> 	...
+> 
+> 
+> Add the following code:
+> 
+>   .pushsection .annotate.jump_table
+> 	// indirect JMP address
+> 	.quad .Lswitch_jmp
+> 
+> 	// num jump targets
+> 	.quad 2
+> 
+> 	// indirect JMP target addresses
+> 	.quad .Lcase_1
+> 	.quad .Lcase_2
+>   .popsection
+> 
+> 
+> 2) -fannotate-noreturn
+> 
+> Create an .annotate.noreturn section which is an array of pointers to
+> noreturn functions (both explicit/implicit and defined/undefined).
+> 
+> 
+> For example, given the following three noreturn functions:
+> 
+>   // explicit noreturn:
+>   __attribute__((__noreturn__)) void func1(void)
+>   {
+> 	exit(1);
+>   }
+> 
+>   // explicit noreturn (extern):
+>   extern __attribute__((__noreturn__)) void func2(void);
+> 
+>   // implicit noreturn:
+>   static void func3(void)
+>   {
+>   	// call noreturn function
+> 	func2();
+>   }
+> 
+> 
+> Add the following code:
+> 
+>   .pushsection .annotate.noreturn
+> 	.quad func1
+> 	.quad func2
+> 	.quad func3
+>   .popsection
+> 
+> 
+> Alternatives
+> ------------
+> 
+> Another idea which has been floated in the past is for objtool to read
+> DWARF (or .eh_frame) to help it figure out the control flow.  That
+> hasn't been tried yet, but would be considerably more difficult and
+> fragile IMO.
+> 
+> 
+> -- 
+> Josh
 
-Humour me, the asm version had this in rodata, does this change that or
-does it somehow get put back in there? Should this be const?
+-- 
+Regards/Gruss,
+    Boris.
 
-Otherwise,=20
-
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-
->  #ifdef CONFIG_PPC64
->  #include <asm/syscall_table_64.h>
->  #else
->  #include <asm/syscall_table_32.h>
->  #endif
-> +};
-> =20
->  #ifdef CONFIG_COMPAT
->  #undef __SYSCALL_WITH_COMPAT
->  #define __SYSCALL_WITH_COMPAT(nr, native, compat)	__SYSCALL(nr, compat)
-> -.globl compat_sys_call_table
-> -compat_sys_call_table:
-> -#define compat_sys_sigsuspend	sys_sigsuspend
-> +void *compat_sys_call_table[] =3D {
->  #include <asm/syscall_table_32.h>
-> -#endif
-> +};
-> +#endif /* CONFIG_COMPAT */
-> --=20
-> 2.34.1
-
+https://people.kernel.org/tglx/notes-about-netiquette
