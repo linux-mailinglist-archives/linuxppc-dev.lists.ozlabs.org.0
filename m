@@ -1,74 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B8665B587F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Sep 2022 12:34:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 721AC5B5897
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Sep 2022 12:43:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MR2yg01BZz3bms
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Sep 2022 20:34:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MR38x199Qz3c2R
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Sep 2022 20:43:13 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ViPHStop;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=eG++1Myb;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::533; helo=mail-pg1-x533.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::635; helo=mail-pl1-x635.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ViPHStop;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=eG++1Myb;
 	dkim-atps=neutral
-Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com [IPv6:2607:f8b0:4864:20::533])
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MR2y03CH1z2xJN
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Sep 2022 20:33:43 +1000 (AEST)
-Received: by mail-pg1-x533.google.com with SMTP id 78so7835712pgb.13
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Sep 2022 03:33:43 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MR38K341Jz2xHX
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Sep 2022 20:42:39 +1000 (AEST)
+Received: by mail-pl1-x635.google.com with SMTP id b21so8172146plz.7
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Sep 2022 03:42:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=in-reply-to:references:to:from:subject:message-id:date
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date;
-        bh=9Skrw66xRdoVNUVBLV7A90jCnW6HPA3h92qwDvbqHmk=;
-        b=ViPHStopxL87r/ez0XBFcEFz3VzE0t695oe/H/4vedEPyq5I+GDufcibvlvx68FmF7
-         FPiI8KVcRQbMATKGisgoiZcoiNJJqew+bubHonT3pWbcxC/fLsLB7qiVxde5R7LzjjLG
-         djBRh6X7K1bQH+ROtrk0rwbIdg/CtOdqWnHpPQJoRT7mcr5Lfq6UoU9GcgJ50Iv7M+/d
-         64AuNVCDsBNrHA4KcycMBVg12aAxeZPM9UwcvKRj7O9r0KotNByLh3j4j8L4bbZ2xFub
-         5FrHby+VlHiVH6fcyAvqpeLVnjJ3B/bipOhZD8KVPsi43gWsCzl9RLyqlnMtspzkpJ4r
-         FnQg==
+        bh=e8i3AEXWk+a/KfQ+pkaBKZPSaucmrJXCXprCtbpwRd8=;
+        b=eG++1MybL2CNZl5UfHC5yEODotFrPC7b2BZQSE437o/iaJ9DuiMnAfqzxqRapeWXat
+         ExPYH2Rf/iaSwtIH5+gEz8bfCGPvTxl5aUYGNyDmVaGq7caxdZv7Ketq8X9H343Qa18W
+         FexJIjzsl/s0pCi+OJgXd4lQGfIVGQRDPPUPcgTVPwXvHmp8PXh72gQbdKuMLtvYFMVq
+         +0cb0rYk9qqD43+yN6eF9axng2woXxiQUFSczOSMwdCDqgXPIBbQNTxiquBrEFcY6omT
+         eV+c7OWT2/pS/naOw/4TFmc1edd2CEr2oIJc8d8ywapg8zaXJMHmdia1JoAkcW/Q5Nth
+         9jag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:references:to:from:subject:message-id:date
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date;
-        bh=9Skrw66xRdoVNUVBLV7A90jCnW6HPA3h92qwDvbqHmk=;
-        b=GZGmsuE19WNTcKMDcGgewAYreJjk6aw9Nz6MZTqK+EbXIiuEB37prP2Tz5s9qPZKi9
-         E+x4TyKMwzE7lRU1pHwVAqL2AYilqT5Tow8E7qXDWt/YjZGlzwAdjQxQXk9SDymkr9O4
-         +we7BDsKvt0rmn75nMDs+Tsf3m3F/eZTn4ZF8pK5Xo+Dpsf0TBmBcVm5r0vjrOsESdW9
-         zOFIp0NSfZBOtPfximLJU9f/oSjcZ+1tlvAZ0EY2l8a7CfrEAHBgW+292J5otngW1+3D
-         j9Rbv+VRtCxc7Tn8NDsggRJv2Wb05xSdJwOI8Qlktvw5DgBDtbB30PkL+GM/gY+o42+4
-         475w==
-X-Gm-Message-State: ACgBeo3QHqNXsPh4/ibTkMaWeOla7TGuMigfkGiJ6Ml9sSzpw9gJYujy
-	65nEG7hD2rnezYAPfb6JZHg=
-X-Google-Smtp-Source: AA6agR63sBf7Ug/+xbzbtmGt506lvdxRkQ+tmvOh56hAR5VTLC/dUx+s0gaSVzH7W8cOl/s+8P12Aw==
-X-Received: by 2002:a62:be0d:0:b0:535:df64:b106 with SMTP id l13-20020a62be0d000000b00535df64b106mr26857876pff.60.1662978820825;
-        Mon, 12 Sep 2022 03:33:40 -0700 (PDT)
+        bh=e8i3AEXWk+a/KfQ+pkaBKZPSaucmrJXCXprCtbpwRd8=;
+        b=PAbwvdL2Oo+eD8d1YzJE8nxe2frZVhQA+56HNnxxfScv87hnf6OJLnMQb0h84pyrjy
+         btl08eX4JsG2k6TOlOoxOZ08XIo4CpYwZF9OCD2qE8g+E3JC4gKvNXZbQ0iMOb8Ug1yf
+         muXORPv2eWFBn3rd5spJeBzIL1uwxx7BjbBpgcy2g4EpRFa3il6C/j0knFPK7ccwhZVc
+         /fAhbXn9PKSzZ7Me+ly2APujjsIGxvJtWRTpf3nmB7Oxk2N4uNbN+lP9tqts9axVEO/U
+         3eak5sqxagKFNwbipqq8N5wMx5yAuXg8hqQiHg4fPma9Ujx4RY/VgxvOFB3sGiaQfgLv
+         Yw3g==
+X-Gm-Message-State: ACgBeo36su5A8edN6y9pHoIluA5n98d5et60XVJHwah+OVMXKa15T60D
+	6UZbZrCQJ60UzkJdtTKZfLk=
+X-Google-Smtp-Source: AA6agR5ik6YJ1txxOmsGJtPROAhvRGk5JjVWXpifJ5B3s5E0rx7jwSZbkqvLBfE0iU/UsDuZ/zMmkQ==
+X-Received: by 2002:a17:902:d512:b0:178:2898:8099 with SMTP id b18-20020a170902d51200b0017828988099mr7375096plg.131.1662979357586;
+        Mon, 12 Sep 2022 03:42:37 -0700 (PDT)
 Received: from localhost ([118.210.107.131])
-        by smtp.gmail.com with ESMTPSA id k72-20020a62844b000000b0053e8368ec34sm5070367pfd.32.2022.09.12.03.33.38
+        by smtp.gmail.com with ESMTPSA id ij9-20020a170902ab4900b0016ee4b0bd60sm5603618plb.166.2022.09.12.03.42.35
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 12 Sep 2022 03:33:40 -0700 (PDT)
+        Mon, 12 Sep 2022 03:42:37 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 12 Sep 2022 20:33:35 +1000
-Message-Id: <CMUCSHFFSDYT.B7W3EV9G02B6@bobo>
-Subject: Re: [PATCH v4 08/20] powerpc: Include all arch-specific syscall
- prototypes
+Date: Mon, 12 Sep 2022 20:42:32 +1000
+Message-Id: <CMUCZC1TQBYV.T5VOLUARFB7C@bobo>
+Subject: Re: [PATCH v4 09/20] powerpc: Enable compile-time check for syscall
+ handlers
 From: "Nicholas Piggin" <npiggin@gmail.com>
 To: "Rohan McLure" <rmclure@linux.ibm.com>, <linuxppc-dev@lists.ozlabs.org>
 X-Mailer: aerc 0.11.0
 References: <20220824020548.62625-1-rmclure@linux.ibm.com>
- <20220824020548.62625-9-rmclure@linux.ibm.com>
-In-Reply-To: <20220824020548.62625-9-rmclure@linux.ibm.com>
+ <20220824020548.62625-10-rmclure@linux.ibm.com>
+In-Reply-To: <20220824020548.62625-10-rmclure@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,77 +80,93 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Arnd Bergmann <arnd@arndb.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On Wed Aug 24, 2022 at 12:05 PM AEST, Rohan McLure wrote:
-> Forward declare all syscall handler prototypes where a generic prototype
-> is not provided in either linux/syscalls.h or linux/compat.h in
-> asm/syscalls.h. This is required for compile-time type-checking for
-> syscall handlers, which is implemented later in this series.
+> The table of syscall handlers and registered compatibility syscall
+> handlers has in past been produced using assembly, with function
+> references resolved at link time. This moves link-time errors to
+> compile-time, by rewriting systbl.S in C, and including the
+> linux/syscalls.h, linux/compat.h and asm/syscalls.h headers for
+> prototypes.
+
+Well this is pretty cool.
+
+Unrelated, but since commit ab66dcc76d6a, is
+arch/powerpc/kernel/systbl_chk.sh unused in the tree?
+
 >
-> 32-bit compatibility syscall handlers are expressed in terms of types in
-> ppc32.h. Expose this header globally.
->
+> Reported-by: Arnd Bergmann <arnd@arndb.de>
 > Signed-off-by: Rohan McLure <rmclure@linux.ibm.com>
 > ---
-> V1 -> V2: Explicitly include prototypes.
-> V2 -> V3: Remove extraneous #include <asm/compat.h> and ppc_fallocate
-> prototype. Rename header.
+> V1 -> V2: New patch.
 > ---
->  arch/powerpc/include/asm/syscalls.h          | 90 +++++++++++++-----
->  .../ppc32.h =3D> include/asm/syscalls_32.h}    |  0
->  arch/powerpc/kernel/signal_32.c              |  2 +-
->  arch/powerpc/perf/callchain_32.c             |  2 +-
->  4 files changed, 70 insertions(+), 24 deletions(-)
+>  arch/powerpc/kernel/{systbl.S =3D> systbl.c} | 27 ++++++++++----------
+>  1 file changed, 14 insertions(+), 13 deletions(-)
 >
-> diff --git a/arch/powerpc/include/asm/syscalls.h b/arch/powerpc/include/a=
-sm/syscalls.h
-> index 3e3aff0835a6..91417dee534e 100644
-> --- a/arch/powerpc/include/asm/syscalls.h
-> +++ b/arch/powerpc/include/asm/syscalls.h
-> @@ -8,45 +8,91 @@
->  #include <linux/types.h>
->  #include <linux/compat.h>
+> diff --git a/arch/powerpc/kernel/systbl.S b/arch/powerpc/kernel/systbl.c
+> similarity index 59%
+> rename from arch/powerpc/kernel/systbl.S
+> rename to arch/powerpc/kernel/systbl.c
+> index cb3358886203..99ffdfef6b9c 100644
+> --- a/arch/powerpc/kernel/systbl.S
+> +++ b/arch/powerpc/kernel/systbl.c
+> @@ -10,31 +10,32 @@
+>   * PPC64 updates by Dave Engebretsen (engebret@us.ibm.com)=20
+>   */
 > =20
-> +#ifdef CONFIG_PPC64
-> +#include <asm/syscalls_32.h>
-> +#endif
+> -#include <asm/ppc_asm.h>
+> +#include <linux/syscalls.h>
+> +#include <linux/compat.h>
 > +#include <asm/unistd.h>
-> +#include <asm/ucontext.h>
-> +
->  struct rtas_args;
+> +#include <asm/syscalls.h>
 > =20
-> +#ifndef CONFIG_ARCH_HAS_SYSCALL_WRAPPER
+> -.section .rodata,"a"
+> +#define __SYSCALL_WITH_COMPAT(nr, entry, compat) __SYSCALL(nr, entry)
+> =20
+> -#ifdef CONFIG_PPC64
+> -	.p2align	3
+> -#define __SYSCALL(nr, entry)	.8byte entry
+> +#ifdef CONFIG_ARCH_HAS_SYSCALL_WRAPPER
+> +#define __SYSCALL(nr, entry) [nr] =3D __powerpc_##entry,
+> +#define __powerpc_sys_ni_syscall	sys_ni_syscall
+>  #else
+> -#define __SYSCALL(nr, entry)	.long entry
+> +#define __SYSCALL(nr, entry) [nr] =3D entry,
+>  #endif
+> =20
+> -#define __SYSCALL_WITH_COMPAT(nr, native, compat)	__SYSCALL(nr, native)
+> -.globl sys_call_table
+> -sys_call_table:
+> +void *sys_call_table[] =3D {
 
-Do you need this ifdef?
+Humour me, the asm version had this in rodata, does this change that or
+does it somehow get put back in there? Should this be const?
 
-> +
-> +/*
-> + * PowerPC architecture-specific syscalls
-> + */
-> +
-> +long sys_rtas(struct rtas_args __user *uargs);
-> +long sys_ni_syscall(void);
-> +
-> +#ifdef CONFIG_PPC64
-> +long sys_ppc64_personality(unsigned long personality);
-> +#ifdef CONFIG_COMPAT
-> +long compat_sys_ppc64_personality(unsigned long personality);
+Otherwise,=20
+
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+
+>  #ifdef CONFIG_PPC64
+>  #include <asm/syscall_table_64.h>
+>  #else
+>  #include <asm/syscall_table_32.h>
+>  #endif
+> +};
+> =20
+>  #ifdef CONFIG_COMPAT
+>  #undef __SYSCALL_WITH_COMPAT
+>  #define __SYSCALL_WITH_COMPAT(nr, native, compat)	__SYSCALL(nr, compat)
+> -.globl compat_sys_call_table
+> -compat_sys_call_table:
+> -#define compat_sys_sigsuspend	sys_sigsuspend
+> +void *compat_sys_call_table[] =3D {
+>  #include <asm/syscall_table_32.h>
+> -#endif
+> +};
 > +#endif /* CONFIG_COMPAT */
-> +#endif /* CONFIG_PPC64 */
-> +
-> +/* Parameters are reordered for powerpc to avoid padding */
-> +long sys_ppc_fadvise64_64(int fd, int advice,
-> +			  u32 offset_high, u32 offset_low,
-> +			  u32 len_high, u32 len_low);
+> --=20
+> 2.34.1
 
-Should this be under PPC32 since you're adding the ifdefs?
-
-Because you added a new comment here... This is register padding
-to do with something, even/odd pair calling convention? I can't
-remember the details would you be able to expand the comment a bit
-because I'm sure I'll forget it again too.
-
-Thanks,
-Nick
