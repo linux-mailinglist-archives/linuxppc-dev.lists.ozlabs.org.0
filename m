@@ -1,85 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 046505B5297
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Sep 2022 03:48:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B36635B5298
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Sep 2022 03:49:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MQqHk6hYSz3c3V
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Sep 2022 11:48:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MQqJT3bV3z3cB3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Sep 2022 11:48:57 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oamck208;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=On5fDUbq;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=rmclure@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oamck208;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=On5fDUbq;
 	dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MQqH25Rx9z2yKD
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MQqH25V0gz2ywS
 	for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Sep 2022 11:47:42 +1000 (AEST)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28BLK4XG026495;
-	Mon, 12 Sep 2022 01:47:36 GMT
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28BMPrdS010513;
+	Mon, 12 Sep 2022 01:47:38 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=iI974MInPCA+KVUYu4Z+G5iaNuTYIGpXYyR2gS0WdGc=;
- b=oamck208UAeHwF7f2Jxm3hnlm8XK4VgeqAOX944yr5dayM96LJe8tmRsQRZ29HXab8Ow
- F05NrVyPcVLAJ9a0/KFg5WvIPBF6LlJ59ckw74Lr3efHlYmCfbNKbBxsQ+z7mlOTp6jJ
- lWT06vN6IR7I73jc0CDnzRCzYSq+NWXV+lRCrWcYAeNFpDWKVkIlJOoC40vTjSvzqy/q
- 0CGurKgw83btdELYrRMoECZtJHs6PSY6ylb2tx5EYZvaSLud1QeKQuXlVJ+YSJl/r4hN
- DWRfzRuU6sbRYZ+DB8lgDCD6DMw1Tv8w8mDaDZgBKQ/M3tNkvtV93aukq6/tAoniEbJZ dA== 
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com [159.122.73.72])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jh7k849ck-1
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=9+KIOvF2UWSTnb+ZzWwJgcqF3x/63T8ngBq0WffOy+c=;
+ b=On5fDUbq3v94qjFg6zDKax739UBzdAONrTvtyzSL+IkxSIIF0lsZ8gkbvh2CXPh9cd1e
+ X/O8kOyKdC3zN9BSS44NCKyl0DAko44yTL3nT1sVnfBGxkesbPZL5lRzPae0S4ht0DMa
+ REoV3Fs7+JIz9UEdp/JlCaipShBui8e0lUx/9tJXvMalExG7538guiVPCTNtxQZNOBck
+ GGwVps1ALSEGcQUIk/Epve1kJpF0QHCRLSSEeBAA917okITKnHnIH+XWXydDnWYrnbhx
+ FbM6eVDlX8Iyg6eoWCvnpwz25nuxonUGVbA00OIlQrQp+XoahGRQYmR1nFZr4xCz5zA4 4Q== 
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jh3vu8673-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 12 Sep 2022 01:47:36 +0000
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
-	by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 28C1bk1t023699;
-	Mon, 12 Sep 2022 01:47:33 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
-	by ppma06fra.de.ibm.com with ESMTP id 3jghuhs8ur-1
+	Mon, 12 Sep 2022 01:47:38 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+	by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 28C1afYD012908;
+	Mon, 12 Sep 2022 01:47:36 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+	by ppma04ams.nl.ibm.com with ESMTP id 3jgj79sp3t-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 12 Sep 2022 01:47:33 +0000
+	Mon, 12 Sep 2022 01:47:35 +0000
 Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
-	by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 28C1lVJq40305022
+	by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 28C1lXeo38863234
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 12 Sep 2022 01:47:31 GMT
+	Mon, 12 Sep 2022 01:47:33 GMT
 Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1C342AE04D;
-	Mon, 12 Sep 2022 01:47:31 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 963BFAE04D;
+	Mon, 12 Sep 2022 01:47:33 +0000 (GMT)
 Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BAF42AE045;
-	Mon, 12 Sep 2022 01:47:30 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 40EFCAE045;
+	Mon, 12 Sep 2022 01:47:33 +0000 (GMT)
 Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
 	by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Mon, 12 Sep 2022 01:47:30 +0000 (GMT)
+	Mon, 12 Sep 2022 01:47:33 +0000 (GMT)
 Received: from civic.. (haven.au.ibm.com [9.192.254.114])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 1BB14600E5;
-	Mon, 12 Sep 2022 11:47:28 +1000 (AEST)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 1760D600E5;
+	Mon, 12 Sep 2022 11:47:32 +1000 (AEST)
 From: Rohan McLure <rmclure@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 1/3] powerpc: mm: move pud_pfn stub to common pgtable header
-Date: Mon, 12 Sep 2022 11:47:01 +1000
-Message-Id: <20220912014703.185471-1-rmclure@linux.ibm.com>
+Subject: [PATCH 2/3] powerpc: mm: add p{te,md,ud}_user_accessible_page helpers
+Date: Mon, 12 Sep 2022 11:47:02 +1000
+Message-Id: <20220912014703.185471-2-rmclure@linux.ibm.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20220912014703.185471-1-rmclure@linux.ibm.com>
+References: <20220912014703.185471-1-rmclure@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: F-zVcS3O0tPYZekDKSa2xUv0hdmv6AXi
-X-Proofpoint-ORIG-GUID: F-zVcS3O0tPYZekDKSa2xUv0hdmv6AXi
+X-Proofpoint-GUID: TsvnKOcV-hL_rhMAA_-SLt6hKSPapkNc
+X-Proofpoint-ORIG-GUID: TsvnKOcV-hL_rhMAA_-SLt6hKSPapkNc
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
  definitions=2022-09-11_14,2022-09-09_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 bulkscore=0
- priorityscore=1501 impostorscore=0 mlxscore=0 spamscore=0
- lowpriorityscore=0 adultscore=0 malwarescore=0 phishscore=0
- mlxlogscore=999 clxscore=1015 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2207270000 definitions=main-2209120004
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
+ lowpriorityscore=0 malwarescore=0 phishscore=0 adultscore=0 bulkscore=0
+ mlxlogscore=999 spamscore=0 priorityscore=1501 impostorscore=0 mlxscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2207270000 definitions=main-2209120004
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,59 +98,67 @@ Cc: Rohan McLure <rmclure@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The pud_pfn inline call is only referenced on 64-bit Book3S systems,
-but its invocations are gated by pud_devmap() invocations, rendering the
-body of this function as dead code.
+Add the following helpers for detecting whether a page table entry
+is a leaf and is accessible to user space.
 
-As such, this function is readily exportable to all platforms in the
-instance where kernel features depend on it at least being defined.
+ * pte_user_accessible_page
+ * pmd_user_accessible_page
+ * pud_user_accessible_page
+
+The heavy lifting is done by pte_user, which checks user accessibility
+on a per-mmu level, provided prior to this commit.
+
+On 32-bit systems, provide stub implementations for these methods, with
+BUG(), as debug features such as page table checks will emit functions
+that call p{md,ud}_user_accessible_page but must not be used.
 
 Signed-off-by: Rohan McLure <rmclure@linux.ibm.com>
 ---
- arch/powerpc/include/asm/book3s/64/pgtable.h | 10 ----------
- arch/powerpc/include/asm/pgtable.h           | 12 ++++++++++++
- 2 files changed, 12 insertions(+), 10 deletions(-)
+ arch/powerpc/include/asm/pgtable.h | 35 ++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
-index 392ff48f77df..8874f2a3661d 100644
---- a/arch/powerpc/include/asm/book3s/64/pgtable.h
-+++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
-@@ -1411,16 +1411,6 @@ static inline int pgd_devmap(pgd_t pgd)
- }
- #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
- 
--static inline int pud_pfn(pud_t pud)
--{
--	/*
--	 * Currently all calls to pud_pfn() are gated around a pud_devmap()
--	 * check so this should never be used. If it grows another user we
--	 * want to know about it.
--	 */
--	BUILD_BUG();
--	return 0;
--}
- #define __HAVE_ARCH_PTEP_MODIFY_PROT_TRANSACTION
- pte_t ptep_modify_prot_start(struct vm_area_struct *, unsigned long, pte_t *);
- void ptep_modify_prot_commit(struct vm_area_struct *, unsigned long,
 diff --git a/arch/powerpc/include/asm/pgtable.h b/arch/powerpc/include/asm/pgtable.h
-index 33f4bf8d22b0..522145b16a07 100644
+index 522145b16a07..8c1f5feb9360 100644
 --- a/arch/powerpc/include/asm/pgtable.h
 +++ b/arch/powerpc/include/asm/pgtable.h
-@@ -158,6 +158,18 @@ struct seq_file;
- void arch_report_meminfo(struct seq_file *m);
- #endif /* CONFIG_PPC64 */
+@@ -170,6 +170,41 @@ static inline int pud_pfn(pud_t pud)
+ 	return 0;
+ }
  
-+#define pud_pfn pud_pfn
-+static inline int pud_pfn(pud_t pud)
++static inline bool pte_user_accessible_page(pte_t pte)
 +{
-+	/*
-+	 * Currently all calls to pud_pfn() are gated around a pud_devmap()
-+	 * check so this should never be used. If it grows another user we
-+	 * want to know about it.
-+	 */
-+	BUILD_BUG();
-+	return 0;
++	return (pte_val(pte) & _PAGE_PRESENT) && pte_user(pte);
 +}
++
++#ifdef CONFIG_PPC64
++
++static inline bool pmd_user_accessible_page(pmd_t pmd)
++{
++	return pmd_is_leaf(pmd) && pmd_present(pmd)
++				&& pte_user(pmd_pte(pmd));
++}
++
++static inline bool pud_user_accessible_page(pud_t pud)
++{
++	return pud_is_leaf(pud) && pud_present(pud)
++				&& pte_user(pud_pte(pud));
++}
++
++#else
++
++static inline bool pmd_user_accessible_page(pmd_t pmd)
++{
++	BUG();
++	return false;
++}
++
++static inline bool pud_user_accessible_page(pud_t pud)
++{
++	BUG();
++	return false;
++}
++
++#endif /* CONFIG_PPC64 */
 +
  #endif /* __ASSEMBLY__ */
  
