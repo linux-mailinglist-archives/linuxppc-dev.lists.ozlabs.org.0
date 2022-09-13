@@ -1,62 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 685055B6D62
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Sep 2022 14:36:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B0E55B6D82
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Sep 2022 14:46:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MRjdR5J5Tz3bc8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Sep 2022 22:36:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MRjrc4jh7z3bYk
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Sep 2022 22:46:24 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=UgqOB3uW;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MRjcz40JJz2xmr
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Sep 2022 22:36:17 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4MRjcs6wMpz9swL;
-	Tue, 13 Sep 2022 14:36:13 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id J-_IE-R0VMXd; Tue, 13 Sep 2022 14:36:13 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4MRjcs67g9z9swK;
-	Tue, 13 Sep 2022 14:36:13 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id C1A868B780;
-	Tue, 13 Sep 2022 14:36:13 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id l5GnJCXuci9M; Tue, 13 Sep 2022 14:36:13 +0200 (CEST)
-Received: from [192.168.232.91] (unknown [192.168.232.91])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 412E88B763;
-	Tue, 13 Sep 2022 14:36:13 +0200 (CEST)
-Message-ID: <4f540391-37dc-8e22-be0a-74543082504d@csgroup.eu>
-Date: Tue, 13 Sep 2022 14:36:13 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MRjr26rZzz2yX3
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Sep 2022 22:45:54 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=UgqOB3uW;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4MRjr23jrfz4xD1;
+	Tue, 13 Sep 2022 22:45:54 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1663073154;
+	bh=wlwdHX3ADO3prs1ePTcA4mbJNan/FFPTr7iySLDzZt0=;
+	h=From:To:Subject:Date:From;
+	b=UgqOB3uWOfLOTy8YiizBKLtWthbl938d+UG3dxsyuhvqub/ybi/NDXxL27+M8DkX9
+	 E+mwtNCbKffowRza0u8woSnqaIvBRUmRseOT2raETqGUpVP2n9MkPh+CfkigW96gA8
+	 2hDZiMbHSrRZsk/H71fduSsgZi+WKWNkGsTjTB/iMIedo7K647v36c9xRXwF2pEDAR
+	 mvpQZGLDgFo+3yQiC0lTv85KYmWSY0c19NzqUMvKzTUFMcfwgXjM8AsqPj4P6Kq75l
+	 7BrIudzMftxiJZSfo7JXCXB1hJAJ/UoTwdsv9tMDdTHof3XiqoHfoYFyppWerpo/Za
+	 4ybZzbtxtSy6Q==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: <linuxppc-dev@lists.ozlabs.org>
+Subject: [PATCH] powerpc/64: Remove unused SYS_CALL_TABLE symbol
+Date: Tue, 13 Sep 2022 22:45:45 +1000
+Message-Id: <20220913124545.2817825-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.1
-Subject: Re: Fragmented physical memory on powerpc/32
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali@kernel.org>,
- Mike Rapoport <rppt@kernel.org>
-References: <20220520080454.c3cqodsdbfbkmg56@pali>
- <935b426a-6c64-beb0-907f-8c3f0a089ab7@heyquark.com>
- <20220520123002.rd46p5ty6wumi7cc@pali> <20220609222420.ponpoodiqmaqtwht@pali>
- <20220808184034.lskqrk6z3gb5q76r@pali>
- <219cda7b-da4b-7a5a-9809-0878e0fc02ba@csgroup.eu>
- <20220908153511.57ceunyusziqfcav@pali> <20220908201701.sd3zqn5hfixmjvhh@pali>
- <9fbc5338-5e10-032a-8f55-e080bd93f74b@csgroup.eu>
- <Yx9GpV1XT8r2a++R@kernel.org> <20220912211623.djb7fckgknyfmof7@pali>
- <1c95875c-29f8-68b7-e480-fed8614f3037@csgroup.eu>
-In-Reply-To: <1c95875c-29f8-68b7-e480-fed8614f3037@csgroup.eu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -69,59 +56,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "robh+dt@kernel.org" <robh+dt@kernel.org>, "paulus@samba.org" <paulus@samba.org>, Ash Logan <ash@heyquark.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "j.ne@posteo.net" <j.ne@posteo.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+In interrupt_64.S, formerly entry_64.S, there are two toc entries
+created for sys_call_table and compat_sys_call_table.
 
+These are no longer used, since the system call entry was converted from
+asm to C, so remove them.
 
-Le 13/09/2022 à 08:11, Christophe Leroy a écrit :
-> 
-> 
-> Le 12/09/2022 à 23:16, Pali Rohár a écrit :
->>>
->>> My guess would be that something went wrong in the linear map setup, 
->>> but it
->>> won't hurt running with "memblock=debug" added to the kernel command 
->>> line
->>> to see if there is anything suspicious there.
->>
->> Here is boot log on serial console with memblock=debug command line:
->>
-> ...
->>
->> Do you need something more for debug?
-> 
-> Can you send me the 'vmlinux' used to generate the above Oops so that I 
-> can see exactly where we are in function mem_init().
-> 
-> And could you also try without CONFIG_HIGHMEM just in case.
-> 
+Fixes: 68b34588e202 ("powerpc/64/sycall: Implement syscall entry/exit logic in C")
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/kernel/interrupt_64.S | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-I looked at the vmlinux you sent me, the problem is in the loop for 
-highmem in mem_init(). It crashes in the call to free_highmem_page()
+diff --git a/arch/powerpc/kernel/interrupt_64.S b/arch/powerpc/kernel/interrupt_64.S
+index f9ee93e3a0d3..0093a6b6b1e1 100644
+--- a/arch/powerpc/kernel/interrupt_64.S
++++ b/arch/powerpc/kernel/interrupt_64.S
+@@ -13,16 +13,6 @@
+ #include <asm/ppc_asm.h>
+ #include <asm/ptrace.h>
+ 
+-	.section	".toc","aw"
+-SYS_CALL_TABLE:
+-	.tc sys_call_table[TC],sys_call_table
+-
+-#ifdef CONFIG_COMPAT
+-COMPAT_SYS_CALL_TABLE:
+-	.tc compat_sys_call_table[TC],compat_sys_call_table
+-#endif
+-	.previous
+-
+ 	.align 7
+ 
+ .macro DEBUG_SRR_VALID srr
+-- 
+2.37.2
 
-#ifdef CONFIG_HIGHMEM
-	{
-		unsigned long pfn, highmem_mapnr;
-
-		highmem_mapnr = lowmem_end_addr >> PAGE_SHIFT;
-		for (pfn = highmem_mapnr; pfn < max_mapnr; ++pfn) {
-			phys_addr_t paddr = (phys_addr_t)pfn << PAGE_SHIFT;
-			struct page *page = pfn_to_page(pfn);
-			if (!memblock_is_reserved(paddr))
-				free_highmem_page(page);
-		}
-	}
-#endif /* CONFIG_HIGHMEM */
-
-
-As far as I can see in the memblock debug lines, the holes don't seem to 
-be marked as reserved by memblock. So it is above valid ? Other 
-architectures seem to do differently.
-
-Can you try by replacing !memblock_is_reserved(paddr) by 
-memblock_is_memory(paddr) ?
-
-Thanks
-Christophe
