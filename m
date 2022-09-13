@@ -1,87 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 893AB5B7714
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Sep 2022 19:03:29 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8984E5B783D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Sep 2022 19:40:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MRqY94jCpz3c65
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Sep 2022 03:03:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MRrMq3Ljwz3c6k
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Sep 2022 03:40:23 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Rm6q2eGQ;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=WMK777Mf;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::332; helo=mail-wm1-x332.google.com; envelope-from=leobras.c@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Rm6q2eGQ;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=WMK777Mf;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MRqXV26cJz2y6N
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Sep 2022 03:02:49 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28DGlEDR031892;
-	Tue, 13 Sep 2022 17:02:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type : content-transfer-encoding; s=pp1;
- bh=Uq3skbboDhKZ8FFGCxQ4C3VXYnnb0vVBTlq5zNym1dw=;
- b=Rm6q2eGQ+2zWejWYmkt6NokLHT/kmPqOXgI0pIit6vrcWDSqkAsBbhHlT5T7kGhCo1LZ
- FT62H9vOuj6N8pYqQAfAKf8MBXsn/BJB1TKSTVcgPFfOPKh+7tig3XI3bVrSdmu97gwZ
- je1hHq/gMHBrQruhAcfiyYr0d1VKVdFNznUCk0+SGTTJo7tVESE7ErfqMT8bCue3lOrS
- J5Uh48+u7LCuym2veK2F2JMlGtPSLQ3Rn4hSLqyJUOkNlW2oJqWbmTsFKR3aE6X37p7J
- jSRe96sErkCjcEOnmDvbqvpAWBjsuMEnNfH/wD4k2lvT+iNmVlBYCbC/q4xduZFCfQa6 zQ== 
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com [169.47.144.27])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3jjwpjgek0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 13 Sep 2022 17:02:44 +0000
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
-	by ppma05wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 28DGodCR015481;
-	Tue, 13 Sep 2022 17:02:43 GMT
-Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com [9.57.198.24])
-	by ppma05wdc.us.ibm.com with ESMTP id 3jgj7a5ak6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 13 Sep 2022 17:02:43 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com [9.57.199.109])
-	by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 28DH2hRk10683006
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 13 Sep 2022 17:02:43 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F0AC1112063;
-	Tue, 13 Sep 2022 17:02:42 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C4FDE112065;
-	Tue, 13 Sep 2022 17:02:42 +0000 (GMT)
-Received: from localhost (unknown [9.65.113.132])
-	by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
-	Tue, 13 Sep 2022 17:02:42 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: Michal =?utf-8?Q?Such=C3=A1nek?= <msuchanek@suse.de>
-Subject: Re: [PATCH] powerpc/pseries: add lparctl driver for
- platform-specific functions
-In-Reply-To: <20220913163343.GA28810@kitsune.suse.cz>
-References: <20220730000458.130938-1-nathanl@linux.ibm.com>
- <0ead0cd1-f6f6-ecf0-65d9-f3d9366e258c@linux.ibm.com>
- <87k07dl1f6.fsf@linux.ibm.com> <20220913091302.GY28810@kitsune.suse.cz>
- <87v8prtgcj.fsf@linux.ibm.com> <20220913163343.GA28810@kitsune.suse.cz>
-Date: Tue, 13 Sep 2022 12:02:42 -0500
-Message-ID: <87sfkvtdfx.fsf@linux.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MRrM83gkkz2xFx
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Sep 2022 03:39:46 +1000 (AEST)
+Received: by mail-wm1-x332.google.com with SMTP id n17-20020a05600c501100b003a84bf9b68bso9986480wmr.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Sep 2022 10:39:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date;
+        bh=GUL3z4nEbyK3zQ3tq3NpxDrHLqSJI3dZl5UAabL9oVE=;
+        b=WMK777MfOi+0u54zSbTbhxMGN55qjb1SYRD7kkRbTK8tSAfQwgmFP7sblYygKt64Ka
+         Ep4+9W0AwBQLa+KWuBGquHYVRYuJi2g/ME595Sf3xE36cKUvAIu+VuLPXT3hTMIVY2dM
+         FsbgEDbjm98MrLRVHEhT23zVc0nRAhDe7H80dGAioiXmVlHN67Icc87NWikL4nsTS3vK
+         iLuuEdL1yWx6vdWofHAnARkfbeIBBN8lWHeJCaBbvJgbFoOWRBkSqOl+gXizjEaFcgIE
+         3TITe14voZz4ViMq/sfvmZExGh3PtbHjK9p97p5TQQwm57sS39Z6TAArmnoY/wzx6l+I
+         iH1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date;
+        bh=GUL3z4nEbyK3zQ3tq3NpxDrHLqSJI3dZl5UAabL9oVE=;
+        b=nDyQRP5+2W3xsFt+hhsA1cD6pvGn1mRK012yBoe+2Ik2YAoRKggPcxAjNkxRSO3mrT
+         9T4IWXe/KjhVrUa2MclH5mAlY2mJuIMqMFfXbsz+zq3ZUZf2QeBfnDgefpcnwqMyPrcd
+         ft3NDohcQftR5aT3h/yw4VXwzxGRXosGiEww2nmrYONb3kNzHhmbS6KpgYb/PEQTUmbC
+         h9YAHPZiTbBrd0kI/jHm/As2b3G+xWhiasqALP60leiIRukfz4eo7hC9LP/DHMwW8o4F
+         3lqDFEWM0FG0y1qsBnzLeGbodmHnq7GqAU+DTgK10GcWga88fOfRLjHDQGkIUQYQuJ0H
+         FK2A==
+X-Gm-Message-State: ACgBeo06K7hmSS2ldtMmeoZpxsYaGZwI7A5ubAqYIxQnLaAABIToR7la
+	Rwp3uzoYeqCn4hN4yWrjvCexuZsWtYs=
+X-Google-Smtp-Source: AA6agR48EGC6A8EDc5HcFSSJhiS99ZkhOjHKr01Rs9wmv2OJpRNhI+aE+NJyLGO7+g0ceAKN5LE9UA==
+X-Received: by 2002:a1c:7412:0:b0:3b4:7a81:e7e4 with SMTP id p18-20020a1c7412000000b003b47a81e7e4mr289401wmc.15.1663090782324;
+        Tue, 13 Sep 2022 10:39:42 -0700 (PDT)
+Received: from [172.20.194.45] ([79.140.208.123])
+        by smtp.gmail.com with ESMTPSA id q127-20020a1c4385000000b003a5f54e3bbbsm14770787wma.38.2022.09.13.10.39.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Sep 2022 10:39:41 -0700 (PDT)
+Message-ID: <14e227181543ab45550ddf8e8fa1c53838361d61.camel@gmail.com>
+Subject: Re: [PATCH] Revert "powerpc/rtas: Implement reentrant rtas call"
+From: Leonardo =?ISO-8859-1?Q?Br=E1s?= <leobras.c@gmail.com>
+To: Nathan Lynch <nathanl@linux.ibm.com>
+Date: Tue, 13 Sep 2022 14:39:27 -0300
+In-Reply-To: <87y1uotlfa.fsf@linux.ibm.com>
+References: <20220907220111.223267-1-nathanl@linux.ibm.com>
+	 <1d76891ee052112ee1547a4027e358d5cbcac23d.camel@gmail.com>
+	 <871qskve2f.fsf@linux.ibm.com>
+	 <cf845311ca7fcc0fded8db153499d9394f2add4e.camel@gmail.com>
+	 <87y1uotlfa.fsf@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 6ZRsEUPm8Y16IVezpCsku13IaMzYke_1
-X-Proofpoint-GUID: 6ZRsEUPm8Y16IVezpCsku13IaMzYke_1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
- definitions=2022-09-13_09,2022-09-13_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
- suspectscore=0 mlxlogscore=999 malwarescore=0 bulkscore=0
- priorityscore=1501 adultscore=0 phishscore=0 impostorscore=0 clxscore=1015
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2207270000 definitions=main-2209130075
+User-Agent: Evolution 3.44.4 
+MIME-Version: 1.0
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,130 +83,83 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, Michal Hocko <mhocko@suse.com>, linux-kernel@vger.kernel.org, Chun-Yi <jlee@suse.com>, Lee@kitsune.suse.cz, Laurent Dufour <ldufour@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michal Such=C3=A1nek <msuchanek@suse.de> writes:
-> On Tue, Sep 13, 2022 at 10:59:56AM -0500, Nathan Lynch wrote:
->> Michal Such=C3=A1nek <msuchanek@suse.de> writes:
->>=20
->> > On Fri, Aug 12, 2022 at 02:14:21PM -0500, Nathan Lynch wrote:
->> >> Laurent Dufour <ldufour@linux.ibm.com> writes:
->> >> > Le 30/07/2022 =C3=A0 02:04, Nathan Lynch a =C3=A9crit=C2=A0:
->> >> >> +static long lparctl_get_sysparm(struct lparctl_get_system_paramet=
-er __user *argp)
->> >> >> +{
->> >> >> +	struct lparctl_get_system_parameter *gsp;
->> >> >> +	long ret;
->> >> >> +	int fwrc;
->> >> >> +
->> >> >> +	/*
->> >> >> +	 * Special case to allow user space to probe the command.
->> >> >> +	 */
->> >> >> +	if (argp =3D=3D NULL)
->> >> >> +		return 0;
->> >> >> +
->> >> >> +	gsp =3D memdup_user(argp, sizeof(*gsp));
->> >> >> +	if (IS_ERR(gsp)) {
->> >> >> +		ret =3D PTR_ERR(gsp);
->> >> >> +		goto err_return;
->> >> >> +	}
->> >> >> +
->> >> >> +	ret =3D -EINVAL;
->> >> >> +	if (gsp->rtas_status !=3D 0)
->> >> >> +		goto err_free;
->> >> >> +
->> >> >> +	do {
->> >> >> +		static_assert(sizeof(gsp->data) <=3D sizeof(rtas_data_buf));
->> >> >> +
->> >> >> +		spin_lock(&rtas_data_buf_lock);
->> >> >> +		memset(rtas_data_buf, 0, sizeof(rtas_data_buf));
->> >> >> +		memcpy(rtas_data_buf, gsp->data, sizeof(gsp->data));
->> >> >> +		fwrc =3D rtas_call(rtas_token("ibm,get-system-parameter"), 3, 1,
->> >> >> +				 NULL, gsp->token, __pa(rtas_data_buf),
->> >> >> +				 sizeof(gsp->data));
->> >> >> +		if (fwrc =3D=3D 0)
->> >> >> +			memcpy(gsp->data, rtas_data_buf, sizeof(gsp->data));
->> >> >
->> >> > May be the amount of data copied out to the user space could be
->> >> > gsp->length. This would prevent copying 4K bytes all the time.
->> >> >
->> >> > In a more general way, the size of the RTAS buffer is quite big, an=
-d I'm
->> >> > wondering if all the data need to be copied back and forth to the k=
-ernel.
->> >> >
->> >> > Unless there are a high frequency of calls this doesn't make sense,=
- and
->> >> > keeping the code simple might be the best way. Otherwise limiting t=
-he bytes
->> >> > copied could help a bit.
->> >>=20
->> >> This is not intended to be a high-bandwidth interface and I don't thi=
-nk
->> >> there's much of a performance concern here, so I'd rather just keep t=
-he
->> >> copy sizes involved constant.
->> >
->> > But that's absolutely horrible!
->>=20
->> ?
->>=20
->> > The user wants the VPD data, all of it. And you only give one page with
->> > this interface.
->>=20
->> The code here is for system parameters, which have a known maximum size,
->> unlike VPD. There's no code for VPD retrieval in this patch.
->
-> But we do need to support the calls that return multiple pages of data.
->
-> If the new driver supports only the simple calls it's a failure.
+On Mon, 2022-09-12 at 14:58 -0500, Nathan Lynch wrote:
+> Leonardo Br=C3=A1s <leobras.c@gmail.com> writes:
+> > On Fri, 2022-09-09 at 09:04 -0500, Nathan Lynch wrote:
+> > > Leonardo Br=C3=A1s <leobras.c@gmail.com> writes:
+> > > > On Wed, 2022-09-07 at 17:01 -0500, Nathan Lynch wrote:
+> > > > > At the time this was submitted by Leonardo, I confirmed -- or tho=
+ught
+> > > > > I had confirmed -- with PowerVM partition firmware development th=
+at
+> > > > > the following RTAS functions:
+> > > > >=20
+> > > > > - ibm,get-xive
+> > > > > - ibm,int-off
+> > > > > - ibm,int-on
+> > > > > - ibm,set-xive
+> > > > >=20
+> > > > > were safe to call on multiple CPUs simultaneously, not only with
+> > > > > respect to themselves as indicated by PAPR, but with arbitrary ot=
+her
+> > > > > RTAS calls:
+> > > > >=20
+> > > > > https://lore.kernel.org/linuxppc-dev/875zcy2v8o.fsf@linux.ibm.com=
+/
+> > > > >=20
+> > > > > Recent discussion with firmware development makes it clear that t=
+his
+> > > > > is not true, and that the code in commit b664db8e3f97 ("powerpc/r=
+tas:
+> > > > > Implement reentrant rtas call") is unsafe, likely explaining seve=
+ral
+> > > > > strange bugs we've seen in internal testing involving DLPAR and
+> > > > > LPM. These scenarios use ibm,configure-connector, whose internal =
+state
+> > > > > can be corrupted by the concurrent use of the "reentrant" functio=
+ns,
+> > > > > leading to symptoms like endless busy statuses from RTAS.
+> > > >=20
+> > > > Oh, does not it means PowerVM is not compliant to the PAPR specs?
+> > >=20
+> > > No, it means the premise of commit b664db8e3f97 ("powerpc/rtas:
+> > > Implement reentrant rtas call") change is incorrect. The "reentrant"
+> > > property described in the spec applies only to the individual RTAS
+> > > functions. The OS can invoke (for example) ibm,set-xive on multiple C=
+PUs
+> > > simultaneously, but it must adhere to the more general requirement to
+> > > serialize with other RTAS functions.
+> > >=20
+> >=20
+> > I see. Thanks for explaining that part!
+> > I agree: reentrant calls that way don't look as useful on Linux than I
+> > previously thought.
+> >=20
+> > OTOH, I think that instead of reverting the change, we could make use o=
+f the
+> > correct information and fix the current implementation. (This could hel=
+p when we
+> > do the same rtas call in multiple cpus)
+>=20
+> Hmm I'm happy to be mistaken here, but I doubt we ever really need to do
+> that. I'm not seeing the need.
+>=20
+> > I have an idea of a patch to fix this.=20
+> > Do you think it would be ok if I sent that, to prospect being an altern=
+ative to
+> > this reversion?
+>=20
+> It is my preference, and I believe it is more common, to revert to the
+> well-understood prior state, imperfect as it may be. The revert can be
+> backported to -stable and distros while development and review of
+> another approach proceeds.
 
-Michal, will you please moderate your tone? I think you can communicate
-your concerns without calling my work "absolutely horrible" or a
-"failure". Thanks.
+Ok then, as long as you are aware of the kdump bug, I'm good.
 
-Anyway, of course I intend to support the more complex calls, but
-supporting the simple calls actually unbreaks a lot of stuff.
+FWIW:
+Reviewed-by: Leonardo Bras <leobras.c@gmail.com>
 
->> But I'm happy to constructively discuss how a VPD ioctl interface should
->> work.
->>=20
->> > Worse, the call is not reentrant so you need to lock against other use=
-rs
->> > calling the call while the current caller is retrieving the inidividual
->> > pagaes.
->> >
->> > You could do that per process, but then processes with userspace
->> > threading would want the data as well so you would have to save the
->> > arguments of the last call, and compare to arguments of any subsequent
->> > call to determine if you can let it pass or block.
->> >
->> > And when you do all that there will be a process that retrieves a coup=
-le
->> > of pages and goes out for lunch or loses interest completely, blocking
->> > out everyone from accessing the interface at all.
->>=20
->> Right, the ibm,get-vpd RTAS function is tricky to expose to user space.
->>=20
->> It needs to be called repeatedly until all data has been returned, 4KB
->> at a time.
->>=20
->> Only one ibm,get-vpd sequence can be in progress at any time. If an
->> ibm,get-vpd sequence is begun while another sequence is already
->> outstanding, the first one is invalidated -- I would guess -1 or some
->> other error is returned on its next call.
->>=20
->> So a new system-call level interface for VPD retrieval probably should
->> not expose the repeating sequence-based nature of the RTAS function to
->> user space, to prevent concurrent clients from interfering with each
->> other. That implies that the kernel should buffer the VPD results
->> internally; at least that's the only idea I've had so far. Open to
->> other suggestions.
->
-> It can save the data to an user-supplied buffer until all data is
-> transferred or the buffer space runs out.
-
-Yes, of course, thanks. Assuming user space can discover the appropriate
-buffer size, which should be possible.
