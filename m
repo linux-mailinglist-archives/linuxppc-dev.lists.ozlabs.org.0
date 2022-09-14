@@ -1,98 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A80E25B85F0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Sep 2022 12:10:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1531E5B862E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Sep 2022 12:21:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MSGKk4mtsz3bdk
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Sep 2022 20:10:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MSGbM16Wxz3c66
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Sep 2022 20:21:51 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EyQ9du6x;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EyQ9du6x;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LLIIKfyf;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=jpoimboe@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EyQ9du6x;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EyQ9du6x;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LLIIKfyf;
 	dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MSGJz5kwJz2xZ7
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Sep 2022 20:09:21 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1663150155;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tRy6NMXVqAdLaaelo9/KHPKagVual2K79eNRneTqSHA=;
-	b=EyQ9du6xRmFX7YB9MtOcw0ux1gbmZFbMa870f0cREnvSY2IrABqTEJKu1seMY5Z6ZTAgA0
-	BF8Gqmj8ht3sJ0Koqz7ckcfPs18wTEGvkTactiV0Ta1+Js/OVzQMzhGoQ1VJL8JT+taLEi
-	aBjTYbA9zjRHMMROLQ6qkJecchuWkfU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1663150155;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tRy6NMXVqAdLaaelo9/KHPKagVual2K79eNRneTqSHA=;
-	b=EyQ9du6xRmFX7YB9MtOcw0ux1gbmZFbMa870f0cREnvSY2IrABqTEJKu1seMY5Z6ZTAgA0
-	BF8Gqmj8ht3sJ0Koqz7ckcfPs18wTEGvkTactiV0Ta1+Js/OVzQMzhGoQ1VJL8JT+taLEi
-	aBjTYbA9zjRHMMROLQ6qkJecchuWkfU=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-595-WNB2l02zPkuL_m5dcbrKmA-1; Wed, 14 Sep 2022 06:09:13 -0400
-X-MC-Unique: WNB2l02zPkuL_m5dcbrKmA-1
-Received: by mail-wm1-f71.google.com with SMTP id h4-20020a1c2104000000b003b334af7d50so10158799wmh.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Sep 2022 03:09:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:organization:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date;
-        bh=tRy6NMXVqAdLaaelo9/KHPKagVual2K79eNRneTqSHA=;
-        b=dgMhWImptHuUKeGfOPxrJkHEZ8vXdhBT+opBNU86wQlNp9GBV7N8s5iwfXvb5LEh6+
-         9SbXsjVKzRN9kFTzyLOrkJmFL4hFV5i7iIyeVeSrSiBDbqFumM2p27+Zm772PDvqSyKd
-         gb5UvLydoCBXXljVIcwZieoVqjtxQYDaDmBDgjAXNed6I5ciXRzoV1ZHkQI8c7vX3WGA
-         auE3vJGer3Ophn87SFUNrs+wkp6vjs/YgeoY9aRESLPhIWn/DPknsvl4+nHDhUvmqX99
-         l1aiO3JtVaU8btsIWGRqvLEgadeGGklqAYRtOla0+a4+NEp10QTelVzXwAsey1SvwIVE
-         QF+Q==
-X-Gm-Message-State: ACgBeo3rrp4OUs1Bs18Y8RNLnWvwJOhZ2SlvWovTbCMhOm1LOV2MRCv8
-	x7gA9WNPv923fJxqOGYMJnvPPXF488Hl9JKbEsGleOBjNqHpH6w3I/+Xx+MGPMai/Ara3v55CZU
-	q3LgH+4XFlz8p9kkWaPbMdA/l0A==
-X-Received: by 2002:a5d:47aa:0:b0:226:dbf6:680c with SMTP id 10-20020a5d47aa000000b00226dbf6680cmr20947366wrb.581.1663150152760;
-        Wed, 14 Sep 2022 03:09:12 -0700 (PDT)
-X-Google-Smtp-Source: AA6agR6mUE0OyqSCSCmqM4mki5eCHDSHXk9TWtC5yJAaN4TbupXuzHkSxN3OSWGQKjEVNQGAFCI3Hw==
-X-Received: by 2002:a5d:47aa:0:b0:226:dbf6:680c with SMTP id 10-20020a5d47aa000000b00226dbf6680cmr20947344wrb.581.1663150152500;
-        Wed, 14 Sep 2022 03:09:12 -0700 (PDT)
-Received: from [10.119.22.46] ([89.101.193.71])
-        by smtp.gmail.com with ESMTPSA id v2-20020adfe282000000b00228dff8d975sm12603941wri.109.2022.09.14.03.09.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 14 Sep 2022 03:09:11 -0700 (PDT)
-Message-ID: <35003c8f-d777-b2b1-4d48-20f90ba66994@redhat.com>
-Date: Wed, 14 Sep 2022 12:09:10 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MSGZh3Zbbz2xKX
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Sep 2022 20:21:16 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id B6C4AB81979;
+	Wed, 14 Sep 2022 10:21:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8A2FC433C1;
+	Wed, 14 Sep 2022 10:21:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1663150870;
+	bh=DiPQNoNQNG+LQNzk/iOQ5X8mk924KHwwG68nSONOT+c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LLIIKfyfTOvDZbH9wZaRqn8c0Jveo+TQ6Zt7JqKiPzkEsMLIQ2+OrSOPk+A75ttv9
+	 cdYSrFuCTthS8RzN8Fv301CuEb8gxC/23zBONTWkIngBDkRj7kzEKYY+2WLrXUExAx
+	 PB05AkMjWJbeZwNBT6PLMz3GsjFf5jQ9L0QBC4fsSAFVVO2vF9bL+DlurkFyPXHYJj
+	 ExNEJTXC06DKdUMf1iLprTPmyOLqTvi1MjJX8basjkokHqeUbpyq3d2+r6WAKnnLav
+	 k6tHWhkuTxHDL3h18VQp1RJwgEhAOREqBPIheMRG2gg2U6A8bvuQw8pkSRGvyp8jy+
+	 LusWJ4Sfx2AIA==
+Date: Wed, 14 Sep 2022 11:21:00 +0100
+From: Josh Poimboeuf <jpoimboe@kernel.org>
+To: Segher Boessenkool <segher@kernel.crashing.org>
+Subject: Re: [RFC] Objtool toolchain proposal:
+ -fannotate-{jump-table,noreturn}
+Message-ID: <20220914102100.thl5ad35plvazark@treble>
+References: <20220909180704.jwwed4zhwvin7uyi@treble>
+ <20220912113114.GV25951@gate.crashing.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.0
-Subject: Re: [PATCH] hmm-tests: Fix migrate_dirty_page test
-To: Alistair Popple <apopple@nvidia.com>
-References: <20220913052203.177071-1-apopple@nvidia.com>
- <53390539-cfa9-7498-5b69-8fb8b307182d@redhat.com>
- <878rmnn0jq.fsf@nvdebian.thelocal>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <878rmnn0jq.fsf@nvdebian.thelocal>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20220912113114.GV25951@gate.crashing.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,80 +61,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Sierra Guiza, Alejandro \(Alex\)" <alex.sierra@amd.com>, Ralph Campbell <rcampbell@nvidia.com>, Lyude Paul <lyude@redhat.com>, Karol Herbst <kherbst@redhat.com>, Nadav Amit <nadav.amit@gmail.com>, Felix Kuehling <Felix.Kuehling@amd.com>, linuxppc-dev@lists.ozlabs.org, LKML <linux-kernel@vger.kernel.org>, Peter Xu <peterx@redhat.com>, linux-mm@kvack.org, Logan Gunthorpe <logang@deltatee.com>, Matthew Wilcox <willy@infradead.org>, Jason Gunthorpe <jgg@nvidia.com>, John Hubbard <jhubbard@nvidia.com>, akpm@linux-foundation.org, huang ying <huang.ying.caritas@gmail.com>, Ben Skeggs <bskeggs@redhat.com>
+Cc: Mark Rutland <mark.rutland@arm.com>, Michael Matz <matz@suse.de>, Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>, linuxppc-dev@lists.ozlabs.org, x86@kernel.org, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>, Sathvika Vasireddy <sv@linux.ibm.com>, linux-toolchains@vger.kernel.org, Indu Bhagat <indu.bhagat@oracle.com>, live-patching@vger.kernel.org, Miroslav Benes <mbenes@suse.cz>, Chen Zhongjin <chenzhongjin@huawei.com>, Ard Biesheuvel <ardb@kernel.org>, linux-arm-kernel@lists.infradead.org, "Jose E. Marchesi" <jemarch@gnu.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 13.09.22 10:20, Alistair Popple wrote:
+On Mon, Sep 12, 2022 at 06:31:14AM -0500, Segher Boessenkool wrote:
+> Hi!
 > 
-> David Hildenbrand <david@redhat.com> writes:
+> On Fri, Sep 09, 2022 at 11:07:04AM -0700, Josh Poimboeuf wrote:
+> > 2) Noreturn functions:
+> >    
+> >    There's no reliable way to determine which functions are designated
+> >    by the compiler to be noreturn (either explictly via function
+> >    attribute, or implicitly via a static function which is a wrapper
+> >    around a noreturn function.)
 > 
->> On 13.09.22 07:22, Alistair Popple wrote:
->>> As noted by John Hubbard the original test relied on side effects of the
->>> implementation of migrate_vma_setup() to detect if pages had been
->>> swapped to disk or not. This is subject to change in future so
->>> explicitly check for swap entries via pagemap instead. Fix a spelling
->>> mistake while we're at it.
->>> Signed-off-by: Alistair Popple <apopple@nvidia.com>
->>> Fixes: 5cc88e844e87 ("selftests/hmm-tests: add test for dirty bits")
->>> ---
->>>    tools/testing/selftests/vm/hmm-tests.c | 50 +++++++++++++++++++++++---
->>>    1 file changed, 46 insertions(+), 4 deletions(-)
->>> diff --git a/tools/testing/selftests/vm/hmm-tests.c
->>> b/tools/testing/selftests/vm/hmm-tests.c
->>> index 70fdb49b59ed..b5f6a7dc1f12 100644
->>> --- a/tools/testing/selftests/vm/hmm-tests.c
->>> +++ b/tools/testing/selftests/vm/hmm-tests.c
->>> @@ -1261,9 +1261,47 @@ static int destroy_cgroup(void)
->>>    	return 0;
->>>    }
->>>    +static uint64_t get_pfn(int fd, uint64_t ptr)
->>> +{
->>> +	uint64_t pfn;
->>> +	int ret;
->>> +
->>> +	ret = pread(fd, &pfn, sizeof(ptr),
->>> +		(uint64_t) ptr / getpagesize() * sizeof(ptr));
->>> +	if (ret != sizeof(ptr))
->>> +		return 0;
->>> +
->>> +	return pfn;
->>> +}
->>> +
->>> +#define PAGEMAP_SWAPPED (1ULL << 62)
->>> +
->>> +/* Returns true if at least one page in the range is on swap */
->>> +static bool pages_swapped(void *ptr, unsigned long pages)
->>> +{
->>> +	uint64_t pfn;
->>> +	int fd = open("/proc/self/pagemap", O_RDONLY);
->>> +	unsigned long i;
->>> +
->>> +	if (fd < 0)
->>> +		return false;
->>> +
->>> +	for (i = 0; i < pages; i++) {
->>> +		pfn = get_pfn(fd, (uint64_t) ptr + i * getpagesize());
->>> +
->>> +		if (pfn & PAGEMAP_SWAPPED) {
->>> +			close(fd);
->>> +			return true;
->>> +		}
->>
->> We do have pagemap_get_entry() in vm_util.c to query the pagemap entry.
+> Or just a function that does not return for any other reason.
 > 
-> Thanks. I'd missed that, although `grep pagemap
-> tools/testing/selftests/vm` suggests I'm not the first to follow a
-> tradition of open-coding this :-)
-> 
-> But there's no need to perpetuate that tradition, so will redo this to
-> use vm_util.c instead.
+> The compiler makes no difference between functions that have the
+> attribute and functions that do not.  There are good reasons to not
+> have the attribute on functions that do in fact not return.  The
+> not-returningness of the function may be just an implementation
+> accident, something you do not want part of the API, so it *should* not
+> have that attribute; or you may want the callers to a function to not be
+> optimised according to this knowledge (you cannot *prevent* that, the
+> compiler can figure it out it other ways, but still) for any other
+> reason.
 
-Yeah, we just recently factored stuff out into there. I'll be factoring 
-out more in my upcoming tests from the madv_populate tests.
+Yes, many static functions that are wrappers around noreturn functions
+have this "implicit noreturn" property.  I agree we would need to know
+about those functions (or, as Michael suggested, their call sites) as
+well.
+
+> >    This information is needed because the
+> >    code after the call to such a function is optimized out as
+> >    unreachable and objtool has no way of knowing that.
+> 
+> Since June we (GCC) have -funreachable-traps.  This creates a trap insn
+> wherever control flow would otherwise go into limbo.
+
+Ah, that's interesting, though I'm not sure if we'd be able to
+distinguish between "call doesn't return" traps and other traps or
+reasons for UD2.
 
 -- 
-Thanks,
-
-David / dhildenb
-
+Josh
