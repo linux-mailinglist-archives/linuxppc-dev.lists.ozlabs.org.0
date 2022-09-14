@@ -2,69 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B5155B8A7F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Sep 2022 16:29:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8BF05B8B21
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Sep 2022 16:56:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MSN4j10r7z3bkk
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Sep 2022 00:29:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MSNhT3ljjz3blw
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Sep 2022 00:56:41 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=IMcU+sMz;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=3fJIRsri;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=czTvweMU;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2001:67c:2178:6::1d; helo=smtp-out2.suse.de; envelope-from=matz@suse.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=IMcU+sMz;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=3fJIRsri;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=czTvweMU;
 	dkim-atps=neutral
-X-Greylist: delayed 8389 seconds by postgrey-1.36 at boromir; Thu, 15 Sep 2022 00:28:32 AEST
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MSN404Bxrz2xy4
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Sep 2022 00:28:31 +1000 (AEST)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-	by smtp-out2.suse.de (Postfix) with ESMTP id 884331FAC1;
-	Wed, 14 Sep 2022 14:28:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1663165707; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rNlI3zlemkHtad6UJYVAQefl5OerSoDA86fMBi08vO4=;
-	b=IMcU+sMzPrtf2swXGKoltws1DQ4PgrmVnuO6T/Q8delDYm0q8pNrJpq1MOP7xd6pZAf/Jb
-	Fj9kKS+pmhqrUq9gHQbLKe9xjwQzs0XXFM41HygdB74Nb7ZvF9w5/0sBD/TJQ6ijUhNld2
-	ovmAUy7zEQzNfJwAOOA+Lerl2Xz07qg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1663165707;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rNlI3zlemkHtad6UJYVAQefl5OerSoDA86fMBi08vO4=;
-	b=3fJIRsrioi8AmmHGURizF9ChVKr3QoUbkZwIJ7IgJ5my1PvR3SHrnTkZipLA9y0w31fOb6
-	QBhZcoLjuWM9F4Bw==
-Received: from wotan.suse.de (wotan.suse.de [10.160.0.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by relay2.suse.de (Postfix) with ESMTPS id 0A94B2C141;
-	Wed, 14 Sep 2022 14:28:27 +0000 (UTC)
-Received: by wotan.suse.de (Postfix, from userid 10510)
-	id EFA0E62AF; Wed, 14 Sep 2022 14:28:26 +0000 (UTC)
-Received: from localhost (localhost [127.0.0.1])
-	by wotan.suse.de (Postfix) with ESMTP id EDC3C62AE;
-	Wed, 14 Sep 2022 14:28:26 +0000 (UTC)
-Date: Wed, 14 Sep 2022 14:28:26 +0000 (UTC)
-From: Michael Matz <matz@suse.de>
-To: Peter Zijlstra <peterz@infradead.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MSNgm2VfRz30Dp
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Sep 2022 00:56:04 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=lALMKmdqPOn863q1KH2GHJFtFLSUGddYczxk7N3aI/M=; b=czTvweMUYoYEwwLa37VQmFT4n6
+	yngz7eFZe9tSr77iA5R23q4p3rOTQ0tUEDmwtQ865Anxjj0hRK5lCOyoI41DeAX4Sbp0G9PJvf5zS
+	kUJ7fsgOMtvDUbenfkNBESLno0UFnzzWqf0WZ3jEAlzoJvMpfFRsvfIXWaXHofc84YUdstmAeGSt/
+	/VWUkFerFuOp0vVfysvRP+QjT2l4QLw4nudPPSkuUDuGF9Obnk9Ndpm8X5umKT9achMkhU35jb+Wg
+	UfejWRl74GzEaZ36dbnwK0cWBDzKeijaPAWBD+mILYlVXI9R0o32CkIs7xdslXQJw8XtBhQDUzoLM
+	AM/bI/KA==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1oYTnX-000GUH-OT; Wed, 14 Sep 2022 14:55:31 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id A75AE3002AE;
+	Wed, 14 Sep 2022 16:55:27 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 8BDA8201B3981; Wed, 14 Sep 2022 16:55:27 +0200 (CEST)
+Date: Wed, 14 Sep 2022 16:55:27 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Michael Matz <matz@suse.de>
 Subject: Re: [RFC] Objtool toolchain proposal:
  -fannotate-{jump-table,noreturn}
-In-Reply-To: <YyHecBM8D0i1lRu8@hirez.programming.kicks-ass.net>
-Message-ID: <alpine.LSU.2.20.2209141415340.8265@wotan.suse.de>
-References: <20220909180704.jwwed4zhwvin7uyi@treble> <Yx8PcldkdOLN8eaw@nazgul.tnic> <alpine.LSU.2.20.2209121200120.8265@wotan.suse.de> <20220914000416.daxbgccbxwpknn2q@treble> <YyHecBM8D0i1lRu8@hirez.programming.kicks-ass.net>
-User-Agent: Alpine 2.20 (LSU 67 2015-01-07)
+Message-ID: <YyHrX/fTMwfv24W7@hirez.programming.kicks-ass.net>
+References: <20220909180704.jwwed4zhwvin7uyi@treble>
+ <Yx8PcldkdOLN8eaw@nazgul.tnic>
+ <alpine.LSU.2.20.2209121200120.8265@wotan.suse.de>
+ <20220914000416.daxbgccbxwpknn2q@treble>
+ <YyHecBM8D0i1lRu8@hirez.programming.kicks-ass.net>
+ <alpine.LSU.2.20.2209141415340.8265@wotan.suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <alpine.LSU.2.20.2209141415340.8265@wotan.suse.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,37 +74,53 @@ Cc: Mark Rutland <mark.rutland@arm.com>, Sathvika Vasireddy <sv@linux.ibm.com>, 
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello,
-
-On Wed, 14 Sep 2022, Peter Zijlstra wrote:
-
-> > Maybe this is semantics, but I wouldn't characterize objtool's existence
-> > as being based on the mistrust of tools.  It's main motivation is to
-> > fill in the toolchain's blind spots in asm and inline-asm, which exist
-> > by design.
+On Wed, Sep 14, 2022 at 02:28:26PM +0000, Michael Matz wrote:
+> Hello,
 > 
-> That and a fairly deep seated loathing for the regular CFI annotations
-> and DWARF in general. Linus was fairly firm he didn't want anything to
-> do with DWARF for in-kernel unwinding.
-
-I was referring only to the check-stuff functionality of objtool, not to 
-its other parts.  Altough, of course, "deep seated loathing" is a special 
-form of mistrust as well ;-)
-
-> That left us in a spot that we needed unwind information in a 'better'
-> format than DWARF.
+> On Wed, 14 Sep 2022, Peter Zijlstra wrote:
 > 
-> Objtool was born out of those contraints. ORC not needing the CFI
-> annotations and ORC being *much* faster at unwiding and generation
-> (debug builds are slow) were all good.
+> > > Maybe this is semantics, but I wouldn't characterize objtool's existence
+> > > as being based on the mistrust of tools.  It's main motivation is to
+> > > fill in the toolchain's blind spots in asm and inline-asm, which exist
+> > > by design.
+> > 
+> > That and a fairly deep seated loathing for the regular CFI annotations
+> > and DWARF in general. Linus was fairly firm he didn't want anything to
+> > do with DWARF for in-kernel unwinding.
+> 
+> I was referring only to the check-stuff functionality of objtool, not to 
+> its other parts.  Altough, of course, "deep seated loathing" is a special 
+> form of mistrust as well ;-)
 
-Don't mix DWARF debug info with DWARF-based unwinding info, the latter 
-doesn't imply the former.  Out of interest: how does ORC get around the 
-need for CFI annotations (or equivalents to restore registers) and what 
-makes it fast?  I want faster unwinding for DWARF as well, when there's 
-feature parity :-)  Maybe something can be learned for integration into 
-dwarf-unwind.
+Those were born out the DWARF unwinder itself crashing the kernel due to
+it's inherent complexity (tracking the whole DWARF state machine and not
+being quite robust itself).
 
+That, and the manual CFI annotations were 'always' wrong, due to humans
+and no tooling verifying them.
 
-Ciao,
-Michael.
+That said; objtool does do have a number of annotations as well; mostly
+things telling what kind of stackframe stuff starts with.
+
+> > That left us in a spot that we needed unwind information in a 'better'
+> > format than DWARF.
+> > 
+> > Objtool was born out of those contraints. ORC not needing the CFI
+> > annotations and ORC being *much* faster at unwiding and generation
+> > (debug builds are slow) were all good.
+> 
+> Don't mix DWARF debug info with DWARF-based unwinding info, the latter 
+> doesn't imply the former.  Out of interest: how does ORC get around the 
+> need for CFI annotations (or equivalents to restore registers) and what 
+
+Objtool 'interprets' the stackops. So it follows the call-graph and is
+an interpreter for all instructions that modify the stack. Doing that it
+konws what the stackframe is at 'most' places.
+
+> makes it fast?  I want faster unwinding for DWARF as well, when there's 
+> feature parity :-)  Maybe something can be learned for integration into 
+> dwarf-unwind.
+
+I think we have some details here:
+
+ https://www.kernel.org/doc/html/latest/x86/orc-unwinder.html
