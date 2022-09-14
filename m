@@ -1,62 +1,36 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5C8B5B8D1E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Sep 2022 18:32:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CAF25B8E49
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Sep 2022 19:45:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MSQpY628Xz3br9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Sep 2022 02:32:05 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=bAF/SEBZ;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MSSQm301Zz3c9K
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Sep 2022 03:45:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org; envelope-from=geoff@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=bAF/SEBZ;
-	dkim-atps=neutral
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MSQnv5Lptz2yyd
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Sep 2022 02:31:31 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
-	:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=il0WJep+KQPBu92Y9mLhLcZYY7YOKzRyf6Y3+Wq3e8M=; b=bAF/SEBZr2JEQCWnIdfDFDwrA+
-	Oi2zI/mhulMHVtCavf6PbaY8NAJ5Grd/NyRL8qGip8MGjX3HmrCG1DTPF47kK/BNuumsR5jyXsXny
-	K85zEn5CU9jo53yUG8/VH/ejIguSZo5rL0Ibq7IzpNaY8Y6PcDpk8KOKyWu+h8BJrkhQOd0YwG//B
-	Hy+45iYvjfWbFB5EHuc5pixJ3S/hw1KfY03Fnxpw0VLg5CzunsaWC/6OYwnAlm9FzTZZM0du/Tk03
-	mL6ubKo8L6gGoh11FvOdLZH6XhJcQoaEaBy+sCpE83eS/9HMXttRpgtWZ/QRm3CBAptMlyn3pGSNS
-	t0rL5D0A==;
-Received: from [2600:1702:3c30:6ca0:3f7c:e43a:b639:6d3a]
-	by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oYVGl-00COtY-HI; Wed, 14 Sep 2022 16:29:48 +0000
-Message-ID: <2d850fa7-7d2a-d4f3-1557-b90a482b0ea0@infradead.org>
-Date: Wed, 14 Sep 2022 09:29:39 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH 8/9] powerpc/ps3: remove orphan declarations from ps3av.h
-Content-Language: en-US
-To: Gaosheng Cui <cuigaosheng1@huawei.com>, mpe@ellerman.id.au,
- npiggin@gmail.com, christophe.leroy@csgroup.eu, jk@ozlabs.org,
- arnd@arndb.de, clg@kaod.org, aik@ozlabs.ru, maciej.szmigiero@oracle.com,
- seanjc@google.com, jgg@ziepe.ca, willy@infradead.org, nick.child@ibm.com,
- bsingharora@gmail.com, michael@ellerman.id.au, arnd.bergmann@de.ibm.com,
- paulus@samba.org, benh@kernel.crashing.org, alistair@popple.id.au,
- miltonm@bga.com, Geert.Uytterhoeven@sonycom.com,
- geoffrey.levand@am.sony.com, yu.liu@freescale.com, scottwood@freescale.com,
- hollisb@us.ibm.com, avi@redhat.com, agraf@suse.de
-References: <20220913075029.682327-1-cuigaosheng1@huawei.com>
- <20220913075029.682327-9-cuigaosheng1@huawei.com>
-From: Geoff Levand <geoff@infradead.org>
-In-Reply-To: <20220913075029.682327-9-cuigaosheng1@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MSSQK1kG7z2xgN
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Sep 2022 03:44:39 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 28EHYR2K002376;
+	Wed, 14 Sep 2022 12:34:27 -0500
+Received: (from segher@localhost)
+	by gate.crashing.org (8.14.1/8.14.1/Submit) id 28EHYPMf002375;
+	Wed, 14 Sep 2022 12:34:25 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
+Date: Wed, 14 Sep 2022 12:34:25 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [RFC] Objtool toolchain proposal: -fannotate-{jump-table,noreturn}
+Message-ID: <20220914173425.GZ25951@gate.crashing.org>
+References: <20220909180704.jwwed4zhwvin7uyi@treble> <Yx8PcldkdOLN8eaw@nazgul.tnic> <alpine.LSU.2.20.2209121200120.8265@wotan.suse.de> <20220914000416.daxbgccbxwpknn2q@treble> <YyHecBM8D0i1lRu8@hirez.programming.kicks-ass.net> <alpine.LSU.2.20.2209141415340.8265@wotan.suse.de> <YyHrX/fTMwfv24W7@hirez.programming.kicks-ass.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YyHrX/fTMwfv24W7@hirez.programming.kicks-ass.net>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,21 +42,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Mark Rutland <mark.rutland@arm.com>, x86@kernel.org, Sathvika Vasireddy <sv@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Chen Zhongjin <chenzhongjin@huawei.com>, Michael Matz <matz@suse.de>, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>, Mark Brown <broonie@kernel.org>, Borislav Petkov <bp@alien8.de>, linux-toolchains@vger.kernel.org, Indu Bhagat <indu.bhagat@oracle.com>, live-patching@vger.kernel.org, Miroslav Benes <mbenes@suse.cz>, Will Deacon <will@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>, linux-arm-kernel@lists.infradead.org, "Jose E. Marchesi" <jemarch@gnu.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Gaosheng,
-
-On 9/13/22 00:50, Gaosheng Cui wrote:
-> Remove the following orphan declarations from ps3av.h:
-> 1. ps3av_dev_open()
-> 2. ps3av_dev_close()
+On Wed, Sep 14, 2022 at 04:55:27PM +0200, Peter Zijlstra wrote:
+> On Wed, Sep 14, 2022 at 02:28:26PM +0000, Michael Matz wrote:
+> > Don't mix DWARF debug info with DWARF-based unwinding info, the latter 
+> > doesn't imply the former.  Out of interest: how does ORC get around the 
+> > need for CFI annotations (or equivalents to restore registers) and what 
 > 
-> They have been removed since commit 13a5e30cf740 ("[POWERPC] PS3:
-> Rework AV settings driver"), so remove them.
+> Objtool 'interprets' the stackops. So it follows the call-graph and is
+> an interpreter for all instructions that modify the stack. Doing that it
+> konws what the stackframe is at 'most' places.
 
-I did a test build with this patch applied to v6.0-rc5 and had no errors.
+To get correct backtraces on e.g. PowerPC you need to emulate many of
+the integer insns.  That is why GCC enables -fasynchronous-unwind-tables
+by default for us.
 
-Acked-by: Geoff Levand <geoff@infradead.org>
+The same is true for s390, aarch64, and x86 (unless 32-bit w/ frame
+pointer).
 
+The problem is that you do not know how to access anything on the stack,
+whether in the current frame or in a previous frame, from a random point
+in the program.  GDB has many heuristics for this, and it still does not
+get it right in all cases.
+
+> > makes it fast?  I want faster unwinding for DWARF as well, when there's 
+> > feature parity :-)  Maybe something can be learned for integration into 
+> > dwarf-unwind.
+> 
+> I think we have some details here:
+> 
+>  https://www.kernel.org/doc/html/latest/x86/orc-unwinder.html
+
+It is faster because it does a whole lot less.  Is that still enough?
+It's not clear (to me) what exact information it wants to provide :-(
+
+
+Segher
