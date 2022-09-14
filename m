@@ -2,52 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF45C5B7EE1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Sep 2022 04:21:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB92D5B7ED5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Sep 2022 04:16:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MS3x85P3pz3c6d
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Sep 2022 12:21:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MS3qB0FySz3c21
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Sep 2022 12:16:22 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=ThkGN67x;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=JVNZrBvM;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=qq.com (client-ip=203.205.221.153; helo=out203-205-221-153.mail.qq.com; envelope-from=zhouzhouyi_linux@qq.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62d; helo=mail-pl1-x62d.google.com; envelope-from=zhouzhouyi@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=ThkGN67x;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=JVNZrBvM;
 	dkim-atps=neutral
-X-Greylist: delayed 873 seconds by postgrey-1.36 at boromir; Wed, 14 Sep 2022 12:00:36 AEST
-Received: from out203-205-221-153.mail.qq.com (out203-205-221-153.mail.qq.com [203.205.221.153])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MS3T02YYYz2xH8
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Sep 2022 12:00:32 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1663120830; bh=OF5i5FyrHvDKyEmcfK4maMV1WTZStjHbhYecICzZ0jY=;
-	h=From:To:Cc:Subject:Date;
-	b=ThkGN67xOcr4EetC8O5/LEb+N5925+9XqUUIo+yJvLWfavd4GlCiR0Qivy5Y1Ryyw
-	 BicMCT8OmByKrGYl4ifPPgZIxvumD7w03E2DkyqT74G7Ox2k07fz1uKFCsdsFqlitQ
-	 W5USsjhkKF0+AlFsVQ6d8/raucVF5QMYtTdx/pFU=
-Received: from localhost.localdomain ([2408:8406:d60:85ca:ec92:d4c7:cd39:5093])
-	by newxmesmtplogicsvrsza30.qq.com (NewEsmtp) with SMTP
-	id B2420A36; Wed, 14 Sep 2022 09:44:36 +0800
-X-QQ-mid: xmsmtpt1663119876tdd4px5iy
-Message-ID: <tencent_7BC3270CBC8463FB34858B4F9101E9329605@qq.com>
-X-QQ-XMAILINFO: OUMxvQDaATieOnMOirgcZHdaTKkB0+VVV1eEiNfYmVXaQ17JN0ltmW5VkGKQ9Q
-	 3KSyUad+N2vTyntW2cNuSXEAjLYTIDVnAelt8uQEJM7QcFHJi0pWsm2v0PuEwjIjMfBFdhClua/4
-	 3sXlhR7ukLaRwntVEAU/ELPIOgOKPJPhQxbiMRc5GUMxFSAZ0bpL8VjOsRnAOyfFWWZ28pZB0Mj+
-	 ePSpllcyV6HVzvo6BVRpZa3HEgQ35dGlevcsECX0Oc4p1Nw+VbRCPW0TlOxWuNpVU9hCWxuvd5xR
-	 JkrMTOeBetPUnsGiLi2Ml5V09NTsim5NJlfg0yDU2DA4ZdUM7emeI8EFe/t0ufCR/ucyLAsG+PU8
-	 1/Z01xHMrUjgvN8a5u6mtBkPENFWSnitbluRtTewN2kH7ekSLC+VnBRHTkLympd8GtVOb6jk7ZFW
-	 kislpNtShJJR3qZuwMXl17kPdGWo0cTS6LnUjjthKdY3R4q95FQ3OoM5HjZdXF+/fNc7cgwv3wqZ
-	 y8Gtab+wW/rOHr7LWkeED7262oOBUw40MqlRWzXsyMo1q2hkhtY3D1nY4iznXB4SQTo+blN4TaxH
-	 mLB8oJYnKCHo6SfAgtHEzBAiOxmzA246y6YWw0EDSnbHRfQL5UDgMERXuGF+U9E8cgfiU30m0Ap0
-	 CTUrzzszdV87X+Svv+exd1DodTv4BTyaahn98a52QimeYScP2p/TqhPYP0N+nx9kwSrSh0jBcKBQ
-	 SDcEnPZakhAXlPX3dUYdfpWmJYEwQAQFRnVm5nVcaqGvM6S96pVgomFfH2qTXG+C0oHSt0C4vWsG
-	 CFBvQbzJ46UU3AMbNcPgTn70q3P5u6K2mi4FOzHBFLZOcKT7tG0XZQEQSBVPULPH6mrBU+gWRXYd
-	 gNqBhg2y6tMrn7iWvC1/0Xq/bypYJE/WE6W2W8WuAjNUwui9AFu7tuP//BaoYApvipZYlSO7C0M7
-	 6zRuGoQJ8=
-From: Zhouyi Zhou <zhouzhouyi_linux@qq.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MS3pW1vFxz2xHW
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Sep 2022 12:15:45 +1000 (AEST)
+Received: by mail-pl1-x62d.google.com with SMTP id x1so13689931plv.5
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Sep 2022 19:15:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date;
+        bh=HLs00qLGkRYsRs/Qs4OSx3zhLgfT7QPCYF2RVcp6Dnw=;
+        b=JVNZrBvMEakmiimzfvMyEqUuOFoaYIxkE7IZ6Uiqx8ikeXCbZRH5jC37NcZLjJKTvh
+         QPw7wQu7uaKL3PlIrh+anQoiFPZwItj9hdbbsD/0zpJ/GKCym2WnVOK3SqoPeUmR5Z/H
+         ctDUd4rdvbo8HEsFWVxJHnfJSnEtJFPT2B7TgDk68tpHAeQKz9lEJWi18WHGY4/Lh8Yg
+         Q7r6TU51e6DsklGPC1DsFRX2WbkE4gPYE0hL8Gji/2tkRxFlNRksj/oS7J9iiuaUyAXV
+         kJ8YRqQ3RNpIKPPIj/e04lKMOPkz1xARs4Rzzyihjqf46cXXbm1pUkJXvPVZS6XHYFln
+         4a5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date;
+        bh=HLs00qLGkRYsRs/Qs4OSx3zhLgfT7QPCYF2RVcp6Dnw=;
+        b=V+JWYZjJTJ/bDwbAjXfuMgpWX0+QCue8l88nnc0d1eC16T11Qk4giHtXhG8sGfUZqu
+         ofyVLMPIrCKh2jPiQQNFCx8DYJUlRD+F58q14syniZLC8raIo6zbzh7u1fb012UhgaCi
+         BgbAUm8X5SUk+WQ1rAi8MjaV4fs/lytkgn/+8A5dDDRh5YlKToVCP9QPBO8UXIzbXuxu
+         bCR8ZNjV/Y936uapHWmYtLBMpxzRzTguU+usDtwwk4A0EhS6ibxUqBW94NwzFWrdri9V
+         OWMZrnroGKPjixM0ztx+izH3tZUgq3N56K1210b+ybEgajKSzpucHbOpGwlH09fDvOMz
+         BaMA==
+X-Gm-Message-State: ACrzQf3uemxftMMFNYPv34mDcriKpDUHFPI70LJum4cN/Uw3w3ymQ1JZ
+	z/VvugHIORvGDLIrAItSc7g=
+X-Google-Smtp-Source: AMsMyM7R+4iL3pfpcVaoK8BnJh2Kbp150IOZXSMqzOihpjKT1NL6dCeS4RSsgTkeIzZhBLJm1DuOzA==
+X-Received: by 2002:a17:90b:3909:b0:202:c879:51a9 with SMTP id ob9-20020a17090b390900b00202c87951a9mr2168744pjb.83.1663121742226;
+        Tue, 13 Sep 2022 19:15:42 -0700 (PDT)
+Received: from localhost.localdomain ([194.5.48.32])
+        by smtp.gmail.com with ESMTPSA id f13-20020a170902684d00b0016ed8af2ec0sm9343655pln.29.2022.09.13.19.15.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Sep 2022 19:15:41 -0700 (PDT)
+From: Zhouyi Zhou <zhouzhouyi@gmail.com>
 To: mpe@ellerman.id.au,
 	npiggin@gmail.com,
 	christophe.leroy@csgroup.eu,
@@ -58,12 +66,11 @@ To: mpe@ellerman.id.au,
 	paulmck@kernel.org,
 	rcu@vger.kernel.org
 Subject: [PATCH linux-next][RFC] powerpc: protect cpu offlining by RCU offline lock
-Date: Wed, 14 Sep 2022 09:44:31 +0800
-X-OQ-MSGID: <20220914014431.9204-1-zhouzhouyi_linux@qq.com>
+Date: Wed, 14 Sep 2022 10:15:28 +0800
+Message-Id: <20220914021528.15946-1-zhouzhouyi@gmail.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Wed, 14 Sep 2022 12:21:02 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,8 +85,6 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Cc: Zhouyi Zhou <zhouzhouyi@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
-
-From: Zhouyi Zhou <zhouzhouyi@gmail.com>
 
 During the cpu offlining, the sub functions of xive_teardown_cpu will
 call __lock_acquire when CONFIG_LOCKDEP=y. The latter function will
@@ -96,6 +101,9 @@ but there are more "BUG: soft lockup" reports than the original kernel
 
 Signed-off-by: Zhouyi Zhou <zhouzhouyi@gmail.com>
 ---
+[it seems that there are some delivery problem in my previous email,
+ so I send again via gmail, sorry for the trouble]
+ 
 Dear PPC and RCU developers
 
 I found this bug when trying to do rcutorture tests in ppc VM of
