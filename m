@@ -1,74 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA3975B82B3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Sep 2022 10:15:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52EF65B83A0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Sep 2022 11:02:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MSCn46P1Mz3blV
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Sep 2022 18:15:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MSDqH14Sdz3bkZ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Sep 2022 19:02:03 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=ZvVlxtef;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=C5pNVGVe;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SBeoQ035;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2001:67c:2178:6::1d; helo=smtp-out2.suse.de; envelope-from=msuchanek@suse.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=ZvVlxtef;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=C5pNVGVe;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SBeoQ035;
 	dkim-atps=neutral
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MSCmP6wB5z2xJN
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Sep 2022 18:14:29 +1000 (AEST)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-	by smtp-out2.suse.de (Postfix) with ESMTP id DC9615CD31;
-	Wed, 14 Sep 2022 08:14:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1663143260; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iO6agN4uJI514eM1G/wjTDz2MnPOI/c/o/Iz1bdZMrY=;
-	b=ZvVlxtefW6hm9QTWjPn5sqpIS0a+KfFxjnbKt7darGrJho6mcX9iANcb6oP1duft//efT+
-	GRSxYHW4ATzfJiW+pTE4McIlQmL+/YeaDJ2W50sTBkbsKv36J1bYV0zEEruCDvZeFZF4nq
-	ncF0oxHLSiCSA2amtoCEWFaKOCu/LPY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1663143260;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iO6agN4uJI514eM1G/wjTDz2MnPOI/c/o/Iz1bdZMrY=;
-	b=C5pNVGVeuwPKHLxwBZyns2UlX3KgfCH36tDBzNn8owFKC2PNsJps4J2dmxd626C/sDC5Qy
-	CvXYGoMUl1GgzUAA==
-Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by relay2.suse.de (Postfix) with ESMTPS id B25BE2C141;
-	Wed, 14 Sep 2022 08:14:20 +0000 (UTC)
-Date: Wed, 14 Sep 2022 10:14:19 +0200
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: Nathan Lynch <nathanl@linux.ibm.com>
-Subject: Re: [PATCH] powerpc/pseries: add lparctl driver for
- platform-specific functions
-Message-ID: <20220914081419.GE28810@kitsune.suse.cz>
-References: <20220730000458.130938-1-nathanl@linux.ibm.com>
- <0ead0cd1-f6f6-ecf0-65d9-f3d9366e258c@linux.ibm.com>
- <87k07dl1f6.fsf@linux.ibm.com>
- <20220913091302.GY28810@kitsune.suse.cz>
- <87v8prtgcj.fsf@linux.ibm.com>
- <20220913163343.GA28810@kitsune.suse.cz>
- <87sfkvtdfx.fsf@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MSDpg3KC4z2xyB
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Sep 2022 19:01:31 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id E6DB561999;
+	Wed, 14 Sep 2022 09:01:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D4E2C433B5;
+	Wed, 14 Sep 2022 09:01:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1663146083;
+	bh=SZXFFr6fQE4QYpoEaaMaZI/GyemsfR2Ojv/xm40sKWw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=SBeoQ0352di0SC94Yge257rfx+gw9hYXb9XSgAdJkagbrVq9iC98hX26J7x9PdPNn
+	 6MhCoMrICFvWBaG92Ul53ie1+rK5RC8JC4hEfN9CPFo4kiDPPg8UW9qg1+VEEWAPBo
+	 K4MhRod+xfO5SYjeH6qsXkypLp9RhZpPWlvO0uUuKmdbjLDmqi0BvvOt2Ct/fnNzPP
+	 SxXvxvRxM1HPP8AERqRrFzXgPefW0bj2NoifP51A2FktKNdzXEQMifMhMnJifIYhAf
+	 19y2p6jMUxPrElIeKnkCJ0mt1pOOa6qnRb9iz2B+t29AG/SuvVQAfMzkwESKdxosoj
+	 YqAMIyg/2OF5w==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.19 05/22] ASoC: fsl_aud2htx: register platform component before registering cpu dai
+Date: Wed, 14 Sep 2022 05:00:46 -0400
+Message-Id: <20220914090103.470630-5-sashal@kernel.org>
+X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20220914090103.470630-1-sashal@kernel.org>
+References: <20220914090103.470630-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <87sfkvtdfx.fsf@linux.ibm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,145 +62,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, Michal Hocko <mhocko@suse.com>, linux-kernel@vger.kernel.org, Chun-Yi <jlee@suse.com>, Lee@kitsune.suse.cz, Laurent Dufour <ldufour@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>, alsa-devel@alsa-project.org, Xiubo.Lee@gmail.com, linuxppc-dev@lists.ozlabs.org, Shengjiu Wang <shengjiu.wang@nxp.com>, tiwai@suse.com, lgirdwood@gmail.com, perex@perex.cz, Mark Brown <broonie@kernel.org>, shengjiu.wang@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Sep 13, 2022 at 12:02:42PM -0500, Nathan Lynch wrote:
-> Michal Suchánek <msuchanek@suse.de> writes:
-> > On Tue, Sep 13, 2022 at 10:59:56AM -0500, Nathan Lynch wrote:
-> >> Michal Suchánek <msuchanek@suse.de> writes:
-> >> 
-> >> > On Fri, Aug 12, 2022 at 02:14:21PM -0500, Nathan Lynch wrote:
-> >> >> Laurent Dufour <ldufour@linux.ibm.com> writes:
-> >> >> > Le 30/07/2022 à 02:04, Nathan Lynch a écrit :
-> >> >> >> +static long lparctl_get_sysparm(struct lparctl_get_system_parameter __user *argp)
-> >> >> >> +{
-> >> >> >> +	struct lparctl_get_system_parameter *gsp;
-> >> >> >> +	long ret;
-> >> >> >> +	int fwrc;
-> >> >> >> +
-> >> >> >> +	/*
-> >> >> >> +	 * Special case to allow user space to probe the command.
-> >> >> >> +	 */
-> >> >> >> +	if (argp == NULL)
-> >> >> >> +		return 0;
-> >> >> >> +
-> >> >> >> +	gsp = memdup_user(argp, sizeof(*gsp));
-> >> >> >> +	if (IS_ERR(gsp)) {
-> >> >> >> +		ret = PTR_ERR(gsp);
-> >> >> >> +		goto err_return;
-> >> >> >> +	}
-> >> >> >> +
-> >> >> >> +	ret = -EINVAL;
-> >> >> >> +	if (gsp->rtas_status != 0)
-> >> >> >> +		goto err_free;
-> >> >> >> +
-> >> >> >> +	do {
-> >> >> >> +		static_assert(sizeof(gsp->data) <= sizeof(rtas_data_buf));
-> >> >> >> +
-> >> >> >> +		spin_lock(&rtas_data_buf_lock);
-> >> >> >> +		memset(rtas_data_buf, 0, sizeof(rtas_data_buf));
-> >> >> >> +		memcpy(rtas_data_buf, gsp->data, sizeof(gsp->data));
-> >> >> >> +		fwrc = rtas_call(rtas_token("ibm,get-system-parameter"), 3, 1,
-> >> >> >> +				 NULL, gsp->token, __pa(rtas_data_buf),
-> >> >> >> +				 sizeof(gsp->data));
-> >> >> >> +		if (fwrc == 0)
-> >> >> >> +			memcpy(gsp->data, rtas_data_buf, sizeof(gsp->data));
-> >> >> >
-> >> >> > May be the amount of data copied out to the user space could be
-> >> >> > gsp->length. This would prevent copying 4K bytes all the time.
-> >> >> >
-> >> >> > In a more general way, the size of the RTAS buffer is quite big, and I'm
-> >> >> > wondering if all the data need to be copied back and forth to the kernel.
-> >> >> >
-> >> >> > Unless there are a high frequency of calls this doesn't make sense, and
-> >> >> > keeping the code simple might be the best way. Otherwise limiting the bytes
-> >> >> > copied could help a bit.
-> >> >> 
-> >> >> This is not intended to be a high-bandwidth interface and I don't think
-> >> >> there's much of a performance concern here, so I'd rather just keep the
-> >> >> copy sizes involved constant.
-> >> >
-> >> > But that's absolutely horrible!
-> >> 
-> >> ?
-> >> 
-> >> > The user wants the VPD data, all of it. And you only give one page with
-> >> > this interface.
-> >> 
-> >> The code here is for system parameters, which have a known maximum size,
-> >> unlike VPD. There's no code for VPD retrieval in this patch.
-> >
-> > But we do need to support the calls that return multiple pages of data.
-> >
-> > If the new driver supports only the simple calls it's a failure.
-> 
-> Michal, will you please moderate your tone? I think you can communicate
-> your concerns without calling my work "absolutely horrible" or a
-> "failure". Thanks.
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-Sorry, it's not a good wording.
+[ Upstream commit ea532c29972df96fda20393d9bf057e898f5e965 ]
 
-> Anyway, of course I intend to support the more complex calls, but
-> supporting the simple calls actually unbreaks a lot of stuff.
+There is no defer probe when adding platform component to
+snd_soc_pcm_runtime(rtd), the code is in snd_soc_add_pcm_runtime()
 
-The thing is that supporting calls that return more than one page of
-data is absolutely required, and this interface built around fixed size
-data transfer can't do it.
+snd_soc_register_card()
+  -> snd_soc_bind_card()
+    -> snd_soc_add_pcm_runtime()
+      -> adding cpu dai
+      -> adding codec dai
+      -> adding platform component.
 
-So it sounds like a ticked for redoing the driver right after it's
-implemented, or ending up with two subtly different interfaces - one for
-the calls that can return multiple pages of data, and one for the simple
-calls.
+So if the platform component is not ready at that time, then the
+sound card still registered successfully, but platform component
+is empty, the sound card can't be used.
 
-That does not sound like a good idea at all to me.
+As there is defer probe checking for cpu dai component, then register
+platform component before cpu dai to avoid such issue.
 
-> 
-> >> But I'm happy to constructively discuss how a VPD ioctl interface should
-> >> work.
-> >> 
-> >> > Worse, the call is not reentrant so you need to lock against other users
-> >> > calling the call while the current caller is retrieving the inidividual
-> >> > pagaes.
-> >> >
-> >> > You could do that per process, but then processes with userspace
-> >> > threading would want the data as well so you would have to save the
-> >> > arguments of the last call, and compare to arguments of any subsequent
-> >> > call to determine if you can let it pass or block.
-> >> >
-> >> > And when you do all that there will be a process that retrieves a couple
-> >> > of pages and goes out for lunch or loses interest completely, blocking
-> >> > out everyone from accessing the interface at all.
-> >> 
-> >> Right, the ibm,get-vpd RTAS function is tricky to expose to user space.
-> >> 
-> >> It needs to be called repeatedly until all data has been returned, 4KB
-> >> at a time.
-> >> 
-> >> Only one ibm,get-vpd sequence can be in progress at any time. If an
-> >> ibm,get-vpd sequence is begun while another sequence is already
-> >> outstanding, the first one is invalidated -- I would guess -1 or some
-> >> other error is returned on its next call.
-> >> 
-> >> So a new system-call level interface for VPD retrieval probably should
-> >> not expose the repeating sequence-based nature of the RTAS function to
-> >> user space, to prevent concurrent clients from interfering with each
-> >> other. That implies that the kernel should buffer the VPD results
-> >> internally; at least that's the only idea I've had so far. Open to
-> >> other suggestions.
-> >
-> > It can save the data to an user-supplied buffer until all data is
-> > transferred or the buffer space runs out.
-> 
-> Yes, of course, thanks. Assuming user space can discover the appropriate
-> buffer size, which should be possible.
+And the behavior of imx_pcm_dma_init() is same as common
+devm_snd_dmaengine_pcm_register(), so use
+devm_snd_dmaengine_pcm_register() instead
 
-It will not be entirely reliable because the data size may change over
-time but assuming the performance is not an issue the caller can just
-call again with a bigger buffer if the data hapens to grow at the very
-moment they tried to retrieve it.
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Link: https://lore.kernel.org/r/1661430460-5234-1-git-send-email-shengjiu.wang@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ sound/soc/fsl/fsl_aud2htx.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-Thanks
+diff --git a/sound/soc/fsl/fsl_aud2htx.c b/sound/soc/fsl/fsl_aud2htx.c
+index 422922146f2a5..e09015e7e3c7c 100644
+--- a/sound/soc/fsl/fsl_aud2htx.c
++++ b/sound/soc/fsl/fsl_aud2htx.c
+@@ -233,6 +233,16 @@ static int fsl_aud2htx_probe(struct platform_device *pdev)
+ 
+ 	regcache_cache_only(aud2htx->regmap, true);
+ 
++	/*
++	 * Register platform component before registering cpu dai for there
++	 * is not defer probe for platform component in snd_soc_add_pcm_runtime().
++	 */
++	ret = devm_snd_dmaengine_pcm_register(&pdev->dev, NULL, 0);
++	if (ret) {
++		dev_err(&pdev->dev, "failed to pcm register\n");
++		return ret;
++	}
++
+ 	ret = devm_snd_soc_register_component(&pdev->dev,
+ 					      &fsl_aud2htx_component,
+ 					      &fsl_aud2htx_dai, 1);
+@@ -241,10 +251,6 @@ static int fsl_aud2htx_probe(struct platform_device *pdev)
+ 		return ret;
+ 	}
+ 
+-	ret = imx_pcm_dma_init(pdev);
+-	if (ret)
+-		dev_err(&pdev->dev, "failed to init imx pcm dma: %d\n", ret);
+-
+ 	return ret;
+ }
+ 
+-- 
+2.35.1
 
-Michal
