@@ -1,51 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A4565B86D3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Sep 2022 12:57:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D0CE5B86D4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Sep 2022 12:58:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MSHNC0lDzz3bkR
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Sep 2022 20:57:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MSHP21cxhz3c6f
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Sep 2022 20:57:58 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=hCybVIQg;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=IeEqrQou;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=40.107.6.85; helo=eur04-db3-obe.outbound.protection.outlook.com; envelope-from=chancel.liu@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=40.107.6.60; helo=eur04-db3-obe.outbound.protection.outlook.com; envelope-from=chancel.liu@nxp.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=hCybVIQg;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=IeEqrQou;
 	dkim-atps=neutral
-Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-eopbgr60085.outbound.protection.outlook.com [40.107.6.85])
+Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-eopbgr60060.outbound.protection.outlook.com [40.107.6.60])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MSHHL5n0jz3bZP
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Sep 2022 20:53:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MSHHm3CwZz3c3B
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Sep 2022 20:53:24 +1000 (AEST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=BhsAq5MqncbydV+oAFECT5hXoCxuHLe6M6yjPWVzEXlQOZPsPvzkMdkCR513rpFOicHR7p+O9rrbeAS+zMhVBl+orFny+o/PcmrG1pMePSz4ZT9NNd4KtHxYVOrCphUIysbwaPcYrBGvszhXBsXNsL7ofMF3E62K9+3U4fDysKCJ+KkcLGXh/WobYq0bY7PtvDzRyy1zQd2zqUBZq6f42zfoR76A1c1dzUk8NhhfOd5ej3ymVDAukfMXRGNjdbJ6wI9iGm0cmpC97WjeneLFDptnthe7MsMTjnn1vUSvQ2zLHn3XN4+9zXyTaTG5pFGS97UNrBcTK1htMy0995qihw==
+ b=GXVlLjiQXOeuRLT05m9bAl8LNrI4NPaSecsQQPYC4rjGnYJj0fboBVxJ+b+F/WCqmwvZ+TzpxmWQTRftxnZe06hFpOFwU8HbO4S8CvOJZahQd3hGwAiJohbmIiEGJCVZCcT+k3C4GGpSbvpqLw0XqKKoxBNLDASQr0vpoinZw85cAGpJWffo5EisIvgtRUeoyGdDeN+9wz3CbG9LgYlxuKuQLClcZYkLs9ZB2tx+vY3qwfU7b3V82lVUE+dqgcTrGS39RhgUtOhpDgVgqzw+ZBEsBD85UkUldXuOhP+mYtR/6VnUOLRXa7ku2FpnQiAQe3kxbf3IaBRLHO0v1ux4jg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XLcmkkiNlbs0tz1gDm+D2uOeNAsHk5XjyBwV+M9cYLE=;
- b=YCOjdybrX7t++PKeGQqr7BAUuejEsy2mQsxOsxBvDUw+kpcevlo4i0qs++adTcVuPYV8PC1RhQHSSsza37x1WdGA/zUzoiU/OpzhX0mX6KE9eyxbnAD7zOQ+pKBFF5sXXyzT23hQstPOeMVENn8BJ5JI40IjO7jA3Cs3MsheRg8gwZE5IRs6tAXW0jVaUsTBoNrrNTlXP8dfbthlv2kHPVO3ObVMUdF8gjw+HNXe7jU2SJWevTOmzW3d67LdjyUwrZnwSJ/5txcwvfelw/aKk+XZNz9yjdxLqIwSdmo3U2e1PDDzIFchNCdLVJmIDEtHUMicxvVujjxUVO1cSAjsiA==
+ bh=gHKoZ/w4g5hkrRVBGiXAnTDf8+HzWV9NMppMRUHKI9g=;
+ b=e1Uy9Dpgyz9A3AlxXoA3Jd0pFnRxmZBWIVkdGDeimWNsgqMvV5eX7FuTFnHuA5y13b/rqyYg1DPVbEhsU14TtwRFgm53QMHNf0BTf2KPhN7CE7zrV9QiRia+mkFeDAJTSRpV/03HBK6EEi4/Y6VmNuzp5trEsgaA8d7SST5sbYB+AnAf0Sy2j2OHyc7W7Yp6PxrzPPthqBZ/5wrzxEGIw145+2AUkP0sy3hb69yXn8Eq5yW952dkvRU1948+XcxJJakyIIwPhep9I13V53beB2x7VLwZhrmE6m86OS4Nai2nFOm5ZwRki5n+aPeTCUrs7/KMSEbvC/xjlVw6wdU5GQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XLcmkkiNlbs0tz1gDm+D2uOeNAsHk5XjyBwV+M9cYLE=;
- b=hCybVIQgYvow8FpUgCckyj0GTsoZrF7uVkdjbbeo2cGvpEg7C93TqhTfaEiygU/UXQNXNjjk//u18wHwClygU/ql7fJ1mcHCh9N5hYQaaKVwkv1+g3LuexaQrAWRV9ivCdsH0ttUlndLZfZhabSNwX0cwpSca6NqTSQLH1cd0Uk=
+ bh=gHKoZ/w4g5hkrRVBGiXAnTDf8+HzWV9NMppMRUHKI9g=;
+ b=IeEqrQou2760IzAJ7hwoL3xuqRQrzJsVpQBApYqS+dfsMlSblR+mMscYADmD5U9Sf/MyNWOblCv4a4blcNrMg81nQ/CzTRrKRXTmpY5P8ajjyBlpIgQeKXcquJdxRe3Fbztuvhnn+IHrrTnlm5hNhPof/GIHAn84c2h8s9KMzTs=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from VI1PR04MB4222.eurprd04.prod.outlook.com (2603:10a6:803:46::19)
  by PA4PR04MB7773.eurprd04.prod.outlook.com (2603:10a6:102:cd::12) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5612.22; Wed, 14 Sep
- 2022 10:53:01 +0000
+ 2022 10:53:06 +0000
 Received: from VI1PR04MB4222.eurprd04.prod.outlook.com
  ([fe80::7008:1596:bb4:d904]) by VI1PR04MB4222.eurprd04.prod.outlook.com
  ([fe80::7008:1596:bb4:d904%4]) with mapi id 15.20.5612.022; Wed, 14 Sep 2022
- 10:53:01 +0000
+ 10:53:06 +0000
 From: Chancel Liu <chancel.liu@nxp.com>
 To: lgirdwood@gmail.com,
 	broonie@kernel.org,
@@ -62,9 +62,9 @@ To: lgirdwood@gmail.com,
 	festevam@gmail.com,
 	nicoleotsuka@gmail.com,
 	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 5/7] ASoC: fsl_rpmsg: Register different ASoC machine devices
-Date: Wed, 14 Sep 2022 18:51:43 +0800
-Message-Id: <20220914105145.2543646-6-chancel.liu@nxp.com>
+Subject: [PATCH v2 6/7] ASoC: fsl_rpmsg: Multi-channel support in CPU DAI driver
+Date: Wed, 14 Sep 2022 18:51:44 +0800
+Message-Id: <20220914105145.2543646-7-chancel.liu@nxp.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220914105145.2543646-1-chancel.liu@nxp.com>
 References: <20220914105145.2543646-1-chancel.liu@nxp.com>
@@ -76,50 +76,50 @@ X-ClientProxiedBy: SI1PR02CA0017.apcprd02.prod.outlook.com
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: VI1PR04MB4222:EE_|PA4PR04MB7773:EE_
-X-MS-Office365-Filtering-Correlation-Id: dbf8eb0b-90ca-4c45-48bf-08da963f4add
+X-MS-Office365-Filtering-Correlation-Id: fbc8e88e-2bc5-4d51-18bf-08da963f4dc5
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	R6r0XmpGG+Qx547+Zkf1gZk5ZRmrMLGCh/mFBQf8YLKRwN+lqtMuBFB3EBDFwCTegQ9C+gW3MEYvmUEhkqddpeO7Dw6jkSbNNPW1G5VtU66V1t/GgMpNYLC10WoB1fcwmplkh0DGAul6zYTc292Gy7P1HYuenjTrM5mclu9266cQB921JtzGQtsvNiL8NUtHNMtszdh7GlIcw6+iqR92Ln1aPlIAXK3iMt1/S/b/dBhTIZn3YW/bO44TDBdR64Rmkv5wCA2A0gwL/0PxlQk5jyrzmyGwtI8bY+dNAIT/jO5BlivZvXRg07nuhHGMRQaBErFUoslHIHGSs9xAMmcASi+GxdSuBtsErYuKFvYL8V9bi1qeuSk0acQL6G8J6BUGpO3d3N6Vh8qcWp0LWJ44HrbQnQ2AiWKW+FTrPupA9SE5SGttf8PmJL/IvXFYlbH8RzBRAZPHViar5RynTfnXirn/SAa1fhlmtE3MPJMiviMldGeWaDDYOuLAR3ssHlLOnj50H5vEM2rqgvJ4M+XZ2W+DQlO+y4yMaIn+lvdOZI9XW6nq47uIqY0NuWNxufoPF7xeVzugDsXtLji1bGwzcOBAng/8CLKRatH/KNx8x4ArY4LCjbRMsDM6ITsP7dAhL/6m+22BqJBizAm+46y0JRsgzD1kezWOGtxEOC79V3JYcnqhYEaoqXB1qfCz5+/1/FVR0GBuUnpjqtWM+qHH7YFQSXtxYZ7lUdmUxxBlIHgBK8i5XzzgWmgjyygUCVJH6DRhLJDJzE4h1LzOlQEb3T+uYAheD7HlkoxFKBscUOc=
+X-Microsoft-Antispam-Message-Info: 	yFmCg37VotNuGRuvFxOtRGGfgcbVWoR3RUspZhS0vj2snPY0zz6wysge/HZ3rS+ptSOtE12zX6he96mGwdhcLdras18g3BcDazWAE3S/Dd4budvyfqLEnyiIA+4CzvDSfvTGeNXiw947eTh/7am588xEa844v8eTu0NbvmAke0g/MguHEz8KdVsqWFQ0yaUO/MeZJZCkwNarhcZJ781O9Hc489vjRwUELmgUT4wM64gad5cP43qp9mmGzJtUNoQozlW9jCFPAONuShs5bc2iJ9ZItj8SlfhVKH013OMOrGmrq2nE/9tmBv3m0zMJM8fS4VV3xKSB1k3pV/+4Q6w8fxvPf2DEubIJx98Ryd0SndsMPhhhzxprzhOR20J7vJpyWiDSAxh74sO5KLt2DRlZk/8rH/o2v9VUgPDGjmqnqPUM9Lw82+zT24yoIXB46uecGtm3qqvG3Kn+tcbxX+xUhdMJIMmOpc56U8BXBQpE91wl4C9lEHsMe+OEKMLGe1fWlM6VZEkntJE84di3EJ8PfcTvsJYVOHFy1U2fC/pCG1acGCWumGCJ2aHq9xxB4YLUR/Zg3ZD2pqQEh9+MkaJO9ZOUS55aXYefqLVFp4woJO4LmmSbvkudZXHM5mGmrC4s1J7ZL9VRicJsYFmYLSX1OheHc9YpkaNphpaQNrpFqVc0nsnNXcSahff/EvovrbPi2sCyCPJzd2cpRbPLh8613xeVLl0RAJqk+NN1lfxcJFMaqMYqSRBeEgK97pajk8l2AqHPjwnnNqc1O628DJEC1AYwWWEuOgOCwSd5t3AFRtw=
 X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR04MB4222.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(376002)(346002)(396003)(39860400002)(366004)(136003)(451199015)(36756003)(66946007)(921005)(316002)(2616005)(6666004)(1076003)(8676002)(2906002)(186003)(52116002)(26005)(478600001)(83380400001)(86362001)(38350700002)(41300700001)(38100700002)(6512007)(7416002)(6506007)(44832011)(66556008)(66476007)(6486002)(5660300002)(4326008)(4744005)(8936002);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?0B/DNRFII8C2nc9cec5j8Yaecyf9cUooRX+DCOHOZtPM0OoaiOOSwtUJuISr?=
- =?us-ascii?Q?ewvAaeCm1cX+BTEncWelGtPS94jCGy5P9c99FmcxviXL/f+MCtvdbBwmwi3j?=
- =?us-ascii?Q?F3+RIcxj3BZbZ41Sy/XtPVEr30kERqOlVEYsH2cTiek7Jw22k097T9lwVJoF?=
- =?us-ascii?Q?X543g6TOheokhNJTz+v7fRhO46mt+uvu7/qlsfwes8A9mzhIu5ZhPtHSYXY5?=
- =?us-ascii?Q?YGg1GVObIN3wMYgUFWZJXGyBtL0ZJgEr0ZGSh2efREH5cdNSj4EB2n1rr604?=
- =?us-ascii?Q?0tLpj7wYnyzewN+7zw4edjjRQzqEq77jUlk43eJtRJihgiJsY6hr78uGIBVY?=
- =?us-ascii?Q?7GI9e2ujpzI8iflCUytD2eeFQd9aY3nLV3S388fd2Kn+y/h4pfYrYLt34jVm?=
- =?us-ascii?Q?duSfj8SF5+UPnm20uKLeg96HsLrTAKKSKQNAUX85wUYvsf6OIT99kqa4KH7V?=
- =?us-ascii?Q?RR0LcPq9E3tvjzNvGZG5loBcUtHsZlymugKoX+Ju0qorRcGH0rIm8iKTqzZk?=
- =?us-ascii?Q?NlEi3m0ZIyg8Jdw0+/YJk4WVNkEFsH0XaFKuHvSHhsmDxMbFveD3R31WWFoR?=
- =?us-ascii?Q?ZqGt+zzNcblUXJzVxy8tImB5azb5vxLRh9cRmgiUIyaDCi4bNmV5ZBhASZU6?=
- =?us-ascii?Q?IJitQ7np1vusU88y9YHMslAjWcPEPC6w2ILE/z3vKLvu711ZUFoO5LZ+Qk97?=
- =?us-ascii?Q?Nv2ZtBq5PEpFHmXiaI9A9wSF89OGOG6UFuZKpytLgep2FNpXmN+c132LFnQ4?=
- =?us-ascii?Q?nsAObs882v6wBPJObMuN7T4NtcW7aj2kJZBgULLVtsJzukwh+W/wZNh125VF?=
- =?us-ascii?Q?GwUZeIOHC1676fr/lyewdUxSKzC/jYnQkvOlAzB6kfVvN8nq7XKoR0eUatwH?=
- =?us-ascii?Q?1YAIlcrHWB+tWtE0j1tRJK1qmui0/7Tk2fTgvIy4j948mZOq7ENbfP1mN/u4?=
- =?us-ascii?Q?LrdGDER5+vG0gjn94x7C0ZJVrA3SlAos9GCDtPFgrDkKmyPR5rouM2EAwsTr?=
- =?us-ascii?Q?g5S5/4yi4A6pdlmfrPWrMlQnM+v7s2SZyEQsikdFSJVUoVo4wXUWknWE6FrZ?=
- =?us-ascii?Q?eQ24W35qR8OCjyziT5QD9e6zOxP9nCAMfHMCgZB13aHiVDEVmtfCc9aCTMCu?=
- =?us-ascii?Q?BYg/EnfqNTH8nczD4TnMJvvHk9KDZwzNyjwVhGaDuJLr13gwctHWq15fWfRt?=
- =?us-ascii?Q?cQn0MDVbkAhi+t/iosEQB2wdayX4a91uevkRgD0tk95ZRq+h9825f4wlnX67?=
- =?us-ascii?Q?yflwP7UbxluvofGY/9mqBSEgQ3k0m03eTrG7BldkhOQVRUfYc+iQqqux0ot4?=
- =?us-ascii?Q?DHPKVCH8EwWnTTSMSyzwFzCwqFa6C6Nc8ljJBPzhxSngFFYPcKeWxyJ0BLnt?=
- =?us-ascii?Q?/8eONs0g9VlUN8fh4Pi6vabWPgE17KD+g2NKjKZCv7wSp3h0Yg3N8swfssjL?=
- =?us-ascii?Q?R4EAVVUgS7hI9dP9b+wubjhl6xboFvgNQ7CltgC3/mstPqh8nKNVQcHTnyJV?=
- =?us-ascii?Q?hfQZQ/vj4fL+wiZFie1SFab396XQDtVuMEc62C4x5S2NtOS12j7s78uV1BY+?=
- =?us-ascii?Q?7UaXVY/Yewio3U2Nm6VBuNnK+zNuNgqgYKfyreDC?=
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?bR/uR+cmSElnMUXI2cC3c2StYrzocphiigpl29nGGiPNylwuRPd7EPjemsIc?=
+ =?us-ascii?Q?O+fDQp4ZyCIQISBguhM81iAk1J/Wm2A+nHVmxrvyrN9DJ2ODqIOD656cHBca?=
+ =?us-ascii?Q?Q+WLaoRYeAsv9xnd7O6f+MAK2bjV+gCfEnXZMU5wFZ5jx3lRMUVOYOpgar58?=
+ =?us-ascii?Q?asFXrGr9E5dPmrG7XTpMStdHdYP3uhOdS3OHkuGFj8Hu5VsaD4Y70ciCbfgw?=
+ =?us-ascii?Q?XBnu3nNdmDXoaL1IGcVwxoT+DwaN3IgleOO/HGKbGe7LFg1S/rna8CqgMt4f?=
+ =?us-ascii?Q?UDK8x94+LYRNNBnZ3ozT2pec6D3tPzbdfxKTuOhCirSYwIYssVn/oTq2I56a?=
+ =?us-ascii?Q?Bww5SrPqbZar059N23t7CnaSlBpc3d9hpELW7Yq2zzkta8cfEn4HEI33mMyj?=
+ =?us-ascii?Q?ClHYkm8lhrM6qMo4CskiU1JVm41bd0xzs1EpzhrzuuUvydHaCxOLXQn3vXlO?=
+ =?us-ascii?Q?JYDz5nzJNH+S6iAbRnxHByrUniNLuhlS2f/qLGYxAFDbnYwqmcISRAubdRDe?=
+ =?us-ascii?Q?xLLvQng4hFmoVboExPVNOR40xBPsUmSUE8T5Gq9oqgQWl0Du0IU8i56F13uI?=
+ =?us-ascii?Q?obtYR/TpRYa30yzDDZXf+9bZZVj6NuSBLhwvCFALoUZwz9ggFkDKQDWc1Ypc?=
+ =?us-ascii?Q?cQ/GQRQBnuCBDzj4vwNbmYpYFii0x7h3LFEmKqGiO2QP8yjw4WtLCC5OpkIn?=
+ =?us-ascii?Q?n0sZt96HNRMT0AsWWlkXjRKdlm82xrNumh5YIuzyr5g8ZPh4jOWp5o0Uyro0?=
+ =?us-ascii?Q?HbOnQKMoLs0TqMYxCVPuSH0zZkCYWWStZEBXwsyPxqXz2izUxWLm451vmTUH?=
+ =?us-ascii?Q?OvKW7rLMbtqDs6J78VNkTR12siOwu7D3uYTNtcYAcelanQA0J/ictz4Lli4w?=
+ =?us-ascii?Q?nEllfh4KWLcyceYUj0etQMdaawT1dUJ4htnsEP4G7RpUkRvFnUQYeZMOdZzN?=
+ =?us-ascii?Q?L3mDxzc8lwOmI9rlZqw1iKfqd6w+AlqjMK8NByyVrlr+QFJCrc7IlrmgzFuX?=
+ =?us-ascii?Q?i1eVLjq9SSCFjx2V1Xd8qmskucxrbnl8XVn9FXPwDjA3vzOwDbzeFyDYwZwu?=
+ =?us-ascii?Q?cf1jLxHnSGWEJYEskgqBt49q5UE/hB0lJB9pyIYMaZB4wYIV8UPqGO03cIfp?=
+ =?us-ascii?Q?U4QNeOutqMAHKCGwznK0+XpFphNmy7ird6K+bNQHbDtfChK8Ee6kYHw2vOz4?=
+ =?us-ascii?Q?wEnMyOClko09mZECT6v7RcnD87EOrkgItqCax+beKxm3TcXEJYnavhZ/rXZV?=
+ =?us-ascii?Q?WlDDMfLHucMaT1fzU+ZZoMZICCWLoFVZltaSX/0AHYgHy3HO83morZwWBx/R?=
+ =?us-ascii?Q?m+Ct8lOtKUGwZP0FSl6DzLu91fa8gI6qVIY4RH2BompPIE24R+9EGoK1calT?=
+ =?us-ascii?Q?rt+WJH9ye2PVIMmJug5Sz8HbkQ/pEmjkVu8lFGhzIPB+Gc8aKrZKm4gjvDv8?=
+ =?us-ascii?Q?0IFwxQcItr3yLuFsBOG64vqRotIJdI6Bx2oW1SenZEVlTUYdmqxwmKA6yHGa?=
+ =?us-ascii?Q?YugOt1ibl6ftVQaH1CnZmpdNTK/pUut4A1BuKqMLtQ6w+d6V8oYB1jh2c86T?=
+ =?us-ascii?Q?VlhibEONzWINB7rQ/NLhQkGelnZfTedgfWsBiUMm?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dbf8eb0b-90ca-4c45-48bf-08da963f4add
+X-MS-Exchange-CrossTenant-Network-Message-Id: fbc8e88e-2bc5-4d51-18bf-08da963f4dc5
 X-MS-Exchange-CrossTenant-AuthSource: VI1PR04MB4222.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2022 10:53:01.2437
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2022 10:53:06.4464
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SwqE8KV8D5Tuy5B92IFI/TgU/3ZQIjp0la8WDwo5o3ceylwPuhrUqDEjMKmNOBkgLkhGty60/lnq2GGkZqyfgg==
+X-MS-Exchange-CrossTenant-UserPrincipalName: EFw4QoUzBS6BQLLykRj7jOeiTRPjSf6TccqPXAjsmRy+QupLUyAkb3mOsEfmojUlIjKI24h5R/JGc9XzEIZYuw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7773
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -136,28 +136,35 @@ Cc: Chancel Liu <chancel.liu@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This driver helps register ASoC machine device thus use of
-PLATFORM_DEVID_AUTO macro in API can automatically create device for
-each sound card based on rpmsg.
+Some sound card based on rpmsg may support multi-channel. This patch
+expands the maximum channels to 32.
 
 Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
 ---
- sound/soc/fsl/fsl_rpmsg.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/fsl/fsl_rpmsg.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/sound/soc/fsl/fsl_rpmsg.c b/sound/soc/fsl/fsl_rpmsg.c
-index bf94838bdbef..fde3d5006ce0 100644
+index fde3d5006ce0..46c7868a2653 100644
 --- a/sound/soc/fsl/fsl_rpmsg.c
 +++ b/sound/soc/fsl/fsl_rpmsg.c
-@@ -235,7 +235,7 @@ static int fsl_rpmsg_probe(struct platform_device *pdev)
- 
- 	rpmsg->card_pdev = platform_device_register_data(&pdev->dev,
- 							 "imx-audio-rpmsg",
--							 PLATFORM_DEVID_NONE,
-+							 PLATFORM_DEVID_AUTO,
- 							 NULL,
- 							 0);
- 	if (IS_ERR(rpmsg->card_pdev)) {
+@@ -117,14 +117,14 @@ static struct snd_soc_dai_driver fsl_rpmsg_dai = {
+ 	.playback = {
+ 		.stream_name = "CPU-Playback",
+ 		.channels_min = 2,
+-		.channels_max = 2,
++		.channels_max = 32,
+ 		.rates = SNDRV_PCM_RATE_KNOT,
+ 		.formats = FSL_RPMSG_FORMATS,
+ 	},
+ 	.capture = {
+ 		.stream_name = "CPU-Capture",
+ 		.channels_min = 2,
+-		.channels_max = 2,
++		.channels_max = 32,
+ 		.rates = SNDRV_PCM_RATE_KNOT,
+ 		.formats = FSL_RPMSG_FORMATS,
+ 	},
 -- 
 2.25.1
 
