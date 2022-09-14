@@ -1,64 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8BF05B8B21
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Sep 2022 16:56:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 326C65B8C36
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Sep 2022 17:48:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MSNhT3ljjz3blw
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Sep 2022 00:56:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MSPrF1kW1z3blj
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Sep 2022 01:48:29 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=czTvweMU;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=KNSbziHi;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::630; helo=mail-pl1-x630.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=czTvweMU;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=KNSbziHi;
 	dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MSNgm2VfRz30Dp
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Sep 2022 00:56:04 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=lALMKmdqPOn863q1KH2GHJFtFLSUGddYczxk7N3aI/M=; b=czTvweMUYoYEwwLa37VQmFT4n6
-	yngz7eFZe9tSr77iA5R23q4p3rOTQ0tUEDmwtQ865Anxjj0hRK5lCOyoI41DeAX4Sbp0G9PJvf5zS
-	kUJ7fsgOMtvDUbenfkNBESLno0UFnzzWqf0WZ3jEAlzoJvMpfFRsvfIXWaXHofc84YUdstmAeGSt/
-	/VWUkFerFuOp0vVfysvRP+QjT2l4QLw4nudPPSkuUDuGF9Obnk9Ndpm8X5umKT9achMkhU35jb+Wg
-	UfejWRl74GzEaZ36dbnwK0cWBDzKeijaPAWBD+mILYlVXI9R0o32CkIs7xdslXQJw8XtBhQDUzoLM
-	AM/bI/KA==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oYTnX-000GUH-OT; Wed, 14 Sep 2022 14:55:31 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id A75AE3002AE;
-	Wed, 14 Sep 2022 16:55:27 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 8BDA8201B3981; Wed, 14 Sep 2022 16:55:27 +0200 (CEST)
-Date: Wed, 14 Sep 2022 16:55:27 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Michael Matz <matz@suse.de>
-Subject: Re: [RFC] Objtool toolchain proposal:
- -fannotate-{jump-table,noreturn}
-Message-ID: <YyHrX/fTMwfv24W7@hirez.programming.kicks-ass.net>
-References: <20220909180704.jwwed4zhwvin7uyi@treble>
- <Yx8PcldkdOLN8eaw@nazgul.tnic>
- <alpine.LSU.2.20.2209121200120.8265@wotan.suse.de>
- <20220914000416.daxbgccbxwpknn2q@treble>
- <YyHecBM8D0i1lRu8@hirez.programming.kicks-ass.net>
- <alpine.LSU.2.20.2209141415340.8265@wotan.suse.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MSPqc5TbPz2xy4
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Sep 2022 01:47:55 +1000 (AEST)
+Received: by mail-pl1-x630.google.com with SMTP id s18so9594166plr.4
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Sep 2022 08:47:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date;
+        bh=3zQPL9q9eYKwVxvL3oyueWAk0Ysc7yP6QOxsSkazGJs=;
+        b=KNSbziHiOn77jRsJyJnsQYPCkqijxQYiotZKSWfMHN6oNI0ElXYBFb5lAGl8st8ERa
+         5B1gKaAPWJqIlIxlAJjeRvl6yqgenFaxNP7Dgn77NNDC9INfLEEoz+NdJrrhc0ZKd49L
+         yEXhN3x7joGeALJqH1ohQLcKXnO4dt4FiYcSi8I7oMPjUR8F1YUKhEh+QH3Ladrf+hqz
+         JCEGCjp7ExzK6wicksvfbE7xoA9JXvs1EKh87TdMoklWzPLxXRJir3Vi9TBUMSLcoATF
+         laCuO7gHGVE7v2/dp08wQx9vxHpxMCGhELTu/r0xJ6w6O7SKhoweoZVQHau98pP8Ktib
+         GsHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date;
+        bh=3zQPL9q9eYKwVxvL3oyueWAk0Ysc7yP6QOxsSkazGJs=;
+        b=IqoCNRKu9TPoc4tLIDZkON7pcNh4Mvz90OakcQgM8PC2Dzs+i4PiF7AURdOCkSTU0P
+         +SujTwxyhpe4g2tiRVdWnvscX7ailLTmewBR6MQnnRABNjbPwzG4zxQzBHX9ye3l4kAq
+         QIj6EmHltK9XRpxXcJd+kt1NPPXopTNkeUsgjvKD7M8JwnvCNdxae24kj72/pG4eLRR/
+         LWTZNAphK7ONkZYJrUL4KUy8IZrKvOPxK8cCslJaywQaAgHeoIH/9OU1Mme9zWNliHWC
+         PFavHJNHOus8483TfUmNlTf71ii7dS89WarneJBj0k4F31VlLVXEt7MsEmbk3rseQl+F
+         1l5g==
+X-Gm-Message-State: ACgBeo2752K2RIVUrpr4pMgQnJSBPtxcBHFkIy58xT/SgY+Ihx9l1jCd
+	YSrzK/ksJ5FBny27ybawGmVmMqe18XI=
+X-Google-Smtp-Source: AA6agR41+i9/T7zFW7gyE4z8UV82yUGrrWcYSAlwzahe/YeCBkyR+2Gjk/HSmYPoXTYxLfTdZZYKIQ==
+X-Received: by 2002:a17:902:7204:b0:172:663f:80b7 with SMTP id ba4-20020a170902720400b00172663f80b7mr37672154plb.115.1663170473349;
+        Wed, 14 Sep 2022 08:47:53 -0700 (PDT)
+Received: from bobo.ozlabs.ibm.com ([118.210.107.131])
+        by smtp.gmail.com with ESMTPSA id i7-20020a17090332c700b00177e263303dsm9919892plr.183.2022.09.14.08.47.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Sep 2022 08:47:52 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 0/7] powerpc: build / linker improvements
+Date: Thu, 15 Sep 2022 01:47:39 +1000
+Message-Id: <20220914154746.1122482-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <alpine.LSU.2.20.2209141415340.8265@wotan.suse.de>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,57 +74,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Sathvika Vasireddy <sv@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Chen Zhongjin <chenzhongjin@huawei.com>, x86@kernel.org, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>, Mark Brown <broonie@kernel.org>, Borislav Petkov <bp@alien8.de>, linux-toolchains@vger.kernel.org, Indu Bhagat <indu.bhagat@oracle.com>, live-patching@vger.kernel.org, Miroslav Benes <mbenes@suse.cz>, Will Deacon <will@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>, linux-arm-kernel@lists.infradead.org, "Jose E. Marchesi" <jemarch@gnu.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Sep 14, 2022 at 02:28:26PM +0000, Michael Matz wrote:
-> Hello,
-> 
-> On Wed, 14 Sep 2022, Peter Zijlstra wrote:
-> 
-> > > Maybe this is semantics, but I wouldn't characterize objtool's existence
-> > > as being based on the mistrust of tools.  It's main motivation is to
-> > > fill in the toolchain's blind spots in asm and inline-asm, which exist
-> > > by design.
-> > 
-> > That and a fairly deep seated loathing for the regular CFI annotations
-> > and DWARF in general. Linus was fairly firm he didn't want anything to
-> > do with DWARF for in-kernel unwinding.
-> 
-> I was referring only to the check-stuff functionality of objtool, not to 
-> its other parts.  Altough, of course, "deep seated loathing" is a special 
-> form of mistrust as well ;-)
+This series is mainly about moving more things out of writable and
+executable memory, and slightly moving the linker script in the
+direction of the binutils ld internal linker script as we do.
 
-Those were born out the DWARF unwinder itself crashing the kernel due to
-it's inherent complexity (tracking the whole DWARF state machine and not
-being quite robust itself).
+Thanks,
+Nick
 
-That, and the manual CFI annotations were 'always' wrong, due to humans
-and no tooling verifying them.
+Nicholas Piggin (7):
+  powerpc/build: put sys_call_table in .data.rel.ro if RELOCATABLE
+  powerpc: move __end_rodata to cover arch read-only sections
+  powerpc/32/build: move got1/got2 sections out of text
+  powerpc/build: move got, toc, plt, branch_lt sections to read-only
+  powerpc/build: move .data.rel.ro, .sdata2 to read-only
+  powerpc/64/build: only include .opd with ELFv1
+  powerpc/64/build: merge .got and .toc input sections
 
-That said; objtool does do have a number of annotations as well; mostly
-things telling what kind of stackframe stuff starts with.
+ arch/powerpc/kernel/systbl.S             |  4 ++
+ arch/powerpc/kernel/vmlinux.lds.S        | 85 +++++++++++++++---------
+ arch/powerpc/mm/book3s32/mmu.c           |  2 +-
+ arch/powerpc/mm/book3s64/hash_pgtable.c  |  2 +-
+ arch/powerpc/mm/book3s64/radix_pgtable.c |  2 +-
+ arch/powerpc/mm/pgtable_32.c             |  5 +-
+ 6 files changed, 62 insertions(+), 38 deletions(-)
 
-> > That left us in a spot that we needed unwind information in a 'better'
-> > format than DWARF.
-> > 
-> > Objtool was born out of those contraints. ORC not needing the CFI
-> > annotations and ORC being *much* faster at unwiding and generation
-> > (debug builds are slow) were all good.
-> 
-> Don't mix DWARF debug info with DWARF-based unwinding info, the latter 
-> doesn't imply the former.  Out of interest: how does ORC get around the 
-> need for CFI annotations (or equivalents to restore registers) and what 
+-- 
+2.37.2
 
-Objtool 'interprets' the stackops. So it follows the call-graph and is
-an interpreter for all instructions that modify the stack. Doing that it
-konws what the stackframe is at 'most' places.
-
-> makes it fast?  I want faster unwinding for DWARF as well, when there's 
-> feature parity :-)  Maybe something can be learned for integration into 
-> dwarf-unwind.
-
-I think we have some details here:
-
- https://www.kernel.org/doc/html/latest/x86/orc-unwinder.html
