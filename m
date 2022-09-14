@@ -1,66 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 544355B8C43
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Sep 2022 17:51:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7E425B8C47
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Sep 2022 17:52:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MSPvh15rjz3f6g
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Sep 2022 01:51:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MSPwL4gKCz3dQy
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Sep 2022 01:52:02 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Jr6e09q2;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=MzKC7oj6;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1030; helo=mail-pj1-x1030.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62e; helo=mail-pl1-x62e.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Jr6e09q2;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=MzKC7oj6;
 	dkim-atps=neutral
-Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MSPqp4qPFz3blb
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Sep 2022 01:48:06 +1000 (AEST)
-Received: by mail-pj1-x1030.google.com with SMTP id x1-20020a17090ab00100b001fda21bbc90so19426571pjq.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Sep 2022 08:48:06 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MSPqt58qbz3c21
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Sep 2022 01:48:10 +1000 (AEST)
+Received: by mail-pl1-x62e.google.com with SMTP id iw17so15581502plb.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Sep 2022 08:48:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date;
-        bh=wLFF1Utp08/9v1deXG6kJe1MWo/7JPmqFzpswU3seJU=;
-        b=Jr6e09q2xZDyt5Q9eHtgnEU8DY9KLvVwYL/XqvOA0n+6kR8ZZsQM3PBnBY2x80ehoY
-         2hMZ/lIhgy24vVDbvZAhbl/TxsgZK11nOhThTxmGVLy2wxLaE7QXISrE7bHkwqRN97YS
-         iBI/YeUz2WSGBhTaCbQ+WoTV5LKYS8ydgX762iX+d32I/AJQL3ucokru1hljpac/yODa
-         F2KFyFUfT5PtZB2WUqcKdt6LgSh1MKnPz1CdmXeyis+KSl5sAkopBVxrDeCYw/q5Uekc
-         u0KY06jFd8RXDflEObAn+XmlN3QoXK63g0DM4Gh+BrP3ZH+oGrc+jDY96ST4bXqok7KL
-         J6Jw==
+        bh=PrQdAFxtxeR17FgsDPQHKNAvtnlHEj0ZyhwQvUbpnik=;
+        b=MzKC7oj6klE0/NzCLCVjeJI1b1+nUjolhzK28UDWGP6j+4V5NhJnODoLVqvxlvTriu
+         VPrdTKyrkSto2QxyOVmXmI3uAMdHdXmOGBg2OY6E0WquMUsVU1bslexxh5mvJ05I1x6c
+         VJl69SZSatrghXAXKKzLrg2umhcRaamozhbhyA73KHA6mTU2B0wtcPzVQaySAjrt6DnB
+         saw6653Kj3Wym7/BZyaSJroWdvMkJwQ5Fu/9Rpq8ZT39EX+5vwQKsDY/lMfBbPMhrshD
+         wIleS2uMRbjR2gHuW6ufHzOb1rvqh74B7UjBjoxhugizDayoWvJcrgDjVR9mu24zvBoT
+         Qb/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date;
-        bh=wLFF1Utp08/9v1deXG6kJe1MWo/7JPmqFzpswU3seJU=;
-        b=Q89V076WD+q5Y7oZAeP4agveQD6+EZmQ8SJz/HIODD83DRDFNIxUFsTJ39s1aVjPLX
-         W+ke2XrqdhJBlMU2TG4VvvMLoOwygjYGEeIXzoYqULfO03qGbNTemnMhyzAjKv7esQlb
-         DGzaFbWCA8s8y5r270Ntt/caRFjYapJAkMWtmyo/rFGj42QzySnIhVdvRRXZPMBZg5PF
-         r1T7ZOnzlGlKy0eYppyFh8Lq+sRUagyPMxqnHK5wYoJFQWZTwZ47rgmBEUjzNC4NjAzY
-         amLQNYSD3k+DVPval4SmLqFvfzrS4FDWJlXLwmBrTgxmykFEI94FaiIiXf71FEvYKY+P
-         7aCA==
-X-Gm-Message-State: ACgBeo12Lup6qGQ2u7XcQQWgUzbxy97SlFp/PGJ81dxgAILoXjgH6UwF
-	BF6AKR8NON6wYIX0e/6g/S8hfTM1H74=
-X-Google-Smtp-Source: AA6agR536HQiIUsPSUt9O5NSLCeUjrddI/0uwa0rNVNxkI3V/oY5u0yCRCG+JCdIcxP156cLnAvQ+g==
-X-Received: by 2002:a17:902:ccd1:b0:176:6eb8:37b2 with SMTP id z17-20020a170902ccd100b001766eb837b2mr38103097ple.69.1663170485767;
-        Wed, 14 Sep 2022 08:48:05 -0700 (PDT)
+        bh=PrQdAFxtxeR17FgsDPQHKNAvtnlHEj0ZyhwQvUbpnik=;
+        b=c04AD7tP9y+S+xTxqDTFnwYmFAOuru2vI/Ru8raTxsl+jN5NAShLTJBNkowoT3csxJ
+         XbvOAC55PtkWf91S9+sZ4XNwH7RIPS97e8RPJFIJHO2/TkUolUqMaLLqd998rlkLAS3M
+         0zrUnV6AXT9qRH7CkFoNSb1Q/P0caK89dS62JKmf9K7LW5qOdW2vvu0VdLjjAxg1nSFZ
+         5gjcZBo4BOnm9rBtEQ3cCB4dnxmmzNUPRev6a6aEoP1+fJYTPnmvg/4cPvOCXvxBVoZ5
+         ONOSHvFMi0Rd9VyCClIZWbT1m8JNa63NJzGXljzwjUlNxEEHeqKE527ylCzuFXs6GUiQ
+         yeDA==
+X-Gm-Message-State: ACgBeo3iqb1eioLI0z20r8p1pGCsVttuTm8DE0mgnqfAYx4+Zzc4UJe1
+	k5QeCpRzW+Lnh3/WGUTI+Pi2UGxmbeM=
+X-Google-Smtp-Source: AA6agR6NswyIPay5sG+3BaxXwJ+N0g8WLb56K9snex4D/PKIPYvzRqGHxtDsTlYYE5W0CJ4oKIo75w==
+X-Received: by 2002:a17:902:f546:b0:177:ed6b:4696 with SMTP id h6-20020a170902f54600b00177ed6b4696mr32601612plf.171.1663170488081;
+        Wed, 14 Sep 2022 08:48:08 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com ([118.210.107.131])
-        by smtp.gmail.com with ESMTPSA id i7-20020a17090332c700b00177e263303dsm9919892plr.183.2022.09.14.08.48.03
+        by smtp.gmail.com with ESMTPSA id i7-20020a17090332c700b00177e263303dsm9919892plr.183.2022.09.14.08.48.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Sep 2022 08:48:05 -0700 (PDT)
+        Wed, 14 Sep 2022 08:48:07 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 5/7] powerpc/build: move .data.rel.ro, .sdata2 to read-only
-Date: Thu, 15 Sep 2022 01:47:44 +1000
-Message-Id: <20220914154746.1122482-6-npiggin@gmail.com>
+Subject: [PATCH 6/7] powerpc/64/build: only include .opd with ELFv1
+Date: Thu, 15 Sep 2022 01:47:45 +1000
+Message-Id: <20220914154746.1122482-7-npiggin@gmail.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20220914154746.1122482-1-npiggin@gmail.com>
 References: <20220914154746.1122482-1-npiggin@gmail.com>
@@ -81,58 +81,31 @@ Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-.sdata2 is a readonly small data section for ppc32, and .data.rel.ro
-is data that needs relocating but is read-only after that so these
-can both be moved to the read only memory region.
+ELFv2 does not use function descriptors so .opd is not required.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/vmlinux.lds.S | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ arch/powerpc/kernel/vmlinux.lds.S | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
-index 716fff86c3fd..44050863032e 100644
+index 44050863032e..404944263db8 100644
 --- a/arch/powerpc/kernel/vmlinux.lds.S
 +++ b/arch/powerpc/kernel/vmlinux.lds.S
-@@ -131,6 +131,16 @@ SECTIONS
- 	/* Read-only data */
- 	RO_DATA(PAGE_SIZE)
+@@ -181,11 +181,13 @@ SECTIONS
+ 	SOFT_MASK_TABLE(8)
+ 	RESTART_TABLE(8)
  
-+#ifdef CONFIG_PPC32
-+	.sdata2 : AT(ADDR(.sdata2) - LOAD_OFFSET) {
-+		*(.sdata2)
-+	}
-+#endif
-+
-+	.data.rel.ro : AT(ADDR(.data.rel.ro) - LOAD_OFFSET) {
-+		*(.data.rel.ro*)
-+	}
-+
- 	.branch_lt : AT(ADDR(.branch_lt) - LOAD_OFFSET) {
- 		*(.branch_lt)
++#ifdef CONFIG_PPC64_ELF_ABI_V1
+ 	.opd : AT(ADDR(.opd) - LOAD_OFFSET) {
+ 		__start_opd = .;
+ 		KEEP(*(.opd))
+ 		__end_opd = .;
  	}
-@@ -348,19 +358,13 @@ SECTIONS
- 	. = ALIGN(PAGE_SIZE);
- 	_sdata = .;
++#endif
  
--#ifdef CONFIG_PPC32
- 	.data : AT(ADDR(.data) - LOAD_OFFSET) {
- 		DATA_DATA
- 		*(.data.rel*)
-+#ifdef CONFIG_PPC32
- 		*(SDATA_MAIN)
--		*(.sdata2)
--	}
--#else
--	.data : AT(ADDR(.data) - LOAD_OFFSET) {
--		DATA_DATA
--		*(.data.rel*)
--	}
- #endif
-+	}
- 
- 	/* The initial task and kernel stack */
- 	INIT_TASK_DATA_SECTION(THREAD_ALIGN)
+ 	. = ALIGN(8);
+ 	__stf_entry_barrier_fixup : AT(ADDR(__stf_entry_barrier_fixup) - LOAD_OFFSET) {
 -- 
 2.37.2
 
