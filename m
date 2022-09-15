@@ -2,65 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73C7D5B8F6A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Sep 2022 21:57:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10FB75B92D3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Sep 2022 04:58:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MSWMN4Dyfz3c1S
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Sep 2022 05:57:20 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AiojQUMq;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MShhr0H2Kz3c9K
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Sep 2022 12:58:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AiojQUMq;
-	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com; envelope-from=chenzhongjin@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MSWLg4ntDz2xh0
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Sep 2022 05:56:43 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id EB98161EA6;
-	Wed, 14 Sep 2022 19:56:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0E71C433C1;
-	Wed, 14 Sep 2022 19:56:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1663185398;
-	bh=1DrhO9J6QoptsuptEgf0uLTwWzccKrsoDC0CgVBHBFk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AiojQUMqkHashxOR7ml2VpTipnwdPjbJUI6LJ9f3ZiTFndPx8DXl3z5j1RyHpM6aM
-	 nuifkRvWDngygC3NWYkI5VGWjJbNVUdzTozwQQj+28BPQqxuYVmCEPaQVVLcZSfSN7
-	 0ahzYcssRxvhLfEG3ZSogs+zYegUAomVRXSsRLxd8k7Mn1IVVfDPm7mdzTtImNF0p0
-	 WcW7DwdSe/ozHTtAG12YS375kFDQXEv5DjL5nKa6NVLO6pDIFbSePqnQr6FI1yQ8qT
-	 xKjBG8SKv5KgUCtp0lVMD3lrceb7jdoESdOMo92qSE4m0RYBI51WQgcIJBnVe0l61Z
-	 ++gDpht0Ek8ag==
-Received: by pali.im (Postfix)
-	id F03A47B8; Wed, 14 Sep 2022 21:56:34 +0200 (CEST)
-Date: Wed, 14 Sep 2022 21:56:34 +0200
-From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: Fragmented physical memory on powerpc/32
-Message-ID: <20220914195634.fumjtflzetvy52fl@pali>
-References: <20220908153511.57ceunyusziqfcav@pali>
- <20220908201701.sd3zqn5hfixmjvhh@pali>
- <9fbc5338-5e10-032a-8f55-e080bd93f74b@csgroup.eu>
- <Yx9GpV1XT8r2a++R@kernel.org>
- <20220912211623.djb7fckgknyfmof7@pali>
- <1c95875c-29f8-68b7-e480-fed8614f3037@csgroup.eu>
- <4f540391-37dc-8e22-be0a-74543082504d@csgroup.eu>
- <YyGfkDKgeW7/nNlr@kernel.org>
- <ed8ff681-4182-3f9f-a65f-21cf5012fff0@csgroup.eu>
- <9779CA34-E40D-4035-A319-A92D2F6E4DDF@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MShhP1y7hz2yYj
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Sep 2022 12:57:38 +1000 (AEST)
+Received: from dggpemm500023.china.huawei.com (unknown [172.30.72.55])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4MShb43Vj9zlVvj;
+	Thu, 15 Sep 2022 10:53:04 +0800 (CST)
+Received: from dggpemm500013.china.huawei.com (7.185.36.172) by
+ dggpemm500023.china.huawei.com (7.185.36.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Thu, 15 Sep 2022 10:57:03 +0800
+Received: from [10.67.108.67] (10.67.108.67) by dggpemm500013.china.huawei.com
+ (7.185.36.172) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Thu, 15 Sep
+ 2022 10:57:03 +0800
+Message-ID: <6a61aa57-141f-039c-5a2d-b2d79fecb8c2@huawei.com>
+Date: Thu, 15 Sep 2022 10:56:58 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <9779CA34-E40D-4035-A319-A92D2F6E4DDF@kernel.org>
-User-Agent: NeoMutt/20180716
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.0
+Subject: Re: [RFC] Objtool toolchain proposal:
+ -fannotate-{jump-table,noreturn}
+Content-Language: en-US
+To: Michael Matz <matz@suse.de>, Borislav Petkov <bp@alien8.de>
+References: <20220909180704.jwwed4zhwvin7uyi@treble>
+ <Yx8PcldkdOLN8eaw@nazgul.tnic>
+ <alpine.LSU.2.20.2209121200120.8265@wotan.suse.de>
+From: Chen Zhongjin <chenzhongjin@huawei.com>
+In-Reply-To: <alpine.LSU.2.20.2209121200120.8265@wotan.suse.de>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.67.108.67]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ dggpemm500013.china.huawei.com (7.185.36.172)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,411 +57,186 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "robh+dt@kernel.org" <robh+dt@kernel.org>, "paulus@samba.org" <paulus@samba.org>, Ash Logan <ash@heyquark.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "j.ne@posteo.net" <j.ne@posteo.net>
+Cc: Mark
+ Rutland <mark.rutland@arm.com>, Peter Zijlstra <peterz@infradead.org>, linuxppc-dev@lists.ozlabs.org, x86@kernel.org, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, Ard
+ Biesheuvel <ardb@kernel.org>, Mark Brown <broonie@kernel.org>, Sathvika Vasireddy <sv@linux.ibm.com>, linux-toolchains@vger.kernel.org, Indu Bhagat <indu.bhagat@oracle.com>, live-patching@vger.kernel.org, Miroslav Benes <mbenes@suse.cz>, Will Deacon <will@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>, linux-arm-kernel@lists.infradead.org, "Jose E. Marchesi" <jemarch@gnu.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wednesday 14 September 2022 16:55:04 Mike Rapoport wrote:
-> On September 14, 2022 10:43:52 AM GMT+01:00, Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
-> >
-> >
-> >Le 14/09/2022 à 11:32, Mike Rapoport a écrit :
-> >> On Tue, Sep 13, 2022 at 02:36:13PM +0200, Christophe Leroy wrote:
-> >>>
-> >>>
-> >>> Le 13/09/2022 à 08:11, Christophe Leroy a écrit :
-> >>>>
-> >>>>
-> >>>> Le 12/09/2022 à 23:16, Pali Rohár a écrit :
-> >>>>>>
-> >>>>>> My guess would be that something went wrong in the linear map
-> >>>>>> setup, but it
-> >>>>>> won't hurt running with "memblock=debug" added to the kernel
-> >>>>>> command line
-> >>>>>> to see if there is anything suspicious there.
-> >>>>>
-> >>>>> Here is boot log on serial console with memblock=debug command line:
-> >>>>>
-> >>>> ...
-> >>>>>
-> >>>>> Do you need something more for debug?
-> >>>>
-> >>>> Can you send me the 'vmlinux' used to generate the above Oops so that I
-> >>>> can see exactly where we are in function mem_init().
-> >>>>
-> >>>> And could you also try without CONFIG_HIGHMEM just in case.
+Hi,
 
-Hello! I disabled CONFIG_HIGHMEM and there is no crash anymore. But
-kernel see only 761160 kB of RAM, which is less than 3GB. I guess this
-is expected.
+On 2022/9/12 22:17, Michael Matz wrote:
+> Hey,
+>
+> On Mon, 12 Sep 2022, Borislav Petkov wrote:
+>
+>> Micha, any opinions on the below are appreciated.
+>>
+>> On Fri, Sep 09, 2022 at 11:07:04AM -0700, Josh Poimboeuf wrote:
+>>> difficult to ensure correctness.  Also, due to kernel live patching, the
+>>> kernel relies on 100% correctness of unwinding metadata, whereas the
+>>> toolchain treats it as a best effort.
+> Unwinding certainly is not best effort.  It's 100% reliable as far as the
+> source language or compilation options require.  But as it doesn't
+> touch the discussed features I won't belabor that point.
+>
+> I will mention that objtool's existence is based on mistrust, of persons
+> (not correctly annotating stuff) and of tools (not correctly heeding those
+> annotations).  The mistrust in persons is understandable and can be dealt
+> with by tools, but the mistrust in tools can't be fixed by making tools
+> more complicated by emitting even more information; there's no good reason
+> to assume that one piece of info can be trusted more than other pieces.
+> So, if you mistrust the tools you have already lost.  That's somewhat
+> philosophical, so I won't beat that horse much more either.
+>
+> Now, recovering the CFG.  I'll switch order of your two items:
+>
+> 2) noreturn function
+>
+>>>    .pushsection .annotate.noreturn
+>>>      .quad func1
+>>>      .quad func2
+>>>      .quad func3
+>>>    .popsection
+> This won't work for indirect calls to noreturn functions:
+>
+>    void (* __attribute__((noreturn)) noretptr)(void);
+>    int callnoret (int i)
+>    {
+>      noretptr();
+>      return i + 32;
+>    }
+>
+> The return statement is unreachable (and removed by GCC).  To know that
+> you would have to mark the call statements, not the individual functions.
+> All schemes that mark functions that somehow indicates a meaningful
+> difference in the calling sequence (e.g. the ABI of functions) have the
+> same problem: it's part of the call expressions type, not of individual
+> decls.
+>
+> Second problem: it's not extensible.  Today it's noreturn functions you
+> want to know, and tomorrow?  So, add a flag word per entry, define bit 0
+> for now to be NORETURN, and see what comes.  Add a header with a version
+> (and/or identifier) as well and it's properly extensible.  For easy
+> linking and identifying the blobs in the linked result include a length in
+> the header.  If this were in an allocated section it would be a good idea
+> to refer to the symbols in a PC-relative manner, so as to not result in
+> runtime relocations.  In this case, as it's within a non-alloc section
+> that doesn't matter.  So:
+>
+> .section .annotate.functions
+> .long 1       # version
+> .long 0xcafe  # ident
+> .long 2f-1f   # length
+> 1:
+> .quad func1, 1   # noreturn
+> .quad func2, 1   # noreturn
+> .quad func3, 32  # something_else_but_not_noreturn
+> ...
+> 2:
+> .long 1b-2b   # align and "checksum"
+>
+> It might be that the length-and-header scheme is cumbersome if you need to
+> write those section commands by hand, in which case another scheme might
+> be preferrable, but it should somehow be self-delimiting.
+>
+> For the above problem of indirect calls to noreturns, instead do:
+>
+>    .text
+>    noretcalllabel:
+>      call noreturn
+>    othercall:
+>      call really_special_thing
+>    .section .annotate.noretcalls
+>    .quad noretcalllabel, 1  # noreturn call
+>    .quad othercall, 32      # call to some special(-ABI?) function
+>
+> Same thoughts re extensibility and self-delimitation apply.
+>
+> 1) jump tables
+>
+>>> Create an .annotate.jump_table section which is an array of the
+>>> following variable-length structure:
+>>>
+>>>    struct annotate_jump_table {
+>>> 	void *indirect_jmp;
+>>> 	long num_targets;
+>>> 	void *targets[];
+>>>    };
+> It's very often the case that the compiler already emits what your
+> .targets[] member would encode, just at some unknown place, length and
+> encoding.  So you would save space if you instead only remember the
+> encoding and places of those jump tables:
 
-> >>>>
-> >>>
-> >>> I looked at the vmlinux you sent me, the problem is in the loop for highmem
-> >>> in mem_init(). It crashes in the call to free_highmem_page()
-> >>>
-> >>> #ifdef CONFIG_HIGHMEM
-> >>> 	{
-> >>> 		unsigned long pfn, highmem_mapnr;
-> >>>
-> >>> 		highmem_mapnr = lowmem_end_addr >> PAGE_SHIFT;
-> >>> 		for (pfn = highmem_mapnr; pfn < max_mapnr; ++pfn) {
-> >>> 			phys_addr_t paddr = (phys_addr_t)pfn << PAGE_SHIFT;
-> >>> 			struct page *page = pfn_to_page(pfn);
-> >>> 			if (!memblock_is_reserved(paddr))
-> >>> 				free_highmem_page(page);
-> >>> 		}
-> >>> 	}
-> >>> #endif /* CONFIG_HIGHMEM */
-> >>>
-> >>>
-> >>> As far as I can see in the memblock debug lines, the holes don't seem to be
-> >>> marked as reserved by memblock. So it is above valid ? Other architectures
-> >>> seem to do differently.
-> >>>
-> >>> Can you try by replacing !memblock_is_reserved(paddr) by
-> >>> memblock_is_memory(paddr) ?
+We have found some anonymous information on x86 in .rodata.
 
-I enabled CONFIG_HIGHMEM again, applied this change and kernel does not
-crash too anymore. And it sees 3062896 kB of memory (in 'free' output).
+I'm not sure if those are *all* of Josh wanted on x86, however for arm64 
+we did not found that in the same section so it is a problem on arm64 now.
 
-So seems that this change fixed it.
+Does the compiler will emit these for all arches? At lease I tried and 
+didn't find anything meaningful (maybe I omitted it).
 
-I tried simple C program for allocating memory via malloc() and it
-successfully allocated 2800 MB. If it tried to request/allocate more
-then kernel started OOM killer which killed that program gracefully.
-No kernel or HW crash.
 
-Here is bootlog:
+Best,
 
-[    0.000000] memblock_alloc_try_nid: 8 bytes align=0x4 nid=-1 from=0x00000000 max_addr=0x00000000 smp_setup_cpu_maps+0x40/0x2b4
-[    0.000000] memblock_reserve: [0x2fff5d74-0x2fff5d7b] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] CPU maps initialized for 1 thread per core
-[    0.000000]  (thread shift is 0)
-[    0.000000] memblock_phys_free: [0x2fff5d74-0x2fff5d7b] setup_arch+0x1bc/0x318
-[    0.000000] -----------------------------------------------------
-[    0.000000] phys_mem_size     = 0xbe500000
-[    0.000000] dcache_bsize      = 0x20
-[    0.000000] icache_bsize      = 0x20
-[    0.000000] cpu_features      = 0x0000000010010108
-[    0.000000]   possible        = 0x0000000010010108
-[    0.000000]   always          = 0x0000000010010108
-[    0.000000] cpu_user_features = 0x84e08000 0x08000000
-[    0.000000] mmu_features      = 0x00020010
-[    0.000000] -----------------------------------------------------
-[    0.000000] memblock_alloc_try_nid: 8192 bytes align=0x2000 nid=-1 from=0x00000000 max_addr=0x00000000 alloc_stack+0x2c/0x60
-[    0.000000] memblock_reserve: [0x2fff2000-0x2fff3fff] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 8192 bytes align=0x2000 nid=-1 from=0x00000000 max_addr=0x00000000 alloc_stack+0x2c/0x60
-[    0.000000] memblock_reserve: [0x2fff0000-0x2fff1fff] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 8192 bytes align=0x2000 nid=-1 from=0x00000000 max_addr=0x00000000 alloc_stack+0x2c/0x60
-[    0.000000] memblock_reserve: [0x2ffee000-0x2ffeffff] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 8192 bytes align=0x2000 nid=-1 from=0x00000000 max_addr=0x00000000 alloc_stack+0x2c/0x60
-[    0.000000] memblock_reserve: [0x2ffec000-0x2ffedfff] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 8192 bytes align=0x2000 nid=-1 from=0x00000000 max_addr=0x00000000 alloc_stack+0x2c/0x60
-[    0.000000] memblock_reserve: [0x2ffea000-0x2ffebfff] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 8192 bytes align=0x2000 nid=-1 from=0x00000000 max_addr=0x00000000 alloc_stack+0x2c/0x60
-[    0.000000] memblock_reserve: [0x2ffe8000-0x2ffe9fff] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 8192 bytes align=0x2000 nid=-1 from=0x00000000 max_addr=0x00000000 alloc_stack+0x2c/0x60
-[    0.000000] memblock_reserve: [0x2ffe6000-0x2ffe7fff] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 8192 bytes align=0x2000 nid=-1 from=0x00000000 max_addr=0x00000000 alloc_stack+0x2c/0x60
-[    0.000000] memblock_reserve: [0x2ffe4000-0x2ffe5fff] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 8192 bytes align=0x2000 nid=-1 from=0x00000000 max_addr=0x00000000 alloc_stack+0x2c/0x60
-[    0.000000] memblock_reserve: [0x2ffe2000-0x2ffe3fff] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 8192 bytes align=0x2000 nid=-1 from=0x00000000 max_addr=0x00000000 alloc_stack+0x2c/0x60
-[    0.000000] memblock_reserve: [0x2ffe0000-0x2ffe1fff] memblock_alloc_range_nid+0xe8/0x1b0
-mpc85xx_rdb_setup_arch()
-[    0.000000] ioremap() called early from of_iomap+0x48/0x80. Use early_ioremap() instead
-[    0.000000] memblock_alloc_try_nid: 4096 bytes align=0x1000 nid=-1 from=0x00000000 max_addr=0x00000000 early_pte_alloc_kernel+0x3c/0x90
-[    0.000000] memblock_reserve: [0x2fff4000-0x2fff4fff] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] MPC85xx RDB board from Freescale Semiconductor
-[    0.000000] barrier-nospec: using isync; sync as speculation barrier
-[    0.000000] barrier-nospec: patched 182 locations
-[    0.000000] memblock_alloc_try_nid: 4096 bytes align=0x1000 nid=-1 from=0x00000000 max_addr=0x00000000 early_pte_alloc_kernel+0x3c/0x90
-[    0.000000] memblock_reserve: [0x2ffdf000-0x2ffdffff] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] Top of RAM: 0xff700000, Total RAM: 0xbe500000
-[    0.000000] Memory hole size: 1042MB
-[    0.000000] Zone ranges:
-[    0.000000]   Normal   [mem 0x0000000000000000-0x000000002fffffff]
-[    0.000000]   HighMem  [mem 0x0000000030000000-0x00000000ff6fffff]
-[    0.000000] Movable zone start for each node
-[    0.000000] Early memory node ranges
-[    0.000000]   node   0: [mem 0x0000000000000000-0x000000007fffffff]
-[    0.000000]   node   0: [mem 0x00000000c0200000-0x00000000eeffffff]
-[    0.000000]   node   0: [mem 0x00000000f0000000-0x00000000ff6fffff]
-[    0.000000] Initmem setup node 0 [mem 0x0000000000000000-0x00000000ff6fffff]
-[    0.000000] memblock_alloc_try_nid_raw: 37675008 bytes align=0x20 nid=0 from=0x00000000 max_addr=0x00000000 free_area_init+0x890/0xc94
-[    0.000000] memblock_reserve: [0x2dbf1000-0x2ffdefff] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 96 bytes align=0x20 nid=0 from=0x00000000 max_addr=0x00000000 setup_usemap+0x60/0xa0
-[    0.000000] memblock_reserve: [0x2fff5d00-0x2fff5d5f] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 416 bytes align=0x20 nid=0 from=0x00000000 max_addr=0x00000000 setup_usemap+0x60/0xa0
-[    0.000000] memblock_reserve: [0x2fff5b60-0x2fff5cff] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 32 bytes align=0x20 nid=-1 from=0x00000000 max_addr=0x00000000 mmu_context_init+0x38/0x154
-[    0.000000] memblock_reserve: [0x2fff5b40-0x2fff5b5f] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 1024 bytes align=0x20 nid=-1 from=0x00000000 max_addr=0x00000000 mmu_context_init+0x7c/0x154
-[    0.000000] memblock_reserve: [0x2fff5740-0x2fff5b3f] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 32 bytes align=0x20 nid=-1 from=0x00000000 max_addr=0x00000000 mmu_context_init+0xc4/0x154
-[    0.000000] memblock_reserve: [0x2fff5720-0x2fff573f] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] MMU: Allocated 1088 bytes of context maps for 255 contexts
-[    0.000000] memblock_alloc_try_nid: 111 bytes align=0x20 nid=-1 from=0x00000000 max_addr=0x00000000 start_kernel+0x194/0x6d0
-[    0.000000] memblock_reserve: [0x2fff56a0-0x2fff570e] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 111 bytes align=0x20 nid=-1 from=0x00000000 max_addr=0x00000000 start_kernel+0x1c0/0x6d0
-[    0.000000] memblock_reserve: [0x2fff5620-0x2fff568e] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 4096 bytes align=0x1000 nid=-1 from=0x00000000 max_addr=0x00000000 pcpu_embed_first_chunk+0x314/0x7b4
-[    0.000000] memblock_reserve: [0x2dbf0000-0x2dbf0fff] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 4096 bytes align=0x20 nid=-1 from=0x00000000 max_addr=0x00000000 pcpu_embed_first_chunk+0x4d4/0x7b4
-[    0.000000] memblock_reserve: [0x2dbef000-0x2dbeffff] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 90112 bytes align=0x1000 nid=-1 from=0x3fffffff max_addr=0x00000000 pcpu_embed_first_chunk+0x564/0x7b4
-[    0.000000] memblock_reserve: [0x2dbd9000-0x2dbeefff] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_phys_free: [0x2dbe4000-0x2dbe3fff] pcpu_embed_first_chunk+0x680/0x7b4
-[    0.000000] memblock_phys_free: [0x2dbef000-0x2dbeefff] pcpu_embed_first_chunk+0x680/0x7b4
-[    0.000000] percpu: Embedded 11 pages/cpu s14196 r8192 d22668 u45056
-[    0.000000] memblock_alloc_try_nid: 4 bytes align=0x20 nid=-1 from=0x00000000 max_addr=0x00000000 pcpu_setup_first_chunk+0x37c/0x924
-[    0.000000] memblock_reserve: [0x2fff5d60-0x2fff5d63] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 4 bytes align=0x20 nid=-1 from=0x00000000 max_addr=0x00000000 pcpu_setup_first_chunk+0x3a4/0x924
-[    0.000000] memblock_reserve: [0x2fff5600-0x2fff5603] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 8 bytes align=0x20 nid=-1 from=0x00000000 max_addr=0x00000000 pcpu_setup_first_chunk+0x3cc/0x924
-[    0.000000] memblock_reserve: [0x2fff55e0-0x2fff55e7] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 8 bytes align=0x20 nid=-1 from=0x00000000 max_addr=0x00000000 pcpu_setup_first_chunk+0x3f4/0x924
-[    0.000000] memblock_reserve: [0x2fff55c0-0x2fff55c7] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] pcpu-alloc: s14196 r8192 d22668 u45056 alloc=11*4096
-[    0.000000] pcpu-alloc: [0] 0 [0] 1 
-[    0.000000] memblock_alloc_try_nid: 136 bytes align=0x20 nid=-1 from=0x00000000 max_addr=0x00000000 pcpu_setup_first_chunk+0x7fc/0x924
-[    0.000000] memblock_reserve: [0x2fff5520-0x2fff55a7] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 96 bytes align=0x20 nid=-1 from=0x00000000 max_addr=0x00000000 pcpu_alloc_first_chunk+0x64/0x2e0
-[    0.000000] memblock_reserve: [0x2fff54c0-0x2fff551f] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 384 bytes align=0x20 nid=-1 from=0x00000000 max_addr=0x00000000 pcpu_alloc_first_chunk+0xc4/0x2e0
-[    0.000000] memblock_reserve: [0x2fff5340-0x2fff54bf] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 388 bytes align=0x20 nid=-1 from=0x00000000 max_addr=0x00000000 pcpu_alloc_first_chunk+0xf0/0x2e0
-[    0.000000] memblock_reserve: [0x2fff51a0-0x2fff5323] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 96 bytes align=0x20 nid=-1 from=0x00000000 max_addr=0x00000000 pcpu_alloc_first_chunk+0x11c/0x2e0
-[    0.000000] memblock_reserve: [0x2fff5140-0x2fff519f] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 96 bytes align=0x20 nid=-1 from=0x00000000 max_addr=0x00000000 pcpu_alloc_first_chunk+0x64/0x2e0
-[    0.000000] memblock_reserve: [0x2fff50e0-0x2fff513f] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 768 bytes align=0x20 nid=-1 from=0x00000000 max_addr=0x00000000 pcpu_alloc_first_chunk+0xc4/0x2e0
-[    0.000000] memblock_reserve: [0x2dbd8d00-0x2dbd8fff] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 772 bytes align=0x20 nid=-1 from=0x00000000 max_addr=0x00000000 pcpu_alloc_first_chunk+0xf0/0x2e0
-[    0.000000] memblock_reserve: [0x2dbd89e0-0x2dbd8ce3] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 192 bytes align=0x20 nid=-1 from=0x00000000 max_addr=0x00000000 pcpu_alloc_first_chunk+0x11c/0x2e0
-[    0.000000] memblock_reserve: [0x2fff5020-0x2fff50df] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_phys_free: [0x2dbf0000-0x2dbf0fff] pcpu_embed_first_chunk+0x744/0x7b4
-[    0.000000] memblock_phys_free: [0x2dbef000-0x2dbeffff] pcpu_embed_first_chunk+0x754/0x7b4
-[    0.000000] Built 1 zonelists, mobility grouping on.  Total pages: 777792
-[    0.000000] Kernel command line: root=ubi0:rootfs rootfstype=ubifs ubi.mtd=rootfs rootflags=chk_data_crc rw console=ttyS0,115200 memblock=debug
-[    0.000000] memblock_alloc_try_nid: 524288 bytes align=0x20 nid=-1 from=0x00000000 max_addr=0x00000000 alloc_large_system_hash+0x1a4/0x2ec
-[    0.000000] memblock_reserve: [0x2db589e0-0x2dbd89df] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] Dentry cache hash table entries: 131072 (order: 7, 524288 bytes, linear)
-[    0.000000] memblock_alloc_try_nid: 262144 bytes align=0x20 nid=-1 from=0x00000000 max_addr=0x00000000 alloc_large_system_hash+0x1a4/0x2ec
-[    0.000000] memblock_reserve: [0x2db189e0-0x2db589df] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] Inode-cache hash table entries: 65536 (order: 6, 262144 bytes, linear)
-[    0.000000] mem auto-init: stack:off, heap alloc:off, heap free:off
-[    0.000000] Kernel virtual memory layout:
-[    0.000000]   * 0xffbbf000..0xfffff000  : fixmap
-[    0.000000]   * 0xff400000..0xff800000  : highmem PTEs
-[    0.000000]   * 0xff3fe000..0xff400000  : early ioremap
-[    0.000000]   * 0xf1000000..0xff3fe000  : vmalloc & ioremap
-[    0.000000] Memory: 3062620K/3118080K available (10732K kernel code, 712K rwdata, 2044K rodata, 276K init, 287K bss, 55460K reserved, 0K cma-reserved, 2331648K highmem)
-[    0.000000] SLUB: HWalign=32, Order=0-3, MinObjects=0, CPUs=2, Nodes=1
+Chen
 
-> >> 
-> >> The holes should not be marked as reserved, we just need to loop over the
-> >> memory ranges rather than over pfns. Then the holes will be taken into
-> >> account.
-> >> 
-> >> I believe arm and xtensa got this right:
-> >> 
-> >> (from arch/arm/mm/init.c)
-> >> 
-> >> static void __init free_highpages(void)
-> >> {
-> >> #ifdef CONFIG_HIGHMEM
-> >> 	unsigned long max_low = max_low_pfn;
-> >> 	phys_addr_t range_start, range_end;
-> >> 	u64 i;
-> >> 
-> >> 	/* set highmem page free */
-> >> 	for_each_free_mem_range(i, NUMA_NO_NODE, MEMBLOCK_NONE,
-> >> 				&range_start, &range_end, NULL) {
-> >> 		unsigned long start = PFN_UP(range_start);
-> >> 		unsigned long end = PFN_DOWN(range_end);
-> >> 
-> >> 		/* Ignore complete lowmem entries */
-> >> 		if (end <= max_low)
-> >> 			continue;
-> >> 
-> >> 		/* Truncate partial highmem entries */
-> >> 		if (start < max_low)
-> >> 			start = max_low;
-> >> 
-> >> 		for (; start < end; start++)
-> >> 			free_highmem_page(pfn_to_page(start));
-> >> 	}
-> >> #endif
-> >> }
-> >> 
-> >
-> >
-> >And what about the way MIPS does it ?
-> >
-> >static inline void __init mem_init_free_highmem(void)
-> >{
-> >#ifdef CONFIG_HIGHMEM
-> >	unsigned long tmp;
-> >
-> >	if (cpu_has_dc_aliases)
-> >		return;
-> >
-> >	for (tmp = highstart_pfn; tmp < highend_pfn; tmp++) {
-> >		struct page *page = pfn_to_page(tmp);
-> >
-> >		if (!memblock_is_memory(PFN_PHYS(tmp)))
-> >			SetPageReserved(page);
-> >		else
-> >			free_highmem_page(page);
-> >	}
-> >#endif
-> >}
-> 
-> This iterates over all PFNs in the highmem range and skips those in holes.
-> for_each_free_mem_range() skips the holes altogether.
-> 
-> Largely, I think we need to move, say, arm's version to mm/ and use it everywhere, except, perhaps, x86.
-
-I tried to replace quoted powerpc CONFIG_HIGHMEM code by above arm code
-and it worked fine too! No kernel crash anymore. But 'free' see only
-3062888 kB of total memory. Which is less then with the first
-workaround.
-
-Here is bootlog:
-
-[    0.000000] memblock_alloc_try_nid: 8 bytes align=0x4 nid=-1 from=0x00000000 max_addr=0x00000000 smp_setup_cpu_maps+0x40/0x2b4
-[    0.000000] memblock_reserve: [0x2fff5d74-0x2fff5d7b] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] CPU maps initialized for 1 thread per core
-[    0.000000]  (thread shift is 0)
-[    0.000000] memblock_phys_free: [0x2fff5d74-0x2fff5d7b] setup_arch+0x1bc/0x318
-[    0.000000] -----------------------------------------------------
-[    0.000000] phys_mem_size     = 0xbe500000
-[    0.000000] dcache_bsize      = 0x20
-[    0.000000] icache_bsize      = 0x20
-[    0.000000] cpu_features      = 0x0000000010010108
-[    0.000000]   possible        = 0x0000000010010108
-[    0.000000]   always          = 0x0000000010010108
-[    0.000000] cpu_user_features = 0x84e08000 0x08000000
-[    0.000000] mmu_features      = 0x00020010
-[    0.000000] -----------------------------------------------------
-[    0.000000] memblock_alloc_try_nid: 8192 bytes align=0x2000 nid=-1 from=0x00000000 max_addr=0x00000000 alloc_stack+0x2c/0x60
-[    0.000000] memblock_reserve: [0x2fff2000-0x2fff3fff] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 8192 bytes align=0x2000 nid=-1 from=0x00000000 max_addr=0x00000000 alloc_stack+0x2c/0x60
-[    0.000000] memblock_reserve: [0x2fff0000-0x2fff1fff] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 8192 bytes align=0x2000 nid=-1 from=0x00000000 max_addr=0x00000000 alloc_stack+0x2c/0x60
-[    0.000000] memblock_reserve: [0x2ffee000-0x2ffeffff] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 8192 bytes align=0x2000 nid=-1 from=0x00000000 max_addr=0x00000000 alloc_stack+0x2c/0x60
-[    0.000000] memblock_reserve: [0x2ffec000-0x2ffedfff] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 8192 bytes align=0x2000 nid=-1 from=0x00000000 max_addr=0x00000000 alloc_stack+0x2c/0x60
-[    0.000000] memblock_reserve: [0x2ffea000-0x2ffebfff] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 8192 bytes align=0x2000 nid=-1 from=0x00000000 max_addr=0x00000000 alloc_stack+0x2c/0x60
-[    0.000000] memblock_reserve: [0x2ffe8000-0x2ffe9fff] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 8192 bytes align=0x2000 nid=-1 from=0x00000000 max_addr=0x00000000 alloc_stack+0x2c/0x60
-[    0.000000] memblock_reserve: [0x2ffe6000-0x2ffe7fff] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 8192 bytes align=0x2000 nid=-1 from=0x00000000 max_addr=0x00000000 alloc_stack+0x2c/0x60
-[    0.000000] memblock_reserve: [0x2ffe4000-0x2ffe5fff] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 8192 bytes align=0x2000 nid=-1 from=0x00000000 max_addr=0x00000000 alloc_stack+0x2c/0x60
-[    0.000000] memblock_reserve: [0x2ffe2000-0x2ffe3fff] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 8192 bytes align=0x2000 nid=-1 from=0x00000000 max_addr=0x00000000 alloc_stack+0x2c/0x60
-[    0.000000] memblock_reserve: [0x2ffe0000-0x2ffe1fff] memblock_alloc_range_nid+0xe8/0x1b0
-mpc85xx_rdb_setup_arch()
-[    0.000000] ioremap() called early from of_iomap+0x48/0x80. Use early_ioremap() instead
-[    0.000000] memblock_alloc_try_nid: 4096 bytes align=0x1000 nid=-1 from=0x00000000 max_addr=0x00000000 early_pte_alloc_kernel+0x3c/0x90
-[    0.000000] memblock_reserve: [0x2fff4000-0x2fff4fff] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] MPC85xx RDB board from Freescale Semiconductor
-[    0.000000] barrier-nospec: using isync; sync as speculation barrier
-[    0.000000] barrier-nospec: patched 182 locations
-[    0.000000] memblock_alloc_try_nid: 4096 bytes align=0x1000 nid=-1 from=0x00000000 max_addr=0x00000000 early_pte_alloc_kernel+0x3c/0x90
-[    0.000000] memblock_reserve: [0x2ffdf000-0x2ffdffff] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] Top of RAM: 0xff700000, Total RAM: 0xbe500000
-[    0.000000] Memory hole size: 1042MB
-[    0.000000] Zone ranges:
-[    0.000000]   Normal   [mem 0x0000000000000000-0x000000002fffffff]
-[    0.000000]   HighMem  [mem 0x0000000030000000-0x00000000ff6fffff]
-[    0.000000] Movable zone start for each node
-[    0.000000] Early memory node ranges
-[    0.000000]   node   0: [mem 0x0000000000000000-0x000000007fffffff]
-[    0.000000]   node   0: [mem 0x00000000c0200000-0x00000000eeffffff]
-[    0.000000]   node   0: [mem 0x00000000f0000000-0x00000000ff6fffff]
-[    0.000000] Initmem setup node 0 [mem 0x0000000000000000-0x00000000ff6fffff]
-[    0.000000] memblock_alloc_try_nid_raw: 37675008 bytes align=0x20 nid=0 from=0x00000000 max_addr=0x00000000 free_area_init+0x890/0xc94
-[    0.000000] memblock_reserve: [0x2dbf1000-0x2ffdefff] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 96 bytes align=0x20 nid=0 from=0x00000000 max_addr=0x00000000 setup_usemap+0x60/0xa0
-[    0.000000] memblock_reserve: [0x2fff5d00-0x2fff5d5f] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 416 bytes align=0x20 nid=0 from=0x00000000 max_addr=0x00000000 setup_usemap+0x60/0xa0
-[    0.000000] memblock_reserve: [0x2fff5b60-0x2fff5cff] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 32 bytes align=0x20 nid=-1 from=0x00000000 max_addr=0x00000000 mmu_context_init+0x38/0x154
-[    0.000000] memblock_reserve: [0x2fff5b40-0x2fff5b5f] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 1024 bytes align=0x20 nid=-1 from=0x00000000 max_addr=0x00000000 mmu_context_init+0x7c/0x154
-[    0.000000] memblock_reserve: [0x2fff5740-0x2fff5b3f] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 32 bytes align=0x20 nid=-1 from=0x00000000 max_addr=0x00000000 mmu_context_init+0xc4/0x154
-[    0.000000] memblock_reserve: [0x2fff5720-0x2fff573f] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] MMU: Allocated 1088 bytes of context maps for 255 contexts
-[    0.000000] memblock_alloc_try_nid: 111 bytes align=0x20 nid=-1 from=0x00000000 max_addr=0x00000000 start_kernel+0x194/0x6d0
-[    0.000000] memblock_reserve: [0x2fff56a0-0x2fff570e] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 111 bytes align=0x20 nid=-1 from=0x00000000 max_addr=0x00000000 start_kernel+0x1c0/0x6d0
-[    0.000000] memblock_reserve: [0x2fff5620-0x2fff568e] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 4096 bytes align=0x1000 nid=-1 from=0x00000000 max_addr=0x00000000 pcpu_embed_first_chunk+0x314/0x7b4
-[    0.000000] memblock_reserve: [0x2dbf0000-0x2dbf0fff] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 4096 bytes align=0x20 nid=-1 from=0x00000000 max_addr=0x00000000 pcpu_embed_first_chunk+0x4d4/0x7b4
-[    0.000000] memblock_reserve: [0x2dbef000-0x2dbeffff] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 90112 bytes align=0x1000 nid=-1 from=0x3fffffff max_addr=0x00000000 pcpu_embed_first_chunk+0x564/0x7b4
-[    0.000000] memblock_reserve: [0x2dbd9000-0x2dbeefff] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_phys_free: [0x2dbe4000-0x2dbe3fff] pcpu_embed_first_chunk+0x680/0x7b4
-[    0.000000] memblock_phys_free: [0x2dbef000-0x2dbeefff] pcpu_embed_first_chunk+0x680/0x7b4
-[    0.000000] percpu: Embedded 11 pages/cpu s14196 r8192 d22668 u45056
-[    0.000000] memblock_alloc_try_nid: 4 bytes align=0x20 nid=-1 from=0x00000000 max_addr=0x00000000 pcpu_setup_first_chunk+0x37c/0x924
-[    0.000000] memblock_reserve: [0x2fff5d60-0x2fff5d63] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 4 bytes align=0x20 nid=-1 from=0x00000000 max_addr=0x00000000 pcpu_setup_first_chunk+0x3a4/0x924
-[    0.000000] memblock_reserve: [0x2fff5600-0x2fff5603] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 8 bytes align=0x20 nid=-1 from=0x00000000 max_addr=0x00000000 pcpu_setup_first_chunk+0x3cc/0x924
-[    0.000000] memblock_reserve: [0x2fff55e0-0x2fff55e7] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 8 bytes align=0x20 nid=-1 from=0x00000000 max_addr=0x00000000 pcpu_setup_first_chunk+0x3f4/0x924
-[    0.000000] memblock_reserve: [0x2fff55c0-0x2fff55c7] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] pcpu-alloc: s14196 r8192 d22668 u45056 alloc=11*4096
-[    0.000000] pcpu-alloc: [0] 0 [0] 1 
-[    0.000000] memblock_alloc_try_nid: 136 bytes align=0x20 nid=-1 from=0x00000000 max_addr=0x00000000 pcpu_setup_first_chunk+0x7fc/0x924
-[    0.000000] memblock_reserve: [0x2fff5520-0x2fff55a7] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 96 bytes align=0x20 nid=-1 from=0x00000000 max_addr=0x00000000 pcpu_alloc_first_chunk+0x64/0x2e0
-[    0.000000] memblock_reserve: [0x2fff54c0-0x2fff551f] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 384 bytes align=0x20 nid=-1 from=0x00000000 max_addr=0x00000000 pcpu_alloc_first_chunk+0xc4/0x2e0
-[    0.000000] memblock_reserve: [0x2fff5340-0x2fff54bf] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 388 bytes align=0x20 nid=-1 from=0x00000000 max_addr=0x00000000 pcpu_alloc_first_chunk+0xf0/0x2e0
-[    0.000000] memblock_reserve: [0x2fff51a0-0x2fff5323] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 96 bytes align=0x20 nid=-1 from=0x00000000 max_addr=0x00000000 pcpu_alloc_first_chunk+0x11c/0x2e0
-[    0.000000] memblock_reserve: [0x2fff5140-0x2fff519f] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 96 bytes align=0x20 nid=-1 from=0x00000000 max_addr=0x00000000 pcpu_alloc_first_chunk+0x64/0x2e0
-[    0.000000] memblock_reserve: [0x2fff50e0-0x2fff513f] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 768 bytes align=0x20 nid=-1 from=0x00000000 max_addr=0x00000000 pcpu_alloc_first_chunk+0xc4/0x2e0
-[    0.000000] memblock_reserve: [0x2dbd8d00-0x2dbd8fff] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 772 bytes align=0x20 nid=-1 from=0x00000000 max_addr=0x00000000 pcpu_alloc_first_chunk+0xf0/0x2e0
-[    0.000000] memblock_reserve: [0x2dbd89e0-0x2dbd8ce3] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_alloc_try_nid: 192 bytes align=0x20 nid=-1 from=0x00000000 max_addr=0x00000000 pcpu_alloc_first_chunk+0x11c/0x2e0
-[    0.000000] memblock_reserve: [0x2fff5020-0x2fff50df] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] memblock_phys_free: [0x2dbf0000-0x2dbf0fff] pcpu_embed_first_chunk+0x744/0x7b4
-[    0.000000] memblock_phys_free: [0x2dbef000-0x2dbeffff] pcpu_embed_first_chunk+0x754/0x7b4
-[    0.000000] Built 1 zonelists, mobility grouping on.  Total pages: 777792
-[    0.000000] Kernel command line: root=ubi0:rootfs rootfstype=ubifs ubi.mtd=rootfs rootflags=chk_data_crc rw console=ttyS0,115200 memblock=debug
-[    0.000000] memblock_alloc_try_nid: 524288 bytes align=0x20 nid=-1 from=0x00000000 max_addr=0x00000000 alloc_large_system_hash+0x1a4/0x2ec
-[    0.000000] memblock_reserve: [0x2db589e0-0x2dbd89df] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] Dentry cache hash table entries: 131072 (order: 7, 524288 bytes, linear)
-[    0.000000] memblock_alloc_try_nid: 262144 bytes align=0x20 nid=-1 from=0x00000000 max_addr=0x00000000 alloc_large_system_hash+0x1a4/0x2ec
-[    0.000000] memblock_reserve: [0x2db189e0-0x2db589df] memblock_alloc_range_nid+0xe8/0x1b0
-[    0.000000] Inode-cache hash table entries: 65536 (order: 6, 262144 bytes, linear)
-[    0.000000] mem auto-init: stack:off, heap alloc:off, heap free:off
-[    0.000000] Kernel virtual memory layout:
-[    0.000000]   * 0xffbbf000..0xfffff000  : fixmap
-[    0.000000]   * 0xff400000..0xff800000  : highmem PTEs
-[    0.000000]   * 0xff3fe000..0xff400000  : early ioremap
-[    0.000000]   * 0xf1000000..0xff3fe000  : vmalloc & ioremap
-[    0.000000] Memory: 3062612K/3118080K available (10732K kernel code, 712K rwdata, 2044K rodata, 276K init, 287K bss, 55468K reserved, 0K cma-reserved, 2331640K highmem)
-[    0.000000] SLUB: HWalign=32, Order=0-3, MinObjects=0, CPUs=2, Nodes=1
-
-> >Christophe
-> -- 
-> Sincerely yours,
-> Mike
+> struct {
+>    void *indirect_jump;
+>    long num_tables;
+>    struct {
+>      unsigned num_entries;
+>      unsigned encoding;
+>      void *start_of_table;
+>    } tables[];
+> };
+>
+> The usual encodings are: direct, PC-relative, relative-to-start-of-table.
+> Usually for a specific jump instruction there's only one table, so
+> optimizing for that makes sense.  For strange unthought-of cases it's
+> probably a good idea to have your initial scheme as fallback, which could
+> be indicated by a special .encoding value.
+>
+>>> For example, given the following switch statement code:
+>>>
+>>>    .Lswitch_jmp:
+>>> 	// %rax is .Lcase_1 or .Lcase_2
+>>> 	jmp %rax
+> So, usually %rax would point into a table (somewhere in .rodata/.text)
+> that looks like so:
+>
+> .Ljump_table:
+>   .quad .Lcase_1 - .Ljump_table
+>   .quad .Lcase_2 - .Ljump_table
+>
+> (for position-independend code)
+>
+> and hence you would emit this as annotation:
+>
+> .quad .Lswitch_jmp
+> .quad 1                   # only a single table
+> .long 2                   # with two entries
+> .long RELATIVE_TO_START   # all entries are X - start_of_table
+> .quad .Ljump_table
+>
+> In this case you won't save anything of course, but as soon as there's a
+> meaningful number of cases you will.
+>
+> Again, if that info would be put into an allocated section you would want
+> to use relative encodings of the addresses to avoid runtime relocs.  And
+> the remarks about self-delimitation and extensibility also apply here.
+>
+>>> Alternatives
+>>> ------------
+>>>
+>>> Another idea which has been floated in the past is for objtool to read
+>>> DWARF (or .eh_frame) to help it figure out the control flow.  That
+>>> hasn't been tried yet, but would be considerably more difficult and
+>>> fragile IMO.
+> While noreturn functions are marked in the debug info, noreturn
+> function types currently aren't quite correct.  And jump-tables aren't
+> marked at all, so that would lose.
+>
+>
+> Ciao,
+> Michael.
