@@ -2,131 +2,40 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8907E5B940C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Sep 2022 07:54:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF9C35B9423
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Sep 2022 08:08:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MSmcd4JWHz3bpW
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Sep 2022 15:54:41 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=simuiH5g;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MSmx55Th7z3c21
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Sep 2022 16:08:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=40.107.9.84; helo=fra01-mr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=simuiH5g;
-	dkim-atps=neutral
-Received: from FRA01-MR2-obe.outbound.protection.outlook.com (mail-eopbgr90084.outbound.protection.outlook.com [40.107.9.84])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MSmbv61wxz305M
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Sep 2022 15:54:02 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Qsl5EYwCsZjTqo/mACmnjmsZy0poTELBgBYeDY0dTt+mdre9Y4ZzGNOoObgtqInxzsMEOoQPzhJluDEkYLsy8UKGuY7RjjUAbVPwIu5YtZXgrP1IkgnmXs49L77WeUxDcHOl8W4PmQLyPHn49dgil8dWmAQoDueR7tCXQIv5129qIToYBH34aSJyFATZRA4sSUqHy+z5D6lAQo6TlIevEl1/i4eb4LsDfAdXY+ejgV5S5rZntf0ibA4x9/wVPgkM3RZjsu8sXXNmAjo6SG8wAONSv7dxwR+fd9SZUoRmYkTu9MEpaIRrLJxWycROL6klx+lGR5ep61U6oud3YXDDVQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=240Poe6E9ex26BUftOn3ipN2uNfE1y8jMFGL/tUcIec=;
- b=Vgd5XEeavfjxDCnNHGfaHaaZ91Rl9jleQVOlbEVSVFddatUYZ15Fu3c9YUmoW+sQi6gE+KvdcgqJ9ANAis5pKHksK4Qn/oyLe0RETWk7jmswrlLYIaEjFSrAwVt12eHmIyVVvtADtoQHB2myhPFzlqFcsGLjGT/x6V5DchLs5VHJdflMcVXJBGz0R19x6A1YUMtGvjrPps/+xpMcyHvbnwlq/nOTOXVbR5ICROvfdNnsmPzQUTdm/Lfif2EfNpMpgAH7fbm72m2czMhr05lE8FgpTyGM06Qopp5QCCFDP2GGX46r9uKqHVdr00mpkChpvkJbNClwNy780FcDN/1ObQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=240Poe6E9ex26BUftOn3ipN2uNfE1y8jMFGL/tUcIec=;
- b=simuiH5gUTMKIeZjLi8n6K7vngsfr0dt8s1NUtiBuuZpg9lNdtNPAYCKWLpwcQlq2qmkqkxczHyuqanOYIDyBa2aHhZSjEmyam8WJIIspR1zdZcT4gIvgQZU7645NJq3hDnzfY+eQpw+HVuRaIPGLrWycyv8/riFVZDi0dOcpq3OWX10BFdDUi6AXO3dxjk9/CsHrlhU0PMO1pomYtgrhKKDIZlUFvBDwtxiHRf7Snu6yE+/+Xh0uxG0XP8ThBXSACCYVgr+9DnNmrRzq92i2JTCiwF5AeCjcp/lmSgGsnO0DHCy1UHkx6xaGFl//twkUwszN6vst4BhM5gz5tp01w==
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by MRZP264MB2266.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:16::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5632.15; Thu, 15 Sep
- 2022 05:53:44 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::382a:ed3b:83d6:e5d8]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::382a:ed3b:83d6:e5d8%5]) with mapi id 15.20.5612.022; Thu, 15 Sep 2022
- 05:53:44 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Nicholas Piggin <npiggin@gmail.com>, "linuxppc-dev@lists.ozlabs.org"
-	<linuxppc-dev@lists.ozlabs.org>
-Subject: Re: [PATCH 1/7] powerpc/build: put sys_call_table in .data.rel.ro if
- RELOCATABLE
-Thread-Topic: [PATCH 1/7] powerpc/build: put sys_call_table in .data.rel.ro if
- RELOCATABLE
-Thread-Index: AQHYyFGE9vrXOrFO+0+cMXcYz+0wkq3f/mQA
-Date: Thu, 15 Sep 2022 05:53:44 +0000
-Message-ID: <2e9a7e03-f89d-15d8-d42b-f5a0b1f9c391@csgroup.eu>
-References: <20220914154746.1122482-1-npiggin@gmail.com>
- <20220914154746.1122482-2-npiggin@gmail.com>
-In-Reply-To: <20220914154746.1122482-2-npiggin@gmail.com>
-Accept-Language: fr-FR, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.1
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MRZP264MB2988:EE_|MRZP264MB2266:EE_
-x-ms-office365-filtering-correlation-id: ce547b75-5de5-4780-eb48-08da96dea67b
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  ryDfADTwBnF0saPVRo1It7TZvCi7MhKDfkAMsAK1SlDRgzNtzB9kkSb7n0ASGEaV1X6oyO7kqd0rUrZpUSnhVK96j7DNUqKWndTyiBaX0ud2NdtU6Hd1OfNMsX5eq4PVmjWRvBRmoPbkKZDzRq8aBolw/W5LFs1YWazFuVLRDTOBGryUKG6kfKXR4Thm5EO3lVG0EoyXCKjcjlEufBo5Hu8c2NaZOA2rHI6iOti4gLRJSKs2xrm7PWEyEBM0FBEl5L2aVzp2/Q+JemUSW9CZWCYhK2B/nw53oXfhkm69BY9RtpEll7QLuTOx8qaria5l0738Wx35xf7haWj9Bq8GQoPRPmoXFgKx0HY+FIsxxD1EuWikR3qalu5nMMMgWa8oacHJcN7TXZT+VmMA3NAai5VRuzQQXBwrZN8cVQFVaYVIBjdLrAU1FDDjEVJVbAwrfTTSMROzbtYGqiA4WxaLbzpCDE7hPr//aD5jT1fPK7mhvh9wu1uo/wCjkXhAWxQ++tTuamUXu+rGdrMTsKuoXpTR1AKlL/m1EYqGZQ0P+yvcj2smHwdD2l1TJ+z9C4TT55edh24mXEpmy6EsAt25gA4Te0j7m4BbvHGemIn57XFYo8keP9FbNnkY0YExcK8Vv69YTJD1qO5JNBsv6kVn3SZ3xIH7lBZKg0U1Ho5LTo0oi9SLpOy5t27cracnfHazCfYpvS+sXu+Plnm5NYqrU+xJPk3M4KslU3ep9Mvzxgl+haXRQ9naaOXqfYJ4zHeWGORXPgkwbcSA/MlFfXbrUsZdkDVpJoSr+16I9L6F3sbNmGtYmE4/rpfWXTSFhRhVCH4HI3rYVRHELj7ZaoPlBbEIzyaClQnSu7z4X44n8D0=
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230022)(4636009)(396003)(366004)(346002)(136003)(39860400002)(376002)(451199015)(316002)(26005)(6512007)(110136005)(31696002)(6506007)(41300700001)(478600001)(6486002)(36756003)(71200400001)(38100700002)(122000001)(38070700005)(186003)(2616005)(86362001)(44832011)(31686004)(5660300002)(8676002)(8936002)(66476007)(66556008)(66446008)(76116006)(2906002)(64756008)(91956017)(66946007)(142923001)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?WUd2eUIwcWc3VHovUy9GMy9QMTZUL0JsVGl5T3ZqbzM0UHZvNEpFbmtXTk94?=
- =?utf-8?B?VVNjcGp3U3hyWnV4MU1reUpmcU9JajNmQ09DK1ZiZi9lazBramVOUkl4OXFv?=
- =?utf-8?B?bTE1TW0xSjRCenZFd3JpbXdmaVhhRFNTRmRvRStXTXhEL3AxUll2bHNVMlJ6?=
- =?utf-8?B?YXVXeWJVWHJiNUIwc2s1b25SMGhHNW9CWFk0TUJVK3dudnVUanJuRTdXWWE3?=
- =?utf-8?B?bzNNeVNjaUh3cWZJNDFHUHlZU2pmUXJYNlhEaU52MUQxZlAvVWdocUpXTHNr?=
- =?utf-8?B?eHBjUTBRN2p2MkJhcDQ5NUI4QjZhV1orSEtnZVJDbHVjSVc5VjZCSVlWb3Jp?=
- =?utf-8?B?ZmxvTUxGNWZtY3NYaUhad3FSaE5xbU9ucFhvdXZwZjN1YnU1MmU0TnFvM0NH?=
- =?utf-8?B?NTZEREZZdjJDR1BqM05QSURrMlBodklrMTh1b1Q2Yml6STVQQUd4a1lJaGhE?=
- =?utf-8?B?TUtPNklPNXp3Y3h3RW94YmNOeFlxOEFETy9FOHhtRjhIdTNTN0RqZ0diNEg1?=
- =?utf-8?B?Zi9pdm00am53SzFLbGZBQnZ3SmdQODBmbU5oNGYxYVpoaDAwR29wZnQ5VjBo?=
- =?utf-8?B?ZFQwZ1FhRGlJdkRIM040SmtoWm5xcHpGVm9hUklFUStOQkNCVFRKWVZVYjEr?=
- =?utf-8?B?bzQvdURRWlpSTnpKVUNNVVY3cDZNTUpLYWt0RGV3YllQU2xxVEpWWkFKSmdZ?=
- =?utf-8?B?OCtod050U2xGdlk0SkJTL3FlSWl3RzFqN3pnZmN5SGQyVzIrcFdOM0hId1BH?=
- =?utf-8?B?VzhDVjlteGZ3TkRoMWdWWWx0N2dRcXdxTjNic1BwdGZqVmdTcU05aXlUaEtW?=
- =?utf-8?B?d0lyNTFFdzlha3h5dVc4blZQQXBpMkc4V1h5RXY5RmVaQUl2RWk4MldtWTZz?=
- =?utf-8?B?blk1eCt6K1VRT1IyV0c1TURjSmFjOFdteTg2aEFQbU9ZRis4S1R1WGpEdFVq?=
- =?utf-8?B?bitaNFVqOE9BRnVZU0g2RU9MQkFhNWgvSW1GZU9yV2IxczZTVDRGbWh1Z001?=
- =?utf-8?B?R0V4cHUwK3p1OTBPZ09waTZCVVA3UWpWR2dreWZOa1FEbVhUS1loZUxUN0ox?=
- =?utf-8?B?cGx0MkhXSUJUTjJiWW8vZWRWSndHSlp1ZUFaNXVSTWZ6RUhQb3YxbWZpSFda?=
- =?utf-8?B?TnNKTmJOUVNPUDl0Qm5SY0p6TXVDMnpyUEJpMExydk1pMXVsODJFWno5K2xa?=
- =?utf-8?B?aHBVbk9pemhoRVlkOUdEanNCV3JGK2MwQTkvQWozSFhWVDluTGpuc0cvaGhx?=
- =?utf-8?B?Q3pZd2FPaTBlNlhjTWNmajQ1M01GU0lteGJtQ3VodFczd1l5MUtpVzBYVVRU?=
- =?utf-8?B?YmFhQWV0N2t0TkR3L1VGZE9oYjdpRlY2S1B0V2lzQ1lQUDBUZDRXTVIrV3dS?=
- =?utf-8?B?SGpRSGpseUU1OE5Fbk4zL2NNUlp3VGVtREV0WXptbGoxTVBKOThOS0pOTTJR?=
- =?utf-8?B?Z0pBT1BybWQrUTZieFplMEg4aFR0VC9LSXBsZmJ5enBFVWdaaEg0UnpqL2pZ?=
- =?utf-8?B?ekxkRllYRzVHU2grd0RjNlBBRnA2Y0FuVGJMU2tqb0F2Q0ZJV1l0MHg0S0Z6?=
- =?utf-8?B?VTB4QTZPNHFpU0pCcjgvMGFtcmxZNE5wNThIM0lUOXMzQkl5aEhvSDdKcXV5?=
- =?utf-8?B?aGRWVnBNc1MvSnljV2hKZ1JvV1NhSXFrcmlzbTU4U01nK0tOQTdzZkNjeDg0?=
- =?utf-8?B?SlNqSkFWS2cxTUpZQXpEZitXWmFaaUhwTzREa3F1VTkySGJEdzBSYXRMUElm?=
- =?utf-8?B?OHNaUG1pRDFkelJFMHpPbE9ZbysyOVFnaGJkK1F0SHM0UXd3U01JVkszbzQ4?=
- =?utf-8?B?SHNmK09pUkl6NUNxWEpqaUJERTlLbWJQak9RNDliVmdUWDg5ZDN2K2JRY2k4?=
- =?utf-8?B?R0VxOUZkUEpaQU04R3J2N0JmU0UxYmoxdEV2aXBla2VSRW9jdzRwTmdIc0RE?=
- =?utf-8?B?MHFvam9LN2gxSU9IckZocUhJYXZUYnhiYXNhamd5VGFha0NGbkpUc01DYklo?=
- =?utf-8?B?SDZ1eGg0Rk5KaFlwMUMyeHd1TXN6bTU4bzdiUXpSYW5WQjNCOTRVd0Q1amxs?=
- =?utf-8?B?TmNZQ3laNHFCWWtzQVRjQytjZ2lTcVEvM1N2aGJTNHNjSjZ3Q25DR2JJUHc2?=
- =?utf-8?B?Zi9GeDAydlRSbFI4a0svaWVxcERvUGJHVjViOGhSMlhTKzJMeDVZUDJWT0JP?=
- =?utf-8?Q?Qjg7RtrQjK4mbJmHKc7lh40=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <A9EEEB5B730B354284B534B005A0D5B0@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MSmwf1XM2z2yYj
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Sep 2022 16:08:32 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 315E31682;
+	Wed, 14 Sep 2022 23:08:04 -0700 (PDT)
+Received: from [10.162.43.6] (unknown [10.162.43.6])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 94AAA3F73B;
+	Wed, 14 Sep 2022 23:08:16 -0700 (PDT)
+Message-ID: <1125554b-c183-23c4-5516-95b918a761cc@arm.com>
+Date: Thu, 15 Sep 2022 11:37:44 +0530
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: ce547b75-5de5-4780-eb48-08da96dea67b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Sep 2022 05:53:44.6079
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: ie7IlR4i1Ll3ulA19MqZyFGGGkf+S7ErnmS8i4PGF/rheC85UIHdu5FvJCjxW9lsfZ5GCZVqP4o6owol2dIz1pI0RmsVtbPvVJhrMwirvB8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRZP264MB2266
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+Subject: Re: [PATCH v3 4/4] arm64: support batched/deferred tlb shootdown
+ during page reclamation
+To: Barry Song <21cnbao@gmail.com>
+References: <20220822082120.8347-1-yangyicong@huawei.com>
+ <20220822082120.8347-5-yangyicong@huawei.com>
+ <1e8642d5-0e2d-5747-d0d2-5aa0817ea4af@arm.com>
+ <CAGsJ_4xD4m-szM1Cm4N5ZRCODGC0fbW+BLBhy8g6+eK=aHPQNw@mail.gmail.com>
+Content-Language: en-US
+In-Reply-To: <CAGsJ_4xD4m-szM1Cm4N5ZRCODGC0fbW+BLBhy8g6+eK=aHPQNw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -138,28 +47,239 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: wangkefeng.wang@huawei.com, prime.zeng@hisilicon.com, linux-doc@vger.kernel.org, peterz@infradead.org, catalin.marinas@arm.com, yangyicong@hisilicon.com, linux-mm@kvack.org, Nadav Amit <namit@vmware.com>, guojian@oppo.com, linux-riscv@lists.infradead.org, will@kernel.org, linux-s390@vger.kernel.org, zhangshiming@oppo.com, lipeifeng@oppo.com, corbet@lwn.net, x86@kernel.org, Mel Gorman <mgorman@suse.de>, linux-mips@vger.kernel.org, arnd@arndb.de, realmz6@gmail.com, Barry Song <v-songbaohua@oppo.com>, openrisc@lists.librecores.org, darren@os.amperecomputing.com, linux-arm-kernel@lists.infradead.org, xhao@linux.alibaba.com, linux-kernel@vger.kernel.org, huzhanyuan@oppo.com, Yicong Yang <yangyicong@huawei.com>, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCkxlIDE0LzA5LzIwMjIgw6AgMTc6NDcsIE5pY2hvbGFzIFBpZ2dpbiBhIMOpY3JpdMKgOg0K
-PiBDb25zdCBmdW5jdGlvbiBwb2ludGVycyBsaXZlIGluIC5kYXRhLnJlbC5ybyByYXRoZXIgdGhh
-biAucm9kYXRhIGJlY2F1c2UNCj4gdGhleSBtdXN0IGJlIHJlbG9jYXRlZC4gVGhpcyBjaGFuZ2Ug
-cHJldmVudHMgcG93ZXJwYy8zMiBmcm9tIGdlbmVyYXRpbmcNCj4gUl9QUENfVUFERFIzMiByZWxv
-Y2F0aW9ucyAod2hpY2ggYXJlIG5vdCBoYW5kbGVkKS4gVGhlIHN5c19jYWxsX3RhYmxlIGlzDQo+
-IG1vdmVkIHRvIHdyaXRlYWJsZSBtZW1vcnksIGJ1dCBhIGxhdGVyIGNoYW5nZSB3aWxsIG1vdmUg
-aXQgYmFjay4NCg0KQXJlbid0IHlvdSBtaXNzaW5nIGNvbW1pdCBjN2FjZWUzZDJmMTIgKCJwb3dl
-cnBjOiBhbGlnbiBzeXNjYWxsIHRhYmxlIA0KZm9yIHBwYzMyIikgPw0KDQpJIGNhbid0IHNlZSBh
-bnkgUl9QUENfVUFERFIzMiByZWxvY2F0aW9ucyBnZW5lcmF0ZWQgYnkgcHBjNHh4X2RlZmNvbmZp
-ZyANCisgQ09ORklHX1JFTE9DQVRBQkxFIHVubGVzcyBJIHJldmVydCB0aGF0IGNvbW1pdC4NCg0K
-DQoNCj4gDQo+IEFmdGVyIHRoaXMgcGF0Y2gsIDQ0eF9kZWZjb25maWcgKyBDT05GSUdfUkVMT0NB
-VEFCTEUgYm9vdHMgdG8gYnVzeWJveC4NCj4gDQo+IFNpZ25lZC1vZmYtYnk6IE5pY2hvbGFzIFBp
-Z2dpbiA8bnBpZ2dpbkBnbWFpbC5jb20+DQo+IC0tLQ0KPiAgIGFyY2gvcG93ZXJwYy9rZXJuZWwv
-c3lzdGJsLlMgfCA0ICsrKysNCj4gICAxIGZpbGUgY2hhbmdlZCwgNCBpbnNlcnRpb25zKCspDQo+
-IA0KPiBkaWZmIC0tZ2l0IGEvYXJjaC9wb3dlcnBjL2tlcm5lbC9zeXN0YmwuUyBiL2FyY2gvcG93
-ZXJwYy9rZXJuZWwvc3lzdGJsLlMNCj4gaW5kZXggY2IzMzU4ODg2MjAzLi4wYmVjMzNlODZmNTAg
-MTAwNjQ0DQo+IC0tLSBhL2FyY2gvcG93ZXJwYy9rZXJuZWwvc3lzdGJsLlMNCj4gKysrIGIvYXJj
-aC9wb3dlcnBjL2tlcm5lbC9zeXN0YmwuUw0KPiBAQCAtMTIsNyArMTIsMTEgQEANCj4gICANCj4g
-ICAjaW5jbHVkZSA8YXNtL3BwY19hc20uaD4NCj4gICANCj4gKyNpZmRlZiBDT05GSUdfUkVMT0NB
-VEFCTEUNCj4gKy5zZWN0aW9uIC5kYXRhLnJlbC5ybywiYXciDQo+ICsjZWxzZQ0KPiAgIC5zZWN0
-aW9uIC5yb2RhdGEsImEiDQo+ICsjZW5kaWYNCj4gICANCj4gICAjaWZkZWYgQ09ORklHX1BQQzY0
-DQo+ICAgCS5wMmFsaWduCTM=
+
+
+On 9/9/22 11:05, Barry Song wrote:
+> On Fri, Sep 9, 2022 at 5:24 PM Anshuman Khandual
+> <anshuman.khandual@arm.com> wrote:
+>>
+>>
+>>
+>> On 8/22/22 13:51, Yicong Yang wrote:
+>>> From: Barry Song <v-songbaohua@oppo.com>
+>>>
+>>> on x86, batched and deferred tlb shootdown has lead to 90%
+>>> performance increase on tlb shootdown. on arm64, HW can do
+>>> tlb shootdown without software IPI. But sync tlbi is still
+>>> quite expensive.
+>>>
+>>> Even running a simplest program which requires swapout can
+>>> prove this is true,
+>>>  #include <sys/types.h>
+>>>  #include <unistd.h>
+>>>  #include <sys/mman.h>
+>>>  #include <string.h>
+>>>
+>>>  int main()
+>>>  {
+>>>  #define SIZE (1 * 1024 * 1024)
+>>>          volatile unsigned char *p = mmap(NULL, SIZE, PROT_READ | PROT_WRITE,
+>>>                                           MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+>>>
+>>>          memset(p, 0x88, SIZE);
+>>>
+>>>          for (int k = 0; k < 10000; k++) {
+>>>                  /* swap in */
+>>>                  for (int i = 0; i < SIZE; i += 4096) {
+>>>                          (void)p[i];
+>>>                  }
+>>>
+>>>                  /* swap out */
+>>>                  madvise(p, SIZE, MADV_PAGEOUT);
+>>>          }
+>>>  }
+>>>
+>>> Perf result on snapdragon 888 with 8 cores by using zRAM
+>>> as the swap block device.
+>>>
+>>>  ~ # perf record taskset -c 4 ./a.out
+>>>  [ perf record: Woken up 10 times to write data ]
+>>>  [ perf record: Captured and wrote 2.297 MB perf.data (60084 samples) ]
+>>>  ~ # perf report
+>>>  # To display the perf.data header info, please use --header/--header-only options.
+>>>  # To display the perf.data header info, please use --header/--header-only options.
+>>>  #
+>>>  #
+>>>  # Total Lost Samples: 0
+>>>  #
+>>>  # Samples: 60K of event 'cycles'
+>>>  # Event count (approx.): 35706225414
+>>>  #
+>>>  # Overhead  Command  Shared Object      Symbol
+>>>  # ........  .......  .................  .............................................................................
+>>>  #
+>>>     21.07%  a.out    [kernel.kallsyms]  [k] _raw_spin_unlock_irq
+>>>      8.23%  a.out    [kernel.kallsyms]  [k] _raw_spin_unlock_irqrestore
+>>>      6.67%  a.out    [kernel.kallsyms]  [k] filemap_map_pages
+>>>      6.16%  a.out    [kernel.kallsyms]  [k] __zram_bvec_write
+>>>      5.36%  a.out    [kernel.kallsyms]  [k] ptep_clear_flush
+>>>      3.71%  a.out    [kernel.kallsyms]  [k] _raw_spin_lock
+>>>      3.49%  a.out    [kernel.kallsyms]  [k] memset64
+>>>      1.63%  a.out    [kernel.kallsyms]  [k] clear_page
+>>>      1.42%  a.out    [kernel.kallsyms]  [k] _raw_spin_unlock
+>>>      1.26%  a.out    [kernel.kallsyms]  [k] mod_zone_state.llvm.8525150236079521930
+>>>      1.23%  a.out    [kernel.kallsyms]  [k] xas_load
+>>>      1.15%  a.out    [kernel.kallsyms]  [k] zram_slot_lock
+>>>
+>>> ptep_clear_flush() takes 5.36% CPU in the micro-benchmark
+>>> swapping in/out a page mapped by only one process. If the
+>>> page is mapped by multiple processes, typically, like more
+>>> than 100 on a phone, the overhead would be much higher as
+>>> we have to run tlb flush 100 times for one single page.
+>>> Plus, tlb flush overhead will increase with the number
+>>> of CPU cores due to the bad scalability of tlb shootdown
+>>> in HW, so those ARM64 servers should expect much higher
+>>> overhead.
+>>>
+>>> Further perf annonate shows 95% cpu time of ptep_clear_flush
+>>> is actually used by the final dsb() to wait for the completion
+>>> of tlb flush. This provides us a very good chance to leverage
+>>> the existing batched tlb in kernel. The minimum modification
+>>> is that we only send async tlbi in the first stage and we send
+>>> dsb while we have to sync in the second stage.
+>>>
+>>> With the above simplest micro benchmark, collapsed time to
+>>> finish the program decreases around 5%.
+>>>
+>>> Typical collapsed time w/o patch:
+>>>  ~ # time taskset -c 4 ./a.out
+>>>  0.21user 14.34system 0:14.69elapsed
+>>> w/ patch:
+>>>  ~ # time taskset -c 4 ./a.out
+>>>  0.22user 13.45system 0:13.80elapsed
+>>>
+>>> Also, Yicong Yang added the following observation.
+>>>       Tested with benchmark in the commit on Kunpeng920 arm64 server,
+>>>       observed an improvement around 12.5% with command
+>>>       `time ./swap_bench`.
+>>>               w/o             w/
+>>>       real    0m13.460s       0m11.771s
+>>>       user    0m0.248s        0m0.279s
+>>>       sys     0m12.039s       0m11.458s
+>>>
+>>>       Originally it's noticed a 16.99% overhead of ptep_clear_flush()
+>>>       which has been eliminated by this patch:
+>>>
+>>>       [root@localhost yang]# perf record -- ./swap_bench && perf report
+>>>       [...]
+>>>       16.99%  swap_bench  [kernel.kallsyms]  [k] ptep_clear_flush
+>>>
+>>> Cc: Jonathan Corbet <corbet@lwn.net>
+>>> Cc: Nadav Amit <namit@vmware.com>
+>>> Cc: Mel Gorman <mgorman@suse.de>
+>>> Tested-by: Yicong Yang <yangyicong@hisilicon.com>
+>>> Tested-by: Xin Hao <xhao@linux.alibaba.com>
+>>> Signed-off-by: Barry Song <v-songbaohua@oppo.com>
+>>> Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+>>> ---
+>>>  .../features/vm/TLB/arch-support.txt          |  2 +-
+>>>  arch/arm64/Kconfig                            |  1 +
+>>>  arch/arm64/include/asm/tlbbatch.h             | 12 ++++++++
+>>>  arch/arm64/include/asm/tlbflush.h             | 28 +++++++++++++++++--
+>>>  4 files changed, 40 insertions(+), 3 deletions(-)
+>>>  create mode 100644 arch/arm64/include/asm/tlbbatch.h
+>>>
+>>> diff --git a/Documentation/features/vm/TLB/arch-support.txt b/Documentation/features/vm/TLB/arch-support.txt
+>>> index 1c009312b9c1..2caf815d7c6c 100644
+>>> --- a/Documentation/features/vm/TLB/arch-support.txt
+>>> +++ b/Documentation/features/vm/TLB/arch-support.txt
+>>> @@ -9,7 +9,7 @@
+>>>      |       alpha: | TODO |
+>>>      |         arc: | TODO |
+>>>      |         arm: | TODO |
+>>> -    |       arm64: | TODO |
+>>> +    |       arm64: |  ok  |
+>>>      |        csky: | TODO |
+>>>      |     hexagon: | TODO |
+>>>      |        ia64: | TODO |
+>>> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+>>> index 571cc234d0b3..09d45cd6d665 100644
+>>> --- a/arch/arm64/Kconfig
+>>> +++ b/arch/arm64/Kconfig
+>>> @@ -93,6 +93,7 @@ config ARM64
+>>>       select ARCH_SUPPORTS_INT128 if CC_HAS_INT128
+>>>       select ARCH_SUPPORTS_NUMA_BALANCING
+>>>       select ARCH_SUPPORTS_PAGE_TABLE_CHECK
+>>> +     select ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH
+>>>       select ARCH_WANT_COMPAT_IPC_PARSE_VERSION if COMPAT
+>>>       select ARCH_WANT_DEFAULT_BPF_JIT
+>>>       select ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT
+>>> diff --git a/arch/arm64/include/asm/tlbbatch.h b/arch/arm64/include/asm/tlbbatch.h
+>>> new file mode 100644
+>>> index 000000000000..fedb0b87b8db
+>>> --- /dev/null
+>>> +++ b/arch/arm64/include/asm/tlbbatch.h
+>>> @@ -0,0 +1,12 @@
+>>> +/* SPDX-License-Identifier: GPL-2.0 */
+>>> +#ifndef _ARCH_ARM64_TLBBATCH_H
+>>> +#define _ARCH_ARM64_TLBBATCH_H
+>>> +
+>>> +struct arch_tlbflush_unmap_batch {
+>>> +     /*
+>>> +      * For arm64, HW can do tlb shootdown, so we don't
+>>> +      * need to record cpumask for sending IPI
+>>> +      */
+>>> +};
+>>> +
+>>> +#endif /* _ARCH_ARM64_TLBBATCH_H */
+>>> diff --git a/arch/arm64/include/asm/tlbflush.h b/arch/arm64/include/asm/tlbflush.h
+>>> index 412a3b9a3c25..23cbc987321a 100644
+>>> --- a/arch/arm64/include/asm/tlbflush.h
+>>> +++ b/arch/arm64/include/asm/tlbflush.h
+>>> @@ -254,17 +254,24 @@ static inline void flush_tlb_mm(struct mm_struct *mm)
+>>>       dsb(ish);
+>>>  }
+>>>
+>>> -static inline void flush_tlb_page_nosync(struct vm_area_struct *vma,
+>>> +
+>>> +static inline void __flush_tlb_page_nosync(struct mm_struct *mm,
+>>>                                        unsigned long uaddr)
+>>>  {
+>>>       unsigned long addr;
+>>>
+>>>       dsb(ishst);
+>>> -     addr = __TLBI_VADDR(uaddr, ASID(vma->vm_mm));
+>>> +     addr = __TLBI_VADDR(uaddr, ASID(mm));
+>>>       __tlbi(vale1is, addr);
+>>>       __tlbi_user(vale1is, addr);
+>>>  }
+>>>
+>>> +static inline void flush_tlb_page_nosync(struct vm_area_struct *vma,
+>>> +                                      unsigned long uaddr)
+>>> +{
+>>> +     return __flush_tlb_page_nosync(vma->vm_mm, uaddr);
+>>> +}
+>>> +
+>>>  static inline void flush_tlb_page(struct vm_area_struct *vma,
+>>>                                 unsigned long uaddr)
+>>>  {
+>>> @@ -272,6 +279,23 @@ static inline void flush_tlb_page(struct vm_area_struct *vma,
+>>>       dsb(ish);
+>>>  }
+>>>
+>>> +static inline bool arch_tlbbatch_should_defer(struct mm_struct *mm)
+>>> +{
+>>> +     return true;
+>>> +}
+>>
+>> Always defer and batch up TLB flush, unconditionally ?
+> 
+> My understanding is we actually don't need tlbbatch for a machine with one
+> or two cores as the tlb flush is not expensive. even for a system with four
+> cortex-a55 cores, i didn't see obvious cost. it was less than 1%.
+> when we have 8 cores, we see the obvious cost of tlb flush. for a server with
+> 100 crores, the cost is incredibly huge.
+
+Although dsb(ish) is deferred via arch_tlbbatch_flush(), there is still
+one dsb(isht) instruction left in __flush_tlb_page_nosync(). Is not that
+expensive as well, while queuing up individual TLB flushes ?
+
+The very idea behind TLB deferral is the opportunity it (might) provide
+to accumulate address ranges and cpu masks so that individual TLB flush
+can be replaced with a more cost effective range based TLB flush. Hence
+I guess unless address range or cpumask based cost effective TLB flush
+is available, deferral does not improve the unmap performance as much.
