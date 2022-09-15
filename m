@@ -1,69 +1,100 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CAC75B948C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Sep 2022 08:43:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 898AE5B94C7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Sep 2022 08:55:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MSnhQ62HZz3c4j
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Sep 2022 16:43:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MSnzJ44FKz3c2L
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Sep 2022 16:55:56 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=j3eTBGf1;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fsd/6ipZ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::52b; helo=mail-ed1-x52b.google.com; envelope-from=21cnbao@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=rmclure@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=j3eTBGf1;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fsd/6ipZ;
 	dkim-atps=neutral
-Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MSngq0pgZz2y8L
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Sep 2022 16:42:30 +1000 (AEST)
-Received: by mail-ed1-x52b.google.com with SMTP id e17so25520591edc.5
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Sep 2022 23:42:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=MkcJu/Np8QuY/ucOxBZPuFE0LnT6gseutxCz5TndTPg=;
-        b=j3eTBGf11Nt5+jlK0GEsZ2oZLsD9oA8jFoxO/kjHYBeK/HQGxlXX4qcF/+4p9oBCUf
-         T1AP3Y6UCoGVMYKSuFMllXKzY7BeIexsgm3ewn1j1N2011ArAfLCCzNtl+dK2fINPhIh
-         TDKNMkVNKlvWCA/LpcKTziiYSSkzLyIyrrCgFjLDbV0Gk3JEQLhdPXDZJ6+ziQGFIyEK
-         c2UQi2duVSIj9iRAhH/AJQ29zyuzofbUwi81QwaZkNXFmuS0Fvyh7LDURHvJWxN6M+Z2
-         kMIWlQVJq/Qe7sHPCAzQI0sz6rmLsSTBFPQXM6e7V8VLWYEDAOcV2CKIhTfy7KdQ9cN5
-         zvJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=MkcJu/Np8QuY/ucOxBZPuFE0LnT6gseutxCz5TndTPg=;
-        b=yx/TIgyS+LrhFGZ0vkh2/62WxjXgNVwsvQx4SsRmnsS0OV+0/dn90YY3kd3Thv3P6h
-         Ov15gK4RzMKehBbsR4mzM/KIBMieXIJOINPbEX01ewEtlGlD4e4dVxOSAgMYk7f6BrYI
-         4Rztx540vR4/cNZQRKOAk5mGQN+Xe9BkfxFUh8EdrWJZ/RcqUeuszCTfWmW3T3qULHLM
-         TWERpRCa9a/06vuo45NoX8xpJSbELulTiXgG2MzNBt0ZQN51WESL/VOW3bL82b7Nk/jn
-         SOv7j5xK5PBGl/SB+MygSYMRe/rI1lLEDxqcnIopMhJoNwAXsav+5BEyeUMffJqTzvgn
-         b1iw==
-X-Gm-Message-State: ACgBeo0oYcwRrxAbku7gR0FymKMxSIj5CqcRgH04uAFd+W+3Crp84vWv
-	G5omYSidhsPEOSGOAmEXdSnoKK8dldn6EccIumk=
-X-Google-Smtp-Source: AA6agR6wPP3msraWOxsivyd5ENGviV/IVE9dV3jxTgCEx3eOfvGhuGKM0U4MD3Qme1H9p+QOQwm2LQK9Q3eEVT2wk2A=
-X-Received: by 2002:aa7:dcd2:0:b0:44e:69f3:edd1 with SMTP id
- w18-20020aa7dcd2000000b0044e69f3edd1mr33523512edu.244.1663224142586; Wed, 14
- Sep 2022 23:42:22 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220822082120.8347-1-yangyicong@huawei.com> <20220822082120.8347-5-yangyicong@huawei.com>
- <1e8642d5-0e2d-5747-d0d2-5aa0817ea4af@arm.com> <CAGsJ_4xD4m-szM1Cm4N5ZRCODGC0fbW+BLBhy8g6+eK=aHPQNw@mail.gmail.com>
- <1125554b-c183-23c4-5516-95b918a761cc@arm.com>
-In-Reply-To: <1125554b-c183-23c4-5516-95b918a761cc@arm.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Thu, 15 Sep 2022 18:42:11 +1200
-Message-ID: <CAGsJ_4zkRv7RYCB2SC0uydMSQWfwXs3-nkjxMoR7wgn2nt43gA@mail.gmail.com>
-Subject: Re: [PATCH v3 4/4] arm64: support batched/deferred tlb shootdown
- during page reclamation
-To: Anshuman Khandual <anshuman.khandual@arm.com>
-Content-Type: text/plain; charset="UTF-8"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MSnyZ1cZRz2y8L
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Sep 2022 16:55:17 +1000 (AEST)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28F6FUs5018576
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Sep 2022 06:55:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
+ mime-version : subject : from : in-reply-to : date : cc :
+ content-transfer-encoding : message-id : references : to; s=pp1;
+ bh=6JDkWHW/ElvYKZKL7uRTr0FTJ2bt8vmkYGBicTM/UFY=;
+ b=fsd/6ipZEIy2UWwKnS6cNWcMuqyD2u06aYzRg4fCjbIvFQm5O3I8QPMr7wIFLpGCfz1x
+ Q0hoexwVBbbd//hFXS+XesAtjNlrxJmM1EKGuXuOxYNaXBAbhXvYFe00pgDL2JYmkd84
+ D9JwdPqTWQYn3amepwmU9hXyhyiz2/Bk6AODNV6Kfz3cu5p/9SjdWoUIvS7wvw4KHzmv
+ x6RU2QgiZe0wKYZFzsLoX8PvMPRt/ZNMXF/259JU8prfMZHVFgS2DsMuO/nbjRbMlN5v
+ B2YjxBPHDPyDAmkemJIe3Ac53rXJZC8IE9j5V7iFF3+UjnQXVrSz3WDk59rS9k5C8mTz kg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3jkxmfs278-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Sep 2022 06:55:13 +0000
+Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 28F6cK67020659
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Sep 2022 06:55:13 GMT
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3jkxmfs264-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 15 Sep 2022 06:55:13 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+	by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 28F6qZFs032389;
+	Thu, 15 Sep 2022 06:55:11 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+	by ppma06ams.nl.ibm.com with ESMTP id 3jjyfra00j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 15 Sep 2022 06:55:11 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
+	by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 28F6pMLJ17433056
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 15 Sep 2022 06:51:22 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 690B4A404D;
+	Thu, 15 Sep 2022 06:55:09 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C031AA4055;
+	Thu, 15 Sep 2022 06:55:08 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Thu, 15 Sep 2022 06:55:08 +0000 (GMT)
+Received: from smtpclient.apple (haven.au.ibm.com [9.192.254.114])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 416F46016C;
+	Thu, 15 Sep 2022 16:55:02 +1000 (AEST)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.1\))
+Subject: Re: [PATCH v4 19/20] powerpc/64s: Clear gprs on interrupt routine
+ entry in Book3S
+From: Rohan McLure <rmclure@linux.ibm.com>
+In-Reply-To: <CMUEYJLOTRVG.2T3T0T50LQZTS@bobo>
+Date: Thu, 15 Sep 2022 16:55:01 +1000
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <5359A37E-5094-4EBC-999A-C5CD5110D1F5@linux.ibm.com>
+References: <20220824020548.62625-1-rmclure@linux.ibm.com>
+ <20220824020548.62625-20-rmclure@linux.ibm.com>
+ <CMUEYJLOTRVG.2T3T0T50LQZTS@bobo>
+To: Nicholas Piggin <npiggin@gmail.com>
+X-Mailer: Apple Mail (2.3696.120.41.1.1)
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: dgu03c6Erm4LasTa-GfHPjcnZC-D3oME
+X-Proofpoint-GUID: GO62whPr_vI2sKUCfya2eYutuwoGPp5K
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
+ definitions=2022-09-15_02,2022-09-14_04,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 spamscore=0
+ priorityscore=1501 phishscore=0 lowpriorityscore=0 malwarescore=0
+ mlxscore=0 adultscore=0 bulkscore=0 mlxlogscore=999 suspectscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2208220000 definitions=main-2209150034
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,261 +106,254 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: wangkefeng.wang@huawei.com, prime.zeng@hisilicon.com, linux-doc@vger.kernel.org, peterz@infradead.org, catalin.marinas@arm.com, yangyicong@hisilicon.com, linux-mm@kvack.org, Nadav Amit <namit@vmware.com>, guojian@oppo.com, linux-riscv@lists.infradead.org, will@kernel.org, linux-s390@vger.kernel.org, zhangshiming@oppo.com, lipeifeng@oppo.com, corbet@lwn.net, x86@kernel.org, Mel Gorman <mgorman@suse.de>, linux-mips@vger.kernel.org, arnd@arndb.de, realmz6@gmail.com, Barry Song <v-songbaohua@oppo.com>, openrisc@lists.librecores.org, darren@os.amperecomputing.com, linux-arm-kernel@lists.infradead.org, xhao@linux.alibaba.com, linux-kernel@vger.kernel.org, huzhanyuan@oppo.com, Yicong Yang <yangyicong@huawei.com>, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Sep 15, 2022 at 6:07 PM Anshuman Khandual
-<anshuman.khandual@arm.com> wrote:
->
->
->
-> On 9/9/22 11:05, Barry Song wrote:
-> > On Fri, Sep 9, 2022 at 5:24 PM Anshuman Khandual
-> > <anshuman.khandual@arm.com> wrote:
-> >>
-> >>
-> >>
-> >> On 8/22/22 13:51, Yicong Yang wrote:
-> >>> From: Barry Song <v-songbaohua@oppo.com>
-> >>>
-> >>> on x86, batched and deferred tlb shootdown has lead to 90%
-> >>> performance increase on tlb shootdown. on arm64, HW can do
-> >>> tlb shootdown without software IPI. But sync tlbi is still
-> >>> quite expensive.
-> >>>
-> >>> Even running a simplest program which requires swapout can
-> >>> prove this is true,
-> >>>  #include <sys/types.h>
-> >>>  #include <unistd.h>
-> >>>  #include <sys/mman.h>
-> >>>  #include <string.h>
-> >>>
-> >>>  int main()
-> >>>  {
-> >>>  #define SIZE (1 * 1024 * 1024)
-> >>>          volatile unsigned char *p = mmap(NULL, SIZE, PROT_READ | PROT_WRITE,
-> >>>                                           MAP_SHARED | MAP_ANONYMOUS, -1, 0);
-> >>>
-> >>>          memset(p, 0x88, SIZE);
-> >>>
-> >>>          for (int k = 0; k < 10000; k++) {
-> >>>                  /* swap in */
-> >>>                  for (int i = 0; i < SIZE; i += 4096) {
-> >>>                          (void)p[i];
-> >>>                  }
-> >>>
-> >>>                  /* swap out */
-> >>>                  madvise(p, SIZE, MADV_PAGEOUT);
-> >>>          }
-> >>>  }
-> >>>
-> >>> Perf result on snapdragon 888 with 8 cores by using zRAM
-> >>> as the swap block device.
-> >>>
-> >>>  ~ # perf record taskset -c 4 ./a.out
-> >>>  [ perf record: Woken up 10 times to write data ]
-> >>>  [ perf record: Captured and wrote 2.297 MB perf.data (60084 samples) ]
-> >>>  ~ # perf report
-> >>>  # To display the perf.data header info, please use --header/--header-only options.
-> >>>  # To display the perf.data header info, please use --header/--header-only options.
-> >>>  #
-> >>>  #
-> >>>  # Total Lost Samples: 0
-> >>>  #
-> >>>  # Samples: 60K of event 'cycles'
-> >>>  # Event count (approx.): 35706225414
-> >>>  #
-> >>>  # Overhead  Command  Shared Object      Symbol
-> >>>  # ........  .......  .................  .............................................................................
-> >>>  #
-> >>>     21.07%  a.out    [kernel.kallsyms]  [k] _raw_spin_unlock_irq
-> >>>      8.23%  a.out    [kernel.kallsyms]  [k] _raw_spin_unlock_irqrestore
-> >>>      6.67%  a.out    [kernel.kallsyms]  [k] filemap_map_pages
-> >>>      6.16%  a.out    [kernel.kallsyms]  [k] __zram_bvec_write
-> >>>      5.36%  a.out    [kernel.kallsyms]  [k] ptep_clear_flush
-> >>>      3.71%  a.out    [kernel.kallsyms]  [k] _raw_spin_lock
-> >>>      3.49%  a.out    [kernel.kallsyms]  [k] memset64
-> >>>      1.63%  a.out    [kernel.kallsyms]  [k] clear_page
-> >>>      1.42%  a.out    [kernel.kallsyms]  [k] _raw_spin_unlock
-> >>>      1.26%  a.out    [kernel.kallsyms]  [k] mod_zone_state.llvm.8525150236079521930
-> >>>      1.23%  a.out    [kernel.kallsyms]  [k] xas_load
-> >>>      1.15%  a.out    [kernel.kallsyms]  [k] zram_slot_lock
-> >>>
-> >>> ptep_clear_flush() takes 5.36% CPU in the micro-benchmark
-> >>> swapping in/out a page mapped by only one process. If the
-> >>> page is mapped by multiple processes, typically, like more
-> >>> than 100 on a phone, the overhead would be much higher as
-> >>> we have to run tlb flush 100 times for one single page.
-> >>> Plus, tlb flush overhead will increase with the number
-> >>> of CPU cores due to the bad scalability of tlb shootdown
-> >>> in HW, so those ARM64 servers should expect much higher
-> >>> overhead.
-> >>>
-> >>> Further perf annonate shows 95% cpu time of ptep_clear_flush
-> >>> is actually used by the final dsb() to wait for the completion
-> >>> of tlb flush. This provides us a very good chance to leverage
-> >>> the existing batched tlb in kernel. The minimum modification
-> >>> is that we only send async tlbi in the first stage and we send
-> >>> dsb while we have to sync in the second stage.
-> >>>
-> >>> With the above simplest micro benchmark, collapsed time to
-> >>> finish the program decreases around 5%.
-> >>>
-> >>> Typical collapsed time w/o patch:
-> >>>  ~ # time taskset -c 4 ./a.out
-> >>>  0.21user 14.34system 0:14.69elapsed
-> >>> w/ patch:
-> >>>  ~ # time taskset -c 4 ./a.out
-> >>>  0.22user 13.45system 0:13.80elapsed
-> >>>
-> >>> Also, Yicong Yang added the following observation.
-> >>>       Tested with benchmark in the commit on Kunpeng920 arm64 server,
-> >>>       observed an improvement around 12.5% with command
-> >>>       `time ./swap_bench`.
-> >>>               w/o             w/
-> >>>       real    0m13.460s       0m11.771s
-> >>>       user    0m0.248s        0m0.279s
-> >>>       sys     0m12.039s       0m11.458s
-> >>>
-> >>>       Originally it's noticed a 16.99% overhead of ptep_clear_flush()
-> >>>       which has been eliminated by this patch:
-> >>>
-> >>>       [root@localhost yang]# perf record -- ./swap_bench && perf report
-> >>>       [...]
-> >>>       16.99%  swap_bench  [kernel.kallsyms]  [k] ptep_clear_flush
-> >>>
-> >>> Cc: Jonathan Corbet <corbet@lwn.net>
-> >>> Cc: Nadav Amit <namit@vmware.com>
-> >>> Cc: Mel Gorman <mgorman@suse.de>
-> >>> Tested-by: Yicong Yang <yangyicong@hisilicon.com>
-> >>> Tested-by: Xin Hao <xhao@linux.alibaba.com>
-> >>> Signed-off-by: Barry Song <v-songbaohua@oppo.com>
-> >>> Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
-> >>> ---
-> >>>  .../features/vm/TLB/arch-support.txt          |  2 +-
-> >>>  arch/arm64/Kconfig                            |  1 +
-> >>>  arch/arm64/include/asm/tlbbatch.h             | 12 ++++++++
-> >>>  arch/arm64/include/asm/tlbflush.h             | 28 +++++++++++++++++--
-> >>>  4 files changed, 40 insertions(+), 3 deletions(-)
-> >>>  create mode 100644 arch/arm64/include/asm/tlbbatch.h
-> >>>
-> >>> diff --git a/Documentation/features/vm/TLB/arch-support.txt b/Documentation/features/vm/TLB/arch-support.txt
-> >>> index 1c009312b9c1..2caf815d7c6c 100644
-> >>> --- a/Documentation/features/vm/TLB/arch-support.txt
-> >>> +++ b/Documentation/features/vm/TLB/arch-support.txt
-> >>> @@ -9,7 +9,7 @@
-> >>>      |       alpha: | TODO |
-> >>>      |         arc: | TODO |
-> >>>      |         arm: | TODO |
-> >>> -    |       arm64: | TODO |
-> >>> +    |       arm64: |  ok  |
-> >>>      |        csky: | TODO |
-> >>>      |     hexagon: | TODO |
-> >>>      |        ia64: | TODO |
-> >>> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-> >>> index 571cc234d0b3..09d45cd6d665 100644
-> >>> --- a/arch/arm64/Kconfig
-> >>> +++ b/arch/arm64/Kconfig
-> >>> @@ -93,6 +93,7 @@ config ARM64
-> >>>       select ARCH_SUPPORTS_INT128 if CC_HAS_INT128
-> >>>       select ARCH_SUPPORTS_NUMA_BALANCING
-> >>>       select ARCH_SUPPORTS_PAGE_TABLE_CHECK
-> >>> +     select ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH
-> >>>       select ARCH_WANT_COMPAT_IPC_PARSE_VERSION if COMPAT
-> >>>       select ARCH_WANT_DEFAULT_BPF_JIT
-> >>>       select ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT
-> >>> diff --git a/arch/arm64/include/asm/tlbbatch.h b/arch/arm64/include/asm/tlbbatch.h
-> >>> new file mode 100644
-> >>> index 000000000000..fedb0b87b8db
-> >>> --- /dev/null
-> >>> +++ b/arch/arm64/include/asm/tlbbatch.h
-> >>> @@ -0,0 +1,12 @@
-> >>> +/* SPDX-License-Identifier: GPL-2.0 */
-> >>> +#ifndef _ARCH_ARM64_TLBBATCH_H
-> >>> +#define _ARCH_ARM64_TLBBATCH_H
-> >>> +
-> >>> +struct arch_tlbflush_unmap_batch {
-> >>> +     /*
-> >>> +      * For arm64, HW can do tlb shootdown, so we don't
-> >>> +      * need to record cpumask for sending IPI
-> >>> +      */
-> >>> +};
-> >>> +
-> >>> +#endif /* _ARCH_ARM64_TLBBATCH_H */
-> >>> diff --git a/arch/arm64/include/asm/tlbflush.h b/arch/arm64/include/asm/tlbflush.h
-> >>> index 412a3b9a3c25..23cbc987321a 100644
-> >>> --- a/arch/arm64/include/asm/tlbflush.h
-> >>> +++ b/arch/arm64/include/asm/tlbflush.h
-> >>> @@ -254,17 +254,24 @@ static inline void flush_tlb_mm(struct mm_struct *mm)
-> >>>       dsb(ish);
-> >>>  }
-> >>>
-> >>> -static inline void flush_tlb_page_nosync(struct vm_area_struct *vma,
-> >>> +
-> >>> +static inline void __flush_tlb_page_nosync(struct mm_struct *mm,
-> >>>                                        unsigned long uaddr)
-> >>>  {
-> >>>       unsigned long addr;
-> >>>
-> >>>       dsb(ishst);
-> >>> -     addr = __TLBI_VADDR(uaddr, ASID(vma->vm_mm));
-> >>> +     addr = __TLBI_VADDR(uaddr, ASID(mm));
-> >>>       __tlbi(vale1is, addr);
-> >>>       __tlbi_user(vale1is, addr);
-> >>>  }
-> >>>
-> >>> +static inline void flush_tlb_page_nosync(struct vm_area_struct *vma,
-> >>> +                                      unsigned long uaddr)
-> >>> +{
-> >>> +     return __flush_tlb_page_nosync(vma->vm_mm, uaddr);
-> >>> +}
-> >>> +
-> >>>  static inline void flush_tlb_page(struct vm_area_struct *vma,
-> >>>                                 unsigned long uaddr)
-> >>>  {
-> >>> @@ -272,6 +279,23 @@ static inline void flush_tlb_page(struct vm_area_struct *vma,
-> >>>       dsb(ish);
-> >>>  }
-> >>>
-> >>> +static inline bool arch_tlbbatch_should_defer(struct mm_struct *mm)
-> >>> +{
-> >>> +     return true;
-> >>> +}
-> >>
-> >> Always defer and batch up TLB flush, unconditionally ?
-> >
-> > My understanding is we actually don't need tlbbatch for a machine with one
-> > or two cores as the tlb flush is not expensive. even for a system with four
-> > cortex-a55 cores, i didn't see obvious cost. it was less than 1%.
-> > when we have 8 cores, we see the obvious cost of tlb flush. for a server with
-> > 100 crores, the cost is incredibly huge.
->
-> Although dsb(ish) is deferred via arch_tlbbatch_flush(), there is still
-> one dsb(isht) instruction left in __flush_tlb_page_nosync(). Is not that
-> expensive as well, while queuing up individual TLB flushes ?
-
-This one is much much cheaper as it is not waiting for the
-completion of tlbi. waiting for the completion of tlbi is a big
-deal in arm64, thus, similar optimization can be seen here
-
-3403e56b41c1("arm64: mm: Don't wait for completion of TLB invalidation
-when page aging").
 
 
->
-> The very idea behind TLB deferral is the opportunity it (might) provide
-> to accumulate address ranges and cpu masks so that individual TLB flush
-> can be replaced with a more cost effective range based TLB flush. Hence
-> I guess unless address range or cpumask based cost effective TLB flush
-> is available, deferral does not improve the unmap performance as much.
+> On 12 Sep 2022, at 10:15 pm, Nicholas Piggin <npiggin@gmail.com> =
+wrote:
+>=20
+> On Wed Aug 24, 2022 at 12:05 PM AEST, Rohan McLure wrote:
+>> Zero GPRS r0, r2-r11, r14-r31, on entry into the kernel for all
+>> other interrupt sources to limit influence of user-space values
+>> in potential speculation gadgets. The remaining gprs are overwritten =
+by
+>> entry macros to interrupt handlers, irrespective of whether or not a
+>> given handler consumes these register values.
+>>=20
+>> Prior to this commit, r14-r31 are restored on a per-interrupt basis =
+at
+>> exit, but now they are always restored. Remove explicit REST_NVGPRS
+>> invocations as non-volatiles must now always be restored. 32-bit =
+systems
+>> do not clear user registers on interrupt, and continue to depend on =
+the
+>> return value of interrupt_exit_user_prepare to determine whether or =
+not
+>> to restore non-volatiles.
+>>=20
+>> The mmap_bench benchmark in selftests should rapidly invoke =
+pagefaults.
+>> See ~0.8% performance regression with this mitigation, but this
+>> indicates the worst-case performance due to heavier-weight interrupt
+>> handlers.
+>=20
+> Ow, my heart :(
+>=20
+> Are we not keeping a CONFIG option to rid ourselves of this vile
+> performance robbing thing? Are we getting rid of the whole
+> _TIF_RESTOREALL thing too, or does PPC32 want to keep it?
 
+I see no reason not to include a CONFIG option for this=20
+mitigation here other than simplicity. Any suggestions for a name?
+I=E2=80=99m thinking PPC64_SANITIZE_INTERRUPTS. Defaults on Book3E_64, =
+optional
+on Book3S_64.
 
-After sending tlbi, if we wait for the completion of tlbi, we have to get Ack
-from all cpus in the system, tlbi is not scalable. The point here is that we
-avoid waiting for each individual TLBi. Alternatively, they are batched. If
-you read the benchmark in the commit log, you can find the great decline
-in the cost to swap out a page.
+>>=20
+>> Signed-off-by: Rohan McLure <rmclure@linux.ibm.com>
+>> ---
+>> V1 -> V2: Add benchmark data
+>> V2 -> V3: Use ZEROIZE_GPR{,S} macro renames, clarify
+>> interrupt_exit_user_prepare changes in summary.
+>> ---
+>> arch/powerpc/kernel/exceptions-64s.S | 21 ++++++++-------------
+>> arch/powerpc/kernel/interrupt_64.S   |  9 ++-------
+>> 2 files changed, 10 insertions(+), 20 deletions(-)
+>>=20
+>> diff --git a/arch/powerpc/kernel/exceptions-64s.S =
+b/arch/powerpc/kernel/exceptions-64s.S
+>> index a3b51441b039..038e42fb2182 100644
+>> --- a/arch/powerpc/kernel/exceptions-64s.S
+>> +++ b/arch/powerpc/kernel/exceptions-64s.S
+>> @@ -502,6 +502,7 @@ DEFINE_FIXED_SYMBOL(\name\()_common_real, text)
+>> 	std	r10,0(r1)		/* make stack chain pointer	=
+*/
+>> 	std	r0,GPR0(r1)		/* save r0 in stackframe	=
+*/
+>> 	std	r10,GPR1(r1)		/* save r1 in stackframe	=
+*/
+>> +	ZEROIZE_GPR(0)
+>>=20
+>> 	/* Mark our [H]SRRs valid for return */
+>> 	li	r10,1
+>> @@ -538,14 +539,18 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
+>> 	ld	r10,IAREA+EX_R10(r13)
+>> 	std	r9,GPR9(r1)
+>> 	std	r10,GPR10(r1)
+>> +	ZEROIZE_GPRS(9, 10)
+>=20
+> You use 9/10 right afterwards, this'd have to move down to where
+> you zero r11 at least.
+>=20
+>> 	ld	r9,IAREA+EX_R11(r13)	/* move r11 - r13 to stackframe	=
+*/
+>> 	ld	r10,IAREA+EX_R12(r13)
+>> 	ld	r11,IAREA+EX_R13(r13)
+>> 	std	r9,GPR11(r1)
+>> 	std	r10,GPR12(r1)
+>> 	std	r11,GPR13(r1)
+>> +	/* keep r12 ([H]SRR1/MSR), r13 (PACA) for interrupt routine */
+>> +	ZEROIZE_GPR(11)
+>=20
+> Kernel always has to keep r13 so no need to comment that. Keeping r11,
+> is that for those annoying fp_unavailable etc handlers?
+>=20
+> There's probably not much a user can do with this, given they're set
+> from the MSR. Use can influence some bits of its MSR though. So long
+> as we're being paranoid, you could add an IOPTION to retain r11 only =
+for
+> the handlers that need it, or have them load it from MSR and zero it
+> here.
 
-Thanks
-Barry
+Good suggestion. Presume you=E2=80=99re referring to r12 here. I might =
+go the
+IOPTION route.
+
+>=20
+> Thanks,
+> Nick
+>=20
+>>=20
+>> 	SAVE_NVGPRS(r1)
+>> +	ZEROIZE_NVGPRS()
+>>=20
+>> 	.if IDAR
+>> 	.if IISIDE
+>> @@ -577,8 +582,8 @@ BEGIN_FTR_SECTION
+>> END_FTR_SECTION_IFSET(CPU_FTR_CFAR)
+>> 	ld	r10,IAREA+EX_CTR(r13)
+>> 	std	r10,_CTR(r1)
+>> -	std	r2,GPR2(r1)		/* save r2 in stackframe	=
+*/
+>> -	SAVE_GPRS(3, 8, r1)		/* save r3 - r8 in stackframe   =
+*/
+>> +	SAVE_GPRS(2, 8, r1)		/* save r2 - r8 in stackframe   =
+*/
+>> +	ZEROIZE_GPRS(2, 8)
+>> 	mflr	r9			/* Get LR, later save to stack	=
+*/
+>> 	ld	r2,PACATOC(r13)		/* get kernel TOC into r2	=
+*/
+>> 	std	r9,_LINK(r1)
+>> @@ -696,6 +701,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_CFAR)
+>> 	mtlr	r9
+>> 	ld	r9,_CCR(r1)
+>> 	mtcr	r9
+>> +	REST_NVGPRS(r1)
+>> 	REST_GPRS(2, 13, r1)
+>> 	REST_GPR(0, r1)
+>> 	/* restore original r1. */
+>> @@ -1368,11 +1374,6 @@ =
+ALT_MMU_FTR_SECTION_END_IFCLR(MMU_FTR_TYPE_RADIX)
+>> 	b	interrupt_return_srr
+>>=20
+>> 1:	bl	do_break
+>> -	/*
+>> -	 * do_break() may have changed the NV GPRS while handling a =
+breakpoint.
+>> -	 * If so, we need to restore them with their updated values.
+>> -	 */
+>> -	REST_NVGPRS(r1)
+>> 	b	interrupt_return_srr
+>>=20
+>>=20
+>> @@ -1598,7 +1599,6 @@ EXC_COMMON_BEGIN(alignment_common)
+>> 	GEN_COMMON alignment
+>> 	addi	r3,r1,STACK_FRAME_OVERHEAD
+>> 	bl	alignment_exception
+>> -	REST_NVGPRS(r1) /* instruction emulation may change GPRs */
+>> 	b	interrupt_return_srr
+>>=20
+>>=20
+>> @@ -1708,7 +1708,6 @@ EXC_COMMON_BEGIN(program_check_common)
+>> .Ldo_program_check:
+>> 	addi	r3,r1,STACK_FRAME_OVERHEAD
+>> 	bl	program_check_exception
+>> -	REST_NVGPRS(r1) /* instruction emulation may change GPRs */
+>> 	b	interrupt_return_srr
+>>=20
+>>=20
+>> @@ -2139,7 +2138,6 @@ EXC_COMMON_BEGIN(emulation_assist_common)
+>> 	GEN_COMMON emulation_assist
+>> 	addi	r3,r1,STACK_FRAME_OVERHEAD
+>> 	bl	emulation_assist_interrupt
+>> -	REST_NVGPRS(r1) /* instruction emulation may change GPRs */
+>> 	b	interrupt_return_hsrr
+>>=20
+>>=20
+>> @@ -2457,7 +2455,6 @@ EXC_COMMON_BEGIN(facility_unavailable_common)
+>> 	GEN_COMMON facility_unavailable
+>> 	addi	r3,r1,STACK_FRAME_OVERHEAD
+>> 	bl	facility_unavailable_exception
+>> -	REST_NVGPRS(r1) /* instruction emulation may change GPRs */
+>> 	b	interrupt_return_srr
+>>=20
+>>=20
+>> @@ -2485,7 +2482,6 @@ EXC_COMMON_BEGIN(h_facility_unavailable_common)
+>> 	GEN_COMMON h_facility_unavailable
+>> 	addi	r3,r1,STACK_FRAME_OVERHEAD
+>> 	bl	facility_unavailable_exception
+>> -	REST_NVGPRS(r1) /* XXX Shouldn't be necessary in practice */
+>> 	b	interrupt_return_hsrr
+>>=20
+>>=20
+>> @@ -2711,7 +2707,6 @@ EXC_COMMON_BEGIN(altivec_assist_common)
+>> 	addi	r3,r1,STACK_FRAME_OVERHEAD
+>> #ifdef CONFIG_ALTIVEC
+>> 	bl	altivec_assist_exception
+>> -	REST_NVGPRS(r1) /* instruction emulation may change GPRs */
+>> #else
+>> 	bl	unknown_exception
+>> #endif
+>> diff --git a/arch/powerpc/kernel/interrupt_64.S =
+b/arch/powerpc/kernel/interrupt_64.S
+>> index ad302ad93433..f9ee93e3a0d3 100644
+>> --- a/arch/powerpc/kernel/interrupt_64.S
+>> +++ b/arch/powerpc/kernel/interrupt_64.S
+>> @@ -432,9 +432,6 @@ interrupt_return_\srr\()_user: /* make backtraces =
+match the _kernel variant */
+>> _ASM_NOKPROBE_SYMBOL(interrupt_return_\srr\()_user)
+>> 	addi	r3,r1,STACK_FRAME_OVERHEAD
+>> 	bl	interrupt_exit_user_prepare
+>> -	cmpdi	r3,0
+>> -	bne-	.Lrestore_nvgprs_\srr
+>> -.Lrestore_nvgprs_\srr\()_cont:
+>> 	std	r1,PACA_EXIT_SAVE_R1(r13) /* save r1 for restart */
+>> #ifdef CONFIG_PPC_BOOK3S
+>> .Linterrupt_return_\srr\()_user_rst_start:
+>> @@ -448,6 +445,7 @@ =
+_ASM_NOKPROBE_SYMBOL(interrupt_return_\srr\()_user)
+>> 	stb	r11,PACAIRQHAPPENED(r13) # clear out possible HARD_DIS
+>>=20
+>> .Lfast_user_interrupt_return_\srr\():
+>> +	REST_NVGPRS(r1)
+>> #ifdef CONFIG_PPC_BOOK3S
+>> 	.ifc \srr,srr
+>> 	lbz	r4,PACASRR_VALID(r13)
+>> @@ -517,10 +515,6 @@ =
+ALT_FTR_SECTION_END_IFCLR(CPU_FTR_STCX_CHECKS_ADDRESS)
+>> 	b	.	/* prevent speculative execution */
+>> .Linterrupt_return_\srr\()_user_rst_end:
+>>=20
+>> -.Lrestore_nvgprs_\srr\():
+>> -	REST_NVGPRS(r1)
+>> -	b	.Lrestore_nvgprs_\srr\()_cont
+>> -
+>> #ifdef CONFIG_PPC_BOOK3S
+>> interrupt_return_\srr\()_user_restart:
+>> _ASM_NOKPROBE_SYMBOL(interrupt_return_\srr\()_user_restart)
+>> @@ -561,6 +555,7 @@ =
+_ASM_NOKPROBE_SYMBOL(interrupt_return_\srr\()_kernel)
+>> 1:
+>>=20
+>> .Lfast_kernel_interrupt_return_\srr\():
+>> +	REST_NVGPRS(r1)
+>> 	cmpdi	cr1,r3,0
+>> #ifdef CONFIG_PPC_BOOK3S
+>> 	.ifc \srr,srr
+>> --=20
+>> 2.34.1
+
