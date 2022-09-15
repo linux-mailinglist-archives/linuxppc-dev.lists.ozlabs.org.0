@@ -2,50 +2,99 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10FB75B92D3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Sep 2022 04:58:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FDAA5B93B1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Sep 2022 06:37:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MShhr0H2Kz3c9K
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Sep 2022 12:58:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MSkvY1tRLz3bnY
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Sep 2022 14:37:29 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=IFO1ukWr;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com; envelope-from=chenzhongjin@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=rmclure@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=IFO1ukWr;
+	dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MShhP1y7hz2yYj
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Sep 2022 12:57:38 +1000 (AEST)
-Received: from dggpemm500023.china.huawei.com (unknown [172.30.72.55])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4MShb43Vj9zlVvj;
-	Thu, 15 Sep 2022 10:53:04 +0800 (CST)
-Received: from dggpemm500013.china.huawei.com (7.185.36.172) by
- dggpemm500023.china.huawei.com (7.185.36.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Thu, 15 Sep 2022 10:57:03 +0800
-Received: from [10.67.108.67] (10.67.108.67) by dggpemm500013.china.huawei.com
- (7.185.36.172) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Thu, 15 Sep
- 2022 10:57:03 +0800
-Message-ID: <6a61aa57-141f-039c-5a2d-b2d79fecb8c2@huawei.com>
-Date: Thu, 15 Sep 2022 10:56:58 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MSktj6Ytfz307g
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Sep 2022 14:36:44 +1000 (AEST)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28F3TvF1025913
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Sep 2022 04:36:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type : subject :
+ from : in-reply-to : date : cc : message-id : references : to :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=/lArB8b+99lMXrsd31kancuoOQCmgzLHk157E/Ll+ow=;
+ b=IFO1ukWr7JIVtUnxrf3p+P4CQ0li2YkrulIzxQ5IrUSKFDgch2qblHTedVRfNrfACrTR
+ vOcMyIgewIiqs2rFGSh7pvyhaq14fKXRl8m2Iog0at+3wfwrirAX2WlLtWEquJPRdkTO
+ kLEg4Rjp8wJVkJvkv96gh062wwdoe0YGCUpezl4zt1ryZPYclF/x6BzWIX/xarwkkJBe
+ coHP2OumdAE12oiQeLv2Ji/OotaUgriYl6DIHznoheKNcqVMrLK+yEdT4BuHmL7VaIKg
+ NuRlQhTXIxxMiiYfAeFtDBjFtGh/bqPqM//a31aMPo4qR3JaBQYE3t0pWU4SnZzU23zG cg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jkv6v9fhm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Sep 2022 04:36:41 +0000
+Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 28F4TlRv002344
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Sep 2022 04:36:41 GMT
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jkv6v9fh1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 15 Sep 2022 04:36:40 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+	by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 28F4YqxV017675;
+	Thu, 15 Sep 2022 04:36:39 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+	by ppma03ams.nl.ibm.com with ESMTP id 3jjy95sub1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 15 Sep 2022 04:36:38 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+	by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 28F4aac336045246
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 15 Sep 2022 04:36:36 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B2F2BA405C;
+	Thu, 15 Sep 2022 04:36:36 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 14A02A4054;
+	Thu, 15 Sep 2022 04:36:36 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Thu, 15 Sep 2022 04:36:36 +0000 (GMT)
+Received: from smtpclient.apple (haven.au.ibm.com [9.192.254.114])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 99F966010D;
+	Thu, 15 Sep 2022 14:36:26 +1000 (AEST)
+Content-Type: text/plain;
+	charset=utf-8
+Subject: Re: [PATCH v4 03/20] powerpc/32: Remove powerpc select specialisation
+From: Rohan McLure <rmclure@linux.ibm.com>
+In-Reply-To: <CMUAVMDUD1XS.9X8HB8W4YK1I@bobo>
+Date: Thu, 15 Sep 2022 14:36:26 +1000
+Message-Id: <259C7BA3-CB32-4385-9E05-FCBF33599B98@linux.ibm.com>
+References: <20220824020548.62625-1-rmclure@linux.ibm.com>
+ <20220824020548.62625-4-rmclure@linux.ibm.com>
+ <CMUAVMDUD1XS.9X8HB8W4YK1I@bobo>
+To: Nicholas Piggin <npiggin@gmail.com>
+X-Mailer: Apple Mail (2.3696.120.41.1.1)
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 3uyE83k8JMbK-8W-n8KyYnQ0dt6xac7C
+X-Proofpoint-ORIG-GUID: Ukl_CONIkT0slF0571hYmlAt2YJQdFMq
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.0
-Subject: Re: [RFC] Objtool toolchain proposal:
- -fannotate-{jump-table,noreturn}
-Content-Language: en-US
-To: Michael Matz <matz@suse.de>, Borislav Petkov <bp@alien8.de>
-References: <20220909180704.jwwed4zhwvin7uyi@treble>
- <Yx8PcldkdOLN8eaw@nazgul.tnic>
- <alpine.LSU.2.20.2209121200120.8265@wotan.suse.de>
-From: Chen Zhongjin <chenzhongjin@huawei.com>
-In-Reply-To: <alpine.LSU.2.20.2209121200120.8265@wotan.suse.de>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.67.108.67]
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- dggpemm500013.china.huawei.com (7.185.36.172)
-X-CFilter-Loop: Reflected
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
+ definitions=2022-09-15_01,2022-09-14_04,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxscore=0
+ priorityscore=1501 suspectscore=0 phishscore=0 spamscore=0
+ lowpriorityscore=0 mlxlogscore=999 malwarescore=0 impostorscore=0
+ adultscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2208220000 definitions=main-2209150022
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,186 +106,138 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark
- Rutland <mark.rutland@arm.com>, Peter Zijlstra <peterz@infradead.org>, linuxppc-dev@lists.ozlabs.org, x86@kernel.org, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, Ard
- Biesheuvel <ardb@kernel.org>, Mark Brown <broonie@kernel.org>, Sathvika Vasireddy <sv@linux.ibm.com>, linux-toolchains@vger.kernel.org, Indu Bhagat <indu.bhagat@oracle.com>, live-patching@vger.kernel.org, Miroslav Benes <mbenes@suse.cz>, Will Deacon <will@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>, linux-arm-kernel@lists.infradead.org, "Jose E. Marchesi" <jemarch@gnu.org>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
-
-On 2022/9/12 22:17, Michael Matz wrote:
-> Hey,
->
-> On Mon, 12 Sep 2022, Borislav Petkov wrote:
->
->> Micha, any opinions on the below are appreciated.
->>
->> On Fri, Sep 09, 2022 at 11:07:04AM -0700, Josh Poimboeuf wrote:
->>> difficult to ensure correctness.  Also, due to kernel live patching, the
->>> kernel relies on 100% correctness of unwinding metadata, whereas the
->>> toolchain treats it as a best effort.
-> Unwinding certainly is not best effort.  It's 100% reliable as far as the
-> source language or compilation options require.  But as it doesn't
-> touch the discussed features I won't belabor that point.
->
-> I will mention that objtool's existence is based on mistrust, of persons
-> (not correctly annotating stuff) and of tools (not correctly heeding those
-> annotations).  The mistrust in persons is understandable and can be dealt
-> with by tools, but the mistrust in tools can't be fixed by making tools
-> more complicated by emitting even more information; there's no good reason
-> to assume that one piece of info can be trusted more than other pieces.
-> So, if you mistrust the tools you have already lost.  That's somewhat
-> philosophical, so I won't beat that horse much more either.
->
-> Now, recovering the CFG.  I'll switch order of your two items:
->
-> 2) noreturn function
->
->>>    .pushsection .annotate.noreturn
->>>      .quad func1
->>>      .quad func2
->>>      .quad func3
->>>    .popsection
-> This won't work for indirect calls to noreturn functions:
->
->    void (* __attribute__((noreturn)) noretptr)(void);
->    int callnoret (int i)
->    {
->      noretptr();
->      return i + 32;
->    }
->
-> The return statement is unreachable (and removed by GCC).  To know that
-> you would have to mark the call statements, not the individual functions.
-> All schemes that mark functions that somehow indicates a meaningful
-> difference in the calling sequence (e.g. the ABI of functions) have the
-> same problem: it's part of the call expressions type, not of individual
-> decls.
->
-> Second problem: it's not extensible.  Today it's noreturn functions you
-> want to know, and tomorrow?  So, add a flag word per entry, define bit 0
-> for now to be NORETURN, and see what comes.  Add a header with a version
-> (and/or identifier) as well and it's properly extensible.  For easy
-> linking and identifying the blobs in the linked result include a length in
-> the header.  If this were in an allocated section it would be a good idea
-> to refer to the symbols in a PC-relative manner, so as to not result in
-> runtime relocations.  In this case, as it's within a non-alloc section
-> that doesn't matter.  So:
->
-> .section .annotate.functions
-> .long 1       # version
-> .long 0xcafe  # ident
-> .long 2f-1f   # length
-> 1:
-> .quad func1, 1   # noreturn
-> .quad func2, 1   # noreturn
-> .quad func3, 32  # something_else_but_not_noreturn
-> ...
-> 2:
-> .long 1b-2b   # align and "checksum"
->
-> It might be that the length-and-header scheme is cumbersome if you need to
-> write those section commands by hand, in which case another scheme might
-> be preferrable, but it should somehow be self-delimiting.
->
-> For the above problem of indirect calls to noreturns, instead do:
->
->    .text
->    noretcalllabel:
->      call noreturn
->    othercall:
->      call really_special_thing
->    .section .annotate.noretcalls
->    .quad noretcalllabel, 1  # noreturn call
->    .quad othercall, 32      # call to some special(-ABI?) function
->
-> Same thoughts re extensibility and self-delimitation apply.
->
-> 1) jump tables
->
->>> Create an .annotate.jump_table section which is an array of the
->>> following variable-length structure:
->>>
->>>    struct annotate_jump_table {
->>> 	void *indirect_jmp;
->>> 	long num_targets;
->>> 	void *targets[];
->>>    };
-> It's very often the case that the compiler already emits what your
-> .targets[] member would encode, just at some unknown place, length and
-> encoding.  So you would save space if you instead only remember the
-> encoding and places of those jump tables:
-
-We have found some anonymous information on x86 in .rodata.
-
-I'm not sure if those are *all* of Josh wanted on x86, however for arm64 
-we did not found that in the same section so it is a problem on arm64 now.
-
-Does the compiler will emit these for all arches? At lease I tried and 
-didn't find anything meaningful (maybe I omitted it).
 
 
-Best,
+> On 12 Sep 2022, at 7:03 pm, Nicholas Piggin <npiggin@gmail.com> wrote:
+>=20
+> On Wed Aug 24, 2022 at 12:05 PM AEST, Rohan McLure wrote:
+>> Syscall #82 has been implemented for 32-bit platforms in a unique way on
+>> powerpc systems. This hack will in effect guess whether the caller is
+>> expecting new select semantics or old select semantics. It does so via a
+>> guess, based off the first parameter. In new select, this parameter
+>> represents the length of a user-memory array of file descriptors, and in
+>> old select this is a pointer to an arguments structure.
+>>=20
+>> The heuristic simply interprets sufficiently large values of its first
+>> parameter as being a call to old select. The following is a discussion
+>> on how this syscall should be handled.
+>>=20
+>> Link: https://lore.kernel.org/lkml/13737de5-0eb7-e881-9af0-163b0d29a1a0@=
+csgroup.eu/
+>=20
+> Seems okay to me, probably Christophe needs to ack it.
+> Should some of that history be included directly in this changelog?
+>=20
+> Should ppc64 compat be added back too, if this is being updated instead
+> of removed? I don't know much about compat but it seems odd not provide
+> it (considering it's just using compat_sys_old_select, isn't it?
 
-Chen
+That would make sense to me. I=E2=80=99ll put that in syscall.tbl.
 
-> struct {
->    void *indirect_jump;
->    long num_tables;
->    struct {
->      unsigned num_entries;
->      unsigned encoding;
->      void *start_of_table;
->    } tables[];
-> };
->
-> The usual encodings are: direct, PC-relative, relative-to-start-of-table.
-> Usually for a specific jump instruction there's only one table, so
-> optimizing for that makes sense.  For strange unthought-of cases it's
-> probably a good idea to have your initial scheme as fallback, which could
-> be indicated by a special .encoding value.
->
->>> For example, given the following switch statement code:
->>>
->>>    .Lswitch_jmp:
->>> 	// %rax is .Lcase_1 or .Lcase_2
->>> 	jmp %rax
-> So, usually %rax would point into a table (somewhere in .rodata/.text)
-> that looks like so:
->
-> .Ljump_table:
->   .quad .Lcase_1 - .Ljump_table
->   .quad .Lcase_2 - .Ljump_table
->
-> (for position-independend code)
->
-> and hence you would emit this as annotation:
->
-> .quad .Lswitch_jmp
-> .quad 1                   # only a single table
-> .long 2                   # with two entries
-> .long RELATIVE_TO_START   # all entries are X - start_of_table
-> .quad .Ljump_table
->
-> In this case you won't save anything of course, but as soon as there's a
-> meaningful number of cases you will.
->
-> Again, if that info would be put into an allocated section you would want
-> to use relative encodings of the addresses to avoid runtime relocs.  And
-> the remarks about self-delimitation and extensibility also apply here.
->
->>> Alternatives
->>> ------------
->>>
->>> Another idea which has been floated in the past is for objtool to read
->>> DWARF (or .eh_frame) to help it figure out the control flow.  That
->>> hasn't been tried yet, but would be considerably more difficult and
->>> fragile IMO.
-> While noreturn functions are marked in the debug info, noreturn
-> function types currently aren't quite correct.  And jump-tables aren't
-> marked at all, so that would lose.
->
->
-> Ciao,
-> Michael.
+> Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+>=20
+>>=20
+>> As discussed in this thread, the existence of such a hack suggests that =
+for
+>> whatever powerpc binaries may predate glibc, it is most likely that they
+>> would have taken use of the old select semantics. x86 and arm64 both
+>> implement this syscall with oldselect semantics.
+>>=20
+>> Remove the powerpc implementation, and update syscall.tbl to refer to em=
+it
+>> a reference to sys_old_select for 32-bit binaries, in keeping with how
+>> other architectures support syscall #82.
+>>=20
+>> Signed-off-by: Rohan McLure <rmclure@linux.ibm.com>
+>> ---
+>> V1 -> V2: Remove arch-specific select handler
+>> V2 -> V3: Remove ppc_old_select prototype in <asm/syscalls.h>. Move to
+>> earlier in patch series
+>> ---
+>> arch/powerpc/include/asm/syscalls.h           |  2 --
+>> arch/powerpc/kernel/syscalls.c                | 17 -----------------
+>> arch/powerpc/kernel/syscalls/syscall.tbl      |  2 +-
+>> .../arch/powerpc/entry/syscalls/syscall.tbl   |  2 +-
+>> 4 files changed, 2 insertions(+), 21 deletions(-)
+>>=20
+>> diff --git a/arch/powerpc/include/asm/syscalls.h b/arch/powerpc/include/=
+asm/syscalls.h
+>> index 675a8f5ec3ca..739498c358a1 100644
+>> --- a/arch/powerpc/include/asm/syscalls.h
+>> +++ b/arch/powerpc/include/asm/syscalls.h
+>> @@ -18,8 +18,6 @@ long sys_mmap2(unsigned long addr, size_t len,
+>> 	       unsigned long fd, unsigned long pgoff);
+>> long ppc64_personality(unsigned long personality);
+>> long sys_rtas(struct rtas_args __user *uargs);
+>> -int ppc_select(int n, fd_set __user *inp, fd_set __user *outp,
+>> -	       fd_set __user *exp, struct __kernel_old_timeval __user *tvp);
+>> long ppc_fadvise64_64(int fd, int advice, u32 offset_high, u32 offset_lo=
+w,
+>> 		      u32 len_high, u32 len_low);
+>>=20
+>> diff --git a/arch/powerpc/kernel/syscalls.c b/arch/powerpc/kernel/syscal=
+ls.c
+>> index fc999140bc27..ef5896bee818 100644
+>> --- a/arch/powerpc/kernel/syscalls.c
+>> +++ b/arch/powerpc/kernel/syscalls.c
+>> @@ -63,23 +63,6 @@ SYSCALL_DEFINE6(mmap, unsigned long, addr, size_t, le=
+n,
+>> 	return do_mmap2(addr, len, prot, flags, fd, offset, PAGE_SHIFT);
+>> }
+>>=20
+>> -#ifdef CONFIG_PPC32
+>> -/*
+>> - * Due to some executables calling the wrong select we sometimes
+>> - * get wrong args.  This determines how the args are being passed
+>> - * (a single ptr to them all args passed) then calls
+>> - * sys_select() with the appropriate args. -- Cort
+>> - */
+>> -int
+>> -ppc_select(int n, fd_set __user *inp, fd_set __user *outp, fd_set __use=
+r *exp, struct __kernel_old_timeval __user *tvp)
+>> -{
+>> -	if ((unsigned long)n >=3D 4096)
+>> -		return sys_old_select((void __user *)n);
+>> -
+>> -	return sys_select(n, inp, outp, exp, tvp);
+>> -}
+>> -#endif
+>> -
+>> #ifdef CONFIG_PPC64
+>> long ppc64_personality(unsigned long personality)
+>> {
+>> diff --git a/arch/powerpc/kernel/syscalls/syscall.tbl b/arch/powerpc/ker=
+nel/syscalls/syscall.tbl
+>> index 2600b4237292..4cbbb810ae10 100644
+>> --- a/arch/powerpc/kernel/syscalls/syscall.tbl
+>> +++ b/arch/powerpc/kernel/syscalls/syscall.tbl
+>> @@ -110,7 +110,7 @@
+>> 79	common	settimeofday			sys_settimeofday		compat_sys_settimeofday
+>> 80	common	getgroups			sys_getgroups
+>> 81	common	setgroups			sys_setgroups
+>> -82	32	select				ppc_select			sys_ni_syscall
+>> +82	32	select				sys_old_select			sys_ni_syscall
+>> 82	64	select				sys_ni_syscall
+>> 82	spu	select				sys_ni_syscall
+>> 83	common	symlink				sys_symlink
+>> diff --git a/tools/perf/arch/powerpc/entry/syscalls/syscall.tbl b/tools/=
+perf/arch/powerpc/entry/syscalls/syscall.tbl
+>> index 2600b4237292..4cbbb810ae10 100644
+>> --- a/tools/perf/arch/powerpc/entry/syscalls/syscall.tbl
+>> +++ b/tools/perf/arch/powerpc/entry/syscalls/syscall.tbl
+>> @@ -110,7 +110,7 @@
+>> 79	common	settimeofday			sys_settimeofday		compat_sys_settimeofday
+>> 80	common	getgroups			sys_getgroups
+>> 81	common	setgroups			sys_setgroups
+>> -82	32	select				ppc_select			sys_ni_syscall
+>> +82	32	select				sys_old_select			sys_ni_syscall
+>> 82	64	select				sys_ni_syscall
+>> 82	spu	select				sys_ni_syscall
+>> 83	common	symlink				sys_symlink
+>> --=20
+>> 2.34.1
+
