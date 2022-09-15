@@ -1,57 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E66AF5B9B4F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Sep 2022 14:52:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82FD65B9C3B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Sep 2022 15:45:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MSxt84c6Nz3c6m
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Sep 2022 22:52:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MSz452CpFz3c7H
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Sep 2022 23:45:41 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=rzBMtsFq;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QuhoIGmm;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MSxsZ580Sz2y8L
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Sep 2022 22:51:30 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=rzBMtsFq;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QuhoIGmm;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4MSxsY2w0Xz4xFt;
-	Thu, 15 Sep 2022 22:51:29 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1663246289;
-	bh=Ma2cufPKqcaymVEQ2UKEbxWCCU3nMvR/mvpW0a4f+Mw=;
-	h=From:To:Subject:In-Reply-To:References:Date:From;
-	b=rzBMtsFqytlXTFxg9PUB/P5y6m/IVKPO0y8kNrEUtBbS/pFmEKI94/95fssHVX9E1
-	 iZvyC14RQk2MxS1ohUH/aHNYGkN+9A16aRjC9JazYon+hCF1w/aWHyHB3WqRVvSHor
-	 TEWn+buorbXHbHJ2L1oJukAW8Vpr0UG3fGOAjhNa0gOmAc31K5AxvFqbGqlOWV1bic
-	 r9uUR8enFtnADAmchzckxkEtvhwz/XO74PXKMCQ13Y13znNuPRnrIysc01J+tYu87v
-	 jrQ0px1BFej9bVcPzw1uzt9k41wIpv9/7wZqJVw9vsgmZWTqGtcB09ZtxUogn76i40
-	 4g/nLoI72vCcg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Nicholas Piggin
- <npiggin@gmail.com>, "linuxppc-dev@lists.ozlabs.org"
- <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: [PATCH 1/7] powerpc/build: put sys_call_table in .data.rel.ro
- if RELOCATABLE
-In-Reply-To: <2e9a7e03-f89d-15d8-d42b-f5a0b1f9c391@csgroup.eu>
-References: <20220914154746.1122482-1-npiggin@gmail.com>
- <20220914154746.1122482-2-npiggin@gmail.com>
- <2e9a7e03-f89d-15d8-d42b-f5a0b1f9c391@csgroup.eu>
-Date: Thu, 15 Sep 2022 22:51:28 +1000
-Message-ID: <874jx8n6lr.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MSz3P2Jppz2yxX
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Sep 2022 23:45:04 +1000 (AEST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28FDCXPQ004631;
+	Thu, 15 Sep 2022 13:45:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=DUiCHVuZrvBO36klH9izOeBWCZAy20AWfKcpBlwGBq4=;
+ b=QuhoIGmmHoV2lGJImEHwmkjZ9GI44np1+7KDrkMCUBlOvd4MMv6q4XeACBYf6WGRgDER
+ pmk4Vik0HqplwUfyxpirBMgs7ETlWh0pRW4U1gwS8a1X5MPgQcR49TcZ3repD6Pam72c
+ YqP+9d3wKRuSAGAGscKMzqZ45ZnXB/QmgJfPnpsdUiNc8cAul8NZtm32xQYqVSyJ8WMp
+ LnCZM6I/b4oKRfjJpdxwZe7Fbt6KloUv43wLGFF+V76ZcTPhP02oe+HykT5+0+z1OSjT
+ jbAsUCbeJEgk01hg9DuhucxaergMKtWGB8Fha8LUu6NQpKR8U77AHD8NydtWCu3nUvXV AQ== 
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.10])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jm4qr15cj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 15 Sep 2022 13:45:01 +0000
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+	by ppma02dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 28FDalNr007133;
+	Thu, 15 Sep 2022 13:45:00 GMT
+Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com [9.57.198.27])
+	by ppma02dal.us.ibm.com with ESMTP id 3jjy2neg70-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 15 Sep 2022 13:45:00 +0000
+Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com [9.57.199.106])
+	by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 28FDixjR65143274
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 15 Sep 2022 13:44:59 GMT
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4B92028071;
+	Thu, 15 Sep 2022 13:44:59 +0000 (GMT)
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2944D28060;
+	Thu, 15 Sep 2022 13:44:59 +0000 (GMT)
+Received: from localhost (unknown [9.65.104.87])
+	by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
+	Thu, 15 Sep 2022 13:44:59 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: Michal =?utf-8?Q?Such=C3=A1nek?= <msuchanek@suse.de>
+Subject: Re: [PATCH] powerpc/pseries: add lparctl driver for
+ platform-specific functions
+In-Reply-To: <20220914081419.GE28810@kitsune.suse.cz>
+References: <20220730000458.130938-1-nathanl@linux.ibm.com>
+ <0ead0cd1-f6f6-ecf0-65d9-f3d9366e258c@linux.ibm.com>
+ <87k07dl1f6.fsf@linux.ibm.com> <20220913091302.GY28810@kitsune.suse.cz>
+ <87v8prtgcj.fsf@linux.ibm.com> <20220913163343.GA28810@kitsune.suse.cz>
+ <87sfkvtdfx.fsf@linux.ibm.com> <20220914081419.GE28810@kitsune.suse.cz>
+Date: Thu, 15 Sep 2022 08:43:20 -0500
+Message-ID: <87leqku51j.fsf@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: el257NwRPQ7fxjA3_1kwWFrfGZMoGHpa
+X-Proofpoint-ORIG-GUID: el257NwRPQ7fxjA3_1kwWFrfGZMoGHpa
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
+ definitions=2022-09-15_08,2022-09-14_04,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 spamscore=0
+ adultscore=0 malwarescore=0 phishscore=0 clxscore=1015 priorityscore=1501
+ mlxlogscore=852 impostorscore=0 mlxscore=0 lowpriorityscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2208220000
+ definitions=main-2209150078
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,31 +94,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, Michal Hocko <mhocko@suse.com>, linux-kernel@vger.kernel.org, Chun-Yi <jlee@suse.com>, Lee@kitsune.suse.cz, Laurent Dufour <ldufour@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> Le 14/09/2022 =C3=A0 17:47, Nicholas Piggin a =C3=A9crit=C2=A0:
->> Const function pointers live in .data.rel.ro rather than .rodata because
->> they must be relocated. This change prevents powerpc/32 from generating
->> R_PPC_UADDR32 relocations (which are not handled). The sys_call_table is
->> moved to writeable memory, but a later change will move it back.
+Michal Such=C3=A1nek <msuchanek@suse.de> writes:
+> On Tue, Sep 13, 2022 at 12:02:42PM -0500, Nathan Lynch wrote:
+>> Anyway, of course I intend to support the more complex calls, but
+>> supporting the simple calls actually unbreaks a lot of stuff.
 >
-> Aren't you missing commit c7acee3d2f12 ("powerpc: align syscall table=20
-> for ppc32") ?
+> The thing is that supporting calls that return more than one page of
+> data is absolutely required, and this interface built around fixed size
+> data transfer can't do it.
 
-That's in fixes. I'll sort it out when I apply this, or when I merge
-fixes into next.
+Again, it is appropriate for the system parameter commands and handlers
+to deal in small fixed size buffers. Code for VPD retrieval will have to
+work differently.
 
-> I can't see any R_PPC_UADDR32 relocations generated by ppc4xx_defconfig=20
-> + CONFIG_RELOCATABLE unless I revert that commit.
+> So it sounds like a ticked for redoing the driver right after it's
+> implemented, or ending up with two subtly different interfaces - one for
+> the calls that can return multiple pages of data, and one for the simple
+> calls.
+>
+> That does not sound like a good idea at all to me.
 
-Presumably this change accidentally aligns the syscall table.
-
->> After this patch, 44x_defconfig + CONFIG_RELOCATABLE boots to busybox.
-=20
-So that's probably just because of the alignment too.
-
-I think this patch should go after .data.rel.ro is made read only.
-
-cheers
+That's not my plan, and I won't be trying to get anything merged without
+supporting some of the more complex cases. OK?
