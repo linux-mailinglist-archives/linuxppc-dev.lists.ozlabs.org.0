@@ -1,100 +1,99 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08A0F5B93CE
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Sep 2022 07:07:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7619E5B9405
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Sep 2022 07:46:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MSlYw3Y5gz3bqx
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Sep 2022 15:07:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MSmRQ2cxsz3c18
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Sep 2022 15:46:42 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Us21GJca;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UEzWe7GM;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=rmclure@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Us21GJca;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UEzWe7GM;
 	dkim-atps=neutral
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MSlY81NDPz3010
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Sep 2022 15:06:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MSmQg5kRPz305M
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Sep 2022 15:46:03 +1000 (AEST)
 Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28F3sZ89027677
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Sep 2022 05:06:33 GMT
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28F5PYvi007936
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Sep 2022 05:46:00 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
  mime-version : subject : from : in-reply-to : date : cc :
  content-transfer-encoding : message-id : references : to; s=pp1;
- bh=pgBrXJ8VlPzGkovjkwhDfTsNP0RsplA35EESJu9sUP8=;
- b=Us21GJcaVAYQYcQZjq39Qf+rdN2KEhhgnA1u+8k6V+NIWYCxXwaWmY5jMt66Kn7E4qR9
- czOmOiGhQx8Ea+bCnxQ/wXca52vr6zbGSk9u7ZwA0sNBtFyURx0rXU79UWEnYDFHsewf
- 8raLlFmTBNAEwk2aTuDTXBIJ3Ri5sxvgL6A+qX1kNd9YqzWEOpNitZD6B87kBxylH66a
- ieamoszest0ugEvD7Kc2nGVCJiMIc7yADDC4Bby6+7IWBNPMSD7OEBoWDV2lLvjZlMmR
- R0UgFHF19qgWkmVoOZx3aNqCFac8U+ySq3FN3vSK3RMqeZxcq81MBeOPyeMDG8KYlyFF qg== 
+ bh=x4J5NDFLDDP8SpiLnPVXkj3sdi5Vs3GaTfpGI+zz/qk=;
+ b=UEzWe7GMT2SlGRcpJ/agnJIIw1yVv1R3UmBZONthVvyeVT+vhLizXEoKFQZ0fSqcMBER
+ p19df87YRv6XQU4QsbY71sMVVUhcj6K1FspDSmrkaw64voHCDjdnbY2Qu6U7eTcumR+g
+ hwKnFXS0kmLR6qOr5tvDRe7LVfBIcfR55GIRbh8lrtUjxe+CLOEYK98oAdKD3l0OoUiV
+ u3m92dPP3XkUIZaGokjhLVLJ1BTcc4XBwFlpVYhWso0/QMjzsiONkNpnjvuT/JS2j0k7
+ LGszckZgb2NX8f6OG5BR+Y5DgO9Y+Z8TXGi7msjfWNvEzugvQi5mTZm0wJBRzWG6nthO OA== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jksyr5hje-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jkww30hb7-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Sep 2022 05:06:32 +0000
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Sep 2022 05:46:00 +0000
 Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 28F4T2MY031477
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Sep 2022 05:06:32 GMT
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jksyr5hhn-1
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 28F5RGxP011964
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Sep 2022 05:46:00 GMT
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jkww30ham-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 15 Sep 2022 05:06:32 +0000
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
-	by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 28F54jE4012249;
-	Thu, 15 Sep 2022 05:06:30 GMT
+	Thu, 15 Sep 2022 05:45:59 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+	by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 28F5YkUv032117;
+	Thu, 15 Sep 2022 05:45:58 GMT
 Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
-	by ppma01fra.de.ibm.com with ESMTP id 3jjy2j9dsn-1
+	by ppma03ams.nl.ibm.com with ESMTP id 3jjy95swfk-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 15 Sep 2022 05:06:30 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
-	by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 28F56R6d22610296
+	Thu, 15 Sep 2022 05:45:57 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+	by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 28F5jtLc38470108
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 15 Sep 2022 05:06:27 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BF05CA4055;
-	Thu, 15 Sep 2022 05:06:27 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 21275A4051;
-	Thu, 15 Sep 2022 05:06:27 +0000 (GMT)
+	Thu, 15 Sep 2022 05:45:55 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C643CA405B;
+	Thu, 15 Sep 2022 05:45:55 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 285D6A4054;
+	Thu, 15 Sep 2022 05:45:55 +0000 (GMT)
 Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Thu, 15 Sep 2022 05:06:27 +0000 (GMT)
+	by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Thu, 15 Sep 2022 05:45:55 +0000 (GMT)
 Received: from smtpclient.apple (unknown [9.192.255.87])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 226B46016C;
-	Thu, 15 Sep 2022 15:06:23 +1000 (AEST)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 7E42C6010D;
+	Thu, 15 Sep 2022 15:45:49 +1000 (AEST)
 Content-Type: text/plain;
-	charset=us-ascii
+	charset=utf-8
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.1\))
-Subject: Re: [PATCH v4 06/20] powerpc: Remove direct call to mmap2 syscall
- handlers
+Subject: Re: [PATCH v4 10/20] powerpc: Use common syscall handler type
 From: Rohan McLure <rmclure@linux.ibm.com>
-In-Reply-To: <CMUBT12P8ZWV.VDK394MP3MSI@bobo>
-Date: Thu, 15 Sep 2022 15:06:22 +1000
+In-Reply-To: <CMUDA0ALFBSI.5KMSI1NSJZH7@bobo>
+Date: Thu, 15 Sep 2022 15:45:48 +1000
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <9E5B02CE-139F-407B-901E-42EEB7E78E1F@linux.ibm.com>
+Message-Id: <6E8ADD7A-6122-4615-8BFC-C1104F13B283@linux.ibm.com>
 References: <20220824020548.62625-1-rmclure@linux.ibm.com>
- <20220824020548.62625-7-rmclure@linux.ibm.com>
- <CMUBT12P8ZWV.VDK394MP3MSI@bobo>
+ <20220824020548.62625-11-rmclure@linux.ibm.com>
+ <CMUDA0ALFBSI.5KMSI1NSJZH7@bobo>
 To: Nicholas Piggin <npiggin@gmail.com>
 X-Mailer: Apple Mail (2.3696.120.41.1.1)
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: nNw2H6SfAQ1iDeEguir-z7PFa_4lwW9N
-X-Proofpoint-ORIG-GUID: 6wpvK607GT-gEGiwBjByQLDch1LZ72Sx
+X-Proofpoint-GUID: Mvd2U8UvlsyWKB9RBFSfjfbxbDd8L2pZ
+X-Proofpoint-ORIG-GUID: v_RvpW8O4DBrwDeNwGPmCWh3QE0lz-uO
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
  definitions=2022-09-15_02,2022-09-14_04,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- impostorscore=0 clxscore=1015 lowpriorityscore=0 priorityscore=1501
- mlxscore=0 mlxlogscore=999 spamscore=0 phishscore=0 bulkscore=0
- suspectscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2208220000 definitions=main-2209150025
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 suspectscore=0
+ phishscore=0 priorityscore=1501 mlxscore=0 malwarescore=0 impostorscore=0
+ lowpriorityscore=0 bulkscore=0 adultscore=0 mlxlogscore=999 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2208220000
+ definitions=main-2209150028
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -112,94 +111,181 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 
 
-> On 12 Sep 2022, at 7:47 pm, Nicholas Piggin <npiggin@gmail.com> wrote:
+> On 12 Sep 2022, at 8:56 pm, Nicholas Piggin <npiggin@gmail.com> wrote:
 >=20
 > On Wed Aug 24, 2022 at 12:05 PM AEST, Rohan McLure wrote:
->> Syscall handlers should not be invoked internally by their symbol =
-names,
->> as these symbols defined by the architecture-defined SYSCALL_DEFINE
->> macro. Move the compatibility syscall definition for mmap2 to
->> syscalls.c, so that all mmap implementations can share an inline =
-helper
->> function, as is done with the personality handlers.
+>> Cause syscall handlers to be typed as follows when called indirectly
+>> throughout the kernel.
+>>=20
+>> typedef long (*syscall_fn)(unsigned long, unsigned long, unsigned =
+long,
+>>                           unsigned long, unsigned long, unsigned =
+long);
+>=20
+> The point is... better type checking?
+>=20
+>>=20
+>> Since both 32 and 64-bit abis allow for at least the first six
+>> machine-word length parameters to a function to be passed by =
+registers,
+>> even handlers which admit fewer than six parameters may be viewed as
+>> having the above type.
+>>=20
+>> Fixup comparisons in VDSO to avoid pointer-integer comparison. =
+Introduce
+>> explicit cast on systems with SPUs.
 >>=20
 >> Signed-off-by: Rohan McLure <rmclure@linux.ibm.com>
->=20
-> Is there any point to keping sys_ppc32.c at all? Might as well move =
-them
-> all to syscall.c IMO.
-
-Currently serves as a fairly arbitrary distinginction between compat =
-calls
-and others, noting that a compat variant of personality is in =
-syscalls.c.
-May as well get rid of it.
-
-> Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
->=20
 >> ---
->> V1 -> V2: Move mmap2 compat implementation to asm/kernel/syscalls.c.
->> V3 -> V4: Move to be applied before syscall wrapper introduced.
+>> V1 -> V2: New patch.
+>> V2 -> V3: Remove unnecessary cast from const syscall_fn to syscall_fn
 >> ---
->> arch/powerpc/kernel/sys_ppc32.c |  9 ---------
->> arch/powerpc/kernel/syscalls.c  | 11 +++++++++++
->> 2 files changed, 11 insertions(+), 9 deletions(-)
+>> arch/powerpc/include/asm/syscall.h          | 7 +++++--
+>> arch/powerpc/include/asm/syscalls.h         | 1 +
+>> arch/powerpc/kernel/systbl.c                | 6 +++---
+>> arch/powerpc/kernel/vdso.c                  | 4 ++--
+>> arch/powerpc/platforms/cell/spu_callbacks.c | 6 +++---
+>> 5 files changed, 14 insertions(+), 10 deletions(-)
 >>=20
->> diff --git a/arch/powerpc/kernel/sys_ppc32.c =
-b/arch/powerpc/kernel/sys_ppc32.c
->> index f4edcc9489fb..bc6491ed6454 100644
->> --- a/arch/powerpc/kernel/sys_ppc32.c
->> +++ b/arch/powerpc/kernel/sys_ppc32.c
->> @@ -25,7 +25,6 @@
->> #include <linux/poll.h>
->> #include <linux/personality.h>
->> #include <linux/stat.h>
->> -#include <linux/mman.h>
->> #include <linux/in.h>
->> #include <linux/syscalls.h>
->> #include <linux/unistd.h>
->> @@ -48,14 +47,6 @@
->> #include <asm/syscalls.h>
->> #include <asm/switch_to.h>
+>> diff --git a/arch/powerpc/include/asm/syscall.h =
+b/arch/powerpc/include/asm/syscall.h
+>> index 25fc8ad9a27a..d2a8dfd5de33 100644
+>> --- a/arch/powerpc/include/asm/syscall.h
+>> +++ b/arch/powerpc/include/asm/syscall.h
+>> @@ -14,9 +14,12 @@
+>> #include <linux/sched.h>
+>> #include <linux/thread_info.h>
 >>=20
->> -unsigned long compat_sys_mmap2(unsigned long addr, size_t len,
->> -			  unsigned long prot, unsigned long flags,
->> -			  unsigned long fd, unsigned long pgoff)
->> -{
->> -	/* This should remain 12 even if PAGE_SIZE changes */
->> -	return sys_mmap(addr, len, prot, flags, fd, pgoff << 12);
->> -}
->> -
->> /*=20
->>  * long long munging:
->>  * The 32 bit ABI passes long longs in an odd even register pair.
->> diff --git a/arch/powerpc/kernel/syscalls.c =
-b/arch/powerpc/kernel/syscalls.c
->> index b8461128c8f7..32fadf3c2cd3 100644
->> --- a/arch/powerpc/kernel/syscalls.c
->> +++ b/arch/powerpc/kernel/syscalls.c
->> @@ -56,6 +56,17 @@ SYSCALL_DEFINE6(mmap2, unsigned long, addr, =
-size_t, len,
->> 	return do_mmap2(addr, len, prot, flags, fd, pgoff, =
-PAGE_SHIFT-12);
->> }
->>=20
->> +#ifdef CONFIG_COMPAT
->> +COMPAT_SYSCALL_DEFINE6(mmap2,
->> +		       unsigned long, addr, size_t, len,
->> +		       unsigned long, prot, unsigned long, flags,
->> +		       unsigned long, fd, unsigned long, pgoff)
->> +{
->> +	/* This should remain 12 even if PAGE_SIZE changes */
->> +	return do_mmap2(addr, len, prot, flags, fd, pgoff << 12, =
-PAGE_SHIFT-12);
->> +}
->> +#endif
+>> +typedef long (*syscall_fn)(unsigned long, unsigned long, unsigned =
+long,
+>> +			   unsigned long, unsigned long, unsigned long);
 >> +
->> SYSCALL_DEFINE6(mmap, unsigned long, addr, size_t, len,
->> 		unsigned long, prot, unsigned long, flags,
->> 		unsigned long, fd, off_t, offset)
+>> /* ftrace syscalls requires exporting the sys_call_table */
+>> -extern const unsigned long sys_call_table[];
+>> -extern const unsigned long compat_sys_call_table[];
+>> +extern const syscall_fn sys_call_table[];
+>> +extern const syscall_fn compat_sys_call_table[];
+>=20
+> Ah you constify it in this patch. I think the previous patch should =
+have
+> kept the const, and it should keep the unsigned long type rather than
+> use void *. Either that or do this patch first.
+>=20
+>> static inline int syscall_get_nr(struct task_struct *task, struct =
+pt_regs *regs)
+>> {
+>> diff --git a/arch/powerpc/include/asm/syscalls.h =
+b/arch/powerpc/include/asm/syscalls.h
+>> index 91417dee534e..e979b7593d2b 100644
+>> --- a/arch/powerpc/include/asm/syscalls.h
+>> +++ b/arch/powerpc/include/asm/syscalls.h
+>> @@ -8,6 +8,7 @@
+>> #include <linux/types.h>
+>> #include <linux/compat.h>
+>>=20
+>> +#include <asm/syscall.h>
+>> #ifdef CONFIG_PPC64
+>> #include <asm/syscalls_32.h>
+>> #endif
+>=20
+> Is this necessary or should be in another patch?
+
+Good spot. This belongs in the patch that produces systbl.c.
+
+>=20
+>> diff --git a/arch/powerpc/kernel/systbl.c =
+b/arch/powerpc/kernel/systbl.c
+>> index 99ffdfef6b9c..b88a9c2a1f50 100644
+>> --- a/arch/powerpc/kernel/systbl.c
+>> +++ b/arch/powerpc/kernel/systbl.c
+>> @@ -21,10 +21,10 @@
+>> #define __SYSCALL(nr, entry) [nr] =3D __powerpc_##entry,
+>> #define __powerpc_sys_ni_syscall	sys_ni_syscall
+>> #else
+>> -#define __SYSCALL(nr, entry) [nr] =3D entry,
+>> +#define __SYSCALL(nr, entry) [nr] =3D (void *) entry,
+>> #endif
+>=20
+> Also perhaps this should have been in the prior pach and this pach
+> should change the cast from void to syscall_fn ?
+
+This cast to (void *) kicks in when casting functions with six or fewer
+parameters to six-parameter type accepting and returning u64. Sadly I =
+can=E2=80=99t
+find a way to avoid -Wcast-function-type even with (__force syscall_fn) =
+short
+of an ugly casti to void* here. Any suggestions?
+
+>=20
+>>=20
+>> -void *sys_call_table[] =3D {
+>> +const syscall_fn sys_call_table[] =3D {
+>> #ifdef CONFIG_PPC64
+>> #include <asm/syscall_table_64.h>
+>> #else
+>> @@ -35,7 +35,7 @@ void *sys_call_table[] =3D {
+>> #ifdef CONFIG_COMPAT
+>> #undef __SYSCALL_WITH_COMPAT
+>> #define __SYSCALL_WITH_COMPAT(nr, native, compat)	__SYSCALL(nr, =
+compat)
+>> -void *compat_sys_call_table[] =3D {
+>> +const syscall_fn compat_sys_call_table[] =3D {
+>> #include <asm/syscall_table_32.h>
+>> };
+>> #endif /* CONFIG_COMPAT */
+>> diff --git a/arch/powerpc/kernel/vdso.c b/arch/powerpc/kernel/vdso.c
+>> index 0da287544054..080c9e7de0c0 100644
+>> --- a/arch/powerpc/kernel/vdso.c
+>> +++ b/arch/powerpc/kernel/vdso.c
+>> @@ -313,10 +313,10 @@ static void __init vdso_setup_syscall_map(void)
+>> 	unsigned int i;
+>>=20
+>> 	for (i =3D 0; i < NR_syscalls; i++) {
+>> -		if (sys_call_table[i] !=3D (unsigned =
+long)&sys_ni_syscall)
+>> +		if (sys_call_table[i] !=3D (void *)&sys_ni_syscall)
+>> 			vdso_data->syscall_map[i >> 5] |=3D 0x80000000UL =
+>> (i & 0x1f);
+>> 		if (IS_ENABLED(CONFIG_COMPAT) &&
+>> -		    compat_sys_call_table[i] !=3D (unsigned =
+long)&sys_ni_syscall)
+>> +		    compat_sys_call_table[i] !=3D (void =
+*)&sys_ni_syscall)
+>=20
+> Also these.
+>=20
+> Thanks,
+> Nick
+>=20
+>> 			vdso_data->compat_syscall_map[i >> 5] |=3D =
+0x80000000UL >> (i & 0x1f);
+>> 	}
+>> }
+>> diff --git a/arch/powerpc/platforms/cell/spu_callbacks.c =
+b/arch/powerpc/platforms/cell/spu_callbacks.c
+>> index fe0d8797a00a..e780c14c5733 100644
+>> --- a/arch/powerpc/platforms/cell/spu_callbacks.c
+>> +++ b/arch/powerpc/platforms/cell/spu_callbacks.c
+>> @@ -34,15 +34,15 @@
+>>  *	mbind, mq_open, ipc, ...
+>>  */
+>>=20
+>> -static void *spu_syscall_table[] =3D {
+>> +static const syscall_fn spu_syscall_table[] =3D {
+>> #define __SYSCALL_WITH_COMPAT(nr, entry, compat) __SYSCALL(nr, entry)
+>> -#define __SYSCALL(nr, entry) [nr] =3D entry,
+>> +#define __SYSCALL(nr, entry) [nr] =3D (void *) entry,
+>> #include <asm/syscall_table_spu.h>
+>> };
+>>=20
+>> long spu_sys_callback(struct spu_syscall_block *s)
+>> {
+>> -	long (*syscall)(u64 a1, u64 a2, u64 a3, u64 a4, u64 a5, u64 a6);
+>> +	syscall_fn syscall;
+>>=20
+>> 	if (s->nr_ret >=3D ARRAY_SIZE(spu_syscall_table)) {
+>> 		pr_debug("%s: invalid syscall #%lld", __func__, =
+s->nr_ret);
 >> --=20
 >> 2.34.1
->=20
 
