@@ -2,56 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 940165BB274
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Sep 2022 20:51:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D17015BB338
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Sep 2022 22:07:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MTjp83Qxmz3cBy
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Sep 2022 04:51:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MTlTh4Z22z3c9L
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Sep 2022 06:07:04 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=e7mDj6Py;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.167.182; helo=mail-oi1-f182.google.com; envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-oi1-f182.google.com (mail-oi1-f182.google.com [209.85.167.182])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.126; helo=mga18.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=e7mDj6Py;
+	dkim-atps=neutral
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MTjnm6PRfz3bc3
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Sep 2022 04:50:52 +1000 (AEST)
-Received: by mail-oi1-f182.google.com with SMTP id m130so7202972oif.6
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Sep 2022 11:50:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
-        bh=3UB7ATwI4jkvN5dfzXoHTLYFFznwA2fYTP5Sp8m3D6A=;
-        b=rrChRWr9RMu+YHVHMcJ1VMoj63j+q8B2e659OHd41GKKsvAenmMd/88F7vXH1slRAn
-         SvmPhFFcmPHPJErkANg407/2S920m6WR+Iw6pubVTvWCK/AoIDvN3xJPRT4RFJchGtKZ
-         UuCVXFo4e6Y5NMivuiZhgCMzJVBN1E/AnvKrFgM1+PiPJjf0M1B24tliC+KjaxIJS+cJ
-         uwH8cYbF9YVKyWVNL8e4gFdqzvcct/3CCYfYT+OTCuKdH4oZozn3nTQnJigcTidQ7v/r
-         KIAbIMLGeZuYqzf+oo77Zbl2v0qP07PjVV11xgDjllg2+/9dxvavzqAQyDSuykBeKQ5Y
-         pAiQ==
-X-Gm-Message-State: ACgBeo3rEvcm3u8a6uazNWcEIAL628ecydXKCGjS06OzW1T+/tYPjy4+
-	+a3PnbglVl6aDCGSDVOPkA==
-X-Google-Smtp-Source: AA6agR710WjH2qECtnOYp/b/ibt2BmM7PlV30E4FBE3nldt1uSx9BidvH6yyuvSYQNT0OEBJvdRZbw==
-X-Received: by 2002:a05:6808:1148:b0:344:e58d:7449 with SMTP id u8-20020a056808114800b00344e58d7449mr7495734oiu.209.1663354249346;
-        Fri, 16 Sep 2022 11:50:49 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id k26-20020a056808069a00b0033a11fcb23bsm9346668oig.27.2022.09.16.11.50.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Sep 2022 11:50:48 -0700 (PDT)
-Received: (nullmailer pid 1065156 invoked by uid 1000);
-	Fri, 16 Sep 2022 18:50:48 -0000
-Date: Fri, 16 Sep 2022 13:50:48 -0500
-From: Rob Herring <robh@kernel.org>
-To: Chancel Liu <chancel.liu@nxp.com>
-Subject: Re: [PATCH v2 1/7] ASoC: dt-bindings: fsl_rpmsg: Add a property to
- assign the rpmsg channel
-Message-ID: <20220916185048.GA1061412-robh@kernel.org>
-References: <20220914105145.2543646-1-chancel.liu@nxp.com>
- <20220914105145.2543646-2-chancel.liu@nxp.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MTlT1263qz3bf5
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Sep 2022 06:06:27 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1663358789; x=1694894789;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=VwaTlTJBVVv07UusDTC05D7hwHhcnsqfYzaVzoJAAYc=;
+  b=e7mDj6PyM4BDnV2LQozkYL5/E2A+7A9HA9USSX3LYS5XnCMpjU6gM5aM
+   OjXP+TXpNY0ZUXMl/szY++X6P+q/qEqBaVkJScJIDXKRzPU8zMFQtXbUS
+   3mB701R7Yt6d3GS7EPSJYpGBjHwAYMPEGMW7237iYICtF4Cn9A196ONxE
+   nIO7DY2n3dZBgfKkzTo50AUjtthpAWk+ERRxB12zuEzcIf3ibFE2USmVZ
+   no+tBCAP6vVwgNjei1zYr/gZT1dybLOLoTla2YrdVb1uX8FUftU5Ucqj8
+   3UoI/CYj1j7UBEkcs6RkcJ5HBOq0cVprywZVbBC3nsqZ0BGO4ouEudu0N
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10472"; a="282097171"
+X-IronPort-AV: E=Sophos;i="5.93,321,1654585200"; 
+   d="scan'208";a="282097171"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2022 13:06:24 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.93,321,1654585200"; 
+   d="scan'208";a="650981444"
+Received: from lkp-server02.sh.intel.com (HELO 41300c7200ea) ([10.239.97.151])
+  by orsmga001.jf.intel.com with ESMTP; 16 Sep 2022 13:06:22 -0700
+Received: from kbuild by 41300c7200ea with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1oZHbR-00027G-14;
+	Fri, 16 Sep 2022 20:06:21 +0000
+Date: Sat, 17 Sep 2022 04:06:17 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: [linux-next:master] BUILD REGRESSION
+ d5538ab91d3a9a237805be6f8c6c272af2987995
+Message-ID: <6324d739.Ulh6jXX5QoKvYKlU%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220914105145.2543646-2-chancel.liu@nxp.com>
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,84 +69,241 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, lgirdwood@gmail.com, festevam@gmail.com, shengjiu.wang@nxp.com, Xiubo.Lee@gmail.com, linux-kernel@vger.kernel.org, tiwai@suse.com, nicoleotsuka@gmail.com, broonie@kernel.org, krzysztof.kozlowski+dt@linaro.org, perex@perex.cz, shengjiu.wang@gmail.com
+Cc: linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, linux-parisc@vger.kernel.org, linux-pm@vger.kernel.org, dri-devel@lists.freedesktop.org, Linux Memory Management List <linux-mm@kvack.org>, linux-mediatek@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Sep 14, 2022 at 06:51:39PM +0800, Chancel Liu wrote:
-> Add a string property to assign the rpmsg channel this sound card sits
-> on. It also represents the name of ASoC platform driver. This property
-> can be omitted if there is only one sound card and it sits on
-> "rpmsg-audio-channel".
-> 
-> Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
-> ---
->  .../devicetree/bindings/sound/fsl,rpmsg.yaml  | 37 ++++++++++++++++++-
->  1 file changed, 35 insertions(+), 2 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/sound/fsl,rpmsg.yaml b/Documentation/devicetree/bindings/sound/fsl,rpmsg.yaml
-> index d370c98a62c7..3744ae794c00 100644
-> --- a/Documentation/devicetree/bindings/sound/fsl,rpmsg.yaml
-> +++ b/Documentation/devicetree/bindings/sound/fsl,rpmsg.yaml
-> @@ -11,8 +11,11 @@ maintainers:
->  
->  description: |
->    fsl_rpmsg is a virtual audio device. Mapping to real hardware devices
-> -  are SAI, DMA controlled by Cortex M core. What we see from Linux
-> -  side is a device which provides audio service by rpmsg channel.
-> +  are SAI, MICFIL, DMA controlled by Cortex M core. What we see from
-> +  Linux side is a device which provides audio service by rpmsg channel.
-> +  We can create different sound cards which access different hardwares
-> +  such as SAI, MICFIL, .etc through building rpmsg channels between
-> +  Cortex-A and Cortex-M.
->  
->  properties:
->    compatible:
-> @@ -85,6 +88,17 @@ properties:
->        This is a boolean property. If present, the receiving function
->        will be enabled.
->  
-> +  fsl,rpmsg-channel-name:
-> +    $ref: /schemas/types.yaml#/definitions/string
-> +    description: |
-> +      A string property to assign rpmsg channel this sound card sits on.
-> +      It also represents the name of ASoC platform driver. This property
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: d5538ab91d3a9a237805be6f8c6c272af2987995  Add linux-next specific files for 20220916
 
-That's a Linux detail which doesn't belong in DT.
+Error/Warning reports:
 
-> +      can be omitted if there is only one sound card and it sits on
-> +      "rpmsg-audio-channel".
-> +    enum:
-> +      - rpmsg-audio-channel
-> +      - rpmsg-micfil-channel
-> +
->  required:
->    - compatible
->    - model
-> @@ -107,3 +121,22 @@ examples:
->                   <&clk IMX8MN_AUDIO_PLL2_OUT>;
->          clock-names = "ipg", "mclk", "dma", "pll8k", "pll11k";
->      };
-> +
-> +  - |
-> +    #include <dt-bindings/clock/imx8mm-clock.h>
-> +
-> +    rpmsg_micfil: audio-controller {
-> +        compatible = "fsl,imx8mm-rpmsg-audio";
-> +        model = "micfil-audio";
-> +        fsl,rpmsg-channel-name = "rpmsg-micfil-channel";
-> +        fsl,enable-lpa;
-> +        fsl,rpmsg-in;
-> +        clocks = <&clk IMX8MM_CLK_PDM_IPG>,
-> +                 <&clk IMX8MM_CLK_PDM_ROOT>,
-> +                 <&clk IMX8MM_CLK_SDMA3_ROOT>,
-> +                 <&clk IMX8MM_AUDIO_PLL1_OUT>,
-> +                 <&clk IMX8MM_AUDIO_PLL2_OUT>;
-> +        clock-names = "ipg", "mclk", "dma", "pll8k", "pll11k";
-> +    };
-> +
-> +...
-> -- 
-> 2.25.1
-> 
-> 
+https://lore.kernel.org/linux-media/202209162214.LZFXhn2B-lkp@intel.com
+https://lore.kernel.org/linux-mm/202209150141.WgbAKqmX-lkp@intel.com
+https://lore.kernel.org/linux-mm/202209150959.hEWCNjXH-lkp@intel.com
+https://lore.kernel.org/linux-mm/202209160607.sE3qvgTy-lkp@intel.com
+https://lore.kernel.org/linux-mm/202209170126.OGPr2Nd1-lkp@intel.com
+https://lore.kernel.org/llvm/202209161913.VNdFWG7o-lkp@intel.com
+
+Error/Warning: (recently discovered and may have been fixed)
+
+ERROR: modpost: "devm_ioremap_resource" [drivers/dma/fsl-edma.ko] undefined!
+ERROR: modpost: "devm_memremap" [drivers/misc/open-dice.ko] undefined!
+ERROR: modpost: "devm_memunmap" [drivers/misc/open-dice.ko] undefined!
+ERROR: modpost: "devm_platform_ioremap_resource" [drivers/char/xillybus/xillybus_of.ko] undefined!
+ERROR: modpost: "devm_platform_ioremap_resource" [drivers/clk/xilinx/clk-xlnx-clock-wizard.ko] undefined!
+ERROR: modpost: "dm365_vpss_set_pg_frame_size" [drivers/staging/media/deprecated/vpfe_capture/isif.ko] undefined!
+ERROR: modpost: "dm365_vpss_set_sync_pol" [drivers/staging/media/deprecated/vpfe_capture/isif.ko] undefined!
+ERROR: modpost: "ioremap" [drivers/tty/ipwireless/ipwireless.ko] undefined!
+ERROR: modpost: "iounmap" [drivers/net/ethernet/8390/pcnet_cs.ko] undefined!
+ERROR: modpost: "iounmap" [drivers/tty/ipwireless/ipwireless.ko] undefined!
+ERROR: modpost: "vpss_clear_wbl_overflow" [drivers/staging/media/deprecated/vpfe_capture/dm644x_ccdc.ko] undefined!
+ERROR: modpost: "vpss_enable_clock" [drivers/staging/media/deprecated/vpfe_capture/dm355_ccdc.ko] undefined!
+ERROR: modpost: "vpss_enable_clock" [drivers/staging/media/deprecated/vpfe_capture/isif.ko] undefined!
+ERROR: modpost: "vpss_select_ccdc_source" [drivers/staging/media/deprecated/vpfe_capture/dm355_ccdc.ko] undefined!
+ERROR: modpost: "vpss_select_ccdc_source" [drivers/staging/media/deprecated/vpfe_capture/isif.ko] undefined!
+arch/arm/include/asm/arch_gicv3.h:18:41: error: implicit declaration of function '__ACCESS_CP15' [-Werror=implicit-function-declaration]
+arch/arm/include/asm/arch_gicv3.h:18:55: error: 'c12' undeclared (first use in this function)
+arch/arm/include/asm/arch_gicv3.h:19:63: error: 'c11' undeclared (first use in this function)
+arch/arm/include/asm/arch_gicv3.h:21:41: error: implicit declaration of function '__ACCESS_CP15_64' [-Werror=implicit-function-declaration]
+arch/arm/include/asm/arch_gicv3.h:22:55: error: 'c4' undeclared (first use in this function)
+arch/arm/include/asm/arch_gicv3.h:22:62: error: 'c6' undeclared (first use in this function)
+arch/arm/include/asm/arch_gicv3.h:29:63: error: 'c8' undeclared (first use in this function); did you mean 'u8'?
+arch/arm/include/asm/arch_gicv3.h:35:63: error: 'c9' undeclared (first use in this function)
+arch/arm/include/asm/arch_gicv3.h:44:9: error: implicit declaration of function 'write_sysreg' [-Werror=implicit-function-declaration]
+arch/arm/include/asm/arch_gicv3.h:48:16: error: implicit declaration of function 'read_sysreg' [-Werror=implicit-function-declaration]
+arch/parisc/lib/iomap.c:363:5: warning: no previous prototype for 'ioread64_lo_hi' [-Wmissing-prototypes]
+arch/parisc/lib/iomap.c:373:5: warning: no previous prototype for 'ioread64_hi_lo' [-Wmissing-prototypes]
+arch/parisc/lib/iomap.c:448:6: warning: no previous prototype for 'iowrite64_lo_hi' [-Wmissing-prototypes]
+arch/parisc/lib/iomap.c:454:6: warning: no previous prototype for 'iowrite64_hi_lo' [-Wmissing-prototypes]
+drivers/gpu/drm/drm_atomic_helper.c:802: warning: expecting prototype for drm_atomic_helper_check_wb_connector_state(). Prototype was for drm_atomic_helper_check_wb_encoder_state() instead
+drivers/scsi/qla2xxx/qla_os.c:2854:23: warning: assignment to 'struct trace_array *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
+drivers/scsi/qla2xxx/qla_os.c:2854:25: error: implicit declaration of function 'trace_array_get_by_name'; did you mean 'trace_array_set_clr_event'? [-Werror=implicit-function-declaration]
+drivers/scsi/qla2xxx/qla_os.c:2869:9: error: implicit declaration of function 'trace_array_put' [-Werror=implicit-function-declaration]
+drivers/thermal/thermal_helpers.c:79:6: warning: Redundant initialization for 'ret'. The initialized value is overwritten before it is read. [redundantInitialization]
+make[5]: *** No rule to make target 'drivers/crypto/aspeed/aspeed_crypto.o', needed by 'drivers/crypto/aspeed/'.
+s390-linux-ld: (.text+0x24a4): undefined reference to `ftrace_likely_update'
+
+Unverified Error/Warning (likely false positive, please contact us if interested):
+
+ERROR: modpost: "devm_ioremap_resource" [drivers/crypto/ccree/ccree.ko] undefined!
+
+Error/Warning ids grouped by kconfigs:
+
+gcc_recent_errors
+|-- alpha-allyesconfig
+|   |-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|   |-- drivers-scsi-qla2xxx-qla_os.c:error:implicit-declaration-of-function-trace_array_get_by_name
+|   |-- drivers-scsi-qla2xxx-qla_os.c:error:implicit-declaration-of-function-trace_array_put
+|   `-- drivers-scsi-qla2xxx-qla_os.c:warning:assignment-to-struct-trace_array-from-int-makes-pointer-from-integer-without-a-cast
+|-- alpha-randconfig-r014-20220916
+|   `-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|-- arc-allyesconfig
+|   `-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|-- arc-buildonly-randconfig-r003-20220916
+|   `-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|-- arc-randconfig-r043-20220916
+|   `-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|-- arm-allyesconfig
+|   `-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|-- arm-defconfig
+|   `-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|-- arm-randconfig-c003-20220916
+|   |-- arch-arm-include-asm-arch_gicv3.h:error:c11-undeclared-(first-use-in-this-function)
+|   |-- arch-arm-include-asm-arch_gicv3.h:error:c12-undeclared-(first-use-in-this-function)
+|   |-- arch-arm-include-asm-arch_gicv3.h:error:c4-undeclared-(first-use-in-this-function)
+|   |-- arch-arm-include-asm-arch_gicv3.h:error:c6-undeclared-(first-use-in-this-function)
+|   |-- arch-arm-include-asm-arch_gicv3.h:error:c8-undeclared-(first-use-in-this-function)
+|   |-- arch-arm-include-asm-arch_gicv3.h:error:c9-undeclared-(first-use-in-this-function)
+|   |-- arch-arm-include-asm-arch_gicv3.h:error:implicit-declaration-of-function-__ACCESS_CP15
+|   |-- arch-arm-include-asm-arch_gicv3.h:error:implicit-declaration-of-function-__ACCESS_CP15_64
+|   |-- arch-arm-include-asm-arch_gicv3.h:error:implicit-declaration-of-function-read_sysreg
+|   `-- arch-arm-include-asm-arch_gicv3.h:error:implicit-declaration-of-function-write_sysreg
+|-- arm64-allyesconfig
+|   `-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|-- i386-allyesconfig
+|   `-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|-- i386-defconfig
+|   `-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|-- i386-randconfig-a003
+|   `-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|-- i386-randconfig-a012
+|   `-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|-- i386-randconfig-a014
+|   `-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|-- i386-randconfig-a016
+|   `-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|-- ia64-allmodconfig
+|   |-- drivers-scsi-qla2xxx-qla_os.c:error:implicit-declaration-of-function-trace_array_get_by_name
+|   |-- drivers-scsi-qla2xxx-qla_os.c:error:implicit-declaration-of-function-trace_array_put
+|   `-- drivers-scsi-qla2xxx-qla_os.c:warning:assignment-to-struct-trace_array-from-int-makes-pointer-from-integer-without-a-cast
+|-- ia64-randconfig-r026-20220916
+|   `-- make:No-rule-to-make-target-drivers-crypto-aspeed-aspeed_crypto.o-needed-by-drivers-crypto-aspeed-.
+|-- loongarch-randconfig-r022-20220916
+|   `-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+clang_recent_errors
+|-- arm64-randconfig-r012-20220916
+|   `-- arch-arm64-kernel-alternative.c:warning:no-previous-prototype-for-function-apply_alternatives_vdso
+|-- arm64-randconfig-r013-20220916
+|   `-- arch-arm64-kernel-alternative.c:warning:no-previous-prototype-for-function-apply_alternatives_vdso
+|-- arm64-randconfig-r025-20220916
+|   |-- arch-arm64-kernel-alternative.c:warning:no-previous-prototype-for-function-apply_alternatives_vdso
+|   `-- drivers-extcon-extcon-usbc-tusb320.c:warning:expecting-prototype-for-drivers-extcon-extcon-tusb320c().-Prototype-was-for-TUSB320_REG8()-instead
+|-- hexagon-buildonly-randconfig-r002-20220916
+|   `-- drivers-extcon-extcon-usbc-tusb320.c:warning:expecting-prototype-for-drivers-extcon-extcon-tusb320c().-Prototype-was-for-TUSB320_REG8()-instead
+|-- hexagon-randconfig-r015-20220916
+|   `-- drivers-extcon-extcon-usbc-tusb320.c:warning:expecting-prototype-for-drivers-extcon-extcon-tusb320c().-Prototype-was-for-TUSB320_REG8()-instead
+|-- hexagon-randconfig-r032-20220916
+|   `-- drivers-extcon-extcon-usbc-tusb320.c:warning:expecting-prototype-for-drivers-extcon-extcon-tusb320c().-Prototype-was-for-TUSB320_REG8()-instead
+|-- hexagon-randconfig-r033-20220916
+|   |-- drivers-media-platform-mediatek-mdp3-mtk-mdp3-comp.c:warning:unused-variable-mdp_comp_dt_ids
+|   `-- drivers-media-platform-mediatek-mdp3-mtk-mdp3-comp.c:warning:unused-variable-mdp_sub_comp_dt_ids
+|-- i386-randconfig-a002
+|   |-- ERROR:___ratelimit-arch-x86-kvm-kvm-intel.ko-undefined
+|   |-- ERROR:__per_cpu_offset-arch-x86-kvm-kvm-intel.ko-undefined
+|   |-- ERROR:__phys_addr-arch-x86-kvm-kvm-intel.ko-undefined
+|   |-- ERROR:__ubsan_handle_out_of_bounds-arch-x86-kvm-kvm-intel.ko-undefined
+|   |-- ERROR:__warn_printk-arch-x86-kvm-kvm-intel.ko-undefined
+|   |-- ERROR:_printk-arch-x86-kvm-kvm-intel.ko-undefined
+|   |-- ERROR:cpu_number-arch-x86-kvm-kvm-intel.ko-undefined
+|   |-- ERROR:kvm_find_user_return_msr-arch-x86-kvm-kvm-intel.ko-undefined
+|   |-- ERROR:kvm_spurious_fault-arch-x86-kvm-kvm-intel.ko-undefined
+|   |-- ERROR:smp_call_function_single-arch-x86-kvm-kvm-intel.ko-undefined
+|   `-- drivers-extcon-extcon-usbc-tusb320.c:warning:expecting-prototype-for-drivers-extcon-extcon-tusb320c().-Prototype-was-for-TUSB320_REG8()-instead
+|-- i386-randconfig-a015
+|   |-- ERROR:__cpuhp_remove_state-arch-x86-events-intel-intel-cstate.ko-undefined
+|   |-- ERROR:__cpuhp_setup_state-arch-x86-events-intel-intel-cstate.ko-undefined
+|   |-- ERROR:_printk-arch-x86-events-intel-intel-cstate.ko-undefined
+|   |-- ERROR:boot_cpu_data-arch-x86-events-intel-intel-cstate.ko-undefined
+|   |-- ERROR:cpu_bit_bitmap-arch-x86-events-intel-intel-cstate.ko-undefined
+|   |-- ERROR:perf_msr_probe-arch-x86-events-intel-intel-cstate.ko-undefined
+|   |-- ERROR:perf_pmu_register-arch-x86-events-intel-intel-cstate.ko-undefined
+|   |-- ERROR:perf_pmu_unregister-arch-x86-events-intel-intel-cstate.ko-undefined
+|   |-- ERROR:x86_match_cpu-arch-x86-events-intel-intel-cstate.ko-undefined
+|   `-- drivers-extcon-extcon-usbc-tusb320.c:warning:expecting-prototype-for-drivers-extcon-extcon-tusb320c().-Prototype-was-for-TUSB320_REG8()-instead
+|-- powerpc-buildonly-randconfig-r005-20220916
+|   |-- drivers-macintosh-ams-ams-i2c.c:error:conflicting-types-for-ams_i2c_remove
+|   `-- drivers-macintosh-ams-ams-i2c.c:error:incompatible-function-pointer-types-initializing-void-(-)(struct-i2c_client-)-with-an-expression-of-type-int-(struct-i2c_client-)
+|-- riscv-randconfig-r033-20220915
+|   |-- ld.lld:error:vmlinux.a(kernel-kallsyms.o):(function-get_symbol_offset:.text):relocation-R_RISCV_PCREL_HI20-out-of-range:is-not-in-references-kallsyms_markers
+|   |-- ld.lld:error:vmlinux.a(kernel-kallsyms.o):(function-get_symbol_offset:.text):relocation-R_RISCV_PCREL_HI20-out-of-range:is-not-in-references-kallsyms_names
+|   |-- ld.lld:error:vmlinux.a(kernel-kallsyms.o):(function-update_iter:.text):relocation-R_RISCV_PCREL_HI20-out-of-range:is-not-in-references-kallsyms_names
+|   |-- ld.lld:error:vmlinux.a(kernel-kallsyms.o):(function-update_iter:.text):relocation-R_RISCV_PCREL_HI20-out-of-range:is-not-in-references-kallsyms_offsets
+|   |-- ld.lld:error:vmlinux.a(kernel-kallsyms.o):(function-update_iter:.text):relocation-R_RISCV_PCREL_HI20-out-of-range:is-not-in-references-kallsyms_relative_base
+|   `-- ld.lld:error:vmlinux.a(kernel-kallsyms.o):(function-update_iter:.text):relocation-R_RISCV_PCREL_HI20-out-of-range:is-not-in-references-kallsyms_token_index
+|-- s390-buildonly-randconfig-r005-20220916
+
+elapsed time: 720m
+
+configs tested: 62
+configs skipped: 2
+
+gcc tested configs:
+i386                                defconfig
+arc                                 defconfig
+alpha                               defconfig
+x86_64                              defconfig
+s390                             allmodconfig
+um                             i386_defconfig
+um                           x86_64_defconfig
+x86_64                               rhel-8.3
+i386                          randconfig-a001
+i386                          randconfig-a003
+s390                                defconfig
+x86_64                           allyesconfig
+i386                          randconfig-a005
+arc                  randconfig-r043-20220916
+i386                             allyesconfig
+s390                             allyesconfig
+x86_64                        randconfig-a015
+x86_64                        randconfig-a013
+x86_64                        randconfig-a011
+i386                          randconfig-a014
+arm                                 defconfig
+i386                          randconfig-a012
+x86_64                        randconfig-a004
+i386                          randconfig-a016
+x86_64                        randconfig-a002
+x86_64                           rhel-8.3-kvm
+x86_64                    rhel-8.3-kselftests
+x86_64                        randconfig-a006
+m68k                             allmodconfig
+powerpc                          allmodconfig
+arc                              allyesconfig
+x86_64                           rhel-8.3-syz
+mips                             allyesconfig
+x86_64                          rhel-8.3-func
+powerpc                           allnoconfig
+x86_64                         rhel-8.3-kunit
+alpha                            allyesconfig
+m68k                             allyesconfig
+ia64                             allmodconfig
+arm                              allyesconfig
+arm64                            allyesconfig
+sh                               allmodconfig
+alpha                             allnoconfig
+riscv                             allnoconfig
+csky                              allnoconfig
+arc                               allnoconfig
+
+clang tested configs:
+i386                          randconfig-a002
+riscv                randconfig-r042-20220916
+i386                          randconfig-a004
+i386                          randconfig-a006
+hexagon              randconfig-r045-20220916
+s390                 randconfig-r044-20220916
+hexagon              randconfig-r041-20220916
+x86_64                        randconfig-a014
+i386                          randconfig-a013
+x86_64                        randconfig-a016
+x86_64                        randconfig-a012
+i386                          randconfig-a011
+i386                          randconfig-a015
+x86_64                        randconfig-a001
+x86_64                        randconfig-a003
+x86_64                        randconfig-a005
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
