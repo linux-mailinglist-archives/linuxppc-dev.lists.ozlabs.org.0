@@ -1,90 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C08F55BABDD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Sep 2022 12:59:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F74C5BAC29
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Sep 2022 13:17:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MTWLG3tq2z3chZ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Sep 2022 20:59:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MTWkm4hpsz3bqj
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Sep 2022 21:17:36 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=kh2c965C;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=NWlpXSvH;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=disgoel@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.43; helo=mga05.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=kh2c965C;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=NWlpXSvH;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MTWJ94NKrz3bqj
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Sep 2022 20:58:01 +1000 (AEST)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28GAgLen025066;
-	Fri, 16 Sep 2022 10:57:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=tYv+WREnp1z57kNdSocB7X3APMfB3NmZHyjCPvszAzE=;
- b=kh2c965C39Onh95zRnSUWga7Q/iCVUZQT7acf8X9zo04I7YbpbNKa45XK1liMXntVxAZ
- CJLfchTMeovXv02HCIjZBAS0igloHrJw1y0/gM5QItzYk7V1QU5tQ9HEiOkzPjD/Fald
- 1FL8k0V6CjRh9YkuA0UexUBJ6goAnjs58MKR9hR9JM/qS6EUI3sCSEetvlzumK4PtTjQ
- YpgDjGv1gYlB7h9EEnqe86dqliaGb0FRl4vG007dfepANQgUOq+X1dSdqrcf8wcYujd6
- 0rk7Kitkm1p7XsjY0hSwJkvNLR8p9Nw45NOXGeISNVY8KlpJmK6DhB8tLUTLkrsO1VM8 Bw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jmqm9gdyg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 16 Sep 2022 10:57:57 +0000
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 28GAhA1R027239;
-	Fri, 16 Sep 2022 10:57:57 GMT
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com [159.122.73.72])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jmqm9gdx0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 16 Sep 2022 10:57:56 +0000
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
-	by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 28GArY52003225;
-	Fri, 16 Sep 2022 10:57:54 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
-	by ppma06fra.de.ibm.com with ESMTP id 3jm91f0n4d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 16 Sep 2022 10:57:54 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
-	by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 28GAvpem36831612
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 16 Sep 2022 10:57:51 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 58FA8A4057;
-	Fri, 16 Sep 2022 10:57:51 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EFF93A404D;
-	Fri, 16 Sep 2022 10:57:47 +0000 (GMT)
-Received: from disgoel-ibm-com.ibm.com (unknown [9.43.57.26])
-	by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Fri, 16 Sep 2022 10:57:47 +0000 (GMT)
-From: Disha Goel <disgoel@linux.vnet.ibm.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH v2 2/2] powerpc/kvm: Remove unused references for MMCR3/SIER2/SIER3 registers
-Date: Fri, 16 Sep 2022 16:27:36 +0530
-Message-Id: <20220916105736.268153-3-disgoel@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20220916105736.268153-1-disgoel@linux.vnet.ibm.com>
-References: <20220916105736.268153-1-disgoel@linux.vnet.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MTWk61xN7z2yxZ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Sep 2022 21:16:56 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1663327022; x=1694863022;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=pC4HNphyXavU9L8VcHEWd0xe/n/o16jCaw0zVw/oAbE=;
+  b=NWlpXSvHSJ7IdQcrjwo4M+yLSTmmUU/zojuxje5M8FDQak8Y8FaKtAOq
+   SD5qctnGtXVFhFSxIf6v12UOd2JbwkU9NVcB2K4x7p+F0uYncuOUjMpMj
+   p+ad188PlALeQLZMcUwCIe1rJDcoNuo/lHMpYXVP47lxZTN01ylDNMasB
+   mcUP2kWD3dV6ft/xI8l/NXsLyWyksJWOILWDvLSAEbAh/XhfKS7cPaJ5g
+   Nl57NOijpifHuCG7JeRo8UCEieJ/usOlV9uVGjtQEnj4aE0OdzUyqXkWw
+   KU5UNEq/+Ob0H5H8nf14W6vgFleDIulyVIeRFwKjlor8LMv4Zg8kN7FC2
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10471"; a="385261513"
+X-IronPort-AV: E=Sophos;i="5.93,320,1654585200"; 
+   d="scan'208";a="385261513"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2022 04:16:53 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.93,320,1654585200"; 
+   d="scan'208";a="686100701"
+Received: from lkp-server02.sh.intel.com (HELO 41300c7200ea) ([10.239.97.151])
+  by fmsmga004.fm.intel.com with ESMTP; 16 Sep 2022 04:16:51 -0700
+Received: from kbuild by 41300c7200ea with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1oZ9L0-0001jO-2c;
+	Fri, 16 Sep 2022 11:16:50 +0000
+Date: Fri, 16 Sep 2022 19:16:03 +0800
+From: kernel test robot <lkp@intel.com>
+To: Benjamin Gray <bgray@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 1/6] powerpc/code-patching: Implement generic text
+ patching function
+Message-ID: <202209161957.R4ivN9mo-lkp@intel.com>
+References: <20220916062330.430468-2-bgray@linux.ibm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 5gLzFQv6Ef0YE872Tt8lUPlvwS-prcuB
-X-Proofpoint-ORIG-GUID: Y8j6uPJU7aPfoichP-dpWapgAcFr2cke
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
- definitions=2022-09-16_05,2022-09-16_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
- lowpriorityscore=0 mlxlogscore=736 mlxscore=0 impostorscore=0 spamscore=0
- clxscore=1015 priorityscore=1501 adultscore=0 bulkscore=0 suspectscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2209130000 definitions=main-2209160077
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220916062330.430468-2-bgray@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,43 +70,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: atrajeev@linux.vnet.ibm.com, kjain@linux.ibm.com, npiggin@gmail.com, maddy@linux.ibm.com, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: christophe.leroy@c-s.fr, kbuild-all@lists.01.org, ajd@linux.ibm.com, npiggin@gmail.com, jpoimboe@kernel.org, jbaron@akamai.com, rostedt@goodmis.org, Benjamin Gray <bgray@linux.ibm.com>, ardb@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Kajol Jain" <kjain@linux.ibm.com>
+Hi Benjamin,
 
-Commit 57dc0eed73ca ("KVM: PPC: Book3S HV P9: Implement PMU save/restore
-in C") removed the PMU save/restore functions from assembly code and
-implemented these functions in C, for power9 and later platforms.
+Thank you for the patch! Perhaps something to improve:
 
-After the code refactoring, Performance Monitoring Unit (PMU) registers
-became part of "p9_host_os_sprs" structure and now this structure is
-used to save/restore pmu host registers, for power9 and later platfroms.
-But we still have old unused registers references. Patch removes unused
-host_mmcr references for Monitor Mode Control Register 3 (MMCR3)/
-Sampled Instruction Event Register 2 (SIER2)/ SIER3 registers from
-"struct kvmppc_host_state".
+[auto build test WARNING on powerpc/next]
+[also build test WARNING on next-20220916]
+[cannot apply to linus/master v6.0-rc5]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Fixes: 57dc0eed73ca ("KVM: PPC: Book3S HV P9: Implement PMU save/restore in C")
-Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
----
- arch/powerpc/include/asm/kvm_book3s_asm.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+url:    https://github.com/intel-lab-lkp/linux/commits/Benjamin-Gray/Out-of-line-static-calls-for-powerpc64-ELF-V2/20220916-142951
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+config: powerpc-allyesconfig (https://download.01.org/0day-ci/archive/20220916/202209161957.R4ivN9mo-lkp@intel.com/config)
+compiler: powerpc-linux-gcc (GCC) 12.1.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/31a9d4d694a3a20129f20390f3d7af2c154c8ed1
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Benjamin-Gray/Out-of-line-static-calls-for-powerpc64-ELF-V2/20220916-142951
+        git checkout 31a9d4d694a3a20129f20390f3d7af2c154c8ed1
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=powerpc SHELL=/bin/bash arch/powerpc/lib/
 
-diff --git a/arch/powerpc/include/asm/kvm_book3s_asm.h b/arch/powerpc/include/asm/kvm_book3s_asm.h
-index c8882d9b86c2..a36797938620 100644
---- a/arch/powerpc/include/asm/kvm_book3s_asm.h
-+++ b/arch/powerpc/include/asm/kvm_book3s_asm.h
-@@ -105,7 +105,7 @@ struct kvmppc_host_state {
- 	void __iomem *xive_tima_virt;
- 	u32 saved_xirr;
- 	u64 dabr;
--	u64 host_mmcr[10];	/* MMCR 0,1,A, SIAR, SDAR, MMCR2, SIER, MMCR3, SIER2/3 */
-+	u64 host_mmcr[7];	/* MMCR 0,1,A, SIAR, SDAR, MMCR2, SIER */
- 	u32 host_pmc[8];
- 	u64 host_purr;
- 	u64 host_spurr;
+If you fix the issue, kindly add following tag where applicable
+Reported-by: kernel test robot <lkp@intel.com>
+
+All warnings (new ones prefixed by >>):
+
+>> arch/powerpc/lib/code-patching.c:235:7: warning: no previous prototype for 'patch_memory' [-Wmissing-prototypes]
+     235 | void *patch_memory(void *dest, const void *src, size_t size)
+         |       ^~~~~~~~~~~~
+   arch/powerpc/lib/code-patching.c: In function 'patch_instruction':
+   arch/powerpc/lib/code-patching.c:248:24: error: implicit declaration of function 'patch_text'; did you mean 'path_get'? [-Werror=implicit-function-declaration]
+     248 |                 return patch_text(addr, &val, sizeof(val), true);
+         |                        ^~~~~~~~~~
+         |                        path_get
+   arch/powerpc/lib/code-patching.c: At top level:
+   arch/powerpc/lib/code-patching.c:230:12: warning: 'do_patch_instruction' defined but not used [-Wunused-function]
+     230 | static int do_patch_instruction(u32 *addr, ppc_inst_t instr)
+         |            ^~~~~~~~~~~~~~~~~~~~
+   cc1: some warnings being treated as errors
+
+
+vim +/patch_memory +235 arch/powerpc/lib/code-patching.c
+
+   234	
+ > 235	void *patch_memory(void *dest, const void *src, size_t size)
+   236	{
+   237		return memcpy(dest, src, size);
+   238	}
+   239	
+
 -- 
-2.31.1
-
+0-DAY CI Kernel Test Service
+https://01.org/lkp
