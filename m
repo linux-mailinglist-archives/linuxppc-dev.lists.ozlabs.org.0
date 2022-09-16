@@ -2,65 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 525945BA642
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Sep 2022 07:08:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99BB35BA685
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Sep 2022 07:49:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MTMYC1p3Jz3c6t
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Sep 2022 15:08:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MTNSg4WqNz3g0Q
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Sep 2022 15:49:55 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=brainfault-org.20210112.gappssmtp.com header.i=@brainfault-org.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=yAWumhze;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tj5etxls;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=brainfault.org (client-ip=2607:f8b0:4864:20::134; helo=mail-il1-x134.google.com; envelope-from=anup@brainfault.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=rmclure@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=brainfault-org.20210112.gappssmtp.com header.i=@brainfault-org.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=yAWumhze;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tj5etxls;
 	dkim-atps=neutral
-Received: from mail-il1-x134.google.com (mail-il1-x134.google.com [IPv6:2607:f8b0:4864:20::134])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MTMXX0Pl8z2xrH
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Sep 2022 15:08:09 +1000 (AEST)
-Received: by mail-il1-x134.google.com with SMTP id x13so1388125ilp.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Sep 2022 22:08:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault-org.20210112.gappssmtp.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=yP5XHXLcK+UX9e2N5YzbTl9a4h8ihKkfwEUan36DPrg=;
-        b=yAWumhzewMa3eEP3CnaMNUvAKmgC8eanQ3L4jWiwdGCcIzPkhFrQzQw0wwV9+O9C/s
-         pWA8px3RR32jSQRkZ724RUliMw1N1pJV7uypHBZtXw/s45KvAkUFFBkjDay0fezO6Q1H
-         n/OjWEaMaEvHTgl1WjFIQhvNgjxtHZeYZXfVlqejl77Y0na9OV31a8qO4TRydLDh9b1J
-         NF1Fubd/swhKTWFgEXpw3HK96R4pCPPNOYmiQOe7Bp9RLaM6/LZ/umsF8xY1IvG5Kb40
-         CBEv7FTQftTVcumiWuAZRwOn7ym/68hjz6J2lRqkwYLZ2FbLbPgjYRH/Tm0ZHhOzbqfn
-         INxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=yP5XHXLcK+UX9e2N5YzbTl9a4h8ihKkfwEUan36DPrg=;
-        b=Tw4G9UtCeCt+AUKJhudF5AnC01/hnxUfo5tR7G1WjvtqTDAE/UXr3n9MPwAPsuQqRL
-         MWuBaOpUxjA6CE6+Sdh5uQnfLaSbAdS3M9muCPfvCyDjWB09jzyxiN3iKJSuXGYEKcTG
-         myRp4eAi7tdiYg/Ww66kdWhzHRXs+eMNOO75Wsf4bMkakdTgX55bPSfuQfCRImQV48Sq
-         rRbutASL4GCbuZbTI6w87R1mwYH2M2hhUrq5zjLJ2VjUEVG37pAAbs+jW0k/weoHglC7
-         KaCznAZ8jI/XTzsYemvsV6NihUi0hJccY0l3hXEsyTgqNzbupYhOWCay7vw7bHwTxnOQ
-         90VQ==
-X-Gm-Message-State: ACrzQf0S5PRIBksflkvFCBPskU3J/nftyN5e7tS4jhVNFBKdz0v2y/nA
-	fyGCVQyerqHOQDxa5TDMX3rfFizqE6+oc4IrRLU/qw==
-X-Google-Smtp-Source: AMsMyM5GqgO04FmX/wur2Jt+8ypcoEU8eotcYd1jKm89jw9hQAj1ZhLfSUj5pD6zTUMTtw3xNbjyMSejcFd/JFYW8jo=
-X-Received: by 2002:a05:6e02:164d:b0:2f1:869c:c45b with SMTP id
- v13-20020a056e02164d00b002f1869cc45bmr1488365ilu.212.1663304885797; Thu, 15
- Sep 2022 22:08:05 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MTNJv73g1z3fXv
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Sep 2022 15:43:11 +1000 (AEST)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28G5M8JD010239;
+	Fri, 16 Sep 2022 05:43:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=rP5Zgu5CwDKvcRKBm4iXqrYoepQT+bynwtAI9JS0EEs=;
+ b=tj5etxlsg92BgRTCa/Lu6FhRz2efc6qwtTPGPq4XhSvPEe6asN4eidIyjVVCIjoW9I2Y
+ ySth6XOGBbcAmAWv9ux/Fyxxujbs3z8kVm/Wm/VStTUEO2NTTZk2SfXS7+rEW8yPiQIz
+ 7FDO7TPL5fSv5hddEp6MEvLgOgLTHivux20HcQqXEyTZQE6RYR/vjR+COf6/o4YtwfBg
+ dvx5NkDi8WJ3tMM2UiH7B2GWzvXYGazPRY82RTsZOoAnDb56WXvJmiEMHm9Sf6A5i4Kp
+ r/TS9xR3FvSPoNfZAOQAINPg+UzcNHiJlX83VEs5ckc48gL7tgD4hNJaxlcLfcLfdq59 FQ== 
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3jmjxe8u1s-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 16 Sep 2022 05:43:06 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+	by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 28G5Kwni013922;
+	Fri, 16 Sep 2022 05:33:19 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+	by ppma03ams.nl.ibm.com with ESMTP id 3jm918ggve-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 16 Sep 2022 05:33:19 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
+	by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 28G5TRrZ33620224
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 16 Sep 2022 05:29:27 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E1D83AE04D;
+	Fri, 16 Sep 2022 05:33:16 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 436B3AE051;
+	Fri, 16 Sep 2022 05:33:16 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Fri, 16 Sep 2022 05:33:16 +0000 (GMT)
+Received: from civic.. (haven.au.ibm.com [9.192.254.114])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 183936016C;
+	Fri, 16 Sep 2022 15:33:13 +1000 (AEST)
+From: Rohan McLure <rmclure@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 00/23] powerpc: Syscall wrapper and register clearing
+Date: Fri, 16 Sep 2022 15:32:37 +1000
+Message-Id: <20220916053300.786330-1-rmclure@linux.ibm.com>
+X-Mailer: git-send-email 2.34.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: Rb1waFIKKCEY2FmITnHu7OO1F-wyaku_
+X-Proofpoint-ORIG-GUID: Rb1waFIKKCEY2FmITnHu7OO1F-wyaku_
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-References: <20220504074807.3616813-1-aik@ozlabs.ru>
-In-Reply-To: <20220504074807.3616813-1-aik@ozlabs.ru>
-From: Anup Patel <anup@brainfault.org>
-Date: Fri, 16 Sep 2022 10:37:53 +0530
-Message-ID: <CAAhSdy0hxHjQkVj8TLPh4j=vBrX1QoZcJXNeRBPtf5ozdjQaTQ@mail.gmail.com>
-Subject: Re: [PATCH kernel] KVM: PPC: Make KVM_CAP_IRQFD_RESAMPLE platform dependent
-To: Alexey Kardashevskiy <aik@ozlabs.ru>
-Content-Type: text/plain; charset="UTF-8"
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
+ definitions=2022-09-16_02,2022-09-14_04,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxscore=0
+ adultscore=0 clxscore=1015 priorityscore=1501 lowpriorityscore=0
+ mlxlogscore=440 spamscore=0 bulkscore=0 impostorscore=0 suspectscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2209130000 definitions=main-2209160041
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,142 +92,142 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, kvm@vger.kernel.org, Fabiano Rosas <farosas@linux.ibm.com>, x86@kernel.org, linux-mips@vger.kernel.org, kvm-ppc@vger.kernel.org, linux-kernel@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>, kvm-riscv@lists.infradead.org, Paolo Bonzini <pbonzini@redhat.com>, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, kvmarm@lists.cs.columbia.edu, linux-arm-kernel@lists.infradead.org
+Cc: Rohan McLure <rmclure@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, May 4, 2022 at 1:18 PM Alexey Kardashevskiy <aik@ozlabs.ru> wrote:
->
-> When introduced, IRQFD resampling worked on POWER8 with XICS. However
-> KVM on POWER9 has never implemented it - the compatibility mode code
-> ("XICS-on-XIVE") misses the kvm_notify_acked_irq() call and the native
-> XIVE mode does not handle INTx in KVM at all.
->
-> This moved the capability support advertising to platforms and stops
-> advertising it on XIVE, i.e. POWER9 and later.
->
-> Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-> ---
->
->
-> Or I could move this one together with KVM_CAP_IRQFD. Thoughts?
+V4 available here:
 
-For KVM RISC-V:
-Acked-by: Anup Patel <anup@brainfault.org>
+Link: https://lore.kernel.org/all/20220824020548.62625-1-rmclure@linux.ibm.com/
 
-Thanks,
-Anup
+Implement a syscall wrapper, causing arguments to handlers to be passed
+via a struct pt_regs on the stack. The syscall wrapper is implemented
+for all platforms other than the Cell processor, from which SPUs expect
+the ability to directly call syscall handler symbols with the regular
+in-register calling convention.
 
->
-> ---
->  arch/arm64/kvm/arm.c       | 3 +++
->  arch/mips/kvm/mips.c       | 3 +++
->  arch/powerpc/kvm/powerpc.c | 6 ++++++
->  arch/riscv/kvm/vm.c        | 3 +++
->  arch/s390/kvm/kvm-s390.c   | 3 +++
->  arch/x86/kvm/x86.c         | 3 +++
->  virt/kvm/kvm_main.c        | 1 -
->  7 files changed, 21 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> index 523bc934fe2f..092f0614bae3 100644
-> --- a/arch/arm64/kvm/arm.c
-> +++ b/arch/arm64/kvm/arm.c
-> @@ -210,6 +210,9 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
->         case KVM_CAP_SET_GUEST_DEBUG:
->         case KVM_CAP_VCPU_ATTRIBUTES:
->         case KVM_CAP_PTP_KVM:
-> +#ifdef CONFIG_HAVE_KVM_IRQFD
-> +       case KVM_CAP_IRQFD_RESAMPLE:
-> +#endif
->                 r = 1;
->                 break;
->         case KVM_CAP_SET_GUEST_DEBUG2:
-> diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
-> index a25e0b73ee70..0f3de470a73e 100644
-> --- a/arch/mips/kvm/mips.c
-> +++ b/arch/mips/kvm/mips.c
-> @@ -1071,6 +1071,9 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
->         case KVM_CAP_READONLY_MEM:
->         case KVM_CAP_SYNC_MMU:
->         case KVM_CAP_IMMEDIATE_EXIT:
-> +#ifdef CONFIG_HAVE_KVM_IRQFD
-> +       case KVM_CAP_IRQFD_RESAMPLE:
-> +#endif
->                 r = 1;
->                 break;
->         case KVM_CAP_NR_VCPUS:
-> diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
-> index 875c30c12db0..87698ffef3be 100644
-> --- a/arch/powerpc/kvm/powerpc.c
-> +++ b/arch/powerpc/kvm/powerpc.c
-> @@ -591,6 +591,12 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
->                 break;
->  #endif
->
-> +#ifdef CONFIG_HAVE_KVM_IRQFD
-> +       case KVM_CAP_IRQFD_RESAMPLE:
-> +               r = !xive_enabled();
-> +               break;
-> +#endif
-> +
->         case KVM_CAP_PPC_ALLOC_HTAB:
->                 r = hv_enabled;
->                 break;
-> diff --git a/arch/riscv/kvm/vm.c b/arch/riscv/kvm/vm.c
-> index c768f75279ef..b58579b386bb 100644
-> --- a/arch/riscv/kvm/vm.c
-> +++ b/arch/riscv/kvm/vm.c
-> @@ -63,6 +63,9 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
->         case KVM_CAP_READONLY_MEM:
->         case KVM_CAP_MP_STATE:
->         case KVM_CAP_IMMEDIATE_EXIT:
-> +#ifdef CONFIG_HAVE_KVM_IRQFD
-> +       case KVM_CAP_IRQFD_RESAMPLE:
-> +#endif
->                 r = 1;
->                 break;
->         case KVM_CAP_NR_VCPUS:
-> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-> index 156d1c25a3c1..85e093fc8d13 100644
-> --- a/arch/s390/kvm/kvm-s390.c
-> +++ b/arch/s390/kvm/kvm-s390.c
-> @@ -564,6 +564,9 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
->         case KVM_CAP_SET_GUEST_DEBUG:
->         case KVM_CAP_S390_DIAG318:
->         case KVM_CAP_S390_MEM_OP_EXTENSION:
-> +#ifdef CONFIG_HAVE_KVM_IRQFD
-> +       case KVM_CAP_IRQFD_RESAMPLE:
-> +#endif
->                 r = 1;
->                 break;
->         case KVM_CAP_SET_GUEST_DEBUG2:
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index 0c0ca599a353..a0a7b769483d 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -4273,6 +4273,9 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
->         case KVM_CAP_SYS_ATTRIBUTES:
->         case KVM_CAP_VAPIC:
->         case KVM_CAP_ENABLE_CAP:
-> +#ifdef CONFIG_HAVE_KVM_IRQFD
-> +       case KVM_CAP_IRQFD_RESAMPLE:
-> +#endif
->                 r = 1;
->                 break;
->         case KVM_CAP_EXIT_HYPERCALL:
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index 70e05af5ebea..885e72e668a5 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-> @@ -4293,7 +4293,6 @@ static long kvm_vm_ioctl_check_extension_generic(struct kvm *kvm, long arg)
->  #endif
->  #ifdef CONFIG_HAVE_KVM_IRQFD
->         case KVM_CAP_IRQFD:
-> -       case KVM_CAP_IRQFD_RESAMPLE:
->  #endif
->         case KVM_CAP_IOEVENTFD_ANY_LENGTH:
->         case KVM_CAP_CHECK_EXTENSION_VM:
-> --
-> 2.30.2
->
+Adopting syscall wrappers requires redefinition of architecture-specific
+syscalls and compatibility syscalls to use the SYSCALL_DEFINE and
+COMPAT_SYSCALL_DEFINE macros, as well as removal of direct-references to
+the emitted syscall-handler symbols from within the kernel. This work
+lead to the following modernisations of powerpc's syscall handlers:
+
+ - Replace syscall 82 semantics with sys_old_select and remove
+   ppc_select handler, which features direct call to both sys_old_select
+   and sys_select.
+ - Use a generic fallocate compatibility syscall
+
+Replace asm implementation of syscall table with C implementation for
+more compile-time checks.
+
+Many compatibility syscalls are candidates to be removed in favour of
+generically defined handlers, but exhibit different parameter orderings
+and numberings due to 32-bit ABI support for 64-bit parameters. The
+parameter reorderings are however consistent with arm. A future patch
+series will serve to modernise syscalls by providing generic
+implementations featuring these reorderings.
+
+The design of this syscall is very similar to the s390, x86 and arm64
+implementations. See also Commit 4378a7d4be30 (arm64: implement syscall wrappers).
+The motivation for this change is that it allows for the clearing of
+register state when entering the kernel via through interrupt handlers
+on 64-bit servers. This serves to reduce the influence of values in
+registers carried over from the interrupted process, e.g. syscall
+parameters from user space, or user state at the site of a pagefault.
+All values in registers are saved and zeroized at the entry to an
+interrupt handler and restored afterward. While this may sound like a
+heavy-weight mitigation, many gprs are already saved and restored on
+handling of an interrupt, and the mmap_bench benchmark on Power 9 guest,
+repeatedly invoking the pagefault handler suggests at most ~0.8%
+regression in performance. Realistic workloads are not constantly
+producing interrupts, and so this does not indicate realistic slowdown.
+
+Using wrapped syscalls yields to a performance improvement of ~5.6% on
+the null_syscall benchmark on pseries guests, by removing the need for
+system_call_exception to allocate its own stack frame. This amortises
+the additional costs of saving and restoring non-volatile registers
+(register clearing is cheap on super scalar platforms), and so the
+final mitigation actually yields a net performance improvement of ~0.6%
+on the null_syscall benchmark.
+
+The clearing of general purpose registers on interrupts other than
+syscalls is enabled by default only on Book3E 64-bit systems (where the
+mitigation is inexpensive), but available to other 64-bit systems via
+the INTERRUPT_SANITIZE_REGISTERS Kconfig option. This mitigation is
+optional, as the speculation influence of interrupts is likely less than
+that of syscalls.
+
+Patch Changelog:
+
+ - Format orig_r3 handling as its own patch rather than just a revert.
+ - Provide asm-generic BE implementation of long-long munging syscall
+   compatiblity arguments.
+ - Syscall #82 now refers to generic sys_old_select or
+   comptat_sys_old_select.
+ - Drop 'inline' on static helper functions for mmap, personality.
+ - Remove arch-specific sys fallocate implementation that was meant to
+   have been removed in V2.
+ - Remove references to syscall wrapper until it is introduced.
+ - Rearrange patch series so the last five patches are syscall wrapper >
+   syscall register clears > interrupt register clears.
+ - Whether non-syscall interrupts should clear registers is now
+   configurable by INTERRUPT_SANITIZE_REGISTERS.
+
+Rohan McLure (23):
+  powerpc: Remove asmlinkage from syscall handler definitions
+  powerpc: Save caller r3 prior to system_call_exception
+  powerpc: Add ZEROIZE_GPRS macros for register clears
+  powerpc/64s: Use {ZEROIZE,SAVE,REST}_GPRS macros in sc, scv 0 handlers
+  powerpc/32: Clarify interrupt restores with REST_GPR macro in
+    entry_32.S
+  powerpc/64e: Clarify register saves and clears with
+    {SAVE,ZEROIZE}_GPRS
+  powerpc/64s: Fix comment on interrupt handler prologue
+  powerpc: Fix fallocate and fadvise64_64 compat parameter combination
+  asm-generic: compat: Support BE for long long args in 32-bit ABIs
+  powerpc: Use generic fallocate compatibility syscall
+  powerpc/32: Remove powerpc select specialisation
+  powerpc: Remove direct call to personality syscall handler
+  powerpc: Remove direct call to mmap2 syscall handlers
+  powerpc: Provide do_ppc64_personality helper
+  powerpc: Adopt SYSCALL_DEFINE for arch-specific syscall handlers
+  powerpc: Include all arch-specific syscall prototypes
+  powerpc: Enable compile-time check for syscall handlers
+  powerpc: Use common syscall handler type
+  powerpc: Provide syscall wrapper
+  powerpc/64s: Clear/restore caller gprs in syscall interrupt/return
+  powerpc/64: Add INTERRUPT_SANITIZE_REGISTERS Kconfig
+  powerpc/64s: Clear gprs on interrupt routine entry in Book3S
+  powerpc/64e: Clear gprs on interrupt routine entry on Book3E
+
+ arch/powerpc/Kconfig                         |  10 ++
+ arch/powerpc/include/asm/interrupt.h         |   3 +-
+ arch/powerpc/include/asm/ppc_asm.h           |  22 +++
+ arch/powerpc/include/asm/syscall.h           |  11 +-
+ arch/powerpc/include/asm/syscall_wrapper.h   |  84 ++++++++++
+ arch/powerpc/include/asm/syscalls.h          | 148 +++++++++++++----
+ .../ppc32.h => include/asm/syscalls_32.h}    |   0
+ arch/powerpc/include/asm/unistd.h            |   1 +
+ arch/powerpc/kernel/entry_32.S               |  40 ++---
+ arch/powerpc/kernel/exceptions-64e.S         |  35 ++--
+ arch/powerpc/kernel/exceptions-64s.S         |  41 ++++-
+ arch/powerpc/kernel/interrupt_64.S           |  92 +++++-----
+ arch/powerpc/kernel/signal_32.c              |   2 +-
+ arch/powerpc/kernel/sys_ppc32.c              |  66 +++-----
+ arch/powerpc/kernel/syscall.c                |  32 ++--
+ arch/powerpc/kernel/syscalls.c               |  61 ++++---
+ arch/powerpc/kernel/syscalls/syscall.tbl     |  24 +--
+ arch/powerpc/kernel/{systbl.S => systbl.c}   |  30 ++--
+ arch/powerpc/kernel/vdso.c                   |   6 +-
+ arch/powerpc/perf/callchain_32.c             |   2 +-
+ arch/powerpc/platforms/cell/spu_callbacks.c  |   6 +-
+ include/asm-generic/compat.h                 |   9 +-
+ .../arch/powerpc/entry/syscalls/syscall.tbl  |  24 +--
+ 23 files changed, 491 insertions(+), 258 deletions(-)
+ create mode 100644 arch/powerpc/include/asm/syscall_wrapper.h
+ rename arch/powerpc/{kernel/ppc32.h => include/asm/syscalls_32.h} (100%)
+ rename arch/powerpc/kernel/{systbl.S => systbl.c} (55%)
+
+-- 
+2.34.1
+
