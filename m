@@ -1,86 +1,85 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D5945BA718
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Sep 2022 08:56:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 001CF5BA71B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Sep 2022 08:57:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MTPwy0rNpz3c2d
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Sep 2022 16:56:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MTPyM2H6gz3c4K
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Sep 2022 16:57:15 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=T5hoge+K;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=snkZRwKM;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=JaDQfQ7k;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=sGC8fYZb;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=66.111.4.229; helo=new3-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=T5hoge+K;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=snkZRwKM;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=JaDQfQ7k;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=sGC8fYZb;
 	dkim-atps=neutral
 Received: from new3-smtp.messagingengine.com (new3-smtp.messagingengine.com [66.111.4.229])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MTPwD6hc3z2yxG
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Sep 2022 16:55:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MTPxl2X8lz2yxG
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Sep 2022 16:56:43 +1000 (AEST)
 Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-	by mailnew.nyi.internal (Postfix) with ESMTP id 14F75580E23;
-	Fri, 16 Sep 2022 02:55:21 -0400 (EDT)
+	by mailnew.nyi.internal (Postfix) with ESMTP id 6ECA45810B3;
+	Fri, 16 Sep 2022 02:56:41 -0400 (EDT)
 Received: from imap51 ([10.202.2.101])
-  by compute3.internal (MEProxy); Fri, 16 Sep 2022 02:55:21 -0400
+  by compute3.internal (MEProxy); Fri, 16 Sep 2022 02:56:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
 	:content-type:date:date:from:from:in-reply-to:in-reply-to
 	:message-id:mime-version:references:reply-to:sender:subject
-	:subject:to:to; s=fm1; t=1663311321; x=1663314921; bh=S5kTMgQG2X
-	deqag4z0DuGjwBmvYRdpjKaBZvs0hManQ=; b=T5hoge+KBlRUZaPtEl+Onl8KWu
-	VGnLiWPyLlwyqj5f4Z0714k3QKbQVZk7Mxsn91a7xE2dBrf86h5PicoDqzXTl36U
-	cavn2lfSzqQB/0F0WmUW1seFts9dlayCZmFtVDQfNFhImFnv910dWUGHw7dIsdXZ
-	hOIYPRF1r7WHcr0CsARz6RBQgJse7ScVjNuJId7q+/9EuwwbNjaU4mPiGhkE1NAT
-	vO3ZPrOFnMhbMXtcTngOaBPNbBsLbQsMpU+UXZHWkk6CHasfuNwcd4pkttfxL0zs
-	twbNKUv2SLlAfLnE6kb1lJZCoJ+VCIGpvz94tWOZbLp/fEwSad2TkDicNblw==
+	:subject:to:to; s=fm1; t=1663311401; x=1663315001; bh=ueGAKpRYcu
+	jBWcF1IXgswNcZrYqQkcImRwqmbgkey1c=; b=JaDQfQ7k6kUDjLkgWulb+k44LG
+	PoGUzq9ERze57B3UCw1Lr/UcItwxa3G3mr7zmPK0Xphm70JczvLzd1kA+hhxWODE
+	NYq8Dif/5aczXu7ypXVDW3nTRIjTcjO9zZ7r7K/OMEO6fU+eb0H2Sd9WadHtnIyO
+	tM6P5XZOzHz9UmubPXzOM21ZXUAouvJnlmsyfJaYJ8H7mSderZE+k8SfIBbaaTaq
+	TYJEri8jJ/9hcvIBRJxYu/whH9XulFw0ANVX1QXgjPXgulU68GiZvf4vr/oQPgpx
+	Ez7bvWjloy6qGJZjvufavTiIOdwHI9bXcQk/dEF9kbD9XPDAdZbejFfRgFFg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:content-type:date:date:feedback-id
 	:feedback-id:from:from:in-reply-to:in-reply-to:message-id
 	:mime-version:references:reply-to:sender:subject:subject:to:to
 	:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1663311321; x=1663314921; bh=S5kTMgQG2Xdeqag4z0DuGjwBmvYR
-	dpjKaBZvs0hManQ=; b=snkZRwKMA8/+zUrOy4NclOhrw0TyT9qZgUUWcrlmzStC
-	qRUN088i7KquLSKY2CbzA5Pq9S16eb1FZmDpf/KwekHYQv05D7P6UgqnQ6nqf4YA
-	9k04bosutiISx4+bck0fjKBu9WM9br/0cIaslLIENf5Eu0pD85epkNWMyuvZ95xE
-	6pffLh8ycYB01aYwzekwtrZlIuVjvuj3Z7+Or0y7k1wzXXvbmld0GJVJOYxHPUPB
-	GzCXe+xp0f9RS2i2t9drEbFcr28GhjBLLMgrlgYXB031nmFNLOl+eDL8AuFSSCm1
-	TrR9lS0sPflN+Iyxg6LYF5U9tkMeEXZocarVccVA+A==
-X-ME-Sender: <xms:2B0kYyE0tht0SAM3wPeMtDT5KI8UwyC37qKxnqJFONnTA8OATouFRw>
-    <xme:2B0kYzX0y3Ne6stSCOczWYud89brNL3wifmekD1IufVrm5-gAlid1IzfWblNEVBte
-    3p-LGwZWKKMYQ-w7Vw>
+	fm2; t=1663311401; x=1663315001; bh=ueGAKpRYcujBWcF1IXgswNcZrYqQ
+	kcImRwqmbgkey1c=; b=sGC8fYZbLrby8Hp+YxO3dPxr0Miys86/O4CmaHnxowfg
+	Why62tHHU6o1iASdMwZIhzug1l/C9ZY86t2c58qr8iGzNaadfw56Xr196zgJkgUC
+	4idalGpYlVVrUCPQgNznKbeUDmYmvUzbCeM0RLDgTM3LKrO9XwXoswicHSWWgHST
+	pS2ZDgEl7d8B/Exylok772c5ekDMzVGzLXMBt+CsmNjGGF4Z/GB7h3NQd30mU4m6
+	p4jDqTlzxDHSt3sZySPbR1cZx0GQTJsR4Z3arYZNgyImNxUdDg8kFoRbUsmMFbgV
+	RemW2KSvuY5pqiXGtnV+y2Sg0zo4VE8Bu0vVDXVdTQ==
+X-ME-Sender: <xms:KR4kYwSffnHjYHKzGqVDkBdHaOOmJq6MjehAfS3U2crt7N3MrNmqzQ>
+    <xme:KR4kY9xobW2gst8mERHauy7ECNYvmX4KYOYuO6C2PY0AUWve0clBz9_9M3fbnD5b4
+    3Iqv59tN4P-26GdqYw>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfeduledgudduvdcutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
     necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
     enucfjughrpefofgggkfgjfhffhffvufgtsehttdertderredtnecuhfhrohhmpedftehr
     nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepgedvueffledvhfduvdeghefggfehvedutdeigeejtedtieeigfdtvdfgveef
-    iedtnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpe
-    dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:2B0kY8Lwepm8iy5goKU69F_kOGV8pfRrksMrxEP_Btd7GQtOCShzQA>
-    <xmx:2B0kY8E6YkEF-HsSVqzdiZ13ileiIzpsm8H9zgJooDJM6r3Pn7jzbA>
-    <xmx:2B0kY4UuzNvgiS_3ewtY2Lw1wouBu7gP1LSg8EwNX-D3SRJMx6Vo8w>
-    <xmx:2R0kY7CYZEBeKb7h56EWIVmvJnIPPvq7hrVg0edgfhAroxsyDHNEXw>
+    htvghrnhepffegffdutddvhefffeeltefhjeejgedvleffjeeigeeuteelvdettddulefg
+    udfgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+    hrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:KR4kY92l-03ZikVoN8fLpdm7POE8h46iwxyKKV01Z2AjeTgKUtI0AQ>
+    <xmx:KR4kY0CZyR3c-ZlbB1hjsmS93LgUW07LZq57dbHpXW-B8um_SuMMQQ>
+    <xmx:KR4kY5iEydEHOWpV3WR5sydfP9FjOquntROFC_oo8YHSRXbr4UuDog>
+    <xmx:KR4kYzdby0oQlR-0FzICuAkIcM4buUOFviVe396msJ97gV2jxFdiQg>
 Feedback-ID: i56a14606:Fastmail
 Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id C93B4B60086; Fri, 16 Sep 2022 02:55:20 -0400 (EDT)
+	id 1E9F3B60086; Fri, 16 Sep 2022 02:56:41 -0400 (EDT)
 X-Mailer: MessagingEngine.com Webmail Interface
 User-Agent: Cyrus-JMAP/3.7.0-alpha0-935-ge4ccd4c47b-fm-20220914.001-ge4ccd4c4
 Mime-Version: 1.0
-Message-Id: <e2c6ee79-6b4b-4f2f-87af-691e461c97ad@www.fastmail.com>
-In-Reply-To: <20220916053300.786330-9-rmclure@linux.ibm.com>
+Message-Id: <94dc51a2-d548-4c4c-98df-cf97a4f94755@www.fastmail.com>
+In-Reply-To: <20220916053300.786330-11-rmclure@linux.ibm.com>
 References: <20220916053300.786330-1-rmclure@linux.ibm.com>
- <20220916053300.786330-9-rmclure@linux.ibm.com>
-Date: Fri, 16 Sep 2022 08:54:37 +0200
+ <20220916053300.786330-11-rmclure@linux.ibm.com>
+Date: Fri, 16 Sep 2022 08:56:20 +0200
 From: "Arnd Bergmann" <arnd@arndb.de>
 To: "Rohan McLure" <rmclure@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 08/23] powerpc: Fix fallocate and fadvise64_64 compat parameter
- combination
+Subject: Re: [PATCH 10/23] powerpc: Use generic fallocate compatibility syscall
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -97,27 +96,23 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On Fri, Sep 16, 2022, at 7:32 AM, Rohan McLure wrote:
-> As reported[1] by Arnd, the arch-specific fadvise64_64 and fallocate
-> compatibility handlers assume parameters are passed with 32-bit
-> big-endian ABI. This affects the assignment of odd-even parameter pairs
-> to the high or low words of a 64-bit syscall parameter.
+> The powerpc fallocate compat syscall handler is identical to the
+> generic implementation provided by commit 59c10c52f573f ("riscv:
+> compat: syscall: Add compat_sys_call_table implementation"), and as
+> such can be removed in favour of the generic implementation.
 >
-> Fix fadvise64_64 fallocate compat handlers to correctly swap upper/lower
-> 32 bits conditioned on endianness.
+> A future patch series will replace more architecture-defined syscall
+> handlers with generic implementations, dependent on introducing generic
+> implementations that are compatible with powerpc and arm's parameter
+> reorderings.
 >
-> A future patch will replace the arch-specific compat fallocate with an
-> asm-generic implementation. This patch is intended for ease of
-> back-port.
->
-> [1]: 
-> https://lore.kernel.org/all/be29926f-226e-48dc-871a-e29a54e80583@www.fastmail.com/
->
-> Fixes: 57f48b4b74e7 ("powerpc/compat_sys: swap hi/lo parts of 64-bit 
-> syscall args in LE mode")
 > Reported-by: Arnd Bergmann <arnd@arndb.de>
 > Signed-off-by: Rohan McLure <rmclure@linux.ibm.com>
-
-Looks good, thanks!
+> ---
+> V1 -> V2: Remove arch-specific fallocate handler.
+> V2 -> V3: Remove generic fallocate prototype. Move to beginning of
+> series.
+> V4 -> V5: Remove implementation as well which I somehow failed to do.
+> Replace local BE compat_arg_u64 with generic.
 
 Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Cc: stable@vger.kernel.org # v5.12+
