@@ -2,54 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 651D45BA697
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Sep 2022 08:08:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E80475BA6CD
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Sep 2022 08:27:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MTNt11fDWz3bcF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Sep 2022 16:08:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MTPJH56ygz3f2Z
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Sep 2022 16:27:43 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (4096-bit key; unprotected) header.d=nabijaczleweli.xyz header.i=@nabijaczleweli.xyz header.a=rsa-sha256 header.s=202205 header.b=Bh3hgchM;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rxkFLE7v;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nabijaczleweli.xyz (client-ip=139.28.40.42; helo=tarta.nabijaczleweli.xyz; envelope-from=nabijaczleweli@nabijaczleweli.xyz; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=bgray@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (4096-bit key; unprotected) header.d=nabijaczleweli.xyz header.i=@nabijaczleweli.xyz header.a=rsa-sha256 header.s=202205 header.b=Bh3hgchM;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rxkFLE7v;
 	dkim-atps=neutral
-X-Greylist: delayed 543 seconds by postgrey-1.36 at boromir; Fri, 16 Sep 2022 12:04:27 AEST
-Received: from tarta.nabijaczleweli.xyz (unknown [139.28.40.42])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MTHSW63pBz302x
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Sep 2022 12:04:27 +1000 (AEST)
-Received: from tarta.nabijaczleweli.xyz (unknown [192.168.1.250])
-	by tarta.nabijaczleweli.xyz (Postfix) with ESMTPSA id AC81C1622;
-	Fri, 16 Sep 2022 03:55:19 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nabijaczleweli.xyz;
-	s=202205; t=1663293319;
-	bh=l9k1DbKKiMqSObU43xu0T2mj2fDjr0VeGS9y7PQ8jPg=;
-	h=Date:From:Cc:Subject:References:In-Reply-To:From;
-	b=Bh3hgchMAnvrp8bHQhJt5ll2yDO/+vXV/PUUx6r4R+oSztvKmgVg6zmhk1reW27iR
-	 tGgu+5AArFJ8BMWtNZOBlFN/xKI6UMzevCjKMdwjvUKkADW6jw9LH4TAlxiR1Pr2uC
-	 vqIRxtSJpEin6x0ieLy4JnCiuGmZ82z7x8K6c3YkMjRDEIODeYnFELjz/6RsS6uoEO
-	 43P2rKBBYFDaIindRFHhwGAgbUcUnD56GjiHI7MQJjEsL0taLBYivPj+e+tfwaRMA6
-	 528fQa+lcNqqG2BQCA6SMH47Rna1pl2Pwh0BN4Ep+wLLH0zeqSMPkLsm7JPT9ekkZv
-	 cm3IkFBEe3IyX0G3lju5NOUQcuuqrIXM94p8jtRorKVAP3CEXd7M8gjQtHIxTAz48y
-	 6dIiMJIdaSxubjwDQFOJ4tZRq3tfCHPbRzAbjiQiijrWN6bJ6BOy1wsCG1TLmpdBWY
-	 jxS/9lxv2XJ8v54q4SsOyQKjzfmO4HTM2v6uEx82JZWfbjHna2tAnHPn4DVddx1VeD
-	 2sRGDCalWHHcFtdQpZ1qW52POJR8AOg0vMGllLfyfc3F3p4Pv5V9pDZcMIGRJludDO
-	 h17KsS2yhrx4PezduKSiPiXkGFjFKoiBm678TNzejofOtgtLHmLgXi9kdQ2jJAyBZS
-	 GVIh7rR8oWKmadMT9PLmn7eQ=
-Date: Fri, 16 Sep 2022 03:55:18 +0200
-From: =?utf-8?B?0L3QsNCx?= <nabijaczleweli@nabijaczleweli.xyz>
-Subject: [PATCH 5/5] tty: hvc: remove HVC_IUCV_MAGIC
-Message-ID: <8c8a2c9dfc1bfbe6ef3f3237368e483865fc1c29.1663288066.git.nabijaczleweli@nabijaczleweli.xyz>
-References: <476d024cd6b04160a5de381ea2b9856b60088cbd.1663288066.git.nabijaczleweli@nabijaczleweli.xyz>
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MTPDh2nZ9z2xjt
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Sep 2022 16:24:35 +1000 (AEST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28G6BlnR020883;
+	Fri, 16 Sep 2022 06:24:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=8xB/PbRQTJytpDahw84/aETgtXA5lYQ+QCxi4G4zkuc=;
+ b=rxkFLE7vSh8ZXenFgbqYWbCD6K4OMXY98/aIUJ937adGhvHJqPN7s8//ZghTHHinoNLd
+ ELQsyc7dvJTlSrnh8jSX9KKLLCGRI+xKMampgGF0kC1N46LGWtUSxtttQNcmzR6kwXPC
+ S9gI563c+lIsTQ9BWbaEr0HTXxoVm9ygcuyutV82ZhEutl+TZQofPMaFxvWQEsFbCIVw
+ P91JVHT1lBbZDcSN6pf73S3AxraeMHyW6CR2BV6LO9kgxB8+gXrdCV+xYIDdym2p3YnZ
+ ITim4D5KAifBgpDpch7ngSQ875OHQAC3yJUwTaUpq4vEWef9Wot/LpgPcaSQJ8/xbRaT uA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jmknm0anp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 16 Sep 2022 06:24:19 +0000
+Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 28G6DWIj030281;
+	Fri, 16 Sep 2022 06:24:18 GMT
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jmknm0amx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 16 Sep 2022 06:24:18 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+	by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 28G6LB7g028729;
+	Fri, 16 Sep 2022 06:24:16 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+	by ppma03ams.nl.ibm.com with ESMTP id 3jm918gjkm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 16 Sep 2022 06:24:15 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
+	by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 28G6ODoe38797746
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 16 Sep 2022 06:24:13 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9D04C52050;
+	Fri, 16 Sep 2022 06:24:13 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id F2AFF5204F;
+	Fri, 16 Sep 2022 06:24:12 +0000 (GMT)
+Received: from beng-ozlabs-ibm-com.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 1E0B26016C;
+	Fri, 16 Sep 2022 16:24:07 +1000 (AEST)
+From: Benjamin Gray <bgray@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 0/6] Out-of-line static calls for powerpc64 ELF V2
+Date: Fri, 16 Sep 2022 16:23:24 +1000
+Message-Id: <20220916062330.430468-1-bgray@linux.ibm.com>
+X-Mailer: git-send-email 2.37.3
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: EdzKYwiF6AID6FNTFWlCrcKz9tN6APhL
+X-Proofpoint-GUID: unlqd9YbXYdBgVF2XjctxIRqL_xzNrzO
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="rnftti7pthqkpnuy"
-Content-Disposition: inline
-In-Reply-To: <476d024cd6b04160a5de381ea2b9856b60088cbd.1663288066.git.nabijaczleweli@nabijaczleweli.xyz>
-User-Agent: NeoMutt/20220429
-X-Mailman-Approved-At: Fri, 16 Sep 2022 16:07:55 +1000
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
+ definitions=2022-09-16_02,2022-09-14_04,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 bulkscore=0
+ lowpriorityscore=0 phishscore=0 priorityscore=1501 suspectscore=0
+ adultscore=0 spamscore=0 mlxlogscore=999 impostorscore=0 mlxscore=0
+ clxscore=1031 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2209130000 definitions=main-2209160045
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,95 +96,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, Jiri Slaby <jirislaby@kernel.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: christophe.leroy@c-s.fr, ajd@linux.ibm.com, peterz@infradead.org, Benjamin Gray <bgray@linux.ibm.com>, npiggin@gmail.com, ardb@kernel.org, jbaron@akamai.com, rostedt@goodmis.org, jpoimboe@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Implementation of out-of-line static calls for PowerPC 64-bit ELF V2 ABI.
+Static calls patch an indirect branch into a direct branch at runtime.
+Out-of-line specifically has a caller directly call a trampoline, and
+the trampoline gets patched to directly call the target.
 
---rnftti7pthqkpnuy
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+More context regarding the challenges with the ELF V2 ABI is in the RFC
+https://lore.kernel.org/linuxppc-dev/20220901055823.152983-1-bgray@linux.ibm.com/
 
-According to Greg, in the context of magic numbers as defined in
-magic-number.rst, "the tty layer should not need this and I'll gladly
-take patches"
+This resolves the stack issue in the RFC by marking the trampoline as not
+preserving the TOC, so the linker will insert its own TOC saving trampoline +
+restore the TOC when the target returns.
 
-This stretches that definition slightly, since it multiplexes it with
-the terminal number as a constant offset, but is equivalent
+It is sub-optimal (a separate TOC saving trampoline is not necessary), but does
+not require any additional support beyond what's given in the ABI (unlike the
+other two suggestions in the RFC). Microbenchmarking shows a performance improvement
+in kernel-kernel-kernel calls on a Power9 when the indirect branch predictor is disabled.
+However the generic implementation performs better in every other case. And when
+branch prediction is enabled the generic implementation behaves like the control cases.
 
-Ref: https://lore.kernel.org/linux-doc/YyMlovoskUcHLEb7@kroah.com/
-Signed-off-by: Ahelenia Ziemia=C5=84ska <nabijaczleweli@nabijaczleweli.xyz>
----
- drivers/tty/hvc/hvc_iucv.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+    |    Case    |    Generic      |     Static      |
+    |------------|-----------------|-----------------|
+    | control_kk | 221536 calls/ms | 221443 calls/ms |  // control is direct call, no SC trampoline
+    | control_mm | 221941 calls/ms | 221913 calls/ms |
+    | kkk        |  89657 calls/ms | 177835 calls/ms |  // kernel caller -> kernel tramp -> kernel target
+    | kkm        |  89835 calls/ms |  53853 calls/ms |  // kernel caller -> kernel tramp -> module target
+    | kmk        | 101808 calls/ms |  52280 calls/ms |  // etc.
+    | kmm        | 101973 calls/ms |  52347 calls/ms |
+    | mkk        |  97621 calls/ms |  78044 calls/ms |
+    | mkm        |  97738 calls/ms |  38370 calls/ms |
+    | mmk        |  98839 calls/ms |  68436 calls/ms |
+    | mmm        |  98967 calls/ms |  68511 calls/ms |
 
-diff --git a/drivers/tty/hvc/hvc_iucv.c b/drivers/tty/hvc/hvc_iucv.c
-index 32366caca662..7d49a872de48 100644
---- a/drivers/tty/hvc/hvc_iucv.c
-+++ b/drivers/tty/hvc/hvc_iucv.c
-@@ -29,7 +29,6 @@
-=20
-=20
- /* General device driver settings */
--#define HVC_IUCV_MAGIC		0xc9e4c3e5
- #define MAX_HVC_IUCV_LINES	HVC_ALLOC_TTY_ADAPTERS
- #define MEMPOOL_MIN_NR		(PAGE_SIZE / sizeof(struct iucv_tty_buffer)/4)
-=20
-@@ -131,9 +130,9 @@ static struct iucv_handler hvc_iucv_handler =3D {
-  */
- static struct hvc_iucv_private *hvc_iucv_get_private(uint32_t num)
- {
--	if ((num < HVC_IUCV_MAGIC) || (num - HVC_IUCV_MAGIC > hvc_iucv_devices))
-+	if (num > hvc_iucv_devices)
- 		return NULL;
--	return hvc_iucv_table[num - HVC_IUCV_MAGIC];
-+	return hvc_iucv_table[num];
- }
-=20
- /**
-@@ -1072,8 +1071,8 @@ static int __init hvc_iucv_alloc(int id, unsigned int=
- is_console)
- 	priv->is_console =3D is_console;
-=20
- 	/* allocate hvc device */
--	priv->hvc =3D hvc_alloc(HVC_IUCV_MAGIC + id, /*		  PAGE_SIZE */
--			      HVC_IUCV_MAGIC + id, &hvc_iucv_ops, 256);
-+	priv->hvc =3D hvc_alloc(id, /*		 PAGE_SIZE */
-+			      id, &hvc_iucv_ops, 256);
- 	if (IS_ERR(priv->hvc)) {
- 		rc =3D PTR_ERR(priv->hvc);
- 		goto out_error_hvc;
-@@ -1371,7 +1370,7 @@ static int __init hvc_iucv_init(void)
-=20
- 	/* register the first terminal device as console
- 	 * (must be done before allocating hvc terminal devices) */
--	rc =3D hvc_instantiate(HVC_IUCV_MAGIC, IUCV_HVC_CON_IDX, &hvc_iucv_ops);
-+	rc =3D hvc_instantiate(0, IUCV_HVC_CON_IDX, &hvc_iucv_ops);
- 	if (rc) {
- 		pr_err("Registering HVC terminal device as "
- 		       "Linux console failed\n");
---=20
-2.30.2
+Using a noinline page-aligned target that adds 1 to a counter then runs 64 NOPs
+to iron out some processor timing quirks. The target is called in a loop like
 
---rnftti7pthqkpnuy
-Content-Type: application/pgp-signature; name="signature.asc"
+	while (!READ_ONCE(stop))
+		static_call(bench_sc)(&counter);
 
------BEGIN PGP SIGNATURE-----
+Again page aligned. The benchmark is stopped by a timer.
 
-iQIzBAABCgAdFiEEfWlHToQCjFzAxEFjvP0LAY0mWPEFAmMj14YACgkQvP0LAY0m
-WPGDlRAAmOsQ96hFk4wbrrr1tz6fBYeA1H7oPGYFhSIPjx2XstzizMg/6MCaYq6K
-wakN5iXs9GFmmpxoX+9MCt7tGbHP5pACaCRb+r/F8wTHFjHe7gAdVuGcVDnhhA1K
-6az+jDCnCHSFpimfjACDEbvzkN7io62V1y0NndI7xDOfzIgr11j5OKTHhKY0e5Em
-yj/SOQ1yIDoNQHJrx1IYK8x18QhLdK8CZWEiQ/HqlO79jQiM3y/TuT3yVJC9hu2v
-gHXLL5bg4M4MwZ9QkKizGcSnFXp3Wg2VwVBsFUdtHAs9df3YOV6CzPlTdGQABcJ4
-RJ68qx0W0o0tVy6obQqyZRP1LJTHbt+Dicw1fdAXMgrcXBhEnEOZzWjSA713MEqZ
-8uYKPle3Tz6wnf0NluBFKOUq0y5eov/GF1YLBWt8jSwa/5YmixHXz4YigCcZ/+1X
-9IMbwiFWXzoDIzO3xwcvHEK/MGMCPgB3a32Fzdx6wwpVVaAm7JKEhDpIMH0zxOor
-/2nJ4pwrtQ3fQI8QsUmZ0h1ylgWM+nBnYvucX/QANC+ihVAUN9WXSfz2Mo2RenAr
-99PAehuHK5wCWApyjgWrJi/8fvzAavjRuCj2sPK5X/HBXIn5gm5q6yClU1BD/0z7
-YjS8CTHUf+eAnvpC8zzY8NpBJJ2C48sBpY/7Kj09Nqbvlc+J1EY=
-=xgyf
------END PGP SIGNATURE-----
+The kernel trampoline's hardcoded TOC offset is done because importing
+the asm constants header imports an unrelated macro definition that is the same as the
+enum name it was generated from, which confuses the compiler when it reaches said enum
+definition.
 
---rnftti7pthqkpnuy--
+
+Benjamin Gray (6):
+  powerpc/code-patching: Implement generic text patching function
+  powerpc/module: Handle caller-saved TOC in module linker
+  powerpc/module: Optimise nearby branches in ELF V2 ABI stub
+  static_call: Move static call selftest to static_call_selftest.c
+  powerpc/64: Add support for out-of-line static calls
+  powerpc/64: Add tests for out-of-line static calls
+
+ arch/powerpc/Kconfig                     |  22 +-
+ arch/powerpc/include/asm/code-patching.h |   2 +
+ arch/powerpc/include/asm/static_call.h   |  80 ++++++-
+ arch/powerpc/kernel/Makefile             |   4 +-
+ arch/powerpc/kernel/module_64.c          |  25 ++-
+ arch/powerpc/kernel/static_call.c        | 203 ++++++++++++++++-
+ arch/powerpc/kernel/static_call_test.c   | 263 +++++++++++++++++++++++
+ arch/powerpc/lib/code-patching.c         | 135 ++++++++----
+ kernel/Makefile                          |   1 +
+ kernel/static_call_inline.c              |  43 ----
+ kernel/static_call_selftest.c            |  41 ++++
+ 11 files changed, 713 insertions(+), 106 deletions(-)
+ create mode 100644 arch/powerpc/kernel/static_call_test.c
+ create mode 100644 kernel/static_call_selftest.c
+
+--
+2.37.3
