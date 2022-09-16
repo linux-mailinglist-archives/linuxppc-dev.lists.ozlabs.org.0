@@ -2,74 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A27115BA380
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Sep 2022 02:29:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 476765BA382
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Sep 2022 02:31:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MTFM531M2z3bWM
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Sep 2022 10:29:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MTFNl0lwcz3bWM
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Sep 2022 10:31:03 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=b+W571Nk;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ZaYq/b40;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::431; helo=mail-pf1-x431.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::630; helo=mail-pl1-x630.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=b+W571Nk;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ZaYq/b40;
 	dkim-atps=neutral
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MTFLP42svz2xtV
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Sep 2022 10:28:59 +1000 (AEST)
-Received: by mail-pf1-x431.google.com with SMTP id e5so19670641pfl.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Sep 2022 17:28:59 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MTFN90RBVz303C
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Sep 2022 10:30:32 +1000 (AEST)
+Received: by mail-pl1-x630.google.com with SMTP id jm11so19893102plb.13
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Sep 2022 17:30:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=in-reply-to:references:to:from:subject:message-id:date
+        h=in-reply-to:references:subject:to:from:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date;
-        bh=pRr+lltLGQMhx8klx0NoKEq8l1FmcSf72sejMqC4PhU=;
-        b=b+W571NkAPWidJkbClHuqOX4zMhF3F6LVNHzEzrd9HuctmJMfYdxX6tNx1vwV9SgJf
-         XqXH2NPJ7ihaDY9eVzVz62wIUm2hE/tirWrHeRXlHtfrjIuTTMrE1bYeTkrmHf/6mR9D
-         ARM2tu3HjvxgldG87JvYPGUqgkcrtGQwDPXhA/1SJ1KtCWBJ64LNWdS0FK4PZVQKnYmt
-         mLpcQYsfLumyNuKNT7KtsjrvIYcrrxwMdNknATxOeNU5XJiBwjOSaLHTu/j3ypVb1XgF
-         hM38ubrdoNWKJFoU35ZjckAkiYRKoKUiICqXaRe0mMtvEiKrhaQ+ORIIgH40+E2Woih7
-         azag==
+        bh=II/cExd0R3Sfm0KxG9Fz8eXU0tK1QDgbEbcnB0TT30w=;
+        b=ZaYq/b406Ch8jO6t3Rnxdr9X48aDtaaM2aIdF9sAHI1lXLsRIbdSVmrvnT0TG/FXkK
+         W4aAPpl/zJG8AyCpCDZqr4WASpiovRL7SQiIZOqUWZOqDv/zrX1dleWfxKBigSBuM9pJ
+         WqvdWxajVrE3rXjCyVi9qKXVziRQikv/Z+yH4GGeaSyL1Lz9GapinnFFjYz6Qo6tLUGs
+         eCtAT3VOPtYfNb6nkQZhPqvQ3X7FcHvFVQhCd7NgM97gcLtCoOSXAxa9lUzqcUi+sH6C
+         yLpEs6ow23uEWeISS1EXADCQ0PJENMim0/JkpxUCnEYGi+Za6fN6V+CGsdqCyZn7dJkQ
+         sUcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:references:to:from:subject:message-id:date
+        h=in-reply-to:references:subject:to:from:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date;
-        bh=pRr+lltLGQMhx8klx0NoKEq8l1FmcSf72sejMqC4PhU=;
-        b=UNm/l87C5pJvo2IdLMnRApg3YE84BZTvthJJDaXyRpqYEFsKeShwXZEX0es7tcGC8w
-         dOlP6XtdoB4BsW7dk6YV1MEOH8JscZs+VmSIwVg6RRWD/w2qtSALTsprLxEdiohGp/Ii
-         /gau95SfiHD2kz/hiEUkjuCwByuL+ouw/7Yz7bHHt0Ah3/wwuolG9dh+qOAcBM5Oh8Gi
-         Cj34yrc2KdC/hNwL/Owo7OV+h7BxZvf9txGEx1D1ds7Wf0mGRaIehlm0gmZu/0dFI/pX
-         K69Gmd2HUpKOAs5z9ZNIjbN529EJwOxKPsRi7GnP6dleINdgnnR6N+FbxPrOfGdS7gG3
-         5hDw==
-X-Gm-Message-State: ACrzQf2fJm6EZlrUF6Ui2HgN8zq8fltBPNBGO0rqxoGynd6BH/egUy9G
-	Vy+t9oxkhx4sEMmUnSrHGM1nqhD8MxQ=
-X-Google-Smtp-Source: AMsMyM6+31iVF8EJu15pYKje3pLfX13J5M5iGseXxQBi9Cw5pPERkg9780cABngI7W8NU5bL3cwkrA==
-X-Received: by 2002:a63:581d:0:b0:42b:399:f15a with SMTP id m29-20020a63581d000000b0042b0399f15amr2158145pgb.337.1663288136980;
-        Thu, 15 Sep 2022 17:28:56 -0700 (PDT)
+        bh=II/cExd0R3Sfm0KxG9Fz8eXU0tK1QDgbEbcnB0TT30w=;
+        b=ez95tgyCFp4y0mvNbswPBHos6IBA4oGaGmd5yXM2LINy2xk51t8SUoflg4AIuaiaXv
+         kyTc43cSKJDQrVNOz/44UcOaNfsnjZlAXJ0uG1F5L/Dig4l/N7Xm30J4EDXzR8S3ZLex
+         sGDSMbt9h6XQO/Ryoce6tlYMWIuws+pJhjrUT138zKTKjU/ZPs7mU9c50yVcfMM5RVlC
+         B2pS0XjclF90TyRkjBm0A8vkVVymavDaJSFgklcqxBaE5zybZKfHNcxr8oRkQ9ccZx1Z
+         5AORU0NIGmkl54vrj1JDJLVWEVoO69capxJGY79R7oexKwnTd/bJqjnE6YilfrxwE5RU
+         VP/A==
+X-Gm-Message-State: ACrzQf0i4HIwy3tedMbD69iMH6J+2bPUWYgpRW29UBQcBotpBUK4xh7e
+	OZekqXlDNGFoYdQjHqoGGw/wsy3J07E=
+X-Google-Smtp-Source: AMsMyM42oImijRICUEUEqJM1hEnhE0vUOBCB2DHhl0yeulhpLZ8bEsaWsmC3xhNJefu+pmr4f5wkHA==
+X-Received: by 2002:a17:902:900a:b0:178:77c7:aa28 with SMTP id a10-20020a170902900a00b0017877c7aa28mr2112540plp.3.1663288230101;
+        Thu, 15 Sep 2022 17:30:30 -0700 (PDT)
 Received: from localhost ([118.210.107.131])
-        by smtp.gmail.com with ESMTPSA id b1-20020a170902d50100b0017550eaa3eesm13638228plg.71.2022.09.15.17.28.54
+        by smtp.gmail.com with ESMTPSA id b77-20020a621b50000000b00545b91e78d3sm7317548pfb.89.2022.09.15.17.30.27
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 15 Sep 2022 17:28:55 -0700 (PDT)
+        Thu, 15 Sep 2022 17:30:29 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 16 Sep 2022 10:28:51 +1000
-Message-Id: <CMXEFN5FQ3F8.3QA0U4XPG6JN0@bobo>
-Subject: Re: [PATCH 2/7] powerpc: move __end_rodata to cover arch read-only
- sections
+Date: Fri, 16 Sep 2022 10:30:25 +1000
+Message-Id: <CMXEGU2RYP2T.2TOKN5MT8WS67@bobo>
 From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Michael Ellerman" <mpe@ellerman.id.au>, <linuxppc-dev@lists.ozlabs.org>
+To: "Michael Ellerman" <mpe@ellerman.id.au>, "Christophe Leroy"
+ <christophe.leroy@csgroup.eu>, "linuxppc-dev@lists.ozlabs.org"
+ <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: [PATCH 1/7] powerpc/build: put sys_call_table in .data.rel.ro
+ if RELOCATABLE
 X-Mailer: aerc 0.11.0
 References: <20220914154746.1122482-1-npiggin@gmail.com>
- <20220914154746.1122482-3-npiggin@gmail.com>
- <877d24n6rt.fsf@mpe.ellerman.id.au>
-In-Reply-To: <877d24n6rt.fsf@mpe.ellerman.id.au>
+ <20220914154746.1122482-2-npiggin@gmail.com>
+ <2e9a7e03-f89d-15d8-d42b-f5a0b1f9c391@csgroup.eu>
+ <874jx8n6lr.fsf@mpe.ellerman.id.au>
+In-Reply-To: <874jx8n6lr.fsf@mpe.ellerman.id.au>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,50 +87,40 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu Sep 15, 2022 at 10:47 PM AEST, Michael Ellerman wrote:
-> Nicholas Piggin <npiggin@gmail.com> writes:
-> > powerpc has a number of read-only sections and tables that are put
-> > after RO_DATA(). Move the __end_rodata symbol to cover these as well.
+On Thu Sep 15, 2022 at 10:51 PM AEST, Michael Ellerman wrote:
+> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> > Le 14/09/2022 =C3=A0 17:47, Nicholas Piggin a =C3=A9crit=C2=A0:
+> >> Const function pointers live in .data.rel.ro rather than .rodata becau=
+se
+> >> they must be relocated. This change prevents powerpc/32 from generatin=
+g
+> >> R_PPC_UADDR32 relocations (which are not handled). The sys_call_table =
+is
+> >> moved to writeable memory, but a later change will move it back.
 > >
-> > Setting memory to read-only at boot is done using __init_begin,
-> > change that that to use __end_rodata.
+> > Aren't you missing commit c7acee3d2f12 ("powerpc: align syscall table=
+=20
+> > for ppc32") ?
 >
-> Did you just do that because it seems logical?
+> That's in fixes. I'll sort it out when I apply this, or when I merge
+> fixes into next.
 
-I actually was looking at moving init so runtime code and data is
-closer.
+Yeah that explains the relocations I was seeing, I should have dug
+further into that, so they're really unrelated to this patch.
 
-> Because it does seem logical, but it leaves a RWX region in the gap
-> between __end_rodata and __init_begin, which is bad.
+> > I can't see any R_PPC_UADDR32 relocations generated by ppc4xx_defconfig=
+=20
+> > + CONFIG_RELOCATABLE unless I revert that commit.
 >
-> This is the current behaviour, on radix:
+> Presumably this change accidentally aligns the syscall table.
 >
-> ---[ Start of kernel VM ]---
-> 0xc000000000000000-0xc000000001ffffff  0x0000000000000000        32M     =
-    r      X   pte  valid  present        dirty  accessed
-> 0xc000000002000000-0xc00000007fffffff  0x0000000002000000      2016M     =
-    r  w       pte  valid  present        dirty  accessed
+> >> After this patch, 44x_defconfig + CONFIG_RELOCATABLE boots to busybox.
+> =20
+> So that's probably just because of the alignment too.
 >
-> And with your change:
->
-> ---[ Start of kernel VM ]---
-> 0xc000000000000000-0xc0000000013fffff  0x0000000000000000        20M     =
-    r      X   pte  valid  present        dirty  accessed
-> 0xc000000001400000-0xc000000001ffffff  0x0000000001400000        12M     =
-    r  w   X   pte  valid  present        dirty  accessed
-> 0xc000000002000000-0xc00000007fffffff  0x0000000002000000      2016M     =
-    r  w       pte  valid  present        dirty  accessed
->
->
-> On radix the 16M alignment is larger than we need, but we need to chose
-> a value at build time that works for radix and hash.
->
-> We could make the code smarter on radix, to mark those pages in between
-> __end_rodata and __init_begin as RW_ and use them for data. But that
-> would be a more involved change.
+> I think this patch should go after .data.rel.ro is made read only.
 
-Ah, yes Christophe pointed out it's broken too. We could just align
-__end_rodata to STRICT_ALIGN_SIZE for this patch?
+Yeah that should be fine.
 
 Thanks,
 Nick
