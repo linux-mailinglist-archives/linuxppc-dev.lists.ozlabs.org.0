@@ -2,67 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C0475BA59D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Sep 2022 06:09:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E7895BA59E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Sep 2022 06:09:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MTLDX54Vxz3cdL
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Sep 2022 14:09:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MTLFC38nMz3dp9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Sep 2022 14:09:51 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=au6qXo8m;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=b74pbhzZ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1036; helo=mail-pj1-x1036.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::435; helo=mail-pf1-x435.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=au6qXo8m;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=b74pbhzZ;
 	dkim-atps=neutral
-Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
+Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MTLCH2XQTz2yYL
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Sep 2022 14:08:10 +1000 (AEST)
-Received: by mail-pj1-x1036.google.com with SMTP id q3so19794304pjg.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Sep 2022 21:08:10 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MTLCL2CDkz2yWK
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Sep 2022 14:08:14 +1000 (AEST)
+Received: by mail-pf1-x435.google.com with SMTP id w2so9766483pfb.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Sep 2022 21:08:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date;
-        bh=HQWmPgcG9K9dWkqcXsV/N4w2BTo24yF4jhvx5rNhVXk=;
-        b=au6qXo8mYWMi0LjJjBefffiIIyyyrwnl42NP1QHvr2l+RYktDtPTlNkfCBirbSVDUd
-         hoGhW4AgPb8zeLPDe+1XQhKIkP5m8DgwWRAinaFYbA3Ea+G3sPcxhDhmdStwgJsQTCjD
-         1oj/cL7oeTAmYPpa60mGTsQWqHiZBRQaXP7bZpGc2IFMptQXwDVMCj5rhg9tjnnNLNWm
-         BwYoxk8UA4cOpVgUz+TmQX2/nhvJz9BereM+zlz2KeWXu0PqvsU3XVHMV5WDLUllSmc3
-         Q8ddi/dmywXbFhds+Gy1RqqdD3mfNYk4fkEjNdsxsERwJRGYXR7PFAJQICgveqJlhYUc
-         qtTg==
+        bh=425jscTdOENl/IcYfphn9Q48DiS+qua4nYw7KaUJl48=;
+        b=b74pbhzZZxqqd69pmwTPIeN5arYMmb/aFh58pqIW6q17eeHxiHsFPFMI/tsZDIxK2d
+         xjWS6szKaEx5adl0BHg9vovgIxHKIi6+jHr5m88M9wGZdyS+sUEgyiuBnqn0UZ5KXncw
+         x3X8y1VWrfEJDsqqvQDgu3JPvceS4jJowPqLcgFhm4SSHu3tLRJuGERcAEOji6HEovzR
+         jqfSgU2OnKxNRufLD0m0eW/xEzHmklX1cvPMmSN2ZZRBr2GmjTesvt33JNc/3HUbUTQ/
+         dSkAmelqqABYnFgvQEa4PuYcBT+UuUI8dWIoVLr4WIndH0PYtFT2ZM88kBbvZlkq6Zk5
+         dizA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date;
-        bh=HQWmPgcG9K9dWkqcXsV/N4w2BTo24yF4jhvx5rNhVXk=;
-        b=dOJMob6o7iOcwJ/ghUnDWI16cjOphI2+aDuP19gCPH8ZR8Pqymn5vPFfu4NM02qEV1
-         fGcgYuz35KSXlaYDtXinghwpbAoh87UFgrsyNE/S56IfyzWqb5dXYHVWR6L5wzJxKM1U
-         59nZj2+ocrh6jbZL2P95lenekL/sRvX8c7FLudd4zo8z5thV48Zyyy1UdmnJPpQB8/q1
-         LLqBA2Ho+XDuNG9vieBfkmFO9IdvYIUWSfkuRWiHr1lPNABdJwhXP3SrJbnzmtaVrFVN
-         L3XI0Vq5pGbDIomc1SX92vnCFnYPkL0Q12EyF1RCtvjlFkT4o7PQvq6nLd0ymv55tgwD
-         6Kow==
-X-Gm-Message-State: ACrzQf0mCMFeE4COZli6dWzQmrQyWpq/RoVYBiSsCTrC2mEATCPEToFh
-	RVc2hr+wP+lwqw7lx+lMjxAy57dh15A=
-X-Google-Smtp-Source: AMsMyM4g/0x2u7tDt6u1p+8dCvURuzu36t5NO/r96BJiIGGEbGTRL/Ok+SrFoHelsnGjwG76Qm38zg==
-X-Received: by 2002:a17:902:d4c1:b0:176:b795:c639 with SMTP id o1-20020a170902d4c100b00176b795c639mr2832025plg.154.1663301288295;
-        Thu, 15 Sep 2022 21:08:08 -0700 (PDT)
+        bh=425jscTdOENl/IcYfphn9Q48DiS+qua4nYw7KaUJl48=;
+        b=jJE84apnj0sSoVVxM9TGIlGwU83T3mrGVjE0jh9GkKJUDZMpC2kqGJxvdPZ22ZU2wE
+         5z3UbsDC2D8lYhkwcY6TW9byge21xb6rNkvAHPxvEzmCgh930GrVbAi2J6QwA+YjfLNr
+         4KFMGnOB8REhTPC1w/0TvXarlxNJSGuPLw75RTtGcZYCT4mbshQAjv8vVdA4+KtKSWOK
+         kaGeK2cNa8YIt0r9Y9XnZjIH29hPnqWxbR7RA64hF8g8DT1DiYCDrtetYZQqE+W8gtOn
+         DdjNko/j9gdELb3pSpWaGd9ngCC1lnfsb9JpeZwd9I9uO2XcB57lUuXLU06j5PRLvo9P
+         pLOw==
+X-Gm-Message-State: ACrzQf3G7wTUjFzSE6Ivj1PsBc5hQQAesFNIlgk0JZ+G+2c35e6jDe7p
+	3402QgGmUHKnyspvy/hmZXzkp5ZZSYA=
+X-Google-Smtp-Source: AMsMyM6jGFLUHGsC+BgYDEkxE8bRmj0ukLJNipfklQFTGpKyH3Ptjbnz5iCduKk3nX6HHBMTkqACiA==
+X-Received: by 2002:a63:de58:0:b0:439:41e9:dda2 with SMTP id y24-20020a63de58000000b0043941e9dda2mr2770099pgi.331.1663301291358;
+        Thu, 15 Sep 2022 21:08:11 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com (193-116-127-167.tpgi.com.au. [193.116.127.167])
-        by smtp.gmail.com with ESMTPSA id t6-20020a1709027fc600b0017534ffd491sm13696816plb.163.2022.09.15.21.08.05
+        by smtp.gmail.com with ESMTPSA id t6-20020a1709027fc600b0017534ffd491sm13696816plb.163.2022.09.15.21.08.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Sep 2022 21:08:07 -0700 (PDT)
+        Thu, 15 Sep 2022 21:08:10 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org,
 	Michael Ellerman <mpe@ellerman.id.au>,
 	Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v2 1/7] powerpc: move __end_rodata to cover arch read-only sections
-Date: Fri, 16 Sep 2022 14:07:49 +1000
-Message-Id: <20220916040755.2398112-2-npiggin@gmail.com>
+Subject: [PATCH v2 2/7] powerpc/32/build: move got1/got2 sections out of text
+Date: Fri, 16 Sep 2022 14:07:50 +1000
+Message-Id: <20220916040755.2398112-3-npiggin@gmail.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20220916040755.2398112-1-npiggin@gmail.com>
 References: <20220916040755.2398112-1-npiggin@gmail.com>
@@ -83,109 +83,60 @@ Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-powerpc has a number of read-only sections and tables that are put after
-RO_DATA(). Move the __end_rodata symbol to cover these as well.
-
-Setting memory to read-only at boot is done using __init_begin, change
-that that to use __end_rodata. This removes the requirement for the init
-section to follow read-only data.
-
-This makes is_kernel_rodata() exactly cover the read-only region, as
-well as other things using __end_rodata (e.g., kernel/dma/debug.c).
-Boot dmesg also prints the rodata size more accurately.
+Following the example from the binutils default linker script, move
+.got1 and .got2 out of .text, to just after RO_DATA.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/vmlinux.lds.S        | 3 +++
- arch/powerpc/mm/book3s32/mmu.c           | 2 +-
- arch/powerpc/mm/book3s64/hash_pgtable.c  | 2 +-
- arch/powerpc/mm/book3s64/radix_pgtable.c | 6 +++---
- arch/powerpc/mm/pgtable_32.c             | 7 ++++---
- 5 files changed, 12 insertions(+), 8 deletions(-)
+ arch/powerpc/kernel/vmlinux.lds.S | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
 diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
-index fe22d940412f..d81e4392da26 100644
+index d81e4392da26..607b17b1e785 100644
 --- a/arch/powerpc/kernel/vmlinux.lds.S
 +++ b/arch/powerpc/kernel/vmlinux.lds.S
-@@ -210,6 +210,9 @@ SECTIONS
+@@ -122,14 +122,6 @@ SECTIONS
+ 		*(.sfpr);
+ 		MEM_KEEP(init.text)
+ 		MEM_KEEP(exit.text)
+-
+-#ifdef CONFIG_PPC32
+-		*(.got1)
+-		__got2_start = .;
+-		*(.got2)
+-		__got2_end = .;
+-#endif /* CONFIG_PPC32 */
+-
+ 	} :text
+ 
+ 	. = ALIGN(PAGE_SIZE);
+@@ -139,7 +131,16 @@ SECTIONS
+ 	/* Read-only data */
+ 	RO_DATA(PAGE_SIZE)
+ 
+-#ifdef CONFIG_PPC64
++#ifdef CONFIG_PPC32
++	.got1 : AT(ADDR(.got1) - LOAD_OFFSET) {
++		*(.got1)
++	}
++	.got2 : AT(ADDR(.got2) - LOAD_OFFSET) {
++		__got2_start = .;
++		*(.got2)
++		__got2_end = .;
++	}
++#else /* CONFIG_PPC32 */
+ 	SOFT_MASK_TABLE(8)
+ 	RESTART_TABLE(8)
+ 
+@@ -190,7 +191,7 @@ SECTIONS
+ 		*(__rfi_flush_fixup)
+ 		__stop___rfi_flush_fixup = .;
  	}
- #endif
+-#endif /* CONFIG_PPC64 */
++#endif /* CONFIG_PPC32 */
  
-+	. = ALIGN(STRICT_ALIGN_SIZE);
-+	__end_rodata = .;
-+
- /*
-  * Init sections discarded at runtime
-  */
-diff --git a/arch/powerpc/mm/book3s32/mmu.c b/arch/powerpc/mm/book3s32/mmu.c
-index a96b73006dfb..e13b883e4e5b 100644
---- a/arch/powerpc/mm/book3s32/mmu.c
-+++ b/arch/powerpc/mm/book3s32/mmu.c
-@@ -240,7 +240,7 @@ void mmu_mark_rodata_ro(void)
- 	for (i = 0; i < nb; i++) {
- 		struct ppc_bat *bat = BATS[i];
- 
--		if (bat_addrs[i].start < (unsigned long)__init_begin)
-+		if (bat_addrs[i].start < (unsigned long)__end_rodata)
- 			bat[1].batl = (bat[1].batl & ~BPP_RW) | BPP_RX;
- 	}
- 
-diff --git a/arch/powerpc/mm/book3s64/hash_pgtable.c b/arch/powerpc/mm/book3s64/hash_pgtable.c
-index ae008b9df0e6..28332001bd87 100644
---- a/arch/powerpc/mm/book3s64/hash_pgtable.c
-+++ b/arch/powerpc/mm/book3s64/hash_pgtable.c
-@@ -541,7 +541,7 @@ void hash__mark_rodata_ro(void)
- 	unsigned long start, end, pp;
- 
- 	start = (unsigned long)_stext;
--	end = (unsigned long)__init_begin;
-+	end = (unsigned long)__end_rodata;
- 
- 	pp = htab_convert_pte_flags(pgprot_val(PAGE_KERNEL_ROX), HPTE_USE_KERNEL_KEY);
- 
-diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-index 698274109c91..eb3c56975c37 100644
---- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-+++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-@@ -228,7 +228,7 @@ void radix__mark_rodata_ro(void)
- 	unsigned long start, end;
- 
- 	start = (unsigned long)_stext;
--	end = (unsigned long)__init_begin;
-+	end = (unsigned long)__end_rodata;
- 
- 	radix__change_memory_range(start, end, _PAGE_WRITE);
- }
-@@ -259,8 +259,8 @@ print_mapping(unsigned long start, unsigned long end, unsigned long size, bool e
- static unsigned long next_boundary(unsigned long addr, unsigned long end)
- {
- #ifdef CONFIG_STRICT_KERNEL_RWX
--	if (addr < __pa_symbol(__init_begin))
--		return __pa_symbol(__init_begin);
-+	if (addr < __pa_symbol(__end_rodata))
-+		return __pa_symbol(__end_rodata);
- #endif
- 	return end;
- }
-diff --git a/arch/powerpc/mm/pgtable_32.c b/arch/powerpc/mm/pgtable_32.c
-index 3ac73f9fb5d5..5c02fd08d61e 100644
---- a/arch/powerpc/mm/pgtable_32.c
-+++ b/arch/powerpc/mm/pgtable_32.c
-@@ -158,10 +158,11 @@ void mark_rodata_ro(void)
- 	}
- 
- 	/*
--	 * mark .text and .rodata as read only. Use __init_begin rather than
--	 * __end_rodata to cover NOTES and EXCEPTION_TABLE.
-+	 * mark text and rodata as read only. __end_rodata is set by
-+	 * powerpc's linker script and includes tables and data
-+	 * requiring relocation which are not put in RO_DATA.
- 	 */
--	numpages = PFN_UP((unsigned long)__init_begin) -
-+	numpages = PFN_UP((unsigned long)__end_rodata) -
- 		   PFN_DOWN((unsigned long)_stext);
- 
- 	set_memory_ro((unsigned long)_stext, numpages);
+ #ifdef CONFIG_PPC_BARRIER_NOSPEC
+ 	. = ALIGN(8);
 -- 
 2.37.2
 
