@@ -1,66 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4482A5BA92C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Sep 2022 11:17:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FEFF5BA95B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Sep 2022 11:27:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MTT3q4qGRz3br0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Sep 2022 19:17:11 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=misterjones.org header.i=@misterjones.org header.a=rsa-sha256 header.s=dkim20211231 header.b=vw30vGqb;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MTTHr6vywz3bnr
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Sep 2022 19:27:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=misterjones.org (client-ip=51.254.78.96; helo=disco-boy.misterjones.org; envelope-from=maz@misterjones.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=misterjones.org header.i=@misterjones.org header.a=rsa-sha256 header.s=dkim20211231 header.b=vw30vGqb;
-	dkim-atps=neutral
-X-Greylist: delayed 925 seconds by postgrey-1.36 at boromir; Fri, 16 Sep 2022 19:16:32 AEST
-Received: from disco-boy.misterjones.org (disco-boy.misterjones.org [51.254.78.96])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33; helo=metis.ext.pengutronix.de; envelope-from=ukl@pengutronix.de; receiver=<UNKNOWN>)
+X-Greylist: delayed 1118 seconds by postgrey-1.36 at boromir; Fri, 16 Sep 2022 19:27:13 AEST
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MTT342vx0z2xsD
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Sep 2022 19:16:31 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=misterjones.org; s=dkim20211231; h=Content-Transfer-Encoding:Content-Type:
-	Message-ID:References:In-Reply-To:Subject:Cc:To:From:Date:MIME-Version:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=WpOIYPFmZvX+Hf2mD/HENyssqGqbLDXFAm0gYQobp9o=; b=vw30vGqbyjYmaM3nKnskMxB/y+
-	lw/jA0e/qsYeOLKWeB+M9pBy79w1bxVNFdGPnj1q7bDvJSGbFGE9g/6/s3WogeA7TOX1YXUyGg1x0
-	pTlP11nDz1yB2tnWgOoUfZONTyL1unFVmhgDysLveBpkJ7DtJcohL8NqRL+bFBB7z/KUIt+Jg8S7L
-	/g0VlHBwX0VvkVE6n9reRzOGt0hMoehxgxc6H3FCI/q3fovs9/b6nZbmWJpwad6zQ2KeRKuGadLzE
-	9DCBQxYnOHWwYY4Gvcv0wEak1BiL7zsNN0+ZPOQ2niZSKo3HdGerEmF7aAZ8QPwNPdyuKP+AkoKqD
-	y63NDfkw==;
-Received: from disco-boy.misterjones.org ([51.254.78.96] helo=www.loen.fr)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@misterjones.org>)
-	id 1oZ7DJ-00AZwo-Lg;
-	Fri, 16 Sep 2022 10:00:45 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MTTHP6L6Yz302x
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Sep 2022 19:27:12 +1000 (AEST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1oZ7Ka-0007Zx-QB; Fri, 16 Sep 2022 11:08:16 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1oZ7KW-00138f-QS; Fri, 16 Sep 2022 11:08:11 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1oZ7KU-001Fs9-JN; Fri, 16 Sep 2022 11:08:10 +0200
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+	Wolfram Sang <wsa@kernel.org>
+Subject: [PATCH] macintosh/ams: Adapt declaration of ams_i2c_remove() to earlier change
+Date: Fri, 16 Sep 2022 11:08:02 +0200
+Message-Id: <20220916090802.261279-1-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-Date: Fri, 16 Sep 2022 10:00:45 +0100
-From: Marc Zyngier <maz@misterjones.org>
-To: Alexey Kardashevskiy <aik@ozlabs.ru>
-Subject: Re: [PATCH kernel] KVM: PPC: Make KVM_CAP_IRQFD_RESAMPLE platform
- dependent
-In-Reply-To: <59dfb450-5a91-f27b-6edf-0adfa89729b7@ozlabs.ru>
-References: <20220504074807.3616813-1-aik@ozlabs.ru>
- <0d4bb0fa-10c6-3f5a-34c8-293144b3fdbb@ozlabs.ru>
- <59dfb450-5a91-f27b-6edf-0adfa89729b7@ozlabs.ru>
-User-Agent: Roundcube Webmail/1.4.13
-Message-ID: <4884805567a0288ab1dbefb8aec819a2@misterjones.org>
-X-Sender: maz@misterjones.org
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1428; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=do/Kw3ytksfrqQaGzU6ZIwCzEv3D5tV24+6WnpVw9pc=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBjJDzutBJxZZLlx5FgG4dttMsbGJHJGQGjkSlGv9F+ 7SD8JbuJATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCYyQ87gAKCRDB/BR4rcrsCXMIB/ 9qMjSb53PiWux7vmHgutZ4Jd3Y5FiJjKKNgEhcd5hoo+CN7n7KhV3sT2sZIGxTcY3qmou30sfntP47 fuG7Z3dByG/++hQOzRFR4yyYHGIzefKuJEvXBjJVT6tFVRWYVviGPMEcXRX0Nni66SYNeWeYBpWBNO MfDRAQ3MtW4NHpRXmQUo9sqzaeGvJ8mpoASYnLwpbo954WaJXg3X16hYiBB2OjJCAVxdSG8tcQfoKd E6ilWWDpHqA/sGLWAITKpJR40r2xFErK7KVcad2nrV+d59kWM97b0bYofEVrUSN5SJukWB9uNLYTLW Z5CmNrDHFfTRH4suRzhLbOn6YrxhPN
+X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 51.254.78.96
-X-SA-Exim-Rcpt-To: aik@ozlabs.ru, kvm-ppc@vger.kernel.org, linux-s390@vger.kernel.org, kvm@vger.kernel.org, farosas@linux.ibm.com, x86@kernel.org, linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org, alex.williamson@redhat.com, kvm-riscv@lists.infradead.org, pbonzini@redhat.com, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, kvmarm@lists.cs.columbia.edu, linux-arm-kernel@lists.infradead.org
-X-SA-Exim-Mail-From: maz@misterjones.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,66 +56,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, kvm@vger.kernel.org, Fabiano Rosas <farosas@linux.ibm.com>, x86@kernel.org, linux-mips@vger.kernel.org, kvm-ppc@vger.kernel.org, linux-kernel@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>, kvm-riscv@lists.infradead.org, Paolo Bonzini <pbonzini@redhat.com>, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, kvmarm@lists.cs.columbia.edu, linux-arm-kernel@lists.infradead.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org, kernel@pengutronix.de, kernel test robot <lkp@intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2022-09-13 13:50, Alexey Kardashevskiy wrote:
-> Ping? It's been a while and probably got lost :-/
-> 
-> On 18/05/2022 16:27, Alexey Kardashevskiy wrote:
->> 
->> 
->> On 5/4/22 17:48, Alexey Kardashevskiy wrote:
->>> When introduced, IRQFD resampling worked on POWER8 with XICS. However
->>> KVM on POWER9 has never implemented it - the compatibility mode code
->>> ("XICS-on-XIVE") misses the kvm_notify_acked_irq() call and the 
->>> native
->>> XIVE mode does not handle INTx in KVM at all.
->>> 
->>> This moved the capability support advertising to platforms and stops
->>> advertising it on XIVE, i.e. POWER9 and later.
->>> 
->>> Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
->>> ---
->>> 
->>> 
->>> Or I could move this one together with KVM_CAP_IRQFD. Thoughts?
->> 
->> 
->> Ping?
->> 
->>> 
->>> ---
->>>   arch/arm64/kvm/arm.c       | 3 +++
->>>   arch/mips/kvm/mips.c       | 3 +++
->>>   arch/powerpc/kvm/powerpc.c | 6 ++++++
->>>   arch/riscv/kvm/vm.c        | 3 +++
->>>   arch/s390/kvm/kvm-s390.c   | 3 +++
->>>   arch/x86/kvm/x86.c         | 3 +++
->>>   virt/kvm/kvm_main.c        | 1 -
->>>   7 files changed, 21 insertions(+), 1 deletion(-)
->>> 
->>> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
->>> index 523bc934fe2f..092f0614bae3 100644
->>> --- a/arch/arm64/kvm/arm.c
->>> +++ b/arch/arm64/kvm/arm.c
->>> @@ -210,6 +210,9 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, 
->>> long ext)
->>>       case KVM_CAP_SET_GUEST_DEBUG:
->>>       case KVM_CAP_VCPU_ATTRIBUTES:
->>>       case KVM_CAP_PTP_KVM:
->>> +#ifdef CONFIG_HAVE_KVM_IRQFD
->>> +    case KVM_CAP_IRQFD_RESAMPLE:
->>> +#endif
+Commit ed5c2f5fd10d ("i2c: Make remove callback return void") changed
+the prototype of ams_i2c_remove() but failed to adapt the declaration.
+Catch up and fix the declaration accordingly.
 
-I don't mind moving this around, but I object to the #ifdefery.
+Fixes: ed5c2f5fd10d ("i2c: Make remove callback return void")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+---
+Hello,
 
-This option is always selected on arm64, so it can safely be added
-to the list without any condition.
+the kernel test robot found a regression. I checked the kernel tree and
+(assuming I did it correctly) there are no other instances where I
+missed to adapt a declaration.
 
-Thanks,
+I don't know how to proceed with this fix. Squashing into the broken
+commit is out of the game as the commit is on a stable branch that is
+already merged in a few trees. Maybe let it go in via the i2c tree?
 
-         M.
+Best regards
+Uwe
+
+ drivers/macintosh/ams/ams-i2c.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/macintosh/ams/ams-i2c.c b/drivers/macintosh/ams/ams-i2c.c
+index 362fc56b69dc..3ded340699fb 100644
+--- a/drivers/macintosh/ams/ams-i2c.c
++++ b/drivers/macintosh/ams/ams-i2c.c
+@@ -58,7 +58,7 @@ enum ams_i2c_cmd {
+ 
+ static int ams_i2c_probe(struct i2c_client *client,
+ 			 const struct i2c_device_id *id);
+-static int ams_i2c_remove(struct i2c_client *client);
++static void ams_i2c_remove(struct i2c_client *client);
+ 
+ static const struct i2c_device_id ams_id[] = {
+ 	{ "MAC,accelerometer_1", 0 },
 -- 
-Who you jivin' with that Cosmik Debris?
+2.37.2
+
