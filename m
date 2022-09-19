@@ -2,49 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 796925BD779
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 00:34:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AC265BD885
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 01:58:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MWfcP0PnYz3f6p
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 08:34:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MWhSm2tTrz3c3m
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 09:58:00 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=lixom-net.20210112.gappssmtp.com header.i=@lixom-net.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=pT3AVw/X;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.222.169; helo=mail-qk1-f169.google.com; envelope-from=rjwysocki@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=lixom.net (client-ip=2a00:1450:4864:20::62e; helo=mail-ej1-x62e.google.com; envelope-from=olof@lixom.net; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=lixom-net.20210112.gappssmtp.com header.i=@lixom-net.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=pT3AVw/X;
+	dkim-atps=neutral
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MWT0s2SQzz2yyd
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Sep 2022 01:21:31 +1000 (AEST)
-Received: by mail-qk1-f169.google.com with SMTP id x18so7411064qkn.6
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Sep 2022 08:21:31 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MWg5m3GtKz2yQK
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Sep 2022 08:56:26 +1000 (AEST)
+Received: by mail-ej1-x62e.google.com with SMTP id y17so2095683ejo.6
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Sep 2022 15:56:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=lixom-net.20210112.gappssmtp.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=5S9VBftUHA8Ab+AfT1DhnDF/jWnQCvfphMhw9w+YVhc=;
+        b=pT3AVw/XaQKfMJa28M67X6CWfwalI0Uvo6unsRjOTD2Z+d/hMLJagRy91+fB9mWt/H
+         RvjlLsn+3FsNx74QkbruJHKtTQ+30w35PYmoN36zBZvRhmzaaut2t/ejO0VHEYQ77EDj
+         OXDYFEqkBBbGSPaGws21i+7eNFUtsVpC10Ocfp53V0C+AqpxtnC2gWLf09NvoZb8DNZe
+         nefkWz5Q2xpTnqPE/9sJZpmszdShkKibcjHKjjaL4N2+oQKOJucjE0sZV5m8l2gxJQLL
+         eUTG5Bs9Z5UoBJW4L2zlLkhjGsOc0HVn5guvp/vsJvOqjFnEQJHDOGaHy7aMupntX7WF
+         7vTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=zwk8/QhMZpatQGQHcLa6CxC1A70tMAO9HDHY25D5feE=;
-        b=Q+hCQ3MMj8M7nJ27HYUFZSv8hTHR/E0ASTL8Raisi3fGc/7fPyKb81T3Jz0MXg9hJT
-         /V3paR82s+fDgE/5gmNm2NtpEMtIphFPuK0YyCDxiacMRvwshI9UUolnXBw/+XhSGcQA
-         bt13dTg0r99WToHnWZ47OFJRSmNvTJmDW076fUpbruge5sw0P56LHUAcNnJMY3K9nrDP
-         HUL5hy4tNomExMSoudN1JjRJzPuS92c+2CPsluPTi84x2admy54+XFQAC0GUysTsTE9S
-         23v8LFkjihtZqpUX7nRpFvGbxOCE5LL0G5YErR/Y/LcfOsKOrMNHMBBRjNGZq6+edmmy
-         ef6w==
-X-Gm-Message-State: ACrzQf1K7JCt6h3TEYHEHGNCkFAtVTYbn98ws0ozhoXqBcq6ozf/J1nD
-	q4fhaOiYcGhfoRFoTzIA9CqEsHi/UC/9bKOZjZM=
-X-Google-Smtp-Source: AMsMyM5cgrHdHMwYAR2D2ZjqABuHY9UEfVqKvTwIhmR6+N901HRJWzEi9ZfhaQwzx+J2b350jxNOS+DoidFDWdYllGY=
-X-Received: by 2002:a05:620a:46ac:b0:6ce:3e55:fc21 with SMTP id
- bq44-20020a05620a46ac00b006ce3e55fc21mr12973834qkb.285.1663600885830; Mon, 19
- Sep 2022 08:21:25 -0700 (PDT)
+        bh=5S9VBftUHA8Ab+AfT1DhnDF/jWnQCvfphMhw9w+YVhc=;
+        b=SO00gxPlueAC/7ew6PFdcTzNjco/0nKE1O31Vhoto6pNSSYl17djnhc12njbP6cLep
+         fORioxHnjBdVrQeESneUunqfGWkhbR4bBARrckMRYIm9AQHUQQxEi6bWs82CwnkQlRoY
+         9y1ojo3Fd1vUP03rdd4AIt5XUnQ4/m/s9NU6YVRCENs5L4+E4RO9q3dDcV3PlMt9S0wt
+         na531ix42IKgUwoKXFkwCQrlt1DPV0is5TNy9aPXcWuw2+XLbazD2J6HGNn4/0IRMYT0
+         xc58xi1VDEt/e9RJO8vCDiQ1I7FM728/BEyQl3XSVjDkAmBcOvvs7CjGVpAMfNduIwJZ
+         M4+Q==
+X-Gm-Message-State: ACrzQf2Bp86BNiTcndm1rQyF1YKBT1FpALm+Gu3v3BmHcEbrBoiIX/FM
+	Za7RQOzP8yUmM3rQwvOsdYUjj2zEhdt3N6LUQc04EA==
+X-Google-Smtp-Source: AMsMyM5kdxcAfNB78ChbidtnpNAMschNYMIGpvHRr7zgKTZ4CCEGx6bhJgHHTNr9SAgKH+LAmfDCBtvH2R9hQBackB8=
+X-Received: by 2002:a17:906:ef8c:b0:77c:8f77:330 with SMTP id
+ ze12-20020a170906ef8c00b0077c8f770330mr14503775ejb.604.1663628181793; Mon, 19
+ Sep 2022 15:56:21 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220919095939.761690562@infradead.org>
-In-Reply-To: <20220919095939.761690562@infradead.org>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 19 Sep 2022 17:21:12 +0200
-Message-ID: <CAJZ5v0h3y-MRzHmbzrr6B4vBxkkw07LOdCVmBqSS4JDhtGSKXg@mail.gmail.com>
-Subject: Re: [PATCH v2 00/44] cpuidle,rcu: Clean up the mess
-To: Peter Zijlstra <peterz@infradead.org>
+References: <20220701012647.2007122-1-saravanak@google.com>
+ <YwS5J3effuHQJRZ5@kroah.com> <CAOesGMivJ5Q-jdeGKw32yhjmNiYctHjpEAnoMMRghYqWD2m2tw@mail.gmail.com>
+ <YygsEtxKz8dsEstc@kroah.com>
+In-Reply-To: <YygsEtxKz8dsEstc@kroah.com>
+From: Olof Johansson <olof@lixom.net>
+Date: Mon, 19 Sep 2022 15:56:09 -0700
+Message-ID: <CAOesGMh5GHCONTQ9M1Ro7zW-hkL_1F7Xt=xRV0vYSfPY=7LYkQ@mail.gmail.com>
+Subject: Re: [PATCH v2 0/2] Fix console probe delay when stdout-path isn't set
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Mailman-Approved-At: Tue, 20 Sep 2022 07:59:18 +1000
+X-Mailman-Approved-At: Tue, 20 Sep 2022 09:57:29 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,183 +75,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juri Lelli <juri.lelli@redhat.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, Linus Walleij <linus.walleij@linaro.org>, Benjamin Segall <bsegall@google.com>, Guo Ren <guoren@kernel.org>, Pavel Machek <pavel@ucw.cz>, Alexander Gordeev <agordeev@linux.ibm.com>, srivatsa@csail.mit.edu, linux-arch <linux-arch@vger.kernel.org>, Vincent Guittot <vincent.guittot@linaro.org>, Huacai Chen <chenhuacai@kernel.org>, ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Andy Gross <agross@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>, dl-linux-imx <linux-imx@nxp.com>, vgupta@kernel.org, Matt Turner <mattst88@gmail.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Michael Turquette <mturquette@baylibre.com>, sammy@sammy.net, Petr Mladek <pmladek@suse.com>, Linux PM <linux-pm@vger.kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, linux-um@lists.infradead.org, Nicholas Piggin <npiggin@gmail.com>, Thomas Gleixner <tglx@linutronix.de>, Lin
- ux OMAP Mailing List <linux-omap@vger.kernel.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, andreyknvl@gmail.com, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-perf-users@vger.kernel.org, senozhatsky@chromium.org, Sven Schnelle <svens@linux.ibm.com>, jolsa@kernel.org, Tejun Heo <tj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, virtualization@lists.linux-foundation.org, James Bottomley <James.Bottomley@hansenpartnership.com>, Max Filippov <jcmvbkbc@gmail.com>, Thierry Reding <thierry.reding@gmail.com>, kernel@xen0n.name, Christoph Lameter <cl@linux.com>, linux-s390@vger.kernel.org, vschneid@redhat.com, John Ogness <john.ogness@linutronix.de>, Yoshinori Sato <ysato@users.sourceforge.jp>, Linux-sh list <linux-sh@vger.kernel.org>, Fabio Estevam <festevam@gmail.com>, Helge Deller <deller@gmx.de>, Danie
- l Lezcano <daniel.lezcano@linaro.org>, Jon Hunter <jonathanh@nvidia.com>, Dennis Zhou <dennis@kernel.org>, Len Brown <lenb@kernel.org>, linux-xtensa@linux-xtensa.org, Sascha Hauer <kernel@pengutronix.de>, Vasily Gorbik <gor@linux.ibm.com>, linux-arm-msm <linux-arm-msm@vger.kernel.org>, linux-alpha@vger.kernel.org, linux-m68k <linux-m68k@lists.linux-m68k.org>, loongarch@lists.linux.dev, Stafford Horne <shorne@gmail.com>, Chris Zankel <chris@zankel.net>, Stephen Boyd <sboyd@kernel.org>, dinguyen@kernel.org, Daniel Bristot de Oliveira <bristot@redhat.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, Frederic Weisbecker <fweisbec@gmail.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, Atish Patra <atishp@atishpatra.org>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, kasan-dev@googlegroups.com, Will Deacon <will@kernel.org>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Kevin Hilman <khilman@kernel.org>, linux-csky@vger.kernel.org, pv-drivers@vmware.com, linux-snps-arc@lists.i
- nfradead.org, Mel Gorman <mgorman@suse.de>, Jacob Pan <jacob.jun.pan@linux.intel.com>, Arnd Bergmann <arnd@arndb.de>, ulli.kroll@googlemail.com, linux-clk <linux-clk@vger.kernel.org>, Steven Rostedt <rostedt@goodmis.org>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, bcain@quicinc.com, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Parisc List <linux-parisc@vger.kernel.org>, ryabinin.a.a@gmail.com, Sudeep Holla <sudeep.holla@arm.com>, Shawn Guo <shawnguo@kernel.org>, David Miller <davem@davemloft.net>, Rich Felker <dalias@libc.org>, Tony Lindgren <tony@atomide.com>, amakhalov@vmware.com, Konrad Dybcio <konrad.dybcio@somainline.org>, Bjorn Andersson <bjorn.andersson@linaro.org>, Alexander Potapenko <glider@google.com>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-riscv <linux-riscv@lists.infradead.org>, vincenzo.frascino@arm.com, anton.ivanov@cambridgegreys.com, jonas@southpole.se, Yury Norov <yury.norov@gmail.com>, Richard Weinbe
- rger <richard@nod.at>, the arch/x86 maintainers <x86@kernel.org>, Russell King - ARM Linux <linux@armlinux.org.uk>, Ingo Molnar <mingo@redhat.com>, Albert Ou <aou@eecs.berkeley.edu>, Heiko Carstens <hca@linux.ibm.com>, richard.henderson@linaro.org, stefan.kristiansson@saunalahti.fi, openrisc@lists.librecores.org, acme@kernel.org, Paul Walmsley <paul.walmsley@sifive.com>, linux-tegra <linux-tegra@vger.kernel.org>, namhyung@kernel.org, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Josh Poimboeuf <jpoimboe@kernel.org>, Dmitry Vyukov <dvyukov@google.com>, Juergen Gross <jgross@suse.com>, Michal Simek <monstr@monstr.eu>, "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Anup Patel <anup@brainfault.org>, Borislav Petkov <bp@alien8.de>, Johannes Berg <johannes@sipsolutions.net>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: andrew lunn <andrew@lunn.ch>, peng fan <peng.fan@nxp.com>, "Rafael J. Wysocki" <rafael@kernel.org>, linus walleij <linus.walleij@linaro.org>, Paul Mackerras <paulus@samba.org>, Alim Akhtar <alim.akhtar@samsung.com>, Peter Korsgaard <jacmet@sunsite.dk>, linux-stm32@st-md-mailman.stormreply.com, Karol Gugala <kgugala@antmicro.com>, Jerome Brunet <jbrunet@baylibre.com>, linux-samsung-soc@vger.kernel.org, Michal Simek <michal.simek@xilinx.com>, Hammer Hsieh <hammerh0314@gmail.com>, NXP Linux Team <linux-imx@nxp.com>, Vineet Gupta <vgupta@kernel.org>, len brown <len.brown@intel.com>, Nicolas Saenz Julienne <nsaenz@kernel.org>, linux-pm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, linux-unisoc@lists.infradead.org, Scott Branden <sbranden@broadcom.com>, Andrew Jeffery <andrew@aj.id.au>, linux-kernel@vger.kernel.org, Richard Genoud <richard.genoud@gmail.com>, Masami Hiramatsu <mhiramat@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Claudiu Beznea <claudiu.beznea
+ @microchip.com>, Alexandre Belloni <alexandre.belloni@bootlin.com>, pavel machek <pavel@ucw.cz>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, eric dumazet <edumazet@google.com>, Thierry Reding <thierry.reding@gmail.com>, sascha hauer <sha@pengutronix.de>, Saravana Kannan <saravanak@google.com>, Chunyan Zhang <zhang.lyra@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, Gabriel Somlo <gsomlo@gmail.com>, Tobias Klauser <tklauser@distanz.ch>, linux-mips@vger.kernel.org, kernel-team@android.com, Martin Blumenstingl <martin.blumenstingl@googlemail.com>, linux-arm-msm@vger.kernel.org, linux-actions@lists.infradead.org, linux-gpio@vger.kernel.org, linux-rpi-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org, linux-arm-kernel@lists.infradead.org, Andreas Farber <afaerber@suse.de>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Kevin Hilman <khilman@baylibre.com>, Pali Rohar <pali@kernel.org>, heiner kallweit <hkallweit1@gmail.com>, ulf hansson <ulf.hansson@linaro.org>, Neil
+  Armstrong <narmstrong@baylibre.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, Al Cooper <alcooperx@gmail.com>, linux-tegra@vger.kernel.org, Jiri Slaby <jirislaby@kernel.org>, linux-aspeed@lists.ozlabs.org, Rob Herring <robh@kernel.org>, Florian Fainelli <f.fainelli@gmail.com>, Mateusz Holenko <mholenko@antmicro.com>, Alexander Shiyan <shc_work@mail.ru>, kevin hilman <khilman@kernel.org>, Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Joel Stanley <joel@jms.id.au>, Orson Zhai <orsonzhai@gmail.com>, paolo abeni <pabeni@redhat.com>, Patrice Chotard <patrice.chotard@foss.st.com>, Ray Jui <rjui@broadcom.com>, Vladimir Zapolskiy <vz@mleia.com>, linux-snps-arc@lists.infradead.org, Timur Tabi <timur@kernel.org>, hideaki yoshifuji <yoshfuji@linux-ipv6.org>, iommu@lists.linux-foundation.org, Laxman Dewangan <ldewangan@nvidia.com>, Sudeep Holla <sudeep.holla@arm.com>, Baolin Wang <baolin.wang7@gmail.com>, Shawn Guo <shawnguo@kernel.org>, "David S. Miller" <dav
+ em@davemloft.net>, Baruch Siach <baruch@tkos.co.il>, Liviu Dudau <liviu.dudau@arm.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, Bjorn Andersson <bjorn.andersson@linaro.org>, Paul Cercueil <paul@crapouillou.net>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, joerg roedel <joro@8bytes.org>, Russell King <linux@armlinux.org.uk>, Andy Gross <agross@kernel.org>, linux-serial@vger.kernel.org, jakub kicinski <kuba@kernel.org>, will deacon <will@kernel.org>, Manivannan Sadhasivam <mani@kernel.org>, linux-mediatek@lists.infradead.org, Fabio Estevam <festevam@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>, Matthias Brugger <matthias.bgg@gmail.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Laurentiu Tudor <laurentiu.tudor@nxp.com>, Taichi Sugaya <sugaya.taichi@socionext.com>, netdev@vger.kernel.org, david ahern <dsahern@kernel.org>, Nicolas Ferre <nicolas.ferre@microchip.com>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Palmer Dabbelt <palmer
+ @dabbelt.com>, Takao Orito <orito.takao@socionext.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Sep 19, 2022 at 12:17 PM Peter Zijlstra <peterz@infradead.org> wrote:
+On Mon, Sep 19, 2022 at 1:44 AM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> Hi All!
+> On Sun, Sep 18, 2022 at 08:44:27PM -0700, Olof Johansson wrote:
+> > On Tue, Aug 23, 2022 at 8:37 AM Greg Kroah-Hartman
+> > <gregkh@linuxfoundation.org> wrote:
+> > >
+> > > On Thu, Jun 30, 2022 at 06:26:38PM -0700, Saravana Kannan wrote:
+> > > > These patches are on top of driver-core-next.
+> > > >
+> > > > Even if stdout-path isn't set in DT, this patch should take console
+> > > > probe times back to how they were before the deferred_probe_timeout
+> > > > clean up series[1].
+> > >
+> > > Now dropped from my queue due to lack of a response to other reviewer's
+> > > questions.
+> >
+> > What happened to this patch? I have a 10 second timeout on console
+> > probe on my SiFive Unmatched, and I don't see this flag being set for
+> > the serial driver. In fact, I don't see it anywhere in-tree. I can't
+> > seem to locate another patchset from Saravana around this though, so
+> > I'm not sure where to look for a missing piece for the sifive serial
+> > driver.
+> >
+> > This is the second boot time regression (this one not fatal, unlike
+> > the Layerscape PCIe one) from the fw_devlink patchset.
+> >
+> > Greg, can you revert the whole set for 6.0, please? It's obviously
+> > nowhere near tested enough to go in and I expect we'll see a bunch of
+> > -stable fixups due to this if we let it remain in.
 >
-> At long last, a respin of the cpuidle vs rcu cleanup patches.
->
-> v1: https://lkml.kernel.org/r/20220608142723.103523089@infradead.org
->
-> These here patches clean up the mess that is cpuidle vs rcuidle.
->
-> At the end of the ride there's only on RCU_NONIDLE user left:
->
->   arch/arm64/kernel/suspend.c:            RCU_NONIDLE(__cpu_suspend_exit());
->
-> and 'one' trace_*_rcuidle() user:
->
->   kernel/trace/trace_preemptirq.c:                        trace_irq_enable_rcuidle(CALLER_ADDR0, CALLER_ADDR1);
->   kernel/trace/trace_preemptirq.c:                        trace_irq_disable_rcuidle(CALLER_ADDR0, CALLER_ADDR1);
->   kernel/trace/trace_preemptirq.c:                        trace_irq_enable_rcuidle(CALLER_ADDR0, caller_addr);
->   kernel/trace/trace_preemptirq.c:                        trace_irq_disable_rcuidle(CALLER_ADDR0, caller_addr);
->   kernel/trace/trace_preemptirq.c:                trace_preempt_enable_rcuidle(a0, a1);
->   kernel/trace/trace_preemptirq.c:                trace_preempt_disable_rcuidle(a0, a1);
->
-> However this last is all in deprecated code that should be unused for GENERIC_ENTRY.
->
-> I've touched a lot of code that I can't test and I might've broken something by
-> accident. In particular the whole ARM cpuidle stuff was quite involved.
->
-> Please all; have a look where you haven't already.
->
->
-> New since v1:
->
->  - rebase on top of Frederic's rcu-context-tracking rename fest
->  - more omap goodness as per the last discusion (thanks Tony!)
->  - removed one more RCU_NONIDLE() from arm64/risc-v perf code
->  - ubsan/kasan fixes
->  - intel_idle module-param for testing
->  - a bunch of extra __always_inline, because compilers are silly.
+> What exactly is "the whole set"?  I have the default option fix queued
+> up and will send that to Linus later this week (am traveling back from
+> Plumbers still), but have not heard any problems about any other issues
+> at all other than your report.
 
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+I stand corrected in this case, the issue on the Hifive Unmatched was
+a regression due to a PWM clock change -- I just sent a patch for that
+(serial driver fix).
 
-for the whole set and let me know if you want me to merge any of these
-through cpuidle.
+So it seems like as long as the fw_devlink.strict=1 patch is reverted,
+things are back to a working state here.
 
-Thanks!
+I still struggle with how the fw_devlink patchset is expected to work
+though, since DT is expected to describe the hardware configuration,
+and it has no knowledge of whether there are drivers that will be
+bound to any referenced supplier devnodes. It's not going to work well
+to assume that they will always be bound, and to add 10 second
+timeouts for those cases isn't a good solution. Seems like the number
+of special cases will keep adding up.
 
->
-> ---
->  arch/alpha/kernel/process.c               |  1 -
->  arch/alpha/kernel/vmlinux.lds.S           |  1 -
->  arch/arc/kernel/process.c                 |  3 ++
->  arch/arc/kernel/vmlinux.lds.S             |  1 -
->  arch/arm/include/asm/vmlinux.lds.h        |  1 -
->  arch/arm/kernel/process.c                 |  1 -
->  arch/arm/kernel/smp.c                     |  6 +--
->  arch/arm/mach-gemini/board-dt.c           |  3 +-
->  arch/arm/mach-imx/cpuidle-imx6q.c         |  4 +-
->  arch/arm/mach-imx/cpuidle-imx6sx.c        |  5 ++-
->  arch/arm/mach-omap2/common.h              |  6 ++-
->  arch/arm/mach-omap2/cpuidle34xx.c         | 16 +++++++-
->  arch/arm/mach-omap2/cpuidle44xx.c         | 29 +++++++-------
->  arch/arm/mach-omap2/omap-mpuss-lowpower.c | 12 +++++-
->  arch/arm/mach-omap2/pm.h                  |  2 +-
->  arch/arm/mach-omap2/pm24xx.c              | 51 +-----------------------
->  arch/arm/mach-omap2/pm34xx.c              | 14 +++++--
->  arch/arm/mach-omap2/pm44xx.c              |  2 +-
->  arch/arm/mach-omap2/powerdomain.c         | 10 ++---
->  arch/arm64/kernel/idle.c                  |  1 -
->  arch/arm64/kernel/smp.c                   |  4 +-
->  arch/arm64/kernel/vmlinux.lds.S           |  1 -
->  arch/csky/kernel/process.c                |  1 -
->  arch/csky/kernel/smp.c                    |  2 +-
->  arch/csky/kernel/vmlinux.lds.S            |  1 -
->  arch/hexagon/kernel/process.c             |  1 -
->  arch/hexagon/kernel/vmlinux.lds.S         |  1 -
->  arch/ia64/kernel/process.c                |  1 +
->  arch/ia64/kernel/vmlinux.lds.S            |  1 -
->  arch/loongarch/kernel/idle.c              |  1 +
->  arch/loongarch/kernel/vmlinux.lds.S       |  1 -
->  arch/m68k/kernel/vmlinux-nommu.lds        |  1 -
->  arch/m68k/kernel/vmlinux-std.lds          |  1 -
->  arch/m68k/kernel/vmlinux-sun3.lds         |  1 -
->  arch/microblaze/kernel/process.c          |  1 -
->  arch/microblaze/kernel/vmlinux.lds.S      |  1 -
->  arch/mips/kernel/idle.c                   |  8 ++--
->  arch/mips/kernel/vmlinux.lds.S            |  1 -
->  arch/nios2/kernel/process.c               |  1 -
->  arch/nios2/kernel/vmlinux.lds.S           |  1 -
->  arch/openrisc/kernel/process.c            |  1 +
->  arch/openrisc/kernel/vmlinux.lds.S        |  1 -
->  arch/parisc/kernel/process.c              |  2 -
->  arch/parisc/kernel/vmlinux.lds.S          |  1 -
->  arch/powerpc/kernel/idle.c                |  5 +--
->  arch/powerpc/kernel/vmlinux.lds.S         |  1 -
->  arch/riscv/kernel/process.c               |  1 -
->  arch/riscv/kernel/vmlinux-xip.lds.S       |  1 -
->  arch/riscv/kernel/vmlinux.lds.S           |  1 -
->  arch/s390/kernel/idle.c                   |  1 -
->  arch/s390/kernel/vmlinux.lds.S            |  1 -
->  arch/sh/kernel/idle.c                     |  1 +
->  arch/sh/kernel/vmlinux.lds.S              |  1 -
->  arch/sparc/kernel/leon_pmc.c              |  4 ++
->  arch/sparc/kernel/process_32.c            |  1 -
->  arch/sparc/kernel/process_64.c            |  3 +-
->  arch/sparc/kernel/vmlinux.lds.S           |  1 -
->  arch/um/kernel/dyn.lds.S                  |  1 -
->  arch/um/kernel/process.c                  |  1 -
->  arch/um/kernel/uml.lds.S                  |  1 -
->  arch/x86/boot/compressed/vmlinux.lds.S    |  1 +
->  arch/x86/coco/tdx/tdcall.S                | 15 +------
->  arch/x86/coco/tdx/tdx.c                   | 25 ++++--------
->  arch/x86/events/amd/brs.c                 | 13 +++----
->  arch/x86/include/asm/fpu/xcr.h            |  4 +-
->  arch/x86/include/asm/irqflags.h           | 11 ++----
->  arch/x86/include/asm/mwait.h              | 14 +++----
->  arch/x86/include/asm/nospec-branch.h      |  2 +-
->  arch/x86/include/asm/paravirt.h           |  6 ++-
->  arch/x86/include/asm/perf_event.h         |  2 +-
->  arch/x86/include/asm/shared/io.h          |  4 +-
->  arch/x86/include/asm/shared/tdx.h         |  1 -
->  arch/x86/include/asm/special_insns.h      |  8 ++--
->  arch/x86/include/asm/xen/hypercall.h      |  2 +-
->  arch/x86/kernel/cpu/bugs.c                |  2 +-
->  arch/x86/kernel/fpu/core.c                |  4 +-
->  arch/x86/kernel/paravirt.c                | 14 ++++++-
->  arch/x86/kernel/process.c                 | 65 +++++++++++++++----------------
->  arch/x86/kernel/vmlinux.lds.S             |  1 -
->  arch/x86/lib/memcpy_64.S                  |  5 +--
->  arch/x86/lib/memmove_64.S                 |  4 +-
->  arch/x86/lib/memset_64.S                  |  4 +-
->  arch/x86/xen/enlighten_pv.c               |  2 +-
->  arch/x86/xen/irq.c                        |  2 +-
->  arch/xtensa/kernel/process.c              |  1 +
->  arch/xtensa/kernel/vmlinux.lds.S          |  1 -
->  drivers/acpi/processor_idle.c             | 36 ++++++++++-------
->  drivers/base/power/runtime.c              | 24 ++++++------
->  drivers/clk/clk.c                         |  8 ++--
->  drivers/cpuidle/cpuidle-arm.c             |  1 +
->  drivers/cpuidle/cpuidle-big_little.c      |  8 +++-
->  drivers/cpuidle/cpuidle-mvebu-v7.c        |  7 ++++
->  drivers/cpuidle/cpuidle-psci.c            | 10 +++--
->  drivers/cpuidle/cpuidle-qcom-spm.c        |  1 +
->  drivers/cpuidle/cpuidle-riscv-sbi.c       | 10 +++--
->  drivers/cpuidle/cpuidle-tegra.c           | 21 +++++++---
->  drivers/cpuidle/cpuidle.c                 | 21 +++++-----
->  drivers/cpuidle/dt_idle_states.c          |  2 +-
->  drivers/cpuidle/poll_state.c              | 10 ++++-
->  drivers/idle/intel_idle.c                 | 19 +++++----
->  drivers/perf/arm_pmu.c                    | 11 +-----
->  drivers/perf/riscv_pmu_sbi.c              |  8 +---
->  include/asm-generic/vmlinux.lds.h         |  9 ++---
->  include/linux/compiler_types.h            |  8 +++-
->  include/linux/cpu.h                       |  3 --
->  include/linux/cpuidle.h                   | 34 ++++++++++++++++
->  include/linux/cpumask.h                   |  4 +-
->  include/linux/percpu-defs.h               |  2 +-
->  include/linux/sched/idle.h                | 40 ++++++++++++++-----
->  include/linux/thread_info.h               | 18 ++++++++-
->  include/linux/tracepoint.h                | 13 ++++++-
->  kernel/cpu_pm.c                           |  9 -----
->  kernel/printk/printk.c                    |  2 +-
->  kernel/sched/idle.c                       | 47 +++++++---------------
->  kernel/time/tick-broadcast-hrtimer.c      | 29 ++++++--------
->  kernel/time/tick-broadcast.c              |  6 ++-
->  kernel/trace/trace.c                      |  3 ++
->  lib/ubsan.c                               |  5 ++-
->  mm/kasan/kasan.h                          |  4 ++
->  mm/kasan/shadow.c                         | 38 ++++++++++++++++++
->  tools/objtool/check.c                     | 17 ++++++++
->  121 files changed, 511 insertions(+), 420 deletions(-)
->
+The whole design feels like it's falling short, and it's been patched
+here and there to deal with the shortcomings, instead of revisiting
+the full solution. (The patches are the console one, and another to
+deal with nfsroot boots).
+
+As long as it doesn't keep regressing others, I suppose the work to
+redesign it can happen in-tree, but it's not usually how we try to do
+it for new functionality. Especially since it's still being iterated
+on (with active patch sets posted around -rc1 for improvements).
+
+Oh, and one more thing for the future -- the main patch that changes
+behavior due to dependency tracking is 2f8c3ae8288e, named "driver
+core: Add wait_for_init_devices_probe helper function". It's easy to
+overlook this when looking at a list of patches since it's said to
+just introduce a helper.
+
+
+-Olof
