@@ -1,60 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B946D5BD759
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 00:33:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6533D5BD75E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 00:33:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MWfZg2mYfz3jLm
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 08:32:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MWfbH6qlRz3jQS
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 08:33:31 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=TgoDTVhW;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fxVxz+v2;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=frederic@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=TgoDTVhW;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fxVxz+v2;
 	dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MWScT3vN3z3bY3
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Sep 2022 01:03:53 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=8W4ANpZZg81bkZotlJvZ4fg4qiAvSnY5PZyc1BTsWP4=; b=TgoDTVhWtKioMAysMtRZaz+Ed4
-	3iL0je6K5Ai9n6tiQwv/cwXv6NOP0BwrMkHno/osPxg/RShHq5xAhp+fMX5Yy1LaTFzQyD2PKiDDa
-	IDcRLh7Ei/snb4+/2+Rx+mnplXAYQmJsQxndGbb/87NfjvASOxocT/vko3Dsiv0YDdWBWm40GCYOU
-	BqfYSOsgVZdJmPddNOZCBOqDrZGRZ7l78tr1pd1q85g8jMuq2dLOS9jwOybdzQXTlcFirzTSFh1Mf
-	CwHwwRhI7n9Qk6BduqR2uRJ2T8bbcCN4Pdh8GIPZSoE0DqIl0HQ8n6rVimdaBjWyxLbUZ/OLSG7Cy
-	vJU3fjyg==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oaIId-004nY8-EL; Mon, 19 Sep 2022 15:03:07 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
-	(Client did not present a certificate)
-	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 86D5B30035F;
-	Mon, 19 Sep 2022 17:03:04 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 5DBEE2BAC7A31; Mon, 19 Sep 2022 17:03:04 +0200 (CEST)
-Date: Mon, 19 Sep 2022 17:03:04 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Frederic Weisbecker <frederic@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MWSwS4jn3z303C
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Sep 2022 01:17:44 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 2B61BB81622;
+	Mon, 19 Sep 2022 15:17:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D47AEC433D6;
+	Mon, 19 Sep 2022 15:17:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1663600657;
+	bh=SGRWSsWxhYnFNcVdXVanCp7r8VhObbFain7vrJ2pf9o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fxVxz+v2ZKRYGR2RcB+jwqcdhOAyWFuA63mrtcEpyRTpMkbyS6WHs4N4WpL6wD55y
+	 MEw4vseCOHKlzHluXBoBp/tNbhBozucjByJQwggqB8cSL766iSR/fB5p7HP2XX3V5a
+	 W432aviHiF1CtVbY9+02lVZyqI6r7f0Y+oEmkgLbQeCLJ6mZ8QHUtL9Cb1Rt7pnsGN
+	 oU9BgJeognmYR5a7tpyKmtArG/qTrOVW6g6oNhiIq3bF6GOaiMj1jdkgNeNp7u/R+2
+	 PWnZiOvApDwvdE77MAQCyvfpVSOU+ZSH1CmsYL840fIy4Yva2osOuqdAr10RKbdLw3
+	 uLMmSqj+LM5sA==
+Date: Mon, 19 Sep 2022 17:17:34 +0200
+From: Frederic Weisbecker <frederic@kernel.org>
+To: Peter Zijlstra <peterz@infradead.org>
 Subject: Re: [PATCH v2 08/44] cpuidle,imx6: Push RCU-idle into driver
-Message-ID: <YyiEqDSJVOZrQYg8@hirez.programming.kicks-ass.net>
+Message-ID: <20220919151734.GB62211@lothringen>
 References: <20220919095939.761690562@infradead.org>
  <20220919101520.869531945@infradead.org>
  <20220919144941.GA62211@lothringen>
+ <YyiEqDSJVOZrQYg8@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220919144941.GA62211@lothringen>
+In-Reply-To: <YyiEqDSJVOZrQYg8@hirez.programming.kicks-ass.net>
 X-Mailman-Approved-At: Tue, 20 Sep 2022 07:59:18 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -74,38 +70,46 @@ Cc: juri.lelli@redhat.com, rafael@kernel.org, catalin.marinas@arm.com, linus.wal
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Sep 19, 2022 at 04:49:41PM +0200, Frederic Weisbecker wrote:
-> On Mon, Sep 19, 2022 at 11:59:47AM +0200, Peter Zijlstra wrote:
-> > Doing RCU-idle outside the driver, only to then temporarily enable it
-> > again, at least twice, before going idle is daft.
+On Mon, Sep 19, 2022 at 05:03:04PM +0200, Peter Zijlstra wrote:
+> On Mon, Sep 19, 2022 at 04:49:41PM +0200, Frederic Weisbecker wrote:
+> > On Mon, Sep 19, 2022 at 11:59:47AM +0200, Peter Zijlstra wrote:
+> > > Doing RCU-idle outside the driver, only to then temporarily enable it
+> > > again, at least twice, before going idle is daft.
+> > > 
+> > > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> > > ---
+> > >  arch/arm/mach-imx/cpuidle-imx6sx.c |    5 ++++-
+> > >  1 file changed, 4 insertions(+), 1 deletion(-)
+> > > 
+> > > --- a/arch/arm/mach-imx/cpuidle-imx6sx.c
+> > > +++ b/arch/arm/mach-imx/cpuidle-imx6sx.c
+> > > @@ -47,7 +47,9 @@ static int imx6sx_enter_wait(struct cpui
+> > >  		cpu_pm_enter();
+> > >  		cpu_cluster_pm_enter();
+> > >  
+> > > +		ct_idle_enter();
+> > >  		cpu_suspend(0, imx6sx_idle_finish);
+> > > +		ct_idle_exit();
+> > >  
+> > >  		cpu_cluster_pm_exit();
+> > >  		cpu_pm_exit();
+> > > @@ -87,7 +89,8 @@ static struct cpuidle_driver imx6sx_cpui
+> > >  			 */
+> > >  			.exit_latency = 300,
+> > >  			.target_residency = 500,
+> > > -			.flags = CPUIDLE_FLAG_TIMER_STOP,
+> > > +			.flags = CPUIDLE_FLAG_TIMER_STOP |
+> > > +				 CPUIDLE_FLAG_RCU_IDLE,
+> > >  			.enter = imx6sx_enter_wait,
 > > 
-> > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> > ---
-> >  arch/arm/mach-imx/cpuidle-imx6sx.c |    5 ++++-
-> >  1 file changed, 4 insertions(+), 1 deletion(-)
-> > 
-> > --- a/arch/arm/mach-imx/cpuidle-imx6sx.c
-> > +++ b/arch/arm/mach-imx/cpuidle-imx6sx.c
-> > @@ -47,7 +47,9 @@ static int imx6sx_enter_wait(struct cpui
-> >  		cpu_pm_enter();
-> >  		cpu_cluster_pm_enter();
-> >  
-> > +		ct_idle_enter();
-> >  		cpu_suspend(0, imx6sx_idle_finish);
-> > +		ct_idle_exit();
-> >  
-> >  		cpu_cluster_pm_exit();
-> >  		cpu_pm_exit();
-> > @@ -87,7 +89,8 @@ static struct cpuidle_driver imx6sx_cpui
-> >  			 */
-> >  			.exit_latency = 300,
-> >  			.target_residency = 500,
-> > -			.flags = CPUIDLE_FLAG_TIMER_STOP,
-> > +			.flags = CPUIDLE_FLAG_TIMER_STOP |
-> > +				 CPUIDLE_FLAG_RCU_IDLE,
-> >  			.enter = imx6sx_enter_wait,
+> > There is a second one below that also uses imx6sx_enter_wait.
 > 
-> There is a second one below that also uses imx6sx_enter_wait.
+> Oh, above you mean; but only @index==2 gets us into the whole PM crud.
+> @index==1 is fine afaict.
 
-Oh, above you mean; but only @index==2 gets us into the whole PM crud.
-@index==1 is fine afaict.
+Ah ok, got it, hence why you didn't touch cpu_do_idle()...
+May need to comment that somewhere...
+
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+
+Thanks!
