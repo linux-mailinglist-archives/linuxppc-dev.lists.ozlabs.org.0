@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18AB45BD316
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Sep 2022 19:03:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C7665BD32C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Sep 2022 19:05:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MWWG84Nqsz3bvd
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 03:03:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MWWJn0wZdz3fjr
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 03:05:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
@@ -14,46 +14,46 @@ Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MWWFB6btWz3c6X
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Sep 2022 03:02:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MWWFm5Md6z3drm
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Sep 2022 03:02:52 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4MWWDr5RWXz9sl2;
-	Mon, 19 Sep 2022 19:02:04 +0200 (CEST)
+	by localhost (Postfix) with ESMTP id 4MWWDz5t9Tz9sjb;
+	Mon, 19 Sep 2022 19:02:11 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
 	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id Ykl9t8mHspGn; Mon, 19 Sep 2022 19:02:04 +0200 (CEST)
+	with ESMTP id h2bXSXiVWDFN; Mon, 19 Sep 2022 19:02:11 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4MWWDr4VQJz9sjb;
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4MWWDr5b4Kz9sl3;
 	Mon, 19 Sep 2022 19:02:04 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 7CC988B783;
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id A858D8B77C;
 	Mon, 19 Sep 2022 19:02:04 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id nYapW7gLXxlS; Mon, 19 Sep 2022 19:02:04 +0200 (CEST)
+	with ESMTP id cmXSjdREm2Sd; Mon, 19 Sep 2022 19:02:04 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.232.8])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 48CC18B76E;
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 6FD588B77E;
 	Mon, 19 Sep 2022 19:02:04 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 28JH1xri1549637
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 28JH1xer1549641
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
 	Mon, 19 Sep 2022 19:01:59 +0200
 Received: (from chleroy@localhost)
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 28JH1xgM1549636;
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 28JH1xve1549640;
 	Mon, 19 Sep 2022 19:01:59 +0200
 X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
-Subject: [PATCH v2 15/19] powerpc: Remove CONFIG_PPC_BOOK3E_MMU
-Date: Mon, 19 Sep 2022 19:01:39 +0200
-Message-Id: <c5549cd59a131204ff94ab909cad2e2dad4ddf2f.1663606876.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v2 16/19] powerpc: Replace PPC_85xx || PPC_BOOKE_64 by PPC_E500
+Date: Mon, 19 Sep 2022 19:01:40 +0200
+Message-Id: <af79696f8cb8536fb4e20c0d98a6bf159a9e371b.1663606876.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.37.1
 In-Reply-To: <828f6a64eeb51ce9abfa1d4e84c521a02fecebb8.1663606875.git.christophe.leroy@csgroup.eu>
 References: <828f6a64eeb51ce9abfa1d4e84c521a02fecebb8.1663606875.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1663606899; l=7287; s=20211009; h=from:subject:message-id; bh=fglMNwb9ZiTrG/In6Xy+k4f2DXnfnFluk74gsP3+QVY=; b=2nTbLx1HZK2qV2DSSZNyxkKeuv9FSYDzBQwzCXKI/YfXjPJ6EBjE0usAuhDcY/z52lLqzjc4eWPh vjmUMDSqDEXuQNbfS2mq/67aPyA/j4OrYegzp3TtN+YkU5GwVPyo
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1663606900; l=1782; s=20211009; h=from:subject:message-id; bh=UJi3fSq9YyqvrQXx+rfY1Dr4LEswdpSbyKUknMCg/i0=; b=6twIdX4Th+pdfiRWuQYKheZYVRQls3kKcFzf2tEykOdQ+Qi1EMdDIGJGsafaUhUc0EG+CQafvuRI 3NEWIkkaCdiL+xyBaTAWpXR7tszGAJ2FvFRyURRcS+sFuLr0TGbc
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -71,198 +71,54 @@ Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-CONFIG_PPC_BOOK3E_MMU is redundant with CONFIG_PPC_E500.
-
-Remove it.
-
-Also rename mmu-book3e.h to mmu-e500.h
+PPC_E500 is the same as PPC_85xx || PPC_BOOKE_64
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- .../include/asm/nohash/{mmu-book3e.h => mmu-e500.h}       | 0
- arch/powerpc/include/asm/nohash/mmu.h                     | 4 ++--
- arch/powerpc/kernel/cpu_setup_e500.S                      | 2 +-
- arch/powerpc/kernel/entry_32.S                            | 2 +-
- arch/powerpc/kernel/head_booke.h                          | 4 ++--
- arch/powerpc/kernel/kvm.c                                 | 8 ++++----
- arch/powerpc/kvm/e500.h                                   | 2 +-
- arch/powerpc/mm/nohash/tlb.c                              | 4 ++--
- arch/powerpc/mm/ptdump/Makefile                           | 2 +-
- arch/powerpc/platforms/Kconfig.cputype                    | 4 ----
- 10 files changed, 14 insertions(+), 18 deletions(-)
- rename arch/powerpc/include/asm/nohash/{mmu-book3e.h => mmu-e500.h} (100%)
+ arch/powerpc/Kconfig                   | 2 +-
+ arch/powerpc/platforms/85xx/Kconfig    | 2 +-
+ arch/powerpc/platforms/Kconfig.cputype | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/nohash/mmu-book3e.h b/arch/powerpc/include/asm/nohash/mmu-e500.h
-similarity index 100%
-rename from arch/powerpc/include/asm/nohash/mmu-book3e.h
-rename to arch/powerpc/include/asm/nohash/mmu-e500.h
-diff --git a/arch/powerpc/include/asm/nohash/mmu.h b/arch/powerpc/include/asm/nohash/mmu.h
-index edc793e5f08f..e264be219fdb 100644
---- a/arch/powerpc/include/asm/nohash/mmu.h
-+++ b/arch/powerpc/include/asm/nohash/mmu.h
-@@ -8,9 +8,9 @@
- #elif defined(CONFIG_44x)
- /* 44x-style software loaded TLB */
- #include <asm/nohash/32/mmu-44x.h>
--#elif defined(CONFIG_PPC_BOOK3E_MMU)
-+#elif defined(CONFIG_PPC_E500)
- /* Freescale Book-E software loaded TLB or Book-3e (ISA 2.06+) MMU */
--#include <asm/nohash/mmu-book3e.h>
-+#include <asm/nohash/mmu-e500.h>
- #elif defined (CONFIG_PPC_8xx)
- /* Motorola/Freescale 8xx software loaded TLB */
- #include <asm/nohash/32/mmu-8xx.h>
-diff --git a/arch/powerpc/kernel/cpu_setup_e500.S b/arch/powerpc/kernel/cpu_setup_e500.S
-index 058336079069..2ab25161b0ad 100644
---- a/arch/powerpc/kernel/cpu_setup_e500.S
-+++ b/arch/powerpc/kernel/cpu_setup_e500.S
-@@ -12,7 +12,7 @@
- #include <asm/processor.h>
- #include <asm/cputable.h>
- #include <asm/ppc_asm.h>
--#include <asm/nohash/mmu-book3e.h>
-+#include <asm/nohash/mmu-e500.h>
- #include <asm/asm-offsets.h>
- #include <asm/mpc85xx.h>
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 38f36eb4d96c..1e6346dcb1b4 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -548,7 +548,7 @@ config PPC64_SUPPORTS_MEMORY_FAILURE
  
-diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
-index e6d5fe3a8585..2b5b0677d36c 100644
---- a/arch/powerpc/kernel/entry_32.S
-+++ b/arch/powerpc/kernel/entry_32.S
-@@ -488,7 +488,7 @@ _ASM_NOKPROBE_SYMBOL(interrupt_return)
- 	mtspr	SPRN_##exc_lvl_srr0,r9;					\
- 	mtspr	SPRN_##exc_lvl_srr1,r10;
- 
--#if defined(CONFIG_PPC_BOOK3E_MMU)
-+#if defined(CONFIG_PPC_E500)
- #ifdef CONFIG_PHYS_64BIT
- #define	RESTORE_MAS7							\
- 	lwz	r11,MAS7(r1);						\
-diff --git a/arch/powerpc/kernel/head_booke.h b/arch/powerpc/kernel/head_booke.h
-index 1047dc053b47..1cb9d0f7cbf2 100644
---- a/arch/powerpc/kernel/head_booke.h
-+++ b/arch/powerpc/kernel/head_booke.h
-@@ -242,7 +242,7 @@ ALT_FTR_SECTION_END_IFSET(CPU_FTR_EMB_HV)
- 
- 
- .macro SAVE_MMU_REGS
--#ifdef CONFIG_PPC_BOOK3E_MMU
-+#ifdef CONFIG_PPC_E500
- 	mfspr	r0,SPRN_MAS0
- 	stw	r0,MAS0(r1)
- 	mfspr	r0,SPRN_MAS1
-@@ -257,7 +257,7 @@ ALT_FTR_SECTION_END_IFSET(CPU_FTR_EMB_HV)
- 	mfspr	r0,SPRN_MAS7
- 	stw	r0,MAS7(r1)
- #endif /* CONFIG_PHYS_64BIT */
--#endif /* CONFIG_PPC_BOOK3E_MMU */
-+#endif /* CONFIG_PPC_E500 */
- #ifdef CONFIG_44x
- 	mfspr	r0,SPRN_MMUCR
- 	stw	r0,MMUCR(r1)
-diff --git a/arch/powerpc/kernel/kvm.c b/arch/powerpc/kernel/kvm.c
-index 6568823cf306..5b3c093611ba 100644
---- a/arch/powerpc/kernel/kvm.c
-+++ b/arch/powerpc/kernel/kvm.c
-@@ -455,7 +455,7 @@ static void __init kvm_check_ins(u32 *inst, u32 features)
- 		kvm_patch_ins_lwz(inst, magic_var(dsisr), inst_rt);
- 		break;
- 
--#ifdef CONFIG_PPC_BOOK3E_MMU
-+#ifdef CONFIG_PPC_E500
- 	case KVM_INST_MFSPR(SPRN_MAS0):
- 		if (features & KVM_MAGIC_FEAT_MAS0_TO_SPRG7)
- 			kvm_patch_ins_lwz(inst, magic_var(mas0), inst_rt);
-@@ -484,7 +484,7 @@ static void __init kvm_check_ins(u32 *inst, u32 features)
- 		if (features & KVM_MAGIC_FEAT_MAS0_TO_SPRG7)
- 			kvm_patch_ins_lwz(inst, magic_var(mas7_3), inst_rt);
- 		break;
--#endif /* CONFIG_PPC_BOOK3E_MMU */
-+#endif /* CONFIG_PPC_E500 */
- 
- 	case KVM_INST_MFSPR(SPRN_SPRG4):
- #ifdef CONFIG_BOOKE
-@@ -557,7 +557,7 @@ static void __init kvm_check_ins(u32 *inst, u32 features)
- 	case KVM_INST_MTSPR(SPRN_DSISR):
- 		kvm_patch_ins_stw(inst, magic_var(dsisr), inst_rt);
- 		break;
--#ifdef CONFIG_PPC_BOOK3E_MMU
-+#ifdef CONFIG_PPC_E500
- 	case KVM_INST_MTSPR(SPRN_MAS0):
- 		if (features & KVM_MAGIC_FEAT_MAS0_TO_SPRG7)
- 			kvm_patch_ins_stw(inst, magic_var(mas0), inst_rt);
-@@ -586,7 +586,7 @@ static void __init kvm_check_ins(u32 *inst, u32 features)
- 		if (features & KVM_MAGIC_FEAT_MAS0_TO_SPRG7)
- 			kvm_patch_ins_stw(inst, magic_var(mas7_3), inst_rt);
- 		break;
--#endif /* CONFIG_PPC_BOOK3E_MMU */
-+#endif /* CONFIG_PPC_E500 */
- 
- 	case KVM_INST_MTSPR(SPRN_SPRG4):
- 		if (features & KVM_MAGIC_FEAT_MAS0_TO_SPRG7)
-diff --git a/arch/powerpc/kvm/e500.h b/arch/powerpc/kvm/e500.h
-index c3ef751465fb..6d0d329cbb35 100644
---- a/arch/powerpc/kvm/e500.h
-+++ b/arch/powerpc/kvm/e500.h
-@@ -17,7 +17,7 @@
- #define KVM_E500_H
- 
- #include <linux/kvm_host.h>
--#include <asm/nohash/mmu-book3e.h>
-+#include <asm/nohash/mmu-e500.h>
- #include <asm/tlb.h>
- #include <asm/cputhreads.h>
- 
-diff --git a/arch/powerpc/mm/nohash/tlb.c b/arch/powerpc/mm/nohash/tlb.c
-index fcb1e5ae5c55..fac59fbd475a 100644
---- a/arch/powerpc/mm/nohash/tlb.c
-+++ b/arch/powerpc/mm/nohash/tlb.c
-@@ -49,7 +49,7 @@
-  * other sizes not listed here.   The .ind field is only used on MMUs that have
-  * indirect page table entries.
-  */
--#if defined(CONFIG_PPC_BOOK3E_MMU) || defined(CONFIG_PPC_8xx)
-+#if defined(CONFIG_PPC_E500) || defined(CONFIG_PPC_8xx)
- #ifdef CONFIG_PPC_E500
- struct mmu_psize_def mmu_psize_defs[MMU_PAGE_COUNT] = {
- 	[MMU_PAGE_4K] = {
-@@ -142,7 +142,7 @@ static inline int mmu_get_tsize(int psize)
- 	/* This isn't used on !Book3E for now */
- 	return 0;
- }
--#endif /* CONFIG_PPC_BOOK3E_MMU */
-+#endif /* CONFIG_PPC_E500 */
- 
- /* The variables below are currently only used on 64-bit Book3E
-  * though this will probably be made common with other nohash
-diff --git a/arch/powerpc/mm/ptdump/Makefile b/arch/powerpc/mm/ptdump/Makefile
-index b533caaf0910..dc896d2874f3 100644
---- a/arch/powerpc/mm/ptdump/Makefile
-+++ b/arch/powerpc/mm/ptdump/Makefile
-@@ -4,7 +4,7 @@ obj-y	+= ptdump.o
- 
- obj-$(CONFIG_4xx)		+= shared.o
- obj-$(CONFIG_PPC_8xx)		+= 8xx.o
--obj-$(CONFIG_PPC_BOOK3E_MMU)	+= shared.o
-+obj-$(CONFIG_PPC_E500)		+= shared.o
- obj-$(CONFIG_PPC_BOOK3S_32)	+= shared.o
- obj-$(CONFIG_PPC_BOOK3S_64)	+= book3s64.o
- 
+ config KEXEC
+ 	bool "kexec system call"
+-	depends on (PPC_BOOK3S || PPC_85xx || (44x && !SMP)) || PPC_BOOK3E_64
++	depends on PPC_BOOK3S || PPC_E500 || (44x && !SMP)
+ 	select KEXEC_CORE
+ 	help
+ 	  kexec is a system call that implements the ability to shutdown your
+diff --git a/arch/powerpc/platforms/85xx/Kconfig b/arch/powerpc/platforms/85xx/Kconfig
+index 63fec86e41b4..b92cb2b4d54d 100644
+--- a/arch/powerpc/platforms/85xx/Kconfig
++++ b/arch/powerpc/platforms/85xx/Kconfig
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0
+ menuconfig FSL_SOC_BOOKE
+ 	bool "Freescale Book-E Machine Type"
+-	depends on PPC_85xx || PPC_BOOK3E_64
++	depends on PPC_E500
+ 	select FSL_SOC
+ 	select PPC_UDBG_16550
+ 	select MPIC
 diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
-index 32c60ad8f45d..1746d19d058f 100644
+index 1746d19d058f..6a216e88423b 100644
 --- a/arch/powerpc/platforms/Kconfig.cputype
 +++ b/arch/powerpc/platforms/Kconfig.cputype
-@@ -466,10 +466,6 @@ config PPC_MMU_NOHASH
- 	def_bool y
- 	depends on !PPC_BOOK3S
+@@ -487,7 +487,7 @@ config FORCE_SMP
+ 	select SMP
  
--config PPC_BOOK3E_MMU
--	def_bool y
--	depends on PPC_85xx || PPC_BOOK3E_64
--
- config PPC_HAVE_PMU_SUPPORT
- 	bool
- 
+ config SMP
+-	depends on PPC_BOOK3S || PPC_BOOK3E_64 || PPC_85xx || PPC_47x
++	depends on PPC_BOOK3S || PPC_E500 || PPC_47x
+ 	select GENERIC_IRQ_MIGRATION
+ 	bool "Symmetric multi-processing support" if !FORCE_SMP
+ 	help
 -- 
 2.37.1
 
