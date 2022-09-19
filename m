@@ -2,52 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 568B25BD758
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 00:32:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B946D5BD759
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 00:33:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MWfZ26YfDz3jGB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 08:32:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MWfZg2mYfz3jLm
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 08:32:59 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=g/io43Ri;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=TgoDTVhW;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=g/io43Ri;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=TgoDTVhW;
 	dkim-atps=neutral
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MWSYs5k23z3bYy
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Sep 2022 01:01:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MWScT3vN3z3bY3
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Sep 2022 01:03:53 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=GQT9ZKmQZViLafATQeaZBpdND2gP4uRG0ahM2YMYtd8=; b=g/io43RigyyT41y2dFYusHC91i
-	FN11xGh8i9tSF+EoWlo1zpG/7kAtBGSI2HmZByL4Oe8pG3bEgJ+0ROI7nYO0NOnc1TY5oprLEKNsP
-	0s07QhQQGBqOQpI9GMDgINY/2CjS57svuapajwEVoK2R5yc4GAMJp+DMGuZKJlfslCqnDHrafRUiw
-	jORg8zwhWlWojJALVxpQjQFiL2JzpT9CaEaqFUVxHoyqBPjNzU9yff7QlldALoQgVvDBY1b6Bykv7
-	bVtAcUpYMDOJ65BerD+Uz9pEW8t4LuzSWPRPEzSY89wpLArsaujZiDHsp5Um+PEFfzZR6oEfgqVwd
-	v4kzfEww==;
+	bh=8W4ANpZZg81bkZotlJvZ4fg4qiAvSnY5PZyc1BTsWP4=; b=TgoDTVhWtKioMAysMtRZaz+Ed4
+	3iL0je6K5Ai9n6tiQwv/cwXv6NOP0BwrMkHno/osPxg/RShHq5xAhp+fMX5Yy1LaTFzQyD2PKiDDa
+	IDcRLh7Ei/snb4+/2+Rx+mnplXAYQmJsQxndGbb/87NfjvASOxocT/vko3Dsiv0YDdWBWm40GCYOU
+	BqfYSOsgVZdJmPddNOZCBOqDrZGRZ7l78tr1pd1q85g8jMuq2dLOS9jwOybdzQXTlcFirzTSFh1Mf
+	CwHwwRhI7n9Qk6BduqR2uRJ2T8bbcCN4Pdh8GIPZSoE0DqIl0HQ8n6rVimdaBjWyxLbUZ/OLSG7Cy
+	vJU3fjyg==;
 Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oaIGj-00E6aZ-6M; Mon, 19 Sep 2022 15:01:09 +0000
+	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1oaIId-004nY8-EL; Mon, 19 Sep 2022 15:03:07 +0000
 Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
 	(Client did not present a certificate)
-	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id C25EF30035F;
-	Mon, 19 Sep 2022 17:01:08 +0200 (CEST)
+	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 86D5B30035F;
+	Mon, 19 Sep 2022 17:03:04 +0200 (CEST)
 Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-	id A79C82BA49026; Mon, 19 Sep 2022 17:01:08 +0200 (CEST)
-Date: Mon, 19 Sep 2022 17:01:08 +0200
+	id 5DBEE2BAC7A31; Mon, 19 Sep 2022 17:03:04 +0200 (CEST)
+Date: Mon, 19 Sep 2022 17:03:04 +0200
 From: Peter Zijlstra <peterz@infradead.org>
 To: Frederic Weisbecker <frederic@kernel.org>
 Subject: Re: [PATCH v2 08/44] cpuidle,imx6: Push RCU-idle into driver
-Message-ID: <YyiENIiiw0lx4z3l@hirez.programming.kicks-ass.net>
+Message-ID: <YyiEqDSJVOZrQYg8@hirez.programming.kicks-ass.net>
 References: <20220919095939.761690562@infradead.org>
  <20220919101520.869531945@infradead.org>
  <20220919144941.GA62211@lothringen>
@@ -107,4 +107,5 @@ On Mon, Sep 19, 2022 at 04:49:41PM +0200, Frederic Weisbecker wrote:
 > 
 > There is a second one below that also uses imx6sx_enter_wait.
 
-Duh, thanks!
+Oh, above you mean; but only @index==2 gets us into the whole PM crud.
+@index==1 is fine afaict.
