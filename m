@@ -2,60 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF8BC5BD35A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Sep 2022 19:09:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D1CD5BD3A3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Sep 2022 19:26:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MWWPh5Gtmz3fQq
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 03:09:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MWWnY0gMjz3c7l
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 03:26:57 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=osandov-com.20210112.gappssmtp.com header.i=@osandov-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=OrFOjWmh;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=osandov.com (client-ip=2607:f8b0:4864:20::62c; helo=mail-pl1-x62c.google.com; envelope-from=osandov@osandov.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=osandov-com.20210112.gappssmtp.com header.i=@osandov-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=OrFOjWmh;
+	dkim-atps=neutral
+Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MWWGk0sZ9z3fBc
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Sep 2022 03:03:42 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4MWWF90gRnz9slF;
-	Mon, 19 Sep 2022 19:02:21 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id ie8HRh2nz6OU; Mon, 19 Sep 2022 19:02:21 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4MWWDr63Klz9slC;
-	Mon, 19 Sep 2022 19:02:04 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id ADBF68B77D;
-	Mon, 19 Sep 2022 19:02:04 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id pLzKLz5YKgIo; Mon, 19 Sep 2022 19:02:04 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.232.8])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 5A7FF8B778;
-	Mon, 19 Sep 2022 19:02:04 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 28JH20iq1549653
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 19 Sep 2022 19:02:00 +0200
-Received: (from chleroy@localhost)
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 28JH20Ud1549652;
-	Mon, 19 Sep 2022 19:02:00 +0200
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
-Subject: [PATCH v2 19/19] powerpc: Remove impossible mmu_psize_defs[] on nohash
-Date: Mon, 19 Sep 2022 19:01:43 +0200
-Message-Id: <030a843449f348c0b709ca5349640624f36a016f.1663606876.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <828f6a64eeb51ce9abfa1d4e84c521a02fecebb8.1663606875.git.christophe.leroy@csgroup.eu>
-References: <828f6a64eeb51ce9abfa1d4e84c521a02fecebb8.1663606875.git.christophe.leroy@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MWWmv48Dcz2xGg
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Sep 2022 03:26:22 +1000 (AEST)
+Received: by mail-pl1-x62c.google.com with SMTP id b21so28520264plz.7
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Sep 2022 10:26:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=osandov-com.20210112.gappssmtp.com; s=20210112;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date;
+        bh=RQOtnF4gIAT5J5bZ40nIVekW+hFItpXA03njWhxPCkg=;
+        b=OrFOjWmhbVU41C8KsRwP51cPaIp+R1Bpyjc/zwH1VMf0UdtuxBa9L6X5QY1Y1oqaC/
+         ts8luvNT4hW6BrfXMpLbb3Neq13r7EaHa7gKJOKCYr/ERpiJGyP86mrn8z7x7lDqA/+9
+         qHPzsTjHeBcCZ/aA9O4hovubehLTQq50GOuk47+lc1tDYOPYFatocrXQMs1ofSjETbkE
+         xlSlarh4uMLAw9qmZ2TSh6IgOT3IfXtmxhHAyzyMEGbgvR4utb+Pw0toTzGeqtUrVFOE
+         u4v0KdmwacMfImM4dbklbUkohrPHCIec25W/W+poubt+LMDWvYIq8OigFROgOgZw0uNZ
+         T5sw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=RQOtnF4gIAT5J5bZ40nIVekW+hFItpXA03njWhxPCkg=;
+        b=eoBKge02DGwgMsuPea6AoG9BNNDmjtQgcUcrY5A9hhUhzPXncJp9BIjQxdELx+xRtz
+         fX6V/RkTipvnqHtnb9fTSWF2Gz/3VhZ7vPwytR2RjTN3ju9umZgts/urgFxFdNom1v1B
+         x0CVNpuXXomWuyQ6DskPiF2KRv/zP9TBZlu98yqZnKXd+XyK566L4FI0fq0swsSUFyvT
+         HZLc5gJc3lym7MGWIRZkZTSs2RnvDf9BoR6HZg1zvNmQSXxKlw+ohHNdDKrGgR+dST/0
+         H0JgL39oMsWrGHMojhv3DChXCaM4Qv4u4bR/Fc5AcFN3ZS2vBCDANuurlK5D41D4DMJ5
+         aPRw==
+X-Gm-Message-State: ACrzQf2ubeevaeJz3nBjy1rsUWYbPUcnJ4EfqGuNAN/3+nSxIypHbj/2
+	EPdpckwpO24wnh8lzTJoUdCh4w==
+X-Google-Smtp-Source: AMsMyM6G+tbSHGJR45aDE750Rf2Jljx5e/kiJXpECOAdkTJX3k7Dykh59BTcyBs+oHM4tJDcNKvE7A==
+X-Received: by 2002:a17:90b:3e87:b0:203:b9c:f9b7 with SMTP id rj7-20020a17090b3e8700b002030b9cf9b7mr20713044pjb.93.1663608378677;
+        Mon, 19 Sep 2022 10:26:18 -0700 (PDT)
+Received: from relinquished.localdomain ([2601:602:a300:cc0::1ac9])
+        by smtp.gmail.com with ESMTPSA id c128-20020a624e86000000b0054094544ae7sm20668966pfb.60.2022.09.19.10.26.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Sep 2022 10:26:18 -0700 (PDT)
+Date: Mon, 19 Sep 2022 10:26:17 -0700
+From: Omar Sandoval <osandov@osandov.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 2/2] Discard .note.gnu.property sections in generic NOTES
+Message-ID: <YyimOW229By98Dn7@relinquished.localdomain>
+References: <20200428132105.170886-1-hjl.tools@gmail.com>
+ <20200428132105.170886-2-hjl.tools@gmail.com>
+ <YyTRM3/9Mm+b+M8N@relinquished.localdomain>
+ <e15de60c-8133-3d93-eb1c-c6b1b5389887@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1663606900; l=2716; s=20211009; h=from:subject:message-id; bh=nioyTUrOcI0IAX5HeERk3XUyDqQ/dEMnQUd5F2Nwdqs=; b=nR6Hho7Ye5PVaGQECxLSQ1KMmCb9+i66cAkobdtkukNvnAX6oQFyuXreMNVuO1lEDa6xfkPTyvqq gzXNSvnVDqyiFhHvF357JJ/Yw3Ub1e0HJ3azDa3h3v6ooO5xX5G3
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <e15de60c-8133-3d93-eb1c-c6b1b5389887@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,129 +83,155 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>, "H.J. Lu" <hjl.tools@gmail.com>, Yu-cheng Yu <yu-cheng.yu@intel.com>, Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Paul Mackerras <paulus@samba.org>, "Naveen N . Rao" <naveen.n.rao@linux.vnet.ibm.com>, Borislav Petkov <bp@suse.de>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Today there is:
+On Sat, Sep 17, 2022 at 06:31:20AM +0000, Christophe Leroy wrote:
+> 
+> 
+> Le 16/09/2022 à 21:40, Omar Sandoval a écrit :
+> > [Vous ne recevez pas souvent de courriers de osandov@osandov.com. D?couvrez pourquoi ceci est important ? https://aka.ms/LearnAboutSenderIdentification ]
+> > 
+> > On Tue, Apr 28, 2020 at 06:21:05AM -0700, H.J. Lu wrote:
+> >> With the command-line option, -mx86-used-note=yes, the x86 assembler
+> >> in binutils 2.32 and above generates a program property note in a note
+> >> section, .note.gnu.property, to encode used x86 ISAs and features.  But
+> >> kernel linker script only contains a single NOTE segment:
+> >>
+> >> PHDRS {
+> >>   text PT_LOAD FLAGS(5);
+> >>   data PT_LOAD FLAGS(6);
+> >>   percpu PT_LOAD FLAGS(6);
+> >>   init PT_LOAD FLAGS(7);
+> >>   note PT_NOTE FLAGS(0);
+> >> }
+> >> SECTIONS
+> >> {
+> >> ...
+> >>   .notes : AT(ADDR(.notes) - 0xffffffff80000000) { __start_notes = .; KEEP(*(.not
+> >> e.*)) __stop_notes = .; } :text :note
+> >> ...
+> >> }
+> >>
+> >> The NOTE segment generated by kernel linker script is aligned to 4 bytes.
+> >> But .note.gnu.property section must be aligned to 8 bytes on x86-64 and
+> >> we get
+> >>
+> >> [hjl@gnu-skx-1 linux]$ readelf -n vmlinux
+> >>
+> >> Displaying notes found in: .notes
+> >>    Owner                Data size Description
+> >>    Xen                  0x00000006 Unknown note type: (0x00000006)
+> >>     description data: 6c 69 6e 75 78 00
+> >>    Xen                  0x00000004 Unknown note type: (0x00000007)
+> >>     description data: 32 2e 36 00
+> >>    xen-3.0              0x00000005 Unknown note type: (0x006e6558)
+> >>     description data: 08 00 00 00 03
+> >> readelf: Warning: note with invalid namesz and/or descsz found at offset 0x50
+> >> readelf: Warning:  type: 0xffffffff, namesize: 0x006e6558, descsize:
+> >> 0x80000000, alignment: 8
+> >> [hjl@gnu-skx-1 linux]$
+> >>
+> >> Since note.gnu.property section in kernel image is never used, this patch
+> >> discards .note.gnu.property sections in kernel linker script by adding
+> >>
+> >> /DISCARD/ : {
+> >>    *(.note.gnu.property)
+> >> }
+> >>
+> >> before kernel NOTE segment in generic NOTES.
+> >>
+> >> Signed-off-by: H.J. Lu <hjl.tools@gmail.com>
+> >> Reviewed-by: Kees Cook <keescook@chromium.org>
+> >> ---
+> >>   include/asm-generic/vmlinux.lds.h | 7 +++++++
+> >>   1 file changed, 7 insertions(+)
+> >>
+> >> diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
+> >> index 71e387a5fe90..95cd678428f4 100644
+> >> --- a/include/asm-generic/vmlinux.lds.h
+> >> +++ b/include/asm-generic/vmlinux.lds.h
+> >> @@ -833,7 +833,14 @@
+> >>   #define TRACEDATA
+> >>   #endif
+> >>
+> >> +/*
+> >> + * Discard .note.gnu.property sections which are unused and have
+> >> + * different alignment requirement from kernel note sections.
+> >> + */
+> >>   #define NOTES                                                                \
+> >> +     /DISCARD/ : {                                                   \
+> >> +             *(.note.gnu.property)                                   \
+> >> +     }                                                               \
+> >>        .notes : AT(ADDR(.notes) - LOAD_OFFSET) {                       \
+> >>                __start_notes = .;                                      \
+> >>                KEEP(*(.note.*))                                        \
+> >> --
+> >> 2.25.4
+> >>
+> > 
+> > Hi, H.J.,
+> > 
+> > I recently ran into this same .notes corruption when building kernels on
+> > Arch Linux.
+> > 
+> > What ended up happening to this patch? It doesn't appear to have been
+> > merged, and I couldn't find any further discussion about it. I'm happy
+> > to resend it for you if you need a hand.
+> 
+> As far as I can see, ARM64 is doing something with that section, see 
+> arch/arm64/include/asm/assembler.h
+> 
+> Instead of discarding that section, would it be enough to force 
+> alignment of .notes to 8 bytes ?
+> 
+> Thanks
+> Christophe
 
-  if e500 or 8xx
-    if e500
-      mmu_psize_defs[] =
-    else if 8xx
-      mmu_psize_defs[] =
-    else
-      mmu_psize_defs[] =
-    endif
-  endif
+Unfortunately, "alignment requirement" here isn't just the starting
+alignment of the .notes section; it also refers to internal padding in
+the note metadata to keep things aligned. Changing this would break
+anyone who parses /sys/kernel/notes (e.g., perf).
 
-The else leg is dead definition.
+Here is a little more context around this mess:
 
-Drop that else leg and rewrite as:
+The System V gABI [1] says that the note header and descriptor should be
+aligned to 4 bytes for 32-bit files and 8 bytes for 64-bit files.
+However, Linux never followed this, and 4-byte alignment is used for
+both 32-bit and 64-bit files; see elf(5) [2].
 
-  if e500
-    mmu_psize_defs[] =
-  endif
-  if 8xx
-    mmu_psize_defs[] =
-  endif
+The only exception as of 2022 is
+.note.gnu.property/NT_GNU_PROPERTY_TYPE_0, which is defined to follow
+the gABI alignment. There was a long thread discussing this back in 2018
+with the subject "PT_NOTE alignment, NT_GNU_PROPERTY_TYPE_0, glibc and
+gold" [3].
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
-v2: Fix build failure
----
- arch/powerpc/mm/nohash/tlb.c | 64 +++++++++---------------------------
- 1 file changed, 15 insertions(+), 49 deletions(-)
+According to the gABI Linux Extensions [4], consumers are now supposed
+to use the p_align of the PT_NOTE segment instead of assuming an
+alignment.
 
-diff --git a/arch/powerpc/mm/nohash/tlb.c b/arch/powerpc/mm/nohash/tlb.c
-index fac59fbd475a..2c15c86c7015 100644
---- a/arch/powerpc/mm/nohash/tlb.c
-+++ b/arch/powerpc/mm/nohash/tlb.c
-@@ -49,7 +49,6 @@
-  * other sizes not listed here.   The .ind field is only used on MMUs that have
-  * indirect page table entries.
-  */
--#if defined(CONFIG_PPC_E500) || defined(CONFIG_PPC_8xx)
- #ifdef CONFIG_PPC_E500
- struct mmu_psize_def mmu_psize_defs[MMU_PAGE_COUNT] = {
- 	[MMU_PAGE_4K] = {
-@@ -81,7 +80,20 @@ struct mmu_psize_def mmu_psize_defs[MMU_PAGE_COUNT] = {
- 		.enc	= BOOK3E_PAGESZ_1GB,
- 	},
- };
--#elif defined(CONFIG_PPC_8xx)
-+
-+static inline int mmu_get_tsize(int psize)
-+{
-+	return mmu_psize_defs[psize].enc;
-+}
-+#else
-+static inline int mmu_get_tsize(int psize)
-+{
-+	/* This isn't used on !Book3E for now */
-+	return 0;
-+}
-+#endif
-+
-+#ifdef CONFIG_PPC_8xx
- struct mmu_psize_def mmu_psize_defs[MMU_PAGE_COUNT] = {
- 	[MMU_PAGE_4K] = {
- 		.shift	= 12,
-@@ -96,53 +108,7 @@ struct mmu_psize_def mmu_psize_defs[MMU_PAGE_COUNT] = {
- 		.shift	= 23,
- 	},
- };
--#else
--struct mmu_psize_def mmu_psize_defs[MMU_PAGE_COUNT] = {
--	[MMU_PAGE_4K] = {
--		.shift	= 12,
--		.ind	= 20,
--		.enc	= BOOK3E_PAGESZ_4K,
--	},
--	[MMU_PAGE_16K] = {
--		.shift	= 14,
--		.enc	= BOOK3E_PAGESZ_16K,
--	},
--	[MMU_PAGE_64K] = {
--		.shift	= 16,
--		.ind	= 28,
--		.enc	= BOOK3E_PAGESZ_64K,
--	},
--	[MMU_PAGE_1M] = {
--		.shift	= 20,
--		.enc	= BOOK3E_PAGESZ_1M,
--	},
--	[MMU_PAGE_16M] = {
--		.shift	= 24,
--		.ind	= 36,
--		.enc	= BOOK3E_PAGESZ_16M,
--	},
--	[MMU_PAGE_256M] = {
--		.shift	= 28,
--		.enc	= BOOK3E_PAGESZ_256M,
--	},
--	[MMU_PAGE_1G] = {
--		.shift	= 30,
--		.enc	= BOOK3E_PAGESZ_1GB,
--	},
--};
--#endif /* CONFIG_PPC_85xx */
--
--static inline int mmu_get_tsize(int psize)
--{
--	return mmu_psize_defs[psize].enc;
--}
--#else
--static inline int mmu_get_tsize(int psize)
--{
--	/* This isn't used on !Book3E for now */
--	return 0;
--}
--#endif /* CONFIG_PPC_E500 */
-+#endif
- 
- /* The variables below are currently only used on 64-bit Book3E
-  * though this will probably be made common with other nohash
--- 
-2.37.1
+There are a few issues with this for the kernel:
 
+* The vmlinux linker script squishes together all of the notes sections
+  with different alignments without adjusting their internal padding,
+  but sets p_align to the maximum required alignment. This is what
+  confuses readelf and co: they expect 8-byte alignment, but most of the
+  note entries are only padded for 4-byte alignment.
+* The vmlinux .notes section is exported as /sys/kernel/notes. This is
+  stable ABI and has always had 4-byte alignment; all existing parsers
+  assume this.
+* /sys/kernel/notes doesn't currently have a way to specify an alternate
+  alignment anyways.
+
+My suggestion would be to keep .note.gnu.property in its own section in
+vmlinux, or create a new .notes8 section with 8-byte alignment, and
+leave .notes and /sys/kernel/notes alone.
+
+I'm not sure what exactly arch/arm64/include/asm/assembler.h is doing
+with this file. Perhaps the author, Mark Brown, can clarify?
+
+1: http://www.sco.com/developers/gabi/latest/ch5.pheader.html#note_section
+2: https://man7.org/linux/man-pages/man5/elf.5.html#:~:text=Notes%20(Nhdr)
+3: https://public-inbox.org/libc-alpha/13a92cb0-a993-f684-9a96-e02e4afb1bef@redhat.com/
+4: https://gitlab.com/x86-psABIs/Linux-ABI
