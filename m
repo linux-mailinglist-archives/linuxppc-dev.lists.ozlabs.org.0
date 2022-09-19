@@ -2,54 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A53275BD6B8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 00:02:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C24E55BD643
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Sep 2022 23:21:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MWdv91xJjz3dpk
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 08:02:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MWczW4p2Vz3c34
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 07:20:55 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=o0s60Tz1;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Ou2550Hn;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=patchwork-bot+netdevbpf@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Ou2550Hn;
+	dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MWLG6440Qz2yxQ
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Sep 2022 20:17:32 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Type:MIME-Version:References:
-	Subject:Cc:To:From:Date:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
-	Content-ID:Content-Description:In-Reply-To;
-	bh=opcA1/Y+HqbqHoKXfaoCivp+Xr552TiTgo8o6IEPi68=; b=o0s60Tz10WjGmxt2O9IlKD2zW6
-	PuCx0cTX9J/pibDE6x/EeKWJVUSqibWnPXpJa+q9d460/syW7hiAGHgu4cr1HLa6E5A6RLWWAQF7N
-	BU0wDqaPgn13oGAzZQILZR0of4SZi/+faIYwlAxDrra9kJBHvPvKLs2TKLExGtcT0Nd5/UVeZ64Mz
-	BRjiE+oPUuXTv9zpZEKI0TwyyXQOrtbtPnfJfXrlZuizWXUj8Lhhk2NEczdkAKK26JfX/b2u7H1Zg
-	09mgch7LP0jTa9JSOBgRRCDBiftmu3A5DtJCHHaYXwNFgsZWCFQjIdoiHWd35lXf31xAruQSJUZTM
-	GsF8b/8A==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oaDpH-004aiI-6r; Mon, 19 Sep 2022 10:16:31 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
-	(Client did not present a certificate)
-	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id D508A302E9F;
-	Mon, 19 Sep 2022 12:16:24 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 0)
-	id F01612BA4903F; Mon, 19 Sep 2022 12:16:21 +0200 (CEST)
-Message-ID: <20220919101521.004425686@infradead.org>
-User-Agent: quilt/0.66
-Date: Mon, 19 Sep 2022 11:59:49 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: peterz@infradead.org
-Subject: [PATCH v2 10/44] cpuidle,armada: Push RCU-idle into driver
-References: <20220919095939.761690562@infradead.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MWcys1981z2xJN
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Sep 2022 07:20:20 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 852566207D;
+	Mon, 19 Sep 2022 21:20:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 71C4EC433C1;
+	Mon, 19 Sep 2022 21:20:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1663622414;
+	bh=akJpHY6MQEHvLsC1Re27oJlE5aMX8u2E99iMcnMhMxc=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=Ou2550HnOwwWMe8oYpmod5gb+LfI4zWiwDtuDKmGlpOgOuf7mJOZG29hiSbscQpJx
+	 0EWw2EhGr5AZAWOuFhc9og2EcL4FWxvEub/YIl/pxZTqDB+CEyjV+lEUfhsTteo2gR
+	 /o/2RcYS5+Gro9dovTXax0TYykVO+PLI7c8RW+isu47qH+AKufD8hjb3cvTCF1Ye6R
+	 lR5w0eK5Ns7pG2ETmUqrTD0LQSPBOmo4FOoZk74qrL1UR97eQGmMH0rchbmO2x2nGV
+	 50v68fpor0BSq5JrsgtKlz5PM74HbXG08hYQF6hpZpj2g541BINxxJ9+POpFvx8CIW
+	 knlpDcCMB8g5g==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 50A83E52536;
+	Mon, 19 Sep 2022 21:20:14 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Mailman-Approved-At: Tue, 20 Sep 2022 07:59:18 +1000
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] net: ethernet: remove fs_mii_disconnect and fs_mii_connect
+ declarations
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id:  <166362241432.4330.4829794093210572810.git-patchwork-notify@kernel.org>
+Date: Mon, 19 Sep 2022 21:20:14 +0000
+References: <20220909062959.1144493-1-cuigaosheng1@huawei.com>
+In-Reply-To: <20220909062959.1144493-1-cuigaosheng1@huawei.com>
+To: Gaosheng Cui <cuigaosheng1@huawei.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,65 +63,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: juri.lelli@redhat.com, rafael@kernel.org, catalin.marinas@arm.com, linus.walleij@linaro.org, bsegall@google.com, guoren@kernel.org, pavel@ucw.cz, agordeev@linux.ibm.com, srivatsa@csail.mit.edu, linux-arch@vger.kernel.org, vincent.guittot@linaro.org, chenhuacai@kernel.org, linux-acpi@vger.kernel.org, agross@kernel.org, geert@linux-m68k.org, linux-imx@nxp.com, vgupta@kernel.org, mattst88@gmail.com, borntraeger@linux.ibm.com, mturquette@baylibre.com, sammy@sammy.net, pmladek@suse.com, linux-pm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, linux-um@lists.infradead.org, npiggin@gmail.com, tglx@linutronix.de, linux-omap@vger.kernel.org, dietmar.eggemann@arm.com, andreyknvl@gmail.com, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, senozhatsky@chromium.org, svens@linux.ibm.com, jolsa@kernel.org, tj@kernel.org, Andrew Morton <akpm@linux-foundation.org>, mark.rutland@arm.com, linux-ia64@vger.kernel.org, dave.hansen@linux.intel.com, vir
- tualization@lists.linux-foundation.org, James.Bottomley@HansenPartnership.com, jcmvbkbc@gmail.com, thierry.reding@gmail.com, kernel@xen0n.name, cl@linux.com, linux-s390@vger.kernel.org, vschneid@redhat.com, john.ogness@linutronix.de, ysato@users.sourceforge.jp, linux-sh@vger.kernel.org, festevam@gmail.com, deller@gmx.de, daniel.lezcano@linaro.org, jonathanh@nvidia.com, dennis@kernel.org, lenb@kernel.org, linux-xtensa@linux-xtensa.org, kernel@pengutronix.de, gor@linux.ibm.com, linux-arm-msm@vger.kernel.org, linux-alpha@vger.kernel.org, linux-m68k@lists.linux-m68k.org, loongarch@lists.linux.dev, shorne@gmail.com, chris@zankel.net, sboyd@kernel.org, dinguyen@kernel.org, bristot@redhat.com, alexander.shishkin@linux.intel.com, fweisbec@gmail.com, lpieralisi@kernel.org, atishp@atishpatra.org, linux@rasmusvillemoes.dk, kasan-dev@googlegroups.com, will@kernel.org, boris.ostrovsky@oracle.com, khilman@kernel.org, linux-csky@vger.kernel.org, pv-drivers@vmware.com, linux-snps-arc@lists.infradea
- d.org, mgorman@suse.de, jacob.jun.pan@linux.intel.com, Arnd Bergmann <arnd@arndb.de>, ulli.kroll@googlemail.com, linux-clk@vger.kernel.org, rostedt@goodmis.org, ink@jurassic.park.msu.ru, bcain@quicinc.com, tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, ryabinin.a.a@gmail.com, sudeep.holla@arm.com, shawnguo@kernel.org, davem@davemloft.net, dalias@libc.org, tony@atomide.com, amakhalov@vmware.com, konrad.dybcio@somainline.org, bjorn.andersson@linaro.org, glider@google.com, hpa@zytor.com, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org, vincenzo.frascino@arm.com, anton.ivanov@cambridgegreys.com, jonas@southpole.se, yury.norov@gmail.com, richard@nod.at, x86@kernel.org, linux@armlinux.org.uk, mingo@redhat.com, aou@eecs.berkeley.edu, hca@linux.ibm.com, richard.henderson@linaro.org, stefan.kristiansson@saunalahti.fi, openrisc@lists.librecores.org, acme@kernel.org, paul.walmsley@sifive.com, linux-tegra@vger.kernel.org, namhyung@kernel.org,
-  andriy.shevchenko@linux.intel.com, jpoimboe@kernel.org, dvyukov@google.com, jgross@suse.com, monstr@monstr.eu, linux-mips@vger.kernel.org, palmer@dabbelt.com, anup@brainfault.org, bp@alien8.de, johannes@sipsolutions.net, linuxppc-dev@lists.ozlabs.org
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, edumazet@google.com, vbordug@ru.mvista.com, kuba@kernel.org, pabeni@redhat.com, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Doing RCU-idle outside the driver, only to then temporarily enable it
-again before going idle is daft.
+Hello:
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
----
- drivers/cpuidle/cpuidle-mvebu-v7.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+This patch was applied to netdev/net-next.git (master)
+by Jakub Kicinski <kuba@kernel.org>:
 
---- a/drivers/cpuidle/cpuidle-mvebu-v7.c
-+++ b/drivers/cpuidle/cpuidle-mvebu-v7.c
-@@ -36,7 +36,10 @@ static int mvebu_v7_enter_idle(struct cp
- 	if (drv->states[index].flags & MVEBU_V7_FLAG_DEEP_IDLE)
- 		deepidle = true;
- 
-+	ct_idle_enter();
- 	ret = mvebu_v7_cpu_suspend(deepidle);
-+	ct_idle_exit();
-+
- 	cpu_pm_exit();
- 
- 	if (ret)
-@@ -49,6 +52,7 @@ static struct cpuidle_driver armadaxp_id
- 	.name			= "armada_xp_idle",
- 	.states[0]		= ARM_CPUIDLE_WFI_STATE,
- 	.states[1]		= {
-+		.flags			= CPUIDLE_FLAG_RCU_IDLE,
- 		.enter			= mvebu_v7_enter_idle,
- 		.exit_latency		= 100,
- 		.power_usage		= 50,
-@@ -57,6 +61,7 @@ static struct cpuidle_driver armadaxp_id
- 		.desc			= "CPU power down",
- 	},
- 	.states[2]		= {
-+		.flags			= CPUIDLE_FLAG_RCU_IDLE,
- 		.enter			= mvebu_v7_enter_idle,
- 		.exit_latency		= 1000,
- 		.power_usage		= 5,
-@@ -72,6 +77,7 @@ static struct cpuidle_driver armada370_i
- 	.name			= "armada_370_idle",
- 	.states[0]		= ARM_CPUIDLE_WFI_STATE,
- 	.states[1]		= {
-+		.flags			= CPUIDLE_FLAG_RCU_IDLE,
- 		.enter			= mvebu_v7_enter_idle,
- 		.exit_latency		= 100,
- 		.power_usage		= 5,
-@@ -87,6 +93,7 @@ static struct cpuidle_driver armada38x_i
- 	.name			= "armada_38x_idle",
- 	.states[0]		= ARM_CPUIDLE_WFI_STATE,
- 	.states[1]		= {
-+		.flags			= CPUIDLE_FLAG_RCU_IDLE,
- 		.enter			= mvebu_v7_enter_idle,
- 		.exit_latency		= 10,
- 		.power_usage		= 5,
+On Fri, 9 Sep 2022 14:29:59 +0800 you wrote:
+> fs_mii_disconnect and fs_mii_connect have been removed since
+> commit 5b4b8454344a ("[PATCH] FS_ENET: use PAL for mii management"),
+> so remove them.
+> 
+> Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
+> ---
+>  drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c | 3 ---
+>  1 file changed, 3 deletions(-)
+
+Here is the summary with links:
+  - net: ethernet: remove fs_mii_disconnect and fs_mii_connect declarations
+    https://git.kernel.org/netdev/net-next/c/feceb24ed79a
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
