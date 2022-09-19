@@ -2,65 +2,93 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 326DD5BC415
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Sep 2022 10:13:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 996F85BC417
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Sep 2022 10:14:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MWHW55hV5z3c9C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Sep 2022 18:13:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MWHWs2GWdz3bls
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Sep 2022 18:14:17 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=lixom-net.20210112.gappssmtp.com header.i=@lixom-net.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=EuFCJAks;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UZIKR6sd;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=lixom.net (client-ip=2a00:1450:4864:20::52b; helo=mail-ed1-x52b.google.com; envelope-from=olof@lixom.net; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ganeshgr@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=lixom-net.20210112.gappssmtp.com header.i=@lixom-net.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=EuFCJAks;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UZIKR6sd;
 	dkim-atps=neutral
-Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MW9Xx12LQz2ysx
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Sep 2022 13:44:47 +1000 (AEST)
-Received: by mail-ed1-x52b.google.com with SMTP id x94so22140748ede.11
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 18 Sep 2022 20:44:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lixom-net.20210112.gappssmtp.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=8wzd/IsQMAz4yliZb1FsJ3OfMRVNZc5tTLnz3lR7QHQ=;
-        b=EuFCJAkszMPKPtxQSyMQ0NoboaeVB7t96eFw9rPXwH9oSHUro5o77bxEeYAtANDzyR
-         I9BMOm4HMiosCb0pcsiSHEAZo2qSCtvZawUq0/zPNIdwAvDvQAPS+8+0uFrWbUJgoTtd
-         ExLo8MeQP7GyQ+rW2rlFvIPPT75kqxCAKPhOGjeDjYZZFhuAOfywggSn5a+jZu6mJGBr
-         cWVHHoToy9UWA6nPxBqZcAZLzmJoxjkbRc1yLhwZYNZgNQEBRnr86m6GI/e/+J8MoRAT
-         suDLw8ILYZpcoPAOh+pvz4Lu/zfiYh6RXQKy+jZAxuRvjXsVxLmt63JqorCueNp9TEEJ
-         9kQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=8wzd/IsQMAz4yliZb1FsJ3OfMRVNZc5tTLnz3lR7QHQ=;
-        b=6laK3A0G3fQgA3ySPTCgnura3FOUhC/0hl1/ybLs3r5LDJoGV2zlYFk93KEjD8roaY
-         YvaoDU0EC8bApNSYbiO7khcDuKoHV7AMRuoDBn2KIhOJ+okFPjUICGIrFDyt8/v2uhyo
-         dhHTfZmxfmjkHsBqyzfUaZL3lISV1viM/LqTy3OxWTYRiYEf2Ics6pdnhP2Rp+VVtM9w
-         4JlLegdSmTyU1xgHTUuDHiT6W0/t0pQINA7ORjsNaKGlO8m11zA3E2to53uuhxS3PzOg
-         OwnVy67G2VJnmLgph4aQUOSpgJFTV9CqiA9HIqlBLq7WqzM8iUy/sUPQ0Fu9nSyd5u6N
-         7Csg==
-X-Gm-Message-State: ACrzQf0R9JVc6vx65k2mGqlAwCvFErkTt/FwpWmrH6Rzo2BZqc0R1PLv
-	KOohiiBop/C5wGMvgwylhC6uz3ezz7ef9OSlCoCbgQ==
-X-Google-Smtp-Source: AMsMyM67X4fHgNHGRzRNZ0AalOVh8oZlYNRkDoycvf7zBAcHx4qOwSpxEraLAwYUCmYCoDnGs0xLR1B5pb/N312tK3I=
-X-Received: by 2002:aa7:cc8a:0:b0:446:7668:2969 with SMTP id
- p10-20020aa7cc8a000000b0044676682969mr13821510edt.206.1663559079248; Sun, 18
- Sep 2022 20:44:39 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MWDd06rJRz2yYL
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Sep 2022 16:03:32 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28J5K7Br002816;
+	Mon, 19 Sep 2022 06:03:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
+ message-id : date : mime-version : subject : to : cc : references : from :
+ in-reply-to; s=pp1; bh=b0JxFeJQMsGrOIKS8SCWKkrVTBJMriLRD6npqoHFZZg=;
+ b=UZIKR6sdXoUp5ZhgE8lknsUvkIVEHlWOkj4Bq81HgMEGpFk1XEpQi2wudAzllML13D85
+ uRdFupOf4U4kevCYKKXqc4PrCV3akWrIIsfSkj15/ifrU+SlLmNqqttO+AbrDcXKexd7
+ ZSb2cT9g4oJx+rxDqNXnkXYO3JYjuR/W2/PtBbAfXUA6NmO+B75ovjmFyOHMrMNsBC4e
+ RQQFl0p+tkdTw4paaXumiQnewSh9Cu+k86U+tPznPEki4vHpp7lW/c3R8r8PT/PS2Qfs
+ z7tKZiBCAotsoWemgaL537+nuvkErkuLsWAchi1nmSWN07X93l9C0npD9duNtSvawfjo pg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jpj680sqr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 19 Sep 2022 06:03:26 +0000
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 28J5aoGR032155;
+	Mon, 19 Sep 2022 06:03:26 GMT
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jpj680sq4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 19 Sep 2022 06:03:26 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+	by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 28J5p1Ne001007;
+	Mon, 19 Sep 2022 06:03:24 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+	by ppma06ams.nl.ibm.com with ESMTP id 3jn5gj1y1s-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 19 Sep 2022 06:03:24 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
+	by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 28J63k9j40960400
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 19 Sep 2022 06:03:46 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D9C1DA4053;
+	Mon, 19 Sep 2022 06:03:20 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2E5D7A4040;
+	Mon, 19 Sep 2022 06:03:19 +0000 (GMT)
+Received: from [9.43.125.247] (unknown [9.43.125.247])
+	by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Mon, 19 Sep 2022 06:03:18 +0000 (GMT)
+Content-Type: multipart/alternative;
+ boundary="------------xnH1tx2oswo1w1EnfCqTvUwT"
+Message-ID: <895f4387-582a-6d60-a176-e2112f506e12@linux.ibm.com>
+Date: Mon, 19 Sep 2022 11:33:17 +0530
 MIME-Version: 1.0
-References: <20220701012647.2007122-1-saravanak@google.com> <YwS5J3effuHQJRZ5@kroah.com>
-In-Reply-To: <YwS5J3effuHQJRZ5@kroah.com>
-From: Olof Johansson <olof@lixom.net>
-Date: Sun, 18 Sep 2022 20:44:27 -0700
-Message-ID: <CAOesGMivJ5Q-jdeGKw32yhjmNiYctHjpEAnoMMRghYqWD2m2tw@mail.gmail.com>
-Subject: Re: [PATCH v2 0/2] Fix console probe delay when stdout-path isn't set
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PACTH v2] powerpc/pseries/mce: Avoid instrumentation in realmode
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+        mpe@ellerman.id.au
+References: <20220905063811.16454-1-ganeshgr@linux.ibm.com>
+ <CMPVP7RZXP5G.2D3ZNQPWARIG8@bobo>
+From: Ganesh <ganeshgr@linux.ibm.com>
+In-Reply-To: <CMPVP7RZXP5G.2D3ZNQPWARIG8@bobo>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: AceP4uWgcU3JhxDaC-TzwUxKYIIHO99E
+X-Proofpoint-ORIG-GUID: u5za0AjZP54b_r_2w-7Rj-DUW-k82WTI
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
+ definitions=2022-09-19_03,2022-09-16_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 impostorscore=0
+ mlxscore=0 adultscore=0 lowpriorityscore=0 suspectscore=0
+ priorityscore=1501 spamscore=0 malwarescore=0 clxscore=1015
+ mlxlogscore=772 phishscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2209130000 definitions=main-2209190039
 X-Mailman-Approved-At: Mon, 19 Sep 2022 18:12:32 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -73,43 +101,145 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: andrew lunn <andrew@lunn.ch>, peng fan <peng.fan@nxp.com>, "Rafael J. Wysocki" <rafael@kernel.org>, linus walleij <linus.walleij@linaro.org>, Paul Mackerras <paulus@samba.org>, Alim Akhtar <alim.akhtar@samsung.com>, Peter Korsgaard <jacmet@sunsite.dk>, linux-stm32@st-md-mailman.stormreply.com, Karol Gugala <kgugala@antmicro.com>, Jerome Brunet <jbrunet@baylibre.com>, linux-samsung-soc@vger.kernel.org, Michal Simek <michal.simek@xilinx.com>, Hammer Hsieh <hammerh0314@gmail.com>, NXP Linux Team <linux-imx@nxp.com>, Vineet Gupta <vgupta@kernel.org>, len brown <len.brown@intel.com>, Nicolas Saenz Julienne <nsaenz@kernel.org>, linux-pm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, linux-unisoc@lists.infradead.org, Scott Branden <sbranden@broadcom.com>, Andrew Jeffery <andrew@aj.id.au>, linux-kernel@vger.kernel.org, Richard Genoud <richard.genoud@gmail.com>, Masami Hiramatsu <mhiramat@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Claudiu Beznea <claudiu.beznea
- @microchip.com>, Alexandre Belloni <alexandre.belloni@bootlin.com>, pavel machek <pavel@ucw.cz>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, eric dumazet <edumazet@google.com>, Thierry Reding <thierry.reding@gmail.com>, sascha hauer <sha@pengutronix.de>, Saravana Kannan <saravanak@google.com>, Chunyan Zhang <zhang.lyra@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, Gabriel Somlo <gsomlo@gmail.com>, Tobias Klauser <tklauser@distanz.ch>, linux-mips@vger.kernel.org, kernel-team@android.com, Martin Blumenstingl <martin.blumenstingl@googlemail.com>, linux-arm-msm@vger.kernel.org, linux-actions@lists.infradead.org, linux-gpio@vger.kernel.org, linux-rpi-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org, linux-arm-kernel@lists.infradead.org, Andreas Farber <afaerber@suse.de>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Kevin Hilman <khilman@baylibre.com>, Pali Rohar <pali@kernel.org>, heiner kallweit <hkallweit1@gmail.com>, ulf hansson <ulf.hansson@linaro.org>, Neil
-  Armstrong <narmstrong@baylibre.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, Al Cooper <alcooperx@gmail.com>, linux-tegra@vger.kernel.org, Jiri Slaby <jirislaby@kernel.org>, linux-aspeed@lists.ozlabs.org, Rob Herring <robh@kernel.org>, Florian Fainelli <f.fainelli@gmail.com>, Mateusz Holenko <mholenko@antmicro.com>, Alexander Shiyan <shc_work@mail.ru>, kevin hilman <khilman@kernel.org>, Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Joel Stanley <joel@jms.id.au>, Orson Zhai <orsonzhai@gmail.com>, paolo abeni <pabeni@redhat.com>, Patrice Chotard <patrice.chotard@foss.st.com>, Ray Jui <rjui@broadcom.com>, Vladimir Zapolskiy <vz@mleia.com>, linux-snps-arc@lists.infradead.org, Timur Tabi <timur@kernel.org>, hideaki yoshifuji <yoshfuji@linux-ipv6.org>, iommu@lists.linux-foundation.org, Laxman Dewangan <ldewangan@nvidia.com>, Sudeep Holla <sudeep.holla@arm.com>, Baolin Wang <baolin.wang7@gmail.com>, Shawn Guo <shawnguo@kernel.org>, "David S. Miller" <dav
- em@davemloft.net>, Baruch Siach <baruch@tkos.co.il>, Liviu Dudau <liviu.dudau@arm.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, Bjorn Andersson <bjorn.andersson@linaro.org>, Paul Cercueil <paul@crapouillou.net>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, joerg roedel <joro@8bytes.org>, Russell King <linux@armlinux.org.uk>, Andy Gross <agross@kernel.org>, linux-serial@vger.kernel.org, jakub kicinski <kuba@kernel.org>, will deacon <will@kernel.org>, Manivannan Sadhasivam <mani@kernel.org>, linux-mediatek@lists.infradead.org, Fabio Estevam <festevam@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>, Matthias Brugger <matthias.bgg@gmail.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Laurentiu Tudor <laurentiu.tudor@nxp.com>, Taichi Sugaya <sugaya.taichi@socionext.com>, netdev@vger.kernel.org, david ahern <dsahern@kernel.org>, Nicolas Ferre <nicolas.ferre@microchip.com>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Palmer Dabbelt <palmer
- @dabbelt.com>, Takao Orito <orito.takao@socionext.com>, linuxppc-dev@lists.ozlabs.org
+Cc: mahesh@linux.ibm.com, sachinp@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Aug 23, 2022 at 8:37 AM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+This is a multi-part message in MIME format.
+--------------xnH1tx2oswo1w1EnfCqTvUwT
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+
+On 9/7/22 09:49, Nicholas Piggin wrote:
+
+> On Mon Sep 5, 2022 at 4:38 PM AEST, Ganesh Goudar wrote:
+>> Part of machine check error handling is done in realmode,
+>> As of now instrumentation is not possible for any code that
+>> runs in realmode.
+>> When MCE is injected on KASAN enabled kernel, crash is
+>> observed, Hence force inline or mark no instrumentation
+>> for functions which can run in realmode, to avoid KASAN
+>> instrumentation.
+>>
+>> Signed-off-by: Ganesh Goudar<ganeshgr@linux.ibm.com>
+>> ---
+>> v2: Force inline few more functions.
+>> ---
+>>   arch/powerpc/include/asm/hw_irq.h    | 8 ++++----
+>>   arch/powerpc/include/asm/interrupt.h | 2 +-
+>>   arch/powerpc/include/asm/rtas.h      | 4 ++--
+>>   arch/powerpc/kernel/rtas.c           | 4 ++--
+>>   4 files changed, 9 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/arch/powerpc/include/asm/hw_irq.h b/arch/powerpc/include/asm/hw_irq.h
+>> index 26ede09c521d..3264991fe524 100644
+>> --- a/arch/powerpc/include/asm/hw_irq.h
+>> +++ b/arch/powerpc/include/asm/hw_irq.h
+>> @@ -111,7 +111,7 @@ static inline void __hard_RI_enable(void)
+>>   #ifdef CONFIG_PPC64
+>>   #include <asm/paca.h>
+>>   
+>> -static inline notrace unsigned long irq_soft_mask_return(void)
+>> +static __always_inline notrace unsigned long irq_soft_mask_return(void)
+>>   {
+>>   	return READ_ONCE(local_paca->irq_soft_mask);
+>>   }
+>> @@ -121,7 +121,7 @@ static inline notrace unsigned long irq_soft_mask_return(void)
+>>    * for the critical section and as a clobber because
+>>    * we changed paca->irq_soft_mask
+>>    */
+>> -static inline notrace void irq_soft_mask_set(unsigned long mask)
+>> +static __always_inline notrace void irq_soft_mask_set(unsigned long mask)
+>>   {
+>>   	/*
+>>   	 * The irq mask must always include the STD bit if any are set.
+> This doesn't give a reason why it's __always_inline, and having the
+> notrace attribute makes it possibly confusing. I think it would be easy
+> for someone to break without realising. Could you add a noinstr to these
+> instead / as well?
+
+Yeah we can add noinstr. Missed to see your comment, Sorry for the delayed reply
+
 >
-> On Thu, Jun 30, 2022 at 06:26:38PM -0700, Saravana Kannan wrote:
-> > These patches are on top of driver-core-next.
-> >
-> > Even if stdout-path isn't set in DT, this patch should take console
-> > probe times back to how they were before the deferred_probe_timeout
-> > clean up series[1].
->
-> Now dropped from my queue due to lack of a response to other reviewer's
-> questions.
+> What about adding a 'realmode' function annotation that includes noinstr?
 
-What happened to this patch? I have a 10 second timeout on console
-probe on my SiFive Unmatched, and I don't see this flag being set for
-the serial driver. In fact, I don't see it anywhere in-tree. I can't
-seem to locate another patchset from Saravana around this though, so
-I'm not sure where to look for a missing piece for the sifive serial
-driver.
-
-This is the second boot time regression (this one not fatal, unlike
-the Layerscape PCIe one) from the fw_devlink patchset.
-
-Greg, can you revert the whole set for 6.0, please? It's obviously
-nowhere near tested enough to go in and I expect we'll see a bunch of
--stable fixups due to this if we let it remain in.
-
-This seems to be one of the worst releases I've encountered in recent
-years on my hardware here due to this patchset. :-(
+You mean to define a new function annotation?
 
 
--Olof
+--------------xnH1tx2oswo1w1EnfCqTvUwT
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <div class="moz-cite-prefix">
+      <pre>On 9/7/22 09:49, Nicholas Piggin wrote:</pre>
+    </div>
+    <blockquote type="cite" cite="mid:CMPVP7RZXP5G.2D3ZNQPWARIG8@bobo">
+      <pre class="moz-quote-pre" wrap="">On Mon Sep 5, 2022 at 4:38 PM AEST, Ganesh Goudar wrote:
+</pre>
+      <blockquote type="cite">
+        <pre class="moz-quote-pre" wrap="">Part of machine check error handling is done in realmode,
+As of now instrumentation is not possible for any code that
+runs in realmode.
+When MCE is injected on KASAN enabled kernel, crash is
+observed, Hence force inline or mark no instrumentation
+for functions which can run in realmode, to avoid KASAN
+instrumentation.
+
+Signed-off-by: Ganesh Goudar <a class="moz-txt-link-rfc2396E" href="mailto:ganeshgr@linux.ibm.com">&lt;ganeshgr@linux.ibm.com&gt;</a>
+---
+v2: Force inline few more functions.
+---
+ arch/powerpc/include/asm/hw_irq.h    | 8 ++++----
+ arch/powerpc/include/asm/interrupt.h | 2 +-
+ arch/powerpc/include/asm/rtas.h      | 4 ++--
+ arch/powerpc/kernel/rtas.c           | 4 ++--
+ 4 files changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/hw_irq.h b/arch/powerpc/include/asm/hw_irq.h
+index 26ede09c521d..3264991fe524 100644
+--- a/arch/powerpc/include/asm/hw_irq.h
++++ b/arch/powerpc/include/asm/hw_irq.h
+@@ -111,7 +111,7 @@ static inline void __hard_RI_enable(void)
+ #ifdef CONFIG_PPC64
+ #include &lt;asm/paca.h&gt;
+ 
+-static inline notrace unsigned long irq_soft_mask_return(void)
++static __always_inline notrace unsigned long irq_soft_mask_return(void)
+ {
+ 	return READ_ONCE(local_paca-&gt;irq_soft_mask);
+ }
+@@ -121,7 +121,7 @@ static inline notrace unsigned long irq_soft_mask_return(void)
+  * for the critical section and as a clobber because
+  * we changed paca-&gt;irq_soft_mask
+  */
+-static inline notrace void irq_soft_mask_set(unsigned long mask)
++static __always_inline notrace void irq_soft_mask_set(unsigned long mask)
+ {
+ 	/*
+ 	 * The irq mask must always include the STD bit if any are set.
+</pre>
+      </blockquote>
+      <pre class="moz-quote-pre" wrap="">
+This doesn't give a reason why it's __always_inline, and having the
+notrace attribute makes it possibly confusing. I think it would be easy
+for someone to break without realising. Could you add a noinstr to these
+instead / as well?</pre>
+    </blockquote>
+    <pre>Yeah we can add noinstr. Missed to see your comment, Sorry for the delayed reply</pre>
+    <blockquote type="cite" cite="mid:CMPVP7RZXP5G.2D3ZNQPWARIG8@bobo">
+      <pre class="moz-quote-pre" wrap="">
+
+What about adding a 'realmode' function annotation that includes noinstr?</pre>
+    </blockquote>
+    <pre>You mean to define a new function annotation?</pre>
+    <br>
+  </body>
+</html>
+
+--------------xnH1tx2oswo1w1EnfCqTvUwT--
+
