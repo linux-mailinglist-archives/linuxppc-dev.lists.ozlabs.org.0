@@ -1,54 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1822A5BD74D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 00:30:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03B2D5BD751
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 00:30:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MWfWW4b2jz3hwr
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 08:30:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MWfX86WPlz3gHW
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 08:30:48 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=s3+f9C0K;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=f2RIwdWt;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=frederic@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=s3+f9C0K;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=f2RIwdWt;
 	dkim-atps=neutral
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MWS4348Mlz30Qt
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Sep 2022 00:39:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MWS906tR8z3bWB
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Sep 2022 00:43:32 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id BF856B81C95;
-	Mon, 19 Sep 2022 14:39:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64C85C433D6;
-	Mon, 19 Sep 2022 14:39:09 +0000 (UTC)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 58AD5B81C98;
+	Mon, 19 Sep 2022 14:43:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05DF7C433C1;
+	Mon, 19 Sep 2022 14:43:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1663598350;
-	bh=EYlJ8II0nMQUwIjH0JUADdeT52M2bVXh8wZ8I7YWDZQ=;
+	s=k20201202; t=1663598608;
+	bh=D+NoVno96UrWEE2gn7tpItGkEKOt+jvRjziVTjece0Q=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=s3+f9C0KTVjmYUPiubcRMi8XIY5SJMP0244Vb1fXbwXdFHK2Bm2BwTTQiaCHZh9e8
-	 gk+RkXTCbQvo+kjvjvWXHkL/k/NseZ0cbkyw2yDh2rZtKAxwlQOJfRciHvpbPx0lTm
-	 fDHS2etEOvPkeXqxMZO/oK5HOJhYIwkHmqYibhK+OB+2c+J+ST7lgkwPFAFcYkZbFW
-	 MXfD5dFjyN8rnPvB9qABtdA2rx/c5tMG/PNclmQth0MoJSBvpOxArLP6yCDHF7fpUw
-	 gdJXH8PHYrPCe2KnzR/yv4vNUQpksjg/NG4m1Xvw5PY6ek342QURnNGyGExrAr8OtZ
-	 QX22S+N/3elJw==
-Date: Mon, 19 Sep 2022 16:39:07 +0200
+	b=f2RIwdWtaC1gU/c1iv3f/GeLucEzNWn7ccmc4GkJFGI8QfQfyUHofdECc2rWD4nFT
+	 0GaftLgfVcd1PQZdiEvRWN1bWq4LSfCyq8T7EO2jtq161kguk1vIObBbG692peFow3
+	 xVyXo7iCyJmHMqd+S086gL1tfeYNp+V+xCIDAmfixXqTqubgg5nU77xLOKigezj3PM
+	 DaLeuiIZfTliZOGY4J1mUhwhazJJvjrhlr1eHMdV/EpxzQpUfj4SYRIitJ/3QvhoFT
+	 kXsev9FMLepyLeGkyRUFuM4yf7vwnZr8XA/FTgCZNB/ut+W0bJKqkVzf3mVq0/5WFi
+	 97mYIEcc35h6A==
+Date: Mon, 19 Sep 2022 16:43:24 +0200
 From: Frederic Weisbecker <frederic@kernel.org>
 To: Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH v2 10/44] cpuidle,armada: Push RCU-idle into driver
-Message-ID: <20220919143907.GB61009@lothringen>
+Subject: Re: [PATCH v2 09/44] cpuidle,omap3: Push RCU-idle into driver
+Message-ID: <20220919144324.GA62117@lothringen>
 References: <20220919095939.761690562@infradead.org>
- <20220919101521.004425686@infradead.org>
+ <20220919101520.936337959@infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220919101521.004425686@infradead.org>
+In-Reply-To: <20220919101520.936337959@infradead.org>
 X-Mailman-Approved-At: Tue, 20 Sep 2022 07:59:18 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -68,29 +68,14 @@ Cc: juri.lelli@redhat.com, rafael@kernel.org, catalin.marinas@arm.com, linus.wal
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Sep 19, 2022 at 11:59:49AM +0200, Peter Zijlstra wrote:
-> Doing RCU-idle outside the driver, only to then temporarily enable it
+On Mon, Sep 19, 2022 at 11:59:48AM +0200, Peter Zijlstra wrote:
+> Doing RCU-idle outside the driver, only to then teporarily enable it
 > again before going idle is daft.
-
-Ah wait, now I see, that's cpu_pm_enter()/cpu_pm_exit() -> cpu_pm_notify*() the culprits.
-Might be worth adding a short note about that on your changelogs.
-
 > 
 > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> ---
->  drivers/cpuidle/cpuidle-mvebu-v7.c |    7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> --- a/drivers/cpuidle/cpuidle-mvebu-v7.c
-> +++ b/drivers/cpuidle/cpuidle-mvebu-v7.c
-> @@ -36,7 +36,10 @@ static int mvebu_v7_enter_idle(struct cp
->  	if (drv->states[index].flags & MVEBU_V7_FLAG_DEEP_IDLE)
->  		deepidle = true;
->  
-> +	ct_idle_enter();
->  	ret = mvebu_v7_cpu_suspend(deepidle);
-> +	ct_idle_exit();
+> Reviewed-by: Tony Lindgren <tony@atomide.com>
+> Tested-by: Tony Lindgren <tony@atomide.com>
 
-And then yes of course:
+Ok now with the cpu_pm_*() informations that makes sense:
 
 Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
