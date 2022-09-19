@@ -2,100 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04F105BC31A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Sep 2022 08:50:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE0365BC348
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Sep 2022 09:01:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MWFgC3PvXz30MT
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Sep 2022 16:50:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MWFvH3qykz304j
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Sep 2022 17:00:59 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YodRFNAg;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=W6354r2I;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=bgray@linux.ibm.com; receiver=<UNKNOWN>)
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MWFth1Dwhz2xG7
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Sep 2022 17:00:28 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YodRFNAg;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=W6354r2I;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MWFfT0g76z2yRH
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Sep 2022 16:49:52 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28J56FQ4005386;
-	Mon, 19 Sep 2022 06:49:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=La9mpDMc0nafU8r314iLJmzSSTtAdERr9B5zYcIJDt8=;
- b=YodRFNAgjIWKZ/kHvyNg8p0S/nuplSmMdPS/w4Ty6sitchUlT+qWUDmNQ28kSU5SUonr
- 94gl6/aNuXRmYPPvOChzwlu/xxmSIkj6NzjsKU6ddXO/DKWV1xVnTXkUg20R7V6O0vq4
- YaELebo/yTO2FdIfw8DtwLUugik5IcX1JVMp7n7uU6di7+7wzn5QrLT9xOwKadXTXjWm
- vlr6igi2iAkZ5Y5MmP5jVHSfPcp91cAH1VhEWB6QJbFfcsc9jP+LU3h68ls78GwwhLoi
- afxle3sM7kpAE8GFUc4YRvoqBwbfOhBDHav3K9WqTAn1qyZV0GWjzLpbQ13toDJI57t+ tA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3jpaqb9y6t-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 19 Sep 2022 06:49:28 +0000
-Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 28J6AOj4013715;
-	Mon, 19 Sep 2022 06:49:27 GMT
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com [149.81.74.108])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3jpaqb9y69-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 19 Sep 2022 06:49:27 +0000
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
-	by ppma05fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 28J6ZpZA008387;
-	Mon, 19 Sep 2022 06:49:25 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
-	by ppma05fra.de.ibm.com with ESMTP id 3jn5v8sfm7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 19 Sep 2022 06:49:25 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
-	by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 28J6nNrS40042902
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 19 Sep 2022 06:49:23 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 08297A404D;
-	Mon, 19 Sep 2022 06:49:23 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5B3B6A4053;
-	Mon, 19 Sep 2022 06:49:22 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Mon, 19 Sep 2022 06:49:22 +0000 (GMT)
-Received: from [10.61.2.107] (haven.au.ibm.com [9.192.254.114])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 73B65602EA;
-	Mon, 19 Sep 2022 16:49:13 +1000 (AEST)
-Message-ID: <ff06e95c7f85f0b33e3573c46f9d9fe7ddffba2d.camel@linux.ibm.com>
-Subject: Re: [PATCH 1/6] powerpc/code-patching: Implement generic text
- patching function
-From: Benjamin Gray <bgray@linux.ibm.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
-        "linuxppc-dev@lists.ozlabs.org"
-	 <linuxppc-dev@lists.ozlabs.org>
-Date: Mon, 19 Sep 2022 16:49:13 +1000
-In-Reply-To: <4c19a0fa-6af0-e71a-deaf-b150eeec6381@csgroup.eu>
-References: <20220916062330.430468-1-bgray@linux.ibm.com>
-	 <20220916062330.430468-2-bgray@linux.ibm.com>
-	 <4c19a0fa-6af0-e71a-deaf-b150eeec6381@csgroup.eu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4 (3.44.4-1.fc36) 
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4MWFtg2fTVz4xG6;
+	Mon, 19 Sep 2022 17:00:27 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1663570827;
+	bh=L3tem0uADoiBYbot/yv8uOZ06CEW/rqksjEmxUFy8JA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=W6354r2IURC4zxaDy7TGapraIndtbH0YNRIzO+Rz1+dW1QP3p1Wh2OuO2lQ/2Zedl
+	 rOID+eIoFYbHq1CdRaMtF1cdxu72yf3nnbMS/mUChw0128UIXyGAPB/SrIyhgLFKrd
+	 MCf2Bnd5tw5R394i0qyTBi6UJB+ZJgq+xvgE0CUpjecAK16PlOptnjCQGGXZXiT98v
+	 a4H7T/d1Wh0SQH3mwcic84M/ORUAr9zIqw2Ebklm10zONqi/w3ikxpgpdUmOdhqia2
+	 LEvBO8C4eKEUZ+V13AOe/Djj4NlbLlMnEc2JgSXp/gop3bBxBXHx9rrg0dqZupek4q
+	 g06Llsx9fP4dw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Nicholas Miehlbradt <nicholas@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 1/4] powerpc/64s: Add DEBUG_PAGEALLOC for radix
+In-Reply-To: <20220919014437.608167-1-nicholas@linux.ibm.com>
+References: <20220919014437.608167-1-nicholas@linux.ibm.com>
+Date: Mon, 19 Sep 2022 17:00:26 +1000
+Message-ID: <87k05zlugl.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 73RXf5HwWRlllT8LoakyjEHD06miVfQ6
-X-Proofpoint-GUID: gSlMiGPcXkL4gkf-8qm8alCLMzK0xoUh
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
- definitions=2022-09-19_03,2022-09-16_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0
- priorityscore=1501 spamscore=0 lowpriorityscore=0 clxscore=1015
- impostorscore=0 bulkscore=0 suspectscore=0 malwarescore=0 mlxlogscore=999
- phishscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2209130000 definitions=main-2209190042
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,145 +57,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "ajd@linux.ibm.com" <ajd@linux.ibm.com>, "peterz@infradead.org" <peterz@infradead.org>, "npiggin@gmail.com" <npiggin@gmail.com>, "ardb@kernel.org" <ardb@kernel.org>, "jbaron@akamai.com" <jbaron@akamai.com>, "rostedt@goodmis.org" <rostedt@goodmis.org>, "jpoimboe@kernel.org" <jpoimboe@kernel.org>
+Cc: Nicholas Miehlbradt <nicholas@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 2022-09-19 at 06:04 +0000, Christophe Leroy wrote:
-> With CONFIG_STRICT_KERNEL_RWX, this patches causes a 15% time
-> increase=20
-> for activation/deactivation of ftrace.
+Nicholas Miehlbradt <nicholas@linux.ibm.com> writes:
+> There is support for DEBUG_PAGEALLOC on hash but not on radix.
+> Add support on radix.
+>
+> Signed-off-by: Nicholas Miehlbradt <nicholas@linux.ibm.com>
+> ---
+>  arch/powerpc/mm/book3s64/radix_pgtable.c | 16 +++++++++++++++-
+>  1 file changed, 15 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
+> index db2f3d193448..483c99bfbde5 100644
+> --- a/arch/powerpc/mm/book3s64/radix_pgtable.c
+> +++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+> @@ -30,6 +30,7 @@
+>  #include <asm/trace.h>
+>  #include <asm/uaccess.h>
+>  #include <asm/ultravisor.h>
+> +#include <asm/set_memory.h>
+>  
+>  #include <trace/events/thp.h>
+>  
+> @@ -503,6 +504,9 @@ static unsigned long __init radix_memory_block_size(void)
+>  {
+>  	unsigned long mem_block_size = MIN_MEMORY_BLOCK_SIZE;
+>  
+> +	if (debug_pagealloc_enabled())
+> +		return PAGE_SIZE;
+> +
+>  	/*
+>  	 * OPAL firmware feature is set by now. Hence we are ok
+>  	 * to test OPAL feature.
+> @@ -519,6 +523,9 @@ static unsigned long __init radix_memory_block_size(void)
+>  
+>  static unsigned long __init radix_memory_block_size(void)
+>  {
+> +	if (debug_pagealloc_enabled())
+> +		return PAGE_SIZE;
+> +
+>  	return 1UL * 1024 * 1024 * 1024;
+>  }
+  
+This value ends up in radix_mem_block_size, which is returned by 
+pnv_memory_block_size(), which is wired up as ppc_md.memory_block_size,
+and that's called by memory_block_size_bytes().
 
-It's possible that new alignment check is the cause. I'll see
+And I thought that value had to be >= MIN_MEMORY_BLOCK_SIZE.
+
+#define MIN_MEMORY_BLOCK_SIZE     (1UL << SECTION_SIZE_BITS)
+#define SECTION_SIZE_BITS       24
 
 
-> Without CONFIG_STRICT_KERNEL_RWX, it doesn't build.
+I would expect us to hit the panic in memory_dev_init().
 
-Yup, fixed for v2
+So that's odd.
 
-> > +static int __patch_text(void *dest, const void *src, size_t size,
-> > bool is_exec, void *exec_addr)
->=20
-> Is 'text' a good name ? For me text mean executable code. Should it
-> be=20
-> __patch_memory() ?
+I suspect you need to leave radix_memory_block_size() alone, or at least
+make sure you return MIN_MEMORY_BLOCK_SIZE when debug page alloc is
+enabled.
 
-Well patching regular memory is just a normal store. Text to me implies
-its non-writeable. Though __patch_memory would be fine.
+We probably need a separate variable that holds the max page size used
+for the linear mapping, and that would then be 1G in the normal case or
+PAGE_SIZE in the debug page alloc case.
 
-> Why pass src as a void * ? This forces data to go via the stack.
-> Can't=20
-> you pass it as a 'long' ?
-
-Probably, I wasn't aware that it would make a difference. I prefer
-pointers in general for their semantic meaning, but will change if it
-affects param passing.
-
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (virt_to_pfn(dest) !=3D v=
-irt_to_pfn(dest + size - 1))
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0return -EFAULT;
->=20
-> Why do you need that new check ?
-
-If the patch crosses a page boundary then letting it happen is
-unpredictable. Though perhaps this requirement can just be put as a
-comment, or require that patches be aligned to the patch size.
-
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0case 8:
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0__put_=
-kernel_nofault(dest, src, u64,
-> > failed);
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0break;
->=20
-> Is case 8 needed for PPC32 ?
-
-I don't have a particular need for it, but the underlying
-__put_kernel_nofault is capable of it so I included it.
-
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
->=20
-> Do you catch it when size if none of 1,2,4,8 ?
->=20
-
-Not yet. Perhaps I should wrap patch_text_data in a macro that checks
-the size with BUILD_BUG_ON? I'd rather not check at runtime.
-
-> > +
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0asm ("dcbst 0, %0; sync" :: =
-"r" (dest));
->=20
-> Maybe write it in C:
->=20
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0dcbst(dest);
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0mb(); /* sync */
->=20
-> > +
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (is_exec)
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0asm ("icbi 0,%0; sync; isync" :: "r" (exec_addr));
->=20
-> Same, can be:
->=20
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (is_exec) {
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0icbi(exec_addr);
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0mb(); /* sync */
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0isync();
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
->=20
-> Or keep it flat:
->=20
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (!is_exec)
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0return 0;
->=20
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0icbi(exec_addr);
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0mb(); /* sync */
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0isync();
->=20
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return 0;
-
-Will try this.
-
-> > +static int do_patch_text(void *dest, const void *src, size_t size,
-> > bool is_exec)
-> > +{
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0int err;
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0pte_t *pte;
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0u32 *patch_addr;
-> > +
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0pte =3D start_text_patch(des=
-t, &patch_addr);
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0err =3D __patch_text(patch_a=
-ddr, src, size, is_exec, dest);
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0finish_text_patch(pte);
->=20
-> Why do you need to split this function in three parts ? I can't see
-> the=20
-> added value, all it does is reduce readability.
-
-It made it more readable to me, so the __patch_text didn't get buried.
-It also made it easier to do the refactoring, and potentially add code
-patching variants that use the poke area but not __patch_text. I'll
-remove it for v2 though given this is the only use right now.
-
-> Did you check the impact of calling __this_cpu_read() twice ?
-
-I wasn't concerned about performance, but given I'll merge it back
-again it will only be read once in v2 again.
-
-> > +void *patch_memory(void *dest, const void *src, size_t size)
->=20
-> What is this function used for ?
->=20
-
-Build failure apparently :)
-
-It's removed in v2.
->=20
+cheers
