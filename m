@@ -1,72 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D390C5BC4CF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Sep 2022 10:55:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30DCF5BCBF6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Sep 2022 14:38:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MWJR13QJWz3bXG
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Sep 2022 18:55:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MWPNk6dSVz3c7Q
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Sep 2022 22:38:30 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=plF3f5Fx;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ascLbqb3;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MWPN52FpJz303T
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Sep 2022 22:37:57 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=plF3f5Fx;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ascLbqb3;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MWJQK06X7z2xDN
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Sep 2022 18:54:32 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id B2BA560C8E
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Sep 2022 08:54:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 234FDC433C1
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Sep 2022 08:54:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1663577669;
-	bh=z3OpI/c0u+CbBSFH6pKVwswadrWMR1UFgvhsmAlsO24=;
-	h=From:To:Subject:Date:From;
-	b=plF3f5FxkPGE+lTeOrp/9pXx7XtX7xF1b252Nji7J4LPV0sUVBIZiCJ4rHKonkCzd
-	 OhLMQVNDUYVoOoF3kqthu0lRO6pzy7K6RTgUUwOFhUzjQWHWXd8prSYFDXixJtveFv
-	 1cmXSLn9SYJeas7pVR6f+1TB4nGCg5SU94RgcqPhDf0rwIRhRLkwXjGN9SQ/9gzSxO
-	 GJljmc13XV2cMlTbBpKwf4dhE7m4++vbr0FC06Y4W6ZiRUh9AMy9QUNT6R2PmDwm7c
-	 8k6yMWJFR/fRABtKH+W9saNHUYXIofRdd6G25Ijt6qJgjynVD4V7ZKIbfFZ67Gba2k
-	 ZttXncVYPGtsA==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id 0BAE2C433E4; Mon, 19 Sep 2022 08:54:29 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 216504] New: no audio on iBook G4 (powerbook6,5)
-Date: Mon, 19 Sep 2022 08:54:28 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: new
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-32
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: thieson08@me.com
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: bug_id short_desc product version
- cf_kernel_version rep_platform op_sys cf_tree bug_status bug_severity
- priority component assigned_to reporter cf_regression attachments.created
-Message-ID: <bug-216504-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4MWPN40M8Cz4xG5;
+	Mon, 19 Sep 2022 22:37:55 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1663591077;
+	bh=26aYF6mHiSEt2iwCmNXzzHxdDu+GYYO2herY5axBaIs=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=ascLbqb3/mCGZ9Vqn5RLOOm0XFP91jM5LETMX9S2kwAG7OarHImLnwGRt/MhNWZtS
+	 d2WCoEsXGM6E3eIZYONoX4buh5dXApQ5vdHnnjAxP/bIU7kcOJ6w9N0s7WHJq4c7F1
+	 MURQJjtF+OD18kY8NfzEpsFz9Z9D0K9CiKKKIFk9gauppc5M3+mxt57QzqpuCn80GG
+	 n4deI0vtI6kJ+WGGWRYvBlsn7xBT9zdDc0ONJbU6z/4bSwulkkJyB/P6Gdy+Bdk+iL
+	 uzU9F/A2q9VAAlkaxmARYYY1CvdrwR3PzSMRJNfOozRTU8Nx5OetT8GZfO6iZVeIKu
+	 HRfQKcwEjS44Q==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Samuel Holland
+ <samuel@sholland.org>, Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH] powerpc: Save AMR/IAMR when switching tasks
+In-Reply-To: <89049105-64fc-8d5b-d090-2841064786d1@csgroup.eu>
+References: <20220916050515.48842-1-samuel@sholland.org>
+ <89049105-64fc-8d5b-d090-2841064786d1@csgroup.eu>
+Date: Mon, 19 Sep 2022 22:37:51 +1000
+Message-ID: <87h713leu8.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,44 +60,136 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "Eric W. Biederman" <ebiederm@xmission.com>, Kees Cook <keescook@chromium.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D216504
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> Le 16/09/2022 =C3=A0 07:05, Samuel Holland a =C3=A9crit=C2=A0:
+>> With CONFIG_PREEMPT=3Dy (involuntary preemption enabled), it is possible
+>> to switch away from a task inside copy_{from,to}_user. This left the CPU
+>> with userspace access enabled until after the next IRQ or privilege
+>> level switch, when AMR/IAMR got reset to AMR_KU[AE]P_BLOCKED. Then, when
+>> switching back to the original task, the userspace access would fault:
+>
+> This is not supposed to happen. You never switch away from a task=20
+> magically. Task switch will always happen in an interrupt, that means=20
+> copy_{from,to}_user() get interrupted.
 
-            Bug ID: 216504
-           Summary: no audio on iBook G4 (powerbook6,5)
-           Product: Platform Specific/Hardware
-           Version: 2.5
-    Kernel Version: 5.19
-          Hardware: PPC-32
-                OS: Linux
-              Tree: Mainline
-            Status: NEW
-          Severity: normal
-          Priority: P1
-         Component: PPC-32
-          Assignee: platform_ppc-32@kernel-bugs.osdl.org
-          Reporter: thieson08@me.com
-        Regression: No
+Unfortunately this isn't true when CONFIG_PREEMPT=3Dy.
 
-Created attachment 301831
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D301831&action=3Dedit
-Patch to fix audio issue
+We can switch away without an interrupt via:
+  __copy_tofrom_user()
+    -> __copy_tofrom_user_power7()
+       -> exit_vmx_usercopy()
+          -> preempt_enable()
+             -> __preempt_schedule()
+                -> preempt_schedule()
+                   -> preempt_schedule_common()
+                      -> __schedule()
 
-The audio on my iBook G4 (powerbook65) has not been working. After some tim=
-e of
-googling I have found out that there has been a patch posted to the debian
-mailing lists here:
-https://lists.debian.org/debian-powerpc/2013/09/msg00031.html
-Unfortunately, this has never made it upstream.
-I have adapted the patch in the link to the current state of the kernel and=
- can
-confirm that audio now works (even though I had to play with alsamixer a fe=
-w).
+I do some boot tests with CONFIG_PREEMPT=3Dy, but I realise now those are
+all on Power8, which is a bit of an oversight on my part.
 
---=20
-You may reply to this email to add a comment.
+And clearly no one else tests it, until now :)
 
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+I think the root of our problem is that our KUAP lock/unlock is at too
+high a level, ie. we do it in C around the low-level copy to/from.
+
+eg:
+
+static inline unsigned long
+raw_copy_to_user(void __user *to, const void *from, unsigned long n)
+{
+	unsigned long ret;
+
+	allow_write_to_user(to, n);
+	ret =3D __copy_tofrom_user(to, (__force const void __user *)from, n);
+	prevent_write_to_user(to, n);
+	return ret;
+}
+
+There's a reason we did that, which is that we have various different
+KUAP methods on different platforms, not a simple instruction like other
+arches.
+
+But that means we have that exit_vmx_usercopy() being called deep in the
+guts of __copy_tofrom_user(), with KUAP disabled, and then we call into
+the preempt machinery and eventually schedule.
+
+I don't see an easy way to fix that "properly", it would be a big change
+to all platforms to push the KUAP save/restore down into the low level
+asm code.
+
+But I think the patch below does fix it, although it abuses things a
+little. Namely it only works because the 64s KUAP code can handle a
+double call to prevent, and doesn't need the addresses or size for the
+allow.
+
+Still I think it might be our best option for an easy fix.
+
+Samuel, can you try this on your system and check it works for you?
+
+cheers
+
+
+diff --git a/arch/powerpc/include/asm/processor.h b/arch/powerpc/include/as=
+m/processor.h
+index 97a77b37daa3..c50080c6a136 100644
+--- a/arch/powerpc/include/asm/processor.h
++++ b/arch/powerpc/include/asm/processor.h
+@@ -432,6 +432,7 @@ int speround_handler(struct pt_regs *regs);
+ /* VMX copying */
+ int enter_vmx_usercopy(void);
+ int exit_vmx_usercopy(void);
++void exit_vmx_usercopy_continue(void);
+ int enter_vmx_ops(void);
+ void *exit_vmx_ops(void *dest);
+=20
+diff --git a/arch/powerpc/lib/copyuser_power7.S b/arch/powerpc/lib/copyuser=
+_power7.S
+index 28f0be523c06..77804860383c 100644
+--- a/arch/powerpc/lib/copyuser_power7.S
++++ b/arch/powerpc/lib/copyuser_power7.S
+@@ -47,7 +47,7 @@
+ 	ld	r15,STK_REG(R15)(r1)
+ 	ld	r14,STK_REG(R14)(r1)
+ .Ldo_err3:
+-	bl	exit_vmx_usercopy
++	bl	exit_vmx_usercopy_continue
+ 	ld	r0,STACKFRAMESIZE+16(r1)
+ 	mtlr	r0
+ 	b	.Lexit
+diff --git a/arch/powerpc/lib/vmx-helper.c b/arch/powerpc/lib/vmx-helper.c
+index f76a50291fd7..78a18b8384ff 100644
+--- a/arch/powerpc/lib/vmx-helper.c
++++ b/arch/powerpc/lib/vmx-helper.c
+@@ -8,6 +8,7 @@
+  */
+ #include <linux/uaccess.h>
+ #include <linux/hardirq.h>
++#include <asm/kup.h>
+ #include <asm/switch_to.h>
+=20
+ int enter_vmx_usercopy(void)
+@@ -34,12 +35,19 @@ int enter_vmx_usercopy(void)
+  */
+ int exit_vmx_usercopy(void)
+ {
++	prevent_user_access(KUAP_READ_WRITE);
+ 	disable_kernel_altivec();
+ 	pagefault_enable();
+ 	preempt_enable();
+ 	return 0;
+ }
+=20
++void exit_vmx_usercopy_continue(void)
++{
++	exit_vmx_usercopy();
++	allow_read_write_user(NULL, NULL, 0);
++}
++
+ int enter_vmx_ops(void)
+ {
+ 	if (in_interrupt())
+
