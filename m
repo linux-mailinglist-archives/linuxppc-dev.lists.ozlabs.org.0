@@ -2,53 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E8FD5BD731
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 00:22:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4D795BD6F6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 00:13:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MWfLz6j7lz3cS8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 08:22:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MWf832Fr1z3gG3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 08:13:23 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=buhX52S0;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=Ick7cd7M;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=buhX52S0;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=Ick7cd7M;
 	dkim-atps=neutral
 Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MWLHP3ZzKz308B
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Sep 2022 20:18:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MWLGq3Ng1z305d
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Sep 2022 20:18:11 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Content-Type:MIME-Version:References:
 	Subject:Cc:To:From:Date:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
 	Content-ID:Content-Description:In-Reply-To;
-	bh=jlMVapcDkKa+q5r/dVIZrQzWqwQOPh4aNsx9pv05CFo=; b=buhX52S0N8GfdrpPROTvjfDI65
-	vo2N72F8ANzTI8iX5yZu4448eTVjHyPggkwJJfRKxs1txYZ+DUykF1keHi9dJ3FYJIVgjO+Dv7BtO
-	JXYwk6PDa0+sp3kc5Rvvb8/Ozy1R5v2F0Ol45g7fuR3UdZWhBnqCsW78Po84SfQbz64I7hort1cFr
-	g13XSo10LkBMNLAyuExTJtjyY46T4cXU/beQLLdxRHU6aP5d+5hLJXADRxRrHdk/ecdvH0VaVvyLT
-	ehnX8ZndOukmUSwZ46v+BOtBKQRM0tk1W3kROcANilt30UO816DEUkSwR0/b0qiDh5Is5urKmLXW+
-	Bw+kCTLg==;
+	bh=KSLnjMu353Hxa4O11Me8JnVia/sjgKM0LDIwoSdP0MI=; b=Ick7cd7MD8jj+jy/FoOvcOldv4
+	BXzqJ9/zYCWxDMBoaCpMKWTDlkrsjm+ciYbDhTzmEduHgIHGZFU8eu/9UCVWqxQV5DHTA1YUSp8Tx
+	faKa0oJE6mpLjVarzv5uwBfakpGivkUsYKynKrWjgGyaJKHf7nQ9405HsIrOCwT0Hbb/sk63vSfvE
+	BnxzmNvGwkIXkzdN929OghR8ABtTQgm7zoz4WiUA1zH89oWT84eGaf1f8VAx4krcpDtLRD5v1HZmI
+	M9aENqhsFuSeArxTtlOkUckCjONRAV+wT1xYhtyTytfY6G6hBn+L1OC7ifjz0W0zmPKhKL2PE+41m
+	nB7zCSpw==;
 Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
 	by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oaDq3-00E2Ai-EI; Mon, 19 Sep 2022 10:17:20 +0000
+	id 1oaDq3-00E2Aj-LY; Mon, 19 Sep 2022 10:17:21 +0000
 Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
 	(Client did not present a certificate)
-	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 17458302F05;
+	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 18466302F09;
 	Mon, 19 Sep 2022 12:16:25 +0200 (CEST)
 Received: by hirez.programming.kicks-ass.net (Postfix, from userid 0)
-	id 29E9C2BA7B0FB; Mon, 19 Sep 2022 12:16:22 +0200 (CEST)
-Message-ID: <20220919101521.609602902@infradead.org>
+	id 2E67C2BAB86FF; Mon, 19 Sep 2022 12:16:22 +0200 (CEST)
+Message-ID: <20220919101521.676713943@infradead.org>
 User-Agent: quilt/0.66
-Date: Mon, 19 Sep 2022 11:59:58 +0200
+Date: Mon, 19 Sep 2022 11:59:59 +0200
 From: Peter Zijlstra <peterz@infradead.org>
 To: peterz@infradead.org
-Subject: [PATCH v2 19/44] cpuidle,intel_idle: Fix CPUIDLE_FLAG_INIT_XSTATE
+Subject: [PATCH v2 20/44] cpuidle,intel_idle: Fix CPUIDLE_FLAG_IBRS
 References: <20220919095939.761690562@infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -71,64 +71,42 @@ Cc: juri.lelli@redhat.com, rafael@kernel.org, catalin.marinas@arm.com, linus.wal
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-vmlinux.o: warning: objtool: intel_idle_s2idle+0xd5: call to fpu_idle_fpregs() leaves .noinstr.text section
-vmlinux.o: warning: objtool: intel_idle_xstate+0x11: call to fpu_idle_fpregs() leaves .noinstr.text section
-vmlinux.o: warning: objtool: fpu_idle_fpregs+0x9: call to xfeatures_in_use() leaves .noinstr.text section
+vmlinux.o: warning: objtool: intel_idle_ibrs+0x17: call to spec_ctrl_current() leaves .noinstr.text section
+vmlinux.o: warning: objtool: intel_idle_ibrs+0x27: call to wrmsrl.constprop.0() leaves .noinstr.text section
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 ---
- arch/x86/include/asm/fpu/xcr.h       |    4 ++--
- arch/x86/include/asm/special_insns.h |    2 +-
- arch/x86/kernel/fpu/core.c           |    4 ++--
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ arch/x86/kernel/cpu/bugs.c |    2 +-
+ drivers/idle/intel_idle.c  |    4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
---- a/arch/x86/include/asm/fpu/xcr.h
-+++ b/arch/x86/include/asm/fpu/xcr.h
-@@ -5,7 +5,7 @@
- #define XCR_XFEATURE_ENABLED_MASK	0x00000000
- #define XCR_XFEATURE_IN_USE_MASK	0x00000001
- 
--static inline u64 xgetbv(u32 index)
-+static __always_inline u64 xgetbv(u32 index)
- {
- 	u32 eax, edx;
- 
-@@ -27,7 +27,7 @@ static inline void xsetbv(u32 index, u64
-  *
-  * Callers should check X86_FEATURE_XGETBV1.
-  */
--static inline u64 xfeatures_in_use(void)
-+static __always_inline u64 xfeatures_in_use(void)
- {
- 	return xgetbv(XCR_XFEATURE_IN_USE_MASK);
- }
---- a/arch/x86/include/asm/special_insns.h
-+++ b/arch/x86/include/asm/special_insns.h
-@@ -295,7 +295,7 @@ static inline int enqcmds(void __iomem *
- 	return 0;
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -79,7 +79,7 @@ void write_spec_ctrl_current(u64 val, bo
+ 		wrmsrl(MSR_IA32_SPEC_CTRL, val);
  }
  
--static inline void tile_release(void)
-+static __always_inline void tile_release(void)
+-u64 spec_ctrl_current(void)
++noinstr u64 spec_ctrl_current(void)
  {
- 	/*
- 	 * Instruction opcode for TILERELEASE; supported in binutils
---- a/arch/x86/kernel/fpu/core.c
-+++ b/arch/x86/kernel/fpu/core.c
-@@ -856,12 +856,12 @@ int fpu__exception_code(struct fpu *fpu,
-  * Initialize register state that may prevent from entering low-power idle.
-  * This function will be invoked from the cpuidle driver only when needed.
-  */
--void fpu_idle_fpregs(void)
-+noinstr void fpu_idle_fpregs(void)
- {
- 	/* Note: AMX_TILE being enabled implies XGETBV1 support */
- 	if (cpu_feature_enabled(X86_FEATURE_AMX_TILE) &&
- 	    (xfeatures_in_use() & XFEATURE_MASK_XTILE)) {
- 		tile_release();
--		fpregs_deactivate(&current->thread.fpu);
-+		__this_cpu_write(fpu_fpregs_owner_ctx, NULL);
- 	}
+ 	return this_cpu_read(x86_spec_ctrl_current);
+ }
+--- a/drivers/idle/intel_idle.c
++++ b/drivers/idle/intel_idle.c
+@@ -181,12 +181,12 @@ static __cpuidle int intel_idle_ibrs(str
+ 	int ret;
+ 
+ 	if (smt_active)
+-		wrmsrl(MSR_IA32_SPEC_CTRL, 0);
++		native_wrmsrl(MSR_IA32_SPEC_CTRL, 0);
+ 
+ 	ret = __intel_idle(dev, drv, index);
+ 
+ 	if (smt_active)
+-		wrmsrl(MSR_IA32_SPEC_CTRL, spec_ctrl);
++		native_wrmsrl(MSR_IA32_SPEC_CTRL, spec_ctrl);
+ 
+ 	return ret;
  }
 
 
