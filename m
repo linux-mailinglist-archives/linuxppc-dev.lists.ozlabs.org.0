@@ -2,75 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6758B5BDAFF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 05:52:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 960495BDB00
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 05:55:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MWngf1t6kz3bN6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 13:52:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MWnkG47T4z3c2v
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 13:55:02 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=O2O5MQHZ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Kvw9GHHy;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::431; helo=mail-pf1-x431.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::532; helo=mail-pg1-x532.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=O2O5MQHZ;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Kvw9GHHy;
 	dkim-atps=neutral
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
+Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MWng10lmDz2xjj
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Sep 2022 13:52:11 +1000 (AEST)
-Received: by mail-pf1-x431.google.com with SMTP id e5so1565047pfl.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Sep 2022 20:52:10 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MWnjh2W1Nz2xjj
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Sep 2022 13:54:32 +1000 (AEST)
+Received: by mail-pg1-x532.google.com with SMTP id s206so1299106pgs.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Sep 2022 20:54:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date;
-        bh=Y5ta4QdyeXNtfSOMpNLsSzxGDlEKG54VPWWrX/O8jbw=;
-        b=O2O5MQHZ/zBUV4FzZVwqUp50ucmQykdPspsjZ89VAotp7Asne0Ty93/d8HbiZYmLiY
-         t3lH/xtShruuPmJsAnf8dq4vscG3oM+vgQeLSwxoBWqZdjimpEtpjJIy4eut4UPLrx/I
-         z5CO6e2PFqDJqFQJTY6VLmVGBq6nd+0ycGGQN5UY+fi+MWjnAFFo+wlHqM63JW3WV4DC
-         xrMxgzrZqEQ8T5AMkUyho5p+8marCtL1LdhH6e6OHBlFIGRMyHJnEm3vN4sZNivDKHc8
-         KYGaMTWKja++t4YF+QV8/36otVoQvCSk676XYE5C7GeHPH8JoEdSqHuqwEYgvlZUzpMB
-         HDCQ==
+        bh=iRqGVpJfZnOCizRupG33AtA0KKxYvPEqC5LY7aKX0LY=;
+        b=Kvw9GHHy/1ZrQ0+dQmVqchqF+kOkGzyFBmV2ScUOrXMRFkKReOFJKAF0oCEXePRMqW
+         XTf0XJQIVeyvVoevIljPJEDl/XXFHSqw9ccQXIXHvJyYmYLtzYPl+MXjK6f52SQFlNIG
+         Wknq6+RW09ugx62Jw8I5pIJruqtnv81FLqst96GVVHusurEEazNnGKy/wOtIVUDOhVYf
+         +uqgQj+Ca0JppjZTwheGBIn9tmOqUCgfjmqV8stAgpwOCtV4UkHbSsQNANAjXp0iVOjX
+         LD3Yq9RcpgWT/mmFjSaIQ0Vr1XzG5L2JrSS2Qrgyp3yqOZXeIT7vhsuO5Lu66+czNcqr
+         Lmfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date;
-        bh=Y5ta4QdyeXNtfSOMpNLsSzxGDlEKG54VPWWrX/O8jbw=;
-        b=IPjrozYaW3h6cx2eJIWsta6bwm4txOOYhQTsDsPoPz61u5X1HCy4trNBGp2MPrDwPM
-         aaNrOywvolmsXcBRfbbhYcKePLJAhAaz55ywt4oBmksjDaqQ2Lb74q94IjyTGspc5dP8
-         p8XqB6qv5+/Ij/45NsLNJqtzDLdq5jFfRxm4vPvbA3WbNP3bUElTPfwNzE4jwc2MGZIq
-         bwo7Jjn0c8k+szYBpXcf+NUe+vike782lhzzCd2y7AhNBH3t1XePKTkLBOcxJGrpgHjd
-         Em0CPiOiiicz2Pj0Oq3x5s1Goduc+luyn2OsxCXkM3v9OYhxUuRSbSo+EN0kCiP5zmLM
-         iQzQ==
-X-Gm-Message-State: ACrzQf3Uq9NnI7qEj+82ICLZg64mEPxncmB0RkRJr8a5zeOLtZNxxLTR
-	xxjzX/8cHyQVN0U8yGuSFu6LR8ubP+0=
-X-Google-Smtp-Source: AMsMyM75wIDBbFQwKCCvmH6yL8oH9JpVJA01Fx3q8PdYM75zrnTxIHaMmzxNTxEGXVZsFUHlZgTiSg==
-X-Received: by 2002:a63:4965:0:b0:439:7a97:383c with SMTP id y37-20020a634965000000b004397a97383cmr18242670pgk.462.1663645926352;
-        Mon, 19 Sep 2022 20:52:06 -0700 (PDT)
+        bh=iRqGVpJfZnOCizRupG33AtA0KKxYvPEqC5LY7aKX0LY=;
+        b=JE5/im0qovZ5YHxuP2A6iquw/tg8QBoSP42ogyrqqUyiAgdTw7BfRQIxOq1PkmfJ6b
+         24R9DrC7ibBq9mxvd4d6qUqGJsXK5WZG7sJtX02sGu0P5hCCXjY4P+J26cMDV/fL9S5T
+         DXvTsRRJ7zb4V4f6vZ8MoFdUsQ2wllHYBLE1xndi9ryh9xCKNBAPiyPzZ1FVydjo42D0
+         3iUxrg25TayZNPtj2pGHaQhRr7um4x21xFMmNhvQctv7+tjTmeg6gRgzseLJApe3leRz
+         Abgu1kWhnGBoIs1Pp10UdbbvlcBKYDs2KJLk4TzTS9wGCRZfZxi3/4IXoHle9cR+i7AA
+         hJ9g==
+X-Gm-Message-State: ACrzQf3G+lLHDLpv+6XXfnJftd9blauMxERlpJc3Y5LNgQ6yN3UR8bMb
+	JjTpFBtHq8tngLpKE4CLVwM=
+X-Google-Smtp-Source: AMsMyM7LnotsYswGSNAYzyKV0jecFOsszXCtpIGrSY0xH3D4AZ8n8387VlDKzbY+egFaU8Pw7OpVPQ==
+X-Received: by 2002:a63:82c1:0:b0:439:f2d1:a508 with SMTP id w184-20020a6382c1000000b00439f2d1a508mr10269593pgd.155.1663646069037;
+        Mon, 19 Sep 2022 20:54:29 -0700 (PDT)
 Received: from localhost (118-208-203-28.tpgi.com.au. [118.208.203.28])
-        by smtp.gmail.com with ESMTPSA id 20-20020a631154000000b0041d6d37deb5sm220797pgr.81.2022.09.19.20.52.02
+        by smtp.gmail.com with ESMTPSA id t25-20020a62d159000000b0053ae018a91esm227202pfl.173.2022.09.19.20.54.25
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 Sep 2022 20:52:05 -0700 (PDT)
+        Mon, 19 Sep 2022 20:54:28 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 20 Sep 2022 13:51:59 +1000
-Message-Id: <CN0X9CSRA9D7.ZZVYTCRQ0EWE@bobo>
-Subject: Re: [PACTH v2] powerpc/pseries/mce: Avoid instrumentation in
- realmode
+Date: Tue, 20 Sep 2022 13:54:23 +1000
+Message-Id: <CN0XB6PRTPP7.W10Z5R1QNLZC@bobo>
 From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Ganesh" <ganeshgr@linux.ibm.com>, <linuxppc-dev@lists.ozlabs.org>,
- <mpe@ellerman.id.au>
+To: "Nathan Lynch" <nathanl@linux.ibm.com>, =?utf-8?q?Leonardo_Br=C3=A1s?=
+ <leobras.c@gmail.com>
+Subject: Re: [PATCH] Revert "powerpc/rtas: Implement reentrant rtas call"
 X-Mailer: aerc 0.11.0
-References: <20220905063811.16454-1-ganeshgr@linux.ibm.com>
- <CMPVP7RZXP5G.2D3ZNQPWARIG8@bobo>
- <895f4387-582a-6d60-a176-e2112f506e12@linux.ibm.com>
-In-Reply-To: <895f4387-582a-6d60-a176-e2112f506e12@linux.ibm.com>
+References: <20220907220111.223267-1-nathanl@linux.ibm.com>
+ <1d76891ee052112ee1547a4027e358d5cbcac23d.camel@gmail.com>
+ <871qskve2f.fsf@linux.ibm.com>
+ <cf845311ca7fcc0fded8db153499d9394f2add4e.camel@gmail.com>
+ <87y1uotlfa.fsf@linux.ibm.com>
+ <14e227181543ab45550ddf8e8fa1c53838361d61.camel@gmail.com>
+ <CMXFROL4N1OT.4DV7ZOHOP954@bobo> <87h717t24d.fsf@linux.ibm.com>
+ <87illjqxpn.fsf@linux.ibm.com>
+In-Reply-To: <87illjqxpn.fsf@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,80 +86,125 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mahesh@linux.ibm.com, sachinp@linux.ibm.com
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon Sep 19, 2022 at 4:03 PM AEST, Ganesh wrote:
-> On 9/7/22 09:49, Nicholas Piggin wrote:
->
-> > On Mon Sep 5, 2022 at 4:38 PM AEST, Ganesh Goudar wrote:
-> >> Part of machine check error handling is done in realmode,
-> >> As of now instrumentation is not possible for any code that
-> >> runs in realmode.
-> >> When MCE is injected on KASAN enabled kernel, crash is
-> >> observed, Hence force inline or mark no instrumentation
-> >> for functions which can run in realmode, to avoid KASAN
-> >> instrumentation.
+On Mon Sep 19, 2022 at 11:51 PM AEST, Nathan Lynch wrote:
+> Nathan Lynch <nathanl@linux.ibm.com> writes:
+> > "Nicholas Piggin" <npiggin@gmail.com> writes:
+> >> On Wed Sep 14, 2022 at 3:39 AM AEST, Leonardo Br=C3=A1s wrote:
+> >>> On Mon, 2022-09-12 at 14:58 -0500, Nathan Lynch wrote:
+> >>> > Leonardo Br=C3=A1s <leobras.c@gmail.com> writes:
+> >>> > > On Fri, 2022-09-09 at 09:04 -0500, Nathan Lynch wrote:
+> >>> > > > Leonardo Br=C3=A1s <leobras.c@gmail.com> writes:
+> >>> > > > > On Wed, 2022-09-07 at 17:01 -0500, Nathan Lynch wrote:
+> >>> > > > > > At the time this was submitted by Leonardo, I confirmed -- =
+or thought
+> >>> > > > > > I had confirmed -- with PowerVM partition firmware developm=
+ent that
+> >>> > > > > > the following RTAS functions:
+> >>> > > > > >=20
+> >>> > > > > > - ibm,get-xive
+> >>> > > > > > - ibm,int-off
+> >>> > > > > > - ibm,int-on
+> >>> > > > > > - ibm,set-xive
+> >>> > > > > >=20
+> >>> > > > > > were safe to call on multiple CPUs simultaneously, not only=
+ with
+> >>> > > > > > respect to themselves as indicated by PAPR, but with arbitr=
+ary other
+> >>> > > > > > RTAS calls:
+> >>> > > > > >=20
+> >>> > > > > > https://lore.kernel.org/linuxppc-dev/875zcy2v8o.fsf@linux.i=
+bm.com/
+> >>> > > > > >=20
+> >>> > > > > > Recent discussion with firmware development makes it clear =
+that this
+> >>> > > > > > is not true, and that the code in commit b664db8e3f97 ("pow=
+erpc/rtas:
+> >>> > > > > > Implement reentrant rtas call") is unsafe, likely explainin=
+g several
+> >>> > > > > > strange bugs we've seen in internal testing involving DLPAR=
+ and
+> >>> > > > > > LPM. These scenarios use ibm,configure-connector, whose int=
+ernal state
+> >>> > > > > > can be corrupted by the concurrent use of the "reentrant" f=
+unctions,
+> >>> > > > > > leading to symptoms like endless busy statuses from RTAS.
+> >>> > > > >=20
+> >>> > > > > Oh, does not it means PowerVM is not compliant to the PAPR sp=
+ecs?
+> >>> > > >=20
+> >>> > > > No, it means the premise of commit b664db8e3f97 ("powerpc/rtas:
+> >>> > > > Implement reentrant rtas call") change is incorrect. The "reent=
+rant"
+> >>> > > > property described in the spec applies only to the individual R=
+TAS
+> >>> > > > functions. The OS can invoke (for example) ibm,set-xive on mult=
+iple CPUs
+> >>> > > > simultaneously, but it must adhere to the more general requirem=
+ent to
+> >>> > > > serialize with other RTAS functions.
+> >>> > > >=20
+> >>> > >=20
+> >>> > > I see. Thanks for explaining that part!
+> >>> > > I agree: reentrant calls that way don't look as useful on Linux t=
+han I
+> >>> > > previously thought.
+> >>> > >=20
+> >>> > > OTOH, I think that instead of reverting the change, we could make=
+ use of the
+> >>> > > correct information and fix the current implementation. (This cou=
+ld help when we
+> >>> > > do the same rtas call in multiple cpus)
+> >>> >=20
+> >>> > Hmm I'm happy to be mistaken here, but I doubt we ever really need =
+to do
+> >>> > that. I'm not seeing the need.
+> >>> >=20
+> >>> > > I have an idea of a patch to fix this.=20
+> >>> > > Do you think it would be ok if I sent that, to prospect being an =
+alternative to
+> >>> > > this reversion?
+> >>> >=20
+> >>> > It is my preference, and I believe it is more common, to revert to =
+the
+> >>> > well-understood prior state, imperfect as it may be. The revert can=
+ be
+> >>> > backported to -stable and distros while development and review of
+> >>> > another approach proceeds.
+> >>>
+> >>> Ok then, as long as you are aware of the kdump bug, I'm good.
+> >>>
+> >>> FWIW:
+> >>> Reviewed-by: Leonardo Bras <leobras.c@gmail.com>
 > >>
-> >> Signed-off-by: Ganesh Goudar<ganeshgr@linux.ibm.com>
-> >> ---
-> >> v2: Force inline few more functions.
-> >> ---
-> >>   arch/powerpc/include/asm/hw_irq.h    | 8 ++++----
-> >>   arch/powerpc/include/asm/interrupt.h | 2 +-
-> >>   arch/powerpc/include/asm/rtas.h      | 4 ++--
-> >>   arch/powerpc/kernel/rtas.c           | 4 ++--
-> >>   4 files changed, 9 insertions(+), 9 deletions(-)
+> >> A shame. I guess a reader/writer lock would not be much help because
+> >> the crash is probably more likely to hit longer running rtas calls?
 > >>
-> >> diff --git a/arch/powerpc/include/asm/hw_irq.h b/arch/powerpc/include/=
-asm/hw_irq.h
-> >> index 26ede09c521d..3264991fe524 100644
-> >> --- a/arch/powerpc/include/asm/hw_irq.h
-> >> +++ b/arch/powerpc/include/asm/hw_irq.h
-> >> @@ -111,7 +111,7 @@ static inline void __hard_RI_enable(void)
-> >>   #ifdef CONFIG_PPC64
-> >>   #include <asm/paca.h>
-> >>  =20
-> >> -static inline notrace unsigned long irq_soft_mask_return(void)
-> >> +static __always_inline notrace unsigned long irq_soft_mask_return(voi=
-d)
-> >>   {
-> >>   	return READ_ONCE(local_paca->irq_soft_mask);
-> >>   }
-> >> @@ -121,7 +121,7 @@ static inline notrace unsigned long irq_soft_mask_=
-return(void)
-> >>    * for the critical section and as a clobber because
-> >>    * we changed paca->irq_soft_mask
-> >>    */
-> >> -static inline notrace void irq_soft_mask_set(unsigned long mask)
-> >> +static __always_inline notrace void irq_soft_mask_set(unsigned long m=
-ask)
-> >>   {
-> >>   	/*
-> >>   	 * The irq mask must always include the STD bit if any are set.
-> > This doesn't give a reason why it's __always_inline, and having the
-> > notrace attribute makes it possibly confusing. I think it would be easy
-> > for someone to break without realising. Could you add a noinstr to thes=
-e
-> > instead / as well?
+> >> Alternative is just cheat and do this...?
 >
-> Yeah we can add noinstr. Missed to see your comment, Sorry for the delaye=
-d reply
-
-Okay that would be good. I would prefer to avoid changing the
-inline-ness of things in a fix patch if possible.
+> [...]
 >
 > >
-> > What about adding a 'realmode' function annotation that includes noinst=
-r?
->
-> You mean to define a new function annotation?
+> > I wonder - would it be worth making the panic path use a separate
+> > "emergency" rtas_args buffer as well? If a CPU is actually "stuck" in
+> > RTAS at panic time, then leaving rtas.args untouched might make the
+> > ibm,int-off, ibm,set-xive, ibm,os-term, and any other RTAS calls we
+> > incur on the panic path more likely to succeed.
 
-Yes, a powerpc specific one that has the necessary adjustments. I
-think it would be helpful documentation for the code and possibly
-something we could use to do additional debug checking with at
-some point too.
+Yeah I think that's probably not a bad idea. Not sure if you've got the
+bandwidth to take on doing the patch but be my guest if you do :)
+Otherwise we can file it in github issues.
+
+> Regardless, I request that we proceed with the revert while the crash
+> path hardening gets sorted out. If I understand the motivation behind
+> commit b664db8e3f97 ("powerpc/rtas: Implement reentrant rtas call"),
+> then it looks like it was incomplete anyway? rtas_os_term() still takes
+> the lock when calling ibm,os-term.
+
+Yeah agree a simple revert should be done first.
 
 Thanks,
 Nick
