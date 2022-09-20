@@ -1,74 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A90B75BD8E9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 02:52:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6946B5BD8F1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 02:55:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MWjg93kh0z3blx
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 10:52:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MWjlS2df0z3c1M
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 10:55:48 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=HgCjSc/b;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=PNPfHS8J;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::629; helo=mail-pl1-x629.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::533; helo=mail-pg1-x533.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=HgCjSc/b;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=PNPfHS8J;
 	dkim-atps=neutral
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com [IPv6:2607:f8b0:4864:20::533])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MWjfV58mfz2ysx
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Sep 2022 10:51:28 +1000 (AEST)
-Received: by mail-pl1-x629.google.com with SMTP id w13so854883plp.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Sep 2022 17:51:28 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MWjkr2Vvvz2ymS
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Sep 2022 10:55:16 +1000 (AEST)
+Received: by mail-pg1-x533.google.com with SMTP id u69so984322pgd.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Sep 2022 17:55:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=in-reply-to:references:from:subject:to:message-id:date
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date;
-        bh=3pXbXSsQpah/dDfQB7qyLXB/X+ZylP++MO7t2nK3lQQ=;
-        b=HgCjSc/bMYrk9jfGdBj67FbxvoovYR3gr14NmVjINNekEBbPkurjgK2/UdYKfaWBiF
-         6HksY5nkRuKTIUI/w14zHC5LKD512Z9ufhHqXMYXEVz6RZg3R5zKykEpggeIICML58oe
-         jeSaPXhaXFIUXbPhOV/ntRaQx5d6MGUsE1+W50QPPwVHVMC/6eoaefr2kTIyC94s7Q+a
-         K5uKReomzmy+WSPCktoVl41AFMZvlrft25WbZWgRhvGCHHsQS2GShiua4X6N7H13poYf
-         2KCVmDc4GTKFSOj2qM+1pp9cpWJ1u9hS7fZhAllQZ7tzPQl6kgWMmqdQaTIC8LC8M0ZI
-         eUdA==
+        bh=fH0/q/pKdaiicww3KhO53VbREOyggrvrk9NKyjuEthU=;
+        b=PNPfHS8JNgT2gHWBVyyjiPimFjasQw/D15XhwDU8Fy8G7StzT2H//+5pFL0yuS17UE
+         ppMEhue+3jDiqD9e24TKfaEO57riIph0JJQIk7SLdZD8cdRtqDIUKUX6XWeksfiFaRHM
+         lW9uPy9XGjNWebfFRaCP9B4Km+VnmfYiO1G9akcIS9X1Fckw/VmyFzbldvBpop0mf3zH
+         PCXVHRZSqHQe3nUdRP3LScrEH+ZZKQjtggdKiTaYy/AulSQl2EQVsjuRBiJuvIXExmHn
+         xsUHFmc4A25NrkgCoP+mP4l+cIjXbxeOgTtu4prjIbbusZwT3mJEPozkOUgjKXhhLWt7
+         pV0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:references:from:subject:to:message-id:date
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date;
-        bh=3pXbXSsQpah/dDfQB7qyLXB/X+ZylP++MO7t2nK3lQQ=;
-        b=yWkXpcOeU8UAq+490Ewx55XALSt6lKfLCSKshsnxn2NSHS4+AsONi7t3QV04bCCk24
-         7/2j+1Vf05R1t9ZRxUPjFtniEEV4H5VysCq+8xdXpoRBuYuCGQ8HPQCyKoi/lyCZQzQV
-         xYSDx9lHRc/ZdbeHTb74MgitB/ffRpZFe+qM0yEikZWtD6o09wnTjVjT7og73MbajCik
-         NNAC+c85syoprIiSxKjdZPGVUvJWL71S4Krx1oEmC6YZPo3mKxLp+NUSt09MxzM6y0+N
-         mxS72jK2e05DCVEu8wLur85Fj/OT5x0OePOaa9RwHOhihBlRqTi7OuhPLRUsIRvFJXTC
-         wQWg==
-X-Gm-Message-State: ACrzQf1wC2iEarMwLLVTfMDm32otkIx34aTEiBh+ITBB8b1JbU2LLcog
-	L5rm4G6CvtOkd6ayoWj227o=
-X-Google-Smtp-Source: AMsMyM5QYzCvuFnepcvKvFakV5C5vvfiOyBW+IVzEQwI3ZgCYBpsRVATlRZtfeviLOXLAIshWL5Mvw==
-X-Received: by 2002:a17:90a:d485:b0:202:e6eb:4b7f with SMTP id s5-20020a17090ad48500b00202e6eb4b7fmr949742pju.217.1663635084201;
-        Mon, 19 Sep 2022 17:51:24 -0700 (PDT)
+        bh=fH0/q/pKdaiicww3KhO53VbREOyggrvrk9NKyjuEthU=;
+        b=F4ezXxECXPzqjW4JikiR7fTOnb4kWPCopUxK/nVbn4x3dsMblAelHvpATEiy8b5rLr
+         vGzNk4ntz7lZbwUU+BQkyTGeyZHwwfoDyQ1lYMpEc8osEMW57HEMkhsaUSBcr6mjcAF3
+         TgWTxLbZjQZPL7V0PUTzk/CVa//KpjB9wcV99vW3fjgGxxjU+4LII3YLYOIItTyeKhr/
+         g1UYloqNV3TGsMqlsBhF77JuzcJAJQXmCRQyUZE/wMWRAi42UVhRfZDQaN1Pqa/ViKFT
+         A1WX+iLlqanvjEBcGGLKm5abb9GMTd7jF672zUSfKpLKN07RnAeRTQ4+S9nO+9CJRNZF
+         YFYQ==
+X-Gm-Message-State: ACrzQf0Vd/DP+O3qra7Yd6cj1AQEjXDDt7iCo8CNNzdhIqQBR5UBFsfe
+	fgqqBM6cMdMXzJgW+3H1FHk=
+X-Google-Smtp-Source: AMsMyM5c8Bhfj2gor0/H7eCle/sOBUf8K4pif5rpU0JNFamoutwy3/QVwRwkuZA/4cFbNl8qsAeGyg==
+X-Received: by 2002:a63:b957:0:b0:434:c30d:84b0 with SMTP id v23-20020a63b957000000b00434c30d84b0mr18205414pgo.293.1663635313087;
+        Mon, 19 Sep 2022 17:55:13 -0700 (PDT)
 Received: from localhost (118-208-203-28.tpgi.com.au. [118.208.203.28])
-        by smtp.gmail.com with ESMTPSA id b2-20020a170902d50200b0017315b11bb8sm21552853plg.213.2022.09.19.17.51.22
+        by smtp.gmail.com with ESMTPSA id a13-20020a170902eccd00b001785a72d285sm25604plh.48.2022.09.19.17.55.10
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 Sep 2022 17:51:23 -0700 (PDT)
+        Mon, 19 Sep 2022 17:55:12 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 20 Sep 2022 10:51:18 +1000
-Message-Id: <CN0TF0H6I6FA.AJU2XR69ZV8O@bobo>
-To: "Rohan McLure" <rmclure@linux.ibm.com>, <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: [PATCH 05/23] powerpc/32: Clarify interrupt restores with
- REST_GPR macro in entry_32.S
+Date: Tue, 20 Sep 2022 10:55:07 +1000
+Message-Id: <CN0THXMEUWOI.12LUWMU7XXNL9@bobo>
+Subject: Re: [PATCH 06/23] powerpc/64e: Clarify register saves and clears
+ with {SAVE,ZEROIZE}_GPRS
 From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Rohan McLure" <rmclure@linux.ibm.com>, <linuxppc-dev@lists.ozlabs.org>
 X-Mailer: aerc 0.11.0
 References: <20220916053300.786330-1-rmclure@linux.ibm.com>
- <20220916053300.786330-6-rmclure@linux.ibm.com>
-In-Reply-To: <20220916053300.786330-6-rmclure@linux.ibm.com>
+ <20220916053300.786330-7-rmclure@linux.ibm.com>
+In-Reply-To: <20220916053300.786330-7-rmclure@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,119 +84,120 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On Fri Sep 16, 2022 at 3:32 PM AEST, Rohan McLure wrote:
-> Restoring the register state of the interrupted thread involves issuing
-> a large number of predictable loads to the kernel stack frame. Issue the
-> REST_GPR{,S} macros to clearly signal when this is happening, and bunch
-> together restores at the end of the interrupt handler where the saved
-> value is not consumed earlier in the handler code.
+> The common interrupt handler prologue macro and the bad_stack
+> trampolines include consecutive sequences of register saves, and some
+> register clears. Neaten such instances by expanding use of the SAVE_GPRS
+> macro and employing the ZEROIZE_GPR macro when appropriate.
 >
-> Signed-off-by: Rohan McLure <rmclure@linux.ibm.com>
-> Reported-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Also simplify an invocation of SAVE_GPRS targetting all non-volatile
+> registers to SAVE_NVGPRS.
+>
+> Signed-off-by: Rohan Mclure <rmclure@linux.ibm.com>
+> Reported-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+> V3 -> V4: New commit.
+> ---
+>  arch/powerpc/kernel/exceptions-64e.S | 27 +++++++++++---------------
+>  1 file changed, 11 insertions(+), 16 deletions(-)
+>
+> diff --git a/arch/powerpc/kernel/exceptions-64e.S b/arch/powerpc/kernel/e=
+xceptions-64e.S
+> index 67dc4e3179a0..48c640ca425d 100644
+> --- a/arch/powerpc/kernel/exceptions-64e.S
+> +++ b/arch/powerpc/kernel/exceptions-64e.S
+> @@ -216,17 +216,14 @@ END_FTR_SECTION_IFSET(CPU_FTR_EMB_HV)
+>  	mtlr	r10
+>  	mtcr	r11
+> =20
+> -	ld	r10,GPR10(r1)
+> -	ld	r11,GPR11(r1)
+> -	ld	r12,GPR12(r1)
+> +	REST_GPRS(10, 12, r1)
+>  	mtspr	\scratch,r0
+> =20
+>  	std	r10,\paca_ex+EX_R10(r13);
+>  	std	r11,\paca_ex+EX_R11(r13);
+>  	ld	r10,_NIP(r1)
+>  	ld	r11,_MSR(r1)
+> -	ld	r0,GPR0(r1)
+> -	ld	r1,GPR1(r1)
+> +	REST_GPRS(0, 1, r1)
+
+I'm hesitant to have a multi reg restore that also clobbers the base
+register. It works if we always restore in order, and there might never
+be a good reason to change that, but it's possibly a bit easier to miss
+when you're looking at the code.
+
+Otherwise,
 
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 
-> ---
-> V2 -> V3: New patch.
-> V3 -> V4: Minimise restores in the unrecoverable window between
-> restoring SRR0/1 and return from interrupt.
-> ---
->  arch/powerpc/kernel/entry_32.S | 33 +++++++++++++-------------------
->  1 file changed, 13 insertions(+), 20 deletions(-)
->
-> diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_3=
-2.S
-> index 44dfce9a60c5..e4b694cebc44 100644
-> --- a/arch/powerpc/kernel/entry_32.S
-> +++ b/arch/powerpc/kernel/entry_32.S
-> @@ -68,7 +68,7 @@ prepare_transfer_to_handler:
->  	lwz	r9,_MSR(r11)		/* if sleeping, clear MSR.EE */
->  	rlwinm	r9,r9,0,~MSR_EE
->  	lwz	r12,_LINK(r11)		/* and return to address in LR */
-> -	lwz	r2, GPR2(r11)
-> +	REST_GPR(2, r11)
->  	b	fast_exception_return
->  _ASM_NOKPROBE_SYMBOL(prepare_transfer_to_handler)
->  #endif /* CONFIG_PPC_BOOK3S_32 || CONFIG_E500 */
-> @@ -144,7 +144,7 @@ ret_from_syscall:
->  	lwz	r7,_NIP(r1)
->  	lwz	r8,_MSR(r1)
->  	cmpwi	r3,0
-> -	lwz	r3,GPR3(r1)
-> +	REST_GPR(3, r1)
->  syscall_exit_finish:
->  	mtspr	SPRN_SRR0,r7
->  	mtspr	SPRN_SRR1,r8
-> @@ -152,8 +152,8 @@ syscall_exit_finish:
->  	bne	3f
->  	mtcr	r5
-> =20
-> -1:	lwz	r2,GPR2(r1)
-> -	lwz	r1,GPR1(r1)
-> +1:	REST_GPR(2, r1)
-> +	REST_GPR(1, r1)
->  	rfi
->  #ifdef CONFIG_40x
->  	b .	/* Prevent prefetch past rfi */
-> @@ -165,10 +165,8 @@ syscall_exit_finish:
->  	REST_NVGPRS(r1)
->  	mtctr	r4
->  	mtxer	r5
-> -	lwz	r0,GPR0(r1)
-> -	lwz	r3,GPR3(r1)
-> -	REST_GPRS(4, 11, r1)
-> -	lwz	r12,GPR12(r1)
-> +	REST_GPR(0, r1)
-> +	REST_GPRS(3, 12, r1)
->  	b	1b
-> =20
->  #ifdef CONFIG_44x
-> @@ -260,9 +258,8 @@ fast_exception_return:
->  	beq	3f			/* if not, we've got problems */
->  #endif
-> =20
-> -2:	REST_GPRS(3, 6, r11)
-> -	lwz	r10,_CCR(r11)
-> -	REST_GPRS(1, 2, r11)
-> +2:	lwz	r10,_CCR(r11)
-> +	REST_GPRS(1, 6, r11)
->  	mtcr	r10
->  	lwz	r10,_LINK(r11)
->  	mtlr	r10
-> @@ -277,7 +274,7 @@ fast_exception_return:
->  	mtspr	SPRN_SRR0,r12
->  	REST_GPR(9, r11)
->  	REST_GPR(12, r11)
-> -	lwz	r11,GPR11(r11)
-> +	REST_GPR(11, r11)
->  	rfi
->  #ifdef CONFIG_40x
->  	b .	/* Prevent prefetch past rfi */
-> @@ -454,9 +451,8 @@ _ASM_NOKPROBE_SYMBOL(interrupt_return)
->  	lwz	r3,_MSR(r1);						\
->  	andi.	r3,r3,MSR_PR;						\
->  	bne	interrupt_return;					\
-> -	lwz	r0,GPR0(r1);						\
-> -	lwz	r2,GPR2(r1);						\
-> -	REST_GPRS(3, 8, r1);						\
-> +	REST_GPR(0, r1);						\
-> +	REST_GPRS(2, 8, r1);						\
->  	lwz	r10,_XER(r1);						\
->  	lwz	r11,_CTR(r1);						\
->  	mtspr	SPRN_XER,r10;						\
-> @@ -475,11 +471,8 @@ _ASM_NOKPROBE_SYMBOL(interrupt_return)
->  	lwz	r12,_MSR(r1);						\
->  	mtspr	exc_lvl_srr0,r11;					\
->  	mtspr	exc_lvl_srr1,r12;					\
-> -	lwz	r9,GPR9(r1);						\
-> -	lwz	r12,GPR12(r1);						\
-> -	lwz	r10,GPR10(r1);						\
-> -	lwz	r11,GPR11(r1);						\
-> -	lwz	r1,GPR1(r1);						\
-> +	REST_GPRS(9, 12, r1);						\
-> +	REST_GPR(1, r1);						\
->  	exc_lvl_rfi;							\
->  	b	.;		/* prevent prefetch past exc_lvl_rfi */
-> =20
+>  	mtspr	\srr0,r10
+>  	mtspr	\srr1,r11
+>  	ld	r10,\paca_ex+EX_R10(r13)
+> @@ -372,16 +369,15 @@ ret_from_mc_except:
+>  /* Core exception code for all exceptions except TLB misses. */
+>  #define EXCEPTION_COMMON_LVL(n, scratch, excf)				    \
+>  exc_##n##_common:							    \
+> -	std	r0,GPR0(r1);		/* save r0 in stackframe */	    \
+> -	std	r2,GPR2(r1);		/* save r2 in stackframe */	    \
+> -	SAVE_GPRS(3, 9, r1);		/* save r3 - r9 in stackframe */    \
+> +	SAVE_GPR(0, r1);		/* save r0 in stackframe */	    \
+> +	SAVE_GPRS(2, 9, r1);		/* save r2 - r9 in stackframe */    \
+>  	std	r10,_NIP(r1);		/* save SRR0 to stackframe */	    \
+>  	std	r11,_MSR(r1);		/* save SRR1 to stackframe */	    \
+>  	beq	2f;			/* if from kernel mode */	    \
+>  2:	ld	r3,excf+EX_R10(r13);	/* get back r10 */		    \
+>  	ld	r4,excf+EX_R11(r13);	/* get back r11 */		    \
+>  	mfspr	r5,scratch;		/* get back r13 */		    \
+> -	std	r12,GPR12(r1);		/* save r12 in stackframe */	    \
+> +	SAVE_GPR(12, r1);		/* save r12 in stackframe */	    \
+>  	ld	r2,PACATOC(r13);	/* get kernel TOC into r2 */	    \
+>  	mflr	r6;			/* save LR in stackframe */	    \
+>  	mfctr	r7;			/* save CTR in stackframe */	    \
+> @@ -390,7 +386,7 @@ exc_##n##_common:							    \
+>  	lwz	r10,excf+EX_CR(r13);	/* load orig CR back from PACA	*/  \
+>  	lbz	r11,PACAIRQSOFTMASK(r13); /* get current IRQ softe */	    \
+>  	ld	r12,exception_marker@toc(r2);				    \
+> -	li	r0,0;							    \
+> +	ZEROIZE_GPR(0);							    \
+>  	std	r3,GPR10(r1);		/* save r10 to stackframe */	    \
+>  	std	r4,GPR11(r1);		/* save r11 to stackframe */	    \
+>  	std	r5,GPR13(r1);		/* save it to stackframe */	    \
+> @@ -1056,15 +1052,14 @@ bad_stack_book3e:
+>  	mfspr	r11,SPRN_ESR
+>  	std	r10,_DEAR(r1)
+>  	std	r11,_ESR(r1)
+> -	std	r0,GPR0(r1);		/* save r0 in stackframe */	    \
+> -	std	r2,GPR2(r1);		/* save r2 in stackframe */	    \
+> -	SAVE_GPRS(3, 9, r1);		/* save r3 - r9 in stackframe */    \
+> +	SAVE_GPR(0, r1);		/* save r0 in stackframe */	    \
+> +	SAVE_GPRS(2, 9, r1);		/* save r2 - r9 in stackframe */    \
+>  	ld	r3,PACA_EXGEN+EX_R10(r13);/* get back r10 */		    \
+>  	ld	r4,PACA_EXGEN+EX_R11(r13);/* get back r11 */		    \
+>  	mfspr	r5,SPRN_SPRG_GEN_SCRATCH;/* get back r13 XXX can be wrong */ \
+>  	std	r3,GPR10(r1);		/* save r10 to stackframe */	    \
+>  	std	r4,GPR11(r1);		/* save r11 to stackframe */	    \
+> -	std	r12,GPR12(r1);		/* save r12 in stackframe */	    \
+> +	SAVE_GPR(12, r1);		/* save r12 in stackframe */	    \
+>  	std	r5,GPR13(r1);		/* save it to stackframe */	    \
+>  	mflr	r10
+>  	mfctr	r11
+> @@ -1072,12 +1067,12 @@ bad_stack_book3e:
+>  	std	r10,_LINK(r1)
+>  	std	r11,_CTR(r1)
+>  	std	r12,_XER(r1)
+> -	SAVE_GPRS(14, 31, r1)
+> +	SAVE_NVGPRS(r1)
+>  	lhz	r12,PACA_TRAP_SAVE(r13)
+>  	std	r12,_TRAP(r1)
+>  	addi	r11,r1,INT_FRAME_SIZE
+>  	std	r11,0(r1)
+> -	li	r12,0
+> +	ZEROIZE_GPR(12)
+>  	std	r12,0(r11)
+>  	ld	r2,PACATOC(r13)
+>  1:	addi	r3,r1,STACK_FRAME_OVERHEAD
 > --=20
 > 2.34.1
 
