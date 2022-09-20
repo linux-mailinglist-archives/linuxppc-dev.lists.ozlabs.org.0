@@ -2,73 +2,40 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBDC85BDFA3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 10:16:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE8535BE099
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 10:46:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MWvWm2D8jz2yT0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 18:16:20 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=LiF4a8ET;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MWwBv3tyJz3c7M
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 18:46:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1033; helo=mail-pj1-x1033.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=LiF4a8ET;
-	dkim-atps=neutral
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MWvW86PPcz2yPD
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Sep 2022 18:15:48 +1000 (AEST)
-Received: by mail-pj1-x1033.google.com with SMTP id q3so2211227pjg.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Sep 2022 01:15:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date;
-        bh=qTRYszXd5XP9TmiaPlUCkZYa4RjeSXo51FddiasD47c=;
-        b=LiF4a8ETDj1UP+b5xxnXOBSFtvLC5gZEF/6P1Z0nqVsvfsgXxoQ5ChHQtvXrBjHxXT
-         n/MHGAexMEmyTHB11XcD3503mVuNVLCeNqWz+qllOKX0DFPZueCgCV4kqhI6U2aoqrgK
-         EpLnH6gGov3DdLLT/v4C2YO6ZsrISxFlNd5bE4ymk/o0Tg2muz9JPC9MWefwcFA3Cfhy
-         /kNt42BXd9YzZGJqwzt6uAwVoKnACVubUkKnXeNPtJo9RVj2JN/Gl9ReHKDRMxDHds8g
-         /7twePh7y68iuuPElklgAfI7yQWZaLHtuDfQIXLnq1SK1ewRmr8QvI7QwhP0ymxN41up
-         coxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date;
-        bh=qTRYszXd5XP9TmiaPlUCkZYa4RjeSXo51FddiasD47c=;
-        b=HUFQhH2H2CofourW4A088T8wAScLPHS8ut3WDUBC/LOvNgbbN1QY04O1dRzKOv3FH7
-         iovhkG/mKsDI4y2O+tauahTs63GOjxI1/06ji9TTqKdeR7BBHKK6NSO5UQLYV80JSfHk
-         FFHDc2vklbXtJO09l5pEtITRrvhZmxv2S/jbCuFL9fasbHIFHgwYejWK4veU0SE/15LI
-         hUfu7qgF871trKP7DrUrLPncwKOCl1bKz3QAiejM+sFNMqyd9Q+sAJ5s6/EUuWfbEQk8
-         IUiS7rXzRCt2PnvTjJziLNjonaIskG24yFwmAmg7q8w5DdktBn4ZMgzh8x7ZBgLFPQ47
-         PlJg==
-X-Gm-Message-State: ACrzQf2VfRkiZlUgOE2PddloPbp77bXUa21ojhHAeqjDDEj/ZVr0HTtY
-	FzhpXMogxuUfDGg8t/ZxtLlZy57PSxEfKw==
-X-Google-Smtp-Source: AMsMyM4az+9yzWI/D1Hc1D4TfVc5e75pl364iIY4bQ/e7FFdNW46VuhhRCwRK4rJzf6YyuuQQ1jvFw==
-X-Received: by 2002:a17:90b:4b84:b0:202:ec40:8643 with SMTP id lr4-20020a17090b4b8400b00202ec408643mr2601322pjb.86.1663661745685;
-        Tue, 20 Sep 2022 01:15:45 -0700 (PDT)
-Received: from localhost ([203.219.227.147])
-        by smtp.gmail.com with ESMTPSA id o74-20020a62cd4d000000b005499599ed30sm951625pfg.10.2022.09.20.01.15.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 20 Sep 2022 01:15:45 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MWwBT64Ytz304j
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Sep 2022 18:46:22 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6ED20106F;
+	Tue, 20 Sep 2022 01:45:54 -0700 (PDT)
+Received: from [10.163.57.146] (unknown [10.163.57.146])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EE8EE3F73B;
+	Tue, 20 Sep 2022 01:45:37 -0700 (PDT)
+Message-ID: <8c4f103b-8f04-d0ad-b30a-2db7e52b36a3@arm.com>
+Date: Tue, 20 Sep 2022 14:15:34 +0530
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH v3 4/4] arm64: support batched/deferred tlb shootdown
+ during page reclamation
+Content-Language: en-US
+To: Barry Song <21cnbao@gmail.com>
+References: <20220822082120.8347-1-yangyicong@huawei.com>
+ <20220822082120.8347-5-yangyicong@huawei.com>
+ <302febae-508c-d73e-8676-d51752946645@arm.com>
+ <CAGsJ_4ywwFJFi+q3Ra5UE3twzS9eExtvuXgoGK-8u4c1ZdXCBw@mail.gmail.com>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <CAGsJ_4ywwFJFi+q3Ra5UE3twzS9eExtvuXgoGK-8u4c1ZdXCBw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 20 Sep 2022 18:15:40 +1000
-Message-Id: <CN12V8MQ0QHF.34K9KQO90IR0T@bobo>
-Subject: Re: [PATCH v2 2/2] powerpc/kvm: Remove unused references for
- MMCR3/SIER2/SIER3 registers
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Disha Goel" <disgoel@linux.vnet.ibm.com>, <mpe@ellerman.id.au>
-X-Mailer: aerc 0.11.0
-References: <20220916105736.268153-1-disgoel@linux.vnet.ibm.com>
- <20220916105736.268153-3-disgoel@linux.vnet.ibm.com>
-In-Reply-To: <20220916105736.268153-3-disgoel@linux.vnet.ibm.com>
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,54 +47,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kjain@linux.ibm.com, atrajeev@linux.vnet.ibm.com, maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: wangkefeng.wang@huawei.com, prime.zeng@hisilicon.com, linux-doc@vger.kernel.org, peterz@infradead.org, catalin.marinas@arm.com, yangyicong@hisilicon.com, linux-mm@kvack.org, Nadav Amit <namit@vmware.com>, guojian@oppo.com, linux-riscv@lists.infradead.org, will@kernel.org, linux-s390@vger.kernel.org, zhangshiming@oppo.com, lipeifeng@oppo.com, corbet@lwn.net, x86@kernel.org, Mel Gorman <mgorman@suse.de>, linux-mips@vger.kernel.org, arnd@arndb.de, realmz6@gmail.com, Barry Song <v-songbaohua@oppo.com>, openrisc@lists.librecores.org, darren@os.amperecomputing.com, linux-arm-kernel@lists.infradead.org, xhao@linux.alibaba.com, linux-kernel@vger.kernel.org, huzhanyuan@oppo.com, Yicong Yang <yangyicong@huawei.com>, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri Sep 16, 2022 at 8:57 PM AEST, Disha Goel wrote:
-> From: Kajol Jain" <kjain@linux.ibm.com>
->
-> Commit 57dc0eed73ca ("KVM: PPC: Book3S HV P9: Implement PMU save/restore
-> in C") removed the PMU save/restore functions from assembly code and
-> implemented these functions in C, for power9 and later platforms.
->
-> After the code refactoring, Performance Monitoring Unit (PMU) registers
-> became part of "p9_host_os_sprs" structure and now this structure is
-> used to save/restore pmu host registers, for power9 and later platfroms.
-> But we still have old unused registers references. Patch removes unused
-> host_mmcr references for Monitor Mode Control Register 3 (MMCR3)/
-> Sampled Instruction Event Register 2 (SIER2)/ SIER3 registers from
-> "struct kvmppc_host_state".
->
-> Fixes: 57dc0eed73ca ("KVM: PPC: Book3S HV P9: Implement PMU save/restore =
-in C")
-> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
 
-And it was increased from 7 to 10 with 5752fe0b811bb which added the
-POWER10 registers, so that makes sense to go back to 7 in the POWER8
-path.
 
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+On 9/20/22 09:09, Barry Song wrote:
+> On Tue, Sep 20, 2022 at 3:00 PM Anshuman Khandual
+> <anshuman.khandual@arm.com> wrote:
+>>
+>>
+>> On 8/22/22 13:51, Yicong Yang wrote:
+>>> +static inline bool arch_tlbbatch_should_defer(struct mm_struct *mm)
+>>> +{
+>>> +     return true;
+>>> +}
+>>
+>> This needs to be conditional on systems, where there will be performance
+>> improvements, and should not just be enabled all the time on all systems.
+>> num_online_cpus() > X, which does not hold any cpu hotplug lock would be
+>> a good metric ?
+> 
+> for a small system, i don't see how this patch will help, e.g. cpus <= 4;
+> so we can actually disable tlb-batch on small systems.
 
-> ---
->  arch/powerpc/include/asm/kvm_book3s_asm.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/arch/powerpc/include/asm/kvm_book3s_asm.h b/arch/powerpc/inc=
-lude/asm/kvm_book3s_asm.h
-> index c8882d9b86c2..a36797938620 100644
-> --- a/arch/powerpc/include/asm/kvm_book3s_asm.h
-> +++ b/arch/powerpc/include/asm/kvm_book3s_asm.h
-> @@ -105,7 +105,7 @@ struct kvmppc_host_state {
->  	void __iomem *xive_tima_virt;
->  	u32 saved_xirr;
->  	u64 dabr;
-> -	u64 host_mmcr[10];	/* MMCR 0,1,A, SIAR, SDAR, MMCR2, SIER, MMCR3, SIER2=
-/3 */
-> +	u64 host_mmcr[7];	/* MMCR 0,1,A, SIAR, SDAR, MMCR2, SIER */
->  	u32 host_pmc[8];
->  	u64 host_purr;
->  	u64 host_spurr;
-> --=20
-> 2.31.1
+Do not subscribe ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH based on NR_CPUS ?
+That might not help much as the default value is 256 for NR_CPUS.
 
+OR
+
+arch_tlbbatch_should_defer() checks on
+
+1. online cpus			(dont enable batched TLB if <= X)
+2. ARM64_WORKAROUND_REPEAT_TLBI (dont enable batched TLB)
+
+> just need to check if we will have any race condition since hotplug will
+> make the condition true and false dynamically.
+
+If should_defer_flush() evaluate to be false, then ptep_clear_flush()
+clears and flushes the entry right away. This should not race with other
+queued up TLBI requests, which will be flushed separately. Wondering how
+there can be a race here !
