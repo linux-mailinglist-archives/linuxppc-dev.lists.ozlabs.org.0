@@ -2,65 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D63C5BD9CE
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 04:04:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D84D25BD9E0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 04:08:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MWlGK5YGpz3c2h
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 12:04:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MWlLr3Q6wz305M
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 12:08:04 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=GAQeDtNh;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=P+rdfr8W;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::436; helo=mail-pf1-x436.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1035; helo=mail-pj1-x1035.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=GAQeDtNh;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=P+rdfr8W;
 	dkim-atps=neutral
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
+Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MWlFh5zl0z2xgN
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Sep 2022 12:03:36 +1000 (AEST)
-Received: by mail-pf1-x436.google.com with SMTP id b23so1349943pfp.9
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Sep 2022 19:03:36 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MWlLF0x0Qz2xr1
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Sep 2022 12:07:32 +1000 (AEST)
+Received: by mail-pj1-x1035.google.com with SMTP id p1-20020a17090a2d8100b0020040a3f75eso998038pjd.4
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Sep 2022 19:07:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=in-reply-to:references:to:from:subject:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date;
-        bh=F6Fr2SDjxmFX0Msmh++2tW2WZYEDeyUUu8xt1G6O0fE=;
-        b=GAQeDtNhOvGXUG4HHoqgZSEcw+zlNOaqpa0bygZ2ljnlk3BsMH6ZbE0XCRxds5KdiR
-         z9L9bZziE4vYuQyTDNbJ5fIG0qVEeqHrydNhXM8KAQ3WmJE890uBqtHWzFxNSBm6AjBH
-         DwEUaV2PzLEblW8HZO0g+wDUtXXMolWP9tM1kkcNTAJjWZf2GXOSMMKRbQ+NXHXX+hQw
-         C7hDzlGXPzxwvXl0nhOguvuVE/DGNGTGC4VQiNBr9TTKxboAnsZwThr5jwC7LuZAAO0L
-         Qk8te6yZhCrwq5HJ1wah0+75OL01MBvU2tlziMK4SC3PALkUpoEIsG5OGuDLFIpHLYUj
-         Budg==
+        bh=75rr2Ar6L4Y0FMBhXAX3I+1J6L2xqazXIs85tDwYKzo=;
+        b=P+rdfr8WTIWTciEcgOqgxKTZS1dqBEw2rMq1rOdjVcgbKzfBRPSHodn7plTckrzOie
+         3TZSLIpiIkNtZUMbelr2uCyy5UyEbmfvWNdA0dCy+m89eeK2zsDsReFc4rxpJG1c8FiP
+         buNDzPFxlfsDgf0Bg5Gd/NxdT/d/er8JgmVZi//XcKD6jcLRacD2CLTweY/hNdsgc4Hm
+         VF2uLGjqdI+VE7PBopEhmY8a3pGsRIFg+jhwKgC53ehfQei63ajiLikTefk6l8tb+LV4
+         SihxWyLBmgKBT4CefQYQCxM+AuKqI3q62dvcTr5SQtMBc9VsAwxeAQHbvUGj+ktweZ7I
+         RkAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:references:to:from:subject:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date;
-        bh=F6Fr2SDjxmFX0Msmh++2tW2WZYEDeyUUu8xt1G6O0fE=;
-        b=BUjb/FXRpOuRZQnfeaayHb46PQr50U/xd+SLlaZ6gCHvgfYOZ6A+764JXpLkenqrX/
-         1Y9t8c9CoetdfwFvwcv9PGRSxh6DyBffvSv4FE6V4ZyaEZ589dejrXRKmNfLE3xzH2Uv
-         BbT5RUR88k7/JWSVAxSl63rIAOb6pKIx6A41sLrl+xbI7FKfrva8572N6GDpVro9ES2v
-         2tHkar75+U9pEcksJ4TWmVpQ3J44qb/Sx5K3RcN6LvTusG4p6qwj3c8FiLTtqJHhh9lc
-         dZk7nTa34MXeIoZHFsZGeDzgA4kpA6G3L/El1PtipNy8ZQhVHDFw4d4fgovIt7ZBW9mT
-         ws/A==
-X-Gm-Message-State: ACrzQf2DKnc2gB7S4W+/j1yxTcJUKLXZMWcNefAzAULG29Bnt+lbtH5i
-	TFMJDyeKWUi58OObiRRNLrk=
-X-Google-Smtp-Source: AMsMyM5hzy1pppeaRl7v7bgzevtKoAVUu4aRqgq1y0MvKxKLMDXWqUEAfhDEySJF71Q2aSXzEAM06Q==
-X-Received: by 2002:a63:5b61:0:b0:41d:3227:37b8 with SMTP id l33-20020a635b61000000b0041d322737b8mr17951337pgm.265.1663639414461;
-        Mon, 19 Sep 2022 19:03:34 -0700 (PDT)
+        bh=75rr2Ar6L4Y0FMBhXAX3I+1J6L2xqazXIs85tDwYKzo=;
+        b=nH4gzCMQVN6m1nrv4txgsKzBkKy5Q79C8G+zXLHy2NNcOszPAWqxoUxC+gk4Z7zonO
+         +xxImCVVNm2gRROu/9XQ06Vt/fiLx7w/JYViQx1nbKFd/rLw5twKXVbHgiDjQNP14ihg
+         9LumogrdPmNFXifRmgYTX/4bBGzIACAVcad9cjmijIE45MNXtfKHga428MPcJAE+6LQs
+         7Jt68ECd32MXtAFw9clZyO3pVswv7DZV8FOuDWAgPGyQ9Sg7uDm/IwtyIvvIkdwyDx6v
+         fvlf6m1NAVuOygGXFuRRaQGrVo8u/q0llRCpCB0vzAEdMFRYMu6ZUsfojSfeqHjHBw52
+         /I6g==
+X-Gm-Message-State: ACrzQf3hx172jnTGT8nyC5MyxpGdO3RHFgPOli7sKj5stlglnzjCGIAn
+	Kvrgp66xqVhaXAT92/STXHen5DmS6U8=
+X-Google-Smtp-Source: AMsMyM4qTUDvRziKKuKa64QXp2R731p6SZV6O4aMQYfljUI7pD8QmQD1d1ymM8yaXbih2d0WqU5iCQ==
+X-Received: by 2002:a17:90b:1b47:b0:202:f248:e1f2 with SMTP id nv7-20020a17090b1b4700b00202f248e1f2mr1313811pjb.106.1663639649354;
+        Mon, 19 Sep 2022 19:07:29 -0700 (PDT)
 Received: from localhost (118-208-203-28.tpgi.com.au. [118.208.203.28])
-        by smtp.gmail.com with ESMTPSA id y15-20020a17090264cf00b00172f4835f60sm67729pli.189.2022.09.19.19.03.32
+        by smtp.gmail.com with ESMTPSA id l6-20020a17090a150600b002005f5ab6a8sm7293119pja.29.2022.09.19.19.07.26
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 Sep 2022 19:03:33 -0700 (PDT)
+        Mon, 19 Sep 2022 19:07:28 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 20 Sep 2022 12:03:29 +1000
-Message-Id: <CN0UYA40KPVY.V7SYHTJAP9KO@bobo>
+Date: Tue, 20 Sep 2022 12:07:23 +1000
+Message-Id: <CN0V19K4UC47.3NKT93DAEOX2I@bobo>
 Subject: Re: [PATCH 20/23] powerpc/64s: Clear/restore caller gprs in syscall
  interrupt/return
 From: "Nicholas Piggin" <npiggin@gmail.com>
@@ -97,8 +97,16 @@ On Fri Sep 16, 2022 at 3:32 PM AEST, Rohan McLure wrote:
 > V4 -> V5: Move to end of patch series.
 > ---
 
-I think it looks okay. I'll have to take a better look with the series
-applied.
+Oh I would say change the title more like the interrupt patches to avoid
+mentioning the restore/return because that's implicit.
+
+e.g., "Clear user GPRs in syscall interrupt entry"
+
+Could we have the one config option that does both this and the interrupt
+zeroing?
+
+Thanks,
+Nick
 
 >  arch/powerpc/kernel/interrupt_64.S | 9 ++++++---
 >  1 file changed, 6 insertions(+), 3 deletions(-)
@@ -114,13 +122,6 @@ errupt_64.S
 >  	li	r11,0
 > -	/* Can we avoid saving r3-r8 in common case? */
 > +	/* Save syscall parameters in r3-r8 */
-
-These two comment changes could go in your system_call_exception API
-change patch though.
-
-Thanks,
-Nick
-
 >  	SAVE_GPRS(3, 8, r1)
 >  	/* Zero r9-r12, this should only be required when restoring all GPRs */
 >  	std	r11,GPR9(r1)
