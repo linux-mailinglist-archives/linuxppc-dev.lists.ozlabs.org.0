@@ -2,79 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12F0C5BEB35
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 18:39:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FD195BEB59
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 18:50:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MX6hk4Vltz3c5v
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Sep 2022 02:39:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MX6wx3lwJz3c65
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Sep 2022 02:50:25 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KkfLvFNa;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=FbjFfJIq;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=ardb@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KkfLvFNa;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=FbjFfJIq;
 	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MX6h059Xvz307F
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Sep 2022 02:39:12 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28KGOuQq025830;
-	Tue, 20 Sep 2022 16:39:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=Snf6NantgU73oIZ2yGPMvchR6a8s+n8mDe93D16y/Cg=;
- b=KkfLvFNaFcPXkWmyBNsg90xcptp3ykE8r7Y+HaUyj3PSOtR9fFzGQm1RjU/F0Xz9qbAg
- mzYPoK0RxtIWat0g1LUGJP64a88XVqoIs1yggjkY22P5LYUjHdbF1LinFCCrHCTtaRHT
- vi70CxUlpdP8W3sy4y4UWG0hKBdHlAY4T84rpdZ8gChVS7KUT6VaHrd19MCK71kn6o2c
- dMwkcClU1HEuQnPBBjnSQzQQ3QpAwVn0aNTVkt21nBzyF5/DKHVX0h4h/o+IeOpnTSL6
- aK1jH6vYRiJy6bnnh1s7oeJRFjJ3miufkbRxJQGompZEcsHKGvqFIs0Lvx+hOjK2cZb+ 3Q== 
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jqh0vrdys-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 20 Sep 2022 16:39:04 +0000
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
-	by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 28KGKk1G029155;
-	Tue, 20 Sep 2022 16:39:02 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
-	by ppma02fra.de.ibm.com with ESMTP id 3jn5v8u2qm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 20 Sep 2022 16:39:02 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
-	by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 28KGcxQC51904858
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 20 Sep 2022 16:38:59 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9FF85A405B;
-	Tue, 20 Sep 2022 16:38:59 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 93945A4054;
-	Tue, 20 Sep 2022 16:38:57 +0000 (GMT)
-Received: from li-e8dccbcc-2adc-11b2-a85c-bc1f33b9b810.ibm.com.com (unknown [9.43.74.132])
-	by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Tue, 20 Sep 2022 16:38:57 +0000 (GMT)
-From: Kajol Jain <kjain@linux.ibm.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH] powerpc/hv-gpci: Fix hv_gpci event list
-Date: Tue, 20 Sep 2022 22:08:43 +0530
-Message-Id: <20220920163843.233822-1-kjain@linux.ibm.com>
-X-Mailer: git-send-email 2.31.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MX6wH3Gdwz2xJ8
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Sep 2022 02:49:51 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id E87F462B3E
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Sep 2022 16:49:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B32AC433B5
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Sep 2022 16:49:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1663692586;
+	bh=vmyvq1aUOmre0E18ZlTOn9QV1cEhyDcjVLUmO5iK2lI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=FbjFfJIq2m+Nxif0jMsvbr+hIADfvpyb6qNxQyAL08pZxUZKDCbA79J+mtyY5g/L0
+	 t1SqU6AVg158djYCu+OA6imNwsP5D2zDP8o003yhguUxX6U27NuGHF8HifmAqWAEWV
+	 WGXjT/bFl0zznSVGUFuCFsWx94Vt2ETGBFw6dN1x2aMh28I1Fb/NafyKdlmFeLSgum
+	 kJI805UmX5jj/hOjpnzuqJM0dg1Z5KUdcNnqiAQJ41gYMI/uv9j3U21bEr9W/wY6Qq
+	 Xcs98+Qndy5g/1+UNaHl/qGv2oou1rP9wL4xFBg0RusYn2XdCXXKa2kmK4BRbD4rY5
+	 En9G5F62vNbFQ==
+Received: by mail-lj1-f170.google.com with SMTP id q17so3698779lji.11
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Sep 2022 09:49:46 -0700 (PDT)
+X-Gm-Message-State: ACrzQf1nigpnH7cbK6k4Gm7h5HGd0USz28DF929j4DWBCXFEkMX5FS1H
+	tzRQ8SE2yToIRmS2PvI4aIf3bGbONcqJeIFAVrk=
+X-Google-Smtp-Source: AMsMyM5uPplRBbNk8KwaMSLyjriPjQasS2fkIsUEtjL7XSBKzzbCRhdfBYv0bnsu6GsemWK7B38+lm296jjp7PBFcjA=
+X-Received: by 2002:a2e:9115:0:b0:26a:c086:5138 with SMTP id
+ m21-20020a2e9115000000b0026ac0865138mr6796874ljg.189.1663692584393; Tue, 20
+ Sep 2022 09:49:44 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Gp4IamSrsTVf3lrA-AAOBF0M9nsqSqsi
-X-Proofpoint-ORIG-GUID: Gp4IamSrsTVf3lrA-AAOBF0M9nsqSqsi
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
- definitions=2022-09-20_06,2022-09-20_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
- priorityscore=1501 impostorscore=0 phishscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 suspectscore=0 bulkscore=0 spamscore=0 lowpriorityscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2209130000 definitions=main-2209200095
+References: <20220909180704.jwwed4zhwvin7uyi@treble> <Yx8PcldkdOLN8eaw@nazgul.tnic>
+ <alpine.LSU.2.20.2209121200120.8265@wotan.suse.de> <6a61aa57-141f-039c-5a2d-b2d79fecb8c2@huawei.com>
+ <YyLmhUxTUaNzaieC@hirez.programming.kicks-ass.net>
+In-Reply-To: <YyLmhUxTUaNzaieC@hirez.programming.kicks-ass.net>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Tue, 20 Sep 2022 18:49:33 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXGa7D6TLOQruYF+0czWwxcRxN7k1rWTrhB2xnjTQ32c9Q@mail.gmail.com>
+Message-ID: <CAMj1kXGa7D6TLOQruYF+0czWwxcRxN7k1rWTrhB2xnjTQ32c9Q@mail.gmail.com>
+Subject: Re: [RFC] Objtool toolchain proposal: -fannotate-{jump-table,noreturn}
+To: Peter Zijlstra <peterz@infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,133 +69,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kjain@linux.ibm.com, atrajeev@linux.vnet.ibm.com, maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, disgoel@linux.vnet.ibm.com
+Cc: Mark Rutland <mark.rutland@arm.com>, x86@kernel.org, Sathvika Vasireddy <sv@linux.ibm.com>, Will Deacon <will@kernel.org>, Michael Matz <matz@suse.de>, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Mark Brown <broonie@kernel.org>, Borislav Petkov <bp@alien8.de>, linux-toolchains@vger.kernel.org, Indu Bhagat <indu.bhagat@oracle.com>, live-patching@vger.kernel.org, Miroslav Benes <mbenes@suse.cz>, Chen Zhongjin <chenzhongjin@huawei.com>, Josh Poimboeuf <jpoimboe@kernel.org>, linux-arm-kernel@lists.infradead.org, "Jose E. Marchesi" <jemarch@gnu.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Based on getPerfCountInfo v1.018 documentation, some of the
-hv_gpci events got deprecated for platforms firmware that
-supports counter_info_version 0x8 or above.
+On Thu, 15 Sept 2022 at 10:47, Peter Zijlstra <peterz@infradead.org> wrote:
+>
+> On Thu, Sep 15, 2022 at 10:56:58AM +0800, Chen Zhongjin wrote:
+>
+> > We have found some anonymous information on x86 in .rodata.
+>
+> Well yes, but that's still a bunch of heuristics on our side.
+>
+> > I'm not sure if those are *all* of Josh wanted on x86, however for arm64 we
+> > did not found that in the same section so it is a problem on arm64 now.
+>
+> Nick found Bolt managed the ARM64 jumptables:
+>
+>   https://github.com/llvm/llvm-project/blob/main/bolt/lib/Target/AArch64/AArch64MCPlusBuilder.cpp#L484
+>
+> But that does look like a less than ideal solution too.
+>
+> > Does the compiler will emit these for all arches? At lease I tried and
+> > didn't find anything meaningful (maybe I omitted it).
+>
+> That's the question; can we get the compiler to help us here in a well
+> defined manner.
 
-Patch fixes the hv_gpci event list by adding a new attribute
-group called "hv_gpci_event_attrs_v6" and a "EVENT_ENABLE"
-macro to enable these events for platform firmware
-that supports counter_info_version 0x6 or below.
-
-Fixes: 97bf2640184f4 ("powerpc/perf/hv-gpci: add the remaining gpci
-requests")
-Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
----
- arch/powerpc/perf/hv-gpci-requests.h |  4 ++++
- arch/powerpc/perf/hv-gpci.c          |  9 +++++++--
- arch/powerpc/perf/hv-gpci.h          |  1 +
- arch/powerpc/perf/req-gen/perf.h     | 17 +++++++++++++++++
- 4 files changed, 29 insertions(+), 2 deletions(-)
-
-diff --git a/arch/powerpc/perf/hv-gpci-requests.h b/arch/powerpc/perf/hv-gpci-requests.h
-index 8965b4463d43..baef3d082de9 100644
---- a/arch/powerpc/perf/hv-gpci-requests.h
-+++ b/arch/powerpc/perf/hv-gpci-requests.h
-@@ -79,6 +79,7 @@ REQUEST(__field(0,	8,	partition_id)
- )
- #include I(REQUEST_END)
- 
-+#ifdef EVENT_ENABLE
- /*
-  * Not available for counter_info_version >= 0x8, use
-  * run_instruction_cycles_by_partition(0x100) instead.
-@@ -92,6 +93,7 @@ REQUEST(__field(0,	8,	partition_id)
- 	__count(0x10,	8,	cycles)
- )
- #include I(REQUEST_END)
-+#endif
- 
- #define REQUEST_NAME system_performance_capabilities
- #define REQUEST_NUM 0x40
-@@ -103,6 +105,7 @@ REQUEST(__field(0,	1,	perf_collect_privileged)
- )
- #include I(REQUEST_END)
- 
-+#ifdef EVENT_ENABLE
- #define REQUEST_NAME processor_bus_utilization_abc_links
- #define REQUEST_NUM 0x50
- #define REQUEST_IDX_KIND "hw_chip_id=?"
-@@ -194,6 +197,7 @@ REQUEST(__field(0,	4,	phys_processor_idx)
- 	__count(0x28,	8,	instructions_completed)
- )
- #include I(REQUEST_END)
-+#endif
- 
- /* Processor_core_power_mode (0x95) skipped, no counters */
- /* Affinity_domain_information_by_virtual_processor (0xA0) skipped,
-diff --git a/arch/powerpc/perf/hv-gpci.c b/arch/powerpc/perf/hv-gpci.c
-index 5eb60ed5b5e8..065a01812b3e 100644
---- a/arch/powerpc/perf/hv-gpci.c
-+++ b/arch/powerpc/perf/hv-gpci.c
-@@ -70,9 +70,9 @@ static const struct attribute_group format_group = {
- 	.attrs = format_attrs,
- };
- 
--static const struct attribute_group event_group = {
-+static struct attribute_group event_group = {
- 	.name  = "events",
--	.attrs = hv_gpci_event_attrs,
-+	/* .attrs is set in init */
- };
- 
- #define HV_CAPS_ATTR(_name, _format)				\
-@@ -353,6 +353,11 @@ static int hv_gpci_init(void)
- 	/* sampling not supported */
- 	h_gpci_pmu.capabilities |= PERF_PMU_CAP_NO_INTERRUPT;
- 
-+	if (cpu_has_feature(CPU_FTR_ARCH_207S))
-+		event_group.attrs = hv_gpci_event_attrs;
-+	else
-+		event_group.attrs = hv_gpci_event_attrs_v6;
-+
- 	r = perf_pmu_register(&h_gpci_pmu, h_gpci_pmu.name, -1);
- 	if (r)
- 		return r;
-diff --git a/arch/powerpc/perf/hv-gpci.h b/arch/powerpc/perf/hv-gpci.h
-index 4d108262bed7..866172c1651c 100644
---- a/arch/powerpc/perf/hv-gpci.h
-+++ b/arch/powerpc/perf/hv-gpci.h
-@@ -26,6 +26,7 @@ enum {
- #define REQUEST_FILE "../hv-gpci-requests.h"
- #define NAME_LOWER hv_gpci
- #define NAME_UPPER HV_GPCI
-+#define EVENT_ENABLE	1
- #include "req-gen/perf.h"
- #undef REQUEST_FILE
- #undef NAME_LOWER
-diff --git a/arch/powerpc/perf/req-gen/perf.h b/arch/powerpc/perf/req-gen/perf.h
-index fa9bc804e67a..78d407e3fcc6 100644
---- a/arch/powerpc/perf/req-gen/perf.h
-+++ b/arch/powerpc/perf/req-gen/perf.h
-@@ -139,6 +139,23 @@ PMU_EVENT_ATTR_STRING(							\
- #define REQUEST_(r_name, r_value, r_idx_1, r_fields)			\
- 	r_fields
- 
-+/* Generate event list for platforms with counter_info_version 0x6 or below */
-+static __maybe_unused struct attribute *hv_gpci_event_attrs_v6[] = {
-+#include REQUEST_FILE
-+	NULL
-+};
-+
-+/*
-+ * Based on getPerfCountInfo v1.018 documentation, some of the hv-gpci
-+ * events got deprecated for platforms firmware that supports
-+ * counter_info_version 0x8 or above.
-+ * Undefining macro EVENT_ENABLE, to disable the addition of deprecated
-+ * events in "hv_gpci_event_attrs" attribute group, for platforms that
-+ * supports counter_info_version 0x8 or above.
-+ */
-+#undef EVENT_ENABLE
-+
-+/* Generate event list for platforms with counter_info_version 0x8 or above*/
- static __maybe_unused struct attribute *hv_gpci_event_attrs[] = {
- #include REQUEST_FILE
- 	NULL
--- 
-2.31.1
-
+Do BTI landing pads help at all here? I.e., I assume that objtool just
+treats any indirect call as a dangling edge in the control flow graph,
+and the problem is identifying the valid targets. In the BTI case,
+those will all start with a 'BTI J' instruction.
