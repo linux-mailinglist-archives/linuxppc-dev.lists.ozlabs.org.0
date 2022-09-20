@@ -1,67 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 439155BE5B4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 14:26:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14EA85BE5B9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 14:26:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MX13s6RhNz3f5x
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 22:26:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MX14X3Dszz3bnH
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 22:26:36 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=A4lsNk7/;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=A4lsNk7/;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EEPRPztf;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=jSq7vQJD;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=A4lsNk7/;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=A4lsNk7/;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EEPRPztf;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=jSq7vQJD;
 	dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MX10r2MXxz3c1c
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Sep 2022 22:23:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MX10w2BRFz3c5p
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Sep 2022 22:23:28 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1663676601;
+	s=mimecast20190719; t=1663676605;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=bJLXUbRPoBL46dcO0XZc1HhT2Y45lUQGJ1HmTGP+Pj8=;
-	b=A4lsNk7/iQZB89KjB+ZiQ8dxr3i5MEwR0WRHy9U+ucpmWxz0tjwmf0HXgsw7AYzCKaANpE
-	6H0mNfmOpA+/3dNJj4WCIrAosWS3j6YohxpkXuKOgwOLaNrs+KRvOjpvEiJrrhM6POkPQZ
-	gMVccIHAcSMZzSmtlpbaR71CzyWzn5Y=
+	bh=ITgZ+FEhdrS2y8XEyUzkVY3PfF+vnYBUViWp7eHKbVA=;
+	b=EEPRPztfhOM4l8U7nHFWB8ye50Bk1ZMvAqrgz7Fvpg4yUO8DTa4vuFdnzctqsLQm8sdik/
+	/WSgptTfRIPCnwOCn3ONLqX4Bi0VweUrbGIVmJU6sNdj5p/hAQxykTcawk4TFId5LrrQbh
+	EqV3NOL/+ObggbuZx8JDGrqodnPAbbQ=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1663676601;
+	s=mimecast20190719; t=1663676606;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=bJLXUbRPoBL46dcO0XZc1HhT2Y45lUQGJ1HmTGP+Pj8=;
-	b=A4lsNk7/iQZB89KjB+ZiQ8dxr3i5MEwR0WRHy9U+ucpmWxz0tjwmf0HXgsw7AYzCKaANpE
-	6H0mNfmOpA+/3dNJj4WCIrAosWS3j6YohxpkXuKOgwOLaNrs+KRvOjpvEiJrrhM6POkPQZ
-	gMVccIHAcSMZzSmtlpbaR71CzyWzn5Y=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=ITgZ+FEhdrS2y8XEyUzkVY3PfF+vnYBUViWp7eHKbVA=;
+	b=jSq7vQJDJ/LbJdDtUakqV4im9ipnMHkO676JC2vEJi1mx/X81U6nx1N6h1/J5FFsyFPVpn
+	Tm8RDwk07LHyNYTpJPaIyOTO7LUkcDqiZcnKlTvbot4gu155HMMuD+Ps/Ju439zLcUnQgO
+	EbDzSqVtK8ThQaUV1IQryQIj0FUl+1o=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-362-Emjs82K7M7iPfvk_Mfu3Eg-1; Tue, 20 Sep 2022 08:23:18 -0400
-X-MC-Unique: Emjs82K7M7iPfvk_Mfu3Eg-1
+ us-mta-287-5ll2Ea3jNV6xCqe3I2yCaA-1; Tue, 20 Sep 2022 08:23:22 -0400
+X-MC-Unique: 5ll2Ea3jNV6xCqe3I2yCaA-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
 	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9F8F4862FE2;
-	Tue, 20 Sep 2022 12:23:17 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CC1DA38173C1;
+	Tue, 20 Sep 2022 12:23:21 +0000 (UTC)
 Received: from t480s.redhat.com (unknown [10.39.195.16])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id E4ED6C15BB5;
-	Tue, 20 Sep 2022 12:23:13 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 082A8C15BB5;
+	Tue, 20 Sep 2022 12:23:17 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH v1 2/3] powerpc/prom_init: drop PROM_BUG()
-Date: Tue, 20 Sep 2022 14:23:01 +0200
-Message-Id: <20220920122302.99195-3-david@redhat.com>
+Subject: [PATCH v1 3/3] checkpatch: warn on usage of VM_BUG_ON() and other BUG variants
+Date: Tue, 20 Sep 2022 14:23:02 +0200
+Message-Id: <20220920122302.99195-4-david@redhat.com>
 In-Reply-To: <20220920122302.99195-1-david@redhat.com>
 References: <20220920122302.99195-1-david@redhat.com>
 MIME-Version: 1.0
@@ -82,30 +82,46 @@ Cc: Lukas Bulwahn <lukas.bulwahn@gmail.com>, Jonathan Corbet <corbet@lwn.net>, B
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Unused, let's drop it.
+checkpatch does not point out that VM_BUG_ON() and friends should be
+avoided, however, Linus notes:
+
+    VM_BUG_ON() has the exact same semantics as BUG_ON. It is literally
+    no different, the only difference is "we can make the code smaller
+    because these are less important". [1]
+
+So let's warn on VM_BUG_ON() and other BUG variants as well. While at it,
+make it clearer that the kernel really shouldn't be crashed.
+
+As there are some subsystem BUG macros that actually don't end up crashing
+the kernel -- for example, KVM_BUG_ON() -- exclude these manually.
+
+[1] https://lore.kernel.org/r/CAHk-=wg40EAZofO16Eviaj7mfqDhZ2gVEbvfsMf6gYzspRjYvw@mail.gmail.com
 
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- arch/powerpc/kernel/prom_init.c | 6 ------
- 1 file changed, 6 deletions(-)
+ scripts/checkpatch.pl | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
-index a6669c40c1db..d464ba412084 100644
---- a/arch/powerpc/kernel/prom_init.c
-+++ b/arch/powerpc/kernel/prom_init.c
-@@ -96,12 +96,6 @@ static int of_workarounds __prombss;
- #define OF_WA_CLAIM	1	/* do phys/virt claim separately, then map */
- #define OF_WA_LONGTRAIL	2	/* work around longtrail bugs */
+diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+index 79e759aac543..21f3a79aa46f 100755
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -4695,12 +4695,12 @@ sub process {
+ 			}
+ 		}
  
--#define PROM_BUG() do {						\
--        prom_printf("kernel BUG at %s line 0x%x!\n",		\
--		    __FILE__, __LINE__);			\
--	__builtin_trap();					\
--} while (0)
--
- #ifdef DEBUG_PROM
- #define prom_debug(x...)	prom_printf(x)
- #else
+-# avoid BUG() or BUG_ON()
+-		if ($line =~ /\b(?:BUG|BUG_ON)\b/) {
++# do not use BUG() or variants
++		if ($line =~ /\b(?!AA_|BUILD_|DCCP_|IDA_|KVM_|RWLOCK_|snd_|SPIN_)(?:[a-zA-Z_]*_)?BUG(?:_ON)?(?:_[A-Z_]+)?\s*\(/) {
+ 			my $msg_level = \&WARN;
+ 			$msg_level = \&CHK if ($file);
+ 			&{$msg_level}("AVOID_BUG",
+-				      "Avoid crashing the kernel - try using WARN_ON & recovery code rather than BUG() or BUG_ON()\n" . $herecurr);
++				      "Do not crash the kernel unless it is unavoidable - use WARN_ON_ONCE & recovery code (if reasonable) rather than BUG() or variants.\n" . $herecurr);
+ 		}
+ 
+ # avoid LINUX_VERSION_CODE
 -- 
 2.37.3
 
