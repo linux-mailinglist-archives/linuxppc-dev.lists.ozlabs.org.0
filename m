@@ -1,41 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE8535BE099
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 10:46:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5350E5BE0DD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 10:57:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MWwBv3tyJz3c7M
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 18:46:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MWwRK03vJz3c4B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 18:57:33 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=azy6gWBc;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MWwBT64Ytz304j
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Sep 2022 18:46:22 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6ED20106F;
-	Tue, 20 Sep 2022 01:45:54 -0700 (PDT)
-Received: from [10.163.57.146] (unknown [10.163.57.146])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EE8EE3F73B;
-	Tue, 20 Sep 2022 01:45:37 -0700 (PDT)
-Message-ID: <8c4f103b-8f04-d0ad-b30a-2db7e52b36a3@arm.com>
-Date: Tue, 20 Sep 2022 14:15:34 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH v3 4/4] arm64: support batched/deferred tlb shootdown
- during page reclamation
-Content-Language: en-US
-To: Barry Song <21cnbao@gmail.com>
-References: <20220822082120.8347-1-yangyicong@huawei.com>
- <20220822082120.8347-5-yangyicong@huawei.com>
- <302febae-508c-d73e-8676-d51752946645@arm.com>
- <CAGsJ_4ywwFJFi+q3Ra5UE3twzS9eExtvuXgoGK-8u4c1ZdXCBw@mail.gmail.com>
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <CAGsJ_4ywwFJFi+q3Ra5UE3twzS9eExtvuXgoGK-8u4c1ZdXCBw@mail.gmail.com>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42e; helo=mail-pf1-x42e.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=azy6gWBc;
+	dkim-atps=neutral
+Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MWwQf2z6lz2xJF
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Sep 2022 18:56:56 +1000 (AEST)
+Received: by mail-pf1-x42e.google.com with SMTP id d82so2091040pfd.10
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Sep 2022 01:56:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date;
+        bh=1xCkS/NtliFBAi/Unm7O+jqERrlsw7P433sZiPkri3c=;
+        b=azy6gWBcH4uAn3JvvMQoDVf6XDBtjAt5NsZSWHLqsSuh4LJjSUMemhinc/jbUGQkNz
+         nSjbWacmQzT0rFScKnaXXVgE/9M4fLe1q7HJ2WaujXmuSJjwS4RHp5acXPeqYF83ht6z
+         BxBcRNj+t3HCeMaPJzDrr0/z0n8qxrJ34c+Py8pNW+95MahPfZ4yUIJl5ngeLToM0ZC4
+         4Jsgt2sn25OJMS/SeSkqpk/D5v616MJ1BqTh/8DOxGvRLpp4EzygolAktTUGqO88/Ys5
+         MXnmDRgw8Sg4Ib3mF2wZCSNf33n2NVcEL0lX8lfdJyPgWDszilpA5/AOUrC4Ab5vU4Bb
+         COAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date;
+        bh=1xCkS/NtliFBAi/Unm7O+jqERrlsw7P433sZiPkri3c=;
+        b=KadE24N4yAs3p6Elb295DQpUXDlKEYqN/x3TToYjV37GmmDWoDzHhSeu77GeOmRb7G
+         pxXC/+/N9EPbGkp7rYw52MkFoW54xLB/isLN1tdPx5ZvFW8xlfzj+5zIcxeJw133lk+H
+         4BlBRrOoi8x9zduavI5xApy3fuhrB3elxcEbxC7dix0sqTJTuChJntOAKf4pmEn96xEm
+         d9x2P1adUMDf14ZQMM1B0sR70t+ofsIBhh6LT1sGUMae+kR7BMIVqBvjWnCs/QN2iFak
+         1AA31YGiB5mZHxGdm9vB5WpYN5lPDk3DqNrOUKrlWh7c8hqeQeDIuj+xe7kd9+dgTx4f
+         qMkg==
+X-Gm-Message-State: ACrzQf3GxsCnF3rlI7rfNxlEsOycty9PwRY3bshecb59e6S+QM4UqyHv
+	FCTlPCkioW28HZHzTJEjB50=
+X-Google-Smtp-Source: AMsMyM48Yj9b5Zqz62ykAeM1jQWHvPRvE0b7QwL9zrD02o/110sRTUMvRa0KxyX0KGZe86Bc2XWSAA==
+X-Received: by 2002:a63:88c8:0:b0:439:494d:fd10 with SMTP id l191-20020a6388c8000000b00439494dfd10mr19078526pgd.201.1663664214258;
+        Tue, 20 Sep 2022 01:56:54 -0700 (PDT)
+Received: from localhost ([203.219.227.147])
+        by smtp.gmail.com with ESMTPSA id a2-20020a1709027e4200b001754fa42065sm868869pln.143.2022.09.20.01.56.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 20 Sep 2022 01:56:53 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date: Tue, 20 Sep 2022 18:56:49 +1000
+Message-Id: <CN13QQX0NEA2.M6SABG46NYYN@bobo>
+Subject: Re: [PATCH v2 06/19] powerpc/cputable: Split cpu_specs[] out of
+ cputable.h
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Christophe Leroy" <christophe.leroy@csgroup.eu>, "Michael Ellerman"
+ <mpe@ellerman.id.au>
+X-Mailer: aerc 0.11.0
+References: <828f6a64eeb51ce9abfa1d4e84c521a02fecebb8.1663606875.git.christophe.leroy@csgroup.eu> <a44b865e0318286155273b10cdf524ab697928c1.1663606875.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <a44b865e0318286155273b10cdf524ab697928c1.1663606875.git.christophe.leroy@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,45 +80,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: wangkefeng.wang@huawei.com, prime.zeng@hisilicon.com, linux-doc@vger.kernel.org, peterz@infradead.org, catalin.marinas@arm.com, yangyicong@hisilicon.com, linux-mm@kvack.org, Nadav Amit <namit@vmware.com>, guojian@oppo.com, linux-riscv@lists.infradead.org, will@kernel.org, linux-s390@vger.kernel.org, zhangshiming@oppo.com, lipeifeng@oppo.com, corbet@lwn.net, x86@kernel.org, Mel Gorman <mgorman@suse.de>, linux-mips@vger.kernel.org, arnd@arndb.de, realmz6@gmail.com, Barry Song <v-songbaohua@oppo.com>, openrisc@lists.librecores.org, darren@os.amperecomputing.com, linux-arm-kernel@lists.infradead.org, xhao@linux.alibaba.com, linux-kernel@vger.kernel.org, huzhanyuan@oppo.com, Yicong Yang <yangyicong@huawei.com>, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Tue Sep 20, 2022 at 3:01 AM AEST, Christophe Leroy wrote:
+> cpu_specs[] is full of #ifdefs depending on the different
+> types of CPU.
+>
+> CPUs are mutually exclusive, it is therefore possible to split
+> cpu_specs[] into smaller more readable pieces.
+>
+> Create cpu_specs_XXX.h that will each be dedicated on one
+> of the following mutually exclusive families:
+> - 40x
+> - 44x
+> - 47x
+> - 8xx
+> - e500
+> - book3s/32
+> - book3s/64
+>
+> In book3s/32, the block for 603 has been moved in front in order
+> to not have two 604 blocks.
 
 
-On 9/20/22 09:09, Barry Song wrote:
-> On Tue, Sep 20, 2022 at 3:00 PM Anshuman Khandual
-> <anshuman.khandual@arm.com> wrote:
->>
->>
->> On 8/22/22 13:51, Yicong Yang wrote:
->>> +static inline bool arch_tlbbatch_should_defer(struct mm_struct *mm)
->>> +{
->>> +     return true;
->>> +}
->>
->> This needs to be conditional on systems, where there will be performance
->> improvements, and should not just be enabled all the time on all systems.
->> num_online_cpus() > X, which does not hold any cpu hotplug lock would be
->> a good metric ?
-> 
-> for a small system, i don't see how this patch will help, e.g. cpus <= 4;
-> so we can actually disable tlb-batch on small systems.
+>
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> ---
+>  arch/powerpc/kernel/cpu_specs.h           |   27 +
+>  arch/powerpc/kernel/cpu_specs_40x.h       |  280 +++
+>  arch/powerpc/kernel/cpu_specs_44x.h       |  304 ++++
+>  arch/powerpc/kernel/cpu_specs_47x.h       |   78 +
+>  arch/powerpc/kernel/cpu_specs_8xx.h       |   21 +
+>  arch/powerpc/kernel/cpu_specs_book3s_32.h |  607 +++++++
+>  arch/powerpc/kernel/cpu_specs_book3s_64.h |  488 ++++++
+>  arch/powerpc/kernel/cpu_specs_e500.h      |  135 ++
+>  arch/powerpc/kernel/cputable.c            | 1877 +--------------------
 
-Do not subscribe ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH based on NR_CPUS ?
-That might not help much as the default value is 256 for NR_CPUS.
+This series is a nice cleanup. No comments yet but kernel/ is getting
+pretty crowded. Should we make some subdirectories for subarch things
+like mm has?
 
-OR
+Can do that after your series. Probably requires another merge window
+to do it.
 
-arch_tlbbatch_should_defer() checks on
-
-1. online cpus			(dont enable batched TLB if <= X)
-2. ARM64_WORKAROUND_REPEAT_TLBI (dont enable batched TLB)
-
-> just need to check if we will have any race condition since hotplug will
-> make the condition true and false dynamically.
-
-If should_defer_flush() evaluate to be false, then ptep_clear_flush()
-clears and flushes the entry right away. This should not race with other
-queued up TLBI requests, which will be flushed separately. Wondering how
-there can be a race here !
+Thanks,
+Nick
