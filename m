@@ -1,115 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFDCF5BEE92
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 22:30:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29BD45BF0E4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Sep 2022 01:14:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MXCq85RGzz3fDn
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Sep 2022 06:30:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MXHSF2kk0z3c61
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Sep 2022 09:14:37 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=eIZ0Oo4z;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Q359WuuE;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=seco.com (client-ip=40.107.20.53; helo=eur05-db8-obe.outbound.protection.outlook.com; envelope-from=sean.anderson@seco.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=frederic@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=eIZ0Oo4z;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Q359WuuE;
 	dkim-atps=neutral
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2053.outbound.protection.outlook.com [40.107.20.53])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MXChD1ws0z3bbm
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Sep 2022 06:24:44 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=cNy5ZIECRRZX7LuHFqudbMchiX9KImCAgpINh39uC+dMKMEOoJxZWOQ8/RmNjVnFl3XmjIBq4mG8+7xuRn35BWspqv+Tj2kfx7GicbB6SXkxHroLvwRYdRR45zynX09qf4HMV7fgJbBS3IXegcdcjChGGT4NN1/h1zFJvcY2aQH3cj9t/vfs6/+DBQZoeBjkz0csc5CHDmv/zh2cNwp2teIfi7mQM55Lr81L0oRw+C8kKl9JAXfJidPpbyM0XlTQid+lyypi/X/VOIsk6mbkiwwYK+YDeJUbD3otn69rAAA475eLG7k5j/olVxmRFWX4r31S2bd0ozm7KOi3G/ledA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tmiMEy9s8VTqo+U/o+r/srwiHgqgVnwvLhjLiMh0Oyw=;
- b=i9ivmZ4RQVuHFCIE1ayNFA49/RshZj62x2CXqXfXe7dmKru/hxW//94GeqC+TaijVkMep5seiY9eQrOpbWBw3YmMve+Oi4CmQjI0YJ7NqtpXGvSGkInsZC6575Ijxn/CudFVBWmZ7hJjOpWj33wSKZ35GfPgeV7HOGraXatfYQ2y7BNGt3M+5ebXVUlUUk8lCg8CGeAsm00TPglvu/6a8l28nAMJ2mUSy3QQlCvJpGXMDgBRc/dazSF9mhkFzI2QqWufQLxDx1rtKNDfSwpzxsNINT7n2UhV28+Cdv8/tslnHb/PndZx3CNyQA3lNKFeLzb8btMllqadVYVIDp2xhQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=seco.com; dmarc=pass action=none header.from=seco.com;
- dkim=pass header.d=seco.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seco.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tmiMEy9s8VTqo+U/o+r/srwiHgqgVnwvLhjLiMh0Oyw=;
- b=eIZ0Oo4zoEE4/dMSmlJKvnO/J+oREPvedmxB+2Rlk/VGr9Z4OleapQsIDb5TB1BxVLJxBEDlq5kLKt2aRH3zYpUrsH0b/75QRRosog6Mevc6Xz1W/S854DFYRD7U9esIe79JdEaYfjS9ASNguJygLmmgITEGK4Gmb2QyUNukCi4p5IyhWZLOEVu0zEfg+rwUo+4qzHy6jhTUFH/A6rutlo6mxqA6mDdEXofhYnog+bqI7iGWFbhZsDR8Mh3rNvgdcBUX7semRJ5OUPGKgbl+SJ3AD72vY1J7YTSob+4ugche/TI9oIJKVtwRQOsqzIXc1uzbYrr2eRL2enQ+cr55Bg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=seco.com;
-Received: from DB7PR03MB4972.eurprd03.prod.outlook.com (2603:10a6:10:7d::22)
- by DU0PR03MB9566.eurprd03.prod.outlook.com (2603:10a6:10:41e::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5632.21; Tue, 20 Sep
- 2022 20:24:27 +0000
-Received: from DB7PR03MB4972.eurprd03.prod.outlook.com
- ([fe80::204a:de22:b651:f86d]) by DB7PR03MB4972.eurprd03.prod.outlook.com
- ([fe80::204a:de22:b651:f86d%6]) with mapi id 15.20.5654.014; Tue, 20 Sep 2022
- 20:24:27 +0000
-From: Sean Anderson <sean.anderson@seco.com>
-To: Vinod Koul <vkoul@kernel.org>,
-	Kishon Vijay Abraham I <kishon@ti.com>,
-	linux-phy@lists.infradead.org
-Subject: [PATCH v6 8/8] [WIP] arm64: dts: ls1088ardb: Add serdes bindings
-Date: Tue, 20 Sep 2022 16:23:56 -0400
-Message-Id: <20220920202356.1451033-9-sean.anderson@seco.com>
-X-Mailer: git-send-email 2.35.1.1320.gc452695387.dirty
-In-Reply-To: <20220920202356.1451033-1-sean.anderson@seco.com>
-References: <20220920202356.1451033-1-sean.anderson@seco.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BL1P221CA0014.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:208:2c5::26) To DB7PR03MB4972.eurprd03.prod.outlook.com
- (2603:10a6:10:7d::22)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MX1Bf05kJz2xH9
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Sep 2022 22:31:53 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 22B15620CB;
+	Tue, 20 Sep 2022 12:31:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74CCCC433D6;
+	Tue, 20 Sep 2022 12:31:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1663677108;
+	bh=i2971qM7wlevODiVHlQWVkeQKCoULSDtCivyYa6BY3w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Q359WuuE7X8iHPUglRgZ6umBriKE4r+Hq60s0D7bZenVvQZ4nI53Q/0IHEDWUvL08
+	 uO1lUj+/+gsUuHABZ0IUgFE9VpucvwIQJdQ0+o+qLceGFQWOjTx274Wv0QgoQwQqDB
+	 Bq6B/yj6zX6+ne9r87JfQG1DqPPHAUwk/5wBhBEUUm5zmwQcKDqLTClYTCw1gL+EWj
+	 y+co7RjqxrjwqgzVQOyvkrVOgNfaKYqf/Dnk/7RydhOFfw29XBhF+VqBugULRYy6nW
+	 kGdHmx4EM6/oydyvS6EAGcuvFJCcs2df/Ji6kGzIJMqPXxrjzmWTkMGZJXBpD98pEC
+	 ZvljhnwREUPvw==
+Date: Tue, 20 Sep 2022 14:31:45 +0200
+From: Frederic Weisbecker <frederic@kernel.org>
+To: Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH v2 00/44] cpuidle,rcu: Clean up the mess
+Message-ID: <20220920123145.GC72346@lothringen>
+References: <20220919095939.761690562@infradead.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB7PR03MB4972:EE_|DU0PR03MB9566:EE_
-X-MS-Office365-Filtering-Correlation-Id: aa694195-0f47-49b7-2340-08da9b461d57
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	a2sHcb2JP62SY/3537AB+Q+hTDdaqvZBlMWXRbzGbZnN9S9hZQLmlxjSYNfhU+zImdDPRRPkSjW8VGuGHFVgXPE+WPh8GHpbsqgVwSnhu9JzLYyFxdh/d2Llgrr0oovDLv/Co0pHQ+WBfwPZPnLKWIYq8lvwRHrQWpf5tXtSdnTRLNRPASGhC+iuZu9eSL9bywXUa6yWi5Co2fpQevtZVy9+92NNgReOe1lnsEmyilxN6MqCnRHyjSSCmQMK/RaBjtr4A1YshiATaaSfzAPDXZgbpzwSbYyiGleFAI9/m0nsOsWOyuLek58TDLrzTkhM7KHbXbTVzPfHEiM7LWUzgdYhooaqYQHyW2jD9nVHb/lmYVoWnVZOO+0FF9CQ/6Dl74rQ3jT6YlRg9Rtts8k5KXRyvbzm5h77nSzj/kHJQymL2CFkksx/3HD5Q+xoF3G50Exit1xfN8mDDbiCbDW8syrQIXrCvC8KLvSKp8GDosjZkqbw+a5W3uGMd6nLmcoBmwN07ZGSpYHk2YKSeOe+olgOZOOM6uIOxvDP4BBAw9HgOjbUAhGeHW8Emxs8GYmuzAdyBWTkrsngnIHhCFbFjm/dvOTcQHMSmporhzfVkvjNmax2kBYPQdy074NHzhSe14jAOTmsxp+e5O8TCAm5DuzWvQov+S8uggxTs2cfavOkOaCG7cYaku6GCHrJSxBjV4LdcJ9sgmPTymmAae1vujyQDsiHyUxYOGlCxI648RPmBwdSHQ/OsqDopXDcgstD
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB7PR03MB4972.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(396003)(366004)(136003)(376002)(39850400004)(346002)(451199015)(41300700001)(38350700002)(7416002)(52116002)(6666004)(83380400001)(36756003)(6506007)(8936002)(5660300002)(110136005)(54906003)(44832011)(2906002)(86362001)(316002)(478600001)(6486002)(1076003)(38100700002)(186003)(66946007)(66556008)(66476007)(2616005)(26005)(6512007)(8676002)(4326008);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?dYxllZGxv8YWrFn2pHA6i7XYAzB2R0pIj9z0dqmj7N3CUrVQbRPTvVzVQfr9?=
- =?us-ascii?Q?GPtHwRrqYKPQKWho7UTd5Rno2xNF8NiYm7PPILlte02JXrGm+kJJz0s5FW3q?=
- =?us-ascii?Q?5iPiZoVNngiVT7UZFB2DbphKMR/yvEwYkIiFWGSXLlRAbv3LKBZ2qertLsLA?=
- =?us-ascii?Q?5ErIxA09H1Dp37lw/HN52A6VI92s7MTq5oGJxP2bKoeRwu/huHOAFixcRmTt?=
- =?us-ascii?Q?Lrla4oMO99B6s+zp5xGtaUXHa8VBEB88jQuagY/Ns/5uZQVg6iIwAFM/Mf97?=
- =?us-ascii?Q?qAbaE/aYizn2BMKVsnT1Bl6ozLK14A+H2iuMPAUGOWplaHTT1W9OZmYhR4eI?=
- =?us-ascii?Q?UzcJY471J+RnQRnM4VZ+k+epEQAPKftRqXt+EiKFkNcv2yD50KtFL++GPsya?=
- =?us-ascii?Q?pa9C4dMF1LsWh4sGY5k/1GtH3zMCuuor6b1HUTdzFrCS4VXpAy3DyJGSvvT5?=
- =?us-ascii?Q?3DnzDeQjHIRq4LAwKuFosjOaYHhUlzWJybPq2DDk8ZpC9c6ko1cE46eggd/Z?=
- =?us-ascii?Q?0juOGUVd+Peyn4G0bHGPThHWEfyrTN2LdAQCaFacWj6DvTgIu4pyqK2GkKBQ?=
- =?us-ascii?Q?gTpwDY2h7LYVBvcIH6MJ0ZamhgL+XG3EDXvRNE8A+0qQAOB+gjYVnCCfRonY?=
- =?us-ascii?Q?mNrWkZwUIkYM1U0QvPfylhWCbZ6jYa3sVIf66yncQtvNIGWyOrPdE6UIroqE?=
- =?us-ascii?Q?9TTOAb65iRWYrKtQpq4ySrKqCvjf4N9sZij52B4s3MhcikICxBb3AtCrTdWp?=
- =?us-ascii?Q?3CV/OMaOZYVgLpTeQoo2Gmxb+QcIp8HMzgf1Zt2fML4u7AsJH+wDFobk4I23?=
- =?us-ascii?Q?1lYYq450NajtrYfPIS0qbNLqjOU3vuo8YgWCgx2/jByyMXYtv2eF7EOIfwfn?=
- =?us-ascii?Q?iWh6jSrLqPdxHsr0iISGFcAtfLUvmRX1eNjLkWceJA/Gx+dExp2f5C6wFBOX?=
- =?us-ascii?Q?cChOLJ+xs5Qyyrb5G1t4JD2JkNSWg7GEGb/8bFaKBv/X+weU8bKSsizONzwS?=
- =?us-ascii?Q?2wwBSS7Em8FsHrOXSlsLQZ7t/WYob5F3UU4m1Sn/u+jLBI0DqNBK0GZXwiKu?=
- =?us-ascii?Q?HxfXCnrVpGAESfI6AFclSYAssdgvdd3+96lNRKLdLWZ7Nv3zUSsPZAWcNnHh?=
- =?us-ascii?Q?cAL4NdIFaNcAxpNUCTwa5vLbLHbzo3ovYolNG9fYh93wv6ODS32BFBpPpTwQ?=
- =?us-ascii?Q?ZcJjc/C6rIFfPjXN88V8Wf+zPUhBstj660RrHieHbca9fhhrCKBguWiAU0Uv?=
- =?us-ascii?Q?B1H27Rm9Vgqmq/mcKomE2CiKM1NVAYvspstmfZXcyvTLOl0gtb06RZMRDVhj?=
- =?us-ascii?Q?oXoE5maFZp31NKPUYdnVq8Pz2jJ/kefYC19m/TrkEYU0nKQV9eHwxDCmIhuw?=
- =?us-ascii?Q?GGowyOJu8QMOEQIbgtvTmMOY4U6d3QWRJdYccdKGDBqPLay03R3dV9DQK/a4?=
- =?us-ascii?Q?hW4gyrxLP6zlECwc43ljbNvVvjOruiRnUzQbQ+ir80eofTy1VnyHXiVy5bdA?=
- =?us-ascii?Q?DPoeAz/bVcgTeypOFlNmDEY+5wKC4HFfrbtMQg3s4FBOw2o2PLH6NC+56cLL?=
- =?us-ascii?Q?XAy6gV9YT1TnQdRP38D5DTc1gKTaZ8sfGjL0d6ec9nT9b1uUtaohaPFCqqnb?=
- =?us-ascii?Q?6g=3D=3D?=
-X-OriginatorOrg: seco.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: aa694195-0f47-49b7-2340-08da9b461d57
-X-MS-Exchange-CrossTenant-AuthSource: DB7PR03MB4972.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Sep 2022 20:24:27.0331
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bebe97c3-6438-442e-ade3-ff17aa50e733
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /0RhbXsrehOSlDBzvJT9tdQE3BuNa+DUY7XtPdb6ber8HOiiUmNkwV5LLv4V3kT3Lt981XICb/UHnN8szrBCzg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR03MB9566
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220919095939.761690562@infradead.org>
+X-Mailman-Approved-At: Wed, 21 Sep 2022 09:14:08 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -121,276 +60,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, Madalin Bucur <madalin.bucur@nxp.com>, Sean Anderson <sean.anderson@seco.com>, Shawn Guo <shawnguo@kernel.org>, Li Yang <leoyang.li@nxp.com>, Rob Herring <robh+dt@kernel.org>, Camelia Alexandra Groza <camelia.groza@nxp.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Ioana Ciornei <ioana.ciornei@nxp.com>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: juri.lelli@redhat.com, rafael@kernel.org, catalin.marinas@arm.com, linus.walleij@linaro.org, bsegall@google.com, guoren@kernel.org, pavel@ucw.cz, agordeev@linux.ibm.com, srivatsa@csail.mit.edu, linux-arch@vger.kernel.org, vincent.guittot@linaro.org, chenhuacai@kernel.org, linux-acpi@vger.kernel.org, agross@kernel.org, geert@linux-m68k.org, linux-imx@nxp.com, vgupta@kernel.org, mattst88@gmail.com, borntraeger@linux.ibm.com, mturquette@baylibre.com, sammy@sammy.net, pmladek@suse.com, linux-pm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, linux-um@lists.infradead.org, npiggin@gmail.com, tglx@linutronix.de, linux-omap@vger.kernel.org, dietmar.eggemann@arm.com, andreyknvl@gmail.com, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, senozhatsky@chromium.org, svens@linux.ibm.com, jolsa@kernel.org, tj@kernel.org, Andrew Morton <akpm@linux-foundation.org>, mark.rutland@arm.com, linux-ia64@vger.kernel.org, dave.hansen@linux.intel.com, vir
+ tualization@lists.linux-foundation.org, James.Bottomley@HansenPartnership.com, jcmvbkbc@gmail.com, thierry.reding@gmail.com, kernel@xen0n.name, cl@linux.com, linux-s390@vger.kernel.org, vschneid@redhat.com, john.ogness@linutronix.de, ysato@users.sourceforge.jp, linux-sh@vger.kernel.org, festevam@gmail.com, deller@gmx.de, daniel.lezcano@linaro.org, jonathanh@nvidia.com, dennis@kernel.org, lenb@kernel.org, linux-xtensa@linux-xtensa.org, kernel@pengutronix.de, gor@linux.ibm.com, linux-arm-msm@vger.kernel.org, linux-alpha@vger.kernel.org, linux-m68k@lists.linux-m68k.org, loongarch@lists.linux.dev, shorne@gmail.com, chris@zankel.net, sboyd@kernel.org, dinguyen@kernel.org, bristot@redhat.com, alexander.shishkin@linux.intel.com, fweisbec@gmail.com, lpieralisi@kernel.org, atishp@atishpatra.org, linux@rasmusvillemoes.dk, kasan-dev@googlegroups.com, will@kernel.org, boris.ostrovsky@oracle.com, khilman@kernel.org, linux-csky@vger.kernel.org, pv-drivers@vmware.com, linux-snps-arc@lists.infradea
+ d.org, mgorman@suse.de, jacob.jun.pan@linux.intel.com, Arnd Bergmann <arnd@arndb.de>, ulli.kroll@googlemail.com, linux-clk@vger.kernel.org, rostedt@goodmis.org, ink@jurassic.park.msu.ru, bcain@quicinc.com, tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, ryabinin.a.a@gmail.com, sudeep.holla@arm.com, shawnguo@kernel.org, davem@davemloft.net, dalias@libc.org, tony@atomide.com, amakhalov@vmware.com, konrad.dybcio@somainline.org, bjorn.andersson@linaro.org, glider@google.com, hpa@zytor.com, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org, vincenzo.frascino@arm.com, anton.ivanov@cambridgegreys.com, jonas@southpole.se, yury.norov@gmail.com, richard@nod.at, x86@kernel.org, linux@armlinux.org.uk, mingo@redhat.com, aou@eecs.berkeley.edu, hca@linux.ibm.com, richard.henderson@linaro.org, stefan.kristiansson@saunalahti.fi, openrisc@lists.librecores.org, acme@kernel.org, paul.walmsley@sifive.com, linux-tegra@vger.kernel.org, namhyung@kernel.org,
+  andriy.shevchenko@linux.intel.com, jpoimboe@kernel.org, dvyukov@google.com, jgross@suse.com, monstr@monstr.eu, linux-mips@vger.kernel.org, palmer@dabbelt.com, anup@brainfault.org, bp@alien8.de, johannes@sipsolutions.net, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is a first stab at adding serdes support on the LS1088A. Linux
-hangs around when the serdes is initialized if the si5341 is enabled, so
-it's commented out. The MC firmware needs to be fairly new (it must
-support DPAA2_MAC_FEATURE_PROTOCOL_CHANGE), and the DPC needs to set the
-macs to MAC_LINK_TYPE_BACKPLANE. For this reason, I think this will be
-difficult to do in a backwards-compatible manner. I have not really
-tested this, but hopefully it can be a good starting point.
+On Mon, Sep 19, 2022 at 11:59:39AM +0200, Peter Zijlstra wrote:
+> Hi All!
+> 
+> At long last, a respin of the cpuidle vs rcu cleanup patches.
+> 
+> v1: https://lkml.kernel.org/r/20220608142723.103523089@infradead.org
+> 
+> These here patches clean up the mess that is cpuidle vs rcuidle.
+> 
+> At the end of the ride there's only on RCU_NONIDLE user left:
+> 
+>   arch/arm64/kernel/suspend.c:            RCU_NONIDLE(__cpu_suspend_exit());
+> 
+> and 'one' trace_*_rcuidle() user:
+> 
+>   kernel/trace/trace_preemptirq.c:                        trace_irq_enable_rcuidle(CALLER_ADDR0, CALLER_ADDR1);
+>   kernel/trace/trace_preemptirq.c:                        trace_irq_disable_rcuidle(CALLER_ADDR0, CALLER_ADDR1);
+>   kernel/trace/trace_preemptirq.c:                        trace_irq_enable_rcuidle(CALLER_ADDR0, caller_addr);
+>   kernel/trace/trace_preemptirq.c:                        trace_irq_disable_rcuidle(CALLER_ADDR0, caller_addr);
+>   kernel/trace/trace_preemptirq.c:                trace_preempt_enable_rcuidle(a0, a1);
+>   kernel/trace/trace_preemptirq.c:                trace_preempt_disable_rcuidle(a0, a1);
+> 
+> However this last is all in deprecated code that should be unused for GENERIC_ENTRY.
+> 
+> I've touched a lot of code that I can't test and I might've broken something by
+> accident. In particular the whole ARM cpuidle stuff was quite involved.
+> 
+> Please all; have a look where you haven't already.
+> 
+> 
+> New since v1:
+> 
+>  - rebase on top of Frederic's rcu-context-tracking rename fest
+>  - more omap goodness as per the last discusion (thanks Tony!)
+>  - removed one more RCU_NONIDLE() from arm64/risc-v perf code
+>  - ubsan/kasan fixes
+>  - intel_idle module-param for testing
+>  - a bunch of extra __always_inline, because compilers are silly.
 
-Signed-off-by: Sean Anderson <sean.anderson@seco.com>
+Except for those I have already tagged as Reviewed:
 
----
+Acked-by: Frederic Weisbecker <frederic@kernel.org>
 
-(no changes since v4)
-
-Changes in v4:
-- Convert to new bindings
-
- .../boot/dts/freescale/fsl-ls1088a-rdb.dts    | 161 ++++++++++++++++++
- 1 file changed, 161 insertions(+)
-
-diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1088a-rdb.dts b/arch/arm64/boot/dts/freescale/fsl-ls1088a-rdb.dts
-index 1bfbce69cc8b..5c502048d887 100644
---- a/arch/arm64/boot/dts/freescale/fsl-ls1088a-rdb.dts
-+++ b/arch/arm64/boot/dts/freescale/fsl-ls1088a-rdb.dts
-@@ -10,17 +10,138 @@
- 
- /dts-v1/;
- 
-+#include <dt-bindings/phy/phy.h>
-+
- #include "fsl-ls1088a.dtsi"
- 
- / {
- 	model = "LS1088A RDB Board";
- 	compatible = "fsl,ls1088a-rdb", "fsl,ls1088a";
-+
-+	clocks {
-+		si5341_xtal: clock-48mhz {
-+			compatible = "fixed-clock";
-+			#clock-cells = <0>;
-+			clock-frequency = <48000000>;
-+		};
-+
-+		clk_100mhz: clock-100mhz {
-+			compatible = "fixed-clock";
-+			#clock-cells = <0>;
-+			clock-frequency = <100000000>;
-+		};
-+
-+		clk_156mhz: clock-156mhz {
-+			compatible = "fixed-clock";
-+			#clock-cells = <0>;
-+			clock-frequency = <156250000>;
-+		};
-+	};
-+
-+	ovdd: regulator-1v8 {
-+		compatible = "regulator-fixed";
-+		regulator-name = "ovdd";
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <1800000>;
-+	};
-+
-+	dvdd: regulator-3v3 {
-+		compatible = "regulator-fixed";
-+		regulator-name = "dvdd";
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+	};
-+
-+};
-+
-+&serdes1 {
-+	//clocks = <&si5341 0 8>, <&si5341 0 9>;
-+	clocks = <&clk_100mhz>, <&clk_156mhz>;
-+	clock-names = "ref0", "ref1";
-+	status = "okay";
-+
-+	serdes1_0: phy@0 {
-+		#phy-cells = <0>;
-+		reg = <0>;
-+
-+		/* SG2 */
-+		sgmii-3 {
-+			fsl,pccr = <0x8>;
-+			fsl,index = <3>;
-+			fsl,cfg = <0x1>;
-+			phy-type = <PHY_TYPE_2500BASEX>;
-+		};
-+
-+		/* XFI2 */
-+		xfi-1 {
-+			fsl,pccr = <0xb>;
-+			fsl,index = <1>;
-+			fsl,cfg = <0x1>;
-+			phy-type = <PHY_TYPE_10GBASER>;
-+		};
-+	};
-+
-+	serdes1_1: phy@1 {
-+		#phy-cells = <0>;
-+		reg = <1>;
-+
-+		/* SG1 */
-+		sgmii-2 {
-+			fsl,pccr = <0x8>;
-+			fsl,index = <2>;
-+			fsl,cfg = <0x1>;
-+			phy-type = <PHY_TYPE_2500BASEX>;
-+		};
-+
-+		/*
-+		 * XFI2
-+		 * Table 23-1 and section 23.5.16.4 disagree; this reflects the
-+		 * table.
-+		 */
-+		xfi-0 {
-+			fsl,pccr = <0xb>;
-+			fsl,index = <0>;
-+			fsl,cfg = <0x1>;
-+			phy-type = <PHY_TYPE_10GBASER>;
-+		};
-+	};
-+
-+	serdes1_2: phy@2 {
-+		#phy-cells = <0>;
-+		reg = <2>;
-+
-+		/* QSGb */
-+		qsgmii-1 {
-+			fsl,pccr = <0x9>;
-+			fsl,index = <1>;
-+			fsl,cfg = <0x1>;
-+			phy-type = <PHY_TYPE_QSGMII>;
-+		};
-+	};
-+
-+	serdes1_3: phy@2 {
-+		#phy-cells = <0>;
-+		reg = <2>;
-+
-+		/* QSGa */
-+		qsgmii-0 {
-+			fsl,pccr = <0x9>;
-+			fsl,index = <0>;
-+			fsl,cfg = <0x1>;
-+			phy-type = <PHY_TYPE_QSGMII>;
-+		};
-+	};
-+};
-+
-+&dpmac1 {
-+	phys = <&serdes1_1>;
- };
- 
- &dpmac2 {
- 	phy-handle = <&mdio2_aquantia_phy>;
- 	phy-connection-type = "10gbase-r";
- 	pcs-handle = <&pcs2>;
-+	phys = <&serdes1_0>;
- };
- 
- &dpmac3 {
-@@ -28,6 +149,7 @@ &dpmac3 {
- 	phy-connection-type = "qsgmii";
- 	managed = "in-band-status";
- 	pcs-handle = <&pcs3_0>;
-+	phys = <&serdes1_3>;
- };
- 
- &dpmac4 {
-@@ -35,6 +157,7 @@ &dpmac4 {
- 	phy-connection-type = "qsgmii";
- 	managed = "in-band-status";
- 	pcs-handle = <&pcs3_1>;
-+	phys = <&serdes1_3>;
- };
- 
- &dpmac5 {
-@@ -42,6 +165,7 @@ &dpmac5 {
- 	phy-connection-type = "qsgmii";
- 	managed = "in-band-status";
- 	pcs-handle = <&pcs3_2>;
-+	phys = <&serdes1_3>;
- };
- 
- &dpmac6 {
-@@ -49,6 +173,7 @@ &dpmac6 {
- 	phy-connection-type = "qsgmii";
- 	managed = "in-band-status";
- 	pcs-handle = <&pcs3_3>;
-+	phys = <&serdes1_3>;
- };
- 
- &dpmac7 {
-@@ -56,6 +181,7 @@ &dpmac7 {
- 	phy-connection-type = "qsgmii";
- 	managed = "in-band-status";
- 	pcs-handle = <&pcs7_0>;
-+	phys = <&serdes1_2>;
- };
- 
- &dpmac8 {
-@@ -63,6 +189,7 @@ &dpmac8 {
- 	phy-connection-type = "qsgmii";
- 	managed = "in-band-status";
- 	pcs-handle = <&pcs7_1>;
-+	phys = <&serdes1_2>;
- };
- 
- &dpmac9 {
-@@ -70,6 +197,7 @@ &dpmac9 {
- 	phy-connection-type = "qsgmii";
- 	managed = "in-band-status";
- 	pcs-handle = <&pcs7_2>;
-+	phys = <&serdes1_2>;
- };
- 
- &dpmac10 {
-@@ -77,6 +205,7 @@ &dpmac10 {
- 	phy-connection-type = "qsgmii";
- 	managed = "in-band-status";
- 	pcs-handle = <&pcs7_3>;
-+	phys = <&serdes1_2>;
- };
- 
- &emdio1 {
-@@ -142,6 +271,38 @@ i2c-switch@77 {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 
-+		i2c@1 {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			reg = <0x1>;
-+
-+			si5341: clock-generator@74 {
-+				#address-cells = <1>;
-+				#clock-cells = <2>;
-+				#size-cells = <0>;
-+				compatible = "silabs,si5341";
-+				reg = <0x74>;
-+				clocks = <&si5341_xtal>;
-+				clock-names = "xtal";
-+				vdd-supply = <&ovdd>;
-+				vdda-supply = <&dvdd>;
-+				vddo8-supply = <&ovdd>;
-+				vddo9-supply = <&ovdd>;
-+				silabs,iovdd-33;
-+				status = "disabled";
-+
-+				out@8 {
-+					reg = <8>;
-+					silabs,format = <1>;
-+				};
-+
-+				out@9 {
-+					reg = <9>;
-+					silabs,format = <1>;
-+				};
-+			};
-+		};
-+
- 		i2c@2 {
- 			#address-cells = <1>;
- 			#size-cells = <0>;
--- 
-2.35.1.1320.gc452695387.dirty
-
+Thanks for the hard work!
