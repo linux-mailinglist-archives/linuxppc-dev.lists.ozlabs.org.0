@@ -1,68 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BC8D5BDAF0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 05:40:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6758B5BDAFF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 05:52:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MWnPT2KJZz30hw
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 13:40:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MWngf1t6kz3bN6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 13:52:46 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=a1adS1EC;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=O2O5MQHZ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::530; helo=mail-ed1-x530.google.com; envelope-from=21cnbao@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::431; helo=mail-pf1-x431.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=a1adS1EC;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=O2O5MQHZ;
 	dkim-atps=neutral
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MWnNv20yrz2xG6
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Sep 2022 13:39:57 +1000 (AEST)
-Received: by mail-ed1-x530.google.com with SMTP id e18so1988026edj.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Sep 2022 20:39:57 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MWng10lmDz2xjj
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Sep 2022 13:52:11 +1000 (AEST)
+Received: by mail-pf1-x431.google.com with SMTP id e5so1565047pfl.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Sep 2022 20:52:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=G999qRJ3ZYDAwyPJfqHMd90vcXhx8IHao6Ql7QiFPDQ=;
-        b=a1adS1ECR642XvCjjjLjLzQ6JfBYYWC6Zjk4Ayb0GPq1HNHS6cqyiHrOVDg6U66sl0
-         oRwS5IaWQZ+A5oOC1m7PxvHbKpXhbG7+ITj7+GYBrhpBh9xKw8vK67u8q6EX1Xki8DUo
-         CDP74oWnx9ZaM60n/aZKsxAgdaJUVTWMaF9yFWNxcQkdtfYRxgwyEspizTHzaFbOCzgV
-         ow1iuQ8bKgJYPcLGUqqzxM7BgkoIsKCZhQGQhb9cCsywveib9s1aSgybsdN2E41GWeXS
-         rALuCfC8AzbIeVWaRYMIHWZdHmEgrfViS3GY5sZGLUldXsqTqQIWHrw+E1895ArI8ghu
-         cFYw==
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date;
+        bh=Y5ta4QdyeXNtfSOMpNLsSzxGDlEKG54VPWWrX/O8jbw=;
+        b=O2O5MQHZ/zBUV4FzZVwqUp50ucmQykdPspsjZ89VAotp7Asne0Ty93/d8HbiZYmLiY
+         t3lH/xtShruuPmJsAnf8dq4vscG3oM+vgQeLSwxoBWqZdjimpEtpjJIy4eut4UPLrx/I
+         z5CO6e2PFqDJqFQJTY6VLmVGBq6nd+0ycGGQN5UY+fi+MWjnAFFo+wlHqM63JW3WV4DC
+         xrMxgzrZqEQ8T5AMkUyho5p+8marCtL1LdhH6e6OHBlFIGRMyHJnEm3vN4sZNivDKHc8
+         KYGaMTWKja++t4YF+QV8/36otVoQvCSk676XYE5C7GeHPH8JoEdSqHuqwEYgvlZUzpMB
+         HDCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=G999qRJ3ZYDAwyPJfqHMd90vcXhx8IHao6Ql7QiFPDQ=;
-        b=Z+JwjSVEHkK8+IBAadynyq8t4TVtjU9Wvu07s/N2k9KgBDT4aXoM2p4fymMbSTfnny
-         OUsZ4xtTeG/NB5YsSU3WUdJZCLNDGCAmxhYKrOtZ8CEaHRd73/8O0HoJyNpqpwKc7jCb
-         9RVshozykiz+pv0B8xQhuPPVzriTMStoVqMwXT1e9NQb3lI3m+VQ5XFpaynUXvxYDwjS
-         osbgLb7xS0j3c01xlDfaDewgUAbBHrx6A0VTEiMb+nubDdvvp9YYDGOtZzbYU69Ni8PF
-         smSOoWEUq/0F/MurJKb09wl8AsKyZiP8ICH3TSb4lOdxcoPXIECJ1m+QNI0FpldUZtG2
-         jCUg==
-X-Gm-Message-State: ACrzQf1xOlI/GcjAE0FOoCdmkXoGZdVZab7/ZKXZLiRVzOcUvOvshwtB
-	tE1ISihbBS9Ob0gRMYhZ2xpU+is4BzznayaT2Qw=
-X-Google-Smtp-Source: AMsMyM6UiGVnTD/J8ryFZQsJHTbdkIhpQZQxOdBwdC1toRqikXsXkHg47dV0ojfdIgLd8MUR/GxUavW0TPpgHSHF44M=
-X-Received: by 2002:aa7:cb87:0:b0:43b:e650:6036 with SMTP id
- r7-20020aa7cb87000000b0043be6506036mr18386887edt.350.1663645189918; Mon, 19
- Sep 2022 20:39:49 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220822082120.8347-1-yangyicong@huawei.com> <20220822082120.8347-5-yangyicong@huawei.com>
- <302febae-508c-d73e-8676-d51752946645@arm.com>
-In-Reply-To: <302febae-508c-d73e-8676-d51752946645@arm.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Tue, 20 Sep 2022 15:39:38 +1200
-Message-ID: <CAGsJ_4ywwFJFi+q3Ra5UE3twzS9eExtvuXgoGK-8u4c1ZdXCBw@mail.gmail.com>
-Subject: Re: [PATCH v3 4/4] arm64: support batched/deferred tlb shootdown
- during page reclamation
-To: Anshuman Khandual <anshuman.khandual@arm.com>
-Content-Type: text/plain; charset="UTF-8"
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date;
+        bh=Y5ta4QdyeXNtfSOMpNLsSzxGDlEKG54VPWWrX/O8jbw=;
+        b=IPjrozYaW3h6cx2eJIWsta6bwm4txOOYhQTsDsPoPz61u5X1HCy4trNBGp2MPrDwPM
+         aaNrOywvolmsXcBRfbbhYcKePLJAhAaz55ywt4oBmksjDaqQ2Lb74q94IjyTGspc5dP8
+         p8XqB6qv5+/Ij/45NsLNJqtzDLdq5jFfRxm4vPvbA3WbNP3bUElTPfwNzE4jwc2MGZIq
+         bwo7Jjn0c8k+szYBpXcf+NUe+vike782lhzzCd2y7AhNBH3t1XePKTkLBOcxJGrpgHjd
+         Em0CPiOiiicz2Pj0Oq3x5s1Goduc+luyn2OsxCXkM3v9OYhxUuRSbSo+EN0kCiP5zmLM
+         iQzQ==
+X-Gm-Message-State: ACrzQf3Uq9NnI7qEj+82ICLZg64mEPxncmB0RkRJr8a5zeOLtZNxxLTR
+	xxjzX/8cHyQVN0U8yGuSFu6LR8ubP+0=
+X-Google-Smtp-Source: AMsMyM75wIDBbFQwKCCvmH6yL8oH9JpVJA01Fx3q8PdYM75zrnTxIHaMmzxNTxEGXVZsFUHlZgTiSg==
+X-Received: by 2002:a63:4965:0:b0:439:7a97:383c with SMTP id y37-20020a634965000000b004397a97383cmr18242670pgk.462.1663645926352;
+        Mon, 19 Sep 2022 20:52:06 -0700 (PDT)
+Received: from localhost (118-208-203-28.tpgi.com.au. [118.208.203.28])
+        by smtp.gmail.com with ESMTPSA id 20-20020a631154000000b0041d6d37deb5sm220797pgr.81.2022.09.19.20.52.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 19 Sep 2022 20:52:05 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 20 Sep 2022 13:51:59 +1000
+Message-Id: <CN0X9CSRA9D7.ZZVYTCRQ0EWE@bobo>
+Subject: Re: [PACTH v2] powerpc/pseries/mce: Avoid instrumentation in
+ realmode
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Ganesh" <ganeshgr@linux.ibm.com>, <linuxppc-dev@lists.ozlabs.org>,
+ <mpe@ellerman.id.au>
+X-Mailer: aerc 0.11.0
+References: <20220905063811.16454-1-ganeshgr@linux.ibm.com>
+ <CMPVP7RZXP5G.2D3ZNQPWARIG8@bobo>
+ <895f4387-582a-6d60-a176-e2112f506e12@linux.ibm.com>
+In-Reply-To: <895f4387-582a-6d60-a176-e2112f506e12@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,29 +82,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: wangkefeng.wang@huawei.com, prime.zeng@hisilicon.com, linux-doc@vger.kernel.org, peterz@infradead.org, catalin.marinas@arm.com, yangyicong@hisilicon.com, linux-mm@kvack.org, Nadav Amit <namit@vmware.com>, guojian@oppo.com, linux-riscv@lists.infradead.org, will@kernel.org, linux-s390@vger.kernel.org, zhangshiming@oppo.com, lipeifeng@oppo.com, corbet@lwn.net, x86@kernel.org, Mel Gorman <mgorman@suse.de>, linux-mips@vger.kernel.org, arnd@arndb.de, realmz6@gmail.com, Barry Song <v-songbaohua@oppo.com>, openrisc@lists.librecores.org, darren@os.amperecomputing.com, linux-arm-kernel@lists.infradead.org, xhao@linux.alibaba.com, linux-kernel@vger.kernel.org, huzhanyuan@oppo.com, Yicong Yang <yangyicong@huawei.com>, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
+Cc: mahesh@linux.ibm.com, sachinp@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Sep 20, 2022 at 3:00 PM Anshuman Khandual
-<anshuman.khandual@arm.com> wrote:
+On Mon Sep 19, 2022 at 4:03 PM AEST, Ganesh wrote:
+> On 9/7/22 09:49, Nicholas Piggin wrote:
 >
+> > On Mon Sep 5, 2022 at 4:38 PM AEST, Ganesh Goudar wrote:
+> >> Part of machine check error handling is done in realmode,
+> >> As of now instrumentation is not possible for any code that
+> >> runs in realmode.
+> >> When MCE is injected on KASAN enabled kernel, crash is
+> >> observed, Hence force inline or mark no instrumentation
+> >> for functions which can run in realmode, to avoid KASAN
+> >> instrumentation.
+> >>
+> >> Signed-off-by: Ganesh Goudar<ganeshgr@linux.ibm.com>
+> >> ---
+> >> v2: Force inline few more functions.
+> >> ---
+> >>   arch/powerpc/include/asm/hw_irq.h    | 8 ++++----
+> >>   arch/powerpc/include/asm/interrupt.h | 2 +-
+> >>   arch/powerpc/include/asm/rtas.h      | 4 ++--
+> >>   arch/powerpc/kernel/rtas.c           | 4 ++--
+> >>   4 files changed, 9 insertions(+), 9 deletions(-)
+> >>
+> >> diff --git a/arch/powerpc/include/asm/hw_irq.h b/arch/powerpc/include/=
+asm/hw_irq.h
+> >> index 26ede09c521d..3264991fe524 100644
+> >> --- a/arch/powerpc/include/asm/hw_irq.h
+> >> +++ b/arch/powerpc/include/asm/hw_irq.h
+> >> @@ -111,7 +111,7 @@ static inline void __hard_RI_enable(void)
+> >>   #ifdef CONFIG_PPC64
+> >>   #include <asm/paca.h>
+> >>  =20
+> >> -static inline notrace unsigned long irq_soft_mask_return(void)
+> >> +static __always_inline notrace unsigned long irq_soft_mask_return(voi=
+d)
+> >>   {
+> >>   	return READ_ONCE(local_paca->irq_soft_mask);
+> >>   }
+> >> @@ -121,7 +121,7 @@ static inline notrace unsigned long irq_soft_mask_=
+return(void)
+> >>    * for the critical section and as a clobber because
+> >>    * we changed paca->irq_soft_mask
+> >>    */
+> >> -static inline notrace void irq_soft_mask_set(unsigned long mask)
+> >> +static __always_inline notrace void irq_soft_mask_set(unsigned long m=
+ask)
+> >>   {
+> >>   	/*
+> >>   	 * The irq mask must always include the STD bit if any are set.
+> > This doesn't give a reason why it's __always_inline, and having the
+> > notrace attribute makes it possibly confusing. I think it would be easy
+> > for someone to break without realising. Could you add a noinstr to thes=
+e
+> > instead / as well?
 >
-> On 8/22/22 13:51, Yicong Yang wrote:
-> > +static inline bool arch_tlbbatch_should_defer(struct mm_struct *mm)
-> > +{
-> > +     return true;
-> > +}
->
-> This needs to be conditional on systems, where there will be performance
-> improvements, and should not just be enabled all the time on all systems.
-> num_online_cpus() > X, which does not hold any cpu hotplug lock would be
-> a good metric ?
+> Yeah we can add noinstr. Missed to see your comment, Sorry for the delaye=
+d reply
 
-for a small system, i don't see how this patch will help, e.g. cpus <= 4;
-so we can actually disable tlb-batch on small systems.
-just need to check if we will have any race condition since hotplug will
-make the condition true and false dynamically.
+Okay that would be good. I would prefer to avoid changing the
+inline-ness of things in a fix patch if possible.
+>
+> >
+> > What about adding a 'realmode' function annotation that includes noinst=
+r?
+>
+> You mean to define a new function annotation?
 
-Thanks
-Barry
+Yes, a powerpc specific one that has the necessary adjustments. I
+think it would be helpful documentation for the code and possibly
+something we could use to do additional debug checking with at
+some point too.
+
+Thanks,
+Nick
