@@ -1,57 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 216A95BE465
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 13:28:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 328B45BE3C5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 12:51:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MWznk41JFz3dwJ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 21:28:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MWyyT3Lvgz304J
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 20:51:13 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=B5dAVjAu;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=lS3GgcAs;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=frederic@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::533; helo=mail-pg1-x533.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=B5dAVjAu;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=lS3GgcAs;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com [IPv6:2607:f8b0:4864:20::533])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MWync11p8z2yRV
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Sep 2022 20:43:31 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 0BBD662224;
-	Tue, 20 Sep 2022 10:43:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A744C433C1;
-	Tue, 20 Sep 2022 10:43:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1663670608;
-	bh=6GsQ3yhKLr/MxdSlXebBHOnZZwkqV+Km5n+FdtLELFs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=B5dAVjAuYVAf/ldcpMwVOIccr93eh+i/PPqe86bcTTpe9rquyYiwNXWsEYN6MEgtC
-	 4dkSGP8Y6MjqZepb+9gQ6s3zfFi8AQZlWHaT9YE94OBgT652ETiHQ4+oyg1H9cMKe0
-	 W4ejHxERjCdEHRyFhCMtozUTXVDZIa2H0g10CJTUgcjhZqBq48hlTCa71o1rmNMJUn
-	 UuRNJ769Ea2tTmdOKpPB1SWcTi7Afm+dzY4ofsUzOPWyR3eaWqkGsJ5+yZC/8xtTFB
-	 fdtVAvZE4UfiE+hEXckkBlXeuH+b1N2KqaqSOzsoRx2yLdTrKi9779585hh4U8ohjY
-	 b1TN7NMPsPyxQ==
-Date: Tue, 20 Sep 2022 12:43:25 +0200
-From: Frederic Weisbecker <frederic@kernel.org>
-To: Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH v2 03/44] cpuidle/poll: Ensure IRQ state is invariant
-Message-ID: <20220920104325.GA72346@lothringen>
-References: <20220919095939.761690562@infradead.org>
- <20220919101520.534233547@infradead.org>
- <20220919131927.GA58444@lothringen>
- <YymAXPkZkyFIEjXM@hirez.programming.kicks-ass.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YymAXPkZkyFIEjXM@hirez.programming.kicks-ass.net>
-X-Mailman-Approved-At: Tue, 20 Sep 2022 21:24:41 +1000
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MWyxr29cFz2yxc
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Sep 2022 20:50:38 +1000 (AEST)
+Received: by mail-pg1-x533.google.com with SMTP id t190so2155961pgd.9
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Sep 2022 03:50:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date;
+        bh=HUkaSAo1IOya4d3G9FGaOCxDJgEIAR+69OEJGr38Qv4=;
+        b=lS3GgcAsa8leQ5Eu/gRsAwvX6RGOCXTqjk+gdslL4wHU2H02QXBITBuR/2QPjeR/59
+         gT580JPk6dsFQLT4N3mkFH/fzNzKDok9oTa2frhwGm5yLmRWEp2k1x6wJHfOGdibxsrr
+         nX0eON7rUtxL1C90gwb3qic2OWV4MehjrSUKi9+1QVuYa3dJkgHbxhY332FsP5onQ7rt
+         2yNG6tgywdKhUYubPrCFIkyUxK7kKfx0y9VjX4X+rGJdm2n5lmhp8aXJ3GuS1Q+W2pZf
+         tsS4uSn4uu0JF8qMJ/1mqe6BZpxSwy+/P7zlmCJJE3CGREl4o3HLFvufKTsRydZsuVuG
+         7wbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date;
+        bh=HUkaSAo1IOya4d3G9FGaOCxDJgEIAR+69OEJGr38Qv4=;
+        b=NVeCIscjl9s/ZTheEz9z82vV8QEXPR2BI8kKWdJY5NticqCciihjaOsLSUvCUgPxui
+         kOjs+T3rudpdYuLusjbnLp0jLltoEVbnJ14ezjHZrNNNcvnhJtKRbVI9yX/NhuJ74sFs
+         AJNzTtCdxBGQl+wQgBPa1LjTLBRgN8lEhI7w7NRR5sr9jjtAxERsuilpXIhrICem9aT6
+         coYGntNe7bwhMPPNiZ/IazLeJ4IStVehMTIMOPtN+QPp/G5wX5kS2ml3Kk6x2LXusues
+         9TRJk5OEtQeij/K3l2SoH0JYZTtq1b3THe3Bqg9XIu9w+X7xPkeBXQaws1bZgQGKBeSB
+         7now==
+X-Gm-Message-State: ACrzQf2Z3n8Dj2gm9LJMNI+a7Nmmol+TzZ7vPQJlliuOp6625ko5gG9V
+	nXxLlXrl0NuWIcoLyrd1ipY=
+X-Google-Smtp-Source: AMsMyM6PSDM8zqBavSIxknz7nTi4i25IiINMsUGzoFoc9Qv3bV++N9hjffneKGZnizCU2te8KuzwvQ==
+X-Received: by 2002:a63:3381:0:b0:439:ef53:fedc with SMTP id z123-20020a633381000000b00439ef53fedcmr11725414pgz.140.1663671036041;
+        Tue, 20 Sep 2022 03:50:36 -0700 (PDT)
+Received: from localhost ([203.219.227.147])
+        by smtp.gmail.com with ESMTPSA id n2-20020a170902d2c200b0017839e5abfasm1105772plc.263.2022.09.20.03.50.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 20 Sep 2022 03:50:34 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 20 Sep 2022 20:50:28 +1000
+Message-Id: <CN165RJCKFUQ.1ZE3WP9S8Q5FF@bobo>
+To: "Michael Ellerman" <mpe@ellerman.id.au>, "kernel test robot"
+ <lkp@intel.com>, <linuxppc-dev@lists.ozlabs.org>, "Christophe Leroy"
+ <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v2 3/7] powerpc/build: move got, toc, plt, branch_lt
+ sections to read-only
+From: "Nicholas Piggin" <npiggin@gmail.com>
+X-Mailer: aerc 0.11.0
+References: <20220916040755.2398112-4-npiggin@gmail.com>
+ <202209180437.4U3soljK-lkp@intel.com> <87mtavly89.fsf@mpe.ellerman.id.au>
+In-Reply-To: <87mtavly89.fsf@mpe.ellerman.id.au>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,39 +82,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: juri.lelli@redhat.com, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, rafael@kernel.org, catalin.marinas@arm.com, linus.walleij@linaro.org, bsegall@google.com, guoren@kernel.org, pavel@ucw.cz, agordeev@linux.ibm.com, srivatsa@csail.mit.edu, linux-arch@vger.kernel.org, vincent.guittot@linaro.org, chenhuacai@kernel.org, linux-acpi@vger.kernel.org, agross@kernel.org, geert@linux-m68k.org, linux-imx@nxp.com, vgupta@kernel.org, mattst88@gmail.com, borntraeger@linux.ibm.com, mturquette@baylibre.com, sammy@sammy.net, pmladek@suse.com, linux-pm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, linux-um@lists.infradead.org, npiggin@gmail.com, tglx@linutronix.de, linux-omap@vger.kernel.org, dietmar.eggemann@arm.com, andreyknvl@gmail.com, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, senozhatsky@chromium.org, svens@linux.ibm.com, jolsa@kernel.org, tj@kernel.org, Andrew Morton <akpm@linux-foundation.org>, mark.rutland@arm.com, linux-ia64
- @vger.kernel.org, dave.hansen@linux.intel.com, virtualization@lists.linux-foundation.org, James.Bottomley@hansenpartnership.com, jcmvbkbc@gmail.com, thierry.reding@gmail.com, kernel@xen0n.name, cl@linux.com, linux-s390@vger.kernel.org, vschneid@redhat.com, john.ogness@linutronix.de, ysato@users.sourceforge.jp, linux-sh@vger.kernel.org, festevam@gmail.com, deller@gmx.de, daniel.lezcano@linaro.org, jonathanh@nvidia.com, dennis@kernel.org, lenb@kernel.org, linux-xtensa@linux-xtensa.org, kernel@pengutronix.de, gor@linux.ibm.com, linux-arm-msm@vger.kernel.org, linux-alpha@vger.kernel.org, linux-m68k@lists.linux-m68k.org, loongarch@lists.linux.dev, shorne@gmail.com, chris@zankel.net, sboyd@kernel.org, dinguyen@kernel.org, bristot@redhat.com, alexander.shishkin@linux.intel.com, fweisbec@gmail.com, lpieralisi@kernel.org, atishp@atishpatra.org, linux@rasmusvillemoes.dk, kasan-dev@googlegroups.com, will@kernel.org, boris.ostrovsky@oracle.com, khilman@kernel.org, linux-csky@vger.kernel.org, pv
- -drivers@vmware.com, linux-snps-arc@lists.infradead.org, mgorman@suse.de, jacob.jun.pan@linux.intel.com, Arnd Bergmann <arnd@arndb.de>, ulli.kroll@googlemail.com, linux-clk@vger.kernel.org, rostedt@goodmis.org, ink@jurassic.park.msu.ru, bcain@quicinc.com, tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, ryabinin.a.a@gmail.com, sudeep.holla@arm.com, shawnguo@kernel.org, davem@davemloft.net, dalias@libc.org, tony@atomide.com, amakhalov@vmware.com, konrad.dybcio@somainline.org, bjorn.andersson@linaro.org, glider@google.com, hpa@zytor.com, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org, vincenzo.frascino@arm.com, anton.ivanov@cambridgegreys.com, jonas@southpole.se, yury.norov@gmail.com, richard@nod.at, x86@kernel.org, linux@armlinux.org.uk, mingo@redhat.com, aou@eecs.berkeley.edu, hca@linux.ibm.com, richard.henderson@linaro.org, stefan.kristiansson@saunalahti.fi, openrisc@lists.librecores.org, acme@kernel.org, paul.walmsley@sifive.com,
-  linux-tegra@vger.kernel.org, namhyung@kernel.org, andriy.shevchenko@linux.intel.com, jpoimboe@kernel.org, dvyukov@google.com, jgross@suse.com, monstr@monstr.eu, linux-mips@vger.kernel.org, palmer@dabbelt.com, anup@brainfault.org, bp@alien8.de, johannes@sipsolutions.net, linuxppc-dev@lists.ozlabs.org
+Cc: llvm@lists.linux.dev, kbuild-all@lists.01.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Sep 20, 2022 at 10:57:00AM +0200, Peter Zijlstra wrote:
-> On Mon, Sep 19, 2022 at 03:19:27PM +0200, Frederic Weisbecker wrote:
-> > On Mon, Sep 19, 2022 at 11:59:42AM +0200, Peter Zijlstra wrote:
-> > > cpuidle_state::enter() methods should be IRQ invariant
-> > 
-> > Got a bit confused with the invariant thing since the first chunck I
-> > see in this patch is a conversion to an non-traceable local_irq_enable().
-> > 
-> > Maybe just add a short mention about that and why?
-> 
-> Changelog now reads:
-> 
-> ---
-> Subject: cpuidle/poll: Ensure IRQ state is invariant
-> From: Peter Zijlstra <peterz@infradead.org>
-> Date: Tue May 31 15:43:32 CEST 2022
-> 
-> cpuidle_state::enter() methods should be IRQ invariant.
-> 
-> Additionally make sure to use raw_local_irq_*() methods since this
-> cpuidle callback will be called with RCU already disabled.
-> 
-> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Mon Sep 19, 2022 at 3:39 PM AEST, Michael Ellerman wrote:
+> kernel test robot <lkp@intel.com> writes:
+> > Hi Nicholas,
+> >
+> > I love your patch! Yet something to improve:
+> >
+> > [auto build test ERROR on powerpc/next]
+> > [also build test ERROR on linus/master v6.0-rc5 next-20220916]
+> > [If your patch is applied to the wrong git tree, kindly drop us a note.
+> > And when submitting patch, we suggest to use '--base' as documented in
+> > https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> >
+> > url:    https://github.com/intel-lab-lkp/linux/commits/Nicholas-Piggin/=
+powerpc-build-linker-improvements/20220916-121310
+> > base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.g=
+it next
+> > config: powerpc-microwatt_defconfig (https://download.01.org/0day-ci/ar=
+chive/20220918/202209180437.4U3soljK-lkp@intel.com/config)
+> > compiler: clang version 16.0.0 (https://github.com/llvm/llvm-project 79=
+1a7ae1ba3efd6bca96338e10ffde557ba83920)
+> > reproduce (this is a W=3D1 build):
+> >         wget https://raw.githubusercontent.com/intel/lkp-tests/master/s=
+bin/make.cross -O ~/bin/make.cross
+> >         chmod +x ~/bin/make.cross
+> >         # install powerpc cross compiling tool for clang build
+> >         # apt-get install binutils-powerpc-linux-gnu
+> >         # https://github.com/intel-lab-lkp/linux/commit/6c034c08f8d0add=
+b6fecba38c9c428b1c4df7c29
+> >         git remote add linux-review https://github.com/intel-lab-lkp/li=
+nux
+> >         git fetch --no-tags linux-review Nicholas-Piggin/powerpc-build-=
+linker-improvements/20220916-121310
+> >         git checkout 6c034c08f8d0addb6fecba38c9c428b1c4df7c29
+> >         # save the config file
+> >         mkdir build_dir && cp config build_dir/.config
+> >         COMPILER_INSTALL_PATH=3D$HOME/0day COMPILER=3Dclang make.cross =
+W=3D1 O=3Dbuild_dir ARCH=3Dpowerpc SHELL=3D/bin/bash
+>                                                     ^^^^^
+>
+> > If you fix the issue, kindly add following tag where applicable
+> > Reported-by: kernel test robot <lkp@intel.com>
+> >
+> > All errors (new ones prefixed by >>):
+> >
+> >>> ld.lld: error: ./arch/powerpc/kernel/vmlinux.lds:46: { expected, but =
+got SPECIAL
+> >    >>>  .got : AT(ADDR(.got) - (0xc0000000 -0x00000000)) SPECIAL {
+> >    >>>                                                   ^
+>
+> I guess SPECIAL is a binutils ld ism?
+>
+> I can't find it documented anywhere.
+>
+> Presumably we can just not use it, given we never did before?
 
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Yeah that's what it is, oops I just took it from the linker script.
 
-Thanks!
+I think we can drop it, I think it selects either old or new plt
+sections that are created with --secure-plt, I guess depending on
+some link options and copmatibility concerns. Doesn't look like
+ppc32 uses --secure-plt.
+
+Thanks,
+Nick
 
