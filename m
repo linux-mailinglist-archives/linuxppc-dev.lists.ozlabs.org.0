@@ -2,73 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66EF25BD955
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 03:28:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE2A25BD963
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 03:31:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MWkT46v0Qz3c2h
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 11:28:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MWkXB2fJdz3c42
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Sep 2022 11:31:06 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ioVZ4cm2;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=dZqMGhQN;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52d; helo=mail-pg1-x52d.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::535; helo=mail-pg1-x535.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ioVZ4cm2;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=dZqMGhQN;
 	dkim-atps=neutral
-Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com [IPv6:2607:f8b0:4864:20::52d])
+Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com [IPv6:2607:f8b0:4864:20::535])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MWkSR4dS8z2xG4
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Sep 2022 11:27:51 +1000 (AEST)
-Received: by mail-pg1-x52d.google.com with SMTP id 3so1046175pga.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Sep 2022 18:27:51 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MWkWZ5QLtz2xJS
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Sep 2022 11:30:32 +1000 (AEST)
+Received: by mail-pg1-x535.google.com with SMTP id bh13so1043690pgb.4
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Sep 2022 18:30:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=in-reply-to:references:to:from:subject:message-id:date
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date;
-        bh=27QxZOVJL4AYtV2tP+ZCVq7m6lgfLTYwyTSGnPTiml4=;
-        b=ioVZ4cm2ddqrP85VOmeqkBHdzG7LyKHIXL3x65tLAD8/F+Fecei6UBJwJEtUdYNLS7
-         XSF1npsELza3ADMHxhJE9QU0gXF5z+jKXIJtklRyz4UWJAo3AjXpUl/OZzlz90Sua7r8
-         tMFKE+sjowCmbrtpRwl5Pywagi3MNxR9fOEIAvFFik9YCAztUuXqE416x10Yuh3tfeee
-         TF9LS55FYfQIboGZXvBFIOBhKYAe7Rdx5uw+oTw3UKpGeBZOMW/xbHEwsgPmb62gTkB3
-         qRVyAwgMa8I3Gou6ognuHeuVkutfGsAaTLGEStabRfYQLUjzfYyxr23G4RGLcwmXLTwd
-         h5LA==
+        bh=mRb3qVUCae9tpxft3cduTET9jhig4IHJ6IDwPQeSAvM=;
+        b=dZqMGhQNsol+UY4O+9xlzLDtpkG9DQYqA7g5X+Zzr3zSoImUst2hDShW8SIL9s0ona
+         qvSSjckWjkF4VsnbRX+yvSKQmsUmTzZAESlfSAZWfeGEy5GO5zr6br2I3ES7/V1nGlg+
+         hFaOaeenxQl0/nNrBSPYKoWNeOrFIM46wrmGAFE1VHQ9HPQflqWdeysnUdh0IpnHi5Tm
+         YpJOpQVdRCz3VVKWug49qUyCMP+hqRuzbNKDJ/LSZLgjExgaHXXxkANG3vFYNtuH/1ro
+         ygdFac2PWfHJT4m4hWkYrwWbQs7lvZET4+1CXp0tMiKilzdqwl6GwVA6FZLEhPRxeWDH
+         C2jw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:references:to:from:subject:message-id:date
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date;
-        bh=27QxZOVJL4AYtV2tP+ZCVq7m6lgfLTYwyTSGnPTiml4=;
-        b=4YEzR+zHXzIKNEX/iHL9yBNN6hTbcHEc2mFjQqmk423gERv3uEhxqFOm7b+dSZW/rz
-         J8e5xog95DrIYU7uEg6rFk8s19u8yVIx4mWQALZPwzAF24UMDEvhgttWGHqTReQOBwXT
-         YOQxOCupawaWtS37RdbbfdRFra3LMMnt/XqO8kLilw8cTWkc5+B72XS4kGEAYRKHOvU+
-         SKGdTVkbuz6Glg5e/Y3uQRMdmnAiUqQDCPu3FucbDaiDQRJEXL8YoCgjgsh+MAmxT1Fl
-         HCKDesGpPEqBzi7fJ9PqpO4LxwezNfF6g2u/Q4raAPmU4W+YYigakg+5e7GerLRly+hT
-         pLLg==
-X-Gm-Message-State: ACrzQf3XswhAhoL0IIrJYR1Rqavayd2xwVDZTQHi9hGemRf1tnRNPxA/
-	5LNCNGFN0XCLpMgiVJraWnwLQHYQ/pU=
-X-Google-Smtp-Source: AMsMyM5tqeHBkRcVDdecNK9ysSdLjIDTYMdl4o3cAXdJM29wxJRuiahCGQeBG7h3i8AdgaQoq4mYmg==
-X-Received: by 2002:a62:4c2:0:b0:52e:bd4d:50e1 with SMTP id 185-20020a6204c2000000b0052ebd4d50e1mr21595720pfe.8.1663637268344;
-        Mon, 19 Sep 2022 18:27:48 -0700 (PDT)
+        bh=mRb3qVUCae9tpxft3cduTET9jhig4IHJ6IDwPQeSAvM=;
+        b=mBTD5oNP7lsp2d6eEGpXVlEtVulepRAZ7/Q5XymV6UzXwITbnYpzgSlXijGEscvEEe
+         FWuQcKuKUKZBnI9CMD2Rz8ZXhRuIXTsCtcYEnPDO3q9UwjXQcTQ6t0tfhydQj8wVZ4QS
+         iNitKLTxY+ILwzXyJVp++QB10tJrLhOG/oaX8ZUTo2u8sjs9ICIVIGQoGtARPpl6Qbsn
+         HXJrdgVqr+zAag8jODVgZ91vT3nCqF3X+M/MfOEGSj8QZMiYt5RGGDWjkcsRhmdfxJ0g
+         aWnMFrwB2F6FC1ibKt07aUotmSccENh6WNGuDQEfKno6BvU6yT4NPQtmZ0aKqjBrQR8y
+         dBzg==
+X-Gm-Message-State: ACrzQf0BhVX9xDjuTT4aXCYVQZGiAU1MtGN6BAeJBy63c1dC4oJACdfT
+	02OGeoWfJZ0cNnxLxGABHO3vWCMIKbI=
+X-Google-Smtp-Source: AMsMyM6Ttr36l+kAeIn8nawv8s1bao73ZzJCx1CNEQm6c+9ubzd1fLbIjYx4hv+J3Ze6yqJhy7h0Ew==
+X-Received: by 2002:a63:4ca:0:b0:434:b550:2115 with SMTP id 193-20020a6304ca000000b00434b5502115mr17881617pge.203.1663637430758;
+        Mon, 19 Sep 2022 18:30:30 -0700 (PDT)
 Received: from localhost (118-208-203-28.tpgi.com.au. [118.208.203.28])
-        by smtp.gmail.com with ESMTPSA id d19-20020aa797b3000000b0052d98fbf8f3sm53974pfq.56.2022.09.19.18.27.46
+        by smtp.gmail.com with ESMTPSA id d15-20020a170903230f00b00172d0c7edf4sm48856plh.106.2022.09.19.18.30.27
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 Sep 2022 18:27:47 -0700 (PDT)
+        Mon, 19 Sep 2022 18:30:30 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 20 Sep 2022 11:27:43 +1000
-Message-Id: <CN0U6W1ZA0GA.1J34ZJPEE7J1D@bobo>
-Subject: Re: [PATCH 16/23] powerpc: Include all arch-specific syscall
- prototypes
+Date: Tue, 20 Sep 2022 11:30:25 +1000
+Message-Id: <CN0U8YDYVPMM.3UYCVY2V79L0@bobo>
+Subject: Re: [PATCH 17/23] powerpc: Enable compile-time check for syscall
+ handlers
 From: "Nicholas Piggin" <npiggin@gmail.com>
 To: "Rohan McLure" <rmclure@linux.ibm.com>, <linuxppc-dev@lists.ozlabs.org>
 X-Mailer: aerc 0.11.0
 References: <20220916053300.786330-1-rmclure@linux.ibm.com>
- <20220916053300.786330-17-rmclure@linux.ibm.com>
-In-Reply-To: <20220916053300.786330-17-rmclure@linux.ibm.com>
+ <20220916053300.786330-18-rmclure@linux.ibm.com>
+In-Reply-To: <20220916053300.786330-18-rmclure@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,209 +80,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Arnd Bergmann <arnd@arndb.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On Fri Sep 16, 2022 at 3:32 PM AEST, Rohan McLure wrote:
-> Forward declare all syscall handler prototypes where a generic prototype
-> is not provided in either linux/syscalls.h or linux/compat.h in
-> asm/syscalls.h. This is required for compile-time type-checking for
-> syscall handlers, which is implemented later in this series.
+> The table of syscall handlers and registered compatibility syscall
+> handlers has in past been produced using assembly, with function
+> references resolved at link time. This moves link-time errors to
+> compile-time, by rewriting systbl.S in C, and including the
+> linux/syscalls.h, linux/compat.h and asm/syscalls.h headers for
+> prototypes.
 >
-> 32-bit compatibility syscall handlers are expressed in terms of types in
-> ppc32.h. Expose this header globally.
->
+> Reported-by: Arnd Bergmann <arnd@arndb.de>
 > Signed-off-by: Rohan McLure <rmclure@linux.ibm.com>
+> Reported-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+> V1 -> V2: New patch.
+> V4 -> V5: For this patch only, represent handler function pointers as
+> unsigned long. Remove reference to syscall wrappers. Use asm/syscalls.h
+> which implies asm/syscall.h
 
-I didn't go through all the code moving carefully but I guess that
-would blow up with the compile time checking so it must be right :)
+Thanks, I think this is the right way to split the patches.
 
-Acked-by: Nicholas Piggin <npiggin@gmail.com>
+I'm not sure if I reported this issue, but I really like the patch.
+
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 
 > ---
-> V1 -> V2: Explicitly include prototypes.
-> V2 -> V3: Remove extraneous #include <asm/compat.h> and ppc_fallocate
-> prototype. Rename header.
-> V4 -> V5: Clean. Elaborate comment on long long munging. Remove
-> prototype hiding conditional on SYSCALL_WRAPPER.
-> ---
->  arch/powerpc/include/asm/syscalls.h          | 97 ++++++++++++++----
->  .../ppc32.h =3D> include/asm/syscalls_32.h}    |  0
->  arch/powerpc/kernel/signal_32.c              |  2 +-
->  arch/powerpc/perf/callchain_32.c             |  2 +-
->  4 files changed, 77 insertions(+), 24 deletions(-)
+>  arch/powerpc/kernel/{systbl.S =3D> systbl.c} | 28 ++++++++------------
+>  1 file changed, 11 insertions(+), 17 deletions(-)
 >
-> diff --git a/arch/powerpc/include/asm/syscalls.h b/arch/powerpc/include/a=
-sm/syscalls.h
-> index 525d2aa0c8ca..5d106acf7906 100644
-> --- a/arch/powerpc/include/asm/syscalls.h
-> +++ b/arch/powerpc/include/asm/syscalls.h
-> @@ -8,6 +8,14 @@
->  #include <linux/types.h>
->  #include <linux/compat.h>
+> diff --git a/arch/powerpc/kernel/systbl.S b/arch/powerpc/kernel/systbl.c
+> similarity index 61%
+> rename from arch/powerpc/kernel/systbl.S
+> rename to arch/powerpc/kernel/systbl.c
+> index 6c1db3b6de2d..ce52bd2ec292 100644
+> --- a/arch/powerpc/kernel/systbl.S
+> +++ b/arch/powerpc/kernel/systbl.c
+> @@ -10,32 +10,26 @@
+>   * PPC64 updates by Dave Engebretsen (engebret@us.ibm.com)=20
+>   */
 > =20
-> +#ifdef CONFIG_PPC64
-> +#include <asm/syscalls_32.h>
-> +#endif
+> -#include <asm/ppc_asm.h>
+> +#include <linux/syscalls.h>
+> +#include <linux/compat.h>
 > +#include <asm/unistd.h>
-> +#include <asm/ucontext.h>
-> +
-> +struct rtas_args;
-> +
->  /*
->   * long long munging:
->   * The 32 bit ABI passes long longs in an odd even register pair.
-> @@ -20,44 +28,89 @@
->  #define merge_64(high, low) ((u64)high << 32) | low
->  #endif
+> +#include <asm/syscalls.h>
 > =20
-> -struct rtas_args;
-> +long sys_ni_syscall(void);
-> +
-> +/*
-> + * PowerPC architecture-specific syscalls
-> + */
-> +
-> +long sys_rtas(struct rtas_args __user *uargs);
-> +
-> +#ifdef CONFIG_PPC64
-> +long sys_ppc64_personality(unsigned long personality);
-> +#ifdef CONFIG_COMPAT
-> +long compat_sys_ppc64_personality(unsigned long personality);
-> +#endif /* CONFIG_COMPAT */
-> +#endif /* CONFIG_PPC64 */
+> -.section .rodata,"a"
+> +#define __SYSCALL_WITH_COMPAT(nr, entry, compat) __SYSCALL(nr, entry)
+> +#define __SYSCALL(nr, entry) [nr] =3D (unsigned long) &entry,
 > =20
-> +long sys_swapcontext(struct ucontext __user *old_ctx,
-> +		     struct ucontext __user *new_ctx, long ctx_size);
->  long sys_mmap(unsigned long addr, size_t len,
->  	      unsigned long prot, unsigned long flags,
->  	      unsigned long fd, off_t offset);
->  long sys_mmap2(unsigned long addr, size_t len,
->  	       unsigned long prot, unsigned long flags,
->  	       unsigned long fd, unsigned long pgoff);
-> -long sys_ppc64_personality(unsigned long personality);
-> -long sys_rtas(struct rtas_args __user *uargs);
-> -long sys_ppc_fadvise64_64(int fd, int advice, u32 offset_high, u32 offse=
-t_low,
-> -			  u32 len_high, u32 len_low);
-> +long sys_switch_endian(void);
-> =20
-> -#ifdef CONFIG_COMPAT
-> -unsigned long compat_sys_mmap2(unsigned long addr, size_t len,
-> -			       unsigned long prot, unsigned long flags,
-> -			       unsigned long fd, unsigned long pgoff);
+> -#ifdef CONFIG_PPC64
+> -	.p2align	3
+> -#define __SYSCALL(nr, entry)	.8byte entry
+> -#else
+> -	.p2align	2
+> -#define __SYSCALL(nr, entry)	.long entry
+> -#endif
 > -
-> -compat_ssize_t compat_sys_pread64(unsigned int fd, char __user *ubuf, co=
-mpat_size_t count,
-> -				  u32 reg6, u32 pos1, u32 pos2);
-> +#ifdef CONFIG_PPC32
-> +long sys_sigreturn(void);
-> +long sys_debug_setcontext(struct ucontext __user *ctx, int ndbg,
-> +			  struct sig_dbg_op __user *dbg);
-> +#endif
-> =20
-> -compat_ssize_t compat_sys_pwrite64(unsigned int fd, const char __user *u=
-buf, compat_size_t count,
-> -				   u32 reg6, u32 pos1, u32 pos2);
-> +long sys_rt_sigreturn(void);
-> =20
-> -compat_ssize_t compat_sys_readahead(int fd, u32 r4, u32 offset1, u32 off=
-set2, u32 count);
-> +long sys_subpage_prot(unsigned long addr,
-> +		      unsigned long len, u32 __user *map);
-> =20
-> -int compat_sys_truncate64(const char __user *path, u32 reg4,
-> -			  unsigned long len1, unsigned long len2);
-> +#ifdef CONFIG_COMPAT
-> +long compat_sys_swapcontext(struct ucontext32 __user *old_ctx,
-> +			    struct ucontext32 __user *new_ctx,
-> +			    int ctx_size);
-> +long compat_sys_old_getrlimit(unsigned int resource,
-> +			      struct compat_rlimit __user *rlim);
-> +long compat_sys_sigreturn(void);
-> +long compat_sys_rt_sigreturn(void);
-> +#endif /* CONFIG_COMPAT */
-> =20
-> -int compat_sys_ftruncate64(unsigned int fd, u32 reg4, unsigned long len1=
-,
-> -			   unsigned long len2);
-> +/*
-> + * Architecture specific signatures required by long long munging:
-> + * The 32 bit ABI passes long longs in an odd even register pair.
-> + * The following signatures provide a machine long parameter for
-> + * each register that will be supplied. The implementation is
-> + * responsible for combining parameter pairs.
-> + */
-> =20
-> +#ifdef CONFIG_COMPAT
-> +long compat_sys_mmap2(unsigned long addr, size_t len,
-> +		      unsigned long prot, unsigned long flags,
-> +		      unsigned long fd, unsigned long pgoff);
-> +long compat_sys_ppc_pread64(unsigned int fd,
-> +			    char __user *ubuf, compat_size_t count,
-> +			    u32 reg6, u32 pos1, u32 pos2);
-> +long compat_sys_ppc_pwrite64(unsigned int fd,
-> +			     const char __user *ubuf, compat_size_t count,
-> +			     u32 reg6, u32 pos1, u32 pos2);
-> +long compat_sys_ppc_readahead(int fd, u32 r4,
-> +			      u32 offset1, u32 offset2, u32 count);
-> +long compat_sys_ppc_truncate64(const char __user *path, u32 reg4,
-> +			       unsigned long len1, unsigned long len2);
-> +long compat_sys_ppc_ftruncate64(unsigned int fd, u32 reg4,
-> +				unsigned long len1, unsigned long len2);
->  long compat_sys_ppc32_fadvise64(int fd, u32 unused, u32 offset1, u32 off=
-set2,
->  				size_t len, int advice);
-> +long compat_sys_ppc_sync_file_range2(int fd, unsigned int flags,
-> +				     unsigned int offset1,
-> +				     unsigned int offset2,
-> +				     unsigned int nbytes1,
-> +				     unsigned int nbytes2);
-> +#endif /* CONFIG_COMPAT */
-> =20
-> -long compat_sys_sync_file_range2(int fd, unsigned int flags,
-> -				 unsigned int offset1, unsigned int offset2,
-> -				 unsigned int nbytes1, unsigned int nbytes2);
-> +#if defined(CONFIG_PPC32) || defined(CONFIG_COMPAT)
-> +long sys_ppc_fadvise64_64(int fd, int advice,
-> +			  u32 offset_high, u32 offset_low,
-> +			  u32 len_high, u32 len_low);
->  #endif
-> =20
->  #endif /* __KERNEL__ */
-> diff --git a/arch/powerpc/kernel/ppc32.h b/arch/powerpc/include/asm/sysca=
-lls_32.h
-> similarity index 100%
-> rename from arch/powerpc/kernel/ppc32.h
-> rename to arch/powerpc/include/asm/syscalls_32.h
-> diff --git a/arch/powerpc/kernel/signal_32.c b/arch/powerpc/kernel/signal=
-_32.c
-> index 157a7403e3eb..c114c7f25645 100644
-> --- a/arch/powerpc/kernel/signal_32.c
-> +++ b/arch/powerpc/kernel/signal_32.c
-> @@ -43,7 +43,7 @@
->  #include <asm/tm.h>
->  #include <asm/asm-prototypes.h>
+> -#define __SYSCALL_WITH_COMPAT(nr, native, compat)	__SYSCALL(nr, native)
+> -.globl sys_call_table
+> -sys_call_table:
+> +const unsigned long sys_call_table[] =3D {
 >  #ifdef CONFIG_PPC64
-> -#include "ppc32.h"
-> +#include <asm/syscalls_32.h>
->  #include <asm/unistd.h>
+>  #include <asm/syscall_table_64.h>
 >  #else
->  #include <asm/ucontext.h>
-> diff --git a/arch/powerpc/perf/callchain_32.c b/arch/powerpc/perf/callcha=
-in_32.c
-> index b83c47b7947f..ea8cfe3806dc 100644
-> --- a/arch/powerpc/perf/callchain_32.c
-> +++ b/arch/powerpc/perf/callchain_32.c
-> @@ -19,7 +19,7 @@
->  #include "callchain.h"
+>  #include <asm/syscall_table_32.h>
+>  #endif
+> +};
 > =20
->  #ifdef CONFIG_PPC64
-> -#include "../kernel/ppc32.h"
-> +#include <asm/syscalls_32.h>
->  #else  /* CONFIG_PPC64 */
-> =20
->  #define __SIGNAL_FRAMESIZE32	__SIGNAL_FRAMESIZE
+>  #ifdef CONFIG_COMPAT
+>  #undef __SYSCALL_WITH_COMPAT
+>  #define __SYSCALL_WITH_COMPAT(nr, native, compat)	__SYSCALL(nr, compat)
+> -.globl compat_sys_call_table
+> -compat_sys_call_table:
+> -#define compat_sys_sigsuspend	sys_sigsuspend
+> +const unsigned long compat_sys_call_table[] =3D {
+>  #include <asm/syscall_table_32.h>
+> -#endif
+> +};
+> +#endif /* CONFIG_COMPAT */
 > --=20
 > 2.34.1
 
