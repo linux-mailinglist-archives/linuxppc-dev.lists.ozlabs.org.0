@@ -1,101 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED9295BF5EF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Sep 2022 07:34:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BA0A5BF668
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Sep 2022 08:31:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MXRts55ysz3bxY
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Sep 2022 15:34:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MXT8j0QzDz3cBq
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Sep 2022 16:31:49 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DLVpZJpE;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=b39rKPm3;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=rmclure@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=sachinp@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DLVpZJpE;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=b39rKPm3;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MXRt82tZpz3bcF
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Sep 2022 15:34:07 +1000 (AEST)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28L5Kk5L009465
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Sep 2022 05:34:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
- mime-version : subject : from : in-reply-to : date : cc :
- content-transfer-encoding : message-id : references : to; s=pp1;
- bh=597D5+gE+dagLCvCBVzH5BFtAv6fSz7SI2+0/364SrU=;
- b=DLVpZJpEv2wLnq3m0sdo9x/DJy77gXecLVGYwjaYwHwgb+EAxSY4qyooH2+ucvzGE81x
- GZRkj9rJ1h9k6IqSoDjdEOt2HXrzJfGEL8JlQCxyh62d92sGrhdj1pJSt6Gc0c0+TOPO
- /hKQRWSXeUda3F/ZF+UdcOJTGw5AkO51QlT8v9jo4SBwy5RXdyKPSo0GZ4uctyjfGojK
- OBGUUFZ08PBXa8zrqVD09P7P48OmCaWHGMpUjwsIdqLqIADAZrlWdcLHl8PT5MnrR/zI
- CGS/lo9y1H+HJJF1U6jf1jJVt2lQoWo4TYlg9OrqwgWSWirrND4HamDvMdyTveXOCW71 BQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jqvctgcjb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Sep 2022 05:34:04 +0000
-Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 28L5MHEl022464
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Sep 2022 05:34:04 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MXT7z1Pc9z30LJ
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Sep 2022 16:31:10 +1000 (AEST)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28L6EIFw022002;
+	Wed, 21 Sep 2022 06:31:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : content-type :
+ subject : message-id : date : cc : to : content-transfer-encoding :
+ mime-version; s=pp1; bh=vjk4eIKbdqnaddTSBrwhu12wc7vTtk5Lr5Xt0GcaCq4=;
+ b=b39rKPm3+hdbLJJ9JIpIctTGtop7X4q89BLV6xWqGvtWAfAQHybnaMynVNggroBAm0t/
+ DapLHg0t2RnGLZg0LKK/aOeCgZz2dgMEQ4qccr/2urORoVJzKRMkX35noSAepT33o9ea
+ 8BhPKaxg+uyhEdJohuQsgrLIrUDoEKu1Lrx+via9lmnV6BAPNjOBmWNzuq2GtXJs0+kA
+ 9TJgNSgclWCU6RQkAm8MvkAsjZDTqh7LGE/gKW6XvTHYKrpep1+70LRlt0Ub+UTsOf/C
+ Ny0U8Q2YJ3eMZtpzdRIheJPd+P/m8f78IsUoe3zhqRRQS9kWp3b8ksD8gm38LreFnncn YQ== 
 Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jqvctgcgq-1
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3jqw5m8dyc-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 21 Sep 2022 05:34:04 +0000
+	Wed, 21 Sep 2022 06:31:04 +0000
 Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
-	by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 28L5L3og010097;
-	Wed, 21 Sep 2022 05:34:01 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
-	by ppma01fra.de.ibm.com with ESMTP id 3jn5v8kh1x-1
+	by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 28L6L7EW023313;
+	Wed, 21 Sep 2022 06:31:02 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+	by ppma01fra.de.ibm.com with ESMTP id 3jn5v8kjhj-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 21 Sep 2022 05:34:01 +0000
+	Wed, 21 Sep 2022 06:31:02 +0000
 Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
-	by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 28L5XxP834079156
+	by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 28L6Qxa842205694
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 21 Sep 2022 05:33:59 GMT
+	Wed, 21 Sep 2022 06:26:59 GMT
 Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EDF5FAE053;
-	Wed, 21 Sep 2022 05:33:58 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id DF40CAE04D;
+	Wed, 21 Sep 2022 06:30:59 +0000 (GMT)
 Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4F8E8AE045;
-	Wed, 21 Sep 2022 05:33:58 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by IMSVA (Postfix) with ESMTP id 1C059AE045;
+	Wed, 21 Sep 2022 06:30:59 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.109.241.54])
 	by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Wed, 21 Sep 2022 05:33:58 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.177.29.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 6B37460060;
-	Wed, 21 Sep 2022 15:33:51 +1000 (AEST)
+	Wed, 21 Sep 2022 06:30:58 +0000 (GMT)
+From: Sachin Sant <sachinp@linux.ibm.com>
 Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.1\))
-Subject: Re: [PATCH 20/23] powerpc/64s: Clear/restore caller gprs in syscall
- interrupt/return
-From: Rohan McLure <rmclure@linux.ibm.com>
-In-Reply-To: <2F4E472D-A70E-470A-A9A0-2AC24FDCE9CE@linux.ibm.com>
-Date: Wed, 21 Sep 2022 15:33:46 +1000
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <CAD81242-B031-42CF-BB6B-F31FB1196A85@linux.ibm.com>
-References: <20220916053300.786330-1-rmclure@linux.ibm.com>
- <20220916053300.786330-21-rmclure@linux.ibm.com>
- <CN0UYA40KPVY.V7SYHTJAP9KO@bobo>
- <2F4E472D-A70E-470A-A9A0-2AC24FDCE9CE@linux.ibm.com>
-To: Nicholas Piggin <npiggin@gmail.com>
+	charset=us-ascii
+Subject: [powerpc] Kernel crash with THP tests (next-20220920)
+Message-Id: <C2C8DA4F-F00F-43E9-ACD8-2A8BACA55893@linux.ibm.com>
+Date: Wed, 21 Sep 2022 12:00:57 +0530
+To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-mm@kvack.org
 X-Mailer: Apple Mail (2.3696.120.41.1.1)
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: ZIa5al5Y_dKX4pvOK_-7Xsw71iYgYGF2
-X-Proofpoint-ORIG-GUID: Xl80O3f2Dc3evATmHtSHUKssOVLkvlHV
+X-Proofpoint-ORIG-GUID: FmHBtZGju_2Wpn0e6Rqc0-P0DWZ-YXBe
+X-Proofpoint-GUID: FmHBtZGju_2Wpn0e6Rqc0-P0DWZ-YXBe
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
  definitions=2022-09-21_02,2022-09-20_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 phishscore=0
- mlxscore=0 adultscore=0 priorityscore=1501 malwarescore=0 suspectscore=0
- mlxlogscore=963 impostorscore=0 spamscore=0 bulkscore=0 lowpriorityscore=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=665 phishscore=0
+ priorityscore=1501 adultscore=0 malwarescore=0 spamscore=0 bulkscore=0
+ suspectscore=0 clxscore=1011 lowpriorityscore=0 impostorscore=0 mlxscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2209130000
- definitions=main-2209210035
+ definitions=main-2209210040
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,136 +89,104 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: open list <linux-kernel@vger.kernel.org>, mike.kravetz@oracle.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+While running transparent huge page tests [1] against 6.0.0-rc6-next-202209=
+20
+following crash is seen on IBM Power server.
 
+Kernel attempted to read user page (34) - exploit attempt? (uid: 0)
+BUG: Kernel NULL pointer dereference on read at 0x00000034
+Faulting instruction address: 0xc0000000004d2744
+Oops: Kernel access of bad area, sig: 11 [#1]
+LE PAGE_SIZE=3D64K MMU=3DRadix SMP NR_CPUS=3D2048 NUMA pSeries
+Modules linked in: dm_mod(E) bonding(E) rfkill(E) tls(E) sunrpc(E) nd_pmem(=
+E) nd_btt(E) dax_pmem(E) papr_scm(E) libnvdimm(E) pseries_rng(E) vmx_crypto=
+(E) ext4(E) mbcache(E) jbd2(E) sd_mod(E) t10_pi(E) crc64_rocksoft(E) crc64(=
+E) sg(E) ibmvscsi(E) scsi_transport_srp(E) ibmveth(E) fuse(E)
+CPU: 37 PID: 2219255 Comm: sysctl Tainted: G            E      6.0.0-rc6-ne=
+xt-20220920 #1
+NIP:  c0000000004d2744 LR: c0000000004d2734 CTR: 0000000000000000
+REGS: c0000012801bf660 TRAP: 0300   Tainted: G            E       (6.0.0-rc=
+6-next-20220920)
+MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE>  CR: 24048222  XER: 20040000
+CFAR: c0000000004b0eac DAR: 0000000000000034 DSISR: 40000000 IRQMASK: 0=20
+GPR00: c0000000004d2734 c0000012801bf900 c000000002a92300 0000000000000000=
+=20
+GPR04: c000000002ac8ac0 c000000001209340 0000000000000005 c000001286714b80=
+=20
+GPR08: 0000000000000034 0000000000000000 0000000000000000 0000000000000000=
+=20
+GPR12: 0000000028048242 c00000167fff6b00 0000000000000000 0000000000000000=
+=20
+GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000=
+=20
+GPR20: c0000012801bfae8 0000000000000001 0000000000000100 0000000000000001=
+=20
+GPR24: c0000012801bfae8 c000000002ac8ac0 0000000000000002 0000000000000005=
+=20
+GPR28: 0000000000000000 0000000000000001 0000000000000000 0000000000346cca=
+=20
+NIP [c0000000004d2744] alloc_buddy_huge_page+0xd4/0x240
+LR [c0000000004d2734] alloc_buddy_huge_page+0xc4/0x240
+Call Trace:
+[c0000012801bf900] [c0000000004d2734] alloc_buddy_huge_page+0xc4/0x240 (unr=
+eliable)
+[c0000012801bf9b0] [c0000000004d46a4] alloc_fresh_huge_page.part.72+0x214/0=
+x2a0
+[c0000012801bfa40] [c0000000004d7f88] alloc_pool_huge_page+0x118/0x190
+[c0000012801bfa90] [c0000000004d84dc] __nr_hugepages_store_common+0x4dc/0x6=
+10
+[c0000012801bfb70] [c0000000004d88bc] hugetlb_sysctl_handler_common+0x13c/0=
+x180
+[c0000012801bfc10] [c0000000006380e0] proc_sys_call_handler+0x210/0x350
+[c0000012801bfc90] [c000000000551c00] vfs_write+0x2e0/0x460
+[c0000012801bfd50] [c000000000551f5c] ksys_write+0x7c/0x140
+[c0000012801bfda0] [c000000000033f58] system_call_exception+0x188/0x3f0
+[c0000012801bfe10] [c00000000000c53c] system_call_common+0xec/0x270
+--- interrupt: c00 at 0x7fffa9520c34
+NIP:  00007fffa9520c34 LR: 00000001024754bc CTR: 0000000000000000
+REGS: c0000012801bfe80 TRAP: 0c00   Tainted: G            E       (6.0.0-rc=
+6-next-20220920)
+MSR:  800000000280f033 <SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 28002202  =
+XER: 00000000
+IRQMASK: 0=20
+GPR00: 0000000000000004 00007fffccd76cd0 00007fffa9607300 0000000000000003=
+=20
+GPR04: 0000000138da6970 0000000000000006 fffffffffffffff6 0000000000000000=
+=20
+GPR08: 0000000138da6970 0000000000000000 0000000000000000 0000000000000000=
+=20
+GPR12: 0000000000000000 00007fffa9a40940 0000000000000000 0000000000000000=
+=20
+GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000=
+=20
+GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000=
+=20
+GPR24: 0000000000000001 0000000000000010 0000000000000006 0000000138da8aa0=
+=20
+GPR28: 00007fffa95fc2c8 0000000138da8aa0 0000000000000006 0000000138da6930=
+=20
+NIP [00007fffa9520c34] 0x7fffa9520c34
+LR [00000001024754bc] 0x1024754bc
+--- interrupt: c00
+Instruction dump:
+3b400002 3ba00001 3b800000 7f26cb78 7fc5f378 7f64db78 7fe3fb78 4bfde5b9=20
+60000000 7c691b78 39030034 7c0004ac <7d404028> 7c0ae800 40c20010 7f80412d=20
+---[ end trace 0000000000000000 ]---
 
-> On 20 Sep 2022, at 2:54 pm, Rohan McLure <rmclure@linux.ibm.com> =
-wrote:=20
->=20
->> On 20 Sep 2022, at 12:03 pm, Nicholas Piggin <npiggin@gmail.com> =
-wrote:
->>=20
->> On Fri Sep 16, 2022 at 3:32 PM AEST, Rohan McLure wrote:
->>> Clear user state in gprs (assign to zero) to reduce the influence of =
-user
->>> registers on speculation within kernel syscall handlers. Clears =
-occur
->>> at the very beginning of the sc and scv 0 interrupt handlers, with
->>> restores occurring following the execution of the syscall handler.
->>>=20
->>> Signed-off-by: Rohan McLure <rmclure@linux.ibm.com>
->>> ---
->>> V1 -> V2: Update summary
->>> V2 -> V3: Remove erroneous summary paragraph on syscall_exit_prepare
->>> V3 -> V4: Use ZEROIZE instead of NULLIFY. Clear r0 also.
->>> V4 -> V5: Move to end of patch series.
->>> ---
->>=20
->> I think it looks okay. I'll have to take a better look with the =
-series
->> applied.
->=20
->=20
-> Your comments alerted me to the fact that general interrupt and =
-syscalls
-> share their exit code in interrupt_return and its derivatives. Meaning
-> that disabling INTERRUPT_SANITIZE_REGISTERS also reverts restores of =
-NVGPRS
-> to being optional, which makes it possible to clobber NVGPRS and then =
-not
-> restore them. The cleanest way forward I belive is going to be to =
-cause
-> INTERRUPT_SANITIZE_REGISTERS to perform sanitisation on all interrupt =
-sources
-> rather than continuing with syscalls as their own special case. I=E2=80=99=
-ll put
-> this out in a v6 soon.
+Kernel panic - not syncing: Fatal exception
 
-I think I managed to confuse myself here. Syscall handlers directly =
-RFID, while
-other interrupt sources share a common exit path.
+Bisect points to following patch:
+commit f2f3c25dea3acfb17aecb7273541e7266dfc8842
+    hugetlb: freeze allocated pages before creating hugetlb pages
 
->>=20
->>> arch/powerpc/kernel/interrupt_64.S | 9 ++++++---
->>> 1 file changed, 6 insertions(+), 3 deletions(-)
->>>=20
->>> diff --git a/arch/powerpc/kernel/interrupt_64.S =
-b/arch/powerpc/kernel/interrupt_64.S
->>> index 16a1b44088e7..40147558e1a6 100644
->>> --- a/arch/powerpc/kernel/interrupt_64.S
->>> +++ b/arch/powerpc/kernel/interrupt_64.S
->>> @@ -70,7 +70,7 @@ _ASM_NOKPROBE_SYMBOL(system_call_vectored_\name)
->>> 	ld	r2,PACATOC(r13)
->>> 	mfcr	r12
->>> 	li	r11,0
->>> -	/* Can we avoid saving r3-r8 in common case? */
->>> +	/* Save syscall parameters in r3-r8 */
->>=20
->> These two comment changes could go in your system_call_exception API
->> change patch though.
->>=20
->> Thanks,
->> Nick
->>=20
->>> 	SAVE_GPRS(3, 8, r1)
->>> 	/* Zero r9-r12, this should only be required when restoring all =
-GPRs */
->>> 	std	r11,GPR9(r1)
->>> @@ -110,6 +110,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
->>> 	 * Zero user registers to prevent influencing speculative =
-execution
->>> 	 * state of kernel code.
->>> 	 */
->>> +	ZEROIZE_GPR(0)
->>> 	ZEROIZE_GPRS(5, 12)
->>> 	ZEROIZE_NVGPRS()
->>> 	bl	system_call_exception
->>> @@ -140,6 +141,7 @@ BEGIN_FTR_SECTION
->>> 	HMT_MEDIUM_LOW
->>> END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
->>>=20
->>> +	REST_NVGPRS(r1)
->>> 	cmpdi	r3,0
->>> 	bne	.Lsyscall_vectored_\name\()_restore_regs
->>>=20
->>> @@ -243,7 +245,7 @@ END_BTB_FLUSH_SECTION
->>> 	ld	r2,PACATOC(r13)
->>> 	mfcr	r12
->>> 	li	r11,0
->>> -	/* Can we avoid saving r3-r8 in common case? */
->>> +	/* Save syscall parameters in r3-r8 */
->>> 	SAVE_GPRS(3, 8, r1)
->>> 	/* Zero r9-r12, this should only be required when restoring all =
-GPRs */
->>> 	std	r11,GPR9(r1)
->>> @@ -295,6 +297,7 @@ END_BTB_FLUSH_SECTION
->>> 	 * Zero user registers to prevent influencing speculative =
-execution
->>> 	 * state of kernel code.
->>> 	 */
->>> +	ZEROIZE_GPR(0)
->>> 	ZEROIZE_GPRS(5, 12)
->>> 	ZEROIZE_NVGPRS()
->>> 	bl	system_call_exception
->>> @@ -337,6 +340,7 @@ BEGIN_FTR_SECTION
->>> 	stdcx.	r0,0,r1			/* to clear the reservation */
->>> END_FTR_SECTION_IFCLR(CPU_FTR_STCX_CHECKS_ADDRESS)
->>>=20
->>> +	REST_NVGPRS(r1)
->>> 	cmpdi	r3,0
->>> 	bne	.Lsyscall_restore_regs
->>> 	/* Zero volatile regs that may contain sensitive kernel data */
->>> @@ -364,7 +368,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
->>> .Lsyscall_restore_regs:
->>> 	ld	r3,_CTR(r1)
->>> 	ld	r4,_XER(r1)
->>> -	REST_NVGPRS(r1)
->>> 	mtctr	r3
->>> 	mtspr	SPRN_XER,r4
->>> 	REST_GPR(0, r1)
->>> --=20
->>> 2.34.1
+Reverting the patch allows the test to run successfully.
 
+Thanks
+- Sachin
+
+[1] https://github.com/avocado-framework-tests/avocado-misc-tests/blob/mast=
+er/memory/transparent_hugepages_defrag.py=
