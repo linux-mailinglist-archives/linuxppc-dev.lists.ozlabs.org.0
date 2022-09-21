@@ -2,65 +2,93 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C07825BF9E5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Sep 2022 10:55:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 113075BFA4B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Sep 2022 11:11:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MXXLP2jHWz3c6r
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Sep 2022 18:55:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MXXjL4qwQz3cB8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Sep 2022 19:11:50 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=nvXLTwTu;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=WHA3eQ7e;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::629; helo=mail-ej1-x629.google.com; envelope-from=21cnbao@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sv@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=nvXLTwTu;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=WHA3eQ7e;
 	dkim-atps=neutral
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MXXKp2nblz2xJN
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Sep 2022 18:54:53 +1000 (AEST)
-Received: by mail-ej1-x629.google.com with SMTP id sd10so3656796ejc.2
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Sep 2022 01:54:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=sc4HrH+dawwbyFY4jxaPYFax97q7PbwtRdCVIa2eWag=;
-        b=nvXLTwTum0Zu+Nzwkb/Va5KR7MpZoNKJUWh0AvWe8HdVcr1Grhklhdo1BZW8sba5fw
-         BGnTPKQw9TWdIn1AwbWmhqYPWj/FVYt+uu55rzvSXj7gyQEl6nisi0K/8PiKq+G1vate
-         OwUz5f2/PwR248iBS39pCnt+cZvqAUi3xnXwI/CPS+xFuJqBAs2z3QcTEXopA/PS8206
-         LsKWiJynHncuR2MFh2DVSwmUKzCR6RXBe0hFSksOj2krERKhpYbj6OOLJgFNJt7NSBQ6
-         hVqA13u7w8pzq63oY/Yhzl8fszOLZBKNoD8poD5JuUBZFek7tviVQ4tIq4kb5M10FNKT
-         s1WA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=sc4HrH+dawwbyFY4jxaPYFax97q7PbwtRdCVIa2eWag=;
-        b=NJi9rZXGil8S3SC6oC9YNfv1O7DPWC+RwmCo2sb8WqH6l8HDJ1+bTN+iCWv+rgYdvp
-         Qv2lgoZzgOZ9Nwralr8v91Hqx/jjBuZTKPI8H51rEVzKmwuyogCnFId+Co18Wnb7pi0O
-         Z8mznn2l9tP68Q7kQ7axINU5wggGJZoZsfoAJfu+DbaRhmED/3LvKy2aJu6rSvPLtiba
-         7/dXFqfLO9n+2wjQO8+NW5oYQqMn2CocroRnPeOGveHPPZzgY+q9o+I/+k+k29t5HgZU
-         +mGgbBqw47SRAJdpFr3pJzw0xGoOfNImkDz61Dq/Gkpk3EZRQgREiVKj7GbstsBgSam3
-         jTgg==
-X-Gm-Message-State: ACrzQf2bmM4UUMHay65knO6sOLXGQSw9KWrT0tYvGFMn+gFhKTDuyvuU
-	26b1eck6wb1MQEmdYRf7QVaDc5lSUJLcHxmMWsI=
-X-Google-Smtp-Source: AMsMyM5mpmqn+gfhEkasy6u301zqGqQeURhHcxEGpcBIv8VPgxV44BVkZMurDLR6PBxFMgmK/214xxyLA2GRvdonQRQ=
-X-Received: by 2002:a17:907:c13:b0:781:d3c2:5015 with SMTP id
- ga19-20020a1709070c1300b00781d3c25015mr4799862ejc.457.1663750486484; Wed, 21
- Sep 2022 01:54:46 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MXXhd0j91z2yJV
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Sep 2022 19:11:12 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28L93DWO024358;
+	Wed, 21 Sep 2022 09:10:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=37A0x5inEl9Rw9dZSKllyUWg7VbfWPMt2RxrL/mkaUg=;
+ b=WHA3eQ7eTWURuOEW7UcIh8gue9h5u3W4oC7Qy6KJ2bsbS+rYjdvXlJVuH2enLdvtEOOV
+ UQBt77BXtOPmquyPNUyrf0j+zJ21ktyS6Ou0bV5Dy092rsxHcYybmMcaYktLj/vSe/TO
+ GpgD9LVVnAl8dgawPW1IJJufM5ralFXx6y+eVZR8tlaRGyWZkrMt6LRbcIoWOiGcXrU1
+ rCa13BzO9Bm9kxQSWAH/H/vT/6LcbHEgMyJcYgSf1MsYFkpYJdaQrDj1/IZI/CObXKHA
+ p0TGHpWV7VoQdOQWiqUcLqDzO7yOFW489lOIRgQ6ppeQAkGGT0UPeCRUSTbMalS2tjAt pQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jqymwg649-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 21 Sep 2022 09:10:53 +0000
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 28L95EtO031086;
+	Wed, 21 Sep 2022 09:10:52 GMT
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jqymwg63p-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 21 Sep 2022 09:10:52 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+	by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 28L976uL009170;
+	Wed, 21 Sep 2022 09:10:50 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+	by ppma06ams.nl.ibm.com with ESMTP id 3jn5gj507w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 21 Sep 2022 09:10:50 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
+	by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 28L9Am6p50004284
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 21 Sep 2022 09:10:48 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 40F905204F;
+	Wed, 21 Sep 2022 09:10:48 +0000 (GMT)
+Received: from [9.109.198.186] (unknown [9.109.198.186])
+	by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id D23335204E;
+	Wed, 21 Sep 2022 09:10:45 +0000 (GMT)
+Message-ID: <d2a198a0-1962-093c-da7b-312cf7db1ee0@linux.vnet.ibm.com>
+Date: Wed, 21 Sep 2022 14:40:44 +0530
 MIME-Version: 1.0
-References: <20220921084302.43631-1-yangyicong@huawei.com> <20220921084302.43631-2-yangyicong@huawei.com>
-In-Reply-To: <20220921084302.43631-2-yangyicong@huawei.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Wed, 21 Sep 2022 20:54:35 +1200
-Message-ID: <CAGsJ_4ydO=CegfrAF=jYmhOffXd7zKaFp_YxhdMgnoNGA8mBQQ@mail.gmail.com>
-Subject: Re: [PATCH v4 1/2] mm/tlbbatch: Introduce arch_tlbbatch_should_defer()
-To: Yicong Yang <yangyicong@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Subject: Re: [PATCH v3 00/16] objtool: Enable and implement --mcount option on
+ powerpc
+Content-Language: en-US
+To: Josh Poimboeuf <jpoimboe@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>
+References: <20220912082020.226755-1-sv@linux.ibm.com>
+ <YyCQIMHXP9DdvCzo@hirez.programming.kicks-ass.net>
+ <20220914001552.6nerqcbrqy7burda@treble>
+From: Sathvika Vasireddy <sv@linux.vnet.ibm.com>
+In-Reply-To: <20220914001552.6nerqcbrqy7burda@treble>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: ovNe1RC2yZlsjawaBLx26CPMMw9K4yYm
+X-Proofpoint-ORIG-GUID: ZENcveH6O_41B_50-uUB79Fbw7Za7HaN
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
+ definitions=2022-09-21_04,2022-09-20_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ lowpriorityscore=0 bulkscore=0 clxscore=1011 mlxlogscore=845
+ suspectscore=0 adultscore=0 spamscore=0 mlxscore=0 phishscore=0
+ priorityscore=1501 impostorscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2209130000 definitions=main-2209210061
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,81 +100,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: wangkefeng.wang@huawei.com, prime.zeng@hisilicon.com, anshuman.khandual@arm.com, linux-doc@vger.kernel.org, peterz@infradead.org, catalin.marinas@arm.com, yangyicong@hisilicon.com, linux-mm@kvack.org, guojian@oppo.com, linux-riscv@lists.infradead.org, will@kernel.org, Anshuman Khandual <khandual@linux.vnet.ibm.com>, linux-s390@vger.kernel.org, zhangshiming@oppo.com, lipeifeng@oppo.com, corbet@lwn.net, x86@kernel.org, linux-mips@vger.kernel.org, arnd@arndb.de, realmz6@gmail.com, openrisc@lists.librecores.org, darren@os.amperecomputing.com, linux-arm-kernel@lists.infradead.org, xhao@linux.alibaba.com, linux-kernel@vger.kernel.org, huzhanyuan@oppo.com, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
+Cc: aik@ozlabs.ru, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, npiggin@gmail.com, mingo@redhat.com, Sathvika Vasireddy <sv@linux.ibm.com>, rostedt@goodmis.org, jpoimboe@redhat.com, naveen.n.rao@linux.vnet.ibm.com, mbenes@suse.cz, chenzhongjin@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Sep 21, 2022 at 8:45 PM Yicong Yang <yangyicong@huawei.com> wrote:
->
-> From: Anshuman Khandual <khandual@linux.vnet.ibm.com>
->
-> The entire scheme of deferred TLB flush in reclaim path rests on the
-> fact that the cost to refill TLB entries is less than flushing out
-> individual entries by sending IPI to remote CPUs. But architecture
-> can have different ways to evaluate that. Hence apart from checking
-> TTU_BATCH_FLUSH in the TTU flags, rest of the decision should be
-> architecture specific.
->
-> Signed-off-by: Anshuman Khandual <khandual@linux.vnet.ibm.com>
-> [https://lore.kernel.org/linuxppc-dev/20171101101735.2318-2-khandual@linux.vnet.ibm.com/]
-> Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
-> [Rebase and fix incorrect return value type]
-> Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-> Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> ---
+Hi Josh,
 
-Reviewed-by: Barry Song <baohua@kernel.org>
+On 14/09/22 05:45, Josh Poimboeuf wrote:
 
->  arch/x86/include/asm/tlbflush.h | 12 ++++++++++++
->  mm/rmap.c                       |  9 +--------
->  2 files changed, 13 insertions(+), 8 deletions(-)
->
-> diff --git a/arch/x86/include/asm/tlbflush.h b/arch/x86/include/asm/tlbflush.h
-> index cda3118f3b27..8a497d902c16 100644
-> --- a/arch/x86/include/asm/tlbflush.h
-> +++ b/arch/x86/include/asm/tlbflush.h
-> @@ -240,6 +240,18 @@ static inline void flush_tlb_page(struct vm_area_struct *vma, unsigned long a)
->         flush_tlb_mm_range(vma->vm_mm, a, a + PAGE_SIZE, PAGE_SHIFT, false);
->  }
->
-> +static inline bool arch_tlbbatch_should_defer(struct mm_struct *mm)
-> +{
-> +       bool should_defer = false;
-> +
-> +       /* If remote CPUs need to be flushed then defer batch the flush */
-> +       if (cpumask_any_but(mm_cpumask(mm), get_cpu()) < nr_cpu_ids)
-> +               should_defer = true;
-> +       put_cpu();
-> +
-> +       return should_defer;
-> +}
-> +
->  static inline u64 inc_mm_tlb_gen(struct mm_struct *mm)
->  {
->         /*
-> diff --git a/mm/rmap.c b/mm/rmap.c
-> index 93d5a6f793d2..cd8cf5cb0b01 100644
-> --- a/mm/rmap.c
-> +++ b/mm/rmap.c
-> @@ -690,17 +690,10 @@ static void set_tlb_ubc_flush_pending(struct mm_struct *mm, bool writable)
->   */
->  static bool should_defer_flush(struct mm_struct *mm, enum ttu_flags flags)
->  {
-> -       bool should_defer = false;
-> -
->         if (!(flags & TTU_BATCH_FLUSH))
->                 return false;
->
-> -       /* If remote CPUs need to be flushed then defer batch the flush */
-> -       if (cpumask_any_but(mm_cpumask(mm), get_cpu()) < nr_cpu_ids)
-> -               should_defer = true;
-> -       put_cpu();
-> -
-> -       return should_defer;
-> +       return arch_tlbbatch_should_defer(mm);
->  }
->
->  /*
-> --
-> 2.24.0
->
+> On Tue, Sep 13, 2022 at 04:13:52PM +0200, Peter Zijlstra wrote:
+>> On Mon, Sep 12, 2022 at 01:50:04PM +0530, Sathvika Vasireddy wrote:
+>>> Christophe Leroy (4):
+>>>    objtool: Fix SEGFAULT
+>>>    objtool: Use target file endianness instead of a compiled constant
+>>>    objtool: Use target file class size instead of a compiled constant
+>>> Sathvika Vasireddy (12):
+>>>    objtool: Add --mnop as an option to --mcount
+>>>    objtool: Read special sections with alts only when specific options are selected
+>>>    objtool: Use macros to define arch specific reloc types
+>>>    objtool: Add arch specific function arch_ftrace_match()
+>>>    objtool/powerpc: Enable objtool to be built on ppc
+>>>    objtool/powerpc: Add --mcount specific implementation
+>>>   tools/objtool/arch/powerpc/Build              |   2 +
+>>>   tools/objtool/arch/powerpc/decode.c           | 101 ++++++++++++++++++
+>>>   .../arch/powerpc/include/arch/cfi_regs.h      |  11 ++
+>>>   tools/objtool/arch/powerpc/include/arch/elf.h |  10 ++
+>>>   .../arch/powerpc/include/arch/special.h       |  21 ++++
+>>>   tools/objtool/arch/powerpc/special.c          |  19 ++++
+>>>   tools/objtool/arch/x86/decode.c               |   5 +
+>>>   tools/objtool/arch/x86/include/arch/elf.h     |   2 +
+>>>   .../arch/x86/include/arch/endianness.h        |   9 --
+>>>   tools/objtool/builtin-check.c                 |  14 +++
+>>>   tools/objtool/check.c                         |  53 ++++-----
+>>>   tools/objtool/elf.c                           |   8 +-
+>>>   tools/objtool/include/objtool/arch.h          |   2 +
+>>>   tools/objtool/include/objtool/builtin.h       |   1 +
+>>>   tools/objtool/include/objtool/elf.h           |   8 ++
+>>>   tools/objtool/include/objtool/endianness.h    |  32 +++---
+>>>   tools/objtool/orc_dump.c                      |  11 +-
+>>>   tools/objtool/orc_gen.c                       |   4 +-
+>>>   tools/objtool/special.c                       |   3 +-
+>> This seems to painlessly merge with the objtool changes I have in
+>> queue.git/call-depth-tracking. After that all I need is the below little
+>> patch to make it to build ppc44x_defconfig + CONFIG_DYNAMIC_FTRACE=y.
+>>
+>> So I think these patches can go through the powerpc tree if Michael
+>> wants. Josh you okay with that, or should we do something complicated?
+> I'm all for avoiding complicated, but let me try to give it a proper
+> review first.
+
+Did you get a chance to review this patch set?
+
+- Sathvika
+
