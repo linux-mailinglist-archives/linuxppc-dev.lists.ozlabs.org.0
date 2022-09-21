@@ -1,88 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B10055BF755
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Sep 2022 09:14:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56C235BF6D7
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Sep 2022 08:58:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MXV5Y2LNcz3gJ4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Sep 2022 17:14:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MXTm015LRz3cFK
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Sep 2022 16:58:56 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=lpvLZHMW;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=zd9VKku7;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=rmclure@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::22e; helo=mail-lj1-x22e.google.com; envelope-from=krzysztof.kozlowski@linaro.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=lpvLZHMW;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=zd9VKku7;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MXTmY1l7nz3f4t
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Sep 2022 16:59:25 +1000 (AEST)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28L6gQxr025613;
-	Wed, 21 Sep 2022 06:59:21 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=p016jM1f1mQNYpH62akW3Tf41ixuV/Q/lxVjkwHfogY=;
- b=lpvLZHMWHtLYdjTHLHzlnnKY+sVjh/p+OcHgrDImlqxSeiLGbet0zGP83Ezva2dS9+12
- irHyonF6CM0dLqky5PE2syio/oWDP2Rnyu877I8vPMuGJI+CbZVMoHdSGMug9iG247+U
- B7n34DJhkVsjG3BjGCezUFMeUM09ZmfK96tz0gj13pvTjfi8zv40bvjAibBi4RJuOgHm
- UjSojOUIDXvIxGFzSoAJ9Wy2D+6OlGwelu4EHXPffMqzC8Zu0WlBfUtQ6Vm6bUocY8jF
- LA0ZTaYTX1rV5pLKL20f8jQANEAm+RDNT5AKYzVMZmiEKR6rj0UplhGGFLPf1WAPs0Ze og== 
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jqwju8emu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 21 Sep 2022 06:59:21 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-	by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 28L6rUut004615;
-	Wed, 21 Sep 2022 06:59:18 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
-	by ppma04ams.nl.ibm.com with ESMTP id 3jn5v8mvk0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 21 Sep 2022 06:59:18 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
-	by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 28L6tGqQ40174054
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 21 Sep 2022 06:55:16 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 64B4E4C046;
-	Wed, 21 Sep 2022 06:59:16 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0F3624C040;
-	Wed, 21 Sep 2022 06:59:16 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Wed, 21 Sep 2022 06:59:16 +0000 (GMT)
-Received: from civic.. (unknown [9.177.29.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 2164960531;
-	Wed, 21 Sep 2022 16:59:12 +1000 (AEST)
-From: Rohan McLure <rmclure@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v6 25/25] powerpc/64e: Clear gprs on interrupt routine entry on Book3E
-Date: Wed, 21 Sep 2022 16:56:05 +1000
-Message-Id: <20220921065605.1051927-26-rmclure@linux.ibm.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220921065605.1051927-1-rmclure@linux.ibm.com>
-References: <20220921065605.1051927-1-rmclure@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MXTkG0Ksgz3c4Y
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Sep 2022 16:57:25 +1000 (AEST)
+Received: by mail-lj1-x22e.google.com with SMTP id h3so5844962lja.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Sep 2022 23:57:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date;
+        bh=NK2N/b/QQywGXjYSUF1DR4DFgFeCcv8ay3tmMR7yQe4=;
+        b=zd9VKku7G1ak2cVyYOpEVge/UKl5/MrmOGUtOuV36rnH2moft2SkAC/9tMMOJjqevW
+         iij9gy5AkWzLqLBhcQtg1LjWDm4G7jMk8WimQOrNfN9u3qVCSv4AvFMcBkGlB/Z+DkrM
+         44pP9yln+ruBWW3bjLElOcV+dH5W1qdMRKI9bGT5lqT/8i3qKkxJAdDmOLkLgCbIHLdQ
+         yXDMxXv2Kyp4S00TH8ryrjxRPvWLMtROado73s+RWJl4EyKQFnQDrVSrFJ1qNp7NWebr
+         brEd1UtiG4Qv3mueTQn9TpQaUJVc7FuasEN6YvoZj72MynPHRGdqSqPndsNjRBMnNICy
+         zACg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
+        bh=NK2N/b/QQywGXjYSUF1DR4DFgFeCcv8ay3tmMR7yQe4=;
+        b=M8DkUV0Ci3J9cnLTTxZnM3b9xRuRM+QJ4mGBQkU0SRgE9+uk7peVBcU8xnKtQQHCYC
+         U+uXUHBRlj06QxYclQG0+fJLAEtxRzayg1NBqX+rusujQN6NZK5mGfcCVfq4w5IcoxDc
+         miH1ldsFAXlSwthhs2oI9TREdPL/ocTVNcZBQDJ3HiHyOPB2h0Xp7L/IbFeVH/hWjjvK
+         QWoQ7WgwP49SjW9ZihsRjKA7zYd9/Ma5klMdc4dLxzVo5BQFgKIDl6YkyRpbC46DUpKC
+         JgwsJpc7ezg7LRJ8Gw0WwwEMy1DFqsYzER0bTrjKu5VFR6qTpI9L7alhDCghqwxAq9DM
+         OevQ==
+X-Gm-Message-State: ACrzQf0Kc49WzGFwTpoixAskN142FXoixyTOjY8HiR+avLqXwmtjbnSo
+	3nVt9sOAEczpWHrrQ5kyqYGWYw==
+X-Google-Smtp-Source: AMsMyM4EcQa7KqdhM3o6+dyVA7n/gHX0GrxOqzZR52bpaVcu/jIZW6WrDc7SJVRTnVlFdh3dYeQywA==
+X-Received: by 2002:a2e:944a:0:b0:24f:10bd:b7e8 with SMTP id o10-20020a2e944a000000b0024f10bdb7e8mr8835541ljh.238.1663743441318;
+        Tue, 20 Sep 2022 23:57:21 -0700 (PDT)
+Received: from krzk-bin (78-11-189-27.static.ip.netia.com.pl. [78.11.189.27])
+        by smtp.gmail.com with ESMTPSA id p15-20020ac24ecf000000b00499cf3e3ebesm307999lfr.121.2022.09.20.23.57.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Sep 2022 23:57:20 -0700 (PDT)
+Date: Wed, 21 Sep 2022 08:57:18 +0200
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Sean Anderson <sean.anderson@seco.com>
+Subject: Re: [PATCH v6 2/8] dt-bindings: phy: Add Lynx 10G phy binding
+Message-ID: <20220921065718.lafutkkgiium5ycu@krzk-bin>
+References: <20220920202356.1451033-1-sean.anderson@seco.com>
+ <20220920202356.1451033-3-sean.anderson@seco.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Sz5HTIvM77kp0CyQJfCcFMaPtQqwbGHG
-X-Proofpoint-ORIG-GUID: Sz5HTIvM77kp0CyQJfCcFMaPtQqwbGHG
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
- definitions=2022-09-21_03,2022-09-20_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 suspectscore=0
- spamscore=0 lowpriorityscore=0 priorityscore=1501 malwarescore=0
- adultscore=0 impostorscore=0 mlxlogscore=608 mlxscore=0 clxscore=1015
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2209130000 definitions=main-2209210043
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20220920202356.1451033-3-sean.anderson@seco.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,56 +77,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rohan McLure <rmclure@linux.ibm.com>
+Cc: Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org, Madalin Bucur <madalin.bucur@nxp.com>, Stephen Boyd <sboyd@kernel.org>, Michael Turquette <mturquette@baylibre.com>, Kishon Vijay Abraham I <kishon@ti.com>, Vinod Koul <vkoul@kernel.org>, Rob Herring <robh+dt@kernel.org>, Camelia Alexandra Groza <camelia.groza@nxp.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Ioana Ciornei <ioana.ciornei@nxp.com>, linux-phy@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Zero GPRS r14-r31 on entry into the kernel for interrupt sources to
-limit influence of user-space values in potential speculation gadgets.
-Prior to this commit, all other GPRS are reassigned during the common
-prologue to interrupt handlers and so need not be zeroised explicitly.
+On Tue, 20 Sep 2022 16:23:50 -0400, Sean Anderson wrote:
+> This adds a binding for the SerDes module found on QorIQ processors.
+> Each phy is a subnode of the top-level device, possibly supporting
+> multiple lanes and protocols. This "thick" #phy-cells is used due to
+> allow for better organization of parameters. Note that the particular
+> parameters necessary to select a protocol-controller/lane combination
+> vary across different SoCs, and even within different SerDes on the same
+> SoC.
+> 
+> The driver is designed to be able to completely reconfigure lanes at
+> runtime. Generally, the phy consumer can select the appropriate
+> protocol using set_mode.
+> 
+> There are two PLLs, each of which can be used as the master clock for
+> each lane. Each PLL has its own reference. For the moment they are
+> required, because it simplifies the driver implementation. Absent
+> reference clocks can be modeled by a fixed-clock with a rate of 0.
+> 
+> Signed-off-by: Sean Anderson <sean.anderson@seco.com>
+> Reviewed-by: Rob Herring <robh@kernel.org>
+> ---
+> 
+> Changes in v6:
+> - fsl,type -> phy-type
+> 
+> Changes in v4:
+> - Use subnodes to describe lane configuration, instead of describing
+>   PCCRs. This is the same style used by phy-cadence-sierra et al.
+> 
+> Changes in v3:
+> - Manually expand yaml references
+> - Add mode configuration to device tree
+> 
+> Changes in v2:
+> - Rename to fsl,lynx-10g.yaml
+> - Refer to the device in the documentation, rather than the binding
+> - Move compatible first
+> - Document phy cells in the description
+> - Allow a value of 1 for phy-cells. This allows for compatibility with
+>   the similar (but according to Ioana Ciornei different enough) lynx-28g
+>   binding.
+> - Remove minItems
+> - Use list for clock-names
+> - Fix example binding having too many cells in regs
+> - Add #clock-cells. This will allow using assigned-clocks* to configure
+>   the PLLs.
+> - Document the structure of the compatible strings
+> 
+>  .../devicetree/bindings/phy/fsl,lynx-10g.yaml | 236 ++++++++++++++++++
+>  1 file changed, 236 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/phy/fsl,lynx-10g.yaml
+> 
 
-This may be done safely, without loss of register state prior to the
-interrupt, as the common prologue saves the initial values of
-non-volatiles, which are unconditionally restored in interrupt_64.S.
-Mitigation defaults to enabled by INTERRUPT_SANITIZE_REGISTERS.
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
-Signed-off-by: Rohan McLure <rmclure@linux.ibm.com>
----
-V4: New patch.
-V5: Depend on Kconfig option. Remove ZEROIZE_NVGPRS on bad kernel
-stack handler.
-V6: Change name of zeroize macro to be consistent with Book3S.
----
- arch/powerpc/kernel/exceptions-64e.S | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+yamllint warnings/errors:
 
-diff --git a/arch/powerpc/kernel/exceptions-64e.S b/arch/powerpc/kernel/exceptions-64e.S
-index f1d714acc945..d55c0a368dcb 100644
---- a/arch/powerpc/kernel/exceptions-64e.S
-+++ b/arch/powerpc/kernel/exceptions-64e.S
-@@ -366,6 +366,11 @@ ret_from_mc_except:
- 	std	r14,PACA_EXMC+EX_R14(r13);				    \
- 	std	r15,PACA_EXMC+EX_R15(r13)
- 
-+#ifdef CONFIG_INTERRUPT_SANITIZE_REGISTERS
-+#define SANITIZE_ZEROIZE_NVGPRS()	ZEROIZE_NVGPRS()
-+#else
-+#define SANITIZE_ZEROIZE_NVGPRS()
-+#endif
- 
- /* Core exception code for all exceptions except TLB misses. */
- #define EXCEPTION_COMMON_LVL(n, scratch, excf)				    \
-@@ -402,7 +407,8 @@ exc_##n##_common:							    \
- 	std	r12,STACK_FRAME_OVERHEAD-16(r1); /* mark the frame */	    \
- 	std	r3,_TRAP(r1);		/* set trap number		*/  \
- 	std	r0,RESULT(r1);		/* clear regs->result */	    \
--	SAVE_NVGPRS(r1);
-+	SAVE_NVGPRS(r1);						    \
-+	SANITIZE_ZEROIZE_NVGPRS();	/* minimise speculation influence */
- 
- #define EXCEPTION_COMMON(n) \
- 	EXCEPTION_COMMON_LVL(n, SPRN_SPRG_GEN_SCRATCH, PACA_EXGEN)
--- 
-2.34.1
+dtschema/dtc warnings/errors:
+Error: Documentation/devicetree/bindings/phy/fsl,lynx-10g.example.dts:51.27-28 syntax error
+FATAL ERROR: Unable to parse input tree
+make[1]: *** [scripts/Makefile.lib:384: Documentation/devicetree/bindings/phy/fsl,lynx-10g.example.dtb] Error 1
+make[1]: *** Waiting for unfinished jobs....
+make: *** [Makefile:1420: dt_binding_check] Error 2
 
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/patch/
+
+This check can fail if there are any dependencies. The base for a patch
+series is generally the most recent rc1.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit.
