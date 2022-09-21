@@ -1,80 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B4B35BFE80
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Sep 2022 14:56:05 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FA035BFE89
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Sep 2022 15:01:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MXdh30Dpyz3bdg
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Sep 2022 22:56:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MXdnk1ZB9z3cCL
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Sep 2022 23:00:58 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Ka07vDM8;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=9ndm+mId;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=hjA4SvFW;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.29; helo=smtp-out2.suse.de; envelope-from=tzimmermann@suse.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Ka07vDM8;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=9ndm+mId;
-	dkim-atps=neutral
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MXdgN3ck8z2yPD
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Sep 2022 22:55:27 +1000 (AEST)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MXdn73gZ7z30LJ
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Sep 2022 23:00:27 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=hjA4SvFW;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 01AF91F88D;
-	Wed, 21 Sep 2022 12:55:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1663764924; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KoZGBoaFxZPTmEkKRwEqifkfWr8iC0r3ozJsZIDMqOM=;
-	b=Ka07vDM8K1km2hMng59LbUvZwrw8/msv6neHJTsQnazag5oU/ZFa5DO0x7zodAvoPLbEza
-	hnw7lGVsUcDLMrv5ymFu/DvOMRO/mkKHeK1WDiSmEKJwMr6MEv8VRENpXPkHCcbUTLH7Dv
-	kpekC/Unl34vuGbSCVVdp1bnyv89YUY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1663764924;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KoZGBoaFxZPTmEkKRwEqifkfWr8iC0r3ozJsZIDMqOM=;
-	b=9ndm+mIdGZF7Q045YkYqcwIoESP9MgkrBJuJBK4PD+greHpjg8MtRvSyKpwAsyyBa9D4gN
-	gGxa7EmP6Z6DuxDQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id A462913A89;
-	Wed, 21 Sep 2022 12:55:23 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id EOMWJrsJK2O+LAAAMHmgww
-	(envelope-from <tzimmermann@suse.de>); Wed, 21 Sep 2022 12:55:23 +0000
-Message-ID: <350bdc4b-7fb3-f04f-06ba-0a3a266041a0@suse.de>
-Date: Wed, 21 Sep 2022 14:55:23 +0200
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4MXdn0035Tz4xG9;
+	Wed, 21 Sep 2022 23:00:19 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1663765221;
+	bh=QT/Sl5AvXoUzaa7Mvmu4tMi+mbhfGfOR2s8x//+T2VY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=hjA4SvFWM/5Cex+dNXi9ZS8vBM8YsfJ2esWTPctRWZuPxP8Zr1thsxjaxFiUVdJbm
+	 cYkKXj8QJq3eUhadLV8HDf3qMWwXdhtDyNX5yEPJj46HF7MuP5sZE9GQVUtIlJRJFY
+	 GAuTf0KYAfy1F09+xy3KD8PC+JMCyd6LSW5Opsbt2Ha7fkxRYPwqsj/KxSp7Rtt3w5
+	 CiwzFpaE3ybt+1ljMDmHxoDaU7Qgnb6nZWlVXCbNV8wwBwjEki6CwtCRlQ75+Rnmnh
+	 jISwtL+dfAdsZDPV7EIQe/JjoUdVrHXW93wgz+QCX4S7Oq662PaU/hP58nEUYjFy9/
+	 pgxXLkacus4vw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Samuel Holland
+ <samuel@sholland.org>, Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH] powerpc: Save AMR/IAMR when switching tasks
+In-Reply-To: <9a433048-ab0d-6d57-7aa8-c9acbe7b7a99@csgroup.eu>
+References: <20220916050515.48842-1-samuel@sholland.org>
+ <89049105-64fc-8d5b-d090-2841064786d1@csgroup.eu>
+ <87h713leu8.fsf@mpe.ellerman.id.au>
+ <9a433048-ab0d-6d57-7aa8-c9acbe7b7a99@csgroup.eu>
+Date: Wed, 21 Sep 2022 23:00:16 +1000
+Message-ID: <87a66s287z.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.2
-Subject: Re: [PATCH v2 10/10] drm/ofdrm: Support color management
-Content-Language: en-US
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, javierm@redhat.com,
- airlied@linux.ie, daniel@ffwll.ch, deller@gmx.de, maxime@cerno.tech,
- sam@ravnborg.org, msuchanek@suse.de, mpe@ellerman.id.au, paulus@samba.org,
- geert@linux-m68k.org, mark.cave-ayland@ilande.co.uk
-References: <20220720142732.32041-1-tzimmermann@suse.de>
- <20220720142732.32041-11-tzimmermann@suse.de>
- <4715518d0a6ec60349c76414815ae3f6e4ed977e.camel@kernel.crashing.org>
-From: Thomas Zimmermann <tzimmermann@suse.de>
-In-Reply-To: <4715518d0a6ec60349c76414815ae3f6e4ed977e.camel@kernel.crashing.org>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------AG7Z9AOHsuDY2uOy5F4SArY8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,71 +62,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-fbdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, dri-devel@lists.freedesktop.org
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "Eric W. Biederman" <ebiederm@xmission.com>, Kees Cook <keescook@chromium.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------AG7Z9AOHsuDY2uOy5F4SArY8
-Content-Type: multipart/mixed; boundary="------------Xmfdjl4UiEJQ0soLPwFr76ao";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, javierm@redhat.com,
- airlied@linux.ie, daniel@ffwll.ch, deller@gmx.de, maxime@cerno.tech,
- sam@ravnborg.org, msuchanek@suse.de, mpe@ellerman.id.au, paulus@samba.org,
- geert@linux-m68k.org, mark.cave-ayland@ilande.co.uk
-Cc: linux-fbdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- dri-devel@lists.freedesktop.org
-Message-ID: <350bdc4b-7fb3-f04f-06ba-0a3a266041a0@suse.de>
-Subject: Re: [PATCH v2 10/10] drm/ofdrm: Support color management
-References: <20220720142732.32041-1-tzimmermann@suse.de>
- <20220720142732.32041-11-tzimmermann@suse.de>
- <4715518d0a6ec60349c76414815ae3f6e4ed977e.camel@kernel.crashing.org>
-In-Reply-To: <4715518d0a6ec60349c76414815ae3f6e4ed977e.camel@kernel.crashing.org>
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> Le 19/09/2022 =C3=A0 14:37, Michael Ellerman a =C3=A9crit=C2=A0:
+>> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+>>> Le 16/09/2022 =C3=A0 07:05, Samuel Holland a =C3=A9crit=C2=A0:
+>>>> With CONFIG_PREEMPT=3Dy (involuntary preemption enabled), it is possib=
+le
+>>>> to switch away from a task inside copy_{from,to}_user. This left the C=
+PU
+>>>> with userspace access enabled until after the next IRQ or privilege
+>>>> level switch, when AMR/IAMR got reset to AMR_KU[AE]P_BLOCKED. Then, wh=
+en
+>>>> switching back to the original task, the userspace access would fault:
+>>>
+>>> This is not supposed to happen. You never switch away from a task
+>>> magically. Task switch will always happen in an interrupt, that means
+>>> copy_{from,to}_user() get interrupted.
+>>=20
+>> Unfortunately this isn't true when CONFIG_PREEMPT=3Dy.
+>
+> Argh, yes, I wrote the above with the assumption that we properly follow=
+=20
+> the main principles that no complex fonction is to be used while KUAP is=
+=20
+> open ... Which is apparently not true here. x86 would have detected it=20
+> with objtool, but we don't have it yet in powerpc.
 
---------------Xmfdjl4UiEJQ0soLPwFr76ao
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+Yes and yes :/
 
-SGkNCg0KQW0gMDUuMDguMjIgdW0gMDI6MTkgc2NocmllYiBCZW5qYW1pbiBIZXJyZW5zY2ht
-aWR0Og0KPiBPbiBXZWQsIDIwMjItMDctMjAgYXQgMTY6MjcgKzAyMDAsIFRob21hcyBaaW1t
-ZXJtYW5uIHdyb3RlOg0KPj4gKyNpZiAhZGVmaW5lZChDT05GSUdfUFBDKQ0KPj4gK3N0YXRp
-YyBpbmxpbmUgdm9pZCBvdXRfOCh2b2lkIF9faW9tZW0gKmFkZHIsIGludCB2YWwpDQo+PiAr
-eyB9DQo+PiArc3RhdGljIGlubGluZSB2b2lkIG91dF9sZTMyKHZvaWQgX19pb21lbSAqYWRk
-ciwgaW50IHZhbCkNCj4+ICt7IH0NCj4+ICtzdGF0aWMgaW5saW5lIHVuc2lnbmVkIGludCBp
-bl9sZTMyKGNvbnN0IHZvaWQgX19pb21lbSAqYWRkcikNCj4+ICt7DQo+PiArICAgICAgIHJl
-dHVybiAwOw0KPj4gK30NCj4+ICsjZW5kaWYNCj4gDQo+IFRoZXNlIGd1eXMgY291bGQganVz
-dCBiZSByZXBsYWNlZCB3aXRoIHJlYWRiL3dyaXRlbC9yZWFkbCByZXNwZWN0aXZlbHkNCj4g
-KGJld2FyZSBvZiB0aGUgYXJndW1lbnQgc3dhcCkuDQoNCkkgb25seSBhZGRlZCB0aGVtIGZv
-ciBDT01QSUxFX1RFU1QuIFRoZXJlIGFwcGVhcnMgdG8gYmUgbm8gcG9ydGFibGUgDQppbnRl
-cmZhY2UgdGhhdCBpbXBsZW1lbnRzIG91dF9sZTMyKCkgYW5kIGluX2xlMzIoKT8NCg0KQmVz
-dCByZWdhcmRzDQpUaG9tYXMNCg0KPiANCj4gQ2hlZXJzLA0KPiBCZW4uDQo+IA0KDQotLSAN
-ClRob21hcyBaaW1tZXJtYW5uDQpHcmFwaGljcyBEcml2ZXIgRGV2ZWxvcGVyDQpTVVNFIFNv
-ZnR3YXJlIFNvbHV0aW9ucyBHZXJtYW55IEdtYkgNCk1heGZlbGRzdHIuIDUsIDkwNDA5IE7D
-vHJuYmVyZywgR2VybWFueQ0KKEhSQiAzNjgwOSwgQUcgTsO8cm5iZXJnKQ0KR2VzY2jDpGZ0
-c2bDvGhyZXI6IEl2byBUb3Rldg0K
+>> We can switch away without an interrupt via:
+>>    __copy_tofrom_user()
+>>      -> __copy_tofrom_user_power7()
+>>         -> exit_vmx_usercopy()
+>>            -> preempt_enable()
+>>               -> __preempt_schedule()
+>>                  -> preempt_schedule()
+>>                     -> preempt_schedule_common()
+>>                        -> __schedule()
+>
+>
+> Should we use preempt_enable_no_resched() to avoid that ?
 
---------------Xmfdjl4UiEJQ0soLPwFr76ao--
+Good point :)
 
---------------AG7Z9AOHsuDY2uOy5F4SArY8
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
+...
+>>=20
+>> Still I think it might be our best option for an easy fix.
+>
+> Wouldn't it be even easier and less abusive to use=20
+> preemt_enable_no_resched() ? Or is there definitively a good reason to=20
+> resched after a VMX copy while we don't with regular copies ?
 
------BEGIN PGP SIGNATURE-----
+I don't think it's important to reschedule there. I guess it means
+another task that wants to preempt will have to wait a little longer,
+but I doubt it's measurable.
 
-wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmMrCbsFAwAAAAAACgkQlh/E3EQov+DE
-9Q//ckxi55KFvAJ4UA6WPGS3cdi+g8bzAosXAU3ixBEO19e0UGZfB/W0dRjZ3sN9c9g5IH6wuboY
-57s8qJe84uVFNPMNsRO51fywFN6hQOUsGK86lrAauRNn2iUMEUhAo0INU6LAANJ4bmgk2iDAHoj+
-QkbFfymf844Rjqrtp7meFDhrtCtZAeBOIDCDl5WTUsuzg2kLEpy+3N397SOtvxVZNOZYYL80NBi3
-dnnplHgjuFK7vB0t2d99+8Ggd44B0FCHk+wKdZEhb5uSXTYYNkmSFNtkjzLJSPVR7ThWsTFTiyf3
-/1m+czrzL0iVQy+buexGvIfO8W863bYhs/HkkfXJaVYhHFq6R1xAT1TdaYiADGsq5OjUs8ytJ/+N
-s1LZoGaxKqsfKM1ho14rvCCMTa7wMX72sRDKJewga5usfDyJbVpAEC5DfZLwHd2xL+sOgscoICRS
-6czwZJ5zrwDzXNwmYM7CkiK5hV+ghOAxESjZnb1OMXFb6/IVAgDJ+5d7yFhD4FU+y1QIZFmTDBLb
-ZIDKxJP7mlVHfQo5mePpe0BqfmucsWU0MIIoyika5waxlhkYnTweiWgA6Jkgs5Ah1pDt7HSXtjPG
-cmcY4tSKCbzJDw7tsdn5fKxpFZbYXpZBZG1L/Pmplf66LSh1HXUNE8Yxh7rNbHXoEt0Folk6xiFq
-Nvs=
-=mw0X
------END PGP SIGNATURE-----
+One reason to do the KUAP lock is it also protects us from running
+disable_kernel_altivec() with KUAP unlocked.
 
---------------AG7Z9AOHsuDY2uOy5F4SArY8--
+That in turn calls into msr_check_and_clear() and
+__msr_check_and_clear(), none of which is a problem per-se, but we'd
+need to make that all notrace to be 100% safe.
+
+At the moment we're running that all with KUAP unlocked anyway, so using
+preempt_enable_no_resched() would fix the actual bug and is much nicer
+than my patch, so we should probably do that.
+
+We can look at making disable_kernel_altivec() etc. notrace as a
+follow-up.
+
+cheers
