@@ -2,74 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5997C5BF289
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Sep 2022 03:02:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F49C5BF2FD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Sep 2022 03:41:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MXKrB1Vtxz3c6r
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Sep 2022 11:02:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MXLk62YVqz3btQ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Sep 2022 11:41:50 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=iLJLvUe0;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Mxo4mSHU;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1036; helo=mail-pj1-x1036.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::631; helo=mail-pl1-x631.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=iLJLvUe0;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Mxo4mSHU;
 	dkim-atps=neutral
-Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
+Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MXKqW34pBz308w
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Sep 2022 11:01:26 +1000 (AEST)
-Received: by mail-pj1-x1036.google.com with SMTP id y11so4837546pjv.4
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Sep 2022 18:01:26 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MXLjT0Jbrz2xfv
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Sep 2022 11:41:14 +1000 (AEST)
+Received: by mail-pl1-x631.google.com with SMTP id x1so4180991plv.5
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Sep 2022 18:41:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date;
-        bh=n6V55hfpd/IpNBQsuhOppMXoilc1FpyWyhYZfk6um3M=;
-        b=iLJLvUe0BXGz3DFz+Kq1qCukLs2WMaWmpYSYE8U1z5/fSdC+gIcEGtkjYwbnEC4/MM
-         E+lKD66eeS5T1zTPNcRTAuDuI9Rgg4iqftHNEI5bYgsGi3cWer71neHk8A7U0w7z3Pfc
-         WFbHwDvH6GLwXYcNmNf/3wS0gSoNOtCIEze9l+s+Hpt9EIOQ8Rs78zahh7+/19LNii3a
-         IGuSniu4AGUeNyyz7EEuButuuBcFxGWyr/l0xactsq7/guqy4Wjz6Mv08U5JMXgSIUO8
-         BObliC3jpxXc0u85E1sCV2NtBkFjgw/C7RuHJwG0K3i/heHuKfZS8SKe1EBvxKguadXP
-         0tHg==
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date;
+        bh=hR7QwSAGQh9N6q7ZPHC7+ZqD38IvKoHXc94J4+WGZwY=;
+        b=Mxo4mSHU8kYuEp4BvVR7qikgRY/uE6s3Q2FZDwegO/Ar8lCXIMsXt1Cty///J5iamH
+         cphh6xP5q+ZkF70qh94WHjIIs6oY34Jm/sHwfWS6E9XYq+bVi+nmFz2EgEOLArDppqxP
+         oKfPUClOzXbuH2Awp9ZEY0B/61gWl40pPzpRsQenot15XCDoCbDsTthOq4ikyULNoYcd
+         cXVA8j1Nv598K1BZJhioycmidovg3DJXOugY/vjsswxm6cZECUNj8JIUwP7AXCmpmqoy
+         MJcGbELpncfqdqKtr/Uv9xbe7Ys5hb7ozfNNBwSoPzl5P9UwsI3kHo3y3jhyaqXPOidc
+         bg+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date;
-        bh=n6V55hfpd/IpNBQsuhOppMXoilc1FpyWyhYZfk6um3M=;
-        b=LI88GXp73T+ddeAIOubkrnKUndbzjjBSbRSohjKB/+WiiKTihIfIQd/CUBi1G42xwM
-         pOTmZHBGCef6/sP9wH8fHQBvwrXT3lbZ7J6gqxgIdzpe3+YVX36z/lrWDkWcrFafTRwd
-         IgvQKkLty63l5qHPn19L1Q++fWp9Qsp31XL14BAa+CpQ097mjf3kuGLm4WAzkS4m3sQe
-         kUiI3k/qk3elZVa9uDvzdUPDBTfzfYfTvn6vX/DYvxm/OCix+qacvXVFkCDoYxvcTkDi
-         dyQtOvPrCQr1mM+oALsgD2Sl39RKBGlNNa5buPMtLA0Cph9uKxtzj3sWQL22YCT3a/Ce
-         joaw==
-X-Gm-Message-State: ACrzQf15y63w6lu33fbAWnvflIu8+I43H0LdMFtf1N3HDD5NW/J4r36I
-	dTQOuxWwsJarJ3IkW266yedw2WtwRkw=
-X-Google-Smtp-Source: AMsMyM6yw25tj6XV13SOe0m0IWpubF8iz2/XtkpIHcGc/o7b63fAIBSy6PLpOuFjNZci7ngQ/fDtoA==
-X-Received: by 2002:a17:90a:ab91:b0:202:a520:56c9 with SMTP id n17-20020a17090aab9100b00202a52056c9mr6918372pjq.1.1663722083850;
-        Tue, 20 Sep 2022 18:01:23 -0700 (PDT)
-Received: from localhost ([203.219.227.147])
-        by smtp.gmail.com with ESMTPSA id c1-20020a170902b68100b0017519b86996sm513757pls.218.2022.09.20.18.01.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 20 Sep 2022 18:01:23 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 21 Sep 2022 11:01:18 +1000
-Message-Id: <CN1O97PLNVSM.VDXMAFRIPU9S@bobo>
-To: "Segher Boessenkool" <segher@kernel.crashing.org>
-Subject: Re: [RFC PATCH 5/7] powerpc/64s: update generic cpu option name and
- compiler flags
-From: "Nicholas Piggin" <npiggin@gmail.com>
-X-Mailer: aerc 0.11.0
-References: <20220919140149.4018927-1-npiggin@gmail.com>
- <20220919140149.4018927-6-npiggin@gmail.com>
- <20220920221608.GB25951@gate.crashing.org>
-In-Reply-To: <20220920221608.GB25951@gate.crashing.org>
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date;
+        bh=hR7QwSAGQh9N6q7ZPHC7+ZqD38IvKoHXc94J4+WGZwY=;
+        b=n4c4aQrfDvzKAn8TaKPt3p9ihLqFs7MwS8SuUCPabOq28WKvgJRNI9ZeqhWTdi1Hza
+         hGtgMzFROtUjzUiqGk4g0+MTr930RHv7SqEIrvD1CcSURzcJPJn34yfvFXW0pgUx4zto
+         qJiYsdEsJiEjHJ0/U02LdeM6/PY8FTOqp5eCdWTtVu1StZyVgVFsA8Rke95WU+aGbOAW
+         ZOYGatyuSYCy2bRyy2hhJgAfi+rX/r4I1RhqHGiCx7fNpevEqUvuEhM4i25JxH2858sU
+         x+wfX/76K7nD9Lr593Qku32xnTlTIAyxYM3DHrs0Hx7YQQehRMDAbv0ryq7JkX8TQy5X
+         3aIw==
+X-Gm-Message-State: ACrzQf0EqH6pg1G9AOw17AYTCuabUm88emI8vKVS5xq49Fi5lGPiKD/9
+	2R/UxX4CfrvqKs07gN3x+DQfBlwofCA=
+X-Google-Smtp-Source: AMsMyM6Fko4zV8FDijogf//Kb6pO3nsw5iIyDjj+vzSczAaHLcADzje62Xz0GalFOn2Wr46tbeukNA==
+X-Received: by 2002:a17:902:c7d1:b0:178:54cf:d69e with SMTP id r17-20020a170902c7d100b0017854cfd69emr2433872pla.86.1663724471244;
+        Tue, 20 Sep 2022 18:41:11 -0700 (PDT)
+Received: from bobo.ozlabs.ibm.com ([203.219.227.147])
+        by smtp.gmail.com with ESMTPSA id w62-20020a623041000000b0053e156e9475sm575131pfw.182.2022.09.20.18.41.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Sep 2022 18:41:10 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 1/2] powerpc/64s: Fix GENERIC_CPU build flags for PPC970 / G5
+Date: Wed, 21 Sep 2022 11:41:02 +1000
+Message-Id: <20220921014103.587954-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.37.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,55 +74,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Alan Modra <amodra@gmail.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed Sep 21, 2022 at 8:16 AM AEST, Segher Boessenkool wrote:
-> Hi!
->
-> On Tue, Sep 20, 2022 at 12:01:47AM +1000, Nicholas Piggin wrote:
-> > Update the 64s GENERIC_CPU option. POWER4 support has been dropped, so
-> > make that clear in the option name.
->
-> AFAIR the minimum now is POWER4+ (ISA 2.01), not POWER5 (ISA 2.02).
+Big-endian GENERIC_CPU supports 970, but builds with -mcpu=power5.
+POWER5 is ISA v2.02 whereas 970 is v2.01 plus Altivec. 2.02 added
+the popcntb instruction which a compiler might use.
 
-It's POWER5 now, because of commit 471d7ff8b5 ("powerpc/64s: Remove
-POWER4 support"), which is misguided about POWER4+ and also introduced
-the -mcpu=3Dpower5 bug on 970 builds :\
+Use -mcpu=power4.
 
-Not sure it's worth adding POWER4+ support back but if someone has a
-POWER4+ or adds it to QEMU TCG, I will do the patch.
+Fixes: 471d7ff8b51b ("powerpc/64s: Remove POWER4 support")
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ arch/powerpc/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> > -mtune=3D before power8 is dropped because the minimum gcc version
-> > supports power8, and tuning is made consistent between big and little
-> > endian.
->
-> Tuning for p8 on e.g. 970 gives quite bad results.  No idea if anyone
-> cares, but this is a serious regression if so.
+diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
+index 02742facf895..140a5e6471fe 100644
+--- a/arch/powerpc/Makefile
++++ b/arch/powerpc/Makefile
+@@ -152,7 +152,7 @@ CFLAGS-$(CONFIG_GENERIC_CPU) += -mcpu=power8
+ CFLAGS-$(CONFIG_GENERIC_CPU) += $(call cc-option,-mtune=power9,-mtune=power8)
+ else
+ CFLAGS-$(CONFIG_GENERIC_CPU) += $(call cc-option,-mtune=power7,$(call cc-option,-mtune=power5))
+-CFLAGS-$(CONFIG_GENERIC_CPU) += $(call cc-option,-mcpu=power5,-mcpu=power4)
++CFLAGS-$(CONFIG_GENERIC_CPU) += -mcpu=power4
+ endif
+ else ifdef CONFIG_PPC_BOOK3E_64
+ CFLAGS-$(CONFIG_GENERIC_CPU) += -mcpu=powerpc64
+-- 
+2.37.2
 
-It's for "generic" kernel so we set low minimum but higher tune,
-assuming that people would usually have newer, so it was already
-doing -mtune=3Dpower7.
-
-We could make a specific 970/G5 entry though, since those still
-have users.
-
-> > Big endian drops -mcpu=3Dpower4 in favour of power5. Effectively the
-> > minimum compiler version means power5 was always being selected here,
-> > so this should not change anything. 970 / G5 code generation does not
-> > seem to have been a problem with -mcpu=3Dpower5, but it's possible we
-> > should go back to power4 to be really safe.
->
-> Yes, -mcpu=3Dpower5 code does *not* run on 970, if you are unlucky enough
-> that the compiler does something smart with popcntb (the sole non-float
-> insn new on p5, not counting hrfid).
->
-> > +# -mcpu=3Dpower5 should generate 970 compatible kernel code
->
-> It doesn't.  Even if it did, it would need more explanation!
-
-Okay, sounds like we should go back to power4.
-
-Thanks,
-Nick
