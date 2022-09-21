@@ -2,79 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91DE05BFD26
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Sep 2022 13:46:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A7705BFE10
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Sep 2022 14:38:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MXc7B1Xn5z3c8p
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Sep 2022 21:45:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MXdHX73yRz3c4S
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Sep 2022 22:38:16 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=QLHjMVjM;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=G0hIRewB;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=u3uBtj1m;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=/m0exgHk;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=tzimmermann@suse.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2001:67c:2178:6::1c; helo=smtp-out1.suse.de; envelope-from=tzimmermann@suse.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=QLHjMVjM;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=G0hIRewB;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=u3uBtj1m;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=/m0exgHk;
 	dkim-atps=neutral
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+X-Greylist: delayed 3136 seconds by postgrey-1.36 at boromir; Wed, 21 Sep 2022 22:37:38 AEST
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MXc6Y1Nmpz2yjC
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Sep 2022 21:45:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MXdGp6kgHz30Bp
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Sep 2022 22:37:38 +1000 (AEST)
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 54FFE21AB3;
-	Wed, 21 Sep 2022 11:45:13 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 815F821AE9;
+	Wed, 21 Sep 2022 12:37:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1663760713; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1663763854; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=idEXkueM5dC+SdaLjxK4VFV+c2cSRzdpu/DUyStVyLw=;
-	b=QLHjMVjMI0trQkmtixjQSBwCnfh/2m55XWaJYsnTZupAQRBzkewNWjsnICU4q4nPFfxXSg
-	c4Wdn7i4Mg2iwmkl2ioCk+7tWBBSBFEveLsTCnQOYXzPt4AuuNDfWrG7tPJe2ru7z8p7RW
-	Xyox63PfYDG2ZPYSaDxYhZshY7uBICE=
+	bh=1DQcj5L4TAl4uuX44y/RQFf53uG70ciwYuYneMltK0k=;
+	b=u3uBtj1mQy5m2OjMSwkR/SMELSQs0A/uVMMItcHdK4zoguCGv+JSURzBLY86b/Z/ziUhOj
+	40y7uDPumhzVZBqbd+872GIqscWQ+sG3WhaY4Z2TzeGomRm0NcBC0VJ4fe9+/oD/Oukz2j
+	piYoYYg+ROn6gRcnLfFcDjJlRKZs4RU=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1663760713;
+	s=susede2_ed25519; t=1663763854;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=idEXkueM5dC+SdaLjxK4VFV+c2cSRzdpu/DUyStVyLw=;
-	b=G0hIRewB4OoaWpntTqOsb4SdkIJb8UDZP+ZXM4d4Fbj3GAQ82Sb/Hb1DgFs31ul+45XzgU
-	mO/3otFzEfaiEUCg==
+	bh=1DQcj5L4TAl4uuX44y/RQFf53uG70ciwYuYneMltK0k=;
+	b=/m0exgHk/ZsyD2YhoI1SXe1YcyFLrt+wOBv5Zl9DLugUkvwqtzdrhJNYBYwlifyNH+DYm5
+	pcMECEzG63BCqjBw==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 1D47F13A00;
-	Wed, 21 Sep 2022 11:45:13 +0000 (UTC)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 39EA213A89;
+	Wed, 21 Sep 2022 12:37:34 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
 	by imap2.suse-dmz.suse.de with ESMTPSA
-	id dsJlBkn5KmP4CgAAMHmgww
-	(envelope-from <tzimmermann@suse.de>); Wed, 21 Sep 2022 11:45:13 +0000
-Message-ID: <1946b9c3-f90d-a521-40e9-dfcde2b96950@suse.de>
-Date: Wed, 21 Sep 2022 13:45:12 +0200
+	id nQBLDY4FK2NIJAAAMHmgww
+	(envelope-from <tzimmermann@suse.de>); Wed, 21 Sep 2022 12:37:34 +0000
+Message-ID: <39e692cd-717a-a1f2-d330-7ff14cb9d1eb@suse.de>
+Date: Wed, 21 Sep 2022 14:37:33 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.2.2
-Subject: Re: [PATCH v2 08/10] drm/ofdrm: Add CRTC state
+Subject: Re: [PATCH v2 09/10] drm/ofdrm: Add per-model device function
 Content-Language: en-US
-To: Javier Martinez Canillas <javierm@redhat.com>, airlied@linux.ie,
- daniel@ffwll.ch, deller@gmx.de, maxime@cerno.tech, sam@ravnborg.org,
- msuchanek@suse.de, mpe@ellerman.id.au, benh@kernel.crashing.org,
- paulus@samba.org, geert@linux-m68k.org, mark.cave-ayland@ilande.co.uk
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ =?UTF-8?Q?Michal_Such=c3=a1nek?= <msuchanek@suse.de>,
+ Javier Martinez Canillas <javierm@redhat.com>
 References: <20220720142732.32041-1-tzimmermann@suse.de>
- <20220720142732.32041-9-tzimmermann@suse.de>
- <3fb4d471-2653-07a6-8fbd-f59da6c113e0@redhat.com>
+ <20220720142732.32041-10-tzimmermann@suse.de>
+ <7b1a2807-59c7-d524-af8e-1ec634c740a7@redhat.com>
+ <20220726144024.GP17705@kitsune.suse.cz>
+ <a9822ef5fba5599ddcee5daa4dbd17d8aaca8390.camel@kernel.crashing.org>
 From: Thomas Zimmermann <tzimmermann@suse.de>
-In-Reply-To: <3fb4d471-2653-07a6-8fbd-f59da6c113e0@redhat.com>
+In-Reply-To: <a9822ef5fba5599ddcee5daa4dbd17d8aaca8390.camel@kernel.crashing.org>
 Content-Type: multipart/signed; micalg=pgp-sha256;
  protocol="application/pgp-signature";
- boundary="------------FlUm8BeuCnLB3E0sIdPKAcvW"
+ boundary="------------J7ZJQ22hMiBNS7g8WBOOaqnQ"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,90 +88,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-fbdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, dri-devel@lists.freedesktop.org
+Cc: linux-fbdev@vger.kernel.org, airlied@linux.ie, deller@gmx.de, mark.cave-ayland@ilande.co.uk, linuxppc-dev@lists.ozlabs.org, dri-devel@lists.freedesktop.org, paulus@samba.org, maxime@cerno.tech, daniel@ffwll.ch, geert@linux-m68k.org, sam@ravnborg.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------FlUm8BeuCnLB3E0sIdPKAcvW
-Content-Type: multipart/mixed; boundary="------------CBRzefQJQXLs6PLdW0uG9NrQ";
+--------------J7ZJQ22hMiBNS7g8WBOOaqnQ
+Content-Type: multipart/mixed; boundary="------------tFMA1N913dYeGh59nKAste9g";
  protected-headers="v1"
 From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Javier Martinez Canillas <javierm@redhat.com>, airlied@linux.ie,
- daniel@ffwll.ch, deller@gmx.de, maxime@cerno.tech, sam@ravnborg.org,
- msuchanek@suse.de, mpe@ellerman.id.au, benh@kernel.crashing.org,
- paulus@samba.org, geert@linux-m68k.org, mark.cave-ayland@ilande.co.uk
-Cc: linux-fbdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ =?UTF-8?Q?Michal_Such=c3=a1nek?= <msuchanek@suse.de>,
+ Javier Martinez Canillas <javierm@redhat.com>
+Cc: airlied@linux.ie, daniel@ffwll.ch, deller@gmx.de, maxime@cerno.tech,
+ sam@ravnborg.org, mpe@ellerman.id.au, paulus@samba.org,
+ geert@linux-m68k.org, mark.cave-ayland@ilande.co.uk,
+ linux-fbdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
  dri-devel@lists.freedesktop.org
-Message-ID: <1946b9c3-f90d-a521-40e9-dfcde2b96950@suse.de>
-Subject: Re: [PATCH v2 08/10] drm/ofdrm: Add CRTC state
+Message-ID: <39e692cd-717a-a1f2-d330-7ff14cb9d1eb@suse.de>
+Subject: Re: [PATCH v2 09/10] drm/ofdrm: Add per-model device function
 References: <20220720142732.32041-1-tzimmermann@suse.de>
- <20220720142732.32041-9-tzimmermann@suse.de>
- <3fb4d471-2653-07a6-8fbd-f59da6c113e0@redhat.com>
-In-Reply-To: <3fb4d471-2653-07a6-8fbd-f59da6c113e0@redhat.com>
+ <20220720142732.32041-10-tzimmermann@suse.de>
+ <7b1a2807-59c7-d524-af8e-1ec634c740a7@redhat.com>
+ <20220726144024.GP17705@kitsune.suse.cz>
+ <a9822ef5fba5599ddcee5daa4dbd17d8aaca8390.camel@kernel.crashing.org>
+In-Reply-To: <a9822ef5fba5599ddcee5daa4dbd17d8aaca8390.camel@kernel.crashing.org>
 
---------------CBRzefQJQXLs6PLdW0uG9NrQ
+--------------tFMA1N913dYeGh59nKAste9g
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: base64
 
-SGkNCg0KQW0gMjYuMDcuMjIgdW0gMTU6MzYgc2NocmllYiBKYXZpZXIgTWFydGluZXogQ2Fu
-aWxsYXM6DQo+IE9uIDcvMjAvMjIgMTY6MjcsIFRob21hcyBaaW1tZXJtYW5uIHdyb3RlOg0K
-Pj4gQWRkIGEgZGVkaWNhdGVkIENSVEMgc3RhdGUgdG8gb2Zkcm0gdG8gbGF0ZXIgc3RvcmUg
-aW5mb3JtYXRpb24gZm9yDQo+PiBwYWxldHRlIHVwZGF0ZXMuDQo+Pg0KPj4gU2lnbmVkLW9m
-Zi1ieTogVGhvbWFzIFppbW1lcm1hbm4gPHR6aW1tZXJtYW5uQHN1c2UuZGU+DQo+PiAtLS0N
-Cj4+ICAgZHJpdmVycy9ncHUvZHJtL3Rpbnkvb2Zkcm0uYyB8IDYyICsrKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKystLQ0KPj4gICANCj4gDQo+IFJldmlld2VkLWJ5OiBKYXZp
-ZXIgTWFydGluZXogQ2FuaWxsYXMgPGphdmllcm1AcmVkaGF0LmNvbT4NCj4gDQo+IFsuLi5d
-DQo+IA0KPj4gK3N0YXRpYyB2b2lkIG9mZHJtX2NydGNfcmVzZXQoc3RydWN0IGRybV9jcnRj
-ICpjcnRjKQ0KPj4gK3sNCj4+ICsJc3RydWN0IG9mZHJtX2NydGNfc3RhdGUgKm9mZHJtX2Ny
-dGNfc3RhdGU7DQo+PiArDQo+PiArCWlmIChjcnRjLT5zdGF0ZSkgew0KPj4gKwkJb2Zkcm1f
-Y3J0Y19zdGF0ZV9kZXN0cm95KHRvX29mZHJtX2NydGNfc3RhdGUoY3J0Yy0+c3RhdGUpKTsN
-Cj4+ICsJCWNydGMtPnN0YXRlID0gTlVMTDsgLyogbXVzdCBiZSBzZXQgdG8gTlVMTCBoZXJl
-ICovDQo+PiArCX0NCj4+ICsNCj4+ICsJb2Zkcm1fY3J0Y19zdGF0ZSA9IGt6YWxsb2Moc2l6
-ZW9mKCpvZmRybV9jcnRjX3N0YXRlKSwgR0ZQX0tFUk5FTCk7DQo+PiArCWlmICghb2Zkcm1f
-Y3J0Y19zdGF0ZSkNCj4+ICsJCXJldHVybjsNCj4+ICsJX19kcm1fYXRvbWljX2hlbHBlcl9j
-cnRjX3Jlc2V0KGNydGMsICZvZmRybV9jcnRjX3N0YXRlLT5iYXNlKTsNCj4+ICt9DQo+PiAr
-DQo+IA0KPiBJTU8gdGhpcyBmdW5jdGlvbiBpcyBoYXJkIHRvIHJlYWQsIEkgd291bGQgaW5z
-dGVhZCB3cml0ZSBpdCBhcyBmb2xsb3dpbmc6DQo+IA0KPiBzdGF0aWMgdm9pZCBvZmRybV9j
-cnRjX3Jlc2V0KHN0cnVjdCBkcm1fY3J0YyAqY3J0YykNCj4gew0KPiAgICAgICAgICBzdHJ1
-Y3Qgb2Zkcm1fY3J0Y19zdGF0ZSAqb2Zkcm1fY3J0Y19zdGF0ZSA9IGt6YWxsb2Moc2l6ZW9m
-KCpvZmRybV9jcnRjX3N0YXRlKSwgR0ZQX0tFUk5FTCk7DQo+IA0KPiAJaWYgKCFvZmRybV9j
-cnRjX3N0YXRlKQ0KPiAJCXJldHVybjsNCj4gDQo+ICAgICAgICAgIGlmIChjcnRjLT5zdGF0
-ZSkgew0KPiAgICAgICAgICAgICAgICAgIG9mZHJtX2NydGNfc3RhdGVfZGVzdHJveSh0b19v
-ZmRybV9jcnRjX3N0YXRlKGNydGMtPnN0YXRlKSk7DQo+IAkJY3J0Yy0+c3RhdGUgPSBOVUxM
-OyAvKiBtdXN0IGJlIHNldCB0byBOVUxMIGhlcmUgKi8NCj4gCX0NCj4gDQo+ICAgICAgICAg
-IF9fZHJtX2F0b21pY19oZWxwZXJfY3J0Y19yZXNldChjcnRjLCAmb2Zkcm1fY3J0Y19zdGF0
-ZS0+YmFzZSk7DQo+IH0NCj4gDQo+IEFsc28gd2l0aCB0aGF0IGZvcm0gSSB0aGluayB0aGF0
-IHRoZSBjcnRjLT5zdGF0ZSA9IE5VTEwgY291bGQganVzdCBiZSBkcm9wcGVkID8NCg0KSSBv
-bmNlIGhhZCB0byBhZGQgdGhpcyBsaW5lIHRvIGEgZHJpdmVyIHRvIG1ha2UgdGhlIERSTSBo
-ZWxwZXJzIHdvcmsuIA0KQnV0IEkgY2Fubm90IGZpbmQgYW55IGxvbmdlciB3aHkuIE1heWJl
-IGl0J3MgYmVlbiByZXNvbHZlZCBtZWFud2hpbGUuDQoNCkJlc3QgcmVnYXJkcw0KVGhvbWFz
-DQoNCj4gDQoNCi0tIA0KVGhvbWFzIFppbW1lcm1hbm4NCkdyYXBoaWNzIERyaXZlciBEZXZl
-bG9wZXINClNVU0UgU29mdHdhcmUgU29sdXRpb25zIEdlcm1hbnkgR21iSA0KTWF4ZmVsZHN0
-ci4gNSwgOTA0MDkgTsO8cm5iZXJnLCBHZXJtYW55DQooSFJCIDM2ODA5LCBBRyBOw7xybmJl
-cmcpDQpHZXNjaMOkZnRzZsO8aHJlcjogSXZvIFRvdGV2DQo=
+SGkNCg0KQW0gMDUuMDguMjIgdW0gMDI6MjIgc2NocmllYiBCZW5qYW1pbiBIZXJyZW5zY2ht
+aWR0Og0KPiBPbiBUdWUsIDIwMjItMDctMjYgYXQgMTY6NDAgKzAyMDAsIE1pY2hhbCBTdWNo
+w6FuZWsgd3JvdGU6DQo+PiBIZWxsbywNCj4+DQo+PiBPbiBUdWUsIEp1bCAyNiwgMjAyMiBh
+dCAwMzozODozN1BNICswMjAwLCBKYXZpZXIgTWFydGluZXogQ2FuaWxsYXMgd3JvdGU6DQo+
+Pj4gT24gNy8yMC8yMiAxNjoyNywgVGhvbWFzIFppbW1lcm1hbm4gd3JvdGU6DQo+Pj4+IEFk
+ZCBhIHBlci1tb2RlbCBkZXZpY2UtZnVuY3Rpb24gc3RydWN0dXJlIGluIHByZXBhcmF0aW9u
+IG9mIGFkZGluZw0KPj4+PiBjb2xvci1tYW5hZ2VtZW50IHN1cHBvcnQuIERldGVjdGlvbiBv
+ZiB0aGUgaW5kaXZpZHVhbCBtb2RlbHMgaGFzIGJlZW4NCj4+Pj4gdGFrZW4gZnJvbSBmYmRl
+didzIG9mZmIuDQo+Pj4+DQo+Pj4+IFNpZ25lZC1vZmYtYnk6IFRob21hcyBaaW1tZXJtYW5u
+IDx0emltbWVybWFubkBzdXNlLmRlPg0KPj4+PiAtLS0NCj4+Pg0KPj4+IFJldmlld2VkLWJ5
+OiBKYXZpZXIgTWFydGluZXogQ2FuaWxsYXMgPGphdmllcm1AcmVkaGF0LmNvbT4NCj4+Pg0K
+Pj4+IFsuLi5dDQo+Pj4NCj4+Pj4gK3N0YXRpYyBib29sIGlzX2F2aXZvKF9fYmUzMiB2ZW5k
+b3IsIF9fYmUzMiBkZXZpY2UpDQo+Pj4+ICt7DQo+Pj4+ICsJLyogVGhpcyB3aWxsIG1hdGNo
+IG1vc3QgUjV4eCAqLw0KPj4+PiArCXJldHVybiAodmVuZG9yID09IDB4MTAwMikgJiYNCj4+
+Pj4gKwkgICAgICAgKChkZXZpY2UgPj0gMHg3MTAwICYmIGRldmljZSA8IDB4NzgwMCkgfHwg
+KGRldmljZSA+PSAweDk0MDApKTsNCj4+Pj4gK30NCj4+Pg0KPj4+IE1heWJlIGFkZCBzb21l
+IGNvbnN0YW50IG1hY3JvcyB0byBub3QgaGF2ZSB0aGVzZSBtYWdpYyBudW1iZXJzID8NCj4+
+DQo+PiBUaGlzIGlzIGJhc2VkIG9uIHRoZSBleGlzdGluZyBmYmRldiBpbXBsZW1lbnRhdGlv
+bidzIG1hZ2ljIG51bWJlcnM6DQo+Pg0KPj4gZHJpdmVycy92aWRlby9mYmRldi9vZmZiLmM6
+ICAgICAgICAgICAgICAgICAoKCpkaWQgPj0gMHg3MTAwICYmICpkaWQgPCAweDc4MDApIHx8
+DQo+Pg0KPj4gT2YgY291cnNlLCBpdCB3b3VsZCBiZSBncmVhdCBpZiBzb21lYm9keSBrbm93
+bGVkZ2VhYmxlIGNvdWxkIGNsYXJpZnkNCj4+IHRob3NlLg0KPiANCj4gSSBkb24ndCB0aGlu
+ayBhbnlib2R5IHJlbWVtYmVycyA6LSkgVmVuZG9yIDB4MTAwMiBpcyBQQ0lfVkVORE9SX0lE
+X0FUSSwNCg0KSSBkbyA6KQ0KDQo+IGJ1dCB0aGUgcmVzdCBpcyBiYXNpY2FsbHkgcmFuZ2Vz
+IG9mIFBDSSBJRHMgZm9yIHdoaWNoIHdlIGRvbid0IGhhdmUNCj4gc3ltYm9saWMgY29uc3Rh
+bnRzLg0KDQpTaG91bGQgd2UgYWRkIHRoZW0gdG8gdGhlIG9mZmljaWFsIGxpc3QgaW4gcGNp
+X2lkcy5oPyAgSSBjYW5ub3QgZmluZCANCjB4NzgwMC4gVGhlIG90aGVycyBhcmUgUjUyMCBh
+bmQgUjYwMC4NCg0KQmVzdCByZWdhcmRzDQpUaG9tYXMNCg0KPiANCj4gQ2hlZXJzLA0KPiBC
+ZW4uDQo+IA0KDQotLSANClRob21hcyBaaW1tZXJtYW5uDQpHcmFwaGljcyBEcml2ZXIgRGV2
+ZWxvcGVyDQpTVVNFIFNvZnR3YXJlIFNvbHV0aW9ucyBHZXJtYW55IEdtYkgNCk1heGZlbGRz
+dHIuIDUsIDkwNDA5IE7DvHJuYmVyZywgR2VybWFueQ0KKEhSQiAzNjgwOSwgQUcgTsO8cm5i
+ZXJnKQ0KR2VzY2jDpGZ0c2bDvGhyZXI6IEl2byBUb3Rldg0K
 
---------------CBRzefQJQXLs6PLdW0uG9NrQ--
+--------------tFMA1N913dYeGh59nKAste9g--
 
---------------FlUm8BeuCnLB3E0sIdPKAcvW
+--------------J7ZJQ22hMiBNS7g8WBOOaqnQ
 Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
 Content-Description: OpenPGP digital signature
 Content-Disposition: attachment; filename="OpenPGP_signature"
 
 -----BEGIN PGP SIGNATURE-----
 
-wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmMq+UgFAwAAAAAACgkQlh/E3EQov+CH
-ng/9GJR9WyP08CLQ+u7aFDk/QkDScbHixaIUwb89p9KC2hbg2lQLuLEkYAGRcg5chRnIPOVmCLyf
-1jlKDsGdd7H/WjwJMDMxzNjrX6AyGCYpuBa0iXGPeZ2ErpgQqyH0UUPUQvugqCHXSpoc+qRaKutP
-6ITjNmN+M6F2NgNzwAduhNUwQ8SbdZQp1AmNwjWn2zbeJJ0ambEJD0qRChayq/2ackWdRMDCU/hS
-pt3sMhVtvtCZrblJZ7nfx9+O295zWDCYeEKrYBJ0XEO5T8jqrHllqdbiKLF//ke/qMIBzZ6wN2Yf
-ZNxe4weyCJdPkUXLxGzt6aJrk1KWhj6d6aswyj22ucbsjZZZaHmPYXiXQGWM01J6v80hTmYuL1Ii
-RDw8myDNZQCGdJ2aXor9dzN1prJ/yUeQ09Cm5Rp+fcZAuBRXyXvxuh5XErMQA9urLWAPORSN38Ra
-/W7J2YyUJTzst+crA69RyxeJp4H9ZHNLRjCKbt2uuxCQdqr/puR3/A4pOBvMgfns/yswdPztiTG8
-dtaJDHU55NCUwJSEarMolF3VI8e3qzAsCXWMMA3+gptyat07oxQ4h6wzEmF6ZbH3vmRaxIAZvIPv
-Ll0Kb2D9dlerldXbIBMCsU/mZjg73WJXGkYMTViJM9M/8SayMvXdt03Th7fGld3l7Ivu2pv8e8HD
-fs8=
-=Frl4
+wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmMrBY0FAwAAAAAACgkQlh/E3EQov+BL
+FRAAla16EWn6KwL9Ar+FVldXx4f2y1XdVqUBNapsPFs48Ft7QgcB4X0LorN7n2RAJ4ag/so4kvWU
+kc7lrt+vJx+MYEH2NqsN0MnXLtbmbVLCR4nzWOEduKY2VngZU/DJIS2vBbDbXlJgI/jebEMGX3Ao
+SqZUBmgqTXWEJOeyzZkf+tI5DaZtIHQVwMj8Zlsv9sMc02ya7YHsblZRR97uxP/0fUJGVTUhTeJk
+D04uZ5iTk/iJuj+j+sURQDWPZFMuRlLrK4kqqs1drK0RE79BRUdw1snIQLkbXOohna9gF8Fj8g4M
+t7UFmsvUdRqIbrWZrKCaAGZMP1t/nXGcTMvfj8LXlafSzZbvnnhGJeuyI/AB4XDTTNMoP7j++18o
+EwUqWhN0VP/luO+SV4WC+4BYgIOqtu+QiTsQUzp1XO0ML650eCj25XpW55UHDQuaZ8pK9YezZXbT
+D2orSQf8nVH5P27dxXjJ9OMoSaIH+wMccI53QgWU2vS/+UxMh+WpyImRGg4t9KgCVBt3uj4gGUzq
+DlGOZbpwYD2tJy5PBqQ7i+sPU70KO8CHTwkrU8e7dzxjAyZ6fTN407zmNyPjJoOdmpqXKMnuIITJ
+AFTpobMsnjcaUWqw9Q3xtdji+1iu6/dooTLeTEn7HvB9SbFBPbI6Xu8xCFGKdOCKB1Y55JO1EBe6
++b0=
+=4BcL
 -----END PGP SIGNATURE-----
 
---------------FlUm8BeuCnLB3E0sIdPKAcvW--
+--------------J7ZJQ22hMiBNS7g8WBOOaqnQ--
