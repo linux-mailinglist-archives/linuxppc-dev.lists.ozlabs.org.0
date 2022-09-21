@@ -2,65 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DF725BF23A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Sep 2022 02:36:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8440F5BF23B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Sep 2022 02:37:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MXKH43J8bz3fDC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Sep 2022 10:36:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MXKHk3qPYz3dyJ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Sep 2022 10:37:22 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=grJuuh2+;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=ARUifQn8;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::54a; helo=mail-pg1-x54a.google.com; envelope-from=3uvsqywykddooawjfyckkcha.ykihejqtlly-zarheopo.kvhwxo.knc@flex--seanjc.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::64a; helo=mail-pl1-x64a.google.com; envelope-from=3u1sqywykddwqcylhaemmejc.amkjglsvnna-bctjgqrq.mxjyzq.mpe@flex--seanjc.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=grJuuh2+;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=ARUifQn8;
 	dkim-atps=neutral
-Received: from mail-pg1-x54a.google.com (mail-pg1-x54a.google.com [IPv6:2607:f8b0:4864:20::54a])
+Received: from mail-pl1-x64a.google.com (mail-pl1-x64a.google.com [IPv6:2607:f8b0:4864:20::64a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MXKBh11ktz3c2N
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Sep 2022 10:32:59 +1000 (AEST)
-Received: by mail-pg1-x54a.google.com with SMTP id f4-20020a636a04000000b0043a18cf1a5aso2507916pgc.14
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Sep 2022 17:32:59 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MXKBk0C1yz3c1N
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Sep 2022 10:33:01 +1000 (AEST)
+Received: by mail-pl1-x64a.google.com with SMTP id b11-20020a170902d50b00b0017828988079so2729985plg.21
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Sep 2022 17:33:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date;
-        bh=MbPfwZWv+I6kc3yY72JCQSO5yCJ8JCb5ELGKfLOjwok=;
-        b=grJuuh2+k9rqNemRgEr/i3C9qelUa8pmjrIwpZzOZWsob4m9BMj0id2HZJEYNqX2vk
-         IyiBqggCegoMniVIEZ7ve0Pcy1+h2jKB9+MbFtK10I6z6o71JeWojaaos6m7WE8fir0j
-         heFLVTWw3UN27mkc0NRFrTsxNKdJe5TptRVjlgbhxvmnLYxPIxj71ZtTzy+8U9psEbMq
-         /DJvRQaVwnNJl+52DMbtmS4ycyYoramkBPdq9kNpcRPXozDD2tMcpY+VTWl4f/e0cZ1u
-         xUxifAHZRm7LM+0f4tqB8q/MJPB9s8lTaVH0t++C99WkByoXTjU2cYt2Zh/7y53Gwmu9
-         hSqg==
+        bh=qOL17Oc8lfNiT6vI1N2DgBeo2oQr9pvN4OAUhg4HlfA=;
+        b=ARUifQn8X722qfUwF91vggFYXNpMmdld6jHGucJn9mYIHgePg3e3ltjHazRJ7WJQIY
+         w+6+dDv/mxautN/CuWkRVIzUB4MM0mFVqAUofjmwyaRB9E3nNhDZAx6ZDYK3UkIvlcW3
+         K9NzDWtr9CpQ/CIsHl9VDcl9eNecHkOQ3A4eAV1FpyXScQBTQQwiNPVxGPrxUtBQTP6V
+         AEpBQWZgYOtijs1937kE9A8HMcoOQ+ZcnStpwMSDNJZXDvCTzuIS4CNbetfFaKrPYBbF
+         SNyUEVo0ACy2TKSphVy9cWwOnuMGoqVKl4ZpNYYdwpjQNgZOx/k9BLzDCMUkycF0nN5P
+         tZKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date;
-        bh=MbPfwZWv+I6kc3yY72JCQSO5yCJ8JCb5ELGKfLOjwok=;
-        b=X0f6GTfJmke1eA9ZgeiJ40kguNGO3YOquz/1tnI+Q8wCSvYwJmr2x7yGRt15ydpyUJ
-         t9UMZC7HZjMQzmpaaXP6Eex75tCfpT6UktF+X49hxgXobLGRGvHAae+ZhT6ndPRTDVef
-         K656P9jT+SRnd/lboc9dnpGp/68VYJZsKe3XhLey+iQWv1JJDg8NsGtD06bQYoQcr7XR
-         PRbOMAmTqG9wjYbgSNJ0z4fDmh/SVSDyMSS+bmuUbg4C9zFgOsUAEZKk2Q3QwFt7qRoI
-         Xd74S9OuKwt49z0Hc//VuOcyscxw+LvLrKx1N9/BLxwJpr58NyyivZyNs1AjzS7+/cv3
-         oW6A==
-X-Gm-Message-State: ACrzQf1jCxcF9Smze1Xh9wo45lbOln6SOgVVMvrEAsNiZ/YLaluSelO0
-	wd1XxwFig2aHLn30sUo8XCQKkD0bqLw=
-X-Google-Smtp-Source: AMsMyM7f/RJC1MtdX6LkmKjLrG4mZov+EsK6V2BR+rQVSc6X+vDgdbpWXXujI7vaEWcw3mjY8BTW5lUZVRw=
+        bh=qOL17Oc8lfNiT6vI1N2DgBeo2oQr9pvN4OAUhg4HlfA=;
+        b=VDFL+FDOwwhIlm5DsXNIWm27BwFyGZYnDJw/diRkBpYWCEZJI/gBKY2AhivFs72umg
+         W503cjA+QHZeN7EknmIoi8BuyHvLVoezyV1oHa4iLa51nwPrmaD1xgJDz/KA+qc1t+CB
+         REIx/vSWfz8RsGXH1ZFiCDDMIMWIU170L5QWPAKEBuCbkIkQZlbEEuE0LjAUl/72OI7g
+         7be+dY32yfgipxGA5o5pIUyrxVzfrEgOm4BKIKJt2BHT/SL2jv2pCx3gGJA2cG8xcOIp
+         Q8zKtkaGKk8nMPd4+q2aP7c/Zz0R/7mP+f8fjT/oQHAxM3ArQ+zDpVSkQvTcRMvHBWFr
+         Y4fg==
+X-Gm-Message-State: ACrzQf3TYYHBYajKavNAAPXbRVI8SADZuVdv5tRPb24L1zk4+RLA8BGM
+	syQEb4O+KcD5yX6Y9eRbIX8n1mhGLmA=
+X-Google-Smtp-Source: AMsMyM6CB910qkp43a3cP5VNkh9ZvqTlylmwVUImF03qdsZIEcBH6bFWk0KDb4437+crJl7uEogrf6c2DIk=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a17:902:dac7:b0:178:b5e0:3627 with SMTP id
- q7-20020a170902dac700b00178b5e03627mr2094501plx.147.1663720377687; Tue, 20
- Sep 2022 17:32:57 -0700 (PDT)
-Date: Wed, 21 Sep 2022 00:31:55 +0000
+ (user=seanjc job=sendgmr) by 2002:a17:903:26d4:b0:178:8de:fb5f with SMTP id
+ jg20-20020a17090326d400b0017808defb5fmr2230591plb.45.1663720379233; Tue, 20
+ Sep 2022 17:32:59 -0700 (PDT)
+Date: Wed, 21 Sep 2022 00:31:56 +0000
 In-Reply-To: <20220921003201.1441511-1-seanjc@google.com>
 Mime-Version: 1.0
 References: <20220921003201.1441511-1-seanjc@google.com>
 X-Mailer: git-send-email 2.37.3.968.ga6b4b080e4-goog
-Message-ID: <20220921003201.1441511-7-seanjc@google.com>
-Subject: [PATCH v4 06/12] KVM: SVM: Make an event request if INIT or SIPI is
- pending when GIF is set
+Message-ID: <20220921003201.1441511-8-seanjc@google.com>
+Subject: [PATCH v4 07/12] KVM: nVMX: Make an event request if INIT or SIPI is
+ pending on VM-Enter
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
 	Huacai Chen <chenhuacai@kernel.org>, 
@@ -86,31 +86,53 @@ Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linuxppc-dev@list
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Set KVM_REQ_EVENT if INIT or SIPI is pending when the guest enables GIF.
-INIT in particular is blocked when GIF=0 and needs to be processed when
-GIF is toggled to '1'.  This bug has been masked by (a) KVM calling
-->check_nested_events() in the core run loop and (b) hypervisors toggling
-GIF from 0=>1 only when entering guest mode (L1 entering L2).
+Evaluate interrupts, i.e. set KVM_REQ_EVENT, if INIT or SIPI is pending
+when emulating nested VM-Enter.  INIT is blocked while the CPU is in VMX
+root mode, but not in VMX non-root, i.e. becomes unblocked on VM-Enter.
+This bug has been masked by KVM calling ->check_nested_events() in the
+core run loop, but that hack will be fixed in the near future.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/svm/svm.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/kvm/vmx/nested.c | 18 ++++++------------
+ 1 file changed, 6 insertions(+), 12 deletions(-)
 
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index dd599afc85f5..58f0077d9357 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -2339,7 +2339,8 @@ void svm_set_gif(struct vcpu_svm *svm, bool value)
- 		enable_gif(svm);
- 		if (svm->vcpu.arch.smi_pending ||
- 		    svm->vcpu.arch.nmi_pending ||
--		    kvm_cpu_has_injectable_intr(&svm->vcpu))
-+		    kvm_cpu_has_injectable_intr(&svm->vcpu) ||
-+		    kvm_apic_has_pending_init_or_sipi(&svm->vcpu))
- 			kvm_make_request(KVM_REQ_EVENT, &svm->vcpu);
- 	} else {
- 		disable_gif(svm);
+diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+index 3a080051a4ec..5922531f6c52 100644
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -3377,6 +3377,8 @@ enum nvmx_vmentry_status nested_vmx_enter_non_root_mode(struct kvm_vcpu *vcpu,
+ 		(CPU_BASED_INTR_WINDOW_EXITING | CPU_BASED_NMI_WINDOW_EXITING);
+ 	if (likely(!evaluate_pending_interrupts) && kvm_vcpu_apicv_active(vcpu))
+ 		evaluate_pending_interrupts |= vmx_has_apicv_interrupt(vcpu);
++	if (!evaluate_pending_interrupts)
++		evaluate_pending_interrupts |= kvm_apic_has_pending_init_or_sipi(vcpu);
+ 
+ 	if (!vmx->nested.nested_run_pending ||
+ 	    !(vmcs12->vm_entry_controls & VM_ENTRY_LOAD_DEBUG_CONTROLS))
+@@ -3457,18 +3459,10 @@ enum nvmx_vmentry_status nested_vmx_enter_non_root_mode(struct kvm_vcpu *vcpu,
+ 	}
+ 
+ 	/*
+-	 * If L1 had a pending IRQ/NMI until it executed
+-	 * VMLAUNCH/VMRESUME which wasn't delivered because it was
+-	 * disallowed (e.g. interrupts disabled), L0 needs to
+-	 * evaluate if this pending event should cause an exit from L2
+-	 * to L1 or delivered directly to L2 (e.g. In case L1 don't
+-	 * intercept EXTERNAL_INTERRUPT).
+-	 *
+-	 * Usually this would be handled by the processor noticing an
+-	 * IRQ/NMI window request, or checking RVI during evaluation of
+-	 * pending virtual interrupts.  However, this setting was done
+-	 * on VMCS01 and now VMCS02 is active instead. Thus, we force L0
+-	 * to perform pending event evaluation by requesting a KVM_REQ_EVENT.
++	 * Re-evaluate pending events if L1 had a pending IRQ/NMI/INIT/SIPI
++	 * when it executed VMLAUNCH/VMRESUME, as entering non-root mode can
++	 * effectively unblock various events, e.g. INIT/SIPI cause VM-Exit
++	 * unconditionally.
+ 	 */
+ 	if (unlikely(evaluate_pending_interrupts))
+ 		kvm_make_request(KVM_REQ_EVENT, vcpu);
 -- 
 2.37.3.968.ga6b4b080e4-goog
 
