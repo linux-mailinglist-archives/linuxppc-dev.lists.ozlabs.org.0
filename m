@@ -2,51 +2,91 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CA375E6DB0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Sep 2022 23:09:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E82435E6DC4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Sep 2022 23:12:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MYSb30wbRz3c5p
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 07:09:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MYSf466fhz3cFd
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 07:12:12 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Ail1Z8lW;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport header.b=X0T/4vKD;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=cisco.com (client-ip=173.37.86.76; helo=rcdn-iport-5.cisco.com; envelope-from=danielwa@cisco.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Ail1Z8lW;
+	dkim=pass (1024-bit key; unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport header.b=X0T/4vKD;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+Received: from rcdn-iport-5.cisco.com (rcdn-iport-5.cisco.com [173.37.86.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MYSZQ4zltz2xJS
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Sep 2022 07:09:02 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 08D3CB82A9B;
-	Thu, 22 Sep 2022 21:08:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F2E9C433C1;
-	Thu, 22 Sep 2022 21:08:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1663880935;
-	bh=Gs1easMEUixl0oFKypteShhqardlbobN+iwArzVzzxI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=Ail1Z8lWsVe2AZcWMJhdoj5Dv1rS1X+P6kDATJnbQGX6WpxbizbzFaGOgsFfzeThS
-	 VrLZN5RhwDn8YVI/6RnyAulzF6fn6Xvfq+dQrL4tR0FGqVk9Csr4C0YvJl2UTy3YvB
-	 EPLI81GxHt1kd2qC8XJ/uBwegiF2nO7SnLL4BGziDDgXXmViIH2+zY7t2RsN9HXQ4q
-	 ObwF6dRDlMai49sEHgBSq80J96Wf6guMvcarpZiZOaW1LKhvF70HDrEzroeZnFnO90
-	 6aa3MqfIT3b3PG09+phRqvPcfOoTxGZnImar0DzMmwgdLDVY5BRk/98zH9LiMhlH0w
-	 eyrtuPJ4rN+EA==
-Date: Thu, 22 Sep 2022 16:08:53 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Zhuo Chen <chenzhuo.1@bytedance.com>
-Subject: Re: [PATCH 2/3] PCI/ERR: Clear fatal status in pcie_do_recovery()
-Message-ID: <20220922210853.GA1335665@bhelgaas>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MYSdS3RBjz304n
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Sep 2022 07:11:36 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=cisco.com; i=@cisco.com; l=851; q=dns/txt; s=iport;
+  t=1663881100; x=1665090700;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=vganC7W5irzHuK0hffp/PseJz28ORkjAfA5hJ9l7l4g=;
+  b=X0T/4vKDISRdgFppQ36zVRJjJb1+LdD5LcydoZYHmu1jBX3j03F1PDMx
+   N4zWXfDlC66Cxq42tWdl6mZLrJCVcRG+8scTHamS4DC6EZZoL0HaLQXlU
+   pcUHcOAVU06kE64aVQPA9Evwbj/zPUYLHt1j4KeW1lF5jqqvXcv4fUgEm
+   g=;
+IronPort-Data: =?us-ascii?q?A9a23=3AUy0loqPIn6DGLK7vrR00lsFynXyQoLVcMsEvi?=
+ =?us-ascii?q?/4bfWQNrUon12BTyTMWW2DUaK3YZjPxLo1+b4i28B5S7cDdydJjG3M5pCpnJ?=
+ =?us-ascii?q?55oRWUpJjg4wn8dtEp+F+WbJK5cx5hYO4CowPwcFCeG/E/wa+a59BGQ6InRL?=
+ =?us-ascii?q?lbCIL+cUsxObVcMpBcJ0XqPqsZh6mJaqYHR7zCl4bsel/bi1GqNgFaYBI67B?=
+ =?us-ascii?q?5Wr83uDtNyq0N8RU8dXifpj5DcynFFNZH4TyD3YEpf2fmVUNrbSq+fr1rq1+?=
+ =?us-ascii?q?CbS+A0gT4/jmbfgeUpMSbnXVeSMoiMJAO753V4T/Wprj/tT2Pk0MS+7jx2Fl?=
+ =?us-ascii?q?tZwxdFSvLS7SBwiOevHn+F1vxxwQ3kjbP0aoueWSZS4mYnJp6HcSFPowvNzH?=
+ =?us-ascii?q?AQ7M4ww5Ol6GydN+OYeJTRLaQqM78qywbSmWqxvjNkiKMXDIowSoDdjwCvfA?=
+ =?us-ascii?q?PJgRorMK43G6MFZ1zosnM1DNejRatBfajd1ahnEJRpVNT8/DJM4gffthXTld?=
+ =?us-ascii?q?TBcgEyaqLBx4GXJygF1lr/3P7L9ft2MWNUQl1yd42HL5WL0BjkeNceD0nyE9?=
+ =?us-ascii?q?Hy2j+PClC+9X5gdfJW47vdCkkyPwXZVAxoTPXO/oP+kmlamUJdTJlI8/is1s?=
+ =?us-ascii?q?bN0816vR9PmGRqirxasuh8aRsoVFuwi8ymTxafOpQWUHG4JSnhGctNOnN9mG?=
+ =?us-ascii?q?xQp20WPktevAiZg2JWcSmqY3rOVqy6ifCYSMGkObDMFSg1D5MPsyKk/hxTOQ?=
+ =?us-ascii?q?9JLH6+wltDxFC/xyDDMtyE4wrsJhMgA1r6w+hbMinSxvfDhVAk/5i3UU3ij4?=
+ =?us-ascii?q?wc/Y5SqD6Sj6ULa9upHNIaUCF2Mpn8Vs8OF4/oJEInLmTHlaPoMGLWB5PufN?=
+ =?us-ascii?q?jDYx1l1EPEJ7Dmk/Tiqe4xd+ip5Im9yP80DPzTuZSfuVal5jHNIFGGhYakya?=
+ =?us-ascii?q?IWrBoF2i6PhDt/iEPvTa7JzjlFKXFfv1ElTiYS4hggBSHQRrJw=3D?=
+IronPort-HdrOrdr: =?us-ascii?q?A9a23=3A0r06i6lakzFvmjzxnh/v/ne4t2zpDfIp3D?=
+ =?us-ascii?q?Abv31ZSRFFG/FwWfrAoB0+726QtN9xYgBDpTnuAsO9qB/nmKKdpLNhWYtKPz?=
+ =?us-ascii?q?OW21dATrsC0WKK+VSJcBEWtNQ86U4KScZD4bPLYWSTSa3BkW+F+xFK+qjhzJ?=
+ =?us-ascii?q?yV?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0CHAwBDbIJi/5tdJa1aH2qBT4Ird1Q?=
+ =?us-ascii?q?9Q5M0giiRR4sdFIFoCwEBAQ0BATkJBAEBgU6DNAKFPgIlNAkOAQIEAQEBEgE?=
+ =?us-ascii?q?BBQEBAQIBBwSBCROFaA2GQwEFOj8QCxguVwYTgn6DFw+rR3iBM4EBg08BGBi?=
+ =?us-ascii?q?EGYFfBiSBGI5gJxyBSUSEPz6EKoZVBJVjOwNUgQUSgSFxAQgGBgcKBTIGAgw?=
+ =?us-ascii?q?YFAQCExJTHgITDAocDlQZDA8DEgMRAQcCCxIIFSwIAwIDCAMCAyMLAgMYCQc?=
+ =?us-ascii?q?KAx0IChwSEBQCBBMfCwgDGh8tCQIEDgNDCAsKAxEEAxMYCxYIEAQGAwkvDSg?=
+ =?us-ascii?q?LAxQPAQYDBgIFBQEDIAMUAwUnBwMhBwsmDQ0EHAcdAwMFJgMCAhsHAgIDAgY?=
+ =?us-ascii?q?XBgICcQooDQgECAQcHiUTBQIHMQUELwIeBAUGEQkCFgIGBAUCBAQWAgISCAI?=
+ =?us-ascii?q?IJxsHFjYZAQVdBgsJIxwsCwYFBhYDJlIGIgGVdgiBeYFBgj2SfIJijRiBL5x?=
+ =?us-ascii?q?7g1aBQ4lXlFZLEahGlmaNJ5lXAgQGBQIWgWE8gVkzGggbFYMjEz4ZD5cmhWo?=
+ =?us-ascii?q?kMQI5AgYLAQEDCZEaAQE?=
+X-IronPort-AV: E=Sophos;i="5.91,230,1647302400"; 
+   d="scan'208";a="805984209"
+Received: from rcdn-core-4.cisco.com ([173.37.93.155])
+  by rcdn-iport-5.cisco.com with ESMTP/TLS/DHE-RSA-SEED-SHA; 22 Sep 2022 21:10:29 +0000
+Received: from zorba ([10.25.129.98])
+	by rcdn-core-4.cisco.com (8.15.2/8.15.2) with ESMTPS id 28MLAQTc012966
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Thu, 22 Sep 2022 21:10:28 GMT
+Date: Thu, 22 Sep 2022 14:10:26 -0700
+From: Daniel Walker <danielwa@cisco.com>
+To: Sean Anderson <sean.anderson@seco.com>
+Subject: Re: [PATCH 0/8] generic command line v4
+Message-ID: <20220922211026.GW4320@zorba>
+References: <20210416040924.2882771-1-danielwa@cisco.com>
+ <b517fac5-2fdc-a8c9-75d0-174c67f5a2de@seco.com>
+ <20220922205334.GV4320@zorba>
+ <dcff9b0f-82c8-5aa7-0fff-b749a05fcb20@seco.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220901181634.99591-3-chenzhuo.1@bytedance.com>
+In-Reply-To: <dcff9b0f-82c8-5aa7-0fff-b749a05fcb20@seco.com>
+X-Outbound-SMTP-Client: 10.25.129.98, [10.25.129.98]
+X-Outbound-Node: rcdn-core-4.cisco.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,67 +98,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: allenbh@gmail.com, dave.jiang@intel.com, linux-scsi@vger.kernel.org, martin.petersen@oracle.com, linux-pci@vger.kernel.org, jejb@linux.ibm.com, jdmason@kudzu.us, james.smart@broadcom.com, fancer.lancer@gmail.com, linux-kernel@vger.kernel.org, ntb@lists.linux.dev, oohall@gmail.com, bhelgaas@google.com, dick.kennedy@broadcom.com, linuxppc-dev@lists.ozlabs.org
+Cc: Rob Herring <robh@kernel.org>, linux-efi@vger.kernel.org, Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>, devicetree@vger.kernel.org, linux-kbuild@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, x86@kernel.org, linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Sep 02, 2022 at 02:16:33AM +0800, Zhuo Chen wrote:
-> When state is pci_channel_io_frozen in pcie_do_recovery(),
-> the severity is fatal and fatal status should be cleared.
-> So we add pci_aer_clear_fatal_status().
-
-Seems sensible to me.  Did you find this by code inspection or by
-debugging a problem?  If the latter, it would be nice to mention the
-symptoms of the problem in the commit log.
-
-> Since pcie_aer_is_native() in pci_aer_clear_fatal_status()
-> and pci_aer_clear_nonfatal_status() contains the function of
-> 'if (host->native_aer || pcie_ports_native)', so we move them
-> out of it.
-
-Wrap commit log to fill 75 columns.
-
-> Signed-off-by: Zhuo Chen <chenzhuo.1@bytedance.com>
-> ---
->  drivers/pci/pcie/err.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
+On Thu, Sep 22, 2022 at 05:03:46PM -0400, Sean Anderson wrote:
 > 
-> diff --git a/drivers/pci/pcie/err.c b/drivers/pci/pcie/err.c
-> index 0c5a143025af..e0a8ade4c3fe 100644
-> --- a/drivers/pci/pcie/err.c
-> +++ b/drivers/pci/pcie/err.c
-> @@ -243,10 +243,14 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
->  	 * it is responsible for clearing this status.  In that case, the
->  	 * signaling device may not even be visible to the OS.
->  	 */
-> -	if (host->native_aer || pcie_ports_native) {
-> +	if (host->native_aer || pcie_ports_native)
->  		pcie_clear_device_status(dev);
-
-pcie_clear_device_status() doesn't check for pcie_aer_is_native()
-internally, but after 068c29a248b6 ("PCI/ERR: Clear PCIe Device Status
-errors only if OS owns AER") and aa344bc8b727 ("PCI/ERR: Clear AER
-status only when we control AER"), both callers check before calling
-it.
-
-I think we should move the check inside pcie_clear_device_status().
-That could be a separate preliminary patch.
-
-There are a couple other places (aer_root_reset() and
-get_port_device_capability()) that do the same check and could be
-changed to use pcie_aer_is_native() instead.  That could be another
-preliminary patch.
-
-
-> +	if (state == pci_channel_io_frozen)
-> +		pci_aer_clear_fatal_status(dev);
-> +	else
->  		pci_aer_clear_nonfatal_status(dev);
-> -	}
-> +
->  	pci_info(bridge, "device recovery successful\n");
->  	return status;
->  
-> -- 
-> 2.30.1 (Apple Git-130)
 > 
+> 
+> On 9/22/22 4:53 PM, Daniel Walker wrote:
+> > On Thu, Sep 22, 2022 at 04:45:01PM -0400, Sean Anderson wrote:
+> >> 
+> >> 
+> >> 
+> >> For an arm64 platform (after rebasing):
+> >> 
+> >> Tested-by: Sean Anderson <sean.anderson@seco.com>
+> > 
+> > Maybe I'll re-submit it.
+> > 
+> > Daniel
+> > 
+> 
+> There's still no way to extend the command line on ARM64, since the
+> existing method was removed in anticipation that your series would be
+> added. 
+> 
+> As recently as last month, someone's patch to add such support was
+> rejected for this reason [1].
+> 
+> --Sean
+> 
+> [1] https://lore.kernel.org/linux-arm-kernel/20220812084613.GA3107@willie-the-truck/
+
+
+I had no idea.. Thanks for pointing that out. I guess I will re-submit in that
+case.
+
+Daniel
