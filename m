@@ -1,77 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59B215E6FB7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 00:30:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C8945E704C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 01:45:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MYVN91ldTz2xy6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 08:30:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MYX2V2vR5z3c6T
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 09:45:06 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=C0FMWnH4;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=UoEi3MQn;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52d; helo=mail-pg1-x52d.google.com; envelope-from=akiyks@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::430; helo=mail-wr1-x430.google.com; envelope-from=irogers@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=C0FMWnH4;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=UoEi3MQn;
 	dkim-atps=neutral
-Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com [IPv6:2607:f8b0:4864:20::52d])
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MYGhs5Ph2z30D1
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Sep 2022 23:43:55 +1000 (AEST)
-Received: by mail-pg1-x52d.google.com with SMTP id q9so9154308pgq.8
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Sep 2022 06:43:55 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MYX1v5ZZ7z2xDN
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Sep 2022 09:44:34 +1000 (AEST)
+Received: by mail-wr1-x430.google.com with SMTP id bq9so17917542wrb.4
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Sep 2022 16:44:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:content-language:subject
-         :references:cc:to:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date;
-        bh=A1gPIGPkwtBGNAsou3191eDbQnV5HHWhy5YFxtQ8rL0=;
-        b=C0FMWnH4ugLgjQCous99pqe1wPHUAHr4+tONBDxgiuVY2C7QiPNnPy8wa85+aDYArY
-         Q9CcWmvTsaW+HVRDsMq8Sp+ZP6KRzG/AUCj5UKIlIj88xHEXOwewDKTrpgu/iG5TBEbI
-         IFyLdTZYLN/N51HRjK48hWY9hwA2EN/Px+Fwd6k73RqomjklcD7i16LKcfUQqSIUgNVI
-         wetzltHqurERKJWxlNQ+lWdXu6EQ/D4EvDXD/YNTo6gfKbdVBRSUzb0vpEvfWXzH6ehX
-         zhXZ+7l7tigtoN3rJZQwXP2cG4mFuQD+yspPrg2NCWkcuLxBXNCuZQ2DFusEgLHkhqg+
-         vsUg==
+        d=google.com; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date;
+        bh=ggfQdZjdAa827c+Q4ONwD92LhyjF+5a7nbXBS1iOpTY=;
+        b=UoEi3MQn1jWoFQNi3yggMKvZSsegg+k/b5oSYr33gLv/xFYjj/t2xVeqaVXeGHrDdI
+         8Y1EpUmdZtf84zjg8pimx/RdJs4t6qJQGioUXmsp5/rrzqra2Gg51/ercWI1cTfKgMqK
+         3oEbcI7BrUzRUFo1h/mWTC5WacY3a+WyNMvwegu8CS2VoVgkiwci5JHJ9UPb171lti7/
+         6D3ZxQm7tUd+gdPO+6pG91nUyVvyOMLsC4nQ4pTASdKHh61m5NbA41ey5Ulv+pfEBuio
+         DTcOel87mocnGxW6Lr9PU/AoGmttIA8bCaoKybDAzwOTRq/pQtcEvonlfyF3VmKRLMNo
+         e6eA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:content-language:subject
-         :references:cc:to:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=A1gPIGPkwtBGNAsou3191eDbQnV5HHWhy5YFxtQ8rL0=;
-        b=AmKMY17fJZm9uPMxvpiCbyCEOUuLlkbvbHDKlfnwX0xYm9Vzvml++FMpQy+8wFBBrz
-         cSI1VSkk3rM6BMdHmED0Z++mIT8oDAQcQ2YjCHfVcrpr/Li0xIEznFjLAKWMdNTydcvI
-         oZf3E8S98NETMLQiSPVmQ5p9fYwBnIGHEl10kNxIXgp40griIY/8aXSzgwOcS7XN1eUT
-         f0PRSqVDPe9DhCEoNyUZW7moWEhf81iRenzccxixxeefNP384b/Co/QYEGCst3mppIY2
-         SJz2cpgB2AE42cZyE06Oer//oakr+rOjeU9K7S6azN+p33YG52afTGi6EMyR6Jt+6G9i
-         WiVQ==
-X-Gm-Message-State: ACrzQf07OVwFUhW5UG3yceIeW5iXiaFcstW8ZkpD1qKlCdI0bzNUMG9H
-	s5MTC9KiEJw8K09EVYsXSto=
-X-Google-Smtp-Source: AMsMyM7AkwO3l8V5ynYvYZueIPngu0PrXh3//n/yokMVdyGKH8unhU1UjYRnlttNuuru0V/uT29V4Q==
-X-Received: by 2002:a05:6a00:15d4:b0:544:170c:4f5a with SMTP id o20-20020a056a0015d400b00544170c4f5amr3614064pfu.75.1663854232588;
-        Thu, 22 Sep 2022 06:43:52 -0700 (PDT)
-Received: from [192.168.11.9] (KD106167171201.ppp-bb.dion.ne.jp. [106.167.171.201])
-        by smtp.gmail.com with ESMTPSA id x125-20020a628683000000b0053e199aa99bsm4295515pfd.220.2022.09.22.06.43.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 22 Sep 2022 06:43:52 -0700 (PDT)
-Message-ID: <93343c05-f31e-cfbe-6650-8ea8d79e6d55@gmail.com>
-Date: Thu, 22 Sep 2022 22:43:43 +0900
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date;
+        bh=ggfQdZjdAa827c+Q4ONwD92LhyjF+5a7nbXBS1iOpTY=;
+        b=HA3P3ELJcS1tmD7n9jdMqNAVeElMTV28IfUhGD7U3CTorkrVMdvA10DD2nff2IUb0+
+         0MHjnej00sWsW8D+x0bNhB2s1hsrPEw/9EFmEoyuNYZp40eZBjwdaE3i8rMMnLBFhY5f
+         VqLwXzM/epfzArpub0K/GAxTcMt46CjzA/opt6/3zkGWzCu/GS5UKWDgpVWrPTIm8Jkw
+         7i3uWqQ2jltWqCMpZjBCWVH9k9J/4d/vF4/hrfeeb/F3WcAFo6eHUD2Q21jG3W/DvuDu
+         6ugb+H66AOEN1PX5ByZcgy94RcUyemqlx+EieXRtDNQfH5zyMlSwz7pPCNlZv+5Pz7Y4
+         imtQ==
+X-Gm-Message-State: ACrzQf2I7cF2CSelB7AJ3g6rSwZ4y9q/0beYKCmkWDA4vM35SZjP09Cv
+	T9XKU3kt6YIKSqGCpcApZctwfvSwFBvFGQMG76u17g==
+X-Google-Smtp-Source: AMsMyM6u/WuV0WiMixUedkRzYEe96mN+MeHLvNablSRwk/fwFB2OjE5y3sinLKe2odHdb8bGijJ50rWnK5BJOLHuSjM=
+X-Received: by 2002:adf:dd8f:0:b0:22a:84ab:4be3 with SMTP id
+ x15-20020adfdd8f000000b0022a84ab4be3mr3444502wrl.40.1663890265884; Thu, 22
+ Sep 2022 16:44:25 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-To: David Hildenbrand <david@redhat.com>
-References: <20220920122302.99195-2-david@redhat.com>
-Subject: Re: [PATCH v1 1/3] coding-style.rst: document BUG() and WARN() rules
- ("do not crash the kernel")
-Content-Language: en-US
-From: Akira Yokosawa <akiyks@gmail.com>
-In-Reply-To: <20220920122302.99195-2-david@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Mailman-Approved-At: Fri, 23 Sep 2022 08:29:47 +1000
+References: <20220921170839.21927-1-atrajeev@linux.vnet.ibm.com> <Yyy0W6CnPk7BkkCU@kernel.org>
+In-Reply-To: <Yyy0W6CnPk7BkkCU@kernel.org>
+From: Ian Rogers <irogers@google.com>
+Date: Thu, 22 Sep 2022 16:44:13 -0700
+Message-ID: <CAP-5=fUnmVXds0eR3x3u17VQHZJ_7Q5+yhpXhq1-542d6g1ezA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] tools/perf/tests: Fix string substitutions in build
+ id test
+To: Arnaldo Carvalho de Melo <acme@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,145 +75,190 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, bhe@redhat.com, corbet@lwn.net, Akira Yokosawa <akiyks@gmail.com>, dwaipayanray1@gmail.com, linux-doc@vger.kernel.org, npiggin@gmail.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, joe@perches.com, torvalds@linux-foundation.org, David.Laight@ACULAB.COM, jani.nikula@linux.intel.com, apw@canonical.com, lukas.bulwahn@gmail.com, akpm@linux-foundation.org, dyoung@redhat.com, mingo@kernel.org, vgoyal@redhat.com
+Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, rnsastry@linux.ibm.com, Adrian Hunter <adrian.hunter@intel.com>, linux-perf-users@vger.kernel.org, maddy@linux.vnet.ibm.com, Jiri Olsa <jolsa@kernel.org>, kjain@linux.ibm.com, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+On Thu, Sep 22, 2022 at 12:15 PM Arnaldo Carvalho de Melo
+<acme@kernel.org> wrote:
+>
+> Em Wed, Sep 21, 2022 at 10:38:38PM +0530, Athira Rajeev escreveu:
+> > The perf test named =E2=80=9Cbuild id cache operations=E2=80=9D skips w=
+ith below
+> > error on some distros:
+>
+> I wonder if we shouldn't instead state that bash is needed?
+>
+> =E2=AC=A2[acme@toolbox perf-urgent]$ head -1 tools/perf/tests/shell/*.sh =
+| grep ^#
+> #!/bin/sh
+> #!/bin/bash
+> #!/bin/sh
+> #!/bin/sh
+> #!/bin/sh
+> #!/bin/sh
+> #!/bin/sh
+> #!/bin/sh
+> #!/bin/sh
+> #!/bin/sh
+> #!/bin/bash
+> #!/bin/sh
+> #!/bin/sh
+> #!/bin/sh
+> #!/bin/bash
+> #!/bin/sh
+> #!/bin/bash
+> #!/bin/sh
+> #!/bin/sh
+> #!/bin/sh
+> #!/bin/sh
+> #!/bin/sh
+> #!/bin/sh
+> #!/bin/sh
+> #!/bin/sh
+> #!/bin/sh
+> =E2=AC=A2[acme@toolbox perf-urgent]$
+>
+> Opinions?
 
-Minor nits on section title adornments.
-See inline comments below.
++1 to bash. Perhaps python longer term?  The XML test output generated
+by things like kunit is possible to generate from either bash or
+python, but in my experience the python stuff feels better built.
 
-On Tue, 20 Sep 2022 14:23:00 +0200, David Hildenbrand wrote:
-> Linus notes [1] that the introduction of new code that uses VM_BUG_ON()
-> is just as bad as BUG_ON(), because it will crash the kernel on
-> distributions that enable CONFIG_DEBUG_VM (like Fedora):
-> 
->     VM_BUG_ON() has the exact same semantics as BUG_ON. It is literally
->     no different, the only difference is "we can make the code smaller
->     because these are less important". [2]
-> 
-> This resulted in a more generic discussion about usage of BUG() and
-> friends. While there might be corner cases that still deserve a BUG_ON(),
-> most BUG_ON() cases should simply use WARN_ON_ONCE() and implement a
-> recovery path if reasonable:
-> 
->     The only possible case where BUG_ON can validly be used is "I have
->     some fundamental data corruption and cannot possibly return an
->     error". [2]
-> 
-> As a very good approximation is the general rule:
-> 
->     "absolutely no new BUG_ON() calls _ever_" [2]
-> 
-> ... not even if something really shouldn't ever happen and is merely for
-> documenting that an invariant always has to hold. However, there are sill
-> exceptions where BUG_ON() may be used:
-> 
->     If you have a "this is major internal corruption, there's no way we can
->     continue", then BUG_ON() is appropriate. [3]
-> 
-> There is only one good BUG_ON():
-> 
->     Now, that said, there is one very valid sub-form of BUG_ON():
->     BUILD_BUG_ON() is absolutely 100% fine. [2]
-> 
-> While WARN will also crash the machine with panic_on_warn set, that's
-> exactly to be expected:
-> 
->     So we have two very different cases: the "virtual machine with good
->     logging where a dead machine is fine" - use 'panic_on_warn'. And
->     the actual real hardware with real drivers, running real loads by
->     users. [4]
-> 
-> The basic idea is that warnings will similarly get reported by users
-> and be found during testing. However, in contrast to a BUG(), there is a
-> way to actually influence the expected behavior (e.g., panic_on_warn)
-> and to eventually keep the machine alive to extract some debug info.
-> 
-> Ingo notes that not all WARN_ON_ONCE cases need recovery. If we don't ever
-> expect this code to trigger in any case, recovery code is not really
-> helpful.
-> 
->     I'd prefer to keep all these warnings 'simple' - i.e. no attempted
->     recovery & control flow, unless we ever expect these to trigger.
->     [5]
-> 
-> There have been different rules floating around that were never properly
-> documented. Let's try to clarify.
-> 
-> [1] https://lkml.kernel.org/r/CAHk-=wiEAH+ojSpAgx_Ep=NKPWHU8AdO3V56BXcCsU97oYJ1EA@mail.gmail.com
-> [2] https://lore.kernel.org/r/CAHk-=wg40EAZofO16Eviaj7mfqDhZ2gVEbvfsMf6gYzspRjYvw@mail.gmail.com
-> [2] https://lkml.kernel.org/r/CAHk-=wit-DmhMfQErY29JSPjFgebx_Ld+pnerc4J2Ag990WwAA@mail.gmail.com
-> [4] https://lore.kernel.org/r/CAHk-=wgF7K2gSSpy=m_=K3Nov4zaceUX9puQf1TjkTJLA2XC_g@mail.gmail.com
-> [5] https://lore.kernel.org/r/YwIW+mVeZoTOxn%2F4@gmail.com
-> 
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-> ---
->  Documentation/process/coding-style.rst | 61 ++++++++++++++++++++++++++
->  1 file changed, 61 insertions(+)
-> 
-> diff --git a/Documentation/process/coding-style.rst b/Documentation/process/coding-style.rst
-> index 03eb53fd029a..e05899cbfd49 100644
-> --- a/Documentation/process/coding-style.rst
-> +++ b/Documentation/process/coding-style.rst
-> @@ -1186,6 +1186,67 @@ expression used.  For instance:
->  	#endif /* CONFIG_SOMETHING */
->  
->  
-> +22) Do not crash the kernel
-> +---------------------------
-> +
-> +In general, it is not the kernel developer's decision to crash the kernel.
-> +
-> +Avoid panic()
-> +=============
-This looks to me like a subsection-level title.  The adornment symbol
-needs to be:
+Thanks,
+Ian
 
-   *************
-
-> +
-> +panic() should be used with care and primarily only during system boot.
-> +panic() is, for example, acceptable when running out of memory during boot and
-> +not being able to continue.
-> +
-> +Use WARN() rather than BUG()
-> +============================
-Ditto.
-
-> +
-> +Do not add new code that uses any of the BUG() variants, such as BUG(),
-> +BUG_ON(), or VM_BUG_ON(). Instead, use a WARN*() variant, preferably
-> +WARN_ON_ONCE(), and possibly with recovery code. Recovery code is not
-> +required if there is no reasonable way to at least partially recover.
-> +
-> +"I'm too lazy to do error handling" is not an excuse for using BUG(). Major
-> +internal corruptions with no way of continuing may still use BUG(), but need
-> +good justification.
-> +
-> +Use WARN_ON_ONCE() rather than WARN() or WARN_ON()
-> +**************************************************
-These wrong adornment symbol confuse ReST parser of Sphinx and results in
-the build error from "make htmldocs" at this title (long message folded):
-
-    Sphinx parallel build error:
-
-    docutils.utils.SystemMessage: /xxx/Documentation/process/coding-style.rst:1213:
-     (SEVERE/4) Title level inconsistent:
-
-
-
-Please fix in v2.
-
-        Thanks, Akira
-
-> +
-> +WARN_ON_ONCE() is generally preferred over WARN() or WARN_ON(), because it
-> +is common for a given warning condition, if it occurs at all, to occur
-> +multiple times. This can fill up and wrap the kernel log, and can even slow
-> +the system enough that the excessive logging turns into its own, additional
-> +problem.
-> +
-[...]
-
+> - Arnaldo
+>
+> > <<>>
+> >  78: build id cache operations                                       :
+> > test child forked, pid 111101
+> > WARNING: wine not found. PE binaries will not be run.
+> > test binaries: /tmp/perf.ex.SHA1.PKz /tmp/perf.ex.MD5.Gt3 ./tests/shell=
+/../pe-file.exe
+> > DEBUGINFOD_URLS=3D
+> > Adding 4abd406f041feb4f10ecde3fc30fd0639e1a91cb /tmp/perf.ex.SHA1.PKz: =
+Ok
+> > build id: 4abd406f041feb4f10ecde3fc30fd0639e1a91cb
+> > ./tests/shell/buildid.sh: 69: ./tests/shell/buildid.sh: Bad substitutio=
+n
+> > test child finished with -2
+> > build id cache operations: Skip
+> > <<>>
+> >
+> > The test script "tests/shell/buildid.sh" uses some of the
+> > string substitution ways which are supported in bash, but not in
+> > "sh" or other shells. Above error on line number 69 that reports
+> > "Bad substitution" is:
+> >
+> > <<>>
+> > link=3D${build_id_dir}/.build-id/${id:0:2}/${id:2}
+> > <<>>
+> >
+> > Here the way of getting first two characters from id ie,
+> > ${id:0:2} and similarly expressions like ${id:2} is not
+> > recognised in "sh". So the line errors and instead of
+> > hitting failure, the test gets skipped as shown in logs.
+> > So the syntax issue causes test not to be executed in
+> > such cases. Similarly usage : "${@: -1}" [ to pick last
+> > argument passed to a function] in =E2=80=9Ctest_record=E2=80=9D doesn=
+=E2=80=99t
+> > work in all distros.
+> >
+> > Fix this by using alternative way with "cut" command
+> > to pick "n" characters from the string. Also fix the usage
+> > of =E2=80=9C${@: -1}=E2=80=9D to work in all cases.
+> >
+> > Another usage in =E2=80=9Ctest_record=E2=80=9D is:
+> > <<>>
+> > ${perf} record --buildid-all -o ${data} $@ &> ${log}
+> > <<>>
+> >
+> > This causes the perf record to start in background and
+> > Results in the data file not being created by the time
+> > "check" function is invoked. Below log shows perf record
+> > result getting displayed after the call to "check" function.
+> >
+> > <<>>
+> > running: perf record /tmp/perf.ex.SHA1.EAU
+> > build id: 4abd406f041feb4f10ecde3fc30fd0639e1a91cb
+> > link: /tmp/perf.debug.mLT/.build-id/4a/bd406f041feb4f10ecde3fc30fd0639e=
+1a91cb
+> > failed: link /tmp/perf.debug.mLT/.build-id/4a/bd406f041feb4f10ecde3fc30=
+fd0639e1a91cb does not exist
+> > test child finished with -1
+> > build id cache operations: FAILED!
+> > root@machine:~/athira/linux/tools/perf# Couldn't synthesize bpf events.
+> > [ perf record: Woken up 1 times to write data ]
+> > [ perf record: Captured and wrote 0.010 MB /tmp/perf.data.bFF ]
+> > <<>>
+> >
+> > Fix this by redirecting output instead of using =E2=80=9C&=E2=80=9D whi=
+ch
+> > starts the command in background.
+> >
+> > Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+> > ---
+> >  tools/perf/tests/shell/buildid.sh | 16 +++++++++-------
+> >  1 file changed, 9 insertions(+), 7 deletions(-)
+> >
+> > diff --git a/tools/perf/tests/shell/buildid.sh b/tools/perf/tests/shell=
+/buildid.sh
+> > index f05670d1e39e..3512c4423d48 100755
+> > --- a/tools/perf/tests/shell/buildid.sh
+> > +++ b/tools/perf/tests/shell/buildid.sh
+> > @@ -66,7 +66,7 @@ check()
+> >       esac
+> >       echo "build id: ${id}"
+> >
+> > -     link=3D${build_id_dir}/.build-id/${id:0:2}/${id:2}
+> > +     link=3D${build_id_dir}/.build-id/$(echo ${id}|cut -c 1-2)/$(echo =
+${id}|cut -c 3-)
+> >       echo "link: ${link}"
+> >
+> >       if [ ! -h $link ]; then
+> > @@ -74,7 +74,7 @@ check()
+> >               exit 1
+> >       fi
+> >
+> > -     file=3D${build_id_dir}/.build-id/${id:0:2}/`readlink ${link}`/elf
+> > +     file=3D${build_id_dir}/.build-id/$(echo ${id}|cut -c 1-2)/`readli=
+nk ${link}`/elf
+> >       echo "file: ${file}"
+> >
+> >       if [ ! -x $file ]; then
+> > @@ -117,20 +117,22 @@ test_record()
+> >  {
+> >       data=3D$(mktemp /tmp/perf.data.XXX)
+> >       build_id_dir=3D$(mktemp -d /tmp/perf.debug.XXX)
+> > -     log=3D$(mktemp /tmp/perf.log.XXX)
+> > +     log_out=3D$(mktemp /tmp/perf.log.out.XXX)
+> > +     log_err=3D$(mktemp /tmp/perf.log.err.XXX)
+> >       perf=3D"perf --buildid-dir ${build_id_dir}"
+> > +     eval last=3D\${$#}
+> >
+> >       echo "running: perf record $@"
+> > -     ${perf} record --buildid-all -o ${data} $@ &> ${log}
+> > +     ${perf} record --buildid-all -o ${data} $@ 1>${log_out} 2>${log_e=
+rr}
+> >       if [ $? -ne 0 ]; then
+> >               echo "failed: record $@"
+> > -             echo "see log: ${log}"
+> > +             echo "see log: ${log_err}"
+> >               exit 1
+> >       fi
+> >
+> > -     check ${@: -1}
+> > +     check $last
+> >
+> > -     rm -f ${log}
+> > +     rm -f ${log_out} ${log_err}
+> >       rm -rf ${build_id_dir}
+> >       rm -rf ${data}
+> >  }
+> > --
+> > 2.17.1
+>
+> --
+>
+> - Arnaldo
