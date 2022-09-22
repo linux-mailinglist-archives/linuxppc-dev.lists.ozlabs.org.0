@@ -1,77 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B405E5E67FF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Sep 2022 18:01:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 806C65E6AAE
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Sep 2022 20:22:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MYKlc4wzRz3dpn
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 02:01:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MYNsv4sSjz3c6n
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 04:22:11 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=p9HhITvA;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Qip61DlN;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::12a; helo=mail-lf1-x12a.google.com; envelope-from=krzysztof.kozlowski@linaro.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.43; helo=mga05.intel.com; envelope-from=isaku.yamahata@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=p9HhITvA;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Qip61DlN;
 	dkim-atps=neutral
-Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MYKl02cVDz309f
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Sep 2022 02:01:00 +1000 (AEST)
-Received: by mail-lf1-x12a.google.com with SMTP id w8so15395657lft.12
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Sep 2022 09:01:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date;
-        bh=81pL7DGs9HD5w7I37cpuZ7MXwqHOECwJdeVMBgzAlQw=;
-        b=p9HhITvAiTLIOA9Xo9RkPoH1sLpf0YyHjNBG9YCwwqIrBHvl401CFBSWoEt1sVFO+7
-         ymzYQY5i35KlA6q+G6SBXoLHML5N4MtO0DVQwt7qDLviEtR6HVss78HJK7NOGHBgLNI/
-         Mpj3KN9khXDzOMP9REWxPpa7QusEkgXmTa/9tzQxHHNpnEVPKZsyAlH4c2TgBZfZNsTi
-         yiBjg56FL4PsxXbBeNYwljk2EDScJqL3zkEJuOia1Pb2YRxvsCUYuh1us9eMIFEXvswP
-         z/0zWWf5V0DhlkgA18+c1dK9JZ5cxblbt7d/a0ljJNov97Bp6PUEm7hrR7NYkDqUcsFJ
-         hy8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=81pL7DGs9HD5w7I37cpuZ7MXwqHOECwJdeVMBgzAlQw=;
-        b=qGQtCEHSX4+yFW8H9XFY8FffvOk+9hW3CrPBfY/M5HpxJzzGzoGuqnl0JW483rXuAt
-         L2x843Da11avo4fDr62T04Nkn9/93lcunckPsIuh/ayRi+wcBtz5OURTDrB2Bj65KfOy
-         GFJzX0qUuxAXtRPgSzfMiboIGVxFWWll52JX/01TitvNwFm1M7+z6hq7O08tay5Yc8tO
-         XDbZuReZh46B3+M0/vRS5m9MGGgM8lMyk2j8t/REUu9TSt09r4Ym/R2o8RhNDFONm+Qy
-         erGmHUhcJvUpp5EG5+fgfXvbvUxC461hLpysInySz1TDYzE1woClxO55WFJ9Vl5Knlv6
-         kXXw==
-X-Gm-Message-State: ACrzQf0t6NoxP3H7i4+z04d9flhZ7AbcHS9I1OmbXiXzXceLo5SwdV1z
-	ozkuDFLhMCIXMigjBKNcJ7AEZg==
-X-Google-Smtp-Source: AMsMyM7zp82NHkC7Tv6Mqv+9LGkxDK/DsUhOCxklWQbvOP7x7UlHQe656cZRo7e1NfMasN7HH9hIng==
-X-Received: by 2002:a05:6512:2621:b0:491:10ba:321a with SMTP id bt33-20020a056512262100b0049110ba321amr1407331lfb.187.1663862456786;
-        Thu, 22 Sep 2022 09:00:56 -0700 (PDT)
-Received: from [192.168.0.21] (78-11-189-27.static.ip.netia.com.pl. [78.11.189.27])
-        by smtp.gmail.com with ESMTPSA id k3-20020a2eb743000000b0026c5bc6ed1asm952108ljo.69.2022.09.22.09.00.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 22 Sep 2022 09:00:56 -0700 (PDT)
-Message-ID: <c66e2bbe-4758-4d8e-f8aa-5b7bd1b7c2e3@linaro.org>
-Date: Thu, 22 Sep 2022 18:00:55 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MYNsJ07Mgz3bk0
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Sep 2022 04:21:34 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1663870900; x=1695406900;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=W2Kk+Oh554M6hYppcd4bamgUFE8iODrNht1zMrNWv44=;
+  b=Qip61DlNOAbIYYUf5Nl/thC2x98ijyBwSo0wTvhGBW9vy8A5hLFfev7X
+   ZiNsI3O76yEEly2ppN3WfxjLLQeELk9OytuwZAUcK5BcnERpbCnNvMhtS
+   NBobtYeKdCWfGV6J7UmtgUXPE85FJSrOHSN9SSTcfyRq6c00l6tAPruU6
+   50p67XUrmr8vlQJg7dfqUGRJ+G0zPhPAMse1a4gUHhy39RQ9RtPPYFOn5
+   tM0T3oAX3tZEFpsC7ljFebWfrlPIXhEENrlIScHLYwv2zvYwTMbiMT/+I
+   EK+3mYQC9r6fvhAyoZ7pwV5kO0ItnovKZhfh5tb+iUgfYqLIxybZSSgaw
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10478"; a="386676073"
+X-IronPort-AV: E=Sophos;i="5.93,337,1654585200"; 
+   d="scan'208";a="386676073"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2022 11:21:29 -0700
+X-IronPort-AV: E=Sophos;i="5.93,337,1654585200"; 
+   d="scan'208";a="653086909"
+Received: from ls.sc.intel.com (HELO localhost) ([143.183.96.54])
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2022 11:21:28 -0700
+From: isaku.yamahata@intel.com
+To: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Marc Zyngier <maz@kernel.org>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH v5 27/30] RFC: KVM: powerpc: Move processor compatibility check to hardware setup
+Date: Thu, 22 Sep 2022 11:20:56 -0700
+Message-Id: <574ca90fdaec0f37c197d9600d47d48a74f324bd.1663869838.git.isaku.yamahata@intel.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <cover.1663869838.git.isaku.yamahata@intel.com>
+References: <cover.1663869838.git.isaku.yamahata@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.2
-Subject: Re: [PATCH v6 2/8] dt-bindings: phy: Add Lynx 10G phy binding
-Content-Language: en-US
-To: Sean Anderson <sean.anderson@seco.com>, Vinod Koul <vkoul@kernel.org>,
- Kishon Vijay Abraham I <kishon@ti.com>, linux-phy@lists.infradead.org
-References: <20220920202356.1451033-1-sean.anderson@seco.com>
- <20220920202356.1451033-3-sean.anderson@seco.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220920202356.1451033-3-sean.anderson@seco.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,103 +70,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, Madalin Bucur <madalin.bucur@nxp.com>, Stephen Boyd <sboyd@kernel.org>, Michael Turquette <mturquette@baylibre.com>, linux-clk@vger.kernel.org, Rob Herring <robh+dt@kernel.org>, Camelia Alexandra Groza <camelia.groza@nxp.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Ioana Ciornei <ioana.ciornei@nxp.com>, linuxppc-dev@lists.ozlabs.org, Rob Herring <robh@kernel.org>, linux-arm-kernel@lists.infradead.org
+Cc: isaku.yamahata@intel.com, Huang Ying <ying.huang@intel.com>, Huacai Chen <chenhuacai@kernel.org>, Fabiano Rosas <farosas@linux.ibm.com>, Daniel Lezcano <daniel.lezcano@linaro.org>, Shaokun Zhang <zhangshaokun@hisilicon.com>, Kai Huang <kai.huang@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, Atish Patra <atishp@atishpatra.org>, Borislav Petkov <bp@alien8.de>, linuxppc-dev@lists.ozlabs.org, isaku.yamahata@gmail.com, Chao Gao <chao.gao@intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 20/09/2022 22:23, Sean Anderson wrote:
-> This adds a binding for the SerDes module found on QorIQ processors.
-> Each phy is a subnode of the top-level device, possibly supporting
-> multiple lanes and protocols. This "thick" #phy-cells is used due to
-> allow for better organization of parameters. Note that the particular
-> parameters necessary to select a protocol-controller/lane combination
-> vary across different SoCs, and even within different SerDes on the same
-> SoC.
-> 
-> The driver is designed to be able to completely reconfigure lanes at
-> runtime. Generally, the phy consumer can select the appropriate
-> protocol using set_mode.
-> 
-> There are two PLLs, each of which can be used as the master clock for
-> each lane. Each PLL has its own reference. For the moment they are
-> required, because it simplifies the driver implementation. Absent
-> reference clocks can be modeled by a fixed-clock with a rate of 0.
-> 
-> Signed-off-by: Sean Anderson <sean.anderson@seco.com>
-> Reviewed-by: Rob Herring <robh@kernel.org>
-> ---
-> 
-> Changes in v6:
-> - fsl,type -> phy-type
-> 
-> Changes in v4:
-> - Use subnodes to describe lane configuration, instead of describing
->   PCCRs. This is the same style used by phy-cadence-sierra et al.
-> 
-> Changes in v3:
-> - Manually expand yaml references
-> - Add mode configuration to device tree
-> 
-> Changes in v2:
-> - Rename to fsl,lynx-10g.yaml
-> - Refer to the device in the documentation, rather than the binding
-> - Move compatible first
-> - Document phy cells in the description
-> - Allow a value of 1 for phy-cells. This allows for compatibility with
->   the similar (but according to Ioana Ciornei different enough) lynx-28g
->   binding.
-> - Remove minItems
-> - Use list for clock-names
-> - Fix example binding having too many cells in regs
-> - Add #clock-cells. This will allow using assigned-clocks* to configure
->   the PLLs.
-> - Document the structure of the compatible strings
-> 
->  .../devicetree/bindings/phy/fsl,lynx-10g.yaml | 236 ++++++++++++++++++
->  1 file changed, 236 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/phy/fsl,lynx-10g.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/phy/fsl,lynx-10g.yaml b/Documentation/devicetree/bindings/phy/fsl,lynx-10g.yaml
-> new file mode 100644
-> index 000000000000..ce9afdbf33f4
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/phy/fsl,lynx-10g.yaml
-> @@ -0,0 +1,236 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/phy/fsl,lynx-10g.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: NXP Lynx 10G SerDes
-> +
-> +maintainers:
-> +  - Sean Anderson <sean.anderson@seco.com>
-> +
-> +description: |
-> +  These Lynx "SerDes" devices are found in NXP's QorIQ line of processors. The
-> +  SerDes provides up to eight lanes. Each lane may be configured individually,
-> +  or may be combined with adjacent lanes for a multi-lane protocol. The SerDes
-> +  supports a variety of protocols, including up to 10G Ethernet, PCIe, SATA, and
-> +  others. The specific protocols supported for each lane depend on the
-> +  particular SoC.
-> +
-> +properties:
-> +  compatible:
-> +    items:
-> +      - enum:
-> +          - fsl,ls1046a-serdes
-> +          - fsl,ls1088a-serdes
-> +      - const: fsl,lynx-10g
-> +
-> +  "#address-cells":
+From: Isaku Yamahata <isaku.yamahata@intel.com>
 
-If there is going to be resend, use only one type of quotes: ' or ".
+Move processor compatibility check from kvm_arch_processor_compat() into
+kvm_arch_hardware_setup().  The check does model name comparison with a
+global variable, cur_cpu_spec.  There is no point to check it at run time
+on all processors.
 
-FWIW (Rob's reviewed it):
+kvmppc_core_check_processor_compat() checks the global variable.  There are
+five implementation for it as follows.
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+  arch/powerpc/include/asm/cputable.h: extern struct cpu_spec *cur_cpu_spec;
+  arch/powerpc/kvm/book3s.c: return 0
+  arch/powerpc/kvm/e500.c: strcmp(cur_cpu_spec->cpu_name, "e500v2")
+  arch/powerpc/kvm/e500mc.c: strcmp(cur_cpu_spec->cpu_name, "e500mc")
+                             strcmp(cur_cpu_spec->cpu_name, "e5500")
+                             strcmp(cur_cpu_spec->cpu_name, "e6500")
 
-Best regards,
-Krzysztof
+Suggested-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Fabiano Rosas <farosas@linux.ibm.com>
+---
+ arch/powerpc/kvm/powerpc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+index 7b56d6ccfdfb..31dc4f231e9d 100644
+--- a/arch/powerpc/kvm/powerpc.c
++++ b/arch/powerpc/kvm/powerpc.c
+@@ -444,12 +444,12 @@ int kvm_arch_hardware_enable(void)
+ 
+ int kvm_arch_hardware_setup(void *opaque)
+ {
+-	return 0;
++	return kvmppc_core_check_processor_compat();
+ }
+ 
+ int kvm_arch_check_processor_compat(void)
+ {
+-	return kvmppc_core_check_processor_compat();
++	return 0;
+ }
+ 
+ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
+-- 
+2.25.1
 
