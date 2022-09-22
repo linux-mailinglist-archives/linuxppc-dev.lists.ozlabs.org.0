@@ -1,92 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E82435E6DC4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Sep 2022 23:12:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F7035E6DD4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Sep 2022 23:16:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MYSf466fhz3cFd
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 07:12:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MYSkz5vqqz3c6T
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 07:16:27 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport header.b=X0T/4vKD;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gimpelevich-san-francisco-ca-us.20210112.gappssmtp.com header.i=@gimpelevich-san-francisco-ca-us.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=tGeOq2JW;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=cisco.com (client-ip=173.37.86.76; helo=rcdn-iport-5.cisco.com; envelope-from=danielwa@cisco.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=gimpelevich.san-francisco.ca.us (client-ip=2607:f8b0:4864:20::1029; helo=mail-pj1-x1029.google.com; envelope-from=daniel@gimpelevich.san-francisco.ca.us; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport header.b=X0T/4vKD;
+	dkim=pass (2048-bit key; unprotected) header.d=gimpelevich-san-francisco-ca-us.20210112.gappssmtp.com header.i=@gimpelevich-san-francisco-ca-us.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=tGeOq2JW;
 	dkim-atps=neutral
-Received: from rcdn-iport-5.cisco.com (rcdn-iport-5.cisco.com [173.37.86.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MYSdS3RBjz304n
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Sep 2022 07:11:36 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=cisco.com; i=@cisco.com; l=851; q=dns/txt; s=iport;
-  t=1663881100; x=1665090700;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=vganC7W5irzHuK0hffp/PseJz28ORkjAfA5hJ9l7l4g=;
-  b=X0T/4vKDISRdgFppQ36zVRJjJb1+LdD5LcydoZYHmu1jBX3j03F1PDMx
-   N4zWXfDlC66Cxq42tWdl6mZLrJCVcRG+8scTHamS4DC6EZZoL0HaLQXlU
-   pcUHcOAVU06kE64aVQPA9Evwbj/zPUYLHt1j4KeW1lF5jqqvXcv4fUgEm
-   g=;
-IronPort-Data: =?us-ascii?q?A9a23=3AUy0loqPIn6DGLK7vrR00lsFynXyQoLVcMsEvi?=
- =?us-ascii?q?/4bfWQNrUon12BTyTMWW2DUaK3YZjPxLo1+b4i28B5S7cDdydJjG3M5pCpnJ?=
- =?us-ascii?q?55oRWUpJjg4wn8dtEp+F+WbJK5cx5hYO4CowPwcFCeG/E/wa+a59BGQ6InRL?=
- =?us-ascii?q?lbCIL+cUsxObVcMpBcJ0XqPqsZh6mJaqYHR7zCl4bsel/bi1GqNgFaYBI67B?=
- =?us-ascii?q?5Wr83uDtNyq0N8RU8dXifpj5DcynFFNZH4TyD3YEpf2fmVUNrbSq+fr1rq1+?=
- =?us-ascii?q?CbS+A0gT4/jmbfgeUpMSbnXVeSMoiMJAO753V4T/Wprj/tT2Pk0MS+7jx2Fl?=
- =?us-ascii?q?tZwxdFSvLS7SBwiOevHn+F1vxxwQ3kjbP0aoueWSZS4mYnJp6HcSFPowvNzH?=
- =?us-ascii?q?AQ7M4ww5Ol6GydN+OYeJTRLaQqM78qywbSmWqxvjNkiKMXDIowSoDdjwCvfA?=
- =?us-ascii?q?PJgRorMK43G6MFZ1zosnM1DNejRatBfajd1ahnEJRpVNT8/DJM4gffthXTld?=
- =?us-ascii?q?TBcgEyaqLBx4GXJygF1lr/3P7L9ft2MWNUQl1yd42HL5WL0BjkeNceD0nyE9?=
- =?us-ascii?q?Hy2j+PClC+9X5gdfJW47vdCkkyPwXZVAxoTPXO/oP+kmlamUJdTJlI8/is1s?=
- =?us-ascii?q?bN0816vR9PmGRqirxasuh8aRsoVFuwi8ymTxafOpQWUHG4JSnhGctNOnN9mG?=
- =?us-ascii?q?xQp20WPktevAiZg2JWcSmqY3rOVqy6ifCYSMGkObDMFSg1D5MPsyKk/hxTOQ?=
- =?us-ascii?q?9JLH6+wltDxFC/xyDDMtyE4wrsJhMgA1r6w+hbMinSxvfDhVAk/5i3UU3ij4?=
- =?us-ascii?q?wc/Y5SqD6Sj6ULa9upHNIaUCF2Mpn8Vs8OF4/oJEInLmTHlaPoMGLWB5PufN?=
- =?us-ascii?q?jDYx1l1EPEJ7Dmk/Tiqe4xd+ip5Im9yP80DPzTuZSfuVal5jHNIFGGhYakya?=
- =?us-ascii?q?IWrBoF2i6PhDt/iEPvTa7JzjlFKXFfv1ElTiYS4hggBSHQRrJw=3D?=
-IronPort-HdrOrdr: =?us-ascii?q?A9a23=3A0r06i6lakzFvmjzxnh/v/ne4t2zpDfIp3D?=
- =?us-ascii?q?Abv31ZSRFFG/FwWfrAoB0+726QtN9xYgBDpTnuAsO9qB/nmKKdpLNhWYtKPz?=
- =?us-ascii?q?OW21dATrsC0WKK+VSJcBEWtNQ86U4KScZD4bPLYWSTSa3BkW+F+xFK+qjhzJ?=
- =?us-ascii?q?yV?=
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0CHAwBDbIJi/5tdJa1aH2qBT4Ird1Q?=
- =?us-ascii?q?9Q5M0giiRR4sdFIFoCwEBAQ0BATkJBAEBgU6DNAKFPgIlNAkOAQIEAQEBEgE?=
- =?us-ascii?q?BBQEBAQIBBwSBCROFaA2GQwEFOj8QCxguVwYTgn6DFw+rR3iBM4EBg08BGBi?=
- =?us-ascii?q?EGYFfBiSBGI5gJxyBSUSEPz6EKoZVBJVjOwNUgQUSgSFxAQgGBgcKBTIGAgw?=
- =?us-ascii?q?YFAQCExJTHgITDAocDlQZDA8DEgMRAQcCCxIIFSwIAwIDCAMCAyMLAgMYCQc?=
- =?us-ascii?q?KAx0IChwSEBQCBBMfCwgDGh8tCQIEDgNDCAsKAxEEAxMYCxYIEAQGAwkvDSg?=
- =?us-ascii?q?LAxQPAQYDBgIFBQEDIAMUAwUnBwMhBwsmDQ0EHAcdAwMFJgMCAhsHAgIDAgY?=
- =?us-ascii?q?XBgICcQooDQgECAQcHiUTBQIHMQUELwIeBAUGEQkCFgIGBAUCBAQWAgISCAI?=
- =?us-ascii?q?IJxsHFjYZAQVdBgsJIxwsCwYFBhYDJlIGIgGVdgiBeYFBgj2SfIJijRiBL5x?=
- =?us-ascii?q?7g1aBQ4lXlFZLEahGlmaNJ5lXAgQGBQIWgWE8gVkzGggbFYMjEz4ZD5cmhWo?=
- =?us-ascii?q?kMQI5AgYLAQEDCZEaAQE?=
-X-IronPort-AV: E=Sophos;i="5.91,230,1647302400"; 
-   d="scan'208";a="805984209"
-Received: from rcdn-core-4.cisco.com ([173.37.93.155])
-  by rcdn-iport-5.cisco.com with ESMTP/TLS/DHE-RSA-SEED-SHA; 22 Sep 2022 21:10:29 +0000
-Received: from zorba ([10.25.129.98])
-	by rcdn-core-4.cisco.com (8.15.2/8.15.2) with ESMTPS id 28MLAQTc012966
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Thu, 22 Sep 2022 21:10:28 GMT
-Date: Thu, 22 Sep 2022 14:10:26 -0700
-From: Daniel Walker <danielwa@cisco.com>
-To: Sean Anderson <sean.anderson@seco.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MYSkN1CWyz304n
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Sep 2022 07:15:52 +1000 (AEST)
+Received: by mail-pj1-x1029.google.com with SMTP id o99-20020a17090a0a6c00b002039c4fce53so3745414pjo.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Sep 2022 14:15:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gimpelevich-san-francisco-ca-us.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:mime-version:disposition-notification-to
+         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
+         :cc:subject:date;
+        bh=F/fSD3tiHwAEumeXG+qiH5G3ZfY9Y6LXUkEueVgh6Fk=;
+        b=tGeOq2JWiIBsL3jWhqw00ZY4tOCMc7IQwKuz2NBmLdlz6nI72CPqI5nvU4wYA7wrSK
+         4ZtSaaYV2fWWtkk6v6ylkQsxeFK/GpQhc5Kroq/oD899bc22M7UnBHR9Kf264D7iCyFg
+         NPoBZnxVotT//5zKC5GKwBGbCnKU2NoIe0/OJHqWzMDG0yR4UwOL74fYkFPbPFTM/EZy
+         2FWS/hle0d47gTgQgX7IgjjsLEVfb3z04geb4y98if+3dNiERqjRRvZk0HyzSwRUfTWQ
+         BRQKsTwaWXeqkdmv1qnX1MPytI/80wucocrAmC2XiQFJs11GsU5g6AGI7NkC7/vFD3PI
+         B1fw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:disposition-notification-to
+         :references:in-reply-to:date:cc:to:from:subject:message-id
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=F/fSD3tiHwAEumeXG+qiH5G3ZfY9Y6LXUkEueVgh6Fk=;
+        b=MUp6kLe0PdFFWZZCxhZ3ECmKPvX8Ho7gX83/QGX0O5/X7XLC5FVC0gOlgqRUsfHek8
+         C/Rx1II6Cqap06ULeukImskDTJbIgmu1WDLybKPvDUwfC3LbjdM6ZgeHx8Kj262Ey/Tj
+         uCpIEhEjbqWlLswJ9N05xMyvmzOKzU6eUgRelJujG0s4gnmHQ02fsGEclAucH6f4AUYc
+         3Gk+/KnElu9jJqAzz6ZfIW/zICtl7gEq8Csfh7bYMTqOXnwlHdWFFk/i3AeufnjPtw6c
+         MOG+qtrEx+G1xY7dJL7BHSTlArKipNBkNYCMWtFfVG33ZfXRq/8w/kw7eLv2/Zzb7W79
+         fIeQ==
+X-Gm-Message-State: ACrzQf1YQSYVx9hQYMYoWdL9GYJQHFm9hrM+OyVNrVikzrwUylDOeFr8
+	y8TL2vHr9EWDlP28SyQBklTESQ==
+X-Google-Smtp-Source: AMsMyM5ldt2VrAPEWUNgs13BVkUvJnBv9O5XNfcE5ETCAxNGwR13fNpzdtYlY5dOXChaPEyxe5tV+Q==
+X-Received: by 2002:a17:902:7897:b0:178:9292:57b9 with SMTP id q23-20020a170902789700b00178929257b9mr5370369pll.102.1663881348801;
+        Thu, 22 Sep 2022 14:15:48 -0700 (PDT)
+Received: from [192.168.72.152] (157-131-203-68.fiber.dynamic.sonic.net. [157.131.203.68])
+        by smtp.gmail.com with ESMTPSA id d6-20020a170902b70600b00173368e9dedsm4485709pls.252.2022.09.22.14.15.47
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 22 Sep 2022 14:15:48 -0700 (PDT)
+Message-ID: <1663881344.25129.23.camel@chimera>
 Subject: Re: [PATCH 0/8] generic command line v4
-Message-ID: <20220922211026.GW4320@zorba>
+From: Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>
+To: Daniel Walker <danielwa@cisco.com>
+Date: Thu, 22 Sep 2022 14:15:44 -0700
+In-Reply-To: <20220922211026.GW4320@zorba>
 References: <20210416040924.2882771-1-danielwa@cisco.com>
- <b517fac5-2fdc-a8c9-75d0-174c67f5a2de@seco.com>
- <20220922205334.GV4320@zorba>
- <dcff9b0f-82c8-5aa7-0fff-b749a05fcb20@seco.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <dcff9b0f-82c8-5aa7-0fff-b749a05fcb20@seco.com>
-X-Outbound-SMTP-Client: 10.25.129.98, [10.25.129.98]
-X-Outbound-Node: rcdn-core-4.cisco.com
+	 <b517fac5-2fdc-a8c9-75d0-174c67f5a2de@seco.com>
+	 <20220922205334.GV4320@zorba>
+	 <dcff9b0f-82c8-5aa7-0fff-b749a05fcb20@seco.com>
+	 <20220922211026.GW4320@zorba>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.10.4-0ubuntu2 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,41 +83,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rob Herring <robh@kernel.org>, linux-efi@vger.kernel.org, Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>, devicetree@vger.kernel.org, linux-kbuild@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, x86@kernel.org, linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org
+Cc: Rob Herring <robh@kernel.org>, linux-efi@vger.kernel.org, devicetree@vger.kernel.org, Sean Anderson <sean.anderson@seco.com>, linuxppc-dev@lists.ozlabs.org, x86@kernel.org, linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org, "H. Peter Anvin" <hpa@zytor.com>, linux-kbuild@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Sep 22, 2022 at 05:03:46PM -0400, Sean Anderson wrote:
-> 
-> 
-> 
-> On 9/22/22 4:53 PM, Daniel Walker wrote:
-> > On Thu, Sep 22, 2022 at 04:45:01PM -0400, Sean Anderson wrote:
-> >> 
-> >> 
-> >> 
-> >> For an arm64 platform (after rebasing):
-> >> 
-> >> Tested-by: Sean Anderson <sean.anderson@seco.com>
+On Thu, 2022-09-22 at 14:10 -0700, Daniel Walker wrote:
+> On Thu, Sep 22, 2022 at 05:03:46PM -0400, Sean Anderson wrote:
+[snip]
+> > As recently as last month, someone's patch to add such support was
+> > rejected for this reason [1].
 > > 
-> > Maybe I'll re-submit it.
+> > --Sean
 > > 
-> > Daniel
-> > 
+> > [1] https://lore.kernel.org/linux-arm-kernel/20220812084613.GA3107@willie-the-truck/
 > 
-> There's still no way to extend the command line on ARM64, since the
-> existing method was removed in anticipation that your series would be
-> added. 
 > 
-> As recently as last month, someone's patch to add such support was
-> rejected for this reason [1].
+> I had no idea.. Thanks for pointing that out. I guess I will re-submit in that
+> case.
 > 
-> --Sean
-> 
-> [1] https://lore.kernel.org/linux-arm-kernel/20220812084613.GA3107@willie-the-truck/
+> Daniel
 
+This has been happening repeatedly since circa 2014, on multiple
+architectures. It's quite frustrating, really.
 
-I had no idea.. Thanks for pointing that out. I guess I will re-submit in that
-case.
-
-Daniel
