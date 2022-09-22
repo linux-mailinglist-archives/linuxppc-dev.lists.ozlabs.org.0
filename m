@@ -1,84 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A5B25E6BD6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Sep 2022 21:39:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F6945E6C9D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Sep 2022 22:02:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MYQZf6WPdz3cDF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 05:39:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MYR5x0Ftkz3c2N
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 06:02:45 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KrbT0gkA;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YD5Izudc;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KrbT0gkA;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YD5Izudc;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MYQYx4QGgz3bln
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Sep 2022 05:38:29 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28MJGMj2026762;
-	Thu, 22 Sep 2022 19:38:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=SumduS5pnJG4Lexk2qixDBgCpRAyAPkg9dIaI+5HcOo=;
- b=KrbT0gkAlLxqoXhyIut5A53Bun3Wkme+N/Bs4wr0qukq37EFQ0LVXoCM9rtvNAsRj0/2
- Od015XaciMhaL2t5scHoM6biaURMQHULeU4q2jsi/9lWO7GoUcTuqXs4QkIAhbyKMz4m
- 1PXVdK2RW2RB9Dl0aI8/fhTUXdkdtE7O6+syp5PkLXnlrKArZIOsOerAB5Xx3jdg3Cr1
- yvh+QOPqfuoatABNBdbQbndonhQD7lZkhXIYYpIYM+veg1bo49zUr4NzHHjjrKhNC9IG
- oBkx4HG0EqE3bNmJS2u9log8W7DRn3L33lg/WAJidODDuyVDkjfukVpi1RjFJV/YmBva 9Q== 
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com [169.55.85.253])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jrvvx2cv7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 22 Sep 2022 19:38:20 +0000
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
-	by ppma01wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 28MJa37O008113;
-	Thu, 22 Sep 2022 19:38:19 GMT
-Received: from b03cxnp08026.gho.boulder.ibm.com (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
-	by ppma01wdc.us.ibm.com with ESMTP id 3jn5v9twp9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 22 Sep 2022 19:38:19 +0000
-Received: from smtpav02.dal12v.mail.ibm.com ([9.208.128.128])
-	by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 28MJcJuo65470872
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 22 Sep 2022 19:38:19 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9735A5805A;
-	Thu, 22 Sep 2022 19:38:17 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8476958051;
-	Thu, 22 Sep 2022 19:38:17 +0000 (GMT)
-Received: from localhost (unknown [9.41.178.242])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 22 Sep 2022 19:38:17 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] powerpc/rtas: block error injection when locked down
-Date: Thu, 22 Sep 2022 14:38:17 -0500
-Message-Id: <20220922193817.106041-3-nathanl@linux.ibm.com>
-X-Mailer: git-send-email 2.37.3
-In-Reply-To: <20220922193817.106041-1-nathanl@linux.ibm.com>
-References: <20220922193817.106041-1-nathanl@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MYR5J1dMxz3bk0
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Sep 2022 06:02:11 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id DA1E6B83A6D;
+	Thu, 22 Sep 2022 20:02:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67686C433D6;
+	Thu, 22 Sep 2022 20:02:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1663876924;
+	bh=Ap/Inp3Sfe6Zj7tVN/jKuxxDgsHgXhBJT3+6ZeY53fc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=YD5Izudcy+JGNfMCtpGgZ/rSEC/l9vxBq36v7/luVgQo32yQqZBe6+BK3Eh/9831P
+	 UxlwPxO8o8wWv6Vb61BN+jGJ3l+KXsdNecTqFHLALYH5JKvA9arWWSlTVsvRYi1jjD
+	 MheTFWou+tfUq8aaRr0uzCNXUnBlFkBtXoK8pq/sxq7UQmQePlks30pUPoijAwqgg+
+	 /h7JFohyEHX4vurUPlyY/AvDy8ySJ1hHQBXWQZxG9W2FKFFnvVr0BgqLaK+L3tGal9
+	 +fxci7yFTUK22u1yLmcvsv9XIlR2U7Qkyu5Z56xdfINRcxFiNA6pDfOnOzp84JsUH0
+	 x4/VwD+Ma+QDQ==
+Date: Thu, 22 Sep 2022 15:02:02 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Zhuo Chen <chenzhuo.1@bytedance.com>
+Subject: Re: [External] Re: [PATCH 1/3] PCI/AER: Use
+ pci_aer_clear_uncorrect_error_status() to clear uncorrectable error status
+Message-ID: <20220922200202.GA1330813@bhelgaas>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: wUH6TLbpjNitun1gfSh4CeOowyl852t6
-X-Proofpoint-ORIG-GUID: wUH6TLbpjNitun1gfSh4CeOowyl852t6
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
- definitions=2022-09-22_14,2022-09-22_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- mlxlogscore=999 mlxscore=0 lowpriorityscore=0 adultscore=0 bulkscore=0
- suspectscore=0 spamscore=0 clxscore=1015 malwarescore=0 phishscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2209130000 definitions=main-2209220126
+In-Reply-To: <69f2df4e-b2c6-0f19-bf8d-92b7d6c4e033@bytedance.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,113 +60,242 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ajd@linux.ibm.com, nayna@linux.ibm.com, jmorris@namei.org, paul@paul-moore.com, gcwilson@linux.ibm.com, serge@hallyn.com
+Cc: allenbh@gmail.com, dave.jiang@intel.com, martin.petersen@oracle.com, linux-scsi@vger.kernel.org, linux-pci@vger.kernel.org, jejb@linux.ibm.com, james.smart@broadcom.com, Serge Semin <fancer.lancer@gmail.com>, linux-kernel@vger.kernel.org, ntb@lists.linux.dev, oohall@gmail.com, jdmason@kudzu.us, bhelgaas@google.com, dick.kennedy@broadcom.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The error injection facility on pseries VMs allows corruption of
-arbitrary guest memory, potentially enabling a sufficiently privileged
-user to disable lockdown or perform other modifications of the running
-kernel via the rtas syscall.
+On Mon, Sep 12, 2022 at 01:09:05AM +0800, Zhuo Chen wrote:
+> On 9/12/22 12:22 AM, Serge Semin wrote:
+> > On Fri, Sep 02, 2022 at 02:16:32AM +0800, Zhuo Chen wrote:
+> > > Status bits for ERR_NONFATAL errors only are cleared in
+> > > pci_aer_clear_nonfatal_status(), but we want clear uncorrectable
+> > > error status in ntb_hw_idt.c and lpfc_attr.c. So we add
+> > > pci_aer_clear_uncorrect_error_status() and change to use it.
+> > 
+> > What about the next drivers
+> > 
+> > drivers/scsi/lpfc/lpfc_attr.c
+> > drivers/crypto/hisilicon/qm.c
+> > drivers/net/ethernet/intel/ice/ice_main.c
+> > 
+> > which call the pci_aer_clear_nonfatal_status() method too?
+> 
+> ‘pci_aer_clear_nonfatal_status()’ in
+> drivers/net/ethernet/intel/ice/ice_main.c has already been removed and
+> merged in kernel in: https://github.com/torvalds/linux/commit/ca415ea1f03abf34fc8e4cc5fc30a00189b4e776
 
-Block the PAPR error injection facility from being opened or called
-when locked down.
+It's better if you can use kernel.org URLs that don't depend on
+third parties like github, e.g.,
 
-Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
----
- arch/powerpc/kernel/rtas.c | 25 ++++++++++++++++++++++++-
- include/linux/security.h   |  1 +
- security/security.c        |  1 +
- 3 files changed, 26 insertions(+), 1 deletion(-)
+  https://git.kernel.org/linus/ca415ea1f03a
 
-diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-index 693133972294..c2540d393f1c 100644
---- a/arch/powerpc/kernel/rtas.c
-+++ b/arch/powerpc/kernel/rtas.c
-@@ -23,6 +23,7 @@
- #include <linux/memblock.h>
- #include <linux/slab.h>
- #include <linux/reboot.h>
-+#include <linux/security.h>
- #include <linux/syscalls.h>
- #include <linux/of.h>
- #include <linux/of_fdt.h>
-@@ -464,6 +465,9 @@ void rtas_call_unlocked(struct rtas_args *args, int token, int nargs, int nret,
- 	va_end(list);
- }
- 
-+static int ibm_open_errinjct_token;
-+static int ibm_errinjct_token;
-+
- int rtas_call(int token, int nargs, int nret, int *outputs, ...)
- {
- 	va_list list;
-@@ -476,6 +480,16 @@ int rtas_call(int token, int nargs, int nret, int *outputs, ...)
- 	if (!rtas.entry || token == RTAS_UNKNOWN_SERVICE)
- 		return -1;
- 
-+	if (token == ibm_open_errinjct_token || token == ibm_errinjct_token) {
-+		/*
-+		 * It would be nicer to not discard the error value
-+		 * from security_locked_down(), but callers expect an
-+		 * RTAS status, not an errno.
-+		 */
-+		if (security_locked_down(LOCKDOWN_RTAS_ERROR_INJECTION))
-+			return -1;
-+	}
-+
- 	if ((mfmsr() & (MSR_IR|MSR_DR)) != (MSR_IR|MSR_DR)) {
- 		WARN_ON_ONCE(1);
- 		return -1;
-@@ -1227,6 +1241,14 @@ SYSCALL_DEFINE1(rtas, struct rtas_args __user *, uargs)
- 	if (block_rtas_call(token, nargs, &args))
- 		return -EINVAL;
- 
-+	if (token == ibm_open_errinjct_token || token == ibm_errinjct_token) {
-+		int err;
-+
-+		err = security_locked_down(LOCKDOWN_RTAS_ERROR_INJECTION);
-+		if (err)
-+			return err;
-+	}
-+
- 	/* Need to handle ibm,suspend_me call specially */
- 	if (token == rtas_token("ibm,suspend-me")) {
- 
-@@ -1325,7 +1347,8 @@ void __init rtas_initialize(void)
- #ifdef CONFIG_RTAS_ERROR_LOGGING
- 	rtas_last_error_token = rtas_token("rtas-last-error");
- #endif
--
-+	ibm_open_errinjct_token = rtas_token("ibm,open-errinjct");
-+	ibm_errinjct_token = rtas_token("ibm,errinjct");
- 	rtas_syscall_filter_init();
- }
- 
-diff --git a/include/linux/security.h b/include/linux/security.h
-index 1ca8dbacd3cc..b5d5138ae66a 100644
---- a/include/linux/security.h
-+++ b/include/linux/security.h
-@@ -123,6 +123,7 @@ enum lockdown_reason {
- 	LOCKDOWN_BPF_WRITE_USER,
- 	LOCKDOWN_DBG_WRITE_KERNEL,
- 	LOCKDOWN_DEVICE_TREE,
-+	LOCKDOWN_RTAS_ERROR_INJECTION,
- 	LOCKDOWN_INTEGRITY_MAX,
- 	LOCKDOWN_KCORE,
- 	LOCKDOWN_KPROBES,
-diff --git a/security/security.c b/security/security.c
-index 2863fc31eec6..6518b239ada2 100644
---- a/security/security.c
-+++ b/security/security.c
-@@ -61,6 +61,7 @@ const char *const lockdown_reasons[LOCKDOWN_CONFIDENTIALITY_MAX+1] = {
- 	[LOCKDOWN_BPF_WRITE_USER] = "use of bpf to write user RAM",
- 	[LOCKDOWN_DBG_WRITE_KERNEL] = "use of kgdb/kdb to write kernel RAM",
- 	[LOCKDOWN_DEVICE_TREE] = "modifying device tree contents",
-+	[LOCKDOWN_RTAS_ERROR_INJECTION] = "RTAS error injection",
- 	[LOCKDOWN_INTEGRITY_MAX] = "integrity",
- 	[LOCKDOWN_KCORE] = "/proc/kcore access",
- 	[LOCKDOWN_KPROBES] = "use of kprobes",
--- 
-2.37.3
+> ‘pci_aer_clear_nonfatal_status()’ in drivers/crypto/hisilicon/qm.c will be
+> removed in the next kernel:
+> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/drivers/crypto/hisilicon/qm.c?id=00278564a60e11df8bcca0ececd8b2f55434e406
 
+This is a problem because 00278564a60e ("crypto: hisilicon - Remove
+pci_aer_clear_nonfatal_status() call") is in Herbert's cryptodev tree,
+and if I apply this series to the PCI tree and Linus merges it before
+Herbert's cryptodev changes, it will break the build.
+
+I think we need to split this patch up like this:
+
+  - Add pci_aer_clear_uncorrect_error_status() to PCI core
+  - Convert dpc to use pci_aer_clear_uncorrect_error_status()
+    (I might end up squashing with above)
+  - Convert lpfc to use pci_aer_clear_uncorrect_error_status()
+  - Convert ntb_hw_idt to use pci_aer_clear_uncorrect_error_status()
+  - Unexport pci_aer_clear_nonfatal_status()
+
+Then I can apply all but the last patch safely.  If the crypto changes
+are merged first, we can add the last one; otherwise we can do it for
+the next cycle.
+
+> Uncorrectable error status register was intended to be cleared in
+> drivers/scsi/lpfc/lpfc_attr.c. But originally function was changed in https://github.com/torvalds/linux/commit/e7b0b847de6db161e3917732276e425bc92a2feb
+> and
+> https://github.com/torvalds/linux/commit/894020fdd88c1e9a74c60b67c0f19f1c7696ba2f
+
+This will be a behavior change for lpfc and ntb_hw_idt.  It looks like
+it changes the behavior back to what it was before e7b0b847de6d
+("PCI/AER: Clear only ERR_NONFATAL bits during non-fatal recovery"),
+so it might be OK, but splitting these out to their own patches will
+make the change more obvious and we can make sure that's what we want.
+
+Bjorn
+
+> > > Use pci_aer_clear_nonfatal_status() in dpc_process_error(), which has
+> > > no functional changes.
+> > > 
+> > > Since pci_aer_clear_nonfatal_status() is used only internally, move
+> > > its declaration to the PCI internal header file. Also, no one cares
+> > > about return value of pci_aer_clear_nonfatal_status(), so make it void.
+> > > 
+> > > Signed-off-by: Zhuo Chen <chenzhuo.1@bytedance.com>
+> > > ---
+> > >   drivers/ntb/hw/idt/ntb_hw_idt.c |  4 ++--
+> > >   drivers/pci/pci.h               |  2 ++
+> > >   drivers/pci/pcie/aer.c          | 23 ++++++++++++++++++-----
+> > >   drivers/pci/pcie/dpc.c          |  3 +--
+> > >   drivers/scsi/lpfc/lpfc_attr.c   |  4 ++--
+> > >   include/linux/aer.h             |  4 ++--
+> > >   6 files changed, 27 insertions(+), 13 deletions(-)
+> > > 
+> > > diff --git a/drivers/ntb/hw/idt/ntb_hw_idt.c b/drivers/ntb/hw/idt/ntb_hw_idt.c
+> > > index 733557231ed0..de1dbbc5b9de 100644
+> > > --- a/drivers/ntb/hw/idt/ntb_hw_idt.c
+> > > +++ b/drivers/ntb/hw/idt/ntb_hw_idt.c
+> > > @@ -2657,8 +2657,8 @@ static int idt_init_pci(struct idt_ntb_dev *ndev)
+> > >   	ret = pci_enable_pcie_error_reporting(pdev);
+> > >   	if (ret != 0)
+> > >   		dev_warn(&pdev->dev, "PCIe AER capability disabled\n");
+> > 
+> > > -	else /* Cleanup nonfatal error status before getting to init */
+> > > -		pci_aer_clear_nonfatal_status(pdev);
+> > > +	else /* Cleanup uncorrectable error status before getting to init */
+> > > +		pci_aer_clear_uncorrect_error_status(pdev);
+> > 
+> >  From the IDT NTB PCIe initialization procedure point of view both of
+> > these methods are equivalent. So for the IDT NTB part:
+> > 
+> IDT NTB part is the same as drivers/scsi/lpfc/lpfc_attr.c. The original
+> function is clear uncorrectable error status register including fatal and
+> non-fatal error status bits.
+> 
+> > Acked-by: Serge Semin <fancer.lancer@gmail.com>
+> > 
+> > -Sergey
+> > 
+> > >   	/* First enable the PCI device */
+> > >   	ret = pcim_enable_device(pdev);
+> > > diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+> > > index e10cdec6c56e..574176f43025 100644
+> > > --- a/drivers/pci/pci.h
+> > > +++ b/drivers/pci/pci.h
+> > > @@ -686,6 +686,7 @@ void pci_aer_init(struct pci_dev *dev);
+> > >   void pci_aer_exit(struct pci_dev *dev);
+> > >   extern const struct attribute_group aer_stats_attr_group;
+> > >   void pci_aer_clear_fatal_status(struct pci_dev *dev);
+> > > +void pci_aer_clear_nonfatal_status(struct pci_dev *dev);
+> > >   int pci_aer_clear_status(struct pci_dev *dev);
+> > >   int pci_aer_raw_clear_status(struct pci_dev *dev);
+> > >   #else
+> > > @@ -693,6 +694,7 @@ static inline void pci_no_aer(void) { }
+> > >   static inline void pci_aer_init(struct pci_dev *d) { }
+> > >   static inline void pci_aer_exit(struct pci_dev *d) { }
+> > >   static inline void pci_aer_clear_fatal_status(struct pci_dev *dev) { }
+> > > +static inline void pci_aer_clear_nonfatal_status(struct pci_dev *dev) { }
+> > >   static inline int pci_aer_clear_status(struct pci_dev *dev) { return -EINVAL; }
+> > >   static inline int pci_aer_raw_clear_status(struct pci_dev *dev) { return -EINVAL; }
+> > >   #endif
+> > > diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+> > > index 7952e5efd6cf..d2996afa80f6 100644
+> > > --- a/drivers/pci/pcie/aer.c
+> > > +++ b/drivers/pci/pcie/aer.c
+> > > @@ -251,13 +251,13 @@ int pci_disable_pcie_error_reporting(struct pci_dev *dev)
+> > >   }
+> > >   EXPORT_SYMBOL_GPL(pci_disable_pcie_error_reporting);
+> > > -int pci_aer_clear_nonfatal_status(struct pci_dev *dev)
+> > > +void pci_aer_clear_nonfatal_status(struct pci_dev *dev)
+> > >   {
+> > >   	int aer = dev->aer_cap;
+> > >   	u32 status, sev;
+> > >   	if (!pcie_aer_is_native(dev))
+> > > -		return -EIO;
+> > > +		return;
+> > >   	/* Clear status bits for ERR_NONFATAL errors only */
+> > >   	pci_read_config_dword(dev, aer + PCI_ERR_UNCOR_STATUS, &status);
+> > > @@ -265,10 +265,7 @@ int pci_aer_clear_nonfatal_status(struct pci_dev *dev)
+> > >   	status &= ~sev;
+> > >   	if (status)
+> > >   		pci_write_config_dword(dev, aer + PCI_ERR_UNCOR_STATUS, status);
+> > > -
+> > > -	return 0;
+> > >   }
+> > > -EXPORT_SYMBOL_GPL(pci_aer_clear_nonfatal_status);
+> > >   void pci_aer_clear_fatal_status(struct pci_dev *dev)
+> > >   {
+> > > @@ -286,6 +283,22 @@ void pci_aer_clear_fatal_status(struct pci_dev *dev)
+> > >   		pci_write_config_dword(dev, aer + PCI_ERR_UNCOR_STATUS, status);
+> > >   }
+> > > +int pci_aer_clear_uncorrect_error_status(struct pci_dev *dev)
+> > > +{
+> > > +	int aer = dev->aer_cap;
+> > > +	u32 status;
+> > > +
+> > > +	if (!pcie_aer_is_native(dev))
+> > > +		return -EIO;
+> > > +
+> > > +	pci_read_config_dword(dev, aer + PCI_ERR_UNCOR_STATUS, &status);
+> > > +	if (status)
+> > > +		pci_write_config_dword(dev, aer + PCI_ERR_UNCOR_STATUS, status);
+> > > +
+> > > +	return 0;
+> > > +}
+> > > +EXPORT_SYMBOL_GPL(pci_aer_clear_uncorrect_error_status);
+> > > +
+> > >   /**
+> > >    * pci_aer_raw_clear_status - Clear AER error registers.
+> > >    * @dev: the PCI device
+> > > diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
+> > > index 3e9afee02e8d..7942073fbb34 100644
+> > > --- a/drivers/pci/pcie/dpc.c
+> > > +++ b/drivers/pci/pcie/dpc.c
+> > > @@ -288,8 +288,7 @@ void dpc_process_error(struct pci_dev *pdev)
+> > >   		 dpc_get_aer_uncorrect_severity(pdev, &info) &&
+> > >   		 aer_get_device_error_info(pdev, &info)) {
+> > >   		aer_print_error(pdev, &info);
+> > > -		pci_aer_clear_nonfatal_status(pdev);
+> > > -		pci_aer_clear_fatal_status(pdev);
+> > > +		pci_aer_clear_uncorrect_error_status(pdev);
+> > >   	}
+> > >   }
+> > > diff --git a/drivers/scsi/lpfc/lpfc_attr.c b/drivers/scsi/lpfc/lpfc_attr.c
+> > > index 3caaa7c4af48..1ed8d1640325 100644
+> > > --- a/drivers/scsi/lpfc/lpfc_attr.c
+> > > +++ b/drivers/scsi/lpfc/lpfc_attr.c
+> > > @@ -4712,7 +4712,7 @@ static DEVICE_ATTR_RW(lpfc_aer_support);
+> > >    * Description:
+> > >    * If the @buf contains 1 and the device currently has the AER support
+> > >    * enabled, then invokes the kernel AER helper routine
+> > > - * pci_aer_clear_nonfatal_status() to clean up the uncorrectable
+> > > + * pci_aer_clear_uncorrect_error_status() to clean up the uncorrectable
+> > >    * error status register.
+> > >    *
+> > >    * Notes:
+> > > @@ -4738,7 +4738,7 @@ lpfc_aer_cleanup_state(struct device *dev, struct device_attribute *attr,
+> > >   		return -EINVAL;
+> > >   	if (phba->hba_flag & HBA_AER_ENABLED)
+> > > -		rc = pci_aer_clear_nonfatal_status(phba->pcidev);
+> > > +		rc = pci_aer_clear_uncorrect_error_status(phba->pcidev);
+> > >   	if (rc == 0)
+> > >   		return strlen(buf);
+> > > diff --git a/include/linux/aer.h b/include/linux/aer.h
+> > > index 97f64ba1b34a..f638ad955deb 100644
+> > > --- a/include/linux/aer.h
+> > > +++ b/include/linux/aer.h
+> > > @@ -44,7 +44,7 @@ struct aer_capability_regs {
+> > >   /* PCIe port driver needs this function to enable AER */
+> > >   int pci_enable_pcie_error_reporting(struct pci_dev *dev);
+> > >   int pci_disable_pcie_error_reporting(struct pci_dev *dev);
+> > > -int pci_aer_clear_nonfatal_status(struct pci_dev *dev);
+> > > +int pci_aer_clear_uncorrect_error_status(struct pci_dev *dev);
+> > >   void pci_save_aer_state(struct pci_dev *dev);
+> > >   void pci_restore_aer_state(struct pci_dev *dev);
+> > >   #else
+> > > @@ -56,7 +56,7 @@ static inline int pci_disable_pcie_error_reporting(struct pci_dev *dev)
+> > >   {
+> > >   	return -EINVAL;
+> > >   }
+> > > -static inline int pci_aer_clear_nonfatal_status(struct pci_dev *dev)
+> > > +static inline int pci_aer_clear_uncorrect_error_status(struct pci_dev *dev)
+> > >   {
+> > >   	return -EINVAL;
+> > >   }
+> > > -- 
+> > > 2.30.1 (Apple Git-130)
+> > > 
+> 
+> -- 
+> Thanks,
+> Zhuo Chen
