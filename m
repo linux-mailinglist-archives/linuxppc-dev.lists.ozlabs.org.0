@@ -1,90 +1,87 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46D9F5E6216
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Sep 2022 14:15:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAEFF5E62E3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Sep 2022 14:54:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MYDl71sCMz3c7S
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Sep 2022 22:15:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MYFbC3D3Nz3bxp
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Sep 2022 22:53:59 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=RgqXoQ47;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Djw/J0RT;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sachinp@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=RgqXoQ47;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Djw/J0RT;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MYDkP2YxRz2ywY
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Sep 2022 22:15:08 +1000 (AEST)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28MBxF9A036223;
-	Thu, 22 Sep 2022 12:15:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=YJT4R8Os4J4E5d7o3IhoRVRcnBNZtdep37aGVbRe68c=;
- b=RgqXoQ47cZqKdj669EOwXKRzpT/86bZh8IRplOHZj41KK4k67n+iNcDS+1sdwKfF6T/N
- OuIf+1IZB257MlfkrkSzWDPKsRc2F93MaVDl3urnRwJZbcLvnV9hh1rGqjDWi2bH4B1w
- bBsiuArr+BxZLFXu3EhcJeNMFfPknJNq0EQTCgchRAIx3h616ULK7/zmkKRYLFiHDX9m
- ScQneSKyM0vEv1JgFPqb8bLRa3RqGbHwbQQA9zFTTlATVjIVjCbAhdGmvQv+sQQgBSNS
- w8wn6WSqt0f0KlJvP9U9smqn85WgQNZLIuo2DHLtvCjJfdtveyE9g1eOIsW7jQea3lC7 7g== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jrqad0kfa-1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MYFZQ6RZLz305M
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Sep 2022 22:53:18 +1000 (AEST)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28MCkSBx031015;
+	Thu, 22 Sep 2022 12:53:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type : subject :
+ from : in-reply-to : date : cc : message-id : references : to :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=EMMrbPpnVu2KIeviMqn2ADJFSOeRHY+vjNS+Z/uUL4g=;
+ b=Djw/J0RTUtlMq8mAjXvAx3MVmmMLny0h0S+g1V6verBy6VY/jiwayzQonrNN0TwTI0Ti
+ 9hWxFgbBZq3u/vDW/K8cnnEz8a4JNoA1Rarcp2LWzAPfg7q57+9LpGiwuZZJvl9SVL4Z
+ HC6p9z/6L+H2JNOfaWWWTZQCkE8SW9n/JhjGoOKVnT58R1H5HwOwVaxfyCOLDrMNUYSF
+ ugEHOqGyMhMILexidplyEXvzvQVUBAWdPG/bL7NRhE0ggfNjnKC8HWOdWY1QXJ9i4i8P
+ VjUO75V3nP7Ty3vSEnsP8vAgeOZZlNN4HiZwq5X61jFvj7zJYLT40HbYGkky12Kt0d0f RA== 
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com [159.122.73.72])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jrptcaghj-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 22 Sep 2022 12:15:02 +0000
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 28MC0Op1001429;
-	Thu, 22 Sep 2022 12:15:01 GMT
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com [169.55.85.253])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jrqad0keg-1
+	Thu, 22 Sep 2022 12:53:13 +0000
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+	by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 28MCq1vE031346;
+	Thu, 22 Sep 2022 12:53:11 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+	by ppma06fra.de.ibm.com with ESMTP id 3jn5ghmyv5-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 22 Sep 2022 12:15:01 +0000
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
-	by ppma01wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 28MC66C8020452;
-	Thu, 22 Sep 2022 12:15:00 GMT
-Received: from b03cxnp08026.gho.boulder.ibm.com (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
-	by ppma01wdc.us.ibm.com with ESMTP id 3jn5v9rk6a-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 22 Sep 2022 12:15:00 +0000
-Received: from smtpav01.dal12v.mail.ibm.com ([9.208.128.133])
-	by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 28MCExPE66650448
+	Thu, 22 Sep 2022 12:53:11 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
+	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 28MCr91F30081364
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 22 Sep 2022 12:14:59 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DD09558063;
-	Thu, 22 Sep 2022 12:14:57 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C40F758062;
-	Thu, 22 Sep 2022 12:14:57 +0000 (GMT)
-Received: from localhost (unknown [9.163.93.105])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 22 Sep 2022 12:14:57 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: Haren Myneni <haren@linux.ibm.com>, mpe@ellerman.id.au, npiggin@gmail.com,
-        linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH] powerpc/pseries: Move vas_migration_handler early
- during migration
-In-Reply-To: <d8efade91dda831c9ed4abb226dab627da594c5f.camel@linux.ibm.com>
-References: <d8efade91dda831c9ed4abb226dab627da594c5f.camel@linux.ibm.com>
-Date: Thu, 22 Sep 2022 07:14:57 -0500
-Message-ID: <87czbnr4fy.fsf@linux.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain
+	Thu, 22 Sep 2022 12:53:09 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5DE7CA4051;
+	Thu, 22 Sep 2022 12:53:09 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5597CA404D;
+	Thu, 22 Sep 2022 12:53:08 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.43.115.178])
+	by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Thu, 22 Sep 2022 12:53:08 +0000 (GMT)
+Content-Type: text/plain;
+	charset=us-ascii
+Subject: Re: [powerpc] Kernel crash with THP tests (next-20220920)
+From: Sachin Sant <sachinp@linux.ibm.com>
+In-Reply-To: <YyuhD+7N022PgRA+@monkey>
+Date: Thu, 22 Sep 2022 18:23:04 +0530
+Message-Id: <5B4296E1-922B-4B01-A16D-CB427761FD2E@linux.ibm.com>
+References: <C2C8DA4F-F00F-43E9-ACD8-2A8BACA55893@linux.ibm.com>
+ <YyuhD+7N022PgRA+@monkey>
+To: Mike Kravetz <mike.kravetz@oracle.com>
+X-Mailer: Apple Mail (2.3696.120.41.1.1)
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: BcYi9jaXezA6asP6W5x9SHoOxVkJRNyw
-X-Proofpoint-ORIG-GUID: aKNG3h-kwdigZXNSHD7fwPjgWguXH3U8
+X-Proofpoint-GUID: egoh55Pn-Vyx9HaWGHlKKX99qDCQ2z8X
+X-Proofpoint-ORIG-GUID: egoh55Pn-Vyx9HaWGHlKKX99qDCQ2z8X
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
  definitions=2022-09-22_08,2022-09-22_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 mlxscore=0 lowpriorityscore=0 clxscore=1011 impostorscore=0
- adultscore=0 phishscore=0 bulkscore=0 spamscore=0 mlxlogscore=999
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2209130000 definitions=main-2209220080
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
+ mlxscore=0 impostorscore=0 lowpriorityscore=0 mlxlogscore=999
+ clxscore=1015 priorityscore=1501 suspectscore=0 spamscore=0 adultscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2209130000 definitions=main-2209220083
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,24 +93,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-mm@kvack.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, open list <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Haren Myneni <haren@linux.ibm.com> writes:
-> When the migration is initiated, the hypervisor changes VAS
-> mappings as part of pre-migration event. Then the OS gets the
-> migration event which closes all VAS windows before the migration
-> starts. NX generates continuous faults until windows are closed
-> and the user space can not differentiate these NX faults coming
-> from the actual migration. So to reduce this time window, close
-> VAS windows first in pseries_migrate_partition().
 
-I'm concerned that this is only narrowing a window of time where
-undesirable faults occur, and that it may not be sufficient for all
-configurations. Migrations can be in progress for minutes or hours,
-while the time that we wait for the VASI state transition is usually
-seconds or minutes. So I worry that this works around a problem in
-limited cases but doesn't cover them all.
 
-Maybe I don't understand the problem well enough. How does user space
-respond to the NX faults?
+> On 22-Sep-2022, at 5:11 AM, Mike Kravetz <mike.kravetz@oracle.com> wrote:
+>=20
+> On 09/21/22 12:00, Sachin Sant wrote:
+>> While running transparent huge page tests [1] against 6.0.0-rc6-next-202=
+20920
+>> following crash is seen on IBM Power server.
+>=20
+> Thanks Sachin,
+>=20
+> Naoya reported this, with my analysis here:
+> https://lore.kernel.org/linux-mm/YyqCS6+OXAgoqI8T@monkey/
+>=20
+
+Thanks Mike for the pointer.
+
+> An updated version of the patch was posted here,
+> https://lore.kernel.org/linux-mm/20220921202702.106069-1-mike.kravetz@ora=
+cle.com/
+>=20
+This updated patch works for me. The test runs to completion without any
+issues.
+
+- Sachin=
