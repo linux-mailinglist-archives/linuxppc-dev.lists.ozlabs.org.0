@@ -1,54 +1,132 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F6945E6C9D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Sep 2022 22:02:47 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 930AE5E6D58
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Sep 2022 22:46:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MYR5x0Ftkz3c2N
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 06:02:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MYS436Kgsz3bsS
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 06:46:11 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YD5Izudc;
+	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=idymt9cB;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=seco.com (client-ip=40.107.21.63; helo=eur05-vi1-obe.outbound.protection.outlook.com; envelope-from=sean.anderson@seco.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YD5Izudc;
+	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=idymt9cB;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2063.outbound.protection.outlook.com [40.107.21.63])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MYR5J1dMxz3bk0
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Sep 2022 06:02:11 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id DA1E6B83A6D;
-	Thu, 22 Sep 2022 20:02:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67686C433D6;
-	Thu, 22 Sep 2022 20:02:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1663876924;
-	bh=Ap/Inp3Sfe6Zj7tVN/jKuxxDgsHgXhBJT3+6ZeY53fc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=YD5Izudcy+JGNfMCtpGgZ/rSEC/l9vxBq36v7/luVgQo32yQqZBe6+BK3Eh/9831P
-	 UxlwPxO8o8wWv6Vb61BN+jGJ3l+KXsdNecTqFHLALYH5JKvA9arWWSlTVsvRYi1jjD
-	 MheTFWou+tfUq8aaRr0uzCNXUnBlFkBtXoK8pq/sxq7UQmQePlks30pUPoijAwqgg+
-	 /h7JFohyEHX4vurUPlyY/AvDy8ySJ1hHQBXWQZxG9W2FKFFnvVr0BgqLaK+L3tGal9
-	 +fxci7yFTUK22u1yLmcvsv9XIlR2U7Qkyu5Z56xdfINRcxFiNA6pDfOnOzp84JsUH0
-	 x4/VwD+Ma+QDQ==
-Date: Thu, 22 Sep 2022 15:02:02 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Zhuo Chen <chenzhuo.1@bytedance.com>
-Subject: Re: [External] Re: [PATCH 1/3] PCI/AER: Use
- pci_aer_clear_uncorrect_error_status() to clear uncorrectable error status
-Message-ID: <20220922200202.GA1330813@bhelgaas>
-MIME-Version: 1.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MYS3G46Khz3bZt
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Sep 2022 06:45:28 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=aXT1Xz9E21wXZFZ2JRhtq02E7zaOvKx+rBDq17ghCrrZ7kBy+4WOxJhbkTCFQbZHfwNLVmp+OayJOeQ49HYo4hoZf8vMAUe89/VaabPSX/QlRVCRnq43QzXgm9TTakjnB5Wzyd1dFVSV1o2Bj9oP3QAlE55Cmp9ayrBk/gASIwntCoRKQ8ProcnB7xA5G0q1pDy9wC/g6q6kPve6W0qbLrbrLge4KE6UhRykxREGtWpKTlhpfgCj9SHHobAwVTD/KCPKOWPeUqUQGvqBxbtu0Tuv75wuLBCZ0rBeJPxwktPETBi32Zw3Tk1TE39Ew8Su39Cba2267SxNCvaIhhBaCw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=uRNzI2qxAKvnz1aInNFTua4KkPPOYUAf3B9CPlrs030=;
+ b=moGRFVeHydJBbAUWgKZQ72xTkZDTH3gpOMnJ4sf20E7BiI7erfXn/sghqE0rNGeQPB5a6uTCzo5RcLKKJBOAV6jDJei8SqV+vjCj2HLrZsYqRTSX+6jjdt1DReaBEm+xXM5h9729h+jndyZktM4AZkmkRsre4H41d1VULQfQ5ppMQmkZJjVXOPXOiy1eWnf86oFsqV1EGnI1R3kHNSXeeHM7m+uduRB3ZUycgNRzcZ74UO/bVQo7te1kf0Eu4fuh5khq3t63u2E8wS1X0g4L43EFIcC6YoMFOg0MjREaWXT+eHVRgkIpjYRU1P+zIivqBIgzjLbcUVcx5CTp5OFiqQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=seco.com; dmarc=pass action=none header.from=seco.com;
+ dkim=pass header.d=seco.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seco.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=uRNzI2qxAKvnz1aInNFTua4KkPPOYUAf3B9CPlrs030=;
+ b=idymt9cBMEDm4qKxWU0svAh+bo1HjSU38TL3wMQUgrPXUxLbVXkF5xYxubQgnH7DntUMoOCjOPe6scfy6uA+vnr0GxVJqnFgZziOlKIfJZqhLDcW2YoQAAVj5sAikdxGebQqDD51zJZ1VDD4xo+PbyqB2ssF/hYgonTCGMg2Ee0B7AtqOz04IdOBxHuIhsKjJnJrfkDsV4NWdoqD70EQstrCii38TBRazIA1P6TsO0xvCJ8aWD+ZIyGUCwF8LG3iwxLiaqSr5DERGieZjFDvmC6V8a2Z7bZaqdfag/1X3sGnQf/1o1rkHpgUIxL+lJrWVQ6+kLpK5jIL4zM46jIpiA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=seco.com;
+Received: from DB7PR03MB4972.eurprd03.prod.outlook.com (2603:10a6:10:7d::22)
+ by AM9PR03MB7489.eurprd03.prod.outlook.com (2603:10a6:20b:272::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5654.19; Thu, 22 Sep
+ 2022 20:45:07 +0000
+Received: from DB7PR03MB4972.eurprd03.prod.outlook.com
+ ([fe80::204a:de22:b651:f86d]) by DB7PR03MB4972.eurprd03.prod.outlook.com
+ ([fe80::204a:de22:b651:f86d%6]) with mapi id 15.20.5654.014; Thu, 22 Sep 2022
+ 20:45:07 +0000
+Subject: Re: [PATCH 0/8] generic command line v4
+To: Daniel Walker <danielwa@cisco.com>, Will Deacon <will@kernel.org>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>, Rob Herring
+ <robh@kernel.org>,
+ Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>,
+ Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
+ linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ "H. Peter Anvin" <hpa@zytor.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kbuild@vger.kernel.org
+References: <20210416040924.2882771-1-danielwa@cisco.com>
+From: Sean Anderson <sean.anderson@seco.com>
+Message-ID: <b517fac5-2fdc-a8c9-75d0-174c67f5a2de@seco.com>
+Date: Thu, 22 Sep 2022 16:45:01 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
+In-Reply-To: <20210416040924.2882771-1-danielwa@cisco.com>
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <69f2df4e-b2c6-0f19-bf8d-92b7d6c4e033@bytedance.com>
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BL1PR13CA0157.namprd13.prod.outlook.com
+ (2603:10b6:208:2bd::12) To DB7PR03MB4972.eurprd03.prod.outlook.com
+ (2603:10a6:10:7d::22)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB7PR03MB4972:EE_|AM9PR03MB7489:EE_
+X-MS-Office365-Filtering-Correlation-Id: 73e73d97-7860-47c6-a4a0-08da9cdb5552
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	xGOXnGsukXz2qL1nIrEuMqcttbS7kpXyxM18YpPNKBAtqofbOo4s3tzxleD1yVKBlRlhTX9KntLU8MDPEQ73sGoAMqaV8CaX3/U/Kpkq/GiO1ZTgLJLzL4BJM5+kp+WRr2drx3XPocf4O8mDIRisFaNb6D7nvoLgTbYQ46cGV0f4tzDdLPKcqZw29dj4Zcx8eQfB4rkIq16xEQzMq1i5K5YTeL2lduwNaeVvxzdm6OOpfjwdLl5I+wKNu3DcqQnwHc0QT20Bq+gr6fyDyyvRXKuJ9sH1tOAQ146Hb8oQYoSt5lmri93Lc/PbWmSSX26Yt3qCi8NJBHr8eLfwPiroahinN3St+yJLTSQZ1vMofAR0CJAXx/QUMqbqVN+m6owa9bFb7DeNdEQ2jks8Osy1b1SFG3EbCsARqmKSLy7Px7ahQOdi9ME9lSlWQqnMIKHo1HI6puDp8c0vn5MnSvk41NlL9HrMzJoycLAsDUIV+lzMXtDwsPYqb69KJE0hHt3XlryFaeZue+MGs+1q2kM4EUc0ZK5b2bBiriGIMPAqphzdkjVCcDusV094C7rS+pCBRU9PY4G16Usdv+kvJ0gtIEsok+mRGqquyj/nku6IFQ/1H4BQJAVn8xweIk+U2Y4mMLAswV69yFtbTRCCowf8OOOSEz7YtaOUrDG9kJIDFkfIbBFPUK365ZKcLYlmsdMyJ8MBVBNjqcmMrzvH31tDDaRNP+qjr9OnGAMgxh9YVvxLj0rRtx+y8/yDGsJPlWDZ6ForucwQEQosoyoSYf37EKF7XyVgV/1qQWTIHLz7HMp3Hb6N5rhm4xle6sGHWP6EjIsgeINOlMIuplkwqNr2dykYXbP36GtPekBRyIEwNvmUuUFWXnKY3BydpWqANmh1
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB7PR03MB4972.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(366004)(39850400004)(346002)(376002)(136003)(396003)(451199015)(5660300002)(38100700002)(38350700002)(921005)(316002)(478600001)(86362001)(44832011)(36756003)(31696002)(2906002)(110136005)(66946007)(6486002)(4326008)(66556008)(66476007)(186003)(7416002)(6512007)(26005)(8676002)(2616005)(6506007)(53546011)(52116002)(41300700001)(6666004)(8936002)(31686004)(83380400001)(41533002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?utf-8?B?NU0rVzh1MGFkdlJCTndOVnBwQTdERWpXWGF4YXVtQm5TbGJweHVxa3I3UU00?=
+ =?utf-8?B?Y04vN29KQVhkVG9zR2hjdUN0NTNhOFZjUWp2dmV5UDhSUGZJRHNwRmxtWHpW?=
+ =?utf-8?B?cWZPQ25HckFxUk1PK0JGN214WHRjOGtvYzNUR2x4MjV2dVplaml3Q1RBdExX?=
+ =?utf-8?B?UjNPcDd5dDVkT0JtbDlGWncva0w1ZTkwcTIvOG41NTZqdHJtdjIvL0V2WFRx?=
+ =?utf-8?B?NXczVzFWOWR2VURMN0hkWmFuUng2TGVzUGlaSXFjVC9LM0hDalh2ZmlXL0V1?=
+ =?utf-8?B?aFV1UVJpZWNmRjkwVlBONEdnaElPLzNEcDVnQSt4dVdRbVBUTlhydGNWNHlK?=
+ =?utf-8?B?M1ZGZDhFTisrei8wdVgvVCtoZTcwSGZGaUNwRDBzTjc1L2JXRXN0ZjN6emht?=
+ =?utf-8?B?bVNpT0J2NDRuS1VxK283aHJmMlo2UGtvVzFBREo1VVU4OTNsS2tMbk5BMHBP?=
+ =?utf-8?B?cTFtVjNzTUlkb0hiMnY4a0dUOVlOeURzU2JIN0x5TWQxYy9jaS9JNERFYVAy?=
+ =?utf-8?B?Vy8rM3dLaS83SUZzaUxzY0E2Q3FFWmlKcnhnR2RtT28wdFRQcEdhYWgyWWVY?=
+ =?utf-8?B?R01Ed0wyRDFjd0lSWE8ybnVDV3FTekFidkhhMTFqaUx2QzhqdjEvWmJzTHFw?=
+ =?utf-8?B?VjhGSnk5Yit1YzA2T25xTm16VzJ4SFlCT2hsaTdCRU5hTUJtcDI0NkM0SWVN?=
+ =?utf-8?B?WlNEc3lVdEZweDhVcE9CbDhSZUpnbjQ2RjhZdTYrQVJQM2V0UW12cnhxRFJT?=
+ =?utf-8?B?aHRZQVZrcG1xK09QdjhsSTBUeWs0dnR0OTZqQnF2bG1JVStjZDBxcEV2My9T?=
+ =?utf-8?B?N2VJb2ZtN1dlb1lYcDNNNkVNbGFCeXh5VHBIRHNRaHRGenllSUc1Mk9MUnZZ?=
+ =?utf-8?B?R2kwZ1hRUk5mWFd6S1pKcTVrZS9OeFRFemluYmhpZThHTndOZW50dkU0aE14?=
+ =?utf-8?B?Mis0d3NKVDZkdU9pM3c2ZGpBVUtITTI3MXoxLzNvcTRVSk9zamNCK3hEZmRK?=
+ =?utf-8?B?THNHVW5TU1J2VE5oOFJtQ3poK0d3Q1NGYUpzeDU4b3dtdC9TdXp5b3BoakNF?=
+ =?utf-8?B?NkFFNWEvM0FNeVNMZFhWazRVNGMyYmJmckJIQmhHRmh2cGRzRWdnMjgyc1BW?=
+ =?utf-8?B?SVZzOHBlWGd3MXo4SkFOR21iZHdTNjZOODYxcUNGVHU1VkdubmFhNW9IVnNo?=
+ =?utf-8?B?TUJNazdZcTF6ZWdyWjRCdlk5K3R2UXpRR28xRktWTnZPbmd6Q3BDMjd4ZDBM?=
+ =?utf-8?B?ZWt6WTd1T2YwNXc3bVhUL2tTQXZwQVlKLzluOXZXVWRWRjViL1I5blFVb25O?=
+ =?utf-8?B?Q0g4SWoxWTFGWWYrTU4yUFJud1hZeFlvQVhlMkxUVTBNNHRUZkwyallCbks5?=
+ =?utf-8?B?alFjT1lHMlpPUkZYbWZRNGx3Nk1iYWlUMFd5TmtQeUpoQ3pGUnRPdUx2eS9j?=
+ =?utf-8?B?T3ZSRjRHY1o1M0E0OEtoeGFHNStwdVY3VThvaitoUGVkODc0aXNDSVdTU1F1?=
+ =?utf-8?B?TmgzOHAwYTg2SmExUDg5Z0dIQVpmV3NWRzd2ekZVdEhNTCtFeUIveHF2bzhJ?=
+ =?utf-8?B?V2MwM0VtS0dCWENza0o0eDBGS3NGMVdlYnBDaElXZm5lSldkWWxxL2xpL3R1?=
+ =?utf-8?B?MEQ4bWhBalZWd05BNENtSUVRRGJGTDlXOHBMWmRyakRqSkpVdHEvSS84L2JK?=
+ =?utf-8?B?a0t0M0JsRGRrYlVqbHQxMnM2ZmlzMXBWQ1MwaU9uZXdSSzJkOXBicExKWHMx?=
+ =?utf-8?B?MFVNYXd1U3dyYmExaXhDMnd3RjVhRGViVDdMSFNQa1k0S1paMFV0NHd2RkVs?=
+ =?utf-8?B?dm1TdmVyTGtQTHFiSmxOTXorcUZtRldtQjgraUs1alZYYUEwczNYbDZaUkN5?=
+ =?utf-8?B?SVpZanNoTHl2Z1M5alhOSFQ2bnYyQnRtQllCdm05YTU2bjJpaFVRditlQ00x?=
+ =?utf-8?B?MFFOb2RyMDk5UTVyRUdCUzN4SmJobW5XbWppaExHdUlIVUY1UkpxdDlndWNP?=
+ =?utf-8?B?RXFwVkZGMDZmUmN2eFMwTUozUHB0Q1FjRE1JeWEwZld2ZWNldXZTWDA1OSsv?=
+ =?utf-8?B?Y3ozRDNqUzZoQ0x0enE3UWM5M3grb082NnBCOHpNZVJwQ2o2WGNQWXR1RVd4?=
+ =?utf-8?B?U0gxU3E1RnNhMlJ6TzRXS1EvajFjRGthdnVQY3FjVGtaQWdia0I4RldEaGRP?=
+ =?utf-8?B?UVE9PQ==?=
+X-OriginatorOrg: seco.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 73e73d97-7860-47c6-a4a0-08da9cdb5552
+X-MS-Exchange-CrossTenant-AuthSource: DB7PR03MB4972.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Sep 2022 20:45:07.2252
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bebe97c3-6438-442e-ade3-ff17aa50e733
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nwG5PW2KJTygBs9VaQOnjkW+lnZQ1Mo17MCVS6VJCx6HzxoY7oHwNL7fhrTShyqQBSwCgjyUK9go3r5sMH+nyg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR03MB7489
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,242 +138,106 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: allenbh@gmail.com, dave.jiang@intel.com, martin.petersen@oracle.com, linux-scsi@vger.kernel.org, linux-pci@vger.kernel.org, jejb@linux.ibm.com, james.smart@broadcom.com, Serge Semin <fancer.lancer@gmail.com>, linux-kernel@vger.kernel.org, ntb@lists.linux.dev, oohall@gmail.com, jdmason@kudzu.us, bhelgaas@google.com, dick.kennedy@broadcom.com, linuxppc-dev@lists.ozlabs.org
+Cc: linux-efi@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Sep 12, 2022 at 01:09:05AM +0800, Zhuo Chen wrote:
-> On 9/12/22 12:22 AM, Serge Semin wrote:
-> > On Fri, Sep 02, 2022 at 02:16:32AM +0800, Zhuo Chen wrote:
-> > > Status bits for ERR_NONFATAL errors only are cleared in
-> > > pci_aer_clear_nonfatal_status(), but we want clear uncorrectable
-> > > error status in ntb_hw_idt.c and lpfc_attr.c. So we add
-> > > pci_aer_clear_uncorrect_error_status() and change to use it.
-> > 
-> > What about the next drivers
-> > 
-> > drivers/scsi/lpfc/lpfc_attr.c
-> > drivers/crypto/hisilicon/qm.c
-> > drivers/net/ethernet/intel/ice/ice_main.c
-> > 
-> > which call the pci_aer_clear_nonfatal_status() method too?
+
+
+On 4/16/21 12:09 AM, Daniel Walker wrote:
 > 
-> ‘pci_aer_clear_nonfatal_status()’ in
-> drivers/net/ethernet/intel/ice/ice_main.c has already been removed and
-> merged in kernel in: https://github.com/torvalds/linux/commit/ca415ea1f03abf34fc8e4cc5fc30a00189b4e776
-
-It's better if you can use kernel.org URLs that don't depend on
-third parties like github, e.g.,
-
-  https://git.kernel.org/linus/ca415ea1f03a
-
-> ‘pci_aer_clear_nonfatal_status()’ in drivers/crypto/hisilicon/qm.c will be
-> removed in the next kernel:
-> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/drivers/crypto/hisilicon/qm.c?id=00278564a60e11df8bcca0ececd8b2f55434e406
-
-This is a problem because 00278564a60e ("crypto: hisilicon - Remove
-pci_aer_clear_nonfatal_status() call") is in Herbert's cryptodev tree,
-and if I apply this series to the PCI tree and Linus merges it before
-Herbert's cryptodev changes, it will break the build.
-
-I think we need to split this patch up like this:
-
-  - Add pci_aer_clear_uncorrect_error_status() to PCI core
-  - Convert dpc to use pci_aer_clear_uncorrect_error_status()
-    (I might end up squashing with above)
-  - Convert lpfc to use pci_aer_clear_uncorrect_error_status()
-  - Convert ntb_hw_idt to use pci_aer_clear_uncorrect_error_status()
-  - Unexport pci_aer_clear_nonfatal_status()
-
-Then I can apply all but the last patch safely.  If the crypto changes
-are merged first, we can add the last one; otherwise we can do it for
-the next cycle.
-
-> Uncorrectable error status register was intended to be cleared in
-> drivers/scsi/lpfc/lpfc_attr.c. But originally function was changed in https://github.com/torvalds/linux/commit/e7b0b847de6db161e3917732276e425bc92a2feb
-> and
-> https://github.com/torvalds/linux/commit/894020fdd88c1e9a74c60b67c0f19f1c7696ba2f
-
-This will be a behavior change for lpfc and ntb_hw_idt.  It looks like
-it changes the behavior back to what it was before e7b0b847de6d
-("PCI/AER: Clear only ERR_NONFATAL bits during non-fatal recovery"),
-so it might be OK, but splitting these out to their own patches will
-make the change more obvious and we can make sure that's what we want.
-
-Bjorn
-
-> > > Use pci_aer_clear_nonfatal_status() in dpc_process_error(), which has
-> > > no functional changes.
-> > > 
-> > > Since pci_aer_clear_nonfatal_status() is used only internally, move
-> > > its declaration to the PCI internal header file. Also, no one cares
-> > > about return value of pci_aer_clear_nonfatal_status(), so make it void.
-> > > 
-> > > Signed-off-by: Zhuo Chen <chenzhuo.1@bytedance.com>
-> > > ---
-> > >   drivers/ntb/hw/idt/ntb_hw_idt.c |  4 ++--
-> > >   drivers/pci/pci.h               |  2 ++
-> > >   drivers/pci/pcie/aer.c          | 23 ++++++++++++++++++-----
-> > >   drivers/pci/pcie/dpc.c          |  3 +--
-> > >   drivers/scsi/lpfc/lpfc_attr.c   |  4 ++--
-> > >   include/linux/aer.h             |  4 ++--
-> > >   6 files changed, 27 insertions(+), 13 deletions(-)
-> > > 
-> > > diff --git a/drivers/ntb/hw/idt/ntb_hw_idt.c b/drivers/ntb/hw/idt/ntb_hw_idt.c
-> > > index 733557231ed0..de1dbbc5b9de 100644
-> > > --- a/drivers/ntb/hw/idt/ntb_hw_idt.c
-> > > +++ b/drivers/ntb/hw/idt/ntb_hw_idt.c
-> > > @@ -2657,8 +2657,8 @@ static int idt_init_pci(struct idt_ntb_dev *ndev)
-> > >   	ret = pci_enable_pcie_error_reporting(pdev);
-> > >   	if (ret != 0)
-> > >   		dev_warn(&pdev->dev, "PCIe AER capability disabled\n");
-> > 
-> > > -	else /* Cleanup nonfatal error status before getting to init */
-> > > -		pci_aer_clear_nonfatal_status(pdev);
-> > > +	else /* Cleanup uncorrectable error status before getting to init */
-> > > +		pci_aer_clear_uncorrect_error_status(pdev);
-> > 
-> >  From the IDT NTB PCIe initialization procedure point of view both of
-> > these methods are equivalent. So for the IDT NTB part:
-> > 
-> IDT NTB part is the same as drivers/scsi/lpfc/lpfc_attr.c. The original
-> function is clear uncorrectable error status register including fatal and
-> non-fatal error status bits.
+> v4 release changes
 > 
-> > Acked-by: Serge Semin <fancer.lancer@gmail.com>
-> > 
-> > -Sergey
-> > 
-> > >   	/* First enable the PCI device */
-> > >   	ret = pcim_enable_device(pdev);
-> > > diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-> > > index e10cdec6c56e..574176f43025 100644
-> > > --- a/drivers/pci/pci.h
-> > > +++ b/drivers/pci/pci.h
-> > > @@ -686,6 +686,7 @@ void pci_aer_init(struct pci_dev *dev);
-> > >   void pci_aer_exit(struct pci_dev *dev);
-> > >   extern const struct attribute_group aer_stats_attr_group;
-> > >   void pci_aer_clear_fatal_status(struct pci_dev *dev);
-> > > +void pci_aer_clear_nonfatal_status(struct pci_dev *dev);
-> > >   int pci_aer_clear_status(struct pci_dev *dev);
-> > >   int pci_aer_raw_clear_status(struct pci_dev *dev);
-> > >   #else
-> > > @@ -693,6 +694,7 @@ static inline void pci_no_aer(void) { }
-> > >   static inline void pci_aer_init(struct pci_dev *d) { }
-> > >   static inline void pci_aer_exit(struct pci_dev *d) { }
-> > >   static inline void pci_aer_clear_fatal_status(struct pci_dev *dev) { }
-> > > +static inline void pci_aer_clear_nonfatal_status(struct pci_dev *dev) { }
-> > >   static inline int pci_aer_clear_status(struct pci_dev *dev) { return -EINVAL; }
-> > >   static inline int pci_aer_raw_clear_status(struct pci_dev *dev) { return -EINVAL; }
-> > >   #endif
-> > > diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> > > index 7952e5efd6cf..d2996afa80f6 100644
-> > > --- a/drivers/pci/pcie/aer.c
-> > > +++ b/drivers/pci/pcie/aer.c
-> > > @@ -251,13 +251,13 @@ int pci_disable_pcie_error_reporting(struct pci_dev *dev)
-> > >   }
-> > >   EXPORT_SYMBOL_GPL(pci_disable_pcie_error_reporting);
-> > > -int pci_aer_clear_nonfatal_status(struct pci_dev *dev)
-> > > +void pci_aer_clear_nonfatal_status(struct pci_dev *dev)
-> > >   {
-> > >   	int aer = dev->aer_cap;
-> > >   	u32 status, sev;
-> > >   	if (!pcie_aer_is_native(dev))
-> > > -		return -EIO;
-> > > +		return;
-> > >   	/* Clear status bits for ERR_NONFATAL errors only */
-> > >   	pci_read_config_dword(dev, aer + PCI_ERR_UNCOR_STATUS, &status);
-> > > @@ -265,10 +265,7 @@ int pci_aer_clear_nonfatal_status(struct pci_dev *dev)
-> > >   	status &= ~sev;
-> > >   	if (status)
-> > >   		pci_write_config_dword(dev, aer + PCI_ERR_UNCOR_STATUS, status);
-> > > -
-> > > -	return 0;
-> > >   }
-> > > -EXPORT_SYMBOL_GPL(pci_aer_clear_nonfatal_status);
-> > >   void pci_aer_clear_fatal_status(struct pci_dev *dev)
-> > >   {
-> > > @@ -286,6 +283,22 @@ void pci_aer_clear_fatal_status(struct pci_dev *dev)
-> > >   		pci_write_config_dword(dev, aer + PCI_ERR_UNCOR_STATUS, status);
-> > >   }
-> > > +int pci_aer_clear_uncorrect_error_status(struct pci_dev *dev)
-> > > +{
-> > > +	int aer = dev->aer_cap;
-> > > +	u32 status;
-> > > +
-> > > +	if (!pcie_aer_is_native(dev))
-> > > +		return -EIO;
-> > > +
-> > > +	pci_read_config_dword(dev, aer + PCI_ERR_UNCOR_STATUS, &status);
-> > > +	if (status)
-> > > +		pci_write_config_dword(dev, aer + PCI_ERR_UNCOR_STATUS, status);
-> > > +
-> > > +	return 0;
-> > > +}
-> > > +EXPORT_SYMBOL_GPL(pci_aer_clear_uncorrect_error_status);
-> > > +
-> > >   /**
-> > >    * pci_aer_raw_clear_status - Clear AER error registers.
-> > >    * @dev: the PCI device
-> > > diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
-> > > index 3e9afee02e8d..7942073fbb34 100644
-> > > --- a/drivers/pci/pcie/dpc.c
-> > > +++ b/drivers/pci/pcie/dpc.c
-> > > @@ -288,8 +288,7 @@ void dpc_process_error(struct pci_dev *pdev)
-> > >   		 dpc_get_aer_uncorrect_severity(pdev, &info) &&
-> > >   		 aer_get_device_error_info(pdev, &info)) {
-> > >   		aer_print_error(pdev, &info);
-> > > -		pci_aer_clear_nonfatal_status(pdev);
-> > > -		pci_aer_clear_fatal_status(pdev);
-> > > +		pci_aer_clear_uncorrect_error_status(pdev);
-> > >   	}
-> > >   }
-> > > diff --git a/drivers/scsi/lpfc/lpfc_attr.c b/drivers/scsi/lpfc/lpfc_attr.c
-> > > index 3caaa7c4af48..1ed8d1640325 100644
-> > > --- a/drivers/scsi/lpfc/lpfc_attr.c
-> > > +++ b/drivers/scsi/lpfc/lpfc_attr.c
-> > > @@ -4712,7 +4712,7 @@ static DEVICE_ATTR_RW(lpfc_aer_support);
-> > >    * Description:
-> > >    * If the @buf contains 1 and the device currently has the AER support
-> > >    * enabled, then invokes the kernel AER helper routine
-> > > - * pci_aer_clear_nonfatal_status() to clean up the uncorrectable
-> > > + * pci_aer_clear_uncorrect_error_status() to clean up the uncorrectable
-> > >    * error status register.
-> > >    *
-> > >    * Notes:
-> > > @@ -4738,7 +4738,7 @@ lpfc_aer_cleanup_state(struct device *dev, struct device_attribute *attr,
-> > >   		return -EINVAL;
-> > >   	if (phba->hba_flag & HBA_AER_ENABLED)
-> > > -		rc = pci_aer_clear_nonfatal_status(phba->pcidev);
-> > > +		rc = pci_aer_clear_uncorrect_error_status(phba->pcidev);
-> > >   	if (rc == 0)
-> > >   		return strlen(buf);
-> > > diff --git a/include/linux/aer.h b/include/linux/aer.h
-> > > index 97f64ba1b34a..f638ad955deb 100644
-> > > --- a/include/linux/aer.h
-> > > +++ b/include/linux/aer.h
-> > > @@ -44,7 +44,7 @@ struct aer_capability_regs {
-> > >   /* PCIe port driver needs this function to enable AER */
-> > >   int pci_enable_pcie_error_reporting(struct pci_dev *dev);
-> > >   int pci_disable_pcie_error_reporting(struct pci_dev *dev);
-> > > -int pci_aer_clear_nonfatal_status(struct pci_dev *dev);
-> > > +int pci_aer_clear_uncorrect_error_status(struct pci_dev *dev);
-> > >   void pci_save_aer_state(struct pci_dev *dev);
-> > >   void pci_restore_aer_state(struct pci_dev *dev);
-> > >   #else
-> > > @@ -56,7 +56,7 @@ static inline int pci_disable_pcie_error_reporting(struct pci_dev *dev)
-> > >   {
-> > >   	return -EINVAL;
-> > >   }
-> > > -static inline int pci_aer_clear_nonfatal_status(struct pci_dev *dev)
-> > > +static inline int pci_aer_clear_uncorrect_error_status(struct pci_dev *dev)
-> > >   {
-> > >   	return -EINVAL;
-> > >   }
-> > > -- 
-> > > 2.30.1 (Apple Git-130)
-> > > 
+> * Updated insert-sys-cert tool to change command line symbols after
+>   compilation.
 > 
-> -- 
-> Thanks,
-> Zhuo Chen
+> 	This tool is used to release binary kernels internally to companies
+> 	and then later insert certificates for each product by consumers of
+> 	the binary kernel. Cisco uses this tool for this purpose.
+> 
+> 	Cisco has a similar need for the command line to be modified on a
+> 	binary released kernels similar to how certificates are setup.
+> 
+> * Added global symbols to hold append and prepend values.
+> 
+> 	These changes follow the system certificate code to allow the
+> 	insert-sys-cert tool to be used.
+> 
+> * Added a test case to confirm functionality.
+> 
+> 	Seemed sensible to add this to make sure everything is working.
+> 
+> * Dropped powerpc changes
+> 
+> 	Christophe Leroy has reservations about the features for powerpc. I
+> 	don't think his reservations are founded, and these changes should
+> 	fully work on powerpc. However, I dropped these changes so Christophe
+> 	can have more time to get comfortable with the changes.
+> 
+> 
+> Enjoy!
+> 
+> 
+> Daniel Walker (8):
+>   CMDLINE: add generic builtin command line
+>   scripts: insert-sys-cert: add command line insert capability
+>   scripts: insert-sys-cert: change name to insert-symbol
+>   CMDLINE: mips: convert to generic builtin command line
+>   drivers: firmware: efi: libstub: enable generic commandline
+>   CMDLINE: x86: convert to generic builtin command line
+>   of: allow sending a NULL value to early_init_dt_scan_chosen
+>   CMDLINE: arm64: convert to generic builtin command line
+> 
+>  arch/arm64/Kconfig                            |  33 +--
+>  arch/arm64/include/asm/setup.h                |   2 +
+>  arch/arm64/kernel/idreg-override.c            |   9 +-
+>  arch/mips/Kconfig                             |   4 +-
+>  arch/mips/Kconfig.debug                       |  44 ----
+>  arch/mips/configs/ar7_defconfig               |   9 +-
+>  arch/mips/configs/bcm47xx_defconfig           |   8 +-
+>  arch/mips/configs/bcm63xx_defconfig           |  15 +-
+>  arch/mips/configs/bmips_be_defconfig          |  11 +-
+>  arch/mips/configs/bmips_stb_defconfig         |  11 +-
+>  arch/mips/configs/capcella_defconfig          |  11 +-
+>  arch/mips/configs/ci20_defconfig              |  10 +-
+>  arch/mips/configs/cu1000-neo_defconfig        |  10 +-
+>  arch/mips/configs/cu1830-neo_defconfig        |  10 +-
+>  arch/mips/configs/e55_defconfig               |   4 +-
+>  arch/mips/configs/generic_defconfig           |   6 +-
+>  arch/mips/configs/gpr_defconfig               |  18 +-
+>  arch/mips/configs/loongson3_defconfig         |  13 +-
+>  arch/mips/configs/mpc30x_defconfig            |   7 +-
+>  arch/mips/configs/tb0219_defconfig            |   7 +-
+>  arch/mips/configs/tb0226_defconfig            |   7 +-
+>  arch/mips/configs/tb0287_defconfig            |   7 +-
+>  arch/mips/configs/workpad_defconfig           |  11 +-
+>  arch/mips/include/asm/setup.h                 |   2 +
+>  arch/mips/kernel/relocate.c                   |  17 +-
+>  arch/mips/kernel/setup.c                      |  36 +--
+>  arch/mips/pic32/pic32mzda/early_console.c     |   2 +-
+>  arch/mips/pic32/pic32mzda/init.c              |   3 +-
+>  arch/x86/Kconfig                              |  44 +---
+>  arch/x86/kernel/setup.c                       |  18 +-
+>  .../firmware/efi/libstub/efi-stub-helper.c    |  29 +++
+>  drivers/firmware/efi/libstub/efi-stub.c       |   9 +
+>  drivers/firmware/efi/libstub/efistub.h        |   1 +
+>  drivers/firmware/efi/libstub/x86-stub.c       |  13 +-
+>  drivers/of/fdt.c                              |  44 ++--
+>  include/linux/cmdline.h                       | 103 ++++++++
+>  init/Kconfig                                  |  78 ++++++
+>  lib/Kconfig                                   |   4 +
+>  lib/Makefile                                  |   3 +
+>  lib/generic_cmdline.S                         |  53 ++++
+>  lib/test_cmdline1.c                           | 139 ++++++++++
+>  scripts/Makefile                              |   2 +-
+>  .../{insert-sys-cert.c => insert-symbol.c}    | 243 ++++++++++++------
+>  43 files changed, 716 insertions(+), 394 deletions(-)
+>  create mode 100644 include/linux/cmdline.h
+>  create mode 100644 lib/generic_cmdline.S
+>  create mode 100644 lib/test_cmdline1.c
+>  rename scripts/{insert-sys-cert.c => insert-symbol.c} (72%)
+> 
+
+For an arm64 platform (after rebasing):
+
+Tested-by: Sean Anderson <sean.anderson@seco.com>
