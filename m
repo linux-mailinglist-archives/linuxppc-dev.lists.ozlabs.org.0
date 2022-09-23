@@ -1,74 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 101675E755F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 10:02:47 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C06745E758D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 10:17:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MYl4j09Byz3cj7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 18:02:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MYlPF3gtKz3chN
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 18:17:05 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=kEqQvozf;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=p8748LgI;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::431; helo=mail-pf1-x431.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62e; helo=mail-pl1-x62e.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=kEqQvozf;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=p8748LgI;
 	dkim-atps=neutral
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MYl420chxz3c6X
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Sep 2022 18:02:08 +1000 (AEST)
-Received: by mail-pf1-x431.google.com with SMTP id l65so11673500pfl.8
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Sep 2022 01:02:08 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MYlNd2n60z3bcc
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Sep 2022 18:16:32 +1000 (AEST)
+Received: by mail-pl1-x62e.google.com with SMTP id jm5so10109165plb.13
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Sep 2022 01:16:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=in-reply-to:references:subject:to:from:message-id:date
+        h=in-reply-to:references:to:from:subject:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date;
-        bh=289XXjvdyvLnF8KX8Pv+XWrwMbTGd7NpL7xn2GTxxF0=;
-        b=kEqQvozfSCttnsRlwvYYEcSxXGRqKuwRpp1yrF0k3RdyZQ1MJ00saXN1SDZJohCRAm
-         cPukUc65Fj1KGX8SVtB5OKBUfOaSH7axKrVpYc5bXUj5f1C1ie/p97uLGLc626WTkVWj
-         Z1jJFl0fXjNUABBL9kEj7fTgjQhY08nuY2u8te81Xsc8ouODvt30Zo23Dr71RFUrMxdJ
-         jlofs1d5KFMchexh/YFXPFGXer+3321kUPUfHWvNhZBkH6VDuOE0CdKjwExgWY+s82xS
-         PnJpBVL5ltcjVXOz44y6K5Gx0Ezx6Mu1Uq2JMa77LnwQi0ovZ+Zk/qFhe5zLygTx6b4d
-         65mA==
+        bh=Z0xRXo05qfL3EBUon41EbvA3vzqw/Pd0dAy39CE17qw=;
+        b=p8748LgIfqnjq4wB2bxJ+C6EeDFANVWa6IZ7IGHBaU5yghhDUQmtX/yZoXzZaNYbro
+         aR2AE2DA2wmSBTlNa7q0+Qhtsvmq2DaD0248xboX4pCpWSOqK/HNkxycA6+3Zrn3/ONr
+         r7IhiCwOPouf5o+m+0qK3CmCQUIUnFdBy46kiCltZoUgPFOY+O/AyytgAKO4ysE/mydj
+         GyLIwxz8fdq6+/uLajoSTiA+g3HOPTMn1zzcv5urTK8kArNDKNxmx78HW9N+2s7ugLKu
+         XcZR1+EZHJV9VsBVEMK7d2rmL9JgHzUbukr7ueH+U3W+PPdna1vqqvfjbjpbwvmu69yL
+         guog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:references:subject:to:from:message-id:date
+        h=in-reply-to:references:to:from:subject:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date;
-        bh=289XXjvdyvLnF8KX8Pv+XWrwMbTGd7NpL7xn2GTxxF0=;
-        b=BmxeGwsQLFZNDVCl9RnVYLDPI6nu2JXETyTAG3kZTodZp5Fdr+scT/tFWLTCQw5hGh
-         O734VQP/UapVtxVU4BU0yZoT28KBd5WxDErz0JKj/ds91x1KUl9W3iyYL5/02MHc4n7M
-         EazO8dLg0eTBJnvrRjcxXbwTeslznroiqc4UssZ0bmMK+Mv9/0i9r5k2Dsdu8Pa8mYz3
-         P6yhCklfqNtV+ORi3TeYpy09xKMXXI64VDhcJXZOrczc/BNXDzvDeltVo8zHTqMVAJcl
-         GM8aNGiNX9Wdjd4o13ECnR9Spv0/wbQcKmyMgoVIxF/BPAyDbB7CbUgkXl3M10AoHY5J
-         iBqw==
-X-Gm-Message-State: ACrzQf2nuvXTZbaGDbpnz1dYVgR/u6aeewzs++nzMMyL6+MoNP97ZygR
-	EidTwSa8osnxB4Wp60lZAWA=
-X-Google-Smtp-Source: AMsMyM5dQIYWteMB48Zevyr5JRisYZyqg1HO1w4NuR4azr0VVGHOQQUEaws/9LJ1K/GpiMV5QFpo4g==
-X-Received: by 2002:a63:1d62:0:b0:439:61fa:eb4b with SMTP id d34-20020a631d62000000b0043961faeb4bmr6685578pgm.275.1663920125953;
-        Fri, 23 Sep 2022 01:02:05 -0700 (PDT)
+        bh=Z0xRXo05qfL3EBUon41EbvA3vzqw/Pd0dAy39CE17qw=;
+        b=153iLORFidmu9Miu5IPMFI8liAPyAy9KMxxdxX++Oz4+fCjZa2sgQjqRzbKM9wUOg8
+         zQN7MVPyw+ajGofXBM7LMWmErqcuW3LtERavkymhq/aWJT/VVXxurTmdHDZZjB0Hbuje
+         0QsrKyY4t5ccfY+5iBzh1pypx7jCUbFGHY+wmfjBcPrX1Lfa0tQGpN+yZLokDZC53eJ8
+         UhUW3M381aXVnmCPnwxyT3xMRL/dgph2T+DrQSlE1xwqNpPNSE3odjl8SnIMCLWhhBP3
+         00OENlSaZeiX0tCRA7IfbNtUOomQF4YVRNlb44cftepkpXwMViDKNHTbnM6/oEv/XLxu
+         V23A==
+X-Gm-Message-State: ACrzQf3GYHjjvoCsXn0GtP09U7d1ZTRVoJJXyIj9x6jAnF1zuGDudBVz
+	G9UYgQacpx9fcyfHHBrkpx0=
+X-Google-Smtp-Source: AMsMyM7WGhtu0xIg6xyfaKWkDafJHoxSLBF1VjLdIVGGUuy480AD0/pKOaoFr4jUfmcLfXvyx5h9KA==
+X-Received: by 2002:a17:902:ca05:b0:177:324a:784d with SMTP id w5-20020a170902ca0500b00177324a784dmr7265592pld.11.1663920989541;
+        Fri, 23 Sep 2022 01:16:29 -0700 (PDT)
 Received: from localhost (27-32-155-116.static.tpgi.com.au. [27.32.155.116])
-        by smtp.gmail.com with ESMTPSA id g6-20020aa79dc6000000b00540b3be3bf6sm5768969pfq.196.2022.09.23.01.02.03
+        by smtp.gmail.com with ESMTPSA id c60-20020a17090a494200b001f216407204sm1039877pjh.36.2022.09.23.01.16.27
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 23 Sep 2022 01:02:05 -0700 (PDT)
+        Fri, 23 Sep 2022 01:16:28 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 23 Sep 2022 18:02:01 +1000
-Message-Id: <CN3MGF4GO42K.22AHRCY1C91N2@bobo>
+Date: Fri, 23 Sep 2022 18:16:24 +1000
+Message-Id: <CN3MRFI9GCO8.2JI4W3155ZPJ3@bobo>
+Subject: Re: [PATCH 16/17] powerpc/qspinlock: allow indefinite spinning on a
+ preempted owner
 From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Rohan McLure" <rmclure@linux.ibm.com>, <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: [PATCH v6 22/25] powerpc/64s: Clear user GPRs in syscall
- interrupt entry
+To: "Laurent Dufour" <ldufour@linux.ibm.com>,
+ <linuxppc-dev@lists.ozlabs.org>
 X-Mailer: aerc 0.11.0
-References: <20220921065605.1051927-1-rmclure@linux.ibm.com>
- <20220921065605.1051927-23-rmclure@linux.ibm.com>
-In-Reply-To: <20220921065605.1051927-23-rmclure@linux.ibm.com>
+References: <20220728063120.2867508-1-npiggin@gmail.com>
+ <20220728063120.2867508-18-npiggin@gmail.com>
+ <5b1ed668-15f2-414d-b491-b1677a6b5537@linux.ibm.com>
+In-Reply-To: <5b1ed668-15f2-414d-b491-b1677a6b5537@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,96 +85,48 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed Sep 21, 2022 at 4:56 PM AEST, Rohan McLure wrote:
-> Clear user state in gprs (assign to zero) to reduce the influence of user
-> registers on speculation within kernel syscall handlers. Clears occur
-> at the very beginning of the sc and scv 0 interrupt handlers, with
-> restores occurring following the execution of the syscall handler.
+On Fri Sep 23, 2022 at 1:02 AM AEST, Laurent Dufour wrote:
+> On 28/07/2022 08:31:19, Nicholas Piggin wrote:
+> > Provide an option that holds off queueing indefinitely while the lock
+> > owner is preempted. This could reduce queueing latencies for very
+> > overcommitted vcpu situations.
+> >=20
+> > This is disabled by default.
 >
-> Signed-off-by: Rohan McLure <rmclure@linux.ibm.com>
-> ---
-> V2: Update summary
-> V3: Remove erroneous summary paragraph on syscall_exit_prepare
-> V4: Use ZEROIZE instead of NULLIFY. Clear r0 also.
-> V5: Move to end of patch series.
-> V6: Include clears which were previously in the syscall wrapper patch.
-> Move comment on r3-r8 register save to when we alter the calling
-> convention for system_call_exception.
+> Hi Nick,
+>
+> I should have missed something here.
+>
+> If this option is turned on, CPU trying to lock when there is a preempted
+> owner will spin checking the lock->val and yielding the lock owner CPU.
+> Am I right?
 
-The series looks good to here, I just need to find a bit more time to
-look at the code and do some tests with the next few patches. I don't
-see much problem with them, looks a lot better now with fewer ifdefs
-so that's good. Possibly you could share some of those new sanitize
-macros in a header file but that's a minor nit.
+Yes.
 
-Coud we have this zeroize also under the same config option as the
-next? I figure if we care about speculative security we want both,
-and if we don't we need neither.
+> If yes, why not being queued and spin checking its own value, yielding
+> against the lock owner CPU?
+
+I guess the idea is that when we start getting vCPU preemption, queueing
+behaviour causes this "train wreck" behaviour where lock waiters being
+preempted can halt lock transfers to other waiters (whereas with simple
+spinlocks only owner vCPU preemption matters). So the heuristics for
+paravirt qspinlock basically come down to avoiding queueing and making
+waiters behave more like a simple spinlock when it matters. That's the
+case for upstream and this rewrite.
+
+> This will generate less cache bouncing, which
+> is what the queued spinlock is trying to address, isn't it?
+
+It could. When the owner is preempted it's not going to be modifying
+the lock word and probably not surrounding data in the same cache
+line, and there won't be a lot of other try-lock operations come in
+(because they'll mostly queue up here as well). So cacheline bouncing
+shouldn't be the worst problem we face here. But it possibly is a
+concern.
+
+I didn't yet meausre any real improvement from this option, and it
+possibly has some starvation potential, so it's disabled by default for
+now.
 
 Thanks,
 Nick
-
-> ---
->  arch/powerpc/kernel/interrupt_64.S | 17 ++++++++++++++++-
->  1 file changed, 16 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/powerpc/kernel/interrupt_64.S b/arch/powerpc/kernel/int=
-errupt_64.S
-> index a5dd78bdbe6d..40147558e1a6 100644
-> --- a/arch/powerpc/kernel/interrupt_64.S
-> +++ b/arch/powerpc/kernel/interrupt_64.S
-> @@ -106,6 +106,13 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
->  	 * but this is the best we can do.
->  	 */
-> =20
-> +	/*
-> +	 * Zero user registers to prevent influencing speculative execution
-> +	 * state of kernel code.
-> +	 */
-> +	ZEROIZE_GPR(0)
-> +	ZEROIZE_GPRS(5, 12)
-> +	ZEROIZE_NVGPRS()
->  	bl	system_call_exception
-> =20
->  .Lsyscall_vectored_\name\()_exit:
-> @@ -134,6 +141,7 @@ BEGIN_FTR_SECTION
->  	HMT_MEDIUM_LOW
->  END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
-> =20
-> +	REST_NVGPRS(r1)
->  	cmpdi	r3,0
->  	bne	.Lsyscall_vectored_\name\()_restore_regs
-> =20
-> @@ -285,6 +293,13 @@ END_BTB_FLUSH_SECTION
->  	wrteei	1
->  #endif
-> =20
-> +	/*
-> +	 * Zero user registers to prevent influencing speculative execution
-> +	 * state of kernel code.
-> +	 */
-> +	ZEROIZE_GPR(0)
-> +	ZEROIZE_GPRS(5, 12)
-> +	ZEROIZE_NVGPRS()
->  	bl	system_call_exception
-> =20
->  .Lsyscall_exit:
-> @@ -325,6 +340,7 @@ BEGIN_FTR_SECTION
->  	stdcx.	r0,0,r1			/* to clear the reservation */
->  END_FTR_SECTION_IFCLR(CPU_FTR_STCX_CHECKS_ADDRESS)
-> =20
-> +	REST_NVGPRS(r1)
->  	cmpdi	r3,0
->  	bne	.Lsyscall_restore_regs
->  	/* Zero volatile regs that may contain sensitive kernel data */
-> @@ -352,7 +368,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
->  .Lsyscall_restore_regs:
->  	ld	r3,_CTR(r1)
->  	ld	r4,_XER(r1)
-> -	REST_NVGPRS(r1)
->  	mtctr	r3
->  	mtspr	SPRN_XER,r4
->  	REST_GPR(0, r1)
-> --=20
-> 2.34.1
-
