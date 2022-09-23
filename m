@@ -1,69 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C8945E704C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 01:45:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D79925E7154
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 03:19:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MYX2V2vR5z3c6T
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 09:45:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MYZ7G3ysVz3cd7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 11:19:22 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=UoEi3MQn;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=paul-moore-com.20210112.gappssmtp.com header.i=@paul-moore-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=slE4TJt9;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::430; helo=mail-wr1-x430.google.com; envelope-from=irogers@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=paul-moore.com (client-ip=2001:4860:4864:20::35; helo=mail-oa1-x35.google.com; envelope-from=paul@paul-moore.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=UoEi3MQn;
+	dkim=pass (2048-bit key; unprotected) header.d=paul-moore-com.20210112.gappssmtp.com header.i=@paul-moore-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=slE4TJt9;
 	dkim-atps=neutral
-Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
+Received: from mail-oa1-x35.google.com (mail-oa1-x35.google.com [IPv6:2001:4860:4864:20::35])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MYX1v5ZZ7z2xDN
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Sep 2022 09:44:34 +1000 (AEST)
-Received: by mail-wr1-x430.google.com with SMTP id bq9so17917542wrb.4
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Sep 2022 16:44:34 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MYZ6f0zqNz3bbj
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Sep 2022 11:18:48 +1000 (AEST)
+Received: by mail-oa1-x35.google.com with SMTP id 586e51a60fabf-12c8312131fso16391514fac.4
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Sep 2022 18:18:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date;
-        bh=ggfQdZjdAa827c+Q4ONwD92LhyjF+5a7nbXBS1iOpTY=;
-        b=UoEi3MQn1jWoFQNi3yggMKvZSsegg+k/b5oSYr33gLv/xFYjj/t2xVeqaVXeGHrDdI
-         8Y1EpUmdZtf84zjg8pimx/RdJs4t6qJQGioUXmsp5/rrzqra2Gg51/ercWI1cTfKgMqK
-         3oEbcI7BrUzRUFo1h/mWTC5WacY3a+WyNMvwegu8CS2VoVgkiwci5JHJ9UPb171lti7/
-         6D3ZxQm7tUd+gdPO+6pG91nUyVvyOMLsC4nQ4pTASdKHh61m5NbA41ey5Ulv+pfEBuio
-         DTcOel87mocnGxW6Lr9PU/AoGmttIA8bCaoKybDAzwOTRq/pQtcEvonlfyF3VmKRLMNo
-         e6eA==
+        d=paul-moore-com.20210112.gappssmtp.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=wauY9icRcEzEDbhLIuBAjc38+zIZU9tq0CBry9g6Ooc=;
+        b=slE4TJt9/dXDYfy+rMRKeN5k8cMVUfrps+7LGvGQhlqHE6ERCjN/lfbKJ4KjF9nXeo
+         6AJfMTUFZk/R3ITkRAB/Iu6XNtGdRXBPvSyxmSSN46t4/ltDu6V8cBEYShJL5X92F18m
+         G47uf8YuxIn+QgNPctzUMP3X6nCwc3O2N7GYJfAX+lJn8dMhfM1Fs9wWxlcxmEFakRjg
+         FhXSZXSyWPYguhFhFLJaTPt3Tkf8N/sWD6l6MqxIPratLG/PZSTYa5OdrMZZxjtYgoFG
+         Yr38vg6UpQ7rqJipbno3wA0356WdNtTAe8GeHQaSCsCsZefmQgqMzuM5E1DiycXT6Um/
+         qm2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date;
-        bh=ggfQdZjdAa827c+Q4ONwD92LhyjF+5a7nbXBS1iOpTY=;
-        b=HA3P3ELJcS1tmD7n9jdMqNAVeElMTV28IfUhGD7U3CTorkrVMdvA10DD2nff2IUb0+
-         0MHjnej00sWsW8D+x0bNhB2s1hsrPEw/9EFmEoyuNYZp40eZBjwdaE3i8rMMnLBFhY5f
-         VqLwXzM/epfzArpub0K/GAxTcMt46CjzA/opt6/3zkGWzCu/GS5UKWDgpVWrPTIm8Jkw
-         7i3uWqQ2jltWqCMpZjBCWVH9k9J/4d/vF4/hrfeeb/F3WcAFo6eHUD2Q21jG3W/DvuDu
-         6ugb+H66AOEN1PX5ByZcgy94RcUyemqlx+EieXRtDNQfH5zyMlSwz7pPCNlZv+5Pz7Y4
-         imtQ==
-X-Gm-Message-State: ACrzQf2I7cF2CSelB7AJ3g6rSwZ4y9q/0beYKCmkWDA4vM35SZjP09Cv
-	T9XKU3kt6YIKSqGCpcApZctwfvSwFBvFGQMG76u17g==
-X-Google-Smtp-Source: AMsMyM6u/WuV0WiMixUedkRzYEe96mN+MeHLvNablSRwk/fwFB2OjE5y3sinLKe2odHdb8bGijJ50rWnK5BJOLHuSjM=
-X-Received: by 2002:adf:dd8f:0:b0:22a:84ab:4be3 with SMTP id
- x15-20020adfdd8f000000b0022a84ab4be3mr3444502wrl.40.1663890265884; Thu, 22
- Sep 2022 16:44:25 -0700 (PDT)
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=wauY9icRcEzEDbhLIuBAjc38+zIZU9tq0CBry9g6Ooc=;
+        b=18QfbLUxj7zmS9lh+J4AfYXRL1u4oD2mqodvWicz4qM97wZLv96HUUCQTdCtcLnzLj
+         MQdfqh6u1+e9fMvA6gAvtpyMkg36Xr0lSt9t61WHTjifRqTOJKiRB4q4c/cuOFsi+UZK
+         xov/tHhpcRB+XJL+/RkzwLIfskIZGOzGNkhDg0ReyH8En02gyyHe+G8JpP+CoWxSeSNn
+         5n5w5BiwdS4Vs6lImCx87QQOXMs5ZT8iyzTQXzGlI5RObom7AX2peX+VC93fMte0x+LK
+         X+amNJf5SvH5UVAi0SpFzuOZJjw1g4jzRHrpVRRvUtJuqA1OOz6NbKrmKPoooAcHB8PR
+         t8UA==
+X-Gm-Message-State: ACrzQf2cNJ9N8ztP7ZOgv5FgTjAjF/npQZpR5+tWn7kqr72ilOkKkf1N
+	IdBMq2Z7EVA8EuKGXvJl75lTnLnUm9RbEnUV+XPrG8jpj0sj
+X-Google-Smtp-Source: AMsMyM7nqnRFdhUa3AKhiMDrdqfkMkNMtS+CAPxM0mIQs/OrjYyKafG9iMOvWz5ktyQ7ZfkZNj8lp2r17TUOYM734bw=
+X-Received: by 2002:a05:6870:600c:b0:12d:9e19:9860 with SMTP id
+ t12-20020a056870600c00b0012d9e199860mr3740124oaa.172.1663895925469; Thu, 22
+ Sep 2022 18:18:45 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220921170839.21927-1-atrajeev@linux.vnet.ibm.com> <Yyy0W6CnPk7BkkCU@kernel.org>
-In-Reply-To: <Yyy0W6CnPk7BkkCU@kernel.org>
-From: Ian Rogers <irogers@google.com>
-Date: Thu, 22 Sep 2022 16:44:13 -0700
-Message-ID: <CAP-5=fUnmVXds0eR3x3u17VQHZJ_7Q5+yhpXhq1-542d6g1ezA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] tools/perf/tests: Fix string substitutions in build
- id test
-To: Arnaldo Carvalho de Melo <acme@kernel.org>
+References: <20220922193817.106041-1-nathanl@linux.ibm.com> <20220922193817.106041-2-nathanl@linux.ibm.com>
+In-Reply-To: <20220922193817.106041-2-nathanl@linux.ibm.com>
+From: Paul Moore <paul@paul-moore.com>
+Date: Thu, 22 Sep 2022 21:18:34 -0400
+Message-ID: <CAHC9VhQG_jEh_H8pV-qJgX2oX_fyGjXoBV7_EJOgvOd4ndc+Xw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] powerpc/pseries: block untrusted device tree changes
+ when locked down
+To: Nathan Lynch <nathanl@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,190 +73,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, rnsastry@linux.ibm.com, Adrian Hunter <adrian.hunter@intel.com>, linux-perf-users@vger.kernel.org, maddy@linux.vnet.ibm.com, Jiri Olsa <jolsa@kernel.org>, kjain@linux.ibm.com, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: ajd@linux.ibm.com, nayna@linux.ibm.com, linux-kernel@vger.kernel.org, jmorris@namei.org, linux-security-module@vger.kernel.org, gcwilson@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, serge@hallyn.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Sep 22, 2022 at 12:15 PM Arnaldo Carvalho de Melo
-<acme@kernel.org> wrote:
+On Thu, Sep 22, 2022 at 3:38 PM Nathan Lynch <nathanl@linux.ibm.com> wrote:
 >
-> Em Wed, Sep 21, 2022 at 10:38:38PM +0530, Athira Rajeev escreveu:
-> > The perf test named =E2=80=9Cbuild id cache operations=E2=80=9D skips w=
-ith below
-> > error on some distros:
+> The /proc/powerpc/ofdt interface allows the root user to freely alter
+> the in-kernel device tree, enabling arbitrary physical address writes
+> via drivers that could bind to malicious device nodes, thus making it
+> possible to disable lockdown.
 >
-> I wonder if we shouldn't instead state that bash is needed?
+> Historically this interface has been used on the pseries platform to
+> facilitate the runtime addition and removal of processor, memory, and
+> device resources (aka Dynamic Logical Partitioning or DLPAR). Years
+> ago, the processor and memory use cases were migrated to designs that
+> happen to be lockdown-friendly: device tree updates are communicated
+> directly to the kernel from firmware without passing through untrusted
+> user space. I/O device DLPAR via the "drmgr" command in powerpc-utils
+> remains the sole legitimate user of /proc/powerpc/ofdt, but it is
+> already broken in lockdown since it uses /dev/mem to allocate argument
+> buffers for the rtas syscall. So only illegitimate uses of the
+> interface should see a behavior change when running on a locked down
+> kernel.
 >
-> =E2=AC=A2[acme@toolbox perf-urgent]$ head -1 tools/perf/tests/shell/*.sh =
-| grep ^#
-> #!/bin/sh
-> #!/bin/bash
-> #!/bin/sh
-> #!/bin/sh
-> #!/bin/sh
-> #!/bin/sh
-> #!/bin/sh
-> #!/bin/sh
-> #!/bin/sh
-> #!/bin/sh
-> #!/bin/bash
-> #!/bin/sh
-> #!/bin/sh
-> #!/bin/sh
-> #!/bin/bash
-> #!/bin/sh
-> #!/bin/bash
-> #!/bin/sh
-> #!/bin/sh
-> #!/bin/sh
-> #!/bin/sh
-> #!/bin/sh
-> #!/bin/sh
-> #!/bin/sh
-> #!/bin/sh
-> #!/bin/sh
-> =E2=AC=A2[acme@toolbox perf-urgent]$
->
-> Opinions?
+> Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+> ---
+>  arch/powerpc/platforms/pseries/reconfig.c | 5 +++++
+>  include/linux/security.h                  | 1 +
+>  security/security.c                       | 1 +
+>  3 files changed, 7 insertions(+)
 
-+1 to bash. Perhaps python longer term?  The XML test output generated
-by things like kunit is possible to generate from either bash or
-python, but in my experience the python stuff feels better built.
+A couple of small nits below, but in general this seems reasonable.
+However, as we are currently at -rc6 I would like us to wait to merge
+this until after the upcoming merge window closes (I don't like
+merging new functionality into -next at -rc6).
 
-Thanks,
-Ian
+https://git.kernel.org/pub/scm/linux/kernel/git/pcmoore/lsm.git/tree/README.md
 
-> - Arnaldo
->
-> > <<>>
-> >  78: build id cache operations                                       :
-> > test child forked, pid 111101
-> > WARNING: wine not found. PE binaries will not be run.
-> > test binaries: /tmp/perf.ex.SHA1.PKz /tmp/perf.ex.MD5.Gt3 ./tests/shell=
-/../pe-file.exe
-> > DEBUGINFOD_URLS=3D
-> > Adding 4abd406f041feb4f10ecde3fc30fd0639e1a91cb /tmp/perf.ex.SHA1.PKz: =
-Ok
-> > build id: 4abd406f041feb4f10ecde3fc30fd0639e1a91cb
-> > ./tests/shell/buildid.sh: 69: ./tests/shell/buildid.sh: Bad substitutio=
-n
-> > test child finished with -2
-> > build id cache operations: Skip
-> > <<>>
-> >
-> > The test script "tests/shell/buildid.sh" uses some of the
-> > string substitution ways which are supported in bash, but not in
-> > "sh" or other shells. Above error on line number 69 that reports
-> > "Bad substitution" is:
-> >
-> > <<>>
-> > link=3D${build_id_dir}/.build-id/${id:0:2}/${id:2}
-> > <<>>
-> >
-> > Here the way of getting first two characters from id ie,
-> > ${id:0:2} and similarly expressions like ${id:2} is not
-> > recognised in "sh". So the line errors and instead of
-> > hitting failure, the test gets skipped as shown in logs.
-> > So the syntax issue causes test not to be executed in
-> > such cases. Similarly usage : "${@: -1}" [ to pick last
-> > argument passed to a function] in =E2=80=9Ctest_record=E2=80=9D doesn=
-=E2=80=99t
-> > work in all distros.
-> >
-> > Fix this by using alternative way with "cut" command
-> > to pick "n" characters from the string. Also fix the usage
-> > of =E2=80=9C${@: -1}=E2=80=9D to work in all cases.
-> >
-> > Another usage in =E2=80=9Ctest_record=E2=80=9D is:
-> > <<>>
-> > ${perf} record --buildid-all -o ${data} $@ &> ${log}
-> > <<>>
-> >
-> > This causes the perf record to start in background and
-> > Results in the data file not being created by the time
-> > "check" function is invoked. Below log shows perf record
-> > result getting displayed after the call to "check" function.
-> >
-> > <<>>
-> > running: perf record /tmp/perf.ex.SHA1.EAU
-> > build id: 4abd406f041feb4f10ecde3fc30fd0639e1a91cb
-> > link: /tmp/perf.debug.mLT/.build-id/4a/bd406f041feb4f10ecde3fc30fd0639e=
-1a91cb
-> > failed: link /tmp/perf.debug.mLT/.build-id/4a/bd406f041feb4f10ecde3fc30=
-fd0639e1a91cb does not exist
-> > test child finished with -1
-> > build id cache operations: FAILED!
-> > root@machine:~/athira/linux/tools/perf# Couldn't synthesize bpf events.
-> > [ perf record: Woken up 1 times to write data ]
-> > [ perf record: Captured and wrote 0.010 MB /tmp/perf.data.bFF ]
-> > <<>>
-> >
-> > Fix this by redirecting output instead of using =E2=80=9C&=E2=80=9D whi=
-ch
-> > starts the command in background.
-> >
-> > Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-> > ---
-> >  tools/perf/tests/shell/buildid.sh | 16 +++++++++-------
-> >  1 file changed, 9 insertions(+), 7 deletions(-)
-> >
-> > diff --git a/tools/perf/tests/shell/buildid.sh b/tools/perf/tests/shell=
-/buildid.sh
-> > index f05670d1e39e..3512c4423d48 100755
-> > --- a/tools/perf/tests/shell/buildid.sh
-> > +++ b/tools/perf/tests/shell/buildid.sh
-> > @@ -66,7 +66,7 @@ check()
-> >       esac
-> >       echo "build id: ${id}"
-> >
-> > -     link=3D${build_id_dir}/.build-id/${id:0:2}/${id:2}
-> > +     link=3D${build_id_dir}/.build-id/$(echo ${id}|cut -c 1-2)/$(echo =
-${id}|cut -c 3-)
-> >       echo "link: ${link}"
-> >
-> >       if [ ! -h $link ]; then
-> > @@ -74,7 +74,7 @@ check()
-> >               exit 1
-> >       fi
-> >
-> > -     file=3D${build_id_dir}/.build-id/${id:0:2}/`readlink ${link}`/elf
-> > +     file=3D${build_id_dir}/.build-id/$(echo ${id}|cut -c 1-2)/`readli=
-nk ${link}`/elf
-> >       echo "file: ${file}"
-> >
-> >       if [ ! -x $file ]; then
-> > @@ -117,20 +117,22 @@ test_record()
-> >  {
-> >       data=3D$(mktemp /tmp/perf.data.XXX)
-> >       build_id_dir=3D$(mktemp -d /tmp/perf.debug.XXX)
-> > -     log=3D$(mktemp /tmp/perf.log.XXX)
-> > +     log_out=3D$(mktemp /tmp/perf.log.out.XXX)
-> > +     log_err=3D$(mktemp /tmp/perf.log.err.XXX)
-> >       perf=3D"perf --buildid-dir ${build_id_dir}"
-> > +     eval last=3D\${$#}
-> >
-> >       echo "running: perf record $@"
-> > -     ${perf} record --buildid-all -o ${data} $@ &> ${log}
-> > +     ${perf} record --buildid-all -o ${data} $@ 1>${log_out} 2>${log_e=
-rr}
-> >       if [ $? -ne 0 ]; then
-> >               echo "failed: record $@"
-> > -             echo "see log: ${log}"
-> > +             echo "see log: ${log_err}"
-> >               exit 1
-> >       fi
-> >
-> > -     check ${@: -1}
-> > +     check $last
-> >
-> > -     rm -f ${log}
-> > +     rm -f ${log_out} ${log_err}
-> >       rm -rf ${build_id_dir}
-> >       rm -rf ${data}
-> >  }
-> > --
-> > 2.17.1
->
+> diff --git a/include/linux/security.h b/include/linux/security.h
+> index 7bd0c490703d..1ca8dbacd3cc 100644
+> --- a/include/linux/security.h
+> +++ b/include/linux/security.h
+> @@ -122,6 +122,7 @@ enum lockdown_reason {
+>         LOCKDOWN_XMON_WR,
+>         LOCKDOWN_BPF_WRITE_USER,
+>         LOCKDOWN_DBG_WRITE_KERNEL,
+> +       LOCKDOWN_DEVICE_TREE,
+
+I would suggest moving LOCKDOWN_DEVICE_TREE to be next to
+LOCKDOWN_ACPI_TABLES.  It's not a hard requirement, but it seems like
+a nice idea to group similar things when we can.
+
+>         LOCKDOWN_INTEGRITY_MAX,
+>         LOCKDOWN_KCORE,
+>         LOCKDOWN_KPROBES,
+> diff --git a/security/security.c b/security/security.c
+> index 4b95de24bc8d..2863fc31eec6 100644
+> --- a/security/security.c
+> +++ b/security/security.c
+> @@ -60,6 +60,7 @@ const char *const lockdown_reasons[LOCKDOWN_CONFIDENTIALITY_MAX+1] = {
+>         [LOCKDOWN_XMON_WR] = "xmon write access",
+>         [LOCKDOWN_BPF_WRITE_USER] = "use of bpf to write user RAM",
+>         [LOCKDOWN_DBG_WRITE_KERNEL] = "use of kgdb/kdb to write kernel RAM",
+> +       [LOCKDOWN_DEVICE_TREE] = "modifying device tree contents",
+
+Might as well move this one too.
+
+>         [LOCKDOWN_INTEGRITY_MAX] = "integrity",
+>         [LOCKDOWN_KCORE] = "/proc/kcore access",
+>         [LOCKDOWN_KPROBES] = "use of kprobes",
 > --
->
-> - Arnaldo
+> 2.37.3
+
+-- 
+paul-moore.com
