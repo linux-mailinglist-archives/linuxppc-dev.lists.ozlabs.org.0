@@ -2,77 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EDE35E750A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 09:42:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4A835E750F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 09:44:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MYkck0pCQz3cCF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 17:41:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MYkgF5lx2z3cf1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 17:44:09 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=ee7gz6EA;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=8Yum5bkx;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=h4nUtgpB;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=tzimmermann@suse.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::534; helo=mail-pg1-x534.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=ee7gz6EA;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=8Yum5bkx;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=h4nUtgpB;
 	dkim-atps=neutral
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MYkc42KJ4z3cgt
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Sep 2022 17:41:24 +1000 (AEST)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 9DB30219CE;
-	Fri, 23 Sep 2022 07:41:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1663918880; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MixGtf6XlGUYA0vR4YxCqSkg8gP1qXH1N0CGkhI3jh0=;
-	b=ee7gz6EAin02m1W7B+d9rEsCEdOARRI/z3WxQIhA1GXtVz2HpfKAgMq34DycgtRGChVO67
-	Hcg2L4f0dUtHXOtDAZY2FppTSWgwuuIszlnxv/vxXz1bFdmXkXAaTqb3k1O7i5KmAeJZZe
-	cNZYrTt/QVNCGnZYZY9BMYGk6dfS9fA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1663918880;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MixGtf6XlGUYA0vR4YxCqSkg8gP1qXH1N0CGkhI3jh0=;
-	b=8Yum5bkx+necVqMUpvlXtAYKbzm3GXFE749NcZtfUubNm51toekxFfslTRgGbDhhNCdWVt
-	sCnRQznu1p83CXAQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 54BA813A00;
-	Fri, 23 Sep 2022 07:41:20 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id MJO9EyBjLWN7dAAAMHmgww
-	(envelope-from <tzimmermann@suse.de>); Fri, 23 Sep 2022 07:41:20 +0000
-Message-ID: <be027064-32f2-03ec-ded6-23688aed749f@suse.de>
-Date: Fri, 23 Sep 2022 09:41:19 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.2
-Subject: Re: [PATCH v3 1/4] drm/ofdrm: Add ofdrm for Open Firmware
- framebuffers
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-References: <20220922113306.11251-1-tzimmermann@suse.de>
- <20220922113306.11251-2-tzimmermann@suse.de>
- <CAMuHMdW1echz6wc6Y2cfjrkPa2vZW+X4s83rXo7VebJ0E+qaqg@mail.gmail.com>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-In-Reply-To: <CAMuHMdW1echz6wc6Y2cfjrkPa2vZW+X4s83rXo7VebJ0E+qaqg@mail.gmail.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------H91OYNMtRx6prswFu5pEb1hk"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MYkfg49mnz3c21
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Sep 2022 17:43:39 +1000 (AEST)
+Received: by mail-pg1-x534.google.com with SMTP id bh13so11519939pgb.4
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Sep 2022 00:43:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=in-reply-to:references:subject:to:from:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date;
+        bh=rLV9p6q9yI81aauScdeQl4cl/mOX9PCFhqhacAHLNr8=;
+        b=h4nUtgpBsj//wy4jtjkq1nql8SXQ0sfF5hmq+IiHdLxGjxn2jX+1VhNi6u/t1J1gfv
+         LYAJNpArIe1+Xll1H9zC3AArdkHW1Jlod7d3sdbT/BOr91slmRfh50c6lQ14XKRdODlK
+         sDCWzIHfQBJwqDBkTkY0KmfoXWlR8uCnyOdwHQCFXz7GWdrQLcOyI9PVXckJKhPPSCTz
+         B/N30SHRn9IEdzHauHMkhAzPwy7kykLH3KrC9DO62hLH5WtRSmRmJAyEmBSNks3M62pP
+         H6ikl8ZuztXu+uwvCmI6ufkhBc6d2mBcefPjZVJ/DABhZ7F8tVHR1ZLsMFzJodPsxhFm
+         BmaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:references:subject:to:from:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date;
+        bh=rLV9p6q9yI81aauScdeQl4cl/mOX9PCFhqhacAHLNr8=;
+        b=rR5xlpi3TFpeCHbMb96YCCTKtD7AYa236c0HkWf1dzIIdTLgvl4torfZrbcRNC2Xuw
+         RMOxEmcXRIC8iJhPfqIxvn43nm1xurik4Z3o3qQAw0p9mekLhuTe0MG7X7RsbYcWCJfA
+         loOFCj+AD7lLE5mYhJDkPcGWrd+wam/O7x6yPrTHKCf9Hh5BBRAiBc93eCyLTZsaL/BS
+         a1sCtMUmUWXQcplYSjm1XUNhDg/yJSy5LgPo3XONU6HEflfPVxSstDaAJFCunDHzaaeH
+         bVtREYu/v1rtSzxxyCJuxHlrynlmeW/TksB7h82DjZz9MqqAUgStIYyFXFkzOaVQ4GNn
+         rSeg==
+X-Gm-Message-State: ACrzQf0hzlrZsqQ58/vefLyd4Q20u6CGQoizL7Gf6TKFkzrA9lSB1CrE
+	uJlb7qznmJ/RidDr+0WeGL041gPK1ZY=
+X-Google-Smtp-Source: AMsMyM6QlIn2QZTlCJfr7g+gAowEWdVScB8jKW2o9zMedFJOU0kyzmocRADwqSdUN4CUvpf+lH34yA==
+X-Received: by 2002:aa7:9532:0:b0:53e:7875:39e1 with SMTP id c18-20020aa79532000000b0053e787539e1mr7704343pfp.82.1663919017444;
+        Fri, 23 Sep 2022 00:43:37 -0700 (PDT)
+Received: from localhost (27-32-155-116.static.tpgi.com.au. [27.32.155.116])
+        by smtp.gmail.com with ESMTPSA id ik24-20020a170902ab1800b0017495461db7sm5340685plb.190.2022.09.23.00.43.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 23 Sep 2022 00:43:36 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 23 Sep 2022 17:43:33 +1000
+Message-Id: <CN3M2A0W1J3A.2V3NYEDYLSIVQ@bobo>
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Rohan McLure" <rmclure@linux.ibm.com>, <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: [PATCH v6 20/25] powerpc: Change system_call_exception calling
+ convention
+X-Mailer: aerc 0.11.0
+References: <20220921065605.1051927-1-rmclure@linux.ibm.com>
+ <20220921065605.1051927-21-rmclure@linux.ibm.com>
+In-Reply-To: <20220921065605.1051927-21-rmclure@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,115 +80,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-fbdev@vger.kernel.org, airlied@linux.ie, deller@gmx.de, linuxppc-dev@lists.ozlabs.org, mark.cave-ayland@ilande.co.uk, javierm@redhat.com, dri-devel@lists.freedesktop.org, paulus@samba.org, maxime@cerno.tech, daniel@ffwll.ch, msuchanek@suse.de, sam@ravnborg.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------H91OYNMtRx6prswFu5pEb1hk
-Content-Type: multipart/mixed; boundary="------------fzfqo0wFS1mmeexNmEqnr0AQ";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: javierm@redhat.com, airlied@linux.ie, daniel@ffwll.ch, deller@gmx.de,
- maxime@cerno.tech, sam@ravnborg.org, msuchanek@suse.de, mpe@ellerman.id.au,
- benh@kernel.crashing.org, paulus@samba.org, mark.cave-ayland@ilande.co.uk,
- linux-fbdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- dri-devel@lists.freedesktop.org
-Message-ID: <be027064-32f2-03ec-ded6-23688aed749f@suse.de>
-Subject: Re: [PATCH v3 1/4] drm/ofdrm: Add ofdrm for Open Firmware
- framebuffers
-References: <20220922113306.11251-1-tzimmermann@suse.de>
- <20220922113306.11251-2-tzimmermann@suse.de>
- <CAMuHMdW1echz6wc6Y2cfjrkPa2vZW+X4s83rXo7VebJ0E+qaqg@mail.gmail.com>
-In-Reply-To: <CAMuHMdW1echz6wc6Y2cfjrkPa2vZW+X4s83rXo7VebJ0E+qaqg@mail.gmail.com>
+On Wed Sep 21, 2022 at 4:56 PM AEST, Rohan McLure wrote:
+> Change system_call_exception arguments to pass a pointer to a stack frame
+> container caller state, as well as the original r0, which determines the
+> number of the syscall. This has been observed to yield improved performan=
+ce
+> to passing them by registers, circumventing the need to allocate a stack =
+frame.
+>
+> Signed-off-by: Rohan McLure <rmclure@linux.ibm.com>
 
---------------fzfqo0wFS1mmeexNmEqnr0AQ
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+Thanks for splitting it out, I think it does make it nicer to review.
 
-SGkgR2VlcnQNCg0KQW0gMjMuMDkuMjIgdW0gMDk6MTQgc2NocmllYiBHZWVydCBVeXR0ZXJo
-b2V2ZW46DQo+IEhpIFRob21hcywNCj4gDQo+IE9uIFRodSwgU2VwIDIyLCAyMDIyIGF0IDE6
-MzMgUE0gVGhvbWFzIFppbW1lcm1hbm4gPHR6aW1tZXJtYW5uQHN1c2UuZGU+IHdyb3RlOg0K
-Pj4gT3BlbiBGaXJtd2FyZSBwcm92aWRlcyBiYXNpYyBkaXNwbGF5IG91dHB1dCB2aWEgdGhl
-ICdkaXNwbGF5JyBub2RlLg0KPj4gRFQgcGxhdGZvcm0gY29kZSBhbHJlYWR5IHByb3ZpZGVz
-IGEgZGV2aWNlIHRoYXQgcmVwcmVzZW50cyB0aGUgbm9kZSdzDQo+PiBmcmFtZWJ1ZmZlci4g
-QWRkIGEgRFJNIGRyaXZlciBmb3IgdGhlIGRldmljZS4gVGhlIGRpc3BsYXkgbW9kZSBhbmQN
-Cj4+IGNvbG9yIGZvcm1hdCBpcyBwcmUtaW5pdGlhbGl6ZWQgYnkgdGhlIHN5c3RlbSdzIGZp
-cm13YXJlLiBSdW50aW1lDQo+PiBtb2Rlc2V0dGluZyB2aWEgRFJNIGlzIG5vdCBwb3NzaWJs
-ZS4gVGhlIGRpc3BsYXkgaXMgdXNlZnVsIGR1cmluZw0KPj4gZWFybHkgYm9vdCBzdGFnZXMg
-b3IgYXMgZXJyb3IgZmFsbGJhY2suDQo+Pg0KPj4gU2ltaWxhciBmdW5jdGlvbmFsaXR5IGlz
-IGFscmVhZHkgcHJvdmlkZWQgYnkgZmJkZXYncyBvZmZiIGRyaXZlciwNCj4+IHdoaWNoIGlz
-IGluc3VmZmljaWVudCBmb3IgbW9kZXJuIHVzZXJzcGFjZS4gVGhlIG9sZCBkcml2ZXIgaW5j
-bHVkZXMNCj4+IHN1cHBvcnQgZm9yIEJvb3RYIGRldmljZSB0cmVlLCB3aGljaCBjYW4gYmUg
-Zm91bmQgb24gb2xkIDMyLWJpdA0KPj4gUG93ZXJQQyBNYWNpbnRvc2ggc3lzdGVtcy4gSWYg
-dGhlc2UgYXJlIHN0aWxsIGluIHVzZSwgdGhlDQo+PiBmdW5jdGlvbmFsaXR5IGNhbiBiZSBh
-ZGRlZCB0byBvZmRybSBvciBpbXBsZW1lbnRlZCBpbiBhIG5ldw0KPj4gZHJpdmVyLiBBcyB3
-aXRoIHNpbXBsZWRybSwgdGhlIGZiZGV2IGRyaXZlciBjYW5ub3QgYmUgc2VsZWN0ZWQgaWYN
-Cj4+IG9mZHJtIGlzIGFscmVhZHkgZW5hYmxlZC4NCj4gDQo+IFRoYW5rcyBmb3IgeW91ciBw
-YXRjaCENCj4gDQo+PiBUaGUgZHJpdmVyIGhhcyBiZWVuIHRlc3RlZCBvbiBxZW11J3MgcHBj
-NjRsZSBlbXVsYXRpb24uIFRoZSBkZXZpY2UNCj4+IGhhbmQtb3ZlciBoYXMgYmVlbiB0ZXN0
-ZWQgd2l0aCBib2Nocy4NCj4gDQo+IE9oLCB0ZXN0ZWQgb24gbGl0dGxlLWVuZGlhbiBvbmx5
-IDstKQ0KDQpJIHdpc2ggaXQgd2FzIGVhc2llciB0byB0ZXN0LiBCdXQgaXQncyBoYXJkIHRv
-IGZpbmQgaGFyZHdhcmUgYW5kIGEgTGludXggDQpmb3IgUG93ZXJQQyB0aGVzZSBkYXlzLCBz
-byBJIGhhdmUgbGltaXRlZCBvcHRpb25zIGZvciB0ZXN0aW5nLiBJdCdzIGp1c3QgDQpxZW11
-ICsgYSBjb21wYXRpYmxlIGRpc3RyaWJ1dGlvbiBmb3IgbWUuIE15IGFzc3VtcHRpb24gaGFz
-IGJlZW4gdGhhdCANCnBlb3BsZSB3aG8gd2hhdCB0byB1c2UgaXQgb24gYW55dGhpbmcgZWxz
-ZSB3b3VsZCBzZW5kIG1lIGEgcGF0Y2guDQoNCj4gDQo+PiAtLS0gL2Rldi9udWxsDQo+PiAr
-KysgYi9kcml2ZXJzL2dwdS9kcm0vdGlueS9vZmRybS5jDQo+PiArc3RhdGljIGNvbnN0IHN0
-cnVjdCBkcm1fZm9ybWF0X2luZm8gKmRpc3BsYXlfZ2V0X3ZhbGlkYXRlZF9mb3JtYXQoc3Ry
-dWN0IGRybV9kZXZpY2UgKmRldiwNCj4+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHUzMiBkZXB0aCkNCj4+ICt7
-DQo+PiArICAgICAgIGNvbnN0IHN0cnVjdCBkcm1fZm9ybWF0X2luZm8gKmluZm87DQo+PiAr
-ICAgICAgIHUzMiBmb3JtYXQ7DQo+PiArDQo+PiArICAgICAgIHN3aXRjaCAoZGVwdGgpIHsN
-Cj4+ICsgICAgICAgY2FzZSA4Og0KPj4gKyAgICAgICAgICAgICAgIGZvcm1hdCA9IGRybV9t
-b2RlX2xlZ2FjeV9mYl9mb3JtYXQoOCwgOCk7DQo+PiArICAgICAgICAgICAgICAgYnJlYWs7
-DQo+PiArICAgICAgIGNhc2UgMTU6DQo+PiArICAgICAgIGNhc2UgMTY6DQo+PiArICAgICAg
-ICAgICAgICAgZm9ybWF0ID0gZHJtX21vZGVfbGVnYWN5X2ZiX2Zvcm1hdCgxNiwgZGVwdGgp
-Ow0KPj4gKyAgICAgICAgICAgICAgIGJyZWFrOw0KPj4gKyAgICAgICBjYXNlIDMyOg0KPj4g
-KyAgICAgICAgICAgICAgIGZvcm1hdCA9IGRybV9tb2RlX2xlZ2FjeV9mYl9mb3JtYXQoMzIs
-IDI0KTsNCj4gDQo+IFNob3VsZG4ndCBhbGwgb2YgdGhlc2UgdXNlIGRybV9kcml2ZXJfbGVn
-YWN5X2ZiX2Zvcm1hdCgpIChhbmQgdGhlDQo+IGRyaXZlciBzZXQgZHJtX21vZGVfY29uZmln
-LnF1aXJrX2FkZGZiX3ByZWZlcl9ob3N0X2J5dGVfb3JkZXIpIHRvIGhhdmUNCj4gYSBjaGFu
-Y2Ugb2Ygd29ya2luZyBvbiB0cmFkaXRpb25hbCBiaWctZW5kaWFuIFBQQz8NCg0KVGhhdCdz
-IGEgZ29vZCBwb2ludC4gVGhlIG9mZmIgZHJpdmVyIHJlYWRzIHRoZSBlbmRpYW5lc3MgcHJv
-cGVydHkuIE9mZHJtIA0KY291bGQgZG8gdGhpcyBhbmQgc2V0IHRoZSBxdWlyayBiaXQgYWNj
-b3JkaW5nbHkuIEkgd29uJ3QgaGF2ZSB0aGUgb3B0aW9uIA0KdG8gdGVzdCBpdCwgYnV0IHRo
-ZSBjb2RlIHNlZW1zIGVhc3kgZW5vdWdoIHRvIGFkZCBpdC4gSSdsbCBtYWtlIGFuIGV4dHJh
-IA0KcGF0Y2ggZm9yIHRoaXMgaW4gdGhlIG5leHQgaXRlcmF0aW9uLg0KDQpCZXN0IHJlZ2Fy
-ZHMNClRob21hcw0KDQo+IA0KPiBHcntvZXRqZSxlZXRpbmd9cywNCj4gDQo+ICAgICAgICAg
-ICAgICAgICAgICAgICAgICBHZWVydA0KPiANCj4gLS0NCj4gR2VlcnQgVXl0dGVyaG9ldmVu
-IC0tIFRoZXJlJ3MgbG90cyBvZiBMaW51eCBiZXlvbmQgaWEzMiAtLSBnZWVydEBsaW51eC1t
-NjhrLm9yZw0KPiANCj4gSW4gcGVyc29uYWwgY29udmVyc2F0aW9ucyB3aXRoIHRlY2huaWNh
-bCBwZW9wbGUsIEkgY2FsbCBteXNlbGYgYSBoYWNrZXIuIEJ1dA0KPiB3aGVuIEknbSB0YWxr
-aW5nIHRvIGpvdXJuYWxpc3RzIEkganVzdCBzYXkgInByb2dyYW1tZXIiIG9yIHNvbWV0aGlu
-ZyBsaWtlIHRoYXQuDQo+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIC0tIExp
-bnVzIFRvcnZhbGRzDQoNCi0tIA0KVGhvbWFzIFppbW1lcm1hbm4NCkdyYXBoaWNzIERyaXZl
-ciBEZXZlbG9wZXINClNVU0UgU29mdHdhcmUgU29sdXRpb25zIEdlcm1hbnkgR21iSA0KTWF4
-ZmVsZHN0ci4gNSwgOTA0MDkgTsO8cm5iZXJnLCBHZXJtYW55DQooSFJCIDM2ODA5LCBBRyBO
-w7xybmJlcmcpDQpHZXNjaMOkZnRzZsO8aHJlcjogSXZvIFRvdGV2DQo=
+[...]
 
---------------fzfqo0wFS1mmeexNmEqnr0AQ--
+> diff --git a/arch/powerpc/kernel/syscall.c b/arch/powerpc/kernel/syscall.=
+c
+> index 15af0ed019a7..0e9ba3efee94 100644
+> --- a/arch/powerpc/kernel/syscall.c
+> +++ b/arch/powerpc/kernel/syscall.c
+> @@ -13,9 +13,7 @@
+> =20
+> =20
+>  /* Has to run notrace because it is entered not completely "reconciled" =
+*/
+> -notrace long system_call_exception(long r3, long r4, long r5,
+> -				   long r6, long r7, long r8,
+> -				   unsigned long r0, struct pt_regs *regs)
+> +notrace long system_call_exception(struct pt_regs *regs, unsigned long r=
+0)
+>  {
+>  	long ret;
+>  	syscall_fn f;
+> @@ -136,12 +134,6 @@ notrace long system_call_exception(long r3, long r4,=
+ long r5,
+>  		r0 =3D do_syscall_trace_enter(regs);
+>  		if (unlikely(r0 >=3D NR_syscalls))
+>  			return regs->gpr[3];
+> -		r3 =3D regs->gpr[3];
+> -		r4 =3D regs->gpr[4];
+> -		r5 =3D regs->gpr[5];
+> -		r6 =3D regs->gpr[6];
+> -		r7 =3D regs->gpr[7];
+> -		r8 =3D regs->gpr[8];
+> =20
+>  	} else if (unlikely(r0 >=3D NR_syscalls)) {
+>  		if (unlikely(trap_is_unsupported_scv(regs))) {
+> --=20
+> 2.34.1
 
---------------H91OYNMtRx6prswFu5pEb1hk
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
+This is probably just missing the hunk
 
------BEGIN PGP SIGNATURE-----
++       ret =3D f(regs->gpr[3], regs->gpr[4], regs->gpr[5],                =
+                                                                           =
+                                                                           =
+       =20
++               regs->gpr[6], regs->gpr[7], regs->gpr[8]);       =20
 
-wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmMtYx8FAwAAAAAACgkQlh/E3EQov+D0
-fw//d5p+dv2wxW6Ft0+t/oE82gNR6WJD2p98G3tg+X3MZ6LKPI0NtIfjAAbzLer+1794p1q9YvYn
-TXEO9B9HwXx91GHxkL6HonzxVNIQaUmpjjrLoEHpdpxnWTTvHEVASSGEASLSn5FGvSjN125NZt0g
-uYcpZPiZupfVU6fg1MbgtAAYKOud/D54+WJqWUXJkaKoQ7DMp18FqalwBJjhlRzMYBRqjyPp0s9M
-4zvwhjgZKRyyRW15F0MkBU4YD4094YEiLBbpktuB4R4Bz7BV2OF+m3jj92BItH60gmIT2ui5cLYP
-avfqcD6D1biq1CIpMEd0bDYNvFcXZEpuP92ivSuz5dqtG7eufj+aF+JdiAtmAVHtDHG5G62NGvX0
-D6nchMfvII5cJi5nmu4iaWFvm76g85LF6XGZWeGjI6o3vbvXyihW6GPJoAjmghlRYXDxhYkwaQmq
-31UuCRfJaaq27evIBNZN39EqD18n1Y8xloljhT9dYfPXCxuTFjlpaUahMtNz/2JGjztC8ABJrFpX
-WwwRD26dXni0XScQSfp9SrMaZDocktYsXxwvEtjI2MfWrQFK1fnJCj4py1kcFcK227820lwZlBL4
-utCeQbh5Q4HWJJ2pL1Waejdw4lXW5jmy/6SZb5MUehrV8qv72VFKRUR249TgGms3XUYOdMhAiHFN
-h6Y=
-=Odhd
------END PGP SIGNATURE-----
+which got into your next patch.
 
---------------H91OYNMtRx6prswFu5pEb1hk--
+Otherwise I think it looks good.
+
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
