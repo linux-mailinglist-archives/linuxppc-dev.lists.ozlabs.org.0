@@ -2,83 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0BE15E7F2F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 17:59:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 677335E7FBE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 18:27:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MYxfg4tWFz3dpc
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Sep 2022 01:59:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MYyHG22ykz3cj9
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Sep 2022 02:27:38 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bp3bcAFU;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=SAiDToSa;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::433; helo=mail-pf1-x433.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bp3bcAFU;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=SAiDToSa;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MYxdy3pX6z3bl3
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Sep 2022 01:58:45 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28NF2tmR016608;
-	Fri, 23 Sep 2022 15:58:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=FsBCcJas74CxYs/IS4zHTgpISVSDZp2/LeMa0RYqubA=;
- b=bp3bcAFUI0EzWv071v+W4zoL4IUWfhGPWZQT4MwEwjDBYZxFJPEli7M8oR10Mi/nubY6
- +c9tXd86kwaYv329W5iL06iWpnf0hndGZkEnSjPs08qXp6+PmC3SAauudWK47VoJ/maS
- uTb1EhD7t2F5laAIjsa/6f4F+z2P/cmeFcgEvDaeLMNDrc6s0KhF1qUrmxITo8a4zRRY
- pvCJ+NQrGWMv0/iGZcRIJvsGuNiLD4VAWs+tgYFX3Zy2cvG44f4/xdVRt+XyuX+mojCw
- JJGKra0BuThlCYXcdJxq0AJ0dzz0LJy9PvpZTMIl3GeUcerJEwwQeAaivexdemSBh9Ug xg== 
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com [169.53.41.122])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3js8nep5ua-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 23 Sep 2022 15:58:36 +0000
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
-	by ppma04dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 28NFqXoA007289;
-	Fri, 23 Sep 2022 15:58:35 GMT
-Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com [9.57.198.24])
-	by ppma04dal.us.ibm.com with ESMTP id 3jn5vajp8c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 23 Sep 2022 15:58:35 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com ([9.208.128.117])
-	by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 28NFwYlk4522692
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 23 Sep 2022 15:58:34 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 04E2258059;
-	Fri, 23 Sep 2022 15:58:34 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CEE2858053;
-	Fri, 23 Sep 2022 15:58:33 +0000 (GMT)
-Received: from localhost (unknown [9.211.104.104])
-	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 23 Sep 2022 15:58:33 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: Paul Moore <paul@paul-moore.com>
-Subject: Re: [PATCH 1/2] powerpc/pseries: block untrusted device tree
- changes when locked down
-In-Reply-To: <CAHC9VhQG_jEh_H8pV-qJgX2oX_fyGjXoBV7_EJOgvOd4ndc+Xw@mail.gmail.com>
-References: <20220922193817.106041-1-nathanl@linux.ibm.com>
- <20220922193817.106041-2-nathanl@linux.ibm.com>
- <CAHC9VhQG_jEh_H8pV-qJgX2oX_fyGjXoBV7_EJOgvOd4ndc+Xw@mail.gmail.com>
-Date: Fri, 23 Sep 2022 10:58:33 -0500
-Message-ID: <875yheqdzq.fsf@linux.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: PKz65p7FSPUnU9jDiIkaJSyQ69VbztD8
-X-Proofpoint-ORIG-GUID: PKz65p7FSPUnU9jDiIkaJSyQ69VbztD8
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
- definitions=2022-09-23_04,2022-09-22_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 mlxscore=0
- phishscore=0 impostorscore=0 bulkscore=0 adultscore=0 malwarescore=0
- spamscore=0 mlxlogscore=999 lowpriorityscore=0 priorityscore=1501
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2209130000 definitions=main-2209230101
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MYyGZ3n0Lz3c7t
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Sep 2022 02:27:01 +1000 (AEST)
+Received: by mail-pf1-x433.google.com with SMTP id a29so644590pfk.5
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Sep 2022 09:27:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date;
+        bh=IyPY3jNYz1zmj8hC2XWs0gtCQLKsELDuACeXIEucHZQ=;
+        b=SAiDToSaHfqFgiQllB+souznfy9cjE7uiCVxu/+FJGJpgekfLf+2ETQzw13CSxgE4W
+         D9ntvAOYdxO6PUNeuaeN40fQ4wwK3Q7qFil1G2HjPAjEl/oDTiogBRI0dFZHgn8DBEYk
+         2PqoiKAmgBVn3F2ho+OFCFsKsc3GJ9QLxaBNFeUiOBw0jr7nSGrD8ubD1OaH5K/l9z1H
+         rrCK58W+ULROUGDf5NfcudRKbLBDelMEql+ZTk6M7dL6LmEauMKa3/RZBKF8ZxLsAqUF
+         kNqQqWZjcPTpikk+isWJ+fFvgC341oYUzHEqI1Bl/AEPU5ZgODtle9ipNJ93iOLux8fe
+         4/xw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date;
+        bh=IyPY3jNYz1zmj8hC2XWs0gtCQLKsELDuACeXIEucHZQ=;
+        b=hkIlFBnRprJIBt5fKa07wIbWMK5lnrJFpmbMsNnJcuvz7uHknDfv96PeWvji5GyxOD
+         jvv+91/VQPYz5MJWfaIR2ONhVmojJKVyRgvFMZ34bOCtiUyPOtiCWHGEYmqYLXQOXz+b
+         owhvbk6ThMwZ7YTNqMjIs2Mt3uTaKIEfo6MgWlT8OHXvY0MIlycLzdzhzOOx4LSeM2Ej
+         I/oq6nb3rpCJLeI7BULQ+Ki5kJZtN7hSzmGHgHMT6dCuDrr6IuqQZKPMPjWzVUoURcHi
+         BHipaPePRO69j3iGXuEghR4AHdOs/5e52xI7uqcyoMK2Xwd2831Izdhd7kXlkbCcfKVL
+         VJlw==
+X-Gm-Message-State: ACrzQf1tHaqktbw1N5QQn4WIE797EWMcZts6tUPCtPtCFRNirDSungUI
+	j7tbkcXdPlqILFehoSnAGq7PA/O2Rxc=
+X-Google-Smtp-Source: AMsMyM7rc731dQvjk+iLZLlBI2OutVcUyXEqc0JNp5UQYmHIx7XUmEOD6VBJInYp1uuo4XbQUAajFQ==
+X-Received: by 2002:aa7:998f:0:b0:54d:a441:85da with SMTP id k15-20020aa7998f000000b0054da44185damr9782049pfh.20.1663950417459;
+        Fri, 23 Sep 2022 09:26:57 -0700 (PDT)
+Received: from localhost (27-32-155-116.static.tpgi.com.au. [27.32.155.116])
+        by smtp.gmail.com with ESMTPSA id v67-20020a622f46000000b0054ee4b632dasm6537845pfv.169.2022.09.23.09.26.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 23 Sep 2022 09:26:56 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 24 Sep 2022 02:26:52 +1000
+Message-Id: <CN3X6YN1FRQ3.1Z9BVD6WYQY3M@bobo>
+Subject: Re: [PATCH] powerpc/irq: Modernise inline assembly in
+ irq_soft_mask_{set,return}
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Segher Boessenkool" <segher@kernel.crashing.org>
+X-Mailer: aerc 0.11.0
+References: <178f30ff62c0317061f019b3dbbc079073f104c3.1663656058.git.christophe.leroy@csgroup.eu> <CN3LB8F3D9LM.3W1RQRVS64UXU@bobo> <20220923121829.GL25951@gate.crashing.org>
+In-Reply-To: <20220923121829.GL25951@gate.crashing.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,38 +79,98 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ajd@linux.ibm.com, nayna@linux.ibm.com, linux-kernel@vger.kernel.org, jmorris@namei.org, linux-security-module@vger.kernel.org, gcwilson@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, serge@hallyn.com
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Paul Moore <paul@paul-moore.com> writes:
->> diff --git a/include/linux/security.h b/include/linux/security.h
->> index 7bd0c490703d..1ca8dbacd3cc 100644
->> --- a/include/linux/security.h
->> +++ b/include/linux/security.h
->> @@ -122,6 +122,7 @@ enum lockdown_reason {
->>         LOCKDOWN_XMON_WR,
->>         LOCKDOWN_BPF_WRITE_USER,
->>         LOCKDOWN_DBG_WRITE_KERNEL,
->> +       LOCKDOWN_DEVICE_TREE,
+On Fri Sep 23, 2022 at 10:18 PM AEST, Segher Boessenkool wrote:
+> On Fri, Sep 23, 2022 at 05:08:13PM +1000, Nicholas Piggin wrote:
+> > On Tue Sep 20, 2022 at 4:41 PM AEST, Christophe Leroy wrote:
+> > > local_paca is declared as global register asm("r13"), it is therefore
+> > > garantied to always ever be r13.
+> > >
+> > > It is therefore not required to opencode r13 in the assembly, use
+> > > a reference to local_paca->irq_soft_mask instead.
 >
-> I would suggest moving LOCKDOWN_DEVICE_TREE to be next to
-> LOCKDOWN_ACPI_TABLES.  It's not a hard requirement, but it seems like
-> a nice idea to group similar things when we can.
+> > The code matches the changelog AFAIKS. But I don't know where it is
+> > guaranteed it will always be r13 in GCC and Clang. I still don't know
+> > where in the specification or documentation suggests this.
 >
->>         LOCKDOWN_INTEGRITY_MAX,
->>         LOCKDOWN_KCORE,
->>         LOCKDOWN_KPROBES,
->> diff --git a/security/security.c b/security/security.c
->> index 4b95de24bc8d..2863fc31eec6 100644
->> --- a/security/security.c
->> +++ b/security/security.c
->> @@ -60,6 +60,7 @@ const char *const lockdown_reasons[LOCKDOWN_CONFIDENTIALITY_MAX+1] = {
->>         [LOCKDOWN_XMON_WR] = "xmon write access",
->>         [LOCKDOWN_BPF_WRITE_USER] = "use of bpf to write user RAM",
->>         [LOCKDOWN_DBG_WRITE_KERNEL] = "use of kgdb/kdb to write kernel RAM",
->> +       [LOCKDOWN_DEVICE_TREE] = "modifying device tree contents",
+> "Global Register Variables" in the GCC manual.
 >
-> Might as well move this one too.
+> > There was some assertion it would always be r13, but that can't be a
+> > *general* rule. e.g., the following code:
+> >=20
+> > struct foo {
+> > #ifdef BIGDISP
+> >         int array[1024*1024];
+> > #endif
+> >         char bar;
+> > };
+> >=20
+> > register struct foo *foo asm("r13");
+> >=20
+> > static void setval(char val)
+> > {
+> >         asm("stb%X0 %1,%0" : "=3Dm" (foo->bar) : "r" (val));
+> > }
+> >=20
+> > int main(void)
+> > {
+> >         setval(10);
+> > }
+>
+> Just use r13 directly in the asm, if that is what you want!
+>
+> > With -O0 this generates stb 9,0(10) for me for GCC 12, and with -O2
+> > -DBIGDISP it generates stb 10,0(9). So that makes me nervious. GCC
+> > does not have some kind of correctness guarantee here, so it must not
+> > have this in its regression tests etc., and who knows about clang.
+>
+> GCC has all kinds of correctness guarantees, here and elsewhere, that is
+> 90% of a compiler's job.  But you don't *tell* it what you consider
+> "correct" here.
 
-Yes, I can do that for v2. Thanks.
+Right, that's what I expect. I think the confusion came from here,
+
+https://lists.ozlabs.org/pipermail/linuxppc-dev/2022-August/247595.html
+
+In any case it is answered now.
+
+> You wrote "foo->bar", and this expression was translated to something
+> that derived from r13.  If you made the asm something like
+> 	asm("stb%X0 %1,0(%0)" : : "r" (foo), "r" (val) : "memory");
+> it would work fine.  It would also work fine if you wrote 13 in the
+> template directly.  These things follow the rules, so are guaranteed.
+>
+> The most important pieces of doc here may be
+>    * Accesses to the variable may be optimized as usual and the register
+>      remains available for allocation and use in any computations,
+>      provided that observable values of the variable are not affected.
+>    * If the variable is referenced in inline assembly, the type of
+>      access must be provided to the compiler via constraints (*note
+>      Constraints::).  Accesses from basic asms are not supported.
+> but read the whole "Global Register Variables" chapter?
+
+I still don't see what clauses guarantees asm("%0" ::"r"(foo)) to give
+13. It doesn't say access via inline assembly is special, so if
+optimized as usual means it could be accessed by any register like
+access to a usual variable, then asm could also substitute a different
+register for the access by the letter of it AFAIKS.
+
+I think if it was obviously guaranteed then this might be marginally
+better than explicit r13 in the asm
+
+       asm volatile(
+               "stb %0,%2(%1)"
+               :
+               : "r" (mask),
+	         "r" (local_paca),
+                 "i" (offsetof(struct paca_struct, irq_soft_mask))
+               : "memory");
+
+But as it is I think we should just stick with explicit r13 base
+in the asm.
+
+Thanks,
+Nick
