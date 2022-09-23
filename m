@@ -2,64 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D79925E7154
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 03:19:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20D065E7165
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 03:28:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MYZ7G3ysVz3cd7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 11:19:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MYZLJ6GBZz3cNM
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 11:28:56 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=paul-moore-com.20210112.gappssmtp.com header.i=@paul-moore-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=slE4TJt9;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=paul-moore-com.20210112.gappssmtp.com header.i=@paul-moore-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=MiEmXExP;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=paul-moore.com (client-ip=2001:4860:4864:20::35; helo=mail-oa1-x35.google.com; envelope-from=paul@paul-moore.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=paul-moore.com (client-ip=2607:f8b0:4864:20::22f; helo=mail-oi1-x22f.google.com; envelope-from=paul@paul-moore.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=paul-moore-com.20210112.gappssmtp.com header.i=@paul-moore-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=slE4TJt9;
+	dkim=pass (2048-bit key; unprotected) header.d=paul-moore-com.20210112.gappssmtp.com header.i=@paul-moore-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=MiEmXExP;
 	dkim-atps=neutral
-Received: from mail-oa1-x35.google.com (mail-oa1-x35.google.com [IPv6:2001:4860:4864:20::35])
+Received: from mail-oi1-x22f.google.com (mail-oi1-x22f.google.com [IPv6:2607:f8b0:4864:20::22f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MYZ6f0zqNz3bbj
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Sep 2022 11:18:48 +1000 (AEST)
-Received: by mail-oa1-x35.google.com with SMTP id 586e51a60fabf-12c8312131fso16391514fac.4
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Sep 2022 18:18:48 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MYZKf4sglz3bfH
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Sep 2022 11:28:21 +1000 (AEST)
+Received: by mail-oi1-x22f.google.com with SMTP id d64so11648262oia.9
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Sep 2022 18:28:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=paul-moore-com.20210112.gappssmtp.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date;
-        bh=wauY9icRcEzEDbhLIuBAjc38+zIZU9tq0CBry9g6Ooc=;
-        b=slE4TJt9/dXDYfy+rMRKeN5k8cMVUfrps+7LGvGQhlqHE6ERCjN/lfbKJ4KjF9nXeo
-         6AJfMTUFZk/R3ITkRAB/Iu6XNtGdRXBPvSyxmSSN46t4/ltDu6V8cBEYShJL5X92F18m
-         G47uf8YuxIn+QgNPctzUMP3X6nCwc3O2N7GYJfAX+lJn8dMhfM1Fs9wWxlcxmEFakRjg
-         FhXSZXSyWPYguhFhFLJaTPt3Tkf8N/sWD6l6MqxIPratLG/PZSTYa5OdrMZZxjtYgoFG
-         Yr38vg6UpQ7rqJipbno3wA0356WdNtTAe8GeHQaSCsCsZefmQgqMzuM5E1DiycXT6Um/
-         qm2Q==
+        bh=s/6p8wN+VGvSrnwRHCNxYJbAlNC9MCYqHdn8E1KltBc=;
+        b=MiEmXExP/Uly7GSmB4QzuSnXDeHlqxx2OYMWx1W1iLm6vljxXfeG/Z1YepMPzxT3Vr
+         pjf3zh1pkkU+//zUrJhF4e4JGkNqdyppztz4T8wJ/uCNDG9n1+wm2AxbOTmrrnSjbib3
+         iMJkLUI1e210eZUYsproVon8WIbSm9FDnQrMocQmAf+cwSoPvcJxl/EQW1gPOTO1a1v0
+         uKM3uV4+5qY4zCW/+rO28NdwsOmv63e8AuEiKOD5G1dvIwDKIFKt7sQe31/J+fhjZf9J
+         3P9O5j8Qmjl6gy2o2ER9gscgaXthVC4wjW5i2vSOkefhL6zf7xf6j0QhCmz9O5sjsKwf
+         W2mA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=wauY9icRcEzEDbhLIuBAjc38+zIZU9tq0CBry9g6Ooc=;
-        b=18QfbLUxj7zmS9lh+J4AfYXRL1u4oD2mqodvWicz4qM97wZLv96HUUCQTdCtcLnzLj
-         MQdfqh6u1+e9fMvA6gAvtpyMkg36Xr0lSt9t61WHTjifRqTOJKiRB4q4c/cuOFsi+UZK
-         xov/tHhpcRB+XJL+/RkzwLIfskIZGOzGNkhDg0ReyH8En02gyyHe+G8JpP+CoWxSeSNn
-         5n5w5BiwdS4Vs6lImCx87QQOXMs5ZT8iyzTQXzGlI5RObom7AX2peX+VC93fMte0x+LK
-         X+amNJf5SvH5UVAi0SpFzuOZJjw1g4jzRHrpVRRvUtJuqA1OOz6NbKrmKPoooAcHB8PR
-         t8UA==
-X-Gm-Message-State: ACrzQf2cNJ9N8ztP7ZOgv5FgTjAjF/npQZpR5+tWn7kqr72ilOkKkf1N
-	IdBMq2Z7EVA8EuKGXvJl75lTnLnUm9RbEnUV+XPrG8jpj0sj
-X-Google-Smtp-Source: AMsMyM7nqnRFdhUa3AKhiMDrdqfkMkNMtS+CAPxM0mIQs/OrjYyKafG9iMOvWz5ktyQ7ZfkZNj8lp2r17TUOYM734bw=
-X-Received: by 2002:a05:6870:600c:b0:12d:9e19:9860 with SMTP id
- t12-20020a056870600c00b0012d9e199860mr3740124oaa.172.1663895925469; Thu, 22
- Sep 2022 18:18:45 -0700 (PDT)
+        bh=s/6p8wN+VGvSrnwRHCNxYJbAlNC9MCYqHdn8E1KltBc=;
+        b=s+TWGz8j9lR+yks//bDoJ/poi+EUX268ZCRxVIJt2UfkC085lTnjF+Gj9dwtFoh0d4
+         1lGdEXMT2bhoHT4gk1D6fXMBpu6PoNzKIaIH2KIkY6B3sg57GbXAR4Tmnjj8wvxaFUca
+         GJRTwct8JOi4XTWsZt63PanH9c+jXevAxCNUt/tlBfXHWjqGlBOOeVf4HAUFz+1X9y6c
+         Xz19kH/9tniO6P3CerJ/X3hQaanM1VTRIgGck5Uj911HfpmdRp/iSw5/mqkG/fX9choO
+         5C0Y0Eh3qQ2edNnX549teJ8Y/a3mcpIN2yKTD1mNDIlUVMVF7kGXZRmxJSfMIZNxCJR7
+         KWpQ==
+X-Gm-Message-State: ACrzQf2avQLTYXJMSfH39/LPTElupPw5cnIroTI7BasC06sC+CuPLmbw
+	TuWCscecpys8Rxo1ZhoXwHYX6+QLrBHqhz1/jEl0
+X-Google-Smtp-Source: AMsMyM7Yf+KZZuONXI++p3mR8psQkZBWvo4g+9yZJfNGgyny4tIddm5WbnhMos4FwWrI0S/BZoFi1lqAinau9cVB2O0=
+X-Received: by 2002:a05:6808:144b:b0:350:a06a:f8cb with SMTP id
+ x11-20020a056808144b00b00350a06af8cbmr7833965oiv.51.1663896497881; Thu, 22
+ Sep 2022 18:28:17 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220922193817.106041-1-nathanl@linux.ibm.com> <20220922193817.106041-2-nathanl@linux.ibm.com>
-In-Reply-To: <20220922193817.106041-2-nathanl@linux.ibm.com>
+References: <20220922193817.106041-1-nathanl@linux.ibm.com> <20220922193817.106041-3-nathanl@linux.ibm.com>
+In-Reply-To: <20220922193817.106041-3-nathanl@linux.ibm.com>
 From: Paul Moore <paul@paul-moore.com>
-Date: Thu, 22 Sep 2022 21:18:34 -0400
-Message-ID: <CAHC9VhQG_jEh_H8pV-qJgX2oX_fyGjXoBV7_EJOgvOd4ndc+Xw@mail.gmail.com>
-Subject: Re: [PATCH 1/2] powerpc/pseries: block untrusted device tree changes
- when locked down
+Date: Thu, 22 Sep 2022 21:28:07 -0400
+Message-ID: <CAHC9VhTWMFbCxQFAEJZzS3Kd5cSFigmvHac5y5ypVU7TqRqpTA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] powerpc/rtas: block error injection when locked down
 To: Nathan Lynch <nathanl@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -79,66 +78,54 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 On Thu, Sep 22, 2022 at 3:38 PM Nathan Lynch <nathanl@linux.ibm.com> wrote:
 >
-> The /proc/powerpc/ofdt interface allows the root user to freely alter
-> the in-kernel device tree, enabling arbitrary physical address writes
-> via drivers that could bind to malicious device nodes, thus making it
-> possible to disable lockdown.
+> The error injection facility on pseries VMs allows corruption of
+> arbitrary guest memory, potentially enabling a sufficiently privileged
+> user to disable lockdown or perform other modifications of the running
+> kernel via the rtas syscall.
 >
-> Historically this interface has been used on the pseries platform to
-> facilitate the runtime addition and removal of processor, memory, and
-> device resources (aka Dynamic Logical Partitioning or DLPAR). Years
-> ago, the processor and memory use cases were migrated to designs that
-> happen to be lockdown-friendly: device tree updates are communicated
-> directly to the kernel from firmware without passing through untrusted
-> user space. I/O device DLPAR via the "drmgr" command in powerpc-utils
-> remains the sole legitimate user of /proc/powerpc/ofdt, but it is
-> already broken in lockdown since it uses /dev/mem to allocate argument
-> buffers for the rtas syscall. So only illegitimate uses of the
-> interface should see a behavior change when running on a locked down
-> kernel.
+> Block the PAPR error injection facility from being opened or called
+> when locked down.
 >
 > Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
 > ---
->  arch/powerpc/platforms/pseries/reconfig.c | 5 +++++
->  include/linux/security.h                  | 1 +
->  security/security.c                       | 1 +
->  3 files changed, 7 insertions(+)
+>  arch/powerpc/kernel/rtas.c | 25 ++++++++++++++++++++++++-
+>  include/linux/security.h   |  1 +
+>  security/security.c        |  1 +
+>  3 files changed, 26 insertions(+), 1 deletion(-)
 
-A couple of small nits below, but in general this seems reasonable.
-However, as we are currently at -rc6 I would like us to wait to merge
-this until after the upcoming merge window closes (I don't like
-merging new functionality into -next at -rc6).
-
-https://git.kernel.org/pub/scm/linux/kernel/git/pcmoore/lsm.git/tree/README.md
+...
 
 > diff --git a/include/linux/security.h b/include/linux/security.h
-> index 7bd0c490703d..1ca8dbacd3cc 100644
+> index 1ca8dbacd3cc..b5d5138ae66a 100644
 > --- a/include/linux/security.h
 > +++ b/include/linux/security.h
-> @@ -122,6 +122,7 @@ enum lockdown_reason {
->         LOCKDOWN_XMON_WR,
+> @@ -123,6 +123,7 @@ enum lockdown_reason {
 >         LOCKDOWN_BPF_WRITE_USER,
 >         LOCKDOWN_DBG_WRITE_KERNEL,
-> +       LOCKDOWN_DEVICE_TREE,
+>         LOCKDOWN_DEVICE_TREE,
+> +       LOCKDOWN_RTAS_ERROR_INJECTION,
 
-I would suggest moving LOCKDOWN_DEVICE_TREE to be next to
-LOCKDOWN_ACPI_TABLES.  It's not a hard requirement, but it seems like
-a nice idea to group similar things when we can.
+With the understanding that I've never heard of RTAS until now, are
+there any other RTAS events that would require a lockdown reason?  As
+a follow up, is it important to distinguish between different RTAS
+lockdown reasons?
+
+I'm trying to determine if we can just call it LOCKDOWN_RTAS.
 
 >         LOCKDOWN_INTEGRITY_MAX,
 >         LOCKDOWN_KCORE,
 >         LOCKDOWN_KPROBES,
 > diff --git a/security/security.c b/security/security.c
-> index 4b95de24bc8d..2863fc31eec6 100644
+> index 2863fc31eec6..6518b239ada2 100644
 > --- a/security/security.c
 > +++ b/security/security.c
-> @@ -60,6 +60,7 @@ const char *const lockdown_reasons[LOCKDOWN_CONFIDENTIALITY_MAX+1] = {
->         [LOCKDOWN_XMON_WR] = "xmon write access",
+> @@ -61,6 +61,7 @@ const char *const lockdown_reasons[LOCKDOWN_CONFIDENTIALITY_MAX+1] = {
 >         [LOCKDOWN_BPF_WRITE_USER] = "use of bpf to write user RAM",
 >         [LOCKDOWN_DBG_WRITE_KERNEL] = "use of kgdb/kdb to write kernel RAM",
-> +       [LOCKDOWN_DEVICE_TREE] = "modifying device tree contents",
+>         [LOCKDOWN_DEVICE_TREE] = "modifying device tree contents",
+> +       [LOCKDOWN_RTAS_ERROR_INJECTION] = "RTAS error injection",
 
-Might as well move this one too.
+See above.
 
 >         [LOCKDOWN_INTEGRITY_MAX] = "integrity",
 >         [LOCKDOWN_KCORE] = "/proc/kcore access",
