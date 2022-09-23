@@ -2,52 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0B065E74A1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 09:13:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 384D55E74A5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 09:15:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MYjzZ5ZX7z3cBt
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 17:13:14 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ctLGeQJF;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MYk1l0Wv9z3cjH
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 17:15:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.219.46; helo=mail-qv1-f46.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MYjz05Hpnz30Ly
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Sep 2022 17:12:44 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ctLGeQJF;
-	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4MYjz03jXvz4x3w;
-	Fri, 23 Sep 2022 17:12:44 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1663917164;
-	bh=kxWYcawWkDsL3TwlfeLJQOQEaNorwtdowRSsbnTQqLM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=ctLGeQJFpKJv/zX3tcVU0BqtR/Dr3hq17VSASc+ICLxpUstLEV9Xl1YWv3U1cPcEy
-	 nUX+7kZUG4sSGFJgFOqqZ3PO5+sjoE7lLLCfQYaFaDxRhWYlobLitJXo831s2zTkvF
-	 ZJtM/RQQt194V3otmlCzJqnOZzwkOAvsOX/Y5tZ3Ukr4IBGVpv0pWWubIlLZtrwoc4
-	 0YWYjIeRSB3iRgD6UhJkT4MMJxDdfcrO8pp4D8yn2fHl3GZc1sXiVn0Crvy4eFfyaH
-	 YsYitlmXS9842JGtyGyMVBWW+FKaPdYy/aqnufp1Hd53rbUeOIeX8l1+LQqoHHsuvh
-	 o4OTbsOwhVQZw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Paul Moore <paul@paul-moore.com>, Nathan Lynch <nathanl@linux.ibm.com>
-Subject: Re: [PATCH 2/2] powerpc/rtas: block error injection when locked down
-In-Reply-To: <CAHC9VhTWMFbCxQFAEJZzS3Kd5cSFigmvHac5y5ypVU7TqRqpTA@mail.gmail.com>
-References: <20220922193817.106041-1-nathanl@linux.ibm.com>
- <20220922193817.106041-3-nathanl@linux.ibm.com>
- <CAHC9VhTWMFbCxQFAEJZzS3Kd5cSFigmvHac5y5ypVU7TqRqpTA@mail.gmail.com>
-Date: Fri, 23 Sep 2022 17:12:44 +1000
-Message-ID: <87wn9uzhqr.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MYk1G6N6Gz3bSS
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Sep 2022 17:14:40 +1000 (AEST)
+Received: by mail-qv1-f46.google.com with SMTP id y9so8495933qvo.4
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Sep 2022 00:14:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=S3UyUtioqiLswQVfydApgd1DWgeD5a9i4NJMAx10xfU=;
+        b=l7vaUoh/hE+toxrBZimcI6Zu4mKUl9naScoXOITpceXII/p1onOAzJ4agpTrkn+5de
+         LPVERJDgGAiaHol1TgCY1268r+p0cztv728ZXJDqsKc4ikVUysQxyUO7LITiWImzJGDU
+         hGv5R7yh1HGGttk5xfKn3DcI2ebViQ6OLqBIy6Ns7xhx4Pr39Wl2jLaeO6Ntf3p/u+iF
+         LYgAGS6aXtkcQL+pszM6L1/gsB0wmiMHfXjwtfMVmbN+yU3M8PeATk2d0de8qYe+sKtS
+         N95Ln26Bo1bBq6QfvjUBpVOjix7FcoIzn/BdCoGRRebIAS7bVb0e2EzlbxMs19jT7BZl
+         3p2w==
+X-Gm-Message-State: ACrzQf0k3o/IRlEZsFwYyh4qjTSIuz8a8nCn5dt79RuK7NB15dT09vvY
+	ZB6eP+cBQdfuhXnMehfA4+DhEtdDTDywlg==
+X-Google-Smtp-Source: AMsMyM42s+6yZnK6bBguvIQ7XcltteLDwP3cPQzbaTRaTIP/XLPAPyYa+rC+kc/aXi5J6CB6drLdiA==
+X-Received: by 2002:a05:6214:2486:b0:4a5:8b:9ba0 with SMTP id gi6-20020a056214248600b004a5008b9ba0mr5949694qvb.70.1663917277307;
+        Fri, 23 Sep 2022 00:14:37 -0700 (PDT)
+Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com. [209.85.128.171])
+        by smtp.gmail.com with ESMTPSA id v6-20020a05620a0f0600b006bc0980db76sm5553517qkl.126.2022.09.23.00.14.36
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 23 Sep 2022 00:14:36 -0700 (PDT)
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-324ec5a9e97so123034647b3.7
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Sep 2022 00:14:36 -0700 (PDT)
+X-Received: by 2002:a0d:de43:0:b0:349:31bd:e8d5 with SMTP id
+ h64-20020a0dde43000000b0034931bde8d5mr6762932ywe.283.1663917276015; Fri, 23
+ Sep 2022 00:14:36 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20220922113306.11251-1-tzimmermann@suse.de> <20220922113306.11251-2-tzimmermann@suse.de>
+In-Reply-To: <20220922113306.11251-2-tzimmermann@suse.de>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Fri, 23 Sep 2022 09:14:24 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdW1echz6wc6Y2cfjrkPa2vZW+X4s83rXo7VebJ0E+qaqg@mail.gmail.com>
+Message-ID: <CAMuHMdW1echz6wc6Y2cfjrkPa2vZW+X4s83rXo7VebJ0E+qaqg@mail.gmail.com>
+Subject: Re: [PATCH v3 1/4] drm/ofdrm: Add ofdrm for Open Firmware framebuffers
+To: Thomas Zimmermann <tzimmermann@suse.de>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,60 +65,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ajd@linux.ibm.com, nayna@linux.ibm.com, linux-kernel@vger.kernel.org, jmorris@namei.org, linux-security-module@vger.kernel.org, gcwilson@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, serge@hallyn.com
+Cc: linux-fbdev@vger.kernel.org, airlied@linux.ie, deller@gmx.de, linuxppc-dev@lists.ozlabs.org, mark.cave-ayland@ilande.co.uk, javierm@redhat.com, dri-devel@lists.freedesktop.org, paulus@samba.org, maxime@cerno.tech, daniel@ffwll.ch, msuchanek@suse.de, sam@ravnborg.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Paul Moore <paul@paul-moore.com> writes:
-> On Thu, Sep 22, 2022 at 3:38 PM Nathan Lynch <nathanl@linux.ibm.com> wrote:
->>
->> The error injection facility on pseries VMs allows corruption of
->> arbitrary guest memory, potentially enabling a sufficiently privileged
->> user to disable lockdown or perform other modifications of the running
->> kernel via the rtas syscall.
->>
->> Block the PAPR error injection facility from being opened or called
->> when locked down.
->>
->> Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
->> ---
->>  arch/powerpc/kernel/rtas.c | 25 ++++++++++++++++++++++++-
->>  include/linux/security.h   |  1 +
->>  security/security.c        |  1 +
->>  3 files changed, 26 insertions(+), 1 deletion(-)
+Hi Thomas,
+
+On Thu, Sep 22, 2022 at 1:33 PM Thomas Zimmermann <tzimmermann@suse.de> wrote:
+> Open Firmware provides basic display output via the 'display' node.
+> DT platform code already provides a device that represents the node's
+> framebuffer. Add a DRM driver for the device. The display mode and
+> color format is pre-initialized by the system's firmware. Runtime
+> modesetting via DRM is not possible. The display is useful during
+> early boot stages or as error fallback.
 >
-> ...
->
->> diff --git a/include/linux/security.h b/include/linux/security.h
->> index 1ca8dbacd3cc..b5d5138ae66a 100644
->> --- a/include/linux/security.h
->> +++ b/include/linux/security.h
->> @@ -123,6 +123,7 @@ enum lockdown_reason {
->>         LOCKDOWN_BPF_WRITE_USER,
->>         LOCKDOWN_DBG_WRITE_KERNEL,
->>         LOCKDOWN_DEVICE_TREE,
->> +       LOCKDOWN_RTAS_ERROR_INJECTION,
->
-> With the understanding that I've never heard of RTAS until now, are
-> there any other RTAS events that would require a lockdown reason?  As
-> a follow up, is it important to distinguish between different RTAS
-> lockdown reasons?
->
-> I'm trying to determine if we can just call it LOCKDOWN_RTAS.
+> Similar functionality is already provided by fbdev's offb driver,
+> which is insufficient for modern userspace. The old driver includes
+> support for BootX device tree, which can be found on old 32-bit
+> PowerPC Macintosh systems. If these are still in use, the
+> functionality can be added to ofdrm or implemented in a new
+> driver. As with simpledrm, the fbdev driver cannot be selected if
+> ofdrm is already enabled.
 
-Yes I think we should.
+Thanks for your patch!
 
-Currently it only locks down the error injection calls, not all of RTAS.
+> The driver has been tested on qemu's ppc64le emulation. The device
+> hand-over has been tested with bochs.
 
-But firmware can/will add new RTAS calls in future, so it's always
-possible something will need to be added to the list of things that need
-to be blocked during lockdown.
+Oh, tested on little-endian only ;-)
 
-So I think calling it LOCKDOWN_RTAS would be more general and future
-proof, and can be read to mean "lockdown the parts of RTAS that need
-to be locked down".
+> --- /dev/null
+> +++ b/drivers/gpu/drm/tiny/ofdrm.c
+> +static const struct drm_format_info *display_get_validated_format(struct drm_device *dev,
+> +                                                                 u32 depth)
+> +{
+> +       const struct drm_format_info *info;
+> +       u32 format;
+> +
+> +       switch (depth) {
+> +       case 8:
+> +               format = drm_mode_legacy_fb_format(8, 8);
+> +               break;
+> +       case 15:
+> +       case 16:
+> +               format = drm_mode_legacy_fb_format(16, depth);
+> +               break;
+> +       case 32:
+> +               format = drm_mode_legacy_fb_format(32, 24);
 
-Similarly we have LOCKDOWN_ACPI_TABLES which locks down modification to
-ACPI data, but doesn't disable ACPI use entirely AIUI.
+Shouldn't all of these use drm_driver_legacy_fb_format() (and the
+driver set drm_mode_config.quirk_addfb_prefer_host_byte_order) to have
+a chance of working on traditional big-endian PPC?
 
-cheers
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
