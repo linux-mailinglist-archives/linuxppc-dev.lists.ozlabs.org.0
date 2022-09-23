@@ -2,42 +2,117 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E52D55E7755
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 11:37:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED3155E77C4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 11:57:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MYnB339q6z3cj0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 19:37:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MYncj4RwZz3cfd
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 19:57:09 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=fy0snUTp;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com; envelope-from=lihuafei1@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=40.107.104.85; helo=eur03-dba-obe.outbound.protection.outlook.com; envelope-from=chancel.liu@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=fy0snUTp;
+	dkim-atps=neutral
+Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2085.outbound.protection.outlook.com [40.107.104.85])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MYn9b1HBYz3c4c
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Sep 2022 19:37:06 +1000 (AEST)
-Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.54])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4MYn476F2kzlVyl;
-	Fri, 23 Sep 2022 17:32:23 +0800 (CST)
-Received: from kwepemm600010.china.huawei.com (7.193.23.86) by
- dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Fri, 23 Sep 2022 17:36:33 +0800
-Received: from ubuntu1804.huawei.com (10.67.174.174) by
- kwepemm600010.china.huawei.com (7.193.23.86) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Fri, 23 Sep 2022 17:36:32 +0800
-From: Li Huafei <lihuafei1@huawei.com>
-To: <mpe@ellerman.id.au>, <jniethe5@gmail.com>
-Subject: [PATCH] powerpc/kprobes: Fix null pointer reference in arch_prepare_kprobe()
-Date: Fri, 23 Sep 2022 17:32:53 +0800
-Message-ID: <20220923093253.177298-1-lihuafei1@huawei.com>
-X-Mailer: git-send-email 2.17.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MYnbx2BSnz3c6R
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Sep 2022 19:56:27 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=na0kSsRuKOPX9caXV+XlFo1ZF55hoxAVZIBr3+AsoETV84T5nMuACdoK1U+jbDEvkFwGGAFMIYsyG1ihQiGlEA9qdNa1VYdNkfMjwIKn90UTFR35uH97yjUV9maunXYpGB3z7Xb9Epc21G6kk+SdcLvROGqLk21MUo3VMMfVFtAbp3KvIXzEpfsLurPfLv2XuNv2kM7Oug0O/mmo8Ysss/PwCx1S8TM/tqBD9iPYonq0dF6EDdFE65qGB1ur9EdYu3YSneq2i86k/qldEEg8dUFZKA5sRg1iVcIb9762hgyDKFQgBvsiKfgmm1iw8JNZNfOurxx8x1z8+zPQ2WjBbQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=A07iPSt4dr7WZn0qJ5FzweBarro6FnzJbDXu/QiTapw=;
+ b=oBcaV1qkBo0eyN0r0Gbw5PpgN/mSjGk+9oOx1UwNy/NVWDU/vB6ClSKHVeZ3+Yy/724nd5DW81hWaKbVIxSEgocb9UCs1DOc44B9I+HC69/zADDs4H/5giZEyyj6dKbkF+gYM0IQR6My+cIv/Qmichg8MhSbEREF37kcY3fUqfW8C6WA4JT3/du6SivNY0C+cNuFlMBqzv3XDfeAhnrk9MaikY5qDYw9I4cnzLRylwQj9/VLsGQPxqPp9hUbyt0cKL00c1E2v0pACEYA8cbcJkrbmlcXKzaG5F2BuHMBGcdf5KHSBTk6Lp9gnCVvPABpiriAB4ZMaCVmvb667IpK9g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=A07iPSt4dr7WZn0qJ5FzweBarro6FnzJbDXu/QiTapw=;
+ b=fy0snUTpGDD7Mu1weidtKHqn/HiMxut1K187oRATgMMqq35r241KYQGi+TdDO7xPVYmwZlUtiokD/MbuVTSyq8HSLmYsuBjc4vRNBke1NMcVn4zF9geQo0m4AZgQdWuYx9Yj2MwEAVlC5tj0yXUL2//ceckFHNTa1XF1oxMm2kw=
+Received: from VI1PR04MB4222.eurprd04.prod.outlook.com (2603:10a6:803:46::19)
+ by VI1PR04MB6863.eurprd04.prod.outlook.com (2603:10a6:803:12f::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5654.20; Fri, 23 Sep
+ 2022 09:56:07 +0000
+Received: from VI1PR04MB4222.eurprd04.prod.outlook.com
+ ([fe80::7008:1596:bb4:d904]) by VI1PR04MB4222.eurprd04.prod.outlook.com
+ ([fe80::7008:1596:bb4:d904%4]) with mapi id 15.20.5654.020; Fri, 23 Sep 2022
+ 09:56:07 +0000
+From: Chancel Liu <chancel.liu@nxp.com>
+To: Rob Herring <robh@kernel.org>
+Subject: RE: Re: [PATCH v2 1/7] ASoC: dt-bindings: fsl_rpmsg: Add a property
+ to assign the rpmsg channel
+Thread-Topic: Re: [PATCH v2 1/7] ASoC: dt-bindings: fsl_rpmsg: Add a property
+ to assign the rpmsg channel
+Thread-Index: AQHYzzKzIRcLJ21/30SyeFStqUuMIg==
+Date: Fri, 23 Sep 2022 09:56:07 +0000
+Message-ID:  <VI1PR04MB4222BDB1378A01E99DFC6211E3519@VI1PR04MB4222.eurprd04.prod.outlook.com>
+References: <20220914105145.2543646-1-chancel.liu@nxp.com>
+ <20220914105145.2543646-2-chancel.liu@nxp.com>
+ <20220916185048.GA1061412-robh@kernel.org>
+In-Reply-To: <20220916185048.GA1061412-robh@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: VI1PR04MB4222:EE_|VI1PR04MB6863:EE_
+x-ms-office365-filtering-correlation-id: 8eeb9b13-ffbc-407c-d2ce-08da9d49d619
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:  dm0r35HEz6QkYvyHee9QY1RpZSMiwIkQEY/FjrbvLJ0DhR7BVDKaUVyekT4lJ18v7VmV4bhFVHa1xf08Wb/uwMrkj1O8TFkvo19LkA90x01JV2aUVibOAUA66CGTKfznXMTUEwUBvy7qD8j4ql/ufGWlV2MxtAG7Zdejhj7EULTGDIUqJUSxqoWH38uYlzGufTmZ1vIN9wigSGhFGPZ2eTQXR8sXHIrg2Ekbtwa+UhgRyX/I2ge0K+ixczeNh+jJWmggAXe2J5lWRc4PPQF+VOG+EFmuLRvPKrWeu71rb3FFMQUL4F4x/xkipPMHTPXHfRr9kbQfk7QzUAAUINU5OSdCNqVC0LFS/9LDv0oENLuHW1gojTeamn76FdWyHpoWMo7f+R0dK8/DBe2NsaE4QpPjf6EpIgxnEhBaKy53LZhkUy19VLQiaNwM6Erva73Yv8HfEEjn3r0xZh6mb6pkDlY3WeqQkcZDYHebdyhofskreB6gCcwBkgCYcqFbVvIzc5r+aUAWeEiAiiLpiKfJn19dEB9+ks0pMMEdkTZ9bO5YZCx3zW8QgB4UHDq+mKmHzzhzym6uO4v+RFr9lsJ4FAy8N09u9vekfnhh+YuY+Xhwsy8wWv0Xhh1WE5Xl+E8mX4c54nSli1jf8rCQHWuEmaNASn9ceStEUKIzBXy1DI8UqsulXEOSyU943Vo0w5LaRBdCjoVbaV53GAf/Xf9drzPhmS2Q/YEOVfiJKRSkyQJknNtTEKasEQDKWAMCs8qb6pp2RX8E974kWdsVuENcVQ==
+x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR04MB4222.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(376002)(366004)(346002)(39860400002)(396003)(136003)(451199015)(54906003)(26005)(6916009)(9686003)(2906002)(6506007)(7696005)(76116006)(186003)(66446008)(86362001)(66476007)(66946007)(4326008)(66556008)(64756008)(83380400001)(316002)(33656002)(55016003)(41300700001)(122000001)(8936002)(5660300002)(8676002)(7416002)(52536014)(38100700002)(44832011)(478600001)(38070700005)(71200400001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:  =?us-ascii?Q?zhFPTHMvrad2d+w3NV++4YtpTl+XtURLF2N4aw5A8/6L1Mz5rik24aw+nxFL?=
+ =?us-ascii?Q?H8X+BKbWxOZl/+w4+/EwUNJTcq30GYs27oi+Jv3xs45jfRDv5hdOKfInZoVe?=
+ =?us-ascii?Q?4+cD6m/6Np/+NHPWWg7IqFFm7momVhXoVLFzCxq/oitX3RihQtpwifdkU04E?=
+ =?us-ascii?Q?F/C41EQZo+MevfL7871S64dSOAlkI9JnqVK8Od+h0MvCaApAHGxwBexHF6FN?=
+ =?us-ascii?Q?1Dfu1VoU+wsn/6mJf3G5a7J9s5O2YJxnXssbHngrUxP4YdQEvOXiEtEAjPwP?=
+ =?us-ascii?Q?vrTOFLaRLUjSL1GJE3QvsbOWrqxg6wpJqaR+ep2agVAXRFbLSc1FaZhtZtdD?=
+ =?us-ascii?Q?jO5xFQuwpEABAlwNVEc6UxhF49e4Z/71Xcm1Tn0sla44qWLMuPKXUNDdehUs?=
+ =?us-ascii?Q?gsmKKBbyX6sc4JknEATb9LHF/+pu2GSh8cnkfH6YXuq2avfroPnUj7CYxxrC?=
+ =?us-ascii?Q?GgJFarNEKOvS5LZ6hgRmBTURXZINAL5gL+xUnys0O2eTLyRui3MQHCA7cOhF?=
+ =?us-ascii?Q?4NWhHE3yfALJvaHPbwhaquE3i9BOXAf6C0AGcjHTHuasVz8O1a18FFfyVKjc?=
+ =?us-ascii?Q?wLgsCv2DZVN7qfBb5VYF9cjCnfD1TLw+bXHLH1e0ye4VQ8i1DOUsPYMEVF6E?=
+ =?us-ascii?Q?Ph1kgoGQ3wTDGe7Uq7ISkWmtnpP7h0MtuqL8jPs+C6WPOlaaspghUN7Ignxu?=
+ =?us-ascii?Q?y8MnT3dU2jAujw+IYOZcpBiPz+w0s2ZFV74Q3WiOdMWg0cN+1oRUtMJEIDh9?=
+ =?us-ascii?Q?IKQTnXkn0TTFAA/Y0m1fmdxitqGIb7mrtsVZRC9cxvt3vcMlhiJJhghDJx72?=
+ =?us-ascii?Q?MGS5yp9hq3x+fur17nFiZejEjSyRRQbUgq/AP2F1kXy74z6J1dCH6DhCuWPT?=
+ =?us-ascii?Q?YzsEiy44faogLj6I2Hax3ehYB3e/v+F+aS/a7ddr/kRylRP63Tn3YAHeUnxJ?=
+ =?us-ascii?Q?AQPKwiRzD99RhSymIgYjj/M55Ixq6KmKX7vJk9MLUoI6E6+ZodJQ54I+E3Xy?=
+ =?us-ascii?Q?kJq11peSNkPj5pFn88+zBBI2q94f5aEYqLoPwjYYEN7md91wI/rDYNodjogh?=
+ =?us-ascii?Q?UVAJuc6HCdnANmbmLg8dnEyiJe3D2gA48ibBUSsXo3MpoF7Uf4OUcSU5rYDm?=
+ =?us-ascii?Q?f6M6ZTHSVeUTnElzxUtl6eS2qAKQD+SmliYzmoywre082eGk6naLoeeIfAjO?=
+ =?us-ascii?Q?8ojY51tkHfnyJKR2r/H8eFqqU+L2wAtrCeTK/EG2CCb7oWnDHTRHmb4Z4Ltl?=
+ =?us-ascii?Q?L8J5HOpBMiuAB1lrvSEwIp7qBtj8aHzMFB3LV/Bl7SUXtMC7mObuI3ULwOLv?=
+ =?us-ascii?Q?UDZ6M6oHl2SRJxyjNZTPYDpY95hPNLF58o0xSfWOaT9UIn7t7+HJYUwu59E4?=
+ =?us-ascii?Q?bXXqamtTefE/K7W+ZPKBnh/1ey37yhn8p7x5vL2AqO1IMiUwmh9i7YUlyvAb?=
+ =?us-ascii?Q?6kRlCzVbSBxnMVBGZISaFBec7tze1q0GYwY8i1lGyeVWSyRqzDzK11nfcSdq?=
+ =?us-ascii?Q?vVrE+Xm+kZE9Pz2QDRU3RwTk4D5KzBm3FrwjJyrzWtxm1a5gEqqQQJxYEl+v?=
+ =?us-ascii?Q?Vb0eskD4twcFNXDOklbGaOWyQx0FcaUTLx0YbUA4?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.67.174.174]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- kwepemm600010.china.huawei.com (7.193.23.86)
-X-CFilter-Loop: Reflected
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: VI1PR04MB4222.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8eeb9b13-ffbc-407c-d2ce-08da9d49d619
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Sep 2022 09:56:07.5911
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 8qhR0PxfqGbm24lmD/5jz/C6Nbp2Drp3VGAshCDL3I2McdvCTSws264A+QSEn2oe4LEoJ6LPM2fgH49WIustzg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB6863
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,115 +124,118 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: lihuafei1@huawei.com, peterz@infradead.org, npiggin@gmail.com, linux-kernel@vger.kernel.org, rostedt@goodmis.org, naveen.n.rao@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, mhiramat@kernel.org
+Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "lgirdwood@gmail.com" <lgirdwood@gmail.com>, "festevam@gmail.com" <festevam@gmail.com>, "S.J. Wang" <shengjiu.wang@nxp.com>, "Xiubo.Lee@gmail.com" <Xiubo.Lee@gmail.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "tiwai@suse.com" <tiwai@suse.com>, "nicoleotsuka@gmail.com" <nicoleotsuka@gmail.com>, "broonie@kernel.org" <broonie@kernel.org>, "krzysztof.kozlowski+dt@linaro.org" <krzysztof.kozlowski+dt@linaro.org>, "perex@perex.cz" <perex@perex.cz>, "shengjiu.wang@gmail.com" <shengjiu.wang@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-I found a null pointer reference in arch_prepare_kprobe():
+> > Add a string property to assign the rpmsg channel this sound card sits
+> > on. It also represents the name of ASoC platform driver. This property
+> > can be omitted if there is only one sound card and it sits on
+> > "rpmsg-audio-channel".
+> >
+> > Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
+> > ---
+> >  .../devicetree/bindings/sound/fsl,rpmsg.yaml  | 37 ++++++++++++++++++-
+> >  1 file changed, 35 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/Documentation/devicetree/bindings/sound/fsl,rpmsg.yaml
+> b/Documentation/devicetree/bindings/sound/fsl,rpmsg.yaml
+> > index d370c98a62c7..3744ae794c00 100644
+> > --- a/Documentation/devicetree/bindings/sound/fsl,rpmsg.yaml
+> > +++ b/Documentation/devicetree/bindings/sound/fsl,rpmsg.yaml
+> > @@ -11,8 +11,11 @@ maintainers:
+> >
+> >  description: |
+> >    fsl_rpmsg is a virtual audio device. Mapping to real hardware device=
+s
+> > -  are SAI, DMA controlled by Cortex M core. What we see from Linux
+> > -  side is a device which provides audio service by rpmsg channel.
+> > +  are SAI, MICFIL, DMA controlled by Cortex M core. What we see from
+> > +  Linux side is a device which provides audio service by rpmsg channel=
+.
+> > +  We can create different sound cards which access different hardwares
+> > +  such as SAI, MICFIL, .etc through building rpmsg channels between
+> > +  Cortex-A and Cortex-M.
+> >
+> >  properties:
+> >    compatible:
+> > @@ -85,6 +88,17 @@ properties:
+> >        This is a boolean property. If present, the receiving function
+> >        will be enabled.
+> >
+> > +  fsl,rpmsg-channel-name:
+> > +    $ref: /schemas/types.yaml#/definitions/string
+> > +    description: |
+> > +      A string property to assign rpmsg channel this sound card sits o=
+n.
+> > +      It also represents the name of ASoC platform driver. This proper=
+ty
+>=20
+> That's a Linux detail which doesn't belong in DT.
+>=20
 
-  # echo 'p cmdline_proc_show' > kprobe_events
-  # echo 'p cmdline_proc_show+16' >> kprobe_events
-  [   67.278533][  T122] Kernel attempted to read user page (0) - exploit attempt? (uid: 0)
-  [   67.279326][  T122] BUG: Kernel NULL pointer dereference on read at 0x00000000
-  [   67.279738][  T122] Faulting instruction address: 0xc000000000050bfc
-  [   67.280486][  T122] Oops: Kernel access of bad area, sig: 11 [#1]
-  [   67.280846][  T122] LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA PowerNV
-  [   67.281435][  T122] Modules linked in:
-  [   67.281903][  T122] CPU: 0 PID: 122 Comm: sh Not tainted 6.0.0-rc3-00007-gdcf8e5633e2e #10
-  [   67.282547][  T122] NIP:  c000000000050bfc LR: c000000000050bec CTR: 0000000000005bdc
-  [   67.282920][  T122] REGS: c0000000348475b0 TRAP: 0300   Not tainted  (6.0.0-rc3-00007-gdcf8e5633e2e)
-  [   67.283424][  T122] MSR:  9000000000009033 <SF,HV,EE,ME,IR,DR,RI,LE>  CR: 88002444  XER: 20040006
-  [   67.284023][  T122] CFAR: c00000000022d100 DAR: 0000000000000000 DSISR: 40000000 IRQMASK: 0
-  [   67.284023][  T122] GPR00: c000000000050bec c000000034847850 c0000000013f6100 c000000001fb7718
-  [   67.284023][  T122] GPR04: c000000000515c10 c000000000e5fe08 c00000000133da60 c000000004839300
-  [   67.284023][  T122] GPR08: c0000000014ffb98 0000000000000000 c000000000515c0c c000000000e18576
-  [   67.284023][  T122] GPR12: c000000000e60170 c0000000015a0000 00000001155e0460 0000000000000000
-  [   67.284023][  T122] GPR16: 0000000000000000 00007fffe8eeb3c8 0000000116320728 0000000000000000
-  [   67.284023][  T122] GPR20: 0000000116320720 0000000000000000 c0000000012fa918 0000000000000006
-  [   67.284023][  T122] GPR24: c0000000014ffb98 c0000000011ed360 0000000000000000 c000000001fb7928
-  [   67.284023][  T122] GPR28: 0000000000000000 0000000000000000 000000007c0802a6 c000000001fb7918
-  [   67.287799][  T122] NIP [c000000000050bfc] arch_prepare_kprobe+0x10c/0x2d0
-  [   67.288490][  T122] LR [c000000000050bec] arch_prepare_kprobe+0xfc/0x2d0
-  [   67.289025][  T122] Call Trace:
-  [   67.289268][  T122] [c000000034847850] [c0000000012f77a0] 0xc0000000012f77a0 (unreliable)
-  [   67.289999][  T122] [c0000000348478d0] [c000000000231320] register_kprobe+0x3c0/0x7a0
-  [   67.290439][  T122] [c000000034847940] [c0000000002938c0] __register_trace_kprobe+0x140/0x1a0
-  [   67.290898][  T122] [c0000000348479b0] [c0000000002944c4] __trace_kprobe_create+0x794/0x1040
-  [   67.291330][  T122] [c000000034847b60] [c0000000002a1614] trace_probe_create+0xc4/0xe0
-  [   67.291717][  T122] [c000000034847bb0] [c00000000029363c] create_or_delete_trace_kprobe+0x2c/0x80
-  [   67.292158][  T122] [c000000034847bd0] [c000000000264420] trace_parse_run_command+0xf0/0x210
-  [   67.292611][  T122] [c000000034847c70] [c0000000002934a0] probes_write+0x20/0x40
-  [   67.292996][  T122] [c000000034847c90] [c00000000045e98c] vfs_write+0xfc/0x450
-  [   67.293356][  T122] [c000000034847d50] [c00000000045eec4] ksys_write+0x84/0x140
-  [   67.293716][  T122] [c000000034847da0] [c00000000002e4fc] system_call_exception+0x17c/0x3a0
-  [   67.294186][  T122] [c000000034847e10] [c00000000000c0e8] system_call_vectored_common+0xe8/0x278
-  [   67.294680][  T122] --- interrupt: 3000 at 0x7fffa5682de0
-  [   67.294937][  T122] NIP:  00007fffa5682de0 LR: 0000000000000000 CTR: 0000000000000000
-  [   67.295313][  T122] REGS: c000000034847e80 TRAP: 3000   Not tainted  (6.0.0-rc3-00007-gdcf8e5633e2e)
-  [   67.295725][  T122] MSR:  900000000280f033 <SF,HV,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 44002408  XER: 00000000
-  [   67.296291][  T122] IRQMASK: 0
-  [   67.296291][  T122] GPR00: 0000000000000004 00007fffe8eeaec0 00007fffa5757300 0000000000000001
-  [   67.296291][  T122] GPR04: 0000000116329c60 0000000000000017 0000000000116329 0000000000000000
-  [   67.296291][  T122] GPR08: 0000000000000006 0000000000000000 0000000000000000 0000000000000000
-  [   67.296291][  T122] GPR12: 0000000000000000 00007fffa580ac60 00000001155e0460 0000000000000000
-  [   67.296291][  T122] GPR16: 0000000000000000 00007fffe8eeb3c8 0000000116320728 0000000000000000
-  [   67.296291][  T122] GPR20: 0000000116320720 0000000000000000 0000000000000000 0000000000000002
-  [   67.296291][  T122] GPR24: 00000001163206f0 0000000000000020 00007fffe8eeafa0 0000000000000001
-  [   67.296291][  T122] GPR28: 0000000000000000 0000000000000017 0000000116329c60 0000000000000001
-  [   67.299570][  T122] NIP [00007fffa5682de0] 0x7fffa5682de0
-  [   67.299837][  T122] LR [0000000000000000] 0x0
-  [   67.300072][  T122] --- interrupt: 3000
-  [   67.300447][  T122] Instruction dump:
-  [   67.300736][  T122] 386319d8 481342f5 60000000 60000000 60000000 e87f0028 3863fffc 481dc4d1
-  [   67.301230][  T122] 60000000 2c230000 41820018 e9230058 <81290000> 552936be 2c090001 4182018c
-  [   67.302102][  T122] ---[ end trace 0000000000000000 ]---
-  [   67.302496][  T122]
+We pass hardware parameters in dts node to set up clocks or other
+configurations. These configurations are finally sent to Cortex-M by
+rpmsg channel because Cortex-M actually controls real hardware devices.
+If there's only one sound card sits on one rpmsg channel we will not
+need this property. But if there are several sound cards we need to
+specify correct rpmsg channel. Thus hardware configurations can be
+properly sent to Cortex-M. From this level to speak, this property is
+hardware-related since rpmsg channel represents the real hardware audio
+controller.
 
-The address being probed has some special:
-
-  cmdline_proc_show: Probe based on ftrace
-  cmdline_proc_show+16: Probe for the next instruction at the ftrace location
-
-The ftrace-based kprobe does not generate kprobe::ainsn::insn, it gets
-set to NULL. In arch_prepare_kprobe() it will check for:
-
-  ...
-  prev = get_kprobe(p->addr - 1);
-  preempt_enable_no_resched();
-  if (prev && ppc_inst_prefixed(ppc_inst_read(prev->ainsn.insn))) {
-  ...
-
-If prev is based on ftrace, 'ppc_inst_read(prev->ainsn.insn)' will occur
-with a null pointer reference. At this point prev->addr will not be a
-prefixed instruction, so the check can be skipped.
-
-Check if prev is ftrace-based kprobe before reading 'prev->ainsn.insn'
-to fix this problem.
-
-Fixes: b4657f7650ba ("powerpc/kprobes: Don't allow breakpoints on suffixes")
-Signed-off-by: Li Huafei <lihuafei1@huawei.com>
+Here I attach the discussion in version 1 patches for your information:
 ---
- arch/powerpc/kernel/kprobes.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+This property aims to tell the ASoC driver which rpmsg channel the
+sound card depends on. If there are several sound cards sit on rpmsg,
+we should pass correct information in dts node to specify the name of
+rpmsg channel. That is why I meant to add this property.=20
 
-diff --git a/arch/powerpc/kernel/kprobes.c b/arch/powerpc/kernel/kprobes.c
-index 912d4f8a13be..9f6cbbd56809 100644
---- a/arch/powerpc/kernel/kprobes.c
-+++ b/arch/powerpc/kernel/kprobes.c
-@@ -161,7 +161,12 @@ int arch_prepare_kprobe(struct kprobe *p)
- 	preempt_disable();
- 	prev = get_kprobe(p->addr - 1);
- 	preempt_enable_no_resched();
--	if (prev && ppc_inst_prefixed(ppc_inst_read(prev->ainsn.insn))) {
-+	/*
-+	 * When prev is a ftrace-based kprobe, we don't have an insn, and it
-+	 * doesn't probe for prefixed instruction.
-+	 */
-+	if (prev && !kprobe_ftrace(prev) &&
-+	    ppc_inst_prefixed(ppc_inst_read(prev->ainsn.insn))) {
- 		printk("Cannot register a kprobe on the second word of prefixed instruction\n");
- 		ret = -EINVAL;
- 	}
--- 
-2.17.1
+Actually this property is hardware-related. As we discussed before,
+this kind of sound card based on rpmsg works under this mechanism
+Cortex-A core tells the Cortex-M core configuration of the PCM
+parameters then Cortex-M controls real hardware devices. This property
+specifying rpmsg channel represents the real hardware audio controller.
+---
 
+That's my idea adding this property. Do you have any suggstion?
+
+Regards,=20
+Chancel Liu
+
+> > +      can be omitted if there is only one sound card and it sits on
+> > +      "rpmsg-audio-channel".
+> > +    enum:
+> > +      - rpmsg-audio-channel
+> > +      - rpmsg-micfil-channel
+> > +
+> >  required:
+> >    - compatible
+> >    - model
+> > @@ -107,3 +121,22 @@ examples:
+> >                   <&clk IMX8MN_AUDIO_PLL2_OUT>;
+> >          clock-names =3D "ipg", "mclk", "dma", "pll8k", "pll11k";
+> >      };
+> > +
+> > +  - |
+> > +    #include <dt-bindings/clock/imx8mm-clock.h>
+> > +
+> > +    rpmsg_micfil: audio-controller {
+> > +        compatible =3D "fsl,imx8mm-rpmsg-audio";
+> > +        model =3D "micfil-audio";
+> > +        fsl,rpmsg-channel-name =3D "rpmsg-micfil-channel";
+> > +        fsl,enable-lpa;
+> > +        fsl,rpmsg-in;
+> > +        clocks =3D <&clk IMX8MM_CLK_PDM_IPG>,
+> > +                 <&clk IMX8MM_CLK_PDM_ROOT>,
+> > +                 <&clk IMX8MM_CLK_SDMA3_ROOT>,
+> > +                 <&clk IMX8MM_AUDIO_PLL1_OUT>,
+> > +                 <&clk IMX8MM_AUDIO_PLL2_OUT>;
+> > +        clock-names =3D "ipg", "mclk", "dma", "pll8k", "pll11k";
+> > +    };
+> > +
+> > +...
+> > --
+> > 2.25.1
+> >
+> >
