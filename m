@@ -1,33 +1,33 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99C4F5E723D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 05:00:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 523AC5E7268
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 05:24:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MYcMp4bJjz3cdr
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 13:00:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MYcvd3602z3cfl
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 13:24:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=benh@kernel.crashing.org; receiver=<UNKNOWN>)
 Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MYcMM6wMRz2xk6
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Sep 2022 12:59:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MYcvC3Lnxz3bSS
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Sep 2022 13:24:05 +1000 (AEST)
 Received: from [IPv6:::1] (localhost.localdomain [127.0.0.1])
-	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 28N2vYVY028156;
-	Thu, 22 Sep 2022 21:57:35 -0500
-Message-ID: <575f239205e8635add81c9f902b7d9db7beb83ea.camel@kernel.crashing.org>
-Subject: Re: [PATCH] powerpc/pci: Enable PCI domains in /proc when PCI bus
- numbers are not unique
+	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 28N3LWpA028633;
+	Thu, 22 Sep 2022 22:21:33 -0500
+Message-ID: <14c592e1d0a6126a66cfab1851d52d097023b74f.camel@kernel.crashing.org>
+Subject: Re: [PATCH v2 2/2] powerpc/pci: Prefer PCI domain assignment via DT
+ 'linux,pci-domain' and alias
 From: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-To: Michael Ellerman <mpe@ellerman.id.au>,
-        Pali =?ISO-8859-1?Q?Roh=E1r?=
-	 <pali@kernel.org>
-Date: Fri, 23 Sep 2022 12:57:32 +1000
-In-Reply-To: <87wnanu4vf.fsf@mpe.ellerman.id.au>
-References: <20220820115113.30581-1-pali@kernel.org>
-	 <878rnclq47.fsf@mpe.ellerman.id.au> <20220825083713.4glfivegmodluiun@pali>
-	 <87wnanu4vf.fsf@mpe.ellerman.id.au>
+To: Michael Ellerman <mpe@ellerman.id.au>, Guenter Roeck
+ <linux@roeck-us.net>,
+        Pali =?ISO-8859-1?Q?Roh=E1r?= <pali@kernel.org>
+Date: Fri, 23 Sep 2022 13:21:30 +1000
+In-Reply-To: <874jyevz2g.fsf@mpe.ellerman.id.au>
+References: <20220706102148.5060-1-pali@kernel.org>
+	 <20220706102148.5060-2-pali@kernel.org>
+	 <20220813135735.GA3413265@roeck-us.net> <874jyevz2g.fsf@mpe.ellerman.id.au>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.44.1-0ubuntu1 
@@ -43,50 +43,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Paul Mackerras <paulus@samba.org>, linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
+Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, Guowen Shan <gshan@redhat.com>, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, "Guilherme G. Piccoli" <gpiccoli@igalia.com>, Bjorn Helgaas <helgaas@kernel.org>, Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 2022-09-01 at 13:53 +1000, Michael Ellerman wrote:
+On Mon, 2022-08-15 at 15:46 +1000, Michael Ellerman wrote:
+> Guenter Roeck <linux@roeck-us.net> writes:
+> > On Wed, Jul 06, 2022 at 12:21:48PM +0200, Pali Roh=C3=A1r wrote:
+> > > Other Linux architectures use DT property 'linux,pci-domain' for spec=
+ifying
+> > > fixed PCI domain of PCI controller specified in Device-Tree.
+> > >=20
+> > > And lot of Freescale powerpc boards have defined numbered pci alias i=
+n
+> > > Device-Tree for every PCIe controller which number specify preferred =
+PCI
+> > > domain.
+> > >=20
+> > > So prefer usage of DT property 'linux,pci-domain' (via function
+> > > of_get_pci_domain_nr()) and DT pci alias (via function of_alias_get_i=
+d())
+> > > on powerpc architecture for assigning PCI domain to PCI controller.
+> > >=20
+> > > Fixes: 63a72284b159 ("powerpc/pci: Assign fixed PHB number based on d=
+evice-tree properties")
+> > > Signed-off-by: Pali Roh=C3=A1r <pali@kernel.org>
 > >=20
-> > I sent two patches which do another steps to achieve it:
-> > https://lore.kernel.org/linuxppc-dev/20220817163927.24453-1-pali@kernel=
-.org/t/#u
-> >=20
-> > Main blocker is pci-OF-bus-map which is in direct conflict with
-> > CONFIG_PPC_PCI_BUS_NUM_DOMAIN_DEPENDENT and which used on chrp and pmac=
-.
-> > And I have no idea if pci-OF-bus-map is still needed or not.
+> > This patch results in a number of boot warnings with various qemu
+> > boot tests.
 >=20
-> Yeah thanks, I saw those patches.
+> Thanks for the report.
 >=20
-> I can't find any code that refers to pci-OF-bus-map, so I'm inclined to
-> remove it entirely.
->=20
-> But I'll do some more searching to see if I can find any references to
-> it in old code.
+> I have automated qemu boot tests to catch things like this, they even
+> have DEBUG_ATOMIC_SLEEP enabled ... but I inadvertantly broke my script
+> that checks for "BUG:" in the console log. Sometimes you just can't
+> win.
 
-Trying to remember ... :-)
+So the problem is
 
-So this is what I recall at this point:
+ 	spin_lock(&hose_spinlock);
 
- - Ancient X11 didn't understand domains in /proc and thus would barf,
-which was the primary reason for not enabling them always iirc...
+get_phb_number() relies on it for the phb_bitmap allocation. You can
+move it out of the lock but you'll have to either:
 
- - There might be something else with early PowerMacs (Grand Central
-chipset) where we have effectively two domains (gc and chaos) but
-overlapping bus numbers. There might still be pre-historical code in
-there that assumes it's that way though I can't see anything obvious.
-Paul might still have one of these :-) (PowerMac 7200/7500/8500/9500
-afaik).
+ - Take the lock inside it to protect the allocation
 
- - pci-OF-bus-map predates the PCI layer keeping track of the PCI/OF
-relationship. I don't believe it's still used anywhere in the kernel,
-though it's possible (unlikely ?) that some garbage remains in
-userspace that does.
+ - Turn find_first_zero_bit/set_bit into a loop of
+find_first_zero_bit+test_and_set_bit() which wouldn't require a lock.
 
-At this point, I wouldn't object to tearing this all out and just
-having domains always (and see what the fallout is).
+Note about the other "reg" numbering conversation ... I'm pretty sure
+that breaks some old PowerMac crap which shows nobody really uses these
+things considering how long the patch has been there :-)
+
+I'm pretty sure something somewhere assumes the primary bus is 0. Some
+old userspace definitely does though that might no longer be relevant.
+The whole business with "domain 0" being special and avoiding domain
+numbers in /proc relies on this too...
 
 Cheers,
 Ben.
