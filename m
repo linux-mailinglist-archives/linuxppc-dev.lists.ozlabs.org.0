@@ -1,56 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D1FC5E805B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 19:07:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 783655E807F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 19:11:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MYz9R4r8rz3cfk
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Sep 2022 03:07:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MYzFf1PhBz3cfG
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Sep 2022 03:11:18 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EYo3+adf;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=uumJiLIU;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Fngpn3ub;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=msuchanek@suse.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EYo3+adf;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=uumJiLIU;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Fngpn3ub;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MYz8n4mfVz2xHL
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Sep 2022 03:07:05 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 444B3B8211A;
-	Fri, 23 Sep 2022 17:07:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E6DDC433D6;
-	Fri, 23 Sep 2022 17:06:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1663952820;
-	bh=yv65ncJXP7zLVMNN7B/VDPHTlWRGuMb/y6L+TYsAh/Y=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=EYo3+adffwYq+V60pgZhrnEsjdK72Opshe6krDmqOjpA643KcE3o8fELUUZ83oaEF
-	 CakBPYWSwvHxKiUb02XOIHkv8TkZ7TkRYc+JDWvJyBbJ19cocw0y6w3j1rCNVVljMB
-	 M1Pf+Cue4ZXGgZJ8bj2kNjshLULKhVznlQNYGYapbFAcqLdOWFTXo8+w/KnEDgF2hu
-	 RW0mANNFgode+5S6TMw+HyJ1dhHgbTcHxJ4NDM8hn7OiqWWUBowiAWW5JxgdJECTVu
-	 lcIR1V9q9O7ElSItDp6Nitb5BpSClXbhbfEuPjzzJFyQ8T3YcfV+bn1fxlg0nrtW3r
-	 J95mbaH4t3xlg==
-From: Mark Brown <broonie@kernel.org>
-To: linux-imx@nxp.com, shawnguo@kernel.org, perex@perex.cz, nicoleotsuka@gmail.com, shengjiu.wang@gmail.com,
- tiwai@suse.com, s.hauer@pengutronix.de, lgirdwood@gmail.com, kernel@pengutronix.de, Xiubo.Lee@gmail.com,
- Gaosheng Cui <cuigaosheng1@huawei.com>, festevam@gmail.com
-In-Reply-To: <20220923090355.507648-1-cuigaosheng1@huawei.com>
-References: <20220923090355.507648-1-cuigaosheng1@huawei.com>
-Subject: Re: [PATCH] ASoC: fsl: Remove unused inline function imx_pcm_dma_params_init_data()
-Message-Id: <166395281690.610218.17739272553546985512.b4-ty@kernel.org>
-Date: Fri, 23 Sep 2022 18:06:56 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MYzF36j8Fz3bxL
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Sep 2022 03:10:47 +1000 (AEST)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+	by smtp-out1.suse.de (Postfix) with ESMTP id 9C334219EC;
+	Fri, 23 Sep 2022 17:10:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1663953043; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=ZSPBzEUu4HvvRKKrmrdU/FMS6Qx20fLyxT3yF1tghgc=;
+	b=uumJiLIU2hCeUjB//pYmunQ3XhUTmH5n97IVRpx0df4OZYv5fuXBQ0xekIy4XJccvKNdf+
+	ZZ2q/2pniI8zXucmq84IOe9+SqdEoZRhNamUxbx08sYZ/Rz9mhwPlaqhD1IuXjRA5vy2v5
+	Iqu37b4i4NZhqLy45/3MLfqEcVgd2Os=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1663953043;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=ZSPBzEUu4HvvRKKrmrdU/FMS6Qx20fLyxT3yF1tghgc=;
+	b=Fngpn3ub5IEe7UJDgzoo8OBgYwiwTJAr8CYGfJ5/Ppmar1cb8XYsiESPKo8Bi3lpB3A8SE
+	scN82gpoaRkfC7CQ==
+Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
+	by relay2.suse.de (Postfix) with ESMTP id 44B9C2C15B;
+	Fri, 23 Sep 2022 17:10:41 +0000 (UTC)
+From: Michal Suchanek <msuchanek@suse.de>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH 5.15 0/6] arm64: kexec_file: use more system keyrings to verify kernel image signature + dependencies
+Date: Fri, 23 Sep 2022 19:10:28 +0200
+Message-Id: <cover.1663951201.git.msuchanek@suse.de>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.10.0-dev-fc921
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,44 +64,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: Dave Hansen <dave.hansen@linux.intel.com>, Alexander Egorenkov <egorenar@linux.ibm.com>, keyrings@vger.kernel.org, Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>, "open list:S390" <linux-s390@vger.kernel.org>, Coiby Xu <coxu@redhat.com>, Baoquan He <bhe@redhat.com>, AKASHI Takahiro <takahiro.akashi@linaro.org>, "maintainer:X86 ARCHITECTURE 32-BIT AND 64-BIT" <x86@kernel.org>, Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>, Catalin Marinas <catalin.marinas@arm.com>, "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>, Michal Suchanek <msuchanek@suse.de>, Eric Biederman <ebiederm@xmission.com>, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Borislav Petkov <bp@alien8.de>, Mimi Zohar <zohar@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>, "moderated list:ARM64 PORT AARCH64 ARCHITECTURE" <linux-arm-
+ kernel@lists.infradead.org>, Philipp Rudo <prudo@redhat.com>, "open list:KEXEC" <kexec@lists.infradead.org>, linux-security-module@vger.kernel.org, James Morse <james.morse@arm.com>, Sven Schnelle <svens@linux.ibm.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Andrew Morton <akpm@linux-foundation.org>, "open list:LINUX FOR POWERPC 32-BIT AND 64-BIT" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 23 Sep 2022 17:03:55 +0800, Gaosheng Cui wrote:
-> The imx_pcm_dma_params_init_data() are no longer used since
-> commit c31da0b196f9 ("ASoC: imx-ssi: Remove unused driver"),
-> and the function is used to initialize some members of
-> "struct imx_dma_data", it's more readable to assign the value
-> directly, imx_pcm_dma_params_init_data is useless, so remove it.
-> 
-> 
-> [...]
+Hello,
 
-Applied to
+this is backport of commit 0d519cadf751
+("arm64: kexec_file: use more system keyrings to verify kernel image signature")
+to table 5.15 tree including the preparatory patches.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+Some patches needed minor adjustment for context.
 
-Thanks!
+Thanks
 
-[1/1] ASoC: fsl: Remove unused inline function imx_pcm_dma_params_init_data()
-      commit: 4f865485e8ef1d04de23fc1def1fa4e39fb00b91
+Michal
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+Coiby Xu (3):
+  kexec: clean up arch_kexec_kernel_verify_sig
+  kexec, KEYS: make the code in bzImage64_verify_sig generic
+  arm64: kexec_file: use more system keyrings to verify kernel image
+    signature
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+Naveen N. Rao (2):
+  kexec_file: drop weak attribute from functions
+  kexec: drop weak attribute from functions
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+Sven Schnelle (1):
+  s390/kexec_file: move kernel image size check
 
-Thanks,
-Mark
+ arch/arm64/include/asm/kexec.h        | 20 ++++++-
+ arch/arm64/kernel/kexec_image.c       | 11 +---
+ arch/powerpc/include/asm/kexec.h      | 14 +++++
+ arch/s390/boot/head.S                 |  2 -
+ arch/s390/include/asm/kexec.h         | 14 +++++
+ arch/s390/include/asm/setup.h         |  1 -
+ arch/s390/kernel/machine_kexec_file.c | 17 +-----
+ arch/x86/include/asm/kexec.h          | 12 ++++
+ arch/x86/kernel/kexec-bzimage64.c     | 20 +------
+ include/linux/kexec.h                 | 82 ++++++++++++++++++++++----
+ kernel/kexec_core.c                   | 27 ---------
+ kernel/kexec_file.c                   | 83 ++++++++++-----------------
+ 12 files changed, 163 insertions(+), 140 deletions(-)
+
+-- 
+2.35.3
+
