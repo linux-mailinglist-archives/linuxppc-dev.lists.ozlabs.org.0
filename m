@@ -1,44 +1,43 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 376155E77A5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 11:51:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E52D55E7755
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 11:37:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MYnTZ6xtlz3cL8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 19:50:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MYnB339q6z3cj0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 19:37:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=92.121.34.21; helo=inva021.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com; envelope-from=lihuafei1@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MYnT52ShGz3c6R
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Sep 2022 19:50:31 +1000 (AEST)
-Received: from inva021.nxp.com (localhost [127.0.0.1])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 79B7D216CD3;
-	Fri, 23 Sep 2022 11:50:27 +0200 (CEST)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id EF382216CD0;
-	Fri, 23 Sep 2022 11:50:26 +0200 (CEST)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 23E18180031F;
-	Fri, 23 Sep 2022 17:50:23 +0800 (+08)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: nicoleotsuka@gmail.com,
-	Xiubo.Lee@gmail.com,
-	festevam@gmail.com,
-	shengjiu.wang@gmail.com,
-	lgirdwood@gmail.com,
-	broonie@kernel.org,
-	perex@perex.cz,
-	tiwai@suse.com,
-	alsa-devel@alsa-project.org
-Subject: [PATCH] ASoC: fsl_micfil: Add Hardware Voice Activity Detector support
-Date: Fri, 23 Sep 2022 17:31:34 +0800
-Message-Id: <1663925494-9941-1-git-send-email-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-X-Virus-Scanned: ClamAV using ClamSMTP
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MYn9b1HBYz3c4c
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Sep 2022 19:37:06 +1000 (AEST)
+Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.54])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4MYn476F2kzlVyl;
+	Fri, 23 Sep 2022 17:32:23 +0800 (CST)
+Received: from kwepemm600010.china.huawei.com (7.193.23.86) by
+ dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Fri, 23 Sep 2022 17:36:33 +0800
+Received: from ubuntu1804.huawei.com (10.67.174.174) by
+ kwepemm600010.china.huawei.com (7.193.23.86) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Fri, 23 Sep 2022 17:36:32 +0800
+From: Li Huafei <lihuafei1@huawei.com>
+To: <mpe@ellerman.id.au>, <jniethe5@gmail.com>
+Subject: [PATCH] powerpc/kprobes: Fix null pointer reference in arch_prepare_kprobe()
+Date: Fri, 23 Sep 2022 17:32:53 +0800
+Message-ID: <20220923093253.177298-1-lihuafei1@huawei.com>
+X-Mailer: git-send-email 2.17.1
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [10.67.174.174]
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ kwepemm600010.china.huawei.com (7.193.23.86)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,558 +49,115 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: lihuafei1@huawei.com, peterz@infradead.org, npiggin@gmail.com, linux-kernel@vger.kernel.org, rostedt@goodmis.org, naveen.n.rao@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, mhiramat@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The Hardware Voice Activity Detector (HWVAD) is a block
-responsible for detect voice activity in a channel selected
-by the user. It can be configured in Envelope-based or
-Energy-based mode.
+I found a null pointer reference in arch_prepare_kprobe():
 
-There are additional two interrupts for HWVAD, one is event
-interrupt, another is error interrupt.
+  # echo 'p cmdline_proc_show' > kprobe_events
+  # echo 'p cmdline_proc_show+16' >> kprobe_events
+  [   67.278533][  T122] Kernel attempted to read user page (0) - exploit attempt? (uid: 0)
+  [   67.279326][  T122] BUG: Kernel NULL pointer dereference on read at 0x00000000
+  [   67.279738][  T122] Faulting instruction address: 0xc000000000050bfc
+  [   67.280486][  T122] Oops: Kernel access of bad area, sig: 11 [#1]
+  [   67.280846][  T122] LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA PowerNV
+  [   67.281435][  T122] Modules linked in:
+  [   67.281903][  T122] CPU: 0 PID: 122 Comm: sh Not tainted 6.0.0-rc3-00007-gdcf8e5633e2e #10
+  [   67.282547][  T122] NIP:  c000000000050bfc LR: c000000000050bec CTR: 0000000000005bdc
+  [   67.282920][  T122] REGS: c0000000348475b0 TRAP: 0300   Not tainted  (6.0.0-rc3-00007-gdcf8e5633e2e)
+  [   67.283424][  T122] MSR:  9000000000009033 <SF,HV,EE,ME,IR,DR,RI,LE>  CR: 88002444  XER: 20040006
+  [   67.284023][  T122] CFAR: c00000000022d100 DAR: 0000000000000000 DSISR: 40000000 IRQMASK: 0
+  [   67.284023][  T122] GPR00: c000000000050bec c000000034847850 c0000000013f6100 c000000001fb7718
+  [   67.284023][  T122] GPR04: c000000000515c10 c000000000e5fe08 c00000000133da60 c000000004839300
+  [   67.284023][  T122] GPR08: c0000000014ffb98 0000000000000000 c000000000515c0c c000000000e18576
+  [   67.284023][  T122] GPR12: c000000000e60170 c0000000015a0000 00000001155e0460 0000000000000000
+  [   67.284023][  T122] GPR16: 0000000000000000 00007fffe8eeb3c8 0000000116320728 0000000000000000
+  [   67.284023][  T122] GPR20: 0000000116320720 0000000000000000 c0000000012fa918 0000000000000006
+  [   67.284023][  T122] GPR24: c0000000014ffb98 c0000000011ed360 0000000000000000 c000000001fb7928
+  [   67.284023][  T122] GPR28: 0000000000000000 0000000000000000 000000007c0802a6 c000000001fb7918
+  [   67.287799][  T122] NIP [c000000000050bfc] arch_prepare_kprobe+0x10c/0x2d0
+  [   67.288490][  T122] LR [c000000000050bec] arch_prepare_kprobe+0xfc/0x2d0
+  [   67.289025][  T122] Call Trace:
+  [   67.289268][  T122] [c000000034847850] [c0000000012f77a0] 0xc0000000012f77a0 (unreliable)
+  [   67.289999][  T122] [c0000000348478d0] [c000000000231320] register_kprobe+0x3c0/0x7a0
+  [   67.290439][  T122] [c000000034847940] [c0000000002938c0] __register_trace_kprobe+0x140/0x1a0
+  [   67.290898][  T122] [c0000000348479b0] [c0000000002944c4] __trace_kprobe_create+0x794/0x1040
+  [   67.291330][  T122] [c000000034847b60] [c0000000002a1614] trace_probe_create+0xc4/0xe0
+  [   67.291717][  T122] [c000000034847bb0] [c00000000029363c] create_or_delete_trace_kprobe+0x2c/0x80
+  [   67.292158][  T122] [c000000034847bd0] [c000000000264420] trace_parse_run_command+0xf0/0x210
+  [   67.292611][  T122] [c000000034847c70] [c0000000002934a0] probes_write+0x20/0x40
+  [   67.292996][  T122] [c000000034847c90] [c00000000045e98c] vfs_write+0xfc/0x450
+  [   67.293356][  T122] [c000000034847d50] [c00000000045eec4] ksys_write+0x84/0x140
+  [   67.293716][  T122] [c000000034847da0] [c00000000002e4fc] system_call_exception+0x17c/0x3a0
+  [   67.294186][  T122] [c000000034847e10] [c00000000000c0e8] system_call_vectored_common+0xe8/0x278
+  [   67.294680][  T122] --- interrupt: 3000 at 0x7fffa5682de0
+  [   67.294937][  T122] NIP:  00007fffa5682de0 LR: 0000000000000000 CTR: 0000000000000000
+  [   67.295313][  T122] REGS: c000000034847e80 TRAP: 3000   Not tainted  (6.0.0-rc3-00007-gdcf8e5633e2e)
+  [   67.295725][  T122] MSR:  900000000280f033 <SF,HV,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 44002408  XER: 00000000
+  [   67.296291][  T122] IRQMASK: 0
+  [   67.296291][  T122] GPR00: 0000000000000004 00007fffe8eeaec0 00007fffa5757300 0000000000000001
+  [   67.296291][  T122] GPR04: 0000000116329c60 0000000000000017 0000000000116329 0000000000000000
+  [   67.296291][  T122] GPR08: 0000000000000006 0000000000000000 0000000000000000 0000000000000000
+  [   67.296291][  T122] GPR12: 0000000000000000 00007fffa580ac60 00000001155e0460 0000000000000000
+  [   67.296291][  T122] GPR16: 0000000000000000 00007fffe8eeb3c8 0000000116320728 0000000000000000
+  [   67.296291][  T122] GPR20: 0000000116320720 0000000000000000 0000000000000000 0000000000000002
+  [   67.296291][  T122] GPR24: 00000001163206f0 0000000000000020 00007fffe8eeafa0 0000000000000001
+  [   67.296291][  T122] GPR28: 0000000000000000 0000000000000017 0000000116329c60 0000000000000001
+  [   67.299570][  T122] NIP [00007fffa5682de0] 0x7fffa5682de0
+  [   67.299837][  T122] LR [0000000000000000] 0x0
+  [   67.300072][  T122] --- interrupt: 3000
+  [   67.300447][  T122] Instruction dump:
+  [   67.300736][  T122] 386319d8 481342f5 60000000 60000000 60000000 e87f0028 3863fffc 481dc4d1
+  [   67.301230][  T122] 60000000 2c230000 41820018 e9230058 <81290000> 552936be 2c090001 4182018c
+  [   67.302102][  T122] ---[ end trace 0000000000000000 ]---
+  [   67.302496][  T122]
 
-Enable hwvad in parallel with recording.
-when voice activity detected, HWVAD will be disabled and
-alsa control notification is triggerred.
+The address being probed has some special:
 
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+  cmdline_proc_show: Probe based on ftrace
+  cmdline_proc_show+16: Probe for the next instruction at the ftrace location
+
+The ftrace-based kprobe does not generate kprobe::ainsn::insn, it gets
+set to NULL. In arch_prepare_kprobe() it will check for:
+
+  ...
+  prev = get_kprobe(p->addr - 1);
+  preempt_enable_no_resched();
+  if (prev && ppc_inst_prefixed(ppc_inst_read(prev->ainsn.insn))) {
+  ...
+
+If prev is based on ftrace, 'ppc_inst_read(prev->ainsn.insn)' will occur
+with a null pointer reference. At this point prev->addr will not be a
+prefixed instruction, so the check can be skipped.
+
+Check if prev is ftrace-based kprobe before reading 'prev->ainsn.insn'
+to fix this problem.
+
+Fixes: b4657f7650ba ("powerpc/kprobes: Don't allow breakpoints on suffixes")
+Signed-off-by: Li Huafei <lihuafei1@huawei.com>
 ---
- sound/soc/fsl/fsl_micfil.c | 434 +++++++++++++++++++++++++++++++++++++
- sound/soc/fsl/fsl_micfil.h |   6 +-
- 2 files changed, 439 insertions(+), 1 deletion(-)
+ arch/powerpc/kernel/kprobes.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/fsl/fsl_micfil.c b/sound/soc/fsl/fsl_micfil.c
-index 79ef4e269bc9..eeaa75fb9196 100644
---- a/sound/soc/fsl/fsl_micfil.c
-+++ b/sound/soc/fsl/fsl_micfil.c
-@@ -47,11 +47,15 @@ struct fsl_micfil {
- 	struct clk *pll11k_clk;
- 	struct snd_dmaengine_dai_dma_data dma_params_rx;
- 	struct sdma_peripheral_config sdmacfg;
-+	struct snd_soc_card *card;
- 	unsigned int dataline;
- 	char name[32];
- 	int irq[MICFIL_IRQ_LINES];
- 	enum quality quality;
- 	int dc_remover;
-+	int vad_init_mode;
-+	int vad_enabled;
-+	int vad_detected;
- };
- 
- struct fsl_micfil_soc_data {
-@@ -152,6 +156,152 @@ static int micfil_quality_set(struct snd_kcontrol *kcontrol,
- 	return micfil_set_quality(micfil);
- }
- 
-+static const char * const micfil_hwvad_enable[] = {
-+	"Disable (Record only)",
-+	"Enable (Record with Vad)",
-+};
-+
-+static const char * const micfil_hwvad_init_mode[] = {
-+	"Envelope mode", "Energy mode",
-+};
-+
-+static const char * const micfil_hwvad_hpf_texts[] = {
-+	"Filter bypass",
-+	"Cut-off @1750Hz",
-+	"Cut-off @215Hz",
-+	"Cut-off @102Hz",
-+};
-+
-+/*
-+ * DC Remover Control
-+ * Filter Bypassed	1 1
-+ * Cut-off @21Hz	0 0
-+ * Cut-off @83Hz	0 1
-+ * Cut-off @152HZ	1 0
-+ */
-+static const char * const micfil_dc_remover_texts[] = {
-+	"Cut-off @21Hz", "Cut-off @83Hz",
-+	"Cut-off @152Hz", "Bypass",
-+};
-+
-+static const struct soc_enum hwvad_enable_enum =
-+	SOC_ENUM_SINGLE_EXT(ARRAY_SIZE(micfil_hwvad_enable),
-+			    micfil_hwvad_enable);
-+static const struct soc_enum hwvad_init_mode_enum =
-+	SOC_ENUM_SINGLE_EXT(ARRAY_SIZE(micfil_hwvad_init_mode),
-+			    micfil_hwvad_init_mode);
-+static const struct soc_enum hwvad_hpf_enum =
-+	SOC_ENUM_SINGLE(REG_MICFIL_VAD0_CTRL2, 0,
-+			ARRAY_SIZE(micfil_hwvad_hpf_texts),
-+			micfil_hwvad_hpf_texts);
-+static const struct soc_enum fsl_micfil_dc_remover_enum =
-+	SOC_ENUM_SINGLE_EXT(ARRAY_SIZE(micfil_dc_remover_texts),
-+			    micfil_dc_remover_texts);
-+
-+static int micfil_put_dc_remover_state(struct snd_kcontrol *kcontrol,
-+				       struct snd_ctl_elem_value *ucontrol)
-+{
-+	struct soc_enum *e = (struct soc_enum *)kcontrol->private_value;
-+	struct snd_soc_component *comp = snd_kcontrol_chip(kcontrol);
-+	struct fsl_micfil *micfil = snd_soc_component_get_drvdata(comp);
-+	unsigned int *item = ucontrol->value.enumerated.item;
-+	int val = snd_soc_enum_item_to_val(e, item[0]);
-+	int i = 0, ret = 0;
-+	u32 reg_val = 0;
-+
-+	if (val < 0 || val > 3)
-+		return -EINVAL;
-+
-+	micfil->dc_remover = val;
-+
-+	/* Calculate total value for all channels */
-+	for (i = 0; i < MICFIL_OUTPUT_CHANNELS; i++)
-+		reg_val |= val << MICFIL_DC_CHX_SHIFT(i);
-+
-+	/* Update DC Remover mode for all channels */
-+	ret = snd_soc_component_update_bits(comp, REG_MICFIL_DC_CTRL,
-+					    MICFIL_DC_CTRL_CONFIG, reg_val);
-+	if (ret < 0)
-+		return ret;
-+
-+	return 0;
-+}
-+
-+static int micfil_get_dc_remover_state(struct snd_kcontrol *kcontrol,
-+				       struct snd_ctl_elem_value *ucontrol)
-+{
-+	struct snd_soc_component *comp = snd_kcontrol_chip(kcontrol);
-+	struct fsl_micfil *micfil = snd_soc_component_get_drvdata(comp);
-+
-+	ucontrol->value.enumerated.item[0] = micfil->dc_remover;
-+
-+	return 0;
-+}
-+
-+static int hwvad_put_enable(struct snd_kcontrol *kcontrol,
-+			    struct snd_ctl_elem_value *ucontrol)
-+{
-+	struct snd_soc_component *comp = snd_kcontrol_chip(kcontrol);
-+	struct soc_enum *e = (struct soc_enum *)kcontrol->private_value;
-+	unsigned int *item = ucontrol->value.enumerated.item;
-+	struct fsl_micfil *micfil = snd_soc_component_get_drvdata(comp);
-+	int val = snd_soc_enum_item_to_val(e, item[0]);
-+
-+	micfil->vad_enabled = val;
-+
-+	return 0;
-+}
-+
-+static int hwvad_get_enable(struct snd_kcontrol *kcontrol,
-+			    struct snd_ctl_elem_value *ucontrol)
-+{
-+	struct snd_soc_component *comp = snd_kcontrol_chip(kcontrol);
-+	struct fsl_micfil *micfil = snd_soc_component_get_drvdata(comp);
-+
-+	ucontrol->value.enumerated.item[0] = micfil->vad_enabled;
-+
-+	return 0;
-+}
-+
-+static int hwvad_put_init_mode(struct snd_kcontrol *kcontrol,
-+			       struct snd_ctl_elem_value *ucontrol)
-+{
-+	struct snd_soc_component *comp = snd_kcontrol_chip(kcontrol);
-+	struct soc_enum *e = (struct soc_enum *)kcontrol->private_value;
-+	unsigned int *item = ucontrol->value.enumerated.item;
-+	struct fsl_micfil *micfil = snd_soc_component_get_drvdata(comp);
-+	int val = snd_soc_enum_item_to_val(e, item[0]);
-+
-+	/* 0 - Envelope-based Mode
-+	 * 1 - Energy-based Mode
-+	 */
-+	micfil->vad_init_mode = val;
-+
-+	return 0;
-+}
-+
-+static int hwvad_get_init_mode(struct snd_kcontrol *kcontrol,
-+			       struct snd_ctl_elem_value *ucontrol)
-+{
-+	struct snd_soc_component *comp = snd_kcontrol_chip(kcontrol);
-+	struct fsl_micfil *micfil = snd_soc_component_get_drvdata(comp);
-+
-+	ucontrol->value.enumerated.item[0] = micfil->vad_init_mode;
-+
-+	return 0;
-+}
-+
-+static int hwvad_detected(struct snd_kcontrol *kcontrol,
-+			  struct snd_ctl_elem_value *ucontrol)
-+{
-+	struct snd_soc_component *comp = snd_kcontrol_chip(kcontrol);
-+	struct fsl_micfil *micfil = snd_soc_component_get_drvdata(comp);
-+
-+	ucontrol->value.enumerated.item[0] = micfil->vad_detected;
-+
-+	return 0;
-+}
-+
- static const struct snd_kcontrol_new fsl_micfil_snd_controls[] = {
- 	SOC_SINGLE_SX_TLV("CH0 Volume", REG_MICFIL_OUT_CTRL,
- 			  MICFIL_OUTGAIN_CHX_SHIFT(0), 0xF, 0x7, gain_tlv),
-@@ -172,6 +322,27 @@ static const struct snd_kcontrol_new fsl_micfil_snd_controls[] = {
- 	SOC_ENUM_EXT("MICFIL Quality Select",
- 		     fsl_micfil_quality_enum,
- 		     micfil_quality_get, micfil_quality_set),
-+	SOC_ENUM_EXT("HWVAD Enablement Switch", hwvad_enable_enum,
-+		     hwvad_get_enable, hwvad_put_enable),
-+	SOC_ENUM_EXT("HWVAD Initialization Mode", hwvad_init_mode_enum,
-+		     hwvad_get_init_mode, hwvad_put_init_mode),
-+	SOC_ENUM("HWVAD High-Pass Filter", hwvad_hpf_enum),
-+	SOC_SINGLE("HWVAD ZCD Switch", REG_MICFIL_VAD0_ZCD, 0, 1, 0),
-+	SOC_SINGLE("HWVAD ZCD Auto Threshold Switch",
-+		   REG_MICFIL_VAD0_ZCD, 2, 1, 0),
-+	SOC_ENUM_EXT("MICFIL DC Remover Control", fsl_micfil_dc_remover_enum,
-+		     micfil_get_dc_remover_state, micfil_put_dc_remover_state),
-+	SOC_SINGLE("HWVAD Input Gain", REG_MICFIL_VAD0_CTRL2, 8, 15, 0),
-+	SOC_SINGLE("HWVAD Sound Gain", REG_MICFIL_VAD0_SCONFIG, 0, 15, 0),
-+	SOC_SINGLE("HWVAD Noise Gain", REG_MICFIL_VAD0_NCONFIG, 0, 15, 0),
-+	SOC_SINGLE_RANGE("HWVAD Detector Frame Time", REG_MICFIL_VAD0_CTRL2, 16, 0, 63, 0),
-+	SOC_SINGLE("HWVAD Detector Initialization Time", REG_MICFIL_VAD0_CTRL1, 8, 31, 0),
-+	SOC_SINGLE("HWVAD Noise Filter Adjustment", REG_MICFIL_VAD0_NCONFIG, 8, 31, 0),
-+	SOC_SINGLE("HWVAD ZCD Threshold", REG_MICFIL_VAD0_ZCD, 16, 1023, 0),
-+	SOC_SINGLE("HWVAD ZCD Adjustment", REG_MICFIL_VAD0_ZCD, 8, 15, 0),
-+	SOC_SINGLE("HWVAD ZCD And Behavior Switch",
-+		   REG_MICFIL_VAD0_ZCD, 4, 1, 0),
-+	SOC_SINGLE_BOOL_EXT("VAD Detected", 0, hwvad_detected, NULL),
- };
- 
- /* The SRES is a self-negated bit which provides the CPU with the
-@@ -210,6 +381,167 @@ static int fsl_micfil_startup(struct snd_pcm_substream *substream,
- 	return 0;
- }
- 
-+/* Enable/disable hwvad interrupts */
-+static int fsl_micfil_configure_hwvad_interrupts(struct fsl_micfil *micfil, int enable)
-+{
-+	u32 vadie_reg = enable ? MICFIL_VAD0_CTRL1_IE : 0;
-+	u32 vaderie_reg = enable ? MICFIL_VAD0_CTRL1_ERIE : 0;
-+
-+	/* Voice Activity Detector Error Interruption */
-+	regmap_update_bits(micfil->regmap, REG_MICFIL_VAD0_CTRL1,
-+			   MICFIL_VAD0_CTRL1_ERIE, vaderie_reg);
-+
-+	/* Voice Activity Detector Interruption */
-+	regmap_update_bits(micfil->regmap, REG_MICFIL_VAD0_CTRL1,
-+			   MICFIL_VAD0_CTRL1_IE, vadie_reg);
-+
-+	return 0;
-+}
-+
-+/* Configuration done only in energy-based initialization mode */
-+static int fsl_micfil_init_hwvad_energy_mode(struct fsl_micfil *micfil)
-+{
-+	/* Keep the VADFRENDIS bitfield cleared. */
-+	regmap_clear_bits(micfil->regmap, REG_MICFIL_VAD0_CTRL2,
-+			  MICFIL_VAD0_CTRL2_FRENDIS);
-+
-+	/* Keep the VADPREFEN bitfield cleared. */
-+	regmap_clear_bits(micfil->regmap, REG_MICFIL_VAD0_CTRL2,
-+			  MICFIL_VAD0_CTRL2_PREFEN);
-+
-+	/* Keep the VADSFILEN bitfield cleared. */
-+	regmap_clear_bits(micfil->regmap, REG_MICFIL_VAD0_SCONFIG,
-+			  MICFIL_VAD0_SCONFIG_SFILEN);
-+
-+	/* Keep the VADSMAXEN bitfield cleared. */
-+	regmap_clear_bits(micfil->regmap, REG_MICFIL_VAD0_SCONFIG,
-+			  MICFIL_VAD0_SCONFIG_SMAXEN);
-+
-+	/* Keep the VADNFILAUTO bitfield asserted. */
-+	regmap_set_bits(micfil->regmap, REG_MICFIL_VAD0_NCONFIG,
-+			MICFIL_VAD0_NCONFIG_NFILAUT);
-+
-+	/* Keep the VADNMINEN bitfield cleared. */
-+	regmap_clear_bits(micfil->regmap, REG_MICFIL_VAD0_NCONFIG,
-+			  MICFIL_VAD0_NCONFIG_NMINEN);
-+
-+	/* Keep the VADNDECEN bitfield cleared. */
-+	regmap_clear_bits(micfil->regmap, REG_MICFIL_VAD0_NCONFIG,
-+			  MICFIL_VAD0_NCONFIG_NDECEN);
-+
-+	/* Keep the VADNOREN bitfield cleared. */
-+	regmap_clear_bits(micfil->regmap, REG_MICFIL_VAD0_NCONFIG,
-+			  MICFIL_VAD0_NCONFIG_NOREN);
-+
-+	return 0;
-+}
-+
-+/* Configuration done only in envelope-based initialization mode */
-+static int fsl_micfil_init_hwvad_envelope_mode(struct fsl_micfil *micfil)
-+{
-+	/* Assert the VADFRENDIS bitfield */
-+	regmap_set_bits(micfil->regmap, REG_MICFIL_VAD0_CTRL2,
-+			MICFIL_VAD0_CTRL2_FRENDIS);
-+
-+	/* Assert the VADPREFEN bitfield. */
-+	regmap_set_bits(micfil->regmap, REG_MICFIL_VAD0_CTRL2,
-+			MICFIL_VAD0_CTRL2_PREFEN);
-+
-+	/* Assert the VADSFILEN bitfield. */
-+	regmap_set_bits(micfil->regmap, REG_MICFIL_VAD0_SCONFIG,
-+			MICFIL_VAD0_SCONFIG_SFILEN);
-+
-+	/* Assert the VADSMAXEN bitfield. */
-+	regmap_set_bits(micfil->regmap, REG_MICFIL_VAD0_SCONFIG,
-+			MICFIL_VAD0_SCONFIG_SMAXEN);
-+
-+	/* Clear the VADNFILAUTO bitfield */
-+	regmap_clear_bits(micfil->regmap, REG_MICFIL_VAD0_NCONFIG,
-+			  MICFIL_VAD0_NCONFIG_NFILAUT);
-+
-+	/* Assert the VADNMINEN bitfield. */
-+	regmap_set_bits(micfil->regmap, REG_MICFIL_VAD0_NCONFIG,
-+			MICFIL_VAD0_NCONFIG_NMINEN);
-+
-+	/* Assert the VADNDECEN bitfield. */
-+	regmap_set_bits(micfil->regmap, REG_MICFIL_VAD0_NCONFIG,
-+			MICFIL_VAD0_NCONFIG_NDECEN);
-+
-+	/* Assert VADNOREN bitfield. */
-+	regmap_set_bits(micfil->regmap, REG_MICFIL_VAD0_NCONFIG,
-+			MICFIL_VAD0_NCONFIG_NOREN);
-+
-+	return 0;
-+}
-+
-+/*
-+ * Hardware Voice Active Detection: The HWVAD takes data from the input
-+ * of a selected PDM microphone to detect if there is any
-+ * voice activity. When a voice activity is detected, an interrupt could
-+ * be delivered to the system. Initialization in section 8.4:
-+ * Can work in two modes:
-+ *  -> Eneveope-based mode (section 8.4.1)
-+ *  -> Energy-based mode (section 8.4.2)
-+ *
-+ * It is important to remark that the HWVAD detector could be enabled
-+ * or reset only when the MICFIL isn't running i.e. when the BSY_FIL
-+ * bit in STAT register is cleared
-+ */
-+static int fsl_micfil_hwvad_enable(struct fsl_micfil *micfil)
-+{
-+	int ret;
-+
-+	micfil->vad_detected = 0;
-+
-+	/* envelope-based specific initialization */
-+	if (micfil->vad_init_mode == MICFIL_HWVAD_ENVELOPE_MODE)
-+		ret = fsl_micfil_init_hwvad_envelope_mode(micfil);
-+	else
-+		ret = fsl_micfil_init_hwvad_energy_mode(micfil);
-+	if (ret)
-+		return ret;
-+
-+	/* Voice Activity Detector Internal Filters Initialization*/
-+	regmap_set_bits(micfil->regmap, REG_MICFIL_VAD0_CTRL1,
-+			MICFIL_VAD0_CTRL1_ST10);
-+
-+	/* Voice Activity Detector Internal Filter */
-+	regmap_clear_bits(micfil->regmap, REG_MICFIL_VAD0_CTRL1,
-+			  MICFIL_VAD0_CTRL1_ST10);
-+
-+	/* Enable Interrupts */
-+	ret = fsl_micfil_configure_hwvad_interrupts(micfil, 1);
-+	if (ret)
-+		return ret;
-+
-+	/* Voice Activity Detector Reset */
-+	regmap_set_bits(micfil->regmap, REG_MICFIL_VAD0_CTRL1,
-+			MICFIL_VAD0_CTRL1_RST);
-+
-+	/* Voice Activity Detector Enabled */
-+	regmap_set_bits(micfil->regmap, REG_MICFIL_VAD0_CTRL1,
-+			MICFIL_VAD0_CTRL1_EN);
-+
-+	return 0;
-+}
-+
-+static int fsl_micfil_hwvad_disable(struct fsl_micfil *micfil)
-+{
-+	struct device *dev = &micfil->pdev->dev;
-+	int ret = 0;
-+
-+	/* Disable HWVAD */
-+	regmap_clear_bits(micfil->regmap, REG_MICFIL_VAD0_CTRL1,
-+			  MICFIL_VAD0_CTRL1_EN);
-+
-+	/* Disable hwvad interrupts */
-+	ret = fsl_micfil_configure_hwvad_interrupts(micfil, 0);
-+	if (ret)
-+		dev_err(dev, "Failed to disable interrupts\n");
-+
-+	return ret;
-+}
-+
- static int fsl_micfil_trigger(struct snd_pcm_substream *substream, int cmd,
- 			      struct snd_soc_dai *dai)
- {
-@@ -245,10 +577,16 @@ static int fsl_micfil_trigger(struct snd_pcm_substream *substream, int cmd,
- 		if (ret)
- 			return ret;
- 
-+		if (micfil->vad_enabled)
-+			fsl_micfil_hwvad_enable(micfil);
-+
- 		break;
- 	case SNDRV_PCM_TRIGGER_STOP:
- 	case SNDRV_PCM_TRIGGER_SUSPEND:
- 	case SNDRV_PCM_TRIGGER_PAUSE_PUSH:
-+		if (micfil->vad_enabled)
-+			fsl_micfil_hwvad_disable(micfil);
-+
- 		/* Disable the module */
- 		ret = regmap_clear_bits(micfil->regmap, REG_MICFIL_CTRL1,
- 					MICFIL_CTRL1_PDMIEN);
-@@ -328,6 +666,16 @@ static int fsl_micfil_hw_params(struct snd_pcm_substream *substream,
- 				 FIELD_PREP(MICFIL_CTRL2_CLKDIV, clk_div) |
- 				 FIELD_PREP(MICFIL_CTRL2_CICOSR, 16 - osr));
- 
-+	/* Configure CIC OSR in VADCICOSR */
-+	regmap_update_bits(micfil->regmap, REG_MICFIL_VAD0_CTRL1,
-+			   MICFIL_VAD0_CTRL1_CICOSR,
-+			   FIELD_PREP(MICFIL_VAD0_CTRL1_CICOSR, 16 - osr));
-+
-+	/* Configure source channel in VADCHSEL */
-+	regmap_update_bits(micfil->regmap, REG_MICFIL_VAD0_CTRL1,
-+			   MICFIL_VAD0_CTRL1_CHSEL,
-+			   FIELD_PREP(MICFIL_VAD0_CTRL1_CHSEL, (channels - 1)));
-+
- 	micfil->dma_params_rx.peripheral_config = &micfil->sdmacfg;
- 	micfil->dma_params_rx.peripheral_size = sizeof(micfil->sdmacfg);
- 	micfil->sdmacfg.n_fifos_src = channels;
-@@ -351,6 +699,7 @@ static int fsl_micfil_dai_probe(struct snd_soc_dai *cpu_dai)
- 	int ret, i;
- 
- 	micfil->quality = QUALITY_VLOW0;
-+	micfil->card = cpu_dai->component->card;
- 
- 	/* set default gain to 2 */
- 	regmap_write(micfil->regmap, REG_MICFIL_OUT_CTRL, 0x22222222);
-@@ -585,6 +934,71 @@ static irqreturn_t micfil_err_isr(int irq, void *devid)
- 	return IRQ_HANDLED;
- }
- 
-+static irqreturn_t voice_detected_fn(int irq, void *devid)
-+{
-+	struct fsl_micfil *micfil = (struct fsl_micfil *)devid;
-+	struct snd_kcontrol *kctl;
-+
-+	if (!micfil->card)
-+		return IRQ_HANDLED;
-+
-+	kctl = snd_soc_card_get_kcontrol(micfil->card, "VAD Detected");
-+	if (!kctl)
-+		return IRQ_HANDLED;
-+
-+	if (micfil->vad_detected)
-+		snd_ctl_notify(micfil->card->snd_card,
-+			       SNDRV_CTL_EVENT_MASK_VALUE,
-+			       &kctl->id);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static irqreturn_t hwvad_isr(int irq, void *devid)
-+{
-+	struct fsl_micfil *micfil = (struct fsl_micfil *)devid;
-+	struct device *dev = &micfil->pdev->dev;
-+	u32 vad0_reg;
-+	int ret;
-+
-+	regmap_read(micfil->regmap, REG_MICFIL_VAD0_STAT, &vad0_reg);
-+
+diff --git a/arch/powerpc/kernel/kprobes.c b/arch/powerpc/kernel/kprobes.c
+index 912d4f8a13be..9f6cbbd56809 100644
+--- a/arch/powerpc/kernel/kprobes.c
++++ b/arch/powerpc/kernel/kprobes.c
+@@ -161,7 +161,12 @@ int arch_prepare_kprobe(struct kprobe *p)
+ 	preempt_disable();
+ 	prev = get_kprobe(p->addr - 1);
+ 	preempt_enable_no_resched();
+-	if (prev && ppc_inst_prefixed(ppc_inst_read(prev->ainsn.insn))) {
 +	/*
-+	 * The only difference between MICFIL_VAD0_STAT_EF and
-+	 * MICFIL_VAD0_STAT_IF is that the former requires Write
-+	 * 1 to Clear. Since both flags are set, it is enough
-+	 * to only read one of them
++	 * When prev is a ftrace-based kprobe, we don't have an insn, and it
++	 * doesn't probe for prefixed instruction.
 +	 */
-+	if (vad0_reg & MICFIL_VAD0_STAT_IF) {
-+		/* Write 1 to clear */
-+		regmap_write_bits(micfil->regmap, REG_MICFIL_VAD0_STAT,
-+				  MICFIL_VAD0_STAT_IF,
-+				  MICFIL_VAD0_STAT_IF);
-+
-+		micfil->vad_detected = 1;
-+	}
-+
-+	ret = fsl_micfil_hwvad_disable(micfil);
-+	if (ret)
-+		dev_err(dev, "Failed to disable hwvad\n");
-+
-+	return IRQ_WAKE_THREAD;
-+}
-+
-+static irqreturn_t hwvad_err_isr(int irq, void *devid)
-+{
-+	struct fsl_micfil *micfil = (struct fsl_micfil *)devid;
-+	struct device *dev = &micfil->pdev->dev;
-+	u32 vad0_reg;
-+
-+	regmap_read(micfil->regmap, REG_MICFIL_VAD0_STAT, &vad0_reg);
-+
-+	if (vad0_reg & MICFIL_VAD0_STAT_INSATF)
-+		dev_dbg(dev, "voice activity input overflow/underflow detected\n");
-+
-+	return IRQ_HANDLED;
-+}
-+
- static int fsl_micfil_probe(struct platform_device *pdev)
- {
- 	struct device_node *np = pdev->dev.of_node;
-@@ -677,6 +1091,26 @@ static int fsl_micfil_probe(struct platform_device *pdev)
- 		return ret;
++	if (prev && !kprobe_ftrace(prev) &&
++	    ppc_inst_prefixed(ppc_inst_read(prev->ainsn.insn))) {
+ 		printk("Cannot register a kprobe on the second word of prefixed instruction\n");
+ 		ret = -EINVAL;
  	}
- 
-+	/* Digital Microphone interface voice activity detector event */
-+	ret = devm_request_threaded_irq(&pdev->dev, micfil->irq[2],
-+					hwvad_isr, voice_detected_fn,
-+					IRQF_SHARED, micfil->name, micfil);
-+	if (ret) {
-+		dev_err(&pdev->dev, "failed to claim hwvad event irq %u\n",
-+			micfil->irq[0]);
-+		return ret;
-+	}
-+
-+	/* Digital Microphone interface voice activity detector error */
-+	ret = devm_request_irq(&pdev->dev, micfil->irq[3],
-+			       hwvad_err_isr, IRQF_SHARED,
-+			       micfil->name, micfil);
-+	if (ret) {
-+		dev_err(&pdev->dev, "failed to claim hwvad error irq %u\n",
-+			micfil->irq[1]);
-+		return ret;
-+	}
-+
- 	micfil->dma_params_rx.chan_name = "rx";
- 	micfil->dma_params_rx.addr = res->start + REG_MICFIL_DATACH0;
- 	micfil->dma_params_rx.maxburst = MICFIL_DMA_MAXBURST_RX;
-diff --git a/sound/soc/fsl/fsl_micfil.h b/sound/soc/fsl/fsl_micfil.h
-index d60285dd07bc..9237a1c4cb8f 100644
---- a/sound/soc/fsl/fsl_micfil.h
-+++ b/sound/soc/fsl/fsl_micfil.h
-@@ -136,10 +136,14 @@
- #define FIFO_PTRWID			3
- #define FIFO_LEN			BIT(FIFO_PTRWID)
- 
--#define MICFIL_IRQ_LINES		2
-+#define MICFIL_IRQ_LINES		4
- #define MICFIL_MAX_RETRY		25
- #define MICFIL_SLEEP_MIN		90000 /* in us */
- #define MICFIL_SLEEP_MAX		100000 /* in us */
- #define MICFIL_DMA_MAXBURST_RX		6
- 
-+/* HWVAD Constants */
-+#define MICFIL_HWVAD_ENVELOPE_MODE	0
-+#define MICFIL_HWVAD_ENERGY_MODE	1
-+
- #endif /* _FSL_MICFIL_H */
 -- 
-2.34.1
+2.17.1
 
