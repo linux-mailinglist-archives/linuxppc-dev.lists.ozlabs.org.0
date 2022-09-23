@@ -2,67 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 885525E8105
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 19:43:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03B465E81B4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 20:22:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MYzyt23tJz3cFB
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Sep 2022 03:43:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MZ0qn6cTNz3cd3
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Sep 2022 04:22:29 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=paul-moore-com.20210112.gappssmtp.com header.i=@paul-moore-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=PdNbfG7d;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Y7dXJdug;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=paul-moore.com (client-ip=2001:4860:4864:20::34; helo=mail-oa1-x34.google.com; envelope-from=paul@paul-moore.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=paul-moore-com.20210112.gappssmtp.com header.i=@paul-moore-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=PdNbfG7d;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Y7dXJdug;
 	dkim-atps=neutral
-Received: from mail-oa1-x34.google.com (mail-oa1-x34.google.com [IPv6:2001:4860:4864:20::34])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MYzyB6h7Nz3c4B
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Sep 2022 03:42:58 +1000 (AEST)
-Received: by mail-oa1-x34.google.com with SMTP id 586e51a60fabf-130af056397so1264169fac.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Sep 2022 10:42:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore-com.20210112.gappssmtp.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=xbj6epvJJhhapTMVuodevN96OG6IhecVF0uzFcA1js8=;
-        b=PdNbfG7dLZJPXXVVrSSHaozoV7dVWBYqD6KfJj9NhK2ugy4djDTBaPYwhD2Vv0/Oov
-         1UCF3DLjngt6G3egCCdPI26bLOTMe6clFwf1MNrsuZ3K0GfZZRJ8Duy2W9G4voez3lIZ
-         fUK5MxfSmOE0fEa8yv6WKDO0IIaRReAQXykoRc0P8jN4vv1yrEud17v1XQkW3cktemg9
-         QVK6K8Ft45rbwaew/ArnYpokLoxmrLXeYGYK7zhTPVjZK+B6yHS5Kj4I6s4rHtCYyeEK
-         OlxcW7D5ZrSHC0DP55D4XMDKYBlxhLdtgSPjRCcMwDCbqv4Es2F7DxHAFOzM8+kdqqXP
-         oqJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=xbj6epvJJhhapTMVuodevN96OG6IhecVF0uzFcA1js8=;
-        b=p3E7z6OdNzPVtqz30wedPLvwM3zlJxUopybO2hQSh9vCdEmNXblPo4ekRPKoJP5wAf
-         JTQGspb5CnKMuFXbKsWxD+Swje7sTBfHDjNHRdPobud2j2d3ypBPqnIRTuPcQFv6w8mq
-         gCvBnDpxGMeYslFC55S2my4stfaALRdl4ZaTt4gzc8G6NSZOXllXYGD6GVzDVAsTXX2J
-         +gGWLQhIJW78Oc0wAUlFHXxO6X1xXl+kYkrCx9ZfHgE+t9u3pvoaTkiFiXuichFtzHw1
-         JQm/YdVAFZoxNyzLXGhFnBrENBfJzKy6xHKrv68gzZ2CwQElRxqQBWGeYIvgbdKe65IA
-         8Hqw==
-X-Gm-Message-State: ACrzQf2lJ5OQS8X0TYQTfz0AjFVcRAcg49eSeHknXMO6f6aY84YCyjKE
-	2D3DlfgETuHFPJre9x8Du0+HiJaaKRdF5LqqjbZ9
-X-Google-Smtp-Source: AMsMyM4nOntxYIBjWoQA+kOV867HFzXiGgpCE78cV/95Rz3YJow53XHYaEDcWLh0KFgMR8Uyo6DYBMSMy8TBaVBR9AI=
-X-Received: by 2002:a05:6870:15c9:b0:101:e18b:d12d with SMTP id
- k9-20020a05687015c900b00101e18bd12dmr12107961oad.51.1663954974870; Fri, 23
- Sep 2022 10:42:54 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MZ0qD3MRCz3cB1
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Sep 2022 04:22:00 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 441F9B82150;
+	Fri, 23 Sep 2022 18:21:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE6EDC433D6;
+	Fri, 23 Sep 2022 18:21:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1663957314;
+	bh=nHs2AfrvtEk1XxvpH+aLNwlJHpGH5OeAB5BjgaRdNn8=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=Y7dXJdughMertrvwxRUGuz8LzjWUTBvV5X48hlDNnHdB1j7npK5z+KTRictpFfUrL
+	 84VLE38m3G0bW06zvrH4NKm8KuscGbXgmkvR834NV/RuvG9XWmmGj26gWdnmdXYrFr
+	 a775kFaLzRN+IiXdgDSL3iU2Q03MRLvU93oadp6SNz+iUiL/HaDa23sNB/daKo+ka7
+	 R01XG81lq9Bhp4sllixfmqsKK/M2/GZrcduG2bzmo4O2tHSI1rxoqOgHxaVOtBmH+T
+	 cJY3/yEG/SRyqzJ/w/vksueuKOy4TNZbcAi7m12zQ7aL5tPc0eUJIfnSNo7LvhtP9/
+	 UzP1anJQ9lcBw==
+From: Mark Brown <broonie@kernel.org>
+To: shengjiu.wang@gmail.com, alsa-devel@alsa-project.org, Shengjiu Wang <shengjiu.wang@nxp.com>, tiwai@suse.com,
+ nicoleotsuka@gmail.com, festevam@gmail.com, Xiubo.Lee@gmail.com, perex@perex.cz, lgirdwood@gmail.com
+In-Reply-To: <1662446961-20799-1-git-send-email-shengjiu.wang@nxp.com>
+References: <1662446961-20799-1-git-send-email-shengjiu.wang@nxp.com>
+Subject: Re: [PATCH] Revert "ASoC: fsl_audmix: make clock and output src write only"
+Message-Id: <166395731156.751793.9528112393184864154.b4-ty@kernel.org>
+Date: Fri, 23 Sep 2022 19:21:51 +0100
 MIME-Version: 1.0
-References: <20220922193817.106041-1-nathanl@linux.ibm.com>
- <20220922193817.106041-3-nathanl@linux.ibm.com> <CAHC9VhTWMFbCxQFAEJZzS3Kd5cSFigmvHac5y5ypVU7TqRqpTA@mail.gmail.com>
- <87wn9uzhqr.fsf@mpe.ellerman.id.au> <878rmaqeuw.fsf@linux.ibm.com>
-In-Reply-To: <878rmaqeuw.fsf@linux.ibm.com>
-From: Paul Moore <paul@paul-moore.com>
-Date: Fri, 23 Sep 2022 13:42:43 -0400
-Message-ID: <CAHC9VhRW5X4-7yOtEbWeMnTCtbnKHW0Nt8BFp8S3M65kFDKXoA@mail.gmail.com>
-Subject: Re: [PATCH 2/2] powerpc/rtas: block error injection when locked down
-To: Nathan Lynch <nathanl@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.10.0-dev-fc921
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,90 +61,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ajd@linux.ibm.com, nayna@linux.ibm.com, linux-kernel@vger.kernel.org, jmorris@namei.org, linux-security-module@vger.kernel.org, gcwilson@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, serge@hallyn.com
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Sep 23, 2022 at 11:40 AM Nathan Lynch <nathanl@linux.ibm.com> wrote:
-> Michael Ellerman <mpe@ellerman.id.au> writes:
-> > Paul Moore <paul@paul-moore.com> writes:
-> >> On Thu, Sep 22, 2022 at 3:38 PM Nathan Lynch <nathanl@linux.ibm.com> wrote:
-> >>>
-> >>> The error injection facility on pseries VMs allows corruption of
-> >>> arbitrary guest memory, potentially enabling a sufficiently privileged
-> >>> user to disable lockdown or perform other modifications of the running
-> >>> kernel via the rtas syscall.
-> >>>
-> >>> Block the PAPR error injection facility from being opened or called
-> >>> when locked down.
-> >>>
-> >>> Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
-> >>> ---
-> >>>  arch/powerpc/kernel/rtas.c | 25 ++++++++++++++++++++++++-
-> >>>  include/linux/security.h   |  1 +
-> >>>  security/security.c        |  1 +
-> >>>  3 files changed, 26 insertions(+), 1 deletion(-)
-> >>
-> >> ...
-> >>
-> >>> diff --git a/include/linux/security.h b/include/linux/security.h
-> >>> index 1ca8dbacd3cc..b5d5138ae66a 100644
-> >>> --- a/include/linux/security.h
-> >>> +++ b/include/linux/security.h
-> >>> @@ -123,6 +123,7 @@ enum lockdown_reason {
-> >>>         LOCKDOWN_BPF_WRITE_USER,
-> >>>         LOCKDOWN_DBG_WRITE_KERNEL,
-> >>>         LOCKDOWN_DEVICE_TREE,
-> >>> +       LOCKDOWN_RTAS_ERROR_INJECTION,
-> >>
-> >> With the understanding that I've never heard of RTAS until now, are
-> >> there any other RTAS events that would require a lockdown reason?  As
-> >> a follow up, is it important to distinguish between different RTAS
-> >> lockdown reasons?
->
-> 1. Not to my current knowledge.
-> 2. Yes, I think so, see below.
->
-> >>
-> >> I'm trying to determine if we can just call it LOCKDOWN_RTAS.
-> >
-> > Yes I think we should.
-> >
-> > Currently it only locks down the error injection calls, not all of RTAS.
-> >
-> > But firmware can/will add new RTAS calls in future, so it's always
-> > possible something will need to be added to the list of things that need
-> > to be blocked during lockdown.
-> >
-> > So I think calling it LOCKDOWN_RTAS would be more general and future
-> > proof, and can be read to mean "lockdown the parts of RTAS that need
-> > to be locked down".
->
-> RTAS provides callable interfaces for a broad variety of functions,
-> including device configuration, halt/reboot/suspend, CPU online/offline,
-> NVRAM access, firmware upgrade, platform diagnostic data retrieval, and
-> others.
->
-> Currently I don't know of other RTAS-provided functions that should be
-> restricted. But if we were to add more, then -- in answer to Paul -- yes
-> I think it would be important to have distinct reasons and
-> messages. Taking the point of view of someone diagnosing lockdown denial
-> messages and relating them to kernel code and user space activity, I
-> would rather we err toward specificity.
+On Tue, 6 Sep 2022 14:49:21 +0800, Shengjiu Wang wrote:
+> This reverts commit 944c517b8c838832a166f1c89afbf8724f4a6b49.
+> 
+> There is error after making clock and output src write only
+> 
+> $amixer -c imxaudmix cset numid=1 1
+> amixer: Cannot read the given element from control sysdefault:3
+> 
+> [...]
 
-As I said before, RTAS is a great mystery to me, if it can be extended
-in the future then having a targeted lockdown name makes perfect
-sense.
+Applied to
 
-> So a single RTAS catch-all lockdown reason doesn't appeal to me, but
-> lockdown reasons and messages aren't ABI (right?) ...
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-Correct.  Or at least that is my understanding, but there have been
-some odd rulings on lockdown in the past so my advice would be to make
-*very* sure you get this right the first time.  From what you and
-Michael have said, it seems like a function specific name is the way
-to go here, and based on your explanations of the situation it seems
-like putting this in the integrity bin is the right way to go.
+Thanks!
 
--- 
-paul-moore.com
+[1/1] Revert "ASoC: fsl_audmix: make clock and output src write only"
+      commit: 086ceada2107b482df437d76f581062b547eb7f2
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
