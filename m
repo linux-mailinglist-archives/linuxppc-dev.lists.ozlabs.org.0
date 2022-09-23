@@ -2,73 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F9005E74B5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 09:18:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CFC35E74B8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 09:18:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MYk5b2vdVz3cL8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 17:18:27 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=qGTKCyHZ;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MYk661jZ7z3cdX
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Sep 2022 17:18:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1035; helo=mail-pj1-x1035.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=qGTKCyHZ;
-	dkim-atps=neutral
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.219.50; helo=mail-qv1-f50.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MYk4x66KLz2xGg
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Sep 2022 17:17:53 +1000 (AEST)
-Received: by mail-pj1-x1035.google.com with SMTP id g1-20020a17090a708100b00203c1c66ae3so4561559pjk.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Sep 2022 00:17:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date;
-        bh=vydazv6+h5spM18LFXgq/17X1W+tTD1sYZJbaJkA4X8=;
-        b=qGTKCyHZiYIs2nrvIh/P6WdhgZ3dsR6x8/dL5NS2oB7iioUkiahVVSQ2T7GyEkeai3
-         VosaAS2qC/qUnFl1rY/Zw3coyKxxnihptUj01eAYCodf8Uo1icNNO/RXZbRn5BeYc6dg
-         vyGadXY4ioIK4HVfsjLy/VF7fgwpQF3wYanAVXlQgpC+cBUyKpAnipcjlD10o8PhOafR
-         II8kVZHw89pqkK8ZUHqR/glLX5X5fuv/e69s7siPQW6WSvCmhQRNIUymO/AQY0YOUpaF
-         EJVrhkz2FmehSYp3UiXomru1J12YcJoiDFUGyqr04OqqKRi0AJKSd2bWfcqfRCFfkWlE
-         nNhA==
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MYk5j5Vmyz30R7
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Sep 2022 17:18:33 +1000 (AEST)
+Received: by mail-qv1-f50.google.com with SMTP id z9so8474719qvn.9
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Sep 2022 00:18:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date;
-        bh=vydazv6+h5spM18LFXgq/17X1W+tTD1sYZJbaJkA4X8=;
-        b=SerKEQZs8/KScggiYhbPYkqO3P07lq3eBGWseskf8icz8TCZfQEahr1xcWRQtzFGIb
-         MQldUbyrazRCg4oxcz3VaRpGEL5FrH2z1mcNHiIM+sOirap2B3U2iW/JF7qJB8/Z5iBO
-         oH6ZBcFbggpVoaci20XiiI+EduDwNmDMtsQ5AK4piFU2dFYazgfV2TuvSt15BNdmJd8I
-         +L2XgCQJRrUOSB5xgE5N2nNU4C+jv7Uosv2qxFuOiNCJn4VKjNinVma4cWR67KPwMHV7
-         ZBRYb/1tORaqzMiVDv+1K2JmAcp/tjrAHdPbEHXXRfeDmxibu8dEQBn4UeWiS4X+etQ1
-         z9lw==
-X-Gm-Message-State: ACrzQf3aCOpSQ/3kPtmxNCzjr13vp4xGi1l1Yjk7JM8XaXtjddzq9/Q0
-	VoFIevQLoFDQuw090yisCIU=
-X-Google-Smtp-Source: AMsMyM5WmUFUXTuyh/Pj9kyItQsfxjOtFP06WZoXHOsUOEokZ6vAy4PaWfSsgcMOHXUSelWcYle6rA==
-X-Received: by 2002:a17:902:c245:b0:178:3912:f1fe with SMTP id 5-20020a170902c24500b001783912f1femr7333208plg.13.1663917470257;
-        Fri, 23 Sep 2022 00:17:50 -0700 (PDT)
-Received: from localhost (27-32-155-116.static.tpgi.com.au. [27.32.155.116])
-        by smtp.gmail.com with ESMTPSA id p9-20020a17090a2c4900b001fd76f7a0d1sm915469pjm.54.2022.09.23.00.17.48
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=6vg6B8D/hQyHxlC2HaS8TXm7SR0b9itjbd+F1YgR9rg=;
+        b=3vE8kehNUtKltbOFDJUqKDwLTDFYHc7d9pLzSnw1JDSOm/KQoS2x5+Y7FoE3S1asFm
+         1FUuuDtqDmhBfmyLiCUIkFp2ytsclBWsnUtySsfr2woCB+K5CMuJqqKeWwpLunc0Zoz5
+         PQrA2ikvkSKG1IQXV/aSpzaIS0TSlfD9n7dDzx63aemIMYfbZFc2nxF6uaRqjuU/oC0f
+         ehyNZj8tLlPG+Qx+4pLFjaMkvt75beiKILFXdBMW03uXolAr1M2j+N9An0n3xMbJRry5
+         4hevEcArH8YmEeijVtK20QdLbq1tf3PCg30ryq8wyk9eY97W5cLcV7r+JM1gKALiV0fA
+         DHhg==
+X-Gm-Message-State: ACrzQf1/uyVdDCuWgfijf8X27/zH8HE2XanLmo8RykIuzFTksCvV6GhK
+	6bad87OfIxYwX2xk5ZTZe1RJzLZSVh/6JQ==
+X-Google-Smtp-Source: AMsMyM45CmJa3EBYh3zQm8jPYHY7n/CuGoFISUIBn37Q9iDuWZ3clGjcTD5Mo+PwBzncYUhmzc1ARw==
+X-Received: by 2002:a0c:da14:0:b0:4aa:aad9:e450 with SMTP id x20-20020a0cda14000000b004aaaad9e450mr5870952qvj.130.1663917510971;
+        Fri, 23 Sep 2022 00:18:30 -0700 (PDT)
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com. [209.85.128.180])
+        by smtp.gmail.com with ESMTPSA id cp4-20020a05622a420400b0035cdd7a42d0sm4739050qtb.22.2022.09.23.00.18.28
+        for <linuxppc-dev@lists.ozlabs.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 23 Sep 2022 00:17:49 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 23 Sep 2022 17:17:45 +1000
-Message-Id: <CN3LIJ54GWR1.LTJXTAPJG39S@bobo>
-To: "Segher Boessenkool" <segher@kernel.crashing.org>
-Subject: Re: [PATCH 1/2] powerpc/64s: Fix GENERIC_CPU build flags for PPC970
- / G5
-From: "Nicholas Piggin" <npiggin@gmail.com>
-X-Mailer: aerc 0.11.0
-References: <20220921014103.587954-1-npiggin@gmail.com>
- <20220921185031.GE25951@gate.crashing.org>
-In-Reply-To: <20220921185031.GE25951@gate.crashing.org>
+        Fri, 23 Sep 2022 00:18:29 -0700 (PDT)
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-345528ceb87so122858257b3.11
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Sep 2022 00:18:28 -0700 (PDT)
+X-Received: by 2002:a81:78f:0:b0:34d:74c0:1110 with SMTP id
+ 137-20020a81078f000000b0034d74c01110mr7049955ywh.383.1663917508700; Fri, 23
+ Sep 2022 00:18:28 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220922113306.11251-1-tzimmermann@suse.de> <20220922113306.11251-5-tzimmermann@suse.de>
+In-Reply-To: <20220922113306.11251-5-tzimmermann@suse.de>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Fri, 23 Sep 2022 09:18:17 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdXM2JmnVAgCjSAAf2swX=2T7h5wtFcfWZ5uJEbs5GCvqg@mail.gmail.com>
+Message-ID: <CAMuHMdXM2JmnVAgCjSAAf2swX=2T7h5wtFcfWZ5uJEbs5GCvqg@mail.gmail.com>
+Subject: Re: [PATCH v3 4/4] drm/ofdrm: Support color management
+To: Thomas Zimmermann <tzimmermann@suse.de>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,34 +65,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-fbdev@vger.kernel.org, airlied@linux.ie, deller@gmx.de, linuxppc-dev@lists.ozlabs.org, mark.cave-ayland@ilande.co.uk, javierm@redhat.com, dri-devel@lists.freedesktop.org, paulus@samba.org, maxime@cerno.tech, daniel@ffwll.ch, msuchanek@suse.de, sam@ravnborg.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu Sep 22, 2022 at 4:50 AM AEST, Segher Boessenkool wrote:
-> On Wed, Sep 21, 2022 at 11:41:02AM +1000, Nicholas Piggin wrote:
-> > Big-endian GENERIC_CPU supports 970, but builds with -mcpu=3Dpower5.
-> > POWER5 is ISA v2.02 whereas 970 is v2.01 plus Altivec. 2.02 added
-> > the popcntb instruction which a compiler might use.
-> >=20
-> > Use -mcpu=3Dpower4.
-> >=20
-> > Fixes: 471d7ff8b51b ("powerpc/64s: Remove POWER4 support")
-> > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->
-> Reviewed-by: Segher Boessenkool <segher@kernel.crashing.org>
->
-> Thank you!
->
-> Maybe superfluous, but some more context: GCC's -mcpu=3Dpower4 means
-> POWER4+, ISA 2.01, according to our documentation.  There is no
-> difference with ISA 2.00 (what plain POWER4 implements) for anything
-> GCC does.
+Hi Thomas,
 
-Huh, okay. Well I guess we are past that point now, interesting that
-another ISA version was done for 4+ though, and then another for 5.
-I don't see a list of changes from 2.00 in the public version, I
-wonder what else changed other than mtmsrd.
+On Thu, Sep 22, 2022 at 1:33 PM Thomas Zimmermann <tzimmermann@suse.de> wrote:
+> Support the CRTC's color-management property and implement each model's
+> palette support.
+>
+> The OF hardware has different methods of setting the palette. The
+> respective code has been taken from fbdev's offb and refactored into
+> per-model device functions. The device functions integrate this
+> functionality into the overall modesetting.
+>
+> As palette handling is a CRTC property that depends on the primary
+> plane's color format, the plane's atomic_check helper now updates the
+> format field in ofdrm's custom CRTC state. The CRTC's atomic_flush
+> helper updates the palette for the format as needed.
+>
+> v3:
+>         * lookup CRTC state with drm_atomic_get_new_crtc_state()
+>         * access HW palette with writeb(), writel(), and readl() (Ben)
+>         * declare register values as u32
+>
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
 
-Thanks,
-Nick
+Thanks for your patch!
+
+
+> --- a/drivers/gpu/drm/tiny/ofdrm.c
+> +++ b/drivers/gpu/drm/tiny/ofdrm.c
+
+> +static void __iomem *ofdrm_qemu_cmap_ioremap(struct ofdrm_device *odev,
+> +                                            struct device_node *of_node,
+> +                                            u64 fb_base)
+> +{
+> +#ifdef __BIG_ENDIAN
+> +       static const __be32 io_of_addr[3] = { 0x01000000, 0x0, 0x0 };
+> +#else
+> +       static const __be32 io_of_addr[3] = { 0x00000001, 0x0, 0x0 };
+> +#endif
+
+You can easily get rid of the #ifdef:
+
+    static const __be32 io_of_addr[3] = { cpu_to_be32(0x01000000), 0x0, 0x0 };
+
+And probably sparse ("make C=2") will complain about the plain zeros,
+so "cpu_to_be32(0x0)" as well.
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
