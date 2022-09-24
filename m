@@ -1,70 +1,36 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E7665E8D6E
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Sep 2022 16:44:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2576E5E8E6A
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Sep 2022 18:18:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MZWy83Z16z3chQ
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Sep 2022 00:44:48 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=ZYYExhvh;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=LwyQx+Mw;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MZZ1m5rY0z3dqy
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Sep 2022 02:18:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=msuchanek@suse.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=ZYYExhvh;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=LwyQx+Mw;
-	dkim-atps=neutral
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MZWxS1TLsz3byv
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Sep 2022 00:44:11 +1000 (AEST)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-	by smtp-out1.suse.de (Postfix) with ESMTP id 854FE21880;
-	Sat, 24 Sep 2022 14:44:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1664030646; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ldCH7q8JyvLEKaktegyDOVQARi1eF2vv5KGzrW1iCKE=;
-	b=ZYYExhvhe3hvVYy4oVk/eFH8gYNpGCko5Ihe7Zb9d4XHzj0gN+cbmJ5znD+HxwJBv4rbaf
-	xOAiTy+7OSutCerOOUzrNf7vSiurU7B6noAUxrtuNDY8e/xv8++TCq4sPot33lF0rn5bY3
-	j5D7iIgKtKQkzwHDFuKS1s7nX1iR+bg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1664030646;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ldCH7q8JyvLEKaktegyDOVQARi1eF2vv5KGzrW1iCKE=;
-	b=LwyQx+Mw9MIzMldTchSCV/M9BlwXBCMS+77FXL0rg1zfTVtmjUy+KUTCczSeB7Oi5a4eGF
-	DV0wxb7/VTheveCg==
-Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by relay2.suse.de (Postfix) with ESMTPS id 2218E2C172;
-	Sat, 24 Sep 2022 14:44:05 +0000 (UTC)
-Date: Sat, 24 Sep 2022 16:44:03 +0200
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: Mimi Zohar <zohar@linux.ibm.com>
-Subject: Re: [PATCH 5.15 0/6] arm64: kexec_file: use more system keyrings to
- verify kernel image signature + dependencies
-Message-ID: <20220924144403.GA28810@kitsune.suse.cz>
-References: <cover.1663951201.git.msuchanek@suse.de>
- <67337b60a4d3cae00794d3cfd0e5add9899f18b7.camel@linux.ibm.com>
- <20220923191650.GX28810@kitsune.suse.cz>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MZZ1J63JGz3blg
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Sep 2022 02:17:39 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 28OGEQAB001449;
+	Sat, 24 Sep 2022 11:14:26 -0500
+Received: (from segher@localhost)
+	by gate.crashing.org (8.14.1/8.14.1/Submit) id 28OGEOKe001448;
+	Sat, 24 Sep 2022 11:14:24 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
+Date: Sat, 24 Sep 2022 11:14:24 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH] powerpc/irq: Modernise inline assembly in irq_soft_mask_{set,return}
+Message-ID: <20220924161424.GO25951@gate.crashing.org>
+References: <178f30ff62c0317061f019b3dbbc079073f104c3.1663656058.git.christophe.leroy@csgroup.eu> <CN3LB8F3D9LM.3W1RQRVS64UXU@bobo> <20220923121829.GL25951@gate.crashing.org> <CN3X6YN1FRQ3.1Z9BVD6WYQY3M@bobo> <20220923221543.GN25951@gate.crashing.org> <CN4BYDAY75PX.33LJ1P2VQJXD9@bobo>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220923191650.GX28810@kitsune.suse.cz>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <CN4BYDAY75PX.33LJ1P2VQJXD9@bobo>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,50 +42,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, Alexander Egorenkov <egorenar@linux.ibm.com>, keyrings@vger.kernel.org, Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>, "open list:S390" <linux-s390@vger.kernel.org>, Coiby Xu <coxu@redhat.com>, Baoquan He <bhe@redhat.com>, AKASHI Takahiro <takahiro.akashi@linaro.org>, "maintainer:X86 ARCHITECTURE \(32-BIT AND 64-BIT\)" <x86@kernel.org>, Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>, "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>, "moderated list:ARM64 PORT \(AARCH64 ARCHITECTURE\)" <linux-arm-kernel@lists.infradead.org>, Philipp Rudo <prudo@redhat.com>, " op
- en list:KEXEC" <kexec@lists.infradead.org>, linux-kernel@vger.kernel.org, stable@vger.kernel.org, linux-security-module@vger.kernel.org, James Morse <james.morse@arm.com>, Eric Biederman <ebiederm@xmission.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Andrew Morton <akpm@linux-foundation.org>, "open list:LINUX FOR POWERPC \(32-BIT AND 64-BIT\)" <linuxppc-dev@lists.ozlabs.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Sep 23, 2022 at 09:16:50PM +0200, Michal Suchánek wrote:
-> Hello,
+On Sat, Sep 24, 2022 at 02:00:55PM +1000, Nicholas Piggin wrote:
+> On Sat Sep 24, 2022 at 8:15 AM AEST, Segher Boessenkool wrote:
+> > Never it is guaranteed that all accesses through this variable will use
+> > the register directly: this fundamentally cannot work on all archs, and
+> > also not at -O0.  More in general it doesn't work if some basic
+> > optimisations are not done, be it because of a compiler deficiency, or a
+> > straight out bug, or maybe it is a conscious choice in some cases.
 > 
-> On Fri, Sep 23, 2022 at 03:03:36PM -0400, Mimi Zohar wrote:
-> > On Fri, 2022-09-23 at 19:10 +0200, Michal Suchanek wrote:
-> > > Hello,
-> > > 
-> > > this is backport of commit 0d519cadf751
-> > > ("arm64: kexec_file: use more system keyrings to verify kernel image signature")
-> > > to table 5.15 tree including the preparatory patches.
-> > > 
-> > > Some patches needed minor adjustment for context.
-> > 
-> > In general when backporting this patch set, there should be a
-> > dependency on backporting these commits as well.  In this instance for
-> > linux-5.15.y, they've already been backported.
-> > 
-> > 543ce63b664e ("lockdown: Fix kexec lockdown bypass with ima policy")
+> Right, and we know better than to rely on a spec that is not 100% air
+> tight with no possibility of lawyering. This may be what the intention is,
+> it may be what gcc and clang do now, and everybody involved today agrees
+> with that interpretation. We still have to maintain the kernel tomorrow
+> though, so explicit r13 it must be.
 
-AFAICT this is everywhere relevant, likely because it's considered a CVE
-fix.
+It has *always* been this way.  Very old GCC (say, GCC < 3.x) tried to
+guarantee more, even, but that turned out to be untenable.  But this is
+all in the distant past.
 
-> > af16df54b89d ("ima: force signature verification when CONFIG_KEXEC_SIG is configured")
+I have no idea if clang implements the GCC C extensions correctly.  If
+they don't it is just another compiler bug and they'll just have to fix
+it.
 
-This is missing in 5.4, and 5.4 is missing this prerequisite:
-fd7af71be542 ("kexec: do not verify the signature without the lockdown or mandatory signature")
+The rules *are* airtight.  But this does not mean you can assume random
+other stuff, adjacent or not :-P
 
+> > (Please use "n" instead of "i".  Doesn't matter here, but it does in
+> > many other places.)
 > 
-> Thanks for bringing these up. It might be in general useful to backport
-> these fixes as well.
-> 
-> However, this patchset does one very specific thing: it lifts the x86
-> kexec_file signature verification to arch-independent and uses it on
-> arm64 to unify all features (and any existing warts) between EFI
-> architectures.
-> 
-> So unless I am missing something the fixes you pointed out are
-> completely independent of this.
-> 
-> Thanks
-> 
-> Michal
+> What is the difference? Just "i" allows assmebly-time constants?
+
+"n" means "number": constant integers.  "i" means "immediate": any
+constant.  The address of a global variable is "i" but not "n" (in most
+ABIs, no -fPIC and such) for example.
+
+> How about "I"? that looks like it was made for it. Gives much better
+> errors.
+
+For PowerPC, "I" is a signed 16-bit number.  "K" is unsigned 16-bit,
+and there are more as well.  Just like for "n" you'll have to make
+sure the number you feed in will work in the assembler, and you'll get
+the same error message (but, as you say, for "I" in some cases the
+compiler will give errors already).  It's otherwise only useful if you
+use e.g. "IL" as constraint, and then write "addi%e2 %0,%1,%2" for
+example, so the asm can generate "addis" insns.  Such things aren't very
+often useful in internal asm.  The main reason any of this exists is
+this is how GCC works internally; extended inline asm exposes a lot of
+that.
+
+
+Segher
