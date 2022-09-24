@@ -1,62 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 207515E8CAD
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Sep 2022 14:42:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E7665E8D6E
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Sep 2022 16:44:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MZTFP3DwPz3dpr
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Sep 2022 22:42:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MZWy83Z16z3chQ
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Sep 2022 00:44:48 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fjOn8i6t;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=ZYYExhvh;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=LwyQx+Mw;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=msuchanek@suse.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fjOn8i6t;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=ZYYExhvh;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=LwyQx+Mw;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MZWxS1TLsz3byv
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Sep 2022 00:44:11 +1000 (AEST)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+	by smtp-out1.suse.de (Postfix) with ESMTP id 854FE21880;
+	Sat, 24 Sep 2022 14:44:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1664030646; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ldCH7q8JyvLEKaktegyDOVQARi1eF2vv5KGzrW1iCKE=;
+	b=ZYYExhvhe3hvVYy4oVk/eFH8gYNpGCko5Ihe7Zb9d4XHzj0gN+cbmJ5znD+HxwJBv4rbaf
+	xOAiTy+7OSutCerOOUzrNf7vSiurU7B6noAUxrtuNDY8e/xv8++TCq4sPot33lF0rn5bY3
+	j5D7iIgKtKQkzwHDFuKS1s7nX1iR+bg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1664030646;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ldCH7q8JyvLEKaktegyDOVQARi1eF2vv5KGzrW1iCKE=;
+	b=LwyQx+Mw9MIzMldTchSCV/M9BlwXBCMS+77FXL0rg1zfTVtmjUy+KUTCczSeB7Oi5a4eGF
+	DV0wxb7/VTheveCg==
+Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MZTDm4p5Gz3bqv
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Sep 2022 22:42:16 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 9A8A960A56;
-	Sat, 24 Sep 2022 12:42:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB10FC433D6;
-	Sat, 24 Sep 2022 12:42:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1664023333;
-	bh=6iWK7MK63UXpCUFl7W57m3jhiTiWw7+4+ckgt+e0Lts=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fjOn8i6tQaf/A+OxVzTK+jqElgTlTWlTxWeN2RIMCAp8qYHIz6ChUbHzcJeHPlgWZ
-	 H8AG3/5CGf1BxosP3gUgw0V4ZZxlbNIUKzT2m3qvrsed9HAxjZo2bCEIpNCOLEHfg1
-	 k/TqzXbD0yryl8eaVn5StOaq+Amd9aAYvmI94sBrnkHJ8cVeih73gWCbbXC2ZtbExi
-	 SkLUuue5oDGgqWgUWwxE3lunOiuiwya2ZRzDioZr0vpwya7lAq8EQArsdD64d+0TOc
-	 y1Q67VmIO3d8FZALNL1D9knLvTnnXuqoSC52WI5q0VQ8moKLksPk4UnP0NaTMDN35o
-	 ea8S/1mojVTog==
-Received: by pali.im (Postfix)
-	id 0F31C8A2; Sat, 24 Sep 2022 14:42:10 +0200 (CEST)
-Date: Sat, 24 Sep 2022 14:42:09 +0200
-From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To: Michael Ellerman <mpe@ellerman.id.au>,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-	Paul Mackerras <paulus@samba.org>, Scott Wood <oss@buserror.net>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Sinan Akman <sinan@writeme.com>
-Subject: Re: [PATCH 0/7] powerpc/85xx: p2020: Create one unified machine
- description
-Message-ID: <20220924124209.7vxsvfdoxbtntegs@pali>
-References: <20220819191557.28116-1-pali@kernel.org>
+	by relay2.suse.de (Postfix) with ESMTPS id 2218E2C172;
+	Sat, 24 Sep 2022 14:44:05 +0000 (UTC)
+Date: Sat, 24 Sep 2022 16:44:03 +0200
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Mimi Zohar <zohar@linux.ibm.com>
+Subject: Re: [PATCH 5.15 0/6] arm64: kexec_file: use more system keyrings to
+ verify kernel image signature + dependencies
+Message-ID: <20220924144403.GA28810@kitsune.suse.cz>
+References: <cover.1663951201.git.msuchanek@suse.de>
+ <67337b60a4d3cae00794d3cfd0e5add9899f18b7.camel@linux.ibm.com>
+ <20220923191650.GX28810@kitsune.suse.cz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220819191557.28116-1-pali@kernel.org>
-User-Agent: NeoMutt/20180716
+In-Reply-To: <20220923191650.GX28810@kitsune.suse.cz>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,40 +76,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, Alexander Egorenkov <egorenar@linux.ibm.com>, keyrings@vger.kernel.org, Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>, "open list:S390" <linux-s390@vger.kernel.org>, Coiby Xu <coxu@redhat.com>, Baoquan He <bhe@redhat.com>, AKASHI Takahiro <takahiro.akashi@linaro.org>, "maintainer:X86 ARCHITECTURE \(32-BIT AND 64-BIT\)" <x86@kernel.org>, Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>, "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>, "moderated list:ARM64 PORT \(AARCH64 ARCHITECTURE\)" <linux-arm-kernel@lists.infradead.org>, Philipp Rudo <prudo@redhat.com>, " op
+ en list:KEXEC" <kexec@lists.infradead.org>, linux-kernel@vger.kernel.org, stable@vger.kernel.org, linux-security-module@vger.kernel.org, James Morse <james.morse@arm.com>, Eric Biederman <ebiederm@xmission.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Andrew Morton <akpm@linux-foundation.org>, "open list:LINUX FOR POWERPC \(32-BIT AND 64-BIT\)" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello! Any comments for these patches?
+On Fri, Sep 23, 2022 at 09:16:50PM +0200, Michal Such�nek wrote:
+> Hello,
+> 
+> On Fri, Sep 23, 2022 at 03:03:36PM -0400, Mimi Zohar wrote:
+> > On Fri, 2022-09-23 at 19:10 +0200, Michal Suchanek wrote:
+> > > Hello,
+> > > 
+> > > this is backport of commit 0d519cadf751
+> > > ("arm64: kexec_file: use more system keyrings to verify kernel image signature")
+> > > to table 5.15 tree including the preparatory patches.
+> > > 
+> > > Some patches needed minor adjustment for context.
+> > 
+> > In general when backporting this patch set, there should be a
+> > dependency on backporting these commits as well.  In this instance for
+> > linux-5.15.y, they've already been backported.
+> > 
+> > 543ce63b664e ("lockdown: Fix kexec lockdown bypass with ima policy")
 
-On Friday 19 August 2022 21:15:50 Pali Rohár wrote:
-> This patch series unifies all P2020 boards and machine descriptions into
-> one generic unified P2020 machine description. With this generic machine
-> description, kernel can boot on any P2020-based board with correct DTS
-> file.
+AFAICT this is everywhere relevant, likely because it's considered a CVE
+fix.
+
+> > af16df54b89d ("ima: force signature verification when CONFIG_KEXEC_SIG is configured")
+
+This is missing in 5.4, and 5.4 is missing this prerequisite:
+fd7af71be542 ("kexec: do not verify the signature without the lockdown or mandatory signature")
+
 > 
-> Tested on CZ.NIC Turris 1.1 board with has Freescale P2020 processor.
-> Kernel during booting correctly detects P2020 and prints:
-> [    0.000000] Using Freescale P2020 machine description
+> Thanks for bringing these up. It might be in general useful to backport
+> these fixes as well.
 > 
-> Pali Rohár (7):
->   powerpc/85xx: Mark mpc85xx_rdb_pic_init() as static
->   powerpc/85xx: Mark mpc85xx_ds_pic_init() as static
->   powerpc/85xx: p2020: Move all P2020 machine descriptions to p2020.c
->   powerpc/85xx: p2020: Unify .setup_arch and .init_IRQ callbacks
->   powerpc/85xx: p2020: Define just one machine description
->   powerpc/85xx: p2020: Enable boards by new config option CONFIG_P2020
->   powerpc: dts: turris1x.dts: Remove "fsl,P2020RDB-PC" compatible string
+> However, this patchset does one very specific thing: it lifts the x86
+> kexec_file signature verification to arch-independent and uses it on
+> arm64 to unify all features (and any existing warts) between EFI
+> architectures.
 > 
->  arch/powerpc/boot/dts/turris1x.dts            |   2 +-
->  arch/powerpc/platforms/85xx/Kconfig           |  22 ++-
->  arch/powerpc/platforms/85xx/Makefile          |   1 +
->  arch/powerpc/platforms/85xx/mpc85xx_ds.c      |  25 +--
->  arch/powerpc/platforms/85xx/mpc85xx_rdb.c     |  46 +-----
->  .../platforms/85xx/{mpc85xx_ds.c => p2020.c}  | 144 +++++++-----------
->  6 files changed, 75 insertions(+), 165 deletions(-)
->  copy arch/powerpc/platforms/85xx/{mpc85xx_ds.c => p2020.c} (53%)
+> So unless I am missing something the fixes you pointed out are
+> completely independent of this.
 > 
-> -- 
-> 2.20.1
+> Thanks
 > 
+> Michal
