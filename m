@@ -1,36 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E6F55E8F5E
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Sep 2022 20:33:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1F185E9116
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Sep 2022 07:06:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MZd1r0g8Qz3dtW
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Sep 2022 04:33:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MZv4r5wk7z3cfk
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Sep 2022 15:06:52 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=jv4KKGWk;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MZd1N2jJ8z3bbP
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Sep 2022 04:32:55 +1000 (AEST)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
-	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 28OIUpan005575;
-	Sat, 24 Sep 2022 13:30:51 -0500
-Received: (from segher@localhost)
-	by gate.crashing.org (8.14.1/8.14.1/Submit) id 28OIUoYF005572;
-	Sat, 24 Sep 2022 13:30:50 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
-Date: Sat, 24 Sep 2022 13:30:50 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH] powerpc/irq: Modernise inline assembly in irq_soft_mask_{set,return}
-Message-ID: <20220924183050.GP25951@gate.crashing.org>
-References: <178f30ff62c0317061f019b3dbbc079073f104c3.1663656058.git.christophe.leroy@csgroup.eu> <CN3LB8F3D9LM.3W1RQRVS64UXU@bobo> <20220923121829.GL25951@gate.crashing.org> <CN3X6YN1FRQ3.1Z9BVD6WYQY3M@bobo> <20220923221543.GN25951@gate.crashing.org>
-Mime-Version: 1.0
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102d; helo=mail-pj1-x102d.google.com; envelope-from=dmitry.torokhov@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=jv4KKGWk;
+	dkim-atps=neutral
+Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MZv4C2Kg5z30Bp
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Sep 2022 15:06:17 +1000 (AEST)
+Received: by mail-pj1-x102d.google.com with SMTP id q9-20020a17090a178900b0020265d92ae3so9513384pja.5
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Sep 2022 22:06:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date;
+        bh=+hF2iRaC8IwIsQwNG2CBaYdzZGOTAXTx4/lHRlsiuzc=;
+        b=jv4KKGWkKkIq512ndX4nKTtjG4XrjJbLxVL06117qJ+I0Xm9IvyOF33yFL2yCMkT5w
+         Fxr73rJYZ0yGupKFvbOCuSWXRglw34svpFSj2ZR+NTD98r9R2nKyZ7OV/byUgNDMPuWA
+         n12xWQ/oGyITJ7XxydUu7bqbaRuSJTcP1zo0ZtIYbEELTEu8an9bP9pk5l0ruU5P7m/j
+         q+kH5idzaF/sDR8LlHZEaWwn2WXjs8ccZNKNxEQhq2+zYivfMcj3Hej1tX51/en6ACMc
+         xgNG28EX/v7hw1mWSB2esMYmJU9Z0pbSh2/+3Bi91HKJblrgtCYqGKXXwQDHxy2d4+9t
+         A6RA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=+hF2iRaC8IwIsQwNG2CBaYdzZGOTAXTx4/lHRlsiuzc=;
+        b=2cd381qWyORLfFdS7hokx4/9jEr1wPBrILD2gRdePnjV586Qft1vPQvNfmR1MHFejE
+         B/Aic07Ya/9QHMgPvFhMamMUVCxyZxDKnFZoVyPPnlbVARKtvMK25Mo0JT2VS8dgBev1
+         drmzUCAryqyR7Bt4YevCCA2HPx45m3knu26sDMLigLepFPnXa+S0y4Imuw/enwE1tQMk
+         GeSq+UQo+hjVo/almH4sQ5n5EiFGkXkeraTuqYFrVkbsioAegCKfu7pfZt8SvhOBtn0A
+         7hicoPLeOQKy45Mtk5QQ2OU7xGphNIz2i+kHuZgEmoyY9U1hONU1TKlK62Vr24uvNPN4
+         fEcA==
+X-Gm-Message-State: ACrzQf3Yo26SbHMQ6hlBWWJlg0QYK+QXn1p65lCHiXcJYXTyOaCqeBsT
+	K1Qt4rcEQcBi7BmpbrSELlk=
+X-Google-Smtp-Source: AMsMyM66KSNWmGU9MaV1h6icVVQeJXcHFgyUNZUjSSQXwQRU5yNzpVeQLbsx3vXKtyM388kCZLUbsg==
+X-Received: by 2002:a17:903:2443:b0:178:221d:c599 with SMTP id l3-20020a170903244300b00178221dc599mr16471698pls.100.1664082370927;
+        Sat, 24 Sep 2022 22:06:10 -0700 (PDT)
+Received: from google.com ([2620:15c:9d:2:37c:3916:9a45:14cc])
+        by smtp.gmail.com with ESMTPSA id 7-20020a621507000000b0053e80515df8sm9167942pfv.202.2022.09.24.22.06.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 24 Sep 2022 22:06:10 -0700 (PDT)
+Date: Sat, 24 Sep 2022 22:06:07 -0700
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>
+Subject: Is PPC 44x PIKA Warp board still relevant?
+Message-ID: <Yy/hv2fOLzdWOuvT@google.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220923221543.GN25951@gate.crashing.org>
-User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,18 +79,23 @@ Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Sep 23, 2022 at 05:15:43PM -0500, Segher Boessenkool wrote:
-> On Sat, Sep 24, 2022 at 02:26:52AM +1000, Nicholas Piggin wrote:
-> > I still don't see what clauses guarantees asm("%0" ::"r"(foo)) to give
-> > 13. It doesn't say access via inline assembly is special,
-> 
-> But it is.  It is for all register variables, local and global.  I agree
-> this isn't documented clearly.  For local register variables this is the
-> *only* thing guaranteed; for global register vars there is more (it
-> changes the ABI, there are safe/restore effects, that kind of thing).
+Hi Michael, Nick,
 
-I filed <https://gcc.gnu.org/PR107027> to improve the docs.  Thanks for
-bringing this to our attention!
+I was wondering if PIKA Warp board still relevant. The reason for my
+question is that I am interested in dropping legacy gpio APIs,
+especially OF-specific ones, in favor of newer gpiod APIs, and
+arch/powerpc/platforms/44x/warp.c is one of few users of it.
 
+The code in question is supposed to turn off green led and flash red led
+in case of overheating, and is doing so by directly accessing GPIOs
+owned by led-gpio driver without requesting/allocating them. This is not
+really supported with gpiod API, and is not a good practice in general.
+Before I spend much time trying to implement a replacement without
+access to the hardware, I wonder if this board is in use at all, and if
+it is how important is the feature of flashing red led on critical
+temperature shutdown?
 
-Segher
+Thanks.
+
+-- 
+Dmitry
