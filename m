@@ -2,65 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 965AA5E990A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Sep 2022 07:58:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A9295E990B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Sep 2022 07:58:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MbX9Z2Kvbz3c7t
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Sep 2022 15:58:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MbXBF08LHz3cd3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Sep 2022 15:58:45 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=SpG69Onb;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ltBp/HqM;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::534; helo=mail-pg1-x534.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::532; helo=mail-pg1-x532.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=SpG69Onb;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ltBp/HqM;
 	dkim-atps=neutral
-Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
+Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MbX7g5d50z3bjX
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Sep 2022 15:56:31 +1000 (AEST)
-Received: by mail-pg1-x534.google.com with SMTP id u69so5642659pgd.2
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Sep 2022 22:56:31 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MbX7j6qk4z3bSX
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Sep 2022 15:56:33 +1000 (AEST)
+Received: by mail-pg1-x532.google.com with SMTP id q9so5614519pgq.8
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Sep 2022 22:56:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date;
-        bh=RLCrKlVFozGALeT02ZLXoM7pllAGdwe4OOoiJXzTpBU=;
-        b=SpG69Onb/78zNmd+ZQKjkVcrv4IGH9xVWbSjiKuRRDhnc25aw7o5zBbj9rxw00JJQS
-         KzHjtimyh4DGu0pRQ6NVVdKGJk/wmraiuwzvgiyIzkZkYc9NWccSrJVC/zgD1r3fgupe
-         vgYwhInDDy6Jvr7m0ewMJWuqzS9VTclBtPVzZ1vvu+EvSBVq1bSUwTZS5h+EJYeXvdVS
-         uOfwzjl4x1T3Z3tIOWL1zJPBR8oxkwmKSQpi2bwMT7s1Vqb3dSNwLb7CPqa+gtgrJa4M
-         uyVRusBDOn1wJ2U/f5hR0/7DEnscZ8DiPyhxgALS916yPKYc6WAsfNIgOnIcnc5heoVN
-         nnsQ==
+        bh=vJ5dkdb4BXxM25qwwd4Qe6WFPnXrJI6JlmxMYvccGwM=;
+        b=ltBp/HqMxPeJFNT7Z1fC6dW0BLwdZjgnDi+zpQlzIo+UZ19r3gYTRDm4kfD6OzYeRe
+         MQPmsPeAHLnd9jEaFwCDhRCXdB/5U82qUbvXJAAO/QU/6iBz/gM6WtUHj9gCLWYpro94
+         4AhtaqmiKMMpgi7L4Nz0jJEHpEMgxFeELdqO75rDK1VIJl9JlbHnTJeDSWzHC6rFU02K
+         0NHZsHczPcBB5qZqlqmSkuQztVaqQcRM/I2tg/rGPX5n/62nniV+rg+HcM6P/Uigf2FZ
+         039snYpczRwnoTUOwtKYto8vdilqynKupJlYA0ppXstXrd/7BdHtTUJ0SMrYlgp5VlkO
+         lq2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date;
-        bh=RLCrKlVFozGALeT02ZLXoM7pllAGdwe4OOoiJXzTpBU=;
-        b=kTkV2qT12mbI/Z/sTN4Lmblf+IQZH0NvlouyKj0ClGfUR4aZDtdRRdH+WJGMxQu8cz
-         AZWxGZW67jL9I5MD3lvCMIixeb60rDSVLutCl2wRAq7Op8foz241CcYMmKYDA1/M841I
-         9RWgrYDsX9R4zmrTpughmFUgl6V2gJIj2hI3wy0oYDAwlYIdrovGkJiaGEvWFLMD+neM
-         baS0YVHawUFUJ18l7ERemhaT3A6VaRlcjcShvAaMule44cak7F/3YuL6DIuDoLTB71vm
-         SGeP4laU+804ZqnKVVtvPpZFoCbC5nXNgMPRIKlE0vNAsLoMUFpzw9gdgMjUsMNd91Qb
-         E+Mg==
-X-Gm-Message-State: ACrzQf06TWxsqyVHoGU3UGj6BX0Z5/clSP6VFPcKmcnB39x/lVtYX1mf
-	CF+sVAeiyxtFoaFnH7WysP9Kx71G0izNaQ==
-X-Google-Smtp-Source: AMsMyM7NesVH+NzzcTvNRPfRTWZOtVVnp5I1niTT4UC/Br97LXSBI8y8/Ps6ikXlYIADi8ruVinBYA==
-X-Received: by 2002:a05:6a00:cd6:b0:546:d03:3dd7 with SMTP id b22-20020a056a000cd600b005460d033dd7mr21949126pfv.19.1664171788872;
-        Sun, 25 Sep 2022 22:56:28 -0700 (PDT)
+        bh=vJ5dkdb4BXxM25qwwd4Qe6WFPnXrJI6JlmxMYvccGwM=;
+        b=RU97u3C0zebqkthftn/yfBFUl3Kya0iOroCNJEq92HjCIo3U9mmI+3CHWYFSJagMw9
+         cBQeopSMEA8q9NhLUpge04qzyKlCfaM/1ndSq+zGs2+TO9NpSVLrHcX3OvIqLunVka1a
+         cz2vQ8n31EO3y+sNFFlkcwnSheq4xaLbvuW6BSdrtA1mRMdzErDyFog1erz0Bns0yLBi
+         Zh9ObsdX+Ngv3lMzpevsWumffMKT+CiZQIVPxAv6evl4JZ9v0nI7JxnqMTK3zDhrerAF
+         1eOrH827d4hz0KB21LkqD7WINhjk2DjvwelRv9pDpfU63DOpCiV6+hsEk+osb9v87hrh
+         miYQ==
+X-Gm-Message-State: ACrzQf1xMRLHM5X/xF0QdZqu+mOcLvrOTDpj4anN6pBp2GDYICzx62xf
+	tFsctBkHtMNWpnbEzjSa5pCebCD8EoXdIw==
+X-Google-Smtp-Source: AMsMyM4X7ZJxLPS3zCz6GpEph8pdrL/mL/Lv/aa1wbeM2pGv4INy6QoEjFf2VZWPLiukjwTkWDylYQ==
+X-Received: by 2002:a63:67c1:0:b0:42c:366f:e8fe with SMTP id b184-20020a6367c1000000b0042c366fe8femr18872366pgc.198.1664171791288;
+        Sun, 25 Sep 2022 22:56:31 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com (203-219-181-119.static.tpgi.com.au. [203.219.181.119])
-        by smtp.gmail.com with ESMTPSA id pv7-20020a17090b3c8700b00203a4f70b90sm5628075pjb.45.2022.09.25.22.56.26
+        by smtp.gmail.com with ESMTPSA id pv7-20020a17090b3c8700b00203a4f70b90sm5628075pjb.45.2022.09.25.22.56.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 25 Sep 2022 22:56:28 -0700 (PDT)
+        Sun, 25 Sep 2022 22:56:30 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 1/5] powerpc/64s/interrupt: move early boot ILE fixup into a macro
-Date: Mon, 26 Sep 2022 15:56:16 +1000
-Message-Id: <20220926055620.2676869-2-npiggin@gmail.com>
+Subject: [PATCH v2 2/5] powerpc/64s: early boot machine check handler
+Date: Mon, 26 Sep 2022 15:56:17 +1000
+Message-Id: <20220926055620.2676869-3-npiggin@gmail.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20220926055620.2676869-1-npiggin@gmail.com>
 References: <20220926055620.2676869-1-npiggin@gmail.com>
@@ -81,132 +81,139 @@ Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In preparation for using this sequence in machine check interrupt, move
-it into a macro, with a small change to make it position independent.
+Use the early boot interrupt fixup in the machine check handler to allow
+the machine check handler to run before interrupt endian is set up.
+Branch to an early boot handler that just does a basic crash, which
+allows it to run before ppc_md is set up. MSR[ME] is enabled on the boot
+CPU earlier, and the machine check stack is temporarily set to the
+middle of the init task stack.
+
+This allows machine checks (e.g., due to invalid data access in real
+mode) to print something useful earlier in boot (as soon as udbg is set
+up, if CONFIG_PPC_EARLY_DEBUG=y).
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/exceptions-64s.S | 100 +++++++++++++++------------
- 1 file changed, 55 insertions(+), 45 deletions(-)
+ arch/powerpc/include/asm/asm-prototypes.h |  1 +
+ arch/powerpc/kernel/exceptions-64s.S      |  6 +++++-
+ arch/powerpc/kernel/setup_64.c            | 14 ++++++++++++++
+ arch/powerpc/kernel/traps.c               | 14 ++++++++++++++
+ 4 files changed, 34 insertions(+), 1 deletion(-)
 
+diff --git a/arch/powerpc/include/asm/asm-prototypes.h b/arch/powerpc/include/asm/asm-prototypes.h
+index 81631e64dbeb..a1039b9da42e 100644
+--- a/arch/powerpc/include/asm/asm-prototypes.h
++++ b/arch/powerpc/include/asm/asm-prototypes.h
+@@ -36,6 +36,7 @@ int64_t __opal_call(int64_t a0, int64_t a1, int64_t a2, int64_t a3,
+ 		    int64_t opcode, uint64_t msr);
+ 
+ /* misc runtime */
++void enable_machine_check(void);
+ extern u64 __bswapdi2(u64);
+ extern s64 __lshrdi3(s64, int);
+ extern s64 __ashldi3(s64, int);
 diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index dafa275f18bc..66e2adf50745 100644
+index 66e2adf50745..9b853fdd59de 100644
 --- a/arch/powerpc/kernel/exceptions-64s.S
 +++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -702,6 +702,60 @@ END_FTR_SECTION_IFSET(CPU_FTR_CFAR)
- 	ld	r1,GPR1(r1)
- .endm
+@@ -1133,6 +1133,7 @@ INT_DEFINE_BEGIN(machine_check)
+ INT_DEFINE_END(machine_check)
  
-+/*
-+ * EARLY_BOOT_FIXUP - Fix real-mode interrupt with wrong endian in early boot.
-+ *
-+ * There's a short window during boot where although the kernel is running
-+ * little endian, any exceptions will cause the CPU to switch back to big
-+ * endian. For example a WARN() boils down to a trap instruction, which will
-+ * cause a program check, and we end up here but with the CPU in big endian
-+ * mode. The first instruction of the program check handler (in GEN_INT_ENTRY
-+ * below) is an mtsprg, which when executed in the wrong endian is an lhzu with
-+ * a ~3GB displacement from r3. The content of r3 is random, so that is a load
-+ * from some random location, and depending on the system can easily lead to a
-+ * checkstop, or an infinitely recursive page fault.
-+ *
-+ * So to handle that case we have a trampoline here that can detect we are in
-+ * the wrong endian and flip us back to the correct endian. We can't flip
-+ * MSR[LE] using mtmsr, so we have to use rfid. That requires backing up SRR0/1
-+ * as well as a GPR. To do that we use SPRG0/2/3, as SPRG1 is already used for
-+ * the paca. SPRG3 is user readable, but this trampoline is only active very
-+ * early in boot, and SPRG3 will be reinitialised in vdso_getcpu_init() before
-+ * userspace starts.
-+ */
-+.macro EARLY_BOOT_FIXUP
-+#ifdef CONFIG_CPU_LITTLE_ENDIAN
-+BEGIN_FTR_SECTION
-+	tdi   0,0,0x48    // Trap never, or in reverse endian: b . + 8
-+	b     2f          // Skip trampoline if endian is correct
-+	.long 0xa643707d  // mtsprg  0, r11      Backup r11
-+	.long 0xa6027a7d  // mfsrr0  r11
-+	.long 0xa643727d  // mtsprg  2, r11      Backup SRR0 in SPRG2
-+	.long 0xa6027b7d  // mfsrr1  r11
-+	.long 0xa643737d  // mtsprg  3, r11      Backup SRR1 in SPRG3
-+	.long 0xa600607d  // mfmsr   r11
-+	.long 0x01006b69  // xori    r11, r11, 1 Invert MSR[LE]
-+	.long 0xa6037b7d  // mtsrr1  r11
-+	/*
-+	 * This is 'li  r11,1f' where 1f is the absolute address of that
-+	 * label, byteswapped into the SI field of the instruction.
-+	 */
-+	.long 0x00006039 | \
-+		((ABS_ADDR(1f, real_vectors) & 0x00ff) << 24) | \
-+		((ABS_ADDR(1f, real_vectors) & 0xff00) << 8)
-+	.long 0xa6037a7d  // mtsrr0  r11
-+	.long 0x2400004c  // rfid
-+1:
-+	mfsprg r11, 3
-+	mtsrr1 r11        // Restore SRR1
-+	mfsprg r11, 2
-+	mtsrr0 r11        // Restore SRR0
-+	mfsprg r11, 0     // Restore r11
-+2:
-+END_FTR_SECTION(0, 1)     // nop out after boot
-+#endif
-+.endm
-+
- /*
-  * There are a few constraints to be concerned with.
-  * - Real mode exceptions code/data must be located at their physical location.
-@@ -1619,51 +1673,7 @@ INT_DEFINE_BEGIN(program_check)
- INT_DEFINE_END(program_check)
- 
- EXC_REAL_BEGIN(program_check, 0x700, 0x100)
--
--#ifdef CONFIG_CPU_LITTLE_ENDIAN
--	/*
--	 * There's a short window during boot where although the kernel is
--	 * running little endian, any exceptions will cause the CPU to switch
--	 * back to big endian. For example a WARN() boils down to a trap
--	 * instruction, which will cause a program check, and we end up here but
--	 * with the CPU in big endian mode. The first instruction of the program
--	 * check handler (in GEN_INT_ENTRY below) is an mtsprg, which when
--	 * executed in the wrong endian is an lhzu with a ~3GB displacement from
--	 * r3. The content of r3 is random, so that is a load from some random
--	 * location, and depending on the system can easily lead to a checkstop,
--	 * or an infinitely recursive page fault.
--	 *
--	 * So to handle that case we have a trampoline here that can detect we
--	 * are in the wrong endian and flip us back to the correct endian. We
--	 * can't flip MSR[LE] using mtmsr, so we have to use rfid. That requires
--	 * backing up SRR0/1 as well as a GPR. To do that we use SPRG0/2/3, as
--	 * SPRG1 is already used for the paca. SPRG3 is user readable, but this
--	 * trampoline is only active very early in boot, and SPRG3 will be
--	 * reinitialised in vdso_getcpu_init() before userspace starts.
--	 */
--BEGIN_FTR_SECTION
--	tdi   0,0,0x48    // Trap never, or in reverse endian: b . + 8
--	b     1f          // Skip trampoline if endian is correct
--	.long 0xa643707d  // mtsprg  0, r11      Backup r11
--	.long 0xa6027a7d  // mfsrr0  r11
--	.long 0xa643727d  // mtsprg  2, r11      Backup SRR0 in SPRG2
--	.long 0xa6027b7d  // mfsrr1  r11
--	.long 0xa643737d  // mtsprg  3, r11      Backup SRR1 in SPRG3
--	.long 0xa600607d  // mfmsr   r11
--	.long 0x01006b69  // xori    r11, r11, 1 Invert MSR[LE]
--	.long 0xa6037b7d  // mtsrr1  r11
--	.long 0x34076039  // li      r11, 0x734
--	.long 0xa6037a7d  // mtsrr0  r11
--	.long 0x2400004c  // rfid
--	mfsprg r11, 3
--	mtsrr1 r11        // Restore SRR1
--	mfsprg r11, 2
--	mtsrr0 r11        // Restore SRR0
--	mfsprg r11, 0     // Restore r11
--1:
--END_FTR_SECTION(0, 1)     // nop out after boot
--#endif /* CONFIG_CPU_LITTLE_ENDIAN */
--
+ EXC_REAL_BEGIN(machine_check, 0x200, 0x100)
 +	EARLY_BOOT_FIXUP
- 	GEN_INT_ENTRY program_check, virt=0
- EXC_REAL_END(program_check, 0x700, 0x100)
- EXC_VIRT_BEGIN(program_check, 0x4700, 0x100)
+ 	GEN_INT_ENTRY machine_check_early, virt=0
+ EXC_REAL_END(machine_check, 0x200, 0x100)
+ EXC_VIRT_NONE(0x4200, 0x100)
+@@ -1197,6 +1198,9 @@ BEGIN_FTR_SECTION
+ 	bl	enable_machine_check
+ END_FTR_SECTION_IFSET(CPU_FTR_HVMODE)
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
++BEGIN_FTR_SECTION
++	bl	machine_check_early_boot
++END_FTR_SECTION(0, 1)     // nop out after boot
+ 	bl	machine_check_early
+ 	std	r3,RESULT(r1)	/* Save result */
+ 	ld	r12,_MSR(r1)
+@@ -3095,7 +3099,7 @@ CLOSE_FIXED_SECTION(virt_trampolines);
+ USE_TEXT_SECTION()
+ 
+ /* MSR[RI] should be clear because this uses SRR[01] */
+-enable_machine_check:
++_GLOBAL(enable_machine_check)
+ 	mflr	r0
+ 	bcl	20,31,$+4
+ 0:	mflr	r3
+diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_64.c
+index ce8fc6575eaa..e68d316b993e 100644
+--- a/arch/powerpc/kernel/setup_64.c
++++ b/arch/powerpc/kernel/setup_64.c
+@@ -34,6 +34,7 @@
+ #include <linux/of.h>
+ #include <linux/of_fdt.h>
+ 
++#include <asm/asm-prototypes.h>
+ #include <asm/kvm_guest.h>
+ #include <asm/io.h>
+ #include <asm/kdump.h>
+@@ -180,6 +181,16 @@ static void __init fixup_boot_paca(void)
+ {
+ 	/* The boot cpu is started */
+ 	get_paca()->cpu_start = 1;
++#ifdef CONFIG_PPC_BOOK3S_64
++	/*
++	 * Give the early boot machine check stack somewhere to use, use
++	 * half of the init stack. This is a bit hacky but there should not be
++	 * deep stack usage in early init so shouldn't overflow it or overwrite
++	 * things.
++	 */
++	get_paca()->mc_emergency_sp = (void *)&init_thread_union +
++		(THREAD_SIZE/2);
++#endif
+ 	/* Allow percpu accesses to work until we setup percpu data */
+ 	get_paca()->data_offset = 0;
+ 	/* Mark interrupts soft and hard disabled in PACA */
+@@ -357,6 +368,9 @@ void __init early_setup(unsigned long dt_ptr)
+ 
+ 	/* -------- printk is now safe to use ------- */
+ 
++	if (IS_ENABLED(CONFIG_PPC_BOOK3S_64) && (mfmsr() & MSR_HV))
++		enable_machine_check();
++
+ 	/* Try new device tree based feature discovery ... */
+ 	if (!dt_cpu_ftrs_init(__va(dt_ptr)))
+ 		/* Otherwise use the old style CPU table */
+diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
+index dadfcef5d6db..37f8375452ad 100644
+--- a/arch/powerpc/kernel/traps.c
++++ b/arch/powerpc/kernel/traps.c
+@@ -68,6 +68,7 @@
+ #include <asm/stacktrace.h>
+ #include <asm/nmi.h>
+ #include <asm/disassemble.h>
++#include <asm/udbg.h>
+ 
+ #if defined(CONFIG_DEBUGGER) || defined(CONFIG_KEXEC_CORE)
+ int (*__debugger)(struct pt_regs *regs) __read_mostly;
+@@ -850,6 +851,19 @@ static void __machine_check_exception(struct pt_regs *regs)
+ }
+ 
+ #ifdef CONFIG_PPC_BOOK3S_64
++DEFINE_INTERRUPT_HANDLER_RAW(machine_check_early_boot)
++{
++	udbg_printf("Machine check (early boot)\n");
++	udbg_printf("SRR0=0x%016lx   SRR1=0x%016lx\n", regs->nip, regs->msr);
++	udbg_printf(" DAR=0x%016lx  DSISR=0x%08lx\n", regs->dar, regs->dsisr);
++	udbg_printf("  LR=0x%016lx     R1=0x%08lx\n", regs->link, regs->gpr[1]);
++	udbg_printf("------\n");
++	die("Machine check (early boot)", regs, SIGBUS);
++	for (;;)
++		;
++	return 0;
++}
++
+ DEFINE_INTERRUPT_HANDLER_ASYNC(machine_check_exception_async)
+ {
+ 	__machine_check_exception(regs);
 -- 
 2.37.2
 
