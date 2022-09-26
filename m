@@ -1,66 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4A815E98F7
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Sep 2022 07:47:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EA035E98F8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Sep 2022 07:47:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MbWx44zx3z3fC4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Sep 2022 15:47:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MbWxl6lYqz3fFm
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Sep 2022 15:47:55 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Sd/FMCoT;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=BWZnXz4k;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1029; helo=mail-pj1-x1029.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1035; helo=mail-pj1-x1035.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Sd/FMCoT;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=BWZnXz4k;
 	dkim-atps=neutral
-Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MbWrb6hCMz3bcw
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Sep 2022 15:43:27 +1000 (AEST)
-Received: by mail-pj1-x1029.google.com with SMTP id s90-20020a17090a2f6300b00203a685a1aaso5696916pjd.1
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Sep 2022 22:43:27 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MbWrf3vYyz3c5v
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Sep 2022 15:43:30 +1000 (AEST)
+Received: by mail-pj1-x1035.google.com with SMTP id i15-20020a17090a4b8f00b0020073b4ac27so5658641pjh.3
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Sep 2022 22:43:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date;
-        bh=nZy4uxEt5h7DKz5jIhv2KcDDKz2QLaUO1KgGLJtUmsg=;
-        b=Sd/FMCoT9ojX59SYhGCwnk94Gcy/jAw4o+m8O3Q8XLbayhJwAqevHJLYZkxMCxPFr6
-         F8ydIzd1T0uy7jBhRxoMPM51EH8xKAePN52kfUzBXmuKXMX/e7mlFgNJkRuq3XiXGusO
-         FHFqk17tjD+VfJBahVrwKwKFdSNJtaBpkVOInSwO6K+bkRunpFhqq9qxnGSs64A4X9xn
-         RrpmXCrtEULjB2s1WVGffRk0AAplNhSu3Jp+hwBY+OBkUbIa5eWbnW7oJb/gi76xHMTt
-         2/pXfnW3Qc8CDcD7hs/uyCoSr4/LoCk2diCfa+E6VsP8B1IsxEwrJrbVtxuM+HL/MLYE
-         v9hw==
+        bh=MYDXvHWVqlFaxJDDMXiyCj4gN/S0APV5VGQxUE3ephc=;
+        b=BWZnXz4kgAC5AvUOIL7No/c7/ElDnDrlpWGppCkPUERaay6/serJrYbqA9waPSSORZ
+         zr8jCRzVGo7558Uq6Sav9dl3pmdCiOj0yDSd/YaMIzzr93R+6KvIIR6NMZZlPdiSMPuk
+         /6bO6MbhT/GIIrqjwLzeRcHOfqUSc3JImd+O86V20by9FwUCfW200ToCPRiJvxk/JUpK
+         GRotMrEA62e7cSwcwyjaEhlwJQ5ovdXonc8dhT9Yz1hMTt6P4PsFZ6rIa9kESJ6P9v+Z
+         XhkuIS2HvyGw5oGARH1u3bMvEwnc4OBJdKuSCTZZqyEadCSKrL2BEdMyq+ExDWRxoUKB
+         flRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date;
-        bh=nZy4uxEt5h7DKz5jIhv2KcDDKz2QLaUO1KgGLJtUmsg=;
-        b=n1pjYededeZMiduOkkB0i7b+jBjV+7lKaBpz8UpaABDmJa1Zd9jxOVoMJFHkr9zetj
-         7CzP2w22bGIsIndJjxUiFJGGlvFVBX38et2xjrzDCiPbUha8bueMPLBoX8UP0ESmYsO9
-         Jv1bBxNHUzB6uvFo/jZjAvGFb96jFslEpNnzUyvYKe32/nPKdVw/JCQgsP5SEX98KM3I
-         9VjrOqa1hyyUgeKNmLcUZQd0Sp67S+/fPgJ0KM0m4+U6jfKHdK2S8yYaDlVIXBBM1b0X
-         p/naD1mI+Bh7Gv8+I4z3AcDN3mqtH+d/dOTSmUKCj5EbjZMF1nw5lJVcXtw0+pdlDo78
-         y2Mg==
-X-Gm-Message-State: ACrzQf1mfU1MO0CF9KrdL470CvhqNLmJPrjdVLAkozOu7jG+CoyV1d09
-	Wm5uUz1WJCjgOf4c5knC5F+yLiudiE2Y2w==
-X-Google-Smtp-Source: AMsMyM5H8hB2yDCTpktOWNvdES5sKRKHzPyPBJ8lpijpj3C36URsp+VJ2VXG0HKX9zYihNMWb+wEKw==
-X-Received: by 2002:a17:90b:3b81:b0:202:597a:c71d with SMTP id pc1-20020a17090b3b8100b00202597ac71dmr34167368pjb.105.1664171005696;
-        Sun, 25 Sep 2022 22:43:25 -0700 (PDT)
+        bh=MYDXvHWVqlFaxJDDMXiyCj4gN/S0APV5VGQxUE3ephc=;
+        b=3wdvJdMBtCmNSVuaXAWsXOqNkFd+3+UzEfGvICsaauUJzr7fMvZDezE9F2+bY87ySQ
+         04GAUP/TXvXbnl7l+OY1xUHLapqtrX7Nx6INV5SNuANbwmUlYwvuANjjQGEhzPpTTUfX
+         xIlLz+Cfb1d+apqwxLXcqNbFv9FG7A/Ij5izjoaSAJe9PDEiZ6ImH2k3JoMi4k+MFaIU
+         cjqeVhoTaTzvVDF53rbKT8gHxX9CGNIDl26of0w8jBclmZNaMUqcRBlDhsbyCcd5V7tS
+         ft92uNzO67/HWfdBPLTJxWJNhAIWTgxxExrG4JAJYZP+zA40rEMSGof84zW0MFjjLgnd
+         1Lfw==
+X-Gm-Message-State: ACrzQf1165bK9IGwfPNFMdpS0nJUvCdViAP9h7Rjjz4Awvf4NDify0ml
+	as7ZNECcb2lXzZevBIIR2St29w09kYEkWA==
+X-Google-Smtp-Source: AMsMyM7XzO57FbdjTsEDGwmzhn/wtg5xseuZiN1WmfnmF0La0vdcg3hKsSyJ+RRRIKy4cy8oQ4e4LQ==
+X-Received: by 2002:a17:90b:4a43:b0:202:7706:73d7 with SMTP id lb3-20020a17090b4a4300b00202770673d7mr22613425pjb.137.1664171008015;
+        Sun, 25 Sep 2022 22:43:28 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com (203-219-181-119.static.tpgi.com.au. [203.219.181.119])
-        by smtp.gmail.com with ESMTPSA id o90-20020a17090a0a6300b002001c9bf22esm5676553pjo.8.2022.09.25.22.43.23
+        by smtp.gmail.com with ESMTPSA id o90-20020a17090a0a6300b002001c9bf22esm5676553pjo.8.2022.09.25.22.43.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 25 Sep 2022 22:43:25 -0700 (PDT)
+        Sun, 25 Sep 2022 22:43:27 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3 6/7] powerpc/64/interrupt: avoid BUG/WARN recursion in interrupt entry
-Date: Mon, 26 Sep 2022 15:43:04 +1000
-Message-Id: <20220926054305.2671436-7-npiggin@gmail.com>
+Subject: [PATCH v3 7/7] powerpc/64/irq: tidy soft-masked irq replay and improve documentation
+Date: Mon, 26 Sep 2022 15:43:05 +1000
+Message-Id: <20220926054305.2671436-8-npiggin@gmail.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20220926054305.2671436-1-npiggin@gmail.com>
 References: <20220926054305.2671436-1-npiggin@gmail.com>
@@ -81,80 +81,183 @@ Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-BUG/WARN are handled with a program interrupt which can turn into an
-infinite recursion when there are bugs in interrupt handler entry
-(which can be irritated by bugs in other parts of the code).
+irq replay is quite complicated because of softirq processing which
+itself enables and disables irqs. Several considerations need to be
+accounted for due to this, and they are not clearly documented.
 
-There is one feeble attempt to avoid this recursion, but it misses
-several cases. Make a tidier macro for this and switch most bugs in
-the interrupt entry wrapper over to use it.
+Refactor the irq replay code a bit to tidy and deduplicate some common
+functions. Add comments, debug checks.
+
+This has a minor functional change that irq tracing enable/disable is
+done after each interrupt replayed, rather than after a batch. It also
+re-sets state to IRQS_ALL_DISABLED after an interrupt, which doesn't
+matter much because interrupts are hard disabled at this point, but it
+is more consistent with how interrupt handlers are called.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/include/asm/interrupt.h | 33 +++++++++++++++++-----------
- 1 file changed, 20 insertions(+), 13 deletions(-)
+ arch/powerpc/kernel/irq_64.c | 93 +++++++++++++++++++++++-------------
+ 1 file changed, 61 insertions(+), 32 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/asm/interrupt.h
-index b61555e30c7c..7f3180047115 100644
---- a/arch/powerpc/include/asm/interrupt.h
-+++ b/arch/powerpc/include/asm/interrupt.h
-@@ -74,6 +74,19 @@
- #include <asm/kprobes.h>
- #include <asm/runlatch.h>
+diff --git a/arch/powerpc/kernel/irq_64.c b/arch/powerpc/kernel/irq_64.c
+index 01645e03e9f0..eb2b380e52a0 100644
+--- a/arch/powerpc/kernel/irq_64.c
++++ b/arch/powerpc/kernel/irq_64.c
+@@ -68,6 +68,35 @@
  
-+#ifdef CONFIG_PPC64
-+/*
-+ * WARN/BUG is handled with a program interrupt so minimise checks here to
-+ * avoid recursion and maximise the chance of getting the first oops handled.
-+ */
-+#define INT_SOFT_MASK_BUG_ON(regs, cond)				\
-+do {									\
-+	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG) &&		\
-+	    (user_mode(regs) || (TRAP(regs) != INTERRUPT_PROGRAM)))	\
-+		BUG_ON(cond);						\
-+} while (0)
-+#endif
+ int distribute_irqs = 1;
+ 
++static inline void next_interrupt(struct pt_regs *regs)
++{
++	/*
++	 * Softirq processing can enable/disable irqs, which will leave
++	 * MSR[EE] enabled and the soft mask set to IRQS_DISABLED. Fix
++	 * this up.
++	 */
++	if (!(local_paca->irq_happened & PACA_IRQ_HARD_DIS))
++		hard_irq_disable();
++	else
++		irq_soft_mask_set(IRQS_ALL_DISABLED);
 +
- #ifdef CONFIG_PPC_BOOK3S_64
- extern char __end_soft_masked[];
- bool search_kernel_soft_mask_table(unsigned long addr);
-@@ -170,8 +183,7 @@ static inline void interrupt_enter_prepare(struct pt_regs *regs)
- 	 * context.
++	/*
++	 * We are responding to the next interrupt, so interrupt-off
++	 * latencies should be reset here.
++	 */
++	trace_hardirqs_on();
++	trace_hardirqs_off();
++}
++
++static inline bool irq_happened_test_and_clear(u8 irq)
++{
++	if (local_paca->irq_happened & irq) {
++		local_paca->irq_happened &= ~irq;
++		return true;
++	}
++	return false;
++}
++
+ void replay_soft_interrupts(void)
+ {
+ 	struct pt_regs regs;
+@@ -79,18 +108,25 @@ void replay_soft_interrupts(void)
+ 	 * recurse into this function. Don't keep any state across
+ 	 * interrupt handler calls which may change underneath us.
+ 	 *
++	 * Softirqs can not be disabled over replay to stop this recursion
++	 * because interrupts taken in idle code may require RCU softirq
++	 * to run in the irq RCU tracking context. This is a hard problem
++	 * to fix without changes to the softirq or idle layer.
++	 *
+ 	 * We use local_paca rather than get_paca() to avoid all the
+ 	 * debug_smp_processor_id() business in this low level function.
  	 */
- 	if (!(local_paca->irq_happened & PACA_IRQ_HARD_DIS)) {
--		if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
--			BUG_ON(!(regs->msr & MSR_EE));
-+		INT_SOFT_MASK_BUG_ON(regs, !(regs->msr & MSR_EE));
- 		__hard_irq_enable();
- 	} else {
- 		__hard_RI_enable();
-@@ -194,20 +206,15 @@ static inline void interrupt_enter_prepare(struct pt_regs *regs)
- 		 * CT_WARN_ON comes here via program_check_exception,
- 		 * so avoid recursion.
- 		 */
--		if (TRAP(regs) != INTERRUPT_PROGRAM) {
-+		if (TRAP(regs) != INTERRUPT_PROGRAM)
- 			CT_WARN_ON(ct_state() != CONTEXT_KERNEL &&
- 				   ct_state() != CONTEXT_IDLE);
--			if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
--				BUG_ON(is_implicit_soft_masked(regs));
--		}
--
--		/* Move this under a debugging check */
--		if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG) &&
--				arch_irq_disabled_regs(regs))
--			BUG_ON(search_kernel_restart_table(regs->nip));
-+		INT_SOFT_MASK_BUG_ON(regs, is_implicit_soft_masked(regs));
-+		INT_SOFT_MASK_BUG_ON(regs, arch_irq_disabled_regs(regs) &&
-+					   search_kernel_restart_table(regs->nip));
- 	}
--	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
--		BUG_ON(!arch_irq_disabled_regs(regs) && !(regs->msr & MSR_EE));
-+	INT_SOFT_MASK_BUG_ON(regs, !arch_irq_disabled_regs(regs) &&
-+				   !(regs->msr & MSR_EE));
- #endif
  
- 	booke_restore_dbcr0();
++	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG)) {
++		WARN_ON_ONCE(mfmsr() & MSR_EE);
++		WARN_ON(!(local_paca->irq_happened & PACA_IRQ_HARD_DIS));
++	}
++
+ 	ppc_save_regs(&regs);
+ 	regs.softe = IRQS_ENABLED;
+ 	regs.msr |= MSR_EE;
+ 
+ again:
+-	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
+-		WARN_ON_ONCE(mfmsr() & MSR_EE);
+-
+ 	/*
+ 	 * Force the delivery of pending soft-disabled interrupts on PS3.
+ 	 * Any HV call will have this side effect.
+@@ -105,56 +141,47 @@ void replay_soft_interrupts(void)
+ 	 * This is a higher priority interrupt than the others, so
+ 	 * replay it first.
+ 	 */
+-	if (IS_ENABLED(CONFIG_PPC_BOOK3S) && (local_paca->irq_happened & PACA_IRQ_HMI)) {
+-		local_paca->irq_happened &= ~PACA_IRQ_HMI;
++	if (IS_ENABLED(CONFIG_PPC_BOOK3S) &&
++	    irq_happened_test_and_clear(PACA_IRQ_HMI)) {
+ 		regs.trap = INTERRUPT_HMI;
+ 		handle_hmi_exception(&regs);
+-		if (!(local_paca->irq_happened & PACA_IRQ_HARD_DIS))
+-			hard_irq_disable();
++		next_interrupt(&regs);
+ 	}
+ 
+-	if (local_paca->irq_happened & PACA_IRQ_DEC) {
+-		local_paca->irq_happened &= ~PACA_IRQ_DEC;
++	if (irq_happened_test_and_clear(PACA_IRQ_DEC)) {
+ 		regs.trap = INTERRUPT_DECREMENTER;
+ 		timer_interrupt(&regs);
+-		if (!(local_paca->irq_happened & PACA_IRQ_HARD_DIS))
+-			hard_irq_disable();
++		next_interrupt(&regs);
+ 	}
+ 
+-	if (local_paca->irq_happened & PACA_IRQ_EE) {
+-		local_paca->irq_happened &= ~PACA_IRQ_EE;
++	if (irq_happened_test_and_clear(PACA_IRQ_EE)) {
+ 		regs.trap = INTERRUPT_EXTERNAL;
+ 		do_IRQ(&regs);
+-		if (!(local_paca->irq_happened & PACA_IRQ_HARD_DIS))
+-			hard_irq_disable();
++		next_interrupt(&regs);
+ 	}
+ 
+-	if (IS_ENABLED(CONFIG_PPC_DOORBELL) && (local_paca->irq_happened & PACA_IRQ_DBELL)) {
+-		local_paca->irq_happened &= ~PACA_IRQ_DBELL;
++	if (IS_ENABLED(CONFIG_PPC_DOORBELL) &&
++	    irq_happened_test_and_clear(PACA_IRQ_DBELL)) {
+ 		regs.trap = INTERRUPT_DOORBELL;
+ 		doorbell_exception(&regs);
+-		if (!(local_paca->irq_happened & PACA_IRQ_HARD_DIS))
+-			hard_irq_disable();
++		next_interrupt(&regs);
+ 	}
+ 
+ 	/* Book3E does not support soft-masking PMI interrupts */
+-	if (IS_ENABLED(CONFIG_PPC_BOOK3S) && (local_paca->irq_happened & PACA_IRQ_PMI)) {
+-		local_paca->irq_happened &= ~PACA_IRQ_PMI;
++	if (IS_ENABLED(CONFIG_PPC_BOOK3S) &&
++	    irq_happened_test_and_clear(PACA_IRQ_PMI)) {
+ 		regs.trap = INTERRUPT_PERFMON;
+ 		performance_monitor_exception(&regs);
+-		if (!(local_paca->irq_happened & PACA_IRQ_HARD_DIS))
+-			hard_irq_disable();
++		next_interrupt(&regs);
+ 	}
+ 
+-	if (local_paca->irq_happened & ~PACA_IRQ_HARD_DIS) {
+-		/*
+-		 * We are responding to the next interrupt, so interrupt-off
+-		 * latencies should be reset here.
+-		 */
+-		trace_hardirqs_on();
+-		trace_hardirqs_off();
++	/*
++	 * Softirq processing can enable and disable interrupts, which can
++	 * result in new irqs becoming pending. Must keep looping until we
++	 * have cleared out all pending interrupts.
++	 */
++	if (local_paca->irq_happened & ~PACA_IRQ_HARD_DIS)
+ 		goto again;
+-	}
+ }
+ 
+ #if defined(CONFIG_PPC_BOOK3S_64) && defined(CONFIG_PPC_KUAP)
+@@ -270,10 +297,12 @@ notrace void arch_local_irq_restore(unsigned long mask)
+ 	trace_hardirqs_off();
+ 
+ 	replay_soft_interrupts_irqrestore();
+-	local_paca->irq_happened = 0;
+ 
+ 	trace_hardirqs_on();
+ 	irq_soft_mask_set(IRQS_ENABLED);
++	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
++		WARN_ON(local_paca->irq_happened != PACA_IRQ_HARD_DIS);
++	local_paca->irq_happened = 0;
+ 	__hard_irq_enable();
+ 	preempt_enable();
+ }
 -- 
 2.37.2
 
