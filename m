@@ -1,38 +1,95 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB6B05ED23F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 02:52:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F1795ED240
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 02:52:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4McdHL3xbYz3f3n
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 10:51:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4McdJ50jDxz3f6J
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 10:52:37 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gqPkCoAQ;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gqPkCoAQ;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=srs0=56q7=z5=goodmis.org=rostedt@kernel.org; receiver=<UNKNOWN>)
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=lyude@redhat.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gqPkCoAQ;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gqPkCoAQ;
+	dkim-atps=neutral
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mbs5x0kySz3bP1
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Sep 2022 04:41:08 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 70D3BB80D67;
-	Mon, 26 Sep 2022 18:41:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8346C433D7;
-	Mon, 26 Sep 2022 18:40:49 +0000 (UTC)
-Date: Mon, 26 Sep 2022 14:41:57 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH v2 33/44] ftrace: WARN on rcuidle
-Message-ID: <20220926144157.0406dfbb@gandalf.local.home>
-In-Reply-To: <20220919101522.573936213@infradead.org>
-References: <20220919095939.761690562@infradead.org>
-	<20220919101522.573936213@infradead.org>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mbwrx46byz30R7
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Sep 2022 07:30:07 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1664227803;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WoZ9fgngRao8IT+B8E9l7WqjGAnK52AtXGsAOFoOmwE=;
+	b=gqPkCoAQEXqORUk3o6im4JzSArv6xL3j/IDtTmL469ivnDe5yMrRCk9Xr53ETfsGaUYo6m
+	tQb7OKQjmCMxAOJvxQRYcBq8iHB37974sy+5Cmi0kIMi3KvoZRYOL22cxpdWpY7tOSg7d6
+	nHV4I6mtZTWDKCjOkpdVbhKordrh4qs=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1664227803;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WoZ9fgngRao8IT+B8E9l7WqjGAnK52AtXGsAOFoOmwE=;
+	b=gqPkCoAQEXqORUk3o6im4JzSArv6xL3j/IDtTmL469ivnDe5yMrRCk9Xr53ETfsGaUYo6m
+	tQb7OKQjmCMxAOJvxQRYcBq8iHB37974sy+5Cmi0kIMi3KvoZRYOL22cxpdWpY7tOSg7d6
+	nHV4I6mtZTWDKCjOkpdVbhKordrh4qs=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-249-_-YT0D0XP2asH_RuC0GcsA-1; Mon, 26 Sep 2022 17:30:00 -0400
+X-MC-Unique: _-YT0D0XP2asH_RuC0GcsA-1
+Received: by mail-qk1-f200.google.com with SMTP id h7-20020a05620a400700b006cebec84734so5990246qko.23
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Sep 2022 14:30:00 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:user-agent:organization
+         :references:in-reply-to:date:cc:to:from:subject:message-id
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=WoZ9fgngRao8IT+B8E9l7WqjGAnK52AtXGsAOFoOmwE=;
+        b=uDTLR0sHHZOv1BZUsBAMDPfX3TrfZELrGNlkMad+iaMVK83FyRKPpo90/yXRZhl3sV
+         0LSanAtOaQlwU7uuyyXmCiCDLsuUirPIRbsDuPVceGO3vJnp+aekiqoAzDBYTW1FtSCR
+         zjHwPVi/EVwjGU/oi/du+CdwC71ZYTTTmVn4k0+1sSQwSa5m9KNUt/rF0P3hIIYmeRG3
+         s9/kvUXq9D0P/ub97v5E8SpgVLChhQTUvr6dnSOPb3xdCG4crNVtFOf8sAoevcuQ6wTN
+         j0NahPDSVneVPj0kmCyIHqXDmKlsPK8dgx2ShT7h9Qwmun7p1PnNi0LSFmtgjvVCnDc+
+         w/RA==
+X-Gm-Message-State: ACrzQf0go34nTl1vKpeDcMaInGFt17GWprtZFSg/letxHNa5mFhf7uri
+	5ueMNPxGo/eVuBE0fs/TLzup4jwM5TvNjzAWS/qQfgIWP6Srsbr742spNRRyJ3vkseyOM587IWa
+	fiLrcwQJoCV5tJlcedJyuhJrDMg==
+X-Received: by 2002:a05:620a:2987:b0:6ce:c029:5f03 with SMTP id r7-20020a05620a298700b006cec0295f03mr15801504qkp.157.1664227799830;
+        Mon, 26 Sep 2022 14:29:59 -0700 (PDT)
+X-Google-Smtp-Source: AMsMyM5ooMLHPNGYGRP1IOKqLF5TpXz9XfH1OcMI3VMSbPod5U0TpcrkzXrJ+Bq2BgRX5qr4d9CtNA==
+X-Received: by 2002:a05:620a:2987:b0:6ce:c029:5f03 with SMTP id r7-20020a05620a298700b006cec0295f03mr15801473qkp.157.1664227799582;
+        Mon, 26 Sep 2022 14:29:59 -0700 (PDT)
+Received: from ?IPv6:2600:4040:5c48:e00:e786:1aff:4f5c:c549? ([2600:4040:5c48:e00:e786:1aff:4f5c:c549])
+        by smtp.gmail.com with ESMTPSA id y14-20020a05620a25ce00b006cfa7b944fdsm1686678qko.16.2022.09.26.14.29.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Sep 2022 14:29:57 -0700 (PDT)
+Message-ID: <d839ead12d782a184ca104d6b5f62184c0f178dd.camel@redhat.com>
+Subject: Re: [PATCH 5/7] nouveau/dmem: Refactor nouveau_dmem_fault_copy_one()
+From: Lyude Paul <lyude@redhat.com>
+To: Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org, Andrew Morton
+	 <akpm@linux-foundation.org>
+Date: Mon, 26 Sep 2022 17:29:55 -0400
+In-Reply-To: <ea208905d853a0fdc277c2b5e74742593e53f767.1664171943.git-series.apopple@nvidia.com>
+References: <cover.f15b25597fc3afd45b144df863eeca3b2c13f9f4.1664171943.git-series.apopple@nvidia.com>
+	 <ea208905d853a0fdc277c2b5e74742593e53f767.1664171943.git-series.apopple@nvidia.com>
+Organization: Red Hat Inc.
+User-Agent: Evolution 3.42.4 (3.42.4-2.fc35)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
 X-Mailman-Approved-At: Wed, 28 Sep 2022 10:50:40 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -46,84 +103,137 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: juri.lelli@redhat.com, rafael@kernel.org, catalin.marinas@arm.com, linus.walleij@linaro.org, bsegall@google.com, guoren@kernel.org, pavel@ucw.cz, agordeev@linux.ibm.com, srivatsa@csail.mit.edu, linux-arch@vger.kernel.org, vincent.guittot@linaro.org, chenhuacai@kernel.org, linux-acpi@vger.kernel.org, agross@kernel.org, geert@linux-m68k.org, linux-imx@nxp.com, vgupta@kernel.org, mattst88@gmail.com, borntraeger@linux.ibm.com, mturquette@baylibre.com, sammy@sammy.net, pmladek@suse.com, linux-pm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, linux-um@lists.infradead.org, npiggin@gmail.com, tglx@linutronix.de, linux-omap@vger.kernel.org, dietmar.eggemann@arm.com, andreyknvl@gmail.com, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, senozhatsky@chromium.org, svens@linux.ibm.com, jolsa@kernel.org, tj@kernel.org, Andrew Morton <akpm@linux-foundation.org>, mark.rutland@arm.com, linux-ia64@vger.kernel.org, dave.hansen@linux.intel.com, vir
- tualization@lists.linux-foundation.org, James.Bottomley@HansenPartnership.com, jcmvbkbc@gmail.com, thierry.reding@gmail.com, kernel@xen0n.name, cl@linux.com, linux-s390@vger.kernel.org, vschneid@redhat.com, john.ogness@linutronix.de, ysato@users.sourceforge.jp, linux-sh@vger.kernel.org, festevam@gmail.com, deller@gmx.de, daniel.lezcano@linaro.org, jonathanh@nvidia.com, dennis@kernel.org, lenb@kernel.org, linux-xtensa@linux-xtensa.org, kernel@pengutronix.de, gor@linux.ibm.com, linux-arm-msm@vger.kernel.org, linux-alpha@vger.kernel.org, linux-m68k@lists.linux-m68k.org, loongarch@lists.linux.dev, shorne@gmail.com, chris@zankel.net, sboyd@kernel.org, dinguyen@kernel.org, bristot@redhat.com, alexander.shishkin@linux.intel.com, fweisbec@gmail.com, lpieralisi@kernel.org, atishp@atishpatra.org, linux@rasmusvillemoes.dk, kasan-dev@googlegroups.com, will@kernel.org, boris.ostrovsky@oracle.com, khilman@kernel.org, linux-csky@vger.kernel.org, pv-drivers@vmware.com, linux-snps-arc@lists.infradea
- d.org, mgorman@suse.de, jacob.jun.pan@linux.intel.com, Arnd Bergmann <arnd@arndb.de>, ulli.kroll@googlemail.com, linux-clk@vger.kernel.org, ink@jurassic.park.msu.ru, bcain@quicinc.com, tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, ryabinin.a.a@gmail.com, sudeep.holla@arm.com, shawnguo@kernel.org, davem@davemloft.net, dalias@libc.org, tony@atomide.com, amakhalov@vmware.com, konrad.dybcio@somainline.org, bjorn.andersson@linaro.org, glider@google.com, hpa@zytor.com, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org, vincenzo.frascino@arm.com, anton.ivanov@cambridgegreys.com, jonas@southpole.se, yury.norov@gmail.com, richard@nod.at, x86@kernel.org, linux@armlinux.org.uk, mingo@redhat.com, aou@eecs.berkeley.edu, hca@linux.ibm.com, richard.henderson@linaro.org, stefan.kristiansson@saunalahti.fi, openrisc@lists.librecores.org, acme@kernel.org, paul.walmsley@sifive.com, linux-tegra@vger.kernel.org, namhyung@kernel.org, andriy.shevchenko@li
- nux.intel.com, jpoimboe@kernel.org, dvyukov@google.com, jgross@suse.com, monstr@monstr.eu, linux-mips@vger.kernel.org, palmer@dabbelt.com, anup@brainfault.org, bp@alien8.de, johannes@sipsolutions.net, linuxppc-dev@lists.ozlabs.org
+Cc: Alex Sierra <alex.sierra@amd.com>, Ralph Campbell <rcampbell@nvidia.com>, "Matthew Wilcox \(Oracle\)" <willy@infradead.org>, dri-devel@lists.freedesktop.org, Karol Herbst <kherbst@redhat.com>, nouveau@lists.freedesktop.org, David Airlie <airlied@linux.ie>, Felix Kuehling <Felix.Kuehling@amd.com>, "Pan, Xinhui" <Xinhui.Pan@amd.com>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Ben Skeggs <bskeggs@redhat.com>, Daniel Vetter <daniel@ffwll.ch>, John Hubbard <jhubbard@nvidia.com>, Alex Deucher <alexander.deucher@amd.com>, Dan Williams <dan.j.williams@intel.com>, amd-gfx@lists.freedesktop.org, linuxppc-dev@lists.ozlabs.org, Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>, Jason Gunthorpe <jgg@nvidia.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-Nit, the subject should have "tracing:" an not "ftrace:" as the former
-encompasses the tracing infrastructure and the latter is for the function
-hook part of that.
-
-On Mon, 19 Sep 2022 12:00:12 +0200
-Peter Zijlstra <peterz@infradead.org> wrote:
-
-> CONFIG_GENERIC_ENTRY disallows any and all tracing when RCU isn't
-> enabled.
+On Mon, 2022-09-26 at 16:03 +1000, Alistair Popple wrote:
+> nouveau_dmem_fault_copy_one() is used during handling of CPU faults via
+> the migrate_to_ram() callback and is used to copy data from GPU to CPU
+> memory. It is currently specific to fault handling, however a future
+> patch implementing eviction of data during teardown needs similar
+> functionality.
 > 
-> XXX if s390 (the only other GENERIC_ENTRY user as of this writing)
-> isn't comfortable with this, we could switch to
-> HAVE_NOINSTR_VALIDATION which is x86_64 only atm.
+> Refactor out the core functionality so that it is not specific to fault
+> handling.
 > 
-> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Signed-off-by: Alistair Popple <apopple@nvidia.com>
 > ---
->  include/linux/tracepoint.h |   13 ++++++++++++-
->  kernel/trace/trace.c       |    3 +++
->  2 files changed, 15 insertions(+), 1 deletion(-)
+>  drivers/gpu/drm/nouveau/nouveau_dmem.c | 59 +++++++++++++--------------
+>  1 file changed, 29 insertions(+), 30 deletions(-)
 > 
-> --- a/include/linux/tracepoint.h
-> +++ b/include/linux/tracepoint.h
-> @@ -178,6 +178,16 @@ static inline struct tracepoint *tracepo
->  #endif /* CONFIG_HAVE_STATIC_CALL */
->  
->  /*
-> + * CONFIG_GENERIC_ENTRY archs are expected to have sanitized entry and idle
-> + * code that disallow any/all tracing/instrumentation when RCU isn't watching.
-> + */
-> +#ifdef CONFIG_GENERIC_ENTRY
-> +#define RCUIDLE_COND(rcuidle)	(rcuidle)
-> +#else
-
-Should probably move the below comment to here:
-
- /* srcu can't be used from NMI */
-
-> +#define RCUIDLE_COND(rcuidle)	(rcuidle && in_nmi())
-> +#endif
-> +
-> +/*
->   * it_func[0] is never NULL because there is at least one element in the array
->   * when the array itself is non NULL.
->   */
-> @@ -189,7 +199,8 @@ static inline struct tracepoint *tracepo
->  			return;						\
->  									\
->  		/* srcu can't be used from NMI */			\
-
-And remove the above.
-
--- Steve
-
-> -		WARN_ON_ONCE(rcuidle && in_nmi());			\
-> +		if (WARN_ON_ONCE(RCUIDLE_COND(rcuidle)))		\
-> +			return;						\
->  									\
->  		/* keep srcu and sched-rcu usage consistent */		\
->  		preempt_disable_notrace();				\
-> --- a/kernel/trace/trace.c
-> +++ b/kernel/trace/trace.c
-> @@ -3104,6 +3104,9 @@ void __trace_stack(struct trace_array *t
->  		return;
+> diff --git a/drivers/gpu/drm/nouveau/nouveau_dmem.c b/drivers/gpu/drm/nouveau/nouveau_dmem.c
+> index f9234ed..66ebbd4 100644
+> --- a/drivers/gpu/drm/nouveau/nouveau_dmem.c
+> +++ b/drivers/gpu/drm/nouveau/nouveau_dmem.c
+> @@ -139,44 +139,25 @@ static void nouveau_dmem_fence_done(struct nouveau_fence **fence)
 >  	}
+>  }
 >  
-> +	if (WARN_ON_ONCE(IS_ENABLED(CONFIG_GENERIC_ENTRY)))
-> +		return;
+> -static vm_fault_t nouveau_dmem_fault_copy_one(struct nouveau_drm *drm,
+> -		struct vm_fault *vmf, struct migrate_vma *args,
+> -		dma_addr_t *dma_addr)
+> +static int nouveau_dmem_copy_one(struct nouveau_drm *drm, struct page *spage,
+> +				struct page *dpage, dma_addr_t *dma_addr)
+>  {
+>  	struct device *dev = drm->dev->dev;
+> -	struct page *dpage, *spage;
+> -	struct nouveau_svmm *svmm;
+> -
+> -	spage = migrate_pfn_to_page(args->src[0]);
+> -	if (!spage || !(args->src[0] & MIGRATE_PFN_MIGRATE))
+> -		return 0;
+>  
+> -	dpage = alloc_page_vma(GFP_HIGHUSER, vmf->vma, vmf->address);
+> -	if (!dpage)
+> -		return VM_FAULT_SIGBUS;
+>  	lock_page(dpage);
+>  
+>  	*dma_addr = dma_map_page(dev, dpage, 0, PAGE_SIZE, DMA_BIDIRECTIONAL);
+>  	if (dma_mapping_error(dev, *dma_addr))
+> -		goto error_free_page;
+> +		return -EIO;
+>  
+> -	svmm = spage->zone_device_data;
+> -	mutex_lock(&svmm->mutex);
+> -	nouveau_svmm_invalidate(svmm, args->start, args->end);
+>  	if (drm->dmem->migrate.copy_func(drm, 1, NOUVEAU_APER_HOST, *dma_addr,
+> -			NOUVEAU_APER_VRAM, nouveau_dmem_page_addr(spage)))
+> -		goto error_dma_unmap;
+> -	mutex_unlock(&svmm->mutex);
+> +					 NOUVEAU_APER_VRAM,
+> +					 nouveau_dmem_page_addr(spage))) {
+> +		dma_unmap_page(dev, *dma_addr, PAGE_SIZE, DMA_BIDIRECTIONAL);
+> +		return -EIO;
+> +	}
+
+Feel free to just align this with the starting (, as long as it doesn't go
+above 100 characters it doesn't really matter imho and would look nicer that
+way.
+
+Otherwise:
+
+Reviewed-by: Lyude Paul <lyude@redhat.com>
+
+Will look at the other patch in a moment
+
+>  
+> -	args->dst[0] = migrate_pfn(page_to_pfn(dpage));
+>  	return 0;
+> -
+> -error_dma_unmap:
+> -	mutex_unlock(&svmm->mutex);
+> -	dma_unmap_page(dev, *dma_addr, PAGE_SIZE, DMA_BIDIRECTIONAL);
+> -error_free_page:
+> -	__free_page(dpage);
+> -	return VM_FAULT_SIGBUS;
+>  }
+>  
+>  static vm_fault_t nouveau_dmem_migrate_to_ram(struct vm_fault *vmf)
+> @@ -184,9 +165,11 @@ static vm_fault_t nouveau_dmem_migrate_to_ram(struct vm_fault *vmf)
+>  	struct nouveau_drm *drm = page_to_drm(vmf->page);
+>  	struct nouveau_dmem *dmem = drm->dmem;
+>  	struct nouveau_fence *fence;
+> +	struct nouveau_svmm *svmm;
+> +	struct page *spage, *dpage;
+>  	unsigned long src = 0, dst = 0;
+>  	dma_addr_t dma_addr = 0;
+> -	vm_fault_t ret;
+> +	vm_fault_t ret = 0;
+>  	struct migrate_vma args = {
+>  		.vma		= vmf->vma,
+>  		.start		= vmf->address,
+> @@ -207,9 +190,25 @@ static vm_fault_t nouveau_dmem_migrate_to_ram(struct vm_fault *vmf)
+>  	if (!args.cpages)
+>  		return 0;
+>  
+> -	ret = nouveau_dmem_fault_copy_one(drm, vmf, &args, &dma_addr);
+> -	if (ret || dst == 0)
+> +	spage = migrate_pfn_to_page(src);
+> +	if (!spage || !(src & MIGRATE_PFN_MIGRATE))
+> +		goto done;
 > +
->  	/*
->  	 * When an NMI triggers, RCU is enabled via ct_nmi_enter(),
->  	 * but if the above rcu_is_watching() failed, then the NMI
-> 
+> +	dpage = alloc_page_vma(GFP_HIGHUSER, vmf->vma, vmf->address);
+> +	if (!dpage)
+> +		goto done;
+> +
+> +	dst = migrate_pfn(page_to_pfn(dpage));
+> +
+> +	svmm = spage->zone_device_data;
+> +	mutex_lock(&svmm->mutex);
+> +	nouveau_svmm_invalidate(svmm, args.start, args.end);
+> +	ret = nouveau_dmem_copy_one(drm, spage, dpage, &dma_addr);
+> +	mutex_unlock(&svmm->mutex);
+> +	if (ret) {
+> +		ret = VM_FAULT_SIGBUS;
+>  		goto done;
+> +	}
+>  
+>  	nouveau_fence_new(dmem->migrate.chan, false, &fence);
+>  	migrate_vma_pages(&args);
+
+-- 
+Cheers,
+ Lyude Paul (she/her)
+ Software Engineer at Red Hat
 
