@@ -1,66 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 314855E990E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Sep 2022 07:59:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D25425E9910
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Sep 2022 08:00:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MbXCc6Lxfz3bZ2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Sep 2022 15:59:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MbXDN5g60z3fBQ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Sep 2022 16:00:36 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=LRmM9CVZ;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=lseCb+JV;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::435; helo=mail-pf1-x435.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102e; helo=mail-pj1-x102e.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=LRmM9CVZ;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=lseCb+JV;
 	dkim-atps=neutral
-Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
+Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MbX7p6QsLz3brh
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Sep 2022 15:56:38 +1000 (AEST)
-Received: by mail-pf1-x435.google.com with SMTP id b75so5621634pfb.7
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Sep 2022 22:56:38 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MbX7s38xpz3c1Q
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Sep 2022 15:56:41 +1000 (AEST)
+Received: by mail-pj1-x102e.google.com with SMTP id rt12so5287473pjb.1
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Sep 2022 22:56:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date;
-        bh=sYSpv5QERNvLxR32H6o+2VcLaf/RGvB/HyqdkhQ/8Lk=;
-        b=LRmM9CVZ+v6eLzrQmCv4jlns/Cxzus4Ru/2H2ylmQ9Y1Z2oXY+5Zxbi16//Z5+ExMc
-         8UJo8NbIkFLOm6K6O9sDvFSEX8/qdTGi4iOTAs5n4tzbDAlGqyzPeAAkFsS8SI28emkZ
-         Ns72XmH3Xbxh54A0wNcxOi2LFB6yWeB9wkLZ9ZWTImZJVU5Ypx1Qe4TZtaoXzrdE1fkt
-         XawLIhQxhpjzMmNgSHtiOPOrnzUDsoYeWzL/qzZrGFtZry0nB7VJ46ueAFAzPKb2lsun
-         HSzprm44F/4pajAx57a+sn2wanC+1LqT27EFjVJ/jmMH/sj8uLa71HDvTfPNXZn2HLPz
-         TvrQ==
+        bh=zhCL+sq8ldJZ8+xpHPumeVopAsycKiI4g3DVUhg8zvI=;
+        b=lseCb+JVFFihECF4BLrQsyI2JX3BqoH+DmV3ollGf6Mgxn+VnDOjTHxw+cq8G6NrXa
+         arNyM89LbNx86FhTyJGoXJ2ZHofRKa9PxUn26Dl55Rp7hK3Wrp3Qt8HuONnm3KNcmp/C
+         pp476K1wnECTHk3Xh2P5tag4KuPE17vXznm98XQhh2OkRuDwD470iCSfiE89Q4F3q2UC
+         /mUlZkjRA186fSU/dg51L3GRAGJmxYGZ8pGGZuBxqh1b8y/heIWfQ40R8H0L2OoWX2dX
+         y6e42V1aNSv1rytM0fIZ4iWTUSFEL69cJQOMDsLvehJxM3fG27RXWVgOUall28UnE5gz
+         Aa7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date;
-        bh=sYSpv5QERNvLxR32H6o+2VcLaf/RGvB/HyqdkhQ/8Lk=;
-        b=J1HIxnZ4vj7ZGQijfiOD1zri6hQrVKMJf+ueAHMpvNM8Kfs+PP4vaHBxUq/UjnWT2P
-         HGpUQERaxLSRBh+wkNnRRuhBOzhxg0dLRQndgNeFZ8t+NHupxAflN4NhrwA1a1GPlgeQ
-         lHxQ29SQxMQd9f7iQiuFZNaBKveyUyQksmbAlkaDcpqmHY0X9FKTTjxGXzWDMhhBB6UJ
-         ax7IU19RWcT6CoNKhB1D6UjEEuklMP/PmlKc/8TmDHwZ/4sWemq1sykG8MsZpPljAcuC
-         /0P8gPUHL5JAxnylOg+6VlTtAEGztC8y3vvQmmYbxughf/OFWj9YmswZAQZbGdkkA8iB
-         PDeg==
-X-Gm-Message-State: ACrzQf0fD3uDiL5yLtcQ9HEVWxqqGrHa4N3G4b61Or7rs9VFRDAfCb4t
-	RmVmOVJZDeTLl8cq+8zBOLFoOPn/7Y0/cg==
-X-Google-Smtp-Source: AMsMyM6dQcDTwgRntAVFPDLh0mPYkQ+qBO00DMYwKoxWwRUydErLLDE/mkFYHz4taAazKmhoCr5H1A==
-X-Received: by 2002:a05:6a00:1488:b0:542:78a:3f8a with SMTP id v8-20020a056a00148800b00542078a3f8amr21881397pfu.85.1664171796117;
-        Sun, 25 Sep 2022 22:56:36 -0700 (PDT)
+        bh=zhCL+sq8ldJZ8+xpHPumeVopAsycKiI4g3DVUhg8zvI=;
+        b=6+heTj6EWEC8WRyHY7xBS8/9LdN2CiFuKS3j7NanoMlWqHCivlcaLII91cUe8wUorN
+         jakPY+ntiab8nYAiGJzQnpYPCED4sk2SB4y6lcmq2EchG6KkKHS1s6UIuLcu1bb9lox9
+         I2JNBjAaC2QDcE/bjFH9nFH3eGAMERHpvZxXD0W8eRToBKjxgAfiudmnefZs74TFoR9u
+         C6Bl4lJ/7XheIlB8VM+75RheNIFdZZM9BSJq15SgB2GM2A3s9PBBd+qysDwb0G4zqSbT
+         fn501oVlbjy2StZ0k+N0rkJBvJzdjoFTtNWpEk1rKAbpJ+7LrMq87cATpJZx3vhXyDOf
+         WTiA==
+X-Gm-Message-State: ACrzQf0AwywBdfTa3FFrp1MF5qJc8c6QCL6ONShWUqA1QrLFPpvrSJrd
+	5WSIhxkbVX4E2PKyLWgynK7r9bQb37DRsA==
+X-Google-Smtp-Source: AMsMyM5NrrcXhMGk4z96muAM290yM+ekBMMb4d4jom2K7xlgtjXpuhIu8w6krzbjRQa8Ur3uhTtTAQ==
+X-Received: by 2002:a17:902:ce85:b0:178:292b:a87a with SMTP id f5-20020a170902ce8500b00178292ba87amr20312718plg.167.1664171798947;
+        Sun, 25 Sep 2022 22:56:38 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com (203-219-181-119.static.tpgi.com.au. [203.219.181.119])
-        by smtp.gmail.com with ESMTPSA id pv7-20020a17090b3c8700b00203a4f70b90sm5628075pjb.45.2022.09.25.22.56.34
+        by smtp.gmail.com with ESMTPSA id pv7-20020a17090b3c8700b00203a4f70b90sm5628075pjb.45.2022.09.25.22.56.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 25 Sep 2022 22:56:35 -0700 (PDT)
+        Sun, 25 Sep 2022 22:56:37 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 4/5] powerpc/64: don't set boot CPU's r13 to paca until the structure is set up
-Date: Mon, 26 Sep 2022 15:56:19 +1000
-Message-Id: <20220926055620.2676869-5-npiggin@gmail.com>
+Subject: [PATCH v2 5/5] powerpc/64s/interrupt: halt early boot interrupts if paca is not set up
+Date: Mon, 26 Sep 2022 15:56:20 +1000
+Message-Id: <20220926055620.2676869-6-npiggin@gmail.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20220926055620.2676869-1-npiggin@gmail.com>
 References: <20220926055620.2676869-1-npiggin@gmail.com>
@@ -81,74 +81,84 @@ Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The idea is to get to the point where if r13 is non-zero, then it should
-contain a reasonable paca. This can be used in early boot program check
-and machine check handlers to avoid running off into the weeds if they
-hit before r13 has a paca.
+Ensure r13 is zero from very early in boot until it gets set to the
+boot paca pointer. This allows early program and mce handlers to halt
+if there is no valid paca, rather than potentially run off into the
+weeds. This preserves register and memory contents for low level
+debugging tools.
+
+Nothing could be printed to console at this point in any case because
+even udbg is only set up after the boot paca is set, so this shouldn't
+be missed.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/setup_64.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ arch/powerpc/kernel/exceptions-64s.S | 15 +++++++++++++--
+ arch/powerpc/kernel/head_64.S        |  3 +++
+ arch/powerpc/kernel/setup_64.c       |  1 +
+ 3 files changed, 17 insertions(+), 2 deletions(-)
 
+diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
+index 9b853fdd59de..2f3b8d8a7ef6 100644
+--- a/arch/powerpc/kernel/exceptions-64s.S
++++ b/arch/powerpc/kernel/exceptions-64s.S
+@@ -724,8 +724,8 @@ END_FTR_SECTION_IFSET(CPU_FTR_CFAR)
+  * userspace starts.
+  */
+ .macro EARLY_BOOT_FIXUP
+-#ifdef CONFIG_CPU_LITTLE_ENDIAN
+ BEGIN_FTR_SECTION
++#ifdef CONFIG_CPU_LITTLE_ENDIAN
+ 	tdi   0,0,0x48    // Trap never, or in reverse endian: b . + 8
+ 	b     2f          // Skip trampoline if endian is correct
+ 	.long 0xa643707d  // mtsprg  0, r11      Backup r11
+@@ -752,8 +752,19 @@ BEGIN_FTR_SECTION
+ 	mtsrr0 r11        // Restore SRR0
+ 	mfsprg r11, 0     // Restore r11
+ 2:
+-END_FTR_SECTION(0, 1)     // nop out after boot
+ #endif
++	/*
++	 * program check could hit at any time, and pseries can not block
++	 * MSR[ME] in early boot. So check if there is anything useful in r13
++	 * yet, and spin forever if not.
++	 */
++	mtsprg	0, r11
++	mfcr	r11
++	cmpdi	r13, 0
++	beq	.
++	mtcr	r11
++	mfsprg	r11, 0
++END_FTR_SECTION(0, 1)     // nop out after boot
+ .endm
+ 
+ /*
+diff --git a/arch/powerpc/kernel/head_64.S b/arch/powerpc/kernel/head_64.S
+index cf2c08902c05..6aeba8a9814e 100644
+--- a/arch/powerpc/kernel/head_64.S
++++ b/arch/powerpc/kernel/head_64.S
+@@ -494,6 +494,9 @@ __start_initialization_multiplatform:
+ 	/* Make sure we are running in 64 bits mode */
+ 	bl	enable_64b_mode
+ 
++	/* Zero r13 (paca) so early program check / mce don't use it */
++	li	r13,0
++
+ 	/* Get TOC pointer (current runtime address) */
+ 	bl	relative_toc
+ 
 diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_64.c
-index e68d316b993e..83e564564f63 100644
+index 83e564564f63..4cb057e6b3aa 100644
 --- a/arch/powerpc/kernel/setup_64.c
 +++ b/arch/powerpc/kernel/setup_64.c
-@@ -177,10 +177,10 @@ early_param("smt-enabled", early_smt_enabled);
- #endif /* CONFIG_SMP */
- 
- /** Fix up paca fields required for the boot cpu */
--static void __init fixup_boot_paca(void)
-+static void __init fixup_boot_paca(struct paca_struct *boot_paca)
- {
- 	/* The boot cpu is started */
--	get_paca()->cpu_start = 1;
-+	boot_paca->cpu_start = 1;
- #ifdef CONFIG_PPC_BOOK3S_64
- 	/*
- 	 * Give the early boot machine check stack somewhere to use, use
-@@ -188,14 +188,14 @@ static void __init fixup_boot_paca(void)
- 	 * deep stack usage in early init so shouldn't overflow it or overwrite
- 	 * things.
- 	 */
--	get_paca()->mc_emergency_sp = (void *)&init_thread_union +
-+	boot_paca->mc_emergency_sp = (void *)&init_thread_union +
- 		(THREAD_SIZE/2);
- #endif
- 	/* Allow percpu accesses to work until we setup percpu data */
--	get_paca()->data_offset = 0;
-+	boot_paca->data_offset = 0;
- 	/* Mark interrupts soft and hard disabled in PACA */
--	irq_soft_mask_set(IRQS_DISABLED);
--	get_paca()->irq_happened = PACA_IRQ_HARD_DIS;
-+	boot_paca->irq_soft_mask = IRQS_DISABLED;
-+	boot_paca->irq_happened = PACA_IRQ_HARD_DIS;
- 	WARN_ON(mfmsr() & MSR_EE);
- }
- 
-@@ -363,8 +363,8 @@ void __init early_setup(unsigned long dt_ptr)
- 	 * what CPU we are on.
+@@ -364,6 +364,7 @@ void __init early_setup(unsigned long dt_ptr)
  	 */
  	initialise_paca(&boot_paca, 0);
--	setup_paca(&boot_paca);
--	fixup_boot_paca();
-+	fixup_boot_paca(&boot_paca);
-+	setup_paca(&boot_paca); /* install the paca into registers */
+ 	fixup_boot_paca(&boot_paca);
++	WARN_ON(local_paca != 0);
+ 	setup_paca(&boot_paca); /* install the paca into registers */
  
  	/* -------- printk is now safe to use ------- */
- 
-@@ -393,8 +393,8 @@ void __init early_setup(unsigned long dt_ptr)
- 		/* Poison paca_ptrs[0] again if it's not the boot cpu */
- 		memset(&paca_ptrs[0], 0x88, sizeof(paca_ptrs[0]));
- 	}
--	setup_paca(paca_ptrs[boot_cpuid]);
--	fixup_boot_paca();
-+	fixup_boot_paca(paca_ptrs[boot_cpuid]);
-+	setup_paca(paca_ptrs[boot_cpuid]); /* install the paca into registers */
- 
- 	/*
- 	 * Configure exception handlers. This include setting up trampolines
 -- 
 2.37.2
 
