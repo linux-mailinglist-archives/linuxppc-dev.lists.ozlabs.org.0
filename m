@@ -2,65 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95BE65E98E0
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Sep 2022 07:43:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C90055E98E3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Sep 2022 07:44:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MbWrp6zxRz3bmW
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Sep 2022 15:43:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MbWsc3y1Qz3c7h
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Sep 2022 15:44:20 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=HRvWwlMi;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=O632LASm;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1029; helo=mail-pj1-x1029.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52c; helo=mail-pg1-x52c.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=HRvWwlMi;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=O632LASm;
 	dkim-atps=neutral
-Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com [IPv6:2607:f8b0:4864:20::52c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MbWrM2xbkz2xZp
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Sep 2022 15:43:15 +1000 (AEST)
-Received: by mail-pj1-x1029.google.com with SMTP id q9-20020a17090a178900b0020265d92ae3so11298340pja.5
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Sep 2022 22:43:15 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MbWrP0vSFz30NN
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Sep 2022 15:43:16 +1000 (AEST)
+Received: by mail-pg1-x52c.google.com with SMTP id bh13so5615492pgb.4
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Sep 2022 22:43:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date;
-        bh=ofigAa9NvTAwmWDLqAKevaPcrWQb6cU0KX0iFBvDK2k=;
-        b=HRvWwlMiTbkSjyvjiLcLZU2vR2apH3NSLNwTavFpODHCFXCp3q3+88wvFIHTbPLrJ8
-         ac+fEs99e5nOPpJTqFtbVoy6CmL1uxmnHLGXbJQb0D8nyL4t2qZUx1FwFHfkdBkNqLW5
-         uW1lBeyKWsLKcxiIjMQADDMBmzc6gvSnhZyt54v1CN0hZZWr7yYVvZK/rOC4bm1nnzA+
-         ZsrQe+y0SDbqBxU8jGP4gjtbsPavDK4EnC1UzOD/xqJ6AOHEpHsjrrCoK5h4j1HiSOUF
-         mSvdDfzszGAmjOqM+1N5Ha85aQd3drGqbXwJYjArV4upCtRXEGtgcDVEhiWasb5J91W+
-         w5qw==
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date;
+        bh=fzntS4WX1i90+5q+5N/CxBpfx0CbxwrAKxxx53N9RCA=;
+        b=O632LASm7es0XoQWWnlaV0jZXpOkevUkGYPI7jOzFnzIqJazBTo3/G3nB6GRX+8Tik
+         gl5SAgQDRtLsnkSJugpOi6OMmYblbokbxEcWbvtwW73YX8pBsuvNvWvGgY+eQOSpfzej
+         /5Tev82QT6TGGXVpgDrG1BFGkZ54pmH7auebBcoaeE0cdGKBZYiKPVjfVPISxv0TH3o6
+         VGzK/6TAZNtoAqoouG+31B5wZp0Qq/9+Aw6Hlng1YmVYC/zM7U9xZpBeHNfeyRe6FrDR
+         KlEjnZTk324Fu9QvNFiKQxYU1pUCHJjKHz8spBz7tEylrznKtgY6IJwVLaBK2pgScIaI
+         CdNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date;
-        bh=ofigAa9NvTAwmWDLqAKevaPcrWQb6cU0KX0iFBvDK2k=;
-        b=ceKEcaBVBkSFlME6NfNYIeDHeWLft/dnr1gAm2N784HAcASJVPvkMjd/9Lvz7G4Npo
-         DtNnJixVyq+H4RwNLQXerXQn2WGnaoyB9+1icpwb5xOl+SiLmIVrZLA+bB5Llj+UdEt3
-         HnW34OihckLLKgZv1Se9mXN3M9gvpaphwggaEbNGdTifBWFRIXxiSHBGnN9XV5wJj346
-         lXTdXHXBMF2bs1mDNGU1Q6bYajozgSy7BNQksUxrbSWIuT+3/YoYaJtFdffBkHJElN/y
-         lpFncFh6k/b79v+T31zyoWf4C3nYjYARjSFd2bmPJMI4JqZijrNNhO8LSNzp0aQxG2u1
-         wIlg==
-X-Gm-Message-State: ACrzQf20jSGpLYbz90fmaXO6RG/XegzOgkDmOyiKDUd6aXwJA28pTLPb
-	WZodDtl26Qu5wsJSUvHspwHwr0KRyoXb0A==
-X-Google-Smtp-Source: AMsMyM5ApcvtDkA0YdnCnkh+QmuK4uUMbfTvkIf2F42cnmb2Yd3TwMJ4LHWGcGtnrTw1qMDLKDssfw==
-X-Received: by 2002:a17:90b:1e0b:b0:205:bce5:467f with SMTP id pg11-20020a17090b1e0b00b00205bce5467fmr2988232pjb.24.1664170991729;
-        Sun, 25 Sep 2022 22:43:11 -0700 (PDT)
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date;
+        bh=fzntS4WX1i90+5q+5N/CxBpfx0CbxwrAKxxx53N9RCA=;
+        b=4IX89uRIXFkEFPsbBpa4wRAJ0omN9ko+nPatEmhRqH+933eiab9OEGQsQEfkGhacg+
+         typpcMZzFIWDq2fj2Hp7ROZRe9bEQMceDSIqBCWbEKyjOxSyb6F2uAjyF2WSIbuXU9yr
+         RsHsXKD4NvnrPZ0j+XlAGDEGN8KyjDfDPlvBIFbsluSaKfQDF46n88OalVvw8O5k7lU3
+         zBmrKX1gNGfVwUpXMr+BBRg5aHKifyNTLFGYzXO7wRTe9sHc7Dq+YxeyWsQXyDc2kq8O
+         R0P4j2VdOypZi+O2S8dHMAplVF61f/8HYZTtGPpLHeOOd3R4IJ/ZnQxE+DqMxLdMpPJz
+         mr2w==
+X-Gm-Message-State: ACrzQf1p9h+amaBFVkBlVqBOh+wcXaFU1WCgwZ7UDKw3StLrcsbgoqZq
+	MyAQ50YFzGihy/Y5QJHGaELJ0yuUNyTrcA==
+X-Google-Smtp-Source: AMsMyM4LkAV0CPkzfamxhGm2WsOJB67oHCncfgp8dC/Y3XoesJ5AuWTnLujSB750+/s5Jg/gu8MJ3g==
+X-Received: by 2002:a05:6a00:22cb:b0:543:7003:21a1 with SMTP id f11-20020a056a0022cb00b00543700321a1mr21864402pfj.3.1664170994142;
+        Sun, 25 Sep 2022 22:43:14 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com (203-219-181-119.static.tpgi.com.au. [203.219.181.119])
-        by smtp.gmail.com with ESMTPSA id o90-20020a17090a0a6300b002001c9bf22esm5676553pjo.8.2022.09.25.22.43.09
+        by smtp.gmail.com with ESMTPSA id o90-20020a17090a0a6300b002001c9bf22esm5676553pjo.8.2022.09.25.22.43.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 25 Sep 2022 22:43:11 -0700 (PDT)
+        Sun, 25 Sep 2022 22:43:13 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3 0/7] powerpc/64: interrupt soft-mask and context fixes
-Date: Mon, 26 Sep 2022 15:42:58 +1000
-Message-Id: <20220926054305.2671436-1-npiggin@gmail.com>
+Subject: [PATCH v3 1/7] powerpc/64/interrupt: Fix false warning in context tracking due to idle state
+Date: Mon, 26 Sep 2022 15:42:59 +1000
+Message-Id: <20220926054305.2671436-2-npiggin@gmail.com>
 X-Mailer: git-send-email 2.37.2
+In-Reply-To: <20220926054305.2671436-1-npiggin@gmail.com>
+References: <20220926054305.2671436-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -78,33 +81,30 @@ Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-No real changes since last posting, I just pulled fixes from several
-series together and rearranged them and updated changelogs slightly.
+Commit 171476775d32 ("context_tracking: Convert state to atomic_t")
+added a CONTEXT_IDLE state which can be encountered by interrupts from
+kernel mode in the idle thread, causing a false positive warning.
 
-Thanks,
-Nick
+Fixes: 171476775d32 ("context_tracking: Convert state to atomic_t")
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ arch/powerpc/include/asm/interrupt.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Nicholas Piggin (7):
-  powerpc/64/interrupt: Fix false warning in context tracking due to
-    idle state
-  powerpc/64: mark irqs hard disabled in boot paca
-  powerpc/64/interrupt: Fix return to masked context after hard-mask irq
-    becomes pending
-  powerpc/64s: Fix irq state management in runlatch functions
-  powerpc/64s/interrupt: masked handler debug check for previous hard
-    disable
-  powerpc/64/interrupt: avoid BUG/WARN recursion in interrupt entry
-  powerpc/64/irq: tidy soft-masked irq replay and improve documentation
-
- arch/powerpc/include/asm/interrupt.h | 36 ++++++-----
- arch/powerpc/include/asm/runlatch.h  |  6 +-
- arch/powerpc/kernel/exceptions-64s.S | 10 +++
- arch/powerpc/kernel/interrupt.c      | 10 ---
- arch/powerpc/kernel/interrupt_64.S   | 34 +++++++++-
- arch/powerpc/kernel/irq_64.c         | 93 ++++++++++++++++++----------
- arch/powerpc/kernel/setup_64.c       |  4 +-
- 7 files changed, 129 insertions(+), 64 deletions(-)
-
+diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/asm/interrupt.h
+index 8069dbc4b8d1..b61555e30c7c 100644
+--- a/arch/powerpc/include/asm/interrupt.h
++++ b/arch/powerpc/include/asm/interrupt.h
+@@ -195,7 +195,8 @@ static inline void interrupt_enter_prepare(struct pt_regs *regs)
+ 		 * so avoid recursion.
+ 		 */
+ 		if (TRAP(regs) != INTERRUPT_PROGRAM) {
+-			CT_WARN_ON(ct_state() != CONTEXT_KERNEL);
++			CT_WARN_ON(ct_state() != CONTEXT_KERNEL &&
++				   ct_state() != CONTEXT_IDLE);
+ 			if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
+ 				BUG_ON(is_implicit_soft_masked(regs));
+ 		}
 -- 
 2.37.2
 
