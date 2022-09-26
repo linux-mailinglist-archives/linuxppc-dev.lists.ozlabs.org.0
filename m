@@ -1,67 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C2715EAB00
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Sep 2022 17:27:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A5C65EAB04
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Sep 2022 17:28:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Mbmpf4rYdz3cg0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Sep 2022 01:27:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MbmqL1WNnz3dtF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Sep 2022 01:28:14 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NiWap9Mg;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gECoolek;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BjvieWru;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BjvieWru;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NiWap9Mg;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gECoolek;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BjvieWru;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BjvieWru;
 	dkim-atps=neutral
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MbmnR2gccz300V
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Sep 2022 01:26:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MbmnV0BVkz3bXn
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Sep 2022 01:26:37 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1664205992;
+	s=mimecast20190719; t=1664205995;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wUjpPVfNq3g+nZuxz52N7YaNroA0tr6QoNT1fN2tuhM=;
-	b=NiWap9MgxNpg1echPVqsnU5KY1mgq5cS3mfSwVJjdUavRePaAgpgLMdHMS0PQ3AQpp+tWj
-	KbNwsgAPommVpKquWQjWHh2FAiG4oJKllVaw5AcjZ1o4UeRzWoCI25S/tYryy26BtHrFrj
-	6HQpnxkYayuhLSBkrcQ3SAfO7V5itZk=
+	bh=zzTxRsO9Y8SBM3+5dXXY7X+zNQ7CrC7lsh1iB+qx+p0=;
+	b=BjvieWruxsCkO+TjtjdpEnlM78K+qXNa9RbCvX+HTFAIJoBR/EsOpyUZPB9oywsAdTWU6n
+	UZmuePGAXqn+2cSdq2hRDQVJTya7sUd1Zeo+KZzajRaM/9790Zem7e6zXFJpT2yGWshF3Q
+	Y3Q0FeijftoIO5P0FS1E80xxx4XfOZA=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1664205993;
+	s=mimecast20190719; t=1664205995;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wUjpPVfNq3g+nZuxz52N7YaNroA0tr6QoNT1fN2tuhM=;
-	b=gECoolekUcxUDeRb1r8E1DljEV7leR6Gg9j7D4VADe65KcsBz14E0PvBiaMpFTOGhHu+vR
-	1HvR3obUWAyWsygwmW93pTrEqlfJ3Rall7KbVI3sIpvVTYZJXufKmynHd6BxVw8l+9nt2k
-	TtoH9kuZmgVcdgd2z4iatdz73cPnyYw=
+	bh=zzTxRsO9Y8SBM3+5dXXY7X+zNQ7CrC7lsh1iB+qx+p0=;
+	b=BjvieWruxsCkO+TjtjdpEnlM78K+qXNa9RbCvX+HTFAIJoBR/EsOpyUZPB9oywsAdTWU6n
+	UZmuePGAXqn+2cSdq2hRDQVJTya7sUd1Zeo+KZzajRaM/9790Zem7e6zXFJpT2yGWshF3Q
+	Y3Q0FeijftoIO5P0FS1E80xxx4XfOZA=
 Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
  [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-400-2yZt-JntMraBHgXMowr4YQ-1; Mon, 26 Sep 2022 11:26:29 -0400
-X-MC-Unique: 2yZt-JntMraBHgXMowr4YQ-1
+ us-mta-210-ozXPzZguOvCPaIuPr2SQTA-1; Mon, 26 Sep 2022 11:26:31 -0400
+X-MC-Unique: ozXPzZguOvCPaIuPr2SQTA-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
 	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5FA4B3801F4C;
-	Mon, 26 Sep 2022 15:26:27 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 801D63C6EAA2;
+	Mon, 26 Sep 2022 15:26:30 +0000 (UTC)
 Received: from t480s.fritz.box (unknown [10.39.193.106])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 280DEC15BA5;
-	Mon, 26 Sep 2022 15:26:23 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 9948BC15BA5;
+	Mon, 26 Sep 2022 15:26:27 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH RFC 1/5] mm/mprotect: allow clean exclusive anon pages to be writable
-Date: Mon, 26 Sep 2022 17:26:14 +0200
-Message-Id: <20220926152618.194810-2-david@redhat.com>
+Subject: [PATCH RFC 2/5] mm/mprotect: minor can_change_pte_writable() cleanups
+Date: Mon, 26 Sep 2022 17:26:15 +0200
+Message-Id: <20220926152618.194810-3-david@redhat.com>
 In-Reply-To: <20220926152618.194810-1-david@redhat.com>
 References: <20220926152618.194810-1-david@redhat.com>
 MIME-Version: 1.0
@@ -82,56 +82,33 @@ Cc: Andrea Arcangeli <aarcange@redhat.com>, David Hildenbrand <david@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Nadav Amit <namit@vmware.com>
+We want to replicate this code for handling PMDs soon. No need to crash
+the kernel, warning and rejecting is good enough. As this will no longer
+get optimized out, drop the pte_write() check: no harm would be done.
 
-Anonymous pages might have the dirty bit clear, but this should not
-prevent mprotect from making them writable if they are exclusive.
-Therefore, skip the test whether the page is dirty in this case.
+While at it, add a comment why PROT_NONE mapped pages are excluded.
 
-Note that there are already other ways to get a writable PTE mapping an
-anonymous page that is clean: for example, via MADV_FREE. In an ideal
-world, we'd have a different indication from the FS whether writenotify
-is still required.
-
-Signed-off-by: Nadav Amit <namit@vmware.com>
-[ comment for dirty/clean handling; return directly; update description ]
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- mm/mprotect.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ mm/mprotect.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/mm/mprotect.c b/mm/mprotect.c
-index ed013f836b4a..c6c13a0a4bcc 100644
+index c6c13a0a4bcc..95323bc9a951 100644
 --- a/mm/mprotect.c
 +++ b/mm/mprotect.c
-@@ -45,7 +45,7 @@ static inline bool can_change_pte_writable(struct vm_area_struct *vma,
+@@ -43,8 +43,10 @@ static inline bool can_change_pte_writable(struct vm_area_struct *vma,
+ {
+ 	struct page *page;
  
- 	VM_BUG_ON(!(vma->vm_flags & VM_WRITE) || pte_write(pte));
+-	VM_BUG_ON(!(vma->vm_flags & VM_WRITE) || pte_write(pte));
++	if (WARN_ON_ONCE(!(vma->vm_flags & VM_WRITE)))
++		return false;
  
--	if (pte_protnone(pte) || !pte_dirty(pte))
-+	if (pte_protnone(pte))
++	/* Don't touch entries that are not even readable (NUMA hinting). */
+ 	if (pte_protnone(pte))
  		return false;
  
- 	/* Do we need write faults for softdirty tracking? */
-@@ -64,11 +64,15 @@ static inline bool can_change_pte_writable(struct vm_area_struct *vma,
- 		 * the PT lock.
- 		 */
- 		page = vm_normal_page(vma, addr, pte);
--		if (!page || !PageAnon(page) || !PageAnonExclusive(page))
--			return false;
-+		return page && PageAnon(page) && PageAnonExclusive(page);
- 	}
- 
--	return true;
-+	/*
-+	 * Shared mapping: "clean" might indicate that the FS still has to be
-+	 * notified via a write fault once first -- see vma_wants_writenotify().
-+	 * If "dirty", the assumtion is that there already was a write fault.
-+	 */
-+	return pte_dirty(pte);
- }
- 
- static unsigned long change_pte_range(struct mmu_gather *tlb,
 -- 
 2.37.3
 
