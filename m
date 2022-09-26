@@ -2,62 +2,38 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34FF25ED23D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 02:51:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB6B05ED23F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 02:52:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4McdGs6vtgz3dq5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 10:51:33 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=J4Gpyrjp;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4McdHL3xbYz3f3n
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 10:51:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=robh@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=J4Gpyrjp;
-	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=srs0=56q7=z5=goodmis.org=rostedt@kernel.org; receiver=<UNKNOWN>)
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mbrly33Wdz3bN6;
-	Tue, 27 Sep 2022 04:25:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mbs5x0kySz3bP1
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Sep 2022 04:41:08 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 709C761219;
-	Mon, 26 Sep 2022 18:25:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EFE4C43140;
-	Mon, 26 Sep 2022 18:25:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1664216729;
-	bh=Y5qLzRGdsOCwx5ouHFiN9SCKtz+YXlGNMDHQ/+qU8uw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=J4Gpyrjp5Ac3/0WEXKzD2q8xPAGnJawSZa8f6rOYxdt0mKmkj9MN103fi8O8KaXQr
-	 rKWbgtkn5zJF3KKNnZSQ2JILojCcgiBN0x9ZmlZL2GWqEeKQ2pnT/IWJv7Iu+jDIOh
-	 96blNui3VgWUy3swBEpS0oA6MLP9rJH0OAtT9Od305+7MRAmsIyCAIiUz2OBTF0k7d
-	 eFkt78ESdu5i0S+8YOqHyVZJX5e+tQFk5eoCDYSLZSngY7LY4QoLDMkkzhldYUbQsv
-	 TGBigf9PLmjOkjjLolgemDpPgE6cZ2Kk9OjuxUnAkhFtQMWWo0u/C1+B6MAJ1CUpMy
-	 dmsu9IhVknvqQ==
-Received: by mail-ua1-f52.google.com with SMTP id s2so403813uae.1;
-        Mon, 26 Sep 2022 11:25:29 -0700 (PDT)
-X-Gm-Message-State: ACrzQf0e1ihUOv4E0Aueo9bQXqBjbhBrb38FpyPz/ciaPgVoRb6JXZj/
-	QU8Td8R7G07petCJJTnGHvFa/gUCF0P5ZSKKug==
-X-Google-Smtp-Source: AMsMyM5WOL0fZfHYzWaw2DdaPSr6kh7DGRI2ScO+UdVg2zStt3aJXG4qtOOC5FFK87yV5Mi/AUvaSMeil9/+6K1KBfA=
-X-Received: by 2002:a81:6608:0:b0:351:4cd2:d59a with SMTP id
- a8-20020a816608000000b003514cd2d59amr1485347ywc.432.1664216717388; Mon, 26
- Sep 2022 11:25:17 -0700 (PDT)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 70D3BB80D67;
+	Mon, 26 Sep 2022 18:41:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8346C433D7;
+	Mon, 26 Sep 2022 18:40:49 +0000 (UTC)
+Date: Mon, 26 Sep 2022 14:41:57 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH v2 33/44] ftrace: WARN on rcuidle
+Message-ID: <20220926144157.0406dfbb@gandalf.local.home>
+In-Reply-To: <20220919101522.573936213@infradead.org>
+References: <20220919095939.761690562@infradead.org>
+	<20220919101522.573936213@infradead.org>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-References: <20220701012647.2007122-1-saravanak@google.com>
- <YwS5J3effuHQJRZ5@kroah.com> <CAOesGMivJ5Q-jdeGKw32yhjmNiYctHjpEAnoMMRghYqWD2m2tw@mail.gmail.com>
- <YygsEtxKz8dsEstc@kroah.com> <CAOesGMh5GHCONTQ9M1Ro7zW-hkL_1F7Xt=xRV0vYSfPY=7LYkQ@mail.gmail.com>
-In-Reply-To: <CAOesGMh5GHCONTQ9M1Ro7zW-hkL_1F7Xt=xRV0vYSfPY=7LYkQ@mail.gmail.com>
-From: Rob Herring <robh@kernel.org>
-Date: Mon, 26 Sep 2022 13:25:05 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqK7auA8coB3DCqSDKw1ept_yQihVs-Me3bvU923os23xg@mail.gmail.com>
-Message-ID: <CAL_JsqK7auA8coB3DCqSDKw1ept_yQihVs-Me3bvU923os23xg@mail.gmail.com>
-Subject: Re: [PATCH v2 0/2] Fix console probe delay when stdout-path isn't set
-To: Olof Johansson <olof@lixom.net>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Mailman-Approved-At: Wed, 28 Sep 2022 10:50:40 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -70,75 +46,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: andrew lunn <andrew@lunn.ch>, peng fan <peng.fan@nxp.com>, "Rafael J. Wysocki" <rafael@kernel.org>, linus walleij <linus.walleij@linaro.org>, Paul Mackerras <paulus@samba.org>, Alim Akhtar <alim.akhtar@samsung.com>, Peter Korsgaard <jacmet@sunsite.dk>, linux-stm32@st-md-mailman.stormreply.com, Karol Gugala <kgugala@antmicro.com>, Jerome Brunet <jbrunet@baylibre.com>, linux-samsung-soc@vger.kernel.org, Michal Simek <michal.simek@xilinx.com>, Hammer Hsieh <hammerh0314@gmail.com>, NXP Linux Team <linux-imx@nxp.com>, Vineet Gupta <vgupta@kernel.org>, len brown <len.brown@intel.com>, Nicolas Saenz Julienne <nsaenz@kernel.org>, linux-pm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, linux-unisoc@lists.infradead.org, Scott Branden <sbranden@broadcom.com>, Andrew Jeffery <andrew@aj.id.au>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, Richard Genoud <richard.genoud@gmail.com>, Masami Hiramatsu <mhiramat@kernel.org>, Pengutronix Kernel Team <kerne
- l@pengutronix.de>, Claudiu Beznea <claudiu.beznea@microchip.com>, Alexandre Belloni <alexandre.belloni@bootlin.com>, pavel machek <pavel@ucw.cz>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, eric dumazet <edumazet@google.com>, Thierry Reding <thierry.reding@gmail.com>, sascha hauer <sha@pengutronix.de>, Saravana Kannan <saravanak@google.com>, will deacon <will@kernel.org>, Jonathan Hunter <jonathanh@nvidia.com>, Gabriel Somlo <gsomlo@gmail.com>, Tobias Klauser <tklauser@distanz.ch>, linux-mips@vger.kernel.org, kernel-team@android.com, Martin Blumenstingl <martin.blumenstingl@googlemail.com>, linux-arm-msm@vger.kernel.org, linux-actions@lists.infradead.org, linux-gpio@vger.kernel.org, linux-rpi-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org, linux-arm-kernel@lists.infradead.org, Chunyan Zhang <zhang.lyra@gmail.com>, Andreas Farber <afaerber@suse.de>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Kevin Hilman <khilman@baylibre.com>, Pali Rohar <pali@kernel.org>, he
- iner kallweit <hkallweit1@gmail.com>, ulf hansson <ulf.hansson@linaro.org>, Neil Armstrong <narmstrong@baylibre.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, Al Cooper <alcooperx@gmail.com>, linux-tegra@vger.kernel.org, Jiri Slaby <jirislaby@kernel.org>, linux-aspeed@lists.ozlabs.org, Florian Fainelli <f.fainelli@gmail.com>, Mateusz Holenko <mholenko@antmicro.com>, Alexander Shiyan <shc_work@mail.ru>, kevin hilman <khilman@kernel.org>, Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Joel Stanley <joel@jms.id.au>, Orson Zhai <orsonzhai@gmail.com>, paolo abeni <pabeni@redhat.com>, Patrice Chotard <patrice.chotard@foss.st.com>, Ray Jui <rjui@broadcom.com>, Vladimir Zapolskiy <vz@mleia.com>, linux-snps-arc@lists.infradead.org, Timur Tabi <timur@kernel.org>, hideaki yoshifuji <yoshfuji@linux-ipv6.org>, iommu@lists.linux-foundation.org, Laxman Dewangan <ldewangan@nvidia.com>, Sudeep Holla <sudeep.holla@arm.com>, Baolin Wang <baolin.wang7@gmail.com>, Shawn 
- Guo <shawnguo@kernel.org>, "David S. Miller" <davem@davemloft.net>, Baruch Siach <baruch@tkos.co.il>, Liviu Dudau <liviu.dudau@arm.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, Bjorn Andersson <bjorn.andersson@linaro.org>, Paul Cercueil <paul@crapouillou.net>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, joerg roedel <joro@8bytes.org>, Russell King <linux@armlinux.org.uk>, Andy Gross <agross@kernel.org>, linux-serial@vger.kernel.org, jakub kicinski <kuba@kernel.org>, Manivannan Sadhasivam <mani@kernel.org>, linux-mediatek@lists.infradead.org, Fabio Estevam <festevam@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>, Matthias Brugger <matthias.bgg@gmail.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Laurentiu Tudor <laurentiu.tudor@nxp.com>, Taichi Sugaya <sugaya.taichi@socionext.com>, netdev@vger.kernel.org, david ahern <dsahern@kernel.org>, Nicolas Ferre <nicolas.ferre@microchip.com>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Palm
- er Dabbelt <palmer@dabbelt.com>, Takao Orito <orito.takao@socionext.com>, linuxppc-dev@lists.ozlabs.org
+Cc: juri.lelli@redhat.com, rafael@kernel.org, catalin.marinas@arm.com, linus.walleij@linaro.org, bsegall@google.com, guoren@kernel.org, pavel@ucw.cz, agordeev@linux.ibm.com, srivatsa@csail.mit.edu, linux-arch@vger.kernel.org, vincent.guittot@linaro.org, chenhuacai@kernel.org, linux-acpi@vger.kernel.org, agross@kernel.org, geert@linux-m68k.org, linux-imx@nxp.com, vgupta@kernel.org, mattst88@gmail.com, borntraeger@linux.ibm.com, mturquette@baylibre.com, sammy@sammy.net, pmladek@suse.com, linux-pm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, linux-um@lists.infradead.org, npiggin@gmail.com, tglx@linutronix.de, linux-omap@vger.kernel.org, dietmar.eggemann@arm.com, andreyknvl@gmail.com, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, senozhatsky@chromium.org, svens@linux.ibm.com, jolsa@kernel.org, tj@kernel.org, Andrew Morton <akpm@linux-foundation.org>, mark.rutland@arm.com, linux-ia64@vger.kernel.org, dave.hansen@linux.intel.com, vir
+ tualization@lists.linux-foundation.org, James.Bottomley@HansenPartnership.com, jcmvbkbc@gmail.com, thierry.reding@gmail.com, kernel@xen0n.name, cl@linux.com, linux-s390@vger.kernel.org, vschneid@redhat.com, john.ogness@linutronix.de, ysato@users.sourceforge.jp, linux-sh@vger.kernel.org, festevam@gmail.com, deller@gmx.de, daniel.lezcano@linaro.org, jonathanh@nvidia.com, dennis@kernel.org, lenb@kernel.org, linux-xtensa@linux-xtensa.org, kernel@pengutronix.de, gor@linux.ibm.com, linux-arm-msm@vger.kernel.org, linux-alpha@vger.kernel.org, linux-m68k@lists.linux-m68k.org, loongarch@lists.linux.dev, shorne@gmail.com, chris@zankel.net, sboyd@kernel.org, dinguyen@kernel.org, bristot@redhat.com, alexander.shishkin@linux.intel.com, fweisbec@gmail.com, lpieralisi@kernel.org, atishp@atishpatra.org, linux@rasmusvillemoes.dk, kasan-dev@googlegroups.com, will@kernel.org, boris.ostrovsky@oracle.com, khilman@kernel.org, linux-csky@vger.kernel.org, pv-drivers@vmware.com, linux-snps-arc@lists.infradea
+ d.org, mgorman@suse.de, jacob.jun.pan@linux.intel.com, Arnd Bergmann <arnd@arndb.de>, ulli.kroll@googlemail.com, linux-clk@vger.kernel.org, ink@jurassic.park.msu.ru, bcain@quicinc.com, tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, ryabinin.a.a@gmail.com, sudeep.holla@arm.com, shawnguo@kernel.org, davem@davemloft.net, dalias@libc.org, tony@atomide.com, amakhalov@vmware.com, konrad.dybcio@somainline.org, bjorn.andersson@linaro.org, glider@google.com, hpa@zytor.com, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org, vincenzo.frascino@arm.com, anton.ivanov@cambridgegreys.com, jonas@southpole.se, yury.norov@gmail.com, richard@nod.at, x86@kernel.org, linux@armlinux.org.uk, mingo@redhat.com, aou@eecs.berkeley.edu, hca@linux.ibm.com, richard.henderson@linaro.org, stefan.kristiansson@saunalahti.fi, openrisc@lists.librecores.org, acme@kernel.org, paul.walmsley@sifive.com, linux-tegra@vger.kernel.org, namhyung@kernel.org, andriy.shevchenko@li
+ nux.intel.com, jpoimboe@kernel.org, dvyukov@google.com, jgross@suse.com, monstr@monstr.eu, linux-mips@vger.kernel.org, palmer@dabbelt.com, anup@brainfault.org, bp@alien8.de, johannes@sipsolutions.net, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Sep 19, 2022 at 5:56 PM Olof Johansson <olof@lixom.net> wrote:
->
-> On Mon, Sep 19, 2022 at 1:44 AM Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > On Sun, Sep 18, 2022 at 08:44:27PM -0700, Olof Johansson wrote:
-> > > On Tue, Aug 23, 2022 at 8:37 AM Greg Kroah-Hartman
-> > > <gregkh@linuxfoundation.org> wrote:
-> > > >
-> > > > On Thu, Jun 30, 2022 at 06:26:38PM -0700, Saravana Kannan wrote:
-> > > > > These patches are on top of driver-core-next.
-> > > > >
-> > > > > Even if stdout-path isn't set in DT, this patch should take console
-> > > > > probe times back to how they were before the deferred_probe_timeout
-> > > > > clean up series[1].
-> > > >
-> > > > Now dropped from my queue due to lack of a response to other reviewer's
-> > > > questions.
-> > >
-> > > What happened to this patch? I have a 10 second timeout on console
-> > > probe on my SiFive Unmatched, and I don't see this flag being set for
-> > > the serial driver. In fact, I don't see it anywhere in-tree. I can't
-> > > seem to locate another patchset from Saravana around this though, so
-> > > I'm not sure where to look for a missing piece for the sifive serial
-> > > driver.
-> > >
-> > > This is the second boot time regression (this one not fatal, unlike
-> > > the Layerscape PCIe one) from the fw_devlink patchset.
-> > >
-> > > Greg, can you revert the whole set for 6.0, please? It's obviously
-> > > nowhere near tested enough to go in and I expect we'll see a bunch of
-> > > -stable fixups due to this if we let it remain in.
-> >
-> > What exactly is "the whole set"?  I have the default option fix queued
-> > up and will send that to Linus later this week (am traveling back from
-> > Plumbers still), but have not heard any problems about any other issues
-> > at all other than your report.
->
-> I stand corrected in this case, the issue on the Hifive Unmatched was
-> a regression due to a PWM clock change -- I just sent a patch for that
-> (serial driver fix).
->
-> So it seems like as long as the fw_devlink.strict=1 patch is reverted,
-> things are back to a working state here.
->
-> I still struggle with how the fw_devlink patchset is expected to work
-> though, since DT is expected to describe the hardware configuration,
-> and it has no knowledge of whether there are drivers that will be
-> bound to any referenced supplier devnodes. It's not going to work well
-> to assume that they will always be bound, and to add 10 second
-> timeouts for those cases isn't a good solution. Seems like the number
-> of special cases will keep adding up.
 
-Since the introduction of deferred probe, the kernel has always
-assumed if there is a device described, then there is or will be a
-driver for it. The result is you can't use new DTs (if they add
-providers) with older kernels.
+Nit, the subject should have "tracing:" an not "ftrace:" as the former
+encompasses the tracing infrastructure and the latter is for the function
+hook part of that.
 
-We've ended up with a timeout because no one has come up with a better
-way to handle it. What the kernel needs is userspace saying "I'm done
-loading modules", but it's debatable whether that's a good solution
-too.
+On Mon, 19 Sep 2022 12:00:12 +0200
+Peter Zijlstra <peterz@infradead.org> wrote:
 
-Rob
+> CONFIG_GENERIC_ENTRY disallows any and all tracing when RCU isn't
+> enabled.
+> 
+> XXX if s390 (the only other GENERIC_ENTRY user as of this writing)
+> isn't comfortable with this, we could switch to
+> HAVE_NOINSTR_VALIDATION which is x86_64 only atm.
+> 
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> ---
+>  include/linux/tracepoint.h |   13 ++++++++++++-
+>  kernel/trace/trace.c       |    3 +++
+>  2 files changed, 15 insertions(+), 1 deletion(-)
+> 
+> --- a/include/linux/tracepoint.h
+> +++ b/include/linux/tracepoint.h
+> @@ -178,6 +178,16 @@ static inline struct tracepoint *tracepo
+>  #endif /* CONFIG_HAVE_STATIC_CALL */
+>  
+>  /*
+> + * CONFIG_GENERIC_ENTRY archs are expected to have sanitized entry and idle
+> + * code that disallow any/all tracing/instrumentation when RCU isn't watching.
+> + */
+> +#ifdef CONFIG_GENERIC_ENTRY
+> +#define RCUIDLE_COND(rcuidle)	(rcuidle)
+> +#else
+
+Should probably move the below comment to here:
+
+ /* srcu can't be used from NMI */
+
+> +#define RCUIDLE_COND(rcuidle)	(rcuidle && in_nmi())
+> +#endif
+> +
+> +/*
+>   * it_func[0] is never NULL because there is at least one element in the array
+>   * when the array itself is non NULL.
+>   */
+> @@ -189,7 +199,8 @@ static inline struct tracepoint *tracepo
+>  			return;						\
+>  									\
+>  		/* srcu can't be used from NMI */			\
+
+And remove the above.
+
+-- Steve
+
+> -		WARN_ON_ONCE(rcuidle && in_nmi());			\
+> +		if (WARN_ON_ONCE(RCUIDLE_COND(rcuidle)))		\
+> +			return;						\
+>  									\
+>  		/* keep srcu and sched-rcu usage consistent */		\
+>  		preempt_disable_notrace();				\
+> --- a/kernel/trace/trace.c
+> +++ b/kernel/trace/trace.c
+> @@ -3104,6 +3104,9 @@ void __trace_stack(struct trace_array *t
+>  		return;
+>  	}
+>  
+> +	if (WARN_ON_ONCE(IS_ENABLED(CONFIG_GENERIC_ENTRY)))
+> +		return;
+> +
+>  	/*
+>  	 * When an NMI triggers, RCU is enabled via ct_nmi_enter(),
+>  	 * but if the above rcu_is_watching() failed, then the NMI
+> 
+
