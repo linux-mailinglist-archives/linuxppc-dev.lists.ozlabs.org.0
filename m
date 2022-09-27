@@ -2,55 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 778B05ECCFF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Sep 2022 21:36:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8C685ECCFE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Sep 2022 21:35:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4McVGt38Blz3cDF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 05:36:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4McVGD5WSgz3c8x
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 05:35:32 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=am2yVo6U;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=l22s2/6w;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mga12.intel.com (client-ip=192.55.52.136; helo=mga12.intel.com; envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=134.134.136.31; helo=mga06.intel.com; envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=am2yVo6U;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=l22s2/6w;
 	dkim-atps=neutral
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4McVFZ5Hx8z2xJS
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Sep 2022 05:34:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4McVFZ244Jz2xGS
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Sep 2022 05:34:56 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1664307299; x=1695843299;
+  t=1664307298; x=1695843298;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=Uboi46HtitzGzAeJcxV+sy5FI8yISydqs8FYVzxay40=;
-  b=am2yVo6UyVn54cErVpNaHVe/AD3rd69Slxmfqpp4kWPw+/iUKrmG38lA
-   DlbtBOZF+Q/y50IBO5oOHrp21Q3fYGv5C7EfA1/XRjqy/BzhfXBKWOEJ3
-   DvDDOs68fCGYoJDLY0JxoaV8+8bFhwJl1y5TqWAPHNwB8Qv1FiAWPR+0d
-   syatM7NPOnWduXR4sq6GNnv9YdACAlFEMWgr5VgFgsGA5w43izPk1Tbkw
-   mk3mM6V9z/mOHORfckdWxT7lxA4v4Ew/4SKEawMyu8vu6fgX3yijU5+qX
-   hAw5ArwabTvNynG1hkMKUuFi76iI52IxRna294B41HHW5kJhjyJuFQZTe
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10483"; a="281131794"
+  bh=JZPmuA9NArT3KuyZCskF79bot+02uPrqjNJBcTvQL8E=;
+  b=l22s2/6wAkQko8sIPfkdG+TGnne1fOS7p4UTvvOyYwY5SRNtnBvhYrNv
+   qTDaPZHMETu+oLv7A/mSMbqBYiKTGqjk4daw5X/z+FSTCZxPFRiMY49f5
+   VkBkfg1Cn4vQ6VfWnp35Dv7CeEQpAG5T33hbPAzl9NlFjXipH+ulQqwbq
+   5a+b9fb+GhrU1IsP23+6YUtFmhH0w9SLDJJnpBUvgecqg+1D2cM3ZkqYL
+   3aNYQ8vGJuTsgPtZMoogOO5EhJ89zh37CEsXQsZQzlifIhGRtklhhJHIA
+   lsK0RSlFotW41aJeKcpHNURfntP6bSB1DyhqRLNdSqhi4ihaafbLfNfQs
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10483"; a="363252338"
 X-IronPort-AV: E=Sophos;i="5.93,350,1654585200"; 
-   d="scan'208";a="281131794"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Sep 2022 12:31:50 -0700
-X-IronPort-AV: E=McAfee;i="6500,9779,10483"; a="652399393"
+   d="scan'208";a="363252338"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Sep 2022 12:34:53 -0700
+X-IronPort-AV: E=McAfee;i="6500,9779,10483"; a="684110152"
 X-IronPort-AV: E=Sophos;i="5.93,350,1654585200"; 
-   d="scan'208";a="652399393"
+   d="scan'208";a="684110152"
 Received: from weimingg-mobl.amr.corp.intel.com (HELO [10.212.244.112]) ([10.212.244.112])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Sep 2022 12:31:49 -0700
-Message-ID: <564e778a-4ed8-3907-1cb3-34af109d0ce0@linux.intel.com>
-Date: Tue, 27 Sep 2022 12:31:48 -0700
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Sep 2022 12:34:52 -0700
+Message-ID: <caf2949a-e98d-e0a2-dc8a-af632d9b610a@linux.intel.com>
+Date: Tue, 27 Sep 2022 12:34:52 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Firefox/91.0 Thunderbird/91.11.0
-Subject: Re: [PATCH v2 1/9] PCI/AER: Add
- pci_aer_clear_uncorrect_error_status() to PCI core
+Subject: Re: [PATCH v2 2/9] PCI/DPC: Use
+ pci_aer_clear_uncorrect_error_status() to clear uncorrectable error status
 Content-Language: en-US
 To: Zhuo Chen <chenzhuo.1@bytedance.com>, bhelgaas@google.com,
  ruscur@russell.cc, oohall@gmail.com, fancer.lancer@gmail.com,
@@ -58,9 +58,9 @@ To: Zhuo Chen <chenzhuo.1@bytedance.com>, bhelgaas@google.com,
  james.smart@broadcom.com, dick.kennedy@broadcom.com, jejb@linux.ibm.com,
  martin.petersen@oracle.com
 References: <20220927153524.49172-1-chenzhuo.1@bytedance.com>
- <20220927153524.49172-2-chenzhuo.1@bytedance.com>
+ <20220927153524.49172-3-chenzhuo.1@bytedance.com>
 From: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <20220927153524.49172-2-chenzhuo.1@bytedance.com>
+In-Reply-To: <20220927153524.49172-3-chenzhuo.1@bytedance.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -81,78 +81,33 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 Hi,
 
 On 9/27/22 8:35 AM, Zhuo Chen wrote:
-> Sometimes we need to clear aer uncorrectable error status, so we add
+> Use pci_aer_clear_nonfatal_status() in dpc_process_error(), which has
+> no functional changes.
 
-Adding n actual use case will help.
-
-> pci_aer_clear_uncorrect_error_status() to PCI core.
-
-If possible, try to avoid "we" usage in commit log. Just say "so add
-pci_aer_clear_uncorrect_error_status() function" 
+Just say pci_aer_clear_uncorrect_error_status() clears both fatal and
+non-fatal errors. So use it in place of pci_aer_clear_nonfatal_status()
+and pci_aer_clear_fatal_status().
 
 > 
 > Signed-off-by: Zhuo Chen <chenzhuo.1@bytedance.com>
 > ---
->  drivers/pci/pcie/aer.c | 16 ++++++++++++++++
->  include/linux/aer.h    |  5 +++++
->  2 files changed, 21 insertions(+)
+>  drivers/pci/pcie/dpc.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
 > 
-> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> index e2d8a74f83c3..4e637121be23 100644
-> --- a/drivers/pci/pcie/aer.c
-> +++ b/drivers/pci/pcie/aer.c
-> @@ -286,6 +286,22 @@ void pci_aer_clear_fatal_status(struct pci_dev *dev)
->  		pci_write_config_dword(dev, aer + PCI_ERR_UNCOR_STATUS, status);
+> diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
+> index 3e9afee02e8d..7942073fbb34 100644
+> --- a/drivers/pci/pcie/dpc.c
+> +++ b/drivers/pci/pcie/dpc.c
+> @@ -288,8 +288,7 @@ void dpc_process_error(struct pci_dev *pdev)
+>  		 dpc_get_aer_uncorrect_severity(pdev, &info) &&
+>  		 aer_get_device_error_info(pdev, &info)) {
+>  		aer_print_error(pdev, &info);
+> -		pci_aer_clear_nonfatal_status(pdev);
+> -		pci_aer_clear_fatal_status(pdev);
+> +		pci_aer_clear_uncorrect_error_status(pdev);
+>  	}
 >  }
 >  
-> +int pci_aer_clear_uncorrect_error_status(struct pci_dev *dev)
-> +{
-> +	int aer = dev->aer_cap;
-> +	u32 status;
-> +
-> +	if (!pcie_aer_is_native(dev))
-> +		return -EIO;
-> +
-> +	pci_read_config_dword(dev, aer + PCI_ERR_UNCOR_STATUS, &status);
-> +	if (status)
-> +		pci_write_config_dword(dev, aer + PCI_ERR_UNCOR_STATUS, status);
-
-Why not just write all '1' and clear it? Why read and write?
-
-> +
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(pci_aer_clear_uncorrect_error_status);
-
-Add details about why you want to export in commit log.
-
-> +
->  /**
->   * pci_aer_raw_clear_status - Clear AER error registers.
->   * @dev: the PCI device
-> diff --git a/include/linux/aer.h b/include/linux/aer.h
-> index 97f64ba1b34a..154690c278cb 100644
-> --- a/include/linux/aer.h
-> +++ b/include/linux/aer.h
-> @@ -45,6 +45,7 @@ struct aer_capability_regs {
->  int pci_enable_pcie_error_reporting(struct pci_dev *dev);
->  int pci_disable_pcie_error_reporting(struct pci_dev *dev);
->  int pci_aer_clear_nonfatal_status(struct pci_dev *dev);
-> +int pci_aer_clear_uncorrect_error_status(struct pci_dev *dev);
->  void pci_save_aer_state(struct pci_dev *dev);
->  void pci_restore_aer_state(struct pci_dev *dev);
->  #else
-> @@ -60,6 +61,10 @@ static inline int pci_aer_clear_nonfatal_status(struct pci_dev *dev)
->  {
->  	return -EINVAL;
->  }
-> +static inline int pci_aer_clear_uncorrect_error_status(struct pci_dev *dev)
-> +{
-> +	return -EINVAL;
-> +}
->  static inline void pci_save_aer_state(struct pci_dev *dev) {}
->  static inline void pci_restore_aer_state(struct pci_dev *dev) {}
->  #endif
 
 -- 
 Sathyanarayanan Kuppuswamy
