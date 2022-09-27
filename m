@@ -2,105 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E60955EBBF1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Sep 2022 09:50:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E13EA5EBC06
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Sep 2022 09:53:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4McBc856pgz3c1Q
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Sep 2022 17:50:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4McBhD3tD6z3cCC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Sep 2022 17:53:32 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=v5VLFFd9;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=i72b3Uei;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=d1vmthHc;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2001:67c:2178:6::1c; helo=smtp-out1.suse.de; envelope-from=msuchanek@suse.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=v5VLFFd9;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=i72b3Uei;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=d1vmthHc;
 	dkim-atps=neutral
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4McBbS3yGGz2xsD
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Sep 2022 17:49:23 +1000 (AEST)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-	by smtp-out1.suse.de (Postfix) with ESMTP id A7FC721B71;
-	Tue, 27 Sep 2022 07:49:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1664264954; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1VwPyV7AtQHzloaAOjZRzxyWeQSrOsANjomRHJp33DQ=;
-	b=v5VLFFd9wq5cE+//cZFZuH7cOpbibmgr9gVvKXGP9FM3RQlBO+gs3evfUkW+vCgxOrTshy
-	n+2pVLHQFScJy3uU20eab0wUMdEHJSpALPLuLNpEjcsbcCFjLw9TqYLlXi2nC+ovevb+LN
-	LO+UMRMB11+tySlxMbilfLNwj0Qfaqs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1664264954;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1VwPyV7AtQHzloaAOjZRzxyWeQSrOsANjomRHJp33DQ=;
-	b=i72b3Uei1khrOAbpleZV6WJGrMDJTZm+ya3DC1m6lhLTuY0UD4gT1qMCwuelFNo5c1m1/S
-	vdm3M/Qf50Z+mZBQ==
-Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by relay2.suse.de (Postfix) with ESMTPS id 6269E2C184;
-	Tue, 27 Sep 2022 07:49:12 +0000 (UTC)
-Date: Tue, 27 Sep 2022 09:49:11 +0200
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: AKASHI Takahiro <takahiro.akashi@linaro.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@de.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Philipp Rudo <prudo@redhat.com>, Sasha Levin <sashal@kernel.org>,
-	Baoquan He <bhe@redhat.com>,
-	Alexander Egorenkov <egorenar@linux.ibm.com>,
-	"open list:S390" <linux-s390@vger.kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-	Paul Mackerras <paulus@samba.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Eric Biederman <ebiederm@xmission.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	"Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"moderated list:ARM64 PORT (AARCH64 ARCHITECTURE)" <linux-arm-kernel@lists.infradead.org>,
-	"open list:LINUX FOR POWERPC (32-BIT AND 64-BIT)" <linuxppc-dev@lists.ozlabs.org>,
-	"open list:KEXEC" <kexec@lists.infradead.org>,
-	Coiby Xu <coxu@redhat.com>, keyrings@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	James Morse <james.morse@arm.com>
-Subject: Re: [PATCH 5.15 0/6] arm64: kexec_file: use more system keyrings to
- verify kernel image signature + dependencies
-Message-ID: <20220927074911.GF28810@kitsune.suse.cz>
-References: <cover.1663951201.git.msuchanek@suse.de>
- <Yy7Ll1QJ+u+nkic9@kroah.com>
- <20220924094521.GY28810@kitsune.suse.cz>
- <Yy7YTnJKkv1UtvWF@kroah.com>
- <20220924115523.GZ28810@kitsune.suse.cz>
- <YzFLBJukjDy7uNVl@kroah.com>
- <20220926074024.GD28810@kitsune.suse.cz>
- <20220927023952.GB34139@laputa>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4McBgY0GBnz2xsD
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Sep 2022 17:52:56 +1000 (AEST)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28R7RrfN003060;
+	Tue, 27 Sep 2022 07:52:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=cHE7lrcn16mA8EML+xbjQhGs1OhtEXPVbBeJ62ihTBQ=;
+ b=d1vmthHcxItFfX9L08QJPLx1h10e9dVVzI6BYva99/ezMI2bXea1V1F6Q2CN/e+KOuXi
+ 8x77prl/hRyCD8bt0muR601DZ3pati5ifBXLtEwDrQCuxBBgOvJXnu6YSEyQvTlgpYZc
+ 7ZUJwdkhn/VD1bIW/heMVfFB0X3m40FEkmDcEqrC8Jfnl53aEwJ+4i91/0z4nKCt+OgU
+ Iy3VVXY2Y2B3InNw/w2XbMYpODwkT5Fl0jrBCRDsJyeMJF19yDPpkIP0CeLUG0cRq+Vc
+ Ga1NB+r+vzP2YnNypHWVDland0bI/04JEhAz1gdfciBW1aGw41HKEcbF9LrZLx4W9jHA 8A== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3juvtdgkjj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 27 Sep 2022 07:52:33 +0000
+Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 28R7UCdp009678;
+	Tue, 27 Sep 2022 07:52:33 GMT
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com [149.81.74.106])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3juvtdgkhy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 27 Sep 2022 07:52:33 +0000
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+	by ppma04fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 28R7psu3015958;
+	Tue, 27 Sep 2022 07:52:31 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+	by ppma04fra.de.ibm.com with ESMTP id 3jssh92m9e-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 27 Sep 2022 07:52:31 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
+	by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 28R7qS5S5374586
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 27 Sep 2022 07:52:28 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D0D9752050;
+	Tue, 27 Sep 2022 07:52:28 +0000 (GMT)
+Received: from saptagiri.in.ibm.com (unknown [9.43.94.238])
+	by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id A705752051;
+	Tue, 27 Sep 2022 07:52:26 +0000 (GMT)
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: LKML <linux-kernel@vger.kernel.org>
+Subject: [PATCH] scripts/faddr2line: Fix regression in name resolution on ppc64le
+Date: Tue, 27 Sep 2022 13:22:11 +0530
+Message-Id: <20220927075211.897152-1-srikar@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.34.3
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: HWBmjJbKSMX3_2jZ8JK5u-A6ZPIZoGVt
+X-Proofpoint-ORIG-GUID: OejE7pt4GMwj1nz1Jcx1kkT4W3GvQReb
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220927023952.GB34139@laputa>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
+ definitions=2022-09-27_02,2022-09-22_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ priorityscore=1501 lowpriorityscore=0 phishscore=0 clxscore=1011
+ malwarescore=0 adultscore=0 spamscore=0 mlxlogscore=999 bulkscore=0
+ mlxscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2209130000 definitions=main-2209270043
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -112,76 +91,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>, Srikar Dronamraju <srikar@linux.vnet.ibm.com>, Peter Zijlstra <peterz@infradead.org>, Jiri Olsa <jolsa@kernel.org>, Josh Poimboeuf <jpoimboe@redhat.com>, "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Sep 27, 2022 at 11:39:52AM +0900, AKASHI Takahiro wrote:
-> On Mon, Sep 26, 2022 at 09:40:25AM +0200, Michal Such??nek wrote:
-> > On Mon, Sep 26, 2022 at 08:47:32AM +0200, Greg Kroah-Hartman wrote:
-> > > On Sat, Sep 24, 2022 at 01:55:23PM +0200, Michal Suchánek wrote:
-> > > > On Sat, Sep 24, 2022 at 12:13:34PM +0200, Greg Kroah-Hartman wrote:
-> > > > > On Sat, Sep 24, 2022 at 11:45:21AM +0200, Michal Suchánek wrote:
-> > > > > > On Sat, Sep 24, 2022 at 11:19:19AM +0200, Greg Kroah-Hartman wrote:
-> > > > > > > On Fri, Sep 23, 2022 at 07:10:28PM +0200, Michal Suchanek wrote:
-> > > > > > > > Hello,
-> > > > > > > > 
-> > > > > > > > this is backport of commit 0d519cadf751
-> > > > > > > > ("arm64: kexec_file: use more system keyrings to verify kernel image signature")
-> > > > > > > > to table 5.15 tree including the preparatory patches.
-> > > > > > > 
-> > > > > > > This feels to me like a new feature for arm64, one that has never worked
-> > > > > > > before and you are just making it feature-parity with x86, right?
-> > > > > > > 
-> > > > > > > Or is this a regression fix somewhere?  Why is this needed in 5.15.y and
-> > > > > > > why can't people who need this new feature just use a newer kernel
-> > > > > > > version (5.19?)
-> > > > > > 
-> > > > > > It's half-broken implementation of the kexec kernel verification. At the time
-> > > > > > it was implemented for arm64 we had the platform and secondary keyrings
-> > > > > > and x86 was using them but on arm64 the initial implementation ignores
-> > > > > > them.
-> > > > > 
-> > > > > Ok, so it's something that never worked.  Adding support to get it to
-> > > > > work doesn't really fall into the stable kernel rules, right?
-> > > > 
-> > > > Not sure. It was defective, not using the facilities available at the
-> > > > time correctly. Which translates to kernels that can be kexec'd on x86
-> > > > failing to kexec on arm64 without any explanation (signed with same key,
-> > > > built for the appropriate arch).
-> > > 
-> > > Feature parity across architectures is not a "regression", but rather a
-> > > "this feature is not implemented for this architecture yet" type of
-> > > thing.
-> > 
-> > That depends on the view - before kexec verification you could boot any
-> > kernel, now you can boot some kernels signed with a valid key, but not
-> > others - the initial implementation is buggy, probably because it
-> > is based on an old version of the x86 code.
-> 
-> Buggy?
-> The feature of supporting platform ring had been slipped in just before
-> I submitted the latest patch series which was eventually merged.
-> (I should have noticed it though.)
+Commit 1d1a0e7c5100 ("scripts/faddr2line: Fix overlapping text section failures")
+can cause scripts/faddr2line to fail on ppc64le machines on few
+distributions, while working on other distributions. The failure can be
+attributed to difference in readelf output on various distributions.
 
-It's difficult to notice another in-flight patch that does not conflict
-with yours, and is for a different architecture. That's why we have
-followup patches and Fixes tags.
+$ ./scripts/faddr2line vmlinux find_busiest_group+0x00
+no match for find_busiest_group+0x00
 
-However, the support for secondary keyring was added in 4.19 by commit
-ea93102f3224 ("Fix kexec forbidding kernels signed with keys in the
-secondary keyring to boot") which was not supported by the arm64 code
-either.
+Expected output was:
+$ ./scripts/faddr2line vmlinux find_busiest_group+0x00
+find_busiest_group+0x00/0x3d0:
+find_busiest_group at kernel/sched/fair.c:9595
 
-> Looking at changes in the commit 278311e417be ("kexec, KEYS: Make use of platform
-> keyring for signature verify"), it seems to be obvious that it is a new feature
-> because it introduced a new Kconfig option, CONFIG_INTEGRITY_PLATFORM_KEYRING,
-> which allows for enabling/disabling platform ring support.
+On ppc64le, readelf adds localentry tag before the symbol name on few
+distributions and adds the localentry tag after the symbol name on few
+other distributions. This problem has been discussed in the reference
+URL given below. This problem can be overcome by filtering out
+localentry tags in readelf output. Similar fixes are already present in
+kernel by way of commits:
 
-Yes, and that feature exists since 5.1, and we are talking about 5.15
-here. Not making use of the keyring that is supported by the kernel
-results in inability to kexec kernels that are signed by a valid key,
-arguably a bug.
+1fd6cee127e2 ("libbpf: Fix VERSIONED_SYM_COUNT number parsing")
+aa915931ac3e ("libbpf: Fix readelf output parsing for Fedora")
 
-Thanks
+Fixes: 1d1a0e7c5100 ("scripts/faddr2line: Fix overlapping text section failures")
+Reference: https://lore.kernel.org/bpf/20191211160133.GB4580@calabresa/
+Cc: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
+Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+Cc: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: LKML <linux-kernel@vger.kernel.org>
+Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+---
+ scripts/faddr2line | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-Michal
+diff --git a/scripts/faddr2line b/scripts/faddr2line
+index 5514c23f45c2..0e73aca4f908 100755
+--- a/scripts/faddr2line
++++ b/scripts/faddr2line
+@@ -74,7 +74,8 @@ command -v ${ADDR2LINE} >/dev/null 2>&1 || die "${ADDR2LINE} isn't installed"
+ find_dir_prefix() {
+ 	local objfile=$1
+ 
+-	local start_kernel_addr=$(${READELF} --symbols --wide $objfile | ${AWK} '$8 == "start_kernel" {printf "0x%s", $2}')
++	local start_kernel_addr=$(${READELF} --symbols --wide $objfile | sed 's/\[.*\]//' |
++		${AWK} '$8 == "start_kernel" {printf "0x%s", $2}')
+ 	[[ -z $start_kernel_addr ]] && return
+ 
+ 	local file_line=$(${ADDR2LINE} -e $objfile $start_kernel_addr)
+@@ -178,7 +179,7 @@ __faddr2line() {
+ 				found=2
+ 				break
+ 			fi
+-		done < <(${READELF} --symbols --wide $objfile | ${AWK} -v sec=$sym_sec '$7 == sec' | sort --key=2)
++		done < <(${READELF} --symbols --wide $objfile | sed 's/\[.*\]//' | ${AWK} -v sec=$sym_sec '$7 == sec' | sort --key=2)
+ 
+ 		if [[ $found = 0 ]]; then
+ 			warn "can't find symbol: sym_name: $sym_name sym_sec: $sym_sec sym_addr: $sym_addr sym_elf_size: $sym_elf_size"
+@@ -259,7 +260,7 @@ __faddr2line() {
+ 
+ 		DONE=1
+ 
+-	done < <(${READELF} --symbols --wide $objfile | ${AWK} -v fn=$sym_name '$4 == "FUNC" && $8 == fn')
++	done < <(${READELF} --symbols --wide $objfile | sed 's/\[.*\]//' | ${AWK} -v fn=$sym_name '$4 == "FUNC" && $8 == fn')
+ }
+ 
+ [[ $# -lt 2 ]] && usage
+
+base-commit: bf682942cd26ce9cd5e87f73ae099b383041e782
+-- 
+2.31.1
+
