@@ -1,127 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41D825EC97A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Sep 2022 18:28:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01BCF5ECCCE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Sep 2022 21:24:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4McQ6k1KBNz3c6X
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 02:28:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4McV1h6gY6z3cGj
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 05:24:40 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=mf7hDJmr;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=NONrf1KR;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=seco.com (client-ip=40.107.1.71; helo=eur02-he1-obe.outbound.protection.outlook.com; envelope-from=sean.anderson@seco.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1029; helo=mail-pj1-x1029.google.com; envelope-from=dmitry.torokhov@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=mf7hDJmr;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=NONrf1KR;
 	dkim-atps=neutral
-Received: from EUR02-HE1-obe.outbound.protection.outlook.com (mail-eopbgr10071.outbound.protection.outlook.com [40.107.1.71])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4McQ5w3zN6z2yJQ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Sep 2022 02:28:01 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Q5FaILuQ52EpSTQWNBivWWzDW9HvaocY+vmDjVHy5NBndQZap4X6/nAQQRh2yhrtBzW/08NK+IgKIFFC0H6CklgN57MhKSr/vYHwRa2e1SSi5ZAUk+SLDajzIdzM+iL6Qzt/Td2h1KpHex0FjtThf+pdgfX4eWXd5IEXxNWg6yGaLIEDLPjljYIP8gxodVA4sh5ennzuuv/YLjK7QNkap2mikm3I/rUVdH916TwJ4OAoAujM1GIY4nnAWjQhSqH7FHy64fXV7fa3Ry/F4vts1FqbcNQ/MTqh6YILvWLoKOjzgcjMMSpiGc5M2aAKRY+8Xg+SPFiBfKRk1GI9i8LLMQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=b9rVU15Z13R7DX1z9QA8NzWZlivVGi7dRiMmZkFIXSU=;
- b=l1F47QO4thc5ZvRby7Vl5xlBzt8K3qn6aGdKzF8oGPp9HbH65zGjZgXCIpCRY4tzydtnStX3skrYxlax9M9eLAXNmSK3J5Gv9psyZ2zTHaP1BG3YyxNH/deE1iQr+vbchbMBA67L4SND+TwMYQYodQsAOBa+gB96R39yHyhQN1+QJkzKQlnaZMry35TR80xp1TORs5tQga+JtfrL/YXnBaHnWEq9G5x6kg0EF+hbKuTGiGSKJakoutRkKwsYA/lWw1SBFBRrElWEL10m2fU7ESBvM/4axaNMSDdzIsehgc/gLpo5MK8a00Ck9oNtHxal8ibj6pPV+anGPC/4yc7/eA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=seco.com; dmarc=pass action=none header.from=seco.com;
- dkim=pass header.d=seco.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seco.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=b9rVU15Z13R7DX1z9QA8NzWZlivVGi7dRiMmZkFIXSU=;
- b=mf7hDJmrvBh6USz+331lrYEsub+vI+I0SlelMZwjKMJlv1KwQN9c90cbpbDp25Xl639FBiNRRtgcmg/h6mqKJEraC3s96AK2DbgPnr3EVP1tfi84QyOKcrpoDGR/6HwTr6/Y1Xu/UmSN+3LUZumz3ErL5gFAWvij25pzRQINH2b5vBlprNLbsKqGVhRc9p/w4nMP8UbR7SPLEKZei/RdXhaCQoUrhOhnN8cZxJUCsxr4luQXtZvqTVpt77fS/Se69BMLrX681C42x6EAgMQuEzh3IMj1+t9jmhIjcsZ3+QyazCFyzUWpet2XCGREJFstqZHY3whKh3TGi4jNEowIMA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=seco.com;
-Received: from DB7PR03MB4972.eurprd03.prod.outlook.com (2603:10a6:10:7d::22)
- by DBBPR03MB6890.eurprd03.prod.outlook.com (2603:10a6:10:20c::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5654.26; Tue, 27 Sep
- 2022 16:27:40 +0000
-Received: from DB7PR03MB4972.eurprd03.prod.outlook.com
- ([fe80::204a:de22:b651:f86d]) by DB7PR03MB4972.eurprd03.prod.outlook.com
- ([fe80::204a:de22:b651:f86d%6]) with mapi id 15.20.5654.026; Tue, 27 Sep 2022
- 16:27:40 +0000
-Subject: Re: [PATCH net-next v5 1/9] dt-bindings: net: Expand pcs-handle to an
- array
-To: Rob Herring <robh@kernel.org>
-References: <20220926190322.2889342-1-sean.anderson@seco.com>
- <20220926190322.2889342-2-sean.anderson@seco.com>
- <20220927153331.GA4057163-robh@kernel.org>
-From: Sean Anderson <sean.anderson@seco.com>
-Message-ID: <44db6758-2f81-0374-809f-9db0cf2f2e33@seco.com>
-Date: Tue, 27 Sep 2022 12:27:35 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-In-Reply-To: <20220927153331.GA4057163-robh@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BL0PR0102CA0016.prod.exchangelabs.com
- (2603:10b6:207:18::29) To DB7PR03MB4972.eurprd03.prod.outlook.com
- (2603:10a6:10:7d::22)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4McV121RP8z3bY3
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Sep 2022 05:24:03 +1000 (AEST)
+Received: by mail-pj1-x1029.google.com with SMTP id cp18so1500453pjb.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Sep 2022 12:24:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date;
+        bh=i6/ryNav83BQlaWulO74ztbMcRDBUJZlZHngMujmegM=;
+        b=NONrf1KR/nzHmrKI5DWkeZqB59R4iEDFU1D0IGmauZjqD2ZyNZCxrMkssgkm1WsGt8
+         3m6Fhmv/9ML5en6RB5ZZeV8TPhYstv7igjLsO+2f1OsRw5VBpF9Up+s3nJFCDoWUMDVa
+         1AeXaovPZgWsoBTHu1z20szad7PtWu2Ot2sWJhJ6+LRlVoTGltp9QCzOfe9yH//nFn57
+         Ghx4tDLFrwskiUdnex5CgYAE8y378EjXG9jWsMmaA8tUoIboilKOKv4xtQOd279M5oQ/
+         Fgn0jOPCChZCFYlbGLveS778ejmn+e6VQbzBULrZVNshOZniz3Ndb4VHcJNdbSpEKuIl
+         8VSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=i6/ryNav83BQlaWulO74ztbMcRDBUJZlZHngMujmegM=;
+        b=SlWoPkc0olK4UqBuLXvDrN0p2sGUp5gGcp/yUsC9VrCOPlEx8f8VgEU69H2P3PSpjd
+         CDTGjDlx/Eik3M4+vuSKzrqjC1GF47fiRUKXNEOT0NejN4gelcLJiqAlv6Kq2QH5QV9Z
+         +LFq2Ss+ekavFTvtso12WXQhfCIm3l2G0PJUX8c9QrsXwF0IoOvkkLdGWEPB9V60Ndg0
+         yVqF7qnScuf3fXfK1GMjkdfsrHncpOHfkbdPY3f3TtsQNO0cZ8VD+7pviU1kVvHH484/
+         P5iOeHxXJrgQrnrUmbh0aa63P3vf3V9CDNo7XcMih7KwGovqU2kk4jMNPLgnLs2KgqT/
+         Mu2g==
+X-Gm-Message-State: ACrzQf3wfzM56MV8jz17tpKXRRUNGolyFnkKimDD40u4A4ZXpoWju7Lj
+	DO8w/yzjjQCtilK3g4uVmoY=
+X-Google-Smtp-Source: AMsMyM7qgLGVSKn+yO8jVbz6qI2lad7JC1P2l8liI0Kl9P7MSlfQ0+2h3qLWmfPx1KOYsSvklwzfSQ==
+X-Received: by 2002:a17:902:d490:b0:177:fc1d:6b0c with SMTP id c16-20020a170902d49000b00177fc1d6b0cmr28626926plg.28.1664306641554;
+        Tue, 27 Sep 2022 12:24:01 -0700 (PDT)
+Received: from google.com ([2620:15c:9d:2:9739:ab49:3830:2cbb])
+        by smtp.gmail.com with ESMTPSA id t6-20020a62d146000000b0053e8368ec34sm2144386pfl.32.2022.09.27.12.24.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Sep 2022 12:24:01 -0700 (PDT)
+Date: Tue, 27 Sep 2022 12:23:58 -0700
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH] powerpc/sgy_cts1000: convert to using gpiod API and facelift
+Message-ID: <YzNNznewTyCJiGFz@google.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB7PR03MB4972:EE_|DBBPR03MB6890:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7dfcdfcf-0284-40ca-afaf-08daa0a5323e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	a2UcesNH2bYWDpgeZclcCfg/tmys3eO89J6lThfh8hQd+YFSjg99aNZPvL48ZkzxrmNn2XV0mCOTSH2DB+Ezc6FMfEedD0ktKfX/HMA/PhZECM/6ICxIoJq9rH9JWzZIUBMDoFXd1ITviwWke8ZqjveoxiNApDXExEAe3KuNP5gLbe1vg6NXgnnSWWMlRAMAaRzpHpKFJ405XaT7wwVm9ksu5zjjbxA38ladmNczPdx946Rk1+Uk94dGhwpqqfX+Uq8uUDdqQTBjxsi/anM319W4LaCVbXojWjxDBBW1CNqqXn77k9BgrVISijYCjcsFzJpDkW136zloS/eu3lwRUGJOiXjsk/roC29/GvOrFXxlw0J5NYeOUhQ7U6SsGBmp1UrkRKGlJHuI0MO6/3aGenTcKdbFlj1JGWILamshEeaxjM2QkwgE0SD0iXbPaXRgxBzITPP16TUEYZwMX2InF9YKz91VFkdpQYFe0t4dzmVu7q1GS+2ak3Tr/g6f6grKPaSu7REi0Cm9s6YCc+K+Ut74FSsBNDkH1Lc6hIG0mnol1reWku+xtJnxF4nnG7Wvh0xOqulf7DVyxGz1QoeIgMa8ER8vXo2PXhuR7cOhP01UmO5TAJDUFdBK/1fFwtYnmhDabSzXpkxok4SRdiCGTM20xxvPvzsJwbICw4jTqTnslxxrmeOnd1dBayxneReEmcEhxfjKwCJawhAvoTQe8CWI7T9xSNZ/g801mDuBY5t6O80NVCEqKpUnJsuNP3C11yiOLtffeKOCM0R+Mb/BtJdSZiIBa5f7XJAffHXuLfN+3ONG81vltgmNSbGmGLAaxKgXhaAQEYnxua62kuoVfCPwAAq6oMXAM6tCPL7xm78=
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB7PR03MB4972.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(366004)(396003)(376002)(136003)(39850400004)(346002)(451199015)(31686004)(86362001)(31696002)(66476007)(66556008)(44832011)(5660300002)(36756003)(4326008)(2906002)(41300700001)(8676002)(8936002)(316002)(6916009)(54906003)(66946007)(7416002)(6486002)(966005)(83380400001)(186003)(38100700002)(2616005)(6512007)(52116002)(38350700002)(26005)(6506007)(53546011)(478600001)(6666004)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?utf-8?B?aStVZkZsRmlyNzAzRG5CZzZ2eWd2ZitabVd4YjcvME9hVWhpVFNYWmxMUDFZ?=
- =?utf-8?B?SU9CU0xlK1Ivb1IrUnd2MGhyWksvVUhIa1JLaUdzYmkydUZIYVZmNjExcVpu?=
- =?utf-8?B?K0l1c1ZvV0ovSjZsQVFFMUUzZU1QOG4rVVlDMWlaTHRtdzNJR0VwdkZiQ2xq?=
- =?utf-8?B?MFgwUG1pZ2pVdTBZTGt4dzd2TGNMZmcxNHkwWnNhTko3V044cGhNRVlldWg2?=
- =?utf-8?B?M1RuMXFuWlBPUHNrandtTGVNVVZxL1JXUm1jMEdvdTAwWE93VVJuSGhEbzU3?=
- =?utf-8?B?NVUzMEJYSU9qSWVLQ0J0RDRlOXZzNEJCWE1ZUlkzaGRNOTBXRFAzaXFCakND?=
- =?utf-8?B?Wmp1R1lmQnRveDlFUEl1QzBmaEpHU3ZLaURDTU1YRFNJaEJMMk15aFRvYTFW?=
- =?utf-8?B?YWxpOUlrN3YrZStxZHRpQkFDKzRIZ3VCdkxzaEFjUURxOE1iekVLeTl5OEtG?=
- =?utf-8?B?b3FWeHBTSG1iaDIwc1F3djNTSDVoQUx4eXd6TGcwWVU1ZC8yQ3o3WnVXc2V0?=
- =?utf-8?B?bHFjaUd4RHd5RGlGMEJhU21ycVp1NVZ3WGdmRXVjS0pWWGtKU09TMjQyS1Yw?=
- =?utf-8?B?VVI5SUM0MDFVVmdTNkdTU256bW1mcDhNUG1tenZrZEdQRy83a2gxTXRKc1hn?=
- =?utf-8?B?Z3J0eFlsblFWamdtTDZEbVlJcXRQUkNFYVNzVXkxazFGaUtCa2ljVXowK1Rw?=
- =?utf-8?B?YmV2ZVZrVTR3dU1FS1F4ZmVjeVJ0c1k5M3FIYU83cG5HTHJFR2QxSEM3VDFO?=
- =?utf-8?B?WVpIK0JYaWo1WFZIWUhhNVVHYmZWQzRKK2lZSW90bnZLd1E2dG5sVThVL1ky?=
- =?utf-8?B?NE1jKzB1WTUvWDNXQjdEYjdBa1M4Q1N1SFFnMzRXK2ZxTDhtM3QxeE44UVB3?=
- =?utf-8?B?KzBnZTBucWVzcmxtekJjYm03U0pnU3IwQlQ3MFFtQjAyRTNITWNrazFiYVBL?=
- =?utf-8?B?Mnp0endaeEJCb2k5Vk5BajlwTkE1UVNqcDI1OWlTU3NuVFhpS1JCNHBmM0hO?=
- =?utf-8?B?S1NKNko1dkVtWFFqYyt0UW5MaGNpdTByWURrRm9WK3lKM2NqSDQySFFRaTVL?=
- =?utf-8?B?dG9ucFV6RmR6V2I3bnlDSHFxZmE2b2ZLcEEvUm01THp6Qlg1ZExvODdnTTBE?=
- =?utf-8?B?ajgxSVFGK3pwajljMDZ1VStjNEt0ZGV2czhzQjZtZ2I1dk5neGhxNlowQmpv?=
- =?utf-8?B?Y0o2SjNMQnhLakZ5a3RLQVl6ZHBoV0ZNRkoybDg4SVMwR21QR0NzVFpPWXM1?=
- =?utf-8?B?aHorRHR6MTRWRXlpQTJEaVVPSVBjNGZJRGhtN1JTQkhiYmZ2cUdEQ1JZWjAr?=
- =?utf-8?B?NnRMcVFpUXJ5THFOKzR4Vy90cUk1eWtXQkpIcGx5MDk4YTBjNzdjVDhKakhR?=
- =?utf-8?B?aGV0MGtvVUlZMm16N2RuSm9lRGIzNGNkVGZZV05IeWxLL3FMaW9jZzRGbWtl?=
- =?utf-8?B?V2pUWlZraGIzRXhIM3grRWdWeW8wYVUrQmE4bnAvVzQ1elpIcWV5MEhOaW1M?=
- =?utf-8?B?UXVQeXBtSzRNMC9ZZjVkVytGYWg1dmRaYmpuWFB0bHRidmw0REswSmJrTFdC?=
- =?utf-8?B?L2V3YlNLNWhjUFh6V0paTllIQlRYbWhIUCtxcGR3M1FDTWhtSkp2RzFwc1E5?=
- =?utf-8?B?bEs0ZW9GUnN3bEwrODNQR3Z6L1Y4Qld2RHd3V2xKblEvTG9KZWZMc1d3dis1?=
- =?utf-8?B?OE4vQlNnN3NtWkRsQ1BNUm5mS3M1STUwQ1B6ZzBWaWlHckZzRVQzZWlWV1gy?=
- =?utf-8?B?dnZjSmV6ajJXNHBNUmljT0FNYlYreDhKV2ZEOUtoUFJwNE5yQ1VxWkxDYVRi?=
- =?utf-8?B?ZmNRYzRzcjBRU05wbVFiMTBoV3N3TUV2QUZYYkovdVVQVUNlT2RpMVMrTUJt?=
- =?utf-8?B?QStUSjZhLzA4OUZ5emtmNVlxOHpLdVBmVlRmTWJ0NldpdWxpNnpOZ2RhUFda?=
- =?utf-8?B?MU10U203UHI0ekF0L2p2cGVkU3pKNEhaWHM0WGUvVHFENVdFQ283UnU0NFZD?=
- =?utf-8?B?T1g1Q1k2MTFjaXh1bFJERkRrLzJJalAwNFp5WVNKREtmTEc5VkJIbkNtdnNn?=
- =?utf-8?B?WEpBS25rQThTZjdsaXNuQnc2L0pDWHhxOVlRK1NTTlUzaDB4cmhyK3pSK3l4?=
- =?utf-8?B?QUVRb3RFdFlsczBHcE5OV09lQ3BwdmxVQUdGMnhqNkl3Y0tqTFNXajNCUnZP?=
- =?utf-8?B?Znc9PQ==?=
-X-OriginatorOrg: seco.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7dfcdfcf-0284-40ca-afaf-08daa0a5323e
-X-MS-Exchange-CrossTenant-AuthSource: DB7PR03MB4972.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Sep 2022 16:27:40.0925
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bebe97c3-6438-442e-ade3-ff17aa50e733
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NST3vpq+ps/r8O2nvfn8yYbX8fMrzORyM2vGjAnRttogrzXn4CD181X9AssqvvjmN/ZGkpIXpKfGANGJ+tKs3A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR03MB6890
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -133,117 +74,231 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, Madalin Bucur <madalin.bucur@nxp.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Russell King <linux@armlinux.org.uk>, Eric Dumazet <edumazet@google.com>, Camelia Alexandra Groza <camelia.groza@nxp.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "linuxppc-dev @ lists . ozlabs . org" <linuxppc-dev@lists.ozlabs.org>, "David S . Miller" <davem@davemloft.net>, linux-arm-kernel@lists.infradead.org
+Cc: Liang He <windhl@126.com>, linux-kernel@vger.kernel.org, Scott Wood <oss@buserror.net>, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+This patch converts the driver to newer gpiod API, and away from
+OF-specific legacy gpio API that we want to stop using.
+
+While at it, let's address a few more issues:
+
+- switch to using dev_info()/pr_info() and friends
+- cancel work when unbinding the driver
+
+Note that the original code handled halt GPIO polarity incorrectly:
+in halt callback, when line polarity is "low" it would set trigger to
+"1" and drive halt line high, which is counter to the annotation.
+gpiod API will drive such line low. However I do not see any DTSes
+in mainline that have a DT node with "sgy,gpio-halt" compatible.
+
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+---
+
+Cross-compiled with gcc-12.1.0, not tested on hardware.
+
+ arch/powerpc/platforms/85xx/sgy_cts1000.c | 132 +++++++++-------------
+ 1 file changed, 53 insertions(+), 79 deletions(-)
+
+diff --git a/arch/powerpc/platforms/85xx/sgy_cts1000.c b/arch/powerpc/platforms/85xx/sgy_cts1000.c
+index e14d1b74d4e4..751395cbf022 100644
+--- a/arch/powerpc/platforms/85xx/sgy_cts1000.c
++++ b/arch/powerpc/platforms/85xx/sgy_cts1000.c
+@@ -7,10 +7,13 @@
+  * Copyright 2012 by Servergy, Inc.
+  */
+ 
++#define pr_fmt(fmt) "gpio-halt: " fmt
++
++#include <linux/err.h>
+ #include <linux/platform_device.h>
+ #include <linux/device.h>
++#include <linux/gpio/consumer.h>
+ #include <linux/module.h>
+-#include <linux/of_gpio.h>
+ #include <linux/of_irq.h>
+ #include <linux/workqueue.h>
+ #include <linux/reboot.h>
+@@ -18,7 +21,8 @@
+ 
+ #include <asm/machdep.h>
+ 
+-static struct device_node *halt_node;
++static struct gpio_desc *halt_gpio;
++static int halt_irq;
+ 
+ static const struct of_device_id child_match[] = {
+ 	{
+@@ -36,23 +40,10 @@ static DECLARE_WORK(gpio_halt_wq, gpio_halt_wfn);
+ 
+ static void __noreturn gpio_halt_cb(void)
+ {
+-	enum of_gpio_flags flags;
+-	int trigger, gpio;
+-
+-	if (!halt_node)
+-		panic("No reset GPIO information was provided in DT\n");
+-
+-	gpio = of_get_gpio_flags(halt_node, 0, &flags);
+-
+-	if (!gpio_is_valid(gpio))
+-		panic("Provided GPIO is invalid\n");
+-
+-	trigger = (flags == OF_GPIO_ACTIVE_LOW);
+-
+-	printk(KERN_INFO "gpio-halt: triggering GPIO.\n");
++	pr_info("triggering GPIO.\n");
+ 
+ 	/* Probably wont return */
+-	gpio_set_value(gpio, trigger);
++	gpiod_set_value(halt_gpio, 1);
+ 
+ 	panic("Halt failed\n");
+ }
+@@ -61,95 +52,78 @@ static void __noreturn gpio_halt_cb(void)
+  * to handle the shutdown/poweroff. */
+ static irqreturn_t gpio_halt_irq(int irq, void *__data)
+ {
+-	printk(KERN_INFO "gpio-halt: shutdown due to power button IRQ.\n");
++	struct platform_device *pdev = __data;
++
++	dev_info(&pdev->dev, "scheduling shutdown due to power button IRQ\n");
+ 	schedule_work(&gpio_halt_wq);
+ 
+         return IRQ_HANDLED;
+ };
+ 
+-static int gpio_halt_probe(struct platform_device *pdev)
++static int __gpio_halt_probe(struct platform_device *pdev,
++			     struct device_node *halt_node)
+ {
+-	enum of_gpio_flags flags;
+-	struct device_node *node = pdev->dev.of_node;
+-	struct device_node *child_node;
+-	int gpio, err, irq;
+-	int trigger;
+-
+-	if (!node)
+-		return -ENODEV;
+-
+-	/* If there's no matching child, this isn't really an error */
+-	child_node = of_find_matching_node(node, child_match);
+-	if (!child_node)
+-		return 0;
+-
+-	/* Technically we could just read the first one, but punish
+-	 * DT writers for invalid form. */
+-	if (of_gpio_count(child_node) != 1) {
+-		err = -EINVAL;
+-		goto err_put;
+-	}
+-
+-	/* Get the gpio number relative to the dynamic base. */
+-	gpio = of_get_gpio_flags(child_node, 0, &flags);
+-	if (!gpio_is_valid(gpio)) {
+-		err = -EINVAL;
+-		goto err_put;
+-	}
++	int err;
+ 
+-	err = gpio_request(gpio, "gpio-halt");
++	halt_gpio = fwnode_gpiod_get_index(of_fwnode_handle(halt_node),
++					   NULL, 0, GPIOD_OUT_LOW, "gpio-halt");
++	err = PTR_ERR_OR_ZERO(halt_gpio);
+ 	if (err) {
+-		printk(KERN_ERR "gpio-halt: error requesting GPIO %d.\n",
+-		       gpio);
+-		goto err_put;
++		dev_err(&pdev->dev, "failed to request halt GPIO: %d\n", err);
++		return err;
+ 	}
+ 
+-	trigger = (flags == OF_GPIO_ACTIVE_LOW);
+-
+-	gpio_direction_output(gpio, !trigger);
+-
+ 	/* Now get the IRQ which tells us when the power button is hit */
+-	irq = irq_of_parse_and_map(child_node, 0);
+-	err = request_irq(irq, gpio_halt_irq, IRQF_TRIGGER_RISING |
+-			  IRQF_TRIGGER_FALLING, "gpio-halt", child_node);
++	halt_irq = irq_of_parse_and_map(halt_node, 0);
++	err = request_irq(halt_irq, gpio_halt_irq,
++			  IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING,
++			  "gpio-halt", pdev);
+ 	if (err) {
+-		printk(KERN_ERR "gpio-halt: error requesting IRQ %d for "
+-		       "GPIO %d.\n", irq, gpio);
+-		gpio_free(gpio);
+-		goto err_put;
++		dev_err(&pdev->dev, "failed to request IRQ %d: %d\n",
++			halt_irq, err);
++		gpiod_put(halt_gpio);
++		halt_gpio = NULL;
++		return err;
+ 	}
+ 
+ 	/* Register our halt function */
+ 	ppc_md.halt = gpio_halt_cb;
+ 	pm_power_off = gpio_halt_cb;
+ 
+-	printk(KERN_INFO "gpio-halt: registered GPIO %d (%d trigger, %d"
+-	       " irq).\n", gpio, trigger, irq);
++	dev_info(&pdev->dev, "registered halt GPIO, irq: %d\n", halt_irq);
+ 
+-	halt_node = child_node;
+ 	return 0;
+-
+-err_put:
+-	of_node_put(child_node);
+-	return err;
+ }
+ 
+-static int gpio_halt_remove(struct platform_device *pdev)
++static int gpio_halt_probe(struct platform_device *pdev)
+ {
+-	if (halt_node) {
+-		int gpio = of_get_gpio(halt_node, 0);
+-		int irq = irq_of_parse_and_map(halt_node, 0);
++	struct device_node *halt_node;
++	int ret;
++
++	if (!pdev->dev.of_node)
++		return -ENODEV;
++
++	/* If there's no matching child, this isn't really an error */
++	halt_node = of_find_matching_node(pdev->dev.of_node, child_match);
++	if (!halt_node)
++		return -ENODEV;
++
++	ret = __gpio_halt_probe(pdev, halt_node);
++	of_node_put(halt_node);
+ 
+-		free_irq(irq, halt_node);
++	return ret;
++}
+ 
+-		ppc_md.halt = NULL;
+-		pm_power_off = NULL;
++static int gpio_halt_remove(struct platform_device *pdev)
++{
++	free_irq(halt_irq, pdev);
++	cancel_work_sync(&gpio_halt_wq);
+ 
+-		gpio_free(gpio);
++	ppc_md.halt = NULL;
++	pm_power_off = NULL;
+ 
+-		of_node_put(halt_node);
+-		halt_node = NULL;
+-	}
++	gpiod_put(halt_gpio);
++	halt_gpio = NULL;
+ 
+ 	return 0;
+ }
+-- 
+2.38.0.rc1.362.ged0d419d3c-goog
 
 
-On 9/27/22 11:33 AM, Rob Herring wrote:
-> On Mon, Sep 26, 2022 at 03:03:13PM -0400, Sean Anderson wrote:
->> This allows multiple phandles to be specified for pcs-handle, such as
->> when multiple PCSs are present for a single MAC. To differentiate
->> between them, also add a pcs-handle-names property.
->> 
->> Signed-off-by: Sean Anderson <sean.anderson@seco.com>
->> ---
->> This was previously submitted as [1]. I expect to update this series
->> more, so I have moved it here. Changes from that version include:
->> - Add maxItems to existing bindings
->> - Add a dependency from pcs-names to pcs-handle.
->> 
->> [1] https://lore.kernel.org/netdev/20220711160519.741990-3-sean.anderson@seco.com/
->> 
->> (no changes since v4)
->> 
->> Changes in v4:
->> - Use pcs-handle-names instead of pcs-names, as discussed
->> 
->> Changes in v3:
->> - New
->> 
->>  .../bindings/net/dsa/renesas,rzn1-a5psw.yaml           |  1 +
->>  .../devicetree/bindings/net/ethernet-controller.yaml   | 10 +++++++++-
->>  .../devicetree/bindings/net/fsl,qoriq-mc-dpmac.yaml    |  2 +-
->>  3 files changed, 11 insertions(+), 2 deletions(-)
->> 
->> diff --git a/Documentation/devicetree/bindings/net/dsa/renesas,rzn1-a5psw.yaml b/Documentation/devicetree/bindings/net/dsa/renesas,rzn1-a5psw.yaml
->> index 7ca9c19a157c..a53552ee1d0e 100644
->> --- a/Documentation/devicetree/bindings/net/dsa/renesas,rzn1-a5psw.yaml
->> +++ b/Documentation/devicetree/bindings/net/dsa/renesas,rzn1-a5psw.yaml
->> @@ -74,6 +74,7 @@ properties:
->>  
->>          properties:
->>            pcs-handle:
->> +            maxItems: 1
-> 
-> Forgot to remove the $ref here.
-> 
->>              description:
->>                phandle pointing to a PCS sub-node compatible with
->>                renesas,rzn1-miic.yaml#
->> diff --git a/Documentation/devicetree/bindings/net/ethernet-controller.yaml b/Documentation/devicetree/bindings/net/ethernet-controller.yaml
->> index 4b3c590fcebf..5bb2ec2963cf 100644
->> --- a/Documentation/devicetree/bindings/net/ethernet-controller.yaml
->> +++ b/Documentation/devicetree/bindings/net/ethernet-controller.yaml
->> @@ -108,11 +108,16 @@ properties:
->>      $ref: "#/properties/phy-connection-type"
->>  
->>    pcs-handle:
->> -    $ref: /schemas/types.yaml#/definitions/phandle
->> +    $ref: /schemas/types.yaml#/definitions/phandle-array
-> 
-> 'phandle-array' is really a matrix, so this needs a bit more:
-> 
-> items:
->   maxItems: 1
-> 
-> Which basically says this is phandles with no arg cells.
-> 
->>      description:
->>        Specifies a reference to a node representing a PCS PHY device on a MDIO
->>        bus to link with an external PHY (phy-handle) if exists.
->>  
->> +  pcs-handle-names:
->> +    $ref: /schemas/types.yaml#/definitions/string-array
-> 
-> No need for a type as *-names already has a type.
-> 
->> +    description:
->> +      The name of each PCS in pcs-handle.
->> +
->>    phy-handle:
->>      $ref: /schemas/types.yaml#/definitions/phandle
->>      description:
->> @@ -216,6 +221,9 @@ properties:
->>          required:
->>            - speed
->>  
->> +dependencies:
->> +  pcs-handle-names: [pcs-handle]
->> +
->>  allOf:
->>    - if:
->>        properties:
->> diff --git a/Documentation/devicetree/bindings/net/fsl,qoriq-mc-dpmac.yaml b/Documentation/devicetree/bindings/net/fsl,qoriq-mc-dpmac.yaml
->> index 7f620a71a972..600240281e8c 100644
->> --- a/Documentation/devicetree/bindings/net/fsl,qoriq-mc-dpmac.yaml
->> +++ b/Documentation/devicetree/bindings/net/fsl,qoriq-mc-dpmac.yaml
->> @@ -31,7 +31,7 @@ properties:
->>    phy-mode: true
->>  
->>    pcs-handle:
->> -    $ref: /schemas/types.yaml#/definitions/phandle
->> +    maxItems: 1
->>      description:
->>        A reference to a node representing a PCS PHY device found on
->>        the internal MDIO bus.
->> -- 
->> 2.35.1.1320.gc452695387.dirty
->> 
->> 
-> 
-
-OK, I've added these changes for v6.
-
---Sean
+-- 
+Dmitry
