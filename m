@@ -1,56 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8C685ECCFE
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Sep 2022 21:35:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA4785ECD0D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Sep 2022 21:40:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4McVGD5WSgz3c8x
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 05:35:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4McVNK65W3z3c4K
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 05:40:49 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=l22s2/6w;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=dMMzHZgt;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=134.134.136.31; helo=mga06.intel.com; envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=134.134.136.65; helo=mga03.intel.com; envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=l22s2/6w;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=dMMzHZgt;
 	dkim-atps=neutral
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+X-Greylist: delayed 63 seconds by postgrey-1.36 at boromir; Wed, 28 Sep 2022 05:40:18 AEST
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4McVFZ244Jz2xGS
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Sep 2022 05:34:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4McVMk620Lz2xZf
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Sep 2022 05:40:18 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1664307298; x=1695843298;
+  t=1664307619; x=1695843619;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=JZPmuA9NArT3KuyZCskF79bot+02uPrqjNJBcTvQL8E=;
-  b=l22s2/6wAkQko8sIPfkdG+TGnne1fOS7p4UTvvOyYwY5SRNtnBvhYrNv
-   qTDaPZHMETu+oLv7A/mSMbqBYiKTGqjk4daw5X/z+FSTCZxPFRiMY49f5
-   VkBkfg1Cn4vQ6VfWnp35Dv7CeEQpAG5T33hbPAzl9NlFjXipH+ulQqwbq
-   5a+b9fb+GhrU1IsP23+6YUtFmhH0w9SLDJJnpBUvgecqg+1D2cM3ZkqYL
-   3aNYQ8vGJuTsgPtZMoogOO5EhJ89zh37CEsXQsZQzlifIhGRtklhhJHIA
-   lsK0RSlFotW41aJeKcpHNURfntP6bSB1DyhqRLNdSqhi4ihaafbLfNfQs
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10483"; a="363252338"
+  bh=eN4jmEX43FC2hynGPrezejUCbvmijBGF9PDOUGgeBks=;
+  b=dMMzHZgt/TDndzaeKi1CGs7pijQVLZBxhbJL4qnp3xpYncD7GZAvH0fw
+   v3+A8wDJMlLSLEV7qqgU+K4GprXfIRHZpb6+ADJHoWD+PvJtrCnfYEvjB
+   kPM3O7zV/1VE6guQzsZrE/T+lnOf0xgNKjY67ggbXJHYS8tC8Qb5nbNtu
+   5HLKG3o3ns4ik73GchfGTBrg8iZfld5TUUmG8eSVT0zoyZ+yGsILbWNqq
+   PvPw+mqgOWhhqXY1DCJVTPTOrDK7o7kYW7RRrcSZHq2BTH44bHD+0KNKZ
+   PDPymTt7mkPCeEoKLs+OCk5xczTpd0oUPUt+ri8o/ohhL/URuSa6JZJ6y
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10483"; a="302895470"
 X-IronPort-AV: E=Sophos;i="5.93,350,1654585200"; 
-   d="scan'208";a="363252338"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Sep 2022 12:34:53 -0700
-X-IronPort-AV: E=McAfee;i="6500,9779,10483"; a="684110152"
+   d="scan'208";a="302895470"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Sep 2022 12:39:12 -0700
+X-IronPort-AV: E=McAfee;i="6500,9779,10483"; a="690113946"
 X-IronPort-AV: E=Sophos;i="5.93,350,1654585200"; 
-   d="scan'208";a="684110152"
+   d="scan'208";a="690113946"
 Received: from weimingg-mobl.amr.corp.intel.com (HELO [10.212.244.112]) ([10.212.244.112])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Sep 2022 12:34:52 -0700
-Message-ID: <caf2949a-e98d-e0a2-dc8a-af632d9b610a@linux.intel.com>
-Date: Tue, 27 Sep 2022 12:34:52 -0700
+  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Sep 2022 12:39:11 -0700
+Message-ID: <d8123aa3-a5e0-6131-bd0d-109f67923ff2@linux.intel.com>
+Date: Tue, 27 Sep 2022 12:39:10 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Firefox/91.0 Thunderbird/91.11.0
-Subject: Re: [PATCH v2 2/9] PCI/DPC: Use
- pci_aer_clear_uncorrect_error_status() to clear uncorrectable error status
+Subject: Re: [PATCH v2 3/9] NTB: Change to use
+ pci_aer_clear_uncorrect_error_status()
 Content-Language: en-US
 To: Zhuo Chen <chenzhuo.1@bytedance.com>, bhelgaas@google.com,
  ruscur@russell.cc, oohall@gmail.com, fancer.lancer@gmail.com,
@@ -58,9 +59,9 @@ To: Zhuo Chen <chenzhuo.1@bytedance.com>, bhelgaas@google.com,
  james.smart@broadcom.com, dick.kennedy@broadcom.com, jejb@linux.ibm.com,
  martin.petersen@oracle.com
 References: <20220927153524.49172-1-chenzhuo.1@bytedance.com>
- <20220927153524.49172-3-chenzhuo.1@bytedance.com>
+ <20220927153524.49172-4-chenzhuo.1@bytedance.com>
 From: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <20220927153524.49172-3-chenzhuo.1@bytedance.com>
+In-Reply-To: <20220927153524.49172-4-chenzhuo.1@bytedance.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -78,36 +79,41 @@ Cc: linux-pci@vger.kernel.org, ntb@lists.linux.dev, linuxppc-dev@lists.ozlabs.or
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+
 
 On 9/27/22 8:35 AM, Zhuo Chen wrote:
-> Use pci_aer_clear_nonfatal_status() in dpc_process_error(), which has
-> no functional changes.
+> Status bits for ERR_NONFATAL errors only are cleared in
+> pci_aer_clear_nonfatal_status(), but we want clear uncorrectable
+> error status in idt_init_pci(), so we change to use
+> pci_aer_clear_uncorrect_error_status().
 
-Just say pci_aer_clear_uncorrect_error_status() clears both fatal and
-non-fatal errors. So use it in place of pci_aer_clear_nonfatal_status()
-and pci_aer_clear_fatal_status().
+You mean currently driver does not clear fatal errors now, and it is
+a problem? Any error reported?
+
+Also, I am wondering why is it required to clear errors during init
+code. Is it a norm?
 
 > 
 > Signed-off-by: Zhuo Chen <chenzhuo.1@bytedance.com>
 > ---
->  drivers/pci/pcie/dpc.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+>  drivers/ntb/hw/idt/ntb_hw_idt.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
-> index 3e9afee02e8d..7942073fbb34 100644
-> --- a/drivers/pci/pcie/dpc.c
-> +++ b/drivers/pci/pcie/dpc.c
-> @@ -288,8 +288,7 @@ void dpc_process_error(struct pci_dev *pdev)
->  		 dpc_get_aer_uncorrect_severity(pdev, &info) &&
->  		 aer_get_device_error_info(pdev, &info)) {
->  		aer_print_error(pdev, &info);
+> diff --git a/drivers/ntb/hw/idt/ntb_hw_idt.c b/drivers/ntb/hw/idt/ntb_hw_idt.c
+> index 0ed6f809ff2e..d5f0aa87f817 100644
+> --- a/drivers/ntb/hw/idt/ntb_hw_idt.c
+> +++ b/drivers/ntb/hw/idt/ntb_hw_idt.c
+> @@ -2657,8 +2657,8 @@ static int idt_init_pci(struct idt_ntb_dev *ndev)
+>  	ret = pci_enable_pcie_error_reporting(pdev);
+>  	if (ret != 0)
+>  		dev_warn(&pdev->dev, "PCIe AER capability disabled\n");
+> -	else /* Cleanup nonfatal error status before getting to init */
 > -		pci_aer_clear_nonfatal_status(pdev);
-> -		pci_aer_clear_fatal_status(pdev);
+> +	else /* Cleanup uncorrectable error status before getting to init */
 > +		pci_aer_clear_uncorrect_error_status(pdev);
->  	}
->  }
 >  
+>  	/* First enable the PCI device */
+>  	ret = pcim_enable_device(pdev);
 
 -- 
 Sathyanarayanan Kuppuswamy
