@@ -2,56 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A440F5EC7D4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Sep 2022 17:34:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C12125EC812
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Sep 2022 17:36:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4McNvr3D6qz3c61
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 01:34:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4McNyj33bwz3cdR
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 01:36:45 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bytedance-com.20210112.gappssmtp.com header.i=@bytedance-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=VMxLQw+Y;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.210.49; helo=mail-ot1-f49.google.com; envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bytedance.com (client-ip=2607:f8b0:4864:20::52e; helo=mail-pg1-x52e.google.com; envelope-from=chenzhuo.1@bytedance.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=bytedance-com.20210112.gappssmtp.com header.i=@bytedance-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=VMxLQw+Y;
+	dkim-atps=neutral
+Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com [IPv6:2607:f8b0:4864:20::52e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4McNv35Vpvz3c5v
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Sep 2022 01:33:34 +1000 (AEST)
-Received: by mail-ot1-f49.google.com with SMTP id br15-20020a056830390f00b0061c9d73b8bdso6530171otb.6
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Sep 2022 08:33:34 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4McNy80sfHz2yxX
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Sep 2022 01:36:15 +1000 (AEST)
+Received: by mail-pg1-x52e.google.com with SMTP id 129so8311833pgc.5
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Sep 2022 08:36:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance-com.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date;
+        bh=ENsxjBVLvcS9Sl/erSmzP+QvgvvXtgtHf/5YnhDAvHI=;
+        b=VMxLQw+YzPOn2ZG207xNCd7dLUdSahvAo2cuZvccakSqdgflshCiO1x7gfYWchdJ7V
+         MCbKf+oPmAXIPER4u7KiJyyz7pAcid/j6/AlL50WeYv/o2l8dj+CX7bohhgd6tHED0Ww
+         VMT71agF2P2Am58mJrlx0azMo4TcSPcfRKByBmJl//FaKLgerEtYxKuFwTXtZHb5FLfl
+         yhyajQl/AQ+9ykGvVPVSv+D+3GIKNbUm2Mit6c6d1/fe2Er8ssiIFJRXmnJf2LTqc1jU
+         5qdhgsGc7x4OP7dpnBunyb2WPnVW5doGUv3OcRPtdGreBu3hN1KBDzTdqoETRdQhu9/b
+         G5sg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
-        bh=zjI6ubeIbgQT2Yf0aGxPciDY+P2liDNjOEnL2+LkAyE=;
-        b=5MrIZxT0QHI1KGAIFtz50PdCUc22BSVw4Rp/r+kfMEHZvNMXSuKY+ushjO1VRXf3Tm
-         A/ajil7/vadrwo5T2CDEGRNLe6l5imKTrI8EnFrD2ggfPd4msuOvnD4mhf0Gu4fTbv4a
-         mDe87sTbck2+cpKnXc7HjZwk83XPGte2gFbb+xvkOeVSld6TSviP6D1RE8bLO1XWn6Pr
-         uHcsqRHQYJYtvkcWDZ61r+AH1mntDl/ByEwWRMGvFiMdDWRUfrz4vliRuSOstYaxlwUs
-         DKCFGpdvJiJoOKY37SQGOaSCqvx5rKzNu02PlgCr62M5c33kyELtJdfXJ7m1wobX8CYT
-         czOA==
-X-Gm-Message-State: ACrzQf1oSoc/pRLWLrjRRdMlui8EKOpQBWni+9st2VK1wewQYnEL3XP5
-	LoVKwpyVSoTb58+lVxY2fg==
-X-Google-Smtp-Source: AMsMyM5eq9K8ICY6X0Mr3tOx3IJ4dvoj1unYKLRLY6r5PgzFpoQnkpXjPvXns1r165xN5VFsaDkAWw==
-X-Received: by 2002:a05:6830:1d4c:b0:65b:5ca1:3c5c with SMTP id p12-20020a0568301d4c00b0065b5ca13c5cmr12714674oth.77.1664292812364;
-        Tue, 27 Sep 2022 08:33:32 -0700 (PDT)
-Received: from macbook.herring.priv (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id o11-20020a4ae58b000000b00425678b9c4bsm744517oov.0.2022.09.27.08.33.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Sep 2022 08:33:32 -0700 (PDT)
-Received: (nullmailer pid 4069847 invoked by uid 1000);
-	Tue, 27 Sep 2022 15:33:31 -0000
-Date: Tue, 27 Sep 2022 10:33:31 -0500
-From: Rob Herring <robh@kernel.org>
-To: Sean Anderson <sean.anderson@seco.com>
-Subject: Re: [PATCH net-next v5 1/9] dt-bindings: net: Expand pcs-handle to
- an array
-Message-ID: <20220927153331.GA4057163-robh@kernel.org>
-References: <20220926190322.2889342-1-sean.anderson@seco.com>
- <20220926190322.2889342-2-sean.anderson@seco.com>
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date;
+        bh=ENsxjBVLvcS9Sl/erSmzP+QvgvvXtgtHf/5YnhDAvHI=;
+        b=Um28WkxueTVq0hoR892BwFPxQaOE98Cfc8fUJoq63nN3Q7ekjL8x4fsHnnnvs6g6kS
+         paHmecJoRkPquc/xvuKKEhCyluD+RjbObtP5K/loY3HSHIWzr3HQ7q9N5rzy2nlAZ1Q6
+         CNR2/C7N5PoHq0VVpoPdEG6wHKEDj8K/e5L3edunep/w1dlWqeLtcebZOMV56GwiKgBI
+         PaA2FN39K7eNbkTo/4421MIM3QKfk9KfOuuc/iwEAEkWbmKk97bEryL8zV5aDkmag5gl
+         sYXNByvO23gf81urbKT4eMceLclwEoep4qtX8j582bkEUAZlqtJPxWGSn1/laIkHDbJB
+         vHJQ==
+X-Gm-Message-State: ACrzQf2RvzGEW0QF9egiQnB4HX6MtOcFdenbHK91t5fHuH4vWgNdZ4Al
+	OzN2oo3lFEqyQd85n55UG2xP3A==
+X-Google-Smtp-Source: AMsMyM4AesfztARYj7VKlI8kwy86tANKtLJm/3jYH/7q0idxBuYkgELKcxtj7x5R4ivUtTFXDoPKoA==
+X-Received: by 2002:a05:6a02:205:b0:41b:96dc:bb2a with SMTP id bh5-20020a056a02020500b0041b96dcbb2amr25106581pgb.116.1664292971298;
+        Tue, 27 Sep 2022 08:36:11 -0700 (PDT)
+Received: from C02F63J9MD6R.bytedance.net ([61.120.150.77])
+        by smtp.gmail.com with ESMTPSA id w16-20020aa79a10000000b0053639773ad8sm1933087pfj.119.2022.09.27.08.36.04
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 27 Sep 2022 08:36:10 -0700 (PDT)
+From: Zhuo Chen <chenzhuo.1@bytedance.com>
+To: bhelgaas@google.com,
+	ruscur@russell.cc,
+	oohall@gmail.com,
+	fancer.lancer@gmail.com,
+	jdmason@kudzu.us,
+	dave.jiang@intel.com,
+	allenbh@gmail.com,
+	james.smart@broadcom.com,
+	dick.kennedy@broadcom.com,
+	jejb@linux.ibm.com,
+	martin.petersen@oracle.com
+Subject: [PATCH v2 0/9] PCI/AER: Fix and optimize usage of status clearing api
+Date: Tue, 27 Sep 2022 23:35:15 +0800
+Message-Id: <20220927153524.49172-1-chenzhuo.1@bytedance.com>
+X-Mailer: git-send-email 2.30.1 (Apple Git-130)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220926190322.2889342-2-sean.anderson@seco.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,109 +84,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, Madalin Bucur <madalin.bucur@nxp.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Russell King <linux@armlinux.org.uk>, Eric Dumazet <edumazet@google.com>, Camelia Alexandra Groza <camelia.groza@nxp.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "linuxppc-dev @ lists . ozlabs . org" <linuxppc-dev@lists.ozlabs.org>, "David S . Miller" <davem@davemloft.net>, linux-arm-kernel@lists.infradead.org
+Cc: linux-scsi@vger.kernel.org, linux-pci@vger.kernel.org, chenzhuo.1@bytedance.com, linux-kernel@vger.kernel.org, ntb@lists.linux.dev, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Sep 26, 2022 at 03:03:13PM -0400, Sean Anderson wrote:
-> This allows multiple phandles to be specified for pcs-handle, such as
-> when multiple PCSs are present for a single MAC. To differentiate
-> between them, also add a pcs-handle-names property.
-> 
-> Signed-off-by: Sean Anderson <sean.anderson@seco.com>
-> ---
-> This was previously submitted as [1]. I expect to update this series
-> more, so I have moved it here. Changes from that version include:
-> - Add maxItems to existing bindings
-> - Add a dependency from pcs-names to pcs-handle.
-> 
-> [1] https://lore.kernel.org/netdev/20220711160519.741990-3-sean.anderson@seco.com/
-> 
-> (no changes since v4)
-> 
-> Changes in v4:
-> - Use pcs-handle-names instead of pcs-names, as discussed
-> 
-> Changes in v3:
-> - New
-> 
->  .../bindings/net/dsa/renesas,rzn1-a5psw.yaml           |  1 +
->  .../devicetree/bindings/net/ethernet-controller.yaml   | 10 +++++++++-
->  .../devicetree/bindings/net/fsl,qoriq-mc-dpmac.yaml    |  2 +-
->  3 files changed, 11 insertions(+), 2 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/net/dsa/renesas,rzn1-a5psw.yaml b/Documentation/devicetree/bindings/net/dsa/renesas,rzn1-a5psw.yaml
-> index 7ca9c19a157c..a53552ee1d0e 100644
-> --- a/Documentation/devicetree/bindings/net/dsa/renesas,rzn1-a5psw.yaml
-> +++ b/Documentation/devicetree/bindings/net/dsa/renesas,rzn1-a5psw.yaml
-> @@ -74,6 +74,7 @@ properties:
->  
->          properties:
->            pcs-handle:
-> +            maxItems: 1
+Hello.
 
-Forgot to remove the $ref here.
+Here comes patch v2, which contains some fixes and optimizations of
+aer api usage. The original version can be found on the mailing list.
 
->              description:
->                phandle pointing to a PCS sub-node compatible with
->                renesas,rzn1-miic.yaml#
-> diff --git a/Documentation/devicetree/bindings/net/ethernet-controller.yaml b/Documentation/devicetree/bindings/net/ethernet-controller.yaml
-> index 4b3c590fcebf..5bb2ec2963cf 100644
-> --- a/Documentation/devicetree/bindings/net/ethernet-controller.yaml
-> +++ b/Documentation/devicetree/bindings/net/ethernet-controller.yaml
-> @@ -108,11 +108,16 @@ properties:
->      $ref: "#/properties/phy-connection-type"
->  
->    pcs-handle:
-> -    $ref: /schemas/types.yaml#/definitions/phandle
-> +    $ref: /schemas/types.yaml#/definitions/phandle-array
+Changes since v1:
+- Modifications to comments proposed by Bjorn. Split patch into more
+  obvious parts.
 
-'phandle-array' is really a matrix, so this needs a bit more:
+Zhuo Chen (9):
+  PCI/AER: Add pci_aer_clear_uncorrect_error_status() to PCI core
+  PCI/DPC: Use pci_aer_clear_uncorrect_error_status() to clear
+    uncorrectable error status
+  NTB: Change to use pci_aer_clear_uncorrect_error_status()
+  scsi: lpfc: Change to use pci_aer_clear_uncorrect_error_status()
+  PCI/AER: Unexport pci_aer_clear_nonfatal_status()
+  PCI/AER: Move check inside pcie_clear_device_status().
+  PCI/AER: Use pcie_aer_is_native() to judge whether OS owns AER
+  PCI/ERR: Clear fatal status when pci_channel_io_frozen
+  PCI/AER: Refine status clearing process with api
 
-items:
-  maxItems: 1
+ drivers/ntb/hw/idt/ntb_hw_idt.c |  4 +--
+ drivers/pci/pci.c               |  7 +++--
+ drivers/pci/pci.h               |  2 ++
+ drivers/pci/pcie/aer.c          | 45 +++++++++++++++++++--------------
+ drivers/pci/pcie/dpc.c          |  3 +--
+ drivers/pci/pcie/err.c          | 15 ++++-------
+ drivers/pci/pcie/portdrv_core.c |  3 +--
+ drivers/scsi/lpfc/lpfc_attr.c   |  4 +--
+ include/linux/aer.h             |  4 +--
+ 9 files changed, 46 insertions(+), 41 deletions(-)
 
-Which basically says this is phandles with no arg cells.
+-- 
+2.30.1 (Apple Git-130)
 
->      description:
->        Specifies a reference to a node representing a PCS PHY device on a MDIO
->        bus to link with an external PHY (phy-handle) if exists.
->  
-> +  pcs-handle-names:
-> +    $ref: /schemas/types.yaml#/definitions/string-array
-
-No need for a type as *-names already has a type.
-
-> +    description:
-> +      The name of each PCS in pcs-handle.
-> +
->    phy-handle:
->      $ref: /schemas/types.yaml#/definitions/phandle
->      description:
-> @@ -216,6 +221,9 @@ properties:
->          required:
->            - speed
->  
-> +dependencies:
-> +  pcs-handle-names: [pcs-handle]
-> +
->  allOf:
->    - if:
->        properties:
-> diff --git a/Documentation/devicetree/bindings/net/fsl,qoriq-mc-dpmac.yaml b/Documentation/devicetree/bindings/net/fsl,qoriq-mc-dpmac.yaml
-> index 7f620a71a972..600240281e8c 100644
-> --- a/Documentation/devicetree/bindings/net/fsl,qoriq-mc-dpmac.yaml
-> +++ b/Documentation/devicetree/bindings/net/fsl,qoriq-mc-dpmac.yaml
-> @@ -31,7 +31,7 @@ properties:
->    phy-mode: true
->  
->    pcs-handle:
-> -    $ref: /schemas/types.yaml#/definitions/phandle
-> +    maxItems: 1
->      description:
->        A reference to a node representing a PCS PHY device found on
->        the internal MDIO bus.
-> -- 
-> 2.35.1.1320.gc452695387.dirty
-> 
-> 
