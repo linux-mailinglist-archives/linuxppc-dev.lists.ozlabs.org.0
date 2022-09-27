@@ -2,54 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE8495EBFD7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Sep 2022 12:35:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C4525EC0F3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Sep 2022 13:20:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4McGGZ48gvz3c0g
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Sep 2022 20:35:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4McHGh3sftz3cBy
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Sep 2022 21:20:12 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LI+DMpEb;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=ewLOdU6Q;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=canonical.com (client-ip=185.125.188.120; helo=smtp-relay-canonical-0.canonical.com; envelope-from=cascardo@canonical.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LI+DMpEb;
+	dkim=pass (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=ewLOdU6Q;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-relay-canonical-0.canonical.com (smtp-relay-canonical-0.canonical.com [185.125.188.120])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4McGFx6BMYz2ywc
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Sep 2022 20:34:29 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4McHG22DSwz3bjX
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Sep 2022 21:19:36 +1000 (AEST)
+Received: from quatroqueijos.cascardo.eti.br (unknown [187.74.47.218])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id C8DA3B81ADD;
-	Tue, 27 Sep 2022 10:34:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3863CC433C1;
-	Tue, 27 Sep 2022 10:34:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1664274862;
-	bh=Owy1eL2zE7HjhpIKBG9ABMOlVvTMODzZLcYVa8P0yAg=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=LI+DMpEborBOpALwawGLrA7Gp6QTKN9vCaonpEbHUS3pywUfHGgbjEcLZVvOGuB24
-	 oCikCvvncq1xAOHSRShgaZ6wxdyjW5P+R6TGVLFNuyVPbzlJZTf2aXuJr6/bx8rnOI
-	 Rfz09p+BdnMsKCUr7OXgWFntqOCcEP/V9RAtcOdh/TfA+fMml7FIHaNFIYNfGNi2T6
-	 pVTHWOy8bnlEN+NiFxJQ/aNvqVKTFbkKlRyg7hzf1oVtGUQ65ZEspimTMYmEGh1/Mf
-	 1mZ/3uhLCUfEWzMTbWKrA0AZwxgYvCroGbmaPt38qNEfwOZ7iAggm57nihzPjI8e7H
-	 b19wcoTmMwgPA==
-From: Mark Brown <broonie@kernel.org>
-To: festevam@gmail.com, nicoleotsuka@gmail.com, lgirdwood@gmail.com, tiwai@suse.com, perex@perex.cz,
- shengjiu.wang@gmail.com, alsa-devel@alsa-project.org, Shengjiu Wang <shengjiu.wang@nxp.com>, Xiubo.Lee@gmail.com
-In-Reply-To: <1663928147-10106-1-git-send-email-shengjiu.wang@nxp.com>
-References: <1663928147-10106-1-git-send-email-shengjiu.wang@nxp.com>
-Subject: Re: [RESEND PATCH] ASoC: fsl_asrc_dma: fully initialize structs
-Message-Id: <166427485994.60697.4779578506404492678.b4-ty@kernel.org>
-Date: Tue, 27 Sep 2022 11:34:19 +0100
+	by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id 9C82F3F5D7;
+	Tue, 27 Sep 2022 11:19:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20210705; t=1664277571;
+	bh=AA6G+IEo7QP4LnD5kieh7vzYEn3vdQ7EcMpY5MsH8Z0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:In-Reply-To;
+	b=ewLOdU6QwF8RN38uE1ezSAaQxmWeMLzvD07eTYNpRahRDB5eki4tmKe+axMboxhaW
+	 FBSdIyJLgPiGQIAMg5MzRWf9qgQ0RoL8Je9yHUZmYdmExoRYzBwGpPfSF+5kX3LRvN
+	 N1xeDs/y/DlHxNWY57eTuJV1pywCWbJOmHW0r+EAfzCi9lr6arOSA+lggJ2FxTxGKf
+	 cRkI8ymxSGN7aq+mDbeBxzBQSdO8GwlGpooEHk6G5RydTFNseo5SoxKEjoArh8e55v
+	 dcTNaoCgAhStfFi1ZPs0E9pH5RkkesYZsjWmdEsrNYKqSxWMVTA+OA1cLoQW75/5IR
+	 lluJDUtrQwQPA==
+Date: Tue, 27 Sep 2022 08:19:25 -0300
+From: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
+To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Subject: Re: [PATCH] scripts/faddr2line: Fix regression in name resolution on
+ ppc64le
+Message-ID: <YzLcPZYTWXfrU+K4@quatroqueijos.cascardo.eti.br>
+References: <20220927075211.897152-1-srikar@linux.vnet.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.10.0-dev-fc921
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220927075211.897152-1-srikar@linux.vnet.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,45 +61,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: s.hauer@pengutronix.de, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Peter Zijlstra <peterz@infradead.org>, LKML <linux-kernel@vger.kernel.org>, Jiri Olsa <jolsa@kernel.org>, Josh Poimboeuf <jpoimboe@redhat.com>, "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 23 Sep 2022 18:15:47 +0800, Shengjiu Wang wrote:
-> From: Sascha Hauer <s.hauer@pengutronix.de>
+On Tue, Sep 27, 2022 at 01:22:11PM +0530, Srikar Dronamraju wrote:
+> Commit 1d1a0e7c5100 ("scripts/faddr2line: Fix overlapping text section failures")
+> can cause scripts/faddr2line to fail on ppc64le machines on few
+> distributions, while working on other distributions. The failure can be
+> attributed to difference in readelf output on various distributions.
 > 
-> The driver uses two statically ininitialized struct dma_slave_config,
-> but only one of them is initialized to zero. Initialize config_be to
-> zero as well to make sure that no fields are filled with random values.
-> Let the compiler do this instead of explicitly calling memset() which
-> makes it easier to read.
+> $ ./scripts/faddr2line vmlinux find_busiest_group+0x00
+> no match for find_busiest_group+0x00
 > 
-> [...]
+> Expected output was:
+> $ ./scripts/faddr2line vmlinux find_busiest_group+0x00
+> find_busiest_group+0x00/0x3d0:
+> find_busiest_group at kernel/sched/fair.c:9595
+> 
+> On ppc64le, readelf adds localentry tag before the symbol name on few
+> distributions and adds the localentry tag after the symbol name on few
+> other distributions. This problem has been discussed in the reference
+> URL given below. This problem can be overcome by filtering out
+> localentry tags in readelf output. Similar fixes are already present in
+> kernel by way of commits:
+> 
+> 1fd6cee127e2 ("libbpf: Fix VERSIONED_SYM_COUNT number parsing")
+> aa915931ac3e ("libbpf: Fix readelf output parsing for Fedora")
+> 
+> Fixes: 1d1a0e7c5100 ("scripts/faddr2line: Fix overlapping text section failures")
+> Reference: https://lore.kernel.org/bpf/20191211160133.GB4580@calabresa/
+> Cc: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+> Cc: Jiri Olsa <jolsa@kernel.org>
+> Cc: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
 
-Applied to
+Reviewed-by: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+The other instances of readelf --wide on faddr2line use --section-headers and
+should not required the same mangling.
 
-Thanks!
+Cascardo.
 
-[1/1] ASoC: fsl_asrc_dma: fully initialize structs
-      commit: 1849a1505533501ea39ed0538c2d35eba4704baa
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+> Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+> Cc: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+> Cc: LKML <linux-kernel@vger.kernel.org>
+> Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+> ---
+>  scripts/faddr2line | 7 ++++---
+>  1 file changed, 4 insertions(+), 3 deletions(-)
+> 
+> diff --git a/scripts/faddr2line b/scripts/faddr2line
+> index 5514c23f45c2..0e73aca4f908 100755
+> --- a/scripts/faddr2line
+> +++ b/scripts/faddr2line
+> @@ -74,7 +74,8 @@ command -v ${ADDR2LINE} >/dev/null 2>&1 || die "${ADDR2LINE} isn't installed"
+>  find_dir_prefix() {
+>  	local objfile=$1
+>  
+> -	local start_kernel_addr=$(${READELF} --symbols --wide $objfile | ${AWK} '$8 == "start_kernel" {printf "0x%s", $2}')
+> +	local start_kernel_addr=$(${READELF} --symbols --wide $objfile | sed 's/\[.*\]//' |
+> +		${AWK} '$8 == "start_kernel" {printf "0x%s", $2}')
+>  	[[ -z $start_kernel_addr ]] && return
+>  
+>  	local file_line=$(${ADDR2LINE} -e $objfile $start_kernel_addr)
+> @@ -178,7 +179,7 @@ __faddr2line() {
+>  				found=2
+>  				break
+>  			fi
+> -		done < <(${READELF} --symbols --wide $objfile | ${AWK} -v sec=$sym_sec '$7 == sec' | sort --key=2)
+> +		done < <(${READELF} --symbols --wide $objfile | sed 's/\[.*\]//' | ${AWK} -v sec=$sym_sec '$7 == sec' | sort --key=2)
+>  
+>  		if [[ $found = 0 ]]; then
+>  			warn "can't find symbol: sym_name: $sym_name sym_sec: $sym_sec sym_addr: $sym_addr sym_elf_size: $sym_elf_size"
+> @@ -259,7 +260,7 @@ __faddr2line() {
+>  
+>  		DONE=1
+>  
+> -	done < <(${READELF} --symbols --wide $objfile | ${AWK} -v fn=$sym_name '$4 == "FUNC" && $8 == fn')
+> +	done < <(${READELF} --symbols --wide $objfile | sed 's/\[.*\]//' | ${AWK} -v fn=$sym_name '$4 == "FUNC" && $8 == fn')
+>  }
+>  
+>  [[ $# -lt 2 ]] && usage
+> 
+> base-commit: bf682942cd26ce9cd5e87f73ae099b383041e782
+> -- 
+> 2.31.1
+> 
