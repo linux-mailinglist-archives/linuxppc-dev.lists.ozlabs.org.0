@@ -1,61 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7429B5EC856
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Sep 2022 17:41:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2984E5EC858
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Sep 2022 17:42:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4McP453h4xz3fNX
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 01:41:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4McP4m72t3z3f6W
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 01:42:00 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bytedance-com.20210112.gappssmtp.com header.i=@bytedance-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=NvRgdBCT;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bytedance-com.20210112.gappssmtp.com header.i=@bytedance-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=t97e6+By;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bytedance.com (client-ip=2607:f8b0:4864:20::62a; helo=mail-pl1-x62a.google.com; envelope-from=chenzhuo.1@bytedance.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bytedance.com (client-ip=2607:f8b0:4864:20::636; helo=mail-pl1-x636.google.com; envelope-from=chenzhuo.1@bytedance.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bytedance-com.20210112.gappssmtp.com header.i=@bytedance-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=NvRgdBCT;
+	dkim=pass (2048-bit key; unprotected) header.d=bytedance-com.20210112.gappssmtp.com header.i=@bytedance-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=t97e6+By;
 	dkim-atps=neutral
-Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4McNzQ5Y5Sz3drP
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Sep 2022 01:37:22 +1000 (AEST)
-Received: by mail-pl1-x62a.google.com with SMTP id n7so691179plp.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Sep 2022 08:37:22 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4McNzY074bz3dtW
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Sep 2022 01:37:28 +1000 (AEST)
+Received: by mail-pl1-x636.google.com with SMTP id w20so9399820ply.12
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Sep 2022 08:37:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=bytedance-com.20210112.gappssmtp.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date;
-        bh=AFdCbuK2STwU1a0Nvf1lTDCDj1ToB//H9Q+bBUP1Qko=;
-        b=NvRgdBCT61Gudxqofirgx5th8IhGdXVH8ploDF6qA3ooguYlkZg71QV76whvsg9N6l
-         R4KzgPkWN0h5/4Wa+jfAUT3X64/ZrWIc657LewcLsRa8odQNcnMLsWGTFDRG8vyEoBXq
-         TJavhn1JY3shjpKopxaVJH4TRh6fLbyxkkYpmDlWls5S86f+jRYvc4HcSKwwjuTZetKu
-         nRDD15OmlhogeMrBS17ayxlWc9/04/Cg6th9rUmLkxtuPjumSS559ESr/I/y3Z9c7fIn
-         wpKIHX66ByA5ce2JXGh+pHeaqv7pxm0/5tBguNnJcxWHUMej+FaDDZah39r9lluVzFcQ
-         XCgA==
+        bh=jrue3xDv2fahH0oRb0ZfoidxKvGLRwE7ZIzpUZAJ4Nw=;
+        b=t97e6+ByJ/znAh9op7r/0INVD9/ePdia6obzzM84V/fa4k0PkB8CTggLpqdkmQSQxw
+         jPd7dB99HsoumE0BHyoTkal01PjHX2wkJpeP/6HmLwxHhvMSpGCr5ibn6dD8EZ7Sj/rn
+         04VNNXm7c68IcpJ6T3+yeEWknEZodWqZ3I31OZesH5Zmc7YMzL/EcDynSOKl5JP9zdPe
+         V6dsr5jfhPndCyvIe921MSiKUupw6yBVmtvJgVplkpl+lgCfgsl+uXky/HN/txddQC8i
+         QRxcmp/RPPC82K6CC8WaHFIjjhjraR6rlUGNHe5BKYQPpOqfKmOPFXtuNA/EangO43bl
+         K+sA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date;
-        bh=AFdCbuK2STwU1a0Nvf1lTDCDj1ToB//H9Q+bBUP1Qko=;
-        b=nhwsuwruTV3nwwHiq8Qzsf/LIcqzbE7uNDZzaS+sWe+AKhCNczMHUtJ4s+XrpnnWXn
-         qJP3Mu+k0TFyGIHH1Q8j0ykVsw0BftpJLTtS7My123aFFeIyQ1A87ec3jZwUpSFJIayC
-         N5jDMHRwnQeG+lIv+QkTaGVe4N39foz5io+1+4fuWJKLzKR6bbU2L+C1EfkMCcO6anRC
-         4c7h6LIRNsijzyYUoKbNPXEY+uhJhLf/wjkk6nxUPGQwOhgKmR9IRNKzlYzglyfDnyTf
-         3GCw1Z5TLYFxIeopuDJV7hTOWsqs1lFwYMHxVHNTPM2w1qjZNrmyJBeSpilA9ckSfB4G
-         HSsw==
-X-Gm-Message-State: ACrzQf1Ji/Hba/MtKg3dZUJ5Ou6gL37mils9euqGXkPuKABMHtNwP+I5
-	B6bNEi/sJ1mUy0NetEldioPmEg==
-X-Google-Smtp-Source: AMsMyM5jyEmlaQH+Y1BsFMdvCalgfAKFQCnd9GdR1AeXlRDMfov29pS4+9anTO+gz3gmL+s4K9nTMQ==
-X-Received: by 2002:a17:90a:6405:b0:203:6eaa:4999 with SMTP id g5-20020a17090a640500b002036eaa4999mr5266575pjj.8.1664293039489;
-        Tue, 27 Sep 2022 08:37:19 -0700 (PDT)
+        bh=jrue3xDv2fahH0oRb0ZfoidxKvGLRwE7ZIzpUZAJ4Nw=;
+        b=vK/mkyrfSP3qGyTHQxiXeeQHZhyTJVm75CyhJhIVbbAk3Jzxo2yh4Lhz1/SdQQJzpt
+         oMwGn2ArcnOmVkT8LekPPGHNeTMW8O/+alI/7/huu2kO0qEGk9D71NS+N3zmw3bguaDa
+         Vt5LNd0YdLmWTm23eFNcn4sd+Nld24A6sM27qKygxN26slouvAWSG90FUoGmq/8aUhyd
+         V+9BbDLfB0szlivxvE+cD/ngG7D76Ezl9eXrVw7Nj/Jv2OBG0mJ+depBNbf+fVJN67F+
+         Tc+a+jYh6v/EpRFxN/toweXPQEMmEi2eQTGrBEx+AfzFkFQpCkTEo3/DacdYNGeT/7p5
+         x5vw==
+X-Gm-Message-State: ACrzQf28rTCVElTv8eBjdHVstLM6u5UzvIgclhmpv5WhNmId1Az6qG9W
+	+uyNmbvxnlqOqnzizGrL1C3Apg==
+X-Google-Smtp-Source: AMsMyM4mzGSMzMrGQb4AEYHMI3z1A4zjn9jLaUxhhhISN8nn4Omuv8b/L9w4e1lSWVjTg9NQtpY+TA==
+X-Received: by 2002:a17:903:32cf:b0:178:3d49:45b0 with SMTP id i15-20020a17090332cf00b001783d4945b0mr27706370plr.5.1664293046628;
+        Tue, 27 Sep 2022 08:37:26 -0700 (PDT)
 Received: from C02F63J9MD6R.bytedance.net ([61.120.150.77])
-        by smtp.gmail.com with ESMTPSA id w16-20020aa79a10000000b0053639773ad8sm1933087pfj.119.2022.09.27.08.37.13
+        by smtp.gmail.com with ESMTPSA id w16-20020aa79a10000000b0053639773ad8sm1933087pfj.119.2022.09.27.08.37.20
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 27 Sep 2022 08:37:19 -0700 (PDT)
+        Tue, 27 Sep 2022 08:37:26 -0700 (PDT)
 From: Zhuo Chen <chenzhuo.1@bytedance.com>
 To: bhelgaas@google.com,
 	ruscur@russell.cc,
@@ -68,9 +68,9 @@ To: bhelgaas@google.com,
 	dick.kennedy@broadcom.com,
 	jejb@linux.ibm.com,
 	martin.petersen@oracle.com
-Subject: [PATCH v2 8/9] PCI/ERR: Clear fatal status when pci_channel_io_frozen
-Date: Tue, 27 Sep 2022 23:35:23 +0800
-Message-Id: <20220927153524.49172-9-chenzhuo.1@bytedance.com>
+Subject: [PATCH v2 9/9] PCI/AER: Refine status clearing process with api
+Date: Tue, 27 Sep 2022 23:35:24 +0800
+Message-Id: <20220927153524.49172-10-chenzhuo.1@bytedance.com>
 X-Mailer: git-send-email 2.30.1 (Apple Git-130)
 In-Reply-To: <20220927153524.49172-1-chenzhuo.1@bytedance.com>
 References: <20220927153524.49172-1-chenzhuo.1@bytedance.com>
@@ -91,31 +91,59 @@ Cc: linux-scsi@vger.kernel.org, linux-pci@vger.kernel.org, chenzhuo.1@bytedance.
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When state is pci_channel_io_frozen in pcie_do_recovery(),
-the severity is fatal and fatal status should be cleared.
-So we add pci_aer_clear_fatal_status().
+Statements clearing status in aer_enable_rootport() is functionally
+equivalent with pcie_clear_device_status() and pci_aer_clear_status().
+So we replace them, which has no functional changes.
+
+After commit 20e15e673b05 ("PCI/AER: Add pci_aer_raw_clear_status()
+to unconditionally clear Error Status"), pci_aer_raw_clear_status()
+is only used by the EDR path, so we add note in function comment.
 
 Signed-off-by: Zhuo Chen <chenzhuo.1@bytedance.com>
 ---
- drivers/pci/pcie/err.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/pci/pcie/aer.c | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/pci/pcie/err.c b/drivers/pci/pcie/err.c
-index f80b21244ef1..b46f1d36c090 100644
---- a/drivers/pci/pcie/err.c
-+++ b/drivers/pci/pcie/err.c
-@@ -241,7 +241,10 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
- 	pci_walk_bridge(bridge, report_resume, &status);
+diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+index a6d29269ccf2..bd5ecfa4860f 100644
+--- a/drivers/pci/pcie/aer.c
++++ b/drivers/pci/pcie/aer.c
+@@ -306,6 +306,8 @@ EXPORT_SYMBOL_GPL(pci_aer_clear_uncorrect_error_status);
+  * Clearing AER error status registers unconditionally, regardless of
+  * whether they're owned by firmware or the OS.
+  *
++ * Used only by the EDR path. Other paths should use pci_aer_clear_status().
++ *
+  * Returns 0 on success, or negative on failure.
+  */
+ int pci_aer_raw_clear_status(struct pci_dev *dev)
+@@ -1277,24 +1279,17 @@ static void aer_enable_rootport(struct aer_rpc *rpc)
+ {
+ 	struct pci_dev *pdev = rpc->rpd;
+ 	int aer = pdev->aer_cap;
+-	u16 reg16;
+ 	u32 reg32;
  
- 	pcie_clear_device_status(dev);
--	pci_aer_clear_nonfatal_status(dev);
-+	if (state == pci_channel_io_frozen)
-+		pci_aer_clear_fatal_status(dev);
-+	else
-+		pci_aer_clear_nonfatal_status(dev);
+ 	/* Clear PCIe Capability's Device Status */
+-	pcie_capability_read_word(pdev, PCI_EXP_DEVSTA, &reg16);
+-	pcie_capability_write_word(pdev, PCI_EXP_DEVSTA, reg16);
++	pcie_clear_device_status(pdev);
  
- 	pci_info(bridge, "device recovery successful\n");
- 	return status;
+ 	/* Disable system error generation in response to error messages */
+ 	pcie_capability_clear_word(pdev, PCI_EXP_RTCTL,
+ 				   SYSTEM_ERROR_INTR_ON_MESG_MASK);
+ 
+ 	/* Clear error status */
+-	pci_read_config_dword(pdev, aer + PCI_ERR_ROOT_STATUS, &reg32);
+-	pci_write_config_dword(pdev, aer + PCI_ERR_ROOT_STATUS, reg32);
+-	pci_read_config_dword(pdev, aer + PCI_ERR_COR_STATUS, &reg32);
+-	pci_write_config_dword(pdev, aer + PCI_ERR_COR_STATUS, reg32);
+-	pci_read_config_dword(pdev, aer + PCI_ERR_UNCOR_STATUS, &reg32);
+-	pci_write_config_dword(pdev, aer + PCI_ERR_UNCOR_STATUS, reg32);
++	pci_aer_clear_status(pdev);
+ 
+ 	/*
+ 	 * Enable error reporting for the root port device and downstream port
 -- 
 2.30.1 (Apple Git-130)
 
