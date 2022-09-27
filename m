@@ -1,33 +1,31 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E6425ED243
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 02:54:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D38255ED244
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 02:54:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4McdL149Lmz3fGv
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 10:54:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4McdLS4W5kz3f3x
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 10:54:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=atomide.com (client-ip=72.249.23.125; helo=muru.com; envelope-from=tony@atomide.com; receiver=<UNKNOWN>)
-X-Greylist: delayed 533 seconds by postgrey-1.36 at boromir; Tue, 27 Sep 2022 16:30:53 AEST
 Received: from muru.com (muru.com [72.249.23.125])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Mc8rs34HGz3blw
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Sep 2022 16:30:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Mc8sG5bPPz3bkb
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Sep 2022 16:31:14 +1000 (AEST)
 Received: from localhost (localhost [127.0.0.1])
-	by muru.com (Postfix) with ESMTPS id E879B80E0;
-	Tue, 27 Sep 2022 06:13:36 +0000 (UTC)
-Date: Tue, 27 Sep 2022 09:21:54 +0300
+	by muru.com (Postfix) with ESMTPS id 5E7B081BD;
+	Tue, 27 Sep 2022 06:22:54 +0000 (UTC)
+Date: Tue, 27 Sep 2022 09:31:11 +0300
 From: Tony Lindgren <tony@atomide.com>
 To: Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH v2 37/44] arm,omap2: Use WFI for omap2_pm_idle()
-Message-ID: <YzKWgjNLWSmDss/h@atomide.com>
+Subject: Re: [PATCH v2 00/44] cpuidle,rcu: Clean up the mess
+Message-ID: <YzKYrx8Kd9SBYcUg@atomide.com>
 References: <20220919095939.761690562@infradead.org>
- <20220919101522.842219871@infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220919101522.842219871@infradead.org>
+In-Reply-To: <20220919095939.761690562@infradead.org>
 X-Mailman-Approved-At: Wed, 28 Sep 2022 10:50:40 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -47,17 +45,21 @@ Cc: juri.lelli@redhat.com, rafael@kernel.org, catalin.marinas@arm.com, linus.wal
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-* Peter Zijlstra <peterz@infradead.org> [220919 10:09]:
-> arch_cpu_idle() is a very simple idle interface and exposes only a
-> single idle state and is expected to not require RCU and not do any
-> tracing/instrumentation.
-> 
-> As such, omap2_pm_idle() is not a valid implementation. Replace it
-> with a simple (shallow) omap2_do_wfi() call.
-> 
-> Omap2 doesn't have a cpuidle driver; but adding one would be the
-> recourse to (re)gain the other idle states.
+Hi,
 
-Looks good to me thanks:
+* Peter Zijlstra <peterz@infradead.org> [220919 10:08]:
+> Hi All!
+> 
+> At long last, a respin of the cpuidle vs rcu cleanup patches.
+> 
+> v1: https://lkml.kernel.org/r/20220608142723.103523089@infradead.org
+> 
+> These here patches clean up the mess that is cpuidle vs rcuidle.
 
-Acked-by: Tony Lindgren <tony@atomide.com>
+I just gave these a quick test and things still work for me. The old
+omap3 off mode during idle still works. No more need to play the
+whack the mole game with RCU-idle :) I did not test on x86, or on other
+ARMs, but considering the test pretty much covered the all the
+affected RCU-idle related paths, where suitable, feel free to add:
+
+Tested-by: Tony Lindgren <tony@atomide.com>
