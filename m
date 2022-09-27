@@ -1,76 +1,114 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08EF95EB726
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Sep 2022 03:49:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2ED05EB78B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Sep 2022 04:21:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Mc2bw2rsvz3cCD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Sep 2022 11:49:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Mc3KH44nfz3bvs
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Sep 2022 12:21:39 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=hsS5QPCR;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=KgODYrgc;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::534; helo=mail-pg1-x534.google.com; envelope-from=zhouzhouyi@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=40.107.243.40; helo=nam12-dm6-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=hsS5QPCR;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=KgODYrgc;
 	dkim-atps=neutral
-Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2040.outbound.protection.outlook.com [40.107.243.40])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mc2bF5XXjz300V
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Sep 2022 11:48:41 +1000 (AEST)
-Received: by mail-pg1-x534.google.com with SMTP id 3so8137476pga.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Sep 2022 18:48:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date;
-        bh=Bm3/izTH95Qq9qOWmlsGgVeEZswV/Zz9ewlv/cGnqFg=;
-        b=hsS5QPCREgczLtKQfYIXzWj0bkTL+WGEzYaWTOHT18AroGaB0GxploOH2TKP1GBxDq
-         aZnUILn4t1w5YK15z+5ZSb31NLZ7slcNgKUd4VUfemq1ofIHNGGHt/5nCxkkP9ipy5Oz
-         SyR7V5zAHgFnf+FNUKQ3ErYyO3VlGRvq9ocnTJF8z8ehj1d16iQxZ155dEjYC/oL99fz
-         Z+rS24Z2RA2xrbbNq6gpcBa7yZDLMmJSVa9fJG3LnxlPlQ36GWU+t0tN54fQlrRaLJaH
-         YyIM+Sh0+88vCxbZW1/joIwYNaV+4duaHMY79yghfRO9cO3wBoio23ONWNbdUM+f4glD
-         thLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date;
-        bh=Bm3/izTH95Qq9qOWmlsGgVeEZswV/Zz9ewlv/cGnqFg=;
-        b=4LkUdCEDpr5cU4HrdkI/Z5LrJRUth5fiRuoZaptz6gV4l+HjuyqPrHuSUIQzojTLKb
-         jrx5C43dkwJM18dmQ3fFnG+n1OVWnUd4Mk9GZFTi7qG94iVGkkI/FJTCue27WjvH3F2m
-         bTJXqrcSKcBk2iXvEeXsPlB9D7GAgBc6kpDRAM8c50uauVBlwMZCcs4HgrTII0/9beHs
-         qrnu9wWp95ANdftQBi9ZmDFWdD0nRSUdpIW5/N69mp2i3CEl0eXQKpBepG09NYeSjp+9
-         lHxU/Ke+ZPAXYmHnK7iZFRqxxDzLIsOx68EihCDKB6B4MzV61OEzrL0wngQO8EOqstq/
-         CYYA==
-X-Gm-Message-State: ACrzQf37dCd5DhT9nWqudd4Y9KN6uEWWrj/tnLH+H0VQSYmt/oqyPUkh
-	CZ+f3fbZBfSTaQFC741zYR8=
-X-Google-Smtp-Source: AMsMyM5N5md6258CNNbPNXQkn6VOGEXW0FJ2mRiTSWRCcU2eQQmv9r3WV8QL3kknHdWC2kj9BbiNZw==
-X-Received: by 2002:a63:de16:0:b0:438:675c:9f30 with SMTP id f22-20020a63de16000000b00438675c9f30mr22753437pgg.294.1664243319058;
-        Mon, 26 Sep 2022 18:48:39 -0700 (PDT)
-Received: from localhost.localdomain ([199.101.192.35])
-        by smtp.gmail.com with ESMTPSA id q14-20020a17090311ce00b00178af82a000sm110774plh.122.2022.09.26.18.48.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Sep 2022 18:48:38 -0700 (PDT)
-From: Zhouyi Zhou <zhouzhouyi@gmail.com>
-To: mpe@ellerman.id.au,
-	npiggin@gmail.com,
-	christophe.leroy@csgroup.eu,
-	atrajeev@linux.vnet.ibm.com,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	lance@osuosl.org,
-	paulmck@kernel.org,
-	rcu@vger.kernel.org
-Subject: [PATCH linux-next][RFC] powerpc: avoid lockdep when we are offline
-Date: Tue, 27 Sep 2022 09:48:23 +0800
-Message-Id: <20220927014823.11439-1-zhouzhouyi@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mc3JV4S6nz30MT
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Sep 2022 12:20:55 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=iAy0loKVbnta/nmEIJHJ3r0a7+V8AGvCaTi3BS0wf9tH8oh6AEq+da/mDjdeH1IrWNEIS8A2/S0IUfgnDQVynfu809SQFzzUJkyVrrkmRWk3tvIpabDzAHItuA69m7cVJL4/32AMVE/C+A2rlB45fqRT6TyfT2fdVCc0MNB0JiPTHSrWjrx0K1xHGhy2tmmlF1IZsJHmGLuDRlGRPeFKJCndoVRa8muSmVG6D5fWSJuK824J+O3XiYz/Qfzgyci1lDwBR586dkghsfUte0efWITUWPwIhjr6NZA1vgJIh9BIg5OHpiaeGhySUAekeRX4s2dw9ci1x9iQNfWiicjXfA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/0fNFP1t6ElIZwUU3+jJl9kcQFnQvMD2kRwfBjGRoTQ=;
+ b=imSdVc57U0HKg8hFOc3M7sSyfdwqOZdDky5UiaxAIxGBmJsPV4yUXG2HX3Qkb7EcE/bbnXvC6c6FMBRVngOvObsNe4JV5vrciGmgWXfnnUfJcbSFy8SlllSu0+/piFsJ7AbBaIktQPtnn1N34zgdJLXf7YhW5ljtYpUAnC+y4rHl3TeDks9cYDKD2iLhYyVB7PtcHRGz08Noz/C5C06sdNhE98pgZbJm5/DFa6jDM0RoK58bvQEAFhlDh048GX/cxpQMtFzPXOpwzrkEB2KUOFPPdyUXddDtx9MFVVeIUrlfPdczNXw010Vyl9XFIFFs7SPPhgb8AtevVVdLZbAYsA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/0fNFP1t6ElIZwUU3+jJl9kcQFnQvMD2kRwfBjGRoTQ=;
+ b=KgODYrgcPLCPHRc4HfIuzi/HWoEkGsX0Fd/VqPGxaiGPf+01qyzQDZaWXdBG0Zr93CIEYD7MLCmE48hRKlUjTTdeyw11KCy8A/jkxZmPNOX+qilCO71/HVSRdAA3ansOSnaVRIxbpJzT9fjOkl2KU1+qGXdJuJ4+CEcnBoTTBLJQKzSujRYnj9d6H5miUrx3raVc0w2XErofU7Kin3K4/XsoADp/F1PIr7kvk2TZrrUwiloxorZzoymU+XLkWs5rdoapGuS8wP8GVK4u6gLT58VlnqslhRuSo1QrYDMNzjIEzj2gS8q+WmveFdn8nSiok9iRRQ4hbQpPPjLkSYpgTQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from BYAPR12MB3176.namprd12.prod.outlook.com (2603:10b6:a03:134::26)
+ by BL1PR12MB5994.namprd12.prod.outlook.com (2603:10b6:208:39a::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5654.25; Tue, 27 Sep
+ 2022 02:20:35 +0000
+Received: from BYAPR12MB3176.namprd12.prod.outlook.com
+ ([fe80::4064:6c13:72e5:a936]) by BYAPR12MB3176.namprd12.prod.outlook.com
+ ([fe80::4064:6c13:72e5:a936%5]) with mapi id 15.20.5654.026; Tue, 27 Sep 2022
+ 02:20:35 +0000
+References: <cover.f15b25597fc3afd45b144df863eeca3b2c13f9f4.1664171943.git-series.apopple@nvidia.com>
+ <3d74bb439723c7e46cbe47d1711795308aee4ae3.1664171943.git-series.apopple@nvidia.com>
+ <YzG42766BJSxro0R@nvidia.com>
+User-agent: mu4e 1.6.9; emacs 27.1
+From: Alistair Popple <apopple@nvidia.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Subject: Re: [PATCH 2/7] mm: Free device private pages have zero refcount
+Date: Tue, 27 Sep 2022 12:06:24 +1000
+In-reply-to: <YzG42766BJSxro0R@nvidia.com>
+Message-ID: <877d1plfrm.fsf@nvdebian.thelocal>
+Content-Type: text/plain
+X-ClientProxiedBy: SYXPR01CA0124.ausprd01.prod.outlook.com
+ (2603:10c6:0:2d::33) To BYAPR12MB3176.namprd12.prod.outlook.com
+ (2603:10b6:a03:134::26)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BYAPR12MB3176:EE_|BL1PR12MB5994:EE_
+X-MS-Office365-Filtering-Correlation-Id: a38e010b-54fa-419f-962e-08daa02edc3e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	FuZxz3pjuBqeq09mPlJcg3ApcX7R+crmtv9/yFmOIAq5cDifyAaE8Pb3pEONMo8wxzw9Fk1ytNr0Q3gkHkEPb2W/hmWaOmwjn/4tK8oYt0v2io9xYcN3XHdQ2q2bjoFLbjH4Lz7uZN0GgUyVq65Q0vpNuLbB0JNfNUtlM3CRVTURYLea+KSIl/TSeHK7noqIv8TJ2KyiVICMY3qR6qS5nF/YBddk4t+9kuxeLEatcO5fk9huG0asttelUmwZ9L5ukj+EydUPO/VmKJGdqmmtWRoDjuvo8HAXMeQytwX8Hk3aY/ts25jIbJz+QWWBzNLdkjRNJa1DbGOAukhvP2BaGyEfdjwh3UlDZZunqpWAFsAfSYUQ5Dir2EXZ4zL13Dvo6In/a73jYzEtNQ/ywjm9j9jM9fepWRxcz1F3wi+7e+P2uZZPyOF5N/q9uLCjrCH/offlIRXOyfxm4fHEP4sbFvW/bxrNKzqz+HmJOpaQK3sIdntccc+k/rB/ndnbsPgS3UwqUdogrk9/vrljqUqlUSKfp8oVEygoq1gwmkvdT3Qpq5LVWsIPmsFinklzEKxtoF/HyOmPXISm5qe1zsaGqJg9iyjTv50/29cZx4M1+Fmr+6VqJEvL4uFPmTjxKQmF4iTjaHHkzSn1O+zhpbVyi5syBKTko2PhBOiY3wd1CeNjbmZ132N8r14GY8u1PSznqh+vSsvj35URULfRKkLhTQ==
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB3176.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(396003)(136003)(376002)(39860400002)(366004)(346002)(451199015)(86362001)(38100700002)(2906002)(7416002)(186003)(6666004)(9686003)(5660300002)(6486002)(41300700001)(6506007)(26005)(83380400001)(478600001)(6512007)(316002)(6636002)(54906003)(66556008)(8676002)(6862004)(4326008)(8936002)(66946007)(66476007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?nvLEt30MP1i0pkcCWXovXrYkCFXY+DWN1bNo+BNGrjO/AeVGADHaYoRcBHFg?=
+ =?us-ascii?Q?pljoy5XPHPwYP8lE9Mh2LJgso5ZTKT/Nblo5UpvGzVej2IkWE89WAhdSE7UG?=
+ =?us-ascii?Q?LXkT+zvucjNivw8JGKx80j/EKsQ1yXp0o1mGMNsRZOx+oYytRYk54YabO8Nk?=
+ =?us-ascii?Q?9gaspqHtQkBfz2Ob6+Iq9yz8ifpwpUcqaumBztUQ1CUtXc2jZ/YwK3Qwao7A?=
+ =?us-ascii?Q?J7TeDvjGT52RZmjmXwabxUaHu8+/qmDCwhBG3GNVl3cgAUvJF2Nv4cmrBK88?=
+ =?us-ascii?Q?285Ji5lIPJ52JircKGW1gd7McT8KaBsA4OSNxISPQJBgJz2uJW/txcRJDrSX?=
+ =?us-ascii?Q?lnzcAZcodQ2zyP5Kiy+ucyPMDBeSkMXvqZEh+d0hKnojax3YBvcik4VlIxml?=
+ =?us-ascii?Q?iO3hieOI+Yg9ZbZNkLfQVVUAvndXgUFCPw87xl2JvgNIG2Aeewe6lRy6RmYl?=
+ =?us-ascii?Q?PQ72BWtdSJm5kUkQ208+2EgW3WjYUogFU+tYtJfqX9azJmnBkaI4a2K9wXjG?=
+ =?us-ascii?Q?DipMl2D3AsnLm7xtjZiqM5kUvp8/aAkn83U9E63HXv9aDuIQzCm9KME9ptnk?=
+ =?us-ascii?Q?2jYmACPqkrtsq18NM8a+kNrySvISr41NxxMmF/Q4SSZRgtn9dVloDeODk8LT?=
+ =?us-ascii?Q?LHKeptRHmz/sr5RQ5JWZUng8u90Tk75LLSt+1iUekiYmSaF4XJSlut3AnWpF?=
+ =?us-ascii?Q?rygrBo5SiAA5/0uGlorqvwFVbKM/dstTqvfJtaBYp30/K8odVz9cwSxTDtLk?=
+ =?us-ascii?Q?gCs8NYnq5xGnotFLj/udkUCd06SCehMg7eg64r8Cbo6Tr/4xikKGtv2PXl7O?=
+ =?us-ascii?Q?rfQiYtJblUwHfl1wakhmxwlG/Crpqjfp0sk54XshOZPTC+Zic703bchiT8rf?=
+ =?us-ascii?Q?PsmwKuC/LVaFqoy67snaKYpcMbEtj+9qQDtX5vT3p2by1TSvKFO3JSp+EyeC?=
+ =?us-ascii?Q?b/+adB/sTxsJfOtZi8NBjgVm0ev3dNN82UNkEC9/IE0+sBEF1xr8493vN3CW?=
+ =?us-ascii?Q?+sibQEaOOlEXFgEMOhS1VSbaA2UlzwvWY331RiNhLajH0E5JV+pFextvYt5N?=
+ =?us-ascii?Q?Lyo+fzmp/jF0iM8aHkjMSEe2VwuCzLjy4ek/u0epZxL1g/SPrcTj1Sz3ctNP?=
+ =?us-ascii?Q?b8AFBhBrzNBuk3G+ianVwT8WzjGm5fuqUlwsPeDhhX8AE7sKPQAvEnt4NKfj?=
+ =?us-ascii?Q?+u/Zrg7gQn59481EMJfEG34nB5i1Lwa6F4KVRqSLGqBbgi4EicrH20o3lMW2?=
+ =?us-ascii?Q?21pN3HpGEwauckU7xYOZBdukA+GsQYdcVtg14IKrua0i0L/rVXB6vnyUYPOP?=
+ =?us-ascii?Q?139LAqXxnG53F6W/oBBWotZy7w3Ye2XPICcwmB0F7zzw/ujLOnlf0+R2iSRu?=
+ =?us-ascii?Q?jqquEd9MSi60kcYjvKUATk28F26LVhmGHfukB+FR72+hvzLLCf7lMeTqaU2h?=
+ =?us-ascii?Q?Xd0AC/my2h06BHpRk8W35XzZFMwUIN8wpvk3mmE7O8fdZz9v9fddqHsfry9m?=
+ =?us-ascii?Q?vtnO+al574qSUhmsdkqMh2fQhs3HCMWbHgGu+CtqK4ugiPb3NvVoVHUyKm3J?=
+ =?us-ascii?Q?ZGCs9Pm+hFTXsNWUm6U8LhSIrlitbSx9FMngkRcg?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a38e010b-54fa-419f-962e-08daa02edc3e
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR12MB3176.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Sep 2022 02:20:35.1625
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: d9HgsWVPSBNfUn4iByaqyzDIT/EN0tRXfmKhDQlIc36I2iwjG4sCVHHzAmJzsR0GHWsbdNeZiX8CD94p4CGZgA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5994
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,126 +120,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Zhouyi Zhou <zhouzhouyi@gmail.com>
+Cc: Alex Sierra <alex.sierra@amd.com>, Karol Herbst <kherbst@redhat.com>, David Airlie <airlied@linux.ie>, nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-mm@kvack.org, amd-gfx@lists.freedesktop.org, "Matthew Wilcox \(Oracle\)" <willy@infradead.org>, Ben Skeggs <bskeggs@redhat.com>, Ralph Campbell <rcampbell@nvidia.com>, Lyude Paul <lyude@redhat.com>, John Hubbard <jhubbard@nvidia.com>, Nicholas Piggin <npiggin@gmail.com>, Dan Williams <dan.j.williams@intel.com>, Felix Kuehling <Felix.Kuehling@amd.com>, "Pan, Xinhui" <Xinhui.Pan@amd.com>, linux-kernel@vger.kernel.org, Daniel Vetter <daniel@ffwll.ch>, Alex Deucher <alexander.deucher@amd.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Christian =?utf-8?Q?K=C3=B6nig?= <christian.koenig@amd.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is second version of my fix to PPC's  "WARNING: suspicious RCU usage",
-I improved my fix under Paul E. McKenney's guidance:
-Link: https://lore.kernel.org/lkml/20220914021528.15946-1-zhouzhouyi@gmail.com/T/
 
-During the cpu offlining, the sub functions of xive_teardown_cpu will
-call __lock_acquire when CONFIG_LOCKDEP=y. The latter function will
-travel RCU protected list, so "WARNING: suspicious RCU usage" will be
-triggered.
+Jason Gunthorpe <jgg@nvidia.com> writes:
 
-Avoid lockdep when we are offline.
+> On Mon, Sep 26, 2022 at 04:03:06PM +1000, Alistair Popple wrote:
+>> Since 27674ef6c73f ("mm: remove the extra ZONE_DEVICE struct page
+>> refcount") device private pages have no longer had an extra reference
+>> count when the page is in use. However before handing them back to the
+>> owning device driver we add an extra reference count such that free
+>> pages have a reference count of one.
+>>
+>> This makes it difficult to tell if a page is free or not because both
+>> free and in use pages will have a non-zero refcount. Instead we should
+>> return pages to the drivers page allocator with a zero reference count.
+>> Kernel code can then safely use kernel functions such as
+>> get_page_unless_zero().
+>>
+>> Signed-off-by: Alistair Popple <apopple@nvidia.com>
+>> ---
+>>  arch/powerpc/kvm/book3s_hv_uvmem.c       | 1 +
+>>  drivers/gpu/drm/amd/amdkfd/kfd_migrate.c | 1 +
+>>  drivers/gpu/drm/nouveau/nouveau_dmem.c   | 1 +
+>>  lib/test_hmm.c                           | 1 +
+>>  mm/memremap.c                            | 5 -----
+>>  mm/page_alloc.c                          | 6 ++++++
+>>  6 files changed, 10 insertions(+), 5 deletions(-)
+>
+> I think this is a great idea, but I'm surprised no dax stuff is
+> touched here?
 
-Signed-off-by: Zhouyi Zhou <zhouzhouyi@gmail.com>
----
-Dear PPC and RCU developers
+free_zone_device_page() shouldn't be called for pgmap->type ==
+MEMORY_DEVICE_FS_DAX so I don't think we should have to worry about DAX
+there. Except that the folio code looks like it might have introduced a
+bug. AFAICT put_page() always calls
+put_devmap_managed_page(&folio->page) but folio_put() does not (although
+folios_put() does!). So it seems folio_put() won't end up calling
+__put_devmap_managed_page_refs() as I think it should.
 
-I found this bug when trying to do rcutorture tests in ppc VM of
-Open Source Lab of Oregon State University
+I think you're right about the change to __init_zone_device_page() - I
+should limit it to DEVICE_PRIVATE/COHERENT pages only. But I need to
+look at Dan's patch series more closely as I suspect it might be better
+to rebase this patch on top of that.
 
-console.log report following bug:
-[   37.635545][    T0] WARNING: suspicious RCU usage^M
-[   37.636409][    T0] 6.0.0-rc4-next-20220907-dirty #8 Not tainted^M
-[   37.637575][    T0] -----------------------------^M
-[   37.638306][    T0] kernel/locking/lockdep.c:3723 RCU-list traversed in non-reader section!!^M
-[   37.639651][    T0] ^M
-[   37.639651][    T0] other info that might help us debug this:^M
-[   37.639651][    T0] ^M
-[   37.641381][    T0] ^M
-[   37.641381][    T0] RCU used illegally from offline CPU!^M
-[   37.641381][    T0] rcu_scheduler_active = 2, debug_locks = 1^M
-[   37.667170][    T0] no locks held by swapper/6/0.^M
-[   37.668328][    T0] ^M
-[   37.668328][    T0] stack backtrace:^M
-[   37.669995][    T0] CPU: 6 PID: 0 Comm: swapper/6 Not tainted 6.0.0-rc4-next-20220907-dirty #8^M
-[   37.672777][    T0] Call Trace:^M
-[   37.673729][    T0] [c000000004653920] [c00000000097f9b4] dump_stack_lvl+0x98/0xe0 (unreliable)^M
-[   37.678579][    T0] [c000000004653960] [c0000000001f2eb8] lockdep_rcu_suspicious+0x148/0x16c^M
-[   37.680425][    T0] [c0000000046539f0] [c0000000001ed9b4] __lock_acquire+0x10f4/0x26e0^M
-[   37.682450][    T0] [c000000004653b30] [c0000000001efc2c] lock_acquire+0x12c/0x420^M
-[   37.684113][    T0] [c000000004653c20] [c0000000010d704c] _raw_spin_lock_irqsave+0x6c/0xc0^M
-[   37.686154][    T0] [c000000004653c60] [c0000000000c7b4c] xive_spapr_put_ipi+0xcc/0x150^M
-[   37.687879][    T0] [c000000004653ca0] [c0000000010c72a8] xive_cleanup_cpu_ipi+0xc8/0xf0^M
-[   37.689856][    T0] [c000000004653cf0] [c0000000010c7370] xive_teardown_cpu+0xa0/0xf0^M
-[   37.691877][    T0] [c000000004653d30] [c0000000000fba5c] pseries_cpu_offline_self+0x5c/0x100^M
-[   37.693882][    T0] [c000000004653da0] [c00000000005d2c4] arch_cpu_idle_dead+0x44/0x60^M
-[   37.695739][    T0] [c000000004653dc0] [c0000000001c740c] do_idle+0x16c/0x3d0^M
-[   37.697536][    T0] [c000000004653e70] [c0000000001c7a1c] cpu_startup_entry+0x3c/0x40^M
-[   37.699694][    T0] [c000000004653ea0] [c00000000005ca20] start_secondary+0x6c0/0xb50^M
-[   37.701742][    T0] [c000000004653f90] [c00000000000d054] start_secondary_prolog+0x10/0x14^M
-
-
-Tested on PPC VM of Open Source Lab of Oregon State University.
-Test results show that although "WARNING: suspicious RCU usage" has gone,
-and there are less "BUG: soft lockup" reports than the original kernel
-(9 vs 13), which sounds good ;-)
-
-But after my modification, results-rcutorture-kasan/SRCU-P/console.log.diags
-shows a new warning:
-[  222.289242][  T110] WARNING: CPU: 6 PID: 110 at kernel/rcu/rcutorture.c:2806 rcu_torture_fwd_prog+0xc88/0xdd0
-
-I guess above new warning also exits in original kernel, so I write a tiny test script as follows:
-
-#!/bin/sh
-
-COUNTER=0
-while [ $COUNTER -lt 1000 ] ; do
-    qemu-system-ppc64 -nographic -smp cores=8,threads=1 -net none -M pseries -nodefaults -device spapr-vscsi -serial file:/tmp/console.log -m 2G -kernel /tmp/vmlinux -append "debug_boot_weak_hash panic=-1 console=ttyS0 rcupdate.rcu_cpu_stall_suppress_at_boot=1 torture.disable_onoff_at_boot rcupdate.rcu_task_stall_timeout=30000 rcutorture.torture_type=srcud rcupdate.rcu_self_test=1 rcutorture.fwd_progress=3 srcutree.big_cpu_lim=5 rcutorture.onoff_interval=1000 rcutorture.onoff_holdoff=30 rcutorture.n_barrier_cbs=4 rcutorture.stat_interval=15 rcutorture.shutdown_secs=420 rcutorture.test_no_idle_hz=1 rcutorture.verbose=1"&
-    qemu_pid=$!
-    cd ~/next1/linux-next
-    make clean
-#I use "make vmlinux -j 8" to create heavy background jitter
-    make vmlinux -j 8  > /dev/null 2>&1 
-    make_pid=$!
-    wait $qemu_pid
-    kill $qemu_pid
-    kill $make_id
-    if grep -q WARN /tmp/console.log;
-    then
-        echo $COUNTER > /tmp/counter
-        exit
-    fi
-    COUNTER=$(($COUNTER+1))
-done
-
-Above test shows that original kernel also warn about
-"WARNING: CPU: 6 PID: 110 at kernel/rcu/rcutorture.c:2806 rcu_torture_fwd_prog+0xc88/0xdd0"
-
-But I am not very sure about my results, so I still add a [RFC] to my subject line.
-
-Thank all of you for your guidance and encouragement ;-)
-
-Cheers
-Zhouyi
---
- arch/powerpc/platforms/pseries/hotplug-cpu.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/arch/powerpc/platforms/pseries/hotplug-cpu.c b/arch/powerpc/platforms/pseries/hotplug-cpu.c
-index e0a7ac5db15d..e47098f00da1 100644
---- a/arch/powerpc/platforms/pseries/hotplug-cpu.c
-+++ b/arch/powerpc/platforms/pseries/hotplug-cpu.c
-@@ -64,10 +64,15 @@ static void pseries_cpu_offline_self(void)
- 
- 	local_irq_disable();
- 	idle_task_exit();
-+	/* prevent lockdep code from traveling RCU protected list
-+	 * when we are offline.
-+	 */
-+	lockdep_off();
- 	if (xive_enabled())
- 		xive_teardown_cpu();
- 	else
- 		xics_teardown_cpu();
-+	lockdep_on();
- 
- 	unregister_slb_shadow(hwcpu);
- 	rtas_stop_self();
--- 
-2.25.1
-
+> Jason
