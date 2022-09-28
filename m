@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 597B65EDDF0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 15:42:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B5BA5EDDFB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 15:43:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4McyMt1pqFz3drM
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 23:42:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4McyP95nfsz3f6N
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 23:43:09 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=i4YCUIZA;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=IVixxF0b;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -16,33 +16,35 @@ Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4McyL85ffmz3bkb
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Sep 2022 23:40:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4McyL936Wdz3bkb
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Sep 2022 23:40:33 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=i4YCUIZA;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=IVixxF0b;
 	dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4McyL65c8Zz4xGQ;
-	Wed, 28 Sep 2022 23:40:30 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4McyL72pzHz4xGh;
+	Wed, 28 Sep 2022 23:40:31 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1664372430;
-	bh=/lNEJmTqE4KJ0mXO03cJ7YzFkVHxeI96IWFG2LDU56Q=;
-	h=From:To:Subject:Date:From;
-	b=i4YCUIZAaLz17ulYzn+SwmuNEJb67OYEjRJ4H2gghGsC5dBKT3EhaQ5URkuxxBxfN
-	 YzNct5k9A8PnxZ3t2c1pdgTpPEdKOlluwjqny4c4GblxJG4FTIJ9tVTkb2qHMRwHCV
-	 TYAghR7nbT0hhHAlLQQeYmHd785hZZNmHT76OxsT5qY6qFDNq3puAVlTVQp0qeWJZa
-	 sIBNZrfDTLCv50dPcn4i2EiqTkQgAQdMLIQ2vvxegb2+QruvHBK+uOZ5YkuNnIXOp+
-	 8YjY740MxFGFrSHrMiNCen7azpeRG35XRgQiV/Fcr5hc3/dwcE2A1LqbrGItGoD3Cz
-	 oBvQddkXwT9oQ==
+	s=201909; t=1664372431;
+	bh=pi+mUOLsnhmd6VVvCm4bw8pEUUFjwaM50i6henrEXqE=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=IVixxF0b2KwMHLOsnvERQ5NNeaJ6m3SUBNElNvB4OdimyvE+HGWKslUoI35zTg1ys
+	 onJ2Op8Dv+BbC5Mt/FD4RY7Zjroj+xzxf8k7VdQG70ADKQ9E4DSZqLbvoIJ1ka/KIP
+	 K4P6pKJiH6hqW9mtqvkwxPMGTBgRzLjwdPKzHMWVbyDhCNzC7ZrcnIvxI7bnKbQrbU
+	 1NsQDeiybSsQucx7odkIUWE7oo55Ae2mKFKnyPzcYdV1kPhoddfZ4Gu3luBIOucn5p
+	 19izVWTALp9X+pf6Np/ZPkpf2ozoaoHC2fwFHUSAn6heE6eWURWusryCA4NNVfK2ob
+	 YiS0e/abCCo3g==
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH 1/6] powerpc: Add ppc_md.name to dump stack arch description
-Date: Wed, 28 Sep 2022 23:40:20 +1000
-Message-Id: <20220928134025.1739909-1-mpe@ellerman.id.au>
+Subject: [PATCH 2/6] powerpc: Add PVR & CPU name to dump stack arch description
+Date: Wed, 28 Sep 2022 23:40:21 +1000
+Message-Id: <20220928134025.1739909-2-mpe@ellerman.id.au>
 X-Mailer: git-send-email 2.37.3
+In-Reply-To: <20220928134025.1739909-1-mpe@ellerman.id.au>
+References: <20220928134025.1739909-1-mpe@ellerman.id.au>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -59,77 +61,39 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-As soon as we know the name of the machine description we're using,
-add it to the dump stack arch description, which is printed in case of
-an oops.
+Add the PVR and CPU name to the dump stack arch description, which is
+printed in case of an oops.
 
-eg: Hardware name: ... machine:pSeries
+eg: Hardware name: ... POWER8E (raw) pvr:0x4b0201
 
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
- arch/powerpc/include/asm/setup.h   |  2 ++
- arch/powerpc/kernel/setup-common.c | 14 ++++++++++++++
- 2 files changed, 16 insertions(+)
+ arch/powerpc/kernel/prom.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/setup.h b/arch/powerpc/include/asm/setup.h
-index 85143849a586..e29e83f8a89c 100644
---- a/arch/powerpc/include/asm/setup.h
-+++ b/arch/powerpc/include/asm/setup.h
-@@ -88,6 +88,8 @@ unsigned long __init prom_init(unsigned long r3, unsigned long r4,
- 			       unsigned long pp, unsigned long r6,
- 			       unsigned long r7, unsigned long kbase);
- 
-+extern struct seq_buf ppc_hw_desc;
-+
- #endif /* !__ASSEMBLY__ */
- 
- #endif	/* _ASM_POWERPC_SETUP_H */
-diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
-index dd98f43bd685..42279c3f1d31 100644
---- a/arch/powerpc/kernel/setup-common.c
-+++ b/arch/powerpc/kernel/setup-common.c
-@@ -18,6 +18,7 @@
- #include <linux/delay.h>
- #include <linux/initrd.h>
- #include <linux/platform_device.h>
-+#include <linux/printk.h>
- #include <linux/seq_file.h>
- #include <linux/ioport.h>
- #include <linux/console.h>
-@@ -25,6 +26,7 @@
- #include <linux/root_dev.h>
+diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
+index 2e7a04dab2f7..7987d69f1785 100644
+--- a/arch/powerpc/kernel/prom.c
++++ b/arch/powerpc/kernel/prom.c
+@@ -30,6 +30,7 @@
+ #include <linux/libfdt.h>
  #include <linux/cpu.h>
- #include <linux/unistd.h>
+ #include <linux/pgtable.h>
 +#include <linux/seq_buf.h>
- #include <linux/serial.h>
- #include <linux/serial_8250.h>
- #include <linux/percpu.h>
-@@ -588,6 +590,15 @@ static __init int add_pcspkr(void)
- device_initcall(add_pcspkr);
- #endif	/* CONFIG_PCSPKR_PLATFORM */
  
-+static char ppc_hw_desc_buf[128] __initdata;
-+
-+struct seq_buf ppc_hw_desc __initdata = {
-+	.buffer = ppc_hw_desc_buf,
-+	.size = sizeof(ppc_hw_desc_buf),
-+	.len = 0,
-+	.readpos = 0,
-+};
-+
- static __init void probe_machine(void)
- {
- 	extern struct machdep_calls __machine_desc_start;
-@@ -628,6 +639,9 @@ static __init void probe_machine(void)
- 		for (;;);
- 	}
+ #include <asm/rtas.h>
+ #include <asm/page.h>
+@@ -819,6 +820,10 @@ void __init early_init_devtree(void *params)
  
-+	seq_buf_printf(&ppc_hw_desc,"machine:%s ", ppc_md.name);
-+	dump_stack_set_arch_desc(ppc_hw_desc.buffer);
-+
- 	printk(KERN_INFO "Using %s machine description\n", ppc_md.name);
- }
+ 	dt_cpu_ftrs_scan();
  
++	/* We can now set the CPU name & PVR for the oops output */
++	seq_buf_printf(&ppc_hw_desc, "%s pvr:0x%04lx ", cur_cpu_spec->cpu_name,
++		       mfspr(SPRN_PVR));
++
+ 	/* Retrieve CPU related informations from the flat tree
+ 	 * (altivec support, boot CPU ID, ...)
+ 	 */
 -- 
 2.37.3
 
