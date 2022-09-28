@@ -1,92 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01FB75EDE0A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 15:44:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 623485EDC5F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 14:15:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4McyQg6WLKz3c4c
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 23:44:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4McwSC6Kc0z3cBK
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 22:15:39 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jyl7wRTq;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=kZ+g9cd1;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4McwRb6f2rz3bgC
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Sep 2022 22:15:07 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jyl7wRTq;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=kZ+g9cd1;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4McyLm3kXmz3cCD
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Sep 2022 23:41:04 +1000 (AEST)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28SDarhw029178;
-	Wed, 28 Sep 2022 13:40:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=Mh2fWVk3fNEf2DhAYeJxnFE3lkUUL1QVUTXLHpMXmPg=;
- b=jyl7wRTq6Gk7BW8atbRWFccufGg4KPj/S7tcFRjs5qIxcEC7zV+gz/QA69AzERRzo0sN
- DPOii7OJ7uzMHb5kbu+G+nOnnHm0PkgPsHY3Hp7Y0UkC2VFIwlBeU8hUhnx4hmxq0Dvv
- WGS7oHbuWHJgy3+fqcyKT3hBHSpK3NRTHQUUywr0lSUF2XgSfsBVYTbcNidy2wZ0pgmy
- qp234ogI149MIknflBq4UjYuSTSbra15mh7aKlNBhTJFoM04bQTOvpPXv4dbSs2J1+Fw
- kbjwOEVGIBAp23dKpFLcKp1J+PTcrFYSrVmMuI5v7iWpouTCW297+4JUJnOxP76/sdFX NQ== 
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com [149.81.74.106])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jvmtr50aj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 28 Sep 2022 13:40:54 +0000
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
-	by ppma04fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 28SDb6Q8020722;
-	Wed, 28 Sep 2022 13:40:51 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
-	by ppma04fra.de.ibm.com with ESMTP id 3jssh9409c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 28 Sep 2022 13:40:51 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
-	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 28SDeniI52035980
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 28 Sep 2022 13:40:49 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 04E65A4054;
-	Wed, 28 Sep 2022 13:40:49 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5A260A4060;
-	Wed, 28 Sep 2022 13:40:48 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Wed, 28 Sep 2022 13:40:48 +0000 (GMT)
-Received: from intelligence.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id B95496016C;
-	Wed, 28 Sep 2022 20:02:40 +1000 (AEST)
-Message-ID: <591a3e016605181e119496992027ae21700a2c3b.camel@linux.ibm.com>
-Subject: Re: [PATCH v2 2/2] powerpc/rtas: block error injection when locked
- down
-From: Andrew Donnellan <ajd@linux.ibm.com>
-To: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
-        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Wed, 28 Sep 2022 20:02:40 +1000
-In-Reply-To: <20220926131643.146502-3-nathanl@linux.ibm.com>
-References: <20220926131643.146502-1-nathanl@linux.ibm.com>
-	 <20220926131643.146502-3-nathanl@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.3-1 
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4McwRY4MD2z4wgv;
+	Wed, 28 Sep 2022 22:15:05 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1664367305;
+	bh=W/3Ic8ZIL0Nrr7CEJiA+Ku8Aq/xkLrBD/eyQRs8P5Mk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=kZ+g9cd1upeJtNzXhPmIJqlYd9S02rv+qpblBxMWuDSoKxuDfvLnELCAcYr0tY+ru
+	 sOGUiS3ttQbscOvqOQdAOAXosq2wbSgLL58IhrZ0jR8rF7rRERRJESXYUXlkYnZ1KD
+	 1fShgPFcmFx1NKCa0wbAdmDZQ50jFDQ0PgGDqPqf6jhMSSi9x52GUr8/WSYASHg2j0
+	 q8UOQrhrd5D2m2YkAL6XegGS48QG89rINt9QmvHXKXg+FaW2zbZ22rvzPC7WmgVn02
+	 AMhzCp9LHsSHupG3fI0KQwXgaPayWB/6IfBpFrTlH2zeOfImMIuSmMKqQVhoM4Yesq
+	 pLTXlwOAE/V4g==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Rohan McLure <rmclure@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v6 13/25] powerpc: Remove direct call to mmap2 syscall
+ handlers
+In-Reply-To: <20220921065605.1051927-14-rmclure@linux.ibm.com>
+References: <20220921065605.1051927-1-rmclure@linux.ibm.com>
+ <20220921065605.1051927-14-rmclure@linux.ibm.com>
+Date: Wed, 28 Sep 2022 22:15:05 +1000
+Message-ID: <87k05ng0fq.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: mG5ysnGAlMM9Fev4UY_3wOPa0iaGdcWB
-X-Proofpoint-ORIG-GUID: mG5ysnGAlMM9Fev4UY_3wOPa0iaGdcWB
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
- definitions=2022-09-28_06,2022-09-28_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 mlxlogscore=999
- phishscore=0 clxscore=1015 priorityscore=1501 mlxscore=0 adultscore=0
- bulkscore=0 lowpriorityscore=0 impostorscore=0 suspectscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2209130000 definitions=main-2209280083
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,134 +59,114 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: paul@paul-moore.com, nayna@linux.ibm.com, jmorris@namei.org, gcwilson@linux.ibm.com, serge@hallyn.com
+Cc: Rohan McLure <rmclure@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 2022-09-26 at 08:16 -0500, Nathan Lynch wrote:
-> The error injection facility on pseries VMs allows corruption of
-> arbitrary guest memory, potentially enabling a sufficiently
-> privileged
-> user to disable lockdown or perform other modifications of the
-> running
-> kernel via the rtas syscall.
-> 
-> Block the PAPR error injection facility from being opened or called
-> when locked down.
-> 
-> Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
-
-Is there any circumstance (short of arbitrary code execution etc) where
-the rtas_call() check will actually trigger rather than the sys_rtas()
-check? (Not that it matters, defence in depth is good.)
-
-Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
-
+Rohan McLure <rmclure@linux.ibm.com> writes:
+> Syscall handlers should not be invoked internally by their symbol names,
+> as these symbols defined by the architecture-defined SYSCALL_DEFINE
+> macro. Move the compatibility syscall definition for mmap2 to
+> syscalls.c, so that all mmap implementations can share a helper function.
+>
+> Remove 'inline' on static mmap helper.
+>
+> Signed-off-by: Rohan McLure <rmclure@linux.ibm.com>
+> Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->  arch/powerpc/kernel/rtas.c | 25 ++++++++++++++++++++++++-
->  include/linux/security.h   |  1 +
->  security/security.c        |  1 +
->  3 files changed, 26 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-> index 693133972294..c2540d393f1c 100644
-> --- a/arch/powerpc/kernel/rtas.c
-> +++ b/arch/powerpc/kernel/rtas.c
-> @@ -23,6 +23,7 @@
->  #include <linux/memblock.h>
->  #include <linux/slab.h>
->  #include <linux/reboot.h>
-> +#include <linux/security.h>
->  #include <linux/syscalls.h>
->  #include <linux/of.h>
->  #include <linux/of_fdt.h>
-> @@ -464,6 +465,9 @@ void rtas_call_unlocked(struct rtas_args *args,
-> int token, int nargs, int nret,
->         va_end(list);
->  }
->  
-> +static int ibm_open_errinjct_token;
-> +static int ibm_errinjct_token;
-> +
->  int rtas_call(int token, int nargs, int nret, int *outputs, ...)
->  {
->         va_list list;
-> @@ -476,6 +480,16 @@ int rtas_call(int token, int nargs, int nret,
-> int *outputs, ...)
->         if (!rtas.entry || token == RTAS_UNKNOWN_SERVICE)
->                 return -1;
->  
-> +       if (token == ibm_open_errinjct_token || token ==
-> ibm_errinjct_token) {
-> +               /*
-> +                * It would be nicer to not discard the error value
-> +                * from security_locked_down(), but callers expect an
-> +                * RTAS status, not an errno.
-> +                */
-> +               if
-> (security_locked_down(LOCKDOWN_RTAS_ERROR_INJECTION))
-> +                       return -1;
-> +       }
-> +
->         if ((mfmsr() & (MSR_IR|MSR_DR)) != (MSR_IR|MSR_DR)) {
->                 WARN_ON_ONCE(1);
->                 return -1;
-> @@ -1227,6 +1241,14 @@ SYSCALL_DEFINE1(rtas, struct rtas_args __user
-> *, uargs)
->         if (block_rtas_call(token, nargs, &args))
->                 return -EINVAL;
->  
-> +       if (token == ibm_open_errinjct_token || token ==
-> ibm_errinjct_token) {
-> +               int err;
-> +
-> +               err =
-> security_locked_down(LOCKDOWN_RTAS_ERROR_INJECTION);
-> +               if (err)
-> +                       return err;
-> +       }
-> +
->         /* Need to handle ibm,suspend_me call specially */
->         if (token == rtas_token("ibm,suspend-me")) {
->  
-> @@ -1325,7 +1347,8 @@ void __init rtas_initialize(void)
->  #ifdef CONFIG_RTAS_ERROR_LOGGING
->         rtas_last_error_token = rtas_token("rtas-last-error");
->  #endif
+> V2: Move mmap2 compat implementation to asm/kernel/syscalls.c.
+> V4: Move to be applied before syscall wrapper introduced.
+> V5: Remove 'inline' in helper.
+> ---
+>  arch/powerpc/kernel/sys_ppc32.c |  9 ---------
+>  arch/powerpc/kernel/syscalls.c  | 17 ++++++++++++++---
+>  2 files changed, 14 insertions(+), 12 deletions(-)
+>
+> diff --git a/arch/powerpc/kernel/sys_ppc32.c b/arch/powerpc/kernel/sys_ppc32.c
+> index d961634976d8..776ae7565fc5 100644
+> --- a/arch/powerpc/kernel/sys_ppc32.c
+> +++ b/arch/powerpc/kernel/sys_ppc32.c
+> @@ -25,7 +25,6 @@
+>  #include <linux/poll.h>
+>  #include <linux/personality.h>
+>  #include <linux/stat.h>
+> -#include <linux/mman.h>
+>  #include <linux/in.h>
+>  #include <linux/syscalls.h>
+>  #include <linux/unistd.h>
+> @@ -48,14 +47,6 @@
+>  #include <asm/syscalls.h>
+>  #include <asm/switch_to.h>
+>  
+> -unsigned long compat_sys_mmap2(unsigned long addr, size_t len,
+> -			  unsigned long prot, unsigned long flags,
+> -			  unsigned long fd, unsigned long pgoff)
+> -{
+> -	/* This should remain 12 even if PAGE_SIZE changes */
+> -	return sys_mmap(addr, len, prot, flags, fd, pgoff << 12);
+> -}
 > -
-> +       ibm_open_errinjct_token = rtas_token("ibm,open-errinjct");
-> +       ibm_errinjct_token = rtas_token("ibm,errinjct");
->         rtas_syscall_filter_init();
->  }
->  
-> diff --git a/include/linux/security.h b/include/linux/security.h
-> index 39e7c0e403d9..70f89dc3a712 100644
-> --- a/include/linux/security.h
-> +++ b/include/linux/security.h
-> @@ -123,6 +123,7 @@ enum lockdown_reason {
->         LOCKDOWN_XMON_WR,
->         LOCKDOWN_BPF_WRITE_USER,
->         LOCKDOWN_DBG_WRITE_KERNEL,
-> +       LOCKDOWN_RTAS_ERROR_INJECTION,
->         LOCKDOWN_INTEGRITY_MAX,
->         LOCKDOWN_KCORE,
->         LOCKDOWN_KPROBES,
-> diff --git a/security/security.c b/security/security.c
-> index 51bf66d4f472..eabe3ce7e74e 100644
-> --- a/security/security.c
-> +++ b/security/security.c
-> @@ -61,6 +61,7 @@ const char *const
-> lockdown_reasons[LOCKDOWN_CONFIDENTIALITY_MAX+1] = {
->         [LOCKDOWN_XMON_WR] = "xmon write access",
->         [LOCKDOWN_BPF_WRITE_USER] = "use of bpf to write user RAM",
->         [LOCKDOWN_DBG_WRITE_KERNEL] = "use of kgdb/kdb to write
-> kernel RAM",
-> +       [LOCKDOWN_RTAS_ERROR_INJECTION] = "RTAS error injection",
->         [LOCKDOWN_INTEGRITY_MAX] = "integrity",
->         [LOCKDOWN_KCORE] = "/proc/kcore access",
->         [LOCKDOWN_KPROBES] = "use of kprobes",
+>  compat_ssize_t compat_sys_pread64(unsigned int fd, char __user *ubuf, compat_size_t count,
+>  			     u32 reg6, u32 pos1, u32 pos2)
+>  {
+> diff --git a/arch/powerpc/kernel/syscalls.c b/arch/powerpc/kernel/syscalls.c
+> index a04c97faa21a..9830957498b0 100644
+> --- a/arch/powerpc/kernel/syscalls.c
+> +++ b/arch/powerpc/kernel/syscalls.c
+> @@ -36,9 +36,9 @@
+>  #include <asm/time.h>
+>  #include <asm/unistd.h>
+>  
+> -static inline long do_mmap2(unsigned long addr, size_t len,
+> -			unsigned long prot, unsigned long flags,
+> -			unsigned long fd, unsigned long off, int shift)
+> +static long do_mmap2(unsigned long addr, size_t len,
+> +		     unsigned long prot, unsigned long flags,
+> +		     unsigned long fd, unsigned long off, int shift)
+>  {
+>  	if (!arch_validate_prot(prot, addr))
+>  		return -EINVAL;
+> @@ -56,6 +56,17 @@ SYSCALL_DEFINE6(mmap2, unsigned long, addr, size_t, len,
+>  	return do_mmap2(addr, len, prot, flags, fd, pgoff, PAGE_SHIFT-12);
+>  }
+>  
+> +#ifdef CONFIG_COMPAT
+> +COMPAT_SYSCALL_DEFINE6(mmap2,
+> +		       unsigned long, addr, size_t, len,
+> +		       unsigned long, prot, unsigned long, flags,
+> +		       unsigned long, fd, unsigned long, pgoff)
+> +{
+> +	/* This should remain 12 even if PAGE_SIZE changes */
+> +	return do_mmap2(addr, len, prot, flags, fd, pgoff << 12, PAGE_SHIFT-12);
 
--- 
-Andrew Donnellan    OzLabs, ADL Canberra
-ajd@linux.ibm.com   IBM Australia Limited
+This isn't quite right.
 
+The comment about it remaining 12 is kind of misleading, it was true
+when compat_sys_mmap2() called sys_mmap(), but it's wrong now that we're
+calling do_mmap2().
+
+The incoming "pgoff" here is in units of 4K.
+
+do_mmap2() takes "off" in whatever units, but also takes "shift", which
+has to tell us how to shift "off" into PAGE_SIZE units.
+
+If we pass off = pgoff << 12, that's in bytes, so we need to page
+shift = PAGE_SHIFT.
+
+But I think it makes more sense to do the same as mmap2() and pass the
+4K offset through, and pass shift = PAGE_SHIFT - 12. I also borrowed the
+"off_4k" name from arm64. End result:
+
+#ifdef CONFIG_COMPAT
+COMPAT_SYSCALL_DEFINE6(mmap2,
+		       unsigned long, addr, size_t, len,
+		       unsigned long, prot, unsigned long, flags,
+		       unsigned long, fd, unsigned long, off_4k)
+{
+	return do_mmap2(addr, len, prot, flags, fd, off_4k, PAGE_SHIFT-12);
+}
+#endif
+
+With that my G5 boots again :)
+
+cheers
