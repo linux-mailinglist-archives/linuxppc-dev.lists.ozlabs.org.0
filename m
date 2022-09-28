@@ -2,73 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E5F25ED356
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 05:14:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 593A05ED3D7
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 06:21:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MchRB3Ncmz3bsy
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 13:13:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Mcjww2xPmz3bWB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 14:21:20 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=QEWJIyKZ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bytedance-com.20210112.gappssmtp.com header.i=@bytedance-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=hooLisGa;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102e; helo=mail-pj1-x102e.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bytedance.com (client-ip=2607:f8b0:4864:20::52c; helo=mail-pg1-x52c.google.com; envelope-from=chenzhuo.1@bytedance.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=QEWJIyKZ;
+	dkim=pass (2048-bit key; unprotected) header.d=bytedance-com.20210112.gappssmtp.com header.i=@bytedance-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=hooLisGa;
 	dkim-atps=neutral
-Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
+Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com [IPv6:2607:f8b0:4864:20::52c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MchQY2TbBz2xHL
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Sep 2022 13:13:22 +1000 (AEST)
-Received: by mail-pj1-x102e.google.com with SMTP id g1-20020a17090a708100b00203c1c66ae3so533520pjk.2
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Sep 2022 20:13:22 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4McjwD2JvMz2xkV
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Sep 2022 14:20:41 +1000 (AEST)
+Received: by mail-pg1-x52c.google.com with SMTP id 78so11137745pgb.13
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Sep 2022 21:20:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date;
-        bh=ynZzDYV3qu3pTVsoF69OFstFK1wv0X8GI1hFwjv8mpQ=;
-        b=QEWJIyKZ3vlw+J92IlrJjBi8Ic1yWYx28+r67c/zhB9fJyCfkKS9JoGTGiLCOVoV3w
-         8emQt2CvtPOZ7fyBTgPmoLBkoJV66rK2jolVH1QlRbp1dQ9VqSs3SUHUoM6SXTrnQcFE
-         +3mdQtSaUKIIgTuENawcwy2nMgxMQtIs9OKalkPYiBBGV9e7yMLewHDS8070BwEMr8Cp
-         kWeJIPk07zDvWxo6Z/RL7BwL8Qao5dPcwRJXW66G3E97EtOebdgUGG9Nz6RZrPEf3HS/
-         ovVcWCMZxER62VeN2D3+5z9UvL1EQyaSxitMWNTMEPPZ7JZnVNpGLIw9oU7h08JaaOVy
-         E9aQ==
+        d=bytedance-com.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date;
+        bh=yFiQRqenBnP9hKkiD46tWPwfT0QDu8/bSPBGZoBlzgg=;
+        b=hooLisGajE4+4MwjNaS+l0+/mZZQz4+CXmfDaAvTbcp9Vb50hZQ8aJX/wZVVTmklb8
+         n6kAK0pb7T39ni+nyQij+Z33mFANX2gP59HOmQ2XVe9TpjPpvoK1f31TcXv/n0YN4Bbg
+         oS0dvXxSAH+KGgT83rhf206mzkxGsmpGkXwP3xhud1dynDIW1Yi7bNpwtojs8D5EWod6
+         3xDmV6JqIpMjZ3OETd+JUcNTA6KSjVFhr1gGxbBi0ltsZvxy/Lu2xv4k9gusJ2nJ0p2J
+         1TEuv26ILz7fv5H1uHRQbi5VKSiuCyR7YSF24qohAlC1hw9HPvEcGBSYype8ptPffYj2
+         W0Qg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date;
-        bh=ynZzDYV3qu3pTVsoF69OFstFK1wv0X8GI1hFwjv8mpQ=;
-        b=bLawbxHsUQYe5zNNZ2kvrCGHHaDHVFvy/ByjeQ+bgu6eKRqjlThdaXxQ0x5zgAqkGG
-         U8fY8YnNDpywigFkdRgOGUAFhVtWCXy1du8hqPjKvvaEAB+eVqZGnhseHNAfYo9ISwsA
-         SFbZHQ+Sta4chAwJj/BB3knQbTK2mIW0rFC3FOd5SgvGVIq8iqM2WF1P3nH7u4B/mb3f
-         sL86GH7Uua4LMhe/LLwLxTbbHtFArtE2ndewpZZ5fOYVzYWOHq03LFqJYvoQncOVpUFK
-         T3tCYH+3D7AXChueyXd/0qy6J63KZKn5ZGPMTZit7ybjeDNL8GxN8sDB0fZYACjiP9Ja
-         tZPQ==
-X-Gm-Message-State: ACrzQf32vWGqIRMah1GTskXi27HwYH9cO8UicDSy36UqMqeF5Ka3vyxK
-	O6FBLLsZ8D1B/ofxv5zjK3/BhpUYRkY=
-X-Google-Smtp-Source: AMsMyM5Ey/LDF7FHbAoWisWwj7cXTDaEaevRp8tdfxAhHzCd1kUJVZq0sEZpehaBJ7FrJepZyAukHw==
-X-Received: by 2002:a17:902:e801:b0:178:11e9:2ba2 with SMTP id u1-20020a170902e80100b0017811e92ba2mr28670093plg.26.1664334799971;
-        Tue, 27 Sep 2022 20:13:19 -0700 (PDT)
-Received: from localhost (193-116-92-8.tpgi.com.au. [193.116.92.8])
-        by smtp.gmail.com with ESMTPSA id d9-20020a170902f14900b00176b63535adsm2267953plb.260.2022.09.27.20.13.17
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=yFiQRqenBnP9hKkiD46tWPwfT0QDu8/bSPBGZoBlzgg=;
+        b=xNNJVHe6ek8T55HvcyfnofCIRSYU/Duo82txqQ6Io6da0a6LWHIq1vuBlUNU7EfGCk
+         YGa4ffjvfoR1F1lhvsuIcILvAeDFT5Pub5LkLlI6ygsthESCu7G8Ubuts/tk7b0S1MEu
+         +hwEnHzkYt8cWFR/5yEh/TV9J36s9TnlvsUj+umkF0be4GM25+le9GQ+7hI/ltJJ90Fg
+         DdcBibt68GMht5ZKRH6DtIAjpyDsdmMW+NfYRTvKr9G4CORcEy1A4GmrIHy+H53pDDWe
+         lbup2O85/8Q7oLIDGgY5AAwmW3BBIlPJoAUNim9GIWw4oxAu6YmdwkqeeAoOsbH1TSQz
+         mK+A==
+X-Gm-Message-State: ACrzQf2F7dcfRvgh5MmXvN8V7PMwqtvAbLtG8AdIYcytWKqdMCqrQuF5
+	lIcU1lSCYu37u41VF55xctL3Sw==
+X-Google-Smtp-Source: AMsMyM50itfQ0DRAQQIEThIt2ysECjrFQ4ghVKeFxS0QdAhHPdJh+YEyANskKckc0yUejONhTF50Sg==
+X-Received: by 2002:a65:644c:0:b0:43c:e614:ae0e with SMTP id s12-20020a65644c000000b0043ce614ae0emr7481081pgv.491.1664338839008;
+        Tue, 27 Sep 2022 21:20:39 -0700 (PDT)
+Received: from ?IPV6:fdbd:ff1:ce00:f:181d:9138:3f2b:d59e? ([2400:8800:1f02:83:4000::7])
+        by smtp.gmail.com with ESMTPSA id h8-20020a170902680800b0017a018221e2sm324111plk.70.2022.09.27.21.20.33
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 27 Sep 2022 20:13:19 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 28 Sep 2022 13:13:14 +1000
-Message-Id: <CN7PG1IA5HUZ.MCPQ7S3QQKWO@bobo>
-Subject: Re: [PATCH 2/2] powerpc: Reverse stack frame marker on little
- endian
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Michael Ellerman" <mpe@ellerman.id.au>, <linuxppc-dev@lists.ozlabs.org>
-X-Mailer: aerc 0.11.0
-References: <20220927150419.1503001-1-mpe@ellerman.id.au>
- <20220927150419.1503001-2-mpe@ellerman.id.au>
-In-Reply-To: <20220927150419.1503001-2-mpe@ellerman.id.au>
+        Tue, 27 Sep 2022 21:20:38 -0700 (PDT)
+Message-ID: <1d62d0ac-b47c-94b5-dd75-b7df71817d0d@bytedance.com>
+Date: Wed, 28 Sep 2022 12:20:31 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.3.0
+Subject: Re: [External] Re: [PATCH v2 3/9] NTB: Change to use
+ pci_aer_clear_uncorrect_error_status()
+Content-Language: en-US
+To: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ bhelgaas@google.com, ruscur@russell.cc, oohall@gmail.com,
+ fancer.lancer@gmail.com, jdmason@kudzu.us, dave.jiang@intel.com,
+ allenbh@gmail.com, james.smart@broadcom.com, dick.kennedy@broadcom.com,
+ jejb@linux.ibm.com, martin.petersen@oracle.com
+References: <20220927153524.49172-1-chenzhuo.1@bytedance.com>
+ <20220927153524.49172-4-chenzhuo.1@bytedance.com>
+ <d8123aa3-a5e0-6131-bd0d-109f67923ff2@linux.intel.com>
+From: Zhuo Chen <chenzhuo.1@bytedance.com>
+In-Reply-To: <d8123aa3-a5e0-6131-bd0d-109f67923ff2@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,56 +88,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-pci@vger.kernel.org, ntb@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-scsi@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed Sep 28, 2022 at 1:04 AM AEST, Michael Ellerman wrote:
-> On little endian the stack frame marker appears reserved when dumping
-> memory sequentially, as is typical in xmon or gdb, eg:
->
->   c000000004733e40 0000000000000000 0000000000000000  |................|
->   c000000004733e50 0000000000000000 0000000000000000  |................|
->   c000000004733e60 0000000000000000 0000000000000000  |................|
->   c000000004733e70 5347455200000000 0000000000000000  |SGER............|
->   c000000004733e80 a700000000000000 708897f7ff7f0000  |........p.......|
->   c000000004733e90 0073428fff7f0000 208997f7ff7f0000  |.sB..... .......|
->   c000000004733ea0 0100000000000000 ffffffffffffffff  |................|
->   c000000004733eb0 0000000000000000 0000000000000000  |................|
->
-> To make it easier to recognise, reverse the value on little endian, so
-> it always appears as "REGS", eg:
->
->   c000000004733e70 5245475300000000 0000000000000000  |REGS............|
->
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 
-Both look fine to me.
 
-Acked-by: Nicholas Piggin <npiggin@gmail.com>
+On 9/28/22 3:39 AM, Sathyanarayanan Kuppuswamy wrote:
+> 
+> 
+> On 9/27/22 8:35 AM, Zhuo Chen wrote:
+>> Status bits for ERR_NONFATAL errors only are cleared in
+>> pci_aer_clear_nonfatal_status(), but we want clear uncorrectable
+>> error status in idt_init_pci(), so we change to use
+>> pci_aer_clear_uncorrect_error_status().
+> 
+> You mean currently driver does not clear fatal errors now, and it is
+> a problem? Any error reported?
+> 
+Hi Sathyanarayanan,
 
-> ---
->  arch/powerpc/include/asm/ptrace.h | 5 +++++
->  1 file changed, 5 insertions(+)
->
-> diff --git a/arch/powerpc/include/asm/ptrace.h b/arch/powerpc/include/asm=
-/ptrace.h
-> index 6c23d1d25dc7..2efec6d87049 100644
-> --- a/arch/powerpc/include/asm/ptrace.h
-> +++ b/arch/powerpc/include/asm/ptrace.h
-> @@ -99,7 +99,12 @@ struct pt_regs
-> =20
->  #define STACK_FRAME_WITH_PT_REGS (STACK_FRAME_OVERHEAD + sizeof(struct p=
-t_regs))
-> =20
-> +// Always displays as "REGS" in memory dumps
-> +#ifdef CONFIG_CPU_BIG_ENDIAN
->  #define STACK_FRAME_REGS_MARKER	ASM_CONST(0x52454753)
-> +#else
-> +#define STACK_FRAME_REGS_MARKER	ASM_CONST(0x53474552)
-> +#endif
-> =20
->  #ifdef __powerpc64__
-> =20
-> --=20
-> 2.37.3
+No error reports yet, I just changes the behavior back to what it was 
+before commit e7b0b847de6d ("PCI/AER: Clear only ERR_NONFATAL bits 
+during non-fatal recovery"), because this commit change the original 
+function in commit bf2a952d31d2 ("NTB: Add IDT 89HPESxNTx PCIe-switches 
+support").
 
+> Also, I am wondering why is it required to clear errors during init
+> code. Is it a norm?
+> 
+I think there is no need to clear errors during init code.
+>>
+>> Signed-off-by: Zhuo Chen <chenzhuo.1@bytedance.com>
+>> ---
+>>   drivers/ntb/hw/idt/ntb_hw_idt.c | 4 ++--
+>>   1 file changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/ntb/hw/idt/ntb_hw_idt.c b/drivers/ntb/hw/idt/ntb_hw_idt.c
+>> index 0ed6f809ff2e..d5f0aa87f817 100644
+>> --- a/drivers/ntb/hw/idt/ntb_hw_idt.c
+>> +++ b/drivers/ntb/hw/idt/ntb_hw_idt.c
+>> @@ -2657,8 +2657,8 @@ static int idt_init_pci(struct idt_ntb_dev *ndev)
+>>   	ret = pci_enable_pcie_error_reporting(pdev);
+>>   	if (ret != 0)
+>>   		dev_warn(&pdev->dev, "PCIe AER capability disabled\n");
+>> -	else /* Cleanup nonfatal error status before getting to init */
+>> -		pci_aer_clear_nonfatal_status(pdev);
+>> +	else /* Cleanup uncorrectable error status before getting to init */
+>> +		pci_aer_clear_uncorrect_error_status(pdev);
+>>   
+>>   	/* First enable the PCI device */
+>>   	ret = pcim_enable_device(pdev);
+> 
+
+-- 
+Thanks,
+Zhuo Chen
