@@ -2,60 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8A485EDAF8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 13:02:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20D5B5EDB06
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 13:02:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MctqX4Nfdz3f4c
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 21:02:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MctrB5fR6z3f7Z
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 21:02:50 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bytedance-com.20210112.gappssmtp.com header.i=@bytedance-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=hLncl5wi;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bytedance-com.20210112.gappssmtp.com header.i=@bytedance-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=wC+q4gRa;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bytedance.com (client-ip=2607:f8b0:4864:20::102f; helo=mail-pj1-x102f.google.com; envelope-from=chenzhuo.1@bytedance.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bytedance.com (client-ip=2607:f8b0:4864:20::534; helo=mail-pg1-x534.google.com; envelope-from=chenzhuo.1@bytedance.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bytedance-com.20210112.gappssmtp.com header.i=@bytedance-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=hLncl5wi;
+	dkim=pass (2048-bit key; unprotected) header.d=bytedance-com.20210112.gappssmtp.com header.i=@bytedance-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=wC+q4gRa;
 	dkim-atps=neutral
-Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
+Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MctnM5G4Hz3c42
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Sep 2022 21:00:23 +1000 (AEST)
-Received: by mail-pj1-x102f.google.com with SMTP id x1-20020a17090ab00100b001fda21bbc90so1734949pjq.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Sep 2022 04:00:23 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MctnW3Rk0z3bwQ
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Sep 2022 21:00:31 +1000 (AEST)
+Received: by mail-pg1-x534.google.com with SMTP id 78so11854665pgb.13
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Sep 2022 04:00:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=bytedance-com.20210112.gappssmtp.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date;
-        bh=hOXy/3B0e3cTGMIExCyp30h8nQPc8EN7HUScg4kF8wU=;
-        b=hLncl5wigkp6LZxL1UHj5XXUDDZ7qtJq55Ge5vMbfW4Al2AGA2iQkMOvrdtdOf1VL2
-         Rk/K/quMGIKxGPbpPAVJMtta7+wR+aeQCVaEZustg4IyVmieXUttW5qjciBXU//DM50q
-         hGgVzPCREUx3DwaSPr8HwW088CPspOQqoZjpUpmyQMHz4xc+k6wRn2UheZ9k13pqJ4of
-         S61hxLYNDw+33s1SeoYz6kEwxf25V4l4XlDghrJbkBTjFerJpQLwGBR528la4jpRrmBd
-         c0uwJBogoeYHET4ns90XPd1dUcF8W6nI1xhKtZCRBBVuv2WRMWTiyUyYiZy/6E2YUYVj
-         qoCg==
+        bh=TvC/ALrxAJSA8jgElYrPaDlRpGjWvJ+S5PU3u9AGQW0=;
+        b=wC+q4gRayIrrojd5NNz/4k7eSkzCZifqS791bKfvn1KPZjMCq4khGbNFBM+HJO9Moh
+         SDZIxqn2z1ZKYCLxC+8vBo+XConeT223VVXe2zkEJ3WNxA47YbRu87WrN1Xu0y76Y4XU
+         WHH7KC6eNBVqibeF+Y+M7JWgrw0pPmjVRDWLSvzU2XUb5Jm/cJSyUSwvOmgOhPEiNOTS
+         jHAY5J9OTHvpi4EMLOq6zkJ+Al16ABpJ0+awGZonyn0TdixlwEhZzu/OtcwnRHT2Chr/
+         tyDl8tzD+WlEFr9PKwgHpJyh5RB/1G1+t7YHi3WFxpkjrrCGfOTY216lm4YjBX6ZrOfK
+         bqpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date;
-        bh=hOXy/3B0e3cTGMIExCyp30h8nQPc8EN7HUScg4kF8wU=;
-        b=5MJgkxOfloG9ZpO4S4r5FxQwR2TltRot0E65cTYQU/tbkfxfMITIhd7t/nCjNpqQGq
-         /cmXm2U46T5sPgcvSo3dFcikltLFSa6rd3j26TFkSpO38VbuJ8O88P/ffhEWhDjUr0gY
-         62k5Wn37dGFAEC+pD5w52ovhFAE3MDRdSrGPUsim1kId5m5rlY0dyc6H9/kip+Mg9u1o
-         KfA/+o+DPWsyDLOGh1OV6ON3/dVfY7ZeTkDs0zwKzplMEeL/DiTr0pI5TsugokTT0hsF
-         9aZXAsLC+4A6Eg3LcjscjH0IH4drbQQIaMTS2RtWXKdzS6/Yp0wXBKA6y+GseC56IYKo
-         0KRQ==
-X-Gm-Message-State: ACrzQf0yIZOVtzulOIB4KnJdt60P2CfiK2K1EFkbHjwjq7Seo8Rp2Wu9
-	nmzq1iubzc2u0E08XFuOQtqCZA==
-X-Google-Smtp-Source: AMsMyM4zzBvJpGNUwArQu+atMDproDm1I0tlw6EBKQ2GB2pfCmWCLWQxTIq8rmIlylXF+q8NzyS4Lg==
-X-Received: by 2002:a17:90b:374f:b0:205:e255:e8de with SMTP id ne15-20020a17090b374f00b00205e255e8demr6980382pjb.8.1664362821737;
-        Wed, 28 Sep 2022 04:00:21 -0700 (PDT)
+        bh=TvC/ALrxAJSA8jgElYrPaDlRpGjWvJ+S5PU3u9AGQW0=;
+        b=MonYTBblPwi2IgMg7EyquoW3ckSGnno08LgbuZ0lMKG8I2Izbxkz7KTV38IHnN5l+k
+         btQvN+iFdmpzPxKV2CSdq4x6nxxAg4g4MUx5jSCg5YDcrM+F1wQpZ/DZFgkiIj1L+Pc0
+         RT++0xHhZb+l/Ls8+IXM2Nowf6tUhu3OBR4JiW8cjxFneOHGReEjMVelf75mBRWmXtDG
+         U1kA9wineSE3RR4Q5FhT/Mzq+5wh12VTHhXaqoyCOg7TW9qedEqwUjjQ4HglfrDHh+dw
+         BsCPCpOKRZWd6+6pGxw6ru3DxpPqPNkBF/+/28u6vR4EwsnRgr7a+KMfhl33kFYfYtnO
+         wFhg==
+X-Gm-Message-State: ACrzQf2jooT3lmIp9I843wSAlnCVkQn/lWl2iXQjiMsT9dH9p1ap1Oo4
+	9FdjviKwuFBlX0SvOwDhn+JBCQ==
+X-Google-Smtp-Source: AMsMyM7bWfktbsleKoDwZH3+i0nno4js4FOHZ9d6s4pKKsRup/J0ok5b6UIhDd+31p7y1B8DxaaKWg==
+X-Received: by 2002:a63:4408:0:b0:439:befa:3d47 with SMTP id r8-20020a634408000000b00439befa3d47mr27860398pga.64.1664362829108;
+        Wed, 28 Sep 2022 04:00:29 -0700 (PDT)
 Received: from C02F63J9MD6R.bytedance.net ([61.120.150.77])
-        by smtp.gmail.com with ESMTPSA id b13-20020a170902d50d00b00177efb56475sm1539524plg.85.2022.09.28.04.00.15
+        by smtp.gmail.com with ESMTPSA id b13-20020a170902d50d00b00177efb56475sm1539524plg.85.2022.09.28.04.00.22
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 28 Sep 2022 04:00:21 -0700 (PDT)
+        Wed, 28 Sep 2022 04:00:28 -0700 (PDT)
 From: Zhuo Chen <chenzhuo.1@bytedance.com>
 To: sathyanarayanan.kuppuswamy@linux.intel.com,
 	bhelgaas@google.com,
@@ -69,9 +69,9 @@ To: sathyanarayanan.kuppuswamy@linux.intel.com,
 	dick.kennedy@broadcom.com,
 	jejb@linux.ibm.com,
 	martin.petersen@oracle.com
-Subject: [PATCH v3 3/9] NTB: Remove pci_aer_clear_nonfatal_status() call
-Date: Wed, 28 Sep 2022 18:59:40 +0800
-Message-Id: <20220928105946.12469-4-chenzhuo.1@bytedance.com>
+Subject: [PATCH v3 4/9] scsi: lpfc: Change to use pci_aer_clear_uncorrect_error_status()
+Date: Wed, 28 Sep 2022 18:59:41 +0800
+Message-Id: <20220928105946.12469-5-chenzhuo.1@bytedance.com>
 X-Mailer: git-send-email 2.30.1 (Apple Git-130)
 In-Reply-To: <20220928105946.12469-1-chenzhuo.1@bytedance.com>
 References: <20220928105946.12469-1-chenzhuo.1@bytedance.com>
@@ -92,26 +92,38 @@ Cc: linux-scsi@vger.kernel.org, linux-pci@vger.kernel.org, chenzhuo.1@bytedance.
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-There is no need to clear error status during init code, so remove it.
+lpfc_aer_cleanup_state() requires clearing both fatal and non-fatal
+uncorrectable error status. But using pci_aer_clear_nonfatal_status()
+will only clear non-fatal error status. To clear both fatal and
+non-fatal error status, use pci_aer_clear_uncorrect_error_status().
 
 Signed-off-by: Zhuo Chen <chenzhuo.1@bytedance.com>
 ---
- drivers/ntb/hw/idt/ntb_hw_idt.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/scsi/lpfc/lpfc_attr.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/ntb/hw/idt/ntb_hw_idt.c b/drivers/ntb/hw/idt/ntb_hw_idt.c
-index 0ed6f809ff2e..fed03217289d 100644
---- a/drivers/ntb/hw/idt/ntb_hw_idt.c
-+++ b/drivers/ntb/hw/idt/ntb_hw_idt.c
-@@ -2657,8 +2657,6 @@ static int idt_init_pci(struct idt_ntb_dev *ndev)
- 	ret = pci_enable_pcie_error_reporting(pdev);
- 	if (ret != 0)
- 		dev_warn(&pdev->dev, "PCIe AER capability disabled\n");
--	else /* Cleanup nonfatal error status before getting to init */
--		pci_aer_clear_nonfatal_status(pdev);
+diff --git a/drivers/scsi/lpfc/lpfc_attr.c b/drivers/scsi/lpfc/lpfc_attr.c
+index 09cf2cd0ae60..d835cc0ba153 100644
+--- a/drivers/scsi/lpfc/lpfc_attr.c
++++ b/drivers/scsi/lpfc/lpfc_attr.c
+@@ -4689,7 +4689,7 @@ static DEVICE_ATTR_RW(lpfc_aer_support);
+  * Description:
+  * If the @buf contains 1 and the device currently has the AER support
+  * enabled, then invokes the kernel AER helper routine
+- * pci_aer_clear_nonfatal_status() to clean up the uncorrectable
++ * pci_aer_clear_uncorrect_error_status() to clean up the uncorrectable
+  * error status register.
+  *
+  * Notes:
+@@ -4715,7 +4715,7 @@ lpfc_aer_cleanup_state(struct device *dev, struct device_attribute *attr,
+ 		return -EINVAL;
  
- 	/* First enable the PCI device */
- 	ret = pcim_enable_device(pdev);
+ 	if (phba->hba_flag & HBA_AER_ENABLED)
+-		rc = pci_aer_clear_nonfatal_status(phba->pcidev);
++		rc = pci_aer_clear_uncorrect_error_status(phba->pcidev);
+ 
+ 	if (rc == 0)
+ 		return strlen(buf);
 -- 
 2.30.1 (Apple Git-130)
 
