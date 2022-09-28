@@ -1,66 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A1495ED439
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 07:26:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 516C15ED4E2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 08:29:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MclN25gNQz3bWm
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 15:26:26 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=owmaWL8J;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Mcmn82BSlz3bfC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 16:29:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::230; helo=mail-lj1-x230.google.com; envelope-from=maskray@google.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=owmaWL8J;
-	dkim-atps=neutral
-Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MclMP6MFHz2xkV
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Sep 2022 15:25:52 +1000 (AEST)
-Received: by mail-lj1-x230.google.com with SMTP id l12so13122480ljg.9
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Sep 2022 22:25:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=IPCLwIQ+UERHPm9w4nQGFYrwmlLzJ4AJ3JlVNkOLjfk=;
-        b=owmaWL8J0DjnByEMa+cLbTORIRrq8yp3lKV8crjvgMM/NkKnWeQIxzmI5VTzceEs3i
-         S3i46YmZL6hhUlOZgye5isjPYmsTL9s7ZQbh4KxfmQHhPEMfq8R8W01RbLcG9+VJVBK9
-         8fBxKiJNmH3HTgTCP9QbaG5As7Xex+3GS9vMzEkw0RXkyxtNit3zG4NH6cmFKNhRPLcJ
-         1wpCfkC3/obFIyVNyGRuEV+B6a4cqc/MfTeighQRcl1evlTq2RPNa22Fpm7esVybK8t9
-         XiN03BRQL3c+PNAEazrBabL0xPu6A+N1Pr1UnZe63PhoxCuf5jkappeLkxgBidmJu+mi
-         rgAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=IPCLwIQ+UERHPm9w4nQGFYrwmlLzJ4AJ3JlVNkOLjfk=;
-        b=5Capdf1rFhH96L2Ptj8kGZBxK9K4o+YYwzAlXVykPgZ+aEoEdwp0AifgquMfgSHVil
-         dR9rwgAzhLSEBzyut0F8Y6XQV1PJa4FLvadyNar2vWt3TzplwOSxd4Ll6rVsakIT8JT/
-         Q7VUBjViBiEHMZslMMvE4yYINV/r7wYeFY1KPATOv+0Smz5NGaWQcaSbpwEHOmtOFlu6
-         LHvP8qVPK1esqNOAMksKUitlOLZLy98RvfHdMVn/g4g9jklshrbFNFjMY8lSv5NwXZgi
-         YLWDj8nKaocLFAsEeoKOsfnY6E2P7zGuoJFXdz7J/ywIw5bPsTR7qkq9C4LjRPFFtSq9
-         6Ykg==
-X-Gm-Message-State: ACrzQf139W0/SHD/QO99GPCwCiQCJ+GKyqRNVXWJ7LxK9WvWo5NCmmP0
-	Azu1G21LW08Z7xMRzxLQpy3hxxxM0ENigpNWMW7F3g==
-X-Google-Smtp-Source: AMsMyM7wMhHzCDPMFbCTrNC4bpJlQfmpId5OarS9R/571Zfneoaf+BQ5BEj/3dPyNZFm2pWs5O4V9tiCRmerzE31Li4=
-X-Received: by 2002:a2e:3909:0:b0:26c:2ea4:1a79 with SMTP id
- g9-20020a2e3909000000b0026c2ea41a79mr10902755lja.401.1664342747490; Tue, 27
- Sep 2022 22:25:47 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mcmmh0M0dz2yHc
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Sep 2022 16:29:22 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4Mcmmb1CnWz9smH;
+	Wed, 28 Sep 2022 08:29:19 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 2mTkLnVdGBwG; Wed, 28 Sep 2022 08:29:19 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4Mcmmb0QNqz9sm8;
+	Wed, 28 Sep 2022 08:29:19 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id E55CA8B776;
+	Wed, 28 Sep 2022 08:29:18 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id G2sli3qU7am1; Wed, 28 Sep 2022 08:29:18 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.232.79])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id B2D6C8B763;
+	Wed, 28 Sep 2022 08:29:18 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 28S6T81H420548
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 28 Sep 2022 08:29:08 +0200
+Received: (from chleroy@localhost)
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 28S6T6A3420543;
+	Wed, 28 Sep 2022 08:29:06 +0200
+X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
+Subject: [PATCH] powerpc/8xx: Simplify pte_update() with 16k pages
+Date: Wed, 28 Sep 2022 08:29:00 +0200
+Message-Id: <65f76300de07091a59a042a3db2d0ce9b939a05c.1664346532.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.37.1
 MIME-Version: 1.0
-References: <20220830193701.1702962-1-maskray@google.com> <20220910075316.no72fdyqjvunomwm@google.com>
-In-Reply-To: <20220910075316.no72fdyqjvunomwm@google.com>
-From: Fangrui Song <maskray@google.com>
-Date: Tue, 27 Sep 2022 22:25:35 -0700
-Message-ID: <CAFP8O3+OwanSJdzd5V3oGJ_MOJOSVdbn+4iBJJKm2LCR8mCA0Q@mail.gmail.com>
-Subject: Re: [PATCH] vdso: Improve cmd_vdso_check to check all dynamic relocations
-To: Vincenzo Frascino <vincenzo.frascino@arm.com>, Thomas Gleixner <tglx@linutronix.de>
-Content-Type: text/plain; charset="UTF-8"
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1664346539; l=1661; s=20211009; h=from:subject:message-id; bh=Lr8XahhYObOfzO5oPsqbgqOUCyBYxfNYnveRrwOm2sU=; b=XzTB8nyhZpJHQBEnqrFzGfTYexL6o+RStqeFlKPBVi1IqgcLoqYAfrPab+bXLb/sOFwSWjFoexBA Ncpm+3UkCEJv/geDDdmspWD17TX3plxzB7ariBr4glrf3PH+Sup8
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,33 +65,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org, linux-mips@vger.kernel.org, loongarch@lists.linux.dev, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Sep 10, 2022 at 12:53 AM Fangrui Song <maskray@google.com> wrote:
->
-> On 2022-08-30, Fangrui Song wrote:
-> >The actual intention is that no dynamic relocation exists. However, some
-> >GNU ld ports produce unneeded R_*_NONE. (If a port is not care enough to
-> >determine the exact .rel[a].dyn size, the trailing zeros become R_*_NONE
-> >relocations. E.g. powerpc64le ld as of 2.38 has the issue with
-> >defconfig.) R_*_NONE are generally no-op in the dynamic loaders. So just
-> >ignore them.
-> >
-> >With the change, we can remove ARCH_REL_TYPE_ABS. ARCH_REL_TYPE_ABS is a
-> >bit misnomer as ports may check RELAVETIVE/GLOB_DAT/JUMP_SLOT which are
-> >not called "absolute relocations". (The patch is motivated by the arm64
-> >port missing R_AARCH64_RELATIVE.)
-> >
-> >While here, replace "egrep" with "grep" as "egrep" is deprecated in GNU
-> >grep 3.7.
-> >
-> >Signed-off-by: Fangrui Song <maskray@google.com>
-> >---
-> >[...]
-> >
->
-> Ping.
+While looking at code generated for code patching, I saw that
+pte_clear generated:
 
-Ping^2 :)
+ 2d8:	38 a0 00 00 	li      r5,0
+ 2dc:	38 e0 10 00 	li      r7,4096
+ 2e0:	39 00 20 00 	li      r8,8192
+ 2e4:	39 40 30 00 	li      r10,12288
+ 2e8:	90 a9 00 00 	stw     r5,0(r9)
+ 2ec:	90 e9 00 04 	stw     r7,4(r9)
+ 2f0:	91 09 00 08 	stw     r8,8(r9)
+ 2f4:	91 49 00 0c 	stw     r10,12(r9)
+
+With 16k pages, only the first entry is used by the kernel, so no need
+to adapt the address of other entries. Only duplicate the first entry
+for hardware.
+
+Now it is:
+
+ 2cc:	39 40 00 00 	li      r10,0
+ 2d0:	91 49 00 00 	stw     r10,0(r9)
+ 2d4:	91 49 00 04 	stw     r10,4(r9)
+ 2d8:	91 49 00 08 	stw     r10,8(r9)
+ 2dc:	91 49 00 0c 	stw     r10,12(r9)
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/include/asm/nohash/32/pgtable.h | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/nohash/32/pgtable.h b/arch/powerpc/include/asm/nohash/32/pgtable.h
+index 9091e4904a6b..981e414bdeef 100644
+--- a/arch/powerpc/include/asm/nohash/32/pgtable.h
++++ b/arch/powerpc/include/asm/nohash/32/pgtable.h
+@@ -256,8 +256,14 @@ static inline pte_basic_t pte_update(struct mm_struct *mm, unsigned long addr, p
+ 
+ 	num = number_of_cells_per_pte(pmd, new, huge);
+ 
+-	for (i = 0; i < num; i++, entry++, new += SZ_4K)
+-		*entry = new;
++	for (i = 0; i < num; i += PAGE_SIZE / SZ_4K, new += PAGE_SIZE) {
++		*entry++ = new;
++		if (IS_ENABLED(CONFIG_PPC_16K_PAGES) && num != 1) {
++			*entry++ = new;
++			*entry++ = new;
++			*entry++ = new;
++		}
++	}
+ 
+ 	return old;
+ }
+-- 
+2.37.1
+
