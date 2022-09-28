@@ -2,100 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F1155ED2E6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 04:06:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C13E95ED30B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 04:29:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Mcfxl0W50z3c7V
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 12:06:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4McgRy3JN4z3c7d
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 12:29:34 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TQY95/zp;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=r3bKcW8Y;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=bgray@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::1131; helo=mail-yw1-x1131.google.com; envelope-from=surenb@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TQY95/zp;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=r3bKcW8Y;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-x1131.google.com (mail-yw1-x1131.google.com [IPv6:2607:f8b0:4864:20::1131])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mcfx023gQz2xG4
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Sep 2022 12:06:12 +1000 (AEST)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28RNjge0021396;
-	Wed, 28 Sep 2022 02:05:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=KPxir9r2QbP0/v1rRuEMmVDKJOkLgdXo6oByb+eHbfA=;
- b=TQY95/zpiRAOXzbidRai405atxKAcUfy9tjctA/kWDzTnx+46zeAv7pU5yqkgKQbJW7d
- zgf1LPPSU+T0zUj71vFsPCzNmJRaPonLUoCfe/lFvSO/d2iyk05dJele6eyqYAQnA5+s
- fYD8bdDrXSHhox/AA8qKvAwThwgbFsh0yyqznTuOFqdto9oXCJlI9ULjt61ek6n+/m4a
- OaCHBelysNu58Bj7g6tyYGiPpJKOPeuJ+U3XUbTcIeIkfNSzndMs5PxM8uJL8Y9rw0G6
- 1girx6GY3oZW/oi93XIfiMhnV3jzUpYCtaqyR8CgRA+pBo2zM9MIabOiNnfebIm+PFGl ug== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jvb4s3a39-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 28 Sep 2022 02:05:50 +0000
-Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 28S0bBho017973;
-	Wed, 28 Sep 2022 02:05:49 GMT
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jvb4s3a2e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 28 Sep 2022 02:05:49 +0000
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
-	by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 28S25Noq029303;
-	Wed, 28 Sep 2022 02:05:47 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
-	by ppma01fra.de.ibm.com with ESMTP id 3jssh8udxh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 28 Sep 2022 02:05:47 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
-	by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 28S25i1t066260
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 28 Sep 2022 02:05:44 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D06384C04E;
-	Wed, 28 Sep 2022 02:05:44 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 78C544C04A;
-	Wed, 28 Sep 2022 02:05:44 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Wed, 28 Sep 2022 02:05:44 +0000 (GMT)
-Received: from [10.61.2.107] (haven.au.ibm.com [9.192.254.114])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id ABFBB600E1;
-	Wed, 28 Sep 2022 11:30:02 +1000 (AEST)
-Message-ID: <d0c9bde1e7be8004155bb8179f9ea2a17d874471.camel@linux.ibm.com>
-Subject: Re: [PATCH v2 1/6] powerpc/code-patching: Implement generic text
- patching function
-From: Benjamin Gray <bgray@linux.ibm.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
-        "linuxppc-dev@lists.ozlabs.org"
-	 <linuxppc-dev@lists.ozlabs.org>
-Date: Wed, 28 Sep 2022 11:30:02 +1000
-In-Reply-To: <7c06a079-4189-e09f-939e-f672e7ff1ab1@csgroup.eu>
-References: <20220926064316.765967-1-bgray@linux.ibm.com>
-	 <20220926064316.765967-2-bgray@linux.ibm.com>
-	 <7c06a079-4189-e09f-939e-f672e7ff1ab1@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4McgRH4KTCz2xHM
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Sep 2022 12:28:58 +1000 (AEST)
+Received: by mail-yw1-x1131.google.com with SMTP id 00721157ae682-345528ceb87so117709767b3.11
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Sep 2022 19:28:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date;
+        bh=Z0+bMELpdKdE8Q7V1g1xJPLf4JnpkgWuSB4HVsFpACw=;
+        b=r3bKcW8YDyjLKKVV2T2nu9EK+l6skZKjuSXHqw1h7QSsCWuzjJLZSSPbPLqCkYLzuE
+         srxL4E7bdabGQ54uivxtXo6aVslalhWzKnRB3ME9ODMXpkyi1jEarxBh3NdA34ePCygI
+         1Lr3QhYYbCrQxYg+RD5l5rVH3u4LZRTUbQOjBHMe6Udu2afMMcUdFBQFGDW0FxigAg8O
+         XPKvUjM4Q/CEzJnptfAVyGJG2I2t7f4KgpKYO65hCzHnmx7eNrxdV39FhGX4toQIRrGb
+         38ZkEbv55Ye2BtH0b1tKVQ30lEB+ClAg4hKd3nwJkVNLlBsG6At6ipXEoz4LKLfj6HTS
+         GbLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date;
+        bh=Z0+bMELpdKdE8Q7V1g1xJPLf4JnpkgWuSB4HVsFpACw=;
+        b=n/W+epZnvGjq3kPTZ72GdW9MGTFJaMJxJSwHRnlSnffRVYohM2CSPprPZhq4F6ZmCp
+         npqpvVids90tos9uKgDpr74meS6z1k3XgKstRStemmBYKK6+JFfNmVa9++rHlzk01U8b
+         7YZn2lzppcxRZ7cLYHmbxTqWJgmlg6LEC2qTvHkrOGeCq7xnCZtsgjnZFAgV5dhuM57B
+         JCGqdONxLLAZeoMHA7XpxaQYpuzsh4LGmItzqFLYO2pt88R8uqYo6Whazv0MWuPa8JVg
+         hzah2WS9vb/iprz7Uzdy0JOxO6NDTSSmm/bBIvxAbZKcwffr1ctlE2OzuD4jp27ICCfE
+         Vtow==
+X-Gm-Message-State: ACrzQf3Xddb20DbA0Kd0X1lgs9Co89HQT2UxOEEOGdjJhm2sU57XuQ3r
+	YffQQchighw+bbpGMlqYh+kq7xpT4092JO8uMOiGng==
+X-Google-Smtp-Source: AMsMyM7cKmM6s5Wj2EGqGts0HQF0PxKwiB/suSdXFthaiHYdD52M0dUUPdTaFJmVGmtRhNHzLoZ6tTNAnTCaRpIdjiM=
+X-Received: by 2002:a0d:ef84:0:b0:352:9e0d:a596 with SMTP id
+ y126-20020a0def84000000b003529e0da596mr3923448ywe.347.1664332133583; Tue, 27
+ Sep 2022 19:28:53 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220901173516.702122-1-surenb@google.com> <20220901205819.emxnnschszqv4ahy@moria.home.lan>
+ <CAJuCfpGNcZovncozo+Uxfhjwqh3BtGXsws+4QeT6Zy1mcQRJbQ@mail.gmail.com> <b5db3353-8aae-22d8-9598-eaa5eeb77cfc@suse.cz>
+In-Reply-To: <b5db3353-8aae-22d8-9598-eaa5eeb77cfc@suse.cz>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 27 Sep 2022 19:28:42 -0700
+Message-ID: <CAJuCfpEcTv5crNumhMTCf2yAJ5+86ph78-B+eyk_N84Ce=nr5w@mail.gmail.com>
+Subject: Re: [RFC PATCH RESEND 00/28] per-VMA locks proposal
+To: Vlastimil Babka <vbabka@suse.cz>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4 (3.44.4-1.fc36) 
-MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 2ij_mw4TWUyx55BIrtWzNS622Yjkjad6
-X-Proofpoint-ORIG-GUID: V0we8_xx3bAs_1-EuEZSmQSndzH2J7BS
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
- definitions=2022-09-27_12,2022-09-27_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 spamscore=0
- lowpriorityscore=0 adultscore=0 malwarescore=0 phishscore=0 suspectscore=0
- priorityscore=1501 clxscore=1015 mlxscore=0 mlxlogscore=999 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2209130000
- definitions=main-2209280011
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,75 +75,100 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "ajd@linux.ibm.com" <ajd@linux.ibm.com>, "peterz@infradead.org" <peterz@infradead.org>, "npiggin@gmail.com" <npiggin@gmail.com>, "ardb@kernel.org" <ardb@kernel.org>, "jbaron@akamai.com" <jbaron@akamai.com>, "rostedt@goodmis.org" <rostedt@goodmis.org>, "jpoimboe@kernel.org" <jpoimboe@kernel.org>
+Cc: Michel Lespinasse <michel@lespinasse.org>, Joel Fernandes <joelaf@google.com>, Song Liu <songliubraving@fb.com>, Michal Hocko <mhocko@suse.com>, David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Peter Xu <peterx@redhat.com>, dhowells@redhat.com, linux-mm <linux-mm@kvack.org>, Jerome Glisse <jglisse@google.com>, Davidlohr Bueso <dave@stgolabs.net>, Minchan Kim <minchan@google.com>, x86@kernel.org, Hugh Dickins <hughd@google.com>, Matthew Wilcox <willy@infradead.org>, Laurent Dufour <laurent.dufour@fr.ibm.com>, Mel Gorman <mgorman@suse.de>, David Rientjes <rientjes@google.com>, Axel Rasmussen <axelrasmussen@google.com>, kernel-team <kernel-team@android.com>, "Paul E . McKenney" <paulmck@kernel.org>, "Liam R. Howlett" <liam.howlett@oracle.com>, Andy Lutomirski <luto@kernel.org>, Laurent Dufour <ldufour@linux.ibm.com>, linux-arm-kernel@lists.infradead.org, Kent Overstreet <kent.overstreet@linux.dev>, LKML <
+ linux-kernel@vger.kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2022-09-27 at 06:40 +0000, Christophe Leroy wrote:
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/* Flush on the EA that may =
-be executed in case of a non-
-> > coherent icache */
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0icbi(prog_addr);
->=20
-> prog_addr is a misleading name ? Is that the address at which you=20
-> program it ? Is that the address the programs runs at ?
->=20
-> exec_addr was a lot more explicit as it clearly defines the address
-> at=20
-> which the code is executed.
+On Sun, Sep 11, 2022 at 2:35 AM Vlastimil Babka <vbabka@suse.cz> wrote:
+>
+> On 9/2/22 01:26, Suren Baghdasaryan wrote:
+> > On Thu, Sep 1, 2022 at 1:58 PM Kent Overstreet
+> > <kent.overstreet@linux.dev> wrote:
+> >>
+> >> On Thu, Sep 01, 2022 at 10:34:48AM -0700, Suren Baghdasaryan wrote:
+> >> > Resending to fix the issue with the In-Reply-To tag in the original
+> >> > submission at [4].
+> >> >
+> >> > This is a proof of concept for per-vma locks idea that was discussed
+> >> > during SPF [1] discussion at LSF/MM this year [2], which concluded w=
+ith
+> >> > suggestion that =E2=80=9Ca reader/writer semaphore could be put into=
+ the VMA
+> >> > itself; that would have the effect of using the VMA as a sort of ran=
+ge
+> >> > lock. There would still be contention at the VMA level, but it would=
+ be an
+> >> > improvement.=E2=80=9D This patchset implements this suggested approa=
+ch.
+> >> >
+> >> > When handling page faults we lookup the VMA that contains the faulti=
+ng
+> >> > page under RCU protection and try to acquire its lock. If that fails=
+ we
+> >> > fall back to using mmap_lock, similar to how SPF handled this situat=
+ion.
+> >> >
+> >> > One notable way the implementation deviates from the proposal is the=
+ way
+> >> > VMAs are marked as locked. Because during some of mm updates multipl=
+e
+> >> > VMAs need to be locked until the end of the update (e.g. vma_merge,
+> >> > split_vma, etc). Tracking all the locked VMAs, avoiding recursive lo=
+cks
+> >> > and other complications would make the code more complex. Therefore =
+we
+> >> > provide a way to "mark" VMAs as locked and then unmark all locked VM=
+As
+> >> > all at once. This is done using two sequence numbers - one in the
+> >> > vm_area_struct and one in the mm_struct. VMA is considered locked wh=
+en
+> >> > these sequence numbers are equal. To mark a VMA as locked we set the
+> >> > sequence number in vm_area_struct to be equal to the sequence number
+> >> > in mm_struct. To unlock all VMAs we increment mm_struct's seq number=
+.
+> >> > This allows for an efficient way to track locked VMAs and to drop th=
+e
+> >> > locks on all VMAs at the end of the update.
+> >>
+> >> I like it - the sequence numbers are a stroke of genuius. For what it'=
+s doing
+> >> the patchset seems almost small.
+> >
+> > Thanks for reviewing it!
+> >
+> >>
+> >> Two complaints so far:
+> >>  - I don't like the vma_mark_locked() name. To me it says that the cal=
+ler
+> >>    already took or is taking the lock and this function is just markin=
+g that
+> >>    we're holding the lock, but it's really taking a different type of =
+lock. But
+> >>    this function can block, it really is taking a lock, so it should s=
+ay that.
+> >>
+> >>    This is AFAIK a new concept, not sure I'm going to have anything go=
+od either,
+> >>    but perhaps vma_lock_multiple()?
+> >
+> > I'm open to name suggestions but vma_lock_multiple() is a bit
+> > confusing to me. Will wait for more suggestions.
+>
+> Well, it does act like a vma_write_lock(), no? So why not that name. The
+> checking function for it is even called vma_assert_write_locked().
+>
+> We just don't provide a single vma_write_unlock(), but a
+> vma_mark_unlocked_all(), that could be instead named e.g.
+> vma_write_unlock_all().
+> But it's called on a mm, so maybe e.g. mm_vma_write_unlock_all()?
 
-I'm not sure what it could be confused for other than "the address the
-program uses" (be it uses for executing, or uses as data).=C2=A0I just
-called it that because it's not necessarily executed, so 'exec_addr' is
-misleading (to the extent it matters in the first place...).
+Thank you for your suggestions, Vlastimil! vma_write_lock() sounds
+good to me. For vma_mark_unlocked_all() replacement, I would prefer
+vma_write_unlock_all() which keeps the vma_write_XXX naming pattern to
+indicate that these are operating on the same locks. If the fact that
+it accepts mm_struct as a parameter is an issue then maybe
+vma_write_unlock_mm() ?
 
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (IS_ENABLED(CONFIG_PPC64)=
- && L1_CACHE_BYTES < 64)
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0icbi(prog_addr + size - 1);
->=20
-> This doesn't exist today.
->=20
-> I'd rather have:
->=20
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0BUILD_BUG_ON(IS_ENABLED(C=
-ONFIG_PPC64) && L1_CACHE_BYTES <
-> 64);
-
-Sure, I can adjust the style.
-
-> > +static int __always_inline __do_patch_memory(void *dest, unsigned
-> > long src, size_t size)
-> > =C2=A0 {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0int err;
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0u32 *patch_addr;
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0unsigned long text_poke_addr=
-;
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0pte_t *pte;
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0unsigned long pfn =3D get_pa=
-tch_pfn(addr);
-> > -
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0text_poke_addr =3D (unsigned
-> > long)__this_cpu_read(text_poke_area)->addr & PAGE_MASK;
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0patch_addr =3D (u32 *)(text_=
-poke_addr +
-> > offset_in_page(addr));
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0unsigned long text_poke_addr=
- =3D (unsigned
-> > long)__this_cpu_read(text_poke_area)->addr & PAGE_MASK;
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0unsigned long pfn =3D get_pa=
-tch_pfn(dest);
-> >=20
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0patch_addr =3D (u32 *)(text_=
-poke_addr +
-> > offset_in_page(dest));
->=20
-> Can we avoid this churn ?
-> Ok, you want to change 'addr' to 'dest', can we leave everything else
-> as=20
-> is ?
-
-'addr' was only renamed because the v1 used a pointer to the data, so
-'addr' was ambiguous. I'll restore it to 'addr' for v3.
-
-I'll also restore the formatting.
+>
+>
