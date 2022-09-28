@@ -2,64 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 216FA5EDB6F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 13:13:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A56B85EDBC8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 13:30:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Mcv4B66JZz3cH1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 21:13:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4McvSK2jXvz3c8d
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 21:30:41 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=wi33yjM4;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=GcyCBwYm;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=erD3GNfe;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=ijfAGKSy;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2001:67c:2178:6::1c; helo=smtp-out1.suse.de; envelope-from=msuchanek@suse.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2001:67c:2178:6::1c; helo=smtp-out1.suse.de; envelope-from=tzimmermann@suse.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=wi33yjM4;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=GcyCBwYm;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=erD3GNfe;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=ijfAGKSy;
 	dkim-atps=neutral
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mcv3T2cgnz2xGD
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Sep 2022 21:12:36 +1000 (AEST)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-	by smtp-out1.suse.de (Postfix) with ESMTP id 5612621E46;
-	Wed, 28 Sep 2022 11:12:33 +0000 (UTC)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4McvRf3xxcz2xG4
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Sep 2022 21:30:05 +1000 (AEST)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 0593021E87;
+	Wed, 28 Sep 2022 11:30:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1664363553; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1664364602; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=x5QiDkGTtWW3TyyfDNp+cQMUarRxbXPZeZ1xe1IztRY=;
-	b=wi33yjM4KkYImAU0p+583YWmEIPJkk44lVkw738yxB6PuCshvNc0s0HlRrspcZhpTKSxKB
-	00gyKOJyAyCpGdYSoUVjr5CG4VHBwMsNQWDzaALTDglQEm/+bvKHjgRtZdU/DkTdHwmTkM
-	FdxEuCUP8TVUjsmIdZb6ihckIQQkp1Y=
+	bh=ayvMD9up8Ep08QfYACN4jFRMKjXiM4M9B5sySzaFaIU=;
+	b=erD3GNfeSH/MJAdIKuyYIg8CmBx9fTjRwEAXbzIJUF1q2oONJw67K3kgHeo7j7+UG1GU12
+	XYWle78U5sPFa5R2yY3bf4Kl5C9nFYfXwLzbUjdKpbk6+oySXt21IuOXqOYqZUIbeof3EP
+	A+wGHYtt7J1zfi0hWF2yPZuCErUMhqQ=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1664363553;
+	s=susede2_ed25519; t=1664364602;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=x5QiDkGTtWW3TyyfDNp+cQMUarRxbXPZeZ1xe1IztRY=;
-	b=GcyCBwYmx+BT/5vBrC5JzWxxyK8Xr28Crh8RVhxfi5nv7OBQu1tnCOk+D9U4wYBxORJGlQ
-	LRy7wHbS3DUs/aAw==
-Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	bh=ayvMD9up8Ep08QfYACN4jFRMKjXiM4M9B5sySzaFaIU=;
+	b=ijfAGKSyVzu0+lALUmkeNg/onT5XjZp6Lb2zj2FLFvwzIUUIjOBPwxIlok6MGxj/8NIyI3
+	kTJG1o512qeBLYCg==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by relay2.suse.de (Postfix) with ESMTPS id 0679B2C171;
-	Wed, 28 Sep 2022 11:12:33 +0000 (UTC)
-Date: Wed, 28 Sep 2022 13:12:31 +0200
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: Thomas Zimmermann <tzimmermann@suse.de>
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id AA8BD13677;
+	Wed, 28 Sep 2022 11:30:01 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id R3EUKDkwNGMRJQAAMHmgww
+	(envelope-from <tzimmermann@suse.de>); Wed, 28 Sep 2022 11:30:01 +0000
+Message-ID: <a1354fef-f03b-2b43-cf2e-a50dee28bf59@suse.de>
+Date: Wed, 28 Sep 2022 13:30:00 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.2
 Subject: Re: [PATCH v4 5/5] drm/ofdrm: Support big-endian scanout buffers
-Message-ID: <20220928111231.GO28810@kitsune.suse.cz>
+To: =?UTF-8?Q?Michal_Such=c3=a1nek?= <msuchanek@suse.de>
 References: <20220928105010.18880-1-tzimmermann@suse.de>
  <20220928105010.18880-6-tzimmermann@suse.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220928105010.18880-6-tzimmermann@suse.de>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+ <20220928111231.GO28810@kitsune.suse.cz>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+In-Reply-To: <20220928111231.GO28810@kitsune.suse.cz>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------ZB9WIPJXlHulGrPV3engfOdt"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,205 +87,208 @@ Cc: linux-fbdev@vger.kernel.org, airlied@linux.ie, deller@gmx.de, linuxppc-dev@l
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello,
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------ZB9WIPJXlHulGrPV3engfOdt
+Content-Type: multipart/mixed; boundary="------------zrVeAn3BvchnrFFPnF0eg9Dd";
+ protected-headers="v1"
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: =?UTF-8?Q?Michal_Such=c3=a1nek?= <msuchanek@suse.de>
+Cc: javierm@redhat.com, airlied@linux.ie, daniel@ffwll.ch, deller@gmx.de,
+ maxime@cerno.tech, sam@ravnborg.org, mpe@ellerman.id.au,
+ benh@kernel.crashing.org, paulus@samba.org, geert@linux-m68k.org,
+ mark.cave-ayland@ilande.co.uk, linux-fbdev@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, dri-devel@lists.freedesktop.org
+Message-ID: <a1354fef-f03b-2b43-cf2e-a50dee28bf59@suse.de>
+Subject: Re: [PATCH v4 5/5] drm/ofdrm: Support big-endian scanout buffers
+References: <20220928105010.18880-1-tzimmermann@suse.de>
+ <20220928105010.18880-6-tzimmermann@suse.de>
+ <20220928111231.GO28810@kitsune.suse.cz>
+In-Reply-To: <20220928111231.GO28810@kitsune.suse.cz>
 
-On Wed, Sep 28, 2022 at 12:50:10PM +0200, Thomas Zimmermann wrote:
-> All DRM formats assume little-endian byte order. On big-endian systems,
-> it is likely that the scanout buffer is in big endian as well. Update
-> the format accordingly and add endianess conversion to the format-helper
-> library. Also opt-in to allocated buffers in host format by default.
+--------------zrVeAn3BvchnrFFPnF0eg9Dd
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-This sounds backwards to me.
+SGkNCg0KQW0gMjguMDkuMjIgdW0gMTM6MTIgc2NocmllYiBNaWNoYWwgU3VjaMOhbmVrOg0K
+PiBIZWxsbywNCj4gDQo+IE9uIFdlZCwgU2VwIDI4LCAyMDIyIGF0IDEyOjUwOjEwUE0gKzAy
+MDAsIFRob21hcyBaaW1tZXJtYW5uIHdyb3RlOg0KPj4gQWxsIERSTSBmb3JtYXRzIGFzc3Vt
+ZSBsaXR0bGUtZW5kaWFuIGJ5dGUgb3JkZXIuIE9uIGJpZy1lbmRpYW4gc3lzdGVtcywNCj4+
+IGl0IGlzIGxpa2VseSB0aGF0IHRoZSBzY2Fub3V0IGJ1ZmZlciBpcyBpbiBiaWcgZW5kaWFu
+IGFzIHdlbGwuIFVwZGF0ZQ0KPj4gdGhlIGZvcm1hdCBhY2NvcmRpbmdseSBhbmQgYWRkIGVu
+ZGlhbmVzcyBjb252ZXJzaW9uIHRvIHRoZSBmb3JtYXQtaGVscGVyDQo+PiBsaWJyYXJ5LiBB
+bHNvIG9wdC1pbiB0byBhbGxvY2F0ZWQgYnVmZmVycyBpbiBob3N0IGZvcm1hdCBieSBkZWZh
+dWx0Lg0KPiANCj4gVGhpcyBzb3VuZHMgYmFja3dhcmRzIHRvIG1lLg0KDQpJbiB3aGljaCB3
+YXk/DQoNCj4gDQo+IFNraW1taW5nIHRocm91Z2ggdGhlIGNvZGUgaXQgc291bmRzIGxpa2Ug
+dGhlIGJ1ZmZlciBpcyBpbiBmYWN0IGluIHRoZQ0KPiBzYW1lIGZvcm1hdCBhbGwgdGhlIHRp
+bWUgYnV0IHdoZW4gdGhlIENQVSBpcyBzd2l0Y2hlZCB0byBCRSBpdCBzZWVzIHRoZQ0KPiBk
+YXRhIGxvYWRlZCBmcm9tIGl0IGRpZmZlcmVudGx5Lg0KPiANCj4gT3IgYW0gSSBtaXNzaW5n
+IHNvbWV0aGluZz8NCg0KV2hpY2ggYnVmZmVyIGRvIHlvdSBtZWFuPyBUaGUgc2Nhbm91dCBi
+dWZmZXIgY29taW5nIGZyb20gdGhlIGZpcm13YXJlLCANCm9yIHRoZSBHRU0gQk9zIHRoYXQg
+YXJlIGFsbG9jYXRlZCBieSByZW5kZXJlcnM/DQoNClRoZSBzY2Fub3V0IGJ1ZmZlciBpcyBl
+aXRoZXIgaW4gQkUgb3IgTEUgZm9ybWF0LiBBY2NvcmRpbmcgdG8gdGhlIGNvZGUgDQppbiBv
+ZmZiLCBpdCdzIHNpZ25hbGVkIGJ5IGEgbm9kZSBpbiB0aGUgZGV2aWNlIHRyZWUuIEkgdG9v
+ayB0aGF0IGNvZGUgDQppbnRvIG9mZHJtIGFuZCBzZXQgdGhlIHNjYW5vdXQgZm9ybWF0IGFj
+Y29yZGluZ2x5Lg0KDQpUaGUgR0VNIEJPIGNhbiBiZSBpbiBhbnkgZm9ybWF0LiBJZiBuZWNl
+c3NhcnksIG9mZHJtIGNvbnZlcnRzIGludGVybmFsbHkgDQp3aGlsZSBjb3B5aW5nIGl0IHRv
+IHRoZSBzY2Fub3V0IGJ1ZmZlci4gVGhlIHF1aXJrIHdlIG9wdCBpbiwgbWFrZXMgRFJNIA0K
+cHJlZmVyIHdoYXRldmVyIGRlZmF1bHQgYnl0ZW9yZGVyIHRoZSBob3N0IHByZWZlcnMgKEJF
+IG9yIExFKS4gQWNjb3JkaW5nIA0KdG8gdGhlIGRvY3MsIGl0J3MgdGhlIHJpZ2h0IHRoaW5n
+IHRvIGRvLiBCdXQgdGhhdCBvbmx5IGFmZmVjdHMgdGhlIEdFTSANCmNvZGUsIG5vdCB0aGUg
+c2Nhbm91dCBidWZmZXIuDQoNCkJlc3QgcmVnYXJkcw0KVGhvbWFzDQoNCj4gDQo+IFRoYW5r
+cw0KPiANCj4gTWljaGFsDQo+IA0KPj4NCj4+IFN1Z2dlc3RlZC1ieTogR2VlcnQgVXl0dGVy
+aG9ldmVuIDxnZWVydEBsaW51eC1tNjhrLm9yZz4NCj4+IFNpZ25lZC1vZmYtYnk6IFRob21h
+cyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPg0KPj4gLS0tDQo+PiAgIGRyaXZl
+cnMvZ3B1L2RybS9kcm1fZm9ybWF0X2hlbHBlci5jIHwgMTAgKysrKysrDQo+PiAgIGRyaXZl
+cnMvZ3B1L2RybS90aW55L29mZHJtLmMgICAgICAgIHwgNTUgKysrKysrKysrKysrKysrKysr
+KysrKysrKysrLS0NCj4+ICAgMiBmaWxlcyBjaGFuZ2VkLCA2MyBpbnNlcnRpb25zKCspLCAy
+IGRlbGV0aW9ucygtKQ0KPj4NCj4+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2dwdS9kcm0vZHJt
+X2Zvcm1hdF9oZWxwZXIuYyBiL2RyaXZlcnMvZ3B1L2RybS9kcm1fZm9ybWF0X2hlbHBlci5j
+DQo+PiBpbmRleCA0YWZjNGFjMjczNDIuLmZjYTc5MzZkYjA4MyAxMDA2NDQNCj4+IC0tLSBh
+L2RyaXZlcnMvZ3B1L2RybS9kcm1fZm9ybWF0X2hlbHBlci5jDQo+PiArKysgYi9kcml2ZXJz
+L2dwdS9kcm0vZHJtX2Zvcm1hdF9oZWxwZXIuYw0KPj4gQEAgLTY1OSw2ICs2NTksMTEgQEAg
+aW50IGRybV9mYl9ibGl0KHN0cnVjdCBpb3N5c19tYXAgKmRzdCwgY29uc3QgdW5zaWduZWQg
+aW50ICpkc3RfcGl0Y2gsIHVpbnQzMl90IGQNCj4+ICAgCQkJZHJtX2ZiX3hyZ2I4ODg4X3Rv
+X3JnYjU2NShkc3QsIGRzdF9waXRjaCwgc3JjLCBmYiwgY2xpcCwgZmFsc2UpOw0KPj4gICAJ
+CQlyZXR1cm4gMDsNCj4+ICAgCQl9DQo+PiArCX0gZWxzZSBpZiAoZHN0X2Zvcm1hdCA9PSAo
+RFJNX0ZPUk1BVF9SR0I1NjUgfCBEUk1fRk9STUFUX0JJR19FTkRJQU4pKSB7DQo+PiArCQlp
+ZiAoZmJfZm9ybWF0ID09IERSTV9GT1JNQVRfUkdCNTY1KSB7DQo+PiArCQkJZHJtX2ZiX3N3
+YWIoZHN0LCBkc3RfcGl0Y2gsIHNyYywgZmIsIGNsaXAsIGZhbHNlKTsNCj4+ICsJCQlyZXR1
+cm4gMDsNCj4+ICsJCX0NCj4+ICAgCX0gZWxzZSBpZiAoZHN0X2Zvcm1hdCA9PSBEUk1fRk9S
+TUFUX1JHQjg4OCkgew0KPj4gICAJCWlmIChmYl9mb3JtYXQgPT0gRFJNX0ZPUk1BVF9YUkdC
+ODg4OCkgew0KPj4gICAJCQlkcm1fZmJfeHJnYjg4ODhfdG9fcmdiODg4KGRzdCwgZHN0X3Bp
+dGNoLCBzcmMsIGZiLCBjbGlwKTsNCj4+IEBAIC02NzcsNiArNjgyLDExIEBAIGludCBkcm1f
+ZmJfYmxpdChzdHJ1Y3QgaW9zeXNfbWFwICpkc3QsIGNvbnN0IHVuc2lnbmVkIGludCAqZHN0
+X3BpdGNoLCB1aW50MzJfdCBkDQo+PiAgIAkJCWRybV9mYl94cmdiODg4OF90b194cmdiMjEw
+MTAxMChkc3QsIGRzdF9waXRjaCwgc3JjLCBmYiwgY2xpcCk7DQo+PiAgIAkJCXJldHVybiAw
+Ow0KPj4gICAJCX0NCj4+ICsJfSBlbHNlIGlmIChkc3RfZm9ybWF0ID09IERSTV9GT1JNQVRf
+QkdSWDg4ODgpIHsNCj4+ICsJCWlmIChmYl9mb3JtYXQgPT0gRFJNX0ZPUk1BVF9YUkdCODg4
+OCkgew0KPj4gKwkJCWRybV9mYl9zd2FiKGRzdCwgZHN0X3BpdGNoLCBzcmMsIGZiLCBjbGlw
+LCBmYWxzZSk7DQo+PiArCQkJcmV0dXJuIDA7DQo+PiArCQl9DQo+PiAgIAl9DQo+PiAgIA0K
+Pj4gICAJZHJtX3dhcm5fb25jZShmYi0+ZGV2LCAiTm8gY29udmVyc2lvbiBoZWxwZXIgZnJv
+bSAlcDRjYyB0byAlcDRjYyBmb3VuZC5cbiIsDQo+PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9n
+cHUvZHJtL3Rpbnkvb2Zkcm0uYyBiL2RyaXZlcnMvZ3B1L2RybS90aW55L29mZHJtLmMNCj4+
+IGluZGV4IDBiZjVlZWJmNjY3OC4uNmUxMDBhN2Y1ZGI3IDEwMDY0NA0KPj4gLS0tIGEvZHJp
+dmVycy9ncHUvZHJtL3Rpbnkvb2Zkcm0uYw0KPj4gKysrIGIvZHJpdmVycy9ncHUvZHJtL3Rp
+bnkvb2Zkcm0uYw0KPj4gQEAgLTk0LDcgKzk0LDcgQEAgc3RhdGljIGludCBkaXNwbGF5X2dl
+dF92YWxpZGF0ZWRfaW50MChzdHJ1Y3QgZHJtX2RldmljZSAqZGV2LCBjb25zdCBjaGFyICpu
+YW1lLA0KPj4gICB9DQo+PiAgIA0KPj4gICBzdGF0aWMgY29uc3Qgc3RydWN0IGRybV9mb3Jt
+YXRfaW5mbyAqZGlzcGxheV9nZXRfdmFsaWRhdGVkX2Zvcm1hdChzdHJ1Y3QgZHJtX2Rldmlj
+ZSAqZGV2LA0KPj4gLQkJCQkJCQkJICB1MzIgZGVwdGgpDQo+PiArCQkJCQkJCQkgIHUzMiBk
+ZXB0aCwgYm9vbCBiaWdfZW5kaWFuKQ0KPj4gICB7DQo+PiAgIAljb25zdCBzdHJ1Y3QgZHJt
+X2Zvcm1hdF9pbmZvICppbmZvOw0KPj4gICAJdTMyIGZvcm1hdDsNCj4+IEBAIC0xMTUsNiAr
+MTE1LDI5IEBAIHN0YXRpYyBjb25zdCBzdHJ1Y3QgZHJtX2Zvcm1hdF9pbmZvICpkaXNwbGF5
+X2dldF92YWxpZGF0ZWRfZm9ybWF0KHN0cnVjdCBkcm1fZGV2DQo+PiAgIAkJcmV0dXJuIEVS
+Ul9QVFIoLUVJTlZBTCk7DQo+PiAgIAl9DQo+PiAgIA0KPj4gKwkvKg0KPj4gKwkgKiBEUk0g
+Zm9ybWF0cyBhc3N1bWUgbGl0dGxlLWVuZGlhbiBieXRlIG9yZGVyLiBVcGRhdGUgdGhlIGZv
+cm1hdA0KPj4gKwkgKiBpZiB0aGUgc2Nhbm91dCBidWZmZXIgdXNlcyBiaWctZW5kaWFuIG9y
+ZGVyaW5nLg0KPj4gKwkgKi8NCj4+ICsJaWYgKGJpZ19lbmRpYW4pIHsNCj4+ICsJCXN3aXRj
+aCAoZm9ybWF0KSB7DQo+PiArCQljYXNlIERSTV9GT1JNQVRfWFJHQjg4ODg6DQo+PiArCQkJ
+Zm9ybWF0ID0gRFJNX0ZPUk1BVF9CR1JYODg4ODsNCj4+ICsJCQlicmVhazsNCj4+ICsJCWNh
+c2UgRFJNX0ZPUk1BVF9BUkdCODg4ODoNCj4+ICsJCQlmb3JtYXQgPSBEUk1fRk9STUFUX0JH
+UkE4ODg4Ow0KPj4gKwkJCWJyZWFrOw0KPj4gKwkJY2FzZSBEUk1fRk9STUFUX1JHQjU2NToN
+Cj4+ICsJCQlmb3JtYXQgPSBEUk1fRk9STUFUX1JHQjU2NSB8IERSTV9GT1JNQVRfQklHX0VO
+RElBTjsNCj4+ICsJCQlicmVhazsNCj4+ICsJCWNhc2UgRFJNX0ZPUk1BVF9YUkdCMTU1NToN
+Cj4+ICsJCQlmb3JtYXQgPSBEUk1fRk9STUFUX1hSR0IxNTU1IHwgRFJNX0ZPUk1BVF9CSUdf
+RU5ESUFOOw0KPj4gKwkJCWJyZWFrOw0KPj4gKwkJZGVmYXVsdDoNCj4+ICsJCQlicmVhazsN
+Cj4+ICsJCX0NCj4+ICsJfQ0KPj4gKw0KPj4gICAJaW5mbyA9IGRybV9mb3JtYXRfaW5mbyhm
+b3JtYXQpOw0KPj4gICAJaWYgKCFpbmZvKSB7DQo+PiAgIAkJZHJtX2VycihkZXYsICJjYW5u
+b3QgZmluZCBmcmFtZWJ1ZmZlciBmb3JtYXQgZm9yIGRlcHRoICV1XG4iLCBkZXB0aCk7DQo+
+PiBAQCAtMTM0LDYgKzE1NywyMyBAQCBzdGF0aWMgaW50IGRpc3BsYXlfcmVhZF91MzJfb2Yo
+c3RydWN0IGRybV9kZXZpY2UgKmRldiwgc3RydWN0IGRldmljZV9ub2RlICpvZl9ubw0KPj4g
+ICAJcmV0dXJuIHJldDsNCj4+ICAgfQ0KPj4gICANCj4+ICtzdGF0aWMgYm9vbCBkaXNwbGF5
+X2dldF9iaWdfZW5kaWFuX29mKHN0cnVjdCBkcm1fZGV2aWNlICpkZXYsIHN0cnVjdCBkZXZp
+Y2Vfbm9kZSAqb2Zfbm9kZSkNCj4+ICt7DQo+PiArCWJvb2wgYmlnX2VuZGlhbjsNCj4+ICsN
+Cj4+ICsjaWZkZWYgX19CSUdfRU5ESUFODQo+PiArCWJpZ19lbmRpYW4gPSB0cnVlOw0KPj4g
+KwlpZiAob2ZfZ2V0X3Byb3BlcnR5KG9mX25vZGUsICJsaXR0bGUtZW5kaWFuIiwgTlVMTCkp
+DQo+PiArCQliaWdfZW5kaWFuID0gZmFsc2U7DQo+PiArI2Vsc2UNCj4+ICsJYmlnX2VuZGlh
+biA9IGZhbHNlOw0KPj4gKwlpZiAob2ZfZ2V0X3Byb3BlcnR5KG9mX25vZGUsICJiaWctZW5k
+aWFuIiwgTlVMTCkpDQo+PiArCQliaWdfZW5kaWFuID0gdHJ1ZTsNCj4+ICsjZW5kaWYNCj4+
+ICsNCj4+ICsJcmV0dXJuIGJpZ19lbmRpYW47DQo+PiArfQ0KPj4gKw0KPj4gICBzdGF0aWMg
+aW50IGRpc3BsYXlfZ2V0X3dpZHRoX29mKHN0cnVjdCBkcm1fZGV2aWNlICpkZXYsIHN0cnVj
+dCBkZXZpY2Vfbm9kZSAqb2Zfbm9kZSkNCj4+ICAgew0KPj4gICAJdTMyIHdpZHRoOw0KPj4g
+QEAgLTYxMyw2ICs2NTMsNyBAQCBzdGF0aWMgdm9pZCBvZmRybV9kZXZpY2Vfc2V0X2dhbW1h
+X2xpbmVhcihzdHJ1Y3Qgb2Zkcm1fZGV2aWNlICpvZGV2LA0KPj4gICANCj4+ICAgCXN3aXRj
+aCAoZm9ybWF0LT5mb3JtYXQpIHsNCj4+ICAgCWNhc2UgRFJNX0ZPUk1BVF9SR0I1NjU6DQo+
+PiArCWNhc2UgRFJNX0ZPUk1BVF9SR0I1NjUgfCBEUk1fRk9STUFUX0JJR19FTkRJQU46DQo+
+PiAgIAkJLyogVXNlIGJldHRlciBpbnRlcnBvbGF0aW9uLCB0byB0YWtlIDMyIHZhbHVlcyBm
+cm9tIDAgdG8gMjU1ICovDQo+PiAgIAkJZm9yIChpID0gMDsgaSA8IE9GRFJNX0dBTU1BX0xV
+VF9TSVpFIC8gODsgaSsrKSB7DQo+PiAgIAkJCXVuc2lnbmVkIGNoYXIgciA9IGkgKiA4ICsg
+aSAvIDQ7DQo+PiBAQCAtNjMxLDYgKzY3Miw3IEBAIHN0YXRpYyB2b2lkIG9mZHJtX2Rldmlj
+ZV9zZXRfZ2FtbWFfbGluZWFyKHN0cnVjdCBvZmRybV9kZXZpY2UgKm9kZXYsDQo+PiAgIAkJ
+fQ0KPj4gICAJCWJyZWFrOw0KPj4gICAJY2FzZSBEUk1fRk9STUFUX1hSR0I4ODg4Og0KPj4g
+KwljYXNlIERSTV9GT1JNQVRfQkdSWDg4ODg6DQo+PiAgIAkJZm9yIChpID0gMDsgaSA8IE9G
+RFJNX0dBTU1BX0xVVF9TSVpFOyBpKyspDQo+PiAgIAkJCW9kZXYtPmZ1bmNzLT5jbWFwX3dy
+aXRlKG9kZXYsIGksIGksIGksIGkpOw0KPj4gICAJCWJyZWFrOw0KPj4gQEAgLTY1MCw2ICs2
+OTIsNyBAQCBzdGF0aWMgdm9pZCBvZmRybV9kZXZpY2Vfc2V0X2dhbW1hKHN0cnVjdCBvZmRy
+bV9kZXZpY2UgKm9kZXYsDQo+PiAgIA0KPj4gICAJc3dpdGNoIChmb3JtYXQtPmZvcm1hdCkg
+ew0KPj4gICAJY2FzZSBEUk1fRk9STUFUX1JHQjU2NToNCj4+ICsJY2FzZSBEUk1fRk9STUFU
+X1JHQjU2NSB8IERSTV9GT1JNQVRfQklHX0VORElBTjoNCj4+ICAgCQkvKiBVc2UgYmV0dGVy
+IGludGVycG9sYXRpb24sIHRvIHRha2UgMzIgdmFsdWVzIGZyb20gbHV0WzBdIHRvIGx1dFsy
+NTVdICovDQo+PiAgIAkJZm9yIChpID0gMDsgaSA8IE9GRFJNX0dBTU1BX0xVVF9TSVpFIC8g
+ODsgaSsrKSB7DQo+PiAgIAkJCXVuc2lnbmVkIGNoYXIgciA9IGx1dFtpICogOCArIGkgLyA0
+XS5yZWQgPj4gODsNCj4+IEBAIC02NjgsNiArNzExLDcgQEAgc3RhdGljIHZvaWQgb2Zkcm1f
+ZGV2aWNlX3NldF9nYW1tYShzdHJ1Y3Qgb2Zkcm1fZGV2aWNlICpvZGV2LA0KPj4gICAJCX0N
+Cj4+ICAgCQlicmVhazsNCj4+ICAgCWNhc2UgRFJNX0ZPUk1BVF9YUkdCODg4ODoNCj4+ICsJ
+Y2FzZSBEUk1fRk9STUFUX0JHUlg4ODg4Og0KPj4gICAJCWZvciAoaSA9IDA7IGkgPCBPRkRS
+TV9HQU1NQV9MVVRfU0laRTsgaSsrKSB7DQo+PiAgIAkJCXVuc2lnbmVkIGNoYXIgciA9IGx1
+dFtpXS5yZWQgPj4gODsNCj4+ICAgCQkJdW5zaWduZWQgY2hhciBnID0gbHV0W2ldLmdyZWVu
+ID4+IDg7DQo+PiBAQCAtNzE4LDYgKzc2Miw5IEBAIHN0YXRpYyBjb25zdCB1aW50MzJfdCBv
+ZmRybV9wcmltYXJ5X3BsYW5lX2Zvcm1hdHNbXSA9IHsNCj4+ICAgCURSTV9GT1JNQVRfUkdC
+NTY1LA0KPj4gICAJLy9EUk1fRk9STUFUX1hSR0IxNTU1LA0KPj4gICAJLy9EUk1fRk9STUFU
+X0M4LA0KPj4gKwkvKiBCaWctZW5kaWFuIGZvcm1hdHMgYmVsb3cgKi8NCj4+ICsJRFJNX0ZP
+Uk1BVF9CR1JYODg4OCwNCj4+ICsJRFJNX0ZPUk1BVF9SR0I1NjUgfCBEUk1fRk9STUFUX0JJ
+R19FTkRJQU4sDQo+PiAgIH07DQo+PiAgIA0KPj4gICBzdGF0aWMgY29uc3QgdWludDY0X3Qg
+b2Zkcm1fcHJpbWFyeV9wbGFuZV9mb3JtYXRfbW9kaWZpZXJzW10gPSB7DQo+PiBAQCAtMTA0
+OCw2ICsxMDk1LDcgQEAgc3RhdGljIHN0cnVjdCBvZmRybV9kZXZpY2UgKm9mZHJtX2Rldmlj
+ZV9jcmVhdGUoc3RydWN0IGRybV9kcml2ZXIgKmRydiwNCj4+ICAgCXN0cnVjdCBvZmRybV9k
+ZXZpY2UgKm9kZXY7DQo+PiAgIAlzdHJ1Y3QgZHJtX2RldmljZSAqZGV2Ow0KPj4gICAJZW51
+bSBvZmRybV9tb2RlbCBtb2RlbDsNCj4+ICsJYm9vbCBiaWdfZW5kaWFuOw0KPj4gICAJaW50
+IHdpZHRoLCBoZWlnaHQsIGRlcHRoLCBsaW5lYnl0ZXM7DQo+PiAgIAljb25zdCBzdHJ1Y3Qg
+ZHJtX2Zvcm1hdF9pbmZvICpmb3JtYXQ7DQo+PiAgIAl1NjQgYWRkcmVzczsNCj4+IEBAIC0x
+MTA5LDYgKzExNTcsOCBAQCBzdGF0aWMgc3RydWN0IG9mZHJtX2RldmljZSAqb2Zkcm1fZGV2
+aWNlX2NyZWF0ZShzdHJ1Y3QgZHJtX2RyaXZlciAqZHJ2LA0KPj4gICAJCWJyZWFrOw0KPj4g
+ICAJfQ0KPj4gICANCj4+ICsJYmlnX2VuZGlhbiA9IGRpc3BsYXlfZ2V0X2JpZ19lbmRpYW5f
+b2YoZGV2LCBvZl9ub2RlKTsNCj4+ICsNCj4+ICAgCXdpZHRoID0gZGlzcGxheV9nZXRfd2lk
+dGhfb2YoZGV2LCBvZl9ub2RlKTsNCj4+ICAgCWlmICh3aWR0aCA8IDApDQo+PiAgIAkJcmV0
+dXJuIEVSUl9QVFIod2lkdGgpOw0KPj4gQEAgLTExMjIsNyArMTE3Miw3IEBAIHN0YXRpYyBz
+dHJ1Y3Qgb2Zkcm1fZGV2aWNlICpvZmRybV9kZXZpY2VfY3JlYXRlKHN0cnVjdCBkcm1fZHJp
+dmVyICpkcnYsDQo+PiAgIAlpZiAobGluZWJ5dGVzIDwgMCkNCj4+ICAgCQlyZXR1cm4gRVJS
+X1BUUihsaW5lYnl0ZXMpOw0KPj4gICANCj4+IC0JZm9ybWF0ID0gZGlzcGxheV9nZXRfdmFs
+aWRhdGVkX2Zvcm1hdChkZXYsIGRlcHRoKTsNCj4+ICsJZm9ybWF0ID0gZGlzcGxheV9nZXRf
+dmFsaWRhdGVkX2Zvcm1hdChkZXYsIGRlcHRoLCBiaWdfZW5kaWFuKTsNCj4+ICAgCWlmIChJ
+U19FUlIoZm9ybWF0KSkNCj4+ICAgCQlyZXR1cm4gRVJSX0NBU1QoZm9ybWF0KTsNCj4+ICAg
+CWlmICghbGluZWJ5dGVzKSB7DQo+PiBAQCAtMTIzNCw2ICsxMjg0LDcgQEAgc3RhdGljIHN0
+cnVjdCBvZmRybV9kZXZpY2UgKm9mZHJtX2RldmljZV9jcmVhdGUoc3RydWN0IGRybV9kcml2
+ZXIgKmRydiwNCj4+ICAgCQlkZXYtPm1vZGVfY29uZmlnLnByZWZlcnJlZF9kZXB0aCA9IGRl
+cHRoOw0KPj4gICAJCWJyZWFrOw0KPj4gICAJfQ0KPj4gKwlkZXYtPm1vZGVfY29uZmlnLnF1
+aXJrX2FkZGZiX3ByZWZlcl9ob3N0X2J5dGVfb3JkZXIgPSB0cnVlOw0KPj4gICANCj4+ICAg
+CS8qIFByaW1hcnkgcGxhbmUgKi8NCj4+ICAgDQo+PiAtLSANCj4+IDIuMzcuMw0KPj4NCg0K
+LS0gDQpUaG9tYXMgWmltbWVybWFubg0KR3JhcGhpY3MgRHJpdmVyIERldmVsb3Blcg0KU1VT
+RSBTb2Z0d2FyZSBTb2x1dGlvbnMgR2VybWFueSBHbWJIDQpNYXhmZWxkc3RyLiA1LCA5MDQw
+OSBOw7xybmJlcmcsIEdlcm1hbnkNCihIUkIgMzY4MDksIEFHIE7DvHJuYmVyZykNCkdlc2No
+w6RmdHNmw7xocmVyOiBJdm8gVG90ZXYNCg==
 
-Skimming through the code it sounds like the buffer is in fact in the
-same format all the time but when the CPU is switched to BE it sees the
-data loaded from it differently.
+--------------zrVeAn3BvchnrFFPnF0eg9Dd--
 
-Or am I missing something?
+--------------ZB9WIPJXlHulGrPV3engfOdt
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature"
 
-Thanks
+-----BEGIN PGP SIGNATURE-----
 
-Michal
+wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmM0MDgFAwAAAAAACgkQlh/E3EQov+AD
+zA//aVf+ePw6D7uCh2FjY8fIbNXhHzaZnMbpIyEJeExOn1AFae+3kEiS7aT7x2XeuoevyO/3QusD
+WujLInCaV46Ykxf4VeTwiP4/5eqL5vQq5Mpv03KYj9G04MIzrvNNQP3TA9ZbQyFHghOGUh4w303a
+p3Mxci/8sFcBW77ip/rj92iBnGzJQsZkmD3AEOBG9BLIusA/FjQDTuITV3NYHUZR8zwYcWkB+Ars
+CZxIsUeH7V2FOdo6n/gUdAQ0pQZwdgPQjQYeCqOfYwWlr+pTM9fooUeAgiQUCFgUOVrs0OVkyD3f
+u/h/ZA3FJNEPpj3bX4FbE713QHLMJVX5zAO4eix4NhxZ9m8dUR7ppBGXc76G229TyWeMY1x7aLSO
+7CnLwUcWB7q3fSLrDN8YP4zjkou2r7Sg+D1PTHRuVwU0cgJSBK3rSQWUY/XVa/Mv4xqfLf5dIBhV
+cVXbPTom0RfXAlTVo1V/dPXQ7T6N9KzZMI+m2IC/+b6KWuidng1uHo1hLwwZgIyb1ctPdQbTg2Wh
+6Jjp2BY3Zozf9CcCQ8oACMrIVc268psOFdYPJmGNR/Mlhs791CjAgdh6bqV9VWzFJ0IY2PJfG7C5
+MUwfTEPOsp0A6V9tZy0GIW7nox+0MRY6AMrGe8M2ilmtAPRIQyoP7Zqe2cqFFKwz793x6ERMK3+W
+gEs=
+=9kOX
+-----END PGP SIGNATURE-----
 
-> 
-> Suggested-by: Geert Uytterhoeven <geert@linux-m68k.org>
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> ---
->  drivers/gpu/drm/drm_format_helper.c | 10 ++++++
->  drivers/gpu/drm/tiny/ofdrm.c        | 55 +++++++++++++++++++++++++++--
->  2 files changed, 63 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/drm_format_helper.c b/drivers/gpu/drm/drm_format_helper.c
-> index 4afc4ac27342..fca7936db083 100644
-> --- a/drivers/gpu/drm/drm_format_helper.c
-> +++ b/drivers/gpu/drm/drm_format_helper.c
-> @@ -659,6 +659,11 @@ int drm_fb_blit(struct iosys_map *dst, const unsigned int *dst_pitch, uint32_t d
->  			drm_fb_xrgb8888_to_rgb565(dst, dst_pitch, src, fb, clip, false);
->  			return 0;
->  		}
-> +	} else if (dst_format == (DRM_FORMAT_RGB565 | DRM_FORMAT_BIG_ENDIAN)) {
-> +		if (fb_format == DRM_FORMAT_RGB565) {
-> +			drm_fb_swab(dst, dst_pitch, src, fb, clip, false);
-> +			return 0;
-> +		}
->  	} else if (dst_format == DRM_FORMAT_RGB888) {
->  		if (fb_format == DRM_FORMAT_XRGB8888) {
->  			drm_fb_xrgb8888_to_rgb888(dst, dst_pitch, src, fb, clip);
-> @@ -677,6 +682,11 @@ int drm_fb_blit(struct iosys_map *dst, const unsigned int *dst_pitch, uint32_t d
->  			drm_fb_xrgb8888_to_xrgb2101010(dst, dst_pitch, src, fb, clip);
->  			return 0;
->  		}
-> +	} else if (dst_format == DRM_FORMAT_BGRX8888) {
-> +		if (fb_format == DRM_FORMAT_XRGB8888) {
-> +			drm_fb_swab(dst, dst_pitch, src, fb, clip, false);
-> +			return 0;
-> +		}
->  	}
->  
->  	drm_warn_once(fb->dev, "No conversion helper from %p4cc to %p4cc found.\n",
-> diff --git a/drivers/gpu/drm/tiny/ofdrm.c b/drivers/gpu/drm/tiny/ofdrm.c
-> index 0bf5eebf6678..6e100a7f5db7 100644
-> --- a/drivers/gpu/drm/tiny/ofdrm.c
-> +++ b/drivers/gpu/drm/tiny/ofdrm.c
-> @@ -94,7 +94,7 @@ static int display_get_validated_int0(struct drm_device *dev, const char *name,
->  }
->  
->  static const struct drm_format_info *display_get_validated_format(struct drm_device *dev,
-> -								  u32 depth)
-> +								  u32 depth, bool big_endian)
->  {
->  	const struct drm_format_info *info;
->  	u32 format;
-> @@ -115,6 +115,29 @@ static const struct drm_format_info *display_get_validated_format(struct drm_dev
->  		return ERR_PTR(-EINVAL);
->  	}
->  
-> +	/*
-> +	 * DRM formats assume little-endian byte order. Update the format
-> +	 * if the scanout buffer uses big-endian ordering.
-> +	 */
-> +	if (big_endian) {
-> +		switch (format) {
-> +		case DRM_FORMAT_XRGB8888:
-> +			format = DRM_FORMAT_BGRX8888;
-> +			break;
-> +		case DRM_FORMAT_ARGB8888:
-> +			format = DRM_FORMAT_BGRA8888;
-> +			break;
-> +		case DRM_FORMAT_RGB565:
-> +			format = DRM_FORMAT_RGB565 | DRM_FORMAT_BIG_ENDIAN;
-> +			break;
-> +		case DRM_FORMAT_XRGB1555:
-> +			format = DRM_FORMAT_XRGB1555 | DRM_FORMAT_BIG_ENDIAN;
-> +			break;
-> +		default:
-> +			break;
-> +		}
-> +	}
-> +
->  	info = drm_format_info(format);
->  	if (!info) {
->  		drm_err(dev, "cannot find framebuffer format for depth %u\n", depth);
-> @@ -134,6 +157,23 @@ static int display_read_u32_of(struct drm_device *dev, struct device_node *of_no
->  	return ret;
->  }
->  
-> +static bool display_get_big_endian_of(struct drm_device *dev, struct device_node *of_node)
-> +{
-> +	bool big_endian;
-> +
-> +#ifdef __BIG_ENDIAN
-> +	big_endian = true;
-> +	if (of_get_property(of_node, "little-endian", NULL))
-> +		big_endian = false;
-> +#else
-> +	big_endian = false;
-> +	if (of_get_property(of_node, "big-endian", NULL))
-> +		big_endian = true;
-> +#endif
-> +
-> +	return big_endian;
-> +}
-> +
->  static int display_get_width_of(struct drm_device *dev, struct device_node *of_node)
->  {
->  	u32 width;
-> @@ -613,6 +653,7 @@ static void ofdrm_device_set_gamma_linear(struct ofdrm_device *odev,
->  
->  	switch (format->format) {
->  	case DRM_FORMAT_RGB565:
-> +	case DRM_FORMAT_RGB565 | DRM_FORMAT_BIG_ENDIAN:
->  		/* Use better interpolation, to take 32 values from 0 to 255 */
->  		for (i = 0; i < OFDRM_GAMMA_LUT_SIZE / 8; i++) {
->  			unsigned char r = i * 8 + i / 4;
-> @@ -631,6 +672,7 @@ static void ofdrm_device_set_gamma_linear(struct ofdrm_device *odev,
->  		}
->  		break;
->  	case DRM_FORMAT_XRGB8888:
-> +	case DRM_FORMAT_BGRX8888:
->  		for (i = 0; i < OFDRM_GAMMA_LUT_SIZE; i++)
->  			odev->funcs->cmap_write(odev, i, i, i, i);
->  		break;
-> @@ -650,6 +692,7 @@ static void ofdrm_device_set_gamma(struct ofdrm_device *odev,
->  
->  	switch (format->format) {
->  	case DRM_FORMAT_RGB565:
-> +	case DRM_FORMAT_RGB565 | DRM_FORMAT_BIG_ENDIAN:
->  		/* Use better interpolation, to take 32 values from lut[0] to lut[255] */
->  		for (i = 0; i < OFDRM_GAMMA_LUT_SIZE / 8; i++) {
->  			unsigned char r = lut[i * 8 + i / 4].red >> 8;
-> @@ -668,6 +711,7 @@ static void ofdrm_device_set_gamma(struct ofdrm_device *odev,
->  		}
->  		break;
->  	case DRM_FORMAT_XRGB8888:
-> +	case DRM_FORMAT_BGRX8888:
->  		for (i = 0; i < OFDRM_GAMMA_LUT_SIZE; i++) {
->  			unsigned char r = lut[i].red >> 8;
->  			unsigned char g = lut[i].green >> 8;
-> @@ -718,6 +762,9 @@ static const uint32_t ofdrm_primary_plane_formats[] = {
->  	DRM_FORMAT_RGB565,
->  	//DRM_FORMAT_XRGB1555,
->  	//DRM_FORMAT_C8,
-> +	/* Big-endian formats below */
-> +	DRM_FORMAT_BGRX8888,
-> +	DRM_FORMAT_RGB565 | DRM_FORMAT_BIG_ENDIAN,
->  };
->  
->  static const uint64_t ofdrm_primary_plane_format_modifiers[] = {
-> @@ -1048,6 +1095,7 @@ static struct ofdrm_device *ofdrm_device_create(struct drm_driver *drv,
->  	struct ofdrm_device *odev;
->  	struct drm_device *dev;
->  	enum ofdrm_model model;
-> +	bool big_endian;
->  	int width, height, depth, linebytes;
->  	const struct drm_format_info *format;
->  	u64 address;
-> @@ -1109,6 +1157,8 @@ static struct ofdrm_device *ofdrm_device_create(struct drm_driver *drv,
->  		break;
->  	}
->  
-> +	big_endian = display_get_big_endian_of(dev, of_node);
-> +
->  	width = display_get_width_of(dev, of_node);
->  	if (width < 0)
->  		return ERR_PTR(width);
-> @@ -1122,7 +1172,7 @@ static struct ofdrm_device *ofdrm_device_create(struct drm_driver *drv,
->  	if (linebytes < 0)
->  		return ERR_PTR(linebytes);
->  
-> -	format = display_get_validated_format(dev, depth);
-> +	format = display_get_validated_format(dev, depth, big_endian);
->  	if (IS_ERR(format))
->  		return ERR_CAST(format);
->  	if (!linebytes) {
-> @@ -1234,6 +1284,7 @@ static struct ofdrm_device *ofdrm_device_create(struct drm_driver *drv,
->  		dev->mode_config.preferred_depth = depth;
->  		break;
->  	}
-> +	dev->mode_config.quirk_addfb_prefer_host_byte_order = true;
->  
->  	/* Primary plane */
->  
-> -- 
-> 2.37.3
-> 
+--------------ZB9WIPJXlHulGrPV3engfOdt--
