@@ -2,81 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DA355EE6A9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 22:35:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13C855EE6C9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Sep 2022 22:45:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Md7YR3wgHz3c8d
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Sep 2022 06:35:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Md7my6y4fz3c1x
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Sep 2022 06:45:54 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=i+P/wXEo;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=FRS4YOgm;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=nathan@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=i+P/wXEo;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=FRS4YOgm;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Md7Xk6x4Tz2yxF
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Sep 2022 06:35:18 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28SJL73X000850;
-	Wed, 28 Sep 2022 20:35:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : subject :
- in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=Dz8fVpbz0v3FQzvUW6iFf2WOFBdT5o3RcfaXt4aWTTw=;
- b=i+P/wXEofp8xsIMQdrYGhfFk1Wx/K9IT15n/d0mlVzb+KAQ/yF2657dvWQTEhmkJEbNQ
- X/2mtGotdukZ0+q0r60IzUINca8tt5yIpjbRKNvxAGzR7YItI9DYn6xYfwOqBPDzg01j
- x4U9KBwtHvP9Vs9+YjkUyuRM0QHsitvmbhaQEZrZ69L/qGWkbg8RunSC5XXjn8jwP70E
- VhoHeeiZ50ZYTsDhuD9RcEaB7SnnOzphXOrjmkdJFY/Xt/FthtFagT9Ugb358GBQKsHE
- roi1rkV0rjPLX/mQc/T+P28tiudp3yW6RwF5588ETmepuRnjtkB6HLjMWC4wPu+j5MTr xA== 
-Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com [169.55.91.170])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3jvrcxark2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 28 Sep 2022 20:35:11 +0000
-Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
-	by ppma02wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 28SKKa9r017034;
-	Wed, 28 Sep 2022 20:35:11 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
-	by ppma02wdc.us.ibm.com with ESMTP id 3jssh9ncjs-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 28 Sep 2022 20:35:11 +0000
-Received: from smtpav04.dal12v.mail.ibm.com ([9.208.128.131])
-	by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 28SKZ83B41878230
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 28 Sep 2022 20:35:09 GMT
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D96AF58056;
-	Wed, 28 Sep 2022 20:35:09 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C7E965804E;
-	Wed, 28 Sep 2022 20:35:09 +0000 (GMT)
-Received: from localhost (unknown [9.41.178.242])
-	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 28 Sep 2022 20:35:09 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 1/6] powerpc: Add ppc_md.name to dump stack arch
- description
-In-Reply-To: <20220928134025.1739909-1-mpe@ellerman.id.au>
-References: <20220928134025.1739909-1-mpe@ellerman.id.au>
-Date: Wed, 28 Sep 2022 15:35:09 -0500
-Message-ID: <87r0zvp79e.fsf@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Md7mM2Kqcz2xBV
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Sep 2022 06:45:23 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 9E20FB821BC;
+	Wed, 28 Sep 2022 20:45:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A01EC433C1;
+	Wed, 28 Sep 2022 20:45:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1664397916;
+	bh=TUNfwWR1HJKegUyNHHt9zSljJ1tJhnGeXq9PyLq/f/4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FRS4YOgmIGbA0a2Oin8Y7efgYpOv/ySxdSQGwgck/sn+mYml4c0bqIYOprvM3TmrQ
+	 vXPzYZ/PjKq65VgiM0AXU3FC+SLUjTzGXBOkp9GUr54cZ6f44Z7feBSwzMc7H3b93j
+	 91QK40KRgO0WpYvf1goekKukYaG5FUB5vWuWvUvreN/l8v/nsktG8cfWwFR8KdC5by
+	 euWuvg/vVZsb+w64TYIqzS4+MZaK8S0C7qE4xKjC+Tdk3sCLu+UaNNKbcW00Ioxuz4
+	 BkLuVeHH0wkUdPO0i1M2+VQferEwq7Al4brv4QyuGtusnZHriTp6TGmD1tFHJHz+KC
+	 vr+eBqzcjcb6Q==
+Date: Wed, 28 Sep 2022 13:45:13 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Josh Poimboeuf <jpoimboe@kernel.org>
+Subject: Re: [objtool] ca5e2b42c0: kernel_BUG_at_arch/x86/kernel/jump_label.c
+Message-ID: <YzSyWWGsC0lGriYA@dev-arch.thelio-3990X>
+References: <20220912082020.226755-12-sv@linux.ibm.com>
+ <202209280801.2d5eebb5-yujie.liu@intel.com>
+ <YzRr23Bn6qFDC7j0@dev-arch.thelio-3990X>
+ <20220928191353.yu2o7rhkhpi3n74z@treble>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: KPR_VCxDOX6rd_BdJLShBJkszhJJ0xM1
-X-Proofpoint-ORIG-GUID: KPR_VCxDOX6rd_BdJLShBJkszhJJ0xM1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
- definitions=2022-09-28_09,2022-09-28_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 spamscore=0
- suspectscore=0 clxscore=1015 malwarescore=0 adultscore=0
- priorityscore=1501 mlxlogscore=901 lowpriorityscore=0 phishscore=0
- mlxscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2209130000 definitions=main-2209280121
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220928191353.yu2o7rhkhpi3n74z@treble>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,34 +62,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: kernel test robot <yujie.liu@intel.com>, lkp@intel.com, linux-kbuild@vger.kernel.org, aik@ozlabs.ru, linuxppc-dev@lists.ozlabs.org, llvm@lists.linux.dev, linux-kernel@vger.kernel.org, npiggin@gmail.com, Peter Zijlstra <peterz@infradead.org>, mingo@redhat.com, Sathvika Vasireddy <sv@linux.ibm.com>, rostedt@goodmis.org, jpoimboe@redhat.com, lkp@lists.01.org, mbenes@suse.cz, chenzhongjin@huawei.com, naveen.n.rao@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michael Ellerman <mpe@ellerman.id.au> writes:
-> @@ -588,6 +590,15 @@ static __init int add_pcspkr(void)
->  device_initcall(add_pcspkr);
->  #endif	/* CONFIG_PCSPKR_PLATFORM */
->  
-> +static char ppc_hw_desc_buf[128] __initdata;
-> +
-> +struct seq_buf ppc_hw_desc __initdata = {
-> +	.buffer = ppc_hw_desc_buf,
-> +	.size = sizeof(ppc_hw_desc_buf),
-> +	.len = 0,
-> +	.readpos = 0,
-> +};
-> +
->  static __init void probe_machine(void)
->  {
->  	extern struct machdep_calls __machine_desc_start;
-> @@ -628,6 +639,9 @@ static __init void probe_machine(void)
->  		for (;;);
->  	}
->  
-> +	seq_buf_printf(&ppc_hw_desc,"machine:%s ", ppc_md.name);
-> +	dump_stack_set_arch_desc(ppc_hw_desc.buffer);
+On Wed, Sep 28, 2022 at 12:13:53PM -0700, Josh Poimboeuf wrote:
+> On Wed, Sep 28, 2022 at 08:44:27AM -0700, Nathan Chancellor wrote:
+> > This crash appears to just be a symptom of objtool erroring throughout
+> > the entire build, which means things like the jump label hacks do not
+> > get applied. I see a flood of
+> > 
+> >   error: objtool: --mnop requires --mcount
+> > 
+> > throughout the build because the configuration has
+> > CONFIG_HAVE_NOP_MCOUNT=y because CONFIG_HAVE_OBJTOOL_MCOUNT is
+> > unconditionally enabled for x86_64 due to CONFIG_HAVE_OBJTOOL but
+> > '--mcount' is only actually used when CONFIG_FTRACE_MCOUNT_USE_OBJTOOL
+> > is enabled so '--mnop' gets passed in without '--mcount'. This should
+> > obviously be fixed somehow, perhaps by moving the '--mnop' addition into
+> > the '--mcount' if, even if that makes the line really long.
+> > 
+> > A secondary issue is that it seems like if objtool encounters a fatal
+> > error like this, it should completely fail the build to make it obvious
+> > that something is wrong, rather than allowing it to continue and
+> > generate a broken kernel, especially since x86_64 requires objtool to
+> > build a working kernel at this point.
+> 
+> Grrr... I really dislike that objtool is capable of bricking the kernel
+> like this.  We just saw something similar in RHEL.
+> 
+> IMO, we should just get rid of this "short JMP" feature in the jump
+> label code, those saved three bytes aren't worth the pain.
+> 
+> But yes, we do need to fix that config issue.
 
-At first I was confused by the seemingly unnecessary use of the seq_buf,
-but after reading the rest of the series I see that this is the final
-addition to a temporary buffer before setting the arch description
-string. Looks OK to me.
+Right, I actually see that the report I was CC'd on was a part of a
+larger thread, where Naveen already suggested the fix for this problem,
+which is not clang specific it seems:
+
+https://lore.kernel.org/1663223588.wppdx3129x.naveen@linux.ibm.com/
+
+> And yes, maybe fatal objtool warnings should cause a build failure.  We
+> used to do that, but it brought a different sort of pain.  But if
+> objtool is going to be in the kernel's critical boot path then I guess
+> we have to do that.
+
+Right, that was
+
+  644592d32837 ("objtool: Fail the kernel build on fatal errors")
+
+which was reverted in
+
+  655cf86548a3 ("objtool: Don't fail the kernel build on fatal errors")
+
+objtool should not error on warnings but it seems like it should error
+for invalid option combinations and other misconfiguration problems? Did
+this regress with commit b51277eb9775 ("objtool: Ditch subcommands")? I
+can see that the return code of the subcommands would be passed back via
+exit() (?) so objtool could fail the build if there was a true problem
+but after that change, objtool_run() does not have its return code
+checked so any errors that happen don't get passed back up. Perhaps just
+the following diff would resolve this? I assume we would need to look at
+all the different return values to know if this is safe though.
+
+Cheers,
+Nathan
+
+diff --git a/tools/objtool/objtool.c b/tools/objtool/objtool.c
+index a7ecc32e3512..cda649644e32 100644
+--- a/tools/objtool/objtool.c
++++ b/tools/objtool/objtool.c
+@@ -146,7 +146,5 @@ int main(int argc, const char **argv)
+ 	exec_cmd_init("objtool", UNUSED, UNUSED, UNUSED);
+ 	pager_init(UNUSED);
+ 
+-	objtool_run(argc, argv);
+-
+-	return 0;
++	return objtool_run(argc, argv);
+ }
