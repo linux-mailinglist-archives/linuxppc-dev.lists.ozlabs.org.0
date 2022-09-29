@@ -1,67 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37B1F5EEBB1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Sep 2022 04:27:29 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F15E85EEC62
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Sep 2022 05:22:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MdHM31FTFz3c6q
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Sep 2022 12:27:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MdJZ80LFnz3cB6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Sep 2022 13:22:08 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=SpxT3HUK;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=CylrtXTK;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52c; helo=mail-pg1-x52c.google.com; envelope-from=joel.stan@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::633; helo=mail-pl1-x633.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=SpxT3HUK;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=CylrtXTK;
 	dkim-atps=neutral
-Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com [IPv6:2607:f8b0:4864:20::52c])
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MdHLP333Gz2yT0
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Sep 2022 12:26:51 +1000 (AEST)
-Received: by mail-pg1-x52c.google.com with SMTP id b5so218255pgb.6
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Sep 2022 19:26:51 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MdJYS4m8qz2xy6
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Sep 2022 13:21:31 +1000 (AEST)
+Received: by mail-pl1-x633.google.com with SMTP id w20so113701ply.12
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Sep 2022 20:21:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:from:to:cc:subject:date;
-        bh=jt3P+BLXBXjD4xVQjEuovh0jGtGymQW5MnUT4hQ4W48=;
-        b=SpxT3HUKLWw/DOixd485n2jRPAmO7yynLMjwJGXpfhc8uKYjkPfJvxJ4bHqdkOm+S5
-         TXWXEGFBPXmzD7TOaRw5wlf6wLUy5H2mjnJ8jOrSxxZKwAexkmEyFbkYYdTsFnvZ2uxP
-         ZHm/8N47G0KTORRMyc6EVrzMiHjSkU6qEr09m25qh+klBt0r2bqiKPqJHB3WXieKLitQ
-         BZcVvqBby3xvrL9NcgKQsTqNq9gCJXa96ahc/e5s4cYN82MTz+rwPvk+3Ege+7aJ+vDc
-         4mRNZmh87LTyUl0Lz1Vh25gdFL2mao038BmjSv69Sa37x6J8PdkuefQKpaCQXqzakDDl
-         ZGeA==
+         :to:from:from:to:cc:subject:date;
+        bh=aJFNn5/nas7uzIve82N1+Ng6qU4ptNlPvlG/1ppnY6U=;
+        b=CylrtXTKKvJTP52kivUgy+g/TfSo57XfB8GM2+JTDFNb9VgFUQXe0L9VBk96g5DQJ/
+         eU4gcAjyJzTNjmw+vuXGOsTuECpM++IAVoHolbQsryGXaIcjjXSbU/p84BKJlJS5ngFA
+         Fysvriiu/oIngFJXLFHxGHlN6+MErPALpAK03TBlzr+G9ErGuEsd99IlNQJ/GGDy/lVx
+         jospiGvXNNReJikRhfkKWUMHKlgyouDgwbbT9MNjlywUTb35ijYKRQ/VRDf2DnTTCj3o
+         Sl41R8Rf7mg/9DxVE/ACFhdofcioP6+PA3rcgug26j3TLMJWxEsEZuKaG7cN/ZrNjTcO
+         CBBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:x-gm-message-state:from:to:cc:subject:date;
-        bh=jt3P+BLXBXjD4xVQjEuovh0jGtGymQW5MnUT4hQ4W48=;
-        b=ViBqQkQIkYG2Jh/vz6vF/8c7mPgM51q2jtdNrVBmkulXCzXSBWNbncmUxkM+F8A/HN
-         8HPgjg/WS1xM0o3CukqCjvklR6AZzfAuu/vpOFlL2KaWwG0rQ9fFd0mH8rXnS7+C627J
-         f5v4TH04VQaSF+J4UPCA+1g6hW6vlkLtW75qUs3P6ccxmTVAvYB3zw0AUSxPeMQaz7fM
-         UJ7LiI0EE+O8wP6A4ShSYQwPqHcITZyj/XvJwsfwzjzeIkTRO2cH8Ki8rv4zfQ6D5y4/
-         uKX7rWm9n5DdOL9AFLv/dAQiR7FFJhvYZHJIzRHuC6hQ+NP1OHWK/jmPNVv6XxTXJum2
-         7z3w==
-X-Gm-Message-State: ACrzQf347C95jJJU9f7B19N1CS/XNvBHCdfQoiSsRhqeQ1cr97vnJEdA
-	LZpE8B/1H++kBa0zIrHYDD9ZVhx3HgY=
-X-Google-Smtp-Source: AMsMyM5M7wHQMLb7bHYaF+t7SC/lVTx2UUU4gzzx8dUlAMpheZ2s+1ushsvcqWPFfEZk/4xuTJzhyw==
-X-Received: by 2002:a62:1a8d:0:b0:544:1309:19f3 with SMTP id a135-20020a621a8d000000b00544130919f3mr993978pfa.37.1664418408815;
-        Wed, 28 Sep 2022 19:26:48 -0700 (PDT)
-Received: from localhost.localdomain ([45.124.203.18])
-        by smtp.gmail.com with ESMTPSA id w4-20020a634904000000b0042b291a89bfsm4220596pga.11.2022.09.28.19.26.46
+         :to:from:x-gm-message-state:from:to:cc:subject:date;
+        bh=aJFNn5/nas7uzIve82N1+Ng6qU4ptNlPvlG/1ppnY6U=;
+        b=z1MKVUMxrDa+uafPatb+14dgHpOlZezPNjKQoZ9KDhRK7m7q4mBP1/GOy9oMGOBmjB
+         4l1UYcOm7DVCI6NKighhUGEOdN0/+pkrFkUf3hekrmw9gpgn3El7xcXwHl0TPSUEQ/XD
+         t/C0+P78jzWyjZNvqZqodO3z0FtIbu8q7kOdmEomhHANwEWLw3orbeMNFMyYBd6PBhMP
+         NNCKakHmT1X986p2xmSNjbhaBe3TVWHkn9cIsECRMEPEbaMfKJZJ7aV9R2oY4yrds9cs
+         9hpkGnjZsDwU4C8QqClDg+xRIm2Fus6vrMy/1OjTo1y30u1J+QbQ8InaUSSPo0LI0ehQ
+         te4A==
+X-Gm-Message-State: ACrzQf0N1TdgzCiL7XfMdi6IQkrvh5S9jQPlL8SvXNca0NV4FAHx/Ekp
+	7QFPj5CbEbpCTATnZ29dzi8x0nyiEDc=
+X-Google-Smtp-Source: AMsMyM4oMKZIvtEGrsOf64OmRjkAg3HUMiBxdOdrVSpWKr+5nFKAyVfJbCgUBqpJkOmegjhWTr73xw==
+X-Received: by 2002:a17:902:e74f:b0:178:3af4:fb13 with SMTP id p15-20020a170902e74f00b001783af4fb13mr1240701plf.19.1664421689364;
+        Wed, 28 Sep 2022 20:21:29 -0700 (PDT)
+Received: from bobo.ozlabs.ibm.com (193-116-92-8.tpgi.com.au. [193.116.92.8])
+        by smtp.gmail.com with ESMTPSA id j68-20020a625547000000b0053788e9f865sm4805898pfb.21.2022.09.28.20.21.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Sep 2022 19:26:48 -0700 (PDT)
-From: Joel Stanley <joel@jms.id.au>
+        Wed, 28 Sep 2022 20:21:28 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/microwatt: Add litesd
-Date: Thu, 29 Sep 2022 11:55:46 +0930
-Message-Id: <20220929022546.2730192-1-joel@jms.id.au>
-X-Mailer: git-send-email 2.35.1
+Subject: [PATCH] powerpc: remove orphan systbl_chk.sh
+Date: Thu, 29 Sep 2022 13:21:20 +1000
+Message-Id: <20220929032120.3592593-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -74,44 +75,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jeremy Kerr <jk@codeconstruct.com.au>, Matt Johnston <matt@codeconstruct.com.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is the register layout of the litesd peripheral for the fusesoc
-based Microwatt SoC.
+arch/powerpc/kernel/systbl_chk.sh has not been referenced since commit
+ab66dcc76d6a ("powerpc: generate uapi header and system call table
+files"). Remove it.
 
-Signed-off-by: Joel Stanley <joel@jms.id.au>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/boot/dts/microwatt.dts | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ arch/powerpc/kernel/systbl_chk.sh | 30 ------------------------------
+ 1 file changed, 30 deletions(-)
+ delete mode 100644 arch/powerpc/kernel/systbl_chk.sh
 
-diff --git a/arch/powerpc/boot/dts/microwatt.dts b/arch/powerpc/boot/dts/microwatt.dts
-index b69db1d275cd..0a2e82ca1c79 100644
---- a/arch/powerpc/boot/dts/microwatt.dts
-+++ b/arch/powerpc/boot/dts/microwatt.dts
-@@ -141,6 +141,21 @@ ethernet@8020000 {
- 			litex,slot-size = <0x800>;
- 			interrupts = <0x11 0x1>;
- 		};
-+
-+		mmc@8040000 {
-+			compatible = "litex,mmc";
-+			reg = <0x8042800 0x800
-+				0x8041000 0x800
-+				0x8040800 0x800
-+				0x8042000 0x800
-+				0x8041800 0x800>;
-+			reg-names = "phy", "core", "reader", "writer", "irq";
-+			bus-width = <4>;
-+			interrupts = <0x13 1>;
-+			cap-sd-highspeed;
-+			non-removeable;
-+			status = "disabled";
-+		};
- 	};
- 
- 	chosen {
+diff --git a/arch/powerpc/kernel/systbl_chk.sh b/arch/powerpc/kernel/systbl_chk.sh
+deleted file mode 100644
+index c7ac3ed657c4..000000000000
+--- a/arch/powerpc/kernel/systbl_chk.sh
++++ /dev/null
+@@ -1,30 +0,0 @@
+-#!/bin/sh
+-# SPDX-License-Identifier: GPL-2.0-or-later
+-#
+-# Just process the CPP output from systbl_chk.c and complain
+-# if anything is out of order.
+-#
+-# Copyright © 2008 IBM Corporation
+-#
+-
+-awk	'BEGIN { num = -1; }	# Ignore the beginning of the file
+-	/^#/ { next; }
+-	/^[ \t]*$/ { next; }
+-	/^START_TABLE/ { num = 0; next; }
+-	/^END_TABLE/ {
+-		if (num != $2) {
+-			printf "Error: NR_syscalls (%s) is not one more than the last syscall (%s)\n",
+-				$2, num - 1;
+-			exit(1);
+-		}
+-		num = -1;	# Ignore the rest of the file
+-	}
+-	{
+-		if (num == -1) next;
+-		if (($1 != -1) && ($1 != num)) {
+-			printf "Error: Syscall %s out of order (expected %s)\n",
+-				$1, num;
+-			exit(1);
+-		};
+-		num++;
+-	}' "$1"
 -- 
-2.35.1
+2.37.2
 
