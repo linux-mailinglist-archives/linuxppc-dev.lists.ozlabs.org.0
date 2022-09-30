@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAE185F066A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Sep 2022 10:29:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36BF35F0663
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Sep 2022 10:28:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Mf3LJ6NLVz3dqx
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Sep 2022 18:29:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Mf3Kh2JWzz3cFT
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Sep 2022 18:28:56 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=gI/AcHws;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=RhXDMe+j;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -16,32 +16,32 @@ Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3]
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mf3K84wgzz2xy2
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Sep 2022 18:28:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mf3K91PzMz3btV
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Sep 2022 18:28:29 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=gI/AcHws;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=RhXDMe+j;
 	dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Mf3K83pLwz4xGk;
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Mf3K907b3z4xGl;
 	Fri, 30 Sep 2022 18:28:28 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1664526508;
-	bh=ZrM6T/KXJyPxKYfLeGjGcN1HR+t+1SIb13Ka+E8p0Dg=;
+	s=201909; t=1664526509;
+	bh=Hz5Oi+CaYA2Oe0BxqU5l5ZnvEL76zRP5lVRSJIUwwUE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gI/AcHwsE8vqfqFocQfm7Q7sTVMZnornIADdQ/m0MA157p6QswOUSK0GZqa+oQ4P6
-	 uC6PnUGIIVDw0H5DZmBHrTprHgHMcubkk7vFge7Ql16wpdJ+o6AoNmPDtCeJgrTnuZ
-	 FiRQUN/RF3jtudQvkeZNKvVLp026bp4GFPoCLfesQ7idOm+VPGwAzd/tN9lbVyzOzx
-	 3PKioWH3Xf53jgQIQCku3FicLbPBMeq1F0roUJ8PmYi+bH9JgHZ0xqhui+qjaCs2bS
-	 BxukxBhcZ64/i1EmWfKODLhQNXEkla0b0yQbYHn34PkP4RQtsSvM11F2E8eSQJW/3N
-	 fOGlMyIQpquHQ==
+	b=RhXDMe+jGXWhlEnnw1LSVAPHdyrWjOSeMvQgj75Z7stXABVNhQ5qxtyCdhEvPbe84
+	 WyuklTk+mEaxH+foYQM9FeRsXyU0NsgVKlOEk4/mjZR23FHE73HRYvgKS5HUVGe+yD
+	 Z4dcVV6ER3PreXO+B0w5+uDhAhDDzX2vPH7YJmi/Zj045QqGpTfeWiyY4eGQcNZMnT
+	 yq3XY12J6XLzY4sHmO8dQfvNdzDtUOrq9GTi3W8lYIip5dnkf6chGuJe8C4szo+B3A
+	 KEdxNJJ59HOzk4iX4AjcSpSYi8JWcGEl5K+O69XZy9fugBsiO4p00Mzt5lC4ofzO3S
+	 dRMaKH1iXiuJg==
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH v3 3/6] powerpc/64: Add logical PVR to the hardware description
-Date: Fri, 30 Sep 2022 18:27:06 +1000
-Message-Id: <20220930082709.55830-3-mpe@ellerman.id.au>
+Subject: [PATCH v3 4/6] powerpc: Add device-tree model to the hardware description
+Date: Fri, 30 Sep 2022 18:27:07 +1000
+Message-Id: <20220930082709.55830-4-mpe@ellerman.id.au>
 X-Mailer: git-send-email 2.37.3
 In-Reply-To: <20220930082709.55830-1-mpe@ellerman.id.au>
 References: <20220930082709.55830-1-mpe@ellerman.id.au>
@@ -62,34 +62,55 @@ Cc: nathanl@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-If we detect a logical PVR add that to the hardware description, which
+Add the model of the machine we're on to the hardware description, which
 is printed at boot and in case of an oops.
 
-eg: Hardware name: ... 0xf000004
+eg: Hardware name: IBM,8247-22L
 
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
- arch/powerpc/kernel/prom.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/powerpc/kernel/prom.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-v3: Drop "lpvr:" tag for brevity.
+v3: Drop "model:" tag for brevity.
 
 diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
-index 09f07cc57216..83fc72202838 100644
+index 83fc72202838..1eed87d954ba 100644
 --- a/arch/powerpc/kernel/prom.c
 +++ b/arch/powerpc/kernel/prom.c
-@@ -390,8 +390,10 @@ static int __init early_init_dt_scan_cpus(unsigned long node,
- 	 */
- 	if (!dt_cpu_ftrs_in_use()) {
- 		prop = of_get_flat_dt_prop(node, "cpu-version", NULL);
--		if (prop && (be32_to_cpup(prop) & 0xff000000) == 0x0f000000)
-+		if (prop && (be32_to_cpup(prop) & 0xff000000) == 0x0f000000) {
- 			identify_cpu(0, be32_to_cpup(prop));
-+			seq_buf_printf(&ppc_hw_desc, "0x%04x ", be32_to_cpup(prop));
-+		}
+@@ -715,6 +715,23 @@ static void __init tm_init(void)
+ static void tm_init(void) { }
+ #endif /* CONFIG_PPC_TRANSACTIONAL_MEM */
  
- 		check_cpu_feature_properties(node);
- 		check_cpu_features(node, "ibm,pa-features", ibm_pa_features,
++static int __init
++early_init_dt_scan_model(unsigned long node, const char *uname,
++			 int depth, void *data)
++{
++	const char *prop;
++
++	if (depth != 0)
++		return 0;
++
++	prop = of_get_flat_dt_prop(node, "model", NULL);
++	if (prop)
++		seq_buf_printf(&ppc_hw_desc, "%s ", prop);
++
++	/* break now */
++	return 1;
++}
++
+ #ifdef CONFIG_PPC64
+ static void __init save_fscr_to_task(void)
+ {
+@@ -743,6 +760,8 @@ void __init early_init_devtree(void *params)
+ 	if (!early_init_dt_verify(params))
+ 		panic("BUG: Failed verifying flat device tree, bad version?");
+ 
++	of_scan_flat_dt(early_init_dt_scan_model, NULL);
++
+ #ifdef CONFIG_PPC_RTAS
+ 	/* Some machines might need RTAS info for debugging, grab it now. */
+ 	of_scan_flat_dt(early_init_dt_scan_rtas, NULL);
 -- 
 2.37.3
 
