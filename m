@@ -1,60 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EB215F0BEA
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Sep 2022 14:46:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 705085F0BF0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Sep 2022 14:48:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Mf93N3Rjjz3c6N
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Sep 2022 22:46:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Mf94j572sz3cdx
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Sep 2022 22:48:05 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EJq9J8Ys;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=jIpQd3O4;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mf9480cF7z2xyB
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Sep 2022 22:47:36 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EJq9J8Ys;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=jIpQd3O4;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mf92n4yfNz2xy6
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Sep 2022 22:46:25 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 683DFB828D8;
-	Fri, 30 Sep 2022 12:46:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E374FC433D6;
-	Fri, 30 Sep 2022 12:46:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1664541981;
-	bh=u18ImHLoVFp/8I3S3KZ9GhkbNEL7l/wO9nIPOfoNZJo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EJq9J8YsrXbGc+LnJGkrl7zIieCx+O7SOG9/BzfrTh6NyBBNR8aGysTzv/XMI6w6H
-	 SRoPyy679ukwFw2JVHPfAhXlzxjG3/PwxlhvTwhldNH3Odab554HJ9hF1+eDaZ7W53
-	 l2iL1D73OH1xJQnX5bmvysROPT9QHzAFmStpRh+IrFlIvlThtkWtr+sNW6TDHm7t4n
-	 JU76KoSTD+sSuVi7rvcMaP9zUbgOdJYC3XGomNsdxiCV0RZg1dS4MEsNC2r2kAcubJ
-	 mkoPwxRkBKbDYbrsPgq6Tv9YC18OZmncIphnGWo+Y1i16d5VHNKFgpy/USI9vB2Uv2
-	 TqADSsWp8gP0w==
-Received: by pali.im (Postfix)
-	id 45D5693F; Fri, 30 Sep 2022 14:46:18 +0200 (CEST)
-Date: Fri, 30 Sep 2022 14:46:18 +0200
-From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To: Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] powerpc: dts: turris1x.dts: Add channel labels for
- temperature sensor
-Message-ID: <20220930124618.kyaansrl7ls5kn3i@pali>
-References: <20220930123901.10251-1-pali@kernel.org>
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Mf9405MRlz4xG6;
+	Fri, 30 Sep 2022 22:47:28 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1664542050;
+	bh=bHL0vqUrjIu+1JdWXaJUil0M78bFUEWVnPClNNQGSeU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=jIpQd3O4kOlOPP8oeQ0QhASrK8jbG+oBeM8+1tbxdftK5Us2Z6A/GEIVbwSyV4EVT
+	 AEI4FhiU2JgL+aYKCurG3qFEwCdHQ/S4Z0NLR5RgSavk2rn/SM76Clg0vg8SWb9msF
+	 4XeyDRKpQr0DzYEZdN9E3jvpFkYXshm9v9tsdJxdAlmB66HuepZgxqBUSUPqC4Pm//
+	 3Dl1kUJTIJc8kDKxNeT9po65vs0/Uey+LPNeZi92mSnydPTpX/790RzcNVf63gYP7L
+	 caWvnupEthnbrV1Ts/8dXE/ymoQo13SB+Ew7ugqE5vlDefmbi83if1s+j8O2VEe45U
+	 /Lg6uQlklzJhg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: Re: [PATCH] powerpc: update config files
+In-Reply-To: <CAKXUXMxe5EagwsQVyt_WLf2mMXZbUqzaEaiUjBj9ZwRRZywx0g@mail.gmail.com>
+References: <20220929101502.32527-1-lukas.bulwahn@gmail.com>
+ <87pmfdpatr.fsf@mpe.ellerman.id.au>
+ <CAKXUXMxe5EagwsQVyt_WLf2mMXZbUqzaEaiUjBj9ZwRRZywx0g@mail.gmail.com>
+Date: Fri, 30 Sep 2022 22:47:28 +1000
+Message-ID: <87k05lowpr.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220930123901.10251-1-pali@kernel.org>
-User-Agent: NeoMutt/20180716
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,74 +59,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hwmon@vger.kernel.org, Marek =?utf-8?B?QmVow7pu?= <kabel@kernel.org>, Josef Schlehofer <josef.schlehofer@nic.cz>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-+ CC hwmon ML
+Lukas Bulwahn <lukas.bulwahn@gmail.com> writes:
+> On Fri, Sep 30, 2022 at 9:42 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
+>>
+>> Lukas Bulwahn <lukas.bulwahn@gmail.com> writes:
+>> > Clean up config files by:
+>> >   - removing configs that were deleted in the past
+>> >   - removing configs not in tree and without recently pending patches
+>> >   - adding new configs that are replacements for old configs in the file
+>> >
+>> > For some detailed information, see Link.
+>> >
+>> > Link: https://lore.kernel.org/kernel-janitors/20220929090645.1389-1-lukas.bulwahn@gmail.com/
+>>
+>> Ideally I'd like a list in the change log of each symbol and why they're
+>> being removed/changed. It's pretty easy to accidentally drop something
+>> otherwise.
+>>
+>> I think this is the list in this case:
+>>
+>> Renamed:
+>>   - CONFIG_PPC_PTDUMP -> CONFIG_GENERIC_PTDUMP
+>>     e084728393a5 ("powerpc/ptdump: Convert powerpc to GENERIC_PTDUMP")
+...
+>>
+>> I'll fold that into the change log.
+>
+> Sure. Go ahead. I have provided all information I collected in the
+> linked email (and this information drove my scripts to take actions)
+> and I am happy to provide it in any form a maintainer may think is
+> good for them. But I assume you did this with a simple script
+> yourself.
 
-On Friday 30 September 2022 14:39:01 Pali Rohár wrote:
-> Channel 0 of SA56004ED chip refers to internal SA56004ED chip sensor (chip
-> itself is located on the board) and channel 1 of SA56004ED chip refers to
-> external sensor which is connected to temperature diode of the P2020 CPU.
-> 
-> Fixes: 54c15ec3b738 ("powerpc: dts: Add DTS file for CZ.NIC Turris 1.x routers")
-> Signed-off-by: Pali Rohár <pali@kernel.org>
-> ---
-> With this change userspace 'sensors' applications prints labels:
-> 
->     $ sensors
->     sa56004-i2c-0-4c
->     Adapter: MPC adapter (i2c@3000)
->     board:        +34.2°C  (low  =  +0.0°C, high = +70.0°C)
->                            (crit = +85.0°C, hyst = +75.0°C)
->     cpu:          +58.9°C  (low  =  +0.0°C, high = +70.0°C)
->                            (crit = +85.0°C, hyst = +75.0°C)
-> 
-> And without this change it prints just generic tempX names:
-> 
->     $ sensors
->     sa56004-i2c-0-4c
->     Adapter: MPC adapter (i2c@3000)
->     temp1:        +43.0°C  (low  =  +0.0°C, high = +70.0°C)
->                            (crit = +85.0°C, hyst = +75.0°C)
->     temp2:        +63.4°C  (low  =  +0.0°C, high = +70.0°C)
->                            (crit = +85.0°C, hyst = +75.0°C)
-> ---
->  arch/powerpc/boot/dts/turris1x.dts | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
-> 
-> diff --git a/arch/powerpc/boot/dts/turris1x.dts b/arch/powerpc/boot/dts/turris1x.dts
-> index 4033c554b06a..5b5278c32e43 100644
-> --- a/arch/powerpc/boot/dts/turris1x.dts
-> +++ b/arch/powerpc/boot/dts/turris1x.dts
-> @@ -69,6 +69,20 @@
->  				interrupt-parent = <&gpio>;
->  				interrupts = <12 IRQ_TYPE_LEVEL_LOW>, /* GPIO12 - ALERT pin */
->  					     <13 IRQ_TYPE_LEVEL_LOW>; /* GPIO13 - CRIT pin */
-> +				#address-cells = <1>;
-> +				#size-cells = <0>;
-> +
-> +				/* Local temperature sensor (SA56004ED internal) */
-> +				channel@0 {
-> +					reg = <0>;
-> +					label = "board";
-> +				};
-> +
-> +				/* Remote temperature sensor (D+/D- connected to P2020 CPU Temperature Diode) */
-> +				channel@1 {
-> +					reg = <1>;
-> +					label = "cpu";
-> +				};
+I did it manually actually - just a bunch of "git log -G <symbol>".
+A script would have been better :)
 
-I'm not sure if you want UPPERCASE, lowercase, PascalCase, kebab-case
-or snake_case format of labels. Or if you want also "temp" or
-"temperature" keyword in the label. So please adjust label to the
-preferred one, if proposed format is not the correct.
+> After going through the changes of Kconfig from the last decade, it
+> seems feasible that the information on Kconfig changes is actually
+> maintained somewhere and that would allow updating of arbitrary kernel
+> configs to newer kernel versions. It is not completely out of reach at
+> least.
+>
+> And to really improve the situation, I would like to reduce all these
+> defconfigs in the repository to minimal kernel fragments that really
+> focus on what these config for specific machines intend to tell. E.g.,
+> these configs below (powerpc-configs) are about ensuring specific
+> hardware support, not about setting "CONFIG_CRYPTO_XYZ" one way or the
+> other. That is actually just "noise".
 
->  			};
->  
->  			/* DDR3 SPD/EEPROM */
-> -- 
-> 2.20.1
-> 
+Yes I agree. In most cases for a lot of options we just want whatever
+the default is for that subsystem.
+
+> I do not know how to do this right yet, but with a bit of
+> experimentation and investigation, I might come with a first idea and
+> then we will see.
+
+IMHO the best solution we have at the moment is generating the configs
+with merge_config.sh.
+
+See for example the way our ppc_defconfig is generated:
+
+PHONY += ppc_defconfig
+ppc_defconfig:
+	$(call merge_into_defconfig,book3s_32.config,)
+
+$ cat arch/powerpc/configs/book3s_32.config
+CONFIG_PPC64=n
+CONFIG_PPC_BOOK3S_32=y
+
+Everything else just gets the default.
+
+We have some more fully featured examples too, see
+arch/powerpc/Makefile.
+
+There's a few drawbacks of that technique though.
+
+One is that those generated configs aren't shown in 'make help'.
+
+And the other is that there's no way to run something like savedefconfig
+on those .config files to minimise them.
+
+You have to expand them out into a full .config, run savedefconfig on
+that, and then manually grep through the .config to find any symbols
+that are no longer needed. You also need to be careful that any symbol
+that's no longer needed is no longer needed for all the generated
+configs that use that .config file.
+
+cheers
