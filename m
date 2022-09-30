@@ -1,154 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C1EF5F0265
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Sep 2022 03:50:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E90D5F0282
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Sep 2022 04:02:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MdtTk2ZPzz3cGd
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Sep 2022 11:50:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MdtlH2f4Yz3cdj
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Sep 2022 12:02:03 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Dsui5Tkl;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=jD6yuYCP;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mga17.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Dsui5Tkl;
-	dkim-atps=neutral
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MdtSx2F0gz2xyB
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Sep 2022 11:49:35 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1664502577; x=1696038577;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=D0z8hsS40PlLHZh0wFjL38mUyX7aB8MdWDY1E/dj1v0=;
-  b=Dsui5TklhfR6akNgPJrt+RNybGmoMnGJl8wH75E/so5bywSodrWLgijU
-   Zf5h9e/YBSgRsyHUrTxGcNEcrxmemTJmq1eaqfxhsIWZaMKYBA0I/ssWA
-   tmMaa20LiKagMckRDQaNVUXTHNkQgSpXJDKeV4fDgzu3avPKKD5qWjabL
-   QDb/toW8anQLN/OESdxZu1KGq2YjWrKb7vridxb/MJBFeFmii6wreF1n0
-   MBPXzHFpNmqkDHcuzVfkWi4myzOJrEqg4CMBCgUGVEH3dnJAd97yMLMVb
-   BjbaynmQjBySRJgUwsCWvgqwSXUpfo5aFRo/Pt384FpBwRg1rqNMC0LM1
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10485"; a="282440315"
-X-IronPort-AV: E=Sophos;i="5.93,357,1654585200"; 
-   d="scan'208";a="282440315"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2022 18:49:33 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10485"; a="600236764"
-X-IronPort-AV: E=Sophos;i="5.93,357,1654585200"; 
-   d="scan'208";a="600236764"
-Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
-  by orsmga006.jf.intel.com with ESMTP; 29 Sep 2022 18:49:32 -0700
-Received: from orsmsx608.amr.corp.intel.com (10.22.229.21) by
- ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Thu, 29 Sep 2022 18:49:32 -0700
-Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
- ORSMSX608.amr.corp.intel.com (10.22.229.21) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Thu, 29 Sep 2022 18:49:31 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31 via Frontend Transport; Thu, 29 Sep 2022 18:49:31 -0700
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.100)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2375.31; Thu, 29 Sep 2022 18:49:31 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=KGqp6RZWjxnbVv0QgIaF0id+OPy02XH3+7NSI4rbaA+XpRTRBBpYBHS+K5pQE4Xcq/QwSl4SCvp/RqjlmwZha4qx6QopC0hxNEttMqzDmHevhVTw4Aues8CdUUaiaHBUO1YP/unK9/i8Cr/iVxstJf/wD7e+9ojQ2BBLqg7K0Do9bA4ae0LfXng4CPcYH6A1T1Z1ZTFaSBDDsc+343JvVWrfekVdfpMhWHDXfMEQZkj6N4ZVz8BAIGtaplKUU9hiph+ZFP6g2lGN2lM4h0qXA/nsp8PlaWVlTEC0rKheWZJnoRx0pcjnyot3x4PLr8wrfq56txcUbDw/iIx6EVSMww==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=45y12BK85FuuqjolWf81debnE7b6tfOr2CSN3criTEQ=;
- b=T0dhoYhqdeW5VC3lyau3IVfPGK0zio6xokT2bs3IeOV7415JbS/IXoMazXQyxK/rAv2W+zQu4sGiewNpFcCjgAPqNdLPebF/cerGPg08uoJ38WfSsqIdaSSA+Tj4gFDerK8ehyfwi9/CxPgPy6uJYXS22exVwtWPnzDzoJot54B4Msa6mXCuDacNio38GQdnt0AphWCw72jyvDlTciMupKmPloLyTdl1o0VmQCAVjcPyI8NKN6EOkXmuMTJ/Lo0SrKvT1XC1XZtdX6vWEDQ6QpsuqwQZ0j7PXWnzLsGGwT9550bmNcyPEWQx+0bqUehEl3GADoZrBeNTrpE0gbYz/w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from MWHPR1101MB2126.namprd11.prod.outlook.com
- (2603:10b6:301:50::20) by PH0PR11MB5877.namprd11.prod.outlook.com
- (2603:10b6:510:141::12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5676.17; Fri, 30 Sep
- 2022 01:49:24 +0000
-Received: from MWHPR1101MB2126.namprd11.prod.outlook.com
- ([fe80::7d5a:684d:99f7:4e83]) by MWHPR1101MB2126.namprd11.prod.outlook.com
- ([fe80::7d5a:684d:99f7:4e83%12]) with mapi id 15.20.5676.017; Fri, 30 Sep
- 2022 01:49:24 +0000
-Date: Thu, 29 Sep 2022 18:49:20 -0700
-From: Dan Williams <dan.j.williams@intel.com>
-To: Alistair Popple <apopple@nvidia.com>, Dan Williams
-	<dan.j.williams@intel.com>
-Subject: Re: [PATCH 2/7] mm: Free device private pages have zero refcount
-Message-ID: <63364b20ee66d_7390294a1@dwillia2-mobl3.amr.corp.intel.com.notmuch>
-References: <cover.f15b25597fc3afd45b144df863eeca3b2c13f9f4.1664171943.git-series.apopple@nvidia.com>
- <3d74bb439723c7e46cbe47d1711795308aee4ae3.1664171943.git-series.apopple@nvidia.com>
- <YzG42766BJSxro0R@nvidia.com>
- <877d1plfrm.fsf@nvdebian.thelocal>
- <6335fd87adc7f_f6c9d29474@dwillia2-xfh.jf.intel.com.notmuch>
- <87k05llly0.fsf@nvdebian.thelocal>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <87k05llly0.fsf@nvdebian.thelocal>
-X-ClientProxiedBy: SJ0P220CA0006.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:a03:41b::29) To MWHPR1101MB2126.namprd11.prod.outlook.com
- (2603:10b6:301:50::20)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mdtkk65HGz2xr1
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Sep 2022 12:01:34 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=jD6yuYCP;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Mdtkf2S4Rz4xDn;
+	Fri, 30 Sep 2022 12:01:30 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1664503290;
+	bh=y/ZzcHj3m7ppYjfgllLZmaZ3OodsE5D5kgJOuPr05u8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=jD6yuYCPy43qCovdOn/1NAr/vJUojhVdgtpXxwOlcQTGTqaefnyYwVv55pymF2rwj
+	 tP6uTKhP4cN0z51jMKz2oy9jN3H0jNRlRsrishg/RNRal4TRFR2TzFWBahbsW7hxYw
+	 gnslXG43mpCz6Vbes57wJ3HpgLh91EyaYu7+HU9J75uIIKvh71g9QrPVBNFt3O00fy
+	 YIKw6N4Fltsj7eCo6pSRlw7FL0L66Yg5gQrEqRldinzsnF15S+cqXo8AHtHLq1uYvY
+	 ejpfMdAAjbz+2hNM+jU7YDvP5dH8TLcW+JWf2/IRY8F3EuJsi+iyNFgKGfFUOmjGmT
+	 OH0VtaCxrliEQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Matthew Wilcox <willy@infradead.org>, Zorro Lang <zlang@kernel.org>
+Subject: Re: [Bug report] BUG: Kernel NULL pointer dereference at
+ 0x00000069, filemap_release_folio+0x88/0xb0
+In-Reply-To: <YzYN4JqbKdxLd6oA@casper.infradead.org>
+References: <20220927011720.7jmugevxc7ax26qw@zlang-mailbox>
+ <YzYN4JqbKdxLd6oA@casper.infradead.org>
+Date: Fri, 30 Sep 2022 12:01:26 +1000
+Message-ID: <87wn9lei2x.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MWHPR1101MB2126:EE_|PH0PR11MB5877:EE_
-X-MS-Office365-Filtering-Correlation-Id: 200e443b-4afa-4160-d52f-08daa2860071
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: zfOezU+l/ZfaFYLKZXeHJQ3UB4mTnLwQhncz9vFvqcG5jYvl6BtOaqyMqYOB0tHGadjPgS3mVaYxzak676CMkDJwJwyJdTws1Ue+IqPulz9mrAbyqZoRTqxsRYF//URFaOTpvNN5m8aT/uJAA+t8UijqRO5icmF9wsfXiZwP9uMy9HZempzQ+OosPfUqHRrHtg4SNUJ3p9UkniqQ6rhP1U7nKE1fEKE2ZKyxkl1qERmE+h3nC6empLUYjSD/H+1XmGVSaJcwJkXTjvOVzJkEBkglu5tYWNuueOSsR5Mi4BrqUiEQfWOn3wTpt7j8auaxPDQ9HwXJ9I1vxrHrdcGaHKWlqM+WuqmPfVFJX+X+PB5QbjYNy+BE0eSxE8/VfZG5Hb2WVwoYP2/P7veQLn73PtnURVqC9ZYFsXXsqgoX1yqbLC9xm4v5ZjgOvQD512udwf50slhmPZY7JzUcUtL+DJ9ecINB+/ivD9pf3Z3i2PPpKuRLDs1sHKGtS5kkRLANfSJyttP5yfv7cgeCiEoR3XOIGSw4JfQckeVcb91xednme6NpyfKxKM7lMTLuDFJKAQv7mMgoNsqrDIiezPZuLnvbIZDxGfzATSubiJmOcWvcvDVoaRtVrQkuEV9ApWj2iwtCPBy9mkYCKm56sm4oIogkdL8P4VEhpBBPdPsU8eJbYZuF42qyth/0mhRB7E5sfrzv3xhD+PqaOg38OGpBU3zbQYWcQoF9QUkvcROLtCF/J17AaaT+aUUo+Mjf2klB
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MWHPR1101MB2126.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(136003)(376002)(346002)(39860400002)(396003)(366004)(451199015)(2906002)(478600001)(66946007)(41300700001)(4326008)(66556008)(8676002)(66476007)(316002)(6666004)(86362001)(186003)(5660300002)(83380400001)(7416002)(9686003)(6512007)(6506007)(26005)(8936002)(38100700002)(82960400001)(110136005)(54906003)(6486002)(966005);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?0M0H5Ibl78YFwgxHjkTJVmCguTih14uLQrWTIWhrT+iGddLvNYacOj2JkTWI?=
- =?us-ascii?Q?XQ//g2fx+sqA5vG7kESi54ep66pTkSkiL5yX2lqME1x8UxbARTm4h3g8Ml/z?=
- =?us-ascii?Q?m9xjRsuZtGMaQ12A9mjG6l3oeMSQi54hzyMYfj+Isno8Wce0aM93crgbBoN6?=
- =?us-ascii?Q?Ct7YAjM79YE+E9yzxW3C+XRj2wPGxIaOCXXsbBjCcrUNurb3A65VpKfUZl/V?=
- =?us-ascii?Q?Vex4PmlCo41oG+oiza48m78Ut7jJaK2QUabFFSKw77qOgznq9Fs3a6pKoIIh?=
- =?us-ascii?Q?apvx7LZDIp3PPDzXacG+/XTd3/iU5WqnsPl0duHkE+JgeR69bk2cC5IpgG98?=
- =?us-ascii?Q?rS2BkDEhlKPOer6zO6ULUCBTDSrsySxGp7j/ITFnH+nUhWIJ6fuW45lgO/O/?=
- =?us-ascii?Q?bxYYNnAV9bLi2dKVueMOBsit+DJ3eeKsZcceMkQt/JKW/vLUNc4JprlQQs5B?=
- =?us-ascii?Q?PyTpbP38MsEA5s7+EBxExRpq45ZoX4AgXDU7ORgpYj25Vd2e4lGcDnYVWtPZ?=
- =?us-ascii?Q?G/aWCqspsOs7Di79c0zB5BR47rqLQ6vFr0Wryk3AIgk/aFhnv4bDU3KdvGDZ?=
- =?us-ascii?Q?ZMHknHJ0wRPlTIzaj05QNyrF5xlu/1768EbS4bUOAiJtcOcCO99ba40NjOTo?=
- =?us-ascii?Q?/HwVTNgSuzvVBl0Au3v65CuhTGZFU47rQePtIJt/STUxgsiyS843hft0IS3P?=
- =?us-ascii?Q?nRupraFXMMwr/zlEoYJYE6IjG9M+tC2SRqoJ9tq3luic/MMtSncDvrbwrx5H?=
- =?us-ascii?Q?b8Z8oL5FyGcQP+zdqAMJnf3Wbd71zZdiIBOaJP5Y3zXEtnwnzSZHqJCijePU?=
- =?us-ascii?Q?/K1DdFkEbD43zAzs+Evw6oPosmLFG/CQJ6nGNg6ppRpA3uglbo6+uUy61e9e?=
- =?us-ascii?Q?bhqIVL8/0L6pwIwBHSDtqzEuvHWAofgZdKgFYmBSOOjepH/spS1eoo1vFOqf?=
- =?us-ascii?Q?6EZhziPRDpTDTOmTUJH0K339qksyxsui/I8kp2EKLqVmhB+VYOocWHfJjYoT?=
- =?us-ascii?Q?PbDWVrpKYUQs6eYTRgHSw9W/7zyVT2Xfr1TKutt4B8PKd43Z0wS5jUHA/oHi?=
- =?us-ascii?Q?CykzPRauGiS5Z7T6K1969dKMGJmTl2BjoVGH60Z+LymrnQDTQdEQbc/9mzu/?=
- =?us-ascii?Q?O6MV3Q0KtTpJrt+FUmpuuGOyIpiL8KEHAiZpIsu0w8szCXEPdKS93CRaAQzF?=
- =?us-ascii?Q?S2L2w4+OYf4Isx8YGN/tXfeKO2l8PcCodAcUmo0SQodnWtR4BfuXXkcGSr5m?=
- =?us-ascii?Q?mjjdGfoHb9Pcsaki85xJCV9d+Oh4jHONC/WUv5gsIFnT1fkH6+cZaEal7/QC?=
- =?us-ascii?Q?Pbauxky39BxPsNIex8he8wVLxxABTdpYGd6nRmV6ouqBV8OyQmAGc2TUTKeO?=
- =?us-ascii?Q?EL5daB9PGXd8IwCJ6qGDOPbSkndTiBkhmg4uoFPMrJNrTrP8FlnVxubo18//?=
- =?us-ascii?Q?sm1Ayh5XRcRjaeGbQKAh3JMz1qL168WvDDHqg889eZYBwAV43nM/6tNzx6Do?=
- =?us-ascii?Q?DwhAgcVgCAVK7TrJqciEwLTtL+M0+PyubzCdJrUbB4xNGSKLg7/qhv6rQdHY?=
- =?us-ascii?Q?mZ8J/aEu09t53Eutuig9uaz/gkaqTI9yz4sTTzExE61exHPzEaA5R5RzvEVU?=
- =?us-ascii?Q?2g=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 200e443b-4afa-4160-d52f-08daa2860071
-X-MS-Exchange-CrossTenant-AuthSource: MWHPR1101MB2126.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2022 01:49:24.5155
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Il8CfWe8Zs6X5xU0+zppk5yiuvhekafKsJzcDqSiC6QKpf3+uZGSygvAdf59wkFE28rVRzycSfIL473+ul+XPXz7RNcaVaTfCA904MPEUjc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB5877
-X-OriginatorOrg: intel.com
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -160,76 +59,183 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alex Sierra <alex.sierra@amd.com>, Karol Herbst <kherbst@redhat.com>, David Airlie <airlied@linux.ie>, nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-mm@kvack.org, amd-gfx@lists.freedesktop.org, "Matthew Wilcox
- \(Oracle\)" <willy@infradead.org>, Ben Skeggs <bskeggs@redhat.com>, Jason Gunthorpe <jgg@nvidia.com>, Ralph Campbell <rcampbell@nvidia.com>, Lyude Paul <lyude@redhat.com>, John
- Hubbard <jhubbard@nvidia.com>, Nicholas
- Piggin <npiggin@gmail.com>, Felix Kuehling <Felix.Kuehling@amd.com>, "Pan, Xinhui" <Xinhui.Pan@amd.com>, linux-kernel@vger.kernel.org, Daniel Vetter <daniel@ffwll.ch>, Alex
- Deucher <alexander.deucher@amd.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>
+Cc: linux-mm@kvack.org, linux-ext4@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Alistair Popple wrote:
-> 
-> Dan Williams <dan.j.williams@intel.com> writes:
-> 
-> > Alistair Popple wrote:
-> >>
-> >> Jason Gunthorpe <jgg@nvidia.com> writes:
-> >>
-> >> > On Mon, Sep 26, 2022 at 04:03:06PM +1000, Alistair Popple wrote:
-> >> >> Since 27674ef6c73f ("mm: remove the extra ZONE_DEVICE struct page
-> >> >> refcount") device private pages have no longer had an extra reference
-> >> >> count when the page is in use. However before handing them back to the
-> >> >> owning device driver we add an extra reference count such that free
-> >> >> pages have a reference count of one.
-> >> >>
-> >> >> This makes it difficult to tell if a page is free or not because both
-> >> >> free and in use pages will have a non-zero refcount. Instead we should
-> >> >> return pages to the drivers page allocator with a zero reference count.
-> >> >> Kernel code can then safely use kernel functions such as
-> >> >> get_page_unless_zero().
-> >> >>
-> >> >> Signed-off-by: Alistair Popple <apopple@nvidia.com>
-> >> >> ---
-> >> >>  arch/powerpc/kvm/book3s_hv_uvmem.c       | 1 +
-> >> >>  drivers/gpu/drm/amd/amdkfd/kfd_migrate.c | 1 +
-> >> >>  drivers/gpu/drm/nouveau/nouveau_dmem.c   | 1 +
-> >> >>  lib/test_hmm.c                           | 1 +
-> >> >>  mm/memremap.c                            | 5 -----
-> >> >>  mm/page_alloc.c                          | 6 ++++++
-> >> >>  6 files changed, 10 insertions(+), 5 deletions(-)
-> >> >
-> >> > I think this is a great idea, but I'm surprised no dax stuff is
-> >> > touched here?
-> >>
-> >> free_zone_device_page() shouldn't be called for pgmap->type ==
-> >> MEMORY_DEVICE_FS_DAX so I don't think we should have to worry about DAX
-> >> there. Except that the folio code looks like it might have introduced a
-> >> bug. AFAICT put_page() always calls
-> >> put_devmap_managed_page(&folio->page) but folio_put() does not (although
-> >> folios_put() does!). So it seems folio_put() won't end up calling
-> >> __put_devmap_managed_page_refs() as I think it should.
-> >>
-> >> I think you're right about the change to __init_zone_device_page() - I
-> >> should limit it to DEVICE_PRIVATE/COHERENT pages only. But I need to
-> >> look at Dan's patch series more closely as I suspect it might be better
-> >> to rebase this patch on top of that.
-> >
-> > Apologies for the delay I was travelling the past few days. Yes, I think
-> > this patch slots in nicely to avoid the introduction of an init_mode
-> > [1]:
-> >
-> > https://lore.kernel.org/nvdimm/166329940343.2786261.6047770378829215962.stgit@dwillia2-xfh.jf.intel.com/
-> >
-> > Mind if I steal it into my series?
-> 
-> No problem, although I notice Andrew has already merged it into
-> mm-unstable. If you end up rebasing your series on top of mine I think
-> all that's needed is a patch somewhere in your series to drop the
-> various `if (pgmap->type == MEMORY_DEVICE_*)` I added to (hopefully)
-> avoid breaking DAX. Assuming DAX takes a pagemap reference on struct
-> page allocation something like below.
+Matthew Wilcox <willy@infradead.org> writes:
+> On Tue, Sep 27, 2022 at 09:17:20AM +0800, Zorro Lang wrote:
+>> Hi mm and ppc list,
+>> 
+>> Recently I started to hit a kernel panic [2] rarely on *ppc64le* with *1k
+>> blocksize* ext4. It's not easy to reproduce, but still has chance to trigger
+>> by loop running generic/048 on ppc64le (not sure all kind of ppc64le can
+>> reproduce it).
+>> 
+>> Although I've reported a bug to ext4 [1] (more details refer to [1]), but I only
+>> hit it on ppc64le until now, and I'm not sure if it's an ext4 related bug, more
+>> likes folio related issue, so I cc mm and ppc mail list, hope to get more
+>> reviewing.
+>
+> Argh.  This is the wrong way to do it.  Please stop using bugzilla.
+> Now there's discussion in two places and there's nowhere to see all
+> of it.
+>
+>> [ 4681.230907] BUG: Kernel NULL pointer dereference at 0x00000069 
+>> [ 4681.230922] Faulting instruction address: 0xc00000000068ee0c 
+>> [ 4681.230929] Oops: Kernel access of bad area, sig: 11 [#1] 
+>> [ 4681.230934] LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries 
+>> [ 4681.230991] CPU: 0 PID: 82 Comm: kswapd0 Kdump: loaded Not tainted 6.0.0-rc6+ #1 
+>> [ 4681.230999] NIP:  c00000000068ee0c LR: c00000000068f2b8 CTR: 0000000000000000 
+>> [ 4681.238525] REGS: c000000006c0b560 TRAP: 0380   Not tainted  (6.0.0-rc6+) 
+>> [ 4681.238532] MSR:  800000000280b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 24028242  XER: 00000000 
+>> [ 4681.238556] CFAR: c00000000068edf4 IRQMASK: 0  
+>> [ 4681.238556] GPR00: c00000000068f2b8 c000000006c0b800 c000000002cf1700 c00c00000042f1c0  
+>> [ 4681.238556] GPR04: c000000006c0b860 0000000000000000 0000000000000002 0000000000000000  
+>> [ 4681.238556] GPR08: c000000002d404b0 0000000000000000 c00c00000042f1c0 0000000000000000  
+>> [ 4681.238556] GPR12: c0000000001cf080 c000000005100000 c000000000194298 c0000001fff9c480  
+>> [ 4681.238556] GPR16: c000000048cdb850 0000000000000007 0000000000000000 0000000000000000  
+>> [ 4681.238556] GPR20: 0000000000000001 c000000006c0b8f8 c00000000146b9d8 5deadbeef0000100  
+>> [ 4681.238556] GPR24: 5deadbeef0000122 c000000048cdb800 c000000006c0bc00 c000000006c0b8e8  
+>> [ 4681.238556] GPR28: c000000006c0b860 c00c00000042f1c0 0000000000000009 0000000000000009  
+>> [ 4681.238634] NIP [c00000000068ee0c] drop_buffers.constprop.0+0x4c/0x1c0 
+>> [ 4681.238643] LR [c00000000068f2b8] try_to_free_buffers+0x128/0x150 
+>> [ 4681.238650] Call Trace: 
+>> [ 4681.238654] [c000000006c0b800] [c000000006c0b880] 0xc000000006c0b880 (unreliable) 
+>> [ 4681.238663] [c000000006c0b840] [c000000006c0bc00] 0xc000000006c0bc00 
+>> [ 4681.238670] [c000000006c0b890] [c000000000498708] filemap_release_folio+0x88/0xb0 
+>> [ 4681.238679] [c000000006c0b8b0] [c0000000004c51c0] shrink_active_list+0x490/0x750 
+>> [ 4681.238688] [c000000006c0b9b0] [c0000000004c9f88] shrink_lruvec+0x3f8/0x430 
+>> [ 4681.238697] [c000000006c0baa0] [c0000000004ca1f4] shrink_node_memcgs+0x234/0x290 
+>> [ 4681.238704] [c000000006c0bb10] [c0000000004ca3c4] shrink_node+0x174/0x6b0 
+>> [ 4681.238711] [c000000006c0bbc0] [c0000000004cacf0] balance_pgdat+0x3f0/0x970 
+>> [ 4681.238718] [c000000006c0bd20] [c0000000004cb440] kswapd+0x1d0/0x450 
+>> [ 4681.238726] [c000000006c0bdc0] [c0000000001943d8] kthread+0x148/0x150 
+>> [ 4681.238735] [c000000006c0be10] [c00000000000cbe4] ret_from_kernel_thread+0x5c/0x64 
+>> [ 4681.238745] Instruction dump: 
+>> [ 4681.238749] fbc1fff0 f821ffc1 7c7d1b78 7c9c2378 ebc30028 7fdff378 48000018 60000000  
+>> [ 4681.238765] 60000000 ebff0008 7c3ef840 41820048 <815f0060> e93f0000 5529077c 7d295378  
+>
+> Running that through scripts/decodecode (with some minor hacks .. how
+> do PPC people do this properly?)
 
-Yeah, I'll go that route and rebase on top of -mm.
+We've just always used our own scripts. Mine is here: https://github.com/mpe/misc-scripts/blob/master/ppc/ppc-disasm
 
-Thanks again.
+I've added an issue to our tracker for us to get scripts/decodecode
+working on our oopses (eventually).
+
+> I get:
+>
+>    0:	fb c1 ff f0 	std     r30,-16(r1)
+>    4:	f8 21 ff c1 	stdu    r1,-64(r1)
+>    8:	7c 7d 1b 78 	mr      r29,r3
+>    c:	7c 9c 23 78 	mr      r28,r4
+>   10:	eb c3 00 28 	ld      r30,40(r3)
+>   14:	7f df f3 78 	mr      r31,r30
+>   18:	48 00 00 18 	b       0x30
+>   1c:	60 00 00 00 	nop
+>   20:	60 00 00 00 	nop
+>   24:	eb ff 00 08 	ld      r31,8(r31)
+>   28:	7c 3e f8 40 	cmpld   r30,r31
+>   2c:	41 82 00 48 	beq     0x74
+>   30:*	81 5f 00 60 	lwz     r10,96(r31)		<-- trapping instruction
+>   34:	e9 3f 00 00 	ld      r9,0(r31)
+>   38:	55 29 07 7c 	rlwinm  r9,r9,0,29,30
+>   3c:	7d 29 53 78 	or      r9,r9,r10
+>
+> That would seem to track; 96 is 0x60 and r31 contains 0x00..09, giving
+> us an effective address of 0x69.
+>
+> It would be nice to know what source line that corresponds to.  Could
+> you use scripts/faddr2line to turn drop_buffers.constprop.0+0x4c/0x1c0
+> into a line number?  I can't because it needs the vmlinux you generated.
+
+You'll need: https://lore.kernel.org/all/20220927075211.897152-1-srikar@linux.vnet.ibm.com/
+
+I don't have the same vmlinux obviously, but mine seems to match up
+pretty closely, I get:
+
+c0000000004e3900 <drop_buffers.constprop.0>:
+c0000000004e3900:       b9 00 4c 3c     addis   r2,r12,185
+c0000000004e3904:       00 c5 42 38     addi    r2,r2,-15104
+c0000000004e3908:       a6 02 08 7c     mflr    r0
+c0000000004e390c:       29 4f b8 4b     bl      c000000000068834 <_mcount>      # ^ entry & ftrace stuff
+c0000000004e3910:       e0 ff 81 fb     std     r28,-32(r1)
+c0000000004e3914:       e8 ff a1 fb     std     r29,-24(r1)
+c0000000004e3918:       78 23 9c 7c     mr      r28,r4
+c0000000004e391c:       78 1b 7d 7c     mr      r29,r3
+c0000000004e3920:       f8 ff e1 fb     std     r31,-8(r1)
+c0000000004e3924:       f0 ff c1 fb     std     r30,-16(r1)
+c0000000004e3928:       c1 ff 21 f8     stdu    r1,-64(r1)                      # ^ save regs and create stack frame
+c0000000004e392c:       28 00 c3 eb     ld      r30,40(r3)                      # r30 = folio->private (0000000000000009)
+c0000000004e3930:       78 f3 df 7f     mr      r31,r30                         # r31 = folio->private = head = bh
+c0000000004e3934:       18 00 00 48     b       c0000000004e394c <drop_buffers.constprop.0+0x4c>        ->
+c0000000004e3938:       00 00 00 60     nop
+c0000000004e393c:       00 00 42 60     ori     r2,r2,0
+c0000000004e3940:       08 00 ff eb     ld      r31,8(r31)
+c0000000004e3944:       40 f8 3e 7c     cmpld   r30,r31
+c0000000004e3948:       48 00 82 41     beq     c0000000004e3990 <drop_buffers.constprop.0+0x90>
+c0000000004e394c:       60 00 5f 81     lwz     r10,96(r31)                     # r10 = bh->b_count
+
+$ ./scripts/faddr2line .build/vmlinux drop_buffers.constprop.0+0x4c
+drop_buffers.constprop.0+0x4c/0x170:
+arch_atomic_read at arch/powerpc/include/asm/atomic.h:30
+(inlined by) atomic_read at include/linux/atomic/atomic-instrumented.h:28
+(inlined by) buffer_busy at fs/buffer.c:2859
+(inlined by) drop_buffers at fs/buffer.c:2871
+
+static inline int buffer_busy(struct buffer_head *bh)
+{
+	return atomic_read(&bh->b_count) |
+		(bh->b_state & ((1 << BH_Dirty) | (1 << BH_Lock)));
+}
+
+struct folio {
+        union {
+                struct {
+                        long unsigned int flags;         /*     0     8 */
+                        union {
+                                struct list_head lru;    /*     8    16 */
+                                struct {
+                                        void * __filler; /*     8     8 */
+                                        unsigned int mlock_count; /*    16     4 */
+                                };                       /*     8    16 */
+                        };                               /*     8    16 */
+                        struct address_space * mapping;  /*    24     8 */
+                        long unsigned int index;         /*    32     8 */
+                        void *     private;              /*    40     8 */      <----
+
+struct buffer_head {
+        long unsigned int          b_state;              /*     0     8 */
+        struct buffer_head *       b_this_page;          /*     8     8 */
+        struct page *              b_page;               /*    16     8 */
+        sector_t                   b_blocknr;            /*    24     8 */
+        size_t                     b_size;               /*    32     8 */
+        char *                     b_data;               /*    40     8 */
+        struct block_device *      b_bdev;               /*    48     8 */
+        bh_end_io_t *              b_end_io;             /*    56     8 */
+        void *                     b_private;            /*    64     8 */
+        struct list_head           b_assoc_buffers;      /*    72    16 */
+        struct address_space *     b_assoc_map;          /*    88     8 */
+        atomic_t                   b_count;              /*    96     4 */      <----
+
+The buffer_head comes from folio_buffers(folio):
+
+static bool
+drop_buffers(struct folio *folio, struct buffer_head **buffers_to_free)
+{
+	struct buffer_head *head = folio_buffers(folio);
+
+Which is == folio_get_private()
+
+r3 and r29 still hold folio = c00c00000042f1c0 
+
+That's a valid looking vmemmap address.
+
+So we have a valid folio, but its private field == 9 ?
+
+Seems like all sorts of things get stuffed into page->private, so
+presumably 9 is not necessarily a corrupt value, just not what we're
+expecting. But I'm out of my depth so over to you :)
+
+cheers
