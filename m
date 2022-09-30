@@ -1,55 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 487505F092F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Sep 2022 12:35:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 239905F0BD4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Sep 2022 14:40:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Mf6894CbPz3cDT
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Sep 2022 20:35:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Mf8vN0Zk5z3cdT
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Sep 2022 22:40:00 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=m+fmX4Gi;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=T0EDgfQg;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mf67Y3VLYz3bVt
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Sep 2022 20:35:21 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=m+fmX4Gi;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=T0EDgfQg;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Mf67R6K1Bz4xGl;
-	Fri, 30 Sep 2022 20:35:15 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1664534116;
-	bh=SKuit/403TtKi9IVegLO0M0MCgvZAmlsYdK4HyzlPbg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=m+fmX4Gi6vnFBD+bSa7+/k6dl0ZvuTo2nv0o6k2AjMidUoiKfc6q4OwDvEFIa3MU4
-	 x+PbvqSbZruhCPKxdcb0Q2W2tjfA3u5miqAPfhPP3ze4h52cWAGKSxaB6PdEkYttmk
-	 rW7scR02sqk+iyYf1i3Zc8OqV8UqWuffB9qZeIhumZBUzOBnphLm2//xj4X2eNj8Pj
-	 St0Zh9zxbwgAwOuQcMPi73lgUXiArUQoRm0TZnhxg+vGufUPNMkMy28o2Ce4SUvv7h
-	 Gz5ndgcPzIsyGgP86OghiFlTKhw9os4FyiCPsiiQVSVmbBXso28Wh732od4zIQ+d0+
-	 e9FNMJHJouTZQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Michal =?utf-8?Q?Such=C3=A1nek?= <msuchanek@suse.de>, Nathan Lynch
- <nathanl@linux.ibm.com>
-Subject: Re: [PATCH] powerpc/pseries/vas: Pass hw_cpu_id to node
- associativity HCALL
-In-Reply-To: <20220930085542.GW28810@kitsune.suse.cz>
-References: <55380253ea0c11341824cd4c0fc6bbcfc5752689.camel@linux.ibm.com>
- <87wn9lbzcn.fsf@linux.ibm.com> <20220930085542.GW28810@kitsune.suse.cz>
-Date: Fri, 30 Sep 2022 20:35:15 +1000
-Message-ID: <87mtahp2u4.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mf8tk3JF4z3c29
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Sep 2022 22:39:26 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id EE68EB828D5;
+	Fri, 30 Sep 2022 12:39:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 842DAC433D6;
+	Fri, 30 Sep 2022 12:39:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1664541560;
+	bh=tEozaHb1EwOmstcpCIwRRiZp1C/9JrsLwcpTdb1k3X8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=T0EDgfQgvmYBLSv9OrSpIhvmkwN+cWf/8vnijeB9huu7k23C/E2npmMu5p0yqlJDv
+	 7zbLhr/LsNqRWQTGiwiffhTTay64/BnX5D1QgpKMUiSP7mt/IzNqs+lVptZ6UsS/rq
+	 pBl4lccFcMZgFH/egtOFkxwL49p2szeq16mQDZlkNc1JoF1DzOs2CKvZbhOuF67Ubw
+	 nXkFFnDSlEjsNwbgxxRZYe4LyTtxxzPtprtEsNi4iBkZFym/8D/0FKhQHEBODt0pGS
+	 b2oATA/+7srrbyvYnUbW811ftd0J/tq8c14dH2PZzPlUJbga04YvjcaniyUtW7wEMF
+	 K+eYli43Ks7DA==
+Received: by pali.im (Postfix)
+	id A685D93F; Fri, 30 Sep 2022 14:39:17 +0200 (CEST)
+From: =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH] powerpc: dts: turris1x.dts: Add channel labels for temperature sensor
+Date: Fri, 30 Sep 2022 14:39:01 +0200
+Message-Id: <20220930123901.10251-1-pali@kernel.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,56 +62,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Haren Myneni <haren@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com
+Cc: =?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>, Josef Schlehofer <josef.schlehofer@nic.cz>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michal Such=C3=A1nek <msuchanek@suse.de> writes:
-> On Thu, Sep 29, 2022 at 05:16:40PM -0500, Nathan Lynch wrote:
->> Haren Myneni <haren@linux.ibm.com> writes:
->> > Generally the hypervisor decides to allocate a window on different
->> > VAS instances. But if the user space wishes to allocate on the
->> > current VAS instance where the process is executing, the kernel has
->> > to pass associativity domain IDs to allocate VAS window HCALL. To
->> > determine the associativity domain IDs for the current CPU, passing
->> > smp_processor_id() to node associativity HCALL which may return
->> > H_P2 (-55) error during DLPAR CPU event.
->> >
->> > This patch fixes this issue by passing hard_smp_processor_id() with
->> > VPHN_FLAG_VCPU flag (PAPR 14.11.6.1 H_HOME_NODE_ASSOCIATIVITY).
->> >
->> > Signed-off-by: Haren Myneni <haren@linux.ibm.com>
->> > ---
->> >  arch/powerpc/platforms/pseries/vas.c | 2 +-
->> >  1 file changed, 1 insertion(+), 1 deletion(-)
->> >
->> > diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platf=
-orms/pseries/vas.c
->> > index fe33bdb620d5..533026fd1f40 100644
->> > --- a/arch/powerpc/platforms/pseries/vas.c
->> > +++ b/arch/powerpc/platforms/pseries/vas.c
->> > @@ -348,7 +348,7 @@ static struct vas_window *vas_allocate_window(int =
-vas_id, u64 flags,
->> >  		 * So no unpacking needs to be done.
->> >  		 */
->> >  		rc =3D plpar_hcall9(H_HOME_NODE_ASSOCIATIVITY, domain,
->> > -				  VPHN_FLAG_VCPU, smp_processor_id());
->> > +				  VPHN_FLAG_VCPU, hard_smp_processor_id());
->> >  		if (rc !=3D H_SUCCESS) {
->> >  			pr_err("H_HOME_NODE_ASSOCIATIVITY error: %d\n", rc);
->> >  			goto out;
->>=20
->> Yes, it is always wrong to pass Linux CPU numbers to the hypervisor,
->> which has its own numbering for hardware threads. It usually coincides
->> with Linux's numbering in practice, which tends to hide bugs like this.
->>=20
->> Reviewed-by: Nathan Lynch <nathanl@linux.ibm.com>
->
-> This is the code that introduces the problem, right?
->
-> Fixes: b22f2d88e435 ("powerpc/pseries/vas: Integrate API with open/close =
-windows")
+Channel 0 of SA56004ED chip refers to internal SA56004ED chip sensor (chip
+itself is located on the board) and channel 1 of SA56004ED chip refers to
+external sensor which is connected to temperature diode of the P2020 CPU.
 
-Yeah, I tagged it when applying. Thanks.
+Fixes: 54c15ec3b738 ("powerpc: dts: Add DTS file for CZ.NIC Turris 1.x routers")
+Signed-off-by: Pali Rohár <pali@kernel.org>
+---
+With this change userspace 'sensors' applications prints labels:
 
-cheers
+    $ sensors
+    sa56004-i2c-0-4c
+    Adapter: MPC adapter (i2c@3000)
+    board:        +34.2°C  (low  =  +0.0°C, high = +70.0°C)
+                           (crit = +85.0°C, hyst = +75.0°C)
+    cpu:          +58.9°C  (low  =  +0.0°C, high = +70.0°C)
+                           (crit = +85.0°C, hyst = +75.0°C)
+
+And without this change it prints just generic tempX names:
+
+    $ sensors
+    sa56004-i2c-0-4c
+    Adapter: MPC adapter (i2c@3000)
+    temp1:        +43.0°C  (low  =  +0.0°C, high = +70.0°C)
+                           (crit = +85.0°C, hyst = +75.0°C)
+    temp2:        +63.4°C  (low  =  +0.0°C, high = +70.0°C)
+                           (crit = +85.0°C, hyst = +75.0°C)
+---
+ arch/powerpc/boot/dts/turris1x.dts | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/arch/powerpc/boot/dts/turris1x.dts b/arch/powerpc/boot/dts/turris1x.dts
+index 4033c554b06a..5b5278c32e43 100644
+--- a/arch/powerpc/boot/dts/turris1x.dts
++++ b/arch/powerpc/boot/dts/turris1x.dts
+@@ -69,6 +69,20 @@
+ 				interrupt-parent = <&gpio>;
+ 				interrupts = <12 IRQ_TYPE_LEVEL_LOW>, /* GPIO12 - ALERT pin */
+ 					     <13 IRQ_TYPE_LEVEL_LOW>; /* GPIO13 - CRIT pin */
++				#address-cells = <1>;
++				#size-cells = <0>;
++
++				/* Local temperature sensor (SA56004ED internal) */
++				channel@0 {
++					reg = <0>;
++					label = "board";
++				};
++
++				/* Remote temperature sensor (D+/D- connected to P2020 CPU Temperature Diode) */
++				channel@1 {
++					reg = <1>;
++					label = "cpu";
++				};
+ 			};
+ 
+ 			/* DDR3 SPD/EEPROM */
+-- 
+2.20.1
+
