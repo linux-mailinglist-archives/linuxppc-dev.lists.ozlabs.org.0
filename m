@@ -1,51 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27B6E5F0676
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Sep 2022 10:31:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 554515F0692
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Sep 2022 10:34:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Mf3Nn6L9wz3fFq
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Sep 2022 18:31:37 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=qEfjwl/t;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Mf3ST1j1rz3f2W
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Sep 2022 18:34:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mf3KB1F0Yz3c2q
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Sep 2022 18:28:30 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=qEfjwl/t;
-	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Mf3KB0M7lz4xGn;
-	Fri, 30 Sep 2022 18:28:30 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1664526510;
-	bh=Ljk8967RiuAeWBYei2s6rowna0PL4JzVT/iU3xSV3NY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qEfjwl/ts0iwqfJM6nQo3djZlJzwL4xw8bC3Cvxhf1KcoixChH5lxL9r552bA+B4A
-	 RscCy6MVX0vAQ3q6ZinLsf9hHYQtB7x3tBYvSD2CGj/DlS4QDMdG/vKIF+mW09viLJ
-	 ZIpjq9yrQiLl6Qb7qeMUG7aBq2c9ySin0yD7C5+c4NWfTxogyqdSKoqd7QlpBxN8+2
-	 h0LzvbqLfHvXO4cy4r0qUNIq44ox+/QQAvKpnhpZk4UvRtJzMl/0oPolQdrvAsAFPZ
-	 H2Aupxj29RXy6y4ltoPmminrpDnUFaU5ieXHCqEwFDCstuNDYrAgpo4e1DaG5Wc8rM
-	 bFOjJNJ/L7K+Q==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH v3 6/6] powerpc/pseries: Add firmware details to the hardware description
-Date: Fri, 30 Sep 2022 18:27:09 +1000
-Message-Id: <20220930082709.55830-6-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.37.3
-In-Reply-To: <20220930082709.55830-1-mpe@ellerman.id.au>
-References: <20220930082709.55830-1-mpe@ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mf3S43xpCz2xy2
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Sep 2022 18:34:26 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4Mf3Ry0qJBz9spw;
+	Fri, 30 Sep 2022 10:34:22 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id XCZOBoODzobB; Fri, 30 Sep 2022 10:34:22 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4Mf3Rx71YRz9spk;
+	Fri, 30 Sep 2022 10:34:21 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id E073D8B77C;
+	Fri, 30 Sep 2022 10:34:21 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id LgUqmxvfm-X2; Fri, 30 Sep 2022 10:34:21 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.232.36])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 9FA358B763;
+	Fri, 30 Sep 2022 10:34:21 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 28U8Y8rb592601
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 30 Sep 2022 10:34:09 +0200
+Received: (from chleroy@localhost)
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 28U8Y8vK592599;
+	Fri, 30 Sep 2022 10:34:08 +0200
+X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>
+Subject: [PATCH] serial: cpm_uart: Don't request IRQ too early for console port
+Date: Fri, 30 Sep 2022 10:33:56 +0200
+Message-Id: <8bed0f30c2e9ef16ae64fb1243a16d54a48eb8da.1664526717.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.37.1
 MIME-Version: 1.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1664526833; l=2487; s=20211009; h=from:subject:message-id; bh=Yu/jJ7+FWH6Gqx/87LIsVGgkhc4/6uGYsUdAKRxFQnM=; b=GjdQZ7trNHWV7vAf+pSYHG74IWPXZuBU/cM+hFTIrfu9YCC9VwNGMTovAqz2vyCCRlVW2Nx6/oCq 7M2i1Lz9Dn8BPtdh/bQOZmFhvkgwT4l9OyRJtMOql7yPugvIF2Jj
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -58,86 +66,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nathanl@linux.ibm.com
+Cc: stable@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add firmware version details to the hardware description, which is
-printed at boot and in case of an oops.
+The following message is seen during boot and the activation of
+console port gets delayed until normal serial ports activation.
 
-Use /hypervisor if we find it, though currently it only exists if we're
-running under qemu.
+[    0.001346] irq: no irq domain found for pic@930 !
 
-Look for "ibm,powervm-partition" which is specified in PAPR+ v2.11 and
-tells us we're running under PowerVM.
+The console port doesn't need irq, perform irq reservation later,
+during cpm_uart probe.
 
-Failing that look for "ibm,fw-net-version" which is seen on PowerVM
-going back to at least Power6.
+While at it, don't use NO_IRQ but 0 which is the value returned
+by irq_of_parse_and_map() in case of error. By chance powerpc's
+NO_IRQ has value 0 but on some architectures it is -1.
 
-eg: Hardware name: ... of:IBM,FW860.42 (SV860_138) hv:phyp
-
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Fixes: 14d893fc6846 ("powerpc/8xx: Convert CPM1 interrupt controller to platform_device")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/platforms/pseries/setup.c | 30 ++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ drivers/tty/serial/cpm_uart/cpm_uart_core.c | 22 ++++++++++-----------
+ 1 file changed, 10 insertions(+), 12 deletions(-)
 
-v3: Drop quotes for brevity.
-
-diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
-index 5e44c65a032c..8ef3270515a9 100644
---- a/arch/powerpc/platforms/pseries/setup.c
-+++ b/arch/powerpc/platforms/pseries/setup.c
-@@ -41,6 +41,7 @@
- #include <linux/of_pci.h>
- #include <linux/memblock.h>
- #include <linux/swiotlb.h>
-+#include <linux/seq_buf.h>
+diff --git a/drivers/tty/serial/cpm_uart/cpm_uart_core.c b/drivers/tty/serial/cpm_uart/cpm_uart_core.c
+index db07d6a5d764..fa5c4633086e 100644
+--- a/drivers/tty/serial/cpm_uart/cpm_uart_core.c
++++ b/drivers/tty/serial/cpm_uart/cpm_uart_core.c
+@@ -1214,12 +1214,6 @@ static int cpm_uart_init_port(struct device_node *np,
+ 	pinfo->port.fifosize = pinfo->tx_nrfifos * pinfo->tx_fifosize;
+ 	spin_lock_init(&pinfo->port.lock);
  
- #include <asm/mmu.h>
- #include <asm/processor.h>
-@@ -1011,6 +1012,33 @@ static void __init pSeries_cmo_feature_init(void)
- 	pr_debug(" <- fw_cmo_feature_init()\n");
+-	pinfo->port.irq = irq_of_parse_and_map(np, 0);
+-	if (pinfo->port.irq == NO_IRQ) {
+-		ret = -EINVAL;
+-		goto out_pram;
+-	}
+-
+ 	for (i = 0; i < NUM_GPIOS; i++) {
+ 		struct gpio_desc *gpiod;
+ 
+@@ -1229,7 +1223,7 @@ static int cpm_uart_init_port(struct device_node *np,
+ 
+ 		if (IS_ERR(gpiod)) {
+ 			ret = PTR_ERR(gpiod);
+-			goto out_irq;
++			goto out_pram;
+ 		}
+ 
+ 		if (gpiod) {
+@@ -1255,8 +1249,6 @@ static int cpm_uart_init_port(struct device_node *np,
+ 
+ 	return cpm_uart_request_port(&pinfo->port);
+ 
+-out_irq:
+-	irq_dispose_mapping(pinfo->port.irq);
+ out_pram:
+ 	cpm_uart_unmap_pram(pinfo, pram);
+ out_mem:
+@@ -1436,11 +1428,17 @@ static int cpm_uart_probe(struct platform_device *ofdev)
+ 	/* initialize the device pointer for the port */
+ 	pinfo->port.dev = &ofdev->dev;
+ 
++	pinfo->port.irq = irq_of_parse_and_map(ofdev->dev.of_node, 0);
++	if (!pinfo->port.irq)
++		return -EINVAL;
++
+ 	ret = cpm_uart_init_port(ofdev->dev.of_node, pinfo);
+-	if (ret)
+-		return ret;
++	if (!ret)
++		return uart_add_one_port(&cpm_reg, &pinfo->port);
+ 
+-	return uart_add_one_port(&cpm_reg, &pinfo->port);
++	irq_dispose_mapping(pinfo->port.irq);
++
++	return ret;
  }
  
-+static void __init pseries_add_hw_description(void)
-+{
-+	struct device_node *dn;
-+	const char *s;
-+
-+	dn = of_find_node_by_path("/openprom");
-+	if (dn) {
-+		if (of_property_read_string(dn, "model", &s) == 0)
-+			seq_buf_printf(&ppc_hw_desc, "of:%s ", s);
-+
-+		of_node_put(dn);
-+	}
-+
-+	dn = of_find_node_by_path("/hypervisor");
-+	if (dn) {
-+		if (of_property_read_string(dn, "compatible", &s) == 0)
-+			seq_buf_printf(&ppc_hw_desc, "hv:%s ", s);
-+
-+		of_node_put(dn);
-+		return;
-+	}
-+
-+	if (of_property_read_bool(of_root, "ibm,powervm-partition") ||
-+	    of_property_read_bool(of_root, "ibm,fw-net-version"))
-+		seq_buf_printf(&ppc_hw_desc, "hv:phyp ");
-+}
-+
- /*
-  * Early initialization.  Relocation is on but do not reference unbolted pages
-  */
-@@ -1018,6 +1046,8 @@ static void __init pseries_init(void)
- {
- 	pr_debug(" -> pseries_init()\n");
- 
-+	pseries_add_hw_description();
-+
- #ifdef CONFIG_HVC_CONSOLE
- 	if (firmware_has_feature(FW_FEATURE_LPAR))
- 		hvc_vio_init_early();
+ static int cpm_uart_remove(struct platform_device *ofdev)
 -- 
-2.37.3
+2.37.1
 
