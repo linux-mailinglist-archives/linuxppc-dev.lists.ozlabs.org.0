@@ -1,90 +1,104 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78E3C5F2221
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Oct 2022 10:52:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E11A55F22FE
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Oct 2022 13:53:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MgHmR3DHRz3c9W
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Oct 2022 19:52:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MgMmX18FTz3c4N
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Oct 2022 22:53:16 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=E06zv8L0;
+	dkim=pass (2048-bit key; unprotected) header.d=outlook.com header.i=@outlook.com header.a=rsa-sha256 header.s=selector1 header.b=g+5rUop+;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sachinp@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=outlook.com (client-ip=40.92.19.101; helo=nam11-dm6-obe.outbound.protection.outlook.com; envelope-from=arminders208@outlook.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=E06zv8L0;
+	dkim=pass (2048-bit key; unprotected) header.d=outlook.com header.i=@outlook.com header.a=rsa-sha256 header.s=selector1 header.b=g+5rUop+;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11olkn2101.outbound.protection.outlook.com [40.92.19.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MgHlh6lrBz30B1
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 Oct 2022 19:52:16 +1100 (AEDT)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 292543rX017170;
-	Sun, 2 Oct 2022 08:52:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : content-type :
- content-transfer-encoding : mime-version : subject : message-id : date :
- cc : to; s=pp1; bh=SwR1oUr1WgHnWvjW43WdBeu3u2LJMgFnQxvS3yb0Fu8=;
- b=E06zv8L0aEkjFvQZtYZEf6yurrIav6HUK0E7h0m+jDYsdnxlmLk7yQXKqfR7D9Xh6hJl
- MRI9Kv+HechrGl0Ku8GGgw/bk7Hwa/MB4uHVQPbon+J6LRYl4zNiJc+peFq6fsSKuycF
- /uWqet++iP614vKiQY5IaK0AcEhDt4g54NiobuvpjBItoIn2MRLXuaBWSFBAIXKFH+RW
- xKOeCEqsc5PEPmbhB82guT8/KNihD4Eedq5Oi92deLgOIzfYGJcjWZcI0nnaPj2cRD8A
- AkSRIJmE3V7Hcn8C2XKFyrSr23EXb48Wxq3uNlPWoreUcpqhNr2W/uBQnzwvcNWEnkoe /g== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jxxvb03db-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 02 Oct 2022 08:52:07 +0000
-Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2928q6DR013035;
-	Sun, 2 Oct 2022 08:52:06 GMT
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jxxvb03cq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 02 Oct 2022 08:52:06 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
-	by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2928o33c010389;
-	Sun, 2 Oct 2022 08:52:04 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
-	by ppma03ams.nl.ibm.com with ESMTP id 3jxd6917yt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 02 Oct 2022 08:52:04 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
-	by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2928q2Yf36241886
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 2 Oct 2022 08:52:02 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 427F2A4053;
-	Sun,  2 Oct 2022 08:52:02 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C4791A4040;
-	Sun,  2 Oct 2022 08:52:00 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.43.11.7])
-	by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Sun,  2 Oct 2022 08:52:00 +0000 (GMT)
-From: Sachin Sant <sachinp@linux.ibm.com>
-Content-Type: text/plain;
-	charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.1\))
-Subject: [6.0.0-rc7-next-20220930] kernel BUG at
- arch/powerpc/kernel/exceptions-64s.S:2831!
-Message-Id: <85478710-25C6-42DB-9680-92ABD83C662C@linux.ibm.com>
-Date: Sun, 2 Oct 2022 14:21:59 +0530
-To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-X-Mailer: Apple Mail (2.3696.120.41.1.1)
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 9lY1iiZ5fpfq4nDO-nqGlf_RxHiaBHB0
-X-Proofpoint-ORIG-GUID: GK6Z_g_-Tg2dUz_B0cEtyQv6hBv6PHUg
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
- definitions=2022-10-01_15,2022-09-29_03,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0 mlxscore=0
- clxscore=1011 mlxlogscore=769 adultscore=0 priorityscore=1501
- malwarescore=0 phishscore=0 suspectscore=0 impostorscore=0 spamscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2209130000 definitions=main-2210020054
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mg1sK0xB1z3bST
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 Oct 2022 09:26:11 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=I5qTqJJd/Zbxfx8hdw7XWN/3rTMpF2cuS+HWw5mKBOZzD6I7zwH+kYn3RsaJui7FLTGEpcvf3wnMvrRrQ6t9C6pgyUiLYssGHQ6RgN8/wP4td5iVAhMX35rrRj0P/KaLQ3OspwGk/5P7ifUGtL3cVEesdcwUl3hhjgCsu40YY4rHSedn1tmX72rsyD60RauG2+exKGCubfdlZibs7nuI2PZqLpIRXM/vV3oWUVjEXptH7M78/ZRziSu6dwdX1EVcdCcOYeDVp9W976j0SFIHkQVxxoEQqNASDFqw9QDI1OU8FrUG6z0TklOSD9Rzku6LucYHboEfloktYMP78VR+UQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=C+306KdYT145mhgKNOTZrljlJLjsfUJT0g3OMPEX1a4=;
+ b=AZDYeZnTgwvpv8lwpkJtl6/GNcH5MfQPogvSPlCu2tVoZS//xzp+03Y3f/SJw0Y1qblDXT8UC4ns0/vN8FrxSK5mOqcijZ9zVW/ZaE7bh8RmNa+j4xJ4K5zo0VjbpzJU6KgWbVTAnZ0rW7/w1Vr7qhw0IL2acXpALNu8U3xbxR2nXSJs0/x5nIVPZDoF/tK1jxNe/TSQK233ntU7PGs3avAZcNEjxs/wtZtShBdHdmMgIGg5lWye3jXx+onEUU4Lb1U3nC9CT1JNzj775C2GCS3zz39gjdexfH4bHIbxlgTvFDPjtbze8VXaB4n4ifFFAueB1kyM5GY8xN/7ta0vZg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=C+306KdYT145mhgKNOTZrljlJLjsfUJT0g3OMPEX1a4=;
+ b=g+5rUop+pa4OYfNcYSJrOikZLqmTL8CWrX4bMlptaTzYMQdMjVr0EtBaIwaJP4642BOup8zy7vEU5BjKG3FUxg9BaKIKqQLBOn63XCjS/SLamNwGkKAiRJ4cDxDLTe9uclo39QV5QaLYJZRNYbCFqzg0g2KQAdGTnYnKFDH7VGumv/VxMjrelyiM3t1c4TXF8bUuBd6dnlQWXl/CKa0avioHm2LCiY4rfzM+Tp2rHfGGkK2CVCKO4sY8XekTLY7oci81TPP+bz7bViDzZusVVgnchI9FUQgTGVga8xn8i+cGEmUoeILD0i7NB9QFzgD08D0Aew2BNwHAhYjNBuWweQ==
+Received: from MN2PR01MB5358.prod.exchangelabs.com (2603:10b6:208:117::26) by
+ DM6PR01MB5578.prod.exchangelabs.com (2603:10b6:5:17c::10) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.5676.23; Sat, 1 Oct 2022 22:25:51 +0000
+Received: from MN2PR01MB5358.prod.exchangelabs.com
+ ([fe80::3c11:1e6d:4c2b:c8c7]) by MN2PR01MB5358.prod.exchangelabs.com
+ ([fe80::3c11:1e6d:4c2b:c8c7%6]) with mapi id 15.20.5676.019; Sat, 1 Oct 2022
+ 22:25:51 +0000
+From: Arminder Singh <arminders208@outlook.com>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH v2] i2c/pasemi: PASemi I2C controller IRQ enablement
+Date: Sat,  1 Oct 2022 18:25:31 -0400
+Message-ID:  <MN2PR01MB535821C8058C7814B2F8EEDF9F599@MN2PR01MB5358.prod.exchangelabs.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TMN: [/LCd/AQbYy1R09ebhcUzSHx0jSuTZy4T/je8E52It9yvfWHGCYMIIkAUky8zugrT]
+X-ClientProxiedBy: BLAPR03CA0125.namprd03.prod.outlook.com
+ (2603:10b6:208:32e::10) To MN2PR01MB5358.prod.exchangelabs.com
+ (2603:10b6:208:117::26)
+X-Microsoft-Original-Message-ID:  <20221001222531.870810-1-arminders208@outlook.com>
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN2PR01MB5358:EE_|DM6PR01MB5578:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9c733bb9-50a0-47ac-caec-08daa3fbe5e2
+X-MS-Exchange-SLBlob-MailProps: 	ymJijV9pwJkn0EBXIE9SfJLm+nWX9Vm94k3OzsLzm0CWMzQcKbsW/aPwCIqXle/2QjtjeAn17Um9EET2me2shgrTjZtdC7tSS3ypYiZXhsAxA59RtSWCRO4wY/VbmmqW6sCH0QAQa72DPZY6Mz48TaBVY7T6LdmhGV/mzxl1NxIlG6WoGhZn/J5/BGynKdj3YlDY6mNhUsbHT/aO5Fj8QEs4LzR1emRS3KHl4FD7ipQrcNVv7+t8LpICNn3jzYim7JL7RIjOijNlfkmSVpTWRMleehsp7lyAfNPnkOUttPDk6HsiD7biDqQR8X7EvOcxtl6kPFehkfhfjEs8t388WplgUkJk7ReYN5shrOZJ8+ajPIirM34fwGg3IMy+zqPgJrwEsiMsOVnfehe9/LZGg0E3rmb+ZGfNhMbJba/pHg5xprgSuwITmcYtv7ajGjwVho08Kgjr0PuHq9Exp4iKEP3PrR4emYpgVKIiAkzDa15fp+2EnAmItmZ4R1VC5is9mhT58w1nmLeScScc2oMhFjkia6vjYT2vyekt1iu05VugL8uBlR7+/rFNds7wZqKFLgvht9nUqsCmAt8kxORYXQdovfRPGQbl1v/SwEOiGfDg+SLC5J+O3aTB4BsuXDiWuPdbEFNq0W9B+j/cpzggedzZjRQn5YG+x4s8VF2HtJrhCZ39B8YvZZhLMWF8BTbsw1DD2sPlV9BVJZPRpDOookkjoi2UlLXWEPvp10vOjyhrpMia6YSMFZHc0EJwwEqm5t2Dxfri2szWKmFovIqkNHITI50vi4HsAo+5h7+CQ8YVDG/gKbys/uOk2HhvhSfJ
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	N4XWEurXuBXcEHwgdr0zHHpjcneu98VaaUja71pSE2Ju6lD2Ag/dTdg5VdV21KLvG3kfW7dmC/FoWhHMuSpPKUEKD9/LDqmRGQV9JJhf598ze3NcTVRsKpLG+UGeOY9d0pCGtiXy+2HkeLhM5G3kIBQAcqfOR2cqLqOmymDko/gc2jeEf1z6Lhngv8LV2plRiymlU89Q38qOYRfCkFLFyxXCfXXHcAU7NUEcYdCX3Ktl0Ao7oCBI8zRS0i7hv6jdalnVKoB7f0ScepcHhq9OMeQLITStilKlWh6q9BhfrGz4HAHx+2e3aOudElS6YvItuI6zi0a89Z7LMgHeezW1PJ/EwTGloUcKQtuGhx1yHnTuYZEIto+fJJh3i7gLRye4ML1/MC05sGmtAeLIq5e14x6jdD0Cs9Yn2y2e/QbNNzHiRgJ7idKlTU/C2kKGUh3Vg1q7ROv5k2DohkTFXAubWdni9z8K2sAmE1cySa0ZjkyYWCR8S3kvbcfDHLKjiiq7e+JAHutakArq/Yx1ivFD8UdbjhYVmre61uVzl9yV27LZv96hndP5Ja7b3M+I61Ol+/SONcWEfhxt3kTeZjUEEhGTpwiPugFB81zVv0Nj6TgpldQoX4NdNv2CQSrDSeuYM+dcSJ8AoeweFrCa3ImWwfBG5q5aP6bEbN4q8aQE7F6RLxV/zVLj5Nzx3VESmdi+
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?jJUTxrC+74gG7mYV53gVmnAT9q7UQwDY7fePgEsCPWnXzsEgo8qdyjbGEkeo?=
+ =?us-ascii?Q?CwrCiz2eyAEc5+pKFx7xpflxhUAHPTCy0fIz2alAP2K9u4m/Z5Kftjclmqnj?=
+ =?us-ascii?Q?v6fQUxSi6O4fAlJeZByrrDw8k7dw7aEIeFlZGmQuR346OPX5nfeKHoXzVOe5?=
+ =?us-ascii?Q?fK7r9JyBtyl3zhgOoXGKDPHHG0V5GvuP2ALNnM8eXQeiVn84fIUrvwNg2efh?=
+ =?us-ascii?Q?tfFTfLmBSD4hA6G6whmELO2hP03RzlEzMX5hm9pAy2WUYGGu5F1I5ixoApr6?=
+ =?us-ascii?Q?tsKO9vpaUbcq2zeChYXx9hsxbJIrOp0rn6IyCv8oxb51cNr7U/d3NKYWJXXJ?=
+ =?us-ascii?Q?+CAo3A9J7/ExoWJYs5YBAu+GW3uDmXatOw/WjOF3+i9NbabgTPiHokT2JqRK?=
+ =?us-ascii?Q?OuCcTB8NfcRzIJvDgldAjB7kNEx/EH7YSCo59IxyxFVMp9Sb5heXnTSHJ7Cx?=
+ =?us-ascii?Q?BnQWrPpjEkidT0tnXCY1Mj9I5cpDGCNpTRswuJFcXFzjx+bX4ajU9MGu2sqR?=
+ =?us-ascii?Q?z43bRU294EOx6Ql+Xbc9o40AoksiNaDeVKjD+TMRlwnLn5QX0Al0HsigoJuS?=
+ =?us-ascii?Q?HiNuOI3uhIPnTne+lHzHnD+1QjIa0r/7GyPWlk4yoIUp6CvWyqpu8s3FAGgz?=
+ =?us-ascii?Q?61IkqK0/fd6cq+jxbLpIak6QhQ9Rvbwk4BNxe2bDCI3fbYKUWYWcXZr9VT2/?=
+ =?us-ascii?Q?KjF83tocXmkDhE9v7HIz3V1pnCAznAnApqZfIxdK///fGBZImv4eMRcJldyr?=
+ =?us-ascii?Q?4icDWuKTm1xlVd/D7ynd2FA8Gxyx8o7TKo52kzLs1Uss/Z2oSvP0+kDqrTH9?=
+ =?us-ascii?Q?6Jv3bNEzgkzNJoY1YUV3/X8PRYGBhG2h5cHXe1TgTHuv6OZJCbODnlHGXr/6?=
+ =?us-ascii?Q?W0W60WDdZ9e4ZrhXMhIEVSyUrUDaNnFFiRSciYWciKHTcKB1PyuToPDECdKM?=
+ =?us-ascii?Q?9L7rP+UeMmDv4seVBBzn55nTY3nPTDhEENhO1OpSmzqtzVvDoAx20KhCnUX4?=
+ =?us-ascii?Q?xIav1EAo9tCTdXFbi8V6V0C/4qgbEjFhhPodUrH9RGE+CfctxPmKlmK7E4He?=
+ =?us-ascii?Q?hH+oLfADtrWcQ3Pq5S7rp8hzjspP1E39Aed5SCu3PlGCssGrH1apnLoEwPR4?=
+ =?us-ascii?Q?27OkDPV5kzbcDENGdH1XNYBhGoZwOVOx0/AZOTwp9iqAk2OpGLaYze1QnbN0?=
+ =?us-ascii?Q?NEkaiaBr68TeLdlKo7/rKaCa2qDFOhjLJN+D8y99xRSdnTQsfULK3XicMHHN?=
+ =?us-ascii?Q?tdNSR3iIMt8HbaaoUlWY/zkHt01bh26KsQLtfWglPkYmM5qkg4+oj0Acxjmw?=
+ =?us-ascii?Q?ui83pUSfrfuVZb+v0Gwx5Z2ajqf4c6I6hzV0F3jPciz0+Q=3D=3D?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9c733bb9-50a0-47ac-caec-08daa3fbe5e2
+X-MS-Exchange-CrossTenant-AuthSource: MN2PR01MB5358.prod.exchangelabs.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Oct 2022 22:25:51.7654
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR01MB5578
+X-Mailman-Approved-At: Sun, 02 Oct 2022 22:52:39 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,181 +110,182 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: linux-arm-kernel@lists.infradead.org, Darren Stevens <darren@stevens-zone.net>, Sven Peter <sven@svenpeter.dev>, Christian Zigotzky <chzigotzky@xenosoft.de>, Hector Martin <marcan@marcan.st>, Arminder Singh <arminders208@outlook.com>, Paul Mackerras <paulus@samba.org>, linux-i2c@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Alyssa Rosenzweig <alyssa@rosenzweig.io>, asahi@lists.linux.dev
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-With recent versions of linux-next I am observing kernel crashes on =
-Power server.
-I saw this crash once just after boot. I also saw similar crash while =
-compiling a
-Kernel or during a git clone of kernel source. Seem to occur at random =
-times.
+Hello,
 
-[  175.165592] ------------[ cut here ]------------
-[  175.165618] kernel BUG at arch/powerpc/kernel/exceptions-64s.S:2831!
-[  175.165637] Oops: Exception in kernel mode, sig: 5 [#1]
-[  175.165647] LE PAGE_SIZE=3D64K MMU=3DHash SMP NR_CPUS=3D2048 NUMA =
-pSeries
-[  175.165657] Modules linked in: dm_mod(E) nft_fib_inet(E) =
-nft_fib_ipv4(E) nft_fib_ipv6(E) nft_fib(E) nft_reject_inet(E) =
-nf_reject_ipv4(E) nf_reject_ipv6(E) nft_reject(E) nft_ct(E) =
-nft_chain_nat(E) nf_nat(E) nf_conntrack(E) nf_defrag_ipv6(E) =
-nf_defrag_ipv4(E) bonding(E) rfkill(E) tls(E) ip_set(E) nf_tables(E) =
-libcrc32c(E) nfnetlink(E) sunrpc(E) pseries_rng(E) vmx_crypto(E) ext4(E) =
-mbcache(E) jbd2(E) sd_mod(E) t10_pi(E) crc64_rocksoft(E) crc64(E) sg(E) =
-ibmvscsi(E) scsi_transport_srp(E) ibmveth(E) ipmi_devintf(E) =
-ipmi_msghandler(E) fuse(E)
-[  175.165805] CPU: 6 PID: 11059 Comm: sed Tainted: G            E      =
-6.0.0-rc7-next-20220930 #1
-[  175.165820] Hardware name: IBM,8375-42A POWER9 (raw) 0x4e0202 =
-0xf000005 of:IBM,FW950.50 (VL950_105) hv:phyp pSeries
-[  175.165832] NIP:  c00000000000be38 LR: c00000000001cdfc CTR: =
-c000000000008ed0
-[  175.165844] REGS: c00000002840b5b0 TRAP: 0700   Tainted: G            =
-E       (6.0.0-rc7-next-20220930)
-[  175.165856] MSR:  8000000000021031 <SF,ME,IR,DR,LE>  CR: 44828844  =
-XER: 00000000
-[  175.165881] CFAR: c000000000008f74 IRQMASK: 1=20
-[  175.165881] GPR00: c00000000001df08 c00000002840b850 c00000000135e800 =
-0000000002802000=20
-[  175.165881] GPR04: c000000003717e80 0000000000000000 0000000000000166 =
-c000000002a3aa80=20
-[  175.165881] GPR08: 800000000280b033 0000000000000005 0000000000000004 =
-c00000000001c864=20
-[  175.165881] GPR12: 800000000280b033 c00000001ec58b00 0000000000000000 =
-c00000002840bbd8=20
-[  175.165881] GPR16: c000000002988b70 0000000000000009 61c8864680b583eb =
-0000000000000002=20
-[  175.165881] GPR20: c000000002aa3e00 c00000002840bac8 0000000000000001 =
-c000000201eb9f40=20
-[  175.165881] GPR24: c000000201eba420 c000000003718ca0 000000063a4a0000 =
-c000000002160db0=20
-[  175.165881] GPR28: c000000002160db0 c000000201eb9600 800000004280f033 =
-c000000201eb9600=20
-[  175.166058] NIP [c00000000000be38] masked_interrupt+0xc/0xe4
-[  175.166076] LR [c00000000001cdfc] giveup_all+0x6c/0x130
-[  175.166088] Call Trace:
-[  175.166094] [c00000002840b850] [c00000002840b8e0] 0xc00000002840b8e0 =
-(unreliable)
-[  175.166113] [c00000002840b880] [c00000000001df08] =
-__switch_to+0x108/0x4b0
-[  175.166131] [c00000002840b8e0] [c000000000ed07c0] =
-__schedule+0x2b0/0x9e0
-[  175.166147] [c00000002840b9b0] [c000000000ed0f68] schedule+0x78/0x140
-[  175.166163] [c00000002840ba20] [c000000000ed169c] =
-io_schedule+0x2c/0x50
-[  175.166182] [c00000002840ba50] [c000000000419fb4] =
-filemap_fault+0xc74/0x1240
-[  175.166199] [c00000002840bb70] [c00000000047a484] =
-__do_fault+0x64/0x240
-[  175.166215] [c00000002840bbb0] [c00000000047e598] =
-__handle_mm_fault+0x1078/0x16f0
-[  175.166232] [c00000002840bcb0] [c00000000047ed38] =
-handle_mm_fault+0x128/0x320
-[  175.166247] [c00000002840bd00] [c000000000092054] =
-___do_page_fault+0x2f4/0xb50
-[  175.166265] [c00000002840bdb0] [c000000000092ac0] =
-hash__do_page_fault+0x30/0x70
-[  175.166281] [c00000002840bde0] [c00000000009b918] =
-do_hash_fault+0x278/0x470
-[  175.166304] [c00000002840be10] [c000000000008ce8] =
-instruction_access_common_virt+0x198/0x1a0
-[  175.166325] Instruction dump:
-[  175.166337] e96a0110 e96a0198 e96a0220 e96a02a8 e96a0330 e96a03b8 =
-394a0400 4200ffdc=20
-[  175.166368] 4e800020 912d00b4 892d0933 71290025 <0b090000> 892d0933 =
-7d295378 992d0933=20
-[  175.166401] ---[ end trace 0000000000000000 ]---
-[  175.173284] =20
+This is v2 of the PASemi I2C controller IRQ enablement patch.
 
-Another instance of this crash:
+This patch adds IRQ support to the PASemi I2C controller driver to 
+increase the performace of I2C transactions on platforms with PASemi I2C 
+controllers. While the patch is primarily intended for Apple silicon 
+platforms, this patch should also help in enabling IRQ support for 
+older PASemi hardware as well should the need arise.
 
-[    3.109142] ------------[ cut here ]------------
-[    3.109151] kernel BUG at arch/powerpc/kernel/exceptions-64s.S:2831!
-[    3.109156] Oops: Exception in kernel mode, sig: 5 [#1]
-[    3.109160] LE PAGE_SIZE=3D64K MMU=3DRadix SMP NR_CPUS=3D2048 NUMA =
-pSeries
-[    3.109164] Modules linked in: sd_mod(E) t10_pi(E) crc64_rocksoft(E) =
-crc64(E) sg(E) ibmvscsi(E) scsi_transport_srp(E) ibmveth(E) fuse(E)
-[    3.109177] CPU: 14 PID: 600 Comm: fsck.ext4 Tainted: G            E  =
-    6.0.0-rc7-next-20220930 #1
-[    3.109182] Hardware name: IBM,9080-HEX POWER10 (raw) 0x800200 =
-0xf000006 of:IBM,FW1030.00 (NH1030_026) hv:phyp pSeries
-[    3.109187] NIP:  c00000000000be38 LR: c00000000001d5e8 CTR: =
-c000000000008ed0
-[    3.109191] REGS: c0000000210b3a90 TRAP: 0700   Tainted: G            =
-E       (6.0.0-rc7-next-20220930)
-[    3.109195] MSR:  8000000000021031 <SF,ME,IR,DR,LE>  CR: 44042874  =
-XER: 20040000
-[    3.109202] CFAR: c000000000008f74 IRQMASK: 1=20
-[    3.109202] GPR00: c0000000000340b4 c0000000210b3d30 c00000000135e800 =
-0000000002800000=20
-[    3.109202] GPR04: c0000000210b3e80 0000000000000000 0000000000000000 =
-0000000000000000=20
-[    3.109202] GPR08: 8000000002809033 0000000000000005 0000000000000004 =
-c00000000001c864=20
-[    3.109202] GPR12: 8000000002809033 c000000affd00300 000000013850b460 =
-0000000138514380=20
-[    3.109202] GPR16: 000000013851af10 0000000000000002 0000000138514a84 =
-000000000000dd20=20
-[    3.109202] GPR20: 000000012f682548 000000012f682498 00007fffcf59c7b0 =
-0000000000000001=20
-[    3.109202] GPR24: 0000000000b823f5 0000000000000001 0000000002002000 =
-0000000002802000=20
-[    3.109202] GPR28: 0000000002800000 c0000000210b3e80 0000000000800000 =
-0000000002800000=20
-[    3.109246] NIP [c00000000000be38] masked_interrupt+0xc/0xe4
-[    3.109254] LR [c00000000001d5e8] restore_math+0xf8/0x2e0
-[    3.109259] Call Trace:
-[    3.109260] [c0000000210b3d30] [00000001384f8f90] 0x1384f8f90 =
-(unreliable)
-[    3.109266] [c0000000210b3d80] [c0000000000340b4] =
-interrupt_exit_user_prepare_main+0x84/0x270
-[    3.109272] [c0000000210b3de0] [c000000000034314] =
-syscall_exit_prepare+0x74/0x160
-[    3.109277] [c0000000210b3e10] [c00000000000c6e0] =
-system_call_common+0x100/0x278
-[    3.109283] --- interrupt: c00 at 0x7fffa0a1e744
-[    3.109286] NIP:  00007fffa0a1e744 LR: 00007fffa0cb72b0 CTR: =
-0000000000000000
-[    3.109290] REGS: c0000000210b3e80 TRAP: 0c00   Tainted: G            =
-E       (6.0.0-rc7-next-20220930)
-[    3.109294] MSR:  800000000000f033 <SF,EE,PR,FP,ME,IR,DR,RI,LE>  CR: =
-22042472  XER: 00000000
-[    3.109303] IRQMASK: 0=20
-[    3.109303] GPR00: 00000000000000b4 00007fffcf59c6a0 00007fffa0b07300 =
-0000000000001000=20
-[    3.109303] GPR04: 00000001384f8f90 0000000000001000 0000000b823f5000 =
-00000001384f8f90=20
-[    3.109303] GPR08: 00000001384f1608 0000000000000000 0000000000000000 =
-0000000000000000=20
-[    3.109303] GPR12: 0000000000000000 00007fffa0dace90 000000013850b460 =
-0000000138514380=20
-[    3.109303] GPR16: 000000013851af10 0000000000000002 0000000138514a84 =
-000000000000dd20=20
-[    3.109303] GPR20: 000000012f682548 000000012f682498 00007fffcf59c7b0 =
-0000000000000001=20
-[    3.109303] GPR24: 0000000000b823f5 0000000000000001 00000001384f8f90 =
-00000001384f14a0=20
-[    3.109303] GPR28: 0000000b823f5000 0000000000001000 00000001384f1570 =
-0000000000000000=20
-[    3.109344] NIP [00007fffa0a1e744] 0x7fffa0a1e744
-[    3.109347] LR [00007fffa0cb72b0] 0x7fffa0cb72b0
-[    3.109350] --- interrupt: c00
-[    3.109352] Instruction dump:
-[    3.109355] e96a0110 e96a0198 e96a0220 e96a02a8 e96a0330 e96a03b8 =
-394a0400 4200ffdc=20
-[    3.109362] 4e800020 912d00b4 892d0933 71290025 <0b090000> 892d0933 =
-7d295378 992d0933=20
-[    3.109369] ---[ end trace 0000000000000000 ]=E2=80=94
+This version of the patch has been tested on an M1 Ultra Mac Studio,
+as well as an M1 MacBook Pro, and userspace launches successfully
+while using the IRQ path for I2C transactions.
 
-This BUG entry was added with=20
-commit c39fb71a54f09977eba7584ef0eebb25047097c6
-    powerpc/64s/interrupt: masked handler debug check for previous hard =
-disable
+Tested-by: Arminder Singh <arminders208@outlook.com>
+Signed-off-by: Arminder Singh <arminders208@outlook.com>
+---
+Changes from v1:
+ - moved completion setup from pasemi_platform_i2c_probe to
+   pasemi_i2c_common_probe to allow PASemi and Apple platforms to share
+   common completion setup code in case PASemi hardware gets IRQ support
+   added
+ - initialized the status variable in pasemi_smb_waitready when going down
+   the non-IRQ path
+ - removed an unnecessary cast of dev_id in the IRQ handler
+ - fixed alignment of struct member names in i2c-pasemi-core.h
+   (addresses Christophe's feedback in the original submission)
+ - IRQs are now disabled after the wait_for_completion_timeout call
+   instead of inside the IRQ handler
+   (prevents the IRQ from going off after the completion times out)
+ - changed the request_irq call to a devm_request_irq call to obviate
+   the need for a remove function and a free_irq call
+   (thanks to Sven for pointing this out in the original submission)
+ - added a reinit_completion call to pasemi_reset 
+   as a failsafe to prevent missed interrupts from causing the completion
+   to never complete (thanks to Arnd Bergmann for pointing this out)
+ - removed the bitmask variable in favor of just using the value
+   directly (it wasn't used anywhere else)
 
-CONFIG_PPC_IRQ_SOFT_MASK_DEBUG is set.
+v1 linked here: https://lore.kernel.org/linux-i2c/MN2PR01MB535838492432C910F2381F929F6F9@MN2PR01MB5358.prod.exchangelabs.com/T/#m11b3504c2667517aad7521514c99ca0e07a9381f
 
-Thanks
- - Sachin=
+Thanks for all the feedback on the previous submission, I'm sorry
+I wasn't able to answer everyone's emails, was just pretty busy, I'll
+make sure to be more responsive this time around! Also wasn't sure whether
+the v1 changelog belonged before or after the '---' so I put it after
+to keep the commit changelog short and concise.
+(This is just one patch, didn't think it needed a cover letter)
+
+ drivers/i2c/busses/i2c-pasemi-core.c     | 29 ++++++++++++++++++++----
+ drivers/i2c/busses/i2c-pasemi-core.h     |  7 +++++-
+ drivers/i2c/busses/i2c-pasemi-platform.c |  6 +++++
+ 3 files changed, 37 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/i2c/busses/i2c-pasemi-core.c b/drivers/i2c/busses/i2c-pasemi-core.c
+index 9028ffb58cc0..05af8f3575bc 100644
+--- a/drivers/i2c/busses/i2c-pasemi-core.c
++++ b/drivers/i2c/busses/i2c-pasemi-core.c
+@@ -21,6 +21,7 @@
+ #define REG_MTXFIFO	0x00
+ #define REG_MRXFIFO	0x04
+ #define REG_SMSTA	0x14
++#define REG_IMASK   0x18
+ #define REG_CTL		0x1c
+ #define REG_REV		0x28
+ 
+@@ -66,6 +67,7 @@ static void pasemi_reset(struct pasemi_smbus *smbus)
+ 		val |= CTL_EN;
+ 
+ 	reg_write(smbus, REG_CTL, val);
++	reinit_completion(&smbus->irq_completion);
+ }
+ 
+ static void pasemi_smb_clear(struct pasemi_smbus *smbus)
+@@ -81,11 +83,18 @@ static int pasemi_smb_waitready(struct pasemi_smbus *smbus)
+ 	int timeout = 10;
+ 	unsigned int status;
+ 
+-	status = reg_read(smbus, REG_SMSTA);
+-
+-	while (!(status & SMSTA_XEN) && timeout--) {
+-		msleep(1);
++	if (smbus->use_irq) {
++		reinit_completion(&smbus->irq_completion);
++		reg_write(smbus, REG_IMASK, SMSTA_XEN | SMSTA_MTN);
++		wait_for_completion_timeout(&smbus->irq_completion, msecs_to_jiffies(10));
++		reg_write(smbus, REG_IMASK, 0);
+ 		status = reg_read(smbus, REG_SMSTA);
++	} else {
++		status = reg_read(smbus, REG_SMSTA);
++		while (!(status & SMSTA_XEN) && timeout--) {
++			msleep(1);
++			status = reg_read(smbus, REG_SMSTA);
++		}
+ 	}
+ 
+ 	/* Got NACK? */
+@@ -344,10 +353,14 @@ int pasemi_i2c_common_probe(struct pasemi_smbus *smbus)
+ 
+ 	/* set up the sysfs linkage to our parent device */
+ 	smbus->adapter.dev.parent = smbus->dev;
++	smbus->use_irq = 0;
++	init_completion(&smbus->irq_completion);
+ 
+ 	if (smbus->hw_rev != PASEMI_HW_REV_PCI)
+ 		smbus->hw_rev = reg_read(smbus, REG_REV);
+ 
++	reg_write(smbus, REG_IMASK, 0);
++
+ 	pasemi_reset(smbus);
+ 
+ 	error = devm_i2c_add_adapter(smbus->dev, &smbus->adapter);
+@@ -356,3 +369,11 @@ int pasemi_i2c_common_probe(struct pasemi_smbus *smbus)
+ 
+ 	return 0;
+ }
++
++irqreturn_t pasemi_irq_handler(int irq, void *dev_id)
++{
++	struct pasemi_smbus *smbus = dev_id;
++
++	complete(&smbus->irq_completion);
++	return IRQ_HANDLED;
++}
+diff --git a/drivers/i2c/busses/i2c-pasemi-core.h b/drivers/i2c/busses/i2c-pasemi-core.h
+index 4655124a37f3..ba6d6ccf9cdc 100644
+--- a/drivers/i2c/busses/i2c-pasemi-core.h
++++ b/drivers/i2c/busses/i2c-pasemi-core.h
+@@ -7,6 +7,7 @@
+ #include <linux/i2c-smbus.h>
+ #include <linux/io.h>
+ #include <linux/kernel.h>
++#include <linux/completion.h>
+ 
+ #define PASEMI_HW_REV_PCI -1
+ 
+@@ -15,7 +16,11 @@ struct pasemi_smbus {
+ 	struct i2c_adapter	 adapter;
+ 	void __iomem		*ioaddr;
+ 	unsigned int		 clk_div;
+-	int			 hw_rev;
++	int			         hw_rev;
++	int                  use_irq;
++	struct completion    irq_completion;
+ };
+ 
+ int pasemi_i2c_common_probe(struct pasemi_smbus *smbus);
++
++irqreturn_t pasemi_irq_handler(int irq, void *dev_id);
+diff --git a/drivers/i2c/busses/i2c-pasemi-platform.c b/drivers/i2c/busses/i2c-pasemi-platform.c
+index 88a54aaf7e3c..e35945a91dbe 100644
+--- a/drivers/i2c/busses/i2c-pasemi-platform.c
++++ b/drivers/i2c/busses/i2c-pasemi-platform.c
+@@ -49,6 +49,7 @@ static int pasemi_platform_i2c_probe(struct platform_device *pdev)
+ 	struct pasemi_smbus *smbus;
+ 	u32 frequency;
+ 	int error;
++	int irq_num;
+ 
+ 	data = devm_kzalloc(dev, sizeof(struct pasemi_platform_i2c_data),
+ 			    GFP_KERNEL);
+@@ -82,6 +83,11 @@ static int pasemi_platform_i2c_probe(struct platform_device *pdev)
+ 	if (error)
+ 		goto out_clk_disable;
+ 
++	irq_num = platform_get_irq(pdev, 0);
++	error = devm_request_irq(smbus->dev, irq_num, pasemi_irq_handler, 0, "pasemi_apple_i2c", (void *)smbus);
++
++	if (!error)
++		smbus->use_irq = 1;
+ 	platform_set_drvdata(pdev, data);
+ 
+ 	return 0;
+-- 
+2.34.1
+
