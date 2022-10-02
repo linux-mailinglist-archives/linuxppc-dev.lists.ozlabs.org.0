@@ -1,87 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AED75F22C7
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Oct 2022 12:55:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47F935F22F2
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Oct 2022 13:31:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MgLTN24kcz3fjk
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Oct 2022 21:55:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MgMHR23XTz3byL
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Oct 2022 22:31:31 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=R3o+A/S4;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=svenpeter.dev header.i=@svenpeter.dev header.a=rsa-sha256 header.s=fm2 header.b=3M1bqt4u;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=a4YoVWTY;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=sv@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=svenpeter.dev (client-ip=64.147.123.25; helo=wout2-smtp.messagingengine.com; envelope-from=sven@svenpeter.dev; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=R3o+A/S4;
+	dkim=pass (2048-bit key; unprotected) header.d=svenpeter.dev header.i=@svenpeter.dev header.a=rsa-sha256 header.s=fm2 header.b=3M1bqt4u;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=a4YoVWTY;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+X-Greylist: delayed 541 seconds by postgrey-1.36 at boromir; Sun, 02 Oct 2022 22:30:52 AEDT
+Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com [64.147.123.25])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MgLFs2sdsz3cgV
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 Oct 2022 21:45:05 +1100 (AEDT)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 292AGb53003303;
-	Sun, 2 Oct 2022 10:44:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=seXyQs5BLmfK17DAhC+IPaUaFxSwG3PEDBAqBYajgPI=;
- b=R3o+A/S4UBJjZbB5bgYgmkxQJ+A06g9Nm/AA5Hl8VkMfTtoPSLwO/IGAXc+eUaerIcnG
- YDL2SXv/OIY/EZB/5i9ntE6mdL1hKRuXH70g7i4b5m1AXksW655wQbcTRxs+SYa5ezpI
- bi/LGFJDje0NaSoZW0T/UJoeriR2ZY/tvMOvLwvuWlvXpcddi25dlcJE0T70fE1H3wPK
- 9veo/x3mqqIvrr2yBpRmfIJBJwU1yQUoFayiyLgknYKwhpQ3SdCU3Ot14S8Oi29RdGJw
- WEMyEvNSAQegIE9x5FrM1ahD9LRIeHj4QsQXc4s+38vcRRu7wA5ljlsxQzSxJ4hXaWTi JA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3jxy659a66-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 02 Oct 2022 10:44:50 +0000
-Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 292AiWEQ026062;
-	Sun, 2 Oct 2022 10:44:50 GMT
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3jxy659a5m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 02 Oct 2022 10:44:50 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-	by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 292AaDgd001629;
-	Sun, 2 Oct 2022 10:44:48 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
-	by ppma04ams.nl.ibm.com with ESMTP id 3jxd691ax9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 02 Oct 2022 10:44:47 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
-	by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 292AijvN37880090
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 2 Oct 2022 10:44:45 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C672B52050;
-	Sun,  2 Oct 2022 10:44:45 +0000 (GMT)
-Received: from li-c3569c4c-1ef8-11b2-a85c-ee139cda3133.ibm.com.com (unknown [9.43.71.20])
-	by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 5EF3E5204E;
-	Sun,  2 Oct 2022 10:44:42 +0000 (GMT)
-From: Sathvika Vasireddy <sv@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v4 16/16] objtool/powerpc: Add --mcount specific implementation
-Date: Sun,  2 Oct 2022 16:12:40 +0530
-Message-Id: <20221002104240.1316480-17-sv@linux.ibm.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20221002104240.1316480-1-sv@linux.ibm.com>
-References: <20221002104240.1316480-1-sv@linux.ibm.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: sNshyS9yEL-0rvn-l91_QWKv7gvAjVIz
-X-Proofpoint-ORIG-GUID: Lb_FgI5KlZVKH_RcUW3iQVGLBx62xId8
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
- definitions=2022-10-01_15,2022-09-29_03,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 malwarescore=0
- impostorscore=0 priorityscore=1501 clxscore=1015 mlxscore=0 spamscore=0
- mlxlogscore=972 bulkscore=0 lowpriorityscore=0 suspectscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2209130000
- definitions=main-2210020068
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MgMGh5mrGz2xrk
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 Oct 2022 22:30:52 +1100 (AEDT)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+	by mailout.west.internal (Postfix) with ESMTP id 85FAE320076F;
+	Sun,  2 Oct 2022 07:21:43 -0400 (EDT)
+Received: from imap47 ([10.202.2.97])
+  by compute2.internal (MEProxy); Sun, 02 Oct 2022 07:21:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=svenpeter.dev;
+	 h=cc:cc:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:sender
+	:subject:subject:to:to; s=fm2; t=1664709703; x=1664796103; bh=Xy
+	TkOYjp7qHSJy7Vh33q2FfWjqZiZBOoMaARDU2oKvc=; b=3M1bqt4us/hBBA0KeR
+	OjlQuA2nk2ZakA7U7qKNH/r256oyzfooo7Q6u8iasAtgER/i6bv/B0LEsrJXeITH
+	lqAhWs7R/OmVgRPk+6oTmWcauWD/douNH6Chz0nwBdni5jl6hc2B+ZKRmfuJso2L
+	lUgNhrMFUIr60NThEZgMyAL7dpHAXH3p0cPGdVMma44PeGOLQ8EIBvBpKyQzC/e6
+	0aSPGilcVQjUOFM23FKs7TInHjscHV8ZBofbR1rqvHGy4Zm3cEhPN9RzDMRWJesE
+	ekGf0kTRrpxUJdKu7FwI1Ob8fAneaupPR+GUotSeRcUkGYFQoLof0+j2HmRUJ0mb
+	Wcig==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
+	:feedback-id:from:from:in-reply-to:in-reply-to:message-id
+	:mime-version:references:reply-to:sender:subject:subject:to:to
+	:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm2; t=1664709703; x=1664796103; bh=XyTkOYjp7qHSJy7Vh33q2FfWjqZi
+	ZBOoMaARDU2oKvc=; b=a4YoVWTYQ3R8nepw6FHUQjUxLg+fcyJqYmr5SfFGNdf9
+	fa5UXzO8JbOiwtjQtZWWhwXDD8nlcxx+WUwnUi2Ih4x8IMYQZ3L4q1u6gXQfiYie
+	uUevIQy6H/Pg7CyrDEtBashRUkqFE0PSKDqufDXf+cfi0XpQ13c2/8/sRErHbRQ+
+	36UGBh/3nwk+tKLx+UfyhjA3MRMnNUuz1SGv5QqvqgW5FnrjbLPua4eH+wz6TeDL
+	3jsdR8nrssKz+giMauZum5Wbr8yelgUwcY1UVBk+tKwOszVbugpkUldcQSL7lKqG
+	1wTRM896DT7bhseO1GujvnISlpnUc/0I1DnJ9omjHg==
+X-ME-Sender: <xms:RXQ5Y0qTzBklDuYi5rv8XNZxW7ShLCkz3rR3q8cSJ9uEbWhWj6hd8Q>
+    <xme:RXQ5Y6pOnQRR_4jNLMZXUr2vLFNs_tvrZF20naPkFPEreECtZAduOZBaoB4jbE0Bb
+    Vnw-KhK4fbEge_oiBw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfeehjedgfeelucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedfufhv
+    vghnucfrvghtvghrfdcuoehsvhgvnhesshhvvghnphgvthgvrhdruggvvheqnecuggftrf
+    grthhtvghrnhepkeelkeduledvvdfhfefhlefgffefgfdvheejgeejhfehjeejgffffeei
+    jedtteejnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiii
+    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehsvhgvnhesshhvvghnphgvthgvrhdr
+    uggvvh
+X-ME-Proxy: <xmx:RXQ5Y5OSvzPUufzNLdSPO_KfGp1n0ApWg0KCkqfyGLhVL-g0OubHiA>
+    <xmx:RXQ5Y77mqARLDEGCtEJH6jIYalHc__2d22NSDI0qaGXrWdsxruV-fw>
+    <xmx:RXQ5Yz63pHKOyQonFZb53K6zPyejzBeY8yRXARkquyXm8qbuS4v4sg>
+    <xmx:R3Q5YwyVvz0jvkEeD86Qt0f45RFxLAHgZZ2OK8hXHN83e12c6cKYrA>
+Feedback-ID: i51094778:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 8B28DA6007C; Sun,  2 Oct 2022 07:21:41 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.7.0-alpha0-968-g04df58079d-fm-20220921.001-g04df5807
+Mime-Version: 1.0
+Message-Id: <88f8c24a-70df-4b47-a3e8-033f6580d0d4@app.fastmail.com>
+In-Reply-To:  <MN2PR01MB535821C8058C7814B2F8EEDF9F599@MN2PR01MB5358.prod.exchangelabs.com>
+References:  <MN2PR01MB535821C8058C7814B2F8EEDF9F599@MN2PR01MB5358.prod.exchangelabs.com>
+Date: Sun, 02 Oct 2022 13:21:19 +0200
+From: "Sven Peter" <sven@svenpeter.dev>
+To: "Arminder Singh" <arminders208@outlook.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] i2c/pasemi: PASemi I2C controller IRQ enablement
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,78 +94,215 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: peterz@infradead.org, npiggin@gmail.com, linux-kernel@vger.kernel.org, aik@ozlabs.ru, mingo@redhat.com, sv@linux.ibm.com, rostedt@goodmis.org, jpoimboe@redhat.com, naveen.n.rao@linux.vnet.ibm.com, mbenes@suse.cz, chenzhongjin@huawei.com
+Cc: linux-arm-kernel@lists.infradead.org, Darren Stevens <darren@stevens-zone.net>, Christian Zigotzky <chzigotzky@xenosoft.de>, Hector Martin <marcan@marcan.st>, Paul Mackerras <paulus@samba.org>, linux-i2c@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Alyssa Rosenzweig <alyssa@rosenzweig.io>, asahi@lists.linux.dev
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This patch enables objtool --mcount on powerpc, and adds implementation
-specific to powerpc.
+Hi,
 
-Signed-off-by: Sathvika Vasireddy <sv@linux.ibm.com>
----
- arch/powerpc/Kconfig                          |  1 +
- tools/objtool/arch/powerpc/decode.c           | 16 ++++++++++++++++
- tools/objtool/arch/powerpc/include/arch/elf.h |  2 ++
- 3 files changed, 19 insertions(+)
+Looks almost good to me, just a few minor things:
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index dc05cd23c233..6be2e68fa9eb 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -238,6 +238,7 @@ config PPC
- 	select HAVE_NMI				if PERF_EVENTS || (PPC64 && PPC_BOOK3S)
- 	select HAVE_OPTPROBES
- 	select HAVE_OBJTOOL			if PPC32 || MPROFILE_KERNEL
-+	select HAVE_OBJTOOL_MCOUNT		if HAVE_OBJTOOL
- 	select HAVE_PERF_EVENTS
- 	select HAVE_PERF_EVENTS_NMI		if PPC64
- 	select HAVE_PERF_REGS
-diff --git a/tools/objtool/arch/powerpc/decode.c b/tools/objtool/arch/powerpc/decode.c
-index dcd0975cad6b..01cade98b49e 100644
---- a/tools/objtool/arch/powerpc/decode.c
-+++ b/tools/objtool/arch/powerpc/decode.c
-@@ -9,6 +9,11 @@
- #include <objtool/builtin.h>
- #include <objtool/endianness.h>
- 
-+int arch_ftrace_match(char *name)
-+{
-+	return !strcmp(name, "_mcount");
-+}
-+
- unsigned long arch_dest_reloc_offset(int addend)
- {
- 	return addend;
-@@ -50,6 +55,17 @@ int arch_decode_instruction(struct objtool_file *file, const struct section *sec
- 	typ = INSN_OTHER;
- 	imm = 0;
- 
-+	switch (opcode) {
-+	case 18: /* b[l][a] */
-+		if ((insn & 3) == 1) /* bl */
-+			typ = INSN_CALL;
-+
-+		imm = insn & 0x3fffffc;
-+		if (imm & 0x2000000)
-+			imm -= 0x4000000;
-+		break;
-+	}
-+
- 	if (opcode == 1)
- 		*len = 8;
- 	else
-diff --git a/tools/objtool/arch/powerpc/include/arch/elf.h b/tools/objtool/arch/powerpc/include/arch/elf.h
-index 3c8ebb7d2a6b..73f9ae172fe5 100644
---- a/tools/objtool/arch/powerpc/include/arch/elf.h
-+++ b/tools/objtool/arch/powerpc/include/arch/elf.h
-@@ -4,5 +4,7 @@
- #define _OBJTOOL_ARCH_ELF
- 
- #define R_NONE R_PPC_NONE
-+#define R_ABS64 R_PPC64_ADDR64
-+#define R_ABS32 R_PPC_ADDR32
- 
- #endif /* _OBJTOOL_ARCH_ELF */
--- 
-2.31.1
+On Sun, Oct 2, 2022, at 00:25, Arminder Singh wrote:
+> Hello,
+>
+> This is v2 of the PASemi I2C controller IRQ enablement patch.
 
+This shouldn't be inside the commit description.
+
+>
+> This patch adds IRQ support to the PASemi I2C controller driver to 
+> increase the performace of I2C transactions on platforms with PASemi I2C 
+> controllers. While the patch is primarily intended for Apple silicon 
+> platforms, this patch should also help in enabling IRQ support for 
+> older PASemi hardware as well should the need arise.
+
+This is probably the only paragraph that should be the entire commit description.
+
+>
+> This version of the patch has been tested on an M1 Ultra Mac Studio,
+> as well as an M1 MacBook Pro, and userspace launches successfully
+> while using the IRQ path for I2C transactions.
+>
+> Tested-by: Arminder Singh <arminders208@outlook.com>
+
+I think it's usually implied that you tested your own patches ;)
+
+> Signed-off-by: Arminder Singh <arminders208@outlook.com>
+> ---
+> Changes from v1:
+>  - moved completion setup from pasemi_platform_i2c_probe to
+>    pasemi_i2c_common_probe to allow PASemi and Apple platforms to share
+>    common completion setup code in case PASemi hardware gets IRQ support
+>    added
+>  - initialized the status variable in pasemi_smb_waitready when going down
+>    the non-IRQ path
+>  - removed an unnecessary cast of dev_id in the IRQ handler
+>  - fixed alignment of struct member names in i2c-pasemi-core.h
+>    (addresses Christophe's feedback in the original submission)
+>  - IRQs are now disabled after the wait_for_completion_timeout call
+>    instead of inside the IRQ handler
+>    (prevents the IRQ from going off after the completion times out)
+>  - changed the request_irq call to a devm_request_irq call to obviate
+>    the need for a remove function and a free_irq call
+>    (thanks to Sven for pointing this out in the original submission)
+>  - added a reinit_completion call to pasemi_reset 
+>    as a failsafe to prevent missed interrupts from causing the completion
+>    to never complete (thanks to Arnd Bergmann for pointing this out)
+>  - removed the bitmask variable in favor of just using the value
+>    directly (it wasn't used anywhere else)
+>
+> v1 linked here: 
+> https://lore.kernel.org/linux-i2c/MN2PR01MB535838492432C910F2381F929F6F9@MN2PR01MB5358.prod.exchangelabs.com/T/#m11b3504c2667517aad7521514c99ca0e07a9381f
+>
+> Thanks for all the feedback on the previous submission, I'm sorry
+> I wasn't able to answer everyone's emails, was just pretty busy, I'll
+> make sure to be more responsive this time around! Also wasn't sure whether
+> the v1 changelog belonged before or after the '---' so I put it after
+> to keep the commit changelog short and concise.
+> (This is just one patch, didn't think it needed a cover letter)
+>
+>  drivers/i2c/busses/i2c-pasemi-core.c     | 29 ++++++++++++++++++++----
+>  drivers/i2c/busses/i2c-pasemi-core.h     |  7 +++++-
+>  drivers/i2c/busses/i2c-pasemi-platform.c |  6 +++++
+>  3 files changed, 37 insertions(+), 5 deletions(-)
+>
+> diff --git a/drivers/i2c/busses/i2c-pasemi-core.c 
+> b/drivers/i2c/busses/i2c-pasemi-core.c
+> index 9028ffb58cc0..05af8f3575bc 100644
+> --- a/drivers/i2c/busses/i2c-pasemi-core.c
+> +++ b/drivers/i2c/busses/i2c-pasemi-core.c
+> @@ -21,6 +21,7 @@
+>  #define REG_MTXFIFO	0x00
+>  #define REG_MRXFIFO	0x04
+>  #define REG_SMSTA	0x14
+> +#define REG_IMASK   0x18
+
+This doesn't seem to be aligned correctly, this file seems to use a tab
+to separate the register name and the offset and you used spaces here.
+
+>  #define REG_CTL		0x1c
+>  #define REG_REV		0x28
+> 
+> @@ -66,6 +67,7 @@ static void pasemi_reset(struct pasemi_smbus *smbus)
+>  		val |= CTL_EN;
+> 
+>  	reg_write(smbus, REG_CTL, val);
+> +	reinit_completion(&smbus->irq_completion);
+>  }
+> 
+>  static void pasemi_smb_clear(struct pasemi_smbus *smbus)
+> @@ -81,11 +83,18 @@ static int pasemi_smb_waitready(struct pasemi_smbus *smbus)
+>  	int timeout = 10;
+>  	unsigned int status;
+> 
+> -	status = reg_read(smbus, REG_SMSTA);
+> -
+> -	while (!(status & SMSTA_XEN) && timeout--) {
+> -		msleep(1);
+> +	if (smbus->use_irq) {
+> +		reinit_completion(&smbus->irq_completion);
+> +		reg_write(smbus, REG_IMASK, SMSTA_XEN | SMSTA_MTN);
+> +		wait_for_completion_timeout(&smbus->irq_completion, msecs_to_jiffies(10));
+> +		reg_write(smbus, REG_IMASK, 0);
+>  		status = reg_read(smbus, REG_SMSTA);
+> +	} else {
+> +		status = reg_read(smbus, REG_SMSTA);
+> +		while (!(status & SMSTA_XEN) && timeout--) {
+> +			msleep(1);
+> +			status = reg_read(smbus, REG_SMSTA);
+> +		}
+>  	}
+> 
+>  	/* Got NACK? */
+> @@ -344,10 +353,14 @@ int pasemi_i2c_common_probe(struct pasemi_smbus *smbus)
+> 
+>  	/* set up the sysfs linkage to our parent device */
+>  	smbus->adapter.dev.parent = smbus->dev;
+> +	smbus->use_irq = 0;
+> +	init_completion(&smbus->irq_completion);
+> 
+>  	if (smbus->hw_rev != PASEMI_HW_REV_PCI)
+>  		smbus->hw_rev = reg_read(smbus, REG_REV);
+> 
+> +	reg_write(smbus, REG_IMASK, 0);
+> +
+>  	pasemi_reset(smbus);
+> 
+>  	error = devm_i2c_add_adapter(smbus->dev, &smbus->adapter);
+> @@ -356,3 +369,11 @@ int pasemi_i2c_common_probe(struct pasemi_smbus *smbus)
+> 
+>  	return 0;
+>  }
+> +
+> +irqreturn_t pasemi_irq_handler(int irq, void *dev_id)
+> +{
+> +	struct pasemi_smbus *smbus = dev_id;
+> +
+> +	complete(&smbus->irq_completion);
+> +	return IRQ_HANDLED;
+> +}
+> diff --git a/drivers/i2c/busses/i2c-pasemi-core.h 
+> b/drivers/i2c/busses/i2c-pasemi-core.h
+> index 4655124a37f3..ba6d6ccf9cdc 100644
+> --- a/drivers/i2c/busses/i2c-pasemi-core.h
+> +++ b/drivers/i2c/busses/i2c-pasemi-core.h
+> @@ -7,6 +7,7 @@
+>  #include <linux/i2c-smbus.h>
+>  #include <linux/io.h>
+>  #include <linux/kernel.h>
+> +#include <linux/completion.h>
+> 
+>  #define PASEMI_HW_REV_PCI -1
+> 
+> @@ -15,7 +16,11 @@ struct pasemi_smbus {
+>  	struct i2c_adapter	 adapter;
+>  	void __iomem		*ioaddr;
+>  	unsigned int		 clk_div;
+> -	int			 hw_rev;
+> +	int			         hw_rev;
+> +	int                  use_irq;
+> +	struct completion    irq_completion;
+
+This doesn't seem to be aligned correctly and the hw_rev line
+doesn't have to be changed.
+
+>  };
+> 
+>  int pasemi_i2c_common_probe(struct pasemi_smbus *smbus);
+> +
+> +irqreturn_t pasemi_irq_handler(int irq, void *dev_id);
+> diff --git a/drivers/i2c/busses/i2c-pasemi-platform.c 
+> b/drivers/i2c/busses/i2c-pasemi-platform.c
+> index 88a54aaf7e3c..e35945a91dbe 100644
+> --- a/drivers/i2c/busses/i2c-pasemi-platform.c
+> +++ b/drivers/i2c/busses/i2c-pasemi-platform.c
+> @@ -49,6 +49,7 @@ static int pasemi_platform_i2c_probe(struct 
+> platform_device *pdev)
+>  	struct pasemi_smbus *smbus;
+>  	u32 frequency;
+>  	int error;
+> +	int irq_num;
+> 
+>  	data = devm_kzalloc(dev, sizeof(struct pasemi_platform_i2c_data),
+>  			    GFP_KERNEL);
+> @@ -82,6 +83,11 @@ static int pasemi_platform_i2c_probe(struct 
+> platform_device *pdev)
+>  	if (error)
+>  		goto out_clk_disable;
+> 
+> +	irq_num = platform_get_irq(pdev, 0);
+> +	error = devm_request_irq(smbus->dev, irq_num, pasemi_irq_handler, 0, 
+> "pasemi_apple_i2c", (void *)smbus);
+> +
+> +	if (!error)
+> +		smbus->use_irq = 1;
+>  	platform_set_drvdata(pdev, data);
+> 
+>  	return 0;
+> -- 
+> 2.34.1
+
+
+Best,
+
+Sven
