@@ -1,71 +1,90 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CEB35F20A2
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Oct 2022 01:48:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78E3C5F2221
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Oct 2022 10:52:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Mg3gn5SgQz3c3m
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Oct 2022 10:48:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MgHmR3DHRz3c9W
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Oct 2022 19:52:55 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=jPOmCakh;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=E06zv8L0;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::435; helo=mail-wr1-x435.google.com; envelope-from=irogers@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sachinp@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=jPOmCakh;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=E06zv8L0;
 	dkim-atps=neutral
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mg3g54hxnz2xKh
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 Oct 2022 10:47:28 +1100 (AEDT)
-Received: by mail-wr1-x435.google.com with SMTP id j7so6563668wrr.3
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 01 Oct 2022 16:47:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date;
-        bh=WdE1GAqIxOc+81x6Yr68a7Ut3Qj6nxavvS5wTZ+mbmE=;
-        b=jPOmCakhUgr/DAy2F4ihZ8eaK0q2eImTAvFjG3GR+qmyuAoTPYZguWwpcDFYoDi99i
-         OOloW0y+JCU+M944fHnMC+R6pM419rdilfq6Zpt10pg+aSwLJEs/IP4wumY2iEf6Vr89
-         Jy78fq2BU14xe+ZMw8HyHwh7AVrOCKWOSp/WkOXY2ODeMEKgydS1R2YxRaUkm1kWH00k
-         xLDZFFTNniPY5XbHCb3bwMsa/R3I6Ufc30E5SuKnX7WToHwHwfazU23NW3Yo+VeZ4mo7
-         pQYD9/MZRuoVGCS91ruMbRizfBHTAjdeHu0vb1GYf6P3vov+R1iffj1PPlEu8ibjTCRH
-         IdQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date;
-        bh=WdE1GAqIxOc+81x6Yr68a7Ut3Qj6nxavvS5wTZ+mbmE=;
-        b=Moqn3m6CdtP3QA1QseDYtvkVbSHwHEhkgN5cFLDtkgXf8n3R+gpEEWwAQRLOPylUTn
-         qnkLPCOAaTVS5j6Y1veq0Wlq7Dch8LD1qxM6qNpgrYqVDY2xbI8tbKQ7TZKbs0qzEa3t
-         BGvV526KpyaDp3TBQNbFoVaexnJnbsr+2TvjCl8R3S+iCzBkRnMv1Lj8+UY46n8VTE/a
-         g1kZs3muMNYKLUodl6mXTCdP2yo+BUyk6r37MJzZcfINC7jI/eJTmImxGORc93NAPPsD
-         nVuNtWfsUYpKe5jsS3i91s5s6XmG7FH2WuWby/m9jYOlOWlYNRPWfuzh9MVcwf06ZDXm
-         VJQw==
-X-Gm-Message-State: ACrzQf3kYIt+eispmIycrw3JWRxgSAvpXjlxI4hWCPwbS4z2vfxsrVE4
-	BiRJKGprCtpblZPfjZK8/08kZ3I+8ga4g1eJN14m8w==
-X-Google-Smtp-Source: AMsMyM6wt1g+JwpGzIli+b6uwIZgpdF81sTWYAZ3T+iN5tQCxkTPNpPWiYX5hl6khWgGT+NVU6p4sUJJBeZLzhyLovA=
-X-Received: by 2002:a5d:64a8:0:b0:226:f3f3:9914 with SMTP id
- m8-20020a5d64a8000000b00226f3f39914mr9041416wrp.343.1664668040487; Sat, 01
- Oct 2022 16:47:20 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220913115717.36191-1-atrajeev@linux.vnet.ibm.com>
- <4792ef3a-8790-a0d4-50f2-4917874d81d6@arm.com> <82D5587E-593A-43A7-92D7-7E095E2BE9A9@linux.vnet.ibm.com>
- <6627ae9a-91e3-0923-1234-54e0fc3f4916@arm.com>
-In-Reply-To: <6627ae9a-91e3-0923-1234-54e0fc3f4916@arm.com>
-From: Ian Rogers <irogers@google.com>
-Date: Sat, 1 Oct 2022 16:47:08 -0700
-Message-ID: <CAP-5=fVBzLfhfwPjxE_9DNeesPaPxf3k0b5T5S6THzB1H85mrA@mail.gmail.com>
-Subject: Re: [PATCH] tools/perf: Fix aggr_printout to display cpu field
- irrespective of core value
-To: James Clark <james.clark@arm.com>
-Content-Type: text/plain; charset="UTF-8"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MgHlh6lrBz30B1
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 Oct 2022 19:52:16 +1100 (AEDT)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 292543rX017170;
+	Sun, 2 Oct 2022 08:52:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : content-type :
+ content-transfer-encoding : mime-version : subject : message-id : date :
+ cc : to; s=pp1; bh=SwR1oUr1WgHnWvjW43WdBeu3u2LJMgFnQxvS3yb0Fu8=;
+ b=E06zv8L0aEkjFvQZtYZEf6yurrIav6HUK0E7h0m+jDYsdnxlmLk7yQXKqfR7D9Xh6hJl
+ MRI9Kv+HechrGl0Ku8GGgw/bk7Hwa/MB4uHVQPbon+J6LRYl4zNiJc+peFq6fsSKuycF
+ /uWqet++iP614vKiQY5IaK0AcEhDt4g54NiobuvpjBItoIn2MRLXuaBWSFBAIXKFH+RW
+ xKOeCEqsc5PEPmbhB82guT8/KNihD4Eedq5Oi92deLgOIzfYGJcjWZcI0nnaPj2cRD8A
+ AkSRIJmE3V7Hcn8C2XKFyrSr23EXb48Wxq3uNlPWoreUcpqhNr2W/uBQnzwvcNWEnkoe /g== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jxxvb03db-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 02 Oct 2022 08:52:07 +0000
+Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2928q6DR013035;
+	Sun, 2 Oct 2022 08:52:06 GMT
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jxxvb03cq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 02 Oct 2022 08:52:06 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+	by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2928o33c010389;
+	Sun, 2 Oct 2022 08:52:04 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+	by ppma03ams.nl.ibm.com with ESMTP id 3jxd6917yt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 02 Oct 2022 08:52:04 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
+	by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2928q2Yf36241886
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sun, 2 Oct 2022 08:52:02 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 427F2A4053;
+	Sun,  2 Oct 2022 08:52:02 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C4791A4040;
+	Sun,  2 Oct 2022 08:52:00 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.43.11.7])
+	by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Sun,  2 Oct 2022 08:52:00 +0000 (GMT)
+From: Sachin Sant <sachinp@linux.ibm.com>
+Content-Type: text/plain;
+	charset=utf-8
 Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.1\))
+Subject: [6.0.0-rc7-next-20220930] kernel BUG at
+ arch/powerpc/kernel/exceptions-64s.S:2831!
+Message-Id: <85478710-25C6-42DB-9680-92ABD83C662C@linux.ibm.com>
+Date: Sun, 2 Oct 2022 14:21:59 +0530
+To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+X-Mailer: Apple Mail (2.3696.120.41.1.1)
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 9lY1iiZ5fpfq4nDO-nqGlf_RxHiaBHB0
+X-Proofpoint-ORIG-GUID: GK6Z_g_-Tg2dUz_B0cEtyQv6hBv6PHUg
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
+ definitions=2022-10-01_15,2022-09-29_03,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0 mlxscore=0
+ clxscore=1011 mlxlogscore=769 adultscore=0 priorityscore=1501
+ malwarescore=0 phishscore=0 suspectscore=0 impostorscore=0 spamscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2209130000 definitions=main-2210020054
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,351 +96,181 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, Nageswara Sastry <rnsastry@linux.ibm.com>, Kajol Jain <kjain@linux.ibm.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, linux-perf-users@vger.kernel.org, maddy@linux.vnet.ibm.com, Jiri Olsa <jolsa@kernel.org>, Disha Goel <disgoel@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Sep 29, 2022 at 5:56 AM James Clark <james.clark@arm.com> wrote:
->
->
->
-> On 29/09/2022 09:49, Athira Rajeev wrote:
-> >
-> >
-> >> On 28-Sep-2022, at 9:05 PM, James Clark <james.clark@arm.com> wrote:
-> >>
-> >>
-> >>
-> >
-> > Hi James,
-> >
-> > Thanks for looking at the patch and sharing review comments.
-> >
-> >> On 13/09/2022 12:57, Athira Rajeev wrote:
-> >>> perf stat includes option to specify aggr_mode to display
-> >>> per-socket, per-core, per-die, per-node counter details.
-> >>> Also there is option -A ( AGGR_NONE, -no-aggr ), where the
-> >>> counter values are displayed for each cpu along with "CPU"
-> >>> value in one field of the output.
-> >>>
-> >>> Each of the aggregate mode uses the information fetched
-> >>> from "/sys/devices/system/cpu/cpuX/topology" like core_id,
-> >>
-> >> I thought that this wouldn't apply to the cpu field because cpu is
-> >> basically interchangeable as an index in cpumap, rather than anything
-> >> being read from the topology file.
-> >
-> > The cpu value is filled in this function:
-> >
-> > Function : aggr_cpu_id__cpu
-> > Code: util/cpumap.c
-> >
-> >>
-> >>> physical_package_id. Utility functions in "cpumap.c" fetches
-> >>> this information and populates the socket id, core id, cpu etc.
-> >>> If the platform does not expose the topology information,
-> >>> these values will be set to -1. Example, in case of powerpc,
-> >>> details like physical_package_id is restricted to be exposed
-> >>> in pSeries platform. So id.socket, id.core, id.cpu all will
-> >>> be set as -1.
-> >>>
-> >>> In case of displaying socket or die value, there is no check
-> >>> done in the "aggr_printout" function to see if it points to
-> >>> valid socket id or die. But for displaying "cpu" value, there
-> >>> is a check for "if (id.core > -1)". In case of powerpc pSeries
-> >>> where detail like physical_package_id is restricted to be
-> >>> exposed, id.core will be set to -1. Hence the column or field
-> >>> itself for CPU won't be displayed in the output.
-> >>>
-> >>> Result for per-socket:
-> >>>
-> >>> <<>>
-> >>> perf stat -e branches --per-socket -a true
-> >>>
-> >>> Performance counter stats for 'system wide':
-> >>>
-> >>> S-1      32            416,851      branches
-> >>> <<>>
-> >>>
-> >>> Here S has -1 in above result. But with -A option which also
-> >>> expects CPU in one column in the result, below is observed.
-> >>>
-> >>> <<>>
-> >>> /bin/perf stat -e instructions -A -a true
-> >>>
-> >>> Performance counter stats for 'system wide':
-> >>>
-> >>>            47,146      instructions
-> >>>            45,226      instructions
-> >>>            43,354      instructions
-> >>>            45,184      instructions
-> >>> <<>>
-> >>>
-> >>> If the cpu id value is pointing to -1 also, it makes sense
-> >>> to display the column in the output to replicate the behaviour
-> >>> or to be in precedence with other aggr options(like per-socket,
-> >>> per-core). Remove the check "id.core" so that CPU field gets
-> >>> displayed in the output.
-> >>
-> >> Why would you want to print -1 out? Seems like the if statement was a
-> >> good one to me, otherwise the output looks a bit broken to users. Are
-> >> the other aggregation modes even working if -1 is set for socket and
-> >> die? Maybe we need to not print -1 in those cases or exit earlier with=
- a
-> >> failure.
-> >>
-> >> The -1 value has a specific internal meaning which is "to not
-> >> aggregate". It doesn't mean "not set".
-> >
-> > Currently, this check is done only for printing cpu value.
-> > For socket/die/core values, this check is not done. Pasting an
-> > example snippet from a powerpc system ( specifically from pseries platf=
-orm where
-> > the value is set to -1 )
-> >
-> > ./perf stat --per-core -a -C 1 true
-> >
-> >  Performance counter stats for 'system wide':
-> >
-> > S-1-D-1-C-1          1               1.06 msec cpu-clock               =
-         #    1.018 CPUs utilized
-> > S-1-D-1-C-1          1                  2      context-switches        =
-         #    1.879 K/sec
-> > S-1-D-1-C-1          1                  0      cpu-migrations          =
-         #    0.000 /sec
-> >
-> > Here though the value is -1, we are displaying it. Where as in case of =
-cpu, the first column will be
-> > empty since we do a check before printing.
-> >
-> > Example:
-> >
-> > ./perf stat --per-core -A -C 1 true
-> >
-> >  Performance counter stats for 'CPU(s) 1':
-> >
-> >               0.88 msec cpu-clock                        #    1.022 CPU=
-s utilized
-> >                  2      context-switches
-> >                  0      cpu-migrations
-> >
-> >
-> > No sure, whether there are scripts out there, which consume the current=
- format and
-> > not displaying -1 may break it. That is why we tried with change to rem=
-ove check for cpu, similar to
-> > other modes like socket, die, core etc.
->
-> I wouldn't worry about that because there are json and CSV modes which
-> are machine readable, and -1 is already not always displayed. If
-> anything this change here is also likely to break parsing by adding -1
-> where it wasn't before.
->
-> >
-> > Also perf code ie =E2=80=9Caggr_cpu_id__empty=E2=80=9D in util/cpumap.c=
- initialises the
-> > values to -1 . I was checking to see where we are mapping -1 to =E2=80=
-=9Cto not aggregate=E2=80=9D.
-> > What I could find is AGGR_NONE ( which is for no-aggr ) has value as ze=
-ro.
-> >
-> > Reference: defined in util/stat.h
-> >
-> > enum aggr_mode {
-> >         AGGR_NONE,
-> >
->
-> That enum is never written to any of the cpumap members, that defines
-> the mode of how to fill the cpu map instead. 0 is a valid value, for
-> example "CPU 0". -1 is used as a special case and shouldn't be displayed
-> IMO.
->
-> Did you see my comment in the code below about the bad merge? Could that
-> not be related to your issue?
+With recent versions of linux-next I am observing kernel crashes on =
+Power server.
+I saw this crash once just after boot. I also saw similar crash while =
+compiling a
+Kernel or during a git clone of kernel source. Seem to occur at random =
+times.
 
-I'm suspicious of this too. In Claire's patch:
+[  175.165592] ------------[ cut here ]------------
+[  175.165618] kernel BUG at arch/powerpc/kernel/exceptions-64s.S:2831!
+[  175.165637] Oops: Exception in kernel mode, sig: 5 [#1]
+[  175.165647] LE PAGE_SIZE=3D64K MMU=3DHash SMP NR_CPUS=3D2048 NUMA =
+pSeries
+[  175.165657] Modules linked in: dm_mod(E) nft_fib_inet(E) =
+nft_fib_ipv4(E) nft_fib_ipv6(E) nft_fib(E) nft_reject_inet(E) =
+nf_reject_ipv4(E) nf_reject_ipv6(E) nft_reject(E) nft_ct(E) =
+nft_chain_nat(E) nf_nat(E) nf_conntrack(E) nf_defrag_ipv6(E) =
+nf_defrag_ipv4(E) bonding(E) rfkill(E) tls(E) ip_set(E) nf_tables(E) =
+libcrc32c(E) nfnetlink(E) sunrpc(E) pseries_rng(E) vmx_crypto(E) ext4(E) =
+mbcache(E) jbd2(E) sd_mod(E) t10_pi(E) crc64_rocksoft(E) crc64(E) sg(E) =
+ibmvscsi(E) scsi_transport_srp(E) ibmveth(E) ipmi_devintf(E) =
+ipmi_msghandler(E) fuse(E)
+[  175.165805] CPU: 6 PID: 11059 Comm: sed Tainted: G            E      =
+6.0.0-rc7-next-20220930 #1
+[  175.165820] Hardware name: IBM,8375-42A POWER9 (raw) 0x4e0202 =
+0xf000005 of:IBM,FW950.50 (VL950_105) hv:phyp pSeries
+[  175.165832] NIP:  c00000000000be38 LR: c00000000001cdfc CTR: =
+c000000000008ed0
+[  175.165844] REGS: c00000002840b5b0 TRAP: 0700   Tainted: G            =
+E       (6.0.0-rc7-next-20220930)
+[  175.165856] MSR:  8000000000021031 <SF,ME,IR,DR,LE>  CR: 44828844  =
+XER: 00000000
+[  175.165881] CFAR: c000000000008f74 IRQMASK: 1=20
+[  175.165881] GPR00: c00000000001df08 c00000002840b850 c00000000135e800 =
+0000000002802000=20
+[  175.165881] GPR04: c000000003717e80 0000000000000000 0000000000000166 =
+c000000002a3aa80=20
+[  175.165881] GPR08: 800000000280b033 0000000000000005 0000000000000004 =
+c00000000001c864=20
+[  175.165881] GPR12: 800000000280b033 c00000001ec58b00 0000000000000000 =
+c00000002840bbd8=20
+[  175.165881] GPR16: c000000002988b70 0000000000000009 61c8864680b583eb =
+0000000000000002=20
+[  175.165881] GPR20: c000000002aa3e00 c00000002840bac8 0000000000000001 =
+c000000201eb9f40=20
+[  175.165881] GPR24: c000000201eba420 c000000003718ca0 000000063a4a0000 =
+c000000002160db0=20
+[  175.165881] GPR28: c000000002160db0 c000000201eb9600 800000004280f033 =
+c000000201eb9600=20
+[  175.166058] NIP [c00000000000be38] masked_interrupt+0xc/0xe4
+[  175.166076] LR [c00000000001cdfc] giveup_all+0x6c/0x130
+[  175.166088] Call Trace:
+[  175.166094] [c00000002840b850] [c00000002840b8e0] 0xc00000002840b8e0 =
+(unreliable)
+[  175.166113] [c00000002840b880] [c00000000001df08] =
+__switch_to+0x108/0x4b0
+[  175.166131] [c00000002840b8e0] [c000000000ed07c0] =
+__schedule+0x2b0/0x9e0
+[  175.166147] [c00000002840b9b0] [c000000000ed0f68] schedule+0x78/0x140
+[  175.166163] [c00000002840ba20] [c000000000ed169c] =
+io_schedule+0x2c/0x50
+[  175.166182] [c00000002840ba50] [c000000000419fb4] =
+filemap_fault+0xc74/0x1240
+[  175.166199] [c00000002840bb70] [c00000000047a484] =
+__do_fault+0x64/0x240
+[  175.166215] [c00000002840bbb0] [c00000000047e598] =
+__handle_mm_fault+0x1078/0x16f0
+[  175.166232] [c00000002840bcb0] [c00000000047ed38] =
+handle_mm_fault+0x128/0x320
+[  175.166247] [c00000002840bd00] [c000000000092054] =
+___do_page_fault+0x2f4/0xb50
+[  175.166265] [c00000002840bdb0] [c000000000092ac0] =
+hash__do_page_fault+0x30/0x70
+[  175.166281] [c00000002840bde0] [c00000000009b918] =
+do_hash_fault+0x278/0x470
+[  175.166304] [c00000002840be10] [c000000000008ce8] =
+instruction_access_common_virt+0x198/0x1a0
+[  175.166325] Instruction dump:
+[  175.166337] e96a0110 e96a0198 e96a0220 e96a02a8 e96a0330 e96a03b8 =
+394a0400 4200ffdc=20
+[  175.166368] 4e800020 912d00b4 892d0933 71290025 <0b090000> 892d0933 =
+7d295378 992d0933=20
+[  175.166401] ---[ end trace 0000000000000000 ]---
+[  175.173284] =20
 
-        case AGGR_NONE:
--               if (evsel->percore && !config->percore_show_thread) {
--                       fprintf(config->output, "S%d-D%d-C%*d%s",
--                               id.socket,
--                               id.die,
--                               config->csv_output ? 0 : -3,
--                               id.core, config->csv_sep);
--               } else if (id.cpu.cpu > -1) {
--                       fprintf(config->output, "CPU%*d%s",
--                               config->csv_output ? 0 : -7,
--                               id.cpu.cpu, config->csv_sep);
-+               if (config->json_output) {
-+                       if (evsel->percore && !config->percore_show_thread)=
- {
-+                               fprintf(config->output, "\"core\" :
-\"S%d-D%d-C%d\"",
-+                                       id.socket,
-+                                       id.die,
-+                                       id.core);
-+                       } else if (id.core > -1) {
-+                               fprintf(config->output, "\"cpu\" : \"%d\", =
-",
-+                                       id.cpu.cpu);
-+                       }
-+               } else {
-+                       if (evsel->percore && !config->percore_show_thread)=
- {
-+                               fprintf(config->output, "S%d-D%d-C%*d%s",
-+                                       id.socket,
-+                                       id.die,
-+                                       config->csv_output ? 0 : -3,
-+                                       id.core, config->csv_sep);
-+                       } else if (id.core > -1) {
-+                               fprintf(config->output, "CPU%*d%s",
-+                                       config->csv_output ? 0 : -7,
-+                                       id.cpu.cpu, config->csv_sep);
-+                       }
-               }
-               break;
+Another instance of this crash:
 
-The old code was using "id.cpu.cpu > -1" while the new code is
-"id.core > -1". The value printed is id.cpu.cpu and so testing id.core
-makes less sense to me. Going back to the original patch:
+[    3.109142] ------------[ cut here ]------------
+[    3.109151] kernel BUG at arch/powerpc/kernel/exceptions-64s.S:2831!
+[    3.109156] Oops: Exception in kernel mode, sig: 5 [#1]
+[    3.109160] LE PAGE_SIZE=3D64K MMU=3DRadix SMP NR_CPUS=3D2048 NUMA =
+pSeries
+[    3.109164] Modules linked in: sd_mod(E) t10_pi(E) crc64_rocksoft(E) =
+crc64(E) sg(E) ibmvscsi(E) scsi_transport_srp(E) ibmveth(E) fuse(E)
+[    3.109177] CPU: 14 PID: 600 Comm: fsck.ext4 Tainted: G            E  =
+    6.0.0-rc7-next-20220930 #1
+[    3.109182] Hardware name: IBM,9080-HEX POWER10 (raw) 0x800200 =
+0xf000006 of:IBM,FW1030.00 (NH1030_026) hv:phyp pSeries
+[    3.109187] NIP:  c00000000000be38 LR: c00000000001d5e8 CTR: =
+c000000000008ed0
+[    3.109191] REGS: c0000000210b3a90 TRAP: 0700   Tainted: G            =
+E       (6.0.0-rc7-next-20220930)
+[    3.109195] MSR:  8000000000021031 <SF,ME,IR,DR,LE>  CR: 44042874  =
+XER: 20040000
+[    3.109202] CFAR: c000000000008f74 IRQMASK: 1=20
+[    3.109202] GPR00: c0000000000340b4 c0000000210b3d30 c00000000135e800 =
+0000000002800000=20
+[    3.109202] GPR04: c0000000210b3e80 0000000000000000 0000000000000000 =
+0000000000000000=20
+[    3.109202] GPR08: 8000000002809033 0000000000000005 0000000000000004 =
+c00000000001c864=20
+[    3.109202] GPR12: 8000000002809033 c000000affd00300 000000013850b460 =
+0000000138514380=20
+[    3.109202] GPR16: 000000013851af10 0000000000000002 0000000138514a84 =
+000000000000dd20=20
+[    3.109202] GPR20: 000000012f682548 000000012f682498 00007fffcf59c7b0 =
+0000000000000001=20
+[    3.109202] GPR24: 0000000000b823f5 0000000000000001 0000000002002000 =
+0000000002802000=20
+[    3.109202] GPR28: 0000000002800000 c0000000210b3e80 0000000000800000 =
+0000000002800000=20
+[    3.109246] NIP [c00000000000be38] masked_interrupt+0xc/0xe4
+[    3.109254] LR [c00000000001d5e8] restore_math+0xf8/0x2e0
+[    3.109259] Call Trace:
+[    3.109260] [c0000000210b3d30] [00000001384f8f90] 0x1384f8f90 =
+(unreliable)
+[    3.109266] [c0000000210b3d80] [c0000000000340b4] =
+interrupt_exit_user_prepare_main+0x84/0x270
+[    3.109272] [c0000000210b3de0] [c000000000034314] =
+syscall_exit_prepare+0x74/0x160
+[    3.109277] [c0000000210b3e10] [c00000000000c6e0] =
+system_call_common+0x100/0x278
+[    3.109283] --- interrupt: c00 at 0x7fffa0a1e744
+[    3.109286] NIP:  00007fffa0a1e744 LR: 00007fffa0cb72b0 CTR: =
+0000000000000000
+[    3.109290] REGS: c0000000210b3e80 TRAP: 0c00   Tainted: G            =
+E       (6.0.0-rc7-next-20220930)
+[    3.109294] MSR:  800000000000f033 <SF,EE,PR,FP,ME,IR,DR,RI,LE>  CR: =
+22042472  XER: 00000000
+[    3.109303] IRQMASK: 0=20
+[    3.109303] GPR00: 00000000000000b4 00007fffcf59c6a0 00007fffa0b07300 =
+0000000000001000=20
+[    3.109303] GPR04: 00000001384f8f90 0000000000001000 0000000b823f5000 =
+00000001384f8f90=20
+[    3.109303] GPR08: 00000001384f1608 0000000000000000 0000000000000000 =
+0000000000000000=20
+[    3.109303] GPR12: 0000000000000000 00007fffa0dace90 000000013850b460 =
+0000000138514380=20
+[    3.109303] GPR16: 000000013851af10 0000000000000002 0000000138514a84 =
+000000000000dd20=20
+[    3.109303] GPR20: 000000012f682548 000000012f682498 00007fffcf59c7b0 =
+0000000000000001=20
+[    3.109303] GPR24: 0000000000b823f5 0000000000000001 00000001384f8f90 =
+00000001384f14a0=20
+[    3.109303] GPR28: 0000000b823f5000 0000000000001000 00000001384f1570 =
+0000000000000000=20
+[    3.109344] NIP [00007fffa0a1e744] 0x7fffa0a1e744
+[    3.109347] LR [00007fffa0cb72b0] 0x7fffa0cb72b0
+[    3.109350] --- interrupt: c00
+[    3.109352] Instruction dump:
+[    3.109355] e96a0110 e96a0198 e96a0220 e96a02a8 e96a0330 e96a03b8 =
+394a0400 4200ffdc=20
+[    3.109362] 4e800020 912d00b4 892d0933 71290025 <0b090000> 892d0933 =
+7d295378 992d0933=20
+[    3.109369] ---[ end trace 0000000000000000 ]=E2=80=94
 
-https://lore.kernel.org/lkml/20210811224317.1811618-1-cjense@google.com/
-  case AGGR_NONE:
-- if (evsel->percore && !config->percore_show_thread) {
-- fprintf(config->output, "S%d-D%d-C%*d%s",
-- id.socket,
-- id.die,
-- config->csv_output ? 0 : -3,
-- id.core, config->csv_sep);
-+ if (config->json_output) {
-+ if (evsel->percore && !config->percore_show_thread) {
-+ fprintf(config->output, "\"core\" : \"S%d-D%d-C%d\"",
-+ id.socket,
-+ id.die,
-+ id.core);
-+ } else if (id.core > -1) {
-+ fprintf(config->output, "\"cpu\" : \"%d\", ",
-+ evsel__cpus(evsel)->map[id.core]);
-+ }
-+ } else {
-+ if (evsel->percore && !config->percore_show_thread) {
-+ fprintf(config->output, "S%d-D%d-C%*d%s",
-+ id.socket,
-+ id.die,
-+ config->csv_output ? 0 : -3,
-+ id.core, config->csv_sep);
-  } else if (id.core > -1) {
-  fprintf(config->output, "CPU%*d%s",
-  config->csv_output ? 0 : -7,
-  evsel__cpus(evsel)->map[id.core],
-  config->csv_sep);
-- }
-+ }
-+ }
-+
-  break;
+This BUG entry was added with=20
+commit c39fb71a54f09977eba7584ef0eebb25047097c6
+    powerpc/64s/interrupt: masked handler debug check for previous hard =
+disable
 
-So testing the id.core isn't a bad index makes sense. However, we
-changed from core to CPU here:
-https://lore.kernel.org/all/20220105061351.120843-26-irogers@google.com/
-and that was because of:
-https://lore.kernel.org/r/20220105061351.120843-25-irogers@google.com
+CONFIG_PPC_IRQ_SOFT_MASK_DEBUG is set.
 
-So I think the code needs to test CPU and not core. Whether that is
-addressing the Power test failures is another matter, as James said we
-may need a fix in the tests for that.
-
-Thanks,
-Ian
-
-> Or the one about fixing it in the test instead? Or failing early if the
-> topology can't be read?
->
-> I'm still not convinced that any of the modes where -1 is printed are
-> even working properly so it might be best to fix that rather than just
-> the printout.
->
-> > James, can you point me to reference for that meaning if I have missed =
-anything.
->
-> It's here:
->
->   /** Identify where counts are aggregated, -1 implies not to aggregate. =
-*/
->   struct aggr_cpu_id {
->
-> >
-> > Thanks
-> > Athira
-> >
-> >>
-> >>>
-> >>> After the fix:
-> >>>
-> >>> <<>>
-> >>> perf stat -e instructions -A -a true
-> >>>
-> >>> Performance counter stats for 'system wide':
-> >>>
-> >>> CPU-1                  64,034      instructions
-> >>> CPU-1                  68,941      instructions
-> >>> CPU-1                  59,418      instructions
-> >>> CPU-1                  70,478      instructions
-> >>> CPU-1                  65,201      instructions
-> >>> CPU-1                  63,704      instructions
-> >>> <<>>
-> >>>
-> >>> This is caught while running "perf test" for
-> >>> "stat+json_output.sh" and "stat+csv_output.sh".
-> >>
-> >> Is it possible to fix the issue by making the tests cope with the lack
-> >> of the CPU id?
-> >>
-> >>>
-> >>> Reported-by: Disha Goel <disgoel@linux.vnet.ibm.com>
-> >>> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-> >>> ---
-> >>> tools/perf/util/stat-display.c | 6 ++----
-> >>> 1 file changed, 2 insertions(+), 4 deletions(-)
-> >>>
-> >>> diff --git a/tools/perf/util/stat-display.c b/tools/perf/util/stat-di=
-splay.c
-> >>> index b82844cb0ce7..1b751a730271 100644
-> >>> --- a/tools/perf/util/stat-display.c
-> >>> +++ b/tools/perf/util/stat-display.c
-> >>> @@ -168,10 +168,9 @@ static void aggr_printout(struct perf_stat_confi=
-g *config,
-> >>>                                     id.socket,
-> >>>                                     id.die,
-> >>>                                     id.core);
-> >>> -                   } else if (id.core > -1) {
-> >>> +                   } else
-> >>
-> >> This should have been "id.cpu.cpu > -1". Looks like it was changed by
-> >> some kind of bad merge or rebase in df936cadfb because there is no
-> >> obvious justification for the change to .core in that commit.
-> >
-> >>
-> >>>                             fprintf(config->output, "\"cpu\" : \"%d\"=
-, ",
-> >>>                                     id.cpu.cpu);
-> >>> -                   }
-> >>>             } else {
-> >>>                     if (evsel->percore && !config->percore_show_threa=
-d) {
-> >>>                             fprintf(config->output, "S%d-D%d-C%*d%s",
-> >>> @@ -179,11 +178,10 @@ static void aggr_printout(struct perf_stat_conf=
-ig *config,
-> >>>                                     id.die,
-> >>>                                     config->csv_output ? 0 : -3,
-> >>>                                     id.core, config->csv_sep);
-> >>> -                   } else if (id.core > -1) {
-> >>> +                   } else
-> >>>                             fprintf(config->output, "CPU%*d%s",
-> >>>                                     config->csv_output ? 0 : -7,
-> >>>                                     id.cpu.cpu, config->csv_sep);
-> >>> -                   }
-> >>>             }
-> >>>             break;
-> >>>     case AGGR_THREAD:
-> >
+Thanks
+ - Sachin=
