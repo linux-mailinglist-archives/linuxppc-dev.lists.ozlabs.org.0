@@ -1,33 +1,33 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B24F25F44CE
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Oct 2022 15:52:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38E035F4461
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Oct 2022 15:39:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MhfJw2Zlxz3fZN
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Oct 2022 00:52:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Mhf1n1FB8z3dqM
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Oct 2022 00:39:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mhf1f5ztgz3drp
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Oct 2022 00:39:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mhf1H1g30z2xKh
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Oct 2022 00:38:43 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Mhf1f59nPz4xHR;
-	Wed,  5 Oct 2022 00:39:02 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Mhf1G50XTz4xFv;
+	Wed,  5 Oct 2022 00:38:42 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
-In-Reply-To: <20220928130951.1732983-1-mpe@ellerman.id.au>
-References: <20220928130951.1732983-1-mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc: Drops STABS_DEBUG from linker scripts
-Message-Id: <166488997031.779920.6259179561918399131.b4-ty@ellerman.id.au>
-Date: Wed, 05 Oct 2022 00:26:10 +1100
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, npiggin@gmail.com, mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20220907081941.209501-1-aneesh.kumar@linux.ibm.com>
+References: <20220907081941.209501-1-aneesh.kumar@linux.ibm.com>
+Subject: Re: [PATCH] powerpc/mm/book3s/hash: Rename flush_tlb_pmd_range
+Message-Id: <166488997739.779920.5479992731661351009.b4-ty@ellerman.id.au>
+Date: Wed, 05 Oct 2022 00:26:17 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -45,19 +45,15 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 28 Sep 2022 23:09:51 +1000, Michael Ellerman wrote:
-> No toolchain we support should be generating stabs debug information
-> anymore. Drop the sections entirely from our linker scripts.
-> 
-> We removed all the manual stabs annotations in commit
-> 12318163737c ("powerpc/32: Remove remaining .stabs annotations").
+On Wed, 7 Sep 2022 13:49:41 +0530, Aneesh Kumar K.V wrote:
+> This function does the hash page table update. Hence rename it to
+> indicate this better to avoid confusion with flush_pmd_tlb_range()
 > 
 > 
-> [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc: Drops STABS_DEBUG from linker scripts
-      https://git.kernel.org/powerpc/c/7673335e2a0b8e68a2a238773a34e287a089a8fe
+[1/1] powerpc/mm/book3s/hash: Rename flush_tlb_pmd_range
+      https://git.kernel.org/powerpc/c/d368e0c478a628f36680650f8d1d1634037b046e
 
 cheers
