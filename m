@@ -1,33 +1,33 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BABC5F4432
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Oct 2022 15:23:05 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 155CE5F44F6
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Oct 2022 15:59:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Mhdg21hvQz3bjm
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Oct 2022 00:22:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MhfTh0q5Fz3fBW
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Oct 2022 00:59:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MhdfR2X0hz2xHw
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Oct 2022 00:22:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mhf1r2DFdz3brF
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Oct 2022 00:39:12 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4MhdfN4svqz4xGj;
-	Wed,  5 Oct 2022 00:22:20 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Mhf1r14cFz4xHl;
+	Wed,  5 Oct 2022 00:39:12 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Fabiano Rosas <farosas@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-In-Reply-To: <20220816222517.1916391-1-farosas@linux.ibm.com>
-References: <20220816222517.1916391-1-farosas@linux.ibm.com>
-Subject: Re: [PATCH] KVM: PPC: Book3S HV: Fix decrementer migration
-Message-Id: <166488970203.778266.13672388386206891818.b4-ty@ellerman.id.au>
-Date: Wed, 05 Oct 2022 00:21:42 +1100
+To: Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
+In-Reply-To: <20220916040755.2398112-1-npiggin@gmail.com>
+References: <20220916040755.2398112-1-npiggin@gmail.com>
+Subject: Re: [PATCH v2 0/7] powerpc: build / linker improvements
+Message-Id: <166488984825.779920.16579265711784950572.b4-ty@ellerman.id.au>
+Date: Wed, 05 Oct 2022 00:24:08 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -42,27 +42,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm-ppc@vger.kernel.org, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 16 Aug 2022 19:25:17 -0300, Fabiano Rosas wrote:
-> We used to have a workaround[1] for a hang during migration that was
-> made ineffective when we converted the decrementer expiry to be
-> relative to guest timebase.
+On Fri, 16 Sep 2022 14:07:48 +1000, Nicholas Piggin wrote:
+> This series is mainly about moving more things out of writable and
+> executable memory, and slightly moving the linker script in the
+> direction of the binutils ld internal linker script as we do.
 > 
-> The point of the workaround was that in the absence of an explicit
-> decrementer expiry value provided by userspace during migration, KVM
-> needs to initialize dec_expires to a value that will result in an
-> expired decrementer after subtracting the current guest timebase. That
-> stops the vcpu from hanging after migration due to a decrementer
-> that's too large.
+> Thanks,
+> Nick
 > 
 > [...]
 
-Applied to powerpc/topic/ppc-kvm.
+Applied to powerpc/next.
 
-[1/1] KVM: PPC: Book3S HV: Fix decrementer migration
-      https://git.kernel.org/powerpc/c/0a5bfb824a6ea35e54b7e5ac6f881beea5e309d2
+[1/7] powerpc: move __end_rodata to cover arch read-only sections
+      https://git.kernel.org/powerpc/c/7082f8e7d2276575a8806370007cbb4a7b9abdce
+[2/7] powerpc/32/build: move got1/got2 sections out of text
+      https://git.kernel.org/powerpc/c/1faa1235c1a00614bc4849a8dbd0790363c9a22f
+[3/7] powerpc/build: move got, toc, plt, branch_lt sections to read-only
+      https://git.kernel.org/powerpc/c/f21ba4499a15b76ad6013ca0a60873dbcf164c7b
+[4/7] powerpc/build: move .data.rel.ro, .sdata2 to read-only
+      https://git.kernel.org/powerpc/c/b6adc6d6d327229d75607a948cde2349d317f366
+[5/7] powerpc/64/build: only include .opd with ELFv1
+      https://git.kernel.org/powerpc/c/c787fed11890babda1e4882cd3b6efaf412e1bde
+[6/7] powerpc/64/build: merge .got and .toc input sections
+      https://git.kernel.org/powerpc/c/1e9eca485a840985a663080eb049c420272d4bdd
+[7/7] powerpc/build: put sys_call_table in .data.rel.ro if RELOCATABLE
+      https://git.kernel.org/powerpc/c/fdfdcfd504933ed06eb6b4c9df21eede0e213c3e
 
 cheers
