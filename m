@@ -1,66 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EB135F4920
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Oct 2022 20:16:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 825B55F4972
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Oct 2022 20:49:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Mhm9V6CL9z3drm
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Oct 2022 05:16:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MhmwD3xm7z3c2j
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Oct 2022 05:49:48 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Iyfm5JHm;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.a=rsa-sha256 header.s=pandora-2019 header.b=d0wFHXUG;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=acme@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=armlinux.org.uk (client-ip=2001:4d48:ad52:32c8:5054:ff:fe00:142; helo=pandora.armlinux.org.uk; envelope-from=linux+linuxppc-dev=lists.ozlabs.org@armlinux.org.uk; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Iyfm5JHm;
+	dkim=pass (2048-bit key; secure) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.a=rsa-sha256 header.s=pandora-2019 header.b=d0wFHXUG;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mhm7q4PThz3brF
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Oct 2022 05:14:47 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 8853FB81B5E;
-	Tue,  4 Oct 2022 18:14:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 200B6C433C1;
-	Tue,  4 Oct 2022 18:14:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1664907283;
-	bh=HmPXUjaiV2vDR6T0TD6Gk9Wsa835S4OS6c+nRw9ThWk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Iyfm5JHm3HIRa5uwV6GGbLLWBH4xe3SHcguVYJA7TE0qFG1ZzTeippj/EB31Oz7SJ
-	 JkoudTC3RKndVHfoEl3NXLp9HRzoAGywngIDf/n1oLa+rzA4XBG+abbbDB8f9wvdxR
-	 RLOTJBe7EH0GpsQhsmoJXdok0W9fVS0OFTW1fbm6tRL5U9GwRU71j1IDqWu7Ni//TV
-	 ctjqnlHQ8H2GnTtq62pvyKBGAEBJoqsKZJea1sdeG1zl5plEU/CwcsAg0yv8fbbM0+
-	 fqtQNR009POfT5jGSCIEByzo9DEJkROys65KTPOwi9ILtlcfeqvfMmM5r3AJdi7w2/
-	 HDbXaEALrevXA==
-Received: by quaco.ghostprotocols.net (Postfix, from userid 1000)
-	id 23A6F4062C; Tue,  4 Oct 2022 15:14:41 -0300 (-03)
-Date: Tue, 4 Oct 2022 15:14:41 -0300
-From: Arnaldo Carvalho de Melo <acme@kernel.org>
-To: Ian Rogers <irogers@google.com>
-Subject: Re: [PATCH] tools/perf: Fix aggr_printout to display cpu field
- irrespective of core value
-Message-ID: <Yzx4ET7QU2VpCcsx@kernel.org>
-References: <20220913115717.36191-1-atrajeev@linux.vnet.ibm.com>
- <4792ef3a-8790-a0d4-50f2-4917874d81d6@arm.com>
- <82D5587E-593A-43A7-92D7-7E095E2BE9A9@linux.vnet.ibm.com>
- <6627ae9a-91e3-0923-1234-54e0fc3f4916@arm.com>
- <CAP-5=fVBzLfhfwPjxE_9DNeesPaPxf3k0b5T5S6THzB1H85mrA@mail.gmail.com>
- <993a1391ee931e859d972c460644d171@imap.linux.ibm.com>
- <CAP-5=fWJ0YBxdCarpNSfbzoAZ9uTAtgj4CdR7sQU8748Y-+DVA@mail.gmail.com>
- <6A5D0603-CF66-43B4-A13F-0308CF01967A@linux.vnet.ibm.com>
- <CAP-5=fU=bwv-e_53QagWsKvW8wjibOjfGvnivWFFVba5A55boA@mail.gmail.com>
- <Yzx4A+2I4yWTlbEn@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MhmvG4LMWz2y28
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Oct 2022 05:48:53 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=dF82zEweBR6fURXs87QKoPIU10/wyDMoBMuKcKxbCsw=; b=d0wFHXUGjqakfSh7afsSgf3RRB
+	OT8a0L76nJh3fk/DCEhHtF8iYPeVQKVOexG133WwReAh9NXuOBwZEnIx4Xl0kyKihbyxUPx4i+zQj
+	eC7ERK6/BNr8qbSs005EU7PeROav2iTSEeZHTFgg8KAUMFjmoEUygbP/zfVQpD6X5iKMRxAQWok2f
+	xZum0cUHhxAjlt1XkKUV3P8B3sezjfw1r/IRycgtAnbFOAB8hqK3XAPJuEiy6gm6rfLS8HhJjBLal
+	7Rl1eizXkUJ8P/kGvr0f1heBrU3HvvB1jK8W5DoveYwiFIS31Dxb/pMBufvlD7LJnoKqKTpiHlc5b
+	9V3vvf9A==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:34586)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1ofmy4-0008Le-Nz; Tue, 04 Oct 2022 19:48:36 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1ofmy0-0004bi-Eh; Tue, 04 Oct 2022 19:48:32 +0100
+Date: Tue, 4 Oct 2022 19:48:32 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Sean Anderson <sean.anderson@seco.com>
+Subject: Re: [PATCH net-next v6 6/9] net: dpaa: Convert to phylink
+Message-ID: <YzyAADoHpExvo6XE@shell.armlinux.org.uk>
+References: <20220930200933.4111249-1-sean.anderson@seco.com>
+ <20220930200933.4111249-7-sean.anderson@seco.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Yzx4A+2I4yWTlbEn@kernel.org>
-X-Url: http://acmel.wordpress.com
+In-Reply-To: <20220930200933.4111249-7-sean.anderson@seco.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,21 +64,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, Nageswara Sastry <rnsastry@linux.ibm.com>, Kajol Jain <kjain@linux.ibm.com>, linux-perf-users <linux-perf-users@vger.kernel.org>, maddy@linux.vnet.ibm.com, James Clark <james.clark@arm.com>, Jiri Olsa <jolsa@kernel.org>, atrajeev <atrajeev@imap.linux.ibm.com>, Disha Goel <disgoel@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Madalin Bucur <madalin.bucur@nxp.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>, Camelia Alexandra Groza <camelia.groza@nxp.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "linuxppc-dev @ lists . ozlabs . org" <linuxppc-dev@lists.ozlabs.org>, "David S . Miller" <davem@davemloft.net>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Em Tue, Oct 04, 2022 at 03:14:27PM -0300, Arnaldo Carvalho de Melo escreveu:
-> Em Tue, Oct 04, 2022 at 07:49:21AM -0700, Ian Rogers escreveu:
-> > On Tue, Oct 4, 2022, 12:06 AM Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-> > > Thanks for helping with testing. Can I add your Tested-by for the patch ?
->  
-> > Yep.
->  
-> > Tested-by: Ian Rogers <irogers@google.com>
+On Fri, Sep 30, 2022 at 04:09:30PM -0400, Sean Anderson wrote:
+> +static void memac_validate(struct phylink_config *config,
+> +			   unsigned long *supported,
+> +			   struct phylink_link_state *state)
+> +{
+> +	__ETHTOOL_DECLARE_LINK_MODE_MASK(mask) = { 0, };
+> +	struct fman_mac *memac = fman_config_to_mac(config)->fman_mac;
+> +
+> +	phylink_generic_validate(config, supported, state);
+> +
+> +	if (phy_interface_mode_is_rgmii(state->interface) &&
+> +	    memac->rgmii_no_half_duplex) {
+> +		phylink_caps_to_linkmodes(mask, MAC_10HD | MAC_100HD);
+> +		linkmode_andnot(supported, supported, mask);
+> +		linkmode_andnot(state->advertising, state->advertising, mask);
+> +	}
+> +}
 
+Having been through the rest of this with a fine tooth comb, nothing
+else stands out with the exception of the above, which I think could
+be done better with this patch:
 
-Thanks, applied.
+http://git.armlinux.org.uk/cgit/linux-arm.git/commit/?h=net-queue&id=e65a47c4053255bd51715d5550e21c869971258c
 
-- Arnaldo
+Since the above would become:
 
+static void memac_validate(struct phylink_config *config,
+			   unsigned long *supported,
+			   struct phylink_link_state *state)
+{
+	struct mac_device *mac_dev = fman_config_to_mac(config);
+	struct fman_mac *memac = mac_dev->fman_mac;
+	unsigned long caps;
+
+	caps = mac_dev->phylink_config.capabilities;
+
+	if (phy_interface_mode_is_rgmii(state->interface) &&
+	    memac->rgmii_no_half_duplex)
+		caps &= ~(MAC_10HD | MAC_100HD);
+
+	phylink_validate_mask_caps(supported, state, caps);
+}
+
+If you want to pick up my patch that adds this helper into your series,
+please do.
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
