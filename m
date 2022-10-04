@@ -1,33 +1,33 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ACAC5F44C8
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Oct 2022 15:50:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BB795F44CF
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Oct 2022 15:52:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MhfHB6ZVwz3gNs
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Oct 2022 00:50:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MhfKV1Qjwz3gds
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Oct 2022 00:52:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mhf1c0wTVz3c4B
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Oct 2022 00:39:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mhf1g2j8Kz3c4S
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Oct 2022 00:39:03 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Mhf1b6vNwz4xHL;
-	Wed,  5 Oct 2022 00:38:59 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Mhf1g1vtyz4xHT;
+	Wed,  5 Oct 2022 00:39:03 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
 To: linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
-In-Reply-To: <20220913124545.2817825-1-mpe@ellerman.id.au>
-References: <20220913124545.2817825-1-mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/64: Remove unused SYS_CALL_TABLE symbol
-Message-Id: <166488985138.779920.17518270170170849576.b4-ty@ellerman.id.au>
-Date: Wed, 05 Oct 2022 00:24:11 +1100
+In-Reply-To: <20220919052755.800907-1-mpe@ellerman.id.au>
+References: <20220919052755.800907-1-mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc/microwatt: Remove unused early debug code
+Message-Id: <166488985245.779920.12918596230908367280.b4-ty@ellerman.id.au>
+Date: Wed, 05 Oct 2022 00:24:12 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -42,22 +42,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: lukas.bulwahn@gmail.com, andrew.donnellan@au1.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 13 Sep 2022 22:45:45 +1000, Michael Ellerman wrote:
-> In interrupt_64.S, formerly entry_64.S, there are two toc entries
-> created for sys_call_table and compat_sys_call_table.
+On Mon, 19 Sep 2022 15:27:55 +1000, Michael Ellerman wrote:
+> The original microwatt submission[1] included some early debug code for
+> using the Microwatt "potato" UART.
 > 
-> These are no longer used, since the system call entry was converted from
-> asm to C, so remove them.
-> 
+> The series that was eventually merged switched to using a standard UART,
+> and so doesn't need any special early debug handling. But some of the
+> original code was merged accidentally under the non-existent
+> CONFIG_PPC_EARLY_DEBUG_MICROWATT.
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc/64: Remove unused SYS_CALL_TABLE symbol
-      https://git.kernel.org/powerpc/c/e74611aa91bb9939dfc4a41b045a1a19227cff98
+[1/1] powerpc/microwatt: Remove unused early debug code
+      https://git.kernel.org/powerpc/c/456c3005102b18cce6662b1915c6efffe7744dcc
 
 cheers
