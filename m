@@ -1,59 +1,126 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F1D55F4774
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Oct 2022 18:23:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CDC55F4767
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Oct 2022 18:21:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Mhjg60XVCz3bwQ
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Oct 2022 03:23:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MhjdN1bdJz2xFx
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Oct 2022 03:21:44 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.a=rsa-sha256 header.s=pandora-2019 header.b=QTab0oCL;
+	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=yaAGTVMc;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=armlinux.org.uk (client-ip=2001:4d48:ad52:32c8:5054:ff:fe00:142; helo=pandora.armlinux.org.uk; envelope-from=linux+linuxppc-dev=lists.ozlabs.org@armlinux.org.uk; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=seco.com (client-ip=40.107.247.88; helo=eur02-am0-obe.outbound.protection.outlook.com; envelope-from=sean.anderson@seco.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.a=rsa-sha256 header.s=pandora-2019 header.b=QTab0oCL;
+	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=yaAGTVMc;
 	dkim-atps=neutral
-X-Greylist: delayed 512 seconds by postgrey-1.36 at boromir; Wed, 05 Oct 2022 03:22:23 AEDT
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2088.outbound.protection.outlook.com [40.107.247.88])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mhjf72hnqz2xFx
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Oct 2022 03:22:22 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=6Nc03kCD580eoe7aqLtPYGYFRbTdfQEDrzlYxPtOCP8=; b=QTab0oCLBQCQu3bfPCz6/3RDvi
-	HYnHz6RGyGOTRtwHtBTB6PaGjnCpZRV2QgUzchqqWGwb2q57yXI7jx6H8mH39pMX6E8PgTM6QBRHN
-	SlUSj+3oTjYxvTBMhF6tgjevZeCYB4Z91SzhflffKtJZKhLLEX1DIK0ahHb7wW7f7tEJ4KuPW+MRl
-	1A2iJ7xYh4lcHsk6BSc8zpSODpwC5UN1nXGHg/3OP7ubGDP4xBaImozA5rjJM2KXsB3oISgtXqfLL
-	gpaCucWHwlzAtN6SPsB8MO/D4RwDlcjmL6/A0wqgr7tEASOYVaK2nb6NwcQfCDTqtLh2BkLgMgLjF
-	XxsXU2/Q==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:34582)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1ofkXt-0008Fg-VQ; Tue, 04 Oct 2022 17:13:26 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1ofkXq-0004Vq-IH; Tue, 04 Oct 2022 17:13:22 +0100
-Date: Tue, 4 Oct 2022 17:13:22 +0100
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Sean Anderson <sean.anderson@seco.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MhjcQ0YZPz2xHL
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Oct 2022 03:20:52 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Fot/fUyRdKu3YP7VpW82267fli07w26hmwotF4qP4xiBUn5g1v25Tamzzkob3ALvv4WflXppeMnE5VN+7fSfQaYEBTLqpqweZPi1r0IDrb/7XqoEkAzHWzyJ3+AADC4kZAeAKMUnkBRLvvhes+4W6HQRlV2wHD/FDiRW7vc8vUhq0hdjc+BeEFefUHhtwdECzHPtW6K796QKA/5jO3A/bCXvkuQzRY1qTFBngRuE7i9uPwrd/QtPrjVsYlgx4yRcVde8wSNFpaBHRnQePQGNXLtEcL5aOP19Rrbw6KSC5Zhv+7tZLUaKyx6YotL+GjtFb0iVIzB9Hw9sTgKu8cHTXw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=h3ZVStALZWArsxlRo0pF166F4kaw1mXs2EbNZZT1czw=;
+ b=DkQi+FzT5McWBVYleWC/E+xKTES0TcsdweszsYqESoMvI9tx23iqoaQUO9ufnfY3nMTG7LvDnISgRdr4XVQbh2MB+KYdEgvP+zdPN08UkX+JWITJ1tW5DbvSpQkfgN/4s4s0wMtRLNUd67rvV9BZSlZmCKW4i6Rv5/caK+OaGyJ59l6/LbDW4sMW/EYJrzIqbiytHyftRgbNDXtWLEh/AiXyIQhIjiZd9WwqSCpRMpz80kouNgyPH/EwX776mZiQV7ZfKK9z7Bx6gbrkednNRnqVadgJTP65e8CKaXDSoVG7nHMAqUGmloSU4Imj/UXUweVBgzLCNDRAgjJhiCezGw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=seco.com; dmarc=pass action=none header.from=seco.com;
+ dkim=pass header.d=seco.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seco.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=h3ZVStALZWArsxlRo0pF166F4kaw1mXs2EbNZZT1czw=;
+ b=yaAGTVMc61zREC5fT6oe09ug+AGT/yGB8Gkb2K8fut9F/ZkMZidOD8mqwP0z4/M3W9fX9Hzih9WyR8rayL1EpnohCJiYRWjuO7TAVuNjQznBjCIxvnjQAwWDm6jz/HtGGyJeJivEw2b1m8Bd83O0JuCFdJKkoiMAcWMMju8xLZVWmP48QtJrLKeCt6CZdOGDl4akJPTEaDBnpHeH5V4xlV4ZWvSH06Xfq+oSosfKrpIcT8Wy37Ag6WsZRiNeR60O9Zzp08wSLMA/hJmvqee+Jw5hKHZvaCmycoqO+j4AuysXqtKqXwmPuikSdoGfIfxytMXms0MyYdEYB7DBjfT/Kg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=seco.com;
+Received: from DB7PR03MB4972.eurprd03.prod.outlook.com (2603:10a6:10:7d::22)
+ by GV1PR03MB8126.eurprd03.prod.outlook.com (2603:10a6:150:21::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5676.28; Tue, 4 Oct
+ 2022 16:20:31 +0000
+Received: from DB7PR03MB4972.eurprd03.prod.outlook.com
+ ([fe80::204a:de22:b651:f86d]) by DB7PR03MB4972.eurprd03.prod.outlook.com
+ ([fe80::204a:de22:b651:f86d%6]) with mapi id 15.20.5676.031; Tue, 4 Oct 2022
+ 16:20:31 +0000
 Subject: Re: [PATCH net-next v6 6/9] net: dpaa: Convert to phylink
-Message-ID: <YzxbogPClCjNgN+m@shell.armlinux.org.uk>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
 References: <20220930200933.4111249-1-sean.anderson@seco.com>
  <20220930200933.4111249-7-sean.anderson@seco.com>
+ <YzxbogPClCjNgN+m@shell.armlinux.org.uk>
+From: Sean Anderson <sean.anderson@seco.com>
+Message-ID: <f5fec474-095b-2727-c0dc-878d4cd34d06@seco.com>
+Date: Tue, 4 Oct 2022 12:20:27 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
+In-Reply-To: <YzxbogPClCjNgN+m@shell.armlinux.org.uk>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MN2PR03CA0002.namprd03.prod.outlook.com
+ (2603:10b6:208:23a::7) To DB7PR03MB4972.eurprd03.prod.outlook.com
+ (2603:10a6:10:7d::22)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220930200933.4111249-7-sean.anderson@seco.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB7PR03MB4972:EE_|GV1PR03MB8126:EE_
+X-MS-Office365-Filtering-Correlation-Id: 48293118-49c5-488f-cd5c-08daa6245bd1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	Qtkj5cdxqaDsv3oloY1f+RkkmvjbxfJHnwEuMu2u/+gtpC03wOWGepex55XLtUhErXRY0Vy9oZcxEwORzl0bzpNcv/Nn15A6t1jrD4+jy9X/WTyxCX4iRWFSzBJMkZHlHjcvIy3TvcOmxJaVEaqXCG1IbxyU7vu9TQzQ+4UwOAQV2bTrOZvAj3UPstqcjBUcV4m7PEsbikVBB+pLxtSFG28IciPyTVTyg3CyRJDnnaHpoSP/6cCeJimDVHKEyrXqVfob7fHRnPnjOd56PPldQplzLopAMwcjtck+meuEi2gUUGQcpJnV/ZQppmgQPGTddmPr8l1VQl3TSzLnNX82tEUywgzq/RlkRHtvcxDEfGg1IJbFOoTe75vozeSRr+qP4pPokGkiuSDZsSmxvKyBXydyvW9hJHOvtp+3R1hFDESZezD2eq5ayKSLHBiAX14/AnDJ1eHr22fVEfdOHd01hN0LZwaxf9DvQrzKpxl4/SzRoJcSK/+5dejPisEo0l4Kag4p+CTYAkK4hFuFOSOunNTeEGH1np5O9Uc4WGGqdUsbJOciT/v2bmcLx3QorTJDQGzgRMG3Vd8vHsj/xI4/Txlt05+x+0Ewv4vVSoM+UPOMDuY1jVj5XdISRjEKwbWzzHzZXfiALLa29Ba9ozV3LeRQSH6Y0hJx8uomCoPDt5+rxcQsfbDC1oW7ZKVTaWs7vtutDUKom2zrkFw+WWGHUKZMGoEjxXWvOv2fxdD+I+GYNMaMXwp0lgFJlOqkeOsQ/XPo6ueSpjkfzYNKqLxoiSfRci/R5qisuLhZmE/nE9Sjbsvk1RfvkvlwSSU4vIidtLfRO7V4Jyq8TBsfEJMMEA==
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB7PR03MB4972.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(136003)(39850400004)(346002)(396003)(376002)(366004)(451199015)(6486002)(38350700002)(86362001)(41300700001)(83380400001)(31696002)(54906003)(6512007)(38100700002)(26005)(2906002)(316002)(53546011)(6916009)(52116002)(186003)(66476007)(6666004)(36756003)(4326008)(8676002)(6506007)(66946007)(7416002)(2616005)(66556008)(44832011)(5660300002)(31686004)(8936002)(478600001)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?utf-8?B?MS9zZ2JVcHo1c3NFWi9sUHUyUHBFSkV4ZE94N1krdFZVMFVqU1FuaDExMlNM?=
+ =?utf-8?B?dkwzbk40Skc1NzRSeVJkQ2o2SlBpT0VKZ1Q1SGVUVnVGWVNFL0xERWs2K2VS?=
+ =?utf-8?B?RmFvYjh3cTBZQUpuSHhOUnFDa2tYU1FKZUpVWUJtSDdKMWQwZi80QVBLTzNs?=
+ =?utf-8?B?WTRWKzJNNERKMmFPQTczcFFsajl0T1Q4SkpDd0NSaWJjdTEydTJyWEFkcUFl?=
+ =?utf-8?B?SnFjVFFZc2pSRVRlanBDUXlGQ2VESEIzdXR1bncxc1NtbUxLSGNaM3BsSE4w?=
+ =?utf-8?B?bDJWOWpjWE9iTE8zSlRQcUlkaFJJNDU0RWtVZTk1ZlMwNGVYeC8zaGdsQXU5?=
+ =?utf-8?B?ZHZVZ0R1R2oxZmRYMjI3SmwrcmVhK3BzYTZBOHFkUEJ4TzdOb3VFVmJlRkZz?=
+ =?utf-8?B?eW5jMHgyZmU3NzRERDFVd0dNcUZtdExCWXFkZDI3RzBub01RM2l6UUtORHkv?=
+ =?utf-8?B?Q245YVNFR05aZGE1b2YyQWhOTW83b0ZybjAyaUVtSURWTldVcWJsVE5hTkdY?=
+ =?utf-8?B?SExQc2s5UTZjTVRjaWtUNE52eFk2bisvcXRwQk4wTXFCemxHYmM3Yk9BUGZr?=
+ =?utf-8?B?VkhTZDF4K3IvblhiRmxJZkZXYVgwc1daQXdrWnMwNUdPMGd5MndjRVhpM0ZQ?=
+ =?utf-8?B?OWhkYUh5SWx1dlU1NUptWlRCT2k5amFCWVhSZTJMQjNCR3M0VWx2d0pDcUVs?=
+ =?utf-8?B?dS9CS0t0aUsyTU1OU09Fbm5JSFVlM1hvVFBmcFpMbFM0bXZCOGViT2NFdElK?=
+ =?utf-8?B?VXBEWVc4cnlsc250UVl4cmJhWWQ4M0h5NytTUXBPTWRYalh5eTM0K245a3ox?=
+ =?utf-8?B?T1A2bXZmeWdUWTl5eno2cThTNXlvbVNueksvZTdQN1g4c09qZjVOS242NmVn?=
+ =?utf-8?B?alo3SklRNlBwQkJkVVJiaWJLZy9pQVVzOTBaYVRTVWpDNXVpUGVTSERXSTNJ?=
+ =?utf-8?B?Nm93MGFENlFrZCs3ZlZIWEhBUDFRSS84RzFLMVFMM08zUkpNVCtLNTlUdXdB?=
+ =?utf-8?B?V0djUGlEQ3pxeDVuQ3VIdzlGYjZHemZ2blI2Y2hnU0tCTTRRMmZwZVMwdlVr?=
+ =?utf-8?B?Q3JSTWdmQVhrQXh1Uzlscjg1cVc4cTNGYVFwQmFuNFpuVy9JZlhsNm9FdVNX?=
+ =?utf-8?B?RGlvWC9kdFd0N1JFVkUxYzBOaHpndlJNR2VWRmVxZUpnZXJ6Skg0RGdBeTd3?=
+ =?utf-8?B?NDdqbHUzd0ZHMjVrYVBvZWRCdXpLWTl0dEp2TnN5bU9vTzNQVnIvUGFkUGd2?=
+ =?utf-8?B?OC9IdjRjOVhHd1VmYTFJQk4vZnh0dkFaVkVjMXMxMm02MmxmelpnMXRISW1F?=
+ =?utf-8?B?c1YvdG1oQjN5YXk2eVJBaTFJMW1PVktXQVVqSlREakdrelBRZVUzc0t2OGhP?=
+ =?utf-8?B?aEc5L1RRWGVTdlNuN1dBTTBZVkh4RmxoNkF2NWtiUWYxaUdvVkJLMG5jYWd3?=
+ =?utf-8?B?czdNSThNT1pYK25seHA4YzNNMVNkL0p1bTR3N3JXMURSR084MExndmpMSUFV?=
+ =?utf-8?B?N3kvY1d5TUxqZXZCcW5SOWQ0MzZpZnJBVkphYW0zeGp4SVkrcDFBMnlySmtl?=
+ =?utf-8?B?aUgrUml4dnJOenpoUGNNUXhicEJtSGpTKzFqWDR2RmtEd3M1ZW9xRmhpVHBz?=
+ =?utf-8?B?a0pSVy9IemZhRkdJcEhFSWV5V29CREhKUXo3NmtYc3Y1TGNKeFA5bDBCRnBX?=
+ =?utf-8?B?Znk2MlFrZUtKa040SmRLOS9YR0E5R2wzT2tiZVJwWHVsK0JZSE11REdYdVZP?=
+ =?utf-8?B?aURoWG9CRm9UUUYvemxZa3B6Yno4REtnQXNZWXdBeFhoM0hlWEJmVG5UTkd5?=
+ =?utf-8?B?aVhBeFF0VU8vSjY0S2h6VTNrVVFZMmVoRXRJOFFMMWJRY2p4YWxqMG96OGs2?=
+ =?utf-8?B?cmdaeWJjaWYySGxxTURGSXVyWVZhWG1KVjRHa2lObHh2ZjVnQ2FiTFRlcVN0?=
+ =?utf-8?B?dkNtM3ZKdnZHeVZOZ2h1UjNRa2ltazNLb1M3SStYWFo4ajhIeXQzRGxWZm1s?=
+ =?utf-8?B?eGhPZDh3Znl0YzhsaWZFK2JaV29MQ0RuWjNORlQ4VXZlWVdZdEZXdTF0VlpE?=
+ =?utf-8?B?azYrREZTUEV4NEdtYWF5dHN1T1ZiRzVqMVdURHh3aWJFcGhMVFpsWlc5bm82?=
+ =?utf-8?B?SVpRTXR0L1ZjZUI4QXdRRzBWcmFQcUszS1FzdDRnWVVrZzVnS3ZoL0xYaHNM?=
+ =?utf-8?B?S2c9PQ==?=
+X-OriginatorOrg: seco.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 48293118-49c5-488f-cd5c-08daa6245bd1
+X-MS-Exchange-CrossTenant-AuthSource: DB7PR03MB4972.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Oct 2022 16:20:31.6949
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bebe97c3-6438-442e-ade3-ff17aa50e733
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8nacqgj1N2Vm9RBZ4w3pCnblamTLGi5smMjHha8vHnSTGAPNNU0bjfXv6T7yDLVpDcKuBkkgi+Vrl8uqfMJ67w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR03MB8126
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,75 +136,79 @@ Cc: Madalin Bucur <madalin.bucur@nxp.com>, netdev@vger.kernel.org, linux-kernel@
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Sep 30, 2022 at 04:09:30PM -0400, Sean Anderson wrote:
-> @@ -1064,43 +1061,50 @@ static struct phylink_pcs *memac_pcs_create(struct device_node *mac_node,
->  	return pcs;
->  }
->  
-> +static bool memac_supports(struct mac_device *mac_dev, phy_interface_t iface)
-> +{
-> +	/* If there's no serdes device, assume that it's been configured for
-> +	 * whatever the default interface mode is.
-> +	 */
-> +	if (!mac_dev->fman_mac->serdes)
-> +		return mac_dev->phy_if == iface;
-> +	/* Otherwise, ask the serdes */
-> +	return !phy_validate(mac_dev->fman_mac->serdes, PHY_MODE_ETHERNET,
-> +			     iface, NULL);
-> +}
-> +
->  int memac_initialization(struct mac_device *mac_dev,
->  			 struct device_node *mac_node,
->  			 struct fman_mac_params *params)
->  {
->  	int			 err;
-> +	struct device_node      *fixed;
->  	struct phylink_pcs	*pcs;
-> -	struct fixed_phy_status *fixed_link;
->  	struct fman_mac		*memac;
-> +	unsigned long		 capabilities;
-> +	unsigned long		*supported;
->  
-> +	mac_dev->phylink_ops		= &memac_mac_ops;
->  	mac_dev->set_promisc		= memac_set_promiscuous;
->  	mac_dev->change_addr		= memac_modify_mac_address;
->  	mac_dev->add_hash_mac_addr	= memac_add_hash_mac_address;
->  	mac_dev->remove_hash_mac_addr	= memac_del_hash_mac_address;
-> -	mac_dev->set_tx_pause		= memac_set_tx_pause_frames;
-> -	mac_dev->set_rx_pause		= memac_accept_rx_pause_frames;
->  	mac_dev->set_exception		= memac_set_exception;
->  	mac_dev->set_allmulti		= memac_set_allmulti;
->  	mac_dev->set_tstamp		= memac_set_tstamp;
->  	mac_dev->set_multi		= fman_set_multi;
-> -	mac_dev->adjust_link            = adjust_link_memac;
->  	mac_dev->enable			= memac_enable;
->  	mac_dev->disable		= memac_disable;
->  
-> -	if (params->max_speed == SPEED_10000)
-> -		mac_dev->phy_if = PHY_INTERFACE_MODE_XGMII;
-> -
->  	mac_dev->fman_mac = memac_config(mac_dev, params);
-> -	if (!mac_dev->fman_mac) {
-> -		err = -EINVAL;
-> -		goto _return;
-> -	}
-> +	if (!mac_dev->fman_mac)
-> +		return -EINVAL;
->  
->  	memac = mac_dev->fman_mac;
->  	memac->memac_drv_param->max_frame_length = fman_get_max_frm();
->  	memac->memac_drv_param->reset_on_init = true;
->  
-> -	err = of_property_match_string(mac_node, "pcs-names", "xfi");
-> +	err = of_property_match_string(mac_node, "pcs-handle-names", "xfi");
 
-While reading through the patch, I stumbled upon this - in the previous
-patch, you introduce this code with "pcs-names" and then in this patch
-you change the name of the property. I don't think this was mentioned in
-the commit message (searching it for "pcs" didn't reveal anything) so
-I'm wondering whether this name update should've been merged into the
-previous patch instead of this one?
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
+On 10/4/22 12:13 PM, Russell King (Oracle) wrote:
+> On Fri, Sep 30, 2022 at 04:09:30PM -0400, Sean Anderson wrote:
+>> @@ -1064,43 +1061,50 @@ static struct phylink_pcs *memac_pcs_create(struct device_node *mac_node,
+>>  	return pcs;
+>>  }
+>>  
+>> +static bool memac_supports(struct mac_device *mac_dev, phy_interface_t iface)
+>> +{
+>> +	/* If there's no serdes device, assume that it's been configured for
+>> +	 * whatever the default interface mode is.
+>> +	 */
+>> +	if (!mac_dev->fman_mac->serdes)
+>> +		return mac_dev->phy_if == iface;
+>> +	/* Otherwise, ask the serdes */
+>> +	return !phy_validate(mac_dev->fman_mac->serdes, PHY_MODE_ETHERNET,
+>> +			     iface, NULL);
+>> +}
+>> +
+>>  int memac_initialization(struct mac_device *mac_dev,
+>>  			 struct device_node *mac_node,
+>>  			 struct fman_mac_params *params)
+>>  {
+>>  	int			 err;
+>> +	struct device_node      *fixed;
+>>  	struct phylink_pcs	*pcs;
+>> -	struct fixed_phy_status *fixed_link;
+>>  	struct fman_mac		*memac;
+>> +	unsigned long		 capabilities;
+>> +	unsigned long		*supported;
+>>  
+>> +	mac_dev->phylink_ops		= &memac_mac_ops;
+>>  	mac_dev->set_promisc		= memac_set_promiscuous;
+>>  	mac_dev->change_addr		= memac_modify_mac_address;
+>>  	mac_dev->add_hash_mac_addr	= memac_add_hash_mac_address;
+>>  	mac_dev->remove_hash_mac_addr	= memac_del_hash_mac_address;
+>> -	mac_dev->set_tx_pause		= memac_set_tx_pause_frames;
+>> -	mac_dev->set_rx_pause		= memac_accept_rx_pause_frames;
+>>  	mac_dev->set_exception		= memac_set_exception;
+>>  	mac_dev->set_allmulti		= memac_set_allmulti;
+>>  	mac_dev->set_tstamp		= memac_set_tstamp;
+>>  	mac_dev->set_multi		= fman_set_multi;
+>> -	mac_dev->adjust_link            = adjust_link_memac;
+>>  	mac_dev->enable			= memac_enable;
+>>  	mac_dev->disable		= memac_disable;
+>>  
+>> -	if (params->max_speed == SPEED_10000)
+>> -		mac_dev->phy_if = PHY_INTERFACE_MODE_XGMII;
+>> -
+>>  	mac_dev->fman_mac = memac_config(mac_dev, params);
+>> -	if (!mac_dev->fman_mac) {
+>> -		err = -EINVAL;
+>> -		goto _return;
+>> -	}
+>> +	if (!mac_dev->fman_mac)
+>> +		return -EINVAL;
+>>  
+>>  	memac = mac_dev->fman_mac;
+>>  	memac->memac_drv_param->max_frame_length = fman_get_max_frm();
+>>  	memac->memac_drv_param->reset_on_init = true;
+>>  
+>> -	err = of_property_match_string(mac_node, "pcs-names", "xfi");
+>> +	err = of_property_match_string(mac_node, "pcs-handle-names", "xfi");
+> 
+> While reading through the patch, I stumbled upon this - in the previous
+> patch, you introduce this code with "pcs-names" and then in this patch
+> you change the name of the property. I don't think this was mentioned in
+> the commit message (searching it for "pcs" didn't reveal anything) so
+> I'm wondering whether this name update should've been merged into the
+> previous patch instead of this one?
+
+Yes, you're right. It looks like I applied this update to the wrong
+patch. Will fix for v7.
+
+--Sean
