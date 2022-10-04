@@ -2,32 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DA115F44E6
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Oct 2022 15:57:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B20035F44E8
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Oct 2022 15:57:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MhfQg0rtlz3hCJ
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Oct 2022 00:57:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MhfRD5Lj2z3hHl
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Oct 2022 00:57:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mhf1n3C7Qz3drb
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Oct 2022 00:39:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mhf1p0Ks6z3dsV
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Oct 2022 00:39:10 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Mhf1n2Prcz4xHd;
-	Wed,  5 Oct 2022 00:39:09 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Mhf1k6159z4xHZ;
+	Wed,  5 Oct 2022 00:39:06 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-In-Reply-To: <20220926053823.2668799-1-npiggin@gmail.com>
-References: <20220926053823.2668799-1-npiggin@gmail.com>
-Subject: Re: [PATCH] powerpc/pseries: move hcall_tracepoint_refcount out of .toc
-Message-Id: <166488992525.779920.309337516805807715.b4-ty@ellerman.id.au>
-Date: Wed, 05 Oct 2022 00:25:25 +1100
+To: Nicholas Miehlbradt <nicholas@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20220926075726.2846-1-nicholas@linux.ibm.com>
+References: <20220926075726.2846-1-nicholas@linux.ibm.com>
+Subject: Re: [PATCH v3 1/4] powerpc/64s: Add DEBUG_PAGEALLOC for radix
+Message-Id: <166488992976.779920.838090389693307955.b4-ty@ellerman.id.au>
+Date: Wed, 05 Oct 2022 00:25:29 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -45,16 +45,21 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 26 Sep 2022 15:38:23 +1000, Nicholas Piggin wrote:
-> The .toc section is not really intended for arbitrary data. Writable
-> data in particular prevents making the TOC read-only after relocation.
-> Move hcall_tracepoint_refcount into the .data section.
+On Mon, 26 Sep 2022 07:57:23 +0000, Nicholas Miehlbradt wrote:
+> There is support for DEBUG_PAGEALLOC on hash but not on radix.
+> Add support on radix.
 > 
 > 
 
 Applied to powerpc/next.
 
-[1/1] powerpc/pseries: move hcall_tracepoint_refcount out of .toc
-      https://git.kernel.org/powerpc/c/9a10ccb29c0a2befa5a9f691ed0ae37ee3e799a8
+[1/4] powerpc/64s: Add DEBUG_PAGEALLOC for radix
+      https://git.kernel.org/powerpc/c/5e8b2c4dd3a0a4a2966e61d60dbeafab441cff28
+[2/4] powerpc/64s: Remove unneeded #ifdef CONFIG_DEBUG_PAGEALLOC in hash_utils
+      https://git.kernel.org/powerpc/c/3e791d0f32b10eff9437822c6099c7a158560151
+[3/4] powerpc/64s: Allow double call of kernel_[un]map_linear_page()
+      https://git.kernel.org/powerpc/c/d7902d31cbc3bf72722768831a684b0286ccd523
+[4/4] powerpc/64s: Enable KFENCE on book3s64
+      https://git.kernel.org/powerpc/c/a5edf9815dd739fce660b4c8658f61b7d2517042
 
 cheers
