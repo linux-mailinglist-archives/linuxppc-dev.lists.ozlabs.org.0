@@ -1,68 +1,99 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91EE55F4401
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Oct 2022 15:14:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 709CD5F42F6
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Oct 2022 14:33:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MhdTN3JHNz308b
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Oct 2022 00:14:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MhcZM17Kgz3c6r
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Oct 2022 23:33:47 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=Bo9x/OnI;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Bj3j42Z1;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Bj3j42Z1;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::42c; helo=mail-pf1-x42c.google.com; envelope-from=ulf.hansson@linaro.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=Bo9x/OnI;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Bj3j42Z1;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Bj3j42Z1;
 	dkim-atps=neutral
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MhbTB2J6Rz2xGh
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Oct 2022 22:44:11 +1100 (AEDT)
-Received: by mail-pf1-x42c.google.com with SMTP id 83so5922043pfw.10
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Oct 2022 04:44:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=6ZpUfgQM8l58jAA1FLv6FNtqasscnAngw/MWtVrklhs=;
-        b=Bo9x/OnIeuD4yOxUQBcKmabUSqnMZ0tD37iq/OHVxEJh7l092LYUiEcByhyeKoPqQH
-         6ccMpXG4qRKbkr941fgMrmTCvs7mBDKkmcyZ2TkZ97cu4Erpz6364n3eKpYtT/b1NuAZ
-         pi9UC5KrZS8fHRid7zPrK2EhUttI5OrNRFHSo8P3Mb2tkDzqPas8gU17A3WN+Bdf8SsZ
-         dU9egD++P5XQakRrLuSrsLxcUXmzHPNMQsJfA7zWkxd6pg+zQjqIPz81iRSpYAnZdaFW
-         4XHAdmJUPlV/gsJ01s3Xsj5gKwh9HnkRQU0HSv1IiMZAjlCNlnOhbi1ezx8q34YNlXVA
-         xsfw==
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MhcYM301Qz2xf6
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Oct 2022 23:32:53 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1664886769;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ARqzLCUGK9oxipjgV/TP0dhqnyFoncnYQ36iiV2KnPc=;
+	b=Bj3j42Z1UFJxAf6YnYiq7NJ3NO9F4UlDsMIq/7WYaWkpoVrynneqQ4mr6cmd8P35wooo+5
+	YZikVsJClDnsIlB4/Pq/SufLkKeAPtSRu2ZnjjVHRF5aQOrXEaeBt1id4GngKaVoV67Uyk
+	y+uh0YZd8vEipXD3A8r7trk4I9m0sI4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1664886769;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ARqzLCUGK9oxipjgV/TP0dhqnyFoncnYQ36iiV2KnPc=;
+	b=Bj3j42Z1UFJxAf6YnYiq7NJ3NO9F4UlDsMIq/7WYaWkpoVrynneqQ4mr6cmd8P35wooo+5
+	YZikVsJClDnsIlB4/Pq/SufLkKeAPtSRu2ZnjjVHRF5aQOrXEaeBt1id4GngKaVoV67Uyk
+	y+uh0YZd8vEipXD3A8r7trk4I9m0sI4=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-386-cj78BLwhOUqnyypANZd_6w-1; Tue, 04 Oct 2022 08:32:48 -0400
+X-MC-Unique: cj78BLwhOUqnyypANZd_6w-1
+Received: by mail-wm1-f69.google.com with SMTP id c2-20020a1c3502000000b003b535aacc0bso10827567wma.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Oct 2022 05:32:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=6ZpUfgQM8l58jAA1FLv6FNtqasscnAngw/MWtVrklhs=;
-        b=xXjeAOtXUI/UNs+SpE6zavTnKEeLQCcUE/ChTT6MVUml+pN/Pkv6yI2WPNdPJF6R4u
-         H7DAAk+kC7+sM4tgvta2IOO9ApAcVJ1A+YdDDo4yCCbap+tAsxcvP1XdmAtYLfuYsYAi
-         JPeMPkwHO+aCt08HSzJc6xcLj8zu5x8Hrv15uWDxqnOSQNOk7hNnbzRFdOc5OWjZMqEI
-         FWgZbT98QAWYg4wvDA4GZIchNMv1snX5njJisp3mGto/ZYSSS/xY5IZXMiM8GiqwfVns
-         Nr0bfU0lQctbQQm93lWPCvUuTykTC1RSXBFp99IVKS5WFnkybXVOCJE7jj4V5JI5nEYj
-         s9kw==
-X-Gm-Message-State: ACrzQf15ctuuH0/+PIiLRe6yYYr3RNEn29G1Z3FF+b4eBJR0f0Rl9g/e
-	nYjuq4RN5ihrg1t/9SuRL4S5fQPfQuChFa+gXwkgLQ==
-X-Google-Smtp-Source: AMsMyM5om3ildrb6FXKsDICcjLQng8HApyTNXbRFn0vHa6n1wlhKJZOEgXsol3CWajbZfhZ3j9+WO0SV0tqOewvj3U8=
-X-Received: by 2002:a63:464d:0:b0:441:5968:cd0e with SMTP id
- v13-20020a63464d000000b004415968cd0emr19098981pgk.595.1664883848385; Tue, 04
- Oct 2022 04:44:08 -0700 (PDT)
+        h=content-transfer-encoding:in-reply-to:organization:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date;
+        bh=ARqzLCUGK9oxipjgV/TP0dhqnyFoncnYQ36iiV2KnPc=;
+        b=u35T5/vuliGC+cEzM7n67cck8m1BN4JmYrMCnK3zD1L6tAlT+VXWE5W/VLiasaOFux
+         dWFSF4sx2mMkkpftC4VuWPfZbonaRQCKtzcPFgnkVf1y0YoLS9SoGYAGl/lO1EaatNrZ
+         Os/nBcSqMGHn0pUVsUtjqbtLm3JgAmPrQR+MtHFa2HXUwzKD2xpxlCJrvHKsJjFxqv4f
+         vOGO0TTMfq7kkrFVCEjAgXxfiZ/10XOgTeB7XfJ1XBfix1YnhLMcP1xJFFsWDkSS+4Lh
+         0m88wNVQ0ua1SEwbLkeL5XAIXR/m7exQzZT3n6VzteJdX7YBVVvV5hhbtjFNRfgGGMV2
+         BTdA==
+X-Gm-Message-State: ACrzQf1aUtLfHpKQu2mH7aQfhuvGlYjQaETUUQ4W3YLMY9xeHxCw1OEV
+	MMALxtSDK6Cgq2yOtpS+2PhiV9ZXVqJ7zjCeLxmQH71qqBBaaH497SJoKBHJMSwDekkK2Y5oCD8
+	xBxSV6I5dingvRubElXGG7w6Tvw==
+X-Received: by 2002:adf:fb84:0:b0:21a:10f2:1661 with SMTP id a4-20020adffb84000000b0021a10f21661mr15777341wrr.2.1664886767405;
+        Tue, 04 Oct 2022 05:32:47 -0700 (PDT)
+X-Google-Smtp-Source: AMsMyM4xqePutEPB3BXlHEVeHUD3E+8ExIhv/azDcUvIYjAckd2CXwfmrDfdmGjPdpAJS/YBJHMgGg==
+X-Received: by 2002:adf:fb84:0:b0:21a:10f2:1661 with SMTP id a4-20020adffb84000000b0021a10f21661mr15777319wrr.2.1664886767130;
+        Tue, 04 Oct 2022 05:32:47 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c706:5000:4fff:1dd6:7868:a36? (p200300cbc70650004fff1dd678680a36.dip0.t-ipconnect.de. [2003:cb:c706:5000:4fff:1dd6:7868:a36])
+        by smtp.gmail.com with ESMTPSA id k5-20020adff5c5000000b0022afbd02c69sm10360655wrp.56.2022.10.04.05.32.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 04 Oct 2022 05:32:46 -0700 (PDT)
+Message-ID: <31f20ddf-cd41-69b5-2875-2d738b166ae2@redhat.com>
+Date: Tue, 4 Oct 2022 14:32:45 +0200
 MIME-Version: 1.0
-References: <20220919095939.761690562@infradead.org> <20220919101521.139727471@infradead.org>
- <CAPDyKFqTWd4W5Ofk76CtC4X43dxBTNHtmY9YzN355-vpviLsPw@mail.gmail.com>
-In-Reply-To: <CAPDyKFqTWd4W5Ofk76CtC4X43dxBTNHtmY9YzN355-vpviLsPw@mail.gmail.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Tue, 4 Oct 2022 13:43:31 +0200
-Message-ID: <CAPDyKFqGSt2NFe8aY=6rkp4P-WH7DCO1fmWrcXk4_5XNEvv25w@mail.gmail.com>
-Subject: Re: [PATCH v2 12/44] cpuidle,dt: Push RCU-idle into driver
-To: Peter Zijlstra <peterz@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailman-Approved-At: Wed, 05 Oct 2022 00:13:46 +1100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.0
+Subject: Re: [PATCH v1 1/3] coding-style.rst: document BUG() and WARN() rules
+ ("do not crash the kernel")
+To: Kalle Valo <kvalo@kernel.org>
+References: <20220920122302.99195-1-david@redhat.com>
+ <20220920122302.99195-2-david@redhat.com> <87pmfp8hnj.fsf@kernel.org>
+ <d1ceedca-b28e-c47e-aa0d-aa1cb36d12b9@redhat.com> <87leq64m20.fsf@kernel.org>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <87leq64m20.fsf@kernel.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,188 +105,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: juri.lelli@redhat.com, rafael@kernel.org, catalin.marinas@arm.com, linus.walleij@linaro.org, bsegall@google.com, guoren@kernel.org, pavel@ucw.cz, agordeev@linux.ibm.com, linux-clk@vger.kernel.org, linux-arch@vger.kernel.org, vincent.guittot@linaro.org, linux-sh@vger.kernel.org, kasan-dev@googlegroups.com, linux-acpi@vger.kernel.org, mingo@redhat.com, geert@linux-m68k.org, linux-imx@nxp.com, vgupta@kernel.org, mattst88@gmail.com, lpieralisi@kernel.org, sammy@sammy.net, pmladek@suse.com, linux-pm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, linux-um@lists.infradead.org, npiggin@gmail.com, tglx@linutronix.de, linux-omap@vger.kernel.org, dietmar.eggemann@arm.com, andreyknvl@gmail.com, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, senozhatsky@chromium.org, svens@linux.ibm.com, kernel@pengutronix.de, tj@kernel.org, Andrew Morton <akpm@linux-foundation.org>, mark.rutland@arm.com, linux-ia64@vger.kernel.org, dave.hansen@linux.intel
- .com, virtualization@lists.linux-foundation.org, James.Bottomley@hansenpartnership.com, jcmvbkbc@gmail.com, thierry.reding@gmail.com, kernel@xen0n.name, cl@linux.com, linux-s390@vger.kernel.org, vschneid@redhat.com, john.ogness@linutronix.de, ysato@users.sourceforge.jp, festevam@gmail.com, deller@gmx.de, daniel.lezcano@linaro.org, jonathanh@nvidia.com, dennis@kernel.org, lenb@kernel.org, linux-xtensa@linux-xtensa.org, jolsa@kernel.org, gor@linux.ibm.com, linux-arm-msm@vger.kernel.org, sudeep.holla@arm.com, linux-m68k@lists.linux-m68k.org, loongarch@lists.linux.dev, shorne@gmail.com, chris@zankel.net, sboyd@kernel.org, dinguyen@kernel.org, bristot@redhat.com, chenhuacai@kernel.org, alexander.shishkin@linux.intel.com, fweisbec@gmail.com, mturquette@baylibre.com, paul.walmsley@sifive.com, linux@rasmusvillemoes.dk, will@kernel.org, boris.ostrovsky@oracle.com, khilman@kernel.org, linux-csky@vger.kernel.org, tony@atomide.com, linux-snps-arc@lists.infradead.org, mgorman@suse.de, jacob.jun.
- pan@linux.intel.com, Arnd Bergmann <arnd@arndb.de>, ulli.kroll@googlemail.com, rostedt@goodmis.org, ink@jurassic.park.msu.ru, bcain@quicinc.com, tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, anup@brainfault.org, ryabinin.a.a@gmail.com, linux-alpha@vger.kernel.org, shawnguo@kernel.org, davem@davemloft.net, dalias@libc.org, pv-drivers@vmware.com, hpa@zytor.com, konrad.dybcio@somainline.org, bjorn.andersson@linaro.org, glider@google.com, amakhalov@vmware.com, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, vincenzo.frascino@arm.com, anton.ivanov@cambridgegreys.com, jonas@southpole.se, yury.norov@gmail.com, richard@nod.at, x86@kernel.org, linux@armlinux.org.uk, agross@kernel.org, aou@eecs.berkeley.edu, hca@linux.ibm.com, richard.henderson@linaro.org, stefan.kristiansson@saunalahti.fi, openrisc@lists.librecores.org, acme@kernel.org, atishp@atishpatra.org, linux-tegra@vger.kernel.org, namhyung@kernel.org, andriy.shevchenko@linux.intel.com, jpoimboe@kernel.org, dvyu
- kov@google.com, jgross@suse.com, monstr@monstr.eu, linux-mips@vger.kernel.org, palmer@dabbelt.com, linux-hexagon@vger.kernel.org, bp@alien8.de, johannes@sipsolutions.net, linuxppc-dev@lists.ozlabs.org
+Cc: Lukas Bulwahn <lukas.bulwahn@gmail.com>, Baoquan He <bhe@redhat.com>, linux-doc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Dave Young <dyoung@redhat.com>, Jonathan Corbet <corbet@lwn.net>, Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org, Jani Nikula <jani.nikula@linux.intel.com>, linux-mm@kvack.org, David Laight <David.Laight@ACULAB.COM>, Dwaipayan Ray <dwaipayanray1@gmail.com>, Andy Whitcroft <apw@canonical.com>, Joe Perches <joe@perches.com>, Andrew Morton <akpm@linux-foundation.org>, Linus Torvalds <torvalds@linux-foundation.org>, Ingo Molnar <mingo@kernel.org>, Vivek Goyal <vgoyal@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 4 Oct 2022 at 13:03, Ulf Hansson <ulf.hansson@linaro.org> wrote:
->
-> On Mon, 19 Sept 2022 at 12:18, Peter Zijlstra <peterz@infradead.org> wrote:
-> >
-> > Doing RCU-idle outside the driver, only to then temporarily enable it
-> > again before going idle is daft.
-> >
-> > Notably: this converts all dt_init_idle_driver() and
-> > __CPU_PM_CPU_IDLE_ENTER() users for they are inextrably intertwined.
-> >
-> > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
->
-> Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+On 26.09.22 09:44, Kalle Valo wrote:
+> David Hildenbrand <david@redhat.com> writes:
+> 
+>>>> +Use WARN_ON_ONCE() rather than WARN() or WARN_ON()
+>>>> +**************************************************
+>>>> +
+>>>> +WARN_ON_ONCE() is generally preferred over WARN() or WARN_ON(), because it
+>>>> +is common for a given warning condition, if it occurs at all, to occur
+>>>> +multiple times. This can fill up and wrap the kernel log, and can even slow
+>>>> +the system enough that the excessive logging turns into its own, additional
+>>>> +problem.
+>>>
+>>> FWIW I have had cases where WARN() messages caused a reboot, maybe
+>>> mention that here? In my case the logging was so excessive that the
+>>> watchdog wasn't updated and in the end the device was forcefully
+>>> rebooted.
+>>>
+>>
+>> That should be covered by the last part, no? What would be your suggestion?
+> 
+> I was just thinking that maybe make it more obvious that even WARN_ON()
+> can crash the system, something along these lines:
+> 
+> "..., additional problem like stalling the system so much that it causes
+> a reboot."
 
-This was not (yet) my intention. Please have a look at the comments I
-provided below.
+Hi Kalle,
 
-Kind regards
-Uffe
+sorry for the late reply. Jonathan already queued v2 and sent it upstream.
 
->
-> > ---
-> >  arch/arm/mach-omap2/cpuidle34xx.c    |    4 ++--
-> >  drivers/acpi/processor_idle.c        |    2 ++
-> >  drivers/cpuidle/cpuidle-arm.c        |    1 +
-> >  drivers/cpuidle/cpuidle-big_little.c |    8 ++++++--
-> >  drivers/cpuidle/cpuidle-psci.c       |    1 +
-> >  drivers/cpuidle/cpuidle-qcom-spm.c   |    1 +
-> >  drivers/cpuidle/cpuidle-riscv-sbi.c  |    1 +
-> >  drivers/cpuidle/dt_idle_states.c     |    2 +-
-> >  include/linux/cpuidle.h              |    4 ++++
-> >  9 files changed, 19 insertions(+), 5 deletions(-)
-> >
-> > --- a/drivers/acpi/processor_idle.c
-> > +++ b/drivers/acpi/processor_idle.c
-> > @@ -1200,6 +1200,8 @@ static int acpi_processor_setup_lpi_stat
-> >                 state->target_residency = lpi->min_residency;
-> >                 if (lpi->arch_flags)
-> >                         state->flags |= CPUIDLE_FLAG_TIMER_STOP;
-> > +               if (lpi->entry_method == ACPI_CSTATE_FFH)
-> > +                       state->flags |= CPUIDLE_FLAG_RCU_IDLE;
->
-> I assume the state index here will never be 0?
->
-> If not, it may lead to that acpi_processor_ffh_lpi_enter() may trigger
-> CPU_PM_CPU_IDLE_ENTER_PARAM() to call ct_cpuidle_enter|exit() for an
-> idle-state that doesn't have the CPUIDLE_FLAG_RCU_IDLE bit set.
->
-> >                 state->enter = acpi_idle_lpi_enter;
-> >                 drv->safe_state_index = i;
-> >         }
-> > --- a/drivers/cpuidle/cpuidle-arm.c
-> > +++ b/drivers/cpuidle/cpuidle-arm.c
-> > @@ -53,6 +53,7 @@ static struct cpuidle_driver arm_idle_dr
-> >          * handler for idle state index 0.
-> >          */
-> >         .states[0] = {
-> > +               .flags                  = CPUIDLE_FLAG_RCU_IDLE,
->
-> Comparing arm64 and arm32 idle-states/idle-drivers, the $subject
-> series ends up setting the CPUIDLE_FLAG_RCU_IDLE for the ARM WFI idle
-> state (state zero), but only for the arm64 and psci cases (mostly
-> arm64). For arm32 we would need to update the ARM_CPUIDLE_WFI_STATE
-> too, as that is what most arm32 idle-drivers are using. My point is,
-> the code becomes a bit inconsistent.
->
-> Perhaps it's easier to avoid setting the CPUIDLE_FLAG_RCU_IDLE bit for
-> all of the ARM WFI idle states, for both arm64 and arm32?
->
-> >                 .enter                  = arm_enter_idle_state,
-> >                 .exit_latency           = 1,
-> >                 .target_residency       = 1,
-> > --- a/drivers/cpuidle/cpuidle-big_little.c
-> > +++ b/drivers/cpuidle/cpuidle-big_little.c
-> > @@ -64,7 +64,8 @@ static struct cpuidle_driver bl_idle_lit
-> >                 .enter                  = bl_enter_powerdown,
-> >                 .exit_latency           = 700,
-> >                 .target_residency       = 2500,
-> > -               .flags                  = CPUIDLE_FLAG_TIMER_STOP,
-> > +               .flags                  = CPUIDLE_FLAG_TIMER_STOP |
-> > +                                         CPUIDLE_FLAG_RCU_IDLE,
-> >                 .name                   = "C1",
-> >                 .desc                   = "ARM little-cluster power down",
-> >         },
-> > @@ -85,7 +86,8 @@ static struct cpuidle_driver bl_idle_big
-> >                 .enter                  = bl_enter_powerdown,
-> >                 .exit_latency           = 500,
-> >                 .target_residency       = 2000,
-> > -               .flags                  = CPUIDLE_FLAG_TIMER_STOP,
-> > +               .flags                  = CPUIDLE_FLAG_TIMER_STOP |
-> > +                                         CPUIDLE_FLAG_RCU_IDLE,
-> >                 .name                   = "C1",
-> >                 .desc                   = "ARM big-cluster power down",
-> >         },
-> > @@ -124,11 +126,13 @@ static int bl_enter_powerdown(struct cpu
-> >                                 struct cpuidle_driver *drv, int idx)
-> >  {
-> >         cpu_pm_enter();
-> > +       ct_idle_enter();
-> >
-> >         cpu_suspend(0, bl_powerdown_finisher);
-> >
-> >         /* signals the MCPM core that CPU is out of low power state */
-> >         mcpm_cpu_powered_up();
-> > +       ct_idle_exit();
-> >
-> >         cpu_pm_exit();
-> >
-> > --- a/drivers/cpuidle/cpuidle-psci.c
-> > +++ b/drivers/cpuidle/cpuidle-psci.c
-> > @@ -357,6 +357,7 @@ static int psci_idle_init_cpu(struct dev
-> >          * PSCI idle states relies on architectural WFI to be represented as
-> >          * state index 0.
-> >          */
-> > +       drv->states[0].flags = CPUIDLE_FLAG_RCU_IDLE;
-> >         drv->states[0].enter = psci_enter_idle_state;
-> >         drv->states[0].exit_latency = 1;
-> >         drv->states[0].target_residency = 1;
-> > --- a/drivers/cpuidle/cpuidle-qcom-spm.c
-> > +++ b/drivers/cpuidle/cpuidle-qcom-spm.c
-> > @@ -72,6 +72,7 @@ static struct cpuidle_driver qcom_spm_id
-> >         .owner = THIS_MODULE,
-> >         .states[0] = {
-> >                 .enter                  = spm_enter_idle_state,
-> > +               .flags                  = CPUIDLE_FLAG_RCU_IDLE,
-> >                 .exit_latency           = 1,
-> >                 .target_residency       = 1,
-> >                 .power_usage            = UINT_MAX,
-> > --- a/drivers/cpuidle/cpuidle-riscv-sbi.c
-> > +++ b/drivers/cpuidle/cpuidle-riscv-sbi.c
-> > @@ -332,6 +332,7 @@ static int sbi_cpuidle_init_cpu(struct d
-> >         drv->cpumask = (struct cpumask *)cpumask_of(cpu);
-> >
-> >         /* RISC-V architectural WFI to be represented as state index 0. */
-> > +       drv->states[0].flags = CPUIDLE_FLAG_RCU_IDLE;
-> >         drv->states[0].enter = sbi_cpuidle_enter_state;
-> >         drv->states[0].exit_latency = 1;
-> >         drv->states[0].target_residency = 1;
-> > --- a/drivers/cpuidle/dt_idle_states.c
-> > +++ b/drivers/cpuidle/dt_idle_states.c
-> > @@ -77,7 +77,7 @@ static int init_state_node(struct cpuidl
-> >         if (err)
-> >                 desc = state_node->name;
-> >
-> > -       idle_state->flags = 0;
-> > +       idle_state->flags = CPUIDLE_FLAG_RCU_IDLE;
-> >         if (of_property_read_bool(state_node, "local-timer-stop"))
-> >                 idle_state->flags |= CPUIDLE_FLAG_TIMER_STOP;
-> >         /*
-> > --- a/include/linux/cpuidle.h
-> > +++ b/include/linux/cpuidle.h
-> > @@ -282,14 +282,18 @@ extern s64 cpuidle_governor_latency_req(
-> >         int __ret = 0;                                                  \
-> >                                                                         \
-> >         if (!idx) {                                                     \
-> > +               ct_idle_enter();                                        \
->
-> According to my comment above, we should then drop these calls to
-> ct_idle_enter and ct_idle_exit() here. Right?
->
-> >                 cpu_do_idle();                                          \
-> > +               ct_idle_exit();                                         \
-> >                 return idx;                                             \
-> >         }                                                               \
-> >                                                                         \
-> >         if (!is_retention)                                              \
-> >                 __ret =  cpu_pm_enter();                                \
-> >         if (!__ret) {                                                   \
-> > +               ct_idle_enter();                                        \
-> >                 __ret = low_level_idle_enter(state);                    \
-> > +               ct_idle_exit();                                         \
-> >                 if (!is_retention)                                      \
-> >                         cpu_pm_exit();                                  \
-> >         }                                                               \
-> >
->
-> Kind regards
-> Uffe
+I think that's it is already covered by the statement and that the 
+additional example isn't required -- most of us learned the hard way 
+that "excessive logging turns into its own problem" includes all weird 
+kinds of kernel crashes. A panic/reboot due to a watchdog not firing is 
+one such possible outcome.
+
+Thanks!
+
+-- 
+Thanks,
+
+David / dhildenb
+
