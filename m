@@ -2,36 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF1A25F4ACC
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Oct 2022 23:16:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E89F35F4BFF
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Oct 2022 00:38:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Mhr9c4Pssz3dy1
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Oct 2022 08:16:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Mhszy2fKlz30Bb
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Oct 2022 09:38:22 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DgMVaYKZ;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=mark.rutland@arm.com; receiver=<UNKNOWN>)
-X-Greylist: delayed 554 seconds by postgrey-1.36 at boromir; Wed, 05 Oct 2022 04:29:45 AEDT
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Mhl7s3LfXz2xGk
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Oct 2022 04:29:44 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9B6F111FB;
-	Tue,  4 Oct 2022 10:20:00 -0700 (PDT)
-Received: from FVFF77S0Q05N.cambridge.arm.com (FVFF77S0Q05N.cambridge.arm.com [10.1.38.139])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2E7683F792;
-	Tue,  4 Oct 2022 10:19:38 -0700 (PDT)
-Date: Tue, 4 Oct 2022 18:19:33 +0100
-From: Mark Rutland <mark.rutland@arm.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH v2 33/44] ftrace: WARN on rcuidle
-Message-ID: <YzxrJYjKxy/vUc5n@FVFF77S0Q05N.cambridge.arm.com>
-References: <20220919095939.761690562@infradead.org>
- <20220919101522.573936213@infradead.org>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DgMVaYKZ;
+	dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mhsyy4hRbz2xjw
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Oct 2022 09:37:29 +1100 (AEDT)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 294MOxKE008207
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 4 Oct 2022 22:37:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : subject :
+ date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=v3h+vW1mYuCobjs469KgWYfgljfYff4dl0AT7f4l94Q=;
+ b=DgMVaYKZBsklVGV6swOjUwYA9AjTiXcIcyaxGJsAylufzh/RdjXVlZPh0QjaDCL1i3rK
+ MGdxKxtWne7EJT+RZ/KaXCwEpgZAtciXHr0utCaECcNU1g1OP4v1BpI3w/KIXk73JS/3
+ zbcKuvy852aQ2bNIEkkCCAIKzIYIN8ZO4Hy0otSesV3X93ITWepjJJmbxyc7yqXSrQCK
+ mnhGYfqtJ7kGpjNr2qE+gAIuG2XqoJJRSI2QsERft6ffwdNXjc7d4YyzX+eb7Ha4/SNu
+ nEptPRuFlY2metHvpw0aOgggXmcyI0QsQxhJDLXd1rXCiKR31fuK4NqHiGaNomGdUF2V Ag== 
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com [169.53.41.122])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3k0gw1qwb2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Oct 2022 22:37:26 +0000
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+	by ppma04dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 294MamI2020445
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 4 Oct 2022 22:37:26 GMT
+Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com [9.57.198.24])
+	by ppma04dal.us.ibm.com with ESMTP id 3jxd6a5hn4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Oct 2022 22:37:26 +0000
+Received: from smtpav04.wdc07v.mail.ibm.com ([9.208.128.116])
+	by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 294MbO7S20709968
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 4 Oct 2022 22:37:25 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8E0A558058
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Oct 2022 22:37:24 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6745358054
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Oct 2022 22:37:24 +0000 (GMT)
+Received: from localhost (unknown [9.211.83.15])
+	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Oct 2022 22:37:24 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/kasan/book3s_64: warn when running with hash MMU
+Date: Tue,  4 Oct 2022 17:37:24 -0500
+Message-Id: <20221004223724.38707-1-nathanl@linux.ibm.com>
+X-Mailer: git-send-email 2.37.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220919101522.573936213@infradead.org>
-X-Mailman-Approved-At: Wed, 05 Oct 2022 08:14:24 +1100
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: AOrrMRzeVD7vrshpf_CHiYbNRHLoU2rx
+X-Proofpoint-GUID: AOrrMRzeVD7vrshpf_CHiYbNRHLoU2rx
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
+ definitions=2022-10-04_09,2022-09-29_03,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 suspectscore=0
+ bulkscore=0 adultscore=0 mlxlogscore=898 spamscore=0 lowpriorityscore=0
+ priorityscore=1501 clxscore=1015 mlxscore=0 impostorscore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2209130000
+ definitions=main-2210040145
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -43,76 +86,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: juri.lelli@redhat.com, rafael@kernel.org, catalin.marinas@arm.com, linus.walleij@linaro.org, bsegall@google.com, guoren@kernel.org, pavel@ucw.cz, agordeev@linux.ibm.com, srivatsa@csail.mit.edu, linux-arch@vger.kernel.org, vincent.guittot@linaro.org, chenhuacai@kernel.org, linux-acpi@vger.kernel.org, agross@kernel.org, geert@linux-m68k.org, linux-imx@nxp.com, vgupta@kernel.org, mattst88@gmail.com, borntraeger@linux.ibm.com, mturquette@baylibre.com, sammy@sammy.net, pmladek@suse.com, linux-pm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, linux-um@lists.infradead.org, npiggin@gmail.com, tglx@linutronix.de, linux-omap@vger.kernel.org, dietmar.eggemann@arm.com, andreyknvl@gmail.com, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, senozhatsky@chromium.org, svens@linux.ibm.com, jolsa@kernel.org, tj@kernel.org, Andrew Morton <akpm@linux-foundation.org>, linux-ia64@vger.kernel.org, dave.hansen@linux.intel.com, virtualization@lists.linu
- x-foundation.org, James.Bottomley@HansenPartnership.com, jcmvbkbc@gmail.com, thierry.reding@gmail.com, kernel@xen0n.name, cl@linux.com, linux-s390@vger.kernel.org, vschneid@redhat.com, john.ogness@linutronix.de, ysato@users.sourceforge.jp, linux-sh@vger.kernel.org, festevam@gmail.com, deller@gmx.de, daniel.lezcano@linaro.org, jonathanh@nvidia.com, dennis@kernel.org, lenb@kernel.org, linux-xtensa@linux-xtensa.org, kernel@pengutronix.de, gor@linux.ibm.com, linux-arm-msm@vger.kernel.org, linux-alpha@vger.kernel.org, linux-m68k@lists.linux-m68k.org, loongarch@lists.linux.dev, shorne@gmail.com, chris@zankel.net, sboyd@kernel.org, dinguyen@kernel.org, bristot@redhat.com, alexander.shishkin@linux.intel.com, fweisbec@gmail.com, lpieralisi@kernel.org, atishp@atishpatra.org, linux@rasmusvillemoes.dk, kasan-dev@googlegroups.com, will@kernel.org, boris.ostrovsky@oracle.com, khilman@kernel.org, linux-csky@vger.kernel.org, pv-drivers@vmware.com, linux-snps-arc@lists.infradead.org, mgorman@suse.de
- , jacob.jun.pan@linux.intel.com, Arnd Bergmann <arnd@arndb.de>, ulli.kroll@googlemail.com, linux-clk@vger.kernel.org, rostedt@goodmis.org, ink@jurassic.park.msu.ru, bcain@quicinc.com, tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, ryabinin.a.a@gmail.com, sudeep.holla@arm.com, shawnguo@kernel.org, davem@davemloft.net, dalias@libc.org, tony@atomide.com, amakhalov@vmware.com, konrad.dybcio@somainline.org, bjorn.andersson@linaro.org, glider@google.com, hpa@zytor.com, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org, vincenzo.frascino@arm.com, anton.ivanov@cambridgegreys.com, jonas@southpole.se, yury.norov@gmail.com, richard@nod.at, x86@kernel.org, linux@armlinux.org.uk, mingo@redhat.com, aou@eecs.berkeley.edu, hca@linux.ibm.com, richard.henderson@linaro.org, stefan.kristiansson@saunalahti.fi, openrisc@lists.librecores.org, acme@kernel.org, paul.walmsley@sifive.com, linux-tegra@vger.kernel.org, namhyung@kernel.org, andriy.shevchenko@lin
- ux.intel.com, jpoimboe@kernel.org, dvyukov@google.com, jgross@suse.com, monstr@monstr.eu, linux-mips@vger.kernel.org, palmer@dabbelt.com, anup@brainfault.org, bp@alien8.de, johannes@sipsolutions.net, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Sep 19, 2022 at 12:00:12PM +0200, Peter Zijlstra wrote:
-> CONFIG_GENERIC_ENTRY disallows any and all tracing when RCU isn't
-> enabled.
-> 
-> XXX if s390 (the only other GENERIC_ENTRY user as of this writing)
-> isn't comfortable with this, we could switch to
-> HAVE_NOINSTR_VALIDATION which is x86_64 only atm.
-> 
-> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> ---
->  include/linux/tracepoint.h |   13 ++++++++++++-
->  kernel/trace/trace.c       |    3 +++
->  2 files changed, 15 insertions(+), 1 deletion(-)
-> 
-> --- a/include/linux/tracepoint.h
-> +++ b/include/linux/tracepoint.h
-> @@ -178,6 +178,16 @@ static inline struct tracepoint *tracepo
->  #endif /* CONFIG_HAVE_STATIC_CALL */
->  
->  /*
-> + * CONFIG_GENERIC_ENTRY archs are expected to have sanitized entry and idle
-> + * code that disallow any/all tracing/instrumentation when RCU isn't watching.
-> + */
-> +#ifdef CONFIG_GENERIC_ENTRY
-> +#define RCUIDLE_COND(rcuidle)	(rcuidle)
-> +#else
-> +#define RCUIDLE_COND(rcuidle)	(rcuidle && in_nmi())
-> +#endif
+kasan is known to crash at boot on book3s_64 with non-radix MMU. As
+noted in commit 41b7a347bf14 ("powerpc: Book3S 64-bit outline-only
+KASAN support"):
 
-Could we make this depend on ARCH_WANTS_NO_INSTR instead?
+  A kernel with CONFIG_KASAN=y will crash during boot on a machine
+  using HPT translation because not all the entry points to the
+  generic KASAN code are protected with a call to kasan_arch_is_ready().
 
-That'll allow arm64 to check this even though we're not using the generic entry
-code (and there's lots of work necessary to make that possible...).
+Such crashes look like this:
 
-Thanks,
-Mark.
+  BUG: Unable to handle kernel data access at 0xc00e00000308b100
+  Faulting instruction address: 0xc0000000006d0fcc
+  Oops: Kernel access of bad area, sig: 11 [#1]
+  LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
+  CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.0.0-rc5-02183-g3ab165dea2a2 #13
+  [...regs...]
+  NIP [c0000000006d0fcc] kasan_byte_accessible+0xc/0x20
+  LR [c0000000006cd9cc] __kasan_check_byte+0x2c/0xa0
+  Call Trace:
+  [c00000001688f930] [c00000001688f970] 0xc00000001688f970 (unreliable)
+  [c00000001688f970] [c0000000005f6a74] ksize+0x34/0xa0
+  [c00000001688f9a0] [c0000000024c03a8] __alloc_skb+0xd8/0x2d0
+  [c00000001688fa00] [c0000000003c48c0] audit_log_start+0x260/0x660
+  [c00000001688fb30] [c0000000003c50ec] audit_log+0x3c/0x70
+  [c00000001688fb60] [c00000000404590c] audit_init+0x188/0x1ac
+  [c00000001688fbe0] [c0000000000127e0] do_one_initcall+0xe0/0x610
+  [c00000001688fcd0] [c00000000400a1f0] kernel_init_freeable+0x4c0/0x574
+  [c00000001688fda0] [c000000000013450] kernel_init+0x30/0x1d0
+  [c00000001688fe10] [c00000000000cd54] ret_from_kernel_thread+0x5c/0x64
 
-> +
-> +/*
->   * it_func[0] is never NULL because there is at least one element in the array
->   * when the array itself is non NULL.
->   */
-> @@ -189,7 +199,8 @@ static inline struct tracepoint *tracepo
->  			return;						\
->  									\
->  		/* srcu can't be used from NMI */			\
-> -		WARN_ON_ONCE(rcuidle && in_nmi());			\
-> +		if (WARN_ON_ONCE(RCUIDLE_COND(rcuidle)))		\
-> +			return;						\
->  									\
->  		/* keep srcu and sched-rcu usage consistent */		\
->  		preempt_disable_notrace();				\
-> --- a/kernel/trace/trace.c
-> +++ b/kernel/trace/trace.c
-> @@ -3104,6 +3104,9 @@ void __trace_stack(struct trace_array *t
->  		return;
->  	}
->  
-> +	if (WARN_ON_ONCE(IS_ENABLED(CONFIG_GENERIC_ENTRY)))
-> +		return;
-> +
->  	/*
->  	 * When an NMI triggers, RCU is enabled via ct_nmi_enter(),
->  	 * but if the above rcu_is_watching() failed, then the NMI
-> 
-> 
+If you look carefully enough at the full kernel output, you might
+notice this message, much earlier:
+
+  KASAN not enabled as it requires radix!
+
+But the eventual oops does not carry any indication that the real
+problem was detected early on and is a known limitation.
+
+Change init_book3s_64.c::kasan_init() to emit a warning backtrace and
+taint the kernel when not running on radix. When the kernel likely
+oopses later, the 'W' taint flag in the report should help minimize
+developer time spent trying to understand what's gone wrong.
+
+Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+---
+ arch/powerpc/mm/kasan/init_book3s_64.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/arch/powerpc/mm/kasan/init_book3s_64.c b/arch/powerpc/mm/kasan/init_book3s_64.c
+index 9300d641cf9a..5d9894d7fb97 100644
+--- a/arch/powerpc/mm/kasan/init_book3s_64.c
++++ b/arch/powerpc/mm/kasan/init_book3s_64.c
+@@ -56,10 +56,8 @@ void __init kasan_init(void)
+ 	u64 i;
+ 	pte_t zero_pte = pfn_pte(virt_to_pfn(kasan_early_shadow_page), PAGE_KERNEL);
+ 
+-	if (!early_radix_enabled()) {
+-		pr_warn("KASAN not enabled as it requires radix!");
++	if (WARN(!early_radix_enabled(), "KASAN known broken on HPT"))
+ 		return;
+-	}
+ 
+ 	for_each_mem_range(i, &start, &end)
+ 		kasan_init_phys_region((void *)start, (void *)end);
+-- 
+2.37.1
+
