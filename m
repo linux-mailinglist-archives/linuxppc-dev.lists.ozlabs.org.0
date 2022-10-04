@@ -2,32 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7E0D5F44A2
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Oct 2022 15:47:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 076345F449F
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Oct 2022 15:46:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MhfBv3Cjyz3fr9
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Oct 2022 00:47:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MhfBK5rTtz3fnF
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Oct 2022 00:46:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mhf1V6KXZz3bjm
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mhf1V2P8Xz3c5G
 	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Oct 2022 00:38:54 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Mhf1V54rxz4xHB;
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Mhf1V1DNDz4xH9;
 	Wed,  5 Oct 2022 00:38:54 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Haren Myneni <haren@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, christophe.leroy@csgroup.eu, npiggin@gmail.com, mpe@ellerman.id.au
-In-Reply-To: <b9cd844b85eb8f70459109ce1b14e44c4cc85fa7.camel@linux.ibm.com>
-References: <b9cd844b85eb8f70459109ce1b14e44c4cc85fa7.camel@linux.ibm.com>
-Subject: Re: [PATCH v3] powerpc: Ignore DSI error caused by the copy/paste instruction
-Message-Id: <166488996568.779920.3285817727782486217.b4-ty@ellerman.id.au>
-Date: Wed, 05 Oct 2022 00:26:05 +1100
+To: nathanl@linux.ibm.com, Haren Myneni <haren@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, mpe@ellerman.id.au
+In-Reply-To: <55380253ea0c11341824cd4c0fc6bbcfc5752689.camel@linux.ibm.com>
+References: <55380253ea0c11341824cd4c0fc6bbcfc5752689.camel@linux.ibm.com>
+Subject: Re: [PATCH] powerpc/pseries/vas: Pass hw_cpu_id to node associativity HCALL
+Message-Id: <166488996654.779920.8718749297311438980.b4-ty@ellerman.id.au>
+Date: Wed, 05 Oct 2022 00:26:06 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -45,22 +45,20 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 27 Sep 2022 18:29:27 -0700, Haren Myneni wrote:
-> The data storage interrupt (DSI) error will be generated when the
-> paste operation is issued on the suspended Nest Accelerator (NX)
-> window due to NX state changes. The hypervisor expects the
-> partition to ignore this error during page fault handling.
-> To differentiate DSI caused by an actual HW configuration or by
-> the NX window, a new “ibm,pi-features” type value is defined.
-> Byte 0, bit 3 of pi-attribute-specifier-type is now defined to
-> indicate this DSI error. If this error is not ignored, the user
-> space can get SIGBUS when the NX request is issued.
+On Wed, 28 Sep 2022 18:57:33 -0700, Haren Myneni wrote:
+> Generally the hypervisor decides to allocate a window on different
+> VAS instances. But if the user space wishes to allocate on the
+> current VAS instance where the process is executing, the kernel has
+> to pass associativity domain IDs to allocate VAS window HCALL. To
+> determine the associativity domain IDs for the current CPU, passing
+> smp_processor_id() to node associativity HCALL which may return
+> H_P2 (-55) error during DLPAR CPU event.
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc: Ignore DSI error caused by the copy/paste instruction
-      https://git.kernel.org/powerpc/c/335e1a91042764629fbbcd8c7e40379fa3762d35
+[1/1] powerpc/pseries/vas: Pass hw_cpu_id to node associativity HCALL
+      https://git.kernel.org/powerpc/c/f3e5d9e53e74d77e711a2c90a91a8b0836a9e0b3
 
 cheers
