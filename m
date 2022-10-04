@@ -2,32 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 986925F4517
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Oct 2022 16:03:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BAC75F450B
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Oct 2022 16:02:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MhfZP3WF6z3j7S
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Oct 2022 01:03:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MhfY60y64z3hvY
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Oct 2022 01:02:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mhf1x3jX6z3c7B
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Oct 2022 00:39:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mhf1v6GkWz3dq0
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Oct 2022 00:39:15 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Mhf1x2VKKz4xHv;
-	Wed,  5 Oct 2022 00:39:17 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Mhf1r5Bgtz4xHm;
+	Wed,  5 Oct 2022 00:39:12 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Pali Rohár <pali@kernel.org>, Nick Child <nick.child@ibm.com>, Michael Ellerman <mpe@ellerman.id.au>
-In-Reply-To: <20220822231501.16827-1-pali@kernel.org>
-References: <20220819211254.22192-1-pali@kernel.org> <20220822231501.16827-1-pali@kernel.org>
-Subject: Re: [PATCH v2] powerpc: Add support for early debugging via Serial 16550 console
-Message-Id: <166488992434.779920.6350894757814995765.b4-ty@ellerman.id.au>
-Date: Wed, 05 Oct 2022 00:25:24 +1100
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20220926054305.2671436-1-npiggin@gmail.com>
+References: <20220926054305.2671436-1-npiggin@gmail.com>
+Subject: Re: [PATCH v3 0/7] powerpc/64: interrupt soft-mask and context fixes
+Message-Id: <166488993718.779920.14966153082255292179.b4-ty@ellerman.id.au>
+Date: Wed, 05 Oct 2022 00:25:37 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -42,23 +42,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 23 Aug 2022 01:15:01 +0200, Pali Rohár wrote:
-> Currently powerpc early debugging contains lot of platform specific
-> options, but does not support standard UART / serial 16550 console.
+On Mon, 26 Sep 2022 15:42:58 +1000, Nicholas Piggin wrote:
+> No real changes since last posting, I just pulled fixes from several
+> series together and rearranged them and updated changelogs slightly.
 > 
-> Later legacy_serial.c code supports registering UART as early debug console
-> from device tree but it is not early during booting, but rather later after
-> machine description code finishes.
+> Thanks,
+> Nick
+> 
+> Nicholas Piggin (7):
+>   powerpc/64/interrupt: Fix false warning in context tracking due to
+>     idle state
+>   powerpc/64: mark irqs hard disabled in boot paca
+>   powerpc/64/interrupt: Fix return to masked context after hard-mask irq
+>     becomes pending
+>   powerpc/64s: Fix irq state management in runlatch functions
+>   powerpc/64s/interrupt: masked handler debug check for previous hard
+>     disable
+>   powerpc/64/interrupt: avoid BUG/WARN recursion in interrupt entry
+>   powerpc/64/irq: tidy soft-masked irq replay and improve documentation
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc: Add support for early debugging via Serial 16550 console
-      https://git.kernel.org/powerpc/c/b19448fe846baad689ff51a991ebfc74b4b5e0a8
+[1/7] powerpc/64/interrupt: Fix false warning in context tracking due to idle state
+      https://git.kernel.org/powerpc/c/56adbb7a8b6cc7fc9b940829c38494e53c9e57d1
+[2/7] powerpc/64: mark irqs hard disabled in boot paca
+      https://git.kernel.org/powerpc/c/799f7063c7645f9a751d17f5dfd73b952f962cd2
+[3/7] powerpc/64/interrupt: Fix return to masked context after hard-mask irq becomes pending
+      https://git.kernel.org/powerpc/c/e485f6c751e0a969327336c635ca602feea117f0
+[4/7] powerpc/64s: Fix irq state management in runlatch functions
+      https://git.kernel.org/powerpc/c/9524f2278f2e6925f147d9140c83f658e7a7c84f
+[5/7] powerpc/64s/interrupt: masked handler debug check for previous hard disable
+      https://git.kernel.org/powerpc/c/c39fb71a54f09977eba7584ef0eebb25047097c6
+[6/7] powerpc/64/interrupt: avoid BUG/WARN recursion in interrupt entry
+      https://git.kernel.org/powerpc/c/f7bff6e7759b1abb59334f6448f9ef3172c4c04a
+[7/7] powerpc/64/irq: tidy soft-masked irq replay and improve documentation
+      https://git.kernel.org/powerpc/c/1da5351f9eb9b72a7d25316b4d38bf10b6e671b1
 
 cheers
