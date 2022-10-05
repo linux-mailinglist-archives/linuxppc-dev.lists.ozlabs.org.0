@@ -1,95 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED6755F4F80
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Oct 2022 07:36:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF1A85F51AC
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Oct 2022 11:21:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Mj3Gm4dLYz3dsV
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Oct 2022 16:36:48 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Q7usSDcD;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Mj8FT4scPz3drf
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Oct 2022 20:21:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=bgray@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Q7usSDcD;
-	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=virtuozzo.com (client-ip=130.117.225.111; helo=relay.virtuozzo.com; envelope-from=alexander.atanasov@virtuozzo.com; receiver=<UNKNOWN>)
+X-Greylist: delayed 953 seconds by postgrey-1.36 at boromir; Wed, 05 Oct 2022 20:20:31 AEDT
+Received: from relay.virtuozzo.com (relay.virtuozzo.com [130.117.225.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mj3Bg6h1Jz2yph
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Oct 2022 16:33:15 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2955VJ7T030036;
-	Wed, 5 Oct 2022 05:32:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=d2yAZ7F8TDw9fEWMm4S291jpj9nlvepl34zrMk8sw/s=;
- b=Q7usSDcDhdcrq6LkCjwKSuvJnL9cqJO7P5TWLjeIg9rtvSEh+gCEvKBIou5k5fvnyJwG
- Rz0XUn2yBN9Lt/LBJAHDhvhq5RFiOk+JrZTohbzgZGj+B1SbT0M7FBWVNbOR7mOWZpT3
- n4w1TApLSolju6D1doqAjrNkcZmMkqBxdDxr2nq1IkxUsYjm3IRNXJ+Hm/VlioeGCY33
- DJH4yjrZCkAlqmQZfyO4yvgqiOSudFej1GVXbeU4X1cKggwB0YSrG3GjTj35AoIKmz4F
- yA90bRmwxAzM3dAEpVWIRiGT1T+4Ks7vjCYHRX1YN+Ad7GmQ4Wzn0iOt+eLElEf7dbrD hg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3k0fsnjdd2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Oct 2022 05:32:58 +0000
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 29551M5h000801;
-	Wed, 5 Oct 2022 05:32:57 GMT
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3k0fsnjdbv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Oct 2022 05:32:57 +0000
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
-	by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2955K9qW023492;
-	Wed, 5 Oct 2022 05:32:55 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
-	by ppma06ams.nl.ibm.com with ESMTP id 3jxctj53vs-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Oct 2022 05:32:55 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
-	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2955WqCi8651334
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 5 Oct 2022 05:32:52 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B787F11C054;
-	Wed,  5 Oct 2022 05:32:52 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1790D11C050;
-	Wed,  5 Oct 2022 05:32:52 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Wed,  5 Oct 2022 05:32:52 +0000 (GMT)
-Received: from li-0d7fa1cc-2c9d-11b2-a85c-aed20764436d.ibm.com (haven.au.ibm.com [9.192.254.114])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 99F4F605F3;
-	Wed,  5 Oct 2022 16:32:49 +1100 (AEDT)
-From: Benjamin Gray <bgray@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3 6/6] powerpc: Add tests for out-of-line static calls
-Date: Wed,  5 Oct 2022 16:32:34 +1100
-Message-Id: <20221005053234.29312-7-bgray@linux.ibm.com>
-X-Mailer: git-send-email 2.37.3
-In-Reply-To: <20221005053234.29312-1-bgray@linux.ibm.com>
-References: <20221005053234.29312-1-bgray@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mj8Dv2zSGz2xKh
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Oct 2022 20:20:28 +1100 (AEDT)
+Received: from dev011.ch-qa.sw.ru ([172.29.1.16])
+	by relay.virtuozzo.com with esmtp (Exim 4.95)
+	(envelope-from <alexander.atanasov@virtuozzo.com>)
+	id 1og0GJ-007ckN-PT;
+	Wed, 05 Oct 2022 11:02:44 +0200
+From: Alexander Atanasov <alexander.atanasov@virtuozzo.com>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Nadav Amit <namit@vmware.com>,
+	VMware PV-Drivers Reviewers <pv-drivers@vmware.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	David Hildenbrand <david@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH v4 1/7] Make place for common balloon code
+Date: Wed,  5 Oct 2022 12:01:51 +0300
+Message-Id: <20221005090158.2801592-2-alexander.atanasov@virtuozzo.com>
+X-Mailer: git-send-email 2.31.1
+In-Reply-To: <20221005090158.2801592-1-alexander.atanasov@virtuozzo.com>
+References: <20221005090158.2801592-1-alexander.atanasov@virtuozzo.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Ndep1IWzvePCbbJMVuVs_YyQqTz_WSvz
-X-Proofpoint-GUID: PqiVMKzuocEB-J4zaCGgOsxw31AjSEKh
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
- definitions=2022-10-04_09,2022-09-29_03,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- adultscore=0 clxscore=1011 suspectscore=0 phishscore=0 spamscore=0
- priorityscore=1501 malwarescore=0 mlxlogscore=999 impostorscore=0
- mlxscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2209130000 definitions=main-2210050034
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,459 +53,182 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ajd@linux.ibm.com, peterz@infradead.org, Benjamin Gray <bgray@linux.ibm.com>, npiggin@gmail.com, ardb@kernel.org, jbaron@akamai.com, rostedt@goodmis.org, jpoimboe@kernel.org
+Cc: Alexander Atanasov <alexander.atanasov@virtuozzo.com>, linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org, linux-mm@kvack.org, kernel@openvz.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-KUnit tests for the various combinations of caller/trampoline/target and
-kernel/module. They must be run from a module loaded at runtime to
-guarantee they have a different TOC to the kernel (64-bit ELF V2) and
-increase the chance of testing the non-direct branch path of the
-trampoline.
+File already contains code that is common along balloon
+drivers so rename it to reflect its contents.
+mm/balloon_compaction.c -> mm/balloon.c
+include/linux/balloon_compaction.h -> include/linux/balloon.h
+Remove it from files which do not actually use it.
+Drop externs from function delcarations.
 
-For 64-bit ELF V2 ABI the tests try to mitigate the chance of panicking
-by restoring the TOC after every static call. Not all possible errors
-can be caught by this (we can't stop a trampoline from using a bad TOC
-itself), but it makes certain errors easier to debug.
-
-Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
+Signed-off-by: Alexander Atanasov <alexander.atanasov@virtuozzo.com>
+Acked-by: Nadav Amit <namit@vmware.com>
 ---
- arch/powerpc/Kconfig                   |  12 ++
- arch/powerpc/kernel/Makefile           |   1 +
- arch/powerpc/kernel/static_call.c      |  53 +++++
- arch/powerpc/kernel/static_call_test.c | 263 +++++++++++++++++++++++++
- arch/powerpc/kernel/static_call_test.h |  56 ++++++
- 5 files changed, 385 insertions(+)
- create mode 100644 arch/powerpc/kernel/static_call_test.c
- create mode 100644 arch/powerpc/kernel/static_call_test.h
+ MAINTAINERS                                       |  4 ++--
+ arch/powerpc/platforms/pseries/cmm.c              |  2 +-
+ drivers/misc/vmw_balloon.c                        |  2 +-
+ drivers/virtio/virtio_balloon.c                   |  2 +-
+ include/linux/{balloon_compaction.h => balloon.h} | 12 +++++-------
+ mm/Makefile                                       |  2 +-
+ mm/{balloon_compaction.c => balloon.c}            |  4 +---
+ mm/migrate.c                                      |  1 -
+ mm/vmscan.c                                       |  1 -
+ 9 files changed, 12 insertions(+), 18 deletions(-)
+ rename include/linux/{balloon_compaction.h => balloon.h} (93%)
+ rename mm/{balloon_compaction.c => balloon.c} (99%)
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 962e36ec34ec..5b9d5fa96a9e 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -1035,6 +1035,18 @@ config PPC_RTAS_FILTER
- 	  Say Y unless you know what you are doing and the filter is causing
- 	  problems for you.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 8656ab794786..745eb0ada366 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -21572,8 +21572,8 @@ L:	virtualization@lists.linux-foundation.org
+ S:	Maintained
+ F:	drivers/virtio/virtio_balloon.c
+ F:	include/uapi/linux/virtio_balloon.h
+-F:	include/linux/balloon_compaction.h
+-F:	mm/balloon_compaction.c
++F:	include/linux/balloon.h
++F:	mm/balloon.c
  
-+config PPC_STATIC_CALL_KUNIT_TEST
-+	tristate "KUnit tests for static calls"
-+	default KUNIT_ALL_TESTS
-+	depends on HAVE_STATIC_CALL && KUNIT && m
-+	help
-+	  Tests for static calls across all combinations of caller/trampoline/target
-+	  being kernel/module. On ELF ABI V2 the tests check the TOC is kept consistent.
-+
-+	  Must be built as a module and loaded at runtime to ensure the module has
-+	  a different TOC to the kernel and make it likely that non-direct branch
-+	  path of the trampoline is tested.
-+
- endmenu
+ VIRTIO CRYPTO DRIVER
+ M:	Gonglei <arei.gonglei@huawei.com>
+diff --git a/arch/powerpc/platforms/pseries/cmm.c b/arch/powerpc/platforms/pseries/cmm.c
+index 5f4037c1d7fe..1d40f6416d6a 100644
+--- a/arch/powerpc/platforms/pseries/cmm.c
++++ b/arch/powerpc/platforms/pseries/cmm.c
+@@ -19,7 +19,7 @@
+ #include <linux/stringify.h>
+ #include <linux/swap.h>
+ #include <linux/device.h>
+-#include <linux/balloon_compaction.h>
++#include <linux/balloon.h>
+ #include <asm/firmware.h>
+ #include <asm/hvcall.h>
+ #include <asm/mmu.h>
+diff --git a/drivers/misc/vmw_balloon.c b/drivers/misc/vmw_balloon.c
+index 61a2be712bf7..91d4d2a285c5 100644
+--- a/drivers/misc/vmw_balloon.c
++++ b/drivers/misc/vmw_balloon.c
+@@ -29,7 +29,7 @@
+ #include <linux/rwsem.h>
+ #include <linux/slab.h>
+ #include <linux/spinlock.h>
+-#include <linux/balloon_compaction.h>
++#include <linux/balloon.h>
+ #include <linux/vmw_vmci_defs.h>
+ #include <linux/vmw_vmci_api.h>
+ #include <asm/hypervisor.h>
+diff --git a/drivers/virtio/virtio_balloon.c b/drivers/virtio/virtio_balloon.c
+index 3f78a3a1eb75..d0c27c680721 100644
+--- a/drivers/virtio/virtio_balloon.c
++++ b/drivers/virtio/virtio_balloon.c
+@@ -13,7 +13,7 @@
+ #include <linux/delay.h>
+ #include <linux/slab.h>
+ #include <linux/module.h>
+-#include <linux/balloon_compaction.h>
++#include <linux/balloon.h>
+ #include <linux/oom.h>
+ #include <linux/wait.h>
+ #include <linux/mm.h>
+diff --git a/include/linux/balloon_compaction.h b/include/linux/balloon.h
+similarity index 93%
+rename from include/linux/balloon_compaction.h
+rename to include/linux/balloon.h
+index 5ca2d5699620..46ac8f61f607 100644
+--- a/include/linux/balloon_compaction.h
++++ b/include/linux/balloon.h
+@@ -1,7 +1,5 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
+ /*
+- * include/linux/balloon_compaction.h
+- *
+  * Common interface definitions for making balloon pages movable by compaction.
+  *
+  * Balloon page migration makes use of the general non-lru movable page
+@@ -59,13 +57,13 @@ struct balloon_dev_info {
+ 			struct page *page, enum migrate_mode mode);
+ };
  
- config ISA_DMA_API
-diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
-index a30d0d0f5499..22c07e3d34df 100644
---- a/arch/powerpc/kernel/Makefile
-+++ b/arch/powerpc/kernel/Makefile
-@@ -131,6 +131,7 @@ obj-$(CONFIG_RELOCATABLE)	+= reloc_$(BITS).o
- obj-$(CONFIG_PPC32)		+= entry_32.o setup_32.o early_32.o
- obj-$(CONFIG_PPC64)		+= dma-iommu.o iommu.o
- obj-$(CONFIG_HAVE_STATIC_CALL)	+= static_call.o
-+obj-$(CONFIG_PPC_STATIC_CALL_KUNIT_TEST)	+= static_call_test.o
- obj-$(CONFIG_KGDB)		+= kgdb.o
- obj-$(CONFIG_BOOTX_TEXT)	+= btext.o
- obj-$(CONFIG_SMP)		+= smp.o
-diff --git a/arch/powerpc/kernel/static_call.c b/arch/powerpc/kernel/static_call.c
-index 9211b2e189bb..44957ba91e3f 100644
---- a/arch/powerpc/kernel/static_call.c
-+++ b/arch/powerpc/kernel/static_call.c
-@@ -153,3 +153,56 @@ void arch_static_call_transform(void *site, void *tramp, void *func, bool tail)
- 		panic("%s: patching failed %pS at %pS\n", __func__, func, tramp);
- }
- EXPORT_SYMBOL_GPL(arch_static_call_transform);
-+
-+
-+#if IS_MODULE(CONFIG_PPC_STATIC_CALL_KUNIT_TEST)
-+
-+#include "static_call_test.h"
-+
-+int ppc_sc_kernel_target_1(struct kunit *test)
-+{
-+	toc_fixup(test);
-+	return 1;
-+}
-+
-+int ppc_sc_kernel_target_2(struct kunit *test)
-+{
-+	toc_fixup(test);
-+	return 2;
-+}
-+
-+DEFINE_STATIC_CALL(ppc_sc_kernel, ppc_sc_kernel_target_1);
-+
-+int ppc_sc_kernel_call(struct kunit *test)
-+{
-+	return PROTECTED_SC(test, int, static_call(ppc_sc_kernel)(test));
-+}
-+
-+int ppc_sc_kernel_call_indirect(struct kunit *test, int (*fn)(struct kunit *test))
-+{
-+	return PROTECTED_SC(test, int, fn(test));
-+}
-+
-+long ppc_sc_kernel_target_big(struct kunit *test, long a, long b, long c, long d,
-+			      long e, long f, long g, long h, long i)
-+{
-+	toc_fixup(test);
-+	KUNIT_EXPECT_EQ(test, a, b);
-+	KUNIT_EXPECT_EQ(test, a, c);
-+	KUNIT_EXPECT_EQ(test, a, d);
-+	KUNIT_EXPECT_EQ(test, a, e);
-+	KUNIT_EXPECT_EQ(test, a, f);
-+	KUNIT_EXPECT_EQ(test, a, g);
-+	KUNIT_EXPECT_EQ(test, a, h);
-+	KUNIT_EXPECT_EQ(test, a, i);
-+	return ~a;
-+}
-+
-+EXPORT_SYMBOL_GPL(ppc_sc_kernel_target_1);
-+EXPORT_SYMBOL_GPL(ppc_sc_kernel_target_2);
-+EXPORT_SYMBOL_GPL(ppc_sc_kernel_target_big);
-+EXPORT_STATIC_CALL_GPL(ppc_sc_kernel);
-+EXPORT_SYMBOL_GPL(ppc_sc_kernel_call);
-+EXPORT_SYMBOL_GPL(ppc_sc_kernel_call_indirect);
-+
-+#endif /* IS_MODULE(CONFIG_PPC_STATIC_CALL_KUNIT_TEST) */
-diff --git a/arch/powerpc/kernel/static_call_test.c b/arch/powerpc/kernel/static_call_test.c
-new file mode 100644
-index 000000000000..10a09ef455cf
---- /dev/null
-+++ b/arch/powerpc/kernel/static_call_test.c
-@@ -0,0 +1,263 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include "static_call_test.h"
-+
-+#include <linux/kconfig.h>
-+#include <linux/module.h>
-+#include <linux/static_call.h>
-+
-+/* Tests to ensure correctness in a variety of cases for static calls.
-+ *
-+ * The tests focus on ensuring the TOC is kept consistent across the
-+ * module-kernel boundary, as compilers can't see that a trampoline
-+ * defined locally to a caller might be jumping to a function with a
-+ * different TOC. So it's important that these tests are compiled as
-+ * a module to ensure the TOC will be different to the kernel's.
-+ */
-+
-+#ifdef CONFIG_PPC64_ELF_ABI_V2
-+
-+/* Utils to hold a copy of the old register values while we test.
-+ *
-+ * We can't use the KUnit init/exit hooks because when the hooks and
-+ * test cases return they will be in the KUnit context that doesn't know
-+ * we've reserved and modified some non-volatile registers.
-+ */
-+
-+static void *saved_registers[2];
-+
-+static void init_testcase(struct kunit *test)
-+{
-+	saved_registers[0] = actual_toc;
-+	saved_registers[1] = module_toc;
-+	module_toc = current_toc;
-+	KUNIT_ASSERT_PTR_NE(test, module_toc, (void *)get_paca()->kernel_toc);
-+}
-+
-+static void exit_testcase(void)
-+{
-+	actual_toc = saved_registers[0];
-+	module_toc = saved_registers[1];
-+}
-+
-+#else
-+
-+static void init_testcase(struct kunit *test) {}
-+static void exit_testcase(void) {}
-+
-+#endif  /* CONFIG_PPC64_ELF_ABI_V2 */
-+
-+static int module_target_11(struct kunit *test)
-+{
-+	toc_fixup(test);
-+	return 11;
-+}
-+
-+static int module_target_12(struct kunit *test)
-+{
-+	toc_fixup(test);
-+	return 12;
-+}
-+
-+DEFINE_STATIC_CALL(module_sc, module_target_11);
-+
-+DEFINE_STATIC_CALL_RET0(module_sc_ret0, int(void));
-+DEFINE_STATIC_CALL_NULL(module_sc_null, int(int));
-+
-+static int add_one(int *val)
-+{
-+	return (*val)++;
-+}
-+
-+static void null_function_test(struct kunit *test)
-+{
-+	int val = 0;
-+
-+	init_testcase(test);
-+
-+	/* Check argument unconditionally evaluated */
-+	static_call_cond(module_sc_null)(add_one(&val));
-+	KUNIT_ASSERT_EQ(test, 1, val);
-+
-+	exit_testcase();
-+}
-+
-+static void return_zero_test(struct kunit *test)
-+{
-+	int ret;
-+
-+	init_testcase(test);
-+
-+	ret = PROTECTED_SC(test, int, static_call(module_sc_ret0)());
-+	KUNIT_ASSERT_EQ(test, 0, ret);
-+
-+	static_call_update(ppc_sc_kernel, (void *)__static_call_return0);
-+	ret = PROTECTED_SC(test, int, static_call(ppc_sc_kernel)(test));
-+	KUNIT_ASSERT_EQ(test, 0, ret);
-+
-+	static_call_update(module_sc, (void *)__static_call_return0);
-+	ret = PROTECTED_SC(test, int, static_call(module_sc)(test));
-+	KUNIT_ASSERT_EQ(test, 0, ret);
-+
-+	exit_testcase();
-+}
-+
-+static void kernel_kernel_kernel_test(struct kunit *test)
-+{
-+	init_testcase(test);
-+
-+	static_call_update(ppc_sc_kernel, ppc_sc_kernel_target_1);
-+	KUNIT_ASSERT_EQ(test, 1, ppc_sc_kernel_call(test));
-+
-+	static_call_update(ppc_sc_kernel, ppc_sc_kernel_target_2);
-+	KUNIT_ASSERT_EQ(test, 2, ppc_sc_kernel_call(test));
-+
-+	exit_testcase();
-+}
-+
-+static void kernel_kernel_module_test(struct kunit *test)
-+{
-+	init_testcase(test);
-+
-+	static_call_update(ppc_sc_kernel, module_target_11);
-+	KUNIT_ASSERT_EQ(test, 11, ppc_sc_kernel_call(test));
-+
-+	static_call_update(ppc_sc_kernel, module_target_12);
-+	KUNIT_ASSERT_EQ(test, 12, ppc_sc_kernel_call(test));
-+
-+	exit_testcase();
-+}
-+
-+static void kernel_module_kernel_test(struct kunit *test)
-+{
-+	init_testcase(test);
-+
-+	static_call_update(module_sc, ppc_sc_kernel_target_1);
-+	KUNIT_ASSERT_EQ(test, 1, ppc_sc_kernel_call_indirect(test, static_call(module_sc)));
-+
-+	static_call_update(module_sc, ppc_sc_kernel_target_2);
-+	KUNIT_ASSERT_EQ(test, 2, ppc_sc_kernel_call_indirect(test, static_call(module_sc)));
-+
-+	exit_testcase();
-+}
-+
-+static void kernel_module_module_test(struct kunit *test)
-+{
-+	init_testcase(test);
-+
-+	static_call_update(module_sc, module_target_11);
-+	KUNIT_ASSERT_EQ(test, 11, ppc_sc_kernel_call_indirect(test, static_call(module_sc)));
-+
-+	static_call_update(module_sc, module_target_12);
-+	KUNIT_ASSERT_EQ(test, 12, ppc_sc_kernel_call_indirect(test, static_call(module_sc)));
-+
-+	exit_testcase();
-+}
-+
-+static void module_kernel_kernel_test(struct kunit *test)
-+{
-+	int ret;
-+
-+	init_testcase(test);
-+
-+	static_call_update(ppc_sc_kernel, ppc_sc_kernel_target_1);
-+	ret = PROTECTED_SC(test, int, static_call(ppc_sc_kernel)(test));
-+	KUNIT_ASSERT_EQ(test, 1, ret);
-+
-+	static_call_update(ppc_sc_kernel, ppc_sc_kernel_target_2);
-+	ret = PROTECTED_SC(test, int, static_call(ppc_sc_kernel)(test));
-+	KUNIT_ASSERT_EQ(test, 2, ret);
-+
-+	exit_testcase();
-+}
-+
-+static void module_kernel_module_test(struct kunit *test)
-+{
-+	int ret;
-+
-+	init_testcase(test);
-+
-+	static_call_update(ppc_sc_kernel, module_target_11);
-+	ret = PROTECTED_SC(test, int, static_call(ppc_sc_kernel)(test));
-+	KUNIT_ASSERT_EQ(test, 11, ret);
-+
-+	static_call_update(ppc_sc_kernel, module_target_12);
-+	ret = PROTECTED_SC(test, int, static_call(ppc_sc_kernel)(test));
-+	KUNIT_ASSERT_EQ(test, 12, ret);
-+
-+	exit_testcase();
-+}
-+
-+static void module_module_kernel_test(struct kunit *test)
-+{
-+	int ret;
-+
-+	init_testcase(test);
-+
-+	static_call_update(module_sc, ppc_sc_kernel_target_1);
-+	ret = PROTECTED_SC(test, int, static_call(module_sc)(test));
-+	KUNIT_ASSERT_EQ(test, 1, ret);
-+
-+	static_call_update(module_sc, ppc_sc_kernel_target_2);
-+	ret = PROTECTED_SC(test, int, static_call(module_sc)(test));
-+	KUNIT_ASSERT_EQ(test, 2, ret);
-+
-+	exit_testcase();
-+}
-+
-+static void module_module_module_test(struct kunit *test)
-+{
-+	int ret;
-+
-+	init_testcase(test);
-+
-+	static_call_update(module_sc, module_target_11);
-+	ret = PROTECTED_SC(test, int, static_call(module_sc)(test));
-+	KUNIT_ASSERT_EQ(test, 11, ret);
-+
-+	static_call_update(module_sc, module_target_12);
-+	ret = PROTECTED_SC(test, int, static_call(module_sc)(test));
-+	KUNIT_ASSERT_EQ(test, 12, ret);
-+
-+	exit_testcase();
-+}
-+
-+DEFINE_STATIC_CALL(module_sc_stack_params, ppc_sc_kernel_target_big);
-+
-+static void stack_parameters_test(struct kunit *test)
-+{
-+	long m = -0x87654321;
-+	long ret;
-+
-+	init_testcase(test);
-+
-+	ret = PROTECTED_SC(test, long,
-+		static_call(module_sc_stack_params)(test, m, m, m, m, m, m, m, m, m));
-+	KUNIT_ASSERT_EQ(test, ~m, ret);
-+
-+	exit_testcase();
-+}
-+
-+static struct kunit_case static_call_test_cases[] = {
-+	KUNIT_CASE(null_function_test),
-+	KUNIT_CASE(return_zero_test),
-+	KUNIT_CASE(stack_parameters_test),
-+	KUNIT_CASE(kernel_kernel_kernel_test),
-+	KUNIT_CASE(kernel_kernel_module_test),
-+	KUNIT_CASE(kernel_module_kernel_test),
-+	KUNIT_CASE(kernel_module_module_test),
-+	KUNIT_CASE(module_kernel_kernel_test),
-+	KUNIT_CASE(module_kernel_module_test),
-+	KUNIT_CASE(module_module_kernel_test),
-+	KUNIT_CASE(module_module_module_test),
-+	{}
-+};
-+
-+static struct kunit_suite ppc_static_call_test_suite = {
-+	.name = "ppc-static-call",
-+	.test_cases = static_call_test_cases,
-+};
-+kunit_test_suite(ppc_static_call_test_suite);
-+
-+MODULE_AUTHOR("Benjamin Gray <bgray@linux.ibm.com>");
-+MODULE_LICENSE("GPL");
-diff --git a/arch/powerpc/kernel/static_call_test.h b/arch/powerpc/kernel/static_call_test.h
-new file mode 100644
-index 000000000000..71b5bc52c099
---- /dev/null
-+++ b/arch/powerpc/kernel/static_call_test.h
-@@ -0,0 +1,56 @@
-+#ifndef _POWERPC_STATIC_CALL_TEST_
-+#define _POWERPC_STATIC_CALL_TEST_
-+
-+#include <kunit/test.h>
-+
-+DECLARE_STATIC_CALL(ppc_sc_kernel, int(struct kunit *test));
-+int ppc_sc_kernel_target_1(struct kunit *test);
-+int ppc_sc_kernel_target_2(struct kunit *test);
-+long ppc_sc_kernel_target_big(struct kunit *test, long a, long b, long c, long d,
-+			      long e, long f, long g, long h, long i);
-+int ppc_sc_kernel_call(struct kunit *test);
-+int ppc_sc_kernel_call_indirect(struct kunit *test, int(*fn)(struct kunit *test));
-+
-+#ifdef CONFIG_PPC64_ELF_ABI_V2
-+
-+/* Reserve these registers for testing so that a TOC error
-+ * doesn't necessarily crash the whole kernel.
-+ *
-+ * The tests ensure the contents are restored before returning.
-+ */
-+register void *current_toc asm ("r2");
-+register void *actual_toc asm ("r14");  /* Copy of TOC before fixup */
-+register void *module_toc asm ("r15");
-+
-+#ifdef MODULE
-+
-+#define toc_fixup(test) \
-+	actual_toc = current_toc; \
-+	current_toc = module_toc; \
-+	KUNIT_EXPECT_PTR_EQ(test, module_toc, actual_toc)
-+
-+#else /* KERNEL */
-+
-+#define toc_fixup(test) \
-+	actual_toc = current_toc; \
-+	current_toc = (void *)get_paca()->kernel_toc; \
-+	KUNIT_EXPECT_PTR_EQ(test, (void *)get_paca()->kernel_toc, actual_toc)
-+
-+#endif /* MODULE */
-+
-+#define PROTECTED_SC(test, ret_type, call) \
-+({ \
-+	ret_type ret; \
-+	ret = call; \
-+	toc_fixup(test); \
-+	ret; \
-+})
-+
-+#else
-+
-+#define toc_fixup(test) {}
-+#define PROTECTED_SC(test, ret_type, call) call
-+
-+#endif /* CONFIG_PPC64_ELF_ABI_V2 */
-+
-+#endif /* _POWERPC_STATIC_CALL_TEST_ */
+-extern struct page *balloon_page_alloc(void);
+-extern void balloon_page_enqueue(struct balloon_dev_info *b_dev_info,
++struct page *balloon_page_alloc(void);
++void balloon_page_enqueue(struct balloon_dev_info *b_dev_info,
+ 				 struct page *page);
+-extern struct page *balloon_page_dequeue(struct balloon_dev_info *b_dev_info);
+-extern size_t balloon_page_list_enqueue(struct balloon_dev_info *b_dev_info,
++struct page *balloon_page_dequeue(struct balloon_dev_info *b_dev_info);
++size_t balloon_page_list_enqueue(struct balloon_dev_info *b_dev_info,
+ 				      struct list_head *pages);
+-extern size_t balloon_page_list_dequeue(struct balloon_dev_info *b_dev_info,
++size_t balloon_page_list_dequeue(struct balloon_dev_info *b_dev_info,
+ 				     struct list_head *pages, size_t n_req_pages);
+ 
+ static inline void balloon_devinfo_init(struct balloon_dev_info *balloon)
+diff --git a/mm/Makefile b/mm/Makefile
+index 9a564f836403..550cb0663f50 100644
+--- a/mm/Makefile
++++ b/mm/Makefile
+@@ -112,7 +112,7 @@ obj-$(CONFIG_ZSMALLOC)	+= zsmalloc.o
+ obj-$(CONFIG_Z3FOLD)	+= z3fold.o
+ obj-$(CONFIG_GENERIC_EARLY_IOREMAP) += early_ioremap.o
+ obj-$(CONFIG_CMA)	+= cma.o
+-obj-$(CONFIG_MEMORY_BALLOON) += balloon_compaction.o
++obj-$(CONFIG_MEMORY_BALLOON) += balloon.o
+ obj-$(CONFIG_PAGE_EXTENSION) += page_ext.o
+ obj-$(CONFIG_PAGE_TABLE_CHECK) += page_table_check.o
+ obj-$(CONFIG_CMA_DEBUGFS) += cma_debug.o
+diff --git a/mm/balloon_compaction.c b/mm/balloon.c
+similarity index 99%
+rename from mm/balloon_compaction.c
+rename to mm/balloon.c
+index 22c96fed70b5..22b3e876bc78 100644
+--- a/mm/balloon_compaction.c
++++ b/mm/balloon.c
+@@ -1,7 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ /*
+- * mm/balloon_compaction.c
+- *
+  * Common interface for making balloon pages movable by compaction.
+  *
+  * Copyright (C) 2012, Red Hat, Inc.  Rafael Aquini <aquini@redhat.com>
+@@ -9,7 +7,7 @@
+ #include <linux/mm.h>
+ #include <linux/slab.h>
+ #include <linux/export.h>
+-#include <linux/balloon_compaction.h>
++#include <linux/balloon.h>
+ 
+ static void balloon_page_enqueue_one(struct balloon_dev_info *b_dev_info,
+ 				     struct page *page)
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 6a1597c92261..a4c8bb334dde 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -41,7 +41,6 @@
+ #include <linux/pfn_t.h>
+ #include <linux/memremap.h>
+ #include <linux/userfaultfd_k.h>
+-#include <linux/balloon_compaction.h>
+ #include <linux/page_idle.h>
+ #include <linux/page_owner.h>
+ #include <linux/sched/mm.h>
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 382dbe97329f..0274e2cb8430 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -54,7 +54,6 @@
+ #include <asm/div64.h>
+ 
+ #include <linux/swapops.h>
+-#include <linux/balloon_compaction.h>
+ #include <linux/sched/sysctl.h>
+ 
+ #include "internal.h"
 -- 
-2.37.3
+2.31.1
 
