@@ -2,61 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 910A55F6059
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Oct 2022 06:56:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33AF15F605A
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Oct 2022 06:57:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MjfKX1q0Sz3cfQ
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Oct 2022 15:56:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MjfLX5jXdz3f1y
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Oct 2022 15:57:08 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=Pa5J7iVI;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=VDYXzBjT;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::62c; helo=mail-pl1-x62c.google.com; envelope-from=keescook@chromium.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::1031; helo=mail-pj1-x1031.google.com; envelope-from=keescook@chromium.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=Pa5J7iVI;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=VDYXzBjT;
 	dkim-atps=neutral
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mjf5847HDz30F7
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Oct 2022 15:45:30 +1100 (AEDT)
-Received: by mail-pl1-x62c.google.com with SMTP id b2so671066plc.7
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Oct 2022 21:45:29 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mjf8G5m8Jz30Dp
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Oct 2022 15:48:14 +1100 (AEDT)
+Received: by mail-pj1-x1031.google.com with SMTP id x1-20020a17090ab00100b001fda21bbc90so3281349pjq.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Oct 2022 21:48:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date;
-        bh=BXKZz/gOYpFYEK/kvAD1ks5ZMqdWWvWPR9euDTlMinY=;
-        b=Pa5J7iVIfOPPpc5FnD+VCPFKYUv3DdEsBgX8F3veGLnr0MqCAKKnFqdt9Zn7I1vA4a
-         hp/m/n+zFRiftLounW3GI1Yh9t5CRw9Qy1PoS1A+KhEfND0rtCnNn/VAYMO7oSLOURb7
-         x/xHspG9KrvXOaDvidgpTqZEY9MLlutH21Sdk=
+        bh=Zga/kwguXOa9tZGzF2X+ZLpnzxGRszRa7j7kheBbr2g=;
+        b=VDYXzBjTmlsVIl+Y4iF0uyvrgTLR7zDCDitOOtRhnnkCI+cj7BOAV+jXORmkdJC8NR
+         kLVeoGGmNjWIzbs7ngaNL2av6vzDETZ5xNshsjkA6+Ddrv+XZy7wZSPrRI2h/WYQMveo
+         FOjR6IXNtLQ2MzWVWNTzoDYr9QH87X51UPqiU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
-        bh=BXKZz/gOYpFYEK/kvAD1ks5ZMqdWWvWPR9euDTlMinY=;
-        b=UWrAhzFEyGi1Yqsc2OM5aA4IKvUYtKyF/D4xBk0T4TNMaEDCItCkYzbdn0naCDSRn3
-         /scLWxHbw9qbXni3lxDPJXPpsse2eAEzy95P6erwjzfTwbEA7/pgciXRYgOao+eHL/I4
-         wlsxLEViyadsBNXvUdDQQQ2lzIvJGzBGh+/4T/wIl2chjN7D6CX61b/2chyXpbYlHKhT
-         Dqk916QpvpqtZZAa5zWAdO/VOgRhX1Hvr2wdkj0PJKPU0Fip/H7R8GMEEIqgVacjMldz
-         /DahB1ePZBz91UBXYLlJrORVU1LrER3z8ye0z3uNgubqeMW3oiSe+R4XUiLztk5IH6pr
-         RM5g==
-X-Gm-Message-State: ACrzQf3jTyoewX3MzsTQYByTIJlvXXqxh/xvNsygOsYwAA6ZbxO2FXxH
-	FOyj/2Z5G9Of5yaM5XRB4l2EGg==
-X-Google-Smtp-Source: AMsMyM7BFOiJDjGZF65COEMp2Clzr5vtXi0588PB1vqUCkCeq9oCGZAqcRbRAS5gmL3ROlmwc9XhOA==
-X-Received: by 2002:a17:90b:384a:b0:203:7388:64bf with SMTP id nl10-20020a17090b384a00b00203738864bfmr8697904pjb.115.1665031527009;
-        Wed, 05 Oct 2022 21:45:27 -0700 (PDT)
+        bh=Zga/kwguXOa9tZGzF2X+ZLpnzxGRszRa7j7kheBbr2g=;
+        b=cmrw65xCpRBBm9+Ld4LtRCEBDf0AOud29Lma2mapsrdK7kpj40SPugoshEL28YGGkb
+         Vyp1dlvp5Nnss+4VFGEP5ukUxsFdMx+Yk+reVngOd8VUrKxIpuWT3AZ4iTEh4q2uXRpu
+         SAH5M2qf1bzBV+nPWLkaUOjAQ2qPRqc+Pjz2JmqiO7qjZunlHXM10SejY5P1UxSSDrJb
+         DuzW7SZwhrOPUBDKJwEV/DEnBDzjS4YWqfbFnhi+LayFbth7Inty8LBcF77R62e3JZoF
+         q5xQ0bnN105VQUeIgK0FFq4HZvrXz72aFXcMGMvYt2kcbBwceAoR9M9GDlPzX3ma1IGD
+         sCGw==
+X-Gm-Message-State: ACrzQf26/tns8Kv4iq1EpNA1BxPzHdGNExap8sDyDX39FcIdhGmo29A2
+	Z6Txtl2hPsuHh2DpX/iQXguiVw==
+X-Google-Smtp-Source: AMsMyM5noNd8dF5/8fuBkrlB/HNbt95GlgliJJ8jYtlN4mBVQXEji+jNlD1vk9tphNCBxko7f/llIA==
+X-Received: by 2002:a17:90b:254b:b0:200:a860:5bf9 with SMTP id nw11-20020a17090b254b00b00200a8605bf9mr8436942pjb.176.1665031691628;
+        Wed, 05 Oct 2022 21:48:11 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id d5-20020a62f805000000b0054124008c14sm11733797pfh.154.2022.10.05.21.45.23
+        by smtp.gmail.com with ESMTPSA id t20-20020a170902dcd400b00178a8f4d4f2sm11197475pll.74.2022.10.05.21.48.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Oct 2022 21:45:24 -0700 (PDT)
-Date: Wed, 5 Oct 2022 21:45:22 -0700
+        Wed, 05 Oct 2022 21:48:10 -0700 (PDT)
+Date: Wed, 5 Oct 2022 21:48:09 -0700
 From: Kees Cook <keescook@chromium.org>
 To: "Jason A. Donenfeld" <Jason@zx2c4.com>
 Subject: Re: [PATCH v1 4/5] treewide: use get_random_bytes when possible
-Message-ID: <202210052144.5DA3690D@keescook>
+Message-ID: <202210052148.AA3C7BB@keescook>
 References: <20221005214844.2699-1-Jason@zx2c4.com>
  <20221005214844.2699-5-Jason@zx2c4.com>
 MIME-Version: 1.0
@@ -90,6 +90,8 @@ On Wed, Oct 05, 2022 at 11:48:43PM +0200, Jason A. Donenfeld wrote:
 > get_random_bytes() for several releases now, and compiles down to the
 > exact same code. Replace the deprecated wrapper with a direct call to
 > the real function.
+> 
+> Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
 
 Global search/replace matches. :)
 
