@@ -1,70 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 027065F6109
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Oct 2022 08:28:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 478FA5F610A
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Oct 2022 08:29:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MjhMw6Z6nz3cfN
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Oct 2022 17:28:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MjhNw1LCvz3dsN
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Oct 2022 17:29:20 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=e0wWc8f7;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=HIlnByPT;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::52e; helo=mail-pg1-x52e.google.com; envelope-from=keescook@chromium.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::62c; helo=mail-pl1-x62c.google.com; envelope-from=keescook@chromium.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=e0wWc8f7;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=HIlnByPT;
 	dkim-atps=neutral
-Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com [IPv6:2607:f8b0:4864:20::52e])
+Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MjfK131Sgz3c5D
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Oct 2022 15:55:48 +1100 (AEDT)
-Received: by mail-pg1-x52e.google.com with SMTP id bh13so880609pgb.4
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Oct 2022 21:55:48 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MjgJp27ZYz2xJ6
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Oct 2022 16:40:40 +1100 (AEDT)
+Received: by mail-pl1-x62c.google.com with SMTP id z20so746597plb.10
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Oct 2022 22:40:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date;
-        bh=51dSYIsgEywaJmdEPyI7vbp82hVQfJ6jQKHayIqsWH8=;
-        b=e0wWc8f7UVTw3oXSVMh5SbOC8/ybqXORh0RfOsp37foz3bEHC+sZdUS2Cb48q2Rals
-         cLwchuP5t4lVTMm+j0edXnLdA6eiOkpTvFVeI+b/+yanhEnnWG77EYRopMXRVrLoop3K
-         nYwrVibqoZRWrTFw38o2fgxxWy4pLnB/kciNo=
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date;
+        bh=7rD76ImKhWSr9uLkAh+d+zcZYfUm0ip9Vo7hna38oSs=;
+        b=HIlnByPTia/JV2Hio0Z3vTGHRO3pP+g3PDOdFVRfXo+4JMSWemnyOHulYs1b2f7JO3
+         4B68mkEwVVg8IQ3IkOWlhCZu1DHmNpOVf5BI7g3+ztCRosIDaXqnmyXn8NbvhlX0kAlJ
+         1+EIMZBflEmYzO5Z7VvIiaOCr5rSQzs8/emFI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=51dSYIsgEywaJmdEPyI7vbp82hVQfJ6jQKHayIqsWH8=;
-        b=3Yim1k4yjzfE3JZUTKuiwNr9+Sld7F/jIm67T1J3wPti/4I3PzwvchsGivUi4gNpaK
-         OJsr+1edVjrLfM/zoMCBsisjdFTw0a3kQ7nNoPxqqwETDxOjbaYk7MS+H5QKhz2nIj/P
-         VvutK188FG89hsq6jqWjDomLEVHy5t4gqvcE6tl9dckeJe2uBoCLWT+4ZjUq1E9AS0WK
-         SseHy/cL1Kdn5TvJxzoYOSeYU2PtJvvAUT0uagbM0s3E+r/VmiGUB9G48ieMAn0HGz3y
-         +sczd4zZSHQhi9e4O2GJtQei54zUyl8meXeIJgAVWAEXCFE9etiB3Qi/00uv1LmfpdsO
-         dNuw==
-X-Gm-Message-State: ACrzQf0UFfOYUnv8kpeu6MNa4huifB+udTjpUiMT6kM8rD+PbgZtrWle
-	l425SYi6oJKQy+srFcuIHUV/2Q==
-X-Google-Smtp-Source: AMsMyM48HYcC17YfWxdcqN47yJn5oQWwbAuWOEmTE9E3JPhKRJg4eKNbmI4Bm6DfbK3tY9AIwV8yDw==
-X-Received: by 2002:a63:d613:0:b0:45a:654:cf16 with SMTP id q19-20020a63d613000000b0045a0654cf16mr2835844pgg.611.1665032145428;
-        Wed, 05 Oct 2022 21:55:45 -0700 (PDT)
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
+        bh=7rD76ImKhWSr9uLkAh+d+zcZYfUm0ip9Vo7hna38oSs=;
+        b=vArD2d/lbzG5qW5vg9LW55dHc/jBVcK/JiCeyKauyizJbfEdJ88xyO1Haze9zsPMeq
+         Uuu6oUAS+DZG9C5fNMk4e6NN2VQcQQAG3QcRfOx9BQUDeBi+oxA31HhtsyJ8P+hiFIeW
+         qNgyCxMhChAnWptdPM/L2NK6KMbLVTq/cHvidmJ+s3SNhfnsi6Y4CAYLNOgw+4HBm76I
+         hiZBrEgpkXkXit1V5TeNvKU/5TcQy1KXTQDlxlAsIP4ehxOJiVzEjp6Yb09r8BkVHLlH
+         zdNG/a7bQeKRXO4l99syytA4zdq7RXSsb9mrjoebL55AhUG7tf8yA1k7UdIlohfyzHB2
+         bN3w==
+X-Gm-Message-State: ACrzQf3zAvOdGe0hozRMjPrT32V5v8TjejBXVDDfZWYUy1UOwdyQPnVt
+	lYPHwPf6Vy7xrhB0LwfEy/ox8Q==
+X-Google-Smtp-Source: AMsMyM5d8kq/QLGWHL1lT7d4vvr6wiHcKPw02UiifePzthTJzj01ofprelzHftcv9opKc24+zWNWRw==
+X-Received: by 2002:a17:90b:1943:b0:20a:85e9:f089 with SMTP id nk3-20020a17090b194300b0020a85e9f089mr3484011pjb.47.1665034838827;
+        Wed, 05 Oct 2022 22:40:38 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id s14-20020a17090302ce00b0017a09ebd1e2sm11252393plk.237.2022.10.05.21.55.44
+        by smtp.gmail.com with ESMTPSA id s9-20020a63ff49000000b0043be31d490dsm776833pgk.67.2022.10.05.22.40.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Oct 2022 21:55:44 -0700 (PDT)
-Date: Wed, 5 Oct 2022 21:55:43 -0700
+        Wed, 05 Oct 2022 22:40:38 -0700 (PDT)
+Date: Wed, 5 Oct 2022 22:40:36 -0700
 From: Kees Cook <keescook@chromium.org>
 To: "Jason A. Donenfeld" <Jason@zx2c4.com>
 Subject: Re: [PATCH v1 0/5] treewide cleanup of random integer usage
-Message-ID: <202210052148.B11CBC60@keescook>
+Message-ID: <202210052240.23F1699@keescook>
 References: <20221005214844.2699-1-Jason@zx2c4.com>
+ <202210052148.B11CBC60@keescook>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20221005214844.2699-1-Jason@zx2c4.com>
+In-Reply-To: <202210052148.B11CBC60@keescook>
 X-Mailman-Approved-At: Thu, 06 Oct 2022 17:27:43 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -87,94 +85,12 @@ Cc: Andrew Lunn <andrew@lunn.ch>, "Darrick J . Wong" <djwong@kernel.org>, Ulf Ha
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Oct 05, 2022 at 11:48:39PM +0200, Jason A. Donenfeld wrote:
-> Hi folks,
-> 
-> This is a five part treewide cleanup of random integer handling. The
-> rules for random integers are:
-> 
-> - If you want a secure or an insecure random u64, use get_random_u64().
-> - If you want a secure or an insecure random u32, use get_random_u32().
->   * The old function prandom_u32() has been deprecated for a while now
->     and is just a wrapper around get_random_u32().
-> - If you want a secure or an insecure random u16, use get_random_u16().
-> - If you want a secure or an insecure random u8, use get_random_u8().
-> - If you want secure or insecure random bytes, use get_random_bytes().
->   * The old function prandom_bytes() has been deprecated for a while now
->     and has long been a wrapper around get_random_bytes().
-> - If you want a non-uniform random u32, u16, or u8 bounded by a certain
->   open interval maximum, use prandom_u32_max().
->   * I say "non-uniform", because it doesn't do any rejection sampling or
->     divisions. Hence, it stays within the prandom_* namespace.
-> 
-> These rules ought to be applied uniformly, so that we can clean up the
-> deprecated functions, and earn the benefits of using the modern
-> functions. In particular, in addition to the boring substitutions, this
-> patchset accomplishes a few nice effects:
-> 
-> - By using prandom_u32_max() with an upper-bound that the compiler can
->   prove at compile-time is ≤65536 or ≤256, internally get_random_u16()
->   or get_random_u8() is used, which wastes fewer batched random bytes,
->   and hence has higher throughput.
-> 
-> - By using prandom_u32_max() instead of %, when the upper-bound is not a
->   constant, division is still avoided, because prandom_u32_max() uses
->   a faster multiplication-based trick instead.
-> 
-> - By using get_random_u16() or get_random_u8() in cases where the return
->   value is intended to indeed be a u16 or a u8, we waste fewer batched
->   random bytes, and hence have higher throughput.
-> 
-> So, based on those rules and benefits from following them, this patchset
-> breaks down into the following five steps:
-> 
-> 1) Replace `prandom_u32() % max` and variants thereof with
->    prandom_u32_max(max).
-> 
-> 2) Replace `(type)get_random_u32()` and variants thereof with
->    get_random_u16() or get_random_u8(). I took the pains to actually
->    look and see what every lvalue type was across the entire tree.
-> 
-> 3) Replace remaining deprecated uses of prandom_u32() with
->    get_random_u32(). 
-> 
-> 4) Replace remaining deprecated uses of prandom_bytes() with
->    get_random_bytes().
-> 
-> 5) Remove the deprecated and now-unused prandom_u32() and
->    prandom_bytes() inline wrapper functions.
-> 
-> I was thinking of taking this through my random.git tree (on which this
-> series is currently based) and submitting it near the end of the merge
-> window, or waiting for the very end of the 6.1 cycle when there will be
-> the fewest new patches brewing. If somebody with some treewide-cleanup
-> experience might share some wisdom about what the best timing usually
-> winds up being, I'm all ears.
+On Wed, Oct 05, 2022 at 09:55:43PM -0700, Kees Cook wrote:
+> If any of the subsystems ask you to break this up (I hope not), I've got
+> this[1], which does a reasonable job of splitting a commit up into
+> separate commits for each matching subsystem.
 
-It'd be nice to capture some (all?) of the above somewhere. Perhaps just
-a massive comment in the header?
-
-> I've CC'd get_maintainers.pl, which is a pretty big list. Probably some
-> portion of those are going to bounce, too, and everytime you reply to
-> this thread, you'll have to deal with a bunch of bounces coming
-> immediately after. And a recipient list this big will probably dock my
-> email domain's spam reputation, at least temporarily. Sigh. I think
-> that's just how it goes with treewide cleanups though. Again, let me
-> know if I'm doing it wrong.
-
-I usually stick to just mailing lists and subsystem maintainers.
-
-If any of the subsystems ask you to break this up (I hope not), I've got
-this[1], which does a reasonable job of splitting a commit up into
-separate commits for each matching subsystem.
-
-Showing that a treewide change can be reproduced mechanically helps with
-keeping it together as one bit treewide patch, too, I've found. :)
-
-Thank you for the cleanup! The "u8 rnd = get_random_u32()" in the tree
-has bothered me for a loooong time.
-
--Kees
+[1] https://github.com/kees/kernel-tools/blob/trunk/split-on-maintainer
 
 -- 
 Kees Cook
