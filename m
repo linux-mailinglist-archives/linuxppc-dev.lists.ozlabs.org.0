@@ -1,66 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91FF75F68C5
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Oct 2022 16:06:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C3365F68DC
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Oct 2022 16:07:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MjtX71cYYz3c6T
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Oct 2022 01:06:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MjtY80BlLz3c6g
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Oct 2022 01:07:08 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=BP436Rx/;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=XlsSVomq;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102e; helo=mail-pj1-x102e.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1035; helo=mail-pj1-x1035.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=BP436Rx/;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=XlsSVomq;
 	dkim-atps=neutral
-Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
+Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MjtV90nPdz3bnH
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Oct 2022 01:04:32 +1100 (AEDT)
-Received: by mail-pj1-x102e.google.com with SMTP id gf8so1821061pjb.5
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Oct 2022 07:04:32 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MjtVC5xC4z3bnH
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Oct 2022 01:04:35 +1100 (AEDT)
+Received: by mail-pj1-x1035.google.com with SMTP id b15so1855877pje.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Oct 2022 07:04:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date;
-        bh=VUM1eVPgnKnSlmMyivyjw988SQgffBXBeBVBEebs8w0=;
-        b=BP436Rx/7HlFlBKp9DKt7FQC93kCaULu6N6W0eIpzflTFKb0aqZcewegAjiWyhJ43D
-         UomuZlgQW8kREr8oSznqfXaFo83ZhaY0Jx2YHItM6qr/hm1nn3lcVudk+h8cP1/KMgTb
-         YD+0mRfDn+Z0dO2QE8/zqKr9O2Fpu09x+9Mdu2W/UKu9sIR1zZz6+J7IWU8KSCl2dCup
-         tEKdlNOyB0Sz1Oex2ov5ZJrEzW3f7PuXGzWxyjr4NH3nrSxmkImuIAzO27aysCrQNdzl
-         3r4QJoT34RN0g9CG+DE+qzLcaz7UwDmTaBNcs1NZM+ddtZhEBnra+1PT6Kvwk2N7uMvV
-         B8Pg==
+        bh=8LvpQvcpcFN1tsqIY/Uy4lSuvckbcO6NzLuJ8RGjMpM=;
+        b=XlsSVomq9W6BTm6R/QCGnHRuHONO8cvh5v7k5LyTjPCrQlzaUmsK6trNUVMqNuV0G5
+         moRpIeyoI4EnE7g5V0uF5txGG7YuL8zGCd1MM/StAgEp6X4Bbv1UgNV39TDznf4UL9F/
+         kywcHOTo3MAlrpPyTD8gSR01NdIF9e1k2/ZUSbnTQFjE8XeLBe3sZaxcI20StpsVpQlc
+         wOReFHu1+/w+Vp7mNrUlwD9dG47G5/5c+oY+Vat7bbNAuwMbTU5Dh08M6Up7f6CvnbZM
+         Sx71ttpZsLiQVb5wkobNQAvFOx+E/gMQCFRHrDWRPwNApQxJ1Dl1YWVD1YOmgM84z9JQ
+         TySA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date;
-        bh=VUM1eVPgnKnSlmMyivyjw988SQgffBXBeBVBEebs8w0=;
-        b=5Q954eA3eM4nHj23gs7/89r3dzaey9ooCOuP5FVfLgrkAhH+eu8enATendLgUtIt5i
-         csHhSruXiAlIJe/TQ0zopOzx6pqoqJpH+GzD0QpGgEia40fDMnXOKWTahp0Rl/Q3tu4m
-         KDM0RpF7dhUTjXGRuKdZUVRn0jXrQT60UQMzeInn2/ku95/qZ8mqIDju7J+OEK6zlT2o
-         rjtFzgbASLe7I+upDBa3HaPJF8BYfTYQN77yWJvuuI91LnOcwYx1ZmllAX9HrEq7uPw9
-         j6sO1w0yzWihv+MQRwJ2DjXyyKWZVEnrG6iA7JzjZ/8PXtiBldYbyMi34pYsvR/3Vz23
-         c8aQ==
-X-Gm-Message-State: ACrzQf1INy9s5bSRiMIc6nvZM/O9ksNVqfGjnxm2ttrBit3GvYBuqLtI
-	uFfjLOzgUTKTbti6/2Zhmem4cFcM8Yo=
-X-Google-Smtp-Source: AMsMyM7rxEDwH1V8yPUg7SmXD/2c3QidR2Le0RrJnopejk9NM0qD1rwl8Hakz+5XuvnVwYuRktn+Zw==
-X-Received: by 2002:a17:902:da8b:b0:178:3980:4597 with SMTP id j11-20020a170902da8b00b0017839804597mr5005817plx.113.1665065070170;
-        Thu, 06 Oct 2022 07:04:30 -0700 (PDT)
+        bh=8LvpQvcpcFN1tsqIY/Uy4lSuvckbcO6NzLuJ8RGjMpM=;
+        b=wj5/aTeduc+J/WSUpXToCzBjrUWCGEO6fWoVheZzyFH9smzFXkG19e2pgmwSv6IJ9s
+         lnCHryZYbOCTb51TI1HyGXzFfgv1AKKBZDY+4A3WW4RmRdqMC+ZC9eGR3xr1aF4Iy7xo
+         yLR6s6flkk9kGYMMwo32tGoHZyUZW/8M4MJn6uMvRpxCwT9oaTkrLD+QePKUnEftai+8
+         7itcUq51evxbm5CdbGoGrynib9wordpEZmEqs+1caf2EaWhm+HsN6Kk9rCZxpmmZephP
+         hTazaiXE4El0jiHXAZYQeB8Yd61lkR9Vt99MEuVu1FOv7EGue7fN3yruH68bflQuHKtU
+         i/eQ==
+X-Gm-Message-State: ACrzQf1NPj58VaJFfp00IyZxE2dWVBfGuNM57ky9oMuF5NQB9tedg/Qb
+	4yi1fyIJdRqFulHijl7IWJyQjGz5JLc=
+X-Google-Smtp-Source: AMsMyM7C1iW42JwTbXdxWWsMY+TDYC7smbCN2Zb72RntKS5kfjakhRxKiTLmd7GezQA/k4DQP+JowQ==
+X-Received: by 2002:a17:902:b942:b0:178:be25:203f with SMTP id h2-20020a170902b94200b00178be25203fmr77182pls.101.1665065073059;
+        Thu, 06 Oct 2022 07:04:33 -0700 (PDT)
 Received: from bobo.ibm.com ([118.208.156.99])
-        by smtp.gmail.com with ESMTPSA id m1-20020a170902bb8100b0017bf6061ee4sm4602901pls.117.2022.10.06.07.04.27
+        by smtp.gmail.com with ESMTPSA id m1-20020a170902bb8100b0017bf6061ee4sm4602901pls.117.2022.10.06.07.04.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Oct 2022 07:04:29 -0700 (PDT)
+        Thu, 06 Oct 2022 07:04:32 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 1/4] KVM: PPC: BookS PR-KVM and BookE do not support context tracking
-Date: Fri,  7 Oct 2022 00:04:10 +1000
-Message-Id: <20221006140413.126443-2-npiggin@gmail.com>
+Subject: [PATCH 2/4] powerpc/64s/interrupt: Perf NMI should not take normal exit path
+Date: Fri,  7 Oct 2022 00:04:11 +1000
+Message-Id: <20221006140413.126443-3-npiggin@gmail.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20221006140413.126443-1-npiggin@gmail.com>
 References: <20221006140413.126443-1-npiggin@gmail.com>
@@ -81,52 +81,74 @@ Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The context tracking code in PR-KVM and BookE implementations is not
-complete, and can cause host crashes if context tracking is enabled.
+NMI interrupts should exit with EXCEPTION_RESTORE_REGS not with
+interrupt_return_srr, which is what the perf NMI handler currently does.
+This breaks if a PMI hits after interrupt_exit_user_prepare_main() has
+switched the context tracking to user mode, then the CT_WARN_ON() in
+interrupt_exit_kernel_prepare() fires because it returns to kernel with
+context set to user.
 
-Make these implementations depend on !CONTEXT_TRACKING_USER.
+This could possibly be solved by soft-disabling PMIs in the exit path,
+but that reduces our ability to profile that code. The warning could be
+removed, but it's potentially useful.
+
+All other NMIs and soft-NMIs return using EXCEPTION_RESTORE_REGS, so
+this makes perf interrupts consistent with that and seems like the best
+fix.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kvm/Kconfig | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/powerpc/kernel/exceptions-64s.S | 14 +++++++++++++-
+ arch/powerpc/kernel/traps.c          |  2 --
+ 2 files changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/kvm/Kconfig b/arch/powerpc/kvm/Kconfig
-index 61cdd782d3c5..a9f57dad6d91 100644
---- a/arch/powerpc/kvm/Kconfig
-+++ b/arch/powerpc/kvm/Kconfig
-@@ -51,6 +51,7 @@ config KVM_BOOK3S_HV_POSSIBLE
- config KVM_BOOK3S_32
- 	tristate "KVM support for PowerPC book3s_32 processors"
- 	depends on PPC_BOOK3S_32 && !SMP && !PTE_64BIT
-+	depends on !CONTEXT_TRACKING_USER
- 	select KVM
- 	select KVM_BOOK3S_32_HANDLER
- 	select KVM_BOOK3S_PR_POSSIBLE
-@@ -105,6 +106,7 @@ config KVM_BOOK3S_64_HV
- config KVM_BOOK3S_64_PR
- 	tristate "KVM support without using hypervisor mode in host"
- 	depends on KVM_BOOK3S_64
-+	depends on !CONTEXT_TRACKING_USER
- 	select KVM_BOOK3S_PR_POSSIBLE
- 	help
- 	  Support running guest kernels in virtual machines on processors
-@@ -190,6 +192,7 @@ config KVM_EXIT_TIMING
- config KVM_E500V2
- 	bool "KVM support for PowerPC E500v2 processors"
- 	depends on PPC_E500 && !PPC_E500MC
-+	depends on !CONTEXT_TRACKING_USER
- 	select KVM
- 	select KVM_MMIO
- 	select MMU_NOTIFIER
-@@ -205,6 +208,7 @@ config KVM_E500V2
- config KVM_E500MC
- 	bool "KVM support for PowerPC E500MC/E5500/E6500 processors"
- 	depends on PPC_E500MC
-+	depends on !CONTEXT_TRACKING_USER
- 	select KVM
- 	select KVM_MMIO
- 	select KVM_BOOKE_HV
+diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
+index 5381a43e50fe..651c36b056bd 100644
+--- a/arch/powerpc/kernel/exceptions-64s.S
++++ b/arch/powerpc/kernel/exceptions-64s.S
+@@ -2357,9 +2357,21 @@ EXC_VIRT_END(performance_monitor, 0x4f00, 0x20)
+ EXC_COMMON_BEGIN(performance_monitor_common)
+ 	GEN_COMMON performance_monitor
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+-	bl	performance_monitor_exception
++	lbz	r4,PACAIRQSOFTMASK(r13)
++	cmpdi	r4,IRQS_ENABLED
++	bne	1f
++	bl	performance_monitor_exception_async
+ 	b	interrupt_return_srr
++1:
++	bl	performance_monitor_exception_nmi
++	/* Clear MSR_RI before setting SRR0 and SRR1. */
++	li	r9,0
++	mtmsrd	r9,1
+ 
++	kuap_kernel_restore r9, r10
++
++	EXCEPTION_RESTORE_REGS hsrr=0
++	RFI_TO_KERNEL
+ 
+ /**
+  * Interrupt 0xf20 - Vector Unavailable Interrupt.
+diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
+index 9bdd79aa51cf..6138ee22d06c 100644
+--- a/arch/powerpc/kernel/traps.c
++++ b/arch/powerpc/kernel/traps.c
+@@ -1899,7 +1899,6 @@ DEFINE_INTERRUPT_HANDLER(vsx_unavailable_tm)
+ #endif /* CONFIG_PPC_TRANSACTIONAL_MEM */
+ 
+ #ifdef CONFIG_PPC64
+-DECLARE_INTERRUPT_HANDLER_NMI(performance_monitor_exception_nmi);
+ DEFINE_INTERRUPT_HANDLER_NMI(performance_monitor_exception_nmi)
+ {
+ 	__this_cpu_inc(irq_stat.pmu_irqs);
+@@ -1910,7 +1909,6 @@ DEFINE_INTERRUPT_HANDLER_NMI(performance_monitor_exception_nmi)
+ }
+ #endif
+ 
+-DECLARE_INTERRUPT_HANDLER_ASYNC(performance_monitor_exception_async);
+ DEFINE_INTERRUPT_HANDLER_ASYNC(performance_monitor_exception_async)
+ {
+ 	__this_cpu_inc(irq_stat.pmu_irqs);
 -- 
 2.37.2
 
