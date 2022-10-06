@@ -1,68 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FBF85F6054
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Oct 2022 06:54:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12D055F6056
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Oct 2022 06:55:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MjfHY1J3tz2xGv
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Oct 2022 15:54:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MjfJX6Yt9z3dxY
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Oct 2022 15:55:24 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=FnhfzhzY;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=Fcbv6b+y;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::630; helo=mail-pl1-x630.google.com; envelope-from=keescook@chromium.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::102c; helo=mail-pj1-x102c.google.com; envelope-from=keescook@chromium.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=FnhfzhzY;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=Fcbv6b+y;
 	dkim-atps=neutral
-Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mjdwf4Cd4z304J
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Oct 2022 15:38:08 +1100 (AEDT)
-Received: by mail-pl1-x630.google.com with SMTP id u24so636102plq.12
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Oct 2022 21:38:08 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mjdxq0J3kz2y8J
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Oct 2022 15:39:10 +1100 (AEDT)
+Received: by mail-pj1-x102c.google.com with SMTP id b15so761231pje.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Oct 2022 21:39:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date;
-        bh=+S5GQGZ6/D/Mg+joUObE0SvwDFyqkvRT2sP5/5vRQvk=;
-        b=FnhfzhzYXlNcl6IxqwADyyzc747mTy8MU4rkgJN+LmLi1BBuM+8meOEr2rKBNA5cdb
-         UV5cg1R4d2Z6xBRg09lXiXAPPCtiRk0FnLoDXMxi1ZwCUSCYDye4OaZgSAusHDiISi0X
-         vF5wP8hNjXz8Z2pcn3GjqjTxVus9QcfOT5k48=
+        bh=y1Ewt823HoXUJ+RVCiU5hfekdC+9m7ghxyBCLtj1eUk=;
+        b=Fcbv6b+yCuol0AU1mIs9HnAOz2/wjXtHru3VW95DL3V7mKymOrKADEfZ1NfF0xLiTB
+         LkCGzY8eutuXPS5+afbW7jf6o9DhcYADtCDqs8Qo8xeP+lYFZISv7p7XEeNAqavCs9/t
+         xtqe21TFW/x7aAqkAHw+ftHWXMel86ys26msI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
-        bh=+S5GQGZ6/D/Mg+joUObE0SvwDFyqkvRT2sP5/5vRQvk=;
-        b=Mm1P77oBKkXLyXFxHPYMv70asrWOrZLI3LrYgZiDD1WrFyLF/rQA2UhC/UZIoMGavx
-         7hVHaRDdi1CFFTAhU+m8rtpcgU7G3ZxJJ7F0V9jxnQFeu8+0VA5zRV/foKZACxe3mFi2
-         JTiYIJOgff+xHjEsavvows+PjOhbiZ8a73zQMaUCFU+l+0Kza1cT5w+mvKafFSimZils
-         iDIvZbjzk9WUBcySj7ZiaYYr/UCfJZo2kCDmNPFYkh4JSuTjmmQcCLimU/uiWULnIaEc
-         dEhtiHmpsR2m5Iz766oNwVUsGcjAKWN+dJ9azYrbIISnxyXVBSn5H7GBOHU1ffYiLH0P
-         Y0PQ==
-X-Gm-Message-State: ACrzQf0XGea5QSOH66kfhcwNnaeBf0EFjE3m4jezxzedF6UvwGfFjf1t
-	kXFLT7BOHXwWvMKmWKYJn+CjhA==
-X-Google-Smtp-Source: AMsMyM5wQShENjZofrpCE9JXF1y8+Mj33eJ2Bpuqg3wBtAV3umQgBeXMs02cH4EGpzIndWjF3gW38w==
-X-Received: by 2002:a17:902:db0a:b0:178:2636:b6de with SMTP id m10-20020a170902db0a00b001782636b6demr2822346plx.58.1665031085103;
-        Wed, 05 Oct 2022 21:38:05 -0700 (PDT)
+        bh=y1Ewt823HoXUJ+RVCiU5hfekdC+9m7ghxyBCLtj1eUk=;
+        b=keB31obNu3QzJAtek0a36VmvevrsDM392irlcHZHJ203JscsJ2NcXd7nqkUETBUFYZ
+         5PSrAoJMGNELemMRj3cx8bCrUr2rSUkr/LuqyKsSpGOtTqQcgdY6YvoIbpMJm6zEKZ8m
+         zGqQ4sNZiBYD9zPWUSm8+gAyhRh1MntuOdcCgnsZd9OIU1gIXAWep/jTjxi21OD9OuhC
+         H9mwAmeTw+wxcR5tK6fwO7G5L1+9YlgVjMliHNIosGPQpQxGI28OeFoepyA8hN7RFrxQ
+         kfBkMQd3RGltkT5RzXMWhFNKJyE5sgHKbtV7rAc34wYdvOkayr+urv1wQ2OUNV25ZBaC
+         bigA==
+X-Gm-Message-State: ACrzQf3ZlmFtzLliQ/pihxhNKV8aeyS0T6QaC+2yfiUM/oUxR92Zw/oa
+	rxOw+nMBtJdtJcC4ntdMERUW1Q==
+X-Google-Smtp-Source: AMsMyM60ELYmxh+A5d0x30z3COx8LaynKqt9bJxGAbjfrLwodOIKXzOKJgIYAS8Aw4fmck7UQns81A==
+X-Received: by 2002:a17:902:db0f:b0:176:e70f:6277 with SMTP id m15-20020a170902db0f00b00176e70f6277mr2639160plx.13.1665031147915;
+        Wed, 05 Oct 2022 21:39:07 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id l18-20020a17090aaa9200b001fd8316db51sm1928521pjq.7.2022.10.05.21.38.03
+        by smtp.gmail.com with ESMTPSA id d12-20020a634f0c000000b00439d071c110sm673132pgb.43.2022.10.05.21.39.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Oct 2022 21:38:03 -0700 (PDT)
-Date: Wed, 5 Oct 2022 21:38:02 -0700
+        Wed, 05 Oct 2022 21:39:06 -0700 (PDT)
+Date: Wed, 5 Oct 2022 21:39:03 -0700
 From: Kees Cook <keescook@chromium.org>
 To: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Subject: Re: [PATCH v1 2/5] treewide: use get_random_{u8,u16}() when possible
-Message-ID: <202210052126.B34A2C62@keescook>
+Subject: Re: [PATCH v1 5/5] prandom: remove unused functions
+Message-ID: <202210052138.A585E4CC@keescook>
 References: <20221005214844.2699-1-Jason@zx2c4.com>
- <20221005214844.2699-3-Jason@zx2c4.com>
+ <20221005214844.2699-6-Jason@zx2c4.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20221005214844.2699-3-Jason@zx2c4.com>
+In-Reply-To: <20221005214844.2699-6-Jason@zx2c4.com>
 X-Mailman-Approved-At: Thu, 06 Oct 2022 15:52:03 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -85,78 +85,11 @@ Cc: Andrew Lunn <andrew@lunn.ch>, "Darrick J . Wong" <djwong@kernel.org>, Ulf Ha
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Oct 05, 2022 at 11:48:41PM +0200, Jason A. Donenfeld wrote:
-> Rather than truncate a 32-bit value to a 16-bit value or an 8-bit value,
-> simply use the get_random_{u8,u16}() functions, which are faster than
-> wasting the additional bytes from a 32-bit value.
+On Wed, Oct 05, 2022 at 11:48:44PM +0200, Jason A. Donenfeld wrote:
+> With no callers left of prandom_u32() and prandom_bytes(), remove these
+> deprecated wrappers.
 > 
 > Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-
-Same question about "mechanism of transformation".
-
-> diff --git a/drivers/net/ethernet/chelsio/inline_crypto/chtls/chtls_cm.c b/drivers/net/ethernet/chelsio/inline_crypto/chtls/chtls_cm.c
-> index ddfe9208529a..ac452a0111a9 100644
-> --- a/drivers/net/ethernet/chelsio/inline_crypto/chtls/chtls_cm.c
-> +++ b/drivers/net/ethernet/chelsio/inline_crypto/chtls/chtls_cm.c
-> @@ -1467,7 +1467,7 @@ static void make_established(struct sock *sk, u32 snd_isn, unsigned int opt)
->  	tp->write_seq = snd_isn;
->  	tp->snd_nxt = snd_isn;
->  	tp->snd_una = snd_isn;
-> -	inet_sk(sk)->inet_id = prandom_u32();
-> +	inet_sk(sk)->inet_id = get_random_u16();
->  	assign_rxopt(sk, opt);
->  
->  	if (tp->rcv_wnd > (RCV_BUFSIZ_M << 10))
-
-This one I had to go look at -- inet_id is u16, so yeah. :)
-
-> diff --git a/lib/test_vmalloc.c b/lib/test_vmalloc.c
-> index 56ffaa8dd3f6..0131ed2cd1bd 100644
-> --- a/lib/test_vmalloc.c
-> +++ b/lib/test_vmalloc.c
-> @@ -80,7 +80,7 @@ static int random_size_align_alloc_test(void)
->  	int i;
->  
->  	for (i = 0; i < test_loop_count; i++) {
-> -		rnd = prandom_u32();
-> +		rnd = get_random_u8();
->  
->  		/*
->  		 * Maximum 1024 pages, if PAGE_SIZE is 4096.
-
-This wasn't obvious either, but it looks like it's because it never
-consumes more than u8?
-
-> diff --git a/net/netfilter/nf_nat_core.c b/net/netfilter/nf_nat_core.c
-> index 7981be526f26..57c7686ac485 100644
-> --- a/net/netfilter/nf_nat_core.c
-> +++ b/net/netfilter/nf_nat_core.c
-> @@ -468,7 +468,7 @@ static void nf_nat_l4proto_unique_tuple(struct nf_conntrack_tuple *tuple,
->  	if (range->flags & NF_NAT_RANGE_PROTO_OFFSET)
->  		off = (ntohs(*keyptr) - ntohs(range->base_proto.all));
->  	else
-> -		off = prandom_u32();
-> +		off = get_random_u16();
->  
->  	attempts = range_size;
-
-Yup, u16 off;
-
-> diff --git a/net/sched/sch_sfb.c b/net/sched/sch_sfb.c
-> index 2829455211f8..7eb70acb4d58 100644
-> --- a/net/sched/sch_sfb.c
-> +++ b/net/sched/sch_sfb.c
-> @@ -379,7 +379,7 @@ static int sfb_enqueue(struct sk_buff *skb, struct Qdisc *sch,
->  		goto enqueue;
->  	}
->  
-> -	r = prandom_u32() & SFB_MAX_PROB;
-> +	r = get_random_u16() & SFB_MAX_PROB;
->  
->  	if (unlikely(r < p_min)) {
->  		if (unlikely(p_min > SFB_MAX_PROB / 2)) {
-
-include/uapi/linux/pkt_sched.h:#define SFB_MAX_PROB 0xFFFF
 
 Reviewed-by: Kees Cook <keescook@chromium.org>
 
