@@ -2,68 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5979C5F679B
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Oct 2022 15:16:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0DE05F67C1
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Oct 2022 15:21:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MjsQl6MZhz3c7q
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Oct 2022 00:16:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MjsXg26bFz3c9W
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Oct 2022 00:21:39 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=j4TXfdYh;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=g9dsHX3i;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ziepe.ca (client-ip=2607:f8b0:4864:20::82d; helo=mail-qt1-x82d.google.com; envelope-from=jgg@ziepe.ca; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=134.134.136.126; helo=mga18.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=j4TXfdYh;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=g9dsHX3i;
 	dkim-atps=neutral
-Received: from mail-qt1-x82d.google.com (mail-qt1-x82d.google.com [IPv6:2607:f8b0:4864:20::82d])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MjsPp0GHqz3bjT
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Oct 2022 00:15:40 +1100 (AEDT)
-Received: by mail-qt1-x82d.google.com with SMTP id hh9so896788qtb.13
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Oct 2022 06:15:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date;
-        bh=GSOPunDdTF0UIVvBpION9xBpexDiGo+rjOxipFbXtOA=;
-        b=j4TXfdYhCC5IuPEKT7c142DGOyyUICiYEJ2rQ5pM4q0yiZx4WA0kHStxgeCysxKdIn
-         TuxQmiKuGnCh2iLv5lCSAeVvdfZCgr0gslAO6C/wmbiJpJE+HGv9p0BlGAp2YHTd7MAZ
-         JFShEKjZddNRI3EB69zxWrjNCIn5FEtT938q5Kh600byBOTgEAyr3Cw5BxKLykg6qGKZ
-         putHsZDuOr6KOj1BUasiDhf52tRH/Ed62HmMrAEpEsYDeTWjqgqViGX5p251folDWhG6
-         /9qz6hzxVHLZMa8vddlM+hc6XFLs5D7qWuuoVr7OgpiuiN/JdE0keFKPOZzvhwuMVbjX
-         g/wA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
-        bh=GSOPunDdTF0UIVvBpION9xBpexDiGo+rjOxipFbXtOA=;
-        b=tWqK9OqTgMBdqhHY3vN42RPwiEL/9I+VVrjAyHzoetIcMTq8ST46/JWX8Mfon0cJEI
-         J8jaxHph98Fw47ek06VQzaNfI4z5iQa24FiBtE14nLUcY2dIAggxHmwf7WMT1glZvg6h
-         f8ULFFHzZoXcmxF2gpaQaJWmRrjOsLl8Ka52UQUiowKGQ/aB9SuLxCAKgCuereqLOVlo
-         Box1NiER8Ddvuu0XFi+cWmVGEA7fliP4CuGLfCFS9wk3FXHCo9EyUixvrBPpp+gYX61f
-         R4UXIC2VJ26mczoXgiGwKZ/2qH/q92nXLaWatgcWftq8BVX5kMhDha+emq/oUkFWBa3W
-         6x+g==
-X-Gm-Message-State: ACrzQf1ns3/AceoJOe1+EL1DIrvu2epWhInHnhpyB6/VTVRsoMk3Kd5v
-	Z9Dp50CWI80IikhNErzdquKvEQ==
-X-Google-Smtp-Source: AMsMyM4GpHypPhwf4qnIOCDMCCPPCaDHHZXra2UnB6U4hePjwcf7/TKsWZTRJwrBHYFFgt7B+K7zfA==
-X-Received: by 2002:ac8:5703:0:b0:35c:c3f6:5991 with SMTP id 3-20020ac85703000000b0035cc3f65991mr3383265qtw.185.1665062137334;
-        Thu, 06 Oct 2022 06:15:37 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-47-55-122-23.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.122.23])
-        by smtp.gmail.com with ESMTPSA id k11-20020a05620a0b8b00b006cbc6e1478csm18686320qkh.57.2022.10.06.06.15.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Oct 2022 06:15:36 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.95)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1ogQit-00A1hY-6O;
-	Thu, 06 Oct 2022 10:15:35 -0300
-Date: Thu, 6 Oct 2022 10:15:35 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MjsWj1TZzz3bmK
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Oct 2022 00:20:47 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1665062449; x=1696598449;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=EU0abpI6YFdk3YA4KGgLZ9e2cnqNyTF/1r17KmA6WbU=;
+  b=g9dsHX3ig9H92u93rW73lEQQH9uCCTCS+aTRaeoowfmUbqjxwzb2D4a8
+   uzpNAafM547w19gZEKqsHNYQHogTOZjBWq3jhYje8c7nl5zTPT0crHI6o
+   b8ZvGwrTidO6ggH6g9sNc7r3rPGjpjcsgo7dIpcCYZ51RNeUjET3NwxPS
+   AmLldLIh7974mjNKcuz/zC+Z5bikd7BxyNaYaHhfqhiMtL+lDPDTWyeP0
+   3TK/oJLwN1uAqzduS+B2iyjgT7tv1hbUY4znNrsRAMjub/snpw4RYRz8d
+   LbYCw4OvoqL8DanUnZhb3Oom2aP3ihJXncPlt3AtLtMJFmKPYIW5q+1ja
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10491"; a="286665445"
+X-IronPort-AV: E=Sophos;i="5.95,163,1661842800"; 
+   d="scan'208";a="286665445"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2022 06:20:45 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10491"; a="729143418"
+X-IronPort-AV: E=Sophos;i="5.95,163,1661842800"; 
+   d="scan'208";a="729143418"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP; 06 Oct 2022 06:20:34 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1ogQng-0039rX-0O;
+	Thu, 06 Oct 2022 16:20:32 +0300
+Date: Thu, 6 Oct 2022 16:20:31 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: "Jason A. Donenfeld" <Jason@zx2c4.com>
 Subject: Re: [PATCH v1 3/5] treewide: use get_random_u32() when possible
-Message-ID: <Yz7U99PPl8uHCLFY@ziepe.ca>
+Message-ID: <Yz7WHyD+teLOh2ho@smile.fi.intel.com>
 References: <20221005214844.2699-1-Jason@zx2c4.com>
  <20221005214844.2699-4-Jason@zx2c4.com>
  <Yz7OdfKZeGkpZSKb@ziepe.ca>
@@ -72,6 +62,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <CAHmME9r_vNRFFjUvqx8QkBddg_kQU=FMgpk9TqOVZdvX6zXHNg@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,21 +74,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-fbdev@vger.kernel.org, linux-doc@vger.kernel.org, linux-wireless@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-mm@kvack.org, linux-sctp@vger.kernel.org, target-devel@vger.kernel.org, linux-mtd@lists.infradead.org, linux-stm32@st-md-mailman.stormreply.com, drbd-dev@lists.linbit.com, dev@openvswitch.org, rds-devel@oss.oracle.com, linux-scsi@vger.kernel.org, dccp@vger.kernel.org, linux-rdma@vger.kernel.org, kasan-dev@googlegroups.com, lvs-devel@vger.kernel.org, SHA-cyfmac-dev-list@infineon.com, coreteam@netfilter.org, tipc-discussion@lists.sourceforge.net, linux-ext4@vger.kernel.org, linux-media@vger.kernel.org, linux-actions@lists.infradead.org, linux-nfs@vger.kernel.org, linux-block@vger.kernel.org, dmaengine@vger.kernel.org, linux-nvme@lists.infradead.org, linux-hams@vger.kernel.org, ceph-devel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, cake@lists.bufferbloat.net, brcm80211-dev-list.pdl@broadcom.com, linux-raid@vger.kernel.org, netdev@vger.kernel.org, 
- linux-usb@vger.kernel.org, linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net, linux-xfs@vger.kernel.org, netfilter-devel@vger.kernel.org, linux-crypto@vger.kernel.org, linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: linux-fbdev@vger.kernel.org, linux-doc@vger.kernel.org, linux-wireless@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-mm@kvack.org, linux-sctp@vger.kernel.org, target-devel@vger.kernel.org, linux-mtd@lists.infradead.org, linux-stm32@st-md-mailman.stormreply.com, drbd-dev@lists.linbit.com, dev@openvswitch.org, rds-devel@oss.oracle.com, linux-scsi@vger.kernel.org, dccp@vger.kernel.org, linux-rdma@vger.kernel.org, kasan-dev@googlegroups.com, lvs-devel@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>, SHA-cyfmac-dev-list@infineon.com, coreteam@netfilter.org, tipc-discussion@lists.sourceforge.net, linux-ext4@vger.kernel.org, linux-media@vger.kernel.org, linux-actions@lists.infradead.org, linux-nfs@vger.kernel.org, linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-nvme@lists.infradead.org, linux-hams@vger.kernel.org, ceph-devel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, cake@lists.bufferbloat.net, brcm80211-dev-list.pdl@broadcom.com, linux-raid@vger.
+ kernel.org, netdev@vger.kernel.org, linux-usb@vger.kernel.org, linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net, linux-xfs@vger.kernel.org, netfilter-devel@vger.kernel.org, linux-crypto@vger.kernel.org, dmaengine@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On Thu, Oct 06, 2022 at 07:05:48AM -0600, Jason A. Donenfeld wrote:
+> On Thu, Oct 6, 2022 at 6:47 AM Jason Gunthorpe <jgg@ziepe.ca> wrote:
+> > On Wed, Oct 05, 2022 at 11:48:42PM +0200, Jason A. Donenfeld wrote:
 
-> > > diff --git a/drivers/infiniband/ulp/ipoib/ipoib_cm.c b/drivers/infiniband/ulp/ipoib/ipoib_cm.c
-> > > index fd9d7f2c4d64..a605cf66b83e 100644
-> > > --- a/drivers/infiniband/ulp/ipoib/ipoib_cm.c
-> > > +++ b/drivers/infiniband/ulp/ipoib/ipoib_cm.c
-> > > @@ -465,7 +465,7 @@ static int ipoib_cm_req_handler(struct ib_cm_id *cm_id,
-> > >               goto err_qp;
-> > >       }
-> > >
+...
+
+> > > -     u32 isn = (prandom_u32() & ~7UL) - 1;
+> > > +     u32 isn = (get_random_u32() & ~7UL) - 1;
+> >
+> > Maybe this wants to be written as
+> >
+> > (prandom_max(U32_MAX >> 7) << 7) | 7
+
+> > ?
+> 
+> Holy smokes. Yea I guess maybe? It doesn't exactly gain anything or
+> make the code clearer though, and is a little bit more magical than
+> I'd like on a first pass.
+
+Shouldn't the two first 7s to be 3s?
+
+...
+
 > > > -     psn = prandom_u32() & 0xffffff;
 > > > +     psn = get_random_u32() & 0xffffff;
 > >
@@ -106,6 +110,12 @@ On Thu, Oct 06, 2022 at 07:05:48AM -0600, Jason A. Donenfeld wrote:
 > That'd work, but again it's not more clear. Authors here are going for
 > a 24-bit number, and masking seems like a clear way to express that.
 
-vs just asking directly for a 24 bit number?
+We have some 24-bit APIs (and 48-bit) already in kernel, why not to have
+get_random_u24() ?
 
-Jason
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
