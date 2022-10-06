@@ -2,200 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 590C95F7145
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Oct 2022 00:42:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 347915F714D
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Oct 2022 00:43:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Mk60K1r9bz3dtN
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Oct 2022 09:42:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Mk61L0jfwz3dxb
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Oct 2022 09:43:50 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=XQW+nWRK;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=YxC3oT64;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=srs0=tiop=2h=zx2c4.com=jason@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=srs0=tiop=2h=zx2c4.com=jason@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=XQW+nWRK;
+	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=YxC3oT64;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mjt9k0rCcz3bjS
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Oct 2022 00:50:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MjyFq4XzDz3bpr
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Oct 2022 03:54:07 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id C2113B8206F;
-	Thu,  6 Oct 2022 13:50:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1536CC433B5;
-	Thu,  6 Oct 2022 13:49:57 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 13EAA61A2A;
+	Thu,  6 Oct 2022 16:54:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F4ABC433D6;
+	Thu,  6 Oct 2022 16:53:55 +0000 (UTC)
 Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="XQW+nWRK"
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="YxC3oT64"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1665064196;
+	t=1665075233;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mEetLjJ38ygHBekWX+Dw1oorRVmw9Gz/icaPb6ZlUv4=;
-	b=XQW+nWRKwxnddFTGI7/ZKz5VyRlNEuklQa0u+Ig10InpOrVisjGqrd6f7GbuQRp84tPInF
-	fBPY5LYDd0f8SjNIkSIvSi4EX3Xfu2tEtQmdD02Dhr2bOlmNQ98IREjja+Z3DlOFF4ZQhX
-	tSRriBekZGRJFgALCRECJrV3N/Wp248=
-Received: 	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id ac8c61f2 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Thu, 6 Oct 2022 13:49:56 +0000 (UTC)
-Date: Thu, 6 Oct 2022 07:49:44 -0600
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=6twd6NKcrpKRpxhL2GuF//PBQH+AtKKBlpf7BdYWYLc=;
+	b=YxC3oT644F6BUB/gmAGiQBBGWgp3n0FehffRlwyeodP07y7MVsjsXbFAQzsU/2o2uVsJq5
+	VtcleBQzxt/KoOskUVPWr/05GxvAiG7dOh4CI7nJ0VyQUQgujT/7xx02t3v3qM64r0//TZ
+	+tPMpk25B0qfWffSryBfqPL8Keq6964=
+Received: 	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 843b2bb2 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Thu, 6 Oct 2022 16:53:53 +0000 (UTC)
 From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-To: linux-kernel@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
-	"Darrick J . Wong" <djwong@kernel.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	dri-devel@lists.freedesktop.org,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>, linux-sctp@vger.kernel.org,
-	"Md . Haris Iqbal" <haris.iqbal@ionos.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Andy Gospodarek <andy@greyhouse.net>,
-	Sergey Matyukevich <geomatsi@gmail.com>,
-	Rohit Maheshwari <rohitm@chelsio.com>,
-	Michael Ellerman <mpe@ellerman.id.au>, ceph-devel@vger.kernel.org,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Jozsef Kadlecsik <kadlec@netfilter.org>,
-	Nilesh Javali <njavali@marvell.com>,
-	Jean-Paul Roubelat <jpr@f6fbb.org>,
-	Dick Kennedy <dick.kennedy@broadcom.com>,
-	Jay Vosburgh <j.vosburgh@gmail.com>,
-	Potnuri Bharat Teja <bharat@chelsio.com>,
-	Vinay Kumar Yadav <vinay.yadav@chelsio.com>,
-	linux-nfs@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
-	Igor Mitsyanko <imitsyanko@quantenna.com>,
-	Andy Lutomirski <luto@kernel.org>, linux-hams@vger.kernel.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	linux-raid@vger.kernel.org, Neil Horman <nhorman@tuxdriver.com>,
-	Hante Meuleman <hante.meuleman@broadcom.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-usb@vger.kernel.org, Michael Chan <michael.chan@broadcom.com>,
-	Varun Prakash <varun@chelsio.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	netfilter-devel@vger.kernel.org,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>, Jan Kara <jack@suse.com>,
-	linux-fsdevel@vger.kernel.org,
-	Lars Ellenberg <lars.ellenberg@linbit.com>,
-	linux-media@vger.kernel.org,
-	Claudiu Beznea <claudiu.beznea@microchip.com>,
-	Sharvari Harisangam <sharvari.harisangam@nxp.com>,
-	linux-doc@vger.kernel.org, linux-mmc@vger.kernel.org,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Song Liu <song@kernel.org>, Eric Dumazet <edumazet@google.com>,
-	target-devel@vger.kernel.org, John Stultz <jstultz@google.com>,
-	Stanislav Fomichev <sdf@google.com>,
-	Gregory Greenman <gregory.greenman@intel.com>,
-	drbd-dev@lists.linbit.com, dev@openvswitch.org,
-	Leon Romanovsky <leon@kernel.org>, Helge Deller <deller@gmx.de>,
-	Hugh Dickins <hughd@google.com>,
-	James Smart <james.smart@broadcom.com>,
-	Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>,
-	Pravin B Shelar <pshelar@ovn.org>, Julian Anastasov <ja@ssi.bg>,
-	coreteam@netfilter.org, Veaceslav Falico <vfalico@gmail.com>,
-	Yonghong Song <yhs@fb.com>, Namjae Jeon <linkinjeon@kernel.org>,
-	linux-crypto@vger.kernel.org,
-	Santosh Shilimkar <santosh.shilimkar@oracle.com>,
-	Ganapathi Bhat <ganapathi017@gmail.com>,
-	linux-actions@lists.infradead.org,
-	Simon Horman <horms@verge.net.au>, Jaegeuk Kim <jaegeuk@kernel.org>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
-	Hao Luo <haoluo@google.com>, Theodore Ts'o <tytso@mit.edu>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
-	Florian Westphal <fw@strlen.de>,
-	Andreas =?utf-8?Q?F=C3=A4rber?= <afaerber@suse.de>,
-	Jon Maloy <jmaloy@redhat.com>, Vlad Yasevich <vyasevich@gmail.com>,
-	Anna Schumaker <anna@kernel.org>,
-	Yehezkel Bernat <YehezkelShB@gmail.com>,
-	Haoyue Xu <xuhaoyue1@hisilicon.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	linux-wireless@vger.kernel.org,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	linux-fbdev@vger.kernel.org, linux-nvme@lists.infradead.org,
-	Michal Januszewski <spock@gentoo.org>,
-	linux-mtd@lists.infradead.org, kasan-dev@googlegroups.com,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Thomas Sailer <t.sailer@alumni.ethz.ch>,
-	Ajay Singh <ajay.kathat@microchip.com>,
-	Xiubo Li <xiubli@redhat.com>, Sagi Grimberg <sagi@grimberg.me>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org,
-	lvs-devel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	"Naveen N . Rao" <naveen.n.rao@linux.ibm.com>,
-	Ilya Dryomov <idryomov@gmail.com>, Paolo Abeni <pabeni@redhat.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Marco Elver <elver@google.com>, Kees Cook <keescook@chromium.org>,
-	Yury Norov <yury.norov@gmail.com>,
-	"James E . J . Bottomley" <jejb@linux.ibm.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>, KP Singh <kpsingh@kernel.org>,
-	Borislav Petkov <bp@alien8.de>, Keith Busch <kbusch@kernel.org>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Franky Lin <franky.lin@broadcom.com>,
-	Arend van Spriel <aspriel@gmail.com>, linux-ext4@vger.kernel.org,
-	Wenpeng Liang <liangwenpeng@huawei.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
-	Xinming Hu <huxinming820@gmail.com>,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Jeff Layton <jlayton@kernel.org>, linux-xfs@vger.kernel.org,
-	netdev@vger.kernel.org, Ying Xue <ying.xue@windriver.com>,
-	Manish Rangankar <mrangankar@marvell.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Amitkumar Karwar <amitkarwar@gmail.com>, linux-mm@kvack.org,
-	Andreas Dilger <adilger.kernel@dilger.ca>,
-	Ayush Sawal <ayush.sawal@chelsio.com>,
-	Andreas Noever <andreas.noever@gmail.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	linux-f2fs-devel@lists.sourceforge.net,
-	Jack Wang <jinpu.wang@ionos.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	rds-devel@oss.oracle.com, Herbert Xu <herbert@gondor.apana.org.au>,
-	linux-scsi@vger.kernel.org, dccp@vger.kernel.org,
-	Richard Weinberger <richard@nod.at>,
-	Russell King <linux@armlinux.org.uk>,
-	Jason Gunthorpe <jgg@ziepe.ca>, SHA-cyfmac-dev-list@infineon.com,
-	Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Michael Jamet <michael.jamet@intel.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Akinobu Mita <akinobu.mita@gmail.com>, linux-block@vger.kernel.org,
-	dmaengine@vger.kernel.org, Hannes Reinecke <hare@suse.de>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Dmitry Vyukov <dvyukov@google.com>, Jens Axboe <axboe@kernel.dk>,
-	cake@lists.bufferbloat.net, brcm80211-dev-list.pdl@broadcom.com,
-	Yishai Hadas <yishaih@nvidia.com>,
-	Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
-	linuxppc-dev@lists.ozlabs.org, David Ahern <dsahern@kernel.org>,
-	Philipp Reisner <philipp.reisner@linbit.com>,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Christoph =?utf-8?Q?B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	tipc-discussion@lists.sourceforge.net, Thomas Graf <tgraf@suug.ch>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Sungjong Seo <sj1557.seo@samsung.com>,
-	Martin KaFai Lau <martin.lau@linux.dev>
-Subject: Re: [f2fs-dev] [PATCH v1 0/5] treewide cleanup of random integer
- usage
-Message-ID: <Yz7c+LqDGjzd2QSd@zx2c4.com>
-References: <20221005214844.2699-1-Jason@zx2c4.com>
+To: linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev
+Subject: [PATCH v3 0/5] treewide cleanup of random integer usage
+Date: Thu,  6 Oct 2022 10:53:41 -0600
+Message-Id: <20221006165346.73159-1-Jason@zx2c4.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20221005214844.2699-1-Jason@zx2c4.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Mailman-Approved-At: Fri, 07 Oct 2022 09:35:18 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -208,11 +62,357 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-wireless@vger.kernel.org, "Jason A. Donenfeld" <Jason@zx2c4.com>, x86@kernel.org, Vignesh Raghavendra <vigneshr@ti.com>, linux-doc@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, kernel-janitors@vger.kernel.org, KP Singh <kpsingh@kernel.org>, dri-devel@lists.freedesktop.org, linux-mm@kvack.org, Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org, linux-mtd@lists.infradead.org, kasan-dev@googlegroups.com, "H . Peter Anvin" <hpa@zytor.com>, Andreas Noever <andreas.noever@gmail.com>, WANG Xuerui <kernel@xen0n.name>, Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>, linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, Mauro Carvalho Chehab <mchehab@kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>, Daniel Borkmann <daniel@iogearbox.net>, Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.
+ org>, Hugh Dickins <hughd@google.com>, Russell King <linux@armlinux.org.uk>, Jozsef Kadlecsik <kadlec@netfilter.org>, Jason Gunthorpe <jgg@ziepe.ca>, Dave Airlie <airlied@redhat.com>, Ulf Hansson <ulf.hansson@linaro.org>, Paolo Abeni <pabeni@redhat.com>, "James E . J . Bottomley" <jejb@linux.ibm.com>, Pablo Neira Ayuso <pablo@netfilter.org>, linux-media@vger.kernel.org, Marco Elver <elver@google.com>, Kees Cook <keescook@chromium.org>, Yury Norov <yury.norov@gmail.com>, Heiko Carstens <hca@linux.ibm.com>, linux-um@lists.infradead.org, linux-block@vger.kernel.org, Richard Weinberger <richard@nod.at>, Borislav Petkov <bp@alien8.de>, linux-nvme@lists.infradead.org, loongarch@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Johannes Berg <johannes@sipsolutions.net>, linux-arm-kernel@lists.infradead.org, Jens Axboe <axboe@kernel.dk>, linux-mmc@vger.kernel.org, Thomas Bogendoerfer <tsbogend@alpha.
+ franken.de>, Theodore Ts'o <tytso@mit.edu>, linux-parisc@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org, Florian Westphal <fw@strlen.de>, linux-mips@vger.kernel.org, =?UTF-8?q?Christoph=20B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>, linux-crypto@vger.kernel.org, Jan Kara <jack@suse.com>, Thomas Graf <tgraf@suug.ch>, linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-A v2 that won't murder your mail setup is now available here:
-https://lore.kernel.org/lkml/20221006132510.23374-1-Jason@zx2c4.com/
+Changes v2->v3:
+- Handle get_random_int() conversions too, which were overlooked before,
+  in the same way as the rest.
 
-Please do not (attempt to) post more replies to v1, as it kicks up a
-storm of angry MTAs.
+Hi folks,
+
+This is a five part treewide cleanup of random integer handling. The
+rules for random integers are:
+
+- If you want a secure or an insecure random u64, use get_random_u64().
+- If you want a secure or an insecure random u32, use get_random_u32().
+  * The old function prandom_u32() has been deprecated for a while now
+    and is just a wrapper around get_random_u32(). Same for
+    get_random_int().
+- If you want a secure or an insecure random u16, use get_random_u16().
+- If you want a secure or an insecure random u8, use get_random_u8().
+- If you want secure or insecure random bytes, use get_random_bytes().
+  * The old function prandom_bytes() has been deprecated for a while now
+    and has long been a wrapper around get_random_bytes().
+- If you want a non-uniform random u32, u16, or u8 bounded by a certain
+  open interval maximum, use prandom_u32_max().
+  * I say "non-uniform", because it doesn't do any rejection sampling or
+    divisions. Hence, it stays within the prandom_* namespace.
+
+These rules ought to be applied uniformly, so that we can clean up the
+deprecated functions, and earn the benefits of using the modern
+functions. In particular, in addition to the boring substitutions, this
+patchset accomplishes a few nice effects:
+
+- By using prandom_u32_max() with an upper-bound that the compiler can
+  prove at compile-time is ≤65536 or ≤256, internally get_random_u16()
+  or get_random_u8() is used, which wastes fewer batched random bytes,
+  and hence has higher throughput.
+
+- By using prandom_u32_max() instead of %, when the upper-bound is not a
+  constant, division is still avoided, because prandom_u32_max() uses
+  a faster multiplication-based trick instead.
+
+- By using get_random_u16() or get_random_u8() in cases where the return
+  value is intended to indeed be a u16 or a u8, we waste fewer batched
+  random bytes, and hence have higher throughput.
+
+So, based on those rules and benefits from following them, this patchset
+breaks down into the following five steps, which were done mostly
+manually:
+
+1) Replace `prandom_u32() % max` and variants thereof with
+   prandom_u32_max(max).
+
+2) Replace `(type)get_random_u32()` and variants thereof with
+   get_random_u16() or get_random_u8(). I took the pains to actually
+   look and see what every lvalue type was across the entire tree.
+
+3) Replace remaining deprecated uses of prandom_u32() and
+   get_random_int() with get_random_u32(). 
+
+4) Replace remaining deprecated uses of prandom_bytes() with
+   get_random_bytes().
+
+5) Remove the deprecated and now-unused prandom_u32() and
+   prandom_bytes() inline wrapper functions.
+
+I was thinking of taking this through my random.git tree (on which this
+series is currently based) and submitting it near the end of the merge
+window, or waiting for the very end of the 6.1 cycle when there will be
+the fewest new patches brewing. If somebody with some treewide-cleanup
+experience might share some wisdom about what the best timing usually
+winds up being, I'm all ears.
+
+Please take a look! At "379 insertions(+), 422 deletions(-)", this
+should be a somewhat small patchset to review, despite it having the
+scary "treewide" moniker on it.
+
+Thanks,
+Jason
+
+Cc: Andreas Noever <andreas.noever@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Christoph Böhmwalder <christoph.boehmwalder@linbit.com>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Daniel Borkmann <daniel@iogearbox.net>
+Cc: Dave Airlie <airlied@redhat.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Florian Westphal <fw@strlen.de>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Helge Deller <deller@gmx.de>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: Huacai Chen <chenhuacai@kernel.org>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: James E.J. Bottomley <jejb@linux.ibm.com>
+Cc: Jan Kara <jack@suse.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Johannes Berg <johannes@sipsolutions.net>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Jozsef Kadlecsik <kadlec@netfilter.org>
+Cc: KP Singh <kpsingh@kernel.org>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Marco Elver <elver@google.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Richard Weinberger <richard@nod.at>
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: Theodore Ts'o <tytso@mit.edu>
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Thomas Graf <tgraf@suug.ch>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Vignesh Raghavendra <vigneshr@ti.com>
+Cc: WANG Xuerui <kernel@xen0n.name>
+Cc: Will Deacon <will@kernel.org>
+Cc: Yury Norov <yury.norov@gmail.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: kasan-dev@googlegroups.com
+Cc: kernel-janitors@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-block@vger.kernel.org
+Cc: linux-crypto@vger.kernel.org
+Cc: linux-doc@vger.kernel.org
+Cc: linux-fsdevel@vger.kernel.org
+Cc: linux-media@vger.kernel.org
+Cc: linux-mips@vger.kernel.org
+Cc: linux-mm@kvack.org
+Cc: linux-mmc@vger.kernel.org
+Cc: linux-mtd@lists.infradead.org
+Cc: linux-nvme@lists.infradead.org
+Cc: linux-parisc@vger.kernel.org
+Cc: linux-rdma@vger.kernel.org
+Cc: linux-s390@vger.kernel.org
+Cc: linux-um@lists.infradead.org
+Cc: linux-usb@vger.kernel.org
+Cc: linux-wireless@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: loongarch@lists.linux.dev
+Cc: netdev@vger.kernel.org
+Cc: sparclinux@vger.kernel.org
+Cc: x86@kernel.org
+
+Jason A. Donenfeld (5):
+  treewide: use prandom_u32_max() when possible
+  treewide: use get_random_{u8,u16}() when possible
+  treewide: use get_random_u32() when possible
+  treewide: use get_random_bytes when possible
+  prandom: remove unused functions
+
+ Documentation/networking/filter.rst           |  2 +-
+ arch/arm/kernel/process.c                     |  2 +-
+ arch/arm/kernel/signal.c                      |  2 +-
+ arch/arm64/kernel/process.c                   |  2 +-
+ arch/arm64/kernel/syscall.c                   |  2 +-
+ arch/loongarch/kernel/process.c               |  2 +-
+ arch/loongarch/kernel/vdso.c                  |  2 +-
+ arch/mips/kernel/process.c                    |  2 +-
+ arch/mips/kernel/vdso.c                       |  2 +-
+ arch/parisc/kernel/process.c                  |  2 +-
+ arch/parisc/kernel/sys_parisc.c               |  4 +-
+ arch/parisc/kernel/vdso.c                     |  2 +-
+ arch/powerpc/crypto/crc-vpmsum_test.c         |  2 +-
+ arch/powerpc/kernel/process.c                 |  2 +-
+ arch/s390/kernel/process.c                    |  4 +-
+ arch/s390/kernel/vdso.c                       |  2 +-
+ arch/s390/mm/mmap.c                           |  2 +-
+ arch/sparc/vdso/vma.c                         |  2 +-
+ arch/um/kernel/process.c                      |  2 +-
+ arch/x86/entry/vdso/vma.c                     |  2 +-
+ arch/x86/kernel/cpu/amd.c                     |  2 +-
+ arch/x86/kernel/module.c                      |  2 +-
+ arch/x86/kernel/process.c                     |  2 +-
+ arch/x86/mm/pat/cpa-test.c                    |  4 +-
+ block/blk-crypto-fallback.c                   |  2 +-
+ crypto/async_tx/raid6test.c                   |  2 +-
+ crypto/testmgr.c                              | 94 +++++++++----------
+ drivers/block/drbd/drbd_receiver.c            |  4 +-
+ drivers/char/random.c                         | 11 +--
+ drivers/dma/dmatest.c                         |  2 +-
+ .../gpu/drm/i915/gem/i915_gem_execbuffer.c    |  2 +-
+ drivers/gpu/drm/i915/i915_gem_gtt.c           |  6 +-
+ .../gpu/drm/i915/selftests/i915_selftest.c    |  2 +-
+ drivers/gpu/drm/selftests/test-drm_buddy.c    |  2 +-
+ drivers/gpu/drm/selftests/test-drm_mm.c       |  2 +-
+ drivers/infiniband/core/cma.c                 |  2 +-
+ drivers/infiniband/hw/cxgb4/cm.c              |  4 +-
+ drivers/infiniband/hw/cxgb4/id_table.c        |  4 +-
+ drivers/infiniband/hw/hfi1/tid_rdma.c         |  2 +-
+ drivers/infiniband/hw/hns/hns_roce_ah.c       |  5 +-
+ drivers/infiniband/hw/mlx4/mad.c              |  2 +-
+ drivers/infiniband/ulp/ipoib/ipoib_cm.c       |  2 +-
+ drivers/infiniband/ulp/rtrs/rtrs-clt.c        |  3 +-
+ drivers/md/bcache/request.c                   |  2 +-
+ drivers/md/raid5-cache.c                      |  2 +-
+ drivers/media/common/v4l2-tpg/v4l2-tpg-core.c |  2 +-
+ .../media/test-drivers/vivid/vivid-radio-rx.c |  4 +-
+ .../test-drivers/vivid/vivid-touch-cap.c      |  6 +-
+ drivers/misc/habanalabs/gaudi2/gaudi2.c       |  2 +-
+ drivers/mmc/core/core.c                       |  4 +-
+ drivers/mmc/host/dw_mmc.c                     |  2 +-
+ drivers/mtd/nand/raw/nandsim.c                |  8 +-
+ drivers/mtd/tests/mtd_nandecctest.c           | 12 +--
+ drivers/mtd/tests/speedtest.c                 |  2 +-
+ drivers/mtd/tests/stresstest.c                | 19 +---
+ drivers/mtd/ubi/debug.c                       |  2 +-
+ drivers/mtd/ubi/debug.h                       |  6 +-
+ drivers/net/bonding/bond_main.c               |  2 +-
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c     |  2 +-
+ drivers/net/ethernet/broadcom/cnic.c          |  5 +-
+ .../chelsio/inline_crypto/chtls/chtls_cm.c    |  4 +-
+ .../chelsio/inline_crypto/chtls/chtls_io.c    |  4 +-
+ drivers/net/ethernet/rocker/rocker_main.c     |  8 +-
+ drivers/net/hamradio/baycom_epp.c             |  2 +-
+ drivers/net/hamradio/hdlcdrv.c                |  2 +-
+ drivers/net/hamradio/yam.c                    |  2 +-
+ drivers/net/phy/at803x.c                      |  2 +-
+ drivers/net/wireguard/selftest/allowedips.c   | 16 ++--
+ .../broadcom/brcm80211/brcmfmac/p2p.c         |  2 +-
+ .../broadcom/brcm80211/brcmfmac/pno.c         |  2 +-
+ .../net/wireless/intel/iwlwifi/mvm/mac-ctxt.c |  2 +-
+ .../net/wireless/marvell/mwifiex/cfg80211.c   |  4 +-
+ .../wireless/microchip/wilc1000/cfg80211.c    |  2 +-
+ .../net/wireless/quantenna/qtnfmac/cfg80211.c |  2 +-
+ drivers/net/wireless/st/cw1200/wsm.c          |  2 +-
+ drivers/net/wireless/ti/wlcore/main.c         |  2 +-
+ drivers/nvme/common/auth.c                    |  2 +-
+ drivers/scsi/cxgbi/cxgb4i/cxgb4i.c            |  4 +-
+ drivers/scsi/fcoe/fcoe_ctlr.c                 |  4 +-
+ drivers/scsi/lpfc/lpfc_hbadisc.c              |  6 +-
+ drivers/scsi/qedi/qedi_main.c                 |  2 +-
+ drivers/target/iscsi/cxgbit/cxgbit_cm.c       |  2 +-
+ drivers/thunderbolt/xdomain.c                 |  2 +-
+ drivers/video/fbdev/uvesafb.c                 |  2 +-
+ fs/ceph/inode.c                               |  2 +-
+ fs/ceph/mdsmap.c                              |  2 +-
+ fs/exfat/inode.c                              |  2 +-
+ fs/ext2/ialloc.c                              |  3 +-
+ fs/ext4/ialloc.c                              |  7 +-
+ fs/ext4/ioctl.c                               |  4 +-
+ fs/ext4/mmp.c                                 |  2 +-
+ fs/ext4/super.c                               |  7 +-
+ fs/f2fs/gc.c                                  |  2 +-
+ fs/f2fs/namei.c                               |  2 +-
+ fs/f2fs/segment.c                             |  8 +-
+ fs/fat/inode.c                                |  2 +-
+ fs/nfsd/nfs4state.c                           |  4 +-
+ fs/ntfs3/fslog.c                              |  6 +-
+ fs/ubifs/debug.c                              | 10 +-
+ fs/ubifs/journal.c                            |  2 +-
+ fs/ubifs/lpt_commit.c                         | 14 +--
+ fs/ubifs/tnc_commit.c                         |  2 +-
+ fs/xfs/libxfs/xfs_alloc.c                     |  2 +-
+ fs/xfs/libxfs/xfs_ialloc.c                    |  4 +-
+ fs/xfs/xfs_error.c                            |  2 +-
+ fs/xfs/xfs_icache.c                           |  2 +-
+ fs/xfs/xfs_log.c                              |  2 +-
+ include/linux/nodemask.h                      |  2 +-
+ include/linux/prandom.h                       | 12 ---
+ include/linux/random.h                        |  5 -
+ include/net/netfilter/nf_queue.h              |  2 +-
+ include/net/red.h                             |  2 +-
+ include/net/sock.h                            |  2 +-
+ kernel/bpf/bloom_filter.c                     |  2 +-
+ kernel/bpf/core.c                             |  6 +-
+ kernel/bpf/hashtab.c                          |  2 +-
+ kernel/bpf/verifier.c                         |  2 +-
+ kernel/kcsan/selftest.c                       |  4 +-
+ kernel/locking/test-ww_mutex.c                |  4 +-
+ kernel/time/clocksource.c                     |  2 +-
+ lib/cmdline_kunit.c                           |  4 +-
+ lib/fault-inject.c                            |  2 +-
+ lib/find_bit_benchmark.c                      |  4 +-
+ lib/kobject.c                                 |  2 +-
+ lib/random32.c                                |  4 +-
+ lib/reed_solomon/test_rslib.c                 | 12 +--
+ lib/sbitmap.c                                 |  4 +-
+ lib/test-string_helpers.c                     |  2 +-
+ lib/test_fprobe.c                             |  2 +-
+ lib/test_hexdump.c                            | 10 +-
+ lib/test_kasan.c                              |  6 +-
+ lib/test_kprobes.c                            |  2 +-
+ lib/test_list_sort.c                          |  2 +-
+ lib/test_min_heap.c                           |  6 +-
+ lib/test_objagg.c                             |  2 +-
+ lib/test_rhashtable.c                         |  6 +-
+ lib/test_vmalloc.c                            | 19 +---
+ lib/uuid.c                                    |  2 +-
+ mm/migrate.c                                  |  2 +-
+ mm/shmem.c                                    |  2 +-
+ mm/slab.c                                     |  2 +-
+ mm/slub.c                                     |  2 +-
+ net/802/garp.c                                |  2 +-
+ net/802/mrp.c                                 |  2 +-
+ net/ceph/mon_client.c                         |  2 +-
+ net/ceph/osd_client.c                         |  2 +-
+ net/core/neighbour.c                          |  2 +-
+ net/core/pktgen.c                             | 47 +++++-----
+ net/core/stream.c                             |  2 +-
+ net/dccp/ipv4.c                               |  4 +-
+ net/ipv4/datagram.c                           |  2 +-
+ net/ipv4/igmp.c                               |  6 +-
+ net/ipv4/inet_connection_sock.c               |  2 +-
+ net/ipv4/inet_hashtables.c                    |  2 +-
+ net/ipv4/ip_output.c                          |  2 +-
+ net/ipv4/route.c                              |  4 +-
+ net/ipv4/tcp_cdg.c                            |  2 +-
+ net/ipv4/tcp_ipv4.c                           |  4 +-
+ net/ipv4/udp.c                                |  2 +-
+ net/ipv6/addrconf.c                           |  8 +-
+ net/ipv6/ip6_flowlabel.c                      |  2 +-
+ net/ipv6/mcast.c                              | 10 +-
+ net/ipv6/output_core.c                        |  2 +-
+ net/mac80211/rc80211_minstrel_ht.c            |  2 +-
+ net/mac80211/scan.c                           |  2 +-
+ net/netfilter/ipvs/ip_vs_conn.c               |  2 +-
+ net/netfilter/ipvs/ip_vs_twos.c               |  4 +-
+ net/netfilter/nf_nat_core.c                   |  4 +-
+ net/netfilter/xt_statistic.c                  |  2 +-
+ net/openvswitch/actions.c                     |  2 +-
+ net/packet/af_packet.c                        |  2 +-
+ net/rds/bind.c                                |  2 +-
+ net/sched/act_gact.c                          |  2 +-
+ net/sched/act_sample.c                        |  2 +-
+ net/sched/sch_cake.c                          |  8 +-
+ net/sched/sch_netem.c                         | 22 ++---
+ net/sched/sch_pie.c                           |  2 +-
+ net/sched/sch_sfb.c                           |  2 +-
+ net/sctp/socket.c                             |  4 +-
+ net/sunrpc/auth_gss/gss_krb5_wrap.c           |  4 +-
+ net/sunrpc/cache.c                            |  2 +-
+ net/sunrpc/xprt.c                             |  2 +-
+ net/sunrpc/xprtsock.c                         |  2 +-
+ net/tipc/socket.c                             |  2 +-
+ net/unix/af_unix.c                            |  2 +-
+ net/xfrm/xfrm_state.c                         |  2 +-
+ 186 files changed, 379 insertions(+), 422 deletions(-)
+
+-- 
+2.37.3
+
