@@ -1,131 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6188C5F7166
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Oct 2022 00:50:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AB4D5F7167
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Oct 2022 00:50:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Mk68X1N2Bz3dyY
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Oct 2022 09:50:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Mk69Y3hW0z3f8m
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Oct 2022 09:50:57 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=KWPR9kmI;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=POjrwExN;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=40.107.12.40; helo=fra01-pr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=srs0=tiop=2h=zx2c4.com=jason@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=KWPR9kmI;
+	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=POjrwExN;
 	dkim-atps=neutral
-Received: from FRA01-PR2-obe.outbound.protection.outlook.com (mail-eopbgr120040.outbound.protection.outlook.com [40.107.12.40])
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mjyv90flqz3c6D
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Oct 2022 04:23:00 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=age+G8iNIrVuEPOWbvb64N1s1USQwpQYHDphwTRYsk7f049KgAOO1CMxm4ATg/h6weCOn+Cch+cjG6aomqJCIrQ+VxvLQy9U2+qa1gX9LjsHKJKUI85NOkQoY7DfwcjGsxJ/tnNSbWj5g+zKuzpasAkQ2fJydPt7Qy6NH7ZFTMi4Rx2FyuJj7lUM55sOHx0g6wXXREUciyLu2hy6G0yOmrJJBulk28l0IB1yNcjNwNrRteOjGWocmSS5uVRAVzjXEkQT/YMi6cnKMAEZ9scUkH+xTp0WbK+3AFM2K1lOm70Zy10VIKgP788NzHFNcmphvrjNkmv5daS6s7sVtDoH9w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JEJ0X/HXgPcxrMfMufxKj+fUp6CJ4LGRqrwHihOttYA=;
- b=fmxfi2VsHrRf06I5XmIHvbcleiPcvX9xEIk7hk6RL094aW53m2G4QNcazT5IGEg4rk7G5IEVp3HgMEqw5dkNtnwEakokhJThToRlO+SlABDLeahGu2FYtE7FEO/GhgQZC8R1/Mm7XZTaseKj/yp5d5v95QTv5N5ICqV45PC8VDXuf9RZTms2kXiNRR/16NASEpzFw2x7xsVDwK3X+x/r0pHAUwDkf65ALopvVOTh1Kl20LT1PVxQ8MheAyBArLS/fx1N2RNd72WDafDgsZ6uv4KChOeOPrToSTiOwY7m1zvgWTtyZYrYqWVxzEEOrWdJpK9g8bVzJoC07qsp5TxDGg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JEJ0X/HXgPcxrMfMufxKj+fUp6CJ4LGRqrwHihOttYA=;
- b=KWPR9kmIvYrHOZR51enOBwSPam3mbYt06ZdSdr+fxLNhgcRYHFL6dlE/0HWfVYZ0ANwa2+IkVRIaKHjz8DOcqF0bZLKqZDOXzJ15Kac2whc++sQcqL4e34HoyQiCvgEohcbq4h/W2YfeL/s3LOy5Br3V4KjUCStapAEzmWaXOSVG+v/66SyNivqDxcX0vV/vnOrHAoUAL7lKVhjszgZDu2tA2a5KdAaSy3rnkI9KJ+9Mh16EKoyVaLLDZji4zPdTGP1RxKXQYdu7s59bHgWBSasS98QcOOWkJnkvnz7wp6XctpG1NbYX2/K35u5AJD+KauXRuXyZlPTq0gK0+/FBDg==
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by PR0P264MB2471.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:1e2::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5676.39; Thu, 6 Oct
- 2022 17:22:41 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::c854:380d:c901:45af]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::c854:380d:c901:45af%5]) with mapi id 15.20.5676.036; Thu, 6 Oct 2022
- 17:22:41 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: "Jason A. Donenfeld" <Jason@zx2c4.com>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "patches@lists.linux.dev"
-	<patches@lists.linux.dev>
-Subject: Re: [PATCH v3 4/5] treewide: use get_random_bytes when possible
-Thread-Topic: [PATCH v3 4/5] treewide: use get_random_bytes when possible
-Thread-Index: AQHY2aROlLqkBYztHUmTuAtdwYDXna4BnTAA
-Date: Thu, 6 Oct 2022 17:22:41 +0000
-Message-ID: <0eea033d-7018-c777-f3e8-2239916aed9b@csgroup.eu>
-References: <20221006165346.73159-1-Jason@zx2c4.com>
- <20221006165346.73159-5-Jason@zx2c4.com>
-In-Reply-To: <20221006165346.73159-5-Jason@zx2c4.com>
-Accept-Language: fr-FR, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.1
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MRZP264MB2988:EE_|PR0P264MB2471:EE_
-x-ms-office365-filtering-correlation-id: e2a27763-3ea2-4f5b-fdf4-08daa7bf5fbe
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  20r9Tx2pwuKezrfaWAbS82QYH8y7YVUeqQPOOI+bDEW8wTwryUJNqpp3xxMSnSjyNuIMQHothQsS7OsbwdxyN+OUMd6+xb/PATGsFKK4hxGhgvPt/AaYARMTFSRs+z9sOR5wJkY6jxnhzPyKe03cQZgvbw1ld+Hm/7aw0l9mhkA2mWhPD/pEEB3ppP7pVThHWxkB9E6n93DvgoSPqyi41EsXru5E85TK0qSdMqxV097wftKe/yd0agul3Pb/VH08M6qD3DX0wrYXm6HcAT6bs6EInM78nJE6wwWMac2JE1fnxYKH/Nq6ZQiypcRMeD8IayogbpYf1HVplqEfx9fogQG9whNChKSEX2TUGZFomY/j4VXqWYma13u/GVYQJmKBIYy0UR5Exa4epINzX0TIQXq4JgWyuPjR/nn5/an/q+Juw790UVQTv2eg1iaHjr0J6R7M+hxdLpJJ0a/xbh4jmNkSXRmcucY0lg9HxCWaX+1VxWDAoSY5bcOsNp005aZMSb46MC6fZyD4M5Xew0dun+LGfI7E0eBZF30z/Laz6oYr2NbfGVBUxAMoDuTazm3O6kdw0+9BCUQqDwZZgAtYo6tuE8GMQauG0/88bIBIyOFFn0kFCiouz0kLoK9WSLM09y55W2XXKPSRk+Yqt4FgpT3WCWZquCwVreH6YelVcjYTeM6OiJMWI+FIpATLQTeyf4s2XHK6iTbG0wz6KNucERq1HG7u08FnEbs+qbtN8lSDCd9hIErZ9IU0JEQWqEWgAHIF5KBiaM0zFqblqywltlsjBSWARMksHekBcnyxZpOHJvMUL/Qz+r/xhj7M1FBxOTazuGrmiYBPbZUmdcslUQ==
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230022)(4636009)(346002)(136003)(376002)(396003)(366004)(39860400002)(451199015)(83380400001)(186003)(2616005)(31696002)(38100700002)(38070700005)(66574015)(122000001)(4744005)(44832011)(7336002)(7366002)(7406005)(7416002)(2906002)(41300700001)(5660300002)(8936002)(6486002)(478600001)(26005)(6512007)(6506007)(8676002)(4326008)(64756008)(66476007)(66556008)(66946007)(76116006)(71200400001)(91956017)(316002)(54906003)(110136005)(86362001)(66446008)(36756003)(31686004)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?UnVzTlhtSTZPNE9wZ05ERFgwcGFIY0l6bXNKZGJqOVpGRjRDS1dua05SRmZh?=
- =?utf-8?B?UDE1UTQyTmpuUjk2VFJiYTYzc0pRN3hlSGpkK2t4ZGZMM0pPOEE1TmNpVFFa?=
- =?utf-8?B?S0FBL1d2dW1vK1NKR3VtbmZxQiswTUxXdFpBM2pjcHJJSGF4VlBUVlhmaWg4?=
- =?utf-8?B?WWE0Q244dWE2MndBRWRaSU01V0M5bG81Wis5SlJIcUJoTTFVSkN0RHk5cy83?=
- =?utf-8?B?QXFrNVovU2dmT3lza2tFaERZaHo5VTRrTkJoOVg4ODN6eUsxWGFpSDdkZnZM?=
- =?utf-8?B?MmQrTFBOaXNsbnpQVXEweUxEd2pjSzRlVUFrVGNLN3MzajJDbmwwZ2Y0dEtF?=
- =?utf-8?B?QmtOSkZqamZWcjk1RFM3RXUrWTBNN2NpVjAyNm5razRCNDVPZW8rbkgrdklF?=
- =?utf-8?B?anVqWkpDSklhMVpVd0htQXBZNFJtdDloU1dhaDg4cDEyTGcvZUpjaksxbzlR?=
- =?utf-8?B?RDNHV2NZSnZXNzFvcnN5WkVIT285cElNK0QyNitjLzFhaDBsWWZWOXVwV2E0?=
- =?utf-8?B?VGZvajNEbWNwZjlleG4zRmVhSmMzaWhzcFZsT0ZhTHlhbEJoK1lFT0VVVU90?=
- =?utf-8?B?MFlGcDZoVVNMN01GMG5NaFRYTUFGR2hieU5hMnlDZjllMDQvZlN4U01uSWlV?=
- =?utf-8?B?NHMva3h3SmgxcTRZZkxMUmx0YnZKRzJCZGloSUFQMVZqZ0JERzhxN3l1d0Rw?=
- =?utf-8?B?ZUpYdGZlWkoxcjNIUDJaQ3Rocms5NDB4SjIvWEVxOElROUlhZGRsQmJwaWgv?=
- =?utf-8?B?YkhRV2ZKSTUrQ0x3ajFFVWR0eUdJZnNjYU0rMmdSUVZqRFZpQTVjb3ZwaDJN?=
- =?utf-8?B?TUx0YnpjaG5kVmNKcVZhclIxcUhySVlzdCtkdzQvdWFOTVBva3d3Z2htbVZw?=
- =?utf-8?B?QzdGMExMVkZEUG9EYU0vWU9SekNqTFpVNTlTb3d6TVhwLzJmQWRucEhUY3I1?=
- =?utf-8?B?aDFqUDZlMkdSckdpYUJscy92K0x1UUhqY0dBZWhIdWdCS2hFN3RxdEJ3TE9U?=
- =?utf-8?B?bXd4azFpUXRzVVJRUGNYTnlJdGpEQ2Q1RVNkVkg4MHBnYlFodUNnZk85ekZV?=
- =?utf-8?B?NGVmUCtUYnFPeHBQM1NpOUJEZHBEb2pvaEJwZFVoVUYxQklwQyt4YkUvUUJn?=
- =?utf-8?B?VTNPdURMRXZ4cWZQa1Y3dloxSjBnZkNDdGFBYm9ka3FOeENaQThQbDNWbWUw?=
- =?utf-8?B?U2RXRmtpUmZ1Tk8yMk8wbmRMVjV6b01PNjdYVndsb25ub1BpN2pQdTF3Z3pw?=
- =?utf-8?B?K1FrVnhrazM1L0pwVWNHSUt1TWN3Z1UxVWFzR3lJYVZsZ3ZnR3Fnb0dPbDFZ?=
- =?utf-8?B?Z3RpUHVlL0JOV2FBK0VtdU9BZmgwNkZuRGRHZk8xL01GeWpSd2JJWDNWRzNY?=
- =?utf-8?B?M0NKV21nbjd2RzlPNXk4UHBXeG9jbGgveDdsL2FCckJvSjluY3pCSktPSzZX?=
- =?utf-8?B?RlBPcWErb3BibXFMRGEraFlyMlRwZUtvb2NpV1MwcmEweTVsVWppRGxJdy9h?=
- =?utf-8?B?TFB5LzlmN1R3YlozMUtlTDdwYm5JeWl4eTVabGR6MURQY0xtdUJJbm5mVFBW?=
- =?utf-8?B?dGs1RUFNcGRaSk83Zkw1MXorVjBuazc5WkVyd0JrSHBxcDZjcVpsQ1V4L29W?=
- =?utf-8?B?S0FNOTFDWUFPVElGUWRMU25LVCtsQVNyU0RDbnJvK2x5RlMxNVRaSnpqWjFT?=
- =?utf-8?B?ekJBdmw3bjlzMGVockJaRjVkRFEzeXVxai9td1pPb1d0RUFMU09vNFpNdjR6?=
- =?utf-8?B?TXB6aUhlSFdxVm1CRFh2ckRiR3J2cWxTaDg5ODlMa09sZnBkclZGWUhKakQ5?=
- =?utf-8?B?Y1h0TVZpVU9Sa3pUd2pIdnhOUGNiNnZFY0w2ZjI1THpRVzQ4YUpJWjhGT2F6?=
- =?utf-8?B?TW9hWnppSzIwYmNnelE0a2E3SnZ2K1FWQVd4OGpXeWh2bWJ5c1lvTGVybnc4?=
- =?utf-8?B?K01MbG1qbUM3N1ZhMnZsSHp2cUVWYTd1TXVOT09DMFFJc09JamN2amlxc2ZN?=
- =?utf-8?B?MmhCSzBZQmo3Q0lKdVUrZ1pRNmFNdi9PUTVPRVBnQzFYYmZvT0J0SGh2dGVp?=
- =?utf-8?B?OHRqSDUvQWtycnFFVXp4TnBnMWYySkhqUGdnNjlGY0dIS055T2NGL2UrZERI?=
- =?utf-8?B?cDlSbjAxdUNLQWUxSmNyRmV2K2ZMRyt0RDB1VjRhTnlKbVpFNis2bUZuUGNo?=
- =?utf-8?Q?pqY6jRBVOR0sNVmTO6IUDJw=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <944C3E8CB2B01D44B74BB4038DDFEDBA@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MjyxJ5K7Wz2xb4
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Oct 2022 04:24:52 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 2ADE9B8210B
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Oct 2022 17:24:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B96F0C43470
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Oct 2022 17:24:47 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="POjrwExN"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+	t=1665077083;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hw+hnIMvKUNp0lwyCAgNJh72KYkKEhg87FRQTBs88Es=;
+	b=POjrwExNl+YXOaE1lio2t2OoJfp8Pmah83jSwtmwy+a2nmIcgGjbJmUmksnkg0epw22VVq
+	tGGHYs/cXqxakaG1JY+AKcIhkDIqLD1VU/xPH1+NYYAgl3bbbwTmxU3VYrpCk1M4Y+6MDS
+	6kdK5f+OZLONIyv9rAEIsa1XZ5KZlTQ=
+Received: 	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id de81d11b (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO)
+	for <linuxppc-dev@lists.ozlabs.org>;
+	Thu, 6 Oct 2022 17:24:42 +0000 (UTC)
+Received: by mail-oo1-f44.google.com with SMTP id q70-20020a4a3349000000b0047f9951ad3aso1337592ooq.7
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Oct 2022 10:24:41 -0700 (PDT)
+X-Gm-Message-State: ACrzQf3qbWyVEczI7hGZZPINencpV5VeWVmpuOrDhLYUHVp66iVQc4Tr
+	P50CJl8SzzXF6seLciHPEaWlDcKktVbttRXH1tI=
+X-Google-Smtp-Source: AMsMyM5KG2gwBNORWG5lbntrblDeF/IiEaNCtjq1xHSusLtpHfgrAAJFtzxp/82W985F9k39J/OxSFTwH+6dW+Mrfqw=
+X-Received: by 2002:ab0:6cb0:0:b0:3d7:1184:847f with SMTP id
+ j16-20020ab06cb0000000b003d71184847fmr777504uaa.49.1665077067240; Thu, 06 Oct
+ 2022 10:24:27 -0700 (PDT)
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: e2a27763-3ea2-4f5b-fdf4-08daa7bf5fbe
-X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Oct 2022 17:22:41.3134
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: pTHm9BWHosgLsHe/r9X0INoJ+/FB5Kooii7fNm9KKWGwNrY4ZYq2KxYscZa7ptaYPFNiL9EevIzry/WEHTlBENklIU57c8mwdJeGgS2nL3E=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR0P264MB2471
+References: <20221006165346.73159-1-Jason@zx2c4.com> <20221006165346.73159-4-Jason@zx2c4.com>
+ <848ed24c-13ef-6c38-fd13-639b33809194@csgroup.eu>
+In-Reply-To: <848ed24c-13ef-6c38-fd13-639b33809194@csgroup.eu>
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Date: Thu, 6 Oct 2022 11:24:16 -0600
+X-Gmail-Original-Message-ID: <CAHmME9raQ4E00r9r8NyWJ17iSXE_KniTG0onCNAfMmfcGar1eg@mail.gmail.com>
+Message-ID: <CAHmME9raQ4E00r9r8NyWJ17iSXE_KniTG0onCNAfMmfcGar1eg@mail.gmail.com>
+Subject: Re: [PATCH v3 3/5] treewide: use get_random_u32() when possible
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Mailman-Approved-At: Fri, 07 Oct 2022 09:35:18 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -138,29 +75,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>, "x86@kernel.org" <x86@kernel.org>, Vignesh Raghavendra <vigneshr@ti.com>, "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>, KP Singh <kpsingh@kernel.org>, "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, Eric Dumazet <edumazet@google.com>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>, "H . Peter
- Anvin" <hpa@zytor.com>, Andreas Noever <andreas.noever@gmail.com>, WANG Xuerui <kernel@xen0n.name>, Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>, "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>, Daniel Borkmann <daniel@iogearbox.net>, Jonathan Corbet <corbet@lwn.net>, "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Hugh Dickins <hughd@google.com>, Russell King <linux@armlinux.org.uk>, "kasan-dev@googlegroups.com" <kasan-dev@googlegroups.com>, Jozsef Kadlecsik <kadlec@netfilter.org>, Jason Gunthorpe <jgg@ziepe.ca>, Dave Airlie <airlied@redhat.com>, Paolo Abeni <pabeni@redhat.com>, "James E . J . Bottomley" <jejb@linux.ibm.com>, Pablo Neira Ayuso <pablo@netfilter.org>, "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>, Marco Elve
- r <elver@google.com>, Kees Cook <keescook@chromium.org>, Yury Norov <yury.norov@gmail.com>, Heiko Carstens <hca@linux.ibm.com>, "linux-um@lists.infradead.org" <linux-um@lists.infradead.org>, "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>, Richard Weinberger <richard@nod.at>, Borislav Petkov <bp@alien8.de>, "linux-nvme@lists.infradead.org" <linux-nvme@lists.infradead.org>, "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, Jakub Kicinski <kuba@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Johannes Berg <johannes@sipsolutions.net>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, Jens Axboe <axboe@kernel.dk>, "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Theodore Ts'o <tytso@mit.edu>, "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "linux-usb@vger.kernel.org
- " <linux-usb@vger.kernel.org>, Florian Westphal <fw@strlen.de>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, =?utf-8?B?Q2hyaXN0b3BoIELDtmhtd2FsZGVy?= <christoph.boehmwalder@linbit.com>, "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>, Jan Kara <jack@suse.com>, Thomas Graf <tgraf@suug.ch>, "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "David S . Miller" <davem@davemloft.net>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>, "x86@kernel.org" <x86@kernel.org>, Jan Kara <jack@suse.cz>, Vignesh Raghavendra <vigneshr@ti.com>, "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>, KP Singh <kpsingh@kernel.org>, "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>, "patches@lists.linux.dev" <patches@lists.linux.dev>, "linux-mm@kvack.org" <linux-mm@kvack.org>, Eric Dumazet <edumazet@google.com>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>, "H . Peter Anvin" <hpa@zytor.com>, Andreas Noever <andreas.noever@gmail.com>, WANG Xuerui <kernel@xen0n.name>, Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>, "linux-s390@vger.
+ kernel.org" <linux-s390@vger.kernel.org>, "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>, Daniel Borkmann <daniel@iogearbox.net>, Jonathan Corbet <corbet@lwn.net>, "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Hugh Dickins <hughd@google.com>, Russell King <linux@armlinux.org.uk>, "kasan-dev@googlegroups.com" <kasan-dev@googlegroups.com>, Jozsef Kadlecsik <kadlec@netfilter.org>, Jason Gunthorpe <jgg@ziepe.ca>, Dave Airlie <airlied@redhat.com>, Paolo Abeni <pabeni@redhat.com>, "James E . J . Bottomley" <jejb@linux.ibm.com>, Pablo Neira Ayuso <pablo@netfilter.org>, "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>, Marco Elver <elver@google.com>, Kees Cook <keescook@chromium.org>, Yury Norov <yury.norov@gmail.com>, Heiko Carstens <hca@linux.ibm.com>, =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@t
+ oke.dk>, "linux-um@lists.infradead.org" <linux-um@lists.infradead.org>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>, Richard Weinberger <richard@nod.at>, Borislav Petkov <bp@alien8.de>, "linux-nvme@lists.infradead.org" <linux-nvme@lists.infradead.org>, "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, Jakub Kicinski <kuba@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Johannes Berg <johannes@sipsolutions.net>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, Jens Axboe <axboe@kernel.dk>, "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Theodore Ts'o <tytso@mit.edu>, "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>, Florian Westphal <fw@strlen.d
+ e>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, =?UTF-8?Q?Christoph_B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>, Chuck Lever <chuck.lever@oracle.com>, "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>, Jan Kara <jack@suse.com>, Thomas Graf <tgraf@suug.ch>, "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCkxlIDA2LzEwLzIwMjIgw6AgMTg6NTMsIEphc29uIEEuIERvbmVuZmVsZCBhIMOpY3JpdMKg
-Og0KPiBUaGUgcHJhbmRvbV9ieXRlcygpIGZ1bmN0aW9uIGhhcyBiZWVuIGEgZGVwcmVjYXRlZCBp
-bmxpbmUgd3JhcHBlciBhcm91bmQNCj4gZ2V0X3JhbmRvbV9ieXRlcygpIGZvciBzZXZlcmFsIHJl
-bGVhc2VzIG5vdywgYW5kIGNvbXBpbGVzIGRvd24gdG8gdGhlDQo+IGV4YWN0IHNhbWUgY29kZS4g
-UmVwbGFjZSB0aGUgZGVwcmVjYXRlZCB3cmFwcGVyIHdpdGggYSBkaXJlY3QgY2FsbCB0bw0KPiB0
-aGUgcmVhbCBmdW5jdGlvbi4NCj4gDQo+IFJldmlld2VkLWJ5OiBLZWVzIENvb2sgPGtlZXNjb29r
-QGNocm9taXVtLm9yZz4NCj4gU2lnbmVkLW9mZi1ieTogSmFzb24gQS4gRG9uZW5mZWxkIDxKYXNv
-bkB6eDJjNC5jb20+DQoNClJldmlld2VkLWJ5OiBDaHJpc3RvcGhlIExlcm95IDxjaHJpc3RvcGhl
-Lmxlcm95QGNzZ3JvdXAuZXU+IChQb3dlcnBjIHBhcnQpDQoNCj4gLS0tDQo+ICAgYXJjaC9wb3dl
-cnBjL2NyeXB0by9jcmMtdnBtc3VtX3Rlc3QuYyAgICAgICB8ICAyICstDQo+IA0KPiBkaWZmIC0t
-Z2l0IGEvYXJjaC9wb3dlcnBjL2NyeXB0by9jcmMtdnBtc3VtX3Rlc3QuYyBiL2FyY2gvcG93ZXJw
-Yy9jcnlwdG8vY3JjLXZwbXN1bV90ZXN0LmMNCj4gaW5kZXggYzFjMWVmOTQ1N2ZiLi4yNzNjNTI3
-ODY4ZGIgMTAwNjQ0DQo+IC0tLSBhL2FyY2gvcG93ZXJwYy9jcnlwdG8vY3JjLXZwbXN1bV90ZXN0
-LmMNCj4gKysrIGIvYXJjaC9wb3dlcnBjL2NyeXB0by9jcmMtdnBtc3VtX3Rlc3QuYw0KPiBAQCAt
-ODIsNyArODIsNyBAQCBzdGF0aWMgaW50IF9faW5pdCBjcmNfdGVzdF9pbml0KHZvaWQpDQo+ICAg
-DQo+ICAgCQkJaWYgKGxlbiA8PSBvZmZzZXQpDQo+ICAgCQkJCWNvbnRpbnVlOw0KPiAtCQkJcHJh
-bmRvbV9ieXRlcyhkYXRhLCBsZW4pOw0KPiArCQkJZ2V0X3JhbmRvbV9ieXRlcyhkYXRhLCBsZW4p
-Ow0KPiAgIAkJCWxlbiAtPSBvZmZzZXQ7DQo+ICAgDQo+ICAgCQkJY3J5cHRvX3NoYXNoX3VwZGF0
-ZShjcmN0MTBkaWZfc2hhc2gsIGRhdGErb2Zmc2V0LCBsZW4pOw==
+Hi Christophe,
+
+On Thu, Oct 6, 2022 at 11:21 AM Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
+> Le 06/10/2022 =C3=A0 18:53, Jason A. Donenfeld a =C3=A9crit :
+> > The prandom_u32() function has been a deprecated inline wrapper around
+> > get_random_u32() for several releases now, and compiles down to the
+> > exact same code. Replace the deprecated wrapper with a direct call to
+> > the real function. The same also applies to get_random_int(), which is
+> > just a wrapper around get_random_u32().
+> >
+> > Reviewed-by: Kees Cook <keescook@chromium.org>
+> > Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk> # for sch_cak=
+e
+> > Acked-by: Chuck Lever <chuck.lever@oracle.com> # for nfsd
+> > Reviewed-by: Jan Kara <jack@suse.cz> # for ext4
+> > Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+> > ---
+>
+> > diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/proces=
+s.c
+> > index 0fbda89cd1bb..9c4c15afbbe8 100644
+> > --- a/arch/powerpc/kernel/process.c
+> > +++ b/arch/powerpc/kernel/process.c
+> > @@ -2308,6 +2308,6 @@ void notrace __ppc64_runlatch_off(void)
+> >   unsigned long arch_align_stack(unsigned long sp)
+> >   {
+> >       if (!(current->personality & ADDR_NO_RANDOMIZE) && randomize_va_s=
+pace)
+> > -             sp -=3D get_random_int() & ~PAGE_MASK;
+> > +             sp -=3D get_random_u32() & ~PAGE_MASK;
+> >       return sp & ~0xf;
+>
+> Isn't that a candidate for prandom_u32_max() ?
+>
+> Note that sp is deemed to be 16 bytes aligned at all time.
+
+Yes, probably. It seemed non-trivial to think about, so I didn't. But
+let's see here... maybe it's not too bad:
+
+If PAGE_MASK is always ~(PAGE_SIZE-1), then ~PAGE_MASK is
+(PAGE_SIZE-1), so prandom_u32_max(PAGE_SIZE) should yield the same
+thing? Is that accurate? And holds across platforms (this comes up a
+few places)? If so, I'll do that for a v4.
+
+Jason
