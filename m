@@ -2,75 +2,97 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06B985F627C
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Oct 2022 10:23:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FFD15F628F
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Oct 2022 10:26:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MjkwT4P8Lz3cBS
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Oct 2022 19:23:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Mjkzk0wpmz3dqX
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Oct 2022 19:26:10 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=nZNDQt8F;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bQaJ2FUT;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::431; helo=mail-pf1-x431.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=nZNDQt8F;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bQaJ2FUT;
 	dkim-atps=neutral
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MjkvY74NMz30MT
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Oct 2022 19:22:33 +1100 (AEDT)
-Received: by mail-pf1-x431.google.com with SMTP id y136so1419995pfb.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Oct 2022 01:22:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:references:to:from:subject:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date;
-        bh=psS2jEDaZwmPQ2PvVHmqLj5KAvqnRM6VGDvy2GUYEB8=;
-        b=nZNDQt8FFOaQZBJAhl4+Y9EvUgt0VTHY5b0wwvpA8576/ZfC5AAhni3GG6aJWk6dS1
-         vfqqaoHJee64KwuZNv6lOP0mEMQ1U03FoVX+4do7oTLGgpNJXP3kRcBb8bF7LUAvbkA2
-         uyCmk8XqTAbo09gkHUEnNy07ASJSagC99gyq7xzk9SwUtUuoBYS07B6TfneoeJSqmOb2
-         7WYUApRxCbBlDB1d01wLBUvjHPOUJ/gmxBV2eOJnPEDJZ8NpgVDked/QZQSCfdt4Ikkd
-         ZRN50QnLPS++MUU+dRQX3j7o9aLxv4sp3bbDITYjxeVOwgCc/DN/pVv4J/K05y2H6DqL
-         Db5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:references:to:from:subject:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date;
-        bh=psS2jEDaZwmPQ2PvVHmqLj5KAvqnRM6VGDvy2GUYEB8=;
-        b=S/yIa0c4C41pXxbRxb9p93WFoA/C+nk6YRt2GihyhoM5I4L/pBRIbPLlYvJemlbRg7
-         jU7Jpi9Hz/vbpJll4Rtcwhbbg4lS91L4qcP6GyAOVkZ20cDwxXvlQBW5Xu17+qcfXsqu
-         02+B4bWChBeyUWxgdCK/61eX4zjeoz4DfXA4jOvLgnJn+kO1w0rx1xqiwNRZJRjzP/7E
-         GPT08Vku941ExTmcsOwDNntdUNbOUyovRr+UhRloo0pQfCeyYBKybNTTGicKKbWLpMu7
-         z6qxIh5hAKqfhleIoo34qBb5VjBBqE7sscA7LkIKA5nlnUIQI0moLWmzxJmE38Hi214Q
-         YBrg==
-X-Gm-Message-State: ACrzQf2suvqAU8VfTGmnwhNES6HRtcdufciekU4vPGiE4RoPpk+x3cWL
-	HmVIB6eWzefqbXFNpNsuKcj36CQwd9BhOg==
-X-Google-Smtp-Source: AMsMyM4Xy+eaOXlbiVHvAAIaQmWraVSI6obSxvh5d3C3I6GQW+dAshiD61q0JbCwBmyUZB4J54bOvA==
-X-Received: by 2002:a65:4689:0:b0:458:764a:221b with SMTP id h9-20020a654689000000b00458764a221bmr3579652pgr.296.1665044550862;
-        Thu, 06 Oct 2022 01:22:30 -0700 (PDT)
-Received: from localhost ([118.208.156.99])
-        by smtp.gmail.com with ESMTPSA id bx4-20020a17090af48400b00203c0a1d56bsm2338930pjb.35.2022.10.06.01.22.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 06 Oct 2022 01:22:30 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 06 Oct 2022 18:22:26 +1000
-Message-Id: <CNEP14SSR4QI.I26M3DYXJE5N@bobo>
-Subject: Re: [RFC PATCH 1/3] powerpc/32: Implement
- HAVE_CONTEXT_TRACKING_USER support
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Christophe Leroy" <christophe.leroy@csgroup.eu>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-X-Mailer: aerc 0.11.0
-References: <20221004063306.511154-1-npiggin@gmail.com>
- <20221004063306.511154-2-npiggin@gmail.com>
- <c3f87f7b-c4f9-eca0-a8dd-acc6e7e9f02b@csgroup.eu>
-In-Reply-To: <c3f87f7b-c4f9-eca0-a8dd-acc6e7e9f02b@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mjkyn3kHjz2xJN
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Oct 2022 19:25:21 +1100 (AEDT)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2968HtnG020035;
+	Thu, 6 Oct 2022 08:25:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=4z06aEt1CVcXcJJgdJGrsDHXiD7DCE9N7M+HtyX1Nks=;
+ b=bQaJ2FUTsSUoluOzAzg/h3Zf3fjIf675pxE+nenCTE4abhR3Dmatz3sP6FEmtLAy+45X
+ SdahBGAcK+oANqLADmy7MqL2MtS0GqJiomQlh6l36b4R3x+G10wEeac2TfA7wiB5ims4
+ IQvT9NvIntzSeZ7ZzNBZT4xy+WB88S9RlA3NtKvSwhYM8EozNPyW6ToKwyfzolZQfWEg
+ Ooh1F4FuPB8HGVjHmS+Mnszawe4YBcGEjnJFcmLUaoqw0DTNDqOCaKjuY+zJ0EzrVwnt
+ iUNAz0riS+9hhIK7ItKKa9vvzWb3CFYAAagK56dQ3Xj+3gA4OUGz//gIp0XYyHWDuTsd BA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3k1ucv864c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Oct 2022 08:25:03 +0000
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2968J4ch023613;
+	Thu, 6 Oct 2022 08:25:03 GMT
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com [149.81.74.107])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3k1ucv863k-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Oct 2022 08:25:03 +0000
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+	by ppma03fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2968MQG2027853;
+	Thu, 6 Oct 2022 08:25:00 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+	by ppma03fra.de.ibm.com with ESMTP id 3jxd68vxfr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Oct 2022 08:25:00 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+	by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2968Ow7D51314948
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 6 Oct 2022 08:24:58 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 572E4A405C;
+	Thu,  6 Oct 2022 08:24:58 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 01585A4054;
+	Thu,  6 Oct 2022 08:24:58 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Thu,  6 Oct 2022 08:24:57 +0000 (GMT)
+Received: from intelligence.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id D3689605A7;
+	Thu,  6 Oct 2022 19:24:52 +1100 (AEDT)
+Message-ID: <2e13f9e24866c493c2ec656d3ca625df9f4ca14f.camel@linux.ibm.com>
+Subject: Re: [PATCH v3 3/6] powerpc/module: Optimise nearby branches in ELF
+ V2 ABI stub
+From: Andrew Donnellan <ajd@linux.ibm.com>
+To: Benjamin Gray <bgray@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Date: Thu, 06 Oct 2022 19:24:52 +1100
+In-Reply-To: <20221005053234.29312-4-bgray@linux.ibm.com>
+References: <20221005053234.29312-1-bgray@linux.ibm.com>
+	 <20221005053234.29312-4-bgray@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.3-1 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: sjOsItCl3urofmbSn8wGqfy6-yTBCr-F
+X-Proofpoint-ORIG-GUID: 3Hs5vCDElrkvmAmQnkb3r7Z6zG70yZvN
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
+ definitions=2022-10-05_05,2022-10-06_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 phishscore=0
+ malwarescore=0 bulkscore=0 suspectscore=0 mlxscore=0 clxscore=1015
+ lowpriorityscore=0 priorityscore=1501 impostorscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2209130000 definitions=main-2210060048
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,81 +104,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: peterz@infradead.org, npiggin@gmail.com, ardb@kernel.org, jbaron@akamai.com, rostedt@goodmis.org, jpoimboe@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue Oct 4, 2022 at 9:32 PM AEST, Christophe Leroy wrote:
->
->
-> Le 04/10/2022 =C3=A0 08:33, Nicholas Piggin a =C3=A9crit=C2=A0:
-> > Context tracking involves tracking user, kernel, guest switches. This
-> > enables existing context tracking code for interrupt entry on 32-bit.
-> > KVM and interrupt exit already has context tracking calls.
-> >=20
-> > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> > ---
-> >   arch/powerpc/Kconfig                 |  2 +-
-> >   arch/powerpc/include/asm/interrupt.h | 21 ++++++---------------
-> >   2 files changed, 7 insertions(+), 16 deletions(-)
-> >=20
-> > diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> > index 81c9f895d690..f667279ec74c 100644
-> > --- a/arch/powerpc/Kconfig
-> > +++ b/arch/powerpc/Kconfig
-> > @@ -204,7 +204,7 @@ config PPC
-> >   	select HAVE_ARCH_SECCOMP_FILTER
-> >   	select HAVE_ARCH_TRACEHOOK
-> >   	select HAVE_ASM_MODVERSIONS
-> > -	select HAVE_CONTEXT_TRACKING_USER		if PPC64
-> > +	select HAVE_CONTEXT_TRACKING_USER
-> >   	select HAVE_C_RECORDMCOUNT
-> >   	select HAVE_DEBUG_KMEMLEAK
-> >   	select HAVE_DEBUG_STACKOVERFLOW
-> > diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/includ=
-e/asm/interrupt.h
-> > index 4745bb9998bd..8860a246d51a 100644
-> > --- a/arch/powerpc/include/asm/interrupt.h
-> > +++ b/arch/powerpc/include/asm/interrupt.h
-> > @@ -85,6 +85,8 @@ do {									\
-> >   	    (user_mode(regs) || (TRAP(regs) !=3D INTERRUPT_PROGRAM)))	\
-> >   		BUG_ON(cond);						\
-> >   } while (0)
-> > +#else
-> > +#define INT_SOFT_MASK_BUG_ON(regs, cond)
->
-> Here you can just drop the ifdef CONFIG_PPC64 I guess instead of adding=
-=20
-> an additional empty macro.
+On Wed, 2022-10-05 at 16:32 +1100, Benjamin Gray wrote:
+> Inserts a direct branch to the stub target when possible, replacing
+> the
+> mtctr/btctr sequence.
+> 
+> The load into r12 could potentially be skipped too, but that change
+> would need to refactor the arguments to indicate that the address
+> does not have a separate local entry point.
+> 
+> This helps the static call implementation, where modules calling
+> their
+> own trampolines are called through this stub and the trampoline is
+> easily within range of a direct branch.
+> 
+> Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
 
-I couldn't because some of the statements use some PPC64-only variables.
-It ends up looking a bit better this way.
+I'm not well versed in this code but nothing stands out as problematic
+and it makes sense.
 
-> >   #endif
-> >  =20
-> >   #ifdef CONFIG_PPC_BOOK3S_64
-> > @@ -152,19 +154,8 @@ static inline void booke_restore_dbcr0(void)
-> >   static inline void interrupt_enter_prepare(struct pt_regs *regs)
-> >   {
-> >   #ifdef CONFIG_PPC32
-> > -	if (!arch_irq_disabled_regs(regs))
-> > -		trace_hardirqs_off();
-> > -
-> > -	if (user_mode(regs))
-> > -		kuap_lock();
-> > -	else
-> > -		kuap_save_and_lock(regs);
-> > -
-> > -	if (user_mode(regs))
-> > -		account_cpu_user_entry();
-> > -#endif
-> > -
-> > -#ifdef CONFIG_PPC64
-> > +	bool trace_enable =3D !arch_irq_disabled_regs(regs);
->
-> nit: You could be put this as an #else to the existing #ifdef CONFIG_PPC6=
-4
+Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
 
-Yep, I was able to clean it up even a bit better actually.
+> ---
+>  arch/powerpc/kernel/module_64.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
+> 
+> diff --git a/arch/powerpc/kernel/module_64.c
+> b/arch/powerpc/kernel/module_64.c
+> index 4d816f7785b4..13ce7a4d8a8d 100644
+> --- a/arch/powerpc/kernel/module_64.c
+> +++ b/arch/powerpc/kernel/module_64.c
+> @@ -141,6 +141,12 @@ static u32 ppc64_stub_insns[] = {
+>         PPC_RAW_BCTR(),
+>  };
+>  
+> +#ifdef CONFIG_PPC64_ELF_ABI_V1
+> +#define PPC64_STUB_MTCTR_OFFSET 5
+> +#else
+> +#define PPC64_STUB_MTCTR_OFFSET 4
+> +#endif
+> +
+>  /* Count how many different 24-bit relocations (different symbol,
+>     different addend) */
+>  static unsigned int count_relocs(const Elf64_Rela *rela, unsigned
+> int num)
+> @@ -426,6 +432,7 @@ static inline int create_stub(const Elf64_Shdr
+> *sechdrs,
+>                               struct module *me,
+>                               const char *name)
+>  {
+> +       int err;
+>         long reladdr;
+>         func_desc_t desc;
+>         int i;
+> @@ -439,6 +446,11 @@ static inline int create_stub(const Elf64_Shdr
+> *sechdrs,
+>                         return 0;
+>         }
+>  
+> +       /* Replace indirect branch sequence with direct branch where
+> possible */
+> +       err = patch_branch(&entry->jump[PPC64_STUB_MTCTR_OFFSET],
+> addr, 0);
+> +       if (err && err != -ERANGE)
+> +               return 0;
+> +
+>         /* Stub uses address relative to r2. */
+>         reladdr = (unsigned long)entry - my_r2(sechdrs, me);
+>         if (reladdr > 0x7FFFFFFF || reladdr < -(0x80000000L)) {
 
-Thanks,
-Nick
+-- 
+Andrew Donnellan    OzLabs, ADL Canberra
+ajd@linux.ibm.com   IBM Australia Limited
+
