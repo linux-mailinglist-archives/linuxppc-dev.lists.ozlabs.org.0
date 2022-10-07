@@ -1,56 +1,36 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFD685F7705
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Oct 2022 12:42:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D22E95F79DA
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Oct 2022 16:41:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MkPyG0FVjz3cBP
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Oct 2022 21:42:14 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=aipWrbBL;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MkWGZ5m3Zz3dwH
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Oct 2022 01:41:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MkPxJ2kwnz3bry
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Oct 2022 21:41:24 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=aipWrbBL;
-	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4MkPxF3b4nz4xFv;
-	Fri,  7 Oct 2022 21:41:21 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1665139281;
-	bh=UR2MeUI/j4OkA0mD873etMijpD0UYiYWP9Zb1OCdxjg=;
-	h=From:To:Subject:In-Reply-To:References:Date:From;
-	b=aipWrbBLdtlHUXM+gEo+Z09U66kWuoZNPADrORyjauQ+Ffu2gbxkrM8J+FwivjZWt
-	 o+Jm5Gjup/rL8wJB96PeEBJdRxex3nsMf1aFIko1HEbifuFNvurHYWEnJfcg2p9+V5
-	 9wk81uErqIstEh9pAhQDvj2sQHsreDGuDU/NACk3W6a2Wp2j3dDyCxm1ydfyM4U/sE
-	 vEd0EIBs7bxW0oxeGv+6yTHUyzNdxwFmx+MxuliVlfFICfIbfyRcvQA/UhYOPyiivG
-	 KMNh9K2gSFtSrtwER4oX31OHccxY+u10E08wqcW97McDTpia7wi7s6F5CodBt692Rt
-	 N510M7/9tN2Ng==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Nathan Lynch
- <nathanl@linux.ibm.com>, "linuxppc-dev@lists.ozlabs.org"
- <linuxppc-dev@lists.ozlabs.org>, kasan-dev <kasan-dev@googlegroups.com>
-Subject: Re: [PATCH] powerpc/kasan/book3s_64: warn when running with hash MMU
-In-Reply-To: <9b6eb796-6b40-f61d-b9c6-c2e9ab0ced38@csgroup.eu>
-References: <20221004223724.38707-1-nathanl@linux.ibm.com>
- <874jwhpp6g.fsf@mpe.ellerman.id.au>
- <9b6eb796-6b40-f61d-b9c6-c2e9ab0ced38@csgroup.eu>
-Date: Fri, 07 Oct 2022 21:41:18 +1100
-Message-ID: <87h70for01.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MkWG21FkNz2y8J
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Oct 2022 01:41:12 +1100 (AEDT)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 297Ec5Il011226;
+	Fri, 7 Oct 2022 09:38:05 -0500
+Received: (from segher@localhost)
+	by gate.crashing.org (8.14.1/8.14.1/Submit) id 297Ec5qG011225;
+	Fri, 7 Oct 2022 09:38:05 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
+Date: Fri, 7 Oct 2022 09:38:04 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc/64s: POWER10 CPU Kconfig build option
+Message-ID: <20221007143804.GX25951@gate.crashing.org>
+References: <20220923033004.536127-1-npiggin@gmail.com> <20221006195411.GS25951@gate.crashing.org> <CNF6C5XSIE75.3R12NULNLHEN2@bobo> <20221006232345.GW25951@gate.crashing.org> <CNF91RLXUENG.32NIZ5S1R3UCZ@bobo> <87wn9cnqrz.fsf@mpe.ellerman.id.au>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87wn9cnqrz.fsf@mpe.ellerman.id.au>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,74 +42,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> + KASAN list
->
-> Le 06/10/2022 =C3=A0 06:10, Michael Ellerman a =C3=A9crit=C2=A0:
->> Nathan Lynch <nathanl@linux.ibm.com> writes:
->>> kasan is known to crash at boot on book3s_64 with non-radix MMU. As
->>> noted in commit 41b7a347bf14 ("powerpc: Book3S 64-bit outline-only
->>> KASAN support"):
->>>
->>>    A kernel with CONFIG_KASAN=3Dy will crash during boot on a machine
->>>    using HPT translation because not all the entry points to the
->>>    generic KASAN code are protected with a call to kasan_arch_is_ready(=
-).
->>=20
->> I guess I thought there was some plan to fix that.
->
-> I was thinking the same.
->
-> Do we have a list of the said entry points to the generic code that are=20
-> lacking a call to kasan_arch_is_ready() ?
->
-> Typically, the BUG dump below shows that kasan_byte_accessible() is=20
-> lacking the check. It should be straight forward to add=20
-> kasan_arch_is_ready() check to kasan_byte_accessible(), shouldn't it ?
+On Fri, Oct 07, 2022 at 04:31:28PM +1100, Michael Ellerman wrote:
+> "Nicholas Piggin" <npiggin@gmail.com> writes:
+> > On Fri Oct 7, 2022 at 9:23 AM AEST, Segher Boessenkool wrote:
+> >> On Fri, Oct 07, 2022 at 07:56:09AM +1000, Nicholas Piggin wrote:
+> >> > On Fri Oct 7, 2022 at 5:54 AM AEST, Segher Boessenkool wrote:
+> >> > > On Fri, Sep 23, 2022 at 01:30:04PM +1000, Nicholas Piggin wrote:
+> ...
+> >> > > > +# No AltiVec or VSX or MMA instructions when building kernel
+> >> > > >  KBUILD_CFLAGS += $(call cc-option,-mno-altivec)
+> >> > > >  KBUILD_CFLAGS += $(call cc-option,-mno-vsx)
+> >> > > > +KBUILD_CFLAGS += $(call cc-option,-mno-mma)
+> >> > >
+> >> > > MMA code is never generated unless the code asks for it explicitly.
+> >> > > This is fundamental, not just an implementations side effect.
+> >> > 
+> >> > Well, now it double won't be generated :)
+> >>
+> >> Yeah, but there are many other things you can unnecessarily disable as
+> >> well!  :-)
+> >>
+> >> VMX and VSX are disabled here because the compiler *will* use those
+> >> registers if it feels like it (that is, if it thinks that will be
+> >> faster).  MMA is a very different beast: the compiler can never know if
+> >> it will be faster, to start with.
+> >
+> > True, but now I don't have to find the exact clause and have my lawyer
+> > confirm that it definitely probably won't change in future and break
+> > things.
+> 
+> Right. If someone asks "does the kernel ever use MMA instructions?" we
+> can just point at that line and we have a definite answer. No need to
+> audit the behaviour of all GCC and Clang versions ever released.
 
-Yes :)
-
-And one other spot, but the patch below boots OK for me. I'll leave it
-running for a while just in case there's a path I've missed.
-
-cheers
+As I said, no sane compiler can use MMA ever (unless asked for it
+directly of course).  But yeah, who knows what clang does!
 
 
-diff --git a/mm/kasan/common.c b/mm/kasan/common.c
-index 69f583855c8b..5def0118f2cd 100644
---- a/mm/kasan/common.c
-+++ b/mm/kasan/common.c
-@@ -377,6 +377,9 @@ bool __kasan_slab_free(struct kmem_cache *cache, void *=
-object,
-=20
- static inline bool ____kasan_kfree_large(void *ptr, unsigned long ip)
- {
-+	if (!kasan_arch_is_ready())
-+		return false;
-+
- 	if (ptr !=3D page_address(virt_to_head_page(ptr))) {
- 		kasan_report_invalid_free(ptr, ip, KASAN_REPORT_INVALID_FREE);
- 		return true;
-diff --git a/mm/kasan/generic.c b/mm/kasan/generic.c
-index 437fcc7e77cf..017d3c69e3b3 100644
---- a/mm/kasan/generic.c
-+++ b/mm/kasan/generic.c
-@@ -191,7 +191,12 @@ bool kasan_check_range(unsigned long addr, size_t size=
-, bool write,
-=20
- bool kasan_byte_accessible(const void *addr)
- {
--	s8 shadow_byte =3D READ_ONCE(*(s8 *)kasan_mem_to_shadow(addr));
-+	s8 shadow_byte;
-+
-+	if (!kasan_arch_is_ready())
-+		return true;
-+
-+	shadow_byte =3D READ_ONCE(*(s8 *)kasan_mem_to_shadow(addr));
-=20
- 	return shadow_byte >=3D 0 && shadow_byte < KASAN_GRANULE_SIZE;
- }
-
+Segher
