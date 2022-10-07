@@ -1,134 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36B145F7764
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Oct 2022 13:26:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B1EB5F7767
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Oct 2022 13:27:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MkQws61r4z3dx9
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Oct 2022 22:26:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MkQxv1kRpz3f1Q
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Oct 2022 22:26:59 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=vvUxAKw3;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=cJidoh6H;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=40.107.9.82; helo=fra01-mr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::1030; helo=mail-pj1-x1030.google.com; envelope-from=ulf.hansson@linaro.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=vvUxAKw3;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=cJidoh6H;
 	dkim-atps=neutral
-Received: from FRA01-MR2-obe.outbound.protection.outlook.com (mail-eopbgr90082.outbound.protection.outlook.com [40.107.9.82])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MkGJp1FS8z2yT0
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Oct 2022 15:57:44 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=lh5j08N6jCfV2VeKBdJrJ+Z020WJWMrbJZs4LukNRoH37XN2UjgZvzVABR2xTnGkKxJykn+bpREHo5xxerR2b9PBDeexPhBQYVob6M1g6487HUkYCOtFsU6YfyGkKFDw76LYasEzSAaDYanvWNBu2wapvePeBBCZsHrELDpUxq8IRHpXnFkxrU7xb6D35AYZ8u+gLvEBWsasiqL3Ai4uyz8CLx7faJm1phibeFRS+sDu8yq8IS5TVFuiTqHWnUbfwefYcQvAqCdY4xwKsj6QrA80ViB2P1uvvMJmGfQK94DRadlvSpAGQ7L+UvTrhQRaBAo6SSOdNUVW5zwfa3W3vg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oq4wMAaFj/7s0RVxjSrvoiqUcvKjXrV8XQwCN+AY2rs=;
- b=bSmA4b4wS+tsty+JFUvaxIvsY7bRnbSeCNiwybhPrLKeaoPTUbb0zCykaJcIMYIC8du+J6gWfrb+7U+ih9X5q/X7TeWQM7TeufbJL9r5Mae7pak4Dpihw7V6RGR/JdastkIG58KQwgWZ4nJOs8GZ+4fOEXyCN2C9NZtBT2WIbebwWV+2m/dvtnSM0MhQvKtjGe+AdY+cIp09jiL1cP1pfAc9pF1ROHgnafoovtccJYMibpSSQsbLA/wXsR8v2ri2GlFGIldDsa50lFkH/k5UEtzqL2S58LhY4CL8GX1XCFQCqebfhqWYrTy+cKHAD+2b8rL5w7HL8fK1GKUB7qL4nQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oq4wMAaFj/7s0RVxjSrvoiqUcvKjXrV8XQwCN+AY2rs=;
- b=vvUxAKw3C5G8QkvwFz+9K6cBzdU3epT4Jf6xjHMxh4yl4SG8KaX/kErC5aerA/mUkd6rJ0z36XAowc8azfwB9o3nbI6QA5oFAmxEY1ZhCMfuLSzX6JrVow1KxOafssqmBqBRoABVRqGiW0zStJutvLSrWy8DsaKnwTA3RExYXOe+ZJ7sQ9nqLQCDvF3HX/oJ+pcENWPDl/qC4KoBiMCTf0L+v0a2p9m7ZEl0ADq6hMuZmxgB8GQvRbZJuM2waH38EgQ+ydeqBwIBwvvR0mFEdeRFFjnO1/n62CVy9fKdJSsuKtJ68OH9P+KcY0zroP8fDoLmVvhJlTbJCRTfyaWiDg==
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by MRZP264MB2086.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:f::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5709.15; Fri, 7 Oct
- 2022 04:57:24 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::c854:380d:c901:45af]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::c854:380d:c901:45af%5]) with mapi id 15.20.5676.036; Fri, 7 Oct 2022
- 04:57:24 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Subject: Re: [PATCH v3 3/5] treewide: use get_random_u32() when possible
-Thread-Topic: [PATCH v3 3/5] treewide: use get_random_u32() when possible
-Thread-Index:  AQHY2aRLUOmMOiRiqUe6k1BKDHReSa4BnNgAgAAAygCAAAHkAIAAA1KAgABi4ACAAFmSgA==
-Date: Fri, 7 Oct 2022 04:57:24 +0000
-Message-ID: <501b0fc3-6c67-657f-781e-25ee0283bc2e@csgroup.eu>
-References: <20221006165346.73159-1-Jason@zx2c4.com>
- <20221006165346.73159-4-Jason@zx2c4.com>
- <848ed24c-13ef-6c38-fd13-639b33809194@csgroup.eu>
- <CAHmME9raQ4E00r9r8NyWJ17iSXE_KniTG0onCNAfMmfcGar1eg@mail.gmail.com>
- <f10fcfbf-2da6-cf2d-6027-fbf8b52803e9@csgroup.eu>
- <6396875c-146a-acf5-dd9e-7f93ba1b4bc3@csgroup.eu>
- <CAHmME9pE4saqnwxhsAwt-xegYGjsavPOGnHCbZhUXD7kaJ+GAA@mail.gmail.com>
-In-Reply-To:  <CAHmME9pE4saqnwxhsAwt-xegYGjsavPOGnHCbZhUXD7kaJ+GAA@mail.gmail.com>
-Accept-Language: fr-FR, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.1
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MRZP264MB2988:EE_|MRZP264MB2086:EE_
-x-ms-office365-filtering-correlation-id: ae4cff8a-e95b-42f1-753c-08daa8206d11
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  ecYqdAkTmlRgnXmSnSqeTxHPrAmSWJdW2+ksYp/5CrlRUQSxGFELyDBnybCuCYO1HwmDqvagL4rCW/0eDX5lQxqdy9HPHHmqeQbB9VZNl1UV75r+sKm9PeEJ3/r0DW1agvZ6Rzdo0EmiF/z/ITM413QGiv9axIa+OznyfrjcSE4KhzzG68IvCYL8+ZlR33Dl6gW49Cnb8rJXvMjHDC8gwhZt6kcR28RTz7Q9O7wOGJL8U6drBpQhyFNsGeuq6Q/i+rR5dBMUx0Gc2mV3q/R3eGcVtij16JM7vgb1BlUYkejiszP3qyIqbVwMMpsVtksy1Gueic07MuZ/5Q8fXtyfavoHI5sDeFMSYr5HL8LrByALufIkd/GDXOr0UdJ2ArDeRWxZYIRvEGRHSrA75MciLIb+T0wGJTRm3otNH8DIwqCAS3zVBYICOITwedeehgRTLBrg5PVvkCZxip6ub1EW3F/zORDtVfvRHeWu3Bine1Xl6WnqYKqmQT3A6Bv7f1/J/2vGxamgAdEcAiQlIqlAi/NWuwo2zxULgu5lEz4dg8CIR6QZeacjjCgGHgL4sXpaPeFpo4R9/AKwyGp/30g9TgUh2iTwqdvqlcEv+NfGz8802SeG/NfGMJqwnhqRrMmsK/Te6aRg5Kh6NpMTPlB071ZRA9NmJacr8gGeGHS2BW/b9yLueEuNdcIcn7Pi4ZKc1Jxdctk/dzQGezS01UwQ2k6fN8e0ymuGVsvrx0VgmHDRZSLc7XcxboZfCTuQPJuTN70Txavto2+dzwH8n3PXMCZPDttLrBmBPOvty7xYYZ4HBYYbxuNpMRqKDELJYXfc0FftYEbKxk9H5ehAHpDOhQ==
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230022)(4636009)(39860400002)(396003)(376002)(136003)(346002)(366004)(451199015)(31686004)(8936002)(8676002)(5660300002)(7336002)(2906002)(36756003)(7366002)(7416002)(41300700001)(4326008)(7406005)(91956017)(31696002)(66446008)(54906003)(64756008)(66556008)(66476007)(76116006)(86362001)(316002)(66946007)(44832011)(6916009)(71200400001)(6486002)(478600001)(38070700005)(6506007)(26005)(53546011)(6512007)(66574015)(122000001)(2616005)(186003)(38100700002)(83380400001)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?SjBiVnFrN3lGWlM0NXVKdGhSTDd4MVBDT2NmcUdkVy91MWFkNUpKdzZXWDJC?=
- =?utf-8?B?K3R6dFh5Q3lsbnRPS2JEL0lpM1o3M3ZzbzJGNkJraVZOeDVIVzRML3E0R0tW?=
- =?utf-8?B?bmN1dXE2eGpSRFJYRVVURUJHTEU0U21MT3MvL0VKdTdMT1cwenlRazFmK2hs?=
- =?utf-8?B?UDBuaEdES0hCRUw2akZzQm9hUUZPeUNES3hzbVg5SDhsVXJ1a0VnR3NKR3dp?=
- =?utf-8?B?MFZ5S29WMEF3OWVVR2JINzB0OW9VOHJ0aG5DZXJNQkgzTmU2c1NkZjI2WDBy?=
- =?utf-8?B?TDZrQldhL0YvVkcvTlF6c0NScVQyNlZHREdoS0ZMcnB4Yjk3cS96K05QN2xF?=
- =?utf-8?B?NDJHMnU0cG1JQlUvUjFiWFBKc1Zld1JpREpHaG0vaStpRm5WUG1uT1JpSXdr?=
- =?utf-8?B?SUttQUtqb2NJRzdjOWNWNVBqeWZPTGNlRlFlNXgyYy9aNTBWbitOZkJodTRB?=
- =?utf-8?B?dEYwYjFJODR1WlRlRE02d2dPUlJUNXRHZGJXMWtSRlRQaEFtKys4YWdLZGhw?=
- =?utf-8?B?TklpZWpoMjlwRFd4QnlYMjM2Q09SQ2lJWHVncXZKdERRNTkwc1pqYUczeC91?=
- =?utf-8?B?THIrVnppb2tIOGtKT2llUFJ3NHRTci9EOU5iVU1Sa2doQ0t6MzQyN0xRZW1j?=
- =?utf-8?B?VkU4Q08wVHdWUVI2Z2FlSW9nUVdPWUNXSEtIMTF4dEVkekVHY0ZuT1ErZWJ3?=
- =?utf-8?B?YVBMWkQ1ZEdJWEJlaFNKNU1KOGhRODAwU2I5UGYxVTV3T1NOTktrdVJ1MkZ2?=
- =?utf-8?B?TFF5dFlpL2s2TlFGdkR2QUFjYStKMS9oRjZmSVJ5OEZPd1Y3TGk1QWo2K2Rx?=
- =?utf-8?B?WkxZby9TMXBnUlNrdDM0TXVIMFF2aW9kRnFWRHRVa3F3dUl6WE81T2JJSThx?=
- =?utf-8?B?OFdUUkZoUGtZZHRYWi9KNjh5MXYrQ1RFQ1hydUZHNXAwSTRDZ0pUMmVsQWpt?=
- =?utf-8?B?amhveVFtalJlUnpLRXB5Nkd4R09sZUx5K3R6WUtHS21uamhOT3Q4OVFTcFY3?=
- =?utf-8?B?cW9qeEdVS2tJZ2JhNTNxNDk5ckhjVUduTVhOS0N1L1M4Tk9hWmJRZHEvdFlQ?=
- =?utf-8?B?SER3THhoZlJVeVg1T0s2TklZUWdodVZaWUpQMURJd1lTYTBJbXgyMkxlRGZl?=
- =?utf-8?B?YXNzZk92dTVqOEtJT21RYTFKUHNZSHEwQkJsc0cwekNlbm44RkpTb1hnZkox?=
- =?utf-8?B?c0lQOHVoTUY5TFlsNUxrU2tXa1hrNmU3OGlPVk1NeDI2YlpnNEExZVBqVTJG?=
- =?utf-8?B?L0Y2VEU4ekVocDJtOWMxTXF1QWZ5L3JDRGVRakllVnl3cS9hU1praEpWcVBN?=
- =?utf-8?B?MFhFb1d6NzhES3VFTWhkU001VW03NkI2K2JCeXkvK1plMFBqZzdSRFhQY2lC?=
- =?utf-8?B?ZSt6TVk0WWdzcmJDVlE2Vlg4MWp1Tld2b0M1dmR5N2h0RFZIVjBHaDQxdG01?=
- =?utf-8?B?UTRnc2cwb2pQQjhVK0ZpanJGVytiVHZwMkxvWGpHY0tlQTFvZDc2MW9ObFdW?=
- =?utf-8?B?RlNmZHV4TEpqQTZVZmRubE9pT3hqbHVDWkZ1Q2dLb05xUHRZVnF0Q2Q2bjNn?=
- =?utf-8?B?dllwZTRFNytEQm1uYnF3WDUzUHJOeUtDbXF3eklha1VxQm5yd3ZZNGU2eE55?=
- =?utf-8?B?MktpSlovRjdHbXlHdEtSTjJ6eFFwdkg2a1VrVm1ONm1UdCtIVkFNUE9VMkdt?=
- =?utf-8?B?Qm9oVzAvd1NWdkxPc29DTituOWdPQXVaSm0yaDdZL3pjQ043dThtYlhvNVAv?=
- =?utf-8?B?ejhwdkExOXBtMnJSdTVIbEc4dHRHUHJFTktTbGxyMmlOeE9id212Z2U3ajF5?=
- =?utf-8?B?MXJJUEZZank3cWphMmN3ZGFyZms2Z0xWU1R0NGZQVnBTRlZGM3pwRmhZWUFo?=
- =?utf-8?B?TlY1RFk4YkFzdllNSmRFOFdHb3lvYkNIODErWXpZZEo1WE54a2Vad0k1WVRM?=
- =?utf-8?B?bVd5aW5iMUhXUHhhUFFhWFp4clVoTDViYkxncjRLRmdMUm9tRFQ1Z2xiNGpZ?=
- =?utf-8?B?QTVoTjhxNk0vdDJjTU9EbVV5ZkVlaVN3ZVN6RUlhbUVwbFVrbHdiOW5scjNG?=
- =?utf-8?B?akE1MVVLZDlWeExuSk12MDJaOTRHM0hiRXk5dHVtNmE5ckVOWjNKNGs4WmIr?=
- =?utf-8?B?YS9GMER1ZlZPN0JUMWJObUVoSHlKMzVYWkFsV1FBaTdZNldyaW9hVk15VnBa?=
- =?utf-8?Q?AoqtEj+pAO/r5/nujYdg9vY=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <8277F4805BBBC64490B411D5CECB85D7@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MkMys1Cnnz3bmW
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Oct 2022 20:12:34 +1100 (AEDT)
+Received: by mail-pj1-x1030.google.com with SMTP id p3-20020a17090a284300b0020a85fa3ffcso6698497pjf.2
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 07 Oct 2022 02:12:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XWfgfYA0Y7Bsea8YsJLHPPRZpIuS1ctJ2qwzsdNXRQQ=;
+        b=cJidoh6H1uADw+7tISOibhEtRZw6/8LgPK8xnUPP26DeNpl86nNCrmcFETPzQcR1HU
+         EeiKEtiHa/TEq2yCVbkNPAuc0vW4RKnX+gsl1ZZdlofZ75a90WDG3Vuzc+Qbf0Eo+Zf4
+         txkWoGs9n/ABfCltcqS9/k5qefNE2E91YJPQeX59PyxFsA0iBom6oJW7gXuQRehm5R+4
+         u79Pg1a2OJi1CJGNwWNEXpxA6O24alQwdDRv7Arndr0yRXAp2xeICJvSl9kHElUmPkl2
+         afuzKnPKiHF2/N8t6hdI7rgCS5NbRQl5q0FjalEDXUOlmkHUNJaylPxO8O4zBhTsnOAY
+         fWdg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=XWfgfYA0Y7Bsea8YsJLHPPRZpIuS1ctJ2qwzsdNXRQQ=;
+        b=nzk6S0iDfQ1WCV+OHlo0Z7gQSd0wj43MI/oqyGvOBugb1WR2OdGXMBVMWe3S865W6L
+         W0EyMuI9/rmqYHhJuBSMc3HdWZwqwNGTGro9TPW9sG8FTIduLBz5CZNqLPhPlT3uCRpB
+         7itSicwWNQ6ErpvEsjUo3VCFk1yRYuyL8cuwyPQstI95/XM/XiSdImESVCD8K52OwoSF
+         kekye6xx50h1HeTOyf2pl0QyDY4FzTrkRmn1UivYM3og+5pZ0rqFmAxArNg5z/oOwojH
+         ytV+MMEwIyBZ/Fq970GDK11rSXBqBiRXJ+wuQ0rXqt6EDUkvFNjcjS5PyfItT9DJ48Is
+         1LvQ==
+X-Gm-Message-State: ACrzQf2eApi5cdRa0sY/2IumGbAuDDM/mhv5CS6UJOPeclAAgKXcaJGL
+	NYrxxQJHoHnbJb/dYNAg9EMQPpxzv3wRaIcGUeoJmA==
+X-Google-Smtp-Source: AMsMyM6zPtbJGyFd5+PZ/YLbHOSjqHhuMJPpmd2X/NiEKV7uyszzQEkaDQfomvJJ+WgdnhP03Ir6+teXOvtZIUZdWhs=
+X-Received: by 2002:a17:903:246:b0:179:96b5:1ad2 with SMTP id
+ j6-20020a170903024600b0017996b51ad2mr4017157plh.37.1665133951783; Fri, 07 Oct
+ 2022 02:12:31 -0700 (PDT)
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: ae4cff8a-e95b-42f1-753c-08daa8206d11
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Oct 2022 04:57:24.8002
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: cq1ecfOnhv4ymIgLNsdDILWsoBKaeYECzn9QuW4ShXFVtYbHn9+XhLVJ1f9K7Q6r2K8dxDM0MNT/5Y7NJ8vkQB91TU68Hdx5urMk3Ygdur8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRZP264MB2086
+References: <20221006165346.73159-1-Jason@zx2c4.com>
+In-Reply-To: <20221006165346.73159-1-Jason@zx2c4.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Fri, 7 Oct 2022 11:11:54 +0200
+Message-ID: <CAPDyKFoTLHULeGJMgDxGKci+HvHjE6K8G1JLuYmXHCch+=WUKw@mail.gmail.com>
+Subject: Re: [PATCH v3 0/5] treewide cleanup of random integer usage
+To: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Mailman-Approved-At: Fri, 07 Oct 2022 22:22:35 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -141,75 +76,362 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>, "x86@kernel.org" <x86@kernel.org>, Jan Kara <jack@suse.cz>, Vignesh Raghavendra <vigneshr@ti.com>, "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>, KP Singh <kpsingh@kernel.org>, "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>, "patches@lists.linux.dev" <patches@lists.linux.dev>, "linux-mm@kvack.org" <linux-mm@kvack.org>, Eric Dumazet <edumazet@google.com>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>, "H . Peter Anvin" <hpa@zytor.com>, Andreas Noever <andreas.noever@gmail.com>, WANG Xuerui <kernel@xen0n.name>, Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>, "linux-s390@vger.
- kernel.org" <linux-s390@vger.kernel.org>, "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>, Daniel Borkmann <daniel@iogearbox.net>, Jonathan Corbet <corbet@lwn.net>, "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Hugh Dickins <hughd@google.com>, Russell King <linux@armlinux.org.uk>, "kasan-dev@googlegroups.com" <kasan-dev@googlegroups.com>, Jozsef Kadlecsik <kadlec@netfilter.org>, Jason Gunthorpe <jgg@ziepe.ca>, Dave Airlie <airlied@redhat.com>, Paolo Abeni <pabeni@redhat.com>, "James E . J .
- Bottomley" <jejb@linux.ibm.com>, Pablo Neira Ayuso <pablo@netfilter.org>, "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>, Marco Elver <elver@google.com>, Kees Cook <keescook@chromium.org>, Yury Norov <yury.norov@gmail.com>, Heiko Carstens <hca@linux.ibm.com>, =?utf-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@toke.dk>, "linux-um@lists.infradead.org" <linux-um@lists.infradead.org>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>, Richard Weinberger <richard@nod.at>, Borislav Petkov <bp@alien8.de>, "linux-nvme@lists.infradead.org" <linux-nvme@lists.infradead.org>, "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, Jakub Kicinski <kuba@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Johannes Berg <johannes@sipsolutions.net>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, Jens Axboe <axboe@kernel.dk>, "linux-mmc
- @vger.kernel.org" <linux-mmc@vger.kernel.org>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Theodore Ts'o <tytso@mit.edu>, "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>, Florian Westphal <fw@strlen.de>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, =?utf-8?B?Q2hyaXN0b3BoIELDtmhtd2FsZGVy?= <christoph.boehmwalder@linbit.com>, Chuck Lever <chuck.lever@oracle.com>, "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>, Jan Kara <jack@suse.com>, Thomas Graf <tgraf@suug.ch>, "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "David S . Miller" <davem@davemloft.net>
+Cc: linux-wireless@vger.kernel.org, x86@kernel.org, Vignesh Raghavendra <vigneshr@ti.com>, linux-doc@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, kernel-janitors@vger.kernel.org, KP Singh <kpsingh@kernel.org>, dri-devel@lists.freedesktop.org, patches@lists.linux.dev, linux-mm@kvack.org, Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org, linux-mtd@lists.infradead.org, kasan-dev@googlegroups.com, "H . Peter Anvin" <hpa@zytor.com>, Andreas Noever <andreas.noever@gmail.com>, WANG Xuerui <kernel@xen0n.name>, Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>, linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, Mauro Carvalho Chehab <mchehab@kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>, Daniel Borkmann <daniel@iogearbox.net>, Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Hugh Dick
+ ins <hughd@google.com>, Russell King <linux@armlinux.org.uk>, Jozsef Kadlecsik <kadlec@netfilter.org>, Jason Gunthorpe <jgg@ziepe.ca>, Dave Airlie <airlied@redhat.com>, Paolo Abeni <pabeni@redhat.com>, "James E . J . Bottomley" <jejb@linux.ibm.com>, Pablo Neira Ayuso <pablo@netfilter.org>, linux-media@vger.kernel.org, Marco Elver <elver@google.com>, Kees Cook <keescook@chromium.org>, Yury Norov <yury.norov@gmail.com>, Heiko Carstens <hca@linux.ibm.com>, linux-um@lists.infradead.org, linux-mips@vger.kernel.org, linux-block@vger.kernel.org, Richard Weinberger <richard@nod.at>, Borislav Petkov <bp@alien8.de>, linux-nvme@lists.infradead.org, loongarch@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Johannes Berg <johannes@sipsolutions.net>, linux-arm-kernel@lists.infradead.org, Jens Axboe <axboe@kernel.dk>, linux-mmc@vger.kernel.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Theodore Ts'
+ o <tytso@mit.edu>, linux-parisc@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org, Florian Westphal <fw@strlen.de>, linux-kernel@vger.kernel.org, =?UTF-8?Q?Christoph_B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>, linux-crypto@vger.kernel.org, Jan Kara <jack@suse.com>, Thomas Graf <tgraf@suug.ch>, linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCkxlIDA3LzEwLzIwMjIgw6AgMDE6MzYsIEphc29uIEEuIERvbmVuZmVsZCBhIMOpY3JpdMKg
-Og0KPiBPbiAxMC82LzIyLCBDaHJpc3RvcGhlIExlcm95IDxjaHJpc3RvcGhlLmxlcm95QGNzZ3Jv
-dXAuZXU+IHdyb3RlOg0KPj4NCj4+DQo+PiBMZSAwNi8xMC8yMDIyIMOgIDE5OjMxLCBDaHJpc3Rv
-cGhlIExlcm95IGEgw6ljcml0IDoNCj4+Pg0KPj4+DQo+Pj4gTGUgMDYvMTAvMjAyMiDDoCAxOToy
-NCwgSmFzb24gQS4gRG9uZW5mZWxkIGEgw6ljcml0IDoNCj4+Pj4gSGkgQ2hyaXN0b3BoZSwNCj4+
-Pj4NCj4+Pj4gT24gVGh1LCBPY3QgNiwgMjAyMiBhdCAxMToyMSBBTSBDaHJpc3RvcGhlIExlcm95
-DQo+Pj4+IDxjaHJpc3RvcGhlLmxlcm95QGNzZ3JvdXAuZXU+IHdyb3RlOg0KPj4+Pj4gTGUgMDYv
-MTAvMjAyMiDDoCAxODo1MywgSmFzb24gQS4gRG9uZW5mZWxkIGEgw6ljcml0IDoNCj4+Pj4+PiBU
-aGUgcHJhbmRvbV91MzIoKSBmdW5jdGlvbiBoYXMgYmVlbiBhIGRlcHJlY2F0ZWQgaW5saW5lIHdy
-YXBwZXIgYXJvdW5kDQo+Pj4+Pj4gZ2V0X3JhbmRvbV91MzIoKSBmb3Igc2V2ZXJhbCByZWxlYXNl
-cyBub3csIGFuZCBjb21waWxlcyBkb3duIHRvIHRoZQ0KPj4+Pj4+IGV4YWN0IHNhbWUgY29kZS4g
-UmVwbGFjZSB0aGUgZGVwcmVjYXRlZCB3cmFwcGVyIHdpdGggYSBkaXJlY3QgY2FsbCB0bw0KPj4+
-Pj4+IHRoZSByZWFsIGZ1bmN0aW9uLiBUaGUgc2FtZSBhbHNvIGFwcGxpZXMgdG8gZ2V0X3JhbmRv
-bV9pbnQoKSwgd2hpY2ggaXMNCj4+Pj4+PiBqdXN0IGEgd3JhcHBlciBhcm91bmQgZ2V0X3JhbmRv
-bV91MzIoKS4NCj4+Pj4+Pg0KPj4+Pj4+IFJldmlld2VkLWJ5OiBLZWVzIENvb2sgPGtlZXNjb29r
-QGNocm9taXVtLm9yZz4NCj4+Pj4+PiBBY2tlZC1ieTogVG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu
-IDx0b2tlQHRva2UuZGs+ICMgZm9yIHNjaF9jYWtlDQo+Pj4+Pj4gQWNrZWQtYnk6IENodWNrIExl
-dmVyIDxjaHVjay5sZXZlckBvcmFjbGUuY29tPiAjIGZvciBuZnNkDQo+Pj4+Pj4gUmV2aWV3ZWQt
-Ynk6IEphbiBLYXJhIDxqYWNrQHN1c2UuY3o+ICMgZm9yIGV4dDQNCj4+Pj4+PiBTaWduZWQtb2Zm
-LWJ5OiBKYXNvbiBBLiBEb25lbmZlbGQgPEphc29uQHp4MmM0LmNvbT4NCj4+Pj4+PiAtLS0NCj4+
-Pj4+DQo+Pj4+Pj4gZGlmZiAtLWdpdCBhL2FyY2gvcG93ZXJwYy9rZXJuZWwvcHJvY2Vzcy5jDQo+
-Pj4+Pj4gYi9hcmNoL3Bvd2VycGMva2VybmVsL3Byb2Nlc3MuYw0KPj4+Pj4+IGluZGV4IDBmYmRh
-ODljZDFiYi4uOWM0YzE1YWZiYmU4IDEwMDY0NA0KPj4+Pj4+IC0tLSBhL2FyY2gvcG93ZXJwYy9r
-ZXJuZWwvcHJvY2Vzcy5jDQo+Pj4+Pj4gKysrIGIvYXJjaC9wb3dlcnBjL2tlcm5lbC9wcm9jZXNz
-LmMNCj4+Pj4+PiBAQCAtMjMwOCw2ICsyMzA4LDYgQEAgdm9pZCBub3RyYWNlIF9fcHBjNjRfcnVu
-bGF0Y2hfb2ZmKHZvaWQpDQo+Pj4+Pj4gICAgIHVuc2lnbmVkIGxvbmcgYXJjaF9hbGlnbl9zdGFj
-ayh1bnNpZ25lZCBsb25nIHNwKQ0KPj4+Pj4+ICAgICB7DQo+Pj4+Pj4gICAgICAgICBpZiAoIShj
-dXJyZW50LT5wZXJzb25hbGl0eSAmIEFERFJfTk9fUkFORE9NSVpFKSAmJg0KPj4+Pj4+IHJhbmRv
-bWl6ZV92YV9zcGFjZSkNCj4+Pj4+PiAtICAgICAgICAgICAgIHNwIC09IGdldF9yYW5kb21faW50
-KCkgJiB+UEFHRV9NQVNLOw0KPj4+Pj4+ICsgICAgICAgICAgICAgc3AgLT0gZ2V0X3JhbmRvbV91
-MzIoKSAmIH5QQUdFX01BU0s7DQo+Pj4+Pj4gICAgICAgICByZXR1cm4gc3AgJiB+MHhmOw0KPj4+
-Pj4NCj4+Pj4+IElzbid0IHRoYXQgYSBjYW5kaWRhdGUgZm9yIHByYW5kb21fdTMyX21heCgpID8N
-Cj4+Pj4+DQo+Pj4+PiBOb3RlIHRoYXQgc3AgaXMgZGVlbWVkIHRvIGJlIDE2IGJ5dGVzIGFsaWdu
-ZWQgYXQgYWxsIHRpbWUuDQo+Pj4+DQo+Pj4+IFllcywgcHJvYmFibHkuIEl0IHNlZW1lZCBub24t
-dHJpdmlhbCB0byB0aGluayBhYm91dCwgc28gSSBkaWRuJ3QuIEJ1dA0KPj4+PiBsZXQncyBzZWUg
-aGVyZS4uLiBtYXliZSBpdCdzIG5vdCB0b28gYmFkOg0KPj4+Pg0KPj4+PiBJZiBQQUdFX01BU0sg
-aXMgYWx3YXlzIH4oUEFHRV9TSVpFLTEpLCB0aGVuIH5QQUdFX01BU0sgaXMNCj4+Pj4gKFBBR0Vf
-U0laRS0xKSwgc28gcHJhbmRvbV91MzJfbWF4KFBBR0VfU0laRSkgc2hvdWxkIHlpZWxkIHRoZSBz
-YW1lDQo+Pj4+IHRoaW5nPyBJcyB0aGF0IGFjY3VyYXRlPyBBbmQgaG9sZHMgYWNyb3NzIHBsYXRm
-b3JtcyAodGhpcyBjb21lcyB1cCBhDQo+Pj4+IGZldyBwbGFjZXMpPyBJZiBzbywgSSdsbCBkbyB0
-aGF0IGZvciBhIHY0Lg0KPj4+Pg0KPj4+DQo+Pj4gT24gcG93ZXJwYyBpdCBpcyBhbHdheXMgKGZy
-b20gYXJjaC9wb3dlcnBjL2luY2x1ZGUvYXNtL3BhZ2UuaCkgOg0KPj4+DQo+Pj4gLyoNCj4+PiAg
-ICAqIFN1YnRsZTogKDEgPDwgUEFHRV9TSElGVCkgaXMgYW4gaW50LCBub3QgYW4gdW5zaWduZWQg
-bG9uZy4gU28gaWYgd2UNCj4+PiAgICAqIGFzc2lnbiBQQUdFX01BU0sgdG8gYSBsYXJnZXIgdHlw
-ZSBpdCBnZXRzIGV4dGVuZGVkIHRoZSB3YXkgd2Ugd2FudA0KPj4+ICAgICogKGkuZS4gd2l0aCAx
-cyBpbiB0aGUgaGlnaCBiaXRzKQ0KPj4+ICAgICovDQo+Pj4gI2RlZmluZSBQQUdFX01BU0sgICAg
-ICAofigoMSA8PCBQQUdFX1NISUZUKSAtIDEpKQ0KPj4+DQo+Pj4gI2RlZmluZSBQQUdFX1NJWkUg
-ICAgICAgICgxVUwgPDwgUEFHRV9TSElGVCkNCj4+Pg0KPj4+DQo+Pj4gU28gaXQgd291bGQgd29y
-ayBJIGd1ZXNzLg0KPj4NCj4+IEJ1dCB0YWtpbmcgaW50byBhY2NvdW50IHRoYXQgc3AgbXVzdCBy
-ZW1haW4gMTYgYnl0ZXMgYWxpZ25lZCwgd291bGQgaXQNCj4+IGJlIGJldHRlciB0byBkbyBzb21l
-dGhpbmcgbGlrZSA/DQo+Pg0KPj4gCXNwIC09IHByYW5kb21fdTMyX21heChQQUdFX1NJWkUgPj4g
-NCkgPDwgNDsNCj4+DQo+PiAJcmV0dXJuIHNwOw0KPiANCj4gRG9lcyB0aGlzIGFzc3VtZSB0aGF0
-IHNwIGlzIGFscmVhZHkgYWxpZ25lZCBhdCB0aGUgYmVnaW5uaW5nIG9mIHRoZQ0KPiBmdW5jdGlv
-bj8gSSdkIGFzc3VtZSBmcm9tIHRoZSBmdW5jdGlvbidzIG5hbWUgdGhhdCB0aGlzIGlzbid0IHRo
-ZQ0KPiBjYXNlPw0KDQpBaCB5b3UgYXJlIHJpZ2h0LCBJIG92ZXJsb29rZWQgaXQuDQoNCkxvb2tp
-bmcgaW4gbW9yZSBkZXRhaWxzLCBJIHNlZSB0aGF0IGFsbCBhcmNoaXRlY3R1cmVzIHRoYXQgaW1w
-bGVtZW50IGl0IA0KaW1wbGVtZW50IGl0IGFsbW9zdCB0aGUgc2FtZSB3YXkuDQoNCkJ5IHRoZSB3
-YXksIHRoZSBjb21tZW50IGluIGFyY2gvdW0va2VybmVsL3Byb2Nlc3MuYyBpcyBvdmVyZGF0ZWQu
-DQoNCk1vc3QgYXJjaGl0ZWN0dXJlcyBBTkQgdGhlIHJhbmRvbSB2YWx1ZSB3aXRoIH5QQUdFX01B
-U0ssIHg4NiBhbmQgdW0gdXNlIA0KJTgxOTIuIFNlZW1zIGxpa2UgYXQgdGhlIHRpbWUgMi42LjEy
-IHdhcyBpbnRyb2R1Y2VkIGludG8gZ2l0LCBvbmx5IGkzODYgDQp4ODZfNjQgYW5kIHVtIGhhZCB0
-aGF0IGZ1bmN0aW9uLg0KDQpNYXliZSBpdCBpcyB0aW1lIGZvciBhIGNsZWFudXAgYW5kIGEgcmVm
-YWN0b3JpbmcgPyBBcmNoaXRlY3R1cmVzIHdvdWxkIA0KanVzdCBoYXZlIHRvIHByb3ZpZGUgU1RB
-Q0tfQUxJR04ganVzdCBsaWtlIGxvb25nYXJjaCBkb2VzIHRvZGF5LCBhbmQgd2UgDQpjb3VsZCBn
-ZXQgYSBnZW5lcmljIGFyY2hfYWxpZ25fc3RhY2soKSA/DQoNCkNocmlzdG9waGU=
+On Thu, 6 Oct 2022 at 18:54, Jason A. Donenfeld <Jason@zx2c4.com> wrote:
+>
+> Changes v2->v3:
+> - Handle get_random_int() conversions too, which were overlooked before,
+>   in the same way as the rest.
+>
+> Hi folks,
+>
+> This is a five part treewide cleanup of random integer handling. The
+> rules for random integers are:
+>
+> - If you want a secure or an insecure random u64, use get_random_u64().
+> - If you want a secure or an insecure random u32, use get_random_u32().
+>   * The old function prandom_u32() has been deprecated for a while now
+>     and is just a wrapper around get_random_u32(). Same for
+>     get_random_int().
+> - If you want a secure or an insecure random u16, use get_random_u16().
+> - If you want a secure or an insecure random u8, use get_random_u8().
+> - If you want secure or insecure random bytes, use get_random_bytes().
+>   * The old function prandom_bytes() has been deprecated for a while now
+>     and has long been a wrapper around get_random_bytes().
+> - If you want a non-uniform random u32, u16, or u8 bounded by a certain
+>   open interval maximum, use prandom_u32_max().
+>   * I say "non-uniform", because it doesn't do any rejection sampling or
+>     divisions. Hence, it stays within the prandom_* namespace.
+>
+> These rules ought to be applied uniformly, so that we can clean up the
+> deprecated functions, and earn the benefits of using the modern
+> functions. In particular, in addition to the boring substitutions, this
+> patchset accomplishes a few nice effects:
+>
+> - By using prandom_u32_max() with an upper-bound that the compiler can
+>   prove at compile-time is =E2=89=A465536 or =E2=89=A4256, internally get=
+_random_u16()
+>   or get_random_u8() is used, which wastes fewer batched random bytes,
+>   and hence has higher throughput.
+>
+> - By using prandom_u32_max() instead of %, when the upper-bound is not a
+>   constant, division is still avoided, because prandom_u32_max() uses
+>   a faster multiplication-based trick instead.
+>
+> - By using get_random_u16() or get_random_u8() in cases where the return
+>   value is intended to indeed be a u16 or a u8, we waste fewer batched
+>   random bytes, and hence have higher throughput.
+>
+> So, based on those rules and benefits from following them, this patchset
+> breaks down into the following five steps, which were done mostly
+> manually:
+>
+> 1) Replace `prandom_u32() % max` and variants thereof with
+>    prandom_u32_max(max).
+>
+> 2) Replace `(type)get_random_u32()` and variants thereof with
+>    get_random_u16() or get_random_u8(). I took the pains to actually
+>    look and see what every lvalue type was across the entire tree.
+>
+> 3) Replace remaining deprecated uses of prandom_u32() and
+>    get_random_int() with get_random_u32().
+>
+> 4) Replace remaining deprecated uses of prandom_bytes() with
+>    get_random_bytes().
+>
+> 5) Remove the deprecated and now-unused prandom_u32() and
+>    prandom_bytes() inline wrapper functions.
+>
+> I was thinking of taking this through my random.git tree (on which this
+> series is currently based) and submitting it near the end of the merge
+> window, or waiting for the very end of the 6.1 cycle when there will be
+> the fewest new patches brewing. If somebody with some treewide-cleanup
+> experience might share some wisdom about what the best timing usually
+> winds up being, I'm all ears.
+>
+> Please take a look! At "379 insertions(+), 422 deletions(-)", this
+> should be a somewhat small patchset to review, despite it having the
+> scary "treewide" moniker on it.
+>
+> Thanks,
+> Jason
+>
+> Cc: Andreas Noever <andreas.noever@gmail.com>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Cc: Borislav Petkov <bp@alien8.de>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Christoph B=C3=B6hmwalder <christoph.boehmwalder@linbit.com>
+> Cc: Christoph Hellwig <hch@lst.de>
+> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Cc: Daniel Borkmann <daniel@iogearbox.net>
+> Cc: Dave Airlie <airlied@redhat.com>
+> Cc: Dave Hansen <dave.hansen@linux.intel.com>
+> Cc: David S. Miller <davem@davemloft.net>
+> Cc: Eric Dumazet <edumazet@google.com>
+> Cc: Florian Westphal <fw@strlen.de>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+> Cc: H. Peter Anvin <hpa@zytor.com>
+> Cc: Heiko Carstens <hca@linux.ibm.com>
+> Cc: Helge Deller <deller@gmx.de>
+> Cc: Herbert Xu <herbert@gondor.apana.org.au>
+> Cc: Huacai Chen <chenhuacai@kernel.org>
+> Cc: Hugh Dickins <hughd@google.com>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: James E.J. Bottomley <jejb@linux.ibm.com>
+> Cc: Jan Kara <jack@suse.com>
+> Cc: Jason Gunthorpe <jgg@ziepe.ca>
+> Cc: Jens Axboe <axboe@kernel.dk>
+> Cc: Johannes Berg <johannes@sipsolutions.net>
+> Cc: Jonathan Corbet <corbet@lwn.net>
+> Cc: Jozsef Kadlecsik <kadlec@netfilter.org>
+> Cc: KP Singh <kpsingh@kernel.org>
+> Cc: Kees Cook <keescook@chromium.org>
+> Cc: Marco Elver <elver@google.com>
+> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Pablo Neira Ayuso <pablo@netfilter.org>
+> Cc: Paolo Abeni <pabeni@redhat.com>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Richard Weinberger <richard@nod.at>
+> Cc: Russell King <linux@armlinux.org.uk>
+> Cc: Theodore Ts'o <tytso@mit.edu>
+> Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Thomas Graf <tgraf@suug.ch>
+> Cc: Ulf Hansson <ulf.hansson@linaro.org>
+> Cc: Vignesh Raghavendra <vigneshr@ti.com>
+> Cc: WANG Xuerui <kernel@xen0n.name>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Yury Norov <yury.norov@gmail.com>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: kasan-dev@googlegroups.com
+> Cc: kernel-janitors@vger.kernel.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-block@vger.kernel.org
+> Cc: linux-crypto@vger.kernel.org
+> Cc: linux-doc@vger.kernel.org
+> Cc: linux-fsdevel@vger.kernel.org
+> Cc: linux-media@vger.kernel.org
+> Cc: linux-mips@vger.kernel.org
+> Cc: linux-mm@kvack.org
+> Cc: linux-mmc@vger.kernel.org
+> Cc: linux-mtd@lists.infradead.org
+> Cc: linux-nvme@lists.infradead.org
+> Cc: linux-parisc@vger.kernel.org
+> Cc: linux-rdma@vger.kernel.org
+> Cc: linux-s390@vger.kernel.org
+> Cc: linux-um@lists.infradead.org
+> Cc: linux-usb@vger.kernel.org
+> Cc: linux-wireless@vger.kernel.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: loongarch@lists.linux.dev
+> Cc: netdev@vger.kernel.org
+> Cc: sparclinux@vger.kernel.org
+> Cc: x86@kernel.org
+>
+> Jason A. Donenfeld (5):
+>   treewide: use prandom_u32_max() when possible
+>   treewide: use get_random_{u8,u16}() when possible
+>   treewide: use get_random_u32() when possible
+>   treewide: use get_random_bytes when possible
+>   prandom: remove unused functions
+>
+>  Documentation/networking/filter.rst           |  2 +-
+>  arch/arm/kernel/process.c                     |  2 +-
+>  arch/arm/kernel/signal.c                      |  2 +-
+>  arch/arm64/kernel/process.c                   |  2 +-
+>  arch/arm64/kernel/syscall.c                   |  2 +-
+>  arch/loongarch/kernel/process.c               |  2 +-
+>  arch/loongarch/kernel/vdso.c                  |  2 +-
+>  arch/mips/kernel/process.c                    |  2 +-
+>  arch/mips/kernel/vdso.c                       |  2 +-
+>  arch/parisc/kernel/process.c                  |  2 +-
+>  arch/parisc/kernel/sys_parisc.c               |  4 +-
+>  arch/parisc/kernel/vdso.c                     |  2 +-
+>  arch/powerpc/crypto/crc-vpmsum_test.c         |  2 +-
+>  arch/powerpc/kernel/process.c                 |  2 +-
+>  arch/s390/kernel/process.c                    |  4 +-
+>  arch/s390/kernel/vdso.c                       |  2 +-
+>  arch/s390/mm/mmap.c                           |  2 +-
+>  arch/sparc/vdso/vma.c                         |  2 +-
+>  arch/um/kernel/process.c                      |  2 +-
+>  arch/x86/entry/vdso/vma.c                     |  2 +-
+>  arch/x86/kernel/cpu/amd.c                     |  2 +-
+>  arch/x86/kernel/module.c                      |  2 +-
+>  arch/x86/kernel/process.c                     |  2 +-
+>  arch/x86/mm/pat/cpa-test.c                    |  4 +-
+>  block/blk-crypto-fallback.c                   |  2 +-
+>  crypto/async_tx/raid6test.c                   |  2 +-
+>  crypto/testmgr.c                              | 94 +++++++++----------
+>  drivers/block/drbd/drbd_receiver.c            |  4 +-
+>  drivers/char/random.c                         | 11 +--
+>  drivers/dma/dmatest.c                         |  2 +-
+>  .../gpu/drm/i915/gem/i915_gem_execbuffer.c    |  2 +-
+>  drivers/gpu/drm/i915/i915_gem_gtt.c           |  6 +-
+>  .../gpu/drm/i915/selftests/i915_selftest.c    |  2 +-
+>  drivers/gpu/drm/selftests/test-drm_buddy.c    |  2 +-
+>  drivers/gpu/drm/selftests/test-drm_mm.c       |  2 +-
+>  drivers/infiniband/core/cma.c                 |  2 +-
+>  drivers/infiniband/hw/cxgb4/cm.c              |  4 +-
+>  drivers/infiniband/hw/cxgb4/id_table.c        |  4 +-
+>  drivers/infiniband/hw/hfi1/tid_rdma.c         |  2 +-
+>  drivers/infiniband/hw/hns/hns_roce_ah.c       |  5 +-
+>  drivers/infiniband/hw/mlx4/mad.c              |  2 +-
+>  drivers/infiniband/ulp/ipoib/ipoib_cm.c       |  2 +-
+>  drivers/infiniband/ulp/rtrs/rtrs-clt.c        |  3 +-
+>  drivers/md/bcache/request.c                   |  2 +-
+>  drivers/md/raid5-cache.c                      |  2 +-
+>  drivers/media/common/v4l2-tpg/v4l2-tpg-core.c |  2 +-
+>  .../media/test-drivers/vivid/vivid-radio-rx.c |  4 +-
+>  .../test-drivers/vivid/vivid-touch-cap.c      |  6 +-
+>  drivers/misc/habanalabs/gaudi2/gaudi2.c       |  2 +-
+>  drivers/mmc/core/core.c                       |  4 +-
+>  drivers/mmc/host/dw_mmc.c                     |  2 +-
+>  drivers/mtd/nand/raw/nandsim.c                |  8 +-
+>  drivers/mtd/tests/mtd_nandecctest.c           | 12 +--
+>  drivers/mtd/tests/speedtest.c                 |  2 +-
+>  drivers/mtd/tests/stresstest.c                | 19 +---
+>  drivers/mtd/ubi/debug.c                       |  2 +-
+>  drivers/mtd/ubi/debug.h                       |  6 +-
+>  drivers/net/bonding/bond_main.c               |  2 +-
+>  drivers/net/ethernet/broadcom/bnxt/bnxt.c     |  2 +-
+>  drivers/net/ethernet/broadcom/cnic.c          |  5 +-
+>  .../chelsio/inline_crypto/chtls/chtls_cm.c    |  4 +-
+>  .../chelsio/inline_crypto/chtls/chtls_io.c    |  4 +-
+>  drivers/net/ethernet/rocker/rocker_main.c     |  8 +-
+>  drivers/net/hamradio/baycom_epp.c             |  2 +-
+>  drivers/net/hamradio/hdlcdrv.c                |  2 +-
+>  drivers/net/hamradio/yam.c                    |  2 +-
+>  drivers/net/phy/at803x.c                      |  2 +-
+>  drivers/net/wireguard/selftest/allowedips.c   | 16 ++--
+>  .../broadcom/brcm80211/brcmfmac/p2p.c         |  2 +-
+>  .../broadcom/brcm80211/brcmfmac/pno.c         |  2 +-
+>  .../net/wireless/intel/iwlwifi/mvm/mac-ctxt.c |  2 +-
+>  .../net/wireless/marvell/mwifiex/cfg80211.c   |  4 +-
+>  .../wireless/microchip/wilc1000/cfg80211.c    |  2 +-
+>  .../net/wireless/quantenna/qtnfmac/cfg80211.c |  2 +-
+>  drivers/net/wireless/st/cw1200/wsm.c          |  2 +-
+>  drivers/net/wireless/ti/wlcore/main.c         |  2 +-
+>  drivers/nvme/common/auth.c                    |  2 +-
+>  drivers/scsi/cxgbi/cxgb4i/cxgb4i.c            |  4 +-
+>  drivers/scsi/fcoe/fcoe_ctlr.c                 |  4 +-
+>  drivers/scsi/lpfc/lpfc_hbadisc.c              |  6 +-
+>  drivers/scsi/qedi/qedi_main.c                 |  2 +-
+>  drivers/target/iscsi/cxgbit/cxgbit_cm.c       |  2 +-
+>  drivers/thunderbolt/xdomain.c                 |  2 +-
+>  drivers/video/fbdev/uvesafb.c                 |  2 +-
+>  fs/ceph/inode.c                               |  2 +-
+>  fs/ceph/mdsmap.c                              |  2 +-
+>  fs/exfat/inode.c                              |  2 +-
+>  fs/ext2/ialloc.c                              |  3 +-
+>  fs/ext4/ialloc.c                              |  7 +-
+>  fs/ext4/ioctl.c                               |  4 +-
+>  fs/ext4/mmp.c                                 |  2 +-
+>  fs/ext4/super.c                               |  7 +-
+>  fs/f2fs/gc.c                                  |  2 +-
+>  fs/f2fs/namei.c                               |  2 +-
+>  fs/f2fs/segment.c                             |  8 +-
+>  fs/fat/inode.c                                |  2 +-
+>  fs/nfsd/nfs4state.c                           |  4 +-
+>  fs/ntfs3/fslog.c                              |  6 +-
+>  fs/ubifs/debug.c                              | 10 +-
+>  fs/ubifs/journal.c                            |  2 +-
+>  fs/ubifs/lpt_commit.c                         | 14 +--
+>  fs/ubifs/tnc_commit.c                         |  2 +-
+>  fs/xfs/libxfs/xfs_alloc.c                     |  2 +-
+>  fs/xfs/libxfs/xfs_ialloc.c                    |  4 +-
+>  fs/xfs/xfs_error.c                            |  2 +-
+>  fs/xfs/xfs_icache.c                           |  2 +-
+>  fs/xfs/xfs_log.c                              |  2 +-
+>  include/linux/nodemask.h                      |  2 +-
+>  include/linux/prandom.h                       | 12 ---
+>  include/linux/random.h                        |  5 -
+>  include/net/netfilter/nf_queue.h              |  2 +-
+>  include/net/red.h                             |  2 +-
+>  include/net/sock.h                            |  2 +-
+>  kernel/bpf/bloom_filter.c                     |  2 +-
+>  kernel/bpf/core.c                             |  6 +-
+>  kernel/bpf/hashtab.c                          |  2 +-
+>  kernel/bpf/verifier.c                         |  2 +-
+>  kernel/kcsan/selftest.c                       |  4 +-
+>  kernel/locking/test-ww_mutex.c                |  4 +-
+>  kernel/time/clocksource.c                     |  2 +-
+>  lib/cmdline_kunit.c                           |  4 +-
+>  lib/fault-inject.c                            |  2 +-
+>  lib/find_bit_benchmark.c                      |  4 +-
+>  lib/kobject.c                                 |  2 +-
+>  lib/random32.c                                |  4 +-
+>  lib/reed_solomon/test_rslib.c                 | 12 +--
+>  lib/sbitmap.c                                 |  4 +-
+>  lib/test-string_helpers.c                     |  2 +-
+>  lib/test_fprobe.c                             |  2 +-
+>  lib/test_hexdump.c                            | 10 +-
+>  lib/test_kasan.c                              |  6 +-
+>  lib/test_kprobes.c                            |  2 +-
+>  lib/test_list_sort.c                          |  2 +-
+>  lib/test_min_heap.c                           |  6 +-
+>  lib/test_objagg.c                             |  2 +-
+>  lib/test_rhashtable.c                         |  6 +-
+>  lib/test_vmalloc.c                            | 19 +---
+>  lib/uuid.c                                    |  2 +-
+>  mm/migrate.c                                  |  2 +-
+>  mm/shmem.c                                    |  2 +-
+>  mm/slab.c                                     |  2 +-
+>  mm/slub.c                                     |  2 +-
+>  net/802/garp.c                                |  2 +-
+>  net/802/mrp.c                                 |  2 +-
+>  net/ceph/mon_client.c                         |  2 +-
+>  net/ceph/osd_client.c                         |  2 +-
+>  net/core/neighbour.c                          |  2 +-
+>  net/core/pktgen.c                             | 47 +++++-----
+>  net/core/stream.c                             |  2 +-
+>  net/dccp/ipv4.c                               |  4 +-
+>  net/ipv4/datagram.c                           |  2 +-
+>  net/ipv4/igmp.c                               |  6 +-
+>  net/ipv4/inet_connection_sock.c               |  2 +-
+>  net/ipv4/inet_hashtables.c                    |  2 +-
+>  net/ipv4/ip_output.c                          |  2 +-
+>  net/ipv4/route.c                              |  4 +-
+>  net/ipv4/tcp_cdg.c                            |  2 +-
+>  net/ipv4/tcp_ipv4.c                           |  4 +-
+>  net/ipv4/udp.c                                |  2 +-
+>  net/ipv6/addrconf.c                           |  8 +-
+>  net/ipv6/ip6_flowlabel.c                      |  2 +-
+>  net/ipv6/mcast.c                              | 10 +-
+>  net/ipv6/output_core.c                        |  2 +-
+>  net/mac80211/rc80211_minstrel_ht.c            |  2 +-
+>  net/mac80211/scan.c                           |  2 +-
+>  net/netfilter/ipvs/ip_vs_conn.c               |  2 +-
+>  net/netfilter/ipvs/ip_vs_twos.c               |  4 +-
+>  net/netfilter/nf_nat_core.c                   |  4 +-
+>  net/netfilter/xt_statistic.c                  |  2 +-
+>  net/openvswitch/actions.c                     |  2 +-
+>  net/packet/af_packet.c                        |  2 +-
+>  net/rds/bind.c                                |  2 +-
+>  net/sched/act_gact.c                          |  2 +-
+>  net/sched/act_sample.c                        |  2 +-
+>  net/sched/sch_cake.c                          |  8 +-
+>  net/sched/sch_netem.c                         | 22 ++---
+>  net/sched/sch_pie.c                           |  2 +-
+>  net/sched/sch_sfb.c                           |  2 +-
+>  net/sctp/socket.c                             |  4 +-
+>  net/sunrpc/auth_gss/gss_krb5_wrap.c           |  4 +-
+>  net/sunrpc/cache.c                            |  2 +-
+>  net/sunrpc/xprt.c                             |  2 +-
+>  net/sunrpc/xprtsock.c                         |  2 +-
+>  net/tipc/socket.c                             |  2 +-
+>  net/unix/af_unix.c                            |  2 +-
+>  net/xfrm/xfrm_state.c                         |  2 +-
+>  186 files changed, 379 insertions(+), 422 deletions(-)
+>
+
+Acked-by: Ulf Hansson <ulf.hansson@linaro.org> # For MMC
+
+Kind regards
+Uffe
