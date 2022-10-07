@@ -2,63 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 812785F776A
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Oct 2022 13:28:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFD685F7705
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Oct 2022 12:42:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MkQzW2MCkz3dwj
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Oct 2022 22:28:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MkPyG0FVjz3cBP
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Oct 2022 21:42:14 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=GMGJ0d3x;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=aipWrbBL;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=134.134.136.65; helo=mga03.intel.com; envelope-from=mika.westerberg@linux.intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=GMGJ0d3x;
-	dkim-atps=neutral
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MkNGk3J2Wz3bjT
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Oct 2022 20:26:21 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1665134782; x=1696670782;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=YIsvu8HuZoKfT0WBNxjXL2VasbVdSxWppe8Gs3rIq6U=;
-  b=GMGJ0d3x+aIHxliDrU762kI5kEx36935NSpInhpsnmz8SKcSaZz1aKKq
-   3kGOshtNO0EOPiGMM17NHPWJxZDjNBJDlHjUVIt0xD9jcwk2Vyyy/GyTf
-   LFD6wnv5P+funJQcVhEVCf2e6p7R6AxBd7pMW0fcJgLlkt7mTAw4z2w+s
-   RVjihlTqvqZ1cjFALfQCEDnzlkz6VdtdDHOjJ3pGouHFFLMrrufingkFI
-   vk7+kKttbOVrnY+hI8eiZbmt6Q5U6+byWUIy/hqCWiMLoe1dsEurygB1t
-   D0wUzoW5HiYvaZSAKnafwGCuR6Z+f+ErAyCGdiqXMtwq7ufCni4qLjMbg
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10492"; a="305275900"
-X-IronPort-AV: E=Sophos;i="5.95,166,1661842800"; 
-   d="scan'208";a="305275900"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2022 02:26:15 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10492"; a="620199690"
-X-IronPort-AV: E=Sophos;i="5.95,166,1661842800"; 
-   d="scan'208";a="620199690"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga007.jf.intel.com with ESMTP; 07 Oct 2022 02:26:03 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1001)
-	id 6645E17E; Fri,  7 Oct 2022 12:26:23 +0300 (EEST)
-Date: Fri, 7 Oct 2022 12:26:23 +0300
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
-To: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Subject: Re: [PATCH v3 3/5] treewide: use get_random_u32() when possible
-Message-ID: <Yz/wv0sqBR+J+jy+@black.fi.intel.com>
-References: <20221006165346.73159-1-Jason@zx2c4.com>
- <20221006165346.73159-4-Jason@zx2c4.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MkPxJ2kwnz3bry
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Oct 2022 21:41:24 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=aipWrbBL;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4MkPxF3b4nz4xFv;
+	Fri,  7 Oct 2022 21:41:21 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1665139281;
+	bh=UR2MeUI/j4OkA0mD873etMijpD0UYiYWP9Zb1OCdxjg=;
+	h=From:To:Subject:In-Reply-To:References:Date:From;
+	b=aipWrbBLdtlHUXM+gEo+Z09U66kWuoZNPADrORyjauQ+Ffu2gbxkrM8J+FwivjZWt
+	 o+Jm5Gjup/rL8wJB96PeEBJdRxex3nsMf1aFIko1HEbifuFNvurHYWEnJfcg2p9+V5
+	 9wk81uErqIstEh9pAhQDvj2sQHsreDGuDU/NACk3W6a2Wp2j3dDyCxm1ydfyM4U/sE
+	 vEd0EIBs7bxW0oxeGv+6yTHUyzNdxwFmx+MxuliVlfFICfIbfyRcvQA/UhYOPyiivG
+	 KMNh9K2gSFtSrtwER4oX31OHccxY+u10E08wqcW97McDTpia7wi7s6F5CodBt692Rt
+	 N510M7/9tN2Ng==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Nathan Lynch
+ <nathanl@linux.ibm.com>, "linuxppc-dev@lists.ozlabs.org"
+ <linuxppc-dev@lists.ozlabs.org>, kasan-dev <kasan-dev@googlegroups.com>
+Subject: Re: [PATCH] powerpc/kasan/book3s_64: warn when running with hash MMU
+In-Reply-To: <9b6eb796-6b40-f61d-b9c6-c2e9ab0ced38@csgroup.eu>
+References: <20221004223724.38707-1-nathanl@linux.ibm.com>
+ <874jwhpp6g.fsf@mpe.ellerman.id.au>
+ <9b6eb796-6b40-f61d-b9c6-c2e9ab0ced38@csgroup.eu>
+Date: Fri, 07 Oct 2022 21:41:18 +1100
+Message-ID: <87h70for01.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221006165346.73159-4-Jason@zx2c4.com>
-X-Mailman-Approved-At: Fri, 07 Oct 2022 22:22:35 +1100
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,13 +62,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-wireless@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>, x86@kernel.org, Jan Kara <jack@suse.cz>, Vignesh Raghavendra <vigneshr@ti.com>, linux-doc@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, kernel-janitors@vger.kernel.org, KP Singh <kpsingh@kernel.org>, dri-devel@lists.freedesktop.org, patches@lists.linux.dev, linux-mm@kvack.org, Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org, linux-mtd@lists.infradead.org, kasan-dev@googlegroups.com, "H . Peter Anvin" <hpa@zytor.com>, Andreas Noever <andreas.noever@gmail.com>, WANG Xuerui <kernel@xen0n.name>, Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>, linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, Mauro Carvalho Chehab <mchehab@kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>, Daniel Borkmann <daniel@iogearbox.net>, Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org, Helge Deller 
- <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Hugh Dickins <hughd@google.com>, Russell King <linux@armlinux.org.uk>, Jozsef Kadlecsik <kadlec@netfilter.org>, Jason Gunthorpe <jgg@ziepe.ca>, Dave Airlie <airlied@redhat.com>, Paolo Abeni <pabeni@redhat.com>, "James E . J . Bottomley" <jejb@linux.ibm.com>, Pablo Neira Ayuso <pablo@netfilter.org>, linux-media@vger.kernel.org, Marco Elver <elver@google.com>, Kees Cook <keescook@chromium.org>, Yury Norov <yury.norov@gmail.com>, Heiko Carstens <hca@linux.ibm.com>, Toke H??iland-J??rgensen <toke@toke.dk>, linux-um@lists.infradead.org, linux-mips@vger.kernel.org, linux-block@vger.kernel.org, Richard Weinberger <richard@nod.at>, Borislav Petkov <bp@alien8.de>, linux-nvme@lists.infradead.org, loongarch@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Johannes Berg <johannes@sipsolutions.net>, linux-arm-kernel@lists.infradead.org, Jens Axboe <ax
- boe@kernel.dk>, linux-mmc@vger.kernel.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Theodore Ts'o <tytso@mit.edu>, linux-parisc@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org, Florian Westphal <fw@strlen.de>, linux-kernel@vger.kernel.org, Christoph B??hmwalder <christoph.boehmwalder@linbit.com>, Chuck Lever <chuck.lever@oracle.com>, linux-crypto@vger.kernel.org, Jan Kara <jack@suse.com>, Thomas Graf <tgraf@suug.ch>, linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Oct 06, 2022 at 10:53:44AM -0600, Jason A. Donenfeld wrote:
->  drivers/thunderbolt/xdomain.c                  |  2 +-
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> + KASAN list
+>
+> Le 06/10/2022 =C3=A0 06:10, Michael Ellerman a =C3=A9crit=C2=A0:
+>> Nathan Lynch <nathanl@linux.ibm.com> writes:
+>>> kasan is known to crash at boot on book3s_64 with non-radix MMU. As
+>>> noted in commit 41b7a347bf14 ("powerpc: Book3S 64-bit outline-only
+>>> KASAN support"):
+>>>
+>>>    A kernel with CONFIG_KASAN=3Dy will crash during boot on a machine
+>>>    using HPT translation because not all the entry points to the
+>>>    generic KASAN code are protected with a call to kasan_arch_is_ready(=
+).
+>>=20
+>> I guess I thought there was some plan to fix that.
+>
+> I was thinking the same.
+>
+> Do we have a list of the said entry points to the generic code that are=20
+> lacking a call to kasan_arch_is_ready() ?
+>
+> Typically, the BUG dump below shows that kasan_byte_accessible() is=20
+> lacking the check. It should be straight forward to add=20
+> kasan_arch_is_ready() check to kasan_byte_accessible(), shouldn't it ?
 
-Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Yes :)
+
+And one other spot, but the patch below boots OK for me. I'll leave it
+running for a while just in case there's a path I've missed.
+
+cheers
+
+
+diff --git a/mm/kasan/common.c b/mm/kasan/common.c
+index 69f583855c8b..5def0118f2cd 100644
+--- a/mm/kasan/common.c
++++ b/mm/kasan/common.c
+@@ -377,6 +377,9 @@ bool __kasan_slab_free(struct kmem_cache *cache, void *=
+object,
+=20
+ static inline bool ____kasan_kfree_large(void *ptr, unsigned long ip)
+ {
++	if (!kasan_arch_is_ready())
++		return false;
++
+ 	if (ptr !=3D page_address(virt_to_head_page(ptr))) {
+ 		kasan_report_invalid_free(ptr, ip, KASAN_REPORT_INVALID_FREE);
+ 		return true;
+diff --git a/mm/kasan/generic.c b/mm/kasan/generic.c
+index 437fcc7e77cf..017d3c69e3b3 100644
+--- a/mm/kasan/generic.c
++++ b/mm/kasan/generic.c
+@@ -191,7 +191,12 @@ bool kasan_check_range(unsigned long addr, size_t size=
+, bool write,
+=20
+ bool kasan_byte_accessible(const void *addr)
+ {
+-	s8 shadow_byte =3D READ_ONCE(*(s8 *)kasan_mem_to_shadow(addr));
++	s8 shadow_byte;
++
++	if (!kasan_arch_is_ready())
++		return true;
++
++	shadow_byte =3D READ_ONCE(*(s8 *)kasan_mem_to_shadow(addr));
+=20
+ 	return shadow_byte >=3D 0 && shadow_byte < KASAN_GRANULE_SIZE;
+ }
+
