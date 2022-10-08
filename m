@@ -1,70 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 996C35F8226
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Oct 2022 03:51:29 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DDA85F818C
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Oct 2022 02:24:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Mkp7M336fz3fQD
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Oct 2022 12:51:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MkmBp1fZTz3dq6
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Oct 2022 11:24:18 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=iXQ9Uvdz;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dLa9rcro;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::530; helo=mail-pg1-x530.google.com; envelope-from=keescook@chromium.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=guoren@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=iXQ9Uvdz;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dLa9rcro;
 	dkim-atps=neutral
-Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mkk3Y0RzNz3c6B
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Oct 2022 09:47:50 +1100 (AEDT)
-Received: by mail-pg1-x530.google.com with SMTP id q9so5820123pgq.8
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 07 Oct 2022 15:47:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yZqaicka3IU4vV1MYdOWb5w3mOcfwDVNwAUulPcr27Y=;
-        b=iXQ9UvdzaG3zByw2GBNLz3/YVU1qnMbHWTkFhauTR657sXRQGAG+NlE+Q9rJd5luVx
-         INuHridXF4858oAPsKtGfjtbkx2VdjBSQCDETBbwUrSMqp7tkUzuQxOHz4Iev7dLesfK
-         vpnuiiKohn9Hx+Mnal9EiATSUtY0yZ8+mCOj4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yZqaicka3IU4vV1MYdOWb5w3mOcfwDVNwAUulPcr27Y=;
-        b=HpKLW+it0tmNXL8v6V1dIQJLx4cSNYjtsAqBIbc1RYFrHronye/Xlx3chE7y59xuuR
-         UXdZ+6f4s1rSSXiT5Jtr9EGSns5gW2qYjQDbB0dcqMK3vfL1EZudb1cK/A8hMI0JMCx0
-         JLTCici8pS7bStNW2Fr+qCtTyd0QOY+fWkx5HgL9UaNT7x76jMyjEh76neIkukpfcs4Q
-         jfZ7NcVYza/Xjr/fYF2MeHya1HyCzHzaVLqJXHcqFVS0w/IsIyDFr9d2oF8Wso9DT/PC
-         I+VCjIKNyax3ulycRH/DGfpgLHPsHU68VAVsMJsAQFac0lizzx2b2oyJA4yU4tVfSk4W
-         1bNw==
-X-Gm-Message-State: ACrzQf0oCLzKkuZp2A6SgpdIAHPXFFOkwxImWSd/W3Nd5E5SFuzPLSGQ
-	kYi5feW0m9fLaocdC0fkNbnxuQ==
-X-Google-Smtp-Source: AMsMyM6iCBWc/uxIx6z9Rtqnu5DJFDtYNmNoozJCUMl1bWP400YM3aAZ5nfN+Rih1bQNvESsCMLxdQ==
-X-Received: by 2002:a63:5a61:0:b0:41b:b021:f916 with SMTP id k33-20020a635a61000000b0041bb021f916mr6209429pgm.387.1665182866043;
-        Fri, 07 Oct 2022 15:47:46 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id z12-20020a1709027e8c00b0016dbaf3ff2esm2038893pla.22.2022.10.07.15.47.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Oct 2022 15:47:45 -0700 (PDT)
-Date: Fri, 7 Oct 2022 15:47:44 -0700
-From: Kees Cook <keescook@chromium.org>
-To: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Subject: Re: [PATCH v4 2/6] treewide: use prandom_u32_max() when possible
-Message-ID: <202210071241.445289C5@keescook>
-References: <20221007180107.216067-1-Jason@zx2c4.com>
- <20221007180107.216067-3-Jason@zx2c4.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mkm9q6wlKz30D1
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Oct 2022 11:23:27 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id B66B3B8248D
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Oct 2022 00:23:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57DBDC433C1
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Oct 2022 00:23:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1665188601;
+	bh=sgFxqSsEF0+bcN38uHnAUtCzYqPWkGv+/tZCP/6JQvw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=dLa9rcrowpgVtq+iFYBKyTsJRXjwt2l1ZoU9dK0QG9IYeZ2a62zgJvBsG6oDXjiRU
+	 g8IoKrAwYQj7iljuM7UWlAR6Dt/2U7zsJfp2vplIpTVOwfHqsWzcac8KjUdZ0Dc2yA
+	 RCczFaeQ5B8FiF0ufVKuJ7JdzaK+mtRyW2F+KPQWg/+aUW90XGHd6DH5O5vfBk1pI0
+	 5tBoKEeNTFgtz/mLCbyE4fMKLadfq7AQG2zG37YF0cD05zufKdpxw6lgYxQKwr4/wi
+	 LrejuG/TFjbqp+GYbPrEG+2DskVrU3NKjmdfN2fZ2S+EirBDox7F3IDgaSR54AyyZg
+	 9SPR0ZPOxd4OA==
+Received: by mail-oi1-f180.google.com with SMTP id l5so7279142oif.7
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 07 Oct 2022 17:23:21 -0700 (PDT)
+X-Gm-Message-State: ACrzQf2RGowOOhg1WxZJPPYW5A8ZcjiMBeGFfAdq7v0n/z84E6O3nYtS
+	4SWC0aOFypCCFpg13c0xZ/GrTLbmqj81WGjSo7Q=
+X-Google-Smtp-Source: AMsMyM6d1vEFgVz7vAhL63BB/M/+P/PP5ZhiAkdB3z/coca0NEdVvl3lU8eJKhAXTwQbJjldnSeasVabLKztwU34kGU=
+X-Received: by 2002:aca:6155:0:b0:353:e740:ce01 with SMTP id
+ v82-20020aca6155000000b00353e740ce01mr8708756oib.19.1665188600393; Fri, 07
+ Oct 2022 17:23:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221007180107.216067-3-Jason@zx2c4.com>
-X-Mailman-Approved-At: Sat, 08 Oct 2022 12:28:34 +1100
+References: <20221007154145.1877054-1-vschneid@redhat.com> <20221007154533.1878285-5-vschneid@redhat.com>
+In-Reply-To: <20221007154533.1878285-5-vschneid@redhat.com>
+From: Guo Ren <guoren@kernel.org>
+Date: Sat, 8 Oct 2022 08:23:08 +0800
+X-Gmail-Original-Message-ID: <CAJF2gTQs62gJ7hTrqKNX=og7NuR=ou5S8WZp9Mf9JXxs0-duwA@mail.gmail.com>
+Message-ID: <CAJF2gTQs62gJ7hTrqKNX=og7NuR=ou5S8WZp9Mf9JXxs0-duwA@mail.gmail.com>
+Subject: Re: [RFC PATCH 5/5] treewide: Rename and trace arch-definitions of smp_send_reschedule()
+To: Valentin Schneider <vschneid@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,286 +67,340 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-wireless@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>, x86@kernel.org, Jan Kara <jack@suse.cz>, Vignesh Raghavendra <vigneshr@ti.com>, linux-doc@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, kernel-janitors@vger.kernel.org, KP Singh <kpsingh@kernel.org>, dri-devel@lists.freedesktop.org, patches@lists.linux.dev, linux-mm@kvack.org, Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org, linux-mtd@lists.infradead.org, kasan-dev@googlegroups.com, "H . Peter Anvin" <hpa@zytor.com>, Andreas Noever <andreas.noever@gmail.com>, WANG Xuerui <kernel@xen0n.name>, Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>, linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, Mauro Carvalho Chehab <mchehab@kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>, Daniel Borkmann <daniel@iogearbox.net>, Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org, Helge Deller 
- <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Hugh Dickins <hughd@google.com>, Russell King <linux@armlinux.org.uk>, Jozsef Kadlecsik <kadlec@netfilter.org>, Jason Gunthorpe <jgg@ziepe.ca>, Dave Airlie <airlied@redhat.com>, Paolo Abeni <pabeni@redhat.com>, "James E . J . Bottomley" <jejb@linux.ibm.com>, Pablo Neira Ayuso <pablo@netfilter.org>, linux-media@vger.kernel.org, Marco Elver <elver@google.com>, Yury Norov <yury.norov@gmail.com>, Heiko Carstens <hca@linux.ibm.com>, linux-um@lists.infradead.org, linux-mips@vger.kernel.org, linux-block@vger.kernel.org, Richard Weinberger <richard@nod.at>, Borislav Petkov <bp@alien8.de>, linux-nvme@lists.infradead.org, loongarch@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Johannes Berg <johannes@sipsolutions.net>, linux-arm-kernel@lists.infradead.org, Jens Axboe <axboe@kernel.dk>, linux-mmc@vger.kernel.org, Thomas Bogendoerfer <tsbogend@alp
- ha.franken.de>, Theodore Ts'o <tytso@mit.edu>, linux-parisc@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org, Florian Westphal <fw@strlen.de>, linux-kernel@vger.kernel.org, Christoph =?iso-8859-1?Q?B=F6hmwalder?= <christoph.boehmwalder@linbit.com>, linux-crypto@vger.kernel.org, Jan Kara <jack@suse.com>, Thomas Graf <tgraf@suug.ch>, linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
+Cc: Juri Lelli <juri.lelli@redhat.com>, Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Dave Hansen <dave.hansen@linux.intel.com>, linux-mips@vger.kernel.org, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, Marc Zyngier <maz@kernel.org>, linux-hexagon@vger.kernel.org, x86@kernel.org, Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org, Ingo Molnar <mingo@redhat.com>, linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org, "Paul E. McKenney" <paulmck@kernel.org>, Frederic Weisbecker <frederic@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, openrisc@lists.librecores.org, Borislav Petkov <bp@alien8.de>, Nicholas Piggin <npiggin@gmail.com>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, linux-parisc@vg
+ er.kernel.org, Daniel Bristot de Oliveira <bristot@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>, linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Oct 07, 2022 at 12:01:03PM -0600, Jason A. Donenfeld wrote:
-> Rather than incurring a division or requesting too many random bytes for
-> the given range, use the prandom_u32_max() function, which only takes
-> the minimum required bytes from the RNG and avoids divisions.
-
-I actually meant splitting the by-hand stuff by subsystem, but nearly
-all of these can be done mechanically too, so it shouldn't be bad. Notes
-below...
-
-> 
-> [...]
-> diff --git a/arch/arm64/kernel/process.c b/arch/arm64/kernel/process.c
-> index 92bcc1768f0b..87203429f802 100644
-> --- a/arch/arm64/kernel/process.c
-> +++ b/arch/arm64/kernel/process.c
-> @@ -595,7 +595,7 @@ unsigned long __get_wchan(struct task_struct *p)
->  unsigned long arch_align_stack(unsigned long sp)
->  {
->  	if (!(current->personality & ADDR_NO_RANDOMIZE) && randomize_va_space)
-> -		sp -= get_random_int() & ~PAGE_MASK;
-> +		sp -= prandom_u32_max(PAGE_SIZE);
->  	return sp & ~0xf;
+On Fri, Oct 7, 2022 at 11:46 PM Valentin Schneider <vschneid@redhat.com> wrote:
+>
+> To be able to trace invocations of smp_send_reschedule(), rename the
+> arch-specific definitions of it to arch_smp_send_reschedule() and wrap it
+> into an smp_send_reschedule() that contains a tracepoint.
+>
+> Signed-off-by: Valentin Schneider <vschneid@redhat.com>
+> ---
+>  arch/alpha/kernel/smp.c          | 2 +-
+>  arch/arc/kernel/smp.c            | 2 +-
+>  arch/arm/kernel/smp.c            | 2 +-
+>  arch/arm64/kernel/smp.c          | 2 +-
+>  arch/csky/kernel/smp.c           | 2 +-
+>  arch/hexagon/kernel/smp.c        | 2 +-
+>  arch/ia64/kernel/smp.c           | 4 ++--
+>  arch/loongarch/include/asm/smp.h | 2 +-
+>  arch/mips/include/asm/smp.h      | 2 +-
+>  arch/openrisc/kernel/smp.c       | 2 +-
+>  arch/parisc/kernel/smp.c         | 4 ++--
+>  arch/powerpc/kernel/smp.c        | 4 ++--
+>  arch/riscv/kernel/smp.c          | 4 ++--
+>  arch/s390/kernel/smp.c           | 2 +-
+>  arch/sh/kernel/smp.c             | 2 +-
+>  arch/sparc/kernel/smp_32.c       | 2 +-
+>  arch/sparc/kernel/smp_64.c       | 2 +-
+>  arch/x86/include/asm/smp.h       | 2 +-
+>  arch/xtensa/kernel/smp.c         | 2 +-
+>  include/linux/smp.h              | 1 +
+>  kernel/smp.c                     | 6 ++++++
+>  21 files changed, 30 insertions(+), 23 deletions(-)
+>
+> diff --git a/arch/alpha/kernel/smp.c b/arch/alpha/kernel/smp.c
+> index f4e20f75438f..38637eb9eebd 100644
+> --- a/arch/alpha/kernel/smp.c
+> +++ b/arch/alpha/kernel/smp.c
+> @@ -562,7 +562,7 @@ handle_ipi(struct pt_regs *regs)
 >  }
->  
-
-@mask@
-expression MASK;
-@@
-
-- (get_random_int() & ~(MASK))
-+ prandom_u32_max(MASK)
-
-> diff --git a/arch/loongarch/kernel/vdso.c b/arch/loongarch/kernel/vdso.c
-> index f32c38abd791..8c9826062652 100644
-> --- a/arch/loongarch/kernel/vdso.c
-> +++ b/arch/loongarch/kernel/vdso.c
-> @@ -78,7 +78,7 @@ static unsigned long vdso_base(void)
->  	unsigned long base = STACK_TOP;
->  
->  	if (current->flags & PF_RANDOMIZE) {
-> -		base += get_random_int() & (VDSO_RANDOMIZE_SIZE - 1);
-> +		base += prandom_u32_max(VDSO_RANDOMIZE_SIZE);
->  		base = PAGE_ALIGN(base);
->  	}
->  
-
-@minus_one@
-expression FULL;
-@@
-
-- (get_random_int() & ((FULL) - 1)
-+ prandom_u32_max(FULL)
-
-> diff --git a/arch/parisc/kernel/vdso.c b/arch/parisc/kernel/vdso.c
-> index 63dc44c4c246..47e5960a2f96 100644
-> --- a/arch/parisc/kernel/vdso.c
-> +++ b/arch/parisc/kernel/vdso.c
-> @@ -75,7 +75,7 @@ int arch_setup_additional_pages(struct linux_binprm *bprm,
->  
->  	map_base = mm->mmap_base;
->  	if (current->flags & PF_RANDOMIZE)
-> -		map_base -= (get_random_int() & 0x1f) * PAGE_SIZE;
-> +		map_base -= prandom_u32_max(0x20) * PAGE_SIZE;
->  
->  	vdso_text_start = get_unmapped_area(NULL, map_base, vdso_text_len, 0, 0);
->  
-
-These are more fun, but Coccinelle can still do them with a little
-Pythonic help:
-
-// Find a potential literal
-@literal_mask@
-expression LITERAL;
-identifier randfunc =~ "get_random_int|prandom_u32|get_random_u32";
-position p;
-@@
-
-        (randfunc()@p & (LITERAL))
-
-// Add one to the literal.
-@script:python add_one@
-literal << literal_mask.LITERAL;
-RESULT;
-@@
-
-if literal.startswith('0x'):
-        value = int(literal, 16) + 1
-        coccinelle.RESULT = cocci.make_expr("0x%x" % (value))
-elif literal[0] in '123456789':
-        value = int(literal, 10) + 1
-        coccinelle.RESULT = cocci.make_expr("%d" % (value))
-else:
-        print("I don't know how to handle: %s" % (literal))
-
-// Replace the literal mask with the calculated result.
-@plus_one@
-expression literal_mask.LITERAL;
-position literal_mask.p;
-expression add_one.RESULT;
-identifier FUNC;
-@@
-
--       (FUNC()@p & (LITERAL))
-+       prandom_u32_max(RESULT)
-
-> diff --git a/drivers/mtd/tests/stresstest.c b/drivers/mtd/tests/stresstest.c
-> index cb29c8c1b370..d2faaca7f19d 100644
-> --- a/drivers/mtd/tests/stresstest.c
-> +++ b/drivers/mtd/tests/stresstest.c
-> @@ -45,9 +45,8 @@ static int rand_eb(void)
->  	unsigned int eb;
->  
->  again:
-> -	eb = prandom_u32();
->  	/* Read or write up 2 eraseblocks at a time - hence 'ebcnt - 1' */
-> -	eb %= (ebcnt - 1);
-> +	eb = prandom_u32_max(ebcnt - 1);
->  	if (bbt[eb])
->  		goto again;
->  	return eb;
-
-This can also be done mechanically:
-
-@multi_line@
-identifier randfunc =~ "get_random_int|prandom_u32|get_random_u32";
-identifier RAND;
-expression E;
-@@
-
--       RAND = randfunc();
-        ... when != RAND
--       RAND %= (E);
-+       RAND = prandom_u32_max(E);
-
-@collapse_ret@
-type TYPE;
-identifier VAR;
-expression E;
-@@
-
- {
--       TYPE VAR;
--       VAR = (E);
--       return VAR;
-+       return E;
- }
-
-@drop_var@
-type TYPE;
-identifier VAR;
-@@
-
- {
--       TYPE VAR;
-        ... when != VAR
- }
-
-> diff --git a/fs/ext2/ialloc.c b/fs/ext2/ialloc.c
-> index 998dd2ac8008..f4944c4dee60 100644
-> --- a/fs/ext2/ialloc.c
-> +++ b/fs/ext2/ialloc.c
-> @@ -277,8 +277,7 @@ static int find_group_orlov(struct super_block *sb, struct inode *parent)
->  		int best_ndir = inodes_per_group;
->  		int best_group = -1;
->  
-> -		group = prandom_u32();
-> -		parent_group = (unsigned)group % ngroups;
-> +		parent_group = prandom_u32_max(ngroups);
->  		for (i = 0; i < ngroups; i++) {
->  			group = (parent_group + i) % ngroups;
->  			desc = ext2_get_group_desc (sb, group, NULL);
-
-Okay, that one is too much for me -- checking that group is never used
-after the assignment removal is likely possible, but beyond my cocci
-know-how. :)
-
-> diff --git a/fs/ext4/ialloc.c b/fs/ext4/ialloc.c
-> index f73e5eb43eae..36d5bc595cc2 100644
-> --- a/fs/ext4/ialloc.c
-> +++ b/fs/ext4/ialloc.c
-> @@ -463,10 +463,9 @@ static int find_group_orlov(struct super_block *sb, struct inode *parent,
->  			hinfo.hash_version = DX_HASH_HALF_MD4;
->  			hinfo.seed = sbi->s_hash_seed;
->  			ext4fs_dirhash(parent, qstr->name, qstr->len, &hinfo);
-> -			grp = hinfo.hash;
-> +			parent_group = hinfo.hash % ngroups;
->  		} else
-> -			grp = prandom_u32();
-> -		parent_group = (unsigned)grp % ngroups;
-> +			parent_group = prandom_u32_max(ngroups);
->  		for (i = 0; i < ngroups; i++) {
->  			g = (parent_group + i) % ngroups;
->  			get_orlov_stats(sb, g, flex_size, &stats);
-
-Much less easy mechanically. :)
-
-> diff --git a/lib/test_hexdump.c b/lib/test_hexdump.c
-> index 0927f44cd478..41a0321f641a 100644
-> --- a/lib/test_hexdump.c
-> +++ b/lib/test_hexdump.c
-> @@ -208,7 +208,7 @@ static void __init test_hexdump_overflow(size_t buflen, size_t len,
->  static void __init test_hexdump_overflow_set(size_t buflen, bool ascii)
+>
+>  void
+> -smp_send_reschedule(int cpu)
+> +arch_smp_send_reschedule(int cpu)
 >  {
->  	unsigned int i = 0;
-> -	int rs = (prandom_u32_max(2) + 1) * 16;
-> +	int rs = prandom_u32_max(2) + 1 * 16;
->  
->  	do {
->  		int gs = 1 << i;
-
-This looks wrong. Cocci says:
-
--       int rs = (get_random_int() % 2 + 1) * 16;
-+       int rs = (prandom_u32_max(2) + 1) * 16;
-
-> diff --git a/lib/test_vmalloc.c b/lib/test_vmalloc.c
-> index 4f2f2d1bac56..56ffaa8dd3f6 100644
-> --- a/lib/test_vmalloc.c
-> +++ b/lib/test_vmalloc.c
-> @@ -151,9 +151,7 @@ static int random_size_alloc_test(void)
->  	int i;
->  
->  	for (i = 0; i < test_loop_count; i++) {
-> -		n = prandom_u32();
-> -		n = (n % 100) + 1;
-> -
-> +		n = prandom_u32_max(n % 100) + 1;
->  		p = vmalloc(n * PAGE_SIZE);
->  
->  		if (!p)
-
-This looks wrong. Cocci says:
-
--               n = prandom_u32();
--               n = (n % 100) + 1;
-+               n = prandom_u32_max(100) + 1;
-
-> @@ -293,16 +291,12 @@ pcpu_alloc_test(void)
->  		return -1;
->  
->  	for (i = 0; i < 35000; i++) {
-> -		unsigned int r;
-> -
-> -		r = prandom_u32();
-> -		size = (r % (PAGE_SIZE / 4)) + 1;
-> +		size = prandom_u32_max(PAGE_SIZE / 4) + 1;
->  
->  		/*
->  		 * Maximum PAGE_SIZE
->  		 */
-> -		r = prandom_u32();
-> -		align = 1 << ((r % 11) + 1);
-> +		align = 1 << (prandom_u32_max(11) + 1);
->  
->  		pcpu[i] = __alloc_percpu(size, align);
->  		if (!pcpu[i])
-> @@ -393,14 +387,11 @@ static struct test_driver {
->  
->  static void shuffle_array(int *arr, int n)
+>  #ifdef DEBUG_IPI_MSG
+>         if (cpu == hard_smp_processor_id())
+> diff --git a/arch/arc/kernel/smp.c b/arch/arc/kernel/smp.c
+> index ab9e75e90f72..ae2e6a312361 100644
+> --- a/arch/arc/kernel/smp.c
+> +++ b/arch/arc/kernel/smp.c
+> @@ -292,7 +292,7 @@ static void ipi_send_msg(const struct cpumask *callmap, enum ipi_msg_type msg)
+>                 ipi_send_msg_one(cpu, msg);
+>  }
+>
+> -void smp_send_reschedule(int cpu)
+> +void arch_smp_send_reschedule(int cpu)
 >  {
-> -	unsigned int rnd;
->  	int i, j;
->  
->  	for (i = n - 1; i > 0; i--)  {
-> -		rnd = prandom_u32();
-> -
->  		/* Cut the range. */
-> -		j = rnd % i;
-> +		j = prandom_u32_max(i);
->  
->  		/* Swap indexes. */
->  		swap(arr[i], arr[j]);
+>         ipi_send_msg_one(cpu, IPI_RESCHEDULE);
+>  }
+> diff --git a/arch/arm/kernel/smp.c b/arch/arm/kernel/smp.c
+> index 3b280d55c1c4..f216ac890b6f 100644
+> --- a/arch/arm/kernel/smp.c
+> +++ b/arch/arm/kernel/smp.c
+> @@ -745,7 +745,7 @@ void __init set_smp_ipi_range(int ipi_base, int n)
+>         ipi_setup(smp_processor_id());
+>  }
+>
+> -void smp_send_reschedule(int cpu)
+> +void arch_smp_send_reschedule(int cpu)
+>  {
+>         smp_cross_call(cpumask_of(cpu), IPI_RESCHEDULE);
+>  }
+> diff --git a/arch/arm64/kernel/smp.c b/arch/arm64/kernel/smp.c
+> index 937d2623e06b..8d108edc4a89 100644
+> --- a/arch/arm64/kernel/smp.c
+> +++ b/arch/arm64/kernel/smp.c
+> @@ -976,7 +976,7 @@ void __init set_smp_ipi_range(int ipi_base, int n)
+>         ipi_setup(smp_processor_id());
+>  }
+>
+> -void smp_send_reschedule(int cpu)
+> +void arch_smp_send_reschedule(int cpu)
+>  {
+>         smp_cross_call(cpumask_of(cpu), IPI_RESCHEDULE);
+>  }
+> diff --git a/arch/csky/kernel/smp.c b/arch/csky/kernel/smp.c
+> index 4b605aa2e1d6..fd7f81be16dd 100644
+> --- a/arch/csky/kernel/smp.c
+> +++ b/arch/csky/kernel/smp.c
+> @@ -140,7 +140,7 @@ void smp_send_stop(void)
+>         on_each_cpu(ipi_stop, NULL, 1);
+>  }
+>
+> -void smp_send_reschedule(int cpu)
+> +void arch_smp_send_reschedule(int cpu)
+For csky part, Acked-by: Guo Ren <guoren@kernel.org>
 
-Yup, agrees with Cocci on these.
+>  {
+>         send_ipi_message(cpumask_of(cpu), IPI_RESCHEDULE);
+>  }
+> diff --git a/arch/hexagon/kernel/smp.c b/arch/hexagon/kernel/smp.c
+> index 4ba93e59370c..4e8bee25b8c6 100644
+> --- a/arch/hexagon/kernel/smp.c
+> +++ b/arch/hexagon/kernel/smp.c
+> @@ -217,7 +217,7 @@ void __init smp_prepare_cpus(unsigned int max_cpus)
+>         }
+>  }
+>
+> -void smp_send_reschedule(int cpu)
+> +void arch_smp_send_reschedule(int cpu)
+>  {
+>         send_ipi(cpumask_of(cpu), IPI_RESCHEDULE);
+>  }
+> diff --git a/arch/ia64/kernel/smp.c b/arch/ia64/kernel/smp.c
+> index e2cc59db86bc..ea4f009a232b 100644
+> --- a/arch/ia64/kernel/smp.c
+> +++ b/arch/ia64/kernel/smp.c
+> @@ -220,11 +220,11 @@ kdump_smp_send_init(void)
+>   * Called with preemption disabled.
+>   */
+>  void
+> -smp_send_reschedule (int cpu)
+> +arch_smp_send_reschedule (int cpu)
+>  {
+>         ia64_send_ipi(cpu, IA64_IPI_RESCHEDULE, IA64_IPI_DM_INT, 0);
+>  }
+> -EXPORT_SYMBOL_GPL(smp_send_reschedule);
+> +EXPORT_SYMBOL_GPL(arch_smp_send_reschedule);
+>
+>  /*
+>   * Called with preemption disabled.
+> diff --git a/arch/loongarch/include/asm/smp.h b/arch/loongarch/include/asm/smp.h
+> index 71189b28bfb2..3fcca134dfb1 100644
+> --- a/arch/loongarch/include/asm/smp.h
+> +++ b/arch/loongarch/include/asm/smp.h
+> @@ -83,7 +83,7 @@ extern void show_ipi_list(struct seq_file *p, int prec);
+>   * it goes straight through and wastes no time serializing
+>   * anything. Worst case is that we lose a reschedule ...
+>   */
+> -static inline void smp_send_reschedule(int cpu)
+> +static inline void arch_smp_send_reschedule(int cpu)
+>  {
+>         loongson3_send_ipi_single(cpu, SMP_RESCHEDULE);
+>  }
+> diff --git a/arch/mips/include/asm/smp.h b/arch/mips/include/asm/smp.h
+> index 5d9ff61004ca..9806e79895d9 100644
+> --- a/arch/mips/include/asm/smp.h
+> +++ b/arch/mips/include/asm/smp.h
+> @@ -66,7 +66,7 @@ extern void calculate_cpu_foreign_map(void);
+>   * it goes straight through and wastes no time serializing
+>   * anything. Worst case is that we lose a reschedule ...
+>   */
+> -static inline void smp_send_reschedule(int cpu)
+> +static inline void arch_smp_send_reschedule(int cpu)
+>  {
+>         extern const struct plat_smp_ops *mp_ops;       /* private */
+>
+> diff --git a/arch/openrisc/kernel/smp.c b/arch/openrisc/kernel/smp.c
+> index e1419095a6f0..0a7a059e2dff 100644
+> --- a/arch/openrisc/kernel/smp.c
+> +++ b/arch/openrisc/kernel/smp.c
+> @@ -173,7 +173,7 @@ void handle_IPI(unsigned int ipi_msg)
+>         }
+>  }
+>
+> -void smp_send_reschedule(int cpu)
+> +void arch_smp_send_reschedule(int cpu)
+>  {
+>         smp_cross_call(cpumask_of(cpu), IPI_RESCHEDULE);
+>  }
+> diff --git a/arch/parisc/kernel/smp.c b/arch/parisc/kernel/smp.c
+> index 7dbd92cafae3..b7fc859fa87d 100644
+> --- a/arch/parisc/kernel/smp.c
+> +++ b/arch/parisc/kernel/smp.c
+> @@ -246,8 +246,8 @@ void kgdb_roundup_cpus(void)
+>  inline void
+>  smp_send_stop(void)    { send_IPI_allbutself(IPI_CPU_STOP); }
+>
+> -void
+> -smp_send_reschedule(int cpu) { send_IPI_single(cpu, IPI_RESCHEDULE); }
+> +void
+> +arch_smp_send_reschedule(int cpu) { send_IPI_single(cpu, IPI_RESCHEDULE); }
+>
+>  void
+>  smp_send_all_nop(void)
+> diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
+> index 169703fead57..2d7b217392f2 100644
+> --- a/arch/powerpc/kernel/smp.c
+> +++ b/arch/powerpc/kernel/smp.c
+> @@ -364,12 +364,12 @@ static inline void do_message_pass(int cpu, int msg)
+>  #endif
+>  }
+>
+> -void smp_send_reschedule(int cpu)
+> +void arch_smp_send_reschedule(int cpu)
+>  {
+>         if (likely(smp_ops))
+>                 do_message_pass(cpu, PPC_MSG_RESCHEDULE);
+>  }
+> -EXPORT_SYMBOL_GPL(smp_send_reschedule);
+> +EXPORT_SYMBOL_GPL(arch_smp_send_reschedule);
+>
+>  void arch_send_call_function_single_ipi(int cpu)
+>  {
+> diff --git a/arch/riscv/kernel/smp.c b/arch/riscv/kernel/smp.c
+> index 760a64518c58..213602e89a8b 100644
+> --- a/arch/riscv/kernel/smp.c
+> +++ b/arch/riscv/kernel/smp.c
+> @@ -235,8 +235,8 @@ void smp_send_stop(void)
+>                            cpumask_pr_args(cpu_online_mask));
+>  }
+>
+> -void smp_send_reschedule(int cpu)
+> +void arch_smp_send_reschedule(int cpu)
+>  {
+>         send_ipi_single(cpu, IPI_RESCHEDULE);
+>  }
+> -EXPORT_SYMBOL_GPL(smp_send_reschedule);
+> +EXPORT_SYMBOL_GPL(arch_smp_send_reschedule);
+> diff --git a/arch/s390/kernel/smp.c b/arch/s390/kernel/smp.c
+> index 30c91d565933..9d1c36571106 100644
+> --- a/arch/s390/kernel/smp.c
+> +++ b/arch/s390/kernel/smp.c
+> @@ -542,7 +542,7 @@ void arch_send_call_function_single_ipi(int cpu)
+>   * it goes straight through and wastes no time serializing
+>   * anything. Worst case is that we lose a reschedule ...
+>   */
+> -void smp_send_reschedule(int cpu)
+> +void arch_smp_send_reschedule(int cpu)
+>  {
+>         pcpu_ec_call(pcpu_devices + cpu, ec_schedule);
+>  }
+> diff --git a/arch/sh/kernel/smp.c b/arch/sh/kernel/smp.c
+> index 65924d9ec245..5cf35a774dc7 100644
+> --- a/arch/sh/kernel/smp.c
+> +++ b/arch/sh/kernel/smp.c
+> @@ -256,7 +256,7 @@ void __init smp_cpus_done(unsigned int max_cpus)
+>                (bogosum / (5000/HZ)) % 100);
+>  }
+>
+> -void smp_send_reschedule(int cpu)
+> +void arch_smp_send_reschedule(int cpu)
+>  {
+>         mp_ops->send_ipi(cpu, SMP_MSG_RESCHEDULE);
+>  }
+> diff --git a/arch/sparc/kernel/smp_32.c b/arch/sparc/kernel/smp_32.c
+> index ad8094d955eb..87eaa7719fa2 100644
+> --- a/arch/sparc/kernel/smp_32.c
+> +++ b/arch/sparc/kernel/smp_32.c
+> @@ -120,7 +120,7 @@ void cpu_panic(void)
+>
+>  struct linux_prom_registers smp_penguin_ctable = { 0 };
+>
+> -void smp_send_reschedule(int cpu)
+> +void arch_smp_send_reschedule(int cpu)
+>  {
+>         /*
+>          * CPU model dependent way of implementing IPI generation targeting
+> diff --git a/arch/sparc/kernel/smp_64.c b/arch/sparc/kernel/smp_64.c
+> index a55295d1b924..e5964d1d8b37 100644
+> --- a/arch/sparc/kernel/smp_64.c
+> +++ b/arch/sparc/kernel/smp_64.c
+> @@ -1430,7 +1430,7 @@ static unsigned long send_cpu_poke(int cpu)
+>         return hv_err;
+>  }
+>
+> -void smp_send_reschedule(int cpu)
+> +void arch_smp_send_reschedule(int cpu)
+>  {
+>         if (cpu == smp_processor_id()) {
+>                 WARN_ON_ONCE(preemptible());
+> diff --git a/arch/x86/include/asm/smp.h b/arch/x86/include/asm/smp.h
+> index a73bced40e24..5ff5815149bd 100644
+> --- a/arch/x86/include/asm/smp.h
+> +++ b/arch/x86/include/asm/smp.h
+> @@ -99,7 +99,7 @@ static inline void play_dead(void)
+>         smp_ops.play_dead();
+>  }
+>
+> -static inline void smp_send_reschedule(int cpu)
+> +static inline void arch_smp_send_reschedule(int cpu)
+>  {
+>         smp_ops.smp_send_reschedule(cpu);
+>  }
+> diff --git a/arch/xtensa/kernel/smp.c b/arch/xtensa/kernel/smp.c
+> index 4dc109dd6214..d95907b8e4d3 100644
+> --- a/arch/xtensa/kernel/smp.c
+> +++ b/arch/xtensa/kernel/smp.c
+> @@ -389,7 +389,7 @@ void arch_send_call_function_single_ipi(int cpu)
+>         send_ipi_message(cpumask_of(cpu), IPI_CALL_FUNC);
+>  }
+>
+> -void smp_send_reschedule(int cpu)
+> +void arch_smp_send_reschedule(int cpu)
+>  {
+>         send_ipi_message(cpumask_of(cpu), IPI_RESCHEDULE);
+>  }
+> diff --git a/include/linux/smp.h b/include/linux/smp.h
+> index a80ab58ae3f1..a67e7aad17b9 100644
+> --- a/include/linux/smp.h
+> +++ b/include/linux/smp.h
+> @@ -125,6 +125,7 @@ extern void smp_send_stop(void);
+>  /*
+>   * sends a 'reschedule' event to another CPU:
+>   */
+> +extern void arch_smp_send_reschedule(int cpu);
+>  extern void smp_send_reschedule(int cpu);
+>
+>
+> diff --git a/kernel/smp.c b/kernel/smp.c
+> index 387735180aed..9dfe057424f8 100644
+> --- a/kernel/smp.c
+> +++ b/kernel/smp.c
+> @@ -166,6 +166,12 @@ static inline void send_call_function_ipi_mask(const struct cpumask *mask)
+>         arch_send_call_function_ipi_mask(mask);
+>  }
+>
+> +void smp_send_reschedule(int cpu)
+> +{
+> +       trace_ipi_send_cpu(_RET_IP_, cpu);
+> +       arch_smp_send_reschedule(cpu);
+> +}
+> +
+>  #ifdef CONFIG_CSD_LOCK_WAIT_DEBUG
+>
+>  static DEFINE_STATIC_KEY_FALSE(csdlock_debug_enabled);
+> --
+> 2.31.1
+>
+
 
 -- 
-Kees Cook
+Best Regards
+ Guo Ren
