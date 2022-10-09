@@ -2,68 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D5065F8972
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 Oct 2022 07:35:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60B1C5F89AC
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 Oct 2022 08:24:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MlW3f37qVz3cJx
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 Oct 2022 16:35:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MlX8K1wyfz3dv4
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 Oct 2022 17:24:49 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=ZhbF7auk;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=NiQB3aeW;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::530; helo=mail-pg1-x530.google.com; envelope-from=keescook@chromium.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::234; helo=mail-lj1-x234.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=ZhbF7auk;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=NiQB3aeW;
 	dkim-atps=neutral
-Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
+Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MlSWl6Trgz3bSX
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  9 Oct 2022 14:41:21 +1100 (AEDT)
-Received: by mail-pg1-x530.google.com with SMTP id 129so7799112pgc.5
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 08 Oct 2022 20:41:21 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MlWzv2Xwwz301m
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  9 Oct 2022 17:17:29 +1100 (AEDT)
+Received: by mail-lj1-x234.google.com with SMTP id d24so5803130ljl.9
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 08 Oct 2022 23:17:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Jc9wqi9hH7sDAuXmZMPHByefEvgO0MbR3+ZEqDB7Wuk=;
-        b=ZhbF7aukJSn3TNMRwCJkZSqm1r+X38mJ2RxvPJW6Z+9mn1TOlxypOyituNx8mz1HVC
-         FGqxSiHSDomVzpOPFi9kka3+6Rdn9v0XaNwqyXLdtOhmQI0POv0z39c8Rsj4C7/d+KIP
-         fJKzHg6Na0ETg2nVHR+d6vQT/rsL3lGZwlInw=
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=e/EErkgAu4+sS/bcjgyuBvc1y8OiXjbSXTk2pNqKv6c=;
+        b=NiQB3aeWglXaGIEIV3/i/gSogfgbbLnH7z2zhGaWVC8Ub35+EPLO4wIbZ3w2Enaa9l
+         fB7UB5wJWSb36Fch45szcwQU3MZlznBhIlqnGPb0pmsam/81Ks2xHnu5zEXQnAi2qg3i
+         dSsS3qLBwN2nRgQiy7WEyA/iYlzFUAe+I0+UZ5rIYslvx4yOek0t8p6ZIcwI1dcemtzD
+         wCxogl78aJiSWW4JWgTgmm3LRhzhjI2VrYtJk154WvGbRaFpgo0Rqd0FK57yM6UhW1My
+         M3KW0kDTX6pXCCEaK+7tvZNKYZw6O0RQP1r2DShvVSsHV70ENra54bDLdNvk4lvzUoZM
+         ivDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Jc9wqi9hH7sDAuXmZMPHByefEvgO0MbR3+ZEqDB7Wuk=;
-        b=k+Ib07R3zs4U02N/g3cidYWsyV2YWq3jWiBSKd/Crk2mspwt5BrMzKpZxz6AvfRzcG
-         ABWo0fOR2aZrULzzh52IiblutN9a0r0ZJp8xTD+qJ9jVAzBW32+9e5T5Gqn6W8kEx03M
-         3DwVCrEORI5Km3BxuwlYdcLxNhmFKTaNrsbgnh9GTgLQiUST4CGkCRpE4x+SNIUl9PF6
-         J2096WVksvMChIdhzihOYzkwR2i4JuoCNRT9RF4txWF3JFeJOHNPrJqAv2Ltc6Ofght2
-         azHRM4aDyVrK2sqiYzCUigQstbSZHpvq13NWK+Z6z2v0UJvgRjePXjsRRsu59xEifqlu
-         FLCg==
-X-Gm-Message-State: ACrzQf3Abmis10ZRkqcuY11WS59/+biLQk5W7PFfojaawniRWz1mSKwy
-	EtSa6Wu1Ep1d8SI8NlIj3QTGdA==
-X-Google-Smtp-Source: AMsMyM5FGTaJNFEGPbumoaD5MBb6Q7fQgfiKiCpnvelFpTCgpDJD/BqrIxkvX1O2Yt8qSiE6wtg/9Q==
-X-Received: by 2002:a63:1a45:0:b0:439:49b4:9672 with SMTP id a5-20020a631a45000000b0043949b49672mr11177300pgm.551.1665286876512;
-        Sat, 08 Oct 2022 20:41:16 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id h129-20020a625387000000b00561ed54aa53sm4353776pfb.97.2022.10.08.20.41.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 08 Oct 2022 20:41:15 -0700 (PDT)
-Date: Sat, 8 Oct 2022 20:41:14 -0700
-From: Kees Cook <keescook@chromium.org>
-To: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Subject: Re: [PATCH v5 0/7] treewide cleanup of random integer usage
-Message-ID: <202210082028.692DFA21@keescook>
-References: <20221008055359.286426-1-Jason@zx2c4.com>
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=e/EErkgAu4+sS/bcjgyuBvc1y8OiXjbSXTk2pNqKv6c=;
+        b=2zED5fHYh+k/eblMtFCHS1ObPFCHMTfXJv7nBegvy0Wbp81kn6xI47k4W+Nsy6nO38
+         nr5K7QtUT8MpUAmU7zB7ntIgCkM8Zs1+bmIUIYavNHbRxYZ4XrYjJkyVrS2ANW7xAngZ
+         INXtzT0eV/fhvQ9CGehwBQNWPfVvO4Aq2eQaEpHfPDb0CSGojNyU4QdMpzdb8/LU2IR/
+         jXoZX9C1mxYVuiD5PP9GS36EAlJ3FGfyMpOxlqUE3KOmYATuc0lMeQFUEj63YnP7nIwt
+         T3EEMOHWA1O13AXZILaFOl+Kk3RM1Uugvf1EcvJzE0UjY8AGxoCfUnjwJcH2pevugmSE
+         vkSg==
+X-Gm-Message-State: ACrzQf0/mppyvG+EdH3wAaNP5tp1nmpIxlySu+Ni+AACBKxrRr8lmowV
+	9+B3dOdP6clatysOETlpc9nvA3HOvCCmnRlCsSY=
+X-Google-Smtp-Source: AMsMyM74mW1O13BDrUgKjgucSJwkxHRRPwFOF4F1NZN8tz2anvpWrby4cMCRmLTayTpZ4+F7W/YAc9K7fmz95kyZoXI=
+X-Received: by 2002:a2e:960e:0:b0:26b:e5ae:cd78 with SMTP id
+ v14-20020a2e960e000000b0026be5aecd78mr4454929ljh.129.1665296241279; Sat, 08
+ Oct 2022 23:17:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221008055359.286426-1-Jason@zx2c4.com>
-X-Mailman-Approved-At: Sun, 09 Oct 2022 16:34:56 +1100
+References: <20220930064441.2548505-1-chancel.liu@nxp.com> <20220930064441.2548505-3-chancel.liu@nxp.com>
+In-Reply-To: <20220930064441.2548505-3-chancel.liu@nxp.com>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Sun, 9 Oct 2022 14:17:09 +0800
+Message-ID: <CAA+D8AO5qoPA3m8_-8jq6nYhNOSHaXimDGX3HRqrX54pbcQn3Q@mail.gmail.com>
+Subject: Re: [PATCH v3 2/7] ASoC: imx-audio-rpmsg: Create rpmsg channel for MICFIL
+To: Chancel Liu <chancel.liu@nxp.com>
+Content-Type: multipart/alternative; boundary="000000000000e846a905ea93fe62"
+X-Mailman-Approved-At: Sun, 09 Oct 2022 17:24:02 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,51 +74,134 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-wireless@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>, x86@kernel.org, Vignesh Raghavendra <vigneshr@ti.com>, linux-doc@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, kernel-janitors@vger.kernel.org, KP Singh <kpsingh@kernel.org>, dri-devel@lists.freedesktop.org, patches@lists.linux.dev, linux-mm@kvack.org, Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org, linux-mtd@lists.infradead.org, kasan-dev@googlegroups.com, "H . Peter Anvin" <hpa@zytor.com>, Andreas Noever <andreas.noever@gmail.com>, WANG Xuerui <kernel@xen0n.name>, Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>, linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, Mauro Carvalho Chehab <mchehab@kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>, Daniel Borkmann <daniel@iogearbox.net>, Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org, Helge Deller <deller@gmx.de>, Huacai C
- hen <chenhuacai@kernel.org>, Hugh Dickins <hughd@google.com>, Russell King <linux@armlinux.org.uk>, Jozsef Kadlecsik <kadlec@netfilter.org>, Jason Gunthorpe <jgg@ziepe.ca>, Dave Airlie <airlied@redhat.com>, Paolo Abeni <pabeni@redhat.com>, "James E . J . Bottomley" <jejb@linux.ibm.com>, Pablo Neira Ayuso <pablo@netfilter.org>, linux-media@vger.kernel.org, Marco Elver <elver@google.com>, Yury Norov <yury.norov@gmail.com>, Heiko Carstens <hca@linux.ibm.com>, linux-um@lists.infradead.org, linux-mips@vger.kernel.org, linux-block@vger.kernel.org, Richard Weinberger <richard@nod.at>, Borislav Petkov <bp@alien8.de>, linux-nvme@lists.infradead.org, loongarch@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Johannes Berg <johannes@sipsolutions.net>, linux-arm-kernel@lists.infradead.org, Jens Axboe <axboe@kernel.dk>, linux-mmc@vger.kernel.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Theodore 
- Ts'o <tytso@mit.edu>, linux-parisc@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org, Florian Westphal <fw@strlen.de>, linux-kernel@vger.kernel.org, Christoph =?iso-8859-1?Q?B=F6hmwalder?= <christoph.boehmwalder@linbit.com>, linux-crypto@vger.kernel.org, Jan Kara <jack@suse.com>, Thomas Graf <tgraf@suug.ch>, linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
+Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, lgirdwood@gmail.com, linuxppc-dev@lists.ozlabs.org, Xiubo.Lee@gmail.com, linux-kernel@vger.kernel.org, robh+dt@kernel.org, tiwai@suse.com, nicoleotsuka@gmail.com, broonie@kernel.org, krzysztof.kozlowski+dt@linaro.org, perex@perex.cz, festevam@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Oct 07, 2022 at 11:53:52PM -0600, Jason A. Donenfeld wrote:
-> This is a five part treewide cleanup of random integer handling. The
-> rules for random integers are:
+--000000000000e846a905ea93fe62
+Content-Type: text/plain; charset="UTF-8"
 
-Reviewing the delta between of my .cocci rules and your v5, everything
-matches, except for get_random_int() conversions for files not in
-your tree:
+On Fri, Sep 30, 2022 at 2:46 PM Chancel Liu <chancel.liu@nxp.com> wrote:
 
-diff --git a/drivers/gpu/drm/tests/drm_buddy_test.c b/drivers/gpu/drm/tests/drm_buddy_test.c
-index 7a2b2d6bc3fe..62f69589a72d 100644
---- a/drivers/gpu/drm/tests/drm_buddy_test.c
-+++ b/drivers/gpu/drm/tests/drm_buddy_test.c
-@@ -729,7 +729,7 @@ static void drm_test_buddy_alloc_limit(struct kunit *test)
- static int drm_buddy_init_test(struct kunit *test)
- {
- 	while (!random_seed)
--		random_seed = get_random_int();
-+		random_seed = get_random_u32();
- 
- 	return 0;
- }
-diff --git a/drivers/gpu/drm/tests/drm_mm_test.c b/drivers/gpu/drm/tests/drm_mm_test.c
-index 659d1af4dca7..c4b66eeae203 100644
---- a/drivers/gpu/drm/tests/drm_mm_test.c
-+++ b/drivers/gpu/drm/tests/drm_mm_test.c
-@@ -2212,7 +2212,7 @@ static void drm_test_mm_color_evict_range(struct kunit *test)
- static int drm_mm_init_test(struct kunit *test)
- {
- 	while (!random_seed)
--		random_seed = get_random_int();
-+		random_seed = get_random_u32();
- 
- 	return 0;
- }
+> Rpmsg channel for MICFIL can also be created through rpmsg name service
+> announcement. If this driver is probed, Cortex-A can access MICFIL
+> which is actually controlled by Cortex-M through rpmsg channel for
+> MICFIL. This driver also helps register ASoC platform device thus use
+> of PLATFORM_DEVID_AUTO macro in API can automatically create device for
+> each rpmsg channel.
+>
+> Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
+>
 
-So, I guess I mean to say that "prandom: remove unused functions" is
-going to cause some pain. :) Perhaps don't push that to -next, and do a
-final pass next merge window to catch any new stuff, and then send those
-updates and the removal before -rc1 closes?
+Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
 
--- 
-Kees Cook
+Best regards
+Wang Shengjiu
+
+> ---
+>  sound/soc/fsl/imx-audio-rpmsg.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/sound/soc/fsl/imx-audio-rpmsg.c
+> b/sound/soc/fsl/imx-audio-rpmsg.c
+> index 905c3a071300..d5234ac4b09b 100644
+> --- a/sound/soc/fsl/imx-audio-rpmsg.c
+> +++ b/sound/soc/fsl/imx-audio-rpmsg.c
+> @@ -88,7 +88,7 @@ static int imx_audio_rpmsg_probe(struct rpmsg_device
+> *rpdev)
+>         /* Register platform driver for rpmsg routine */
+>         data->rpmsg_pdev = platform_device_register_data(&rpdev->dev,
+>                                                          IMX_PCM_DRV_NAME,
+> -
+> PLATFORM_DEVID_NONE,
+> +
+> PLATFORM_DEVID_AUTO,
+>                                                          NULL, 0);
+>         if (IS_ERR(data->rpmsg_pdev)) {
+>                 dev_err(&rpdev->dev, "failed to register rpmsg
+> platform.\n");
+> @@ -110,6 +110,7 @@ static void imx_audio_rpmsg_remove(struct rpmsg_device
+> *rpdev)
+>
+>  static struct rpmsg_device_id imx_audio_rpmsg_id_table[] = {
+>         { .name = "rpmsg-audio-channel" },
+> +       { .name = "rpmsg-micfil-channel" },
+>         { },
+>  };
+>
+> --
+> 2.25.1
+>
+>
+
+--000000000000e846a905ea93fe62
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Fri, Sep 30, 2022 at 2:46 PM Chanc=
+el Liu &lt;<a href=3D"mailto:chancel.liu@nxp.com">chancel.liu@nxp.com</a>&g=
+t; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0p=
+x 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">Rpmsg =
+channel for MICFIL can also be created through rpmsg name service<br>
+announcement. If this driver is probed, Cortex-A can access MICFIL<br>
+which is actually controlled by Cortex-M through rpmsg channel for<br>
+MICFIL. This driver also helps register ASoC platform device thus use<br>
+of PLATFORM_DEVID_AUTO macro in API can automatically create device for<br>
+each rpmsg channel.<br>
+<br>
+Signed-off-by: Chancel Liu &lt;<a href=3D"mailto:chancel.liu@nxp.com" targe=
+t=3D"_blank">chancel.liu@nxp.com</a>&gt;<br></blockquote><div><br></div><di=
+v>Acked-by: Shengjiu Wang &lt;<a href=3D"mailto:shengjiu.wang@gmail.com">sh=
+engjiu.wang@gmail.com</a>&gt;</div><div><br></div><div>Best regards</div><d=
+iv>Wang Shengjiu=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"marg=
+in:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1e=
+x">
+---<br>
+=C2=A0sound/soc/fsl/imx-audio-rpmsg.c | 3 ++-<br>
+=C2=A01 file changed, 2 insertions(+), 1 deletion(-)<br>
+<br>
+diff --git a/sound/soc/fsl/imx-audio-rpmsg.c b/sound/soc/fsl/imx-audio-rpms=
+g.c<br>
+index 905c3a071300..d5234ac4b09b 100644<br>
+--- a/sound/soc/fsl/imx-audio-rpmsg.c<br>
++++ b/sound/soc/fsl/imx-audio-rpmsg.c<br>
+@@ -88,7 +88,7 @@ static int imx_audio_rpmsg_probe(struct rpmsg_device *rpd=
+ev)<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 /* Register platform driver for rpmsg routine *=
+/<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 data-&gt;rpmsg_pdev =3D platform_device_registe=
+r_data(&amp;rpdev-&gt;dev,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0IMX_PCM_DRV_NAME,<br=
+>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 PLATFORM_DEVID_NONE,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 PLATFORM_DEVID_AUTO,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0NULL, 0);<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (IS_ERR(data-&gt;rpmsg_pdev)) {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 dev_err(&amp;rpdev-=
+&gt;dev, &quot;failed to register rpmsg platform.\n&quot;);<br>
+@@ -110,6 +110,7 @@ static void imx_audio_rpmsg_remove(struct rpmsg_device =
+*rpdev)<br>
+<br>
+=C2=A0static struct rpmsg_device_id imx_audio_rpmsg_id_table[] =3D {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 { .name =3D &quot;rpmsg-audio-channel&quot; },<=
+br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0{ .name =3D &quot;rpmsg-micfil-channel&quot; },=
+<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 { },<br>
+=C2=A0};<br>
+<br>
+-- <br>
+2.25.1<br>
+<br>
+</blockquote></div></div>
+
+--000000000000e846a905ea93fe62--
