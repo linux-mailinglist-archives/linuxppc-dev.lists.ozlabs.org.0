@@ -1,68 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A0BA5F89AF
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 Oct 2022 08:26:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BB1D5F89B0
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 Oct 2022 08:27:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MlXBL732Vz3dwR
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 Oct 2022 17:26:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MlXCN1gwWz3dwL
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 Oct 2022 17:27:28 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Vnn3OC5a;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=PPyhE01b;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::232; helo=mail-lj1-x232.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::135; helo=mail-lf1-x135.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Vnn3OC5a;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=PPyhE01b;
 	dkim-atps=neutral
-Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MlX0w0zJCz3bjT
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  9 Oct 2022 17:18:24 +1100 (AEDT)
-Received: by mail-lj1-x232.google.com with SMTP id p5so9995644ljc.13
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 08 Oct 2022 23:18:23 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MlX1p29Rpz3bc5
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  9 Oct 2022 17:19:10 +1100 (AEDT)
+Received: by mail-lf1-x135.google.com with SMTP id s20so12476445lfi.11
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 08 Oct 2022 23:19:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=i4xfQIyuSmS7q/zccFt7uuXnpmr0dTN+JLFy1qBP9+Q=;
-        b=Vnn3OC5a+mBIFdJXtXSfziRoydRuVChhA33DdoMnFHX0DViEwCcwPSdpt/1gVJSal+
-         mBsdNBle9TetrxuuLfCxKd0pDzV1xBDiYmblUiUyRmLEYhyb9gODDpnRNSQpmp7ae7A5
-         ReMDI/3VB4odYyBAbX/78NFsBy/wqhPSZBnXlO+3dtVBSDE+oeuoB266nLgnQ1lO9YLR
-         q8sjQHmlc4TaoBuRFneYVZDLIMgtS6atuTXiKSLSPH6YlGtcUia6tWTlvd5TKs96y6fL
-         thGeokKYXBuL0U6QCyLkXxNijT2/cdGsZjOUzEw6ZQmqwFsJGjYAQwU4aq/48KndbgKc
-         fMIg==
+        bh=FwFtbnuHXctfwVd3JKQNg+pvdLuGE81h0Vad0SlZEM8=;
+        b=PPyhE01bnzN0uGGFHXvZs8G49heZgoCMbrpmPh6O9CBwul7F+CG8MU28S0rMtx4viR
+         +VW4N4zfwg4wUkLdxghB41OUAaSc+zy28EIkzuft3Z/rSYqnasvExxrWgcWGS4VVTMfk
+         3gkl62gGMq740AjC48/I3ggs9tWUv7nbbEVH0nLWnJhWWkczYWCHcTAcY0p0KUW0hD3U
+         ILE5K1UyvxakJahOdLObdXWBRvQaN63JDkuqLOuZ8fM4Dlab0N28ayLREFFvLZLK/2HZ
+         IiEZF0iBiD3g5U8slIJXXa7wKQ5F0XUpUiwia5ErCzv2TNg5P5opGEMdeCGPc/t34cqp
+         GyHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=i4xfQIyuSmS7q/zccFt7uuXnpmr0dTN+JLFy1qBP9+Q=;
-        b=VT9Cx+OMRo3QURYsFRhGW5CuUaJys1hy5z7Dgwov2DGN3xZwj0CEwWCIJ8gvyX/n2F
-         6NJiA4URK+KCwijyHKr8m4cYcww4zNGb0QV0xfiVJNxqAdv2xnxyv2MZ1R1gfXqruLnG
-         KtTZBoqDCP5mi1dewiLxC5kGnae1zcZ4TKp+4PduVDvKjRX5SwqsGiLOn/krc0HZFwEC
-         Lec6q69dXFnV5sQg+8aw9zWKdX/ze3lHQuYKYtIbl3Ss6zirQ1jgLhGdgbpDjPjF9gl2
-         ED9cbT2/UkfD0qe29YREDUCygU7/nK2ncHy9kWG80slPXV0aPjNF6K5+F0sTHcBVRSsM
-         3Ijg==
-X-Gm-Message-State: ACrzQf0oeVMmFgJznumatv2HNifCVp8hN4J9IeOYEHau4tQ9QwqZiDrA
-	V1gb8lQy74ZE4r6NR6KW5b44LpgFybgvBAZp9ZE=
-X-Google-Smtp-Source: AMsMyM6vOS0rpU4QAxo6gdqNHlV/KsQBH4SrBvGhQVncrsdlz6ri/aA09LrNxwK1tQwAGXy1BJkpVNIygl7ySBczrgQ=
-X-Received: by 2002:a2e:a1c8:0:b0:261:e4e5:1cc3 with SMTP id
- c8-20020a2ea1c8000000b00261e4e51cc3mr4852152ljm.248.1665296300917; Sat, 08
- Oct 2022 23:18:20 -0700 (PDT)
+        bh=FwFtbnuHXctfwVd3JKQNg+pvdLuGE81h0Vad0SlZEM8=;
+        b=6gjVBTzmJ+iKaoTuXaEeavBuSjTrfu7H6TdVLCSeypENk/AUKTqRUB3KR7HuhrSc2m
+         2tc88O5MD+X6IhPLH0Zwl0aZDvkiN9K+CZguBgpnOg26n7ee55WIqxwFB3ZHxS5gnWjW
+         WD612ujI75An6Ib5XqwUIM9yYSpuoFJRIeMbFJhdJT8l77BILvzxW/65KM6m4Xo04nyc
+         n7MJukLprc0Zb1yBeV0yWBxJCCbIXjb4PxECR29cVyFAZPiHOx8f8+hwwflL7ZN9DBFd
+         YPXYzm67qvjAE6lXc+Ne5bXYIO3PwQyv7nUnOctXSfATAiTgHPOr+untXCfuHVg5daaq
+         seCA==
+X-Gm-Message-State: ACrzQf1XStCEkp3AToUiaoQG9QsebVPKInnTt5LW4R5N1LNUkAfLXQyC
+	9peMXYmfmt7vwsKAs8cfYLxUuNP0G0SeGlEHhxg=
+X-Google-Smtp-Source: AMsMyM4mwpBj9E5VmiZkhu50z2NUYKyEvBld8q+mnFLoSzMC2flw0ou8454LOgpGciwCmURlMc8O5kJM1wuW3bv4ZcI=
+X-Received: by 2002:ac2:4d46:0:b0:4a2:473f:1fb3 with SMTP id
+ 6-20020ac24d46000000b004a2473f1fb3mr4163640lfp.408.1665296345775; Sat, 08 Oct
+ 2022 23:19:05 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220930064441.2548505-1-chancel.liu@nxp.com> <20220930064441.2548505-5-chancel.liu@nxp.com>
-In-Reply-To: <20220930064441.2548505-5-chancel.liu@nxp.com>
+References: <20220930064441.2548505-1-chancel.liu@nxp.com> <20220930064441.2548505-6-chancel.liu@nxp.com>
+In-Reply-To: <20220930064441.2548505-6-chancel.liu@nxp.com>
 From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Sun, 9 Oct 2022 14:18:09 +0800
-Message-ID: <CAA+D8AMtPhW_sXhF3BBHwkKW-hvZevH7xn9RxZb3N1Zrd2jmog@mail.gmail.com>
-Subject: Re: [PATCH v3 4/7] ASoC: imx-pcm-rpmsg: Multi-channel support for
- sound card based on rpmsg
+Date: Sun, 9 Oct 2022 14:18:54 +0800
+Message-ID: <CAA+D8AOUxRK7_DrCVsCXpRmri3=ejdoYakSfusmzFVaZf9B2wQ@mail.gmail.com>
+Subject: Re: [PATCH v3 5/7] ASoC: fsl_rpmsg: Register different ASoC machine devices
 To: Chancel Liu <chancel.liu@nxp.com>
-Content-Type: multipart/alternative; boundary="0000000000007647f205ea94027f"
+Content-Type: multipart/alternative; boundary="00000000000022c23c05ea940592"
 X-Mailman-Approved-At: Sun, 09 Oct 2022 17:24:03 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -79,13 +78,14 @@ Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, lgirdwood@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---0000000000007647f205ea94027f
+--00000000000022c23c05ea940592
 Content-Type: text/plain; charset="UTF-8"
 
 On Fri, Sep 30, 2022 at 2:46 PM Chancel Liu <chancel.liu@nxp.com> wrote:
 
-> Some sound card based on rpmsg may support multi-channel. The number of
-> channels can be sent to Cortex-M in rpmsg for process.
+> This driver helps register ASoC machine device thus use of
+> PLATFORM_DEVID_AUTO macro in API can automatically create device for
+> each sound card based on rpmsg.
 >
 > Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
 >
@@ -96,29 +96,31 @@ Best regards
 Wang Shengjiu
 
 > ---
->  sound/soc/fsl/imx-pcm-rpmsg.c | 2 +-
+>  sound/soc/fsl/fsl_rpmsg.c | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/sound/soc/fsl/imx-pcm-rpmsg.c b/sound/soc/fsl/imx-pcm-rpmsg.c
-> index 3157cd5a837e..2f310994f7ee 100644
-> --- a/sound/soc/fsl/imx-pcm-rpmsg.c
-> +++ b/sound/soc/fsl/imx-pcm-rpmsg.c
-> @@ -178,7 +178,7 @@ static int imx_rpmsg_pcm_hw_params(struct
-> snd_soc_component *component,
->                 msg->s_msg.param.channels = RPMSG_CH_STEREO;
->                 break;
->         default:
-> -               ret = -EINVAL;
-> +               msg->s_msg.param.channels = params_channels(params);
->                 break;
->         }
+> diff --git a/sound/soc/fsl/fsl_rpmsg.c b/sound/soc/fsl/fsl_rpmsg.c
+> index bf94838bdbef..fde3d5006ce0 100644
+> --- a/sound/soc/fsl/fsl_rpmsg.c
+> +++ b/sound/soc/fsl/fsl_rpmsg.c
+> @@ -235,7 +235,7 @@ static int fsl_rpmsg_probe(struct platform_device
+> *pdev)
 >
+>         rpmsg->card_pdev = platform_device_register_data(&pdev->dev,
+>                                                          "imx-audio-rpmsg",
+> -
+> PLATFORM_DEVID_NONE,
+> +
+> PLATFORM_DEVID_AUTO,
+>                                                          NULL,
+>                                                          0);
+>         if (IS_ERR(rpmsg->card_pdev)) {
 > --
 > 2.25.1
 >
 >
 
---0000000000007647f205ea94027f
+--00000000000022c23c05ea940592
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -126,9 +128,10 @@ Content-Transfer-Encoding: quoted-printable
 <div dir=3D"ltr" class=3D"gmail_attr">On Fri, Sep 30, 2022 at 2:46 PM Chanc=
 el Liu &lt;<a href=3D"mailto:chancel.liu@nxp.com">chancel.liu@nxp.com</a>&g=
 t; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0p=
-x 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">Some s=
-ound card based on rpmsg may support multi-channel. The number of<br>
-channels can be sent to Cortex-M in rpmsg for process.<br>
+x 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">This d=
+river helps register ASoC machine device thus use of<br>
+PLATFORM_DEVID_AUTO macro in API can automatically create device for<br>
+each sound card based on rpmsg.<br>
 <br>
 Signed-off-by: Chancel Liu &lt;<a href=3D"mailto:chancel.liu@nxp.com" targe=
 t=3D"_blank">chancel.liu@nxp.com</a>&gt;<br></blockquote><div><br></div><di=
@@ -138,30 +141,38 @@ iv>Wang Shengjiu=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"marg=
 in:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1e=
 x">
 ---<br>
-=C2=A0sound/soc/fsl/imx-pcm-rpmsg.c | 2 +-<br>
+=C2=A0sound/soc/fsl/fsl_rpmsg.c | 2 +-<br>
 =C2=A01 file changed, 1 insertion(+), 1 deletion(-)<br>
 <br>
-diff --git a/sound/soc/fsl/imx-pcm-rpmsg.c b/sound/soc/fsl/imx-pcm-rpmsg.c<=
-br>
-index 3157cd5a837e..2f310994f7ee 100644<br>
---- a/sound/soc/fsl/imx-pcm-rpmsg.c<br>
-+++ b/sound/soc/fsl/imx-pcm-rpmsg.c<br>
-@@ -178,7 +178,7 @@ static int imx_rpmsg_pcm_hw_params(struct snd_soc_compo=
-nent *component,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 msg-&gt;s_msg.param=
-.channels =3D RPMSG_CH_STEREO;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 default:<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0ret =3D -EINVAL;<br=
->
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0msg-&gt;s_msg.param=
-.channels =3D params_channels(params);<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
+diff --git a/sound/soc/fsl/fsl_rpmsg.c b/sound/soc/fsl/fsl_rpmsg.c<br>
+index bf94838bdbef..fde3d5006ce0 100644<br>
+--- a/sound/soc/fsl/fsl_rpmsg.c<br>
++++ b/sound/soc/fsl/fsl_rpmsg.c<br>
+@@ -235,7 +235,7 @@ static int fsl_rpmsg_probe(struct platform_device *pdev=
+)<br>
 <br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 rpmsg-&gt;card_pdev =3D platform_device_registe=
+r_data(&amp;pdev-&gt;dev,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&quot;imx-audio-rpms=
+g&quot;,<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 PLATFORM_DEVID_NONE,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 PLATFORM_DEVID_AUTO,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0NULL,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A00);<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (IS_ERR(rpmsg-&gt;card_pdev)) {<br>
 -- <br>
 2.25.1<br>
 <br>
 </blockquote></div></div>
 
---0000000000007647f205ea94027f--
+--00000000000022c23c05ea940592--
