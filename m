@@ -1,60 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEDE45F8EEE
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 Oct 2022 23:18:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F1D05F8FE1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Oct 2022 00:17:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MlvzC3ymlz3dqL
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Oct 2022 08:18:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MlxHT0nZzz3dsm
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Oct 2022 09:17:25 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gGMq9knb;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=RVxnEoNn;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=pr-tracker-bot@kernel.org; receiver=<UNKNOWN>)
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MlxGY2NN9z2xJ8
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Oct 2022 09:16:37 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gGMq9knb;
+	dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=RVxnEoNn;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MlvyG6t12z2xjj
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Oct 2022 08:17:26 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id E9B9BB80DC9;
-	Sun,  9 Oct 2022 21:17:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 86564C4347C;
-	Sun,  9 Oct 2022 21:17:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1665350237;
-	bh=D74XGDY0AjKTNtkw0xUbEB6QSJ1u5+Xpx3ddWubXG80=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=gGMq9knbUi4Ax+zO3B5ZTyymLExoMlwEdI1AU4dSszEWjPw8AedXjgqpUgaNZbPGE
-	 c8DHkgeKvMJ3+7znCo6K8gTvruKiVZnyA5BkC5UMHfk8LDeH7zLcC3Che1+0LMK8fw
-	 ZznZTYge2XFnyoCAA542bJRoS6LCbMOQMr3ZTUCs8ag5iSvoCPy4ttbMBBtwZhtFGX
-	 YhjD4pW4IAbxj6clavzi9fPkhZTTZFrgyiB8xbZRVhfeiJZdFM8YAc66A56VlCn5Qm
-	 ULWur7nfXQKyNdHiaotwYZph9RlTmq68gE6gxtpMqm11abFYB/gFNpmgmdqj/W4OPN
-	 h+cn9C0D7ouPQ==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 747AFE21EC5;
-	Sun,  9 Oct 2022 21:17:17 +0000 (UTC)
-Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-6.1-1 tag
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <87edvhntv0.fsf@mpe.ellerman.id.au>
-References: <87edvhntv0.fsf@mpe.ellerman.id.au>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <87edvhntv0.fsf@mpe.ellerman.id.au>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.1-1
-X-PR-Tracked-Commit-Id: 376b3275c19f83d373e841e9af2d7658693190b9
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 4899a36f91a9f9b06878471096bd143e7253006d
-Message-Id: <166535023747.11566.620649606369998979.pr-tracker-bot@kernel.org>
-Date: Sun, 09 Oct 2022 21:17:17 +0000
-To: Michael Ellerman <mpe@ellerman.id.au>
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4MlxGS5W22z4wgv;
+	Mon, 10 Oct 2022 09:16:32 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+	s=201702; t=1665353793;
+	bh=5JXiyZ2rBUBWg3NdZnRUOBYGxdaJVI3zNREgAnnnSGE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=RVxnEoNnLYmLN/XeKRBBN0MbOXQ7XdNGTwIFR7MAqcDRQC+OXtn6AWacO5gOP8gJP
+	 pairn8Mfsct4dLSrLqwliTM9oUgUXDPB2m04UNsCzJncJ9IUO6xkSqOLJj2qfCIFnj
+	 5w2iCiFpfYsFHYY4KCHtxRQ//JycHRaIsKMKx+PAPPBdMsWizVTQu9cfsAO8reCMp6
+	 SJMo7QCx3AKrCy+OT91tXDROL4CJMvHvAZZ5KfPsVTGb5LRepEisAPHmuQVDfLo1hI
+	 8RvipvyxQorPHaOXKeGeqvacFqTPPAlzRZ9nLR7VGKgepxnV7rN0SvmxCUnDJ0xmJF
+	 0gXpZ1KGBKcbA==
+Date: Mon, 10 Oct 2022 09:16:14 +1100
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Masahiro Yamada <masahiroy@kernel.org>
+Subject: Re: linux-next: manual merge of the powerpc tree with the kbuild
+ tree
+Message-ID: <20221010091614.20a89f56@canb.auug.org.au>
+In-Reply-To: <20221004091205.2677b823@canb.auug.org.au>
+References: <20221004091205.2677b823@canb.auug.org.au>
+MIME-Version: 1.0
+Content-Type: multipart/signed; boundary="Sig_/.km7qOSO.2uHzBoxFdOk.nC";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,19 +59,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: david@redhat.com, linux-kernel@vger.kernel.org, wsa+renesas@sang-engineering.com, nicholas@linux.ibm.com, windhl@126.com, cuigaosheng1@huawei.com, mikey@neuling.org, paul@paul-moore.com, aneesh.kumar@linux.ibm.com, haren@linux.ibm.com, joel@jms.id.au, lukas.bulwahn@gmail.com, linux@roeck-us.net, nathanl@linux.ibm.com, ajd@linux.ibm.com, ye.xingchen@zte.com.cn, npiggin@gmail.com, nathan@kernel.org, rmclure@linux.ibm.com, hbathini@linux.ibm.com, atrajeev@linux.vnet.ibm.com, yuanjilin@cdjrlc.com, pali@kernel.org, farosas@linux.ibm.com, geoff@infradead.org, Linus Torvalds <torvalds@linux-foundation.org>, gustavoars@kernel.org, lihuafei1@huawei.com, zhengyongjun3@huawei.com, linuxppc-dev@lists.ozlabs.org
+Cc: Linux Next Mailing List <linux-next@vger.kernel.org>, PowerPC <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The pull request you sent on Sun, 09 Oct 2022 22:01:39 +1100:
+--Sig_/.km7qOSO.2uHzBoxFdOk.nC
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.1-1
+Hi all,
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/4899a36f91a9f9b06878471096bd143e7253006d
+On Tue, 4 Oct 2022 09:12:05 +1100 Stephen Rothwell <sfr@canb.auug.org.au> w=
+rote:
+>=20
+> Today's linux-next merge of the powerpc tree got a conflict in:
+>=20
+>   arch/powerpc/kernel/Makefile
+>=20
+> between commit:
+>=20
+>   321648455061 ("kbuild: use obj-y instead extra-y for objects placed at =
+the head")
+>=20
+> from the kbuild tree and commit:
+>=20
+>   dfc3095cec27 ("powerpc: Remove CONFIG_FSL_BOOKE")
+>=20
+> from the powerpc tree.
+>=20
+> I fixed it up (see below) and can carry the fix as necessary. This
+> is now fixed as far as linux-next is concerned, but any non trivial
+> conflicts should be mentioned to your upstream maintainer when your tree
+> is submitted for merging.  You may also want to consider cooperating
+> with the maintainer of the conflicting tree to minimise any particularly
+> complex conflicts.
+>=20
+> --=20
+> Cheers,
+> Stephen Rothwell
+>=20
+> diff --cc arch/powerpc/kernel/Makefile
+> index ad3decb9f20b,1f121c188805..000000000000
+> --- a/arch/powerpc/kernel/Makefile
+> +++ b/arch/powerpc/kernel/Makefile
+> @@@ -118,12 -116,12 +116,12 @@@ obj-$(CONFIG_PPC_E500)		+=3D cpu_setup_e5
+>   obj-$(CONFIG_PPC_DOORBELL)	+=3D dbell.o
+>   obj-$(CONFIG_JUMP_LABEL)	+=3D jump_label.o
+>  =20
+>  -extra-$(CONFIG_PPC64)		:=3D head_64.o
+>  -extra-$(CONFIG_PPC_BOOK3S_32)	:=3D head_book3s_32.o
+>  -extra-$(CONFIG_40x)		:=3D head_40x.o
+>  -extra-$(CONFIG_44x)		:=3D head_44x.o
+>  -extra-$(CONFIG_PPC_85xx)	:=3D head_85xx.o
+>  -extra-$(CONFIG_PPC_8xx)		:=3D head_8xx.o
+>  +obj-$(CONFIG_PPC64)		+=3D head_64.o
+>  +obj-$(CONFIG_PPC_BOOK3S_32)	+=3D head_book3s_32.o
+>  +obj-$(CONFIG_40x)		+=3D head_40x.o
+>  +obj-$(CONFIG_44x)		+=3D head_44x.o
+> - obj-$(CONFIG_FSL_BOOKE)		+=3D head_fsl_booke.o
+> ++obj-$(CONFIG_PPC_85xx)		:=3D head_85xx.o
+>  +obj-$(CONFIG_PPC_8xx)		+=3D head_8xx.o
+>   extra-y				+=3D vmlinux.lds
+>  =20
+>   obj-$(CONFIG_RELOCATABLE)	+=3D reloc_$(BITS).o
 
-Thank you!
+This is now a conflict between the kbuild tree and Linus' tree.
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/.km7qOSO.2uHzBoxFdOk.nC
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmNDSC8ACgkQAVBC80lX
+0Gy6egf8CKc2goJR5uR31lWy7MtzaXaEXtSJhagzpfue8Ykt1sikkbMLJt+i2WVt
+zK2/ehfB9wV6o37xfSdeL3slBnX7bkhqEI6oolypnozHXRArTYbtCO1uVs0cO2kR
++vR1h/TzNcApDlPnZ6DKEjpVDAv3uQyFFuMy9CrTR8lq4ZR7xL/5l9ksfcd02vOO
++aSrN0UDZ05BeFF5AzQs7wBl4iBrDqr+1atpqtxxSmyAJqs+yT2w8mjov8+u2x2p
+HUL/F+PepQhGYLFY+M1x56VYH8BLx2SPBc1wM+LZtfGPIYCV/Aw8Ma8i6VKhV2a1
+hnOJqR8ie93KM+zhra1hgZrxlurK+g==
+=ID1k
+-----END PGP SIGNATURE-----
+
+--Sig_/.km7qOSO.2uHzBoxFdOk.nC--
