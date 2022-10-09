@@ -2,51 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F1D05F8FE1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Oct 2022 00:17:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 781BC5F8FE3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Oct 2022 00:18:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MlxHT0nZzz3dsm
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Oct 2022 09:17:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MlxJT2cbCz3dwZ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Oct 2022 09:18:17 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=RVxnEoNn;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=Ztag6pwh;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MlxGY2NN9z2xJ8
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Oct 2022 09:16:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MlxHZ4g0bz3drc
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Oct 2022 09:17:30 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=RVxnEoNn;
+	dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=Ztag6pwh;
 	dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4MlxGS5W22z4wgv;
-	Mon, 10 Oct 2022 09:16:32 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4MlxHZ2mpPz4wgv;
+	Mon, 10 Oct 2022 09:17:30 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
-	s=201702; t=1665353793;
-	bh=5JXiyZ2rBUBWg3NdZnRUOBYGxdaJVI3zNREgAnnnSGE=;
+	s=201702; t=1665353850;
+	bh=5LhU91hzXcsdTITP/y2kFOEOJhWJVytyRhyKH9Dkk0s=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=RVxnEoNnLYmLN/XeKRBBN0MbOXQ7XdNGTwIFR7MAqcDRQC+OXtn6AWacO5gOP8gJP
-	 pairn8Mfsct4dLSrLqwliTM9oUgUXDPB2m04UNsCzJncJ9IUO6xkSqOLJj2qfCIFnj
-	 5w2iCiFpfYsFHYY4KCHtxRQ//JycHRaIsKMKx+PAPPBdMsWizVTQu9cfsAO8reCMp6
-	 SJMo7QCx3AKrCy+OT91tXDROL4CJMvHvAZZ5KfPsVTGb5LRepEisAPHmuQVDfLo1hI
-	 8RvipvyxQorPHaOXKeGeqvacFqTPPAlzRZ9nLR7VGKgepxnV7rN0SvmxCUnDJ0xmJF
-	 0gXpZ1KGBKcbA==
-Date: Mon, 10 Oct 2022 09:16:14 +1100
+	b=Ztag6pwhjM9Dzx9O0gIZXwZoaGVe/BQCJG4sFGH0vTPhTIb1LSnBklRdTUg4wAa5g
+	 EMRIDExQ8E8TuYImGPFwEIubNbN3KD4IvSSKkzQsdPkVUOm8t5ehUGYpTuMuFmBVAp
+	 Tly22HtZ3S3u2Xc6n2vi6t8Juie+09x4KLvE/PO0uqxFGiydgMoutewRFaFH4Lxdzf
+	 Q5ASQQIYYmbXhSF1sh5hNDx+kQyPT2aalTEA0/kGk5qQruY7v7NXpGTcaOrvUUxGNX
+	 qSQIgO3+151nuI7R30ArfTDBZ9mxIXqD2bbJRapx2dZJdt7Omgr2NSaBB6yY47li+i
+	 1hbeSDar7RhYg==
+Date: Mon, 10 Oct 2022 09:17:28 +1100
 From: Stephen Rothwell <sfr@canb.auug.org.au>
 To: Masahiro Yamada <masahiroy@kernel.org>
 Subject: Re: linux-next: manual merge of the powerpc tree with the kbuild
  tree
-Message-ID: <20221010091614.20a89f56@canb.auug.org.au>
-In-Reply-To: <20221004091205.2677b823@canb.auug.org.au>
-References: <20221004091205.2677b823@canb.auug.org.au>
+Message-ID: <20221010091728.479da473@canb.auug.org.au>
+In-Reply-To: <20221004091606.71418ddc@canb.auug.org.au>
+References: <20221004091606.71418ddc@canb.auug.org.au>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/.km7qOSO.2uHzBoxFdOk.nC";
+Content-Type: multipart/signed; boundary="Sig_/FjJq/BB9oL1OU8/74gW1U78";
  protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -63,23 +63,22 @@ Cc: Linux Next Mailing List <linux-next@vger.kernel.org>, PowerPC <linuxppc-dev@
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/.km7qOSO.2uHzBoxFdOk.nC
+--Sig_/FjJq/BB9oL1OU8/74gW1U78
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: quoted-printable
 
 Hi all,
 
-On Tue, 4 Oct 2022 09:12:05 +1100 Stephen Rothwell <sfr@canb.auug.org.au> w=
+On Tue, 4 Oct 2022 09:16:06 +1100 Stephen Rothwell <sfr@canb.auug.org.au> w=
 rote:
 >=20
 > Today's linux-next merge of the powerpc tree got a conflict in:
 >=20
->   arch/powerpc/kernel/Makefile
+>   arch/powerpc/Makefile
 >=20
 > between commit:
 >=20
->   321648455061 ("kbuild: use obj-y instead extra-y for objects placed at =
-the head")
+>   ce697ccee1a8 ("kbuild: remove head-y syntax")
 >=20
 > from the kbuild tree and commit:
 >=20
@@ -87,41 +86,38 @@ the head")
 >=20
 > from the powerpc tree.
 >=20
-> I fixed it up (see below) and can carry the fix as necessary. This
+> I fixed it up (I used the former version of this file and added the
+> following merge fix patch) and can carry the fix as necessary. This
 > is now fixed as far as linux-next is concerned, but any non trivial
 > conflicts should be mentioned to your upstream maintainer when your tree
 > is submitted for merging.  You may also want to consider cooperating
 > with the maintainer of the conflicting tree to minimise any particularly
 > complex conflicts.
 >=20
-> --=20
-> Cheers,
-> Stephen Rothwell
+> From: Stephen Rothwell <sfr@canb.auug.org.au>
+> Date: Tue, 4 Oct 2022 09:13:46 +1100
+> Subject: [PATCH] powerpc: fix up for "kbuild: remove head-y syntax"
 >=20
-> diff --cc arch/powerpc/kernel/Makefile
-> index ad3decb9f20b,1f121c188805..000000000000
-> --- a/arch/powerpc/kernel/Makefile
-> +++ b/arch/powerpc/kernel/Makefile
-> @@@ -118,12 -116,12 +116,12 @@@ obj-$(CONFIG_PPC_E500)		+=3D cpu_setup_e5
->   obj-$(CONFIG_PPC_DOORBELL)	+=3D dbell.o
->   obj-$(CONFIG_JUMP_LABEL)	+=3D jump_label.o
->  =20
->  -extra-$(CONFIG_PPC64)		:=3D head_64.o
->  -extra-$(CONFIG_PPC_BOOK3S_32)	:=3D head_book3s_32.o
->  -extra-$(CONFIG_40x)		:=3D head_40x.o
->  -extra-$(CONFIG_44x)		:=3D head_44x.o
->  -extra-$(CONFIG_PPC_85xx)	:=3D head_85xx.o
->  -extra-$(CONFIG_PPC_8xx)		:=3D head_8xx.o
->  +obj-$(CONFIG_PPC64)		+=3D head_64.o
->  +obj-$(CONFIG_PPC_BOOK3S_32)	+=3D head_book3s_32.o
->  +obj-$(CONFIG_40x)		+=3D head_40x.o
->  +obj-$(CONFIG_44x)		+=3D head_44x.o
-> - obj-$(CONFIG_FSL_BOOKE)		+=3D head_fsl_booke.o
-> ++obj-$(CONFIG_PPC_85xx)		:=3D head_85xx.o
->  +obj-$(CONFIG_PPC_8xx)		+=3D head_8xx.o
->   extra-y				+=3D vmlinux.lds
->  =20
->   obj-$(CONFIG_RELOCATABLE)	+=3D reloc_$(BITS).o
+> Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
+> ---
+>  scripts/head-object-list.txt | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/scripts/head-object-list.txt b/scripts/head-object-list.txt
+> index dd2ba2eda636..e8219d65c3b7 100644
+> --- a/scripts/head-object-list.txt
+> +++ b/scripts/head-object-list.txt
+> @@ -34,7 +34,7 @@ arch/powerpc/kernel/head_44x.o
+>  arch/powerpc/kernel/head_64.o
+>  arch/powerpc/kernel/head_8xx.o
+>  arch/powerpc/kernel/head_book3s_32.o
+> -arch/powerpc/kernel/head_fsl_booke.o
+> +arch/powerpc/kernel/head_85xx.o
+>  arch/powerpc/kernel/entry_64.o
+>  arch/powerpc/kernel/fpu.o
+>  arch/powerpc/kernel/vector.o
+> --=20
+> 2.35.1
 
 This is now a conflict between the kbuild tree and Linus' tree.
 
@@ -129,20 +125,20 @@ This is now a conflict between the kbuild tree and Linus' tree.
 Cheers,
 Stephen Rothwell
 
---Sig_/.km7qOSO.2uHzBoxFdOk.nC
+--Sig_/FjJq/BB9oL1OU8/74gW1U78
 Content-Type: application/pgp-signature
 Content-Description: OpenPGP digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmNDSC8ACgkQAVBC80lX
-0Gy6egf8CKc2goJR5uR31lWy7MtzaXaEXtSJhagzpfue8Ykt1sikkbMLJt+i2WVt
-zK2/ehfB9wV6o37xfSdeL3slBnX7bkhqEI6oolypnozHXRArTYbtCO1uVs0cO2kR
-+vR1h/TzNcApDlPnZ6DKEjpVDAv3uQyFFuMy9CrTR8lq4ZR7xL/5l9ksfcd02vOO
-+aSrN0UDZ05BeFF5AzQs7wBl4iBrDqr+1atpqtxxSmyAJqs+yT2w8mjov8+u2x2p
-HUL/F+PepQhGYLFY+M1x56VYH8BLx2SPBc1wM+LZtfGPIYCV/Aw8Ma8i6VKhV2a1
-hnOJqR8ie93KM+zhra1hgZrxlurK+g==
-=ID1k
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmNDSHgACgkQAVBC80lX
+0GwuBggAmO8EhxNN2jAtp3nrStgr7Uqe2ZKLDOaZg0d3R6w4GIj5OQn8bhXRYjrr
+YscC5o5rSOuoe2Z26+vXQzHiOLV02FVtfL/gpyf1efqZ3BR1+JN/kQCIbkSHEgie
+R7B4/X9mOoll7MsWUAmpCmM71ccgPl9lI4SKygAcJimN8YxwDvGhjXNpsVY9JgRN
+Dt6f9ovcl3gjD9jWVS0JtfuXwMp7vG0SR8c6LEC+G9GA0nqZY+cexQrPK5feAGbL
+3XAXdXlXjYyZfGLixJ24HZnU4lPA6F5pbfts6cz8jVk8DRRSfqDxrlzvqXuls54C
+nYvH+rLQ7bPKy9bHg3M1vxKcDGn2nA==
+=zYnB
 -----END PGP SIGNATURE-----
 
---Sig_/.km7qOSO.2uHzBoxFdOk.nC--
+--Sig_/FjJq/BB9oL1OU8/74gW1U78--
