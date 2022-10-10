@@ -1,74 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C818C5FA691
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Oct 2022 22:50:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDCBE5FA7A6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Oct 2022 00:27:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MmWJm5NTvz3dtV
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Oct 2022 07:50:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MmYSV53j7z3dtQ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Oct 2022 09:27:22 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=eYQbkdsI;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=mPRyN+Tj;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::630; helo=mail-pl1-x630.google.com; envelope-from=groeck7@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=srs0=yjjh=2l=zx2c4.com=jason@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=eYQbkdsI;
+	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=mPRyN+Tj;
 	dkim-atps=neutral
-Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MmWHn0YWVz3cB6
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Oct 2022 07:49:38 +1100 (AEDT)
-Received: by mail-pl1-x630.google.com with SMTP id b2so11369005plc.7
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Oct 2022 13:49:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=j9Km09otb6ysXfp2Upd1R3VIr3s3vlnpHyezTgN6rBo=;
-        b=eYQbkdsISYtwea2nFRP6PRE7kZCgNezCR5oRAUagKNHLr/KoqGgYI4laVi+tdN6cey
-         7kEyxoAptvek1ldzQNCAky1/7CfQ5KDvAzXvOFQSAvpEp6vAcFtUYVWOH2Q31QG5xe+I
-         UmC/dBs2Q0vXHymSnrMP7w9K2ksRD/o5AeE2P57qVKwBSW1YGsnsyhRPRaCI6FoJvg6k
-         gb8gTZ/ykAa2hkDk9+8EfMujkzIOg6pHU8rsQaXCYWRcxtOL9P2WXBsHHWj2Bf5pB6C+
-         vhrVzUo9Imea40vRu89tz9Vrb/hQevVB55KKJ1u68IDL4SN0/Hfd1sdI25mogz4vYXEs
-         pXZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=j9Km09otb6ysXfp2Upd1R3VIr3s3vlnpHyezTgN6rBo=;
-        b=VgRLRmXPNjG7tUi20nbGF33yCTns39taBxSaiB7/LWrsBG8dhUj6EjNqmKpH/fE9aT
-         DYfkAUhuqhRlhlbKy5cJIRZYV94wtCtj9tqmYM3cBbS+pjPHliA1bur0hhE+frYK0vB+
-         e6Wzy9KvvjW11jjKAsWc2AW2iGNTXKys0veGrUJr3Z+361z5fmfZisO2BRS+zGHyrKyC
-         iO+gJpNlSaOC9627/50pPLrWdXXRUl4gbj7ALirnCB7CECPMvI4T+ADtpp0Q0hyKLjAj
-         UcroDuzgCXU3r9X6NnCdemUl76s+nh+lVBPd53sBaWIG3KEGY5B2J1iQDcpkNlEtizu0
-         c5AA==
-X-Gm-Message-State: ACrzQf3v8EyOVmEwj+fLUmp95taXuo8aiN4z1Ej9MXg9DwxOIEi+KH6P
-	MxfGWuUuwqAkPy/KHKNT8xE=
-X-Google-Smtp-Source: AMsMyM5Dgx1NtpzY9x2NDNyrXo4BK0nGyr7EHfFNmmMSe6fMsjlUD1skYA6kp6YIoDUb13w5F4aKug==
-X-Received: by 2002:a17:902:d4cb:b0:178:6e81:35b7 with SMTP id o11-20020a170902d4cb00b001786e8135b7mr21519312plg.108.1665434974242;
-        Mon, 10 Oct 2022 13:49:34 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id k18-20020a170902c41200b0016c0c82e85csm6085039plk.75.2022.10.10.13.49.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Oct 2022 13:49:33 -0700 (PDT)
-Date: Mon, 10 Oct 2022 13:49:29 -0700
-From: Guenter Roeck <linux@roeck-us.net>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v2 4/4] powerpc/pseries: Move dtl scanning and steal time
- accounting to pseries platform
-Message-ID: <20221010204929.GA2987565@roeck-us.net>
-References: <20220902085316.2071519-1-npiggin@gmail.com>
- <20220902085316.2071519-5-npiggin@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MmYRX5HbBz2xvJ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Oct 2022 09:26:32 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id D2FB3B810FE;
+	Mon, 10 Oct 2022 22:26:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96FF5C433D6;
+	Mon, 10 Oct 2022 22:26:22 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="mPRyN+Tj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+	t=1665440780;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VUzvUqSNatlxX9gNd/YDNJ1TNF7Czge+HXCXVSv6YMc=;
+	b=mPRyN+TjE4Xfv27gOFAYKxgtAA61Xfc4uYJrGqzLxXMp4g3L5CEdQomfowvEy2rDPDksps
+	5y+SG7QNMNpGbQLkt/P1Ls3QS748lF5ru/de5m6lDZi1VAd7gxPC7cGHzto0+oTdm6otkq
+	SrMAwLxccTnLuBJsjk+iGfJk+vnZ1ec=
+Received: 	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 3e47577a (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Mon, 10 Oct 2022 22:26:19 +0000 (UTC)
+Date: Mon, 10 Oct 2022 16:26:10 -0600
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+To: Michael Ellerman <mpe@ellerman.id.au>, rmclure@linux.ibm.com
+Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-6.1-1 tag
+Message-ID: <Y0ScAhqysKK6Hrks@zx2c4.com>
+References: <87edvhntv0.fsf@mpe.ellerman.id.au>
+ <Y0RxpSFyn9m68zIb@zx2c4.com>
+ <Y0R6fcvgGA858TQA@zx2c4.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20220902085316.2071519-5-npiggin@gmail.com>
+In-Reply-To: <Y0R6fcvgGA858TQA@zx2c4.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,25 +64,141 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: david@redhat.com, linux-kernel@vger.kernel.org, wsa+renesas@sang-engineering.com, nicholas@linux.ibm.com, windhl@126.com, cuigaosheng1@huawei.com, mikey@neuling.org, paul@paul-moore.com, aneesh.kumar@linux.ibm.com, haren@linux.ibm.com, joel@jms.id.au, lukas.bulwahn@gmail.com, linux@roeck-us.net, nathanl@linux.ibm.com, ajd@linux.ibm.com, ye.xingchen@zte.com.cn, npiggin@gmail.com, nathan@kernel.org, rmclure@linux.ibm.com, hbathini@linux.ibm.com, atrajeev@linux.vnet.ibm.com, yuanjilin@cdjrlc.com, pali@kernel.org, farosas@linux.ibm.com, geoff@infradead.org, Linus Torvalds <torvalds@linux-foundation.org>, gustavoars@kernel.org, lihuafei1@huawei.com, zhengyongjun3@huawei.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Sep 02, 2022 at 06:53:16PM +1000, Nicholas Piggin wrote:
-> dtl is the PAPR Dispatch Trace Log, which is entirely a pseries feature.
-> The pseries platform alrady has a file dealing with the dtl, so move
-> scanning for stolen time accounting there from kernel/time.c.
+On Mon, Oct 10, 2022 at 02:03:09PM -0600, Jason A. Donenfeld wrote:
+> On Mon, Oct 10, 2022 at 01:25:25PM -0600, Jason A. Donenfeld wrote:
+> > Hi Michael,
+> > 
+> > On Sun, Oct 09, 2022 at 10:01:39PM +1100, Michael Ellerman wrote:
+> > > powerpc updates for 6.1
+> > > 
+> > >  - Remove our now never-true definitions for pgd_huge() and p4d_leaf().
+> > > 
+> > >  - Add pte_needs_flush() and huge_pmd_needs_flush() for 64-bit.
+> > > 
+> > >  - Add support for syscall wrappers.
+> > > 
+> > >  - Add support for KFENCE on 64-bit.
+> > > 
+> > >  - Update 64-bit HV KVM to use the new guest state entry/exit accounting API.
+> > > 
+> > >  - Support execute-only memory when using the Radix MMU (P9 or later).
+> > > 
+> > >  - Implement CONFIG_PARAVIRT_TIME_ACCOUNTING for pseries guests.
+> > > 
+> > >  - Updates to our linker script to move more data into read-only sections.
+> > > 
+> > >  - Allow the VDSO to be randomised on 32-bit.
+> > > 
+> > >  - Many other small features and fixes.
+> > 
+> > FYI, something in here broke the wireguard test suite, which runs the
+> > iperf3 networking utility. The full log is here [1], but the relevant part
+> > is: 
+> > 
+> > [+] NS1: iperf3 -Z -t 3 -c 192.168.241.2
+> > Connecting to host 192.168.241.2, port 5201
+> > iperf3: error - failed to read /dev/urandom: Bad address
+> > 
+> > I'll see if I can narrow it down a bit more and bisect. But just FYI, in
+> > case you have an intuition.
 > 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> Huh. From iov_iter.c:
+> 
+> static int copyout(void __user *to, const void *from, size_t n)
+> {
+>         size_t before = n;
+>         if (should_fail_usercopy())
+>                 return n;
+>         if (access_ok(to, n)) {
+>                 instrument_copy_to_user(to, from, n);
+>                 n = raw_copy_to_user(to, from, n);
+>                 if (n == before)
+>                         pr_err("SARU n still %zu pointer is %lx\n", n, (unsigned long)to);
+>         }
+>         return n;
+> }
+> 
+> I added the pr_err() there to catch the failure:
+> [    3.443506] SARU n still 64 pointer is b78db000
+> 
+> Also I managed to extract the failing portion of iperf3 into something
+> smaller:
+> 
+>         int temp;
+>         char *x;
+>         ssize_t l;
+>         FILE *f;
+>         char template[] = "/blah-XXXXXX";
+> 
+>         temp = mkstemp(template);
+>         if (temp < 0)
+>                 panic("mkstemp");
+>         if (unlink(template) < 0)
+>                 panic("unlink");
+>         if (ftruncate(temp, 0x20000) < 0)
+>                 panic("ftruncate");
+>         x = mmap(NULL, 0x20000, PROT_READ|PROT_WRITE, MAP_PRIVATE, temp, 0);
+>         if (x == MAP_FAILED)
+>                 panic("mmap");
+>         f = fopen("/dev/urandom", "rb");
+>         if (!f)
+>                 panic("fopen");
+>         setbuf(f, NULL);
+>         if (fread(x, 1, 0x20000, f) != 0x20000)
+>                 panic("fread");
+> 
+> Jason
 
-This patch ties DTL to PPC_SPLPAR without updating configuration
-dependencies. As result, the following build error may now be seen
-if CONFIG_PPC_SPLPAR=y and CONFIG_DTL=n.
+Bisected:
 
-arch/powerpc/kernel/irq.o: in function `.do_IRQ':
-irq.c:(.text+0x2798): undefined reference to `.pseries_accumulate_stolen_time'
+7e92e01b724526b98cbc7f03dd4afa0295780d56 is the first bad commit
+commit 7e92e01b724526b98cbc7f03dd4afa0295780d56
+Author: Rohan McLure <rmclure@linux.ibm.com>
+Date:   Wed Sep 21 16:56:01 2022 +1000
 
-I updated my own configurations to avoid the problem, but you might see
-randconfig failures with this error in the future.
+    powerpc: Provide syscall wrapper
 
-Guenter
+    Implement syscall wrapper as per s390, x86, arm64. When enabled
+    cause handlers to accept parameters from a stack frame rather than
+    from user scratch register state. This allows for user registers to be
+    safely cleared in order to reduce caller influence on speculation
+    within syscall routine. The wrapper is a macro that emits syscall
+    handler symbols that call into the target handler, obtaining its
+    parameters from a struct pt_regs on the stack.
+
+    As registers are already saved to the stack prior to calling
+    system_call_exception, it appears that this function is executed more
+    efficiently with the new stack-pointer convention than with parameters
+    passed by registers, avoiding the allocation of a stack frame for this
+    method. On a 32-bit system, we see >20% performance increases on the
+    null_syscall microbenchmark, and on a Power 8 the performance gains
+    amortise the cost of clearing and restoring registers which is
+    implemented at the end of this series, seeing final result of ~5.6%
+    performance improvement on null_syscall.
+
+    Syscalls are wrapped in this fashion on all platforms except for the
+    Cell processor as this commit does not provide SPU support. This can be
+    quickly fixed in a successive patch, but requires spu_sys_callback to
+    allocate a pt_regs structure to satisfy the wrapped calling convention.
+
+    Co-developed-by: Andrew Donnellan <ajd@linux.ibm.com>
+    Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
+    Signed-off-by: Rohan McLure <rmclure@linux.ibm.com>
+    Reviewed-by: Nicholas Piggin <npiggin@gmai.com>
+    [mpe: Make incompatible with COMPAT to retain clearing of high bits of args]
+    Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+    Link: https://lore.kernel.org/r/20220921065605.1051927-22-rmclure@linux.ibm.com
+
+ arch/powerpc/Kconfig                       |  1 +
+ arch/powerpc/include/asm/syscall.h         |  4 +++
+ arch/powerpc/include/asm/syscall_wrapper.h | 51 ++++++++++++++++++++++++++++++
+ arch/powerpc/include/asm/syscalls.h        | 24 ++++++++++++--
+ arch/powerpc/kernel/syscall.c              | 34 ++++++++++----------
+ arch/powerpc/kernel/systbl.c               |  7 ++++
+ arch/powerpc/kernel/vdso.c                 |  2 ++
+ 7 files changed, 105 insertions(+), 18 deletions(-)
+ create mode 100644 arch/powerpc/include/asm/syscall_wrapper.h
