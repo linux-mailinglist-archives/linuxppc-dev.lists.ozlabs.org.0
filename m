@@ -1,97 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9222B5FA8E3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Oct 2022 02:02:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B95C05FA96D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Oct 2022 02:43:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MmbYs3k5Zz3dww
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Oct 2022 11:02:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MmcSz28hzz3dws
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Oct 2022 11:42:59 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nUvkvxmJ;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=LJrnNFvf;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=srs0=yjjh=2l=zx2c4.com=jason@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nUvkvxmJ;
+	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=LJrnNFvf;
 	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MmbXt1NZWz3cB6
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Oct 2022 11:01:17 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29AMVA2B022603;
-	Tue, 11 Oct 2022 00:00:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=MUav98Gqd8+jnPeoXL3mH1XPkjFXSCLleskfAKiCeP0=;
- b=nUvkvxmJSWQzRAcDKpK9n3/z4s7vmVQJxV4/k8z07b7LnWl0gbSJMVZP6E6un2y731hZ
- dULr2wD58tYfAXP78lLZTxvc9U4bjDa+kq4Fgsqq7y1ktA7APwmFoYdMQwfNJj2gkCKU
- 2VZc/bLGK/KG8k5GeCKainf1RMy34l6vbCyprdPsckLeN03qKiXvP5KttjvbdrLBWa5y
- q0nZe0lagWTo9MjobPBbKIEnc0VdIx2XuQX6/oT5Ns/r1qywbNGTeuPbNBMkQrOyyXHu
- untFZCJOxOcRQ3Dr/TcRBkJ0fLWe/NbhKPyLVSEx3Zw20OrfYJpmfg0GmreTBU4bgiIL MQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3k3k7vx7j1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Oct 2022 00:00:37 +0000
-Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 29B007R9013158;
-	Tue, 11 Oct 2022 00:00:36 GMT
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3k3k7vx7h0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Oct 2022 00:00:36 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-	by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 29ANodQl023738;
-	Tue, 11 Oct 2022 00:00:34 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
-	by ppma04ams.nl.ibm.com with ESMTP id 3k30u9bdw0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Oct 2022 00:00:34 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
-	by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 29ANtoIK25755940
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 10 Oct 2022 23:55:50 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0A59A52052;
-	Tue, 11 Oct 2022 00:00:32 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 5EA555204F;
-	Tue, 11 Oct 2022 00:00:31 +0000 (GMT)
-Received: from [9.43.172.4] (unknown [9.43.172.4])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MmZL05r0Qz2xJ8
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Oct 2022 10:06:48 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 1A07A602EB;
-	Tue, 11 Oct 2022 11:00:18 +1100 (AEDT)
-Message-ID: <d402a6a0a11d84906ecba3909f4c8f880298dc0f.camel@linux.ibm.com>
-Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-6.1-1 tag
-From: Andrew Donnellan <ajd@linux.ibm.com>
-To: "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        Michael Ellerman
-	 <mpe@ellerman.id.au>, rmclure@linux.ibm.com
-Date: Tue, 11 Oct 2022 11:00:15 +1100
-In-Reply-To: <Y0ScAhqysKK6Hrks@zx2c4.com>
-References: <87edvhntv0.fsf@mpe.ellerman.id.au> <Y0RxpSFyn9m68zIb@zx2c4.com>
-	 <Y0R6fcvgGA858TQA@zx2c4.com> <Y0ScAhqysKK6Hrks@zx2c4.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.3-1 
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 36w4YCAQ4nTGdgqjFxiN2AM5kFcUeosw
-X-Proofpoint-GUID: IdWhmLj7iNQ56oqIgH1w5wqO-vj6xDLc
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by dfw.source.kernel.org (Postfix) with ESMTPS id B405460FDD;
+	Mon, 10 Oct 2022 23:06:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2675C433D6;
+	Mon, 10 Oct 2022 23:06:38 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="LJrnNFvf"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+	t=1665443196;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=KqVWEHtrBC2bSt6YfoMbVT2SYWISgaw7tOKuJ16fz7w=;
+	b=LJrnNFvfDOqQWYC4PoBtpE/7KEY/yAa5vkOQZ17V8pyw/dQ0Ut5sDiG9yCMxhlm9lRM7ie
+	4zM0Rr22+8YQothSzq/M0zvd6io4jGoNkN8EgihYFT5cdIB2o32FIjoFBY6hstDwXqVhpG
+	NDQdZGAZ7Nc8LJm2dFAZNCOmr2q4rZg=
+Received: 	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id d37e5149 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Mon, 10 Oct 2022 23:06:36 +0000 (UTC)
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+To: linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev
+Subject: [PATCH v6 0/7] treewide cleanup of random integer usage
+Date: Mon, 10 Oct 2022 17:06:06 -0600
+Message-Id: <20221010230613.1076905-1-Jason@zx2c4.com>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
- definitions=2022-10-10_12,2022-10-10_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
- lowpriorityscore=0 phishscore=0 adultscore=0 bulkscore=0 mlxlogscore=905
- mlxscore=0 priorityscore=1501 suspectscore=0 impostorscore=0 clxscore=1011
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2209130000 definitions=main-2210100139
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Tue, 11 Oct 2022 11:42:14 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,71 +62,367 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: david@redhat.com, linux-kernel@vger.kernel.org, wsa+renesas@sang-engineering.com, nicholas@linux.ibm.com, windhl@126.com, cuigaosheng1@huawei.com, mikey@neuling.org, paul@paul-moore.com, aneesh.kumar@linux.ibm.com, haren@linux.ibm.com, joel@jms.id.au, lukas.bulwahn@gmail.com, linux@roeck-us.net, nathanl@linux.ibm.com, ye.xingchen@zte.com.cn, npiggin@gmail.com, nathan@kernel.org, hbathini@linux.ibm.com, atrajeev@linux.vnet.ibm.com, yuanjilin@cdjrlc.com, pali@kernel.org, farosas@linux.ibm.com, geoff@infradead.org, Linus Torvalds <torvalds@linux-foundation.org>, gustavoars@kernel.org, lihuafei1@huawei.com, zhengyongjun3@huawei.com, linuxppc-dev@lists.ozlabs.org
+Cc: linux-wireless@vger.kernel.org, "Jason A. Donenfeld" <Jason@zx2c4.com>, x86@kernel.org, Vignesh Raghavendra <vigneshr@ti.com>, linux-doc@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, kernel-janitors@vger.kernel.org, KP Singh <kpsingh@kernel.org>, dri-devel@lists.freedesktop.org, linux-mm@kvack.org, Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org, linux-mtd@lists.infradead.org, kasan-dev@googlegroups.com, "H . Peter Anvin" <hpa@zytor.com>, Andreas Noever <andreas.noever@gmail.com>, WANG Xuerui <kernel@xen0n.name>, Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>, linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, Mauro Carvalho Chehab <mchehab@kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>, Daniel Borkmann <daniel@iogearbox.net>, Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.
+ org>, Hugh Dickins <hughd@google.com>, Russell King <linux@armlinux.org.uk>, Jozsef Kadlecsik <kadlec@netfilter.org>, Jason Gunthorpe <jgg@ziepe.ca>, Dave Airlie <airlied@redhat.com>, Ulf Hansson <ulf.hansson@linaro.org>, Paolo Abeni <pabeni@redhat.com>, "James E . J . Bottomley" <jejb@linux.ibm.com>, Pablo Neira Ayuso <pablo@netfilter.org>, linux-media@vger.kernel.org, Marco Elver <elver@google.com>, Kees Cook <keescook@chromium.org>, Yury Norov <yury.norov@gmail.com>, Heiko Carstens <hca@linux.ibm.com>, linux-um@lists.infradead.org, linux-block@vger.kernel.org, Richard Weinberger <richard@nod.at>, Borislav Petkov <bp@alien8.de>, linux-nvme@lists.infradead.org, loongarch@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Johannes Berg <johannes@sipsolutions.net>, linux-arm-kernel@lists.infradead.org, Jens Axboe <axboe@kernel.dk>, linux-mmc@vger.kernel.org, Thomas Bogendoerfer <tsbogend@alpha.
+ franken.de>, Theodore Ts'o <tytso@mit.edu>, linux-parisc@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org, Florian Westphal <fw@strlen.de>, linux-mips@vger.kernel.org, =?UTF-8?q?Christoph=20B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>, linux-crypto@vger.kernel.org, Jan Kara <jack@suse.com>, Thomas Graf <tgraf@suug.ch>, linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 2022-10-10 at 16:26 -0600, Jason A. Donenfeld wrote:
-> 
-> Bisected:
-> 
-> 7e92e01b724526b98cbc7f03dd4afa0295780d56 is the first bad commit
-> commit 7e92e01b724526b98cbc7f03dd4afa0295780d56
-> Author: Rohan McLure <rmclure@linux.ibm.com>
-> Date:   Wed Sep 21 16:56:01 2022 +1000
-> 
->     powerpc: Provide syscall wrapper
-> 
->     Implement syscall wrapper as per s390, x86, arm64. When enabled
->     cause handlers to accept parameters from a stack frame rather
-> than
->     from user scratch register state. This allows for user registers
-> to be
->     safely cleared in order to reduce caller influence on speculation
->     within syscall routine. The wrapper is a macro that emits syscall
->     handler symbols that call into the target handler, obtaining its
->     parameters from a struct pt_regs on the stack.
-> 
->     As registers are already saved to the stack prior to calling
->     system_call_exception, it appears that this function is executed
-> more
->     efficiently with the new stack-pointer convention than with
-> parameters
->     passed by registers, avoiding the allocation of a stack frame for
-> this
->     method. On a 32-bit system, we see >20% performance increases on
-> the
->     null_syscall microbenchmark, and on a Power 8 the performance
-> gains
->     amortise the cost of clearing and restoring registers which is
->     implemented at the end of this series, seeing final result of
-> ~5.6%
->     performance improvement on null_syscall.
-> 
->     Syscalls are wrapped in this fashion on all platforms except for
-> the
->     Cell processor as this commit does not provide SPU support. This
-> can be
->     quickly fixed in a successive patch, but requires
-> spu_sys_callback to
->     allocate a pt_regs structure to satisfy the wrapped calling
-> convention.
-> 
->     Co-developed-by: Andrew Donnellan <ajd@linux.ibm.com>
->     Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
->     Signed-off-by: Rohan McLure <rmclure@linux.ibm.com>
->     Reviewed-by: Nicholas Piggin <npiggin@gmai.com>
->     [mpe: Make incompatible with COMPAT to retain clearing of high
-> bits of args]
->     Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
->     Link:
-> https://lore.kernel.org/r/20220921065605.1051927-22-rmclure@linux.ibm.com
+Changes v5->v6:
+- Added a few missing conversions that weren't in my older tree, so now
+  this should be ready to go, as well as a couple nits people had from
+  v5. Barring something large and unforeseen, this is the "final
+  version", as this is ready to ship. Thanks to everyone who reviewed
+  this.
 
-Thanks for bisecting, this is interesting! Could you provide your
-.config and the environment you're running in? Your reproducer doesn't
-seem to trigger it on my baremetal POWER8 pseries_le_defconfig.
+Hi folks,
+
+This is a five part treewide cleanup of random integer handling. The
+rules for random integers are:
+
+- If you want a secure or an insecure random u64, use get_random_u64().
+- If you want a secure or an insecure random u32, use get_random_u32().
+  * The old function prandom_u32() has been deprecated for a while now
+    and is just a wrapper around get_random_u32(). Same for
+    get_random_int().
+- If you want a secure or an insecure random u16, use get_random_u16().
+- If you want a secure or an insecure random u8, use get_random_u8().
+- If you want secure or insecure random bytes, use get_random_bytes().
+  * The old function prandom_bytes() has been deprecated for a while now
+    and has long been a wrapper around get_random_bytes().
+- If you want a non-uniform random u32, u16, or u8 bounded by a certain
+  open interval maximum, use prandom_u32_max().
+  * I say "non-uniform", because it doesn't do any rejection sampling or
+    divisions. Hence, it stays within the prandom_* namespace.
+
+These rules ought to be applied uniformly, so that we can clean up the
+deprecated functions, and earn the benefits of using the modern
+functions. In particular, in addition to the boring substitutions, this
+patchset accomplishes a few nice effects:
+
+- By using prandom_u32_max() with an upper-bound that the compiler can
+  prove at compile-time is ≤65536 or ≤256, internally get_random_u16()
+  or get_random_u8() is used, which wastes fewer batched random bytes,
+  and hence has higher throughput.
+
+- By using prandom_u32_max() instead of %, when the upper-bound is not a
+  constant, division is still avoided, because prandom_u32_max() uses
+  a faster multiplication-based trick instead.
+
+- By using get_random_u16() or get_random_u8() in cases where the return
+  value is intended to indeed be a u16 or a u8, we waste fewer batched
+  random bytes, and hence have higher throughput.
+
+So, based on those rules and benefits from following them, this patchset
+breaks down into the following five steps:
+
+1) Replace `prandom_u32() % max` and variants thereof with
+   prandom_u32_max(max).
+
+   * Part 1 is done with Coccinelle. Part 2 is done by hand.
+
+2) Replace `(type)get_random_u32()` and variants thereof with
+   get_random_u16() or get_random_u8(). I took the pains to actually
+   look and see what every lvalue type was across the entire tree.
+
+   * Part 1 is done with Coccinelle. Part 2 is done by hand.
+
+3) Replace remaining deprecated uses of prandom_u32() and
+   get_random_int() with get_random_u32(). 
+
+   * A boring search and replace operation.
+
+4) Replace remaining deprecated uses of prandom_bytes() with
+   get_random_bytes().
+
+   * A boring search and replace operation.
+
+5) Remove the deprecated and now-unused prandom_u32() and
+   prandom_bytes() inline wrapper functions.
+
+   * Just deleting code and updating comments.
+
+I'll be sending this toward the end of the 6.1 merge window via the
+random.git tree.
+
+Please take a look! The number of lines touched is quite small, so this
+should be reviewable, and as much as is possible has been pushed into
+Coccinelle scripts.
+
+Thanks,
+Jason
+
+Cc: Andreas Noever <andreas.noever@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Christoph Böhmwalder <christoph.boehmwalder@linbit.com>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Daniel Borkmann <daniel@iogearbox.net>
+Cc: Dave Airlie <airlied@redhat.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Florian Westphal <fw@strlen.de>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Helge Deller <deller@gmx.de>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: Huacai Chen <chenhuacai@kernel.org>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: James E.J. Bottomley <jejb@linux.ibm.com>
+Cc: Jan Kara <jack@suse.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Johannes Berg <johannes@sipsolutions.net>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Jozsef Kadlecsik <kadlec@netfilter.org>
+Cc: KP Singh <kpsingh@kernel.org>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Marco Elver <elver@google.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Richard Weinberger <richard@nod.at>
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: Theodore Ts'o <tytso@mit.edu>
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Thomas Graf <tgraf@suug.ch>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Vignesh Raghavendra <vigneshr@ti.com>
+Cc: WANG Xuerui <kernel@xen0n.name>
+Cc: Will Deacon <will@kernel.org>
+Cc: Yury Norov <yury.norov@gmail.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: kasan-dev@googlegroups.com
+Cc: kernel-janitors@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-block@vger.kernel.org
+Cc: linux-crypto@vger.kernel.org
+Cc: linux-doc@vger.kernel.org
+Cc: linux-fsdevel@vger.kernel.org
+Cc: linux-media@vger.kernel.org
+Cc: linux-mips@vger.kernel.org
+Cc: linux-mm@kvack.org
+Cc: linux-mmc@vger.kernel.org
+Cc: linux-mtd@lists.infradead.org
+Cc: linux-nvme@lists.infradead.org
+Cc: linux-parisc@vger.kernel.org
+Cc: linux-rdma@vger.kernel.org
+Cc: linux-s390@vger.kernel.org
+Cc: linux-um@lists.infradead.org
+Cc: linux-usb@vger.kernel.org
+Cc: linux-wireless@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: loongarch@lists.linux.dev
+Cc: netdev@vger.kernel.org
+Cc: sparclinux@vger.kernel.org
+Cc: x86@kernel.org
+
+Jason A. Donenfeld (7):
+  treewide: use prandom_u32_max() when possible, part 1
+  treewide: use prandom_u32_max() when possible, part 2
+  treewide: use get_random_{u8,u16}() when possible, part 1
+  treewide: use get_random_{u8,u16}() when possible, part 2
+  treewide: use get_random_u32() when possible
+  treewide: use get_random_bytes() when possible
+  prandom: remove unused functions
+
+ Documentation/networking/filter.rst           |  2 +-
+ arch/arm/kernel/process.c                     |  2 +-
+ arch/arm/kernel/signal.c                      |  2 +-
+ arch/arm64/kernel/process.c                   |  2 +-
+ arch/arm64/kernel/syscall.c                   |  2 +-
+ arch/loongarch/kernel/process.c               |  2 +-
+ arch/loongarch/kernel/vdso.c                  |  2 +-
+ arch/mips/kernel/process.c                    |  2 +-
+ arch/mips/kernel/vdso.c                       |  2 +-
+ arch/parisc/kernel/process.c                  |  2 +-
+ arch/parisc/kernel/sys_parisc.c               |  4 +-
+ arch/parisc/kernel/vdso.c                     |  2 +-
+ arch/powerpc/crypto/crc-vpmsum_test.c         |  2 +-
+ arch/powerpc/kernel/process.c                 |  2 +-
+ arch/s390/kernel/process.c                    |  4 +-
+ arch/s390/kernel/vdso.c                       |  2 +-
+ arch/s390/mm/mmap.c                           |  2 +-
+ arch/sparc/vdso/vma.c                         |  2 +-
+ arch/um/kernel/process.c                      |  2 +-
+ arch/x86/entry/vdso/vma.c                     |  2 +-
+ arch/x86/kernel/cpu/amd.c                     |  2 +-
+ arch/x86/kernel/module.c                      |  2 +-
+ arch/x86/kernel/process.c                     |  2 +-
+ arch/x86/mm/pat/cpa-test.c                    |  4 +-
+ block/blk-crypto-fallback.c                   |  2 +-
+ crypto/async_tx/raid6test.c                   |  2 +-
+ crypto/testmgr.c                              | 94 +++++++++----------
+ drivers/block/drbd/drbd_receiver.c            |  4 +-
+ drivers/char/random.c                         | 11 +--
+ drivers/dma/dmatest.c                         |  2 +-
+ .../gpu/drm/i915/gem/i915_gem_execbuffer.c    |  2 +-
+ drivers/gpu/drm/i915/i915_gem_gtt.c           |  6 +-
+ .../gpu/drm/i915/selftests/i915_selftest.c    |  2 +-
+ drivers/gpu/drm/tests/drm_buddy_test.c        |  2 +-
+ drivers/gpu/drm/tests/drm_mm_test.c           |  2 +-
+ drivers/infiniband/core/cma.c                 |  2 +-
+ drivers/infiniband/hw/cxgb4/cm.c              |  4 +-
+ drivers/infiniband/hw/cxgb4/id_table.c        |  4 +-
+ drivers/infiniband/hw/hfi1/tid_rdma.c         |  2 +-
+ drivers/infiniband/hw/hns/hns_roce_ah.c       |  5 +-
+ drivers/infiniband/hw/mlx4/mad.c              |  2 +-
+ drivers/infiniband/ulp/ipoib/ipoib_cm.c       |  2 +-
+ drivers/infiniband/ulp/rtrs/rtrs-clt.c        |  3 +-
+ drivers/md/bcache/request.c                   |  2 +-
+ drivers/md/raid5-cache.c                      |  2 +-
+ drivers/media/common/v4l2-tpg/v4l2-tpg-core.c |  2 +-
+ .../media/test-drivers/vivid/vivid-radio-rx.c |  4 +-
+ .../test-drivers/vivid/vivid-touch-cap.c      |  6 +-
+ drivers/misc/habanalabs/gaudi2/gaudi2.c       |  2 +-
+ drivers/mmc/core/core.c                       |  4 +-
+ drivers/mmc/host/dw_mmc.c                     |  2 +-
+ drivers/mtd/nand/raw/nandsim.c                |  8 +-
+ drivers/mtd/tests/mtd_nandecctest.c           | 12 +--
+ drivers/mtd/tests/speedtest.c                 |  2 +-
+ drivers/mtd/tests/stresstest.c                | 19 +---
+ drivers/mtd/ubi/debug.c                       |  2 +-
+ drivers/mtd/ubi/debug.h                       |  6 +-
+ drivers/net/bonding/bond_main.c               |  2 +-
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c     |  2 +-
+ drivers/net/ethernet/broadcom/cnic.c          |  5 +-
+ .../chelsio/inline_crypto/chtls/chtls_cm.c    |  4 +-
+ .../chelsio/inline_crypto/chtls/chtls_io.c    |  4 +-
+ drivers/net/ethernet/rocker/rocker_main.c     |  8 +-
+ drivers/net/hamradio/baycom_epp.c             |  2 +-
+ drivers/net/hamradio/hdlcdrv.c                |  2 +-
+ drivers/net/hamradio/yam.c                    |  2 +-
+ drivers/net/phy/at803x.c                      |  2 +-
+ drivers/net/wireguard/selftest/allowedips.c   | 16 ++--
+ .../broadcom/brcm80211/brcmfmac/p2p.c         |  2 +-
+ .../broadcom/brcm80211/brcmfmac/pno.c         |  2 +-
+ .../net/wireless/intel/iwlwifi/mvm/mac-ctxt.c |  2 +-
+ .../net/wireless/marvell/mwifiex/cfg80211.c   |  4 +-
+ .../wireless/microchip/wilc1000/cfg80211.c    |  2 +-
+ .../net/wireless/quantenna/qtnfmac/cfg80211.c |  2 +-
+ drivers/net/wireless/st/cw1200/wsm.c          |  2 +-
+ drivers/net/wireless/ti/wlcore/main.c         |  2 +-
+ drivers/nvme/common/auth.c                    |  2 +-
+ drivers/scsi/cxgbi/cxgb4i/cxgb4i.c            |  4 +-
+ drivers/scsi/fcoe/fcoe_ctlr.c                 |  4 +-
+ drivers/scsi/lpfc/lpfc_hbadisc.c              |  6 +-
+ drivers/scsi/qedi/qedi_main.c                 |  2 +-
+ drivers/target/iscsi/cxgbit/cxgbit_cm.c       |  2 +-
+ drivers/thunderbolt/xdomain.c                 |  2 +-
+ drivers/video/fbdev/uvesafb.c                 |  2 +-
+ fs/ceph/inode.c                               |  2 +-
+ fs/ceph/mdsmap.c                              |  2 +-
+ fs/exfat/inode.c                              |  2 +-
+ fs/ext2/ialloc.c                              |  3 +-
+ fs/ext4/ialloc.c                              |  7 +-
+ fs/ext4/ioctl.c                               |  4 +-
+ fs/ext4/mmp.c                                 |  2 +-
+ fs/ext4/super.c                               |  7 +-
+ fs/f2fs/gc.c                                  |  2 +-
+ fs/f2fs/namei.c                               |  2 +-
+ fs/f2fs/segment.c                             |  8 +-
+ fs/fat/inode.c                                |  2 +-
+ fs/nfsd/nfs4state.c                           |  4 +-
+ fs/ntfs3/fslog.c                              |  6 +-
+ fs/ubifs/debug.c                              | 10 +-
+ fs/ubifs/journal.c                            |  2 +-
+ fs/ubifs/lpt_commit.c                         | 14 +--
+ fs/ubifs/tnc_commit.c                         |  2 +-
+ fs/xfs/libxfs/xfs_alloc.c                     |  2 +-
+ fs/xfs/libxfs/xfs_ialloc.c                    |  4 +-
+ fs/xfs/xfs_error.c                            |  2 +-
+ fs/xfs/xfs_icache.c                           |  2 +-
+ fs/xfs/xfs_log.c                              |  2 +-
+ include/linux/nodemask.h                      |  2 +-
+ include/linux/prandom.h                       | 12 ---
+ include/linux/random.h                        |  5 -
+ include/net/netfilter/nf_queue.h              |  2 +-
+ include/net/red.h                             |  2 +-
+ include/net/sock.h                            |  2 +-
+ kernel/bpf/bloom_filter.c                     |  2 +-
+ kernel/bpf/core.c                             |  6 +-
+ kernel/bpf/hashtab.c                          |  2 +-
+ kernel/bpf/verifier.c                         |  2 +-
+ kernel/kcsan/selftest.c                       |  4 +-
+ kernel/locking/test-ww_mutex.c                |  4 +-
+ kernel/time/clocksource.c                     |  2 +-
+ lib/cmdline_kunit.c                           |  4 +-
+ lib/fault-inject.c                            |  2 +-
+ lib/find_bit_benchmark.c                      |  4 +-
+ lib/kobject.c                                 |  2 +-
+ lib/random32.c                                |  4 +-
+ lib/reed_solomon/test_rslib.c                 | 12 +--
+ lib/sbitmap.c                                 |  4 +-
+ lib/test-string_helpers.c                     |  2 +-
+ lib/test_fprobe.c                             |  2 +-
+ lib/test_hexdump.c                            | 10 +-
+ lib/test_kasan.c                              |  6 +-
+ lib/test_kprobes.c                            |  2 +-
+ lib/test_list_sort.c                          |  2 +-
+ lib/test_min_heap.c                           |  6 +-
+ lib/test_objagg.c                             |  2 +-
+ lib/test_rhashtable.c                         |  6 +-
+ lib/test_vmalloc.c                            | 19 +---
+ lib/uuid.c                                    |  2 +-
+ mm/migrate.c                                  |  2 +-
+ mm/shmem.c                                    |  2 +-
+ mm/slab.c                                     |  2 +-
+ mm/slub.c                                     |  2 +-
+ net/802/garp.c                                |  2 +-
+ net/802/mrp.c                                 |  2 +-
+ net/ceph/mon_client.c                         |  2 +-
+ net/ceph/osd_client.c                         |  2 +-
+ net/core/neighbour.c                          |  2 +-
+ net/core/pktgen.c                             | 47 +++++-----
+ net/core/stream.c                             |  2 +-
+ net/dccp/ipv4.c                               |  4 +-
+ net/ipv4/datagram.c                           |  2 +-
+ net/ipv4/igmp.c                               |  6 +-
+ net/ipv4/inet_connection_sock.c               |  2 +-
+ net/ipv4/inet_hashtables.c                    |  2 +-
+ net/ipv4/ip_output.c                          |  2 +-
+ net/ipv4/route.c                              |  4 +-
+ net/ipv4/tcp_cdg.c                            |  2 +-
+ net/ipv4/tcp_ipv4.c                           |  4 +-
+ net/ipv4/udp.c                                |  2 +-
+ net/ipv6/addrconf.c                           |  8 +-
+ net/ipv6/ip6_flowlabel.c                      |  2 +-
+ net/ipv6/mcast.c                              | 10 +-
+ net/ipv6/output_core.c                        |  2 +-
+ net/mac80211/rc80211_minstrel_ht.c            |  2 +-
+ net/mac80211/scan.c                           |  2 +-
+ net/netfilter/ipvs/ip_vs_conn.c               |  2 +-
+ net/netfilter/ipvs/ip_vs_twos.c               |  4 +-
+ net/netfilter/nf_nat_core.c                   |  4 +-
+ net/netfilter/xt_statistic.c                  |  2 +-
+ net/openvswitch/actions.c                     |  2 +-
+ net/packet/af_packet.c                        |  2 +-
+ net/rds/bind.c                                |  2 +-
+ net/sched/act_gact.c                          |  2 +-
+ net/sched/act_sample.c                        |  2 +-
+ net/sched/sch_cake.c                          |  8 +-
+ net/sched/sch_netem.c                         | 22 ++---
+ net/sched/sch_pie.c                           |  2 +-
+ net/sched/sch_sfb.c                           |  2 +-
+ net/sctp/socket.c                             |  4 +-
+ net/sunrpc/auth_gss/gss_krb5_wrap.c           |  4 +-
+ net/sunrpc/cache.c                            |  2 +-
+ net/sunrpc/xprt.c                             |  2 +-
+ net/sunrpc/xprtsock.c                         |  2 +-
+ net/tipc/socket.c                             |  2 +-
+ net/unix/af_unix.c                            |  2 +-
+ net/xfrm/xfrm_state.c                         |  2 +-
+ 186 files changed, 379 insertions(+), 422 deletions(-)
 
 -- 
-Andrew Donnellan    OzLabs, ADL Canberra
-ajd@linux.ibm.com   IBM Australia Limited
+2.37.3
 
