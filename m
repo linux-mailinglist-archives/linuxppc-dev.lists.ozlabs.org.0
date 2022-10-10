@@ -2,89 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 814405F9738
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Oct 2022 05:42:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFAE45F9740
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Oct 2022 05:50:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Mm4W238KCz3dwf
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Oct 2022 14:42:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Mm4gZ4p7hz3dsF
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Oct 2022 14:50:18 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YYIcUWyb;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=JiFdjcQk;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::634; helo=mail-pl1-x634.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YYIcUWyb;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=JiFdjcQk;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mm4Tl2ntVz3ds0
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Oct 2022 14:41:47 +1100 (AEDT)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29A3PJ7G023472;
-	Mon, 10 Oct 2022 03:41:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : content-type : mime-version :
- content-transfer-encoding; s=pp1;
- bh=Oe341oHzOp5iovx308hWmfUjKuenBV4d+93vQnpF6tc=;
- b=YYIcUWybqWWXy49VWE6Fmg2KcwT7svyaAuy1zo17hM/wbKjGvadQH2EO8uQdYpA+XivG
- QsMjOxf7kuYCLm1mHTaQ/DRlN6iqvCI9kevuJaGWSEd3XmJX6hzhjrdk1FFI8Bjgp1L3
- iA2X79gAjdG7RSyMphtW8w6dHQ7dUlc2d2s8oMgora8Sm9SdkY47JWftby4J6n9uo3jA
- nNYcqNvuKBQ9Jyy22PrQ5JHjTKoGKQJ9bXB7jVTxRbXEMboF3iDk6aoK74HderZJ/GH0
- L03N2yFUv0kGDIf76exSDLS2ONy971gMNnBkVixtflgf0n8CQuHPAk1gKOc7iwLo+M7j NQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3k3jgwfv9y-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 10 Oct 2022 03:41:40 +0000
-Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 29A3fejT014973;
-	Mon, 10 Oct 2022 03:41:40 GMT
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.11])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3k3jgwfv9m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 10 Oct 2022 03:41:40 +0000
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
-	by ppma03dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 29A3a1Mp006262;
-	Mon, 10 Oct 2022 03:41:39 GMT
-Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com [9.57.198.24])
-	by ppma03dal.us.ibm.com with ESMTP id 3k30uacs7x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 10 Oct 2022 03:41:39 +0000
-Received: from smtpav04.wdc07v.mail.ibm.com ([9.208.128.116])
-	by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 29A3faVE9241156
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 10 Oct 2022 03:41:37 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A193958058;
-	Mon, 10 Oct 2022 03:41:36 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3713158054;
-	Mon, 10 Oct 2022 03:41:35 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.160.36.35])
-	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 10 Oct 2022 03:41:34 +0000 (GMT)
-Message-ID: <aaad8813b4762a6753cfcd0b605a7574a5192ec7.camel@linux.ibm.com>
-Subject: [PATCH v3] powerpc/pseries/vas: Add VAS IRQ primary handler
-From: Haren Myneni <haren@linux.ibm.com>
-To: mpe@ellerman.id.au, npiggin@gmail.com, fbarrat@linux.ibm.com,
-        linuxppc-dev@lists.ozlabs.org
-Date: Sun, 09 Oct 2022 20:41:25 -0700
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5 (3.36.5-2.fc32) 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: CTGGRSfRAuQ8k80qp7CJr_gCg-5na0XD
-X-Proofpoint-ORIG-GUID: _gCy55jL_rAldeV1bjsgmYf6QB-OsdBl
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
- definitions=2022-10-07_04,2022-10-07_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- priorityscore=1501 adultscore=0 clxscore=1015 spamscore=0 impostorscore=0
- mlxlogscore=999 lowpriorityscore=0 mlxscore=0 bulkscore=0 phishscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2209130000 definitions=main-2210100019
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mm4fc5Wscz2xvJ
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Oct 2022 14:49:27 +1100 (AEDT)
+Received: by mail-pl1-x634.google.com with SMTP id x6so9277120pll.11
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 09 Oct 2022 20:49:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=J5uwdgwryFHFJzjWiH++bUzGyJn8a2qBYOFkqPQdUjA=;
+        b=JiFdjcQkZ722P7s3iZCsJihWdE0H8Hb1Xp9mToLMy6UTMLVa1tCTeAPRwv7fmvPIq+
+         8rvkFwCUxFcrDK+3fTfvaFaZAMEyltqjrDVz/PytWUer59eQV1Yyqgh50XgVXauL7Vog
+         oGJr3dns0VUrublr5DdF0JtWb3Ga6TwT8XaZFY25dQ9QbyH1CVyrfzOBtJ3dDtFi+6bM
+         4FaBnTDKc+z1tQ7omh/CnHGX6k/xaRAexHIyAFJH6zA+2/22JywqrL2DD4ZlGMSFimKp
+         eCkRhSDSC5gVtOsYw2u/w2UPJ3VttbeIgjRY1oFln+qveMnci4poe3khwXzntilyOBUx
+         hiNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=J5uwdgwryFHFJzjWiH++bUzGyJn8a2qBYOFkqPQdUjA=;
+        b=kW+pMCQuh3+KqjFGdgV/3ZYDdsiwd/SWqlBbIG51/CplXRaBtOLPvoSSBgjMrk1OHN
+         gJVTYZFdcnFRQYPkPb07fhZg3DtuKbE5w/WnwxOQcqBbWUW49zM+6p2HqQJPZ4z5KbTE
+         4RKxoyeOvigGtUfUFPKfwmun6d6yDCBNu7rXufs2upYuyXV74D7gUSNNH5BnO++Pe5Gh
+         n5OHwYfw5dWxPY75t7sj6MXiCvJoZ1maA/zwaWIGQiyYgjUAxc6G+unOfU09sxY07OBE
+         1dHJJIbOyKnzLEIT2iGjjZ1Xn0UZxRyxg1z63tXYjT8PXsl1Qb+dgDicKkRw6xla9YWr
+         7Gug==
+X-Gm-Message-State: ACrzQf0vZN6uI66V7NON8RsCYqv5en9+nXIvRlzkQthG+AcCRhkCwH4y
+	/iTQCsrXNidt0IVxtbpx3ek=
+X-Google-Smtp-Source: AMsMyM7lHoI8Gy9V6tXanpM85kqRN40SxwDXKwUvcHAfUndnPhZXWSUKGr0roRcIdSUSsDrQ3lEemQ==
+X-Received: by 2002:a17:902:7084:b0:181:5304:fef4 with SMTP id z4-20020a170902708400b001815304fef4mr8742887plk.57.1665373764964;
+        Sun, 09 Oct 2022 20:49:24 -0700 (PDT)
+Received: from localhost ([118.208.156.99])
+        by smtp.gmail.com with ESMTPSA id h17-20020a170902f55100b001788ccecbf5sm5468419plf.31.2022.10.09.20.49.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 09 Oct 2022 20:49:24 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 10 Oct 2022 13:49:18 +1000
+Message-Id: <CNHXQ6R5IEHG.1D2WH96LGUA1I@bobo>
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Zhouyi Zhou" <zhouzhouyi@gmail.com>
+Subject: Re: [PATCH linux-next][RFC] powerpc: avoid lockdep when we are
+ offline
+X-Mailer: aerc 0.11.0
+References: <20220927014823.11439-1-zhouzhouyi@gmail.com>
+ <CN6WCMKCWHOG.LT2QV3910UJ2@bobo>
+ <CAABZP2wYcNXkTo=tgX-ARziwgD2rng+-wCZ-qfQ6M30+vmLEug@mail.gmail.com>
+ <CN7OZ6TMLLFS.2HER50Q3SO480@bobo>
+ <CAABZP2xu5w9Ec8LmTUrF31KhY3HCcBjQYSk4xo14bdB9mxOz+A@mail.gmail.com>
+In-Reply-To: <CAABZP2xu5w9Ec8LmTUrF31KhY3HCcBjQYSk4xo14bdB9mxOz+A@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,113 +84,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: atrajeev@linux.vnet.ibm.com, paulmck@kernel.org, linux-kernel@vger.kernel.org, rcu@vger.kernel.org, lance@osuosl.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Thu Sep 29, 2022 at 11:48 AM AEST, Zhouyi Zhou wrote:
+> On Wed, Sep 28, 2022 at 10:51 AM Nicholas Piggin <npiggin@gmail.com> wrot=
+e:
+> >
+> > On Wed Sep 28, 2022 at 11:48 AM AEST, Zhouyi Zhou wrote:
+> > > Thank Nick for reviewing my patch
+> > >
+> > > On Tue, Sep 27, 2022 at 12:25 PM Nicholas Piggin <npiggin@gmail.com> =
+wrote:
+> > > >
+> > > > On Tue Sep 27, 2022 at 11:48 AM AEST, Zhouyi Zhou wrote:
+> > > > > This is second version of my fix to PPC's  "WARNING: suspicious R=
+CU usage",
+> > > > > I improved my fix under Paul E. McKenney's guidance:
+> > > > > Link: https://lore.kernel.org/lkml/20220914021528.15946-1-zhouzho=
+uyi@gmail.com/T/
+> > > > >
+> > > > > During the cpu offlining, the sub functions of xive_teardown_cpu =
+will
+> > > > > call __lock_acquire when CONFIG_LOCKDEP=3Dy. The latter function =
+will
+> > > > > travel RCU protected list, so "WARNING: suspicious RCU usage" wil=
+l be
+> > > > > triggered.
+> > > > >
+> > > > > Avoid lockdep when we are offline.
+> > > >
+> > > > I don't see how this is safe. If RCU is no longer watching the CPU =
+then
+> > > > the memory it is accessing here could be concurrently freed. I thin=
+k the
+> > > > warning is valid.
+> > > Agree
+> > > >
+> > > > powerpc's problem is that cpuhp_report_idle_dead() is called before
+> > > > arch_cpu_idle_dead(), so it must not rely on any RCU protection the=
+re.
+> > > > I would say xive cleanup just needs to be done earlier. I wonder wh=
+y it
+> > > > is not done in __cpu_disable or thereabouts, that's where the inter=
+rupt
+> > > > controller is supposed to be stopped.
+> > > Yes, I learn flowing events sequence from kgdb debugging
+> > > __cpu_disable -> pseries_cpu_disable -> set_cpu_online(cpu, false)  =
+=3D
+> > > leads to =3D>  do_idle: if (cpu_is_offline(cpu) -> arch_cpu_idle_dead
+> > > so xive cleanup should be done in pseries_cpu_disable.
+> >
+> > It's a good catch and a reasonable approach to the problem.
+> Thank Nick for your encouragement ;-)
+> >
+> > > But as a beginner, I afraid that I am incompetent to do above
+> > > sophisticated work without error although I am very like to,
+> > > Could any expert do this for us?
+> >
+> > This will be difficult for anybody, it's tricky code. I'm not an
+> > expert at it.
+> >
+> > It looks like the interrupt controller disable split has been there
+> > since long before xive. I would try just move them together than see
+> > if that works.
+> Yes, I use "git blame" (I learned "git blame" from Paul E. McKenny ;-)
+> ) to see the same.
+> and anticipate your great works!
 
-irq_default_primary_handler() can be used only with IRQF_ONESHOT
-flag, but the flag disables IRQ before executing the thread handler
-and enables it after the interrupt is handled. But this IRQ disable
-sets the VAS IRQ OFF state in the hypervisor. In case if NX faults
-during this window, the hypervisor will not deliver the fault
-interrupt to the partition and the user space may wait continuously
-for the CSB update. So use VAS specific IRQ handler instead of
-calling the default primary handler.
+I was thinking you could try it and see if it works and what you find.
+If you are interested and have time to look into it?
 
-Increment pending_faults counter in IRQ handler and the bottom
-thread handler will process all faults based on this counter.
-In case if the another interrupt is received while the thread is
-running, it will be processed using this counter. The synchronization
-of top and bottom handlers will be done with IRQTF_RUNTHREAD flag
-and will re-enter to bottom half if this flag is set.
-
-Signed-off-by: Haren Myneni <haren@linux.ibm.com>
----
-v3: Update pending_faults usage in changelog
-v2: Use the pending_faults counter for the second interrupt and
-    process it with the previous interrupt handling if its thread
-    handler is executing.
-
- arch/powerpc/platforms/pseries/vas.c | 40 +++++++++++++++++++++++-----
- arch/powerpc/platforms/pseries/vas.h |  1 +
- 2 files changed, 34 insertions(+), 7 deletions(-)
-
-diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platforms/pseries/vas.c
-index 1a2cbc156e8f..70f26efcc35a 100644
---- a/arch/powerpc/platforms/pseries/vas.c
-+++ b/arch/powerpc/platforms/pseries/vas.c
-@@ -200,16 +200,41 @@ static irqreturn_t pseries_vas_fault_thread_fn(int irq, void *data)
- 	struct vas_user_win_ref *tsk_ref;
- 	int rc;
- 
--	rc = h_get_nx_fault(txwin->vas_win.winid, (u64)virt_to_phys(&crb));
--	if (!rc) {
--		tsk_ref = &txwin->vas_win.task_ref;
--		vas_dump_crb(&crb);
--		vas_update_csb(&crb, tsk_ref);
-+	while (atomic_read(&txwin->pending_faults)) {
-+		rc = h_get_nx_fault(txwin->vas_win.winid, (u64)virt_to_phys(&crb));
-+		if (!rc) {
-+			tsk_ref = &txwin->vas_win.task_ref;
-+			vas_dump_crb(&crb);
-+			vas_update_csb(&crb, tsk_ref);
-+		}
-+		atomic_dec(&txwin->pending_faults);
- 	}
- 
- 	return IRQ_HANDLED;
- }
- 
-+/*
-+ * irq_default_primary_handler() can be used only with IRQF_ONESHOT
-+ * which disables IRQ before executing the thread handler and enables
-+ * it after. But this disabling interrupt sets the VAS IRQ OFF
-+ * state in the hypervisor. If the NX generates fault interrupt
-+ * during this window, the hypervisor will not deliver this
-+ * interrupt to the LPAR. So use VAS specific IRQ handler instead
-+ * of calling the default primary handler.
-+ */
-+static irqreturn_t pseries_vas_irq_handler(int irq, void *data)
-+{
-+	struct pseries_vas_window *txwin = data;
-+
-+	/*
-+	 * The thread hanlder will process this interrupt if it is
-+	 * already running.
-+	 */
-+	atomic_inc(&txwin->pending_faults);
-+
-+	return IRQ_WAKE_THREAD;
-+}
-+
- /*
-  * Allocate window and setup IRQ mapping.
-  */
-@@ -240,8 +265,9 @@ static int allocate_setup_window(struct pseries_vas_window *txwin,
- 		goto out_irq;
- 	}
- 
--	rc = request_threaded_irq(txwin->fault_virq, NULL,
--				  pseries_vas_fault_thread_fn, IRQF_ONESHOT,
-+	rc = request_threaded_irq(txwin->fault_virq,
-+				  pseries_vas_irq_handler,
-+				  pseries_vas_fault_thread_fn, 0,
- 				  txwin->name, txwin);
- 	if (rc) {
- 		pr_err("VAS-Window[%d]: Request IRQ(%u) failed with %d\n",
-diff --git a/arch/powerpc/platforms/pseries/vas.h b/arch/powerpc/platforms/pseries/vas.h
-index 333ffa2f9f42..a2cb12a31c17 100644
---- a/arch/powerpc/platforms/pseries/vas.h
-+++ b/arch/powerpc/platforms/pseries/vas.h
-@@ -132,6 +132,7 @@ struct pseries_vas_window {
- 	u64 flags;
- 	char *name;
- 	int fault_virq;
-+	atomic_t pending_faults; /* Number of pending faults */
- };
- 
- int sysfs_add_vas_caps(struct vas_cop_feat_caps *caps);
--- 
-2.26.3
-
-
+Thanks,
+Nick
