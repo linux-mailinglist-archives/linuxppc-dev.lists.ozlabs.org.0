@@ -2,93 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AE2D5F9DF0
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Oct 2022 13:50:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29AF25F9FF3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Oct 2022 16:11:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MmHKJ0Nrxz3ds8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Oct 2022 22:50:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MmLSb0Rwdz3dsF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Oct 2022 01:11:43 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gXSOkUdP;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=c6TYWAx3;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gXSOkUdP;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=c6TYWAx3;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MmHJN2pr5z3c3G
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Oct 2022 22:49:23 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29AB0fhJ025316;
-	Mon, 10 Oct 2022 11:49:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : subject :
- to : cc : references : in-reply-to : message-id : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=vlit3mspGcQoltaUL4UUslQlY6RHR+R4ZqT6iqVkgvM=;
- b=gXSOkUdPOcBAKdk5JKbdjAPT4hbl8tqTT2o1urKT6RShnEhT3WFDAyKMCNQ8QSnZWBBu
- iibnQmk5RUF9XCtd2u8y+ph0u1VRYr4SST0FB032DUt5RQ+Cea9WQoDi1s8HngngZSyN
- V4zQv0uLyG1tAOAzElprXzLRwnQzk7C4AwsfkFnyp3/x/iphqf0wsdDnSWEeMyPnM45s
- MmH9WMpLMtJ+X8LuZnnHj2X3CFJODwhdv9C8AMSR5aRZFhrNbI/Sv0ALQq6KsjXAfzoW
- cZJb5ZMUQovhxfzrs5oITJgzfd0DIelgojBycRBf8m3qWu262GdfwM/Ve3wzclsOXwJr WQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3k3k0tasx0-1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MmLRZ14N0z3bjp
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Oct 2022 01:10:49 +1100 (AEDT)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29ADYTDN024581;
+	Mon, 10 Oct 2022 14:10:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=kVVtL9sg5geUzXWpD0lphCXAA2C4tqRVjLqbQUC6IoA=;
+ b=c6TYWAx3yPy3kVvONUh5oe0AlS1afBH5nQxwQMZVonq49/3UqbaGAZcHdNwXrUSW1XZX
+ fsuoUcgph+ea4c+B7KBmkTs2mDRxdc+iJYW0IXdpLj5HLDuup62R52Zk6nUMVmYrTvJn
+ 0bxwGBNAfHpb/8cbgZFuaJiaWVExPA2z3jYYQVDy6rQSney2Ep1Sw/zCzRx+OIYwdH/a
+ LB2dp6Svogtius4PHZcG6hfVuteXlD6D+ZKTg1A9pBK2tqEXRpHxMUzKbIQCT6MP4uoF
+ eXi5/Jcgs9H2u8pIApnml3HXFrLYx+UAgRnuNk9mNRr+EqpIF6Cy50YYvG6TWx031Bsz OQ== 
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.10])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3k3ju7743r-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 10 Oct 2022 11:49:10 +0000
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 29ABJKkt028413;
-	Mon, 10 Oct 2022 11:49:09 GMT
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com [149.81.74.106])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3k3k0tasvn-1
+	Mon, 10 Oct 2022 14:10:39 +0000
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+	by ppma02dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 29AE5rH0017672;
+	Mon, 10 Oct 2022 14:10:39 GMT
+Received: from b03cxnp08026.gho.boulder.ibm.com (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
+	by ppma02dal.us.ibm.com with ESMTP id 3k30u9r1q8-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 10 Oct 2022 11:49:09 +0000
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
-	by ppma04fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 29ABdELx011911;
-	Mon, 10 Oct 2022 11:49:06 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
-	by ppma04fra.de.ibm.com with ESMTP id 3k30u9a0e2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 10 Oct 2022 11:49:06 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
-	by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 29ABn45o66650580
+	Mon, 10 Oct 2022 14:10:39 +0000
+Received: from smtpav03.dal12v.mail.ibm.com ([9.208.128.129])
+	by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 29AEAew166191700
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 10 Oct 2022 11:49:04 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 28D5642042;
-	Mon, 10 Oct 2022 11:49:04 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AD57642041;
-	Mon, 10 Oct 2022 11:49:03 +0000 (GMT)
-Received: from localhost (unknown [9.43.23.98])
-	by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Mon, 10 Oct 2022 11:49:03 +0000 (GMT)
-Date: Mon, 10 Oct 2022 17:19:02 +0530
-From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: [PATCH v4 00/16] objtool: Enable and implement --mcount option on
- powerpc
-To: linuxppc-dev@lists.ozlabs.org, Sathvika Vasireddy <sv@linux.ibm.com>,
-        jpoimboe@redhat.com
-References: <20221002104240.1316480-1-sv@linux.ibm.com>
-In-Reply-To: <20221002104240.1316480-1-sv@linux.ibm.com>
-User-Agent: astroid/4d6b06ad (https://github.com/astroidmail/astroid)
-Message-Id: <1665401892.qmrp2qjj9t.naveen@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 6yW98v4FKCZoy1E5uTe0Z3Mne64MmS_O
-X-Proofpoint-ORIG-GUID: 2WBNXd8FziDxka69AQh5-sT2jj99ugWY
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	Mon, 10 Oct 2022 14:10:40 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A4C0158056;
+	Mon, 10 Oct 2022 14:10:37 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8C63E5803F;
+	Mon, 10 Oct 2022 14:10:37 +0000 (GMT)
+Received: from localhost (unknown [9.163.68.247])
+	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 10 Oct 2022 14:10:37 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc/kasan/book3s_64: warn when running with hash MMU
+In-Reply-To: <87h70for01.fsf@mpe.ellerman.id.au>
+References: <20221004223724.38707-1-nathanl@linux.ibm.com>
+ <874jwhpp6g.fsf@mpe.ellerman.id.au>
+ <9b6eb796-6b40-f61d-b9c6-c2e9ab0ced38@csgroup.eu>
+ <87h70for01.fsf@mpe.ellerman.id.au>
+Date: Mon, 10 Oct 2022 09:10:37 -0500
+Message-ID: <8735bvbwgy.fsf@linux.ibm.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: X2AAXZAOir1-kLJTxJrXSE4ZcIOLtkkR
+X-Proofpoint-ORIG-GUID: X2AAXZAOir1-kLJTxJrXSE4ZcIOLtkkR
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
- definitions=2022-10-10_06,2022-10-10_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
- priorityscore=1501 malwarescore=0 bulkscore=0 mlxlogscore=626
- suspectscore=0 mlxscore=0 adultscore=0 spamscore=0 phishscore=0
- impostorscore=0 lowpriorityscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2209130000 definitions=main-2210100069
+ definitions=2022-10-10_08,2022-10-10_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 adultscore=0
+ lowpriorityscore=0 spamscore=0 bulkscore=0 priorityscore=1501
+ clxscore=1011 mlxscore=0 suspectscore=0 malwarescore=0 impostorscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2209130000 definitions=main-2210100084
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,80 +92,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aik@ozlabs.ru, linux-kernel@vger.kernel.org, peterz@infradead.org, mingo@redhat.com, rostedt@goodmis.org, npiggin@gmail.com, mbenes@suse.cz, chenzhongjin@huawei.com
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, kasan-dev <kasan-dev@googlegroups.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Sathvika Vasireddy wrote:
-> This patchset enables and implements objtool --mcount
-> option on powerpc. This applies atop powerpc/merge branch.
->=20
-> Changelog:
->=20
-> ----
-> v4:
->=20
-> * Patch 11/16 - Introduce a new config option
-> 		CONFIG_HAVE_OBJTOOL_NOP_MCOUNT as a means for
-> 		architectures to enable nop'ing ftrace locations.
->=20
-> 	      - Remove Acked-by tag from Peter Zijlstra (Intel),
-> 		and Reviewed-by tag from Christophe Leroy.=20
-> 		[This is done because I reworked the patch to add
-> 		a new config option to objtool. Please let me know
-> 		if you want me to retain the tags. Thanks!]
->=20
-> * Patch 16/16 - Rework the patch to handle only 'bl' instruction
-> 		decoding.=20
+Michael Ellerman <mpe@ellerman.id.au> writes:
+> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+>> + KASAN list
+>>
+>> Le 06/10/2022 =C3=A0 06:10, Michael Ellerman a =C3=A9crit=C2=A0:
+>>> Nathan Lynch <nathanl@linux.ibm.com> writes:
+>>>> kasan is known to crash at boot on book3s_64 with non-radix MMU. As
+>>>> noted in commit 41b7a347bf14 ("powerpc: Book3S 64-bit outline-only
+>>>> KASAN support"):
+>>>>
+>>>>    A kernel with CONFIG_KASAN=3Dy will crash during boot on a machine
+>>>>    using HPT translation because not all the entry points to the
+>>>>    generic KASAN code are protected with a call to kasan_arch_is_ready=
+().
+>>>=20
+>>> I guess I thought there was some plan to fix that.
+>>
+>> I was thinking the same.
+>>
+>> Do we have a list of the said entry points to the generic code that are=
+=20
+>> lacking a call to kasan_arch_is_ready() ?
+>>
+>> Typically, the BUG dump below shows that kasan_byte_accessible() is=20
+>> lacking the check. It should be straight forward to add=20
+>> kasan_arch_is_ready() check to kasan_byte_accessible(), shouldn't it ?
+>
+> Yes :)
+>
+> And one other spot, but the patch below boots OK for me. I'll leave it
+> running for a while just in case there's a path I've missed.
 
-With changes to the two patches in this series that I have described,=20
-and with my patch to have ftrace ignore weak symbols (*) applied, I=20
-built a ppc64le config.
+It works for me too, thanks (p8 pseries qemu).
 
-(*) http://lkml.kernel.org/r/20220809105425.424045-1-naveen.n.rao@linux.vne=
-t.ibm.com
+This avoids the boot-time oops, but kasan remains unimplemented for hash
+mmu. Raising the question: with the trivial crashes addressed, is the
+current message ('KASAN not enabled as it requires radix!') sufficient
+to notify developers (such as me, a week ago) who mean to use kasan on a
+book3s platform, unaware that it's radix-only? Would a WARN or something
+more prominent still be justified?
 
-I then used the below diff to disable objtool and to build with=20
-recordmcount:
-
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 7e28a8fd4c24fa..81c9f895d69012 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -238,8 +238,6 @@ config PPC
-        select HAVE_MOD_ARCH_SPECIFIC
-        select HAVE_NMI                         if PERF_EVENTS || (PPC64 &&=
- PPC_BOOK3S)
-        select HAVE_OPTPROBES
--       select HAVE_OBJTOOL                     if PPC32 || MPROFILE_KERNEL
--       select HAVE_OBJTOOL_MCOUNT              if HAVE_OBJTOOL
-        select HAVE_PERF_EVENTS
-        select HAVE_PERF_EVENTS_NMI             if PPC64
-        select HAVE_PERF_REGS
-
-Comparing available_filter_functions across the two builds showed the=20
-below differences:
-  $ diff ftrace_funcs_recordmcount_20221010.sort.out ftrace_funcs_objtool_2=
-0221010.sort.out=20
-  6799d6798
-  < __dev_alloc_name
-  6800a6800
-  > dev_alloc_name_ns
-  11680d11679
-  < find_zone.isra.0
-  22396a22396
-  > ns_capable_common.part.0
-
-All the above changes are down to compiler optimizations and shuffling=20
-due to CONFIG_OBJTOOL being enabled and changing annotate_unreachable().
-
-As such, for this series:
-Reviewed-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
-Tested-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
-
-
-Josh,
-Are you ok if this series is taken in through the powerpc tree?
-
-
-- Naveen
+I guess people will figure it out as soon as they think to search the
+kernel log for 'KASAN'...
