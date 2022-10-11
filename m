@@ -1,55 +1,40 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 483A95FBC19
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Oct 2022 22:34:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6440A5FBC2C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Oct 2022 22:35:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Mn6vn6tYvz3dry
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Oct 2022 07:34:29 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HTRD6zMn;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Mn6x62kmpz3drb
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Oct 2022 07:35:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=jpoimboe@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HTRD6zMn;
-	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=srs0=y8wv=2m=goodmis.org=rostedt@kernel.org; receiver=<UNKNOWN>)
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mn6tr2BYxz306m
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Oct 2022 07:33:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mn6wY66MJz306m
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Oct 2022 07:35:09 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 4BC8861168;
-	Tue, 11 Oct 2022 20:33:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E8D3C433C1;
-	Tue, 11 Oct 2022 20:33:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1665520414;
-	bh=u/ngx5nkN4Heguu0mTv5ntQdOfvx9DRizvMHIBMZFBM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HTRD6zMn+QYXURS0Xv4rcmQ9+ca9gGY/ivP4U4j+PLGelg2oB6pXpRpdASuFUUs1N
-	 IEdCoKkJyNNKldLLfiV8wN2XZTJLm7QlBASADnaibAtfNPOU1SNDa7+tEQiWTNwWMB
-	 ejLR375TzQlXuvEAE0W+SbQ3kZU4hmXGoiMbiYqHNIWTlT1IkQ939fZp8gIubhMJJr
-	 lwalcI/94AJXKlgH+e1vCau578ipHzFF1oblY1uZga+Pz6/Q9s+Brm5+30Rwrbgdd2
-	 nrRwTH45iigXeo6U/+uRQQN1H9lNxvM5gPg+SqV9ZXWyZTwdcBAATBRZz+yi18r71m
-	 C/yl6zIK44Ycg==
-Date: Tue, 11 Oct 2022 13:33:32 -0700
-From: Josh Poimboeuf <jpoimboe@kernel.org>
-To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: [PATCH v4 11/16] objtool: Add --mnop as an option to --mcount
-Message-ID: <20221011203332.zzmv6awd5eiydxgw@treble>
-References: <20221002104240.1316480-1-sv@linux.ibm.com>
- <20221002104240.1316480-12-sv@linux.ibm.com>
- <1665401725.d3dolquorh.naveen@linux.ibm.com>
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 7DCF9612CD;
+	Tue, 11 Oct 2022 20:35:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0CA5C433C1;
+	Tue, 11 Oct 2022 20:34:59 +0000 (UTC)
+Date: Tue, 11 Oct 2022 16:34:53 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Valentin Schneider <vschneid@redhat.com>
+Subject: Re: [RFC PATCH 0/5] Generic IPI sending tracepoint
+Message-ID: <20221011163453.2133ab4a@rorschach.local.home>
+In-Reply-To: <xhsmhilkqfi7z.mognet@vschneid.remote.csb>
+References: <20221007154145.1877054-1-vschneid@redhat.com>
+	<Y0CFnWDpMNGajIRD@fuller.cnet>
+	<xhsmhilkqfi7z.mognet@vschneid.remote.csb>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <1665401725.d3dolquorh.naveen@linux.ibm.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,49 +46,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aik@ozlabs.ru, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, linux-kernel@vger.kernel.org, peterz@infradead.org, mingo@redhat.com, Sathvika Vasireddy <sv@linux.ibm.com>, jpoimboe@redhat.com, rostedt@goodmis.org, mbenes@suse.cz, chenzhongjin@huawei.com
+Cc: Juri Lelli <juri.lelli@redhat.com>, Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Dave Hansen <dave.hansen@linux.intel.com>, linux-mips@vger.kernel.org, Guo Ren <guoren@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, Marc Zyngier <maz@kernel.org>, linux-hexagon@vger.kernel.org, x86@kernel.org, Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org, Ingo Molnar <mingo@redhat.com>, linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org, "Paul E. McKenney" <paulmck@kernel.org>, Frederic Weisbecker <frederic@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, openrisc@lists.librecores.org, Borislav Petkov <bp@alien8.de>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel
+ .org, Daniel Bristot de Oliveira <bristot@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>, linux-kernel@vger.kernel.org, Douglas RAILLARD <douglas.raillard@arm.com>, linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "David S.
+ Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Oct 10, 2022 at 05:07:46PM +0530, Naveen N. Rao wrote:
-> > +++ b/scripts/Makefile.lib
-> > @@ -234,6 +234,7 @@ objtool_args =								\
-> >  	$(if $(CONFIG_HAVE_NOINSTR_HACK), --hacks=noinstr)		\
-> >  	$(if $(CONFIG_X86_KERNEL_IBT), --ibt)				\
-> >  	$(if $(CONFIG_FTRACE_MCOUNT_USE_OBJTOOL), --mcount)		\
-> > +	$(if $(CONFIG_HAVE_OBJTOOL_NOP_MCOUNT), --mnop)                 \
-> 
-> This still won't help: for instance, if CONFIG_FTRACE itself is disabled. I
-> think we should make this depend on CONFIG_FTRACE_MCOUNT_USE_OBJTOOL. The
-> below change works for me:
-> 
-> diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-> index 54d2d6451bdacc..fd3f55a1fdb7bb 100644
-> --- a/scripts/Makefile.lib
-> +++ b/scripts/Makefile.lib
-> @@ -245,8 +245,8 @@ objtool_args =                                                              \
->        $(if $(CONFIG_HAVE_JUMP_LABEL_HACK), --hacks=jump_label)        \
->        $(if $(CONFIG_HAVE_NOINSTR_HACK), --hacks=noinstr)              \
->        $(if $(CONFIG_X86_KERNEL_IBT), --ibt)                           \
-> -       $(if $(CONFIG_FTRACE_MCOUNT_USE_OBJTOOL), --mcount)             \
-> -       $(if $(CONFIG_HAVE_OBJTOOL_NOP_MCOUNT), --mnop)                 \
-> +        $(if $(CONFIG_FTRACE_MCOUNT_USE_OBJTOOL),                       \
-> +             $(if $(CONFIG_HAVE_OBJTOOL_NOP_MCOUNT), --mcount --mnop, --mcount)) \
->        $(if $(CONFIG_UNWINDER_ORC), --orc)                             \
->        $(if $(CONFIG_RETPOLINE), --retpoline)                          \
->        $(if $(CONFIG_RETHUNK), --rethunk)                              \
+On Tue, 11 Oct 2022 17:17:04 +0100
+Valentin Schneider <vschneid@redhat.com> wrote:
 
-This has a new conflict, may need something like:
+> tep_get_field_val() just yields an unsigned long long of value 0x200018,
+> which AFAICT is just the [length, offset] thing associated with dynamic
+> arrays. Not really usable, and I don't see anything exported in the lib to
+> extract and use those values.
 
---- a/scripts/Makefile.lib
-+++ b/scripts/Makefile.lib
-@@ -256,6 +256,9 @@ objtool-args-$(CONFIG_HAVE_JUMP_LABEL_HACK)		+= --hacks=jump_label
- objtool-args-$(CONFIG_HAVE_NOINSTR_HACK)		+= --hacks=noinstr
- objtool-args-$(CONFIG_X86_KERNEL_IBT)			+= --ibt
- objtool-args-$(CONFIG_FTRACE_MCOUNT_USE_OBJTOOL)	+= --mcount
-+ifdef CONFIG_FTRACE_MCOUNT_USE_OBJTOOL
-+objtool-args-$(CONFIG_HAVE_OBJTOOL_NOP_MCOUNT)		+= --mnop
-+endif
- objtool-args-$(CONFIG_UNWINDER_ORC)			+= --orc
- objtool-args-$(CONFIG_RETPOLINE)			+= --retpoline
- objtool-args-$(CONFIG_RETHUNK)				+= --rethunk
+Correct.
+
+> 
+> tep_get_field_raw() is better, it handles the dynamic array for us and
+> yields a pointer to the cpumask array at the tail of the record. With that
+> it's easy to get an output such as: cpumask[size=32]=[4,0,0,0,]. Still,
+> this isn't a native type for many programming languages.
+
+Yeah, this is the interface that I would have used. And it would likely
+require some kind of wrapper to make it into what you prefer.
+
+Note, I've been complaining for some time now how much I hate the
+libtraceevent interface, and want to rewrite it. (I just spoke to
+someone that wants to implement it in Rust). But the question comes
+down to how to make it backward compatible. Perhaps we don't and just
+up the major version number (libtraceevent 2.0).
+
+What would you recommend as an API to process cpumasks better?
+
+-- Steve
