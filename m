@@ -2,89 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 414185FB657
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Oct 2022 17:03:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E247F5FB69C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Oct 2022 17:08:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MmzYW17TPz3dsD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Oct 2022 02:03:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MmzgB63cWz3br0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Oct 2022 02:08:06 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JBzjSpq+;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bFlEr+6K;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Wa80gUpm;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=sVlHbFHK;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=vschneid@redhat.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.29; helo=smtp-out2.suse.de; envelope-from=tzimmermann@suse.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JBzjSpq+;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bFlEr+6K;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Wa80gUpm;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=sVlHbFHK;
 	dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MmzXV4b7fz2xf6
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Oct 2022 02:02:17 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1665500532;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ti1NCFCTzr5YPwBHvg45c+mfaiUwrR60uA7ep6lLZuA=;
-	b=JBzjSpq+jRqqpD9oYTBWlNLyM7uj0Urqg1VYVfaKhguV+x0JV9H69UIQjThagjQkTspvj+
-	95m9ek4KYWV6VxONycqhZwrWFkAs6UL4xLNqkNoEGcF4+3CEx/403GzBu7Ugoi9RyK0j/f
-	MefmfEkLDgQZFp0D8u7h5+IxmbIEtVI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1665500533;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ti1NCFCTzr5YPwBHvg45c+mfaiUwrR60uA7ep6lLZuA=;
-	b=bFlEr+6Kou7c1Uq+2pDZ9tDyqBmC6hB5Yz69cCDmjCiwJ0RYANSd+q7eqqXzIxNZlKmCsJ
-	HK86uUjGeeiHsSK1V+RpVwq/virSvYwS4LVGk7CpdIk8VDl90w3NrN1PoMDqyymSkyYH6c
-	x7t6hK8WAEMHQictmEFy0bW7/NiJmGY=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-110-Hi9bB4JqNWeGs07Uf8h-oQ-1; Tue, 11 Oct 2022 11:02:11 -0400
-X-MC-Unique: Hi9bB4JqNWeGs07Uf8h-oQ-1
-Received: by mail-wm1-f70.google.com with SMTP id bg21-20020a05600c3c9500b003c2acbff422so912373wmb.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Oct 2022 08:02:11 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ti1NCFCTzr5YPwBHvg45c+mfaiUwrR60uA7ep6lLZuA=;
-        b=xlr/11gCA5aK1Q934X7//OHOXBB+kZPp90g99yBWXvkOnXzsss+UZNY7jRYsd5a5Ua
-         7XyaxqH5UoppMqgZtbCCqr65fncOrDvrnpelHW3sYF9yq52dGaeO4rGJaKhv9RGariPP
-         vE2Kdp83BXxoZALCZ2lLnRITPDm3B0dHk/C4a5WrHAam0ibmbQSse7aLWIYbLEWmKSsr
-         L9uH9twhfJ4MhGuMOS9n/7WQw+FTpgpbutdiAtQoETLZlfkmlZgpen2h3wkMebLW1Slj
-         qwWs9SlC4KZbKhdSrdmONAuBAweE4P+zgb1LlcnMXjtlld20pdPHWIfu1pw+bg2M/OtF
-         hbyQ==
-X-Gm-Message-State: ACrzQf0dbwnOSVTahudWqvXYNP2HN6u8O9vQJvMX7YFquDhvSH9f4vwG
-	9pehljktxIOLyZDr01jwmqCik2G8iztPV5TT75IyxgZ1OZprD0kUPOKPP3JuzEkMGkrVF/6RAbC
-	ipDHhpQ+VQWfI8Un8anzs1RI6tw==
-X-Received: by 2002:a5d:59a3:0:b0:22e:4b62:7ceb with SMTP id p3-20020a5d59a3000000b0022e4b627cebmr15699182wrr.90.1665500528705;
-        Tue, 11 Oct 2022 08:02:08 -0700 (PDT)
-X-Google-Smtp-Source: AMsMyM7srUgXRaEVg4Pb59BUs0ShAt8e40s56KQw2lU0G4VdN3sOMR/0VHio2//G+OqnLs1Wx3l7Vw==
-X-Received: by 2002:a5d:59a3:0:b0:22e:4b62:7ceb with SMTP id p3-20020a5d59a3000000b0022e4b627cebmr15699160wrr.90.1665500528495;
-        Tue, 11 Oct 2022 08:02:08 -0700 (PDT)
-Received: from vschneid.remote.csb ([104.132.153.106])
-        by smtp.gmail.com with ESMTPSA id bh11-20020a05600c3d0b00b003b49ab8ff53sm13552403wmb.8.2022.10.11.08.02.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Oct 2022 08:02:07 -0700 (PDT)
-From: Valentin Schneider <vschneid@redhat.com>
-To: Steven Rostedt <rostedt@goodmis.org>
-Subject: Re: [RFC PATCH 4/5] irq_work: Trace calls to arch_irq_work_raise()
-In-Reply-To: <20221008153442.159b2f2d@rorschach.local.home>
-References: <20221007154145.1877054-1-vschneid@redhat.com>
- <20221007154533.1878285-4-vschneid@redhat.com>
- <20221008153442.159b2f2d@rorschach.local.home>
-Date: Tue, 11 Oct 2022 16:02:06 +0100
-Message-ID: <xhsmhlepmflox.mognet@vschneid.remote.csb>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MmzfG4mwQz2xJ8
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Oct 2022 02:07:18 +1100 (AEDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 6E9331F92C;
+	Tue, 11 Oct 2022 15:07:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1665500835; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=augkMaHC0I3987qNRIF51UWxwXfQVd4W0P3vSWtiW3A=;
+	b=Wa80gUpmnS80wGfuFNXI8eLmNbkVfqGbcqrI87D2xq9esfzINaw1pW4avYlf5oqkjOfsTx
+	1y2GddS3vaSGgVulIjjlxdfehOV2J+yN+lK5H7FZOdiFFwOdrdAzn9EiwEcSfCBZ+MVlGb
+	BLQ/7KvZPXoc5c4vsyr9c8m8WuilTR0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1665500835;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=augkMaHC0I3987qNRIF51UWxwXfQVd4W0P3vSWtiW3A=;
+	b=sVlHbFHKcjJzfAEcRKkPoJhoMeTiylWiFbigThyguhm0FHcIOFOVrevwfqatSGpUb1BulE
+	Hz9IaqJX5x+g2FAQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 977B6139ED;
+	Tue, 11 Oct 2022 15:07:14 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id h/MJI6KGRWPUTAAAMHmgww
+	(envelope-from <tzimmermann@suse.de>); Tue, 11 Oct 2022 15:07:14 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: javierm@redhat.com,
+	airlied@linux.ie,
+	daniel@ffwll.ch,
+	deller@gmx.de,
+	maxime@cerno.tech,
+	sam@ravnborg.org,
+	msuchanek@suse.de,
+	benh@kernel.crashing.org,
+	paulus@samba.org,
+	geert@linux-m68k.org,
+	mark.cave-ayland@ilande.co.uk
+Subject: [PATCH v5 0/5] drm: Add driver for PowerPC OF displays
+Date: Tue, 11 Oct 2022 17:07:07 +0200
+Message-Id: <20221011150712.3928-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.37.3
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,37 +83,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juri Lelli <juri.lelli@redhat.com>, Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Dave Hansen <dave.hansen@linux.intel.com>, linux-mips@vger.kernel.org, Guo Ren <guoren@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, Marc Zyngier <maz@kernel.org>, linux-hexagon@vger.kernel.org, x86@kernel.org, Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org, Ingo Molnar <mingo@redhat.com>, linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org, "Paul E. McKenney" <paulmck@kernel.org>, Frederic Weisbecker <frederic@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, openrisc@lists.librecores.org, Borislav Petkov <bp@alien8.de>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel
- .org, Daniel Bristot de Oliveira <bristot@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>, linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: linux-fbdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Thomas Zimmermann <tzimmermann@suse.de>, dri-devel@lists.freedesktop.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 08/10/22 15:34, Steven Rostedt wrote:
-> On Fri,  7 Oct 2022 16:45:32 +0100
-> Valentin Schneider <vschneid@redhat.com> wrote:
->>  }
->>  
->> +static inline void irq_work_raise(void)
->> +{
->> +	if (arch_irq_work_has_interrupt())
->> +		trace_ipi_send_cpu(_RET_IP_, smp_processor_id());
->
-> To save on the branch, let's make the above:
->
-> 	if (trace_ipi_send_cpu_enabled() && arch_irq_work_has_interrupt())
->
-> As the "trace_*_enabled()" is a static branch that will make it a nop
-> when the tracepoint is not enabled.
->
+PowerPC's Open Firmware offers a simple display buffer for graphics
+output. Add ofdrm, a DRM driver for the device. As with the existing
+simpledrm driver, the graphics hardware is pre-initialized by the
+firmware. The driver only provides blitting, no actual DRM modesetting
+is possible.
 
-Makes sense, thanks for the suggestion.
+Patch 1 adds ofdrm, which has again been significantly reworked.
+The FWFB library has been removed infavor of various functions in
+existing DRM helper libraries. Ofdrm now supports damage iterators
+and synchronization for imported GEM BOs.
 
-> -- Steve
->
->
->> +
->> +	arch_irq_work_raise();
->> +}
->> +
->>  /* Enqueue on current CPU, work must already be claimed and preempt disabled */
+Patches 2 to 4 add support for color management. The code has been
+taken from fbdev's offb. I have no hardware available for testing the
+functionality. Qemu's stdvga apparently does not support gamma tables
+in RGB modes. I verified that the color management code is executed
+by running Gnome's night-mode settings, but the display's color tone
+does not change.
+
+Patch 5, which is new in version 4 of this patchset, adds support for
+big-endian scanout buffers. It works at least with qemu's ppc64
+emulation. Fbdev emulation and pixman rendering works. GL rendering
+produces incorrect colors.
+
+Tested by running fbdev emulation, Wayland Gnome, and Weston on qemu's
+ppc64le and ppc64 emulation. 
+
+Thomas Zimmermann (5):
+  drm/ofdrm: Add ofdrm for Open Firmware framebuffers
+  drm/ofdrm: Add CRTC state
+  drm/ofdrm: Add per-model device function
+  drm/ofdrm: Support color management
+  drm/ofdrm: Support big-endian scanout buffers
+
+ MAINTAINERS                         |    1 +
+ drivers/gpu/drm/drm_format_helper.c |   10 +
+ drivers/gpu/drm/tiny/Kconfig        |   13 +
+ drivers/gpu/drm/tiny/Makefile       |    1 +
+ drivers/gpu/drm/tiny/ofdrm.c        | 1424 +++++++++++++++++++++++++++
+ drivers/video/fbdev/Kconfig         |    1 +
+ 6 files changed, 1450 insertions(+)
+ create mode 100644 drivers/gpu/drm/tiny/ofdrm.c
+
+-- 
+2.37.3
 
