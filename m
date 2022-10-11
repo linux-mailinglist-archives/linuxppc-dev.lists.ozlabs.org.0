@@ -2,92 +2,123 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C72CF5FB219
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Oct 2022 14:09:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFE5C5FB341
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Oct 2022 15:21:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Mmvhs4Lbzz3bkQ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Oct 2022 23:09:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MmxJ94B6Vz3dqS
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Oct 2022 00:21:29 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=OOL8Hxcl;
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=5u5ytv2w;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hca@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=amd.com (client-ip=40.107.92.56; helo=nam10-bn7-obe.outbound.protection.outlook.com; envelope-from=ravi.bangoria@amd.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=OOL8Hxcl;
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=5u5ytv2w;
 	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2056.outbound.protection.outlook.com [40.107.92.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mmrrj6dtlz3dsk
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Oct 2022 21:00:53 +1100 (AEDT)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29B9iM3q008462;
-	Tue, 11 Oct 2022 10:00:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- content-transfer-encoding : in-reply-to; s=pp1;
- bh=cDUY+1vkbBQhdXB58PoxjcuGNo/DQDfRq3ZaWdWqAzc=;
- b=OOL8Hxcl0CKggxHmxcmT0PdgQBUgq70AseSjBOxMElBjpC3YsyKSp0LsFe55kHAJxmP/
- P3Jz3ag1O2AUkeUOaghVX6JDJ5kM0YJ7sL5PwnHUI6Ma39FfAvDjkjUnaxQ+dIXxKdyD
- 0UJEGZXrJzQKMLnVPW2vlNCgGVAfoSIsQ+WhotQC4kiRmGWKHnjea50FzdBUAJ71FJc+
- ha+oihFj3Y0sg1dbtCOh0rA793pGDPp0NNreqW6HwCNbBoPf1UwfbXpi/ZMgEAcXPr4L
- jGojWsVXNUI21pC2RMzUsTcR7A1Cv0qDFAHlZVwNEMYKhUUdOCyqynChy69sy9YVbhbH 4g== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3k54d0kknr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Oct 2022 10:00:28 +0000
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 29B7spN5026272;
-	Tue, 11 Oct 2022 10:00:27 GMT
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3k54d0kkk0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Oct 2022 10:00:26 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-	by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 29B9ok2w003853;
-	Tue, 11 Oct 2022 10:00:23 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
-	by ppma04ams.nl.ibm.com with ESMTP id 3k30u9c3m9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Oct 2022 10:00:23 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
-	by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 29BA0LdC58196252
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 11 Oct 2022 10:00:21 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 32F1DAE051;
-	Tue, 11 Oct 2022 10:00:21 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 26CF8AE053;
-	Tue, 11 Oct 2022 10:00:19 +0000 (GMT)
-Received: from osiris (unknown [9.152.212.239])
-	by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
-	Tue, 11 Oct 2022 10:00:19 +0000 (GMT)
-Date: Tue, 11 Oct 2022 12:00:18 +0200
-From: Heiko Carstens <hca@linux.ibm.com>
-To: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Subject: Re: [PATCH v6 5/7] treewide: use get_random_u32() when possible
-Message-ID: <Y0U+sluE4MidMk8M@osiris>
-References: <20221010230613.1076905-1-Jason@zx2c4.com>
- <20221010230613.1076905-6-Jason@zx2c4.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MmxH95Cdpz2xWx
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Oct 2022 00:20:34 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=IyIyC/uOAiiQbkW/N+mdeuaVRqHV03N/oaIAOXP5NKwzROLfSJcDC6z5LIpYPpzoJu7Up3F3erDNtlCduMf1i1AlHUVQ/sptvfJaBF5YPHUhjOv9OeQASnnCMO9feRX6Pu8Odq3NDP5mNBzfgraI+So8WxqiLvpFRiK/nHd9g2Kif4DQo0eNuPhw8v7o+B6mnxZcYTPcFSCYShjTeXZLoou1N7jw6CKKmmw+M0HVU9VvWqKojX5z9c8ABSy4d9RFQkmFpxglGJkpqHD02tr4ADnVBO2nz/5O85yaoSkbPjQA4RQnmY/+7G7ktjpuXaoI/R0YEhmTPRXlhHyIJJMKtA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6uDDdNQRtnMiVbMZUpFcACT7p0EQtw8QygLM3CiGSHU=;
+ b=BOZB9Q3P98a9jsACFoEBrhC8puJ/hsnraykiRuXlHGBKJsUQaJxoae1yUrSKSFTuy4FTJFCWjT44Qmc3VBwUv2pSPPdpt0wv6Qf4fQs1xgyMtzfSLBNimj/1Jaq1xbjcsNPYa2l2URAL7yUqL2ryQvQM4Z4P4ZCvM276I9gaVKA5ckgcHYpZ3w4L16cCEoH9AZ2nHPZJ3WH2bqYSJ8ThIvufyvOnMsV19DEOq6DlwCGZ5iI5h3ugauXWptZFPawzg1SYMs2XowfkSR+ZviMgY0JCUj4Qcw3Wd0xAp2LmbiPEJtEW1iEcUuPHDDaCoWtl3k2lKy+JaBx7D9KYTQ0SfQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6uDDdNQRtnMiVbMZUpFcACT7p0EQtw8QygLM3CiGSHU=;
+ b=5u5ytv2wCKtiQryLNQqnMos9yuuWMlqhLiPs14NXXXzcSbSPf+gRrw5eoLfDWPKu178/+f4V8RwbXhz1xqvFDmobziWuu0a9ABvkrAxu9WN9OIcKRXmsO+p2W/C0HHNTIhOX/m7rZqxBe+tTAQRYMvPrnTCxuLdR1VV8rSwIsJ4=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from PH7PR12MB6588.namprd12.prod.outlook.com (2603:10b6:510:210::10)
+ by MW4PR12MB7381.namprd12.prod.outlook.com (2603:10b6:303:219::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5709.21; Tue, 11 Oct
+ 2022 13:20:14 +0000
+Received: from PH7PR12MB6588.namprd12.prod.outlook.com
+ ([fe80::4a1c:7d22:b1b:1adc]) by PH7PR12MB6588.namprd12.prod.outlook.com
+ ([fe80::4a1c:7d22:b1b:1adc%6]) with mapi id 15.20.5676.032; Tue, 11 Oct 2022
+ 13:20:14 +0000
+Message-ID: <ba47d079-6d97-0412-69a0-fa15999b5024@amd.com>
+Date: Tue, 11 Oct 2022 18:49:55 +0530
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH v2] perf: Rewrite core context handling
+Content-Language: en-US
+To: Peter Zijlstra <peterz@infradead.org>
+References: <20221008062424.313-1-ravi.bangoria@amd.com>
+ <Y0VTn0qLWd925etP@hirez.programming.kicks-ass.net>
+From: Ravi Bangoria <ravi.bangoria@amd.com>
+In-Reply-To: <Y0VTn0qLWd925etP@hirez.programming.kicks-ass.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PN3PR01CA0122.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:96::8) To PH7PR12MB6588.namprd12.prod.outlook.com
+ (2603:10b6:510:210::10)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20221010230613.1076905-6-Jason@zx2c4.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 3pMFFvEysNa_wNbSt0Vlrry7CHQANLe-
-X-Proofpoint-ORIG-GUID: 9Pz4WXqTZkXGRUv-u8RjmFHok1WNz2gs
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
- definitions=2022-10-11_03,2022-10-10_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 mlxscore=0
- spamscore=0 mlxlogscore=530 phishscore=0 priorityscore=1501
- impostorscore=0 bulkscore=0 adultscore=0 suspectscore=0 lowpriorityscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2209130000 definitions=main-2210110053
-X-Mailman-Approved-At: Tue, 11 Oct 2022 23:06:43 +1100
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB6588:EE_|MW4PR12MB7381:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0644ac64-882f-4178-1562-08daab8b5530
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	jdZcImlqCz211+QqByTyCGKEgiEv3uJqubagbVoOcBwcsJMtRFt4T9/qCieOtNvfPUiC8VE2LALhXDcjOBaOFxxrX//Snx/SpuyZhdQArK/MyBcfSF/j77hsctwlEez46JhGDMKvGf/ZTYcj6mpYUwCFOx1xJKoA5LLMSiqhObR4Ez16+RLynFTIDQ5ElfttW2TVmcay1nAil5CH+FLy1BQ2wbDS2q4e7MLCg/t9NzIXp/gziZPPSS2JCK9kS2Tk3/aO+G3NJsvC68ENmeGHhR00LnGBiSfW3u+IZNCeeaw0EcFXHTzzoa7HymGb+buGEU6PV9BrQAL+Vexf2Mrg0LkkkpwryII/Czc2uF9UeozPI/P7uL7/G+YBsUZDrZHaiiX0YFQa8k5w3mSkKoR8UodbpNdJ9CDABYw1lQRlBloBQ7kRe6c7BTTUf/oeB4ADgYMGGdwX6RfevNabOXrRnD0yPIjT4cbUsgfrDn9vRX+/GX/OcS/oSoPmPDaiGjza3xscgvUryu8gNWBwmXl55mPIgAghou4vH2XW3FJyakM5ncLtUQrxVh27Lxja08nenzMjOtplcGFJViUDivr8KKI/q8AfRNeP50Gg5uyi6qnck9BWHpZhXB5pg/lEc/u0jpOfPWMlogsZ4rdS4BqZTJzQA791HPMdfaV8eNG9LglRWANIrWe2uqUu8aJFhHUmNhQbkz3fkHJz9mcDmNfC08EnPtHYrheuV0fL4egCYahvOyGBK0Rgkd86VWp430OweVlnugi9tc/aK6leoZKbliX3FxUgf6rvf59JhaPNbe8=
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB6588.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(39860400002)(346002)(376002)(366004)(136003)(396003)(451199015)(31686004)(36756003)(6666004)(6506007)(26005)(6512007)(2616005)(186003)(53546011)(6486002)(478600001)(2906002)(44832011)(38100700002)(4326008)(41300700001)(31696002)(6916009)(86362001)(66946007)(66476007)(66556008)(7416002)(8676002)(8936002)(5660300002)(316002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?utf-8?B?QkRlTlFhRlFtQjlWcHB3MDlEZ0RSRFZ4dUFYVVNWU0pzLzgyZTJ0a0RVYXFu?=
+ =?utf-8?B?L3haUUlORlVlYllFYnRya0FpMXcxNUFLQzBheUVhV0Y1Y1lGLyt2TjZrKzBm?=
+ =?utf-8?B?MEJTcnNWMy91Z0twMWZnbnQ4bGJlbTFZV2FRbStaRGpLc1hPVm9JS0k0bGpW?=
+ =?utf-8?B?ZlNWd1orcUNhRFZJMXB2a25iWElsZHRnTmZ2Y0lENWFMbkpYWlBFRTA1UTV0?=
+ =?utf-8?B?QUdadjFmTm1HeTgzUE5sWDVZZW83RHpUT20xY2Z5Mk5La2VteEhZMEYyVGZj?=
+ =?utf-8?B?QVhFbTlybW5nRXQ1QXBpMzNqOTYvRm9kbEFiazNHVlppRlNLblZGbTl5RzA3?=
+ =?utf-8?B?T3BvdjhtbVhhbDIrL1RGVFVaOUZybVM0V3VrN1JKRHAzR2trT1VLaWFDczd1?=
+ =?utf-8?B?ZUlZcE0vZENHWm9LZUtMOHBydHQ3azdOZm9Td0R1WUNMMVJVcEs4SytqMzZB?=
+ =?utf-8?B?Mmx1T29IVUJ5RVpLTXA4bXN3aG80YlRrM0duYWRCeCt6U21saEh1MmdGcDFQ?=
+ =?utf-8?B?OHJZVmlWZ0cyNGpyaGdQUWE5ZmFJYk9iT2dxbDBjb1Q5Vmp4djdxeHBZUFpM?=
+ =?utf-8?B?bWVvdE9FK2NoZ0R4VlRNdDRMUDc2REhmc3RPR0pWWVVkSU1PQ2NISWJwZ28w?=
+ =?utf-8?B?ZUNhWUxidWpGQVBCRlM4Z1Ywb0ViQUFOU0tvcHNSYTZRVXBiT3htQjB1OGI5?=
+ =?utf-8?B?UFlYWUdldXBjdVVMNHpjSFVaOUQzcnFZSDlQUXZZUnhtNGtKdmdmWmYxUG5u?=
+ =?utf-8?B?VndHdHl4Q2RTS0M1VTJGdkdhQ1NvZ3lLWjMwTTFWM1FtWFlpWlhDZ1RBN2pH?=
+ =?utf-8?B?N0lJMDcxeWh2SGkreGtGQSt4emJZNzNYczZ1RWxJVUpaTzM1NUl0Wkc4STVE?=
+ =?utf-8?B?Ulc4ajlZRzdYL2tWVHV6RFYwR0tRRHpvamhZVnFqdzU5aloxWHhLSzVwODg5?=
+ =?utf-8?B?YjVUMDZ6Tkc3OWtZeG9GZVZLVjl3cVZ6dXRpU244d2FkVGZyMWJxVDB0RWpN?=
+ =?utf-8?B?d3loWndqU1ZlUFNlUy9CTnF3SmhqYzhxVUZEbHFhTDRWVVd2NHcvNGpiTnpY?=
+ =?utf-8?B?KzROa1ZWV2xnK0I3bzZSSzVWRmRycEUxbFFqSyt6L2dUQmdWMTFGQTAwSnZu?=
+ =?utf-8?B?U09BYWtLSVJxcHhWVnM5Sjd0aFQ0UjJqOFVueHRvUGdDMnp2eEoyK2FHQUtL?=
+ =?utf-8?B?Z0FzWTU2UEp1QStIb0kzNkhzUXZ6YjhWOTRiNnI0Njg1RTZiVlR5UnJ6cXpl?=
+ =?utf-8?B?VHJ1bDZNNkZjK3RxRGl3TzRVYXBsZE81UVJMYVh6QW9qWEdUbTJtajcreXJI?=
+ =?utf-8?B?bGFQMm5ZOXlSV2gzNXJmdlNJcGd0YnJUM0o0M2l0UG5uamtBMytpdWVSSkNo?=
+ =?utf-8?B?ZXJkZit4L3dSb2ZZYzdvSXM3b3BEVVRpWXlRbFBScGhVWEhOSFBydXd3OTdp?=
+ =?utf-8?B?TjdqMWR1OVRCY3c2S3JCMHF4ZlFjRHYvdXJzWEVRYkMwL0RYTFBQblhLczNv?=
+ =?utf-8?B?QXF0Y1QvZ3lydmsrMVdQKzJOZ3Z0VnhhMUg2enlVNzJXRnZsSG1oNmdVRjlx?=
+ =?utf-8?B?Q0U2TXRHdElHNzJPWHI0VXE2YzhYdVAwR091c01qR3pMc0YvKzVPTkU1cW1z?=
+ =?utf-8?B?TzJJSXFTZXkxeW1COUZPNjNrMHc4cS9sVGVjY000ay9McWd2eUVmWGU1Z0xt?=
+ =?utf-8?B?RGZCY2FMeU9QNlZFU3k3VXhSQlRETTc3QkpvdnhxY3Z2Y0RaZXdKalpkTWY3?=
+ =?utf-8?B?aVY0UzdYMkFvdlZQa0pXWkpZM21vcHR5eHFvODRTcUlRMDBQRU5rYk5JMDFY?=
+ =?utf-8?B?eWhuK2cxV0tUMnhKdWVHb1hKc21QOEFpRXRBQ3pjRmhlM1c0bnE2NWtUNk03?=
+ =?utf-8?B?VWxDWlhRMmk3RDcxWkFOQ3JIUVdKeUNhTW1TK1ZxUyswbU15cFQ1aFlZbjFI?=
+ =?utf-8?B?aGVMOGVBcDlSOStYeityTmlKMFk2SEQ4N2Qzc0NyM3doSlllbDc3QUdxVXVr?=
+ =?utf-8?B?T3NqQktmNFpiNEsrSDNwVmYxUVpobVR1Rk9CaGlzUkI4dTVhTkx1ZXE1blNt?=
+ =?utf-8?B?a0owTHhabDNNb2ZSWXBsL3RJTi81d3plOUFQcDladFRZZXY4K29PYTU3VUlK?=
+ =?utf-8?Q?Ya8tjN8RI7HBLbsMjTJB7vsBg?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0644ac64-882f-4178-1562-08daab8b5530
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB6588.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Oct 2022 13:20:14.7020
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 633TzDeNA+t7Oo8jETcdVLvVZ3APB2kjakF0s3ssc1IGMgxziBLNTWsl9E+isqFoWH/FB8weL8TwUKpWXiZMRQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7381
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,31 +130,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-wireless@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>, x86@kernel.org, Jan Kara <jack@suse.cz>, Vignesh Raghavendra <vigneshr@ti.com>, linux-doc@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, kernel-janitors@vger.kernel.org, KP Singh <kpsingh@kernel.org>, dri-devel@lists.freedesktop.org, patches@lists.linux.dev, linux-mm@kvack.org, Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org, linux-mtd@lists.infradead.org, kasan-dev@googlegroups.com, "H . Peter Anvin" <hpa@zytor.com>, Andreas Noever <andreas.noever@gmail.com>, WANG Xuerui <kernel@xen0n.name>, Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>, linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, Mauro Carvalho Chehab <mchehab@kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>, Daniel Borkmann <daniel@iogearbox.net>, Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org, Helge Deller 
- <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Hugh Dickins <hughd@google.com>, Russell King <linux@armlinux.org.uk>, Jozsef Kadlecsik <kadlec@netfilter.org>, Jason Gunthorpe <jgg@ziepe.ca>, "Darrick J . Wong" <djwong@kernel.org>, Dave Airlie <airlied@redhat.com>, Paolo Abeni <pabeni@redhat.com>, Pablo Neira Ayuso <pablo@netfilter.org>, linux-media@vger.kernel.org, Marco Elver <elver@google.com>, Kees Cook <keescook@chromium.org>, Yury Norov <yury.norov@gmail.com>, "James E . J . Bottomley" <jejb@linux.ibm.com>, Toke =?iso-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@toke.dk>, linux-um@lists.infradead.org, linux-mips@vger.kernel.org, linux-block@vger.kernel.org, Richard Weinberger <richard@nod.at>, Borislav Petkov <bp@alien8.de>, linux-nvme@lists.infradead.org, loongarch@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Mika Westerberg <mika.westerberg@linux.intel.com>, Johannes Berg <johann
- es@sipsolutions.net>, linux-arm-kernel@lists.infradead.org, Jens Axboe <axboe@kernel.dk>, linux-mmc@vger.kernel.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Theodore Ts'o <tytso@mit.edu>, linux-parisc@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org, Florian Westphal <fw@strlen.de>, linux-kernel@vger.kernel.org, Christoph =?iso-8859-1?Q?B=F6hmwalder?= <christoph.boehmwalder@linbit.com>, Chuck Lever <chuck.lever@oracle.com>, linux-crypto@vger.kernel.org, Jan Kara <jack@suse.com>, Thomas Graf <tgraf@suug.ch>, linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
+Cc: mark.rutland@arm.com, irogers@google.com, songliubraving@fb.com, sandipan.das@amd.com, alexander.shishkin@linux.intel.com, catalin.marinas@arm.com, eranian@google.com, kim.phillips@amd.com, will@kernel.org, robh@kernel.org, ak@linux.intel.com, jolsa@redhat.com, mingo@redhat.com, linux-s390@vger.kernel.org, frederic@kernel.org, srw@sladewatkins.net, acme@kernel.org, maddy@linux.ibm.com, namhyung@kernel.org, linux-arm-kernel@lists.infradead.org, Ravi Bangoria <ravi.bangoria@amd.com>, ndesaulniers@google.com, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, ananth.narayan@amd.com, linuxppc-dev@lists.ozlabs.org, santosh.shukla@amd.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Oct 10, 2022 at 05:06:11PM -0600, Jason A. Donenfeld wrote:
-> The prandom_u32() function has been a deprecated inline wrapper around
-> get_random_u32() for several releases now, and compiles down to the
-> exact same code. Replace the deprecated wrapper with a direct call to
-> the real function. The same also applies to get_random_int(), which is
-> just a wrapper around get_random_u32(). This was done as a basic find
-> and replace.
+On 11-Oct-22 4:59 PM, Peter Zijlstra wrote:
+> On Sat, Oct 08, 2022 at 11:54:24AM +0530, Ravi Bangoria wrote:
 > 
-> Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Reviewed-by: Kees Cook <keescook@chromium.org>
-> Reviewed-by: Yury Norov <yury.norov@gmail.com>
-> Acked-by: Toke Høiland-Jørgensen <toke@toke.dk> # for sch_cake
-> Acked-by: Chuck Lever <chuck.lever@oracle.com> # for nfsd
-> Reviewed-by: Jan Kara <jack@suse.cz> # for ext4
-> Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com> # for thunderbolt
-> Acked-by: Darrick J. Wong <djwong@kernel.org> # for xfs
-> Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-> ---
->  arch/s390/mm/mmap.c                            |  2 +-
+>> +static void perf_event_swap_task_ctx_data(struct perf_event_context *prev_ctx,
+>> +					  struct perf_event_context *next_ctx)
+>> +{
+>> +	struct perf_event_pmu_context *prev_epc, *next_epc;
+>> +
+>> +	if (!prev_ctx->nr_task_data)
+>> +		return;
+>> +
+>> +	prev_epc = list_first_entry(&prev_ctx->pmu_ctx_list,
+>> +				    struct perf_event_pmu_context,
+>> +				    pmu_ctx_entry);
+>> +	next_epc = list_first_entry(&next_ctx->pmu_ctx_list,
+>> +				    struct perf_event_pmu_context,
+>> +				    pmu_ctx_entry);
+>> +
+>> +	while (&prev_epc->pmu_ctx_entry != &prev_ctx->pmu_ctx_list &&
+>> +	       &next_epc->pmu_ctx_entry != &next_ctx->pmu_ctx_list) {
+>> +
+>> +		WARN_ON_ONCE(prev_epc->pmu != next_epc->pmu);
+>> +
+>> +		/*
+>> +		 * PMU specific parts of task perf context can require
+>> +		 * additional synchronization. As an example of such
+>> +		 * synchronization see implementation details of Intel
+>> +		 * LBR call stack data profiling;
+>> +		 */
+>> +		if (prev_epc->pmu->swap_task_ctx)
+>> +			prev_epc->pmu->swap_task_ctx(prev_epc, next_epc);
+>> +		else
+>> +			swap(prev_epc->task_ctx_data, next_epc->task_ctx_data);
+> 
+> Did I forget to advance the iterators here?
 
-For s390:
-Acked-by: Heiko Carstens <hca@linux.ibm.com>
+Yeah. Seems so. I overlooked it too.
+
+Thanks,
+Ravi
