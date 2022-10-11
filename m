@@ -1,83 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8E185FB6A8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Oct 2022 17:11:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 902A45FB82B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Oct 2022 18:18:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MmzlT4sH4z3f0l
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Oct 2022 02:11:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Mn1Cx3cByz3c6T
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Oct 2022 03:18:05 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=VbH4NKYf;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=HgaKWlSl;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=X24PB1uG;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JGxXlUjq;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2001:67c:2178:6::1d; helo=smtp-out2.suse.de; envelope-from=tzimmermann@suse.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=vschneid@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=VbH4NKYf;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=HgaKWlSl;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=X24PB1uG;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JGxXlUjq;
 	dkim-atps=neutral
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MmzfP0C3Pz3bjJ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Oct 2022 02:07:24 +1100 (AEDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 4EF2220144;
-	Tue, 11 Oct 2022 15:07:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1665500838; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mn1By3pgPz2xGB
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Oct 2022 03:17:12 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1665505029;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=n0H8wmcl+ICg57kb1ejflxYGDs3/q4QxYPnWLTQSd1M=;
-	b=VbH4NKYfOWQRcpvQuMxGhKdPLoaKuk6IX96ESlUV25YiZP9SOfhMUxdPLEiisXvXgSczzr
-	AYs1OcPJfztoAcd90j+OM9w84FiBcO43sygqHXsmbKVIR9GBidWh4ZbhcA5n+SgvAgR1J4
-	setbicwPLbLLotHM7hwiUJQCDPkb7sg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1665500838;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
+	bh=pm4VeB8ssmcYRaiZFIcIhGhr8ty4z8Z6FbdtNOJecy0=;
+	b=X24PB1uGCMhBpXyL2eFidTjEOFO7f+QodkMC03tdMCmfyfTPIp+mdLXTscYuUxTjgpnnCY
+	DkCEkXwG77/2i2tR+nmbFP6zXBIp+LiunHReUqFme7BOWXHi42K29n9pDyx2eGx+ZoRMNN
+	qU0IjWxBX+d71GtH/KeV+55Scil5I7Q=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1665505030;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=n0H8wmcl+ICg57kb1ejflxYGDs3/q4QxYPnWLTQSd1M=;
-	b=HgaKWlSloBFl/Jl8oZtit5RYD/JcGbLwrjktKA03Q9qB9X7l1iDLAyKirS23VB/HMj0GbE
-	kYNgmRDeDSIpIyCQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 9CAE213ACA;
-	Tue, 11 Oct 2022 15:07:17 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id yEfaJKWGRWPUTAAAMHmgww
-	(envelope-from <tzimmermann@suse.de>); Tue, 11 Oct 2022 15:07:17 +0000
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: javierm@redhat.com,
-	airlied@linux.ie,
-	daniel@ffwll.ch,
-	deller@gmx.de,
-	maxime@cerno.tech,
-	sam@ravnborg.org,
-	msuchanek@suse.de,
-	benh@kernel.crashing.org,
-	paulus@samba.org,
-	geert@linux-m68k.org,
-	mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v5 5/5] drm/ofdrm: Support big-endian scanout buffers
-Date: Tue, 11 Oct 2022 17:07:12 +0200
-Message-Id: <20221011150712.3928-6-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.37.3
-In-Reply-To: <20221011150712.3928-1-tzimmermann@suse.de>
-References: <20221011150712.3928-1-tzimmermann@suse.de>
+	bh=pm4VeB8ssmcYRaiZFIcIhGhr8ty4z8Z6FbdtNOJecy0=;
+	b=JGxXlUjqwf4SSRcK3A5Rg/5toenBcv9t6uXkSHuxOIJc6G4p/0aFTdB5uGG2mHmzDWjxsI
+	InhweNmddwGaw/0g7RoWCvkpF9aRAzCIAco+AuzA21Dq1m6M/0SBneIaD3UIB5iRWUCrNT
+	AW8TWlEbmbb6tQ+xQA6/aWEuSS51B1g=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-572-bsbPBhvFO_OeR9-nfSPGtA-1; Tue, 11 Oct 2022 12:17:08 -0400
+X-MC-Unique: bsbPBhvFO_OeR9-nfSPGtA-1
+Received: by mail-wm1-f69.google.com with SMTP id ay21-20020a05600c1e1500b003b45fd14b53so871806wmb.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Oct 2022 09:17:08 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=pm4VeB8ssmcYRaiZFIcIhGhr8ty4z8Z6FbdtNOJecy0=;
+        b=ROz3JiAM9wHwvwendns2GvXdpNSRySx2S6e1XwwxX0wmAkiN+5pU9EgpqglXc/hcTU
+         VlFThZl7KgFwusmkboU+kYJbRdgFneOX9p+sbPXjAJy2g3gSnXtG7s/fyH02o6hn2+Rf
+         zuG7vWVQAnN/VKlHKY5jK644M7rzkew0iOT4j10o+ZK6P+pYykj1hEoclOs87KCSTxSQ
+         aytjBMM1KG8v2afS/4uq1McHsRVExJlOeMhzsLSSFstVWDsfgAA10+i+jl7J8HZxAAR8
+         6y9J+DX2tzYA7HL83Ja5FEaCqZWh/Efh0ub+ORFgTGaRKDOqScD+lFYQ86Ly/sGBR6bB
+         SmrA==
+X-Gm-Message-State: ACrzQf2/Xv+rO3pIW87H3a727bsuP/ubF+FKdLsnBD8kQIw42AOSmVmy
+	Eo6ZaF3hXtCCkR2uvL4I24MsAQ6Nn6XSNw6i/ORn/hO6PJ4T/5BcyYwxE4C7M2TcQfkzIPHS6SG
+	fQ1FnHEIlL6li2r36POoh7DEW6A==
+X-Received: by 2002:a7b:cd96:0:b0:3b4:856a:28f7 with SMTP id y22-20020a7bcd96000000b003b4856a28f7mr17405257wmj.117.1665505027272;
+        Tue, 11 Oct 2022 09:17:07 -0700 (PDT)
+X-Google-Smtp-Source: AMsMyM6+yXZheRjtpI2Mraq3mO0aiY2aGzgLzN/bP6F6DHEepFtgXyphrd7vxKSt0bqtKCZRjEunTA==
+X-Received: by 2002:a7b:cd96:0:b0:3b4:856a:28f7 with SMTP id y22-20020a7bcd96000000b003b4856a28f7mr17405207wmj.117.1665505026699;
+        Tue, 11 Oct 2022 09:17:06 -0700 (PDT)
+Received: from vschneid.remote.csb ([104.132.153.106])
+        by smtp.gmail.com with ESMTPSA id b21-20020a05600c151500b003c6b9749505sm4667967wmg.30.2022.10.11.09.17.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Oct 2022 09:17:05 -0700 (PDT)
+From: Valentin Schneider <vschneid@redhat.com>
+To: Marcelo Tosatti <mtosatti@redhat.com>
+Subject: Re: [RFC PATCH 0/5] Generic IPI sending tracepoint
+In-Reply-To: <Y0CFnWDpMNGajIRD@fuller.cnet>
+References: <20221007154145.1877054-1-vschneid@redhat.com>
+ <Y0CFnWDpMNGajIRD@fuller.cnet>
+Date: Tue, 11 Oct 2022 17:17:04 +0100
+Message-ID: <xhsmhilkqfi7z.mognet@vschneid.remote.csb>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,194 +95,138 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-fbdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Thomas Zimmermann <tzimmermann@suse.de>, dri-devel@lists.freedesktop.org
+Cc: Juri Lelli <juri.lelli@redhat.com>, Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Dave Hansen <dave.hansen@linux.intel.com>, linux-mips@vger.kernel.org, Guo Ren <guoren@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, Marc Zyngier <maz@kernel.org>, linux-hexagon@vger.kernel.org, x86@kernel.org, Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org, Ingo Molnar <mingo@redhat.com>, linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org, "Paul E. McKenney" <paulmck@kernel.org>, Frederic Weisbecker <frederic@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, openrisc@lists.librecores.org, Borislav Petkov <bp@alien8.de>, Nicholas Piggin <npiggin@gmail.com>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.i
+ nfradead.org, linux-parisc@vger.kernel.org, Daniel Bristot de Oliveira <bristot@redhat.com>, linux-kernel@vger.kernel.org, Douglas RAILLARD <douglas.raillard@arm.com>, linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "David
+ S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-All DRM formats assume little-endian byte order. On big-endian systems,
-it is likely that the scanout buffer is in big endian as well. Update
-the format accordingly and add endianess conversion to the format-helper
-library. Also opt-in to allocated buffers in host format by default.
++Cc Douglas
 
-Suggested-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
----
- drivers/gpu/drm/drm_format_helper.c | 10 ++++++
- drivers/gpu/drm/tiny/ofdrm.c        | 55 +++++++++++++++++++++++++++--
- 2 files changed, 63 insertions(+), 2 deletions(-)
+On 07/10/22 17:01, Marcelo Tosatti wrote:
+> Hi Valentin,
+>
+> On Fri, Oct 07, 2022 at 04:41:40PM +0100, Valentin Schneider wrote:
+>> Background
+>> ==========
+>> 
+>> As for the targeted CPUs, the existing tracepoint does export them, albeit in
+>> cpumask form, which is quite inconvenient from a tooling perspective. For
+>> instance, as far as I'm aware, it's not possible to do event filtering on a
+>> cpumask via trace-cmd.
+>
+> https://man7.org/linux/man-pages/man1/trace-cmd-set.1.html
+>
+>        -f filter
+>            Specify a filter for the previous event. This must come after
+>            a -e. This will filter what events get recorded based on the
+>            content of the event. Filtering is passed to the kernel
+>            directly so what filtering is allowed may depend on what
+>            version of the kernel you have. Basically, it will let you
+>            use C notation to check if an event should be processed or
+>            not.
+>
+>                ==, >=, <=, >, <, &, |, && and ||
+>
+>            The above are usually safe to use to compare fields.
+>
+> This looks overkill to me (consider large number of bits set in mask).
+>
+> +#define trace_ipi_send_cpumask(callsite, mask) do {            \
+> +	if (static_key_false(&__tracepoint_ipi_send_cpu.key)) { \
+> +               int cpu;                                        \
+> +               for_each_cpu(cpu, mask)                         \
+> +                       trace_ipi_send_cpu(callsite, cpu);	\
+> +	}                                                       \
+> +} while (0)
+>
 
-diff --git a/drivers/gpu/drm/drm_format_helper.c b/drivers/gpu/drm/drm_format_helper.c
-index e2f76621453c..653a5821dd53 100644
---- a/drivers/gpu/drm/drm_format_helper.c
-+++ b/drivers/gpu/drm/drm_format_helper.c
-@@ -660,6 +660,11 @@ int drm_fb_blit(struct iosys_map *dst, const unsigned int *dst_pitch, uint32_t d
- 			drm_fb_xrgb8888_to_rgb565(dst, dst_pitch, src, fb, clip, false);
- 			return 0;
- 		}
-+	} else if (dst_format == (DRM_FORMAT_RGB565 | DRM_FORMAT_BIG_ENDIAN)) {
-+		if (fb_format == DRM_FORMAT_RGB565) {
-+			drm_fb_swab(dst, dst_pitch, src, fb, clip, false);
-+			return 0;
-+		}
- 	} else if (dst_format == DRM_FORMAT_RGB888) {
- 		if (fb_format == DRM_FORMAT_XRGB8888) {
- 			drm_fb_xrgb8888_to_rgb888(dst, dst_pitch, src, fb, clip);
-@@ -678,6 +683,11 @@ int drm_fb_blit(struct iosys_map *dst, const unsigned int *dst_pitch, uint32_t d
- 			drm_fb_xrgb8888_to_xrgb2101010(dst, dst_pitch, src, fb, clip);
- 			return 0;
- 		}
-+	} else if (dst_format == DRM_FORMAT_BGRX8888) {
-+		if (fb_format == DRM_FORMAT_XRGB8888) {
-+			drm_fb_swab(dst, dst_pitch, src, fb, clip, false);
-+			return 0;
-+		}
- 	}
- 
- 	drm_warn_once(fb->dev, "No conversion helper from %p4cc to %p4cc found.\n",
-diff --git a/drivers/gpu/drm/tiny/ofdrm.c b/drivers/gpu/drm/tiny/ofdrm.c
-index 3b0eaebd86f9..0e1cc2369afc 100644
---- a/drivers/gpu/drm/tiny/ofdrm.c
-+++ b/drivers/gpu/drm/tiny/ofdrm.c
-@@ -94,7 +94,7 @@ static int display_get_validated_int0(struct drm_device *dev, const char *name,
- }
- 
- static const struct drm_format_info *display_get_validated_format(struct drm_device *dev,
--								  u32 depth)
-+								  u32 depth, bool big_endian)
- {
- 	const struct drm_format_info *info;
- 	u32 format;
-@@ -115,6 +115,29 @@ static const struct drm_format_info *display_get_validated_format(struct drm_dev
- 		return ERR_PTR(-EINVAL);
- 	}
- 
-+	/*
-+	 * DRM formats assume little-endian byte order. Update the format
-+	 * if the scanout buffer uses big-endian ordering.
-+	 */
-+	if (big_endian) {
-+		switch (format) {
-+		case DRM_FORMAT_XRGB8888:
-+			format = DRM_FORMAT_BGRX8888;
-+			break;
-+		case DRM_FORMAT_ARGB8888:
-+			format = DRM_FORMAT_BGRA8888;
-+			break;
-+		case DRM_FORMAT_RGB565:
-+			format = DRM_FORMAT_RGB565 | DRM_FORMAT_BIG_ENDIAN;
-+			break;
-+		case DRM_FORMAT_XRGB1555:
-+			format = DRM_FORMAT_XRGB1555 | DRM_FORMAT_BIG_ENDIAN;
-+			break;
-+		default:
-+			break;
-+		}
-+	}
-+
- 	info = drm_format_info(format);
- 	if (!info) {
- 		drm_err(dev, "cannot find framebuffer format for depth %u\n", depth);
-@@ -134,6 +157,23 @@ static int display_read_u32_of(struct drm_device *dev, struct device_node *of_no
- 	return ret;
- }
- 
-+static bool display_get_big_endian_of(struct drm_device *dev, struct device_node *of_node)
-+{
-+	bool big_endian;
-+
-+#ifdef __BIG_ENDIAN
-+	big_endian = true;
-+	if (of_get_property(of_node, "little-endian", NULL))
-+		big_endian = false;
-+#else
-+	big_endian = false;
-+	if (of_get_property(of_node, "big-endian", NULL))
-+		big_endian = true;
-+#endif
-+
-+	return big_endian;
-+}
-+
- static int display_get_width_of(struct drm_device *dev, struct device_node *of_node)
- {
- 	u32 width;
-@@ -613,6 +653,7 @@ static void ofdrm_device_set_gamma_linear(struct ofdrm_device *odev,
- 
- 	switch (format->format) {
- 	case DRM_FORMAT_RGB565:
-+	case DRM_FORMAT_RGB565 | DRM_FORMAT_BIG_ENDIAN:
- 		/* Use better interpolation, to take 32 values from 0 to 255 */
- 		for (i = 0; i < OFDRM_GAMMA_LUT_SIZE / 8; i++) {
- 			unsigned char r = i * 8 + i / 4;
-@@ -631,6 +672,7 @@ static void ofdrm_device_set_gamma_linear(struct ofdrm_device *odev,
- 		}
- 		break;
- 	case DRM_FORMAT_XRGB8888:
-+	case DRM_FORMAT_BGRX8888:
- 		for (i = 0; i < OFDRM_GAMMA_LUT_SIZE; i++)
- 			odev->funcs->cmap_write(odev, i, i, i, i);
- 		break;
-@@ -650,6 +692,7 @@ static void ofdrm_device_set_gamma(struct ofdrm_device *odev,
- 
- 	switch (format->format) {
- 	case DRM_FORMAT_RGB565:
-+	case DRM_FORMAT_RGB565 | DRM_FORMAT_BIG_ENDIAN:
- 		/* Use better interpolation, to take 32 values from lut[0] to lut[255] */
- 		for (i = 0; i < OFDRM_GAMMA_LUT_SIZE / 8; i++) {
- 			unsigned char r = lut[i * 8 + i / 4].red >> 8;
-@@ -668,6 +711,7 @@ static void ofdrm_device_set_gamma(struct ofdrm_device *odev,
- 		}
- 		break;
- 	case DRM_FORMAT_XRGB8888:
-+	case DRM_FORMAT_BGRX8888:
- 		for (i = 0; i < OFDRM_GAMMA_LUT_SIZE; i++) {
- 			unsigned char r = lut[i].red >> 8;
- 			unsigned char g = lut[i].green >> 8;
-@@ -718,6 +762,9 @@ static const uint32_t ofdrm_primary_plane_formats[] = {
- 	DRM_FORMAT_RGB565,
- 	//DRM_FORMAT_XRGB1555,
- 	//DRM_FORMAT_C8,
-+	/* Big-endian formats below */
-+	DRM_FORMAT_BGRX8888,
-+	DRM_FORMAT_RGB565 | DRM_FORMAT_BIG_ENDIAN,
- };
- 
- static const uint64_t ofdrm_primary_plane_format_modifiers[] = {
-@@ -1051,6 +1098,7 @@ static struct ofdrm_device *ofdrm_device_create(struct drm_driver *drv,
- 	struct ofdrm_device *odev;
- 	struct drm_device *dev;
- 	enum ofdrm_model model;
-+	bool big_endian;
- 	int width, height, depth, linebytes;
- 	const struct drm_format_info *format;
- 	u64 address;
-@@ -1112,6 +1160,8 @@ static struct ofdrm_device *ofdrm_device_create(struct drm_driver *drv,
- 		break;
- 	}
- 
-+	big_endian = display_get_big_endian_of(dev, of_node);
-+
- 	width = display_get_width_of(dev, of_node);
- 	if (width < 0)
- 		return ERR_PTR(width);
-@@ -1125,7 +1175,7 @@ static struct ofdrm_device *ofdrm_device_create(struct drm_driver *drv,
- 	if (linebytes < 0)
- 		return ERR_PTR(linebytes);
- 
--	format = display_get_validated_format(dev, depth);
-+	format = display_get_validated_format(dev, depth, big_endian);
- 	if (IS_ERR(format))
- 		return ERR_CAST(format);
- 	if (!linebytes) {
-@@ -1237,6 +1287,7 @@ static struct ofdrm_device *ofdrm_device_create(struct drm_driver *drv,
- 		dev->mode_config.preferred_depth = depth;
- 		break;
- 	}
-+	dev->mode_config.quirk_addfb_prefer_host_byte_order = true;
- 
- 	/* Primary plane */
- 
--- 
-2.37.3
+Indeed, I expected pushback on this :-)
+
+I went for this due to how much simpler an int is to process/use compared
+to a cpumask. There is the trigger example I listed above, but the
+consumption of the trace event itself as well.
+
+Consider this event collected on an arm64 QEMU instance (output from trace-cmd)
+
+    <...>-234   [001]    37.251567: ipi_raise:            target_mask=00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000004 (Function call interrupts)
+
+That sort of formatting has been an issue downstream for things like LISA
+[1] where events are aggregated into Pandas tables, and we need to play
+silly games for performance reason because bitmasks aren't a native Python
+type.
+
+I had a look at libtraceevent to see how this data is exposed and if the
+answer would be better tooling:
+
+tep_get_field_val() just yields an unsigned long long of value 0x200018,
+which AFAICT is just the [length, offset] thing associated with dynamic
+arrays. Not really usable, and I don't see anything exported in the lib to
+extract and use those values.
+
+tep_get_field_raw() is better, it handles the dynamic array for us and
+yields a pointer to the cpumask array at the tail of the record. With that
+it's easy to get an output such as: cpumask[size=32]=[4,0,0,0,]. Still,
+this isn't a native type for many programming languages.
+
+In contrast, this is immediately readable and consumable by userspace tools
+
+<...>-234   [001]    37.250882: ipi_send_cpu:         callsite=__smp_call_single_queue+0x5c target_cpu=2
+
+Thinking out loud, it makes way more sense to record a cpumask in the
+tracepoint, but perhaps we could have a postprocessing step to transform
+those into N events each targeting a single CPU?
+
+[1]: https://github.com/ARM-software/lisa/blob/37b51243a94b27ea031ff62bb4ce818a59a7f6ef/lisa/trace.py#L4756
+
+>
+>> 
+>> Because of the above points, this is introducing a new tracepoint.
+>> 
+>> Patches
+>> =======
+>> 
+>> This results in having trace events for:
+>> 
+>> o smp_call_function*()
+>> o smp_send_reschedule()
+>> o irq_work_queue*()
+>> 
+>> This is incomplete, just looking at arm64 there's more IPI types that aren't covered:
+>> 
+>>   IPI_CPU_STOP,
+>>   IPI_CPU_CRASH_STOP,
+>>   IPI_TIMER,
+>>   IPI_WAKEUP,
+>> 
+>> ... But it feels like a good starting point.
+>
+> Can't you have a single tracepoint (or variant with cpumask) that would
+> cover such cases as well?
+>
+> Maybe (as parameters for tracepoint):
+>
+> 	* type (reschedule, smp_call_function, timer, wakeup, ...).
+>
+> 	* function address: valid for smp_call_function, irq_work_queue
+> 	  types.
+>
+
+That's a good point, I wasn't sure about having a parameter serving as
+discriminant for another, but the function address would be either valid or
+NULL which is fine. So perhaps:
+o callsite (i.e. _RET_IP_), serves as type
+o address of callback tied to IPI, if any
+o target CPUs
+
+>> Another thing worth mentioning is that depending on the callsite, the _RET_IP_
+>> fed to the tracepoint is not always useful - generic_exec_single() doesn't tell
+>> you much about the actual callback being sent via IPI, so there might be value
+>> in exploding the single tracepoint into at least one variant for smp_calls.
+>
+> Not sure i grasp what you mean by "exploding the single tracepoint...",
+> but yes knowing the function or irq work function is very useful.
+>
+
+Sorry; I meant having several "specialized" tracepoints instead of a single one.
 
