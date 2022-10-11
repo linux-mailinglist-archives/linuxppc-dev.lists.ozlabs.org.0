@@ -2,59 +2,93 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B4F85FB412
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Oct 2022 16:04:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F4205FB49C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Oct 2022 16:31:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MmyFY6vSNz30Dp
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Oct 2022 01:04:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Mmyrk3wt6z3bgC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Oct 2022 01:31:18 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=SABjHiCl;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DWnICvFO;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=SABjHiCl;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DWnICvFO;
 	dkim-atps=neutral
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MmyDZ56qnz2xf7
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Oct 2022 01:03:26 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=D73BjQfIrSTnj6EqtQCxORHOxjQyNOc/wJqBUfiO9Q8=; b=SABjHiClB4JQLpcyV5/NJW5d3o
-	7qiqIFwxs3yuoRYvHYEUmakkgOL5QJruLYYiLrB8KNBxvc9M0m1MoPYCe3IOz0IAw0eNWihsAXV/P
-	5Y+f4dExVkJIGRYxLQbJ5kAOwfVu5T6Pm67GO++RvcH0pmN82akGPlefH2VZrln++lzM7rjbIHmLX
-	OGbnU3htHC2Rq9KOnboXIhUwg0DEfnfpXfP1N++I2+o6Ukub7Ckdu6lBrxmW1FB4Cb9KB7FurUxMk
-	eNByW8y5b+lmZE8M/V8PaAIkYFv7qB7CIAzpDcxJNW9ZAkwV7KHd56f56h5fcbaZVr9iX5gjnz055
-	cLqo9vfg==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oiFqT-002aUL-ES; Tue, 11 Oct 2022 14:02:57 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
-	(Client did not present a certificate)
-	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 557723000E3;
-	Tue, 11 Oct 2022 16:02:56 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 449D529AC89DB; Tue, 11 Oct 2022 16:02:56 +0200 (CEST)
-Date: Tue, 11 Oct 2022 16:02:56 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Ravi Bangoria <ravi.bangoria@amd.com>
-Subject: Re: [PATCH v2] perf: Rewrite core context handling
-Message-ID: <Y0V3kOWInrvCvVtk@hirez.programming.kicks-ass.net>
-References: <20221008062424.313-1-ravi.bangoria@amd.com>
- <Y0VTn0qLWd925etP@hirez.programming.kicks-ass.net>
- <ba47d079-6d97-0412-69a0-fa15999b5024@amd.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mmyqk3LgSz2xZ7
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Oct 2022 01:30:26 +1100 (AEDT)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29BEBTVT027128;
+	Tue, 11 Oct 2022 14:30:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=Os2RaEbQ9GVITBvDxwys+IihW6sILyr8NFRDg+QzZLo=;
+ b=DWnICvFOytCU2VVpehzTqxYsC+XhS8FZrp2Vw9SnpNmNVg7Orqz52gqRQlHBG2CthLJK
+ 5DrSWtf3M4Eg1GIX0yUGLWzdM/oARHC3ekF3998w/nKtEBK+SAvFKk8+ZlbtGVWt+t3n
+ hSqsdrleikoELBL5Tp9iuXMaeyro6Vh7+FjrE539NoiSjvTZ3sU9OZPN4etaFXRYIZfe
+ WXWq5RpBVP1E6CeZWJZtKUQlbLQpEZ6+RMLyc9lm7yB0Pcee1DHEaqz59DCTozihyv4e
+ +i9imiCwKSNEhSrgRiIIikqCGvkK6qU+8DPa4SfR3TNvd8rV92sznGm2OSUcUtqG0n22 VA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3k54d0uk64-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 11 Oct 2022 14:30:17 +0000
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 29BEC5UB032310;
+	Tue, 11 Oct 2022 14:30:16 GMT
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com [149.81.74.107])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3k54d0uk3w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 11 Oct 2022 14:30:16 +0000
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+	by ppma03fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 29BELuBi013090;
+	Tue, 11 Oct 2022 14:30:14 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+	by ppma03fra.de.ibm.com with ESMTP id 3k30u9bch5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 11 Oct 2022 14:30:14 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
+	by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 29BEUB566292096
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 11 Oct 2022 14:30:11 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D3369AE053;
+	Tue, 11 Oct 2022 14:30:11 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 27B13AE04D;
+	Tue, 11 Oct 2022 14:30:11 +0000 (GMT)
+Received: from [9.171.47.225] (unknown [9.171.47.225])
+	by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Tue, 11 Oct 2022 14:30:11 +0000 (GMT)
+Message-ID: <83377974-a28a-c581-60ea-c8c70b1b1973@linux.ibm.com>
+Date: Tue, 11 Oct 2022 16:30:10 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ba47d079-6d97-0412-69a0-fa15999b5024@amd.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.1
+Subject: Re: [PATCH v3] powerpc/pseries/vas: Add VAS IRQ primary handler
+To: Haren Myneni <haren@linux.ibm.com>, mpe@ellerman.id.au, npiggin@gmail.com,
+        linuxppc-dev@lists.ozlabs.org
+References: <aaad8813b4762a6753cfcd0b605a7574a5192ec7.camel@linux.ibm.com>
+Content-Language: en-US
+From: Frederic Barrat <fbarrat@linux.ibm.com>
+In-Reply-To: <aaad8813b4762a6753cfcd0b605a7574a5192ec7.camel@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: ug50Q4nKonLHSw3ayO1UyrxDKnPeAJbE
+X-Proofpoint-ORIG-GUID: 2PGNz0LNXStI0yDu8iCViKGHvcHxmlwq
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-10-11_08,2022-10-11_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 mlxscore=0
+ spamscore=0 mlxlogscore=999 phishscore=0 priorityscore=1501
+ impostorscore=0 bulkscore=0 adultscore=0 suspectscore=0 lowpriorityscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2209130000 definitions=main-2210110077
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,50 +100,120 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, irogers@google.com, songliubraving@fb.com, sandipan.das@amd.com, alexander.shishkin@linux.intel.com, catalin.marinas@arm.com, eranian@google.com, kim.phillips@amd.com, will@kernel.org, robh@kernel.org, ak@linux.intel.com, jolsa@redhat.com, mingo@redhat.com, linux-s390@vger.kernel.org, frederic@kernel.org, srw@sladewatkins.net, acme@kernel.org, maddy@linux.ibm.com, namhyung@kernel.org, linux-arm-kernel@lists.infradead.org, ndesaulniers@google.com, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, ananth.narayan@amd.com, linuxppc-dev@lists.ozlabs.org, santosh.shukla@amd.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Oct 11, 2022 at 06:49:55PM +0530, Ravi Bangoria wrote:
-> On 11-Oct-22 4:59 PM, Peter Zijlstra wrote:
-> > On Sat, Oct 08, 2022 at 11:54:24AM +0530, Ravi Bangoria wrote:
-> > 
-> >> +static void perf_event_swap_task_ctx_data(struct perf_event_context *prev_ctx,
-> >> +					  struct perf_event_context *next_ctx)
-> >> +{
-> >> +	struct perf_event_pmu_context *prev_epc, *next_epc;
-> >> +
-> >> +	if (!prev_ctx->nr_task_data)
-> >> +		return;
-> >> +
-> >> +	prev_epc = list_first_entry(&prev_ctx->pmu_ctx_list,
-> >> +				    struct perf_event_pmu_context,
-> >> +				    pmu_ctx_entry);
-> >> +	next_epc = list_first_entry(&next_ctx->pmu_ctx_list,
-> >> +				    struct perf_event_pmu_context,
-> >> +				    pmu_ctx_entry);
-> >> +
-> >> +	while (&prev_epc->pmu_ctx_entry != &prev_ctx->pmu_ctx_list &&
-> >> +	       &next_epc->pmu_ctx_entry != &next_ctx->pmu_ctx_list) {
-> >> +
-> >> +		WARN_ON_ONCE(prev_epc->pmu != next_epc->pmu);
-> >> +
-> >> +		/*
-> >> +		 * PMU specific parts of task perf context can require
-> >> +		 * additional synchronization. As an example of such
-> >> +		 * synchronization see implementation details of Intel
-> >> +		 * LBR call stack data profiling;
-> >> +		 */
-> >> +		if (prev_epc->pmu->swap_task_ctx)
-> >> +			prev_epc->pmu->swap_task_ctx(prev_epc, next_epc);
-> >> +		else
-> >> +			swap(prev_epc->task_ctx_data, next_epc->task_ctx_data);
-> > 
-> > Did I forget to advance the iterators here?
+
+
+On 10/10/2022 05:41, Haren Myneni wrote:
 > 
-> Yeah. Seems so. I overlooked it too.
+> irq_default_primary_handler() can be used only with IRQF_ONESHOT
+> flag, but the flag disables IRQ before executing the thread handler
+> and enables it after the interrupt is handled. But this IRQ disable
+> sets the VAS IRQ OFF state in the hypervisor. In case if NX faults
+> during this window, the hypervisor will not deliver the fault
+> interrupt to the partition and the user space may wait continuously
+> for the CSB update. So use VAS specific IRQ handler instead of
+> calling the default primary handler.
+> 
+> Increment pending_faults counter in IRQ handler and the bottom
+> thread handler will process all faults based on this counter.
+> In case if the another interrupt is received while the thread is
+> running, it will be processed using this counter. The synchronization
+> of top and bottom handlers will be done with IRQTF_RUNTHREAD flag
+> and will re-enter to bottom half if this flag is set.
+> 
+> Signed-off-by: Haren Myneni <haren@linux.ibm.com>
+> ---
 
-OK; so I'm not slowly going crazy staring at this code ;-) Let me go add
-it now then. :-)
 
-But first I gotta taxi the kids around for a bit, bbl.
+That version looks good to me.
+Reviewed-by: Frederic Barrat <fbarrat@linux.ibm.com>
+
+   Fred
+
+
+> v3: Update pending_faults usage in changelog
+> v2: Use the pending_faults counter for the second interrupt and
+>      process it with the previous interrupt handling if its thread
+>      handler is executing.
+> 
+>   arch/powerpc/platforms/pseries/vas.c | 40 +++++++++++++++++++++++-----
+>   arch/powerpc/platforms/pseries/vas.h |  1 +
+>   2 files changed, 34 insertions(+), 7 deletions(-)
+> 
+> diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platforms/pseries/vas.c
+> index 1a2cbc156e8f..70f26efcc35a 100644
+> --- a/arch/powerpc/platforms/pseries/vas.c
+> +++ b/arch/powerpc/platforms/pseries/vas.c
+> @@ -200,16 +200,41 @@ static irqreturn_t pseries_vas_fault_thread_fn(int irq, void *data)
+>   	struct vas_user_win_ref *tsk_ref;
+>   	int rc;
+>   
+> -	rc = h_get_nx_fault(txwin->vas_win.winid, (u64)virt_to_phys(&crb));
+> -	if (!rc) {
+> -		tsk_ref = &txwin->vas_win.task_ref;
+> -		vas_dump_crb(&crb);
+> -		vas_update_csb(&crb, tsk_ref);
+> +	while (atomic_read(&txwin->pending_faults)) {
+> +		rc = h_get_nx_fault(txwin->vas_win.winid, (u64)virt_to_phys(&crb));
+> +		if (!rc) {
+> +			tsk_ref = &txwin->vas_win.task_ref;
+> +			vas_dump_crb(&crb);
+> +			vas_update_csb(&crb, tsk_ref);
+> +		}
+> +		atomic_dec(&txwin->pending_faults);
+>   	}
+>   
+>   	return IRQ_HANDLED;
+>   }
+>   
+> +/*
+> + * irq_default_primary_handler() can be used only with IRQF_ONESHOT
+> + * which disables IRQ before executing the thread handler and enables
+> + * it after. But this disabling interrupt sets the VAS IRQ OFF
+> + * state in the hypervisor. If the NX generates fault interrupt
+> + * during this window, the hypervisor will not deliver this
+> + * interrupt to the LPAR. So use VAS specific IRQ handler instead
+> + * of calling the default primary handler.
+> + */
+> +static irqreturn_t pseries_vas_irq_handler(int irq, void *data)
+> +{
+> +	struct pseries_vas_window *txwin = data;
+> +
+> +	/*
+> +	 * The thread hanlder will process this interrupt if it is
+> +	 * already running.
+> +	 */
+> +	atomic_inc(&txwin->pending_faults);
+> +
+> +	return IRQ_WAKE_THREAD;
+> +}
+> +
+>   /*
+>    * Allocate window and setup IRQ mapping.
+>    */
+> @@ -240,8 +265,9 @@ static int allocate_setup_window(struct pseries_vas_window *txwin,
+>   		goto out_irq;
+>   	}
+>   
+> -	rc = request_threaded_irq(txwin->fault_virq, NULL,
+> -				  pseries_vas_fault_thread_fn, IRQF_ONESHOT,
+> +	rc = request_threaded_irq(txwin->fault_virq,
+> +				  pseries_vas_irq_handler,
+> +				  pseries_vas_fault_thread_fn, 0,
+>   				  txwin->name, txwin);
+>   	if (rc) {
+>   		pr_err("VAS-Window[%d]: Request IRQ(%u) failed with %d\n",
+> diff --git a/arch/powerpc/platforms/pseries/vas.h b/arch/powerpc/platforms/pseries/vas.h
+> index 333ffa2f9f42..a2cb12a31c17 100644
+> --- a/arch/powerpc/platforms/pseries/vas.h
+> +++ b/arch/powerpc/platforms/pseries/vas.h
+> @@ -132,6 +132,7 @@ struct pseries_vas_window {
+>   	u64 flags;
+>   	char *name;
+>   	int fault_virq;
+> +	atomic_t pending_faults; /* Number of pending faults */
+>   };
+>   
+>   int sysfs_add_vas_caps(struct vas_cop_feat_caps *caps);
