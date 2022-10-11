@@ -1,42 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93FAB5FBC50
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Oct 2022 22:42:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C30D5FBD1A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Oct 2022 23:39:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Mn74w3CHRz3dvy
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Oct 2022 07:42:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Mn8M0274wz3c2N
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Oct 2022 08:39:40 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=wC/hF1Ny;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=TuFbMswD;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=srs0=y8wv=2m=goodmis.org=rostedt@kernel.org; receiver=<UNKNOWN>)
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.29; helo=smtp-out2.suse.de; envelope-from=msuchanek@suse.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=wC/hF1Ny;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=TuFbMswD;
+	dkim-atps=neutral
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mn8L053pvz2xtF
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Oct 2022 08:38:48 +1100 (AEDT)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+	by smtp-out2.suse.de (Postfix) with ESMTP id AF61F1FCF3;
+	Tue, 11 Oct 2022 21:38:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1665524323; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HT6Li+iF0Huei/eJnoHamNCOr9aOW9HkL2tj0lBESgY=;
+	b=wC/hF1Ny/hJY1jVHKsfExaX1+zfDSb84W4lZvBkL+iDBhyznquBZjNxSyD9cZMmCysJGlG
+	eLJjFboUoFgxjA53maP3cgAQ9cgMM7URWuOtal12f5VFZwGgu34cVl07FXWdLCdgGsFrpf
+	56vveVxG5mDY9Q/vF3X46n70Jj1HjtA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1665524323;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HT6Li+iF0Huei/eJnoHamNCOr9aOW9HkL2tj0lBESgY=;
+	b=TuFbMswDOmZrTi3o8o5XH75BlGDCDWOHBFECy7skP9CenomkVYx40wAF/SE46A1oZgE16J
+	oRs90C7DUPM6StAw==
+Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mn74P07dVz2xG9
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Oct 2022 07:41:56 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 36325B80F9B;
-	Tue, 11 Oct 2022 20:41:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8570C433C1;
-	Tue, 11 Oct 2022 20:41:44 +0000 (UTC)
-Date: Tue, 11 Oct 2022 16:41:43 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Valentin Schneider <vschneid@redhat.com>
-Subject: Re: [RFC PATCH 0/5] Generic IPI sending tracepoint
-Message-ID: <20221011164143.52c84421@rorschach.local.home>
-In-Reply-To: <xhsmhfsfufh51.mognet@vschneid.remote.csb>
-References: <20221007154145.1877054-1-vschneid@redhat.com>
-	<Y0CFnWDpMNGajIRD@fuller.cnet>
-	<xhsmhilkqfi7z.mognet@vschneid.remote.csb>
-	<3e680bb9-9896-3665-dd59-4f2e6f8205bb@redhat.com>
-	<xhsmhfsfufh51.mognet@vschneid.remote.csb>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	by relay2.suse.de (Postfix) with ESMTPS id 979B32C141;
+	Tue, 11 Oct 2022 21:38:42 +0000 (UTC)
+Date: Tue, 11 Oct 2022 23:38:41 +0200
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH v4 5/5] drm/ofdrm: Support big-endian scanout buffers
+Message-ID: <20221011213841.GA28810@kitsune.suse.cz>
+References: <20220928105010.18880-1-tzimmermann@suse.de>
+ <20220928105010.18880-6-tzimmermann@suse.de>
+ <23333ff7-3ae1-494f-7abe-62da6698fd00@redhat.com>
+ <83071743-a7f2-f761-baa3-da688f26b5e3@suse.de>
+ <9162f41f-28c3-493c-ab54-b1c4a2fdf494@app.fastmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9162f41f-28c3-493c-ab54-b1c4a2fdf494@app.fastmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,25 +74,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juri Lelli <juri.lelli@redhat.com>, Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Dave Hansen <dave.hansen@linux.intel.com>, linux-mips@vger.kernel.org, Guo Ren <guoren@kernel.org>, "H. Peter
- Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, Marc Zyngier <maz@kernel.org>, linux-hexagon@vger.kernel.org, x86@kernel.org, Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org, Ingo Molnar <mingo@redhat.com>, linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org, "Paul E. McKenney" <paulmck@kernel.org>, Frederic Weisbecker <frederic@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, openrisc@lists.librecores.org, Borislav Petkov <bp@alien8.de>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, Daniel Bristot de Oliveira <bristot@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>, linux-kernel@vger.kernel.org, Douglas RAILLARD <douglas.raillard@arm.com>, linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: linux-fbdev@vger.kernel.org, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@linux.ie>, Helge Deller <deller@gmx.de>, linuxppc-dev@lists.ozlabs.org, mark.cave-ayland@ilande.co.uk, Javier Martinez Canillas <javierm@redhat.com>, dri-devel@lists.freedesktop.org, Paul Mackerras <paulus@samba.org>, maxime@cerno.tech, Daniel Vetter <daniel@ffwll.ch>, Geert Uytterhoeven <geert@linux-m68k.org>, sam@ravnborg.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 11 Oct 2022 17:40:26 +0100
-Valentin Schneider <vschneid@redhat.com> wrote:
-
-> > You could keep the tracepoint as a mask, and then make it pretty, like cpus=3-5,8
-> > in user-space. For example with a trace-cmd/perf loadable plugin, libtracefs helper.
-> >  
+On Tue, Oct 11, 2022 at 10:06:59PM +0200, Arnd Bergmann wrote:
+> On Tue, Oct 11, 2022, at 1:30 PM, Thomas Zimmermann wrote:
+> > Am 11.10.22 um 09:46 schrieb Javier Martinez Canillas:
+> >>> +static bool display_get_big_endian_of(struct drm_device *dev, struct device_node *of_node)
+> >>> +{
+> >>> +	bool big_endian;
+> >>> +
+> >>> +#ifdef __BIG_ENDIAN
+> >>> +	big_endian = true;
+> >>> +	if (of_get_property(of_node, "little-endian", NULL))
+> >>> +		big_endian = false;
+> >>> +#else
+> >>> +	big_endian = false;
+> >>> +	if (of_get_property(of_node, "big-endian", NULL))
+> >>> +		big_endian = true;
+> >>> +#endif
+> >>> +
+> >>> +	return big_endian;
+> >>> +}
+> >>> +
+> >> 
+> >> Ah, I see. The heuristic then is whether the build is BE or LE or if the Device
+> >> Tree has an explicit node defining the endianess. The patch looks good to me:
+> >
+> > Yes. I took this test from offb.
 > 
-> That's a nice idea, the one downside I see is that means registering an
-> event handler for all events with cpumasks rather than directly targeting
-> cpumask fields, but that doesn't look too horrible. I'll dig a bit in that
-> direction.
+> Has the driver been tested with little-endian kernels though? While
+> ppc32 kernels are always BE, you can build kernels as either big-endian
+> or little-endian for most (modern) powerpc64 and arm/arm64 hardware,
+> and I don't see why that should change the defaults of the driver
+> when describing the same framebuffer hardware.
 
-We could just make all all dynamic array's of unsigned long use that
-format? I don't know of any other event that has dynamic arrays of
-unsigned longs. And doing a search doesn't come up with any.
+The original code was added with
+commit 7f29b87a7779 ("powerpc: offb: add support for foreign endianness")
 
--- Steve
+The hardware is either big-endian or runtime-switchable-endian. It makes
+sense to assume big-endian when runnig big-endian and the DT does not
+specify endian which is likely on a historical system.
+
+It also makes sense to assume that on system with
+runtime-switchable-endian the DT specifies the framebuffer endian.
+
+If systems that only do little-endian exist or emerge later then it also
+makes sense to assume that the framebuffer matches the host if not
+specified.
+
+I don't really see a problem here.
+
+BTW is this used on arm and on what platform?
+
+I do not see any bindings in dts.
+
+Thanks
+
+Michal
