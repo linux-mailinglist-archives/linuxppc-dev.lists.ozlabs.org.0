@@ -2,62 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A5565FB69E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Oct 2022 17:09:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AC5B5FB6A0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Oct 2022 17:09:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MmzhD59zSz3c75
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Oct 2022 02:09:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MmzjG1gT3z3dsN
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Oct 2022 02:09:54 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=ovKQUGCK;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=uJSEikp3;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=NblE2sAl;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=n+Ss6kZ1;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.29; helo=smtp-out2.suse.de; envelope-from=tzimmermann@suse.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=ovKQUGCK;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=uJSEikp3;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=NblE2sAl;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=n+Ss6kZ1;
 	dkim-atps=neutral
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MmzfH1M7Vz2yJQ
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MmzfJ06j8z2xJ8
 	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Oct 2022 02:07:19 +1100 (AEDT)
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 66CA31FE4C;
-	Tue, 11 Oct 2022 15:07:16 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 0A20320123;
+	Tue, 11 Oct 2022 15:07:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1665500836; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1665500837; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=f8b0mC6JZGDRuIjT+QaUdtL9/4bk3rT57EU7ZAcT7xs=;
-	b=ovKQUGCKMzOO0825XDQzqoogCg47dLyOnth9ZDuCM2WHt5v0U445z+NuPvYjVNm9zCVigI
-	kNkMI27fd+Yi70+WlfcyL4n0sP3ExhvJsS7KDsFqmWDH6rspKIr4i1bZB4qSaLGHBZMjxv
-	uc9RUaJZFBuPWX0tLgDtcEyHGup/gHM=
+	bh=yV0+I3qPqQz4zObE1It162Rbzz/bRUWnIf/5KtHaSrk=;
+	b=NblE2sAl96EqPy8iszt4n8hLZbgNESGCEgtzwFP3zxcRa/CT0BG3eiurv3xf5wYyYA028S
+	sqnD+WBT9gM7tBOvworK9yqwc2EKOlSU3Kvh0kou0yBI7BEdtfFe/tNeCH0itVyLipMCQb
+	1q5qz4/kwV3WWrX8Xdw5arW4tCZIzmA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1665500836;
+	s=susede2_ed25519; t=1665500837;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=f8b0mC6JZGDRuIjT+QaUdtL9/4bk3rT57EU7ZAcT7xs=;
-	b=uJSEikp3EEP9Z72yZh0V4gdE0c+4ypoIgKU40FwuYlKNL8UPaLo6CyC5zOU0c4bzffdbd4
-	7FCNlSdiRi3nYYDg==
+	bh=yV0+I3qPqQz4zObE1It162Rbzz/bRUWnIf/5KtHaSrk=;
+	b=n+Ss6kZ1mmkWbDvHqMB9vsaB2RivxMl1Pg4HAVbbC9a1ep+jbKpLTD4A/8ZD7P/+sQrVqE
+	QxcJuFUCpzUUfTBw==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id D70B6139ED;
-	Tue, 11 Oct 2022 15:07:15 +0000 (UTC)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 5B93213ACA;
+	Tue, 11 Oct 2022 15:07:16 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
 	by imap2.suse-dmz.suse.de with ESMTPSA
-	id yMBXM6OGRWPUTAAAMHmgww
-	(envelope-from <tzimmermann@suse.de>); Tue, 11 Oct 2022 15:07:15 +0000
+	id +KTHE6SGRWPUTAAAMHmgww
+	(envelope-from <tzimmermann@suse.de>); Tue, 11 Oct 2022 15:07:16 +0000
 From: Thomas Zimmermann <tzimmermann@suse.de>
 To: javierm@redhat.com,
 	airlied@linux.ie,
@@ -70,9 +70,9 @@ To: javierm@redhat.com,
 	paulus@samba.org,
 	geert@linux-m68k.org,
 	mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v5 2/5] drm/ofdrm: Add CRTC state
-Date: Tue, 11 Oct 2022 17:07:09 +0200
-Message-Id: <20221011150712.3928-3-tzimmermann@suse.de>
+Subject: [PATCH v5 3/5] drm/ofdrm: Add per-model device function
+Date: Tue, 11 Oct 2022 17:07:10 +0200
+Message-Id: <20221011150712.3928-4-tzimmermann@suse.de>
 X-Mailer: git-send-email 2.37.3
 In-Reply-To: <20221011150712.3928-1-tzimmermann@suse.de>
 References: <20221011150712.3928-1-tzimmermann@suse.de>
@@ -93,99 +93,191 @@ Cc: linux-fbdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Thomas Zimmerman
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add a dedicated CRTC state to ofdrm to later store information for
-palette updates.
+Add a per-model device-function structure in preparation of adding
+color-management support. Detection of the individual models has been
+taken from fbdev's offb.
 
 v3:
-	* rework CRTC state helpers (Javier)
+	* define constants for PCI ids (Javier)
 
 Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
 ---
- drivers/gpu/drm/tiny/ofdrm.c | 59 ++++++++++++++++++++++++++++++++++--
- 1 file changed, 56 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/tiny/ofdrm.c | 125 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 125 insertions(+)
 
 diff --git a/drivers/gpu/drm/tiny/ofdrm.c b/drivers/gpu/drm/tiny/ofdrm.c
-index 96a46078ade8..6782589ff9fa 100644
+index 6782589ff9fa..a0282a077238 100644
 --- a/drivers/gpu/drm/tiny/ofdrm.c
 +++ b/drivers/gpu/drm/tiny/ofdrm.c
-@@ -278,6 +278,21 @@ static struct resource *ofdrm_find_fb_resource(struct ofdrm_device *odev,
-  * Modesetting
-  */
+@@ -28,6 +28,21 @@
+ #define DRIVER_MAJOR	1
+ #define DRIVER_MINOR	0
  
-+struct ofdrm_crtc_state {
-+	struct drm_crtc_state base;
++#define PCI_VENDOR_ID_ATI_R520	0x7100
++#define PCI_VENDOR_ID_ATI_R600	0x9400
++
++enum ofdrm_model {
++	OFDRM_MODEL_UNKNOWN,
++	OFDRM_MODEL_MACH64, /* ATI Mach64 */
++	OFDRM_MODEL_RAGE128, /* ATI Rage128 */
++	OFDRM_MODEL_RAGE_M3A, /* ATI Rage Mobility M3 Head A */
++	OFDRM_MODEL_RAGE_M3B, /* ATI Rage Mobility M3 Head B */
++	OFDRM_MODEL_RADEON, /* ATI Radeon */
++	OFDRM_MODEL_GXT2000, /* IBM GXT2000 */
++	OFDRM_MODEL_AVIVO, /* ATI R5xx */
++	OFDRM_MODEL_QEMU, /* QEMU VGA */
 +};
 +
-+static struct ofdrm_crtc_state *to_ofdrm_crtc_state(struct drm_crtc_state *base)
+ /*
+  * Helpers for display nodes
+  */
+@@ -148,14 +163,63 @@ static u64 display_get_address_of(struct drm_device *dev, struct device_node *of
+ 	return address;
+ }
+ 
++static bool is_avivo(__be32 vendor, __be32 device)
 +{
-+	return container_of(base, struct ofdrm_crtc_state, base);
++	/* This will match most R5xx */
++	return (vendor == PCI_VENDOR_ID_ATI) &&
++	       ((device >= PCI_VENDOR_ID_ATI_R520 && device < 0x7800) ||
++		(PCI_VENDOR_ID_ATI_R600 >= 0x9400));
 +}
 +
-+static void ofdrm_crtc_state_destroy(struct ofdrm_crtc_state *ofdrm_crtc_state)
++static enum ofdrm_model display_get_model_of(struct drm_device *dev, struct device_node *of_node)
 +{
-+	__drm_atomic_helper_crtc_destroy_state(&ofdrm_crtc_state->base);
-+	kfree(ofdrm_crtc_state);
++	enum ofdrm_model model = OFDRM_MODEL_UNKNOWN;
++
++	if (of_node_name_prefix(of_node, "ATY,Rage128")) {
++		model = OFDRM_MODEL_RAGE128;
++	} else if (of_node_name_prefix(of_node, "ATY,RageM3pA") ||
++		   of_node_name_prefix(of_node, "ATY,RageM3p12A")) {
++		model = OFDRM_MODEL_RAGE_M3A;
++	} else if (of_node_name_prefix(of_node, "ATY,RageM3pB")) {
++		model = OFDRM_MODEL_RAGE_M3B;
++	} else if (of_node_name_prefix(of_node, "ATY,Rage6")) {
++		model = OFDRM_MODEL_RADEON;
++	} else if (of_node_name_prefix(of_node, "ATY,")) {
++		return OFDRM_MODEL_MACH64;
++	} else if (of_device_is_compatible(of_node, "pci1014,b7") ||
++		   of_device_is_compatible(of_node, "pci1014,21c")) {
++		model = OFDRM_MODEL_GXT2000;
++	} else if (of_node_name_prefix(of_node, "vga,Display-")) {
++		struct device_node *of_parent;
++		const __be32 *vendor_p, *device_p;
++
++		/* Look for AVIVO initialized by SLOF */
++		of_parent = of_get_parent(of_node);
++		vendor_p = of_get_property(of_parent, "vendor-id", NULL);
++		device_p = of_get_property(of_parent, "device-id", NULL);
++		if (vendor_p && device_p && is_avivo(*vendor_p, *device_p))
++			model = OFDRM_MODEL_AVIVO;
++		of_node_put(of_parent);
++	} else if (of_device_is_compatible(of_node, "qemu,std-vga")) {
++		model = OFDRM_MODEL_QEMU;
++	}
++
++	return model;
 +}
 +
  /*
-  * Support all formats of OF display and maybe more; in order
-  * of preference. The display's update function will do any
-@@ -431,13 +446,51 @@ static const struct drm_crtc_helper_funcs ofdrm_crtc_helper_funcs = {
- 	.atomic_check = ofdrm_crtc_helper_atomic_check,
- };
+  * Open Firmware display device
+  */
  
-+static void ofdrm_crtc_reset(struct drm_crtc *crtc)
-+{
-+	struct ofdrm_crtc_state *ofdrm_crtc_state =
-+		kzalloc(sizeof(*ofdrm_crtc_state), GFP_KERNEL);
++struct ofdrm_device_funcs {
++};
 +
-+	if (crtc->state)
-+		ofdrm_crtc_state_destroy(to_ofdrm_crtc_state(crtc->state));
-+
-+	if (ofdrm_crtc_state)
-+		__drm_atomic_helper_crtc_reset(crtc, &ofdrm_crtc_state->base);
-+	else
-+		__drm_atomic_helper_crtc_reset(crtc, NULL);
-+}
-+
-+static struct drm_crtc_state *ofdrm_crtc_atomic_duplicate_state(struct drm_crtc *crtc)
-+{
-+	struct drm_device *dev = crtc->dev;
-+	struct drm_crtc_state *crtc_state = crtc->state;
-+	struct ofdrm_crtc_state *new_ofdrm_crtc_state;
-+
-+	if (drm_WARN_ON(dev, !crtc_state))
-+		return NULL;
-+
-+	new_ofdrm_crtc_state = kzalloc(sizeof(*new_ofdrm_crtc_state), GFP_KERNEL);
-+	if (!new_ofdrm_crtc_state)
-+		return NULL;
-+
-+	__drm_atomic_helper_crtc_duplicate_state(crtc, &new_ofdrm_crtc_state->base);
-+
-+	return &new_ofdrm_crtc_state->base;
-+}
-+
-+static void ofdrm_crtc_atomic_destroy_state(struct drm_crtc *crtc,
-+					    struct drm_crtc_state *crtc_state)
-+{
-+	ofdrm_crtc_state_destroy(to_ofdrm_crtc_state(crtc_state));
-+}
-+
- static const struct drm_crtc_funcs ofdrm_crtc_funcs = {
--	.reset = drm_atomic_helper_crtc_reset,
-+	.reset = ofdrm_crtc_reset,
- 	.destroy = drm_crtc_cleanup,
- 	.set_config = drm_atomic_helper_set_config,
- 	.page_flip = drm_atomic_helper_page_flip,
--	.atomic_duplicate_state = drm_atomic_helper_crtc_duplicate_state,
--	.atomic_destroy_state = drm_atomic_helper_crtc_destroy_state,
-+	.atomic_duplicate_state = ofdrm_crtc_atomic_duplicate_state,
-+	.atomic_destroy_state = ofdrm_crtc_atomic_destroy_state,
- };
+ struct ofdrm_device {
+ 	struct drm_device dev;
+ 	struct platform_device *pdev;
  
- static int ofdrm_connector_helper_get_modes(struct drm_connector *connector)
++	const struct ofdrm_device_funcs *funcs;
++
+ 	/* firmware-buffer settings */
+ 	struct iosys_map screen_base;
+ 	struct drm_display_mode mode;
+@@ -522,6 +586,33 @@ static const struct drm_mode_config_funcs ofdrm_mode_config_funcs = {
+  * Init / Cleanup
+  */
+ 
++static const struct ofdrm_device_funcs ofdrm_unknown_device_funcs = {
++};
++
++static const struct ofdrm_device_funcs ofdrm_mach64_device_funcs = {
++};
++
++static const struct ofdrm_device_funcs ofdrm_rage128_device_funcs = {
++};
++
++static const struct ofdrm_device_funcs ofdrm_rage_m3a_device_funcs = {
++};
++
++static const struct ofdrm_device_funcs ofdrm_rage_m3b_device_funcs = {
++};
++
++static const struct ofdrm_device_funcs ofdrm_radeon_device_funcs = {
++};
++
++static const struct ofdrm_device_funcs ofdrm_gxt2000_device_funcs = {
++};
++
++static const struct ofdrm_device_funcs ofdrm_avivo_device_funcs = {
++};
++
++static const struct ofdrm_device_funcs ofdrm_qemu_device_funcs = {
++};
++
+ static struct drm_display_mode ofdrm_mode(unsigned int width, unsigned int height)
+ {
+ 	/*
+@@ -543,6 +634,7 @@ static struct ofdrm_device *ofdrm_device_create(struct drm_driver *drv,
+ 	struct device_node *of_node = pdev->dev.of_node;
+ 	struct ofdrm_device *odev;
+ 	struct drm_device *dev;
++	enum ofdrm_model model;
+ 	int width, height, depth, linebytes;
+ 	const struct drm_format_info *format;
+ 	u64 address;
+@@ -571,6 +663,39 @@ static struct ofdrm_device *ofdrm_device_create(struct drm_driver *drv,
+ 	 * OF display-node settings
+ 	 */
+ 
++	model = display_get_model_of(dev, of_node);
++	drm_dbg(dev, "detected model %d\n", model);
++
++	switch (model) {
++	case OFDRM_MODEL_UNKNOWN:
++		odev->funcs = &ofdrm_unknown_device_funcs;
++		break;
++	case OFDRM_MODEL_MACH64:
++		odev->funcs = &ofdrm_mach64_device_funcs;
++		break;
++	case OFDRM_MODEL_RAGE128:
++		odev->funcs = &ofdrm_rage128_device_funcs;
++		break;
++	case OFDRM_MODEL_RAGE_M3A:
++		odev->funcs = &ofdrm_rage_m3a_device_funcs;
++		break;
++	case OFDRM_MODEL_RAGE_M3B:
++		odev->funcs = &ofdrm_rage_m3b_device_funcs;
++		break;
++	case OFDRM_MODEL_RADEON:
++		odev->funcs = &ofdrm_radeon_device_funcs;
++		break;
++	case OFDRM_MODEL_GXT2000:
++		odev->funcs = &ofdrm_gxt2000_device_funcs;
++		break;
++	case OFDRM_MODEL_AVIVO:
++		odev->funcs = &ofdrm_avivo_device_funcs;
++		break;
++	case OFDRM_MODEL_QEMU:
++		odev->funcs = &ofdrm_qemu_device_funcs;
++		break;
++	}
++
+ 	width = display_get_width_of(dev, of_node);
+ 	if (width < 0)
+ 		return ERR_PTR(width);
 -- 
 2.37.3
 
