@@ -1,72 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A15A95FC720
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Oct 2022 16:19:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C88DB5FC75D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Oct 2022 16:28:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MnZXX4C0kz3c2g
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Oct 2022 01:19:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MnZkZ650rz3bls
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Oct 2022 01:28:06 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Bm355Ctd;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=HyPb1yFQ;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=pRJzz5ay;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::435; helo=mail-pf1-x435.google.com; envelope-from=groeck7@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.29; helo=smtp-out2.suse.de; envelope-from=msuchanek@suse.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Bm355Ctd;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=HyPb1yFQ;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=pRJzz5ay;
 	dkim-atps=neutral
-Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MnZWY6RHFz2xJF
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Oct 2022 01:18:33 +1100 (AEDT)
-Received: by mail-pf1-x435.google.com with SMTP id y1so9486922pfr.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Oct 2022 07:18:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=cvAcGLtt6Cfb3BGCG2urxrj4E9S/TnAlrCGOKagFlro=;
-        b=Bm355Ctd3ShfR0c7dUkErA5orrH0Id+tTW+ZWvOAXDwcQa7kufHkK8izXEtrZX348N
-         pQBo78SBIIWRDKcDocx6CnBAG9wkJd1JU79NMYX31KdkjHD/HuW1uGJoNbpN0wKNizHF
-         nKyKpx6D/tDiSISI9XcQKGdZiHV3yn1RoUpyI5fEC7k8MElFiW2lxZ3gUEjSXoMKlZNa
-         zJ9/Vq7wD6ZrNKpl7nIB0Z4qm3HJH9lHnDZoJ/b8gngmZSLDXUES5TMXfyuLjaFUp4uW
-         lLUF1ZXM2leydhXVU+sEPJkZJoH9XP4kRfnQEOZ7sCs9WR4hBI3ZHMtCotQZdbYr7DDf
-         QxJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cvAcGLtt6Cfb3BGCG2urxrj4E9S/TnAlrCGOKagFlro=;
-        b=5oy7effzuIQh3qWtU7DjwR5w+NoPKgmkmPn9uwHlxAxd9KtmMrK/DSnXtKHYJC1KE1
-         5KF1ncjSDlmelX6EsbP6v1LBz+PQ9SLq5fzeBQe0eNn9JYneR32SvIs+yvMX0AhUQ7pN
-         9vTs36vMtQkuvQz67bzMSnc0EJW7XpjtPMD8knN2Y9bQPitk2YAQE24sqEr5cESzYAS7
-         kB3Uwg5ab6NAVdm3J25dhiZHZuPIrESQMXvMeSCcgMp9yz7Zqhj2lbgF94Nh/X+SMs1A
-         7X3bjbqA/x6ZJ2r9GJ35Mwny0OWkLwspQc2INm8o7JWebLtcEVrZCADfDj0+QD+giBv9
-         7lRw==
-X-Gm-Message-State: ACrzQf0GRntxQlZ38r/3WUWaV2pGlLnC9j6Tdh4IVZVrkkMt7rBth8Cs
-	w0412lxOGVK3w0AqRgHxXKc=
-X-Google-Smtp-Source: AMsMyM5AhzgCIJQ9kT5JAogHTs04xAYzFZdRQck3a0Tlat7OQuvrrYzzbddhmdEnvz5Ykpxs7OrePw==
-X-Received: by 2002:a63:3155:0:b0:45a:553a:3479 with SMTP id x82-20020a633155000000b0045a553a3479mr25694349pgx.408.1665584309826;
-        Wed, 12 Oct 2022 07:18:29 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id cp17-20020a170902e79100b00176b3c9693esm10609102plb.299.2022.10.12.07.18.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Oct 2022 07:18:28 -0700 (PDT)
-Date: Wed, 12 Oct 2022 07:18:27 -0700
-From: Guenter Roeck <linux@roeck-us.net>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-6.1-1 tag
-Message-ID: <20221012141827.GA2405914@roeck-us.net>
-References: <87edvhntv0.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MnZjb106kz2x9J
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Oct 2022 01:27:14 +1100 (AEDT)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+	by smtp-out2.suse.de (Postfix) with ESMTP id 936DF1F45F;
+	Wed, 12 Oct 2022 14:27:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1665584830; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bUIoEZRTB9r1lwBbrkvBK28f0PkDXtp6GQxBtOrWsPI=;
+	b=HyPb1yFQquCok37hotWVp1+Zij1t1706TKbh4gACWlWrc5llFVQAubq5qlfdM1tGfbLTgi
+	ezhLbkMtSQWqUd9V6dSfc+LEIHIjxy69utiEs0a4E4IcG2c0XP3HSe0u88uFDnXHm0FlVq
+	eIp4ihby3219zuNZU47kbkC73YglsD8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1665584830;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bUIoEZRTB9r1lwBbrkvBK28f0PkDXtp6GQxBtOrWsPI=;
+	b=pRJzz5ayEEG0IBdG1KJosmLHta58ronj+wi2sA0HDRLfAlEyZonma7ygjpcxKNKwRVx+qE
+	yKf4wDpmaaHxn/BQ==
+Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by relay2.suse.de (Postfix) with ESMTPS id 8B2BA2C141;
+	Wed, 12 Oct 2022 14:27:08 +0000 (UTC)
+Date: Wed, 12 Oct 2022 16:27:07 +0200
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH v4 5/5] drm/ofdrm: Support big-endian scanout buffers
+Message-ID: <20221012142707.GD28810@kitsune.suse.cz>
+References: <83071743-a7f2-f761-baa3-da688f26b5e3@suse.de>
+ <9162f41f-28c3-493c-ab54-b1c4a2fdf494@app.fastmail.com>
+ <fda959d7-1bae-716f-f01b-66d9db9096e0@suse.de>
+ <654e3cfe-80d7-46c9-8e5e-461846e4df35@app.fastmail.com>
+ <866c7033-0d4e-7b5d-008c-8eb16f99498b@suse.de>
+ <f26ca6a1-feb1-4822-ac96-bc484b22f8a0@app.fastmail.com>
+ <c80a6e2d-a3b9-8186-cc95-97c4775171ed@suse.de>
+ <fc33ebf7-ecb7-4686-ac31-0118a40595f6@app.fastmail.com>
+ <0a15ecf5-939d-3b00-bcde-0fc7b449cfda@suse.de>
+ <76d8a408-fc3e-4bd1-91c5-8278f7469979@app.fastmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <87edvhntv0.fsf@mpe.ellerman.id.au>
+In-Reply-To: <76d8a408-fc3e-4bd1-91c5-8278f7469979@app.fastmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,172 +79,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: david@redhat.com, linux-kernel@vger.kernel.org, wsa+renesas@sang-engineering.com, nicholas@linux.ibm.com, windhl@126.com, cuigaosheng1@huawei.com, mikey@neuling.org, paul@paul-moore.com, aneesh.kumar@linux.ibm.com, haren@linux.ibm.com, joel@jms.id.au, lukas.bulwahn@gmail.com, nathanl@linux.ibm.com, ajd@linux.ibm.com, ye.xingchen@zte.com.cn, npiggin@gmail.com, nathan@kernel.org, rmclure@linux.ibm.com, hbathini@linux.ibm.com, atrajeev@linux.vnet.ibm.com, yuanjilin@cdjrlc.com, pali@kernel.org, farosas@linux.ibm.com, geoff@infradead.org, Linus Torvalds <torvalds@linux-foundation.org>, gustavoars@kernel.org, lihuafei1@huawei.com, zhengyongjun3@huawei.com, linuxppc-dev@lists.ozlabs.org
+Cc: linux-fbdev@vger.kernel.org, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@linux.ie>, Helge Deller <deller@gmx.de>, linuxppc-dev@lists.ozlabs.org, mark.cave-ayland@ilande.co.uk, Javier Martinez Canillas <javierm@redhat.com>, dri-devel@lists.freedesktop.org, Paul Mackerras <paulus@samba.org>, Maxime Ripard <maxime@cerno.tech>, Daniel Vetter <daniel@ffwll.ch>, Geert Uytterhoeven <geert@linux-m68k.org>, sam@ravnborg.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Oct 09, 2022 at 10:01:39PM +1100, Michael Ellerman wrote:
-> -----BEGIN PGP SIGNED MESSAGE-----
-> Hash: SHA256
+Hello,
+
+On Wed, Oct 12, 2022 at 03:12:35PM +0200, Arnd Bergmann wrote:
+> On Wed, Oct 12, 2022, at 2:00 PM, Thomas Zimmermann wrote:
+> >
+> > Could well be. But ofdrm intents to replace offb and this test has 
+> > worked well in offb for almost 15 yrs. If there are bug reports, I'm 
+> > happy to take patches, but until then I see no reason to change it.
 > 
-> Hi Linus,
+> I wouldn't change the code in offb unless a user reports a bug,
+> but I don't see a point in adding the same mistake to ofdrm if we
+> know it can't work on real hardware.
 > 
-> Please pull powerpc updates for 6.1.
+> I tried to find out where this is configured in qemu, but it seems
+> to depend on the framebuffer backend there: most are always little-endian,
+> ati/bochs/vga-pci/virtio-vga are configurable from the guest through
+> some register setting, but vga.c picks a default from the
+> 'TARGET_WORDS_BIGENDIAN' macro, which I think is set differently
+> between qemu-system-ppc64le and qemu-system-ppc64.
 > 
-> No conflicts with your tree. There will be a conflict when you merge the kbuild tree, due
-> to us renaming head_fsl_booke.S to head_85xx.S. The resolution is mostly trivial,
-> linux-next has the correct result if it's unclear.
-> 
+> If you are using the framebuffer code from vga.c, I would guess that
+> that you can run a big-endian kernel with qemu-system-ppc64,
+> or a little-endian kernel with qemu-system-ppc64le and get the
+> correct colors, while running a little-endian kernel with
+> qemu-system-ppc64 and vga.c, or using a different framebuffer
+> emulation on a big-endian kernel would give you the wrong colors.
 
-Post-merge problems are much more exciting when trying to run mac99
-emulations in qemu.
+Thanks for digging this up.
 
-Enabling KFENCE results in log messages such as
+That makes one thing clear: qemu does not emulate this framebuffer
+property correctly, and cannot be relied on for verification.
 
-================================
-WARNING: inconsistent lock state
-6.0.0-rc2-00163-ga5edf9815dd7 #1 Tainted: G                 N
---------------------------------
-inconsistent {IN-SOFTIRQ-W} -> {SOFTIRQ-ON-W} usage.
-swapper/0/1 [HC0[0]:SC0[0]:HE1:SE1] takes:
-c000000002734d68 (native_tlbie_lock){+.?.}-{2:2}, at: .native_hpte_updateboltedpp+0x1a4/0x600
-{IN-SOFTIRQ-W} state was registered at:
-  .lock_acquire+0x20c/0x520
-  ._raw_spin_lock+0x4c/0x70
-  .native_hpte_invalidate+0x62c/0x840
-  .hash__kernel_map_pages+0x450/0x640
-  .kfence_protect+0x58/0xc0
-  .kfence_guarded_free+0x374/0x5a0
-  .__slab_free+0x340/0x670
-  .__d_free+0x2c/0x50
-  .rcu_core+0x3f4/0x1750
-  .__do_softirq+0x1dc/0x7dc
-  .do_softirq_own_stack+0x40/0x60
-  0xc00000000775bca0
-  .irq_exit+0x1e8/0x220
-  .timer_interrupt+0x284/0x700
-  decrementer_common_virt+0x208/0x210
-irq event stamp: 243607
-hardirqs last  enabled at (243607): [<c0000000003bd424>] .__slab_free+0x324/0x670
-hardirqs last disabled at (243606): [<c0000000003bd2f4>] .__slab_free+0x1f4/0x670
-softirqs last  enabled at (242982): [<c0000000010a387c>] .__do_softirq+0x7ac/0x7dc
-softirqs last disabled at (242973): [<c000000000014b20>] .do_softirq_own_stack+0x40/0x60
+If you can provide test results from real hardware that show the current
+logic as flawed it should be changed.
 
-other info that might help us debug this:
- Possible unsafe locking scenario:
+In absence of such test results I think the most reasonable thing is to
+keep the logic that nobody complained about for 10+ years.
 
-       CPU0
-       ----
-  lock(native_tlbie_lock);
-  <Interrupt>
-    lock(native_tlbie_lock);
+Thanks
 
- *** DEADLOCK ***
-
-and, indeed, there appear to be various deadlocks.
-
-I had to disable KFENCE to be able to test further (or maybe KFENCE works
-and points out the soft lockup problem observed below - hard for me to
-determine).
-
->       powerpc/pseries: Move dtl scanning and steal time accounting to pseries platform
-
-With this patch, CONFIG_DTL must be enabled if CONFIG_PPC_SPLPAR is enabled.
-CONFIG_PPC_SPLPAR=y and CONFIG_DTL=n results in build failures due to
-
-irq.c:(.text+0x2798): undefined reference to `.pseries_accumulate_stolen_time'
-
-and many similar errors.
-
-I had to enable CONFIG_DTL explicitly to be able to build my test images.
-CONFIG_PPC_SPLPAR now depends on or requires CONFIG_DTL which in turn
-depends on CONFIG_DEBUG_FS. That seems odd.
-
-With all this worked around, I still get soft lockup problems when trying to boot
-from SDHCI. I have not been able to bisect this problem.
-
-BUG: soft lockup - CPU#0 stuck for 23s! [dd:111]
-Modules linked in:
-CPU: 0 PID: 111 Comm: dd Not tainted 6.0.0-10822-g60bb8154d1d7 #1
-Hardware name: PowerMac3,1 PPC970FX 0x3c0301 PowerMac
-NIP:  c000000000031630 LR: c000000000031964 CTR: 0000000000000000
-REGS: c000000007df36a8 TRAP: 0900   Not tainted  (6.0.0-10822-g60bb8154d1d7)
-MSR:  800000000000b032 <SF,EE,FP,ME,IR,DR,RI>  CR: 28002228  XER: 00000000
-IRQMASK: 0
-GPR00: c000000000031964 c000000007df3870 c0000000013e5500 c000000007df36a8
-GPR04: c00000000125dd80 0000000000000000 c000000007df3814 c00000000291d018
-GPR08: c000000002d4bbb8 0000000000000000 c000000007365100 c000000002d21098
-GPR12: 0000000028002222 c000000002e20000 00000000100d32e0 00000000100d32b4
-GPR16: 00000000100d3301 00000000100d32b9 00000000100d3358 00000000100d32bf
-GPR20: 0000000000002000 00000000100d3372 00000000100d331e c000000007365918
-GPR24: 0000000000000000 0000000000000e60 0000000000000900 0000000000000500
-GPR28: 0000000000000a00 0000000000000f00 0000000000000002 0000000000000003
-NIP [c000000000031630] .replay_soft_interrupts+0x60/0x300
-LR [c000000000031964] .arch_local_irq_restore+0x94/0x1c0
-Call Trace:
-[c000000007df3870] [c000000000031964] .arch_local_irq_restore+0x94/0x1c0 (unreliable)
-[c000000007df38f0] [c000000000f8a444] .__schedule+0x664/0xa50
-[c000000007df39d0] [c000000000f8a8b0] .schedule+0x80/0x140
-[c000000007df3a50] [c00000000092f0dc] .try_to_generate_entropy+0x118/0x174
-[c000000007df3b40] [c00000000092e2e4] .urandom_read_iter+0x74/0x140
-[c000000007df3bc0] [c0000000003b0044] .vfs_read+0x284/0x2d0
-[c000000007df3cd0] [c0000000003b0d2c] .ksys_read+0xdc/0x130
-[c000000007df3d80] [c00000000002a88c] .system_call_exception+0x19c/0x330
-[c000000007df3e10] [c00000000000c1d4] system_call_common+0xf4/0x258
---- interrupt: c00 at 0x7fff829fd49c
-NIP:  00007fff829fd49c LR: 000000001000da90 CTR: 0000000000000000
-REGS: c000000007df3e80 TRAP: 0c00   Not tainted  (6.0.0-10822-g60bb8154d1d7)
-MSR:  800000000000f032 <SF,EE,PR,FP,ME,IR,DR,RI>  CR: 22002422  XER: 00000000
-IRQMASK: 0
-GPR00: 0000000000000003 00007ffff138df70 00007fff82af7300 0000000000000000
-GPR04: 00000000101102a0 0000000000000020 0000000000000000 0000000000000000
-GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-GPR12: 0000000000000000 00007fff82bcaac0 00000000100d32e0 00000000100d32b4
-GPR16: 00000000100d3301 00000000100d32b9 00000000100d3358 00000000100d32bf
-GPR20: 0000000000002000 00000000100d3372 00000000100d331e 0000000000000000
-GPR24: 7fffffffffffffff 00000000100b3a9c 00000000101102a0 0000000000000020
-GPR28: 00000000101025c0 0000000000000020 0000000000000000 0000000000000000
-NIP [00007fff829fd49c] 0x7fff829fd49c
-LR [000000001000da90] 0x1000da90
---- interrupt: c00
-Instruction dump:
-3b600500 3b800a00 3ba00f00 f8010010 f821fdc1 60000000 60000000 38610078
-e92d0af8 f92101f8 39200000 48039745 <60000000> 39000000 e9410180 892d0933
-Kernel panic - not syncing: softlockup: hung tasks
-CPU: 0 PID: 111 Comm: dd Tainted: G             L     6.0.0-10822-g60bb8154d1d7 #1
-Hardware name: PowerMac3,1 PPC970FX 0x3c0301 PowerMac
-Call Trace:
-[c000000007df3180] [c000000000f584c0] .dump_stack_lvl+0x7c/0xc4 (unreliable)
-[c000000007df3210] [c0000000000d5b58] .panic+0x174/0x42c
-[c000000007df32c0] [c000000000231054] .watchdog_timer_fn+0x3a4/0x3e0
-[c000000007df3380] [c0000000001cc65c] .__hrtimer_run_queues+0x1fc/0x650
-[c000000007df3490] [c0000000001cd5cc] .hrtimer_interrupt+0x11c/0x320
-[c000000007df3550] [c000000000021f5c] .timer_interrupt+0x1cc/0x600
-[c000000007df3630] [c0000000000316c8] .replay_soft_interrupts+0xf8/0x300
-[c000000007df3870] [c000000000031964] .arch_local_irq_restore+0x94/0x1c0
-[c000000007df38f0] [c000000000f8a444] .__schedule+0x664/0xa50
-[c000000007df39d0] [c000000000f8a8b0] .schedule+0x80/0x140
-[c000000007df3a50] [c00000000092f0dc] .try_to_generate_entropy+0x118/0x174
-[c000000007df3b40] [c00000000092e2e4] .urandom_read_iter+0x74/0x140
-[c000000007df3bc0] [c0000000003b0044] .vfs_read+0x284/0x2d0
-[c000000007df3cd0] [c0000000003b0d2c] .ksys_read+0xdc/0x130
-[c000000007df3d80] [c00000000002a88c] .system_call_exception+0x19c/0x330
-[c000000007df3e10] [c00000000000c1d4] system_call_common+0xf4/0x258
---- interrupt: c00 at 0x7fff829fd49c
-NIP:  00007fff829fd49c LR: 000000001000da90 CTR: 0000000000000000
-REGS: c000000007df3e80 TRAP: 0c00   Tainted: G             L      (6.0.0-10822-g60bb8154d1d7)
-MSR:  800000000000f032 <SF,EE,PR,FP,ME,IR,DR,RI>  CR: 22002422  XER: 00000000
-IRQMASK: 0
-GPR00: 0000000000000003 00007ffff138df70 00007fff82af7300 0000000000000000
-GPR04: 00000000101102a0 0000000000000020 0000000000000000 0000000000000000
-GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-GPR12: 0000000000000000 00007fff82bcaac0 00000000100d32e0 00000000100d32b4
-GPR16: 00000000100d3301 00000000100d32b9 00000000100d3358 00000000100d32bf
-GPR20: 0000000000002000 00000000100d3372 00000000100d331e 0000000000000000
-GPR24: 7fffffffffffffff 00000000100b3a9c 00000000101102a0 0000000000000020
-GPR28: 00000000101025c0 0000000000000020 0000000000000000 0000000000000000
-NIP [00007fff829fd49c] 0x7fff829fd49c
-LR [000000001000da90] 0x1000da90
---- interrupt: c00
-
-Guenter
+Michal
