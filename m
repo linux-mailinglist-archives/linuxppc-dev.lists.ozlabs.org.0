@@ -1,91 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77ED25FCCC9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Oct 2022 23:08:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D3145FCD3F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Oct 2022 23:29:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MnlcX2kRrz2ygC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Oct 2022 08:08:28 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=vAwa1ydC;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=VFM8vr6J;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Mnm566BN2z3dw5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Oct 2022 08:29:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=66.111.4.26; helo=out2-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=vAwa1ydC;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=VFM8vr6J;
-	dkim-atps=neutral
-Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=aculab.com (client-ip=185.58.86.151; helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com; receiver=<UNKNOWN>)
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MnlbV6V9tz2xmw
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Oct 2022 08:07:33 +1100 (AEDT)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-	by mailout.nyi.internal (Postfix) with ESMTP id 68F2B5C00BC;
-	Wed, 12 Oct 2022 17:07:30 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute3.internal (MEProxy); Wed, 12 Oct 2022 17:07:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:date:date:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:sender:subject
-	:subject:to:to; s=fm2; t=1665608850; x=1665695250; bh=1zjTzbu3nE
-	vKPjEu+A0VVC9cmYrYpXNTso2KnYCuc7o=; b=vAwa1ydC+9d2I9JWQMsHnQzLD0
-	NajTZT00Z6YRtX9eVlpSljSvsU/yFsucT7Aq4Oscd1E2DbgdPAvw7h8MKi+SfPJi
-	6olwV0ACpfjzjzNIEvpw0f/+c5g/bj3HsWyEX4gLB+349ezXY0uOnWrZsu6S7TNx
-	mfiAfZoqvCDtQdLE6T4GDduKjKA2nipxepU9MAG7ujEEXk99r8DrNRZfGlK15Cfu
-	z2WWUcSqqd0bankroEDffJ6XWZiKoziKWQd8PePJNpvICMQhTRfBPaFsQfDtKMUQ
-	MpT0yNPx59E+CJiAriCqWotq1txyVUSWV7+ett3PIQE6J6q76SW15b7lC0nw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-	:feedback-id:from:from:in-reply-to:in-reply-to:message-id
-	:mime-version:references:reply-to:sender:subject:subject:to:to
-	:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm3; t=1665608850; x=1665695250; bh=1zjTzbu3nEvKPjEu+A0VVC9cmYrY
-	pXNTso2KnYCuc7o=; b=VFM8vr6JEg7opglf79F9TeVrikpH40HEGO+JtHdDIeGo
-	JDNkv7wsHZKKzWWSsZGrud+/BfHI86ACBp7Eh2fzKmPR66F8OFpDhsKVcYTF3km4
-	fFrIaAgxygV9e3TVbuCCWSF+3oxXTTbLWobgiAdbqQm0TbXyIObYp94McGRHBuYL
-	O1dyvj+JVJzlRkigjzYCMQ0mYi0YxGQ4Ipe4pnbIw6CFmauLOazr6n3faaW+nETo
-	5vFahsqFKyaqFPx8QGAQW3Tdw+ANTXwL8y8U/rytPX57DKMWyIGBdHLm4rMbHaVe
-	kqcHrt6Y/l1Vx6o3khLwq3Hlu6WofmmXMSVZWsPt2Q==
-X-ME-Sender: <xms:kSxHY4uYl8NqQVKE7TlRYofsBddMRUrI96xa6Pk9mWO3s30GLZXhVw>
-    <xme:kSxHY1fxsuw10Uc3pbJSjBs6_0Up0QOclLg48G8pVmvua6kas8vOv7Rp8Ih-15c7Q
-    aHhfUnNJWhs47BeYJc>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfeejkedgudehlecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdet
-    rhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrg
-    htthgvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedt
-    keetffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    grrhhnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:kSxHYzxEmXJhVtY7mzAljiIxJ8g7vbYtpPC0tpJEjUSewlAhg0JIhw>
-    <xmx:kSxHY7Nhw7JdZ-kUMWRwEPuRQzBFD8USLwWQFxnptjhFcbC8wS7iMg>
-    <xmx:kSxHY48vPy4-hM5zI6LGwuSveJEJXMlJt5fVNQg9kSkEIfc1U4af4w>
-    <xmx:kixHYydoUmNqBtkkA6x_gy4dCaEesVEAWfyCYVTtN8EfE59z9KQcCw>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 02DC4B60086; Wed, 12 Oct 2022 17:07:29 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.7.0-alpha0-1047-g9e4af4ada4-fm-20221005.001-g9e4af4ad
-Mime-Version: 1.0
-Message-Id: <38893b2e-c7a1-4ad2-b691-7fbcbbeb310f@app.fastmail.com>
-In-Reply-To:  <CAHk-=wg2Pkb9kbfbstbB91AJA2SF6cySbsgHG-iQMq56j3VTcA@mail.gmail.com>
-References: <20221010132030-mutt-send-email-mst@kernel.org>
- <87r0zdmujf.fsf@mpe.ellerman.id.au>
- <20221012070532-mutt-send-email-mst@kernel.org>
- <87mta1marq.fsf@mpe.ellerman.id.au> <87edvdm7qg.fsf@mpe.ellerman.id.au>
- <20221012115023-mutt-send-email-mst@kernel.org>
- <CAHk-=wg2Pkb9kbfbstbB91AJA2SF6cySbsgHG-iQMq56j3VTcA@mail.gmail.com>
-Date: Wed, 12 Oct 2022 23:06:54 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Linus Torvalds" <torvalds@linux-foundation.org>,
- "Michael S. Tsirkin" <mst@redhat.com>
-Subject: Re: [GIT PULL] virtio: fixes, features
-Content-Type: text/plain
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mnm4V5JvXz2yQg
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Oct 2022 08:29:12 +1100 (AEDT)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-269-WPghBqosPyeNkdeVSYELTw-1; Wed, 12 Oct 2022 22:29:04 +0100
+X-MC-Unique: WPghBqosPyeNkdeVSYELTw-1
+Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
+ (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.38; Wed, 12 Oct
+ 2022 22:29:02 +0100
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.040; Wed, 12 Oct 2022 22:29:02 +0100
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Joe Perches' <joe@perches.com>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH v1 3/5] treewide: use get_random_u32() when possible
+Thread-Topic: [PATCH v1 3/5] treewide: use get_random_u32() when possible
+Thread-Index: AQHY3m9QJDmwhr5XuUa4Hi/RfD23ja4LRXVg
+Date: Wed, 12 Oct 2022 21:29:02 +0000
+Message-ID: <d45bd258e033453b85a137112e7694e1@AcuMS.aculab.com>
+References: <20221005214844.2699-1-Jason@zx2c4.com>
+	 <20221005214844.2699-4-Jason@zx2c4.com>
+ <f8ad3ba44d28dec1a5f7626b82c5e9c2aeefa729.camel@perches.com>
+In-Reply-To: <f8ad3ba44d28dec1a5f7626b82c5e9c2aeefa729.camel@perches.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
+MIME-Version: 1.0
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,28 +60,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: xiujianfeng@huawei.com, kvm@vger.kernel.org, alvaro.karsz@solid-run.com, linux-pci@vger.kernel.org, Jason Wang <jasowang@redhat.com>, wangdeming@inspur.com, linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org, Netdev <netdev@vger.kernel.org>, angus.chen@jaguarmicro.com, Bjorn Helgaas <bhelgaas@google.com>, lingshan.zhu@intel.com, linuxppc-dev@lists.ozlabs.org, gavinl@nvidia.com
+Cc: "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>, "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>, "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-sctp@vger.kernel.org" <linux-sctp@vger.kernel.org>, "target-devel@vger.kernel.org" <target-devel@vger.kernel.org>, "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>, "linux-stm32@st-md-mailman.stormreply.com" <linux-stm32@st-md-mailman.stormreply.com>, "drbd-dev@lists.linbit.com" <drbd-dev@lists.linbit.com>, "dev@openvswitch.org" <dev@openvswitch.org>, "rds-devel@oss.oracle.com" <rds-devel@oss.oracle.com>, "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>, "dccp@vger.kernel.org" <dccp@vger.kernel.org>, "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>, "kasan-dev@googlegroups.com" <kasan-dev@googlegroups.com>, "lvs-devel@vger.kernel.org" <lvs-devel@vger.kernel.o
+ rg>, "SHA-cyfmac-dev-list@infineon.com" <SHA-cyfmac-dev-list@infineon.com>, "coreteam@netfilter.org" <coreteam@netfilter.org>, "netfilter-devel@vger.kernel.org" <netfilter-devel@vger.kernel.org>, "linux-ext4@vger.kernel.org" <linux-ext4@vger.kernel.org>, "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>, "linux-actions@lists.infradead.org" <linux-actions@lists.infradead.org>, "brcm80211-dev-list.pdl@broadcom.com" <brcm80211-dev-list.pdl@broadcom.com>, "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>, "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "linux-nvme@lists.infradead.org" <linux-nvme@lists.infradead.org>, "linux-hams@vger.kernel.org" <linux-hams@vger.kernel.org>, "ceph-devel@vger.kernel.org" <ceph-devel@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "cake@lists.bufferbloat.net" <cake@lists.bufferbloat.net>, "linux-nfs@vger.kernel.org" <linux-nfs@vger.kernel.org>, "linux-raid@vger.kernel.o
+ rg" <linux-raid@vger.kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>, "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, "linux-f2fs-devel@lists.sourceforge.net" <linux-f2fs-devel@lists.sourceforge.net>, "linux-xfs@vger.kernel.org" <linux-xfs@vger.kernel.org>, "tipc-discussion@lists.sourceforge.net" <tipc-discussion@lists.sourceforge.net>, "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>, "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Oct 12, 2022, at 7:22 PM, Linus Torvalds wrote:
->
-> The NO_IRQ thing is mainly actually defined by a few drivers that just
-> never got converted to the proper world order, and even then you can
-> see the confusion (ie some drivers use "-1", others use "0", and yet
-> others use "((unsigned int)(-1)".
+From: Joe Perches
+> Sent: 12 October 2022 20:17
+>=20
+> On Wed, 2022-10-05 at 23:48 +0200, Jason A. Donenfeld wrote:
+> > The prandom_u32() function has been a deprecated inline wrapper around
+> > get_random_u32() for several releases now, and compiles down to the
+> > exact same code. Replace the deprecated wrapper with a direct call to
+> > the real function.
+> []
+> > diff --git a/drivers/infiniband/hw/cxgb4/cm.c b/drivers/infiniband/hw/c=
+xgb4/cm.c
+> []
+> > @@ -734,7 +734,7 @@ static int send_connect(struct c4iw_ep *ep)
+> >  =09=09=09=09   &ep->com.remote_addr;
+> >  =09int ret;
+> >  =09enum chip_type adapter_type =3D ep->com.dev->rdev.lldi.adapter_type=
+;
+> > -=09u32 isn =3D (prandom_u32() & ~7UL) - 1;
+> > +=09u32 isn =3D (get_random_u32() & ~7UL) - 1;
+>=20
+> trivia:
+>=20
+> There are somewhat odd size mismatches here.
+>=20
+> I had to think a tiny bit if random() returned a value from 0 to 7
+> and was promoted to a 64 bit value then truncated to 32 bit.
+>=20
+> Perhaps these would be clearer as ~7U and not ~7UL
 
-The last time I looked at removing it for arch/arm/, one problem was
-that there were a number of platforms using IRQ 0 as a valid number.
-We have converted most of them in the meantime, leaving now only
-mach-rpc and mach-footbridge. For the other platforms, we just
-renumbered all interrupts to add one, but footbridge apparently
-relies on hardcoded ISA interrupts in device drivers. For rpc,
-it looks like IRQ 0 (printer) already wouldn't work, and it
-looks like there was never a driver referencing it either.
+That makes no difference - the compiler will generate the same code.
 
-I see that openrisc and parisc also still define NO_IRQ to -1, but at
-least openrisc already relies on 0 being the invalid IRQ (from
-CONFIG_IRQ_DOMAIN), probably parisc as well.
+The real question is WTF is the code doing?
+The '& ~7u' clears the bottom 3 bits.
+The '- 1' then sets the bottom 3 bits and decrements the
+(random) high bits.
 
-     Arnd
+So is the same as get_random_u32() | 7.
+But I bet the coder had something else in mind.
+
+=09David
+
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
+PT, UK
+Registration No: 1397386 (Wales)
+
