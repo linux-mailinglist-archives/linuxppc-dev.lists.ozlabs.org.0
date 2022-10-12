@@ -2,72 +2,126 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE6175FC138
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Oct 2022 09:24:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3BA65FC14D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Oct 2022 09:36:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MnPKh5lMqz3c6N
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Oct 2022 18:24:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MnPbh4SkHz3bjh
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Oct 2022 18:36:32 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=tyPYFLr2;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=/zwlqSJk;
+	dkim=pass (2048-bit key; unprotected) header.d=jaguarmicro.com header.i=@jaguarmicro.com header.a=rsa-sha256 header.s=selector1 header.b=JpidCFIX;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2001:67c:2178:6::1d; helo=smtp-out2.suse.de; envelope-from=msuchanek@suse.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=jaguarmicro.com (client-ip=40.107.117.69; helo=apc01-tyz-obe.outbound.protection.outlook.com; envelope-from=angus.chen@jaguarmicro.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=tyPYFLr2;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=/zwlqSJk;
+	dkim=pass (2048-bit key; unprotected) header.d=jaguarmicro.com header.i=@jaguarmicro.com header.a=rsa-sha256 header.s=selector1 header.b=JpidCFIX;
 	dkim-atps=neutral
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MnPJc2RkTz3cCx
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Oct 2022 18:23:28 +1100 (AEDT)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-	by smtp-out2.suse.de (Postfix) with ESMTP id C45101F8B4;
-	Wed, 12 Oct 2022 07:23:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1665559403; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=djcwSN4dkWIz5Sy4j03l1ZsVJt74zX0r7xHpF62rRLw=;
-	b=tyPYFLr29QirZ2tlQWMq0kO+H0JFk9YU6aTsmy6+OmcKxGXZo3hYZWOoK+Hq5UjU7qR4nx
-	IEF6Qjuq9QDYsS18qVE0aGYXpcvfrlkmsPL1tWoiSogpykHNxXTzIs6RNUc5XVtCViV0be
-	LgDtsfjtFTTdKD7uVEQ0QfAhCC+RbWw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1665559403;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=djcwSN4dkWIz5Sy4j03l1ZsVJt74zX0r7xHpF62rRLw=;
-	b=/zwlqSJkxjPROQdXgETbJhWAElIVpqUJIH1IIifJczs0WhPwV2PzQLgdFS8CnvHHjkzNUg
-	h92uKCF6uDgB0mBw==
-Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
+Received: from APC01-TYZ-obe.outbound.protection.outlook.com (mail-tyzapc01on2069.outbound.protection.outlook.com [40.107.117.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by relay2.suse.de (Postfix) with ESMTPS id 7052A2C141;
-	Wed, 12 Oct 2022 07:23:23 +0000 (UTC)
-Date: Wed, 12 Oct 2022 09:23:22 +0200
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH v4 5/5] drm/ofdrm: Support big-endian scanout buffers
-Message-ID: <20221012072322.GB28810@kitsune.suse.cz>
-References: <20220928105010.18880-1-tzimmermann@suse.de>
- <20220928105010.18880-6-tzimmermann@suse.de>
- <23333ff7-3ae1-494f-7abe-62da6698fd00@redhat.com>
- <83071743-a7f2-f761-baa3-da688f26b5e3@suse.de>
- <9162f41f-28c3-493c-ab54-b1c4a2fdf494@app.fastmail.com>
- <20221011213841.GA28810@kitsune.suse.cz>
- <87fbe7bd-1160-420e-984b-5afccd5d523c@app.fastmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MnPZh3JPkz2yPN
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Oct 2022 18:35:39 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Jrs4oXnX/PSJxBQaNA1xiDXWiiVsBWpN438dIFuimmW7fHZLsi3owGPctahEE8flv90JokBfnSyvSAUT/Benv6FvdO61rv2jqdzm17Mqwd7OElKlnPATVZQYfPjcEE0+hGZkMWvI78nwziae7SGYudGoLxcWqJRktXKSlTthOh8TFM4Qfgw62iMJSfzRrf2TEkXllGoyYc0PxzhzxEBDObwTH394vhn9POzX3DEo+pPW1XSg+IKGFeUq52LhTacNcO6c8db6+adrhQ0nRYkNf+DnGSDK44rrTfnJEClfLQlJ+8DA7oc2xQMGYsPUYVxHOoV4ZvU9iNCXP/rZKElm3g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1SnIPgYzpo2fudFqfrMN+lEY6pHxMzb1u1BVAqC+PLQ=;
+ b=A17cPcIoKLWEA/wdmRi3aYnXhOcfmp2xmKjF+TRLGLYo70YW/sEDmgR69wkMDV4a5taAc5VNEqeBu7kghMLG1i1W11KJAWjTZAFyXJGuNGyeq95nYOknR6bqUFo9eNtO8RyDQOQ5QLFpaxgBpaX9yHghNJs9lJN91FqjZbUucrvF1hjqwtOz/l4mfcR88tgD+LA0SJi2FgPl7CCA0m+nm/a/fzqJ28iBzh7q2+2aYTOWLCW1vJdnhZYZ2mkwJXYL1ppvLJdjPyfZH9Znm1ToNyEc34gmqvTps3zeFa7nQY3ng1+K98jftypVnRUZCIu08vavQF/Du7AIxGeWL9S0LQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=jaguarmicro.com; dmarc=pass action=none
+ header.from=jaguarmicro.com; dkim=pass header.d=jaguarmicro.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jaguarmicro.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1SnIPgYzpo2fudFqfrMN+lEY6pHxMzb1u1BVAqC+PLQ=;
+ b=JpidCFIXV41sIyCpt7AIfJmYOHGscfYCHD5toERVO7coPMq2ALxYtQQtwMQIGV6bXvm85mcDytqJ9Hxwohneyvye+hy4ttClN611fkS3SqZd2UaSEZT/7BMASyujBwSdgr3KOUKos2JLgEhooA4Hqc8U05ThUXvGGB4Gx/nbfHnZhFuGMaijG8TLvrvz5xbtK47p2ADR688RXe118b8OGgrFQh/OjrlXO5jDgwWyb40YTJbFbtgdjvtrLRpkF603+AcBkv2F29mZxoXEUGGEMNXmXCfR0vdqnYGFeK8nd5t9yvgPXe4ZdoooUzdLZ1FeC017LeSFN/KkD46I311pOQ==
+Received: from TY2PR06MB3424.apcprd06.prod.outlook.com (2603:1096:404:104::19)
+ by PSAPR06MB4198.apcprd06.prod.outlook.com (2603:1096:301:3e::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5676.34; Wed, 12 Oct
+ 2022 07:35:18 +0000
+Received: from TY2PR06MB3424.apcprd06.prod.outlook.com
+ ([fe80::aa83:33dc:435c:cb5d]) by TY2PR06MB3424.apcprd06.prod.outlook.com
+ ([fe80::aa83:33dc:435c:cb5d%6]) with mapi id 15.20.5709.021; Wed, 12 Oct 2022
+ 07:35:17 +0000
+From: Angus Chen <angus.chen@jaguarmicro.com>
+To: Michael Ellerman <mpe@ellerman.id.au>, "Michael S. Tsirkin"
+	<mst@redhat.com>
+Subject: RE: [GIT PULL] virtio: fixes, features
+Thread-Topic: [GIT PULL] virtio: fixes, features
+Thread-Index: AQHY3MyiiKqJa7Fnx0Wd1nXI+hxoOK4KTBsAgAAR5+A=
+Date: Wed, 12 Oct 2022 07:35:17 +0000
+Message-ID:  <TY2PR06MB3424CA67A42A40B16FA7A66285229@TY2PR06MB3424.apcprd06.prod.outlook.com>
+References: <20221010132030-mutt-send-email-mst@kernel.org>
+ <87r0zdmujf.fsf@mpe.ellerman.id.au>
+In-Reply-To: <87r0zdmujf.fsf@mpe.ellerman.id.au>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=jaguarmicro.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: TY2PR06MB3424:EE_|PSAPR06MB4198:EE_
+x-ms-office365-filtering-correlation-id: 76ec6c5a-7f5b-428d-e6b5-08daac244f30
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:  76vC2fg6UFuQsMYeJeU2bAL01tlTqDuTcKqbWvODrmgrnhTNZ1g0OT0Ru4L+9W7xUD1JSCfQ5Ll9eTQlqO7pMF5ZPJBeF8r9LssheSuEmjEvPtZoHTzV2rjrZ+e7LL8/M19BFubFS2zwuxfn7qm66BpgNoXU/uNHJc50VmHdj+ehw3uuaRu82yt0oUov7YON75oHfnTyznDQaJDxqs6A07BvlyQ+0WaU7zu/VI29Xm9CCnW2ZW+Kfem8d9F6o0D3IYaozu4B8/28z70qSgw5AMKMwllLnyN82T+K5nGSel17FOnw1aI7mDGdVqe7hII4he7Do7WHkNviu9TAwmClV8Cd3qCjL6Ulbe517sLQvFrjqTHA99zjqH50ksLRrmLK5R8G+MF4k0icOE35lvzPyNwlPLBQBkqHyeKw3+PgqD2amWDD0jRu2zlEEnviQU7NoUGFwZ/QjO8SZ4AYK5XdViway7h+lWxMi3YLOaADBTPRQNReAKN09qL01wqkzcI7q5WBrJXpclvMfhd4MbtcpQt2M1sQgY9QKXakFCtezcwpQ20ZqlFP6w1tLH4u6F72x/atH0chPDVSHW3tHVptkjQRgsekKugZoSt4J7CbHPfdR44/7WrmMcg16c2hN4LMB4cME8LdBhqWv1OWNh85gLZiBMQ1ieH6EDLGiA/VCjxMX2HF9jnamPyapKjbREXCbHpDK++xir/p+WkVJeXAwRceplzcuCue/sgQhUc4X0++iNiEBMRv5Z1Fa9iGcjMNFnMb9qWhBiGeeWh8RpVWSmOulvUmNNs3RGgdUCuJBmk=
+x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY2PR06MB3424.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(366004)(39830400003)(376002)(346002)(136003)(396003)(451199015)(71200400001)(86362001)(316002)(38070700005)(110136005)(54906003)(41300700001)(2906002)(55016003)(5660300002)(33656002)(186003)(8936002)(83380400001)(966005)(66446008)(64756008)(66476007)(66556008)(66946007)(52536014)(44832011)(4326008)(7416002)(76116006)(8676002)(478600001)(9686003)(26005)(6506007)(66899015)(38100700002)(122000001)(7696005)(53546011);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?SkorekFUKzRBeU14NGRaZTdjRXJIZ28zWjdxWlczZTFBV1dMUllNaDhGUCsw?=
+ =?utf-8?B?VFk2NnRVV3owZkFKRnZQL3RiVGpZUFpoRHNRSzZlTXNXLzlweHdqampZdmoy?=
+ =?utf-8?B?OWk2NDZFRk5ISzhyU3FSS2tGYTBxaEord000MDlrQ0E2VWdTanUwSVhQV2c3?=
+ =?utf-8?B?c2xMNWJpQ0tzd2gzeWhyT1RPamwxK1l6a244UmhsK3lGNWlDQldpU3hUMkpL?=
+ =?utf-8?B?YmFqMmY3d2U4ZWh4QmUrTUF5RTVoc3R5VVNrcjVleUVjSnlySEFqdUFuaTRl?=
+ =?utf-8?B?TW9QcHFxZFlaazZjbkdxQ3FhMFFFNUNna2VFZ3NiOWc5L29JWDJGV01iaVF6?=
+ =?utf-8?B?dGZWQXgrQUVEdWFVSVVLTlFESm5KWDZMYU9JUEhFNWY3LzFpRUo0aTlIUjls?=
+ =?utf-8?B?bHFrbzBJc3lJUlpPKzFDTmU1UVJBMXNOSmQ2dHFIK1EyUzBpQ3RERm0weHhP?=
+ =?utf-8?B?d2pRQnNQM2xsOVJ1aUNwQ3RySk9QSG1TNXVKQVh1VGVsYTBicmlzMkxKZzA0?=
+ =?utf-8?B?b3lXV1UrYXdLYmxhUU0xRkplTmJoYW51RkFMR3lmM044WmU2emZCTUR6TGcv?=
+ =?utf-8?B?eFNzNjNiQ2pyeU1YOGgranQ1ekhJdTNIZzNvcjNhNE04a2w1anpvMHhsQW9W?=
+ =?utf-8?B?NWJPckZrSXpRWlhVQ0ZSUFJsK1hOc1VvNnZ1UkNHMWJSK2ZGYWI3TzZzQTJl?=
+ =?utf-8?B?Z0ZXc004eEY4c3NpT3JsVUExbmVHb1BVRGV2MVpKZExrdzF1Wllrd2FpdVZt?=
+ =?utf-8?B?UWZLNHVrNHFyb1VhRFFQaUMvQjBwaS9RU3JMYVhSK2RaNi9PY2RkN1ZYYUVq?=
+ =?utf-8?B?YmhMdVp3VFZnVUZERld1ckErTnRQOHRQNHZNMXZ1dTdMWk1weHovdmZ3SGpI?=
+ =?utf-8?B?MC9RaWl0aTB0eGg1ck95QlZrVTc1VW9kdXFXRmxRQkJ3dk04U2FENnRZekI2?=
+ =?utf-8?B?bVg4Z0JFYmR2ZEhLSU8zcnRMWUZEaDNLZ2k4SWs5N0R3YjJRcXhxQk1UNHhs?=
+ =?utf-8?B?eEJyanJtUVVXeDZsanNEbnBKa2NzU0h4S2hOSXp0ZkV0cW0rMlRpaDNhVDRH?=
+ =?utf-8?B?ZE9nSnJHSVgxdmxNTlZCUEV1MFJxbm1nS2ZTN3V4MDB4NGVhSjErZEU2VFd6?=
+ =?utf-8?B?ckVTV0RRK25zd3dWeGZic3FPaktUblJyOUc2MkNadkFPYTNzVWVvdGVHT0Ur?=
+ =?utf-8?B?bmEydlZKNzlzZGhKeXk4QWZSRVdhM1ZZMnduajZvTE1WNnV4VlErYytBNFhv?=
+ =?utf-8?B?Z0dtczlBaEV0VC94REFkSWdJakJ0WmQzRGZOZk9odDhuVU9vcERoLzZhT2Z0?=
+ =?utf-8?B?L0F0UERuMlZkU1VQMFdncDg2SDFteWxGSlJEbHVQY1B2REtFalc2a2Juc3hW?=
+ =?utf-8?B?ellLcEhkNDh2disvbFlUZU5USDRoYWZpSVhiRzNVbzJIbytwaCs5NW1MSzNY?=
+ =?utf-8?B?bWZ1eXlyYzJWTW5YRE45MDlZZTV0aWkyOW1EKzhQV091RHB3QmxwcnB5N2hY?=
+ =?utf-8?B?TFFpNi9RQ1VTUkUxRVdYamVkTkV3dWhka1ZDVCtKaU5QeGlESTNPY3d4T1hN?=
+ =?utf-8?B?aTJmc3RsMStqQmNlY1dUdCtGMmtSdHZ5MjQ1Nlk1V1FuRzQwUnphSThaNzNj?=
+ =?utf-8?B?TkJOcEFvT0ZGeTZhWGwvZ3BCQXJybFZITEV0K3BPMWlUZlJPbU1uNGZINnRX?=
+ =?utf-8?B?NTE4RTMwMGFUcEZrUnVKbk9FWUVvbi9tL0IrLzd0QjVmSmNabm01aHZOQTg1?=
+ =?utf-8?B?aUZ1L2dhS2tFNThXcGwydGUxU2UycW9aVGswWDU5OEIvOU5HeGIzd2RUSkM4?=
+ =?utf-8?B?eTR4M2lhV0pkWWdSWk9hUXArUDdsL1dOVmhEcEdIczVrZ0pxbUNtNkVLMy9l?=
+ =?utf-8?B?RjkyZUpUK1BJWGRETi9DVlN2RUg4Y1FXK1Zwb3QxaEtyNFMrWTRqeEQySDJD?=
+ =?utf-8?B?MjFRNDkyc2JwZkp0MWlObVZqWkk3UzhXbldBYzZxSmZRTHZIcXl6UFlhRkZK?=
+ =?utf-8?B?Y21UNi8xTFpUUFRnS2J5NTVUQjZCRjlDdC9FckdPTE5neVB1OXRtSkRFNElC?=
+ =?utf-8?B?K0FLWTZzYXFIRms5ekxqT0NURFRGWFNwT0l4L3c2OElUSHpGb3g3SkJ6cUR1?=
+ =?utf-8?B?UTNELzE4TXRITS9JT2RDaEk2NlpsTzJYa2luZEliTDRDZUozWTUwMTRRSUxo?=
+ =?utf-8?B?S3c9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87fbe7bd-1160-420e-984b-5afccd5d523c@app.fastmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-OriginatorOrg: jaguarmicro.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TY2PR06MB3424.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 76ec6c5a-7f5b-428d-e6b5-08daac244f30
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Oct 2022 07:35:17.3126
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 1e45a5c2-d3e1-46b3-a0e6-c5ebf6d8ba7b
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: PjZ5E4NM6zaKx0IkG9Q7MgeL/4luBJNnW6+9DNpn8p1QYq5I1I++iWi/gDIt//qU34L6WnEaqmWJ78vd+YWIPnwwWRGgdQUQG2O5Ijb/u34=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PSAPR06MB4198
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,89 +133,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: "xiujianfeng@huawei.com" <xiujianfeng@huawei.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "mst@redhat.com" <mst@redhat.com>, "alvaro.karsz@solid-run.com" <alvaro.karsz@solid-run.com>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "jasowang@redhat.com" <jasowang@redhat.com>, "wangdeming@inspur.com" <wangdeming@inspur.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "virtualization@lists.linux-foundation.org" <virtualization@lists.linux-foundation.org>, Linus Torvalds <torvalds@linux-foundation.org>, "lingshan.zhu@intel.com" <lingshan.zhu@intel.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "gavinl@nvidia.com" <gavinl@nvidia.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Oct 12, 2022 at 08:29:39AM +0200, Arnd Bergmann wrote:
-> On Tue, Oct 11, 2022, at 11:38 PM, Michal Suchánek wrote:
-> > On Tue, Oct 11, 2022 at 10:06:59PM +0200, Arnd Bergmann wrote:
-> >> On Tue, Oct 11, 2022, at 1:30 PM, Thomas Zimmermann wrote:
-> >> > Am 11.10.22 um 09:46 schrieb Javier Martinez Canillas:
-> >> >>> +static bool display_get_big_endian_of(struct drm_device *dev, struct device_node *of_node)
-> >> >>> +{
-> >> >>> +	bool big_endian;
-> >> >>> +
-> >> >>> +#ifdef __BIG_ENDIAN
-> >> >>> +	big_endian = true;
-> >> >>> +	if (of_get_property(of_node, "little-endian", NULL))
-> >> >>> +		big_endian = false;
-> >> >>> +#else
-> >> >>> +	big_endian = false;
-> >> >>> +	if (of_get_property(of_node, "big-endian", NULL))
-> >> >>> +		big_endian = true;
-> >> >>> +#endif
-> >> >>> +
-> >> >>> +	return big_endian;
-> >> >>> +}
-> >> >>> +
-> >> >> 
-> >> >> Ah, I see. The heuristic then is whether the build is BE or LE or if the Device
-> >> >> Tree has an explicit node defining the endianess. The patch looks good to me:
-> >> >
-> >> > Yes. I took this test from offb.
-> >> 
-> >> Has the driver been tested with little-endian kernels though? While
-> >> ppc32 kernels are always BE, you can build kernels as either big-endian
-> >> or little-endian for most (modern) powerpc64 and arm/arm64 hardware,
-> >> and I don't see why that should change the defaults of the driver
-> >> when describing the same framebuffer hardware.
-> >
-> > The original code was added with
-> > commit 7f29b87a7779 ("powerpc: offb: add support for foreign endianness")
-> >
-> > The hardware is either big-endian or runtime-switchable-endian.
-> 
-> Are you referring to CPU hardware or framebuffer hardware here?
-CPU hardware
-> 
-> > It makes
-> > sense to assume big-endian when runnig big-endian and the DT does not
-> > specify endian which is likely on a historical system.
-> 
-> Agreed, assuming big-endian here clearly makes sense.
-> 
-> > It also makes sense to assume that on system with
-> > runtime-switchable-endian the DT specifies the framebuffer endian.
-> >
-> > If systems that only do little-endian exist or emerge later then it also
-> > makes sense to assume that the framebuffer matches the host if not
-> > specified.
-> >
-> > I don't really see a problem here.
-> >
-> > BTW is this used on arm and on what platform?
-> 
-> I'm not aware of any users on Arm, most likely they all use
-> simplefb/simpledrm or a gpu specific binding. There might be
-> users on sparc, but they would obviously be big-endian
-> as well.
-> 
-> > I do not see any bindings in dts.
-> 
-> Right, that is the real problem I see as well. I found the original
-> CHRP binding document at
-> https://www.devicetree.org/open-firmware/bindings/devices/html/lfb-1_0d.html
-> 
-> Unfortunately, this only specifies an 8-bit-per-pixel mode, and the
-> multi-byte pixel support that was added in linux-2.1.125 was
-> probably powermac specific without a public specification.
-> 
-> I think ideally we should add a binding document that describes what
-> the driver actually expects, but in this case I would just drop the
-> #ifdef check and always assume the framebuffer is big-endian unless
-> the "little-endian" property is set, in order to have a sensible
-> definition that does not depend on what OS (i.e. Linux
-> CONFIG_CPU_BIG_ENDIAN) you are running.
-> 
->        Arnd
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogTWljaGFlbCBFbGxlcm1h
+biA8bXBlQGVsbGVybWFuLmlkLmF1Pg0KPiBTZW50OiBXZWRuZXNkYXksIE9jdG9iZXIgMTIsIDIw
+MjIgMjoyMSBQTQ0KPiBUbzogTWljaGFlbCBTLiBUc2lya2luIDxtc3RAcmVkaGF0LmNvbT4NCj4g
+Q2M6IGt2bUB2Z2VyLmtlcm5lbC5vcmc7IHZpcnR1YWxpemF0aW9uQGxpc3RzLmxpbnV4LWZvdW5k
+YXRpb24ub3JnOw0KPiBuZXRkZXZAdmdlci5rZXJuZWwub3JnOyBsaW51eC1rZXJuZWxAdmdlci5r
+ZXJuZWwub3JnOw0KPiBhbHZhcm8ua2Fyc3pAc29saWQtcnVuLmNvbTsgQW5ndXMgQ2hlbiA8YW5n
+dXMuY2hlbkBqYWd1YXJtaWNyby5jb20+Ow0KPiBnYXZpbmxAbnZpZGlhLmNvbTsgamFzb3dhbmdA
+cmVkaGF0LmNvbTsgbGluZ3NoYW4uemh1QGludGVsLmNvbTsNCj4gbXN0QHJlZGhhdC5jb207IHdh
+bmdkZW1pbmdAaW5zcHVyLmNvbTsgeGl1amlhbmZlbmdAaHVhd2VpLmNvbTsNCj4gbGludXhwcGMt
+ZGV2QGxpc3RzLm96bGFicy5vcmc7IExpbnVzIFRvcnZhbGRzIDx0b3J2YWxkc0BsaW51eC1mb3Vu
+ZGF0aW9uLm9yZz4NCj4gU3ViamVjdDogUmU6IFtHSVQgUFVMTF0gdmlydGlvOiBmaXhlcywgZmVh
+dHVyZXMNCj4gDQo+ICJNaWNoYWVsIFMuIFRzaXJraW4iIDxtc3RAcmVkaGF0LmNvbT4gd3JpdGVz
+Og0KPiA+IFRoZSBmb2xsb3dpbmcgY2hhbmdlcyBzaW5jZSBjb21taXQNCj4gNGZlODlkMDdkY2My
+ODA0YzhiNTYyZjZjNzg5NmE0NTY0M2QzNGIyZjoNCj4gPg0KPiA+ICAgTGludXggNi4wICgyMDIy
+LTEwLTAyIDE0OjA5OjA3IC0wNzAwKQ0KPiA+DQo+ID4gYXJlIGF2YWlsYWJsZSBpbiB0aGUgR2l0
+IHJlcG9zaXRvcnkgYXQ6DQo+ID4NCj4gPiAgIGh0dHBzOi8vZ2l0Lmtlcm5lbC5vcmcvcHViL3Nj
+bS9saW51eC9rZXJuZWwvZ2l0L21zdC92aG9zdC5naXQNCj4gdGFncy9mb3JfbGludXMNCj4gPg0K
+PiA+IGZvciB5b3UgdG8gZmV0Y2ggY2hhbmdlcyB1cCB0bw0KPiA3MTQ5MWM1NGVhZmEzMThmZGQy
+NGExZjI2YTFjODJiMjhlMWFjMjFkOg0KPiA+DQo+ID4gICB2aXJ0aW9fcGNpOiBkb24ndCB0cnkg
+dG8gdXNlIGludHhpZiBwaW4gaXMgemVybyAoMjAyMi0xMC0wNyAyMDowMDo0NCAtMDQwMCkNCj4g
+Pg0KPiA+IC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0NCj4gPiB2aXJ0aW86IGZpeGVzLCBmZWF0dXJlcw0KPiA+DQo+ID4gOWsg
+bXR1IHBlcmYgaW1wcm92ZW1lbnRzDQo+ID4gdmRwYSBmZWF0dXJlIHByb3Zpc2lvbmluZw0KPiA+
+IHZpcnRpbyBibGsgU0VDVVJFIEVSQVNFIHN1cHBvcnQNCj4gPg0KPiA+IEZpeGVzLCBjbGVhbnVw
+cyBhbGwgb3ZlciB0aGUgcGxhY2UuDQo+ID4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBNaWNoYWVsIFMu
+IFRzaXJraW4gPG1zdEByZWRoYXQuY29tPg0KPiA+DQo+ID4gLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KPiA+IEFsdmFybyBL
+YXJzeiAoMSk6DQo+ID4gICAgICAgdmlydGlvX2JsazogYWRkIFNFQ1VSRSBFUkFTRSBjb21tYW5k
+IHN1cHBvcnQNCj4gPg0KPiA+IEFuZ3VzIENoZW4gKDEpOg0KPiA+ICAgICAgIHZpcnRpb19wY2k6
+IGRvbid0IHRyeSB0byB1c2UgaW50eGlmIHBpbiBpcyB6ZXJvDQo+IA0KPiBUaGlzIGNvbW1pdCBi
+cmVha3MgdmlydGlvX3BjaSBmb3IgbWUgb24gcG93ZXJwYywgd2hlbiBydW5uaW5nIGFzIGEgcWVt
+dQ0KPiBndWVzdC4NCj4gDQo+IHZwX2ZpbmRfdnFzKCkgYmFpbHMgb3V0IGJlY2F1c2UgcGNpX2Rl
+di0+cGluID09IDAuDQo+IA0KPiBCdXQgcGNpX2Rldi0+aXJxIGlzIHBvcHVsYXRlZCBjb3JyZWN0
+bHksIHNvIHZwX2ZpbmRfdnFzX2ludHgoKSB3b3VsZA0KPiBzdWNjZWVkIGlmIHdlIGNhbGxlZCBp
+dCAtIHdoaWNoIGlzIHdoYXQgdGhlIGNvZGUgdXNlZCB0byBkby4NCj4gDQo+IEkgdGhpbmsgdGhp
+cyBoYXBwZW5zIGJlY2F1c2UgcGNpX2Rldi0+cGluIGlzIG5vdCBwb3B1bGF0ZWQgaW4NCj4gcGNp
+X2Fzc2lnbl9pcnEoKS4NCj4gDQo+IEkgd291bGQgYWJzb2x1dGVseSBiZWxpZXZlIHRoaXMgaXMg
+YnVnIGluIG91ciBQQ0kgY29kZSwgYnV0IEkgdGhpbmsgaXQNCj4gbWF5IGFsc28gYWZmZWN0IG90
+aGVyIHBsYXRmb3JtcyB0aGF0IHVzZSBvZl9pcnFfcGFyc2VfYW5kX21hcF9wY2koKS4NCj4gDQo+
+IGNoZWVycw0KSEksc29ycnkgZm9yIHJlcGx5IGFnYWluLiBJZiBJIGNoYW5nZSB0aGUgY29kZSBs
+aWtlIGJsZXc6DQogcGNpX3JlYWRfY29uZmlnX2J5dGUoZGV2LCBQQ0lfSU5URVJSVVBUX1BJTiwg
+JnBpbik7DQogaWYgKCFwaW4pIHsNCiAgICAgICAgd2Fybl9vbigic29tZSB0aGluZyIpOw0KICAg
+ICAgICAgcmV0dXJuIDA7DQogICAgICAgIH0NCkl0IHdpbGwgZml4IHRoZSBvcmlnbiBidWcuDQpP
+ciB3ZSBzaG91bGQgcG9wdWxhdGVkIHRoZSBwY2lfZGV2LT5waW4gdmFsdWUgY29ycmVjdGx5IGFj
+Y29yZGluZyB0byBQQ0kgc3BlYyBhYm91dCAiSW50ZXJydXB0IFBpbiIgUmVnaXN0ZXIuDQoNCkkg
+aGF2ZSBubyBpZGVhIGFib3V0IGl0LCBhbnkgc3VnZ2VzdGlvbnMgYXJlIHdlbGNvbWUuDQpUaGFu
+ayB5b3UuDQo=
