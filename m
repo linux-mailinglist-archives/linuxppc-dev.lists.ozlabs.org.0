@@ -1,72 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 559FD5FD87C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Oct 2022 13:38:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF68E5FD881
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Oct 2022 13:39:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Mp6wX12tMz3c7K
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Oct 2022 22:38:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Mp6xY5V4Sz3dtM
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Oct 2022 22:39:29 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=hSkbNoXo;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=k4/rn0ND;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ventanamicro.com (client-ip=2a00:1450:4864:20::629; helo=mail-ej1-x629.google.com; envelope-from=ajones@ventanamicro.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.88; helo=mga01.intel.com; envelope-from=ville.syrjala@linux.intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=hSkbNoXo;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=k4/rn0ND;
 	dkim-atps=neutral
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MnXNh1gvRz2xk6
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Oct 2022 23:42:26 +1100 (AEDT)
-Received: by mail-ej1-x629.google.com with SMTP id q9so33178021ejd.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Oct 2022 05:42:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=scSSoPVjvPcIKMwAKdcIxF1HMnXwBEuvlyuD0JbeDac=;
-        b=hSkbNoXoG3wWcVdKnqVO7XYK1bv0MH9u8oEv95OaWkkCTB9RsoNg9sS+DyfAXD0gi8
-         C3B5RxdZ6EF3FePvqnrCKkr5w8XgiGA0OEB2iK+NsGb9ZOHdvUgBAY5mEupVk514sXh2
-         BcfULR6zZ2AZhQJP/B28JemyEcyeDcI3AKRJ5lPKFWuGde9NbfJyX15rLE2gsyDez6YX
-         OKDkOurVilre1ybmB6wqSmbSEpcfuh+ukasYa8QPIj2WOxaDkWQTz+Nri8qre79tIxTd
-         1cFDVYDQytan/tbkNZZVN4NNSOJbGSrVUq2mGHauT+3m9QGeWYsm/jufVV+rUDLqTO07
-         hCAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=scSSoPVjvPcIKMwAKdcIxF1HMnXwBEuvlyuD0JbeDac=;
-        b=InHSR9XZZ6lzXx4QUiY1wvlsTz4ypaC5kvZbouv0f3MOgS+tVsZFioOhbeIIBU9OFn
-         N47Y+oGkM0ohfxw++ymytxtqSpxa73szhmIXM4jQ3lDGHGIdbN6o1utZRMsCSrDbnSrG
-         4aBsHGOzILWILFJJGb4f3A4xG9YIrwncTtsf3mZf9PKcBG1ihWsoiPv5BelMdMBte+We
-         GEFu5zdfPtsHrUD/5nrfR44mocBWOQ/6i26HCi49RMwRRjUYTuUR/+LL3ASl/pLKKQSz
-         /Oc/N2TVG7B7E6tHmraH7QJN4dBWE8CgV88Y5NVnEP2Hxz1W9Mn2mYAUnCDuTtQ86X0Q
-         zGnw==
-X-Gm-Message-State: ACrzQf0XeadRrjESIpntRLtrR6cUR2OI6dbO1sv7vyZxmWxX9EDPeyJq
-	WNX2EQ9gyecjqGMqNumWbroQ+A==
-X-Google-Smtp-Source: AMsMyM5pMRTzBK4wxOaeWPxAICeTFfKr9UUi5U35RJKBVu1VmBh/W7bpRQUc+vTTEtwGS2qmCt2lPQ==
-X-Received: by 2002:a17:907:a06b:b0:78d:d25f:b726 with SMTP id ia11-20020a170907a06b00b0078dd25fb726mr7250759ejc.203.1665578537183;
-        Wed, 12 Oct 2022 05:42:17 -0700 (PDT)
-Received: from localhost (cst2-173-61.cust.vodafone.cz. [31.30.173.61])
-        by smtp.gmail.com with ESMTPSA id w21-20020aa7da55000000b0044e01e2533asm11133463eds.43.2022.10.12.05.42.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Oct 2022 05:42:16 -0700 (PDT)
-Date: Wed, 12 Oct 2022 14:42:15 +0200
-From: Andrew Jones <ajones@ventanamicro.com>
-To: x86@kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] x86: Fix /proc/cpuinfo cpumask warning
-Message-ID: <20221012124215.edmgo6767yipfkt2@kamzik>
-References: <20221012081905.1800640-1-ajones@ventanamicro.com>
- <20221012082422.uavybxdfmv4xkhxi@kamzik>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MnbRS5GKBz3bjX
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Oct 2022 02:00:03 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1665586804; x=1697122804;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=p5FnZ4+f6pmWst9wSfrEJB9i2nRqQShtidpftxEjnbE=;
+  b=k4/rn0NDF0J2cHR0rRdy3Ww4lzeVFJz5efWFGMon6C1w+0h0EAASwG9Z
+   x8YKSDWYjfxpOE5jE2aylmCjcnTTGNqpJikbgSrTQ/CJ5O929q1O+iGOj
+   JQ0MRSPqIfXDfe7LrXI6XyMwE5o3Eed9a9OSXJjC4sXzh1Tgm8B61wLX6
+   A0uFfHjjZQq03w/nu0egityXuLJkARoNH8TkHtecY4vcpArAY3uM9EdDZ
+   KMlEyM/thwN5+YqF2X8ksGNHdVHWO/4ZJXCVInDPHmW/B8VUBajmGL8dh
+   osBjnzbQtnbkR/6U62Y4l9Yz9C3jGoRHTe12xhwrOp+nhxOEHRzItDodw
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10497"; a="331308573"
+X-IronPort-AV: E=Sophos;i="5.95,179,1661842800"; 
+   d="scan'208";a="331308573"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2022 07:59:51 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10497"; a="731455010"
+X-IronPort-AV: E=Sophos;i="5.95,179,1661842800"; 
+   d="scan'208";a="731455010"
+Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.191])
+  by fmsmga002.fm.intel.com with SMTP; 12 Oct 2022 07:59:46 -0700
+Received: by stinkbox (sSMTP sendmail emulation); Wed, 12 Oct 2022 17:59:45 +0300
+Date: Wed, 12 Oct 2022 17:59:45 +0300
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To: Thomas Zimmermann <tzimmermann@suse.de>
+Subject: Re: [PATCH v4 5/5] drm/ofdrm: Support big-endian scanout buffers
+Message-ID: <Y0bWYb0z1HZ2PztG@intel.com>
+References: <9162f41f-28c3-493c-ab54-b1c4a2fdf494@app.fastmail.com>
+ <fda959d7-1bae-716f-f01b-66d9db9096e0@suse.de>
+ <654e3cfe-80d7-46c9-8e5e-461846e4df35@app.fastmail.com>
+ <866c7033-0d4e-7b5d-008c-8eb16f99498b@suse.de>
+ <f26ca6a1-feb1-4822-ac96-bc484b22f8a0@app.fastmail.com>
+ <c80a6e2d-a3b9-8186-cc95-97c4775171ed@suse.de>
+ <fc33ebf7-ecb7-4686-ac31-0118a40595f6@app.fastmail.com>
+ <0a15ecf5-939d-3b00-bcde-0fc7b449cfda@suse.de>
+ <76d8a408-fc3e-4bd1-91c5-8278f7469979@app.fastmail.com>
+ <a81e1acf-64dd-f69d-d97f-4a1af534e8e6@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20221012082422.uavybxdfmv4xkhxi@kamzik>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <a81e1acf-64dd-f69d-d97f-4a1af534e8e6@suse.de>
+X-Patchwork-Hint: comment
 X-Mailman-Approved-At: Thu, 13 Oct 2022 22:37:49 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -79,74 +79,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jonas Bonn <jonas@southpole.se>, linux-s390@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Yury Norov <yury.norov@gmail.com>, Heiko Carstens <hca@linux.ibm.com>, Dave Hansen <dave.hansen@linux.intel.com>, Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org, Stafford Horne <shorne@gmail.com>, openrisc@lists.librecores.org
+Cc: linux-fbdev@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, David Airlie <airlied@linux.ie>, Helge Deller <deller@gmx.de>, linuxppc-dev@lists.ozlabs.org, mark.cave-ayland@ilande.co.uk, Javier Martinez Canillas <javierm@redhat.com>, dri-devel@lists.freedesktop.org, Paul Mackerras <paulus@samba.org>, Maxime Ripard <maxime@cerno.tech>, Daniel Vetter <daniel@ffwll.ch>, Geert Uytterhoeven <geert@linux-m68k.org>, Michal Suchanek <msuchanek@suse.de>, sam@ravnborg.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-Adding more people and lists to CC in order to point this patch out,
-because, based on a quick grep of cpuinfo seq operations, I think at least
-openrisc, powerpc, and s390 also need an equivalent patch (and I've
-already sent a patch for riscv). While the test is simple (see next
-paragraph) I'm not equipped to test on each architecture.
-
-To test, just build a kernel with DEBUG_PER_CPU_MAPS enabled, boot to a
-shell, do 'cat /proc/cpuinfo', and look for a kernel warning.
-
-Thanks,
-drew
-
-On Wed, Oct 12, 2022 at 10:24:22AM +0200, Andrew Jones wrote:
-> On Wed, Oct 12, 2022 at 10:19:05AM +0200, Andrew Jones wrote:
-> > Commit 78e5a3399421 ("cpumask: fix checking valid cpu range") has
-> > started issuing warnings[*] when cpu indices equal to nr_cpu_ids - 1
-> > are passed to cpumask_next* functions. seq_read_iter() and cpuinfo's
-> > start and next seq operations implement a pattern like
-> > 
-> >   n = cpumask_next(n - 1, mask);
-> >   show(n);
-> >   while (1) {
-> >       ++n;
-> >       n = cpumask_next(n - 1, mask);
-> >       if (n >= nr_cpu_ids)
-> >           break;
-> >       show(n);
-> >   }
-> > 
-> > which will issue the warning when reading /proc/cpuinfo. Ensure no
-> > warning is generated by validating the cpu index before calling
-> > cpumask_next().
-> > 
-> > [*] Warnings will only appear with DEBUG_PER_CPU_MAPS enabled.
-> > 
-> > Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
-> > Cc: Yury Norov <yury.norov@gmail.com>
-> > ---
+On Wed, Oct 12, 2022 at 04:31:14PM +0200, Thomas Zimmermann wrote:
+> Hi
 > 
-> Forgot the changelog...
-> 
-> v2:
->   - Added all the information I should have in the first place to the
->     commit message [Boris]
->   - Changed style of fix [Boris]
-> 
-> >  arch/x86/kernel/cpu/proc.c | 3 +++
-> >  1 file changed, 3 insertions(+)
+> Am 12.10.22 um 15:12 schrieb Arnd Bergmann:
+> > On Wed, Oct 12, 2022, at 2:00 PM, Thomas Zimmermann wrote:
+> >>
+> >> Could well be. But ofdrm intents to replace offb and this test has
+> >> worked well in offb for almost 15 yrs. If there are bug reports, I'm
+> >> happy to take patches, but until then I see no reason to change it.
 > > 
-> > diff --git a/arch/x86/kernel/cpu/proc.c b/arch/x86/kernel/cpu/proc.c
-> > index 099b6f0d96bd..94ac02c8dd6f 100644
-> > --- a/arch/x86/kernel/cpu/proc.c
-> > +++ b/arch/x86/kernel/cpu/proc.c
-> > @@ -153,6 +153,9 @@ static int show_cpuinfo(struct seq_file *m, void *v)
-> >  
-> >  static void *c_start(struct seq_file *m, loff_t *pos)
-> >  {
-> > +	if (*pos >= nr_cpu_ids)
-> > +		return NULL;
-> > +
-> >  	*pos = cpumask_next(*pos - 1, cpu_online_mask);
-> >  	if ((*pos) < nr_cpu_ids)
-> >  		return &cpu_data(*pos);
-> > -- 
-> > 2.37.3
-> > 
+> > I wouldn't change the code in offb unless a user reports a bug,
+> > but I don't see a point in adding the same mistake to ofdrm if we
+> > know it can't work on real hardware.
+> 
+> As I said, this has worked with offb and apparently on real hardware. 
+> For all I know, ATI hardware (before it became AMD) was used in PPC 
+> Macintoshs and assumed big-endian access on those machines.
+
+At least mach64 class hardware has two frame buffer apertures, and
+byte swapping can be configured separately for each. But that means
+you only get correct byte swapping for at most two bpps at the same
+time (and that only if you know which aperture to access each time).
+IIRC Rage 128 already has the surface register stuff where you
+could byte swap a limited set of ranges independently. And old
+mga hardware has just one byte swap setting for the whole frame
+buffer aperture, so only one bpp at a time.
+
+That kind of horrible limitations of the byte swappers is the
+main reason why I wanted to make drm fourcc endianness explicit.
+Simply assuming host endianness would end in tears on big endian
+as soon as you need to access stuff with two bpps at the same time.
+Much better to just switch off those useless byte swappers and
+swap by hand when necessary.
+
+-- 
+Ville Syrjälä
+Intel
