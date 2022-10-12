@@ -2,58 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B51F05FD747
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Oct 2022 11:47:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 559FD5FD87C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Oct 2022 13:38:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Mp4Sj3px9z3drk
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Oct 2022 20:47:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Mp6wX12tMz3c7K
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Oct 2022 22:38:36 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=bWOCqUh7;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=hSkbNoXo;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=81.169.146.164; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ventanamicro.com (client-ip=2a00:1450:4864:20::629; helo=mail-ej1-x629.google.com; envelope-from=ajones@ventanamicro.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=bWOCqUh7;
+	dkim=pass (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=hSkbNoXo;
 	dkim-atps=neutral
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.164])
+Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mp4Rk6nhLz2yHc
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Oct 2022 20:46:58 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1665654414;
-    s=strato-dkim-0002; d=xenosoft.de;
-    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
-    From:Subject:Sender;
-    bh=GmChsE3oCAxWSn/E0fkS3urNK3UgLbhcjuL+QIKA06k=;
-    b=bWOCqUh7LX0Fq6v6sAKpQ2lwiuAXZHGVN7vwUU12xV7u7J2ddXTmWxsL0WtPe9Wnxj
-    dSkZtbCeH54TTfNI9UlXBWJaCrcFPWq64hpf4sKH+C+4H5d1uJ7QBs9f2i9vri+EGnBF
-    oF5uwhXpMZ+huPrJ0uWl3GRM//xsyb4N61B7QfEIIendUBUSEwRq87N/sYQFMamDRLjH
-    oEzScnXyrT6E47a44bAol8Ns7BtHb2xeWKkNiPmaY/JaIf49YbzJHE1pyyOJcOSDW7ZQ
-    nRLdPnKAhNFx4ALzIwGtZbdObMb0Ndg8JzpBS+NM2WhiPOrk9qE9ZddsjsUZxdIIpwF8
-    LNPQ==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6KxrfO5Oh7R7bG522bozl37kaui3HwOGhWp+RmNzb4NyZUji/bQ="
-X-RZG-CLASS-ID: mo00
-Received: from smtpclient.apple
-    by smtp.strato.de (RZmta 48.2.0 AUTH)
-    with ESMTPSA id j7449ey9D9krngd
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Thu, 13 Oct 2022 11:46:53 +0200 (CEST)
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-Mime-Version: 1.0 (1.0)
-Subject: Re: Issues with the first PowerPC updates for the kernel 6.1
-Date: Thu, 13 Oct 2022 11:46:53 +0200
-Message-Id: <2541E107-C8EA-4369-B7A8-1FACA8213837@xenosoft.de>
-References: <0D40FEF9-D87D-42C4-BC31-EC8AE952C1FB@xenosoft.de>
-In-Reply-To: <0D40FEF9-D87D-42C4-BC31-EC8AE952C1FB@xenosoft.de>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-X-Mailer: iPhone Mail (19H12)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MnXNh1gvRz2xk6
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Oct 2022 23:42:26 +1100 (AEDT)
+Received: by mail-ej1-x629.google.com with SMTP id q9so33178021ejd.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Oct 2022 05:42:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=scSSoPVjvPcIKMwAKdcIxF1HMnXwBEuvlyuD0JbeDac=;
+        b=hSkbNoXoG3wWcVdKnqVO7XYK1bv0MH9u8oEv95OaWkkCTB9RsoNg9sS+DyfAXD0gi8
+         C3B5RxdZ6EF3FePvqnrCKkr5w8XgiGA0OEB2iK+NsGb9ZOHdvUgBAY5mEupVk514sXh2
+         BcfULR6zZ2AZhQJP/B28JemyEcyeDcI3AKRJ5lPKFWuGde9NbfJyX15rLE2gsyDez6YX
+         OKDkOurVilre1ybmB6wqSmbSEpcfuh+ukasYa8QPIj2WOxaDkWQTz+Nri8qre79tIxTd
+         1cFDVYDQytan/tbkNZZVN4NNSOJbGSrVUq2mGHauT+3m9QGeWYsm/jufVV+rUDLqTO07
+         hCAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=scSSoPVjvPcIKMwAKdcIxF1HMnXwBEuvlyuD0JbeDac=;
+        b=InHSR9XZZ6lzXx4QUiY1wvlsTz4ypaC5kvZbouv0f3MOgS+tVsZFioOhbeIIBU9OFn
+         N47Y+oGkM0ohfxw++ymytxtqSpxa73szhmIXM4jQ3lDGHGIdbN6o1utZRMsCSrDbnSrG
+         4aBsHGOzILWILFJJGb4f3A4xG9YIrwncTtsf3mZf9PKcBG1ihWsoiPv5BelMdMBte+We
+         GEFu5zdfPtsHrUD/5nrfR44mocBWOQ/6i26HCi49RMwRRjUYTuUR/+LL3ASl/pLKKQSz
+         /Oc/N2TVG7B7E6tHmraH7QJN4dBWE8CgV88Y5NVnEP2Hxz1W9Mn2mYAUnCDuTtQ86X0Q
+         zGnw==
+X-Gm-Message-State: ACrzQf0XeadRrjESIpntRLtrR6cUR2OI6dbO1sv7vyZxmWxX9EDPeyJq
+	WNX2EQ9gyecjqGMqNumWbroQ+A==
+X-Google-Smtp-Source: AMsMyM5pMRTzBK4wxOaeWPxAICeTFfKr9UUi5U35RJKBVu1VmBh/W7bpRQUc+vTTEtwGS2qmCt2lPQ==
+X-Received: by 2002:a17:907:a06b:b0:78d:d25f:b726 with SMTP id ia11-20020a170907a06b00b0078dd25fb726mr7250759ejc.203.1665578537183;
+        Wed, 12 Oct 2022 05:42:17 -0700 (PDT)
+Received: from localhost (cst2-173-61.cust.vodafone.cz. [31.30.173.61])
+        by smtp.gmail.com with ESMTPSA id w21-20020aa7da55000000b0044e01e2533asm11133463eds.43.2022.10.12.05.42.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Oct 2022 05:42:16 -0700 (PDT)
+Date: Wed, 12 Oct 2022 14:42:15 +0200
+From: Andrew Jones <ajones@ventanamicro.com>
+To: x86@kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] x86: Fix /proc/cpuinfo cpumask warning
+Message-ID: <20221012124215.edmgo6767yipfkt2@kamzik>
+References: <20221012081905.1800640-1-ajones@ventanamicro.com>
+ <20221012082422.uavybxdfmv4xkhxi@kamzik>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221012082422.uavybxdfmv4xkhxi@kamzik>
+X-Mailman-Approved-At: Thu, 13 Oct 2022 22:37:49 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,94 +79,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Darren Stevens <darren@stevens-zone.net>, Andrew Donnellan <ajd@linux.ibm.com>, mad skateman <madskateman@gmail.com>, npiggin@gmail.com, rmclure@linux.ibm.com, Trevor Dickinson <rtd2@xtra.co.nz>, Olof Johansson <olof@lixom.net>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christian Zigotzky <info@xenosoft.de>
+Cc: Jonas Bonn <jonas@southpole.se>, linux-s390@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Yury Norov <yury.norov@gmail.com>, Heiko Carstens <hca@linux.ibm.com>, Dave Hansen <dave.hansen@linux.intel.com>, Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org, Stafford Horne <shorne@gmail.com>, openrisc@lists.librecores.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Edit: fixed typos.
 
-> On 13. Oct 2022, at 11:42, Christian Zigotzky <chzigotzky@xenosoft.de> wro=
-te:
->=20
-> =EF=BB=BFHi Christophe,
->=20
-> Thanks a lot for your answer. OK, now, I know, that I don=E2=80=99t need t=
-o test it. After the boot of the latest git kernel, my system was extremely d=
-amaged. Some config files have a size of several gigabytes for example the r=
-esolv.conf. I tried to repair this Debian system but without any success.
-> I copied with dd and Netcat via network another rootfs from another comput=
-er to the damaged partition.
-> I don=E2=80=99t have the time to do it always again and again after a bad b=
-isect result.
-> I will wait some weeks and try it again.
->=20
-> Cheers,
-> Christian
->=20
->> On 13. Oct 2022, at 09:28, Christophe Leroy <christophe.leroy@csgroup.eu>=
- wrote:
->>=20
->> =EF=BB=BF
->>=20
->>>> Le 13/10/2022 =C3=A0 09:03, Christian Zigotzky a =C3=A9crit :
->>> Hi Andrew,
->>>=20
->>> Does this patch also affect 64-bit kernels?
->>>=20
->>> We use often 32-bit userlands with 64-bit kernels.
->>=20
->> As far as I understand, it was already correct for 32-bit userlands with=20=
+Adding more people and lists to CC in order to point this patch out,
+because, based on a quick grep of cpuinfo seq operations, I think at least
+openrisc, powerpc, and s390 also need an equivalent patch (and I've
+already sent a patch for riscv). While the test is simple (see next
+paragraph) I'm not equipped to test on each architecture.
 
->> 64 bit kernels, aka compat.
->>=20
->> The patch applies the same approach for 32 bit kernels, as explained in=20=
+To test, just build a kernel with DEBUG_PER_CPU_MAPS enabled, boot to a
+shell, do 'cat /proc/cpuinfo', and look for a kernel warning.
 
->> the commit message : "Fix this by having 32-bit kernels share those=20
->> syscall definitions with compat."
->>=20
->> Christophe
->>=20
->>>=20
->>> Cheers,
->>> Christian
->>>=20
->>>>> On 12. Oct 2022, at 09:56, Andrew Donnellan <ajd@linux.ibm.com> wrote:=
+Thanks,
+drew
 
->>>>=20
->>>> =EF=BB=BFOn Wed, 2022-10-12 at 08:51 +0200, Christian Zigotzky wrote:
->>>>> Hi All,
->>>>>=20
->>>>> I use the Nemo board with a PASemi PA6T CPU and have some issues
->>>>> since the first PowerPC updates for the kernel 6.1.
->>>>>=20
->>>>> I successfully compiled the git kernel with the first PowerPC updates
->>>>> two days ago.
->>>>>=20
->>>>> Unfortunately this kernel is really dangerous. Many things for
->>>>> example Network Manager and LightDM don't work anymore and produced
->>>>> several gigabyte of config files till the partition has been filled.
->>>>>=20
->>>>> I deleted some files like the resolv.conf that had a size over 200
->>>>> GB!
->>>>>=20
->>>>> Unfortunately, MintPPC was still damaged. For example LightDM doesn't
->>>>> work anymore and the MATE desktop doesn't display any icons anymore
->>>>> because Caja wasn't able to reserve memory anymore.
->>>>>=20
->>>>> In this case, bisecting isn't an option and I have to wait some
->>>>> weeks. It is really difficult to find the issue if the userland will
->>>>> damaged again and again.
->>>>=20
->>>> Could you try with
->>>> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20221012035335.=
-866440-1-npiggin@gmail.com/
->>>> to see if your issues are related to that?
->>>>=20
->>>> Andrew
->>>>=20
->>>> --=20
->>>> Andrew Donnellan    OzLabs, ADL Canberra
->>>> ajd@linux.ibm.com   IBM Australia Limited
->>>>=20
->=20
-
+On Wed, Oct 12, 2022 at 10:24:22AM +0200, Andrew Jones wrote:
+> On Wed, Oct 12, 2022 at 10:19:05AM +0200, Andrew Jones wrote:
+> > Commit 78e5a3399421 ("cpumask: fix checking valid cpu range") has
+> > started issuing warnings[*] when cpu indices equal to nr_cpu_ids - 1
+> > are passed to cpumask_next* functions. seq_read_iter() and cpuinfo's
+> > start and next seq operations implement a pattern like
+> > 
+> >   n = cpumask_next(n - 1, mask);
+> >   show(n);
+> >   while (1) {
+> >       ++n;
+> >       n = cpumask_next(n - 1, mask);
+> >       if (n >= nr_cpu_ids)
+> >           break;
+> >       show(n);
+> >   }
+> > 
+> > which will issue the warning when reading /proc/cpuinfo. Ensure no
+> > warning is generated by validating the cpu index before calling
+> > cpumask_next().
+> > 
+> > [*] Warnings will only appear with DEBUG_PER_CPU_MAPS enabled.
+> > 
+> > Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
+> > Cc: Yury Norov <yury.norov@gmail.com>
+> > ---
+> 
+> Forgot the changelog...
+> 
+> v2:
+>   - Added all the information I should have in the first place to the
+>     commit message [Boris]
+>   - Changed style of fix [Boris]
+> 
+> >  arch/x86/kernel/cpu/proc.c | 3 +++
+> >  1 file changed, 3 insertions(+)
+> > 
+> > diff --git a/arch/x86/kernel/cpu/proc.c b/arch/x86/kernel/cpu/proc.c
+> > index 099b6f0d96bd..94ac02c8dd6f 100644
+> > --- a/arch/x86/kernel/cpu/proc.c
+> > +++ b/arch/x86/kernel/cpu/proc.c
+> > @@ -153,6 +153,9 @@ static int show_cpuinfo(struct seq_file *m, void *v)
+> >  
+> >  static void *c_start(struct seq_file *m, loff_t *pos)
+> >  {
+> > +	if (*pos >= nr_cpu_ids)
+> > +		return NULL;
+> > +
+> >  	*pos = cpumask_next(*pos - 1, cpu_online_mask);
+> >  	if ((*pos) < nr_cpu_ids)
+> >  		return &cpu_data(*pos);
+> > -- 
+> > 2.37.3
+> > 
