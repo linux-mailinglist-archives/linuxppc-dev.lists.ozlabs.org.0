@@ -2,93 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD9195FC8B9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Oct 2022 17:52:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FAAE5FC8D6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Oct 2022 18:03:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Mncc42rzlz3drT
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Oct 2022 02:52:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Mncr05N8qz3ds4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Oct 2022 03:02:56 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WJaeT/hf;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dmkT5tJv;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=aBn04Kj+;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=5n5D4Gdr;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=mst@redhat.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2001:67c:2178:6::1c; helo=smtp-out1.suse.de; envelope-from=msuchanek@suse.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WJaeT/hf;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dmkT5tJv;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=aBn04Kj+;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=5n5D4Gdr;
 	dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mncb60Gjmz3bjB
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Oct 2022 02:51:44 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1665589899;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mncq02C7nz2xB5
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Oct 2022 03:02:03 +1100 (AEDT)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+	by smtp-out1.suse.de (Postfix) with ESMTP id 3017A21B52;
+	Wed, 12 Oct 2022 16:01:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1665590515; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=VEmL4QPQ3D0Tb37hjB24vN30XeOf49ixlW7Qc6HLGRk=;
-	b=WJaeT/hfRBNbHlU9zu2CWUNrf7ywGPPVInm8zmeodjK+DCusFlRdQgfbxPetkh306Sny4b
-	KtCW7YcTZN9NPgQNxa8A7kJSTgNSJNEEFdljPDvDZFVvtK5IP/ct5SorE6Js1zc1E0nYi7
-	I1SAgMqyhaoIa+FthdRIScvjyvtyXKQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1665589900;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	bh=K+RNgCK6qqojiT+qhhYN/EWp/y1Qj/NNbS50byrHex4=;
+	b=aBn04Kj+B41WURCoXqhWODwI4dy6X6yhzTmNQmNmO+vr23JDzWbAANBt2kS4TO6nBhsY+I
+	S8bDfCC6OfglAt98NrUpWyfw5uuLLN0+hcQnJg90DJR4sGKGBASIbpESwcuS1vtlLx/W1D
+	EdLIB/al7Ld3DOpgihAaxO5ZE2OluEw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1665590515;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=VEmL4QPQ3D0Tb37hjB24vN30XeOf49ixlW7Qc6HLGRk=;
-	b=dmkT5tJvAYOg1sm1oR5+8lsE9oysIFIY5ulvOo+NuFuFwyr477TzEqUMm3XzXo7+ZT7LIq
-	d7phcoDx1WtwArpJSkf1QPhkMXW0yI6SFqrQew+ZQ0tR5F43GljjXxpP1RseUZtRxqEKSP
-	de7a+T25RbSL/XpFnUbcYqqPLuv4LSo=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-457-AoAHC3KBPyqTrRlXTcwJEQ-1; Wed, 12 Oct 2022 11:51:38 -0400
-X-MC-Unique: AoAHC3KBPyqTrRlXTcwJEQ-1
-Received: by mail-wm1-f69.google.com with SMTP id q14-20020a7bce8e000000b003c6b7debf22so650680wmj.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Oct 2022 08:51:38 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VEmL4QPQ3D0Tb37hjB24vN30XeOf49ixlW7Qc6HLGRk=;
-        b=QtbwrENUZuxnW8gviYxjjuq75VbKZNvmUkFVuFUXQWGgnD8zuBfIU6fsCyvyTo5UAP
-         VSEdHa8e1S+JNkoBSbHS3EOAAPYPPDPy0ziI4gIWTDj34VITw6l+G11fguIqnAaGpaSa
-         XbiMUDXYzFbaYOUDUV61MqM6wTDKy+A/3G3/uo2TzVM10e4yOyxL2ZJqpy0GrjvjaCzP
-         Um8twvur+oLAQuSVuGs06iJI+o7PjROtQhL+8SFUvp5qCA05GraQLD7/hu40lrNM42CU
-         PTMZ1UwRe34KH4B3LY9Jy4hbxP9QRx6di5s33cfJ7/XW9ug0myLnuKYQIOLFZYl7lcUH
-         Wgvg==
-X-Gm-Message-State: ACrzQf09I6UB7kDLnRAtt7NvJiYNoDJF+p6wYZ7tiAz4ENrwDGfd+Kl/
-	rN+KcuVQG3tdNrMSLDOJRDwBhV4waPAgFTX7mi6sEjGocxZgoUeYil6CfveQQ754KbAlXrj6ipq
-	P+kMg6nSkNyyrE8LGrkF7GdyFrQ==
-X-Received: by 2002:a7b:c047:0:b0:3b4:adc7:1ecb with SMTP id u7-20020a7bc047000000b003b4adc71ecbmr3255634wmc.144.1665589897406;
-        Wed, 12 Oct 2022 08:51:37 -0700 (PDT)
-X-Google-Smtp-Source: AMsMyM7N8bKAUKvYW6q1makifjzVvultjsSZhoTQJypXKec3ISNPJh+4qwpbqB9CUNsCQPvo9cbiyw==
-X-Received: by 2002:a7b:c047:0:b0:3b4:adc7:1ecb with SMTP id u7-20020a7bc047000000b003b4adc71ecbmr3255614wmc.144.1665589897125;
-        Wed, 12 Oct 2022 08:51:37 -0700 (PDT)
-Received: from redhat.com ([2.54.162.123])
-        by smtp.gmail.com with ESMTPSA id d17-20020adfe891000000b0022e62529888sm32297wrm.67.2022.10.12.08.51.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Oct 2022 08:51:36 -0700 (PDT)
-Date: Wed, 12 Oct 2022 11:51:31 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [GIT PULL] virtio: fixes, features
-Message-ID: <20221012115023-mutt-send-email-mst@kernel.org>
-References: <20221010132030-mutt-send-email-mst@kernel.org>
- <87r0zdmujf.fsf@mpe.ellerman.id.au>
- <20221012070532-mutt-send-email-mst@kernel.org>
- <87mta1marq.fsf@mpe.ellerman.id.au>
- <87edvdm7qg.fsf@mpe.ellerman.id.au>
+	bh=K+RNgCK6qqojiT+qhhYN/EWp/y1Qj/NNbS50byrHex4=;
+	b=5n5D4GdrRgeDPdJBOUJdODy0llgwsWDODFU/6LSgcBsCCf7800UHSrCmzV6c28KWklPXtU
+	+EuG3coeE1e7mrAw==
+Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by relay2.suse.de (Postfix) with ESMTPS id C8FAB2C141;
+	Wed, 12 Oct 2022 16:01:53 +0000 (UTC)
+Date: Wed, 12 Oct 2022 18:01:52 +0200
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+Subject: Re: [PATCH v4 5/5] drm/ofdrm: Support big-endian scanout buffers
+Message-ID: <20221012160152.GE28810@kitsune.suse.cz>
+References: <fda959d7-1bae-716f-f01b-66d9db9096e0@suse.de>
+ <654e3cfe-80d7-46c9-8e5e-461846e4df35@app.fastmail.com>
+ <866c7033-0d4e-7b5d-008c-8eb16f99498b@suse.de>
+ <f26ca6a1-feb1-4822-ac96-bc484b22f8a0@app.fastmail.com>
+ <c80a6e2d-a3b9-8186-cc95-97c4775171ed@suse.de>
+ <fc33ebf7-ecb7-4686-ac31-0118a40595f6@app.fastmail.com>
+ <0a15ecf5-939d-3b00-bcde-0fc7b449cfda@suse.de>
+ <76d8a408-fc3e-4bd1-91c5-8278f7469979@app.fastmail.com>
+ <a81e1acf-64dd-f69d-d97f-4a1af534e8e6@suse.de>
+ <Y0bWYb0z1HZ2PztG@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <87edvdm7qg.fsf@mpe.ellerman.id.au>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Y0bWYb0z1HZ2PztG@intel.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,87 +82,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: xiujianfeng@huawei.com, kvm@vger.kernel.org, alvaro.karsz@solid-run.com, netdev@vger.kernel.org, jasowang@redhat.com, wangdeming@inspur.com, linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, virtualization@lists.linux-foundation.org, Linus Torvalds <torvalds@linux-foundation.org>, angus.chen@jaguarmicro.com, Bjorn Helgaas <bhelgaas@google.com>, lingshan.zhu@intel.com, linuxppc-dev@lists.ozlabs.org, gavinl@nvidia.com
+Cc: linux-fbdev@vger.kernel.org, Thomas Zimmermann <tzimmermann@suse.de>, Arnd Bergmann <arnd@arndb.de>, David Airlie <airlied@linux.ie>, Helge Deller <deller@gmx.de>, linuxppc-dev@lists.ozlabs.org, mark.cave-ayland@ilande.co.uk, Javier Martinez Canillas <javierm@redhat.com>, dri-devel@lists.freedesktop.org, Paul Mackerras <paulus@samba.org>, Maxime Ripard <maxime@cerno.tech>, Daniel Vetter <daniel@ffwll.ch>, Geert Uytterhoeven <geert@linux-m68k.org>, sam@ravnborg.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Oct 13, 2022 at 01:33:59AM +1100, Michael Ellerman wrote:
-> Michael Ellerman <mpe@ellerman.id.au> writes:
-> > [ Cc += Bjorn & linux-pci ]
-> >
-> > "Michael S. Tsirkin" <mst@redhat.com> writes:
-> >> On Wed, Oct 12, 2022 at 05:21:24PM +1100, Michael Ellerman wrote:
-> >>> "Michael S. Tsirkin" <mst@redhat.com> writes:
-> > ...
-> >>> > ----------------------------------------------------------------
-> >>> > virtio: fixes, features
-> >>> >
-> >>> > 9k mtu perf improvements
-> >>> > vdpa feature provisioning
-> >>> > virtio blk SECURE ERASE support
-> >>> >
-> >>> > Fixes, cleanups all over the place.
-> >>> >
-> >>> > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> >>> >
-> >>> > ----------------------------------------------------------------
-> >>> > Alvaro Karsz (1):
-> >>> >       virtio_blk: add SECURE ERASE command support
-> >>> >
-> >>> > Angus Chen (1):
-> >>> >       virtio_pci: don't try to use intxif pin is zero
-> >>> 
-> >>> This commit breaks virtio_pci for me on powerpc, when running as a qemu
-> >>> guest.
-> >>> 
-> >>> vp_find_vqs() bails out because pci_dev->pin == 0.
-> >>> 
-> >>> But pci_dev->irq is populated correctly, so vp_find_vqs_intx() would
-> >>> succeed if we called it - which is what the code used to do.
-> >>> 
-> >>> I think this happens because pci_dev->pin is not populated in
-> >>> pci_assign_irq().
-> >>> 
-> >>> I would absolutely believe this is bug in our PCI code, but I think it
-> >>> may also affect other platforms that use of_irq_parse_and_map_pci().
-> >>
-> >> How about fixing this in of_irq_parse_and_map_pci then?
-> >> Something like the below maybe?
-> >> 
-> >> diff --git a/drivers/pci/of.c b/drivers/pci/of.c
-> >> index 196834ed44fe..504c4d75c83f 100644
-> >> --- a/drivers/pci/of.c
-> >> +++ b/drivers/pci/of.c
-> >> @@ -446,6 +446,8 @@ static int of_irq_parse_pci(const struct pci_dev *pdev, struct of_phandle_args *
-> >>  	if (pin == 0)
-> >>  		return -ENODEV;
-> >>  
-> >> +	pdev->pin = pin;
-> >> +
-> >>  	/* Local interrupt-map in the device node? Use it! */
-> >>  	if (of_get_property(dn, "interrupt-map", NULL)) {
-> >>  		pin = pci_swizzle_interrupt_pin(pdev, pin);
+On Wed, Oct 12, 2022 at 05:59:45PM +0300, Ville Syrjälä wrote:
+> On Wed, Oct 12, 2022 at 04:31:14PM +0200, Thomas Zimmermann wrote:
+> > Hi
+> > 
+> > Am 12.10.22 um 15:12 schrieb Arnd Bergmann:
+> > > On Wed, Oct 12, 2022, at 2:00 PM, Thomas Zimmermann wrote:
+> > >>
+> > >> Could well be. But ofdrm intents to replace offb and this test has
+> > >> worked well in offb for almost 15 yrs. If there are bug reports, I'm
+> > >> happy to take patches, but until then I see no reason to change it.
+> > > 
+> > > I wouldn't change the code in offb unless a user reports a bug,
+> > > but I don't see a point in adding the same mistake to ofdrm if we
+> > > know it can't work on real hardware.
+> > 
+> > As I said, this has worked with offb and apparently on real hardware. 
+> > For all I know, ATI hardware (before it became AMD) was used in PPC 
+> > Macintoshs and assumed big-endian access on those machines.
 > 
-> Backing up a bit. Should the virtio code be looking at pci_dev->pin in
-> the first place?
+> At least mach64 class hardware has two frame buffer apertures, and
+> byte swapping can be configured separately for each. But that means
+> you only get correct byte swapping for at most two bpps at the same
+> time (and that only if you know which aperture to access each time).
+> IIRC Rage 128 already has the surface register stuff where you
+> could byte swap a limited set of ranges independently. And old
+> mga hardware has just one byte swap setting for the whole frame
+> buffer aperture, so only one bpp at a time.
 > 
-> Shouldn't it be checking pci_dev->irq instead?
-> 
-> The original commit talks about irq being 0 and colliding with the timer
-> interrupt.
-> 
-> But all (most?) platforms have converged on 0 meaning NO_IRQ since quite
-> a fews ago AFAIK.
+> That kind of horrible limitations of the byte swappers is the
+> main reason why I wanted to make drm fourcc endianness explicit.
+> Simply assuming host endianness would end in tears on big endian
+> as soon as you need to access stuff with two bpps at the same time.
+> Much better to just switch off those useless byte swappers and
+> swap by hand when necessary.
 
-Are you sure?
+If you have hardware-specific driver, sure.
 
-arch/arm/include/asm/irq.h:#ifndef NO_IRQ
-arch/arm/include/asm/irq.h:#define NO_IRQ       ((unsigned int)(-1))
+This is firmware-provided framebuffer, though. You get one framebuffer
+address, and one endian - whatever the firmware set up and described in
+the DT.
 
+Thanks
 
-
-> And the timer irq == 0 is a special case AIUI:
->   https://lore.kernel.org/all/CA+55aFwiLp1z+2mzkrFsid1WZQ0TQkcn8F2E6NL_AVR+m1fZ2w@mail.gmail.com/
-> 
-> cheers
-
+Michal
