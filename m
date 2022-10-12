@@ -2,85 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 769B25FC3AA
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Oct 2022 12:23:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A8295FC42A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Oct 2022 13:12:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MnTJJ1mpxz3c2Q
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Oct 2022 21:23:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MnVNZ0HGKz3cfR
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Oct 2022 22:12:14 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=FZhr1hcj;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=EAqFbwrO;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Q3/M+TrI;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Q3/M+TrI;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=64.147.123.24; helo=wout1-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=mst@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=FZhr1hcj;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=EAqFbwrO;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Q3/M+TrI;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Q3/M+TrI;
 	dkim-atps=neutral
-Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com [64.147.123.24])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MnTHJ6XpDz2yPN
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Oct 2022 21:22:36 +1100 (AEDT)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-	by mailout.west.internal (Postfix) with ESMTP id A49D732005C1;
-	Wed, 12 Oct 2022 06:22:16 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute3.internal (MEProxy); Wed, 12 Oct 2022 06:22:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:date:date:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:sender:subject
-	:subject:to:to; s=fm2; t=1665570136; x=1665656536; bh=0JMSioevQ4
-	gDTfOTdHVlyZsG3TVOQ8okNlP2UiBlbCM=; b=FZhr1hcjwxjwZ9oGJqVEKJFL17
-	piqAn7hioFb+WOOcdMl/XuAWR8AUQemPasRLuPlURxzeDpCj3HWKP115LTRgQP+F
-	V7AUW47Q9MFH17CRTC/xyDNuWaHEzX5KiNQW4raz9gKOebvvVdch9e+CunUoxPA2
-	ZEfw/8ROOu7+BRRyuLkzUdSGeqbszckLhDEkIPYhcH6XOdfFWekS4CF/xorx2hoA
-	3pAh4+kGGGmo7zt+nj+wTMtH49W32q9cHl36MJamHlSVpvLuWkNm1XlkxuNt5C4t
-	9ePBUSgzPQr5z8Fv3VPjaITzEa6kR43ISF1IDKTTAnfY1cL7MHecauXOC1FA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-	:feedback-id:from:from:in-reply-to:in-reply-to:message-id
-	:mime-version:references:reply-to:sender:subject:subject:to:to
-	:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm3; t=1665570136; x=1665656536; bh=0JMSioevQ4gDTfOTdHVlyZsG3TVO
-	Q8okNlP2UiBlbCM=; b=EAqFbwrOlxyzQa7oYdBXIhkYKLp56lfWaXrHDtGPT8cm
-	94bwIQg+h/lIFgKEm86x6FHHR71rnbqF2k0ESnaPnw/bfKAFNukVE+jLsyLhKwwh
-	10yqjJYP1GKwbBZngaM9thNUznU2zWrvGUnyZr0gpJFt3TbEzqudCpkrwJ2WjCqE
-	WrHKukXzhFD+4a5k61uddsaLzKhPffKf2BtHkA7PZFZJnhZ6SiIPpRMav+ssdxJt
-	d4bK+u4Nj8WZlDfPZgGo47RQORH45LLBNof1DGnk+g6pRdEWu030O8JCvvYaYnDX
-	DLnOb4i9rp+JDlsdZ5Ce8aOuL2QC8N3kFgPIIA5DKg==
-X-ME-Sender: <xms:WJVGY_rRcmqM8_k9VxRb95K-S5UK7yZnv0Y9aCRCKqJOYo8z9EWpxw>
-    <xme:WJVGY5of-CEu4VlGUYDVI8B-9WE3sKJqZlXNUaAfTuNVERw2_UQ8QEJhKffNEA0m2
-    SVcbyA7jpl9lFPs2wM>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfeejkedgvdekucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:WJVGY8MoYghTEr4zzGbDIiSGc_c-PIGCpVEhocvY03H7fQH0PknpPw>
-    <xmx:WJVGYy75EbXojDEmDc5aIJdx2rwxtDqYwDbs3I_sRYLwyiNKeGWaYQ>
-    <xmx:WJVGY-4wMhUfepD2Fn0ej-gqi0W0QhcpmPVE7nKBTX0iJWsYSuUGpg>
-    <xmx:WJVGYzh7dDXLQQjNqQZ-x43T6SBcR_WrqeoXKhXzh_SaOzjYiPyGTA>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id F202DB60089; Wed, 12 Oct 2022 06:22:15 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.7.0-alpha0-1047-g9e4af4ada4-fm-20221005.001-g9e4af4ad
-Mime-Version: 1.0
-Message-Id: <970f5125-2c32-4040-bab9-74ce04e0f2ea@app.fastmail.com>
-In-Reply-To: <20221012035335.866440-2-npiggin@gmail.com>
-References: <20221012035335.866440-1-npiggin@gmail.com>
- <20221012035335.866440-2-npiggin@gmail.com>
-Date: Wed, 12 Oct 2022 12:21:54 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Nicholas Piggin" <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 2/2] powerpc: move sync_file_range2 compat definition
-Content-Type: text/plain
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MnVMX3bVBz2ypV
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Oct 2022 22:11:18 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1665573075;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8YiAlVcyacuAF1cXPKHrDiH+rQYQoNsO4NEHWDYYi14=;
+	b=Q3/M+TrIeRpFKLA1bOdRlHyfHw/8+/6/gz3Q8d+WT6Kcs8bZt7Hp+og7mOeAEsmf04Rn5e
+	nN0ckTyQFNkf6zrlU8x0prXmBY6jNrYrDUQbOQnQRwds7BlUFhc+0uF0K63SjTC/mrAy6/
+	Syh0ZUe3P3L/BAhBHQ6sRaUMD8MP83s=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1665573075;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8YiAlVcyacuAF1cXPKHrDiH+rQYQoNsO4NEHWDYYi14=;
+	b=Q3/M+TrIeRpFKLA1bOdRlHyfHw/8+/6/gz3Q8d+WT6Kcs8bZt7Hp+og7mOeAEsmf04Rn5e
+	nN0ckTyQFNkf6zrlU8x0prXmBY6jNrYrDUQbOQnQRwds7BlUFhc+0uF0K63SjTC/mrAy6/
+	Syh0ZUe3P3L/BAhBHQ6sRaUMD8MP83s=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-14-4n04EqmcNpOS1oOGBt1z5g-1; Wed, 12 Oct 2022 07:11:13 -0400
+X-MC-Unique: 4n04EqmcNpOS1oOGBt1z5g-1
+Received: by mail-wm1-f69.google.com with SMTP id g8-20020a05600c4ec800b003b4bcbdb63cso9830776wmq.7
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Oct 2022 04:11:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8YiAlVcyacuAF1cXPKHrDiH+rQYQoNsO4NEHWDYYi14=;
+        b=ySBZd3FaN9AYfLZ3l84D/Dbp41hemjbxXGCEhH/yEscE5ZkF30mbLxl5bOtmoreB53
+         wX5eR+62ElymYjKDvpqBgf90pbqImBzy/iEVItT5t0d+E8sgogUnEi99RTgoxG3k9cRt
+         cxc6IxReI3lj331nbp11newEz4+gL94uRIoLe+CAxSVOfUYvMgNqk0qAuh6ZD5Y9sGof
+         uGV5EKX8EFEpOe7/7Bb6cy/cWe3ehCy7FdmRFT/c/CNke9pl6vd+w8ZVqk47S27JRpxw
+         1e6kqtnWZBo6KNjWHSx18RafqzwNBVTOEh+DWJY9qxLC/m6DcuLFfpqoexTTPMovquKc
+         iWxA==
+X-Gm-Message-State: ACrzQf15yEk65DmyuS35wLcIOef3UQ3iJ7IowYJf4uIjDVgt1pOgNglR
+	LaUbmm26nkSdpVusp0X1ncKmueL6/F0uvhuxVGQeZYJxhJW5LygbmXLu/zVy+ww95Ek7J3wxxUR
+	hwMaOJ6Nd+vcFKjs6TIv46RF/Ag==
+X-Received: by 2002:a5d:4581:0:b0:228:a8e5:253c with SMTP id p1-20020a5d4581000000b00228a8e5253cmr16709127wrq.506.1665573072676;
+        Wed, 12 Oct 2022 04:11:12 -0700 (PDT)
+X-Google-Smtp-Source: AMsMyM4M2UeBQqsLu/YgEb0FS7XO2FtVoGI+qgl10zlKDVC740GbGZGoVVc16JkgQ8fSzCwcytvnSw==
+X-Received: by 2002:a5d:4581:0:b0:228:a8e5:253c with SMTP id p1-20020a5d4581000000b00228a8e5253cmr16709111wrq.506.1665573072445;
+        Wed, 12 Oct 2022 04:11:12 -0700 (PDT)
+Received: from redhat.com ([2.54.162.123])
+        by smtp.gmail.com with ESMTPSA id y8-20020a05600c364800b003c6bd91caa5sm1493777wmq.17.2022.10.12.04.11.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Oct 2022 04:11:11 -0700 (PDT)
+Date: Wed, 12 Oct 2022 07:11:08 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [GIT PULL] virtio: fixes, features
+Message-ID: <20221012070532-mutt-send-email-mst@kernel.org>
+References: <20221010132030-mutt-send-email-mst@kernel.org>
+ <87r0zdmujf.fsf@mpe.ellerman.id.au>
+MIME-Version: 1.0
+In-Reply-To: <87r0zdmujf.fsf@mpe.ellerman.id.au>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,24 +97,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Jason A . Donenfeld" <Jason@zx2c4.com>
+Cc: xiujianfeng@huawei.com, kvm@vger.kernel.org, alvaro.karsz@solid-run.com, netdev@vger.kernel.org, jasowang@redhat.com, wangdeming@inspur.com, linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org, Linus Torvalds <torvalds@linux-foundation.org>, angus.chen@jaguarmicro.com, lingshan.zhu@intel.com, linuxppc-dev@lists.ozlabs.org, gavinl@nvidia.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Oct 12, 2022, at 5:53 AM, Nicholas Piggin wrote:
-> sync_file_range2 is not a special unaligned-odd-pair calling convention
-> syscall, it's just a regular one that does not have a generic compat
-> definition. Move it out of sys_ppc32.c and into syscalls.c.
->
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
-> This one doesn't fix anything and is not required for the previous
-> fix, so it could be merged later. Now that we've repurposed sys_ppc32.c
-> for the difficult syscalls and compat syscalls live all over the kernel
-> now anyway, IMO it's makes things less confusing to move this.
+On Wed, Oct 12, 2022 at 05:21:24PM +1100, Michael Ellerman wrote:
+> "Michael S. Tsirkin" <mst@redhat.com> writes:
+> > The following changes since commit 4fe89d07dcc2804c8b562f6c7896a45643d34b2f:
+> >
+> >   Linux 6.0 (2022-10-02 14:09:07 -0700)
+> >
+> > are available in the Git repository at:
+> >
+> >   https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git tags/for_linus
+> >
+> > for you to fetch changes up to 71491c54eafa318fdd24a1f26a1c82b28e1ac21d:
+> >
+> >   virtio_pci: don't try to use intxif pin is zero (2022-10-07 20:00:44 -0400)
+> >
+> > ----------------------------------------------------------------
+> > virtio: fixes, features
+> >
+> > 9k mtu perf improvements
+> > vdpa feature provisioning
+> > virtio blk SECURE ERASE support
+> >
+> > Fixes, cleanups all over the place.
+> >
+> > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> >
+> > ----------------------------------------------------------------
+> > Alvaro Karsz (1):
+> >       virtio_blk: add SECURE ERASE command support
+> >
+> > Angus Chen (1):
+> >       virtio_pci: don't try to use intxif pin is zero
+> 
+> This commit breaks virtio_pci for me on powerpc, when running as a qemu
+> guest.
+> 
+> vp_find_vqs() bails out because pci_dev->pin == 0.
+> 
+> But pci_dev->irq is populated correctly, so vp_find_vqs_intx() would
+> succeed if we called it - which is what the code used to do.
+> 
+> I think this happens because pci_dev->pin is not populated in
+> pci_assign_irq().
+> 
+> I would absolutely believe this is bug in our PCI code, but I think it
+> may also affect other platforms that use of_irq_parse_and_map_pci().
+> 
+> cheers
 
-For this one, I would just move the implementation right next to
-sync_file_range2() the same way we define compat_sys_sync_file_range(),
-and share it with arm64.
+How about fixing this in of_irq_parse_and_map_pci then?
+Something like the below maybe?
 
-      Arnd
+diff --git a/drivers/pci/of.c b/drivers/pci/of.c
+index 196834ed44fe..504c4d75c83f 100644
+--- a/drivers/pci/of.c
++++ b/drivers/pci/of.c
+@@ -446,6 +446,8 @@ static int of_irq_parse_pci(const struct pci_dev *pdev, struct of_phandle_args *
+ 	if (pin == 0)
+ 		return -ENODEV;
+ 
++	pdev->pin = pin;
++
+ 	/* Local interrupt-map in the device node? Use it! */
+ 	if (of_get_property(dn, "interrupt-map", NULL)) {
+ 		pin = pci_swizzle_interrupt_pin(pdev, pin);
+
