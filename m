@@ -1,73 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B581B5FC505
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Oct 2022 14:08:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19D555FC522
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Oct 2022 14:18:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MnWd44PhNz3blw
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Oct 2022 23:08:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MnWrH2NDpz3c9B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Oct 2022 23:17:51 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=aWK/GoG2;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=EUwrAEdo;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=E1drx2e5;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.29; helo=smtp-out2.suse.de; envelope-from=msuchanek@suse.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=aWK/GoG2;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=EUwrAEdo;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=E1drx2e5;
 	dkim-atps=neutral
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MnWc51cCXz2x9J
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Oct 2022 23:07:16 +1100 (AEDT)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-	by smtp-out2.suse.de (Postfix) with ESMTP id 6AA791F381;
-	Wed, 12 Oct 2022 12:07:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1665576433; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FLCPJxzJ0YYg2ZOgvIOSJ8Odau36xhYM3uJca/JYmTM=;
-	b=aWK/GoG2/0N0MOrwxh+/O+NkFUqsPj6bfy5yFCLcAwu+RgOePf0jIIImImg3Y1z8Lq+jHr
-	Al6xFtCJq6TsFtHU2tv2HjYcuG5ZZZCptGMC4NAnKqXEdevp5mz3Bbmt74HeMXbrunIpAx
-	vIv2jeSVjZtVPFlwENubImIy2xQiStI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1665576433;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FLCPJxzJ0YYg2ZOgvIOSJ8Odau36xhYM3uJca/JYmTM=;
-	b=EUwrAEdomB1XMZtAb3Yak1TjM5uFoJg8tDEwZcbhsHvzbyH78mVYjePQByhRCfQyASeXAt
-	qc/d/WVFS1IFuUDw==
-Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by relay2.suse.de (Postfix) with ESMTPS id 312582C141;
-	Wed, 12 Oct 2022 12:07:11 +0000 (UTC)
-Date: Wed, 12 Oct 2022 14:07:09 +0200
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH v4 5/5] drm/ofdrm: Support big-endian scanout buffers
-Message-ID: <20221012120709.GC28810@kitsune.suse.cz>
-References: <20220928105010.18880-6-tzimmermann@suse.de>
- <23333ff7-3ae1-494f-7abe-62da6698fd00@redhat.com>
- <83071743-a7f2-f761-baa3-da688f26b5e3@suse.de>
- <9162f41f-28c3-493c-ab54-b1c4a2fdf494@app.fastmail.com>
- <fda959d7-1bae-716f-f01b-66d9db9096e0@suse.de>
- <654e3cfe-80d7-46c9-8e5e-461846e4df35@app.fastmail.com>
- <866c7033-0d4e-7b5d-008c-8eb16f99498b@suse.de>
- <f26ca6a1-feb1-4822-ac96-bc484b22f8a0@app.fastmail.com>
- <c80a6e2d-a3b9-8186-cc95-97c4775171ed@suse.de>
- <fc33ebf7-ecb7-4686-ac31-0118a40595f6@app.fastmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MnWqG1YHkz2xGB
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Oct 2022 23:16:55 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=771q3x4hOnkGzc78SSiuR2Kc8F2eZjEEOxi50XFCd14=; b=E1drx2e5ov2RYK9oK5Zx5/KeJi
+	euNoevVzCIAtLYs/LZRRj1ulRyX2D/g1DoT/h6nJ8WHN4wg8v9l8zMHApB0wkPYhVKPO75VrWjbuZ
+	6MezWJMrWmFs+QNaXuL1ijf3KmKfIZqg2nux/9HZGvrJjKNQB4C3JgNYbiafLXR01Q7K+kpVkjcxl
+	yA/QkyrirVfJz1SUdljE2HM4DMFlxizmQa9C0Gij2voz7Mv8EFIszLrDBUY4ZHMnXzldcVLvtj55A
+	qfhTY8b4HbKz14NvEk9HXzGkBgibBW6NpB/P9lmwrLP9E63vjpm2kMHSQU/7f0TdNQivVL5jIjQlp
+	UsjTPjFA==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1oiaf1-002rHx-8r; Wed, 12 Oct 2022 12:16:32 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
+	(Client did not present a certificate)
+	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id CCA95300023;
+	Wed, 12 Oct 2022 14:16:29 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+	id A982F20E06FFE; Wed, 12 Oct 2022 14:16:29 +0200 (CEST)
+Date: Wed, 12 Oct 2022 14:16:29 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Ravi Bangoria <ravi.bangoria@amd.com>
+Subject: Re: [PATCH v2] perf: Rewrite core context handling
+Message-ID: <Y0awHa8oS5yal5M9@hirez.programming.kicks-ass.net>
+References: <20221008062424.313-1-ravi.bangoria@amd.com>
+ <Y0VTn0qLWd925etP@hirez.programming.kicks-ass.net>
+ <ba47d079-6d97-0412-69a0-fa15999b5024@amd.com>
+ <Y0V3kOWInrvCvVtk@hirez.programming.kicks-ass.net>
+ <Y0WsRItHmfI5uaq3@hirez.programming.kicks-ass.net>
+ <174fb540-ec18-eeca-191d-c02e1f1005d2@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <fc33ebf7-ecb7-4686-ac31-0118a40595f6@app.fastmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <174fb540-ec18-eeca-191d-c02e1f1005d2@amd.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,50 +69,107 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-fbdev@vger.kernel.org, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@linux.ie>, Helge Deller <deller@gmx.de>, linuxppc-dev@lists.ozlabs.org, mark.cave-ayland@ilande.co.uk, Javier Martinez Canillas <javierm@redhat.com>, dri-devel@lists.freedesktop.org, Paul Mackerras <paulus@samba.org>, Maxime Ripard <maxime@cerno.tech>, Daniel Vetter <daniel@ffwll.ch>, Geert Uytterhoeven <geert@linux-m68k.org>, sam@ravnborg.org
+Cc: mark.rutland@arm.com, irogers@google.com, songliubraving@fb.com, sandipan.das@amd.com, alexander.shishkin@linux.intel.com, catalin.marinas@arm.com, eranian@google.com, kim.phillips@amd.com, will@kernel.org, robh@kernel.org, ak@linux.intel.com, jolsa@redhat.com, mingo@redhat.com, linux-s390@vger.kernel.org, frederic@kernel.org, srw@sladewatkins.net, acme@kernel.org, maddy@linux.ibm.com, namhyung@kernel.org, linux-arm-kernel@lists.infradead.org, ndesaulniers@google.com, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, ananth.narayan@amd.com, linuxppc-dev@lists.ozlabs.org, santosh.shukla@amd.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Oct 12, 2022 at 10:38:29AM +0200, Arnd Bergmann wrote:
-> On Wed, Oct 12, 2022, at 10:27 AM, Thomas Zimmermann wrote:
-> > Am 12.10.22 um 09:44 schrieb Arnd Bergmann:
-> >> On Wed, Oct 12, 2022, at 9:40 AM, Thomas Zimmermann wrote:
-> >>> Am 12.10.22 um 09:17 schrieb Arnd Bergmann:
-> >>>> On Wed, Oct 12, 2022, at 8:46 AM, Thomas Zimmermann wrote:
-> >>>
-> >>>> Does qemu mark the device has having a particular endianess then, or
-> >>>> does it switch the layout of the framebuffer to match what the CPU
-> >>>> does?
-> >>>
-> >>> The latter. On neither architecture does qemu expose this flag. The
-> >>> default endianess corresponds to the host.
-> >> 
-> >> "host" as in the machine that qemu runs on, or the machine that is
-> >> being emulated? I suppose it would be broken either way, but in the
-> >> latter case, we could get away with detecting that the machine is
-> >> running under qemu.
-> >
-> > Sorry, my mistake. I meant "guest": the endianess of the framebuffer 
-> > corresponds to the endianess of the emulated machine.  Given that many 
-> > graphics cards support LE and BE modes, I assume that this behavior 
-> > mimics real-hardware systems.
+On Wed, Oct 12, 2022 at 02:09:00PM +0530, Ravi Bangoria wrote:
+
+> > @@ -3366,6 +3370,14 @@ static void perf_event_sync_stat(struct
+> >  	}
+> >  }
+> >  
+> > +#define list_for_each_entry_double(pos1, pos2, head1, head2, member)	\
+> > +	for (pos1 = list_first_entry(head1, typeof(*pos1), member),	\
+> > +	     pos2 = list_first_entry(head2, typeof(*pos2), member);	\
+> > +	     !list_entry_is_head(pos1, head1, member) &&		\
+> > +	     !list_entry_is_head(pos2, head2, member);			\
+> > +	     pos1 = list_next_entry(pos1, member),			\
+> > +	     pos2 = list_next_entry(pos2, member))
+> > +
+> >  static void perf_event_swap_task_ctx_data(struct perf_event_context *prev_ctx,
+> >  					  struct perf_event_context *next_ctx)
+> >  {
+> > @@ -3374,16 +3386,9 @@ static void perf_event_swap_task_ctx_dat
+> >  	if (!prev_ctx->nr_task_data)
+> >  		return;
+> >  
+> > -	prev_epc = list_first_entry(&prev_ctx->pmu_ctx_list,
+> > -				    struct perf_event_pmu_context,
+> > -				    pmu_ctx_entry);
+> > -	next_epc = list_first_entry(&next_ctx->pmu_ctx_list,
+> > -				    struct perf_event_pmu_context,
+> > -				    pmu_ctx_entry);
+> > -
+> > -	while (&prev_epc->pmu_ctx_entry != &prev_ctx->pmu_ctx_list &&
+> > -	       &next_epc->pmu_ctx_entry != &next_ctx->pmu_ctx_list) {
+> > -
+> > +	list_for_each_entry_double(prev_epc, next_epc,
+> > +				   &prev_ctx->pmu_ctx_list, &next_ctx->pmu_ctx_list,
+> > +				   pmu_ctx_entry) {
 > 
-> Not really: While the hardware may be able to switch between
-> the modes, something has to actively set some hardware registers up
-> that way, but the offb/ofdrm driver has no interface for interacting
-> with that register, and the bootloader or firmware code that knows
-> about the register has no information about what kernel it will
-> eventually run. This is a bit architecture dependent, as e.g. on
-> MIPS, a bi-endian hardware platform has to run a bootloader with the
-> same endianness as the kernel, but on arm and powerpc the bootloader
-> is usually fixed and the kernel switches to its configured endianness
-> in the first few instructions after it gets entered.
+> There are more places which can use list_for_each_entry_double().
+> I'll fix those.
 
-But then the firmware knows that the kernel can switch endian and the
-endian information should be provided. And maybe that should be emulated
-better by qemu. Unfortunately, modern Power servers rarely come with a
-graphics card so it's hard to test on real hardware.
+I've gone and renamed it: double_list_for_each_entry(), but yeah, didn't
+look too hard for other users.
 
-Thanks
+> > @@ -4859,7 +4879,14 @@ static void put_pmu_ctx(struct perf_even
+> >  	if (epc->ctx) {
+> >  		struct perf_event_context *ctx = epc->ctx;
+> >  
+> > -		// XXX ctx->mutex
+> > +		/*
+> > +		 * XXX
+> > +		 *
+> > +		 * lockdep_assert_held(&ctx->mutex);
+> > +		 *
+> > +		 * can't because of the call-site in _free_event()/put_event()
+> > +		 * which isn't always called under ctx->mutex.
+> > +		 */
+> 
+> Yes. I came across the same and could not figure out how to solve
+> this. So Just kept XXX as is.
 
-Michal
+Yeah, I can sorta fix it, but it's ugly so there we are.
+
+> >  
+> >  		WARN_ON_ONCE(list_empty(&epc->pmu_ctx_entry));
+> >  		raw_spin_lock_irqsave(&ctx->lock, flags);
+
+> > @@ -12657,6 +12675,13 @@ perf_event_create_kernel_counter(struct
+> >  		goto err_unlock;
+> >  	}
+> >  
+> > +	pmu_ctx = find_get_pmu_context(pmu, ctx, event);
+> > +	if (IS_ERR(pmu_ctx)) {
+> > +		err = PTR_ERR(pmu_ctx);
+> > +		goto err_unlock;
+> > +	}
+> > +	event->pmu_ctx = pmu_ctx;
+> 
+> We should call find_get_pmu_context() with ctx->mutex held and thus
+> above perf_event_create_kernel_counter() change. Is my understanding
+> correct?
+
+That's the intent yeah. But due to not always holding ctx->mutex over
+put_pmu_ctx() this might be moot. I'm almost through auditing epc usage
+and I think ctx->lock is sufficient, fingers crossed.
+
+> > +
+> >  	if (!task) {
+> >  		/*
+> >  		 * Check if the @cpu we're creating an event for is online.
+
+> > @@ -12998,7 +13022,7 @@ void perf_event_free_task(struct task_st
+> >  	struct perf_event_context *ctx;
+> >  	struct perf_event *event, *tmp;
+> >  
+> > -	ctx = rcu_dereference(task->perf_event_ctxp);
+> > +	ctx = rcu_access_pointer(task->perf_event_ctxp);
+> 
+> We dereference ctx pointer but with mutex and lock held. And thus
+> rcu_access_pointer() is sufficient. Is my understanding correct?
+
+We do not in fact hold ctx->lock here IIRC; but this is a NULL test, if
+it is !NULL we know we have a reference on it and are good.
