@@ -2,77 +2,91 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D30D5FD43A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Oct 2022 07:23:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83FC95FD4D3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Oct 2022 08:30:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MnybN0Mfbz3bjQ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Oct 2022 16:23:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Mp04c4fWxz3cBP
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Oct 2022 17:30:08 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=mDoghLF0;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=InSsjplS;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=Q2CpNE0R;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::635; helo=mail-pl1-x635.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=66.111.4.27; helo=out3-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=mDoghLF0;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=InSsjplS;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=Q2CpNE0R;
 	dkim-atps=neutral
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
+Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com [66.111.4.27])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MnyZP6cXpz2xfV
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Oct 2022 16:22:21 +1100 (AEDT)
-Received: by mail-pl1-x635.google.com with SMTP id k9so430597pll.11
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Oct 2022 22:22:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5KUigR7SJ7uFyr2yNbxpVBZqM/PTPgSSjnaooqgXQb4=;
-        b=mDoghLF0CDSCPU4++bngkMIB3aPLTW4HOAtQe7zp1ltS3uBufcMoVWGDWMQyreLZCU
-         yRFG6g2e1dv8StaRvGI1qiKcrVTtrdTgcObGTzaOyaRQdVRCmjZmXJA8P3jC/CbzchDb
-         ch7WseAve+DRjfS54Oh1FMXR3TZtPI/r+xMlZqk5CPCEObseWIVTOL4MJgjGposWh41z
-         xkmywKUlppn7VdLluqfkeGMXA3picuSrIEgPWd39GfFSPlAN+zF3m/IJpWBk6/Vnv4u9
-         wsRZ4opeub7nggQVoOG3g6g7MiWnrORIzTEyL6E+iQESVjoKJxN2xvEX+Vb4SZuwXvZv
-         z74Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=5KUigR7SJ7uFyr2yNbxpVBZqM/PTPgSSjnaooqgXQb4=;
-        b=yupSUBmpvy2EiRorgO4O+y+ERazP2HZu+Jkw4LKAW9QIbRQ8G1Xdl6+jHBRNRSuQE4
-         uFlgGhS/30JUNnIEoUaQ0ufFlAxyLoDhKevkaeOeeecyE7MdxFnJRJrW8i+Kgv62DjqM
-         Ceoocbyf6uoepyFIBwc+0ljRRjHG4Yb77M7s2dmLrhM4iSuE1DXbB+9DDDsantmTj3fG
-         cgWBLS6VCIGac9Y9EhIkVvM/7WJo5ow6gOz3bJrT0TMsAiXwCZcQBH9IZwjPaOif/qIA
-         VJheF0e14Qo/UN2CQ29+hHAksp339XYkShw8ncaVHah1qTklm8R6lYTJzmKjDRxPqUEx
-         HBPg==
-X-Gm-Message-State: ACrzQf2Ds+mBa4gAoWxEg1XnGffuhC/KMAFQ3caK+ypjonLCyREHJnYG
-	fJD2KiKli7wY6P7GN5SVXqs=
-X-Google-Smtp-Source: AMsMyM4IE0OtdgMomYoWq+tu6m77qqVcqsJKqjqKRhI/OJqvgva+src7nCKPmMXCXbDUsqYT+YODkQ==
-X-Received: by 2002:a17:902:e982:b0:17f:ca1f:aa44 with SMTP id f2-20020a170902e98200b0017fca1faa44mr32495020plb.76.1665638538944;
-        Wed, 12 Oct 2022 22:22:18 -0700 (PDT)
-Received: from localhost ([202.173.165.98])
-        by smtp.gmail.com with ESMTPSA id h185-20020a62dec2000000b00561c6a4c1b0sm847441pfg.176.2022.10.12.22.22.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 Oct 2022 22:22:18 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mp03b4b47z2yP8
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Oct 2022 17:29:14 +1100 (AEDT)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+	by mailout.nyi.internal (Postfix) with ESMTP id 55C7E5C00FC;
+	Thu, 13 Oct 2022 02:29:11 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute3.internal (MEProxy); Thu, 13 Oct 2022 02:29:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-type:date:date:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:sender:subject
+	:subject:to:to; s=fm2; t=1665642551; x=1665728951; bh=IK7qyXP/Hq
+	Hv2l79+EvbWbN9n2PDThaIIYKN+SdCmLU=; b=InSsjplS9Ys0U2AGlXKt7JrKR9
+	P4de4X3Des9x2jpi0NY5SqXFP9lDw2DELcTICNVaFYyQVug4NSAlLn2wnv5RNlKE
+	yseSXnYYuoWnY4pjo8NBgTmK4BauaA0Vxpaxn30Rme9wCptdagLbtyc4WqCbQL+Q
+	cbpa5YWMf59gAIoWc3xf7hsmriAvf6j0yjBXUSGoOutA/yJEXGrfxtUUh5GtWCLx
+	zifPjL/UKNieG6TcgJ/e4rUEQQTkNwwTqlJHxlGJxgo3ljAN8kc2ybhzMWsdCfpj
+	IJCSW6YUymHtrKbcSmGL7p68Usa2uTDg003fZ+yniKqlbvDqZ69trc46dPqg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
+	:feedback-id:from:from:in-reply-to:in-reply-to:message-id
+	:mime-version:references:reply-to:sender:subject:subject:to:to
+	:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm3; t=1665642551; x=1665728951; bh=IK7qyXP/HqHv2l79+EvbWbN9n2PD
+	ThaIIYKN+SdCmLU=; b=Q2CpNE0R0yn5ejpW0T6nFjfHoMnRLXBS32u4Y90NWnC0
+	1tIINvXRjhsIWBsk9oo21L9SAU2QG0twhkXlxNprdbOVir6CW2viY7ro8/IkN8ok
+	W1MerrZ+NRcgQkEAfAo90dHOYlI/yT2O/u4mZarMEBDibKBp2TtBsMdspWbRg2kQ
+	Px0D68KqMraQDAElccP2rC/C/MFaZSBgdlWvMtzRW6oqKkXKDumd9MfS8pJCrir2
+	nCjkuqxVVg1yMAURsQv5HJ7jx7PktJYsnkYbIGw3/La60yExsGRF81MZ30FuyXLE
+	3X3N1SLQ8ZDLF1NicDFofzohyntVbzNOOhnOW0gCgQ==
+X-ME-Sender: <xms:NrBHY7_Ni3TZ3cVbcq129ad5lztFqrAYS710Pvv1ow2bZY2XNGV1gw>
+    <xme:NrBHY3tQatCkmrhc2_bIhRoGWRGOqxv5firinyaUfWUaMrKmhSZ-4DcpdrafBG5Xr
+    vDrDMrPBmVYdpapWdQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfeejledguddutdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdet
+    rhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrg
+    htthgvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedt
+    keetffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    grrhhnugesrghrnhgusgdruggv
+X-ME-Proxy: <xmx:NrBHY5AeVxScoHloAQn3dk12_0JBsCSMxhuCYcm0_4fd4jccNPWxqA>
+    <xmx:NrBHY3fPMECVqQVWlU7aEwnSnBUtJ3eZzm5kEW7Di4IbMUH406kCmw>
+    <xmx:NrBHYwMEJd_OL-fNGSTJEFtKIs8WIBfG6KXbe-VRRsY3OPi7Nu-NYw>
+    <xmx:N7BHYyv332Ii0uhigppB6rMr2NLWWMg9MonS7J95YHIiD4hXOpdN6Q>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 28323B60086; Thu, 13 Oct 2022 02:29:10 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.7.0-alpha0-1047-g9e4af4ada4-fm-20221005.001-g9e4af4ad
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 13 Oct 2022 15:22:05 +1000
-Message-Id: <CNKJKV3GCTGF.18JF410CFEKR3@bobo>
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Guenter Roeck" <linux@roeck-us.net>, "Michael Ellerman"
- <mpe@ellerman.id.au>
-Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-6.1-1 tag
-X-Mailer: aerc 0.11.0
-References: <87edvhntv0.fsf@mpe.ellerman.id.au>
- <20221012141827.GA2405914@roeck-us.net> <Y0biBtCUtc2mowbQ@zx2c4.com>
- <20221012164452.GA2990467@roeck-us.net> <Y0b3ZsTRHWG6jGK8@zx2c4.com>
- <20221012221615.GA364143@roeck-us.net> <87bkqgmvxl.fsf@mpe.ellerman.id.au>
- <20221013002148.GA535574@roeck-us.net>
-In-Reply-To: <20221013002148.GA535574@roeck-us.net>
+Message-Id: <a35fd31b-0658-4ac1-8340-99cdf4c75bb7@app.fastmail.com>
+In-Reply-To: <20221012180806-mutt-send-email-mst@kernel.org>
+References: <20221010132030-mutt-send-email-mst@kernel.org>
+ <87r0zdmujf.fsf@mpe.ellerman.id.au>
+ <20221012070532-mutt-send-email-mst@kernel.org>
+ <87mta1marq.fsf@mpe.ellerman.id.au> <87edvdm7qg.fsf@mpe.ellerman.id.au>
+ <20221012115023-mutt-send-email-mst@kernel.org>
+ <CAHk-=wg2Pkb9kbfbstbB91AJA2SF6cySbsgHG-iQMq56j3VTcA@mail.gmail.com>
+ <38893b2e-c7a1-4ad2-b691-7fbcbbeb310f@app.fastmail.com>
+ <20221012180806-mutt-send-email-mst@kernel.org>
+Date: Thu, 13 Oct 2022 08:28:03 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Subject: Re: [GIT PULL] virtio: fixes, features
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,38 +98,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, david@redhat.com, linux-kernel@vger.kernel.org, wsa+renesas@sang-engineering.com, nicholas@linux.ibm.com, windhl@126.com, cuigaosheng1@huawei.com, mikey@neuling.org, paul@paul-moore.com, aneesh.kumar@linux.ibm.com, haren@linux.ibm.com, joel@jms.id.au, lukas.bulwahn@gmail.com, nathanl@linux.ibm.com, ajd@linux.ibm.com, ye.xingchen@zte.com.cn, nathan@kernel.org, rmclure@linux.ibm.com, hbathini@linux.ibm.com, atrajeev@linux.vnet.ibm.com, yuanjilin@cdjrlc.com, pali@kernel.org, farosas@linux.ibm.com, geoff@infradead.org, Linus Torvalds <torvalds@linux-foundation.org>, gustavoars@kernel.org, lihuafei1@huawei.com, zhengyongjun3@huawei.com, linuxppc-dev@lists.ozlabs.org
+Cc: xiujianfeng@huawei.com, kvm@vger.kernel.org, alvaro.karsz@solid-run.com, linux-pci@vger.kernel.org, Jason Wang <jasowang@redhat.com>, linuxppc-dev@lists.ozlabs.org, wangdeming@inspur.com, linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org, Netdev <netdev@vger.kernel.org>, angus.chen@jaguarmicro.com, Bjorn Helgaas <bhelgaas@google.com>, lingshan.zhu@intel.com, Linus Torvalds <torvalds@linux-foundation.org>, gavinl@nvidia.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu Oct 13, 2022 at 10:21 AM AEST, Guenter Roeck wrote:
-> On Thu, Oct 13, 2022 at 11:03:34AM +1100, Michael Ellerman wrote:
-> > Guenter Roeck <linux@roeck-us.net> writes:
-> > > On Wed, Oct 12, 2022 at 11:20:38AM -0600, Jason A. Donenfeld wrote:
-> > >>=20
-> > >> I've also managed to not hit this bug a few times. When it triggers,
-> > >> after "kprobes: kprobe jump-optimization is enabled. All kprobes are
-> > >> optimized if possible.", there's a long hang - tens seconds before i=
-t
-> > >> continues. When it doesn't trigger, there's no hang at that point in=
- the
-> > >> boot process.
-> > >>=20
-> > >
-> > > I managed to bisect the problem. See below for results. Reverting the
-> > > offending patch fixes the problem for me.
-> >=20
-> > Thanks.
-> >=20
-> > This is probably down to me/us not testing with PREEMPT enabled enough.
-> >=20
-> Not sure. My configuration has
+On Thu, Oct 13, 2022, at 12:08 AM, Michael S. Tsirkin wrote:
+> On Wed, Oct 12, 2022 at 11:06:54PM +0200, Arnd Bergmann wrote:
+>> On Wed, Oct 12, 2022, at 7:22 PM, Linus Torvalds wrote:
+>> >
+>> > The NO_IRQ thing is mainly actually defined by a few drivers that just
+>> > never got converted to the proper world order, and even then you can
+>> > see the confusion (ie some drivers use "-1", others use "0", and yet
+>> > others use "((unsigned int)(-1)".
+>> 
+>> The last time I looked at removing it for arch/arm/, one problem was
+>> that there were a number of platforms using IRQ 0 as a valid number.
+>> We have converted most of them in the meantime, leaving now only
+>> mach-rpc and mach-footbridge. For the other platforms, we just
+>> renumbered all interrupts to add one, but footbridge apparently
+>> relies on hardcoded ISA interrupts in device drivers. For rpc,
+>> it looks like IRQ 0 (printer) already wouldn't work, and it
+>> looks like there was never a driver referencing it either.
 >
-> CONFIG_PREEMPT_NONE=3Dy
-> # CONFIG_PREEMPT_VOLUNTARY is not set
-> # CONFIG_PREEMPT is not set
+> Do these two boxes even have pci?
 
-Okay I reproduced it, just takes a while to hit.
+Footbridge/netwinder has PCI and PC-style ISA on-board devices
+(floppy, ps2 mouse/keyboard, parport, soundblaster, ...), RiscPC
+has neither.
 
-Thanks,
-Nick
+    Arnd
