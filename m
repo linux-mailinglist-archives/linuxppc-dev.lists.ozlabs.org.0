@@ -1,79 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 036BA5FDED4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Oct 2022 19:20:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E679D5FE235
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Oct 2022 20:57:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MpGVr6X76z3ds4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Oct 2022 04:20:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MpJfL5Fggz3drS
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Oct 2022 05:56:58 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=RwP93R0i;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=FPFt3yOE;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2001:4860:4864:20::29; helo=mail-oa1-x29.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1031; helo=mail-pj1-x1031.google.com; envelope-from=groeck7@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=RwP93R0i;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=FPFt3yOE;
 	dkim-atps=neutral
-Received: from mail-oa1-x29.google.com (mail-oa1-x29.google.com [IPv6:2001:4860:4864:20::29])
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MpGTv2S8rz2yP8
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Oct 2022 04:19:29 +1100 (AEDT)
-Received: by mail-oa1-x29.google.com with SMTP id 586e51a60fabf-1364357a691so3053892fac.7
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Oct 2022 10:19:29 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MpJdL5FRlz2yQg
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Oct 2022 05:56:05 +1100 (AEDT)
+Received: by mail-pj1-x1031.google.com with SMTP id q10-20020a17090a304a00b0020b1d5f6975so2728195pjl.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Oct 2022 11:56:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=j1qTz+oYugF8Lf770mKCIrdepvqmBbCEzwy+EaukMrM=;
-        b=RwP93R0i/58OL7LRD+//xbsGSpXEvsNfrhi2GXL/rRnIR0fEBr1hhf0AxtH9ySaIuq
-         fxnBUs5tBFF0nv+sS5fXPWTFdyDQIQyfW3oaIHCHCny57nHo+jkN3VT1oW56ATf0pSAn
-         /cXKnAs4MWRb/mczWEGT2NYOdgosHqzbcK1Ec=
+        d=gmail.com; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=oWRpr36T0vvq5ApDatbP6GER4re2aJOEKr2PxsMGVwo=;
+        b=FPFt3yOEfGwAJKS6G8ieWTOkgCkn7k7tjXJgzao8TvPZ3+ep3kpnG3uSiMJCtdlZAq
+         0m6zhPax4wvRaecvmxZuiVBMb4by2zlwPVv7gTcQlpWueAD002NEZqX9fin/PwQiZJ8N
+         EEZ/5H/32HU9wFTU6IHEu0zSjYsu+eumn2zslMJ7xBuARtaoMkOWuJ69POuuW2GgXVPV
+         1vMQBb7BxHzoddHA60gRD0Vd0F5if2bUAMxfo8mlRhGEAZqLhF6QXfkEH8R0xU1GiyQU
+         i1cmwIpar3JRqG6oH8JxCjBZZNKKvG05q2c84T9kXzRtPmxtJsbTQwqLioaKnYlD/38+
+         crYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=j1qTz+oYugF8Lf770mKCIrdepvqmBbCEzwy+EaukMrM=;
-        b=esnsDu/DSpe8TAMBYhKKgQXcpOR3dXscfVtcfIk/j02QJ/MauwkHHPW6mqPeE098Z3
-         X8YazFKgY519W0PdWa71ysWqHxpw114a/P2EIdQ+xCd8qL6U/rMlYeHiYgD2NoG55wHp
-         9jVfDdGC1Xu8f7WfEZve0xKtdWyL9WC4byqmLAvtSvB9GMOMxxQZTdxcSe/41bT+BDaI
-         gT8YVw2DKyEx0ObNrm4sPtwJtZAkYi+yE1CkDsucHWIv2Yv3FhfuPatnIlhh/2diIAGi
-         cEPEVmlGsNbCoRZ7PlFirp5B0dKTkvcDhoApPJw9MJAApg76pGDjQcOCR5bAazC8PhJX
-         Ldvw==
-X-Gm-Message-State: ACrzQf0+9WZE6Hpf498yzfzsEb4iPFCsuXJkVEY3JIShqU7QB3CQJRrr
-	EFGUDQr6p5dk4W/R8LEy2Lh5PjFd4ody9A==
-X-Google-Smtp-Source: AMsMyM6Vu3jJDMxmzE48w1hSi6kJZoxgCPdFB9YCtR6tLiLd68t/3mBDdnPuMbGcUOccsvU3UgYZ/A==
-X-Received: by 2002:a05:6870:e0c9:b0:132:2090:20f7 with SMTP id a9-20020a056870e0c900b00132209020f7mr409438oab.277.1665681562749;
-        Thu, 13 Oct 2022 10:19:22 -0700 (PDT)
-Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com. [209.85.210.49])
-        by smtp.gmail.com with ESMTPSA id d24-20020a056830045800b006618b23df05sm202853otc.21.2022.10.13.10.19.19
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 13 Oct 2022 10:19:19 -0700 (PDT)
-Received: by mail-ot1-f49.google.com with SMTP id cb2-20020a056830618200b00661b6e5dcd8so425173otb.8
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Oct 2022 10:19:19 -0700 (PDT)
-X-Received: by 2002:a05:6830:4421:b0:661:8fdd:81e9 with SMTP id
- q33-20020a056830442100b006618fdd81e9mr528782otv.69.1665681558964; Thu, 13 Oct
- 2022 10:19:18 -0700 (PDT)
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oWRpr36T0vvq5ApDatbP6GER4re2aJOEKr2PxsMGVwo=;
+        b=wlPasi2xINzZX2mRJdYKZ1VCEXavyg7Ja+gJSZ12rUjP3whUxYJ9BiBpp7uESEkrsL
+         mkhN4Y8jpcZqTdYbJRl3Ea1fEX/QWkt1zgGnC0g4K1B18V7zdaSz2wdW0YHNhs6/y4KH
+         MK8RIXaMCwgdHgRH4Oh3t8l5Z8K5uws+I10BNaZNAx/m2fGrv2hQtHs1Ilu0WiIvGjFs
+         XMo/YorPJFg2f3cGuuf38gsCOgYtttwWmWQbeON7ArtClN9B5TArBjvuDBj84ovJZ2A1
+         9twtStNSkVqXxo/zuNkBUkxbS7ArIHOCdNXfmoxiIR5ThXe/eZbd15nAzUcAd4/xWFoI
+         opNw==
+X-Gm-Message-State: ACrzQf2hPsKwjs8lEc7avkBJgztBiJVjD3vYtngYaQy+M7Yp7BZF/vCn
+	h2W4Sx44hNhSdDwJswB4AG4=
+X-Google-Smtp-Source: AMsMyM59xd6ZcVEx+l3swra9RQo5gElDf282vgtxbCfMlBM5HWdPGtooDKymbuG/Y/s6RPa38fhMgA==
+X-Received: by 2002:a17:90b:1e11:b0:20d:90b3:45a0 with SMTP id pg17-20020a17090b1e1100b0020d90b345a0mr10212953pjb.29.1665687361502;
+        Thu, 13 Oct 2022 11:56:01 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id b1-20020a170902d40100b0017870f471f6sm173606ple.226.2022.10.13.11.56.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Oct 2022 11:56:00 -0700 (PDT)
+Date: Thu, 13 Oct 2022 11:55:59 -0700
+From: Guenter Roeck <linux@roeck-us.net>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-6.1-1 tag
+Message-ID: <20221013185559.GA836698@roeck-us.net>
+References: <87edvhntv0.fsf@mpe.ellerman.id.au>
+ <20221012141827.GA2405914@roeck-us.net>
+ <Y0biBtCUtc2mowbQ@zx2c4.com>
+ <20221012164452.GA2990467@roeck-us.net>
+ <Y0b3ZsTRHWG6jGK8@zx2c4.com>
+ <bba714ce-4af7-a7ea-21b5-10e5578b6db8@roeck-us.net>
+ <CNKJES19WP6K.LOS0TA0Q4MRO@bobo>
 MIME-Version: 1.0
-References: <20221010132030-mutt-send-email-mst@kernel.org>
- <87r0zdmujf.fsf@mpe.ellerman.id.au> <20221012070532-mutt-send-email-mst@kernel.org>
- <87mta1marq.fsf@mpe.ellerman.id.au> <87edvdm7qg.fsf@mpe.ellerman.id.au>
- <20221012115023-mutt-send-email-mst@kernel.org> <CAHk-=wg2Pkb9kbfbstbB91AJA2SF6cySbsgHG-iQMq56j3VTcA@mail.gmail.com>
- <38893b2e-c7a1-4ad2-b691-7fbcbbeb310f@app.fastmail.com> <20221012180806-mutt-send-email-mst@kernel.org>
- <a35fd31b-0658-4ac1-8340-99cdf4c75bb7@app.fastmail.com>
-In-Reply-To: <a35fd31b-0658-4ac1-8340-99cdf4c75bb7@app.fastmail.com>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Thu, 13 Oct 2022 10:19:02 -0700
-X-Gmail-Original-Message-ID: <CAHk-=whLv3MO0Tvc62zJ+=4yvSfKMK17C0wfpbXBwUJqSjKbYA@mail.gmail.com>
-Message-ID: <CAHk-=whLv3MO0Tvc62zJ+=4yvSfKMK17C0wfpbXBwUJqSjKbYA@mail.gmail.com>
-Subject: Re: [GIT PULL] virtio: fixes, features
-To: Arnd Bergmann <arnd@arndb.de>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CNKJES19WP6K.LOS0TA0Q4MRO@bobo>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,63 +84,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: xiujianfeng@huawei.com, kvm@vger.kernel.org, "Michael S. Tsirkin" <mst@redhat.com>, alvaro.karsz@solid-run.com, linux-pci@vger.kernel.org, Jason Wang <jasowang@redhat.com>, wangdeming@inspur.com, linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org, Netdev <netdev@vger.kernel.org>, angus.chen@jaguarmicro.com, Bjorn Helgaas <bhelgaas@google.com>, lingshan.zhu@intel.com, linuxppc-dev@lists.ozlabs.org, gavinl@nvidia.com
+Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, david@redhat.com, Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org, wsa+renesas@sang-engineering.com, nicholas@linux.ibm.com, windhl@126.com, cuigaosheng1@huawei.com, mikey@neuling.org, paul@paul-moore.com, haren@linux.ibm.com, Ingo Molnar <mingo@kernel.org>, joel@jms.id.au, lukas.bulwahn@gmail.com, nathanl@linux.ibm.com, ajd@linux.ibm.com, ye.xingchen@zte.com.cn, nathan@kernel.org, rmclure@linux.ibm.com, hbathini@linux.ibm.com, atrajeev@linux.vnet.ibm.com, yuanjilin@cdjrlc.com, pali@kernel.org, farosas@linux.ibm.com, geoff@infradead.org, Linus Torvalds <torvalds@linux-foundation.org>, gustavoars@kernel.org, lihuafei1@huawei.com, aneesh.kumar@linux.ibm.com, zhengyongjun3@huawei.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Oct 12, 2022 at 11:29 PM Arnd Bergmann <arnd@arndb.de> wrote:
->
-> On Thu, Oct 13, 2022, at 12:08 AM, Michael S. Tsirkin wrote:
+On Thu, Oct 13, 2022 at 03:14:08PM +1000, Nicholas Piggin wrote:
+> > > 
+> > > BUG: using smp_processor_id() in preemptible [00000000] code: swapper/0/1
+> > > caller is .__flush_tlb_pending+0x40/0xf0
+> > > CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.0.0-28380-gde492c83cae0-dirty #4
+> > > Hardware name: PowerMac3,1 PPC970FX 0x3c0301 PowerMac
+> > > Call Trace:
+> > > [c0000000044c3540] [c000000000f93ef0] .dump_stack_lvl+0x7c/0xc4 (unreliable)
+> > > [c0000000044c35d0] [c000000000fc9550] .check_preemption_disabled+0x140/0x150
+> > > [c0000000044c3660] [c000000000073dd0] .__flush_tlb_pending+0x40/0xf0
+> > > [c0000000044c36f0] [c000000000334434] .__apply_to_page_range+0x764/0xa30
+> > > [c0000000044c3840] [c00000000006cad0] .change_memory_attr+0xf0/0x160
+> > > [c0000000044c38d0] [c0000000002a1d70] .bpf_prog_select_runtime+0x150/0x230
+> > > [c0000000044c3970] [c000000000d405d4] .bpf_prepare_filter+0x504/0x6f0
+> > > [c0000000044c3a30] [c000000000d4085c] .bpf_prog_create+0x9c/0x140
+> > > [c0000000044c3ac0] [c000000002051d9c] .ptp_classifier_init+0x44/0x78
+> > > [c0000000044c3b50] [c000000002050f3c] .sock_init+0xe0/0x100
+> > > [c0000000044c3bd0] [c000000000010bd4] .do_one_initcall+0xa4/0x438
+> > > [c0000000044c3cc0] [c000000002005008] .kernel_init_freeable+0x378/0x428
+> > > [c0000000044c3da0] [c0000000000113d8] .kernel_init+0x28/0x1a0
+> > > [c0000000044c3e10] [c00000000000ca3c] .ret_from_kernel_thread+0x58/0x60
+> > > 
+> > > This in turn is because __flush_tlb_pending() calls:
+> > > 
+> > > static inline int mm_is_thread_local(struct mm_struct *mm)
+> > > {
+> > >          return cpumask_equal(mm_cpumask(mm),
+> > >                                cpumask_of(smp_processor_id()));
+> > > }
+> > > 
+> > > __flush_tlb_pending() has a comment about this:
+> > > 
+> > >   * Must be called from within some kind of spinlock/non-preempt region...
+> > >   */
+> > > void __flush_tlb_pending(struct ppc64_tlb_batch *batch)
+> > > 
+> > > So I guess that didn't happen for some reason? Maybe this is indicative
+> > > of some lock imbalance that then gets hit later?
 > >
-> > Do these two boxes even have pci?
->
-> Footbridge/netwinder has PCI and PC-style ISA on-board devices
-> (floppy, ps2 mouse/keyboard, parport, soundblaster, ...), RiscPC
-> has neither.
+> > I managed to bisect that problem. Unfortunately it points to the
+> > scheduler merge. No idea what to do about that. Any idea ?
+> > I am copying Peter and Ingo for comments.
+> >
+> 
+> > # first bad commit: [30c999937f69abf935b0228b8411713737377d9e] Merge tag 'sched-core-2022-10-07' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip
+> 
+> This might be a red herring because I can reproduce without it.
+> I think we can fix this with some preempt critical sections, they
+> don't look too much of a problem.
+> 
 
-It's worth noting that changing a driver that does
+Do you refer to the bisect of the BUG: message above, or to the other
+problem ? I can try to repeat the bisect with some retries if you
+think that 30c999937f69a isn't responsible for "BUG: using
+smp_processor_id() in preemptible [00000000] code".
 
-        if (dev->irq == NO_IRQ)
-                return -ENODEV;
-
-to use
-
-        if (!dev->irq)
-                return -ENODEV;
-
-should be pretty much always fine.
-
-Even *if* that driver is then compiled and used on an architecture
-where NO_IRQ is one of the odd values, you end up having only two
-cases
-
- (a) irq 0 was actually a valid irq after all
-
- (b) you just get the error later when actually trying to use the odd
-NO_IRQ interrupt with request_irq() and friends
-
-and here (a) basically never happens - certainly not for any PCI setup
-- and (b) is harmless unless the driver was already terminally broken
-anyway.
-
-The one exception for (a) might be some platform irq code. On x86,
-that would be the legacy timer interrupt, of course.
-
-So if some odd platform actually has a "real" interrupt on irq0, that
-platform should either just fix the irq number mapping, or should
-consider that interrupt to be a platform-specific thing and handle it
-very very specially.
-
-On x86, for example, we do
-
-        if (request_irq(0, timer_interrupt, flags, "timer", NULL))
-
-early in boot, and that's basically what then makes sure that no
-driver can get that irq. It's done through the platform "timer_init"
-code at the "late_time_init()" call.
-
-(And that "late_time_init()" - despite the name - isn't very late at
-all. It's just later than the very early timekeeping init - after
-interrupts have been enabled at all.
-
-             Linus
+Thanks,
+Guenter
