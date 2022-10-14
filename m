@@ -1,49 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8613E5FED49
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Oct 2022 13:42:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7C8D5FEF08
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Oct 2022 15:52:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Mpkyg5gwrz3ds9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Oct 2022 22:42:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Mpnrm42Fxz3dsT
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Oct 2022 00:52:40 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=TLtHq9Ln;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=F292aE98;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mpkxl38wwz30DP
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Oct 2022 22:41:47 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=TLtHq9Ln;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=F292aE98;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Mpkxl1STpz4x1G;
-	Fri, 14 Oct 2022 22:41:47 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1665747707;
-	bh=2CAXROmdXXHnzNjRew8XdikNXQgXjSxX5epQMzVUkgM=;
-	h=From:To:Cc:Subject:Date:From;
-	b=TLtHq9LnOVtJzTL4fSS/iWYAdVooPFHmAd0/2hX5wtLyCj5P0mdQPVr7HI+9w6+Z4
-	 SrNu3DRZBEq1eCvS719/jaQtoYlg4kWdnO5HeMcFlrG7zhyTocksSJyet1cGT7Brky
-	 0CWEZVNh6YRcnWBc4VXDR1b1NXXc8RCo8nB0GSMDlDM1LW7UEauNxz7XzWic9ut/Ux
-	 bEajJVj1L1HYzLdBi11noVahuPEAq+5UfKEzgS+ZCKsNyJ8LIxB2TgtMW6BsBpHCkm
-	 DOmJvO07DU6Kw12PV3v79usgo0oZgvsGHku9RMYdozRd63Ybns6MMir7QB04o0PqGz
-	 TqRHKK1a9lnKw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-6.1-2 tag
-Date: Fri, 14 Oct 2022 22:41:42 +1100
-Message-ID: <874jw6my2x.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mpnqp2xzCz2xHb
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Oct 2022 00:51:50 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by sin.source.kernel.org (Postfix) with ESMTPS id 26B14CE25AE;
+	Fri, 14 Oct 2022 13:51:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ABEDC433D6;
+	Fri, 14 Oct 2022 13:51:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1665755505;
+	bh=BOeUAW08y22Ui11TSsJcGyob9iBOvUvzBgY7Wtfqjlo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=F292aE98knGltMuyqhTAVRtwXQpU/7VoSYrUjVzwHx/FhazwqhLGdGDv+zERZ/3Qb
+	 6M1UibXr+Jfva7c5hoIxcwdAJnZnJ9KHcLQoHgoPrFmMrk+e5rUJPTMuHVV/AtaD27
+	 xOr+W84/oiZH4qM/T71uj4QCvvTCXSSCEJRkLEmzrbS+qfGeLH6nkYDVBBVkL/Ryyc
+	 gDwxB+Z8rjwgcL1fM7bt11XcTKWgc6G8jzULMdKjVMP60CTy8taZZ8eDxIDBeOVFae
+	 xIWzx7ai3Nw9d3gRAKJlsYvaCb5mrVNgjuLjwBPA3ZbIQ2cttifaZ6KvSFaKAFJGQW
+	 APg1rLN/cKaIQ==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.0 02/11] powerpc/selftests: Use timersub() for gettimeofday()
+Date: Fri, 14 Oct 2022 09:51:28 -0400
+Message-Id: <20221014135139.2109024-2-sashal@kernel.org>
+X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20221014135139.2109024-1-sashal@kernel.org>
+References: <20221014135139.2109024-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,69 +62,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, npiggin@gmail.com
+Cc: Sasha Levin <sashal@kernel.org>, ye xingchen <ye.xingchen@zte.com.cn>, Zeal Robot <zealci@zte.com.cn>, linuxppc-dev@lists.ozlabs.org, linux-kselftest@vger.kernel.org, shuah@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA256
+From: ye xingchen <ye.xingchen@zte.com.cn>
 
-Hi Linus,
+[ Upstream commit c814bf958926ff45a9c1e899bd001006ab6cfbae ]
 
-Please pull powerpc fixes for 6.1:
+Use timersub() function to simplify the code.
 
-The following changes since commit ae5b6779fa8724628bbad58126a626d0cd599414:
+Reported-by: Zeal Robot <zealci@zte.com.cn>
+Signed-off-by: ye xingchen <ye.xingchen@zte.com.cn>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/20220816105106.82666-1-ye.xingchen@zte.com.cn
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ tools/testing/selftests/powerpc/benchmarks/gettimeofday.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-  powerpc: Fix 85xx build (2022-10-11 10:13:34 -0700)
+diff --git a/tools/testing/selftests/powerpc/benchmarks/gettimeofday.c b/tools/testing/selftests/powerpc/benchmarks/gettimeofday.c
+index 6b415683357b..580fcac0a09f 100644
+--- a/tools/testing/selftests/powerpc/benchmarks/gettimeofday.c
++++ b/tools/testing/selftests/powerpc/benchmarks/gettimeofday.c
+@@ -12,7 +12,7 @@ static int test_gettimeofday(void)
+ {
+ 	int i;
+ 
+-	struct timeval tv_start, tv_end;
++	struct timeval tv_start, tv_end, tv_diff;
+ 
+ 	gettimeofday(&tv_start, NULL);
+ 
+@@ -20,7 +20,9 @@ static int test_gettimeofday(void)
+ 		gettimeofday(&tv_end, NULL);
+ 	}
+ 
+-	printf("time = %.6f\n", tv_end.tv_sec - tv_start.tv_sec + (tv_end.tv_usec - tv_start.tv_usec) * 1e-6);
++	timersub(&tv_start, &tv_end, &tv_diff);
++
++	printf("time = %.6f\n", tv_diff.tv_sec + (tv_diff.tv_usec) * 1e-6);
+ 
+ 	return 0;
+ }
+-- 
+2.35.1
 
-are available in the git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.1-2
-
-for you to fetch changes up to 90d5ce82e143b42b2fdfb95401a89f86b71cedb7:
-
-  powerpc/pseries: Fix CONFIG_DTL=n build (2022-10-13 22:30:07 +1100)
-
-- ------------------------------------------------------------------
-powerpc fixes for 6.1 #2
-
- - Fix 32-bit syscall wrappers with 64-bit arguments of unaligned register-pairs.
-   Notably this broke ftruncate64 & pread/write64, which can lead to file corruption.
-
- - Fix lost interrupts when returning to soft-masked context on 64-bit.
-
- - Fix build failure when CONFIG_DTL=n.
-
-Thanks to: Nicholas Piggin, Jason A. Donenfeld, Guenter Roeck, Arnd Bergmann, Sachin Sant.
-
-- ------------------------------------------------------------------
-Nicholas Piggin (3):
-      powerpc/32: fix syscall wrappers with 64-bit arguments of unaligned register-pairs
-      powerpc/64s/interrupt: Fix lost interrupts when returning to soft-masked context
-      powerpc/pseries: Fix CONFIG_DTL=n build
-
-
- arch/powerpc/include/asm/syscalls.h      |  16 +++
- arch/powerpc/kernel/Makefile             |   1 +
- arch/powerpc/kernel/interrupt_64.S       |  15 +-
- arch/powerpc/kernel/sys_ppc32.c          |  38 +++--
- arch/powerpc/kernel/syscalls/syscall.tbl |  16 ++-
- arch/powerpc/platforms/pseries/Makefile  |   3 +-
- arch/powerpc/platforms/pseries/dtl.c     | 151 ++++++++++----------
- 7 files changed, 149 insertions(+), 91 deletions(-)
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAmNJSsUACgkQUevqPMjh
-pYBBOg//aOMrUh9f40AMV7EOln4mk8c28nrpbl2JOIJ0CHuEbD4RJOTD/1Ndfg/2
-5p/zR5Dz3T7NgZtwOM0Zyokl1OV4o76riwq3DR4eYDlclYNErOsv0OLFcsx4mymn
-gfqRrMf8DIVu7dyGBRK9JY+zXFswa0pYlctnDC6Ron2D1/eQtLrMVpGGuXs3QKR5
-nsqssaD/0lyQqG6K4vCk5pKx53fNi3uGiN1mjBAwVkAwy7xFvSoedQ3xg7UtE69j
-ee2tBFQAHHLgkcXX50wlQSiry5lH+FAbgiXJhNsf6YrwwJ11Hs6llVAVO+X6olQv
-h3STKbkCcP6HG1ZAq/+0w8ivzJ7EbqOG3h9lDDCp5kmK5D4uO8DPs6+lBEhcjPmf
-DeVM+AiUCCNzc2NNw8Q94HO8YTQRa/5o2VIbNPXdVvowJkBFNbdrOH/uiJx/FXBw
-+x2nMvWu/PwQCR9//Sju/71ULm+qKhw/p8IAarTBRGLG+HF1Drm/aCcxX00INcNI
-mbrUoR8fHDtVI6osdI0hjMrAyyuYGS8Bqg55J/O4aOz3AwhiI8JRennA6zLrKm/a
-KADqIdMvhwmH+hjLZPUoLjQf/WbjJUt17IXtBWEv8kZB/tmdeXr/7Cn/IEGaMFDg
-MuDL5aMkS/Y7Ve784+etgG8f8H04HrW4PuZSL71iltaF5eg2R0U=
-=UegA
------END PGP SIGNATURE-----
