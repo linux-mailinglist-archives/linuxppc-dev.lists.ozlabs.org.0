@@ -2,48 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E58915FF068
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Oct 2022 16:34:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06EDB5FF06A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Oct 2022 16:35:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MppnQ5m4fz3gJY
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Oct 2022 01:34:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MpppQ6Rtyz3fRX
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Oct 2022 01:35:42 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BkTrXLYU;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Zcgx6PXt;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BkTrXLYU;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Zcgx6PXt;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mpnvf6z3yz3f18
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Oct 2022 00:55:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mpnvj5c1Kz3dy8
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Oct 2022 00:55:13 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id D246661B4D;
-	Fri, 14 Oct 2022 13:55:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 456E2C4347C;
-	Fri, 14 Oct 2022 13:55:07 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id E7B5161B48;
+	Fri, 14 Oct 2022 13:55:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CAC5C4347C;
+	Fri, 14 Oct 2022 13:55:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1665755708;
-	bh=N7qjOu8AM4o2tEFVFWLtqsDSfSJXOTnsmwUIOChiYk8=;
+	s=k20201202; t=1665755711;
+	bh=ueeWCw8JepfakVzE9OMUQ0cAaI9rX4AoDI/tKAPXQSk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BkTrXLYUALuU6/9hlVAxeteCsotkWKIIc4NQXf5qRQn/7mAnTvwifd3Kuczr9oIU+
-	 aM2f2vRy2wQGU4NFG87BLraK05CQDfzGfn45iQ4rbRyal/w3f5SnWG6hK4cKwWi0no
-	 2tItU2V4wg+9tbwIuBZ8WxUfO7v8CifF7/2R22uVDYEqmyagTZNerxwv5cGXPzRgZF
-	 xqp4b0jNW92jf5b7hF7KyZ+zEfMv7aUnpyK4WgbhXFn64JicYfEJOk3kP/HuH9OCJN
-	 XkTL0HifctEjU8PL2jki4welqKb/u/iPqJ6MmGGmUhJwi3pmdhnbpp1EEj8G5jCBYU
-	 Y6wKimWxeDxKw==
+	b=Zcgx6PXtkBRs5lLY2A9FCRoAmQ4c0IrCUzdPhYszW0Rjk6tAfFS2g0nHaCRQYQSSQ
+	 yv8i80ggamBH4keosbf9GbDvCojS5qoMCkq5XhiE4pZ9HB+5Ztg4cTlR5LaN+UTUHI
+	 Dge3KQI1Oia4LUq8kO7pF0u7WSBTSupjXwoFHAUgiOjynNwnHrDy5b2pvLA2jjgt42
+	 tOOvyIJsHUA5JaZpbKqJKqUNmBsxK03pdBOa8kjIcUO4/upsQElQD0dPMDlbYufIVf
+	 8lWzuK1zyFOM6T0FNFBYW/CN6iIU4kouAQ9QnBn5hS4+Dv36DBB9xE2mmbwliRYCco
+	 poBr+VYYs0SIw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 2/3] powerpc/85xx: Fix fall-through warning for Clang
-Date: Fri, 14 Oct 2022 09:54:59 -0400
-Message-Id: <20221014135502.2110218-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 3/3] powerpc: Remove direct call to personality syscall handler
+Date: Fri, 14 Oct 2022 09:55:00 -0400
+Message-Id: <20221014135502.2110218-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20221014135502.2110218-1-sashal@kernel.org>
 References: <20221014135502.2110218-1-sashal@kernel.org>
@@ -62,42 +62,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, nathan@kernel.org, Kees Cook <keescook@chromium.org>, nick.child@ibm.com, llvm@lists.linux.dev, ndesaulniers@google.com, "Gustavo A. R. Silva" <gustavoars@kernel.org>, oss@buserror.net, Julia.Lawall@inria.fr, linuxppc-dev@lists.ozlabs.org, kernel test robot <lkp@intel.com>
+Cc: Sasha Levin <sashal@kernel.org>, Rohan McLure <rmclure@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, maqianga@uniontech.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+From: Rohan McLure <rmclure@linux.ibm.com>
 
-[ Upstream commit d4d944ff68cb1f896d3f3b1af0bc656949dc626a ]
+[ Upstream commit 4df0221f9ded8c39aecfb1a80cef346026671cb7 ]
 
-Fix the following fallthrough warning:
+Syscall handlers should not be invoked internally by their symbol names,
+as these symbols defined by the architecture-defined SYSCALL_DEFINE
+macro. Fortunately, in the case of ppc64_personality, its call to
+sys_personality can be replaced with an invocation to the
+equivalent ksys_personality inline helper in <linux/syscalls.h>.
 
-arch/powerpc/platforms/85xx/mpc85xx_cds.c:161:3: warning: unannotated fall-through between switch labels [-Wimplicit-fallthrough]
-
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Reviewed-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Rohan McLure <rmclure@linux.ibm.com>
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://github.com/KSPP/linux/issues/198
-Link: https://lore.kernel.org/lkml/202209061224.KxORRGVg-lkp@intel.com/
-Link: https://lore.kernel.org/r/Yxe8XTY5C9qJLd0Z@work
+Link: https://lore.kernel.org/r/20220921065605.1051927-13-rmclure@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/85xx/mpc85xx_cds.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/powerpc/kernel/syscalls.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/platforms/85xx/mpc85xx_cds.c b/arch/powerpc/platforms/85xx/mpc85xx_cds.c
-index 224db30c497b..b3736b835c10 100644
---- a/arch/powerpc/platforms/85xx/mpc85xx_cds.c
-+++ b/arch/powerpc/platforms/85xx/mpc85xx_cds.c
-@@ -162,6 +162,7 @@ static void __init mpc85xx_cds_pci_irq_fixup(struct pci_dev *dev)
- 			else
- 				dev->irq = 10;
- 			pci_write_config_byte(dev, PCI_INTERRUPT_LINE, dev->irq);
-+			break;
- 		default:
- 			break;
- 		}
+diff --git a/arch/powerpc/kernel/syscalls.c b/arch/powerpc/kernel/syscalls.c
+index 644cce3d8dce..d847b4d5ecf6 100644
+--- a/arch/powerpc/kernel/syscalls.c
++++ b/arch/powerpc/kernel/syscalls.c
+@@ -109,7 +109,7 @@ long ppc64_personality(unsigned long personality)
+ 	if (personality(current->personality) == PER_LINUX32
+ 	    && personality(personality) == PER_LINUX)
+ 		personality = (personality & ~PER_MASK) | PER_LINUX32;
+-	ret = sys_personality(personality);
++	ret = ksys_personality(personality);
+ 	if (personality(ret) == PER_LINUX32)
+ 		ret = (ret & ~PER_MASK) | PER_LINUX;
+ 	return ret;
 -- 
 2.35.1
 
