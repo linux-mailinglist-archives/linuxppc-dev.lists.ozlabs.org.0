@@ -2,48 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8050D5FEF9D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Oct 2022 16:03:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15B355FEFA2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Oct 2022 16:04:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Mpp552FMTz3fHh
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Oct 2022 01:03:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Mpp656C3kz3fKL
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Oct 2022 01:04:13 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bNFG9Fhh;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Y2iilNWT;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bNFG9Fhh;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Y2iilNWT;
 	dkim-atps=neutral
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mpnrx2DWnz3dsw
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Oct 2022 00:52:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mpns40HH7z3dtS
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Oct 2022 00:52:56 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 9B06561B49;
-	Fri, 14 Oct 2022 13:52:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A06EDC433C1;
-	Fri, 14 Oct 2022 13:52:45 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 2F41561B45;
+	Fri, 14 Oct 2022 13:52:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4308DC433C1;
+	Fri, 14 Oct 2022 13:52:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1665755567;
-	bh=IivAcdpslJF9mJghrjAkkh5jrTvm60iW/mTmgYTTy9w=;
+	s=k20201202; t=1665755573;
+	bh=qa/nkLRZZlwVbA9hanFq24bZyUalUJx/CypuGXgINzQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bNFG9Fhhe7tzy4LqD7CPACYm8sh/7h9WhzO8FAoqAZww19i9xDL3arYz+ybZLKzJw
-	 1SIMT8qTk62EDbOpCTV/Ieqbtw1yvG+ofQzzKB6oUPQQgwgl3gXXVsAIzUqQ6tjcF9
-	 ZlpQRiu4OTImq+LbBydvZLFQOc8IryajBNcaJTDjGEu8vdUv4E/4mbPrxudhvtK0Cm
-	 FfooRSffDDpRm6NR0ECWb5XxrUYyUydc/TgoZU0S1mNPol7VCsE9iSyZO9rZqSI0YI
-	 w190yJkEHZOPbCG/pUn5e8ZNHx2pQIOuDOvrKU5T0VSusyjcQPrw1wj3uWhMhbaQcz
-	 PgZLldUsWPF2A==
+	b=Y2iilNWTa1D9g95WsmaBHkdPoUn8UtPyv+dKr2uHXEW4GD5u/J5MYmOX+f01WT3HA
+	 vTpFzabO33pjULyRBTCBEJWw1jGxwS+8ONbwd8zVEDoerdUVx0CiWGHIX7rrK4D1a+
+	 ezeXr29H9HVTB3hRyqtoXoZGbh9t2HPEwYX4FzUgp2DuVrKVLb1U3TbXkajQ0G15JO
+	 GgI7cOdWA050lkCRTfWjKBpiGlmVb1rVggzwvJM5Sc64mXXYjnPIKjyo1y5SdwmU/M
+	 Bep4+BRt8zm1a0qKW4589clx79VyXKbtzsXBl3qPWBMyiXGw9zF+Ygt06sjm9b92MY
+	 kYXD+OGACluvw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.19 07/10] powerpc/perf: Fix branch_filter support for multiple filters
-Date: Fri, 14 Oct 2022 09:52:18 -0400
-Message-Id: <20221014135222.2109334-7-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.19 08/10] powerpc/rtas: block error injection when locked down
+Date: Fri, 14 Oct 2022 09:52:19 -0400
+Message-Id: <20221014135222.2109334-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20221014135222.2109334-1-sashal@kernel.org>
 References: <20221014135222.2109334-1-sashal@kernel.org>
@@ -62,85 +62,121 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Athira Rajeev <atrajeev@linux.vnet.ibm.com>, nick.child@ibm.com, Kajol Jain <kjain@linux.ibm.com>, npiggin@gmail.com, Julia.Lawall@inria.fr, Madhavan Srinivasan <maddy@linux.ibm.com>, joel@jms.id.au, Disha Goel <disgoel@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: mortonm@chromium.org, Sasha Levin <sashal@kernel.org>, daniel.thompson@linaro.org, lucien.xin@gmail.com, Paul Moore <paul@paul-moore.com>, jmorris@namei.org, serge@hallyn.com, Nathan Lynch <nathanl@linux.ibm.com>, ajd@linux.ibm.com, npiggin@gmail.com, ldufour@linux.ibm.com, brauner@kernel.org, omosnace@redhat.com, sourabhjain@linux.ibm.com, linux-security-module@vger.kernel.org, casey@schaufler-ca.com, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net, tkjos@google.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+From: Nathan Lynch <nathanl@linux.ibm.com>
 
-[ Upstream commit b9c001276d4a756f98cc7dc4672eff5343949203 ]
+[ Upstream commit b8f3e48834fe8c86b4f21739c6effd160e2c2c19 ]
 
-For PERF_SAMPLE_BRANCH_STACK sample type, different branch_sample_type
-ie branch filters are supported. The branch filters are requested via
-event attribute "branch_sample_type". Multiple branch filters can be
-passed in event attribute. eg:
+The error injection facility on pseries VMs allows corruption of
+arbitrary guest memory, potentially enabling a sufficiently privileged
+user to disable lockdown or perform other modifications of the running
+kernel via the rtas syscall.
 
-  $ perf record -b -o- -B --branch-filter any,ind_call true
+Block the PAPR error injection facility from being opened or called
+when locked down.
 
-None of the Power PMUs support having multiple branch filters at
-the same time. Branch filters for branch stack sampling is set via MMCRA
-IFM bits [32:33]. But currently when requesting for multiple filter
-types, the "perf record" command does not report any error.
-
-eg:
-  $ perf record -b -o- -B --branch-filter any,save_type true
-  $ perf record -b -o- -B --branch-filter any,ind_call true
-
-The "bhrb_filter_map" function in PMU driver code does the validity
-check for supported branch filters. But this check is done for single
-filter. Hence "perf record" will proceed here without reporting any
-error.
-
-Fix power_pmu_event_init() to return EOPNOTSUPP when multiple branch
-filters are requested in the event attr.
-
-After the fix:
-  $ perf record --branch-filter any,ind_call -- ls
-  Error:
-  cycles: PMU Hardware doesn't support sampling/overflow-interrupts.
-  Try 'perf stat'
-
-Reported-by: Disha Goel <disgoel@linux.vnet.ibm.com>
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Tested-by: Disha Goel<disgoel@linux.vnet.ibm.com>
-Reviewed-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Reviewed-by: Kajol Jain <kjain@linux.ibm.com>
-[mpe: Tweak comment and change log wording]
+Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+Acked-by: Paul Moore <paul@paul-moore.com> (LSM)
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20220921145255.20972-1-atrajeev@linux.vnet.ibm.com
+Link: https://lore.kernel.org/r/20220926131643.146502-3-nathanl@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/perf/core-book3s.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ arch/powerpc/kernel/rtas.c | 25 ++++++++++++++++++++++++-
+ include/linux/security.h   |  1 +
+ security/security.c        |  1 +
+ 3 files changed, 26 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
-index 03c64a0195df..783d2860bb74 100644
---- a/arch/powerpc/perf/core-book3s.c
-+++ b/arch/powerpc/perf/core-book3s.c
-@@ -2131,6 +2131,23 @@ static int power_pmu_event_init(struct perf_event *event)
- 	if (has_branch_stack(event)) {
- 		u64 bhrb_filter = -1;
+diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
+index 693133972294..c2540d393f1c 100644
+--- a/arch/powerpc/kernel/rtas.c
++++ b/arch/powerpc/kernel/rtas.c
+@@ -23,6 +23,7 @@
+ #include <linux/memblock.h>
+ #include <linux/slab.h>
+ #include <linux/reboot.h>
++#include <linux/security.h>
+ #include <linux/syscalls.h>
+ #include <linux/of.h>
+ #include <linux/of_fdt.h>
+@@ -464,6 +465,9 @@ void rtas_call_unlocked(struct rtas_args *args, int token, int nargs, int nret,
+ 	va_end(list);
+ }
  
-+		/*
-+		 * Currently no PMU supports having multiple branch filters
-+		 * at the same time. Branch filters are set via MMCRA IFM[32:33]
-+		 * bits for Power8 and above. Return EOPNOTSUPP when multiple
-+		 * branch filters are requested in the event attr.
-+		 *
-+		 * When opening event via perf_event_open(), branch_sample_type
-+		 * gets adjusted in perf_copy_attr(). Kernel will automatically
-+		 * adjust the branch_sample_type based on the event modifier
-+		 * settings to include PERF_SAMPLE_BRANCH_PLM_ALL. Hence drop
-+		 * the check for PERF_SAMPLE_BRANCH_PLM_ALL.
-+		 */
-+		if (hweight64(event->attr.branch_sample_type & ~PERF_SAMPLE_BRANCH_PLM_ALL) > 1) {
-+			local_irq_restore(irq_flags);
-+			return -EOPNOTSUPP;
-+		}
++static int ibm_open_errinjct_token;
++static int ibm_errinjct_token;
 +
- 		if (ppmu->bhrb_filter_map)
- 			bhrb_filter = ppmu->bhrb_filter_map(
- 					event->attr.branch_sample_type);
+ int rtas_call(int token, int nargs, int nret, int *outputs, ...)
+ {
+ 	va_list list;
+@@ -476,6 +480,16 @@ int rtas_call(int token, int nargs, int nret, int *outputs, ...)
+ 	if (!rtas.entry || token == RTAS_UNKNOWN_SERVICE)
+ 		return -1;
+ 
++	if (token == ibm_open_errinjct_token || token == ibm_errinjct_token) {
++		/*
++		 * It would be nicer to not discard the error value
++		 * from security_locked_down(), but callers expect an
++		 * RTAS status, not an errno.
++		 */
++		if (security_locked_down(LOCKDOWN_RTAS_ERROR_INJECTION))
++			return -1;
++	}
++
+ 	if ((mfmsr() & (MSR_IR|MSR_DR)) != (MSR_IR|MSR_DR)) {
+ 		WARN_ON_ONCE(1);
+ 		return -1;
+@@ -1227,6 +1241,14 @@ SYSCALL_DEFINE1(rtas, struct rtas_args __user *, uargs)
+ 	if (block_rtas_call(token, nargs, &args))
+ 		return -EINVAL;
+ 
++	if (token == ibm_open_errinjct_token || token == ibm_errinjct_token) {
++		int err;
++
++		err = security_locked_down(LOCKDOWN_RTAS_ERROR_INJECTION);
++		if (err)
++			return err;
++	}
++
+ 	/* Need to handle ibm,suspend_me call specially */
+ 	if (token == rtas_token("ibm,suspend-me")) {
+ 
+@@ -1325,7 +1347,8 @@ void __init rtas_initialize(void)
+ #ifdef CONFIG_RTAS_ERROR_LOGGING
+ 	rtas_last_error_token = rtas_token("rtas-last-error");
+ #endif
+-
++	ibm_open_errinjct_token = rtas_token("ibm,open-errinjct");
++	ibm_errinjct_token = rtas_token("ibm,errinjct");
+ 	rtas_syscall_filter_init();
+ }
+ 
+diff --git a/include/linux/security.h b/include/linux/security.h
+index 3cc127bb5bfd..9b0ec28e96bf 100644
+--- a/include/linux/security.h
++++ b/include/linux/security.h
+@@ -122,6 +122,7 @@ enum lockdown_reason {
+ 	LOCKDOWN_XMON_WR,
+ 	LOCKDOWN_BPF_WRITE_USER,
+ 	LOCKDOWN_DBG_WRITE_KERNEL,
++	LOCKDOWN_RTAS_ERROR_INJECTION,
+ 	LOCKDOWN_INTEGRITY_MAX,
+ 	LOCKDOWN_KCORE,
+ 	LOCKDOWN_KPROBES,
+diff --git a/security/security.c b/security/security.c
+index 8b62654ff3f9..48a5d07d0ffc 100644
+--- a/security/security.c
++++ b/security/security.c
+@@ -60,6 +60,7 @@ const char *const lockdown_reasons[LOCKDOWN_CONFIDENTIALITY_MAX+1] = {
+ 	[LOCKDOWN_XMON_WR] = "xmon write access",
+ 	[LOCKDOWN_BPF_WRITE_USER] = "use of bpf to write user RAM",
+ 	[LOCKDOWN_DBG_WRITE_KERNEL] = "use of kgdb/kdb to write kernel RAM",
++	[LOCKDOWN_RTAS_ERROR_INJECTION] = "RTAS error injection",
+ 	[LOCKDOWN_INTEGRITY_MAX] = "integrity",
+ 	[LOCKDOWN_KCORE] = "/proc/kcore access",
+ 	[LOCKDOWN_KPROBES] = "use of kprobes",
 -- 
 2.35.1
 
