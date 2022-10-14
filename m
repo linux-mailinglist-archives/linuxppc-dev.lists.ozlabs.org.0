@@ -1,33 +1,33 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B1715FF6C4
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Oct 2022 01:22:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CA685FF6C7
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Oct 2022 01:22:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Mq2Tt0SXpz3dqt
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Oct 2022 10:22:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Mq2VS1WD1z3drc
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Oct 2022 10:22:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mq2TH11h6z2xy6
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Oct 2022 10:21:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mq2TS4NzQz3drx
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Oct 2022 10:21:48 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Mq2TG2tYMz4x1F;
-	Sat, 15 Oct 2022 10:21:38 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Mq2TH3sQnz4xGR;
+	Sat, 15 Oct 2022 10:21:39 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
 To: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
-In-Reply-To: <20221012035335.866440-1-npiggin@gmail.com>
-References: <20221012035335.866440-1-npiggin@gmail.com>
-Subject: Re: (subset) [PATCH 1/2] powerpc/32: fix syscall wrappers with 64-bit arguments of unaligned register-pairs
-Message-Id: <166578967707.3420000.7771851820279270494.b4-ty@ellerman.id.au>
-Date: Sat, 15 Oct 2022 10:21:17 +1100
+In-Reply-To: <20221013064418.1311104-1-npiggin@gmail.com>
+References: <20221013064418.1311104-1-npiggin@gmail.com>
+Subject: Re: [PATCH] powerpc/64s/interrupt: Fix lost interrupts when returning to soft-masked context
+Message-Id: <166578967820.3420000.11446142092319079722.b4-ty@ellerman.id.au>
+Date: Sat, 15 Oct 2022 10:21:18 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -42,27 +42,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Jason A . Donenfeld" <Jason@zx2c4.com>
+Cc: "Jason A . Donenfeld" <Jason@zx2c4.com>, Sachin Sant <sachinp@linux.ibm.com>, Guenter Roeck <linux@roeck-us.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 12 Oct 2022 13:53:34 +1000, Nicholas Piggin wrote:
-> powerpc 32-bit system call (and function) calling convention for 64-bit
-> arguments requires the next available odd-pair (two sequential registers
-> with the first being odd-numbered) from the standard register argument
-> allocation.
-> 
-> The first argument register is r3, so a 64-bit argument that appears at
-> an even position in the argument list must skip a register (unless there
-> were preceeding 64-bit arguments, which might throw things off). This
-> requires non-standard compat definitions to deal with the holes in the
-> argument register allocation.
+On Thu, 13 Oct 2022 16:44:18 +1000, Nicholas Piggin wrote:
+> It's possible for an interrupt returning to an irqs-disabled context to
+> lose a pending soft-masked irq because it branches to part of the exit
+> code for irqs-enabled contexts, which is meant to clear only the
+> PACA_IRQS_HARD_DIS flag from PACAIRQHAPPENED by zeroing the byte. This
+> just looks like a simple thinko from a recent commit (if there was no
+> hard mask pending, there would be no reason to clear it anyway).
 > 
 > [...]
 
 Applied to powerpc/fixes.
 
-[1/2] powerpc/32: fix syscall wrappers with 64-bit arguments of unaligned register-pairs
-      https://git.kernel.org/powerpc/c/e237506238352f3bfa9cf3983cdab873e35651eb
+[1/1] powerpc/64s/interrupt: Fix lost interrupts when returning to soft-masked context
+      https://git.kernel.org/powerpc/c/a4cb3651a174366cc85a677da9e3681fbe97fdae
 
 cheers
