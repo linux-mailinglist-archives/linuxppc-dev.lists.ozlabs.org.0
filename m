@@ -2,73 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8601A5FE623
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Oct 2022 02:19:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02E905FE633
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Oct 2022 02:20:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MpRpS0hwNz3dsk
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Oct 2022 11:19:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MpRqS5d3Dz3cds
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Oct 2022 11:20:20 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Hqw7LX+M;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=fzAPlEp3;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102d; helo=mail-pj1-x102d.google.com; envelope-from=groeck7@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::532; helo=mail-pg1-x532.google.com; envelope-from=groeck7@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Hqw7LX+M;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=fzAPlEp3;
 	dkim-atps=neutral
-Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
+Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MpRmg1rWFz3cf2
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Oct 2022 11:17:55 +1100 (AEDT)
-Received: by mail-pj1-x102d.google.com with SMTP id n18-20020a17090ade9200b0020b0012097cso6854487pjv.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Oct 2022 17:17:55 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MpRms6vr0z3cBS
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Oct 2022 11:18:05 +1100 (AEDT)
+Received: by mail-pg1-x532.google.com with SMTP id r18so2913345pgr.12
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Oct 2022 17:18:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=wrslMZ2QYGwlTjkSjOE53DFE17yfkkz5/a3RIe7cfhw=;
-        b=Hqw7LX+MQulLhDgnWbwN49dFqjIQFiqstB5kc/ardcXUaCn0i8nvkXft80HPDKU12a
-         si09fOpIrdKle00c+sAlMzdt04gu102T8wZPIUBTssmZ9VHpKZ19vJmdXims4Uc1UaP1
-         JL37SD6yEBsQiaofdyI7SZrJjDwBSuKwMuZc1KFDhXzixby71lQOsrWJTAgucrefpOO0
-         1lbNyYELYgQXPGAkBbaSGYNJrUjGL6QAzqn099cUyQ7U0G5fPtGiBOXcRpA90Xubt4Re
-         XGyxFtLdfUAQR/BDzc9XXkhRxD2u8orUWmpTny8F5iRtb6ZUL9JPNrvGVvMPeBtlSO2C
-         9RwA==
+        bh=ZSBzZSb65gn/j9NaItoSfk3CggK32TvwZMOVPNUDON0=;
+        b=fzAPlEp3SxmISYEPOFkBcOj8BgcwWMj7ob5kZjCVyjI2TefmMoRom8Cjr9n0UoIsb5
+         ksk2RCQDNmL0izlAjEU/m6PLEu+vrT97GNEZ/t08Vn4ES4qYZjaIMaR2pedNrwZ14Psw
+         FA1PPT37QtvPtj89Y4SFG3KT2x/9Ep1PuaunAQVGeDm7TfrNqgEBEv58Og+O1QmXQGVm
+         pWdB/DsobTal3hHB0EZwFX7hNIo0h7KLbY+KO5/HcUIEzZZU5PpT9U7c7b39Ulig+Dls
+         aKlilIfewOefzEk9CP44oL2u6fbU0+lWnXl3CAM6/9doTSoLACoIRa+MUP2/JvlfNzA1
+         sbOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=wrslMZ2QYGwlTjkSjOE53DFE17yfkkz5/a3RIe7cfhw=;
-        b=bH1MmryXZRsGwxzFGX6oZAkqjLosul8uUfm4c3wk1roTCzGDhiV6COHFyqHL8MxKT3
-         mO7Vhgi7EcGqOryhOcHss6uvX2iittP3BIV/AVxJXefR7V93Q2Qy8zg9l8Pl2JoIWg+0
-         sZgrdUIQuDXkMhm1z9tyDJi1vNIlB4BC5mzHbJZQ2nOMCPi4RLR+iK97tRzw6LI5cElT
-         eFuN/d68yt+0j/lTcLBu9PVCwW54fqkDGHb7C/wu8X9vm4F7Sg/YiPiiNgBlUFNlPEmy
-         fV48E5OLWgO+oW2xvZXd19tZk1TwiaMqccJUK5ANeZLXZr+3mEEfi3+D0dvefzF0bVMu
-         NtLQ==
-X-Gm-Message-State: ACrzQf2gaB5Br7wudExr+efhQksNyUcRvf1Owkjty9iZZfg+84YmRjWY
-	gYmNZxa3T+HFVetYspMxtC+kfJtZ5rY=
-X-Google-Smtp-Source: AMsMyM76TJWPD7z1UsBl1Ne6us7NXJus+Y8qEbxuulIfVmyshbhW3S1k4gKSohVOE2k+IdK37WL2Bg==
-X-Received: by 2002:a17:903:2402:b0:184:29:8ac0 with SMTP id e2-20020a170903240200b0018400298ac0mr2495074plo.174.1665706673447;
-        Thu, 13 Oct 2022 17:17:53 -0700 (PDT)
+        bh=ZSBzZSb65gn/j9NaItoSfk3CggK32TvwZMOVPNUDON0=;
+        b=32gz9+RIZBw/kNZgUKdmDKSyIGVsi4FhbKZyHw9TYBc9xUBXYpSnATV9grs7u2Vi0y
+         3aC6sgY0BVK88dbsZ6l7ijYwVHnhC7NEgEbEpTQBW5PCY5kyHCfEVpPyoA+HVgT/WcUS
+         OAxzc6PKZQ4bHijfR25GZ2BspAVLyE2Z3J7fApbzD1biZxNWwZCwV2MVvwK5+Vqtym2M
+         REgvJAO3eS/QwfrBlqJj5B8xzjqXrphZ6NSirbM7R/CeFZKHizZygXKjU+7JpT7h9ikf
+         2V/VF9+0k4k7eAzJw+bzGIQ5Pox3Wu2/dv5SrlvrJ9ql6ha4pFjIQf9vej2hRdvhAdli
+         gn1w==
+X-Gm-Message-State: ACrzQf2nJq8rKco/qMQe005XN6a1lDif/abQrup6aaEtU6rmYURK6T6l
+	jD62munor7vNqkF8W+vvS4gaOZx7EQs=
+X-Google-Smtp-Source: AMsMyM7+BvA8w34L0RzIlgyhhbWpSu7387UxVj9N/Wf98XMIGKXZg1e1vjz9kwAj9aqwX8BiXfM/1A==
+X-Received: by 2002:a65:6ccd:0:b0:439:2033:6ee with SMTP id g13-20020a656ccd000000b00439203306eemr2175776pgw.271.1665706682927;
+        Thu, 13 Oct 2022 17:18:02 -0700 (PDT)
 Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id b5-20020a63cf45000000b0044e8d66ae05sm284970pgj.22.2022.10.13.17.17.52
+        by smtp.gmail.com with ESMTPSA id o7-20020a625a07000000b00562496395besm275632pfb.170.2022.10.13.17.18.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Oct 2022 17:17:53 -0700 (PDT)
-Date: Thu, 13 Oct 2022 17:17:52 -0700
+        Thu, 13 Oct 2022 17:18:02 -0700 (PDT)
+Date: Thu, 13 Oct 2022 17:18:01 -0700
 From: Guenter Roeck <linux@roeck-us.net>
 To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 2/3] powerpc/64s: Fix hash__change_memory_range
- preemption warning
-Message-ID: <20221014001752.GB412544@roeck-us.net>
+Subject: Re: [PATCH 3/3] powerpc: fix reschedule bug in KUAP-unlocked user
+ copy
+Message-ID: <20221014001801.GC412544@roeck-us.net>
 References: <20221013151647.1857994-1-npiggin@gmail.com>
- <20221013151647.1857994-2-npiggin@gmail.com>
+ <20221013151647.1857994-3-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20221013151647.1857994-2-npiggin@gmail.com>
+In-Reply-To: <20221013151647.1857994-3-npiggin@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,58 +84,52 @@ Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Oct 14, 2022 at 01:16:46AM +1000, Nicholas Piggin wrote:
-> stop_machine_cpuslocked takes a mutex so it must be called in a
-> preemptible context, so it can't simply be fixed by disabling
-> preemption.
+On Fri, Oct 14, 2022 at 01:16:47AM +1000, Nicholas Piggin wrote:
+> schedule must not be explicitly called while KUAP is unlocked, because
+> the AMR register will not be saved across the context switch on 64s
+> (preemption is allowed because that is driven by interrupts which do
+> save the AMR).
 > 
-> This is not a bug, because CPU hotplug is locked, so this processor will
-> call in to the stop machine function. So raw_smp_processor_id() could be
-> used. This leaves a small chance that this thread will be migrated to
-> another CPU, so the master work would be done by a CPU from a different
-> context. Better for test coverage to make that a common case by just
-> having the first CPU to call in become the master.
+> exit_vmx_usercopy() runs inside an unlocked user access region, and it
+> calls preempt_enable() which will call schedule() if need_resched() was
+> set while non-preemptible. This can cause tasks to run unprotected when
+> the should not, and can cause the user copy to be improperly blocked
+> when scheduling back to it.
+> 
+> Fix this by avoiding the explicit resched for preempt kernels by
+> generating an interrupt to reschedule the context if need_resched() got
+> set.
 > 
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 
 Tested-by: Guenter Roeck <linux@roeck-us.net>
 
 > ---
->  arch/powerpc/mm/book3s64/hash_pgtable.c | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
+>  arch/powerpc/lib/vmx-helper.c | 12 +++++++++++-
+>  1 file changed, 11 insertions(+), 1 deletion(-)
 > 
-> diff --git a/arch/powerpc/mm/book3s64/hash_pgtable.c b/arch/powerpc/mm/book3s64/hash_pgtable.c
-> index 747492edb75a..51f48984abca 100644
-> --- a/arch/powerpc/mm/book3s64/hash_pgtable.c
-> +++ b/arch/powerpc/mm/book3s64/hash_pgtable.c
-> @@ -404,7 +404,8 @@ EXPORT_SYMBOL_GPL(hash__has_transparent_hugepage);
->  
->  struct change_memory_parms {
->  	unsigned long start, end, newpp;
-> -	unsigned int step, nr_cpus, master_cpu;
-> +	unsigned int step, nr_cpus;
-> +	atomic_t master_cpu;
->  	atomic_t cpu_counter;
->  };
->  
-> @@ -478,7 +479,8 @@ static int change_memory_range_fn(void *data)
+> diff --git a/arch/powerpc/lib/vmx-helper.c b/arch/powerpc/lib/vmx-helper.c
+> index f76a50291fd7..d491da8d1838 100644
+> --- a/arch/powerpc/lib/vmx-helper.c
+> +++ b/arch/powerpc/lib/vmx-helper.c
+> @@ -36,7 +36,17 @@ int exit_vmx_usercopy(void)
 >  {
->  	struct change_memory_parms *parms = data;
->  
-> -	if (parms->master_cpu != smp_processor_id())
-> +	// First CPU goes through, all others wait.
-> +	if (atomic_xchg(&parms->master_cpu, 1) == 1)
->  		return chmem_secondary_loop(parms);
->  
->  	// Wait for all but one CPU (this one) to call-in
-> @@ -516,7 +518,7 @@ static bool hash__change_memory_range(unsigned long start, unsigned long end,
->  		chmem_parms.end = end;
->  		chmem_parms.step = step;
->  		chmem_parms.newpp = newpp;
-> -		chmem_parms.master_cpu = smp_processor_id();
-> +		atomic_set(&chmem_parms.master_cpu, 0);
->  
->  		cpus_read_lock();
+>  	disable_kernel_altivec();
+>  	pagefault_enable();
+> -	preempt_enable();
+> +	preempt_enable_no_resched();
+> +	/*
+> +	 * Must never explicitly call schedule (including preempt_enable())
+> +	 * while in a kuap-unlocked user copy, because the AMR register will
+> +	 * not be saved and restored across context switch. However preempt
+> +	 * kernels need to be preempted as soon as possible if need_resched is
+> +	 * set and we are preemptible. The hack here is to schedule a
+> +	 * decrementer to fire here and reschedule for us if necessary.
+> +	 */
+> +	if (IS_ENABLED(CONFIG_PREEMPT) && need_resched())
+> +		set_dec(1);
+>  	return 0;
+>  }
 >  
 > -- 
 > 2.37.2
