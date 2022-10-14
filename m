@@ -1,49 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E47F65FF033
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Oct 2022 16:22:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 179365FF038
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Oct 2022 16:23:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MppVs59ltz3fs1
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Oct 2022 01:22:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MppX16zb1z3fdQ
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Oct 2022 01:23:13 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=azeJgndR;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CnXUSzVE;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=azeJgndR;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CnXUSzVE;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mpntk0KsQz3dyp
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Oct 2022 00:54:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mpntm45pTz3cd2
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Oct 2022 00:54:24 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 957C7B82349;
+	by ams.source.kernel.org (Postfix) with ESMTPS id 41EBAB82215;
+	Fri, 14 Oct 2022 13:54:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BACD3C433D6;
 	Fri, 14 Oct 2022 13:54:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 061B8C433B5;
-	Fri, 14 Oct 2022 13:54:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1665755658;
-	bh=Qw+6H+ZOP4gsN8WGLnC2cFOKNAPmCexk/rIFZKCtEoo=;
+	s=k20201202; t=1665755661;
+	bh=aHGYmcVRwR9pS2JGLSuP8Fab4uwnyRpaqn1e/+OBEhM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=azeJgndRwwBtatE7cAfTGBjoIX+sDOfmDjefQMSBsP9pAEjtivimPJv8Y6Lb9aUrc
-	 6f9q+NHqLrfRrfjUF1ynY/AGB+Tt2gH3ZSG6wOxjTCq5vqw0uMyYgUsdL9stqjSQGS
-	 77zSUWPBdSDgBgckbBnkChrQoIq9E83mbANW/AUpmhf5Z9Ev64m4rdctb8wGAtRA+y
-	 u1+4XImUCSAA0IIuyUgtTGwnfetdIQyNV9TGb8GhGnKxZJkMfNv9jX2pMDYdSboPnK
-	 c11lVCeA1pg/IWrfcAJ8O+s7v5k/zPRQJvMbML8Z2FQm34HbY/THJ0FwSCl8Bj2jyn
-	 SlX3PlBjodiFg==
+	b=CnXUSzVE2dY6B0/Fo/es2+BC7H2dmOnn5E+Mo+xFziyjks3bbRIocAANk/pmYg7zP
+	 Ey7eV4w1gqLCyH49hCI4aZLYO9IDafoaODdFXm9HGRpotp5O+S/fyLbhgsriZ6pLJq
+	 EIqGp/GMa1mAl0KzPSqcQvEmIHPBhXzykeKLH9kucN6QhDWoWEAVI7oiAwPwlVNvgP
+	 ltd0I0wbXSDXjz4eH8u7da9UyBToiNMwhPP6lDV66M6DekKpAKWhKeGGDtYMVGaTtV
+	 xFikRbQmf7TwVOhzdQ/T3TXxZSgJPimrfgaNRLMCHzZ1Vi1OD3jNKtSCPS36+FAWU3
+	 Pa92Qjw5Rd0ow==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 4/7] powerpc: Remove direct call to personality syscall handler
-Date: Fri, 14 Oct 2022 09:53:57 -0400
-Message-Id: <20221014135402.2109942-4-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 5/7] powerpc/perf: Fix branch_filter support for multiple filters
+Date: Fri, 14 Oct 2022 09:53:58 -0400
+Message-Id: <20221014135402.2109942-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20221014135402.2109942-1-sashal@kernel.org>
 References: <20221014135402.2109942-1-sashal@kernel.org>
@@ -62,42 +62,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Rohan McLure <rmclure@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, maqianga@uniontech.com, linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>, Athira Rajeev <atrajeev@linux.vnet.ibm.com>, nick.child@ibm.com, Kajol Jain <kjain@linux.ibm.com>, npiggin@gmail.com, Julia.Lawall@inria.fr, Madhavan Srinivasan <maddy@linux.ibm.com>, joel@jms.id.au, Disha Goel <disgoel@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Rohan McLure <rmclure@linux.ibm.com>
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 
-[ Upstream commit 4df0221f9ded8c39aecfb1a80cef346026671cb7 ]
+[ Upstream commit b9c001276d4a756f98cc7dc4672eff5343949203 ]
 
-Syscall handlers should not be invoked internally by their symbol names,
-as these symbols defined by the architecture-defined SYSCALL_DEFINE
-macro. Fortunately, in the case of ppc64_personality, its call to
-sys_personality can be replaced with an invocation to the
-equivalent ksys_personality inline helper in <linux/syscalls.h>.
+For PERF_SAMPLE_BRANCH_STACK sample type, different branch_sample_type
+ie branch filters are supported. The branch filters are requested via
+event attribute "branch_sample_type". Multiple branch filters can be
+passed in event attribute. eg:
 
-Signed-off-by: Rohan McLure <rmclure@linux.ibm.com>
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+  $ perf record -b -o- -B --branch-filter any,ind_call true
+
+None of the Power PMUs support having multiple branch filters at
+the same time. Branch filters for branch stack sampling is set via MMCRA
+IFM bits [32:33]. But currently when requesting for multiple filter
+types, the "perf record" command does not report any error.
+
+eg:
+  $ perf record -b -o- -B --branch-filter any,save_type true
+  $ perf record -b -o- -B --branch-filter any,ind_call true
+
+The "bhrb_filter_map" function in PMU driver code does the validity
+check for supported branch filters. But this check is done for single
+filter. Hence "perf record" will proceed here without reporting any
+error.
+
+Fix power_pmu_event_init() to return EOPNOTSUPP when multiple branch
+filters are requested in the event attr.
+
+After the fix:
+  $ perf record --branch-filter any,ind_call -- ls
+  Error:
+  cycles: PMU Hardware doesn't support sampling/overflow-interrupts.
+  Try 'perf stat'
+
+Reported-by: Disha Goel <disgoel@linux.vnet.ibm.com>
+Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Tested-by: Disha Goel<disgoel@linux.vnet.ibm.com>
+Reviewed-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Reviewed-by: Kajol Jain <kjain@linux.ibm.com>
+[mpe: Tweak comment and change log wording]
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20220921065605.1051927-13-rmclure@linux.ibm.com
+Link: https://lore.kernel.org/r/20220921145255.20972-1-atrajeev@linux.vnet.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/syscalls.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/perf/core-book3s.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/arch/powerpc/kernel/syscalls.c b/arch/powerpc/kernel/syscalls.c
-index 3bfb3888e897..8e5de71c4888 100644
---- a/arch/powerpc/kernel/syscalls.c
-+++ b/arch/powerpc/kernel/syscalls.c
-@@ -104,7 +104,7 @@ long ppc64_personality(unsigned long personality)
- 	if (personality(current->personality) == PER_LINUX32
- 	    && personality(personality) == PER_LINUX)
- 		personality = (personality & ~PER_MASK) | PER_LINUX32;
--	ret = sys_personality(personality);
-+	ret = ksys_personality(personality);
- 	if (personality(ret) == PER_LINUX32)
- 		ret = (ret & ~PER_MASK) | PER_LINUX;
- 	return ret;
+diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
+index 6f013e418834..5433cb961fab 100644
+--- a/arch/powerpc/perf/core-book3s.c
++++ b/arch/powerpc/perf/core-book3s.c
+@@ -1963,6 +1963,23 @@ static int power_pmu_event_init(struct perf_event *event)
+ 	if (has_branch_stack(event)) {
+ 		u64 bhrb_filter = -1;
+ 
++		/*
++		 * Currently no PMU supports having multiple branch filters
++		 * at the same time. Branch filters are set via MMCRA IFM[32:33]
++		 * bits for Power8 and above. Return EOPNOTSUPP when multiple
++		 * branch filters are requested in the event attr.
++		 *
++		 * When opening event via perf_event_open(), branch_sample_type
++		 * gets adjusted in perf_copy_attr(). Kernel will automatically
++		 * adjust the branch_sample_type based on the event modifier
++		 * settings to include PERF_SAMPLE_BRANCH_PLM_ALL. Hence drop
++		 * the check for PERF_SAMPLE_BRANCH_PLM_ALL.
++		 */
++		if (hweight64(event->attr.branch_sample_type & ~PERF_SAMPLE_BRANCH_PLM_ALL) > 1) {
++			local_irq_restore(irq_flags);
++			return -EOPNOTSUPP;
++		}
++
+ 		if (ppmu->bhrb_filter_map)
+ 			bhrb_filter = ppmu->bhrb_filter_map(
+ 					event->attr.branch_sample_type);
 -- 
 2.35.1
 
