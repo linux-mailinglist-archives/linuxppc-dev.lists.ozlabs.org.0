@@ -1,54 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ECF2600498
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Oct 2022 02:43:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0F17600531
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Oct 2022 04:22:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MrJC40JRpz3c6k
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Oct 2022 11:43:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MrLNt5ZFZz3cfN
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Oct 2022 13:22:22 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=myUXAcEn;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=JfIklEed;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MrJB71Smxz2xb4
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Oct 2022 11:42:55 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.65; helo=mga03.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=myUXAcEn;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=JfIklEed;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4MrJB706b6z4x1G;
-	Mon, 17 Oct 2022 11:42:54 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1665967375;
-	bh=N23Jut8Z5LGdpnJdMvqJqMrXe+KgoU+mIuEegke+ihw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=myUXAcEnbsz1sj2bOG1/Cbkj0CPz8Ezwx/4pZOWzwHb6GhSY1Vf1FpwEAFuJdEtEh
-	 oOEToC0cmcBV4NUg7HAojIMmDIHeJiWPzWbxvvdDSP9aLFn/nEIdHHcjQuAB937aL8
-	 s3laOGqVIUPhovd3dF4qsCdlc9OgB0N7N6f3PT2HJGeloRFp8/In1DVbNeRodexAOr
-	 qJJs4cxO4A1a/RnxOaokehqqOyu3Fwma+MkjZ5dD7Npl43+2d76dV1ViAsOul7NWSm
-	 r8X/fZtnai7LHcegwFd4v38hASwyujlgNYxLUAH3YqpWCpArnhlvMu2j9frdlm9ABZ
-	 fI37UZd11Pc0w==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christian Zigotzky <chzigotzky@xenosoft.de>, Segher Boessenkool
- <segher@kernel.crashing.org>
-Subject: Re: Issues with the first PowerPC updates for the kernel 6.1
-In-Reply-To: <C4072BA4-BF73-41B8-A109-8062C4F051DD@xenosoft.de>
-References: <20221016164654.GH25951@gate.crashing.org>
- <C4072BA4-BF73-41B8-A109-8062C4F051DD@xenosoft.de>
-Date: Mon, 17 Oct 2022 11:42:54 +1100
-Message-ID: <87y1tfl1pt.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MrLMv3mknz2xfS
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Oct 2022 13:21:25 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1665973291; x=1697509291;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=pxkq8CtebPBZrIMMWls0f4MW4tsfYO45wW3jhnHk44o=;
+  b=JfIklEedz24V/ZFsZ1MvrEHzj42CShzEWRtMfonJekTt1jSgmRz8kx46
+   ggDe5hmBt0/9axlZJ2R7bfmg5PvAr312qluC3aCB+TlUUjhXH6TUJ0/+O
+   30JIt+oUeOts5yJmFNPIcist5T+E5J8/8IIeWyNUsR8Sv3104aEWrneHy
+   i6jMRGUwoMQOMDBFJ5td6Jmykc0Vj3+7xmxhPhlYSkFOV66FOO5T56x02
+   aoyjt7Qb0Jz6HYhGi9WDuvddUORWjTC7MxPSabXRyiHAk7VX7JEoySmaO
+   FpOotvmcwsNjl1OT/EmGO/jRQGlc+MZocX2+yVOE+QAvTKva6jLYB1qeM
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10502"; a="307344381"
+X-IronPort-AV: E=Sophos;i="5.95,190,1661842800"; 
+   d="scan'208";a="307344381"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2022 19:21:20 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10502"; a="628136676"
+X-IronPort-AV: E=Sophos;i="5.95,190,1661842800"; 
+   d="scan'208";a="628136676"
+Received: from lkp-server02.sh.intel.com (HELO 8556ec0e0fdc) ([10.239.97.151])
+  by orsmga002.jf.intel.com with ESMTP; 16 Oct 2022 19:21:19 -0700
+Received: from kbuild by 8556ec0e0fdc with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1okFkk-00003p-2Y;
+	Mon, 17 Oct 2022 02:21:18 +0000
+Date: Mon, 17 Oct 2022 10:21:14 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:fixes-test] BUILD SUCCESS
+ af544511aa1b39150d7526acdd8b7076bceda538
+Message-ID: <634cbc1a.Q2RsVBj4Aj8zNRK0%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,45 +70,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Darren Stevens <darren@stevens-zone.net>, Andrew Donnellan <ajd@linux.ibm.com>, npiggin@gmail.com, rmclure@linux.ibm.com, mad skateman <madskateman@gmail.com>, Olof Johansson <olof@lixom.net>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Trevor Dickinson <rtd2@xtra.co.nz>, Christian Zigotzky <info@xenosoft.de>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christian Zigotzky <chzigotzky@xenosoft.de> writes:
-> No, it=E2=80=99s not fine. We used the POWER4 CPU config before.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
+branch HEAD: af544511aa1b39150d7526acdd8b7076bceda538  powerpc/64s: make linear_map_hash_lock a raw spinlock
 
-We dropped POWER4 support in 2018.
+elapsed time: 4384m
 
-The recent commit just updated the help text to match reality.
+configs tested: 2
+configs skipped: 100
 
-There were some changes to the CPU flags, but if anything they should
-have made things more likely to work properly on old CPUs.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Previously BIG_ENDIAN && GENERIC_CPU would use -mcpu=3Dpower5, now it uses
--mcpu=3Dpower4.
+gcc tested configs:
+powerpc                           allnoconfig
+powerpc                          allmodconfig
 
-
-cheers
-
->> On 16. Oct 2022, at 18:51, Segher Boessenkool <segher@kernel.crashing.or=
-g> wrote:
->>=20
->> =EF=BB=BFOn Fri, Oct 14, 2022 at 06:11:21PM +0200, Christian Zigotzky wr=
-ote:
->>> make oldconfig has asked because of the CPU family. I choosed GENERIC f=
-or my P.A. Semi PWRficient PA6T-1682M. Is this correct? Maybe this is the p=
-roblem.
->>>=20
->>> config GENERIC_CPU
->>> -    bool "Generic (POWER4 and above)"
->>> +    bool "Generic (POWER5 and PowerPC 970 and above)"
->>>    depends on PPC_BOOK3S_64 && !CPU_LITTLE_ENDIAN
->>>    select PPC_64S_HASH_MMU
->>>=20
->>> There isn=E2=80=99t a POWER4 anymore and I used it via CONFIG_GENERIC_C=
-PU=3Dy before.
->>=20
->> PA6T is ISA 2.04, just like POWER5+.  It should be fine.
->>=20
->>=20
->> Segher
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
