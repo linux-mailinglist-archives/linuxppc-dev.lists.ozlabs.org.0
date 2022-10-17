@@ -1,59 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED612600823
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Oct 2022 09:54:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2042600AE3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Oct 2022 11:34:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MrTlg4l8Qz3c4K
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Oct 2022 18:54:07 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=IZApUDce;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MrWzj5zmKz3dvw
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Oct 2022 20:34:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.50; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=IZApUDce;
-	dkim-atps=neutral
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.50])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kaod.org (client-ip=79.137.123.220; helo=smtpout2.mo529.mail-out.ovh.net; envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
+X-Greylist: delayed 578 seconds by postgrey-1.36 at boromir; Mon, 17 Oct 2022 20:34:09 AEDT
+Received: from smtpout2.mo529.mail-out.ovh.net (smtpout2.mo529.mail-out.ovh.net [79.137.123.220])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MrTkk4mVGz2xb4
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Oct 2022 18:53:16 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1665993188;
-    s=strato-dkim-0002; d=xenosoft.de;
-    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
-    From:Subject:Sender;
-    bh=JtfsYCsUICzmwX0ptWIcaY6Vu7OLivbGEJZFsC1Cdx0=;
-    b=IZApUDcezTeplvCL/EKUfB5CgZWsz4NsPucgBXfk98rJ8nI82KsUfyy2AmHQFYo4cv
-    ZUWi7Qc/qJ05RWrTWuim4bo0/9WeIp3sJgnkofrl0DDygQzsO8ODpzv6Ww0wrTjzaxQO
-    XJYrFE+ZDMshf06bSNChu6ziVfDhfnIIBcEi/OdfmOCxn8w0guOhPwccQCYdjru7Z1T4
-    DptvbydxvJDYXgzg8X65n4sCzw/wXOClCHT/bhM8Fy3iOZJkmZvNtZ/LALkGhgBa0cNb
-    oeP4zdfrXTjfqDoOt2z1TvnM9TZ5Fq4t7yt4uXDq49y+G2cf7SRe2YiXNU9jmoOemb6+
-    qbcw==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6KxrfO5Oh7R7aW9yg7ptxnXpGu7JNmh/OkQXbEmHh6ySqrUfMZQ="
-X-RZG-CLASS-ID: mo00
-Received: from smtpclient.apple
-    by smtp.strato.de (RZmta 48.2.0 AUTH)
-    with ESMTPSA id j7449ey9H7r6YA1
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Mon, 17 Oct 2022 09:53:06 +0200 (CEST)
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-Mime-Version: 1.0 (1.0)
-Subject: Re: Issues with the first PowerPC updates for the kernel 6.1
-Date: Mon, 17 Oct 2022 09:53:04 +0200
-Message-Id: <BCDB3B67-48A1-45E6-806D-2501C7EA6D8C@xenosoft.de>
-References: <87y1tfl1pt.fsf@mpe.ellerman.id.au>
-In-Reply-To: <87y1tfl1pt.fsf@mpe.ellerman.id.au>
-To: Michael Ellerman <mpe@ellerman.id.au>
-X-Mailer: iPhone Mail (19H12)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MrWz561Slz2xJ6
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Oct 2022 20:34:06 +1100 (AEDT)
+Received: from mxplan5.mail.ovh.net (unknown [10.108.4.35])
+	by mo529.mail-out.ovh.net (Postfix) with ESMTPS id D37CD132ED2F9;
+	Mon, 17 Oct 2022 11:18:19 +0200 (CEST)
+Received: from kaod.org (37.59.142.105) by DAG4EX2.mxp5.local (172.16.2.32)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.12; Mon, 17 Oct
+ 2022 11:18:19 +0200
+Authentication-Results: garm.ovh; auth=pass (GARM-105G006581fe873-9005-4a83-b87d-4f4ed40551a6,
+                    03067325AA2E056BEC2EB751A0783F460AB0E9BE) smtp.auth=clg@kaod.org
+X-OVh-ClientIp: 82.64.250.170
+Message-ID: <e7757611-e648-9bec-7e29-225b92fd629a@kaod.org>
+Date: Mon, 17 Oct 2022 11:18:18 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.1
+Subject: Re: [PATCH] powerpc/xive: add missing iounmap() in error path in
+ xive_spapr_populate_irq_data()
+Content-Language: en-US
+To: Yang Yingliang <yangyingliang@huawei.com>, <linuxppc-dev@lists.ozlabs.org>
+References: <20221017032333.1852406-1-yangyingliang@huawei.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20221017032333.1852406-1-yangyingliang@huawei.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [37.59.142.105]
+X-ClientProxiedBy: DAG5EX2.mxp5.local (172.16.2.42) To DAG4EX2.mxp5.local
+ (172.16.2.32)
+X-Ovh-Tracer-GUID: e823773e-96d6-479e-81e5-c58aa0225303
+X-Ovh-Tracer-Id: 2151313250605698016
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvfedrfeekledgudefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvvehfhfgjtgfgihesthekredttdefjeenucfhrhhomhepveorughrihgtpgfnvggpifhorghtvghruceotghlgheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpeekteejtdelkeejvdevffduhfetteelieefgeefffeugffhfeekheffueefledujeenucfkphepuddvjedrtddrtddruddpfeejrdehledrudegvddruddtheenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduvdejrddtrddtrddupdhmrghilhhfrhhomhepoegtlhhgsehkrghougdrohhrgheqpdhnsggprhgtphhtthhopedupdhrtghpthhtohephigrnhhghihinhhglhhirghngheshhhurgifvghirdgtohhmpdhlihhnuhigphhptgdquggvvheslhhishhtshdrohiilhgrsghsrdhorhhgpdhmphgvsegvlhhlvghrmhgrnhdrihgurdgruhdpsggvnhhhsehkvghrnhgvlhdrtghrrghshhhinhhgrdhorhhgpdfovfetjfhoshhtpehmohehvdelpdhmohguvgepshhmthhpohhuth
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,50 +59,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Darren Stevens <darren@stevens-zone.net>, Andrew Donnellan <ajd@linux.ibm.com>, npiggin@gmail.com, rmclure@linux.ibm.com, mad skateman <madskateman@gmail.com>, Olof Johansson <olof@lixom.net>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Trevor Dickinson <rtd2@xtra.co.nz>, Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On 10/17/22 05:23, Yang Yingliang wrote:
+> If remapping 'data->trig_page' fails, the 'data->eoi_mmio' need be unmapped
+> before returning from xive_spapr_populate_irq_data().
+> 
+> Fixes: eac1e731b59e ("powerpc/xive: guest exploitation of the XIVE interrupt controller")
+> Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 
-> On 17. Oct 2022, at 02:43, Michael Ellerman <mpe@ellerman.id.au> wrote:
-> Previously BIG_ENDIAN && GENERIC_CPU would use -mcpu=3Dpower5, now it uses=
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
 
-> -mcpu=3Dpower4.
+Thanks,
 
-Maybe this is the issue. We will wait and not release the RC1 for testing be=
-cause it is a risk for our testers to test these new kernels because of this=
- issue.
-
-It is really important do not to rewrite code, that is well worked before.
-Bugfixing and adding some new features is ok but rewriting of good code is e=
-xpensive and doesn=E2=80=99t make any sense.
-
-=E2=80=94 Christian
-
->=20
->=20
-> cheers
->=20
->>>> On 16. Oct 2022, at 18:51, Segher Boessenkool <segher@kernel.crashing.o=
-rg> wrote:
->>>=20
->>> =EF=BB=BFOn Fri, Oct 14, 2022 at 06:11:21PM +0200, Christian Zigotzky wr=
-ote:
->>>> make oldconfig has asked because of the CPU family. I choosed GENERIC f=
-or my P.A. Semi PWRficient PA6T-1682M. Is this correct? Maybe this is the pr=
-oblem.
->>>>=20
->>>> config GENERIC_CPU
->>>> -    bool "Generic (POWER4 and above)"
->>>> +    bool "Generic (POWER5 and PowerPC 970 and above)"
->>>>   depends on PPC_BOOK3S_64 && !CPU_LITTLE_ENDIAN
->>>>   select PPC_64S_HASH_MMU
->>>>=20
->>>> There isn=E2=80=99t a POWER4 anymore and I used it via CONFIG_GENERIC_C=
-PU=3Dy before.
->>>=20
->>> PA6T is ISA 2.04, just like POWER5+.  It should be fine.
->>>=20
->>>=20
->>> Segher
+C.
+> ---
+>   arch/powerpc/sysdev/xive/spapr.c | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/arch/powerpc/sysdev/xive/spapr.c b/arch/powerpc/sysdev/xive/spapr.c
+> index e2c8f93b535b..e45419264391 100644
+> --- a/arch/powerpc/sysdev/xive/spapr.c
+> +++ b/arch/powerpc/sysdev/xive/spapr.c
+> @@ -439,6 +439,7 @@ static int xive_spapr_populate_irq_data(u32 hw_irq, struct xive_irq_data *data)
+>   
+>   	data->trig_mmio = ioremap(data->trig_page, 1u << data->esb_shift);
+>   	if (!data->trig_mmio) {
+> +		iounmap(data->eoi_mmio);
+>   		pr_err("Failed to map trigger page for irq 0x%x\n", hw_irq);
+>   		return -ENOMEM;
+>   	}
 
