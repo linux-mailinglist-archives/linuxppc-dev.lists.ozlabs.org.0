@@ -1,126 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1B746012CF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Oct 2022 17:36:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDDB46012D7
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Oct 2022 17:41:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Mrh0p4zrwz3drv
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Oct 2022 02:36:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Mrh6j68Vvz3dqk
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Oct 2022 02:41:17 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=AZltl162;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jRdsio5w;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=seco.com (client-ip=40.107.8.84; helo=eur04-vi1-obe.outbound.protection.outlook.com; envelope-from=sean.anderson@seco.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=disgoel@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=AZltl162;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jRdsio5w;
 	dkim-atps=neutral
-Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-eopbgr80084.outbound.protection.outlook.com [40.107.8.84])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mrgzr175cz3c87
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Oct 2022 02:35:17 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=JEkwd2MtIBl5rCbDYslmhyWX0+8qbYyBKcfNqC1fVxrAdHDoqk+7x65IUOSAjfzl6TOoNHa8PAaEttRG5+h4c57vmxING4r3N2BHWdX55/LYAe0vA1T49h7/ShipEPrabhg7/9nmONKLtbbslPE1rjJEbZUkIA+mkxxLGTesAoHtgcbgiwn53OyZbeA2GvzmPu9UH1LNABJTRy76lbAwiBpuEJKPLxzktUmlLvV1+miaUNsyuOssTMHT5rvS8igM7wJRvAFr15lmtNJuQK8e3x4QGh8EEzdUYaYGiEo2+KallKyg0YDf4zMk3I3hQnFKmebVsbQfIQKhYvUl6Rg+6g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oB+kx1OPzZxKIQwwkg6hIkYyhMPiN1IpgiZB16yNWbo=;
- b=C9oaNaXiKpHKHPRej13PEmc13KIMfDKY91pQvnbD9kIhg/wTHh4GEZOlxjJqyoI0dvBTI61m8xUN+CLXDLZbq9J/ZmvzGqZvddAUn76XtzXMFHvTnsabpGM5m/BA185ztvWRsXS4d+nCMxRGyLk6Rk138Tuv7xzbt1BR5AbWIXv+r44r18OlsGsOSh2KfEVqNZGEj4l8UCpYoIDEacm69qZM48gVGWLnfjxlsBfPDcgEssnwe/NRoQeY9Hbd/hFdwOIYRqzvb2LNStyU34vYcmPlxeMnqdK1qJLnHqYFj7ldAUGYxZU0DNtGoJ4HhdA8rFyEFFX3AG7IlKLe/5Ck/w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=seco.com; dmarc=pass action=none header.from=seco.com;
- dkim=pass header.d=seco.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seco.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oB+kx1OPzZxKIQwwkg6hIkYyhMPiN1IpgiZB16yNWbo=;
- b=AZltl162BmBJAgqkkw8HdsTqDnwBjvQpEa6dSPWCecFqRK2QALpQxXMjLX71rhtW9UOGpuSRrOKU6aBhDCT3s9s4/UPlkJag/Bz48+XdXZKTx84FaUysJ1hG6kzteS5mpGJgBYs2Uox53BPL2NvVp1NBHjiTtymSGJeWD5rV3bi/RVCzZp/87XtnTbdXxkHUO+aQ0UGen/owKz/NgJYQPu+BP0uMR/tfw1O9zDvMk7u16Di5b/tgJq1iimloRbZWC/fm0DrNTS7xtPt+ooMBHu65udGbqa0jDc+EkfQaCn7TxyIBw+PvLryryAjBYlNKQqJvHBBgM1hRlH6h1+BiKw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=seco.com;
-Received: from DB7PR03MB4972.eurprd03.prod.outlook.com (2603:10a6:10:7d::22)
- by PAXPR03MB7999.eurprd03.prod.outlook.com (2603:10a6:102:21e::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5723.28; Mon, 17 Oct
- 2022 15:34:56 +0000
-Received: from DB7PR03MB4972.eurprd03.prod.outlook.com
- ([fe80::204a:de22:b651:f86d]) by DB7PR03MB4972.eurprd03.prod.outlook.com
- ([fe80::204a:de22:b651:f86d%6]) with mapi id 15.20.5723.033; Mon, 17 Oct 2022
- 15:34:55 +0000
-Subject: Re: [PATCH net-next v5 05/14] net: fman: Map the base address once
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-References: <20220902215737.981341-1-sean.anderson@seco.com>
- <20220902215737.981341-6-sean.anderson@seco.com>
- <CAMuHMdWqTtjuOvDo9qxgDVpm+RBGm7BEgpdqVRH1n_dLGoYLTA@mail.gmail.com>
-From: Sean Anderson <sean.anderson@seco.com>
-Message-ID: <086a6f02-4495-510e-9fc5-64f95e7d55f6@seco.com>
-Date: Mon, 17 Oct 2022 11:34:47 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-In-Reply-To: <CAMuHMdWqTtjuOvDo9qxgDVpm+RBGm7BEgpdqVRH1n_dLGoYLTA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BL0PR02CA0076.namprd02.prod.outlook.com
- (2603:10b6:208:51::17) To DB7PR03MB4972.eurprd03.prod.outlook.com
- (2603:10a6:10:7d::22)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mrh5j5tKmz3c87
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Oct 2022 02:40:25 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29HEe0gs031076;
+	Mon, 17 Oct 2022 15:40:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=rnbdnwmmTYFN3ka7BUYRRTD3vlsSmXwUOO/6IsVJ5zE=;
+ b=jRdsio5wDqRP4ttf33SBxSCMtL38ok3MtHfFR3MtsKG6WPftEm5U5D836pItH327kdtZ
+ fz4mvDyGPmE9y0RJGCvotGAC2UwZXIxGf6sa/Wwec1Fa60QfgoYwtHjadsDtQyRcsCFL
+ QCjWZ0T8iYh3b4n1XRlUDa7FkWSAfmIdFp/ZJy10lmubuBWdssjsSlhiQ+jho9Gwhg3/
+ qVSisnOmNi0Ia6wDemAI3qAoL8oBCw4P0Sq6B7DuBV31qd3OYggF6qx9l4IHRb2uZTL4
+ jTqPlF8r7NlQzLwtVk4Zfx2MNO1/z3Ler+rfQv4G+C1fqM5gsv6Yc9bg4uUD3/hoGH8L 9g== 
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3k86vu6v34-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 17 Oct 2022 15:40:08 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+	by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 29HFbFd2008004;
+	Mon, 17 Oct 2022 15:40:07 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+	by ppma03ams.nl.ibm.com with ESMTP id 3k7mg938xj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 17 Oct 2022 15:40:06 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
+	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 29HFe2Do3867312
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 17 Oct 2022 15:40:02 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A99E942041;
+	Mon, 17 Oct 2022 15:40:02 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 82B2E42047;
+	Mon, 17 Oct 2022 15:39:57 +0000 (GMT)
+Received: from [9.43.55.73] (unknown [9.43.55.73])
+	by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Mon, 17 Oct 2022 15:39:56 +0000 (GMT)
+Message-ID: <c92d40fa-4394-a755-62f2-abbd21296412@linux.ibm.com>
+Date: Mon, 17 Oct 2022 21:09:55 +0530
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB7PR03MB4972:EE_|PAXPR03MB7999:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1cfb7a7a-d584-4d51-3eaa-08dab0552457
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	urh6ONtA/A8UeFSCZ02DNrzPC8GN3lvHwfLPvgoup9JQ3/ID0Plhpd++JCwIgyEfnjIzk4X+v5GUN4wd/4d0bEVV12UwBVnP3KAcMqe213d/g1TtrJLjXDA6nim5FiR1ehGV03UIRVq+fF/jbufXFDpZwsmUhNGwzQ6IwCQywVn+rNyF41Ba7HYxB2gWuRkPOerT8IqnF3EWgSqEeEoo9bN6qMlNwrv7FNNwb7oleCibE9sBO+gmZ3anzokHAb/uZqbmNzkCDUnZsbSPsYcClcv9WaRgZZW8GRxCUR5vvjRfd0yFZFIM9Mu1w95uqzofvziTBZCrULmsLrZyKr9gHrirSkNXFAJfZM6ijZ2Dfi8bKgIyfAjp8swtFtdsOsOkV3HSXm4FbBwML5Nj+FK42sRatNxDNRyOnYnkdkoAEhRVRXSUA9WJuMI24TUWSTreMxmr4Bh2wXaQv2O80kA8QzD0Ui0aiZmzZjf2Lgv9ZhCjXCj/1uKN8JW4i0JXNpOhtbqY56xjIQnmoW7FCyGKMGl4pg1C3nUVGLpslFbYUCNrBTqVpaVpmy9M/WVJI8ur7Z/PR0xaFGfC2HsXYSY2pwvh9KgierEi0rs9eq5jgNHzW4AplWbUxlovHiczfCrPEf4WW6JQAn4a+0BjiBTG8sl2ActwayTHaZo7bu2QOlt/ana/WYkm9Y/qtS3UiYXnmVCU3yfCpwqpehezyNOlIKexSEYQ8Zjh+m4pyJXRb7A0VM0lQPozHIZQ5P/tDTJ3jfgFVcY+2Bdo7BzZZ4ZpVkYwB+lGUu8K6KeuFOeejYE0JB72OUX13OuKkawCw13rHpVMRJO37k1xR7dqieEivQ==
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB7PR03MB4972.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(396003)(376002)(39850400004)(346002)(136003)(366004)(451199015)(36756003)(31686004)(53546011)(86362001)(31696002)(7416002)(38100700002)(5660300002)(44832011)(2906002)(38350700002)(2616005)(186003)(83380400001)(52116002)(6506007)(316002)(478600001)(26005)(6512007)(6486002)(54906003)(6916009)(66946007)(66476007)(66556008)(41300700001)(4326008)(8936002)(6666004)(8676002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?utf-8?B?UlRhUnY1MDlPSkpyTUlEaW1mTjM5ZWkxMm9JTzhqTGJVNllPVFdRZGVKVTh1?=
- =?utf-8?B?b0h1Tk1Vd29lVVRQRWozeHpPYlJBYW5KWkxPREJrUURjc0FDdDNWZXBlaU1R?=
- =?utf-8?B?UTlpQ2hETmlpcFNodDNncjM0Wm5mTEd5Z0VOZnh5SWxDQ2RXeW9IUnJzREZ5?=
- =?utf-8?B?cEhXbEJNTTgrTnFEbE15YWl5RzNkMnh5NVA1OFVMUkVkYXlwN0MyZjZRVTZM?=
- =?utf-8?B?RDRUNldiMmhENWx0Zkl2dHVpTVM4N01VWXFIMmlZMFVnRStmU0FmekdmTVcz?=
- =?utf-8?B?RGxhMDZXZDNGQzNaTEE3b0NOWWh3K1FidUpHRVBUMTRXN1VUcjZpL2FFaUZj?=
- =?utf-8?B?MHBtQzhBVkRRZ09DdUdpMFpQSVhHMFlkRUJIbkNyM0ZtTG9zOHJsWW84TE03?=
- =?utf-8?B?UEtLbXgxWVFnOThtb25sVUFiMWdSYzgrVCtVVEwyNXNLai93TnQ4TzAraFVh?=
- =?utf-8?B?a005cHlKUjZNWDg1ekY0ZGhSZFV6NnM2TTVaVks0cnVBby81c3hBTGdDZVIr?=
- =?utf-8?B?NEMxZXpYYTI3Q1diWFIzNjNVM2cvaXhyNVJCanI4YXowM0hLT0J4RTlYa0o0?=
- =?utf-8?B?MkZmL005bTVMcnhIUlJMTHFMM0JUVm5DRHV1Szc1eVE5K1pkdTRidHp4TWxu?=
- =?utf-8?B?eXlMQmxVaTBzN2Q4RDlqdzhsYnpxaHIxalBLdnZjUnB2V0FzTXFCeTBlV3Bm?=
- =?utf-8?B?YVFhV3FHbVNIUmZYZkoxbzUxN0VEbHVGRWNXa1RiR1BtdWVTV1JmbzBNT0pS?=
- =?utf-8?B?VW50TldiMURNU0haTHN6ODJzRGV3T3pmdFJYeXpHeDU5aUJmeEE0QytwamVL?=
- =?utf-8?B?N3E1NWQ0MXVDNTByTmNQeCthUC9QMnhTeGl0S1RGN296czFjVE02R0t4TXBP?=
- =?utf-8?B?VTNWKzZHa05Hd3MrN1dkZkd1a0dRTzVJYUpYRWpjaGJFeXB3WnFPaW13dHBu?=
- =?utf-8?B?WGh4QkJRYkl6YTFwOGN0K0JrOWFiMEs0dWVacDJoaG5nUVoxOWkxOWc3MzIw?=
- =?utf-8?B?bGpNL0RhNXM2dmVWYnJBMHRUNHBGTFg4emJzSWp2YTFOZHBBRTBKYldnTjdx?=
- =?utf-8?B?OFY2SHM2YzgxR29LaXdVbTR6UEdhOVcreUhybkV0VWgwalU1Sm1yVklvVVVs?=
- =?utf-8?B?MVlPNFV0RXl5b2JjcWprVisxYkVRRTl6cDRkckFJdjl2LzhBN0dZOVJMWkVk?=
- =?utf-8?B?cWRDOXY2dmZCS09aUWZEQ0lITVJlOE91a2xKOGsrZnZIUThxeG9VbWd6MHFy?=
- =?utf-8?B?VmRnaXJDRHRZTFVPOTIwRlRUREI3ZitxaitUb0xYR0t0NDliK0hCYW16YnND?=
- =?utf-8?B?enFRT0lTY2JGbDJkTEdJc2RsUE9xTEIrbS9uVjB2N3k5Q2VEL0E5N2VFNjdI?=
- =?utf-8?B?R0o3OFJ6K2F2TmVueFgwK2Ryd2FocTdYWXhhL2k0YnVsNjZiUDF1d3o1KzNx?=
- =?utf-8?B?dHV0MlB5WXJrYU1CbW9IOXBRVCtJMU9rdWVubFBXMDRsRkgwbk9OeHdTdkk3?=
- =?utf-8?B?RVVMSTFwTHFFOGh0dGNIa2ordWgvMmgwUDlESnNCOFdHTHgvT083NVZnZ3g3?=
- =?utf-8?B?VTJndmhyNmUrZ2pUb1JXclJjbnJmNndOcTJuMUw1a0RwcUFObmdBRFNHQTlh?=
- =?utf-8?B?clBKUTd0ZXNGWUZIRzkyZE5vQmY4MVpoWXBJbDlYTmJyakdIUjZpbWxub3k3?=
- =?utf-8?B?dXhkN2s0MlFYbFVFbTdUU21aL29uSVoydVpIVXVua0FOamlNNXJLaVBORzh2?=
- =?utf-8?B?Um43NXhIbTllOEpxV2FZMmI4bWl2V2VDbThFaFlGRGlYZVdyNjBTYnNEcHZB?=
- =?utf-8?B?VTk4ZkxKRE4yY0ZHQ2FiNlZVUDU4WW5SWTZWd0ZGYXNzZm1NdUJtYzE2c3dJ?=
- =?utf-8?B?VUdiM2pLUDdLemJTWTErMnJWWlBmK01vdUU0bDlBbEhkdldPYzlFOW5NN0do?=
- =?utf-8?B?SVhBVkt5ZnZEVFpnckFScHRxZ3FPck9nc2hoT3JFemw5cysrQU1SeUdNcGV4?=
- =?utf-8?B?akVqRmQ2bk1KRk0zTi9xL0xGc0dIZkVPOGdDL1FkNlRGcHFWNjJKeVVOSG9h?=
- =?utf-8?B?OUJnbGhwQUFnQ21yRE80TVE0Rkg5eG14QXRNK2tpVi9QZDJRSUJOK1ZpbndO?=
- =?utf-8?B?OU12aFVCa2lsZjdXZ0xiNlFrR09PbDBOMkJid2JEWEpnT2hxVnJkNjZ3UXVt?=
- =?utf-8?B?dFE9PQ==?=
-X-OriginatorOrg: seco.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1cfb7a7a-d584-4d51-3eaa-08dab0552457
-X-MS-Exchange-CrossTenant-AuthSource: DB7PR03MB4972.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Oct 2022 15:34:55.8033
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bebe97c3-6438-442e-ade3-ff17aa50e733
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YuAarAyGJBiA/jVd9UarW9m6/GMrAV6/GMVotVQaF7xBwYUFkqpRsXMpvDz6lWthc5H3rZ9aPvFTdf9KPRdxPg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR03MB7999
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.2
+Subject: Re: [PATCH 1/2] tools/perf/tests/shell: Update stat+csv_output.sh to
+ include sanity check for topology
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, acme@kernel.org,
+        jolsa@kernel.org, mpe@ellerman.id.au
+References: <20221006155149.67205-1-atrajeev@linux.vnet.ibm.com>
+Content-Language: en-US
+From: Disha Goel <disgoel@linux.ibm.com>
+In-Reply-To: <20221006155149.67205-1-atrajeev@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: AbwBz5PjmFLnw_JMJmjKohr3zSPLA6pd
+X-Proofpoint-GUID: AbwBz5PjmFLnw_JMJmjKohr3zSPLA6pd
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-10-17_12,2022-10-17_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 suspectscore=0
+ bulkscore=0 priorityscore=1501 adultscore=0 malwarescore=0 clxscore=1011
+ phishscore=0 lowpriorityscore=0 mlxlogscore=999 spamscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2209130000 definitions=main-2210170084
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -132,89 +94,129 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madalin Bucur <madalin.bucur@nxp.com>, netdev@vger.kernel.org, open list <linux-kernel@vger.kernel.org>, Eric Dumazet <edumazet@google.com>, Camelia Groza <camelia.groza@nxp.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>, linux-arm-kernel@lists.infradead.org
+Cc: maddy@linux.vnet.ibm.com, rnsastry@linux.ibm.com, kjain@linux.ibm.com, linux-perf-users@vger.kernel.org, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
+On 10/6/22 9:21 PM, Athira Rajeev wrote:
+> Testcase stat+csv_output.sh fails in powerpc:
+>
+> 	84: perf stat CSV output linter: FAILED!
+>
+> The testcase "stat+csv_output.sh" verifies perf stat
+> CSV output. The test covers aggregation modes like
+> per-socket, per-core, per-die, -A (no_aggr mode) along
+> with few other tests. It counts expected fields for
+> various commands. For example say -A (i.e, AGGR_NONE
+> mode), expects 7 fields in the output having "CPU" as
+> first field. Same way, for per-socket, it expects the
+> first field in result to point to socket id. The testcases
+> compares the result with expected count.
+>
+> The values for socket, die, core and cpu are fetched
+> from topology directory:
+> /sys/devices/system/cpu/cpu*/topology.
+> For example, socket value is fetched from
+> "physical_package_id" file of topology directory.
+> (cpu__get_topology_int() in util/cpumap.c)
+>
+> If a platform fails to fetch the topology information,
+> values will be set to -1. For example, incase of pSeries
+> platform of powerpc, value for  "physical_package_id" is
+> restricted and not exposed. So, -1 will be assigned.
+>
+> Perf code has a checks for valid cpu id in "aggr_printout"
+> (stat-display.c), which displays the fields. So, in cases
+> where topology values not exposed, first field of the
+> output displaying will be empty. This cause the testcase
+> to fail, as it counts  number of fields in the output.
+>
+> Incase of -A (AGGR_NONE mode,), testcase expects 7 fields
+> in the output, becos of -1 value obtained from topology
+> files for some, only 6 fields are printed. Hence a testcase
+> failure reported due to mismatch in number of fields in
+> the output.
+>
+> Patch here adds a sanity check in the testcase for topology.
+> Check will help to skip the test if -1 value found.
+>
+> Fixes: 7473ee56dbc9 ("perf test: Add checking for perf stat CSV output.")
+> Reported-by: Disha Goel <disgoel@linux.vnet.ibm.com>
+> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+> Suggested-by: James Clark <james.clark@arm.com>
+> Suggested-by: Ian Rogers <irogers@google.com>
 
-On 10/17/22 11:15 AM, Geert Uytterhoeven wrote:
-> Hi Sean,
-> 
-> On Sat, Sep 3, 2022 at 12:00 AM Sean Anderson <sean.anderson@seco.com> wrote:
->> We don't need to remap the base address from the resource twice (once in
->> mac_probe() and again in set_fman_mac_params()). We still need the
->> resource to get the end address, but we can use a single function call
->> to get both at once.
->>
->> While we're at it, use platform_get_mem_or_io and devm_request_resource
->> to map the resource. I think this is the more "correct" way to do things
->> here, since we use the pdev resource, instead of creating a new one.
->> It's still a bit tricky, since we need to ensure that the resource is a
->> child of the fman region when it gets requested.
->>
->> Signed-off-by: Sean Anderson <sean.anderson@seco.com>
->> Acked-by: Camelia Groza <camelia.groza@nxp.com>
-> 
-> Thanks for your patch, which is now commit 262f2b782e255b79
-> ("net: fman: Map the base address once") in v6.1-rc1.
-> 
->> --- a/drivers/net/ethernet/freescale/dpaa/dpaa_eth_sysfs.c
->> +++ b/drivers/net/ethernet/freescale/dpaa/dpaa_eth_sysfs.c
->> @@ -18,7 +18,7 @@ static ssize_t dpaa_eth_show_addr(struct device *dev,
->>
->>         if (mac_dev)
->>                 return sprintf(buf, "%llx",
->> -                               (unsigned long long)mac_dev->res->start);
->> +                               (unsigned long long)mac_dev->vaddr);
-> 
-> On 32-bit:
-> 
->     warning: cast from pointer to integer of different size
-> [-Wpointer-to-int-cast]
-> 
-> Obviously you should cast to "uintptr_t" or "unsigned long" instead,
-> and change the "%llx" to "%p" or "%lx"...
+For the patchset,
 
-Isn't there a %px for this purpose?
+Tested-by: Disha Goel <disgoel@linux.vnet.ibm.com>
 
-> However, taking a closer look:
->   1. The old code exposed a physical address to user space, the new
->      code exposes the mapped virtual address.
->      Is that change intentional?
-
-No, this is not intentional. So to make this backwards-compatible, I
-suppose I need a virt_to_phys?
-
->   2. Virtual addresses are useless in user space.
->      Moreover, addresses printed by "%p" are obfuscated, as this is
->      considered a security issue. Likewise for working around this by
->      casting to an integer.
-
-Yes, you're right that this probably shouldn't be exposed to userspace.
-
-> What's the real purpose of dpaa_eth_show_addr()?
-
-I have no idea. This is a question for Madalin.
-
-> Perhaps it should be removed?
-
-That would be reasonable IMO.
-
---Sean
-
->>         else
->>                 return sprintf(buf, "none");
->>  }
-> 
-> Gr{oetje,eeting}s,
-> 
->                         Geert
-> 
-> --
-> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-> 
-> In personal conversations with technical people, I call myself a hacker. But
-> when I'm talking to journalists I just say "programmer" or something like that.
->                                 -- Linus Torvalds
-> 
+> ---
+>   tools/perf/tests/shell/stat+csv_output.sh | 43 ++++++++++++++++++++---
+>   1 file changed, 39 insertions(+), 4 deletions(-)
+>
+> diff --git a/tools/perf/tests/shell/stat+csv_output.sh b/tools/perf/tests/shell/stat+csv_output.sh
+> index eb5196f58190..b7f050aa6210 100755
+> --- a/tools/perf/tests/shell/stat+csv_output.sh
+> +++ b/tools/perf/tests/shell/stat+csv_output.sh
+> @@ -6,6 +6,8 @@
+>
+>   set -e
+>
+> +skip_test=0
+> +
+>   function commachecker()
+>   {
+>   	local -i cnt=0
+> @@ -156,14 +158,47 @@ check_per_socket()
+>   	echo "[Success]"
+>   }
+>
+> +# The perf stat options for per-socket, per-core, per-die
+> +# and -A ( no_aggr mode ) uses the info fetched from this
+> +# directory: "/sys/devices/system/cpu/cpu*/topology". For
+> +# example, socket value is fetched from "physical_package_id"
+> +# file in topology directory.
+> +# Reference: cpu__get_topology_int in util/cpumap.c
+> +# If the platform doesn't expose topology information, values
+> +# will be set to -1. For example, incase of pSeries platform
+> +# of powerpc, value for  "physical_package_id" is restricted
+> +# and set to -1. Check here validates the socket-id read from
+> +# topology file before proceeding further
+> +
+> +FILE_LOC="/sys/devices/system/cpu/cpu*/topology/"
+> +FILE_NAME="physical_package_id"
+> +
+> +check_for_topology()
+> +{
+> +	if ! ParanoidAndNotRoot 0
+> +	then
+> +		socket_file=`ls $FILE_LOC/$FILE_NAME | head -n 1`
+> +		[ -z $socket_file ] && return 0
+> +		socket_id=`cat $socket_file`
+> +		[ $socket_id == -1 ] && skip_test=1
+> +		return 0
+> +	fi
+> +}
+> +
+> +check_for_topology
+>   check_no_args
+>   check_system_wide
+> -check_system_wide_no_aggr
+>   check_interval
+>   check_event
+> -check_per_core
+>   check_per_thread
+> -check_per_die
+>   check_per_node
+> -check_per_socket
+> +if [ $skip_test -ne 1 ]
+> +then
+> +	check_system_wide_no_aggr
+> +	check_per_core
+> +	check_per_die
+> +	check_per_socket
+> +else
+> +	echo "[Skip] Skipping tests for system_wide_no_aggr, per_core, per_die and per_socket since socket id exposed via topology is invalid"
+> +fi
+>   exit 0
