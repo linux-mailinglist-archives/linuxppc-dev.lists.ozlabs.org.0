@@ -2,51 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3464E601F11
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Oct 2022 02:15:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59ED0601F2A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Oct 2022 02:16:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MrvXL0kqVz3bj0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Oct 2022 11:15:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MrvYL1lp5z3f3k
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Oct 2022 11:16:38 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jh++9IEo;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=vFzoLUKR;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jh++9IEo;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=vFzoLUKR;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MrvRD0Zjhz3bry
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Oct 2022 11:11:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MrvRg4rv2z3dyY
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Oct 2022 11:11:43 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id BAC8DB81BDD;
-	Tue, 18 Oct 2022 00:11:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56975C433C1;
-	Tue, 18 Oct 2022 00:11:15 +0000 (UTC)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 53B7DB81BEC;
+	Tue, 18 Oct 2022 00:11:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE708C433C1;
+	Tue, 18 Oct 2022 00:11:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1666051876;
-	bh=qc/1fxhkCoJQKN5s/IGlNPN/gIPP99FhAf2TEAhnO9A=;
+	s=k20201202; t=1666051900;
+	bh=DioVqI/h31Tdt9uY++8OagUiUVAKi+JznvCbJDe2+xM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jh++9IEoVPd/nELBfBjSHHLcLPMIQ0Ff28/TsOQ6RqGYKy9zNo/aZRcauYz+wCVPr
-	 Q5/a7kHLmF14fO5W+0iAUCPpQnvTAGjUFTxcRYpH2NFGLJXIAdlqlgX7qTY7pmurRN
-	 Eu11Cce5WvNgIMAP/e0xevjx0Ey9xcJPAiYy5e+jGKUXIOvNKeT0/f6VTELJK91Jvw
-	 JXZ/Fs4IOLhXSKLYbaG2RyXfJYXMv91NpDD39ikY00AVJltwoSQ0Jc4q/uJQlxWQbV
-	 v853iJKmUuXuHo2jLLty4ZfAX3vN/4m3HbassA0v1ihVHbTT/Zw/aGB1oCfdjBD18p
-	 3Qvy/Y6NAjhdQ==
+	b=vFzoLUKRUScowy084qdnBhlzyQuZAypkzpm4OOVEaoqJUEoZcQ6H9GyUA8vmdEvl+
+	 9BhLwt2emVqvN6AH1IzetsMD/HbgU07mxWo1hzQ0qCrwo2g4zUyxaJ0x2cVfndoCkZ
+	 7GYa/i4sGtb1rwQ1L0w9PLQqA1Xc8MKfPdvykhHCa0RQCnTh6Mh5mTJCFsBnAP/FWh
+	 4AKV4qWyWz1oMecBa06VevlBzHAbOz7okz4zWI2QHV7cGjCCF/Um23vnp00Yp7/p2M
+	 +Gf5EtxDI8L/XxrNb4mvhE4/waNBJvCAYBbeP2TASyziW9cDe6Siv/1ukkhwIZQA/C
+	 89/djHCY9cn9Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 07/13] powerpc/64: don't refer nr_cpu_ids in asm code when it's undefined
-Date: Mon, 17 Oct 2022 20:10:56 -0400
-Message-Id: <20221018001102.2731930-7-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 05/10] powerpc/64: don't refer nr_cpu_ids in asm code when it's undefined
+Date: Mon, 17 Oct 2022 20:11:23 -0400
+Message-Id: <20221018001128.2732162-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20221018001102.2731930-1-sashal@kernel.org>
-References: <20221018001102.2731930-1-sashal@kernel.org>
+In-Reply-To: <20221018001128.2732162-1-sashal@kernel.org>
+References: <20221018001128.2732162-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -99,10 +99,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 4 insertions(+)
 
 diff --git a/arch/powerpc/kernel/head_64.S b/arch/powerpc/kernel/head_64.S
-index 9019f1395d39..be6e94f203c1 100644
+index 4f7b225d78cf..4215439a4663 100644
 --- a/arch/powerpc/kernel/head_64.S
 +++ b/arch/powerpc/kernel/head_64.S
-@@ -395,8 +395,12 @@ generic_secondary_common_init:
+@@ -398,8 +398,12 @@ generic_secondary_common_init:
  #else
  	LOAD_REG_ADDR(r8, paca_ptrs)	/* Load paca_ptrs pointe	 */
  	ld	r8,0(r8)		/* Get base vaddr of array	 */
