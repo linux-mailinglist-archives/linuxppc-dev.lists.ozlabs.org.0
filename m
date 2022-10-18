@@ -1,55 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A0F8602A27
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Oct 2022 13:30:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 520D7603435
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Oct 2022 22:47:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MsBVK1TnGz3c7H
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Oct 2022 22:30:01 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ozVGQfH0;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MsQsp1svfz3dt0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Oct 2022 07:47:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ozVGQfH0;
-	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.219.41; helo=mail-qv1-f41.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MsBSY4ljnz3c4W
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Oct 2022 22:28:29 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id C77BEB81EA9;
-	Tue, 18 Oct 2022 11:28:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 706DCC433B5;
-	Tue, 18 Oct 2022 11:28:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1666092503;
-	bh=t7x/A8HbCw3ENFEa0NBFmoMvgPlcglz9IsJ2LAmequw=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=ozVGQfH0HK6rhGMYDfgkvZ7uDwIlPojVdg/p4xZ88I8W+do/H21R2wJAEFCQdBmYl
-	 zGLhNAWispSleNoCgX4JpVq/95Igt4iaxVg2o76xaBTPcYGQ7gfxgPVW8xoZ6DKfEZ
-	 663qNLqrKCTr1+Dv6nviBSf6nlm2PyRBXPRjAKxKkAl3jI2gGCkVaWNBPpcRzL1zi8
-	 kIi7dTe//g7Pf5n40tCRdWDfIbPUs07wmbNCcWFGl7gOHv5PUdTQNRwbxtsj2bXIAY
-	 vG1Lb19RpFPIlfgSagsfXJiunqgcB0MGGT1J1QzoRaho1MtY/jO6VKSt8kLhgvFBqd
-	 w+bQSKsm+Feug==
-From: Mark Brown <broonie@kernel.org>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>, Xiubo.Lee@gmail.com, tiwai@suse.com, shengjiu.wang@gmail.com,
- nicoleotsuka@gmail.com, alsa-devel@alsa-project.org, lgirdwood@gmail.com, festevam@gmail.com, perex@perex.cz
-In-Reply-To: <1663925494-9941-1-git-send-email-shengjiu.wang@nxp.com>
-References: <1663925494-9941-1-git-send-email-shengjiu.wang@nxp.com>
-Subject: Re: [PATCH] ASoC: fsl_micfil: Add Hardware Voice Activity Detector support
-Message-Id: <166609250118.155136.1014438138123181100.b4-ty@kernel.org>
-Date: Tue, 18 Oct 2022 12:28:21 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ms5KN6wl2z2xBV
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Oct 2022 18:36:55 +1100 (AEDT)
+Received: by mail-qv1-f41.google.com with SMTP id i9so8837109qvu.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Oct 2022 00:36:55 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Mwq8mRE5qiqVJEFTV8PMaTxlxiFl0HRvXCI1ESDIAgA=;
+        b=6bv5iKb4bGjIUnOrFcPFVu6vfMRMf03XuLlXJNnyrDP0fuS5nS+dXy6UlfMU21wUII
+         wn+vL8o7DJNJi15P5U87+8cXAUFF+vcCDoySwi8X8VpxL2UEhyhX/jCof/qrnhEmdQ2o
+         zsP4A8JRTbFiE/ZhQ3ft2wB2rJGkCprfauTo5IO7i1k4GPe3quCvwoU6n5wvb/cv9QzL
+         h9wlUWNJOmSPHErJTdbVD21FiMYtb6gkU9OaSNCW6gCSJb17VjGlX1Q8tryJrsgYplCR
+         1DdNy2b4uFhTQytHe4/e7vmfydVf4KYvDAXXeAiBNKRXPBXBxW9jNTM5K7lNzuy6vQHQ
+         B5hQ==
+X-Gm-Message-State: ACrzQf2F332CYOHxoKJFgOR3zB7O4kYTZA4Piz2c+lfC16FFw/mnNQ5X
+	TfYPJU8piYD6OZvWGb5xVsi7w+El9rmtdz6z
+X-Google-Smtp-Source: AMsMyM4TO2rohnsNqn8RjbdpvaS+eeG/dGtzAOZL55Bt+p3Hp1/LkC+LSgijf7fNuYQz9+fEkL6KXQ==
+X-Received: by 2002:a0c:a9d0:0:b0:4b4:3f85:f282 with SMTP id c16-20020a0ca9d0000000b004b43f85f282mr1356936qvb.24.1666078611673;
+        Tue, 18 Oct 2022 00:36:51 -0700 (PDT)
+Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com. [209.85.219.171])
+        by smtp.gmail.com with ESMTPSA id w18-20020a05620a425200b006eeb25369e9sm1866673qko.25.2022.10.18.00.36.51
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 18 Oct 2022 00:36:51 -0700 (PDT)
+Received: by mail-yb1-f171.google.com with SMTP id 126so16010495ybw.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Oct 2022 00:36:51 -0700 (PDT)
+X-Received: by 2002:a81:848c:0:b0:356:e173:2c7a with SMTP id
+ u134-20020a81848c000000b00356e1732c7amr1276352ywf.502.1666078253767; Tue, 18
+ Oct 2022 00:30:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.10.0-dev-fc921
+References: <20221018074014.185687-1-wangkefeng.wang@huawei.com>
+In-Reply-To: <20221018074014.185687-1-wangkefeng.wang@huawei.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Tue, 18 Oct 2022 09:30:42 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdWwAgPkifAkah7MoBKBoyB4tb+HM5cgvenwNFaAfbg+UQ@mail.gmail.com>
+Message-ID: <CAMuHMdWwAgPkifAkah7MoBKBoyB4tb+HM5cgvenwNFaAfbg+UQ@mail.gmail.com>
+Subject: Re: [PATCH] mm: remove kern_addr_valid() completely
+To: Kefeng Wang <wangkefeng.wang@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailman-Approved-At: Wed, 19 Oct 2022 07:46:46 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,45 +67,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org, Andy Lutomirski <luto@kernel.org>, linux-sh@vger.kernel.org, Christian Borntraeger <borntraeger@linux.ibm.com>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, Thomas Gleixner <tglx@linutronix.de>, linux-mips@vger.kernel.org, "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>, "H . Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>, WANG Xuerui <kernel@xen0n.name>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, Jonas Bonn <jonas@southpole.se>, linux-s390@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, linux-hexagon@vger.kernel.org, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org, Greg Ungerer <gerg
+ @linux-m68k.org>, Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Vineet Gupta <vgupta@kernel.org>, Matt Turner <mattst88@gmail.com>, linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org, Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>, Chris Zankel <chris@zankel.net>, Richard Henderson <richard.henderson@linaro.org>, Heiko Carstens <hca@linux.ibm.com>, linux-um@lists.infradead.org, Nicholas Piggin <npiggin@gmail.com>, Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, Richard Weinberger <richard@nod.at>, linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, loongarch@lists.linux.dev, Paul Walmsley <paul.walmsley@sifive.com>, Stafford Horne <shorne@gmail.com>, Johannes Berg <johannes@sipsolutions.net>, linux-arm-kernel@lists.infradead.org, x86@kernel.org, Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, li
+ nux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Sven Schnelle <svens@linux.ibm.com>, linux-alpha@vger.kernel.org, linux-fsdevel@vger.kernel.org, Borislav Petkov <bp@alien8.de>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 23 Sep 2022 17:31:34 +0800, Shengjiu Wang wrote:
-> The Hardware Voice Activity Detector (HWVAD) is a block
-> responsible for detect voice activity in a channel selected
-> by the user. It can be configured in Envelope-based or
-> Energy-based mode.
-> 
-> There are additional two interrupts for HWVAD, one is event
-> interrupt, another is error interrupt.
-> 
-> [...]
+On Tue, Oct 18, 2022 at 9:25 AM Kefeng Wang <wangkefeng.wang@huawei.com> wrote:
+> Most architectures(except arm64/x86/sparc) simply return 1 for
+> kern_addr_valid(), which is only used in read_kcore(), and it
+> calls copy_from_kernel_nofault() which could check whether the
+> address is a valid kernel address, so no need kern_addr_valid(),
+> let's remove unneeded kern_addr_valid() completely.
+>
+> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
 
-Applied to
+>  arch/m68k/include/asm/pgtable_mm.h        |  2 -
+>  arch/m68k/include/asm/pgtable_no.h        |  1 -
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org> [m68k]
 
-Thanks!
+Gr{oetje,eeting}s,
 
-[1/1] ASoC: fsl_micfil: Add Hardware Voice Activity Detector support
-      commit: 29dbfeecab85fc998d8c5c29473da33d272d0c85
+                        Geert
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
