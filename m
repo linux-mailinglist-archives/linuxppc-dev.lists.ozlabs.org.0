@@ -1,64 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E58E604983
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Oct 2022 16:42:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32B5E604A7E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Oct 2022 17:06:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MstjV4wKwz3dqs
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Oct 2022 01:42:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MsvFD36qxz3dwQ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Oct 2022 02:06:08 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=LqqliPiE;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=YYO7v04T;
+	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=taXn8qnV;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.43; helo=mga05.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=john.ogness@linutronix.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=LqqliPiE;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=YYO7v04T;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=taXn8qnV;
 	dkim-atps=neutral
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+X-Greylist: delayed 490 seconds by postgrey-1.36 at boromir; Thu, 20 Oct 2022 02:04:24 AEDT
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MsthV5fhBz2xGJ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Oct 2022 01:41:09 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1666190475; x=1697726475;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=6v6qLdtYAoaiS5TSUCzJk/2BpQGCWyMLYrB07TdQAKY=;
-  b=LqqliPiE0QhLhqQ8FKVBt7QNiKFjn84JQh4si4aTM3rFMlbzTrNLngDL
-   Z9ZmL38mSMf5nlB0j0XKiJ4yi14Hex3+pnPM6anOI2Xmh4scEUh3G6IGc
-   58QKSYj4urylp2oVo+iEOJJScMASSI0zNZcR8p1KC58f3dAitlzZykO6T
-   /n7Mjjql77YbZSApc+Nrcg4NAOvSEApM4dSQ+HON+Xy5pYJ4VMM76j0Bj
-   eZ40/8cHLKRpur4WSNueT6Lr9h0zq8zz8YkWGQmyjO0CR0YiDBJG/5OWX
-   I+4pjsybx+UxBBZYNATcq+ThQkvbDtpTwTXkyVAPDN2hPrDgDmy79KTID
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10505"; a="392730208"
-X-IronPort-AV: E=Sophos;i="5.95,196,1661842800"; 
-   d="scan'208";a="392730208"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2022 07:40:58 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10505"; a="692416016"
-X-IronPort-AV: E=Sophos;i="5.95,196,1661842800"; 
-   d="scan'208";a="692416016"
-Received: from lkp-server02.sh.intel.com (HELO b6d29c1a0365) ([10.239.97.151])
-  by fmsmga008.fm.intel.com with ESMTP; 19 Oct 2022 07:40:55 -0700
-Received: from kbuild by b6d29c1a0365 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1olAFV-00006T-2P;
-	Wed, 19 Oct 2022 14:40:49 +0000
-Date: Wed, 19 Oct 2022 22:40:39 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [linux-next:master] BUILD REGRESSION
- a72b55bc981b62f7186600d06d1824f1d0612b27
-Message-ID: <63500c67.OtDDn8C+xvHrmrIj%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MsvCD1XHnz2yQg
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Oct 2022 02:04:24 +1100 (AEDT)
+From: John Ogness <john.ogness@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1666191362;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=zkI+7kE11pEfvJZCSjIsOIHfnjIhjBs6goKb/AUL2D4=;
+	b=YYO7v04TmKSkEL8SQfYf9FANh400BpV31ZQR/trpNhqYtbMsqHy7XZuAyWZcYguh+KTZKz
+	uMkqVYF2Idk8ssJy6cSwkhJih5dltGrVFm3Z7MoL7Nhtw4GkmZEKblfArE1vVoKGDs5p81
+	WHY9OAlLqzr8G07YBDVNtY0AT4QClPosfQAXC7SCLUuMtHyHR5c2LCkNDByg36nTiuRcRN
+	AVWPIk+/COT66KSdFzs7sxleUpL2onRYs8JoVdAMBeDCEkOf8Yvmkp92DVD8xjN57OewPI
+	lAF6m3iPq5588431gmChW8+srrThoCLrEllt8f0GsYtka8ApK0mxiWi8JG1KQQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1666191362;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=zkI+7kE11pEfvJZCSjIsOIHfnjIhjBs6goKb/AUL2D4=;
+	b=taXn8qnVlav1KthfUzD2BUf7770pohYL/ecGjx8VGuNp3NOcr/dyz4UXH5Ok4L9J1BRVse
+	cqmXXqp/T3jlr9Bg==
+To: Petr Mladek <pmladek@suse.com>
+Subject: [PATCH printk v2 00/38] reduce console_lock scope
+Date: Wed, 19 Oct 2022 17:01:22 +0206
+Message-Id: <20221019145600.1282823-1-john.ogness@linutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,220 +62,206 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ntfs3@lists.linux.dev, Linux Memory Management List <linux-mm@kvack.org>, linux-mediatek@lists.infradead.org, linux-ext4@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: linux-fbdev@vger.kernel.org, linux-efi@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, kgdb-bugreport@lists.sourceforge.net, dri-devel@lists.freedesktop.org, Douglas Anderson <dianders@chromium.org>, Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, Jiri Slaby <jirislaby@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, Daniel Thompson <daniel.thompson@linaro.org>, linux-samsung-soc@vger.kernel.org, Tom Rix <trix@redhat.com>, Xianting Tian <xianting.tian@linux.alibaba.com>, Richard Weinberger <richard@nod.at>, Helge Deller <deller@gmx.de>, Michal Simek <michal.simek@xilinx.com>, Geert Uytterhoeven <geert@linux-m68k.org>, linux-serial@vger.kernel.org, Aaron Tomlin <atomlin@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Juergen Gross <jgross@suse.com>, "Paul E. McKenney" <paulmck
+ @kernel.org>, Shile Zhang <shile.zhang@linux.alibaba.com>, linux-um@lists.infradead.org, Steven Rostedt <rostedt@goodmis.org>, linux-m68k@lists.linux-m68k.org, Thomas Gleixner <tglx@linutronix.de>, Andrew Morton <akpm@linux-foundation.org>, linux-arm-kernel@lists.infradead.org, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Mathias Nyman <mathias.nyman@linux.intel.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, Sergey Senozhatsky <senozhatsky@chromium.org>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Thomas Zimmermann <tzimmermann@suse.de>, Jason Wessel <jason.wessel@windriver.com>, linux-fsdevel@vger.kernel.org, Javier Martinez Canillas <javierm@redhat.com>, Johannes Berg <johannes@sipsolutions.net>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-branch HEAD: a72b55bc981b62f7186600d06d1824f1d0612b27  Add linux-next specific files for 20221019
+This is v2 of a series to prepare for threaded/atomic
+printing. It is a rework of patches 6-12 of the v1 [0]. From
+the v1, patches 1-5 are already mainline and a rework of
+patches >12 will be posted in a later series.
 
-Error/Warning reports:
+This series focuses on reducing the scope of the BKL
+console_lock. It achieves this by switching to SRCU and a
+dedicated mutex for console list iteration and modification,
+respectively. The console_lock will no longer offer this
+protection and is completely removed from
+(un)register_console() and console_stop/start() code.
 
-https://lore.kernel.org/linux-mm/202210090954.pTR6m6rj-lkp@intel.com
-https://lore.kernel.org/linux-mm/202210110857.9s0tXVNn-lkp@intel.com
-https://lore.kernel.org/linux-mm/202210111318.mbUfyhps-lkp@intel.com
-https://lore.kernel.org/llvm/202210060148.UXBijOcS-lkp@intel.com
+All users of the console_lock for list iteration have been
+modified. For the call sites where the console_lock is still
+needed (because of other reasons), I added comments to explain
+exactly why the console_lock was needed.
 
-Error/Warning: (recently discovered and may have been fixed)
+The base commit for this series is from Paul McKenney's RCU tree
+and provides an NMI-safe SRCU implementation [1]. Without the
+NMI-safe SRCU implementation, this series is not less safe than
+mainline. But we will need the NMI-safe SRCU implementation for
+atomic consoles anyway, so we might as well get it in
+now. Especially since it _does_ increase the reliability for
+mainline in the panic path.
 
-ERROR: modpost: "devm_ioremap_resource" [drivers/dma/idma64.ko] undefined!
-ERROR: modpost: "devm_ioremap_resource" [drivers/dma/qcom/hdma.ko] undefined!
-arch/arm64/kernel/alternative.c:199:6: warning: no previous prototype for 'apply_alternatives_vdso' [-Wmissing-prototypes]
-arch/arm64/kernel/alternative.c:295:14: warning: no previous prototype for 'alt_cb_patch_nops' [-Wmissing-prototypes]
-arch/powerpc/mm/nohash/e500.c:314:21: error: no previous prototype for 'relocate_init' [-Werror=missing-prototypes]
-fs/ext4/super.c:1744:19: warning: 'deprecated_msg' defined but not used [-Wunused-const-variable=]
+Changes since v2:
 
-Error/Warning ids grouped by kconfigs:
+general:
 
-gcc_recent_errors
-|-- arm64-allyesconfig
-|   |-- arch-arm64-kernel-alternative.c:warning:no-previous-prototype-for-alt_cb_patch_nops
-|   `-- arch-arm64-kernel-alternative.c:warning:no-previous-prototype-for-apply_alternatives_vdso
-|-- arm64-randconfig-c041-20221019
-|   |-- arch-arm64-kernel-alternative.c:warning:no-previous-prototype-for-alt_cb_patch_nops
-|   `-- arch-arm64-kernel-alternative.c:warning:no-previous-prototype-for-apply_alternatives_vdso
-|-- arm64-randconfig-s031-20221019
-|   |-- arch-arm64-kernel-alternative.c:warning:no-previous-prototype-for-alt_cb_patch_nops
-|   |-- arch-arm64-kernel-alternative.c:warning:no-previous-prototype-for-apply_alternatives_vdso
-|   |-- fs-ext4-fast_commit.c:sparse:sparse:incorrect-type-in-argument-(different-base-types)-expected-int-priv1-got-restricted-__le16-addressable-usertype-fc_len
-|   |-- fs-ext4-fast_commit.c:sparse:sparse:incorrect-type-in-argument-(different-base-types)-expected-int-tag-got-restricted-__le16-addressable-usertype-fc_tag
-|   |-- fs-ext4-fast_commit.c:sparse:sparse:incorrect-type-in-argument-(different-base-types)-expected-unsigned-short-usertype-tag-got-restricted-__le16-addressable-usertype-fc_tag
-|   |-- fs-ext4-fast_commit.c:sparse:sparse:incorrect-type-in-assignment-(different-base-types)-expected-restricted-__le16-usertype-fc_len-got-unsigned-short-usertype
-|   |-- fs-ext4-fast_commit.c:sparse:sparse:incorrect-type-in-assignment-(different-base-types)-expected-restricted-__le16-usertype-fc_tag-got-unsigned-short-usertype
-|   |-- fs-ext4-fast_commit.c:sparse:sparse:incorrect-type-in-initializer-(different-base-types)-expected-int-tag-got-restricted-__le16-usertype-fc_tag
-|   |-- fs-ext4-fast_commit.c:sparse:sparse:restricted-__le16-degrades-to-integer
-|   |-- fs-ntfs3-index.c:sparse:sparse:restricted-__le32-degrades-to-integer
-|   |-- fs-ntfs3-namei.c:sparse:sparse:incorrect-type-in-argument-(different-base-types)-expected-restricted-__le16-const-usertype-s1-got-unsigned-short
-|   `-- fs-ntfs3-namei.c:sparse:sparse:incorrect-type-in-argument-(different-base-types)-expected-restricted-__le16-const-usertype-s2-got-unsigned-short
-|-- i386-allyesconfig
-|   `-- fs-ext4-super.c:warning:deprecated_msg-defined-but-not-used
-|-- i386-defconfig
-|   `-- fs-ext4-super.c:warning:deprecated_msg-defined-but-not-used
-|-- i386-randconfig-a003
-|   `-- fs-ext4-super.c:warning:deprecated_msg-defined-but-not-used
-|-- i386-randconfig-a005
-|   `-- fs-ext4-super.c:warning:deprecated_msg-defined-but-not-used
-|-- i386-randconfig-a012
-|   `-- fs-ext4-super.c:warning:deprecated_msg-defined-but-not-used
-|-- i386-randconfig-a014
-|   `-- fs-ext4-super.c:warning:deprecated_msg-defined-but-not-used
-|-- i386-randconfig-a016
-|   `-- fs-ext4-super.c:warning:deprecated_msg-defined-but-not-used
-|-- microblaze-randconfig-s033-20221019
-|   |-- fs-ext4-fast_commit.c:sparse:sparse:incorrect-type-in-argument-(different-base-types)-expected-int-priv1-got-restricted-__le16-addressable-usertype-fc_len
-|   |-- fs-ext4-fast_commit.c:sparse:sparse:incorrect-type-in-argument-(different-base-types)-expected-int-tag-got-restricted-__le16-addressable-usertype-fc_tag
-|   |-- fs-ext4-fast_commit.c:sparse:sparse:incorrect-type-in-argument-(different-base-types)-expected-unsigned-short-usertype-tag-got-restricted-__le16-addressable-usertype-fc_tag
-|   |-- fs-ext4-fast_commit.c:sparse:sparse:incorrect-type-in-assignment-(different-base-types)-expected-restricted-__le16-usertype-fc_len-got-unsigned-short-usertype
-|   |-- fs-ext4-fast_commit.c:sparse:sparse:incorrect-type-in-assignment-(different-base-types)-expected-restricted-__le16-usertype-fc_tag-got-unsigned-short-usertype
-|   |-- fs-ext4-fast_commit.c:sparse:sparse:incorrect-type-in-initializer-(different-base-types)-expected-int-tag-got-restricted-__le16-usertype-fc_tag
-|   |-- fs-ext4-fast_commit.c:sparse:sparse:restricted-__le16-degrades-to-integer
-|   |-- fs-ntfs3-index.c:sparse:sparse:restricted-__le32-degrades-to-integer
-|   |-- fs-ntfs3-namei.c:sparse:sparse:incorrect-type-in-argument-(different-base-types)-expected-restricted-__le16-const-usertype-s1-got-unsigned-short
-|   `-- fs-ntfs3-namei.c:sparse:sparse:incorrect-type-in-argument-(different-base-types)-expected-restricted-__le16-const-usertype-s2-got-unsigned-short
-|-- openrisc-randconfig-s052-20221019
-|   |-- fs-ext4-fast_commit.c:sparse:sparse:incorrect-type-in-argument-(different-base-types)-expected-int-priv1-got-restricted-__le16-addressable-usertype-fc_len
-|   |-- fs-ext4-fast_commit.c:sparse:sparse:incorrect-type-in-argument-(different-base-types)-expected-int-tag-got-restricted-__le16-addressable-usertype-fc_tag
-|   |-- fs-ext4-fast_commit.c:sparse:sparse:incorrect-type-in-argument-(different-base-types)-expected-unsigned-short-usertype-tag-got-restricted-__le16-addressable-usertype-fc_tag
-|   |-- fs-ext4-fast_commit.c:sparse:sparse:incorrect-type-in-assignment-(different-base-types)-expected-restricted-__le16-usertype-fc_len-got-unsigned-short-usertype
-|   |-- fs-ext4-fast_commit.c:sparse:sparse:incorrect-type-in-assignment-(different-base-types)-expected-restricted-__le16-usertype-fc_tag-got-unsigned-short-usertype
-clang_recent_errors
-|-- hexagon-defconfig
-|   `-- fs-ext4-super.c:warning:unused-variable-deprecated_msg
-|-- hexagon-randconfig-r013-20221019
-|   |-- drivers-phy-mediatek-phy-mtk-tphy.c:warning:result-of-comparison-of-constant-with-expression-of-type-typeof-(_Generic((mask_)-char:(unsigned-char)-unsigned-char:(unsigned-char)-signed-char:(unsigned-c
-|   |-- fs-ext4-super.c:warning:unused-variable-deprecated_msg
-|   `-- fs-ntfs3-namei.c:warning:variable-uni1-is-used-uninitialized-whenever-if-condition-is-true
-|-- hexagon-randconfig-r031-20221019
-|   `-- fs-ntfs3-namei.c:warning:variable-uni1-is-used-uninitialized-whenever-if-condition-is-true
-|-- hexagon-randconfig-r036-20221019
-|   |-- fs-ext4-super.c:warning:unused-variable-deprecated_msg
-|   |-- ld.lld:error:vmlinux.a(arch-hexagon-kernel-head.o):(.init.text):relocation-R_HEX_B22_PCREL-out-of-range:is-not-in-references-__vmnewmap
-|   |-- ld.lld:error:vmlinux.a(arch-hexagon-kernel-head.o):(.init.text):relocation-R_HEX_B22_PCREL-out-of-range:is-not-in-references-__vmsetvec
-|   `-- ld.lld:error:vmlinux.a(arch-hexagon-kernel-head.o):(.init.text):relocation-R_HEX_B22_PCREL-out-of-range:is-not-in-references-memset
-|-- hexagon-randconfig-r041-20221018
-|   |-- ld.lld:error:vmlinux.a(arch-hexagon-kernel-head.o):(.init.text):relocation-R_HEX_B22_PCREL-out-of-range:is-not-in-references-__vmnewmap
-|   |-- ld.lld:error:vmlinux.a(arch-hexagon-kernel-head.o):(.init.text):relocation-R_HEX_B22_PCREL-out-of-range:is-not-in-references-__vmsetvec
-|   `-- ld.lld:error:vmlinux.a(arch-hexagon-kernel-head.o):(.init.text):relocation-R_HEX_B22_PCREL-out-of-range:is-not-in-references-memset
-|-- hexagon-randconfig-r045-20221018
-|   |-- ld.lld:error:vmlinux.a(arch-hexagon-kernel-head.o):(.init.text):relocation-R_HEX_B22_PCREL-out-of-range:is-not-in-references-__vmnewmap
-|   |-- ld.lld:error:vmlinux.a(arch-hexagon-kernel-head.o):(.init.text):relocation-R_HEX_B22_PCREL-out-of-range:is-not-in-references-__vmsetvec
-|   `-- ld.lld:error:vmlinux.a(arch-hexagon-kernel-head.o):(.init.text):relocation-R_HEX_B22_PCREL-out-of-range:is-not-in-references-memset
-|-- i386-randconfig-a002
-|   |-- fs-ext4-super.c:warning:unused-variable-deprecated_msg
-|   `-- fs-ntfs3-namei.c:warning:variable-uni1-is-used-uninitialized-whenever-if-condition-is-true
-|-- i386-randconfig-a004
-|   |-- fs-ext4-super.c:warning:unused-variable-deprecated_msg
-|   `-- fs-ntfs3-namei.c:warning:variable-uni1-is-used-uninitialized-whenever-if-condition-is-true
-|-- i386-randconfig-a011
-|   |-- fs-ext4-super.c:warning:unused-variable-deprecated_msg
-|   `-- fs-ntfs3-namei.c:warning:variable-uni1-is-used-uninitialized-whenever-if-condition-is-true
-|-- i386-randconfig-a013
-|   `-- fs-ext4-super.c:warning:unused-variable-deprecated_msg
-|-- i386-randconfig-a015
-|   |-- fs-ext4-super.c:warning:unused-variable-deprecated_msg
-|   `-- fs-ntfs3-namei.c:warning:variable-uni1-is-used-uninitialized-whenever-if-condition-is-true
-|-- powerpc-buildonly-randconfig-r004-20221019
-|   |-- drivers-phy-mediatek-phy-mtk-hdmi-mt2701.c:warning:result-of-comparison-of-constant-with-expression-of-type-typeof-(_Generic((mask_)-char:(unsigned-char)-unsigned-char:(unsigned-char)-signed-char:(uns
-|   |-- drivers-phy-mediatek-phy-mtk-hdmi-mt8173.c:warning:result-of-comparison-of-constant-with-expression-of-type-typeof-(_Generic((mask_)-char:(unsigned-char)-unsigned-char:(unsigned-char)-signed-char:(uns
-|   |-- drivers-phy-mediatek-phy-mtk-mipi-dsi-mt8173.c:warning:result-of-comparison-of-constant-with-expression-of-type-typeof-(_Generic((mask_)-char:(unsigned-char)-unsigned-char:(unsigned-char)-signed-char:
-|   `-- drivers-phy-mediatek-phy-mtk-mipi-dsi-mt8183.c:warning:result-of-comparison-of-constant-with-expression-of-type-typeof-(_Generic((mask_)-char:(unsigned-char)-unsigned-char:(unsigned-char)-signed-char:
-|-- powerpc-mvme5100_defconfig
-|   `-- fs-ext4-super.c:warning:unused-variable-deprecated_msg
-|-- riscv-randconfig-r024-20221019
-|   |-- fs-ext4-super.c:warning:unused-variable-deprecated_msg
-|   |-- ld.lld:error:vmlinux.a(kernel-kallsyms.o):(function-get_symbol_pos:.text):relocation-R_RISCV_PCREL_HI20-out-of-range:is-not-in-references-kallsyms_num_syms
-|   |-- ld.lld:error:vmlinux.a(kernel-kallsyms.o):(function-get_symbol_pos:.text):relocation-R_RISCV_PCREL_HI20-out-of-range:is-not-in-references-kallsyms_offsets
-|   |-- ld.lld:error:vmlinux.a(kernel-kallsyms.o):(function-kallsyms_lookup_name:.text):relocation-R_RISCV_PCREL_HI20-out-of-range:is-not-in-references-kallsyms_names
-|   |-- ld.lld:error:vmlinux.a(kernel-kallsyms.o):(function-kallsyms_lookup_name:.text):relocation-R_RISCV_PCREL_HI20-out-of-range:is-not-in-references-kallsyms_num_syms
-|   |-- ld.lld:error:vmlinux.a(kernel-kallsyms.o):(function-kallsyms_lookup_name:.text):relocation-R_RISCV_PCREL_HI20-out-of-range:is-not-in-references-kallsyms_offsets
-|   |-- ld.lld:error:vmlinux.a(kernel-kallsyms.o):(function-kallsyms_lookup_name:.text):relocation-R_RISCV_PCREL_HI20-out-of-range:is-not-in-references-kallsyms_relative_base
+- introduce console_is_enabled() to document safe data race on
+  console->flags
 
-elapsed time: 725m
+- switch all "console->flags & CON_ENABLED" code sites to
+  console_is_enabled()
 
-configs tested: 77
-configs skipped: 3
+- add "for_each_console_srcu" to .clang-format
 
-gcc tested configs:
-arc                              alldefconfig
-um                             i386_defconfig
-um                           x86_64_defconfig
-m68k                       m5208evb_defconfig
-powerpc                    klondike_defconfig
-x86_64                          rhel-8.3-func
-i386                                defconfig
-x86_64                    rhel-8.3-kselftests
-arc                                 defconfig
-x86_64                           rhel-8.3-syz
-arm                                 defconfig
-x86_64                        randconfig-a013
-i386                          randconfig-a014
-x86_64                        randconfig-a004
-x86_64                              defconfig
-x86_64                        randconfig-a011
-arc                  randconfig-r043-20221018
-x86_64                         rhel-8.3-kunit
-loongarch                         allnoconfig
-x86_64                        randconfig-a002
-riscv                randconfig-r042-20221018
-x86_64                           rhel-8.3-kvm
-alpha                               defconfig
-i386                             allyesconfig
-x86_64                        randconfig-a015
-i386                          randconfig-a012
-s390                 randconfig-r044-20221018
-x86_64                        randconfig-a006
-arm64                            allyesconfig
-i386                          randconfig-a016
-x86_64                               rhel-8.3
-sh                          polaris_defconfig
-i386                          randconfig-a001
-arm                              allyesconfig
-i386                          randconfig-a003
-mips                         cobalt_defconfig
-x86_64                           allyesconfig
-sh                             shx3_defconfig
-i386                          randconfig-a005
-powerpc                           allnoconfig
-m68k                             allmodconfig
-powerpc                          allmodconfig
-arc                              allyesconfig
-mips                             allyesconfig
-s390                             allmodconfig
-alpha                            allyesconfig
-s390                                defconfig
-sh                               allmodconfig
-arc                         haps_hs_defconfig
-ia64                             allmodconfig
-arc                           tb10x_defconfig
-sparc                             allnoconfig
-m68k                             allyesconfig
-m68k                        mvme16x_defconfig
-s390                             allyesconfig
-arm                         cm_x300_defconfig
-sh                   sh7724_generic_defconfig
-sh                           se7712_defconfig
+- cleanup/clarify comments relating to console_lock
+  coverage/usage
 
-clang tested configs:
-hexagon                             defconfig
-hexagon              randconfig-r045-20221018
-i386                          randconfig-a013
-x86_64                        randconfig-a016
-i386                          randconfig-a011
-x86_64                        randconfig-a012
-mips                        bcm63xx_defconfig
-x86_64                        randconfig-a005
-x86_64                        randconfig-a001
-x86_64                        randconfig-a014
-hexagon              randconfig-r041-20221018
-x86_64                        randconfig-a003
-i386                          randconfig-a015
-i386                          randconfig-a002
-i386                          randconfig-a006
-i386                          randconfig-a004
-powerpc                      obs600_defconfig
-x86_64                          rhel-8.3-rust
-powerpc                    mvme5100_defconfig
+um:
 
+- kmsg_dumper: use srcu instead of console_lock for list
+  iteration
+
+kgdb/kdb:
+
+- configure_kgdboc: keep console_lock for console->device()
+  synchronization, use srcu for list iteration
+
+- kgdboc_earlycon_pre_exp_handler: use srcu instead of
+  documenting unsafety for list iteration
+
+- kgdboc_earlycon_init: use console_list_lock instead of
+  console_lock to lock list
+
+- kdb_msg_write: use srcu instead of documenting unsafety for
+  list iteration
+
+tty:
+
+- show_cons_active: keep console_lock for console->device()
+  synchronization
+
+fbdev:
+
+- xen-fbfront: xenfb_probe: use srcu instead of console_lock
+  for list iteration, introduce console_force_preferred() to
+  safely implement hack
+
+proc/consoles:
+
+- show_console_dev: keep console_lock for console->device()
+  synchronization
+
+- c_next: use hlist_entry_safe() instead of
+  hlist_for_each_entry_continue()
+
+printk:
+
+- remove console_lock from console_stop/start() and
+  (un)register_console()
+
+- introduce console_srcu_read_(un)lock() to wrap scru read
+  (un)lock
+
+- rename cons_first() macro to console_first()
+
+- for_each_console: add lockdep check instead of introducing
+  new for_each_registered_console()
+
+- console_list_lock: add warning if in read-side critical
+  section
+
+- release srcu read lock on handover
+
+- console_flush_all: use srcu instead of relying on console
+  lock for list iteration
+
+- console_unblank: use srcu instead of relying on console_lock
+  for list iteration
+
+- console_flush_on_panic: use srcu for list iteration and
+  document console->seq race
+
+- device: keep console_lock for console->device()
+  synchronization, usr srcu for list iteration
+
+- register_console: split list adding logic into the 3 distinct
+  scenarios
+
+- register_console: set initial sequence number before adding
+  to list
+
+- unregister_console: fix ENODEV return value if the console is
+  not registered
+
+- console_stop: synchronize srcu
+
+- printk_late_init: use _safe variant of iteration
+
+- __pr_flush: use srcu instead of relying on console_lock for
+  list iteration
+
+John Ogness
+
+[0] https://lore.kernel.org/r/20220924000454.3319186-1-john.ogness@linutronix.de
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/paulmck/linux-rcu.git/log/?h=srcunmisafe.2022.10.18b
+
+John Ogness (37):
+  printk: Convert console_drivers list to hlist
+  printk: Prepare for SRCU console list protection
+  printk: introduce console_is_enabled() wrapper
+  printk: use console_is_enabled()
+  tty: nfcon: use console_is_enabled()
+  um: kmsg_dump: use console_is_enabled()
+  efi: earlycon: use console_is_enabled()
+  netconsole: use console_is_enabled()
+  tty: hvc: use console_is_enabled()
+  tty: serial: earlycon: use console_is_enabled()
+  tty: serial: kgdboc: use console_is_enabled()
+  tty: serial: pic32_uart: use console_is_enabled()
+  tty: serial: samsung_tty: use console_is_enabled()
+  tty: serial: serial_core: use console_is_enabled()
+  tty: serial: xilinx_uartps: use console_is_enabled()
+  tty: tty_io: use console_is_enabled()
+  usb: early: xhci-dbc: use console_is_enabled()
+  kdb: kdb_io: use console_is_enabled()
+  um: kmsg_dumper: use srcu console list iterator
+  serial: kgdboc: use srcu console list iterator
+  serial: kgdboc: document console_lock usage
+  tty: tty_io: document console_lock usage
+  xen: fbfront: use srcu console list iterator
+  proc: consoles: document console_lock usage
+  kdb: use srcu console list iterator
+  printk: console_flush_all: use srcu console list iterator
+  printk: console_unblank: use srcu console list iterator
+  printk: console_flush_on_panic: use srcu console list iterator
+  printk: console_device: use srcu console list iterator
+  printk: register_console: use srcu console list iterator
+  printk: __pr_flush: use srcu console list iterator
+  printk: introduce console_list_lock
+  serial: kgdboc: use console_list_lock instead of console_lock
+  tty: tty_io: use console_list_lock for list synchronization
+  proc: consoles: use console_list_lock for list iteration
+  printk: relieve console_lock of list synchronization duties
+  printk, xen: fbfront: create/use safe function for forcing preferred
+
+Thomas Gleixner (1):
+  serial: kgdboc: Lock console list in probe function
+
+ .clang-format                      |   1 +
+ arch/m68k/emu/nfcon.c              |   4 +-
+ arch/um/kernel/kmsg_dump.c         |  15 +-
+ drivers/firmware/efi/earlycon.c    |   4 +-
+ drivers/net/netconsole.c           |   4 +-
+ drivers/tty/hvc/hvc_console.c      |   2 +-
+ drivers/tty/serial/earlycon.c      |   4 +-
+ drivers/tty/serial/kgdboc.c        |  37 ++-
+ drivers/tty/serial/pic32_uart.c    |   2 +-
+ drivers/tty/serial/samsung_tty.c   |   2 +-
+ drivers/tty/serial/serial_core.c   |   2 +-
+ drivers/tty/serial/xilinx_uartps.c |   2 +-
+ drivers/tty/tty_io.c               |  18 +-
+ drivers/usb/early/xhci-dbc.c       |   2 +-
+ drivers/video/fbdev/xen-fbfront.c  |  16 +-
+ fs/proc/consoles.c                 |  20 +-
+ include/linux/console.h            |  75 +++++-
+ include/linux/serial_core.h        |   2 +-
+ kernel/debug/kdb/kdb_io.c          |   7 +-
+ kernel/printk/printk.c             | 373 +++++++++++++++++++++--------
+ 20 files changed, 438 insertions(+), 154 deletions(-)
+
+
+base-commit: c2d158a284abd63d727dad7402a2eed650dd4233
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.30.2
+
