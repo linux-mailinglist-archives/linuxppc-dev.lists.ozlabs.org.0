@@ -1,54 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32B5E604A7E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Oct 2022 17:06:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F35BE604A76
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Oct 2022 17:05:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MsvFD36qxz3dwQ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Oct 2022 02:06:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MsvDD04pDz3dsT
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Oct 2022 02:05:16 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=YYO7v04T;
-	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=taXn8qnV;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=CJ0wkcfD;
+	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=4/3XcDP9;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=john.ogness@linutronix.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=YYO7v04T;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=taXn8qnV;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=CJ0wkcfD;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=4/3XcDP9;
 	dkim-atps=neutral
-X-Greylist: delayed 490 seconds by postgrey-1.36 at boromir; Thu, 20 Oct 2022 02:04:24 AEDT
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MsvCD1XHnz2yQg
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MsvCD266mz2yZd
 	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Oct 2022 02:04:24 +1100 (AEDT)
 From: John Ogness <john.ogness@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1666191362;
+	s=2020; t=1666191367;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=zkI+7kE11pEfvJZCSjIsOIHfnjIhjBs6goKb/AUL2D4=;
-	b=YYO7v04TmKSkEL8SQfYf9FANh400BpV31ZQR/trpNhqYtbMsqHy7XZuAyWZcYguh+KTZKz
-	uMkqVYF2Idk8ssJy6cSwkhJih5dltGrVFm3Z7MoL7Nhtw4GkmZEKblfArE1vVoKGDs5p81
-	WHY9OAlLqzr8G07YBDVNtY0AT4QClPosfQAXC7SCLUuMtHyHR5c2LCkNDByg36nTiuRcRN
-	AVWPIk+/COT66KSdFzs7sxleUpL2onRYs8JoVdAMBeDCEkOf8Yvmkp92DVD8xjN57OewPI
-	lAF6m3iPq5588431gmChW8+srrThoCLrEllt8f0GsYtka8ApK0mxiWi8JG1KQQ==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=q43bR7EIdzwEejtqYY/+0pBZ/1DlBf/ms3Th4977RU4=;
+	b=CJ0wkcfDAIYxYlfRDwtWDHTwKRBKnIGO7mDk96DEhEfPYYF1oPQuNnmaWMjNVFx82t2g2p
+	vzwkF94n0h7nEyhv0U93cY/SDg0gFrPMaHBWZPIoWnM4PkhT8ENrt1zwlq56m266UfO6ok
+	E2Pf4W9zbKKXLfOeDb67zW0A+t3HCRbpaPaonrDqlLifvlY/UNRbzMHnKW0rU52czq11LU
+	2QA4703MQAMlTBiSbe41rKt7kIT0G7svma7Brz2sKaxLCd0oZwJQ/auRydmpv7zgddgQ7Z
+	KT6cqgK7jbmb4Yo+LE3H9hyyE9UAia6OLCMO0LrI4vSPeblK36wIq1qdR3Gn5A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1666191362;
+	s=2020e; t=1666191367;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=zkI+7kE11pEfvJZCSjIsOIHfnjIhjBs6goKb/AUL2D4=;
-	b=taXn8qnVlav1KthfUzD2BUf7770pohYL/ecGjx8VGuNp3NOcr/dyz4UXH5Ok4L9J1BRVse
-	cqmXXqp/T3jlr9Bg==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=q43bR7EIdzwEejtqYY/+0pBZ/1DlBf/ms3Th4977RU4=;
+	b=4/3XcDP9JpywLbtVPvYMt3perm+LULFBKeOfwGqUTnu4+/A8q5xycmiCMFah2+WEFeLmuc
+	PyYB51N0P1g/zmCw==
 To: Petr Mladek <pmladek@suse.com>
-Subject: [PATCH printk v2 00/38] reduce console_lock scope
-Date: Wed, 19 Oct 2022 17:01:22 +0206
-Message-Id: <20221019145600.1282823-1-john.ogness@linutronix.de>
+Subject: [PATCH printk v2 10/38] tty: hvc: use console_is_enabled()
+Date: Wed, 19 Oct 2022 17:01:32 +0206
+Message-Id: <20221019145600.1282823-11-john.ogness@linutronix.de>
+In-Reply-To: <20221019145600.1282823-1-john.ogness@linutronix.de>
+References: <20221019145600.1282823-1-john.ogness@linutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -62,206 +65,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-fbdev@vger.kernel.org, linux-efi@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, kgdb-bugreport@lists.sourceforge.net, dri-devel@lists.freedesktop.org, Douglas Anderson <dianders@chromium.org>, Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, Jiri Slaby <jirislaby@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, Daniel Thompson <daniel.thompson@linaro.org>, linux-samsung-soc@vger.kernel.org, Tom Rix <trix@redhat.com>, Xianting Tian <xianting.tian@linux.alibaba.com>, Richard Weinberger <richard@nod.at>, Helge Deller <deller@gmx.de>, Michal Simek <michal.simek@xilinx.com>, Geert Uytterhoeven <geert@linux-m68k.org>, linux-serial@vger.kernel.org, Aaron Tomlin <atomlin@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Juergen Gross <jgross@suse.com>, "Paul E. McKenney" <paulmck
- @kernel.org>, Shile Zhang <shile.zhang@linux.alibaba.com>, linux-um@lists.infradead.org, Steven Rostedt <rostedt@goodmis.org>, linux-m68k@lists.linux-m68k.org, Thomas Gleixner <tglx@linutronix.de>, Andrew Morton <akpm@linux-foundation.org>, linux-arm-kernel@lists.infradead.org, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Mathias Nyman <mathias.nyman@linux.intel.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, Sergey Senozhatsky <senozhatsky@chromium.org>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Thomas Zimmermann <tzimmermann@suse.de>, Jason Wessel <jason.wessel@windriver.com>, linux-fsdevel@vger.kernel.org, Javier Martinez Canillas <javierm@redhat.com>, Johannes Berg <johannes@sipsolutions.net>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org, Xianting Tian <xianting.tian@linux.alibaba.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Shile Zhang <shile.zhang@linux.alibaba.com>, linux-kernel@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, Thomas Gleixner <tglx@linutronix.de>, Jiri Slaby <jirislaby@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is v2 of a series to prepare for threaded/atomic
-printing. It is a rework of patches 6-12 of the v1 [0]. From
-the v1, patches 1-5 are already mainline and a rework of
-patches >12 will be posted in a later series.
+Replace (console->flags & CON_ENABLED) usage with console_is_enabled().
 
-This series focuses on reducing the scope of the BKL
-console_lock. It achieves this by switching to SRCU and a
-dedicated mutex for console list iteration and modification,
-respectively. The console_lock will no longer offer this
-protection and is completely removed from
-(un)register_console() and console_stop/start() code.
+Signed-off-by: John Ogness <john.ogness@linutronix.de>
+---
+ drivers/tty/hvc/hvc_console.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-All users of the console_lock for list iteration have been
-modified. For the call sites where the console_lock is still
-needed (because of other reasons), I added comments to explain
-exactly why the console_lock was needed.
-
-The base commit for this series is from Paul McKenney's RCU tree
-and provides an NMI-safe SRCU implementation [1]. Without the
-NMI-safe SRCU implementation, this series is not less safe than
-mainline. But we will need the NMI-safe SRCU implementation for
-atomic consoles anyway, so we might as well get it in
-now. Especially since it _does_ increase the reliability for
-mainline in the panic path.
-
-Changes since v2:
-
-general:
-
-- introduce console_is_enabled() to document safe data race on
-  console->flags
-
-- switch all "console->flags & CON_ENABLED" code sites to
-  console_is_enabled()
-
-- add "for_each_console_srcu" to .clang-format
-
-- cleanup/clarify comments relating to console_lock
-  coverage/usage
-
-um:
-
-- kmsg_dumper: use srcu instead of console_lock for list
-  iteration
-
-kgdb/kdb:
-
-- configure_kgdboc: keep console_lock for console->device()
-  synchronization, use srcu for list iteration
-
-- kgdboc_earlycon_pre_exp_handler: use srcu instead of
-  documenting unsafety for list iteration
-
-- kgdboc_earlycon_init: use console_list_lock instead of
-  console_lock to lock list
-
-- kdb_msg_write: use srcu instead of documenting unsafety for
-  list iteration
-
-tty:
-
-- show_cons_active: keep console_lock for console->device()
-  synchronization
-
-fbdev:
-
-- xen-fbfront: xenfb_probe: use srcu instead of console_lock
-  for list iteration, introduce console_force_preferred() to
-  safely implement hack
-
-proc/consoles:
-
-- show_console_dev: keep console_lock for console->device()
-  synchronization
-
-- c_next: use hlist_entry_safe() instead of
-  hlist_for_each_entry_continue()
-
-printk:
-
-- remove console_lock from console_stop/start() and
-  (un)register_console()
-
-- introduce console_srcu_read_(un)lock() to wrap scru read
-  (un)lock
-
-- rename cons_first() macro to console_first()
-
-- for_each_console: add lockdep check instead of introducing
-  new for_each_registered_console()
-
-- console_list_lock: add warning if in read-side critical
-  section
-
-- release srcu read lock on handover
-
-- console_flush_all: use srcu instead of relying on console
-  lock for list iteration
-
-- console_unblank: use srcu instead of relying on console_lock
-  for list iteration
-
-- console_flush_on_panic: use srcu for list iteration and
-  document console->seq race
-
-- device: keep console_lock for console->device()
-  synchronization, usr srcu for list iteration
-
-- register_console: split list adding logic into the 3 distinct
-  scenarios
-
-- register_console: set initial sequence number before adding
-  to list
-
-- unregister_console: fix ENODEV return value if the console is
-  not registered
-
-- console_stop: synchronize srcu
-
-- printk_late_init: use _safe variant of iteration
-
-- __pr_flush: use srcu instead of relying on console_lock for
-  list iteration
-
-John Ogness
-
-[0] https://lore.kernel.org/r/20220924000454.3319186-1-john.ogness@linutronix.de
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/paulmck/linux-rcu.git/log/?h=srcunmisafe.2022.10.18b
-
-John Ogness (37):
-  printk: Convert console_drivers list to hlist
-  printk: Prepare for SRCU console list protection
-  printk: introduce console_is_enabled() wrapper
-  printk: use console_is_enabled()
-  tty: nfcon: use console_is_enabled()
-  um: kmsg_dump: use console_is_enabled()
-  efi: earlycon: use console_is_enabled()
-  netconsole: use console_is_enabled()
-  tty: hvc: use console_is_enabled()
-  tty: serial: earlycon: use console_is_enabled()
-  tty: serial: kgdboc: use console_is_enabled()
-  tty: serial: pic32_uart: use console_is_enabled()
-  tty: serial: samsung_tty: use console_is_enabled()
-  tty: serial: serial_core: use console_is_enabled()
-  tty: serial: xilinx_uartps: use console_is_enabled()
-  tty: tty_io: use console_is_enabled()
-  usb: early: xhci-dbc: use console_is_enabled()
-  kdb: kdb_io: use console_is_enabled()
-  um: kmsg_dumper: use srcu console list iterator
-  serial: kgdboc: use srcu console list iterator
-  serial: kgdboc: document console_lock usage
-  tty: tty_io: document console_lock usage
-  xen: fbfront: use srcu console list iterator
-  proc: consoles: document console_lock usage
-  kdb: use srcu console list iterator
-  printk: console_flush_all: use srcu console list iterator
-  printk: console_unblank: use srcu console list iterator
-  printk: console_flush_on_panic: use srcu console list iterator
-  printk: console_device: use srcu console list iterator
-  printk: register_console: use srcu console list iterator
-  printk: __pr_flush: use srcu console list iterator
-  printk: introduce console_list_lock
-  serial: kgdboc: use console_list_lock instead of console_lock
-  tty: tty_io: use console_list_lock for list synchronization
-  proc: consoles: use console_list_lock for list iteration
-  printk: relieve console_lock of list synchronization duties
-  printk, xen: fbfront: create/use safe function for forcing preferred
-
-Thomas Gleixner (1):
-  serial: kgdboc: Lock console list in probe function
-
- .clang-format                      |   1 +
- arch/m68k/emu/nfcon.c              |   4 +-
- arch/um/kernel/kmsg_dump.c         |  15 +-
- drivers/firmware/efi/earlycon.c    |   4 +-
- drivers/net/netconsole.c           |   4 +-
- drivers/tty/hvc/hvc_console.c      |   2 +-
- drivers/tty/serial/earlycon.c      |   4 +-
- drivers/tty/serial/kgdboc.c        |  37 ++-
- drivers/tty/serial/pic32_uart.c    |   2 +-
- drivers/tty/serial/samsung_tty.c   |   2 +-
- drivers/tty/serial/serial_core.c   |   2 +-
- drivers/tty/serial/xilinx_uartps.c |   2 +-
- drivers/tty/tty_io.c               |  18 +-
- drivers/usb/early/xhci-dbc.c       |   2 +-
- drivers/video/fbdev/xen-fbfront.c  |  16 +-
- fs/proc/consoles.c                 |  20 +-
- include/linux/console.h            |  75 +++++-
- include/linux/serial_core.h        |   2 +-
- kernel/debug/kdb/kdb_io.c          |   7 +-
- kernel/printk/printk.c             | 373 +++++++++++++++++++++--------
- 20 files changed, 438 insertions(+), 154 deletions(-)
-
-
-base-commit: c2d158a284abd63d727dad7402a2eed650dd4233
+diff --git a/drivers/tty/hvc/hvc_console.c b/drivers/tty/hvc/hvc_console.c
+index 4802cfaa107f..6d1d7b72488c 100644
+--- a/drivers/tty/hvc/hvc_console.c
++++ b/drivers/tty/hvc/hvc_console.c
+@@ -265,7 +265,7 @@ static void hvc_port_destruct(struct tty_port *port)
+ static void hvc_check_console(int index)
+ {
+ 	/* Already enabled, bail out */
+-	if (hvc_console.flags & CON_ENABLED)
++	if (console_is_enabled(&hvc_console))
+ 		return;
+ 
+  	/* If this index is what the user requested, then register
 -- 
 2.30.2
 
