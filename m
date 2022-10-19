@@ -1,41 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6D13603A11
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Oct 2022 08:48:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25C50603E6B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Oct 2022 11:14:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MshBq23Xfz3cDb
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Oct 2022 17:48:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MslRl0TTNz3drM
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Oct 2022 20:14:43 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mVjvQ8+v;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com; envelope-from=ruanjinjie@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.115; helo=mga14.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mVjvQ8+v;
+	dkim-atps=neutral
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MshBH0Cwbz301Z
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Oct 2022 17:47:50 +1100 (AEDT)
-Received: from kwepemi500008.china.huawei.com (unknown [172.30.72.53])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Msh9z2ywFzHv4H;
-	Wed, 19 Oct 2022 14:47:35 +0800 (CST)
-Received: from huawei.com (10.67.175.83) by kwepemi500008.china.huawei.com
- (7.221.188.139) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Wed, 19 Oct
- 2022 14:47:41 +0800
-From: ruanjinjie <ruanjinjie@huawei.com>
-To: <gregkh@linuxfoundation.org>, <jirislaby@kernel.org>,
-	<linuxppc-dev@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH -next] tty: hvc: make hvc_rtas_dev static
-Date: Wed, 19 Oct 2022 14:44:12 +0800
-Message-ID: <20221019064412.3759874-1-ruanjinjie@huawei.com>
-X-Mailer: git-send-email 2.25.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MslQp6pLZz3blY
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Oct 2022 20:13:53 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1666170835; x=1697706835;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=1SnEG++lmkrZFM5w3ZM3z5ZQmAONQeCxSy4cYq4nyY8=;
+  b=mVjvQ8+vFBs/pxpiAMx0ACPVcRn3Eot+YOIxcjzNOUmOYFEY8ub5xEhr
+   9SrfFQovPC0dZjdaBSVb/qSjTMdKrSIZBVB3N1Cdsv88NpOHEw3xWY+GM
+   kXkZ03g9j/SVuGuenIUSv7ypm3nejZDbHrQyjnn8sRrEdvHVghhZcxhfM
+   PXnPaHI3rG6xn1KNVWXC2/T+viaIjqqUOfmn3kE+dB2UEwLlE0MK9P+im
+   7ihUdymmcRFUf4PKQW2J10v5szs3eG8v/89jdNAXNooiQp5KAR0/aCqAO
+   dVPu3xeS6WJ6EoktROIlmUBZgjYrB7pEOjkUjTlCOWNT2TbKrxSI9p1pO
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10504"; a="306344507"
+X-IronPort-AV: E=Sophos;i="5.95,195,1661842800"; 
+   d="scan'208";a="306344507"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2022 02:13:49 -0700
+X-IronPort-AV: E=McAfee;i="6500,9779,10504"; a="734119003"
+X-IronPort-AV: E=Sophos;i="5.95,195,1661842800"; 
+   d="scan'208";a="734119003"
+Received: from sponnura-mobl1.amr.corp.intel.com (HELO ijarvine-MOBL2.ger.corp.intel.com) ([10.251.214.35])
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2022 02:13:45 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To: linux-serial@vger.kernel.org,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 26/44] serial: pmac_zilog: Use uart_xmit_advance()
+Date: Wed, 19 Oct 2022 12:11:33 +0300
+Message-Id: <20221019091151.6692-27-ilpo.jarvinen@linux.intel.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20221019091151.6692-1-ilpo.jarvinen@linux.intel.com>
+References: <20221019091151.6692-1-ilpo.jarvinen@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.67.175.83]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- kwepemi500008.china.huawei.com (7.221.188.139)
-X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,35 +73,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ruanjinjie@huawei.com
+Cc: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The symbol is not used outside of the file, so mark it static.
+Take advantage of the new uart_xmit_advance() helper.
 
-Fixes the following warning:
-
-drivers/tty/hvc/hvc_rtas.c:29:19: warning: symbol 'hvc_rtas_dev' was
-not declared. Should it be static?
-
-Signed-off-by: ruanjinjie <ruanjinjie@huawei.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 ---
- drivers/tty/hvc/hvc_rtas.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/pmac_zilog.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/tty/hvc/hvc_rtas.c b/drivers/tty/hvc/hvc_rtas.c
-index e8b8c645482b..184d325abeed 100644
---- a/drivers/tty/hvc/hvc_rtas.c
-+++ b/drivers/tty/hvc/hvc_rtas.c
-@@ -26,7 +26,7 @@
- #include "hvc_console.h"
+diff --git a/drivers/tty/serial/pmac_zilog.c b/drivers/tty/serial/pmac_zilog.c
+index fe2e4ec423f7..13668ffdb1e7 100644
+--- a/drivers/tty/serial/pmac_zilog.c
++++ b/drivers/tty/serial/pmac_zilog.c
+@@ -410,8 +410,7 @@ static void pmz_transmit_chars(struct uart_pmac_port *uap)
+ 	write_zsdata(uap, xmit->buf[xmit->tail]);
+ 	zssync(uap);
  
- #define hvc_rtas_cookie 0x67781e15
--struct hvc_struct *hvc_rtas_dev;
-+static struct hvc_struct *hvc_rtas_dev;
+-	xmit->tail = (xmit->tail + 1) & (UART_XMIT_SIZE - 1);
+-	uap->port.icount.tx++;
++	uart_xmit_advance(&uap->port, 1);
  
- static int rtascons_put_char_token = RTAS_UNKNOWN_SERVICE;
- static int rtascons_get_char_token = RTAS_UNKNOWN_SERVICE;
+ 	if (uart_circ_chars_pending(xmit) < WAKEUP_CHARS)
+ 		uart_write_wakeup(&uap->port);
+@@ -627,8 +626,7 @@ static void pmz_start_tx(struct uart_port *port)
+ 			return;
+ 		write_zsdata(uap, xmit->buf[xmit->tail]);
+ 		zssync(uap);
+-		xmit->tail = (xmit->tail + 1) & (UART_XMIT_SIZE - 1);
+-		port->icount.tx++;
++		uart_xmit_advance(port, 1);
+ 
+ 		if (uart_circ_chars_pending(xmit) < WAKEUP_CHARS)
+ 			uart_write_wakeup(&uap->port);
 -- 
-2.25.1
+2.30.2
 
