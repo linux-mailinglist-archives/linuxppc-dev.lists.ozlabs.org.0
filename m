@@ -1,74 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 808456072C6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Oct 2022 10:46:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB32C607413
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Oct 2022 11:30:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MtykT2wgFz3drY
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Oct 2022 19:46:41 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=BySkZbgU;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Mtzj83vLbz3dwR
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Oct 2022 20:30:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::435; helo=mail-wr1-x435.google.com; envelope-from=colin.i.king@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=BySkZbgU;
-	dkim-atps=neutral
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.130; helo=out30-130.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=<UNKNOWN>)
+Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MtyjY3dbGz3bXn
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Oct 2022 19:45:52 +1100 (AEDT)
-Received: by mail-wr1-x435.google.com with SMTP id a10so3251904wrm.12
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Oct 2022 01:45:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=JxsO3aS7NjLpZUBDpCGoh/+bxorngRfIVIYvqLMlg2w=;
-        b=BySkZbgUWMqqHNxMGo1gF6+KBubryJBs8Bou3znSPFC6nKDtO3lj2HdgvK++atrWvF
-         KLvM06m+uoiRSbqpF97+wMG7+ksLIGtMuM4iLu0OHcwD3VG6WEwDLWpU7BPOXpvmcQcz
-         tPTJizRnZRsT+oPZ8smNdDYr8UPjWZuIwSaJ2EF/8lpGe7U7rqzyJzfRQQHAAMWRKyGK
-         AW9XiBX1UdY1GpjABdJRMwzWO+4h2tza1t5i/WpsGDt22rXziAge/rsTIy9mKOFflJQA
-         u3mVq0TKWU47iODMmAS7DU74odTQGEZZDzuJ+ZFu7DklJsrJA13x/0Ys4NVoC/oPR2yJ
-         gVzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=JxsO3aS7NjLpZUBDpCGoh/+bxorngRfIVIYvqLMlg2w=;
-        b=H1cKmc8zxA6S59aFsyIgAyGN1KehT5N4rzmzlutxlR0FfmOyuItQE/Cg1FqJijeZwI
-         DfB+FDaAbXrZfxrrbXeiYh6Xmd3MQK8kGrDDVuQyXrwYi3GyEniaPrhDMAmgC4TLGKKq
-         cu8dQNZ3jdtAaf1lvw1xV4ymRpgh1D1dB5tPBO9c2hAt4qs9t9PHyvS82t4Of9L72LIB
-         OdHUsmxICiPtyR1t4t04JPLEIVmH+TLPCdXT83g30HC58Bs1MUZHyUmuC6fgV4hz4N7w
-         I7G9wYKZt7HnCS1FQWhMc59VmPDIGzzXT6r+o+3Q2hBqrXzd+zw4tBU/ByyyVSY4hZiJ
-         AwSQ==
-X-Gm-Message-State: ACrzQf1X41U5sAZeynY1a9YtEN07e/1mMyD3lkowsf9wV1lnM/2UsyJ3
-	+LFyZZ3bQOP4CwAgFTTcWfE=
-X-Google-Smtp-Source: AMsMyM6XDUT6X/iWNzzTZNVgmPGxFjL4tJSmQ3m8l/mUiVDpjEDHPQrOqLtNM95ZeM+p6vHgNuqcUQ==
-X-Received: by 2002:adf:d23a:0:b0:236:467e:a3bc with SMTP id k26-20020adfd23a000000b00236467ea3bcmr4323041wrh.542.1666341946452;
-        Fri, 21 Oct 2022 01:45:46 -0700 (PDT)
-Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
-        by smtp.gmail.com with ESMTPSA id t13-20020a05600c198d00b003c6c1686b10sm2352593wmq.7.2022.10.21.01.45.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Oct 2022 01:45:46 -0700 (PDT)
-From: Colin Ian King <colin.i.king@gmail.com>
-To: Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Shuah Khan <shuah@kernel.org>,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH] selftests/powerpc: Fix spelling mistake "mmaping" -> "mmapping"
-Date: Fri, 21 Oct 2022 09:45:45 +0100
-Message-Id: <20221021084545.65973-1-colin.i.king@gmail.com>
-X-Mailer: git-send-email 2.37.3
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mtzhd4y8Pz3bj0
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Oct 2022 20:30:08 +1100 (AEDT)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R761e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046049;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0VSizZuS_1666344600;
+Received: from 30.32.67.117(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VSizZuS_1666344600)
+          by smtp.aliyun-inc.com;
+          Fri, 21 Oct 2022 17:30:02 +0800
+Message-ID: <dda2321d-15f4-342a-2fbe-5c535858eb34@linux.alibaba.com>
+Date: Fri, 21 Oct 2022 17:29:58 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.13.0
+Subject: Re: [PATCH v2] mm, hwpoison: Try to recover from copy-on write faults
+Content-Language: en-US
+To: "Luck, Tony" <tony.luck@intel.com>, David Laight <David.Laight@ACULAB.COM>
+References: <SJ1PR11MB60838C1F65CA293188BB442DFC289@SJ1PR11MB6083.namprd11.prod.outlook.com>
+ <20221019170835.155381-1-tony.luck@intel.com>
+ <893b681b-726e-94e3-441e-4d68c767778a@linux.alibaba.com>
+ <Y1GqGbBNk6fX/OnD@agluck-desk3.sc.intel.com>
+ <359bae4e-6ce3-cc7e-33d0-252064157bc6@linux.alibaba.com>
+ <Y1IbOAvpGzA8bst1@agluck-desk3.sc.intel.com>
+ <1643d19d795b4a8084228eab66a7db9f@AcuMS.aculab.com>
+ <SJ1PR11MB6083624E288992BFA902CC8CFC2D9@SJ1PR11MB6083.namprd11.prod.outlook.com>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+In-Reply-To: <SJ1PR11MB6083624E288992BFA902CC8CFC2D9@SJ1PR11MB6083.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -81,30 +51,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <naoya.horiguchi@nec.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Matthew Wilcox <willy@infradead.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, Nicholas Piggin <npiggin@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "Williams, Dan J" <dan.j.williams@intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-There is a spelling mistake in a perror message. Fix it.
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
----
- tools/testing/selftests/powerpc/ptrace/core-pkey.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/powerpc/ptrace/core-pkey.c b/tools/testing/selftests/powerpc/ptrace/core-pkey.c
-index bbc05ffc5860..1a70a96f0bfe 100644
---- a/tools/testing/selftests/powerpc/ptrace/core-pkey.c
-+++ b/tools/testing/selftests/powerpc/ptrace/core-pkey.c
-@@ -329,7 +329,7 @@ static int parent(struct shared_info *info, pid_t pid)
- 
- 	core = mmap(NULL, core_size, PROT_READ, MAP_PRIVATE, fd, 0);
- 	if (core == (void *) -1) {
--		perror("Error mmaping core file");
-+		perror("Error mmapping core file");
- 		ret = TEST_FAIL;
- 		goto out;
- 	}
--- 
-2.37.3
+在 2022/10/21 PM12:41, Luck, Tony 写道:
+>>> When we do return to user mode the task is going to be busy servicing
+>>> a SIGBUS ... so shouldn't try to touch the poison page before the
+>>> memory_failure() called by the worker thread cleans things up.
+>>
+>> What about an RT process on a busy system?
+>> The worker threads are pretty low priority.
+> 
+> Most tasks don't have a SIGBUS handler ... so they just die without possibility of accessing poison
+> 
+> If this task DOES have a SIGBUS handler, and that for some bizarre reason just does a "return"
+> so the task jumps back to the instruction that cause the COW then there is a 63/64
+> likelihood that it is touching a different cache line from the poisoned one.
+> 
+> In the 1/64 case ... its probably a simple store (since there was a COW, we know it was trying to
+> modify the page) ... so won't generate another machine check (those only happen for reads).
+> 
+> But maybe it is some RMW instruction ... then, if all the above options didn't happen ... we
+> could get another machine check from the same address. But then we just follow the usual
+> recovery path.
+> 
+> -Tony
 
+
+Let assume the instruction that cause the COW is in the 63/64 case, aka,
+it is writing a different cache line from the poisoned one. But the new_page
+allocated in COW is dropped right? So might page fault again?
+
+Best Regards,
+Shuai
