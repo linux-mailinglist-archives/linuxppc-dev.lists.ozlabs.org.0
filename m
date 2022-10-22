@@ -2,68 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15BFD608481
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Oct 2022 07:23:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36F3960849A
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Oct 2022 07:33:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MvV946VVdz3drZ
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Oct 2022 16:23:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MvVPJ0CGgz3dwP
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Oct 2022 16:33:40 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=h9FBBNYs;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XiKRpGGC;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::429; helo=mail-pf1-x429.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=kuba@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=h9FBBNYs;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XiKRpGGC;
 	dkim-atps=neutral
-Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MvV893X5Cz3bjh
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Oct 2022 16:22:16 +1100 (AEDT)
-Received: by mail-pf1-x429.google.com with SMTP id y1so4498279pfr.3
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Oct 2022 22:22:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=otLUHhulLpueLxpBEaW5/pvg9rasrTUF1MJmFYKUK4o=;
-        b=h9FBBNYscRElxEeBIgd3Y7vekvAteJr7LZoJatpj/33fOQ9+m1nzDJ3u3qsKI1OhkZ
-         NmRyoPKajHhykEqLF0/pVO60kawAAdT7fE2ZqaHCAx++AMs/yNtEYjzRwBbqQ1Ig+RnX
-         S8NqNEafxgwvMoC8ESevCAzFW5ou+QRwqeoOJy1RLN4XIUCD5YyVG4HuVAyRURtdv6d/
-         si59qJHoQAKonC/ObeVzQ6ekDHwDjEoM1AsA/SO17oqy4AaiogThHaFEf8zV/C62VRzr
-         wCZwtqXGN2IjPcIlHKeKiHq5ay2ZcFnpd1x8MtjgZTObN+5avPmYbOaMT7I43Rc+W9Hu
-         77tw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=otLUHhulLpueLxpBEaW5/pvg9rasrTUF1MJmFYKUK4o=;
-        b=MeUsAI8borhguJtX8BshVT4Y7iYJKuuCDMoDxQR76tmlNQHWxCNLNnDEHJMsnT0Scb
-         lDPHLLMOvKxmnTFu9tazBcRaiD/58ruam3TuKbPoLDMMMtH7TITFv/nEM0wqkMRRtomg
-         4i9yU5SPulPlIW5uOCb+65k1gw4d1X7nXehidBy7wuyhwDXqhMKhgRXuSJkVKNqDFHnA
-         0v6pVoKanMbHbt2aIPMWtRovLE8jic+R6pJisQWGNMpjpKzufiIvMrdyNSipkG1jTXhK
-         A0K0LSCz1UQKrxXhRGjqng2LA1RkBg0p9gsPxdeD8J2gB7951tdtg84fpYrdQjXxOngr
-         9Khg==
-X-Gm-Message-State: ACrzQf2uWfjdhgBSJ2jL3asOma/+m3bI7Y7nz9oo7S3S/ZQSIkS7x2Ck
-	rAvDCxM8neddeiZlZ/8vUbPATQzMKDi1bg==
-X-Google-Smtp-Source: AMsMyM5+ifK55hKUfuh8BdRRcGJc8H/dbEX0LHVEymuM/9pnJ+8Nor/QXPnWU4llMFUis4r7tQa2dg==
-X-Received: by 2002:a63:251:0:b0:46e:9da8:1f93 with SMTP id 78-20020a630251000000b0046e9da81f93mr9830639pgc.490.1666416134131;
-        Fri, 21 Oct 2022 22:22:14 -0700 (PDT)
-Received: from bobo.ozlabs.ibm.com ([118.208.150.62])
-        by smtp.gmail.com with ESMTPSA id q15-20020a170902dacf00b001868981a18esm484745plx.6.2022.10.21.22.22.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Oct 2022 22:22:13 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/64s/interrupt: Fix clear of PACA_IRQS_HARD_DIS when returning to soft-masked context
-Date: Sat, 22 Oct 2022 15:22:07 +1000
-Message-Id: <20221022052207.471328-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.37.2
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MvVNL273Yz3bjh
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Oct 2022 16:32:50 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 689CEB80E2A;
+	Sat, 22 Oct 2022 05:32:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9AE7C433D6;
+	Sat, 22 Oct 2022 05:32:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1666416765;
+	bh=uf/R6l7THqxM2eHX/ustV805xoE8PhYT+1NbCR1d9A0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=XiKRpGGCmE/1hVye3ks4VJsdgQWl4ep8RDm+RId5IAAujaPtM2G+4i6YdPrtEB8nH
+	 q1Qj8HSnwQEOWQWPR8bzNYtYmBI1rIvEGKyk/TxU5aHsFRNHSNZO56sQy1qHdU3rI9
+	 U0WQ+d+xKvGWN2I6VU9wZCRGKaE4CeIj2zJodGKNkBO8/gxw10rMKSLqOi9+fm9XL2
+	 aVxqSKiID3UJMx6AplycmP9wIR/o3WiE2TTEdqTvywk+wi1rvKyOtrwa5kAC+IvOzs
+	 /uJLZkjhd3iv/Hr57ZGnG61GWwtYesQTjbIs3uQ9LNEHWpQYfNMZdpP0JfeK0o9opa
+	 S++WYI56QMg6A==
+Date: Fri, 21 Oct 2022 22:32:42 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Subject: Re: [PATCH v1 0/5] convert tree to
+ get_random_u32_{below,above,between}()
+Message-ID: <20221021223242.05df0a5b@kernel.org>
+In-Reply-To: <Y1NwJJOIB4gI5G11@zx2c4.com>
+References: <20221022014403.3881893-1-Jason@zx2c4.com>
+	<20221021205522.6b56fd24@kernel.org>
+	<Y1NwJJOIB4gI5G11@zx2c4.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,68 +62,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sachin Sant <sachinp@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
+Cc: "Darrick J .
+ Wong" <djwong@kernel.org>, linux-mips@vger.kernel.org, netdev@vger.kernel.org, Andreas Dilger <adilger.kernel@dilger.ca>, Herbert Xu <herbert@gondor.apana.org.au>, Richard Weinberger <richard@nod.at>, Helge Deller <deller@gmx.de>, Russell King <linux@armlinux.org.uk>, Jason Gunthorpe <jgg@nvidia.com>, Catalin Marinas <catalin.marinas@arm.com>, linux-media@vger.kernel.org, Kees Cook <keescook@chromium.org>, Heiko Carstens <hca@linux.ibm.com>, Jani Nikula <jani.nikula@linux.intel.com>, linux-block@vger.kernel.org, SeongJae Park <sj@kernel.org>, loongarch@lists.linux.dev, Jaegeuk Kim <jaegeuk@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Theodore Ts'o <tytso@mit.edu>, linux-parisc@vger.kernel.org, "Martin K .
+ Petersen" <martin.petersen@oracle.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org, Christoph =?UTF-8?B?QsO2aG13YWxkZXI=?= <christoph.boehmwalder@linbit.com>, linux-crypto@vger.kernel.org, Sakari Ailus <sakari.ailus@linux.intel.com>, linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Commit a4cb3651a1743 ("powerpc/64s/interrupt: Fix lost interrupts when
-returning to soft-masked context") fixed the problem of pending irqs
-pending cleared when clearing the HARD_DIS bit, but then it didn't clear
-the bit at all. This change clears HARD_DIS without affecting other bits
-in the mask.
+On Sat, 22 Oct 2022 00:23:00 -0400 Jason A. Donenfeld wrote:
+> > How big is it?  Can you provide a stable branch to pull in the new
+> > helpers and then everyone will be able to apply the patches to their
+> > subsystem?  
+> 
+> It's a patch. But what you suggest sounds crazy to me. Supply some
+> branch and have every tree merge that branch separately, in duplicate,
+> and then get all of the conversion patches through every tree, and then
+> somehow coordinate the removal of the deprecated function after all of
+> that, and then baby sit the grand orchestration of all this over the
+> course of two and half months, watch it fail because of some
+> unmaintained corner that's affected, and then try to herd it through for
+> another two and a half months after that? Holy crap. That's torture.
 
-When an interrupt hits in a soft-masked section that has MSR[EE]=1, it
-can hard disable and set PACA_IRQS_HARD_DIS,which  must be cleared
-when returning to the EE=1 caller (unless it was set due to a
-MUST_HARD_MASK interrupt becoming pending). Failure to clear this leaves
-the returned-to context running with MSR[EE]=1 and PACA_IRQS_HARD_DIS,
-which confuses irq assertions and could be dangerous for code that might
-test the flag.
+I clean up some random networking API every couple of releases.
+Unfortunately other subsystems use networking APIs too, so I have 
+to do what you describe as "torture". It's not that hard in my
+experience but perhaps I'm incredibly gifted. Or resilient to pain.
 
-This was observed in a hash MMU kernel where a kernel hash fault hits in
-a local_irqs_disabled region that has EE=1. The hash fault also runs
-with EE=1, then as it returns, a decrementer hits in the restart section
-and the irq restart code hard-masks which sets the PACA_IRQ_HARD_DIS
-flag, which is not clear when the original context is returned to.
+> Were this an actually technically interesting patchset that required
+> some really detailed expert review, maybe that'd have some iota of
+> merit. But this is a really boring refactoring, mostly automated with
+> Coccinelle. If having to baby sit one hundred separate patches over the
+> course of months, handling confusion of walking maintainers through the
+> exercise of merging some weird duplicate branch into their trees before,
+> and so forth, is required to get this kind of grunt work done, I'm just
+> going to wind up losing all motivation for this kind of thing, and
+> naturally, as a matter of human nature, stop doing it. The result will
+> be that we have garbage pile up over time that operates on the principle
+> of "least hassle to deal with for the time being" rather than "love of
+> the code and a desire for long term maintainability and quality". The
+> former is sometimes how things go. The latter is what I'm striving for.
+> 
+> So what you suggest sounds really dreadful to me. Sorry.
+> 
+> Instead, this series follows the same template as the last one, and the
+> last one was much more nuanced and invasive and went fine. In the very
+> worst case, it'll require me to be on the ball with what's happening
+> with -next, which is something I've done before and can do again.
 
-Reported-by: Sachin Sant <sachinp@linux.ibm.com>
-Fixes: a4cb3651a1743 ("powerpc/64s/interrupt: Fix lost interrupts when returning to soft-masked context")
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/kernel/interrupt_64.S | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+Not sure what you mean by "being on the ball with what's happening with
+-next" surely it's Steven who'll be fixing the conflicts and paying
+with his time? Or carrying extra patches because neither you will be
+able to convert the new cases in your tree nor in the origin tree since
+it won't have your new helpers.
 
-diff --git a/arch/powerpc/kernel/interrupt_64.S b/arch/powerpc/kernel/interrupt_64.S
-index 978a173eb339..a019ed6fc839 100644
---- a/arch/powerpc/kernel/interrupt_64.S
-+++ b/arch/powerpc/kernel/interrupt_64.S
-@@ -532,15 +532,24 @@ _ASM_NOKPROBE_SYMBOL(interrupt_return_\srr\()_kernel)
- 	 * Returning to soft-disabled context.
- 	 * Check if a MUST_HARD_MASK interrupt has become pending, in which
- 	 * case we need to disable MSR[EE] in the return context.
-+	 *
-+	 * The MSR[EE] check catches among other things the short incoherency
-+	 * in hard_irq_disable() between clearing MSR[EE] and setting
-+	 * PACA_IRQ_HARD_DIS.
- 	 */
- 	ld	r12,_MSR(r1)
- 	andi.	r10,r12,MSR_EE
- 	beq	.Lfast_kernel_interrupt_return_\srr\() // EE already disabled
- 	lbz	r11,PACAIRQHAPPENED(r13)
- 	andi.	r10,r11,PACA_IRQ_MUST_HARD_MASK
--	beq	.Lfast_kernel_interrupt_return_\srr\() // No HARD_MASK pending
-+	bne	1f // HARD_MASK is pending
-+	// No HARD_MASK pending, clear possible HARD_DIS set by interrupt
-+	andi.	r11,r11,(~PACA_IRQ_HARD_DIS)@l
-+	stb	r11,PACAIRQHAPPENED(r13)
-+	b	.Lfast_kernel_interrupt_return_\srr\()
-+
- 
--	/* Must clear MSR_EE from _MSR */
-+1:	/* Must clear MSR_EE from _MSR */
- #ifdef CONFIG_PPC_BOOK3S
- 	li	r10,0
- 	/* Clear valid before changing _MSR */
--- 
-2.37.2
+To me putting the new helpers first, on a clean branch off Linus's tree
+so in case of emergency it can be pulled into a random^W arbitrary tree
+is just good hygiene.
 
+But whatever. I mean - hopefully there aren't any conflicts in the ~50
+networking files you touch. I just wish that people didn't pipe up with
+the tree wide changes right after the merge window. Feels like the
+worst possible timing.
