@@ -1,39 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BED960948C
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Oct 2022 17:52:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0B1E60962D
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Oct 2022 22:33:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MwN582WKBz3cGv
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Oct 2022 02:52:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MwVKF54m9z3byj
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Oct 2022 07:33:37 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=QnB2qtO6;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.44; helo=out30-44.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=<UNKNOWN>)
-Received: from out30-44.freemail.mail.aliyun.com (out30-44.freemail.mail.aliyun.com [115.124.30.44])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=srs0=qviv=2y=zx2c4.com=jason@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=QnB2qtO6;
+	dkim-atps=neutral
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MwN4Y6zC0z2xsD
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Oct 2022 02:52:11 +1100 (AEDT)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046051;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=12;SR=0;TI=SMTPD_---0VSptVNr_1666540325;
-Received: from 30.13.157.28(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VSptVNr_1666540325)
-          by smtp.aliyun-inc.com;
-          Sun, 23 Oct 2022 23:52:06 +0800
-Message-ID: <85b1b706-c3c2-6316-6dd5-ba1b4306d772@linux.alibaba.com>
-Date: Sun, 23 Oct 2022 23:52:04 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MwVJF30mrz2xGJ
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Oct 2022 07:32:45 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id C1CADB80DBE;
+	Sun, 23 Oct 2022 20:32:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51389C433D6;
+	Sun, 23 Oct 2022 20:32:36 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="QnB2qtO6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+	t=1666557154;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=eCkESx7tLbcl/nHIQwtIPhMNwZ8iCRtVJZ00kAPVrdA=;
+	b=QnB2qtO6lEOM4mxmjapSCxuIUb838GyXQD9dk5cHuNf7r1kHF1OS2YJOtpj4MajPA79g2y
+	QGM5P4bMHnEZYNxeABp8h+OC9XW5ZhtaXOplvIwtuUPSR4RupWA3lpwNA60vNAAYYFdeXD
+	J2Fu0drXLEG5BiOYGLbxOOeFisHSqfM=
+Received: 	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 40fbc149 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Sun, 23 Oct 2022 20:32:33 +0000 (UTC)
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH v1 0/2] cleanup stackprotector canary generation
+Date: Sun, 23 Oct 2022 22:32:06 +0200
+Message-Id: <20221023203208.118919-1-Jason@zx2c4.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.13.0
-Subject: Re: [PATCH v3 0/2] Copy-on-write poison recovery
-Content-Language: en-US
-To: Tony Luck <tony.luck@intel.com>, Naoya Horiguchi
- <naoya.horiguchi@nec.com>, Andrew Morton <akpm@linux-foundation.org>
-References: <20221019170835.155381-1-tony.luck@intel.com>
- <20221021200120.175753-1-tony.luck@intel.com>
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <20221021200120.175753-1-tony.luck@intel.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -46,72 +59,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Miaohe Lin <linmiaohe@huawei.com>, Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Nicholas Piggin <npiggin@gmail.com>, Dan Williams <dan.j.williams@intel.com>, linuxppc-dev@lists.ozlabs.org
+Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org, "H . Peter Anvin" <hpa@zytor.com>, linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, x86@kernel.org, Russell King <linux@armlinux.org.uk>, Ingo Molnar <mingo@redhat.com>, linux-xtensa@linux-xtensa.org, Albert Ou <aou@eecs.berkeley.edu>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Juergen Gross <jgross@suse.com>, Chris Zankel <chris@zankel.net>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org
+ , Palmer Dabbelt <palmer@dabbelt.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Stack canary generation currently lives partially in random.h, where it
+doesn't belong, and is in general a bit overcomplicated. This small
+patchset fixes up both issues. I'll take these in my tree, unless
+somebody else prefers to do so.
 
+Cc: Albert Ou <aou@eecs.berkeley.edu>
+Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Chris Zankel <chris@zankel.net>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Guo Ren <guoren@kernel.org>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Juergen Gross <jgross@suse.com>
+Cc: Max Filippov <jcmvbkbc@gmail.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: Rich Felker <dalias@libc.org>
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Will Deacon <will@kernel.org>
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-csky@vger.kernel.org
+Cc: linux-mips@vger.kernel.org
+Cc: linux-riscv@lists.infradead.org
+Cc: linux-sh@vger.kernel.org
+Cc: linux-xtensa@linux-xtensa.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: x86@kernel.org
 
-在 2022/10/22 AM4:01, Tony Luck 写道:
-> Part 1 deals with the process that triggered the copy on write
-> fault with a store to a shared read-only page. That process is
-> send a SIGBUS with the usual machine check decoration to specify
-> the virtual address of the lost page, together with the scope.
-> 
-> Part 2 sets up to asynchronously take the page with the uncorrected
-> error offline to prevent additional machine check faults. H/t to
-> Miaohe Lin <linmiaohe@huawei.com> and Shuai Xue <xueshuai@linux.alibaba.com>
-> for pointing me to the existing function to queue a call to
-> memory_failure().
-> 
-> On x86 there is some duplicate reporting (because the error is
-> also signalled by the memory controller as well as by the core
-> that triggered the machine check). Console logs look like this:
-> 
-> [ 1647.723403] mce: [Hardware Error]: Machine check events logged
-> 	Machine check from kernel copy routine
-> 
-> [ 1647.723414] MCE: Killing einj_mem_uc:3600 due to hardware memory corruption fault at 7f3309503400
-> 	x86 fault handler sends SIGBUS to child process
-> 
-> [ 1647.735183] Memory failure: 0x905b92d: recovery action for dirty LRU page: Recovered
-> 	Async call to memory_failure() from copy on write path
+Jason A. Donenfeld (2):
+  stackprotector: move CANARY_MASK and get_random_canary() into
+    stackprotector.h
+  stackprotector: actually use get_random_canary()
 
-The recovery action might also be handled asynchronously in CMCI uc_decode_notifier
-handler signaled by memory controller, right?
+ arch/arm/include/asm/stackprotector.h     |  9 +--------
+ arch/arm64/include/asm/stackprotector.h   |  9 +--------
+ arch/csky/include/asm/stackprotector.h    | 10 +---------
+ arch/mips/include/asm/stackprotector.h    |  9 +--------
+ arch/powerpc/include/asm/stackprotector.h | 10 +---------
+ arch/riscv/include/asm/stackprotector.h   | 10 +---------
+ arch/sh/include/asm/stackprotector.h      | 10 +---------
+ arch/x86/include/asm/stackprotector.h     | 14 +-------------
+ arch/x86/kernel/cpu/common.c              |  2 +-
+ arch/x86/kernel/setup_percpu.c            |  2 +-
+ arch/x86/kernel/smpboot.c                 |  2 +-
+ arch/x86/xen/enlighten_pv.c               |  2 +-
+ arch/xtensa/include/asm/stackprotector.h  |  7 +------
+ include/linux/random.h                    | 19 -------------------
+ include/linux/stackprotector.h            | 19 +++++++++++++++++++
+ kernel/fork.c                             |  2 +-
+ 16 files changed, 33 insertions(+), 103 deletions(-)
 
-I have a one more memory failure log than yours.
+-- 
+2.38.1
 
-[ 3187.485742] MCE: Killing einj_mem_uc:31746 due to hardware memory corruption fault at 7fc4bf7cf400
-[ 3187.740620] Memory failure: 0x1a3b80: recovery action for dirty LRU page: Recovered
-	uc_decode_notifier() processes memory controller report
-
-[ 3187.748272] Memory failure: 0x1a3b80: already hardware poisoned
-	Workqueue: events memory_failure_work_func // queued by ghes_do_memory_failure
-
-[ 3187.754194] Memory failure: 0x1a3b80: already hardware poisoned
-	Workqueue: events memory_failure_work_func // queued by __wp_page_copy_user
-
-[ 3188.615920] MCE: Killing einj_mem_uc:31745 due to hardware memory corruption fault at 7fc4bf7cf400
-
-Best Regards,
-Shuai
-
-> 
-> [ 1647.748397] Memory failure: 0x905b92d: already hardware poisoned
-> 	uc_decode_notifier() processes memory controller report
-> 
-> [ 1647.761313] MCE: Killing einj_mem_uc:3599 due to hardware memory corruption fault at 7f3309503400
-> 	Parent process tries to read poisoned page. Page has been unmapped, so
-> 	#PF handler sends SIGBUS
-> 
-> 
-> Tony Luck (2):
->   mm, hwpoison: Try to recover from copy-on write faults
->   mm, hwpoison: When copy-on-write hits poison, take page offline
-> 
->  include/linux/highmem.h | 24 ++++++++++++++++++++++++
->  include/linux/mm.h      |  5 ++++-
->  mm/memory.c             | 32 ++++++++++++++++++++++----------
->  3 files changed, 50 insertions(+), 11 deletions(-)
-> 
