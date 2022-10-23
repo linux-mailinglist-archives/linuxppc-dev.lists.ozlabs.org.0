@@ -2,55 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6F4A609630
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Oct 2022 22:35:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79BAF60966B
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Oct 2022 23:12:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MwVMH4Pljz3c1K
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Oct 2022 07:35:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MwWBH2Grvz3byZ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Oct 2022 08:12:39 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=GGCHpZzH;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=mit.edu header.i=@mit.edu header.a=rsa-sha256 header.s=outgoing header.b=FXNrxCWr;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=srs0=qviv=2y=zx2c4.com=jason@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=mit.edu (client-ip=18.9.28.11; helo=outgoing.mit.edu; envelope-from=tytso@mit.edu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=GGCHpZzH;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=mit.edu header.i=@mit.edu header.a=rsa-sha256 header.s=outgoing header.b=FXNrxCWr;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+X-Greylist: delayed 179 seconds by postgrey-1.36 at boromir; Mon, 24 Oct 2022 08:11:46 AEDT
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MwVJZ4HJlz3bck
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Oct 2022 07:33:02 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 3CC0BB80DCF;
-	Sun, 23 Oct 2022 20:33:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F20E3C433C1;
-	Sun, 23 Oct 2022 20:32:55 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="GGCHpZzH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1666557174;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IvHYiUD7yNRmt/asO7QumwNoOyWIQxir33jt5CIvM9o=;
-	b=GGCHpZzHb5lPcZyGswIBHQcNGEIPQaTvQl+HfPJd/ZnqTaqWRNrjWebo//8RZ9Rqsu65Sh
-	UHaBe/0H4JjmNEcvv7wzFRjm+/GTanCFE+z1xJtK0Imgg1gWbl5PTEfnCazGMwFSZi9Up3
-	5286Zs09ENNAYT6JT+IB3ssrqgGzpl4=
-Received: 	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 69c84e2d (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Sun, 23 Oct 2022 20:32:54 +0000 (UTC)
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH v1 2/2] stackprotector: actually use get_random_canary()
-Date: Sun, 23 Oct 2022 22:32:08 +0200
-Message-Id: <20221023203208.118919-3-Jason@zx2c4.com>
-In-Reply-To: <20221023203208.118919-1-Jason@zx2c4.com>
-References: <20221023203208.118919-1-Jason@zx2c4.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MwW9G6cfCz2xGJ
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Oct 2022 08:11:45 +1100 (AEDT)
+Received: from cwcc.thunk.org (pool-173-48-120-46.bstnma.fios.verizon.net [173.48.120.46])
+	(authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 29NL7D2p025712
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 23 Oct 2022 17:07:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+	t=1666559243; bh=zbENVyGNAon7zNh9ohkJFECSMTzXRXbcNrepMHxrEAM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=FXNrxCWraFmMAOW+vqR38ZOexAnGjiiR9A8LdOwTHYuoNMBlL77R2zP0ktOpr83lt
+	 VqRJZ2eM6bTmotP3IJ0ZjbLCm4EYxGWCpxZWFf6OGNB4ci103uHdfxC4WF6VQ2zTX/
+	 sdIQ8AMmuFf2tnrWyiobYzmlMOkVIMT/l7Xfqoj9INuJk54r2BALT8VjDgqDT3Zhdd
+	 VJdERnwc5/7VlgvkT7OeoHx0mHgokAaWpeUY/UYmdBjcPk3IReiiQVTczMP0A0m8lc
+	 roc5e18VhoTm14PI9JdmJ03W1yO7BPKEnbbIuJ9deFvxdyuN3p81VawGcIo+Cv1H4t
+	 KETGAaOyQuEfg==
+Received: by cwcc.thunk.org (Postfix, from userid 15806)
+	id BE8CB15C33A3; Sun, 23 Oct 2022 17:07:13 -0400 (EDT)
+Date: Sun, 23 Oct 2022 17:07:13 -0400
+From: "Theodore Ts'o" <tytso@mit.edu>
+To: Jakub Kicinski <kuba@kernel.org>
+Subject: Re: [PATCH v1 0/5] convert tree to
+ get_random_u32_{below,above,between}()
+Message-ID: <Y1WtAZfciG1z2CC7@mit.edu>
+References: <20221022014403.3881893-1-Jason@zx2c4.com>
+ <20221021205522.6b56fd24@kernel.org>
+ <Y1NwJJOIB4gI5G11@zx2c4.com>
+ <20221021223242.05df0a5b@kernel.org>
+ <Y1OD2tdVwQsydSNV@zx2c4.com>
+ <20221021230322.00dd045c@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221021230322.00dd045c@kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,286 +66,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org, "H . Peter Anvin" <hpa@zytor.com>, linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, x86@kernel.org, Russell King <linux@armlinux.org.uk>, Ingo Molnar <mingo@redhat.com>, linux-xtensa@linux-xtensa.org, Albert Ou <aou@eecs.berkeley.edu>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Juergen Gross <jgross@suse.com>, Chris Zankel <chris@zankel.net>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org
- , Palmer Dabbelt <palmer@dabbelt.com>, linuxppc-dev@lists.ozlabs.org
+Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, "Darrick J . Wong" <djwong@kernel.org>, linux-mips@vger.kernel.org, netdev@vger.kernel.org, Andreas Dilger <adilger.kernel@dilger.ca>, Herbert Xu <herbert@gondor.apana.org.au>, Richard Weinberger <richard@nod.at>, Helge Deller <deller@gmx.de>, Russell King <linux@armlinux.org.uk>, Jason Gunthorpe <jgg@nvidia.com>, Catalin Marinas <catalin.marinas@arm.com>, linux-media@vger.kernel.org, Kees Cook <keescook@chromium.org>, Heiko Carstens <hca@linux.ibm.com>, Jani Nikula <jani.nikula@linux.intel.com>, linux-block@vger.kernel.org, SeongJae Park <sj@kernel.org>, loongarch@lists.linux.dev, Jaegeuk Kim <jaegeuk@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, "Martin K . Petersen" <martin.petersen@oracle.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org, Christoph =?iso-88
+ 59-1?Q?B=F6hmwalder?= <christoph.boehmwalder@linbit.com>, linux-crypto@vger.kernel.org, Sakari Ailus <sakari.ailus@linux.intel.com>, linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The RNG always mixes in the Linux version extremely early in boot. It
-also always includes a cycle counter, not only during early boot, but
-each and every time it is invoked prior to being fully initialized.
-Together, this means that the use of additional xors inside of the
-various stackprotector.h files is superfluous and over-complicated.
-Instead, we can get exactly the same thing, but better, by just calling
-`get_random_canary()`.
+On Fri, Oct 21, 2022 at 11:03:22PM -0700, Jakub Kicinski wrote:
+> On Sat, 22 Oct 2022 07:47:06 +0200 Jason A. Donenfeld wrote:
+> > On Fri, Oct 21, 2022 at 10:32:42PM -0700, Jakub Kicinski wrote:
+> > > But whatever. I mean - hopefully there aren't any conflicts in the ~50
+> > > networking files you touch. I just wish that people didn't pipe up with
+> > > the tree wide changes right after the merge window. Feels like the
+> > > worst possible timing.  
+> > 
+> > Oh, if the timing is what makes this especially worrisome, I have
+> > no qualms about rebasing much later, and reposting this series then.
+> > I'll do that.
+> 
+> Cool, thanks! I promise to not be grumpy if you repost around rc6 :)
 
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
----
- arch/arm/include/asm/stackprotector.h     |  9 +--------
- arch/arm64/include/asm/stackprotector.h   |  9 +--------
- arch/csky/include/asm/stackprotector.h    | 10 +---------
- arch/mips/include/asm/stackprotector.h    |  9 +--------
- arch/powerpc/include/asm/stackprotector.h | 10 +---------
- arch/riscv/include/asm/stackprotector.h   | 10 +---------
- arch/sh/include/asm/stackprotector.h      | 10 +---------
- arch/x86/include/asm/stackprotector.h     | 14 +-------------
- arch/xtensa/include/asm/stackprotector.h  |  7 +------
- 9 files changed, 9 insertions(+), 79 deletions(-)
+One way of making things less painful for the stable branch and for
+the upstream branch is to *add* new helpers instead of playing
+replacement games like s/prandom_u32_max/get_random_u32_below/.  This
+is what causes the patch conflict problems.
 
-diff --git a/arch/arm/include/asm/stackprotector.h b/arch/arm/include/asm/stackprotector.h
-index 088d03161be5..0bd4979759f1 100644
---- a/arch/arm/include/asm/stackprotector.h
-+++ b/arch/arm/include/asm/stackprotector.h
-@@ -15,9 +15,6 @@
- #ifndef _ASM_STACKPROTECTOR_H
- #define _ASM_STACKPROTECTOR_H 1
- 
--#include <linux/random.h>
--#include <linux/version.h>
--
- #include <asm/thread_info.h>
- 
- extern unsigned long __stack_chk_guard;
-@@ -30,11 +27,7 @@ extern unsigned long __stack_chk_guard;
-  */
- static __always_inline void boot_init_stack_canary(void)
- {
--	unsigned long canary;
--
--	/* Try to get a semi random initial value. */
--	get_random_bytes(&canary, sizeof(canary));
--	canary ^= LINUX_VERSION_CODE;
-+	unsigned long canary = get_random_canary();
- 
- 	current->stack_canary = canary;
- #ifndef CONFIG_STACKPROTECTOR_PER_TASK
-diff --git a/arch/arm64/include/asm/stackprotector.h b/arch/arm64/include/asm/stackprotector.h
-index 33f1bb453150..ae3ad80f51fe 100644
---- a/arch/arm64/include/asm/stackprotector.h
-+++ b/arch/arm64/include/asm/stackprotector.h
-@@ -13,8 +13,6 @@
- #ifndef __ASM_STACKPROTECTOR_H
- #define __ASM_STACKPROTECTOR_H
- 
--#include <linux/random.h>
--#include <linux/version.h>
- #include <asm/pointer_auth.h>
- 
- extern unsigned long __stack_chk_guard;
-@@ -28,12 +26,7 @@ extern unsigned long __stack_chk_guard;
- static __always_inline void boot_init_stack_canary(void)
- {
- #if defined(CONFIG_STACKPROTECTOR)
--	unsigned long canary;
--
--	/* Try to get a semi random initial value. */
--	get_random_bytes(&canary, sizeof(canary));
--	canary ^= LINUX_VERSION_CODE;
--	canary &= CANARY_MASK;
-+	unsigned long canary = get_random_canary();
- 
- 	current->stack_canary = canary;
- 	if (!IS_ENABLED(CONFIG_STACKPROTECTOR_PER_TASK))
-diff --git a/arch/csky/include/asm/stackprotector.h b/arch/csky/include/asm/stackprotector.h
-index d7cd4e51edd9..d23747447166 100644
---- a/arch/csky/include/asm/stackprotector.h
-+++ b/arch/csky/include/asm/stackprotector.h
-@@ -2,9 +2,6 @@
- #ifndef _ASM_STACKPROTECTOR_H
- #define _ASM_STACKPROTECTOR_H 1
- 
--#include <linux/random.h>
--#include <linux/version.h>
--
- extern unsigned long __stack_chk_guard;
- 
- /*
-@@ -15,12 +12,7 @@ extern unsigned long __stack_chk_guard;
-  */
- static __always_inline void boot_init_stack_canary(void)
- {
--	unsigned long canary;
--
--	/* Try to get a semi random initial value. */
--	get_random_bytes(&canary, sizeof(canary));
--	canary ^= LINUX_VERSION_CODE;
--	canary &= CANARY_MASK;
-+	unsigned long canary = get_random_canary();
- 
- 	current->stack_canary = canary;
- 	__stack_chk_guard = current->stack_canary;
-diff --git a/arch/mips/include/asm/stackprotector.h b/arch/mips/include/asm/stackprotector.h
-index 68d4be9e1254..518c192ad982 100644
---- a/arch/mips/include/asm/stackprotector.h
-+++ b/arch/mips/include/asm/stackprotector.h
-@@ -15,9 +15,6 @@
- #ifndef _ASM_STACKPROTECTOR_H
- #define _ASM_STACKPROTECTOR_H 1
- 
--#include <linux/random.h>
--#include <linux/version.h>
--
- extern unsigned long __stack_chk_guard;
- 
- /*
-@@ -28,11 +25,7 @@ extern unsigned long __stack_chk_guard;
-  */
- static __always_inline void boot_init_stack_canary(void)
- {
--	unsigned long canary;
--
--	/* Try to get a semi random initial value. */
--	get_random_bytes(&canary, sizeof(canary));
--	canary ^= LINUX_VERSION_CODE;
-+	unsigned long canary = get_random_canary();
- 
- 	current->stack_canary = canary;
- 	__stack_chk_guard = current->stack_canary;
-diff --git a/arch/powerpc/include/asm/stackprotector.h b/arch/powerpc/include/asm/stackprotector.h
-index 1c8460e23583..283c34647856 100644
---- a/arch/powerpc/include/asm/stackprotector.h
-+++ b/arch/powerpc/include/asm/stackprotector.h
-@@ -7,8 +7,6 @@
- #ifndef _ASM_STACKPROTECTOR_H
- #define _ASM_STACKPROTECTOR_H
- 
--#include <linux/random.h>
--#include <linux/version.h>
- #include <asm/reg.h>
- #include <asm/current.h>
- #include <asm/paca.h>
-@@ -21,13 +19,7 @@
-  */
- static __always_inline void boot_init_stack_canary(void)
- {
--	unsigned long canary;
--
--	/* Try to get a semi random initial value. */
--	canary = get_random_canary();
--	canary ^= mftb();
--	canary ^= LINUX_VERSION_CODE;
--	canary &= CANARY_MASK;
-+	unsigned long canary = get_random_canary();
- 
- 	current->stack_canary = canary;
- #ifdef CONFIG_PPC64
-diff --git a/arch/riscv/include/asm/stackprotector.h b/arch/riscv/include/asm/stackprotector.h
-index 09093af46565..43895b90fe3f 100644
---- a/arch/riscv/include/asm/stackprotector.h
-+++ b/arch/riscv/include/asm/stackprotector.h
-@@ -3,9 +3,6 @@
- #ifndef _ASM_RISCV_STACKPROTECTOR_H
- #define _ASM_RISCV_STACKPROTECTOR_H
- 
--#include <linux/random.h>
--#include <linux/version.h>
--
- extern unsigned long __stack_chk_guard;
- 
- /*
-@@ -16,12 +13,7 @@ extern unsigned long __stack_chk_guard;
-  */
- static __always_inline void boot_init_stack_canary(void)
- {
--	unsigned long canary;
--
--	/* Try to get a semi random initial value. */
--	get_random_bytes(&canary, sizeof(canary));
--	canary ^= LINUX_VERSION_CODE;
--	canary &= CANARY_MASK;
-+	unsigned long canary = get_random_canary();
- 
- 	current->stack_canary = canary;
- 	if (!IS_ENABLED(CONFIG_STACKPROTECTOR_PER_TASK))
-diff --git a/arch/sh/include/asm/stackprotector.h b/arch/sh/include/asm/stackprotector.h
-index 35616841d0a1..665dafac376f 100644
---- a/arch/sh/include/asm/stackprotector.h
-+++ b/arch/sh/include/asm/stackprotector.h
-@@ -2,9 +2,6 @@
- #ifndef __ASM_SH_STACKPROTECTOR_H
- #define __ASM_SH_STACKPROTECTOR_H
- 
--#include <linux/random.h>
--#include <linux/version.h>
--
- extern unsigned long __stack_chk_guard;
- 
- /*
-@@ -15,12 +12,7 @@ extern unsigned long __stack_chk_guard;
-  */
- static __always_inline void boot_init_stack_canary(void)
- {
--	unsigned long canary;
--
--	/* Try to get a semi random initial value. */
--	get_random_bytes(&canary, sizeof(canary));
--	canary ^= LINUX_VERSION_CODE;
--	canary &= CANARY_MASK;
-+	unsigned long canary = get_random_canary();
- 
- 	current->stack_canary = canary;
- 	__stack_chk_guard = current->stack_canary;
-diff --git a/arch/x86/include/asm/stackprotector.h b/arch/x86/include/asm/stackprotector.h
-index 24a8d6c4fb18..00473a650f51 100644
---- a/arch/x86/include/asm/stackprotector.h
-+++ b/arch/x86/include/asm/stackprotector.h
-@@ -34,7 +34,6 @@
- #include <asm/percpu.h>
- #include <asm/desc.h>
- 
--#include <linux/random.h>
- #include <linux/sched.h>
- 
- /*
-@@ -50,22 +49,11 @@
-  */
- static __always_inline void boot_init_stack_canary(void)
- {
--	u64 canary;
--	u64 tsc;
-+	unsigned long canary = get_random_canary();
- 
- #ifdef CONFIG_X86_64
- 	BUILD_BUG_ON(offsetof(struct fixed_percpu_data, stack_canary) != 40);
- #endif
--	/*
--	 * We both use the random pool and the current TSC as a source
--	 * of randomness. The TSC only matters for very early init,
--	 * there it already has some randomness on most systems. Later
--	 * on during the bootup the random pool has true entropy too.
--	 */
--	get_random_bytes(&canary, sizeof(canary));
--	tsc = rdtsc();
--	canary += tsc + (tsc << 32UL);
--	canary &= CANARY_MASK;
- 
- 	current->stack_canary = canary;
- #ifdef CONFIG_X86_64
-diff --git a/arch/xtensa/include/asm/stackprotector.h b/arch/xtensa/include/asm/stackprotector.h
-index e368f94fd2af..e1e318a0c98a 100644
---- a/arch/xtensa/include/asm/stackprotector.h
-+++ b/arch/xtensa/include/asm/stackprotector.h
-@@ -14,7 +14,6 @@
- #ifndef _ASM_STACKPROTECTOR_H
- #define _ASM_STACKPROTECTOR_H 1
- 
--#include <linux/random.h>
- #include <linux/version.h>
- 
- extern unsigned long __stack_chk_guard;
-@@ -27,11 +26,7 @@ extern unsigned long __stack_chk_guard;
-  */
- static __always_inline void boot_init_stack_canary(void)
- {
--	unsigned long canary;
--
--	/* Try to get a semi random initial value. */
--	get_random_bytes(&canary, sizeof(canary));
--	canary ^= LINUX_VERSION_CODE;
-+	unsigned long canary = get_random_canary();
- 
- 	current->stack_canary = canary;
- 	__stack_chk_guard = current->stack_canary;
--- 
-2.38.1
+One advantage of at least adding the new functions to the stable
+branches, even if we don't do the wholesale replacement, is that it
+makes it much less likely that a backported patch, which uses the new
+API, won't fail to compile --- and of course, the major headache case
+is one where it's not noticed at first because it didn't get picked up
+in people's test compiles until after the Linux x.y.z release has been
+pushed out.
 
+Whether it's worth doing the wholesale replacement is a different
+question, but separating "add the new functions with one or two use
+cases so the functions are actulaly _used_" from the "convert the
+world to use the new functions" from the "remove the old functions",
+might life easier.
+
+					- Ted
