@@ -1,63 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A773D6098AB
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Oct 2022 05:21:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3F2A6098E5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Oct 2022 05:31:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MwgMQ21hYz3c6k
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Oct 2022 14:21:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MwgZt3yBzz3cBc
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Oct 2022 14:31:02 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm1 header.b=vuZrne0j;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=T36df/Y3;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm1 header.b=8FfUxYGV;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=hVy1eFOw;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=russell.cc (client-ip=66.111.4.25; helo=out1-smtp.messagingengine.com; envelope-from=ruscur@russell.cc; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm1 header.b=vuZrne0j;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=T36df/Y3;
+	dkim=pass (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm1 header.b=8FfUxYGV;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=hVy1eFOw;
 	dkim-atps=neutral
 Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MwgLV0HYvz2xJN
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Oct 2022 14:20:17 +1100 (AEDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailout.nyi.internal (Postfix) with ESMTP id 013845C00B5;
-	Sun, 23 Oct 2022 23:20:16 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute5.internal (MEProxy); Sun, 23 Oct 2022 23:20:16 -0400
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MwgYy1sFPz2xjr
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Oct 2022 14:30:14 +1100 (AEDT)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+	by mailout.nyi.internal (Postfix) with ESMTP id 396B95C00DB;
+	Sun, 23 Oct 2022 23:30:12 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute1.internal (MEProxy); Sun, 23 Oct 2022 23:30:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=cc
 	:cc:content-transfer-encoding:content-type:date:date:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:sender:subject:subject:to:to; s=fm1; t=1666581615; x=
-	1666668015; bh=2gJpJ7akxhZjMTe1TnBqQLyKz4hf0Ei7snaoUkc6FdY=; b=v
-	uZrne0jg+2yoG3Wyke559mXi9L8HwBvXGuNsa5JX2JghGnbiA90A+60Sald6h9jr
-	wBHrA3UISX/pjrOMvc0dkTHVcY8mHCpCnAKGgFI+lIzPnXlxiTJYJPpVkjWK0xS2
-	nIiQPSJlAs9NhoQbRTjaLlpwg8pqYhbFhny+5oQZLnhzusxBUcxLfyA5nNPQohYC
-	2XN5EbK9Ngg5fcqhhcVB7wns4ARziYnEnLeTCc8c6QIes4xllG3rGsbaffaHj6C2
-	FmDflxqj7V3Sl803hMxQz6BMdua5/L9REcx/CArSIq4kthM7vmohf2W9zLSI6kLP
-	FkLGwgJ+wZpBO74prYgZg==
+	:reply-to:sender:subject:subject:to:to; s=fm1; t=1666582212; x=
+	1666668612; bh=wUyUo3ivr0Z69paIJPRzOJLAJoCE3FkjJH4q6xBTylM=; b=8
+	FfUxYGVkbGvaJ9V1b44Fw9rj8saPd5NXCH5AEKwIyC096ezrsvm3J4qVS/D+ft4i
+	zzBoCgX8xKVinqTgW9A9LB67YD5KH7ixsW+liiEK+5v7B3nsJbdUTDhh9CAdr9sz
+	7xl6dzFAoXmA6lfYNKBJ1Ktnpq8BcWNhGt9iyvbhOue9VIpliZrfyUlil9QuLS2E
+	FEuEPlec+g1RkELrxkXW1ODzlPvE47u+ADx6ii8/lrswRlvegrCcZwPMc5pnnXSI
+	7jPR2YaYiIvsND/wMdcrd232SlY9SpsbCE8KprsC8nRuP7eyauv3ny/B9monqea8
+	FGkLwuzW/kfNxWYy9rN6w==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1666581615; x=
-	1666668015; bh=2gJpJ7akxhZjMTe1TnBqQLyKz4hf0Ei7snaoUkc6FdY=; b=T
-	36df/Y3t4mXx6e0OZUIzvG6EtBtlwZsCnvkeaUHWuGywnEqvKeemGACa825gdfnv
-	cR3j4lRPNdgvN+iHchhYvk2OaS2TtgSa0Df5b1TLkkqr4rLmSxJgwtW2EfMf9cC7
-	PruKs7KSbhe6SJ/Jw27kaVzg76uCTDc1tVUJSAEW/8qNvD4inwc2ZMadx+gHRCva
-	KJCpebLVN+nrrVe/Eahse5OyuWyFwIf6AX64cxXuzi8rmCNwIglrWhV/besTt9zF
-	lLrrJK+Sii9jWBSPdWrl9g5gkPi1sodIrpfypNxaLqFWxluKRWDWp5EyC3gylpY1
-	RGlCTP/xD9tvB54ioHp4g==
-X-ME-Sender: <xms:bwRWY70n1IxZ3m6bmPNApDZXLcd8crkrPnH0BTlcoCLLLwFzffhA5A>
-    <xme:bwRWY6HVOmJqk-XPQY0Y6OuwJy80qQuHtjUrqSCdfKmYINA-dv-LPx73RXD0xWqpz
-    MQnNFfeob1-1YlBjg>
-X-ME-Received: <xmr:bwRWY77zxzQZsAztzZg92zTNh-912GYrP0IAQZ66YFKXOlKtWBfcIbFRjVifLT6Fyh1o5w8TDZgmnaMZivA8WQ-pM0JsGpiGx38NEkng2vt4lw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrgedtfedgjedtucetufdoteggodetrfdotf
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1666582212; x=
+	1666668612; bh=wUyUo3ivr0Z69paIJPRzOJLAJoCE3FkjJH4q6xBTylM=; b=h
+	Vy1eFOw0ep006BFMbBQ7z904eNlkQ9dhPBZNusQSrTHMvUUgRW8E6C3RT+lUJQ29
+	ldgkunPb6b2evfVpmCCp+836N54hXf+RK8jgApUXmTNSHHwd0ya4fB1gHde3Bw9v
+	GLhD/eux10zpdBPT9bLa4OxKv1I8TWZOvLw2HgMLr2awlAZDnrTLEn12yuDRMco/
+	EHa649RTs16P6kC5P/NbZCsjH3y775BG2lwcsqO5SKxuGhSBFmbwOCvJRu5TMq2+
+	OhbuzMdP9SRnKCb10nCmClZaLAgyLAgzYg0Q3mB3QhsOp884KlOsRtJ+faFouKEp
+	oQp6QocIsyN+BL2OfCI6w==
+X-ME-Sender: <xms:xAZWYyMZB4uQzHCjzkkc4UINPCnXEt_AGbXDPXfPXwGBTy1GJ0z_3g>
+    <xme:xAZWYw9C1WAOWllgyzzqrIVYlEFWr5WgO2Gxy_PPYHSrAhK113DWDizejwVxzbZnB
+    qeC4qmzoU0k9DQCzA>
+X-ME-Received: <xmr:xAZWY5TyWrOCjvFhMaCC4OBBIN5mNXcoES86sUnaW0Spuqfqw0LqaRfAvgOLwEiobot3Ggn2lhdTJ8cnnZGLqEwQCU_v62TlCwtI0ZAnujl8qw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrgedtfedgjedvucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
     uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
     gfrhhlucfvnfffucdludehmdenucfjughrpefkuffhvfevffgjfhgtgfgfggesthhqredt
@@ -65,22 +65,22 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrgedtfedgjedtucetufdoteggod
     hsshgvlhhlrdgttgeqnecuggftrfgrthhtvghrnheptefgieelhfeufeevvdekheeifeej
     gfefgeehtedukeeigfduuddtueekteevleelnecuvehluhhsthgvrhfuihiivgeptdenuc
     frrghrrghmpehmrghilhhfrhhomheprhhushgtuhhrsehruhhsshgvlhhlrdgttg
-X-ME-Proxy: <xmx:bwRWYw3oKtpWJqaVcEJiUXbEx9QQOdwkTBphiPEltLMfMg95zq18nw>
-    <xmx:bwRWY-E_AN9oybGNYMHk3AWyF0EXKMr_1E73nydQsTayehEGs2nW9g>
-    <xmx:bwRWYx_10a4cXGYHtqVBalTLC0WSZYWXwJixsVMkw1WoeVeodr9cVA>
-    <xmx:bwRWY7NrMDM0l1CmndkQ_grH3qPUNOTJe7tb5fjt_a8YE_SLGtZh3g>
+X-ME-Proxy: <xmx:xAZWYyut_VCIXd2Yhw_e0Zr2UOJNYnPB3Al13Y9sUJleSMhQRYr4Eg>
+    <xmx:xAZWY6chf4-X7lzvrHgm5SRewVgik7FhUk5WMQuM4ky45f1pxf-ypg>
+    <xmx:xAZWY236N6oFjxdUucXmSEMA_c2MGv9OtyyoHbU_VYNhbVin5jG7Fg>
+    <xmx:xAZWY3GGQODMz9BG0PV85Y8QbpvqWCOCQ2dgXCPE4CCeYvY1kRjLoQ>
 Feedback-ID: i4421424f:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 23 Oct 2022 23:20:13 -0400 (EDT)
-Message-ID: <d5febacfc792876848bd4ba58f43b0e24450f250.camel@russell.cc>
-Subject: Re: [PATCH v8 3/6] powerpc/code-patching: Verify instruction patch
- succeeded
+ 23 Oct 2022 23:30:09 -0400 (EDT)
+Message-ID: <491120551489673b614d2f058ea580dc9a1534f0.camel@russell.cc>
+Subject: Re: [PATCH v8 4/6] powerpc/tlb: Add local flush for page given
+ mm_struct and psize
 From: Russell Currey <ruscur@russell.cc>
 To: Benjamin Gray <bgray@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Date: Mon, 24 Oct 2022 14:20:11 +1100
-In-Reply-To: <20221021052238.580986-4-bgray@linux.ibm.com>
+Date: Mon, 24 Oct 2022 14:30:07 +1100
+In-Reply-To: <20221021052238.580986-5-bgray@linux.ibm.com>
 References: <20221021052238.580986-1-bgray@linux.ibm.com>
-	 <20221021052238.580986-4-bgray@linux.ibm.com>
+	 <20221021052238.580986-5-bgray@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
@@ -101,36 +101,135 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On Fri, 2022-10-21 at 16:22 +1100, Benjamin Gray wrote:
-> Verifies that if the instruction patching did not return an error
-> then
-> the value stored at the given address to patch is now equal to the
-> instruction we patched it to.
+> Adds a local TLB flush operation that works given an mm_struct, VA to
+> flush, and page size representation.
+>=20
+> This removes the need to create a vm_area_struct, which the temporary
+> patching mm work does not need.
 >=20
 > Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
 > ---
-> =C2=A0arch/powerpc/lib/code-patching.c | 2 ++
-> =C2=A01 file changed, 2 insertions(+)
+> =C2=A0arch/powerpc/include/asm/book3s/32/tlbflush.h=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 | 9 +++++++++
+> =C2=A0arch/powerpc/include/asm/book3s/64/tlbflush-hash.h | 5 +++++
+> =C2=A0arch/powerpc/include/asm/book3s/64/tlbflush.h=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 | 8 ++++++++
+> =C2=A0arch/powerpc/include/asm/nohash/tlbflush.h=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 | 1 +
+> =C2=A04 files changed, 23 insertions(+)
 >=20
-> diff --git a/arch/powerpc/lib/code-patching.c
-> b/arch/powerpc/lib/code-patching.c
-> index 34fc7ac34d91..9b9eba574d7e 100644
-> --- a/arch/powerpc/lib/code-patching.c
-> +++ b/arch/powerpc/lib/code-patching.c
-> @@ -186,6 +186,8 @@ static int do_patch_instruction(u32 *addr,
-> ppc_inst_t instr)
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0err =3D __do_patch_instru=
-ction(addr, instr);
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0local_irq_restore(flags);
+> diff --git a/arch/powerpc/include/asm/book3s/32/tlbflush.h
+> b/arch/powerpc/include/asm/book3s/32/tlbflush.h
+> index ba1743c52b56..e5a688cebf69 100644
+> --- a/arch/powerpc/include/asm/book3s/32/tlbflush.h
+> +++ b/arch/powerpc/include/asm/book3s/32/tlbflush.h
+> @@ -2,6 +2,8 @@
+> =C2=A0#ifndef _ASM_POWERPC_BOOK3S_32_TLBFLUSH_H
+> =C2=A0#define _ASM_POWERPC_BOOK3S_32_TLBFLUSH_H
 > =C2=A0
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0WARN_ON(!err && !ppc_inst_equa=
-l(instr, ppc_inst_read(addr)));
+> +#include <linux/build_bug.h>
 > +
-
-As a side note, I had a look at test-code-patching.c and it doesn't
-look like we don't have a test for ppc_inst_equal() with prefixed
-instructions.  We should fix that.
-
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return err;
+> =C2=A0#define MMU_NO_CONTEXT=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 (0)
+> =C2=A0/*
+> =C2=A0 * TLB flushing for "classic" hash-MMU 32-bit CPUs, 6xx, 7xx, 7xxx
+> @@ -74,6 +76,13 @@ static inline void local_flush_tlb_page(struct
+> vm_area_struct *vma,
+> =C2=A0{
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0flush_tlb_page(vma, vmadd=
+r);
 > =C2=A0}
-> =C2=A0#else /* !CONFIG_STRICT_KERNEL_RWX */
+> +
+> +static inline void local_flush_tlb_page_psize(struct mm_struct *mm,
+> unsigned long vmaddr, int psize)
+> +{
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0BUILD_BUG_ON(psize !=3D MMU_PA=
+GE_4K);
+
+Is there any utility in adding this for 32bit if the following patches
+are only for Radix?
+
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0flush_range(mm, vmaddr, vmaddr=
+ + PAGE_SIZE);
+> +}
+> +
+> =C2=A0static inline void local_flush_tlb_mm(struct mm_struct *mm)
+> =C2=A0{
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0flush_tlb_mm(mm);
+> diff --git a/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
+> b/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
+> index fab8332fe1ad..8fd9dc49b2a1 100644
+> --- a/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
+> +++ b/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
+> @@ -94,6 +94,11 @@ static inline void
+> hash__local_flush_tlb_page(struct vm_area_struct *vma,
+> =C2=A0{
+> =C2=A0}
+> =C2=A0
+> +static inline void hash__local_flush_tlb_page_psize(struct mm_struct
+> *mm,
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 unsigned long
+> vmaddr, int psize)
+> +{
+> +}
+> +
+> =C2=A0static inline void hash__flush_tlb_page(struct vm_area_struct *vma,
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned lo=
+ng vmaddr)
+> =C2=A0{
+> diff --git a/arch/powerpc/include/asm/book3s/64/tlbflush.h
+> b/arch/powerpc/include/asm/book3s/64/tlbflush.h
+> index 67655cd60545..2d839dd5c08c 100644
+> --- a/arch/powerpc/include/asm/book3s/64/tlbflush.h
+> +++ b/arch/powerpc/include/asm/book3s/64/tlbflush.h
+> @@ -92,6 +92,14 @@ static inline void local_flush_tlb_page(struct
+> vm_area_struct *vma,
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return hash__local_flush_=
+tlb_page(vma, vmaddr);
+> =C2=A0}
+> =C2=A0
+> +static inline void local_flush_tlb_page_psize(struct mm_struct *mm,
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned long vmaddr,
+> int psize)
+> +{
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (radix_enabled())
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0return radix__local_flush_tlb_page_psize(mm, vmaddr,
+> psize);
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return hash__local_flush_tlb_p=
+age_psize(mm, vmaddr, psize);
+> +}
+> +
+> =C2=A0static inline void local_flush_all_mm(struct mm_struct *mm)
+> =C2=A0{
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (radix_enabled())
+> diff --git a/arch/powerpc/include/asm/nohash/tlbflush.h
+> b/arch/powerpc/include/asm/nohash/tlbflush.h
+> index bdaf34ad41ea..59bce0ebdcf4 100644
+> --- a/arch/powerpc/include/asm/nohash/tlbflush.h
+> +++ b/arch/powerpc/include/asm/nohash/tlbflush.h
+> @@ -58,6 +58,7 @@ static inline void flush_tlb_kernel_range(unsigned
+> long start, unsigned long end
+> =C2=A0extern void flush_tlb_kernel_range(unsigned long start, unsigned
+> long end);
+> =C2=A0extern void local_flush_tlb_mm(struct mm_struct *mm);
+> =C2=A0extern void local_flush_tlb_page(struct vm_area_struct *vma,
+> unsigned long vmaddr);
+> +extern void local_flush_tlb_page_psize(struct mm_struct *mm,
+> unsigned long vmaddr, int psize);
+> =C2=A0
+> =C2=A0extern void __local_flush_tlb_page(struct mm_struct *mm, unsigned
+> long vmaddr,
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int tsize, int in=
+d);
 
