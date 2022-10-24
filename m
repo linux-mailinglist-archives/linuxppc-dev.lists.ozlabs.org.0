@@ -1,63 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D17B260B234
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Oct 2022 18:44:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40B9D60B905
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Oct 2022 22:01:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Mx1BC5ygZz3cBn
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Oct 2022 03:44:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Mx5Yv1LgYz3cBM
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Oct 2022 07:01:39 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=R/LWqL0H;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=sGYDK7eI;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=srs0=xank=2z=zx2c4.com=jason@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::429; helo=mail-wr1-x429.google.com; envelope-from=philmd@linaro.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=R/LWqL0H;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=sGYDK7eI;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mx19D6Stbz2xgG
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Oct 2022 03:43:28 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id DC75FB81612;
-	Mon, 24 Oct 2022 16:43:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 495C4C433D7;
-	Mon, 24 Oct 2022 16:43:19 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="R/LWqL0H"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1666629797;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jVwnCaFZdOk86y5jBEGAHVTaPFA8qqxydDorS9HQrxk=;
-	b=R/LWqL0HmERHhgI7BdwcGOaB3Q8XsPIH6B/Gdo3HJUMIuT9hwUE+2aIfUs7T5AhOI79Jt6
-	d8ngYNFZKfkYsUwIv2qdXPqC/aoaC88pmme7vJsjJeVfqbHgYDfmh3RufMLuzpN+0qp8US
-	fVJyhkYuwNudc5bRrrZ+Jls0DQkggGI=
-Received: 	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 885087f8 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Mon, 24 Oct 2022 16:43:17 +0000 (UTC)
-Date: Mon, 24 Oct 2022 18:43:09 +0200
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-To: Theodore Ts'o <tytso@mit.edu>
-Subject: Re: [PATCH v1 0/5] convert tree to
- get_random_u32_{below,above,between}()
-Message-ID: <Y1bAnU4pCczkw5j8@zx2c4.com>
-References: <20221022014403.3881893-1-Jason@zx2c4.com>
- <20221021205522.6b56fd24@kernel.org>
- <Y1NwJJOIB4gI5G11@zx2c4.com>
- <20221021223242.05df0a5b@kernel.org>
- <Y1OD2tdVwQsydSNV@zx2c4.com>
- <20221021230322.00dd045c@kernel.org>
- <Y1WtAZfciG1z2CC7@mit.edu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mwk6n5gsGz2xJF
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Oct 2022 16:25:20 +1100 (AEDT)
+Received: by mail-wr1-x429.google.com with SMTP id k8so5692553wrh.1
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Oct 2022 22:25:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=xZk2YhOyCsD5JgZA8622Psb4g9tdzFicF6waMAEX+tE=;
+        b=sGYDK7eIYH5PqH/5Acy0XyaEjCscnyemwFKPlv0plAI4IwAFCznfoGKOXs1a7qYDrr
+         ly2ism/XDhfqN7P+LUkOQ+8zw1DW3s9014bL3MpmA/VeepyZ997065xLFYnKak1tqGkq
+         FoBa0umV34QeH83RdEplTs4i5Q4cLt0MSci1zU3y4K+5MRKk5kvOo6/OmTyP65vvmeaX
+         Q5fVy3H/6NpDIslefYS/jRvBlP4GCt+4AychccYkqmARW0YsM+HURsaQVLlgY4KIgMaO
+         8B0U5afdOstZ9Xnrvl2gDFtoZcogvKS6fdmiHd2ZOE5f9wxSOHws4RH0J6kyMAnRSo9m
+         cgVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=xZk2YhOyCsD5JgZA8622Psb4g9tdzFicF6waMAEX+tE=;
+        b=ihSqbSNmErt35/psqaJbRVbFBFNytKaxQ9eVFSg2wV5cHsjRi/F3fDCQ3/nZhzU/d1
+         knfznihfPFOTXQ73B9mjcbxfvUrEtG4A1ddXRzVx82863EDeEdGnOhjgYg1F1NYkd4zy
+         uHKtDSLf1t4LnBFdmiivsg4XGlKtTR4KhZGFj2SwfFwbIxmRRG/UVqTMLSXBM/nraXO+
+         VZntoiPaDNcU2J+Jcb8SY+zf7XlEVxUvFHeAWCnpeECs0HUp7lXlymX0tRP8BxLKFQux
+         2xVVVpkmlWfNtzc4c99xIJ6ZN+YojDyIMCKgEOFZ6PeANE1gJSCJE32HL6KOTqAK7Pyp
+         JfLA==
+X-Gm-Message-State: ACrzQf0hxiHx7cm31E6rEp6sSuwhsbxfgS0CmI8M2j4IFTP/zJKDx9KL
+	abk8cNCDaYiHIGvmACMZn0V4ZQ==
+X-Google-Smtp-Source: AMsMyM6QxHnKrRaxO/sgu91YoPZwLII9g5woi4tdrjAvc7GmkjpM0AXJ+q3phtLN49229n5kcuKDXw==
+X-Received: by 2002:adf:e196:0:b0:236:740f:f234 with SMTP id az22-20020adfe196000000b00236740ff234mr996926wrb.518.1666589113331;
+        Sun, 23 Oct 2022 22:25:13 -0700 (PDT)
+Received: from [10.50.0.10] (ec2-54-194-108-71.eu-west-1.compute.amazonaws.com. [54.194.108.71])
+        by smtp.gmail.com with ESMTPSA id c11-20020a05600c0a4b00b003c6f27d275dsm7317108wmq.33.2022.10.23.22.25.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 23 Oct 2022 22:25:12 -0700 (PDT)
+Message-ID: <5f4b9276-92bf-2e04-8a42-8f416526b3a6@linaro.org>
+Date: Mon, 24 Oct 2022 07:25:08 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <Y1WtAZfciG1z2CC7@mit.edu>
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.3.2
+Subject: Re: [PATCH v1 1/2] stackprotector: move CANARY_MASK and
+ get_random_canary() into stackprotector.h
+Content-Language: en-US
+To: "Jason A. Donenfeld" <Jason@zx2c4.com>, linux-kernel@vger.kernel.org
+References: <20221023203208.118919-1-Jason@zx2c4.com>
+ <20221023203208.118919-2-Jason@zx2c4.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20221023203208.118919-2-Jason@zx2c4.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Tue, 25 Oct 2022 07:00:53 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,37 +84,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Darrick J . Wong" <djwong@kernel.org>, linux-mips@vger.kernel.org, netdev@vger.kernel.org, Andreas Dilger <adilger.kernel@dilger.ca>, Herbert Xu <herbert@gondor.apana.org.au>, Richard Weinberger <richard@nod.at>, Helge Deller <deller@gmx.de>, Russell King <linux@armlinux.org.uk>, Jason Gunthorpe <jgg@nvidia.com>, Catalin Marinas <catalin.marinas@arm.com>, Jakub Kicinski <kuba@kernel.org>, linux-media@vger.kernel.org, Kees Cook <keescook@chromium.org>, Heiko Carstens <hca@linux.ibm.com>, Jani Nikula <jani.nikula@linux.intel.com>, linux-block@vger.kernel.org, SeongJae Park <sj@kernel.org>, loongarch@lists.linux.dev, Jaegeuk Kim <jaegeuk@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, "Martin K . Petersen" <martin.petersen@oracle.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org, Christoph =?utf-8?Q?B=C3
- =B6hmwalder?= <christoph.boehmwalder@linbit.com>, linux-crypto@vger.kernel.org, Sakari Ailus <sakari.ailus@linux.intel.com>, linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org, "H . Peter Anvin" <hpa@zytor.com>, linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, x86@kernel.org, Russell King <linux@armlinux.org.uk>, Ingo Molnar <mingo@redhat.com>, linux-xtensa@linux-xtensa.org, Albert Ou <aou@eecs.berkeley.edu>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Juergen Gross <jgross@suse.com>, Chris Zankel <chris@zankel.net>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, l
+ inuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Oct 23, 2022 at 05:07:13PM -0400, Theodore Ts'o wrote:
-> On Fri, Oct 21, 2022 at 11:03:22PM -0700, Jakub Kicinski wrote:
-> > On Sat, 22 Oct 2022 07:47:06 +0200 Jason A. Donenfeld wrote:
-> > > On Fri, Oct 21, 2022 at 10:32:42PM -0700, Jakub Kicinski wrote:
-> > > > But whatever. I mean - hopefully there aren't any conflicts in the ~50
-> > > > networking files you touch. I just wish that people didn't pipe up with
-> > > > the tree wide changes right after the merge window. Feels like the
-> > > > worst possible timing.  
-> > > 
-> > > Oh, if the timing is what makes this especially worrisome, I have
-> > > no qualms about rebasing much later, and reposting this series then.
-> > > I'll do that.
-> > 
-> > Cool, thanks! I promise to not be grumpy if you repost around rc6 :)
+On 23/10/22 22:32, Jason A. Donenfeld wrote:
+> This has nothing to do with random.c and everything to do with stack
+> protectors. Yes, it uses randomness. But many things use randomness.
+> random.h and random.c are concerned with the generation of randomness,
+> not with each and every use. So move this function into the more
+> specific stackprotector.h file where it belongs.
 > 
-> One way of making things less painful for the stable branch and for
-> the upstream branch is to *add* new helpers instead of playing
-> replacement games like s/prandom_u32_max/get_random_u32_below/.  This
-> is what causes the patch conflict problems.
-> 
-> One advantage of at least adding the new functions to the stable
-> branches, even if we don't do the wholesale replacement, is that it
+> Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+> ---
+>   arch/x86/kernel/cpu/common.c   |  2 +-
+>   arch/x86/kernel/setup_percpu.c |  2 +-
+>   arch/x86/kernel/smpboot.c      |  2 +-
+>   arch/x86/xen/enlighten_pv.c    |  2 +-
+>   include/linux/random.h         | 19 -------------------
+>   include/linux/stackprotector.h | 19 +++++++++++++++++++
+>   kernel/fork.c                  |  2 +-
+>   7 files changed, 24 insertions(+), 24 deletions(-)
 
-That's a good idea. I'll also save the removal commit, anyhow, for a
-separate thing at the end of 6.2 rc1, so that -next doesn't have issues
-either.  That's how things wound up going down for the first tranche of
-these, and that worked well.
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Jason
