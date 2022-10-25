@@ -1,99 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A56A60D81D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Oct 2022 01:43:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A25360D889
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Oct 2022 02:41:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MxpQr3r0Kz3cFv
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Oct 2022 10:43:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Mxqk65Sskz3bym
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Oct 2022 11:41:18 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=l30knxfd;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=OGVQx/2j;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=bgray@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::82c; helo=mail-qt1-x82c.google.com; envelope-from=opendmb@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=l30knxfd;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=OGVQx/2j;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-x82c.google.com (mail-qt1-x82c.google.com [IPv6:2607:f8b0:4864:20::82c])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MxpPr5WGxz2xsc
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Oct 2022 10:42:08 +1100 (AEDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29PM7oHH036731;
-	Tue, 25 Oct 2022 23:41:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=FyBX5VMnzLOKSq6KavKCbmI+FZxBM+5Uay0XV4ohsXg=;
- b=l30knxfdE7H0Q37X9WrteOcdIeEd/dr0spoA22FXYc/1wuC1L+XOIip2vlNZnHDjmfjS
- WW/AV6ma/CK34D/LAOyscWrMvvUohzteB4sRG0GM369SiIVARPrgOsN9fdB1hLiRyjqt
- pWEQ9kW0ullj+O3gb3etXjaomTjpPT14jYexrlsEsTYE0YLhVSrj18eANiBZteJ8ZnCR
- XKLIp0eaBNEauO0lBylGMealpONX496+JOmcqO2xZcGL5Za9cyIru//52L911e2CMcG1
- 4ET1XKdjN9Ao5DYyi0AKmXMXkXztMryM8HS+0W6hJbvJ/4wofmXOLGv4/hWIozDtfm0n cw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3kee36fg7s-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 25 Oct 2022 23:41:52 +0000
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 29PNSe1Y033435;
-	Tue, 25 Oct 2022 23:41:52 GMT
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3kee36fg7c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 25 Oct 2022 23:41:51 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-	by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 29PNZwnw005373;
-	Tue, 25 Oct 2022 23:41:49 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
-	by ppma04ams.nl.ibm.com with ESMTP id 3kc859edhq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 25 Oct 2022 23:41:49 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
-	by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 29PNflQr42533170
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 25 Oct 2022 23:41:47 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5D983A4051;
-	Tue, 25 Oct 2022 23:41:47 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 06CD6A4040;
-	Tue, 25 Oct 2022 23:41:47 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Tue, 25 Oct 2022 23:41:46 +0000 (GMT)
-Received: from li-0d7fa1cc-2c9d-11b2-a85c-aed20764436d.ibm.com (haven.au.ibm.com [9.192.254.114])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 255B260609;
-	Wed, 26 Oct 2022 10:41:39 +1100 (AEDT)
-Message-ID: <eb0c1f04e9b567936b2494ae9bf98859ce735915.camel@linux.ibm.com>
-Subject: Re: [PATCH v4 2/6] powerpc/module: Handle caller-saved TOC in
- module linker
-From: Benjamin Gray <bgray@linux.ibm.com>
-To: Andrew Donnellan <ajd@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Date: Wed, 26 Oct 2022 10:41:38 +1100
-In-Reply-To: <05571d7c9bc1f8287cfd44ed519ba668d1cfdb86.camel@linux.ibm.com>
-References: <20221010002957.128276-1-bgray@linux.ibm.com>
-	 <20221010002957.128276-3-bgray@linux.ibm.com>
-	 <05571d7c9bc1f8287cfd44ed519ba668d1cfdb86.camel@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mxnb12Rmcz2xJ7
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Oct 2022 10:04:59 +1100 (AEDT)
+Received: by mail-qt1-x82c.google.com with SMTP id g11so8763741qts.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Oct 2022 16:04:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ClspvyXTECiETgdUQTzdfSfb1fdhiX3Hnq3vM9YFJKg=;
+        b=OGVQx/2jN+RSO85l2tT+FBBLDTg3+Zwd7kPErhrGyLOvARiBsC6CG7mlS5qehrVYjz
+         ihtrkFKVyhxJhSYcMvV5NWm9PskAi/kmNQQmlfOa/Atw95eHt5E/xoWUmo4sZqo3vl6j
+         CFQyTygR+2sMm/0/KV7GFc4CoMhIlc5XmYa/1tJQAXFJdrhS0cF3+wNUENeelrFXVU52
+         B+fJaSn+KrN1P/cNjmuab6WTcWn/9XgYj18k3hKTDHoKhxqIHLAQQtgY7Ei3jjIvIsAG
+         fcVYL7OzlTbJRpGXtu8aguc9N1G0gMaX45lDxLj2aL/avr2nXoN6LoTK0/S4kgTRI4RP
+         T+7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ClspvyXTECiETgdUQTzdfSfb1fdhiX3Hnq3vM9YFJKg=;
+        b=LAFFRaOd36gkUDiXUrEyNm2GDQuUIccfvZCBLQxPvFuVpLKMZpeN38K2AvexdsY6I9
+         N/5lBcSndDQk1L2utPux2kJsN6YXMr2lgB9YGBy8m83gr9JzQLselh4eZRmBPf3oeXFM
+         AZcjaUQ/uDVsTFMdWrDAfvdTuiF51wxH3zFXDdELQXdO804sivDwMqp+9Gys25jstFe4
+         MuEAQhIxOC6cNzMhN9hsKaFjJwPGfe8Km6F8wbtzCaKupm3LE4IpAb/0twXMAn5onyw8
+         9qs0RfQPcZp8mJJWR7EbKJdMpSy36v80SRLlUa53p2ZDJ/4TD4+dlMr/+ogUyj5LrCTT
+         6sNw==
+X-Gm-Message-State: ACrzQf0wMto1GY7QxT6THw1NMsHmii3DeKpGVfZ/9sfrxo57vghuwvLr
+	bxFC3hDwsctxnGgZCf/hn3g=
+X-Google-Smtp-Source: AMsMyM7rTVsA7B/1nr6n/+LBGSf6vGViUcnpSdM2UVcJd2IwE+vvSTBrnUYbSAFzBatpLBuidNMdkw==
+X-Received: by 2002:ac8:7d0f:0:b0:398:3029:3328 with SMTP id g15-20020ac87d0f000000b0039830293328mr34625420qtb.99.1666739095917;
+        Tue, 25 Oct 2022 16:04:55 -0700 (PDT)
+Received: from [10.69.53.73] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id t18-20020a05620a451200b006cfc7f9eea0sm2913312qkp.122.2022.10.25.16.04.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 25 Oct 2022 16:04:55 -0700 (PDT)
+Message-ID: <8fbc9d02-3c73-5990-85af-82eecb6d64e3@gmail.com>
+Date: Tue, 25 Oct 2022 16:04:15 -0700
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: U0YHBGMrBi9wnN3UVnAipssZ0seR7q5D
-X-Proofpoint-GUID: hjXpFTUVd-uW8RzK9xRYFi4wRcs2bC0H
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-10-25_13,2022-10-25_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=961
- suspectscore=0 adultscore=0 mlxscore=0 malwarescore=0 spamscore=0
- lowpriorityscore=0 priorityscore=1501 clxscore=1011 phishscore=0
- bulkscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2209130000 definitions=main-2210250129
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.1.2
+Subject: Re: [linux-next:master] BUILD REGRESSION
+ 89bf6e28373beef9577fa71f996a5f73a569617c
+To: Jakub Kicinski <kuba@kernel.org>, kernel test robot <lkp@intel.com>
+References: <63581a3c.U6bx8B6mFoRe2pWN%lkp@intel.com>
+ <20221025154150.729bbbd0@kernel.org>
+Content-Language: en-US
+From: Doug Berger <opendmb@gmail.com>
+In-Reply-To: <20221025154150.729bbbd0@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Mailman-Approved-At: Wed, 26 Oct 2022 11:40:32 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,42 +84,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: peterz@infradead.org, rostedt@goodmis.org, jpoimboe@kernel.org, jbaron@akamai.com, npiggin@gmail.com, ardb@kernel.org
+Cc: Florian Fainelli <f.fainelli@gmail.com>, linux-scsi@vger.kernel.org, netdev@vger.kernel.org, linux-mm@kvack.org, linux-mediatek@lists.infradead.org, Andrew Morton <akpm@linux-foundation.org>, ntfs3@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-T24gVHVlLCAyMDIyLTEwLTI1IGF0IDEzOjEwICsxMTAwLCBBbmRyZXcgRG9ubmVsbGFuIHdyb3Rl
-Ogo+IE9uIE1vbiwgMjAyMi0xMC0xMCBhdCAxMToyOSArMTEwMCwgQmVuamFtaW4gR3JheSB3cm90
-ZToKPiA+ID4gQSBmdW5jdGlvbiBzeW1ib2wgbWF5IHNldCBhIHZhbHVlIGluIHRoZSBzdF9vdGhl
-ciBmaWVsZCB0bwo+ID4gPiBpbmRpY2F0ZQo+ID4gPiB0aGUgVE9DIHNob3VsZCBiZSB0cmVhdGVk
-IGFzIGNhbGxlci1zYXZlZC4gVGhlIGxpbmtlciBzaG91bGQKPiA+ID4gZW5zdXJlPiB0aGUKPiA+
-ID4gY3VycmVudCBUT0MgaXMgc2F2ZWQgYmVmb3JlIGNhbGxpbmcgaXQgYW5kIHJlc3RvcmUgdGhl
-IFRPQz4KPiA+ID4gYWZ0ZXJ3YXJkcywKPiA+ID4gbXVjaCBsaWtlIGV4dGVybmFsIGNhbGxzLgo+
-IAo+IEFzIEkgc3VnZ2VzdGVkIG9uIHRoZSBsYXN0IHJldmlzaW9uLCB3b3J0aCBtZW50aW9uaW5n
-IGhlcmUgdGhhdCBpdCdzCj4gdGhlICcubG9jYWxlbnRyeSA8TkFNRT4sIDEnIGRpcmVjdGl2ZSB3
-ZSdyZSB0YWxraW5nIGFib3V0IGhlcmUuCgpBaCByaWdodCwgd2hvb3BzLiBBZGRlZCAiRm9yIGV4
-YW1wbGUsIEdDQyBhbmQgQ2xhbmcgc3VwcG9ydCBhCicubG9jYWxlbnRyeSA8TkFNRT4sIDEnIGRp
-cmVjdGl2ZSB0byBzZXQgdGhpcyBleHBsaWNpdGx5IGluIGFzc2VtYmx5LiIKClRoZSBleGFjdCBt
-ZXRob2QgZm9yIGRvaW5nIHRoaXMgc2VlbXMgdG8gYmUgbm9uc3RhbmRhcmQgKEdDQyBzdXBwb3J0
-cwphcmJpdHJhcnkgdmFsdWUgaW4gMS0tNywgQ2xhbmcgc3BlY2lhbCBjYXNlcyBvbmx5IDEpLCBz
-byBvcmlnaW5hbGx5IEkKd2FzIGF2b2lkaW5nIHNwZWNpZnlpbmcgaG93IGl0IGlzIHNldC4KCj4g
-PiA+IEBAIC02MzIsNyArNjQzLDggQEAgaW50IGFwcGx5X3JlbG9jYXRlX2FkZChFbGY2NF9TaGRy
-ICpzZWNoZHJzLAo+ID4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGNhc2UgUl9Q
-UENfUkVMMjQ6Cj4gPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoC8qIEZJWE1FOiBIYW5kbGUgd2VhayBzeW1ib2xzIGhlcmUgLS1SUgo+ID4gPiAqLwo+
-ID4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZiAo
-c3ltLT5zdF9zaG5keCA9PSBTSE5fVU5ERUYgfHwKPiA+ID4gLcKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgc3ltLT5zdF9zaG5keCA9PSBTSE5fTElW
-RVBBVENIKSB7Cj4gPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgIHN5bS0+c3Rfc2huZHggPT0gU0hOX0xJVkVQQVRDSCB8fAo+ID4gPiArwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBuZWVkX3Iy
-c2F2ZV9zdHViKHN5bS0+c3Rfb3RoZXIpKSB7Cj4gPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAvKiBFeHRlcm5hbDogZ28g
-dmlhIHN0dWIgKi8KPiAKPiBQZXJoYXBzIHRoaXMgY29tbWVudCBzaG91bGQgYmUgdXBkYXRlZCB0
-byBtZW50aW9uIHRoYXQgdGhlcmUgYXJlIG5vbi0KPiBleHRlcm5hbCBidXQgZXh0ZXJuYWwtbGlr
-ZSBjYWxscz8KPiAKPiBPdGhlcndpc2UKPiAKPiBSZXZpZXdlZC1ieTogQW5kcmV3IERvbm5lbGxh
-biA8YWpkQGxpbnV4LmlibS5jb20+CgpVcGRhdGVkIHRvICIvKiBNYXkgdXNlIGRpZmZlcmVudCAv
-IG5vdCBwcmVzZXJ2ZSBUT0M6IGdvIHZpYSBzdHViICovIiwKd2lsbCBhZGQgeW91ciByZXZpZXdl
-ZC1ieSBpbiB0aGUgbmV4dCB2ZXJzaW9uLiBGb3Igbm93IEknbGwgd2FpdCBmb3IKYW55IG90aGVy
-IGZlZWRiYWNrIGJlZm9yZSBzZW5kaW5nIGl0Lgo+ID4gCg==
+On 10/25/2022 3:41 PM, Jakub Kicinski wrote:
+> On Wed, 26 Oct 2022 01:17:48 +0800 kernel test robot wrote:
+>> drivers/net/ethernet/broadcom/genet/bcmgenet.c:1497:5-13: ERROR: invalid reference to the index variable of the iterator on line 1475
+> 
+> CC Doug
+Thanks for highlighting this for me, but I happened to catch it from the 
+linux-mm list and was just looking into it.
 
+It looks to me like a false positive since I am initializing the 
+loc_rule variable in all paths outside of the list_for_each_entry() loop 
+prior to its use on line 1497.
+
+If desired I can submit a new patch to make coccinelle happy.
+-Doug
