@@ -2,95 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E035860C242
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Oct 2022 05:31:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F306F60C249
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Oct 2022 05:39:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MxHY65d9hz3bjF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Oct 2022 14:31:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MxHkL6Bh6z3cC5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Oct 2022 14:39:38 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tJ7eauo1;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MQEi4JzR;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=bgray@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=rmclure@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tJ7eauo1;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MQEi4JzR;
 	dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MxHX74cKnz307C
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Oct 2022 14:30:47 +1100 (AEDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29P3EQ8e030601;
-	Tue, 25 Oct 2022 03:30:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=CZmBLJFMDAFjalnI2nfqxxiibyZg1GQkaSvl9ROaTbI=;
- b=tJ7eauo1HUZF7DAne9kvjsxTffZiGrv9A1AXH0I62CbQ/mqQbBsQ+bxVuya2aV3y2mCU
- K00Ixe0CwAt6TNHrIgevVvZ96JxAn2V7118Q0MMYaVj4zMIfOzSV5WQaOA8sVdUrZSNV
- kQRJ6vUrTyU3Rvk39AQtFJFx/pGPKB5JdEvBDG5cArXGYIprKmkvDYaPz2Fz9bj84PV7
- uFQRbloMX/LqVg5veq/hwypWVhP56IaTi9g38XsAz/kQbMcoA5oq5qpilyXXmvDHO+rm
- Y0cIg0u9cj2jaUVO9WnZMm8i12R0wpKpuI05qxHHDUw5YMADqiwrK3J7rZDE1UJtx2cJ Jg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ke7qa0aqr-1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MxHjN1wCVz307C
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Oct 2022 14:38:47 +1100 (AEDT)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29P3PUbt002422;
+	Tue, 25 Oct 2022 03:38:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=VYvGBx2UETZ4/qT3ZJAZ3qqHQgrIkIgoAZkeR3+HRb8=;
+ b=MQEi4JzRDpuiN5Qz3MbuNbm0J/Uhc5jbef2lnTIwyAeBs4HdDz4k1pKH3i5SBbZUSGTk
+ lkfp4b/yOmxLSvOEjlPROfpUtdli1fbEAGggntmMWGQnU+q5+9VeWq8sxLlfZPxIWLDY
+ TlAJzoIZtYqWKVZ3Jd3D6Jc575XmWkOYIsnUPUWLz4D3cXhYaIOXEa3+HIGkfEM2y15P
+ QEljuJCORwc4aYVPd9sasv1xDs/VwpfXGPb0BRLrUJs7TlL9LZGR97997UNnH9Nlyc5S
+ 5+PTb389p08xhU8xe0ArpaGdcyijO8LFCC6p+UA9X4h7GeMVbcUz9nbLIOJFdttlaLSn xg== 
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ke7vsrb1t-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 25 Oct 2022 03:30:36 +0000
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 29P3HFGN037009;
-	Tue, 25 Oct 2022 03:30:36 GMT
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com [149.81.74.106])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ke7qa0ag9-1
+	Tue, 25 Oct 2022 03:38:43 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+	by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 29P3KqSq011745;
+	Tue, 25 Oct 2022 03:38:40 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+	by ppma06ams.nl.ibm.com with ESMTP id 3kc7sj49rw-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 25 Oct 2022 03:30:36 +0000
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
-	by ppma04fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 29P3M9gv006657;
-	Tue, 25 Oct 2022 03:30:21 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
-	by ppma04fra.de.ibm.com with ESMTP id 3kc859kc8m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 25 Oct 2022 03:30:20 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
-	by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 29P3UIDb25559786
+	Tue, 25 Oct 2022 03:38:40 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+	by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 29P3XQxA43647410
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 25 Oct 2022 03:30:18 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5686B52051;
-	Tue, 25 Oct 2022 03:30:18 +0000 (GMT)
+	Tue, 25 Oct 2022 03:33:26 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 853364203F;
+	Tue, 25 Oct 2022 03:38:38 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 39EC142049;
+	Tue, 25 Oct 2022 03:38:38 +0000 (GMT)
 Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 010475204E;
-	Tue, 25 Oct 2022 03:30:18 +0000 (GMT)
-Received: from li-0d7fa1cc-2c9d-11b2-a85c-aed20764436d.ibm.com (haven.au.ibm.com [9.192.254.114])
+	by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Tue, 25 Oct 2022 03:38:38 +0000 (GMT)
+Received: from civic.. (haven.au.ibm.com [9.192.254.114])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id D408060213;
-	Tue, 25 Oct 2022 14:30:16 +1100 (AEDT)
-Message-ID: <38598d238bc2b46399a8af17a922b0a6a8dd5b0d.camel@linux.ibm.com>
-Subject: Re: [PATCH v8 3/6] powerpc/code-patching: Verify instruction patch
- succeeded
-From: Benjamin Gray <bgray@linux.ibm.com>
-To: Russell Currey <ruscur@russell.cc>, linuxppc-dev@lists.ozlabs.org
-Date: Tue, 25 Oct 2022 14:30:16 +1100
-In-Reply-To: <d5febacfc792876848bd4ba58f43b0e24450f250.camel@russell.cc>
-References: <20221021052238.580986-1-bgray@linux.ibm.com>
-	 <20221021052238.580986-4-bgray@linux.ibm.com>
-	 <d5febacfc792876848bd4ba58f43b0e24450f250.camel@russell.cc>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
-MIME-Version: 1.0
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id F0BAE60213;
+	Tue, 25 Oct 2022 14:38:29 +1100 (AEDT)
+From: Rohan McLure <rmclure@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc: Interrupt handler stack randomisation
+Date: Tue, 25 Oct 2022 14:38:07 +1100
+Message-Id: <20221025033807.1413688-1-rmclure@linux.ibm.com>
+X-Mailer: git-send-email 2.34.1
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: oDk1MHWMkIfDE0p-Le5nDrSwxeLDREn8
-X-Proofpoint-GUID: OCbCE1OXKqJhyP6EXcNxf8P-skKNu-TU
+X-Proofpoint-ORIG-GUID: hNduYhIdXIq3T12N12Yri52d1BYn06H3
+X-Proofpoint-GUID: hNduYhIdXIq3T12N12Yri52d1BYn06H3
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
  definitions=2022-10-24_09,2022-10-21_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- malwarescore=0 spamscore=0 clxscore=1015 suspectscore=0 priorityscore=1501
- mlxscore=0 phishscore=0 adultscore=0 mlxlogscore=985 impostorscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2209130000 definitions=main-2210250016
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 impostorscore=0
+ bulkscore=0 adultscore=0 malwarescore=0 spamscore=0 suspectscore=0
+ mlxlogscore=999 priorityscore=1501 clxscore=1015 phishscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2209130000 definitions=main-2210250018
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,32 +92,100 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: jniethe5@gmail.com, cmr@bluescreens.de, npiggin@gmail.com, ajd@linux.ibm.com
+Cc: Rohan McLure <rmclure@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 2022-10-24 at 14:20 +1100, Russell Currey wrote:
-> On Fri, 2022-10-21 at 16:22 +1100, Benjamin Gray wrote:
-> > diff --git a/arch/powerpc/lib/code-patching.c
-> > b/arch/powerpc/lib/code-patching.c
-> > index 34fc7ac34d91..9b9eba574d7e 100644
-> > --- a/arch/powerpc/lib/code-patching.c
-> > +++ b/arch/powerpc/lib/code-patching.c
-> > @@ -186,6 +186,8 @@ static int do_patch_instruction(u32 *addr,
-> > ppc_inst_t instr)
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0err =3D __do_patch_inst=
-ruction(addr, instr);
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0local_irq_restore(flags=
-);
-> > =C2=A0
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0WARN_ON(!err && !ppc_inst_eq=
-ual(instr,
-> > ppc_inst_read(addr)));
-> > +
->=20
-> As a side note, I had a look at test-code-patching.c and it doesn't
-> look like we don't have a test for ppc_inst_equal() with prefixed
-> instructions.=C2=A0 We should fix that.
+Stack frames used by syscall handlers support random offsets as of
+commit f4a0318f278d (powerpc: add support for syscall stack randomization).
+Implement the same for general interrupt handlers, by applying the
+random stack offset and then updating this offset from within the
+DEFINE_INTERRUPT_HANDLER macros.
 
-Yeah, for a different series though I assume. And I think it would be
-better suited in a suite dedicated to testing asm/inst.h functions.
+Applying this offset perturbs the layout of interrupt handler stack
+frames, rendering to the kernel stack more difficult to control by means
+of user invoked interrupts.
+
+Link: https://lists.ozlabs.org/pipermail/linuxppc-dev/2022-May/243238.html
+
+Signed-off-by: Rohan McLure <rmclure@linux.ibm.com>
+---
+ arch/powerpc/include/asm/interrupt.h | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/asm/interrupt.h
+index 4745bb9998bd..b7f7beff4e13 100644
+--- a/arch/powerpc/include/asm/interrupt.h
++++ b/arch/powerpc/include/asm/interrupt.h
+@@ -68,6 +68,7 @@
+ 
+ #include <linux/context_tracking.h>
+ #include <linux/hardirq.h>
++#include <linux/randomize_kstack.h>
+ #include <asm/cputime.h>
+ #include <asm/firmware.h>
+ #include <asm/ftrace.h>
+@@ -448,9 +449,12 @@ interrupt_handler long func(struct pt_regs *regs)			\
+ 	long ret;							\
+ 									\
+ 	__hard_RI_enable();						\
++	add_random_kstack_offset();					\
+ 									\
+ 	ret = ____##func (regs);					\
+ 									\
++	choose_random_kstack_offset(mftb());				\
++									\
+ 	return ret;							\
+ }									\
+ NOKPROBE_SYMBOL(func);							\
+@@ -480,9 +484,11 @@ static __always_inline void ____##func(struct pt_regs *regs);		\
+ interrupt_handler void func(struct pt_regs *regs)			\
+ {									\
+ 	interrupt_enter_prepare(regs);					\
++	add_random_kstack_offset();					\
+ 									\
+ 	____##func (regs);						\
+ 									\
++	choose_random_kstack_offset(mftb());				\
+ 	interrupt_exit_prepare(regs);					\
+ }									\
+ NOKPROBE_SYMBOL(func);							\
+@@ -515,9 +521,11 @@ interrupt_handler long func(struct pt_regs *regs)			\
+ 	long ret;							\
+ 									\
+ 	interrupt_enter_prepare(regs);					\
++	add_random_kstack_offset();					\
+ 									\
+ 	ret = ____##func (regs);					\
+ 									\
++	choose_random_kstack_offset(mftb());				\
+ 	interrupt_exit_prepare(regs);					\
+ 									\
+ 	return ret;							\
+@@ -548,9 +556,11 @@ static __always_inline void ____##func(struct pt_regs *regs);		\
+ interrupt_handler void func(struct pt_regs *regs)			\
+ {									\
+ 	interrupt_async_enter_prepare(regs);				\
++	add_random_kstack_offset();					\
+ 									\
+ 	____##func (regs);						\
+ 									\
++	choose_random_kstack_offset(mftb());				\
+ 	interrupt_async_exit_prepare(regs);				\
+ }									\
+ NOKPROBE_SYMBOL(func);							\
+@@ -585,9 +595,11 @@ interrupt_handler long func(struct pt_regs *regs)			\
+ 	long ret;							\
+ 									\
+ 	interrupt_nmi_enter_prepare(regs, &state);			\
++	add_random_kstack_offset();					\
+ 									\
+ 	ret = ____##func (regs);					\
+ 									\
++	choose_random_kstack_offset(mftb());				\
+ 	interrupt_nmi_exit_prepare(regs, &state);			\
+ 									\
+ 	return ret;							\
+-- 
+2.34.1
+
