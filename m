@@ -2,63 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13C3F60D258
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Oct 2022 19:19:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC9BF60D268
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Oct 2022 19:23:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MxdwK6fgnz3bls
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Oct 2022 04:19:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Mxf125Qvhz3c78
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Oct 2022 04:23:34 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Ax5zdu10;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=aQXTsL9N;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.31; helo=mga06.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::22c; helo=mail-oi1-x22c.google.com; envelope-from=groeck7@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Ax5zdu10;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=aQXTsL9N;
 	dkim-atps=neutral
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-x22c.google.com (mail-oi1-x22c.google.com [IPv6:2607:f8b0:4864:20::22c])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MxdvM3tGsz2yQl
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Oct 2022 04:18:32 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1666718319; x=1698254319;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=o+HzEuDfAAEoVRMr0f+9fq2bvIH6vQ0gqFpLaf4Zkdw=;
-  b=Ax5zdu103yLvX/x49s3gFlb2Zjdd81l05cxA6FAiilIaDy/FpCKrb0j9
-   6GVlSc7216Hm4vNG75Nxk3B2fa825W5ZPa4yOomGjAsuleg0LiPt3y3w1
-   IVgBPUSIeV1ADiaec89gO2cqwez9xOOiY8P15jhykt4AAiEtDUOkFz8+c
-   sdsvXMN8wxu7+S184MSjcizyXNkv8zC6EyCexKPwE6exoa99DJNxNHiuY
-   m4/wBT9Iw7d+7V7Ij6RYjcsrIUphzvpNyp21Kyqkv0ZF/hKojlfW16OkR
-   PbR3bG4eP1CT7XReTv42RGyfJd0BvzEsvr2MkTcezQRQMsFC3m4y3Qx06
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10511"; a="369807381"
-X-IronPort-AV: E=Sophos;i="5.95,212,1661842800"; 
-   d="scan'208";a="369807381"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2022 10:18:22 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10511"; a="631707576"
-X-IronPort-AV: E=Sophos;i="5.95,212,1661842800"; 
-   d="scan'208";a="631707576"
-Received: from lkp-server02.sh.intel.com (HELO b6d29c1a0365) ([10.239.97.151])
-  by orsmga002.jf.intel.com with ESMTP; 25 Oct 2022 10:18:19 -0700
-Received: from kbuild by b6d29c1a0365 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1onNZD-0006UG-0E;
-	Tue, 25 Oct 2022 17:18:19 +0000
-Date: Wed, 26 Oct 2022 01:17:48 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [linux-next:master] BUILD REGRESSION
- 89bf6e28373beef9577fa71f996a5f73a569617c
-Message-ID: <63581a3c.U6bx8B6mFoRe2pWN%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mxf063pfvz2xbK
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Oct 2022 04:22:45 +1100 (AEDT)
+Received: by mail-oi1-x22c.google.com with SMTP id u132so2052530oib.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Oct 2022 10:22:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UnycRWzQFhXW+E+yHAOypiR1qOTxMMwn/mhojHoxaPo=;
+        b=aQXTsL9NfQ6zm9GGiC7urT7nYN3RJAfmUONUTx6FytLwp5zSbDRgfbpz0SkKcQutcy
+         4IiyJ3bK+iCKC8ie7Y84bwUlEgaL6ANTpS+4zD0TzLANJacQoTs3TZPB6Wm9k+YJEydU
+         Ke6M/V6X9jp3zk2h2TmweOM1irSxFs7/d5EqHPwZmxxqLIqLGm6bUl1n1/cq66ojxVoz
+         r7bcn30Ga46Fqa5dIdpMNE1MQLX6HB1EZMpyWGIwJdkqAuXcYX26I3VWs6G6NchoaeG7
+         /49Vx7VY34jlFs8ZP8oj5TyWvP0u0CjBOmubNWu2ozkoGngbbvQzSnY2njDzn7dQCvlx
+         sRAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UnycRWzQFhXW+E+yHAOypiR1qOTxMMwn/mhojHoxaPo=;
+        b=gvHpuR1fCLcetyDldahLEmbbTGVXK1OG3quMwHe55BNJql3uAjmVf9uXn96Ztj4uRY
+         JVPQeHyzWwGXHScmoOrWza9PegU0W8Q8k57vf2Nv2wGq+iCuSpuuZ+KWdDKAkLiNeYh1
+         qpv9+njk7opQDwWaNYYpXALsy8B/POje18ByP+EiJbIKPOLLHNh63IrjdfKYiBQISbg+
+         2j4GH0OufgSO+E4ShgY1qtgjED3nIhe7zmxuDwwe+QCHOR15zEA8bkD7sgZFWJAp2zRG
+         BRcWn9eWJes0vXLBrBBaN6lvFIrto2XVpu61jzVDuSAf1Kht6lul/zP2q80+x7Uumoj3
+         dDkg==
+X-Gm-Message-State: ACrzQf31C2LhcDeB5dm3kRVupSWkrayoV7MXmz0tTuxwuzk1qtIeA8Ci
+	IUDhqKvQAKQlKit54or0C80=
+X-Google-Smtp-Source: AMsMyM4Y1I0byczm5I1F5DvGJA5GWyFL+U1kQRDyENq0n5dTlj7k3Hyfz7okkqqHKolh48TLkZ4kXg==
+X-Received: by 2002:a05:6808:130e:b0:359:5695:bb9a with SMTP id y14-20020a056808130e00b003595695bb9amr1590412oiv.131.1666718560890;
+        Tue, 25 Oct 2022 10:22:40 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id 11-20020aca0d0b000000b0035476861b1dsm1120347oin.49.2022.10.25.10.22.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Oct 2022 10:22:40 -0700 (PDT)
+Date: Tue, 25 Oct 2022 10:22:39 -0700
+From: Guenter Roeck <linux@roeck-us.net>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: Linux 6.1-rc2
+Message-ID: <20221025172239.GC968059@roeck-us.net>
+References: <CAHk-=wgLV1tNP0EYz7qWK-xeKzO6bh5Kogbpn2wxKLPPpOit3w@mail.gmail.com>
+ <20221025162441.GA1128834@roeck-us.net>
+ <CAHk-=wivKoK4VgfKB8ykQUHKhNSUYA2=m4X7k8QKaizSMvzgZg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wivKoK4VgfKB8ykQUHKhNSUYA2=m4X7k8QKaizSMvzgZg@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,177 +80,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-scsi@vger.kernel.org, netdev@vger.kernel.org, Linux Memory Management List <linux-mm@kvack.org>, linux-mediatek@lists.infradead.org, ntfs3@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: linuxppc-dev@lists.ozlabs.org, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-branch HEAD: 89bf6e28373beef9577fa71f996a5f73a569617c  Add linux-next specific files for 20221025
+On Tue, Oct 25, 2022 at 09:41:50AM -0700, Linus Torvalds wrote:
+> On Tue, Oct 25, 2022 at 9:24 AM Guenter Roeck <linux@roeck-us.net> wrote:
+> >
+> > Build results:
+> >         total: 152 pass: 152 fail: 0
+> > Qemu test results:
+> >         total: 499 pass: 499 fail: 0
+> 
+> Woo-hoo!
+> 
+> That was quick, for once.
+> 
 
-Error/Warning reports:
+Yes, it was. I now have an even better one, with a new personal
+milestone reached (500 qemu boot tests):
 
-https://lore.kernel.org/linux-mm/202210110857.9s0tXVNn-lkp@intel.com
-https://lore.kernel.org/linux-mm/202210240729.zs46Cfzo-lkp@intel.com
-https://lore.kernel.org/linux-mm/202210251946.eT92YAhG-lkp@intel.com
-https://lore.kernel.org/llvm/202210260009.9qq1JXZi-lkp@intel.com
+Build results:
+	total: 152 pass: 152 fail: 0
+Qemu test results:
+	total: 500 pass: 500 fail: 0
+	       ^^^
 
-Error/Warning: (recently discovered and may have been fixed)
+... after getting yet another qemu machine to boot.
 
-drivers/net/ethernet/broadcom/genet/bcmgenet.c:1497:5-13: ERROR: invalid reference to the index variable of the iterator on line 1475
-drivers/scsi/pm8001/pm8001_sas.c:996 pm8001_abort_task() warn: variable dereferenced before check 'task' (see line 986)
+> > Runtime warnings
+> 
+> Oh.
+> 
+> Well, close enough, and those fixes are presumably pending too.
+> 
 
-Unverified Error/Warning (likely false positive, please contact us if interested):
+Let's hope so. I think I forgot to copy the ppc maintainers last week,
+so we'll see if we get some feedback on the status of those problems.
 
-ERROR: modpost: "devm_ioremap" [drivers/net/ethernet/altera/altera_tse.ko] undefined!
-ERROR: modpost: "ioremap" [drivers/net/ethernet/fujitsu/fmvj18x_cs.ko] undefined!
-ERROR: modpost: "ioremap" [drivers/tty/ipwireless/ipwireless.ko] undefined!
-ERROR: modpost: "iounmap" [drivers/net/ethernet/fujitsu/fmvj18x_cs.ko] undefined!
-ERROR: modpost: "iounmap" [drivers/tty/ipwireless/ipwireless.ko] undefined!
-mm/khugepaged.c:1729:7: warning: variable 'index' is used uninitialized whenever 'if' condition is true [-Wsometimes-uninitialized]
-mm/khugepaged.c:1729:7: warning: variable 'nr' is used uninitialized whenever 'if' condition is true [-Wsometimes-uninitialized]
-
-Error/Warning ids grouped by kconfigs:
-
-gcc_recent_errors
-|-- ia64-randconfig-c033-20221025
-|   `-- drivers-net-ethernet-broadcom-genet-bcmgenet.c:ERROR:invalid-reference-to-the-index-variable-of-the-iterator-on-line
-`-- x86_64-randconfig-m001-20221024
-    `-- drivers-scsi-pm8001-pm8001_sas.c-pm8001_abort_task()-warn:variable-dereferenced-before-check-task-(see-line-)
-clang_recent_errors
-|-- arm-randconfig-r013-20221024
-|   |-- drivers-phy-mediatek-phy-mtk-hdmi-mt2701.c:warning:result-of-comparison-of-constant-with-expression-of-type-typeof-(_Generic((mask_)-char:(unsigned-char)-unsigned-char:(unsigned-char)-signed-char:(uns
-|   |-- drivers-phy-mediatek-phy-mtk-hdmi-mt8173.c:warning:result-of-comparison-of-constant-with-expression-of-type-typeof-(_Generic((mask_)-char:(unsigned-char)-unsigned-char:(unsigned-char)-signed-char:(uns
-|   |-- drivers-phy-mediatek-phy-mtk-mipi-dsi-mt8173.c:warning:result-of-comparison-of-constant-with-expression-of-type-typeof-(_Generic((mask_)-char:(unsigned-char)-unsigned-char:(unsigned-char)-signed-char:
-|   |-- drivers-phy-mediatek-phy-mtk-mipi-dsi-mt8183.c:warning:result-of-comparison-of-constant-with-expression-of-type-typeof-(_Generic((mask_)-char:(unsigned-char)-unsigned-char:(unsigned-char)-signed-char:
-|   `-- fs-ntfs3-namei.c:warning:variable-uni1-is-used-uninitialized-whenever-if-condition-is-true
-|-- arm-randconfig-r014-20221024
-|   |-- drivers-phy-mediatek-phy-mtk-hdmi-mt2701.c:warning:result-of-comparison-of-constant-with-expression-of-type-typeof-(_Generic((mask_)-char:(unsigned-char)-unsigned-char:(unsigned-char)-signed-char:(uns
-|   |-- drivers-phy-mediatek-phy-mtk-hdmi-mt8173.c:warning:result-of-comparison-of-constant-with-expression-of-type-typeof-(_Generic((mask_)-char:(unsigned-char)-unsigned-char:(unsigned-char)-signed-char:(uns
-|   |-- drivers-phy-mediatek-phy-mtk-mipi-dsi-mt8173.c:warning:result-of-comparison-of-constant-with-expression-of-type-typeof-(_Generic((mask_)-char:(unsigned-char)-unsigned-char:(unsigned-char)-signed-char:
-|   |-- drivers-phy-mediatek-phy-mtk-mipi-dsi-mt8183.c:warning:result-of-comparison-of-constant-with-expression-of-type-typeof-(_Generic((mask_)-char:(unsigned-char)-unsigned-char:(unsigned-char)-signed-char:
-|   |-- drivers-phy-mediatek-phy-mtk-tphy.c:warning:result-of-comparison-of-constant-with-expression-of-type-typeof-(_Generic((mask_)-char:(unsigned-char)-unsigned-char:(unsigned-char)-signed-char:(unsigned-c
-|   `-- fs-ntfs3-namei.c:warning:variable-uni1-is-used-uninitialized-whenever-if-condition-is-true
-|-- hexagon-randconfig-r045-20221023
-|   |-- drivers-phy-mediatek-phy-mtk-hdmi-mt2701.c:warning:result-of-comparison-of-constant-with-expression-of-type-typeof-(_Generic((mask_)-char:(unsigned-char)-unsigned-char:(unsigned-char)-signed-char:(uns
-|   |-- drivers-phy-mediatek-phy-mtk-hdmi-mt8173.c:warning:result-of-comparison-of-constant-with-expression-of-type-typeof-(_Generic((mask_)-char:(unsigned-char)-unsigned-char:(unsigned-char)-signed-char:(uns
-|   |-- drivers-phy-mediatek-phy-mtk-mipi-dsi-mt8173.c:warning:result-of-comparison-of-constant-with-expression-of-type-typeof-(_Generic((mask_)-char:(unsigned-char)-unsigned-char:(unsigned-char)-signed-char:
-|   |-- drivers-phy-mediatek-phy-mtk-mipi-dsi-mt8183.c:warning:result-of-comparison-of-constant-with-expression-of-type-typeof-(_Generic((mask_)-char:(unsigned-char)-unsigned-char:(unsigned-char)-signed-char:
-|   |-- drivers-phy-mediatek-phy-mtk-tphy.c:warning:result-of-comparison-of-constant-with-expression-of-type-typeof-(_Generic((mask_)-char:(unsigned-char)-unsigned-char:(unsigned-char)-signed-char:(unsigned-c
-|   `-- fs-ntfs3-namei.c:warning:variable-uni1-is-used-uninitialized-whenever-if-condition-is-true
-|-- i386-randconfig-a001-20221024
-|   |-- fs-ntfs3-namei.c:warning:variable-uni1-is-used-uninitialized-whenever-if-condition-is-true
-|   `-- mm-khugepaged.c:warning:variable-index-is-used-uninitialized-whenever-if-condition-is-true
-|-- mips-randconfig-r012-20221024
-|   `-- fs-ntfs3-namei.c:warning:variable-uni1-is-used-uninitialized-whenever-if-condition-is-true
-|-- powerpc-randconfig-r024-20221025
-|   `-- arch-powerpc-mm-nohash-e500.c:error:no-previous-prototype-for-function-relocate_init-Werror-Wmissing-prototypes
-|-- riscv-randconfig-r042-20221023
-|   `-- ld.lld:error:undefined-symbol:dax_holder_notify_failure
-|-- s390-randconfig-r004-20221024
-|   |-- fs-ntfs3-namei.c:warning:variable-uni1-is-used-uninitialized-whenever-if-condition-is-true
-|   |-- mm-khugepaged.c:warning:variable-index-is-used-uninitialized-whenever-if-condition-is-true
-|   `-- mm-khugepaged.c:warning:variable-nr-is-used-uninitialized-whenever-if-condition-is-true
-|-- s390-randconfig-r012-20221023
-|   `-- fs-ntfs3-namei.c:warning:variable-uni1-is-used-uninitialized-whenever-if-condition-is-true
-|-- s390-randconfig-r026-20221025
-|   `-- fs-ntfs3-namei.c:warning:variable-uni1-is-used-uninitialized-whenever-if-condition-is-true
-|-- s390-randconfig-r044-20221023
-|   `-- fs-ntfs3-namei.c:warning:variable-uni1-is-used-uninitialized-whenever-if-condition-is-true
-|-- s390-randconfig-r044-20221025
-|   |-- ERROR:devm_ioremap-drivers-net-ethernet-altera-altera_tse.ko-undefined
-|   |-- ERROR:ioremap-drivers-net-ethernet-fujitsu-fmvj18x_cs.ko-undefined
-|   |-- ERROR:ioremap-drivers-tty-ipwireless-ipwireless.ko-undefined
-|   |-- ERROR:iounmap-drivers-net-ethernet-fujitsu-fmvj18x_cs.ko-undefined
-|   `-- ERROR:iounmap-drivers-tty-ipwireless-ipwireless.ko-undefined
-|-- x86_64-randconfig-a004-20221024
-|   `-- fs-ntfs3-namei.c:warning:variable-uni1-is-used-uninitialized-whenever-if-condition-is-true
-|-- x86_64-randconfig-a005-20221024
-|   `-- fs-ntfs3-namei.c:warning:variable-uni1-is-used-uninitialized-whenever-if-condition-is-true
-|-- x86_64-randconfig-a012
-
-elapsed time: 726m
-
-configs tested: 74
-configs skipped: 2
-
-gcc tested configs:
-powerpc                           allnoconfig
-um                             i386_defconfig
-arc                                 defconfig
-um                           x86_64_defconfig
-alpha                               defconfig
-x86_64                              defconfig
-s390                                defconfig
-x86_64                           rhel-8.3-syz
-s390                             allmodconfig
-x86_64                         rhel-8.3-kunit
-x86_64                        randconfig-a013
-x86_64                           rhel-8.3-kvm
-x86_64                        randconfig-a011
-x86_64                          rhel-8.3-func
-x86_64                    rhel-8.3-kselftests
-x86_64                        randconfig-a015
-s390                             allyesconfig
-i386                                defconfig
-x86_64                               rhel-8.3
-arm                                 defconfig
-arc                  randconfig-r043-20221024
-i386                 randconfig-a014-20221024
-i386                 randconfig-a013-20221024
-riscv                randconfig-r042-20221024
-i386                 randconfig-a012-20221024
-arc                  randconfig-r043-20221023
-i386                             allyesconfig
-i386                 randconfig-a016-20221024
-x86_64                           allyesconfig
-arm                              allyesconfig
-i386                 randconfig-a011-20221024
-powerpc                       eiger_defconfig
-i386                 randconfig-a015-20221024
-sh                               allmodconfig
-m68k                             allmodconfig
-arm64                            allyesconfig
-s390                 randconfig-r044-20221024
-powerpc                      chrp32_defconfig
-sh                            migor_defconfig
-arc                              allyesconfig
-mips                             allyesconfig
-sh                      rts7751r2d1_defconfig
-csky                             alldefconfig
-powerpc                          allmodconfig
-alpha                            allyesconfig
-m68k                             allyesconfig
-sh                          lboxre2_defconfig
-powerpc                     tqm8555_defconfig
-sh                           se7712_defconfig
-
-clang tested configs:
-x86_64                        randconfig-a012
-x86_64                        randconfig-a014
-hexagon              randconfig-r041-20221024
-x86_64                        randconfig-a016
-riscv                randconfig-r042-20221023
-x86_64               randconfig-a001-20221024
-hexagon              randconfig-r045-20221024
-i386                 randconfig-a001-20221024
-x86_64               randconfig-a003-20221024
-x86_64               randconfig-a004-20221024
-s390                 randconfig-r044-20221023
-i386                 randconfig-a002-20221024
-x86_64               randconfig-a002-20221024
-x86_64               randconfig-a005-20221024
-i386                 randconfig-a005-20221024
-i386                 randconfig-a003-20221024
-hexagon              randconfig-r041-20221023
-x86_64                          rhel-8.3-rust
-powerpc                 xes_mpc85xx_defconfig
-i386                 randconfig-a004-20221024
-hexagon              randconfig-r045-20221023
-x86_64               randconfig-a006-20221024
-i386                 randconfig-a006-20221024
-powerpc                 mpc832x_mds_defconfig
-powerpc                     powernv_defconfig
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+Thanks,
+Guenter
