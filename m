@@ -1,149 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4FA760E919
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Oct 2022 21:40:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98DB060E70E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Oct 2022 20:15:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MyJzz3fCSz3cJD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Oct 2022 06:39:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MyH644vNTz3cDJ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Oct 2022 05:15:08 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2022-7-12 header.b=vFTsS8pv;
-	dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=JVmq+DWt;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MZjNK0Ey;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=oracle.com (client-ip=205.220.177.32; helo=mx0b-00069f02.pphosted.com; envelope-from=mike.kravetz@oracle.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=brking@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2022-7-12 header.b=vFTsS8pv;
-	dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=JVmq+DWt;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MZjNK0Ey;
 	dkim-atps=neutral
-X-Greylist: delayed 5219 seconds by postgrey-1.36 at boromir; Thu, 27 Oct 2022 06:39:06 AEDT
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MyJyy1QQJz2xsc
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Oct 2022 06:39:04 +1100 (AEDT)
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29QGUQEb001643;
-	Wed, 26 Oct 2022 18:11:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : content-type : in-reply-to :
- mime-version; s=corp-2022-7-12;
- bh=ENoHJQqp/bVhmptqEXuf5WeQ7JEKYLeQEAVg8x81Y+8=;
- b=vFTsS8pvFTqKjpIkeyZzs8YEPVi+bdTPm4qhDQRlM7BNjMm1MsC0UK4zijGlBnFjWY6D
- nfzp1RSr6VnbO1e2XOygSEx21uLQ1mcKh4N3EwqGNcQLZ4jue8vq66kznEbc+XFBdx1+
- +x4vhYXRj3y/1ALZ3VXfUlSgsx7CS8+sEXzcxn6WKhLKGrvnJmOaGVZVIRrTU+yRldOL
- hR8sbA98ORvOkbhgKG9EOBcMvi4Yf4TXobQWTQcEOd+80Z5OSO59K5z8hAMkL8ye7DjP
- mJ0Q339MZ3gkkrvJyp1vaoGyiU/gXXt+s5zL4WHwNdUaWWIzZ5seA8AEI4Jw9LykRTb+ WA== 
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3kc6xe6pw5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 26 Oct 2022 18:11:35 +0000
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.5/8.17.1.5) with ESMTP id 29QH9R1C025656;
-	Wed, 26 Oct 2022 18:11:34 GMT
-Received: from nam10-dm6-obe.outbound.protection.outlook.com (mail-dm6nam10lp2106.outbound.protection.outlook.com [104.47.58.106])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3kc6y5r4ka-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 26 Oct 2022 18:11:34 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=HPAavFbSZ4PSa2hJxUZ18khtiv4V47MWuKgf0BZmELp/CjcroVL4P0aaGm8jGubN+xqb84/jVaz+90Mgj6DlzkcmOZtmeLlueRm7YoxY1JHHL1m2ueZg3FvxF/CqcUzWxwo1RO8iTXwG71/PTMqz/9PhVS/NqNfe515Df//qjqTUCC/xxC2PcIRtqLpcluAWbtt0KzlK2XeH23kZlW0/6BsMLkcQ37UGBPRiNbW6E47lUtdAURYyiXzIC0gazNSY+/mvWpdzeF96K1y1ylAyn3VaN3r+kz2AVFO0uonBGLL0/P0OpmnpTeEn9hGxYXQYn6pHmpzco4MknJXm+/39Dg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ENoHJQqp/bVhmptqEXuf5WeQ7JEKYLeQEAVg8x81Y+8=;
- b=En9XWo47cbIYFR+Ugep4aEzys89AQxb3r/lH/Tm4pZ/bgThP/tcXFhWHcNoY0W0J9Rm3G7uqZ8BmwcY7CqGXBc5dzqvMOxI4ysm5pKYVpELNWmAC9GNY9gx8d4cXABH2CdMuyy8BlS5uujIERsPBAe2Ycm80jsPvvboiM3W6UZpzPM9b0o81QTfTIyYUb4O0QYGSLdl+9RB6lGC1L8gRntgePw1gP5MVzJdpKIfr4ykwvoyWQQzcANlt5Af4u2osrVZmPW0bP7cFS4FSHkZEGn9BCCoRy9FNSzx6eW/55mIsiPMxnYq1mYAAWWvk5m7jNFJSV4nlDzzjPA6fGrPTRw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ENoHJQqp/bVhmptqEXuf5WeQ7JEKYLeQEAVg8x81Y+8=;
- b=JVmq+DWtIutsJ9Q6aFnb/pGdAUxjYOCFvSqRB/p81YqymafybETEMc98alwuhBeSFBzgfpR4A8QAKLfzKshECR9SawkinkuwqwNlhHXYxNrZ2QFcviNt/vMQ5iMCwnPtgDK+5Mx4lJ9X3K7RWEKirDHq54LNPvVOlBiYLTLJv8E=
-Received: from BY5PR10MB4196.namprd10.prod.outlook.com (2603:10b6:a03:20d::23)
- by SN4PR10MB5590.namprd10.prod.outlook.com (2603:10b6:806:205::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5746.22; Wed, 26 Oct
- 2022 18:11:32 +0000
-Received: from BY5PR10MB4196.namprd10.prod.outlook.com
- ([fe80::58e9:95ba:d31e:ddd3]) by BY5PR10MB4196.namprd10.prod.outlook.com
- ([fe80::58e9:95ba:d31e:ddd3%5]) with mapi id 15.20.5746.028; Wed, 26 Oct 2022
- 18:11:32 +0000
-Date: Wed, 26 Oct 2022 11:11:14 -0700
-From: Mike Kravetz <mike.kravetz@oracle.com>
-To: Aristeu Rozanski <aris@ruivo.org>
-Subject: Re: [RFC PATCH] fs/hugetlb: Fix UBSAN warning reported on hugetlb
-Message-ID: <Y1l4Qr33LmTzvrhp@monkey>
-References: <20220908072659.259324-1-aneesh.kumar@linux.ibm.com>
- <YxoeFUW5HFP/3/s1@casper.infradead.org>
- <6e8246ae-c420-df00-c1d1-03c49c0ab1f1@linux.ibm.com>
- <Y1lJNepa22oMZ3tR@cathedrallabs.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Y1lJNepa22oMZ3tR@cathedrallabs.org>
-X-ClientProxiedBy: MW4PR03CA0084.namprd03.prod.outlook.com
- (2603:10b6:303:b6::29) To BY5PR10MB4196.namprd10.prod.outlook.com
- (2603:10b6:a03:20d::23)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MyH555ry3z2xtK
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Oct 2022 05:14:16 +1100 (AEDT)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29QI8lZT005118;
+	Wed, 26 Oct 2022 18:14:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=OYmqZvZ+irXwuSAnR/t6qV1pFq1Ay+RDfTTRuBZbi60=;
+ b=MZjNK0EyZ0FMOON0gUo/FEHNM1oxoJ97Bz6iz08hAKi6Tm31e6JFZviRrPYsT7QDtXpg
+ gM+W/12PR071d3pFnfSLfdw0esQkW7zp1uzfEzJ7LCKMdlBwCMu0usAPyWkCgiF0y6Lj
+ 5UIgi+41QcIe0I6IXy0/UWNj2/NIPEF9trWQGb3vpDOfgWLgrpc6a7KbgWXAOYwsGGBr
+ KjMr+xvC3d7t92PMGPUd44mcvVE5menilEX5dkBe1HO5OHNQ4f5KSApT70dbiMtlf1rx
+ 6odWcdrKwwpjjP1hPVBw6sYsJtBfvOqqk0mVGFLrjUWxzLYCV45J4AhKytW5y9Z3Kmf9 Lw== 
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.11])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3kf8uuac05-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 26 Oct 2022 18:14:13 +0000
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+	by ppma03dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 29QI6Ckk032017;
+	Wed, 26 Oct 2022 18:14:12 GMT
+Received: from b03cxnp07029.gho.boulder.ibm.com (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
+	by ppma03dal.us.ibm.com with ESMTP id 3kc85axp6d-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 26 Oct 2022 18:14:12 +0000
+Received: from smtpav01.dal12v.mail.ibm.com ([9.208.128.133])
+	by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 29QIEA8G41091392
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 26 Oct 2022 18:14:10 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 27B5358061;
+	Wed, 26 Oct 2022 18:14:11 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DB2DB5805D;
+	Wed, 26 Oct 2022 18:14:10 +0000 (GMT)
+Received: from li-6bf4d4cc-31f5-11b2-a85c-838e9310af65.ibm.com.com (unknown [9.163.43.124])
+	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 26 Oct 2022 18:14:10 +0000 (GMT)
+From: Brian King <brking@linux.vnet.ibm.com>
+To: tyreld@linux.ibm.com
+Subject: [PATCH] ibmvfc: Avoid path failures during live migration
+Date: Wed, 26 Oct 2022 13:13:56 -0500
+Message-Id: <20221026181356.148517-1-brking@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BY5PR10MB4196:EE_|SN4PR10MB5590:EE_
-X-MS-Office365-Filtering-Correlation-Id: a4ad250d-7bcf-41f4-d073-08dab77d822f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	DA3CmtZZJLb82OkTuyTNjUGPC7q1OZE4GoBdyU/hIQsAHt7qt8wveWPtTh0nwpOVlkE6J5a0VIj9X8leSGqWRwVvCfYmZoIbvL7uZ918RxCkUuqkzjq+ze7NCd/eS9k1ItHN2QETkK7i3pFnmpoPbNeUzDwbuUZiPfmjak7NpTdpdEmuqFgZIa071swIVZ7jxy0t7nOklg5HpktVr+2xgIdYxF7ZKIJE0lOtFZE7EwpHt82m7ZsEtNdYUGkXja7Ae+BArWJwqf6V63efr2rAyfyErieqfXVBynM1LqS+xaMNcw37Cl3ufFZlHMrWzBBNS/N5/RgvAHLw2FWcOOFiJxZ87/zcDHlpItEGNxPES8QleABubP6WliYTJ0D7ghwgGbe6vFXwWhg5OmQEUao+4cieTAz0Zl5cZdUwlbmlQM+kPIgFCM2tWhkDoR3hslLQCajrEf38ItePQATapxfy+L1Z1cBwKogBa+yux3CAVSo6qw72SOoVnSfgOcWV+airDOCCQgYGWlXUZkuKqXS1H0bxAKTXIwlEmPcA7lZA8lnNys2sD9ZRybx0O6fmQSnXrdWBf7fy8rL+OsovIQuRHe06k+/wQtJBp03G1jz3X50vZGiHdt7IMUl+DZUy/WZpsSmPsdDgFyziFWnue5vpw4bxW2c/KRBb/xBM+lChLgO5sm9vBS3OF8PnmPn4IABxCOz6dt8uHh5yVGnHyV7Bgw==
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR10MB4196.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(7916004)(39860400002)(346002)(396003)(366004)(136003)(376002)(451199015)(6666004)(86362001)(38100700002)(6486002)(2906002)(44832011)(8676002)(478600001)(4326008)(5660300002)(66476007)(6916009)(66556008)(8936002)(7416002)(54906003)(66946007)(316002)(53546011)(33716001)(83380400001)(26005)(9686003)(6512007)(41300700001)(6506007)(186003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?JuQknefroofoaWv/nWNpImPUNMGmAe9Z4xPXLbHVuaL6GyBRcKfXAM5dAZu8?=
- =?us-ascii?Q?29XVfjOkK4K7efPx4i5qa9w0xroaOesSIHP1c5e0UdjUGRntZJ7yq/rt8vDY?=
- =?us-ascii?Q?Ci2qLq7vGxZvqbtzmGEooajuHMqv59pN2Mg0hXyOxAVDHTxlftP1BuxzsOdB?=
- =?us-ascii?Q?n36OmASs957l9dLLstpXkXx8M1CC02fm+Eh6L/x+XJZH2Es+s6tkcQhUYNuI?=
- =?us-ascii?Q?SwoEX/FIAbiijcGl+7IGoM1OP3Z0of0GrHTwApDk/HqMc7IZpHuaTKJoaoqu?=
- =?us-ascii?Q?wBcgsGwaPNhGzyfBJ4qYNlUQL87M9395dmRMnMu/mAozmrk3PDgR5diJkaAV?=
- =?us-ascii?Q?OPxOR0DrCf3dKXe5sPgxIhT4SvmxCgBm5vU2lVGQTM6cbNwSUFyNQbF52OFS?=
- =?us-ascii?Q?znhHq8AX94W6nmo2KQXww9tznbwS2VpvTeHO3AdevOxB9JBda+F3SB0bokKh?=
- =?us-ascii?Q?zf6CS8jeJHqIaStwlog9oZNk7CJvbSlNu4J0R2J3NvAMq0HDSKvWoY/jHqEA?=
- =?us-ascii?Q?hcTJ1EYkAu+CeVf9DDZjwsLe1muD9n9GztZTWHWYVd+hvl4yeMlgPUZ/AbL7?=
- =?us-ascii?Q?G6w6RShFMLTu79R0c46Rbyl2DREUYiHXarVLJmNc6W5RkOZtn6+hoIahbo3Z?=
- =?us-ascii?Q?Z3KKHFHiW/5YRUnyN5xBrK/Jxy2P4T7BkHQRP7zapNjPHVb1rXgiR+IPfPFE?=
- =?us-ascii?Q?+5qd4OI4uqzk7i70wZGorWfx2Hi/GUmqw3sYQHC6ObUYKL9zSEHydGoQS0j8?=
- =?us-ascii?Q?qNVXe4/ibiB0/nkfZeBWg9sgRU4LQmpkkYpoNToNqkriCArXWnhtLXpCxlU6?=
- =?us-ascii?Q?sXoeBX2goge6hSRIQvLXByudGFk4GlJJTZpbix+8SZ3DhNaKSoIAkfOWI5CH?=
- =?us-ascii?Q?D+9IRuuIUExjP+E6Deu4X6cQ1RSW3rEtNa3+w6HnJStG24FtqoIQU7ter4H3?=
- =?us-ascii?Q?b6+qinWX/dZA0Z7/XtJ1cMdWCbed3p0NgOrsD+jsRy+TQDrYO/owVmOkAcgz?=
- =?us-ascii?Q?SmhqGqoooHb5NJUD+F5Iz4kdCpyFl4KLSqOEjquSGeBQRZjFzTXly8HsTPIw?=
- =?us-ascii?Q?IshiSCSmiwwlkaY3VP4VY+5p+UQxHwsvvLWdP2Dz/mTYJzW3RdmdSLl8V+2y?=
- =?us-ascii?Q?8nvClxgjsKK2x7Phk01doklGpib+eexqoD+I85OSVP59Msm/4KQszRaJjgud?=
- =?us-ascii?Q?f887UBZhrGDhyq8W8gM3OiVBk621Bt7WF18tEpowLpIHo562tWlK3sYr7d2/?=
- =?us-ascii?Q?V3PdHHkIHUCtp3Ooy3wAc5pvISUjYTQ/9Hc8jIs6w/1ekEWiFDf3DNvz80OE?=
- =?us-ascii?Q?Pysd7df+FzQz77jOF5qnBc8g7cX8E6W2WyRNNkVJnE4FXVU3eLR6UgS9cvOt?=
- =?us-ascii?Q?8K1ZwnuSBTLltQZzq8zdZcoev+37AEsW2uYuum3xfrVkF7Hdg0qpvCadn4DJ?=
- =?us-ascii?Q?noO8fwOT/a8jaOTVE6l859TYAq1YkXYaeLXpzoLOKMOtdvpOgrXtEX63+eUz?=
- =?us-ascii?Q?GExOY1UOKhEutbWLpNx0nWgDZLI5LXtQdpr97J6jCoXi4MjHR4p7211VGLTz?=
- =?us-ascii?Q?ckNJHH+dP+l6mbeZzcwknEubyEVp7GZ7+KCJIixLrNqRKjMEl+SYIl4dFkpi?=
- =?us-ascii?Q?mA=3D=3D?=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a4ad250d-7bcf-41f4-d073-08dab77d822f
-X-MS-Exchange-CrossTenant-AuthSource: BY5PR10MB4196.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Oct 2022 18:11:32.4636
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Xr05pu+WvN87K6ZNDCnCf+B8ctKGEyBWhtMQHjbsU3hxv3uP/E2rWuqs+zaRwVLDiTSKQuTrd+eL3QtGwlkEIw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN4PR10MB5590
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: _BiNbAOrhfyt6SDNYhxPZCtxlEizwYpo
+X-Proofpoint-ORIG-GUID: _BiNbAOrhfyt6SDNYhxPZCtxlEizwYpo
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
  definitions=2022-10-26_07,2022-10-26_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 malwarescore=0 phishscore=0
- suspectscore=0 mlxlogscore=999 bulkscore=0 adultscore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2209130000
- definitions=main-2210260103
-X-Proofpoint-GUID: wBRdggOFzB4DvcbEkZFsvSGrir4HWXO4
-X-Proofpoint-ORIG-GUID: wBRdggOFzB4DvcbEkZFsvSGrir4HWXO4
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
+ lowpriorityscore=0 bulkscore=0 impostorscore=0 adultscore=0 malwarescore=0
+ suspectscore=0 phishscore=0 mlxlogscore=999 priorityscore=1501
+ clxscore=1011 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2209130000 definitions=main-2210260102
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -155,56 +86,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Matthew Wilcox <willy@infradead.org>, Aneesh Kumar K V <aneesh.kumar@linux.ibm.com>, David Howells <dhowells@redhat.com>, linux-mm@kvack.org, npiggin@gmail.com, linux-fsdevel@vger.kernel.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, Al Viro <viro@zeniv.linux.org.uk>
+Cc: Brian King <brking@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org, linux-scsi@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 10/26/22 10:50, Aristeu Rozanski wrote:
-> On Thu, Sep 08, 2022 at 10:29:59PM +0530, Aneesh Kumar K V wrote:
-> > On 9/8/22 10:23 PM, Matthew Wilcox wrote:
-> > > On Thu, Sep 08, 2022 at 12:56:59PM +0530, Aneesh Kumar K.V wrote:
-> > >> +++ b/fs/dax.c
-> > >> @@ -1304,7 +1304,7 @@ EXPORT_SYMBOL_GPL(dax_zero_range);
-> > >>  int dax_truncate_page(struct inode *inode, loff_t pos, bool *did_zero,
-> > >>  		const struct iomap_ops *ops)
-> > >>  {
-> > >> -	unsigned int blocksize = i_blocksize(inode);
-> > >> +	size_t blocksize = i_blocksize(inode);
-> > >>  	unsigned int off = pos & (blocksize - 1);
-> > > 
-> > > If blocksize is larger than 4GB, then off also needs to be size_t.
-> > > 
-> > >> +++ b/fs/iomap/buffered-io.c
-> > >> @@ -955,7 +955,7 @@ int
-> > >>  iomap_truncate_page(struct inode *inode, loff_t pos, bool *did_zero,
-> > >>  		const struct iomap_ops *ops)
-> > >>  {
-> > >> -	unsigned int blocksize = i_blocksize(inode);
-> > >> +	size_t blocksize = i_blocksize(inode);
-> > >>  	unsigned int off = pos & (blocksize - 1);
-> > > 
-> > > Ditto.
-> > > 
-> > > (maybe there are others; I didn't check closely)
-> > 
-> > Thanks. will check those. 
-> > 
-> > Any feedback on statx? Should we really fix that?
-> > 
-> > I am still not clear why we chose to set blocksize = pagesize for hugetlbfs.
-> > Was that done to enable application find the hugetlb pagesize via stat()? 
-> 
-> I'd like to know that as well. It'd be easier to just limit the hugetlbfs max
-> blocksize to 4GB. It's very unlikely anything else will use such large
-> blocksizes and having to introduce new user interfaces for it doesn't sound
-> right.
+This patch fixes an issue reported when performing a live
+migration when multipath is configured with a short fast
+fail timeout of 5 seconds and also to have no_path_retry
+set to fail. In this scenario, all paths would go into the
+devloss state while the ibmvfc driver went through discovery
+to log back in. On a loaded system, the discovery might
+take longer than 5 seconds, which was resulting in all paths
+being marked failed, which then resulted in a read only filesystem.
 
-I was not around hugetlbfs when the decision was made to set 'blocksize =
-pagesize'.  However, I must say that it does seem to make sense as you
-can only add or remove entire hugetlb pages from a hugetlbfs file.  So,
-the hugetlb page size does seem to correspond to the meaning of filesystem
-blocksize.
+This patch changes the migration code in ibmvfc to
+avoid deleting rports at all in this scenario, so we
+avoid losing all paths.
 
-Does any application code make use of this?  I can not make a guess.
+Signed-off-by: Brian King <brking@linux.vnet.ibm.com>
+---
+ drivers/scsi/ibmvscsi/ibmvfc.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
+index 00684e11976b..1a0c0b7289d2 100644
+--- a/drivers/scsi/ibmvscsi/ibmvfc.c
++++ b/drivers/scsi/ibmvscsi/ibmvfc.c
+@@ -708,8 +708,13 @@ static void ibmvfc_init_host(struct ibmvfc_host *vhost)
+ 		memset(vhost->async_crq.msgs.async, 0, PAGE_SIZE);
+ 		vhost->async_crq.cur = 0;
+ 
+-		list_for_each_entry(tgt, &vhost->targets, queue)
+-			ibmvfc_del_tgt(tgt);
++		list_for_each_entry(tgt, &vhost->targets, queue) {
++			if (vhost->client_migrated)
++				tgt->need_login = 1;
++			else
++				ibmvfc_del_tgt(tgt);
++		}
++
+ 		scsi_block_requests(vhost->host);
+ 		ibmvfc_set_host_action(vhost, IBMVFC_HOST_ACTION_INIT);
+ 		vhost->job_step = ibmvfc_npiv_login;
+@@ -3235,9 +3240,12 @@ static void ibmvfc_handle_crq(struct ibmvfc_crq *crq, struct ibmvfc_host *vhost,
+ 			/* We need to re-setup the interpartition connection */
+ 			dev_info(vhost->dev, "Partition migrated, Re-enabling adapter\n");
+ 			vhost->client_migrated = 1;
++
++			scsi_block_requests(vhost->host);
+ 			ibmvfc_purge_requests(vhost, DID_REQUEUE);
+-			ibmvfc_link_down(vhost, IBMVFC_LINK_DOWN);
++			ibmvfc_set_host_state(vhost, IBMVFC_LINK_DOWN);
+ 			ibmvfc_set_host_action(vhost, IBMVFC_HOST_ACTION_REENABLE);
++			wake_up(&vhost->work_wait_q);
+ 		} else if (crq->format == IBMVFC_PARTNER_FAILED || crq->format == IBMVFC_PARTNER_DEREGISTER) {
+ 			dev_err(vhost->dev, "Host partner adapter deregistered or failed (rc=%d)\n", crq->format);
+ 			ibmvfc_purge_requests(vhost, DID_ERROR);
 -- 
-Mike Kravetz
+2.31.1
+
