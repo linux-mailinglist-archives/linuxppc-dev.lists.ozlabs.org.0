@@ -2,71 +2,78 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E351D610621
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Oct 2022 01:08:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 625976106F1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Oct 2022 02:43:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Mz1Yn623Kz3cCn
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Oct 2022 10:08:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Mz3gm2Hwsz3cJK
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Oct 2022 11:43:32 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=dabbelt-com.20210112.gappssmtp.com header.i=@dabbelt-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=ZNNSYZLM;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bytedance-com.20210112.gappssmtp.com header.i=@bytedance-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=mbukdALr;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=dabbelt.com (client-ip=2607:f8b0:4864:20::535; helo=mail-pg1-x535.google.com; envelope-from=palmer@dabbelt.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bytedance.com (client-ip=2a00:1450:4864:20::42a; helo=mail-wr1-x42a.google.com; envelope-from=punit.agrawal@bytedance.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=dabbelt-com.20210112.gappssmtp.com header.i=@dabbelt-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=ZNNSYZLM;
+	dkim=pass (2048-bit key; unprotected) header.d=bytedance-com.20210112.gappssmtp.com header.i=@bytedance-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=mbukdALr;
 	dkim-atps=neutral
-Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com [IPv6:2607:f8b0:4864:20::535])
+Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mz1Xs4CX8z3c7H
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Oct 2022 10:07:25 +1100 (AEDT)
-Received: by mail-pg1-x535.google.com with SMTP id 20so3169431pgc.5
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Oct 2022 16:07:24 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MynqR1P4Bz2yxd
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Oct 2022 01:19:12 +1100 (AEDT)
+Received: by mail-wr1-x42a.google.com with SMTP id l14so2444483wrw.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Oct 2022 07:19:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dabbelt-com.20210112.gappssmtp.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3gyfpmFe14VJ3jdYNVJ0rx3Ah2uaRzNTmMnT4495S4I=;
-        b=ZNNSYZLMCiTx3pCpdTSLaMqTAwcT0XD23hboDkck2m1sj0K18I/wiwFIJBnxkxlMh1
-         TMOX+6v0XNUWVLrMkaS7nFMD6HK3C70ZLK5411vF56AMxZrrEveIWdn7U/wWYAX6hu8f
-         z7X+MhLcDZ2abQ+JkeJnFiHqWkFba2HtnVwkX4LhmKXO9kCXDrbkBH+MQc0VlITciM7I
-         DQ4GGK7LnrmeObtOo33dthlXeC/HBl0rQRBuyHKeRHXZmYYPUrcsYqTcTlXIWwUSoL9i
-         Op+9awjoXqXajuMDeHaLc5MvW/7/blHnT1v9JwgcyUng9A7q3UoZ9aZNVukbXbfjaCwz
-         UOQQ==
+        d=bytedance-com.20210112.gappssmtp.com; s=20210112;
+        h=mime-version:user-agent:message-id:in-reply-to:date:references
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=y/eINMlmbJBT0Nx7Q4sfLDyjRpzPNMcfZ0CREI4hqno=;
+        b=mbukdALrSt0e0Xy4FkFyuHJzpwUdkyhoGFOxMyHUB7cxYmMBOVcqKs7RAsg3TvKCMI
+         S6Zt6qpSUwkQjxNNynwidnp+zFyIsBNmXxZzJjNls7MYhrbClbxzYmIVgRYp06bSQdtL
+         O7fH1uUWV7MEOXcVso26GgH9a/JML0ZANePeYFgvoRP0qL2d2Ahpn/AaBliDN7CLjbvY
+         gJZTLiVy1C5KhCv9CDCCP3ri0epXt9PZTTgGTDX6YM3buYGEnVVu0TewyqNPkVoASFNV
+         HoQLFEWGw10kDNxYOQhiSN2oCj4N7aJDsvRT/pTpO0Sl2koUjt+Id8P6r55SN+Gkye+h
+         8EYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
+        h=mime-version:user-agent:message-id:in-reply-to:date:references
+         :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=3gyfpmFe14VJ3jdYNVJ0rx3Ah2uaRzNTmMnT4495S4I=;
-        b=jTVTxmCvyM52reFYPCNUF03OKZV409KlUnTTlV+XG3XXtV8Vi/nCyAUORqKRTC9BEh
-         x86cdCRfPNBAe4NE9qUOo9yhlmuSW32x3Vj7nYTh+8V+6AlpydforaRwlCcXd0kl8Lme
-         VhuRvc3Z3aPceAVEAx5upOKhGNCm2hoKittMQp3/DWQBaL12RBabG1PKWu2cFxLrCA/5
-         YFYH184DJlslHlayRGazheEXPozeJcEJY0z1vTaL/o7qB7oMT23KKrz6lf4ximMUDiIp
-         BThI4Y12jmC1HpCbhbJ4ZJ8Q91LOkowDK2B8EeCLdB83g1EW6TBydmimhdoTIspSIbYj
-         n9cw==
-X-Gm-Message-State: ACrzQf1u8wbejrfQyPQjFFjRTi42VcR3X6A0PtGdId7AnScSMrIXfTZe
-	8LDMPFCIQ8TxI8RvDI2sAhxChA==
-X-Google-Smtp-Source: AMsMyM48cCCOaGHpcUrqKPuvLPqi8N0s0YHUDIkD3gXkNLjihHit7dpsoFkfZbjAvACH4Z61kt9rCg==
-X-Received: by 2002:a65:44c1:0:b0:428:ab8f:62dd with SMTP id g1-20020a6544c1000000b00428ab8f62ddmr44319504pgs.211.1666912040505;
-        Thu, 27 Oct 2022 16:07:20 -0700 (PDT)
-Received: from localhost ([50.221.140.188])
-        by smtp.gmail.com with ESMTPSA id bf4-20020a170902b90400b00186e8526790sm1675818plb.127.2022.10.27.16.07.18
+        bh=y/eINMlmbJBT0Nx7Q4sfLDyjRpzPNMcfZ0CREI4hqno=;
+        b=WgFEMhBwSZGig7Vbk7SJCJ7KwvBd6oXwwWw88WZ8BidWBp48mJrhvDudLkbdh1xZWE
+         lBgsYaJjMyStC8aSU/b46iruCW4oXzvaAyXXZNeRsJknkSRGN4PxDIUQHdcMVyhSI0u6
+         wPdfakk+rUkkzHiVwxQr9RQmLWb6hW+ASU/1IqGCwvGtOkQDKPNAVfjY3zL9mgh3P6uC
+         TkGnZAwlJARNYBXZWmC3PfbNWPpMyTUEbE6fUEFyToz6sIB7pZnezYWRfAM5GF+NVFe+
+         RCXG5bCa6BWPnMmzy7EYfDW+C+mC+lsa5U0NFm4wqZ8Qn/Cv/nAdgMGzQlCG6Fd7vF8a
+         LR5w==
+X-Gm-Message-State: ACrzQf0qk70bo84Q6NRiPrcTNv8p8TcdeytoND1ItFwpK5D6kEp6Etd7
+	0qtaQAfLf3z0EvEhxgGjeJF5vw==
+X-Google-Smtp-Source: AMsMyM6DMVnaAfEbCGsBgr0BuHUuRcLePH4/Vs6YQPdqiIKHzKuxA0+67WIXfXH9Uz+IHOQBcqEyow==
+X-Received: by 2002:a05:6000:79c:b0:236:6f2e:301e with SMTP id bu28-20020a056000079c00b002366f2e301emr14778667wrb.458.1666880345421;
+        Thu, 27 Oct 2022 07:19:05 -0700 (PDT)
+Received: from localhost ([95.148.15.66])
+        by smtp.gmail.com with ESMTPSA id bh17-20020a05600c3d1100b003cf47fdead5sm1727545wmb.30.2022.10.27.07.19.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Oct 2022 16:07:18 -0700 (PDT)
-Date: Thu, 27 Oct 2022 16:07:18 -0700 (PDT)
-X-Google-Original-Date: Thu, 27 Oct 2022 15:22:27 PDT (-0700)
-Subject: Re: [PATCH v3 0/2] Fix /proc/cpuinfo cpumask warning
-In-Reply-To: <20221014155845.1986223-1-ajones@ventanamicro.com>
-From: Palmer Dabbelt <palmer@dabbelt.com>
-To: ajones@ventanamicro.com
-Message-ID: <mhng-b3bcbdea-1572-44ba-9d9a-e35e55b8880f@palmer-ri-x1c9a>
-Mime-Version: 1.0 (MHng)
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+        Thu, 27 Oct 2022 07:19:04 -0700 (PDT)
+From: Punit Agrawal <punit.agrawal@bytedance.com>
+To: Anshuman Khandual <anshuman.khandual@arm.com>
+Subject: Re: [PATCH v4 2/2] arm64: support batched/deferred tlb shootdown
+ during page reclamation
+References: <20220921084302.43631-1-yangyicong@huawei.com>
+	<20220921084302.43631-3-yangyicong@huawei.com>
+	<168eac93-a6ee-0b2e-12bb-4222eff24561@arm.com>
+	<8e391962-4e3a-5a56-64b4-78e8637e3b8c@huawei.com>
+	<CAGsJ_4z=dZbrAUD9jczT08S3qi_ep-h+EK35UfayVk1S+Cnp2A@mail.gmail.com>
+	<ecd161db-b290-7997-a81e-a0a00bd1c599@arm.com>
+Date: Thu, 27 Oct 2022 15:19:02 +0100
+In-Reply-To: <ecd161db-b290-7997-a81e-a0a00bd1c599@arm.com> (Anshuman
+	Khandual's message of "Thu, 27 Oct 2022 16:11:59 +0530")
+Message-ID: <87o7tx5oyx.fsf@stealth>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Mailman-Approved-At: Fri, 28 Oct 2022 11:42:46 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,62 +85,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: jonas@southpole.se, linux-s390@vger.kernel.org, agordeev@linux.ibm.com, dave.hansen@linux.intel.com, gor@linux.ibm.com, yury.norov@gmail.com, hca@linux.ibm.com, x86@kernel.org, linux-kernel@vger.kernel.org, stefan.kristiansson@saunalahti.fi, openrisc@lists.librecores.org, mingo@redhat.com, bp@alien8.de, Paul Walmsley <paul.walmsley@sifive.com>, shorne@gmail.com, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, tglx@linutronix.de, aou@eecs.berkeley.edu
+Cc: wangkefeng.wang@huawei.com, prime.zeng@hisilicon.com, linux-doc@vger.kernel.org, peterz@infradead.org, catalin.marinas@arm.com, yangyicong@hisilicon.com, linux-mm@kvack.org, Nadav Amit <namit@vmware.com>, guojian@oppo.com, linux-riscv@lists.infradead.org, will@kernel.org, linux-s390@vger.kernel.org, zhangshiming@oppo.com, lipeifeng@oppo.com, corbet@lwn.net, x86@kernel.org, Barry Song <21cnbao@gmail.com>, Mel Gorman <mgorman@suse.de>, linux-mips@vger.kernel.org, arnd@arndb.de, realmz6@gmail.com, Barry Song <v-songbaohua@oppo.com>, openrisc@lists.librecores.org, darren@os.amperecomputing.com, linux-arm-kernel@lists.infradead.org, xhao@linux.alibaba.com, linux-kernel@vger.kernel.org, huzhanyuan@oppo.com, Yicong Yang <yangyicong@huawei.com>, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 14 Oct 2022 08:58:43 PDT (-0700), ajones@ventanamicro.com wrote:
-> Commit 78e5a3399421 ("cpumask: fix checking valid cpu range") has
-> started issuing warnings[*] when cpu indices equal to nr_cpu_ids - 1
-> are passed to cpumask_next* functions. seq_read_iter() and cpuinfo's
-> start and next seq operations implement a pattern like
->
->   n = cpumask_next(n - 1, mask);
->   show(n);
->   while (1) {
->       ++n;
->       n = cpumask_next(n - 1, mask);
->       if (n >= nr_cpu_ids)
->           break;
->       show(n);
->   }
->
-> which will issue the warning when reading /proc/cpuinfo.
->
-> [*] Warnings will only appear with DEBUG_PER_CPU_MAPS enabled.
->
-> This series address the issue for x86 and riscv, but from a quick
-> grep of cpuinfo seq operations, I think at least openrisc, powerpc,
-> and s390 also need an equivalent patch. While the test is simple (see
-> next paragraph) I'm not equipped to test on each architecture.
->
-> To test, just build a kernel with DEBUG_PER_CPU_MAPS enabled, boot to
-> a shell, do 'cat /proc/cpuinfo', and look for a kernel warning.
->
-> While the patches are being posted together in a series since they're
-> for two different architectures they don't necessarily need to go
-> through the same tree.
->
-> v3:
->   - Change condition from >= to == in order to still get a warning
->     for > as that's unexpected. [Yury]
->   - Picked up tags on the riscv patch
->
-> v2:
->   - Added all the information I should have in the first place
->     to the commit message [Boris]
->   - Changed style of fix [Boris]
->
-> Andrew Jones (2):
->   RISC-V: Fix /proc/cpuinfo cpumask warning
 
-I just took the RISC-V fix, might be worth re-sending the x86 one alone 
-as nobody's replied over there so it may be lost.
+[ Apologies for chiming in late in the conversation ]
 
-Thanks!
+Anshuman Khandual <anshuman.khandual@arm.com> writes:
 
->   x86: Fix /proc/cpuinfo cpumask warning
+> On 9/28/22 05:53, Barry Song wrote:
+>> On Tue, Sep 27, 2022 at 10:15 PM Yicong Yang <yangyicong@huawei.com> wrote:
+>>>
+>>> On 2022/9/27 14:16, Anshuman Khandual wrote:
+>>>> [...]
+>>>>
+>>>> On 9/21/22 14:13, Yicong Yang wrote:
+>>>>> +static inline bool arch_tlbbatch_should_defer(struct mm_struct *mm)
+>>>>> +{
+>>>>> +    /* for small systems with small number of CPUs, TLB shootdown is cheap */
+>>>>> +    if (num_online_cpus() <= 4)
+>>>>
+>>>> It would be great to have some more inputs from others, whether 4 (which should
+>>>> to be codified into a macro e.g ARM64_NR_CPU_DEFERRED_TLB, or something similar)
+>>>> is optimal for an wide range of arm64 platforms.
+>>>>
+>> 
+>> I have tested it on a 4-cpus and 8-cpus machine. but i have no machine
+>> with 5,6,7
+>> cores.
+>> I saw improvement on 8-cpus machines and I found 4-cpus machines don't need
+>> this patch.
+>> 
+>> so it seems safe to have
+>> if (num_online_cpus()  < 8)
+>> 
+>>>
+>>> Do you prefer this macro to be static or make it configurable through kconfig then
+>>> different platforms can make choice based on their own situations? It maybe hard to
+>>> test on all the arm64 platforms.
+>> 
+>> Maybe we can have this default enabled on machines with 8 and more cpus and
+>> provide a tlbflush_batched = on or off to allow users enable or
+>> disable it according
+>> to their hardware and products. Similar example: rodata=on or off.
 >
->  arch/riscv/kernel/cpu.c    | 3 +++
->  arch/x86/kernel/cpu/proc.c | 3 +++
->  2 files changed, 6 insertions(+)
+> No, sounds bit excessive. Kernel command line options should not be added
+> for every possible run time switch options.
+>
+>> 
+>> Hi Anshuman, Will,  Catalin, Andrew,
+>> what do you think about this approach?
+>> 
+>> BTW, haoxin mentioned another important user scenarios for tlb bach on arm64:
+>> https://lore.kernel.org/lkml/393d6318-aa38-01ed-6ad8-f9eac89bf0fc@linux.alibaba.com/
+>> 
+>> I do believe we need it based on the expensive cost of tlb shootdown in arm64
+>> even by hardware broadcast.
+>
+> Alright, for now could we enable ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH selectively
+> with CONFIG_EXPERT and for num_online_cpus()  > 8 ?
+
+When running the test program in the commit in a VM, I saw benefits from
+the patches at all sizes from 2, 4, 8, 32 vcpus. On the test machine,
+ptep_clear_flush() went from ~1% in the unpatched version to not showing
+up.
+
+Yicong mentioned that he didn't see any benefit for <= 4 CPUs but is
+there any overhead? I am wondering what are the downsides of enabling
+the config by default.
+
+Thanks,
+Punit
