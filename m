@@ -2,70 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7B0160F06B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Oct 2022 08:39:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DECA60F102
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Oct 2022 09:14:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MybcV5Hqmz3cCl
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Oct 2022 17:39:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MycPL6jyzz3cDq
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Oct 2022 18:14:30 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=LzHkFzDw;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=KD4RglaC;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Tz5mhNIF;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=tiwai@suse.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::632; helo=mail-ej1-x632.google.com; envelope-from=daniel.baluta@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=LzHkFzDw;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=KD4RglaC;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Tz5mhNIF;
 	dkim-atps=neutral
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MybbZ0nzcz2xbK
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Oct 2022 17:38:17 +1100 (AEDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 09366229AD;
-	Thu, 27 Oct 2022 06:38:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1666852692; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HAfG3fxO5nB+zy7DQ0VrMelHumsdPtpgcNkAR3o65r8=;
-	b=LzHkFzDwVTwUrl9FtPI+xSP5wcd2kRNmIXOpJsdcR82Mb5UjzIkBYUGeoLuhPhKEnKZEGq
-	lhzN6Fpx8BTnYj7mAnrjCZ82weDRIbTKrnp9+zM1xETwP7rDpdHH9U65waepala6ktSm8e
-	NjFso6fM+dvKKnkp+MAhJaY7Xd7gOuM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1666852692;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HAfG3fxO5nB+zy7DQ0VrMelHumsdPtpgcNkAR3o65r8=;
-	b=KD4RglaCNmhEIG8W5X8Gdl9J7rH5TgzeD/dlaCBNR5//iBOUWXRCxn45l7yfq3mIRLm+qU
-	uV0PA56KIIjCUcCw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id DCA3D134CA;
-	Thu, 27 Oct 2022 06:38:11 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id +SpONVMnWmM8EAAAMHmgww
-	(envelope-from <tiwai@suse.de>); Thu, 27 Oct 2022 06:38:11 +0000
-Date: Thu, 27 Oct 2022 08:38:11 +0200
-Message-ID: <87r0ytojos.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Yang Yingliang <yangyingliang@huawei.com>
-Subject: Re: [PATCH] ALSA: aoa: i2sbus: fix possible memory leak in i2sbus_add_dev()
-In-Reply-To: <20221027013438.991920-1-yangyingliang@huawei.com>
-References: <20221027013438.991920-1-yangyingliang@huawei.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MycNM6rtyz2xs1
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Oct 2022 18:13:37 +1100 (AEDT)
+Received: by mail-ej1-x632.google.com with SMTP id k2so2025163ejr.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Oct 2022 00:13:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=MDxbGJrw6ODYsB7ZdyD4/84nlR1jBff/NV+grX5V3Bs=;
+        b=Tz5mhNIF+/mpMprs4Y6gUBmDWkzyVobMrFo5/UU48sEYvCG2FuZ2moCLwMtBpu1uSk
+         fckgdxFABiXavxRr7zTImcwYGTYN2MIY/gJRsxupEMvy5nJ/Q5r5MdR3qB3GLLRo14p/
+         3rusLtUVUMllo4RQhR7IpNTOD2fLAWcFS+a8fFw6mIO60CBTPDyOurQnnTP+4vLZT6+G
+         ttDQxem84uINniF9Ha279HH1ni9dtTODY7Fa6jZ51uMsvzMTfRBwQKWswy264TMs16pZ
+         5ooze8s8MrIR0L+WDIVDVfKYYVglYkWDUn+CRk2ANAXvB+nLCRFjcjLDWOK0CikJBk+q
+         uPSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MDxbGJrw6ODYsB7ZdyD4/84nlR1jBff/NV+grX5V3Bs=;
+        b=uX4jKhEtJ2CTqSXA+TkDsCfK6sjXzwAmKzqUey+4w9WtKg0DrP+1ECvheJHFdLTtiw
+         hL+cIWUnzrK4NmcXE719v6UROB/PY2K2c1/0kTneUuYmXN+e6Zi6PehrAG8gdt7nvHZf
+         b5ymX7HSEDDErs/YH4//CgtZa5P9lKVyUdMYBa0JMgsix5SmYAGfhvw1RO4HgFzKXxe6
+         GeTILEZx93g3cE2Cx3tLExeDPrUJSyuVxaJUxL83iSy93IgOkkfb2hN0cyHqM0lqKdnF
+         1QgbCzqNzzchezaFbfmvQm6IGXMjHYVJ2vaZLzpE/yLbi7LY03SJw26AXHACqiWb0cnD
+         Nv/A==
+X-Gm-Message-State: ACrzQf3aZDQW87VdtmRrf4vZ0cS1mUXS4kPXuponKFnL57djXH2HJ9sY
+	8kpEgYTackzy9tZURVB54h+cZel9CiOX+sDEnEo=
+X-Google-Smtp-Source: AMsMyM7SJjmDy81uIp59EMVnOgbrq10xzO0jl74Jy5bcQqegFeZgsV1CK7dqzobdLEyH6QNX7eaGJJ3NXd7r0cBwTDQ=
+X-Received: by 2002:a17:907:31c3:b0:770:852b:71a2 with SMTP id
+ xf3-20020a17090731c300b00770852b71a2mr40960769ejb.557.1666854809089; Thu, 27
+ Oct 2022 00:13:29 -0700 (PDT)
+MIME-Version: 1.0
+References: <20221027060311.2549711-1-chancel.liu@nxp.com>
+In-Reply-To: <20221027060311.2549711-1-chancel.liu@nxp.com>
+From: Daniel Baluta <daniel.baluta@gmail.com>
+Date: Thu, 27 Oct 2022 10:13:17 +0300
+Message-ID: <CAEnQRZAr9HQ6LNAdwOnvAKUrazr1Q0CognQfd-+67Sfo1zoOHw@mail.gmail.com>
+Subject: Re: [PATCH 0/3] Add support for SAI on i.MX93 platform
+To: Chancel Liu <chancel.liu@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,48 +73,17 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, tiwai@suse.com, linuxppc-dev@lists.ozlabs.org, johannes@sipsolutions.net, perex@perex.cz
+Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, lgirdwood@gmail.com, festevam@gmail.com, Xiubo.Lee@gmail.com, linux-kernel@vger.kernel.org, robh+dt@kernel.org, tiwai@suse.com, nicoleotsuka@gmail.com, broonie@kernel.org, krzysztof.kozlowski+dt@linaro.org, perex@perex.cz, shengjiu.wang@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 27 Oct 2022 03:34:38 +0200,
-Yang Yingliang wrote:
-> 
-> dev_set_name() in soundbus_add_one() allocates memory for name, it need be
-> freed when of_device_register() fails, call soundbus_dev_put() to give up
-> the reference that hold in device_initialize(), so that it can be freed in
-> kobject_cleanup() when the refcount hit to 0. And other resources are also
-> freed in i2sbus_release_dev(), so it can return 0 directly.
-> 
-> Fixes: f3d9478b2ce4 ("[ALSA] snd-aoa: add snd-aoa")
-> Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+On Thu, Oct 27, 2022 at 9:14 AM Chancel Liu <chancel.liu@nxp.com> wrote:
+>
+> This patchset supports SAI on i.MX93 platform.
+>
+> Chancel Liu (3):
+>   ASoC: dt-bindings: fsl,sai: Add compatible string for i.MX93 platform
+>   ASoC: fsl_sai: Add support for i.MX93 platform
+>   ASoC: fsl_sai: Specify the maxburst to 8 on i.MX93 platform
 
-The check of kobj state is awkward, but it seems to be the simplest
-way...  Applied now.  Thanks!
-
-
-Takashi
-
-
-> ---
->  sound/aoa/soundbus/i2sbus/core.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/sound/aoa/soundbus/i2sbus/core.c b/sound/aoa/soundbus/i2sbus/core.c
-> index faf6b03131ee..f6841daf9e3b 100644
-> --- a/sound/aoa/soundbus/i2sbus/core.c
-> +++ b/sound/aoa/soundbus/i2sbus/core.c
-> @@ -302,6 +302,10 @@ static int i2sbus_add_dev(struct macio_dev *macio,
->  
->  	if (soundbus_add_one(&dev->sound)) {
->  		printk(KERN_DEBUG "i2sbus: device registration error!\n");
-> +		if (dev->sound.ofdev.dev.kobj.state_initialized) {
-> +			soundbus_dev_put(&dev->sound);
-> +			return 0;
-> +		}
->  		goto err;
->  	}
->  
-> -- 
-> 2.25.1
-> 
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
