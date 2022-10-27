@@ -2,66 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DECA60F102
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Oct 2022 09:14:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4979260F142
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Oct 2022 09:40:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MycPL6jyzz3cDq
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Oct 2022 18:14:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MyczR0dNkz3cCZ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Oct 2022 18:40:35 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Tz5mhNIF;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ozlabs-ru.20210112.gappssmtp.com header.i=@ozlabs-ru.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=2ThwM1Cd;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::632; helo=mail-ej1-x632.google.com; envelope-from=daniel.baluta@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::636; helo=mail-pl1-x636.google.com; envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Tz5mhNIF;
+	dkim=pass (2048-bit key; unprotected) header.d=ozlabs-ru.20210112.gappssmtp.com header.i=@ozlabs-ru.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=2ThwM1Cd;
 	dkim-atps=neutral
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MycNM6rtyz2xs1
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Oct 2022 18:13:37 +1100 (AEDT)
-Received: by mail-ej1-x632.google.com with SMTP id k2so2025163ejr.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Oct 2022 00:13:37 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MycyT3DjTz307C
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Oct 2022 18:39:42 +1100 (AEDT)
+Received: by mail-pl1-x636.google.com with SMTP id 4so640014pli.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Oct 2022 00:39:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=MDxbGJrw6ODYsB7ZdyD4/84nlR1jBff/NV+grX5V3Bs=;
-        b=Tz5mhNIF+/mpMprs4Y6gUBmDWkzyVobMrFo5/UU48sEYvCG2FuZ2moCLwMtBpu1uSk
-         fckgdxFABiXavxRr7zTImcwYGTYN2MIY/gJRsxupEMvy5nJ/Q5r5MdR3qB3GLLRo14p/
-         3rusLtUVUMllo4RQhR7IpNTOD2fLAWcFS+a8fFw6mIO60CBTPDyOurQnnTP+4vLZT6+G
-         ttDQxem84uINniF9Ha279HH1ni9dtTODY7Fa6jZ51uMsvzMTfRBwQKWswy264TMs16pZ
-         5ooze8s8MrIR0L+WDIVDVfKYYVglYkWDUn+CRk2ANAXvB+nLCRFjcjLDWOK0CikJBk+q
-         uPSg==
+        d=ozlabs-ru.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Ea0hxXYFnPXaT0jl+FmZql4yNHr4Fyf6HAvktIBslno=;
+        b=2ThwM1CdoeYroa+FUfTpj1Vp6/OxgPMaiL4s0FckhXA4OUMe7dceB7UU1bxyXDnuNT
+         WRLa57sVacmjmOn6/3JMFN+P690O63TOweBHTnc9vTjCcsua1jCjyBEObGuG4JNkFcBX
+         +X2VqROAzObgXJiUk/KP3G2MezF7+FVhsRLKfahh7SpBP5I2kkAUFIctsR2wVs0JG3vK
+         4VwHwAZOftrzGJFOnvqwc+Ly/CAjReoxjQN+LPM8LImCcwKtGKGJds9D3FShYfvqiYRG
+         5ukKRJWvxfdNdMk0OEOi3rMATxsR/6zvedd4U1Q16Rs72dRhSeHTQID9YYcB4VLBpaSL
+         G8uA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MDxbGJrw6ODYsB7ZdyD4/84nlR1jBff/NV+grX5V3Bs=;
-        b=uX4jKhEtJ2CTqSXA+TkDsCfK6sjXzwAmKzqUey+4w9WtKg0DrP+1ECvheJHFdLTtiw
-         hL+cIWUnzrK4NmcXE719v6UROB/PY2K2c1/0kTneUuYmXN+e6Zi6PehrAG8gdt7nvHZf
-         b5ymX7HSEDDErs/YH4//CgtZa5P9lKVyUdMYBa0JMgsix5SmYAGfhvw1RO4HgFzKXxe6
-         GeTILEZx93g3cE2Cx3tLExeDPrUJSyuVxaJUxL83iSy93IgOkkfb2hN0cyHqM0lqKdnF
-         1QgbCzqNzzchezaFbfmvQm6IGXMjHYVJ2vaZLzpE/yLbi7LY03SJw26AXHACqiWb0cnD
-         Nv/A==
-X-Gm-Message-State: ACrzQf3aZDQW87VdtmRrf4vZ0cS1mUXS4kPXuponKFnL57djXH2HJ9sY
-	8kpEgYTackzy9tZURVB54h+cZel9CiOX+sDEnEo=
-X-Google-Smtp-Source: AMsMyM7SJjmDy81uIp59EMVnOgbrq10xzO0jl74Jy5bcQqegFeZgsV1CK7dqzobdLEyH6QNX7eaGJJ3NXd7r0cBwTDQ=
-X-Received: by 2002:a17:907:31c3:b0:770:852b:71a2 with SMTP id
- xf3-20020a17090731c300b00770852b71a2mr40960769ejb.557.1666854809089; Thu, 27
- Oct 2022 00:13:29 -0700 (PDT)
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ea0hxXYFnPXaT0jl+FmZql4yNHr4Fyf6HAvktIBslno=;
+        b=RZgJFPIxOwMuWECvS+1k6bNeJBWInA5mys+WbAApKHhc6CNL2tPR6mKDJBMnbQDmBC
+         E8gIV8fWA8Ew+dPM3LHH8gPl181I6W+JmcrEmJa0zXIqemnKzQTTQWbHXUEWu2WRM1JN
+         Yr1Z1jNEVvJ2XEkySeUxn25JVAfwgoGn5Hn4JVLCiD8jag5cDN/3g2I05pVnV+WJNky7
+         4JAtSuudvZWVIRec3i5THHnAhUHu5Ap4CfeSGfM90/2nWC18Mg3rcp7rHAMu0m4o6lQx
+         ayfaFZM+TGgDIwV8bAroeGOSXum+z9h9jFl4LYhx8NHAItKcxhlXp1RKiGmCxhseizs0
+         hcHg==
+X-Gm-Message-State: ACrzQf3eRMfOoH+gPW6vmNVy0QztlVaidPte9jibPG2J2tJK2RVjPduH
+	sHDT4Spk/wXUulyPxsGiC93Kx8k/OKlqwg==
+X-Google-Smtp-Source: AMsMyM5bFkKEzQ/H6gKUH7MQ0VVAtvEwIxKoZncGQIAFcNvoO2vHRJC/jD9FI81OF59vCOMa2psMJg==
+X-Received: by 2002:a17:902:e845:b0:184:8078:be88 with SMTP id t5-20020a170902e84500b001848078be88mr47545935plg.99.1666856377744;
+        Thu, 27 Oct 2022 00:39:37 -0700 (PDT)
+Received: from [192.168.10.153] (ppp121-45-204-168.cbr-trn-nor-bras38.tpg.internode.on.net. [121.45.204.168])
+        by smtp.gmail.com with ESMTPSA id u66-20020a627945000000b0056c814a501dsm594389pfc.10.2022.10.27.00.39.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 27 Oct 2022 00:39:37 -0700 (PDT)
+Message-ID: <737f1978-4f3c-40be-ed78-8fe525d04da8@ozlabs.ru>
+Date: Thu, 27 Oct 2022 18:39:30 +1100
 MIME-Version: 1.0
-References: <20221027060311.2549711-1-chancel.liu@nxp.com>
-In-Reply-To: <20221027060311.2549711-1-chancel.liu@nxp.com>
-From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Thu, 27 Oct 2022 10:13:17 +0300
-Message-ID: <CAEnQRZAr9HQ6LNAdwOnvAKUrazr1Q0CognQfd-+67Sfo1zoOHw@mail.gmail.com>
-Subject: Re: [PATCH 0/3] Add support for SAI on i.MX93 platform
-To: Chancel Liu <chancel.liu@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:107.0) Gecko/20100101
+ Thunderbird/107.0
+Subject: Re: [PATCH kernel v2 0/3] powerpc/iommu: Add iommu_ops to report
+ capabilities and allow blocking domains
+Content-Language: en-US
+To: linuxppc-dev@lists.ozlabs.org
+References: <20220920130457.29742-1-aik@ozlabs.ru>
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+In-Reply-To: <20220920130457.29742-1-aik@ozlabs.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,17 +82,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, lgirdwood@gmail.com, festevam@gmail.com, Xiubo.Lee@gmail.com, linux-kernel@vger.kernel.org, robh+dt@kernel.org, tiwai@suse.com, nicoleotsuka@gmail.com, broonie@kernel.org, krzysztof.kozlowski+dt@linaro.org, perex@perex.cz, shengjiu.wang@gmail.com
+Cc: kvm@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Jason Gunthorpe <jgg@ziepe.ca>, Alex Williamson <alex.williamson@redhat.com>, kvm-ppc@vger.kernel.org, Frederic Barrat <fbarrat@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Oct 27, 2022 at 9:14 AM Chancel Liu <chancel.liu@nxp.com> wrote:
->
-> This patchset supports SAI on i.MX93 platform.
->
-> Chancel Liu (3):
->   ASoC: dt-bindings: fsl,sai: Add compatible string for i.MX93 platform
->   ASoC: fsl_sai: Add support for i.MX93 platform
->   ASoC: fsl_sai: Specify the maxburst to 8 on i.MX93 platform
+Michael, Fred, ping?
 
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+
+On 20/09/2022 23:04, Alexey Kardashevskiy wrote:
+> Here is another take on iommu_ops on POWER to make VFIO work
+> again on POWERPC64. Tested on PPC, kudos to Fred!
+> 
+> The tree with all prerequisites is here:
+> https://github.com/aik/linux/tree/kvm-fixes-wip
+> 
+> The previous discussion is here:
+> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20220707135552.3688927-1-aik@ozlabs.ru/
+> https://patchwork.ozlabs.org/project/kvm-ppc/patch/20220701061751.1955857-1-aik@ozlabs.ru/
+> https://lore.kernel.org/all/20220714081822.3717693-3-aik@ozlabs.ru/T/
+> 
+> Please comment. Thanks.
+> 
+> 
+> This is based on sha1
+> ce888220d5c7 Linus Torvalds "Merge tag 'scsi-fixes' of git://git.kernel.org/pub/scm/linux/kernel/git/jejb/scsi".
+> 
+> Please comment. Thanks.
+> 
+> 
+> 
+> Alexey Kardashevskiy (3):
+>    powerpc/iommu: Add "borrowing" iommu_table_group_ops
+>    powerpc/pci_64: Init pcibios subsys a bit later
+>    powerpc/iommu: Add iommu_ops to report capabilities and allow blocking
+>      domains
+> 
+>   arch/powerpc/include/asm/iommu.h          |   6 +-
+>   arch/powerpc/include/asm/pci-bridge.h     |   7 +
+>   arch/powerpc/platforms/pseries/pseries.h  |   4 +
+>   arch/powerpc/kernel/iommu.c               | 247 +++++++++++++++++++++-
+>   arch/powerpc/kernel/pci_64.c              |   2 +-
+>   arch/powerpc/platforms/powernv/pci-ioda.c |  36 +++-
+>   arch/powerpc/platforms/pseries/iommu.c    |  27 +++
+>   arch/powerpc/platforms/pseries/setup.c    |   3 +
+>   drivers/vfio/vfio_iommu_spapr_tce.c       |  96 ++-------
+>   9 files changed, 334 insertions(+), 94 deletions(-)
+> 
+
+-- 
+Alexey
