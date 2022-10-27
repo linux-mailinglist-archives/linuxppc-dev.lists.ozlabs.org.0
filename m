@@ -2,41 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D0F060F590
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Oct 2022 12:43:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B131460F65D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Oct 2022 13:41:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Myj291jvFz3cGD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Oct 2022 21:43:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MykK24F5Jz3cGm
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Oct 2022 22:41:10 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WVl8EVgZ;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Myj1Z45SKz2xvF
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Oct 2022 21:42:40 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BF9221FB;
-	Thu, 27 Oct 2022 03:42:12 -0700 (PDT)
-Received: from [10.163.38.26] (unknown [10.163.38.26])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2EF8D3F445;
-	Thu, 27 Oct 2022 03:41:56 -0700 (PDT)
-Message-ID: <ecd161db-b290-7997-a81e-a0a00bd1c599@arm.com>
-Date: Thu, 27 Oct 2022 16:11:59 +0530
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=patchwork-bot+netdevbpf@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WVl8EVgZ;
+	dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MykJ51C3Kz2yy7
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Oct 2022 22:40:21 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 6FF87622A2;
+	Thu, 27 Oct 2022 11:40:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id C2BF1C433D7;
+	Thu, 27 Oct 2022 11:40:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1666870815;
+	bh=RF8Y5zep0x7rqgzfxQFPqd8WIra/ygMKrhNsxfV1RTQ=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=WVl8EVgZN0s4jNjH5Tj/pQZxm/GFX87VFUfxglOs9BnLSmY1nhojE6HCwRyRjtnUT
+	 LfCWrV+nBN9A8UfHHqVXxDscWqDL7UIqkrmeT/i8bN4eUp+y/xJYELalaOrJl393Hw
+	 8jNBKV8DMbij0C/m7qmL0OfN/JBZte90qqc16ppwfmoK1KD4C3ZMfwyCE8B4Sf/MpJ
+	 eSkzJvVN7E+NNi4XsZDJeHyeefFCxhRk6c6s9BaqZ4Uzext2SwCjbVlEn6qNw/APW7
+	 ydJyuiee4sdQDnmChMBf27OwVou0X5625IAN8JisbSdpk6WgVx5oOHG6kRcsrDm77c
+	 kmqd6ZPbfTm2w==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id A1BEAE270D8;
+	Thu, 27 Oct 2022 11:40:15 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.2
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Subject: Re: [PATCH v4 2/2] arm64: support batched/deferred tlb shootdown
- during page reclamation
-To: Barry Song <21cnbao@gmail.com>, Yicong Yang <yangyicong@huawei.com>
-References: <20220921084302.43631-1-yangyicong@huawei.com>
- <20220921084302.43631-3-yangyicong@huawei.com>
- <168eac93-a6ee-0b2e-12bb-4222eff24561@arm.com>
- <8e391962-4e3a-5a56-64b4-78e8637e3b8c@huawei.com>
- <CAGsJ_4z=dZbrAUD9jczT08S3qi_ep-h+EK35UfayVk1S+Cnp2A@mail.gmail.com>
-Content-Language: en-US
-In-Reply-To: <CAGsJ_4z=dZbrAUD9jczT08S3qi_ep-h+EK35UfayVk1S+Cnp2A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] eth: fealnx: delete the driver for Myson MTD-800
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id:  <166687081565.19214.14130841762810817464.git-patchwork-notify@kernel.org>
+Date: Thu, 27 Oct 2022 11:40:15 +0000
+References: <20221025184254.1717982-1-kuba@kernel.org>
+In-Reply-To: <20221025184254.1717982-1-kuba@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,60 +62,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: wangkefeng.wang@huawei.com, prime.zeng@hisilicon.com, linux-doc@vger.kernel.org, peterz@infradead.org, catalin.marinas@arm.com, yangyicong@hisilicon.com, linux-mm@kvack.org, Nadav Amit <namit@vmware.com>, guojian@oppo.com, linux-riscv@lists.infradead.org, will@kernel.org, linux-s390@vger.kernel.org, zhangshiming@oppo.com, lipeifeng@oppo.com, corbet@lwn.net, x86@kernel.org, Mel Gorman <mgorman@suse.de>, linux-mips@vger.kernel.org, arnd@arndb.de, realmz6@gmail.com, Barry Song <v-songbaohua@oppo.com>, openrisc@lists.librecores.org, darren@os.amperecomputing.com, linux-arm-kernel@lists.infradead.org, xhao@linux.alibaba.com, linux-kernel@vger.kernel.org, huzhanyuan@oppo.com, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
+Cc: petrm@nvidia.com, tsbogend@alpha.franken.de, leon@kernel.org, arnd@arndb.de, netdev@vger.kernel.org, linux-mips@vger.kernel.org, npiggin@gmail.com, stephen@networkplumber.org, wsa+renesas@sang-engineering.com, lukas.bulwahn@gmail.com, shayagr@amazon.com, mw@semihalf.com, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hello:
+
+This patch was applied to netdev/net-next.git (master)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Tue, 25 Oct 2022 11:42:54 -0700 you wrote:
+> The git history for this driver seems to be completely
+> automated / tree wide changes. I can't find any boards
+> or systems which would use this chip. Google search
+> shows pictures of towel warmers and no networking products.
+> 
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next] eth: fealnx: delete the driver for Myson MTD-800
+    https://git.kernel.org/netdev/net-next/c/d5e2d038dbec
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
-On 9/28/22 05:53, Barry Song wrote:
-> On Tue, Sep 27, 2022 at 10:15 PM Yicong Yang <yangyicong@huawei.com> wrote:
->>
->> On 2022/9/27 14:16, Anshuman Khandual wrote:
->>> [...]
->>>
->>> On 9/21/22 14:13, Yicong Yang wrote:
->>>> +static inline bool arch_tlbbatch_should_defer(struct mm_struct *mm)
->>>> +{
->>>> +    /* for small systems with small number of CPUs, TLB shootdown is cheap */
->>>> +    if (num_online_cpus() <= 4)
->>>
->>> It would be great to have some more inputs from others, whether 4 (which should
->>> to be codified into a macro e.g ARM64_NR_CPU_DEFERRED_TLB, or something similar)
->>> is optimal for an wide range of arm64 platforms.
->>>
-> 
-> I have tested it on a 4-cpus and 8-cpus machine. but i have no machine
-> with 5,6,7
-> cores.
-> I saw improvement on 8-cpus machines and I found 4-cpus machines don't need
-> this patch.
-> 
-> so it seems safe to have
-> if (num_online_cpus()  < 8)
-> 
->>
->> Do you prefer this macro to be static or make it configurable through kconfig then
->> different platforms can make choice based on their own situations? It maybe hard to
->> test on all the arm64 platforms.
-> 
-> Maybe we can have this default enabled on machines with 8 and more cpus and
-> provide a tlbflush_batched = on or off to allow users enable or
-> disable it according
-> to their hardware and products. Similar example: rodata=on or off.
-
-No, sounds bit excessive. Kernel command line options should not be added
-for every possible run time switch options.
-
-> 
-> Hi Anshuman, Will,  Catalin, Andrew,
-> what do you think about this approach?
-> 
-> BTW, haoxin mentioned another important user scenarios for tlb bach on arm64:
-> https://lore.kernel.org/lkml/393d6318-aa38-01ed-6ad8-f9eac89bf0fc@linux.alibaba.com/
-> 
-> I do believe we need it based on the expensive cost of tlb shootdown in arm64
-> even by hardware broadcast.
-
-Alright, for now could we enable ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH selectively
-with CONFIG_EXPERT and for num_online_cpus()  > 8 ?
