@@ -1,50 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF56760F147
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Oct 2022 09:41:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A5B060F155
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Oct 2022 09:44:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Myd0k4P2xz3cCd
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Oct 2022 18:41:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Myd3h6rTzz3cH0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Oct 2022 18:44:16 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ZMa9b9qd;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.255; helo=szxga08-in.huawei.com; envelope-from=yangyingliang@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42c; helo=mail-pf1-x42c.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ZMa9b9qd;
+	dkim-atps=neutral
+Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Myd070Zn1z2yy7
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Oct 2022 18:41:10 +1100 (AEDT)
-Received: from dggpemm500022.china.huawei.com (unknown [172.30.72.53])
-	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4MyctL3Nh6z15M19;
-	Thu, 27 Oct 2022 15:36:10 +0800 (CST)
-Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm500022.china.huawei.com (7.185.36.162) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Thu, 27 Oct 2022 15:41:04 +0800
-Received: from [10.174.178.174] (10.174.178.174) by
- dggpemm500007.china.huawei.com (7.185.36.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Thu, 27 Oct 2022 15:41:04 +0800
-Subject: Re: [PATCH] ALSA: aoa: i2sbus: fix possible memory leak in
- i2sbus_add_dev()
-To: Takashi Iwai <tiwai@suse.de>
-References: <20221027013438.991920-1-yangyingliang@huawei.com>
- <87r0ytojos.wl-tiwai@suse.de>
-From: Yang Yingliang <yangyingliang@huawei.com>
-Message-ID: <91e667bb-b6dd-4966-eba6-31de4f2b56a7@huawei.com>
-Date: Thu, 27 Oct 2022 15:41:03 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Myd2k4Tmlz2xsc
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Oct 2022 18:43:26 +1100 (AEDT)
+Received: by mail-pf1-x42c.google.com with SMTP id e4so726815pfl.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Oct 2022 00:43:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=tyV2HqAYahIfAWWwYChjluGTBPMCZR7nyHbxVJAWMRw=;
+        b=ZMa9b9qd4f4MOSAvzKURcHFbbg7FznubRAunAxJ8/g6qxN3DPHemWRbgVr1pUnpDZY
+         D7eqekMpMBxbAx51Cpumy8+7wIdD9c29NQME+6x5cxE1ft52tHWxVMSACsxMkgPo/M7r
+         WR8AjyUaFw2v8IOh2tt5gcStjzkK9Q0/xtOaj1U2NSfNUhUxhAQonXGGpSv9snLzDsXQ
+         9qJcp+Y2IuJl0a9r8MqFDFTuzraQHTvTTsBTEFgtL3tFsxUoDwVUD0A1m1BmDO9AxXM4
+         rkjdbD539l6DD6a7nWo/VHidXY6a/khxP6qWFuxJywSws+ZHb+l9G/gwhd4dvH9c55oQ
+         II2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=tyV2HqAYahIfAWWwYChjluGTBPMCZR7nyHbxVJAWMRw=;
+        b=yxU7jU6ERz6S91Mk5BObaZGBbUr/CpNflEADFL0MtucICXFQjF+Zl+ZY68XgtZVc7n
+         P6d/EY6whs6SPsP4oeSuynaccFQBRoBwGJJoFTAzo37BqprAgIJZfcazeRd6KPqceUpX
+         pb7e8cDVn2hbo89T/4kTyFVfEaubPvsnWLBkmjWsKuI61fznfEXZwrbzeGNUbRllPNU5
+         Q8m+vle4rDS+lRnCJbnYQpVktpyvnn0g2N0KfV9o7H/+7w/mWCC19iizwKmvm+OpwWMr
+         0SziFbpBtSJxNphb7kzp080/aNf6KCgN+KbAY9B3hbK53Xe7ZkP31CVSAgJtMon9WfcF
+         sR2w==
+X-Gm-Message-State: ACrzQf2brRJXgysr/hjajKPNZeHgvBxk6Q+AJ2k/Vj94xR0cPbFhMjcF
+	CJ8A+ue9LykqIlBJ3NTI4LL43hJjvhyyIg==
+X-Google-Smtp-Source: AMsMyM6vt5trpsMkUZrK/cdepdTpb696nwMjwaG6LEa9sgaVt9T6a1bay09ZpBK5z+eRZaDDAmFo+g==
+X-Received: by 2002:a05:6a02:207:b0:46f:53ca:cab8 with SMTP id bh7-20020a056a02020700b0046f53cacab8mr945398pgb.242.1666856602802;
+        Thu, 27 Oct 2022 00:43:22 -0700 (PDT)
+Received: from bobo.ozlabs.ibm.com (193-116-106-251.tpgi.com.au. [193.116.106.251])
+        by smtp.gmail.com with ESMTPSA id bi6-20020a170902bf0600b0017f36638010sm507782plb.276.2022.10.27.00.43.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Oct 2022 00:43:21 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/books: Never call nmi_enter for real-mode NMIs
+Date: Thu, 27 Oct 2022 17:43:13 +1000
+Message-Id: <20221027074314.2084016-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-In-Reply-To: <87r0ytojos.wl-tiwai@suse.de>
-Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-Originating-IP: [10.174.178.174]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- dggpemm500007.china.huawei.com (7.185.36.183)
-X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,82 +75,135 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, tiwai@suse.com, linuxppc-dev@lists.ozlabs.org, johannes@sipsolutions.net, perex@perex.cz
+Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+NMIs that are taken in real mode (the early MCE and HMI handlers)
+skipped calling nmi_enter() in some configurations, in the hope that
+more modern configurations like radix suffer fewer restrictions.  This
+just turns into whack-a-mole and fragile when core kernel code changes
+anything.
 
-On 2022/10/27 14:38, Takashi Iwai wrote:
-> On Thu, 27 Oct 2022 03:34:38 +0200,
-> Yang Yingliang wrote:
->> dev_set_name() in soundbus_add_one() allocates memory for name, it need be
->> freed when of_device_register() fails, call soundbus_dev_put() to give up
->> the reference that hold in device_initialize(), so that it can be freed in
->> kobject_cleanup() when the refcount hit to 0. And other resources are also
->> freed in i2sbus_release_dev(), so it can return 0 directly.
->>
->> Fixes: f3d9478b2ce4 ("[ALSA] snd-aoa: add snd-aoa")
->> Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-> The check of kobj state is awkward, but it seems to be the simplest
-> way...  Applied now.  Thanks!
+A recent such example that breaks with radix, an HMI real mode interrupt
+tries to access vmalloc memory, causing it to take a machine check:
 
-Indeed, it's awkward, shall we introduce a helper like this:
+ --- interrupt: 200 at perf_trace_rcu_dyntick+0x140/0x190
+ NIP:  c0000000001d4720 LR: c0000000001d2bb4 CTR: c0000000001d45e0
+ REGS: c000000fffdbfd60 TRAP: 0200   Tainted: G   M                (6.0.0-dirty)
+ MSR:  9000000000201003 <SF,HV,ME,RI,LE>  CR: 24024228  XER: 20040000
+ CFAR: c0000000001d4648 DAR: c009e000016e29a8 DSISR: 00000008 IRQMASK: 3
+ GPR00: c0000000001d2bb4 c000000fffdc7b30 c00000000255c100 c0000000023089f8
+ GPR04: c000000001bd0438 4000000000000000 4000000000000002 0000000000964794
+ GPR08: 0000000000000000 c009dff0055b29a8 0000000ffc130000 7265677368657265
+ GPR12: c0000000001d45e0 c000000ffffd7000 c00000000014e7c8 c00000000ab74280
+ GPR16: 0000000000000000 0000000000000000 0000000000000000 c0000000031a64d8
+ GPR20: c00000000d9f7b00 0000000000000006 c000000002446a28 c009e000016e29a8
+ GPR24: c000000001bd0438 4000000000000000 4000000000000002 0000000000964794
+ GPR28: c0000000001d2bb4 4000000000000002 c0000000023089f8 c0002000063f0668
+ perf_trace_rcu_dyntick+0x140/0x190
+ __traceiter_rcu_dyntick+0x84/0xc0
+ --- interrupt: 200
+ rcu_read_lock_sched_held+0x10/0xe0 (unreliable)
+ __traceiter_rcu_dyntick+0x84/0xc0
+ ct_nmi_enter+0x118/0x280
+ interrupt_nmi_enter_prepare+0x118/0x1f0
+ hmi_exception_realmode+0x38/0xe4
+ hmi_exception_early_common+0x114/0x2a0
+ --- interrupt: e60 at arch_local_irq_restore+0x11c/0x1b0
 
-diff --git a/sound/aoa/soundbus/i2sbus/core.c 
-b/sound/aoa/soundbus/i2sbus/core.c
-index f6841daf9e3b..950c37e0297e 100644
---- a/sound/aoa/soundbus/i2sbus/core.c
-+++ b/sound/aoa/soundbus/i2sbus/core.c
-@@ -302,7 +302,7 @@ static int i2sbus_add_dev(struct macio_dev *macio,
+Just disable this entirely. It turns out the features that might be
+enabled by nmi_enter(), like RCU or printk are unlikely to be usable
+in real mode anyway.
 
-         if (soundbus_add_one(&dev->sound)) {
-                 printk(KERN_DEBUG "i2sbus: device registration error!\n");
--               if (dev->sound.ofdev.dev.kobj.state_initialized) {
-+               if (soundbus_dev_initialized(&dev->sound)) {
-                         soundbus_dev_put(&dev->sound);
-                         return 0;
-                 }
-diff --git a/sound/aoa/soundbus/soundbus.h b/sound/aoa/soundbus/soundbus.h
-index 3a99c1f1a3ca..2c9c95cf156a 100644
---- a/sound/aoa/soundbus/soundbus.h
-+++ b/sound/aoa/soundbus/soundbus.h
-@@ -174,6 +174,10 @@ struct soundbus_dev {
+Reported-by: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ arch/powerpc/include/asm/interrupt.h | 49 +++++++++-------------------
+ 1 file changed, 16 insertions(+), 33 deletions(-)
 
-  extern int soundbus_add_one(struct soundbus_dev *dev);
-  extern void soundbus_remove_one(struct soundbus_dev *dev);
-+static inline bool soundbus_dev_initialized(struct soundbus_dev *dev)
-+{
-+       return dev->ofdev.dev.kobj.state_initialized;
-+}
+diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/asm/interrupt.h
+index 4745bb9998bd..3e87e9ec5117 100644
+--- a/arch/powerpc/include/asm/interrupt.h
++++ b/arch/powerpc/include/asm/interrupt.h
+@@ -276,6 +276,7 @@ struct interrupt_nmi_state {
+ 	u8 irq_soft_mask;
+ 	u8 irq_happened;
+ 	u8 ftrace_enabled;
++	u8 mmu_enabled;
+ 	u64 softe;
+ #endif
+ };
+@@ -303,6 +304,7 @@ static inline void interrupt_nmi_enter_prepare(struct pt_regs *regs, struct inte
+ 	state->irq_soft_mask = local_paca->irq_soft_mask;
+ 	state->irq_happened = local_paca->irq_happened;
+ 	state->softe = regs->softe;
++	state->mmu_enabled = !!(mfmsr() & MSR_DR);
+ 
+ 	/*
+ 	 * Set IRQS_ALL_DISABLED unconditionally so irqs_disabled() does
+@@ -333,46 +335,27 @@ static inline void interrupt_nmi_enter_prepare(struct pt_regs *regs, struct inte
+ 	}
+ #endif
+ 
+-	/* If data relocations are enabled, it's safe to use nmi_enter() */
+-	if (mfmsr() & MSR_DR) {
+-		nmi_enter();
+-		return;
+-	}
+-
+-	/*
+-	 * But do not use nmi_enter() for pseries hash guest taking a real-mode
+-	 * NMI because not everything it touches is within the RMA limit.
+-	 */
+-	if (IS_ENABLED(CONFIG_PPC_BOOK3S_64) &&
+-	    firmware_has_feature(FW_FEATURE_LPAR) &&
+-	    !radix_enabled())
+-		return;
+-
+ 	/*
+-	 * Likewise, don't use it if we have some form of instrumentation (like
+-	 * KASAN shadow) that is not safe to access in real mode (even on radix)
++	 * If data relocations are enabled, it's safe to use nmi_enter().
++	 * Otherwise avoid using it because the core kernel may touch
++	 * vmalloc (e.g., in per-CPU variables), which is not accessible
++	 * with the MMU off. Linear memory beyond the VRMA limit is also
++	 * a problem for hash guests.
++	 *
++	 * The real-mode machine checks should not use RCU, tracing, lockdep
++	 * locks, and should not printk, access per-CPU variables, among
++	 * many other restrictions.
+ 	 */
+-	if (IS_ENABLED(CONFIG_KASAN))
+-		return;
+-
+-	/* Otherwise, it should be safe to call it */
+-	nmi_enter();
++	if (state->mmu_enabled)
++		nmi_enter();
+ }
+ 
+ static inline void interrupt_nmi_exit_prepare(struct pt_regs *regs, struct interrupt_nmi_state *state)
+ {
+-	if (mfmsr() & MSR_DR) {
+-		// nmi_exit if relocations are on
+-		nmi_exit();
+-	} else if (IS_ENABLED(CONFIG_PPC_BOOK3S_64) &&
+-		   firmware_has_feature(FW_FEATURE_LPAR) &&
+-		   !radix_enabled()) {
+-		// no nmi_exit for a pseries hash guest taking a real mode exception
+-	} else if (IS_ENABLED(CONFIG_KASAN)) {
+-		// no nmi_exit for KASAN in real mode
+-	} else {
++	WARN_ON_ONCE(state->mmu_enabled != !!(mfmsr() & MSR_DR));
++
++	if (state->mmu_enabled)
+ 		nmi_exit();
+-	}
+ 
+ 	/*
+ 	 * nmi does not call nap_adjust_return because nmi should not create
+-- 
+2.37.2
 
-
-Thanks,
-Yang
->
->
-> Takashi
->
->
->> ---
->>   sound/aoa/soundbus/i2sbus/core.c | 4 ++++
->>   1 file changed, 4 insertions(+)
->>
->> diff --git a/sound/aoa/soundbus/i2sbus/core.c b/sound/aoa/soundbus/i2sbus/core.c
->> index faf6b03131ee..f6841daf9e3b 100644
->> --- a/sound/aoa/soundbus/i2sbus/core.c
->> +++ b/sound/aoa/soundbus/i2sbus/core.c
->> @@ -302,6 +302,10 @@ static int i2sbus_add_dev(struct macio_dev *macio,
->>   
->>   	if (soundbus_add_one(&dev->sound)) {
->>   		printk(KERN_DEBUG "i2sbus: device registration error!\n");
->> +		if (dev->sound.ofdev.dev.kobj.state_initialized) {
->> +			soundbus_dev_put(&dev->sound);
->> +			return 0;
->> +		}
->>   		goto err;
->>   	}
->>   
->> -- 
->> 2.25.1
->>
-> .
