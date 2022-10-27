@@ -2,75 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4979260F142
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Oct 2022 09:40:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF56760F147
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Oct 2022 09:41:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MyczR0dNkz3cCZ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Oct 2022 18:40:35 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ozlabs-ru.20210112.gappssmtp.com header.i=@ozlabs-ru.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=2ThwM1Cd;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Myd0k4P2xz3cCd
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Oct 2022 18:41:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::636; helo=mail-pl1-x636.google.com; envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ozlabs-ru.20210112.gappssmtp.com header.i=@ozlabs-ru.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=2ThwM1Cd;
-	dkim-atps=neutral
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.255; helo=szxga08-in.huawei.com; envelope-from=yangyingliang@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MycyT3DjTz307C
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Oct 2022 18:39:42 +1100 (AEDT)
-Received: by mail-pl1-x636.google.com with SMTP id 4so640014pli.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Oct 2022 00:39:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ozlabs-ru.20210112.gappssmtp.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Ea0hxXYFnPXaT0jl+FmZql4yNHr4Fyf6HAvktIBslno=;
-        b=2ThwM1CdoeYroa+FUfTpj1Vp6/OxgPMaiL4s0FckhXA4OUMe7dceB7UU1bxyXDnuNT
-         WRLa57sVacmjmOn6/3JMFN+P690O63TOweBHTnc9vTjCcsua1jCjyBEObGuG4JNkFcBX
-         +X2VqROAzObgXJiUk/KP3G2MezF7+FVhsRLKfahh7SpBP5I2kkAUFIctsR2wVs0JG3vK
-         4VwHwAZOftrzGJFOnvqwc+Ly/CAjReoxjQN+LPM8LImCcwKtGKGJds9D3FShYfvqiYRG
-         5ukKRJWvxfdNdMk0OEOi3rMATxsR/6zvedd4U1Q16Rs72dRhSeHTQID9YYcB4VLBpaSL
-         G8uA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ea0hxXYFnPXaT0jl+FmZql4yNHr4Fyf6HAvktIBslno=;
-        b=RZgJFPIxOwMuWECvS+1k6bNeJBWInA5mys+WbAApKHhc6CNL2tPR6mKDJBMnbQDmBC
-         E8gIV8fWA8Ew+dPM3LHH8gPl181I6W+JmcrEmJa0zXIqemnKzQTTQWbHXUEWu2WRM1JN
-         Yr1Z1jNEVvJ2XEkySeUxn25JVAfwgoGn5Hn4JVLCiD8jag5cDN/3g2I05pVnV+WJNky7
-         4JAtSuudvZWVIRec3i5THHnAhUHu5Ap4CfeSGfM90/2nWC18Mg3rcp7rHAMu0m4o6lQx
-         ayfaFZM+TGgDIwV8bAroeGOSXum+z9h9jFl4LYhx8NHAItKcxhlXp1RKiGmCxhseizs0
-         hcHg==
-X-Gm-Message-State: ACrzQf3eRMfOoH+gPW6vmNVy0QztlVaidPte9jibPG2J2tJK2RVjPduH
-	sHDT4Spk/wXUulyPxsGiC93Kx8k/OKlqwg==
-X-Google-Smtp-Source: AMsMyM5bFkKEzQ/H6gKUH7MQ0VVAtvEwIxKoZncGQIAFcNvoO2vHRJC/jD9FI81OF59vCOMa2psMJg==
-X-Received: by 2002:a17:902:e845:b0:184:8078:be88 with SMTP id t5-20020a170902e84500b001848078be88mr47545935plg.99.1666856377744;
-        Thu, 27 Oct 2022 00:39:37 -0700 (PDT)
-Received: from [192.168.10.153] (ppp121-45-204-168.cbr-trn-nor-bras38.tpg.internode.on.net. [121.45.204.168])
-        by smtp.gmail.com with ESMTPSA id u66-20020a627945000000b0056c814a501dsm594389pfc.10.2022.10.27.00.39.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 27 Oct 2022 00:39:37 -0700 (PDT)
-Message-ID: <737f1978-4f3c-40be-ed78-8fe525d04da8@ozlabs.ru>
-Date: Thu, 27 Oct 2022 18:39:30 +1100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Myd070Zn1z2yy7
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Oct 2022 18:41:10 +1100 (AEDT)
+Received: from dggpemm500022.china.huawei.com (unknown [172.30.72.53])
+	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4MyctL3Nh6z15M19;
+	Thu, 27 Oct 2022 15:36:10 +0800 (CST)
+Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
+ dggpemm500022.china.huawei.com (7.185.36.162) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Thu, 27 Oct 2022 15:41:04 +0800
+Received: from [10.174.178.174] (10.174.178.174) by
+ dggpemm500007.china.huawei.com (7.185.36.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Thu, 27 Oct 2022 15:41:04 +0800
+Subject: Re: [PATCH] ALSA: aoa: i2sbus: fix possible memory leak in
+ i2sbus_add_dev()
+To: Takashi Iwai <tiwai@suse.de>
+References: <20221027013438.991920-1-yangyingliang@huawei.com>
+ <87r0ytojos.wl-tiwai@suse.de>
+From: Yang Yingliang <yangyingliang@huawei.com>
+Message-ID: <91e667bb-b6dd-4966-eba6-31de4f2b56a7@huawei.com>
+Date: Thu, 27 Oct 2022 15:41:03 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:107.0) Gecko/20100101
- Thunderbird/107.0
-Subject: Re: [PATCH kernel v2 0/3] powerpc/iommu: Add iommu_ops to report
- capabilities and allow blocking domains
+In-Reply-To: <87r0ytojos.wl-tiwai@suse.de>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 8bit
 Content-Language: en-US
-To: linuxppc-dev@lists.ozlabs.org
-References: <20220920130457.29742-1-aik@ozlabs.ru>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-In-Reply-To: <20220920130457.29742-1-aik@ozlabs.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.178.174]
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ dggpemm500007.china.huawei.com (7.185.36.183)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,52 +56,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Jason Gunthorpe <jgg@ziepe.ca>, Alex Williamson <alex.williamson@redhat.com>, kvm-ppc@vger.kernel.org, Frederic Barrat <fbarrat@linux.ibm.com>
+Cc: alsa-devel@alsa-project.org, tiwai@suse.com, linuxppc-dev@lists.ozlabs.org, johannes@sipsolutions.net, perex@perex.cz
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michael, Fred, ping?
+
+On 2022/10/27 14:38, Takashi Iwai wrote:
+> On Thu, 27 Oct 2022 03:34:38 +0200,
+> Yang Yingliang wrote:
+>> dev_set_name() in soundbus_add_one() allocates memory for name, it need be
+>> freed when of_device_register() fails, call soundbus_dev_put() to give up
+>> the reference that hold in device_initialize(), so that it can be freed in
+>> kobject_cleanup() when the refcount hit to 0. And other resources are also
+>> freed in i2sbus_release_dev(), so it can return 0 directly.
+>>
+>> Fixes: f3d9478b2ce4 ("[ALSA] snd-aoa: add snd-aoa")
+>> Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+> The check of kobj state is awkward, but it seems to be the simplest
+> way...  Applied now.  Thanks!
+
+Indeed, it's awkward, shall we introduce a helper like this:
+
+diff --git a/sound/aoa/soundbus/i2sbus/core.c 
+b/sound/aoa/soundbus/i2sbus/core.c
+index f6841daf9e3b..950c37e0297e 100644
+--- a/sound/aoa/soundbus/i2sbus/core.c
++++ b/sound/aoa/soundbus/i2sbus/core.c
+@@ -302,7 +302,7 @@ static int i2sbus_add_dev(struct macio_dev *macio,
+
+         if (soundbus_add_one(&dev->sound)) {
+                 printk(KERN_DEBUG "i2sbus: device registration error!\n");
+-               if (dev->sound.ofdev.dev.kobj.state_initialized) {
++               if (soundbus_dev_initialized(&dev->sound)) {
+                         soundbus_dev_put(&dev->sound);
+                         return 0;
+                 }
+diff --git a/sound/aoa/soundbus/soundbus.h b/sound/aoa/soundbus/soundbus.h
+index 3a99c1f1a3ca..2c9c95cf156a 100644
+--- a/sound/aoa/soundbus/soundbus.h
++++ b/sound/aoa/soundbus/soundbus.h
+@@ -174,6 +174,10 @@ struct soundbus_dev {
+
+  extern int soundbus_add_one(struct soundbus_dev *dev);
+  extern void soundbus_remove_one(struct soundbus_dev *dev);
++static inline bool soundbus_dev_initialized(struct soundbus_dev *dev)
++{
++       return dev->ofdev.dev.kobj.state_initialized;
++}
 
 
-On 20/09/2022 23:04, Alexey Kardashevskiy wrote:
-> Here is another take on iommu_ops on POWER to make VFIO work
-> again on POWERPC64. Tested on PPC, kudos to Fred!
-> 
-> The tree with all prerequisites is here:
-> https://github.com/aik/linux/tree/kvm-fixes-wip
-> 
-> The previous discussion is here:
-> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20220707135552.3688927-1-aik@ozlabs.ru/
-> https://patchwork.ozlabs.org/project/kvm-ppc/patch/20220701061751.1955857-1-aik@ozlabs.ru/
-> https://lore.kernel.org/all/20220714081822.3717693-3-aik@ozlabs.ru/T/
-> 
-> Please comment. Thanks.
-> 
-> 
-> This is based on sha1
-> ce888220d5c7 Linus Torvalds "Merge tag 'scsi-fixes' of git://git.kernel.org/pub/scm/linux/kernel/git/jejb/scsi".
-> 
-> Please comment. Thanks.
-> 
-> 
-> 
-> Alexey Kardashevskiy (3):
->    powerpc/iommu: Add "borrowing" iommu_table_group_ops
->    powerpc/pci_64: Init pcibios subsys a bit later
->    powerpc/iommu: Add iommu_ops to report capabilities and allow blocking
->      domains
-> 
->   arch/powerpc/include/asm/iommu.h          |   6 +-
->   arch/powerpc/include/asm/pci-bridge.h     |   7 +
->   arch/powerpc/platforms/pseries/pseries.h  |   4 +
->   arch/powerpc/kernel/iommu.c               | 247 +++++++++++++++++++++-
->   arch/powerpc/kernel/pci_64.c              |   2 +-
->   arch/powerpc/platforms/powernv/pci-ioda.c |  36 +++-
->   arch/powerpc/platforms/pseries/iommu.c    |  27 +++
->   arch/powerpc/platforms/pseries/setup.c    |   3 +
->   drivers/vfio/vfio_iommu_spapr_tce.c       |  96 ++-------
->   9 files changed, 334 insertions(+), 94 deletions(-)
-> 
-
--- 
-Alexey
+Thanks,
+Yang
+>
+>
+> Takashi
+>
+>
+>> ---
+>>   sound/aoa/soundbus/i2sbus/core.c | 4 ++++
+>>   1 file changed, 4 insertions(+)
+>>
+>> diff --git a/sound/aoa/soundbus/i2sbus/core.c b/sound/aoa/soundbus/i2sbus/core.c
+>> index faf6b03131ee..f6841daf9e3b 100644
+>> --- a/sound/aoa/soundbus/i2sbus/core.c
+>> +++ b/sound/aoa/soundbus/i2sbus/core.c
+>> @@ -302,6 +302,10 @@ static int i2sbus_add_dev(struct macio_dev *macio,
+>>   
+>>   	if (soundbus_add_one(&dev->sound)) {
+>>   		printk(KERN_DEBUG "i2sbus: device registration error!\n");
+>> +		if (dev->sound.ofdev.dev.kobj.state_initialized) {
+>> +			soundbus_dev_put(&dev->sound);
+>> +			return 0;
+>> +		}
+>>   		goto err;
+>>   	}
+>>   
+>> -- 
+>> 2.25.1
+>>
+> .
