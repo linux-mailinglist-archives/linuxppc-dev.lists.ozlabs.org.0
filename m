@@ -2,89 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89422611529
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Oct 2022 16:50:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 548FF61152D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Oct 2022 16:51:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MzQSp2Hyzz3fP8
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Oct 2022 01:50:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MzQTq0yhWz3fQR
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Oct 2022 01:51:11 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Fj1v+UwD;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=U9faWpM7;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sv@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::736; helo=mail-qk1-x736.google.com; envelope-from=yury.norov@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Fj1v+UwD;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=U9faWpM7;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-x736.google.com (mail-qk1-x736.google.com [IPv6:2607:f8b0:4864:20::736])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MzQ883bdqz3cMf
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Oct 2022 01:35:52 +1100 (AEDT)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29SEVqdj014128;
-	Fri, 28 Oct 2022 14:35:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=1PlQTx08gDNMcuSjsgLHsbCJyxz3KNMlbtE73QKmjvI=;
- b=Fj1v+UwD4m51chJrBywiI3gQRLo8OGwJE/JVoZVg4kRiuBaOIt6f309r7KoVW50j03a5
- YYfoFm3tRGqv8JEAQfooNkbKvTw01WAFwj7b1FnaD67DQjNtnHvfD7XsLFp0y7mlefem
- kKsFfIBbH63hswEJdHuQOtSPexlHquuEJuh3APCP9FrjKrlHalqWVwoVFU3NqzlC500S
- E06PInH2G9cmQpKSOeOVTMqfl71llALjUNl9YAmCn6xVCXwirp573wb+sdJMrli3OpVc
- JA43YrRNNckqp3TDRUhlPCL05vvRYNs/0Y74erXOKRlugIp+76aIlFmqaGet2jeitfdW 2w== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3kggx586ue-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 28 Oct 2022 14:35:38 +0000
-Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 29SEWAss014906;
-	Fri, 28 Oct 2022 14:35:37 GMT
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3kggx586sb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 28 Oct 2022 14:35:37 +0000
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
-	by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 29SEKhFB019348;
-	Fri, 28 Oct 2022 14:35:34 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
-	by ppma02fra.de.ibm.com with ESMTP id 3kfahmjqge-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 28 Oct 2022 14:35:34 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
-	by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 29SEZVmt51577334
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 28 Oct 2022 14:35:32 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DE414A4051;
-	Fri, 28 Oct 2022 14:35:31 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DD5BFA4040;
-	Fri, 28 Oct 2022 14:35:27 +0000 (GMT)
-Received: from li-c3569c4c-1ef8-11b2-a85c-ee139cda3133.ibm.com.com (unknown [9.43.124.163])
-	by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Fri, 28 Oct 2022 14:35:27 +0000 (GMT)
-From: Sathvika Vasireddy <sv@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v5 16/16] objtool/powerpc: Add --mcount specific implementation
-Date: Fri, 28 Oct 2022 20:03:46 +0530
-Message-Id: <20221028143346.183569-17-sv@linux.ibm.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20221028143346.183569-1-sv@linux.ibm.com>
-References: <20221028143346.183569-1-sv@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MzQN60dPfz3fG6
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Oct 2022 01:46:13 +1100 (AEDT)
+Received: by mail-qk1-x736.google.com with SMTP id k4so643687qkj.8
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Oct 2022 07:46:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=0Eap9vgCOo567XBoaqrJtjJTPOneofbaWXwjzfOt/ko=;
+        b=U9faWpM7anfFBwf3lzGgjWdNMgzIZ5MaBAebT8n2v2OUJY1IMy0pME/pjQqGG+QCfK
+         7bZUQVJbFh+CxKQQwQ9R5DDx2LWJYCh9bHvuVmZHPmCZPkMxsq4v3oJXCIxrEtU2wyRC
+         xULShKwG4KVA/V/y2mm6RzTgzuuWv442t/NvFxc8iUofWRjpiTJmB9Up3DOffi9xJubj
+         RR/im5wg2HXy+AthCzdp6tuonbTc2TjHap3B8Gg0F07kxqFgPa43HIxP9DkvUH0elOgY
+         5p7rsu2JPPbc+4Yasp+tik93X6+d2C8f2E2ZaK63ox8JmrIPJbDeHqmIGgxLkGGsIsze
+         bCDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0Eap9vgCOo567XBoaqrJtjJTPOneofbaWXwjzfOt/ko=;
+        b=XH27LDiI4qScVR6dY7qOH78SKoK9/M28u3o6dUL9tfmyBx4xOkN1UrBAbYqIhDHfNa
+         4iWIJNgcgLzp/I7HuCrvSgyAEMViMwZXvV74+LrZsmn+NNTTCaMUgIp94//VG/SPegCW
+         6chLEvf/c0nOpABxqLBmNmeVgDdIykbEhZ4ZAz6juR5x0x/BM5RXZgBVvcuH2HkwKOUr
+         uINpgZaXaIFfEIVVkREolcOkWu5/FdCTTtIqB2+Mrp+7HuDEokW9CaNbXmFq/Hfxer4m
+         MagqRiA7twtoEuSVVeeJDxtJmzxBPR5VVAxu+AMcdhj2s7NrWk2tBAlfPUG5vlSQGDNO
+         01ug==
+X-Gm-Message-State: ACrzQf1lYPiz8wmboke2NFZJADrKmNizpbKTeYawC2CDcuGcw4U2rgQv
+	BPziU8+tY/EOWQrKdipxJgQ=
+X-Google-Smtp-Source: AMsMyM57AgHD6SgkTqjWVZle9kdelFZLgih4OaFJ7oUhyOHHF+SxLTt1A5EyJr2xvmD6EBJZRyNRIw==
+X-Received: by 2002:ae9:ebce:0:b0:6f9:ff07:7295 with SMTP id b197-20020ae9ebce000000b006f9ff077295mr5459491qkg.655.1666968369100;
+        Fri, 28 Oct 2022 07:46:09 -0700 (PDT)
+Received: from localhost ([2601:589:4102:5fd2:5b94:d8b:99bf:707a])
+        by smtp.gmail.com with ESMTPSA id x3-20020a05620a448300b006bbc09af9f5sm3032932qkp.101.2022.10.28.07.46.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Oct 2022 07:46:08 -0700 (PDT)
+Date: Fri, 28 Oct 2022 07:46:08 -0700
+From: Yury Norov <yury.norov@gmail.com>
+To: Andrew Jones <ajones@ventanamicro.com>
+Subject: Re: [PATCH v3 2/2] x86: Fix /proc/cpuinfo cpumask warning
+Message-ID: <Y1vrMMtRwb0Lekl0@yury-laptop>
+References: <20221014155845.1986223-1-ajones@ventanamicro.com>
+ <20221014155845.1986223-3-ajones@ventanamicro.com>
+ <20221028074828.b66uuqqfbrnjdtab@kamzik>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: hI6smG1Z_9eYCsOgk5DaoR0-m1o6WEfM
-X-Proofpoint-ORIG-GUID: 0mOoM1qbGu1BcSaKbAE5cYShNgE33o5C
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-10-28_07,2022-10-27_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- priorityscore=1501 mlxscore=0 lowpriorityscore=0 mlxlogscore=999
- impostorscore=0 bulkscore=0 adultscore=0 clxscore=1015 spamscore=0
- phishscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2210170000 definitions=main-2210280090
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221028074828.b66uuqqfbrnjdtab@kamzik>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,82 +79,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: peterz@infradead.org, npiggin@gmail.com, linux-kernel@vger.kernel.org, aik@ozlabs.ru, mingo@redhat.com, sv@linux.ibm.com, rostedt@goodmis.org, jpoimboe@redhat.com, naveen.n.rao@linux.vnet.ibm.com, mbenes@suse.cz, chenzhongjin@huawei.com
+Cc: Jonas Bonn <jonas@southpole.se>, linux-s390@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Dave Hansen <dave.hansen@linux.intel.com>, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, x86@kernel.org, linux-kernel@vger.kernel.org, Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, openrisc@lists.librecores.org, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Paul Walmsley <paul.walmsley@sifive.com>, Stafford Horne <shorne@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, Thomas Gleixner <tglx@linutronix.de>, Albert Ou <aou@eecs.berkeley.edu>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This patch enables objtool --mcount on powerpc, and adds implementation
-specific to powerpc.
+On Fri, Oct 28, 2022 at 09:48:28AM +0200, Andrew Jones wrote:
+> Hi x86 maintainers,
+> 
+> I realize 78e5a3399421 has now been reverted, so this fix is no longer
+> urgent. I don't believe it's wrong, though, so if it's still of interest,
+> then please consider this a friendly ping.
+> 
+> Thanks,
+> drew
 
-Tested-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
-Reviewed-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Sathvika Vasireddy <sv@linux.ibm.com>
----
- arch/powerpc/Kconfig                          |  1 +
- tools/objtool/arch/powerpc/decode.c           | 16 ++++++++++++++++
- tools/objtool/arch/powerpc/include/arch/elf.h |  2 ++
- 3 files changed, 19 insertions(+)
+Hi Andrew,
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 12e6c16be54e..9c07068ba5e5 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -239,6 +239,7 @@ config PPC
- 	select HAVE_NMI				if PERF_EVENTS || (PPC64 && PPC_BOOK3S)
- 	select HAVE_OPTPROBES
- 	select HAVE_OBJTOOL			if PPC32 || MPROFILE_KERNEL
-+	select HAVE_OBJTOOL_MCOUNT		if HAVE_OBJTOOL
- 	select HAVE_PERF_EVENTS
- 	select HAVE_PERF_EVENTS_NMI		if PPC64
- 	select HAVE_PERF_REGS
-diff --git a/tools/objtool/arch/powerpc/decode.c b/tools/objtool/arch/powerpc/decode.c
-index dcd0975cad6b..01cade98b49e 100644
---- a/tools/objtool/arch/powerpc/decode.c
-+++ b/tools/objtool/arch/powerpc/decode.c
-@@ -9,6 +9,11 @@
- #include <objtool/builtin.h>
- #include <objtool/endianness.h>
- 
-+int arch_ftrace_match(char *name)
-+{
-+	return !strcmp(name, "_mcount");
-+}
-+
- unsigned long arch_dest_reloc_offset(int addend)
- {
- 	return addend;
-@@ -50,6 +55,17 @@ int arch_decode_instruction(struct objtool_file *file, const struct section *sec
- 	typ = INSN_OTHER;
- 	imm = 0;
- 
-+	switch (opcode) {
-+	case 18: /* b[l][a] */
-+		if ((insn & 3) == 1) /* bl */
-+			typ = INSN_CALL;
-+
-+		imm = insn & 0x3fffffc;
-+		if (imm & 0x2000000)
-+			imm -= 0x4000000;
-+		break;
-+	}
-+
- 	if (opcode == 1)
- 		*len = 8;
- 	else
-diff --git a/tools/objtool/arch/powerpc/include/arch/elf.h b/tools/objtool/arch/powerpc/include/arch/elf.h
-index 3c8ebb7d2a6b..73f9ae172fe5 100644
---- a/tools/objtool/arch/powerpc/include/arch/elf.h
-+++ b/tools/objtool/arch/powerpc/include/arch/elf.h
-@@ -4,5 +4,7 @@
- #define _OBJTOOL_ARCH_ELF
- 
- #define R_NONE R_PPC_NONE
-+#define R_ABS64 R_PPC64_ADDR64
-+#define R_ABS32 R_PPC_ADDR32
- 
- #endif /* _OBJTOOL_ARCH_ELF */
--- 
-2.31.1
+I'll take it in bitmap-for-next this weekend.
 
+Thanks,
+Yury
