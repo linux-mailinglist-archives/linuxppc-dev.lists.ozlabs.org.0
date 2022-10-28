@@ -2,72 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74ED1610985
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Oct 2022 07:06:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4179B6109BE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Oct 2022 07:30:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Mz9WK2lphz3cM0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Oct 2022 16:06:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MzB34120Cz3cJK
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Oct 2022 16:30:40 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=gErV0eXB;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ea06Zx8s;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62e; helo=mail-pl1-x62e.google.com; envelope-from=dmitry.torokhov@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sachinp@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=gErV0eXB;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ea06Zx8s;
 	dkim-atps=neutral
-Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mz9VL3C5Mz2ywm
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Oct 2022 16:05:44 +1100 (AEDT)
-Received: by mail-pl1-x62e.google.com with SMTP id f23so3896455plr.6
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Oct 2022 22:05:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=uyMK7y8RQqNmNtG3Q5ktkxVubz+gBEtfWLQrdJqX2zo=;
-        b=gErV0eXBCE/xHbxTMfsdEvDxGOEn3fGY/8zejUHjfMv3FrLyfBoFOQBzLJJrN1RVYM
-         od04CkKdyLcUWs3j/YIrSlhipPOUBVGuJn4oQx3weiiOIniaAYnpn63W/vYVlcrI6w6/
-         36zjQjMcGjdOyckUR+WWBGzqp606NphecQkFtF9DQxpHeFNKeq2gLrKmcGpNRCICML9s
-         w7YUtbZZTugKuQnEOCAsuef+Sy5mwVZ410aXGsPdulRVPPYPd5wpiBFCoaHoh9MGpwgA
-         G59uo4LOug8QZxy9MmSkv7hdFuKWGLnvH5zJCSWboZzRBdSInH304kSDKaVLyk18H8zF
-         UKtA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uyMK7y8RQqNmNtG3Q5ktkxVubz+gBEtfWLQrdJqX2zo=;
-        b=JMtSq575x8FDiTGwHS/9GJ48Db8PtOCbEv/HyZUgQ+963QIVtX5JwjBu1oMYtRq0xa
-         f6YN6E8UynC4MjPW5zuhQzGIgvQq+uvFmYqyg3eyP/nqLwCvVsTzp5dgosPOHxMByLVs
-         jhOfM4yfMKgWGsLxY1YZyZsgAPUttS7fXzuLslwB6uV8BTX1epNfRp3tkywRipP2dNqY
-         SitaG/vYaffrhM5Ajqg+F5lZovOpyVzZoFK30Q+y6H0ANytc48S27YJNyXmVs0kdY0bp
-         Ex+trqYgVUaZWqPyOFcKle1stJx2qX3k/sdw2+q3CEzEcETI2kzeLbMBEfqTdm/B/T7L
-         pKsw==
-X-Gm-Message-State: ACrzQf12JUbWc1MqUL67+AYSsMhYVnt3UOXZhPn9YGMTA/+Z0TJO9I1Y
-	uTmF+GKoJG83lUTavddWwy8=
-X-Google-Smtp-Source: AMsMyM5Hrxu+dB6bgfe7cCuQnitxTrwwQynOFFJMD2+fwZ+wwoOFbwZ6omcSSAE1Uoamrp4D7U57Kg==
-X-Received: by 2002:a17:902:ec8e:b0:186:de89:7f66 with SMTP id x14-20020a170902ec8e00b00186de897f66mr11629707plg.160.1666933540074;
-        Thu, 27 Oct 2022 22:05:40 -0700 (PDT)
-Received: from google.com ([2620:15c:9d:2:ea9a:801b:ed52:2db1])
-        by smtp.gmail.com with ESMTPSA id z12-20020a63b90c000000b004277f43b736sm1829407pge.92.2022.10.27.22.05.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Oct 2022 22:05:39 -0700 (PDT)
-Date: Thu, 27 Oct 2022 22:05:36 -0700
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] powerpc/warp: switch to using gpiod API
-Message-ID: <Y1tjIOCohHF3faQb@google.com>
-References: <YzKSLcrYmV5kjyeX@google.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YzKSLcrYmV5kjyeX@google.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MzB235Hygz2xZ7
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Oct 2022 16:29:46 +1100 (AEDT)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29S5Ik0B021769
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Oct 2022 05:29:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : content-type :
+ content-transfer-encoding : mime-version : subject : message-id : date :
+ cc : to; s=pp1; bh=GvYePZU6Zm7c3AzBM9qcuuLWLt+TNR/ozwMeDqQZBas=;
+ b=ea06Zx8spSOecFZ8e6Q1yIZDH4Q+897HPh69K7u5oWBToZBd4RLzxcs55Fm8AlwL8gFv
+ DSrq1Nc3eSHhPdm5FPxohdKR4kDic9xKeT+yDZFXerwjG6TRnFBND/O6EQb2jnA2sKNj
+ Igk2iJ3hj3Vc3RVWGzGTK6p2c002pkvtRXNYLuhxIj7oegZiwi6N7iXPYa2trvwRAYsJ
+ +wDu/VxSRwWzM8rfrjiG+0zu2xyMdIjYl01CATW7e3CLHzZKn8IiHNm0JV+MqRjnsO2a
+ 6+OPAvCj05rfYYeUbhmYnLOcM9le0QFtQh8DqJDp12Ev+dcXKmTvOgBCAW2y1MRwZqdk +A== 
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3kg8tvgc6c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Oct 2022 05:29:43 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+	by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 29S5L9SJ025842
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Oct 2022 05:28:46 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+	by ppma03ams.nl.ibm.com with ESMTP id 3kfahqk5wt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Oct 2022 05:28:45 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
+	by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 29S5Sgkh63045986
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 28 Oct 2022 05:28:42 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BA8D642045;
+	Fri, 28 Oct 2022 05:28:42 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E7B9C42041;
+	Fri, 28 Oct 2022 05:28:41 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.109.241.54])
+	by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Fri, 28 Oct 2022 05:28:41 +0000 (GMT)
+From: Sachin Sant <sachinp@linux.ibm.com>
+Content-Type: text/plain;
+	charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.1\))
+Subject: [6.1.0-rc2] insecure W+X mapping warning during kdump kernel boot
+Message-Id: <48206911-FD3D-401A-A69D-1A79403E79E2@linux.ibm.com>
+Date: Fri, 28 Oct 2022 10:58:40 +0530
+To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+X-Mailer: Apple Mail (2.3696.120.41.1.1)
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: bq0rX4OdA66iQEJlT0NFgpY70ZSI4F-x
+X-Proofpoint-ORIG-GUID: bq0rX4OdA66iQEJlT0NFgpY70ZSI4F-x
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-10-28_02,2022-10-27_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ mlxlogscore=813 lowpriorityscore=0 clxscore=1011 malwarescore=0
+ phishscore=0 adultscore=0 mlxscore=0 suspectscore=0 bulkscore=0
+ priorityscore=1501 spamscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2210170000 definitions=main-2210280031
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,242 +88,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Hari Bathini <hbathini@linux.ibm.com>, Sourabh Jain <sourabhjain@linux.ibm.com>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Sep 26, 2022 at 11:03:25PM -0700, Dmitry Torokhov wrote:
-> This switches PIKA Warp away from legacy gpio API and to newer gpiod
-> API, so that we can eventually deprecate the former.
-> 
-> Because LEDs are normally driven by leds-gpio driver, but the
-> platform code also wants to access the LEDs during thermal shutdown,
-> and gpiod API does not allow locating GPIO without requesting it,
-> the platform code is now responsible for locating GPIOs through device
-> tree and requesting them. It then constructs platform data for
-> leds-gpio platform device and registers it. This allows platform
-> code to retain access to LED GPIO descriptors and use them when needed.
-> 
-> Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+With CONFIG_DEBUG_WX=3Dy I am observing following warning
+During kdump kernel boot. This warning is not seen during production
+kernel boot. Kernel crash dump is captured correctly.
 
-Gentle ping on this... Could I get a feedback if this is acceptable or
-if you want me to rework this somehow?
+------------[ cut here ]------------
+[   11.541311] powerpc/mm: Found insecure W+X mapping at address =
+00000000749d3849/0xc000000000000000
+[   11.541328] WARNING: CPU: 28 PID: 1 at =
+arch/powerpc/mm/ptdump/ptdump.c:194 note_page+0x408/0x430
+[   11.541342] Modules linked in:
+[   11.541348] CPU: 28 PID: 1 Comm: swapper/28 Not tainted =
+6.1.0-rc2-gb229b6ca5abb #1
+[   11.541356] Hardware name: IBM,9080-HEX POWER10 (raw) 0x800200 =
+0xf000006 of:IBM,FW1030.00 (NH1030_026) hv:phyp pSeries
+[   11.541364] NIP:  c0000000100b1ac8 LR: c0000000100b1ac4 CTR: =
+0000000000725d90
+[   11.541370] REGS: c0000000156f7720 TRAP: 0700   Not tainted  =
+(6.1.0-rc2-gb229b6ca5abb)
+[   11.541377] MSR:  800000000282b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  =
+CR: 28000822  XER: 00000006
+[   11.541393] CFAR: c000000010157514 IRQMASK: 0=20
+[   11.541393] GPR00: c0000000100b1ac4 c0000000156f79c0 c00000001135eb00 =
+0000000000000055=20
+[   11.541393] GPR04: 00000000fffeffff c0000000156f7780 c0000000156f7778 =
+0000000000000000=20
+[   11.541393] GPR08: 00000000fffeffff 0000000000000000 c0000000125d73b8 =
+c000000083dfffe8=20
+[   11.541393] GPR12: 0000000000000000 c000000012e12400 c000000010f3b5f0 =
+c0000000001f0000=20
+[   11.541393] GPR16: c000000012b2dba0 0000000000000001 c0000000156f7bd8 =
+c00000008ffc0010=20
+[   11.541393] GPR20: c000000010f3b5f0 c00000003fffffff c000000000010000 =
+c000000012b2dbb0=20
+[   11.541393] GPR24: c000000012b2dba8 c00000008ffe0000 c000000000200000 =
+c000000000010000=20
+[   11.541393] GPR28: c00000000001018e 0000000000000004 c00000000001018e =
+c0000000156f7cc0=20
+[   11.541462] NIP [c0000000100b1ac8] note_page+0x408/0x430
+[   11.541469] LR [c0000000100b1ac4] note_page+0x404/0x430
+[   11.541476] Call Trace:
+[   11.541478] [c0000000156f79c0] [c0000000100b1ac4] =
+note_page+0x404/0x430 (unreliable)
+[   11.541488] [c0000000156f7a70] [c000000010550a14] =
+ptdump_pte_entry+0xa4/0x100
+[   11.541498] [c0000000156f7ab0] [c00000001049849c] =
+walk_pgd_range+0x8ec/0xb20
+[   11.541507] [c0000000156f7bb0] [c000000010498bf4] =
+walk_page_range_novma+0x74/0xc0
+[   11.541515] [c0000000156f7c10] [c000000010550e48] =
+ptdump_walk_pgd+0x98/0x170
+[   11.541523] [c0000000156f7c60] [c0000000100b1b84] =
+ptdump_check_wx+0x94/0x100
+[   11.541532] [c0000000156f7d40] [c000000010094cb0] =
+mark_rodata_ro+0x30/0x70
+[   11.541540] [c0000000156f7da0] [c00000001001282c] =
+kernel_init+0x8c/0x1b0
+[   11.541548] [c0000000156f7e10] [c00000001000cf60] =
+ret_from_kernel_thread+0x5c/0x64
+[   11.541556] Instruction dump:
+[   11.541560] eb410080 ebc100a0 7c0803a6 4bfffc94 3c62ffe1 39200001 =
+3d42016b 7ca42b78=20
+[   11.541571] 3863e5c0 992a9e23 480a59ed 60000000 <0fe00000> fae10068 =
+fb010070 fb210078=20
+[   11.541583] ---[ end trace 0000000000000000 ]=E2=80=94
 
-Thanks!
 
-> ---
-> 
-> Compiled only, no hardware to test this.
-> 
->  arch/powerpc/boot/dts/warp.dts    |   4 +-
->  arch/powerpc/platforms/44x/warp.c | 105 ++++++++++++++++++++++++++----
->  2 files changed, 94 insertions(+), 15 deletions(-)
-> 
-> diff --git a/arch/powerpc/boot/dts/warp.dts b/arch/powerpc/boot/dts/warp.dts
-> index b4f32740870e..aa62d08e97c2 100644
-> --- a/arch/powerpc/boot/dts/warp.dts
-> +++ b/arch/powerpc/boot/dts/warp.dts
-> @@ -258,14 +258,12 @@ GPIO1: gpio@ef600c00 {
->  			};
->  
->  			power-leds {
-> -				compatible = "gpio-leds";
-> +				compatible = "warp-power-leds";
->  				green {
->  					gpios = <&GPIO1 0 0>;
-> -					default-state = "keep";
->  				};
->  				red {
->  					gpios = <&GPIO1 1 0>;
-> -					default-state = "keep";
->  				};
->  			};
->  
-> diff --git a/arch/powerpc/platforms/44x/warp.c b/arch/powerpc/platforms/44x/warp.c
-> index f03432ef010b..cefa313c09f0 100644
-> --- a/arch/powerpc/platforms/44x/warp.c
-> +++ b/arch/powerpc/platforms/44x/warp.c
-> @@ -5,15 +5,17 @@
->   * Copyright (c) 2008-2009 PIKA Technologies
->   *   Sean MacLennan <smaclennan@pikatech.com>
->   */
-> +#include <linux/err.h>
->  #include <linux/init.h>
->  #include <linux/of_platform.h>
->  #include <linux/kthread.h>
-> +#include <linux/leds.h>
->  #include <linux/i2c.h>
->  #include <linux/interrupt.h>
->  #include <linux/delay.h>
->  #include <linux/of_address.h>
->  #include <linux/of_irq.h>
-> -#include <linux/of_gpio.h>
-> +#include <linux/gpio/consumer.h>
->  #include <linux/slab.h>
->  #include <linux/export.h>
->  
-> @@ -92,8 +94,6 @@ static int __init warp_post_info(void)
->  
->  static LIST_HEAD(dtm_shutdown_list);
->  static void __iomem *dtm_fpga;
-> -static unsigned green_led, red_led;
-> -
->  
->  struct dtm_shutdown {
->  	struct list_head list;
-> @@ -101,7 +101,6 @@ struct dtm_shutdown {
->  	void *arg;
->  };
->  
-> -
->  int pika_dtm_register_shutdown(void (*func)(void *arg), void *arg)
->  {
->  	struct dtm_shutdown *shutdown;
-> @@ -132,6 +131,35 @@ int pika_dtm_unregister_shutdown(void (*func)(void *arg), void *arg)
->  	return -EINVAL;
->  }
->  
-> +#define WARP_GREEN_LED	0
-> +#define WARP_RED_LED	1
-> +
-> +static struct gpio_led warp_gpio_led_pins[] = {
-> +	[WARP_GREEN_LED] = {
-> +		.name		= "green",
-> +		.default_state	= LEDS_DEFSTATE_KEEP,
-> +		.gpiod		= NULL, /* to be filled by pika_setup_leds() */
-> +	},
-> +	[WARP_RED_LED] = {
-> +		.name		= "red",
-> +		.default_state	= LEDS_DEFSTATE_KEEP,
-> +		.gpiod		= NULL, /* to be filled by pika_setup_leds() */
-> +	},
-> +};
-> +
-> +static struct gpio_led_platform_data warp_gpio_led_data = {
-> +	.leds		= warp_gpio_led_pins,
-> +	.num_leds	= ARRAY_SIZE(warp_gpio_led_pins),
-> +};
-> +
-> +static struct platform_device warp_gpio_leds = {
-> +	.name	= "leds-gpio",
-> +	.id	= -1,
-> +	.dev	= {
-> +		.platform_data = &warp_gpio_led_data,
-> +	},
-> +};
-> +
->  static irqreturn_t temp_isr(int irq, void *context)
->  {
->  	struct dtm_shutdown *shutdown;
-> @@ -139,7 +167,7 @@ static irqreturn_t temp_isr(int irq, void *context)
->  
->  	local_irq_disable();
->  
-> -	gpio_set_value(green_led, 0);
-> +	gpiod_set_value(warp_gpio_led_pins[WARP_GREEN_LED].gpiod, 0);
->  
->  	/* Run through the shutdown list. */
->  	list_for_each_entry(shutdown, &dtm_shutdown_list, list)
-> @@ -153,7 +181,7 @@ static irqreturn_t temp_isr(int irq, void *context)
->  			out_be32(dtm_fpga + 0x14, reset);
->  		}
->  
-> -		gpio_set_value(red_led, value);
-> +		gpiod_set_value(warp_gpio_led_pins[WARP_RED_LED].gpiod, value);
->  		value ^= 1;
->  		mdelay(500);
->  	}
-> @@ -162,25 +190,78 @@ static irqreturn_t temp_isr(int irq, void *context)
->  	return IRQ_HANDLED;
->  }
->  
-> +/*
-> + * Because green and red power LEDs are normally driven by leds-gpio driver,
-> + * but in case of critical temperature shutdown we want to drive them
-> + * ourselves, we acquire both and then create leds-gpio platform device
-> + * ourselves, instead of doing it through device tree. This way we can still
-> + * keep access to the gpios and use them when needed.
-> + */
->  static int pika_setup_leds(void)
->  {
->  	struct device_node *np, *child;
-> +	struct gpio_desc *gpio;
-> +	struct gpio_led *led;
-> +	int led_count = 0;
-> +	int error;
-> +	int i;
->  
-> -	np = of_find_compatible_node(NULL, NULL, "gpio-leds");
-> +	np = of_find_compatible_node(NULL, NULL, "warp-power-leds");
->  	if (!np) {
->  		printk(KERN_ERR __FILE__ ": Unable to find leds\n");
->  		return -ENOENT;
->  	}
->  
-> -	for_each_child_of_node(np, child)
-> -		if (of_node_name_eq(child, "green"))
-> -			green_led = of_get_gpio(child, 0);
-> -		else if (of_node_name_eq(child, "red"))
-> -			red_led = of_get_gpio(child, 0);
-> +	for_each_child_of_node(np, child) {
-> +		for (i = 0; i < ARRAY_SIZE(warp_gpio_led_pins); i++) {
-> +			led = &warp_gpio_led_pins[i];
-> +
-> +			if (!of_node_name_eq(child, led->name))
-> +				continue;
-> +
-> +			if (led->gpiod) {
-> +				printk(KERN_ERR __FILE__ ": %s led has already been defined\n",
-> +				       led->name);
-> +				continue;
-> +			}
-> +
-> +			gpio = fwnode_gpiod_get_index(of_fwnode_handle(child),
-> +						      NULL, 0, GPIOD_ASIS,
-> +						      led->name);
-> +			error = PTR_ERR_OR_ZERO(gpio);
-> +			if (error) {
-> +				printk(KERN_ERR __FILE__ ": Failed to get %s led gpio: %d\n",
-> +				       led->name, error);
-> +				of_node_put(child);
-> +				goto err_cleanup_pins;
-> +			}
-> +
-> +			led->gpiod = gpio;
-> +			led_count++;
-> +		}
-> +	}
->  
->  	of_node_put(np);
->  
-> +	/* Skip device registration if no leds have been defined */
-> +	if (led_count) {
-> +		error = platform_device_register(&warp_gpio_leds);
-> +		if (error) {
-> +			printk(KERN_ERR __FILE__ ": Unable to add leds-gpio: %d\n",
-> +			       error);
-> +			goto err_cleanup_pins;
-> +		}
-> +	}
-> +
->  	return 0;
-> +
-> +err_cleanup_pins:
-> +	for (i = 0; i < ARRAY_SIZE(warp_gpio_led_pins); i++) {
-> +		led = &warp_gpio_led_pins[i];
-> +		gpiod_put(led->gpiod);
-> +		led->gpiod = NULL;
-> +	}
-> +	return error;
->  }
->  
->  static void pika_setup_critical_temp(struct device_node *np,
-> -- 
-> 2.38.0.rc1.362.ged0d419d3c-goog
-> 
-> 
-> -- 
-> Dmitry
+- Sachin
 
--- 
-Dmitry
