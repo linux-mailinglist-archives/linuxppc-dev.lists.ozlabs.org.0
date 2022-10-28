@@ -2,89 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F07AC611502
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Oct 2022 16:46:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62F6961150C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Oct 2022 16:47:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MzQNX4k2Jz3f5K
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Oct 2022 01:46:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MzQPZ1nJKz3drm
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Oct 2022 01:47:30 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cOIWBVXM;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rYVN2Vev;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=sv@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sv@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cOIWBVXM;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rYVN2Vev;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MzQ7n4gT7z3cNY
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Oct 2022 01:35:33 +1100 (AEDT)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29SEBuFj005159;
-	Fri, 28 Oct 2022 14:35:15 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MzQ7t3rx1z3cQk
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Oct 2022 01:35:38 +1100 (AEDT)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29SEB7tq026466;
+	Fri, 28 Oct 2022 14:35:20 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=4k/rdNumXQft386BS6nTbPJDsgjlCfRAZJSeNCUeFYk=;
- b=cOIWBVXM5l4IWp2QY/vTUPEVx8MSLHAjjNPHB1xPdxY6BMVaXvNRqxgvvcMcbKHeXMvB
- LHVT4i+tdytslTJe4rLCvnUPywd55S3iFxYQIzDDn/Oliw+ovAGC+ibZ+IxkU/viEFAy
- XBmsIw268kyRBH3OFwQZnjq3puCJqnRysj9w2VsID1tkrxfhBaGcQMBozKqS3Ty6Q2rP
- sC1mP7aGKpB6F6C8Yf+FfBw6c0s5EbN2ssdLzWsA5cr30ovsqxmqA54kqyDXC0y0jBqA
- kB1VTOmviiz+xrzB63a9mfPaeTxAaV6+mSooFXyc+Ac/ytZmQAdGUX9GmLVdDMY8u3BG Pg== 
+ bh=xz2HT3U3i+AwM29IiB9s/7S2JPakevApyv5uJ9vDXMM=;
+ b=rYVN2VevcDv7/IKwQJUmGsqlyaaxj8CtzEemertFyiWOyaEKBrbHlsk4K5OZgfii0Trl
+ 2WYvD6LCQR2linVbVm8n9k0OZ46y3aQGanMNdBIJQ3W3MmYrq6+Hn9bhyO22tDcZcILB
+ f1oYOZvcYE9ImbYkpbi1xjNZ7IjHxvvSm3ePgetn1BH+d7hiijOdze59G+tYc/gFUckI
+ q8T37/6ijTc8FIUmtQ7sD6LeboMAz9wk69m5ObSNXx+TSvjrkwifMGWBZIXQAGT3Kvx0
+ sdA2F6JLKchl4slO6bzsFMoW1k5Qrn184jxZgND1VIjEUM/4Jc8YCaNioRKtIyetRUg0 eA== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3kgfhnu7v6-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3kggm70ypv-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 28 Oct 2022 14:35:15 +0000
-Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 29SEYrJK004950;
-	Fri, 28 Oct 2022 14:35:14 GMT
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3kgfhnu7rc-1
+	Fri, 28 Oct 2022 14:35:20 +0000
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 29SEBBHm026679;
+	Fri, 28 Oct 2022 14:35:20 GMT
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3kggm70ykk-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 28 Oct 2022 14:35:14 +0000
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
-	by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 29SEKbPZ019341;
-	Fri, 28 Oct 2022 14:35:12 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
-	by ppma02fra.de.ibm.com with ESMTP id 3kfahmjqfs-1
+	Fri, 28 Oct 2022 14:35:19 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+	by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 29SEZ1Yl015942;
+	Fri, 28 Oct 2022 14:35:17 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+	by ppma03ams.nl.ibm.com with ESMTP id 3kfahqkvjx-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 28 Oct 2022 14:35:12 +0000
+	Fri, 28 Oct 2022 14:35:17 +0000
 Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
-	by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 29SEZ9SA852594
+	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 29SEZEHc7143954
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 28 Oct 2022 14:35:10 GMT
+	Fri, 28 Oct 2022 14:35:14 GMT
 Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D8D1AA4055;
-	Fri, 28 Oct 2022 14:35:09 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id C427BA4051;
+	Fri, 28 Oct 2022 14:35:14 +0000 (GMT)
 Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F29CAA4053;
-	Fri, 28 Oct 2022 14:35:05 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 0313FA4040;
+	Fri, 28 Oct 2022 14:35:11 +0000 (GMT)
 Received: from li-c3569c4c-1ef8-11b2-a85c-ee139cda3133.ibm.com.com (unknown [9.43.124.163])
 	by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Fri, 28 Oct 2022 14:35:05 +0000 (GMT)
+	Fri, 28 Oct 2022 14:35:10 +0000 (GMT)
 From: Sathvika Vasireddy <sv@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v5 12/16] objtool: Read special sections with alts only when specific options are selected
-Date: Fri, 28 Oct 2022 20:03:42 +0530
-Message-Id: <20221028143346.183569-13-sv@linux.ibm.com>
+Subject: [PATCH v5 13/16] objtool: Use macros to define arch specific reloc types
+Date: Fri, 28 Oct 2022 20:03:43 +0530
+Message-Id: <20221028143346.183569-14-sv@linux.ibm.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20221028143346.183569-1-sv@linux.ibm.com>
 References: <20221028143346.183569-1-sv@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: cjaixYULH6UjhZRemu42A2TqsbJiwClw
-X-Proofpoint-ORIG-GUID: ly0I6L1kcJiuXbo9jSlqojcB5QBkRUzn
+X-Proofpoint-ORIG-GUID: iodo2o35QQ9gWqcly6VxcpYe99lKr-Do
+X-Proofpoint-GUID: Op5oqI4xoJJvugDBqRwyRJLoHkMIcue8
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
  definitions=2022-10-28_07,2022-10-27_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 spamscore=0
- impostorscore=0 bulkscore=0 clxscore=1015 suspectscore=0
- lowpriorityscore=0 adultscore=0 priorityscore=1501 malwarescore=0
- mlxscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2210170000 definitions=main-2210280090
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=887
+ impostorscore=0 phishscore=0 mlxscore=0 bulkscore=0 suspectscore=0
+ lowpriorityscore=0 clxscore=1015 priorityscore=1501 spamscore=0
+ adultscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2210170000 definitions=main-2210280090
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,37 +100,44 @@ Cc: peterz@infradead.org, npiggin@gmail.com, linux-kernel@vger.kernel.org, aik@o
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Call add_special_section_alts() only when stackval or orc or uaccess or
-noinstr options are passed to objtool.
+Make relocation types architecture specific.
 
 Tested-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
 Reviewed-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
 Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Sathvika Vasireddy <sv@linux.ibm.com>
 ---
- tools/objtool/check.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ tools/objtool/arch/x86/include/arch/elf.h | 2 ++
+ tools/objtool/check.c                     | 2 +-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
+diff --git a/tools/objtool/arch/x86/include/arch/elf.h b/tools/objtool/arch/x86/include/arch/elf.h
+index 69cc4264b28a..ac14987cf687 100644
+--- a/tools/objtool/arch/x86/include/arch/elf.h
++++ b/tools/objtool/arch/x86/include/arch/elf.h
+@@ -2,5 +2,7 @@
+ #define _OBJTOOL_ARCH_ELF
+ 
+ #define R_NONE R_X86_64_NONE
++#define R_ABS64 R_X86_64_64
++#define R_ABS32 R_X86_64_32
+ 
+ #endif /* _OBJTOOL_ARCH_ELF */
 diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 71cf4b4ba1da..752a6ffd5c4c 100644
+index 752a6ffd5c4c..2d7153b5d5d1 100644
 --- a/tools/objtool/check.c
 +++ b/tools/objtool/check.c
-@@ -2392,9 +2392,11 @@ static int decode_sections(struct objtool_file *file)
- 	 * Must be before add_jump_destinations(), which depends on 'func'
- 	 * being set for alternatives, to enable proper sibling call detection.
- 	 */
--	ret = add_special_section_alts(file);
--	if (ret)
--		return ret;
-+	if (opts.stackval || opts.orc || opts.uaccess || opts.noinstr) {
-+		ret = add_special_section_alts(file);
-+		if (ret)
-+			return ret;
-+	}
+@@ -885,7 +885,7 @@ static int create_mcount_loc_sections(struct objtool_file *file)
+ 		memset(loc, 0, addrsize);
  
- 	ret = add_jump_destinations(file);
- 	if (ret)
+ 		if (elf_add_reloc_to_insn(file->elf, sec, idx,
+-					  R_X86_64_64,
++					  addrsize == sizeof(u64) ? R_ABS64 : R_ABS32,
+ 					  insn->sec, insn->offset))
+ 			return -1;
+ 
 -- 
 2.31.1
 
