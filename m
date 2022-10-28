@@ -1,67 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C83B61153F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Oct 2022 16:57:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30DF161158D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Oct 2022 17:10:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MzQd40D0wz3cMP
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Oct 2022 01:57:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MzQw574d5z3cGc
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Oct 2022 02:10:29 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=arTa8Hp9;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=dkim header.b=gxQSofa/;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::633; helo=mail-ej1-x633.google.com; envelope-from=daniel.baluta@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=alien8.de (client-ip=2a01:4f8:190:11c2::b:1457; helo=mail.skyhub.de; envelope-from=bp@alien8.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=arTa8Hp9;
+	dkim=pass (1024-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=dkim header.b=gxQSofa/;
 	dkim-atps=neutral
-Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+X-Greylist: delayed 364 seconds by postgrey-1.36 at boromir; Sat, 29 Oct 2022 02:09:38 AEDT
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MzQc70JDvz2xH9
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Oct 2022 01:56:37 +1100 (AEDT)
-Received: by mail-ej1-x633.google.com with SMTP id t25so13524448ejb.8
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Oct 2022 07:56:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=LQqF7mgoMpdPDEfiMU46JdqFEc964tvWxw1HB/RMwiE=;
-        b=arTa8Hp9eU8CHAAKuZxCuCp9TFtlwbZW3v87Df9EtS2SMm22Eduv2F12bZhmi3qg20
-         8HJmCjY+CdC+8I75dYuUqmXe2VE3oJRS1Ab7QBBuK7Ac/Ucs7NcYDqHBIzhvEcOuwBJc
-         ZWvP3FVXgJzFksiq7wweonN1/pPCb7+/yCC5SAHOH+OzqHpY6JAMJMI6kG/uWEGSUQvS
-         C7eqz3grRob4bZfW+oH6rwPz54fq0r8j8OQoAuLFzgYj7ghCn5PKe2DQUj7NA6U5P9N3
-         bur7cp6c9yjVC9Erdf8lbNNpRTVZ1+xuAt9YjDuioE9AU6LsasEf/2ttDERdZTUyoiBv
-         T8Ug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=LQqF7mgoMpdPDEfiMU46JdqFEc964tvWxw1HB/RMwiE=;
-        b=F99wJl0Nvr3r0ZercQXrYQfHYl8wFLUVrc5SuALpUm/w+Ol8wlfY2NxgoDTKR1siJ2
-         5zmt7t2j9Lwc+IQNHCBbQDaX/GsLBlPw7bjhNXJWNkk35ly1JC1W3PfOgEbIIcahcdbO
-         swQDPJ7aoSXLpZYysAsCt57vjn/bHt+cS6tggBiSQnnEFwJOwyPrsOXHjE9jiQw7Grru
-         U3fz/F7onsqr1xBYWXaOlq5DxhQ5W4UdER4Xs1fYDSxwbRuw5Gn3rx6P622i2C4Rwf9V
-         X4qcdVdAm+JfpZfGWqL8CYqQp3Uh+9H1tSyoBO3umMb5KZRnIq5v6J0bxyFXTp4f7jIw
-         b0yQ==
-X-Gm-Message-State: ACrzQf3QtofAODUDWbRznq/PgVMchon3bUKJBrYpFxG3DO/oocyLdTcM
-	cpE3e0tHu9flXHA2kuHq5nzZUcS5S3xAwQsR7ys=
-X-Google-Smtp-Source: AMsMyM5YEMqyGVRZ22xaHEfcgjC/wjYt3YHikBMrSXZTvnr//2VkFszSR6BbgM3ElAHwJxzJNTa8V2q3veDVgCO00eQ=
-X-Received: by 2002:a17:906:9750:b0:798:9ccc:845d with SMTP id
- o16-20020a170906975000b007989ccc845dmr38539663ejy.760.1666968993915; Fri, 28
- Oct 2022 07:56:33 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MzQv60J2Gz2xfV
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Oct 2022 02:09:37 +1100 (AEDT)
+Received: from zn.tnic (p200300ea9733e7ce329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:9733:e7ce:329c:23ff:fea6:a903])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id AD3D51EC02F2;
+	Fri, 28 Oct 2022 17:03:18 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1666969398;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=i/4Cjq8GYwaXxiXVKl0FhiYMVNlnZzPqMpB349dIQEo=;
+	b=gxQSofa/L8yGDLBNTJGXcDQT1BZ9EN2QpEBOtb8fae2l7kkacWjuo0irRxC4ObsNM3cmGG
+	bPB442gmbrlZRjjavdzIHDYaIOFPK4Q5k/F+Co/CHbM3wSA0Xik4w6msl5qJHKYZvW3nFR
+	flu71/Fhe1SdET62l2UNhiU1pG+TDjA=
+Date: Fri, 28 Oct 2022 17:03:14 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Yury Norov <yury.norov@gmail.com>
+Subject: Re: [PATCH v3 2/2] x86: Fix /proc/cpuinfo cpumask warning
+Message-ID: <Y1vvMlwf/4EA/8WW@zn.tnic>
+References: <20221014155845.1986223-1-ajones@ventanamicro.com>
+ <20221014155845.1986223-3-ajones@ventanamicro.com>
+ <20221028074828.b66uuqqfbrnjdtab@kamzik>
+ <Y1vrMMtRwb0Lekl0@yury-laptop>
 MIME-Version: 1.0
-References: <20221028141129.100702-1-maarten.zanders@mind.be>
-In-Reply-To: <20221028141129.100702-1-maarten.zanders@mind.be>
-From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Fri, 28 Oct 2022 17:56:22 +0300
-Message-ID: <CAEnQRZDyEdJtcMd0et5=3+Q8+oX5b8zOf6o_2yfRNVxmDuxDXg@mail.gmail.com>
-Subject: Re: [PATCH] ASoC: fsl_asrc fsl_esai fsl_sai: allow CONFIG_PM=N
-To: Maarten Zanders <maarten.zanders@mind.be>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <Y1vrMMtRwb0Lekl0@yury-laptop>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,26 +60,17 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, Xiubo Li <Xiubo.Lee@gmail.com>, Shengjiu Wang <shengjiu.wang@gmail.com>, Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, Nicolin Chen <nicoleotsuka@gmail.com>, Mark Brown <broonie@kernel.org>, Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org
+Cc: Jonas Bonn <jonas@southpole.se>, linux-s390@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Dave Hansen <dave.hansen@linux.intel.com>, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, x86@kernel.org, linux-kernel@vger.kernel.org, Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, openrisc@lists.librecores.org, Ingo Molnar <mingo@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Stafford Horne <shorne@gmail.com>, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, Thomas Gleixner <tglx@linutronix.de>, Albert Ou <aou@eecs.berkeley.edu>, Andrew Jones <ajones@ventanamicro.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Oct 28, 2022 at 5:37 PM Maarten Zanders <maarten.zanders@mind.be> wrote:
->
-> When CONFIG_PM=N, pm_runtime_put_sync() returns -ENOSYS
-> which breaks the probe function of these drivers.
->
-> Other users of pm_runtime_put_sync() typically don't check
-> the return value. In order to keep the program flow as
-> intended, check for -ENOSYS.
->
-> This commit is similar to commit 0434d3f (omap-mailbox.c).
->
-> This commit fixes:
-> cab04ab (ASoC: fsl_asrc: Don't use devm_regmap_init_mmio_clk)
-> 203773e (ASoC: fsl_esai: Don't use devm_regmap_init_mmio_clk)
-> 2277e7e (ASoC: fsl_sai: Don't use devm_regmap_init_mmio_clk)
->
-> Signed-off-by: Maarten Zanders <maarten.zanders@mind.be>
+On Fri, Oct 28, 2022 at 07:46:08AM -0700, Yury Norov wrote:
+> I'll take it in bitmap-for-next this weekend.
 
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+Why?
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
