@@ -1,53 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0120E6116BD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Oct 2022 18:03:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F12436116CB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Oct 2022 18:04:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MzS5T4J7Qz3cK8
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Oct 2022 03:03:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MzS6T5TNWz3ccm
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Oct 2022 03:04:33 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DkLDaKvF;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QoMxNCkb;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DkLDaKvF;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QoMxNCkb;
 	dkim-atps=neutral
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MzS4b4x1tz30NS
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Oct 2022 03:02:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MzS4d3mXKz3cG9
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Oct 2022 03:02:57 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 7553FB82870;
-	Fri, 28 Oct 2022 16:02:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A35EC433D6;
-	Fri, 28 Oct 2022 16:02:48 +0000 (UTC)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 0E78CB828F7;
+	Fri, 28 Oct 2022 16:02:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99C60C433D7;
+	Fri, 28 Oct 2022 16:02:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1666972971;
-	bh=Oxti1A+2ZLM13LWu91bH36f/Fx13AJFSM+jY4B3mE7U=;
-	h=From:To:In-Reply-To:References:Subject:Date:From;
-	b=DkLDaKvFD2Rwrze6hxXZRo9+kKLB8sEtVs8hwjQHbqkL7Q7ijbMoDuq/gFBKUR0Or
-	 H0sImDSmMB4S2UDXg5jApERzjViHb30R5L1bHrFOoGA7P0aiVypEnvCfR+J78sdtJj
-	 najlz55vlJ/guZaA5vJGCboYQn5O0+giD7iNJgIQ2IboHXAcVV7C1NCrAc6N4WIxHZ
-	 D4LS+cONMnpTQrQGeP++D4qGyUh+ypmBFjINQTFR0/4nM07JEpW7hBXvpk1a0TUSGx
-	 ai3K4gJso5h9quUOPIwPb75OdU7+DaspFSqjYHONOaM07jhkZ0YAWFuma6u0l9TyI0
-	 syLrAx8KFkcpQ==
+	s=k20201202; t=1666972973;
+	bh=wNXKotwuuxgi6yUVKqYwBdPAK78kh9kgseKN/VlZMsQ=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=QoMxNCkbqCrOrhXaqnGoLA1VvcD3H75wwfwDf4OmM04KM6glN09KDgQGZ12VkVQVW
+	 DL+lkbzixjKEznebXjDlvZtDbvqWfHPChXvnNfsQokZPKiB/wg9z0EAZ/GcAeWvTE5
+	 ySAgSvhMx8cATgMQ3GT/8UMaFY0q3usVtI3roTXE5Un6D21+Ny0cZUDFhLJ3JLP+XU
+	 5sc0suRcC57UX4gv45jaHbE1WVkH5UN81F+xxVhy2mTRtU/NwE+FJ/wGTVooHxJnaL
+	 Kw1W3b9ac5bff3ZNOX9/KOwbj4mNNVxaufY5KHuEJMgVtjXHPLemjuDMJbhNzR+dZU
+	 RMNwt01hsnRLA==
 From: Mark Brown <broonie@kernel.org>
-To: devicetree@vger.kernel.org, tiwai@suse.com, festevam@gmail.com, linux-kernel@vger.kernel.org, nicoleotsuka@gmail.com,
- lgirdwood@gmail.com, krzysztof.kozlowski+dt@linaro.org, Xiubo.Lee@gmail.com, shengjiu.wang@gmail.com,
- alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, robh+dt@kernel.org, Chancel Liu <chancel.liu@nxp.com>,
- perex@perex.cz
-In-Reply-To: <20221027060311.2549711-1-chancel.liu@nxp.com>
-References: <20221027060311.2549711-1-chancel.liu@nxp.com>
-Subject: Re: [PATCH 0/3] Add support for SAI on i.MX93 platform
-Message-Id: <166697296821.717517.14812404041210557854.b4-ty@kernel.org>
-Date: Fri, 28 Oct 2022 17:02:48 +0100
+To: tiwai@suse.com, festevam@gmail.com, nicoleotsuka@gmail.com, Shengjiu Wang <shengjiu.wang@nxp.com>,
+ lgirdwood@gmail.com, Xiubo.Lee@gmail.com, shengjiu.wang@gmail.com, alsa-devel@alsa-project.org, perex@perex.cz
+In-Reply-To: <1666940627-7611-1-git-send-email-shengjiu.wang@nxp.com>
+References: <1666940627-7611-1-git-send-email-shengjiu.wang@nxp.com>
+Subject: Re: [PATCH] ASoC: fsl_xcvr: Add Counter registers
+Message-Id: <166697297135.717517.11089794085800695281.b4-ty@kernel.org>
+Date: Fri, 28 Oct 2022 17:02:51 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -63,16 +61,19 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 27 Oct 2022 14:03:08 +0800, Chancel Liu wrote:
-> This patchset supports SAI on i.MX93 platform.
+On Fri, 28 Oct 2022 15:03:47 +0800, Shengjiu Wang wrote:
+> These counter registers are part of register list,
+> add them to complete the register map
 > 
-> Chancel Liu (3):
->   ASoC: dt-bindings: fsl,sai: Add compatible string for i.MX93 platform
->   ASoC: fsl_sai: Add support for i.MX93 platform
->   ASoC: fsl_sai: Specify the maxburst to 8 on i.MX93 platform
+> - DMAC counter control registers
+> - Data path Timestamp counter register
+> - Data path bit counter register
+> - Data path bit count timestamp register
+> - Data path bit read timestamp register
 > 
 > [...]
 
@@ -82,12 +83,8 @@ Applied to
 
 Thanks!
 
-[1/3] ASoC: dt-bindings: fsl,sai: Add compatible string for i.MX93 platform
-      commit: aa8289fda86ede0e164a260316647c8bf0400d41
-[2/3] ASoC: fsl_sai: Add support for i.MX93 platform
-      commit: 67d5c6c19923ad26def8a001e86fc0f42264a8b5
-[3/3] ASoC: fsl_sai: Specify the maxburst to 8 on i.MX93 platform
-      commit: 870b89d118a29bd845ea706a74e313f9b83f5a45
+[1/1] ASoC: fsl_xcvr: Add Counter registers
+      commit: 107d170dc46e14cfa575d1b995107ef2f2e51dfe
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during
