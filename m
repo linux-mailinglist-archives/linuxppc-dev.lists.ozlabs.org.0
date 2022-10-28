@@ -1,60 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04F6B6124B9
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Oct 2022 19:41:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FF1561264F
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Oct 2022 00:57:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N06Cr6qFvz3cM7
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Oct 2022 04:41:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N0FD62lhCz3cLf
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Oct 2022 09:57:10 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Cqd30bUl;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=TyVnnG3t;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=pr-tracker-bot@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::12a; helo=mail-lf1-x12a.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Cqd30bUl;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=TyVnnG3t;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N06Bs5Tsjz3bm6
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Oct 2022 04:40:37 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id A344160B68;
-	Sat, 29 Oct 2022 17:40:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 102EBC433D6;
-	Sat, 29 Oct 2022 17:40:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1667065234;
-	bh=lYagOyKb5yVvupfNOTAb95+iRFTKOiPV3Lgapdw5lzU=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=Cqd30bUl5fJMipLLzkuueHuX6ynDsDhdlSYgcfjUyOqb68lrTrq7Qk+C1rflsa1WS
-	 2oFoDgHBGVnaI1b8BmTIdeAyA/Z4l3AOTtPWdY692KFs1QJ44UDFOp/2cMxZBghYb7
-	 /XKr1BW2TRQs1QjH2m49N8f/itnfauHMiJwPvn1Y+hET29J9hHDURB512wtm2srWM1
-	 kuisACz4ZUcrAGpUNOlFnnNw2daDMc5rOFU5yWaogvfgu8VpVr2Ft5G2LghwYqtXYW
-	 Janq/BOyJAOc73RfStUmjPYY839hCVQ3h8VrYHnryXPiVw2ewecQ9xhAJjup8dUC4i
-	 U/4ZJN+XIm/qg==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id F2B51C4166D;
-	Sat, 29 Oct 2022 17:40:33 +0000 (UTC)
-Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-6.1-3 tag
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <87zgdesy5y.fsf@mpe.ellerman.id.au>
-References: <87zgdesy5y.fsf@mpe.ellerman.id.au>
-X-PR-Tracked-List-Id: Linux on PowerPC Developers Mail List <linuxppc-dev.lists.ozlabs.org>
-X-PR-Tracked-Message-Id: <87zgdesy5y.fsf@mpe.ellerman.id.au>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.1-3
-X-PR-Tracked-Commit-Id: 65722736c3baf29e02e964a09e85c9ef71c48e8d
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 91562cf99364dd29755988f3cc33ce9a46cd5b0a
-Message-Id: <166706523398.17372.12855262120121557759.pr-tracker-bot@kernel.org>
-Date: Sat, 29 Oct 2022 17:40:33 +0000
-To: Michael Ellerman <mpe@ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MzFxG3Rynz3bP1
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Oct 2022 19:25:52 +1100 (AEDT)
+Received: by mail-lf1-x12a.google.com with SMTP id g7so7115613lfv.5
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Oct 2022 01:25:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Aze6Vdz40SivY/OyVTioHF5+ECKEXJzUkeeEGjpn7nM=;
+        b=TyVnnG3t93HVnGlm8qTCubRTPGcFE9YxDMIwaj6tUIXcxzqTV5RF1jeMaCKF5KhAJx
+         F8afYGGyJ4PNLRQPJ5QdXpQjRyDeWPcotAiWGC8XOGW9Nd7zGC8r8izjc5MH6bZ5Zu4y
+         ix2uDYpfZvNgBKDUvbOnPEt9bgyg1aEelBblScvXdRfESu2l19o4P9qr+SA5j59N/h1+
+         2gm7LtihzGfWuHQrICms9y19Pa8UPlghNsQSFvj0t2r+zwTZP92ZZxstBCFrcF6Y4OUq
+         Sn6+WJdWUaJC6f7s8FAfHLjg3KhLvjrSLVbSSxJWgr2jvwVYjHCTQzQ4+tfgbSFwzTgf
+         /aZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Aze6Vdz40SivY/OyVTioHF5+ECKEXJzUkeeEGjpn7nM=;
+        b=XYzeeUsWeCDIH2jMUk4VY5PtBhBvIqEfgDUzItJQWDKRXN868t1uxTsnngIHc+B1fm
+         s5PA0JR0+yai15+0aL6+BEU+jaDapDgJwubFTOALw6di8BzzgeonkW0rGm7mIZjbgkBM
+         t3QA97FWEt2p7+jMYb3NlrDeH40MMOH7zDlFiksuKX1hIuFtasc7CD7pCf0WWdQUo8C6
+         sR07uq5MeT0Xm/oVWpX0T3IGm5xMX+n2FtIiQseiV+7pUff4UJGeHKMvQcPFhqKFtRAV
+         azJcTR0m12b095vsXUPtPScTgfdhLR577fYibpzHBL/dlzwvfSQlTUA2rnHPWNFalsUb
+         oaHw==
+X-Gm-Message-State: ACrzQf279eQkOuklz5qWBNqzmF6Q0r1Pyz5NtNyeVPeJCchL1oR3J0mc
+	PNp4BbsSiK0/BVNZYEU1g+ptEAmGODN+GrtY9po=
+X-Google-Smtp-Source: AMsMyM6Bt+HYyjCphx0irVeTv2U6ca6Ir+VpNl77yNcjGX2Nf4ffrXSzqEbrIuQOyZIuEHXTJwINuVPwwlXtijh03mo=
+X-Received: by 2002:ac2:58d8:0:b0:4af:af1f:87e0 with SMTP id
+ u24-20020ac258d8000000b004afaf1f87e0mr4354978lfo.283.1666945547756; Fri, 28
+ Oct 2022 01:25:47 -0700 (PDT)
+MIME-Version: 1.0
+References: <20221027060311.2549711-1-chancel.liu@nxp.com> <20221027060311.2549711-3-chancel.liu@nxp.com>
+In-Reply-To: <20221027060311.2549711-3-chancel.liu@nxp.com>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Fri, 28 Oct 2022 16:25:36 +0800
+Message-ID: <CAA+D8AOyyn+Ax9Bo=Dh4tUDq=Eh_Ep1RMehwENqiaWeAdWRa-w@mail.gmail.com>
+Subject: Re: [PATCH 2/3] ASoC: fsl_sai: Add support for i.MX93 platform
+To: Chancel Liu <chancel.liu@nxp.com>
+Content-Type: multipart/alternative; boundary="0000000000003be82905ec1401d5"
+X-Mailman-Approved-At: Sun, 30 Oct 2022 09:56:23 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,19 +74,130 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org, npiggin@gmail.com, haren@linux.ibm.com
+Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, lgirdwood@gmail.com, linuxppc-dev@lists.ozlabs.org, Xiubo.Lee@gmail.com, linux-kernel@vger.kernel.org, robh+dt@kernel.org, tiwai@suse.com, nicoleotsuka@gmail.com, broonie@kernel.org, krzysztof.kozlowski+dt@linaro.org, perex@perex.cz, festevam@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The pull request you sent on Sat, 29 Oct 2022 21:48:41 +1100:
+--0000000000003be82905ec1401d5
+Content-Type: text/plain; charset="UTF-8"
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.1-3
+On Thu, Oct 27, 2022 at 2:04 PM Chancel Liu <chancel.liu@nxp.com> wrote:
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/91562cf99364dd29755988f3cc33ce9a46cd5b0a
+> Add compatible string and specific soc data to support SAI on i.MX93
+> platform.
+>
+> Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
+>
 
-Thank you!
+Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+best regards
+wang shengjiu
+
+> ---
+>  sound/soc/fsl/fsl_sai.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
+>
+> diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
+> index 81f89f6767a2..68e1cc4c369a 100644
+> --- a/sound/soc/fsl/fsl_sai.c
+> +++ b/sound/soc/fsl/fsl_sai.c
+> @@ -1579,6 +1579,17 @@ static const struct fsl_sai_soc_data
+> fsl_sai_imx8ulp_data = {
+>         .max_register = FSL_SAI_RTCAP,
+>  };
+>
+> +static const struct fsl_sai_soc_data fsl_sai_imx93_data = {
+> +       .use_imx_pcm = true,
+> +       .use_edma = true,
+> +       .fifo_depth = 128,
+> +       .reg_offset = 8,
+> +       .mclk0_is_mclk1 = false,
+> +       .pins = 4,
+> +       .flags = 0,
+> +       .max_register = FSL_SAI_MCTL,
+> +};
+> +
+>  static const struct of_device_id fsl_sai_ids[] = {
+>         { .compatible = "fsl,vf610-sai", .data = &fsl_sai_vf610_data },
+>         { .compatible = "fsl,imx6sx-sai", .data = &fsl_sai_imx6sx_data },
+> @@ -1590,6 +1601,7 @@ static const struct of_device_id fsl_sai_ids[] = {
+>         { .compatible = "fsl,imx8mp-sai", .data = &fsl_sai_imx8mp_data },
+>         { .compatible = "fsl,imx8ulp-sai", .data = &fsl_sai_imx8ulp_data },
+>         { .compatible = "fsl,imx8mn-sai", .data = &fsl_sai_imx8mp_data },
+> +       { .compatible = "fsl,imx93-sai", .data = &fsl_sai_imx93_data },
+>         { /* sentinel */ }
+>  };
+>  MODULE_DEVICE_TABLE(of, fsl_sai_ids);
+> --
+> 2.25.1
+>
+>
+
+--0000000000003be82905ec1401d5
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Thu, Oct 27, 2022 at 2:04 PM Chanc=
+el Liu &lt;<a href=3D"mailto:chancel.liu@nxp.com">chancel.liu@nxp.com</a>&g=
+t; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0p=
+x 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">Add co=
+mpatible string and specific soc data to support SAI on i.MX93<br>
+platform.<br>
+<br>
+Signed-off-by: Chancel Liu &lt;<a href=3D"mailto:chancel.liu@nxp.com" targe=
+t=3D"_blank">chancel.liu@nxp.com</a>&gt;<br></blockquote><div><br></div><di=
+v>Acked-by: Shengjiu Wang &lt;<a href=3D"mailto:shengjiu.wang@gmail.com">sh=
+engjiu.wang@gmail.com</a>&gt;</div><div><br></div><div>best regards</div><d=
+iv>wang shengjiu=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"marg=
+in:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1e=
+x">
+---<br>
+=C2=A0sound/soc/fsl/fsl_sai.c | 12 ++++++++++++<br>
+=C2=A01 file changed, 12 insertions(+)<br>
+<br>
+diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c<br>
+index 81f89f6767a2..68e1cc4c369a 100644<br>
+--- a/sound/soc/fsl/fsl_sai.c<br>
++++ b/sound/soc/fsl/fsl_sai.c<br>
+@@ -1579,6 +1579,17 @@ static const struct fsl_sai_soc_data fsl_sai_imx8ulp=
+_data =3D {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 .max_register =3D FSL_SAI_RTCAP,<br>
+=C2=A0};<br>
+<br>
++static const struct fsl_sai_soc_data fsl_sai_imx93_data =3D {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0.use_imx_pcm =3D true,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0.use_edma =3D true,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0.fifo_depth =3D 128,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0.reg_offset =3D 8,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0.mclk0_is_mclk1 =3D false,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0.pins =3D 4,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0.flags =3D 0,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0.max_register =3D FSL_SAI_MCTL,<br>
++};<br>
++<br>
+=C2=A0static const struct of_device_id fsl_sai_ids[] =3D {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 { .compatible =3D &quot;fsl,vf610-sai&quot;, .d=
+ata =3D &amp;fsl_sai_vf610_data },<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 { .compatible =3D &quot;fsl,imx6sx-sai&quot;, .=
+data =3D &amp;fsl_sai_imx6sx_data },<br>
+@@ -1590,6 +1601,7 @@ static const struct of_device_id fsl_sai_ids[] =3D {<=
+br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 { .compatible =3D &quot;fsl,imx8mp-sai&quot;, .=
+data =3D &amp;fsl_sai_imx8mp_data },<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 { .compatible =3D &quot;fsl,imx8ulp-sai&quot;, =
+.data =3D &amp;fsl_sai_imx8ulp_data },<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 { .compatible =3D &quot;fsl,imx8mn-sai&quot;, .=
+data =3D &amp;fsl_sai_imx8mp_data },<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0{ .compatible =3D &quot;fsl,imx93-sai&quot;, .d=
+ata =3D &amp;fsl_sai_imx93_data },<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 { /* sentinel */ }<br>
+=C2=A0};<br>
+=C2=A0MODULE_DEVICE_TABLE(of, fsl_sai_ids);<br>
+-- <br>
+2.25.1<br>
+<br>
+</blockquote></div></div>
+
+--0000000000003be82905ec1401d5--
