@@ -2,147 +2,86 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50C4A6115D5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Oct 2022 17:29:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2751661162E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Oct 2022 17:44:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4MzRKx1cbdz3cLC
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Oct 2022 02:29:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4MzRfl030Xz3cHh
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Oct 2022 02:43:59 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2022-7-12 header.b=0Oc5Bbxt;
-	dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=cVfwdDy9;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=axD+DtvM;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=oracle.com (client-ip=205.220.177.32; helo=mx0b-00069f02.pphosted.com; envelope-from=mike.kravetz@oracle.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2022-7-12 header.b=0Oc5Bbxt;
-	dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=cVfwdDy9;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=axD+DtvM;
 	dkim-atps=neutral
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MzRJv5Llvz3bqn
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Oct 2022 02:28:27 +1100 (AEDT)
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29SEhbdF031749;
-	Fri, 28 Oct 2022 15:28:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : content-type : in-reply-to :
- mime-version; s=corp-2022-7-12;
- bh=MSXlpp0bOMo/Dc/jUAMCmxUl0mcuplH6CrDrHtW6u5c=;
- b=0Oc5BbxtPn2sB7qrv96roab5RL6RuPON+3Lg2Ln45KhhJM/x1u7SgrfyexDLlDVHUY+k
- XfdjkXrVfWNu+3Wi89LqqhTIiT0u0JMTkRmBpwP/ep7DU0g3dYJn3Y/dudxbKe+GFLuy
- KO7QoPUoM9RI7otCqWRw6ZbRbVSKs6g+TXAJ32QwWL4jKq+KQIXgur78zZWJOHk40JF7
- SCXGCKFR6octKAiOL8QlWJrJI3xu7GOkkwUc5vk3W5Frnex03fcavUdhWcA/5i/evPGu
- aXgZgLrR1MxyrWNBYgcsTlQLH0X4HtKlkyFhMwaAvtZudzsiegS5/nFJdNehniyBreo6 Tg== 
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3kfagv5fjv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 28 Oct 2022 15:28:08 +0000
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.5/8.17.1.5) with ESMTP id 29SECVL4011509;
-	Fri, 28 Oct 2022 15:28:06 GMT
-Received: from nam12-bn8-obe.outbound.protection.outlook.com (mail-bn8nam12lp2169.outbound.protection.outlook.com [104.47.55.169])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3kfags6mfn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 28 Oct 2022 15:28:06 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=jaSAtYfh0FqKlSV8lYsKtTfemCqgtflUQIMFhUAXQtuh7LNuuzjH2RTVPLj7Mzj+EnV3KKabWKxD/y6YZZQ4CxH+1uv2u1ySUzzR/LzKx2Lmqtz896qIed3tc9851asNyYdFaeb/ZjSBqI+n/S/hifysIx6354vMTBruw0Ws9/NjuMFtKzKwEJwOstilrBL4G3uwraU9hhhxIvdz62M1G4LJgQE+PF9RgS8wkJxPGD49QUKcJ3g64EluWRa8XP55jzpBagX0lrIOkmFjxOPUJ0hwJb/Zg5+a4lRMse6O82Nd1ahlkfldcTfa6sauyHvrTXmpuwwnv/2ESQDaAxE0uw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MSXlpp0bOMo/Dc/jUAMCmxUl0mcuplH6CrDrHtW6u5c=;
- b=DicP9PVB+jwV8FdA9IU5z8lvb/vnqHQf/6NUaWgzxkOSpZ110EdSENEbwJUnKZuWOyeHaiD5Ay61zqlyYbDpC2ijlq8ZeR07fOGnIwwX306UHwkR9Qh++raui/3yMmsKHjCP/HTNEEWjiSNepV5qYXrdnFDDJ9a8uO6z5rzzbYMtf0C+5I9fDiiw1F/XTLINcIiQ/MzkcNaL+FuuygTSEiizDWcGEwvAkSVR7I/1U9aHwh1B7a/9z36tCdpD0uh2WmyGTWAskSgsADPzv1pxQB5iyXt7j8FOpstoEw9rRKMKEnaBsmrH9boSxK6B7ZpLOISq36360sylfOClePX9TA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MSXlpp0bOMo/Dc/jUAMCmxUl0mcuplH6CrDrHtW6u5c=;
- b=cVfwdDy9zktf/77vWiKrduGitPR1UQVsTkzeFURMG4eaQYEIZXJ+xSJJvl00qnprWlN2RCWFdbOEa/WsLDfQcmBYCFDCVQ3ET6X96T4E5dynSa5ZBs4GoJdQhR2Nxe0A82h9ohuYFiKiwJRcXPcvMRaOHHg1dqIMPAbXYE2ZpTA=
-Received: from BY5PR10MB4196.namprd10.prod.outlook.com (2603:10b6:a03:20d::23)
- by CH0PR10MB5324.namprd10.prod.outlook.com (2603:10b6:610:c3::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5769.15; Fri, 28 Oct
- 2022 15:28:05 +0000
-Received: from BY5PR10MB4196.namprd10.prod.outlook.com
- ([fe80::58e9:95ba:d31e:ddd3]) by BY5PR10MB4196.namprd10.prod.outlook.com
- ([fe80::58e9:95ba:d31e:ddd3%6]) with mapi id 15.20.5769.015; Fri, 28 Oct 2022
- 15:28:04 +0000
-Date: Fri, 28 Oct 2022 08:27:57 -0700
-From: Mike Kravetz <mike.kravetz@oracle.com>
-To: Peter Xu <peterx@redhat.com>
-Subject: Re: [PATCH v3] hugetlb: simplify hugetlb handling in follow_page_mask
-Message-ID: <Y1v0/Y4Xiut2FWx4@monkey>
-References: <20220919021348.22151-1-mike.kravetz@oracle.com>
- <Y1mtz7dFAlhGRsAd@x1n>
- <Y1nR/KToV44GKZ5G@monkey>
- <Y1rdVLMDD4PMt3s3@x1n>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Y1rdVLMDD4PMt3s3@x1n>
-X-ClientProxiedBy: MW4PR03CA0054.namprd03.prod.outlook.com
- (2603:10b6:303:8e::29) To BY5PR10MB4196.namprd10.prod.outlook.com
- (2603:10b6:a03:20d::23)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4MzRdk1z39z30NS
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Oct 2022 02:43:05 +1100 (AEDT)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29SFECNR013754;
+	Fri, 28 Oct 2022 15:42:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=AuSo8EyBcxSAreS7UllZmSol851VHxia2fpnS6U077U=;
+ b=axD+DtvMu0quxdv2n+3NfxK+OLU0tou+PuviLtjGOyIOU2nMOBgP4edTwmSOZs2vexD9
+ AGaVZLY7LyURc08qw4yvZKlien83E4AmjYE2OGy993tUjgtQjE6sg9YWNzL8suNnxR2d
+ X58UAQ4e5kD4u2rxvI9nbZh0KsKPwbLbsVWxKdpaSuL+3MJ4ASMI8U5dq5OMepmv4cHL
+ SXLzIGzLN9BjHu1m6mfzN2/w6bLOWgkQpLydX6k9a7LNl++RCQTqXzwjWP5AHH4PQC9j
+ vnKCBLprXK2Wts3jdby5GndFAnPsZhX0S8KJGTIB/9FMGnWNSIwor36n6RjdIwLF7mPm gw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3kghhw181w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 28 Oct 2022 15:42:53 +0000
+Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 29SFbQY0026913;
+	Fri, 28 Oct 2022 15:42:52 GMT
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com [159.122.73.72])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3kghhw17xm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 28 Oct 2022 15:42:52 +0000
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+	by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 29SFa5XB025043;
+	Fri, 28 Oct 2022 15:42:49 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+	by ppma06fra.de.ibm.com with ESMTP id 3kfbg2aqg6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 28 Oct 2022 15:42:49 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+	by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 29SFgkcg4325894
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 28 Oct 2022 15:42:46 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 33B89A405B;
+	Fri, 28 Oct 2022 15:42:46 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 471EFA4054;
+	Fri, 28 Oct 2022 15:42:43 +0000 (GMT)
+Received: from li-e8dccbcc-2adc-11b2-a85c-bc1f33b9b810.ibm.com.com (unknown [9.43.12.76])
+	by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Fri, 28 Oct 2022 15:42:43 +0000 (GMT)
+From: Kajol Jain <kjain@linux.ibm.com>
+To: acme@kernel.org, jolsa@kernel.org
+Subject: [PATCH] perf test bpf: Skip test if kernel-debuginfo is not present
+Date: Fri, 28 Oct 2022 21:12:30 +0530
+Message-Id: <20221028154230.140709-1-kjain@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BY5PR10MB4196:EE_|CH0PR10MB5324:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2bfdf8f7-6509-492b-af26-08dab8f901cb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	Gerd/KVecxZHYhn/1tjrb1urASN7K1MYHO5LCnXHO9XsJzWKNROO4l9s3ns8sA5DjEac/Hd9tCoW4U5PNWckd/wyh4lMGWpttRa59qRuD/K9aO4EqCO1xxP7SIIBylLArORL5P2bINwHrWQOUIWlSwYEw0Bv4h4UZO2yjQSpMgv36nCv5eZVVgXxVOxG8NzZP2tpfoptF8Tzbff7lFJ0ZDPHvdZmh836F5VbM0RSZ4kTFEVxHvVxyY+JgnlaFgkPwSzrG11Z59w5Y5YLMMVEKNd0h5cpeBvQklZju5A+ApCHqe/puvZ7cvkJS4eIaAlhPjybV55N5nd8eKkcPzW6Jti0ysB7WuHfwFt4ue9q7VxtKDtL0y2rc2QJb8LkoODpu34LZUGZ7WgZgF5IxTlAZ+LlZSQr2H7eJrDNDxwaEmzNGjTqyj0q8uUCDNiNdb0CIaxYzPRSvndzTjbZ1yfeFeYiILWZqUSYBySwwvCT943ROg7RclFSrpxFqHQrjYwcqYDRW6esrhch9aHLAVoRK83OpvZxou2D7OvmQ9hBKATUSiAQirIEA1UxSz2bQz/qkJv4X9jxABU7/ePJhYw5M78pDxQcCgfKSZiO76NsD+lscbtnzpLMZ39nr+BeG0y1A6i+jWXgAP7aKfSxoJCclpUoceZt/IQZA8NJXmkDyn/ijnhESuMQPFC5TZmZqevKC+sJFQyLBS/l5SHQ5oicLQ==
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR10MB4196.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(7916004)(396003)(376002)(346002)(136003)(366004)(39860400002)(451199015)(6666004)(7416002)(2906002)(6486002)(5660300002)(44832011)(86362001)(54906003)(6916009)(316002)(83380400001)(8936002)(478600001)(41300700001)(6512007)(6506007)(8676002)(66476007)(33716001)(9686003)(66556008)(4326008)(186003)(66946007)(53546011)(26005)(38100700002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?RPmxQ/usTKyuBlhmH73ByZJVaBujiH/6LyVtDPUSZrgvwcZVTWQYLxOcsRfW?=
- =?us-ascii?Q?+6z3Lyt0vAfaVQUw6R34X1ImcDonz6dj65XYAceinOYFsmiHNGMiNAMTBw0g?=
- =?us-ascii?Q?O3jYg77g6qACz444voHU0qf6DCbgmm1DfU7OfdEtvTfhvUbhHIYNN+VFuoa6?=
- =?us-ascii?Q?soQVToYqllfqRiQCcOTB51fxqdRKPshBDbtII3TfePXHz4LVRyIoOP8XxKgN?=
- =?us-ascii?Q?igs9vW9FWeVVUh4U8b9wyGANdvfp+xfVgm6W0Z8/TiqiWMpzLuhbG8KzRKuj?=
- =?us-ascii?Q?JWkSXDjLgTBwgTWH9SkocNwKmYQkVgqP/s4g7urBQhD7UX5HnJKLIK+IuSKn?=
- =?us-ascii?Q?rE8ibwHe8kEu16BYMZhMqSq9m9RQbakUcs0ZWRGXQQE1Jo5nCr3Y3ylrxQQ6?=
- =?us-ascii?Q?tfH/o0YjSFzOPYsddcxp5iIxvaud6gfEYeid4+fy4jdySsU5CsK8fFiNpwFR?=
- =?us-ascii?Q?tvVgJNISkmkq9SCYNs/yxzNkeYxTqD1ja9rugX9Y9K0UlGvPAy4TPc30w5S/?=
- =?us-ascii?Q?xscesXGFDCjH98ubj73K8iYvbYKASttv6DaxhStHLKW8h2SvlrezcJ+rSYZM?=
- =?us-ascii?Q?tCQUSFD2np4ozYa3iWSpmWfQpTzfPmjnAHCA5pAGatDpEhVXGfzIhhMzxrd4?=
- =?us-ascii?Q?2LgGkd72Epox4WDUSSK18RFx49bfIRjkafGiiztVsTE1i+OgjRqpLFw91G0H?=
- =?us-ascii?Q?1F/ILI0dFTzGxm9cMsk78IArOnYfBY8T5r3kg5GqbHtnslnI3VE+uV5q2LpR?=
- =?us-ascii?Q?zCYAOrx5tWU+ZhdFnPiKIGtfhisxCtkyxRaenwgxazosZW2wMxXCgfWkF9mZ?=
- =?us-ascii?Q?iZpK/vzoTBwfg9LSgu6yBEY//LMxJt/7JUCoNLaYmvmla8pmFs8TcD4VPu/E?=
- =?us-ascii?Q?aw4+KwWO/kyG8uzt/3zFcf2MLDo4w6ENXXdxJ7c+PMKPM4bT4xYHJuR5c5kC?=
- =?us-ascii?Q?nnS2kGxdiD5IF94Lw7JGphzxtZlSccq5uA1HZrPsu7Igj5e9g3hcU472Pulw?=
- =?us-ascii?Q?Kg2QfkVsBAhrJyeSFNzvHDEHv4f02vkTRKOHdXyc/A5tYo6YsjWZmsNvR2Io?=
- =?us-ascii?Q?4zNh8Sedv8/lh39KAlNL7lgE572aSAzEIIgT6wkXziHVPe5LNH4AQdCIDTbW?=
- =?us-ascii?Q?p9+ehbSbs8JJStIndPdaImAEUBc7mPLJxMMVctzCayvf4kmuCNSY3mJmSNzW?=
- =?us-ascii?Q?zCeGluJRItjgXdg7IHak9RM24ai04AYhB5zT5m7WBhokGCT+R+uiG7/5GdNr?=
- =?us-ascii?Q?oAekhN3EuqcKqzEReTgizZitbq+sXF8sWawdxIrpH3oXjhmV2hBhWHDqvtRB?=
- =?us-ascii?Q?bGz+I28+ohGFg3ncwgP5+qB1NAhwhhSxmz1L73rsHxQXO+iE1EM5fgp5ziW4?=
- =?us-ascii?Q?+hsfBaTmqgkGY3n/t5P63p3HlXrBIaBEyG6uvumxU3Wn0Da2ZVQTjvLol3gZ?=
- =?us-ascii?Q?+GPxj3UBdOBNJkUAlIl25OtzNbgRLSOx4oK01PTf4GMjmUD/7YwfNHgrBMh6?=
- =?us-ascii?Q?Qp4DW1TVhf0NwvXJ1Hu9BPTGJM3gbU+sYeRxKjkWFeYNsjzo5Vx7wC+fcz6q?=
- =?us-ascii?Q?0TYuAVINzu6PaCp5+ds5jHDNQaQQuph2v/4Uo9ehmIhpZOGLCwkPgP4wEz5C?=
- =?us-ascii?Q?vQ=3D=3D?=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2bfdf8f7-6509-492b-af26-08dab8f901cb
-X-MS-Exchange-CrossTenant-AuthSource: BY5PR10MB4196.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2022 15:28:04.6276
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: DA2mRVd2AQYNKJNtNtw3GTMc5LQjHQl4lT5b5mxW49k0Gpr5TXcDhS2bfiH9kYVNw5/H38Z1CEov97go09wEpQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR10MB5324
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: HpBAPdfTok6vfA1nzPmibUzWh5naDlvt
+X-Proofpoint-ORIG-GUID: CQYuff1woyh3AuoF0nBvLz4ziNEZtLQ1
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
  definitions=2022-10-28_07,2022-10-27_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 phishscore=0
- adultscore=0 malwarescore=0 mlxscore=0 suspectscore=0 bulkscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2210170000 definitions=main-2210280096
-X-Proofpoint-ORIG-GUID: lz7Fk0T9kZnKH7Maqfriu0XZzmUTaI9T
-X-Proofpoint-GUID: lz7Fk0T9kZnKH7Maqfriu0XZzmUTaI9T
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 bulkscore=0
+ mlxlogscore=999 malwarescore=0 phishscore=0 suspectscore=0 mlxscore=0
+ impostorscore=0 clxscore=1011 lowpriorityscore=0 adultscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2210170000 definitions=main-2210280097
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -154,50 +93,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Naoya Horiguchi <naoya.horiguchi@linux.dev>, linux-ia64@vger.kernel.org, David Hildenbrand <david@redhat.com>, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Muchun Song <songmuchun@bytedance.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Baolin Wang <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: irogers@google.com, maddy@linux.ibm.com, rnsastry@linux.ibm.com, kjain@linux.ibm.com, linux-perf-users@vger.kernel.org, atrajeev@linux.vnet.ibm.com, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 10/27/22 15:34, Peter Xu wrote:
-> On Wed, Oct 26, 2022 at 05:34:04PM -0700, Mike Kravetz wrote:
-> > On 10/26/22 17:59, Peter Xu wrote:
-> 
-> If we want to use the vma read lock to protect here as the slow gup path,
-> then please check again with below [1] - I think we'll also need to protect
-> it with fast-gup (probably with trylock only, because fast-gup cannot
-> sleep) or it'll encounter the same race, iiuc.
-> 
-> Actually, instead of using vma lock, I really think this is another problem
-> and needs standalone fixing.  The problem is we allows huge_pte_offset() to
-> walk the process pgtable without any protection, while pmd unsharing can
-> drop a page anytime.  huge_pte_offset() is always facing use-after-free
-> when walking the PUD page.
-> 
-> We may want RCU lock to protect the pgtable pages from getting away when
-> huge_pte_offset() is walking it, it'll be safe then because pgtable pages
-> are released in RCU fashion only (e.g. in above example, process [2] will
-> munmap() and release the last ref to the "used to be shared" pmd and the
-> PUD that maps the shared pmds will be released only after a RCU grace
-> period), and afaict that's also what's protecting fast-gup from accessing
-> freed pgtable pages.
-> 
-> If with all huge_pte_offset() callers becoming RCU-safe, then IIUC we can
-> drop the vma lock in all GUP code, aka, in hugetlb_follow_page_mask() here,
-> because both slow and fast gup should be safe too in the same manner.
-> 
-> Thanks,
-> 
-> > > IIUC it's also the same as fast-gup - afaiu we don't take the read vma lock
-> > > in fast-gup too but I also think it's safe.  But I hope I didn't miss
-> > > something.
-> 
-> [1]
+Perf BPF filter test fails in environment where "kernel-debuginfo"
+is not installed.
 
-Thanks Peter!  I think the best thing would be to eliminate the vma_lock
-calls in this patch.  The code it is replacing/simplifying does not do any
-locking, so no real regression.
+Test failure logs:
+<<>>
+ 42: BPF filter                            :
+ 42.1: Basic BPF filtering                 : Ok
+ 42.2: BPF pinning                         : Ok
+ 42.3: BPF prologue generation             : FAILED!
+<<>>
 
-I think a scheme like you describe above is going to require some more
-thought/work.  It might be better as a follow on patch.
+Enabling verbose option provided debug logs, which says debuginfo
+needs to be installed. Snippet of verbose logs:
+
+<<>>
+ 42.3: BPF prologue generation                                       :
+--- start ---
+test child forked, pid 28218
+<<>>
+Rebuild with CONFIG_DEBUG_INFO=y, or install an appropriate debuginfo
+package.
+bpf_probe: failed to convert perf probe events
+Failed to add events selected by BPF
+test child finished with -1
+---- end ----
+BPF filter subtest 3: FAILED!
+<<>>
+
+Here subtest, "BPF prologue generation" failed and
+logs shows debuginfo is needed. After installing
+kernel-debuginfo package, testcase passes.
+
+Subtest "BPF prologue generation" failed because, the "do_test"
+function returns "TEST_FAIL" without checking the error type
+returned by "parse_events_load_bpf_obj" function.
+Function parse_events_load_bpf_obj can also return error of type
+"-ENOENT" incase kernel-debuginfo package is not installed. Fix this
+by adding check for -ENOENT error.
+
+Test result after the patch changes:
+
+Test failure logs:
+<<>>
+ 42: BPF filter                 :
+ 42.1: Basic BPF filtering      : Ok
+ 42.2: BPF pinning              : Ok
+ 42.3: BPF prologue generation  : Skip (clang/debuginfo isn't
+installed or environment missing BPF support)
+
+Fixes: ba1fae431e74bb42 ("perf test: Add 'perf test BPF'")
+Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+Reviewed-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+---
+ tools/perf/tests/bpf.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/tools/perf/tests/bpf.c b/tools/perf/tests/bpf.c
+index 17c023823713..57cecadc1da2 100644
+--- a/tools/perf/tests/bpf.c
++++ b/tools/perf/tests/bpf.c
+@@ -126,6 +126,10 @@ static int do_test(struct bpf_object *obj, int (*func)(void),
+ 
+ 	err = parse_events_load_bpf_obj(&parse_state, &parse_state.list, obj, NULL);
+ 	parse_events_error__exit(&parse_error);
++	if (err == -ENOENT) {
++		pr_debug("Failed to add events selected by BPF, debuginfo package not installed\n");
++		return TEST_SKIP;
++	}
+ 	if (err || list_empty(&parse_state.list)) {
+ 		pr_debug("Failed to add events selected by BPF\n");
+ 		return TEST_FAIL;
+@@ -368,7 +372,7 @@ static struct test_case bpf_tests[] = {
+ 			"clang isn't installed or environment missing BPF support"),
+ #ifdef HAVE_BPF_PROLOGUE
+ 	TEST_CASE_REASON("BPF prologue generation", bpf_prologue_test,
+-			"clang isn't installed or environment missing BPF support"),
++			"clang/debuginfo isn't installed or environment missing BPF support"),
+ #else
+ 	TEST_CASE_REASON("BPF prologue generation", bpf_prologue_test, "not compiled in"),
+ #endif
 -- 
-Mike Kravetz
+2.31.1
+
