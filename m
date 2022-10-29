@@ -2,45 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 626B061220D
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Oct 2022 11:55:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84F7E61223C
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Oct 2022 12:49:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Mzvsx2Hg8z3ccs
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Oct 2022 20:55:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Mzx4d3DCJz3cLh
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Oct 2022 21:49:37 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Pewceabm;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=cdjrlc.com (client-ip=43.154.221.58; helo=bg4.exmail.qq.com; envelope-from=dengshaomin@cdjrlc.com; receiver=<UNKNOWN>)
-X-Greylist: delayed 452 seconds by postgrey-1.36 at boromir; Sat, 29 Oct 2022 20:54:45 AEDT
-Received: from bg4.exmail.qq.com (bg4.exmail.qq.com [43.154.221.58])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4MzvsK4RVlz3bjy
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Oct 2022 20:54:45 +1100 (AEDT)
-X-QQ-mid: bizesmtp62t1667036809t7njbpzb
-Received: from localhost.localdomain ( [182.148.13.81])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Sat, 29 Oct 2022 17:46:44 +0800 (CST)
-X-QQ-SSF: 01000000002000D0E000B00A0000000
-X-QQ-FEAT: D6RqbDSxuq6cl7v6+jiUzOwsMIqLKR3vyxMmJUI7LbiJuMEO0xzlTsP1JQPEv
-	mWGLT9H0GslUYISo6RVuqOdBRtSdgzbRohNS30tbt4OyKxbV9EfU6alLVINk0cLS8AJGNOW
-	+Arn+7QyDYlpZVfoAVtkUTNmZxcUE3EtuYHGr0hQ5GOW+GoBKWzF3j+iiDu65AYSxkOQe4q
-	KvZeWyhgtxzfuCwK+jvoM6o4fW2RnflgwDHuUGAloPtyAQvJ3wQystrdiBVj8rpHrPJkSg4
-	+LlFUfq2SegkwOPF85ah5YGbpKywZJE7wVUkALHXVb2a8k6BKAkMXhKmLbfA0/dvMYgv3mG
-	gLjEbywiQoUNZAoTfgxK8eBED3C+c0Rr/4l2TieDCXskIqa8YGW2/DoD7zxPQ==
-X-QQ-GoodBg: 0
-From: Shaomin Deng <dengshaomin@cdjrlc.com>
-To: shuah@kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] selftests/powerpc: Remove repeated word in comments
-Date: Sat, 29 Oct 2022 05:46:43 -0400
-Message-Id: <20221029094643.5595-1-dengshaomin@cdjrlc.com>
-X-Mailer: git-send-email 2.35.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Mzx3j1JGnz3bkQ
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Oct 2022 21:48:49 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Pewceabm;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Mzx3f3jHJz4xGR;
+	Sat, 29 Oct 2022 21:48:46 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1667040527;
+	bh=w4Rmmw3RS24hXRNe+iPdpTEFwX0r7o0PH0nM1I/G3U0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=PewceabmNMnMjE/7Tp7JPCcgXvMHwQAGd9AJdAALJmmhC2Rpzxgs8e4wYPf6MIpXz
+	 rzYFty7Ibb4axiPwnC501svvWHwTnrqi6oY5kUR4PWFTzs86dZLDOXwF3DPdzwS3CR
+	 bN3Hz0K0eZ8/KY/X23x76p3q+j8fynXwyrH6Wq/4MdS/W6BGNvgeDSI4iH6i2V+I+Q
+	 inZiHh1RglMrQ410+2k4wbAocLFLI4t/wB6BqZ/zGcx/fNSMOSjAARoS6pMG8eX7hr
+	 QwscPmIUxrjCiMJ86F3RpkmSC7MsiB6b3o/5K6fOJ0FvNNzbwdiP4+gRVx+vCCd2D2
+	 8CzJSTfR2u6CA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-6.1-3 tag
+Date: Sat, 29 Oct 2022 21:48:41 +1100
+Message-ID: <87zgdesy5y.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:cdjrlc.com:qybglogicsvr:qybglogicsvr4
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,30 +55,96 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Shaomin Deng <dengshaomin@cdjrlc.com>, npiggin@gmail.com
+Cc: linuxppc-dev@lists.ozlabs.org, haren@linux.ibm.com, linux-kernel@vger.kernel.org, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Remove the repeated word "not" in comments.
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
 
-Signed-off-by: Shaomin Deng <dengshaomin@cdjrlc.com>
----
- tools/testing/selftests/powerpc/include/pkeys.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Hi Linus,
 
-diff --git a/tools/testing/selftests/powerpc/include/pkeys.h b/tools/testing/selftests/powerpc/include/pkeys.h
-index 3312cb1b058d..51729d9a7111 100644
---- a/tools/testing/selftests/powerpc/include/pkeys.h
-+++ b/tools/testing/selftests/powerpc/include/pkeys.h
-@@ -24,7 +24,7 @@
- #undef PKEY_DISABLE_EXECUTE
- #define PKEY_DISABLE_EXECUTE	0x4
- 
--/* Older versions of libc do not not define this */
-+/* Older versions of libc do not define this */
- #ifndef SEGV_PKUERR
- #define SEGV_PKUERR	4
- #endif
--- 
-2.35.1
+Please pull some more powerpc fixes for 6.1:
 
+The following changes since commit 9abf2313adc1ca1b6180c508c25f22f9395cc780:
+
+  Linux 6.1-rc1 (2022-10-16 15:36:24 -0700)
+
+are available in the git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.1-3
+
+for you to fetch changes up to 65722736c3baf29e02e964a09e85c9ef71c48e8d:
+
+  powerpc/64s/interrupt: Fix clear of PACA_IRQS_HARD_DIS when returning to soft-masked context (2022-10-27 00:38:35 +1100)
+
+- ------------------------------------------------------------------
+powerpc fixes for 6.1 #3
+
+ - Fix a case of rescheduling with user access unlocked, when preempt is enabled.
+
+ - A follow-up fix for a recent fix, which could lead to IRQ state assertions firing
+   incorrectly.
+
+ - Two fixes for lockdep warnings seen when using kfence with the Hash MMU.
+
+ - Two fixes for preempt warnings seen when using the Hash MMU.
+
+ - Two fixes for the VAS coprocessor mechanism used on pseries.
+
+ - Prevent building some of our older KVM backends when CONTEXT_TRACKING_USER is enabled,
+   as it's known to cause crashes.
+
+ - A couple of fixes for issues seen with PMU NMIs.
+
+Thanks to: Nicholas Piggin, Guenter Roeck, Frederic Barrat Haren Myneni, Sachin Sant,
+Samuel Holland.
+
+- ------------------------------------------------------------------
+Haren Myneni (2):
+      powerpc/pseries/vas: Add VAS IRQ primary handler
+      powerpc/pseries: Use lparcfg to reconfig VAS windows for DLPAR CPU
+
+Nicholas Piggin (10):
+      powerpc/64s: Add lockdep for HPTE lock
+      powerpc/64s: make HPTE lock and native_tlbie_lock irq-safe
+      powerpc/64s: make linear_map_hash_lock a raw spinlock
+      powerpc/64s: Disable preemption in hash lazy mmu mode
+      powerpc/64s: Fix hash__change_memory_range preemption warning
+      powerpc: Fix reschedule bug in KUAP-unlocked user copy
+      KVM: PPC: BookS PR-KVM and BookE do not support context tracking
+      powerpc/64/interrupt: Prevent NMI PMI causing a dangerous warning
+      powerpc/64s/interrupt: Perf NMI should not take normal exit path
+      powerpc/64s/interrupt: Fix clear of PACA_IRQS_HARD_DIS when returning to soft-masked context
+
+
+ arch/powerpc/include/asm/book3s/64/tlbflush-hash.h |  6 ++
+ arch/powerpc/kernel/exceptions-64e.S               |  7 ++
+ arch/powerpc/kernel/exceptions-64s.S               | 14 +++-
+ arch/powerpc/kernel/interrupt.c                    | 14 +++-
+ arch/powerpc/kernel/interrupt_64.S                 | 13 ++-
+ arch/powerpc/kvm/Kconfig                           |  4 +
+ arch/powerpc/lib/vmx-helper.c                      | 12 ++-
+ arch/powerpc/mm/book3s64/hash_native.c             | 67 ++++++++++++++--
+ arch/powerpc/mm/book3s64/hash_pgtable.c            |  8 +-
+ arch/powerpc/mm/book3s64/hash_utils.c              | 12 +--
+ arch/powerpc/platforms/pseries/lparcfg.c           | 11 +++
+ arch/powerpc/platforms/pseries/vas.c               | 83 +++++++++++++++-----
+ arch/powerpc/platforms/pseries/vas.h               |  6 ++
+ 13 files changed, 212 insertions(+), 45 deletions(-)
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAmNdBLMACgkQUevqPMjh
+pYBiVRAAmr/98OnqSULxJsuJHZnLGTZuMCnMOsk4sPYVEqfwiR2wF4GmQWV1EHG1
+hSk9nw46lZaPBtg5FLxp8VrmRsJLv9GTM81bvfIA40+nmpHwuljXckEtkVkTMO4M
+EPBMbrinLJhBczXNJ9etAK/Sm7zlBW4Zunyo8ejm04RfrbNdUTEzhzwV9uK0AE0S
+Leg2LAYsChcd1on0L+rcBIHLZUCFd3GJJz0i4MHGtLV/cBtbg+qrNRxYQMyHVZmG
+PlWUHywweya6mzyDi2WBU2rjzRz0ZjcNAEnMvqsihAmrnDQJcYGXc61gDH3lYuDk
+oGLcm7an2aElPnoJOCCmAugUk1IY7c9WVxgrHCQ08kBtHgPkuL0XGMJNGYRyNcUN
+azoz0VikviOLkECPP9MGrKUuYSewUXjk4DIYLEZclvvRbBKp7gM7hAAtJXJxghVH
+mynKr2zTGTJb73sGo7ey/kAgzXPBX6mre2BhSYR+odzSEcptg+Rd+6pDqwAw2Xkt
+ao8iTGZUA2Vrq+KutoXvWb1mtP/EKLTz7dhbJUid4+cTrNo7NCTiNj/jSKEVXI2p
+FNwLXpP16VihJNg2ttOxz2GPhB2+6TIk9TeVJDFytqZPqx2bhY9PVpZxt0ARm3tH
+m8cl0gI8zXfbpyhAT3Y6IGRwpEFEyJ7UEQk9ew+JnRol2uaPLiM=
+=Dccx
+-----END PGP SIGNATURE-----
