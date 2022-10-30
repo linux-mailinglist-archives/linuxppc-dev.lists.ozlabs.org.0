@@ -1,87 +1,90 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 352A0612C7C
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Oct 2022 20:45:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFDB1612C7F
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Oct 2022 20:46:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N0mvv0D6Vz3cFt
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Oct 2022 06:44:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N0mx55N94z3cCl
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Oct 2022 06:46:01 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=YcrjoliI;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=fXiXfJlV;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PoClh2O5;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PoClh2O5;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=66.111.4.26; helo=out2-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=YcrjoliI;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=fXiXfJlV;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PoClh2O5;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PoClh2O5;
 	dkim-atps=neutral
-Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N0mts2PWWz2y35
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Oct 2022 06:44:03 +1100 (AEDT)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-	by mailout.nyi.internal (Postfix) with ESMTP id A44805C0089;
-	Sun, 30 Oct 2022 15:43:59 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute3.internal (MEProxy); Sun, 30 Oct 2022 15:43:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:date:date:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:sender:subject
-	:subject:to:to; s=fm3; t=1667159039; x=1667245439; bh=RY8rR7d4cE
-	K7NC6MNjZkdPe/HCyeseCpAgG3zsf1oFk=; b=YcrjoliI5+x+26qfOLGHfPUW1b
-	qU8XZI0CuCoGGlynz6VHuMwKQgnpjmEdiUYNgkepEDFpZarXzoNTOQg5zlceb2d3
-	GWNWjoECBrMCu+9Y7lZu7MMoWcWHjvxC0Qq46xQsfesWj2Mq2CPEq0XPrT12kCwD
-	AdTal9HPHKRLLsLxuiz7RNoqLE5RbJ417VSBO5JkiATosnnHRMfzT3Mg2ht26lji
-	Q+KAFBf2YRsiVutOqaYR8dUeM8pAinz0Kf+vSF0PR4VH8k6A7LQ1LaaxUIXNBKs+
-	OoZvOqOMHJD+l0N39qjsIgND6FGN3CvnZeW0vVBq98gNVRu5i1nvlNSe//dg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-	:feedback-id:from:from:in-reply-to:in-reply-to:message-id
-	:mime-version:references:reply-to:sender:subject:subject:to:to
-	:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm3; t=1667159039; x=1667245439; bh=RY8rR7d4cEK7NC6MNjZkdPe/HCye
-	seCpAgG3zsf1oFk=; b=fXiXfJlVaJsIP0etUaLKATAEWXIJPWQwukqvKUQReUic
-	VpRgp8IWtc883+ewGCFEeNCGZdHXm45PDYx0zcCSbK4JJv85CxeCG3SXQWVIy/lJ
-	5dwMbTbqZ8m+VKXqlDxqI3oHf9e1pcLNpXc7iy8Mv61ihbXb6VEA7KmiKWCTD/8+
-	NE3/VuM1BWMjH79UmkqO04RFswt84KvkbKlmWefsdq2E3t/S0dA2OCIoF6MAKag1
-	dHGR10fCv4+vRQwhv95jpTI7mFDc4O0TimnuTYuxE9kJKvIbGl9zVGR7UW2yGpZd
-	BDxehaqKwW8jlxDh4/69KZi0cSb5AHdSSv7RKfifVA==
-X-ME-Sender: <xms:_9NeY0nfd2oTuTAU37H_3cwVCNli3u2cvb0xZ6OGYqCvnI-_zTFjig>
-    <xme:_9NeYz3E53TOptTNEnT_RqVNrcHPL1QWTZSYzKdyQ1IttBQ-6zamqjecDdaLE3kPX
-    _ABj2K2E8TlOY91x1E>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvgedruddtgddufedtucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepvefhffeltdegheeffffhtdegvdehjedtgfekueevgfduffettedtkeekueef
-    hedunecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpe
-    dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:_9NeYyq0mca0jk1oPnzO_1b3uW-tGsbvnXwE1oB3TtzjIOUuRmpD1w>
-    <xmx:_9NeYwne6m5NNbU7wsOB8lIsW9xsWLoYE_cfgvhxMmCUeOHsZbPT5A>
-    <xmx:_9NeYy1kDPgpA7i8BevqiE8nKN5X06I_CABi6m-_oOP-PvMRicW67A>
-    <xmx:_9NeY39B0vW1_qD6BrVS7cHfnJaIHElkZpkuLFEt23uRvB9qcojhLQ>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 1B0F4B60089; Sun, 30 Oct 2022 15:43:59 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.7.0-alpha0-1087-g968661d8e1-fm-20221021.001-g968661d8
-Mime-Version: 1.0
-Message-Id: <8d567e4a-6972-458d-b220-eec56ba52ed9@app.fastmail.com>
-In-Reply-To: <87h6zlgwb1.fsf@igel.home>
-References: <20220921065605.1051927-1-rmclure@linux.ibm.com>
- <20220921065605.1051927-22-rmclure@linux.ibm.com> <87h6zlgwb1.fsf@igel.home>
-Date: Sun, 30 Oct 2022 20:43:38 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Andreas Schwab" <schwab@linux-m68k.org>,
- "Rohan McLure" <rmclure@linux.ibm.com>
-Subject: Re: [PATCH v6 21/25] powerpc: Provide syscall wrapper
-Content-Type: text/plain
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N0mw91pGrz3cKW
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Oct 2022 06:45:12 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1667159106;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bT5+mtm9SvOiSWB+WL0RWSIeohhjPs4i/ZgPi5EI8zo=;
+	b=PoClh2O51ymkJ5489xkzu+7JK9d3cRC2g34qs5bZO8zQARzP7TQ98l2rCJBR/fkY5cFB3+
+	vCDGOj5PvuxlZWMqZJMPmfZWVfAAMnue3wdBB111cPeOoexnj+OlYOtW9RMFfMm1rD9O8B
+	GQceIGxVsqSxLbPjTc7NdxZyIiBFuXU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1667159106;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bT5+mtm9SvOiSWB+WL0RWSIeohhjPs4i/ZgPi5EI8zo=;
+	b=PoClh2O51ymkJ5489xkzu+7JK9d3cRC2g34qs5bZO8zQARzP7TQ98l2rCJBR/fkY5cFB3+
+	vCDGOj5PvuxlZWMqZJMPmfZWVfAAMnue3wdBB111cPeOoexnj+OlYOtW9RMFfMm1rD9O8B
+	GQceIGxVsqSxLbPjTc7NdxZyIiBFuXU=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-154-wqk-wi8tPTG8qa9un5cuoA-1; Sun, 30 Oct 2022 15:45:05 -0400
+X-MC-Unique: wqk-wi8tPTG8qa9un5cuoA-1
+Received: by mail-qk1-f199.google.com with SMTP id x22-20020a05620a259600b006b552a69231so7877564qko.18
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Oct 2022 12:45:05 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bT5+mtm9SvOiSWB+WL0RWSIeohhjPs4i/ZgPi5EI8zo=;
+        b=fzj+p6EVqgjBg80TiNnPZ5wdEr4lyk8DXcVgwLlASkCwo8K8donWdhLB20Vlr0j4f4
+         st4iVHDJdGH4xiu1koSUUc3B/tujmJ27KLfW/m3sP8VD+TsvUWwlOZovJqMiqgkekqEt
+         RhGiWgTppLAOUMt02z51sMiI75JblNZQVIh1/neJyY/USKunfkTBx/At3qcCY1kdXGeY
+         kmeigNm8FnFstaQ+XbUdgM8l59vjLUvmA7viZ4c7LuT4b2gZtE6W+CJmJ6A/SFKYqmaT
+         NuNTzX9rZ243eGngeqcQoGI9V8xDBhk8gqNMomXWxN0XhSQ174uB+ohV5zG1fcXLJmZS
+         PNgg==
+X-Gm-Message-State: ACrzQf0wjndQZlUk0gzfOkFCRA1sBB9BdOQ5CA/gYg9G1SsMxkF3+WMV
+	hz7q5wHnO1BH9+fdhopMLXWb1aHueKUOmu+bx/oyNxSFlf5FYfuBfpdrCuEeHoK/1CMcmyCOfTm
+	clFz4/iR8D+r2ii4O7nfbq3S0wg==
+X-Received: by 2002:ac8:5b05:0:b0:399:9b82:77b4 with SMTP id m5-20020ac85b05000000b003999b8277b4mr7916914qtw.681.1667159104707;
+        Sun, 30 Oct 2022 12:45:04 -0700 (PDT)
+X-Google-Smtp-Source: AMsMyM7DGRAbhY7ngHol5WrR3s5q5A6o6BjH1ZsifAnGgA9PVQrmUO3jQvhvJGCv8i15sQG8OQjvCA==
+X-Received: by 2002:ac8:5b05:0:b0:399:9b82:77b4 with SMTP id m5-20020ac85b05000000b003999b8277b4mr7916896qtw.681.1667159104500;
+        Sun, 30 Oct 2022 12:45:04 -0700 (PDT)
+Received: from x1n (bras-base-aurron9127w-grc-46-70-31-27-79.dsl.bell.ca. [70.31.27.79])
+        by smtp.gmail.com with ESMTPSA id fu38-20020a05622a5da600b0039953dcc480sm2596227qtb.88.2022.10.30.12.45.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 30 Oct 2022 12:45:03 -0700 (PDT)
+Date: Sun, 30 Oct 2022 15:45:02 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Mike Kravetz <mike.kravetz@oracle.com>
+Subject: Re: [PATCH v4] hugetlb: simplify hugetlb handling in follow_page_mask
+Message-ID: <Y17UPk9CBjPumcz6@x1n>
+References: <20221028181108.119432-1-mike.kravetz@oracle.com>
+MIME-Version: 1.0
+In-Reply-To: <20221028181108.119432-1-mike.kravetz@oracle.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,16 +96,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Andrew Donnellan <ajd@linux.ibm.com>
+Cc: Naoya Horiguchi <naoya.horiguchi@linux.dev>, linux-ia64@vger.kernel.org, David Hildenbrand <david@redhat.com>, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Muchun Song <songmuchun@bytedance.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Baolin Wang <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Oct 30, 2022, at 16:34, Andreas Schwab wrote:
-> This breaks powerpc32.  The fallocate syscall misinterprets its
-> arguments.
+On Fri, Oct 28, 2022 at 11:11:08AM -0700, Mike Kravetz wrote:
+> +struct page *hugetlb_follow_page_mask(struct vm_area_struct *vma,
+> +				unsigned long address, unsigned int flags)
+> +{
+> +	struct hstate *h = hstate_vma(vma);
+> +	struct mm_struct *mm = vma->vm_mm;
+> +	unsigned long haddr = address & huge_page_mask(h);
+> +	struct page *page = NULL;
+> +	spinlock_t *ptl;
+> +	pte_t *pte, entry;
+> +
+> +	/*
+> +	 * FOLL_PIN is not supported for follow_page(). Ordinary GUP goes via
+> +	 * follow_hugetlb_page().
+> +	 */
+> +	if (WARN_ON_ONCE(flags & FOLL_PIN))
+> +		return NULL;
+> +
+> +retry:
+> +	pte = huge_pte_offset(mm, haddr, huge_page_size(h));
+> +	if (!pte)
+> +		return NULL;
+> +
+> +	ptl = huge_pte_lock(h, mm, pte);
+> +	entry = huge_ptep_get(pte);
+> +	if (pte_present(entry)) {
+> +		page = pte_page(entry) +
+> +				((address & ~huge_page_mask(h)) >> PAGE_SHIFT);
+> +		/*
+> +		 * Note that page may be a sub-page, and with vmemmap
+> +		 * optimizations the page struct may be read only.
+> +		 * try_grab_page() will increase the ref count on the
+> +		 * head page, so this will be OK.
+> +		 *
+> +		 * try_grab_page() should always succeed here, because we hold
+> +		 * the ptl lock and have verified pte_present().
+> +		 */
+> +		if (WARN_ON_ONCE(!try_grab_page(page, flags))) {
+> +			page = NULL;
+> +			goto out;
+> +		}
+> +	} else {
+> +		if (is_hugetlb_entry_migration(entry)) {
+> +			spin_unlock(ptl);
+> +			hugetlb_vma_unlock_read(vma);
 
-It was fixed in
+Just noticed it when pulled the last mm-unstable: this line seems to be a
+left-over of v3, while not needed now?
 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=e237506238352f3bfa9cf3983cdab873e35651eb
+> +			__migration_entry_wait_huge(pte, ptl);
+> +			goto retry;
+> +		}
+> +		/*
+> +		 * hwpoisoned entry is treated as no_page_table in
+> +		 * follow_page_mask().
+> +		 */
+> +	}
+> +out:
+> +	spin_unlock(ptl);
+> +	return page;
+> +}
 
-     Arnd
+-- 
+Peter Xu
+
