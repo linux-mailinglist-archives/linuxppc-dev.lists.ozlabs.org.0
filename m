@@ -1,42 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79365612BEA
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Oct 2022 18:31:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BE81612BB1
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Oct 2022 18:04:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N0jxL2VFYz3ccr
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Oct 2022 04:31:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N0jLP2Nn6z3cHh
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Oct 2022 04:04:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=leemhuis.info (client-ip=80.237.130.52; helo=wp530.webpack.hosteurope.de; envelope-from=regressions@leemhuis.info; receiver=<UNKNOWN>)
-X-Greylist: delayed 2648 seconds by postgrey-1.36 at boromir; Mon, 31 Oct 2022 04:30:32 AEDT
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nefkom.net (client-ip=212.18.0.9; helo=mail-out.m-online.net; envelope-from=whitebox@nefkom.net; receiver=<UNKNOWN>)
+X-Greylist: delayed 5364 seconds by postgrey-1.36 at boromir; Mon, 31 Oct 2022 04:03:42 AEDT
+Received: from mail-out.m-online.net (mail-out.m-online.net [212.18.0.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N0jwm05TKz2ywY
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Oct 2022 04:30:31 +1100 (AEDT)
-Received: from [2a02:8108:963f:de38:eca4:7d19:f9a2:22c5]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1opBRw-0005y7-8Z; Sun, 30 Oct 2022 17:46:16 +0100
-Message-ID: <28bb92a2-851d-cccc-2c1b-2f5a21fc49c1@leemhuis.info>
-Date: Sun, 30 Oct 2022 17:46:15 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N0jKp1z8Pz2yR9
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Oct 2022 04:03:40 +1100 (AEDT)
+Received: from frontend03.mail.m-online.net (unknown [192.168.6.182])
+	by mail-out.m-online.net (Postfix) with ESMTP id 4N0jKg61XYz1r1fY;
+	Sun, 30 Oct 2022 18:03:35 +0100 (CET)
+Received: from localhost (dynscan3.mnet-online.de [192.168.6.84])
+	by mail.m-online.net (Postfix) with ESMTP id 4N0jKg5fHPz1qqlR;
+	Sun, 30 Oct 2022 18:03:35 +0100 (CET)
+X-Virus-Scanned: amavisd-new at mnet-online.de
+Received: from mail.mnet-online.de ([192.168.8.182])
+	by localhost (dynscan3.mail.m-online.net [192.168.6.84]) (amavisd-new, port 10024)
+	with ESMTP id ZN5KiYZUMw8E; Sun, 30 Oct 2022 18:03:35 +0100 (CET)
+X-Auth-Info: JoKxX75W+C5HOESzkd84gZ5+tP4QpO6ib6kXPjlKygZHF6EVPq0pOVuGAKX90SND
+Received: from igel.home (aftr-82-135-86-167.dynamic.mnet-online.de [82.135.86.167])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.mnet-online.de (Postfix) with ESMTPSA;
+	Sun, 30 Oct 2022 18:03:35 +0100 (CET)
+Received: by igel.home (Postfix, from userid 1000)
+	id E492E2C358A; Sun, 30 Oct 2022 18:03:34 +0100 (CET)
+From: Andreas Schwab <schwab@linux-m68k.org>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH 1/2] powerpc/32: fix syscall wrappers with 64-bit
+ arguments of unaligned register-pairs
+References: <20221012035335.866440-1-npiggin@gmail.com>
+X-Yow: ..Are we having FUN yet...?
+Date: Sun, 30 Oct 2022 18:03:34 +0100
+In-Reply-To: <20221012035335.866440-1-npiggin@gmail.com> (Nicholas Piggin's
+	message of "Wed, 12 Oct 2022 13:53:34 +1000")
+Message-ID: <878rkxgs61.fsf@igel.home>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.0
-Subject: Re: Issues with the first PowerPC updates for the kernel 6.1
- #forregzbot
-Content-Language: en-US, de-DE
-To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "regressions@lists.linux.dev" <regressions@lists.linux.dev>
-References: <6C70D01A-B819-40BC-94F7-5BA6D8109134@xenosoft.de>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-In-Reply-To: <6C70D01A-B819-40BC-94F7-5BA6D8109134@xenosoft.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1667151032;edd23d9b;
-X-HE-SMSGID: 1opBRw-0005y7-8Z
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,60 +59,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: "Jason A . Donenfeld" <Jason@zx2c4.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-[Note: this mail is primarily send for documentation purposes and/or for
-regzbot, my Linux kernel regression tracking bot. That's why I removed
-most or all folks from the list of recipients, but left any that looked
-like a mailing lists. These mails usually contain '#forregzbot' in the
-subject, to make them easy to spot and filter out.]
+On Okt 12 2022, Nicholas Piggin wrote:
 
-[TLDR: I'm adding this regression report to the list of tracked
-regressions; all text from me you find below is based on a few templates
-paragraphs you might have encountered already already in similar form.]
+> diff --git a/arch/powerpc/kernel/syscalls/syscall.tbl b/arch/powerpc/kernel/syscalls/syscall.tbl
+> index 2bca64f96164..e9e0df4f9a61 100644
+> --- a/arch/powerpc/kernel/syscalls/syscall.tbl
+> +++ b/arch/powerpc/kernel/syscalls/syscall.tbl
+> @@ -228,8 +228,10 @@
+>  176	64	rt_sigtimedwait			sys_rt_sigtimedwait
+>  177	nospu 	rt_sigqueueinfo			sys_rt_sigqueueinfo		compat_sys_rt_sigqueueinfo
+>  178	nospu 	rt_sigsuspend			sys_rt_sigsuspend		compat_sys_rt_sigsuspend
+> -179	common	pread64				sys_pread64			compat_sys_ppc_pread64
+> -180	common	pwrite64			sys_pwrite64			compat_sys_ppc_pwrite64
+> +179	32	pread64				sys_ppc_pread64			compat_sys_ppc_pread64
+> +179	64	pread64				sys_pread64
+> +180	32	pwrite64			sys_ppc_pwrite64		compat_sys_ppc_pwrite64
+> +180	64	pwrite64			sys_pwrite64
 
-Hi, this is your Linux kernel regression tracker.
+Doesn't that lack entries for SPU?  Likewise for all other former common
+syscalls in this patch.
 
-On 12.10.22 08:51, Christian Zigotzky wrote:
-> Hi All,
-> 
-> I use the Nemo board with a PASemi PA6T CPU and have some issues since the first PowerPC updates for the kernel 6.1.
-> 
-> I successfully compiled the git kernel with the first PowerPC updates two days ago.
-> 
-> Unfortunately this kernel is really dangerous. Many things for example Network Manager and LightDM don't work anymore and produced several gigabyte of config files till the partition has been filled.
-> 
-> I deleted some files like the resolv.conf that had a size over 200 GB!
-> 
-> Unfortunately, MintPPC was still damaged. For example LightDM doesn't work anymore and the MATE desktop doesn't display any icons anymore because Caja wasn't able to reserve memory anymore.
-> 
-> In this case, bisecting isn't an option and I have to wait some weeks. It is really difficult to find the issue if the userland will damaged again and again.
-
-Thanks for the report. To be sure below issue doesn't fall through the
-cracks unnoticed, I'm adding it to regzbot, my Linux kernel regression
-tracking bot:
-
-#regzbot ^introduced c2e7a19827eec443a7cb
-#regzbot title ppc: PASemi PA6T CPU: Network Manager and LightDM and
-fill volume with data
-#regzbot ignore-activity
-
-This isn't a regression? This issue or a fix for it are already
-discussed somewhere else? It was fixed already? You want to clarify when
-the regression started to happen? Or point out I got the title or
-something else totally wrong? Then just reply -- ideally with also
-telling regzbot about it, as explained here:
-https://linux-regtracking.leemhuis.info/tracked-regression/
-
-Reminder for developers: When fixing the issue, add 'Link:' tags
-pointing to the report (the mail this one replies to), as explained for
-in the Linux kernel's documentation; above webpage explains why this is
-important for tracked regressions.
-
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
-
-P.S.: As the Linux kernel's regression tracker I deal with a lot of
-reports and sometimes miss something important when writing mails like
-this. If that's the case here, don't hesitate to tell me in a public
-reply, it's in everyone's interest to set the public record straight.
+-- 
+Andreas Schwab, schwab@linux-m68k.org
+GPG Key fingerprint = 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC1
+"And now for something completely different."
