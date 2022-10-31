@@ -1,67 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7DEF613026
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Oct 2022 07:08:27 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 109A761302B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Oct 2022 07:09:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N12lF5XZGz3f3T
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Oct 2022 17:08:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N12mG69bjz3cFs
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Oct 2022 17:09:18 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=cH+8a/OD;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Mfx4aYNv;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::429; helo=mail-pf1-x429.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1029; helo=mail-pj1-x1029.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=cH+8a/OD;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Mfx4aYNv;
 	dkim-atps=neutral
-Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N12SD613dz3c2g
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Oct 2022 16:55:24 +1100 (AEDT)
-Received: by mail-pf1-x429.google.com with SMTP id 17so5554673pfv.4
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Oct 2022 22:55:24 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N12SK1GXpz3cKv
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Oct 2022 16:55:29 +1100 (AEDT)
+Received: by mail-pj1-x1029.google.com with SMTP id f5-20020a17090a4a8500b002131bb59d61so11880134pjh.1
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Oct 2022 22:55:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7GPBuQmYtjxa9j7Vp6IVObDl9xrxHYAjMeTDVRPBvB0=;
-        b=cH+8a/OD8Dh9hTykWNIISYvXILbqCg7FB4HN5L50vCgV/fN2uMN631SwjWIUU8CAQU
-         cWvXE5hNs6mX3Y0M7v3BvijtPcyBRiqgA79itUtmbCl1xOTI8CymToVZEBPJr4WdSiLc
-         yPjwHfpN5O25LAFBgKPdx8qyeC1b1gpOc9o2bL2clu1aBX1NJ5mPJvj3RgY2T8ilfmDc
-         220pFJNTomAyf1Nc4/w8YhCCUXf9++YFKPWVN1duxjvNPAfgsUQauB9x3HAtFljSmV2t
-         GN28ZapzUNtQK1vgi9DPAjOk1nNwrHAIoFlMR5y6aNJIaIg+VwgQtC0qKFIG+xFc72A0
-         HIJQ==
+        bh=qUE/vMRCPjOE+uWRzORwT8aB57gxfYRsLdwmW2HmMX0=;
+        b=Mfx4aYNvWFDYg6di8he/c3CCeal/MXKtgfA5aRrrnZmzlbj32pN1iyGLkxOeQlma6Y
+         afFL79BhQgTBUNTfDoot5IGlnsqRFq0aaj29Id27rJnjSbCN/HUCM4+DUrZpmSi17QsC
+         FUmH6z/+EoPRWDv4OrzyrXvaTDskQG/f2pAUDjA66HCVcimYKZ/rvBmp1E5qiVPXcXJw
+         hkSTyLCdRk5/UTxIafNtMzYkIdaIlDV3DPW5p8O4b/CYviXUuKDm7a8PCs1JkbEB5pQG
+         eNZtimQa9KWRdgDahGfRUye5fpk9UKKDScGbE0Y0ZDFJt8+RH1nTTx/kIIgl1ZnEYKOy
+         HSog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=7GPBuQmYtjxa9j7Vp6IVObDl9xrxHYAjMeTDVRPBvB0=;
-        b=gqXOuZVm2HPtRfOXDByS1ftZHpbiDvZhH0OFxFzHs6QGkcDYpbDi7eC3VtTTivWBTM
-         acfSbVWjmYrkfDxbYLuI2ulsQA7yCihtath3RWrx9AE7MkdJYz5/C4EWES+t5YwIhHJH
-         3S/64FXNJ5oOMMkvvwId5yB4jcYLMdg1BOM/8ApceIYwhcx1W/k8Am3W/mu/50LN66TE
-         iY39uF3hPOAisM0vW26unKeVYvJqf6b1WRrEFAr/QpDa4s+m/9wmQmuVWLUY3rCGLatr
-         Af9W/2hKpd+IkfHGIL4bDtKYhVtBOhKL1JxvPQbX8S+2MqRCiMfH5/vnD2az0aFc8j5s
-         D2kQ==
-X-Gm-Message-State: ACrzQf33GJ7UARcFJj2s19czaxh6elpyQWS7frVGKkzX2UZALgSz49kE
-	o+EnDEg7q8yxcON41VG1ngge30V+GWY=
-X-Google-Smtp-Source: AMsMyM7kvInXot1LzbvnN3jK/BrpCii1vQY7cP5zmVUx4Et2IdDkegrMAdO7YbRhJJfvkcUkW//i3A==
-X-Received: by 2002:a63:2bd4:0:b0:451:5df1:4b15 with SMTP id r203-20020a632bd4000000b004515df14b15mr11332937pgr.518.1667195723844;
-        Sun, 30 Oct 2022 22:55:23 -0700 (PDT)
+        bh=qUE/vMRCPjOE+uWRzORwT8aB57gxfYRsLdwmW2HmMX0=;
+        b=6MAkiiANdL7N0Ugukek7K44nub5sECwKlMNZe1NlRJ4a3q6nZWTNgQiz4Qfz47F1pG
+         izrbvjR1hf7N5S3ZCV0okDFyqmqhg+8MjafuCtqjgu4vmtQ7yD+8SapauU08wHNJRqa7
+         37pTQoOCl6arswcZzTJ81bV8+eSoNo6JCWJL1dxf4X2dGrNMXWtvaj7tXmk9jeFH4bUO
+         uuEuZA6/bj5ACQLgE1HsBkvNyvYy7lMUZjdRI9CKr5gHuSltkC3XVF0hjs6cLKS4O5K3
+         VU/dQB+pyjk07MVk2FviXdBbejyPUrdQzu5/em+RKQsiCE2vbVqPJHsscZEFXFN6rptA
+         /9Sw==
+X-Gm-Message-State: ACrzQf07EL7SC8sVFZNIBrA1o5npM3GMI3KwCAxVDykVIC9K53E4n4zp
+	4TFGiVT9xz2/cwqDtXuNukqv3iWByM4=
+X-Google-Smtp-Source: AMsMyM67X87NfxJ/gTsvCgpIXzrhg5H9cfjQxz2LDjSIcQOdjF2nuSgwA6B+dBztYn+BvnRmfjyIiA==
+X-Received: by 2002:a17:902:e811:b0:186:8a61:ea76 with SMTP id u17-20020a170902e81100b001868a61ea76mr12836805plg.10.1667195726952;
+        Sun, 30 Oct 2022 22:55:26 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com (193-116-106-251.tpgi.com.au. [193.116.106.251])
-        by smtp.gmail.com with ESMTPSA id d62-20020a623641000000b005627ddbc7a4sm3599599pfa.191.2022.10.30.22.55.21
+        by smtp.gmail.com with ESMTPSA id d62-20020a623641000000b005627ddbc7a4sm3599599pfa.191.2022.10.30.22.55.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 30 Oct 2022 22:55:23 -0700 (PDT)
+        Sun, 30 Oct 2022 22:55:26 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [RFC PATCH 14/19] powerpc: split validate_sp into two functions
-Date: Mon, 31 Oct 2022 15:54:35 +1000
-Message-Id: <20221031055440.3594315-15-npiggin@gmail.com>
+Subject: [RFC PATCH 15/19] powerpc: allow minimum sized kernel stack frames
+Date: Mon, 31 Oct 2022 15:54:36 +1000
+Message-Id: <20221031055440.3594315-16-npiggin@gmail.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20221031055440.3594315-1-npiggin@gmail.com>
 References: <20221031055440.3594315-1-npiggin@gmail.com>
@@ -82,154 +82,253 @@ Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Most callers just want to validate an arbitrary kernel stack pointer,
-some need a particular size. Make the size case the exceptional one
-with an extra function.
+This affects only 64-bit ELFv2 kernels, and reduces the minimum
+asm-created stack frame size from 112 to 32 byte on those kernels.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/include/asm/processor.h | 15 ++++++++++++---
- arch/powerpc/kernel/process.c        | 23 ++++++++++++++---------
- arch/powerpc/kernel/stacktrace.c     |  2 +-
- arch/powerpc/perf/callchain.c        |  6 +++---
- 4 files changed, 30 insertions(+), 16 deletions(-)
+ arch/powerpc/kernel/head_40x.S       | 2 +-
+ arch/powerpc/kernel/head_44x.S       | 6 +++---
+ arch/powerpc/kernel/head_64.S        | 6 +++---
+ arch/powerpc/kernel/head_85xx.S      | 4 ++--
+ arch/powerpc/kernel/head_8xx.S       | 2 +-
+ arch/powerpc/kernel/head_book3s_32.S | 4 ++--
+ arch/powerpc/kernel/irq.c            | 4 ++--
+ arch/powerpc/kernel/misc_32.S        | 2 +-
+ arch/powerpc/kernel/misc_64.S        | 4 ++--
+ arch/powerpc/kernel/process.c        | 2 +-
+ arch/powerpc/kernel/smp.c            | 2 +-
+ arch/powerpc/kernel/stacktrace.c     | 2 +-
+ 12 files changed, 20 insertions(+), 20 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/processor.h b/arch/powerpc/include/asm/processor.h
-index 631802999d59..e96c9b8c2a60 100644
---- a/arch/powerpc/include/asm/processor.h
-+++ b/arch/powerpc/include/asm/processor.h
-@@ -374,9 +374,18 @@ static inline unsigned long __pack_fe01(unsigned int fpmode)
+diff --git a/arch/powerpc/kernel/head_40x.S b/arch/powerpc/kernel/head_40x.S
+index 088f500896c7..918547b93b5e 100644
+--- a/arch/powerpc/kernel/head_40x.S
++++ b/arch/powerpc/kernel/head_40x.S
+@@ -602,7 +602,7 @@ start_here:
+ 	lis	r1,init_thread_union@ha
+ 	addi	r1,r1,init_thread_union@l
+ 	li	r0,0
+-	stwu	r0,THREAD_SIZE-STACK_FRAME_OVERHEAD(r1)
++	stwu	r0,THREAD_SIZE-STACK_FRAME_MIN_SIZE(r1)
  
- #endif
+ 	bl	early_init	/* We have to do this with MMU on */
  
--/* Check that a certain kernel stack pointer is valid in task_struct p */
--int validate_sp(unsigned long sp, struct task_struct *p,
--                       unsigned long nbytes);
-+/*
-+ * Check that a certain kernel stack pointer is a valid (minimum sized)
-+ * stack frame in task_struct p.
-+ */
-+int validate_sp(unsigned long sp, struct task_struct *p);
-+
-+/*
-+ * validate the stack frame of a particular minimum size, used for when we are
-+ * looking at a certain object in the stack beyond the minimum.
-+ */
-+int validate_sp_size(unsigned long sp, struct task_struct *p,
-+		     unsigned long nbytes);
+diff --git a/arch/powerpc/kernel/head_44x.S b/arch/powerpc/kernel/head_44x.S
+index f15cb9fdb692..63a85c16fef4 100644
+--- a/arch/powerpc/kernel/head_44x.S
++++ b/arch/powerpc/kernel/head_44x.S
+@@ -109,7 +109,7 @@ _GLOBAL(_start);
+ 	lis	r1,init_thread_union@h
+ 	ori	r1,r1,init_thread_union@l
+ 	li	r0,0
+-	stwu	r0,THREAD_SIZE-STACK_FRAME_OVERHEAD(r1)
++	stwu	r0,THREAD_SIZE-STACK_FRAME_MIN_SIZE(r1)
  
+ 	bl	early_init
+ 
+@@ -1012,7 +1012,7 @@ _GLOBAL(start_secondary_47x)
+ 	 */
+ 	lis	r1,temp_boot_stack@h
+ 	ori	r1,r1,temp_boot_stack@l
+-	addi	r1,r1,1024-STACK_FRAME_OVERHEAD
++	addi	r1,r1,1024-STACK_FRAME_MIN_SIZE
+ 	li	r0,0
+ 	stw	r0,0(r1)
+ 	bl	mmu_init_secondary
+@@ -1025,7 +1025,7 @@ _GLOBAL(start_secondary_47x)
+ 	lwz	r1,TASK_STACK(r2)
+ 
+ 	/* Current stack pointer */
+-	addi	r1,r1,THREAD_SIZE-STACK_FRAME_OVERHEAD
++	addi	r1,r1,THREAD_SIZE-STACK_FRAME_MIN_SIZE
+ 	li	r0,0
+ 	stw	r0,0(r1)
+ 
+diff --git a/arch/powerpc/kernel/head_64.S b/arch/powerpc/kernel/head_64.S
+index dedcc6fe2263..b513d13bf79e 100644
+--- a/arch/powerpc/kernel/head_64.S
++++ b/arch/powerpc/kernel/head_64.S
+@@ -424,7 +424,7 @@ generic_secondary_common_init:
+ 
+ 	/* Create a temp kernel stack for use before relocation is on.	*/
+ 	ld	r1,PACAEMERGSP(r13)
+-	subi	r1,r1,STACK_FRAME_OVERHEAD
++	subi	r1,r1,STACK_FRAME_MIN_SIZE
+ 
+ 	/* See if we need to call a cpu state restore handler */
+ 	LOAD_REG_ADDR(r23, cur_cpu_spec)
+@@ -780,7 +780,7 @@ _GLOBAL(pmac_secondary_start)
+ 
+ 	/* Create a temp kernel stack for use before relocation is on.	*/
+ 	ld	r1,PACAEMERGSP(r13)
+-	subi	r1,r1,STACK_FRAME_OVERHEAD
++	subi	r1,r1,STACK_FRAME_MIN_SIZE
+ 
+ 	b	__secondary_start
+ 
+@@ -958,7 +958,7 @@ start_here_multiplatform:
+ 	LOAD_REG_IMMEDIATE(r1,THREAD_SIZE)
+ 	add	r1,r3,r1
+ 	li	r0,0
+-	stdu	r0,-STACK_FRAME_OVERHEAD(r1)
++	stdu	r0,-STACK_FRAME_MIN_SIZE(r1)
+ 
+ 	/*
+ 	 * Do very early kernel initializations, including initial hash table
+diff --git a/arch/powerpc/kernel/head_85xx.S b/arch/powerpc/kernel/head_85xx.S
+index 24f39abf81df..d9bd377dec91 100644
+--- a/arch/powerpc/kernel/head_85xx.S
++++ b/arch/powerpc/kernel/head_85xx.S
+@@ -229,7 +229,7 @@ set_ivor:
+ 	lis	r1,init_thread_union@h
+ 	ori	r1,r1,init_thread_union@l
+ 	li	r0,0
+-	stwu	r0,THREAD_SIZE-STACK_FRAME_OVERHEAD(r1)
++	stwu	r0,THREAD_SIZE-STACK_FRAME_MIN_SIZE(r1)
+ 
+ #ifdef CONFIG_SMP
+ 	stw	r24, TASK_CPU(r2)
+@@ -1044,7 +1044,7 @@ __secondary_start:
+ 	lwz	r1,TASK_STACK(r2)
+ 
+ 	/* stack */
+-	addi	r1,r1,THREAD_SIZE-STACK_FRAME_OVERHEAD
++	addi	r1,r1,THREAD_SIZE-STACK_FRAME_MIN_SIZE
+ 	li	r0,0
+ 	stw	r0,0(r1)
+ 
+diff --git a/arch/powerpc/kernel/head_8xx.S b/arch/powerpc/kernel/head_8xx.S
+index 0b05f2be66b9..cf546d0e5c40 100644
+--- a/arch/powerpc/kernel/head_8xx.S
++++ b/arch/powerpc/kernel/head_8xx.S
+@@ -537,7 +537,7 @@ start_here:
+ 	ori	r0, r0, STACK_END_MAGIC@l
+ 	stw	r0, 0(r1)
+ 	li	r0,0
+-	stwu	r0,THREAD_SIZE-STACK_FRAME_OVERHEAD(r1)
++	stwu	r0,THREAD_SIZE-STACK_FRAME_MIN_SIZE(r1)
+ 
+ 	lis	r6, swapper_pg_dir@ha
+ 	tophys(r6,r6)
+diff --git a/arch/powerpc/kernel/head_book3s_32.S b/arch/powerpc/kernel/head_book3s_32.S
+index 519b60695167..40854d092dd3 100644
+--- a/arch/powerpc/kernel/head_book3s_32.S
++++ b/arch/powerpc/kernel/head_book3s_32.S
+@@ -840,7 +840,7 @@ __secondary_start:
+ 	lwz	r1,TASK_STACK(r1)
+ 
+ 	/* stack */
+-	addi	r1,r1,THREAD_SIZE-STACK_FRAME_OVERHEAD
++	addi	r1,r1,THREAD_SIZE-STACK_FRAME_MIN_SIZE
+ 	li	r0,0
+ 	tophys(r3,r1)
+ 	stw	r0,0(r3)
+@@ -966,7 +966,7 @@ END_MMU_FTR_SECTION_IFCLR(MMU_FTR_HPTE_TABLE)
+ 	lis	r1,init_thread_union@ha
+ 	addi	r1,r1,init_thread_union@l
+ 	li	r0,0
+-	stwu	r0,THREAD_SIZE-STACK_FRAME_OVERHEAD(r1)
++	stwu	r0,THREAD_SIZE-STACK_FRAME_MIN_SIZE(r1)
  /*
-  * Prefetch macros.
+  * Do early platform-specific initialization,
+  * and set up the MMU.
+diff --git a/arch/powerpc/kernel/irq.c b/arch/powerpc/kernel/irq.c
+index 9ede61a5a469..c5b9ce887483 100644
+--- a/arch/powerpc/kernel/irq.c
++++ b/arch/powerpc/kernel/irq.c
+@@ -210,7 +210,7 @@ static __always_inline void call_do_softirq(const void *sp)
+ 		 PPC_LL "	%%r1, 0(%%r1)		;"
+ 		 : // Outputs
+ 		 : // Inputs
+-		   [sp] "b" (sp), [offset] "i" (THREAD_SIZE - STACK_FRAME_OVERHEAD),
++		   [sp] "b" (sp), [offset] "i" (THREAD_SIZE - STACK_FRAME_MIN_SIZE),
+ 		   [callee] "i" (__do_softirq)
+ 		 : // Clobbers
+ 		   "lr", "xer", "ctr", "memory", "cr0", "cr1", "cr5", "cr6",
+@@ -264,7 +264,7 @@ static __always_inline void call_do_irq(struct pt_regs *regs, void *sp)
+ 		 : // Outputs
+ 		   "+r" (r3)
+ 		 : // Inputs
+-		   [sp] "b" (sp), [offset] "i" (THREAD_SIZE - STACK_FRAME_OVERHEAD),
++		   [sp] "b" (sp), [offset] "i" (THREAD_SIZE - STACK_FRAME_MIN_SIZE),
+ 		   [callee] "i" (__do_irq)
+ 		 : // Clobbers
+ 		   "lr", "xer", "ctr", "memory", "cr0", "cr1", "cr5", "cr6",
+diff --git a/arch/powerpc/kernel/misc_32.S b/arch/powerpc/kernel/misc_32.S
+index e5127b19fec2..daf8f87d2372 100644
+--- a/arch/powerpc/kernel/misc_32.S
++++ b/arch/powerpc/kernel/misc_32.S
+@@ -382,7 +382,7 @@ EXPORT_SYMBOL(__bswapdi2)
+ _GLOBAL(start_secondary_resume)
+ 	/* Reset stack */
+ 	rlwinm	r1, r1, 0, 0, 31 - THREAD_SHIFT
+-	addi	r1,r1,THREAD_SIZE-STACK_FRAME_OVERHEAD
++	addi	r1,r1,THREAD_SIZE-STACK_FRAME_MIN_SIZE
+ 	li	r3,0
+ 	stw	r3,0(r1)		/* Zero the stack frame pointer	*/
+ 	bl	start_secondary
+diff --git a/arch/powerpc/kernel/misc_64.S b/arch/powerpc/kernel/misc_64.S
+index 36184cada00b..4bb6dd30c556 100644
+--- a/arch/powerpc/kernel/misc_64.S
++++ b/arch/powerpc/kernel/misc_64.S
+@@ -384,7 +384,7 @@ _GLOBAL(kexec_sequence)
+ 	std	r0,16(r1)
+ 
+ 	/* switch stacks to newstack -- &kexec_stack.stack */
+-	stdu	r1,THREAD_SIZE-STACK_FRAME_OVERHEAD(r3)
++	stdu	r1,THREAD_SIZE-STACK_FRAME_MIN_SIZE(r3)
+ 	mr	r1,r3
+ 
+ 	li	r0,0
+@@ -401,7 +401,7 @@ _GLOBAL(kexec_sequence)
+ 	std	r26,-48(r1)
+ 	std	r25,-56(r1)
+ 
+-	stdu	r1,-STACK_FRAME_OVERHEAD-64(r1)
++	stdu	r1,-STACK_FRAME_MIN_SIZE-64(r1)
+ 
+ 	/* save args into preserved regs */
+ 	mr	r31,r3			/* newstack (both) */
 diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index 6cb3982a11ef..b5defea32e75 100644
+index b5defea32e75..20fdb84759f0 100644
 --- a/arch/powerpc/kernel/process.c
 +++ b/arch/powerpc/kernel/process.c
-@@ -2128,9 +2128,12 @@ static inline int valid_emergency_stack(unsigned long sp, struct task_struct *p,
- 	return 0;
- }
+@@ -2151,7 +2151,7 @@ int validate_sp_size(unsigned long sp, struct task_struct *p,
  
--
--int validate_sp(unsigned long sp, struct task_struct *p,
--		       unsigned long nbytes)
-+/*
-+ * validate the stack frame of a particular minimum size, used for when we are
-+ * looking at a certain object in the stack beyond the minimum.
-+ */
-+int validate_sp_size(unsigned long sp, struct task_struct *p,
-+		     unsigned long nbytes)
+ int validate_sp(unsigned long sp, struct task_struct *p)
  {
- 	unsigned long stack_page = (unsigned long)task_stack_page(p);
- 
-@@ -2146,7 +2149,10 @@ int validate_sp(unsigned long sp, struct task_struct *p,
- 	return valid_emergency_stack(sp, p, nbytes);
+-	return validate_sp(sp, p, STACK_FRAME_OVERHEAD);
++	return validate_sp(sp, p, STACK_FRAME_MIN_SIZE);
  }
- 
--EXPORT_SYMBOL(validate_sp);
-+int validate_sp(unsigned long sp, struct task_struct *p)
-+{
-+	return validate_sp(sp, p, STACK_FRAME_OVERHEAD);
-+}
  
  static unsigned long ___get_wchan(struct task_struct *p)
- {
-@@ -2154,13 +2160,12 @@ static unsigned long ___get_wchan(struct task_struct *p)
- 	int count = 0;
- 
- 	sp = p->thread.ksp;
--	if (!validate_sp(sp, p, STACK_FRAME_OVERHEAD))
-+	if (!validate_sp(sp, p))
- 		return 0;
- 
- 	do {
- 		sp = READ_ONCE_NOCHECK(*(unsigned long *)sp);
--		if (!validate_sp(sp, p, STACK_FRAME_OVERHEAD) ||
--		    task_is_running(p))
-+		if (!validate_sp(sp, p) || task_is_running(p))
- 			return 0;
- 		if (count > 0) {
- 			ip = READ_ONCE_NOCHECK(((unsigned long *)sp)[STACK_FRAME_LR_SAVE]);
-@@ -2214,7 +2219,7 @@ void __no_sanitize_address show_stack(struct task_struct *tsk,
- 	lr = 0;
- 	printk("%sCall Trace:\n", loglvl);
- 	do {
--		if (!validate_sp(sp, tsk, STACK_FRAME_OVERHEAD))
-+		if (!validate_sp(sp, tsk))
- 			break;
- 
- 		stack = (unsigned long *) sp;
-@@ -2241,7 +2246,7 @@ void __no_sanitize_address show_stack(struct task_struct *tsk,
- 		 * could hold a pt_regs, if that does not fit then it can't
- 		 * have regs.
- 		 */
--		if (validate_sp(sp, tsk, STACK_SWITCH_FRAME_SIZE)
-+		if (validate_sp_size(sp, tsk, STACK_SWITCH_FRAME_SIZE)
- 		    && stack[STACK_INT_FRAME_MARKER_LONGS] == STACK_FRAME_REGS_MARKER) {
- 			struct pt_regs *regs = (struct pt_regs *)
- 				(sp + STACK_INT_FRAME_REGS);
+diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
+index 0da6e59161cd..6b90f10a6c81 100644
+--- a/arch/powerpc/kernel/smp.c
++++ b/arch/powerpc/kernel/smp.c
+@@ -1249,7 +1249,7 @@ static void cpu_idle_thread_init(unsigned int cpu, struct task_struct *idle)
+ #ifdef CONFIG_PPC64
+ 	paca_ptrs[cpu]->__current = idle;
+ 	paca_ptrs[cpu]->kstack = (unsigned long)task_stack_page(idle) +
+-				 THREAD_SIZE - STACK_FRAME_OVERHEAD;
++				 THREAD_SIZE - STACK_FRAME_MIN_SIZE;
+ #endif
+ 	task_thread_info(idle)->cpu = cpu;
+ 	secondary_current = current_set[cpu] = idle;
 diff --git a/arch/powerpc/kernel/stacktrace.c b/arch/powerpc/kernel/stacktrace.c
-index 453ac317a6cf..1dbbf30f265e 100644
+index 1dbbf30f265e..5de8597eaab8 100644
 --- a/arch/powerpc/kernel/stacktrace.c
 +++ b/arch/powerpc/kernel/stacktrace.c
-@@ -43,7 +43,7 @@ void __no_sanitize_address arch_stack_walk(stack_trace_consume_fn consume_entry,
- 		unsigned long *stack = (unsigned long *) sp;
- 		unsigned long newsp, ip;
+@@ -94,7 +94,7 @@ int __no_sanitize_address arch_stack_walk_reliable(stack_trace_consume_fn consum
+ 		 * idle tasks have a custom stack layout,
+ 		 * c.f. cpu_idle_thread_init().
+ 		 */
+-		stack_end -= STACK_FRAME_OVERHEAD;
++		stack_end -= STACK_FRAME_MIN_SIZE;
+ 	}
  
--		if (!validate_sp(sp, task, STACK_FRAME_OVERHEAD))
-+		if (!validate_sp(sp, task))
- 			return;
- 
- 		newsp = stack[0];
-diff --git a/arch/powerpc/perf/callchain.c b/arch/powerpc/perf/callchain.c
-index b01497ed5173..6b4434dd0ff3 100644
---- a/arch/powerpc/perf/callchain.c
-+++ b/arch/powerpc/perf/callchain.c
-@@ -27,7 +27,7 @@ static int valid_next_sp(unsigned long sp, unsigned long prev_sp)
- {
- 	if (sp & 0xf)
- 		return 0;		/* must be 16-byte aligned */
--	if (!validate_sp(sp, current, STACK_FRAME_OVERHEAD))
-+	if (!validate_sp(sp, current))
- 		return 0;
- 	if (sp >= prev_sp + STACK_FRAME_MIN_SIZE)
- 		return 1;
-@@ -53,7 +53,7 @@ perf_callchain_kernel(struct perf_callchain_entry_ctx *entry, struct pt_regs *re
- 	sp = regs->gpr[1];
- 	perf_callchain_store(entry, perf_instruction_pointer(regs));
- 
--	if (!validate_sp(sp, current, STACK_FRAME_OVERHEAD))
-+	if (!validate_sp(sp, current))
- 		return;
- 
- 	for (;;) {
-@@ -61,7 +61,7 @@ perf_callchain_kernel(struct perf_callchain_entry_ctx *entry, struct pt_regs *re
- 		next_sp = fp[0];
- 
- 		if (next_sp == sp + STACK_INT_FRAME_SIZE &&
--		    validate_sp(sp, current, STACK_INT_FRAME_SIZE) &&
-+		    validate_sp_size(sp, current, STACK_INT_FRAME_SIZE) &&
- 		    fp[STACK_INT_FRAME_MARKER_LONGS] == STACK_FRAME_REGS_MARKER) {
- 			/*
- 			 * This looks like an interrupt frame for an
+ 	if (task == current)
 -- 
 2.37.2
 
