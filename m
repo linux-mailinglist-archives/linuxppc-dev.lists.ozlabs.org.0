@@ -2,41 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F36861321A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Oct 2022 10:00:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E17E1613336
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Oct 2022 11:04:32 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N16YW3lNgz3cFw
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Oct 2022 20:00:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N17zf60xrz3cJr
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Oct 2022 21:04:30 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=dkim header.b=eI/C2tSl;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=NVMInip0;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=alien8.de (client-ip=2a01:4f8:190:11c2::b:1457; helo=mail.skyhub.de; envelope-from=bp@alien8.de; receiver=<UNKNOWN>)
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ventanamicro.com (client-ip=2a00:1450:4864:20::62c; helo=mail-ej1-x62c.google.com; envelope-from=ajones@ventanamicro.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=NVMInip0;
+	dkim-atps=neutral
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N16XV3Vqqz2xb4
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Oct 2022 19:59:18 +1100 (AEDT)
-Received: from zn.tnic (p200300ea9733e7cf329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:9733:e7cf:329c:23ff:fea6:a903])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id B91D91EC0531;
-	Mon, 31 Oct 2022 09:59:06 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1667206746;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=ev78IiojEqGZ8VOXUxmz9XVfROk+6cN5zzZ8OowFM8w=;
-	b=eI/C2tSlcg0AxMZOuPZM7vJKKoRmjE6inbkFlcyC7xyapkJ4fbL6uqhy9LxHWWR24ASGVE
-	A/YY8Nzaqhc5keG/EfmGhgdQunAK7K3mp31A11nA8qzGhVzkP/b4DF6aS9rc2MXsmebhdy
-	KGNWf+tkEEOxBllDztC3oUYW5H3eT+s=
-Date: Mon, 31 Oct 2022 09:58:57 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Andrew Jones <ajones@ventanamicro.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N17yg5W7lz2xCj
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Oct 2022 21:03:37 +1100 (AEDT)
+Received: by mail-ej1-x62c.google.com with SMTP id y14so28047576ejd.9
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Oct 2022 03:03:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ij0opVplOZ4JlIp6K8xwI+xLgpGAyEZHWtU1AyZKEUo=;
+        b=NVMInip05i3j2Mewd8/9DA5VH9moDODkHGKksq2V35DG4ZziDSBIvUuAT9vkgpRf0d
+         21cfnb+Ic7yb0fKpaQko2/3X06kq6xe/XCHQEYDl6OhLI2/0FrdGqDZUQd1J7/senkcv
+         DOl89eFWBJftp3vto1gh5cWgUBeCTuph9SIKiz0krDlDYUjX/89nzBZ1SkCF6yXeBQ5L
+         oy/FLx+eyQ0Wt0BTeHJp3vkdt0LtCHU4KDi4RBqwOyUiIBl9/k/dAugnydtOxw9EUUT/
+         ArMtYe3iEM2RkUy0/xdIxnvFPevgupjBBbMoUxHQvvlem6IUyPz4BSgqjGCJMagdWnvZ
+         oKCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ij0opVplOZ4JlIp6K8xwI+xLgpGAyEZHWtU1AyZKEUo=;
+        b=p4jS+1T13TYomWq1cXVFF1n7w4BYp1RixetW8cllh+QK/nW4XA+YVR+A5YExT0ofLg
+         7set24jlWxxl29IkY2xhkVvD78Cn6RkhgOuc++06SQ7rFbHOR9bB3IHw3bYsaBUbCPrq
+         2TmbZkSvYL1jBOuG7zYaFGEZaxYywpiMJEOoBRFWNkdOjDopSQwe9ximAPi4jzbqA/LU
+         IjyUrqbq75Q6r9olj1BVJ2ZygckkXN2Kono0OKJ3sukMiKHgaULCLolfcXvYK2AU8OAS
+         U6okwb6Y4dpfsjzpXNyHfz96UrJXvW5G79QxbMWFTJCeQFX5XRQAnbFuF2/eO77gMuJX
+         xkbQ==
+X-Gm-Message-State: ACrzQf1ZpnoXPKM6q08OnyVQcFLEz+2s+oEePSSrTHyw0YS7WVPWe8Xi
+	3fQ1GeLPpDM+eB2c5wJlAs56Yw==
+X-Google-Smtp-Source: AMsMyM6ycpS4chQBPAohNrxS8VumeP7MjXmU/tZoBGLw1w6j4emq8bR2PAjr2PZhdKbiabGv9P0mtA==
+X-Received: by 2002:a17:906:9745:b0:78d:480f:cee7 with SMTP id o5-20020a170906974500b0078d480fcee7mr11952970ejy.192.1667210609260;
+        Mon, 31 Oct 2022 03:03:29 -0700 (PDT)
+Received: from localhost (cst2-173-61.cust.vodafone.cz. [31.30.173.61])
+        by smtp.gmail.com with ESMTPSA id eh22-20020a0564020f9600b00461bacee867sm3048302edb.25.2022.10.31.03.03.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 31 Oct 2022 03:03:28 -0700 (PDT)
+Date: Mon, 31 Oct 2022 11:03:27 +0100
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Borislav Petkov <bp@alien8.de>
 Subject: Re: [PATCH v3 2/2] x86: Fix /proc/cpuinfo cpumask warning
-Message-ID: <Y1+OUawGJDjh4DOJ@zn.tnic>
+Message-ID: <20221031100327.r7tswmpszvs5ot5n@kamzik>
 References: <20221014155845.1986223-1-ajones@ventanamicro.com>
  <20221014155845.1986223-3-ajones@ventanamicro.com>
  <20221028074828.b66uuqqfbrnjdtab@kamzik>
@@ -45,10 +69,11 @@ References: <20221014155845.1986223-1-ajones@ventanamicro.com>
  <CAAH8bW_DkvPCH0-q2Bfe0OJ72r63mRM3GP7NKOFrhe3zMO2gbQ@mail.gmail.com>
  <Y1v+Ed6mRN9gisJS@zn.tnic>
  <20221031080604.6xei6c4e3ckhsvmy@kamzik>
+ <Y1+OUawGJDjh4DOJ@zn.tnic>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20221031080604.6xei6c4e3ckhsvmy@kamzik>
+In-Reply-To: <Y1+OUawGJDjh4DOJ@zn.tnic>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,18 +89,48 @@ Cc: Jonas Bonn <jonas@southpole.se>, linux-s390@vger.kernel.org, Alexander Gorde
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Oct 31, 2022 at 09:06:04AM +0100, Andrew Jones wrote:
->  The valid cpumask range is [0, nr_cpu_ids) and cpumask_next() always
->  returns a CPU ID greater than its input, which results in its input
->  range being [-1, nr_cpu_ids - 1). Ensure showing CPU info avoids
->  triggering error conditions in cpumask_next() by stopping its loop
+On Mon, Oct 31, 2022 at 09:58:57AM +0100, Borislav Petkov wrote:
+> On Mon, Oct 31, 2022 at 09:06:04AM +0100, Andrew Jones wrote:
+> >  The valid cpumask range is [0, nr_cpu_ids) and cpumask_next() always
+> >  returns a CPU ID greater than its input, which results in its input
+> >  range being [-1, nr_cpu_ids - 1). Ensure showing CPU info avoids
+> >  triggering error conditions in cpumask_next() by stopping its loop
+> 
+> What error conditions?
+> 
+> What would happen if @n is outside of the valid range?
 
-What error conditions?
+Currently (after the revert of 78e5a3399421) with DEBUG_PER_CPU_MAPS we'll
+get a warning splat when the cpu is outside the range [-1, nr_cpu_ids) and
+cpumask_next() will call find_next_bit() with the input plus one anyway.
+find_next_bit() doesn't explicity document what happens when an input is
+outside the range, but it currently returns the bitmap size without any
+side effects, which means cpumask_next() will return nr_cpu_ids.
+show_cpuinfo() doesn't try to show anything in that case and stops its
+loop, or, IOW, things work fine now with an input of nr_cpu_ids - 1. But,
+show_cpuinfo() is just getting away with a violated cpumask_next()
+contract, which 78e5a3399421 exposed. How about a new commit message like
+this
 
-What would happen if @n is outside of the valid range?
+  seq_read_iter() and cpuinfo's start and next seq operations implement a
+  pattern like
 
--- 
-Regards/Gruss,
-    Boris.
+    n = cpumask_next(n - 1, mask);
+    show(n);
+    while (1) {
+        ++n;
+        n = cpumask_next(n - 1, mask);
+        if (n >= nr_cpu_ids)
+           break;
+        show(n);
+    }
 
-https://people.kernel.org/tglx/notes-about-netiquette
+  which loops until cpumask_next() identifies its CPU ID input is out of
+  its valid range, [-1, nr_cpu_ids - 1). seq_read_iter() assumes the
+  result of an invalid input is to return nr_cpu_ids or larger without any
+  side effects, however the cpumask API does not document that and it
+  reserves the right to change how it responds to invalid inputs. Ensure
+  inputs from seq_read_iter() are valid.
+
+Thanks,
+drew
