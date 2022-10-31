@@ -2,47 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C7EA613A6B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Oct 2022 16:42:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C926613A6E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Oct 2022 16:43:32 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N1HTp458Pz3cQ0
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Nov 2022 02:42:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N1HVp3N94z3cJt
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Nov 2022 02:43:30 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=oy/IOnLM;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Xx6ewcqT;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=oy/IOnLM;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Xx6ewcqT;
 	dkim-atps=neutral
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N1HQv6GkRz2x9d
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Nov 2022 02:40:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N1HQx3GFWz2xCd
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Nov 2022 02:40:09 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 9CAFA612E7;
-	Mon, 31 Oct 2022 15:40:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACD48C433D6;
-	Mon, 31 Oct 2022 15:40:03 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id D7AF4612E4;
+	Mon, 31 Oct 2022 15:40:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89B1FC43141;
+	Mon, 31 Oct 2022 15:40:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1667230804;
-	bh=Ry1yPEx/VrNVXc5mpZkvv9i5ZTht3Zoh5muiCVNjxzA=;
+	s=k20201202; t=1667230805;
+	bh=d2qwTVjIOLKmzm2jp8sYlOBb+EYG7A7QejDW//F0bVw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oy/IOnLMkbQ7kxnquoU/2edARkafOXHPiIJq2OqrpQkGiZgvJexhCdpjG37prwLLg
-	 NDs1zg8tIRJwDr4H2monx6M6P8WUjH2T7eQqaJdK09Xcd2VfnZuWzcImqEgbPl1epE
-	 wtcqpp0KKL8gbtORGYeoBMBfhHw3ZZyLXzvEEPVY8v8P1GgOvMBS+UX3sP9ySSwaLm
-	 NsOrv2PW/Mhv9f+24QK03QLBoS7u+WNhKL9A5ps0SHLGjArc22j4hUnA4LCWzgwVhf
-	 yKkEneeNNyULguuHRvrB6p0UvlVwEimpyZJT6DK5dETWRXrdNtSTaeacaQ/l6qRItH
-	 2vzfLen3Rxu9g==
+	b=Xx6ewcqT8jUXOJmJKlk1a/DS5oUrpS9k0H8XxYkycnfRz8fZSVPkuLBscXAB6uZg8
+	 COdRhuwSrkmb8zeVOEMlaypMNnmwUDmU6YRlvwNthETWisXBy7kX/ho+YYwTFDG6By
+	 klqgObmuRyn0Whg0qtZEvlTetbtwEXLN2RjoSduTg1ztMtxgTac5FIytRQY8iaAyrO
+	 sr44zA32UrGTNx52JUtpzrzYsm6g8Si2Tpn9MbVxC7DSvVwyY2VuC2/QGk0DQzSdVi
+	 GbIMiHBI7VYixt1UzYD8L9MX7/zn4TXWByLI5sPpKRoVF7iGkuyAgY0pDH9ciKX+HG
+	 npICMhPsu3P9w==
 From: Bjorn Helgaas <helgaas@kernel.org>
 To: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Subject: [PATCH v3 2/5] PCI: microchip: Include <linux/irqdomain.h> explicitly
-Date: Mon, 31 Oct 2022 10:39:51 -0500
-Message-Id: <20221031153954.1163623-3-helgaas@kernel.org>
+Subject: [PATCH v3 3/5] PCI: mvebu: Include <linux/irqdomain.h> explicitly
+Date: Mon, 31 Oct 2022 10:39:52 -0500
+Message-Id: <20221031153954.1163623-4-helgaas@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20221031153954.1163623-1-helgaas@kernel.org>
 References: <20221031153954.1163623-1-helgaas@kernel.org>
@@ -66,32 +66,30 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: Bjorn Helgaas <bhelgaas@google.com>
 
-pcie-microchip-host.c uses irq_domain_add_linear() and related interfaces,
-so it needs <linux/irqdomain.h> but doesn't include it directly; it relies
-on the fact that <linux/of_irq.h> includes it.
+pci-mvebu.c uses irq_domain_add_linear() and related interfaces but relies
+on <linux/irqdomain.h> but doesn't include it directly; it relies on the
+fact that <linux/of_irq.h> includes it.
 
-But pcie-microchip-host.c *doesn't* need <linux/of_irq.h> itself.  Include
-<linux/irqdomain.h> directly to remove this implicit dependency so a future
-patch can drop <linux/of_irq.h>.
+Include <linux/irqdomain.h> directly to remove this implicit dependency.
 
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Acked-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 ---
- drivers/pci/controller/pcie-microchip-host.c | 1 +
+ drivers/pci/controller/pci-mvebu.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/pci/controller/pcie-microchip-host.c b/drivers/pci/controller/pcie-microchip-host.c
-index 7263d175b5ad..57b2a62f52c8 100644
---- a/drivers/pci/controller/pcie-microchip-host.c
-+++ b/drivers/pci/controller/pcie-microchip-host.c
-@@ -9,6 +9,7 @@
- 
- #include <linux/clk.h>
- #include <linux/irqchip/chained_irq.h>
+diff --git a/drivers/pci/controller/pci-mvebu.c b/drivers/pci/controller/pci-mvebu.c
+index 1ced73726a26..73db99035c2b 100644
+--- a/drivers/pci/controller/pci-mvebu.c
++++ b/drivers/pci/controller/pci-mvebu.c
+@@ -13,6 +13,7 @@
+ #include <linux/delay.h>
+ #include <linux/gpio.h>
+ #include <linux/init.h>
 +#include <linux/irqdomain.h>
- #include <linux/module.h>
- #include <linux/msi.h>
- #include <linux/of_address.h>
+ #include <linux/mbus.h>
+ #include <linux/slab.h>
+ #include <linux/platform_device.h>
 -- 
 2.25.1
 
