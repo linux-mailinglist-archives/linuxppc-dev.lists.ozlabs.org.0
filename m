@@ -2,59 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 639396154F0
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Nov 2022 23:27:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D10D615540
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Nov 2022 23:44:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N24Px2N3wz3cM1
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Nov 2022 09:27:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N24pK1Rgzz3cJg
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Nov 2022 09:44:41 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mXfVmQc8;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WuFx8933;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mXfVmQc8;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WuFx8933;
 	dkim-atps=neutral
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N24Nz2SDHz2xrk
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Nov 2022 09:26:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N24nP38QFz2ywV
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Nov 2022 09:43:53 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 9D4F060FA4;
-	Tue,  1 Nov 2022 22:26:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B274DC433C1;
-	Tue,  1 Nov 2022 22:26:06 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 16EA9611DA;
+	Tue,  1 Nov 2022 22:43:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 575F7C433B5;
+	Tue,  1 Nov 2022 22:43:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1667341567;
-	bh=bH391DK6mDhlfk/m9c9qaAOR1+HEqjYW4XKMtEK5zKQ=;
+	s=k20201202; t=1667342630;
+	bh=2zNKF9sIrblZIsup7pAfIEmiHmxsXlJEBUxwNTmO6lk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mXfVmQc8UrEuZM0HilitmRJturD7H7r9yQzekwIkMDc6cUWPlu5EV9ozQDqEP6lkd
-	 /4eefv4pttplO2R6vVTBoTcE2rqf0KY3sm4oOa6DyDDS3FKV7O6YySYI/JkWXw90uk
-	 MqE1CnzjyZDSU8fKkaQGCzRzJYgZnL2m8zSCN873FDu2en+0tibCmxo2KU//vb/F0X
-	 WS7fBwtJ3wDrPXYfmQUcxmfGb4fA3EeeRVAYhBhmpSgS1OHGTfAePN8X1rV5id3TiY
-	 171/iY4Ezrf/HtSqck4qz6ZL1d1phbJK8Sm3Z4SDYsK+d+t2uyxjR9WD+zE9di68j6
-	 y5fgZWBrBzJFg==
+	b=WuFx8933JHTEaadMAo6XrnWpo7g90tPRQXRB7DjNMKQsdDQFCmBF6z2ATeQ3euU32
+	 YBGfwPJKcJyhJDvV2HVx01O8lxSvdmvftj49OjVWC2lj4f8SX+znJm4IHz+2p0iWHj
+	 BV+J+bK1SRItD5IU5Z15NXggaCX44NYUK+0I6LSjAg/1TQqaS67nRVOcttR0LLCc9V
+	 45FZsSbEtoIaQMEwuvKXA4VFegTvmUt1t725ep8CTMfNLWrjykTJkuI+VuquWX55ty
+	 UdgdVccL3o85KRdikcu4o6sXDJx+6+WtFzQbSupglm8bbenKmKfmSOp9gBiKk2C0vq
+	 H9zjXfz5qaTfg==
 Received: by pali.im (Postfix)
-	id C50EA7F8; Tue,  1 Nov 2022 23:26:03 +0100 (CET)
-Date: Tue, 1 Nov 2022 23:26:03 +0100
+	id 1312D7F8; Tue,  1 Nov 2022 23:43:48 +0100 (CET)
+Date: Tue, 1 Nov 2022 23:43:48 +0100
 From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
 To: Michael Ellerman <mpe@ellerman.id.au>,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-	Paul Mackerras <paulus@samba.org>
-Subject: Re: [PATCH 1/2] powerpc/pci: Allow to disable filling deprecated
- pci-OF-bus-map
-Message-ID: <20221101222603.h3nlrp6xuhrnkmht@pali>
-References: <20220817163927.24453-1-pali@kernel.org>
- <20221009112555.spnwid27r4rwi67q@pali>
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] powerpc: dts: turris1x.dts: Add channel labels for
+ temperature sensor
+Message-ID: <20221101224348.xkpzucskunn46i5z@pali>
+References: <20220930123901.10251-1-pali@kernel.org>
+ <20220930124618.kyaansrl7ls5kn3i@pali>
+ <20221009120506.itwa4n25nljn2tll@pali>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20221009112555.spnwid27r4rwi67q@pali>
+In-Reply-To: <20221009120506.itwa4n25nljn2tll@pali>
 User-Agent: NeoMutt/20180716
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -67,102 +68,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linux-hwmon@vger.kernel.org, Marek =?utf-8?B?QmVow7pu?= <kabel@kernel.org>, Josef Schlehofer <josef.schlehofer@nic.cz>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello! Gentle reminder...
+Michael, could you take this patch?
 
-On Sunday 09 October 2022 13:25:55 Pali Rohár wrote:
-> Hello! Any comments on this? It would be nice to take these two patches
-> (or at least patch 2) to finally enable PPC_PCI_BUS_NUM_DOMAIN_DEPENDENT
-> by default where possible.
+On Sunday 09 October 2022 14:05:06 Pali Rohár wrote:
+> On Friday 30 September 2022 14:46:18 Pali Rohár wrote:
+> > + CC hwmon ML
+> > 
+> > On Friday 30 September 2022 14:39:01 Pali Rohár wrote:
+> > > Channel 0 of SA56004ED chip refers to internal SA56004ED chip sensor (chip
+> > > itself is located on the board) and channel 1 of SA56004ED chip refers to
+> > > external sensor which is connected to temperature diode of the P2020 CPU.
+> > > 
+> > > Fixes: 54c15ec3b738 ("powerpc: dts: Add DTS file for CZ.NIC Turris 1.x routers")
+> > > Signed-off-by: Pali Rohár <pali@kernel.org>
+> > > ---
+> > > With this change userspace 'sensors' applications prints labels:
+> > > 
+> > >     $ sensors
+> > >     sa56004-i2c-0-4c
+> > >     Adapter: MPC adapter (i2c@3000)
+> > >     board:        +34.2°C  (low  =  +0.0°C, high = +70.0°C)
+> > >                            (crit = +85.0°C, hyst = +75.0°C)
+> > >     cpu:          +58.9°C  (low  =  +0.0°C, high = +70.0°C)
+> > >                            (crit = +85.0°C, hyst = +75.0°C)
+> > > 
+> > > And without this change it prints just generic tempX names:
+> > > 
+> > >     $ sensors
+> > >     sa56004-i2c-0-4c
+> > >     Adapter: MPC adapter (i2c@3000)
+> > >     temp1:        +43.0°C  (low  =  +0.0°C, high = +70.0°C)
+> > >                            (crit = +85.0°C, hyst = +75.0°C)
+> > >     temp2:        +63.4°C  (low  =  +0.0°C, high = +70.0°C)
+> > >                            (crit = +85.0°C, hyst = +75.0°C)
+> > > ---
+> > >  arch/powerpc/boot/dts/turris1x.dts | 14 ++++++++++++++
+> > >  1 file changed, 14 insertions(+)
+> > > 
+> > > diff --git a/arch/powerpc/boot/dts/turris1x.dts b/arch/powerpc/boot/dts/turris1x.dts
+> > > index 4033c554b06a..5b5278c32e43 100644
+> > > --- a/arch/powerpc/boot/dts/turris1x.dts
+> > > +++ b/arch/powerpc/boot/dts/turris1x.dts
+> > > @@ -69,6 +69,20 @@
+> > >  				interrupt-parent = <&gpio>;
+> > >  				interrupts = <12 IRQ_TYPE_LEVEL_LOW>, /* GPIO12 - ALERT pin */
+> > >  					     <13 IRQ_TYPE_LEVEL_LOW>; /* GPIO13 - CRIT pin */
+> > > +				#address-cells = <1>;
+> > > +				#size-cells = <0>;
+> > > +
+> > > +				/* Local temperature sensor (SA56004ED internal) */
+> > > +				channel@0 {
+> > > +					reg = <0>;
+> > > +					label = "board";
+> > > +				};
+> > > +
+> > > +				/* Remote temperature sensor (D+/D- connected to P2020 CPU Temperature Diode) */
+> > > +				channel@1 {
+> > > +					reg = <1>;
+> > > +					label = "cpu";
+> > > +				};
+> > 
+> > I'm not sure if you want UPPERCASE, lowercase, PascalCase, kebab-case
+> > or snake_case format of labels. Or if you want also "temp" or
+> > "temperature" keyword in the label. So please adjust label to the
+> > preferred one, if proposed format is not the correct.
 > 
-> Per following comment there can be an issue with early powermac so seems
-> that PPC_PCI_OF_BUS_MAP_FILL still has to be by default enabled (which
-> implies that PPC_PCI_BUS_NUM_DOMAIN_DEPENDENT is disabled) on powermac:
-> https://lore.kernel.org/linuxppc-dev/575f239205e8635add81c9f902b7d9db7beb83ea.camel@kernel.crashing.org/
+> Ok, if nobody complains then please take this patch as is.
 > 
-> On Wednesday 17 August 2022 18:39:26 Pali Rohár wrote:
-> > Creating or filling pci-OF-bus-map property in the device-tree is
-> > deprecated since May 2006 [1]. Allow to disable filling this property by
-> > unsetting config option CONFIG_PPC_PCI_OF_BUS_MAP_FILL for remaining chrp
-> > and powermac code.
-> > 
-> > Disabling of pci-OF-bus-map property allows to enable new option
-> > CONFIG_PPC_PCI_BUS_NUM_DOMAIN_DEPENDENT also for chrp and powermac.
-> > 
-> > [1] - https://lore.kernel.org/linuxppc-dev/1148016268.13249.14.camel@localhost.localdomain/
-> > 
-> > Signed-off-by: Pali Rohár <pali@kernel.org>
-> > ---
-> >  arch/powerpc/Kconfig         | 12 +++++++++++-
-> >  arch/powerpc/kernel/pci_32.c |  6 ++++++
-> >  2 files changed, 17 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> > index 5881441f7672..df2696c406ad 100644
-> > --- a/arch/powerpc/Kconfig
-> > +++ b/arch/powerpc/Kconfig
-> > @@ -373,9 +373,19 @@ config PPC_DCR
-> >  	depends on PPC_DCR_NATIVE || PPC_DCR_MMIO
-> >  	default y
-> >  
-> > +config PPC_PCI_OF_BUS_MAP_FILL
-> > +	bool "Fill pci-OF-bus-map property in the device-tree"
-> > +	depends on PPC32
-> > +	depends on PPC_PMAC || PPC_CHRP
-> > +	default y
-> > +	help
-> > +	  This option creates and fills pci-OF-bus-map property in the
-> > +	  device-tree which is deprecated and is needed only for old
-> > +	  platforms.
-> > +
-> >  config PPC_PCI_BUS_NUM_DOMAIN_DEPENDENT
-> >  	depends on PPC32
-> > -	depends on !PPC_PMAC && !PPC_CHRP
-> > +	depends on !PPC_PCI_OF_BUS_MAP_FILL
-> >  	bool "Assign PCI bus numbers from zero individually for each PCI domain"
-> >  	help
-> >  	  By default on PPC32 were PCI bus numbers unique across all PCI domains.
-> > diff --git a/arch/powerpc/kernel/pci_32.c b/arch/powerpc/kernel/pci_32.c
-> > index 433965bf37b4..ffc4e1928c80 100644
-> > --- a/arch/powerpc/kernel/pci_32.c
-> > +++ b/arch/powerpc/kernel/pci_32.c
-> > @@ -64,6 +64,8 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_IBM,	PCI_DEVICE_ID_IBM_CPC710_PCI64,	fixu
-> >  
-> >  #if defined(CONFIG_PPC_PMAC) || defined(CONFIG_PPC_CHRP)
-> >  
-> > +#ifdef CONFIG_PPC_PCI_OF_BUS_MAP_FILL
-> > +
-> >  static u8* pci_to_OF_bus_map;
-> >  static int pci_bus_count;
-> >  
-> > @@ -223,6 +225,8 @@ pci_create_OF_bus_map(void)
-> >  }
-> >  #endif
-> >  
-> > +#endif /* CONFIG_PPC_PCI_OF_BUS_MAP_FILL */
-> > +
-> >  #endif /* defined(CONFIG_PPC_PMAC) || defined(CONFIG_PPC_CHRP) */
-> >  
-> >  void pcibios_setup_phb_io_space(struct pci_controller *hose)
-> > @@ -264,6 +268,7 @@ static int __init pcibios_init(void)
-> >  	}
-> >  
-> >  #if defined(CONFIG_PPC_PMAC) || defined(CONFIG_PPC_CHRP)
-> > +#ifdef CONFIG_PPC_PCI_OF_BUS_MAP_FILL
-> >  	pci_bus_count = next_busno;
-> >  
-> >  	/* OpenFirmware based machines need a map of OF bus
-> > @@ -272,6 +277,7 @@ static int __init pcibios_init(void)
-> >  	 */
-> >  	if (pci_assign_all_buses)
-> >  		pcibios_make_OF_bus_map();
-> > +#endif
-> >  #endif
-> >  
-> >  	/* Call common code to handle resource allocation */
-> > -- 
-> > 2.20.1
-> > 
+> > >  			};
+> > >  
+> > >  			/* DDR3 SPD/EEPROM */
+> > > -- 
+> > > 2.20.1
+> > > 
