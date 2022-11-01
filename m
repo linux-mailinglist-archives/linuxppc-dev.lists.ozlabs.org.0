@@ -1,66 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80357614B2D
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Nov 2022 13:54:16 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32D57614CA3
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Nov 2022 15:34:52 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N1qj22vgGz3cKV
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Nov 2022 23:54:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N1swz0Wpqz3cH0
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Nov 2022 01:34:43 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pwFUNTan;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OHqr7Vo/;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=wsa@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pwFUNTan;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OHqr7Vo/;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N1qh75Xthz2xl5
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Nov 2022 23:53:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N1sw415wnz3cB9
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Nov 2022 01:33:56 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id A66B0B81D0C;
-	Tue,  1 Nov 2022 12:53:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6BCEC433D6;
-	Tue,  1 Nov 2022 12:53:21 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 2CF3A6119B;
+	Tue,  1 Nov 2022 14:33:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB2CCC433D6;
+	Tue,  1 Nov 2022 14:33:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1667307202;
-	bh=//Hxv4m5/4QFRxQRfAon0gk4J4k+/YkMxoNhB+9hSjw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pwFUNTanDEt0f8mjmDDpk4NWrcYo9Qn4x5XD5ockyCaqypHBIdKaVZ+14azUWPgpn
-	 hMjvkwEzWCtqs46Aet/E0rWrEjF7iZIc8xCakHca3Qvn+VV0OOmFYGgRWwhaw+69Dg
-	 LwmcaI03269wCwnQfr5NQv1sen/dHOnzrSTt7vvccQ57Ewg9/w2GZYTCGADBk4vunj
-	 +iIE/iEpKcrcxV7ZklHDvKeVRfM2Eu6EMuCsh3ngxn1hD22d2GM+eXGWuvLumv9/ho
-	 V1NAE6YQ8UPSWU9gvgqd4THWN4omXnkkVegA/TzD/3WTw4ppprmal9bSnZEmXbegZw
-	 FAJIKc0TpYNFw==
-Date: Tue, 1 Nov 2022 13:53:18 +0100
-From: Wolfram Sang <wsa@kernel.org>
-To: Sven Peter <sven@svenpeter.dev>
-Subject: Re: [PATCH v3] i2c/pasemi: PASemi I2C controller IRQ enablement
-Message-ID: <Y2EWvokvkixLucg+@shikoro>
-Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
-	Sven Peter <sven@svenpeter.dev>,
-	Arminder Singh <arminders208@outlook.com>,
-	linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, asahi@lists.linux.dev,
-	linuxppc-dev@lists.ozlabs.org,
-	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-	Hector Martin <marcan@marcan.st>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>
-References: <MN2PR01MB5358ED8FC32C0CFAEBD4A0E19F5F9@MN2PR01MB5358.prod.exchangelabs.com>
- <A0B81E7F-BF26-424D-B9E5-5647323B24EC@svenpeter.dev>
+	s=k20201202; t=1667313233;
+	bh=5wW5fMffXJgRHGmoyZvOIkPaV2Johu/1uvLcafbGSG0=;
+	h=From:To:In-Reply-To:References:Subject:Date:From;
+	b=OHqr7Vo/xB2puwUuLILh2ggR5FlTfNTzr+bxUpXT1Q2MyStbEvdrIz+u1euEv6J5C
+	 8dCmpItF0Qv4j0reelkFGia/zaYAbr7s/Nke8I8m61t15DacLt3ERd6AY7szsYhGkR
+	 Z7DeaheSdF2O0g4qti0p6HiB75qEjfIPow9TH+Hd9X0qaCBnj3xVydFjtdOsk2IuA7
+	 FVroEkRxkUTzjlvyk4IrzK8QZ0wO/3XKeHrDcSIJ5PFN06GO2ei+zNA02XymRv3cce
+	 sQxpeRV4Gg4TnVstaAzlmSQ8ANtNjuZPDSDiKmxJKuqD93ygeKoUmuaQ5JnqNC0cu0
+	 8JRE86XpHOAmg==
+From: Mark Brown <broonie@kernel.org>
+To: devicetree@vger.kernel.org, festevam@gmail.com, perex@perex.cz, Xiubo.Lee@gmail.com, robh+dt@kernel.org,
+ linuxppc-dev@lists.ozlabs.org, shengjiu.wang@gmail.com, alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
+ nicoleotsuka@gmail.com, tiwai@suse.com, Chancel Liu <chancel.liu@nxp.com>, krzysztof.kozlowski+dt@linaro.org,
+ lgirdwood@gmail.com
+In-Reply-To: <20221028082750.991822-1-chancel.liu@nxp.com>
+References: <20221028082750.991822-1-chancel.liu@nxp.com>
+Subject: Re: [PATCH 0/3] Add support for MICFIL on i.MX93 platform
+Message-Id: <166731323052.255497.10142620061824758896.b4-ty@kernel.org>
+Date: Tue, 01 Nov 2022 14:33:50 +0000
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="NW2sLPhekt1Tv84F"
-Content-Disposition: inline
-In-Reply-To: <A0B81E7F-BF26-424D-B9E5-5647323B24EC@svenpeter.dev>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.10.0-dev-fc921
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,46 +63,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alyssa Rosenzweig <alyssa@rosenzweig.io>, Hector Martin <marcan@marcan.st>, Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org, Arminder Singh <arminders208@outlook.com>, linux-i2c@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, asahi@lists.linux.dev
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Fri, 28 Oct 2022 16:27:47 +0800, Chancel Liu wrote:
+> This patchset supports MICFIL on i.MX93 platform.
+> 
+> Chancel Liu (3):
+>   ASoC: dt-bindings: fsl,micfil: Add compatible string for i.MX93
+>     platform
+>   ASoC: fsl_micfil: Add support for i.MX93 platform
+>   ASoC: fsl_micfil: Add support when using eDMA
+> 
+> [...]
 
---NW2sLPhekt1Tv84F
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Applied to
 
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-> > +    complete(&smbus->irq_completion);
->=20
-> I only realized just now that you also want to disable the interrupt
-> right here by writing to IMASK. This is a level sensitive interrupt at
-> AIC level so the moment this handler returns it will fire again until
-> you reach the write above after the completion wait a bit later.
+Thanks!
 
-This seems like a valid request. Any chance for a v4? We are so close to
-being good here...
+[1/3] ASoC: dt-bindings: fsl,micfil: Add compatible string for i.MX93 platform
+      commit: fb3425689699daebecf27a37d729ae43ef66ebab
+[2/3] ASoC: fsl_micfil: Add support for i.MX93 platform
+      commit: a10a52541f644a1fdf8876d474f31a54c4142ccc
+[3/3] ASoC: fsl_micfil: Add support when using eDMA
+      commit: 77a7a6e9a94df0ac7ba46677b5ce4a743a931fce
 
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
---NW2sLPhekt1Tv84F
-Content-Type: application/pgp-signature; name="signature.asc"
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
------BEGIN PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmNhFr4ACgkQFA3kzBSg
-KbZTiw/8Dlg4oKc1MA8MC7mHzNw8On6Tqi9U92KfEJWvk2wK99rdh41lCyBayYdB
-4NCFrJeY+Nqu90Buf4Ui2rVom01pPSd9guyDZ+YAyxd+uLSlfrD8R6vCjLbWbXPo
-V0SSN0+POvYYZ5XLE5ASIU3MlIMCAYV/+ZgOesqjD7LyraOIcSvt+nEVe7y0BDFX
-qDR2LxOZMo512FVzjoloyGicjbhGbbMBm0Xmo4QKWv5RBmxbZIebuEbqnoibtzEe
-VXFGULpQt9wJ+q+Tw1S12uKnrV1ds8qX614A1uILui6he0WaX92mIxiN9FGROGaB
-t/0vqarPj6zTgmD7JhQLDtxqZcxjzJSE2mMX4ied6NC1zi1H6NFatxyIg7gCLS5b
-hlYlhVk2x8IjeCnaeGfrtczmQSSK71xMi34RhS+Ohyic3PG/xWfOUMqDuI2Glfx1
-IwkrTaR+WQwb9TJEnH7peybHATPjmeZHG8mC+VlH9c4vtSRXNq8JYXtH+hLCN8kb
-vJuHvbsXFpe0NZGCm4gT12g4UhJTM/nVwBxO89j7wmETdf9AMxAMStUepUQpxd4w
-M4q0zgnAwT+iSz1qCRO2LT+84J0LH+tV6zfH+NfysoSnjPG+Gi3Ke9RWqJeEME3T
-MzPj6d88/qFAMcwN9L9eewvRncGBSqpqBQcSYEBTnEmrVNSZEto=
-=tAGC
------END PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---NW2sLPhekt1Tv84F--
+Thanks,
+Mark
