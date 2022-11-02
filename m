@@ -2,65 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F9FD617311
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 00:54:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2147617312
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 00:55:38 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N2kJh39q5z3g4B
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 10:54:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N2kKh5X0xz3g54
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 10:55:36 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=QqNc2gbe;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=jv6dI7qG;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::449; helo=mail-pf1-x449.google.com; envelope-from=3m_tiywykdnyk62fb48gg8d6.4gedafmphh4-56ndaklk.grd23k.gj8@flex--seanjc.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::b49; helo=mail-yb1-xb49.google.com; envelope-from=3nptiywykdncl73gc59hh9e7.5hfebgnqii5-67oeblml.hse34l.hk9@flex--seanjc.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=QqNc2gbe;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=jv6dI7qG;
 	dkim-atps=neutral
-Received: from mail-pf1-x449.google.com (mail-pf1-x449.google.com [IPv6:2607:f8b0:4864:20::449])
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N2jY220M6z3dv1
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Nov 2022 10:20:22 +1100 (AEDT)
-Received: by mail-pf1-x449.google.com with SMTP id cj8-20020a056a00298800b0056cee8a0cf8so10317pfb.9
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 02 Nov 2022 16:20:21 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N2jY34Pvjz3cKM
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Nov 2022 10:20:23 +1100 (AEDT)
+Received: by mail-yb1-xb49.google.com with SMTP id t6-20020a25b706000000b006b38040b6f7so381750ybj.6
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 02 Nov 2022 16:20:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=hGyIy/c9x7gid81AWLPwZ0ljJlv+xEg20udWYHo0hbA=;
-        b=QqNc2gbel1jInPNqFUgamY9IlriDQkvmhLgs/+APWLQZ26DgF8ww5iLxK5OkUpbYy3
-         HBY25YJUg8bQglW+8pK0XdmoWu5kp0V1X30MP4hvDgUq/lXrr/IjN5eYBpw2Cpmbjanr
-         TqynEnzd9faNEz99LeseMmE1IXDN+BI4xwg7V9Sy2Mz5r4CleSP/B+U7AVSrFavYJ1Fj
-         pLJTmPuFLhW67P7oNt/wLRQeJzFX3YhDs7A5R02nLIxeyDaFpeIL7acpvdeYKRt0I/5K
-         OaH2yRJI3oUK/4Z+nQ16STa2tY+sAGIiXMgaJn/xhTNa56oRdIbBfXfqmK+HDZY/Eb8W
-         RwKw==
+        bh=+sxIRPFhQ/bRU1EUsINusyHUfwnJnra57CB3HRbIrGQ=;
+        b=jv6dI7qGHV2gUZ3Nk9vOoHe84FBP9TkOY9A9eVQMhtjmGk9u0jlVKDO6SkkJVrwt12
+         m0CdSNNgCHma9W4plIHPNP31YE0isW6rHxg8SLzN06JNj7B4eH/JVFDKLvwVk+pTrSfc
+         cd1f3arotAsI9PLIVZ+gM5iOHqG0gkQonoBeG+igtzlakyKPUg7bVk8HEG4Qt0gpuy/J
+         SANWh5EPPIcvcI1b1i5q00zNbhYEA45rs8BxPx1RbxWAx78g+tAqKNfe3EdC5ZhIPY91
+         Xb4J0zHYKnAPUlNccijsQBbbLfGEdn+GfBR6MlkOjmTN4KzH5w39TKzZQ1G6FhxzCFCP
+         aqaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=hGyIy/c9x7gid81AWLPwZ0ljJlv+xEg20udWYHo0hbA=;
-        b=vzuGE2UUHng3rlzaIHdyckwT9eKn4ED3CWrGboVbYlgcklVUTS878E+SZlwhycHhr2
-         2Ukn666EDRRO6coe8ufmVyQ4pso6ahiSU7TggB2TQv7rihIxQu+5Xr5i0eAu1kWDypr5
-         7qjlOkE4RMKkwhhu0ff3J7/d/lp5uN8mJHv+36AFOpt+gTtMCfPZUJkOabFANwXZtsrs
-         INLynCZCIR1x21LgXkGQVawoCaSPxGxNOdJdnxUZGACTbgR+f/3MggLl5ASQVpGtZh8A
-         e/b7ZWI52sH3dm4TBCeFFGua2Lhn42nxi66IQhNFHDDpBWHtyXSwfNM0ysVqVA5pmZmh
-         Q/vg==
-X-Gm-Message-State: ACrzQf3jgeNzj8r/Hz6h19C0qYbric5HuANmnBEV9GkWc7ydkHnNcy8x
-	FD5GmydJNvlMvmLsLxN9EfKyXbMtp04=
-X-Google-Smtp-Source: AMsMyM4ko2OsoLvqzFyYKz9/I+3Jr5HBRqjQ9HRHF35ITIEOD8mTj17ITtdRiAaAjWe/b+jAZlUVnVQHbNk=
+        bh=+sxIRPFhQ/bRU1EUsINusyHUfwnJnra57CB3HRbIrGQ=;
+        b=TzQi5jhze4hWGaLlVvwF0qdc13NdE5T/hZ5QCQlAcVgHhwh1ZFU+9nB7xgkvi6kvCv
+         QBUiIVjowRCWW0L6e1vwkp/o9TXWAAobgYAGcE771g42GT1ahG2r77QR+fhPywtz8sGz
+         x23AM6WVwRsTPqYxSWMEKQIoPnXi9UDJ2f6R7knSX1sL/n6SZGJuepvaT0gaXHnKvvZP
+         uDOQNlcb3WVs+GIR9p7AF7XNbe5aVsmA6OEkqRGR3BVBoGRXx3nHyra2c2yMumbGIWRY
+         aE7BBmsQc0V5R7zIPL5rQG0H1vuyCNP9bPhYl/zq+okA5BggtQRkDteusnTuWCSv4nFw
+         Oj8A==
+X-Gm-Message-State: ACrzQf1zf1gy4urGp6VouSFxpO6xfzJ733+afqmJ3PZjJO9vmQJbdAKW
+	GoVIJkzSETDIRJX/TiON8f9WBg+gjbI=
+X-Google-Smtp-Source: AMsMyM7Mckg8vSF26OBPsgSvPOkzyFaltg8pOaKtjrHcZ6qZe4t+swUi+9nV+tBPsQQEDVrcX89hWVA+EhE=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a17:902:9308:b0:182:b2ba:755 with SMTP id
- bc8-20020a170902930800b00182b2ba0755mr27515720plb.107.1667431219005; Wed, 02
- Nov 2022 16:20:19 -0700 (PDT)
-Date: Wed,  2 Nov 2022 23:19:05 +0000
+ (user=seanjc job=sendgmr) by 2002:a05:690c:80a:b0:36b:6ff3:ee05 with SMTP id
+ bx10-20020a05690c080a00b0036b6ff3ee05mr183596ywb.495.1667431220753; Wed, 02
+ Nov 2022 16:20:20 -0700 (PDT)
+Date: Wed,  2 Nov 2022 23:19:06 +0000
 In-Reply-To: <20221102231911.3107438-1-seanjc@google.com>
 Mime-Version: 1.0
 References: <20221102231911.3107438-1-seanjc@google.com>
 X-Mailer: git-send-email 2.38.1.431.g37b22c650d-goog
-Message-ID: <20221102231911.3107438-39-seanjc@google.com>
-Subject: [PATCH 38/44] KVM: Disable CPU hotplug during hardware enabling
+Message-ID: <20221102231911.3107438-40-seanjc@google.com>
+Subject: [PATCH 39/44] KVM: Drop kvm_count_lock and instead protect
+ kvm_usage_count with kvm_lock
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
 	Huacai Chen <chenhuacai@kernel.org>, 
@@ -87,87 +88,195 @@ Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Atish Patra <atis
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Chao Gao <chao.gao@intel.com>
+From: Isaku Yamahata <isaku.yamahata@intel.com>
 
-Disable CPU hotplug during hardware_enable_all() to prevent the corner
-case where if the following sequence occurs:
+Drop kvm_count_lock and instead protect kvm_usage_count with kvm_lock now
+that KVM hooks CPU hotplug during the ONLINE phase, which can sleep.
+Previously, KVM hooked the STARTING phase, which is not allowed to sleep
+and thus could not take kvm_lock (a mutex).
 
-  1. A hotplugged CPU marks itself online in cpu_online_mask
-  2. The hotplugged CPU enables interrupt before invoking KVM's ONLINE
-     callback
-  3  hardware_enable_all() is invoked on another CPU right
+Explicitly disable preemptions/IRQs in the CPU hotplug paths as needed to
+keep arch code happy, e.g. x86 expects IRQs to be disabled during hardware
+enabling, and expects preemption to be disabled during hardware disabling.
+There are no preemption/interrupt concerns in the hotplug path, i.e. the
+extra disabling is done purely to allow x86 to keep its sanity checks,
+which are targeted primiarily at the "enable/disable all" paths.
 
-the hotplugged CPU will be included in on_each_cpu() and thus get sent
-through hardware_enable_nolock() before kvm_online_cpu() is called.
+Opportunistically update KVM's locking documentation.
 
-        start_secondary { ...
-                set_cpu_online(smp_processor_id(), true); <- 1
-                ...
-                local_irq_enable();  <- 2
-                ...
-                cpu_startup_entry(CPUHP_AP_ONLINE_IDLE); <- 3
-        }
-
-KVM currently fudges around this race by keeping track of which CPUs have
-done hardware enabling (see commit 1b6c016818a5 "KVM: Keep track of which
-cpus have virtualization enabled"), but that's an inefficient, convoluted,
-and hacky solution.
-
-Signed-off-by: Chao Gao <chao.gao@intel.com>
-[sean: split to separate patch, write changelog]
+Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
+Co-developed-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/x86.c  |  8 +++++++-
- virt/kvm/kvm_main.c | 10 ++++++++++
- 2 files changed, 17 insertions(+), 1 deletion(-)
+ Documentation/virt/kvm/locking.rst | 18 ++++++------
+ virt/kvm/kvm_main.c                | 44 +++++++++++++++++++++---------
+ 2 files changed, 40 insertions(+), 22 deletions(-)
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index a7b1d916ecb2..a15e54ba0471 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -9283,7 +9283,13 @@ static int kvm_x86_check_processor_compatibility(struct kvm_x86_init_ops *ops)
- 	int cpu = smp_processor_id();
- 	struct cpuinfo_x86 *c = &cpu_data(cpu);
+diff --git a/Documentation/virt/kvm/locking.rst b/Documentation/virt/kvm/locking.rst
+index 845a561629f1..4feaf527575b 100644
+--- a/Documentation/virt/kvm/locking.rst
++++ b/Documentation/virt/kvm/locking.rst
+@@ -9,6 +9,8 @@ KVM Lock Overview
  
--	WARN_ON(!irqs_disabled());
-+	/*
-+	 * Compatibility checks are done when loading KVM and when enabling
-+	 * hardware, e.g. during CPU hotplug, to ensure all online CPUs are
-+	 * compatible, i.e. KVM should never perform a compatibility check on
-+	 * an offline CPU.
-+	 */
-+	WARN_ON(!irqs_disabled() && cpu_active(cpu));
+ The acquisition orders for mutexes are as follows:
  
- 	if (__cr4_reserved_bits(cpu_has, c) !=
- 	    __cr4_reserved_bits(cpu_has, &boot_cpu_data))
++- cpus_read_lock() is taken outside kvm_lock
++
+ - kvm->lock is taken outside vcpu->mutex
+ 
+ - kvm->lock is taken outside kvm->slots_lock and kvm->irq_lock
+@@ -29,6 +31,8 @@ The acquisition orders for mutexes are as follows:
+ 
+ On x86:
+ 
++- kvm_lock is taken outside kvm->mmu_lock
++
+ - vcpu->mutex is taken outside kvm->arch.hyperv.hv_lock
+ 
+ - kvm->arch.mmu_lock is an rwlock.  kvm->arch.tdp_mmu_pages_lock and
+@@ -216,15 +220,11 @@ time it will be set using the Dirty tracking mechanism described above.
+ :Type:		mutex
+ :Arch:		any
+ :Protects:	- vm_list
+-
+-``kvm_count_lock``
+-^^^^^^^^^^^^^^^^^^
+-
+-:Type:		raw_spinlock_t
+-:Arch:		any
+-:Protects:	- hardware virtualization enable/disable
+-:Comment:	'raw' because hardware enabling/disabling must be atomic /wrt
+-		migration.
++		- kvm_usage_count
++		- hardware virtualization enable/disable
++		- module probing (x86 only)
++:Comment:	KVM also disables CPU hotplug via cpus_read_lock() during
++		enable/disable.
+ 
+ ``kvm->mn_invalidate_lock``
+ ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index fd9e39c85549..4e765ef9f4bd 100644
+index 4e765ef9f4bd..c8d92e6c3922 100644
 --- a/virt/kvm/kvm_main.c
 +++ b/virt/kvm/kvm_main.c
-@@ -5088,6 +5088,15 @@ static int hardware_enable_all(void)
- {
- 	int r = 0;
+@@ -100,7 +100,6 @@ EXPORT_SYMBOL_GPL(halt_poll_ns_shrink);
+  */
  
-+	/*
-+	 * When onlining a CPU, cpu_online_mask is set before kvm_online_cpu()
-+	 * is called, and so on_each_cpu() between them includes the CPU that
-+	 * is being onlined.  As a result, hardware_enable_nolock() may get
-+	 * invoked before kvm_online_cpu().
-+	 *
-+	 * Disable CPU hotplug to prevent scenarios where KVM sees
-+	 */
+ DEFINE_MUTEX(kvm_lock);
+-static DEFINE_RAW_SPINLOCK(kvm_count_lock);
+ LIST_HEAD(vm_list);
+ 
+ static cpumask_var_t cpus_hardware_enabled;
+@@ -5028,9 +5027,10 @@ static void hardware_enable_nolock(void *junk)
+ 
+ static int kvm_online_cpu(unsigned int cpu)
+ {
++	unsigned long flags;
+ 	int ret = 0;
+ 
+-	raw_spin_lock(&kvm_count_lock);
++	mutex_lock(&kvm_lock);
+ 	/*
+ 	 * Abort the CPU online process if hardware virtualization cannot
+ 	 * be enabled. Otherwise running VMs would encounter unrecoverable
+@@ -5039,13 +5039,16 @@ static int kvm_online_cpu(unsigned int cpu)
+ 	if (kvm_usage_count) {
+ 		WARN_ON_ONCE(atomic_read(&hardware_enable_failed));
+ 
++		local_irq_save(flags);
+ 		hardware_enable_nolock(NULL);
++		local_irq_restore(flags);
++
+ 		if (atomic_read(&hardware_enable_failed)) {
+ 			atomic_set(&hardware_enable_failed, 0);
+ 			ret = -EIO;
+ 		}
+ 	}
+-	raw_spin_unlock(&kvm_count_lock);
++	mutex_unlock(&kvm_lock);
+ 	return ret;
+ }
+ 
+@@ -5061,10 +5064,13 @@ static void hardware_disable_nolock(void *junk)
+ 
+ static int kvm_offline_cpu(unsigned int cpu)
+ {
+-	raw_spin_lock(&kvm_count_lock);
+-	if (kvm_usage_count)
++	mutex_lock(&kvm_lock);
++	if (kvm_usage_count) {
++		preempt_disable();
+ 		hardware_disable_nolock(NULL);
+-	raw_spin_unlock(&kvm_count_lock);
++		preempt_enable();
++	}
++	mutex_unlock(&kvm_lock);
+ 	return 0;
+ }
+ 
+@@ -5079,9 +5085,11 @@ static void hardware_disable_all_nolock(void)
+ 
+ static void hardware_disable_all(void)
+ {
+-	raw_spin_lock(&kvm_count_lock);
 +	cpus_read_lock();
- 	raw_spin_lock(&kvm_count_lock);
++	mutex_lock(&kvm_lock);
+ 	hardware_disable_all_nolock();
+-	raw_spin_unlock(&kvm_count_lock);
++	mutex_unlock(&kvm_lock);
++	cpus_read_unlock();
+ }
+ 
+ static int hardware_enable_all(void)
+@@ -5097,7 +5105,7 @@ static int hardware_enable_all(void)
+ 	 * Disable CPU hotplug to prevent scenarios where KVM sees
+ 	 */
+ 	cpus_read_lock();
+-	raw_spin_lock(&kvm_count_lock);
++	mutex_lock(&kvm_lock);
  
  	kvm_usage_count++;
-@@ -5102,6 +5111,7 @@ static int hardware_enable_all(void)
+ 	if (kvm_usage_count == 1) {
+@@ -5110,7 +5118,7 @@ static int hardware_enable_all(void)
+ 		}
  	}
  
- 	raw_spin_unlock(&kvm_count_lock);
-+	cpus_read_unlock();
+-	raw_spin_unlock(&kvm_count_lock);
++	mutex_unlock(&kvm_lock);
+ 	cpus_read_unlock();
  
  	return r;
+@@ -5716,6 +5724,15 @@ static void kvm_init_debug(void)
+ 
+ static int kvm_suspend(void)
+ {
++	/*
++	 * Secondary CPUs and CPU hotplug are disabled across the suspend/resume
++	 * callbacks, i.e. no need to acquire kvm_lock to ensure the usage count
++	 * is stable.  Assert that kvm_lock is not held as a paranoid sanity
++	 * check that the system isn't suspended when KVM is enabling hardware.
++	 */
++	lockdep_assert_not_held(&kvm_lock);
++	lockdep_assert_irqs_disabled();
++
+ 	if (kvm_usage_count)
+ 		hardware_disable_nolock(NULL);
+ 	return 0;
+@@ -5723,10 +5740,11 @@ static int kvm_suspend(void)
+ 
+ static void kvm_resume(void)
+ {
+-	if (kvm_usage_count) {
+-		lockdep_assert_not_held(&kvm_count_lock);
++	lockdep_assert_not_held(&kvm_lock);
++	lockdep_assert_irqs_disabled();
++
++	if (kvm_usage_count)
+ 		hardware_enable_nolock(NULL);
+-	}
  }
+ 
+ static struct syscore_ops kvm_syscore_ops = {
 -- 
 2.38.1.431.g37b22c650d-goog
 
