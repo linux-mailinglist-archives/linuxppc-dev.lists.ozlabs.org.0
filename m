@@ -2,66 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8389D6172AD
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 00:33:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A83086172AF
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 00:34:37 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N2jrR32DSz3fHv
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 10:33:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N2jsR41qYz3fTd
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 10:34:35 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=Fhq9PEIX;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=ay8cPyDC;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::b49; helo=mail-yb1-xb49.google.com; envelope-from=3c_tiywykdk4gsobxquccuzs.qcazwbilddq-rsjzwghg.cnzopg.cfu@flex--seanjc.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::1049; helo=mail-pj1-x1049.google.com; envelope-from=3dftiywykdlaiuqdzsweewbu.secbydknffs-tulbyiji.epbqri.ehw@flex--seanjc.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=Fhq9PEIX;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=ay8cPyDC;
 	dkim-atps=neutral
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+Received: from mail-pj1-x1049.google.com (mail-pj1-x1049.google.com [IPv6:2607:f8b0:4864:20::1049])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N2jXG0PgCz30F7
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Nov 2022 10:19:41 +1100 (AEDT)
-Received: by mail-yb1-xb49.google.com with SMTP id 69-20020a250548000000b006cc9d755afaso343422ybf.16
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 02 Nov 2022 16:19:41 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N2jXH3R3Fz3cMb
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Nov 2022 10:19:43 +1100 (AEDT)
+Received: by mail-pj1-x1049.google.com with SMTP id ci1-20020a17090afc8100b00212e5b4c3afso14580pjb.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 02 Nov 2022 16:19:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=jjwuYM33wa0dwVWFlLHKwYhVaHzm2FgiCKOfn+QDNQ4=;
-        b=Fhq9PEIX8LJQUbJ64jTN1JvSF4aDYgMhxvOWYGX1iAWoV/lvAdG5LOXuNivkfQWmaN
-         XoYRELj0iLXTcGUgDHg9R/bhGsJRvY0Qx7IEF0y4w7dFOPQtmSUB+O6PUVY8/MhozQfF
-         AX6SYnVZgv9nJGu4JJBc65UftCLAjC1MJHk1aUCf2yILUXt8A+rMwOgyzW8jvMWXgkl0
-         LgkleUhB3pCNMAS+BVFzOjuYh6vlw9PADZ2etUZ8fiuYZCiK9hkRPf6dczcVLTjo6nqb
-         SNGwaGeIsaxofOZxTFjiZYanOv3dUMmT9VRhi3xCUQ51Z2IYrlwrIcc2Hbem0XHCdIi2
-         UM4w==
+        bh=yE/4Y9j/oYhrNnppN3pBbrFR3yZQeQID1rXlzF1UIrs=;
+        b=ay8cPyDCIqaMfo0DK1yGgX9Wb9Bl9/1fVHbdhv2aAy1cj0+xuZ97OrHcZUeV1cFb37
+         6xEzJJ8+vktqwJnTtuH1USFvq8dlhSmN+zODY90fpIycgDYl660YnoWyBjRJ4shxmyzm
+         eiIMz6ZQ5l1bjRGivO4fA9kceUx/9ETkzTfr9tWJ9HyO6sppdHxDi6fl6UdHy8ptqT6P
+         DK4l+CKIMpqMLCpZJAWwhuO/obSacLjdsxWR0MNI7G5lNuNRlHspSUm1vSdSmF25/DFv
+         q5eNxeOVs/atfRGxPMYHZj9KnffzNZveBs/Mh+BUBe8auRPPWp99Q7jjD7exn9MfTR0m
+         9eDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=jjwuYM33wa0dwVWFlLHKwYhVaHzm2FgiCKOfn+QDNQ4=;
-        b=VwnMRj7EWiUbT//Vzk/OnxV6ecrTbcp3H3QRSKHehoiEx/MaJeE3r/AOkoDQGPiImr
-         QXi9n9LPBZWOBMVhZqETHtN2og6Py+A4HfB3nafDeBG5fPTxFqJSh5QAtDA8wh0MJ8mg
-         dNwQEZLijJEwXM3HFrsC8JjAVe/Rtiiq4UOHScuXgA/zVklK+X4mJRte3+QX7NoK4EfC
-         Rcw98usGBm0BuSJ/KqQ02sw6k4SBIAdgahgYRBWtimpm2AUofxtTDb2IPbalRooo8y+3
-         xJryL5fWpa6W6R0w4vCTEjoS98Uyath17rZ+QX+t45BdSqzK7fvVS7aoXImP7bc+T6V1
-         AJcQ==
-X-Gm-Message-State: ACrzQf1tV2xj8KyTKIbq5ym4u0kRTFUPNTljqE9Lrd2e3GlysJFXVcSK
-	VSkGwwOsfVxy6K7u2D88dlBVw4UgKs8=
-X-Google-Smtp-Source: AMsMyM6G8+cpsdlQ24WmBjSm0uN0SQ0FUjj6LFQ9PdnISN+9XlJSF9tKC3IM7fcpwDmLrOspg5L0a2rB188=
+        bh=yE/4Y9j/oYhrNnppN3pBbrFR3yZQeQID1rXlzF1UIrs=;
+        b=xRhbCoQP7faPzEo4M3l+MNhoiLGGWjYj3VCsqbe6ttTmjzaOJ3OxqdPA62GxLs984+
+         KbjIJQoxlBB0S9QAQxG6Lrsu58MNh6gwSNu0WRzaepI8OCq3ZKPDlng7/4AkoWSsSIMk
+         8cg4bA1Ijy4XlsfmpG8HqVJf17JXXwPtOeCbQgxZv85ckNe0iJJ0SQx/PRcaLCc4hlWN
+         zpq+ZIs41fPou+/Tea4jiX0pFTxygcUtkN4vSWUJbHJXW2bd+kMwNukqDj9SF3DDduPo
+         J61bn+mLXTD9GclHUcG2VycvnuEf3NOl12ugiBD2HjZktFHfSi+B7yie8/GYyqwjCM9M
+         JOSg==
+X-Gm-Message-State: ACrzQf11aEoOIk4Px4AqopFhNrgcS9gbPuQtDfsW7a4QjHWpbK04Q4JV
+	ISUzv3dpSRZ5zyK7fR2aoptj/vyhkkc=
+X-Google-Smtp-Source: AMsMyM5/m9Qv5qe0i9jmB6ZTvP1qiSAaI3rCUeMWt3X4Tz8UOP4pahzgtmW58pUMKKKCCfw0sH3ElrsKh+M=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a25:e695:0:b0:6cb:895b:5a35 with SMTP id
- d143-20020a25e695000000b006cb895b5a35mr25441755ybh.573.1667431179587; Wed, 02
- Nov 2022 16:19:39 -0700 (PDT)
-Date: Wed,  2 Nov 2022 23:18:42 +0000
+ (user=seanjc job=sendgmr) by 2002:a62:d412:0:b0:56c:6f25:8b12 with SMTP id
+ a18-20020a62d412000000b0056c6f258b12mr27322827pfh.60.1667431181026; Wed, 02
+ Nov 2022 16:19:41 -0700 (PDT)
+Date: Wed,  2 Nov 2022 23:18:43 +0000
 In-Reply-To: <20221102231911.3107438-1-seanjc@google.com>
 Mime-Version: 1.0
 References: <20221102231911.3107438-1-seanjc@google.com>
 X-Mailer: git-send-email 2.38.1.431.g37b22c650d-goog
-Message-ID: <20221102231911.3107438-16-seanjc@google.com>
-Subject: [PATCH 15/44] KVM: arm64: Free hypervisor allocations if vector slot
- init fails
+Message-ID: <20221102231911.3107438-17-seanjc@google.com>
+Subject: [PATCH 16/44] KVM: arm64: Unregister perf callbacks if hypervisor
+ finalization fails
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
 	Huacai Chen <chenhuacai@kernel.org>, 
@@ -88,55 +88,60 @@ Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Atish Patra <atis
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Teardown hypervisor mode if vector slot setup fails in order to avoid
-leaking any allocations done by init_hyp_mode().
+Undo everything done by init_subsystems() if a later initialization step
+fails, i.e. unregister perf callbacks in addition to unregistering the
+power management notifier.
 
-Fixes: b881cdce77b4 ("KVM: arm64: Allocate hyp vectors statically")
+Fixes: bfa79a805454 ("KVM: arm64: Elevate hypervisor mappings creation at EL2")
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/arm64/kvm/arm.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ arch/arm64/kvm/arm.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
 diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-index 0c328af064dd..73644def7780 100644
+index 73644def7780..f400a8c029dd 100644
 --- a/arch/arm64/kvm/arm.c
 +++ b/arch/arm64/kvm/arm.c
-@@ -2232,18 +2232,18 @@ int kvm_arch_init(void *opaque)
- 	err = kvm_init_vector_slots();
- 	if (err) {
- 		kvm_err("Cannot initialise vector slots\n");
--		goto out_err;
--	}
--
--	err = init_subsystems();
--	if (err)
- 		goto out_hyp;
-+	}
-+
-+	err = init_subsystems();
+@@ -1839,12 +1839,21 @@ static int init_subsystems(void)
+ 	kvm_register_perf_callbacks(NULL);
+ 
+ out:
 +	if (err)
-+		goto out_subs;
++		hyp_cpu_pm_exit();
++
+ 	if (err || !is_protected_kvm_enabled())
+ 		on_each_cpu(_kvm_arch_hardware_disable, NULL, 1);
+ 
+ 	return err;
+ }
+ 
++static void teardown_subsystems(void)
++{
++	kvm_unregister_perf_callbacks();
++	hyp_cpu_pm_exit();
++}
++
+ static void teardown_hyp_mode(void)
+ {
+ 	int cpu;
+@@ -2237,7 +2246,7 @@ int kvm_arch_init(void *opaque)
+ 
+ 	err = init_subsystems();
+ 	if (err)
+-		goto out_subs;
++		goto out_hyp;
  
  	if (!in_hyp_mode) {
  		err = finalize_hyp_mode();
- 		if (err) {
- 			kvm_err("Failed to finalize Hyp protection\n");
--			goto out_hyp;
-+			goto out_subs;
- 		}
- 	}
- 
-@@ -2257,8 +2257,9 @@ int kvm_arch_init(void *opaque)
- 
+@@ -2258,7 +2267,7 @@ int kvm_arch_init(void *opaque)
  	return 0;
  
--out_hyp:
-+out_subs:
- 	hyp_cpu_pm_exit();
-+out_hyp:
+ out_subs:
+-	hyp_cpu_pm_exit();
++	teardown_subsystems();
+ out_hyp:
  	if (!in_hyp_mode)
  		teardown_hyp_mode();
- out_err:
 -- 
 2.38.1.431.g37b22c650d-goog
 
