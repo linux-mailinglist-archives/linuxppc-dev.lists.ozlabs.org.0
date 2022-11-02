@@ -2,66 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 756BE6172F5
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 00:42:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 550D86172F7
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 00:43:45 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N2k2y2cZBz3fBR
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 10:42:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N2k3z1fvXz3fkN
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 10:43:43 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=qayOPbuA;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=hkPOoen/;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::114a; helo=mail-yw1-x114a.google.com; envelope-from=3hptiywykdl8xjfsohlttlqj.htrqnsz2uuh-ij0qnxyx.t4qfgx.twl@flex--seanjc.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::649; helo=mail-pl1-x649.google.com; envelope-from=3hvtiywykdmezlhuqjnvvnsl.jvtspu14wwj-kl2spz0z.v6shiz.vyn@flex--seanjc.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=qayOPbuA;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=hkPOoen/;
 	dkim-atps=neutral
-Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
+Received: from mail-pl1-x649.google.com (mail-pl1-x649.google.com [IPv6:2607:f8b0:4864:20::649])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N2jXZ64M0z3bdC
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Nov 2022 10:19:58 +1100 (AEDT)
-Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-36fc0644f51so611827b3.17
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 02 Nov 2022 16:19:58 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N2jXc2RVSz3ccm
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Nov 2022 10:20:00 +1100 (AEDT)
+Received: by mail-pl1-x649.google.com with SMTP id k9-20020a170902c40900b0018734e872a9so205425plk.21
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 02 Nov 2022 16:20:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=CzSf5zn0WCjHNHnOQoVFnBDZCb0UJEWJAWP5e8x7mpU=;
-        b=qayOPbuABiIuhyUyS81pM4aIXP0zbbDCyOAoStlcDM54io6H46scG/b+AOJZ083vkp
-         7VUQSDA3F1PV+eczWk9jhX07na0Ee5Y/y96fcuWnjX0SDylBmMM507BoItRwczIvX47w
-         quWZbFbuSFsnuRxvRxHTWN2VK6E9IoRaN3Rn0730zHfCEZF81HBccJpL9kyZIy1KxZA/
-         662DkzEQNlhCKGQQORLsI62wqsjL9SN7t5eET3UjVYfrxzuz8jEkm9iuoDgYatGUaOSX
-         hwFfEfHx7Y5bc5lWLW7ELIceyIhTn7UMBpI42o+ooA3Zs7kMfZ0227v/cGHQHHsdYmrl
-         HIHw==
+        bh=w/Q7bH8THgyaKP3B1ctDp6/bth9WI6Zn0uJypuG9eac=;
+        b=hkPOoen/pyqZsKi1YCSawLdA3GEp9C4f3mv9W0KoQWrN/JmnscJ/7nrSl0bhgo5kc/
+         284CZWTN6cQtZyS3BcYl1rO3d2JXX3uptOp6QgDDXHKKXwZWYnEXXtfdURHWu0sgST7b
+         SR2jmNv70MkTjk45xUfHV7CREolEUHHjBimLzgCj57Qvy29dchlrARjt1C82JrSjtdvz
+         CjPyz+19dEzhNchjZdr/kuW84eKlMR1llHgovF4ZVnGabG/rB0khgL15izrPpgwurgg8
+         AnCmcr2wDk7Yyae3uT31jet5RZCDh/LNmD6fqF7lWW4xFuTB9UT2b6Ep4Ac5WXcUuWtP
+         s9ug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=CzSf5zn0WCjHNHnOQoVFnBDZCb0UJEWJAWP5e8x7mpU=;
-        b=Vs6Cwp70KJ3WoLW/8E6ULA+1GSygXxNjvlkH+e4wFRwwQ9g7VnzfCdKradONEcmHIa
-         mToz3Lm5eutJNfGE0uPs8yHYyR50dIY78W4IQXRqeqWJOuBenWKS3iFRZ/GrsMOJlT3R
-         xQX5Dls5J4gcHBuB6V7Mj0riIhknXhtqf3CAxKS2mXOb+v3RNeEQC8u34v2A3t//AJA+
-         7eJzQBh+KDBetKrysjLxsWc+YtEZv9pTzeWFxbEVs8KmZvyEtKse6UcZUTxu3wyVUtGQ
-         vVbU7oPKrMbADU3HbRXXuHq6Twi9MDWMXTEadHvkamkMeWRx647LK90QHs6FSVMXUhZd
-         KgLw==
-X-Gm-Message-State: ACrzQf0mBmLdFfLPhzjgRS6GIejehJXg6p6wNe5B0m3fG4vKm23gg3AJ
-	W/t5Qg/HdFvTsCVJDtMABhHy8ee/I0M=
-X-Google-Smtp-Source: AMsMyM5QAC+6uL9KNRnm9M5TXJQCSY2aBJVNt4dTDVzjRpTyYTEDmCTYsEFvvoqsJQdz2eHBvIeRC0Fos4c=
+        bh=w/Q7bH8THgyaKP3B1ctDp6/bth9WI6Zn0uJypuG9eac=;
+        b=6wasLK7iLg2Zmla0MZIZNeBV4AzxjM2BwcUhmcrSlLIvrbkerTuyot95g1P9uK3N9P
+         BVc5KysEaAS8MMzqVa4wL3rEif0g2URQVIwm/aTRvnXWj4hncShZWZQqWISGdJ3xuyFw
+         NyYGqLpsTiu9EzivktF8iDZ4iuuBLnOEVxz2ATYjalQXY3/1ljYXRyShnCab0j9+UZUH
+         N9cLU75zzYJI37d4su1xTf4L9Kw7TGfT3HIh3MQtCliaClAlnhD6Ed6pzuscc56bT3Fx
+         MMceSOUmDeHZRO6AgVSY+bM0uPF0sH5TjGBmD6HSlDM13twbvKOz+88fNu5denEbahis
+         4Ung==
+X-Gm-Message-State: ACrzQf1IPrgci3IPOvyGVgr0rLVpV+4lg+OAGFBKUn3UEQJNMRp73D09
+	Rt4dEdyFRwiC50vv+pdRcUtACGm1h10=
+X-Google-Smtp-Source: AMsMyM52tU6iRK0I4Ec35KUAzBrT1sghmvSrKR24lxi1BsrlBLfXrWc/1+j2917tMPr6x8h/JqOXwdenWAg=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a81:2544:0:b0:360:c270:15a1 with SMTP id
- l65-20020a812544000000b00360c27015a1mr24717446ywl.67.1667431196650; Wed, 02
- Nov 2022 16:19:56 -0700 (PDT)
-Date: Wed,  2 Nov 2022 23:18:52 +0000
+ (user=seanjc job=sendgmr) by 2002:a05:6a00:852:b0:56d:e2bc:1978 with SMTP id
+ q18-20020a056a00085200b0056de2bc1978mr8835032pfk.47.1667431198455; Wed, 02
+ Nov 2022 16:19:58 -0700 (PDT)
+Date: Wed,  2 Nov 2022 23:18:53 +0000
 In-Reply-To: <20221102231911.3107438-1-seanjc@google.com>
 Mime-Version: 1.0
 References: <20221102231911.3107438-1-seanjc@google.com>
 X-Mailer: git-send-email 2.38.1.431.g37b22c650d-goog
-Message-ID: <20221102231911.3107438-26-seanjc@google.com>
-Subject: [PATCH 25/44] KVM: s390: Do s390 specific init without bouncing
- through kvm_init()
+Message-ID: <20221102231911.3107438-27-seanjc@google.com>
+Subject: [PATCH 26/44] KVM: s390: Mark __kvm_s390_init() and its descendants
+ as __init
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
 	Huacai Chen <chenhuacai@kernel.org>, 
@@ -88,95 +88,94 @@ Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Atish Patra <atis
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Move the guts of kvm_arch_init() into a new helper, __kvm_s390_init(),
-and invoke the new helper directly from kvm_s390_init() instead of
-bouncing through kvm_init().  Invoking kvm_arch_init() is the very
-first action performed by kvm_init(), i.e. this is a glorified nop.
-
-Moving setup to __kvm_s390_init() will allow tagging more functions as
-__init, and emptying kvm_arch_init() will allow dropping the hook
-entirely once all architecture implementations are nops.
-
-No functional change intended.
+Tag __kvm_s390_init() and its unique helpers as __init.  These functions
+are only ever called during module_init(), but could not be tagged
+accordingly while they were invoked from the common kvm_arch_init(),
+which is not __init because of x86.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/s390/kvm/kvm-s390.c | 29 +++++++++++++++++++++++++----
- 1 file changed, 25 insertions(+), 4 deletions(-)
+ arch/s390/kvm/interrupt.c | 2 +-
+ arch/s390/kvm/kvm-s390.c  | 4 ++--
+ arch/s390/kvm/kvm-s390.h  | 2 +-
+ arch/s390/kvm/pci.c       | 2 +-
+ arch/s390/kvm/pci.h       | 2 +-
+ 5 files changed, 6 insertions(+), 6 deletions(-)
 
+diff --git a/arch/s390/kvm/interrupt.c b/arch/s390/kvm/interrupt.c
+index ab569faf0df2..bf9d55fbc21a 100644
+--- a/arch/s390/kvm/interrupt.c
++++ b/arch/s390/kvm/interrupt.c
+@@ -3416,7 +3416,7 @@ void kvm_s390_gib_destroy(void)
+ 	gib = NULL;
+ }
+ 
+-int kvm_s390_gib_init(u8 nisc)
++int __init kvm_s390_gib_init(u8 nisc)
+ {
+ 	int rc = 0;
+ 
 diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-index 7fcd2d3b3558..e1c9980aae78 100644
+index e1c9980aae78..f6ae845bc1c1 100644
 --- a/arch/s390/kvm/kvm-s390.c
 +++ b/arch/s390/kvm/kvm-s390.c
+@@ -358,7 +358,7 @@ static __always_inline void __insn32_query(unsigned int opcode, u8 *query)
+ #define INSN_SORTL 0xb938
+ #define INSN_DFLTCC 0xb939
+ 
+-static void kvm_s390_cpu_feat_init(void)
++static void __init kvm_s390_cpu_feat_init(void)
+ {
+ 	int i;
+ 
 @@ -461,7 +461,7 @@ static void kvm_s390_cpu_feat_init(void)
  	 */
  }
  
--int kvm_arch_init(void *opaque)
-+static int __kvm_s390_init(void)
+-static int __kvm_s390_init(void)
++static int __init __kvm_s390_init(void)
  {
  	int rc = -ENOMEM;
  
-@@ -519,7 +519,7 @@ int kvm_arch_init(void *opaque)
- 	return rc;
+diff --git a/arch/s390/kvm/kvm-s390.h b/arch/s390/kvm/kvm-s390.h
+index f6fd668f887e..e7f6166129eb 100644
+--- a/arch/s390/kvm/kvm-s390.h
++++ b/arch/s390/kvm/kvm-s390.h
+@@ -467,7 +467,7 @@ void kvm_s390_gisa_clear(struct kvm *kvm);
+ void kvm_s390_gisa_destroy(struct kvm *kvm);
+ void kvm_s390_gisa_disable(struct kvm *kvm);
+ void kvm_s390_gisa_enable(struct kvm *kvm);
+-int kvm_s390_gib_init(u8 nisc);
++int __init kvm_s390_gib_init(u8 nisc);
+ void kvm_s390_gib_destroy(void);
+ 
+ /* implemented in guestdbg.c */
+diff --git a/arch/s390/kvm/pci.c b/arch/s390/kvm/pci.c
+index c50c1645c0ae..60548791c077 100644
+--- a/arch/s390/kvm/pci.c
++++ b/arch/s390/kvm/pci.c
+@@ -670,7 +670,7 @@ int kvm_s390_pci_zpci_op(struct kvm *kvm, struct kvm_s390_zpci_op *args)
+ 	return r;
  }
  
--void kvm_arch_exit(void)
-+static void __kvm_s390_exit(void)
+-int kvm_s390_pci_init(void)
++int __init kvm_s390_pci_init(void)
  {
- 	gmap_unregister_pte_notifier(&gmap_notifier);
- 	gmap_unregister_pte_notifier(&vsie_gmap_notifier);
-@@ -533,6 +533,16 @@ void kvm_arch_exit(void)
- 	debug_unregister(kvm_s390_dbf_uv);
- }
+ 	zpci_kvm_hook.kvm_register = kvm_s390_pci_register_kvm;
+ 	zpci_kvm_hook.kvm_unregister = kvm_s390_pci_unregister_kvm;
+diff --git a/arch/s390/kvm/pci.h b/arch/s390/kvm/pci.h
+index 486d06ef563f..ff0972dd5e71 100644
+--- a/arch/s390/kvm/pci.h
++++ b/arch/s390/kvm/pci.h
+@@ -60,7 +60,7 @@ void kvm_s390_pci_clear_list(struct kvm *kvm);
  
-+int kvm_arch_init(void *opaque)
-+{
-+	return 0;
-+}
-+
-+void kvm_arch_exit(void)
-+{
-+
-+}
-+
- /* Section: device related */
- long kvm_arch_dev_ioctl(struct file *filp,
- 			unsigned int ioctl, unsigned long arg)
-@@ -5634,7 +5644,7 @@ static inline unsigned long nonhyp_mask(int i)
+ int kvm_s390_pci_zpci_op(struct kvm *kvm, struct kvm_s390_zpci_op *args);
  
- static int __init kvm_s390_init(void)
- {
--	int i;
-+	int i, r;
+-int kvm_s390_pci_init(void);
++int __init kvm_s390_pci_init(void);
+ void kvm_s390_pci_exit(void);
  
- 	if (!sclp.has_sief2) {
- 		pr_info("SIE is not available\n");
-@@ -5650,12 +5660,23 @@ static int __init kvm_s390_init(void)
- 		kvm_s390_fac_base[i] |=
- 			stfle_fac_list[i] & nonhyp_mask(i);
- 
--	return kvm_init(NULL, sizeof(struct kvm_vcpu), 0, THIS_MODULE);
-+	r = __kvm_s390_init();
-+	if (r)
-+		return r;
-+
-+	r = kvm_init(NULL, sizeof(struct kvm_vcpu), 0, THIS_MODULE);
-+	if (r) {
-+		__kvm_s390_exit();
-+		return r;
-+	}
-+	return 0;
- }
- 
- static void __exit kvm_s390_exit(void)
- {
- 	kvm_exit();
-+
-+	__kvm_s390_exit();
- }
- 
- module_init(kvm_s390_init);
+ static inline bool kvm_s390_pci_interp_allowed(void)
 -- 
 2.38.1.431.g37b22c650d-goog
 
