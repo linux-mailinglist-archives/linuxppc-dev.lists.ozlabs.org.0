@@ -1,66 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5DF061722A
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 00:22:47 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9165617239
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 00:23:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N2jbn5TQBz3f44
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 10:22:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N2jcn3Rhmz3cLg
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 10:23:37 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=bL+6TpNk;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=pj8ZAUMz;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::649; helo=mail-pl1-x649.google.com; envelope-from=39_piywykdjom84hd6aiiaf8.6igfchorjj6-78pfcmnm.itf45m.ila@flex--seanjc.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::549; helo=mail-pg1-x549.google.com; envelope-from=3-fpiywykdjwoa6jf8ckkcha.8kihejqtll8-9arheopo.kvh67o.knc@flex--seanjc.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=bL+6TpNk;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=pj8ZAUMz;
 	dkim-atps=neutral
-Received: from mail-pl1-x649.google.com (mail-pl1-x649.google.com [IPv6:2607:f8b0:4864:20::649])
+Received: from mail-pg1-x549.google.com (mail-pg1-x549.google.com [IPv6:2607:f8b0:4864:20::549])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N2jWt0vGyz2xtK
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Nov 2022 10:19:21 +1100 (AEDT)
-Received: by mail-pl1-x649.google.com with SMTP id s15-20020a170902ea0f00b00187050232fcso240354plg.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 02 Nov 2022 16:19:21 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N2jWv49GXz2xtK
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Nov 2022 10:19:23 +1100 (AEDT)
+Received: by mail-pg1-x549.google.com with SMTP id f19-20020a63f113000000b0046fde69a09dso90837pgi.10
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 02 Nov 2022 16:19:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=Pm9EI+cM+5edeoncgirJOK1OjdMfit/iE/V7h68jiBA=;
-        b=bL+6TpNkM7xunyoG+gMR3bDhbv+lOJER+h6vrXBg2jRt79YqAlbOV3s6/VQkeIpj52
-         Ky1J7zaHaUxciHs2i3/MW5CLnr8pffu2zrCWdSsWEvN6vkqzU4pIQp/Uj0gPLK6GDxI3
-         GXoAw0QLp0yQS3/DSHQFoQOG98RSEwY0diep14lnnAfxj0vljm9xePUY2AEeRFGvmBXm
-         tRsmblxsjx3f7i/4+Y9GUkzbutc8U0tSPE9xz/PT80Ld6mJSu9LlyVnSoU2uILnp4M37
-         3H0YxDU1PZnTyFdDu6Y+lDm6+PExiZVQW1JgbUHVisjW0UqEwp57euCcN8FduUynf2n5
-         u4Jg==
+        bh=c745/GhVAupZOShsaNtc5Y0Jm7uB9ydr3S2itBPefjM=;
+        b=pj8ZAUMzpQAWjfpeZGv/CFSzOSSwAiDNlmMCeDtMJXA3Ia6uRvLVcV16Cymca0aHXC
+         PM6wRe31jjgcVPugCvX2WsyNtqvMLIJF0v+Ys/n5Nq2k4svZOYnhn3INYaYp+USpd+G1
+         514pS4WDUrP9flgT5BLdl+/qUHO2eNFQZVTslZCWnmYA53yd76i4Ah4L5OS7bjh89Kxd
+         agD1FqGzCkHp/1xQ5FePUye1+JugXCV19Z37h3h0SVTeBVE4gWePoOlMN/4jX90JcqtQ
+         h9Xz7vnqCR6lnYHkhGhaSKxff5kFMXnt6v8GUJMP6nlzvcT1qM4okUu+0Q4ETJu9vS+7
+         8iTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Pm9EI+cM+5edeoncgirJOK1OjdMfit/iE/V7h68jiBA=;
-        b=A7ji/QdOViNFAW+S0cfLOn73zReV9N/JnsTLsRJuWFyJR7RVZgqPHfY92eIzJ1im5E
-         c/lwjlEHlrz+YY1n0T95KwJHUmhqDPJTujBLmqzoq81w83cHdYBNlv/oAogxtsRDcehd
-         JHi1w5FNghKvzwtGhflirFTUCTToCY6fa66Wjfog1kpz4bnMN1JpvnuxYp/yVef2gd5V
-         QtHJ9A8+lJjPgKk4Ty/XFP4YLrGSuTmwBsqcW7jTviYDp0wkqzgp7gm6waC7YWXfzNdD
-         smxQUK3yEu5zxFt6Dwqe7o6P/V/HjDtd4c6WgVo44KKjhzSzT8/jJggdk/iBhGHXq1uX
-         VJdA==
-X-Gm-Message-State: ACrzQf1JtBAxAbgbXLdBTFnbGKgcauO5IhvOsjVybsp8N2ULYfObBVgZ
-	YXbJRPj1AlhvJTcUBv6IzIZ3p3w8jcM=
-X-Google-Smtp-Source: AMsMyM6cjV/OPOyVIfIANSlI60mryZ5mbwTKQzkf0thAVt8NDrReB3H6IytQCpI+wrkAP6TPRUKjJyN3TqA=
+        bh=c745/GhVAupZOShsaNtc5Y0Jm7uB9ydr3S2itBPefjM=;
+        b=2guIdtoxsucKxEGZPdyftbXbDu9SPKufjEn+Cd9fARs672tb7DtZZOd5yrZo3P5vHH
+         7puoqh3E2FHkVJhTReI7/xuLkfB31ZwkmAeKhqsNyr8od6Xxj8IZzXXK+7Fy45ZtEx00
+         UTCF/rx2FA/75/G2gu1/kRSzrnJTdpDYsBJRD0HXn06KoNehb9ns0OLOrp4ElfFqzLR2
+         uOJCSZkq83ahXykjnZu7E6gzvNVu9GvXh2f57E1e+AOO7V8QOLpqwGpkgCur/FiZ+p0+
+         nuOGS/nFyt3ZvYkhdZ/G894i0VD1doITxKBsLG5QCBkmZLQgZWpe8ASrPGKR5aZN/6w7
+         3BKQ==
+X-Gm-Message-State: ACrzQf17MGN5HYNhLQcKsgTJ+z1wZY7trIP7dNvmIiViuSjWyvBm+wBa
+	etB/atdSF1DTrf2QDCJ112QYHGldm88=
+X-Google-Smtp-Source: AMsMyM50bKDX4r1Ac7K4343Hy6JzbUn/G7PmXwa6NG1xDlxuMg48/hoXRC8GNkJYnpu6i2NofBL/D0pMfb0=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a62:3281:0:b0:56d:385:149b with SMTP id
- y123-20020a623281000000b0056d0385149bmr27381564pfy.29.1667431159662; Wed, 02
- Nov 2022 16:19:19 -0700 (PDT)
-Date: Wed,  2 Nov 2022 23:18:30 +0000
+ (user=seanjc job=sendgmr) by 2002:a17:902:8a97:b0:178:1939:c721 with SMTP id
+ p23-20020a1709028a9700b001781939c721mr27564226plo.108.1667431161027; Wed, 02
+ Nov 2022 16:19:21 -0700 (PDT)
+Date: Wed,  2 Nov 2022 23:18:31 +0000
 In-Reply-To: <20221102231911.3107438-1-seanjc@google.com>
 Mime-Version: 1.0
 References: <20221102231911.3107438-1-seanjc@google.com>
 X-Mailer: git-send-email 2.38.1.431.g37b22c650d-goog
-Message-ID: <20221102231911.3107438-4-seanjc@google.com>
-Subject: [PATCH 03/44] KVM: Allocate cpus_hardware_enabled after arch hardware setup
+Message-ID: <20221102231911.3107438-5-seanjc@google.com>
+Subject: [PATCH 04/44] KVM: Teardown VFIO ops earlier in kvm_exit()
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
 	Huacai Chen <chenhuacai@kernel.org>, 
@@ -87,69 +87,44 @@ Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Atish Patra <atis
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Allocate cpus_hardware_enabled after arch hardware setup so that arch
-"init" and "hardware setup" are called back-to-back and thus can be
-combined in a future patch.  cpus_hardware_enabled is never used before
-kvm_create_vm(), i.e. doesn't have a dependency with hardware setup and
-only needs to be allocated before /dev/kvm is exposed to userspace.
+Move the call to kvm_vfio_ops_exit() further up kvm_exit() to try and
+bring some amount of symmetry to the setup order in kvm_init(), and more
+importantly so that the arch hooks are invoked dead last by kvm_exit().
+This will allow arch code to move away from the arch hooks without any
+change in ordering between arch code and common code in kvm_exit().
 
-Free the object before the arch hooks are invoked to maintain symmetry,
-and so that arch code can move away from the hooks without having to
-worry about ordering changes.
+That kvm_vfio_ops_exit() is called last appears to be 100% arbitrary.  It
+was bolted on after the fact by commit 571ee1b68598 ("kvm: vfio: fix
+unregister kvm_device_ops of vfio").  The nullified kvm_device_ops_table
+is also local to kvm_main.c and is used only when there are active VMs,
+so unless arch code is doing something truly bizarre, nullifying the
+table earlier in kvm_exit() is little more than a nop.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- virt/kvm/kvm_main.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ virt/kvm/kvm_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index e0424af52acc..8b7534cc953b 100644
+index 8b7534cc953b..f592dd4ce8f2 100644
 --- a/virt/kvm/kvm_main.c
 +++ b/virt/kvm/kvm_main.c
-@@ -5843,15 +5843,15 @@ int kvm_init(void *opaque, unsigned vcpu_size, unsigned vcpu_align,
- 	if (r)
- 		return r;
- 
-+	r = kvm_arch_hardware_setup(opaque);
-+	if (r < 0)
-+		goto err_hw_setup;
-+
- 	if (!zalloc_cpumask_var(&cpus_hardware_enabled, GFP_KERNEL)) {
- 		r = -ENOMEM;
- 		goto err_hw_enabled;
- 	}
- 
--	r = kvm_arch_hardware_setup(opaque);
--	if (r < 0)
--		goto out_free_1;
--
- 	c.ret = &r;
- 	c.opaque = opaque;
- 	for_each_online_cpu(cpu) {
-@@ -5937,10 +5937,10 @@ int kvm_init(void *opaque, unsigned vcpu_size, unsigned vcpu_align,
+@@ -5961,6 +5961,7 @@ void kvm_exit(void)
+ 	for_each_possible_cpu(cpu)
+ 		free_cpumask_var(per_cpu(cpu_kick_mask, cpu));
+ 	kmem_cache_destroy(kvm_vcpu_cache);
++	kvm_vfio_ops_exit();
+ 	kvm_async_pf_deinit();
+ 	unregister_syscore_ops(&kvm_syscore_ops);
  	unregister_reboot_notifier(&kvm_reboot_notifier);
- 	cpuhp_remove_state_nocalls(CPUHP_AP_KVM_STARTING);
- out_free_2:
--	kvm_arch_hardware_unsetup();
--out_free_1:
+@@ -5970,7 +5971,6 @@ void kvm_exit(void)
  	free_cpumask_var(cpus_hardware_enabled);
- err_hw_enabled:
-+	kvm_arch_hardware_unsetup();
-+err_hw_setup:
- 	kvm_arch_exit();
- 	return r;
- }
-@@ -5967,9 +5967,9 @@ void kvm_exit(void)
- 	cpuhp_remove_state_nocalls(CPUHP_AP_KVM_STARTING);
- 	on_each_cpu(hardware_disable_nolock, NULL, 1);
- 	kvm_irqfd_exit();
-+	free_cpumask_var(cpus_hardware_enabled);
  	kvm_arch_hardware_unsetup();
  	kvm_arch_exit();
--	free_cpumask_var(cpus_hardware_enabled);
- 	kvm_vfio_ops_exit();
+-	kvm_vfio_ops_exit();
  }
  EXPORT_SYMBOL_GPL(kvm_exit);
+ 
 -- 
 2.38.1.431.g37b22c650d-goog
 
