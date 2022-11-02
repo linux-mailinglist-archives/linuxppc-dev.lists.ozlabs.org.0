@@ -1,66 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E5B761720F
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 00:21:03 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D43F617217
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 00:21:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N2jYn1VlGz3dv7
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 10:21:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N2jZn1njzz3dvG
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 10:21:53 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=Y/LgcbOS;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=GJuDT4qI;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::b49; helo=mail-yb1-xb49.google.com; envelope-from=39ppiywykdjcj51ea37ff7c5.3fdc9elogg3-45mc9jkj.fqc12j.fi7@flex--seanjc.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::b49; helo=mail-yb1-xb49.google.com; envelope-from=39vpiywykdjkl73gc59hh9e7.5hfebgnqii5-67oeblml.hse34l.hk9@flex--seanjc.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=Y/LgcbOS;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=GJuDT4qI;
 	dkim-atps=neutral
 Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N2jWr21THz2xl1
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Nov 2022 10:19:19 +1100 (AEDT)
-Received: by mail-yb1-xb49.google.com with SMTP id p66-20020a257445000000b006ca0ba7608fso375201ybc.7
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 02 Nov 2022 16:19:19 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N2jWr2Hgcz2xtK
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Nov 2022 10:19:20 +1100 (AEDT)
+Received: by mail-yb1-xb49.google.com with SMTP id t9-20020a5b03c9000000b006cff5077dc9so393485ybp.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 02 Nov 2022 16:19:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=J4baT2gCaqaG+hAt/mJp+w8Lapt4XhULv2rUZ1lbod8=;
-        b=Y/LgcbOSvwbnzJXRGal3Ep3KB7/0yCP9cU65YkQert5+3hLyHHSjjMao2/UuV8Y1pm
-         rxtzoLchmx+Mfw2uDAT2cc7aUI/oVviLkjgjK/axQ+ux0UramBaUfpMh7qr3oHRIrkbM
-         g29/HkiYkyDP9zLb6T5zYBFWjCRhk7uodXh+YwW0fknC8LCiXKsmBrjDcUEU31+Wr1aB
-         IkpbU9xq9Vh5sCGgS87jUUdeWGvPSndSpQtpQaJwtmMAXoArYlfZq/YuY0lzlwpeE7m/
-         iktR7kaNiirOlR+WEM+Xzua+uL8FsQlW7DYdB778CLiAWY7J4Sab6pQ6XIRdRfFvya7C
-         dqQw==
+        bh=7+eEYWgdfK2f235NQouH0yOVJiIE3XUzS6aBBcpH2Xg=;
+        b=GJuDT4qIFRmN0zrEcesKp5eZ38WFJtAk7eJLI6MT/Ki4scur3JzxZHizyJ8pIsBMLg
+         TZsxQflrMw0vV6/LQ4eLuVGkeHataXwJMbFJYWT60aCHjdYTQzerfB15KOU/infpl1Yg
+         Dq7XMjNzBlwZlnSc61H5gBHFkm3TEEd35yWHpJa13qtav7MsW7uSfcNWliarLL2r1uQq
+         n4Uyhy3npcssGJRIlfdRDpGm7iF4EKYzBOtaYqDiDMZ0E2gBBrutJfjyLCbotmATUg5n
+         cvQzCJ4G8GbG22iIRvx4lfqlDB2hxbUTz17cEFGPuQiDi1PGB1ilnB2TMVHOT/GiMblc
+         mfsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=J4baT2gCaqaG+hAt/mJp+w8Lapt4XhULv2rUZ1lbod8=;
-        b=QrxZZ5sbLr666eG8ixGrGlQRso7BJFLKFiOMxzjMHGNMezD7/BTlmgxPpNH0/pjXo7
-         zkY1hAYkCCjFZ2EH4yl1nGnSYJHBEPy6jotgRqcq768rU6n9tA3k2jRXPrRogwsgi2rQ
-         ZC6WPHFQ5VaaNadjDbScx4U+wIAD5qSPnMh50BcKXjTn+mQBCSkiEam7R4/Za5dTZans
-         pvhzYxaPOQzC68mX7gc7JgNUmfXTflx/xyTx+jO3uJbFxZjScWIA957tCimA7BtWsoXJ
-         naN0EFG5BahaxACd5JwvPPTvf/kry4Gy3H7S+6eiQqDoB+M/n2pE9o6D53J82kvVtHjA
-         3ldg==
-X-Gm-Message-State: ACrzQf2b8EAKbwh1j74xf8dDxBtVhTvP00Z1SHSd/U9GgVk5Rya+xfgd
-	kD8KRNLnUNfgefAkz6J7DWES9xC3zq8=
-X-Google-Smtp-Source: AMsMyM5o6mEhEhiYREiqHX2O6l5zHbOoOJ5LkmkQQCrMnpzWAr9BhETh9np1j3huSYRmzTw5GjJ2jYjKldE=
+        bh=7+eEYWgdfK2f235NQouH0yOVJiIE3XUzS6aBBcpH2Xg=;
+        b=dXHIm7Biou+97mXxzJbVB4ZsfBlvQ9ncBE/sgMgubaHij6t1J4azrfe0NNuRwdRa6j
+         e0Zc34tddvQ+2sB92UlyM3wVVg1N68nxWJE463uJ7gCiW+J2JUHWH8zbDOVXGYtTuPhF
+         xBsDikyvZjMGds18WKQEZMwZ9TYwFaucBQHsj0A0t0X6MZtdUQaBLKH4ZcnPQeyI6Pga
+         b75wVmpOtLHp2avSRbM1kJnNSnduQGWRKKsmW6Bw9WdbG37jnBLEIFcyMQLxmDzSYBUE
+         9M/Mtc2Tc55Vv72db5AulmW1UJ3U8BFidKOgoI54TNTFmDRviyne0hyfYVxBxtyWF2fl
+         1BZg==
+X-Gm-Message-State: ACrzQf1VbLn7t1/grxNkH7SAdzgVr9VXqA3UnmYHXbC6K+zSWCLPygQr
+	otKGicYQ/i6UjpmtHEw0nPE0YdPZBZQ=
+X-Google-Smtp-Source: AMsMyM70haTx/XR5G28CKoYVC6XM4t6KIj6EhKrnhdUb7b9djmPG/60PGXPcAfFKa85v8fvZQusLb10dmQQ=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a25:f451:0:b0:6cc:aeeb:8fed with SMTP id
- p17-20020a25f451000000b006ccaeeb8fedmr15718187ybe.11.1667431156834; Wed, 02
- Nov 2022 16:19:16 -0700 (PDT)
-Date: Wed,  2 Nov 2022 23:18:28 +0000
+ (user=seanjc job=sendgmr) by 2002:a25:afc2:0:b0:6cd:3a43:a395 with SMTP id
+ d2-20020a25afc2000000b006cd3a43a395mr12532811ybj.220.1667431158134; Wed, 02
+ Nov 2022 16:19:18 -0700 (PDT)
+Date: Wed,  2 Nov 2022 23:18:29 +0000
 In-Reply-To: <20221102231911.3107438-1-seanjc@google.com>
 Mime-Version: 1.0
 References: <20221102231911.3107438-1-seanjc@google.com>
 X-Mailer: git-send-email 2.38.1.431.g37b22c650d-goog
-Message-ID: <20221102231911.3107438-2-seanjc@google.com>
-Subject: [PATCH 01/44] KVM: Register /dev/kvm as the _very_ last thing during initialization
+Message-ID: <20221102231911.3107438-3-seanjc@google.com>
+Subject: [PATCH 02/44] KVM: Initialize IRQ FD after arch hardware setup
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
 	Huacai Chen <chenhuacai@kernel.org>, 
@@ -87,79 +87,116 @@ Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Atish Patra <atis
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Register /dev/kvm, i.e. expose KVM to userspace, only after all other
-setup has completed.  Once /dev/kvm is exposed, userspace can start
-invoking KVM ioctls, creating VMs, etc...  If userspace creates a VM
-before KVM is done with its configuration, bad things may happen, e.g.
-KVM will fail to properly migrate vCPU state if a VM is created before
-KVM has registered preemption notifiers.
+Move initialization of KVM's IRQ FD workqueue below arch hardware setup
+as a step towards consolidating arch "init" and "hardware setup", and
+eventually towards dropping the hooks entirely.  There is no dependency
+on the workqueue being created before hardware setup, the workqueue is
+used only when destroying VMs, i.e. only needs to be created before
+/dev/kvm is exposed to userspace.
 
-Cc: stable@vger.kernel.org
+Move the destruction of the workqueue before the arch hooks to maintain
+symmetry, and so that arch code can move away from the hooks without
+having to worry about ordering changes.
+
+Reword the comment about kvm_irqfd_init() needing to come after
+kvm_arch_init() to call out that kvm_arch_init() must come before common
+KVM does _anything_, as x86 very subtly relies on that behavior to deal
+with multiple calls to kvm_init(), e.g. if userspace attempts to load
+kvm_amd.ko and kvm_intel.ko.  Tag the code with a FIXME, as x86's subtle
+requirement is gross, and invoking an arch callback as the very first
+action in a helper that is called only from arch code is silly.
+
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- virt/kvm/kvm_main.c | 31 ++++++++++++++++++++++---------
- 1 file changed, 22 insertions(+), 9 deletions(-)
+ virt/kvm/kvm_main.c | 37 ++++++++++++++++++-------------------
+ 1 file changed, 18 insertions(+), 19 deletions(-)
 
 diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index f1df24c2bc84..a188d27f78af 100644
+index a188d27f78af..e0424af52acc 100644
 --- a/virt/kvm/kvm_main.c
 +++ b/virt/kvm/kvm_main.c
-@@ -5900,12 +5900,6 @@ int kvm_init(void *opaque, unsigned vcpu_size, unsigned vcpu_align,
+@@ -5833,24 +5833,19 @@ int kvm_init(void *opaque, unsigned vcpu_size, unsigned vcpu_align,
+ 	int r;
+ 	int cpu;
+ 
++	/*
++	 * FIXME: Get rid of kvm_arch_init(), vendor code should call arch code
++	 * directly.  Note, kvm_arch_init() _must_ be called before anything
++	 * else as x86 relies on checks buried in kvm_arch_init() to guard
++	 * against multiple calls to kvm_init().
++	 */
+ 	r = kvm_arch_init(opaque);
+ 	if (r)
+-		goto out_fail;
+-
+-	/*
+-	 * kvm_arch_init makes sure there's at most one caller
+-	 * for architectures that support multiple implementations,
+-	 * like intel and amd on x86.
+-	 * kvm_arch_init must be called before kvm_irqfd_init to avoid creating
+-	 * conflicts in case kvm is already setup for another implementation.
+-	 */
+-	r = kvm_irqfd_init();
+-	if (r)
+-		goto out_irqfd;
++		return r;
+ 
+ 	if (!zalloc_cpumask_var(&cpus_hardware_enabled, GFP_KERNEL)) {
+ 		r = -ENOMEM;
+-		goto out_free_0;
++		goto err_hw_enabled;
+ 	}
+ 
+ 	r = kvm_arch_hardware_setup(opaque);
+@@ -5894,9 +5889,13 @@ int kvm_init(void *opaque, unsigned vcpu_size, unsigned vcpu_align,
+ 		}
+ 	}
+ 
++	r = kvm_irqfd_init();
++	if (r)
++		goto err_irqfd;
++
+ 	r = kvm_async_pf_init();
+ 	if (r)
+-		goto out_free_4;
++		goto err_async_pf;
  
  	kvm_chardev_ops.owner = module;
  
--	r = misc_register(&kvm_dev);
--	if (r) {
--		pr_err("kvm: misc device register failed\n");
--		goto out_unreg;
--	}
--
- 	register_syscore_ops(&kvm_syscore_ops);
- 
- 	kvm_preempt_ops.sched_in = kvm_sched_in;
-@@ -5914,11 +5908,24 @@ int kvm_init(void *opaque, unsigned vcpu_size, unsigned vcpu_align,
- 	kvm_init_debug();
- 
- 	r = kvm_vfio_ops_init();
--	WARN_ON(r);
-+	if (WARN_ON_ONCE(r))
-+		goto err_vfio;
-+
-+	/*
-+	 * Registration _must_ be the very last thing done, as this exposes
-+	 * /dev/kvm to userspace, i.e. all infrastructure must be setup!
-+	 */
-+	r = misc_register(&kvm_dev);
-+	if (r) {
-+		pr_err("kvm: misc device register failed\n");
-+		goto err_register;
-+	}
- 
- 	return 0;
- 
--out_unreg:
-+err_register:
-+	kvm_vfio_ops_exit();
-+err_vfio:
+@@ -5927,6 +5926,9 @@ int kvm_init(void *opaque, unsigned vcpu_size, unsigned vcpu_align,
+ 	kvm_vfio_ops_exit();
+ err_vfio:
  	kvm_async_pf_deinit();
++err_async_pf:
++	kvm_irqfd_exit();
++err_irqfd:
  out_free_4:
  	for_each_possible_cpu(cpu)
-@@ -5944,8 +5951,14 @@ void kvm_exit(void)
- {
- 	int cpu;
- 
--	debugfs_remove_recursive(kvm_debugfs_dir);
-+	/*
-+	 * Note, unregistering /dev/kvm doesn't strictly need to come first,
-+	 * fops_get(), a.k.a. try_module_get(), prevents acquiring references
-+	 * to KVM while the module is being stopped.
-+	 */
- 	misc_deregister(&kvm_dev);
-+
-+	debugfs_remove_recursive(kvm_debugfs_dir);
- 	for_each_possible_cpu(cpu)
  		free_cpumask_var(per_cpu(cpu_kick_mask, cpu));
- 	kmem_cache_destroy(kvm_vcpu_cache);
+@@ -5938,11 +5940,8 @@ int kvm_init(void *opaque, unsigned vcpu_size, unsigned vcpu_align,
+ 	kvm_arch_hardware_unsetup();
+ out_free_1:
+ 	free_cpumask_var(cpus_hardware_enabled);
+-out_free_0:
+-	kvm_irqfd_exit();
+-out_irqfd:
++err_hw_enabled:
+ 	kvm_arch_exit();
+-out_fail:
+ 	return r;
+ }
+ EXPORT_SYMBOL_GPL(kvm_init);
+@@ -5967,9 +5966,9 @@ void kvm_exit(void)
+ 	unregister_reboot_notifier(&kvm_reboot_notifier);
+ 	cpuhp_remove_state_nocalls(CPUHP_AP_KVM_STARTING);
+ 	on_each_cpu(hardware_disable_nolock, NULL, 1);
++	kvm_irqfd_exit();
+ 	kvm_arch_hardware_unsetup();
+ 	kvm_arch_exit();
+-	kvm_irqfd_exit();
+ 	free_cpumask_var(cpus_hardware_enabled);
+ 	kvm_vfio_ops_exit();
+ }
 -- 
 2.38.1.431.g37b22c650d-goog
 
