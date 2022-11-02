@@ -1,66 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31E6561729E
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 00:28:09 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D7DE61729F
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 00:29:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N2jjz0gjmz3f9x
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 10:28:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N2jkz0p7fz3f83
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 10:28:59 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=N/AO+DlA;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=ECpjGJtb;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::54a; helo=mail-pg1-x54a.google.com; envelope-from=3aftiywykdkqwierngksskpi.gsqpmrybttg-hizpmwxw.sdpefw.svk@flex--seanjc.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::104a; helo=mail-pj1-x104a.google.com; envelope-from=3avtiywykdkuxjfsohlttlqj.htrqnszcuuh-ijaqnxyx.teqfgx.twl@flex--seanjc.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=N/AO+DlA;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=ECpjGJtb;
 	dkim-atps=neutral
-Received: from mail-pg1-x54a.google.com (mail-pg1-x54a.google.com [IPv6:2607:f8b0:4864:20::54a])
+Received: from mail-pj1-x104a.google.com (mail-pj1-x104a.google.com [IPv6:2607:f8b0:4864:20::104a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N2jX31jj8z3c2j
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Nov 2022 10:19:31 +1100 (AEDT)
-Received: by mail-pg1-x54a.google.com with SMTP id v18-20020a637a12000000b0046ed84b94efso94439pgc.6
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 02 Nov 2022 16:19:30 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N2jX455g1z3cJ2
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Nov 2022 10:19:32 +1100 (AEDT)
+Received: by mail-pj1-x104a.google.com with SMTP id o15-20020a17090aac0f00b00212e93524c0so2496293pjq.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 02 Nov 2022 16:19:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=SRqZjl0CVbTa6NG2E64G3dLAUo/Pz8pk6hIhLm2VMUc=;
-        b=N/AO+DlAJnQ9J/vtwHmeA+LWmW2X38Xvh1eLG4RWzywbm32Vf0IsEJKwUIfrABuxFl
-         0EKhIzYrEfkzCVSFK3biZb9XwWk4XwwJS/OnHHvaR70SNUpWUpE57FN4sbTk/TPj35x/
-         cAJkeY4R4md/H6BBXnN0tlgqyVYRq72kGCHMOXzsnn+VDv0nws/iLVsXJU1fSeeLEY4w
-         /5W7IzSHqdo5Jkh7TgJ/2kp0Wml2Tqdg9OOSx8bwuC9pmrXmMmqnDL37uTYdYPfVtwii
-         poXkBmFS7imW8u09oi9MQ4pJzJGTl8VmWIvB/CfRCk2mynsmxJDVg6mdWRwKUMtA9Dq0
-         KkpQ==
+        bh=4c2zoa+pA6B5dVM5IIaZmnVQdrF+CmLigOtVMLLIYD8=;
+        b=ECpjGJtbjyyvm3Zkn97le29FJrvdukE8ffHVj2dNk9FAwC++NI0lCVrbf3Opd4TWBf
+         7ONE7EX0w7ttmK3YMIoyE2Vh0FaG9SkGVZLCFbXid7ImD6yTFbtqmq7Vw0x0n0YWc1qr
+         UvPnlqsBKgTOUZmLDWND50zLAkoG2FqWh124NRVJwySYvacHzZnlXGsktrezCTNW/gFJ
+         apDpep1BU4A8VIiFKZFnkDLw7l8sDdIIv36URgpIHyxEBEvEU09NfxgFq/1iQFi4+zri
+         llBfs0X8HKEdffCS4sfZ+5suanib1tg9fTY0dlx5A7HaJ0XDgPt9qN3X7bOUhQWSSKhm
+         Q5OQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=SRqZjl0CVbTa6NG2E64G3dLAUo/Pz8pk6hIhLm2VMUc=;
-        b=0KLssFnlRVlcpf8s7Uj1dWq3ScBdIUgGJGKHqyvZrm7VBapUl8JCHRa3H3NH6t5rbD
-         Kj0nZ0utwqeNE3jHL3ULtT/+DTlVC1ltbQykIjZr9ie6dk5xWs6Swf1bxIptJulCrUCI
-         iyyBPoZoLQMREHjVZIgYwIxmTwFYvCPVT/xzr7VjCxvAGg1CScTWDlglfOaQg8gn+jH/
-         h56j0LcuRW/cjGaHr5pzYZFOABAQZdmuYAd386BRJVGvN514l5pHjwjKD+r4IAbUYPFI
-         UXq8g2A2gnCZTxn7yjJCpnT0Vc0m9EVbXzvChSP/Ad8BNSvGyJNwoB2hqfb8XdfbocEJ
-         eubw==
-X-Gm-Message-State: ACrzQf0HhHdJqfTGzikcRvsBX92CNoTikZyZy5ckVz4+cT3TfiGTGOGZ
-	OlumTAfu9Fi4J4lT+BZJQpvGQk+QY34=
-X-Google-Smtp-Source: AMsMyM4EhVfOAXnvh3uqqR+GrfRtTcz5EdIn8ldyko2v+yjX0B25rXaAkhDgO2YLd/AhKl4jKmJJf3AFTk4=
+        bh=4c2zoa+pA6B5dVM5IIaZmnVQdrF+CmLigOtVMLLIYD8=;
+        b=LCIxGLa26V1THJG+ziV2DuJ480dEUM9dFpxIGo3XkNDlyU51P1nql+3Z4ovFoUyv5m
+         uRxbw+gJBRHidOxJSTevzhxJpQs5H9jm46cIJTazt+dZX3FJeWcKTuyoV/ILi686FVQ0
+         HlHYjw0hoVs9NpxErsrdNq0p7d5wd3LDB0gfhB46EEfHvqLv24/TrQX9SjMn/T3eLukq
+         6dlLHug/bZ8IFjlekCz3w5NeG1Nb1R2AlaEVd/+KNXz5c3UpgOVfG8+vSIet1XGseL7E
+         kqFcB+Hknx0HSx4ba0BcLi3gdsHJChRAx6obSc9vAFO+dO0PBeAwZQH/DnBB8xeB4vKW
+         fifw==
+X-Gm-Message-State: ACrzQf1sbS5QLPzQg3X9F372Sd0YzpmKCydGXtP5HD6Qzf6tMYD3phwN
+	nMINC3voKIKvYJKgbAQuJRE8D/1225g=
+X-Google-Smtp-Source: AMsMyM7u9h/dkayT+hLSeOHW3eyFIXztD8JIQO3WHKnzA+a8+f1OvWCBCQrfKTAJAPpphlP/kzg5suewz9I=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a05:6a00:1d89:b0:56c:a2b:f1c2 with SMTP id
- z9-20020a056a001d8900b0056c0a2bf1c2mr27838704pfw.45.1667431169395; Wed, 02
- Nov 2022 16:19:29 -0700 (PDT)
-Date: Wed,  2 Nov 2022 23:18:36 +0000
+ (user=seanjc job=sendgmr) by 2002:a17:902:f602:b0:178:9818:48a4 with SMTP id
+ n2-20020a170902f60200b00178981848a4mr27063044plg.148.1667431170921; Wed, 02
+ Nov 2022 16:19:30 -0700 (PDT)
+Date: Wed,  2 Nov 2022 23:18:37 +0000
 In-Reply-To: <20221102231911.3107438-1-seanjc@google.com>
 Mime-Version: 1.0
 References: <20221102231911.3107438-1-seanjc@google.com>
 X-Mailer: git-send-email 2.38.1.431.g37b22c650d-goog
-Message-ID: <20221102231911.3107438-10-seanjc@google.com>
-Subject: [PATCH 09/44] KVM: Drop arch hardware (un)setup hooks
+Message-ID: <20221102231911.3107438-11-seanjc@google.com>
+Subject: [PATCH 10/44] KVM: VMX: Clean up eVMCS enabling if KVM initialization fails
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
 	Huacai Chen <chenhuacai@kernel.org>, 
@@ -87,226 +87,206 @@ Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Atish Patra <atis
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Drop kvm_arch_hardware_setup() and kvm_arch_hardware_unsetup() now that
-all implementations are nops.
-
-No functional change intended.
+To make it obvious that KVM doesn't have a lurking bug, cleanup eVMCS
+enabling if kvm_init() fails even though the enabling doesn't strictly
+need to be unwound.  eVMCS enabling only toggles values that are fully
+contained in the VMX module, i.e. it's technically ok to leave the values
+as-is since they'll disappear entirely when the module is unloaded, but
+doing proper cleanup is relatively simple, and having a chunk of code
+that isn't unwound is confusing.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/arm64/include/asm/kvm_host.h   |  1 -
- arch/arm64/kvm/arm.c                |  5 -----
- arch/mips/include/asm/kvm_host.h    |  1 -
- arch/mips/kvm/mips.c                |  5 -----
- arch/powerpc/include/asm/kvm_host.h |  1 -
- arch/powerpc/kvm/powerpc.c          |  5 -----
- arch/riscv/include/asm/kvm_host.h   |  1 -
- arch/riscv/kvm/main.c               |  5 -----
- arch/s390/kvm/kvm-s390.c            | 10 ----------
- arch/x86/kvm/x86.c                  | 10 ----------
- include/linux/kvm_host.h            |  2 --
- virt/kvm/kvm_main.c                 |  7 -------
- 12 files changed, 53 deletions(-)
+ arch/x86/kvm/vmx/vmx.c | 137 +++++++++++++++++++++++------------------
+ 1 file changed, 78 insertions(+), 59 deletions(-)
 
-diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-index 45e2136322ba..5d5a887e63a5 100644
---- a/arch/arm64/include/asm/kvm_host.h
-+++ b/arch/arm64/include/asm/kvm_host.h
-@@ -859,7 +859,6 @@ static inline bool kvm_system_needs_idmapped_vectors(void)
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 05a747c9a9ff..b3fd4049de01 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -524,6 +524,8 @@ static inline void vmx_segment_cache_clear(struct vcpu_vmx *vmx)
+ static unsigned long host_idt_base;
  
- void kvm_arm_vcpu_ptrauth_trap(struct kvm_vcpu *vcpu);
+ #if IS_ENABLED(CONFIG_HYPERV)
++static struct kvm_x86_ops vmx_x86_ops __initdata;
++
+ static bool __read_mostly enlightened_vmcs = true;
+ module_param(enlightened_vmcs, bool, 0444);
  
--static inline void kvm_arch_hardware_unsetup(void) {}
- static inline void kvm_arch_sync_events(struct kvm *kvm) {}
- static inline void kvm_arch_sched_in(struct kvm_vcpu *vcpu, int cpu) {}
- 
-diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-index 94d33e296e10..2ee729f54ce0 100644
---- a/arch/arm64/kvm/arm.c
-+++ b/arch/arm64/kvm/arm.c
-@@ -63,11 +63,6 @@ int kvm_arch_vcpu_should_kick(struct kvm_vcpu *vcpu)
- 	return kvm_vcpu_exiting_guest_mode(vcpu) == IN_GUEST_MODE;
- }
- 
--int kvm_arch_hardware_setup(void *opaque)
--{
--	return 0;
--}
--
- int kvm_arch_check_processor_compat(void *opaque)
- {
- 	return 0;
-diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
-index 5cedb28e8a40..28f0ba97db71 100644
---- a/arch/mips/include/asm/kvm_host.h
-+++ b/arch/mips/include/asm/kvm_host.h
-@@ -888,7 +888,6 @@ extern unsigned long kvm_mips_get_ramsize(struct kvm *kvm);
- extern int kvm_vcpu_ioctl_interrupt(struct kvm_vcpu *vcpu,
- 			     struct kvm_mips_interrupt *irq);
- 
--static inline void kvm_arch_hardware_unsetup(void) {}
- static inline void kvm_arch_sync_events(struct kvm *kvm) {}
- static inline void kvm_arch_free_memslot(struct kvm *kvm,
- 					 struct kvm_memory_slot *slot) {}
-diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
-index a25e0b73ee70..af29490d9740 100644
---- a/arch/mips/kvm/mips.c
-+++ b/arch/mips/kvm/mips.c
-@@ -135,11 +135,6 @@ void kvm_arch_hardware_disable(void)
- 	kvm_mips_callbacks->hardware_disable();
- }
- 
--int kvm_arch_hardware_setup(void *opaque)
--{
--	return 0;
--}
--
- int kvm_arch_check_processor_compat(void *opaque)
- {
- 	return 0;
-diff --git a/arch/powerpc/include/asm/kvm_host.h b/arch/powerpc/include/asm/kvm_host.h
-index caea15dcb91d..5d2c3a487e73 100644
---- a/arch/powerpc/include/asm/kvm_host.h
-+++ b/arch/powerpc/include/asm/kvm_host.h
-@@ -877,7 +877,6 @@ struct kvm_vcpu_arch {
- #define __KVM_HAVE_CREATE_DEVICE
- 
- static inline void kvm_arch_hardware_disable(void) {}
--static inline void kvm_arch_hardware_unsetup(void) {}
- static inline void kvm_arch_sync_events(struct kvm *kvm) {}
- static inline void kvm_arch_memslots_updated(struct kvm *kvm, u64 gen) {}
- static inline void kvm_arch_flush_shadow_all(struct kvm *kvm) {}
-diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
-index b850b0efa201..74ea5687ecbc 100644
---- a/arch/powerpc/kvm/powerpc.c
-+++ b/arch/powerpc/kvm/powerpc.c
-@@ -441,11 +441,6 @@ int kvm_arch_hardware_enable(void)
+@@ -552,6 +554,71 @@ static int hv_enable_direct_tlbflush(struct kvm_vcpu *vcpu)
  	return 0;
  }
  
--int kvm_arch_hardware_setup(void *opaque)
--{
--	return 0;
--}
++static __init void hv_setup_evmcs(void)
++{
++	int cpu;
++
++	if (!enlightened_vmcs)
++		return;
++
++	/*
++	 * Enlightened VMCS usage should be recommended and the host needs
++	 * to support eVMCS v1 or above.
++	 */
++	if (ms_hyperv.hints & HV_X64_ENLIGHTENED_VMCS_RECOMMENDED &&
++	    (ms_hyperv.nested_features & HV_X64_ENLIGHTENED_VMCS_VERSION) >=
++	     KVM_EVMCS_VERSION) {
++
++		/* Check that we have assist pages on all online CPUs */
++		for_each_online_cpu(cpu) {
++			if (!hv_get_vp_assist_page(cpu)) {
++				enlightened_vmcs = false;
++				break;
++			}
++		}
++
++		if (enlightened_vmcs) {
++			pr_info("KVM: vmx: using Hyper-V Enlightened VMCS\n");
++			static_branch_enable(&enable_evmcs);
++		}
++
++		if (ms_hyperv.nested_features & HV_X64_NESTED_DIRECT_FLUSH)
++			vmx_x86_ops.enable_direct_tlbflush
++				= hv_enable_direct_tlbflush;
++
++	} else {
++		enlightened_vmcs = false;
++	}
++}
++static void hv_cleanup_evmcs(void)
++{
++	struct hv_vp_assist_page *vp_ap;
++	int cpu;
++
++	if (!static_branch_unlikely(&enable_evmcs))
++		return;
++
++	/*
++	 * Reset everything to support using non-enlightened VMCS access later
++	 * (e.g. when we reload the module with enlightened_vmcs=0)
++	 */
++	for_each_online_cpu(cpu) {
++		vp_ap =	hv_get_vp_assist_page(cpu);
++
++		if (!vp_ap)
++			continue;
++
++		vp_ap->nested_control.features.directhypercall = 0;
++		vp_ap->current_nested_vmcs = 0;
++		vp_ap->enlighten_vmentry = 0;
++	}
++
++	static_branch_disable(&enable_evmcs);
++}
++
++#else /* IS_ENABLED(CONFIG_HYPERV) */
++static void hv_setup_evmcs(void) {}
++static void hv_cleanup_evmcs(void) {}
+ #endif /* IS_ENABLED(CONFIG_HYPERV) */
+ 
+ /*
+@@ -8435,29 +8502,8 @@ static void vmx_exit(void)
+ 
+ 	kvm_exit();
+ 
+-#if IS_ENABLED(CONFIG_HYPERV)
+-	if (static_branch_unlikely(&enable_evmcs)) {
+-		int cpu;
+-		struct hv_vp_assist_page *vp_ap;
+-		/*
+-		 * Reset everything to support using non-enlightened VMCS
+-		 * access later (e.g. when we reload the module with
+-		 * enlightened_vmcs=0)
+-		 */
+-		for_each_online_cpu(cpu) {
+-			vp_ap =	hv_get_vp_assist_page(cpu);
++	hv_cleanup_evmcs();
+ 
+-			if (!vp_ap)
+-				continue;
 -
- int kvm_arch_check_processor_compat(void *opaque)
+-			vp_ap->nested_control.features.directhypercall = 0;
+-			vp_ap->current_nested_vmcs = 0;
+-			vp_ap->enlighten_vmentry = 0;
+-		}
+-
+-		static_branch_disable(&enable_evmcs);
+-	}
+-#endif
+ 	vmx_cleanup_l1d_flush();
+ 
+ 	allow_smaller_maxphyaddr = false;
+@@ -8468,43 +8514,12 @@ static int __init vmx_init(void)
  {
- 	return kvmppc_core_check_processor_compat();
-diff --git a/arch/riscv/include/asm/kvm_host.h b/arch/riscv/include/asm/kvm_host.h
-index dbbf43d52623..8c771fc4f5d2 100644
---- a/arch/riscv/include/asm/kvm_host.h
-+++ b/arch/riscv/include/asm/kvm_host.h
-@@ -229,7 +229,6 @@ struct kvm_vcpu_arch {
- 	bool pause;
- };
+ 	int r, cpu;
  
--static inline void kvm_arch_hardware_unsetup(void) {}
- static inline void kvm_arch_sync_events(struct kvm *kvm) {}
- static inline void kvm_arch_sched_in(struct kvm_vcpu *vcpu, int cpu) {}
+-#if IS_ENABLED(CONFIG_HYPERV)
+-	/*
+-	 * Enlightened VMCS usage should be recommended and the host needs
+-	 * to support eVMCS v1 or above. We can also disable eVMCS support
+-	 * with module parameter.
+-	 */
+-	if (enlightened_vmcs &&
+-	    ms_hyperv.hints & HV_X64_ENLIGHTENED_VMCS_RECOMMENDED &&
+-	    (ms_hyperv.nested_features & HV_X64_ENLIGHTENED_VMCS_VERSION) >=
+-	    KVM_EVMCS_VERSION) {
+-
+-		/* Check that we have assist pages on all online CPUs */
+-		for_each_online_cpu(cpu) {
+-			if (!hv_get_vp_assist_page(cpu)) {
+-				enlightened_vmcs = false;
+-				break;
+-			}
+-		}
+-
+-		if (enlightened_vmcs) {
+-			pr_info("KVM: vmx: using Hyper-V Enlightened VMCS\n");
+-			static_branch_enable(&enable_evmcs);
+-		}
+-
+-		if (ms_hyperv.nested_features & HV_X64_NESTED_DIRECT_FLUSH)
+-			vmx_x86_ops.enable_direct_tlbflush
+-				= hv_enable_direct_tlbflush;
+-
+-	} else {
+-		enlightened_vmcs = false;
+-	}
+-#endif
++	hv_setup_evmcs();
  
-diff --git a/arch/riscv/kvm/main.c b/arch/riscv/kvm/main.c
-index df2d8716851f..a146fa0ce4d2 100644
---- a/arch/riscv/kvm/main.c
-+++ b/arch/riscv/kvm/main.c
-@@ -25,11 +25,6 @@ int kvm_arch_check_processor_compat(void *opaque)
- 	return 0;
- }
- 
--int kvm_arch_hardware_setup(void *opaque)
--{
--	return 0;
--}
--
- int kvm_arch_hardware_enable(void)
- {
- 	unsigned long hideleg, hedeleg;
-diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-index 1aaee15211f2..7fcd2d3b3558 100644
---- a/arch/s390/kvm/kvm-s390.c
-+++ b/arch/s390/kvm/kvm-s390.c
-@@ -321,16 +321,6 @@ static struct notifier_block kvm_clock_notifier = {
- 	.notifier_call = kvm_clock_sync,
- };
- 
--int kvm_arch_hardware_setup(void *opaque)
--{
--	return 0;
--}
--
--void kvm_arch_hardware_unsetup(void)
--{
--
--}
--
- static void allow_cpu_feat(unsigned long nr)
- {
- 	set_bit_inv(nr, kvm_s390_available_cpu_feat);
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 80ee580a9cd4..40d4bfaa17a4 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -11985,16 +11985,6 @@ void kvm_arch_hardware_disable(void)
- 	drop_user_return_notifiers();
- }
- 
--int kvm_arch_hardware_setup(void *opaque)
--{
--	return 0;
--}
--
--void kvm_arch_hardware_unsetup(void)
--{
--
--}
--
- int kvm_arch_check_processor_compat(void *opaque)
- {
- 	struct cpuinfo_x86 *c = &cpu_data(smp_processor_id());
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 18592bdf4c1b..9b52bd40be56 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -1447,8 +1447,6 @@ static inline void kvm_create_vcpu_debugfs(struct kvm_vcpu *vcpu) {}
- 
- int kvm_arch_hardware_enable(void);
- void kvm_arch_hardware_disable(void);
--int kvm_arch_hardware_setup(void *opaque);
--void kvm_arch_hardware_unsetup(void);
- int kvm_arch_check_processor_compat(void *opaque);
- int kvm_arch_vcpu_runnable(struct kvm_vcpu *vcpu);
- bool kvm_arch_vcpu_in_kernel(struct kvm_vcpu *vcpu);
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index f592dd4ce8f2..27ce263a80e4 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -5843,10 +5843,6 @@ int kvm_init(void *opaque, unsigned vcpu_size, unsigned vcpu_align,
+ 	r = kvm_init(&vmx_init_ops, sizeof(struct vcpu_vmx),
+ 		     __alignof__(struct vcpu_vmx), THIS_MODULE);
  	if (r)
- 		return r;
+-		return r;
++		goto err_kvm_init;
  
--	r = kvm_arch_hardware_setup(opaque);
--	if (r < 0)
--		goto err_hw_setup;
--
- 	if (!zalloc_cpumask_var(&cpus_hardware_enabled, GFP_KERNEL)) {
- 		r = -ENOMEM;
- 		goto err_hw_enabled;
-@@ -5939,8 +5935,6 @@ int kvm_init(void *opaque, unsigned vcpu_size, unsigned vcpu_align,
- out_free_2:
- 	free_cpumask_var(cpus_hardware_enabled);
- err_hw_enabled:
--	kvm_arch_hardware_unsetup();
--err_hw_setup:
- 	kvm_arch_exit();
- 	return r;
+ 	/*
+ 	 * Must be called after kvm_init() so enable_ept is properly set
+@@ -8514,10 +8529,8 @@ static int __init vmx_init(void)
+ 	 * mitigation mode.
+ 	 */
+ 	r = vmx_setup_l1d_flush(vmentry_l1d_flush_param);
+-	if (r) {
+-		vmx_exit();
+-		return r;
+-	}
++	if (r)
++		goto err_l1d_flush;
+ 
+ 	vmx_setup_fb_clear_ctrl();
+ 
+@@ -8542,5 +8555,11 @@ static int __init vmx_init(void)
+ 		allow_smaller_maxphyaddr = true;
+ 
+ 	return 0;
++
++err_l1d_flush:
++	vmx_exit();
++err_kvm_init:
++	hv_cleanup_evmcs();
++	return r;
  }
-@@ -5969,7 +5963,6 @@ void kvm_exit(void)
- 	on_each_cpu(hardware_disable_nolock, NULL, 1);
- 	kvm_irqfd_exit();
- 	free_cpumask_var(cpus_hardware_enabled);
--	kvm_arch_hardware_unsetup();
- 	kvm_arch_exit();
- }
- EXPORT_SYMBOL_GPL(kvm_exit);
+ module_init(vmx_init);
 -- 
 2.38.1.431.g37b22c650d-goog
 
