@@ -2,47 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63A4D615898
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Nov 2022 03:54:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF298615948
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Nov 2022 04:08:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N2BLn2M7Bz3ccg
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Nov 2022 13:54:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N2Bg946sBz3cP6
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Nov 2022 14:08:53 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=fqdG0x/8;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=omr4UZIo;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=fqdG0x/8;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=omr4UZIo;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N2BKp1z0pz308b
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Nov 2022 13:53:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N2BfF5gVHz2yxd
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Nov 2022 14:08:04 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 34CB7617C8;
-	Wed,  2 Nov 2022 02:53:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 719E8C433C1;
-	Wed,  2 Nov 2022 02:53:43 +0000 (UTC)
+	by ams.source.kernel.org (Postfix) with ESMTPS id CB6EBB82072;
+	Wed,  2 Nov 2022 03:08:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B97BC433D6;
+	Wed,  2 Nov 2022 03:07:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1667357624;
+	s=korg; t=1667358479;
 	bh=cRFcfuf4TepHhpKrHJ2aj9/sZA2JEZEZVC3XjSRcFDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fqdG0x/8ivmnaLHMKNIW5XMJU+DU+ya5Jx6nyZmB7sZmJRMI0mWud8/Hl1nPvYozY
-	 SpQcxxpwcoFq8CDOXxBuSDVnN68zrSFq2CZQUIVDKuizn6xq4nubdLVUadScAjlSZm
-	 fnXYBAaNPsynCtCszGQJHUKBcjhmtOEtz0kiW8Gs=
+	b=omr4UZIosMhuTbGOa9bQCbmu820gEbToDkDyrLKoOoGtxrkM0csAnmcnrzcx/LOpG
+	 rCd+fiblYOHib3mh6eH0OC9vCnxfAzQQmnxh9lky+4GuC6OLwyEiO4KukKix0K6UcK
+	 b/ZRXa/e2K7uFEnckRQ92syGjeEBtAutkYYz53GI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
-Subject: [PATCH 6.0 201/240] perf vendor events power10: Fix hv-24x7 metric events
-Date: Wed,  2 Nov 2022 03:32:56 +0100
-Message-Id: <20221102022115.942132764@linuxfoundation.org>
+Subject: [PATCH 5.15 098/132] perf vendor events power10: Fix hv-24x7 metric events
+Date: Wed,  2 Nov 2022 03:33:24 +0100
+Message-Id: <20221102022102.211141502@linuxfoundation.org>
 X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20221102022111.398283374@linuxfoundation.org>
-References: <20221102022111.398283374@linuxfoundation.org>
+In-Reply-To: <20221102022059.593236470@linuxfoundation.org>
+References: <20221102022059.593236470@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
