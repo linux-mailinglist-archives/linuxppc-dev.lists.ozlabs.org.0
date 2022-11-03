@@ -1,50 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68B7D618CEC
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Nov 2022 00:45:48 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F9D9618CEE
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Nov 2022 00:46:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N3L3t1kTBz3cD6
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Nov 2022 10:45:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N3L4v3lrHz3f3y
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Nov 2022 10:46:39 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LPXgbFBX;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Put+Owlo;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LPXgbFBX;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Put+Owlo;
 	dkim-atps=neutral
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N3L2w2bJPz3bbb
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Nov 2022 10:44:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N3L3k0vhMz3dsg
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Nov 2022 10:45:38 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.source.kernel.org (Postfix) with ESMTPS id 4F2E8CE2942
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Nov 2022 23:44:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B28BCC433C1
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Nov 2022 23:44:49 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id C1D1962039
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Nov 2022 23:45:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 2E82CC433C1
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Nov 2022 23:45:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1667519089;
-	bh=mISbEP4nEx4zm1pdOjbbH7rX5tnHKhqZ8KYQGNAu2WE=;
+	s=k20201202; t=1667519134;
+	bh=N3H0Bzg0dkqrIO+NBt1z/yLfpIDe7s2NSlmMOsB4Vmc=;
 	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=LPXgbFBX+4SErTsNyDNH7Edqs7Vk7rCVcvxzs86vb3L7tKFFsUVZURk/Z2+HnlrIy
-	 f8OndOQXlIKBRZNY29ymDAoc0GL8AGpvnl8jqByjuRFxxoDGnMOSyRb86Hyd73FWb/
-	 UiUggAjqoeDB3j4LDDY09BVLYLUvNpzJwwXYjSbduAB3q3JkK2mbhPr7C9D7/Oe0XQ
-	 I+wnuWifgcP5j0UpgYLpwpHNS2ESD+eALnS1y+dC626iJY9Ppwliu+c/y2IqoJdilV
-	 chjURwyhapTWumjYCSD18Tz5j3WGeGUw56TgiRARJ8+QP01zO6byyI8d+ew3e9wiuK
-	 Ujyf/RUHAZQlg==
+	b=Put+OwlokKlnOXTU1FlIoa8QqIGzl74DmXtjpjj0d/MBR5flVhDnJM6Q0gWjq+Q0w
+	 r95DKkRKmjAXfuRZ0rh91rVo/vwvRj/JrEXxXV4sCdi0qdjvycQ2z5O8v14jL7xCyB
+	 /dtizUo9a7/McHb5JhSoK5R9YiOwrH9/WkuEQs58o4gvAeVtdj+wrfBnVpgaWdh0u1
+	 my9PZgDeSWMPt1DTW+/LxK4mpc2yVBzlZCYv5ve+3rHVZ0JZLu6C/sJAwCl9nD35v4
+	 hAfpQXaPYNf5FrFu1WC9CItyJ/8OwOAJaf/vPe4uNLouD6a1C8yZgOGP2lnd9KKajK
+	 N0W2eGinYDg+Q==
 Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id 94C8DC433E6; Thu,  3 Nov 2022 23:44:49 +0000 (UTC)
+	id 1B923C433E6; Thu,  3 Nov 2022 23:45:34 +0000 (UTC)
 From: bugzilla-daemon@kernel.org
 To: linuxppc-dev@lists.ozlabs.org
 Subject: [Bug 216407] OF: unittest fails some tests on ppc and ppc64 (###
  dt-test ### end of unittest - 266 passed, 6 failed)
-Date: Thu, 03 Nov 2022 23:44:49 +0000
+Date: Thu, 03 Nov 2022 23:45:33 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
@@ -60,7 +60,7 @@ X-Bugzilla-Priority: P1
 X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
 X-Bugzilla-Changed-Fields: attachments.created
-Message-ID: <bug-216407-206035-jUSN03aMFJ@https.bugzilla.kernel.org/>
+Message-ID: <bug-216407-206035-esUJkPSV0K@https.bugzilla.kernel.org/>
 In-Reply-To: <bug-216407-206035@https.bugzilla.kernel.org/>
 References: <bug-216407-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
@@ -84,32 +84,10 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 https://bugzilla.kernel.org/show_bug.cgi?id=3D216407
 
---- Comment #4 from Erhard F. (erhard_f@mailbox.org) ---
-Created attachment 303129
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D303129&action=3Dedit
-dmesg (kernel 6.1-rc3, Talos II)
-
-No change on 6.1-rc3.
-
- # dmesg | grep FAIL
-[   51.237023] ### dt-test ### FAIL of_unittest_dma_ranges_one():927
-of_dma_get_range: wrong phys addr 0x0000000000000000 (expecting 20000000) on
-node /testcase-data/address-tests/device@70000000
-[   51.237036] ### dt-test ### FAIL of_unittest_dma_ranges_one():930
-of_dma_get_range: wrong DMA addr 0x0000000020000000 (expecting 0) on node
-/testcase-data/address-tests/device@70000000
-[   51.237064] ### dt-test ### FAIL of_unittest_dma_ranges_one():927
-of_dma_get_range: wrong phys addr 0x0000000100000000 (expecting 20000000) on
-node /testcase-data/address-tests/bus@80000000/device@1000
-[   51.237078] ### dt-test ### FAIL of_unittest_dma_ranges_one():930
-of_dma_get_range: wrong DMA addr 0x0000000020000000 (expecting 100000000) on
-node /testcase-data/address-tests/bus@80000000/device@1000
-[   51.237117] ### dt-test ### FAIL of_unittest_dma_ranges_one():927
-of_dma_get_range: wrong phys addr 0x0000000080000000 (expecting 20000000) on
-node /testcase-data/address-tests/pci@90000000
-[   51.237128] ### dt-test ### FAIL of_unittest_dma_ranges_one():930
-of_dma_get_range: wrong DMA addr 0x0000000020000000 (expecting 80000000) on
-node /testcase-data/address-tests/pci@90000000
+--- Comment #5 from Erhard F. (erhard_f@mailbox.org) ---
+Created attachment 303130
+  --> https://bugzilla.kernel.org/attachment.cgi?id=3D303130&action=3Dedit
+kernel .config (kernel 6.1-rc3, Talos II)
 
 --=20
 You may reply to this email to add a comment.
