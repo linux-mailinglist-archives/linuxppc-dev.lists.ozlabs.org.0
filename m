@@ -1,60 +1,106 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8406E61806C
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 16:03:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5350661809E
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 16:09:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N36Sr2zLZz3cJq
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Nov 2022 02:03:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N36br13RPz3c6k
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Nov 2022 02:09:12 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=dkim header.b=QSTgD6Nc;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CY0XdSUN;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CY0XdSUN;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=alien8.de (client-ip=5.9.137.197; helo=mail.skyhub.de; envelope-from=bp@alien8.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=dkim header.b=QSTgD6Nc;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CY0XdSUN;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CY0XdSUN;
 	dkim-atps=neutral
-X-Greylist: delayed 73079 seconds by postgrey-1.36 at boromir; Fri, 04 Nov 2022 02:02:20 AEDT
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N36Rw1Yq0z3bjX
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Nov 2022 02:02:19 +1100 (AEDT)
-Received: from zn.tnic (p200300ea9733e7e7329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:9733:e7e7:329c:23ff:fea6:a903])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E2C1D1EC0528;
-	Thu,  3 Nov 2022 16:02:15 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1667487736;
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N36Zr1KQNz3c2g
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Nov 2022 02:08:18 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1667488095;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=5zOKDwJu4FB0xil2b5a/FPJvsZt45ByyRxSMQsaaDR8=;
-	b=QSTgD6Ncd3yLcOSJYmXGo3EY1DApfHw02ztOKs7k0PAMuO15QSqsfMgfLs99GK7c8D6O5M
-	EIOEJproe4r8R5EXjhGGomlU7hRESTU4jQUJYXGQ2n64qCj7A3JMaFvsauSzmA31U5bm9T
-	1HVpbEVPWdzipSAdtoW/ML7JHqLy6kc=
-Date: Thu, 3 Nov 2022 16:02:12 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Andrew Jones <ajones@ventanamicro.com>
-Subject: Re: [PATCH v3 2/2] x86: Fix /proc/cpuinfo cpumask warning
-Message-ID: <Y2PX9GfxWYh6+XGT@zn.tnic>
-References: <20221028074828.b66uuqqfbrnjdtab@kamzik>
- <Y1vrMMtRwb0Lekl0@yury-laptop>
- <Y1vvMlwf/4EA/8WW@zn.tnic>
- <CAAH8bW_DkvPCH0-q2Bfe0OJ72r63mRM3GP7NKOFrhe3zMO2gbQ@mail.gmail.com>
- <Y1v+Ed6mRN9gisJS@zn.tnic>
- <20221031080604.6xei6c4e3ckhsvmy@kamzik>
- <Y1+OUawGJDjh4DOJ@zn.tnic>
- <20221031100327.r7tswmpszvs5ot5n@kamzik>
- <Y2K6clNJBn0SbWU+@zn.tnic>
- <20221103125945.lrr5oxxmylwpam53@kamzik>
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MLzJVyRQvNMkBYTyqF+CAZ1OHQes3dhnjH8NkXHBEKk=;
+	b=CY0XdSUNeD70Vl1nGxs1Lz+fnk0kusmK2S1UsPsNT8dLTmXjInbelY6+e3b5y7Ko5tIVIJ
+	GjNatx/L9IwHA5zc6/OiTWykTS/bAEj8ZzaX1UXKPxhZ3sbJ8ZDVRaIEoUtDDguhIUMpHD
+	qTYzz17K/R2E4/sKLw6Sj0PqzQp7mp8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1667488095;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MLzJVyRQvNMkBYTyqF+CAZ1OHQes3dhnjH8NkXHBEKk=;
+	b=CY0XdSUNeD70Vl1nGxs1Lz+fnk0kusmK2S1UsPsNT8dLTmXjInbelY6+e3b5y7Ko5tIVIJ
+	GjNatx/L9IwHA5zc6/OiTWykTS/bAEj8ZzaX1UXKPxhZ3sbJ8ZDVRaIEoUtDDguhIUMpHD
+	qTYzz17K/R2E4/sKLw6Sj0PqzQp7mp8=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-502-UhNvFtrcMouTJxHodkiIBg-1; Thu, 03 Nov 2022 11:08:14 -0400
+X-MC-Unique: UhNvFtrcMouTJxHodkiIBg-1
+Received: by mail-ej1-f69.google.com with SMTP id gn34-20020a1709070d2200b0079330e196c8so1446905ejc.16
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 03 Nov 2022 08:08:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=MLzJVyRQvNMkBYTyqF+CAZ1OHQes3dhnjH8NkXHBEKk=;
+        b=yk8uKjPsJJNusurRvITJLcAyYwTMz/QkYA+o4K2+mis/waVykuubRZQklAohLX61IQ
+         pAuDsgLVHcEwA9sEeBvgsNqPDw3Fot7b6exR14T+ZxL5uVH9eCnj09FTS9cUJf/WMO7F
+         GT+5GKC9sGCdT3wP2lxeLau6Xwm28J7g8yOVCMwa0ziSszrC5YYIpJKibgWxuK5xuxPC
+         Ti0Ri76dOwDXMBnEhRxglOyaa1gMdNMqKstQ4RknljALxha1+JT9pFy+OzKzfawSS0Rk
+         jO46qUSdZJoo6yPIi/poajav99sAhZIkU0fEMXA0Gk5uwe2ZG/vvdQHyb9/mV9dDp0Oz
+         g3WQ==
+X-Gm-Message-State: ACrzQf0t2LYzNncrqeTd3zkZZw9m2RXWlZMlCTK/6OjxA8t10ZxofEIi
+	y3YARw4PHJb/he+2fMAoLagMCpsibTkxG7BtxRj9c5tXKrNFah+l5sUXhnNyXhnS0cxqJerlxSM
+	9jR1sxxjDSndJZLS40tpOnyfeCA==
+X-Received: by 2002:a05:6402:550e:b0:456:f79f:2bed with SMTP id fi14-20020a056402550e00b00456f79f2bedmr31117693edb.106.1667488092994;
+        Thu, 03 Nov 2022 08:08:12 -0700 (PDT)
+X-Google-Smtp-Source: AMsMyM6ksX1XHskAylW8hRvHj1WJtzsGVm4o7GE4R3Qlz1mullFc3dI571812AyMzkQixxOznTrmOg==
+X-Received: by 2002:a05:6402:550e:b0:456:f79f:2bed with SMTP id fi14-20020a056402550e00b00456f79f2bedmr31117664edb.106.1667488092781;
+        Thu, 03 Nov 2022 08:08:12 -0700 (PDT)
+Received: from ?IPV6:2001:b07:6468:f312:1c09:f536:3de6:228c? ([2001:b07:6468:f312:1c09:f536:3de6:228c])
+        by smtp.googlemail.com with ESMTPSA id s28-20020a056402037c00b0045bccd8ab83sm646641edw.1.2022.11.03.08.08.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 03 Nov 2022 08:08:11 -0700 (PDT)
+Message-ID: <bfa98587-3b36-3834-a4b9-585a0e0aa56a@redhat.com>
+Date: Thu, 3 Nov 2022 16:08:09 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20221103125945.lrr5oxxmylwpam53@kamzik>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.0
+Subject: Re: [PATCH 33/44] KVM: x86: Do VMX/SVM support checks directly in
+ vendor code
+To: Sean Christopherson <seanjc@google.com>, Marc Zyngier <maz@kernel.org>,
+ Huacai Chen <chenhuacai@kernel.org>,
+ Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>,
+ Anup Patel <anup@brainfault.org>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Janosch Frank <frankja@linux.ibm.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>
+References: <20221102231911.3107438-1-seanjc@google.com>
+ <20221102231911.3107438-34-seanjc@google.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+In-Reply-To: <20221102231911.3107438-34-seanjc@google.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,49 +112,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jonas Bonn <jonas@southpole.se>, linux-s390@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Dave Hansen <dave.hansen@linux.intel.com>, Vasily Gorbik <gor@linux.ibm.com>, Yury Norov <yury.norov@gmail.com>, Heiko Carstens <hca@linux.ibm.com>, x86@kernel.org, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, openrisc@lists.librecores.org, Ingo Molnar <mingo@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Stafford Horne <shorne@gmail.com>, linux-riscv <linux-riscv@lists.infradead.org>, "open list:LINUX FOR POWERPC PA SEMI PWRFICIENT" <linuxppc-dev@lists.ozlabs.org>, Thomas Gleixner <tglx@linutronix.de>, Albert Ou <aou@eecs.berkeley.edu>
+Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Atish Patra <atishp@atishpatra.org>, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, kvmarm@lists.cs.columbia.edu, linux-s390@vger.kernel.org, Chao Gao <chao.gao@intel.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, Yuan Yao <yuan.yao@intel.com>, kvmarm@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, Alexandru Elisei <alexandru.elisei@arm.com>, linux-arm-kernel@lists.infradead.org, Isaku Yamahata <isaku.yamahata@intel.com>, Fabiano Rosas <farosas@linux.ibm.com>, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, James Morse <james.morse@arm.com>, kvm-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Nov 03, 2022 at 01:59:45PM +0100, Andrew Jones wrote:
-> The patch I'm proposing ensures cpumask_next()'s range, which is actually
-> [-1, nr_cpus_ids - 1),
+On 11/3/22 00:19, Sean Christopherson wrote:
+> +	if (!boot_cpu_has(X86_FEATURE_MSR_IA32_FEAT_CTL) ||
+> +	    !boot_cpu_has(X86_FEATURE_VMX)) {
+> +		pr_err("VMX not enabled in MSR_IA32_FEAT_CTL\n");
+> +		return false;
 
-Lemme make sure I understand it correctly: on the upper boundary, if you
-supply for n the value nr_cpu_ids - 2, then it will return potentially
-the last bit if the mask is set, i.e., the one at position (nr_cpu_ids - 1).
+I think the reference to the BIOS should remain in these messages and in 
+svm.c (even though these days it's much less common for vendors to 
+default to disabled virtualization in the system setup).
 
-If you supply nr_cpus_ids - 1, then it'll return nr_cpu_ids to signal no
-further bits set.
+The check for X86_FEATURE_MSR_IA32_FEAT_CTL is not needed because 
+init_ia32_feat_ctl() will clear X86_FEATURE_VMX if the rdmsr fail (and 
+not set X86_FEATURE_MSR_IA32_FEAT_CTL).
 
-Yes, no?
+Paolo
 
-> I'll send a v4 with another stab at the commit message.
-
-Yes, and it is still an unreadable mess: "A kernel compiled with commit
-... but not its revert... " Nope.
-
-First make sure cpumask_next()'s valid accepted range has been settled
-upon, has been explicitly documented in a comment above it and then I'll
-take a patch that fixes whatever is there to fix.
-
-Callers should not have to filter values before passing them in - the
-function either returns an error or returns the next bit in the mask.
-
-This thing:
-
-	if (*pos == nr_cpu_ids)
-
-but then to pass in pos - 1:
-
-	*pos = cpumask_next(*pos - 1
-
-looks to me like the interface needs more cooking.
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
