@@ -1,59 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 392A3618550
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 17:52:14 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E88E26185FB
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 18:14:30 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N38th0nm2z3f83
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Nov 2022 03:52:12 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=dkim header.b=GEBGVYys;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N39NN5cqQz3f43
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Nov 2022 04:14:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=alien8.de (client-ip=2a01:4f8:190:11c2::b:1457; helo=mail.skyhub.de; envelope-from=bp@alien8.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=dkim header.b=GEBGVYys;
-	dkim-atps=neutral
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=dominikbrodowski.net (client-ip=136.243.71.142; helo=isilmar-4.linta.de; envelope-from=linux@dominikbrodowski.net; receiver=<UNKNOWN>)
+X-Greylist: delayed 588 seconds by postgrey-1.36 at boromir; Fri, 04 Nov 2022 04:13:31 AEDT
+Received: from isilmar-4.linta.de (isilmar-4.linta.de [136.243.71.142])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N38qP72hPz3f3v
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Nov 2022 03:49:21 +1100 (AEDT)
-Received: from zn.tnic (p200300ea9733e7e7329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:9733:e7e7:329c:23ff:fea6:a903])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E3F291EC04F0;
-	Thu,  3 Nov 2022 17:49:09 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1667494150;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=2ASRoXT4dNz3rsz3g7wk4DQzgAno9/V5MAy7ltfZSS0=;
-	b=GEBGVYysxzMU6LGJTmZd7M+/R/6mbCD6zp4ZSzgggbaUSAV0SVqDm2Gc6AAhFjue3w91tt
-	IAhvE9D7fZ+NRgIf5TsYL8evNAQClXdM104Vgktn6WclPvN36r3al1OF9AVLqkFvz+Oj+i
-	92QAmiYx47vWftNfKrMeen4/XGStEic=
-Date: Thu, 3 Nov 2022 17:49:06 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: yury.norov@gmail.com
-Subject: Re: [PATCH v3 2/2] x86: Fix /proc/cpuinfo cpumask warning
-Message-ID: <Y2PxAiJ1yNzcUSgs@zn.tnic>
-References: <CAAH8bW_DkvPCH0-q2Bfe0OJ72r63mRM3GP7NKOFrhe3zMO2gbQ@mail.gmail.com>
- <Y1v+Ed6mRN9gisJS@zn.tnic>
- <20221031080604.6xei6c4e3ckhsvmy@kamzik>
- <Y1+OUawGJDjh4DOJ@zn.tnic>
- <20221031100327.r7tswmpszvs5ot5n@kamzik>
- <Y2K6clNJBn0SbWU+@zn.tnic>
- <20221103125945.lrr5oxxmylwpam53@kamzik>
- <Y2PX9GfxWYh6+XGT@zn.tnic>
- <20221103153404.uh77nrdkowrxj6cr@kamzik>
- <Y2PsvvOWVs9ZLBsp@yury-laptop>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N39MH2yHdz3cMv
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Nov 2022 04:13:31 +1100 (AEDT)
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+Received: from owl.dominikbrodowski.net (owl.brodo.linta [10.2.0.111])
+	by isilmar-4.linta.de (Postfix) with ESMTPSA id EACA0201349;
+	Thu,  3 Nov 2022 17:03:34 +0000 (UTC)
+Received: by owl.dominikbrodowski.net (Postfix, from userid 1000)
+	id 7BB42801C7; Thu,  3 Nov 2022 18:03:24 +0100 (CET)
+Date: Thu, 3 Nov 2022 18:03:24 +0100
+From: Dominik Brodowski <linux@dominikbrodowski.net>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v2 4/4] pcmcia: Convert to use
+ pci_bus_for_each_resource_p()
+Message-ID: <Y2P0XCNJvTVuziO7@owl.dominikbrodowski.net>
+References: <20221103164644.70554-1-andriy.shevchenko@linux.intel.com>
+ <20221103164644.70554-5-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Y2PsvvOWVs9ZLBsp@yury-laptop>
+In-Reply-To: <20221103164644.70554-5-andriy.shevchenko@linux.intel.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,52 +73,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jonas Bonn <jonas@southpole.se>, linux-s390@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, x86@kernel.org, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Dave Hansen <dave.hansen@linux.intel.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, openrisc@lists.librecores.org, Ingo Molnar <mingo@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Stafford Horne <shorne@gmail.com>, linux-riscv <linux-riscv@lists.infradead.org>, "open list:LINUX FOR POWERPC PA SEMI PWRFICIENT" <linuxppc-dev@lists.ozlabs.org>, Thomas Gleixner <tglx@linutronix.de>, Albert Ou <aou@eecs.berkeley.edu>
+Cc: linux-pci@vger.kernel.org, linux-mips@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>, sparclinux@vger.kernel.org, Stefano Stabellini <sstabellini@kernel.org>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Russell King <linux@armlinux.org.uk>, Bjorn Helgaas <helgaas@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, xen-devel@lists.xenproject.org, Matt Turner <mattst88@gmail.com>, Arnd Bergmann <arnd@arndb.de>, Richard Henderson <richard.henderson@linaro.org>, Nicholas Piggin <npiggin@gmail.com>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>, Mika Westerberg <mika.westerberg@linux.intel.com>, linux-arm-kernel@lists.infradead.org, Juergen Gross <jgross@suse.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-kernel@vger.kernel.org, Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Nov 03, 2022 at 09:30:54AM -0700, yury.norov@gmail.com wrote:a
-> Callers should pass sane arguments into internal functions if they
-> expect sane output.
+Am Thu, Nov 03, 2022 at 06:46:44PM +0200 schrieb Andy Shevchenko:
+> The pci_bus_for_each_resource_p() hides the iterator loop since
+> it may be not used otherwise. With this, we may drop that iterator
+> variable definition.
 
-What internal function? It's in a global header.
+Thanks for your patch!
 
-> The API not exported to userspace shouldn't sanity-check all inputs
-> arguments.
+> diff --git a/drivers/pcmcia/rsrc_nonstatic.c b/drivers/pcmcia/rsrc_nonstatic.c
+> index ad1141fddb4c..9d92d4bb6239 100644
+> --- a/drivers/pcmcia/rsrc_nonstatic.c
+> +++ b/drivers/pcmcia/rsrc_nonstatic.c
+> @@ -934,7 +934,7 @@ static int adjust_io(struct pcmcia_socket *s, unsigned int action, unsigned long
+>  static int nonstatic_autoadd_resources(struct pcmcia_socket *s)
+>  {
+>  	struct resource *res;
+> -	int i, done = 0;
+> +	int done = 0;
+>  
+>  	if (!s->cb_dev || !s->cb_dev->bus)
+>  		return -ENODEV;
+> @@ -960,12 +960,9 @@ static int nonstatic_autoadd_resources(struct pcmcia_socket *s)
+>  	 */
+>  	if (s->cb_dev->bus->number == 0)
+>  		return -EINVAL;
+> -
+> -	for (i = 0; i < PCI_BRIDGE_RESOURCE_NUM; i++) {
+> -		res = s->cb_dev->bus->resource[i];
+> -#else
+> -	pci_bus_for_each_resource(s->cb_dev->bus, res, i) {
+>  #endif
+> +
+> +	pci_bus_for_each_resource_p(s->cb_dev->bus, res) {
+>  		if (!res)
+>  			continue;
 
-That doesn't have anything to do with userspace at all.
+Doesn't this remove the proper iterator for X86? Even if that is the right
+thing to do, it needs an explict explanation.
 
-APIs exported to the rest of the kernel should very well check their
-inputs. Otherwise they're not APIs - just some random functions which
-are visible to the compiler.
+>  
+> diff --git a/drivers/pcmcia/yenta_socket.c b/drivers/pcmcia/yenta_socket.c
+> index 3966a6ceb1ac..b200f2b99a7a 100644
+> --- a/drivers/pcmcia/yenta_socket.c
+> +++ b/drivers/pcmcia/yenta_socket.c
+> @@ -673,9 +673,8 @@ static int yenta_search_res(struct yenta_socket *socket, struct resource *res,
+>  			    u32 min)
+>  {
+>  	struct resource *root;
+> -	int i;
+>  
+> -	pci_bus_for_each_resource(socket->dev->bus, root, i) {
+> +	pci_bus_for_each_resource_p(socket->dev->bus, root) {
+>  		if (!root)
+>  			continue;
+>  
 
-> So, the portable code shouldn't expect from cpumasks more than
-> documentation said: for a _valid_ offset cpumask_next() returns next
-> set bit or >= nr_cpu_ids.
+That looks fine!
 
-Lemme quote from my previous mail:
-
-"First make sure cpumask_next()'s valid accepted range has been settled
-upon, has been explicitly documented"
-
-So where is that valid range documented?
-
-> cpumask_check() has been broken for years. Attempting to fix it faced
-> so much resistance, that I had to revert the patch.
-
-The suggestion on that thread made sense: you first fix the callers and
-then the interface. Just like any other "broken" kernel API.
-
-Nothing's stopping you from fixing it properly - it'll just take a while
-and if it is such a widely used interface, you probably should come up
-with a strategy first how to fix it without impacting current use.
-
-Interfaces and their in-kernel users get refactored constantly.
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Thanks,
+	Dominik
