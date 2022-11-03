@@ -2,104 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB5E26182C6
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 16:28:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 334376182E1
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 16:30:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N372Q48MYz3cGH
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Nov 2022 02:28:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N374s0bH5z3ccn
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Nov 2022 02:30:53 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NZ3fF7Tx;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NZ3fF7Tx;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=JxP3em5m;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::529; helo=mail-pg1-x529.google.com; envelope-from=seanjc@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NZ3fF7Tx;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NZ3fF7Tx;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=JxP3em5m;
 	dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com [IPv6:2607:f8b0:4864:20::529])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N371V2F8Zz3c5D
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Nov 2022 02:27:57 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1667489275;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xCSLioTknXwq+ek9x4fiuIn1LdVr/LliQOq4IIs2CLE=;
-	b=NZ3fF7TxqELuNFxzBWYoUexywm/lT8kIbKbKohyUpTBbq3FCShWRW+6COii9KwpFnmptp9
-	hyvToGLdDDbpcM40ZbarMvN5EzStTHRyJ/kBOeg87+AcCd8ScXR40xQppiwcelGgDxPyNA
-	xH6d6+ycZSRf4OF5jyYVNyAKI8uRHu4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1667489275;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xCSLioTknXwq+ek9x4fiuIn1LdVr/LliQOq4IIs2CLE=;
-	b=NZ3fF7TxqELuNFxzBWYoUexywm/lT8kIbKbKohyUpTBbq3FCShWRW+6COii9KwpFnmptp9
-	hyvToGLdDDbpcM40ZbarMvN5EzStTHRyJ/kBOeg87+AcCd8ScXR40xQppiwcelGgDxPyNA
-	xH6d6+ycZSRf4OF5jyYVNyAKI8uRHu4=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-259-9HL59JjQNL-PSA1_RukxVg-1; Thu, 03 Nov 2022 11:27:52 -0400
-X-MC-Unique: 9HL59JjQNL-PSA1_RukxVg-1
-Received: by mail-ed1-f70.google.com with SMTP id q13-20020a056402518d00b00462b0599644so1644441edd.20
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 03 Nov 2022 08:27:51 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N373x3y1qz2x9v
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Nov 2022 02:30:05 +1100 (AEDT)
+Received: by mail-pg1-x529.google.com with SMTP id b62so2003572pgc.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 03 Nov 2022 08:30:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=UyUe+HbRzSrTdJquQCMiaXWC2coZG28I37xguDaJaYg=;
+        b=JxP3em5mMEo8M/seyYjwqQClKWueZhrkefM7iopEbtJ9U0ARhXsBBlBaHvB0YZ+mCq
+         7I2lDIbzgsTnUJXXFFd+Mf2MRkvMQ3d/mi120+0k+co+feliF2fGnlDGLipP3oo4jHIs
+         yhCQnzB0LNdLsoCiyP2ThdGCDug/wevVBzx4ZCIoRVJzM62ULFanZrMyKnrfoLhgGw7L
+         LE3NJVvLI80qGdb5QUdNBUYtcEfD6sTxNonp/rLGuh5no7R8ACiBwreWQkoFJnyoE1Nq
+         joZ/uzznkWHqO7mwwbSR52gm1kYa+vf+hliw2Y9f1o05+cN6N5swUWJ7vJszMr5BEKoW
+         HTcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xCSLioTknXwq+ek9x4fiuIn1LdVr/LliQOq4IIs2CLE=;
-        b=oYpKzoiSnoZklqZ13SR32rNyk9x5/fRcMKyCk9wm0BcDA4AZ3Pprrley2TJqK7aQi+
-         tSbFtrEXGGWnvHy49kEpHxFREgELhOU/UfZtND0baq1KhHJIwk2i1lcxqqbobGS9Azti
-         gYGWUjJ3kZ/YG7QMHrmxz5qvUidl8PTuEiHQXB672OVfQmi/QGjdcN86aX9RDkhE6q5U
-         f2yby6EuEZNrjK6LG/Y29ynDbINRLCmdBN+irq1OzRzjJlUlaIacIhVy001SUM3IRuDn
-         qixab2V40U3KX03by4p4SPk7I6Rhka5xBg90ND0vwhhbtzGdxyWy6cz4yovUF7kCbbb1
-         tc0w==
-X-Gm-Message-State: ACrzQf1Uqgykk8+diUdl3L8z9c1UvHfMANK83UiZhwHgi2xyCjzFKyZ7
-	4epZ5NrSzgyJUDk2on/4caM6yXT/l2ZQ8HJODH4JKwEST0HmPzIQGqszM3/6BYkXP6yzrj6OZAK
-	I5h7jhbnaydCov9R7VowZpHr9Jw==
-X-Received: by 2002:a17:907:2dab:b0:78d:fc4b:7e31 with SMTP id gt43-20020a1709072dab00b0078dfc4b7e31mr28147756ejc.531.1667489270827;
-        Thu, 03 Nov 2022 08:27:50 -0700 (PDT)
-X-Google-Smtp-Source: AMsMyM7u9a9PiI+1WXKEKW1T9dxImTSTFhIKArq6MPRri6hHxMVLdP9Ji+9iwit/AYCn6duMyFkDdg==
-X-Received: by 2002:a17:907:2dab:b0:78d:fc4b:7e31 with SMTP id gt43-20020a1709072dab00b0078dfc4b7e31mr28147732ejc.531.1667489270591;
-        Thu, 03 Nov 2022 08:27:50 -0700 (PDT)
-Received: from ?IPV6:2001:b07:6468:f312:1c09:f536:3de6:228c? ([2001:b07:6468:f312:1c09:f536:3de6:228c])
-        by smtp.googlemail.com with ESMTPSA id 15-20020a508e4f000000b00463bc1ddc76sm657729edx.28.2022.11.03.08.27.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 03 Nov 2022 08:27:49 -0700 (PDT)
-Message-ID: <82df23f2-b049-8bee-8bb8-608645b918d8@redhat.com>
-Date: Thu, 3 Nov 2022 16:27:47 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.0
-Subject: Re: [PATCH 00/44] KVM: Rework kvm_init() and hardware enabling
-To: Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sean Christopherson <seanjc@google.com>, Marc Zyngier <maz@kernel.org>,
- Huacai Chen <chenhuacai@kernel.org>,
- Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>,
- Anup Patel <anup@brainfault.org>, Paul Walmsley <paul.walmsley@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Janosch Frank <frankja@linux.ibm.com>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>,
- Vitaly Kuznetsov <vkuznets@redhat.com>
+        bh=UyUe+HbRzSrTdJquQCMiaXWC2coZG28I37xguDaJaYg=;
+        b=ytsWfWJVQiLq0mUEP57vqFWSncXVilHQWDFfJtRGuZwnZ7YFwOjlhXkr5f8+tJFWlv
+         VhrY5kmMxDh++wbI07XYvTpFB8c8CGpeEcVKIxHV38XXB+wnbfjA4PCp2p4HKsMpy7x1
+         iIpgr3LebaUiMzkzYYkB2YOUqe35wnS6ClNu0QBxDwuONECaEWiDRO4KunsAYnYCd/3p
+         cPu7X1FqQAeq+gzgGuZFf4E5eaYTO4/7XLZlIw2uYIs9wghgrG90ovE05vIWK2AaFZHm
+         cyRkWwvb1qN8w5r5cP0DpHrsG6XDyc7luKyx9b8+tSdIFIzxFUGppOzStBWLTdHmB95d
+         XJEQ==
+X-Gm-Message-State: ACrzQf20A0/O+WJABQUBCbTJuJW2SQaMwanyR8zIO6kPO+GFs5z+bghn
+	Q+EQCJJZKXpu2vsAE1MUS6/2bQ==
+X-Google-Smtp-Source: AMsMyM6by5WQXi0G4lBZGaavWsGrxKC8DeWyAUbAtvZsM8BboB9ucyemIyMYLKoI4FadI1MlyxYOPw==
+X-Received: by 2002:a05:6a00:1996:b0:56d:a845:5789 with SMTP id d22-20020a056a00199600b0056da8455789mr17697890pfl.59.1667489402026;
+        Thu, 03 Nov 2022 08:30:02 -0700 (PDT)
+Received: from google.com (7.104.168.34.bc.googleusercontent.com. [34.168.104.7])
+        by smtp.gmail.com with ESMTPSA id f3-20020a170902f38300b0017a018221e2sm835452ple.70.2022.11.03.08.30.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Nov 2022 08:30:01 -0700 (PDT)
+Date: Thu, 3 Nov 2022 15:29:58 +0000
+From: Sean Christopherson <seanjc@google.com>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Subject: Re: [PATCH 17/44] KVM: arm64: Do arm/arch initialiation without
+ bouncing through kvm_init()
+Message-ID: <Y2Pedr1MYt/P1uL0@google.com>
 References: <20221102231911.3107438-1-seanjc@google.com>
- <b37267a9-c0b4-9841-71af-d8eab9baeb60@linux.ibm.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-In-Reply-To: <b37267a9-c0b4-9841-71af-d8eab9baeb60@linux.ibm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ <20221102231911.3107438-18-seanjc@google.com>
+ <dd59d579-4a4e-6db2-eac4-6c5c3ab71fd3@linaro.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <dd59d579-4a4e-6db2-eac4-6c5c3ab71fd3@linaro.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -111,28 +82,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Atish Patra <atishp@atishpatra.org>, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, kvmarm@lists.cs.columbia.edu, linux-s390@vger.kernel.org, Chao Gao <chao.gao@intel.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, Yuan Yao <yuan.yao@intel.com>, kvmarm@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, Alexandru Elisei <alexandru.elisei@arm.com>, linux-arm-kernel@lists.infradead.org, Isaku Yamahata <isaku.yamahata@intel.com>, Fabiano Rosas <farosas@linux.ibm.com>, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, James Morse <james.morse@arm.com>, kvm-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
+Cc: Matthew Rosato <mjrosato@linux.ibm.com>, David Hildenbrand <david@redhat.com>, Yuan Yao <yuan.yao@intel.com>, Paul Walmsley <paul.walmsley@sifive.com>, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, Claudio Imbrenda <imbrenda@linux.ibm.com>, kvmarm@lists.cs.columbia.edu, linux-s390@vger.kernel.org, Janosch Frank <frankja@linux.ibm.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>, James Morse <james.morse@arm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Chao Gao <chao.gao@intel.com>, Eric Farman <farman@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org, Atish Patra <atishp@atishpatra.org>, kvmarm@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, Alexandru Elisei <alexandru.elisei@arm.com>, linux-arm-kernel@lists.infradead.org, Isaku Yamahata <isaku.yamahata@intel.com>, Fabiano Rosas <farosas@linux.ibm.com>, 
+ linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, Palmer Dabbelt <palmer@dabbelt.com>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 11/3/22 13:08, Christian Borntraeger wrote:
->> There are bug fixes throughout this series.  They are more scattered than
->> I would usually prefer, but getting the sequencing correct was a gigantic
->> pain for many of the x86 fixes due to needing to fix common code in order
->> for the x86 fix to have any meaning.  And while the bugs are often fatal,
->> they aren't all that interesting for most users as they either require a
->> malicious admin or broken hardware, i.e. aren't likely to be encountered
->> by the vast majority of KVM users.  So unless someone _really_ wants a
->> particular fix isolated for backporting, I'm not planning on shuffling
->> patches.
->>
->> Tested on x86.  Lightly tested on arm64.  Compile tested only on all 
->> other architectures.
+On Thu, Nov 03, 2022, Philippe Mathieu-Daud� wrote:
+> Hi Sean,
 > 
-> Some sniff tests seem to work ok on s390.
+> On 3/11/22 00:18, Sean Christopherson wrote:
+> > Move arm/arch specific initialization directly in arm's module_init(),
+> > now called kvm_arm_init(), instead of bouncing through kvm_init() to
+> > reach kvm_arch_init().  Invoking kvm_arch_init() is the very first action
+> > performed by kvm_init(), i.e. this is a glorified nop.
+> > 
+> > Making kvm_arch_init() a nop will allow dropping it entirely once all
+> > other architectures follow suit.
+> > 
+> > No functional change intended.
+> > 
+> > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> > ---
+> >   arch/arm64/kvm/arm.c | 25 ++++++++++++++++---------
+> >   1 file changed, 16 insertions(+), 9 deletions(-)
+> 
+> >   /* NOP: Compiling as a module not supported */
+> >   void kvm_arch_exit(void)
+> >   {
+> > -	kvm_unregister_perf_callbacks();
+> 
+> Doesn't this belong to the previous patch?
 
-Thanks.  There are just a couple nits, and MIPS/PPC/RISC-V have very 
-small changes.  Feel free to send me a pull request once Marc acks.
+No, but the above changelog is a lie, there is very much a functional change here.
 
-Paolo
+The goal of the previous patch is to fix the error paths in kvm_arch_init(), a.k.a.
+kvm_arm_init().  After fixing kvm_arch_init(), there are still bugs in the sequence
+as a whole because kvm_arch_exit() doesn't unwind other state, e.g. kvm_arch_exit()
+should really look something like:
 
+  void kvm_arch_exit(void)
+  {
+	teardown_subsystems();
+
+	if (!is_kernel_in_hyp_mode())
+		teardown_hyp_mode();
+
+	kvm_arm_vmid_alloc_free();
+
+	if (is_protected_kvm_enabled())
+		???	
+  }
+
+Becuase although the comment "NOP: Compiling as a module not supported" is correct
+about KVM ARM always having to be built into the kernel, kvm_arch_exit() can still
+be called if a later stage of kvm_init() fails.
+
+But rather than add a patch to fix kvm_arch_exit(), I chose to fix the bug by
+moving code out of kvm_arch_init() so that the unwind sequence established in the
+previous patch could be reused.
+
+Except I managed to forget those details when writing the changelog.  The changelog
+should instead be:
+
+  KVM: arm64: Do arm/arch initialization without bouncing through kvm_init()
+  
+  Do arm/arch specific initialization directly in arm's module_init(), now
+  called kvm_arm_init(), instead of bouncing through kvm_init() to reach
+  kvm_arch_init().  Invoking kvm_arch_init() is the very first action
+  performed by kvm_init(), so from a initialization perspective this is a
+  glorified nop.
+  
+  Avoiding kvm_arch_init() also fixes a mostly benign bug as kvm_arch_exit()
+  doesn't properly unwind if a later stage of kvm_init() fails.  While the
+  soon-to-be-deleted comment about compiling as a module being unsupported
+  is correct, kvm_arch_exit() can still be called by kvm_init() if any step
+  after the call to kvm_arch_init() succeeds.
+
+  Add a FIXME to call out that pKVM initialization isn't unwound if
+  kvm_init() fails, which is a pre-existing problem inherited from
+  kvm_arch_exit().
+
+  Making kvm_arch_init() a nop will also allow dropping kvm_arch_init() and
+  kvm_arch_exit() entirely once all other architectures follow suit.
