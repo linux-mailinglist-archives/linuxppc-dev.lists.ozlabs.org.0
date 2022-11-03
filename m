@@ -1,85 +1,93 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 758546176D9
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 07:48:15 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF157617704
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 07:58:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N2vTn2r5rz3cMc
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 17:48:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N2vjD4hPwz3cKM
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 17:58:08 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JS6kjuou;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=V3QXvbba;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JS6kjuou;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=V3QXvbba;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N2vSm5nxfz3bms
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Nov 2022 17:47:20 +1100 (AEDT)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2A358n43029699;
-	Thu, 3 Nov 2022 06:47:12 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N2vhG1HX8z3bjW
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Nov 2022 17:57:17 +1100 (AEDT)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2A36pCTq011468;
+	Thu, 3 Nov 2022 06:57:12 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
  mime-version : subject : from : in-reply-to : date : cc :
  content-transfer-encoding : message-id : references : to; s=pp1;
- bh=5VHrsseso3ocP7cUocUjp/T4QjxkRhtG5hUhl3bV5LI=;
- b=JS6kjuouGD4/QzIasEbhjgNOCeCs6F34IbC30YeLOWPDMO67F5a+8Ec0AQVcrN6L8v1C
- DFq2Xw0eOs+p7XMkSQWQJtKD4TK+Pir5kioafdruCGpwAI7ZlkJV6wTYuppwsKkEKPxu
- VzCDiBgl43fTGUV7/4BfT+RipSIh3BTPV/E+hqnH3KuYYXs3PcwC8ojVfyFbPyhWFb57
- MhJOqmOPN952DdHxZQNXT3LV623GOr8PHHRLo8CHkCoeM/xuwUW4lJKuejfhNHok65fg
- 6mqHW8PqStrwhpszZavbOlDS9zg2czUlAUiQ7aAII/W4y4nxgYIeJ9/6PNIugd1ITet+ 2w== 
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3km6h9kcv5-1
+ bh=sVRK6nDEGoLzroIO2FhoIFQv1+Wda59OiiWXairbzXo=;
+ b=V3QXvbbaghZkh6N8EfbiVoKt8chVFgRc9QQaEG62JE54buk6jLbimw6p0L03Zw5JW7L2
+ ruaCTsdEjc3uUKhFF18UHUOWsra7nxTq5KaJbgBsbc1NO5TKnMD+MEmL+EIlIEhEF5fL
+ 6maCX5Vx7RRol8TwITYcmsk3jFLBBZJrjPF3+185xLrdkVjLdqcan+BMCy0hlkeKpSF3
+ YfoEYks0nfvE8g1gqcdD54QZHss4q55vWHIzMrEaw/B8DAn3FMbvC2VV8roKJyDviN0V
+ FHnOIm2/n8d0P6M8hPptyGkpCSOtvepl51URvCCC7tBG64aulLhVr3pSeVKxgc7UTjz6 Rw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3km8r6850n-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 03 Nov 2022 06:47:11 +0000
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
-	by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2A36a3nr024721;
-	Thu, 3 Nov 2022 06:47:10 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
-	by ppma01fra.de.ibm.com with ESMTP id 3kgut9e49h-1
+	Thu, 03 Nov 2022 06:57:11 +0000
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2A36qv0I016910;
+	Thu, 3 Nov 2022 06:57:11 GMT
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com [159.122.73.72])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3km8r684yn-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 03 Nov 2022 06:47:10 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
-	by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2A36l6eN59113960
+	Thu, 03 Nov 2022 06:57:11 +0000
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+	by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2A36oqmD029461;
+	Thu, 3 Nov 2022 06:57:08 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+	by ppma06fra.de.ibm.com with ESMTP id 3kgueje5g5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 03 Nov 2022 06:57:08 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+	by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2A36v5eQ39977456
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 3 Nov 2022 06:47:06 GMT
+	Thu, 3 Nov 2022 06:57:05 GMT
 Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B8EB542041;
-	Thu,  3 Nov 2022 06:47:06 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 5DA024203F;
+	Thu,  3 Nov 2022 06:57:05 +0000 (GMT)
 Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9FA7842042;
-	Thu,  3 Nov 2022 06:47:05 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 8506C42041;
+	Thu,  3 Nov 2022 06:57:03 +0000 (GMT)
 Received: from smtpclient.apple (unknown [9.43.108.240])
 	by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
-	Thu,  3 Nov 2022 06:47:05 +0000 (GMT)
+	Thu,  3 Nov 2022 06:57:03 +0000 (GMT)
 Content-Type: text/plain;
-	charset=us-ascii
+	charset=utf-8
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.1\))
-Subject: Re: [PATCH v2] powerpc/hv-gpci: Fix hv_gpci event list
+Subject: Re: [PATCH] perf test bpf: Skip test if kernel-debuginfo is not
+ present
 From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-In-Reply-To: <20221028154806.141272-1-kjain@linux.ibm.com>
-Date: Thu, 3 Nov 2022 12:17:03 +0530
+In-Reply-To: <20221028154230.140709-1-kjain@linux.ibm.com>
+Date: Thu, 3 Nov 2022 12:27:01 +0530
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <B8E5754E-9580-4B84-8EA2-4B3947D4FC3D@linux.vnet.ibm.com>
-References: <20221028154806.141272-1-kjain@linux.ibm.com>
+Message-Id: <A7B7E3F1-161D-4B1A-A4FE-E4A77EE06F1A@linux.vnet.ibm.com>
+References: <20221028154230.140709-1-kjain@linux.ibm.com>
 To: Kajol Jain <kjain@linux.ibm.com>
 X-Mailer: Apple Mail (2.3696.120.41.1.1)
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: UdlYt8J5I_WkNYcZrTYYFCN4ApDS6Qtk
-X-Proofpoint-GUID: UdlYt8J5I_WkNYcZrTYYFCN4ApDS6Qtk
+X-Proofpoint-ORIG-GUID: NwhlF43BXDXYZsOXq-EusgJzeKd_3ktI
+X-Proofpoint-GUID: Y7MEHUJ2fXWIW47ILn2NCnX8DgCz6jf1
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
  definitions=2022-11-02_15,2022-11-02_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- lowpriorityscore=0 bulkscore=0 impostorscore=0 mlxscore=0
- priorityscore=1501 mlxlogscore=999 suspectscore=0 phishscore=0
- clxscore=1015 spamscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2210170000 definitions=main-2211030046
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
+ impostorscore=0 malwarescore=0 adultscore=0 priorityscore=1501
+ suspectscore=0 spamscore=0 lowpriorityscore=0 bulkscore=0 clxscore=1015
+ mlxscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2210170000 definitions=main-2211030046
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,198 +99,121 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Disha Goel <disgoel@linux.vnet.ibm.com>
+Cc: Ian Rogers <irogers@google.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Nageswara Sastry <rnsastry@linux.ibm.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, linux-perf-users@vger.kernel.org, Jiri Olsa <jolsa@kernel.org>, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-> On 28-Oct-2022, at 9:18 PM, Kajol Jain <kjain@linux.ibm.com> wrote:
+> On 28-Oct-2022, at 9:12 PM, Kajol Jain <kjain@linux.ibm.com> wrote:
 >=20
-> Based on getPerfCountInfo v1.018 documentation, some of the
-> hv_gpci events got deprecated for platforms firmware that
-> supports counter_info_version 0x8 or above.
+> Perf BPF filter test fails in environment where "kernel-debuginfo"
+> is not installed.
 >=20
-> Patch fixes the hv_gpci event list by adding a new attribute
-> group called "hv_gpci_event_attrs_v6" and a "EVENT_ENABLE"
-> macro to enable these events for platform firmware
-> that supports counter_info_version 0x6 or below. And assigning
-> the hv_gpci event list based on output counter info version
-> of underlying plaform.
+> Test failure logs:
+> <<>>
+> 42: BPF filter                            :
+> 42.1: Basic BPF filtering                 : Ok
+> 42.2: BPF pinning                         : Ok
+> 42.3: BPF prologue generation             : FAILED!
+> <<>>
 >=20
-> Fixes: 97bf2640184f ("powerpc/perf/hv-gpci: add the remaining gpci =
-requests")
+> Enabling verbose option provided debug logs, which says debuginfo
+> needs to be installed. Snippet of verbose logs:
+>=20
+> <<>>
+> 42.3: BPF prologue generation                                       :
+> --- start ---
+> test child forked, pid 28218
+> <<>>
+> Rebuild with CONFIG_DEBUG_INFO=3Dy, or install an appropriate =
+debuginfo
+> package.
+> bpf_probe: failed to convert perf probe events
+> Failed to add events selected by BPF
+> test child finished with -1
+> ---- end ----
+> BPF filter subtest 3: FAILED!
+> <<>>
+>=20
+> Here subtest, "BPF prologue generation" failed and
+> logs shows debuginfo is needed. After installing
+> kernel-debuginfo package, testcase passes.
+>=20
+> Subtest "BPF prologue generation" failed because, the "do_test"
+> function returns "TEST_FAIL" without checking the error type
+> returned by "parse_events_load_bpf_obj" function.
+> Function parse_events_load_bpf_obj can also return error of type
+> "-ENOENT" incase kernel-debuginfo package is not installed. Fix this
+> by adding check for -ENOENT error.
+>=20
+> Test result after the patch changes:
+>=20
+> Test failure logs:
+> <<>>
+> 42: BPF filter                 :
+> 42.1: Basic BPF filtering      : Ok
+> 42.2: BPF pinning              : Ok
+> 42.3: BPF prologue generation  : Skip (clang/debuginfo isn't
+> installed or environment missing BPF support)
+>=20
+> Fixes: ba1fae431e74bb42 ("perf test: Add 'perf test BPF'")
 > Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
 > Reviewed-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+> ---
+> tools/perf/tests/bpf.c | 6 +++++-
+> 1 file changed, 5 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/tools/perf/tests/bpf.c b/tools/perf/tests/bpf.c
+> index 17c023823713..57cecadc1da2 100644
+> --- a/tools/perf/tests/bpf.c
+> +++ b/tools/perf/tests/bpf.c
+> @@ -126,6 +126,10 @@ static int do_test(struct bpf_object *obj, int =
+(*func)(void),
+>=20
+> 	err =3D parse_events_load_bpf_obj(&parse_state, =
+&parse_state.list, obj, NULL);
+> 	parse_events_error__exit(&parse_error);
+> +	if (err =3D=3D -ENOENT) {
+> +		pr_debug("Failed to add events selected by BPF, =
+debuginfo package not installed\n");
+> +		return TEST_SKIP;
+> +	}
 
-Reviewed-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Hi Kajol,
+
+Here, you have used ENOENT to skip the test. But there could be other =
+places in the code path for =E2=80=9Cparse_events_load_bpf_obj=E2=80=9D
+which also returns ENOENT. In that case, for any exit that returns =
+ENOENT, test will get skipped.
+
+Can we look at the logs, example we have this in commit logs:
+
+	Rebuild with CONFIG_DEBUG_INFO=3Dy, or install an appropriate =
+debuginfo
+	package.
+
+so as to decide whether to skip for debug info ?
 
 Thanks
 Athira
-> ---
-> Changelog:
->=20
-> v1 -> v2
-> - As suggested by Michael Ellerman, using counter_info_version value
->  rather then cpu_has_feature() to assign hv-gpci event list.
->=20
-> arch/powerpc/perf/hv-gpci-requests.h |  4 ++++
-> arch/powerpc/perf/hv-gpci.c          | 35 ++++++++++++++++++++++++++--
-> arch/powerpc/perf/hv-gpci.h          |  1 +
-> arch/powerpc/perf/req-gen/perf.h     | 17 ++++++++++++++
-> 4 files changed, 55 insertions(+), 2 deletions(-)
->=20
-> diff --git a/arch/powerpc/perf/hv-gpci-requests.h =
-b/arch/powerpc/perf/hv-gpci-requests.h
-> index 8965b4463d43..baef3d082de9 100644
-> --- a/arch/powerpc/perf/hv-gpci-requests.h
-> +++ b/arch/powerpc/perf/hv-gpci-requests.h
-> @@ -79,6 +79,7 @@ REQUEST(__field(0,	8,	partition_id)
-> )
-> #include I(REQUEST_END)
->=20
-> +#ifdef EVENT_ENABLE
-> /*
->  * Not available for counter_info_version >=3D 0x8, use
->  * run_instruction_cycles_by_partition(0x100) instead.
-> @@ -92,6 +93,7 @@ REQUEST(__field(0,	8,	partition_id)
-> 	__count(0x10,	8,	cycles)
-> )
-> #include I(REQUEST_END)
-> +#endif
->=20
-> #define REQUEST_NAME system_performance_capabilities
-> #define REQUEST_NUM 0x40
-> @@ -103,6 +105,7 @@ REQUEST(__field(0,	1,	=
-perf_collect_privileged)
-> )
-> #include I(REQUEST_END)
->=20
-> +#ifdef EVENT_ENABLE
-> #define REQUEST_NAME processor_bus_utilization_abc_links
-> #define REQUEST_NUM 0x50
-> #define REQUEST_IDX_KIND "hw_chip_id=3D?"
-> @@ -194,6 +197,7 @@ REQUEST(__field(0,	4,	=
-phys_processor_idx)
-> 	__count(0x28,	8,	instructions_completed)
-> )
-> #include I(REQUEST_END)
-> +#endif
->=20
-> /* Processor_core_power_mode (0x95) skipped, no counters */
-> /* Affinity_domain_information_by_virtual_processor (0xA0) skipped,
-> diff --git a/arch/powerpc/perf/hv-gpci.c b/arch/powerpc/perf/hv-gpci.c
-> index 5eb60ed5b5e8..6eeabf3975e5 100644
-> --- a/arch/powerpc/perf/hv-gpci.c
-> +++ b/arch/powerpc/perf/hv-gpci.c
-> @@ -70,9 +70,9 @@ static const struct attribute_group format_group =3D =
-{
-> 	.attrs =3D format_attrs,
-> };
->=20
-> -static const struct attribute_group event_group =3D {
-> +static struct attribute_group event_group =3D {
-> 	.name  =3D "events",
-> -	.attrs =3D hv_gpci_event_attrs,
-> +	/* .attrs is set in init */
-> };
->=20
-> #define HV_CAPS_ATTR(_name, _format)				\
-> @@ -330,6 +330,7 @@ static int hv_gpci_init(void)
-> 	int r;
-> 	unsigned long hret;
-> 	struct hv_perf_caps caps;
-> +	struct hv_gpci_request_buffer *arg;
->=20
-> 	hv_gpci_assert_offsets_correct();
->=20
-> @@ -353,6 +354,36 @@ static int hv_gpci_init(void)
-> 	/* sampling not supported */
-> 	h_gpci_pmu.capabilities |=3D PERF_PMU_CAP_NO_INTERRUPT;
->=20
-> +	arg =3D (void *)get_cpu_var(hv_gpci_reqb);
-> +	memset(arg, 0, HGPCI_REQ_BUFFER_SIZE);
-> +
-> +	/*
-> +	 * hcall H_GET_PERF_COUNTER_INFO populates the output
-> +	 * counter_info_version value based on the system hypervisor.
-> +	 * Pass the counter request 0x10 corresponds to request type
-> +	 * 'Dispatch_timebase_by_processor', to get the supported
-> +	 * counter_info_version.
-> +	 */
-> +	arg->params.counter_request =3D cpu_to_be32(0x10);
-> +
-> +	r =3D plpar_hcall_norets(H_GET_PERF_COUNTER_INFO,
-> +			virt_to_phys(arg), HGPCI_REQ_BUFFER_SIZE);
-> +	if (r) {
-> +		pr_devel("hcall failed, can't get supported =
-counter_info_version: 0x%x\n", r);
-> +		arg->params.counter_info_version_out =3D 0x8;
-> +	}
-> +
-> +	/*
-> +	 * Use counter_info_version_out value to assign
-> +	 * required hv-gpci event list.
-> +	 */
-> +	if (arg->params.counter_info_version_out >=3D 0x8)
-> +		event_group.attrs =3D hv_gpci_event_attrs;
-> +	else
-> +		event_group.attrs =3D hv_gpci_event_attrs_v6;
-> +
-> +	put_cpu_var(hv_gpci_reqb);
-> +
-> 	r =3D perf_pmu_register(&h_gpci_pmu, h_gpci_pmu.name, -1);
-> 	if (r)
-> 		return r;
-> diff --git a/arch/powerpc/perf/hv-gpci.h b/arch/powerpc/perf/hv-gpci.h
-> index 4d108262bed7..10aba0ccb434 100644
-> --- a/arch/powerpc/perf/hv-gpci.h
-> +++ b/arch/powerpc/perf/hv-gpci.h
-> @@ -26,6 +26,7 @@ enum {
-> #define REQUEST_FILE "../hv-gpci-requests.h"
-> #define NAME_LOWER hv_gpci
-> #define NAME_UPPER HV_GPCI
-> +#define EVENT_ENABLE
-> #include "req-gen/perf.h"
-> #undef REQUEST_FILE
-> #undef NAME_LOWER
-> diff --git a/arch/powerpc/perf/req-gen/perf.h =
-b/arch/powerpc/perf/req-gen/perf.h
-> index fa9bc804e67a..e0b355931271 100644
-> --- a/arch/powerpc/perf/req-gen/perf.h
-> +++ b/arch/powerpc/perf/req-gen/perf.h
-> @@ -139,6 +139,23 @@ PMU_EVENT_ATTR_STRING(					=
-		\
-> #define REQUEST_(r_name, r_value, r_idx_1, r_fields)			=
-\
-> 	r_fields
->=20
-> +/* Generate event list for platforms with counter_info_version 0x6 or =
-below */
-> +static __maybe_unused struct attribute *hv_gpci_event_attrs_v6[] =3D =
-{
-> +#include REQUEST_FILE
-> +	NULL
-> +};
-> +
-> +/*
-> + * Based on getPerfCountInfo v1.018 documentation, some of the =
-hv-gpci
-> + * events got deprecated for platforms firmware that supports
-> + * counter_info_version 0x8 or above.
-> + * Undefining macro EVENT_ENABLE, to disable the addition of =
-deprecated
-> + * events in "hv_gpci_event_attrs" attribute group, for platforms =
-that
-> + * supports counter_info_version 0x8 or above.
-> + */
-> +#undef EVENT_ENABLE
-> +
-> +/* Generate event list for platforms with counter_info_version 0x8 or =
-above*/
-> static __maybe_unused struct attribute *hv_gpci_event_attrs[] =3D {
-> #include REQUEST_FILE
-> 	NULL
+
+> 	if (err || list_empty(&parse_state.list)) {
+> 		pr_debug("Failed to add events selected by BPF\n");
+> 		return TEST_FAIL;
+> @@ -368,7 +372,7 @@ static struct test_case bpf_tests[] =3D {
+> 			"clang isn't installed or environment missing =
+BPF support"),
+> #ifdef HAVE_BPF_PROLOGUE
+> 	TEST_CASE_REASON("BPF prologue generation", bpf_prologue_test,
+> -			"clang isn't installed or environment missing =
+BPF support"),
+> +			"clang/debuginfo isn't installed or environment =
+missing BPF support"),
+> #else
+> 	TEST_CASE_REASON("BPF prologue generation", bpf_prologue_test, =
+"not compiled in"),
+> #endif
 > --=20
 > 2.31.1
 >=20
