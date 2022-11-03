@@ -1,73 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95B7761866C
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 18:46:27 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B10C66186AE
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 18:54:28 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N3B5F2zCwz3cMs
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Nov 2022 04:46:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N3BGV4HlDz3cck
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Nov 2022 04:54:26 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=AMXkMgBJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=gjqnoLy1;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::1035; helo=mail-pj1-x1035.google.com; envelope-from=seanjc@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::52b; helo=mail-pg1-x52b.google.com; envelope-from=seanjc@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=AMXkMgBJ;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=gjqnoLy1;
 	dkim-atps=neutral
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
+Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com [IPv6:2607:f8b0:4864:20::52b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N3B3b2YWzz3cJG
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Nov 2022 04:44:58 +1100 (AEDT)
-Received: by mail-pj1-x1035.google.com with SMTP id d13-20020a17090a3b0d00b00213519dfe4aso2508639pjc.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 03 Nov 2022 10:44:58 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N3BFb71sVz2xH6
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Nov 2022 04:53:38 +1100 (AEDT)
+Received: by mail-pg1-x52b.google.com with SMTP id e129so2307697pgc.9
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 03 Nov 2022 10:53:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=cK19xZ8r/JxZ6zrZk59CGRO4XALiFfw/k+DEo690ifc=;
-        b=AMXkMgBJe864E9ylH4eLhcV4DnnmpnUZQciwStcW/fWfVy8vl8xbyLHXqWoh/4n8QF
-         bRAhsfNtOcglKLMhK6Nb/v5AF7HvdYNYuPv80cwXOHPX5E9n4f4rIwmSH2XAdpFIqhuj
-         sSsx/7sAKHM3fmeDS7xyNpoxOPMcbkwOVVWM5XBPQcjHKuBxYoH5JxFh6oDyEgClSLr4
-         VePL27iqi0rk5/s+JivkXFUi7OtMXJLNacJQMnJ3M4obYSjfplMj8jxI5D4RNhWTNCit
-         VmDRgbq4Pt+ph415Zp0hH77zR2JN9eVpsj1xI6CTZrVgir1QKlQnpGg6QTPI6wKdJ0ls
-         3hyg==
+        bh=3tXwq1v6tJCedr2VtV8ELYd8BpIXTKwmGjuY8weIxs8=;
+        b=gjqnoLy192oz/Zxvag+BlBreQGGSfkeJOmpmCEx7rtJpm2GzAgZsoDzOerCZhLAwiY
+         s4s7ScvfoZl8zwg6HI1Ymb7QpOkn2NxzwKs5NTcMl1wbeFQ/hmv3VmCXwSollG4iohk8
+         ZfCLF4UOQot0TZFoB2ZSgy0wzT2PFfm47J97NCOCE8O1C25eIzJzc1jTDAryWTakKtb6
+         +QR4ykcFsYtONZVST62uH0g9I4NSfzwB8k/a9JLQz8I+tNs7JhVckzNuFRTBv1+mgFsk
+         IdkM799qrsruF4xx+MeYDtb4Sd8Y4cxbHh++70LJo94wIuv8aLLKYeYlUVyl7mOC3bBK
+         Ww4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=cK19xZ8r/JxZ6zrZk59CGRO4XALiFfw/k+DEo690ifc=;
-        b=HAQPieJKFKPuFP6xtDIrbE+rNcsQRLq1gEEEfGGMwTMVOaPZfDm90ezI2yyheCkGAL
-         75sWkyjsVA0AXmY8Ugvq6Xu/Y5edRb0zao7BgZUs497jgDImt2c+nGer7GnLvve3XkiH
-         2lpTsioS54+hayvzAbZrAmEOi70LNX/wAuJGGQrqosDfwotNGQM2FBsb3bv6ji7T8Mf7
-         2kT+MkNskOcCexqnuDHh4qsiqsxND7x3w45oVhkOAlgd6scj2qY0E8vWwWLVS47ID2UM
-         hA7VYqmyreOuhA8CWGoPI58/UkuCayXotrzkuP4cEQiSPw34L8vnc1t6h93zBP0BkId0
-         Uk1A==
-X-Gm-Message-State: ACrzQf3AtenrYXfJPMLqW/3/ssgeJNAyJoAX9WEZalGjbqqF54+F/749
-	k7clQTJVCqWRS4VPtybuLnfJMA==
-X-Google-Smtp-Source: AMsMyM7Vi7ErqJmqrzHt1bwsO7Jfw+kVc4w4lCdxf/cK5b8KZHYV39XlOvASF4Eye8GSeC7ZJ2rbFQ==
-X-Received: by 2002:a17:90a:d24d:b0:213:d3e4:677a with SMTP id o13-20020a17090ad24d00b00213d3e4677amr24629292pjw.101.1667497496277;
-        Thu, 03 Nov 2022 10:44:56 -0700 (PDT)
+        bh=3tXwq1v6tJCedr2VtV8ELYd8BpIXTKwmGjuY8weIxs8=;
+        b=MbwAtlzfQktMk/VHx7v/544jnH5Zg+prDVpxEfvYYLIbm97WgKBlMq4ohrYC9JU1l2
+         XADz42wNgxu9KePOgiHx01PALRJvdtc+Vqd9muE6nj/Iy+Q4weL2VrKAsNUG9dDQ6/he
+         sjO3l2B0E59BOycqN/7N48GqCCJCOTlx44SBhpUysp00kLrn8dZkfwg3MP6eXAWLyFh4
+         CgfShdFA+i5wL1i3Mk7d6dOLWgzr/R1RpH2rVYtU/PJpetLpXKOWQg2sXn9wwT0CyheY
+         hSgerXOnCQJY7fnkkfgicRGIvMxVrO2JDEu+AwXGEQMoCtin+h+pmdh+W6YEB9Ly/b1p
+         LUCg==
+X-Gm-Message-State: ACrzQf2tSz2jwwKCMpFjk3/dRg/PqxyWrGPxKSaatnzEmyWgoeWCSyL+
+	eiOfj9QeGuJNKjtvgs7jm+01sQ==
+X-Google-Smtp-Source: AMsMyM5pSkjZTiut6RFho0StQnuo7qAiklz26C63x768BJpOt4UV7sKT8fcspUYyR/B7P1xdFXKPhA==
+X-Received: by 2002:a05:6a00:999:b0:56c:3d0d:96fe with SMTP id u25-20020a056a00099900b0056c3d0d96femr31657100pfg.12.1667498015565;
+        Thu, 03 Nov 2022 10:53:35 -0700 (PDT)
 Received: from google.com (7.104.168.34.bc.googleusercontent.com. [34.168.104.7])
-        by smtp.gmail.com with ESMTPSA id i7-20020a17090332c700b00178aaf6247bsm1004862plr.21.2022.11.03.10.44.55
+        by smtp.gmail.com with ESMTPSA id e20-20020a63e014000000b0045ff216a0casm1080329pgh.3.2022.11.03.10.53.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Nov 2022 10:44:55 -0700 (PDT)
-Date: Thu, 3 Nov 2022 17:44:51 +0000
+        Thu, 03 Nov 2022 10:53:35 -0700 (PDT)
+Date: Thu, 3 Nov 2022 17:53:31 +0000
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH 36/44] KVM: x86: Do compatibility checks when onlining CPU
-Message-ID: <Y2P+E+631c0TNcK7@google.com>
+Subject: Re: [PATCH 39/44] KVM: Drop kvm_count_lock and instead protect
+ kvm_usage_count with kvm_lock
+Message-ID: <Y2QAG0wCPNv7atC/@google.com>
 References: <20221102231911.3107438-1-seanjc@google.com>
- <20221102231911.3107438-37-seanjc@google.com>
- <23bfd709-f99a-5a74-e4b9-1381b88453f1@redhat.com>
+ <20221102231911.3107438-40-seanjc@google.com>
+ <7b6ce80e-7f1f-11cd-8bde-8d8fa9fd7e1d@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <23bfd709-f99a-5a74-e4b9-1381b88453f1@redhat.com>
+In-Reply-To: <7b6ce80e-7f1f-11cd-8bde-8d8fa9fd7e1d@redhat.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,32 +87,42 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 On Thu, Nov 03, 2022, Paolo Bonzini wrote:
 > On 11/3/22 00:19, Sean Christopherson wrote:
-> > From: Chao Gao<chao.gao@intel.com>
-> > 
-> > Do compatibility checks when enabling hardware to effectively add
-> > compatibility checks when onlining a CPU.  Abort enabling, i.e. the
-> > online process, if the (hotplugged) CPU is incompatible with the known
-> > good setup.
+> > +- kvm_lock is taken outside kvm->mmu_lock
 > 
-> This paragraph is not true with this patch being before "KVM: Rename and
-> move CPUHP_AP_KVM_STARTING to ONLINE section".
+> Not surprising since one is a mutex and one is an rwlock. :)
 
-Argh, good eyes.  Getting the ordering correct in this series has been quite the
-struggle.  Assuming there are no subtle dependencies between x86 and common KVM,
-the ordering should be something like this:
+Heh, 
 
-  KVM: Opt out of generic hardware enabling on s390 and PPC
-  KVM: Register syscore (suspend/resume) ops early in kvm_init()
-  KVM: x86: Do compatibility checks when onlining CPU
-  KVM: SVM: Check for SVM support in CPU compatibility checks
-  KVM: VMX: Shuffle support checks and hardware enabling code around
-  KVM: x86: Do VMX/SVM support checks directly in vendor code
-  KVM: x86: Unify pr_fmt to use module name for all KVM modules
-  KVM: x86: Use KBUILD_MODNAME to specify vendor module name
-  KVM: Make hardware_enable_failed a local variable in the "enable all" path
-  KVM: Use a per-CPU variable to track which CPUs have enabled virtualization
-  KVM: Remove on_each_cpu(hardware_disable_nolock) in kvm_exit()
-  KVM: Drop kvm_count_lock and instead protect kvm_usage_count with kvm_lock
-  KVM: Disable CPU hotplug during hardware enabling
-  KVM: Rename and move CPUHP_AP_KVM_STARTING to ONLINE section
-  KVM: Drop kvm_arch_check_processor_compat() hook
+  Signed-off-by: Captain Obvious <seanjc@google.com>
+
+> You can drop this hunk as well as the "Opportunistically update KVM's locking
+> documentation" sentence in the commit message.
+
+Will do.
+
+> >   - vcpu->mutex is taken outside kvm->arch.hyperv.hv_lock
+> >   - kvm->arch.mmu_lock is an rwlock.  kvm->arch.tdp_mmu_pages_lock and
+> > @@ -216,15 +220,11 @@ time it will be set using the Dirty tracking mechanism described above.
+> >   :Type:		mutex
+> >   :Arch:		any
+> >   :Protects:	- vm_list
+> > -
+> > -``kvm_count_lock``
+> > -^^^^^^^^^^^^^^^^^^
+> > -
+> > -:Type:		raw_spinlock_t
+> > -:Arch:		any
+> > -:Protects:	- hardware virtualization enable/disable
+> > -:Comment:	'raw' because hardware enabling/disabling must be atomic /wrt
+> > -		migration.
+> > +		- kvm_usage_count
+> > +		- hardware virtualization enable/disable
+> > +		- module probing (x86 only)
+> 
+> What do you mean exactly by "module probing"?  Is it anything else than what
+> is serialized by vendor_module_lock?
+
+Ooh, I forgot to update this patch after switching to vendor_module_lock.  I
+added the above after fixing the first deadlock between kvm_lock and cpu_hotplug_lock,
+but later gave up on trying to use kvm_lock after deadlock #2, which is when I
+when I realized piggybacking kvm_lock was going to be a maintainance nightmare due.
