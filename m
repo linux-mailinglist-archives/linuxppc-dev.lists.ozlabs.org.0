@@ -2,79 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 316E761863A
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 18:32:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1126161865D
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 18:45:28 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N39nC7537z3cJt
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Nov 2022 04:32:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N3B45662hz3cct
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Nov 2022 04:45:25 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=iPqtLSq3;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=dod+VUiB;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2001:4860:4864:20::29; helo=mail-oa1-x29.google.com; envelope-from=yury.norov@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2607:f8b0:4864:20::82b; helo=mail-qt1-x82b.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=iPqtLSq3;
+	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=dod+VUiB;
 	dkim-atps=neutral
-Received: from mail-oa1-x29.google.com (mail-oa1-x29.google.com [IPv6:2001:4860:4864:20::29])
+Received: from mail-qt1-x82b.google.com (mail-qt1-x82b.google.com [IPv6:2607:f8b0:4864:20::82b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N39mG03Vyz3c81
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Nov 2022 04:31:39 +1100 (AEDT)
-Received: by mail-oa1-x29.google.com with SMTP id 586e51a60fabf-12c8312131fso2966009fac.4
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 03 Nov 2022 10:31:39 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N3B380sNrz3cC0
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Nov 2022 04:44:34 +1100 (AEDT)
+Received: by mail-qt1-x82b.google.com with SMTP id cg5so1671428qtb.12
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 03 Nov 2022 10:44:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=HvZ5+E5qu4GOYga/FqvgfxEG1c0dU8d73zf2fP+htGs=;
-        b=iPqtLSq3l2qHplG860uNDrfYq9b0lZFbxHP6kSO5WcDFeNj74LgawQ3XHbriQnJzId
-         91YDCFJ926vJ7L1jeQcvLnKN5IicgY26QvhLOUAx6NfuqsczuDo2+p95tiUE3Y3d3p8R
-         Wb3AVYnqzTL0X7haZY7BTZ+oilwvxbeF6lVkgFNf8aMcvJgkuEefwy01BOsLK5VvAvzw
-         YLeXvyd9tsE28Dp154l4LlczkE6gYboihsErhJGgG+F9jOSH92X0IzDV0rfpYNgoQqIc
-         gaqjq4mqtFEpLgO3pJNfAld17zV9i0u6xe8AK0ilXIHLGax8f5r/eP0/Q0saTHwnR/aB
-         J0ug==
+        d=linux-foundation.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=mA1Z7Cm83w+Vyx+oBgGwMaOfCfLAZylXYXAtJ1Raiz8=;
+        b=dod+VUiBUEq1hk72lAssa/ES6lzBPt/3grGL93+x6xqazqzSesxF5gOoKjy5hsuBii
+         dpyo6KG7QmoqhIT3bctyKBZuOrbntQ/3KSRaUa+QlclegAP50WUv80YibEtoQqHjPJB6
+         Uu61/FFf2iArbTLONCqSdQPP9r8phlQw2FnrQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HvZ5+E5qu4GOYga/FqvgfxEG1c0dU8d73zf2fP+htGs=;
-        b=TmXZVUFc9s3yTJPqEkDwBY01aO2N7s0V1slaeaLZqUX44sSQ3iePw4ZKQbDCn2pMSP
-         1lv5sCgfHyHtzc3WFvlZ6UZWvdLLRwtNvXpuG4w3NQ+Nqf7V7gtQgNnGCRlItbNU6iFE
-         bfh7c0yqYRbNgbdDTIzuljVUVFvD8gyq1iHejDC3p1L+FQ++c3/qoJ8S+0aTC2otRLqJ
-         +iwaysmEjMWOr6mtL6K8pDzU+/GTUI+nOYcAiHi3pDlzxIHmoRqDytHEwL73pP2PmVM6
-         1PKO2x6Z3PS1Jxdmcf0DCEYBs/NWs3PqNmgeTRPyTVbOuNTm5CEzsrfBnkQkJUyfFiYf
-         Fglg==
-X-Gm-Message-State: ACrzQf1U4mwLDxwj5RdP8C5SoJxMShWm6i4XCUKT30Yxo8v6IdDlrMdl
-	PhQS5iM87vucjsRCvunfNMc=
-X-Google-Smtp-Source: AMsMyM6fJYEOKNxJ1D+xB246uqRaGV2DX2E0qNo3z76RYRYleK2EIFTcmwXSUrFyVWM6R7buKJ49fQ==
-X-Received: by 2002:a05:6870:31c5:b0:13d:a04a:6ecf with SMTP id x5-20020a05687031c500b0013da04a6ecfmr1655565oac.101.1667496692226;
-        Thu, 03 Nov 2022 10:31:32 -0700 (PDT)
-Received: from localhost ([12.97.180.36])
-        by smtp.gmail.com with ESMTPSA id r13-20020a4a964d000000b00425806a20f5sm430333ooi.3.2022.11.03.10.31.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Nov 2022 10:31:31 -0700 (PDT)
-Date: Thu, 3 Nov 2022 10:31:30 -0700
-From: Yury Norov <yury.norov@gmail.com>
-To: Borislav Petkov <bp@alien8.de>
-Subject: Re: [PATCH v3 2/2] x86: Fix /proc/cpuinfo cpumask warning
-Message-ID: <Y2P68sfCJMvhKmhj@yury-laptop>
-References: <Y1v+Ed6mRN9gisJS@zn.tnic>
- <20221031080604.6xei6c4e3ckhsvmy@kamzik>
- <Y1+OUawGJDjh4DOJ@zn.tnic>
- <20221031100327.r7tswmpszvs5ot5n@kamzik>
- <Y2K6clNJBn0SbWU+@zn.tnic>
- <20221103125945.lrr5oxxmylwpam53@kamzik>
- <Y2PX9GfxWYh6+XGT@zn.tnic>
- <20221103153404.uh77nrdkowrxj6cr@kamzik>
- <Y2PsvvOWVs9ZLBsp@yury-laptop>
- <Y2PxAiJ1yNzcUSgs@zn.tnic>
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mA1Z7Cm83w+Vyx+oBgGwMaOfCfLAZylXYXAtJ1Raiz8=;
+        b=QL0QLfAiKp3nSoFfd12RnA3uSHKFe9+Z1mV3fetnGzKvjw3feCwL5718E1L8ebEqpG
+         Mg6GD+mnn/sBprURzSfsXmjPdqDBlGOY9HMDIo3RNXiPhtlSdh08OFmNgjLkbdN6FyK5
+         XfnyETazdewfyUFYlg588sWcSuKOXTLdyRlGnkmIU03xthWzfduOsTQ90PoFd1lhMFV0
+         6ga2TeEnoTjLU2WdoPbk3WSBpgiinqTBvlJeytQD/lVZc5n7p0nlt/58SB4VfWixr1U/
+         2QVyyYZKMeEcrgUqWKprI4ZxVb/RLzfIEArSu1sAJM/EExsGcCj3hJERFEenKmWiuecj
+         8BBg==
+X-Gm-Message-State: ACrzQf00o/ifDgU7LwFIFFKsaE0X/G2pUAKjZVUJOBsC+c4hMdUkElQ7
+	7FZ0MXWWsv/VFHaow5Q1Rx44ZuzMygyM/w==
+X-Google-Smtp-Source: AMsMyM43/9DoGN3LF3pANy4f5yr8r59HPPeh4mQ61KFLUX7yzFTh4SaSHNmdNh9/fF7Rgm3pBb+WBw==
+X-Received: by 2002:ac8:7f48:0:b0:3a5:4234:8a18 with SMTP id g8-20020ac87f48000000b003a542348a18mr10408750qtk.340.1667497469329;
+        Thu, 03 Nov 2022 10:44:29 -0700 (PDT)
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com. [209.85.128.176])
+        by smtp.gmail.com with ESMTPSA id j6-20020ac85f86000000b00397e97baa96sm942536qta.0.2022.11.03.10.44.28
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 03 Nov 2022 10:44:28 -0700 (PDT)
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-36cbcda2157so22309177b3.11
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 03 Nov 2022 10:44:28 -0700 (PDT)
+X-Received: by 2002:a81:8241:0:b0:370:5fad:47f0 with SMTP id
+ s62-20020a818241000000b003705fad47f0mr22362989ywf.441.1667497468069; Thu, 03
+ Nov 2022 10:44:28 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Y2PxAiJ1yNzcUSgs@zn.tnic>
+References: <87o7tossaa.fsf@mpe.ellerman.id.au>
+In-Reply-To: <87o7tossaa.fsf@mpe.ellerman.id.au>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Thu, 3 Nov 2022 10:44:12 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wh87aGtg3eJPkA31V0Pn22hah0DWRc8oWsQ__5P2SXaTw@mail.gmail.com>
+Message-ID: <CAHk-=wh87aGtg3eJPkA31V0Pn22hah0DWRc8oWsQ__5P2SXaTw@mail.gmail.com>
+Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-6.1-4 tag
+To: Michael Ellerman <mpe@ellerman.id.au>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,35 +80,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jonas Bonn <jonas@southpole.se>, linux-s390@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, x86@kernel.org, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Dave Hansen <dave.hansen@linux.intel.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, openrisc@lists.librecores.org, Ingo Molnar <mingo@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Stafford Horne <shorne@gmail.com>, linux-riscv <linux-riscv@lists.infradead.org>, "open list:LINUX FOR POWERPC PA SEMI PWRFICIENT" <linuxppc-dev@lists.ozlabs.org>, Thomas Gleixner <tglx@linutronix.de>, Albert Ou <aou@eecs.berkeley.edu>
+Cc: schwab@linux-m68k.org, linux-riscv@lists.infradead.org, palmer@dabbelt.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Nov 03, 2022 at 05:49:06PM +0100, Borislav Petkov wrote:
-> On Thu, Nov 03, 2022 at 09:30:54AM -0700, yury.norov@gmail.com wrote:a
-> > Callers should pass sane arguments into internal functions if they
-> > expect sane output.
-> 
-> What internal function? It's in a global header.
-> 
-> > The API not exported to userspace shouldn't sanity-check all inputs
-> > arguments.
-> 
-> That doesn't have anything to do with userspace at all.
-> 
-> APIs exported to the rest of the kernel should very well check their
-> inputs. Otherwise they're not APIs - just some random functions which
-> are visible to the compiler.
+On Wed, Nov 2, 2022 at 7:09 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
+>
+>  - Fix an endian thinko in the asm-generic compat_arg_u64() which led to syscall arguments
+>    being swapped for some compat syscalls.
 
-Let's take for example cpu_llc_shared_mask() added by you in
-arch/x86/include/asm/smp.h recently:
+Am I mis-reading this, or did this bug (introduced in this merge
+window by commit 43d5de2b67d7 "asm-generic: compat: Support BE for
+long long args in 32-bit ABIs") break *every* architecture?
 
-  static inline struct cpumask *cpu_llc_shared_mask(int cpu)
-  {
-         return per_cpu(cpu_llc_shared_map, cpu);
-  }
+And people just didn't scream, because 32-bit code has just become so rare?
 
-It's in a global header and available to the rest of the kernel, just as
-well. How does it check its input? Maybe I lost something important in
-per_cpu() internals, but at the first glance, there's no any protection
-against -1, nr_cpu_ids, and other out-of-range arguments.
+Or is it just because those compat macros are effectively not used
+elsewhere, and x86 has its own versions? Looks like possibly mainly
+RISC-V?
+
+Side note: why is it doing
+
+        #ifndef compat_arg_u64
+
+at all? That macro is not actually defined anywhere else, so that
+#ifdef seems to be just confused.
+
+                 Linus
