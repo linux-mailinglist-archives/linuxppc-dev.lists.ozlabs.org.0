@@ -1,76 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1226261880E
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 19:59:16 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7FED61881A
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 20:00:40 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N3CjF6rv6z3dsG
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Nov 2022 05:59:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N3Ckp6FXkz3cNN
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Nov 2022 06:00:34 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=crtTNSDL;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MwuaEKRj;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::52a; helo=mail-pg1-x52a.google.com; envelope-from=seanjc@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.151; helo=mga17.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=crtTNSDL;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MwuaEKRj;
 	dkim-atps=neutral
-Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N3ChK13DRz3cG1
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Nov 2022 05:58:23 +1100 (AEDT)
-Received: by mail-pg1-x52a.google.com with SMTP id 78so2444231pgb.13
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 03 Nov 2022 11:58:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=OgBlWniGTXEnPcASGuNFCxIZuwOSNaqHJ+Eb2HtkZ3A=;
-        b=crtTNSDLBpNcvDSxofCENmrvtDvGgpUzGCkxI3/S4zR915QtnPiMfGmQ1bfa1+IphI
-         JYKHG76keqoKUqskuvBrM1m0JyELxmvNXlZ4KiPUOKMYgaWfFysvap9RGXI963+2hoeq
-         HHT/GX+S1XBR2PYehjOUxetwVpL78GGV9aYozWyKXyCWQQP6iGe8zgNPOME2bv1qjA9e
-         apMslXORbm1rWkX1K/6OQ1RCG98VSwtHOf2J04nfLy9jITyFIIcn6ieZ9TY4AUm1gsGc
-         eyQU7zbjJP0kGKm2zN/8wgEWv2C3dUA3cPXDwDYFGn1wLuJmRxozNVKQFEnfavfSL6Lx
-         ZqXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OgBlWniGTXEnPcASGuNFCxIZuwOSNaqHJ+Eb2HtkZ3A=;
-        b=qtL1e3EoE8YjexuUqJflyLNrJwlGY6Gv05JdyyuBJANnG75WbSxppUq1Ttj0pqUmtm
-         vmJpeOueUyPlRAKwlBEH3AZRi3E2UddvD0NoJx+CFYu6J+v/ZBuU2vp5WKFDLVsrIyIP
-         s/yOQ3IgYRN8+q414eR/ttFPEfJDEdjd48EkQlAkelB3FTZKlxx7eh5yKGhfAhrPL6cK
-         kGg0Y0ysj9TaRQmavm8D3OZK8PMoGdMtgu4Bp2gsbu2cqVmX0OH6B+VpKLlacpcd4okP
-         8QWEtjJonjFFgmRxRzKhRrtb9UDMgvIsMXmtLEak1NXnMOK3oiNOeyo1cI1ATotn0jm7
-         xOQQ==
-X-Gm-Message-State: ACrzQf0Njfsfnmmbl0Ri5LElvNSwn/hv/ktYK25EBOogWcVieC2aWcYo
-	S60VE2CL/tFlT1CN7ymWUKr/lg==
-X-Google-Smtp-Source: AMsMyM7lUXjnrFRO+e+xTY8enXMXmh/YC+M/IqwbxJRPxqwsuhxb3fUJPK1b1MpOBO3HsUEvz+aKuA==
-X-Received: by 2002:aa7:81cf:0:b0:561:7d72:73ef with SMTP id c15-20020aa781cf000000b005617d7273efmr31655060pfn.16.1667501900762;
-        Thu, 03 Nov 2022 11:58:20 -0700 (PDT)
-Received: from google.com (7.104.168.34.bc.googleusercontent.com. [34.168.104.7])
-        by smtp.gmail.com with ESMTPSA id c20-20020a17090ad91400b00209a12b3879sm309308pjv.37.2022.11.03.11.58.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Nov 2022 11:58:20 -0700 (PDT)
-Date: Thu, 3 Nov 2022 18:58:16 +0000
-From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH 33/44] KVM: x86: Do VMX/SVM support checks directly in
- vendor code
-Message-ID: <Y2QPSK1/6esl61wQ@google.com>
-References: <20221102231911.3107438-1-seanjc@google.com>
- <20221102231911.3107438-34-seanjc@google.com>
- <bfa98587-3b36-3834-a4b9-585a0e0aa56a@redhat.com>
- <Y2QJ2TuyZImbFFvi@google.com>
- <c29e7d40-ddb9-def0-f944-a921a05a4bb2@redhat.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N3Cjv4qvFz2xfS
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Nov 2022 05:59:46 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1667501987; x=1699037987;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=iDzJkwIYDgDj9s9QyYyQqMun6Fj8NrFnD6UKX0fcnAs=;
+  b=MwuaEKRjZaSc+IJEudiD+wyUTTzxtTx9XAT2gE4OOwpis7ECQFtH3uxU
+   bhc1GsTHDXORSVb5RJtWwLH+hrk3Lb1KQO0MFt/wK/C4U2p6djE8oemS+
+   dyJYX/VgYULln7+YpkfHOeuiyvEpcgfVnUy15819wi4Xv6vNd6TNUFsmf
+   SYhO81aj0bRI8MTZvJT85kzPcdOi4OFhMIq9xBXwzL9wLAio/sdTbzZJH
+   Gck3AAovH/seuZLKVLsDtPGAWJPiD5z2tZxFjStFpxd+KS4WyKqxmEnB4
+   Wlh36JtgCcnulrGltJm2FlFPZnFxgWKY/6WPZYlJwj8RqunQ+APbEbNvo
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10520"; a="290166543"
+X-IronPort-AV: E=Sophos;i="5.96,135,1665471600"; 
+   d="scan'208";a="290166543"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2022 11:59:44 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10520"; a="724055696"
+X-IronPort-AV: E=Sophos;i="5.96,135,1665471600"; 
+   d="scan'208";a="724055696"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by FMSMGA003.fm.intel.com with ESMTP; 03 Nov 2022 11:59:37 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1oqfR8-006zVP-0o;
+	Thu, 03 Nov 2022 20:59:34 +0200
+Date: Thu, 3 Nov 2022 20:59:33 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
+Subject: Re: [PATCH v2 4/4] pcmcia: Convert to use
+ pci_bus_for_each_resource_p()
+Message-ID: <Y2QPlZ0mhLvKw7X5@smile.fi.intel.com>
+References: <20221103164644.70554-1-andriy.shevchenko@linux.intel.com>
+ <20221103164644.70554-5-andriy.shevchenko@linux.intel.com>
+ <Y2P0XCNJvTVuziO7@owl.dominikbrodowski.net>
+ <Y2P2ja26ikNecTsv@smile.fi.intel.com>
+ <Y2QImB0OLakzz1+F@rocinante>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <c29e7d40-ddb9-def0-f944-a921a05a4bb2@redhat.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Y2QImB0OLakzz1+F@rocinante>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,59 +77,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Matthew Rosato <mjrosato@linux.ibm.com>, David Hildenbrand <david@redhat.com>, Yuan Yao <yuan.yao@intel.com>, Paul Walmsley <paul.walmsley@sifive.com>, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, Claudio Imbrenda <imbrenda@linux.ibm.com>, kvmarm@lists.cs.columbia.edu, linux-s390@vger.kernel.org, Janosch Frank <frankja@linux.ibm.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>, James Morse <james.morse@arm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Chao Gao <chao.gao@intel.com>, Eric Farman <farman@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org, Atish Patra <atishp@atishpatra.org>, kvmarm@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, Alexandru Elisei <alexandru.elisei@arm.com>, linux-arm-kernel@lists.infradead.org, Isaku Yamahata <isaku.yamahata@intel.com>, Fabiano Rosas <farosas@linux.ibm.com>, 
- linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, Palmer Dabbelt <palmer@dabbelt.com>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, Vitaly Kuznetsov <vkuznets@redhat.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-pci@vger.kernel.org, Dominik Brodowski <linux@dominikbrodowski.net>, linux-mips@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>, sparclinux@vger.kernel.org, Stefano Stabellini <sstabellini@kernel.org>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Russell King <linux@armlinux.org.uk>, Bjorn Helgaas <helgaas@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, xen-devel@lists.xenproject.org, Matt Turner <mattst88@gmail.com>, Arnd Bergmann <arnd@arndb.de>, Richard Henderson <richard.henderson@linaro.org>, Nicholas Piggin <npiggin@gmail.com>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>, Mika Westerberg <mika.westerberg@linux.intel.com>, linux-arm-kernel@lists.infradead.org, Juergen Gross <jgross@suse.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-kernel@vger.kernel.org, Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@d
+ avemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Nov 03, 2022, Paolo Bonzini wrote:
-> On 11/3/22 19:35, Sean Christopherson wrote:
-> > It's technically required.  IA32_FEAT_CTL and thus KVM_INTEL depends on any of
-> > CPU_SUP_{INTEL,CENATUR,ZHAOXIN}, but init_ia32_feat_ctl() is invoked if and only
-> > if the actual CPU type matches one of the aforementioned CPU_SUP_*.
+On Fri, Nov 04, 2022 at 03:29:44AM +0900, Krzysztof Wilczyński wrote:
+
+> > > > -
+> > > > -	for (i = 0; i < PCI_BRIDGE_RESOURCE_NUM; i++) {
+> > > > -		res = s->cb_dev->bus->resource[i];
+> > > > -#else
+> > > > -	pci_bus_for_each_resource(s->cb_dev->bus, res, i) {
+> > > >  #endif
+> > > > +
+> > > > +	pci_bus_for_each_resource_p(s->cb_dev->bus, res) {
+> > > >  		if (!res)
+> > > >  			continue;
+> > > 
+> > > Doesn't this remove the proper iterator for X86? Even if that is the right
+> > > thing to do, it needs an explict explanation.
 > > 
-> > E.g. running a kernel built with
-> > 
-> >    CONFIG_CPU_SUP_INTEL=y
-> >    CONFIG_CPU_SUP_AMD=y
-> >    # CONFIG_CPU_SUP_HYGON is not set
-> >    # CONFIG_CPU_SUP_CENTAUR is not set
-> >    # CONFIG_CPU_SUP_ZHAOXIN is not set
-> > 
-> > on a Cenatur or Zhaoxin CPU will leave X86_FEATURE_VMX set but not set
-> > X86_FEATURE_MSR_IA32_FEAT_CTL.  If VMX isn't enabled in MSR_IA32_FEAT_CTL, KVM
-> > will get unexpected #UDs when trying to enable VMX.
+> > I dunno what was in 2010, but reading code now I have found no differences in
+> > the logic on how resources are being iterated in these two pieces of code.
 > 
-> Oh, I see.  Perhaps X86_FEATURE_VMX and X86_FEATURE_SGX should be moved to
-> one of the software words instead of using cpuid.  Nothing that you should
-> care about for this series though.
+> This code is over a decade old (13 years old to be precise) and there was
+> something odd between Bjorn's and Jesse's patches, as per:
+> 
+>   89a74ecccd1f ("PCI: add pci_bus_for_each_resource(), remove direct bus->resource[] refs")
+>   cf26e8dc4194 ("pcmcia: do not autoadd root PCI bus resources")
 
-Or maybe something like this?
+Yeah, thanks for pointing out to the other patch from the same 2010 year.
+It seems the code was completely identical that time, now it uses more
+sophisticated way of getting bus resources, but it's kept the same for
+the resources under PCI_BRIDGE_RESOURCE_NUM threshold.
 
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index 3e508f239098..ebe617ab0b37 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -191,6 +191,8 @@ static void default_init(struct cpuinfo_x86 *c)
-                        strcpy(c->x86_model_id, "386");
-        }
- #endif
-+
-+       clear_cpu_cap(c, X86_FEATURE_MSR_IA32_FEAT_CTL);
- }
- 
- static const struct cpu_dev default_cpu = {
-diff --git a/arch/x86/kernel/cpu/cpuid-deps.c b/arch/x86/kernel/cpu/cpuid-deps.c
-index c881bcafba7d..3a7ae67f5a5e 100644
---- a/arch/x86/kernel/cpu/cpuid-deps.c
-+++ b/arch/x86/kernel/cpu/cpuid-deps.c
-@@ -72,6 +72,8 @@ static const struct cpuid_dep cpuid_deps[] = {
-        { X86_FEATURE_AVX512_FP16,              X86_FEATURE_AVX512BW  },
-        { X86_FEATURE_ENQCMD,                   X86_FEATURE_XSAVES    },
-        { X86_FEATURE_PER_THREAD_MBA,           X86_FEATURE_MBA       },
-+       { X86_FEATURE_VMX,                      X86_FEATURE_MSR_IA32_FEAT_CTL         },
-+       { X86_FEATURE_SGX,                      X86_FEATURE_MSR_IA32_FEAT_CTL         },
-        { X86_FEATURE_SGX_LC,                   X86_FEATURE_SGX       },
-        { X86_FEATURE_SGX1,                     X86_FEATURE_SGX       },
-        { X86_FEATURE_SGX2,                     X86_FEATURE_SGX1      },
+> > But fine, I will add a line to a commit message about this change.
+> 
+> I wouldn't, personally.  The change you are proposing is self-explanatory
+> and somewhat in-line with what is there already - unless I am also reading
+> the current implementation wrong.
+
+But it wouldn't be harmful either.
+
+> That said, Dominik is the maintainer of PCMCIA driver, so his is the last
+> word, so to speak. :)
+> 
+> > Considering this is done, can you issue your conditional tag so I will
+> > incorporate it in v3?
+> 
+> No need, really.  Again, unless Dominik thinks otherwise.
+
+I think that what is wanted to have to get his tag.
+
+Thanks for review, both of you, guys!
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
