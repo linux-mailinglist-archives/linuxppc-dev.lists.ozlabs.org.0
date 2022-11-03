@@ -2,97 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33E8A6186C0
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 18:59:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E85AF6186DB
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 19:02:38 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N3BMr0b4Cz3ccq
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Nov 2022 04:59:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N3BRw6Bghz3cJ2
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Nov 2022 05:02:36 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VcsLNIKX;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VcsLNIKX;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=SWiDYsHx;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.115; helo=mga14.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VcsLNIKX;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VcsLNIKX;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=SWiDYsHx;
 	dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N3BLr4DK7z2yMj
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Nov 2022 04:58:10 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1667498288;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yqxXm7t2WOic9y4ISYxOwK8KmYTr1cBIHzcg/Vydbzs=;
-	b=VcsLNIKXCPbANvk47dCxIiw+T8y96kdw1P5S45DSbzh0n5Xmj9ZEaWPALNzURBDX0Ui0rJ
-	lqaGBq6cZP0Dk6DicQP8W6sgQWejpSgdkH1WkQDRJbOwPFqkthq4bFNCubhFQRnD76Xxet
-	UlQFMjB7q9l5f07VRoICx5aQM7djyxA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1667498288;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yqxXm7t2WOic9y4ISYxOwK8KmYTr1cBIHzcg/Vydbzs=;
-	b=VcsLNIKXCPbANvk47dCxIiw+T8y96kdw1P5S45DSbzh0n5Xmj9ZEaWPALNzURBDX0Ui0rJ
-	lqaGBq6cZP0Dk6DicQP8W6sgQWejpSgdkH1WkQDRJbOwPFqkthq4bFNCubhFQRnD76Xxet
-	UlQFMjB7q9l5f07VRoICx5aQM7djyxA=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-435-sEe_XFdUOjCmDC52pM2pIw-1; Thu, 03 Nov 2022 13:58:01 -0400
-X-MC-Unique: sEe_XFdUOjCmDC52pM2pIw-1
-Received: by mail-ed1-f70.google.com with SMTP id q13-20020a056402518d00b00462b0599644so1923508edd.20
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 03 Nov 2022 10:58:01 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yqxXm7t2WOic9y4ISYxOwK8KmYTr1cBIHzcg/Vydbzs=;
-        b=Bf6c3T5wWnbdAq0fqGmTMy2NY5IY78bYehudR9ZRd51wZBaJLG1VchuYKAH96a/nz/
-         aaoO4NnvQM7iEySMIbtSX+GnlOPipfFxMArtVv+OlTHW4DijR+7P5UfJiBpVXieXKY23
-         LunVV8ntJayrV+FRjpQZ6wwmEYF76pK2NCyJTViS5MLBkpUPRYl6UKLNL81ISUqvMm4R
-         qFkDHJgXwtYFsmVpadxL2ouwyI5Zial4MG+xNjOl3vYUAKIMx/VUlvMC4iczx6qOXynK
-         /WGh5Xv615Ni7RmP5hnFNKet8kpY3gWg2b9vw6/pnK+TXeTThHsRGy7E+A30M5FyDYr4
-         jiqQ==
-X-Gm-Message-State: ACrzQf3DooeBgM3Mb58PqX/o3FjWZyq6OzN1jOF0sUYJYQSJWiqgeFWj
-	Fq9kGn1vgdUxNC1DJkQmDCUBBMCk9Mxrwcg01N62zzk7Eo5XiaOn58N+/Grsl5+ziTqN+vYeQd0
-	BKgDR+c0JxjbsGI14ZmW71m6v9A==
-X-Received: by 2002:a17:907:a087:b0:7ad:a2ec:1afa with SMTP id hu7-20020a170907a08700b007ada2ec1afamr30061870ejc.151.1667498280036;
-        Thu, 03 Nov 2022 10:58:00 -0700 (PDT)
-X-Google-Smtp-Source: AMsMyM6QZmNq5hCph1jlllZl0PdTQdpFjKynjhfU4TqqXsTy2ri356CZrCrEtJkVH+I+gMfL+O9fNA==
-X-Received: by 2002:a17:907:a087:b0:7ad:a2ec:1afa with SMTP id hu7-20020a170907a08700b007ada2ec1afamr30061831ejc.151.1667498279805;
-        Thu, 03 Nov 2022 10:57:59 -0700 (PDT)
-Received: from ?IPV6:2001:b07:6468:f312:1c09:f536:3de6:228c? ([2001:b07:6468:f312:1c09:f536:3de6:228c])
-        by smtp.googlemail.com with ESMTPSA id l3-20020a170907914300b0078d76ee7543sm734215ejs.222.2022.11.03.10.57.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 03 Nov 2022 10:57:58 -0700 (PDT)
-Message-ID: <1fd2e729-6e46-b0bf-d89e-f5d1b4dbde77@redhat.com>
-Date: Thu, 3 Nov 2022 18:57:55 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N3BQy459xz3bm9
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Nov 2022 05:01:45 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1667498506; x=1699034506;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=yb2Mq3fbpPtLAnjCVdV2BEIMFU/XQ1cYRIu5k0HafqM=;
+  b=SWiDYsHxsYUJ4nkW5ZQbYYc0Q0C4/oLWzBBsZ6iy9txNBra+FIsKqULX
+   S7jQnyFVHJMxcSk2z5XtVc3dqsebOJgBEflSNo8gClsaKn9i2sIbEjH/K
+   PxkHXmG9iR8gre4Gi4q8cCaEvKWZhWQbELd2WaBf1a2cMCfHFW4WGHNPS
+   jtLnXtb3r0y63Lw2IipAqx7p1gJ7WE6aDZoPwrH50aSjg7UYUjeQAWWAJ
+   SUN4C3RyoTIGzGZfHJ6RWIoaLB9sX4cr6DzxiHPs2aRcB3h58kE4z3foW
+   Rq3tCarAWx32x7+3wv2HMoxqSPm08CkPRq1ELsh8voYcxHb6aBdLqdE5u
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10520"; a="309755809"
+X-IronPort-AV: E=Sophos;i="5.96,134,1665471600"; 
+   d="scan'208";a="309755809"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2022 11:01:43 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10520"; a="740290898"
+X-IronPort-AV: E=Sophos;i="5.96,134,1665471600"; 
+   d="scan'208";a="740290898"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP; 03 Nov 2022 11:01:36 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1oqeWy-006xtO-3D;
+	Thu, 03 Nov 2022 20:01:33 +0200
+Date: Thu, 3 Nov 2022 20:01:32 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Dominik Brodowski <linux@dominikbrodowski.net>
+Subject: Re: [PATCH v2 4/4] pcmcia: Convert to use
+ pci_bus_for_each_resource_p()
+Message-ID: <Y2QB/BxfKCjckaaU@smile.fi.intel.com>
+References: <20221103164644.70554-1-andriy.shevchenko@linux.intel.com>
+ <20221103164644.70554-5-andriy.shevchenko@linux.intel.com>
+ <Y2P0XCNJvTVuziO7@owl.dominikbrodowski.net>
+ <Y2P2ja26ikNecTsv@smile.fi.intel.com>
+ <Y2P5mRt//Pp6XTLT@owl.dominikbrodowski.net>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.0
-Subject: Re: [PATCH 36/44] KVM: x86: Do compatibility checks when onlining CPU
-To: Sean Christopherson <seanjc@google.com>
-References: <20221102231911.3107438-1-seanjc@google.com>
- <20221102231911.3107438-37-seanjc@google.com>
- <23bfd709-f99a-5a74-e4b9-1381b88453f1@redhat.com>
- <Y2P+E+631c0TNcK7@google.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-In-Reply-To: <Y2P+E+631c0TNcK7@google.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Y2P5mRt//Pp6XTLT@owl.dominikbrodowski.net>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,47 +76,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Matthew Rosato <mjrosato@linux.ibm.com>, David Hildenbrand <david@redhat.com>, Yuan Yao <yuan.yao@intel.com>, Paul Walmsley <paul.walmsley@sifive.com>, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, Claudio Imbrenda <imbrenda@linux.ibm.com>, kvmarm@lists.cs.columbia.edu, linux-s390@vger.kernel.org, Janosch Frank <frankja@linux.ibm.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>, James Morse <james.morse@arm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Chao Gao <chao.gao@intel.com>, Eric Farman <farman@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org, Atish Patra <atishp@atishpatra.org>, kvmarm@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, Alexandru Elisei <alexandru.elisei@arm.com>, linux-arm-kernel@lists.infradead.org, Isaku Yamahata <isaku.yamahata@intel.com>, Fabiano Rosas <farosas@linux.ibm.com>, 
- linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, Palmer Dabbelt <palmer@dabbelt.com>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, Vitaly Kuznetsov <vkuznets@redhat.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-pci@vger.kernel.org, linux-mips@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>, sparclinux@vger.kernel.org, Stefano Stabellini <sstabellini@kernel.org>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Russell King <linux@armlinux.org.uk>, Bjorn Helgaas <helgaas@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, xen-devel@lists.xenproject.org, Matt Turner <mattst88@gmail.com>, Arnd Bergmann <arnd@arndb.de>, Richard Henderson <richard.henderson@linaro.org>, Nicholas Piggin <npiggin@gmail.com>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>, Mika Westerberg <mika.westerberg@linux.intel.com>, linux-arm-kernel@lists.infradead.org, Juergen Gross <jgross@suse.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-kernel@vger.kernel.org, Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 11/3/22 18:44, Sean Christopherson wrote:
->>> Do compatibility checks when enabling hardware to effectively add
->>> compatibility checks when onlining a CPU.  Abort enabling, i.e. the
->>> online process, if the (hotplugged) CPU is incompatible with the known
->>> good setup.
->>
->> This paragraph is not true with this patch being before "KVM: Rename and
->> move CPUHP_AP_KVM_STARTING to ONLINE section".
->
-> Argh, good eyes.  Getting the ordering correct in this series has been quite the
-> struggle.  Assuming there are no subtle dependencies between x86 and common KVM,
-> the ordering should be something like this:
+On Thu, Nov 03, 2022 at 06:25:45PM +0100, Dominik Brodowski wrote:
+> Am Thu, Nov 03, 2022 at 07:12:45PM +0200 schrieb Andy Shevchenko:
+> > On Thu, Nov 03, 2022 at 06:03:24PM +0100, Dominik Brodowski wrote:
 
-It's not a problem to keep the ordering in this v1, just fix the commit 
-message like "Do compatibility checks when enabling hardware to 
-effectively add compatibility checks on CPU hotplug.  For now KVM is 
-using a STARTING hook, which makes it impossible to abort the hotplug if 
-the new CPU is incompatible with the known good setup; switching to an 
-ONLINE hook will fix this."
+...
 
-Paolo
-
->    KVM: Opt out of generic hardware enabling on s390 and PPC
->    KVM: Register syscore (suspend/resume) ops early in kvm_init()
->    KVM: x86: Do compatibility checks when onlining CPU
->    KVM: SVM: Check for SVM support in CPU compatibility checks
->    KVM: VMX: Shuffle support checks and hardware enabling code around
->    KVM: x86: Do VMX/SVM support checks directly in vendor code
->    KVM: x86: Unify pr_fmt to use module name for all KVM modules
->    KVM: x86: Use KBUILD_MODNAME to specify vendor module name
->    KVM: Make hardware_enable_failed a local variable in the "enable all" path
->    KVM: Use a per-CPU variable to track which CPUs have enabled virtualization
->    KVM: Remove on_each_cpu(hardware_disable_nolock) in kvm_exit()
->    KVM: Drop kvm_count_lock and instead protect kvm_usage_count with kvm_lock
->    KVM: Disable CPU hotplug during hardware enabling
->    KVM: Rename and move CPUHP_AP_KVM_STARTING to ONLINE section
->    KVM: Drop kvm_arch_check_processor_compat() hook
+> > Considering this is done, can you issue your conditional tag so I will
+> > incorporate it in v3?
 > 
+> Certainly, feel free to add
+> 
+> 	Acked-by: Dominik Brodowski <linux@dominikbrodowski.net>
+
+Thank you for the review!
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
