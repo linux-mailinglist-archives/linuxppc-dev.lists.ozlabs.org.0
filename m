@@ -1,58 +1,87 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B370161772A
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 08:09:07 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F099E617754
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 08:12:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N2vxs4gssz3cGZ
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 18:09:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N2w1D5b1jz3cLf
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Nov 2022 18:12:00 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=kHZDPyIo;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.255; helo=szxga08-in.huawei.com; envelope-from=chenlifu@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::32e; helo=mail-wm1-x32e.google.com; envelope-from=philmd@linaro.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=kHZDPyIo;
+	dkim-atps=neutral
+Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N2vxJ3HTmz3bms
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Nov 2022 18:08:33 +1100 (AEDT)
-Received: from dggpemm500020.china.huawei.com (unknown [172.30.72.54])
-	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4N2vx16NKLz15MLl;
-	Thu,  3 Nov 2022 15:08:21 +0800 (CST)
-Received: from dggpemm500001.china.huawei.com (7.185.36.107) by
- dggpemm500020.china.huawei.com (7.185.36.49) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Thu, 3 Nov 2022 15:08:26 +0800
-Received: from [10.67.111.195] (10.67.111.195) by
- dggpemm500001.china.huawei.com (7.185.36.107) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Thu, 3 Nov 2022 15:08:25 +0800
-Message-ID: <536aa15f-5953-209f-488f-189f09a3c7b0@huawei.com>
-Date: Thu, 3 Nov 2022 15:08:14 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N2w0H25zwz3bms
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Nov 2022 18:11:08 +1100 (AEDT)
+Received: by mail-wm1-x32e.google.com with SMTP id bg9-20020a05600c3c8900b003bf249616b0so530438wmb.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 03 Nov 2022 00:11:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=CvhsZshQWEcVMeUTUtOp+ihfqDRpu56SkXuVG8Len34=;
+        b=kHZDPyIo8df19dqlQHWniGoyDch8A+hISU8X6gd7fp1VbScHETGhbytjJYmkhLQHKf
+         fwi1nthEtQPwse9uctHll81mNdW31rmNNRadEcJOVs4CiYzIp2cFwfJ+eDzavRkFrV7o
+         df5jmaTAaQvLc9v1sSmbABx4C5Rzw1nTgw7iXi1sO9xpDPFNsNp3LKzpz90wTIQNwZ1t
+         Ho+YhWAPx1xMmOMWNMoEs/sIV1YU/vXuH0Fvy5rAwr8dsko79NvLMAybJkyUdKsceRMO
+         iXCBxeebKyqxkZinLCfgL7TweGZd1asuEGHKg2vBla0voczqpexKdljfuec7O93BtHaM
+         wjHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=CvhsZshQWEcVMeUTUtOp+ihfqDRpu56SkXuVG8Len34=;
+        b=pTNJYBZx+D1fU15swJOj1MPvQygfCCdXNAB+nmFcs4Phn1oaAkItbaU+UFMrLPrxAL
+         XOHpZ9SgA020xOEXqXfMTP6AYUnBZSyRyaxRjHnNKVa5S1AbNQtdhL4J9RkJUsZEzvmX
+         LJuo49FW3qS+Wsmp4EOAIY8x6itszg/1qXBfR3cTlKs7GQ0PERI53Df8vDze9/5fE+9F
+         pUxI8RJvc1SotmCRlb2+9MUylKIHMtpQA1nccXntmTHVN9l/5ERx1viWeXq5GvJB+wOX
+         M6ydCTk/WZaXmsIfwDyeoahYvS6bfqPo4BSdnUQcUeJ5zePFVGq5NX3Th6U8Iy+kGXAJ
+         ywtA==
+X-Gm-Message-State: ACrzQf0fIqr+l4iiqZqVp9JFqYDwv/CJfg63zYnKw/+hg5rjpXr6UNYf
+	taTZ8FAzxMl0P4optlcwLqZ69w==
+X-Google-Smtp-Source: AMsMyM6OzoP+QUJ8ptlTPBD8IHWudpkYNFjUBgo6cbOLfKoB/+Q6j9ksVTjQt2XeCIsVj6BjOQ3zrw==
+X-Received: by 2002:a05:600c:1:b0:3c6:c456:f07a with SMTP id g1-20020a05600c000100b003c6c456f07amr18797697wmc.158.1667459461681;
+        Thu, 03 Nov 2022 00:11:01 -0700 (PDT)
+Received: from [192.168.11.175] (216.red-88-29-181.dynamicip.rima-tde.net. [88.29.181.216])
+        by smtp.gmail.com with ESMTPSA id y16-20020adff6d0000000b0023647841c5bsm17017wrp.60.2022.11.03.00.10.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 03 Nov 2022 00:11:01 -0700 (PDT)
+Message-ID: <e844905b-3775-b89d-8b19-0a1c2e916432@linaro.org>
+Date: Thu, 3 Nov 2022 08:10:57 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.0
-Subject: Re: [PATCH v2 -next] powerpc/powermac: Fix symbol not declared
- warnings
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, "benh@kernel.crashing.org"
-	<benh@kernel.crashing.org>, "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
-	"npiggin@gmail.com" <npiggin@gmail.com>, "nick.child@ibm.com"
-	<nick.child@ibm.com>, "zhengzucheng@huawei.com" <zhengzucheng@huawei.com>,
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"paulus@samba.org" <paulus@samba.org>, "rppt@kernel.org" <rppt@kernel.org>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "oohall@gmail.com"
-	<oohall@gmail.com>
-References: <20220819130616.2030769-1-chenlifu@huawei.com>
- <8478195c-6d6e-d5ac-40f8-ab764419881e@huawei.com>
- <40a62a53-e971-ab26-6ec6-7727eb1d6a7e@csgroup.eu>
-From: chenlifu <chenlifu@huawei.com>
-In-Reply-To: <40a62a53-e971-ab26-6ec6-7727eb1d6a7e@csgroup.eu>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.4.1
+Subject: Re: [PATCH 20/44] KVM: MIPS: Setup VZ emulation? directly from
+ kvm_mips_init()
+Content-Language: en-US
+To: Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>,
+ Huacai Chen <chenhuacai@kernel.org>,
+ Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>,
+ Anup Patel <anup@brainfault.org>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Janosch Frank <frankja@linux.ibm.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>
+References: <20221102231911.3107438-1-seanjc@google.com>
+ <20221102231911.3107438-21-seanjc@google.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20221102231911.3107438-21-seanjc@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.67.111.195]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- dggpemm500001.china.huawei.com (7.185.36.107)
-X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,99 +93,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Atish Patra <atishp@atishpatra.org>, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, kvmarm@lists.cs.columbia.edu, linux-s390@vger.kernel.org, Chao Gao <chao.gao@intel.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, Yuan Yao <yuan.yao@intel.com>, kvmarm@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, Alexandru Elisei <alexandru.elisei@arm.com>, linux-arm-kernel@lists.infradead.org, Isaku Yamahata <isaku.yamahata@intel.com>, Fabiano Rosas <farosas@linux.ibm.com>, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, James Morse <james.morse@arm.com>, kvm-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-在 2022/11/2 21:53, Christophe Leroy 写道:
+On 3/11/22 00:18, Sean Christopherson wrote:
+> Invoke kvm_mips_emulation_init() directly from kvm_mips_init() instead
+> of bouncing through kvm_init()=>kvm_arch_init().  Functionally, this is
+> a glorified nop as invoking kvm_arch_init() is the very first action
+> performed by kvm_init().
 > 
+> Emptying kvm_arch_init() will allow dropping the hook entirely once all
+> architecture implementations are nops.
 > 
-> Le 31/10/2022 à 01:45, chenlifu a écrit :
->> [Vous ne recevez pas souvent de courriers de chenlifu@huawei.com.
->> Découvrez pourquoi ceci est important à
->> https://aka.ms/LearnAboutSenderIdentification ]
->>
->> 在 2022/8/19 21:06, Chen Lifu 写道:
->>> 1. ppc_override_l2cr and ppc_override_l2cr_value are only used in
->>>      l2cr_init() function, remove them and used *l2cr directly.
->>> 2. has_l2cache is not used outside of the file, so mark it static and
->>>      do not initialise statics to 0.
->>>
->>> Fixes the following warning:
->>>
->>> arch/powerpc/platforms/powermac/setup.c:74:5: warning: symbol
->>> 'ppc_override_l2cr' was not declared. Should it be static?
->>> arch/powerpc/platforms/powermac/setup.c:75:5: warning: symbol
->>> 'ppc_override_l2cr_value' was not declared. Should it be static?
->>> arch/powerpc/platforms/powermac/setup.c:76:5: warning: symbol
->>> 'has_l2cache' was not declared. Should it be static?
->>>
->>> Signed-off-by: Chen Lifu <chenlifu@huawei.com>
+> No functional change intended.
 > 
-> You could have replaced printk(KERN_INFO by pr_info(
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> ---
+>   arch/mips/kvm/mips.c | 6 +++++-
+>   1 file changed, 5 insertions(+), 1 deletion(-)
 
-Thanks, I have replaced printk(KERN_INFO by pr_info( in PATCH v3.
-
-> 
-> Otherwise
-> 
-> Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> 
->>> ---
->>>    arch/powerpc/platforms/powermac/setup.c | 19 ++++++-------------
->>>    1 file changed, 6 insertions(+), 13 deletions(-)
->>>
->>> diff --git a/arch/powerpc/platforms/powermac/setup.c
->>> b/arch/powerpc/platforms/powermac/setup.c
->>> index 04daa7f0a03c..49faa066b372 100644
->>> --- a/arch/powerpc/platforms/powermac/setup.c
->>> +++ b/arch/powerpc/platforms/powermac/setup.c
->>> @@ -68,13 +68,11 @@
->>>
->>>    #include "pmac.h"
->>>
->>>    #undef SHOW_GATWICK_IRQS
->>>
->>> -int ppc_override_l2cr = 0;
->>> -int ppc_override_l2cr_value;
->>> -int has_l2cache = 0;
->>> +static int has_l2cache;
->>>
->>>    int pmac_newworld;
->>>
->>>    static int current_root_goodness = -1;
->>>
->>> @@ -234,26 +232,21 @@ static void __init l2cr_init(void)
->>>
->>>                for_each_of_cpu_node(np) {
->>>                        const unsigned int *l2cr =
->>>                                of_get_property(np, "l2cr-value", NULL);
->>>                        if (l2cr) {
->>> -                             ppc_override_l2cr = 1;
->>> -                             ppc_override_l2cr_value = *l2cr;
->>>                                _set_L2CR(0);
->>> -                             _set_L2CR(ppc_override_l2cr_value);
->>> +                             _set_L2CR(*l2cr);
->>> +                             printk(KERN_INFO "L2CR overridden (0x%x), "
->>> +                                    "backside cache is %s\n",
->>> +                                    *l2cr, ((*l2cr) & 0x80000000) ?
->>> +                                    "enabled" : "disabled");
->>>                        }
->>>                        of_node_put(np);
->>>                        break;
->>>                }
->>>        }
->>> -
->>> -     if (ppc_override_l2cr)
->>> -             printk(KERN_INFO "L2CR overridden (0x%x), "
->>> -                    "backside cache is %s\n",
->>> -                    ppc_override_l2cr_value,
->>> -                    (ppc_override_l2cr_value & 0x80000000)
->>> -                             ? "enabled" : "disabled");
->>>    }
->>>    #endif
->>>
->>>    static void __init pmac_setup_arch(void)
->>>    {
->>
->> Friendly ping ...
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
