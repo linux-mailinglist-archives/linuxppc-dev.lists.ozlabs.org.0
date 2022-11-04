@@ -1,73 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96DD9619D54
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Nov 2022 17:32:25 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AE86619E60
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Nov 2022 18:21:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N3mPM3VGLz3dvk
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Nov 2022 03:32:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N3nVV2gVxz3cQl
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Nov 2022 04:21:54 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=ZvfqWRbm;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bytedance-com.20210112.gappssmtp.com header.i=@bytedance-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=uAw80S9v;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::42b; helo=mail-pf1-x42b.google.com; envelope-from=seanjc@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bytedance.com (client-ip=2607:f8b0:4864:20::1029; helo=mail-pj1-x1029.google.com; envelope-from=chenzhuo.1@bytedance.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=ZvfqWRbm;
+	dkim=pass (2048-bit key; unprotected) header.d=bytedance-com.20210112.gappssmtp.com header.i=@bytedance-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=uAw80S9v;
 	dkim-atps=neutral
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N3mNQ1ghRz2xKN
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Nov 2022 03:31:33 +1100 (AEDT)
-Received: by mail-pf1-x42b.google.com with SMTP id v28so4941555pfi.12
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 04 Nov 2022 09:31:33 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N3nTW1NJHz3cGv
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Nov 2022 04:21:00 +1100 (AEDT)
+Received: by mail-pj1-x1029.google.com with SMTP id v4-20020a17090a088400b00212cb0ed97eso5089595pjc.5
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 04 Nov 2022 10:21:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=tykh0C7NQoqMsiv0FEJ8nDBTc1ar6j/4SljcpXaw+gg=;
-        b=ZvfqWRbmiygXbQlvUXzlFPIy6pWgi3NnbKZ9axUfvTwSG1jmeczFdzfmEBk6JPul9u
-         KtfoNDPD7+7L7ckLKxE85H3i30VZE1cLcwZqr+9Pmyt/Uvr0gsenysKMrttjRd1DNmYa
-         taHLNc4BlGL4LuS+a5zOzje7JmI5lr7pLr83tPoJKPDxZ+8mRqo1TUsZIcKB3+pLirGc
-         61VotfoTC994tXlc+pHq0IWsR3SGM7VfiO/hK89Ek0CoqTLSvnWOMLSW6BMMx8STYHyn
-         tAWojTUjFC5IOfCMzJ25ZkS53CsxfaYW+If16SDvap+gn/hFvgnPNsAIXJ/ZXr/CVgup
-         nXnw==
+        d=bytedance-com.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=OczEUwDaDCJagzs0QtMr8aHYN/ko8ymZX7lVummJVOs=;
+        b=uAw80S9vBEJp3aHojoMEpA/68sS1rwm2/DWeE+ULXnA6VihFLM1tIcWa71PfRN9kBY
+         0Dv2ncNI3cIHP1goXyeXZom0/uBfoDaO30ASdZEL4aGfHRhvJUIMCG8nrQlvfooqmoJO
+         hUAuGLtFkFgLnDesYbOIb/h2RG1W4Vfgffao9TGfEveZhdIZofkxgjiB9PJaysiRvxez
+         qh27EMHRn8B9dhv5bFV0Gj3bOcrEvWTaLB9Ua8Lz3QnnrjBVMODvXVdUSprTVXviQ9hj
+         D+qpWlXKArSY4d+JaCwNiIRypZgFLSZR3fDUcNuaeyz///hny0BZ0cHpkYlDAwWb4Z7k
+         HJqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tykh0C7NQoqMsiv0FEJ8nDBTc1ar6j/4SljcpXaw+gg=;
-        b=E16U5HAKQByDAyNoUpwSmEo+R8Lx0ictQC9A6a3yszXqqB0XQFhNuNSQ66y+UWs+V4
-         CX7kN9igjtI/R/CisPDbkaMn8JPIWybnvcxafvH8dPp99PFfa9j5wWjeW68gD9e6ipLl
-         l9JeC10EdjkoqtWQYocTvrzFh5J1BFgxKCEsVts61uqSJOoLup39mehZShWx4hoeX0SN
-         uOMipdXbJLDmVI/cJikX1XZ9f+51ImNNWnJf3OMaYjAYuQsswi5JWmBZ5IkW3hICe1dR
-         U85HgJiJR85h847YhBtsB12PUODgqejqjOnzySWdATvNrlh49lvqGUpEcsCtRbKDY6SA
-         OMTw==
-X-Gm-Message-State: ACrzQf1il45VOGC9aiW/H3I5cM6r+0/AJSbytNvQ1WRtHOvbjjk2fs8E
-	ZRlt9xCDj2/cVAG45/DzaO2IIA==
-X-Google-Smtp-Source: AMsMyM4q4CNgN2lQ4PyaYyADoR+QimlVBokrxw9X6LS0+cBweFifUR+XVuuTHXr8UlnLM2zvHk12kA==
-X-Received: by 2002:a05:6a00:248e:b0:56e:ad31:b976 with SMTP id c14-20020a056a00248e00b0056ead31b976mr1059125pfv.51.1667579490004;
-        Fri, 04 Nov 2022 09:31:30 -0700 (PDT)
-Received: from google.com (7.104.168.34.bc.googleusercontent.com. [34.168.104.7])
-        by smtp.gmail.com with ESMTPSA id y133-20020a62ce8b000000b00565cbad9616sm2954667pfg.6.2022.11.04.09.31.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Nov 2022 09:31:29 -0700 (PDT)
-Date: Fri, 4 Nov 2022 16:31:25 +0000
-From: Sean Christopherson <seanjc@google.com>
-To: Yuan Yao <yuan.yao@linux.intel.com>
-Subject: Re: [PATCH 08/44] KVM: x86: Move hardware setup/unsetup to init/exit
-Message-ID: <Y2U+XT0Sm+a69CaH@google.com>
-References: <20221102231911.3107438-1-seanjc@google.com>
- <20221102231911.3107438-9-seanjc@google.com>
- <20221104062223.7kcrbt66mlmqxk7f@yy-desk-7060>
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=OczEUwDaDCJagzs0QtMr8aHYN/ko8ymZX7lVummJVOs=;
+        b=mQP7/9NMGPWhNSSML1FFN17uEDtU2r4VYinvavWvSBbpc7VkC3eUTy1hbpGHrpSW7p
+         mevUX4iv79UBpEFgBHnfS1vpo6VXCov47HrRf0zkEde7AFDZAPDclYi/BiVcT6S2CA9e
+         0IbN9BS22iWgh8oLgHDb9kPMTmQSAmfxeKte5f1N5uz0japVthlUCABNLeC6OdjBjR06
+         3HevNjXuwIJDqsR/YCbubQ9NitOecUh8j6YGdNpOIwJCPny+H+2rAqr36wK0oFOaWOP2
+         rs+A4l5n9482RfNsuuWjbM8cYYZ8oj5AqHVVCaQRJpyMulFH7UsLOZZW0aukH4T6ESEF
+         6Reg==
+X-Gm-Message-State: ACrzQf0y4vx5w6uPfvfz6p4ViuL8ZoI3238CqONvrrKKeYW8941ejG9l
+	7a/VLsks5pQuSvOpUsqp44JxxQ==
+X-Google-Smtp-Source: AMsMyM7qXmb1tKLbXoG2RN7MYH+OBDKZmahcKO3ZgUlIGFzbY77VBHGSlWccWa4sVOHz9dNTYKbNgg==
+X-Received: by 2002:a17:90a:6045:b0:212:fe9a:5792 with SMTP id h5-20020a17090a604500b00212fe9a5792mr53370678pjm.178.1667582458816;
+        Fri, 04 Nov 2022 10:20:58 -0700 (PDT)
+Received: from [10.255.167.72] ([139.177.225.230])
+        by smtp.gmail.com with ESMTPSA id x16-20020aa79a50000000b0056e0ff577edsm2990000pfj.43.2022.11.04.10.20.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 04 Nov 2022 10:20:58 -0700 (PDT)
+Message-ID: <17b88750-53c2-0653-045a-dde921e37e0c@bytedance.com>
+Date: Sat, 5 Nov 2022 01:20:50 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221104062223.7kcrbt66mlmqxk7f@yy-desk-7060>
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.4.0
+Subject: Re: [PATCH v3 0/9] PCI/AER: Fix and optimize usage of status clearing
+ api
+To: Bjorn Helgaas <helgaas@kernel.org>,
+ Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
+References: <20220928105946.12469-1-chenzhuo.1@bytedance.com>
+Content-Language: en-US
+From: Zhuo Chen <chenzhuo.1@bytedance.com>
+In-Reply-To: <20220928105946.12469-1-chenzhuo.1@bytedance.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,85 +83,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Matthew Rosato <mjrosato@linux.ibm.com>, David Hildenbrand <david@redhat.com>, Yuan Yao <yuan.yao@intel.com>, Paul Walmsley <paul.walmsley@sifive.com>, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, Claudio Imbrenda <imbrenda@linux.ibm.com>, kvmarm@lists.cs.columbia.edu, linux-s390@vger.kernel.org, Janosch Frank <frankja@linux.ibm.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>, James Morse <james.morse@arm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Chao Gao <chao.gao@intel.com>, Eric Farman <farman@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org, Atish Patra <atishp@atishpatra.org>, kvmarm@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, Alexandru Elisei <alexandru.elisei@arm.com>, linux-arm-kernel@lists.infradead.org, Isaku Yamahata <isaku.yamahata@intel.com>, Fabiano Rosas <farosas@linux.ibm.com>, 
- linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, Palmer Dabbelt <palmer@dabbelt.com>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, linuxppc-dev@lists.ozlabs.org
+Cc: allenbh@gmail.com, dave.jiang@intel.com, linux-scsi@vger.kernel.org, martin.petersen@oracle.com, linux-pci@vger.kernel.org, jejb@linux.ibm.com, james.smart@broadcom.com, fancer.lancer@gmail.com, linux-kernel@vger.kernel.org, ntb@lists.linux.dev, oohall@gmail.com, jdmason@kudzu.us, bhelgaas@google.com, dick.kennedy@broadcom.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Nov 04, 2022, Yuan Yao wrote:
-> On Wed, Nov 02, 2022 at 11:18:35PM +0000, Sean Christopherson wrote:
-> > To avoid having to unwind various setup, e.g registration of several
-> > notifiers, slot in the vendor hardware setup before the registration of
-> > said notifiers and callbacks.  Introducing a functional change while
-> > moving code is less than ideal, but the alternative is adding a pile of
-> > unwinding code, which is much more error prone, e.g. several attempts to
-> > move the setup code verbatim all introduced bugs.
+Hi Bjorn, a gentle reminder.
 
-...
+Thanks and regards.
 
-> > @@ -9325,6 +9343,24 @@ int kvm_arch_init(void *opaque)
-> >  		kvm_caps.supported_xcr0 = host_xcr0 & KVM_SUPPORTED_XCR0;
-> >  	}
-> >
-> > +	rdmsrl_safe(MSR_EFER, &host_efer);
-> > +
-> > +	if (boot_cpu_has(X86_FEATURE_XSAVES))
-> > +		rdmsrl(MSR_IA32_XSS, host_xss);
-> > +
-> > +	kvm_init_pmu_capability();
-> > +
-> > +	r = ops->hardware_setup();
-> > +	if (r != 0)
-> > +		goto out_mmu_exit;
+On 9/28/22 6:59 PM, Zhuo Chen wrote:
+> Hello.
 > 
-> The failure case of ops->hardware_setup() is unwound
-> by kvm_arch_exit() before this patch, do we need to
-> keep that old behavior ?
+> Here comes patch v3, which contains some fixes and optimizations of
+> aer api usage. The v1 and v2 can be found on the mailing list.
+> 
+> v3:
+> - Modifications to comments proposed by Sathyanarayanan. Remove
+>    pci_aer_clear_nonfatal_status() call in NTB and improve commit log.
+> 
+> v2:
+> - Modifications to comments proposed by Bjorn. Split patch into more
+>    obvious parts.
+> 
+> Zhuo Chen (9):
+>    PCI/AER: Add pci_aer_clear_uncorrect_error_status() to PCI core
+>    PCI/DPC: Use pci_aer_clear_uncorrect_error_status() to clear
+>      uncorrectable error status
+>    NTB: Remove pci_aer_clear_nonfatal_status() call
+>    scsi: lpfc: Change to use pci_aer_clear_uncorrect_error_status()
+>    PCI/AER: Unexport pci_aer_clear_nonfatal_status()
+>    PCI/AER: Move check inside pcie_clear_device_status().
+>    PCI/AER: Use pcie_aer_is_native() to judge whether OS owns AER
+>    PCI/ERR: Clear fatal error status when pci_channel_io_frozen
+>    PCI/AER: Refine status clearing process with api
+> 
+>   drivers/ntb/hw/idt/ntb_hw_idt.c |  2 --
+>   drivers/pci/pci.c               |  7 +++--
+>   drivers/pci/pci.h               |  2 ++
+>   drivers/pci/pcie/aer.c          | 45 +++++++++++++++++++--------------
+>   drivers/pci/pcie/dpc.c          |  3 +--
+>   drivers/pci/pcie/err.c          | 15 ++++-------
+>   drivers/pci/pcie/portdrv_core.c |  3 +--
+>   drivers/scsi/lpfc/lpfc_attr.c   |  4 +--
+>   include/linux/aer.h             |  4 +--
+>   9 files changed, 44 insertions(+), 41 deletions(-)
+> 
 
-As called out in the changelog, the call to ops->hardware_setup() was deliberately
-slotted in before the call to kvm_timer_init() so that kvm_arch_init() wouldn't
-need to unwind more stuff if harware_setup() fails.
-
-> > +	/*
-> > +	 * Point of no return!  DO NOT add error paths below this point unless
-> > +	 * absolutely necessary, as most operations from this point forward
-> > +	 * require unwinding.
-> > +	 */
-> > +	kvm_ops_update(ops);
-> > +
-> >  	kvm_timer_init();
-> >
-> >  	if (pi_inject_timer == -1)
-> > @@ -9336,8 +9372,32 @@ int kvm_arch_init(void *opaque)
-> >  		set_hv_tscchange_cb(kvm_hyperv_tsc_notifier);
-> >  #endif
-> >
-> > +	kvm_register_perf_callbacks(ops->handle_intel_pt_intr);
-> > +
-> > +	if (!kvm_cpu_cap_has(X86_FEATURE_XSAVES))
-> > +		kvm_caps.supported_xss = 0;
-> > +
-> > +#define __kvm_cpu_cap_has(UNUSED_, f) kvm_cpu_cap_has(f)
-> > +	cr4_reserved_bits = __cr4_reserved_bits(__kvm_cpu_cap_has, UNUSED_);
-> > +#undef __kvm_cpu_cap_has
-> > +
-> > +	if (kvm_caps.has_tsc_control) {
-> > +		/*
-> > +		 * Make sure the user can only configure tsc_khz values that
-> > +		 * fit into a signed integer.
-> > +		 * A min value is not calculated because it will always
-> > +		 * be 1 on all machines.
-> > +		 */
-> > +		u64 max = min(0x7fffffffULL,
-> > +			      __scale_tsc(kvm_caps.max_tsc_scaling_ratio, tsc_khz));
-> > +		kvm_caps.max_guest_tsc_khz = max;
-> > +	}
-> > +	kvm_caps.default_tsc_scaling_ratio = 1ULL << kvm_caps.tsc_scaling_ratio_frac_bits;
-> > +	kvm_init_msr_list();
-> >  	return 0;
-> >
-> > +out_mmu_exit:
-> > +	kvm_mmu_vendor_module_exit();
-> >  out_free_percpu:
-> >  	free_percpu(user_return_msrs);
-> >  out_free_x86_emulator_cache:
+-- 
+Zhuo Chen
