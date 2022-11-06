@@ -2,38 +2,38 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7960861E35E
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  6 Nov 2022 17:16:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AB0561E361
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  6 Nov 2022 17:21:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N4zyW37dkz3f3g
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Nov 2022 03:16:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N503J20Tgz3f3V
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Nov 2022 03:21:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=wanadoo.fr (client-ip=80.12.242.14; helo=smtp.smtpout.orange.fr; envelope-from=christophe.jaillet@wanadoo.fr; receiver=<UNKNOWN>)
-Received: from smtp.smtpout.orange.fr (smtp-14.smtpout.orange.fr [80.12.242.14])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=wanadoo.fr (client-ip=80.12.242.18; helo=smtp.smtpout.orange.fr; envelope-from=christophe.jaillet@wanadoo.fr; receiver=<UNKNOWN>)
+Received: from smtp.smtpout.orange.fr (smtp-18.smtpout.orange.fr [80.12.242.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N4zxt6fNlz2x9J
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Nov 2022 03:16:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N502m1zbyz2xkw
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Nov 2022 03:20:32 +1100 (AEDT)
 Received: from [192.168.1.18] ([86.243.100.34])
 	by smtp.orange.fr with ESMTPA
-	id riCForZc23VQxriCFoI6AX; Sun, 06 Nov 2022 17:08:41 +0100
+	id riGKoGCAyXaJmriGKor48n; Sun, 06 Nov 2022 17:12:59 +0100
 X-ME-Helo: [192.168.1.18]
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 06 Nov 2022 17:08:41 +0100
+X-ME-Date: Sun, 06 Nov 2022 17:12:59 +0100
 X-ME-IP: 86.243.100.34
-Message-ID: <f4c81b9a-ba70-3dea-e4f6-9ff62a3e27e8@wanadoo.fr>
-Date: Sun, 6 Nov 2022 17:08:31 +0100
+Message-ID: <7924fc05-02d7-a2b3-85e3-d30dfe081da3@wanadoo.fr>
+Date: Sun, 6 Nov 2022 17:12:44 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.2.2
-Subject: Re: [PATCH] macintosh: Fix warning comparing pointer to 0
+Subject: Re: [PATCH] macintosh/adb: Fix warning comparing pointer to 0
 Content-Language: fr
-To: wangkailong@jari.cn, benh@kernel.crashing.org,
- christophe.leroy@csgroup.eu, mpe@ellerman.id.au
-References: <c31207c.c3.1844d85a6aa.Coremail.wangkailong@jari.cn>
+To: wangkailong@jari.cn, benh@kernel.crashing.org, mpe@ellerman.id.au,
+ gregkh@linuxfoundation.org, sohu0106@126.com, christophe.leroy@csgroup.eu
+References: <2ef267c.c4.1844d8ef2d8.Coremail.wangkailong@jari.cn>
 From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-In-Reply-To: <c31207c.c3.1844d85a6aa.Coremail.wangkailong@jari.cn>
+In-Reply-To: <2ef267c.c4.1844d8ef2d8.Coremail.wangkailong@jari.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -51,33 +51,33 @@ Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Le 06/11/2022 à 16:18, wangkailong@jari.cn a écrit :
+Le 06/11/2022 à 16:28, wangkailong@jari.cn a écrit :
 > Fix the following coccicheck warning:
 > 
-> drivers/macintosh/macio-adb.c:103:13-14: WARNING comparing pointer to 0.
+> drivers/macintosh/adb.c:676:14-15: WARNING comparing pointer to 0.
 > 
 > Signed-off-by: KaiLong Wang <wangkailong@jari.cn>
 > ---
->   drivers/macintosh/macio-adb.c | 2 +-
+>   drivers/macintosh/adb.c | 2 +-
 >   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/macintosh/macio-adb.c b/drivers/macintosh/macio-adb.c
-> index 9b63bd2551c6..1c1c375a817d 100644
-> --- a/drivers/macintosh/macio-adb.c
-> +++ b/drivers/macintosh/macio-adb.c
-> @@ -100,7 +100,7 @@ int macio_init(void)
->   	unsigned int irq;
->   
->   	adbs = of_find_compatible_node(NULL, "adb", "chrp,adb0");
-> -	if (adbs == 0)
-> +	if (adbs)
+> diff --git a/drivers/macintosh/adb.c b/drivers/macintosh/adb.c
+> index 1bbb9ca08d40..076253599bd4 100644
+> --- a/drivers/macintosh/adb.c
+> +++ b/drivers/macintosh/adb.c
+> @@ -673,7 +673,7 @@ static int adb_open(struct inode *inode, struct file *file)
+>   		goto out;
+>   	}
+>   	state = kmalloc(sizeof(struct adbdev_state), GFP_KERNEL);
+> -	if (state == 0) {
+> +	if (state) {
 
 Hi
-no, this should be "if (!adbs)"
+no, this should be "if (!state)"
 
 CJ
 
->   		return -ENXIO;
->   
->   	if (of_address_to_resource(adbs, 0, &r)) {
+>   		ret = -ENOMEM;
+>   		goto out;
+>   	}
 
