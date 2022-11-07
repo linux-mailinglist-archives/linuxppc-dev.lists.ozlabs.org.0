@@ -2,74 +2,99 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8267161F1C3
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Nov 2022 12:25:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E045261F1CC
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Nov 2022 12:27:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N5TS62Pr0z3cTV
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Nov 2022 22:25:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N5TV05218z3dtl
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Nov 2022 22:27:20 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=P3SUE17F;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pxjYlkDD;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::632; helo=mail-pl1-x632.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=P3SUE17F;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pxjYlkDD;
 	dkim-atps=neutral
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N5TR93p2cz3bym
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Nov 2022 22:24:51 +1100 (AEDT)
-Received: by mail-pl1-x632.google.com with SMTP id g24so10787675plq.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 07 Nov 2022 03:24:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bkXHaDGtvuVhiN69GarlKgDdz00NM6Kt+0lKI4zsZLs=;
-        b=P3SUE17FIdMrZVLaiOZj5XVS/b5P9DJZJufnSMg25v9pjcIDMZIQZ4ZR1H0Iz2XFGP
-         370EBWXfcGso+1RQsk2HIwlD7yktCzn9piMj2JlEncapGvtB2/WTec7vNx4mjHmtzeWa
-         OxoUk9/CEYAm55OESegTyYEG07BFgZka0y6MTFLLA6N0WLTIwRFg6bWdM0sFIBSdIMlF
-         Ds0Gvz0G5k3zenG48gpAB51CRzNUzlJZ9qENz4ONaUuJ/1QlUi4/8aDzxE1mVVoUhIOR
-         yd54smgQVa+DC4rFbqOEfIpJyRZzfGZcDVcAZj3SOfNtpkx2Xxl2Lo3g0Vl00d1UtejU
-         lm4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=bkXHaDGtvuVhiN69GarlKgDdz00NM6Kt+0lKI4zsZLs=;
-        b=lnpgzq4JNgFxmHmYJxvR2fafszy1mhNGcw8OZaX1tth3CcEyTG/TajA9ccECE4hHY+
-         VBoyCy5dXk+zOT+1TlIJ/ac5mnKMTJBDkunxPIqIB0clgl5DJd1Tes3aPgrYlqpjCqln
-         Wlyxr20E7s8l1pxpvYrvmpcmt/E4Q6bXAWvIowmlP00OPGa+O5gOPcDA5rZ8dKKatDY/
-         6sNBdfzVTKh1peXFzHaZo6FSRX9bF3XUBj8vDQSqhrP+UR83ng4Qe/QcnbpiQTYmKbbC
-         IHBN/k1fhDuXk90RVW+3reTX+pB9KoES3tt18mzIKW27uYHXvinoeggQ7UoYcmYlLd9H
-         RXog==
-X-Gm-Message-State: ACrzQf1nnQIvAqRUiBM93895GXtORPXACLqgPQ6JUVWBR/rkrhahg7h4
-	hgxOIbgNJbqtrvdSFj5jus0=
-X-Google-Smtp-Source: AMsMyM7KjokBcg5L0y/OxERq4lN5FFXKLnb6DW/ZfRn6ab/4EpD+J3ir8DKPrYMhPNVnSPTvm6iT4A==
-X-Received: by 2002:a17:903:22c9:b0:187:29fe:bda8 with SMTP id y9-20020a17090322c900b0018729febda8mr39108409plg.40.1667820288365;
-        Mon, 07 Nov 2022 03:24:48 -0800 (PST)
-Received: from localhost (203-221-202-134.tpgi.com.au. [203.221.202.134])
-        by smtp.gmail.com with ESMTPSA id z17-20020aa79e51000000b0053e62b6fd22sm4218231pfq.126.2022.11.07.03.24.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 07 Nov 2022 03:24:47 -0800 (PST)
-Mime-Version: 1.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N5TT300dPz2y84
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Nov 2022 22:26:30 +1100 (AEDT)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2A7AAbMG029770;
+	Mon, 7 Nov 2022 11:26:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=xgcta9XQBq1+gWAt8xGejrZEwYLl45l1gGqyFpuNJvc=;
+ b=pxjYlkDDn9TNGYuFYkBApI3RDLFVcvX4Rr19aZ6Q5dow4XsgFfOUySqJ7917DST3QHYc
+ WFTCBf8ouuaWSbfW3ifF13Esn6hER6AM90Z8V8XwslFRpiNVyJy4plcZKbvVxgOjFpUB
+ 8M18tkqx+QKKIKLFslhNX6Pt6w7HsxCVSZ4N5xOaRwWIDulWWqrbbSPfWkIcmArSCyq8
+ kvWKqURhTgx7Cy3W1ANzwn6Fj5TxjPginvVz2w9xLJ691Ci228D0lYimlGufdPTrQMlz
+ MoKmc9GbPDthw04nn5ix03ZArQZxBJqNqLsTDxjWrGHQkTTktXFNdbNSygFYuQGOfbVK Qg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3kp1f6r582-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 07 Nov 2022 11:26:20 +0000
+Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2A7AD4SF029142;
+	Mon, 7 Nov 2022 11:26:19 GMT
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com [159.122.73.72])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3kp1f6r57b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 07 Nov 2022 11:26:19 +0000
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+	by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2A7BLEOP001033;
+	Mon, 7 Nov 2022 11:26:17 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+	by ppma06fra.de.ibm.com with ESMTP id 3kngq8hsnh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 07 Nov 2022 11:26:17 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+	by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2A7BQEvW64356800
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 7 Nov 2022 11:26:14 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5C641A405B;
+	Mon,  7 Nov 2022 11:26:14 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B9B6EA4054;
+	Mon,  7 Nov 2022 11:26:10 +0000 (GMT)
+Received: from [9.43.101.67] (unknown [9.43.101.67])
+	by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Mon,  7 Nov 2022 11:26:10 +0000 (GMT)
+Message-ID: <244b41b6-ad4d-6298-6c48-c8eefecca398@linux.ibm.com>
+Date: Mon, 7 Nov 2022 16:56:09 +0530
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH 1/2] tools/perf: Fix printing os->prefix in CSV metrics
+ output
+Content-Language: en-US
+To: Disha Goel <disgoel@linux.ibm.com>,
+        Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+        Ian Rogers <irogers@google.com>
+References: <20221018085605.63834-1-atrajeev@linux.vnet.ibm.com>
+ <0B7A4A12-2528-439A-BB83-BBC5606A27B0@linux.vnet.ibm.com>
+ <CAP-5=fVdsaNPptvgQ0NaqhXYELFY8HwwhjAaem0B_HrL2GUkUw@mail.gmail.com>
+ <D12F3A8A-AD9F-4B9D-98EA-8E8AD11A858F@linux.vnet.ibm.com>
+ <04486d47-0009-adfb-3e5a-553abde42d6e@linux.ibm.com>
+From: kajoljain <kjain@linux.ibm.com>
+In-Reply-To: <04486d47-0009-adfb-3e5a-553abde42d6e@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 0DATg3Nm8KnizqAUwMu_xGN-YgQfduL9
+X-Proofpoint-GUID: ghHedmZoFEuLmXxvN-S0wz1PKwgpzw7r
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 07 Nov 2022 21:24:42 +1000
-Message-Id: <CO60Y4MBO8W7.1OSJEIWNIBAHH@bobo>
-To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>, "Michael Ellerman"
- <mpe@ellerman.id.au>
-Subject: Re: [PATCH 0/5] powerpc/kprobes: preempt related changes and
- cleanups
-From: "Nicholas Piggin" <npiggin@gmail.com>
-X-Mailer: aerc 0.11.0
-References: <cover.1666262278.git.naveen.n.rao@linux.vnet.ibm.com>
-In-Reply-To: <cover.1666262278.git.naveen.n.rao@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-11-07_04,2022-11-03_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011
+ lowpriorityscore=0 phishscore=0 adultscore=0 bulkscore=0 mlxlogscore=999
+ impostorscore=0 suspectscore=0 priorityscore=1501 mlxscore=0 spamscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2210170000 definitions=main-2211070092
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,50 +106,198 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Jordan Niethe <jniethe5@gmail.com>, linuxppc-dev@lists.ozlabs.org, Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Andi Kleen <ak@linux.intel.com>, Nageswara Sastry <rnsastry@linux.ibm.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, linux-perf-users@vger.kernel.org, maddy@linux.vnet.ibm.com, James Clark <james.clark@arm.com>, Jiri Olsa <jolsa@kernel.org>, Namhyung Kim <namhyung@kernel.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-+linux-arch
 
-FYI most preempt_enable_no_resched() calls outside of core scheduler
-code come from kprobes copy-and-paste, and can possibly be fixed in
-similar ways as this series. It's a bit of a footgun API that should
-be banished from outside kernel/sched/, at least without an explicit
-comment for each case that explains the need and how the missed
-resched is resolved or not applicable.
+
+On 11/4/22 13:07, Disha Goel wrote:
+> On 11/4/22 12:=E2=80=8A59 PM, Athira Rajeev wrote: On 03-Nov-2022, at 9:=
+=E2=80=8A45 PM,
+> Ian Rogers <irogers@=E2=80=8Agoogle.=E2=80=8Acom> wrote: On Wed, Nov 2, 2=
+022 at 1:=E2=80=8A36 AM
+> Athira Rajeev =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D=
+ =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=
+=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=
+=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =
+=E2=80=8D
+> =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=
+=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=
+=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =
+=E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=
+=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D
+> =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=
+=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D
+>=20
+>=20
+>=20
+> On 11/4/22 12:59 PM, Athira Rajeev wrote:
+>>> On 03-Nov-2022, at 9:45 PM, Ian Rogers <irogers@google.com> wrote:
+>>>
+>>> On Wed, Nov 2, 2022 at 1:36 AM Athira Rajeev
+>>> <atrajeev@linux.vnet.ibm.com> wrote:
+>>>>> On 18-Oct-2022, at 2:26 PM, Athira Rajeev <atrajeev@linux.vnet.ibm.co=
+m> wrote:
+>>>>>
+>>>>> Perf stat with CSV output option prints an extra empty
+>>>>> string as first field in metrics output line.
+>>>>> Sample output below:
+>>>>>
+>>>>>      # ./perf stat -x, --per-socket -a -C 1 ls
+>>>>>      S0,1,1.78,msec,cpu-clock,1785146,100.00,0.973,CPUs utilized
+>>>>>      S0,1,26,,context-switches,1781750,100.00,0.015,M/sec
+>>>>>      S0,1,1,,cpu-migrations,1780526,100.00,0.561,K/sec
+>>>>>      S0,1,1,,page-faults,1779060,100.00,0.561,K/sec
+>>>>>      S0,1,875807,,cycles,1769826,100.00,0.491,GHz
+>>>>>      S0,1,85281,,stalled-cycles-frontend,1767512,100.00,9.74,frontend=
+ cycles idle
+>>>>>      S0,1,576839,,stalled-cycles-backend,1766260,100.00,65.86,backend=
+ cycles idle
+>>>>>      S0,1,288430,,instructions,1762246,100.00,0.33,insn per cycle
+>>>>> =3D=3D=3D=3D> ,S0,1,,,,,,,2.00,stalled cycles per insn
+>>>>>
+>>>>> The above command line uses field separator as ","
+>>>>> via "-x," option and per-socket option displays
+>>>>> socket value as first field. But here the last line
+>>>>> for "stalled cycles per insn" has "," in the
+>>>>> beginning.
+>>>>>
+>>>>> Sample output using interval mode:
+>>>>>      # ./perf stat -I 1000 -x, --per-socket -a -C 1 ls
+>>>>>      0.001813453,S0,1,1.87,msec,cpu-clock,1872052,100.00,0.002,CPUs u=
+tilized
+>>>>>      0.001813453,S0,1,2,,context-switches,1868028,100.00,1.070,K/sec
+>>>>>      ------
+>>>>>      0.001813453,S0,1,85379,,instructions,1856754,100.00,0.32,insn pe=
+r cycle
+>>>>> =3D=3D=3D=3D> 0.001813453,,S0,1,,,,,,,1.34,stalled cycles per insn
+>>>>>
+>>>>> Above result also has an extra csv separator after
+>>>>> the timestamp. Patch addresses extra field separator
+>>>>> in the beginning of the metric output line.
+>>>>>
+>>>>> The counter stats are displayed by function
+>>>>> "perf_stat__print_shadow_stats" in code
+>>>>> "util/stat-shadow.c". While printing the stats info
+>>>>> for "stalled cycles per insn", function "new_line_csv"
+>>>>> is used as new_line callback.
+>>>>>
+>>>>> The new_line_csv function has check for "os->prefix"
+>>>>> and if prefix is not null, it will be printed along
+>>>>> with cvs separator.
+>>>>> Snippet from "new_line_csv":
+>>>>>      if (os->prefix)
+>>>>>              fprintf(os->fh, "%s%s", os->prefix, config->csv_sep);
+>>>>>
+>>>>> Here os->prefix gets printed followed by ","
+>>>>> which is the cvs separator. The os->prefix is
+>>>>> used in interval mode option ( -I ), to print
+>>>>> time stamp on every new line. But prefix is
+>>>>> already set to contain csv separator when used
+>>>>> in interval mode for csv option.
+>>>>>
+>>>>> Reference: Function "static void print_interval"
+>>>>> Snippet:
+>>>>>      sprintf(prefix, "%6lu.%09lu%s", ts->tv_sec, ts->tv_nsec, config-=
+>csv_sep);
+>>>>>
+>>>>> Also if prefix is not assigned (if not used with
+>>>>> -I option), it gets set to empty string.
+>>>>> Reference: function printout() in util/stat-display.c
+>>>>> Snippet:
+>>>>>      .prefix =3D prefix ? prefix : "",
+>>>>>
+>>>>> Since prefix already set to contain cvs_sep in interval
+>>>>> option, patch removes printing config->csv_sep in
+>>>>> new_line_csv function to avoid printing extra field.
+>>>>>
+>>>>> After the patch:
+>>>>>
+>>>>>      # ./perf stat -x, --per-socket -a -C 1 ls
+>>>>>      S0,1,2.04,msec,cpu-clock,2045202,100.00,1.013,CPUs utilized
+>>>>>      S0,1,2,,context-switches,2041444,100.00,979.289,/sec
+>>>>>      S0,1,0,,cpu-migrations,2040820,100.00,0.000,/sec
+>>>>>      S0,1,2,,page-faults,2040288,100.00,979.289,/sec
+>>>>>      S0,1,254589,,cycles,2036066,100.00,0.125,GHz
+>>>>>      S0,1,82481,,stalled-cycles-frontend,2032420,100.00,32.40,fronten=
+d cycles idle
+>>>>>      S0,1,113170,,stalled-cycles-backend,2031722,100.00,44.45,backend=
+ cycles idle
+>>>>>      S0,1,88766,,instructions,2030942,100.00,0.35,insn per cycle
+>>>>>      S0,1,,,,,,,1.27,stalled cycles per insn
+>>>>>
+>>>>> Fixes: 92a61f6412d3 ("perf stat: Implement CSV metrics output")
+>>>>> Reported-by: Disha Goel <disgoel@linux.vnet.ibm.com>
+>>>>> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+>=20
+> perf stat csv test passed after applying the patch
+> Tested-by: Disha Goel <disgoel@linux.vnet.ibm.com>
+
+
+Hi,
+  Patch looks fine to me.
+
+Reviewed-By: Kajol Jain <kjain@linux.ibm.com>
 
 Thanks,
-Nick
+Kajol Jain
 
-On Fri Oct 21, 2022 at 3:28 AM AEST, Naveen N. Rao wrote:
-> This series attempts to address some of the concerns raised in=20
-> https://github.com/linuxppc/issues/issues/440
->
-> The last two patches are minor cleanups in related kprobes code.
->
-> - Naveen
->
->
-> Naveen N. Rao (5):
->   powerpc/kprobes: Remove preempt disable around call to get_kprobe() in
->     arch_prepare_kprobe()
->   powerpc/kprobes: Have optimized_callback() use preempt_enable()
->   powerpc/kprobes: Use preempt_enable() rather than the no_resched
->     variant
->   powerpc/kprobes: Setup consistent pt_regs across kprobes, optprobes
->     and KPROBES_ON_FTRACE
->   powerpc/kprobes: Remove unnecessary headers from kprobes
->
->  arch/powerpc/kernel/kprobes-ftrace.c        |  4 ----
->  arch/powerpc/kernel/kprobes.c               | 16 ++++++----------
->  arch/powerpc/kernel/optprobes.c             |  2 +-
->  arch/powerpc/kernel/optprobes_head.S        |  5 +----
->  arch/powerpc/kernel/trace/ftrace_mprofile.S |  6 ++++++
->  5 files changed, 14 insertions(+), 19 deletions(-)
->
->
-> base-commit: 7dc2a00fdd44a4d0c3bac9fd10558b3933586a0c
-> --=20
-> 2.38.0
-
+>=20
+>>>> Hi All,
+>>>>
+>>>> Looking for review comments for this change.
+>>> Hi,
+>>>
+>>> Thanks for addressing issues in this code. What is the status of the
+>>> CSV output test following these changes?
+>>>
+>>> I think going forward we need to move away from CSV and columns, to
+>>> something with structure like json. We also need to refactor this
+>>> code, trying to add meaning to a newline character is a bad strategy
+>>> and creates some unnatural things. To some extent this overlaps with
+>>> Namhyung's aggregation cleanup. There are also weirdnesses in
+>>> jevents/pmu-events, like the same ScaleUnit applying to a metric and
+>>> an event - why are metrics even parts of events?
+>>>
+>>> Given the current code is wac-a-mole, and this is another whack, if
+>>> the testing is okay I think we should move forward with this change.
+>>>
+>>> Thanks,
+>>> Ian
+>> Hi Ian,
+>>
+>> Thanks for checking the patch.
+>> Yes, CSV output test passes with the change.
+>>
+>> 	perf stat CSV output linter                                     : Ok
+>> 	perf stat csv summary test                                      : Ok
+>>
+>> Thanks
+>> Athira
+>>
+>>>
+>>>> Thanks
+>>>> Athira
+>>>>
+>>>>> ---
+>>>>> tools/perf/util/stat-display.c | 2 +-
+>>>>> 1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>>
+>>>>> diff --git a/tools/perf/util/stat-display.c b/tools/perf/util/stat-di=
+splay.c
+>>>>> index 5c47ee9963a7..879874a4bc07 100644
+>>>>> --- a/tools/perf/util/stat-display.c
+>>>>> +++ b/tools/perf/util/stat-display.c
+>>>>> @@ -273,7 +273,7 @@ static void new_line_csv(struct perf_stat_config =
+*config, void *ctx)
+>>>>>
+>>>>>      fputc('\n', os->fh);
+>>>>>      if (os->prefix)
+>>>>> -             fprintf(os->fh, "%s%s", os->prefix, config->csv_sep);
+>>>>> +             fprintf(os->fh, "%s", os->prefix);
+>>>>>      aggr_printout(config, os->evsel, os->id, os->nr);
+>>>>>      for (i =3D 0; i < os->nfields; i++)
+>>>>>              fputs(config->csv_sep, os->fh);
+>>>>> --
+>>>>> 2.31.1
