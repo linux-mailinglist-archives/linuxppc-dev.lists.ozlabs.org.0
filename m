@@ -2,74 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAD2961F33B
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Nov 2022 13:30:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B518C61F37E
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Nov 2022 13:39:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N5Vtr486nz3dtw
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Nov 2022 23:30:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N5W4n4gxFz3cJQ
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Nov 2022 23:39:05 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=gTRDjg8J;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=fDaxMp/f;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62b; helo=mail-pl1-x62b.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1032; helo=mail-pj1-x1032.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=gTRDjg8J;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=fDaxMp/f;
 	dkim-atps=neutral
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
+Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N5Vst5LBWz2yQl
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Nov 2022 23:29:38 +1100 (AEDT)
-Received: by mail-pl1-x62b.google.com with SMTP id k7so10914786pll.6
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 07 Nov 2022 04:29:38 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N5W3q0gKcz3bqW
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Nov 2022 23:38:14 +1100 (AEDT)
+Received: by mail-pj1-x1032.google.com with SMTP id r61-20020a17090a43c300b00212f4e9cccdso14426059pjg.5
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 07 Nov 2022 04:38:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=in-reply-to:references:to:from:subject:message-id:date
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=2X8WhWV7sHuTI5yM30XZFwxAaegBC0+t1ruBtthnfnI=;
-        b=gTRDjg8JImtjvF33xgKotleK2bx1JphAUadnyauwOfXiZv0Pq62JYhfeqN7PFulD8T
-         wbVQwl4/NLh6PJ+qTOgJxK0IHFsJSeTqlD6yFf3Cq12/B/olxzLcxQr3Uid+oslH9kSm
-         XkxuY/F+Jr7ZUOUEESbvaH3KRTLaafmDPDnQKjOdQAPSSndK7pwxL7l/ixm6Raqungos
-         7AOAbNotIjb/CVHI9NcLEE6o3y1E7WORj7pUGpwItD+ows2lGvSxz2VguXCOYQnzTFIQ
-         EYub8usCMu6DWF8eQ2l/vnasCNlQ4at89nR/6SOGlM2LlG284U2aQozKGr/khPXOC2BK
-         M2DQ==
+        bh=RafuIk7/aRO254sO5kaFn2eaoukNCiocFq8V/csBLds=;
+        b=fDaxMp/f71ZRpbedeyBEnv7t9dZTh+Bqfj5jjvCBHEqpmNj9W3DK4n8Jdn4PbLSea/
+         9vJYHS8giWDhWG0Yr0fRbmlXDqWsgG1xVRRS1j+uj/pYFu9d7gSccaBBL/Ek/Yc7AE5q
+         /Ybvq2QY+aYa3imrPiyw3qnx04VaBDTf380oHXCtjdahKATee9ko6t7G+0uTozephZQM
+         HlUx0HOnXwSgAAtBDeBuUz86rq1KIAhucbhRhP03V+52nw1aSVCkRlN82GdrYVuppupl
+         icSP+qQFseuOUA+910AQUqEDaI4hkR5W1VO/7dNuVGuwuUMoxKMeCckkfPMPGks4Bnct
+         GDGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:references:to:from:subject:message-id:date
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=2X8WhWV7sHuTI5yM30XZFwxAaegBC0+t1ruBtthnfnI=;
-        b=dhFIa2YOEe5XtcTvLqrEef216qBSZUYUxlvaFCB48nCBylM8BS6luur87PvYBFh/IE
-         L6IG7Prp3SnnatZ+1gVeIHbO6Q1UORugL/rmMAk0y4aCYMsYA/IS1dwJBXfdEsjlCxeX
-         zFK2tTBAvAKZVAKAJoJZfCb7ucAJ/qT0aywHlytmfQccd4Wr+aB6ymjRIVlPYDg7i56y
-         9Ebz/jfkSWrHlrOBBARSiKCJ4meN8H9LV+C8EPmr8Quzd4oz2WquePLfWlNuQC3SSLOh
-         rDVoFDXz5eTQvQYy2qwbgYkJS3xxOglT+RE1jpXYeJ/lOPsENNYwVN1G3w5iiZqElNqn
-         SWTA==
-X-Gm-Message-State: ACrzQf279AHMHFfDn++SsWLZgHqP6PZ1RtWkB4/ntY39afbSslXYITte
-	/4W6Ua79x71mlFnmQoifpxlg58YWxnY=
-X-Google-Smtp-Source: AMsMyM5YYU8foQ0UgySPs83S4GHhKj8pDLTnGy0yyFNkTT1cDSh3VdBL3ZYM9udZAtFMOz3QjWxamg==
-X-Received: by 2002:a17:902:690a:b0:17a:32d:7acc with SMTP id j10-20020a170902690a00b0017a032d7accmr50906086plk.18.1667824175757;
-        Mon, 07 Nov 2022 04:29:35 -0800 (PST)
+        bh=RafuIk7/aRO254sO5kaFn2eaoukNCiocFq8V/csBLds=;
+        b=Kzy3BmjJAPm6Be5Vs/hd3aw4iI1JRF4/iu1fRHY2zSsEY12E6ZqrqOsfZviguiKhOl
+         EsH3auna+175qIMS+oXD55PpdS9lcY0IeHpjnlKYF45mHOLy01kRaVlQ34agvIUfjnxx
+         yxHalhwC/AWm4lLSJ0dzmf6BectSgJdtjP/+kF9Ne8YYYJFOi527ghUsqZDkTfSZ2Jag
+         j+xGf2GGZMY2eWtbcmMd7gUDvg2IcaobF3cyH+C2dBOOjLK6ve8IlgqFeAN0CCr1qK9a
+         VQ8FeJkZiijxssG7cOBir4xSrhCudLm1c+FWx8eQvSSXbzOaHCDr1HKgiq3nEpDt9EEE
+         OADg==
+X-Gm-Message-State: ACrzQf0/qu9a6dNcpLvV+/ozrJczOonXyRV59Uljw09vCQmKDg+M1Csu
+	EAkLWgBOOiDBD2dSJEsUW1A=
+X-Google-Smtp-Source: AMsMyM4E1nYQg9Q52dFHfMNwRqKSCd8PT00BBHN0VkZYDe6iWB88CLg5no3nTzgKo/EOO08tgfvpYw==
+X-Received: by 2002:a17:902:9b8e:b0:187:30ec:67dd with SMTP id y14-20020a1709029b8e00b0018730ec67ddmr36070211plp.79.1667824691164;
+        Mon, 07 Nov 2022 04:38:11 -0800 (PST)
 Received: from localhost (203-221-202-134.tpgi.com.au. [203.221.202.134])
-        by smtp.gmail.com with ESMTPSA id q23-20020a63cc57000000b0046f6d7dcd1dsm4094406pgi.25.2022.11.07.04.29.33
+        by smtp.gmail.com with ESMTPSA id pi2-20020a17090b1e4200b0020bfd6586c6sm4234991pjb.7.2022.11.07.04.38.08
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 07 Nov 2022 04:29:35 -0800 (PST)
+        Mon, 07 Nov 2022 04:38:10 -0800 (PST)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 07 Nov 2022 22:29:31 +1000
-Message-Id: <CO62BR5B1ODI.23N0I58THF6O2@bobo>
-Subject: Re: [RFC PATCH 14/19] powerpc: split validate_sp into two functions
+Date: Mon, 07 Nov 2022 22:38:06 +1000
+Message-Id: <CO62IBK4D7K1.1USN6WO3YDZPY@bobo>
+To: "Christophe Leroy" <christophe.leroy@csgroup.eu>, "Andrew Donnellan"
+ <ajd@linux.ibm.com>, "linuxppc-dev@lists.ozlabs.org"
+ <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: [RFC PATCH 2/6] powerpc/64s: Helpers to switch between linear
+ and vmapped stack pointers
 From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Russell Currey" <ruscur@russell.cc>, <linuxppc-dev@lists.ozlabs.org>
 X-Mailer: aerc 0.11.0
-References: <20221031055440.3594315-1-npiggin@gmail.com>
- <20221031055440.3594315-15-npiggin@gmail.com>
- <8bed40278721e31ce89d0d2f82d926ed7b1e5717.camel@russell.cc>
-In-Reply-To: <8bed40278721e31ce89d0d2f82d926ed7b1e5717.camel@russell.cc>
+References: <20221104172737.391978-1-ajd@linux.ibm.com>
+ <20221104172737.391978-3-ajd@linux.ibm.com>
+ <20c79a09-0b95-bb52-2495-999d2365308d@csgroup.eu>
+In-Reply-To: <20c79a09-0b95-bb52-2495-999d2365308d@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,104 +84,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: "linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>, "cmr@bluescreens.de" <cmr@bluescreens.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon Nov 7, 2022 at 10:58 AM AEST, Russell Currey wrote:
-> On Mon, 2022-10-31 at 15:54 +1000, Nicholas Piggin wrote:
-> > Most callers just want to validate an arbitrary kernel stack pointer,
-> > some need a particular size. Make the size case the exceptional one
-> > with an extra function.
-> >=20
-> > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> > ---
-> > =C2=A0arch/powerpc/include/asm/processor.h | 15 ++++++++++++---
-> > =C2=A0arch/powerpc/kernel/process.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 | 23 ++++++++++++++---------
-> > =C2=A0arch/powerpc/kernel/stacktrace.c=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 =
-2 +-
-> > =C2=A0arch/powerpc/perf/callchain.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 |=C2=A0 6 +++---
-> > =C2=A04 files changed, 30 insertions(+), 16 deletions(-)
-> >=20
-> > diff --git a/arch/powerpc/include/asm/processor.h
-> > b/arch/powerpc/include/asm/processor.h
-> > index 631802999d59..e96c9b8c2a60 100644
-> > --- a/arch/powerpc/include/asm/processor.h
-> > +++ b/arch/powerpc/include/asm/processor.h
-> > @@ -374,9 +374,18 @@ static inline unsigned long __pack_fe01(unsigned
-> > int fpmode)
-> > =C2=A0
-> > =C2=A0#endif
-> > =C2=A0
-> > -/* Check that a certain kernel stack pointer is valid in task_struct
-> > p */
-> > -int validate_sp(unsigned long sp, struct task_struct *p,
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned lo=
-ng nbytes);
-> > +/*
-> > + * Check that a certain kernel stack pointer is a valid (minimum
-> > sized)
-> > + * stack frame in task_struct p.
-> > + */
-> > +int validate_sp(unsigned long sp, struct task_struct *p);
-> > +
-> > +/*
-> > + * validate the stack frame of a particular minimum size, used for
-> > when we are
-> > + * looking at a certain object in the stack beyond the minimum.
-> > + */
-> > +int validate_sp_size(unsigned long sp, struct task_struct *p,
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned long nbytes);
-> > =C2=A0
-> > =C2=A0/*
-> > =C2=A0 * Prefetch macros.
-> > diff --git a/arch/powerpc/kernel/process.c
-> > b/arch/powerpc/kernel/process.c
-> > index 6cb3982a11ef..b5defea32e75 100644
-> > --- a/arch/powerpc/kernel/process.c
-> > +++ b/arch/powerpc/kernel/process.c
-> > @@ -2128,9 +2128,12 @@ static inline int
-> > valid_emergency_stack(unsigned long sp, struct task_struct *p,
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return 0;
-> > =C2=A0}
-> > =C2=A0
-> > -
-> > -int validate_sp(unsigned long sp, struct task_struct *p,
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned long nby=
-tes)
-> > +/*
-> > + * validate the stack frame of a particular minimum size, used for
-> > when we are
-> > + * looking at a certain object in the stack beyond the minimum.
-> > + */
-> > +int validate_sp_size(unsigned long sp, struct task_struct *p,
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned long nbytes)
-> > =C2=A0{
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0unsigned long stack_pag=
-e =3D (unsigned long)task_stack_page(p);
-> > =C2=A0
-> > @@ -2146,7 +2149,10 @@ int validate_sp(unsigned long sp, struct
-> > task_struct *p,
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return valid_emergency_=
-stack(sp, p, nbytes);
-> > =C2=A0}
-> > =C2=A0
-> > -EXPORT_SYMBOL(validate_sp);
-> > +int validate_sp(unsigned long sp, struct task_struct *p)
-> > +{
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return validate_sp(sp, p, ST=
-ACK_FRAME_OVERHEAD);
+On Sat Nov 5, 2022 at 6:00 PM AEST, Christophe Leroy wrote:
 >
-> Hi Nick, I assume this supposed to be validate_sp_size()?  Did you get
-> this to compile?
+>
+> Le 04/11/2022 =C3=A0 18:27, Andrew Donnellan a =C3=A9crit=C2=A0:
+> > powerpc unfortunately has too many places where we run stuff in real mo=
+de.
+> >=20
+> > With CONFIG_VMAP_STACK enabled, this means we need to be able to swap t=
+he
+> > stack pointer to use the linear mapping when we enter a real mode secti=
+on,
+> > and back afterwards.
+> >=20
+> > Store the top bits of the stack pointer in both the linear map and the
+> > vmalloc space in the PACA, and add some helper macros/functions to swap
+> > between them.
+>
+> That may work when pagesize is 64k because stack is on a single page,=20
+> but I doubt is works with 4k pages, because vmalloc may allocate non=20
+> contiguous pages.
 
-Oops, yeah I think I sent a slightly stale version of the series. I
-did fix that one.
+Yeah. This could be a first-stage though, and depend on 64k page size
+and stack size, or !KVM or whatever. When the real-mode code is solved,
+that could be relaxed.
 
 Thanks,
 Nick
