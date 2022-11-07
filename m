@@ -2,71 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A04F261FF3D
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Nov 2022 21:13:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE9B461FF4D
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Nov 2022 21:14:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N5j913vDzz3f52
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Nov 2022 07:13:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N5jB24n83z3f5B
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Nov 2022 07:14:18 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tEaZDi2U;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=eebFqKmE;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=farman@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=farman@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tEaZDi2U;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=eebFqKmE;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N5f9s6T2Dz3cK7
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Nov 2022 04:58:57 +1100 (AEDT)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2A7GWQkp031956;
-	Mon, 7 Nov 2022 17:58:26 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N5fj90S7bz3cK8
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Nov 2022 05:22:35 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2A7IBq2u003348;
+	Mon, 7 Nov 2022 18:22:12 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
  from : to : cc : date : in-reply-to : references : content-type :
  content-transfer-encoding : mime-version; s=pp1;
- bh=OtmPuK3MWiLF586NtC+bldTUVNylNT/bGGgI5w0Fq9c=;
- b=tEaZDi2UHVX11QxU6UoEIMv071RQMm9iqzjbdP5Zkbmm9BqKuFi1RARRCA9nYbgxAoa5
- LOIQNR+SswnfIuNoa1HMjKsNBt4OnLxi0/2E2+VmXRtCqkUygEMq2N+VM+W4r+av+7Qh
- ruaENJhnppcGZdv4eWE7ba9gmRthNw3sMIYRmbVwvdpPZ68qWe9/0lFLjj7uoAhcrS9Z
- nR5VOjceXevf9rwoR1BkKyBTWi1EsjrcE5+7s5By+wPbnA8uKDJdnIaiNUwQBGYVIh18
- LtpZyga9eCegesTY+EHPFLs2v1ho0G1FQXTfewe5Pi2Td4kszHEI0kpl5Ecq9Yr8/VZq yA== 
+ bh=DdfWgA9vouqG75fSo60uN652MOW4sllCxUOKeP3RfcQ=;
+ b=eebFqKmEkCdsVhVRi/XbOsQdRoLwq4ZqlPHzBEH8C4MPmOdN3J6x8ZbxV5zTXLIgDm15
+ qQMOH8r09V5AhYha+kX4r724Ee4Rs17OS5mdepLKgsCtM6E+cKKeEzVbWBSKtzUU4YY/
+ aol74r7eqOMb3RVogdjXRRpLoaEf7XKjZLctN4O010ACm93+mKOIeOp847ulP5z3lJdS
+ a6r/G22054YYfe1JEjnORfLH3epvLYpdmC1s98grcGDpk1fzOzBAhj8oDY55/damEQhE
+ H/H/yzX12ifeRs3++3u3YxAL0OCP8U9NqLLbLLjBZeOyB0VpgKfGjSVo9Axrk8+wTTm8 9Q== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3kp1f755gc-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3kp1uuwfut-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 07 Nov 2022 17:58:26 +0000
-Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2A7HbWEb003255;
-	Mon, 7 Nov 2022 17:58:25 GMT
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com [169.55.85.253])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3kp1f755fr-1
+	Mon, 07 Nov 2022 18:22:12 +0000
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2A7Gap89020063;
+	Mon, 7 Nov 2022 18:22:11 GMT
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.10])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3kp1uuwfu3-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 07 Nov 2022 17:58:25 +0000
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
-	by ppma01wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2A7HoTaR015449;
-	Mon, 7 Nov 2022 17:58:24 GMT
-Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com [9.57.198.27])
-	by ppma01wdc.us.ibm.com with ESMTP id 3kngs3s8sd-1
+	Mon, 07 Nov 2022 18:22:11 +0000
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+	by ppma02dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2A7IL2m0022680;
+	Mon, 7 Nov 2022 18:22:10 GMT
+Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com [9.57.198.24])
+	by ppma02dal.us.ibm.com with ESMTP id 3kngnd5nhx-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 07 Nov 2022 17:58:24 +0000
-Received: from smtpav02.wdc07v.mail.ibm.com ([9.208.128.114])
-	by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2A7HwMq33277472
+	Mon, 07 Nov 2022 18:22:10 +0000
+Received: from smtpav04.wdc07v.mail.ibm.com ([9.208.128.116])
+	by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2A7IM8k714090930
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 7 Nov 2022 17:58:23 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7EA165805F;
-	Mon,  7 Nov 2022 17:58:22 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E17745805C;
-	Mon,  7 Nov 2022 17:58:17 +0000 (GMT)
+	Mon, 7 Nov 2022 18:22:09 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D47C358062;
+	Mon,  7 Nov 2022 18:22:07 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1A18E5805F;
+	Mon,  7 Nov 2022 18:22:04 +0000 (GMT)
 Received: from li-479af74c-31f9-11b2-a85c-e4ddee11713b.ibm.com (unknown [9.65.225.56])
-	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  7 Nov 2022 17:58:17 +0000 (GMT)
-Message-ID: <9d5a57634244c268d20ac640e055cc0befd8a881.camel@linux.ibm.com>
-Subject: Re: [PATCH 06/44] KVM: s390: Move hardware setup/unsetup to
- init/exit
+	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  7 Nov 2022 18:22:03 +0000 (GMT)
+Message-ID: <1166ac40ae848d81e7fa7aeec056c91079d768d4.camel@linux.ibm.com>
+Subject: Re: [PATCH 09/44] KVM: Drop arch hardware (un)setup hooks
 From: Eric Farman <farman@linux.ibm.com>
 To: Sean Christopherson <seanjc@google.com>,
         Paolo Bonzini
@@ -86,25 +85,25 @@ To: Sean Christopherson <seanjc@google.com>,
         Matthew Rosato
  <mjrosato@linux.ibm.com>,
         Vitaly Kuznetsov <vkuznets@redhat.com>
-Date: Mon, 07 Nov 2022 12:58:17 -0500
-In-Reply-To: <20221102231911.3107438-7-seanjc@google.com>
+Date: Mon, 07 Nov 2022 13:22:03 -0500
+In-Reply-To: <20221102231911.3107438-10-seanjc@google.com>
 References: <20221102231911.3107438-1-seanjc@google.com>
-	 <20221102231911.3107438-7-seanjc@google.com>
+	 <20221102231911.3107438-10-seanjc@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: base64
 User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
 MIME-Version: 1.0
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: PPn9NNx-sO4I-vjSF70Y0K8sCUEkIPXR
-X-Proofpoint-GUID: xEDs-39vU-yJC_i-RzSPUb6Jd0sKq-pE
+X-Proofpoint-GUID: otjvlxlCigjzwqXdeFPxNBxJt_I7IxRm
+X-Proofpoint-ORIG-GUID: dd3fkNzioIT2BrJda-qHcffczlDpzuYb
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
  definitions=2022-11-07_08,2022-11-07_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
- lowpriorityscore=0 phishscore=0 adultscore=0 bulkscore=0 mlxlogscore=999
- impostorscore=0 suspectscore=0 priorityscore=1501 mlxscore=0 spamscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2210170000 definitions=main-2211070140
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 bulkscore=0
+ mlxlogscore=888 clxscore=1015 impostorscore=0 malwarescore=0
+ lowpriorityscore=0 mlxscore=0 adultscore=0 spamscore=0 phishscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2210170000 definitions=main-2211070144
 X-Mailman-Approved-At: Tue, 08 Nov 2022 07:10:51 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -121,16 +120,24 @@ Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Atish Patra <atis
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2022-11-02 at 23:18 +0000, Sean Christopherson wrote:
-> Now that kvm_arch_hardware_setup() is called immediately after
-> kvm_arch_init(), fold the guts of kvm_arch_hardware_(un)setup() into
-> kvm_arch_{init,exit}() as a step towards dropping one of the hooks.
->=20
-> No functional change intended.
->=20
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
-> =C2=A0arch/s390/kvm/kvm-s390.c | 23 +++++++++++++----------
-> =C2=A01 file changed, 13 insertions(+), 10 deletions(-)
+T24gV2VkLCAyMDIyLTExLTAyIGF0IDIzOjE4ICswMDAwLCBTZWFuIENocmlzdG9waGVyc29uIHdy
+b3RlOgo+IERyb3Aga3ZtX2FyY2hfaGFyZHdhcmVfc2V0dXAoKSBhbmQga3ZtX2FyY2hfaGFyZHdh
+cmVfdW5zZXR1cCgpIG5vdwo+IHRoYXQKPiBhbGwgaW1wbGVtZW50YXRpb25zIGFyZSBub3BzLgo+
+IAo+IE5vIGZ1bmN0aW9uYWwgY2hhbmdlIGludGVuZGVkLgo+IAo+IFNpZ25lZC1vZmYtYnk6IFNl
+YW4gQ2hyaXN0b3BoZXJzb24gPHNlYW5qY0Bnb29nbGUuY29tPgo+IC0tLQo+IMKgYXJjaC9hcm02
+NC9pbmNsdWRlL2FzbS9rdm1faG9zdC5owqDCoCB8wqAgMSAtCj4gwqBhcmNoL2FybTY0L2t2bS9h
+cm0uY8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB8wqAgNSAtLS0tLQo+IMKgYXJjaC9t
+aXBzL2luY2x1ZGUvYXNtL2t2bV9ob3N0LmjCoMKgwqAgfMKgIDEgLQo+IMKgYXJjaC9taXBzL2t2
+bS9taXBzLmPCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfMKgIDUgLS0tLS0KPiDCoGFy
+Y2gvcG93ZXJwYy9pbmNsdWRlL2FzbS9rdm1faG9zdC5oIHzCoCAxIC0KPiDCoGFyY2gvcG93ZXJw
+Yy9rdm0vcG93ZXJwYy5jwqDCoMKgwqDCoMKgwqDCoMKgIHzCoCA1IC0tLS0tCj4gwqBhcmNoL3Jp
+c2N2L2luY2x1ZGUvYXNtL2t2bV9ob3N0LmjCoMKgIHzCoCAxIC0KPiDCoGFyY2gvcmlzY3Yva3Zt
+L21haW4uY8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfMKgIDUgLS0tLS0KPiDCoGFyY2gv
+czM5MC9rdm0va3ZtLXMzOTAuY8KgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfCAxMCAtLS0tLS0tLS0t
+Cj4gwqBhcmNoL3g4Ni9rdm0veDg2LmPCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+IHwgMTAgLS0tLS0tLS0tLQo+IMKgaW5jbHVkZS9saW51eC9rdm1faG9zdC5owqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoCB8wqAgMiAtLQo+IMKgdmlydC9rdm0va3ZtX21haW4uY8KgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgIHzCoCA3IC0tLS0tLS0KPiDCoDEyIGZpbGVzIGNoYW5nZWQsIDUz
+IGRlbGV0aW9ucygtKQoKUmV2aWV3ZWQtYnk6IEVyaWMgRmFybWFuIDxmYXJtYW5AbGludXguaWJt
+LmNvbT4JIyBzMzkwCg==
 
-Reviewed-by: Eric Farman <farman@linux.ibm.com>
