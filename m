@@ -2,88 +2,91 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE6D261E822
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Nov 2022 02:08:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B25F61E823
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Nov 2022 02:09:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N5CmF59TGz3dsy
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Nov 2022 12:08:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N5CnH1Pz7z3cMl
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Nov 2022 12:09:39 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bApY2Q0M;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm1 header.b=l2cADUiQ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=d0/EBKeu;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=rmclure@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=russell.cc (client-ip=64.147.123.24; helo=wout1-smtp.messagingengine.com; envelope-from=ruscur@russell.cc; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bApY2Q0M;
+	dkim=pass (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm1 header.b=l2cADUiQ;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=d0/EBKeu;
 	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com [64.147.123.24])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N5ClH0jc3z2ywV
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Nov 2022 12:07:54 +1100 (AEDT)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2A6NeWJN031723;
-	Mon, 7 Nov 2022 01:07:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type : subject :
- from : in-reply-to : date : cc : message-id : references : to :
- content-transfer-encoding : mime-version; s=pp1;
- bh=iD8X+BSvtXvGRluzKQRCzeVtQ/ivNYPbISJuoh1kzUU=;
- b=bApY2Q0MuSgFQPRJbJjWMw9E6ABAJ1StUCsRjtSzJLvzNSs5S46DwP3Cg3XgpjtPVv54
- NzmZPh6sKJpWjHdyuMNm+UHtE8MS6ylcsu/9vYSW3CXXLiwdMUE/4ZDDETPDqaCbtF2M
- rH+shBRB3oXbmKCSp33h0OKdbjhyYx3DDgc/RlnWAqVYW6H1iirExCSMjEP89kf1OOLu
- eol5Rwgtbg4QXWOGwbypwFfbwT8NCLepVvTi96WhjhESy36x+xCStjaiAmJf4IOXgcaf
- LCbrsvAYtRXO+I4NRJBWRZmQ4HEVb8SiIOghEtSMrJMB/Xh68bYDXqNig7yUdAswxteD pg== 
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3kp1gkhds5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 07 Nov 2022 01:07:42 +0000
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
-	by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2A715Biq029140;
-	Mon, 7 Nov 2022 01:07:40 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
-	by ppma02fra.de.ibm.com with ESMTP id 3kngpghanb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 07 Nov 2022 01:07:40 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
-	by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2A717cVo65732912
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 7 Nov 2022 01:07:38 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 823A252050;
-	Mon,  7 Nov 2022 01:07:38 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id D793752051;
-	Mon,  7 Nov 2022 01:07:37 +0000 (GMT)
-Received: from smtpclient.apple (haven.au.ibm.com [9.192.254.114])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 224A460257;
-	Mon,  7 Nov 2022 12:07:34 +1100 (AEDT)
-Content-Type: text/plain;
-	charset=us-ascii
-Subject: Re: [PATCH 1/4] powerpc: mm: Replace p{u,m,4}d_is_leaf with
- p{u,m,4}_leaf
-From: Rohan McLure <rmclure@linux.ibm.com>
-In-Reply-To: <20221106224958.1320664-1-rmclure@linux.ibm.com>
-Date: Mon, 7 Nov 2022 12:07:21 +1100
-Message-Id: <C06D6F65-5D88-4012-9CBA-1C7891F89F2E@linux.ibm.com>
-References: <20221106224958.1320664-1-rmclure@linux.ibm.com>
-To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-X-Mailer: Apple Mail (2.3731.200.110.1.12)
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: S306JRScIG92WVN-6Wn0nsOB8es0VMUW
-X-Proofpoint-GUID: S306JRScIG92WVN-6Wn0nsOB8es0VMUW
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N5Cm9183vz3cd2
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Nov 2022 12:08:40 +1100 (AEDT)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+	by mailout.west.internal (Postfix) with ESMTP id A0A4D320090C;
+	Sun,  6 Nov 2022 20:08:37 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute3.internal (MEProxy); Sun, 06 Nov 2022 20:08:37 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=cc
+	:cc:content-transfer-encoding:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:sender:subject:subject:to:to; s=fm1; t=1667783317; x=
+	1667869717; bh=XNyBYibYcVK5GuqQPRW4Lt+Zr0ifgOX3ku7XwbBgZVg=; b=l
+	2cADUiQDcGiypAiG3conzuutTHMfaAOXskLcnN1dpQEr72ttmUk884nW13OvZTTd
+	i8IFdQ9gOE/Gz0/z1aOILaaJ8YVIWP04yzZvOSPhQmszWTIyLMKOksVvIxnuTuDJ
+	yEsM/1a+PDDNeeFFSeowy4F+xVVSzN5gEs2NwmZo0uGGFdnNqlWCV+ng3OlZMWah
+	dVhs86SQylniU/vaArnYeioGnCqs12npZ8LJTeMbXG23EcONH7LsJ2je9gnZ0YNR
+	ZnpJt3TFwix8tyWvZIT5E/EGisqsZguLSQ9ksw1E4GiMby2OSSie7HoJuPCLxuSN
+	lx+vsSOMVk+0/uaDrbtnQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1667783317; x=
+	1667869717; bh=XNyBYibYcVK5GuqQPRW4Lt+Zr0ifgOX3ku7XwbBgZVg=; b=d
+	0/EBKeuwc/aRUAv6JAp7wIz9QletriSLFZBfCLYeYSn+SH+NThjRIgGXenF+KtUD
+	d3HmxY9L+lyPmqSDYnoorUEO4ifOXvIIm3OEsgjMElEWxWS3nqFIfXFY8lqZ0ybf
+	7OA8L8qbQrm0k9PiH946aHrinzEET9E59Ue0l+0/CKg9l0QD40qMH3o7EZR00Io3
+	gFGA/LWeEtYRqOVgmYy9I2XaRsIWrtEjXq27RqDAaWB5VGMbGDstGDHPL5Hqwtom
+	/y+1BBOtZVULRMG24OsRzkmCdkDf8oCFegSIGzYjw2/mZXhyWQSdbvQjk5/1Gz1g
+	9lw/p6WwIunXpfVN+zdDA==
+X-ME-Sender: <xms:lFpoYyYB3GcOAoPW9Y88D-xWPvuWAW1w1x0zPR_reWRrCGsdmdtS2A>
+    <xme:lFpoY1a9six_bongppSY2kC-WFT5yIBhZbAPKgWkRqp-2Ta8jhRX9OTUO9a663HYm
+    a3OO7I_NONkH-i1bQ>
+X-ME-Received: <xmr:lFpoY8853rQRFPxkRpohR2wB759cycdlq3fer48KAdTEp4ez5zkBLRetlo-FE-8zBAbirT8WO-l4Vbv_1t9Re9XoMGP1Qz066sf-F9YryXJBlQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvgedrvdejgdefudcutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenfg
+    hrlhcuvffnffculddutddmnecujfgurhepkffuhffvveffjghftgfgfgggsehtsgertddt
+    reejnecuhfhrohhmpeftuhhsshgvlhhlucevuhhrrhgvhicuoehruhhstghurhesrhhush
+    hsvghllhdrtggtqeenucggtffrrghtthgvrhhnpeelgefhvedvgedulefhhfffhffgjedu
+    feehhfeiuedvjeejleffveejffelleehjeenucffohhmrghinhepghhithhhuhgsrdgtoh
+    hmpdhkvghrnhgvlhdrohhrghdpvgigtggvphhtihhonhhsqdeigehsrdhssgdpieegrdhs
+    sgenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehruh
+    hstghurhesrhhushhsvghllhdrtggt
+X-ME-Proxy: <xmx:lVpoY0oDRrwaqZllwPPWlMlcPtkzWov_WdMdNRBqqwDFsI95Avuu6Q>
+    <xmx:lVpoY9qmP4F0fHcI-ZL1jpGgaW45v2pOgwrJUFObFM8Jyg-cMlnUHA>
+    <xmx:lVpoYySD4JXyLn0rXKQZFv8T6i5zaC13gEzO1_NFMIm1IKMzvuSABg>
+    <xmx:lVpoY-BtGkzjaCT6aPno4z15xNsNEUfp33eRJb5Aa8KZ32pYKP1QkQ>
+Feedback-ID: i4421424f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 6 Nov 2022 20:08:35 -0500 (EST)
+Message-ID: <87aa4cce8ae878dc61bd460dec2c98704f82acdd.camel@russell.cc>
+Subject: Re: [PATCH 2/4] powerpc/64s: Clear gprs on interrupt routine entry
+ on Book3S
+From: Russell Currey <ruscur@russell.cc>
+To: Rohan McLure <rmclure@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Date: Mon, 07 Nov 2022 12:08:33 +1100
+In-Reply-To: <20221102224528.639894-2-rmclure@linux.ibm.com>
+References: <20221102224528.639894-1-rmclure@linux.ibm.com>
+	 <20221102224528.639894-2-rmclure@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-11-06_16,2022-11-03_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0
- lowpriorityscore=0 mlxscore=0 mlxlogscore=999 suspectscore=0 clxscore=1015
- priorityscore=1501 malwarescore=0 impostorscore=0 phishscore=0 spamscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2210170000 definitions=main-2211070006
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,377 +98,271 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> On 7 Nov 2022, at 9:49 am, Rohan McLure <rmclure@linux.ibm.com> wrote:
->=20
-> Replace occurrences of p{u,m,4}d_is_leaf with p{u,m,4}_leaf, as the
-> latter is the name given to checking that a higher-level entry in
-> multi-level paging contains a page translation entry (pte). This commit
-> allows for p{u,m,4}d_leaf to be used on all powerpc platforms.
->=20
-> Prior to this commit, the two names have both been present in the
-> kernel, having as far as I can tell the same exact purpose. While the
-> 'is' in the title may better indicate that the macro/function is a
-> boolean returning check, the former naming scheme is standard through
-> all other architectures.
->=20
-> 32-bit systems import pgtable-nop4d.h which defines a default pud_leaf.
-> Define pud_leaf preprocessor macro on both Book3E/S 32-bit to avoid
-> including the default definition in asm/pgtable.h.
->=20
-> Signed-off-by: Rohan McLure <rmclure@linux.ibm.com>
-> ---
-> V4: new patch.
-> ---
-> arch/powerpc/include/asm/book3s/32/pgtable.h |  2 +-
-> arch/powerpc/include/asm/book3s/64/pgtable.h | 10 ++++------
-> arch/powerpc/include/asm/nohash/32/pgtable.h |  1 +
-> arch/powerpc/include/asm/pgtable.h           | 18 +++++++++---------
-> arch/powerpc/kvm/book3s_64_mmu_radix.c       | 12 ++++++------
-> arch/powerpc/mm/book3s64/radix_pgtable.c     | 14 +++++++-------
-> arch/powerpc/mm/pgtable.c                    |  6 +++---
-> arch/powerpc/mm/pgtable_64.c                 |  6 +++---
-> arch/powerpc/xmon/xmon.c                     |  6 +++---
-> 9 files changed, 37 insertions(+), 38 deletions(-)
->=20
-> diff --git a/arch/powerpc/include/asm/book3s/32/pgtable.h b/arch/powerpc/=
-include/asm/book3s/32/pgtable.h
-> index 75823f39e042..f1b91ad8f3a5 100644
-> --- a/arch/powerpc/include/asm/book3s/32/pgtable.h
-> +++ b/arch/powerpc/include/asm/book3s/32/pgtable.h
-> @@ -234,6 +234,7 @@ void unmap_kernel_page(unsigned long va);
-> #define pte_clear(mm, addr, ptep) \
-> do { pte_update(mm, addr, ptep, ~_PAGE_HASHPTE, 0, 0); } while (0)
->=20
-> +#define pud_leaf pud_leaf
-> #define pmd_none(pmd) (!pmd_val(pmd))
-> #define pmd_bad(pmd) (pmd_val(pmd) & _PMD_BAD)
-> #define pmd_present(pmd) (pmd_val(pmd) & _PMD_PRESENT_MASK)
-> @@ -242,7 +243,6 @@ static inline void pmd_clear(pmd_t *pmdp)
-> *pmdp =3D __pmd(0);
-> }
->=20
-> -
-> /*
->  * When flushing the tlb entry for a page, we also need to flush the hash
->  * table entry.  flush_hash_pages is assembler (for speed) in hashtable.S.
-> diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/=
-include/asm/book3s/64/pgtable.h
-> index c436d8422654..3f51de24e4fc 100644
-> --- a/arch/powerpc/include/asm/book3s/64/pgtable.h
-> +++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
-> @@ -1426,16 +1426,14 @@ static inline bool is_pte_rw_upgrade(unsigned lon=
-g old_val, unsigned long new_va
-> /*
->  * Like pmd_huge() and pmd_large(), but works regardless of config options
->  */
-> -#define pmd_is_leaf pmd_is_leaf
-> -#define pmd_leaf pmd_is_leaf
-> -static inline bool pmd_is_leaf(pmd_t pmd)
-> +#define pmd_leaf pmd_leaf
-> +static inline bool pmd_leaf(pmd_t pmd)
-> {
-> return !!(pmd_raw(pmd) & cpu_to_be64(_PAGE_PTE));
-> }
->=20
-> -#define pud_is_leaf pud_is_leaf
-> -#define pud_leaf pud_is_leaf
-> -static inline bool pud_is_leaf(pud_t pud)
-> +#define pud_leaf pud_leaf
-> +static inline bool pud_leaf(pud_t pud)
-> {
-> return !!(pud_raw(pud) & cpu_to_be64(_PAGE_PTE));
-> }
-> diff --git a/arch/powerpc/include/asm/nohash/32/pgtable.h b/arch/powerpc/=
-include/asm/nohash/32/pgtable.h
-> index 0d40b33184eb..04a3b0b128eb 100644
-> --- a/arch/powerpc/include/asm/nohash/32/pgtable.h
-> +++ b/arch/powerpc/include/asm/nohash/32/pgtable.h
-> @@ -201,6 +201,7 @@ static inline pte_t pte_mkexec(pte_t pte)
-> }
-> #endif
->=20
-> +#define pud_leaf pud_leaf
-> #define pmd_none(pmd) (!pmd_val(pmd))
-> #define pmd_bad(pmd) (pmd_val(pmd) & _PMD_BAD)
-> #define pmd_present(pmd) (pmd_val(pmd) & _PMD_PRESENT_MASK)
-> diff --git a/arch/powerpc/include/asm/pgtable.h b/arch/powerpc/include/as=
-m/pgtable.h
-> index 283f40d05a4d..8e7625a89922 100644
-> --- a/arch/powerpc/include/asm/pgtable.h
-> +++ b/arch/powerpc/include/asm/pgtable.h
-> @@ -134,25 +134,25 @@ static inline void pte_frag_set(mm_context_t *ctx, =
-void *p)
-> }
-> #endif
->=20
-> -#ifndef pmd_is_leaf
-> -#define pmd_is_leaf pmd_is_leaf
-> -static inline bool pmd_is_leaf(pmd_t pmd)
-> +#ifndef pmd_leaf
-> +#define pmd_leaf pmd_leaf
-> +static inline bool pmd_leaf(pmd_t pmd)
-> {
-> return false;
-> }
-> #endif
->=20
-> -#ifndef pud_is_leaf
-> -#define pud_is_leaf pud_is_leaf
-> -static inline bool pud_is_leaf(pud_t pud)
-> +#ifndef pud_leaf
-> +#define pud_leaf pud_leaf
-> +static inline bool pud_leaf(pud_t pud)
-> {
-> return false;
-> }
-> #endif
->=20
-> -#ifndef p4d_is_leaf
-> -#define p4d_is_leaf p4d_is_leaf
-> -static inline bool p4d_is_leaf(p4d_t p4d)
-> +#ifndef p4d_leaf
-> +#define p4d_leaf p4d_leaf
-> +static inline bool p4d_leaf(p4d_t p4d)
-> {
-> return false;
-> }
-> diff --git a/arch/powerpc/kvm/book3s_64_mmu_radix.c b/arch/powerpc/kvm/bo=
-ok3s_64_mmu_radix.c
-> index 5d5e12f3bf86..d29f8d1d97a6 100644
-> --- a/arch/powerpc/kvm/book3s_64_mmu_radix.c
-> +++ b/arch/powerpc/kvm/book3s_64_mmu_radix.c
-> @@ -497,7 +497,7 @@ static void kvmppc_unmap_free_pmd(struct kvm *kvm, pm=
-d_t *pmd, bool full,
-> for (im =3D 0; im < PTRS_PER_PMD; ++im, ++p) {
-> if (!pmd_present(*p))
-> continue;
-> - if (pmd_is_leaf(*p)) {
-> + if (pmd_leaf(*p)) {
-> if (full) {
-> pmd_clear(p);
-> } else {
-> @@ -526,7 +526,7 @@ static void kvmppc_unmap_free_pud(struct kvm *kvm, pu=
-d_t *pud,
-> for (iu =3D 0; iu < PTRS_PER_PUD; ++iu, ++p) {
-> if (!pud_present(*p))
-> continue;
-> - if (pud_is_leaf(*p)) {
-> + if (pud_leaf(*p)) {
-> pud_clear(p);
-> } else {
-> pmd_t *pmd;
-> @@ -629,12 +629,12 @@ int kvmppc_create_pte(struct kvm *kvm, pgd_t *pgtab=
-le, pte_t pte,
-> new_pud =3D pud_alloc_one(kvm->mm, gpa);
->=20
-> pmd =3D NULL;
-> - if (pud && pud_present(*pud) && !pud_is_leaf(*pud))
-> + if (pud && pud_present(*pud) && !pud_leaf(*pud))
-> pmd =3D pmd_offset(pud, gpa);
-> else if (level <=3D 1)
-> new_pmd =3D kvmppc_pmd_alloc();
->=20
-> - if (level =3D=3D 0 && !(pmd && pmd_present(*pmd) && !pmd_is_leaf(*pmd)))
-> + if (level =3D=3D 0 && !(pmd && pmd_present(*pmd) && !pmd_leaf(*pmd)))
-> new_ptep =3D kvmppc_pte_alloc();
->=20
-> /* Check if we might have been invalidated; let the guest retry if so */
-> @@ -652,7 +652,7 @@ int kvmppc_create_pte(struct kvm *kvm, pgd_t *pgtable=
-, pte_t pte,
-> new_pud =3D NULL;
-> }
-> pud =3D pud_offset(p4d, gpa);
-> - if (pud_is_leaf(*pud)) {
-> + if (pud_leaf(*pud)) {
-> unsigned long hgpa =3D gpa & PUD_MASK;
->=20
-> /* Check if we raced and someone else has set the same thing */
-> @@ -703,7 +703,7 @@ int kvmppc_create_pte(struct kvm *kvm, pgd_t *pgtable=
-, pte_t pte,
-> new_pmd =3D NULL;
-> }
-> pmd =3D pmd_offset(pud, gpa);
-> - if (pmd_is_leaf(*pmd)) {
-> + if (pmd_leaf(*pmd)) {
-> unsigned long lgpa =3D gpa & PMD_MASK;
->=20
-> /* Check if we raced and someone else has set the same thing */
-> diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/b=
-ook3s64/radix_pgtable.c
-> index cac727b01799..8ac27e031ff4 100644
-> --- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-> +++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-> @@ -205,14 +205,14 @@ static void radix__change_memory_range(unsigned lon=
-g start, unsigned long end,
-> pudp =3D pud_alloc(&init_mm, p4dp, idx);
-> if (!pudp)
-> continue;
-> - if (pud_is_leaf(*pudp)) {
-> + if (pud_leaf(*pudp)) {
-> ptep =3D (pte_t *)pudp;
-> goto update_the_pte;
-> }
-> pmdp =3D pmd_alloc(&init_mm, pudp, idx);
-> if (!pmdp)
-> continue;
-> - if (pmd_is_leaf(*pmdp)) {
-> + if (pmd_leaf(*pmdp)) {
-> ptep =3D pmdp_ptep(pmdp);
-> goto update_the_pte;
-> }
-> @@ -762,7 +762,7 @@ static void __meminit remove_pmd_table(pmd_t *pmd_sta=
-rt, unsigned long addr,
-> if (!pmd_present(*pmd))
-> continue;
->=20
-> - if (pmd_is_leaf(*pmd)) {
-> + if (pmd_leaf(*pmd)) {
-> if (!IS_ALIGNED(addr, PMD_SIZE) ||
->    !IS_ALIGNED(next, PMD_SIZE)) {
-> WARN_ONCE(1, "%s: unaligned range\n", __func__);
-> @@ -792,7 +792,7 @@ static void __meminit remove_pud_table(pud_t *pud_sta=
-rt, unsigned long addr,
-> if (!pud_present(*pud))
-> continue;
->=20
-> - if (pud_is_leaf(*pud)) {
-> + if (pud_leaf(*pud)) {
-> if (!IS_ALIGNED(addr, PUD_SIZE) ||
->    !IS_ALIGNED(next, PUD_SIZE)) {
-> WARN_ONCE(1, "%s: unaligned range\n", __func__);
-> @@ -825,7 +825,7 @@ static void __meminit remove_pagetable(unsigned long =
-start, unsigned long end)
-> if (!p4d_present(*p4d))
-> continue;
->=20
-> - if (p4d_is_leaf(*p4d)) {
-> + if (p4d_leaf(*p4d)) {
-> if (!IS_ALIGNED(addr, P4D_SIZE) ||
->    !IS_ALIGNED(next, P4D_SIZE)) {
-> WARN_ONCE(1, "%s: unaligned range\n", __func__);
-> @@ -1088,7 +1088,7 @@ int pud_set_huge(pud_t *pud, phys_addr_t addr, pgpr=
-ot_t prot)
->=20
-> int pud_clear_huge(pud_t *pud)
-> {
-> - if (pud_is_leaf(*pud)) {
-> + if (pud_leaf(*pud)) {
-> pud_clear(pud);
-> return 1;
-> }
-> @@ -1135,7 +1135,7 @@ int pmd_set_huge(pmd_t *pmd, phys_addr_t addr, pgpr=
-ot_t prot)
->=20
-> int pmd_clear_huge(pmd_t *pmd)
-> {
-> - if (pmd_is_leaf(*pmd)) {
-> + if (pmd_leaf(*pmd)) {
-> pmd_clear(pmd);
-> return 1;
-> }
-> diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
-> index cb2dcdb18f8e..35b9677b9553 100644
-> --- a/arch/powerpc/mm/pgtable.c
-> +++ b/arch/powerpc/mm/pgtable.c
-> @@ -387,7 +387,7 @@ pte_t *__find_linux_pte(pgd_t *pgdir, unsigned long e=
-a,
-> if (p4d_none(p4d))
-> return NULL;
->=20
-> - if (p4d_is_leaf(p4d)) {
-> + if (p4d_leaf(p4d)) {
-> ret_pte =3D (pte_t *)p4dp;
-> goto out;
-> }
-> @@ -409,7 +409,7 @@ pte_t *__find_linux_pte(pgd_t *pgdir, unsigned long e=
-a,
-> if (pud_none(pud))
-> return NULL;
->=20
-> - if (pud_is_leaf(pud)) {
-> + if (pud_leaf(pud)) {
-> ret_pte =3D (pte_t *)pudp;
-> goto out;
-> }
-> @@ -448,7 +448,7 @@ pte_t *__find_linux_pte(pgd_t *pgdir, unsigned long e=
-a,
-> goto out;
-> }
->=20
-> - if (pmd_is_leaf(pmd)) {
-> + if (pmd_leaf(pmd)) {
-> ret_pte =3D (pte_t *)pmdp;
-> goto out;
-> }
-> diff --git a/arch/powerpc/mm/pgtable_64.c b/arch/powerpc/mm/pgtable_64.c
-> index 5ac1fd30341b..0604c80dae66 100644
-> --- a/arch/powerpc/mm/pgtable_64.c
-> +++ b/arch/powerpc/mm/pgtable_64.c
-> @@ -100,7 +100,7 @@ EXPORT_SYMBOL(__pte_frag_size_shift);
-> /* 4 level page table */
-> struct page *p4d_page(p4d_t p4d)
-> {
-> - if (p4d_is_leaf(p4d)) {
-> + if (p4d_leaf(p4d)) {
-> if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMAP))
-> VM_WARN_ON(!p4d_huge(p4d));
-> return pte_page(p4d_pte(p4d));
-> @@ -111,7 +111,7 @@ struct page *p4d_page(p4d_t p4d)
->=20
-> struct page *pud_page(pud_t pud)
-> {
-> - if (pud_is_leaf(pud)) {
-> + if (pud_leaf(pud)) {
-> if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMAP))
-> VM_WARN_ON(!pud_huge(pud));
-> return pte_page(pud_pte(pud));
-> @@ -125,7 +125,7 @@ struct page *pud_page(pud_t pud)
->  */
-> struct page *pmd_page(pmd_t pmd)
-> {
-> - if (pmd_is_leaf(pmd)) {
-> + if (pmd_leaf(pmd)) {
-> /*
-> * vmalloc_to_page may be called on any vmap address (not only
-> * vmalloc), and it uses pmd_page() etc., when huge vmap is
-> diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-> index f51c882bf902..705c230dd4f5 100644
-> --- a/arch/powerpc/xmon/xmon.c
-> +++ b/arch/powerpc/xmon/xmon.c
-> @@ -3342,7 +3342,7 @@ static void show_pte(unsigned long addr)
-> return;
-> }
->=20
-> - if (p4d_is_leaf(*p4dp)) {
-> + if (p4d_leaf(*p4dp)) {
-> format_pte(p4dp, p4d_val(*p4dp));
-> return;
-> }
-> @@ -3356,7 +3356,7 @@ static void show_pte(unsigned long addr)
-> return;
-> }
->=20
-> - if (pud_is_leaf(*pudp)) {
-> + if (pud_leaf(*pudp)) {
-> format_pte(pudp, pud_val(*pudp));
-> return;
-> }
-> @@ -3370,7 +3370,7 @@ static void show_pte(unsigned long addr)
-> return;
-> }
->=20
-> - if (pmd_is_leaf(*pmdp)) {
-> + if (pmd_leaf(*pmdp)) {
-> format_pte(pmdp, pmd_val(*pmdp));
-> return;
-> }
-> --=20
-> 2.34.1
->=20
+T24gVGh1LCAyMDIyLTExLTAzIGF0IDA5OjQ1ICsxMTAwLCBSb2hhbiBNY0x1cmUgd3JvdGU6Cj4g
+WmVybyB1c2VyIHN0YXRlIGluIGdwcnMgKGFzc2lnbiB0byB6ZXJvKSB0byByZWR1Y2UgdGhlIGlu
+Zmx1ZW5jZSBvZgo+IHVzZXIKPiByZWdpc3RlcnMgb24gc3BlY3VsYXRpb24gd2l0aGluIGtlcm5l
+bCBzeXNjYWxsIGhhbmRsZXJzLiBDbGVhcnMgb2NjdXIKPiBhdCB0aGUgdmVyeSBiZWdpbm5pbmcg
+b2YgdGhlIHNjIGFuZCBzY3YgMCBpbnRlcnJ1cHQgaGFuZGxlcnMsIHdpdGgKPiByZXN0b3JlcyBv
+Y2N1cnJpbmcgZm9sbG93aW5nIHRoZSBleGVjdXRpb24gb2YgdGhlIHN5c2NhbGwgaGFuZGxlci4K
+PiAKPiBaZXJvIEdQUlMgcjAsIHIyLXIxMSwgcjE0LXIzMSwgb24gZW50cnkgaW50byB0aGUga2Vy
+bmVsIGZvciBhbGwKPiBvdGhlciBpbnRlcnJ1cHQgc291cmNlcy4gVGhlIHJlbWFpbmluZyBncHJz
+IGFyZSBvdmVyd3JpdHRlbiBieQo+IGVudHJ5IG1hY3JvcyB0byBpbnRlcnJ1cHQgaGFuZGxlcnMs
+IGlycmVzcGVjdGl2ZSBvZiB3aGV0aGVyIG9yIG5vdCBhCj4gZ2l2ZW4gaGFuZGxlciBjb25zdW1l
+cyB0aGVzZSByZWdpc3RlciB2YWx1ZXMuCj4gCj4gUHJpb3IgdG8gdGhpcyBjb21taXQsIHIxNC1y
+MzEgYXJlIHJlc3RvcmVkIG9uIGEgcGVyLWludGVycnVwdCBiYXNpcwo+IGF0Cj4gZXhpdCwgYnV0
+IG5vdyB0aGV5IGFyZSBhbHdheXMgcmVzdG9yZWQgb24gNjRiaXQgQm9vazNTLiBSZW1vdmUKPiBl
+eHBsaWNpdAo+IFJFU1RfTlZHUFJTIGludm9jYXRpb25zIG9uIDY0LWJpdCBCb29rM1MuIDMyLWJp
+dCBzeXN0ZW1zIGRvIG5vdCBjbGVhcgo+IHVzZXIgcmVnaXN0ZXJzIG9uIGludGVycnVwdCwgYW5k
+IGNvbnRpbnVlIHRvIGRlcGVuZCBvbiB0aGUgcmV0dXJuCj4gdmFsdWUKPiBvZiBpbnRlcnJ1cHRf
+ZXhpdF91c2VyX3ByZXBhcmUgdG8gZGV0ZXJtaW5lIHdoZXRoZXIgb3Igbm90IHRvIHJlc3RvcmUK
+PiBub24tdm9sYXRpbGVzLgo+IAo+IFRoZSBtbWFwX2JlbmNoIGJlbmNobWFyayBpbiBzZWxmdGVz
+dHMgc2hvdWxkIHJhcGlkbHkgaW52b2tlCj4gcGFnZWZhdWx0cy4KPiBTZWUgfjAuOCUgcGVyZm9y
+bWFuY2UgcmVncmVzc2lvbiB3aXRoIHRoaXMgbWl0aWdhdGlvbiwgYnV0IHRoaXMKPiBpbmRpY2F0
+ZXMgdGhlIHdvcnN0LWNhc2UgcGVyZm9ybWFuY2UgZHVlIHRvIGhlYXZpZXItd2VpZ2h0IGludGVy
+cnVwdAo+IGhhbmRsZXJzLiBUaGlzIG1pdGlnYXRpb24gaXMgYWJsZSB0byBiZSBlbmFibGVkL2Rp
+c2FibGVkIHRocm91Z2gKPiBDT05GSUdfSU5URVJSVVBUX1NBTklUSVpFX1JFR0lTVEVSUy4KPiAK
+PiBTaWduZWQtb2ZmLWJ5OiBSb2hhbiBNY0x1cmUgPHJtY2x1cmVAbGludXguaWJtLmNvbT4KPiAt
+LS0KCkhpIFJvaGFuLCBJIGhhdmVuJ3QgZmlndXJlZCBvdXQgd2hhdCBpdCdzIGNvbWluZyBmcm9t
+LCBidXQgSSdtIHNlZWluZwphc3NlbWJsZXIgZXJyb3JzIGZyb20gdGhpcyBwYXRjaDoKCiAgIC9s
+aW51eC9hcmNoL3Bvd2VycGMva2VybmVsL2ludGVycnVwdF82NC5TOiBBc3NlbWJsZXIgbWVzc2Fn
+ZXM6CiAgIC9saW51eC9hcmNoL3Bvd2VycGMva2VybmVsL2ludGVycnVwdF82NC5TOjIxMjogRXJy
+b3I6IHRvbyBtYW55CiAgIHBvc2l0aW9uYWwgYXJndW1lbnRzCiAgIC9saW51eC9hcmNoL3Bvd2Vy
+cGMva2VybmVsL2ludGVycnVwdF82NC5TOjIxOTogRXJyb3I6IHRvbyBtYW55CiAgIHBvc2l0aW9u
+YWwgYXJndW1lbnRzCiAgIC9saW51eC9hcmNoL3Bvd2VycGMva2VybmVsL2ludGVycnVwdF82NC5T
+OjMwMjogRXJyb3I6IHRvbyBtYW55CiAgIHBvc2l0aW9uYWwgYXJndW1lbnRzCiAgIApMb2cgaGVy
+ZToKaHR0cHM6Ly9naXRodWIuY29tL3J1c2N1ci9saW51eC1jaS9hY3Rpb25zL3J1bnMvMzM4MTcx
+MTc0OC9qb2JzLzU2MTU5MDM4NzYjc3RlcDo0Ojk4CiAgIAoKPiBSZXN1Ym1pdHRpbmcgcGF0Y2hl
+cyBhcyB0aGVpciBvd24gc2VyaWVzIGFmdGVyIHY2IHBhcnRpYWxseSBtZXJnZWQ6Cj4gTGluazoK
+PiBodHRwczovL2xvcmUua2VybmVsLm9yZy9hbGwvMTY2NDg4OTg4Njg2Ljc3OTkyMC4xMzc5NDg3
+MDEwMjY5NjQxNjI4My5iNC10eUBlbGxlcm1hbi5pZC5hdS90Lwo+IAo+IFN0YW5kYWxvbmUgc2Vy
+aWVzOiBOb3cgc3lzY2FsbCByZWdpc3RlciBjbGVhcmluZyBpcyBpbmNsdWRlZAo+IHVuZGVyIHRo
+ZSBzYW1lIGNvbmZpZ3VyYXRpb24gb3B0aW9uLiBUaGlzIG5vdyBtYXRjaGVzIHRoZQo+IGRlc2Ny
+aXB0aW9uIGdpdmVuIGZvciBDT05GSUdfSU5URVJSVVBUX1NBTklUSVpFX1JFR0lTVEVSUy4KPiAt
+LS0KPiDCoGFyY2gvcG93ZXJwYy9rZXJuZWwvZXhjZXB0aW9ucy02NHMuUyB8IDQ3ICsrKysrKysr
+KysrKysrKysrKysrKy0tLS0tCj4gwqBhcmNoL3Bvd2VycGMva2VybmVsL2ludGVycnVwdF82NC5T
+wqDCoCB8IDM0ICsrKysrKysrKysrKysrKysrKysKPiDCoDIgZmlsZXMgY2hhbmdlZCwgNzIgaW5z
+ZXJ0aW9ucygrKSwgOSBkZWxldGlvbnMoLSkKPiAKPiBkaWZmIC0tZ2l0IGEvYXJjaC9wb3dlcnBj
+L2tlcm5lbC9leGNlcHRpb25zLTY0cy5TCj4gYi9hcmNoL3Bvd2VycGMva2VybmVsL2V4Y2VwdGlv
+bnMtNjRzLlMKPiBpbmRleCA2NTFjMzZiMDU2YmQuLjA2MDUwMTg3NjJkMSAxMDA2NDQKPiAtLS0g
+YS9hcmNoL3Bvd2VycGMva2VybmVsL2V4Y2VwdGlvbnMtNjRzLlMKPiArKysgYi9hcmNoL3Bvd2Vy
+cGMva2VybmVsL2V4Y2VwdGlvbnMtNjRzLlMKPiBAQCAtMjEsNiArMjEsMTkgQEAKPiDCoCNpbmNs
+dWRlIDxhc20vZmVhdHVyZS1maXh1cHMuaD4KPiDCoCNpbmNsdWRlIDxhc20va3VwLmg+Cj4gwqAK
+PiArLyoKPiArICogbWFjcm9zIGZvciBoYW5kbGluZyB1c2VyIHJlZ2lzdGVyIHNhbml0aXNhdGlv
+bgo+ICsgKi8KPiArI2lmZGVmIENPTkZJR19JTlRFUlJVUFRfU0FOSVRJWkVfUkVHSVNURVJTCj4g
+KyNkZWZpbmUgU0FOSVRJWkVfWkVST0laRV9OVkdQUlMoKcKgwqDCoMKgwqDCoFpFUk9JWkVfTlZH
+UFJTKCkKPiArI2RlZmluZSBTQU5JVElaRV9SRVNUT1JFX05WR1BSUygpwqDCoMKgwqDCoMKgUkVT
+VF9OVkdQUlMocjEpCj4gKyNkZWZpbmUgSEFORExFUl9SRVNUT1JFX05WR1BSUygpCj4gKyNlbHNl
+Cj4gKyNkZWZpbmUgU0FOSVRJWkVfWkVST0laRV9OVkdQUlMoKQo+ICsjZGVmaW5lIFNBTklUSVpF
+X1JFU1RPUkVfTlZHUFJTKCkKPiArI2RlZmluZSBIQU5ETEVSX1JFU1RPUkVfTlZHUFJTKCnCoMKg
+wqDCoMKgwqDCoFJFU1RfTlZHUFJTKHIxKQo+ICsjZW5kaWYgLyogQ09ORklHX0lOVEVSUlVQVF9T
+QU5JVElaRV9SRUdJU1RFUlMgKi8KPiArCj4gwqAvKgo+IMKgICogRm9sbG93aW5nIGFyZSBmaXhl
+ZCBzZWN0aW9uIGhlbHBlciBtYWNyb3MuCj4gwqAgKgo+IEBAIC0xMTEsNiArMTI0LDcgQEAgbmFt
+ZToKPiDCoCNkZWZpbmUgSVNUQUNLwqDCoMKgwqDCoMKgwqDCoMKgLkxfSVNUQUNLX1xuYW1lXCgp
+wqDCoMKgwqDCoMKgLyogU2V0IHJlZ3VsYXIga2VybmVsCj4gc3RhY2sgKi8KPiDCoCNkZWZpbmUg
+X19JU1RBQ0sobmFtZSnCoC5MX0lTVEFDS18gIyMgbmFtZQo+IMKgI2RlZmluZSBJS1VBUMKgwqDC
+oMKgwqDCoMKgwqDCoMKgLkxfSUtVQVBfXG5hbWVcKCnCoMKgwqDCoMKgwqDCoC8qIERvIEtVQVAg
+bG9jayAqLwo+ICsjZGVmaW5lIElNU1JfUjEywqDCoMKgwqDCoMKgwqAuTF9JTVNSX1IxMl9cbmFt
+ZVwoKcKgwqDCoMKgLyogQXNzdW1lcyBNU1Igc2F2ZWQKPiB0byByMTIgKi8KPiDCoAo+IMKgI2Rl
+ZmluZQo+IElOVF9ERUZJTkVfQkVHSU4obinCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+XAo+IMKgLm1hY3JvIGludF9kZWZpbmVfICMjIG4gbmFtZQo+IEBAIC0xNzYsNiArMTkwLDkgQEAg
+ZG9fZGVmaW5lX2ludCBuCj4gwqDCoMKgwqDCoMKgwqDCoC5pZm5kZWYgSUtVQVAKPiDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoElLVUFQPTEKPiDCoMKgwqDCoMKgwqDCoMKgLmVuZGlm
+Cj4gK8KgwqDCoMKgwqDCoMKgLmlmbmRlZiBJTVNSX1IxMgo+ICvCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqBJTVNSX1IxMj0wCj4gK8KgwqDCoMKgwqDCoMKgLmVuZGlmCj4gwqAuZW5kbQo+
+IMKgCj4gwqAvKgo+IEBAIC01MDIsNiArNTE5LDcgQEAgREVGSU5FX0ZJWEVEX1NZTUJPTChcbmFt
+ZVwoKV9jb21tb25fcmVhbCwgdGV4dCkKPiDCoMKgwqDCoMKgwqDCoMKgc3RkwqDCoMKgwqDCoHIx
+MCwwKHIxKcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoC8qIG1ha2Ugc3RhY2sgY2hhaW4K
+PiBwb2ludGVywqDCoMKgwqDCoCovCj4gwqDCoMKgwqDCoMKgwqDCoHN0ZMKgwqDCoMKgwqByMCxH
+UFIwKHIxKcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgLyogc2F2ZSByMCBpbgo+IHN0YWNrZnJh
+bWXCoMKgwqDCoMKgwqDCoMKgKi8KPiDCoMKgwqDCoMKgwqDCoMKgc3RkwqDCoMKgwqDCoHIxMCxH
+UFIxKHIxKcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoC8qIHNhdmUgcjEgaW4KPiBzdGFja2ZyYW1l
+wqDCoMKgwqDCoMKgwqDCoCovCj4gK8KgwqDCoMKgwqDCoMKgWkVST0laRV9HUFIoMCkKPiDCoAo+
+IMKgwqDCoMKgwqDCoMKgwqAvKiBNYXJrIG91ciBbSF1TUlJzIHZhbGlkIGZvciByZXR1cm4gKi8K
+PiDCoMKgwqDCoMKgwqDCoMKgbGnCoMKgwqDCoMKgwqByMTAsMQo+IEBAIC01NDQsOCArNTYyLDE0
+IEBAIEVORF9GVFJfU0VDVElPTl9JRlNFVChDUFVfRlRSX0hBU19QUFIpCj4gwqDCoMKgwqDCoMKg
+wqDCoHN0ZMKgwqDCoMKgwqByOSxHUFIxMShyMSkKPiDCoMKgwqDCoMKgwqDCoMKgc3RkwqDCoMKg
+wqDCoHIxMCxHUFIxMihyMSkKPiDCoMKgwqDCoMKgwqDCoMKgc3RkwqDCoMKgwqDCoHIxMSxHUFIx
+MyhyMSkKPiArwqDCoMKgwqDCoMKgwqAuaWYgIUlNU1JfUjEyCj4gK8KgwqDCoMKgwqDCoMKgWkVS
+T0laRV9HUFJTKDksIDEyKQo+ICvCoMKgwqDCoMKgwqDCoC5lbHNlCj4gK8KgwqDCoMKgwqDCoMKg
+WkVST0laRV9HUFJTKDksIDExKQo+ICvCoMKgwqDCoMKgwqDCoC5lbmRpZgo+IMKgCj4gwqDCoMKg
+wqDCoMKgwqDCoFNBVkVfTlZHUFJTKHIxKQo+ICvCoMKgwqDCoMKgwqDCoFNBTklUSVpFX1pFUk9J
+WkVfTlZHUFJTKCkKPiDCoAo+IMKgwqDCoMKgwqDCoMKgwqAuaWYgSURBUgo+IMKgwqDCoMKgwqDC
+oMKgwqAuaWYgSUlTSURFCj4gQEAgLTU3Nyw4ICs2MDEsOCBAQCBCRUdJTl9GVFJfU0VDVElPTgo+
+IMKgRU5EX0ZUUl9TRUNUSU9OX0lGU0VUKENQVV9GVFJfQ0ZBUikKPiDCoMKgwqDCoMKgwqDCoMKg
+bGTCoMKgwqDCoMKgwqByMTAsSUFSRUErRVhfQ1RSKHIxMykKPiDCoMKgwqDCoMKgwqDCoMKgc3Rk
+wqDCoMKgwqDCoHIxMCxfQ1RSKHIxKQo+IC3CoMKgwqDCoMKgwqDCoHN0ZMKgwqDCoMKgwqByMixH
+UFIyKHIxKcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgLyogc2F2ZSByMiBpbgo+IHN0YWNrZnJh
+bWXCoMKgwqDCoMKgwqDCoMKgKi8KPiAtwqDCoMKgwqDCoMKgwqBTQVZFX0dQUlMoMywgOCwgcjEp
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAvKiBzYXZlIHIzIC0gcjggaW4KPiBzdGFja2ZyYW1l
+wqDCoCAqLwo+ICvCoMKgwqDCoMKgwqDCoFNBVkVfR1BSUygyLCA4LCByMSnCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoC8qIHNhdmUgcjIgLSByOCBpbgo+IHN0YWNrZnJhbWXCoMKgICovCj4gK8Kg
+wqDCoMKgwqDCoMKgWkVST0laRV9HUFJTKDIsIDgpCj4gwqDCoMKgwqDCoMKgwqDCoG1mbHLCoMKg
+wqDCoHI5wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAvKiBHZXQg
+TFIsIGxhdGVyIHNhdmUgdG8KPiBzdGFja8KgwqAqLwo+IMKgwqDCoMKgwqDCoMKgwqBMT0FEX1BB
+Q0FfVE9DKCnCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgLyogZ2V0IGtlcm5lbCBU
+T0MgaW50bwo+IHIywqDCoMKgwqDCoMKgwqAqLwo+IMKgwqDCoMKgwqDCoMKgwqBzdGTCoMKgwqDC
+oMKgcjksX0xJTksocjEpCj4gQEAgLTY5Niw2ICs3MjAsNyBAQCBFTkRfRlRSX1NFQ1RJT05fSUZT
+RVQoQ1BVX0ZUUl9DRkFSKQo+IMKgwqDCoMKgwqDCoMKgwqBtdGxywqDCoMKgwqByOQo+IMKgwqDC
+oMKgwqDCoMKgwqBsZMKgwqDCoMKgwqDCoHI5LF9DQ1IocjEpCj4gwqDCoMKgwqDCoMKgwqDCoG10
+Y3LCoMKgwqDCoHI5Cj4gK8KgwqDCoMKgwqDCoMKgU0FOSVRJWkVfUkVTVE9SRV9OVkdQUlMoKQo+
+IMKgwqDCoMKgwqDCoMKgwqBSRVNUX0dQUlMoMiwgMTMsIHIxKQo+IMKgwqDCoMKgwqDCoMKgwqBS
+RVNUX0dQUigwLCByMSkKPiDCoMKgwqDCoMKgwqDCoMKgLyogcmVzdG9yZSBvcmlnaW5hbCByMS4g
+Ki8KPiBAQCAtMTQ0MSw3ICsxNDY2LDcgQEAKPiBBTFRfTU1VX0ZUUl9TRUNUSU9OX0VORF9JRkNM
+UihNTVVfRlRSX1RZUEVfUkFESVgpCj4gwqDCoMKgwqDCoMKgwqDCoCAqIGRvX2JyZWFrKCkgbWF5
+IGhhdmUgY2hhbmdlZCB0aGUgTlYgR1BSUyB3aGlsZSBoYW5kbGluZyBhCj4gYnJlYWtwb2ludC4K
+PiDCoMKgwqDCoMKgwqDCoMKgICogSWYgc28sIHdlIG5lZWQgdG8gcmVzdG9yZSB0aGVtIHdpdGgg
+dGhlaXIgdXBkYXRlZCB2YWx1ZXMuCj4gwqDCoMKgwqDCoMKgwqDCoCAqLwo+IC3CoMKgwqDCoMKg
+wqDCoFJFU1RfTlZHUFJTKHIxKQo+ICvCoMKgwqDCoMKgwqDCoEhBTkRMRVJfUkVTVE9SRV9OVkdQ
+UlMoKQo+IMKgwqDCoMKgwqDCoMKgwqBiwqDCoMKgwqDCoMKgwqBpbnRlcnJ1cHRfcmV0dXJuX3Ny
+cgo+IMKgCj4gwqAKPiBAQCAtMTY2Nyw3ICsxNjkyLDcgQEAgRVhDX0NPTU1PTl9CRUdJTihhbGln
+bm1lbnRfY29tbW9uKQo+IMKgwqDCoMKgwqDCoMKgwqBHRU5fQ09NTU9OIGFsaWdubWVudAo+IMKg
+wqDCoMKgwqDCoMKgwqBhZGRpwqDCoMKgwqByMyxyMSxTVEFDS19GUkFNRV9PVkVSSEVBRAo+IMKg
+wqDCoMKgwqDCoMKgwqBibMKgwqDCoMKgwqDCoGFsaWdubWVudF9leGNlcHRpb24KPiAtwqDCoMKg
+wqDCoMKgwqBSRVNUX05WR1BSUyhyMSkgLyogaW5zdHJ1Y3Rpb24gZW11bGF0aW9uIG1heSBjaGFu
+Z2UgR1BScyAqLwo+ICvCoMKgwqDCoMKgwqDCoEhBTkRMRVJfUkVTVE9SRV9OVkdQUlMoKSAvKiBp
+bnN0cnVjdGlvbiBlbXVsYXRpb24gbWF5IGNoYW5nZQo+IEdQUnMgKi8KPiDCoMKgwqDCoMKgwqDC
+oMKgYsKgwqDCoMKgwqDCoMKgaW50ZXJydXB0X3JldHVybl9zcnIKPiDCoAo+IMKgCj4gQEAgLTE3
+MzMsNyArMTc1OCw3IEBAIEVYQ19DT01NT05fQkVHSU4ocHJvZ3JhbV9jaGVja19jb21tb24pCj4g
+wqAuTGRvX3Byb2dyYW1fY2hlY2s6Cj4gwqDCoMKgwqDCoMKgwqDCoGFkZGnCoMKgwqDCoHIzLHIx
+LFNUQUNLX0ZSQU1FX09WRVJIRUFECj4gwqDCoMKgwqDCoMKgwqDCoGJswqDCoMKgwqDCoMKgcHJv
+Z3JhbV9jaGVja19leGNlcHRpb24KPiAtwqDCoMKgwqDCoMKgwqBSRVNUX05WR1BSUyhyMSkgLyog
+aW5zdHJ1Y3Rpb24gZW11bGF0aW9uIG1heSBjaGFuZ2UgR1BScyAqLwo+ICvCoMKgwqDCoMKgwqDC
+oEhBTkRMRVJfUkVTVE9SRV9OVkdQUlMoKSAvKiBpbnN0cnVjdGlvbiBlbXVsYXRpb24gbWF5IGNo
+YW5nZQo+IEdQUnMgKi8KPiDCoMKgwqDCoMKgwqDCoMKgYsKgwqDCoMKgwqDCoMKgaW50ZXJydXB0
+X3JldHVybl9zcnIKPiDCoAo+IMKgCj4gQEAgLTE3NTEsNiArMTc3Niw3IEBAIElOVF9ERUZJTkVf
+QkVHSU4oZnBfdW5hdmFpbGFibGUpCj4gwqAjaWZkZWYgQ09ORklHX0tWTV9CT09LM1NfUFJfUE9T
+U0lCTEUKPiDCoMKgwqDCoMKgwqDCoMKgSUtWTV9SRUFMPTEKPiDCoCNlbmRpZgo+ICvCoMKgwqDC
+oMKgwqDCoElNU1JfUjEyPTEKPiDCoElOVF9ERUZJTkVfRU5EKGZwX3VuYXZhaWxhYmxlKQo+IMKg
+Cj4gwqBFWENfUkVBTF9CRUdJTihmcF91bmF2YWlsYWJsZSwgMHg4MDAsIDB4MTAwKQo+IEBAIC0y
+MTY0LDcgKzIxOTAsNyBAQCBFWENfQ09NTU9OX0JFR0lOKGVtdWxhdGlvbl9hc3Npc3RfY29tbW9u
+KQo+IMKgwqDCoMKgwqDCoMKgwqBHRU5fQ09NTU9OIGVtdWxhdGlvbl9hc3Npc3QKPiDCoMKgwqDC
+oMKgwqDCoMKgYWRkacKgwqDCoMKgcjMscjEsU1RBQ0tfRlJBTUVfT1ZFUkhFQUQKPiDCoMKgwqDC
+oMKgwqDCoMKgYmzCoMKgwqDCoMKgwqBlbXVsYXRpb25fYXNzaXN0X2ludGVycnVwdAo+IC3CoMKg
+wqDCoMKgwqDCoFJFU1RfTlZHUFJTKHIxKSAvKiBpbnN0cnVjdGlvbiBlbXVsYXRpb24gbWF5IGNo
+YW5nZSBHUFJzICovCj4gK8KgwqDCoMKgwqDCoMKgSEFORExFUl9SRVNUT1JFX05WR1BSUygpIC8q
+IGluc3RydWN0aW9uIGVtdWxhdGlvbiBtYXkgY2hhbmdlCj4gR1BScyAqLwo+IMKgwqDCoMKgwqDC
+oMKgwqBiwqDCoMKgwqDCoMKgwqBpbnRlcnJ1cHRfcmV0dXJuX2hzcnIKPiDCoAo+IMKgCj4gQEAg
+LTIzODQsNiArMjQxMCw3IEBAIElOVF9ERUZJTkVfQkVHSU4oYWx0aXZlY191bmF2YWlsYWJsZSkK
+PiDCoCNpZmRlZiBDT05GSUdfS1ZNX0JPT0szU19QUl9QT1NTSUJMRQo+IMKgwqDCoMKgwqDCoMKg
+wqBJS1ZNX1JFQUw9MQo+IMKgI2VuZGlmCj4gK8KgwqDCoMKgwqDCoMKgSU1TUl9SMTI9MQo+IMKg
+SU5UX0RFRklORV9FTkQoYWx0aXZlY191bmF2YWlsYWJsZSkKPiDCoAo+IMKgRVhDX1JFQUxfQkVH
+SU4oYWx0aXZlY191bmF2YWlsYWJsZSwgMHhmMjAsIDB4MjApCj4gQEAgLTI0MzMsNiArMjQ2MCw3
+IEBAIElOVF9ERUZJTkVfQkVHSU4odnN4X3VuYXZhaWxhYmxlKQo+IMKgI2lmZGVmIENPTkZJR19L
+Vk1fQk9PSzNTX1BSX1BPU1NJQkxFCj4gwqDCoMKgwqDCoMKgwqDCoElLVk1fUkVBTD0xCj4gwqAj
+ZW5kaWYKPiArwqDCoMKgwqDCoMKgwqBJTVNSX1IxMj0xCj4gwqBJTlRfREVGSU5FX0VORCh2c3hf
+dW5hdmFpbGFibGUpCj4gwqAKPiDCoEVYQ19SRUFMX0JFR0lOKHZzeF91bmF2YWlsYWJsZSwgMHhm
+NDAsIDB4MjApCj4gQEAgLTI0OTQsNyArMjUyMiw3IEBAIEVYQ19DT01NT05fQkVHSU4oZmFjaWxp
+dHlfdW5hdmFpbGFibGVfY29tbW9uKQo+IMKgwqDCoMKgwqDCoMKgwqBHRU5fQ09NTU9OIGZhY2ls
+aXR5X3VuYXZhaWxhYmxlCj4gwqDCoMKgwqDCoMKgwqDCoGFkZGnCoMKgwqDCoHIzLHIxLFNUQUNL
+X0ZSQU1FX09WRVJIRUFECj4gwqDCoMKgwqDCoMKgwqDCoGJswqDCoMKgwqDCoMKgZmFjaWxpdHlf
+dW5hdmFpbGFibGVfZXhjZXB0aW9uCj4gLcKgwqDCoMKgwqDCoMKgUkVTVF9OVkdQUlMocjEpIC8q
+IGluc3RydWN0aW9uIGVtdWxhdGlvbiBtYXkgY2hhbmdlIEdQUnMgKi8KPiArwqDCoMKgwqDCoMKg
+wqBIQU5ETEVSX1JFU1RPUkVfTlZHUFJTKCkgLyogaW5zdHJ1Y3Rpb24gZW11bGF0aW9uIG1heSBj
+aGFuZ2UKPiBHUFJzICovCj4gwqDCoMKgwqDCoMKgwqDCoGLCoMKgwqDCoMKgwqDCoGludGVycnVw
+dF9yZXR1cm5fc3JyCj4gwqAKPiDCoAo+IEBAIC0yNTIyLDcgKzI1NTAsOCBAQCBFWENfQ09NTU9O
+X0JFR0lOKGhfZmFjaWxpdHlfdW5hdmFpbGFibGVfY29tbW9uKQo+IMKgwqDCoMKgwqDCoMKgwqBH
+RU5fQ09NTU9OIGhfZmFjaWxpdHlfdW5hdmFpbGFibGUKPiDCoMKgwqDCoMKgwqDCoMKgYWRkacKg
+wqDCoMKgcjMscjEsU1RBQ0tfRlJBTUVfT1ZFUkhFQUQKPiDCoMKgwqDCoMKgwqDCoMKgYmzCoMKg
+wqDCoMKgwqBmYWNpbGl0eV91bmF2YWlsYWJsZV9leGNlcHRpb24KPiAtwqDCoMKgwqDCoMKgwqBS
+RVNUX05WR1BSUyhyMSkgLyogWFhYIFNob3VsZG4ndCBiZSBuZWNlc3NhcnkgaW4gcHJhY3RpY2Ug
+Ki8KPiArwqDCoMKgwqDCoMKgwqAvKiBYWFggU2hvdWxkbid0IGJlIG5lY2Vzc2FyeSBpbiBwcmFj
+dGljZSAqLwo+ICvCoMKgwqDCoMKgwqDCoEhBTkRMRVJfUkVTVE9SRV9OVkdQUlMoKQo+IMKgwqDC
+oMKgwqDCoMKgwqBiwqDCoMKgwqDCoMKgwqBpbnRlcnJ1cHRfcmV0dXJuX2hzcnIKPiDCoAo+IMKg
+Cj4gQEAgLTI3NDgsNyArMjc3Nyw3IEBAIEVYQ19DT01NT05fQkVHSU4oYWx0aXZlY19hc3Npc3Rf
+Y29tbW9uKQo+IMKgwqDCoMKgwqDCoMKgwqBhZGRpwqDCoMKgwqByMyxyMSxTVEFDS19GUkFNRV9P
+VkVSSEVBRAo+IMKgI2lmZGVmIENPTkZJR19BTFRJVkVDCj4gwqDCoMKgwqDCoMKgwqDCoGJswqDC
+oMKgwqDCoMKgYWx0aXZlY19hc3Npc3RfZXhjZXB0aW9uCj4gLcKgwqDCoMKgwqDCoMKgUkVTVF9O
+VkdQUlMocjEpIC8qIGluc3RydWN0aW9uIGVtdWxhdGlvbiBtYXkgY2hhbmdlIEdQUnMgKi8KPiAr
+wqDCoMKgwqDCoMKgwqBIQU5ETEVSX1JFU1RPUkVfTlZHUFJTKCkgLyogaW5zdHJ1Y3Rpb24gZW11
+bGF0aW9uIG1heSBjaGFuZ2UKPiBHUFJzICovCj4gwqAjZWxzZQo+IMKgwqDCoMKgwqDCoMKgwqBi
+bMKgwqDCoMKgwqDCoHVua25vd25fZXhjZXB0aW9uCj4gwqAjZW5kaWYKPiBkaWZmIC0tZ2l0IGEv
+YXJjaC9wb3dlcnBjL2tlcm5lbC9pbnRlcnJ1cHRfNjQuUwo+IGIvYXJjaC9wb3dlcnBjL2tlcm5l
+bC9pbnRlcnJ1cHRfNjQuUwo+IGluZGV4IGEwMTllZDZmYzgzOS4uMjZjMDRiODNkYTFiIDEwMDY0
+NAo+IC0tLSBhL2FyY2gvcG93ZXJwYy9rZXJuZWwvaW50ZXJydXB0XzY0LlMKPiArKysgYi9hcmNo
+L3Bvd2VycGMva2VybmVsL2ludGVycnVwdF82NC5TCj4gQEAgLTEzLDYgKzEzLDIwIEBACj4gwqAj
+aW5jbHVkZSA8YXNtL3BwY19hc20uaD4KPiDCoCNpbmNsdWRlIDxhc20vcHRyYWNlLmg+Cj4gwqAK
+PiArLyoKPiArICogbWFjcm9zIGZvciBoYW5kbGluZyB1c2VyIHJlZ2lzdGVyIHNhbml0aXNhdGlv
+bgo+ICsgKi8KPiArI2lmZGVmIENPTkZJR19JTlRFUlJVUFRfU0FOSVRJWkVfUkVHSVNURVJTCj4g
+KyNkZWZpbmUgU0FOSVRJWkVfWkVST0laRV9TWVNDQUxMX0dQUlMoKcKgwqDCoMKgwqDCoMKgwqBc
+Cj4gK8KgwqDCoMKgwqDCoMKgWkVST0laRV9HUFIoMCnCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqBcwqDCoMKgwqDCoMKgwqAKCkdldHRpbmcgYSB3YXJuaW5nIGZyb20gc29tZSB0
+cmFpbGluZyB3aGl0ZXNwYWNlIG9uIHRoaXMgbGluZS4KCj4gK8KgwqDCoMKgwqDCoMKgWkVST0la
+RV9HUFJTKDUsIDEyKcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgXAo+ICvCoMKgwqDCoMKgwqDC
+oFpFUk9JWkVfTlZHUFJTKCkKPiArI2RlZmluZSBTQU5JVElaRV9SRVNUT1JFX05WR1BSUygpwqDC
+oMKgwqDCoMKgUkVTVF9OVkdQUlMocjEpCj4gKyNlbHNlCj4gKyNkZWZpbmUgU0FOSVRJWkVfWkVS
+T0laRV9TWVNDQUxMX0dQUlMoKQo+ICsjZGVmaW5lIFNBTklUSVpFX1JFU1RPUkVfTlZHUFJTKCkK
+PiArI2VuZGlmIC8qIENPTkZJR19JTlRFUlJVUFRfU0FOSVRJWkVfUkVHSVNURVJTICovCj4gKwo+
+IMKgwqDCoMKgwqDCoMKgwqAuYWxpZ24gNwo+IMKgCj4gwqAubWFjcm8gREVCVUdfU1JSX1ZBTElE
+IHNycgo+IEBAIC05Niw2ICsxMTAsMTEgQEAgRU5EX0ZUUl9TRUNUSU9OX0lGU0VUKENQVV9GVFJf
+SEFTX1BQUikKPiDCoMKgwqDCoMKgwqDCoMKgICogYnV0IHRoaXMgaXMgdGhlIGJlc3Qgd2UgY2Fu
+IGRvLgo+IMKgwqDCoMKgwqDCoMKgwqAgKi8KPiDCoAo+ICvCoMKgwqDCoMKgwqDCoC8qCj4gK8Kg
+wqDCoMKgwqDCoMKgICogWmVybyB1c2VyIHJlZ2lzdGVycyB0byBwcmV2ZW50IGluZmx1ZW5jaW5n
+IHNwZWN1bGF0aXZlCj4gZXhlY3V0aW9uCj4gK8KgwqDCoMKgwqDCoMKgICogc3RhdGUgb2Yga2Vy
+bmVsIGNvZGUuCj4gK8KgwqDCoMKgwqDCoMKgICovCj4gK8KgwqDCoMKgwqDCoMKgU0FOSVRJWkVf
+WkVST0laRV9TWVNDQUxMX0dQUlMoKQo+IMKgwqDCoMKgwqDCoMKgwqBibMKgwqDCoMKgwqDCoHN5
+c3RlbV9jYWxsX2V4Y2VwdGlvbgo+IMKgCj4gwqAuTHN5c2NhbGxfdmVjdG9yZWRfXG5hbWVcKClf
+ZXhpdDoKPiBAQCAtMTI0LDYgKzE0Myw3IEBAIEJFR0lOX0ZUUl9TRUNUSU9OCj4gwqDCoMKgwqDC
+oMKgwqDCoEhNVF9NRURJVU1fTE9XCj4gwqBFTkRfRlRSX1NFQ1RJT05fSUZTRVQoQ1BVX0ZUUl9I
+QVNfUFBSKQo+IMKgCj4gK8KgwqDCoMKgwqDCoMKgUkVTVF9OVkdQUlMocjEpCgpTaG91bGQgdGhp
+cyBiZSBTQU5JVElaRV9SRVNUT1JFX05WR1BSUygpPwoKPiDCoMKgwqDCoMKgwqDCoMKgY21wZGnC
+oMKgwqByMywwCj4gwqDCoMKgwqDCoMKgwqDCoGJuZcKgwqDCoMKgwqAuTHN5c2NhbGxfdmVjdG9y
+ZWRfXG5hbWVcKClfcmVzdG9yZV9yZWdzCj4gwqAKPiBAQCAtMjc1LDYgKzI5NSwxMSBAQCBFTkRf
+QlRCX0ZMVVNIX1NFQ1RJT04KPiDCoMKgwqDCoMKgwqDCoMKgd3J0ZWVpwqDCoDEKPiDCoCNlbmRp
+Zgo+IMKgCj4gK8KgwqDCoMKgwqDCoMKgLyoKPiArwqDCoMKgwqDCoMKgwqAgKiBaZXJvIHVzZXIg
+cmVnaXN0ZXJzIHRvIHByZXZlbnQgaW5mbHVlbmNpbmcgc3BlY3VsYXRpdmUKPiBleGVjdXRpb24K
+PiArwqDCoMKgwqDCoMKgwqAgKiBzdGF0ZSBvZiBrZXJuZWwgY29kZS4KPiArwqDCoMKgwqDCoMKg
+wqAgKi8KPiArwqDCoMKgwqDCoMKgwqBTQU5JVElaRV9aRVJPSVpFX1NZU0NBTExfR1BSUygpCj4g
+wqDCoMKgwqDCoMKgwqDCoGJswqDCoMKgwqDCoMKgc3lzdGVtX2NhbGxfZXhjZXB0aW9uCj4gwqAK
+PiDCoC5Mc3lzY2FsbF9leGl0Ogo+IEBAIC0zMTUsNiArMzQwLDcgQEAgQkVHSU5fRlRSX1NFQ1RJ
+T04KPiDCoMKgwqDCoMKgwqDCoMKgc3RkY3guwqDCoHIwLDAscjHCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgLyogdG8gY2xlYXIgdGhlIHJlc2VydmF0aW9uCj4gKi8KPiDCoEVORF9G
+VFJfU0VDVElPTl9JRkNMUihDUFVfRlRSX1NUQ1hfQ0hFQ0tTX0FERFJFU1MpCj4gwqAKPiArwqDC
+oMKgwqDCoMKgwqBTQU5JVElaRV9SRVNUT1JFX05WR1BSUygpCj4gwqDCoMKgwqDCoMKgwqDCoGNt
+cGRpwqDCoMKgcjMsMAo+IMKgwqDCoMKgwqDCoMKgwqBibmXCoMKgwqDCoMKgLkxzeXNjYWxsX3Jl
+c3RvcmVfcmVncwo+IMKgwqDCoMKgwqDCoMKgwqAvKiBaZXJvIHZvbGF0aWxlIHJlZ3MgdGhhdCBt
+YXkgY29udGFpbiBzZW5zaXRpdmUga2VybmVsIGRhdGEKPiAqLwo+IEBAIC0zNDIsNyArMzY4LDkg
+QEAgRU5EX0ZUUl9TRUNUSU9OX0lGU0VUKENQVV9GVFJfSEFTX1BQUikKPiDCoC5Mc3lzY2FsbF9y
+ZXN0b3JlX3JlZ3M6Cj4gwqDCoMKgwqDCoMKgwqDCoGxkwqDCoMKgwqDCoMKgcjMsX0NUUihyMSkK
+PiDCoMKgwqDCoMKgwqDCoMKgbGTCoMKgwqDCoMKgwqByNCxfWEVSKHIxKQo+ICsjaWZuZGVmIENP
+TkZJR19JTlRFUlJVUFRfU0FOSVRJWkVfUkVHSVNURVJTCj4gwqDCoMKgwqDCoMKgwqDCoFJFU1Rf
+TlZHUFJTKHIxKQo+ICsjZW5kaWYKPiDCoMKgwqDCoMKgwqDCoMKgbXRjdHLCoMKgwqByMwo+IMKg
+wqDCoMKgwqDCoMKgwqBtdHNwcsKgwqDCoFNQUk5fWEVSLHI0Cj4gwqDCoMKgwqDCoMKgwqDCoFJF
+U1RfR1BSKDAsIHIxKQo+IEBAIC00MDgsOSArNDM2LDExIEBAIGludGVycnVwdF9yZXR1cm5fXHNy
+clwoKV91c2VyOiAvKiBtYWtlCj4gYmFja3RyYWNlcyBtYXRjaCB0aGUgX2tlcm5lbCB2YXJpYW50
+ICovCj4gwqBfQVNNX05PS1BST0JFX1NZTUJPTChpbnRlcnJ1cHRfcmV0dXJuX1xzcnJcKClfdXNl
+cikKPiDCoMKgwqDCoMKgwqDCoMKgYWRkacKgwqDCoMKgcjMscjEsU1RBQ0tfRlJBTUVfT1ZFUkhF
+QUQKPiDCoMKgwqDCoMKgwqDCoMKgYmzCoMKgwqDCoMKgwqBpbnRlcnJ1cHRfZXhpdF91c2VyX3By
+ZXBhcmUKPiArI2lmbmRlZiBDT05GSUdfSU5URVJSVVBUX1NBTklUSVpFX1JFR0lTVEVSUwo+IMKg
+wqDCoMKgwqDCoMKgwqBjbXBkacKgwqDCoHIzLDAKPiDCoMKgwqDCoMKgwqDCoMKgYm5lLcKgwqDC
+oMKgLkxyZXN0b3JlX252Z3Byc19cc3JyCj4gwqAuTHJlc3RvcmVfbnZncHJzX1xzcnJcKClfY29u
+dDoKPiArI2VuZGlmCj4gwqDCoMKgwqDCoMKgwqDCoHN0ZMKgwqDCoMKgwqByMSxQQUNBX0VYSVRf
+U0FWRV9SMShyMTMpIC8qIHNhdmUgcjEgZm9yIHJlc3RhcnQgKi8KPiDCoCNpZmRlZiBDT05GSUdf
+UFBDX0JPT0szUwo+IMKgLkxpbnRlcnJ1cHRfcmV0dXJuX1xzcnJcKClfdXNlcl9yc3Rfc3RhcnQ6
+Cj4gQEAgLTQyNCw2ICs0NTQsNyBAQAo+IF9BU01fTk9LUFJPQkVfU1lNQk9MKGludGVycnVwdF9y
+ZXR1cm5fXHNyclwoKV91c2VyKQo+IMKgwqDCoMKgwqDCoMKgwqBzdGLCoMKgwqDCoMKgcjExLFBB
+Q0FJUlFIQVBQRU5FRChyMTMpICMgY2xlYXIgb3V0IHBvc3NpYmxlCj4gSEFSRF9ESVMKPiDCoAo+
+IMKgLkxmYXN0X3VzZXJfaW50ZXJydXB0X3JldHVybl9cc3JyXCgpOgo+ICvCoMKgwqDCoMKgwqDC
+oFNBTklUSVpFX1JFU1RPUkVfTlZHUFJTKCkKPiDCoCNpZmRlZiBDT05GSUdfUFBDX0JPT0szUwo+
+IMKgwqDCoMKgwqDCoMKgwqAuaWZjIFxzcnIsc3JyCj4gwqDCoMKgwqDCoMKgwqDCoGxiesKgwqDC
+oMKgwqByNCxQQUNBU1JSX1ZBTElEKHIxMykKPiBAQCAtNDkzLDkgKzUyNCwxMSBAQAo+IEFMVF9G
+VFJfU0VDVElPTl9FTkRfSUZDTFIoQ1BVX0ZUUl9TVENYX0NIRUNLU19BRERSRVNTKQo+IMKgwqDC
+oMKgwqDCoMKgwqBiwqDCoMKgwqDCoMKgwqAuwqDCoMKgwqDCoMKgwqAvKiBwcmV2ZW50IHNwZWN1
+bGF0aXZlIGV4ZWN1dGlvbiAqLwo+IMKgLkxpbnRlcnJ1cHRfcmV0dXJuX1xzcnJcKClfdXNlcl9y
+c3RfZW5kOgo+IMKgCj4gKyNpZm5kZWYgQ09ORklHX0lOVEVSUlVQVF9TQU5JVElaRV9SRUdJU1RF
+UlMKPiDCoC5McmVzdG9yZV9udmdwcnNfXHNyclwoKToKPiDCoMKgwqDCoMKgwqDCoMKgUkVTVF9O
+VkdQUlMocjEpCj4gwqDCoMKgwqDCoMKgwqDCoGLCoMKgwqDCoMKgwqDCoC5McmVzdG9yZV9udmdw
+cnNfXHNyclwoKV9jb250Cj4gKyNlbmRpZgo+IMKgCj4gwqAjaWZkZWYgQ09ORklHX1BQQ19CT09L
+M1MKPiDCoGludGVycnVwdF9yZXR1cm5fXHNyclwoKV91c2VyX3Jlc3RhcnQ6Cj4gQEAgLTU4NSw2
+ICs2MTgsNyBAQAo+IF9BU01fTk9LUFJPQkVfU1lNQk9MKGludGVycnVwdF9yZXR1cm5fXHNyclwo
+KV9rZXJuZWwpCj4gwqDCoMKgwqDCoMKgwqDCoHN0YsKgwqDCoMKgwqByMTEsUEFDQUlSUUhBUFBF
+TkVEKHIxMykgLy8gY2xlYXIgdGhlIHBvc3NpYmxlCj4gSEFSRF9ESVMKPiDCoAo+IMKgLkxmYXN0
+X2tlcm5lbF9pbnRlcnJ1cHRfcmV0dXJuX1xzcnJcKCk6Cj4gK8KgwqDCoMKgwqDCoMKgU0FOSVRJ
+WkVfUkVTVE9SRV9OVkdQUlMoKQo+IMKgwqDCoMKgwqDCoMKgwqBjbXBkacKgwqDCoGNyMSxyMyww
+Cj4gwqAjaWZkZWYgQ09ORklHX1BQQ19CT09LM1MKPiDCoMKgwqDCoMKgwqDCoMKgLmlmYyBcc3Jy
+LHNycgoK
 
-This should in fact be a v4. v3 available here:
-Link: https://lore.kernel.org/all/cf3cf708786602bef0aade511356420ee387e0f9.=
-camel@russell.cc/t/=
