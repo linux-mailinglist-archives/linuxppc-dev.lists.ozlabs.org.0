@@ -2,81 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C39B561EB01
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Nov 2022 07:30:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B268561EAFF
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Nov 2022 07:29:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N5LvD4w3Sz3f3F
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Nov 2022 17:30:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N5LtC4bjXz3cKv
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Nov 2022 17:29:23 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=RE1m5ri1;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SegejC7a;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=rmclure@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=RE1m5ri1;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SegejC7a;
 	dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N5LsB03Zxz3bhZ
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N5LsB01Hhz2yR9
 	for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Nov 2022 17:28:29 +1100 (AEDT)
 Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2A751TKu020349;
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2A74aENn016561;
 	Mon, 7 Nov 2022 06:28:23 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : content-transfer-encoding : mime-version; s=pp1;
- bh=Eipv6Bg4J2UTJ+sQD44V9cJ9p/7x3bvLxRWl/q/R5yY=;
- b=RE1m5ri19NFC9tf/x1e319d+SuAZ+uRW8paQCBwS71jwN3GInIdGaqCc1usK40rP+1/2
- MjrKDKMqF4OHxxbAERF1HWe0F+aTj7EEpL8vpKb6seeceQ5Rv4dlilJ75nvZBy8eJ/9P
- +mu29/7EOKPAP6tTHQW0IahpmlZeQcQNBePUJv24BspZA4QVb01mRohGYn1n5BvehB6l
- gJYpygInxa7wEaF8mwz7Bvtrho3dHcZ0oBqM+jerrkbAEi7DLQOJ89QikhAsV12h7pSF
- VfkYMjVrdNInsvqoHGM2e1mTbifnhNFMHqL0n9ICfmWTssKhf6HOKmCXtGqbS4nFgXQt Mw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3kp14wr86p-1
+ : date : message-id : in-reply-to : references : content-transfer-encoding
+ : mime-version; s=pp1; bh=bvrikZ77NeaazMl7ISn3Kpc1BQtL7I3XX7c13Fm2bgQ=;
+ b=SegejC7aiUxN9IhNlbf9sUUN23Mh5NFOoS1P5mVg61969ueZQ2hTyQ6q890fHt5CPV9v
+ GZt7gFpkLdteOnGV1oku4oUU0dD6Wtzsu3oa2A1VhLogFcUvZ+g6kJWQegAjudlMQMv5
+ x1dIUqpHhii4dEBAr2APz0kojCymIucELdddRcJjftq+xH6Rif3hXxdSejmxl0OMCAhH
+ iqFtuXpUGIO68EBQ3cHNhkuywgfU3gxwcsEKX39U075LIXgfAIEag9ffQ0gewXLNGuwa
+ PZRIc0ieDv4CLb0hdjTolY4m9pLRrO1D8r/ULHPfHYo98ZMI1q2dWWUHGlYBB/DJW+Lg WQ== 
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3kp14wr868-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Mon, 07 Nov 2022 06:28:22 +0000
-Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2A75GsaI014282;
-	Mon, 7 Nov 2022 06:28:22 GMT
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3kp14wr860-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 07 Nov 2022 06:28:22 +0000
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
-	by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2A76Lxcv014301;
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+	by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2A76Lcua002129;
 	Mon, 7 Nov 2022 06:28:20 GMT
 Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
-	by ppma06ams.nl.ibm.com with ESMTP id 3kngnca4h1-1
+	by ppma02fra.de.ibm.com with ESMTP id 3kngpghggv-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Mon, 07 Nov 2022 06:28:20 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
-	by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2A76SH5T4981428
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
+	by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2A76SIGv64815370
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 7 Nov 2022 06:28:17 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C078BAE053;
-	Mon,  7 Nov 2022 06:28:17 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6A75DAE045;
+	Mon, 7 Nov 2022 06:28:18 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1444B42047;
+	Mon,  7 Nov 2022 06:28:18 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 698B542042;
 	Mon,  7 Nov 2022 06:28:17 +0000 (GMT)
 Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
 	Mon,  7 Nov 2022 06:28:17 +0000 (GMT)
 Received: from civic.. (unknown [9.177.26.211])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 4E04760257;
-	Mon,  7 Nov 2022 17:28:06 +1100 (AEDT)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 2992860371;
+	Mon,  7 Nov 2022 17:28:10 +1100 (AEDT)
 From: Rohan McLure <rmclure@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 1/4] powerpc/64: Add INTERRUPT_SANITIZE_REGISTERS Kconfig
-Date: Mon,  7 Nov 2022 14:31:59 +1100
-Message-Id: <20221107033202.1375238-1-rmclure@linux.ibm.com>
+Subject: [PATCH v2 2/4] powerpc/64s: Clear gprs on interrupt routine entry on Book3S
+Date: Mon,  7 Nov 2022 14:32:00 +1100
+Message-Id: <20221107033202.1375238-2-rmclure@linux.ibm.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20221107033202.1375238-1-rmclure@linux.ibm.com>
+References: <20221107033202.1375238-1-rmclure@linux.ibm.com>
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 52l07BE0HbHD7hqwlMM0LgoHElfMtXNv
-X-Proofpoint-GUID: 1odUQkTf-wswmqJl1WR9O-_0PBQsjNQg
+X-Proofpoint-ORIG-GUID: VyLAzUIlAcxEQsAd5mKzNbnVIhZ5yRKK
+X-Proofpoint-GUID: VyLAzUIlAcxEQsAd5mKzNbnVIhZ5yRKK
 Content-Transfer-Encoding: 8bit
 X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
@@ -85,7 +80,7 @@ X-Proofpoint-Virus-Version: vendor=baseguard
  definitions=2022-11-06_16,2022-11-03_01,2022-06-22_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 suspectscore=0
  lowpriorityscore=0 adultscore=0 phishscore=0 malwarescore=0
- priorityscore=1501 mlxlogscore=503 mlxscore=0 impostorscore=0
+ priorityscore=1501 mlxlogscore=865 mlxscore=0 impostorscore=0
  clxscore=1015 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2210170000 definitions=main-2211070051
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -99,52 +94,342 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rohan McLure <rmclure@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
+Cc: Rohan McLure <rmclure@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add Kconfig option for enabling clearing of registers on arrival in an
-interrupt handler. This reduces the speculation influence of registers
-on kernel internals. The option will be consumed by 64-bit systems that
-feature speculation and wish to implement this mitigation.
+Zero user state in gprs (assign to zero) to reduce the influence of user
+registers on speculation within kernel syscall handlers. Clears occur
+at the very beginning of the sc and scv 0 interrupt handlers, with
+restores occurring following the execution of the syscall handler.
 
-This patch only introduces the Kconfig option, no actual mitigations.
+Zero GPRS r0, r2-r11, r14-r31, on entry into the kernel for all
+other interrupt sources. The remaining gprs are overwritten by
+entry macros to interrupt handlers, irrespective of whether or not a
+given handler consumes these register values.
 
-The primary overhead of this mitigation lies in an increased number of
-registers that must be saved and restored by interrupt handlers on
-Book3S systems. Enable by default on Book3E systems, which prior to
-this patch eagerly save and restore register state, meaning that the
-mitigation when implemented will have minimal overhead.
+Prior to this commit, r14-r31 are restored on a per-interrupt basis at
+exit, but now they are always restored on 64bit Book3S. Remove explicit
+REST_NVGPRS invocations on 64-bit Book3S. 32-bit systems do not clear
+user registers on interrupt, and continue to depend on the return value
+of interrupt_exit_user_prepare to determine whether or not to restore
+non-volatiles.
 
-Acked-by: Nicholas Piggin <npiggin@gmail.com>
+The mmap_bench benchmark in selftests should rapidly invoke pagefaults.
+See ~0.8% performance regression with this mitigation, but this
+indicates the worst-case performance due to heavier-weight interrupt
+handlers. This mitigation is able to be enabled/disabled through
+CONFIG_INTERRUPT_SANITIZE_REGISTERS.
+
 Signed-off-by: Rohan McLure <rmclure@linux.ibm.com>
 ---
 Resubmitting patches as their own series after v6 partially merged:
 Link: https://lore.kernel.org/all/166488988686.779920.13794870102696416283.b4-ty@ellerman.id.au/t/
----
- arch/powerpc/Kconfig | 9 +++++++++
- 1 file changed, 9 insertions(+)
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 2ca5418457ed..9d3d20c6f365 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -529,6 +529,15 @@ config HOTPLUG_CPU
+v2: REST_NVGPRS should be conditional on mitigation in scv handler. Fix
+improper multi-line preprocessor macro in interrupt_64.S
+---
+ arch/powerpc/kernel/exceptions-64s.S | 47 +++++++++++++++++++++-----
+ arch/powerpc/kernel/interrupt_64.S   | 36 ++++++++++++++++++++
+ 2 files changed, 74 insertions(+), 9 deletions(-)
+
+diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
+index 651c36b056bd..0605018762d1 100644
+--- a/arch/powerpc/kernel/exceptions-64s.S
++++ b/arch/powerpc/kernel/exceptions-64s.S
+@@ -21,6 +21,19 @@
+ #include <asm/feature-fixups.h>
+ #include <asm/kup.h>
  
- 	  Say N if you are unsure.
- 
-+config INTERRUPT_SANITIZE_REGISTERS
-+	bool "Clear gprs on interrupt arrival"
-+	depends on PPC64 && ARCH_HAS_SYSCALL_WRAPPER
-+	default PPC_BOOK3E_64
-+	help
-+	  Reduce the influence of user register state on interrupt handlers and
-+	  syscalls through clearing user state from registers before handling
-+	  the exception.
++/*
++ * macros for handling user register sanitisation
++ */
++#ifdef CONFIG_INTERRUPT_SANITIZE_REGISTERS
++#define SANITIZE_ZEROIZE_NVGPRS()	ZEROIZE_NVGPRS()
++#define SANITIZE_RESTORE_NVGPRS()	REST_NVGPRS(r1)
++#define HANDLER_RESTORE_NVGPRS()
++#else
++#define SANITIZE_ZEROIZE_NVGPRS()
++#define SANITIZE_RESTORE_NVGPRS()
++#define HANDLER_RESTORE_NVGPRS()	REST_NVGPRS(r1)
++#endif /* CONFIG_INTERRUPT_SANITIZE_REGISTERS */
 +
- config PPC_QUEUED_SPINLOCKS
- 	bool "Queued spinlocks" if EXPERT
- 	depends on SMP
+ /*
+  * Following are fixed section helper macros.
+  *
+@@ -111,6 +124,7 @@ name:
+ #define ISTACK		.L_ISTACK_\name\()	/* Set regular kernel stack */
+ #define __ISTACK(name)	.L_ISTACK_ ## name
+ #define IKUAP		.L_IKUAP_\name\()	/* Do KUAP lock */
++#define IMSR_R12	.L_IMSR_R12_\name\()	/* Assumes MSR saved to r12 */
+ 
+ #define INT_DEFINE_BEGIN(n)						\
+ .macro int_define_ ## n name
+@@ -176,6 +190,9 @@ do_define_int n
+ 	.ifndef IKUAP
+ 		IKUAP=1
+ 	.endif
++	.ifndef IMSR_R12
++		IMSR_R12=0
++	.endif
+ .endm
+ 
+ /*
+@@ -502,6 +519,7 @@ DEFINE_FIXED_SYMBOL(\name\()_common_real, text)
+ 	std	r10,0(r1)		/* make stack chain pointer	*/
+ 	std	r0,GPR0(r1)		/* save r0 in stackframe	*/
+ 	std	r10,GPR1(r1)		/* save r1 in stackframe	*/
++	ZEROIZE_GPR(0)
+ 
+ 	/* Mark our [H]SRRs valid for return */
+ 	li	r10,1
+@@ -544,8 +562,14 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
+ 	std	r9,GPR11(r1)
+ 	std	r10,GPR12(r1)
+ 	std	r11,GPR13(r1)
++	.if !IMSR_R12
++	ZEROIZE_GPRS(9, 12)
++	.else
++	ZEROIZE_GPRS(9, 11)
++	.endif
+ 
+ 	SAVE_NVGPRS(r1)
++	SANITIZE_ZEROIZE_NVGPRS()
+ 
+ 	.if IDAR
+ 	.if IISIDE
+@@ -577,8 +601,8 @@ BEGIN_FTR_SECTION
+ END_FTR_SECTION_IFSET(CPU_FTR_CFAR)
+ 	ld	r10,IAREA+EX_CTR(r13)
+ 	std	r10,_CTR(r1)
+-	std	r2,GPR2(r1)		/* save r2 in stackframe	*/
+-	SAVE_GPRS(3, 8, r1)		/* save r3 - r8 in stackframe   */
++	SAVE_GPRS(2, 8, r1)		/* save r2 - r8 in stackframe   */
++	ZEROIZE_GPRS(2, 8)
+ 	mflr	r9			/* Get LR, later save to stack	*/
+ 	LOAD_PACA_TOC()			/* get kernel TOC into r2	*/
+ 	std	r9,_LINK(r1)
+@@ -696,6 +720,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_CFAR)
+ 	mtlr	r9
+ 	ld	r9,_CCR(r1)
+ 	mtcr	r9
++	SANITIZE_RESTORE_NVGPRS()
+ 	REST_GPRS(2, 13, r1)
+ 	REST_GPR(0, r1)
+ 	/* restore original r1. */
+@@ -1441,7 +1466,7 @@ ALT_MMU_FTR_SECTION_END_IFCLR(MMU_FTR_TYPE_RADIX)
+ 	 * do_break() may have changed the NV GPRS while handling a breakpoint.
+ 	 * If so, we need to restore them with their updated values.
+ 	 */
+-	REST_NVGPRS(r1)
++	HANDLER_RESTORE_NVGPRS()
+ 	b	interrupt_return_srr
+ 
+ 
+@@ -1667,7 +1692,7 @@ EXC_COMMON_BEGIN(alignment_common)
+ 	GEN_COMMON alignment
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	bl	alignment_exception
+-	REST_NVGPRS(r1) /* instruction emulation may change GPRs */
++	HANDLER_RESTORE_NVGPRS() /* instruction emulation may change GPRs */
+ 	b	interrupt_return_srr
+ 
+ 
+@@ -1733,7 +1758,7 @@ EXC_COMMON_BEGIN(program_check_common)
+ .Ldo_program_check:
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	bl	program_check_exception
+-	REST_NVGPRS(r1) /* instruction emulation may change GPRs */
++	HANDLER_RESTORE_NVGPRS() /* instruction emulation may change GPRs */
+ 	b	interrupt_return_srr
+ 
+ 
+@@ -1751,6 +1776,7 @@ INT_DEFINE_BEGIN(fp_unavailable)
+ #ifdef CONFIG_KVM_BOOK3S_PR_POSSIBLE
+ 	IKVM_REAL=1
+ #endif
++	IMSR_R12=1
+ INT_DEFINE_END(fp_unavailable)
+ 
+ EXC_REAL_BEGIN(fp_unavailable, 0x800, 0x100)
+@@ -2164,7 +2190,7 @@ EXC_COMMON_BEGIN(emulation_assist_common)
+ 	GEN_COMMON emulation_assist
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	bl	emulation_assist_interrupt
+-	REST_NVGPRS(r1) /* instruction emulation may change GPRs */
++	HANDLER_RESTORE_NVGPRS() /* instruction emulation may change GPRs */
+ 	b	interrupt_return_hsrr
+ 
+ 
+@@ -2384,6 +2410,7 @@ INT_DEFINE_BEGIN(altivec_unavailable)
+ #ifdef CONFIG_KVM_BOOK3S_PR_POSSIBLE
+ 	IKVM_REAL=1
+ #endif
++	IMSR_R12=1
+ INT_DEFINE_END(altivec_unavailable)
+ 
+ EXC_REAL_BEGIN(altivec_unavailable, 0xf20, 0x20)
+@@ -2433,6 +2460,7 @@ INT_DEFINE_BEGIN(vsx_unavailable)
+ #ifdef CONFIG_KVM_BOOK3S_PR_POSSIBLE
+ 	IKVM_REAL=1
+ #endif
++	IMSR_R12=1
+ INT_DEFINE_END(vsx_unavailable)
+ 
+ EXC_REAL_BEGIN(vsx_unavailable, 0xf40, 0x20)
+@@ -2494,7 +2522,7 @@ EXC_COMMON_BEGIN(facility_unavailable_common)
+ 	GEN_COMMON facility_unavailable
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	bl	facility_unavailable_exception
+-	REST_NVGPRS(r1) /* instruction emulation may change GPRs */
++	HANDLER_RESTORE_NVGPRS() /* instruction emulation may change GPRs */
+ 	b	interrupt_return_srr
+ 
+ 
+@@ -2522,7 +2550,8 @@ EXC_COMMON_BEGIN(h_facility_unavailable_common)
+ 	GEN_COMMON h_facility_unavailable
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	bl	facility_unavailable_exception
+-	REST_NVGPRS(r1) /* XXX Shouldn't be necessary in practice */
++	/* XXX Shouldn't be necessary in practice */
++	HANDLER_RESTORE_NVGPRS()
+ 	b	interrupt_return_hsrr
+ 
+ 
+@@ -2748,7 +2777,7 @@ EXC_COMMON_BEGIN(altivec_assist_common)
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ #ifdef CONFIG_ALTIVEC
+ 	bl	altivec_assist_exception
+-	REST_NVGPRS(r1) /* instruction emulation may change GPRs */
++	HANDLER_RESTORE_NVGPRS() /* instruction emulation may change GPRs */
+ #else
+ 	bl	unknown_exception
+ #endif
+diff --git a/arch/powerpc/kernel/interrupt_64.S b/arch/powerpc/kernel/interrupt_64.S
+index a019ed6fc839..a262fe6964f3 100644
+--- a/arch/powerpc/kernel/interrupt_64.S
++++ b/arch/powerpc/kernel/interrupt_64.S
+@@ -13,6 +13,20 @@
+ #include <asm/ppc_asm.h>
+ #include <asm/ptrace.h>
+ 
++/*
++ * macros for handling user register sanitisation
++ */
++#ifdef CONFIG_INTERRUPT_SANITIZE_REGISTERS
++#define SANITIZE_ZEROIZE_SYSCALL_GPRS()	\
++	ZEROIZE_GPR(0);			\
++	ZEROIZE_GPRS(5, 12);		\
++	ZEROIZE_NVGPRS()
++#define SANITIZE_RESTORE_NVGPRS()	REST_NVGPRS(r1)
++#else
++#define SANITIZE_ZEROIZE_SYSCALL_GPRS()
++#define SANITIZE_RESTORE_NVGPRS()
++#endif /* CONFIG_INTERRUPT_SANITIZE_REGISTERS */
++
+ 	.align 7
+ 
+ .macro DEBUG_SRR_VALID srr
+@@ -96,6 +110,11 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
+ 	 * but this is the best we can do.
+ 	 */
+ 
++	/*
++	 * Zero user registers to prevent influencing speculative execution
++	 * state of kernel code.
++	 */
++	SANITIZE_ZEROIZE_SYSCALL_GPRS()
+ 	bl	system_call_exception
+ 
+ .Lsyscall_vectored_\name\()_exit:
+@@ -124,6 +143,7 @@ BEGIN_FTR_SECTION
+ 	HMT_MEDIUM_LOW
+ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
+ 
++	SANITIZE_RESTORE_NVGPRS()
+ 	cmpdi	r3,0
+ 	bne	.Lsyscall_vectored_\name\()_restore_regs
+ 
+@@ -159,7 +179,9 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
+ 	ld	r4,_LINK(r1)
+ 	ld	r5,_XER(r1)
+ 
++#ifndef CONFIG_INTERRUPT_SANITIZE_REGISTERS
+ 	REST_NVGPRS(r1)
++#endif
+ 	REST_GPR(0, r1)
+ 	mtcr	r2
+ 	mtctr	r3
+@@ -275,6 +297,11 @@ END_BTB_FLUSH_SECTION
+ 	wrteei	1
+ #endif
+ 
++	/*
++	 * Zero user registers to prevent influencing speculative execution
++	 * state of kernel code.
++	 */
++	SANITIZE_ZEROIZE_SYSCALL_GPRS()
+ 	bl	system_call_exception
+ 
+ .Lsyscall_exit:
+@@ -315,6 +342,7 @@ BEGIN_FTR_SECTION
+ 	stdcx.	r0,0,r1			/* to clear the reservation */
+ END_FTR_SECTION_IFCLR(CPU_FTR_STCX_CHECKS_ADDRESS)
+ 
++	SANITIZE_RESTORE_NVGPRS()
+ 	cmpdi	r3,0
+ 	bne	.Lsyscall_restore_regs
+ 	/* Zero volatile regs that may contain sensitive kernel data */
+@@ -342,7 +370,9 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
+ .Lsyscall_restore_regs:
+ 	ld	r3,_CTR(r1)
+ 	ld	r4,_XER(r1)
++#ifndef CONFIG_INTERRUPT_SANITIZE_REGISTERS
+ 	REST_NVGPRS(r1)
++#endif
+ 	mtctr	r3
+ 	mtspr	SPRN_XER,r4
+ 	REST_GPR(0, r1)
+@@ -408,9 +438,11 @@ interrupt_return_\srr\()_user: /* make backtraces match the _kernel variant */
+ _ASM_NOKPROBE_SYMBOL(interrupt_return_\srr\()_user)
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	bl	interrupt_exit_user_prepare
++#ifndef CONFIG_INTERRUPT_SANITIZE_REGISTERS
+ 	cmpdi	r3,0
+ 	bne-	.Lrestore_nvgprs_\srr
+ .Lrestore_nvgprs_\srr\()_cont:
++#endif
+ 	std	r1,PACA_EXIT_SAVE_R1(r13) /* save r1 for restart */
+ #ifdef CONFIG_PPC_BOOK3S
+ .Linterrupt_return_\srr\()_user_rst_start:
+@@ -424,6 +456,7 @@ _ASM_NOKPROBE_SYMBOL(interrupt_return_\srr\()_user)
+ 	stb	r11,PACAIRQHAPPENED(r13) # clear out possible HARD_DIS
+ 
+ .Lfast_user_interrupt_return_\srr\():
++	SANITIZE_RESTORE_NVGPRS()
+ #ifdef CONFIG_PPC_BOOK3S
+ 	.ifc \srr,srr
+ 	lbz	r4,PACASRR_VALID(r13)
+@@ -493,9 +526,11 @@ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_STCX_CHECKS_ADDRESS)
+ 	b	.	/* prevent speculative execution */
+ .Linterrupt_return_\srr\()_user_rst_end:
+ 
++#ifndef CONFIG_INTERRUPT_SANITIZE_REGISTERS
+ .Lrestore_nvgprs_\srr\():
+ 	REST_NVGPRS(r1)
+ 	b	.Lrestore_nvgprs_\srr\()_cont
++#endif
+ 
+ #ifdef CONFIG_PPC_BOOK3S
+ interrupt_return_\srr\()_user_restart:
+@@ -585,6 +620,7 @@ _ASM_NOKPROBE_SYMBOL(interrupt_return_\srr\()_kernel)
+ 	stb	r11,PACAIRQHAPPENED(r13) // clear the possible HARD_DIS
+ 
+ .Lfast_kernel_interrupt_return_\srr\():
++	SANITIZE_RESTORE_NVGPRS()
+ 	cmpdi	cr1,r3,0
+ #ifdef CONFIG_PPC_BOOK3S
+ 	.ifc \srr,srr
 -- 
 2.34.1
 
