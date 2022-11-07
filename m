@@ -1,131 +1,97 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 208BC61F60A
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Nov 2022 15:30:12 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05ABD61F863
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Nov 2022 17:07:40 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N5YXx6f18z3cMl
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Nov 2022 01:30:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N5bjP6Rjlz3cK9
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Nov 2022 03:07:37 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=NSYmq3qy;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bz5MpVdH;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=40.107.12.72; helo=fra01-pr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=NSYmq3qy;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bz5MpVdH;
 	dkim-atps=neutral
-Received: from FRA01-PR2-obe.outbound.protection.outlook.com (mail-eopbgr120072.outbound.protection.outlook.com [40.107.12.72])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N5YWy39ncz3bqW
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Nov 2022 01:29:16 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=TapW1Fi7+MOsIqXvfLVPQdBdyvG6vEnXxY/qQn6czuJlKtnTtnhFlEBNZrinY4nhtCmb2CQ/EquWMpBbjWsLCNeljFfeNMIDgQdGAIPn80iFyEnpYkUjp55us/WhnLGaolJj4/rYhU2FhWZek5txgoRYRnNyHJWz67otM+HkfnUeZpTk2m58bHBgvVBzsrtuWy/8zkRS9crcGtRO0WXJVC+n2MmOiW45NRhkeaKqtoy2HRyTSFTnDBb59EIMCMTneszOUxEo/S5pBPRigHznMkUM4gTTDBCp1Mn3iuO7968fZHe6dSR7sNnXA0zh1+mZS1+wBUWC5+/44cQh6jzDpw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lT2xfQ3W64t/wGPiwDcWgiMzxm3A/nE9cpA5XvBOcdY=;
- b=EUfEGjxJ/daJcN6mztT7F1FqCbP3C79rvb6iSM7wPNsReWgvhRWiD6e33Ax4TKZxyZuyfPRwl4aYh9AAbDqQqulE6iF/katdCWCHu/hN4l2YL1PG/0hlu/5FW72jGdnC3Pdt6j0KlukgfHv5qIlM0TMaX329JJikbtFfUc8ZHALoq9nv+8L/zhgXglGrkViyLeeaHO8eK0TcBsQJY75q5Q86KszSOWXzRQF3DI8D9AIKjQQS3sCYGNcWWu1QxX1S+MbpRrjrmlvgXinJr/A6SJfVYUNykvx3bLXeZfmchhS5ECmyoMiekO2D0lRQE+lJbEnceBcsdY/K3QF8qPbaUg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lT2xfQ3W64t/wGPiwDcWgiMzxm3A/nE9cpA5XvBOcdY=;
- b=NSYmq3qyz5KkdkcQV0UF5b6rT2r9YtUpLpJEJ1IbjLrc0xkj4guOG//pdZLZS0oJsP3KoYsf8cV4daq4W1sgibLR9vSBcY++ekqAw2fwfSLaSNx6qsM+DX+MwaLUKywxUozRme20nBihqSbIi2GwSDAVuyBTukGAlrDtxGOz75I+XBOLJFJyVBLQZ0e4uMj3Tj4GBFztpdOqz/tkZ7I1Ko0dEefmEmJWL/y9tUZaxUYUHfBZLUKhYv1zcaI0+3wtQiIqHjJLhq4RSsma0ZKUjcQYzfQT66oXPWzRS2NpWcZa0oh3cgRfiqHYvXwmlmpAvUwWsq6sghr4Eekr/AzJaA==
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by PR0P264MB2107.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:167::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5791.26; Mon, 7 Nov
- 2022 14:28:56 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::a85b:a9b6:cb36:fa6]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::a85b:a9b6:cb36:fa6%9]) with mapi id 15.20.5791.026; Mon, 7 Nov 2022
- 14:28:56 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Rohan McLure <rmclure@linux.ibm.com>, "linuxppc-dev@lists.ozlabs.org"
-	<linuxppc-dev@lists.ozlabs.org>
-Subject: Re: [PATCH v2 1/4] powerpc/64: Add INTERRUPT_SANITIZE_REGISTERS
- Kconfig
-Thread-Topic: [PATCH v2 1/4] powerpc/64: Add INTERRUPT_SANITIZE_REGISTERS
- Kconfig
-Thread-Index: AQHY8nJlPZbqzVkmZEuCn0n8dxIRqK4zhaQA
-Date: Mon, 7 Nov 2022 14:28:56 +0000
-Message-ID: <e436f57a-41fa-b91a-80cd-2f5ece074421@csgroup.eu>
-References: <20221107033202.1375238-1-rmclure@linux.ibm.com>
-In-Reply-To: <20221107033202.1375238-1-rmclure@linux.ibm.com>
-Accept-Language: fr-FR, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.1
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MRZP264MB2988:EE_|PR0P264MB2107:EE_
-x-ms-office365-filtering-correlation-id: 03fa2b13-6218-47eb-9b5e-08dac0cc6784
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  ufemh3rZyz088/HrAhAPlg+/xoy2P/cY3/0MUul1HREGNkntf2YFLZw49F2nDVda+3cs8jVe4LSEOGEAfomzbGlaLoP7ocCip7ItgbPL4LGkwDHtcgrBkGZdN1m/C2CSJIuyIrQzIYF348pCwkJrT3c8lKcuGMfFIVmtf9ldv1apyUUieOYFkWd95shJWdLqO7s5VKtMKl13rU/jkTC7gk9Vd8qgPlmh5MElbfGbUFmkEdVAN4wjmq03SCzKkjD0illSNGZe76SLJzqcwjV60go13P0/e7qvDBHmI4OcKks1v7Amk0DMXtV24vIQCUy9MuF1jiJpo89nXzTQpc8rMrm5EabvE2bUEWO+WWY5rBXQZ9RV0txFkSiR3J8yQxw5GXUrKcyyGId/1KFgFcE/78nL8GHF9iVi9DGxgNyu1j16FjjVYRUqsEmYh6tTbm065HpSKMspxlYoQIrjYRVNHGQIheE55nHfgTYnVIHLbRDW/2OKzordXqRGqIDj99gVWDHR6IUu6OY45RaFNmUuSn6PHvrvX5RCDLzKBE/TH9+qjDGVolCo+iAuMB4HUpticRTVq7yjZ/n+VuUU0Ixt04uY2i+wSTtocDr6NY4Hc2jMx7Pnssu9PNdtyeXfV5e4k50/ruxg4qd5WFCRou3OSAka7z1UeK928DXn+z6P8pX/OmMzkEVIiqJbXOodS2i47FRPTIo7yDpAaIOcsBV2gq5OyZELlpKs4ntid8+6AdbvcJEYyi8FsQID5FkAu70/ybaFeqf/HztI1cprNw1YcYc24CVkVHzBcYS62OJlqfB7Jz8F3RswjTUR5sUrQes8ndcw2PAr++zzZdOpO53puktyEBn02p5oS61RWEjBWvg=
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230022)(4636009)(39850400004)(136003)(366004)(396003)(376002)(346002)(451199015)(5660300002)(8936002)(31686004)(44832011)(38100700002)(41300700001)(91956017)(66556008)(8676002)(76116006)(4326008)(66446008)(66946007)(66476007)(64756008)(2906002)(31696002)(83380400001)(36756003)(316002)(110136005)(86362001)(966005)(71200400001)(478600001)(122000001)(26005)(6506007)(6486002)(6512007)(66574015)(38070700005)(2616005)(186003)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?U09JdGRwakhWSWpKQWJoQ3hyOTNGcC9PNUg1RzA0MWRSVE5KVEZEakFISEJC?=
- =?utf-8?B?eFRIL0RZSTgzaDhybXliajBSc25NVmhNcVBxS3RLSEY2UWF6NmxPYXZRcitw?=
- =?utf-8?B?NDNYTkpHQStPc29FSFdOc1VqZWhPTm5QOXE3OTBFRWtxeWpWM2o0Y0FNc0cx?=
- =?utf-8?B?Q1RZZjlRelE2TXIwQnB4eVI2WnpsL2duSXdkbS9yNE8zdy9aVzN3MkZJSjFL?=
- =?utf-8?B?Qkd1SkdmYkl2VkdYd05EK2VhY1B1aW0vWmcyenM4N2srbnpCd3JGay9tK2s4?=
- =?utf-8?B?ejZ2bzFuVXc1eVdTQmxpYytWNCtmdzE5T3RCR3lPdE4zMldIZEx4VHVlN0o4?=
- =?utf-8?B?b3IzZnEwZmRHelVIRFY3YWNRSjFpVDZ2STRPejNMa3lZa1ZTQVlXQlgvTS90?=
- =?utf-8?B?YkVKOExFSkgvaW53YU5OQnhLa25odjM1NWZRci84Y2s2NVl5TUtKUzVIdlh2?=
- =?utf-8?B?TjluQ2lqRkEzaDBzQ09LbmZlZFZsSm5JWHVRUHBGcHVjWi9tNTBBVTQvQ0pK?=
- =?utf-8?B?dktnakpRblpYMU5QVHVHYnlYUjZjKzlXMFJETE5hZXdTUVB2R3JuTW1UVlNB?=
- =?utf-8?B?OXNab2ZtYTFTRkdDOENwNklvQ1pRVTg4ZTN3VWNvNEU5a3NiU2VJc3EvcUsw?=
- =?utf-8?B?eEgvMVRMR0JPWlNENDkxZkxuenU2ZzVHV0lrUFZjeEhOd0RvT0hnb1lBb2tx?=
- =?utf-8?B?VTg2R1BPMmZFVXRSQVNlbWJSYkZGc1hxYnR0MGh6ZGtxaWpuOEJoNVVjVHRp?=
- =?utf-8?B?aFY0QkhVUWJ6bHdXZThnRTJ4dmRjWWdoQVh0d1M5NWNDNHFYV0xlWG5jeFQz?=
- =?utf-8?B?QU9pM1BrN0NYM3BwRFhVcE13TjMrNTZqOS9UdkV3YlMvVGtEWVlZUTNjaERO?=
- =?utf-8?B?UUNobjVhWGpmRjBkWmtsY0JwNTdnWjVlU3Bvek1PZ2tTUnpTdmJKMzFYR2lo?=
- =?utf-8?B?ZjdKY0Q2WlpwWlJseDVUZ2NqWnBaN0oxOHYxNkdqaTBUa2J6dlBaMHA2QlNi?=
- =?utf-8?B?dmtwMVJLbTViczltL3JERnhjRlkyQlk1cTNrYmRvR21GZWpDeEd3Uyt0aEZm?=
- =?utf-8?B?VUlQNjdzNE5aMnBjTS9vTnh1NDNVZzR6VWZTc3dzcHpmUjZCQ2NhbFZNOElR?=
- =?utf-8?B?bGg4d3Y3SWpqTVhxREsyS3U2ZkNyYjlMdGpnTlF3djRrZ0U4WEVLaXNTdWho?=
- =?utf-8?B?bG9UZVkzUUFHbHJJN1VCV3FxTElNL3BtNzM2UEZaaWw4WmVVZk1Pc3BXOS9y?=
- =?utf-8?B?SkZHZU9uMVdnZ0E3V2RjK04xbEF0d0wrbFZmR0ZPL0psb0ZxcFgzNndsR21p?=
- =?utf-8?B?Zk54bVd5R25RR3hlaWVPTFYxdlNiUXg5bVlTWWhPZ1M5aXdDb1RMdUdPMEhh?=
- =?utf-8?B?ME0vdFN1MUVuRFIyNGZlYlkvUDM2NDRBRHltd3hHL3EvTUtTRm1JRVpDYUUx?=
- =?utf-8?B?WUovRXZrQzNyMGM4YUZCTUtodGU1cm81Tjlnc09TQlZoSVdMNm0ydG01bVdF?=
- =?utf-8?B?ZnovL1FVK2lOdDVlWFg4amZQMTh3YzFTdmdyWVRhSnZ4T0pKZm5lek5kNXdI?=
- =?utf-8?B?MDJPUHh5NVRhR2V5Vm0xMlZBbzBXd3c5L0laL0ljTHJBVUdyMFdEdkc4TGFI?=
- =?utf-8?B?WVJYZnFKT3IvWmxRaUJ3TXhPYXFwRlBEMytHalI0K0ZqcGVTSmJOVjJwNnhY?=
- =?utf-8?B?Mzg2dUsrOUM0b0RFWWZ3UEFHMmNNWlVuOVpWVFN3T241NDZCYmVRZEhiRlIv?=
- =?utf-8?B?dXRMQlF0a0FnZE1wVWsydGFROGVyT2w1c2ptdHFheXBQL0hvUnBZemQrYnZM?=
- =?utf-8?B?Q0kzZ1BIdm5FN0lxTnJTR2paKzV3Y2F6QWd5L0pDcHdCU0hrSlVjc3VGSXJB?=
- =?utf-8?B?dDhiT1VodEw2NHFMcytCVGN6dzIrdS9GcmtqUkFXYWF5WW9UYkdxamhQTW4w?=
- =?utf-8?B?UnVxcjMvQVlSSGsvMGJLQTY0Q3VVQkFmVGtsYW5uWUJ6LzZWbzRWeEhvVWVV?=
- =?utf-8?B?UGpqTWlPNW93bk1US0ZzN1c3djdSdUs3SVhQMVAwU1NJR3dudTdCbHRESU1K?=
- =?utf-8?B?UW42TFhFTkRaOWdoODlQbjl3RWQ0U2tKNXRLaVJoaVNyaHRPTEtPVDdxRGtB?=
- =?utf-8?B?Q2t6ODlKRGZjbS9YZjZuWEQvY2ZkdzVQdkkySHhGaVhSenp2TjBEbnBiNnZJ?=
- =?utf-8?Q?WMbLSa8ohx2GttY/arW89Z0=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <71AE3E3899FAA348890611C20D4EB5A5@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N5bhN5Mq7z3bb0
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Nov 2022 03:06:44 +1100 (AEDT)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2A7EwhnT027594;
+	Mon, 7 Nov 2022 16:06:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=di9Ha1vTRpf1SjhO+duGyKMWntDGDAXAzylEOWMY+iE=;
+ b=bz5MpVdHsVq2wyNhWYRjc2AW9tStDFzOsEFgGm3tNXSo6taDEAOy1gEoHQ19uFy2kp4D
+ jEkDxd1dH8266SH8vCzI80A8B/kuGUyl20kFg9jML2/lzsqqVmSuRTOwngAzdL0Nf6pH
+ rGd5uqlX+GIUhAepSg7ey8nBDXdtpy7BiRCBJEKGyoJptT//OFIhDPraLul9njBZa381
+ mDWhPiRPQ3ptKVKCHfWjUNH5LQrojyP4m0/cyy9RmWgYky2XW1hp6EmHbQkRVtqe9dUC
+ 6VINId+Lolof2Fb+jA8ZUc1iTZmgKRjzF4opEGrObuDICesVkdrIcechDgiGd5AvE6ma oQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3kp8bfadn1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 07 Nov 2022 16:06:36 +0000
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2A7EwtxG028764;
+	Mon, 7 Nov 2022 16:06:36 GMT
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com [159.122.73.72])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3kp8bfadkp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 07 Nov 2022 16:06:35 +0000
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+	by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2A7G5RgZ024338;
+	Mon, 7 Nov 2022 16:06:33 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+	by ppma06fra.de.ibm.com with ESMTP id 3kngq8j1tc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 07 Nov 2022 16:06:33 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+	by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2A7G6UL42032292
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 7 Nov 2022 16:06:30 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 986B1A405F;
+	Mon,  7 Nov 2022 16:06:30 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5D6D1A4054;
+	Mon,  7 Nov 2022 16:06:30 +0000 (GMT)
+Received: from [9.101.4.33] (unknown [9.101.4.33])
+	by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Mon,  7 Nov 2022 16:06:30 +0000 (GMT)
+Message-ID: <b5085cee-0ecc-fd20-f038-83a643c4482b@linux.ibm.com>
+Date: Mon, 7 Nov 2022 17:06:29 +0100
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.4.1
+Subject: Re: [PATCH 1/2] powerpc: export the CPU node count
+To: Nicholas Piggin <npiggin@gmail.com>, mpe@ellerman.id.au,
+        christophe.leroy@csgroup.eu
+References: <20221028160034.44400-1-ldufour@linux.ibm.com>
+ <20221028160034.44400-2-ldufour@linux.ibm.com>
+ <CO61XSIISI9G.PHZVHP50ZWUU@bobo>
+Content-Language: fr
+From: Laurent Dufour <ldufour@linux.ibm.com>
+In-Reply-To: <CO61XSIISI9G.PHZVHP50ZWUU@bobo>
+Content-Type: text/plain; charset=UTF-8
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: HvOP1zYnP9YWgKy_t7dyFeiX9J12JCDd
+X-Proofpoint-ORIG-GUID: v3cx5O_l2mPe7_DnCQ11uQTPW2ckpzTw
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 7 URL's were un-rewritten
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 03fa2b13-6218-47eb-9b5e-08dac0cc6784
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Nov 2022 14:28:56.8795
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: rd06KJSDmoI/CNDN2iECOqe9CbMK5JlFfmox36/MqVe45Pxf8UNCBDcmoQqMydytgdlwv69qrvrqQgDAvL6hGRw6u0aVf8foVVhPvR34BTc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR0P264MB2107
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-11-07_08,2022-11-07_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
+ priorityscore=1501 suspectscore=0 adultscore=0 lowpriorityscore=0
+ mlxlogscore=999 bulkscore=0 spamscore=0 malwarescore=0 phishscore=0
+ mlxscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2210170000 definitions=main-2211070129
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -137,42 +103,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCkxlIDA3LzExLzIwMjIgw6AgMDQ6MzEsIFJvaGFuIE1jTHVyZSBhIMOpY3JpdMKgOg0KPiBB
-ZGQgS2NvbmZpZyBvcHRpb24gZm9yIGVuYWJsaW5nIGNsZWFyaW5nIG9mIHJlZ2lzdGVycyBvbiBh
-cnJpdmFsIGluIGFuDQo+IGludGVycnVwdCBoYW5kbGVyLiBUaGlzIHJlZHVjZXMgdGhlIHNwZWN1
-bGF0aW9uIGluZmx1ZW5jZSBvZiByZWdpc3RlcnMNCj4gb24ga2VybmVsIGludGVybmFscy4gVGhl
-IG9wdGlvbiB3aWxsIGJlIGNvbnN1bWVkIGJ5IDY0LWJpdCBzeXN0ZW1zIHRoYXQNCj4gZmVhdHVy
-ZSBzcGVjdWxhdGlvbiBhbmQgd2lzaCB0byBpbXBsZW1lbnQgdGhpcyBtaXRpZ2F0aW9uLg0KPiAN
-Cj4gVGhpcyBwYXRjaCBvbmx5IGludHJvZHVjZXMgdGhlIEtjb25maWcgb3B0aW9uLCBubyBhY3R1
-YWwgbWl0aWdhdGlvbnMuDQoNCklmIHRoYXQgaGFzIHRvIGRvIHdpdGggc3BlY3VsYXRpb24sIGRv
-IHdlIG5lZWQgYSBuZXcgS2NvbmZpZyBvcHRpb24gPyANCkNhbid0IHdlIHVzZSBDT05GSUdfUFBD
-X0JBUlJJRVJfTk9TUEVDIGZvciB0aGF0ID8NCg0KPiANCj4gVGhlIHByaW1hcnkgb3ZlcmhlYWQg
-b2YgdGhpcyBtaXRpZ2F0aW9uIGxpZXMgaW4gYW4gaW5jcmVhc2VkIG51bWJlciBvZg0KPiByZWdp
-c3RlcnMgdGhhdCBtdXN0IGJlIHNhdmVkIGFuZCByZXN0b3JlZCBieSBpbnRlcnJ1cHQgaGFuZGxl
-cnMgb24NCj4gQm9vazNTIHN5c3RlbXMuIEVuYWJsZSBieSBkZWZhdWx0IG9uIEJvb2szRSBzeXN0
-ZW1zLCB3aGljaCBwcmlvciB0bw0KPiB0aGlzIHBhdGNoIGVhZ2VybHkgc2F2ZSBhbmQgcmVzdG9y
-ZSByZWdpc3RlciBzdGF0ZSwgbWVhbmluZyB0aGF0IHRoZQ0KPiBtaXRpZ2F0aW9uIHdoZW4gaW1w
-bGVtZW50ZWQgd2lsbCBoYXZlIG1pbmltYWwgb3ZlcmhlYWQuDQo+IA0KPiBBY2tlZC1ieTogTmlj
-aG9sYXMgUGlnZ2luIDxucGlnZ2luQGdtYWlsLmNvbT4NCj4gU2lnbmVkLW9mZi1ieTogUm9oYW4g
-TWNMdXJlIDxybWNsdXJlQGxpbnV4LmlibS5jb20+DQo+IC0tLQ0KPiBSZXN1Ym1pdHRpbmcgcGF0
-Y2hlcyBhcyB0aGVpciBvd24gc2VyaWVzIGFmdGVyIHY2IHBhcnRpYWxseSBtZXJnZWQ6DQo+IExp
-bms6IGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2FsbC8xNjY0ODg5ODg2ODYuNzc5OTIwLjEzNzk0
-ODcwMTAyNjk2NDE2MjgzLmI0LXR5QGVsbGVybWFuLmlkLmF1L3QvDQo+IC0tLQ0KPiAgIGFyY2gv
-cG93ZXJwYy9LY29uZmlnIHwgOSArKysrKysrKysNCj4gICAxIGZpbGUgY2hhbmdlZCwgOSBpbnNl
-cnRpb25zKCspDQo+IA0KPiBkaWZmIC0tZ2l0IGEvYXJjaC9wb3dlcnBjL0tjb25maWcgYi9hcmNo
-L3Bvd2VycGMvS2NvbmZpZw0KPiBpbmRleCAyY2E1NDE4NDU3ZWQuLjlkM2QyMGM2ZjM2NSAxMDA2
-NDQNCj4gLS0tIGEvYXJjaC9wb3dlcnBjL0tjb25maWcNCj4gKysrIGIvYXJjaC9wb3dlcnBjL0tj
-b25maWcNCj4gQEAgLTUyOSw2ICs1MjksMTUgQEAgY29uZmlnIEhPVFBMVUdfQ1BVDQo+ICAgDQo+
-ICAgCSAgU2F5IE4gaWYgeW91IGFyZSB1bnN1cmUuDQo+ICAgDQo+ICtjb25maWcgSU5URVJSVVBU
-X1NBTklUSVpFX1JFR0lTVEVSUw0KPiArCWJvb2wgIkNsZWFyIGdwcnMgb24gaW50ZXJydXB0IGFy
-cml2YWwiDQo+ICsJZGVwZW5kcyBvbiBQUEM2NCAmJiBBUkNIX0hBU19TWVNDQUxMX1dSQVBQRVIN
-Cj4gKwlkZWZhdWx0IFBQQ19CT09LM0VfNjQNCj4gKwloZWxwDQo+ICsJICBSZWR1Y2UgdGhlIGlu
-Zmx1ZW5jZSBvZiB1c2VyIHJlZ2lzdGVyIHN0YXRlIG9uIGludGVycnVwdCBoYW5kbGVycyBhbmQN
-Cj4gKwkgIHN5c2NhbGxzIHRocm91Z2ggY2xlYXJpbmcgdXNlciBzdGF0ZSBmcm9tIHJlZ2lzdGVy
-cyBiZWZvcmUgaGFuZGxpbmcNCj4gKwkgIHRoZSBleGNlcHRpb24uDQo+ICsNCj4gICBjb25maWcg
-UFBDX1FVRVVFRF9TUElOTE9DS1MNCj4gICAJYm9vbCAiUXVldWVkIHNwaW5sb2NrcyIgaWYgRVhQ
-RVJUDQo+ICAgCWRlcGVuZHMgb24gU01Q
+On 07/11/2022 13:11:17, Nicholas Piggin wrote:
+> On Sat Oct 29, 2022 at 2:00 AM AEST, Laurent Dufour wrote:
+>> At boot time, the FDT is parsed to compute the number of CPUs.
+>> In addition count the number of CPU nodes and export it.
+>>
+>> This is useful when building the FDT for a kexeced kernel since we need to
+>> take in account the CPU node added since the boot time during CPU hotplug
+>> operations.
+> 
+> It would be nice if it just realloced memory in this case, but that
+> looks like a bigger change.
+
+I agree, and I think the best option in long term would be the series 
+Sourabh Jain sent in June, updating the crash kernel FDT without reloading
+it (https://lore.kernel.org/linuxppc-dev/20220620070106.93141-1-sourabhjain@linux.ibm.com/)
+
+In the meantime, this solves the issue.
+
+> 
+> But these patches look okay to me, if you can solve the compile bug.
+
+Indeed, the compile bugs are raised because I added the definition of the new variable 
+'boot_cpu_node_count' in kexec_ranges.h, and add the inclusion of that file in prom.c.
+
+I was not confident putting this new variable definition in that header file, but I 
+didn't find a better option.
+
+Do you have a better idea of header file to use?
+
+Could I just declare this variable "extern" in arch/powerpc/kexec/file_load_64.c? This looks
+ugly to me.
+
+Thanks,
+Laurent.
+
+
+> Thanks,
+> Nick
+> 
+>>
+>> Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
+>> ---
+>>  arch/powerpc/include/asm/kexec_ranges.h | 2 ++
+>>  arch/powerpc/kernel/prom.c              | 4 ++++
+>>  2 files changed, 6 insertions(+)
+>>
+>> diff --git a/arch/powerpc/include/asm/kexec_ranges.h b/arch/powerpc/include/asm/kexec_ranges.h
+>> index f83866a19e87..bf35d00ddd09 100644
+>> --- a/arch/powerpc/include/asm/kexec_ranges.h
+>> +++ b/arch/powerpc/include/asm/kexec_ranges.h
+>> @@ -22,4 +22,6 @@ int add_rtas_mem_range(struct crash_mem **mem_ranges);
+>>  int add_opal_mem_range(struct crash_mem **mem_ranges);
+>>  int add_reserved_mem_ranges(struct crash_mem **mem_ranges);
+>>  
+>> +extern unsigned int boot_cpu_node_count;
+>> +
+>>  #endif /* _ASM_POWERPC_KEXEC_RANGES_H */
+>> diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
+>> index 1eed87d954ba..d326148fd5a4 100644
+>> --- a/arch/powerpc/kernel/prom.c
+>> +++ b/arch/powerpc/kernel/prom.c
+>> @@ -56,6 +56,7 @@
+>>  #include <asm/drmem.h>
+>>  #include <asm/ultravisor.h>
+>>  #include <asm/prom.h>
+>> +#include <asm/kexec_ranges.h>
+>>  
+>>  #include <mm/mmu_decl.h>
+>>  
+>> @@ -72,6 +73,7 @@ int __initdata iommu_is_off;
+>>  int __initdata iommu_force_on;
+>>  unsigned long tce_alloc_start, tce_alloc_end;
+>>  u64 ppc64_rma_size;
+>> +unsigned int boot_cpu_node_count __ro_after_init;
+>>  #endif
+>>  static phys_addr_t first_memblock_size;
+>>  static int __initdata boot_cpu_count;
+>> @@ -335,6 +337,8 @@ static int __init early_init_dt_scan_cpus(unsigned long node,
+>>  	if (type == NULL || strcmp(type, "cpu") != 0)
+>>  		return 0;
+>>  
+>> +	boot_cpu_node_count++;
+>> +
+>>  	/* Get physical cpuid */
+>>  	intserv = of_get_flat_dt_prop(node, "ibm,ppc-interrupt-server#s", &len);
+>>  	if (!intserv)
+>> -- 
+>> 2.38.1
+> 
+
