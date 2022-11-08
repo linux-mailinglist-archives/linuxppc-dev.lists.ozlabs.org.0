@@ -1,76 +1,96 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A359620CE9
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Nov 2022 11:10:44 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 578C2620D59
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Nov 2022 11:34:37 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N63l368ztz3cLJ
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Nov 2022 21:10:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N64Gg1gQlz3dvH
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Nov 2022 21:34:35 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=EUZyFouv;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HBjsJFnK;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52a; helo=mail-pg1-x52a.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=EUZyFouv;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HBjsJFnK;
 	dkim-atps=neutral
-Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N63k94rwfz2xYy
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Nov 2022 21:09:52 +1100 (AEDT)
-Received: by mail-pg1-x52a.google.com with SMTP id 130so601670pgc.5
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 08 Nov 2022 02:09:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wvphYTFCgOsgZAlbKOONe9/A9pZLaBvVSjy3jvONxbQ=;
-        b=EUZyFouvmlVtjbDs95zXRD5ThP2SQwa9jbnRhF4xiFDjPSzDAYpAzc0WTGbB6vmVnV
-         tNfuvYbA9/WL2TRfuQCu7Au9w7FSy1PI2lEyxEgj4NgSGxG3hKNukTVSMUUNI8WagxDI
-         vLW3i1ZwGLMNHGcSvsn9vBMUPm64UKQBU6hFNSvMvuNqvTTSX7JlSZYlnBKqFgg2nlie
-         NYgwQAnmWR7MM8hnS+LuvaqSqDfagwz7PaGyzYiKhTFxT2aCp96zPjo6/EsiptRtBHe+
-         1KhKcQWf2CzxX6f8oa+bv30ZG5x5FXV8EsIGV3ylnWqwfEB0TJmsyU3NU8Tm0HL6dYNT
-         htKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=wvphYTFCgOsgZAlbKOONe9/A9pZLaBvVSjy3jvONxbQ=;
-        b=NBmuJ1QxqvsbCDf9mod2yPlb6mSkfJEun/FkIKlWzTPXhWG4sOaIf0empDGLpylqNr
-         KpCxRj5/2UQeRMC8wzUygENosHJCOJ+mQi7p5pzuF0ytF2lYAL+KiR+LNXBcKeYjn+xZ
-         EcePs0kjLZtFXal+ZK0UQv43IzCsUR/hm1+ybklkTCctzhhbq0lZsPRVyhJs4V8Cb+nB
-         iXWg9gJm+WBn1aIh/rDbsEsqjoSXU4rHWAkyGg64pBiOIbGlFYNlf9TJukfSlNBja2iX
-         Dk1Mqq/vI7tQlrr8ELJ7FtwIFPMTrSSSUqgTLpXgaoIrpd5fdFmnh2N0Ke3OI0xsHSLe
-         Otxw==
-X-Gm-Message-State: ACrzQf3CqyCDsddJMyarb70d0FuTgv/OrqhCm7/ltwtqUR+v2aDjqwU1
-	iNcNXzkMH6zV6evdu5TdWJFT8+QZIGM=
-X-Google-Smtp-Source: AMsMyM7oCY4Zh6DMPpNUjms+XdXHdxTtuxFV2rLeS/KCWHhZDsji/ccY2Lsf53R9FiC2qvIClX4/jw==
-X-Received: by 2002:aa7:8c59:0:b0:56e:aa67:4fc1 with SMTP id e25-20020aa78c59000000b0056eaa674fc1mr20405733pfd.56.1667902189798;
-        Tue, 08 Nov 2022 02:09:49 -0800 (PST)
-Received: from localhost (203-221-202-134.tpgi.com.au. [203.221.202.134])
-        by smtp.gmail.com with ESMTPSA id c27-20020aa7953b000000b0056c04dee930sm6022098pfp.120.2022.11.08.02.09.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 08 Nov 2022 02:09:48 -0800 (PST)
-Mime-Version: 1.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N64Fh444Nz3c5D
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Nov 2022 21:33:43 +1100 (AEDT)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2A89Uauf008683;
+	Tue, 8 Nov 2022 10:33:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : subject :
+ to : cc : references : in-reply-to : mime-version : message-id :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=l9ul+0S7lm+uzPFL9oD0Ysw0PxdqaZ/7uKOWB/AKQvQ=;
+ b=HBjsJFnKAIkAN5PC7N1I/VCM+EcW5f/3YkNCruPkdxkHPnYd8OO2T2dIgA7beFgsDL0E
+ ktbyheBwdArHK2lEPQPGil4KEe5pRZk7Qey1mpHF1ZhPufrOQiI8ciY0CFYCjoJXCxyx
+ 2gjULaiO8khU5grIo5Oq461jRQ4DpuPRm/kPmPBdIhRNEyK9lwNBDZ8W4GYrDKxCMiW0
+ p0TeQ5kQE2Fx0wIekuCAzJRF0GjKAxAWxmrggYKCQbRa+mIM0FLLVQhwQTo9s34DImRm
+ 9sfaJx9FW9RfASa9/XXTYii6qMBMFOTBkgxYVYKve1faj80Oal08NpIZsYq7LpGxOe+0 jA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3kqkjf3n8p-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 08 Nov 2022 10:33:29 +0000
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2A89BaJ1025150;
+	Tue, 8 Nov 2022 10:33:29 GMT
+Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com [149.81.74.108])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3kqkjf3n7s-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 08 Nov 2022 10:33:28 +0000
+Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
+	by ppma05fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2A8ANdhw028302;
+	Tue, 8 Nov 2022 10:33:26 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+	by ppma05fra.de.ibm.com with ESMTP id 3kngpstuev-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 08 Nov 2022 10:33:26 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
+	by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2A8ARfui43581722
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 8 Nov 2022 10:27:41 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 24024AE051;
+	Tue,  8 Nov 2022 10:33:24 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9848AAE045;
+	Tue,  8 Nov 2022 10:33:23 +0000 (GMT)
+Received: from localhost (unknown [9.43.47.171])
+	by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Tue,  8 Nov 2022 10:33:23 +0000 (GMT)
+Date: Tue, 08 Nov 2022 16:03:22 +0530
+From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: [PATCH 1/5] powerpc/kprobes: Remove preempt disable around call
+ to get_kprobe() in arch_prepare_kprobe()
+To: Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin
+	<npiggin@gmail.com>
+References: <cover.1666262278.git.naveen.n.rao@linux.vnet.ibm.com>
+	<1043d06a0affed83a4a46dd29466e72820ee215d.1666262278.git.naveen.n.rao@linux.vnet.ibm.com>
+	<CO5ZGEJVLRZ7.238O5NMW5P1B2@bobo>
+In-Reply-To: <CO5ZGEJVLRZ7.238O5NMW5P1B2@bobo>
+MIME-Version: 1.0
+User-Agent: astroid/4d6b06ad (https://github.com/astroidmail/astroid)
+Message-Id: <1667903577.zgaqqqw8dc.naveen@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 08 Nov 2022 20:09:44 +1000
-Message-Id: <CO6TZ9SSOWP7.1PSIBLSSBCAY3@bobo>
-Subject: Re: [PATCH v2 1/4] powerpc/64: Add INTERRUPT_SANITIZE_REGISTERS
- Kconfig
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Segher Boessenkool" <segher@kernel.crashing.org>, "Rohan McLure"
- <rmclure@linux.ibm.com>
-X-Mailer: aerc 0.11.0
-References: <20221107033202.1375238-1-rmclure@linux.ibm.com>
- <20221107163923.GO25951@gate.crashing.org>
-In-Reply-To: <20221107163923.GO25951@gate.crashing.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: dfVVv-5CGnyzr1JfJHJJLom54ZPmem4B
+X-Proofpoint-GUID: EsxGgPip2munH9I-jSGh5lKJugO-l0NZ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-11-07_11,2022-11-08_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
+ priorityscore=1501 impostorscore=0 suspectscore=0 spamscore=0 bulkscore=0
+ mlxlogscore=592 lowpriorityscore=0 adultscore=0 mlxscore=0 phishscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2210170000 definitions=main-2211080057
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,59 +102,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Jordan Niethe <jniethe5@gmail.com>, linuxppc-dev@lists.ozlabs.org, Masami Hiramatsu <mhiramat@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue Nov 8, 2022 at 2:39 AM AEST, Segher Boessenkool wrote:
-> Hi!
->
-> On Mon, Nov 07, 2022 at 02:31:59PM +1100, Rohan McLure wrote:
-> > Add Kconfig option for enabling clearing of registers on arrival in an
-> > interrupt handler. This reduces the speculation influence of registers
-> > on kernel internals.
->
-> Assuming you are talking about existing PowerPC CPUs from the last 30
-> years:
->
-> There is no data speculation.  At all.  Ever.
->
-> There is branch prediction, but that is not influenced by register
-> contents, either (for any current CPUs at least).  (Except when you get
-> a flush because of a mispredict, but if this zeroing changes anything,
-> we will have used wild (but user controlled) values in the old
-> non-zeroing situation, and that is a much bigger problem itself already,
-> also for security!  This can be an unlikely kernel bug, or a very
-> unlikely compiler bug.)
+Nicholas Piggin wrote:
+> On Fri Oct 21, 2022 at 3:28 AM AEST, Naveen N. Rao wrote:
+>> arch_prepare_kprobe() is called from register_kprobe() via
+>> prepare_kprobe(), or through register_aggr_kprobe(), both with the
+>> kprobe_mutex held. Per the comment for get_kprobe():
+>>   /*
+>>    * This routine is called either:
+>>    *	- under the 'kprobe_mutex' - during kprobe_[un]register().
+>>    *				OR
+>>    *	- with preemption disabled - from architecture specific code.
+>>    */
+>=20
+> That comment should read [un]register_kprobe(), right?
 
-This is not about data speculation, it is about speculative execution
-in kernel mode that uses architected value that were set by user, and
-that value being used to influence a speculative gadget that can expose
-data to user via a side channel.
+Ugh, yes!
 
-> All GPRs are renamed, always.  If you zero all GPRs on interrupt entry
-> (which is context synchronising, importantly), this will guarantee there
-> can be no timing influence from the GPRs, because all of the physical
-> registers depend on nothing that happened before. So that is good, at
-> least it can give some peace of mind.  Except that this makes 30 new
-> registers in just a few cycles, which *itself* can cause stalls, if the
-> renaming things are still busy.
-
-It will have some pipeline effect like any instruction I suppose. At
-least in latest processors, zeroing idiom should release registers
-AFAIK.
-
-> Context synchronising does not
-> necessarily help there, the renaming machinery can do stuff *after* an
-> insn completes.
-
-Possibly context synchronization does not push everything prior to
-completion, certainly it does not drain prior stores from store queues
-even if they had previously completed, so there can be things going on
-there. Software does not really have the ability to do anything about
-that though, so that's more of a hardware problem if that exposes a
-security issue IMO. Or at least a separate issue if there is some
-architecture that could deal with it.
+>=20
+>>
+>> As such, there is no need to disable preemption around the call to
+>> get_kprobe(). Drop the same.
+>=20
+> And prepare_kprobe() and register_aggr_kprobe() are both called with
+> kprobe_mutex held so you rely on the same protection. This seems to
+> fix a lost-resched bug with preempt kernels too.
+>=20
+> Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 
 Thanks,
-Nick
+Naveen
+
