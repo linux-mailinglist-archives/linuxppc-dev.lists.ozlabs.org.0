@@ -1,95 +1,95 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5B7462233C
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Nov 2022 05:52:42 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B5AE62234B
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Nov 2022 06:00:40 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N6Xdf5x9bz3cH0
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Nov 2022 15:52:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N6Xpt1MWtz3fB1
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Nov 2022 16:00:38 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=WhuO6UEX;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BwVhXEcB;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=bgray@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=bgray@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=WhuO6UEX;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BwVhXEcB;
 	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N6Xch3nfVz3c6d
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Nov 2022 15:51:47 +1100 (AEDT)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2A92j5Ks025125;
-	Wed, 9 Nov 2022 04:51:37 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N6Xcp1PQsz3cHX
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Nov 2022 15:51:54 +1100 (AEDT)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2A94o65N022618;
+	Wed, 9 Nov 2022 04:51:38 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : content-transfer-encoding
- : mime-version; s=pp1; bh=ZBGUMPUY3g5BSAqg/1MCPVUPaWexqPyHy60P3/pyn74=;
- b=WhuO6UEXB5nMuTBRgT22S3knYgYMpaoYo0ShGhjUzwzPxt64LLNZLvXvSGyWaVvQwxan
- Z33BXvPpc4v2WBmg57AsFVqZrk08SDhgQdh7ydxdqGQNLQjcDUyQKpf3PrjgaDbNQECW
- f4359DEzjNxqUze932T5uDMHw+XZMXm97bQZ5ucm3v1ETy+61DqW6nKMMxCKWS6JPCJ9
- 89ryGRtUha9VsEJr3Jqnd/OqNc3UF4Vm0aAoW5xTC18N5AIh3XhneWlTALaUtRRt2jbE
- cc0/hIFIziBBFhNrDFVbHUaAMzbWLbAiRpvvB8L8huGb++KsVsdtslUN9iIubw4dVKEq +g== 
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=nvAJnAz2BvCM831ARLKDo5uCQY1I/wkj5OxZoC9OYus=;
+ b=BwVhXEcBAW5rgcN0qtZ8Es7qL2e5UjJvv/nOts3T7EjTgqw/iZarLb0wEGGLImIeYrKD
+ UMYkR7xbWm5wzRU4rPZRFrD6HEl/2KXQ/jzfbbLiT1Hz2RhXj/t43hJm4K+KL5DrGO1n
+ AwIJkMDZBBlc5RL2dB4z8tqAsari07X5cKdwy5/8fTRAvfQPVnq+bd6/rKKiIwH0XuJu
+ /FtnsyI7dmmHj/PlUXzIBDj2BwXkxd377Gsr6QCEds6nolnLErPi9FqpUSKazr/a6qV7
+ Vh39vWwgzufnP0980F+5SfYvxgF+rV8LemV8qp0zZ+l15iCj4R1l3QLN5ZlAOsAa59jy jw== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3kr3pv3ucx-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3kqxte47f1-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 09 Nov 2022 04:51:37 +0000
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2A94KWGK005340;
+	Wed, 09 Nov 2022 04:51:38 +0000
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2A93vMR9007272;
 	Wed, 9 Nov 2022 04:51:37 GMT
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3kr3pv3uc1-1
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com [149.81.74.107])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3kqxte47df-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Wed, 09 Nov 2022 04:51:37 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-	by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2A94pOP2014740;
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+	by ppma03fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2A94oRch020884;
 	Wed, 9 Nov 2022 04:51:35 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
-	by ppma04ams.nl.ibm.com with ESMTP id 3kngqdd1vv-1
+Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+	by ppma03fra.de.ibm.com with ESMTP id 3kngp5kpfk-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Wed, 09 Nov 2022 04:51:35 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
-	by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2A94pWYA61866490
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
+	by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2A94jnbi50659686
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 9 Nov 2022 04:51:33 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DC3F811C054;
-	Wed,  9 Nov 2022 04:51:32 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3DD6511C04A;
+	Wed, 9 Nov 2022 04:45:49 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 22072A4051;
+	Wed,  9 Nov 2022 04:51:33 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 78967A4040;
 	Wed,  9 Nov 2022 04:51:32 +0000 (GMT)
 Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
 	Wed,  9 Nov 2022 04:51:32 +0000 (GMT)
 Received: from li-0d7fa1cc-2c9d-11b2-a85c-aed20764436d.ibm.com (haven.au.ibm.com [9.192.254.114])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id E11C960810;
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id EF94060839;
 	Wed,  9 Nov 2022 15:51:28 +1100 (AEDT)
 From: Benjamin Gray <bgray@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v10 6/9] powerpc/mm: Remove flush_all_mm, local_flush_all_mm
-Date: Wed,  9 Nov 2022 15:51:09 +1100
-Message-Id: <20221109045112.187069-7-bgray@linux.ibm.com>
+Subject: [PATCH v10 7/9] powerpc/tlb: Add local flush for page given mm_struct and psize
+Date: Wed,  9 Nov 2022 15:51:10 +1100
+Message-Id: <20221109045112.187069-8-bgray@linux.ibm.com>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20221109045112.187069-1-bgray@linux.ibm.com>
 References: <20221109045112.187069-1-bgray@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: xvwrauGG-8GId-2IQK6Ui7Pa9yeOZ6pI
-X-Proofpoint-ORIG-GUID: zbzACr4NNjgzWwyllFJHssVzUgRsx9UQ
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: m5IG4uaNmfJMMKGi0l4ctWrxkHZ83Agy
+X-Proofpoint-ORIG-GUID: VGW1O-1Z-BKTBl3kMC0SnpB-0XCqX7_d
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-11-09_01,2022-11-08_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxscore=0
- impostorscore=0 adultscore=0 spamscore=0 lowpriorityscore=0 bulkscore=0
- mlxlogscore=878 suspectscore=0 clxscore=1015 priorityscore=1501
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2210170000 definitions=main-2211090028
+ definitions=2022-11-08_06,2022-11-08_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 adultscore=0
+ clxscore=1015 malwarescore=0 priorityscore=1501 bulkscore=0 spamscore=0
+ mlxlogscore=999 mlxscore=0 phishscore=0 suspectscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2210170000
+ definitions=main-2211090028
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,99 +105,115 @@ Cc: ajd@linux.ibm.com, jniethe5@gmail.com, Benjamin Gray <bgray@linux.ibm.com>, 
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-These functions were introduced for "cxl: Enable global TLBIs for cxl
-contexts" [1], which ended up using them for Radix only. They were never
-implemented on Hash (and creating an implementation appears to be
-difficult), so nothing can actually rely on them.
+Adds a local TLB flush operation that works given an mm_struct, VA to
+flush, and page size representation. Most implementations mirror the
+surrounding code. The book3s/32/tlbflush.h implementation is left as
+a BUILD_BUG because it is more complicated and not required for
+anything as yet.
 
-They behave differently to the existing surrounding functions too, in
-that they actually need to do something on Hash. The other functions
-are primarily for use in generic code that expects their definitions,
-but Hash updates the TLB during PTE updates.
-
-After replacing the only usage with the Radix specific version, there
-are no more users of these functions, and given they are not implemented
-anyway it is safe to delete them.
-
-[1]: https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20170903181513.29635-1-fbarrat@linux.vnet.ibm.com/
+This removes the need to create a vm_area_struct, which the temporary
+patching mm work does not need.
 
 Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
 ---
-v10:	* New in v10 to remove the hash__ set of functions
+v10:	* Change warning to BUILD_BUG
+v9:	* Replace book3s/32/tlbflush.h implementation with warning
 ---
- .../include/asm/book3s/64/tlbflush-hash.h     | 22 -------------------
- arch/powerpc/include/asm/book3s/64/tlbflush.h | 15 -------------
- 2 files changed, 37 deletions(-)
+ arch/powerpc/include/asm/book3s/32/tlbflush.h | 9 +++++++++
+ arch/powerpc/include/asm/book3s/64/tlbflush.h | 7 +++++++
+ arch/powerpc/include/asm/nohash/tlbflush.h    | 7 +++++++
+ arch/powerpc/mm/nohash/tlb.c                  | 8 ++++++++
+ 4 files changed, 31 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h b/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
-index 38d31c2489d3..cdbb1a04bb52 100644
---- a/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
-+++ b/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
-@@ -59,28 +59,6 @@ void flush_hash_range(unsigned long number, int local);
- void flush_hash_hugepage(unsigned long vsid, unsigned long addr, pmd_t *pmdp,
- 			 unsigned int psize, int ssize, unsigned long flags);
+diff --git a/arch/powerpc/include/asm/book3s/32/tlbflush.h b/arch/powerpc/include/asm/book3s/32/tlbflush.h
+index ba1743c52b56..4be572908124 100644
+--- a/arch/powerpc/include/asm/book3s/32/tlbflush.h
++++ b/arch/powerpc/include/asm/book3s/32/tlbflush.h
+@@ -2,6 +2,8 @@
+ #ifndef _ASM_POWERPC_BOOK3S_32_TLBFLUSH_H
+ #define _ASM_POWERPC_BOOK3S_32_TLBFLUSH_H
  
--static inline void hash__local_flush_all_mm(struct mm_struct *mm)
--{
--	/*
--	 * There's no Page Walk Cache for hash, so what is needed is
--	 * the same as flush_tlb_mm(), which doesn't really make sense
--	 * with hash. So the only thing we could do is flush the
--	 * entire LPID! Punt for now, as it's not being used.
--	 */
--	WARN_ON_ONCE(1);
--}
--
--static inline void hash__flush_all_mm(struct mm_struct *mm)
--{
--	/*
--	 * There's no Page Walk Cache for hash, so what is needed is
--	 * the same as flush_tlb_mm(), which doesn't really make sense
--	 * with hash. So the only thing we could do is flush the
--	 * entire LPID! Punt for now, as it's not being used.
--	 */
--	WARN_ON_ONCE(1);
--}
--
- struct mmu_gather;
- void hash__tlb_flush(struct mmu_gather *tlb);
- 
++#include <linux/build_bug.h>
++
+ #define MMU_NO_CONTEXT      (0)
+ /*
+  * TLB flushing for "classic" hash-MMU 32-bit CPUs, 6xx, 7xx, 7xxx
+@@ -74,6 +76,13 @@ static inline void local_flush_tlb_page(struct vm_area_struct *vma,
+ {
+ 	flush_tlb_page(vma, vmaddr);
+ }
++
++static inline void local_flush_tlb_page_psize(struct mm_struct *mm,
++					      unsigned long vmaddr, int psize)
++{
++	BUILD_BUG();
++}
++
+ static inline void local_flush_tlb_mm(struct mm_struct *mm)
+ {
+ 	flush_tlb_mm(mm);
 diff --git a/arch/powerpc/include/asm/book3s/64/tlbflush.h b/arch/powerpc/include/asm/book3s/64/tlbflush.h
-index 2254a40f0564..c56a0aee8124 100644
+index c56a0aee8124..dd39313242b4 100644
 --- a/arch/powerpc/include/asm/book3s/64/tlbflush.h
 +++ b/arch/powerpc/include/asm/book3s/64/tlbflush.h
-@@ -86,13 +86,6 @@ static inline void local_flush_tlb_page(struct vm_area_struct *vma,
+@@ -86,6 +86,13 @@ static inline void local_flush_tlb_page(struct vm_area_struct *vma,
  		radix__local_flush_tlb_page(vma, vmaddr);
  }
  
--static inline void local_flush_all_mm(struct mm_struct *mm)
--{
--	if (radix_enabled())
--		return radix__local_flush_all_mm(mm);
--	return hash__local_flush_all_mm(mm);
--}
--
++static inline void local_flush_tlb_page_psize(struct mm_struct *mm,
++					      unsigned long vmaddr, int psize)
++{
++	if (radix_enabled())
++		radix__local_flush_tlb_page_psize(mm, vmaddr, psize);
++}
++
  static inline void tlb_flush(struct mmu_gather *tlb)
  {
  	if (radix_enabled())
-@@ -112,17 +105,9 @@ static inline void flush_tlb_page(struct vm_area_struct *vma,
- 	if (radix_enabled())
- 		radix__flush_tlb_page(vma, vmaddr);
+diff --git a/arch/powerpc/include/asm/nohash/tlbflush.h b/arch/powerpc/include/asm/nohash/tlbflush.h
+index 0cef5e4f8d92..d98de9e3896f 100644
+--- a/arch/powerpc/include/asm/nohash/tlbflush.h
++++ b/arch/powerpc/include/asm/nohash/tlbflush.h
+@@ -44,6 +44,12 @@ static inline void local_flush_tlb_page(struct vm_area_struct *vma, unsigned lon
+ 	asm volatile ("tlbie %0; sync" : : "r" (vmaddr) : "memory");
  }
--
--static inline void flush_all_mm(struct mm_struct *mm)
--{
--	if (radix_enabled())
--		return radix__flush_all_mm(mm);
--	return hash__flush_all_mm(mm);
--}
- #else
- #define flush_tlb_mm(mm)		local_flush_tlb_mm(mm)
- #define flush_tlb_page(vma, addr)	local_flush_tlb_page(vma, addr)
--#define flush_all_mm(mm)		local_flush_all_mm(mm)
- #endif /* CONFIG_SMP */
  
- #define flush_tlb_fix_spurious_fault flush_tlb_fix_spurious_fault
++static inline void local_flush_tlb_page_psize(struct mm_struct *mm,
++					      unsigned long vmaddr, int psize)
++{
++	asm volatile ("tlbie %0; sync" : : "r" (vmaddr) : "memory");
++}
++
+ static inline void flush_tlb_kernel_range(unsigned long start, unsigned long end)
+ {
+ 	start &= PAGE_MASK;
+@@ -57,6 +63,7 @@ static inline void flush_tlb_kernel_range(unsigned long start, unsigned long end
+ void flush_tlb_kernel_range(unsigned long start, unsigned long end);
+ void local_flush_tlb_mm(struct mm_struct *mm);
+ void local_flush_tlb_page(struct vm_area_struct *vma, unsigned long vmaddr);
++void local_flush_tlb_page_psize(struct mm_struct *mm, unsigned long vmaddr, int psize);
+ 
+ void __local_flush_tlb_page(struct mm_struct *mm, unsigned long vmaddr,
+ 			    int tsize, int ind);
+diff --git a/arch/powerpc/mm/nohash/tlb.c b/arch/powerpc/mm/nohash/tlb.c
+index 2c15c86c7015..a903b308acc5 100644
+--- a/arch/powerpc/mm/nohash/tlb.c
++++ b/arch/powerpc/mm/nohash/tlb.c
+@@ -184,6 +184,14 @@ void local_flush_tlb_page(struct vm_area_struct *vma, unsigned long vmaddr)
+ 			       mmu_get_tsize(mmu_virtual_psize), 0);
+ }
+ EXPORT_SYMBOL(local_flush_tlb_page);
++
++void local_flush_tlb_page_psize(struct mm_struct *mm,
++				unsigned long vmaddr, int psize)
++{
++	__local_flush_tlb_page(mm, vmaddr, mmu_get_tsize(psize), 0);
++}
++EXPORT_SYMBOL(local_flush_tlb_page_psize);
++
+ #endif
+ 
+ /*
 -- 
 2.38.1
 
