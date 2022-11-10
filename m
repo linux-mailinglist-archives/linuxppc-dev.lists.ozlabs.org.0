@@ -1,72 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BFC1623731
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Nov 2022 00:00:44 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B8BD623834
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Nov 2022 01:36:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N70n60C1Tz3dv7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Nov 2022 10:00:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N72vQ32DNz3ccr
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Nov 2022 11:36:18 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=qgV5InPt;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=aEMTlQJm;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::32d; helo=mail-wm1-x32d.google.com; envelope-from=olteanv@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1033; helo=mail-pj1-x1033.google.com; envelope-from=jniethe5@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=qgV5InPt;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=aEMTlQJm;
 	dkim-atps=neutral
-Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
+Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N70m83hC9z303m
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Nov 2022 09:59:51 +1100 (AEDT)
-Received: by mail-wm1-x32d.google.com with SMTP id v124-20020a1cac82000000b003cf7a4ea2caso2246720wme.5
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 09 Nov 2022 14:59:51 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N72tS4VSGz2xb4
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Nov 2022 11:35:27 +1100 (AEDT)
+Received: by mail-pj1-x1033.google.com with SMTP id b11so379587pjp.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 09 Nov 2022 16:35:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=swcrtWEk/pjEDFJKOi6muSLrFWlp8giizOyeDdjr3QI=;
-        b=qgV5InPtVbonJaw0kv4ZbCSPNUG0xf4Pn9GME0tsiZ0IUqaOWghUYHueI4ljO6Po1T
-         o4irPUC5EKmGrtN2mrzJF2gFRCiwSyOxJRriuGI96ZjO5Siks+qR8efhjNt9GRubLaik
-         KgyWYE447kS3+rmtz5QuDgEmy7LzOQ50dH7ns8itJ5M8mT+n1FVvbR33jD+XIU9TNOlR
-         6VD7WdQkVPWhcqH4M7OEaadnw9LR+yTrKE3XVtepyRZ82Ph4VacvfwmoWmnn0zcDYlFi
-         1plh0u6lKqfAeTB/C4spDO4eqcFBbGJWFcJNDntsA8fgeO2LE7GOoSgCfo3oKvVar0q1
-         xTYQ==
+        h=content-transfer-encoding:mime-version:user-agent:references
+         :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=M4U6HYkpXGvvUxavUnJ5+ed1ZVusXt6XGG8837aDmvw=;
+        b=aEMTlQJmtIgZBDbT8vTXqJPYUGR9nY2Jvghan88jbWl44t+wZl+nQbXxiNOMqNAxyw
+         tR4wCWbDWBFIRbe3CFPpyDLT4q1ixi8gxUDcRmOc1FHr7vqrhsTdSK4yS23EbnPWZRZA
+         ExYAy2DlaksWQbHCU0FgqJnMfbiSJlweOfsm2S++T178VqUCRpoqi+t+gCckGprSQvSK
+         djxcMYvYhG2W++c0EWlFBXcd/9kFud8mRv3N+3y8pATJHTvU1/w6IGpCcI4ekvViRgOL
+         35OTYqewPyKzLAxAGf4HS9c687GRJr4H4knlXYs6Tp0ngyi2zC7ToYyPfmgwNLYRf9DE
+         XxHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=swcrtWEk/pjEDFJKOi6muSLrFWlp8giizOyeDdjr3QI=;
-        b=tXtHn71M/oy8Rkasl817mQ0OQkJ5CmIOpfgfwhV+X+P+Gp/CfCNNAITlZN4JRFTyIv
-         LOcqbVMZUUVi4UwXC5aiUXO9aT9FJwjPRFCFXr97AZU2uhgvCVHzAoZiJCvfeLXHyl8F
-         AAkxSzh18rzhkRraG40Dk0jRc7pg/zIWh8/I9tMbs9np/XkilWONrtPGCIrV5xQviZMS
-         DpJbTeJhOAjGtPUhyb6aBWOEZAqn8io+9HuK4RPrX7kbRNIxjPzzCjnu/ZIIJYl7au4x
-         hB6OzgZzb2t/g7W2lsaeUVLUAfIm2Y7XdIqTMd0Dp3muvK+r03JVSXJCOFizaioNTLhY
-         4Qhg==
-X-Gm-Message-State: ANoB5pkhbqTwFUADqaYpw2FFevdMhZDRD3Eg0Hgq/Obevyz23abacc3I
-	Ujio3nll1RBwnwX1AhHB/bfILGyC5YDFtg==
-X-Google-Smtp-Source: AA0mqf79cVkwjf7QQCHzuNa6IK4Sqr+HRH2GA9ig8lczx/Yt8P39Cw2PM+3pWIS8kfcqXPHw8pEUMQ==
-X-Received: by 2002:a05:600c:3393:b0:3cf:b30a:e202 with SMTP id o19-20020a05600c339300b003cfb30ae202mr9650192wmp.91.1668034787609;
-        Wed, 09 Nov 2022 14:59:47 -0800 (PST)
-Received: from skbuf ([188.27.184.197])
-        by smtp.gmail.com with ESMTPSA id q10-20020adff94a000000b0022e035a4e93sm13982413wrr.87.2022.11.09.14.59.45
+        h=content-transfer-encoding:mime-version:user-agent:references
+         :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=M4U6HYkpXGvvUxavUnJ5+ed1ZVusXt6XGG8837aDmvw=;
+        b=Fc36Tpwhe75+2BvwnyRPgao0AitX2aG6ZJ8m5955Faspy6LGwHSPhLJ/Ok7jwKkEWv
+         UEjDT8ezpFWapujIaBQntqXjDZIcMwxakcDTW2VuYfONvxNqfTFe0vYLLoFl8kVOSvyI
+         WXhaHrSafJQ4YeLEANPqjdDC0PCpATc7XuW8D9jhso1EFAOlQgi0Ljlq3wnxL2TeuvKp
+         w0xI3vrtmT6eAdb9fPSQwLotoHw1gZ/IuN2QiGa0L+jLfi9TrFJjxO1OXnUpISOvHz+k
+         kU34xXATwl5ToqyPNI3C9LFEvQ6nGhHSjvPKNpyqaDfnGl1XOkwIEAJQQbq8/La0wnfk
+         ZaRA==
+X-Gm-Message-State: ACrzQf0I6SQT/2YjREtyEx18O1r7GjIK/+1oIUImgep7EQ1x00K70e41
+	P2MlIYSV7NhoUsEzdVTz3Zw=
+X-Google-Smtp-Source: AMsMyM7h4t35Y3nxEBa+s5dmUObDxYZZDxl0MSa00fHIEDJicpFeu/9LawhynZfCmagfWgwXrjAOfQ==
+X-Received: by 2002:a17:90a:f3d4:b0:213:959f:5a90 with SMTP id ha20-20020a17090af3d400b00213959f5a90mr68719325pjb.54.1668040524738;
+        Wed, 09 Nov 2022 16:35:24 -0800 (PST)
+Received: from tee480.ozlabs.ibm.com (110-175-254-242.static.tpgi.com.au. [110.175.254.242])
+        by smtp.googlemail.com with ESMTPSA id k14-20020a170902ce0e00b0016dbdf7b97bsm9634482plg.266.2022.11.09.16.35.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Nov 2022 14:59:47 -0800 (PST)
-Date: Thu, 10 Nov 2022 00:59:44 +0200
-From: Vladimir Oltean <olteanv@gmail.com>
-To: Sean Anderson <sean.anderson@seco.com>
-Subject: Re: [PATCH net-next v2 00/11] net: pcs: Add support for devices
- probed in the "usual" manner
-Message-ID: <20221109225944.n5pisgdytex5s6yk@skbuf>
-References: <20221103210650.2325784-1-sean.anderson@seco.com>
+        Wed, 09 Nov 2022 16:35:24 -0800 (PST)
+Message-ID: <c1bc04fd0c09537cf77461754f5a940d782bfbd7.camel@gmail.com>
+Subject: Re: [PATCH 01/17] powerpc/qspinlock: powerpc qspinlock
+ implementation
+From: Jordan Niethe <jniethe5@gmail.com>
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Date: Thu, 10 Nov 2022 11:35:21 +1100
+In-Reply-To: <20220728063120.2867508-2-npiggin@gmail.com>
+References: <20220728063120.2867508-1-npiggin@gmail.com>
+	 <20220728063120.2867508-2-npiggin@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5-0ubuntu1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221103210650.2325784-1-sean.anderson@seco.com>
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,21 +81,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, Alexandre Belloni <alexandre.belloni@bootlin.com>, Madalin Bucur <madalin.bucur@nxp.com>, Eric Dumazet <edumazet@google.com>, Paul Mackerras <paulus@samba.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Ioana Ciornei <ioana.ciornei@nxp.com>, UNGLinuxDriver@microchip.com, Frank Rowand <frowand.list@gmail.com>, Florian Fainelli <f.fainelli@gmail.com>, Saravana Kannan <saravanak@google.com>, Russell King <linux@armlinux.org.uk>, Vladimir Oltean <vladimir.oltean@nxp.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Vivien Didelot <vivien.didelot@gmail.com>, devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Claudiu Manoil <claudiu.manoil@nxp.com>, Rob Herring <robh+dt@kernel.org>, linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Li Yang <leoyang.li@nxp.com>, Shawn Guo <shawnguo@kernel.org>, "David S . Miller" <davem@davemloft.net>, Heiner Kallweit <hkallweit1@gmail.c
- om>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Nov 03, 2022 at 05:06:39PM -0400, Sean Anderson wrote:
-> For a long time, PCSs have been tightly coupled with their MACs. For
-> this reason, the MAC creates the "phy" or mdio device, and then passes
-> it to the PCS to initialize. This has a few disadvantages:
-> 
-> - Each MAC must re-implement the same steps to look up/create a PCS
-> - The PCS cannot use functions tied to device lifetime, such as devm_*.
-> - Generally, the PCS does not have easy access to its device tree node
+On Thu, 2022-07-28 at 16:31 +1000, Nicholas Piggin wrote:
+<snip>
+> -#define queued_spin_lock queued_spin_lock
+>  
+> -static inline void queued_spin_unlock(struct qspinlock *lock)
+> +static __always_inline int queued_spin_trylock(struct qspinlock *lock)
+>  {
+> -	if (!IS_ENABLED(CONFIG_PARAVIRT_SPINLOCKS) || !is_shared_processor())
+> -		smp_store_release(&lock->locked, 0);
+> -	else
+> -		__pv_queued_spin_unlock(lock);
+> +	if (atomic_cmpxchg_acquire(&lock->val, 0, 1) == 0)
+> +		return 1;
+> +	return 0;
 
-Is there a clear need to solve these disadvantages? There comes extra
-runtime complexity with the PCS-as-device scheme (plus the extra
-complexity needed to address the DT backwards compatibility problems
-it causes; not addressed here).
+optional style nit: return (atomic_cmpxchg_acquire(&lock->val, 0, 1) == 0);
+
+[resend as utf-8, not utf-7]
+
