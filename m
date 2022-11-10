@@ -2,51 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F4CD624C5E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Nov 2022 22:03:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43A58624F15
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Nov 2022 01:51:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N7Z7X1MD8z3cfB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Nov 2022 08:03:36 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iJwMckJy;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N7gB01bj3z3cXX
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Nov 2022 11:51:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iJwMckJy;
-	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=zte.com.cn (client-ip=58.251.27.85; helo=mxct.zte.com.cn; envelope-from=yang.yang29@zte.com.cn; receiver=<UNKNOWN>)
+X-Greylist: delayed 594 seconds by postgrey-1.36 at boromir; Thu, 10 Nov 2022 23:45:23 AEDT
+Received: from mxct.zte.com.cn (mxct.zte.com.cn [58.251.27.85])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N7Z6S6LSNz2xG6
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Nov 2022 08:02:40 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N7M4g4sy8z3c7J
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Nov 2022 23:45:22 +1100 (AEDT)
+Received: from mxde.zte.com.cn (unknown [10.35.20.121])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mxct.zte.com.cn (FangMail) with ESMTPS id 4N7Ls96YYbz7Blc
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Nov 2022 20:35:25 +0800 (CST)
+Received: from mxus.zte.com.cn (unknown [10.207.168.7])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mxde.zte.com.cn (FangMail) with ESMTPS id 4N7Lrg29Xzz9vSpB
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Nov 2022 20:34:59 +0800 (CST)
+Received: from mxhk.zte.com.cn (unknown [192.168.250.138])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mxus.zte.com.cn (FangMail) with ESMTPS id 4N7Lqx6Pnqz9tyD6
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Nov 2022 20:34:21 +0800 (CST)
+Received: from mxct.zte.com.cn (unknown [192.168.251.13])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4N7Lqp5pZZz5BNRf
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Nov 2022 20:34:14 +0800 (CST)
+Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 14F1361E56;
-	Thu, 10 Nov 2022 21:02:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AFFAC433C1;
-	Thu, 10 Nov 2022 21:02:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1668114157;
-	bh=dFjwsB2x4Vktj11UP1nFbKy1JuZUspP3pjwcHIsSSnc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=iJwMckJy0uCcByLR5dTqb/sLhh/p4neWekIYZaZ3yeonbwH09ch8EqoG8ecGOC/gh
-	 LxSdAJBLbKmEE3CXGDI3A7Vc6BCxXLJ/bsFq5hQJgqS/nai15IhiKGetEeKH4+vpT2
-	 j9Ld+7uAe0Uz9IipZQ/88pm8pLqURo9XzvxQWuunebeReJqpcbJfuCN8BWniAwIWF9
-	 a+ZwQoYjb1mS5vRmT3xSXjeYdGWxfBo/pZQHhYRV38fM2nHaPFfGhzmt8f50haLCEQ
-	 7sSMDQr3yt4Z74/HTNY4ceRxsq+32kGBXwaNszYjSX1Y2pvyiMxqjjRM7Gykh+Y6zM
-	 XSZjD4/Y6CHGA==
-Date: Thu, 10 Nov 2022 15:02:35 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Subject: Re: [PATCH v3 0/5] PCI: Remove unnecessary <linux/of_irq.h> includes
-Message-ID: <20221110210235.GA671572@bhelgaas>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221031153954.1163623-1-helgaas@kernel.org>
+	by mxct.zte.com.cn (FangMail) with ESMTPS id 4N7LqZ6MvLz4y0v3;
+	Thu, 10 Nov 2022 20:34:02 +0800 (CST)
+Received: from szxlzmapp03.zte.com.cn ([10.5.231.207])
+	by mse-fl1.zte.com.cn with SMTP id 2AACXwdd047492;
+	Thu, 10 Nov 2022 20:33:58 +0800 (+08)
+	(envelope-from yang.yang29@zte.com.cn)
+Received: from mapi (szxlzmapp03[null])
+	by mapi (Zmail) with MAPI id mid14;
+	Thu, 10 Nov 2022 20:34:01 +0800 (CST)
+Date: Thu, 10 Nov 2022 20:34:01 +0800 (CST)
+X-Zmail-TransId: 2b05636cefb953b22096
+X-Mailer: Zmail v1.0
+Message-ID: <202211102034017058666@zte.com.cn>
+Mime-Version: 1.0
+From: <yang.yang29@zte.com.cn>
+To: <tyreld@linux.ibm.com>
+Subject: =?UTF-8?B?W1BBVENIIGxpbnV4LW5leHRdIHNjc2k6IGlibXZmYzogdXNlIHN5c2ZzX2VtaXQoKSB0byBpbnN0ZWFkIG9mIHNjbnByaW50Zigp?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL: mse-fl1.zte.com.cn 2AACXwdd047492
+X-Fangmail-Gw-Spam-Type: 0
+X-FangMail-Miltered: at cgslv5.04-192.168.251.14.novalocal with ID 636CF00C.000 by FangMail milter!
+X-FangMail-Envelope: 1668083726/4N7Ls96YYbz7Blc/636CF00C.000/10.35.20.121/[10.35.20.121]/mxde.zte.com.cn/<yang.yang29@zte.com.cn>
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 636CF00C.000/4N7Ls96YYbz7Blc
+X-Mailman-Approved-At: Fri, 11 Nov 2022 11:50:37 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,62 +76,96 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Heiko Stuebner <heiko@sntech.de>, linux-pci@vger.kernel.org, Linus Walleij <linus.walleij@linaro.org>, Minghuan Lian <minghuan.Lian@nxp.com>, Conor Dooley <conor.dooley@microchip.com>, Thierry Reding <thierry.reding@gmail.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Bharat Kumar Gogada <bharat.kumar.gogada@amd.com>, Toan Le <toan@os.amperecomputing.com>, linux-riscv@lists.infradead.org, Kishon Vijay Abraham I <kishon@kernel.org>, Rob Herring <robh@kernel.org>, Joyce Ooi <joyce.ooi@intel.com>, Jonathan Hunter <jonathanh@nvidia.com>, linux-rockchip@lists.infradead.org, bcm-kernel-feedback-list@broadcom.com, linux-arm-kernel@lists.infradead.org, Shawn Lin <shawn.lin@rock-chips.com>, Ray Jui <rjui@broadcom.com>, linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org, Michal Simek <michal.simek@amd.com>, Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>, Bjorn Helgaas <bhelgaas@google.com>, Scott Branden <sbra
- nden@broadcom.com>, Daire McNamara <daire.mcnamara@microchip.com>, linux-kernel@vger.kernel.org, Tom Joseph <tjoseph@cadence.com>, linuxppc-dev@lists.ozlabs.org
+Cc: martin.petersen@oracle.com, linux-scsi@vger.kernel.org, jejb@linux.ibm.com, linux-kernel@vger.kernel.org, yang.yang29@zte.com.cn, npiggin@gmail.com, xu.panda@zte.com.cn, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Oct 31, 2022 at 10:39:49AM -0500, Bjorn Helgaas wrote:
-> From: Bjorn Helgaas <bhelgaas@google.com>
-> 
-> Many host controller drivers #include <linux/of_irq.h> even though they
-> don't need it.  Remove the unnecessary #includes.
-> 
-> v2: https://lore.kernel.org/r/20221025185147.665365-1-helgaas@kernel.org/
-> v1: https://lore.kernel.org/r/20221019195452.37606-1-helgaas@kernel.org/
-> 
-> Changes from v2 to v3:
->   - Include <linux/irqdomain.h> explicitly in xgene-msi, which doesn't need
->     <linux/of_irq.h> itself, but relied on it to include
->     <linux/irqdomain.h>.  On x86, this was covered up by the fact that
->     <linux/msi.h> includes <asm/msi.h>, which includes <asm/irqdomain.h>,
->     which includes <linux/irqdomain.h>.  But on parisc, <asm/msi.h> is
->     actually asm-generic/msi.h, which does *not* include
->     <linux/irqdomain.h>
->   - Pick up tags from Conor Dooley and Thomas Petazzoni
-> 
-> Changes from v1 to v2:
->   - Include <linux/irqdomain.h> explicitly in altera-msi and microchip,
->     which don't need <linux/of_irq.h> itself, but relied on it to include
->     <linux/irqdomain.h>
->   - Include <linux/irqdomain.h> explicitly in mvebu, which needs both it
->     and <linux/of_irq.h>
-> 
-> Bjorn Helgaas (5):
->   PCI: altera-msi: Include <linux/irqdomain.h> explicitly
->   PCI: microchip: Include <linux/irqdomain.h> explicitly
->   PCI: mvebu: Include <linux/irqdomain.h> explicitly
->   PCI: xgene-msi: Include <linux/irqdomain.h> explicitly
->   PCI: Remove unnecessary <linux/of_irq.h> includes
-> 
->  drivers/pci/controller/cadence/pci-j721e.c   | 1 -
->  drivers/pci/controller/dwc/pci-layerscape.c  | 1 -
->  drivers/pci/controller/dwc/pcie-armada8k.c   | 1 -
->  drivers/pci/controller/dwc/pcie-tegra194.c   | 1 -
->  drivers/pci/controller/pci-mvebu.c           | 1 +
->  drivers/pci/controller/pci-v3-semi.c         | 1 -
->  drivers/pci/controller/pci-xgene-msi.c       | 2 +-
->  drivers/pci/controller/pci-xgene.c           | 1 -
->  drivers/pci/controller/pcie-altera-msi.c     | 2 +-
->  drivers/pci/controller/pcie-iproc-platform.c | 1 -
->  drivers/pci/controller/pcie-iproc.c          | 1 -
->  drivers/pci/controller/pcie-microchip-host.c | 2 +-
->  drivers/pci/controller/pcie-rockchip-host.c  | 1 -
->  drivers/pci/controller/pcie-xilinx-cpm.c     | 1 -
->  drivers/pci/controller/pcie-xilinx-nwl.c     | 1 -
->  15 files changed, 4 insertions(+), 14 deletions(-)
+From: Xu Panda <xu.panda@zte.com.cn>
 
-I put these on a pci/kbuild branch that I propose to merge in after
-everything else.  Lorenzo, let me know if you prefer another approach.
+Replace the open-code with sysfs_emit() to simplify the code.
 
-Bjorn
+Reported-by: Zeal Robot <zealci@zte.com.cn>
+Signed-off-by: Xu Panda <xu.panda@zte.com.cn>
+Signed-off-by: Yang Yang <yang.yang29@zte.com>
+---
+ drivers/scsi/ibmvscsi/ibmvfc.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
+index 1a0c0b7289d2..c412752ea140 100644
+--- a/drivers/scsi/ibmvscsi/ibmvfc.c
++++ b/drivers/scsi/ibmvscsi/ibmvfc.c
+@@ -3411,7 +3411,7 @@ static ssize_t ibmvfc_show_host_partition_name(struct device *dev,
+ 	struct Scsi_Host *shost = class_to_shost(dev);
+ 	struct ibmvfc_host *vhost = shost_priv(shost);
+
+-	return snprintf(buf, PAGE_SIZE, "%s\n",
++	return sysfs_emit(buf, "%s\n",
+ 			vhost->login_buf->resp.partition_name);
+ }
+
+@@ -3421,7 +3421,7 @@ static ssize_t ibmvfc_show_host_device_name(struct device *dev,
+ 	struct Scsi_Host *shost = class_to_shost(dev);
+ 	struct ibmvfc_host *vhost = shost_priv(shost);
+
+-	return snprintf(buf, PAGE_SIZE, "%s\n",
++	return sysfs_emit(buf, "%s\n",
+ 			vhost->login_buf->resp.device_name);
+ }
+
+@@ -3431,7 +3431,7 @@ static ssize_t ibmvfc_show_host_loc_code(struct device *dev,
+ 	struct Scsi_Host *shost = class_to_shost(dev);
+ 	struct ibmvfc_host *vhost = shost_priv(shost);
+
+-	return snprintf(buf, PAGE_SIZE, "%s\n",
++	return sysfs_emit(buf, "%s\n",
+ 			vhost->login_buf->resp.port_loc_code);
+ }
+
+@@ -3441,7 +3441,7 @@ static ssize_t ibmvfc_show_host_drc_name(struct device *dev,
+ 	struct Scsi_Host *shost = class_to_shost(dev);
+ 	struct ibmvfc_host *vhost = shost_priv(shost);
+
+-	return snprintf(buf, PAGE_SIZE, "%s\n",
++	return sysfs_emit(buf, "%s\n",
+ 			vhost->login_buf->resp.drc_name);
+ }
+
+@@ -3450,7 +3450,7 @@ static ssize_t ibmvfc_show_host_npiv_version(struct device *dev,
+ {
+ 	struct Scsi_Host *shost = class_to_shost(dev);
+ 	struct ibmvfc_host *vhost = shost_priv(shost);
+-	return snprintf(buf, PAGE_SIZE, "%d\n", be32_to_cpu(vhost->login_buf->resp.version));
++	return sysfs_emit(buf, "%d\n", be32_to_cpu(vhost->login_buf->resp.version));
+ }
+
+ static ssize_t ibmvfc_show_host_capabilities(struct device *dev,
+@@ -3458,7 +3458,7 @@ static ssize_t ibmvfc_show_host_capabilities(struct device *dev,
+ {
+ 	struct Scsi_Host *shost = class_to_shost(dev);
+ 	struct ibmvfc_host *vhost = shost_priv(shost);
+-	return snprintf(buf, PAGE_SIZE, "%llx\n", be64_to_cpu(vhost->login_buf->resp.capabilities));
++	return sysfs_emit(buf, "%llx\n", be64_to_cpu(vhost->login_buf->resp.capabilities));
+ }
+
+ /**
+@@ -3479,7 +3479,7 @@ static ssize_t ibmvfc_show_log_level(struct device *dev,
+ 	int len;
+
+ 	spin_lock_irqsave(shost->host_lock, flags);
+-	len = snprintf(buf, PAGE_SIZE, "%d\n", vhost->log_level);
++	len = sysfs_emit(buf, "%d\n", vhost->log_level);
+ 	spin_unlock_irqrestore(shost->host_lock, flags);
+ 	return len;
+ }
+@@ -3517,7 +3517,7 @@ static ssize_t ibmvfc_show_scsi_channels(struct device *dev,
+ 	int len;
+
+ 	spin_lock_irqsave(shost->host_lock, flags);
+-	len = snprintf(buf, PAGE_SIZE, "%d\n", vhost->client_scsi_channels);
++	len = sysfs_emit(buf, "%d\n", vhost->client_scsi_channels);
+ 	spin_unlock_irqrestore(shost->host_lock, flags);
+ 	return len;
+ }
+-- 
+2.15.2
