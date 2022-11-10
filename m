@@ -1,70 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 867BA623869
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Nov 2022 01:50:03 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AB5462386A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Nov 2022 01:51:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N73CF35Cjz3fFV
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Nov 2022 11:50:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N73DP60M4z3cNG
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Nov 2022 11:51:01 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=U7xfHPTf;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=WITg89Ra;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52a; helo=mail-pg1-x52a.google.com; envelope-from=jniethe5@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=U7xfHPTf;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=WITg89Ra;
 	dkim-atps=neutral
 Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N733j6spzz3f7h
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Nov 2022 11:43:29 +1100 (AEDT)
-Received: by mail-pg1-x52a.google.com with SMTP id 130so223644pgc.5
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 09 Nov 2022 16:43:29 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N73434BVFz3f6D
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Nov 2022 11:43:47 +1100 (AEDT)
+Received: by mail-pg1-x52a.google.com with SMTP id 130so224244pgc.5
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 09 Nov 2022 16:43:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:mime-version:user-agent:references
          :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=iZAv2wRTDAWbj0s5BoStPHM/MT78STvi0P+uk27tTbg=;
-        b=U7xfHPTff2qofAZg/vl5B3kFk5b/KCeyHgSoOf/Gh9vJ10N2FPjfoFfOOg1bUYaUQf
-         5Sdv7tc3mchLJJp0aSrQB4idh+19PuBkvD+UaMaRw+zAXkNSgJkKptw5T/QHmaWdfN3A
-         XRQUnKicYqfqfwetwQYg4wq4IRUb/5hJgVBD2b+uwWqlE47WM8PjMBgTffyCCWTbBsAU
-         sUvkQnIgOJWmjGYfElPIaPCwB7T1DGM1vvD+peERcXmTHS2VXYuiMelKKAcKm7Kk0zJe
-         0Kry9q44UnD0VlKiPsEp9hDZl9QdsITJWZrV3JTD8lNARq/5UEE3A6e0X3j1V4CCgsRE
-         yS1A==
+        bh=VadPezrQFQJzXRQcr7ujruIyHLewoq/Ce9dh+ybf5kM=;
+        b=WITg89RaM3OpQK33BMWC2aMjMBzP850wIdCOemxg/GvAPvb5/JsWP+d6cutcmnenYp
+         XfIoFEJR5Uzams6RgODHrv4lyElUBhLbfQhGL4y6I0YyaboBQZiD6nEfW1j/hBZfZ/rQ
+         AdkJKW1n8hjN0wcbZQQzkxjJfcoxz6PWnXahwI9dhwd72ZwJpGMHhEV/2/WIiVLMqefK
+         CHjy0+sl7SJ5o8yc9bvsCb7/WOAMGkCGmMQ+no1Zh24d90p/rduZQ1sAgmKLLkQHhO4i
+         lnC4ouu8i2VK71iadwuirHBJMohRZk7zhyDb/RIyhWarAq2zB5ci6YTHdVfdelq6xzHP
+         DMQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:user-agent:references
          :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=iZAv2wRTDAWbj0s5BoStPHM/MT78STvi0P+uk27tTbg=;
-        b=2KVM6yGAAuIt67HvibqZ0g37pCRqc7gccnOO+yolEJQM74GwASWk8DMEohfLKY1RsJ
-         jwTeorKUKoTXh1XJDxHPgpLKtlgIMY2RtqhEdMVEI4WK0lD+BjMLAUObWzFBuJyjLQbT
-         kDb/jHxR3+fPPsbKsiVcfskrVCmxWRbCOhlHUObOgrWx763IhEd4KiES1NKDP9bBT1OU
-         sh0autVsK9ffjm4pR0eo0MlTNahvnUirhTMElFlNC/+yo7tz6ZDYSzFh1lYEfZN2gWzd
-         A4Amd6JjOnvo6hCAd71kZkSFkGyR/7Rz5rWEzpsIrBio8x8EWigYzqF+BXgtcSTL9UwC
-         c1xA==
-X-Gm-Message-State: ACrzQf0raHeb8E+/d6XItWn1CfI0+g/HwmAPqSWrsJx0tBXmXOiix6+1
-	8iSK+183dfyXDQ1+PpTd7M7EukvvtSw=
-X-Google-Smtp-Source: AMsMyM5Gdf4ahnBhQV7PBe7jK/fL2oZXmkvsg+zqpg2KB0H+zwvtj3ozUfcib6xwS/1hFC3Kj3Wt7A==
-X-Received: by 2002:a63:105e:0:b0:46e:9bac:1c3 with SMTP id 30-20020a63105e000000b0046e9bac01c3mr51888306pgq.388.1668041008082;
-        Wed, 09 Nov 2022 16:43:28 -0800 (PST)
+        bh=VadPezrQFQJzXRQcr7ujruIyHLewoq/Ce9dh+ybf5kM=;
+        b=AqAyQgP1Y+Cm5xkBfOvKItzU6v9TTVkuZeIAqj+bbdbjj3WRmeSELvKe/D2EBe89Pu
+         O1x43zIpfrRYWdqaCINqGJq5re/HBlszsnn+KpPJL64XfchnXv12qVUvcFsga3ZLpOJk
+         kWII0q2cPtAqOIsnvSrEO1vIEVUIj/S2ELBGLn/QqxFeRG7dy7H2xZIWgqOIwHWTpyGa
+         mEfM6z2K0zsEtOQcllVOQ7d9X2FfxIAt4H5FOTnqcDZI53bnFnwKfmp9FSYe0IyNpRF9
+         TJ7xQl2P2MMcG84oxDmoVoxXPhIKQGYrWIG+dIKgIYi0GprGvBaq2hHdSsMUGBu15G4r
+         nD/Q==
+X-Gm-Message-State: ACrzQf05gpv5jUq/1wkk0+A4CBWGax0j+SpUyCnkom7zyirf7Iw+SOGY
+	EXZPM53ihaDXZLiH9E7oFHrhQUjFebo=
+X-Google-Smtp-Source: AMsMyM7/8BXK5hN3dhO8LVjVb5h39ut55qq870XimqBOJ42+LQ5OCljlpP7pdok+Or0+kpSBZjRNEg==
+X-Received: by 2002:a63:5553:0:b0:43c:5c1e:424f with SMTP id f19-20020a635553000000b0043c5c1e424fmr54046887pgm.353.1668041027009;
+        Wed, 09 Nov 2022 16:43:47 -0800 (PST)
 Received: from tee480.ozlabs.ibm.com (110-175-254-242.static.tpgi.com.au. [110.175.254.242])
-        by smtp.googlemail.com with ESMTPSA id bb7-20020a170902bc8700b00174c0dd29f0sm9680289plb.144.2022.11.09.16.43.26
+        by smtp.googlemail.com with ESMTPSA id f30-20020aa79d9e000000b0056bbd286cf4sm8823164pfq.167.2022.11.09.16.43.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Nov 2022 16:43:27 -0800 (PST)
-Message-ID: <b0a117995bb311dff161c475f7ba76709252c995.camel@gmail.com>
-Subject: Re: [PATCH 14/17] powerpc/qspinlock: use spin_begin/end API
+        Wed, 09 Nov 2022 16:43:46 -0800 (PST)
+Message-ID: <aee900bb3870e8daea96ae5b4aab7ef7e9e1baf4.camel@gmail.com>
+Subject: Re: [PATCH 15/17] powerpc/qspinlock: reduce remote node steal spins
 From: Jordan Niethe <jniethe5@gmail.com>
 To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Date: Thu, 10 Nov 2022 11:43:24 +1100
-In-Reply-To: <20220728063120.2867508-16-npiggin@gmail.com>
+Date: Thu, 10 Nov 2022 11:43:43 +1100
+In-Reply-To: <20220728063120.2867508-17-npiggin@gmail.com>
 References: <20220728063120.2867508-1-npiggin@gmail.com>
-	 <20220728063120.2867508-16-npiggin@gmail.com>
+	 <20220728063120.2867508-17-npiggin@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.36.5-0ubuntu1 
 MIME-Version: 1.0
@@ -85,178 +85,106 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 On Thu, 2022-07-28 at 16:31 +1000, Nicholas Piggin wrote:
 [resend as utf-8, not utf-7]
-> Use the spin_begin/spin_cpu_relax/spin_end APIs in qspinlock, which helps
-> to prevent threads issuing a lot of expensive priority nops which may not
-> have much effect due to immediately executing low then medium priority.
-
-Just a general comment regarding the spin_{begin,end} API, more complicated
-than something like
-
-	spin_begin()
-	for(;;)
-		spin_cpu_relax()
-	spin_end()
-
-it becomes difficult to keep track of. Unfortunately, I don't have any good
-suggestions how to improve it. Hopefully with P10s wait instruction we can
-maybe try and move away from this.
-
-It might be useful to comment the functions pre and post conditions regarding
-expectations about spin_begin() and spin_end().
-
+> Allow for a reduction in the number of times a CPU from a different
+> node than the owner can attempt to steal the lock before queueing.
+> This could bias the transfer behaviour of the lock across the
+> machine and reduce NUMA crossings.
 > ---
->  arch/powerpc/lib/qspinlock.c | 35 +++++++++++++++++++++++++++++++----
->  1 file changed, 31 insertions(+), 4 deletions(-)
+>  arch/powerpc/lib/qspinlock.c | 34 +++++++++++++++++++++++++++++++---
+>  1 file changed, 31 insertions(+), 3 deletions(-)
 > 
 > diff --git a/arch/powerpc/lib/qspinlock.c b/arch/powerpc/lib/qspinlock.c
-> index 277aef1fab0a..d4594c701f7d 100644
+> index d4594c701f7d..24f68bd71e2b 100644
 > --- a/arch/powerpc/lib/qspinlock.c
 > +++ b/arch/powerpc/lib/qspinlock.c
-> @@ -233,6 +233,8 @@ static __always_inline void __yield_to_locked_owner(struct qspinlock *lock, u32
->  	if ((yield_count & 1) == 0)
->  		goto relax; /* owner vcpu is running */
+> @@ -4,6 +4,7 @@
+>  #include <linux/export.h>
+>  #include <linux/percpu.h>
+>  #include <linux/smp.h>
+> +#include <linux/topology.h>
+>  #include <asm/qspinlock.h>
+>  #include <asm/paravirt.h>
 >  
-> +	spin_end();
-> +
->  	/*
->  	 * Read the lock word after sampling the yield count. On the other side
->  	 * there may a wmb because the yield count update is done by the
-> @@ -248,11 +250,13 @@ static __always_inline void __yield_to_locked_owner(struct qspinlock *lock, u32
->  		yield_to_preempted(owner, yield_count);
->  		if (clear_mustq)
->  			lock_set_mustq(lock);
-> +		spin_begin();
->  		/* Don't relax if we yielded. Maybe we should? */
->  		return;
->  	}
-> +	spin_begin();
->  relax:
-> -	cpu_relax();
-> +	spin_cpu_relax();
->  }
+> @@ -24,6 +25,7 @@ struct qnodes {
 >  
->  static __always_inline void yield_to_locked_owner(struct qspinlock *lock, u32 val, bool paravirt)
-> @@ -315,14 +319,18 @@ static __always_inline void yield_to_prev(struct qspinlock *lock, struct qnode *
->  	if ((yield_count & 1) == 0)
->  		goto yield_prev; /* owner vcpu is running */
+>  /* Tuning parameters */
+>  static int STEAL_SPINS __read_mostly = (1<<5);
+> +static int REMOTE_STEAL_SPINS __read_mostly = (1<<2);
+>  #if _Q_SPIN_TRY_LOCK_STEAL == 1
+>  static const bool MAYBE_STEALERS = true;
+>  #else
+> @@ -39,9 +41,13 @@ static bool pv_prod_head __read_mostly = false;
 >  
-> +	spin_end();
-> +
->  	smp_rmb();
+>  static DEFINE_PER_CPU_ALIGNED(struct qnodes, qnodes);
 >  
->  	if (yield_cpu == node->yield_cpu) {
->  		if (node->next && node->next->yield_cpu != yield_cpu)
->  			node->next->yield_cpu = yield_cpu;
->  		yield_to_preempted(yield_cpu, yield_count);
-> +		spin_begin();
->  		return;
->  	}
-> +	spin_begin();
->  
->  yield_prev:
->  	if (!pv_yield_prev)
-> @@ -332,15 +340,19 @@ static __always_inline void yield_to_prev(struct qspinlock *lock, struct qnode *
->  	if ((yield_count & 1) == 0)
->  		goto relax; /* owner vcpu is running */
->  
-> +	spin_end();
-> +
->  	smp_rmb(); /* See yield_to_locked_owner comment */
->  
->  	if (!node->locked) {
->  		yield_to_preempted(prev_cpu, yield_count);
-> +		spin_begin();
->  		return;
->  	}
-> +	spin_begin();
->  
->  relax:
-> -	cpu_relax();
-> +	spin_cpu_relax();
->  }
->  
->  
-> @@ -349,6 +361,7 @@ static __always_inline bool try_to_steal_lock(struct qspinlock *lock, bool parav
->  	int iters;
->  
->  	/* Attempt to steal the lock */
-> +	spin_begin();
->  	for (;;) {
->  		u32 val = READ_ONCE(lock->val);
->  
-> @@ -356,8 +369,10 @@ static __always_inline bool try_to_steal_lock(struct qspinlock *lock, bool parav
->  			break;
->  
->  		if (unlikely(!(val & _Q_LOCKED_VAL))) {
-> +			spin_end();
->  			if (trylock_with_tail_cpu(lock, val))
->  				return true;
-> +			spin_begin();
->  			continue;
->  		}
->  
-> @@ -368,6 +383,7 @@ static __always_inline bool try_to_steal_lock(struct qspinlock *lock, bool parav
->  		if (iters >= get_steal_spins(paravirt))
->  			break;
->  	}
-> +	spin_end();
->  
->  	return false;
->  }
-> @@ -418,8 +434,10 @@ static __always_inline void queued_spin_lock_mcs_queue(struct qspinlock *lock, b
->  		WRITE_ONCE(prev->next, node);
->  
->  		/* Wait for mcs node lock to be released */
-> +		spin_begin();
->  		while (!node->locked)
->  			yield_to_prev(lock, node, prev_cpu, paravirt);
-> +		spin_end();
->  
->  		/* Clear out stale propagated yield_cpu */
->  		if (paravirt && pv_yield_propagate_owner && node->yield_cpu != -1)
-> @@ -432,10 +450,12 @@ static __always_inline void queued_spin_lock_mcs_queue(struct qspinlock *lock, b
->  		int set_yield_cpu = -1;
->  
->  		/* We're at the head of the waitqueue, wait for the lock. */
-> +		spin_begin();
->  		while ((val = READ_ONCE(lock->val)) & _Q_LOCKED_VAL) {
->  			propagate_yield_cpu(node, val, &set_yield_cpu, paravirt);
->  			yield_head_to_locked_owner(lock, val, paravirt, false);
->  		}
-> +		spin_end();
->  
->  		/* If we're the last queued, must clean up the tail. */
->  		if ((val & _Q_TAIL_CPU_MASK) == tail) {
-> @@ -453,6 +473,7 @@ static __always_inline void queued_spin_lock_mcs_queue(struct qspinlock *lock, b
->  
->  again:
->  		/* We're at the head of the waitqueue, wait for the lock. */
-> +		spin_begin();
->  		while ((val = READ_ONCE(lock->val)) & _Q_LOCKED_VAL) {
->  			propagate_yield_cpu(node, val, &set_yield_cpu, paravirt);
->  			yield_head_to_locked_owner(lock, val, paravirt,
-> @@ -465,6 +486,7 @@ static __always_inline void queued_spin_lock_mcs_queue(struct qspinlock *lock, b
->  				val |= _Q_MUST_Q_VAL;
->  			}
->  		}
-> +		spin_end();
->  
->  		/* If we're the last queued, must clean up the tail. */
->  		if ((val & _Q_TAIL_CPU_MASK) == tail) {
-> @@ -480,8 +502,13 @@ static __always_inline void queued_spin_lock_mcs_queue(struct qspinlock *lock, b
->  
->  unlock_next:
->  	/* contended path; must wait for next != NULL (MCS protocol) */
-> -	while (!(next = READ_ONCE(node->next)))
-> -		cpu_relax();
-> +	next = READ_ONCE(node->next);
-> +	if (!next) {
-> +		spin_begin();
-> +		while (!(next = READ_ONCE(node->next)))
-> +			cpu_relax();
-> +		spin_end();
+> -static __always_inline int get_steal_spins(bool paravirt)
+> +static __always_inline int get_steal_spins(bool paravirt, bool remote)
+>  {
+> -	return STEAL_SPINS;
+> +	if (remote) {
+> +		return REMOTE_STEAL_SPINS;
+> +	} else {
+> +		return STEAL_SPINS;
 > +	}
+>  }
 >  
->  	/*
->  	 * Unlock the next mcs waiter node. Release barrier is not required
+>  static __always_inline int get_head_spins(bool paravirt)
+> @@ -380,8 +386,13 @@ static __always_inline bool try_to_steal_lock(struct qspinlock *lock, bool parav
+>  
+>  		iters++;
+>  
+> -		if (iters >= get_steal_spins(paravirt))
+> +		if (iters >= get_steal_spins(paravirt, false))
+>  			break;
+> +		if (iters >= get_steal_spins(paravirt, true)) {
+
+There's no indication of what true and false mean here which is hard to read.
+To me it feels like two separate functions would be more clear.
+
+
+> +			int cpu = get_owner_cpu(val);
+> +			if (numa_node_id() != cpu_to_node(cpu))
+
+What about using node_distance() instead?
+
+
+> +				break;
+> +		}
+>  	}
+>  	spin_end();
+>  
+> @@ -588,6 +599,22 @@ static int steal_spins_get(void *data, u64 *val)
+>  
+>  DEFINE_SIMPLE_ATTRIBUTE(fops_steal_spins, steal_spins_get, steal_spins_set, "%llu\n");
+>  
+> +static int remote_steal_spins_set(void *data, u64 val)
+> +{
+> +	REMOTE_STEAL_SPINS = val;
+
+REMOTE_STEAL_SPINS is int not u64.
+
+> +
+> +	return 0;
+> +}
+> +
+> +static int remote_steal_spins_get(void *data, u64 *val)
+> +{
+> +	*val = REMOTE_STEAL_SPINS;
+> +
+> +	return 0;
+> +}
+> +
+> +DEFINE_SIMPLE_ATTRIBUTE(fops_remote_steal_spins, remote_steal_spins_get, remote_steal_spins_set, "%llu\n");
+> +
+>  static int head_spins_set(void *data, u64 val)
+>  {
+>  	HEAD_SPINS = val;
+> @@ -687,6 +714,7 @@ DEFINE_SIMPLE_ATTRIBUTE(fops_pv_prod_head, pv_prod_head_get, pv_prod_head_set, "
+>  static __init int spinlock_debugfs_init(void)
+>  {
+>  	debugfs_create_file("qspl_steal_spins", 0600, arch_debugfs_dir, NULL, &fops_steal_spins);
+> +	debugfs_create_file("qspl_remote_steal_spins", 0600, arch_debugfs_dir, NULL, &fops_remote_steal_spins);
+>  	debugfs_create_file("qspl_head_spins", 0600, arch_debugfs_dir, NULL, &fops_head_spins);
+>  	if (is_shared_processor()) {
+>  		debugfs_create_file("qspl_pv_yield_owner", 0600, arch_debugfs_dir, NULL, &fops_pv_yield_owner);
 
