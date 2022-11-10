@@ -1,76 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2994624072
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Nov 2022 11:55:21 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FC52624083
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Nov 2022 11:58:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N7Jdg61ngz3cck
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Nov 2022 21:55:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N7Jhw6sgdz3dtv
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Nov 2022 21:58:08 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Vhiez2qd;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=WqI2MXGV;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42e; helo=mail-pf1-x42e.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42c; helo=mail-pf1-x42c.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Vhiez2qd;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=WqI2MXGV;
 	dkim-atps=neutral
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
+Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N7Jcj4t7Zz3blY
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Nov 2022 21:54:27 +1100 (AEDT)
-Received: by mail-pf1-x42e.google.com with SMTP id b29so1629136pfp.13
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Nov 2022 02:54:27 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N7Jh23DWxz3cH9
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Nov 2022 21:57:22 +1100 (AEDT)
+Received: by mail-pf1-x42c.google.com with SMTP id m6so1710018pfb.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Nov 2022 02:57:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=in-reply-to:references:to:from:subject:message-id:date
+        h=in-reply-to:references:subject:to:from:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=VgCqGHVxS4ltgJiyQ9etHAiultsdxXTfgBrB7obw1iY=;
-        b=Vhiez2qdHqBJuzXL7szeEgKuro4DG9Y/d18fwjLrwG5O9C1WRcHW0YXluuxZujxO4K
-         1HhfqHdVt7dOg5Nk1Cdm0SUmZVgfsP+FoBHROUyxed1YzKJMtEf/e7N9/U4arKAMpfge
-         3eddQcM8OwVWVT3ulkdTeLdJGet3+vMUpTs2/MHVBiCBzK+tmmBqYdWeVsN2uCpQSjqd
-         +weFmXlv2VFPIo0NZycx+RwAiSpgd4HUZiqXPHwhm/0Y1yhRDKdIzwuZzJOfEHM4LZm2
-         KJ/rld+lzo2CSz91dGZXBh84LWNG8/roOLxAxEo6mKpJ7IG1cvTnU7t7DSK2S+d25CO+
-         1/vw==
+        bh=vSp8qeB73tpKlE5FoGeRycPLzP7uT0i0hzXjyML5EN8=;
+        b=WqI2MXGVpl4N54j/zBNsJe5yuNY4K+ZEu1ii1+eLx05XirHSsWIrGe4fDiOcsis9v+
+         RlR2cp02Q9MEFR/RCt127c/PaS9KyBJ7Qt6fk+8/hz9oPnDrGToLQ4FnWNWcVznckTX5
+         X/Oc3fLnIp1qSX9Mcfc+C4lAAEQp5jwMOHDjMOoPtYXoLai8ZVf79Kq+fZdoHymP9ARc
+         0OJ39UhNG41atDmmcisB+WAMVP4SZSIYSHd4slbxyNxVlVZ9YPo/CbssTWLl4diiuWmf
+         jXW2sYeda+2UA4v51YZRtmQ3dwWBJydM3pmp4+GGzUQuIQCQ01Pxuuq/PxXgY6ZOlbZi
+         lL1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:references:to:from:subject:message-id:date
+        h=in-reply-to:references:subject:to:from:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=VgCqGHVxS4ltgJiyQ9etHAiultsdxXTfgBrB7obw1iY=;
-        b=iuX8Fpblv0Ynnb2PQU4z72O8gn7I0b695PPPf5P3yWoXHS7WWMDR4ZLUbQ2MCzSHEO
-         MQhoDagyebH/XpFfQofszcBv7ic2ufr+8boqMX5XdkaIeBY57LJxByAy5pZHFoUXDrsF
-         wBAL6e58K97ZHQXn77cx9spl2yGjWtSIrjA/Ed6ewOz24E5Y1vBZYOvAiAQxIv6s58gP
-         mEjoVGZXpQ9EYNJI4CEerTj1FWDCQs1WV4Moeb9LnRxcr7U99yuZfpQUBr/T0iP+xoCD
-         dlJsimBKmbjQ8JbIbzGOSym/Wno+n4L6EeCYDz55MbzH/xH64fvbjVf4B04Gl+RyBgdi
-         rzIQ==
-X-Gm-Message-State: ACrzQf0r4/s06nWYoMQqX3Di9mgyEoK+fAq0VyFxLGxsF2u7jNgA7GBG
-	L6lVjWl2+NVLaAMenMgPmEM=
-X-Google-Smtp-Source: AMsMyM6vL5+ChTJhDvfhHrBhfltC53rSplBrTLB59v98fLB+OmoqTbvjJhOyNcXwpJGHxmax4z0cRQ==
-X-Received: by 2002:a63:565f:0:b0:439:8688:a98d with SMTP id g31-20020a63565f000000b004398688a98dmr2189929pgm.424.1668077664068;
-        Thu, 10 Nov 2022 02:54:24 -0800 (PST)
+        bh=vSp8qeB73tpKlE5FoGeRycPLzP7uT0i0hzXjyML5EN8=;
+        b=WUnopHf3zcV0enjqR5b6bAmwu/zyW72GormbuYbPF1MEXdryCwdsz+qdDjDw4BDEMn
+         mwnZ+uLBWLUP4jVEZz+ijOsE3uVGcUbjt7FU1aBadOh+ehGO83eAfDRVr6dJYyIYX33g
+         Sdck/WIyhpcxVZehgrTmUnM69lbz7UM21337eFdbEC7FF6qTMCAXlRS9ez2kO6qFqkXe
+         SiS+VYL04H4TFtz5MWJy2OfQsgVS3G2IS9cZc52e84B62TtqUVbGXBuuh8Eg0rhcRrLq
+         z74ZJ8mxqHVbaBcVMGe26S1SfRUnl+qxWGW32KmGEtp8PmCpFXIfahScoHc8OraRyHIA
+         yw7A==
+X-Gm-Message-State: ACrzQf1sYAt+y/MESsN5AVHxzveCvJ2mTtb8sxG7dXxdqqyc9rGwxAn1
+	CwTAObC3MTXM9W8E/418Tp631qlHiTc=
+X-Google-Smtp-Source: AMsMyM56yokWdQB0GSVtiBVOpdYw2fhvtJKQRTnyRCKmUOCVr5EipbCepn9o898Kj2feS2jUW50agw==
+X-Received: by 2002:a05:6a00:224c:b0:56c:40ff:7709 with SMTP id i12-20020a056a00224c00b0056c40ff7709mr64083871pfu.59.1668077839373;
+        Thu, 10 Nov 2022 02:57:19 -0800 (PST)
 Received: from localhost (61-68-184-43.tpgi.com.au. [61.68.184.43])
-        by smtp.gmail.com with ESMTPSA id c16-20020a056a00009000b0056c3d3f5a8dsm9848120pfj.56.2022.11.10.02.54.21
+        by smtp.gmail.com with ESMTPSA id w22-20020a1709026f1600b00177e5d83d3esm10943639plk.88.2022.11.10.02.57.17
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 10 Nov 2022 02:54:23 -0800 (PST)
+        Thu, 10 Nov 2022 02:57:18 -0800 (PST)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 10 Nov 2022 20:54:19 +1000
-Message-Id: <CO8K6HSM8F4S.2TPYGPKKG84D5@bobo>
-Subject: Re: [PATCH 05/17] powerpc/qspinlock: allow new waiters to steal the
- lock before queueing
+Date: Thu, 10 Nov 2022 20:57:14 +1000
+Message-Id: <CO8K8Q97CDRP.2SETW1SLWN7K2@bobo>
 From: "Nicholas Piggin" <npiggin@gmail.com>
 To: "Jordan Niethe" <jniethe5@gmail.com>, <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: [PATCH 06/17] powerpc/qspinlock: theft prevention to control
+ latency
 X-Mailer: aerc 0.13.0
 References: <20220728063120.2867508-1-npiggin@gmail.com>
- <20220728063120.2867508-7-npiggin@gmail.com>
- <5fdefbeaa6d81aa33c384c73e265049c43b70832.camel@gmail.com>
-In-Reply-To: <5fdefbeaa6d81aa33c384c73e265049c43b70832.camel@gmail.com>
+ <20220728063120.2867508-8-npiggin@gmail.com>
+ <72d8e4c8160c4d19ee6bdeb9f6d0c8fe1df5f8dc.camel@gmail.com>
+In-Reply-To: <72d8e4c8160c4d19ee6bdeb9f6d0c8fe1df5f8dc.camel@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,173 +88,141 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 On Thu Nov 10, 2022 at 10:40 AM AEST, Jordan Niethe wrote:
 > On Thu, 2022-07-28 at 16:31 +1000, Nicholas Piggin wrote:
 > [resend as utf-8, not utf-7]
-> > Allow new waiters a number of spins on the lock word before queueing,
-> > which particularly helps paravirt performance when physical CPUs are
-> > oversubscribed.
+> > Give the queue head the ability to stop stealers. After a number of
+> > spins without sucessfully acquiring the lock, the queue head employs
+> > this, which will assure it is the next owner.
 > > ---
-> >  arch/powerpc/lib/qspinlock.c | 152 ++++++++++++++++++++++++++++++++---
-> >  1 file changed, 141 insertions(+), 11 deletions(-)
+> >  arch/powerpc/include/asm/qspinlock_types.h | 10 +++-
+> >  arch/powerpc/lib/qspinlock.c               | 56 +++++++++++++++++++++-
+> >  2 files changed, 63 insertions(+), 3 deletions(-)
 > >=20
+> > diff --git a/arch/powerpc/include/asm/qspinlock_types.h b/arch/powerpc/=
+include/asm/qspinlock_types.h
+> > index 210adf05b235..8b20f5e22bba 100644
+> > --- a/arch/powerpc/include/asm/qspinlock_types.h
+> > +++ b/arch/powerpc/include/asm/qspinlock_types.h
+> > @@ -29,7 +29,8 @@ typedef struct qspinlock {
+> >   * Bitfields in the lock word:
+> >   *
+> >   *     0: locked bit
+> > - * 16-31: tail cpu (+1)
+> > + *    16: must queue bit
+> > + * 17-31: tail cpu (+1)
+> >   */
+> >  #define	_Q_SET_MASK(type)	(((1U << _Q_ ## type ## _BITS) - 1)\
+> >  				      << _Q_ ## type ## _OFFSET)
+> > @@ -38,7 +39,12 @@ typedef struct qspinlock {
+> >  #define _Q_LOCKED_MASK		_Q_SET_MASK(LOCKED)
+> >  #define _Q_LOCKED_VAL		(1U << _Q_LOCKED_OFFSET)
+> > =20
+> > -#define _Q_TAIL_CPU_OFFSET	16
+> > +#define _Q_MUST_Q_OFFSET	16
+> > +#define _Q_MUST_Q_BITS		1
+> > +#define _Q_MUST_Q_MASK		_Q_SET_MASK(MUST_Q)
+> > +#define _Q_MUST_Q_VAL		(1U << _Q_MUST_Q_OFFSET)
+> > +
+> > +#define _Q_TAIL_CPU_OFFSET	17
+> >  #define _Q_TAIL_CPU_BITS	(32 - _Q_TAIL_CPU_OFFSET)
+> >  #define _Q_TAIL_CPU_MASK	_Q_SET_MASK(TAIL_CPU)
+>
+> Not a big deal but some of these values could be calculated like in the
+> generic version. e.g.
+>
+> 	#define _Q_PENDING_OFFSET	(_Q_LOCKED_OFFSET +_Q_LOCKED_BITS)
+
+Yeah, we don't *really* have more than one locked bit though. Haven't
+made up my mind about these defines yet.
+
 > > diff --git a/arch/powerpc/lib/qspinlock.c b/arch/powerpc/lib/qspinlock.=
 c
-> > index 7c71e5e287df..1625cce714b2 100644
+> > index 1625cce714b2..a906cc8f15fa 100644
 > > --- a/arch/powerpc/lib/qspinlock.c
 > > +++ b/arch/powerpc/lib/qspinlock.c
-> > @@ -19,8 +19,17 @@ struct qnodes {
-> >  	struct qnode nodes[MAX_NODES];
-> >  };
+> > @@ -22,6 +22,7 @@ struct qnodes {
+> >  /* Tuning parameters */
+> >  static int STEAL_SPINS __read_mostly =3D (1<<5);
+> >  static bool MAYBE_STEALERS __read_mostly =3D true;
+> > +static int HEAD_SPINS __read_mostly =3D (1<<8);
 > > =20
-> > +/* Tuning parameters */
-> > +static int STEAL_SPINS __read_mostly =3D (1<<5);
-> > +static bool MAYBE_STEALERS __read_mostly =3D true;
->
-> I can understand why, but macro case variables can be a bit confusing.
-
-Yeah they started out as #defines. I'll change them.
-
-> > +
 > >  static DEFINE_PER_CPU_ALIGNED(struct qnodes, qnodes);
 > > =20
-> > +static __always_inline int get_steal_spins(void)
+> > @@ -30,6 +31,11 @@ static __always_inline int get_steal_spins(void)
+> >  	return STEAL_SPINS;
+> >  }
+> > =20
+> > +static __always_inline int get_head_spins(void)
 > > +{
-> > +	return STEAL_SPINS;
+> > +	return HEAD_SPINS;
 > > +}
 > > +
 > >  static inline u32 encode_tail_cpu(void)
 > >  {
 > >  	return (smp_processor_id() + 1) << _Q_TAIL_CPU_OFFSET;
-> > @@ -76,6 +85,39 @@ static __always_inline int trylock_clear_tail_cpu(st=
-ruct qspinlock *lock, u32 ol
-> >  	return 0;
+> > @@ -142,6 +148,23 @@ static __always_inline u32 publish_tail_cpu(struct=
+ qspinlock *lock, u32 tail)
+> >  	return prev;
 > >  }
 > > =20
-> > +static __always_inline u32 __trylock_cmpxchg(struct qspinlock *lock, u=
-32 old, u32 new)
+> > +static __always_inline u32 lock_set_mustq(struct qspinlock *lock)
 > > +{
+> > +	u32 new =3D _Q_MUST_Q_VAL;
 > > +	u32 prev;
 > > +
-> > +	BUG_ON(old & _Q_LOCKED_VAL);
-> > +
 > > +	asm volatile(
-> > +"1:	lwarx	%0,0,%1,%4	# queued_spin_trylock_cmpxchg		\n"
+> > +"1:	lwarx	%0,0,%1		# lock_set_mustq			\n"
 >
-> s/queued_spin_trylock_cmpxchg/__trylock_cmpxchg/
+> Is the EH bit not set because we don't hold the lock here?
 
-Yes.
+Right, we're still waiting for it.
 
-> btw what is the format you using for the '\n's in the inline asm?
-
-Ah, not really sure :P
-
-> > +"	cmpw	0,%0,%2							\n"
-> > +"	bne-	2f							\n"
-> > +"	stwcx.	%3,0,%1							\n"
+> > +"	or	%0,%0,%2						\n"
+> > +"	stwcx.	%0,0,%1							\n"
 > > +"	bne-	1b							\n"
-> > +"\t"	PPC_ACQUIRE_BARRIER "						\n"
-> > +"2:									\n"
 > > +	: "=3D&r" (prev)
-> > +	: "r" (&lock->val), "r"(old), "r" (new),
-> > +	  "i" (IS_ENABLED(CONFIG_PPC64) ? 1 : 0)
+> > +	: "r" (&lock->val), "r" (new)
 > > +	: "cr0", "memory");
 >
-> This is very similar to trylock_clear_tail_cpu(). So maybe it is worth ha=
-ving
-> some form of "test and set" primitive helper.
-
-Yes I was able to consolidate these two, good point.
-
+> This is another usage close to the DEFINE_TESTOP() pattern.
+>
 > > +
 > > +	return prev;
 > > +}
 > > +
-> > +/* Take lock, preserving tail, cmpxchg with val (which must not be loc=
-ked) */
-> > +static __always_inline int trylock_with_tail_cpu(struct qspinlock *loc=
-k, u32 val)
-> > +{
-> > +	u32 newval =3D _Q_LOCKED_VAL | (val & _Q_TAIL_CPU_MASK);
-> > +
-> > +	if (__trylock_cmpxchg(lock, val, newval) =3D=3D val)
-> > +		return 1;
-> > +	else
-> > +		return 0;
->
-> same optional style nit: return __trylock_cmpxchg(lock, val, newval) =3D=
-=3D val
->
-> > +}
-> > +
-> >  /*
-> >   * Publish our tail, replacing previous tail. Return previous value.
-> >   *
-> > @@ -115,6 +157,31 @@ static struct qnode *get_tail_qnode(struct qspinlo=
-ck *lock, u32 val)
-> >  	BUG();
-> >  }
+> >  static struct qnode *get_tail_qnode(struct qspinlock *lock, u32 val)
+> >  {
+> >  	int cpu =3D get_tail_cpu(val);
+> > @@ -165,6 +188,9 @@ static inline bool try_to_steal_lock(struct qspinlo=
+ck *lock)
+> >  	for (;;) {
+> >  		u32 val =3D READ_ONCE(lock->val);
 > > =20
-> > +static inline bool try_to_steal_lock(struct qspinlock *lock)
-> > +{
-> > +	int iters;
+> > +		if (val & _Q_MUST_Q_VAL)
+> > +			break;
 > > +
-> > +	/* Attempt to steal the lock */
-> > +	for (;;) {
-> > +		u32 val =3D READ_ONCE(lock->val);
+> >  		if (unlikely(!(val & _Q_LOCKED_VAL))) {
+> >  			if (trylock_with_tail_cpu(lock, val))
+> >  				return true;
+> > @@ -246,11 +272,22 @@ static inline void queued_spin_lock_mcs_queue(str=
+uct qspinlock *lock)
+> >  		/* We must be the owner, just set the lock bit and acquire */
+> >  		lock_set_locked(lock);
+> >  	} else {
+> > +		int iters =3D 0;
+> > +		bool set_mustq =3D false;
 > > +
-> > +		if (unlikely(!(val & _Q_LOCKED_VAL))) {
-> > +			if (trylock_with_tail_cpu(lock, val))
-> > +				return true;
-> > +			continue;
-> > +		}
+> >  again:
+> >  		/* We're at the head of the waitqueue, wait for the lock. */
+> > -		while ((val =3D READ_ONCE(lock->val)) & _Q_LOCKED_VAL)
+> > +		while ((val =3D READ_ONCE(lock->val)) & _Q_LOCKED_VAL) {
+> >  			cpu_relax();
+> > =20
+> > +			iters++;
 >
-> The continue would bypass iters++/cpu_relax but the next time around
->   if (unlikely(!(val & _Q_LOCKED_VAL))) {
-> should fail so everything should be fine?
+> It seems instead of using set_mustq, (val & _Q_MUST_Q_VAL) could be check=
+ed?
 
-Yes it should. I suppose it could starve in theory though. Maybe
-I'll change it to count as an iteration.
-
-> > +#include <linux/debugfs.h>
-> > +static int steal_spins_set(void *data, u64 val)
-> > +{
-> > +	static DEFINE_MUTEX(lock);
->
-> I just want to check if it would be possible to get rid of the MAYBE_STEA=
-LERS
-> variable completely and do something like:
->
->   bool maybe_stealers() { return STEAL_SPINS > 0; }
->
-> I guess based on the below code it wouldn't work, but I'm still not quite=
- sure
-> why that is.
-
-Because the slowpath has a !maybe_stealers path which assumes the
-lock won't be stolen so it doesn't need to cmpxchg the lock bit on,
-among other things.
-
-I'll add a bit more comment.
-
-> > +
-> > +	mutex_lock(&lock);
-> > +	if (val && !STEAL_SPINS) {
-> > +		MAYBE_STEALERS =3D true;
-> > +		/* wait for waiter to go away */
-> > +		synchronize_rcu();
-> > +		STEAL_SPINS =3D val;
-> > +	} else if (!val && STEAL_SPINS) {
-> > +		STEAL_SPINS =3D val;
-> > +		/* wait for all possible stealers to go away */
-> > +		synchronize_rcu();
-> > +		MAYBE_STEALERS =3D false;
-> > +	} else {
-> > +		STEAL_SPINS =3D val;
-> > +	}
-> > +	mutex_unlock(&lock);
->
-> STEAL_SPINS is an int not a u64.
-
-Yeah but that's how the DEFINE_SIMPLE_ATTRIBUTE things seem to work,
-unfortunately.
+I wanted to give the reader (and compiler for what that's worth) the
+idea that it won't change concurrently after we set it.
 
 Thanks,
 Nick
