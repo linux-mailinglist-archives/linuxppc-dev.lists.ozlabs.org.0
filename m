@@ -1,54 +1,126 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94C2A6244DE
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Nov 2022 15:53:39 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 349696244E7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Nov 2022 15:57:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N7Pwd3YQBz3f2w
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Nov 2022 01:53:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N7Q0Q43nvz3cMs
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Nov 2022 01:56:54 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=UIYdGp+5;
+	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=WRqfDB84;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=seco.com (client-ip=40.107.103.85; helo=eur03-vi1-obe.outbound.protection.outlook.com; envelope-from=sean.anderson@seco.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=UIYdGp+5;
+	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=WRqfDB84;
 	dkim-atps=neutral
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N7Pvh0KcRz2x9L
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Nov 2022 01:52:46 +1100 (AEDT)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-	by smtp-out1.suse.de (Postfix) with ESMTP id EDD102270F;
-	Thu, 10 Nov 2022 14:52:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1668091960; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FGAJ3kGAx9OCuMsDUI3cZV1jrujznV8zB1qxjRcC7lU=;
-	b=UIYdGp+5XjqeIFOCBbLQeohlzryKD6iW0JXrdVdr66mpsU9YIK/QsB2kJzfPpzMp09O7GT
-	1Awb8s8n1l+I+NuOz1Qz2fujKH5NG4epOZvIfoF0V8YnZiaURLJQjqfMMrTuoaJbRgef6f
-	15tCfS+2EYQ++uXvrFm3ll9Uf6IvFIw=
-Received: from suse.cz (unknown [10.100.201.202])
+Received: from EUR03-VI1-obe.outbound.protection.outlook.com (mail-vi1eur03on2085.outbound.protection.outlook.com [40.107.103.85])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by relay2.suse.de (Postfix) with ESMTPS id 35BD62C141;
-	Thu, 10 Nov 2022 14:52:40 +0000 (UTC)
-Date: Thu, 10 Nov 2022 15:52:39 +0100
-From: Petr Mladek <pmladek@suse.com>
-To: John Ogness <john.ogness@linutronix.de>
-Subject: Re: [PATCH printk v3 26/40] tty: hvc: use console_is_registered()
-Message-ID: <Y20QN1URi41PS/Jh@alley>
-References: <20221107141638.3790965-1-john.ogness@linutronix.de>
- <20221107141638.3790965-27-john.ogness@linutronix.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N7PzP6ZCGz2x9L
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Nov 2022 01:55:59 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Xp6Xu5njkKvzX4Y8CJplFaZazPIWLN0ib5i1XgeFqJBNbGwcHb9RngTXFEZbxwyq3LH/aP5LTbZfF2hLwVU2kCRk0DMP9bRGkKrgJtv536WDhUJVn2AA1W4oHYbttvyVVML+dPo2xU1O9M0lM9SY1XNlB/2bT1qcqri9haYi7iWvAkt9X0De213Ul7BfkYA9hSApF88jKD/dbT1MiAK3xLhRZQCoDQsNyXrcH0k+DenKCVdwDqt8GrIkgIPc5iqqIqKLpyuc6Rx/xYczvQIBMDwflIfNUTmXkyh4+/L8jdDFdyiVGMKHVvD88fb2q66G/R7TqSFWIaLHb1vjbUXKCA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ONNO7+gxGjyLs9EdxaAuxZ4HVuWoqU4cok57uwS47FE=;
+ b=IMrUOEWkgde9phCXnG3IO2R4JR4jcXmnD06FvBbjIqeSqzzEmbXtUPBSfkiHTd+MUKiLUWLEkbyDB07x1gWClgmMhD1kVqXBmXSSylGzY4eh/3fuhKj70yBsEYGAChmvrFMqdb02gk2TbekTYZhEJqtDgRxJmwQIV27LuFzSAHqKE+hCdePKWu2a6ZojAUEZ2YrUAmhTQfDD/2jvgNyxN4TuhPzX/KJbbno/OzuzYuWbPtmZ0AAy19LzGKTQpsbDQekQkX83rEeFNk6mJXPPdA73INi2768pGJ5pHjaGLtIROaZNb/9PQn9UXcqCP/oanKMgfOMbgwdAGrGPWsTFoA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=seco.com; dmarc=pass action=none header.from=seco.com;
+ dkim=pass header.d=seco.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seco.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ONNO7+gxGjyLs9EdxaAuxZ4HVuWoqU4cok57uwS47FE=;
+ b=WRqfDB84+oTrHsCGu1PM/NXDY7ktJfkW0/Q5R8xHdSGft0zuQFHUya5CJWe+AeD1NN5Wq3Ni8Mys536GEFn/uMn5/17tZdQlvm/OEaFq9QxEDrdrIAGVU/4BMFb52w4LHpFfzoDiEG5LqN1O2aYM4HSQMSL6gnx6qWBS0VgYE2j4HCFC/HOAFWgwXczhlFmdyr7yZLmChh+CVxU13VVaviFX3oKRXh/oQlT1AmxcA+lppbtKCmlVAJ5fKyNCcwcAPyzguE6abnDUtcN6sjrN+ew/PfOg+O4WYLTSyGm+qNlsH2PJcj6MQVJIGFNtCcQu9wErtMAyD41oTfr5ouMGrQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=seco.com;
+Received: from DB7PR03MB4972.eurprd03.prod.outlook.com (2603:10a6:10:7d::22)
+ by GV1PR03MB8662.eurprd03.prod.outlook.com (2603:10a6:150:95::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5791.25; Thu, 10 Nov
+ 2022 14:55:40 +0000
+Received: from DB7PR03MB4972.eurprd03.prod.outlook.com
+ ([fe80::e9d6:22e1:489a:c23d]) by DB7PR03MB4972.eurprd03.prod.outlook.com
+ ([fe80::e9d6:22e1:489a:c23d%4]) with mapi id 15.20.5791.022; Thu, 10 Nov 2022
+ 14:55:39 +0000
+Message-ID: <bcb87445-d80d-fea0-82f2-a15b20baaf06@seco.com>
+Date: Thu, 10 Nov 2022 09:55:32 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.0
+Subject: Re: [PATCH net-next v2 00/11] net: pcs: Add support for devices
+ probed in the "usual" manner
+Content-Language: en-US
+To: Vladimir Oltean <olteanv@gmail.com>
+References: <20221103210650.2325784-1-sean.anderson@seco.com>
+ <20221109224110.erfaftzja4fybdbc@skbuf>
+From: Sean Anderson <sean.anderson@seco.com>
+In-Reply-To: <20221109224110.erfaftzja4fybdbc@skbuf>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BL1PR13CA0330.namprd13.prod.outlook.com
+ (2603:10b6:208:2c1::35) To DB7PR03MB4972.eurprd03.prod.outlook.com
+ (2603:10a6:10:7d::22)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221107141638.3790965-27-john.ogness@linutronix.de>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB7PR03MB4972:EE_|GV1PR03MB8662:EE_
+X-MS-Office365-Filtering-Correlation-Id: 927e5b90-edf9-4316-50f9-08dac32ba1d7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	5PObedpEc1Ao4qFXg5XrsJXKZRoHyosuR6bOHXmsCi7Dr6MyR67KrDXT8/6F8doShUN4smOny0ptfEA5Coc03csJnRxaO22+1adGjxC/ezgLVncYzWWxlJ/WDoIEYHfR+xst3U0JreDyLO6MPqQmlCvG/W0NA2pyBphqNPeXXa99RJtCJWIFfuLAlu5lV24SHydCR/znuWF+G6V83Jb396p8dYal4/dzktvTcyULaVCTOO3H610jkxnA9M+4DyLdshrUXRyntkIIkLK8TxXkm+y6XPbfzk+OU18GQp6gzr9E4H+WexBkICzHejZwkomu6WhMvmnj+w4YcixTqpvorV4IbhYvD0P800Xov5bvnH83NEw87D1PwrUWCCiTAalZwVyh611lr4pPOm5SNO6slsQ7Dg0f4yRZq0OUjJ/1tN11mLQjmlRZg8UJS6RadmKN3LN214sYxBnjQO7t07fdl+oZ4iqsV8jO0GrkEIAE2Uh/y+31NVee1dQibEaVEaoUx60Ojzp3uYITKvbZEY2OCCxs6V5jyJGUOy47mSEZhpJoYcf05oeFMljZwWKeJ18Hu07OtvjdRr/mnoE+1LRyUitVLbY4G6aezGOk0tgqKtGOFkbXRNBmwkVsON/eAhOMAXorq6l14LKeiJ8pEWAFpS9OSOOT4PCfEhNAb0vIViC7dNRI3suVewtEU/EIANu1y0y/T4r1dtaPETsrYipze2jKDhw5jsOwmAVi0hvulISSfMrRUIXywJfkTOqcLWST8+7S6UREUA6M2zrRdOC/XCBPYfSM2DfocT2acfJQNgLYhc9+QsbWuVnJRCP1xw+iK+59g55wYRJZhwp4RTUltoh1vyjKGaR+CypUhhNrq00=
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB7PR03MB4972.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(396003)(39850400004)(136003)(366004)(346002)(376002)(451199015)(36756003)(31686004)(86362001)(54906003)(38350700002)(966005)(38100700002)(316002)(6486002)(31696002)(6916009)(5660300002)(66556008)(66946007)(478600001)(6506007)(52116002)(6666004)(53546011)(7406005)(6512007)(26005)(8676002)(2906002)(7416002)(44832011)(8936002)(4326008)(186003)(83380400001)(2616005)(66476007)(41300700001)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?utf-8?B?T3lLdHl1Rm51dnFPSmVVeE1ORk53V2hlbmgrN1BCVVZYYWxLM1ErWnVvYXJU?=
+ =?utf-8?B?bm0rUFJKY0Vtcld1MkVUdDQ3VWxMUGhITHZVL0NJS0QyRTM5SFF0RHlSUzB4?=
+ =?utf-8?B?Mk1HMTRLNFFOZ0d2UHZjYTR4eWVWWGNmdTlxNm8veHlKM01nT0tSRnQzUnZX?=
+ =?utf-8?B?L3JWR0oyRjRtN1NYZ055YVhSQU10azRrbi9lektpa2lxd0FESUNHbVRHSmRB?=
+ =?utf-8?B?endicXN1MGJxYjZPeGpQczVCN0E4Z0YvWG4ybWorUWFYVUdjUFRpenNqN2Mv?=
+ =?utf-8?B?VmJDWTdGMm1VRjhBT1hYUHphYjhJVzM0QXF3SjFhNGZyRmt6MzhTbjZkbnlQ?=
+ =?utf-8?B?WHdyQ1doajNqSklhYzEwZ21ROVNjc2Fwc1BtUjZGMkd0SHJ4NmM0L0F2S3dz?=
+ =?utf-8?B?di9OVkxQWU8xSHJBVTJMRzJUdnRBdHFwUy9Fdnp3b2JwdEluVytnNEdudkFz?=
+ =?utf-8?B?U3BNVWcyRXBGb3M2eUh6ZXhOcUk5bWZPK01XdXNiRmwxSHdzNWdCZU5GbUdO?=
+ =?utf-8?B?V1JMMlpNcytVd2syL2xoZEZQSkZ6dE1tVExlZjZHaGtqYmd6UUNFZ1JqZ0l0?=
+ =?utf-8?B?VDljVXYwMnA4NGF3bW1mVHluTjhJQWlDSUJaQmRCMmp3aHF1d29ibUw4TUJW?=
+ =?utf-8?B?MFVyc0lEZDgzMjNZZ09rM0JENjhWNU4wNmtUK0R1M0FsNDE4OGFxZnhhRHMv?=
+ =?utf-8?B?dFQwMWpDZ2ZqWTNhUU1RS2I5Y0lFZU9UM3BUTjRTWnQySzR1MVV0ZkpQby9I?=
+ =?utf-8?B?dGorN2RsVzhXYjltdE4yeEl3VmRSVHlwb1BJdUdQSVMvdUQ0TThpMW4rTU54?=
+ =?utf-8?B?dnFNMzgxVG1zNE5udmtMSWQ1dGtmMEdKWTZjaTBSWUlWQnJ4bDdGekp2eCsz?=
+ =?utf-8?B?QTFicGNHOW5nWnRBb1kvQkYxTENVQ2VQS1dMMTJ1WEd2S1lQak9SV2Q5YWNr?=
+ =?utf-8?B?dWpPeUs5NEd5WjFISDRPbFJjZmJpUFlVQi9aRlppZGNqaVNKa2M1dzBMMXho?=
+ =?utf-8?B?ZWlVZjJYWDFEMURmS3czUXRXSWNVeEVrY3I1Nnh2TXZ1TDVkdmRnUTBUVmVm?=
+ =?utf-8?B?ZkJRaFBHZndoZG1BM1pEQ0JiV2U4blhTb0w3eGord1h5NVJ2aGwxZ1lmdkZQ?=
+ =?utf-8?B?OWV3TzRPYU5NNExXMWVrMk9uajVNVm5qSVBtQWU0dTYzR1FTaUloWlFuQ1hi?=
+ =?utf-8?B?aXA3NzA2TmFHSHpvUld1dS9Wd2lza2RyYTZKa2p1dkZ0emwxQ1NuakEyVDdR?=
+ =?utf-8?B?akVYNFkxWC82ZkF5WVZtNWtxOC94UFpmN0xKSnBybnIyd2RVbUoxVlF6YTJ6?=
+ =?utf-8?B?U05VRlg1aWgwOGZrTERMRVhadmFsRVV6OE1wUEZrcVVLanhJV3EwOEc5U2Rx?=
+ =?utf-8?B?TCt0OCtSd1RidWtabm5JTDhOS1d4ZE5sU1FEZFFadUprTjdWYUpIN2JTM1kv?=
+ =?utf-8?B?Zm52aGFNVjY5eHEzUmZFc1ZER0hKVEFGQ1hKQUhqZG9FNWpYbDJEL05Ybklq?=
+ =?utf-8?B?YVhKMUs3SGZySHZvWUVLSU15R0FhdzNUMk9ZVFJVdkRibDVyNE1Ma2pEZzNE?=
+ =?utf-8?B?Y1hjS2l1bU1iMVdRUkZtVVRtRFE1YktQYm15Rzd0NXVhWFNuRTl5TGNXWnNj?=
+ =?utf-8?B?UzN5QStETVptdzhHYU5mNkgyb1c0cXRVYjg3NjRYUjhjSWphMmh6clh3Njd2?=
+ =?utf-8?B?SFA2UVU2NGdzWEY5TWVYQ2FmbmdOaXk4czRwNGRLeDMwQ2ZoSFJxaEhYSjZS?=
+ =?utf-8?B?c1U3Z1h6OTVCT0w2YithcUtUUHdsdVkvUHJIeWhoNE9KSHJiTzV5VENLZmJp?=
+ =?utf-8?B?OTZTcjZKRHFXNTExQStKYTJERkhBL1BIbStlcTh5WXp5OGg5aUpjNXFLL0Fs?=
+ =?utf-8?B?UUhkbDhGWDhWUGNSWXRJd3J5ZTdOYUg3UldEVG40eDNvK01hRjMwM2NWMm1h?=
+ =?utf-8?B?K0Jackt5LzNGTms5a0VvQ2FQVDdabGwwbU0wc3pwakJPdG1nbDdpcVZiMHZ3?=
+ =?utf-8?B?OFlVeUVKMG1yUTJQV2FuK3NKSE8zNUVaMldpc3ROSkdKYUYxU3c4and0TURQ?=
+ =?utf-8?B?ZkpsalhUQThDeVdWRWVzMlAyeWRIb1dXeG5SeHByVjJOWGF6S1dySUFKN294?=
+ =?utf-8?B?UEIvUlNkV3lUYXMwUGhobzYydWRvUjlLNFM1SXI3WnJuejZqTnZVY3lTeCti?=
+ =?utf-8?B?SGc9PQ==?=
+X-OriginatorOrg: seco.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 927e5b90-edf9-4316-50f9-08dac32ba1d7
+X-MS-Exchange-CrossTenant-AuthSource: DB7PR03MB4972.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2022 14:55:39.5099
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bebe97c3-6438-442e-ade3-ff17aa50e733
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Vk1ERIu9ORf8Xt+IdXE1Rs9BT1H03wy+cIli4q24JG1Ayt7I4b5fDVpcq93gAqQ6f1qkOo/3O9enR/ZuUTB51g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR03MB8662
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,17 +132,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, Thomas Gleixner <tglx@linutronix.de>, Jiri Slaby <jirislaby@kernel.org>
+Cc: Andrew Lunn <andrew@lunn.ch>, Alexandre Belloni <alexandre.belloni@bootlin.com>, Madalin Bucur <madalin.bucur@nxp.com>, Eric Dumazet <edumazet@google.com>, Paul Mackerras <paulus@samba.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Ioana Ciornei <ioana.ciornei@nxp.com>, UNGLinuxDriver@microchip.com, Frank Rowand <frowand.list@gmail.com>, Florian Fainelli <f.fainelli@gmail.com>, Saravana Kannan <saravanak@google.com>, Russell King <linux@armlinux.org.uk>, Vladimir Oltean <vladimir.oltean@nxp.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Vivien Didelot <vivien.didelot@gmail.com>, devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Claudiu Manoil <claudiu.manoil@nxp.com>, Rob Herring <robh+dt@kernel.org>, linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Li Yang <leoyang.li@nxp.com>, Shawn Guo <shawnguo@kernel.org>, "David S . Miller" <davem@davemloft.net>, Heiner Kallweit <hkallweit1@gmail.c
+ om>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon 2022-11-07 15:22:24, John Ogness wrote:
-> It is not reliable to check for CON_ENABLED in order to identify if a
-> console is registered. Use console_is_registered() instead.
+On 11/9/22 17:41, Vladimir Oltean wrote:
+> On Thu, Nov 03, 2022 at 05:06:39PM -0400, Sean Anderson wrote:
+>> Several (later) patches in this series cannot be applied until a stable
+>> release has occured containing the dts updates.
 > 
-> Signed-off-by: John Ogness <john.ogness@linutronix.de>
+> New kernels must remain compatible with old device trees.
 
-Reviewed-by: Petr Mladek <pmladek@suse.com>
+Well, this binding is not present in older device trees, so it needs to
+be added before these patches can be applied. It also could be possible
+to manually bind the driver using e.g. a helper function (like what is
+done with lynx_pcs_create_on_bus). Of course this would be tricky,
+because we would need to unbind any generic phy driver attached, but
+avoid unbinding an existing Lynx PCS driver.
 
-Best Regards,
-Petr
+As I understand it, kernels must be compatible with device trees from a
+few kernels before and after. There is not a permanent guarantee of
+backwards compatibility (like userspace has) because otherwise we would
+never be able to make internal changes (such as what is done in this
+series). I have suggested deferring these patches until after an LTS
+release as suggested by Rob last time [1].
+
+--Sean
+
+[1] https://lore.kernel.org/netdev/20220718194444.GA3377770-robh@kernel.org/
