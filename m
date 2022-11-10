@@ -1,76 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96A1D62414E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Nov 2022 12:23:33 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A3C1624158
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Nov 2022 12:26:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N7KGC3bqLz3cRW
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Nov 2022 22:23:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N7KKy5vwLz3cNh
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Nov 2022 22:26:46 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=TAtBqUpN;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=px5zMZB9;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62b; helo=mail-pl1-x62b.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102b; helo=mail-pj1-x102b.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=TAtBqUpN;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=px5zMZB9;
 	dkim-atps=neutral
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N7KFH1tVjz3cH9
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Nov 2022 22:22:41 +1100 (AEDT)
-Received: by mail-pl1-x62b.google.com with SMTP id 4so1215606pli.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Nov 2022 03:22:41 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N7KK10Yg9z3cJM
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Nov 2022 22:25:56 +1100 (AEDT)
+Received: by mail-pj1-x102b.google.com with SMTP id l22-20020a17090a3f1600b00212fbbcfb78so4420332pjc.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Nov 2022 03:25:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=in-reply-to:references:to:from:subject:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=0sQlaVtu5408bC9Ght2OwuDi3abMQBa92eZujPcg4m8=;
-        b=TAtBqUpNnG8GB0Bg9xTlKT0WQd5H2UcxBg+/ZMyri9Ugo6421ntoplCz1jhCJHkLXj
-         wMJizQ8EZm07xlyQqzkGK/7G3s1QN9bIJZljPktOsAts1xNh3A2VOPFkQdWe0ywMaNGN
-         dsEIe2lfq+7LCm61Rfpanp5Vgojhn02HwrWnd6KT3xRtN25n38wn97rI/961NP6N//38
-         7+cstXvgqFTCXc0j5XizWCy9TOiGtnEQRek5KNf0ZKmk+PQ4Lo+DrTUB0Zke9qmhWhV9
-         UKUt1vuy9YQUTZMmjsCSgUJjSnVc6d96dsYyCY3DWhoF78yVPPLzz0L1PkxutH1mrxIU
-         rdDw==
+        bh=OqQqEnls6tGoJeego97jUx950uh45WZLAi+Hncqb+F4=;
+        b=px5zMZB9V116wgYwgLyCxvDUP4JDVLmVisVfEdFbG1yqlco5B6E9HPreY3QEl7vY1/
+         cM2Da0PwS5LOpKL+SfWYOC5aDfLaX/eg22hHjnDDfsur78szmTZtCZYL8uGF0exqfPFn
+         i7tK0mEJAedHsoPz9p06o7jLWNgygdhNSe3spX6WalqPaXmP/aAo+VOsxTuyqQBiN9Yf
+         /YTKmWN91qlZmEc6jYScDevu1CTc1S09iRUfEIilsJXET+hhBFZOTqeHzcrMeJdVsSTG
+         QVgjxw6h7tiSsqy41LfihweGjfcTJavcDbSFLJXNOK6GOpgmc0ZP4RqmCFlJvhZ+lETv
+         Selg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:references:to:from:subject:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=0sQlaVtu5408bC9Ght2OwuDi3abMQBa92eZujPcg4m8=;
-        b=we8KVxJHFrZpyg8Tm2rfxCfJW+OxOdltCgvxG9NRAfTWFmr11g0dugdg6rOaroKHBt
-         RowkXWkdcZfLEEAElHGSOjKTE5WSwGNAxJbfHbk3l9CPQSKi4AFvi3q9nm0K8dmWOy7y
-         eaxIMg+3KqJz2FX3sPfOxvqKYCoW39hH/eRbVfY/2Rc3YtNGaaBgrYJ1iuz8Mx4OjaPG
-         v4we/ugloXZkadX08RoHdKSFBLsBuig65qg8VeMS6d9k8TAgcvjAOYdwXSAKFhCH2QKX
-         pLlL5KEMHRDwZXmzobrh6lUnpgxHObqGJBy3DBMd5ggXfYTWqKsk08PDXoUG5wGaeNmo
-         Y5Vw==
-X-Gm-Message-State: ACrzQf0bwiAQjGbLULmT1xrRIcOhBulpEMEbU4aSUOCfxTTS7WSXM5Ak
-	om5HtAAxaRoZ+5cfqkaPeAx/kRZ54zE=
-X-Google-Smtp-Source: AMsMyM7NVnmd94EAvROkf9YIBMs5JXyzRHGGqB7PQn4flZD9uE1BSrvE2zN6BBIlY0Qg1xR8WTq7jA==
-X-Received: by 2002:a17:90a:f414:b0:212:cacf:42c3 with SMTP id ch20-20020a17090af41400b00212cacf42c3mr83614788pjb.198.1668079358345;
-        Thu, 10 Nov 2022 03:22:38 -0800 (PST)
+        bh=OqQqEnls6tGoJeego97jUx950uh45WZLAi+Hncqb+F4=;
+        b=XyfHp/m26HRwC5lwhH8JjsfFJJ9Fkxcz4dzTjP7X8vfcImBhF/29+N1ewCZ6S4LW8D
+         mqvhPG4/bWt1nTlk7ZrsiA9AVxVltYUi2y8vgRrlfb13XP5O//s5MoIbPnGlv5Ji5Flp
+         SwCnCS2shXquTfjQeVly0V6fuPo3r1akN540NxLZuFeGWfXFOupN35Gukd1Z/GfLEnQf
+         dxNRAwWLUfHxisM8CXrK1TuExnDpG9Pwl8DtbEWRt/5g6uCX8Gn4XNpLZYcWIwE5z4cW
+         UA2evcou1XCeLsq+i++rDjUyX9ETiegcCSRSww+BZOQnX9toF1jPTe6tFOftHDE6nmLI
+         F+uQ==
+X-Gm-Message-State: ACrzQf3bVYsOj3uWITaOLqBwNTELPll62iAtPFv3qWYldXeIPUl8HxF3
+	i9YajpcccbMlr69hrI1CL2X+smNwUlI=
+X-Google-Smtp-Source: AMsMyM7+scb5UT/AtphoohFJNEFkeRBruF5mpaVPXw6HkNFMCtZUYz3je94cQbArwRXtdgrPA+ngmw==
+X-Received: by 2002:a17:903:558:b0:187:18f7:714b with SMTP id jo24-20020a170903055800b0018718f7714bmr55044681plb.28.1668079553845;
+        Thu, 10 Nov 2022 03:25:53 -0800 (PST)
 Received: from localhost (61-68-184-43.tpgi.com.au. [61.68.184.43])
-        by smtp.gmail.com with ESMTPSA id x4-20020a170902a38400b00177efb56475sm10999355pla.85.2022.11.10.03.22.35
+        by smtp.gmail.com with ESMTPSA id a14-20020a17090ad80e00b00213d08fa459sm2901450pjv.17.2022.11.10.03.25.51
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 10 Nov 2022 03:22:37 -0800 (PST)
+        Thu, 10 Nov 2022 03:25:52 -0800 (PST)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 10 Nov 2022 21:22:33 +1000
-Message-Id: <CO8KS43CTGR6.18EOOXB8324JL@bobo>
-Subject: Re: [PATCH 10/17] powerpc/qspinlock: allow stealing when head of
- queue yields
+Date: Thu, 10 Nov 2022 21:25:47 +1000
+Message-Id: <CO8KULDWDO5R.16Z0BBIL7LCP3@bobo>
+Subject: Re: [PATCH 11/17] powerpc/qspinlock: allow propagation of yield CPU
+ down the queue
 From: "Nicholas Piggin" <npiggin@gmail.com>
 To: "Jordan Niethe" <jniethe5@gmail.com>, <linuxppc-dev@lists.ozlabs.org>
 X-Mailer: aerc 0.13.0
 References: <20220728063120.2867508-1-npiggin@gmail.com>
- <20220728063120.2867508-12-npiggin@gmail.com>
- <105e7cbf5289fe19339f0cde4033a9afdfea17f9.camel@gmail.com>
-In-Reply-To: <105e7cbf5289fe19339f0cde4033a9afdfea17f9.camel@gmail.com>
+ <20220728063120.2867508-13-npiggin@gmail.com>
+ <539debd7b25d5b4fe36756ae257d12f19aa4d6d3.camel@gmail.com>
+In-Reply-To: <539debd7b25d5b4fe36756ae257d12f19aa4d6d3.camel@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,117 +88,136 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 On Thu Nov 10, 2022 at 10:42 AM AEST, Jordan Niethe wrote:
 > On Thu, 2022-07-28 at 16:31 +1000, Nicholas Piggin wrote:
 > [resend as utf-8, not utf-7]
-> > If the head of queue is preventing stealing but it finds the owner vCPU
-> > is preempted, it will yield its cycles to the owner which could cause i=
-t
-> > to become preempted. Add an option to re-allow stealers before yielding=
-,
-> > and disallow them again after returning from the yield.
+> > Having all CPUs poll the lock word for the owner CPU that should be
+> > yielded to defeats most of the purpose of using MCS queueing for
+> > scalability. Yet it may be desirable for queued waiters to to yield
+> > to a preempted owner.
+> >=20
+> > s390 addreses this problem by having queued waiters sample the lock
+> > word to find the owner much less frequently. In this approach, the
+> > waiters never sample it directly, but the queue head propagates the
+> > owner CPU back to the next waiter if it ever finds the owner has
+> > been preempted. Queued waiters then subsequently propagate the owner
+> > CPU back to the next waiter, and so on.
 > >=20
 > > Disable this option by default for now, i.e., no logical change.
 > > ---
-> >  arch/powerpc/lib/qspinlock.c | 56 ++++++++++++++++++++++++++++++++++--
-> >  1 file changed, 53 insertions(+), 3 deletions(-)
+> >  arch/powerpc/lib/qspinlock.c | 85 +++++++++++++++++++++++++++++++++++-
+> >  1 file changed, 84 insertions(+), 1 deletion(-)
 > >=20
 > > diff --git a/arch/powerpc/lib/qspinlock.c b/arch/powerpc/lib/qspinlock.=
 c
-> > index b39f8c5b329c..94f007f66942 100644
+> > index 94f007f66942..28c85a2d5635 100644
 > > --- a/arch/powerpc/lib/qspinlock.c
 > > +++ b/arch/powerpc/lib/qspinlock.c
-> > @@ -26,6 +26,7 @@ static bool MAYBE_STEALERS __read_mostly =3D true;
-> >  static int HEAD_SPINS __read_mostly =3D (1<<8);
+> > @@ -12,6 +12,7 @@
+> >  struct qnode {
+> >  	struct qnode	*next;
+> >  	struct qspinlock *lock;
+> > +	int		yield_cpu;
+> >  	u8		locked; /* 1 if lock acquired */
+> >  };
 > > =20
+> > @@ -28,6 +29,7 @@ static int HEAD_SPINS __read_mostly =3D (1<<8);
 > >  static bool pv_yield_owner __read_mostly =3D true;
-> > +static bool pv_yield_allow_steal __read_mostly =3D false;
->
-> To me this one does read as a boolean, but if you go with those other cha=
-nges
-> I'd make it pv_yield_steal_enable to be consistent.
->
+> >  static bool pv_yield_allow_steal __read_mostly =3D false;
 > >  static bool pv_yield_prev __read_mostly =3D true;
+> > +static bool pv_yield_propagate_owner __read_mostly =3D true;
+>
+> This also seems to be enabled by default.
+>
 > > =20
 > >  static DEFINE_PER_CPU_ALIGNED(struct qnodes, qnodes);
-> > @@ -173,6 +174,23 @@ static __always_inline u32 lock_set_mustq(struct q=
-spinlock *lock)
-> >  	return prev;
+> > =20
+> > @@ -257,13 +259,66 @@ static __always_inline void yield_head_to_locked_=
+owner(struct qspinlock *lock, u
+> >  	__yield_to_locked_owner(lock, val, paravirt, clear_mustq);
 > >  }
 > > =20
-> > +static __always_inline u32 lock_clear_mustq(struct qspinlock *lock)
+> > +static __always_inline void propagate_yield_cpu(struct qnode *node, u3=
+2 val, int *set_yield_cpu, bool paravirt)
 > > +{
-> > +	u32 new =3D _Q_MUST_Q_VAL;
-> > +	u32 prev;
+> > +	struct qnode *next;
+> > +	int owner;
 > > +
-> > +	asm volatile(
-> > +"1:	lwarx	%0,0,%1		# lock_clear_mustq			\n"
-> > +"	andc	%0,%0,%2						\n"
-> > +"	stwcx.	%0,0,%1							\n"
-> > +"	bne-	1b							\n"
-> > +	: "=3D&r" (prev)
-> > +	: "r" (&lock->val), "r" (new)
-> > +	: "cr0", "memory");
+> > +	if (!paravirt)
+> > +		return;
+> > +	if (!pv_yield_propagate_owner)
+> > +		return;
 > > +
+> > +	owner =3D get_owner_cpu(val);
+> > +	if (*set_yield_cpu =3D=3D owner)
+> > +		return;
+> > +
+> > +	next =3D READ_ONCE(node->next);
+> > +	if (!next)
+> > +		return;
+> > +
+> > +	if (vcpu_is_preempted(owner)) {
 >
-> This is pretty similar to the DEFINE_TESTOP() pattern again with the same=
- llong caveat.
+> Is there a difference about using vcpu_is_preempted() here
+> vs checking bit 0 in other places?
+
+Yeah we weren't yielding here so didn't have to load the yield count
+explicitly.
+
+> > +		next->yield_cpu =3D owner;
+> > +		*set_yield_cpu =3D owner;
+> > +	} else if (*set_yield_cpu !=3D -1) {
 >
+> It might be worth giving the -1 CPU a #define.
+
+It's fairly standard to use -1 as a null value for cpu.
+
 >
-> > +	return prev;
+> > +		next->yield_cpu =3D owner;
+> > +		*set_yield_cpu =3D owner;
+> > +	}
 > > +}
-> > +
-> >  static struct qnode *get_tail_qnode(struct qspinlock *lock, u32 val)
-> >  {
-> >  	int cpu =3D get_tail_cpu(val);
-> > @@ -188,7 +206,7 @@ static struct qnode *get_tail_qnode(struct qspinloc=
-k *lock, u32 val)
-> >  	BUG();
-> >  }
-> > =20
-> > -static __always_inline void yield_to_locked_owner(struct qspinlock *lo=
-ck, u32 val, bool paravirt)
-> > +static __always_inline void __yield_to_locked_owner(struct qspinlock *=
-lock, u32 val, bool paravirt, bool clear_mustq)
 >
->  /* See yield_to_locked_owner comment */ comment needs to be updated now.
-
-Yep.
-
-> >  {
-> >  	int owner;
-> >  	u32 yield_count;
-> > @@ -217,7 +235,11 @@ static __always_inline void yield_to_locked_owner(=
-struct qspinlock *lock, u32 va
-> >  	smp_rmb();
-> > =20
-> >  	if (READ_ONCE(lock->val) =3D=3D val) {
-> > +		if (clear_mustq)
-> > +			lock_clear_mustq(lock);
-> >  		yield_to_preempted(owner, yield_count);
-> > +		if (clear_mustq)
-> > +			lock_set_mustq(lock);
-> >  		/* Don't relax if we yielded. Maybe we should? */
-> >  		return;
-> >  	}
-> > @@ -225,6 +247,16 @@ static __always_inline void yield_to_locked_owner(=
-struct qspinlock *lock, u32 va
-> >  	cpu_relax();
-> >  }
-> > =20
-> > +static __always_inline void yield_to_locked_owner(struct qspinlock *lo=
-ck, u32 val, bool paravirt)
-> > +{
-> > +	__yield_to_locked_owner(lock, val, paravirt, false);
-> > +}
-> > +
-> > +static __always_inline void yield_head_to_locked_owner(struct qspinloc=
-k *lock, u32 val, bool paravirt, bool clear_mustq)
-> > +{
+> Does this need to pass set_yield_cpu by reference? Couldn't it's new valu=
+e be
+> returned? To me it makes it more clear the function is used to change
+> set_yield_cpu. I think this would work:
 >
-> The check for pv_yield_allow_steal seems like it could go here instead of
-> being done by the caller.
-> __yield_to_locked_owner() checks for pv_yield_owner so it seems more
->   consistent.
+> int set_yield_cpu =3D -1;
+>
+> static __always_inline int propagate_yield_cpu(struct qnode *node, u32 va=
+l, int set_yield_cpu, bool paravirt)
+> {
+> 	struct qnode *next;
+> 	int owner;
+>
+> 	if (!paravirt)
+> 		goto out;
+> 	if (!pv_yield_propagate_owner)
+> 		goto out;
+>
+> 	owner =3D get_owner_cpu(val);
+> 	if (set_yield_cpu =3D=3D owner)
+> 		goto out;
+>
+> 	next =3D READ_ONCE(node->next);
+> 	if (!next)
+> 		goto out;
+>
+> 	if (vcpu_is_preempted(owner)) {
+> 		next->yield_cpu =3D owner;
+> 		return owner;
+> 	} else if (set_yield_cpu !=3D -1) {
+> 		next->yield_cpu =3D owner;
+> 		return owner;
+> 	}
+>
+> out:
+> 	return set_yield_cpu;
+> }
+>
+> set_yield_cpu =3D propagate_yield_cpu(...  set_yield_cpu ...);
 
-Yeah that worked and is probably an improvement.
+I think I prefer as is, because the caller doesn't use it anywhere. It
+looks more like some temporary storage to be used by the function over
+multiple calls this way.
 
 Thanks,
 Nick
