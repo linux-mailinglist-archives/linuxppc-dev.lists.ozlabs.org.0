@@ -2,72 +2,78 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14A01623CDC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Nov 2022 08:42:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D84C1623D0B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Nov 2022 09:02:33 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N7DMX6xXWz3cK2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Nov 2022 18:42:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N7DpH5VL7z3dvc
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Nov 2022 19:02:31 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=bKwr6F+u;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Qy7Jxg20;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=134.134.136.65; helo=mga03.intel.com; envelope-from=robert.hu@linux.intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=sachinp@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=bKwr6F+u;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Qy7Jxg20;
 	dkim-atps=neutral
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N7D71077mz3cDx
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Nov 2022 18:31:56 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1668065517; x=1699601517;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=K4DExVACpt2lARFBBsyLRbh7EHo+YwPLCynabZeKIUc=;
-  b=bKwr6F+u5O/uwA0AbzWz4KZuXteMfuppDFTKGhNXmZnnrzmcy6NBF2FP
-   WKqe3wf697p85+AEmFrsXhPYxjtIpS2rhADiebKAHzRrLoftJg5yoxrgp
-   z6xTatM9jdkQkk2ZmhBv7UlPdg61f/pOq8oKuGuDj8cWdqT4KJhzDroBJ
-   vz35oqYWVBj805Xbdx8JXuujf/C5lbJqWzZkMkPXw5lu1s7amdGmJ3zKj
-   rq9tEFLNJgPdjI4YO5zluPd/U+GQV5JGjW6neoAkrnr9TfzdKJLkR6Gzc
-   feWQoR2ZH3KAHM8lci6U6YxtbxBHnEhxVENAJFaX2twmAViiQNDQltW4t
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10526"; a="313009371"
-X-IronPort-AV: E=Sophos;i="5.96,153,1665471600"; 
-   d="scan'208";a="313009371"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2022 23:31:53 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10526"; a="631556568"
-X-IronPort-AV: E=Sophos;i="5.96,153,1665471600"; 
-   d="scan'208";a="631556568"
-Received: from sqa-gate.sh.intel.com (HELO robert-ivt.tsp.org) ([10.239.48.212])
-  by orsmga007.jf.intel.com with ESMTP; 09 Nov 2022 23:31:43 -0800
-Message-ID: <ff0e8701d02ee161d064f92c8b742c2cc061bce0.camel@linux.intel.com>
-Subject: Re: [PATCH 32/44] KVM: x86: Unify pr_fmt to use module name for all
- KVM modules
-From: Robert Hoo <robert.hu@linux.intel.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>,  Marc Zyngier <maz@kernel.org>, Huacai Chen
- <chenhuacai@kernel.org>, Aleksandar Markovic
- <aleksandar.qemu.devel@gmail.com>, Anup Patel <anup@brainfault.org>, Paul
- Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Christian Borntraeger
- <borntraeger@linux.ibm.com>,  Janosch Frank <frankja@linux.ibm.com>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>, Matthew Rosato
- <mjrosato@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>, Vitaly
- Kuznetsov <vkuznets@redhat.com>
-Date: Thu, 10 Nov 2022 15:31:42 +0800
-In-Reply-To: <20221102231911.3107438-33-seanjc@google.com>
-References: <20221102231911.3107438-1-seanjc@google.com>
-	 <20221102231911.3107438-33-seanjc@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-10.el7) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Mailman-Approved-At: Thu, 10 Nov 2022 18:41:09 +1100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N7DnK0KJ3z3c7G
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Nov 2022 19:01:40 +1100 (AEDT)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2AA6cViV000492;
+	Thu, 10 Nov 2022 08:01:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : content-type :
+ content-transfer-encoding : mime-version : subject : message-id : date :
+ cc : to; s=pp1; bh=UfS2M5BskP/u3MZdbZOc3sjFjYUZ2k9IwakRV9/QwBM=;
+ b=Qy7Jxg20ogsjx2omGlC0V6AUHSb9V+teYfAXO1LY93oL+IzRU5g+umKmEzBK9NxE7kaN
+ w2lL4gjonOywQ2elSCSVesHJW9eDKlQQwOFqTUre5FiKWHtxpZmcAjE6SiMph2uv3pu9
+ W5zAuUuO63AsyGRjBSYjyVxsVd2omCNLqtXI4DVOwLrGIamJTKiTUcyR1SrewaDXY4su
+ OU/6CiYa2t2iCnPcTLIYtBYU8aVMTWKX10TFgPXISQFGOMW80eJ9Dm5DRRzunOs+Xfgq
+ lUFkDC21LageIWDv0TCRt+qYBnwV9XU4/LVh6mF9q3lZdDcL2igppniYD1tqSMyF3ZMS VQ== 
+Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com [149.81.74.108])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3krupktjgj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 10 Nov 2022 08:01:33 +0000
+Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
+	by ppma05fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2AA7qifJ032580;
+	Thu, 10 Nov 2022 08:01:32 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+	by ppma05fra.de.ibm.com with ESMTP id 3krcbr0t95-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 10 Nov 2022 08:01:31 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
+	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2AA81T2j7537228
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 10 Nov 2022 08:01:29 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 823D952050;
+	Thu, 10 Nov 2022 08:01:29 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.109.241.54])
+	by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id B759D5204E;
+	Thu, 10 Nov 2022 08:01:28 +0000 (GMT)
+From: Sachin Sant <sachinp@linux.ibm.com>
+Content-Type: text/plain;
+	charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.200.110.1.12\))
+Subject: [6.1.0-rc4-next-20221109] Boot time warning kernel/module/main.c:852
+Message-Id: <06C70AFA-75C5-49A7-9EB4-27AF20A80EBB@linux.ibm.com>
+Date: Thu, 10 Nov 2022 13:31:17 +0530
+To: linux-scsi@vger.kernel.org, Bart Van Assche <bvanassche@acm.org>
+X-Mailer: Apple Mail (2.3731.200.110.1.12)
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: dgJqpu82evfKmaqG3ZN2ugS6iyQKhdh3
+X-Proofpoint-GUID: dgJqpu82evfKmaqG3ZN2ugS6iyQKhdh3
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-11-10_05,2022-11-09_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 phishscore=0
+ lowpriorityscore=0 malwarescore=0 bulkscore=0 clxscore=1011 mlxscore=0
+ adultscore=0 spamscore=0 mlxlogscore=790 suspectscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2210170000
+ definitions=main-2211100056
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,110 +85,83 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Atish Patra <atishp@atishpatra.org>, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, kvmarm@lists.cs.columbia.edu, linux-s390@vger.kernel.org, Chao Gao <chao.gao@intel.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, Yuan Yao <yuan.yao@intel.com>, kvmarm@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, Alexandru Elisei <alexandru.elisei@arm.com>, linux-arm-kernel@lists.infradead.org, Isaku Yamahata <isaku.yamahata@intel.com>, Fabiano Rosas <farosas@linux.ibm.com>, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, James Morse <james.morse@arm.com>, kvm-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, open list <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2022-11-02 at 23:18 +0000, Sean Christopherson wrote:
-> Define pr_fmt using KBUILD_MODNAME for all KVM x86 code so that
-> printks
-> use consistent formatting across common x86, Intel, and AMD code.  In
-> addition to providing consistent print formatting, using
-> KBUILD_MODNAME,
-> e.g. kvm_amd and kvm_intel, allows referencing SVM and VMX (and SEV
-> and
-> SGX and ...) as technologies without generating weird messages, and
-> without causing naming conflicts with other kernel code, e.g. "SEV:
-> ",
-> "tdx: ", "sgx: " etc.. are all used by the kernel for non-KVM
-> subsystems.
-> 
-> Opportunistically move away from printk() for prints that need to be
-> modified anyways, e.g. to drop a manual "kvm: " prefix.
-> 
-> Opportunistically convert a few SGX WARNs that are similarly modified
-> to
-> WARN_ONCE; in the very unlikely event that the WARNs fire, odds are
-> good
-> that they would fire repeatedly and spam the kernel log without
-> providing
-> unique information in each print.
-> 
-> Note, defining pr_fmt yields undesirable results for code that uses
-> KVM's
-> printk wrappers, e.g. vcpu_unimpl().  But, that's a pre-existing
-> problem
-> as SVM/kvm_amd already defines a pr_fmt, and thankfully use of KVM's
-> wrappers is relatively limited in KVM x86 code.
-> 
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
->  arch/x86/kvm/cpuid.c            |  1 +
->  arch/x86/kvm/debugfs.c          |  2 ++
->  arch/x86/kvm/emulate.c          |  1 +
->  arch/x86/kvm/hyperv.c           |  1 +
->  arch/x86/kvm/i8254.c            |  4 ++--
->  arch/x86/kvm/i8259.c            |  4 +++-
->  arch/x86/kvm/ioapic.c           |  1 +
->  arch/x86/kvm/irq.c              |  1 +
->  arch/x86/kvm/irq_comm.c         |  7 +++---
->  arch/x86/kvm/kvm_onhyperv.c     |  1 +
->  arch/x86/kvm/lapic.c            |  8 +++----
->  arch/x86/kvm/mmu/mmu.c          |  6 ++---
->  arch/x86/kvm/mmu/page_track.c   |  1 +
->  arch/x86/kvm/mmu/spte.c         |  4 ++--
->  arch/x86/kvm/mmu/spte.h         |  4 ++--
->  arch/x86/kvm/mmu/tdp_iter.c     |  1 +
->  arch/x86/kvm/mmu/tdp_mmu.c      |  1 +
->  arch/x86/kvm/mtrr.c             |  1 +
->  arch/x86/kvm/pmu.c              |  1 +
->  arch/x86/kvm/smm.c              |  1 +
->  arch/x86/kvm/svm/avic.c         |  2 +-
->  arch/x86/kvm/svm/nested.c       |  2 +-
->  arch/x86/kvm/svm/pmu.c          |  2 ++
->  arch/x86/kvm/svm/sev.c          |  1 +
->  arch/x86/kvm/svm/svm.c          | 10 ++++-----
->  arch/x86/kvm/svm/svm_onhyperv.c |  1 +
->  arch/x86/kvm/svm/svm_onhyperv.h |  4 ++--
->  arch/x86/kvm/vmx/evmcs.c        |  1 +
->  arch/x86/kvm/vmx/evmcs.h        |  4 +---
->  arch/x86/kvm/vmx/nested.c       |  3 ++-
->  arch/x86/kvm/vmx/pmu_intel.c    |  5 +++--
->  arch/x86/kvm/vmx/posted_intr.c  |  2 ++
->  arch/x86/kvm/vmx/sgx.c          |  5 +++--
->  arch/x86/kvm/vmx/vmcs12.c       |  1 +
->  arch/x86/kvm/vmx/vmx.c          | 40 ++++++++++++++++---------------
-> --
->  arch/x86/kvm/vmx/vmx_ops.h      |  4 ++--
->  arch/x86/kvm/x86.c              | 28 ++++++++++++-----------
->  arch/x86/kvm/xen.c              |  1 +
->  38 files changed, 97 insertions(+), 70 deletions(-)
-> 
-After this patch set, still find some printk()s left in arch/x86/kvm/*,
-consider clean all of them up?
+While booting 6.1.0-rc4-next-20221109 next kernel on a IBM Power9 LPAR
+following warning is seen:
 
-arch/x86/kvm/lapic.c:1215:		printk(KERN_ERR "TODO:
-unsupported delivery mode %x\n",
-arch/x86/kvm/lapic.c:1506:		printk(KERN_ERR "Local APIC
-read with len = %x, "
-arch/x86/kvm/lapic.c:2586:		printk(KERN_ERR "malloc apic
-regs error for vcpu %x\n",
-arch/x86/kvm/ioapic.h:95:		printk(KERN_EMERG "assertion
-failed %s: %d: %s\n",	\
-arch/x86/kvm/ioapic.c:614:		printk(KERN_WARNING "ioapic:
-wrong length %d\n", len);
-arch/x86/kvm/ioapic.c:641:		printk(KERN_WARNING "ioapic:
-Unsupported size %d\n", len);
-arch/x86/kvm/mmu/mmu.c:1652:			printk(KERN_ERR "%s: %p
-%llx\n", __func__,
-arch/x86/kvm/svm/svm.c:3450:		printk(KERN_ERR "%s: unexpected
-exit_int_info 0x%x "
-arch/x86/kvm/vmx/posted_intr.c:322:				printk(
-KERN_INFO
-arch/x86/kvm/vmx/posted_intr.c:343:			printk(KERN_INF
-O "%s: failed to update PI IRTE\n",
-arch/x86/kvm/vmx/vmx.c:6507:			printk(KERN_WARNING
-"%s: Breaking out of NMI-blocked "
-arch/x86/kvm/x86.c:13027:		printk(KERN_INFO "irq bypass
-consumer (token %p) unregistration"
+[ 8.808868] ------------[ cut here ]------------
+[ 8.808872] WARNING: CPU: 1 PID: 378 at kernel/module/main.c:852 =
+module_put+0x48/0x100
+[ 8.808881] Modules linked in: sr_mod(E) cdrom(E) sd_mod(E) sg(E) =
+lpfc(E) nvmet_fc(E) nvmet(E) ibmvscsi(E) scsi_transport_srp(E) =
+ibmveth(E) nvme_fc(E) nvme(E) nvme_fabrics(E) nvme_core(E) t10_pi(E) =
+scsi_transport_fc(E) crc64_rocksoft(E) crc64(E) tg3(E) fuse(E)
+[ 8.808912] sd 1:0:0:1: [sdc] Write Protect is off
+[ 8.808913] CPU: 1 PID: 378 Comm: kworker/1:3 Tainted: G E =
+6.1.0-rc4-next-20221109 #1
+[ 8.808916] Hardware name: IBM,8375-42A POWER9 (raw) 0x4e0202 0xf000005 =
+of:IBM,FW950.01 (VL950_047) hv:phyp pSeries
+[ 8.808924] Workqueue: kaluad alua_rtpg_work
+[ 8.808931] NIP: c000000000236c18 LR: c0000000009ee680 CTR: =
+00000000007088ec
+[ 8.808936] REGS: c000000007c37870 TRAP: 0700 Tainted: G E =
+(6.1.0-rc4-next-20221109)
+[ 8.808942] MSR: 800000000282b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE> CR: =
+88002884 XER: 20040007
+[ 8.808957] CFAR: c000000000236c04 IRQMASK: 0=20
+[ 8.808957] GPR00: c0000000009ee680 c000000007c37b10 c00000000137ec00 =
+c008000001d3a500=20
+[ 8.808957] GPR04: 0000000000000000 0000000000000000 0000000000000000 =
+00000000000000ff=20
+[ 8.808957] GPR08: 0000000000000001 0000000000000001 c008000001d3a8c0 =
+c0000000029674a8=20
+[ 8.808957] GPR12: 0000000000002000 c00000000d5cf300 c00000000018f3d8 =
+c000000003ce4d00=20
+[ 8.808957] GPR16: 0000000000000000 0000000000000000 0000000000000000 =
+0000000000000000=20
+[ 8.808957] GPR20: 0000000000000000 0000000000000000 0000000000000000 =
+0000000000000000=20
+[ 8.808957] GPR24: c0000000092b0e00 0000000000000000 c00000008ee81000 =
+c0000000092b0fc0=20
+[ 8.808957] GPR28: c000000007c37c10 c000000007c37c10 c008000001d3a500 =
+c00000008ee81000=20
+[ 8.809018] NIP [c000000000236c18] module_put+0x48/0x100
+[ 8.809024] sd 1:0:0:1: [sdc] Write cache: disabled, read cache: =
+enabled, supports DPO and FUA
+[ 8.809024] LR [c0000000009ee680] scsi_device_put+0x50/0x70
+[ 8.809035] Call Trace:
+[ 8.809038] [c000000007c37b10] [c000000007c37b50] 0xc000000007c37b50 =
+(unreliable)
+[ 8.809045] [c000000007c37b50] [c0000000009ee674] =
+scsi_device_put+0x44/0x70
+[ 8.809053] [c000000007c37b80] [c000000000a10c70] =
+alua_rtpg_work+0x210/0x920
+[ 8.809059] [c000000007c37c90] [c000000000182314] =
+process_one_work+0x2b4/0x5b0
+[ 8.809066] [c000000007c37d30] [c000000000182688] =
+worker_thread+0x78/0x600
+[ 8.809072] [c000000007c37dc0] [c00000000018f4f4] kthread+0x124/0x130
+[ 8.809079] [c000000007c37e10] [c00000000000cffc] =
+ret_from_kernel_thread+0x5c/0x64
+[ 8.809086] Instruction dump:
+[ 8.809090] f821ffc1 41820034 395e03c0 7c0004ac 7d205028 2c090001 =
+3929ffff 41c00010=20
+[ 8.809101] 7d20512d=20
+[ 8.809101] sd 1:0:0:1: [sdc] Preferred minimum I/O size 32768 bytes
+[ 8.809102] 40c2ffec 7c0004ac 79290fe2 <0b090000> 60000000 38210040 =
+ebc1fff0=20
+[ 8.809115] ---[ end trace 0000000000000000 ]=E2=80=94
+
+-next-20221108 was good. Git bisect points to following
+
+commit 0b25e17e9018a0ea68a9f0b4787672e8c68fa8d5
+Date:   Mon Oct 31 15:47:25 2022 -0700
+    scsi: alua: Move a scsi_device_put() call out of alua_check_vpd()
+
+Reverting this patch gets rid of the warning.
+
+- Sachin
 
