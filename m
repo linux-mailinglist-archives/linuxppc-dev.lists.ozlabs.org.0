@@ -2,74 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCE4B62418A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Nov 2022 12:37:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8F97624191
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Nov 2022 12:38:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N7KZH454tz3dxG
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Nov 2022 22:37:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N7KbM3Y57z3f4M
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Nov 2022 22:38:23 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=R9YU88Kl;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Zex9WNEO;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1034; helo=mail-pj1-x1034.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::633; helo=mail-pl1-x633.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=R9YU88Kl;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Zex9WNEO;
 	dkim-atps=neutral
-Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N7KXl5nDDz3dtQ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Nov 2022 22:36:07 +1100 (AEDT)
-Received: by mail-pj1-x1034.google.com with SMTP id m6-20020a17090a5a4600b00212f8dffec9so1335917pji.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Nov 2022 03:36:07 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N7KZT1XMKz3cJn
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Nov 2022 22:37:36 +1100 (AEDT)
+Received: by mail-pl1-x633.google.com with SMTP id v17so1214802plo.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Nov 2022 03:37:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=in-reply-to:references:subject:to:from:message-id:date
+        h=in-reply-to:references:to:from:subject:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=nkGGzOMikKUGKVTwfeE+OZEsBfoKMhINDROQJAFn9+Y=;
-        b=R9YU88KlN56sCBVKX91PZ8zykxZetasCtTMZuKXnfmell6lhEMkh8HAsgtQ5v17yi/
-         HvnazNUpOamxZPIbLz8OIP6lgpcAwThuqds91AXocIKQzxKPmURtZ3jZW4vchCDD/ezZ
-         k1mQX3lfSi16gVRs4q25W+DnDZ1MgQyyYU9GgnXz0on/Zc9HQ/Krfrq/+6Et4XxxtnZ2
-         RqU4lGAiIB0WzfxAgOtAuMWAEMXhhs5SizDQ/kK5BC73lvjHiaV/5d2hczeXfQL2q5kU
-         RxFRcM40Wx4TwD8uqc1kQh5BdDrx0lQOzJ4fLzrIIhS+uSkj90kEQ9iPXF4tTudelSdU
-         Gztg==
+        bh=ptuQEcbUd1kimoJ8Ii/nErDji+/dPIh2G6q00Uby0+Y=;
+        b=Zex9WNEOhndK99ayS6tLmCSHtCn+BxPz+9sF0tR+W03t7Az3943uXJLXfnY4OerVBi
+         Wgrv0DavieRoUoX3hZcz4PXM//VsUqzJtPEkcv4y5xAJOmFzW4opHOThPJnIwT6qfnm9
+         1f/owvZTdruaUDR+e+853W12vSt8HdwIpoyAq0k4FQp6Siv1BBZ0lRMBLhPi/Mz3nILe
+         S+VJhVj0RPVk1RUozcPX2cSmgC12Zah1XwKoMlnfckoBgJ+ZV0KGoe6AaNr6un8P+vuf
+         dcb7xOuI/xe2Bz8VHK9XxQSLs55LDjmkDYlfgMpu6AvRKNly/2guhLHcUpJc1W6MlK69
+         sg5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:references:subject:to:from:message-id:date
+        h=in-reply-to:references:to:from:subject:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=nkGGzOMikKUGKVTwfeE+OZEsBfoKMhINDROQJAFn9+Y=;
-        b=1Qx4DHo38LEb8Pe48pV+VfIrMB69AT458ysixCZ7c8TF7xRPE+h5at2goeVHxOuIcS
-         03W+sCt54LcYZYsi9AWWl1gNEmLQVRu+UuGdxzlLyYSbj0vXrXHkHw+JzMIabTjDc8GL
-         J9HtSpp9Vlcotkbpiph58vMcDSKsU+F4l/1/Zr99hENi4U2lpuljey3asYKa/6eVJOtq
-         McWdQazDdTMn9GREzAX5JZG/TPdinqnIEIaC4Gbs0DUXXClGuPj3bF8HjaFW0FR0KiTz
-         lD7ZNWKZjJ/nrUv2zH5fIUn21wUNRi6ttLGVKHQGNIvF3/mQPopJRRzZ8Nt2OShPXQQb
-         uFAw==
-X-Gm-Message-State: ACrzQf2JertX0FACG0otH0obo2n7s0Qe+0eLXxqOx1RN5FbbkF1BCikk
-	JA4C+BC4poRKAVtIGbdOXWg=
-X-Google-Smtp-Source: AMsMyM7FX3e6Z8Ys5S8tfgGF4al4/HYIrY0PlGgo7J1JGWSbmyf3cVAMnwVP84R0oSTx6clxKbEKYw==
-X-Received: by 2002:a17:902:e9c2:b0:186:79dc:7d87 with SMTP id 2-20020a170902e9c200b0018679dc7d87mr63970094plk.59.1668080165671;
-        Thu, 10 Nov 2022 03:36:05 -0800 (PST)
+        bh=ptuQEcbUd1kimoJ8Ii/nErDji+/dPIh2G6q00Uby0+Y=;
+        b=xFgUxtMhkdluJ0nynw7Lk3q8Ajq7i8DDHGjRTMGC8zczV7FbsrMpTWHgREOZ9yX9FV
+         kz3BOM+WfDZYc3iiAWt6bBHgGG/LjKKn1c+UvK2ceEqD4IWcSCCpFo+FgznMOzHBaEzz
+         XKSd+WL6Ksp4HRN7pTGKhfZQta4+1MCTCaxsdb13ZesTJ3J6rMmjZ5A3BtVQXo/Iuphc
+         q0VCLuonSD158/y9oZTJ3ZM+jcbE+PYSvQHSZHnUEJCp49WGp3+1jKtromBssCCIQEo9
+         ZlGZq+YJe44mDXUtDFeA7115MSE4+jMVSSRJ1hV0GiN3tmUXaIGHgTAd5eYvKsPK7TrD
+         eTaw==
+X-Gm-Message-State: ACrzQf2kn2s+QZjJjJKq7K/USQmWqYZQ/VkCBfnev+z1KyXNIgkuBnk3
+	fcRWjSORp0UeRKrTBb3bLAlCEENOGK4=
+X-Google-Smtp-Source: AMsMyM6sYYB06EvEGyImPuOuvgBpdmVsMQAIpuV8DCGNs/mbCTxUVIl3X+RnLKTQh1G8SVG87/xhyw==
+X-Received: by 2002:a17:902:ee8b:b0:186:a226:7207 with SMTP id a11-20020a170902ee8b00b00186a2267207mr62870128pld.49.1668080255329;
+        Thu, 10 Nov 2022 03:37:35 -0800 (PST)
 Received: from localhost (61-68-184-43.tpgi.com.au. [61.68.184.43])
-        by smtp.gmail.com with ESMTPSA id ij25-20020a170902ab5900b00188a1ae94bbsm422392plb.23.2022.11.10.03.36.03
+        by smtp.gmail.com with ESMTPSA id b23-20020a17090a8c9700b0020b7de675a4sm2874995pjo.41.2022.11.10.03.37.33
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 10 Nov 2022 03:36:04 -0800 (PST)
+        Thu, 10 Nov 2022 03:37:34 -0800 (PST)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 10 Nov 2022 21:36:00 +1000
-Message-Id: <CO8L2EZR2P0D.1G72IZFI1KNAQ@bobo>
+Date: Thu, 10 Nov 2022 21:37:30 +1000
+Message-Id: <CO8L3KBJI158.2DZLTZAUMMA4G@bobo>
+Subject: Re: [PATCH 15/17] powerpc/qspinlock: reduce remote node steal spins
 From: "Nicholas Piggin" <npiggin@gmail.com>
 To: "Jordan Niethe" <jniethe5@gmail.com>, <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: [PATCH 14/17] powerpc/qspinlock: use spin_begin/end API
 X-Mailer: aerc 0.13.0
 References: <20220728063120.2867508-1-npiggin@gmail.com>
- <20220728063120.2867508-16-npiggin@gmail.com>
- <b0a117995bb311dff161c475f7ba76709252c995.camel@gmail.com>
-In-Reply-To: <b0a117995bb311dff161c475f7ba76709252c995.camel@gmail.com>
+ <20220728063120.2867508-17-npiggin@gmail.com>
+ <aee900bb3870e8daea96ae5b4aab7ef7e9e1baf4.camel@gmail.com>
+In-Reply-To: <aee900bb3870e8daea96ae5b4aab7ef7e9e1baf4.camel@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,32 +87,77 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 On Thu Nov 10, 2022 at 10:43 AM AEST, Jordan Niethe wrote:
 > On Thu, 2022-07-28 at 16:31 +1000, Nicholas Piggin wrote:
 > [resend as utf-8, not utf-7]
-> > Use the spin_begin/spin_cpu_relax/spin_end APIs in qspinlock, which hel=
-ps
-> > to prevent threads issuing a lot of expensive priority nops which may n=
-ot
-> > have much effect due to immediately executing low then medium priority.
+> > Allow for a reduction in the number of times a CPU from a different
+> > node than the owner can attempt to steal the lock before queueing.
+> > This could bias the transfer behaviour of the lock across the
+> > machine and reduce NUMA crossings.
+> > ---
+> >  arch/powerpc/lib/qspinlock.c | 34 +++++++++++++++++++++++++++++++---
+> >  1 file changed, 31 insertions(+), 3 deletions(-)
+> >=20
+> > diff --git a/arch/powerpc/lib/qspinlock.c b/arch/powerpc/lib/qspinlock.=
+c
+> > index d4594c701f7d..24f68bd71e2b 100644
+> > --- a/arch/powerpc/lib/qspinlock.c
+> > +++ b/arch/powerpc/lib/qspinlock.c
+> > @@ -4,6 +4,7 @@
+> >  #include <linux/export.h>
+> >  #include <linux/percpu.h>
+> >  #include <linux/smp.h>
+> > +#include <linux/topology.h>
+> >  #include <asm/qspinlock.h>
+> >  #include <asm/paravirt.h>
+> > =20
+> > @@ -24,6 +25,7 @@ struct qnodes {
+> > =20
+> >  /* Tuning parameters */
+> >  static int STEAL_SPINS __read_mostly =3D (1<<5);
+> > +static int REMOTE_STEAL_SPINS __read_mostly =3D (1<<2);
+> >  #if _Q_SPIN_TRY_LOCK_STEAL =3D=3D 1
+> >  static const bool MAYBE_STEALERS =3D true;
+> >  #else
+> > @@ -39,9 +41,13 @@ static bool pv_prod_head __read_mostly =3D false;
+> > =20
+> >  static DEFINE_PER_CPU_ALIGNED(struct qnodes, qnodes);
+> > =20
+> > -static __always_inline int get_steal_spins(bool paravirt)
+> > +static __always_inline int get_steal_spins(bool paravirt, bool remote)
+> >  {
+> > -	return STEAL_SPINS;
+> > +	if (remote) {
+> > +		return REMOTE_STEAL_SPINS;
+> > +	} else {
+> > +		return STEAL_SPINS;
+> > +	}
+> >  }
+> > =20
+> >  static __always_inline int get_head_spins(bool paravirt)
+> > @@ -380,8 +386,13 @@ static __always_inline bool try_to_steal_lock(stru=
+ct qspinlock *lock, bool parav
+> > =20
+> >  		iters++;
+> > =20
+> > -		if (iters >=3D get_steal_spins(paravirt))
+> > +		if (iters >=3D get_steal_spins(paravirt, false))
+> >  			break;
+> > +		if (iters >=3D get_steal_spins(paravirt, true)) {
 >
-> Just a general comment regarding the spin_{begin,end} API, more complicat=
-ed
-> than something like
->
-> 	spin_begin()
-> 	for(;;)
-> 		spin_cpu_relax()
-> 	spin_end()
->
-> it becomes difficult to keep track of. Unfortunately, I don't have any go=
-od
-> suggestions how to improve it. Hopefully with P10s wait instruction we ca=
-n
-> maybe try and move away from this.
->
-> It might be useful to comment the functions pre and post conditions regar=
-ding
-> expectations about spin_begin() and spin_end().
+> There's no indication of what true and false mean here which is hard to r=
+ead.
+> To me it feels like two separate functions would be more clear.
 
-Yep, added some small comments.
+Good point. I reworked this a bit.
+
+>
+>
+> > +			int cpu =3D get_owner_cpu(val);
+> > +			if (numa_node_id() !=3D cpu_to_node(cpu))
+>
+> What about using node_distance() instead?
+
+We don't really need the distance, just whether or not it's the same or
+not. I think distance not only has to look up the nodes, but then has to
+look up a matrix to get a number.
 
 Thanks,
 Nick
