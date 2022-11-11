@@ -1,56 +1,39 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39D13625057
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Nov 2022 03:34:53 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9369625225
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Nov 2022 05:06:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N7jTl0rbYz3cd4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Nov 2022 13:34:51 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WST3di4B;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N7lVw59f3z3f5r
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Nov 2022 15:06:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WST3di4B;
-	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=realitydiluted.com (client-ip=63.228.164.32; helo=home.bethel-hill.org; envelope-from=sjhill@realitydiluted.com; receiver=<UNKNOWN>)
+X-Greylist: delayed 2129 seconds by postgrey-1.36 at boromir; Fri, 11 Nov 2022 12:20:52 AEDT
+Received: from home.bethel-hill.org (home.bethel-hill.org [63.228.164.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N7jSr1p1jz3bhR
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Nov 2022 13:34:04 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id EA6B261E87;
-	Fri, 11 Nov 2022 02:34:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C3C1C433B5;
-	Fri, 11 Nov 2022 02:33:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1668134040;
-	bh=gjdMWEiszGHlgAUbV/wraW2CCRlUI9SwcqtTzT00osE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WST3di4BKL3S+8oSeD3XVPe7gNuwOlyrmzBXWK0O/AZN1q0d9KLCsaWUc7RDU7T08
-	 XqN8C2N6BHlfJher3IvLae7dyOoNzMzBDvlyjZaHpvzgtuDL8wAZigotB2x9nw4tGL
-	 JR2bDcotFy4Ct8qqHDzUHxMsbkiXwmPrKBoV5xtYsHpPvr/P5DUgQcia5mXa/f+F3v
-	 HGxSY7yMi90AbPtz01bhusLD1BXVfeja5nnuS3CnR5bIYnZVppOfKYlCW90uQ8eKdv
-	 Y8fkCCkyrDe95q0iFpiCTI+EZLiZZQIKqrnW0i4EN90eXFpbFfoqiA425lCIh3/45U
-	 v7NruHhPKOVjA==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.0 10/30] powerpc/64e: Fix amdgpu build on Book3E w/o AltiVec
-Date: Thu, 10 Nov 2022 21:33:18 -0500
-Message-Id: <20221111023340.227279-10-sashal@kernel.org>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20221111023340.227279-1-sashal@kernel.org>
-References: <20221111023340.227279-1-sashal@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N7grN37v1z2yWl
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Nov 2022 12:20:52 +1100 (AEDT)
+Received: by home.bethel-hill.org with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	(Exim 4.89)
+	(envelope-from <sjhill@realitydiluted.com>)
+	id 1otIAY-0006qC-Sh
+	for linuxppc-dev@lists.ozlabs.org; Fri, 11 Nov 2022 00:45:19 +0000
+Message-ID: <8893e416-007c-f7b8-3b67-2ceec7db2e01@realitydiluted.com>
+Date: Thu, 10 Nov 2022 18:45:17 -0600
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.2
+Content-Language: en-US
+To: linuxppc-dev@lists.ozlabs.org
+From: "Steven J. Hill" <sjhill@realitydiluted.com>
+Subject: Writing not working to CPLD/FPGA.
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------nSgsqDyB0LJNDhxoibAzvgj0"
+X-Mailman-Approved-At: Fri, 11 Nov 2022 15:01:29 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,46 +45,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------nSgsqDyB0LJNDhxoibAzvgj0
+Content-Type: multipart/mixed; boundary="------------J9DxCnMrg7Jc0DAot7OU4lbG";
+ protected-headers="v1"
+From: "Steven J. Hill" <sjhill@realitydiluted.com>
+To: linuxppc-dev@lists.ozlabs.org
+Message-ID: <8893e416-007c-f7b8-3b67-2ceec7db2e01@realitydiluted.com>
+Subject: Writing not working to CPLD/FPGA.
 
-[ Upstream commit 2153fc9623e5465f503d793d4c94ad65e9ec9b5f ]
+--------------J9DxCnMrg7Jc0DAot7OU4lbG
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-There's a build failure for Book3E without AltiVec:
-  Error: cc1: error: AltiVec not supported in this target
-  make[6]: *** [/linux/scripts/Makefile.build:250:
-  drivers/gpu/drm/amd/amdgpu/../display/dc/dml/display_mode_lib.o] Error 1
+SGVsbG8uDQoNCk15IHBsYXRmb3JtIGlzIGEgNzQ0N0Egd2l0aCBNYXJ2ZWxsIEdUNjQyNjAg
+YnJpZGdlIGNoaXAuIEkgaGF2ZSBjdXJyZW50bHkNCmdvdCB0aGUga2VybmVsIHVwZ3JhZGVk
+IHRvIHYzLjEyIChzdGFydGVkIGZyb20gdjIuNi4yNikgYW5kIG9ubHkgaGF2ZSBvbmUNCm1v
+cmUgcGllY2UgdG8gZ2V0IHdvcmtpbmcgdGhhdCBoYXMgbmV2ZXIgd29ya2VkLiBUaGVyZSBp
+cyBhIENQTEQgb24gdGhlDQpib2FyZC4gSXQgbWFwcyBpbiBqdXN0IGZpbmUgYW5kIEkgY2Fu
+IHJlYWQgdGhlIHJlZ2lzdGVycyB3aXRob3V0IGlzc3VlLg0KSG93ZXZlciwgbm9uZSBvZiBt
+eSB3cml0ZXMgd29yay4gSW4gdGhlIGJvb3Rsb2FkZXIsIEkgY2FuIHdyaXRlIHRoZSBDUExE
+DQpyZWdpc3RlcnMgd2l0aG91dCBpc3N1ZS4gVGhlIHByZWJvb3QgY29kZSBpbiAnYXJjaC9w
+b3dlcnBjL2Jvb3QnIGNhbiBhbHNvDQp3cml0ZSB0aGUgQ1BMRCByZWdpc3RlcnMuIFNvLCB3
+cml0ZSBhY2Nlc3Mgc3RvcHMgd29ya2luZyBvbmNlIHRoZSBrZXJuZWwgaXMNCmJvb3RlZC4g
+VXNpbmcgX1BBR0VfTk9fQ0FDSEUgd2l0aCBpb3JlbWFwX3Byb3QoKSBhbmQgb3RoZXIgZmxh
+Z3MgZG9lcyBub3QNCndvcmsuIEhhcyBhbnlvbmUgZWxzZSBldmVyIGVuY291bnRlcmVkIHNv
+bWV0aGluZyBzaW1pbGFyIGJlaGF2aW9yIGluIHRoZQ0KcGFzdD8gUGxlYXNlIENDOiBtZS4g
+SSBhbSBub3Qgc3Vic2NyaWJlZCB0byB0aGUgbGlzdC4gVGhhbmtzIGluIGFkdmFuY2UuDQoN
+Ci1TdGV2ZQ0K
 
-This happens because the amdgpu build is only gated by
-PPC_LONG_DOUBLE_128, but that symbol can be enabled even though AltiVec
-is disabled.
+--------------J9DxCnMrg7Jc0DAot7OU4lbG--
 
-The only user of PPC_LONG_DOUBLE_128 is amdgpu, so just add a dependency
-on AltiVec to that symbol to fix the build.
+--------------nSgsqDyB0LJNDhxoibAzvgj0
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature"
 
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20221027125626.1383092-1-mpe@ellerman.id.au
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/powerpc/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+-----BEGIN PGP SIGNATURE-----
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index cbe7bb029aec..c1d36a22de30 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -284,7 +284,7 @@ config PPC
- 	#
- 
- config PPC_LONG_DOUBLE_128
--	depends on PPC64
-+	depends on PPC64 && ALTIVEC
- 	def_bool $(success,test "$(shell,echo __LONG_DOUBLE_128__ | $(CC) -E -P -)" = 1)
- 
- config PPC_BARRIER_NOSPEC
--- 
-2.35.1
+wmMEABEIACMWIQQ7FeQaKpedass6DAiDIrkfYhzfpwUCY22bHQUDAAAAAAAKCRCDIrkfYhzfp3l5
+AKCMNucKwgWslrhzTuU9srXuFm+QngCgnU/h7rM39CXBBBtGxIH7DWv2/gM=
+=iaqA
+-----END PGP SIGNATURE-----
 
+--------------nSgsqDyB0LJNDhxoibAzvgj0--
