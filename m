@@ -2,53 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21AE5625C2C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Nov 2022 15:01:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EB89625CAC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Nov 2022 15:12:10 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N80k717Syz3f3C
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Nov 2022 01:01:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N80yH6Z0dz3cMP
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Nov 2022 01:12:07 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=QLffNtOU;
-	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=REJ8yjGk;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=cquks9wv;
+	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=upJdg7cK;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=QLffNtOU;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=REJ8yjGk;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=cquks9wv;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=upJdg7cK;
 	dkim-atps=neutral
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N80hF67VCz3cLW
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Nov 2022 00:59:57 +1100 (AEDT)
-Message-ID: <20221111122014.294554462@linutronix.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N80hS1nzPz3cPg
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Nov 2022 01:00:08 +1100 (AEDT)
+Message-ID: <20221111122014.352437595@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1668174874;
+	s=2020; t=1668174875;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 references:references; bh=bJxkwerKAjiWe6cHbEqN33xS2DP9tmAemXhkKdu0gyY=;
-	b=QLffNtOU+BM9Q6v/Z8H95R6LwiMPRmhfbmoj75MKEHMyuvoWkxB4RbZv0LOe8zConFdPn3
-	FoUFDUYVoPhjPiUz6C+xwY6wbZBS5lKJg3/Gsu3284EwPDC+c//3QKxn3kDkoOFde3hYQC
-	+pd/Xgm/h8dGs8OjV+shpssdUDGjerTJOwD/8mC4GG/L0S4ZPt/7rL+PeupLgtvUpTDE1N
-	Un9QztBWeePvOOGEhy8v40+sFh0e4oCbUYoSJSn1XhDvUlTbCyxiOgkrR743ROQ9a0ADqn
-	+HbdIbRhYeOip7Q6YM6FLWMKuOVt6JtuB76/8dQyT2nLcE1Cab8xY9yYhSPJGw==
+	 references:references; bh=SR+JTKB3rKiZ73e/G+mgOLVXr9oQkVaEjTjLGttb2Gk=;
+	b=cquks9wvdwGZvfTVGMseDqonmMru5Jvd1Wp80d+QA7r+OPUBjVQ33nkUC2zM/Xj1+O8fPG
+	vtb671Sgwa26sjZk08mR0d6Khag9L+dcgpdaaiX3gijScukZ+VHAfliD2IMtv3iaBOUF0H
+	z/MslAY6PXFpX332pOy1ThF73fCI+4dA58/e9E/htDuO/wELj5pOCP8hkEbevCn9g05Q6e
+	Dc8lugCbNGIQGIngKhOUPod5JqprevnRQk8hF+mBQQn/l8M/1bzTmQzN7g8pOmzecptGGk
+	/UJmMPp34YQm20YaIUWb6Ef0Mc9mjvia3FKyyNDWpMCxHg3It/xaV2cgV2oHEA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1668174874;
+	s=2020e; t=1668174875;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 references:references; bh=bJxkwerKAjiWe6cHbEqN33xS2DP9tmAemXhkKdu0gyY=;
-	b=REJ8yjGkmRMaCMvX4cw1m2qo8vf54uF9WaXNDdGlD7gTrIZa0CONrZEpNhXpv0sciserxB
-	AcKM8IQKL5Qmr3BQ==
+	 references:references; bh=SR+JTKB3rKiZ73e/G+mgOLVXr9oQkVaEjTjLGttb2Gk=;
+	b=upJdg7cKT2Y7T72CwaobIKCBWj/eDCRfZapw31fhp5ESPdWoHIOrAME2ohvtTWo1VMweL7
+	27ljumxd1t7PlDBA==
 From: Thomas Gleixner <tglx@linutronix.de>
 To: LKML <linux-kernel@vger.kernel.org>
-Subject: [patch 12/39] genirq/msi: Add bus token to struct msi_domain_info
+Subject: [patch 13/39] PCI/MSI: Use msi_domain_info::bus_token
 References: <20221111120501.026511281@linutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 11 Nov 2022 14:54:33 +0100 (CET)
+Date: Fri, 11 Nov 2022 14:54:35 +0100 (CET)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,75 +66,41 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: Ahmed S. Darwish <darwi@linutronix.de>
 
-Add a bus token member to struct msi_domain_info and let
-msi_create_irq_domain() set the bus token.
+Set the bus token in the msi_domain_info structure and let the core code
+handle the update.
 
-That allows to remove the bus token updates at the call sites.
-
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Ahmed S. Darwish <darwi@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
- include/linux/msi.h |   19 +++++++++++--------
- kernel/irq/msi.c    |    7 +++++--
- 2 files changed, 16 insertions(+), 10 deletions(-)
+ drivers/pci/msi/irqdomain.c |   11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
---- a/include/linux/msi.h
-+++ b/include/linux/msi.h
-@@ -16,6 +16,7 @@
-  * abuse. The only function which is relevant for drivers is msi_get_virq().
-  */
+--- a/drivers/pci/msi/irqdomain.c
++++ b/drivers/pci/msi/irqdomain.c
+@@ -162,8 +162,6 @@ struct irq_domain *pci_msi_create_irq_do
+ 					     struct msi_domain_info *info,
+ 					     struct irq_domain *parent)
+ {
+-	struct irq_domain *domain;
+-
+ 	if (WARN_ON(info->flags & MSI_FLAG_LEVEL_CAPABLE))
+ 		info->flags &= ~MSI_FLAG_LEVEL_CAPABLE;
  
-+#include <linux/irqdomain_defs.h>
- #include <linux/cpumask.h>
- #include <linux/xarray.h>
- #include <linux/mutex.h>
-@@ -365,6 +366,7 @@ struct msi_domain_ops {
- /**
-  * struct msi_domain_info - MSI interrupt domain data
-  * @flags:		Flags to decribe features and capabilities
-+ * @bus_token:		The domain bus token
-  * @ops:		The callback data structure
-  * @chip:		Optional: associated interrupt chip
-  * @chip_data:		Optional: associated interrupt chip data
-@@ -374,14 +376,15 @@ struct msi_domain_ops {
-  * @data:		Optional: domain specific data
-  */
- struct msi_domain_info {
--	u32			flags;
--	struct msi_domain_ops	*ops;
--	struct irq_chip		*chip;
--	void			*chip_data;
--	irq_flow_handler_t	handler;
--	void			*handler_data;
--	const char		*handler_name;
--	void			*data;
-+	u32				flags;
-+	enum irq_domain_bus_token	bus_token;
-+	struct msi_domain_ops		*ops;
-+	struct irq_chip			*chip;
-+	void				*chip_data;
-+	irq_flow_handler_t		handler;
-+	void				*handler_data;
-+	const char			*handler_name;
-+	void				*data;
- };
+@@ -178,13 +176,10 @@ struct irq_domain *pci_msi_create_irq_do
  
- /* Flags for msi_domain_info */
---- a/kernel/irq/msi.c
-+++ b/kernel/irq/msi.c
-@@ -694,8 +694,11 @@ struct irq_domain *msi_create_irq_domain
- 	domain = irq_domain_create_hierarchy(parent, IRQ_DOMAIN_FLAG_MSI, 0,
- 					     fwnode, &msi_domain_ops, info);
+ 	/* PCI-MSI is oneshot-safe */
+ 	info->chip->flags |= IRQCHIP_ONESHOT_SAFE;
++	/* Let the core update the bus token */
++	info->bus_token = DOMAIN_BUS_PCI_MSI;
  
--	if (domain && !domain->name && info->chip)
--		domain->name = info->chip->name;
-+	if (domain) {
-+		if (!domain->name && info->chip)
-+			domain->name = info->chip->name;
-+		irq_domain_update_bus_token(domain, info->bus_token);
-+	}
- 
- 	return domain;
+-	domain = msi_create_irq_domain(fwnode, info, parent);
+-	if (!domain)
+-		return NULL;
+-
+-	irq_domain_update_bus_token(domain, DOMAIN_BUS_PCI_MSI);
+-	return domain;
++	return msi_create_irq_domain(fwnode, info, parent);
  }
+ EXPORT_SYMBOL_GPL(pci_msi_create_irq_domain);
+ 
 
