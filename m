@@ -1,54 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF5E9625C9B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Nov 2022 15:09:33 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC398625C6D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Nov 2022 15:06:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N80vH50Xzz3fFL
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Nov 2022 01:09:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N80r6616kz3f3p
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Nov 2022 01:06:46 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=rM3Hvm2A;
-	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=61OFjcyS;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=Yu6U84ia;
+	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=oM7mFTR/;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=rM3Hvm2A;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=61OFjcyS;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=Yu6U84ia;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=oM7mFTR/;
 	dkim-atps=neutral
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N80hM4Rhhz3cMw
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Nov 2022 01:00:03 +1100 (AEDT)
-Message-ID: <20221111122013.947071142@linutronix.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N80hJ6V5Yz3ccg
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Nov 2022 01:00:00 +1100 (AEDT)
+Message-ID: <20221111122014.004725919@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1668174864;
+	s=2020; t=1668174866;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 references:references; bh=DzwMVitVEwpsnJRYX1GqcWllvAqc3k0vBxAI8Er+FBs=;
-	b=rM3Hvm2A/73BTlgf/cJ63LRmKDRdAAwY5hxOMDRVqxPwJ3lk7tngBwLUDRQqeuz3V9+rh2
-	UK742ef9qcpZt85XVhtCPr67bCbu6J8HmHF9/OXUHWpBeASoZHKjXY5LPgDIXkVvpfcUrh
-	0Fy4d5HpPhKpH8TTLrDqDqP9eJUC4nLW6rPv1G/xbxvW0jE9wO+lR5tz8qZ51i7kz2/WdY
-	HNOhZ6XfV5J0TFdNls9y7zjvYcuIerly6Q1R1KkISjg1mNrIwlh4L7Xc9RsSXApFGVviKb
-	+27SOaCWk/l8xdmgBcHsAANAKPHRSa11nAfqQyh5L2hBCPUHmS6cP+bbtIJm3A==
+	 references:references; bh=GAKiePxBwA26UOzSRlo0ofGhAo2Fb7Jw45XwvXqJzKU=;
+	b=Yu6U84ia9FLugctorieny+7ozdDKY9K4yqqmT77rPtFmjIsYVb+xbI+H5owKByCTwabGFi
+	XSUP3+twnj3K2LOXu5MGeCAk5Fqc95LTtwvoNYzKrFPOlHQMT38RZvffj79o/PUIffICyR
+	Jw4JMo25Fr0VI6ucEf2SRxIGXBk5fNUjPRXoubLhcl+2CXsZWT11nLZF51xi1yvuNx3JzV
+	vLMM+vvz4a8LfnKYX3C/JE+uy3X/nEjWc4GtcwLcypC9JiCo0kd0nnPqlNus4OEuGchKBA
+	/pQVvyBdbBupRB6uqKjHCKGo5tVWIdNOeHLUIvsxZS9dpIQyB+6Of8k52fhTUg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1668174864;
+	s=2020e; t=1668174866;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 references:references; bh=DzwMVitVEwpsnJRYX1GqcWllvAqc3k0vBxAI8Er+FBs=;
-	b=61OFjcySwk55/wM8ZG3QX632+240BfUAoDJeeBKxzaHUj49wFuflEH1l5zdnt0rEJuHj6f
-	WudG4TZAewxnW2BQ==
+	 references:references; bh=GAKiePxBwA26UOzSRlo0ofGhAo2Fb7Jw45XwvXqJzKU=;
+	b=oM7mFTR/BDMFIdSFauwnokPDjh6lKKffIIiPbVtB8cy6c9N5UGO9yua+3dqGd7aiCGwFmW
+	BpQKABGh9Jg8x2DA==
 From: Thomas Gleixner <tglx@linutronix.de>
 To: LKML <linux-kernel@vger.kernel.org>
-Subject: [patch 06/39] genirq/msi: Add missing kernel doc to msi_next_desc()
+Subject: [patch 07/39] genirq/msi: Make __msi_domain_alloc_irqs() static
 References: <20221111120501.026511281@linutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 11 Nov 2022 14:54:23 +0100 (CET)
+Date: Fri, 11 Nov 2022 14:54:25 +0100 (CET)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,21 +64,57 @@ Cc: linux-pci@vger.kernel.org, Will Deacon <will@kernel.org>, Lorenzo Pieralisi 
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-W=1 complains about this.
+Nothing outside of the core code requires this.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
- kernel/irq/msi.c |    1 +
- 1 file changed, 1 insertion(+)
+ include/linux/msi.h |    7 ++-----
+ kernel/irq/msi.c    |    6 ++++--
+ 2 files changed, 6 insertions(+), 7 deletions(-)
 
+--- a/include/linux/msi.h
++++ b/include/linux/msi.h
+@@ -334,9 +334,8 @@ struct msi_domain_info;
+  * MSI_FLAG_USE_DEF_DOM_OPS is not set to avoid breaking existing users and
+  * because these callbacks are obviously mandatory.
+  *
+- * This is NOT meant to be abused, but it can be useful to build wrappers
+- * for specialized MSI irq domains which need extra work before and after
+- * calling __msi_domain_alloc_irqs()/__msi_domain_free_irqs().
++ * __msi_domain_free_irqs() is exposed for PPC pseries to handle extra
++ * work after all interrupts and descriptors have been freed.
+  */
+ struct msi_domain_ops {
+ 	irq_hw_number_t	(*get_hwirq)(struct msi_domain_info *info,
+@@ -425,8 +424,6 @@ int msi_domain_set_affinity(struct irq_d
+ struct irq_domain *msi_create_irq_domain(struct fwnode_handle *fwnode,
+ 					 struct msi_domain_info *info,
+ 					 struct irq_domain *parent);
+-int __msi_domain_alloc_irqs(struct irq_domain *domain, struct device *dev,
+-			    int nvec);
+ int msi_domain_alloc_irqs_descs_locked(struct irq_domain *domain, struct device *dev,
+ 				       int nvec);
+ int msi_domain_alloc_irqs(struct irq_domain *domain, struct device *dev,
 --- a/kernel/irq/msi.c
 +++ b/kernel/irq/msi.c
-@@ -282,6 +282,7 @@ EXPORT_SYMBOL_GPL(msi_first_desc);
- /**
-  * msi_next_desc - Get the next MSI descriptor of a device
-  * @dev:	Device to operate on
-+ * @filter:	Descriptor state filter
-  *
-  * The first invocation of msi_next_desc() has to be preceeded by a
-  * successful invocation of __msi_first_desc(). Consecutive invocations are
+@@ -462,6 +462,8 @@ static inline void msi_sysfs_remove_desc
+ #endif /* !CONFIG_SYSFS */
+ 
+ #ifdef CONFIG_GENERIC_MSI_IRQ_DOMAIN
++static int __msi_domain_alloc_irqs(struct irq_domain *domain, struct device *dev, int nvec);
++
+ static inline void irq_chip_write_msi_msg(struct irq_data *data,
+ 					  struct msi_msg *msg)
+ {
+@@ -852,8 +854,8 @@ static int msi_init_virq(struct irq_doma
+ 	return 0;
+ }
+ 
+-int __msi_domain_alloc_irqs(struct irq_domain *domain, struct device *dev,
+-			    int nvec)
++static int __msi_domain_alloc_irqs(struct irq_domain *domain, struct device *dev,
++				   int nvec)
+ {
+ 	struct msi_domain_info *info = domain->host_data;
+ 	struct msi_domain_ops *ops = info->ops;
 
