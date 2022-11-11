@@ -2,74 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07363624EB7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Nov 2022 01:07:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E31B7624FBB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Nov 2022 02:39:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N7fCG6Vfjz3f3F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Nov 2022 11:07:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N7hGK5mmzz3bhR
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Nov 2022 12:39:53 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=hNVPv+ey;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=SoG++eGs;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::42d; helo=mail-pf1-x42d.google.com; envelope-from=seanjc@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::42c; helo=mail-pf1-x42c.google.com; envelope-from=seanjc@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=hNVPv+ey;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=SoG++eGs;
 	dkim-atps=neutral
-Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
+Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N7fBH6hRKz3cF0
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Nov 2022 11:06:14 +1100 (AEDT)
-Received: by mail-pf1-x42d.google.com with SMTP id b29so3453197pfp.13
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Nov 2022 16:06:14 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N7hFL5Zkhz3bjw
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Nov 2022 12:39:01 +1100 (AEDT)
+Received: by mail-pf1-x42c.google.com with SMTP id y203so3650822pfb.4
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Nov 2022 17:39:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=sXQg6m0KDTXTm2nqz+lTg6WMBvdzJA0Ss4aaQqsqfi0=;
-        b=hNVPv+ey8HIvOZmC+WAnWIG8OYAeSlZS0xPLzYhDCZmnArotz5Y/nhfn9r9c8PCEFe
-         E8mVjVIva+def9PHp762BmRXmUoK5jg3heR3NAusrpN5STPSFfkervClje0NQa5CwXrE
-         HdlsTtSUM+MPo4+vdGUA38aqr644tAa7P5bI3VxUrx5hCBiuVMLzUakeu0v8EjWAOK7v
-         BgVrNZDyAWChq0qRi87Yhdn0EcEzkTu6Ae/6zTz8SPVNgwEGA83vKScQ/P1+h2fj3QJH
-         Ic9NMyWV4IhkYFZTb5wG6PyKY3kSFDqOOs7F1TgAuJpwI7fBOge9ep4GrU+eZD7ML8Bk
-         8lbA==
+        bh=RS3a6hLMxUUoEPjaozjVNm3jkJhC+H0XClz14w/jfaA=;
+        b=SoG++eGsogNhOXHNYNGSQwqVVuREga4mMXnUJPEp2Aaf3wDTjmN4pUpcDu6NyDyk/7
+         ZCrJ5tCMaVWUaaxyvaQrhL0T5FiyghxHxIWcZucG8+WiPsxAaytMKmY0pIZmkCvM/P3A
+         FzRDVfuDDdZ0ZvXjDTxrK9PvmsGmkf3tvXZwJCbLUSF0TG776tNA1944kmAMkLT9zZec
+         fBYk+3bEeWzmhZC19FCrSr44X5QV+XC8WpwQgvzfkBuRNUn1T3FMjmURa/IIpEBzEphS
+         S5BEZ0ZwTijqaaaZMQZlcNfQrroFpxn8GJ4NeHygg9gK3xqWbjbKbAj8qSY8fGLozXvu
+         Gsig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=sXQg6m0KDTXTm2nqz+lTg6WMBvdzJA0Ss4aaQqsqfi0=;
-        b=N7IAoT/CF5HoJ3o1QAh3hUwWudcBcWYDEz+9q2E0PnJ3SG6iz/yrpohf1IXCHU0FvZ
-         R678COyX3uFI44KaeTyXb/3H+k4FU4NhibLfYxgPf7Ob3RdJ/aw1A9sAF7hmEp4Dbs7u
-         N9SHE1gplsPhDqgR3bcyKPdf42/BPcvNTUDzGhneiwSlV+jODpA1F+jCyxCjYHuGaBoT
-         QVIANsn/YjzXY6tRO4kK9DXArzXTb03JfaUXzJlpAziWMlDyq2c8iQ2rOJCw0angEf4r
-         SesyUNFk70Lb4kg5pZXxqmWeum0WBSXsyTMee3YfOsUjKUxVin1hUkjxLFnXQtFDsTtd
-         BBsg==
-X-Gm-Message-State: ACrzQf3ifL3pykUUBRrdHS4pIkJjF5d0AMsLvpHPUhd1fguIh1DELPAu
-	lcaKq0yzU2B84BKX0LucjvtHOQ==
-X-Google-Smtp-Source: AMsMyM4gD1W2r9wxYtObzCBR9GM6UAk6Hoer15K7R44TK7byNmqvji7Uiit5OvUTQRObzAPBYqhIPw==
-X-Received: by 2002:a05:6a00:bef:b0:56e:3a98:1089 with SMTP id x47-20020a056a000bef00b0056e3a981089mr3906306pfu.38.1668125172489;
-        Thu, 10 Nov 2022 16:06:12 -0800 (PST)
+        bh=RS3a6hLMxUUoEPjaozjVNm3jkJhC+H0XClz14w/jfaA=;
+        b=1O3C3mBKL6k8FhwaZUGfkRIdXt3OU8sqzetcPA9tFdZ/h6GC4fB+QJkESFEmg0kIdA
+         4aTqFkcpjZYIfjYiB10HrGdCEm9ouFTmmGNPKhZuumD+Wd+ppljvkVuMV1DAovCbfL9x
+         8jUY8sKypu0+6OMFihZNVy6SWQVQwbp77CWXT13x8bHOAFmnxDZSFhejUrCkkAG3jpEH
+         zRmgXmqwu+6j1gAJLeSeBpNat9WtbE+VmGp3OtGl/rxtS+7SSJ67m0xcyMfcDZEebeNf
+         OcM7apvIU1I68f6JTa642Eb9LiuHsnPK0sn2hpIzZOYrQSRaR0mDVMCJgOdxZzs5dD6/
+         AyvQ==
+X-Gm-Message-State: ACrzQf03cYfSUSLhWo6EDkJy26Xt55DpKs0KYBID61UStjTBvjVi25hM
+	Dvv41XVr10UOeQr0z8tMc5M+LA==
+X-Google-Smtp-Source: AMsMyM5NZekdvfkLtC3kWWLVHXrB1AuT7u9X73tzeCo4RhIdse0v2yQHD++RSAOfBDE10qOQXDbeUA==
+X-Received: by 2002:a63:e62:0:b0:46f:e658:a8ff with SMTP id 34-20020a630e62000000b0046fe658a8ffmr4116215pgo.493.1668130739232;
+        Thu, 10 Nov 2022 17:38:59 -0800 (PST)
 Received: from google.com (7.104.168.34.bc.googleusercontent.com. [34.168.104.7])
-        by smtp.gmail.com with ESMTPSA id s18-20020a170903215200b00186a6b6350esm234146ple.268.2022.11.10.16.06.11
+        by smtp.gmail.com with ESMTPSA id z6-20020aa79486000000b005636326fdbfsm310014pfk.78.2022.11.10.17.38.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Nov 2022 16:06:12 -0800 (PST)
-Date: Fri, 11 Nov 2022 00:06:08 +0000
+        Thu, 10 Nov 2022 17:38:58 -0800 (PST)
+Date: Fri, 11 Nov 2022 01:38:53 +0000
 From: Sean Christopherson <seanjc@google.com>
-To: Isaku Yamahata <isaku.yamahata@gmail.com>
-Subject: Re: [PATCH 36/44] KVM: x86: Do compatibility checks when onlining CPU
-Message-ID: <Y22R8GAvcuoWBELA@google.com>
+To: Vitaly Kuznetsov <vkuznets@redhat.com>
+Subject: Re: [PATCH 10/44] KVM: VMX: Clean up eVMCS enabling if KVM
+ initialization fails
+Message-ID: <Y22nrQ7aziK0NMOE@google.com>
 References: <20221102231911.3107438-1-seanjc@google.com>
- <20221102231911.3107438-37-seanjc@google.com>
- <20221103210402.GB1063309@ls.amr.corp.intel.com>
- <Y2RB4qT02EkhMjPL@google.com>
- <20221104071819.GD1063309@ls.amr.corp.intel.com>
+ <20221102231911.3107438-11-seanjc@google.com>
+ <87mt98qfi2.fsf@ovpn-194-252.brq.redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20221104071819.GD1063309@ls.amr.corp.intel.com>
+In-Reply-To: <87mt98qfi2.fsf@ovpn-194-252.brq.redhat.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,49 +80,198 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Matthew Rosato <mjrosato@linux.ibm.com>, David Hildenbrand <david@redhat.com>, Yuan Yao <yuan.yao@intel.com>, Paul Walmsley <paul.walmsley@sifive.com>, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, Claudio Imbrenda <imbrenda@linux.ibm.com>, kvmarm@lists.cs.columbia.edu, linux-s390@vger.kernel.org, Janosch Frank <frankja@linux.ibm.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>, James Morse <james.morse@arm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Chao Gao <chao.gao@intel.com>, Eric Farman <farman@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org, Atish Patra <atishp@atishpatra.org>, kvmarm@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, Alexandru Elisei <alexandru.elisei@arm.com>, linux-arm-kernel@lists.infradead.org, Isaku Yamahata <isaku.yamahata@intel.com>, Fabiano Rosas <farosas@linux.ibm.com>, 
- linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, Palmer Dabbelt <palmer@dabbelt.com>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, linuxppc-dev@lists.ozlabs.org
+Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Atish Patra <atishp@atishpatra.org>, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, Claudio Imbrenda <imbrenda@linux.ibm.com>, kvmarm@lists.cs.columbia.edu, linux-s390@vger.kernel.org, Janosch Frank <frankja@linux.ibm.com>, Huacai Chen <chenhuacai@kernel.org>, Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Matthew Rosato <mjrosato@linux.ibm.com>, Chao Gao <chao.gao@intel.com>, Eric Farman <farman@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Suzuki K Poulose <suzuki.poulose@arm.com>, Paul Walmsley <paul.walmsley@sifive.com>, Yuan Yao <yuan.yao@intel.com>, kvmarm@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, Alexandru Elisei <alexandru.elisei@arm.com>, linux-arm-kernel@lists.infradead.org, Isaku Yamahata <isaku.yamahata@intel.com>, Fabiano Rosas <farosas@linux.ibm.com>, Anup Patel <anup@brainfault.o
+ rg>, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, James Morse <james.morse@arm.com>, kvm-riscv@lists.infradead.org, Marc Zyngier <maz@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Nov 04, 2022, Isaku Yamahata wrote:
-> On Thu, Nov 03, 2022 at 10:34:10PM +0000,
-> Sean Christopherson <seanjc@google.com> wrote:
+On Thu, Nov 03, 2022, Vitaly Kuznetsov wrote:
+> Sean Christopherson <seanjc@google.com> writes:
+> > +	/*
+> > +	 * Reset everything to support using non-enlightened VMCS access later
+> > +	 * (e.g. when we reload the module with enlightened_vmcs=0)
+> > +	 */
+> > +	for_each_online_cpu(cpu) {
+> > +		vp_ap =	hv_get_vp_assist_page(cpu);
+> > +
+> > +		if (!vp_ap)
+> > +			continue;
+> > +
+> > +		vp_ap->nested_control.features.directhypercall = 0;
+> > +		vp_ap->current_nested_vmcs = 0;
+> > +		vp_ap->enlighten_vmentry = 0;
+> > +	}
 > 
-> > On Thu, Nov 03, 2022, Isaku Yamahata wrote:
-> > > On Wed, Nov 02, 2022 at 11:19:03PM +0000,
-> > > Sean Christopherson <seanjc@google.com> wrote:
-> > > > diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-> > > > index f223c845ed6e..c99222b71fcc 100644
-> > > > --- a/arch/x86/include/asm/kvm_host.h
-> > > > +++ b/arch/x86/include/asm/kvm_host.h
-> > > > @@ -1666,7 +1666,7 @@ struct kvm_x86_nested_ops {
-> > > >  };
-> > > >  
-> > > >  struct kvm_x86_init_ops {
-> > > > -	int (*check_processor_compatibility)(void);
-> > > > +	int (*check_processor_compatibility)(int cpu);
-> > > 
-> > > Is this cpu argument used only for error message to include cpu number
-> > > with avoiding repeating raw_smp_processor_id() in pr_err()?
-> > 
-> > Yep.
-> > 
-> > > The actual check is done on the current executing cpu.
-> > > 
-> > > If cpu != raw_smp_processor_id(), cpu is wrong. Although the function is called
-> > > in non-preemptive context, it's a bit confusing. So voting to remove it and
-> > > to use.
-> > 
-> > What if I rename the param is this_cpu?  I 100% agree the argument is confusing
-> > as-is, but forcing all the helpers to manually grab the cpu is quite annoying.
+> Unrelated to your patch but while looking at this code I got curious
+> about why don't we need a protection against CPU offlining here. Turns
+> out that even when we offline a CPU, its VP assist page remains
+> allocated (see hv_cpu_die()), we just write '0' to the MSR and thus
+
+Heh, "die".  Hyper-V is quite dramatic.
+
+> accessing the page is safe. The consequent hv_cpu_init(), however, does
+> not restore VP assist page when it's already allocated:
 > 
-> Makes sense. Let's settle it with this_cpu.
+> # rdmsr -p 24 0x40000073
+> 10212f001
+> # echo 0 > /sys/devices/system/cpu/cpu24/online 
+> # echo 1 > /sys/devices/system/cpu/cpu24/online 
+> # rdmsr -p 24 0x40000073
+> 0
+> 
+> The culprit is commit e5d9b714fe402 ("x86/hyperv: fix root partition
+> faults when writing to VP assist page MSR"). A patch is inbound.
+> 
+> 'hv_root_partition' case is different though. We do memunmap() and reset
+> VP assist page to zero so it is theoretically possible we're going to
+> clash. Unless I'm missing some obvious reason why module unload can't
+> coincide with CPU offlining, we may be better off surrounding this with
+> cpus_read_lock()/cpus_read_unlock(). 
 
-Finally got to actually change the code, and am not a fan of passing "this_cpu"
-everywhere.  It's not terrible, but it's not clearly better than just grabbing
-the CPU on-demand.  And while manually grabbing the CPU in the helpers is annoying,
-in at least two cases the pain is just shifted to the caller.
+I finally see what you're concerned about.  If a CPU goes offline and its assist
+page is unmapped, zeroing out the nested/eVMCS stuff will fault.
 
-I'm going with your original suggestion of just grabbing raw_smp_processor_id()
-in the helpers that print the error message.
+I think the real problem is that the purging of the eVMCS is in the wrong place.
+Move the clearing to vmx_hardware_disable() and then the CPU hotplug bug goes
+away once KVM disables hotplug during hardware enabling/disable later in the series.
+There's no need to wait until module exit, e.g. it's not like it costs much to
+clear a few variables, and IIUC the state is used only when KVM is actively using
+VMX/eVMCS.
+
+However, I believe there's a second bug.  KVM's CPU online hook is called before
+Hyper-V's online hook (CPUHP_AP_ONLINE_DYN).  Before this series, which moves KVM's
+hook from STARTING to ONLINE, KVM's hook is waaaay before Hyper-V's.  That means
+that hv_cpu_init()'s allocation of the VP assist page will come _after_ KVM's
+check in vmx_hardware_enable()
+
+	/*
+	 * This can happen if we hot-added a CPU but failed to allocate
+	 * VP assist page for it.
+	 */
+	if (static_branch_unlikely(&enable_evmcs) &&
+	    !hv_get_vp_assist_page(cpu))
+		return -EFAULT;
+
+I.e. CPU hotplug will never work if KVM is running VMs as a Hyper-V guest.  I bet
+you can repro by doing a SUSPEND+RESUME.
+
+Can you try to see if that's actually a bug?  If so, the only sane fix seems to
+be to add a dedicated ONLINE action for Hyper-V.  Per patch
+
+  KVM: Rename and move CPUHP_AP_KVM_STARTING to ONLINE section
+
+from this series, CPUHP_AP_KVM_ONLINE needs to be before CPUHP_AP_SCHED_WAIT_EMPTY
+to ensure there are no tasks, i.e. no vCPUs, running on the to-be-unplugged CPU.
+
+Back to the original bug, proposed fix is below.  The other advantage of moving
+the reset to hardware disabling is that the "cleanup" is just disabling the static
+key, and at that point can simply be deleted as there's no need to disable the
+static key when kvm-intel is unloaded since kvm-intel owns the key.  I.e. this
+patch (that we're replying to) would get replaced with a patch to delete the
+disabling of the static key.
+
+--
+From: Sean Christopherson <seanjc@google.com>
+Date: Thu, 10 Nov 2022 17:28:08 -0800
+Subject: [PATCH] KVM: VMX: Reset eVMCS controls in VP assist page during
+ hardware disabling
+
+Reset the eVMCS controls in the per-CPU VP assist page during hardware
+disabling instead of waiting until kvm-intel's module exit.  The controls
+are activated if and only if KVM creates a VM, i.e. don't need to be
+reset if hardware is never enabled.
+
+Doing the reset during hardware disabling will naturally fix a potential
+NULL pointer deref bug once KVM disables CPU hotplug while enabling and
+disabling hardware (which is necessary to fix a variety of bugs).  If the
+kernel is running as the root partition, the VP assist page is unmapped
+during CPU hot unplug, and so KVM's clearing of the eVMCS controls needs
+to occur with CPU hot(un)plug disabled, otherwise KVM could attempt to
+write to a CPU's VP assist page after it's unmapped.
+
+Reported-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ arch/x86/kvm/vmx/vmx.c | 50 +++++++++++++++++++++++++-----------------
+ 1 file changed, 30 insertions(+), 20 deletions(-)
+
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index aca88524fd1e..ae13aa3e8a1d 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -552,6 +552,33 @@ static int hv_enable_direct_tlbflush(struct kvm_vcpu *vcpu)
+ 	return 0;
+ }
+ 
++static void hv_reset_evmcs(void)
++{
++	struct hv_vp_assist_page *vp_ap;
++
++	if (!static_branch_unlikely(&enable_evmcs))
++		return;
++
++	/*
++	 * KVM should enable eVMCS if and only if all CPUs have a VP assist
++	 * page, and should reject CPU onlining if eVMCS is enabled the CPU
++	 * doesn't have a VP assist page allocated.
++	 */
++	vp_ap = hv_get_vp_assist_page(smp_processor_id());
++	if (WARN_ON_ONCE(!vp_ap))
++		return;
++
++	/*
++	 * Reset everything to support using non-enlightened VMCS access later
++	 * (e.g. when we reload the module with enlightened_vmcs=0)
++	 */
++	vp_ap->nested_control.features.directhypercall = 0;
++	vp_ap->current_nested_vmcs = 0;
++	vp_ap->enlighten_vmentry = 0;
++}
++
++#else /* IS_ENABLED(CONFIG_HYPERV) */
++static void hv_reset_evmcs(void) {}
+ #endif /* IS_ENABLED(CONFIG_HYPERV) */
+ 
+ /*
+@@ -2497,6 +2524,8 @@ static void vmx_hardware_disable(void)
+ 	if (cpu_vmxoff())
+ 		kvm_spurious_fault();
+ 
++	hv_reset_evmcs();
++
+ 	intel_pt_handle_vmx(0);
+ }
+ 
+@@ -8463,27 +8492,8 @@ static void vmx_exit(void)
+ 	kvm_exit();
+ 
+ #if IS_ENABLED(CONFIG_HYPERV)
+-	if (static_branch_unlikely(&enable_evmcs)) {
+-		int cpu;
+-		struct hv_vp_assist_page *vp_ap;
+-		/*
+-		 * Reset everything to support using non-enlightened VMCS
+-		 * access later (e.g. when we reload the module with
+-		 * enlightened_vmcs=0)
+-		 */
+-		for_each_online_cpu(cpu) {
+-			vp_ap =	hv_get_vp_assist_page(cpu);
+-
+-			if (!vp_ap)
+-				continue;
+-
+-			vp_ap->nested_control.features.directhypercall = 0;
+-			vp_ap->current_nested_vmcs = 0;
+-			vp_ap->enlighten_vmentry = 0;
+-		}
+-
++	if (static_branch_unlikely(&enable_evmcs))
+ 		static_branch_disable(&enable_evmcs);
+-	}
+ #endif
+ 	vmx_cleanup_l1d_flush();
+ 
+
+base-commit: 5f47ba6894477dfbdc5416467a25fb7acb47d404
+-- 
+
