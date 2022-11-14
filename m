@@ -2,42 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5172628247
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Nov 2022 15:20:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 467F2628331
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Nov 2022 15:49:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N9s0f37R4z3cdy
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Nov 2022 01:20:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N9sdR0zxPz3cMk
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Nov 2022 01:48:59 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YUVENSN3;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N9s063H1Tz2xHJ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Nov 2022 01:20:03 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 71CAB23A;
-	Mon, 14 Nov 2022 06:19:37 -0800 (PST)
-Received: from [192.168.0.110] (unknown [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 61C753F73D;
-	Mon, 14 Nov 2022 06:19:21 -0800 (PST)
-Message-ID: <40f1b5ad-2165-bb81-1ff5-89786373fa14@arm.com>
-Date: Mon, 14 Nov 2022 19:49:13 +0530
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YUVENSN3;
+	dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N9scQ0NDMz2xKN
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Nov 2022 01:48:05 +1100 (AEDT)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.5) with ESMTP id 2AEEdoNA015912;
+	Mon, 14 Nov 2022 14:47:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=Uk5EXZkBNF0tn4o07/dITg6sAe5THIbl29LANdGKdYE=;
+ b=YUVENSN3WIZiTbw6pbWlJ+VcwBOLW1eRQ8HWO6eUXu+zWpeWbVXdxE0vg5X/uw6hzXEk
+ 3KwiuRe5kcqtN/kcOzFqB/zwO7ajvI+fctvUcLLGs5EYg8nIvv+qRtoNXcZf6zR2BsOS
+ pnjVZSEFaH4LojhZFh6Tt9NnRu/trF7TIdwVFCwICEYqWRs/teWwL99bZ0j6WHzDJLhN
+ ADl0nTh3SxNrCSnYFCFKMiz4dCI2F57/mKYxf/rmRe9uLDiQkRn/+g2hLX650YjQqFmN
+ EW3ddAVcoxwuKVeVKkPJOGJdCtmS02torqExwpOriMDP/8/xbk//5+jxHrMLx3yk1O7x UA== 
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3kuqmt06fq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 14 Nov 2022 14:47:44 +0000
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+	by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2AEEaE2v012383;
+	Mon, 14 Nov 2022 14:47:42 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+	by ppma02fra.de.ibm.com with ESMTP id 3kt349202h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 14 Nov 2022 14:47:42 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
+	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2AEEld8F66584858
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 14 Nov 2022 14:47:40 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E2E24A4040;
+	Mon, 14 Nov 2022 14:47:39 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CBBE7A404D;
+	Mon, 14 Nov 2022 14:47:35 +0000 (GMT)
+Received: from [9.163.90.158] (unknown [9.163.90.158])
+	by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Mon, 14 Nov 2022 14:47:35 +0000 (GMT)
+Message-ID: <5b59b7df-d2ec-1664-f0fb-764c9b93417c@linux.ibm.com>
+Date: Mon, 14 Nov 2022 20:17:33 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.2
-Subject: Re: [PATCH v5 2/2] arm64: support batched/deferred tlb shootdown
- during page reclamation
+ Thunderbird/102.4.1
+Subject: Re: [RFC PATCH 0/3] enable bpf_prog_pack allocator for powerpc
 Content-Language: en-US
-To: Yicong Yang <yangyicong@huawei.com>, akpm@linux-foundation.org,
- linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org, x86@kernel.org,
- catalin.marinas@arm.com, will@kernel.org, linux-doc@vger.kernel.org
-References: <20221028081255.19157-1-yangyicong@huawei.com>
- <20221028081255.19157-3-yangyicong@huawei.com>
- <86fbdc8c-0dcb-9b8f-d843-63460d8b1d6a@arm.com>
- <9982dac0-9f2e-112a-d440-467c8e8f8aa4@huawei.com>
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <9982dac0-9f2e-112a-d440-467c8e8f8aa4@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        "bpf@vger.kernel.org" <bpf@vger.kernel.org>
+References: <20221110184303.393179-1-hbathini@linux.ibm.com>
+ <00efe9b1-d9fd-441c-9eb4-cbf25d82baf2@csgroup.eu>
+From: Hari Bathini <hbathini@linux.ibm.com>
+In-Reply-To: <00efe9b1-d9fd-441c-9eb4-cbf25d82baf2@csgroup.eu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: bi3vyvRwPIOVRHzXkZKMZVoheG3BAfsb
+X-Proofpoint-GUID: bi3vyvRwPIOVRHzXkZKMZVoheG3BAfsb
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-11-14_12,2022-11-11_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 malwarescore=0
+ suspectscore=0 impostorscore=0 adultscore=0 clxscore=1011
+ lowpriorityscore=0 spamscore=0 priorityscore=1501 mlxscore=0 bulkscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2210170000 definitions=main-2211140103
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,60 +95,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: wangkefeng.wang@huawei.com, darren@os.amperecomputing.com, peterz@infradead.org, yangyicong@hisilicon.com, punit.agrawal@bytedance.com, Nadav Amit <namit@vmware.com>, guojian@oppo.com, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, zhangshiming@oppo.com, lipeifeng@oppo.com, corbet@lwn.net, Barry Song <21cnbao@gmail.com>, Mel Gorman <mgorman@suse.de>, linux-mips@vger.kernel.org, arnd@arndb.de, realmz6@gmail.com, Barry Song <v-songbaohua@oppo.com>, openrisc@lists.librecores.org, prime.zeng@hisilicon.com, xhao@linux.alibaba.com, linux-kernel@vger.kernel.org, huzhanyuan@oppo.com, linuxppc-dev@lists.ozlabs.org
+Cc: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Song Liu <songliubraving@fb.com>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi Christophe,
 
+On 11/11/22 4:55 pm, Christophe Leroy wrote:
+> Le 10/11/2022 à 19:43, Hari Bathini a écrit :
+>> Most BPF programs are small, but they consume a page each. For systems
+>> with busy traffic and many BPF programs, this may also add significant
+>> pressure on instruction TLB. High iTLB pressure usually slows down the
+>> whole system causing visible performance degradation for production
+>> workloads.
+>>
+>> bpf_prog_pack, a customized allocator that packs multiple bpf programs
+>> into preallocated memory chunks, was proposed [1] to address it. This
+>> series extends this support on powerpc.
+>>
+>> Patches 1 & 2 add the arch specific functions needed to support this
+>> feature. Patch 3 enables the support for powerpc. The last patch
+>> ensures cleanup is handled racefully.
+>>
 
-On 11/14/22 14:16, Yicong Yang wrote:
-> On 2022/11/14 11:29, Anshuman Khandual wrote:
->>
->> On 10/28/22 13:42, Yicong Yang wrote:
->>> +static inline bool arch_tlbbatch_should_defer(struct mm_struct *mm)
->>> +{
->>> +	/*
->>> +	 * TLB batched flush is proved to be beneficial for systems with large
->>> +	 * number of CPUs, especially system with more than 8 CPUs. TLB shutdown
->>> +	 * is cheap on small systems which may not need this feature. So use
->>> +	 * a threshold for enabling this to avoid potential side effects on
->>> +	 * these platforms.
->>> +	 */
->>> +	if (num_online_cpus() <= CONFIG_ARM64_NR_CPUS_FOR_BATCHED_TLB)
->>> +		return false;
->>> +
->>> +#ifdef CONFIG_ARM64_WORKAROUND_REPEAT_TLBI
->>> +	if (unlikely(this_cpu_has_cap(ARM64_WORKAROUND_REPEAT_TLBI)))
->>> +		return false;
->>> +#endif
->> should_defer_flush() is immediately followed by set_tlb_ubc_flush_pending() which calls
->> arch_tlbbatch_add_mm(), triggering the actual TLBI flush via __flush_tlb_page_nosync().
->> It should be okay to check capability with this_cpu_has_cap() as the entire call chain
->> here is executed on the same cpu. But just wondering if cpus_have_const_cap() would be
->> simpler, consistent, and also cost effective ?
->>
-> ok. Checked cpus_have_const_cap() I think it matches your words.
+>> Tested the changes successfully on a PowerVM. patch_instruction(),
+>> needed for bpf_arch_text_copy(), is failing for ppc32. Debugging it.
+>> Posting the patches in the meanwhile for feedback on these changes.
 > 
->> Regardless, a comment is needed before the #ifdef block explaining why it does not make
->> sense to defer/batch when __tlbi()/__tlbi_user() implementation will execute 'dsb(ish)'
->> between two TLBI instructions to workaround the errata.
->>
-> The workaround for the errata mentioned the affected platforms need the tlbi+dsb to be done
-> twice, so I'm not sure if we defer the final dsb will cause any problem so I think the judgement
-> here is used for safety. I have no such platform to test if it's ok to defer the last dsb.
+> I did a quick test on ppc32, I don't get such a problem, only something
+> wrong in the dump print as traps intructions only are dumped, but
+> tcpdump works as expected:
 
-We should not defer TLB flush on such systems, as ensured by the above test and 'false'
-return afterwards. The only question is whether this decision should be taken at a CPU
-level (which is affected by the errata) or the whole system level.
+Thanks for the quick test. Could you please share the config you used.
+I am probably missing a few knobs in my conifg...
 
-What is required now
-
-- Replace this_cpu_has_cap() with cpus_have_const_cap ?
-- Add the following comment before the #ifdef check
-
-/*
- * TLB flush deferral is not required on systems, which are affected with
- * ARM64_WORKAROUND_REPEAT_TLBI, as __tlbi()/__tlbi_user() implementation
- * will have two consecutive TLBI instructions with a dsb(ish) in between
- * defeating the purpose (i.e save overall 'dsb ish' cost).
- */
+Thanks
+Hari
