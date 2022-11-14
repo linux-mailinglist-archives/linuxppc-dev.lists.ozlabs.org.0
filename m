@@ -2,66 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E191062749B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Nov 2022 03:35:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA90662749C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Nov 2022 03:36:23 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N9YM455Djz3f7s
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Nov 2022 13:35:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N9YN54RGPz3f78
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Nov 2022 13:36:21 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ZObpSHoX;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=fv34fExh;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42c; helo=mail-pf1-x42c.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::532; helo=mail-pg1-x532.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ZObpSHoX;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=fv34fExh;
 	dkim-atps=neutral
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
+Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N9YH86tc9z2ybK
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Nov 2022 13:32:04 +1100 (AEDT)
-Received: by mail-pf1-x42c.google.com with SMTP id g62so9773018pfb.10
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Nov 2022 18:32:04 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N9YHD20WSz3cHF
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Nov 2022 13:32:07 +1100 (AEDT)
+Received: by mail-pg1-x532.google.com with SMTP id h193so9102109pgc.10
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Nov 2022 18:32:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=UIhJaoXuWaovgk4L1YJAy7HFH+S6ZwNNpXO7ndwl8Sg=;
-        b=ZObpSHoXE4TFYfxL80z0Q8FbW05RQLkMVa+c2QJnihVo7iZsBmn4RCpgh+UG4mSV26
-         90uY9CSbCXg6P/zyWLrVi3e3gV3lbPA1+3ceLMZoUwRZ6FkRBDFeA0+Z4t12NODgfbxk
-         vdwC10MjcPStcHHAJBHlcnq8b1yWQ4Qr8TuO9PjuhPurUiB/sVt4hgjehHARbLUT0kC0
-         hakpxhRTGYgM2aNAM3PRvgWhUMOrw+Nyj2DlP8yizKWXd4mq9BxNyzLjLLR5YZp7A23x
-         Nr/6IPjQEuK4X01p52FeDzRPXcqoebpOu0CaDbilwI0WBinjXpu5daHlX7CF1nK1IEHV
-         wRlA==
+        bh=0+uMYmD6JNF5IlbnvrwUfhRxoK/tQDZvS1D6p8gYOrI=;
+        b=fv34fExhONbhqZjINv2kWqH1e1Xx7LRBv+lVfi3eLQ+RLDMWy4+vtcXG2Q70MfYfmi
+         JsnGaM64QiW/T2VzB1ndgWpakyjKLzHsYIfUl8ncow973aj/QT/O7WaNARapp/39/6Qd
+         nYb5k5T/JG+hpgkipgI6v5xq1Jlh+RBwib7xVzCgUpw4hUQnwhW2AzXp9U7KHrQgx1g1
+         B0ZEJZGcxR/qnCXUYjNx76sCAn5KCZBI7E1JxpgCu1lN+maJZOwoc2fix7lsuiHWtAjA
+         mTpotk9tm1wCWiBXYOqUwObTlP7jg4di4WflZF/jYE6rFmT6s2pLf2fTPO4hnl6jKKuk
+         Tdpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=UIhJaoXuWaovgk4L1YJAy7HFH+S6ZwNNpXO7ndwl8Sg=;
-        b=27eC4HX+vtb+K+izABgcfvyZIoIvcfcJz6apSAehA23KuQktqIfgWDaej8OefwMn86
-         eB/PY9ZZX0+YaBHHTo5LKYYKWo2IGNkaV4gX1rp5LasbVdb4dQh9XKUnKKpCEsEsUah9
-         rS7J2+68Z/KsBTajTmM50lx5H5wg5vsVz6+K9HXApv3kj7Gt+qsdFDrOsJJyFxBt0r1t
-         Fj02cnNpcXwzTTp7xpuqfhnusc/EbC2IjTR4O6f9l0zBZfFri5FQrO0C785jo5QVnQ5Z
-         SANy8hileh4MwnItP0gy6EelHLbbR4MAazHhxq7j0SIVrzpmyd4+MMgSIyNekghPFOVv
-         8KtQ==
-X-Gm-Message-State: ANoB5pn9VHwJl+cy9TTD/DbFe5+GZmr7v+vi73S2gLeD0ntKaIyIFGDv
-	ag9BI/kDckkfPexsCQDp8GN4fthIXj8=
-X-Google-Smtp-Source: AA0mqf7zLE7c4x1dHmEgO2eK7eUdL67ttTl+PxXigRIxAdNbYGP8b3b5VM0adSiek75V/ufy3gjaSw==
-X-Received: by 2002:a05:6a00:1f13:b0:567:546c:718b with SMTP id be19-20020a056a001f1300b00567546c718bmr12115782pfb.17.1668393121995;
-        Sun, 13 Nov 2022 18:32:01 -0800 (PST)
+        bh=0+uMYmD6JNF5IlbnvrwUfhRxoK/tQDZvS1D6p8gYOrI=;
+        b=fP4ZpdkbQSBd23wT9EQgiZ+mB8iSzYloMEBhAGoL2YMdFgqY3KH8dIkkQ01BiBmrEA
+         tDbDJotrO148/snKXf6qnPRb2yTjwRbQ71NsGAnv8Xbm5KtHYtayh1z8g1WR8lrnF7fJ
+         PeHFecTAIBE8gn/B9/CR4ljfGuoCMU0yP1O6ujGT+06qarARwwX4sKHd6ct7cdRcREL6
+         4Oc0GWcJVRj/KwSLGl2OdQbUdMRg/yG49eYv0hJHalkkjtul0CG1NbF3/C6WYHNHVfDM
+         VSLYldjo/Tksfq5fBaUMDge5IeZOv09GrQuUJ2sWeDD6pFKC4CZfGAdN2Y7OejerSToA
+         Y/Hg==
+X-Gm-Message-State: ANoB5pnCu3Fd6LlRnpjIrQBqrK/v7QwjiE5MwHZyVD3n+mkGKHKn6Nvs
+	+Pkom9k1SpKMXkj71cjVHGzhBQJyLOw=
+X-Google-Smtp-Source: AA0mqf42CBsxzsI03lvPUUawAnBCyHIDJy3YprkmgNlN9XEarARMo7QxGrTDFscEgJ/iRzSerRrigQ==
+X-Received: by 2002:a65:6b8a:0:b0:470:1187:4dae with SMTP id d10-20020a656b8a000000b0047011874daemr10247481pgw.239.1668393125483;
+        Sun, 13 Nov 2022 18:32:05 -0800 (PST)
 Received: from bobo.ibm.com (14-200-187-164.tpgi.com.au. [14.200.187.164])
-        by smtp.gmail.com with ESMTPSA id c6-20020a170902c1c600b00186616b8fbasm5973655plc.10.2022.11.13.18.31.58
+        by smtp.gmail.com with ESMTPSA id c6-20020a170902c1c600b00186616b8fbasm5973655plc.10.2022.11.13.18.32.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Nov 2022 18:32:01 -0800 (PST)
+        Sun, 13 Nov 2022 18:32:04 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 02/17] powerpc/qspinlock: add mcs queueing for contended waiters
-Date: Mon, 14 Nov 2022 12:31:22 +1000
-Message-Id: <20221114023137.2679627-4-npiggin@gmail.com>
+Subject: [PATCH v2 03/17] powerpc/qspinlock: use a half-word store to unlock to avoid larx/stcx.
+Date: Mon, 14 Nov 2022 12:31:23 +1000
+Message-Id: <20221114023137.2679627-5-npiggin@gmail.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20221114023137.2679627-1-npiggin@gmail.com>
 References: <20221114023137.2679627-1-npiggin@gmail.com>
@@ -82,278 +82,68 @@ Cc: Jordan Niethe <jniethe5@gmail.com>, Laurent Dufour <laurent.dufour@fr.ibm.co
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This forms the basis of the qspinlock slow path.
-
-Like generic qspinlocks and unlike the vanilla MCS algorithm, the lock
-owner does not participate in the queue, only waiters. The first waiter
-spins on the lock word, then when the lock is released it takes
-ownership and unqueues the next waiter. This is how qspinlocks can be
-implemented with the spinlock API -- lock owners don't need a node, only
-waiters do.
+The first 16 bits of the lock are only modified by the owner, and other
+modifications always use atomic operations on the entire 32 bits, so
+unlocks can use plain stores on the 16 bits. This is the same kind of
+optimisation done by core qspinlock code.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/include/asm/qspinlock.h       |  10 +-
- arch/powerpc/include/asm/qspinlock_types.h |  21 +++
- arch/powerpc/lib/qspinlock.c               | 180 ++++++++++++++++++++-
- 3 files changed, 205 insertions(+), 6 deletions(-)
+ arch/powerpc/include/asm/qspinlock.h       |  6 +-----
+ arch/powerpc/include/asm/qspinlock_types.h | 19 +++++++++++++++++--
+ 2 files changed, 18 insertions(+), 7 deletions(-)
 
 diff --git a/arch/powerpc/include/asm/qspinlock.h b/arch/powerpc/include/asm/qspinlock.h
-index b1443aab2145..300c7d2ebe2e 100644
+index 300c7d2ebe2e..7bc254c55705 100644
 --- a/arch/powerpc/include/asm/qspinlock.h
 +++ b/arch/powerpc/include/asm/qspinlock.h
-@@ -18,12 +18,12 @@ static __always_inline int queued_spin_value_unlocked(struct qspinlock lock)
- 
- static __always_inline int queued_spin_is_contended(struct qspinlock *lock)
- {
--	return 0;
-+	return !!(atomic_read(&lock->val) & _Q_TAIL_CPU_MASK);
- }
- 
- static __always_inline int queued_spin_trylock(struct qspinlock *lock)
- {
--	return atomic_cmpxchg_acquire(&lock->val, 0, 1) == 0;
-+	return atomic_cmpxchg_acquire(&lock->val, 0, _Q_LOCKED_VAL) == 0;
- }
- 
- void queued_spin_lock_slowpath(struct qspinlock *lock);
-@@ -36,7 +36,11 @@ static __always_inline void queued_spin_lock(struct qspinlock *lock)
+@@ -36,11 +36,7 @@ static __always_inline void queued_spin_lock(struct qspinlock *lock)
  
  static inline void queued_spin_unlock(struct qspinlock *lock)
  {
--	atomic_set_release(&lock->val, 0);
-+	for (;;) {
-+		int val = atomic_read(&lock->val);
-+		if (atomic_cmpxchg_release(&lock->val, val, val & ~_Q_LOCKED_VAL) == val)
-+			return;
-+	}
+-	for (;;) {
+-		int val = atomic_read(&lock->val);
+-		if (atomic_cmpxchg_release(&lock->val, val, val & ~_Q_LOCKED_VAL) == val)
+-			return;
+-	}
++	smp_store_release(&lock->locked, 0);
  }
  
  #define arch_spin_is_locked(l)		queued_spin_is_locked(l)
 diff --git a/arch/powerpc/include/asm/qspinlock_types.h b/arch/powerpc/include/asm/qspinlock_types.h
-index 59606bc0c774..9630e714c70d 100644
+index 9630e714c70d..3425dab42576 100644
 --- a/arch/powerpc/include/asm/qspinlock_types.h
 +++ b/arch/powerpc/include/asm/qspinlock_types.h
-@@ -10,4 +10,25 @@ typedef struct qspinlock {
+@@ -3,12 +3,27 @@
+ #define _ASM_POWERPC_QSPINLOCK_TYPES_H
  
- #define	__ARCH_SPIN_LOCK_UNLOCKED	{ .val = ATOMIC_INIT(0) }
+ #include <linux/types.h>
++#include <asm/byteorder.h>
  
-+/*
-+ * Bitfields in the atomic value:
-+ *
-+ *     0: locked bit
-+ * 16-31: tail cpu (+1)
-+ */
-+#define	_Q_SET_MASK(type)	(((1U << _Q_ ## type ## _BITS) - 1)\
-+				      << _Q_ ## type ## _OFFSET)
-+#define _Q_LOCKED_OFFSET	0
-+#define _Q_LOCKED_BITS		1
-+#define _Q_LOCKED_MASK		_Q_SET_MASK(LOCKED)
-+#define _Q_LOCKED_VAL		(1U << _Q_LOCKED_OFFSET)
+ typedef struct qspinlock {
+-	atomic_t val;
++	union {
++		atomic_t val;
 +
-+#define _Q_TAIL_CPU_OFFSET	16
-+#define _Q_TAIL_CPU_BITS	(32 - _Q_TAIL_CPU_OFFSET)
-+#define _Q_TAIL_CPU_MASK	_Q_SET_MASK(TAIL_CPU)
-+
-+#if CONFIG_NR_CPUS >= (1U << _Q_TAIL_CPU_BITS)
-+#error "qspinlock does not support such large CONFIG_NR_CPUS"
++#ifdef __LITTLE_ENDIAN
++		struct {
++			u16	locked;
++			u8	reserved[2];
++		};
++#else
++		struct {
++			u8	reserved[2];
++			u16	locked;
++		};
 +#endif
-+
- #endif /* _ASM_POWERPC_QSPINLOCK_TYPES_H */
-diff --git a/arch/powerpc/lib/qspinlock.c b/arch/powerpc/lib/qspinlock.c
-index 1c669b5b4607..f3c3d5128bd5 100644
---- a/arch/powerpc/lib/qspinlock.c
-+++ b/arch/powerpc/lib/qspinlock.c
-@@ -1,12 +1,186 @@
- // SPDX-License-Identifier: GPL-2.0-or-later
-+#include <linux/atomic.h>
-+#include <linux/bug.h>
-+#include <linux/compiler.h>
- #include <linux/export.h>
--#include <linux/processor.h>
-+#include <linux/percpu.h>
-+#include <linux/smp.h>
- #include <asm/qspinlock.h>
++	};
+ } arch_spinlock_t;
  
--void queued_spin_lock_slowpath(struct qspinlock *lock)
-+#define MAX_NODES	4
-+
-+struct qnode {
-+	struct qnode	*next;
-+	struct qspinlock *lock;
-+	u8		locked; /* 1 if lock acquired */
-+};
-+
-+struct qnodes {
-+	int		count;
-+	struct qnode nodes[MAX_NODES];
-+};
-+
-+static DEFINE_PER_CPU_ALIGNED(struct qnodes, qnodes);
-+
-+static inline int encode_tail_cpu(int cpu)
-+{
-+	return (cpu + 1) << _Q_TAIL_CPU_OFFSET;
-+}
-+
-+static inline int decode_tail_cpu(int val)
-+{
-+	return (val >> _Q_TAIL_CPU_OFFSET) - 1;
-+}
-+
-+/* Take the lock by setting the bit, no other CPUs may concurrently lock it. */
-+static __always_inline void set_locked(struct qspinlock *lock)
-+{
-+	atomic_or(_Q_LOCKED_VAL, &lock->val);
-+	__atomic_acquire_fence();
-+}
-+
-+/* Take lock, clearing tail, cmpxchg with val (which must not be locked) */
-+static __always_inline int trylock_clear_tail_cpu(struct qspinlock *lock, int val)
-+{
-+	int newval = _Q_LOCKED_VAL;
-+
-+	BUG_ON(val & _Q_LOCKED_VAL);
-+
-+	return atomic_cmpxchg_acquire(&lock->val, val, newval) == val;
-+}
-+
-+/*
-+ * Publish our tail, replacing previous tail. Return previous value.
-+ *
-+ * This provides a release barrier for publishing node, this pairs with the
-+ * acquire barrier in get_tail_qnode() when the next CPU finds this tail
-+ * value.
-+ */
-+static __always_inline int publish_tail_cpu(struct qspinlock *lock, int tail)
-+{
-+	for (;;) {
-+		int val = atomic_read(&lock->val);
-+		int newval = (val & ~_Q_TAIL_CPU_MASK) | tail;
-+		int old;
-+
-+		old = atomic_cmpxchg_release(&lock->val, val, newval);
-+		if (old == val)
-+			return old;
-+	}
-+}
-+
-+static struct qnode *get_tail_qnode(struct qspinlock *lock, int val)
-+{
-+	int cpu = decode_tail_cpu(val);
-+	struct qnodes *qnodesp = per_cpu_ptr(&qnodes, cpu);
-+	int idx;
-+
-+	/*
-+	 * After publishing the new tail and finding a previous tail in the
-+	 * previous val (which is the control dependency), this barrier
-+	 * orders the release barrier in publish_tail_cpu performed by the
-+	 * last CPU, with subsequently looking at its qnode structures
-+	 * after the barrier.
-+	 */
-+	smp_acquire__after_ctrl_dep();
-+
-+	for (idx = 0; idx < MAX_NODES; idx++) {
-+		struct qnode *qnode = &qnodesp->nodes[idx];
-+		if (qnode->lock == lock)
-+			return qnode;
-+	}
-+
-+	BUG();
-+}
-+
-+static inline void queued_spin_lock_mcs_queue(struct qspinlock *lock)
- {
--	while (!queued_spin_trylock(lock))
-+	struct qnodes *qnodesp;
-+	struct qnode *next, *node;
-+	int val, old, tail;
-+	int idx;
-+
-+	BUILD_BUG_ON(CONFIG_NR_CPUS >= (1U << _Q_TAIL_CPU_BITS));
-+
-+	qnodesp = this_cpu_ptr(&qnodes);
-+	if (unlikely(qnodesp->count >= MAX_NODES)) {
-+		while (!queued_spin_trylock(lock))
-+			cpu_relax();
-+		return;
-+	}
-+
-+	idx = qnodesp->count++;
-+	/*
-+	 * Ensure that we increment the head node->count before initialising
-+	 * the actual node. If the compiler is kind enough to reorder these
-+	 * stores, then an IRQ could overwrite our assignments.
-+	 */
-+	barrier();
-+	node = &qnodesp->nodes[idx];
-+	node->next = NULL;
-+	node->lock = lock;
-+	node->locked = 0;
-+
-+	tail = encode_tail_cpu(smp_processor_id());
-+
-+	old = publish_tail_cpu(lock, tail);
-+
-+	/*
-+	 * If there was a previous node; link it and wait until reaching the
-+	 * head of the waitqueue.
-+	 */
-+	if (old & _Q_TAIL_CPU_MASK) {
-+		struct qnode *prev = get_tail_qnode(lock, old);
-+
-+		/* Link @node into the waitqueue. */
-+		WRITE_ONCE(prev->next, node);
-+
-+		/* Wait for mcs node lock to be released */
-+		while (!node->locked)
-+			cpu_relax();
-+
-+		smp_rmb(); /* acquire barrier for the mcs lock */
-+	}
-+
-+	/* We're at the head of the waitqueue, wait for the lock. */
-+	for (;;) {
-+		val = atomic_read(&lock->val);
-+		if (!(val & _Q_LOCKED_VAL))
-+			break;
-+
-+		cpu_relax();
-+	}
-+
-+	/* If we're the last queued, must clean up the tail. */
-+	if ((val & _Q_TAIL_CPU_MASK) == tail) {
-+		if (trylock_clear_tail_cpu(lock, val))
-+			goto release;
-+		/* Another waiter must have enqueued */
-+	}
-+
-+	/* We must be the owner, just set the lock bit and acquire */
-+	set_locked(lock);
-+
-+	/* contended path; must wait for next != NULL (MCS protocol) */
-+	while (!(next = READ_ONCE(node->next)))
- 		cpu_relax();
-+
-+	/*
-+	 * Unlock the next mcs waiter node. Release barrier is not required
-+	 * here because the acquirer is only accessing the lock word, and
-+	 * the acquire barrier we took the lock with orders that update vs
-+	 * this store to locked. The corresponding barrier is the smp_rmb()
-+	 * acquire barrier for mcs lock, above.
-+	 */
-+	WRITE_ONCE(next->locked, 1);
-+
-+release:
-+	qnodesp->count--; /* release the node */
-+}
-+
-+void queued_spin_lock_slowpath(struct qspinlock *lock)
-+{
-+	queued_spin_lock_mcs_queue(lock);
- }
- EXPORT_SYMBOL(queued_spin_lock_slowpath);
+-#define	__ARCH_SPIN_LOCK_UNLOCKED	{ .val = ATOMIC_INIT(0) }
++#define	__ARCH_SPIN_LOCK_UNLOCKED	{ { .val = ATOMIC_INIT(0) } }
  
+ /*
+  * Bitfields in the atomic value:
 -- 
 2.37.2
 
