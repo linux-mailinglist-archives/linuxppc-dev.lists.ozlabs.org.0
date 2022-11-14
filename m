@@ -2,79 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 296686289E3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Nov 2022 20:54:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FF61628BD7
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Nov 2022 23:12:27 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NB0Pn6mMLz3cMT
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Nov 2022 06:54:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NB3T44s5bz3cHm
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Nov 2022 09:12:24 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=dDYVgHhm;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=X/BceVLY;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::629; helo=mail-ej1-x629.google.com; envelope-from=olteanv@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=dDYVgHhm;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=X/BceVLY;
 	dkim-atps=neutral
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NB0Ns10pSz3cC5
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Nov 2022 06:53:31 +1100 (AEDT)
-Received: by mail-ej1-x629.google.com with SMTP id ft34so30886186ejc.12
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Nov 2022 11:53:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=xgkgU+XJK79fNtmiiykE65yOYhyetkrTOcQMcl/CZJ8=;
-        b=dDYVgHhmha1NxtiYQrt/rWBs0feFsx2LKpDZacWco2+/xjuJ4i9EdLPZYJrls6b6hE
-         JOsOMx9dQU5J7msJp3jJetYQxd3p2PuK7qyVYct893G8pZfSzcuZ9SoEjZvdqwxFJ0Zv
-         dST309VowM/mHEKLOFPG03JI+Wvh+CLiFP/HzNoYFvStwCBLjavOVujZOME86uio4LTS
-         P9EmujlrnSVtl7H3DWpzSLSWl4SCreFHTQNBAwGkUKhIlZnNLyewd7wkvIeEYFgGFiNz
-         cFV1w/AiZGZguTCqwVDomg9EUuxkLFfsEkek4XqKvB9C8FjQHqSZKVEiFv1L+OEag6X0
-         9B8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xgkgU+XJK79fNtmiiykE65yOYhyetkrTOcQMcl/CZJ8=;
-        b=JaYORnzN/S1dCC5DHsOyDC/ibkZjkMcB45p9gVFXJ2FOTvWCPLCH/JWG7kiaTqE3Kg
-         sgbfR05M2R9b7lYVegkySjLUWG7UbFs1WTXabfAm+9Q3514MopYOdgZcV0UYF4Nt71xZ
-         37AfEuydcKxnED0qvMSfHsVvEmOVN7uJF2jOgccXcao3piExclqAJXfczlaS613eyYMm
-         UzBaLMj250rpl9JWs/FmKOKedrwe6+NBLeQ2I/tQRjDI22FwnOSbKTWWcYjFy4JCU3qW
-         e5BoRjFMXIHMWBtw8A+ditjdT3qmN109YJYWxl0mlfA42vkRMqDTxkGbdtyLNExVofc/
-         Prqw==
-X-Gm-Message-State: ANoB5pnV6QVPzChs+7t4v+/wuCeZMUGwckIpImIasscxGIlUXZLVk0Yr
-	x9pR1CsH9cihG0/UQlQcInA=
-X-Google-Smtp-Source: AA0mqf5NrXQC9j3yvaQxmK6T+GZXv6adycdupZEpJskbybTG3KPOSJYuASy86evhxQ7UbgdKGMG3IA==
-X-Received: by 2002:a17:906:c00c:b0:7ae:e6ac:2427 with SMTP id e12-20020a170906c00c00b007aee6ac2427mr7498440ejz.345.1668455604968;
-        Mon, 14 Nov 2022 11:53:24 -0800 (PST)
-Received: from skbuf ([188.25.170.202])
-        by smtp.gmail.com with ESMTPSA id v17-20020a1709067d9100b0074134543f82sm4614809ejo.90.2022.11.14.11.53.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Nov 2022 11:53:24 -0800 (PST)
-Date: Mon, 14 Nov 2022 21:53:21 +0200
-From: Vladimir Oltean <olteanv@gmail.com>
-To: Sean Anderson <sean.anderson@seco.com>
-Subject: Re: [PATCH net-next v2 00/11] net: pcs: Add support for devices
- probed in the "usual" manner
-Message-ID: <20221114195321.uludij5x747uzcxr@skbuf>
-References: <20221103210650.2325784-1-sean.anderson@seco.com>
- <20221109224110.erfaftzja4fybdbc@skbuf>
- <bcb87445-d80d-fea0-82f2-a15b20baaf06@seco.com>
- <20221110152925.3gkkp5opf74oqrxb@skbuf>
- <7b4fb14f-1ca0-e4f8-46ca-3884392627c2@seco.com>
- <20221110160008.6t53ouoxqeu7w7qr@skbuf>
- <ce6d6a26-4867-6385-8c64-0f374d027754@seco.com>
- <20221114172357.hdzua4xo7wixtbgs@skbuf>
- <209a0d25-f109-601f-d6f6-1adc44103aee@seco.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NB3S57130z3cFZ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Nov 2022 09:11:33 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 543A8B81333
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Nov 2022 22:11:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 0FB69C433D7
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Nov 2022 22:11:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1668463888;
+	bh=uwyVSpkrwXUl7jnHJ81AUw4TzNnX5k4ICx1w1Dl1uw4=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=X/BceVLYYtCEPAYHKk97YPFVrwMdIEyIw9+7VSSJpDLnJD3UWr/u6Rpr7lQjAsfDA
+	 Fw++/7g923nzy7BztdaQhwl9CgViPrUwBOf+kLGaEVEtshwlznioXjzg7/mvUw/AHC
+	 YgAtNO29BN0KcW+Rleb6Qdn2w3NhjBqhAuzAYnzI8OzrZwpP1hA21wcMAvEs5oKNHg
+	 R1VKAn0G1Lg6jglDkfBtFWvprWU+Gq0rFjl8YxqpPhnTd+tP+YFxiu0oRxnCh2r80W
+	 6Zs2uTeUTb7n5HmwEAqw3Dvl/+d5nGagcswqpdVgvrdWDE85vFbUo17Ein2ypSJy43
+	 TuVMJSeY3VAmg==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
+	id E96A2C433E4; Mon, 14 Nov 2022 22:11:27 +0000 (UTC)
+From: bugzilla-daemon@kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 216156] kmemleak: Not scanning unknown object at
+ 0xc00000007f000000
+Date: Mon, 14 Nov 2022 22:11:27 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-64
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: erhard_f@mailbox.org
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: attachments.isobsolete attachments.created
+Message-ID: <bug-216156-206035-BuBXB4ixMj@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-216156-206035@https.bugzilla.kernel.org/>
+References: <bug-216156-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <209a0d25-f109-601f-d6f6-1adc44103aee@seco.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,82 +79,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, Alexandre Belloni <alexandre.belloni@bootlin.com>, Madalin Bucur <madalin.bucur@nxp.com>, Eric Dumazet <edumazet@google.com>, Paul Mackerras <paulus@samba.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Ioana Ciornei <ioana.ciornei@nxp.com>, "UNGLinuxDriver@microchip.com" <UNGLinuxDriver@microchip.com>, Frank Rowand <frowand.list@gmail.com>, Florian Fainelli <f.fainelli@gmail.com>, Saravana Kannan <saravanak@google.com>, Russell King <linux@armlinux.org.uk>, Vladimir Oltean <vladimir.oltean@nxp.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Vivien Didelot <vivien.didelot@gmail.com>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Claudiu Manoil <claudiu.manoil@nxp.com>, Rob Herring <robh+dt@kernel.org>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "netdev@vger.kernel.org"
-  <netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Leo Li <leoyang.li@nxp.com>, Marc Zyngier <maz@kernel.org>, Shawn Guo <shawnguo@kernel.org>, "David S . Miller" <davem@davemloft.net>, Heiner Kallweit <hkallweit1@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Nov 14, 2022 at 01:08:03PM -0500, Sean Anderson wrote:
-> On 11/14/22 12:23, Vladimir Oltean wrote:
-> > On Thu, Nov 10, 2022 at 11:56:15AM -0500, Sean Anderson wrote:
-> >> these will probably be in device trees for a year before the kernel
-> >> starts using them. But once that is done, we are free to require them.
-> > 
-> > Sorry, you need to propose something that is not "we can break compatibility
-> > with today's device trees one year from now".
-> 
-> But only if the kernel gets updated and not the device tree. When can
-> such a situation occur? Are we stuck with this for the next 10 years all
-> because someone may have a device tree which they compiled in 2017, and
-> *insist* on using the latest kernel with? Is this how you run your
-> systems?
+https://bugzilla.kernel.org/show_bug.cgi?id=3D216156
 
-I'm a developer (and I work on other platforms than the ones you're
-planning to break), so the answer to this question doesn't mean a thing.
+Erhard F. (erhard_f@mailbox.org) changed:
 
-> We don't get the device tree from firmware on this platform; usually it
-> is bundled with the kernel in a FIT or loaded from the same disk
-> partition as the kernel. I can imagine that they might not always be
-> updated at exactly the same time, but this is nuts.
+           What    |Removed                     |Added
+----------------------------------------------------------------------------
+ Attachment #301653|0                           |1
+        is obsolete|                            |
 
-What does "this" platform mean exactly? There are many platforms to
-which you've added compatible strings to keep things working assuming a
-dtb update, many of them very old. And those to which you did are not by
-far all that exist. There is no requirement that all platform device
-trees are upstreamed to the Linux kernel.
+--- Comment #6 from Erhard F. (erhard_f@mailbox.org) ---
+Created attachment 303178
+  --> https://bugzilla.kernel.org/attachment.cgi?id=3D303178&action=3Dedit
+dmesg (6.1-rc5, PowerMac G5 11,2)
 
-> The original device tree is broken because it doesn't include compatible
-> strings for devices on a generic bus. There's no way to fix that other
-> than hard-coding the driver. This can be done for some buses, but this
-> is an MDIO bus and we already assume devices without compatibles are
-> PHYs.
+Still there in 6.1-rc5.
 
-Let's be clear about this. It's "broken" in the sense that you don't like
-the way in which it works, not in the sense that it results in a system
-that doesn't work. And not having a compatible string is just as broken
-as it is for other devices with detectable device IDs, like Ethernet
-PHYs in general, PCI devices, etc.
+hash-mmu: Initializing hash mmu with SLB
+Linux version 6.1.0-rc5-PMacG5 (root@T1000) (gcc (Gentoo 12.2.1_p20221008 p=
+1)
+12.2.1 20221008, GNU ld (Gentoo 2.39 p5) 2.39.0) #2 SMP Mon Nov 14 17:51:54=
+ CET
+2022
+ioremap() called early from .pmac_feature_init+0x22c/0x107c. Use
+early_ioremap() instead
+ioremap() called early from .pmac_feature_init+0x2b0/0x107c. Use
+early_ioremap() instead
+Found U4 memory controller & host bridge @ 0xf8000000 revision: 0x42
+Mapped at 0xc0003e0080000000
+ioremap() called early from .probe_one_macio+0x3a8/0x60c. Use early_ioremap=
+()
+instead
+Found a Shasta mac-io controller, rev: 0, mapped at 0x(____ptrval____)
+PowerMac motherboard: PowerMac G5 Dual Core
+ioremap() called early from .btext_map+0x64/0xf0. Use early_ioremap() inste=
+ad
+ioremap() called early from .iommu_init_early_dart+0x294/0x978. Use
+early_ioremap() instead
+kmemleak: Not scanning unknown object at 0xc00000007f000000
+CPU: 0 PID: 0 Comm: swapper Tainted: G                T  6.1.0-rc5-PMacG5 #2
+Call Trace:
+[c0000000013e3b10] [c000000000b4e7c0] .dump_stack_lvl+0x7c/0xd8 (unreliable)
+[c0000000013e3ba0] [c000000000321048] .kmemleak_no_scan+0x118/0x130
+[c0000000013e3c20] [c00000000101bd2c] .iommu_init_early_dart+0x324/0x978
+[c0000000013e3d50] [c00000000101d064] .pmac_probe+0x1b0/0x21c
+[c0000000013e3df0] [c00000000100af7c] .setup_arch+0x198/0x6f0
+[c0000000013e3eb0] [c000000001004cac] .start_kernel+0xdc/0xb68
+[c0000000013e3f90] [c00000000000c7f8] start_here_common+0x1c/0x20
+DART table allocated at: (____ptrval____)
+DART IOMMU initialized for U4 type chipset
+Hardware name: PowerMac11,2 PPC970MP 0x440101 PowerMac
+printk: bootconsole [udbg0] enabled
+CPU maps initialized for 1 thread per core
+[...]
 
-The way in which that works here, specifically, is that a generic PHY driver
-is bound to the Lynx PCS devices, driver which does nothing since nobody
-calls phy_attach_direct() to it. Then, using fwnode_mdio_find_device(),
-you follow the pcsphy-handle and you get a reference to the mdio_device
-(parent class of phy_device) object that resulted from the generic PHY
-driver probing on the PCS, and you program the PCS to do what you want.
+--=20
+You may reply to this email to add a comment.
 
-The PHY core does assume that mdio_devices without compatible strings
-are phy_devices, but also makes exceptions (and warns about it) - see
-commit ae461131960b ("of: of_mdio: Add a whitelist of PHY compatibilities.").
-Maybe the reverse exception could also be made, and a warning for that
-be added as well.
-
-> In the next version of this series, I will include a compatibility
-> function which can bind a driver automatically if one is missing when
-> looking up a phy. But I would really like to have an exit strategy.
-
-You'll have to get agreement from higher level maintainers than me that
-the strategy "wait one year, break old device trees" is okay. Generally
-we wouldn't have answers to this kind of questions that depend on whom
-you ask. Otherwise.. we would all know whom to ask and whom not to ;)
-
-Sadly I haven't found anything "official" in either Documentation/devicetree/usage-model.rst
-or Documentation/process/submitting-patches.rst. Maybe I missed it?
-
-I've added Arnd Bergmann for an ack, and also Marc Zyngier, not because
-of any particular connection to what's being changed here, but because
-I happen to know that he might have strong opinions on the topic :)
-
-Full context here:
-https://patchwork.kernel.org/project/netdevbpf/cover/20221103210650.2325784-1-sean.anderson@seco.com/
-
-If I'm the only one opposing this, I guess I'll look elsewhere.
+You are receiving this mail because:
+You are watching the assignee of the bug.=
