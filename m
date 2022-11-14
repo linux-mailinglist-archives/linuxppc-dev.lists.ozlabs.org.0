@@ -1,89 +1,90 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F5F8628348
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Nov 2022 15:55:39 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45CA2628353
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Nov 2022 15:57:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N9sn33Fnxz3cJ2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Nov 2022 01:55:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N9sqZ1BGpz3ccs
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Nov 2022 01:57:46 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oYUABfhp;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qznfNdy0;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=aboorvad@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oYUABfhp;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qznfNdy0;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N9sm70dj3z3c3G
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Nov 2022 01:54:46 +1100 (AEDT)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.5) with ESMTP id 2AEEe1pp016774;
-	Mon, 14 Nov 2022 14:54:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=CPLUVuSddiqPTrAv/T1QltnIxi/Oy94b+jEh/U/735Y=;
- b=oYUABfhp177203Uu7VdUHhMmf9ElDFV6XtVsiJcp6agx+ZYxhK1ksu+V1tNSfyHeptEZ
- I5u0ydmmFW7YcbYMyhDB8aTmD00FdMAn7ezfmZG2Vb6gkcO4qtMs3imFqbZ8yptx1WPp
- h1b0mpW0M3T7x0v9QLkLeyzTMihPPQfiUkBC80+xihtFqXt7ik1CL4Ymocs8RF2OxdEY
- 4O37qqAJQ2cA75cOaKe5Y/QA55QBADGF5Pc0pBis6NdeE4mcW/PiEnZ8Sy5yB69xgu4q
- Uxn0TLZz4sXVL8zznxpmRpkxmRiWvU1Gl3SHXuXNCN0yxMv/1R5bDkgANrAteh3ZicKb /Q== 
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3kuqmt0c6c-1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N9spY6CWrz3c3G
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Nov 2022 01:56:53 +1100 (AEDT)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.5) with ESMTP id 2AEEQqfg024050;
+	Mon, 14 Nov 2022 14:56:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=a621prDVU+zXDdD7ylOylSmRzubVK74npGX0+5ko6YM=;
+ b=qznfNdy0+Omk6wpREG43B5m9tHeuWj7YpgIFo7ozNA+QxPGR7f9LR1vIxTWMI1fQ02ZJ
+ vWm+Dfu8fyWTAPGKhkvTC8stJJnoJ72m/xUi9WN3FIwZDBaARh5Rcr0MHPE1lBN+Fk8V
+ lbNrhr+8p3o+Vv96JgzwSVFZECZcMau6UoR0k3B1E4OxDImHnm0t6pkvBBogftvdA9yM
+ zKqvGods7FYjM7xYGGDguMsYVNhQNMReIWeqU+cpGgrVnXnu9+5jWW+kxN93vvYt/CGY
+ rFG8twKqEtTwKWkPAXO9GSz4iWMX+BC02tOOTSCKPwNoXOMMwe8yHsk/ri5A1GW4QEZX Xw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3kuqeg8sta-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 14 Nov 2022 14:54:27 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-	by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2AEEpkOD020586;
-	Mon, 14 Nov 2022 14:54:24 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
-	by ppma04ams.nl.ibm.com with ESMTP id 3kt348tqpt-1
+	Mon, 14 Nov 2022 14:56:38 +0000
+Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2AEEubbs019318;
+	Mon, 14 Nov 2022 14:56:37 GMT
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3kuqeg8ssf-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 14 Nov 2022 14:54:24 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
-	by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2AEEsMSw59310488
+	Mon, 14 Nov 2022 14:56:37 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+	by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2AEEoZ4B030064;
+	Mon, 14 Nov 2022 14:56:36 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+	by ppma06ams.nl.ibm.com with ESMTP id 3kt2rjarda-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 14 Nov 2022 14:56:35 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+	by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2AEEuX8q48038260
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 14 Nov 2022 14:54:22 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2B160A4055;
-	Mon, 14 Nov 2022 14:54:22 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5A7F5A404D;
-	Mon, 14 Nov 2022 14:54:18 +0000 (GMT)
-Received: from [9.163.90.158] (unknown [9.163.90.158])
-	by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Mon, 14 Nov 2022 14:54:17 +0000 (GMT)
-Message-ID: <e6304866-26f4-51f6-c825-9355a2d15b80@linux.ibm.com>
-Date: Mon, 14 Nov 2022 20:24:16 +0530
+	Mon, 14 Nov 2022 14:56:33 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B449942047;
+	Mon, 14 Nov 2022 14:56:33 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 106F74203F;
+	Mon, 14 Nov 2022 14:56:30 +0000 (GMT)
+Received: from li-87263a4c-1efe-11b2-a85c-b6723e0c5f8d.ibm.com.com (unknown [9.43.114.49])
+	by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Mon, 14 Nov 2022 14:56:29 +0000 (GMT)
+From: Aboorva Devarajan <aboorvad@linux.vnet.ibm.com>
+To: mpe@ellerman.id.au, svaidy@linux.vnet.ibm.com, rafael@kernel.org,
+        daniel.lezcano@linaro.org, npiggin@gmail.com
+Subject: [PATCH v2] powerpc/cpuidle: Set CPUIDLE_FLAG_POLLING for snooze state
+Date: Mon, 14 Nov 2022 20:26:11 +0530
+Message-Id: <20221114145611.37669-1-aboorvad@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.31.1
+In-Reply-To: <20221114073154.30407-1-aboorvad@linux.vnet.ibm.com>
+References: <20221114073154.30407-1-aboorvad@linux.vnet.ibm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.1
-Subject: Re: [RFC PATCH 1/3] powerpc/bpf: implement bpf_arch_text_copy
-Content-Language: en-US
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        "bpf@vger.kernel.org" <bpf@vger.kernel.org>
-References: <20221110184303.393179-1-hbathini@linux.ibm.com>
- <20221110184303.393179-2-hbathini@linux.ibm.com>
- <cd26aa17-962f-aaab-a7bc-203a0d63f6c9@csgroup.eu>
-From: Hari Bathini <hbathini@linux.ibm.com>
-In-Reply-To: <cd26aa17-962f-aaab-a7bc-203a0d63f6c9@csgroup.eu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: K71pGfrlLeUo6vXHWxXlp-Js6z6RCWly
-X-Proofpoint-GUID: K71pGfrlLeUo6vXHWxXlp-Js6z6RCWly
+X-Proofpoint-ORIG-GUID: w1bGaCcFRLp9E9ZDsulBPIo1ZbIvhQXj
+X-Proofpoint-GUID: JfEUSnslEYL2_4bGGzbaGT8vgFKY7cKd
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
  definitions=2022-11-14_12,2022-11-11_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 malwarescore=0
- suspectscore=0 impostorscore=0 adultscore=0 clxscore=1015
- lowpriorityscore=0 spamscore=0 priorityscore=1501 mlxscore=0 bulkscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 phishscore=0
+ lowpriorityscore=0 spamscore=0 malwarescore=0 priorityscore=1501
+ adultscore=0 impostorscore=0 mlxlogscore=999 mlxscore=0 clxscore=1015
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2210170000 definitions=main-2211140103
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -96,142 +97,121 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Song Liu <songliubraving@fb.com>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>
+Cc: Aboorva Devarajan <aboorvad@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org, srikar@linux.vnet.ibm.com, linux-pm@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+During the comparative study of cpuidle governors, it is noticed that the
+menu governor does not select CEDE state in some scenarios even though when
+the sleep duration of the CPU exceeds the target residency of the CEDE idle
+state this is because the CPU exits the snooze "polling" state when snooze
+time limit is reached in the snooze_loop(), which is not a real wake up
+and it just means that the polling state selection was not adequate.
 
+cpuidle governors rely on CPUIDLE_FLAG_POLLING flag to be set for the
+polling states to handle the condition mentioned above.
 
-On 13/11/22 6:47 pm, Christophe Leroy wrote:
-> Le 10/11/2022 à 19:43, Hari Bathini a écrit :
->> bpf_arch_text_copy is used to dump JITed binary to RX page, allowing
->> multiple BPF programs to share the same page. Using patch_instruction
->> to implement it.
-> 
-> Using patch_instruction() is nice for a quick implementation, but it is
-> probably suboptimal. Due to the amount of data to be copied, it is worth
+Hence, set the CPUIDLE_FLAG_POLLING flag for snooze state (polling state)
+in powerpc arch to make the cpuidle governor work as expected.
 
-Yeah.
+Reference Commits:
 
-> a dedicated function that maps a RW copy of the page to be updated then
-> does the copy at once with memcpy() then unmaps the page.
+- Timeout enabled for snooze state:
+  commit 78eaa10f027c
+  ("cpuidle: powernv/pseries: Auto-promotion of snooze to deeper idle state")
 
-I will see if I can come up with such implementation for the respin.
+- commit dc2251bf98c6
+  ("cpuidle: Eliminate the CPUIDLE_DRIVER_STATE_START symbol")
 
-> 
->>
->> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
->> ---
->>    arch/powerpc/net/bpf_jit_comp.c | 39 ++++++++++++++++++++++++++++++++-
->>    1 file changed, 38 insertions(+), 1 deletion(-)
->>
->> diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_comp.c
->> index 43e634126514..7383e0effad2 100644
->> --- a/arch/powerpc/net/bpf_jit_comp.c
->> +++ b/arch/powerpc/net/bpf_jit_comp.c
->> @@ -13,9 +13,12 @@
->>    #include <linux/netdevice.h>
->>    #include <linux/filter.h>
->>    #include <linux/if_vlan.h>
->> -#include <asm/kprobes.h>
->> +#include <linux/memory.h>
->>    #include <linux/bpf.h>
->>    
->> +#include <asm/kprobes.h>
->> +#include <asm/code-patching.h>
->> +
->>    #include "bpf_jit.h"
->>    
->>    static void bpf_jit_fill_ill_insns(void *area, unsigned int size)
->> @@ -23,6 +26,35 @@ static void bpf_jit_fill_ill_insns(void *area, unsigned int size)
->>    	memset32(area, BREAKPOINT_INSTRUCTION, size / 4);
->>    }
->>    
->> +/*
->> + * Patch 'len' bytes of instructions from opcode to addr, one instruction
->> + * at a time. Returns addr on success. ERR_PTR(-EINVAL), otherwise.
->> + */
->> +static void *bpf_patch_instructions(void *addr, void *opcode, size_t len)
->> +{
->> +	void *ret = ERR_PTR(-EINVAL);
->> +	size_t patched = 0;
->> +	u32 *inst = opcode;
->> +	u32 *start = addr;
->> +
->> +	if (WARN_ON_ONCE(core_kernel_text((unsigned long)addr)))
->> +		return ret;
->> +
->> +	mutex_lock(&text_mutex);
->> +	while (patched < len) {
->> +		if (patch_instruction(start++, ppc_inst(*inst)))
->> +			goto error;
->> +
->> +		inst++;
->> +		patched += 4;
->> +	}
->> +
->> +	ret = addr;
->> +error:
->> +	mutex_unlock(&text_mutex);
->> +	return ret;
->> +}
->> +
->>    /* Fix updated addresses (for subprog calls, ldimm64, et al) during extra pass */
->>    static int bpf_jit_fixup_addresses(struct bpf_prog *fp, u32 *image,
->>    				   struct codegen_context *ctx, u32 *addrs)
->> @@ -357,3 +389,8 @@ int bpf_add_extable_entry(struct bpf_prog *fp, u32 *image, int pass, struct code
->>    	ctx->exentry_idx++;
->>    	return 0;
->>    }
->> +
->> +void *bpf_arch_text_copy(void *dst, void *src, size_t len)
->> +{
->> +	return bpf_patch_instructions(dst, src, len);
->> +}
-> 
-> I can't see the added value of having two functions when the first one
-> just calls the second one and is the only user of it. Why not have
-> implemented bpf_patch_instructions() directly inside bpf_arch_text_copy() ?
-> 
-> By the way, it can be nice to have two functions, but split them
-> differently, to avoid the goto: etc ....
-> 
-> I also prefer using for loops instead of while loops.
-> 
+- Fix wakeup stats in governor for polling states
+  commit 5f26bdceb9c0
+  ("cpuidle: menu: Fix wakeup statistics updates for polling state")
 
-> It could have looked like below (untested):
-> 
-> static void *bpf_patch_instructions(void *addr, void *opcode, size_t len)
-> {
-> 	u32 *inst = opcode;
-> 	u32 *start = addr;
-> 	u32 *end = addr + len;
-> 
-> 	for (inst = opcode, start = addr; start < end; inst++, start++) {
-> 		if (patch_instruction(start, ppc_inst(*inst)))
-> 			return ERR_PTR(-EINVAL);
-> 	}
-> 
-> 	return addr;
-> }
-> 
-> void *bpf_arch_text_copy(void *dst, void *src, size_t len)
-> {
-> 	if (WARN_ON_ONCE(core_kernel_text((unsigned long)dst)))
-> 		return ret;
-> 
-> 	mutex_lock(&text_mutex);
-> 
-> 	ret = bpf_patch_instructions(dst, src, len);
-> 
-> 	mutex_unlock(&text_mutex);
-> 
-> 	return ret;
-> }
-> 
-> 
+Signed-off-by: Aboorva Devarajan <aboorvad@linux.vnet.ibm.com>
+---
 
-Sure. Will use this.
+Changelog: (v1 -> v2)
 
-Thanks
-Hari
+Added CPUIDLE_POLLING_FLAG to the correct cpuidle_state struct.
+
+Previous version of the patch is stale which was sent by mistake, this 
+is the correct version which is tested on powernv, pseries (shared and 
+dedicated partitions)
+
+ drivers/cpuidle/cpuidle-powernv.c | 5 ++++-
+ drivers/cpuidle/cpuidle-pseries.c | 8 ++++++--
+ 2 files changed, 10 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/cpuidle/cpuidle-powernv.c b/drivers/cpuidle/cpuidle-powernv.c
+index 0b5461b3d7dd..9ebedd972df0 100644
+--- a/drivers/cpuidle/cpuidle-powernv.c
++++ b/drivers/cpuidle/cpuidle-powernv.c
+@@ -76,6 +76,7 @@ static int snooze_loop(struct cpuidle_device *dev,
+ 	local_irq_enable();
+ 
+ 	snooze_exit_time = get_tb() + get_snooze_timeout(dev, drv, index);
++	dev->poll_time_limit = false;
+ 	ppc64_runlatch_off();
+ 	HMT_very_low();
+ 	while (!need_resched()) {
+@@ -86,6 +87,7 @@ static int snooze_loop(struct cpuidle_device *dev,
+ 			 * cleared to order subsequent test of need_resched().
+ 			 */
+ 			clear_thread_flag(TIF_POLLING_NRFLAG);
++			dev->poll_time_limit = true;
+ 			smp_mb();
+ 			break;
+ 		}
+@@ -155,7 +157,8 @@ static struct cpuidle_state powernv_states[CPUIDLE_STATE_MAX] = {
+ 		.desc = "snooze",
+ 		.exit_latency = 0,
+ 		.target_residency = 0,
+-		.enter = snooze_loop },
++		.enter = snooze_loop,
++		.flags = CPUIDLE_FLAG_POLLING },
+ };
+ 
+ static int powernv_cpuidle_cpu_online(unsigned int cpu)
+diff --git a/drivers/cpuidle/cpuidle-pseries.c b/drivers/cpuidle/cpuidle-pseries.c
+index 7e7ab5597d7a..1bad4d2b7be3 100644
+--- a/drivers/cpuidle/cpuidle-pseries.c
++++ b/drivers/cpuidle/cpuidle-pseries.c
+@@ -44,6 +44,7 @@ static int snooze_loop(struct cpuidle_device *dev,
+ 	pseries_idle_prolog();
+ 	local_irq_enable();
+ 	snooze_exit_time = get_tb() + snooze_timeout;
++	dev->poll_time_limit = false;
+ 
+ 	while (!need_resched()) {
+ 		HMT_low();
+@@ -54,6 +55,7 @@ static int snooze_loop(struct cpuidle_device *dev,
+ 			 * loop anyway. Require a barrier after polling is
+ 			 * cleared to order subsequent test of need_resched().
+ 			 */
++			dev->poll_time_limit = true;
+ 			clear_thread_flag(TIF_POLLING_NRFLAG);
+ 			smp_mb();
+ 			break;
+@@ -268,7 +270,8 @@ static struct cpuidle_state dedicated_states[NR_DEDICATED_STATES] = {
+ 		.desc = "snooze",
+ 		.exit_latency = 0,
+ 		.target_residency = 0,
+-		.enter = &snooze_loop },
++		.enter = &snooze_loop,
++		.flags = CPUIDLE_FLAG_POLLING },
+ 	{ /* CEDE */
+ 		.name = "CEDE",
+ 		.desc = "CEDE",
+@@ -286,7 +289,8 @@ static struct cpuidle_state shared_states[] = {
+ 		.desc = "snooze",
+ 		.exit_latency = 0,
+ 		.target_residency = 0,
+-		.enter = &snooze_loop },
++		.enter = &snooze_loop,
++		.flags = CPUIDLE_FLAG_POLLING },
+ 	{ /* Shared Cede */
+ 		.name = "Shared Cede",
+ 		.desc = "Shared Cede",
+-- 
+2.17.1
+
