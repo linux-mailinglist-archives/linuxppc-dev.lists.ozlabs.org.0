@@ -1,87 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 792B062848A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Nov 2022 17:03:12 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A8E56284B9
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Nov 2022 17:12:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N9vH217QRz3dvd
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Nov 2022 03:03:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N9vTc0QJsz3cHl
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Nov 2022 03:12:20 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=mraGueVC;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=HQSXXTYd;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::532; helo=mail-pg1-x532.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=mraGueVC;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=HQSXXTYd;
 	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N9vG25JDGz3bjn
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Nov 2022 03:02:18 +1100 (AEDT)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.5) with ESMTP id 2AEFFAHr003469;
-	Mon, 14 Nov 2022 16:01:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=XLy967Xm6BQKhj1b4c2CbBXXOGq8qDnl6Jw4er3fBbs=;
- b=mraGueVCnwpeuSrqnhyPSRQPML1mmHFfWj2l2g/flTAO62Yt+EGQHndDxqGqsVGdkbU3
- Q3KDqcVU2AUC9lH9BODxC7VX7qWbQy3TFaP5J2URfpCjjBxjbQiUTptveJzJxMpL7jo1
- c6Nkh7JAWWdFdp8wweVcXSY4CFQLBlliCYseKe25vmjEChQsjskWF9Zl4LfnrTpA/Nfb
- exyZQfyggWz79+kCJrAgWZ/Xciedr76FlyLUJ6yv6f6bJK0iHjaOE1u+guuTZ2flbGjU
- 9FkSy04upiHmxoxis9yDrxJANTucHEm8M5c+9D6ME+wJ8T2W8OQVKVpBDrblOHQMqsMd yg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3kur5f18sg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 14 Nov 2022 16:01:58 +0000
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2AEFUi7a005724;
-	Mon, 14 Nov 2022 16:01:58 GMT
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3kur5f18rh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 14 Nov 2022 16:01:58 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-	by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2AEFpmm3013807;
-	Mon, 14 Nov 2022 16:01:55 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
-	by ppma04ams.nl.ibm.com with ESMTP id 3kt348ttec-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 14 Nov 2022 16:01:55 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
-	by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2AEG1qe037290630
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 14 Nov 2022 16:01:52 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AB09FA405F;
-	Mon, 14 Nov 2022 16:01:52 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 458B4A4054;
-	Mon, 14 Nov 2022 16:01:52 +0000 (GMT)
-Received: from pomme.tlslab.ibm.com (unknown [9.101.4.33])
-	by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Mon, 14 Nov 2022 16:01:52 +0000 (GMT)
-From: Laurent Dufour <ldufour@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N9vSj0TQvz3c7J
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Nov 2022 03:11:32 +1100 (AEDT)
+Received: by mail-pg1-x532.google.com with SMTP id 130so10633167pgc.5
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Nov 2022 08:11:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=SFTjOkciAGcU2Xl9Oi2qWBnyuqd5AbVgZoUUEc9uRX0=;
+        b=HQSXXTYdX9Uf4O5ZeruxfwppCCYfgKjqAqEZc7EZyZnuFrg0ToADu1wpPaatyNbP/7
+         1fI1AgVbdxqoSMSa41ht9P2KYH4bXyxrQyZXPY64iKxyoxYRro7UAwydJvXYhNOVVfCC
+         WeMPVgVP+KStkR2r2PyUewjvHOjxcVewPaUr18nxmH7eI0vTRhWJMusPYFXkGs/5mxT1
+         4Cb1gvWFUOZLfUPv1bMU24rMc+cDnb7beUbo01o/Dlx++Jrvn1PGoV1gnTgUsRKqHAsE
+         cLD1SDicGbgFbmQJA4wlm9u8EsCqkUjPs8ryS/H3t6OcButb2a3D+RT1wv1oJAMMFEiM
+         naPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=SFTjOkciAGcU2Xl9Oi2qWBnyuqd5AbVgZoUUEc9uRX0=;
+        b=WnKG28nfmmO3ZtE4a8AHs4OScNiC9r9k/QP7Bb7FF/rUzXtcM3h700yeU1wJHhC61j
+         za/Z/XTf2bnKui/Xelkp5eI/IgSBIRX509dOl+sRL3NUwh1FSMgbTgu8viN2DiOQv2+d
+         pLA++sKyWeNXXP9WmJwUAcUteykoDIqB3d9Q6lF/umwb79eYVBukCfo7iSGRTJpcat7z
+         8c6yHK3SrNK2ELSafUTW/0jc6AUrY2S0lWU5IKsIiWovJDp7V4tHYHl7fdJsu6d5i/YO
+         k6M1g/RyQLFjNWyZbPn7RRP/4RlvRInVSanTwJm3l8G+LpJlXbQPXAwS7++5GR7ilUAn
+         IeoA==
+X-Gm-Message-State: ANoB5pmX6z9fWEtrOikKvZ4bpGukXmeGfF/kNu0NWiO/+2IJeGwmN08f
+	9mMgi66r/1maH7MTGidobjuWVThncJ1Nyw==
+X-Google-Smtp-Source: AA0mqf7gAKFuzzbq1nHHu7FU0b4/pj5rhtaXR5NGKt/JUQOlN/VIpTf1a8vwdknKIUAgeBzPPCr8Ow==
+X-Received: by 2002:a63:205e:0:b0:440:4ad7:cde9 with SMTP id r30-20020a63205e000000b004404ad7cde9mr12144141pgm.308.1668442289403;
+        Mon, 14 Nov 2022 08:11:29 -0800 (PST)
+Received: from bobo.ozlabs.ibm.com (27-32-22-7.tpgi.com.au. [27.32.22.7])
+        by smtp.gmail.com with ESMTPSA id e2-20020a170902d38200b00186e2b3e12fsm7635883pld.261.2022.11.14.08.11.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Nov 2022 08:11:28 -0800 (PST)
+From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/pseries: unregister VPA when hot unplugging a CPU
-Date: Mon, 14 Nov 2022 17:01:50 +0100
-Message-Id: <20221114160150.13554-1-ldufour@linux.ibm.com>
-X-Mailer: git-send-email 2.38.1
+Subject: [RFC PATCH 0/4] powerpc/qspinlock: make slowpath accesses more efficient
+Date: Tue, 15 Nov 2022 02:11:15 +1000
+Message-Id: <20221114161119.2883620-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: e0F07fp231BE45utOI5URh9bkp3UDv5C
-X-Proofpoint-GUID: w7Z9Beb4q_Pkzeyq52QoOjn3oC5GEK8L
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-11-14_12,2022-11-11_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 spamscore=0
- malwarescore=0 adultscore=0 priorityscore=1501 bulkscore=0 phishscore=0
- lowpriorityscore=0 clxscore=1015 suspectscore=0 mlxscore=0 mlxlogscore=809
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2210170000
- definitions=main-2211140110
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,44 +75,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, npiggin@gmail.com
+Cc: Jordan Niethe <jniethe5@gmail.com>, Laurent Dufour <laurent.dufour@fr.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The VPA should unregister when offlining a CPU. Otherwise there could be a
-short window where 2 CPUs could share the same VPA.
+This series (at least the first 3 patches) will get folded into the main
+series, but I will to post incremental changes first to make it easier
+to see the change.
 
-This happens because the hypervisor is still keeping the VPA attached to
-the vCPU even if it became offline.
+The 3rd patch is now quite an ugly mess, but once it is folded in then
+everything should become simpler because that special case will never be
+added in the first place. So don't review it with a fine comb, all it
+really does is remove that branch.
 
-Here is a potential situation:
- 1. remove proc A,
- 2. add proc B. If proc B gets proc A's place in cpu_present_map, then it
-    registers proc A's VPAs.
- 3. If proc B is then re-added to the LP, its threads are sharing VPAs with
-    proc A briefly as they come online.
+There were a couple of cases where I tried to make things a bit simpler
+but less efficient in contended paths. It turns out some microbenchmarks
+or pathological cases might be limited by this so I'm trying to find
+improvements. In one case there is already a better primitive available,
+in another case the end result allows a much bigger simplification so it
+should be worth the more complicated asm primitive.
 
-As the hypervisor may check for the VPA's yield_count field oddity, it may
-detects an unexpected value and kill the LPAR.
+Thanks,
+Nick
 
-Suggested-by: Nathan Lynch <nathanl@linux.ibm.com>
-Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
----
- arch/powerpc/platforms/pseries/hotplug-cpu.c | 1 +
- 1 file changed, 1 insertion(+)
+Nicholas Piggin (4):
+  powerpc/qspinlock: Avoid cmpxchg pattern in lock stealing
+  powerpc/qspinlock: Avoid cmpxchg style patterns in queue head locking
+  powerpc/qspinlock: Remove !maybe_waiters special case queue head
+    locking
+  powerpc/qspinlock: add compile-time tuning adjustments
 
-diff --git a/arch/powerpc/platforms/pseries/hotplug-cpu.c b/arch/powerpc/platforms/pseries/hotplug-cpu.c
-index e0a7ac5db15d..090ae5a1e0f5 100644
---- a/arch/powerpc/platforms/pseries/hotplug-cpu.c
-+++ b/arch/powerpc/platforms/pseries/hotplug-cpu.c
-@@ -70,6 +70,7 @@ static void pseries_cpu_offline_self(void)
- 		xics_teardown_cpu();
- 
- 	unregister_slb_shadow(hwcpu);
-+	unregister_vpa(hwcpu);
- 	rtas_stop_self();
- 
- 	/* Should never get here... */
+ arch/powerpc/include/asm/qspinlock.h |  61 ++++++-
+ arch/powerpc/lib/qspinlock.c         | 237 ++++++++++++---------------
+ 2 files changed, 167 insertions(+), 131 deletions(-)
+
 -- 
-2.38.1
+2.37.2
 
