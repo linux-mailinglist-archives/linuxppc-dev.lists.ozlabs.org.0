@@ -1,73 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC376628865
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Nov 2022 19:34:12 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E32A46288C3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Nov 2022 19:59:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N9ydG4z7Sz3cVQ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Nov 2022 05:34:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N9z9w5GBkz3cLr
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Nov 2022 05:59:00 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=DKn2UkZ/;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=IrlJ/TFG;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::534; helo=mail-pg1-x534.google.com; envelope-from=dmitry.torokhov@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=134.134.136.31; helo=mga06.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=DKn2UkZ/;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=IrlJ/TFG;
 	dkim-atps=neutral
-Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N9ycM21DLz3cGm
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Nov 2022 05:33:21 +1100 (AEDT)
-Received: by mail-pg1-x534.google.com with SMTP id q1so10959232pgl.11
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Nov 2022 10:33:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=loAdI/H0UjgK1hXFwm2WMoco4kfb4Re1pr9WlgqpSEE=;
-        b=DKn2UkZ/IByAeJ35xYGQ8wBbKigRAkvnmJFSnAckCSD5YOYMGyixbY58G1uO8YymnH
-         OjK2J5qVLpTt/LifFSw8BekJ7W7MszrALSl08MnXpQiDeMlea1XviCgO0zd0BCgZ2grh
-         b/pUS/SSzUB0wnlB1FCOZSibmUV+cgL1YId/GuzcpztIcGyOVH7g2VujgSGSAHi1SB78
-         G3Z4bmuVjD0VuCjj1GEXK+jQKR4Lmvv8ZHaQ5YBpqPJeE3H6Q/PA5GBBaISoB028b5vr
-         qsrNgDIMNcWDZlS9uQQZ6MQ3wuD4QjHEsqlYxWKcp4nkok4jENgeQ9lNuTUqiy/oOILU
-         M/Ug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=loAdI/H0UjgK1hXFwm2WMoco4kfb4Re1pr9WlgqpSEE=;
-        b=GR+dmc452RtSsqdlna0lbiVk/O3VOZIokJl54KE+cX4Xiyj/zUGbuvMKBhojDJ1MQ8
-         za1hfTjV4+jJKbxhhtxgH5gH6CuBkIa8MNbnOLvREHTktR+uQU9v5h96YjzMrZagJIHV
-         rWk+JpSo8JG+gCmb3JzJEFexHq3i3v+AahrR+9flHdM0X/+akladv0X7oTir6vLcNlTc
-         vwNw31Idg0q5ftufDIsxyQZpKS0EZokC20tQUgsmH4Uq1ZSI5dp9Cl9Ga+tYVKSU1HFe
-         8rtiToES59prFj/qU2+MnhrUb609eA4fe60lUwo3ASbZmOpBQce9yCfMtpGrhX39EpPp
-         jrLA==
-X-Gm-Message-State: ANoB5plEeCl5LGhKY1wMrbmLSq/1T1cCPdR7LKwmLqlfcK9sdYylPNz2
-	2ZXUweU7qpu9FqkBFtPlP3w=
-X-Google-Smtp-Source: AA0mqf6Nt0BOJymsx+EjDxjxZ25iE86vqkZlwt3jKPvHvSf0m/lqQ/LiBiQrt+pVZ2PfShek6WgqQg==
-X-Received: by 2002:a62:ea15:0:b0:56c:d93a:ac5f with SMTP id t21-20020a62ea15000000b0056cd93aac5fmr14864165pfh.48.1668450797960;
-        Mon, 14 Nov 2022 10:33:17 -0800 (PST)
-Received: from google.com ([2620:15c:9d:2:5c17:fc5a:f127:5bb5])
-        by smtp.gmail.com with ESMTPSA id k3-20020a170902c40300b00176ea6ce0efsm7915345plk.109.2022.11.14.10.33.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Nov 2022 10:33:17 -0800 (PST)
-Date: Mon, 14 Nov 2022 10:33:13 -0800
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>
-Subject: Re: [PATCH] macintosh/mac_hid.c: don't load by default
-Message-ID: <Y3KJ6SOD5PEwj1oe@google.com>
-References: <20221113033022.2639-1-linux@weissschuh.net>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N9z906qDGz2xkx
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Nov 2022 05:58:12 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1668452293; x=1699988293;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=x6ggnXnghcO12tbT4wtQfhiqCsVpusNaj/2IGyQVVxI=;
+  b=IrlJ/TFG3N1lWyi8+WpHfynkzFYp7zuKvcz1ebTEeE6SFc62wWgwVyFJ
+   fThOC/yKpimozRJfNEhrTXuD2gYm1V0LL421UTRfLDA/hsBX/YlCLPzzL
+   oXsWTdtB45RTr8rapk3iujnDHd3uNwrBiI2CLIwA22tcDCCNdd+akmvBy
+   JEoI/7iCXRVEzPzaxprsNx1J42gAmqPmQRzHQ7cJKxBaltn9UngEB6GC7
+   SxgciEyg3hH3YZicqBbZzFiAKSK+EEQO+gaqECjMYC+duAjOVjU6OXHPR
+   TI7YRM99DCSl8h2HCxnLnh4uKuJMrPrLdCEqK1wb4rQ1MWJKBcKAMWaGx
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10531"; a="374182117"
+X-IronPort-AV: E=Sophos;i="5.96,164,1665471600"; 
+   d="scan'208";a="374182117"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Nov 2022 10:58:09 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10531"; a="638607285"
+X-IronPort-AV: E=Sophos;i="5.96,164,1665471600"; 
+   d="scan'208";a="638607285"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga002.jf.intel.com with ESMTP; 14 Nov 2022 10:58:00 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id BAA212F3; Mon, 14 Nov 2022 20:58:24 +0200 (EET)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Bjorn Helgaas <helgaas@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Juergen Gross <jgross@suse.com>,
+	Dominik Brodowski <linux@dominikbrodowski.net>,
+	linux-kernel@vger.kernel.org,
+	linux-alpha@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mips@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	sparclinux@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	xen-devel@lists.xenproject.org
+Subject: [PATCH v3 0/4] PCI: Add pci_dev_for_each_resource() helper and
+Date: Mon, 14 Nov 2022 20:58:18 +0200
+Message-Id: <20221114185822.65038-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20221113033022.2639-1-linux@weissschuh.net>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,51 +83,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-input@vger.kernel.org
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, Richard Henderson <richard.henderson@linaro.org>, Russell King <linux@armlinux.org.uk>, Nicholas Piggin <npiggin@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, Stefano Stabellini <sstabellini@kernel.org>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Miguel Ojeda <ojeda@kernel.org>, Matt Turner <mattst88@gmail.com>, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Thomas,
+Provide two new helper macros to iterate over PCI device resources and
+convert users.
 
-On Sun, Nov 13, 2022 at 04:30:22AM +0100, Thomas Weiﬂschuh wrote:
-> There should be no need to automatically load this driver on *all*
-> machines with a keyboard.
-> 
-> This driver is of very limited utility and has to be enabled by the user
-> explicitly anyway.
-> Furthermore its own header comment has deprecated it for 17 years.
+Looking at it, refactor existing pci_bus_for_each_resource() and convert
+users accordingly.
 
-I think if someone does not need a driver they can either not enable it
-or blacklist it in /etc/modprobe.d/... There is no need to break
-module loading in the kernel.
+This applies on top of this patch Mika sent out earlier:
+https://lore.kernel.org/r/20221114115953.40236-1-mika.westerberg@linux.intel.com
 
-> 
-> Fixes: 99b089c3c38a ("Input: Mac button emulation - implement as an input filter")
-> Signed-off-by: Thomas Weiﬂschuh <linux@weissschuh.net>
-> ---
->  drivers/macintosh/mac_hid.c | 2 --
->  1 file changed, 2 deletions(-)
-> 
-> diff --git a/drivers/macintosh/mac_hid.c b/drivers/macintosh/mac_hid.c
-> index d8c4d5664145..d01d28890db4 100644
-> --- a/drivers/macintosh/mac_hid.c
-> +++ b/drivers/macintosh/mac_hid.c
-> @@ -149,8 +149,6 @@ static const struct input_device_id mac_hid_emumouse_ids[] = {
->  	{ },
->  };
->  
-> -MODULE_DEVICE_TABLE(input, mac_hid_emumouse_ids);
-> -
->  static struct input_handler mac_hid_emumouse_handler = {
->  	.filter		= mac_hid_emumouse_filter,
->  	.connect	= mac_hid_emumouse_connect,
-> 
-> base-commit: fef7fd48922d11b22620e19f9c9101647bfe943d
-> -- 
-> 2.38.1
-> 
+Changelog v3:
+- rebased on top of v2 by Mika, see above
+- added tag to pcmcia patch (Dominik)
 
-Thanks.
+Changelog v2:
+- refactor to have two macros
+- refactor existing pci_bus_for_each_resource() in the same way and
+  convert users
+
+Andy Shevchenko (3):
+  PCI: Split pci_bus_for_each_resource_p() out of
+    pci_bus_for_each_resource()
+  EISA: Convert to use pci_bus_for_each_resource_p()
+  pcmcia: Convert to use pci_bus_for_each_resource_p()
+
+Mika Westerberg (1):
+  PCI: Introduce pci_dev_for_each_resource()
+
+ .clang-format                      |  3 +++
+ arch/alpha/kernel/pci.c            |  5 ++---
+ arch/arm/kernel/bios32.c           | 16 ++++++-------
+ arch/mips/pci/pci-legacy.c         |  3 +--
+ arch/powerpc/kernel/pci-common.c   |  5 ++---
+ arch/sparc/kernel/leon_pci.c       |  5 ++---
+ arch/sparc/kernel/pci.c            | 10 ++++-----
+ arch/sparc/kernel/pcic.c           |  5 ++---
+ drivers/eisa/pci_eisa.c            |  4 ++--
+ drivers/pci/bus.c                  |  7 +++---
+ drivers/pci/hotplug/shpchp_sysfs.c |  8 +++----
+ drivers/pci/pci.c                  |  5 ++---
+ drivers/pci/probe.c                |  2 +-
+ drivers/pci/remove.c               |  5 ++---
+ drivers/pci/setup-bus.c            | 36 ++++++++++++------------------
+ drivers/pci/setup-res.c            |  4 +---
+ drivers/pci/xen-pcifront.c         |  4 +---
+ drivers/pcmcia/rsrc_nonstatic.c    |  9 +++-----
+ drivers/pcmcia/yenta_socket.c      |  3 +--
+ include/linux/pci.h                | 25 +++++++++++++++++----
+ 20 files changed, 78 insertions(+), 86 deletions(-)
 
 -- 
-Dmitry
+2.35.1
+
