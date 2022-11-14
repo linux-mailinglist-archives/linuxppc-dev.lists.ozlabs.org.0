@@ -2,66 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1A92627499
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Nov 2022 03:34:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E191062749B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Nov 2022 03:35:30 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N9YL43B7cz3cGT
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Nov 2022 13:34:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N9YM455Djz3f7s
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Nov 2022 13:35:28 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=OhZIEbYW;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ZObpSHoX;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102f; helo=mail-pj1-x102f.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42c; helo=mail-pf1-x42c.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=OhZIEbYW;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ZObpSHoX;
 	dkim-atps=neutral
-Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
+Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N9YH46Sjtz2ybK
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Nov 2022 13:32:00 +1100 (AEDT)
-Received: by mail-pj1-x102f.google.com with SMTP id q1-20020a17090a750100b002139ec1e999so9374651pjk.1
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Nov 2022 18:32:00 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N9YH86tc9z2ybK
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Nov 2022 13:32:04 +1100 (AEDT)
+Received: by mail-pf1-x42c.google.com with SMTP id g62so9773018pfb.10
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Nov 2022 18:32:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=x/MkpvgiQvZUS48v8RArx2HbNh9Khi3667nn4hCQEgU=;
-        b=OhZIEbYW+V0/w/O2kAJlYDSvrU+rZVMe6mh3M1FdZezJUTChiuWHh9iqDh0b9j0GzC
-         fF2gV5UFi0szLRamMYljJ6icAZZf4qyetFEeFndF393f/kNElJ95C7dhY9NdjMnqIR2Q
-         iHW0mbF1w8RkX8Kc4KJ4X+d9MbglzlSLxde7oCTIhaqwWLyDILOFX1fCvL4zdFFnZES8
-         YaFEjVewBz3URxPQAlr8WcygX84WNW0WoJ7QxJGfkRzC16dViJ9I3Wkbps5O0fYb835c
-         20vFUK3kqOpgcmYbU8QwlH+BTFsWBgQHNpRp4WQdJJlfTKmwWSiw6BcvvhSDoD5C3ED/
-         vd6A==
+        bh=UIhJaoXuWaovgk4L1YJAy7HFH+S6ZwNNpXO7ndwl8Sg=;
+        b=ZObpSHoXE4TFYfxL80z0Q8FbW05RQLkMVa+c2QJnihVo7iZsBmn4RCpgh+UG4mSV26
+         90uY9CSbCXg6P/zyWLrVi3e3gV3lbPA1+3ceLMZoUwRZ6FkRBDFeA0+Z4t12NODgfbxk
+         vdwC10MjcPStcHHAJBHlcnq8b1yWQ4Qr8TuO9PjuhPurUiB/sVt4hgjehHARbLUT0kC0
+         hakpxhRTGYgM2aNAM3PRvgWhUMOrw+Nyj2DlP8yizKWXd4mq9BxNyzLjLLR5YZp7A23x
+         Nr/6IPjQEuK4X01p52FeDzRPXcqoebpOu0CaDbilwI0WBinjXpu5daHlX7CF1nK1IEHV
+         wRlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=x/MkpvgiQvZUS48v8RArx2HbNh9Khi3667nn4hCQEgU=;
-        b=3EmM8jFStmasgiWF1oWGLA4vINBlXJlUXyQJX8qeZ7dX4kz1tlplkUT4cqk9c/emxm
-         lzzrw/Xy+fC0VTqgjFaJEE18U8IOS7hNIGuXQE4VScfZwi/rNCJEtewfdTgDhiwn3FJq
-         eoRNSQvdIML1kPGNTDyVBrie2dOsCEkrjmTM3HLZjvh44XDtqp3+Di74ENK1d2otQ+u0
-         7JdMxXdLgqf6dHqt6bZkshdEF37thlv1ronOkquKqi+XzHyDYuQrZlWcayKMWrM6gd5Q
-         t4wibWBOle8EDxWUwxTVH0Jkx/vHt706EWulhPU9C67o4vVZZLSAHj4lQ8X50OmPRtkt
-         ZppA==
-X-Gm-Message-State: ANoB5pkzVr9dGrd3Y6fUggLTZ4FAaonZW93ouNFj1Ki0HVBHAZZyzST6
-	5AuAm8QuDjmJbDyXNOzAAPxRnot7pJo=
-X-Google-Smtp-Source: AA0mqf42OVVUP5tJzt1Au72st2AjHPCfix/D0XqFQrLWJ2dtbnVCcntOk1QDNzY3ITspEDXk86N+mA==
-X-Received: by 2002:a17:902:f609:b0:186:c958:6cd8 with SMTP id n9-20020a170902f60900b00186c9586cd8mr11669931plg.145.1668393117961;
-        Sun, 13 Nov 2022 18:31:57 -0800 (PST)
+        bh=UIhJaoXuWaovgk4L1YJAy7HFH+S6ZwNNpXO7ndwl8Sg=;
+        b=27eC4HX+vtb+K+izABgcfvyZIoIvcfcJz6apSAehA23KuQktqIfgWDaej8OefwMn86
+         eB/PY9ZZX0+YaBHHTo5LKYYKWo2IGNkaV4gX1rp5LasbVdb4dQh9XKUnKKpCEsEsUah9
+         rS7J2+68Z/KsBTajTmM50lx5H5wg5vsVz6+K9HXApv3kj7Gt+qsdFDrOsJJyFxBt0r1t
+         Fj02cnNpcXwzTTp7xpuqfhnusc/EbC2IjTR4O6f9l0zBZfFri5FQrO0C785jo5QVnQ5Z
+         SANy8hileh4MwnItP0gy6EelHLbbR4MAazHhxq7j0SIVrzpmyd4+MMgSIyNekghPFOVv
+         8KtQ==
+X-Gm-Message-State: ANoB5pn9VHwJl+cy9TTD/DbFe5+GZmr7v+vi73S2gLeD0ntKaIyIFGDv
+	ag9BI/kDckkfPexsCQDp8GN4fthIXj8=
+X-Google-Smtp-Source: AA0mqf7zLE7c4x1dHmEgO2eK7eUdL67ttTl+PxXigRIxAdNbYGP8b3b5VM0adSiek75V/ufy3gjaSw==
+X-Received: by 2002:a05:6a00:1f13:b0:567:546c:718b with SMTP id be19-20020a056a001f1300b00567546c718bmr12115782pfb.17.1668393121995;
+        Sun, 13 Nov 2022 18:32:01 -0800 (PST)
 Received: from bobo.ibm.com (14-200-187-164.tpgi.com.au. [14.200.187.164])
-        by smtp.gmail.com with ESMTPSA id c6-20020a170902c1c600b00186616b8fbasm5973655plc.10.2022.11.13.18.31.54
+        by smtp.gmail.com with ESMTPSA id c6-20020a170902c1c600b00186616b8fbasm5973655plc.10.2022.11.13.18.31.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Nov 2022 18:31:57 -0800 (PST)
+        Sun, 13 Nov 2022 18:32:01 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 01/17] powerpc/qspinlock: powerpc qspinlock implementation
-Date: Mon, 14 Nov 2022 12:31:21 +1000
-Message-Id: <20221114023137.2679627-3-npiggin@gmail.com>
+Subject: [PATCH v2 02/17] powerpc/qspinlock: add mcs queueing for contended waiters
+Date: Mon, 14 Nov 2022 12:31:22 +1000
+Message-Id: <20221114023137.2679627-4-npiggin@gmail.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20221114023137.2679627-1-npiggin@gmail.com>
 References: <20221114023137.2679627-1-npiggin@gmail.com>
@@ -82,210 +82,278 @@ Cc: Jordan Niethe <jniethe5@gmail.com>, Laurent Dufour <laurent.dufour@fr.ibm.co
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add a powerpc specific implementation of queued spinlocks. This is the
-build framework with a very simple (non-queued) spinlock implementation
-to begin with. Later changes add queueing, and other features and
-optimisations one-at-a-time. It is done this way to more easily see how
-the queued spinlocks are built, and to make performance and correctness
-bisects more useful.
+This forms the basis of the qspinlock slow path.
+
+Like generic qspinlocks and unlike the vanilla MCS algorithm, the lock
+owner does not participate in the queue, only waiters. The first waiter
+spins on the lock word, then when the lock is released it takes
+ownership and unqueues the next waiter. This is how qspinlocks can be
+implemented with the spinlock API -- lock owners don't need a node, only
+waiters do.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/Kconfig                       |  1 -
- arch/powerpc/include/asm/qspinlock.h       | 76 +++++++++-------------
- arch/powerpc/include/asm/qspinlock_types.h | 13 ++++
- arch/powerpc/include/asm/spinlock_types.h  |  2 +-
- arch/powerpc/lib/Makefile                  |  4 +-
- arch/powerpc/lib/qspinlock.c               | 17 +++++
- 6 files changed, 66 insertions(+), 47 deletions(-)
- create mode 100644 arch/powerpc/include/asm/qspinlock_types.h
- create mode 100644 arch/powerpc/lib/qspinlock.c
+ arch/powerpc/include/asm/qspinlock.h       |  10 +-
+ arch/powerpc/include/asm/qspinlock_types.h |  21 +++
+ arch/powerpc/lib/qspinlock.c               | 180 ++++++++++++++++++++-
+ 3 files changed, 205 insertions(+), 6 deletions(-)
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 2ca5418457ed..1d5b4f280feb 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -155,7 +155,6 @@ config PPC
- 	select ARCH_USE_CMPXCHG_LOCKREF		if PPC64
- 	select ARCH_USE_MEMTEST
- 	select ARCH_USE_QUEUED_RWLOCKS		if PPC_QUEUED_SPINLOCKS
--	select ARCH_USE_QUEUED_SPINLOCKS	if PPC_QUEUED_SPINLOCKS
- 	select ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT
- 	select ARCH_WANT_IPC_PARSE_VERSION
- 	select ARCH_WANT_IRQS_OFF_ACTIVATE_MM
 diff --git a/arch/powerpc/include/asm/qspinlock.h b/arch/powerpc/include/asm/qspinlock.h
-index 39c1c7f80579..b1443aab2145 100644
+index b1443aab2145..300c7d2ebe2e 100644
 --- a/arch/powerpc/include/asm/qspinlock.h
 +++ b/arch/powerpc/include/asm/qspinlock.h
-@@ -2,66 +2,54 @@
- #ifndef _ASM_POWERPC_QSPINLOCK_H
- #define _ASM_POWERPC_QSPINLOCK_H
+@@ -18,12 +18,12 @@ static __always_inline int queued_spin_value_unlocked(struct qspinlock lock)
  
--#include <asm-generic/qspinlock_types.h>
--#include <asm/paravirt.h>
-+#include <linux/atomic.h>
-+#include <linux/compiler.h>
-+#include <asm/qspinlock_types.h>
- 
--#define _Q_PENDING_LOOPS	(1 << 9) /* not tuned */
--
--void queued_spin_lock_slowpath(struct qspinlock *lock, u32 val);
--void __pv_queued_spin_lock_slowpath(struct qspinlock *lock, u32 val);
--void __pv_queued_spin_unlock(struct qspinlock *lock);
--
--static __always_inline void queued_spin_lock(struct qspinlock *lock)
-+static __always_inline int queued_spin_is_locked(struct qspinlock *lock)
+ static __always_inline int queued_spin_is_contended(struct qspinlock *lock)
  {
--	u32 val = 0;
-+	return atomic_read(&lock->val);
-+}
- 
--	if (likely(arch_atomic_try_cmpxchg_lock(&lock->val, &val, _Q_LOCKED_VAL)))
--		return;
-+static __always_inline int queued_spin_value_unlocked(struct qspinlock lock)
-+{
-+	return !atomic_read(&lock.val);
-+}
- 
--	if (!IS_ENABLED(CONFIG_PARAVIRT_SPINLOCKS) || !is_shared_processor())
--		queued_spin_lock_slowpath(lock, val);
--	else
--		__pv_queued_spin_lock_slowpath(lock, val);
-+static __always_inline int queued_spin_is_contended(struct qspinlock *lock)
-+{
-+	return 0;
- }
--#define queued_spin_lock queued_spin_lock
- 
--static inline void queued_spin_unlock(struct qspinlock *lock)
-+static __always_inline int queued_spin_trylock(struct qspinlock *lock)
- {
--	if (!IS_ENABLED(CONFIG_PARAVIRT_SPINLOCKS) || !is_shared_processor())
--		smp_store_release(&lock->locked, 0);
--	else
--		__pv_queued_spin_unlock(lock);
-+	return atomic_cmpxchg_acquire(&lock->val, 0, 1) == 0;
- }
--#define queued_spin_unlock queued_spin_unlock
- 
--#ifdef CONFIG_PARAVIRT_SPINLOCKS
--#define SPIN_THRESHOLD (1<<15) /* not tuned */
-+void queued_spin_lock_slowpath(struct qspinlock *lock);
- 
--static __always_inline void pv_wait(u8 *ptr, u8 val)
-+static __always_inline void queued_spin_lock(struct qspinlock *lock)
- {
--	if (*ptr != val)
--		return;
--	yield_to_any();
--	/*
--	 * We could pass in a CPU here if waiting in the queue and yield to
--	 * the previous CPU in the queue.
--	 */
-+	if (!queued_spin_trylock(lock))
-+		queued_spin_lock_slowpath(lock);
+-	return 0;
++	return !!(atomic_read(&lock->val) & _Q_TAIL_CPU_MASK);
  }
  
--static __always_inline void pv_kick(int cpu)
-+static inline void queued_spin_unlock(struct qspinlock *lock)
+ static __always_inline int queued_spin_trylock(struct qspinlock *lock)
  {
--	prod_cpu(cpu);
-+	atomic_set_release(&lock->val, 0);
+-	return atomic_cmpxchg_acquire(&lock->val, 0, 1) == 0;
++	return atomic_cmpxchg_acquire(&lock->val, 0, _Q_LOCKED_VAL) == 0;
  }
  
--#endif
-+#define arch_spin_is_locked(l)		queued_spin_is_locked(l)
-+#define arch_spin_is_contended(l)	queued_spin_is_contended(l)
-+#define arch_spin_value_unlocked(l)	queued_spin_value_unlocked(l)
-+#define arch_spin_lock(l)		queued_spin_lock(l)
-+#define arch_spin_trylock(l)		queued_spin_trylock(l)
-+#define arch_spin_unlock(l)		queued_spin_unlock(l)
+ void queued_spin_lock_slowpath(struct qspinlock *lock);
+@@ -36,7 +36,11 @@ static __always_inline void queued_spin_lock(struct qspinlock *lock)
  
--/*
-- * Queued spinlocks rely heavily on smp_cond_load_relaxed() to busy-wait,
-- * which was found to have performance problems if implemented with
-- * the preferred spin_begin()/spin_end() SMT priority pattern. Use the
-- * generic version instead.
-- */
--
--#include <asm-generic/qspinlock.h>
-+#ifdef CONFIG_PARAVIRT_SPINLOCKS
-+void pv_spinlocks_init(void);
-+#else
-+static inline void pv_spinlocks_init(void) { }
-+#endif
+ static inline void queued_spin_unlock(struct qspinlock *lock)
+ {
+-	atomic_set_release(&lock->val, 0);
++	for (;;) {
++		int val = atomic_read(&lock->val);
++		if (atomic_cmpxchg_release(&lock->val, val, val & ~_Q_LOCKED_VAL) == val)
++			return;
++	}
+ }
  
- #endif /* _ASM_POWERPC_QSPINLOCK_H */
+ #define arch_spin_is_locked(l)		queued_spin_is_locked(l)
 diff --git a/arch/powerpc/include/asm/qspinlock_types.h b/arch/powerpc/include/asm/qspinlock_types.h
-new file mode 100644
-index 000000000000..59606bc0c774
---- /dev/null
+index 59606bc0c774..9630e714c70d 100644
+--- a/arch/powerpc/include/asm/qspinlock_types.h
 +++ b/arch/powerpc/include/asm/qspinlock_types.h
-@@ -0,0 +1,13 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+#ifndef _ASM_POWERPC_QSPINLOCK_TYPES_H
-+#define _ASM_POWERPC_QSPINLOCK_TYPES_H
-+
-+#include <linux/types.h>
-+
-+typedef struct qspinlock {
-+	atomic_t val;
-+} arch_spinlock_t;
-+
-+#define	__ARCH_SPIN_LOCK_UNLOCKED	{ .val = ATOMIC_INIT(0) }
-+
-+#endif /* _ASM_POWERPC_QSPINLOCK_TYPES_H */
-diff --git a/arch/powerpc/include/asm/spinlock_types.h b/arch/powerpc/include/asm/spinlock_types.h
-index d5f8a74ed2e8..40b01446cf75 100644
---- a/arch/powerpc/include/asm/spinlock_types.h
-+++ b/arch/powerpc/include/asm/spinlock_types.h
-@@ -7,7 +7,7 @@
- #endif
+@@ -10,4 +10,25 @@ typedef struct qspinlock {
  
- #ifdef CONFIG_PPC_QUEUED_SPINLOCKS
--#include <asm-generic/qspinlock_types.h>
-+#include <asm/qspinlock_types.h>
- #include <asm-generic/qrwlock_types.h>
- #else
- #include <asm/simple_spinlock_types.h>
-diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makefile
-index 8560c912186d..b895cbf6a709 100644
---- a/arch/powerpc/lib/Makefile
-+++ b/arch/powerpc/lib/Makefile
-@@ -52,7 +52,9 @@ obj-$(CONFIG_PPC_BOOK3S_64) += copyuser_power7.o copypage_power7.o \
- obj64-y	+= copypage_64.o copyuser_64.o mem_64.o hweight_64.o \
- 	   memcpy_64.o copy_mc_64.o
+ #define	__ARCH_SPIN_LOCK_UNLOCKED	{ .val = ATOMIC_INIT(0) }
  
--ifndef CONFIG_PPC_QUEUED_SPINLOCKS
-+ifdef CONFIG_PPC_QUEUED_SPINLOCKS
-+obj64-$(CONFIG_SMP)	+= qspinlock.o
-+else
- obj64-$(CONFIG_SMP)	+= locks.o
- endif
- 
++/*
++ * Bitfields in the atomic value:
++ *
++ *     0: locked bit
++ * 16-31: tail cpu (+1)
++ */
++#define	_Q_SET_MASK(type)	(((1U << _Q_ ## type ## _BITS) - 1)\
++				      << _Q_ ## type ## _OFFSET)
++#define _Q_LOCKED_OFFSET	0
++#define _Q_LOCKED_BITS		1
++#define _Q_LOCKED_MASK		_Q_SET_MASK(LOCKED)
++#define _Q_LOCKED_VAL		(1U << _Q_LOCKED_OFFSET)
++
++#define _Q_TAIL_CPU_OFFSET	16
++#define _Q_TAIL_CPU_BITS	(32 - _Q_TAIL_CPU_OFFSET)
++#define _Q_TAIL_CPU_MASK	_Q_SET_MASK(TAIL_CPU)
++
++#if CONFIG_NR_CPUS >= (1U << _Q_TAIL_CPU_BITS)
++#error "qspinlock does not support such large CONFIG_NR_CPUS"
++#endif
++
+ #endif /* _ASM_POWERPC_QSPINLOCK_TYPES_H */
 diff --git a/arch/powerpc/lib/qspinlock.c b/arch/powerpc/lib/qspinlock.c
-new file mode 100644
-index 000000000000..1c669b5b4607
---- /dev/null
+index 1c669b5b4607..f3c3d5128bd5 100644
+--- a/arch/powerpc/lib/qspinlock.c
 +++ b/arch/powerpc/lib/qspinlock.c
-@@ -0,0 +1,17 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+#include <linux/export.h>
-+#include <linux/processor.h>
-+#include <asm/qspinlock.h>
+@@ -1,12 +1,186 @@
+ // SPDX-License-Identifier: GPL-2.0-or-later
++#include <linux/atomic.h>
++#include <linux/bug.h>
++#include <linux/compiler.h>
+ #include <linux/export.h>
+-#include <linux/processor.h>
++#include <linux/percpu.h>
++#include <linux/smp.h>
+ #include <asm/qspinlock.h>
+ 
+-void queued_spin_lock_slowpath(struct qspinlock *lock)
++#define MAX_NODES	4
++
++struct qnode {
++	struct qnode	*next;
++	struct qspinlock *lock;
++	u8		locked; /* 1 if lock acquired */
++};
++
++struct qnodes {
++	int		count;
++	struct qnode nodes[MAX_NODES];
++};
++
++static DEFINE_PER_CPU_ALIGNED(struct qnodes, qnodes);
++
++static inline int encode_tail_cpu(int cpu)
++{
++	return (cpu + 1) << _Q_TAIL_CPU_OFFSET;
++}
++
++static inline int decode_tail_cpu(int val)
++{
++	return (val >> _Q_TAIL_CPU_OFFSET) - 1;
++}
++
++/* Take the lock by setting the bit, no other CPUs may concurrently lock it. */
++static __always_inline void set_locked(struct qspinlock *lock)
++{
++	atomic_or(_Q_LOCKED_VAL, &lock->val);
++	__atomic_acquire_fence();
++}
++
++/* Take lock, clearing tail, cmpxchg with val (which must not be locked) */
++static __always_inline int trylock_clear_tail_cpu(struct qspinlock *lock, int val)
++{
++	int newval = _Q_LOCKED_VAL;
++
++	BUG_ON(val & _Q_LOCKED_VAL);
++
++	return atomic_cmpxchg_acquire(&lock->val, val, newval) == val;
++}
++
++/*
++ * Publish our tail, replacing previous tail. Return previous value.
++ *
++ * This provides a release barrier for publishing node, this pairs with the
++ * acquire barrier in get_tail_qnode() when the next CPU finds this tail
++ * value.
++ */
++static __always_inline int publish_tail_cpu(struct qspinlock *lock, int tail)
++{
++	for (;;) {
++		int val = atomic_read(&lock->val);
++		int newval = (val & ~_Q_TAIL_CPU_MASK) | tail;
++		int old;
++
++		old = atomic_cmpxchg_release(&lock->val, val, newval);
++		if (old == val)
++			return old;
++	}
++}
++
++static struct qnode *get_tail_qnode(struct qspinlock *lock, int val)
++{
++	int cpu = decode_tail_cpu(val);
++	struct qnodes *qnodesp = per_cpu_ptr(&qnodes, cpu);
++	int idx;
++
++	/*
++	 * After publishing the new tail and finding a previous tail in the
++	 * previous val (which is the control dependency), this barrier
++	 * orders the release barrier in publish_tail_cpu performed by the
++	 * last CPU, with subsequently looking at its qnode structures
++	 * after the barrier.
++	 */
++	smp_acquire__after_ctrl_dep();
++
++	for (idx = 0; idx < MAX_NODES; idx++) {
++		struct qnode *qnode = &qnodesp->nodes[idx];
++		if (qnode->lock == lock)
++			return qnode;
++	}
++
++	BUG();
++}
++
++static inline void queued_spin_lock_mcs_queue(struct qspinlock *lock)
+ {
+-	while (!queued_spin_trylock(lock))
++	struct qnodes *qnodesp;
++	struct qnode *next, *node;
++	int val, old, tail;
++	int idx;
++
++	BUILD_BUG_ON(CONFIG_NR_CPUS >= (1U << _Q_TAIL_CPU_BITS));
++
++	qnodesp = this_cpu_ptr(&qnodes);
++	if (unlikely(qnodesp->count >= MAX_NODES)) {
++		while (!queued_spin_trylock(lock))
++			cpu_relax();
++		return;
++	}
++
++	idx = qnodesp->count++;
++	/*
++	 * Ensure that we increment the head node->count before initialising
++	 * the actual node. If the compiler is kind enough to reorder these
++	 * stores, then an IRQ could overwrite our assignments.
++	 */
++	barrier();
++	node = &qnodesp->nodes[idx];
++	node->next = NULL;
++	node->lock = lock;
++	node->locked = 0;
++
++	tail = encode_tail_cpu(smp_processor_id());
++
++	old = publish_tail_cpu(lock, tail);
++
++	/*
++	 * If there was a previous node; link it and wait until reaching the
++	 * head of the waitqueue.
++	 */
++	if (old & _Q_TAIL_CPU_MASK) {
++		struct qnode *prev = get_tail_qnode(lock, old);
++
++		/* Link @node into the waitqueue. */
++		WRITE_ONCE(prev->next, node);
++
++		/* Wait for mcs node lock to be released */
++		while (!node->locked)
++			cpu_relax();
++
++		smp_rmb(); /* acquire barrier for the mcs lock */
++	}
++
++	/* We're at the head of the waitqueue, wait for the lock. */
++	for (;;) {
++		val = atomic_read(&lock->val);
++		if (!(val & _Q_LOCKED_VAL))
++			break;
++
++		cpu_relax();
++	}
++
++	/* If we're the last queued, must clean up the tail. */
++	if ((val & _Q_TAIL_CPU_MASK) == tail) {
++		if (trylock_clear_tail_cpu(lock, val))
++			goto release;
++		/* Another waiter must have enqueued */
++	}
++
++	/* We must be the owner, just set the lock bit and acquire */
++	set_locked(lock);
++
++	/* contended path; must wait for next != NULL (MCS protocol) */
++	while (!(next = READ_ONCE(node->next)))
+ 		cpu_relax();
++
++	/*
++	 * Unlock the next mcs waiter node. Release barrier is not required
++	 * here because the acquirer is only accessing the lock word, and
++	 * the acquire barrier we took the lock with orders that update vs
++	 * this store to locked. The corresponding barrier is the smp_rmb()
++	 * acquire barrier for mcs lock, above.
++	 */
++	WRITE_ONCE(next->locked, 1);
++
++release:
++	qnodesp->count--; /* release the node */
++}
 +
 +void queued_spin_lock_slowpath(struct qspinlock *lock)
 +{
-+	while (!queued_spin_trylock(lock))
-+		cpu_relax();
-+}
-+EXPORT_SYMBOL(queued_spin_lock_slowpath);
-+
-+#ifdef CONFIG_PARAVIRT_SPINLOCKS
-+void pv_spinlocks_init(void)
-+{
-+}
-+#endif
++	queued_spin_lock_mcs_queue(lock);
+ }
+ EXPORT_SYMBOL(queued_spin_lock_slowpath);
+ 
 -- 
 2.37.2
 
