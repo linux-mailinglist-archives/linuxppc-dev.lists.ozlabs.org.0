@@ -2,72 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07B62628DC4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Nov 2022 00:54:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49282628DCB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Nov 2022 00:55:54 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NB5kz5FKDz3cHF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Nov 2022 10:54:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NB5mS0cw5z3dvm
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Nov 2022 10:55:52 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZgYOBCmT;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=sZQl1shn;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=weissschuh.net (client-ip=2a01:4f8:c010:41de::1; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZgYOBCmT;
+	dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=sZQl1shn;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from todd.t-8ch.de (todd.t-8ch.de [IPv6:2a01:4f8:c010:41de::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NB5jv6qmbz3cfF
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Nov 2022 10:53:39 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id C8E6E61483
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Nov 2022 23:53:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 3531FC433D6
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Nov 2022 23:53:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1668470016;
-	bh=J+kc+seEZIhx8JYig6SZHYIEb2863tpFfBDvexl2gtg=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=ZgYOBCmTZPpBy/4Y9ST8jzYZda6E2eVRWG4TCmILnimaxbllJdnwdarx6UYGQEVm6
-	 NQAUbvsc9yfWBdU5TlKf8vxmghQWvNFCRA1Ru5iNHd132rtr85bUFVXvYgSbH+t2Ez
-	 /TPbm6nJYeFX9yWTC6NVHw+K+8pH96HPHLD0H8RhTp5DClZn3+DxPHaGpdjFIJFCba
-	 hUk9p8DvTANFUjPawhnTXPwSjNCTzxDGjEMKTuOVFhiHequJAMMFUITDXTMEsAQ/mD
-	 MCahMKgX3o6dluc+710w6ZvzRRkKAbRmq0w3hv5h3Syw2sg44tOSCnWTukR9nxQqda
-	 DsFs/wiGMUbqw==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id 25515C433E6; Mon, 14 Nov 2022 23:53:36 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 216095] sysfs: cannot create duplicate filename
- '/devices/platform/of-display'
-Date: Mon, 14 Nov 2022 23:53:35 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-32
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: erhard_f@mailbox.org
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: attachments.isobsolete attachments.created
-Message-ID: <bug-216095-206035-sAtnWbwCSD@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-216095-206035@https.bugzilla.kernel.org/>
-References: <bug-216095-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NB5lR5HVBz3bhn
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Nov 2022 10:54:54 +1100 (AEDT)
+Date: Tue, 15 Nov 2022 00:54:41 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=weissschuh.net;
+	s=mail; t=1668470085;
+	bh=Dz7/xSqh2npEbI5YMon1IgZkkovoLxEkmwyrvIsKcfY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sZQl1shnd/0ONXKAOB995YO/xSeXAuy2n3V0lHSrG000Y3kCEhAO3x5L82dszODRP
+	 /4W2589c3L2cBdRz4VkUE2TNSA4zUan4TamKaOu9vtqTsKsP6hL6jRlbjky+X6Y0v/
+	 5XvqQKeoIiWUL894SRs3sMVLCofVdfoYOzocjjbo=
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: Re: [PATCH] macintosh/mac_hid.c: don't load by default
+Message-ID: <9255deb3-6c66-444d-940d-77e721d950e5@t-8ch.de>
+References: <20221113033022.2639-1-linux@weissschuh.net>
+ <Y3KJ6SOD5PEwj1oe@google.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Y3KJ6SOD5PEwj1oe@google.com>
+Jabber-ID: thomas@t-8ch.de
+X-Accept: text/plain, text/html;q=0.2, text/*;q=0.1
+X-Accept-Language: en-us, en;q=0.8, de-de;q=0.7, de;q=0.6
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,27 +55,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-input@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Franz Sirl <Franz.Sirl-kernel@lauterbach.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D216095
+Cc Franz who wrote the driver originally.
+(I hope I got the correct one)
 
-Erhard F. (erhard_f@mailbox.org) changed:
+Hi Dmitry,
 
-           What    |Removed                     |Added
-----------------------------------------------------------------------------
- Attachment #301576|0                           |1
-        is obsolete|                            |
- Attachment #301581|0                           |1
-        is obsolete|                            |
+On 2022-11-14 10:33-0800, Dmitry Torokhov wrote:
+> On Sun, Nov 13, 2022 at 04:30:22AM +0100, Thomas Weißschuh wrote:
+>> There should be no need to automatically load this driver on *all*
+>> machines with a keyboard.
+>> 
+>> This driver is of very limited utility and has to be enabled by the user
+>> explicitly anyway.
+>> Furthermore its own header comment has deprecated it for 17 years.
+> 
+> I think if someone does not need a driver they can either not enable it
+> or blacklist it in /etc/modprobe.d/... There is no need to break
+> module loading in the kernel.
 
---- Comment #6 from Erhard F. (erhard_f@mailbox.org) ---
-Created attachment 303183
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D303183&action=3Dedit
-kernel .config (6.1-rc5, PowerMac G5 11,2)
+But nobody needs the driver as it is autoloaded in its current state.
+Without manual configuration after loading the driver does not provide any
+functionality.
 
---=20
-You may reply to this email to add a comment.
+Furthermore the autoloading should load the driver for a specific
+hardware/resource that it can provide additional functionality for.
+Right now the driver loads automatically for any system that has an input
+device with a key and then just does nothing.
 
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+It only wastes memory and confuses users why it is loaded.
+
+If somebody really needs this (fringe) driver it should be on them to load it
+it instead of everybody else having to disable it.
+
+Furthermore the file has the following comment since the beginning of the git
+history in 2005:
+
+    Copyright (C) 2000 Franz Sirl
+
+    This file will soon be removed in favor of an uinput userspace tool.
+
+>> Fixes: 99b089c3c38a ("Input: Mac button emulation - implement as an input filter")
+>> Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+>> ---
+>>  drivers/macintosh/mac_hid.c | 2 --
+>>  1 file changed, 2 deletions(-)
+>> 
+>> diff --git a/drivers/macintosh/mac_hid.c b/drivers/macintosh/mac_hid.c
+>> index d8c4d5664145..d01d28890db4 100644
+>> --- a/drivers/macintosh/mac_hid.c
+>> +++ b/drivers/macintosh/mac_hid.c
+>> @@ -149,8 +149,6 @@ static const struct input_device_id mac_hid_emumouse_ids[] = {
+>>  	{ },
+>>  };
+>>  
+>> -MODULE_DEVICE_TABLE(input, mac_hid_emumouse_ids);
+>> -
+>>  static struct input_handler mac_hid_emumouse_handler = {
+>>  	.filter		= mac_hid_emumouse_filter,
+>>  	.connect	= mac_hid_emumouse_connect,
+>> 
+>> base-commit: fef7fd48922d11b22620e19f9c9101647bfe943d
+>> -- 
+>> 2.38.1
