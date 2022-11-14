@@ -2,47 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B000627F2D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Nov 2022 13:56:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E83D4627EA0
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Nov 2022 13:49:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4N9q7Q6h8vz3cLh
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Nov 2022 23:56:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4N9pzt48BJz3cNN
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Nov 2022 23:49:46 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=XeklCLsP;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=xJlxwuu7;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=XeklCLsP;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=xJlxwuu7;
 	dkim-atps=neutral
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4N9q6W32Rxz2x9P
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Nov 2022 23:55:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4N9pyz1kdBz2xHK
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Nov 2022 23:48:57 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id E730F61187;
-	Mon, 14 Nov 2022 12:55:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15DF4C433D7;
-	Mon, 14 Nov 2022 12:55:27 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 3A4016112D;
+	Mon, 14 Nov 2022 12:48:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82936C433D6;
+	Mon, 14 Nov 2022 12:48:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1668430527;
-	bh=0z4p9rUQxLSdkyAV5GMITZL7sj5GTAeWL7FWb8SmGEs=;
+	s=korg; t=1668430133;
+	bh=nEG6R45UjiqgCE2ueDYj/L6fdWh9PVlkkC5gYdqi2wU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XeklCLsPDDh4pf293+7UXCISQg4Ft8kNwcY+oppx1Ayyn045dmJIf4Bgh9I3Kyx87
-	 nnQDdo8dRFfsZvfFacybqHWErQ002Ox47BBgIDyNiEMv2iQxB3bfFQNFxKyc2E09iY
-	 NTFe0Ux7uIGeSmS/3Xa1OmROEoZq5DRgl4KLHkU8=
+	b=xJlxwuu7wfSQ/GyU0SP9IsniImLP7wavwfspf/FLNfp+mNkfhmqQR/udEHqSY2HMr
+	 2vvxqbnnKZys4bFvOMiYxqxY07jkbo66LAMLbihcF/m/ggSXEsCyCkXnppOt9QNluB
+	 v/8snTLcEEFMwI1QbpmkP+8P9pkPS51nCGR+AtFs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
-Subject: [PATCH 5.15 054/131] perf stat: Fix printing os->prefix in CSV metrics output
-Date: Mon, 14 Nov 2022 13:45:23 +0100
-Message-Id: <20221114124451.015212698@linuxfoundation.org>
+Subject: [PATCH 5.10 36/95] perf stat: Fix printing os->prefix in CSV metrics output
+Date: Mon, 14 Nov 2022 13:45:30 +0100
+Message-Id: <20221114124444.055900046@linuxfoundation.org>
 X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20221114124448.729235104@linuxfoundation.org>
-References: <20221114124448.729235104@linuxfoundation.org>
+In-Reply-To: <20221114124442.530286937@linuxfoundation.org>
+References: <20221114124442.530286937@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -166,10 +166,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/tools/perf/util/stat-display.c b/tools/perf/util/stat-display.c
-index db00ca6a67de..24e50fabb6c3 100644
+index 96fe9c1af336..4688e39de52a 100644
 --- a/tools/perf/util/stat-display.c
 +++ b/tools/perf/util/stat-display.c
-@@ -207,7 +207,7 @@ static void new_line_csv(struct perf_stat_config *config, void *ctx)
+@@ -203,7 +203,7 @@ static void new_line_csv(struct perf_stat_config *config, void *ctx)
  
  	fputc('\n', os->fh);
  	if (os->prefix)
