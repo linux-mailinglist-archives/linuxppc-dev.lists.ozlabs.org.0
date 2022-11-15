@@ -2,75 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 456FC62912C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Nov 2022 05:22:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D85B62919F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Nov 2022 06:42:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NBChC0kbcz3cGT
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Nov 2022 15:22:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NBFSS6dZJz3c9y
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Nov 2022 16:42:32 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=mpi-sws.org header.i=@mpi-sws.org header.a=rsa-sha256 header.s=mail201904 header.b=u0OZEBqL;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Yl2cAdhA;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=mpi-sws.org (client-ip=139.19.86.40; helo=juno.mpi-klsb.mpg.de; envelope-from=msammler@mpi-sws.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::629; helo=mail-pl1-x629.google.com; envelope-from=dmitry.torokhov@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=mpi-sws.org header.i=@mpi-sws.org header.a=rsa-sha256 header.s=mail201904 header.b=u0OZEBqL;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Yl2cAdhA;
 	dkim-atps=neutral
-X-Greylist: delayed 318 seconds by postgrey-1.36 at boromir; Tue, 15 Nov 2022 15:21:44 AEDT
-Received: from juno.mpi-klsb.mpg.de (juno.mpi-klsb.mpg.de [139.19.86.40])
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NBCgD4S8yz3c9y
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Nov 2022 15:21:44 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mpi-sws.org
-	; s=mail201904; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Subject
-	:References:In-Reply-To:Message-ID:Cc:To:From:Date:sender:reply-to:content-id
-	:content-description:resent-date:resent-from:resent-sender:resent-to:
-	resent-cc:resent-message-id:list-id:list-help:list-unsubscribe:list-subscribe
-	:list-post:list-owner:list-archive;
-	bh=r0432T7jVMKum4pTQ/oaiZ/Dqwe0AOeMgD6+AgcoabM=; b=u0OZEBqLvhRz2kS1/bubuw0oc/
-	jdxC/tN6ayyi577vyJ7wUzNHnDOcDYgLDtvUXcZBdasK0sV3a9YAROtJBeIzjg2ygOERc279e7n5z
-	5Od2PpOUUW0ysj0XozLS0Q+szCA33K6oxhUYWqdMQmhBIQJJpHxql6piO4ySosLFTwAg=;
-Received: from srv-00-62.mpi-klsb.mpg.de ([139.19.86.27]:45226 helo=max.mpi-klsb.mpg.de)
-	by juno.mpi-klsb.mpg.de (envelope-from <msammler@mpi-sws.org>) 
-	with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92) id 1ounMo-00021Z-Rg; Tue, 15 Nov 2022 05:16:16 +0100
-Received: from [107.133.148.158] (port=57104 helo=dummy.faircode.eu)
-	by max.mpi-klsb.mpg.de (envelope-from <msammler@mpi-sws.org>) 
-	with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128)
-	(Exim 4.94.2) id 1ounMo-001oYS-62; Tue, 15 Nov 2022 05:16:10 +0100
-Date: Mon, 14 Nov 2022 20:16:07 -0800 (PST)
-From: Michael Sammler <msammler@mpi-sws.org>
-To: =?UTF-8?Q?Stephen_R=C3=B6ttger?= <sroettger@google.com>
-Message-ID: <0a643215-03ce-4388-bd1a-301dcab87c41@mpi-sws.org>
-In-Reply-To: <CAEAAPHZrMDGsAnZM=GC0bu5WpGvXaDakJBq-WDkW06aDc7_68w@mail.gmail.com>
-References: <CAEAAPHZrMDGsAnZM=GC0bu5WpGvXaDakJBq-WDkW06aDc7_68w@mail.gmail.com>
-Subject: Re: [RFC PATCH] seccomp: Add protection keys into seccomp_data
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NBFRV1snlz3c6k
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Nov 2022 16:41:40 +1100 (AEDT)
+Received: by mail-pl1-x629.google.com with SMTP id k7so12187492pll.6
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Nov 2022 21:41:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=uQqRcNAhAHU0MAvKQcalM3RhDD2z13gHm2Bk2z14Kqk=;
+        b=Yl2cAdhASFvQ+i7S/0GXfWmFFAtErap+Ahnjq6U5qiEBlY2F3G4GfUSfkz64Itn3Pf
+         HgMHmuwQcqz8SE0fNmQSA25iISSEW3/UBgDcfwZEaY7f/CKOIvCdE6ql8fLfgKCA+bRv
+         PiJ0Zqh29x4/wcLoZkulGZzzWcUXNbuO0O6L0aCuz2hiqDN3YE8A2foEcYN5sPxy19da
+         Innx1z+OHUCmfbagjWYP1I3dV0Gd3bIVrGqlSuD4SCGixplofbWlxcTabaNd2tdlNitA
+         CtKRBvWLHdj/FgW7DW+JxpRr69FY+sfokw4J1kaMWheDqDSN/v6YAPwnCbM36eGcU/VC
+         TElA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=uQqRcNAhAHU0MAvKQcalM3RhDD2z13gHm2Bk2z14Kqk=;
+        b=Wu8sip+sVbqonaVylwJ4A4NvfsFx2HGNRCCwh9aje3VAXgDIEd0jaiBK0BoLvXnKZQ
+         Q1COQ5hW8V82t4ggeLaVVnyRHT/dc/klF4twDlIza0D47HjM8Wavcu9CFX0obNt2SQEh
+         PGEvWEwlnfsIUMhauPcRwebN6SuDpp1qk0R34KKSjhL/yMRWRBjxYQJELModrytAfdYU
+         b9EWeAaQM9QB42rskkwBkkCVRJy1572glPfuAp7H/UT+MsOVoPwKzuBWwGT2W/vNEPrV
+         t26ozCl3qkhtHd8LCwq9gvCUvaMhYgA6IXoUTtIYROgI09Tj2o2x7f3AE1CqQCPQPXtW
+         dl/g==
+X-Gm-Message-State: ANoB5plPJT0mL/dPXhKmtw21i2V2RCa7ZmzcK34sdhkk1D6xanCFYP6j
+	oCAH7ARX1N6e64aY6FB395M=
+X-Google-Smtp-Source: AA0mqf44rycjoWi/rDRu5nf/JiahIhO0HTP/5BpbvCgK2TCfeX27ZgnLEHxyPZ9x4v8DU2zEQAA93A==
+X-Received: by 2002:a17:903:1306:b0:17f:7771:dde1 with SMTP id iy6-20020a170903130600b0017f7771dde1mr2574608plb.125.1668490895736;
+        Mon, 14 Nov 2022 21:41:35 -0800 (PST)
+Received: from google.com ([2620:15c:9d:2:718:95ee:2678:497])
+        by smtp.gmail.com with ESMTPSA id sc17-20020a17090b511100b0021828120643sm4897281pjb.45.2022.11.14.21.41.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Nov 2022 21:41:35 -0800 (PST)
+Date: Mon, 14 Nov 2022 21:41:31 -0800
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>
+Subject: Re: [PATCH] macintosh/mac_hid.c: don't load by default
+Message-ID: <Y3Mmi8wm62c7+0zv@google.com>
+References: <20221113033022.2639-1-linux@weissschuh.net>
+ <Y3KJ6SOD5PEwj1oe@google.com>
+ <9255deb3-6c66-444d-940d-77e721d950e5@t-8ch.de>
+ <Y3LaTeMxTa/7Rv7H@google.com>
+ <cf4c9402-189f-4ff7-a130-c61ccfc99a08@t-8ch.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Correlation-ID: <0a643215-03ce-4388-bd1a-301dcab87c41@mpi-sws.org>
-X-RSPAMD-Score: -0.1 (/)
-X-RSPAMD-Report: Action: no action
- Symbol: RCVD_VIA_SMTP_AUTH(0.00)
- Symbol: ARC_NA(0.00)
- Symbol: MID_RHS_MATCH_FROM(0.00)
- Symbol: FROM_HAS_DN(0.00)
- Symbol: TO_DN_SOME(0.00)
- Symbol: TO_MATCH_ENVRCPT_ALL(0.00)
- Symbol: R_SPF_NEUTRAL(0.00)
- Symbol: MIME_GOOD(-0.10)
- Symbol: DMARC_NA(0.00)
- Symbol: RCPT_COUNT_SEVEN(0.00)
- Symbol: NEURAL_HAM(-0.00)
- Symbol: FROM_EQ_ENVFROM(0.00)
- Symbol: R_DKIM_NA(0.00)
- Symbol: MIME_TRACE(0.00)
- Symbol: ASN(0.00)
- Symbol: RCVD_COUNT_TWO(0.00)
- Symbol: RCVD_TLS_ALL(0.00)
- Message-ID: 0a643215-03ce-4388-bd1a-301dcab87c41@mpi-sws.org
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <cf4c9402-189f-4ff7-a130-c61ccfc99a08@t-8ch.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,21 +83,102 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: wad@chromium.org, Kees Cook <keescook@chromium.org>, linux-api@vger.kernel.org, linuxram@us.ibm.com, luto@amacapital.net, linuxppc-dev@lists.ozlabs.org
+Cc: linux-input@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Franz Sirl <Franz.Sirl-kernel@lauterbach.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Tue, Nov 15, 2022 at 04:07:53AM +0100, Thomas Weißschuh wrote:
+> On 2022-11-14 16:16-0800, Dmitry Torokhov wrote:
+> > On Tue, Nov 15, 2022 at 12:54:41AM +0100, Thomas Weißschuh wrote:
+> >> Cc Franz who wrote the driver originally.
+> >> (I hope I got the correct one)
+> >> 
+> >> Hi Dmitry,
+> >> 
+> >> On 2022-11-14 10:33-0800, Dmitry Torokhov wrote:
+> >>> On Sun, Nov 13, 2022 at 04:30:22AM +0100, Thomas Weißschuh wrote:
+> >>>> There should be no need to automatically load this driver on *all*
+> >>>> machines with a keyboard.
+> >>>> 
+> >>>> This driver is of very limited utility and has to be enabled by the user
+> >>>> explicitly anyway.
+> >>>> Furthermore its own header comment has deprecated it for 17 years.
+> >>> 
+> >>> I think if someone does not need a driver they can either not enable it
+> >>> or blacklist it in /etc/modprobe.d/... There is no need to break
+> >>> module loading in the kernel.
+> >> 
+> >> But nobody needs the driver as it is autoloaded in its current state.
+> >> Without manual configuration after loading the driver does not provide any
+> >> functionality.
+> >> 
+> >> Furthermore the autoloading should load the driver for a specific
+> >> hardware/resource that it can provide additional functionality for.
+> >> Right now the driver loads automatically for any system that has an input
+> >> device with a key and then just does nothing.
+> >> 
+> >> It only wastes memory and confuses users why it is loaded.
+> >> 
+> >> If somebody really needs this (fringe) driver it should be on them to load it
+> >> it instead of everybody else having to disable it.
+> > 
+> > The driver is not enabled by default, so somebody has to enable it in
+> > the first place. How did you end up with it?
+> 
+> My distro kernel configured it to be enabled as module.
 
+Maybe you should talk to them? Which one is this? Not all distributions
+seem to enable it (Debian for example does not).
 
-> We're currently working on a feature in chromium that uses pkeys for
-> in-process isolation. Being able to use the pkey state in the seccomp
-> filter would be pretty useful for this. For example, it would allow
-> us to enforce that no code outside the isolated thread would ever
-> map/mprotect executable memory.
-> We can probably do something similar by adding instruction pointer
-> checks to the seccomp filter, but that feels quite hacky and this
-> feature would make a much nicer implementation.
->
-> Are there any plans to make a version 2 of this patch?
+> So people who want to use it can do so. It would be nice if the rest of us
+> wouldn't have to care about it.
+> 
+> >> Furthermore the file has the following comment since the beginning of the git
+> >> history in 2005:
+> >> 
+> >>     Copyright (C) 2000 Franz Sirl
+> >> 
+> >>     This file will soon be removed in favor of an uinput userspace tool.
+> > 
+> > OK, that is a separate topic, if there are no users we can remove the
+> > driver. Do we know if this tool ever came into existence?
+> 
+> One interpretation of it is attached as "mac_hid_userspace.c".
+> 
+> > What I do not want is to break the autoload for one single driver
+> > because somebody enabled it without intending to use and now tries to
+> > implement a one-off.
+> 
+> Is an autoloaded driver that then does not (ever) automatically provide any
+> functionality not broken by definition?
 
-Thanks for your interest in this patch, but I am now working on other projects and currently don't plan to make a version 2 of this patch.
+No because it does not result in any regression in behavior.
+
+> It was enabled by the distro. Which seems correct, because maybe somebody will
+> use it.
+> 
+> Taken to an illogical extreme: If it is fine for modules to load automatically
+> even if they are not useful, why not just always load all available modules?
+
+Well, take for example a driver for a NIC. It is not really useful until
+you configure it by assigning an address to the interface, etc. Should
+we not automatically load drivers for NICs?
+
+> 
+> 
+> Maybe we can take the removal of the autoload as a first step of deprecation
+> and finally removal of the module.
+> To quote you:
+> 
+>     "I'd rather we did not promote from drivers/macintosh to other platforms,
+>      but rather removed it. The same functionality can be done from
+>      userspace." [0]
+
+I think if you talk to your distro and see if they stop enabling it and
+offer your userspace utility as a replacement if they indeed need the
+functionality would be the best way of deprecating the driver.
+
+Thanks.
+
+-- 
+Dmitry
