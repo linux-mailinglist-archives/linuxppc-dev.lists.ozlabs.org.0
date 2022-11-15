@@ -1,77 +1,42 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D85B62919F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Nov 2022 06:42:35 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 396A86291E0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Nov 2022 07:35:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NBFSS6dZJz3c9y
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Nov 2022 16:42:32 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Yl2cAdhA;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NBGdr1SYlz3f3b
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Nov 2022 17:35:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::629; helo=mail-pl1-x629.google.com; envelope-from=dmitry.torokhov@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Yl2cAdhA;
-	dkim-atps=neutral
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.57; helo=out30-57.freemail.mail.aliyun.com; envelope-from=xhao@linux.alibaba.com; receiver=<UNKNOWN>)
+Received: from out30-57.freemail.mail.aliyun.com (out30-57.freemail.mail.aliyun.com [115.124.30.57])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NBFRV1snlz3c6k
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Nov 2022 16:41:40 +1100 (AEDT)
-Received: by mail-pl1-x629.google.com with SMTP id k7so12187492pll.6
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Nov 2022 21:41:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=uQqRcNAhAHU0MAvKQcalM3RhDD2z13gHm2Bk2z14Kqk=;
-        b=Yl2cAdhASFvQ+i7S/0GXfWmFFAtErap+Ahnjq6U5qiEBlY2F3G4GfUSfkz64Itn3Pf
-         HgMHmuwQcqz8SE0fNmQSA25iISSEW3/UBgDcfwZEaY7f/CKOIvCdE6ql8fLfgKCA+bRv
-         PiJ0Zqh29x4/wcLoZkulGZzzWcUXNbuO0O6L0aCuz2hiqDN3YE8A2foEcYN5sPxy19da
-         Innx1z+OHUCmfbagjWYP1I3dV0Gd3bIVrGqlSuD4SCGixplofbWlxcTabaNd2tdlNitA
-         CtKRBvWLHdj/FgW7DW+JxpRr69FY+sfokw4J1kaMWheDqDSN/v6YAPwnCbM36eGcU/VC
-         TElA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uQqRcNAhAHU0MAvKQcalM3RhDD2z13gHm2Bk2z14Kqk=;
-        b=Wu8sip+sVbqonaVylwJ4A4NvfsFx2HGNRCCwh9aje3VAXgDIEd0jaiBK0BoLvXnKZQ
-         Q1COQ5hW8V82t4ggeLaVVnyRHT/dc/klF4twDlIza0D47HjM8Wavcu9CFX0obNt2SQEh
-         PGEvWEwlnfsIUMhauPcRwebN6SuDpp1qk0R34KKSjhL/yMRWRBjxYQJELModrytAfdYU
-         b9EWeAaQM9QB42rskkwBkkCVRJy1572glPfuAp7H/UT+MsOVoPwKzuBWwGT2W/vNEPrV
-         t26ozCl3qkhtHd8LCwq9gvCUvaMhYgA6IXoUTtIYROgI09Tj2o2x7f3AE1CqQCPQPXtW
-         dl/g==
-X-Gm-Message-State: ANoB5plPJT0mL/dPXhKmtw21i2V2RCa7ZmzcK34sdhkk1D6xanCFYP6j
-	oCAH7ARX1N6e64aY6FB395M=
-X-Google-Smtp-Source: AA0mqf44rycjoWi/rDRu5nf/JiahIhO0HTP/5BpbvCgK2TCfeX27ZgnLEHxyPZ9x4v8DU2zEQAA93A==
-X-Received: by 2002:a17:903:1306:b0:17f:7771:dde1 with SMTP id iy6-20020a170903130600b0017f7771dde1mr2574608plb.125.1668490895736;
-        Mon, 14 Nov 2022 21:41:35 -0800 (PST)
-Received: from google.com ([2620:15c:9d:2:718:95ee:2678:497])
-        by smtp.gmail.com with ESMTPSA id sc17-20020a17090b511100b0021828120643sm4897281pjb.45.2022.11.14.21.41.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Nov 2022 21:41:35 -0800 (PST)
-Date: Mon, 14 Nov 2022 21:41:31 -0800
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>
-Subject: Re: [PATCH] macintosh/mac_hid.c: don't load by default
-Message-ID: <Y3Mmi8wm62c7+0zv@google.com>
-References: <20221113033022.2639-1-linux@weissschuh.net>
- <Y3KJ6SOD5PEwj1oe@google.com>
- <9255deb3-6c66-444d-940d-77e721d950e5@t-8ch.de>
- <Y3LaTeMxTa/7Rv7H@google.com>
- <cf4c9402-189f-4ff7-a130-c61ccfc99a08@t-8ch.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NBGdG6hm5z3bXG
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Nov 2022 17:35:13 +1100 (AEDT)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R591e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046060;MF=xhao@linux.alibaba.com;NM=1;PH=DS;RN=32;SR=0;TI=SMTPD_---0VUsFXBY_1668494103;
+Received: from 30.240.98.93(mailfrom:xhao@linux.alibaba.com fp:SMTPD_---0VUsFXBY_1668494103)
+          by smtp.aliyun-inc.com;
+          Tue, 15 Nov 2022 14:35:06 +0800
+Message-ID: <ab7a4db1-a732-c145-8a49-4831a8f7e6fe@linux.alibaba.com>
+Date: Tue, 15 Nov 2022 14:35:02 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.4.1
+Subject: Re: [PATCH v6 2/2] arm64: support batched/deferred tlb shootdown
+ during page reclamation
+To: Yicong Yang <yangyicong@huawei.com>, akpm@linux-foundation.org,
+ linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org, x86@kernel.org,
+ catalin.marinas@arm.com, will@kernel.org, anshuman.khandual@arm.com,
+ linux-doc@vger.kernel.org
+References: <20221115031425.44640-1-yangyicong@huawei.com>
+ <20221115031425.44640-3-yangyicong@huawei.com>
+From: haoxin <xhao@linux.alibaba.com>
+In-Reply-To: <20221115031425.44640-3-yangyicong@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <cf4c9402-189f-4ff7-a130-c61ccfc99a08@t-8ch.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,102 +48,335 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-input@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Franz Sirl <Franz.Sirl-kernel@lauterbach.com>
+Cc: wangkefeng.wang@huawei.com, darren@os.amperecomputing.com, peterz@infradead.org, yangyicong@hisilicon.com, punit.agrawal@bytedance.com, Nadav Amit <namit@vmware.com>, guojian@oppo.com, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, zhangshiming@oppo.com, lipeifeng@oppo.com, corbet@lwn.net, Barry Song <21cnbao@gmail.com>, Mel Gorman <mgorman@suse.de>, linux-mips@vger.kernel.org, arnd@arndb.de, realmz6@gmail.com, Barry Song <v-songbaohua@oppo.com>, openrisc@lists.librecores.org, prime.zeng@hisilicon.com, linux-kernel@vger.kernel.org, huzhanyuan@oppo.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Nov 15, 2022 at 04:07:53AM +0100, Thomas Weißschuh wrote:
-> On 2022-11-14 16:16-0800, Dmitry Torokhov wrote:
-> > On Tue, Nov 15, 2022 at 12:54:41AM +0100, Thomas Weißschuh wrote:
-> >> Cc Franz who wrote the driver originally.
-> >> (I hope I got the correct one)
-> >> 
-> >> Hi Dmitry,
-> >> 
-> >> On 2022-11-14 10:33-0800, Dmitry Torokhov wrote:
-> >>> On Sun, Nov 13, 2022 at 04:30:22AM +0100, Thomas Weißschuh wrote:
-> >>>> There should be no need to automatically load this driver on *all*
-> >>>> machines with a keyboard.
-> >>>> 
-> >>>> This driver is of very limited utility and has to be enabled by the user
-> >>>> explicitly anyway.
-> >>>> Furthermore its own header comment has deprecated it for 17 years.
-> >>> 
-> >>> I think if someone does not need a driver they can either not enable it
-> >>> or blacklist it in /etc/modprobe.d/... There is no need to break
-> >>> module loading in the kernel.
-> >> 
-> >> But nobody needs the driver as it is autoloaded in its current state.
-> >> Without manual configuration after loading the driver does not provide any
-> >> functionality.
-> >> 
-> >> Furthermore the autoloading should load the driver for a specific
-> >> hardware/resource that it can provide additional functionality for.
-> >> Right now the driver loads automatically for any system that has an input
-> >> device with a key and then just does nothing.
-> >> 
-> >> It only wastes memory and confuses users why it is loaded.
-> >> 
-> >> If somebody really needs this (fringe) driver it should be on them to load it
-> >> it instead of everybody else having to disable it.
-> > 
-> > The driver is not enabled by default, so somebody has to enable it in
-> > the first place. How did you end up with it?
-> 
-> My distro kernel configured it to be enabled as module.
+åœ¨ 2022/11/15 ä¸Šåˆ11:14, Yicong Yang å†™é“:
+> From: Barry Song <v-songbaohua@oppo.com>
+>
+> on x86, batched and deferred tlb shootdown has lead to 90%
+> performance increase on tlb shootdown. on arm64, HW can do
+> tlb shootdown without software IPI. But sync tlbi is still
+> quite expensive.
+>
+> Even running a simplest program which requires swapout can
+> prove this is true,
+>   #include <sys/types.h>
+>   #include <unistd.h>
+>   #include <sys/mman.h>
+>   #include <string.h>
+>
+>   int main()
+>   {
+>   #define SIZE (1 * 1024 * 1024)
+>           volatile unsigned char *p = mmap(NULL, SIZE, PROT_READ | PROT_WRITE,
+>                                            MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+>
+>           memset(p, 0x88, SIZE);
+>
+>           for (int k = 0; k < 10000; k++) {
+>                   /* swap in */
+>                   for (int i = 0; i < SIZE; i += 4096) {
+>                           (void)p[i];
+>                   }
+>
+>                   /* swap out */
+>                   madvise(p, SIZE, MADV_PAGEOUT);
+>           }
+>   }
+>
+> Perf result on snapdragon 888 with 8 cores by using zRAM
+> as the swap block device.
+>
+>   ~ # perf record taskset -c 4 ./a.out
+>   [ perf record: Woken up 10 times to write data ]
+>   [ perf record: Captured and wrote 2.297 MB perf.data (60084 samples) ]
+>   ~ # perf report
+>   # To display the perf.data header info, please use --header/--header-only options.
+>   # To display the perf.data header info, please use --header/--header-only options.
+>   #
+>   #
+>   # Total Lost Samples: 0
+>   #
+>   # Samples: 60K of event 'cycles'
+>   # Event count (approx.): 35706225414
+>   #
+>   # Overhead  Command  Shared Object      Symbol
+>   # ........  .......  .................  .............................................................................
+>   #
+>      21.07%  a.out    [kernel.kallsyms]  [k] _raw_spin_unlock_irq
+>       8.23%  a.out    [kernel.kallsyms]  [k] _raw_spin_unlock_irqrestore
+>       6.67%  a.out    [kernel.kallsyms]  [k] filemap_map_pages
+>       6.16%  a.out    [kernel.kallsyms]  [k] __zram_bvec_write
+>       5.36%  a.out    [kernel.kallsyms]  [k] ptep_clear_flush
+>       3.71%  a.out    [kernel.kallsyms]  [k] _raw_spin_lock
+>       3.49%  a.out    [kernel.kallsyms]  [k] memset64
+>       1.63%  a.out    [kernel.kallsyms]  [k] clear_page
+>       1.42%  a.out    [kernel.kallsyms]  [k] _raw_spin_unlock
+>       1.26%  a.out    [kernel.kallsyms]  [k] mod_zone_state.llvm.8525150236079521930
+>       1.23%  a.out    [kernel.kallsyms]  [k] xas_load
+>       1.15%  a.out    [kernel.kallsyms]  [k] zram_slot_lock
+>
+> ptep_clear_flush() takes 5.36% CPU in the micro-benchmark
+> swapping in/out a page mapped by only one process. If the
+> page is mapped by multiple processes, typically, like more
+> than 100 on a phone, the overhead would be much higher as
+> we have to run tlb flush 100 times for one single page.
+> Plus, tlb flush overhead will increase with the number
+> of CPU cores due to the bad scalability of tlb shootdown
+> in HW, so those ARM64 servers should expect much higher
+> overhead.
+>
+> Further perf annonate shows 95% cpu time of ptep_clear_flush
+> is actually used by the final dsb() to wait for the completion
+> of tlb flush. This provides us a very good chance to leverage
+> the existing batched tlb in kernel. The minimum modification
+> is that we only send async tlbi in the first stage and we send
+> dsb while we have to sync in the second stage.
+>
+> With the above simplest micro benchmark, collapsed time to
+> finish the program decreases around 5%.
+>
+> Typical collapsed time w/o patch:
+>   ~ # time taskset -c 4 ./a.out
+>   0.21user 14.34system 0:14.69elapsed
+> w/ patch:
+>   ~ # time taskset -c 4 ./a.out
+>   0.22user 13.45system 0:13.80elapsed
+>
+> Also, Yicong Yang added the following observation.
+> 	Tested with benchmark in the commit on Kunpeng920 arm64 server,
+> 	observed an improvement around 12.5% with command
+> 	`time ./swap_bench`.
+> 		w/o		w/
+> 	real	0m13.460s	0m11.771s
+> 	user	0m0.248s	0m0.279s
+> 	sys	0m12.039s	0m11.458s
+>
+> 	Originally it's noticed a 16.99% overhead of ptep_clear_flush()
+> 	which has been eliminated by this patch:
+>
+> 	[root@localhost yang]# perf record -- ./swap_bench && perf report
+> 	[...]
+> 	16.99%  swap_bench  [kernel.kallsyms]  [k] ptep_clear_flush
+>
+> It is tested on 4,8,128 CPU platforms and shows to be beneficial on
+> large systems but may not have improvement on small systems like on
+> a 4 CPU platform. So make ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH depends
+> on CONFIG_EXPERT for this stage and only make this enabled on systems
+> with more than 8 CPUs. User can modify this threshold according to
+> their own platforms by CONFIG_NR_CPUS_FOR_BATCHED_TLB.
+>
+> Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+> Cc: Jonathan Corbet <corbet@lwn.net>
+> Cc: Nadav Amit <namit@vmware.com>
+> Cc: Mel Gorman <mgorman@suse.de>
+> Tested-by: Yicong Yang <yangyicong@hisilicon.com>
+> Tested-by: Xin Hao <xhao@linux.alibaba.com>
+> Tested-by: Punit Agrawal <punit.agrawal@bytedance.com>
+> Signed-off-by: Barry Song <v-songbaohua@oppo.com>
+> Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+> Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+> ---
+>   .../features/vm/TLB/arch-support.txt          |  2 +-
+>   arch/arm64/Kconfig                            |  6 +++
+>   arch/arm64/include/asm/tlbbatch.h             | 12 +++++
+>   arch/arm64/include/asm/tlbflush.h             | 52 ++++++++++++++++++-
+>   arch/x86/include/asm/tlbflush.h               |  3 +-
+>   mm/rmap.c                                     | 10 ++--
+>   6 files changed, 77 insertions(+), 8 deletions(-)
+>   create mode 100644 arch/arm64/include/asm/tlbbatch.h
+>
+> diff --git a/Documentation/features/vm/TLB/arch-support.txt b/Documentation/features/vm/TLB/arch-support.txt
+> index 039e4e91ada3..2caf815d7c6c 100644
+> --- a/Documentation/features/vm/TLB/arch-support.txt
+> +++ b/Documentation/features/vm/TLB/arch-support.txt
+> @@ -9,7 +9,7 @@
+>       |       alpha: | TODO |
+>       |         arc: | TODO |
+>       |         arm: | TODO |
+> -    |       arm64: | N/A  |
+> +    |       arm64: |  ok  |
+>       |        csky: | TODO |
+>       |     hexagon: | TODO |
+>       |        ia64: | TODO |
+> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> index 505c8a1ccbe0..72975e82c7d7 100644
+> --- a/arch/arm64/Kconfig
+> +++ b/arch/arm64/Kconfig
+> @@ -93,6 +93,7 @@ config ARM64
+>   	select ARCH_SUPPORTS_INT128 if CC_HAS_INT128
+>   	select ARCH_SUPPORTS_NUMA_BALANCING
+>   	select ARCH_SUPPORTS_PAGE_TABLE_CHECK
+> +	select ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH if EXPERT
+>   	select ARCH_WANT_COMPAT_IPC_PARSE_VERSION if COMPAT
+>   	select ARCH_WANT_DEFAULT_BPF_JIT
+>   	select ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT
+> @@ -268,6 +269,11 @@ config ARM64_CONT_PMD_SHIFT
+>   	default 5 if ARM64_16K_PAGES
+>   	default 4
+>   
+> +config ARM64_NR_CPUS_FOR_BATCHED_TLB
+> +	int "Threshold to enable batched TLB flush"
+> +	default 8
+> +	depends on ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH
+> +
+>   config ARCH_MMAP_RND_BITS_MIN
+>   	default 14 if ARM64_64K_PAGES
+>   	default 16 if ARM64_16K_PAGES
+> diff --git a/arch/arm64/include/asm/tlbbatch.h b/arch/arm64/include/asm/tlbbatch.h
+> new file mode 100644
+> index 000000000000..fedb0b87b8db
+> --- /dev/null
+> +++ b/arch/arm64/include/asm/tlbbatch.h
+> @@ -0,0 +1,12 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef _ARCH_ARM64_TLBBATCH_H
+> +#define _ARCH_ARM64_TLBBATCH_H
+> +
+> +struct arch_tlbflush_unmap_batch {
+> +	/*
+> +	 * For arm64, HW can do tlb shootdown, so we don't
+> +	 * need to record cpumask for sending IPI
+> +	 */
+> +};
+> +
+> +#endif /* _ARCH_ARM64_TLBBATCH_H */
+> diff --git a/arch/arm64/include/asm/tlbflush.h b/arch/arm64/include/asm/tlbflush.h
+> index 412a3b9a3c25..20d12de0d231 100644
+> --- a/arch/arm64/include/asm/tlbflush.h
+> +++ b/arch/arm64/include/asm/tlbflush.h
+> @@ -254,17 +254,23 @@ static inline void flush_tlb_mm(struct mm_struct *mm)
+>   	dsb(ish);
+>   }
+>   
+> -static inline void flush_tlb_page_nosync(struct vm_area_struct *vma,
+> +static inline void __flush_tlb_page_nosync(struct mm_struct *mm,
+>   					 unsigned long uaddr)
+>   {
+>   	unsigned long addr;
+>   
+>   	dsb(ishst);
+> -	addr = __TLBI_VADDR(uaddr, ASID(vma->vm_mm));
+> +	addr = __TLBI_VADDR(uaddr, ASID(mm));
+>   	__tlbi(vale1is, addr);
+>   	__tlbi_user(vale1is, addr);
+>   }
+>   
+> +static inline void flush_tlb_page_nosync(struct vm_area_struct *vma,
+> +					 unsigned long uaddr)
+> +{
+> +	return __flush_tlb_page_nosync(vma->vm_mm, uaddr);
+> +}
+> +
+>   static inline void flush_tlb_page(struct vm_area_struct *vma,
+>   				  unsigned long uaddr)
+>   {
+> @@ -272,6 +278,48 @@ static inline void flush_tlb_page(struct vm_area_struct *vma,
+>   	dsb(ish);
+>   }
+>   
+> +#ifdef CONFIG_ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH
+> +
+> +static inline bool arch_tlbbatch_should_defer(struct mm_struct *mm)
+> +{
+> +	/*
+> +	 * TLB batched flush is proved to be beneficial for systems with large
+> +	 * number of CPUs, especially system with more than 8 CPUs. TLB shutdown
+> +	 * is cheap on small systems which may not need this feature. So use
+> +	 * a threshold for enabling this to avoid potential side effects on
+> +	 * these platforms.
+> +	 */
+> +	if (num_online_cpus() < CONFIG_ARM64_NR_CPUS_FOR_BATCHED_TLB)
+> +		return false;
+> +
+> +	/*
+> +	 * TLB flush deferral is not required on systems, which are affected with
+> +	 * ARM64_WORKAROUND_REPEAT_TLBI, as __tlbi()/__tlbi_user() implementation
+> +	 * will have two consecutive TLBI instructions with a dsb(ish) in between
+> +	 * defeating the purpose (i.e save overall 'dsb ish' cost).
+> +	 */
+> +#ifdef CONFIG_ARM64_WORKAROUND_REPEAT_TLBI
+> +	if (unlikely(cpus_have_const_cap(ARM64_WORKAROUND_REPEAT_TLBI)))
+> +		return false;
+> +#endif
+> +
+> +	return true;
+> +}
+> +
+> +static inline void arch_tlbbatch_add_mm(struct arch_tlbflush_unmap_batch *batch,
+> +					struct mm_struct *mm,
+> +					unsigned long uaddr)
+> +{
+> +	__flush_tlb_page_nosync(mm, uaddr);
+> +}
+> +
+> +static inline void arch_tlbbatch_flush(struct arch_tlbflush_unmap_batch *batch)
+> +{
+> +	dsb(ish);
+> +}
+> +
+> +#endif /* CONFIG_ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH */
+> +
+>   /*
+>    * This is meant to avoid soft lock-ups on large TLB flushing ranges and not
+>    * necessarily a performance improvement.
+> diff --git a/arch/x86/include/asm/tlbflush.h b/arch/x86/include/asm/tlbflush.h
+> index 8a497d902c16..5bd78ae55cd4 100644
+> --- a/arch/x86/include/asm/tlbflush.h
+> +++ b/arch/x86/include/asm/tlbflush.h
+> @@ -264,7 +264,8 @@ static inline u64 inc_mm_tlb_gen(struct mm_struct *mm)
+>   }
+>   
+>   static inline void arch_tlbbatch_add_mm(struct arch_tlbflush_unmap_batch *batch,
+> -					struct mm_struct *mm)
+> +					struct mm_struct *mm,
+> +					unsigned long uaddr)
+>   {
+>   	inc_mm_tlb_gen(mm);
+>   	cpumask_or(&batch->cpumask, &batch->cpumask, mm_cpumask(mm));
+> diff --git a/mm/rmap.c b/mm/rmap.c
+> index a9ab10bc0144..a1b408ff44e5 100644
+> --- a/mm/rmap.c
+> +++ b/mm/rmap.c
+> @@ -640,12 +640,13 @@ void try_to_unmap_flush_dirty(void)
+>   #define TLB_FLUSH_BATCH_PENDING_LARGE			\
+>   	(TLB_FLUSH_BATCH_PENDING_MASK / 2)
+>   
+> -static void set_tlb_ubc_flush_pending(struct mm_struct *mm, bool writable)
+> +static void set_tlb_ubc_flush_pending(struct mm_struct *mm, bool writable,
+> +				      unsigned long uaddr)
+>   {
+>   	struct tlbflush_unmap_batch *tlb_ubc = &current->tlb_ubc;
+>   	int batch, nbatch;
+>   
+> -	arch_tlbbatch_add_mm(&tlb_ubc->arch, mm);
+> +	arch_tlbbatch_add_mm(&tlb_ubc->arch, mm, uaddr);
+>   	tlb_ubc->flush_required = true;
+>   
+>   	/*
+> @@ -723,7 +724,8 @@ void flush_tlb_batched_pending(struct mm_struct *mm)
+>   	}
+>   }
+>   #else
+> -static void set_tlb_ubc_flush_pending(struct mm_struct *mm, bool writable)
+> +static void set_tlb_ubc_flush_pending(struct mm_struct *mm, bool writable,
+> +				      unsigned long uaddr)
+>   {
+>   }
+>   
+> @@ -1596,7 +1598,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+>   				 */
+>   				pteval = ptep_get_and_clear(mm, address, pvmw.pte);
+>   
+> -				set_tlb_ubc_flush_pending(mm, pte_dirty(pteval));
+> +				set_tlb_ubc_flush_pending(mm, pte_dirty(pteval), address);
+>   			} else {
+>   				pteval = ptep_clear_flush(vma, address, pvmw.pte);
+>   			}
 
-Maybe you should talk to them? Which one is this? Not all distributions
-seem to enable it (Debian for example does not).
+Nice work, thanks.
 
-> So people who want to use it can do so. It would be nice if the rest of us
-> wouldn't have to care about it.
-> 
-> >> Furthermore the file has the following comment since the beginning of the git
-> >> history in 2005:
-> >> 
-> >>     Copyright (C) 2000 Franz Sirl
-> >> 
-> >>     This file will soon be removed in favor of an uinput userspace tool.
-> > 
-> > OK, that is a separate topic, if there are no users we can remove the
-> > driver. Do we know if this tool ever came into existence?
-> 
-> One interpretation of it is attached as "mac_hid_userspace.c".
-> 
-> > What I do not want is to break the autoload for one single driver
-> > because somebody enabled it without intending to use and now tries to
-> > implement a one-off.
-> 
-> Is an autoloaded driver that then does not (ever) automatically provide any
-> functionality not broken by definition?
+Reviewed-by: Xin Hao <xhao@linux.alibaba.com>
 
-No because it does not result in any regression in behavior.
-
-> It was enabled by the distro. Which seems correct, because maybe somebody will
-> use it.
-> 
-> Taken to an illogical extreme: If it is fine for modules to load automatically
-> even if they are not useful, why not just always load all available modules?
-
-Well, take for example a driver for a NIC. It is not really useful until
-you configure it by assigning an address to the interface, etc. Should
-we not automatically load drivers for NICs?
-
-> 
-> 
-> Maybe we can take the removal of the autoload as a first step of deprecation
-> and finally removal of the module.
-> To quote you:
-> 
->     "I'd rather we did not promote from drivers/macintosh to other platforms,
->      but rather removed it. The same functionality can be done from
->      userspace." [0]
-
-I think if you talk to your distro and see if they stop enabling it and
-offer your userspace utility as a replacement if they indeed need the
-functionality would be the best way of deprecating the driver.
-
-Thanks.
-
--- 
-Dmitry
