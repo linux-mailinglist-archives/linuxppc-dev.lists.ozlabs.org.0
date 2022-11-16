@@ -1,67 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D41A62B8A4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Nov 2022 11:33:57 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84DEB62B8C3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Nov 2022 11:34:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NBztC1vRWz3f5x
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Nov 2022 21:33:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NBzvM2PrJz3fB1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Nov 2022 21:34:55 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=jRdEZPzV;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cP8m4qBp;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VKjFUmrn;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VKjFUmrn;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=jRdEZPzV;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cP8m4qBp;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VKjFUmrn;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VKjFUmrn;
 	dkim-atps=neutral
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NBzls5Hzdz3cHY
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Nov 2022 21:28:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NBzlx0Qk6z3cPg
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Nov 2022 21:28:28 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1668594502;
+	s=mimecast20190719; t=1668594506;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=G7hQ0RjvfvFzJ7xHsADTRuI/sN47/U3pNJiDmnh86Zg=;
-	b=jRdEZPzVdHGC8k0FMyPUFfhVumm8djd477ODp7V7MuH9VUKwDP4x2HZZbKq2QmVpDJ00DY
-	Be7xzIlAA0/iHaIzM6+Uc8gTnog3hUCNS1EkU05f9mdhqFpPz8HgoX+JMcOs9POJCotNMH
-	FoNAGAGVgNopK1RXj3AnmptBGfgCxUk=
+	bh=B1T+ot5qRtqPN1LpUOFfkK/yXOB9NMbn5pFr5NKSN84=;
+	b=VKjFUmrnB7SLhpYpd9eoC2jg7zNsZhTYqzeuEMMn4hTtOk+VGkudT5R5CiSOfvxMz2X6fQ
+	dV+7a0nvRSjvln4q23j1yNM7lpYrqV2jdtatVKnaoDGAwYFei8sMJFWg4D5lBiwKQmrkqC
+	V8AdOEDk/GBdiW16XILgGF3QcddzxQw=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1668594503;
+	s=mimecast20190719; t=1668594506;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=G7hQ0RjvfvFzJ7xHsADTRuI/sN47/U3pNJiDmnh86Zg=;
-	b=cP8m4qBpZZK18zy3Tj4Vs5ZFZa6qlPkb7FwgKdCzqVmhf0iIBa+zAje/+38W7kW81Wm8Ht
-	9APRUj7O1VwSzPXFCX9GwAWY5qzfSpYFUhBhiPdHM999KALPQwu/b1VF+VgVPklS5/AF0e
-	5RQm4AbDOj4BTKvC8bqBG7P4xgtLnNA=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=B1T+ot5qRtqPN1LpUOFfkK/yXOB9NMbn5pFr5NKSN84=;
+	b=VKjFUmrnB7SLhpYpd9eoC2jg7zNsZhTYqzeuEMMn4hTtOk+VGkudT5R5CiSOfvxMz2X6fQ
+	dV+7a0nvRSjvln4q23j1yNM7lpYrqV2jdtatVKnaoDGAwYFei8sMJFWg4D5lBiwKQmrkqC
+	V8AdOEDk/GBdiW16XILgGF3QcddzxQw=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-342-y1dt35sINka8k4sGs1wnag-1; Wed, 16 Nov 2022 05:28:17 -0500
-X-MC-Unique: y1dt35sINka8k4sGs1wnag-1
+ us-mta-412-r17LTSJHM5C5l1EBulZ-LQ-1; Wed, 16 Nov 2022 05:28:24 -0500
+X-MC-Unique: r17LTSJHM5C5l1EBulZ-LQ-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
 	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D8854101CC62;
-	Wed, 16 Nov 2022 10:28:15 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D71761C0A110;
+	Wed, 16 Nov 2022 10:28:22 +0000 (UTC)
 Received: from t480s.fritz.box (unknown [10.39.193.216])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 140632024CC8;
-	Wed, 16 Nov 2022 10:28:08 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 3E25A2024CCA;
+	Wed, 16 Nov 2022 10:28:16 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH mm-unstable v1 07/20] mm: don't call vm_ops->huge_fault() in wp_huge_pmd()/wp_huge_pud() for private mappings
-Date: Wed, 16 Nov 2022 11:26:46 +0100
-Message-Id: <20221116102659.70287-8-david@redhat.com>
+Subject: [PATCH mm-unstable v1 08/20] mm: extend FAULT_FLAG_UNSHARE support to anything in a COW mapping
+Date: Wed, 16 Nov 2022 11:26:47 +0100
+Message-Id: <20221116102659.70287-9-david@redhat.com>
 In-Reply-To: <20221116102659.70287-1-david@redhat.com>
 References: <20221116102659.70287-1-david@redhat.com>
 MIME-Version: 1.0
@@ -83,74 +83,70 @@ Cc: linux-ia64@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-If we already have a PMD/PUD mapped write-protected in a private mapping
-and we want to break COW either due to FAULT_FLAG_WRITE or
-FAULT_FLAG_UNSHARE, there is no need to inform the file system just like on
-the PTE path.
+Extend FAULT_FLAG_UNSHARE to break COW on anything mapped into a
+COW (i.e., private writable) mapping and adjust the documentation
+accordingly.
 
-Let's just split (->zap) + fallback in that case.
+FAULT_FLAG_UNSHARE will now also break COW when encountering the shared
+zeropage, a pagecache page, a PFNMAP, ... inside a COW mapping, by
+properly replacing the mapped page/pfn by a private copy (an exclusive
+anonymous page).
 
-This is a preparation for more generic FAULT_FLAG_UNSHARE support in
+Note that only do_wp_page() needs care: hugetlb_wp() already handles
+FAULT_FLAG_UNSHARE correctly. wp_huge_pmd()/wp_huge_pud() also handles it
+correctly, for example, splitting the huge zeropage on FAULT_FLAG_UNSHARE
+such that we can handle FAULT_FLAG_UNSHARE on the PTE level.
+
+This change is a requirement for reliable long-term R/O pinning in
 COW mappings.
 
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- mm/memory.c | 24 +++++++++++++++---------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+ include/linux/mm_types.h | 8 ++++----
+ mm/memory.c              | 4 ----
+ 2 files changed, 4 insertions(+), 8 deletions(-)
 
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index 5e7f4fac1e78..5e9aaad8c7b2 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -1037,9 +1037,9 @@ typedef struct {
+  * @FAULT_FLAG_REMOTE: The fault is not for current task/mm.
+  * @FAULT_FLAG_INSTRUCTION: The fault was during an instruction fetch.
+  * @FAULT_FLAG_INTERRUPTIBLE: The fault can be interrupted by non-fatal signals.
+- * @FAULT_FLAG_UNSHARE: The fault is an unsharing request to unshare (and mark
+- *                      exclusive) a possibly shared anonymous page that is
+- *                      mapped R/O.
++ * @FAULT_FLAG_UNSHARE: The fault is an unsharing request to break COW in a
++ *                      COW mapping, making sure that an exclusive anon page is
++ *                      mapped after the fault.
+  * @FAULT_FLAG_ORIG_PTE_VALID: whether the fault has vmf->orig_pte cached.
+  *                        We should only access orig_pte if this flag set.
+  *
+@@ -1064,7 +1064,7 @@ typedef struct {
+  *
+  * The combination FAULT_FLAG_WRITE|FAULT_FLAG_UNSHARE is illegal.
+  * FAULT_FLAG_UNSHARE is ignored and treated like an ordinary read fault when
+- * no existing R/O-mapped anonymous page is encountered.
++ * applied to mappings that are not COW mappings.
+  */
+ enum fault_flag {
+ 	FAULT_FLAG_WRITE =		1 << 0,
 diff --git a/mm/memory.c b/mm/memory.c
-index c35e6cd32b6a..d47ad33c6487 100644
+index d47ad33c6487..56b21ab1e4d2 100644
 --- a/mm/memory.c
 +++ b/mm/memory.c
-@@ -4802,6 +4802,7 @@ static inline vm_fault_t create_huge_pmd(struct vm_fault *vmf)
- static inline vm_fault_t wp_huge_pmd(struct vm_fault *vmf)
- {
- 	const bool unshare = vmf->flags & FAULT_FLAG_UNSHARE;
-+	vm_fault_t ret;
- 
- 	if (vma_is_anonymous(vmf->vma)) {
- 		if (likely(!unshare) &&
-@@ -4809,11 +4810,13 @@ static inline vm_fault_t wp_huge_pmd(struct vm_fault *vmf)
- 			return handle_userfault(vmf, VM_UFFD_WP);
- 		return do_huge_pmd_wp_page(vmf);
+@@ -3432,10 +3432,6 @@ static vm_fault_t do_wp_page(struct vm_fault *vmf)
+ 		}
+ 		wp_page_reuse(vmf);
+ 		return 0;
+-	} else if (unshare) {
+-		/* No anonymous page -> nothing to do. */
+-		pte_unmap_unlock(vmf->pte, vmf->ptl);
+-		return 0;
  	}
--	if (vmf->vma->vm_ops->huge_fault) {
--		vm_fault_t ret = vmf->vma->vm_ops->huge_fault(vmf, PE_SIZE_PMD);
- 
--		if (!(ret & VM_FAULT_FALLBACK))
--			return ret;
-+	if (vmf->vma->vm_flags & (VM_SHARED | VM_MAYSHARE)) {
-+		if (vmf->vma->vm_ops->huge_fault) {
-+			ret = vmf->vma->vm_ops->huge_fault(vmf, PE_SIZE_PMD);
-+			if (!(ret & VM_FAULT_FALLBACK))
-+				return ret;
-+		}
- 	}
- 
- 	/* COW or write-notify handled on pte level: split pmd. */
-@@ -4839,14 +4842,17 @@ static vm_fault_t wp_huge_pud(struct vm_fault *vmf, pud_t orig_pud)
- {
- #if defined(CONFIG_TRANSPARENT_HUGEPAGE) &&			\
- 	defined(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD)
-+	vm_fault_t ret;
-+
- 	/* No support for anonymous transparent PUD pages yet */
- 	if (vma_is_anonymous(vmf->vma))
- 		goto split;
--	if (vmf->vma->vm_ops->huge_fault) {
--		vm_fault_t ret = vmf->vma->vm_ops->huge_fault(vmf, PE_SIZE_PUD);
--
--		if (!(ret & VM_FAULT_FALLBACK))
--			return ret;
-+	if (vmf->vma->vm_flags & (VM_SHARED | VM_MAYSHARE)) {
-+		if (vmf->vma->vm_ops->huge_fault) {
-+			ret = vmf->vma->vm_ops->huge_fault(vmf, PE_SIZE_PUD);
-+			if (!(ret & VM_FAULT_FALLBACK))
-+				return ret;
-+		}
- 	}
- split:
- 	/* COW or write-notify not handled on PUD level: split pud.*/
+ copy:
+ 	/*
 -- 
 2.38.1
 
