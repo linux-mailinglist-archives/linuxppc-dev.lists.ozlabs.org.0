@@ -2,94 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D77A62CF02
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Nov 2022 00:45:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B1F862CF39
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Nov 2022 00:56:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NCKRV71RMz3cNY
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Nov 2022 10:45:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NCKhk6bSDz3dtt
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Nov 2022 10:56:54 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=C41DMRDD;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=goQ4eWiA;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=gjoyce@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=srs0=7/5/=3q=zx2c4.com=jason@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=C41DMRDD;
+	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=goQ4eWiA;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NCKQY21n1z3bnM
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Nov 2022 10:44:36 +1100 (AEDT)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AGNgMTD018883;
-	Wed, 16 Nov 2022 23:44:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : reply-to : to : cc : date : in-reply-to : references : content-type
- : mime-version : content-transfer-encoding; s=pp1;
- bh=J1gnzsf/D1YTJY8T2+5NQLgeCtaYrxMGyExgYqnS8Wg=;
- b=C41DMRDD5aHvopRQA7Xc7BtxHDLvZO/6OXZMKnUQ5KQi1Bzz/OKsMo2qrglSffZOVCVr
- ZZgnR5EtEg8Q4yzOjiCcGH+iLlmRokr1+rs0HhRkgPQaimZaEsW2Uy9YAGb9KnmBnveh
- BPYtqLX1Hh2V/z4itIqhMME3k7H02jUyR5rmaSIz+djK6WB/zXsM3NLUDtNvkYgtOrsw
- 3v3lxYlmZegfFX/39R+AVsGulYi0/VMSDQ1PF1/eJxzCenTEhKSoyHVf/pju6fdBJRkt
- rjPKTSHe90fhbVgNgV+qcpjCOvmEXVpFXHCZU+CGUKtMP+Pz7WfMZpU81xpPqhjOSTGe qg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3kw9s7010n-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 16 Nov 2022 23:44:23 +0000
-Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2AGNgWF8019113;
-	Wed, 16 Nov 2022 23:44:22 GMT
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.11])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3kw9s7010g-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 16 Nov 2022 23:44:22 +0000
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
-	by ppma03dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2AGNZJHV020230;
-	Wed, 16 Nov 2022 23:44:22 GMT
-Received: from b03cxnp07027.gho.boulder.ibm.com (b03cxnp07027.gho.boulder.ibm.com [9.17.130.14])
-	by ppma03dal.us.ibm.com with ESMTP id 3kt34a4ymw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 16 Nov 2022 23:44:22 +0000
-Received: from smtpav02.dal12v.mail.ibm.com ([9.208.128.128])
-	by b03cxnp07027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2AGNiK7941681590
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 16 Nov 2022 23:44:21 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A6EC95805A;
-	Wed, 16 Nov 2022 23:44:20 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5577858051;
-	Wed, 16 Nov 2022 23:44:19 +0000 (GMT)
-Received: from sig-9-65-207-159.ibm.com (unknown [9.65.207.159])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 16 Nov 2022 23:44:19 +0000 (GMT)
-Message-ID: <c24c0f7c81ff24d791974ff7945e710b489b7e01.camel@linux.vnet.ibm.com>
-Subject: Re: [PATCH v4 2/3] powerpc/pseries: PLPKS SED Opal keystore support
-From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
-To: "Elliott, Robert (Servers)" <elliott@hpe.com>,
-        "linux-block@vger.kernel.org"
-	 <linux-block@vger.kernel.org>
-Date: Wed, 16 Nov 2022 17:44:18 -0600
-In-Reply-To: <MW5PR84MB1842689FD13382CAFCC260D8AB5F9@MW5PR84MB1842.NAMPRD84.PROD.OUTLOOK.COM>
-References: <20220819223138.1457091-1-gjoyce@linux.vnet.ibm.com>
-	 <20220819223138.1457091-3-gjoyce@linux.vnet.ibm.com>
-	 <MW5PR84MB1842689FD13382CAFCC260D8AB5F9@MW5PR84MB1842.NAMPRD84.PROD.OUTLOOK.COM>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: JgbknSy7aXhV73SxJYXrtnAvcD7UjiHr
-X-Proofpoint-GUID: nGERouHv7XWg6rQBOqOkw7vipn-DPvyA
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-11-16_03,2022-11-16_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 clxscore=1011
- mlxlogscore=999 spamscore=0 suspectscore=0 bulkscore=0 phishscore=0
- priorityscore=1501 impostorscore=0 adultscore=0 lowpriorityscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2210170000 definitions=main-2211160161
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NCKgk69n0z3bm9
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Nov 2022 10:56:02 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 83BF56204E;
+	Wed, 16 Nov 2022 23:55:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AABDBC433D6;
+	Wed, 16 Nov 2022 23:55:55 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="goQ4eWiA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+	t=1668642952;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sM9LBQZ376u5w/8PZH+YQVlUaxTNIyanmkjPT3FYfMU=;
+	b=goQ4eWiAvkZqWkfss8gq1ex5AtlA/ahfxEBk6r2fheEdHDzxQqDvdaI7jHnRtKQZacSknN
+	xALKJahBGIU2w4KpYkodsz6zSfQUgQjwtn/9XiLQzmbduxm8SAGcIyMTbNpEffPJ6eVtj8
+	fknlTQXlnEW5l9AjbJbPQ6U48mWYP8U=
+Received: 	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 48c033fa (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Wed, 16 Nov 2022 23:55:51 +0000 (UTC)
+Date: Thu, 17 Nov 2022 00:55:47 +0100
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+To: Kees Cook <keescook@chromium.org>
+Subject: Re: [PATCH v2 3/3] treewide: use get_random_u32_between() when
+ possible
+Message-ID: <Y3V4g8eorwiU++Y3@zx2c4.com>
+References: <20221114164558.1180362-1-Jason@zx2c4.com>
+ <20221114164558.1180362-4-Jason@zx2c4.com>
+ <202211161436.A45AD719A@keescook>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <202211161436.A45AD719A@keescook>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,51 +65,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: gjoyce@linux.vnet.ibm.com
-Cc: "axboe@kernel.dk" <axboe@kernel.dk>, "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>, "nayna@linux.ibm.com" <nayna@linux.ibm.com>, "dhowells@redhat.com" <dhowells@redhat.com>, "jarkko@kernel.org" <jarkko@kernel.org>, "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>, "jonathan.derrick@linux.dev" <jonathan.derrick@linux.dev>, "brking@linux.vnet.ibm.com" <brking@linux.vnet.ibm.com>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, "msuchanek@suse.de" <msuchanek@suse.de>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: "Darrick J . Wong" <djwong@kernel.org>, patches@lists.linux.dev, netdev@vger.kernel.org, Andreas Dilger <adilger.kernel@dilger.ca>, ydroneaud@opteya.com, Herbert Xu <herbert@gondor.apana.org.au>, Richard Weinberger <richard@nod.at>, Helge Deller <deller@gmx.de>, Russell King <linux@armlinux.org.uk>, Jason Gunthorpe <jgg@nvidia.com>, Catalin Marinas <catalin.marinas@arm.com>, Jakub Kicinski <kuba@kernel.org>, linux-mips@vger.kernel.org, linux-media@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, Jani Nikula <jani.nikula@linux.intel.com>, linux-block@vger.kernel.org, SeongJae Park <sj@kernel.org>, loongarch@lists.linux.dev, Jaegeuk Kim <jaegeuk@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Theodore Ts'o <tytso@mit.edu>, linux-parisc@vger.kernel.org, "Martin K . Petersen" <martin.petersen@oracle.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mmc@vger.kernel.org, linux-kerne
+ l@vger.kernel.org, Christoph =?utf-8?Q?B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>, linux-crypto@vger.kernel.org, Sakari Ailus <sakari.ailus@linux.intel.com>, linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 2022-10-07 at 19:09 +0000, Elliott, Robert (Servers) wrote:
-> > -----Original Message-----
-> > From: gjoyce@linux.vnet.ibm.com <gjoyce@linux.vnet.ibm.com>
-> > Sent: Friday, August 19, 2022 5:32 PM
-> > To: linux-block@vger.kernel.org
-> > Cc: linuxppc-dev@lists.ozlabs.org; jonathan.derrick@linux.dev;
-> > brking@linux.vnet.ibm.com; msuchanek@suse.de; mpe@ellerman.id.au;
-> > nayna@linux.ibm.com; axboe@kernel.dk; akpm@linux-foundation.org;
-> > gjoyce@linux.vnet.ibm.com; linux-efi@vger.kernel.org;
-> > keyrings@vger.kernel.org; dhowells@redhat.com; jarkko@kernel.org
-> > Subject: [PATCH v4 2/3] powerpc/pseries: PLPKS SED Opal keystore
-> > support
-> > 
-> > +++ b/arch/powerpc/platforms/pseries/plpks_sed_ops.c
-> ...
-> > +struct plpks_sed_object_data {
-> > +	u_char version;
-> > +	u_char pad1[7];
-> > +	u_long authority;
-> > +	u_long range;
-> > +	u_int  key_len;
-> > +	u_char key[32];
-> > +};
-> ...
-> > +/*
-> > + * Read the SED Opal key from PLPKS given the label
-> > + */
-> > +int sed_read_key(char *keyname, char *key, u_int *keylen)
-> > +{
-> ...
-> > +	*keylen = be32_to_cpu(data->key_len);
-> > +
-> > +	if (var.data) {
-> > +		memcpy(key, var.data + offset, var.datalen - offset);
-> > +		key[*keylen] = '\0';
+On Wed, Nov 16, 2022 at 02:43:13PM -0800, Kees Cook wrote:
+> On Mon, Nov 14, 2022 at 05:45:58PM +0100, Jason A. Donenfeld wrote:
+> > -				(get_random_u32_below(1024) + 1) * PAGE_SIZE;
+> > +				get_random_u32_between(1, 1024 + 1) * PAGE_SIZE;
 > 
-> Is there a guarantee that key_len is always < sizeof key, or
-> does that need to be checked in more places?
+> I really don't like "between". Can't this be named "inclusive" (and
+> avoid adding 1 everywhere, which seems ugly), or at least named
+> something less ambiguous?
+> 
+> > -		n = get_random_u32_below(100) + 1;
+> > +		n = get_random_u32_between(1, 101);
+> 
+> Because I find this much less readable. "Below 100" is clear: 0-99
+> inclusive, plus 1, so 1-100 inclusive. "Between 1 and 101" is not obvious
+> to me to mean: 1-100 inclusive.
+> 
+> These seem so much nicer:
+> 	get_random_u32_inclusive(1, 1024)
+> 	get_random_u32_inclusive(1, 100)
 
-Changed keylen paramter to be the maximum size that it copied. This 
-will help avoid buffer overwrite.
+Yann pointed out something similar -- the half-closed interval being
+confusing -- and while I was initially dismissive, I've warmed up to
+doing this fully closed after sending a diff of that:
 
+https://lore.kernel.org/lkml/Y3Qt8HiXj8giOnZy@zx2c4.com/
 
+So okay, let's say that I'll implement the inclusive version instead. We
+now have two problems to solve:
+
+1) How/whether to make f(0, UR2_MAX) safe,
+   - without additional 64-bit arithmetic,
+   - minimizing the number of branches.
+   I have a few ideas I'll code golf for a bit.
+
+2) What to call it:
+   - between I still like, because it mirrors "I'm thinking of a number
+     between 1 and 10 and..." that everybody knows,
+   - inclusive I guess works, but it's not a preposition,
+   - bikeshed color #3?
+
+I think I can make progress with (1) alone by fiddling around with
+godbolt enough, like usual. I could use some more ideas for (2) though.
+
+Jason
