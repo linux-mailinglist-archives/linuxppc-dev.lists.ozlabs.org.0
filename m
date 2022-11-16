@@ -2,51 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 042A562C3BE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Nov 2022 17:16:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC7FA62C3D5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Nov 2022 17:17:30 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NC7Tc5pWZz3f5J
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Nov 2022 03:16:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NC7Vc44hqz3f6s
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Nov 2022 03:17:28 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fvHJksod;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OKLQAXun;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fvHJksod;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OKLQAXun;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NC7S54DtHz3dvY
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Nov 2022 03:15:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NC7Sk0yxRz3f3h
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Nov 2022 03:15:50 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id BA68C61EB3;
-	Wed, 16 Nov 2022 16:15:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7FF5C433C1;
-	Wed, 16 Nov 2022 16:15:13 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTPS id 8D325CE1BD1;
+	Wed, 16 Nov 2022 16:15:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A606C433D6;
+	Wed, 16 Nov 2022 16:15:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1668615314;
-	bh=jVuqpvEFC7W6prrFUac475QeeZYTTYxuYTZUcm0S4nk=;
+	s=k20201202; t=1668615346;
+	bh=sDJKa1fbG0u3Us3nL6jtxWazW2/yIEjiBXrsp/ZezNI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=fvHJksodCE+BmfIH4iURixL0h+Qx5bHlH1u2A1T39qpe+ZRm0gW3u9NiL/PoneJHF
-	 gBs6qQXnXxNhzk3JCdlSqhJzAeyZXOqDlCIk5tfGzK5J6NfxYqqGsIzhddwZKPhrl5
-	 57OynNzSRecGFG2yBpWFUSfl5gJ+5eHVpQzQxC4w0mTIsuwDxjeAvrYGBypV6CylQs
-	 lPnDcFmAtgaAtuZ+n4h264NFBubzIca30hLaOzvYoIZxKbiMpOCHnPv/AcUdqIdEnI
-	 +i4S8ooMu4HgWl9ykepn/RqU1Nv5fwTeen8jc7KMRbnLel08Q1WvND13agJcsVDK5r
-	 sJTVHFkI3A8KQ==
-Date: Wed, 16 Nov 2022 10:15:12 -0600
+	b=OKLQAXunR0A8tOp3VcPtuOkm+Fb0sHJnqyryDeFuwlCNZXpvXInros6PSED8376eZ
+	 IBexbk15bbBAN/CfADlMufcqkmkWw6VXAz9VYupLJ4TgYr2A5AD1mX2byD7cPqT1Vj
+	 LGeKraHBrWKWwFbCgk94zdAjCm1WoA+1WwuEOlx7B1udWeFdG4VadEko0xYYydS2Eu
+	 BNSE0qfMHIvhe7yuA1sQiBzZUjdvk3v3+q7EMfl1FWZBI1D1KDW16Gpg9AZNoePjCd
+	 IUbfeGRLsFunbPknRv0RhY9W8ziRmH2o+xa7hahtABjosB43Dxe9cl9/XwAzh/xkT0
+	 uGk0NsCdAk7WQ==
+Date: Wed, 16 Nov 2022 10:15:45 -0600
 From: Bjorn Helgaas <helgaas@kernel.org>
 To: Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [patch 14/39] PCI/MSI: Let the MSI core free descriptors
-Message-ID: <20221116161512.GA1114737@bhelgaas>
+Subject: Re: [patch 17/39] PCI/MSI: Get rid of externs in msi.h
+Message-ID: <20221116161545.GA1114836@bhelgaas>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20221111122014.409654736@linutronix.de>
+In-Reply-To: <20221111122014.582175082@linutronix.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,11 +62,10 @@ Cc: linux-pci@vger.kernel.org, Will Deacon <will@kernel.org>, Lorenzo Pieralisi 
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Nov 11, 2022 at 02:54:37PM +0100, Thomas Gleixner wrote:
+On Fri, Nov 11, 2022 at 02:54:42PM +0100, Thomas Gleixner wrote:
 > From: Ahmed S. Darwish <darwi@linutronix.de>
 > 
-> Let the core do the freeing of descriptors and just keep it around for the
-> legacy case.
+> Follow the style of <linux/pci.h>
 > 
 > Signed-off-by: Ahmed S. Darwish <darwi@linutronix.de>
 > Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
@@ -74,35 +73,26 @@ On Fri, Nov 11, 2022 at 02:54:37PM +0100, Thomas Gleixner wrote:
 Acked-by: Bjorn Helgaas <bhelgaas@google.com>
 
 > ---
->  drivers/pci/msi/irqdomain.c |   10 +++++++---
->  1 file changed, 7 insertions(+), 3 deletions(-)
+>  drivers/pci/msi/msi.h |    8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
 > 
-> --- a/drivers/pci/msi/irqdomain.c
-> +++ b/drivers/pci/msi/irqdomain.c
-> @@ -24,11 +24,12 @@ void pci_msi_teardown_msi_irqs(struct pc
->  	struct irq_domain *domain;
+> --- a/drivers/pci/msi/msi.h
+> +++ b/drivers/pci/msi/msi.h
+> @@ -5,12 +5,12 @@
 >  
->  	domain = dev_get_msi_domain(&dev->dev);
-> -	if (domain && irq_domain_is_hierarchy(domain))
-> +	if (domain && irq_domain_is_hierarchy(domain)) {
->  		msi_domain_free_irqs_descs_locked(domain, &dev->dev);
-> -	else
-> +	} else {
->  		pci_msi_legacy_teardown_msi_irqs(dev);
-> -	msi_free_msi_descs(&dev->dev);
-> +		msi_free_msi_descs(&dev->dev);
-> +	}
->  }
+>  #define msix_table_size(flags)	((flags & PCI_MSIX_FLAGS_QSIZE) + 1)
 >  
->  /**
-> @@ -170,6 +171,9 @@ struct irq_domain *pci_msi_create_irq_do
->  	if (info->flags & MSI_FLAG_USE_DEF_CHIP_OPS)
->  		pci_msi_domain_update_chip_ops(info);
+> -extern int pci_msi_setup_msi_irqs(struct pci_dev *dev, int nvec, int type);
+> -extern void pci_msi_teardown_msi_irqs(struct pci_dev *dev);
+> +int pci_msi_setup_msi_irqs(struct pci_dev *dev, int nvec, int type);
+> +void pci_msi_teardown_msi_irqs(struct pci_dev *dev);
 >  
-> +	/* Let the core code free MSI descriptors when freeing interrupts */
-> +	info->flags |= MSI_FLAG_FREE_MSI_DESCS;
-> +
->  	info->flags |= MSI_FLAG_ACTIVATE_EARLY | MSI_FLAG_DEV_SYSFS;
->  	if (IS_ENABLED(CONFIG_GENERIC_IRQ_RESERVATION_MODE))
->  		info->flags |= MSI_FLAG_MUST_REACTIVATE;
+>  #ifdef CONFIG_PCI_MSI_ARCH_FALLBACKS
+> -extern int pci_msi_legacy_setup_msi_irqs(struct pci_dev *dev, int nvec, int type);
+> -extern void pci_msi_legacy_teardown_msi_irqs(struct pci_dev *dev);
+> +int pci_msi_legacy_setup_msi_irqs(struct pci_dev *dev, int nvec, int type);
+> +void pci_msi_legacy_teardown_msi_irqs(struct pci_dev *dev);
+>  #else
+>  static inline int pci_msi_legacy_setup_msi_irqs(struct pci_dev *dev, int nvec, int type)
+>  {
 > 
