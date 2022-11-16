@@ -1,57 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B2C662D761
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Nov 2022 10:46:39 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8152B62D764
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Nov 2022 10:47:31 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NCZn90QJqz3f8D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Nov 2022 20:46:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NCZp92KT1z3fC8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Nov 2022 20:47:29 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=ojmz8ZQZ;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=eH0YS14V;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2607:f8b0:4864:20::f2d; helo=mail-qv1-xf2d.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=eH0YS14V;
+	dkim-atps=neutral
+Received: from mail-qv1-xf2d.google.com (mail-qv1-xf2d.google.com [IPv6:2607:f8b0:4864:20::f2d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NC6Rq3zqgz3c71
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Nov 2022 02:29:54 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=4XDB6ZbR3Awa7mOslon9xFqMWj0psrdiARhozQeRyJA=; b=ojmz8ZQZRjWLwoZ+ZS6FE8f3wJ
-	CK/Bfmqct5VYOUjRLjwRUWfkj35XZefJ6rca1+nPPtygcRUJXw3oJxKETAjWhIaiftafRsk0CMEh/
-	J5wMjH2Yp5CEFUqc/1mDEFzmv3Mdc0yTnj+SwdQ0sRpQuWbK4I02ssc+mSnaitRZ9Z5Pb/uIPVtsU
-	st8GbHUXc6nOUdEUbfkWcYSrzPEq8tBNp8Q5TCrMo7R2Ryh6BF7TlrqxiIkBjw+Pw8cZuNB/6D6gn
-	mTk80fyh/EA5plmymKut6SRYIZtv3PlZQv81WS10aMHXoX+xNjxLwlZaIoKttXuf1J3/ppa8RmuTu
-	XBGgqr+w==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ovKLd-001NF8-IY; Wed, 16 Nov 2022 15:29:09 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id CE5513006A4;
-	Wed, 16 Nov 2022 16:29:05 +0100 (CET)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-	id A500120832696; Wed, 16 Nov 2022 16:29:05 +0100 (CET)
-Date: Wed, 16 Nov 2022 16:29:05 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Ulf Hansson <ulf.hansson@linaro.org>
-Subject: Re: [PATCH v2 12/44] cpuidle,dt: Push RCU-idle into driver
-Message-ID: <Y3UBwYNY15ETUKy9@hirez.programming.kicks-ass.net>
-References: <20220919095939.761690562@infradead.org>
- <20220919101521.139727471@infradead.org>
- <CAPDyKFqTWd4W5Ofk76CtC4X43dxBTNHtmY9YzN355-vpviLsPw@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NCB8T5hVqz2xBF
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Nov 2022 05:16:55 +1100 (AEDT)
+Received: by mail-qv1-xf2d.google.com with SMTP id c8so12419472qvn.10
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Nov 2022 10:16:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=PBgZn+u117R7gFQNpsnvlIYlwSeo0LUTLoxlFKr3wyI=;
+        b=eH0YS14VezMu1YoYc8i9L/9V4Rda12NtBPhbyEQG9con1K8dLIyV9b4KNCmIq0wzpX
+         WqxRC9GRz2SSVMeoKLZbZ25GRVxvk4TLZwapfzc9KJm3PzFnUZgrmijMI3uqPEOn38/b
+         +5K39+JbiCr6klzOuT84Gyzf87KIYKFM/ltfQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PBgZn+u117R7gFQNpsnvlIYlwSeo0LUTLoxlFKr3wyI=;
+        b=AmdjkVWYbm7uc8oVKo4oX/UhSZKQID6RaneZOO+acoMJNhw42wG8eZObbjFAilrvp7
+         ytNtImpxBA23U0eyoEn92uk/47wZzgO1C2FP8fwnLiRBx+Y9lle/6w37ohnaLqJFJc7O
+         I4g/aB4NSky4IZvpWSubdHDUhe1j8nqbLBRV7XzAekcLVfzAzm9EWnIhhVvfXUzq9dNE
+         fOAGvtMhdXm0MhDZcLaiuFg3MZrtU6ywl6vIrwMd+2DwlDeTv+bLoE0BruFz8Ml9QBxY
+         Y9f7jiLN7BFwDUo4tavSvjfJ5d9jWz8bFzxoxOVE3Pugw8IE0w+10CXMD46QDEclIHSS
+         H+LA==
+X-Gm-Message-State: ANoB5pkmmjPcn76bLtloDx10cbSBrS1Sv7xK/vCus58BBfKJ5cLEirzp
+	ZNAj2PX6cJ+1Jlno20Bmdx3w9V28vmHrRA==
+X-Google-Smtp-Source: AA0mqf4/iDVw0DWb7peSb2OMsL1Arg3HySRG4th2vJYPc5YJ+F7LilnrYHRILeHyYpIHH968TTq4NQ==
+X-Received: by 2002:a05:6214:3c9b:b0:4b8:2b54:b798 with SMTP id ok27-20020a0562143c9b00b004b82b54b798mr21614395qvb.37.1668622611966;
+        Wed, 16 Nov 2022 10:16:51 -0800 (PST)
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com. [209.85.160.182])
+        by smtp.gmail.com with ESMTPSA id l19-20020a05620a28d300b006cfaee39ccesm10620824qkp.114.2022.11.16.10.16.51
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 16 Nov 2022 10:16:51 -0800 (PST)
+Received: by mail-qt1-f182.google.com with SMTP id h21so11241900qtu.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Nov 2022 10:16:51 -0800 (PST)
+X-Received: by 2002:a05:622a:1c15:b0:3a5:49fa:3983 with SMTP id
+ bq21-20020a05622a1c1500b003a549fa3983mr21860304qtb.436.1668622610752; Wed, 16
+ Nov 2022 10:16:50 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAPDyKFqTWd4W5Ofk76CtC4X43dxBTNHtmY9YzN355-vpviLsPw@mail.gmail.com>
+References: <20221116102659.70287-1-david@redhat.com> <20221116102659.70287-21-david@redhat.com>
+In-Reply-To: <20221116102659.70287-21-david@redhat.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Wed, 16 Nov 2022 10:16:34 -0800
+X-Gmail-Original-Message-ID: <CAHk-=wgtEwpR-rE_=cXzecHMZ+zgrx5zf9UfvH0w-mKgckn4=Q@mail.gmail.com>
+Message-ID: <CAHk-=wgtEwpR-rE_=cXzecHMZ+zgrx5zf9UfvH0w-mKgckn4=Q@mail.gmail.com>
+Subject: Re: [PATCH mm-unstable v1 20/20] mm: rename FOLL_FORCE to FOLL_PTRACE
+To: David Hildenbrand <david@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Mailman-Approved-At: Thu, 17 Nov 2022 20:44:04 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -64,177 +81,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: juri.lelli@redhat.com, rafael@kernel.org, catalin.marinas@arm.com, linus.walleij@linaro.org, bsegall@google.com, guoren@kernel.org, pavel@ucw.cz, agordeev@linux.ibm.com, linux-clk@vger.kernel.org, linux-arch@vger.kernel.org, vincent.guittot@linaro.org, linux-sh@vger.kernel.org, kasan-dev@googlegroups.com, linux-acpi@vger.kernel.org, mingo@redhat.com, geert@linux-m68k.org, linux-imx@nxp.com, vgupta@kernel.org, mattst88@gmail.com, lpieralisi@kernel.org, sammy@sammy.net, pmladek@suse.com, linux-pm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, linux-um@lists.infradead.org, npiggin@gmail.com, tglx@linutronix.de, linux-omap@vger.kernel.org, dietmar.eggemann@arm.com, andreyknvl@gmail.com, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, senozhatsky@chromium.org, svens@linux.ibm.com, kernel@pengutronix.de, tj@kernel.org, Andrew Morton <akpm@linux-foundation.org>, mark.rutland@arm.com, linux-ia64@vger.kernel.org, dave.hansen@linux.intel
- .com, virtualization@lists.linux-foundation.org, James.Bottomley@hansenpartnership.com, jcmvbkbc@gmail.com, thierry.reding@gmail.com, kernel@xen0n.name, cl@linux.com, linux-s390@vger.kernel.org, vschneid@redhat.com, john.ogness@linutronix.de, ysato@users.sourceforge.jp, festevam@gmail.com, deller@gmx.de, daniel.lezcano@linaro.org, jonathanh@nvidia.com, dennis@kernel.org, lenb@kernel.org, linux-xtensa@linux-xtensa.org, jolsa@kernel.org, gor@linux.ibm.com, linux-arm-msm@vger.kernel.org, sudeep.holla@arm.com, linux-m68k@lists.linux-m68k.org, loongarch@lists.linux.dev, shorne@gmail.com, chris@zankel.net, sboyd@kernel.org, dinguyen@kernel.org, bristot@redhat.com, chenhuacai@kernel.org, alexander.shishkin@linux.intel.com, fweisbec@gmail.com, mturquette@baylibre.com, paul.walmsley@sifive.com, linux@rasmusvillemoes.dk, will@kernel.org, boris.ostrovsky@oracle.com, khilman@kernel.org, linux-csky@vger.kernel.org, tony@atomide.com, linux-snps-arc@lists.infradead.org, mgorman@suse.de, jacob.jun.
- pan@linux.intel.com, Arnd Bergmann <arnd@arndb.de>, ulli.kroll@googlemail.com, rostedt@goodmis.org, ink@jurassic.park.msu.ru, bcain@quicinc.com, tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, anup@brainfault.org, ryabinin.a.a@gmail.com, linux-alpha@vger.kernel.org, shawnguo@kernel.org, davem@davemloft.net, dalias@libc.org, pv-drivers@vmware.com, hpa@zytor.com, konrad.dybcio@somainline.org, bjorn.andersson@linaro.org, glider@google.com, amakhalov@vmware.com, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, vincenzo.frascino@arm.com, anton.ivanov@cambridgegreys.com, jonas@southpole.se, yury.norov@gmail.com, richard@nod.at, x86@kernel.org, linux@armlinux.org.uk, agross@kernel.org, aou@eecs.berkeley.edu, hca@linux.ibm.com, richard.henderson@linaro.org, stefan.kristiansson@saunalahti.fi, openrisc@lists.librecores.org, acme@kernel.org, atishp@atishpatra.org, linux-tegra@vger.kernel.org, namhyung@kernel.org, andriy.shevchenko@linux.intel.com, jpoimboe@kernel.org, dvyu
- kov@google.com, jgross@suse.com, monstr@monstr.eu, linux-mips@vger.kernel.org, palmer@dabbelt.com, linux-hexagon@vger.kernel.org, bp@alien8.de, johannes@sipsolutions.net, linuxppc-dev@lists.ozlabs.org
+Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>, Dave Hansen <dave.hansen@linux.intel.com>, dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Will Deacon <will@kernel.org>, Nadav Amit <namit@vmware.com>, linux-kselftest@vger.kernel.org, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, Shuah Khan <shuah@kernel.org>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, Andrea Arcangeli <aarcange@redhat.com>, linux-samsung-soc@vger.kernel.org, Paul Moore <paul@paul-moore.com>, linux-rdma@vger.kernel.org, David Airlie <airlied@gmail.com>, x86@kernel.org, Hugh Dickins <hughd@google.com>, James Morris <jmorris@namei.org>, Matthew Wilcox <willy@infradead.org>, Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, Ingo Molnar <mingo@redhat.com>, Vlastimil Babka <vbabka@suse.cz>, Matt 
+ Turner <mattst88@gmail.com>, Kentaro Takeda <takedakn@nttdata.co.jp>, linux-media@vger.kernel.org, Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>, John Hubbard <jhubbard@nvidia.com>, linux-um@lists.infradead.org, etnaviv@lists.freedesktop.org, Nicholas Piggin <npiggin@gmail.com>, Richard Weinberger <richard@nod.at>, Alex Williamson <alex.williamson@redhat.com>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Peter Xu <peterx@redhat.com>, Muchun Song <songmuchun@bytedance.com>, Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Richard Henderson <richard.henderson@linaro.org>, Arnaldo Carvalho de Melo <acme@kernel.org>, Oleg Nesterov <oleg@redhat.com>, linux-arm-kernel@lists.infradead.org, "Serge E. Hallyn" <serge@hallyn.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Oded Gabbay <ogabbay@kernel.org>, linux-mips@vger.kernel.org, Alexander Shishkin <alexander.shishkin@linux.intel.com>, Alexand
+ er Viro <viro@zeniv.linux.org.uk>, linux-perf-users@vger.kernel.org, Johannes Berg <johannes@sipsolutions.net>, linux-security-module@vger.kernel.org, Eric Biederman <ebiederm@xmission.com>, Jiri Olsa <jolsa@kernel.org>, linux-alpha@vger.kernel.org, linux-fsdevel@vger.kernel.org, Borislav Petkov <bp@alien8.de>, Andrew Morton <akpm@linux-foundation.org>, Lucas Stach <l.stach@pengutronix.de>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Wed, Nov 16, 2022 at 2:30 AM David Hildenbrand <david@redhat.com> wrote:
+>
+> Let's make it clearer that functionality provided by FOLL_FORCE is
+> really only for ptrace access.
 
-Sorry; things keep getting in the way of finishing this :/
+I'm not super-happy about this one.
 
-As such, I need a bit of time to get on-track again..
+I do understand the "let's rename the bit so that no new user shows up".
 
-On Tue, Oct 04, 2022 at 01:03:57PM +0200, Ulf Hansson wrote:
+And it's true that the main traditional use is ptrace.
 
-> > --- a/drivers/acpi/processor_idle.c
-> > +++ b/drivers/acpi/processor_idle.c
-> > @@ -1200,6 +1200,8 @@ static int acpi_processor_setup_lpi_stat
-> >                 state->target_residency = lpi->min_residency;
-> >                 if (lpi->arch_flags)
-> >                         state->flags |= CPUIDLE_FLAG_TIMER_STOP;
-> > +               if (lpi->entry_method == ACPI_CSTATE_FFH)
-> > +                       state->flags |= CPUIDLE_FLAG_RCU_IDLE;
-> 
-> I assume the state index here will never be 0?
-> 
-> If not, it may lead to that acpi_processor_ffh_lpi_enter() may trigger
-> CPU_PM_CPU_IDLE_ENTER_PARAM() to call ct_cpuidle_enter|exit() for an
-> idle-state that doesn't have the CPUIDLE_FLAG_RCU_IDLE bit set.
+But from the patch itself it becomes obvious that no, it's not *just*
+ptrace. At least not yet.
 
-I'm not quite sure I see how. AFAICT this condition above implies
-acpi_processor_ffh_lpi_enter() gets called, no?
+It's used for get_arg_page(), which uses it to basically look up (and
+install) pages in the newly created VM.
 
-Which in turn is an unconditional __CPU_PM_CPU_IDLE_ENTER() user, so
-even if idx==0, it ends up in ct_idle_{enter,exit}().
+Now, I'm not entirely sure why it even uses FOLL_FORCE, - I think it
+might be historical, because the target should always be the new stack
+vma.
 
-> 
-> >                 state->enter = acpi_idle_lpi_enter;
-> >                 drv->safe_state_index = i;
-> >         }
-> > --- a/drivers/cpuidle/cpuidle-arm.c
-> > +++ b/drivers/cpuidle/cpuidle-arm.c
-> > @@ -53,6 +53,7 @@ static struct cpuidle_driver arm_idle_dr
-> >          * handler for idle state index 0.
-> >          */
-> >         .states[0] = {
-> > +               .flags                  = CPUIDLE_FLAG_RCU_IDLE,
-> 
-> Comparing arm64 and arm32 idle-states/idle-drivers, the $subject
-> series ends up setting the CPUIDLE_FLAG_RCU_IDLE for the ARM WFI idle
-> state (state zero), but only for the arm64 and psci cases (mostly
-> arm64). For arm32 we would need to update the ARM_CPUIDLE_WFI_STATE
-> too, as that is what most arm32 idle-drivers are using. My point is,
-> the code becomes a bit inconsistent.
+Following the history of it is a big of a mess, because there's a
+number of renamings and re-organizations, but it seems to go back to
+2007 and commit b6a2fea39318 ("mm: variable length argument support").
 
-True.
+Before that commit, we kept our own array of "this is the set of pages
+that I will install in the new VM". That commit basically just inserts
+the pages directly into the VM instead, getting rid of the array size
+limitation.
 
-> Perhaps it's easier to avoid setting the CPUIDLE_FLAG_RCU_IDLE bit for
-> all of the ARM WFI idle states, for both arm64 and arm32?
+So at a minimum, I think that FOLL_FORCE would need to be removed
+before any renaming to FOLL_PTRACE, because that's not some kind of
+small random case.
 
-As per the below?
+It *might* be as simple as just removing it, but maybe there's some
+reason for having it that I don't immediately see.
 
-> 
-> >                 .enter                  = arm_enter_idle_state,
-> >                 .exit_latency           = 1,
-> >                 .target_residency       = 1,
+There _are_ also small random cases too, like get_cmdline(). Maybe
+that counts as ptrace, but the execve() case most definitely does not.
 
-> > --- a/include/linux/cpuidle.h
-> > +++ b/include/linux/cpuidle.h
-> > @@ -282,14 +282,18 @@ extern s64 cpuidle_governor_latency_req(
-> >         int __ret = 0;                                                  \
-> >                                                                         \
-> >         if (!idx) {                                                     \
-> > +               ct_idle_enter();                                        \
-> 
-> According to my comment above, we should then drop these calls to
-> ct_idle_enter and ct_idle_exit() here. Right?
-
-Yes, if we ensure idx==0 never has RCU_IDLE set then these must be
-removed.
-
-> >                 cpu_do_idle();                                          \
-> > +               ct_idle_exit();                                         \
-> >                 return idx;                                             \
-> >         }                                                               \
-> >                                                                         \
-> >         if (!is_retention)                                              \
-> >                 __ret =  cpu_pm_enter();                                \
-> >         if (!__ret) {                                                   \
-> > +               ct_idle_enter();                                        \
-> >                 __ret = low_level_idle_enter(state);                    \
-> > +               ct_idle_exit();                                         \
-> >                 if (!is_retention)                                      \
-> >                         cpu_pm_exit();                                  \
-> >         }                                                               \
-> >
-
-So the basic premise is that everything that needs RCU inside the idle
-callback must set CPUIDLE_FLAG_RCU_IDLE and by doing that promise to
-call ct_idle_{enter,exit}() themselves.
-
-Setting RCU_IDLE is required when there is RCU usage, however even if
-there is no RCU usage, setting RCU_IDLE is fine, as long as
-ct_idle_{enter,exit}() then get called.
-
-
-So does the below (delta) look better to you?
-
---- a/drivers/acpi/processor_idle.c
-+++ b/drivers/acpi/processor_idle.c
-@@ -1218,7 +1218,7 @@ static int acpi_processor_setup_lpi_stat
- 		state->target_residency = lpi->min_residency;
- 		if (lpi->arch_flags)
- 			state->flags |= CPUIDLE_FLAG_TIMER_STOP;
--		if (lpi->entry_method == ACPI_CSTATE_FFH)
-+		if (i != 0 && lpi->entry_method == ACPI_CSTATE_FFH)
- 			state->flags |= CPUIDLE_FLAG_RCU_IDLE;
- 		state->enter = acpi_idle_lpi_enter;
- 		drv->safe_state_index = i;
---- a/drivers/cpuidle/cpuidle-arm.c
-+++ b/drivers/cpuidle/cpuidle-arm.c
-@@ -53,7 +53,7 @@ static struct cpuidle_driver arm_idle_dr
- 	 * handler for idle state index 0.
- 	 */
- 	.states[0] = {
--		.flags			= CPUIDLE_FLAG_RCU_IDLE,
-+		.flags			= 0,
- 		.enter                  = arm_enter_idle_state,
- 		.exit_latency           = 1,
- 		.target_residency       = 1,
---- a/drivers/cpuidle/cpuidle-psci.c
-+++ b/drivers/cpuidle/cpuidle-psci.c
-@@ -357,7 +357,7 @@ static int psci_idle_init_cpu(struct dev
- 	 * PSCI idle states relies on architectural WFI to be represented as
- 	 * state index 0.
- 	 */
--	drv->states[0].flags = CPUIDLE_FLAG_RCU_IDLE;
-+	drv->states[0].flags = 0;
- 	drv->states[0].enter = psci_enter_idle_state;
- 	drv->states[0].exit_latency = 1;
- 	drv->states[0].target_residency = 1;
---- a/drivers/cpuidle/cpuidle-qcom-spm.c
-+++ b/drivers/cpuidle/cpuidle-qcom-spm.c
-@@ -72,7 +72,7 @@ static struct cpuidle_driver qcom_spm_id
- 	.owner = THIS_MODULE,
- 	.states[0] = {
- 		.enter			= spm_enter_idle_state,
--		.flags			= CPUIDLE_FLAG_RCU_IDLE,
-+		.flags			= 0,
- 		.exit_latency		= 1,
- 		.target_residency	= 1,
- 		.power_usage		= UINT_MAX,
---- a/drivers/cpuidle/cpuidle-riscv-sbi.c
-+++ b/drivers/cpuidle/cpuidle-riscv-sbi.c
-@@ -337,7 +337,7 @@ static int sbi_cpuidle_init_cpu(struct d
- 	drv->cpumask = (struct cpumask *)cpumask_of(cpu);
- 
- 	/* RISC-V architectural WFI to be represented as state index 0. */
--	drv->states[0].flags = CPUIDLE_FLAG_RCU_IDLE;
-+	drv->states[0].flags = 0;
- 	drv->states[0].enter = sbi_cpuidle_enter_state;
- 	drv->states[0].exit_latency = 1;
- 	drv->states[0].target_residency = 1;
---- a/include/linux/cpuidle.h
-+++ b/include/linux/cpuidle.h
-@@ -282,9 +282,7 @@ extern s64 cpuidle_governor_latency_req(
- 	int __ret = 0;							\
- 									\
- 	if (!idx) {							\
--		ct_idle_enter();					\
- 		cpu_do_idle();						\
--		ct_idle_exit();						\
- 		return idx;						\
- 	}								\
- 									\
+                Linus
