@@ -1,55 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8205862C5EC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Nov 2022 18:07:47 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFDE762C5F0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Nov 2022 18:08:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NC8cd315pz3cBD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Nov 2022 04:07:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NC8dn3zQKz3dvH
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Nov 2022 04:08:45 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=lb4e92ZP;
-	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=sYbIvezO;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=GSlVYVS8;
+	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=llOgpdV3;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=lb4e92ZP;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=sYbIvezO;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=GSlVYVS8;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=llOgpdV3;
 	dkim-atps=neutral
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NC8ZZ74Bqz3f7B
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Nov 2022 04:05:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NC8bF73Qhz3f8p
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Nov 2022 04:06:33 +1100 (AEDT)
 From: Thomas Gleixner <tglx@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1668618356;
+	s=2020; t=1668618391;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=b0nLXzHCM/9XWJ+CMFPSpqROvymes9f+yWx6tRnxa+c=;
-	b=lb4e92ZPrWNarh8wXVyzL34Lx5FSRAuYKSVO+wWi99kVOgC6pKy9eyOEUz2LeKKVwAnU9J
-	POoEMyE8RXbX+nLRVcwlaMMI6hXH9MaaELMsWDxe9HQfkrYC/FukDwtL/cZ3I2aWaK5m3v
-	wfeD2W0O3ZVtfhAfkAymQaSFAXEj2FmNhKJl6EjWye4YCJ+nnWKnifI5ZF7x2Na4O8ELWQ
-	sgZ8wVyc3DxUotRZPGm2zaeI/Eni3ScKxnrxJMCzKiNIX/gN3p/uN1SNCt9YknAmeHF4os
-	KZ4jKed0PqMc6rVZQQAyyToJe8hXLm94RpQc+LjjxLy5L31FLb69dV8z8uttpw==
+	bh=gMtjvKuzan+EitBOPG6mbHkFHraigrEr8V57kF2xOHg=;
+	b=GSlVYVS8cqCCkAtiXSIgcwB7/v7yViOvR7AfIcmAkV1Fwnf9lQi1GBcnX5Y4Ju4s3TqUax
+	SI7kdSMfFe52kUeFZogQm5vYXUYsQ711qOhOf6n+5fDc1uCT2j8ibEPRae5U0lLpGIs97Z
+	+oTWClBQtsJ9RI/Y/awt0yHaTJkylyAH9nm54r3Ao4AcyOugeX6hASbTTKB68eZNNoG09O
+	aOApii33W8z8RhuR+jxUJIV+zaXsWeYkc9ZbH4P9J+xTs3XRmTsdliMVoYaHNewOYjAErU
+	Bshc1/9AxWWYhLyd7h5nzJ+ZgqVXWfEPoFB0udtJOlGokuJapopWZ46yQfZLQA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1668618356;
+	s=2020e; t=1668618391;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=b0nLXzHCM/9XWJ+CMFPSpqROvymes9f+yWx6tRnxa+c=;
-	b=sYbIvezOT81QU499/hP7iD6CvOFKqoHyM3Yf48D+LHOeB+ppdhzCEz71TqsqPLg1bB8qZy
-	0mMPMBKYHddP/QCg==
+	bh=gMtjvKuzan+EitBOPG6mbHkFHraigrEr8V57kF2xOHg=;
+	b=llOgpdV3hMHSBIhQev8a/HMzrlttd0KuM/S/oask7Lf5ArUR3Gu3hdMmAW6RHbysShpDRH
+	fHUSj6rq+ZuC3FDw==
 To: Bjorn Helgaas <helgaas@kernel.org>
-Subject: Re: [patch 20/39] PCI/MSI: Move pci_enable_msi() API to api.c
-In-Reply-To: <20221116161839.GA1115061@bhelgaas>
-References: <20221116161839.GA1115061@bhelgaas>
-Date: Wed, 16 Nov 2022 18:05:55 +0100
-Message-ID: <87mt8qq170.ffs@tglx>
+Subject: Re: [patch 22/39] PCI/MSI: Move pci_alloc_irq_vectors() to api.c
+In-Reply-To: <20221116162210.GA1115315@bhelgaas>
+References: <20221116162210.GA1115315@bhelgaas>
+Date: Wed, 16 Nov 2022 18:06:30 +0100
+Message-ID: <87k03uq161.ffs@tglx>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -67,22 +67,21 @@ Cc: linux-pci@vger.kernel.org, Will Deacon <will@kernel.org>, Lorenzo Pieralisi 
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Nov 16 2022 at 10:18, Bjorn Helgaas wrote:
-> On Fri, Nov 11, 2022 at 02:54:46PM +0100, Thomas Gleixner wrote:
->> From: Ahmed S. Darwish <darwi@linutronix.de>
->> 
->> To distangle the maze in msi.c all exported device-driver MSI APIs are now
->> to be grouped in one file, api.c.
->> 
->> Move pci_enable_msi() and make its kernel-doc comprehensive.
->> 
->> Signed-off-by: Ahmed S. Darwish <darwi@linutronix.de>
->> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+On Wed, Nov 16 2022 at 10:22, Bjorn Helgaas wrote:
+>> + * Allocate up to @max_vecs interrupt vectors on device. MSI-X irq
 >
-> Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+> s/irq/IRQ/
 >
-> Nit: suggest "disentangle" or "untangle" for "distangle" here and in
-> subsequent patches.
+>> + * vector allocation has a higher precedence over plain MSI, which has a
+>> + * higher precedence over legacy INTx emulation.
+>> + *
+>> + * Upon a successful allocation, the caller should use pci_irq_vector()
+>> + * to get the Linux IRQ number to be passed to request_threaded_irq().
+>> + * The driver must call pci_free_irq_vectors() on cleanup.
+>> + *
+>> + * Return: number of allocated vectors (which might be smaller than
+>> + * @max_vecs), -ENOSPC if less than @min_vecs interrupt vectors are
+>
+> s/less/fewer/ (also in some previous patches, IIRC)
 
-My fault. I suggested the word to Ahmed well knowing that this is one of
-the words I never get spelled correctly :)
+Will fix.
