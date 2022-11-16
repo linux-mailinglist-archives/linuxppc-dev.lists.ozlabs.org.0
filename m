@@ -1,56 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5036762CE0C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Nov 2022 23:50:57 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCCC962CE14
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Nov 2022 23:52:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NCJDb1X2Bz3dvD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Nov 2022 09:50:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NCJGh43Fyz3cK7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Nov 2022 09:52:44 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=i2zVGcjj;
-	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=tPDGD/t7;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=sZmX6Yg3;
+	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=57u6ql1e;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=i2zVGcjj;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=tPDGD/t7;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=sZmX6Yg3;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=57u6ql1e;
 	dkim-atps=neutral
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NCJCg6LBjz3cJX
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Nov 2022 09:50:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NCJFp4FmYz3cJX
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Nov 2022 09:51:58 +1100 (AEDT)
 From: Thomas Gleixner <tglx@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1668639004;
+	s=2020; t=1668639114;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=KJINf6BQpwrxQblgElY3Z/Qake6SaBEaI8K197mgKXI=;
-	b=i2zVGcjjlmtD6RzaAN7Rd8kq8M9SCk4OpZIQDtcnq05onovT5445baNfe1sWBc2cspfcGV
-	lUd0NTWh04skUtkdZpVkqtXRa00FHct9e+ll7+ToZyQ3mGc9rSNCCmckoPMBVGb9UHLlAs
-	X/xaF0Gx3UqpT7weCv6SGUUg78LHE6qMqpmJPehXumZ4PZlkS7qbS/J6XZk74LdBKHv1k6
-	ismg4/n78osu6aIytwon5YEISBmtQHQHNyhDRs6HSkEFWSGJLWUV/UvR+NQW6MyBGw9JiG
-	77+S86sUqEy1+O3RIq/jaOCEVEn+OC4BVRAklJIr0G6vKZRy9NrTKCPVHZKfYw==
+	bh=og7VFGWgga/WDNrUO7ZE1y9YFk0rZZz1Y7SQa3rc/Bo=;
+	b=sZmX6Yg3XezzZ2hq1tZefSPYyfecyqklALECXScfxof5PazPB2pQMWRIq3wUTu43H8z6hb
+	WEwyl4EmYgpScWUlFaXeaT282S6rdI53Thh1Za1i6LXUb+psAzFJsG3vdZDfFLVyvw/JCw
+	cwNu2XjbgPipQlBYCSry4kJc84H4Kg8smh1T7pMdbtgloyQJlj9sRzAx4eomTMleUHdPKo
+	hlT3wRrONZpVSFl2GOjlxVJkbhazs1D90M/bX1BePMGs/NwN3nEx3gsHEQESH0iRS6Cpju
+	DVXaRP9DDJutgsollRsjdoUnbJGLLBgUHHoh6qVhBUkccGZHxhG2kB4lpTMsRQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1668639004;
+	s=2020e; t=1668639114;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=KJINf6BQpwrxQblgElY3Z/Qake6SaBEaI8K197mgKXI=;
-	b=tPDGD/t7fzyzH2BG49DjIxgAsUrKrCtx9CryyXHlRnNXrE1tNhMmGX4Wm6sSFgsZI1yKx/
-	K10CADLTJTyEk+AA==
+	bh=og7VFGWgga/WDNrUO7ZE1y9YFk0rZZz1Y7SQa3rc/Bo=;
+	b=57u6ql1eCbyCY2SupG0ktAPUYRyn+XthnjW8tkxBEfsMcHX0R/8u/XSsMZf/nZLpWEX8UW
+	CM5vMBglNyqiNVAA==
 To: Jason Gunthorpe <jgg@nvidia.com>
-Subject: Re: [patch 12/39] genirq/msi: Add bus token to struct msi_domain_info
-In-Reply-To: <Y3Uim3pC3hy3HwH8@nvidia.com>
+Subject: Re: [patch 13/39] PCI/MSI: Use msi_domain_info::bus_token
+In-Reply-To: <Y3UjOc2XhwYSVVP1@nvidia.com>
 References: <20221111120501.026511281@linutronix.de>
- <20221111122014.294554462@linutronix.de> <Y3Uim3pC3hy3HwH8@nvidia.com>
-Date: Wed, 16 Nov 2022 23:50:04 +0100
-Message-ID: <87iljeo6oz.ffs@tglx>
+ <20221111122014.352437595@linutronix.de> <Y3UjOc2XhwYSVVP1@nvidia.com>
+Date: Wed, 16 Nov 2022 23:51:54 +0100
+Message-ID: <87fseio6lx.ffs@tglx>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -68,47 +68,27 @@ Cc: linux-pci@vger.kernel.org, Will Deacon <will@kernel.org>, Marc Zyngier <maz@
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Nov 16 2022 at 13:49, Jason Gunthorpe wrote:
-
-> On Fri, Nov 11, 2022 at 02:54:33PM +0100, Thomas Gleixner wrote:
->> From: Ahmed S. Darwish <darwi@linutronix.de>
->> 
->> Add a bus token member to struct msi_domain_info and let
->> msi_create_irq_domain() set the bus token.
->> 
->> That allows to remove the bus token updates at the call sites.
->> 
->> Suggested-by: Thomas Gleixner <tglx@linutronix.de>
->> Signed-off-by: Ahmed S. Darwish <darwi@linutronix.de>
->> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
->> ---
->>  include/linux/msi.h |   19 +++++++++++--------
->>  kernel/irq/msi.c    |    7 +++++--
->>  2 files changed, 16 insertions(+), 10 deletions(-)
+On Wed, Nov 16 2022 at 13:51, Jason Gunthorpe wrote:
+> On Fri, Nov 11, 2022 at 02:54:35PM +0100, Thomas Gleixner wrote:
+>>  	/* PCI-MSI is oneshot-safe */
+>>  	info->chip->flags |= IRQCHIP_ONESHOT_SAFE;
+>> +	/* Let the core update the bus token */
+>> +	info->bus_token = DOMAIN_BUS_PCI_MSI;
 >
+> comment seems a bit obvious
+
+:)
+
 > Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 >
->>  struct msi_domain_info {
->> -	u32			flags;
->> -	struct msi_domain_ops	*ops;
->> -	struct irq_chip		*chip;
->> -	void			*chip_data;
->> -	irq_flow_handler_t	handler;
->> -	void			*handler_data;
->> -	const char		*handler_name;
->> -	void			*data;
->> +	u32				flags;
->> +	enum irq_domain_bus_token	bus_token;
->> +	struct msi_domain_ops		*ops;
->> +	struct irq_chip			*chip;
->> +	void				*chip_data;
->> +	irq_flow_handler_t		handler;
->> +	void				*handler_data;
->> +	const char			*handler_name;
->> +	void				*data;
->>  };
->
-> This is why I've been frowning on horizontal alignment :(
+> Should the callers be updated to set this in their "struct
+> msi_domain_info" ?
 
-Yes, it's annoying when you have to adjust it, but it's fundamentaly
-simpler to parse than the clogged together word salad.
+For PCI/MSI we can handle that in the core for all of them. :)
+
+The other msi_domain_info usage in various places needs obviously
+special care.
+
+Thanks,
+
+        tglx
