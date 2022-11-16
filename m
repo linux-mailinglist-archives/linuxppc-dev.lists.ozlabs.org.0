@@ -2,86 +2,112 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8244A62C736
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Nov 2022 19:06:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE79F62C73B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Nov 2022 19:07:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NC9vz2KfVz3fBr
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Nov 2022 05:06:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NC9xD3bfrz3ff5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Nov 2022 05:07:12 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Ug6x9DUX;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=pwalP8Ol;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f400:7eab::607; helo=nam11-co1-obe.outbound.protection.outlook.com; envelope-from=jgg@nvidia.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Ug6x9DUX;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=pwalP8Ol;
 	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on20607.outbound.protection.outlook.com [IPv6:2a01:111:f400:7eab::607])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NC9tk1gCgz3fRC
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Nov 2022 05:05:01 +1100 (AEDT)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AGGmCjr004256;
-	Wed, 16 Nov 2022 18:04:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=8si5+7BxFl4tp4i+Cn3UuDN0YWpqYcoOSvXYutlZBIg=;
- b=Ug6x9DUXAn2Do8E2DOJtCfrFjgTiBmd/YvoIOlFgQppTCeA8LQf6hrU6yGNVlhnOQfJB
- 94PvuqXR+pk3joBzFy47bA0q5RuzoCfIQea9VVSjBlbgh92CHImC3zVohS867lDsL0EI
- 2RdT5yckgAgPsfwQbbGxsSqfRIlDUcAUlmCQTUpFwqWm8vlk4Iku8HjgcuysiNGLe5fq
- J/Cd98efoRm0GbZXA5LAANIC3MT2nIqJTL/owOZ7wKualh7FFTeAmZMY8hCI9XV4gnDO
- 5PFfakAOiFokpOg9JILhM6CHBoEYVGwbgk8Iz0GddLbChPo20YqE7OFNahCeail0Maei KQ== 
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3kw3q1t1ee-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 16 Nov 2022 18:04:50 +0000
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
-	by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2AGHoTRQ002024;
-	Wed, 16 Nov 2022 18:04:48 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
-	by ppma06ams.nl.ibm.com with ESMTP id 3kt2rjec32-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 16 Nov 2022 18:04:48 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
-	by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2AGI4kGP34472664
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 16 Nov 2022 18:04:46 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1708042041;
-	Wed, 16 Nov 2022 18:04:46 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D04F04203F;
-	Wed, 16 Nov 2022 18:04:45 +0000 (GMT)
-Received: from [9.101.4.34] (unknown [9.101.4.34])
-	by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Wed, 16 Nov 2022 18:04:45 +0000 (GMT)
-Message-ID: <a6b5d6bf-7f6b-8443-f82d-8def1b5ee18d@linux.ibm.com>
-Date: Wed, 16 Nov 2022 19:04:45 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NC9wG6cRYz3cJs
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Nov 2022 05:06:20 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=hkWJuyo8RvJ5qFJz7MlrwBHe9MG9yufYpdI/H28aBVBt8vNN5SIc5cjbiec6VFgyYThzMg8CwvFLekwOnmgLDFidi/pw9PBakVfsQgHfaLgqk/9++JBFY2cpytGJ3678ZNpNRIkVYApzhEgN4OT+AlvTktML6OIUpnnwwcWDe+e/AWIgERTVujytMj9hzTa8QeVgHef4DrYLjAz+YG6iWEZZrx+DjLNcuesN+OfR6mBTD7QZgMjgod5uCO2eMYmGNSOiQTFy6ewBYyDvWJ/nkmkRKr47vCVBbMQj8BYLbzaANrAKACFxxHR48SzZIXDdnFMoMix4w74Sqo+ivcCbrg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=YAUtjP/T3hM7Ta2wpLbIvyHHfK4AYDTR+nFn9jTQZbU=;
+ b=gew+QIFX3xc83nu0lvLuk20rS069b5DM79FY/q2pnGdv13AQH99f1U0KuaCCEJCjbHEIDmFG8f8M95/nwT+TKHZYoekjC9cZ4GTLaXVI8ixP/sbJqHoIn+CFmuBauBkiPHY5N0Krhw9Tc/5AnwZwLTVXZGQImnEwPcD5TdUQaftN5i51NO7sLZAZ7Lexm+E8TiXIg0EQIzX9s2vFteD6t4LP4Y0Z+5kvDtsmtHJZD01+rr8P1T6lkVyVtgFoqPa0JjWXMp+d2LPzuuskOdF1/1NDW8bN7HzbnXWvXj04UQ3B2FcmKiJ9/qCeOZPEHQWERHYXGKeCx8k2gfqji9pJug==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=YAUtjP/T3hM7Ta2wpLbIvyHHfK4AYDTR+nFn9jTQZbU=;
+ b=pwalP8OlR7XAX3PW/ZtE+O1tpHfiJV4twUMuqqrHvkRM0iAbVa7Fel4jBPqZHaqv///ZRz3r5Lee2OLf14X3joGXLaTGbAdPhzh1rGjZk9Au90lXcfBNpUoADb0KPyPw1r+8EidkKtJgP3ni8GuhZU25GW1qu0/xxg8JFIDsg8vhlbvNM+KFXmdqkqEfJcwE9nguBwX+CMqBGkeLqdUHlMCIKFf4mLqDl2/sX9LdiA749+C7lXFVwcB9Ml8J9Gw5HJAiY15xOquHqoNexYK494I4aBY415Wf2cUs3lYZwe7IqSOwSHjdvJJSDsCdhuhUjwuGvlggNgjqX8tUBA0ibg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com (2603:10b6:408:176::16)
+ by DM6PR12MB4186.namprd12.prod.outlook.com (2603:10b6:5:21b::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5813.18; Wed, 16 Nov
+ 2022 18:06:01 +0000
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::f8b0:df13:5f8d:12a]) by LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::f8b0:df13:5f8d:12a%7]) with mapi id 15.20.5813.017; Wed, 16 Nov 2022
+ 18:06:01 +0000
+Date: Wed, 16 Nov 2022 14:05:59 -0400
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [patch 39/39] x86/apic: Remove X86_IRQ_ALLOC_CONTIGUOUS_VECTORS
+Message-ID: <Y3Umh+Pa1WSJ33fD@nvidia.com>
+References: <20221111120501.026511281@linutronix.de>
+ <20221111122015.865042356@linutronix.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221111122015.865042356@linutronix.de>
+X-ClientProxiedBy: MN2PR20CA0054.namprd20.prod.outlook.com
+ (2603:10b6:208:235::23) To LV2PR12MB5869.namprd12.prod.outlook.com
+ (2603:10b6:408:176::16)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.1
-Subject: Re: [PATCH 1/2] cxl: fix possible null-ptr-deref in
- cxl_guest_init_afu|adapter()
-Content-Language: en-US
-To: Yang Yingliang <yangyingliang@huawei.com>, linuxppc-dev@lists.ozlabs.org
-References: <20221111145440.2426970-1-yangyingliang@huawei.com>
-From: Frederic Barrat <fbarrat@linux.ibm.com>
-In-Reply-To: <20221111145440.2426970-1-yangyingliang@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: cj9SqHIsKtod2GXELqrxJKDNIbKUG2wV
-X-Proofpoint-GUID: cj9SqHIsKtod2GXELqrxJKDNIbKUG2wV
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-11-16_03,2022-11-16_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 spamscore=0
- priorityscore=1501 mlxscore=0 phishscore=0 mlxlogscore=999
- lowpriorityscore=0 bulkscore=0 malwarescore=0 adultscore=0 clxscore=1015
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2210170000 definitions=main-2211160124
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV2PR12MB5869:EE_|DM6PR12MB4186:EE_
+X-MS-Office365-Filtering-Correlation-Id: dad55b0c-1a9f-4ba4-ff94-08dac7fd3862
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	HpCFMvIyNFgC3ycJ2MkEtlDFn2cQkXeFWb4+OMJO9kmVLWTmMFvJYE9JQX5gF7p4EYYzz7ANoXQn7OvNHYcYMnQxErbEaZ3ylzzCCRGRtPzOa0xVjuWT0AKFko5OWdWhJZgPIpwbaeHHeY4u6IPBf+Z59mbxJhj0uDkkCH4D0kRwAJIJRjk3DxISzsf1vqREv96uXaG7EcLgqpoPH6JLO4cscHriG+vavkFecFr32l0B2BrCBnNLSpJpgfPUFCpsbxLl5cTKflWgSoFAW7VCH4hyJKTHvFgOjPaaDkFRoNPkcY30eFfp9qk1I9KvEbvii/1ikHW1bA46rmQTl1mZOHlFfldp858kx3uQ9vvx/68gkAi0WpPSTZxar7zRq11evvvn7bAFkQ3ksgE2+26Ep4qjGA1gaNCVTkpEiRz8cKiuPoK4Cb5gr4gG+PVAGy90oMH2WX3Lca97x0KnDG2iWGX2hvfYYvw4V7L3T7676JoQaumjApUNZgd0WXhEbVou8OWuwacL38PxdkTHEJCCn4ka5gm/T0dwxY4kEdmc7K6RVvVU5MWHnVlgq8LibW4TG89K1qyeC05SmXx6P8NExPjIMjLIOpZ2gYnkD4m0k+2Ymbnh71aWPyw3/fgH5MVqAFqOsHNurgdy7+6dsJb8rWUcjydZoTheosGHo3yOeYT/QELh8QdBZUkB19a+CsqYZ65IALxteYXEJU+xgLm1wilm2eBP6vQ1LXkVApDtC//lr/1ZP7t3GPW6Gie8XGHC
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV2PR12MB5869.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(136003)(366004)(376002)(39860400002)(346002)(396003)(451199015)(36756003)(8676002)(4326008)(6916009)(6506007)(6512007)(54906003)(41300700001)(26005)(478600001)(66946007)(6486002)(66476007)(66556008)(316002)(2616005)(86362001)(8936002)(2906002)(186003)(38100700002)(7416002)(4744005)(5660300002)(67856001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?nf3J1mrEMyRwxwMxrkmswE74DKJoLdfLPtB1Jm6d6T3MxXN3XscBI6whH6pn?=
+ =?us-ascii?Q?tMxFnlp24Uong60aRxEmHPZm7ZxBVEnbeEbIWCHoyobusJAjPeByhXq17vM9?=
+ =?us-ascii?Q?QYQC7DAD0I5vxPvdLEm1cBVLqn/Yp9+W9Lvq/rC3WkRCnRrwXc7r/3CXGAop?=
+ =?us-ascii?Q?Py5nbBbUotZPaxluILqiw2jrKLvLbttdvtjUx1be5gohsAbJ/WGe1MqlrSDc?=
+ =?us-ascii?Q?XwptDjmqp1PDLYggoghcWqlB+Ta1xW4SVk1goGoteQJO4+UXOXNHrIoPuIpq?=
+ =?us-ascii?Q?eaRMzaqI0fpiGMMbkTwLgBw86T7DxdmqWo7SLlkGvqHH6WlKAO5F0CfexEzz?=
+ =?us-ascii?Q?1seMR5khk8R9+DZvci1UyS74SwaYtTyjdRiDId7/96At2FCgUC35SKvLUiZP?=
+ =?us-ascii?Q?+hg0Ct4vEVN1nyrFdkXHXFIwY1Iz1qub750IXrW+lZehKM0WrhkD1cxz/Qvz?=
+ =?us-ascii?Q?Iuq2JwXGGA34MBuPBoQSbdlTws0H5hyEKa4TPLkdWtjd6ykpYhTSIP55bL8p?=
+ =?us-ascii?Q?TReu4mlvdOBPpGbweuYcdvs3oyFpjMdN0wiSLZTYZoxdG4QePN5WZxVJiZun?=
+ =?us-ascii?Q?dwdYUxg/13ZHw/2iKnw5KRhBoiv8OLWfU669Yjeg+EhmooP1eXkOx6qoGUCY?=
+ =?us-ascii?Q?P2yZlbHl59binSEmMgCtMxCfg3nRRgdnD2KmrL/iTozSLqOqKyU2oelnrvDm?=
+ =?us-ascii?Q?NL1CAF/+Ya5/Dkx+MZl9KPLWhuqh6tHLlZFQoBR6hnw5aaS5uPKt4fTgubci?=
+ =?us-ascii?Q?q9tu0DxMoFnkNOD9nBtGb+A58vT9O3N3e+wFxSMX1n7tV4IDc0o9ANxV+QDv?=
+ =?us-ascii?Q?L/p6WX2uLDgZdSfkkXz2SbUItjxGJmME0oNFyGuxadnhLJhoAO9TqQLKiGoQ?=
+ =?us-ascii?Q?3PtsdpwQABM0gsBwONHA7/zyOgHyc86oyEs83ANE8iPTYttSDHfdU7toiKKE?=
+ =?us-ascii?Q?wMwDYnJrTZcGrOKGAgShDlTV77GFYdVAOTNFzl+EQYlUmVL4aLyDb64WraoB?=
+ =?us-ascii?Q?kw+FwOm5TJylAGJlU/Oy4w9OH118IwmgWkGrGnuv+PctRVIutHhq32oNH9vo?=
+ =?us-ascii?Q?9z3F8fAay3bCwTpxsgu18jOn0P8CASWNF6/jAIxamStom6TH2XWr79cN6rsC?=
+ =?us-ascii?Q?BaSB3wvvCdi0syyFOBne0lr71ouNHWFG38L4ikMp5RR+6XjqAjBIxiZBraWQ?=
+ =?us-ascii?Q?fsrY89Dp3b8+xpRUZ1Cjv5QtjQcnEz7WKCSmCQEcQVlLC/v32Oer4R8K2PfV?=
+ =?us-ascii?Q?edzbx+A+iMQBdWjBFM6UBGEQ2K4K+1NvOEKwaqYImBt2LxPNn0EeL/tuozx6?=
+ =?us-ascii?Q?Zl660XNZqBxXNprmROBh6M4XsFSp0unuJ9wzMJMAIBaGJJ7mPwvoT80nxh3B?=
+ =?us-ascii?Q?WWCWISmSBczyYzWgGcEZzaeUPMctghYlEA7BXLtlCvjupjG6IcbXhig8WO7k?=
+ =?us-ascii?Q?jC6e2lusFglF1QtqrhEW2gWiexJjwM4UJXTd9Y3u92qFmZOtjvjJqrjImUOv?=
+ =?us-ascii?Q?OirjfGoVwwBxLWTqkE9ocCUtHL4dK1BLCGsAqAw+m2GIAE9aaoBa94QniI59?=
+ =?us-ascii?Q?V0X+ed4QGz1WYegBicroXeJ2DN8pdwQHezrQZhUR?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dad55b0c-1a9f-4ba4-ff94-08dac7fd3862
+X-MS-Exchange-CrossTenant-AuthSource: LV2PR12MB5869.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Nov 2022 18:06:01.5980
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0xt5L//ELUnDMt2oE2KWiLsNGZIRfCE5W+cnCIkBK/mMymvZliEWXyhQF5lgIaZa
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4186
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,108 +119,16 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: gregkh@linuxfoundation.org, ajd@linux.ibm.com, arnd@arndb.de
+Cc: linux-pci@vger.kernel.org, Will Deacon <will@kernel.org>, Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>, Dave Jiang <dave.jiang@intel.com>, Ashok Raj <ashok.raj@intel.com>, Joerg Roedel <joro@8bytes.org>, x86@kernel.org, Allen Hubbe <allenbh@gmail.com>, Kevin Tian <kevin.tian@intel.com>, "Ahmed S. Darwish" <darwi@linutronix.de>, Jon Mason <jdmason@kudzu.us>, linuxppc-dev@lists.ozlabs.org, Alex Williamson <alex.williamson@redhat.com>, Bjorn Helgaas <bhelgaas@google.com>, Dan Williams <dan.j.williams@intel.com>, Reinette Chatre <reinette.chatre@intel.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, LKML <linux-kernel@vger.kernel.org>, Marc Zyngier <maz@kernel.org>, Logan Gunthorpe <logang@deltatee.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Fri, Nov 11, 2022 at 02:55:17PM +0100, Thomas Gleixner wrote:
+> Now that the PCI/MSI core code does early checking for multi-MSI support
+> X86_IRQ_ALLOC_CONTIGUOUS_VECTORS is not required anymore.
 
+> Remove the flag and rely on MSI_FLAG_MULTI_PCI_MSI.
 
-On 11/11/2022 15:54, Yang Yingliang wrote:
-> If device_register() fails in cxl_register_afu|adapter(), the device
-> is not added, device_unregister() can not be called in the error path,
-> otherwise it will cause a null-ptr-deref because of removing not added
-> device.
-> 
-> As comment of device_register() says, it should use put_device() to give
-> up the reference in the error path. So split device_unregister() into
-> device_del() and put_device(), then goes to put dev when register fails.
-> 
-> Fixes: 14baf4d9c739 ("cxl: Add guest-specific code")
-> Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-> ---
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 
-
-Thanks for fixing it!
-At first, I was slightly uneasy about calling device_del() and 
-put_device() directly, i.e. it would be better not to worry about what's 
-under the hood of device_unregister(). But 1) I don't see how else to 
-fix it and 2) more importantly, I looked at the history of 
-device_unregister() to see how frequently it changed. I can now rest 
-easy :-)
-
-Acked-by: Frederic Barrat <fbarrat@linux.ibm.com>
-
-   Fred
-
-
-
->   drivers/misc/cxl/guest.c | 24 ++++++++++++++----------
->   1 file changed, 14 insertions(+), 10 deletions(-)
-> 
-> diff --git a/drivers/misc/cxl/guest.c b/drivers/misc/cxl/guest.c
-> index 375f692ae9d6..fb95a2d5cef4 100644
-> --- a/drivers/misc/cxl/guest.c
-> +++ b/drivers/misc/cxl/guest.c
-> @@ -965,10 +965,10 @@ int cxl_guest_init_afu(struct cxl *adapter, int slice, struct device_node *afu_n
->   	 * if it returns an error!
->   	 */
->   	if ((rc = cxl_register_afu(afu)))
-> -		goto err_put1;
-> +		goto err_put_dev;
->   
->   	if ((rc = cxl_sysfs_afu_add(afu)))
-> -		goto err_put1;
-> +		goto err_del_dev;
->   
->   	/*
->   	 * pHyp doesn't expose the programming models supported by the
-> @@ -984,7 +984,7 @@ int cxl_guest_init_afu(struct cxl *adapter, int slice, struct device_node *afu_n
->   		afu->modes_supported = CXL_MODE_DIRECTED;
->   
->   	if ((rc = cxl_afu_select_best_mode(afu)))
-> -		goto err_put2;
-> +		goto err_remove_sysfs;
->   
->   	adapter->afu[afu->slice] = afu;
->   
-> @@ -1004,10 +1004,12 @@ int cxl_guest_init_afu(struct cxl *adapter, int slice, struct device_node *afu_n
->   
->   	return 0;
->   
-> -err_put2:
-> +err_remove_sysfs:
->   	cxl_sysfs_afu_remove(afu);
-> -err_put1:
-> -	device_unregister(&afu->dev);
-> +err_del_dev:
-> +	device_del(&afu->dev);
-> +err_put_dev:
-> +	put_device(&afu->dev);
->   	free = false;
->   	guest_release_serr_irq(afu);
->   err2:
-> @@ -1141,18 +1143,20 @@ struct cxl *cxl_guest_init_adapter(struct device_node *np, struct platform_devic
->   	 * even if it returns an error!
->   	 */
->   	if ((rc = cxl_register_adapter(adapter)))
-> -		goto err_put1;
-> +		goto err_put_dev;
->   
->   	if ((rc = cxl_sysfs_adapter_add(adapter)))
-> -		goto err_put1;
-> +		goto err_del_dev;
->   
->   	/* release the context lock as the adapter is configured */
->   	cxl_adapter_context_unlock(adapter);
->   
->   	return adapter;
->   
-> -err_put1:
-> -	device_unregister(&adapter->dev);
-> +err_del_dev:
-> +	device_del(&adapter->dev);
-> +err_put_dev:
-> +	put_device(&adapter->dev);
->   	free = false;
->   	cxl_guest_remove_chardev(adapter);
->   err1:
+Jason
