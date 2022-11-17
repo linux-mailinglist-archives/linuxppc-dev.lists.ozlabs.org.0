@@ -1,60 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F6BF62D0FB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Nov 2022 03:06:23 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D681B62D128
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Nov 2022 03:36:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NCNZ50m8Pz3dvK
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Nov 2022 13:06:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NCPDl5fkFz3f3M
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Nov 2022 13:36:23 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=oBVYY4GH;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=m5Z1kCtG;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=srs0=dvcg=3r=zx2c4.com=jason@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.100; helo=mga07.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=oBVYY4GH;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=m5Z1kCtG;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NCNY72JP2z3cLF
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Nov 2022 13:05:31 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id C0E69B81F86;
-	Thu, 17 Nov 2022 02:05:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B916CC433D6;
-	Thu, 17 Nov 2022 02:05:21 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="oBVYY4GH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1668650720;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dEJat997gDB284IQJDfbqi4/5IXvytYbwgZCPi3gI8M=;
-	b=oBVYY4GH+szvpy7v+MDpWl7rIbq1Ag0+XjaiW9ivB+W/ypTPzWGRKmZ5grHtl0NRu+tdAw
-	OceXtZlFIdzaNyPTBIDx5ZFzB/5YparpWLHfLRzfitegfl7G9s7sam3TuLTYL+fICnJhuN
-	DFCVAmQjhuCf5Jl3bBUK1aEXDFPWY+A=
-Received: 	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id ca8ad650 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Thu, 17 Nov 2022 02:05:19 +0000 (UTC)
-Date: Thu, 17 Nov 2022 03:05:14 +0100
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-To: Kees Cook <keescook@chromium.org>
-Subject: Re: [PATCH v2 3/3] treewide: use get_random_u32_between() when
- possible
-Message-ID: <Y3WW2lOgoYLKQeve@zx2c4.com>
-References: <20221114164558.1180362-1-Jason@zx2c4.com>
- <20221114164558.1180362-4-Jason@zx2c4.com>
- <202211161436.A45AD719A@keescook>
- <Y3V4g8eorwiU++Y3@zx2c4.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NCPBm2kZ4z3cLF
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Nov 2022 13:34:34 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1668652480; x=1700188480;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Si3sqkGKgxor/0CnkGik1gBWAftmav0NcyaYzVyBuiU=;
+  b=m5Z1kCtGCRUMpDFd2DdZtStSNX+SpDRn9PRIBFN3h5x9DATNUWMb3yBZ
+   2q/ksvNe7zMzK6e36z2/i9jWk40cv+ppwAjw9u1YOVEB/Ce7jSEjtg6Vc
+   fM5dxnJRt+az/j6cI2wEMdz5e2bBEK7L4kuEP4dTQ50jkRG6quGAZWC3u
+   KWxUf1bB38zm3jaxPmZy31pNR1QQ/uLAMxezoLzXEHJUsk/7hMpmELF0c
+   5bPxEkvBThzCVYFtuTfmxDBQlb41rLcSF1bcdYQ9KWppD5uqUa0C3js67
+   AB5F8mKb/m/PRE9CUoMf0PxQpQCQLN0wh8IU997gp5tmCpOT8KIbXEwUb
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10533"; a="377000433"
+X-IronPort-AV: E=Sophos;i="5.96,169,1665471600"; 
+   d="scan'208";a="377000433"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2022 18:34:31 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10533"; a="633874467"
+X-IronPort-AV: E=Sophos;i="5.96,169,1665471600"; 
+   d="scan'208";a="633874467"
+Received: from lkp-server01.sh.intel.com (HELO ebd99836cbe0) ([10.239.97.150])
+  by orsmga007.jf.intel.com with ESMTP; 16 Nov 2022 18:34:29 -0800
+Received: from kbuild by ebd99836cbe0 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1ovUjV-0002zX-0c;
+	Thu, 17 Nov 2022 02:34:29 +0000
+Date: Thu, 17 Nov 2022 10:34:18 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:fixes-test] BUILD SUCCESS
+ eb761a1760bf30cf64e98ee8d914866e62ec9e8a
+Message-ID: <63759daa.hMgGNFSzIKIS6ye8%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <Y3V4g8eorwiU++Y3@zx2c4.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,34 +70,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Darrick J . Wong" <djwong@kernel.org>, patches@lists.linux.dev, netdev@vger.kernel.org, Andreas Dilger <adilger.kernel@dilger.ca>, ydroneaud@opteya.com, Herbert Xu <herbert@gondor.apana.org.au>, Richard Weinberger <richard@nod.at>, Helge Deller <deller@gmx.de>, Russell King <linux@armlinux.org.uk>, Jason Gunthorpe <jgg@nvidia.com>, Catalin Marinas <catalin.marinas@arm.com>, Jakub Kicinski <kuba@kernel.org>, linux-mips@vger.kernel.org, linux-media@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, Jani Nikula <jani.nikula@linux.intel.com>, linux-block@vger.kernel.org, SeongJae Park <sj@kernel.org>, loongarch@lists.linux.dev, Jaegeuk Kim <jaegeuk@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Theodore Ts'o <tytso@mit.edu>, linux-parisc@vger.kernel.org, "Martin K . Petersen" <martin.petersen@oracle.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mmc@vger.kernel.org, linux-kerne
- l@vger.kernel.org, Christoph =?utf-8?Q?B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>, linux-crypto@vger.kernel.org, Sakari Ailus <sakari.ailus@linux.intel.com>, linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Nov 17, 2022 at 12:55:47AM +0100, Jason A. Donenfeld wrote:
-> 1) How/whether to make f(0, UR2_MAX) safe,
->    - without additional 64-bit arithmetic,
->    - minimizing the number of branches.
->    I have a few ideas I'll code golf for a bit.
-> I think I can make progress with (1) alone by fiddling around with
-> godbolt enough, like usual.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
+branch HEAD: eb761a1760bf30cf64e98ee8d914866e62ec9e8a  powerpc: Fix writable sections being moved into the rodata region
 
-The code gen is definitely worse.
+elapsed time: 725m
 
-Original half-open interval:
+configs tested: 67
+configs skipped: 2
 
-    return floor + get_random_u32_below(ceil - floor);
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Suggested fully closed interval:
-	
-    ceil = ceil - floor + 1;
-    return likely(ceil) ? floor + get_random_u32_below(ceil) : get_random_u32();
+gcc tested configs:
+arc                                 defconfig
+alpha                               defconfig
+s390                                defconfig
+s390                             allmodconfig
+um                             i386_defconfig
+um                           x86_64_defconfig
+s390                             allyesconfig
+powerpc                           allnoconfig
+mips                             allyesconfig
+powerpc                          allmodconfig
+sh                               allmodconfig
+ia64                             allmodconfig
+x86_64                          rhel-8.3-func
+x86_64                    rhel-8.3-kselftests
+x86_64                         rhel-8.3-kunit
+x86_64                           rhel-8.3-kvm
+x86_64                           rhel-8.3-syz
+i386                          randconfig-a001
+sh                          r7785rp_defconfig
+m68k                             allyesconfig
+i386                          randconfig-a003
+alpha                            allyesconfig
+m68k                             allmodconfig
+arc                              allyesconfig
+i386                          randconfig-a005
+i386                             allyesconfig
+i386                                defconfig
+x86_64                              defconfig
+x86_64                           allyesconfig
+x86_64                               rhel-8.3
+x86_64                        randconfig-a006
+x86_64                        randconfig-a004
+x86_64                        randconfig-a002
+arm64                            allyesconfig
+arm                                 defconfig
+arm                              allyesconfig
+i386                          randconfig-a012
+i386                          randconfig-a014
+i386                          randconfig-a016
+x86_64                            allnoconfig
+sh                            titan_defconfig
+powerpc                 mpc85xx_cds_defconfig
+mips                            ar7_defconfig
+arm                            zeus_defconfig
+arm                             ezx_defconfig
+i386                          randconfig-c001
+microblaze                          defconfig
+sh                          rsk7203_defconfig
+sparc64                          alldefconfig
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+riscv                    nommu_k210_defconfig
+riscv                             allnoconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+i386                          debian-10.3-kvm
+i386                        debian-10.3-kunit
+i386                         debian-10.3-func
 
-Is the worse code gen actually worth it? Options:
+clang tested configs:
+i386                          randconfig-a002
+i386                          randconfig-a006
+i386                          randconfig-a004
+powerpc                     pseries_defconfig
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+x86_64                        randconfig-a016
+hexagon              randconfig-r041-20221117
+hexagon              randconfig-r045-20221117
 
- a) Decide worse codegen is worth it.
- b) Declare f(0, U32_MAX) undefined and just not handle it.
- c) Stick with original half-open interval that doesn't have this problem.
-
-Jason
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
