@@ -1,62 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F9F862D818
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Nov 2022 11:36:31 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72DB462DC4C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Nov 2022 14:08:32 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NCbtj2WgHz3dvM
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Nov 2022 21:36:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NCgG62g7rz3ccw
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Nov 2022 00:08:30 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.a=rsa-sha256 header.s=pandora-2019 header.b=vf0GDy8l;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=WDZLbEqv;
+	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=L9t4AwQo;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=armlinux.org.uk (client-ip=2001:4d48:ad52:32c8:5054:ff:fe00:142; helo=pandora.armlinux.org.uk; envelope-from=linux+linuxppc-dev=lists.ozlabs.org@armlinux.org.uk; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.a=rsa-sha256 header.s=pandora-2019 header.b=vf0GDy8l;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=WDZLbEqv;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=L9t4AwQo;
 	dkim-atps=neutral
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NCbsl0wB2z3bbB
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Nov 2022 21:35:34 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=2BgNwLdh+HBA4xrzyykRGd8e3nHfE6jHoZjPyIO7tQ8=; b=vf0GDy8lKzIs95KZT9hTDN9bLB
-	KkkakBOovK/EhU72ZwXcJFd6ZXnYeh5hWZFAO+QwAUy+Iil38BRQKWQA/ovqtD2R3k/zIRWUVleNY
-	mI6EufB0EHT9QlEKH1MxQI8dlYgzNxWxQ/KJJ0HUSUpP7NgTBBgzbRiK7voh4pixtxFai3XdS+4CH
-	KUkR3sQ10UY1J1DLrBw2+xk4ToBWEQq3GT1Ou599VPaU5ywBw9TAIVKjU75NdNZTSPprpMUx5CQP1
-	Y51nu+1iINv9JXk8aPYDqbEhMoPEahldPraSq7QM6Racs8sRYiTunUTXpT5cPjddHYjb4UQdEZEgF
-	MxQo2C5A==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:35306)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1ovcCQ-0004Iz-Pt; Thu, 17 Nov 2022 10:32:50 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1ovcCG-0006jE-Em; Thu, 17 Nov 2022 10:32:40 +0000
-Date: Thu, 17 Nov 2022 10:32:40 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Subject: Re: [PATCH v2 3/3] treewide: use get_random_u32_between() when
- possible
-Message-ID: <Y3YNyJ8oeixYuvdI@shell.armlinux.org.uk>
-References: <20221114164558.1180362-1-Jason@zx2c4.com>
- <20221114164558.1180362-4-Jason@zx2c4.com>
- <202211161436.A45AD719A@keescook>
- <Y3V4g8eorwiU++Y3@zx2c4.com>
- <Y3WW2lOgoYLKQeve@zx2c4.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NCgFB0Fjfz3bhZ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Nov 2022 00:07:42 +1100 (AEDT)
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1668690453;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ttz1/GMaTk8h4TD14aPsbGIxMJv2rHjmwjhSDqhucs0=;
+	b=WDZLbEqveG5PJjvIG4M84A7mMytlGNV61Gw/YoP/QDOLetHLKNzxZ+trhb1EyoXlHMRPCY
+	uleqRqzLb6qyJafV7I1Gqw77uQ+CL7yRAXYYLJtPbH+CRgOFjb6Vq/SxWxmOk6937uf5ef
+	9VwJBtcPyyC7HCh0bYgycC5xCmA/8sST/2E8pOe4E148IEPGtXVFI6q6qZGeNE+j3OY1jo
+	QjDBfDC8AF5fbQ+neAWN6pyXgjBX6V6HJ2Yp2YSDLioOXVmnS934gU1wvrFYyMqwWKZSbM
+	O90UyTmYC2HHKEnS9SLVobc7Fm3sQmMNZL1LdzKmSNuNEMLk02Fmth8gzQXnZw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1668690453;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ttz1/GMaTk8h4TD14aPsbGIxMJv2rHjmwjhSDqhucs0=;
+	b=L9t4AwQosUgasEO8gwRfKjPJm0d6kdrZ24AvdpYKQri4d72MF1pCCaBP2DVDgm+HALY4kc
+	v0LLaVo5cdrzG7Dw==
+To: Ashok Raj <ashok.raj@intel.com>
+Subject: Re: [patch 01/39] PCI/MSI: Check for MSI enabled in
+ __pci_msix_enable()
+In-Reply-To: <Y3UEFBJW1toFJZGn@a4bf019067fa.jf.intel.com>
+References: <20221111120501.026511281@linutronix.de>
+ <20221111122013.653556720@linutronix.de>
+ <Y3UEFBJW1toFJZGn@a4bf019067fa.jf.intel.com>
+Date: Thu, 17 Nov 2022 14:07:33 +0100
+Message-ID: <87cz9ln2zu.ffs@tglx>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Y3WW2lOgoYLKQeve@zx2c4.com>
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,42 +66,18 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Darrick J . Wong" <djwong@kernel.org>, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, Andreas Dilger <adilger.kernel@dilger.ca>, ydroneaud@opteya.com, Herbert Xu <herbert@gondor.apana.org.au>, Richard Weinberger <richard@nod.at>, Helge Deller <deller@gmx.de>, Jason Gunthorpe <jgg@nvidia.com>, Catalin Marinas <catalin.marinas@arm.com>, Jakub Kicinski <kuba@kernel.org>, linux-mips@vger.kernel.org, linux-media@vger.kernel.org, Kees Cook <keescook@chromium.org>, Heiko Carstens <hca@linux.ibm.com>, Jani Nikula <jani.nikula@linux.intel.com>, linux-block@vger.kernel.org, SeongJae Park <sj@kernel.org>, loongarch@lists.linux.dev, Jaegeuk Kim <jaegeuk@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Theodore Ts'o <tytso@mit.edu>, linux-parisc@vger.kernel.org, "Martin K . Petersen" <martin.petersen@oracle.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mmc@vger.kernel.org, patches@l
- ists.linux.dev, Christoph =?iso-8859-1?Q?B=F6hmwalder?= <christoph.boehmwalder@linbit.com>, linux-crypto@vger.kernel.org, Sakari Ailus <sakari.ailus@linux.intel.com>, linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-pci@vger.kernel.org, Will Deacon <will@kernel.org>, Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>, Dave Jiang <dave.jiang@intel.com>, Ashok Raj <ashok.raj@intel.com>, Joerg Roedel <joro@8bytes.org>, x86@kernel.org, Jason Gunthorpe <jgg@mellanox.com>, Allen Hubbe <allenbh@gmail.com>, Kevin Tian <kevin.tian@intel.com>, "Ahmed
+ S. Darwish" <darwi@linutronix.de>, Jon Mason <jdmason@kudzu.us>, linuxppc-dev@lists.ozlabs.org, Alex Williamson <alex.williamson@redhat.com>, Bjorn Helgaas <bhelgaas@google.com>, Dan Williams <dan.j.williams@intel.com>, Reinette Chatre <reinette.chatre@intel.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, LKML <linux-kernel@vger.kernel.org>, Marc Zyngier <maz@kernel.org>, Logan Gunthorpe <logang@deltatee.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Nov 17, 2022 at 03:05:14AM +0100, Jason A. Donenfeld wrote:
-> On Thu, Nov 17, 2022 at 12:55:47AM +0100, Jason A. Donenfeld wrote:
-> > 1) How/whether to make f(0, UR2_MAX) safe,
-> >    - without additional 64-bit arithmetic,
-> >    - minimizing the number of branches.
-> >    I have a few ideas I'll code golf for a bit.
-> > I think I can make progress with (1) alone by fiddling around with
-> > godbolt enough, like usual.
-> 
-> The code gen is definitely worse.
-> 
-> Original half-open interval:
-> 
->     return floor + get_random_u32_below(ceil - floor);
-> 
-> Suggested fully closed interval:
-> 	
->     ceil = ceil - floor + 1;
->     return likely(ceil) ? floor + get_random_u32_below(ceil) : get_random_u32();
+On Wed, Nov 16 2022 at 07:39, Ashok Raj wrote:
+> On Fri, Nov 11, 2022 at 02:54:15PM +0100, Thomas Gleixner wrote:
+>
+> Can the pre-enabled checks for msi and msix be moved up before any vector
+> range check?
+>
+> not that it matters for how it fails, does EBUSY sound better?
 
-How many of these uses are going to have ceil and floor as a variable?
-If they're constants (e.g. due to being in an inline function with
-constant arguments) then the compiler will optimise all of the above
-and the assembly code will just be either:
-
-1. a call to get_random_u32()
-2. a call to get_random_u32_below() and an addition.
-
-If one passes ceil or floor as a variable, then yes, the code gen is
-going to be as complicated as you suggest above.
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
+Does any caller care about the error code or about the ordering in which
+the caller stupity is detected?
