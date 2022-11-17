@@ -2,56 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45DFE62E6F6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Nov 2022 22:31:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D040062E772
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Nov 2022 22:58:10 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NCtQX1KG1z3f2r
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Nov 2022 08:31:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NCv1D4ZFKz3f35
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Nov 2022 08:58:08 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=1Mu1bjco;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=PJZ6jbnQ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::1030; helo=mail-pj1-x1030.google.com; envelope-from=keescook@chromium.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=1Mu1bjco;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=PJZ6jbnQ;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NCtPd1dVdz3bbb
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Nov 2022 08:30:43 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id C858CB82202;
-	Thu, 17 Nov 2022 21:30:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B627BC433D6;
-	Thu, 17 Nov 2022 21:30:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1668720638;
-	bh=qYl67bsPlVudFRZ07LmNN+KoGZ8Y9700f1Y7TQQuaAA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=1Mu1bjcodR2h6/tluJfRwYugN7e71YcxSv/MAWYAeYyM6pP9nh/LtchZM00hlfJP4
-	 YWY93YeMF0SBDgjiQEooKErINoLVwD6Uwl9Dpy7RJ58WHYo5sTt49s8jC9H+WkQajW
-	 WNmOX/r/l0+uTB1XIF6NEKv5O5FZFnmVojfttBik=
-Date: Thu, 17 Nov 2022 22:27:30 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Nayna <nayna@linux.vnet.ibm.com>
-Subject: Re: [PATCH 2/4] fs: define a firmware security filesystem named
- fwsecurityfs
-Message-ID: <Y3anQukokMcQr+iE@kroah.com>
-References: <20221106210744.603240-1-nayna@linux.ibm.com>
- <20221106210744.603240-3-nayna@linux.ibm.com>
- <Y2uvUFQ9S2oaefSY@kroah.com>
- <8447a726-c45d-8ebb-2a74-a4d759631e64@linux.vnet.ibm.com>
- <Y2zLRw/TzV/sWgqO@kroah.com>
- <44191f02-7360-bca3-be8f-7809c1562e68@linux.vnet.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NCv0K3Kvsz3bhn
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Nov 2022 08:57:18 +1100 (AEDT)
+Received: by mail-pj1-x1030.google.com with SMTP id d13-20020a17090a3b0d00b00213519dfe4aso3283529pjc.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Nov 2022 13:57:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=IIh+nGIerLfk4ZB9SpoRZWMODmjSUqXiyhjydKb0Cds=;
+        b=PJZ6jbnQhQq9tru88c3QcgjfZaJDnoJRCzzf1bX0/gWQf6BO1kYnGuZiAkcQbfZxF1
+         wVZdaktXE7y7G0iGR9w0mDib97tK+9Z1KEN4DGKZzUJEwZpO/1SRERjEZW4dZS1lSmQm
+         6pLSDQke2I1tY0Rbt7braOr4eQDXUxJpKb4Zg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IIh+nGIerLfk4ZB9SpoRZWMODmjSUqXiyhjydKb0Cds=;
+        b=wB3e2q37b+knDe+5dvesPDFo0o2ywdBwm59l5ZQORmlsD9L/RM8qcoNi2d1l+FNsoi
+         QqDxpqfllq5YvGNTph+atoAYK0nilI3aT0aixRXK8Li09DbqArrLoSG3zN4lDYDglUtj
+         fSCbB/elcsse+r6NUiovOG+IB4Ss7xYfjf4rPw9ZCClpIIwHS066dx81h9A1Usi9+5cv
+         QfNrmEJ2prcuwPkUmrT6uRSyxIponsVNiOfAEPv+xEhnvRpVt5SCIdx28h1DRXCvGBGS
+         sNBu40UjYmZSeO8USY0HOOhXU/W7fekY7FRCkPzLtf5nWsPITpLJawVjq8cz3uMg3oLU
+         lDSg==
+X-Gm-Message-State: ANoB5plRmiBW/DSBC4hIE7aK0T6uY6K0tcjAsktnHzTnqmBU9YJEt/vr
+	oljf10f9aW+tB6eT/7TIHV94Mg==
+X-Google-Smtp-Source: AA0mqf5F2mDePv/SsUAusLJAu22vdbKLGH3peZOY+MZBhXcyEG7NIlWlaGpyKLA4kx4t011dWowR5A==
+X-Received: by 2002:a17:90a:dd82:b0:212:fdb1:720b with SMTP id l2-20020a17090add8200b00212fdb1720bmr10785160pjv.66.1668722234748;
+        Thu, 17 Nov 2022 13:57:14 -0800 (PST)
+Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id a28-20020aa795bc000000b0056beae3dee2sm1674860pfk.145.2022.11.17.13.57.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Nov 2022 13:57:14 -0800 (PST)
+Date: Thu, 17 Nov 2022 13:57:13 -0800
+From: Kees Cook <keescook@chromium.org>
+To: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Subject: Re: [PATCH v3 3/3] treewide: use get_random_u32_inclusive() when
+ possible
+Message-ID: <202211171349.F42BA5B0@keescook>
+References: <20221114164558.1180362-1-Jason@zx2c4.com>
+ <20221117202906.2312482-1-Jason@zx2c4.com>
+ <20221117202906.2312482-4-Jason@zx2c4.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <44191f02-7360-bca3-be8f-7809c1562e68@linux.vnet.ibm.com>
+In-Reply-To: <20221117202906.2312482-4-Jason@zx2c4.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,185 +77,120 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Matthew Garrett <mjg59@srcf.ucam.org>, linux-efi@vger.kernel.org, Andrew Donnellan <ajd@linux.ibm.com>, Nayna Jain <nayna@linux.ibm.com>, linux-kernel@vger.kernel.org, npiggin@gmail.com, Dov Murik <dovmurik@linux.ibm.com>, Dave Hansen <dave.hansen@intel.com>, linux-security-module <linux-security-module@vger.kernel.org>, Paul Mackerras <paulus@samba.org>, linux-fsdevel@vger.kernel.org, George Wilson <gcwilson@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Stefan Berger <stefanb@linux.ibm.com>
+Cc: "Darrick J . Wong" <djwong@kernel.org>, patches@lists.linux.dev, netdev@vger.kernel.org, Andreas Dilger <adilger.kernel@dilger.ca>, Herbert Xu <herbert@gondor.apana.org.au>, Richard Weinberger <richard@nod.at>, Helge Deller <deller@gmx.de>, Russell King <linux@armlinux.org.uk>, Jason Gunthorpe <jgg@nvidia.com>, Catalin Marinas <catalin.marinas@arm.com>, Jakub Kicinski <kuba@kernel.org>, linux-mips@vger.kernel.org, linux-media@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, Jani Nikula <jani.nikula@linux.intel.com>, linux-block@vger.kernel.org, SeongJae Park <sj@kernel.org>, loongarch@lists.linux.dev, Jaegeuk Kim <jaegeuk@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Theodore Ts'o <tytso@mit.edu>, linux-parisc@vger.kernel.org, "Martin K . Petersen" <martin.petersen@oracle.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org, Chr
+ istoph =?iso-8859-1?Q?B=F6hmwalder?= <christoph.boehmwalder@linbit.com>, linux-crypto@vger.kernel.org, Sakari Ailus <sakari.ailus@linux.intel.com>, linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Nov 14, 2022 at 06:03:43PM -0500, Nayna wrote:
+On Thu, Nov 17, 2022 at 09:29:06PM +0100, Jason A. Donenfeld wrote:
+> These cases were done with this Coccinelle:
 > 
-> On 11/10/22 04:58, Greg Kroah-Hartman wrote:
-> > On Wed, Nov 09, 2022 at 03:10:37PM -0500, Nayna wrote:
-> > > On 11/9/22 08:46, Greg Kroah-Hartman wrote:
-> > > > On Sun, Nov 06, 2022 at 04:07:42PM -0500, Nayna Jain wrote:
-> > > > > securityfs is meant for Linux security subsystems to expose policies/logs
-> > > > > or any other information. However, there are various firmware security
-> > > > > features which expose their variables for user management via the kernel.
-> > > > > There is currently no single place to expose these variables. Different
-> > > > > platforms use sysfs/platform specific filesystem(efivarfs)/securityfs
-> > > > > interface as they find it appropriate. Thus, there is a gap in kernel
-> > > > > interfaces to expose variables for security features.
-> > > > > 
-> > > > > Define a firmware security filesystem (fwsecurityfs) to be used by
-> > > > > security features enabled by the firmware. These variables are platform
-> > > > > specific. This filesystem provides platforms a way to implement their
-> > > > >    own underlying semantics by defining own inode and file operations.
-> > > > > 
-> > > > > Similar to securityfs, the firmware security filesystem is recommended
-> > > > > to be exposed on a well known mount point /sys/firmware/security.
-> > > > > Platforms can define their own directory or file structure under this path.
-> > > > > 
-> > > > > Example:
-> > > > > 
-> > > > > # mount -t fwsecurityfs fwsecurityfs /sys/firmware/security
-> > > > Why not juset use securityfs in /sys/security/firmware/ instead?  Then
-> > > > you don't have to create a new filesystem and convince userspace to
-> > > > mount it in a specific location?
-> > >  From man 5 sysfs page:
-> > > 
-> > > /sys/firmware: This subdirectory contains interfaces for viewing and
-> > > manipulating firmware-specific objects and attributes.
-> > > 
-> > > /sys/kernel: This subdirectory contains various files and subdirectories
-> > > that provide information about the running kernel.
-> > > 
-> > > The security variables which are being exposed via fwsecurityfs are managed
-> > > by firmware, stored in firmware managed space and also often consumed by
-> > > firmware for enabling various security features.
-> > Ok, then just use the normal sysfs interface for /sys/firmware, why do
-> > you need a whole new filesystem type?
-> > 
-> > >  From git commit b67dbf9d4c1987c370fd18fdc4cf9d8aaea604c2, the purpose of
-> > > securityfs(/sys/kernel/security) is to provide a common place for all kernel
-> > > LSMs. The idea of
-> > > fwsecurityfs(/sys/firmware/security) is to similarly provide a common place
-> > > for all firmware security objects.
-> > > 
-> > > /sys/firmware already exists. The patch now defines a new /security
-> > > directory in it for firmware security features. Using /sys/kernel/security
-> > > would mean scattering firmware objects in multiple places and confusing the
-> > > purpose of /sys/kernel and /sys/firmware.
-> > sysfs is confusing already, no problem with making it more confusing :)
-> > 
-> > Just document where you add things and all should be fine.
-> > 
-> > > Even though fwsecurityfs code is based on securityfs, since the two
-> > > filesystems expose different types of objects and have different
-> > > requirements, there are distinctions:
-> > > 
-> > > 1. fwsecurityfs lets users create files in userspace, securityfs only allows
-> > > kernel subsystems to create files.
-> > Wait, why would a user ever create a file in this filesystem?  If you
-> > need that, why not use configfs?  That's what that is for, right?
+> @@
+> expression H;
+> expression L;
+> @@
+> - (get_random_u32_below(H) + L)
+> + get_random_u32_inclusive(L, H + L - 1)
 > 
-> The purpose of fwsecurityfs is not to expose configuration items but rather
-> security objects used for firmware security features. I think these are more
-> comparable to EFI variables, which are exposed via an EFI-specific
-> filesystem, efivarfs, rather than configfs.
+> @@
+> expression H;
+> expression L;
+> expression E;
+> @@
+>   get_random_u32_inclusive(L,
+>   H
+> - + E
+> - - E
+>   )
 > 
-> > 
-> > > 2. firmware and kernel objects may have different requirements. For example,
-> > > consideration of namespacing. As per my understanding, namespacing is
-> > > applied to kernel resources and not firmware resources. That's why it makes
-> > > sense to add support for namespacing in securityfs, but we concluded that
-> > > fwsecurityfs currently doesn't need it. Another but similar example of it
-> > > is: TPM space, which is exposed from hardware. For containers, the TPM would
-> > > be made as virtual/software TPM. Similarly for firmware space for
-> > > containers, it would have to be something virtualized/software version of
-> > > it.
-> > I do not understand, sorry.  What does namespaces have to do with this?
-> > sysfs can already handle namespaces just fine, why not use that?
+> @@
+> expression H;
+> expression L;
+> expression E;
+> @@
+>   get_random_u32_inclusive(L,
+>   H
+> - - E
+> - + E
+>   )
 > 
-> Firmware objects are not namespaced. I mentioned it here as an example of
-> the difference between firmware and kernel objects. It is also in response
-> to the feedback from James Bottomley in RFC v2 [https://lore.kernel.org/linuxppc-dev/41ca51e8db9907d9060cc38adb59a66dcae4c59b.camel@HansenPartnership.com/].
-
-I do not understand, sorry.  Do you want to use a namespace for these or
-not?  The code does not seem to be using namespaces.  You can use sysfs
-with, or without, a namespace so I don't understand the issue here.
-
-With your code, there is no namespace.
-
-> > > 3. firmware objects are persistent and read at boot time by interaction with
-> > > firmware, unlike kernel objects which are not persistent.
-> > That doesn't matter, sysfs exports what the hardware provides, and that
-> > might persist over boot.
-> > 
-> > So I don't see why a new filesystem is needed.
-> > 
-> > You didn't explain why sysfs, or securitfs (except for the location in
-> > the tree) does not work at all for your needs.  The location really
-> > doesn't matter all that much as you are creating a brand new location
-> > anyway so we can just declare "this is where this stuff goes" and be ok.
+> @@
+> expression H;
+> expression L;
+> expression E;
+> expression F;
+> @@
+>   get_random_u32_inclusive(L,
+>   H
+> - - E
+>   + F
+> - + E
+>   )
 > 
-> For rest of the questions, here is the summarized response.
+> @@
+> expression H;
+> expression L;
+> expression E;
+> expression F;
+> @@
+>   get_random_u32_inclusive(L,
+>   H
+> - + E
+>   + F
+> - - E
+>   )
 > 
-> Based on mailing list previous discussions [1][2][3] and considering various
-> firmware security use cases, our fwsecurityfs proposal seemed to be a
-> reasonable and acceptable approach based on the feedback [4].
+> And then subsequently cleaned up by hand, with several automatic cases
+> rejected if it didn't make sense contextually.
 > 
-> [1] https://lore.kernel.org/linuxppc-dev/YeuyUVVdFADCuDr4@kroah.com/#t
-> [2] https://lore.kernel.org/linuxppc-dev/Yfk6gucNmJuR%2Fegi@kroah.com/
-> [3] https://lore.kernel.org/all/Yfo%2F5gYgb9Sv24YB@kroah.com/t/#m40250fdb3fddaafe502ab06e329e63381b00582d
-> [4] https://lore.kernel.org/linuxppc-dev/YrQqPhi4+jHZ1WJc@kroah.com/
-> 
-> RFC v1 was using sysfs. After considering feedback[1][2][3], the following
-> are design considerations for unification via fwsecurityfs:
-> 
-> 1. Unify the location: Defining a security directory under /sys/firmware
-> facilitates exposing objects related to firmware security features in a
-> single place. Different platforms can create their respective directory
-> structures within /sys/firmware/security.
+> Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com> # for infiniband
+> Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+> ---
+>  arch/x86/kernel/module.c                      |  2 +-
+>  crypto/rsa-pkcs1pad.c                         |  2 +-
+>  crypto/testmgr.c                              | 10 ++++----
+>  drivers/bus/mhi/host/internal.h               |  2 +-
+>  drivers/dma-buf/st-dma-fence-chain.c          |  2 +-
+>  drivers/infiniband/core/cma.c                 |  2 +-
+>  drivers/infiniband/hw/hns/hns_roce_ah.c       |  5 ++--
+>  drivers/mtd/nand/raw/nandsim.c                |  2 +-
+>  drivers/net/wireguard/selftest/allowedips.c   |  8 +++---
+>  .../broadcom/brcm80211/brcmfmac/p2p.c         |  2 +-
+>  .../net/wireless/intel/iwlwifi/mvm/mac-ctxt.c |  2 +-
+>  fs/f2fs/segment.c                             |  6 ++---
+>  kernel/kcsan/selftest.c                       |  2 +-
+>  lib/test_hexdump.c                            | 10 ++++----
+>  lib/test_printf.c                             |  2 +-
+>  lib/test_vmalloc.c                            |  6 ++---
+>  mm/kasan/kasan_test.c                         |  6 ++---
+>  mm/kfence/kfence_test.c                       |  2 +-
+>  mm/swapfile.c                                 |  5 ++--
+>  net/bluetooth/mgmt.c                          |  5 ++--
+>  net/core/pktgen.c                             | 25 ++++++++-----------
+>  net/ipv4/tcp_input.c                          |  2 +-
+>  net/ipv6/addrconf.c                           |  6 ++---
+>  net/netfilter/nf_nat_helper.c                 |  2 +-
+>  net/xfrm/xfrm_state.c                         |  2 +-
+>  25 files changed, 56 insertions(+), 64 deletions(-)
 
-So just pick one place in sysfs for this to always go into.
+Even the diffstat agrees this is a nice clean-up. :)
 
-Your patch series does not document anything here, there are no
-Documentation/ABI/ entries that define the files being created, so that
-it's really hard to be able to review the code to determine if it is
-doing what you are wanting it to do.
+Reviewed-by: Kees Cook <keescook@chromium.org>
 
-You can't document apis with just a changelog text alone, sorry.
+The only comment I have is that maybe these cases can just be left as-is
+with _below()?
 
-> 2. Unify the code:  To support unification, having the fwsecurityfs
-> filesystem API allows different platforms to define the inode and file
-> operations they need. fwsecurityfs provides a common API that can be used by
-> each platform-specific implementation to support its particular requirements
-> and interaction with firmware. Initializing platform-specific functions is
-> the purpose of the fwsecurityfs_arch_init() function that is called on
-> mount. Patch 3/4 implements fwsecurityfs_arch_init() for powerpc.
+> -             size_t len = get_random_u32_below(rs) + gs;
+> +             size_t len = get_random_u32_inclusive(gs, rs + gs - 1);
 
-But you only are doing this for one platform, that's not any
-unification.  APIs don't really work unless they can handle 3 users, as
-then you really understand if they work or not.
+It seems like writing it in the form of base plus [0, limit) is clearer?
 
-Right now you wrote this code and it only has one user, that's a
-platform-specific-filesystem-only so far.
+		size_t len = gs + get_random_u32_below(rs);
 
-> Similar to the common place securityfs provides for LSMs to interact with
-> kernel security objects, fwsecurityfs would provide a common place for all
-> firmware security objects, which interact with the firmware rather than the
-> kernel. Although at the API level, the two filesystem look similar, the
-> requirements for firmware and kernel objects are different. Therefore,
-> reusing securityfs wasn't a good fit for the firmware use case and we are
-> proposing a similar but different filesystem -  fwsecurityfs - focused for
-> firmware security.
+But there is only a handful, so *shrug*
 
-What other platforms will use this?  Who is going to move their code
-over to it?
+All the others are much cleaner rewritten as _inclusive().
 
-> > And again, how are you going to get all Linux distros to now mount your
-> > new filesystem?
-> 
-> It would be analogous to the way securityfs is mounted.
-
-That did not answer the question.  The question is how are you going to
-get the distros to mount your new filesystem specifically?  How will
-they know that they need to modify their init scripts to do this?  Who
-is going to do that?  For what distro?  On what timeline?
-
-Oh, and it looks like this series doesn't pass the kernel testing bot at
-all, so I'll not review the code until that's all fixed up at the very
-least.
-
-thanks,
-
-greg k-h
+-- 
+Kees Cook
