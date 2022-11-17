@@ -2,58 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 969F462DDB3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Nov 2022 15:14:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D9A862DDED
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Nov 2022 15:25:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NChjs3rf4z3cMt
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Nov 2022 01:14:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NChyR6jSqz3cj6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Nov 2022 01:25:03 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=AbnKE5Jc;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=U6hp/l5V;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=U6hp/l5V;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=vschneid@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=AbnKE5Jc;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=U6hp/l5V;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=U6hp/l5V;
 	dkim-atps=neutral
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NChhs4Fwdz3bjw
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Nov 2022 01:13:12 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=MW5+NnO2Tu8NlwdFq3hDFtaofKcS5eP2XdeVQ9JCU3g=; b=AbnKE5Jc6O+H3xaGhMYqGrC3y9
-	YVacd7j962DPg4af6H/+3simUiSgbuK/6G4zOl6bRYUYuLlrfnrdtOe9kgHbyzTTSHzpcEqu7qPv4
-	i/tQVeVWKIRgJXbg5hWxJebKtN2EOimPdIUqJ5UPTvtVLIe3VOu+NAxDi+ao2G6T7X7leU6AgOQe+
-	EVJz3gbkA7CnSkui7IjODrAPkhoYTvJzucvlcmObLasetIt9Y4UcnCmj1L8efJmwNseYneU9uObMI
-	C3+2NforbJUN9mRB2v294ooOYsk2XW5dJTDvRy1Ypp9Befi7H88f/EarR5pfO0ONSMvNsDK5hGMyP
-	m8CTMzhg==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ovfd5-001hCk-C8; Thu, 17 Nov 2022 14:12:35 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 81A68300220;
-	Thu, 17 Nov 2022 15:12:32 +0100 (CET)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 6829C207D6247; Thu, 17 Nov 2022 15:12:32 +0100 (CET)
-Date: Thu, 17 Nov 2022 15:12:32 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Valentin Schneider <vschneid@redhat.com>
-Subject: Re: [RFC PATCH v2 8/8] sched, smp: Trace smp callback causing an IPI
-Message-ID: <Y3ZBUMteJysc1/lA@hirez.programming.kicks-ass.net>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NChxR3Xf8z3c9B
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Nov 2022 01:24:09 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1668695045;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ero3Dop74ZUrxw/cst3yMxEJhDrRdAAQvlUsX3escHg=;
+	b=U6hp/l5VTUJDdI4+4rllrSNo9nh4XAjZl4owqCdSiSTB7Xq/pF5zdA+I1VpPq0EWqb1E0t
+	adPOlhv7aN0TWCgQ/DCVjdMz60p28eu4CSl6WfCYRzfFZIy5m5JAAZxQfDNsfFo8bYaiR9
+	w0casiP/nCnzJUIuWj4sO/DEY/RxgJ4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1668695045;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ero3Dop74ZUrxw/cst3yMxEJhDrRdAAQvlUsX3escHg=;
+	b=U6hp/l5VTUJDdI4+4rllrSNo9nh4XAjZl4owqCdSiSTB7Xq/pF5zdA+I1VpPq0EWqb1E0t
+	adPOlhv7aN0TWCgQ/DCVjdMz60p28eu4CSl6WfCYRzfFZIy5m5JAAZxQfDNsfFo8bYaiR9
+	w0casiP/nCnzJUIuWj4sO/DEY/RxgJ4=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-640-8HVUW98TO0G2Cz85CHsTjA-1; Thu, 17 Nov 2022 09:24:01 -0500
+X-MC-Unique: 8HVUW98TO0G2Cz85CHsTjA-1
+Received: by mail-wr1-f69.google.com with SMTP id v14-20020adf8b4e000000b0024174021277so768842wra.13
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Nov 2022 06:24:01 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ero3Dop74ZUrxw/cst3yMxEJhDrRdAAQvlUsX3escHg=;
+        b=mF1+IFHSsLFMzdu/Wxf5AaZOKxYM3Ab4F3dN8Zzi8PEh69jPKm9ReHkd3SQJ7YRM4b
+         ouN7g+EjOvCDGigCLM/yvkoYZoe4N+BZfQmvY1QzNUDK10kXhIscqj45echXDeGT603V
+         7H6BDyJSV9Moujoou++dEnSxzGCXv3IDtXCFWcQcM9/BauHKl90qmbEbMQvzYcAtOztQ
+         QHNZ3XsvpiU/4sD6mzXfAX2ytHPQSc4c1882XYbri+H1oktVsW9Cjy2STrZ8aw+Z8AWf
+         c7WsD32ELNA/CqP2KMdmt3WKBuuqjKqFPNeaRB9BlXdX1V9VnTirEPP1RChcJWEipFX4
+         IVUg==
+X-Gm-Message-State: ANoB5pnNAc0nP9wKjQwoqeQ/bREzMIYg+dUL3rBUICpqFPGhrN6KGNzD
+	0eJ12J+f8JWI2lIg5YYq2d1y57o3oMAP4v0q5YPeuYV5rz7Ke6A3An48DJOCWdtpmsBaoJodwbw
+	LlA9Alm1BRbPRyNcalmlDn5ffKQ==
+X-Received: by 2002:a5d:58fb:0:b0:236:74c5:1b2d with SMTP id f27-20020a5d58fb000000b0023674c51b2dmr1616741wrd.14.1668695040760;
+        Thu, 17 Nov 2022 06:24:00 -0800 (PST)
+X-Google-Smtp-Source: AA0mqf7dCrVGloFO6BdNbsi4gADz4iCuS/nJ5b5vEmtvQw4WeirpWLMINwzrWmZ6QxU1sPuLDe40QQ==
+X-Received: by 2002:a5d:58fb:0:b0:236:74c5:1b2d with SMTP id f27-20020a5d58fb000000b0023674c51b2dmr1616704wrd.14.1668695040586;
+        Thu, 17 Nov 2022 06:24:00 -0800 (PST)
+Received: from vschneid.remote.csb ([154.57.232.159])
+        by smtp.gmail.com with ESMTPSA id t11-20020adff60b000000b0022e035a4e93sm1096445wrp.87.2022.11.17.06.23.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Nov 2022 06:23:59 -0800 (PST)
+From: Valentin Schneider <vschneid@redhat.com>
+To: Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [RFC PATCH v2 4/8] smp: Trace IPIs sent via
+ arch_send_call_function_ipi_mask()
+In-Reply-To: <Y3X5/65o8127DgZl@hirez.programming.kicks-ass.net>
 References: <20221102182949.3119584-1-vschneid@redhat.com>
- <20221102183336.3120536-7-vschneid@redhat.com>
+ <20221102183336.3120536-3-vschneid@redhat.com>
+ <Y3X5/65o8127DgZl@hirez.programming.kicks-ass.net>
+Date: Thu, 17 Nov 2022 14:23:55 +0000
+Message-ID: <xhsmhk03ty804.mognet@vschneid.remote.csb>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221102183336.3120536-7-vschneid@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,270 +102,41 @@ Cc: Juri Lelli <juri.lelli@redhat.com>, Mark Rutland <mark.rutland@arm.com>, lin
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Nov 02, 2022 at 06:33:36PM +0000, Valentin Schneider wrote:
-> The newly-introduced ipi_send_cpumask tracepoint has a "callback" parameter
-> which so far has only been fed with NULL.
-> 
-> While CSD_TYPE_SYNC/ASYNC and CSD_TYPE_IRQ_WORK share a similar backing
-> struct layout (meaning their callback func can be accessed without caring
-> about the actual CSD type), CSD_TYPE_TTWU doesn't even have a function
-> attached to its struct. This means we need to check the type of a CSD
-> before eventually dereferencing its associated callback.
-> 
-> This isn't as trivial as it sounds: the CSD type is stored in
-> __call_single_node.u_flags, which get cleared right before the callback is
-> executed via csd_unlock(). This implies checking the CSD type before it is
-> enqueued on the call_single_queue, as the target CPU's queue can be flushed
-> before we get to sending an IPI.
-> 
-> Furthermore, send_call_function_single_ipi() only has a CPU parameter, and
-> would need to have an additional argument to trickle down the invoked
-> function. This is somewhat silly, as the extra argument will always be
-> pushed down to the function even when nothing is being traced, which is
-> unnecessary overhead.
-> 
-> Two options present themselves:
-> a) Create copies of send_call_function_{single_ipi, ipi_mask}() that take
->    an extra argument used for tracing, so that codepaths remain unchanged
->    when tracing isn't in effect (a sort of manual -fipa-sra).
-> 
-> b) Stash the CSD func in somewhere as a side effect that
->    the portion of send_call_function_{single_ipi, ipi_mask}() under the
->    tracepoint's static key can fetch.
-> 
-> a) creates redundant code, and b) is quite fragile due to requiring extra
-> care for "reentrant" functions (async SMP calls).
-> 
-> This implements a).
-> 
-> Signed-off-by: Valentin Schneider <vschneid@redhat.com>
-> ---
->  kernel/irq_work.c   |  2 ++
->  kernel/sched/core.c | 35 ++++++++++++++++++++++++-----------
->  kernel/sched/smp.h  |  1 +
->  kernel/smp.c        | 42 ++++++++++++++++++++++++++++++++++++++----
->  4 files changed, 65 insertions(+), 15 deletions(-)
-> 
-> diff --git a/kernel/irq_work.c b/kernel/irq_work.c
-> index aec38c294ce68..fcfa75c4a5daf 100644
-> --- a/kernel/irq_work.c
-> +++ b/kernel/irq_work.c
-> @@ -24,6 +24,8 @@
->  
->  #include <trace/events/ipi.h>
->  
-> +#include "sched/smp.h"
-> +
->  static DEFINE_PER_CPU(struct llist_head, raised_list);
->  static DEFINE_PER_CPU(struct llist_head, lazy_list);
->  static DEFINE_PER_CPU(struct task_struct *, irq_workd);
-> diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-> index 02181f8072b5f..41196ca67e913 100644
-> --- a/kernel/sched/core.c
-> +++ b/kernel/sched/core.c
-> @@ -3743,17 +3743,30 @@ void sched_ttwu_pending(void *arg)
->  	rq_unlock_irqrestore(rq, &rf);
->  }
->  
-> -void send_call_function_single_ipi(int cpu)
-> -{
-> -	struct rq *rq = cpu_rq(cpu);
-> -
-> -	if (!set_nr_if_polling(rq->idle)) {
-> -		trace_ipi_send_cpumask(cpumask_of(cpu), _RET_IP_, NULL);
-> -		arch_send_call_function_single_ipi(cpu);
-> -	} else {
-> -		trace_sched_wake_idle_without_ipi(cpu);
-> -	}
-> -}
-> +/*
-> + * We want a variant that traces the function causing the IPI to be sent, but
-> + * we don't want the extra argument to cause unnecessary overhead when tracing
-> + * isn't happening.
-> + */
-> +#define GEN_CFSI(suffix, IPI_EXP, ...)						\
-> +void send_call_function_single_ipi##suffix(__VA_ARGS__)				\
-> +{										\
-> +	struct rq *rq = cpu_rq(cpu);						\
-> +										\
-> +	if (!set_nr_if_polling(rq->idle)) {					\
-> +		IPI_EXP;							\
-> +		arch_send_call_function_single_ipi(cpu);			\
-> +	} else {								\
-> +		trace_sched_wake_idle_without_ipi(cpu);				\
-> +	}									\
-> +}
-> +
-> +GEN_CFSI(/* nop */,
-> +	 /* nop */,
-> +	 int cpu)
-> +GEN_CFSI(_trace,
-> +	 trace_ipi_send_cpumask(cpumask_of(cpu), _RET_IP_, func),
-> +	 int cpu, smp_call_func_t func)
->  
+On 17/11/22 10:08, Peter Zijlstra wrote:
+> On Wed, Nov 02, 2022 at 06:33:32PM +0000, Valentin Schneider wrote:
+>> This simply wraps around the arch function and prepends it with a
+>> tracepoint, similar to send_call_function_single_ipi().
+>>
+>> Signed-off-by: Valentin Schneider <vschneid@redhat.com>
+>> ---
+>>  kernel/smp.c | 9 ++++++++-
+>>  1 file changed, 8 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/kernel/smp.c b/kernel/smp.c
+>> index e2ca1e2f31274..c4d561cf50d45 100644
+>> --- a/kernel/smp.c
+>> +++ b/kernel/smp.c
+>> @@ -160,6 +160,13 @@ void __init call_function_init(void)
+>>      smpcfd_prepare_cpu(smp_processor_id());
+>>  }
+>>
+>> +static inline void
+>
+> Given the use of _RET_IP_, I would strongly recommend you use
+> __always_inline.
+>
 
-*yuck*
+Noted, thanks
 
-How about something like so?
+>> +send_call_function_ipi_mask(const struct cpumask *mask)
+>> +{
+>> +	trace_ipi_send_cpumask(mask, _RET_IP_, func);
+>
+> What's func?
+>
 
----
---- a/kernel/irq_work.c
-+++ b/kernel/irq_work.c
-@@ -24,6 +24,8 @@
- 
- #include <trace/events/ipi.h>
- 
-+#include "sched/smp.h"
-+
- static DEFINE_PER_CPU(struct llist_head, raised_list);
- static DEFINE_PER_CPU(struct llist_head, lazy_list);
- static DEFINE_PER_CPU(struct task_struct *, irq_workd);
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -3763,16 +3763,17 @@ void sched_ttwu_pending(void *arg)
- 	rq_unlock_irqrestore(rq, &rf);
- }
- 
--void send_call_function_single_ipi(int cpu)
-+bool send_call_function_single_ipi(int cpu)
- {
- 	struct rq *rq = cpu_rq(cpu);
- 
- 	if (!set_nr_if_polling(rq->idle)) {
--		trace_ipi_send_cpumask(cpumask_of(cpu), _RET_IP_, NULL);
- 		arch_send_call_function_single_ipi(cpu);
--	} else {
--		trace_sched_wake_idle_without_ipi(cpu);
-+		return true;
- 	}
-+
-+	trace_sched_wake_idle_without_ipi(cpu);
-+	return false;
- }
- 
- /*
---- a/kernel/sched/smp.h
-+++ b/kernel/sched/smp.h
-@@ -6,7 +6,7 @@
- 
- extern void sched_ttwu_pending(void *arg);
- 
--extern void send_call_function_single_ipi(int cpu);
-+extern bool send_call_function_single_ipi(int cpu);
- 
- #ifdef CONFIG_SMP
- extern void flush_smp_call_function_queue(void);
---- a/kernel/smp.c
-+++ b/kernel/smp.c
-@@ -163,7 +163,6 @@ void __init call_function_init(void)
- static inline void
- send_call_function_ipi_mask(const struct cpumask *mask)
- {
--	trace_ipi_send_cpumask(mask, _RET_IP_, func);
- 	arch_send_call_function_ipi_mask(mask);
- }
- 
-@@ -438,11 +437,16 @@ static void __smp_call_single_queue_debu
- 	struct cfd_seq_local *seq = this_cpu_ptr(&cfd_seq_local);
- 	struct call_function_data *cfd = this_cpu_ptr(&cfd_data);
- 	struct cfd_percpu *pcpu = per_cpu_ptr(cfd->pcpu, cpu);
-+	struct __call_single_data *csd;
-+
-+	csd = container_of(node, call_single_data_t, node.llist);
-+	WARN_ON_ONCE(!(CSD_TYPE(csd) & (CSD_TYPE_SYNC | CSD_TYPE_ASYNC)));
- 
- 	cfd_seq_store(pcpu->seq_queue, this_cpu, cpu, CFD_SEQ_QUEUE);
- 	if (llist_add(node, &per_cpu(call_single_queue, cpu))) {
- 		cfd_seq_store(pcpu->seq_ipi, this_cpu, cpu, CFD_SEQ_IPI);
- 		cfd_seq_store(seq->ping, this_cpu, cpu, CFD_SEQ_PING);
-+		trace_ipi_send_cpumask(cpumask_of(cpu), _RET_IP_, csd->func);
- 		send_call_function_single_ipi(cpu);
- 		cfd_seq_store(seq->pinged, this_cpu, cpu, CFD_SEQ_PINGED);
- 	} else {
-@@ -487,6 +491,27 @@ static __always_inline void csd_unlock(s
- 
- static DEFINE_PER_CPU_SHARED_ALIGNED(call_single_data_t, csd_data);
- 
-+static __always_inline
-+bool raw_smp_call_single_queue(int cpu, struct llist_node *node)
-+{
-+	/*
-+	 * The list addition should be visible to the target CPU when it pops
-+	 * the head of the list to pull the entry off it in the IPI handler
-+	 * because of normal cache coherency rules implied by the underlying
-+	 * llist ops.
-+	 *
-+	 * If IPIs can go out of order to the cache coherency protocol
-+	 * in an architecture, sufficient synchronisation should be added
-+	 * to arch code to make it appear to obey cache coherency WRT
-+	 * locking and barrier primitives. Generic code isn't really
-+	 * equipped to do the right thing...
-+	 */
-+	if (llist_add(node, &per_cpu(call_single_queue, cpu)))
-+		return send_call_function_single_ipi(cpu);
-+
-+	return false;
-+}
-+
- void __smp_call_single_queue(int cpu, struct llist_node *node)
- {
- #ifdef CONFIG_CSD_LOCK_WAIT_DEBUG
-@@ -503,19 +528,28 @@ void __smp_call_single_queue(int cpu, st
- #endif
- 
- 	/*
--	 * The list addition should be visible to the target CPU when it pops
--	 * the head of the list to pull the entry off it in the IPI handler
--	 * because of normal cache coherency rules implied by the underlying
--	 * llist ops.
--	 *
--	 * If IPIs can go out of order to the cache coherency protocol
--	 * in an architecture, sufficient synchronisation should be added
--	 * to arch code to make it appear to obey cache coherency WRT
--	 * locking and barrier primitives. Generic code isn't really
--	 * equipped to do the right thing...
--	 */
--	if (llist_add(node, &per_cpu(call_single_queue, cpu)))
--		send_call_function_single_ipi(cpu);
-+	 * We have to check the type of the CSD before queueing it, because
-+	 * once queued it can have its flags cleared by
-+	 *   flush_smp_call_function_queue()
-+	 * even if we haven't sent the smp_call IPI yet (e.g. the stopper
-+	 * executes migration_cpu_stop() on the remote CPU).
-+	 */
-+	if (trace_ipi_send_cpumask_enabled()) {
-+		call_single_data_t *csd;
-+		smp_call_func_t func;
-+
-+		csd = container_of(node, call_single_data_t, node.llist);
-+
-+		func = sched_ttwu_pending;
-+		if (CSD_TYPE(csd) != CSD_TYPE_TTWU)
-+			func = csd->func;
-+
-+		if (raw_smp_call_single_queue(cpu, node))
-+			trace_ipi_send_cpumask(cpumask_of(cpu), _RET_IP_, func);
-+		return;
-+	}
-+
-+	raw_smp_call_single_queue(cpu, node);
- }
- 
- /*
-@@ -983,10 +1017,13 @@ static void smp_call_function_many_cond(
- 		 * number of CPUs might be zero due to concurrent changes to the
- 		 * provided mask.
- 		 */
--		if (nr_cpus == 1)
-+		if (nr_cpus == 1) {
-+			trace_ipi_send_cpumask(cpumask_of(last_cpu), _RET_IP_, func);
- 			send_call_function_single_ipi(last_cpu);
--		else if (likely(nr_cpus > 1))
--			send_call_function_ipi_mask(cfd->cpumask_ipi);
-+		} else if (likely(nr_cpus > 1)) {
-+			trace_ipi_send_cpumask(mask, _RET_IP_, func);
-+			send_call_function_ipi_mask(mask);
-+		}
- 
- 		cfd_seq_store(this_cpu_ptr(&cfd_seq_local)->pinged, this_cpu, CFD_SEQ_NOCPU, CFD_SEQ_PINGED);
- 	}
+A rebase fail... That's only plugged in later.
+
+>> +	arch_send_call_function_ipi_mask(mask);
+>> +}
+
