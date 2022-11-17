@@ -1,60 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11F0D62E7DD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Nov 2022 23:11:57 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC2A962E810
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Nov 2022 23:17:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NCvK66Fq5z3dvY
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Nov 2022 09:11:54 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=Q4bD/XUA;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NCvRj6RYgz3f4h
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Nov 2022 09:17:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=srs0=dvcg=3r=zx2c4.com=jason@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=Q4bD/XUA;
-	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=aculab.com (client-ip=185.58.85.151; helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com; receiver=<UNKNOWN>)
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NCvJ872gyz2yHc
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Nov 2022 09:11:04 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 069D3B82208;
-	Thu, 17 Nov 2022 22:11:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D29BC433C1;
-	Thu, 17 Nov 2022 22:10:57 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="Q4bD/XUA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1668723055;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vJhj9Z3si41Okh7QjFL8sfRqIMi0Yk5+ouF0KwmQggU=;
-	b=Q4bD/XUAYdzoxgYLg+XIn4Lk+1x+8orB3IGL4+URLKCwS8OvQEFHtcJHobQ1IjE5hZQeq5
-	VnSTrX5zHZ2fE16n1KLU+eanYkc3vTgMFIfA+ELQ9AAw9UvTlkFM7FU8Z1ElmoQ046TyID
-	RHhzi0IVhFVn9STyoQTnIxbYkGv6Iw8=
-Received: 	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 1cf8d90d (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Thu, 17 Nov 2022 22:10:54 +0000 (UTC)
-Date: Thu, 17 Nov 2022 23:10:50 +0100
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-To: Kees Cook <keescook@chromium.org>
-Subject: Re: [PATCH v3 3/3] treewide: use get_random_u32_inclusive() when
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NCvR522gwz2yHc
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Nov 2022 09:17:04 +1100 (AEDT)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-135-r8pLcNsHMNSPwdstNZNmIw-1; Thu, 17 Nov 2022 22:15:38 +0000
+X-MC-Unique: r8pLcNsHMNSPwdstNZNmIw-1
+Received: from AcuMS.Aculab.com (10.202.163.4) by AcuMS.aculab.com
+ (10.202.163.4) with Microsoft SMTP Server (TLS) id 15.0.1497.42; Thu, 17 Nov
+ 2022 22:15:36 +0000
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.044; Thu, 17 Nov 2022 22:15:36 +0000
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Theodore Ts'o' <tytso@mit.edu>, Kees Cook <kees@kernel.org>
+Subject: RE: [PATCH v2 3/3] treewide: use get_random_u32_between() when
  possible
-Message-ID: <Y3axaspOlt/oEDhw@zx2c4.com>
+Thread-Topic: [PATCH v2 3/3] treewide: use get_random_u32_between() when
+ possible
+Thread-Index: AQHY+pt8WAMBAHgXDk6lkwvXqmmyGK5DraKg
+Date: Thu, 17 Nov 2022 22:15:36 +0000
+Message-ID: <5b2afac148e24181a206e540768e465b@AcuMS.aculab.com>
 References: <20221114164558.1180362-1-Jason@zx2c4.com>
- <20221117202906.2312482-1-Jason@zx2c4.com>
- <20221117202906.2312482-4-Jason@zx2c4.com>
- <202211171349.F42BA5B0@keescook>
+ <20221114164558.1180362-4-Jason@zx2c4.com> <202211161436.A45AD719A@keescook>
+ <Y3V4g8eorwiU++Y3@zx2c4.com> <Y3V6QtYMayODVDOk@zx2c4.com>
+ <202211161628.164F47F@keescook> <Y3WDyl8ArQgeEoUU@zx2c4.com>
+ <0EE39896-C7B6-4CB6-87D5-22AA787740A9@kernel.org> <Y3ZWbcoGOdFjlPhS@mit.edu>
+In-Reply-To: <Y3ZWbcoGOdFjlPhS@mit.edu>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <202211171349.F42BA5B0@keescook>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,24 +63,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Darrick J . Wong" <djwong@kernel.org>, patches@lists.linux.dev, netdev@vger.kernel.org, Andreas Dilger <adilger.kernel@dilger.ca>, Herbert Xu <herbert@gondor.apana.org.au>, Richard Weinberger <richard@nod.at>, Helge Deller <deller@gmx.de>, Russell King <linux@armlinux.org.uk>, Jason Gunthorpe <jgg@nvidia.com>, Catalin Marinas <catalin.marinas@arm.com>, Jakub Kicinski <kuba@kernel.org>, linux-mips@vger.kernel.org, linux-media@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, Jani Nikula <jani.nikula@linux.intel.com>, linux-block@vger.kernel.org, SeongJae Park <sj@kernel.org>, loongarch@lists.linux.dev, Jaegeuk Kim <jaegeuk@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Theodore Ts'o <tytso@mit.edu>, linux-parisc@vger.kernel.org, "Martin K . Petersen" <martin.petersen@oracle.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org, Chr
- istoph =?utf-8?Q?B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>, linux-crypto@vger.kernel.org, Sakari Ailus <sakari.ailus@linux.intel.com>, linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, "Darrick J . Wong" <djwong@kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, Andreas Dilger <adilger.kernel@dilger.ca>, "ydroneaud@opteya.com" <ydroneaud@opteya.com>, Herbert Xu <herbert@gondor.apana.org.au>, Richard Weinberger <richard@nod.at>, Helge Deller <deller@gmx.de>, Russell King <linux@armlinux.org.uk>, Jason Gunthorpe <jgg@nvidia.com>, Catalin Marinas <catalin.marinas@arm.com>, Jakub Kicinski <kuba@kernel.org>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>, Kees Cook <keescook@chromium.org>, Heiko Carstens <hca@linux.ibm.com>, Jani Nikula <jani.nikula@linux.intel.com>, "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>, SeongJae Park <sj@kernel.org>, "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, Jaegeuk Kim <jaegeuk@kernel.org>, Thomas Gleixner <tglx@linutronix.de
+ >, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, Thomas
+ Bogendoerfer <tsbogend@alpha.franken.de>, "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>, "Martin K . Petersen" <martin.petersen@oracle.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>, "patches@lists.linux.dev" <patches@lists.linux.dev>, =?iso-8859-1?Q?Christoph_B=F6hmwalder?= <christoph.boehmwalder@linbit.com>, "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>, Sakari Ailus <sakari.ailus@linux.intel.com>, "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Nov 17, 2022 at 01:57:13PM -0800, Kees Cook wrote:
-> The only comment I have is that maybe these cases can just be left as-is
-> with _below()?
-> 
-> > -             size_t len = get_random_u32_below(rs) + gs;
-> > +             size_t len = get_random_u32_inclusive(gs, rs + gs - 1);
-> 
-> It seems like writing it in the form of base plus [0, limit) is clearer?
-> 
-> 		size_t len = gs + get_random_u32_below(rs);
-> 
-> But there is only a handful, so *shrug*
+From: Theodore Ts'o
+> Sent: 17 November 2022 15:43
+...
+> The problem with "between", "ranged", "spanning" is that they don't
+> tell the reader whether we're dealing with an "open interval" or a
+> "closed interval".  They are just different ways of saying that it's a
+> range between, say, 0 and 20.  But it doesn't tell you whether it
+> includes 0 or 20 or not.
+>=20
+> The only way I can see for making it ambiguous is either to use the
+> terminology "closed interval" or "inclusive".  And "open" and "closed"
+> can have other meanings, so get_random_u32_inclusive() is going to be
+> less confusing than get_random_u32_closed().
 
-Okay, I'll drop that one.
+It has to be said that removing the extra function and requiring
+the callers use 'base + get_random_below(high [+1] - base)' is
+likely to be the only way to succinctly make the code readable
+and understandable.
 
-Jason
+Otherwise readers either have to look up another function to see
+what it does or waste variable brain cells on more trivia.
+
+=09David
+
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
+PT, UK
+Registration No: 1397386 (Wales)
+
