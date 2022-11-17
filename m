@@ -1,58 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94DA062E5F6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Nov 2022 21:33:17 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45DFE62E6F6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Nov 2022 22:31:40 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NCs7H3Lhfz3fBD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Nov 2022 07:33:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NCtQX1KG1z3f2r
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Nov 2022 08:31:32 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=Vr4tD24o;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=1Mu1bjco;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=srs0=dvcg=3r=zx2c4.com=jason@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=Vr4tD24o;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=1Mu1bjco;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NCs3C1ZCKz3cVQ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Nov 2022 07:29:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NCtPd1dVdz3bbb
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Nov 2022 08:30:43 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 7A3526221A;
-	Thu, 17 Nov 2022 20:29:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D84C2C4347C;
-	Thu, 17 Nov 2022 20:29:37 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="Vr4tD24o"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1668716977;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xmyy2AkHg5ask29arvo8JFrI6dJpZI0lTJ2hvNAAz6E=;
-	b=Vr4tD24o6tC9HZn5iUm+W1xPO1rGAs8GASLgrFU/uYve7B+UWrJOWOtZSh3cffJWQ6Sqw4
-	9Js2Y6kNNtvkzalLMrek5tnGBAd5p3sc1CrsmtlBOkuRefa94cvQIxOfB3tjhNp2pFuCIJ
-	hcLVR8GRSZnYzljU8KB/UIlQ2IPrCM8=
-Received: 	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 2aa715f8 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Thu, 17 Nov 2022 20:29:37 +0000 (UTC)
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-To: linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev
-Subject: [PATCH v3 3/3] treewide: use get_random_u32_inclusive() when possible
-Date: Thu, 17 Nov 2022 21:29:06 +0100
-Message-Id: <20221117202906.2312482-4-Jason@zx2c4.com>
-In-Reply-To: <20221117202906.2312482-1-Jason@zx2c4.com>
-References: <20221114164558.1180362-1-Jason@zx2c4.com>
- <20221117202906.2312482-1-Jason@zx2c4.com>
+	by ams.source.kernel.org (Postfix) with ESMTPS id C858CB82202;
+	Thu, 17 Nov 2022 21:30:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B627BC433D6;
+	Thu, 17 Nov 2022 21:30:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1668720638;
+	bh=qYl67bsPlVudFRZ07LmNN+KoGZ8Y9700f1Y7TQQuaAA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=1Mu1bjcodR2h6/tluJfRwYugN7e71YcxSv/MAWYAeYyM6pP9nh/LtchZM00hlfJP4
+	 YWY93YeMF0SBDgjiQEooKErINoLVwD6Uwl9Dpy7RJ58WHYo5sTt49s8jC9H+WkQajW
+	 WNmOX/r/l0+uTB1XIF6NEKv5O5FZFnmVojfttBik=
+Date: Thu, 17 Nov 2022 22:27:30 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Nayna <nayna@linux.vnet.ibm.com>
+Subject: Re: [PATCH 2/4] fs: define a firmware security filesystem named
+ fwsecurityfs
+Message-ID: <Y3anQukokMcQr+iE@kroah.com>
+References: <20221106210744.603240-1-nayna@linux.ibm.com>
+ <20221106210744.603240-3-nayna@linux.ibm.com>
+ <Y2uvUFQ9S2oaefSY@kroah.com>
+ <8447a726-c45d-8ebb-2a74-a4d759631e64@linux.vnet.ibm.com>
+ <Y2zLRw/TzV/sWgqO@kroah.com>
+ <44191f02-7360-bca3-be8f-7809c1562e68@linux.vnet.ibm.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <44191f02-7360-bca3-be8f-7809c1562e68@linux.vnet.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,644 +63,185 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, "Darrick J . Wong" <djwong@kernel.org>, netdev@vger.kernel.org, Andreas Dilger <adilger.kernel@dilger.ca>, Herbert Xu <herbert@gondor.apana.org.au>, Richard Weinberger <richard@nod.at>, Helge Deller <deller@gmx.de>, Russell King <linux@armlinux.org.uk>, Jason Gunthorpe <jgg@nvidia.com>, Catalin Marinas <catalin.marinas@arm.com>, Jakub Kicinski <kuba@kernel.org>, linux-media@vger.kernel.org, Kees Cook <keescook@chromium.org>, Heiko Carstens <hca@linux.ibm.com>, Jani Nikula <jani.nikula@linux.intel.com>, linux-block@vger.kernel.org, SeongJae Park <sj@kernel.org>, loongarch@lists.linux.dev, Jaegeuk Kim <jaegeuk@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Theodore Ts'o <tytso@mit.edu>, linux-parisc@vger.kernel.org, "Martin K . Petersen" <martin.petersen@oracle.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mmc@vger.kernel.org, linux-mips@
- vger.kernel.org, =?UTF-8?q?Christoph=20B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>, linux-crypto@vger.kernel.org, Sakari Ailus <sakari.ailus@linux.intel.com>, linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Matthew Garrett <mjg59@srcf.ucam.org>, linux-efi@vger.kernel.org, Andrew Donnellan <ajd@linux.ibm.com>, Nayna Jain <nayna@linux.ibm.com>, linux-kernel@vger.kernel.org, npiggin@gmail.com, Dov Murik <dovmurik@linux.ibm.com>, Dave Hansen <dave.hansen@intel.com>, linux-security-module <linux-security-module@vger.kernel.org>, Paul Mackerras <paulus@samba.org>, linux-fsdevel@vger.kernel.org, George Wilson <gcwilson@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Stefan Berger <stefanb@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-These cases were done with this Coccinelle:
+On Mon, Nov 14, 2022 at 06:03:43PM -0500, Nayna wrote:
+> 
+> On 11/10/22 04:58, Greg Kroah-Hartman wrote:
+> > On Wed, Nov 09, 2022 at 03:10:37PM -0500, Nayna wrote:
+> > > On 11/9/22 08:46, Greg Kroah-Hartman wrote:
+> > > > On Sun, Nov 06, 2022 at 04:07:42PM -0500, Nayna Jain wrote:
+> > > > > securityfs is meant for Linux security subsystems to expose policies/logs
+> > > > > or any other information. However, there are various firmware security
+> > > > > features which expose their variables for user management via the kernel.
+> > > > > There is currently no single place to expose these variables. Different
+> > > > > platforms use sysfs/platform specific filesystem(efivarfs)/securityfs
+> > > > > interface as they find it appropriate. Thus, there is a gap in kernel
+> > > > > interfaces to expose variables for security features.
+> > > > > 
+> > > > > Define a firmware security filesystem (fwsecurityfs) to be used by
+> > > > > security features enabled by the firmware. These variables are platform
+> > > > > specific. This filesystem provides platforms a way to implement their
+> > > > >    own underlying semantics by defining own inode and file operations.
+> > > > > 
+> > > > > Similar to securityfs, the firmware security filesystem is recommended
+> > > > > to be exposed on a well known mount point /sys/firmware/security.
+> > > > > Platforms can define their own directory or file structure under this path.
+> > > > > 
+> > > > > Example:
+> > > > > 
+> > > > > # mount -t fwsecurityfs fwsecurityfs /sys/firmware/security
+> > > > Why not juset use securityfs in /sys/security/firmware/ instead?  Then
+> > > > you don't have to create a new filesystem and convince userspace to
+> > > > mount it in a specific location?
+> > >  From man 5 sysfs page:
+> > > 
+> > > /sys/firmware: This subdirectory contains interfaces for viewing and
+> > > manipulating firmware-specific objects and attributes.
+> > > 
+> > > /sys/kernel: This subdirectory contains various files and subdirectories
+> > > that provide information about the running kernel.
+> > > 
+> > > The security variables which are being exposed via fwsecurityfs are managed
+> > > by firmware, stored in firmware managed space and also often consumed by
+> > > firmware for enabling various security features.
+> > Ok, then just use the normal sysfs interface for /sys/firmware, why do
+> > you need a whole new filesystem type?
+> > 
+> > >  From git commit b67dbf9d4c1987c370fd18fdc4cf9d8aaea604c2, the purpose of
+> > > securityfs(/sys/kernel/security) is to provide a common place for all kernel
+> > > LSMs. The idea of
+> > > fwsecurityfs(/sys/firmware/security) is to similarly provide a common place
+> > > for all firmware security objects.
+> > > 
+> > > /sys/firmware already exists. The patch now defines a new /security
+> > > directory in it for firmware security features. Using /sys/kernel/security
+> > > would mean scattering firmware objects in multiple places and confusing the
+> > > purpose of /sys/kernel and /sys/firmware.
+> > sysfs is confusing already, no problem with making it more confusing :)
+> > 
+> > Just document where you add things and all should be fine.
+> > 
+> > > Even though fwsecurityfs code is based on securityfs, since the two
+> > > filesystems expose different types of objects and have different
+> > > requirements, there are distinctions:
+> > > 
+> > > 1. fwsecurityfs lets users create files in userspace, securityfs only allows
+> > > kernel subsystems to create files.
+> > Wait, why would a user ever create a file in this filesystem?  If you
+> > need that, why not use configfs?  That's what that is for, right?
+> 
+> The purpose of fwsecurityfs is not to expose configuration items but rather
+> security objects used for firmware security features. I think these are more
+> comparable to EFI variables, which are exposed via an EFI-specific
+> filesystem, efivarfs, rather than configfs.
+> 
+> > 
+> > > 2. firmware and kernel objects may have different requirements. For example,
+> > > consideration of namespacing. As per my understanding, namespacing is
+> > > applied to kernel resources and not firmware resources. That's why it makes
+> > > sense to add support for namespacing in securityfs, but we concluded that
+> > > fwsecurityfs currently doesn't need it. Another but similar example of it
+> > > is: TPM space, which is exposed from hardware. For containers, the TPM would
+> > > be made as virtual/software TPM. Similarly for firmware space for
+> > > containers, it would have to be something virtualized/software version of
+> > > it.
+> > I do not understand, sorry.  What does namespaces have to do with this?
+> > sysfs can already handle namespaces just fine, why not use that?
+> 
+> Firmware objects are not namespaced. I mentioned it here as an example of
+> the difference between firmware and kernel objects. It is also in response
+> to the feedback from James Bottomley in RFC v2 [https://lore.kernel.org/linuxppc-dev/41ca51e8db9907d9060cc38adb59a66dcae4c59b.camel@HansenPartnership.com/].
 
-@@
-expression H;
-expression L;
-@@
-- (get_random_u32_below(H) + L)
-+ get_random_u32_inclusive(L, H + L - 1)
+I do not understand, sorry.  Do you want to use a namespace for these or
+not?  The code does not seem to be using namespaces.  You can use sysfs
+with, or without, a namespace so I don't understand the issue here.
 
-@@
-expression H;
-expression L;
-expression E;
-@@
-  get_random_u32_inclusive(L,
-  H
-- + E
-- - E
-  )
+With your code, there is no namespace.
 
-@@
-expression H;
-expression L;
-expression E;
-@@
-  get_random_u32_inclusive(L,
-  H
-- - E
-- + E
-  )
+> > > 3. firmware objects are persistent and read at boot time by interaction with
+> > > firmware, unlike kernel objects which are not persistent.
+> > That doesn't matter, sysfs exports what the hardware provides, and that
+> > might persist over boot.
+> > 
+> > So I don't see why a new filesystem is needed.
+> > 
+> > You didn't explain why sysfs, or securitfs (except for the location in
+> > the tree) does not work at all for your needs.  The location really
+> > doesn't matter all that much as you are creating a brand new location
+> > anyway so we can just declare "this is where this stuff goes" and be ok.
+> 
+> For rest of the questions, here is the summarized response.
+> 
+> Based on mailing list previous discussions [1][2][3] and considering various
+> firmware security use cases, our fwsecurityfs proposal seemed to be a
+> reasonable and acceptable approach based on the feedback [4].
+> 
+> [1] https://lore.kernel.org/linuxppc-dev/YeuyUVVdFADCuDr4@kroah.com/#t
+> [2] https://lore.kernel.org/linuxppc-dev/Yfk6gucNmJuR%2Fegi@kroah.com/
+> [3] https://lore.kernel.org/all/Yfo%2F5gYgb9Sv24YB@kroah.com/t/#m40250fdb3fddaafe502ab06e329e63381b00582d
+> [4] https://lore.kernel.org/linuxppc-dev/YrQqPhi4+jHZ1WJc@kroah.com/
+> 
+> RFC v1 was using sysfs. After considering feedback[1][2][3], the following
+> are design considerations for unification via fwsecurityfs:
+> 
+> 1. Unify the location: Defining a security directory under /sys/firmware
+> facilitates exposing objects related to firmware security features in a
+> single place. Different platforms can create their respective directory
+> structures within /sys/firmware/security.
 
-@@
-expression H;
-expression L;
-expression E;
-expression F;
-@@
-  get_random_u32_inclusive(L,
-  H
-- - E
-  + F
-- + E
-  )
+So just pick one place in sysfs for this to always go into.
 
-@@
-expression H;
-expression L;
-expression E;
-expression F;
-@@
-  get_random_u32_inclusive(L,
-  H
-- + E
-  + F
-- - E
-  )
+Your patch series does not document anything here, there are no
+Documentation/ABI/ entries that define the files being created, so that
+it's really hard to be able to review the code to determine if it is
+doing what you are wanting it to do.
 
-And then subsequently cleaned up by hand, with several automatic cases
-rejected if it didn't make sense contextually.
+You can't document apis with just a changelog text alone, sorry.
 
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com> # for infiniband
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
----
- arch/x86/kernel/module.c                      |  2 +-
- crypto/rsa-pkcs1pad.c                         |  2 +-
- crypto/testmgr.c                              | 10 ++++----
- drivers/bus/mhi/host/internal.h               |  2 +-
- drivers/dma-buf/st-dma-fence-chain.c          |  2 +-
- drivers/infiniband/core/cma.c                 |  2 +-
- drivers/infiniband/hw/hns/hns_roce_ah.c       |  5 ++--
- drivers/mtd/nand/raw/nandsim.c                |  2 +-
- drivers/net/wireguard/selftest/allowedips.c   |  8 +++---
- .../broadcom/brcm80211/brcmfmac/p2p.c         |  2 +-
- .../net/wireless/intel/iwlwifi/mvm/mac-ctxt.c |  2 +-
- fs/f2fs/segment.c                             |  6 ++---
- kernel/kcsan/selftest.c                       |  2 +-
- lib/test_hexdump.c                            | 10 ++++----
- lib/test_printf.c                             |  2 +-
- lib/test_vmalloc.c                            |  6 ++---
- mm/kasan/kasan_test.c                         |  6 ++---
- mm/kfence/kfence_test.c                       |  2 +-
- mm/swapfile.c                                 |  5 ++--
- net/bluetooth/mgmt.c                          |  5 ++--
- net/core/pktgen.c                             | 25 ++++++++-----------
- net/ipv4/tcp_input.c                          |  2 +-
- net/ipv6/addrconf.c                           |  6 ++---
- net/netfilter/nf_nat_helper.c                 |  2 +-
- net/xfrm/xfrm_state.c                         |  2 +-
- 25 files changed, 56 insertions(+), 64 deletions(-)
+> 2. Unify the code:  To support unification, having the fwsecurityfs
+> filesystem API allows different platforms to define the inode and file
+> operations they need. fwsecurityfs provides a common API that can be used by
+> each platform-specific implementation to support its particular requirements
+> and interaction with firmware. Initializing platform-specific functions is
+> the purpose of the fwsecurityfs_arch_init() function that is called on
+> mount. Patch 3/4 implements fwsecurityfs_arch_init() for powerpc.
 
-diff --git a/arch/x86/kernel/module.c b/arch/x86/kernel/module.c
-index c09ae279ef32..a98687642dd0 100644
---- a/arch/x86/kernel/module.c
-+++ b/arch/x86/kernel/module.c
-@@ -53,7 +53,7 @@ static unsigned long int get_module_load_offset(void)
- 		 */
- 		if (module_load_offset == 0)
- 			module_load_offset =
--				(get_random_u32_below(1024) + 1) * PAGE_SIZE;
-+				get_random_u32_inclusive(1, 1024) * PAGE_SIZE;
- 		mutex_unlock(&module_kaslr_mutex);
- 	}
- 	return module_load_offset;
-diff --git a/crypto/rsa-pkcs1pad.c b/crypto/rsa-pkcs1pad.c
-index 0f722f8f779b..e75728f87ce5 100644
---- a/crypto/rsa-pkcs1pad.c
-+++ b/crypto/rsa-pkcs1pad.c
-@@ -253,7 +253,7 @@ static int pkcs1pad_encrypt(struct akcipher_request *req)
- 	ps_end = ctx->key_size - req->src_len - 2;
- 	req_ctx->in_buf[0] = 0x02;
- 	for (i = 1; i < ps_end; i++)
--		req_ctx->in_buf[i] = 1 + get_random_u32_below(255);
-+		req_ctx->in_buf[i] = get_random_u32_inclusive(1, 255);
- 	req_ctx->in_buf[ps_end] = 0x00;
- 
- 	pkcs1pad_sg_set_buf(req_ctx->in_sg, req_ctx->in_buf,
-diff --git a/crypto/testmgr.c b/crypto/testmgr.c
-index 079923d43ce2..e669acd2ebdd 100644
---- a/crypto/testmgr.c
-+++ b/crypto/testmgr.c
-@@ -962,11 +962,11 @@ static char *generate_random_sgl_divisions(struct test_sg_division *divs,
- 		if (div == &divs[max_divs - 1] || get_random_u32_below(2) == 0)
- 			this_len = remaining;
- 		else
--			this_len = 1 + get_random_u32_below(remaining);
-+			this_len = get_random_u32_inclusive(1, remaining);
- 		div->proportion_of_total = this_len;
- 
- 		if (get_random_u32_below(4) == 0)
--			div->offset = (PAGE_SIZE - 128) + get_random_u32_below(128);
-+			div->offset = get_random_u32_inclusive(PAGE_SIZE - 128, PAGE_SIZE - 1);
- 		else if (get_random_u32_below(2) == 0)
- 			div->offset = get_random_u32_below(32);
- 		else
-@@ -1094,12 +1094,12 @@ static void generate_random_testvec_config(struct testvec_config *cfg,
- 	}
- 
- 	if (get_random_u32_below(2) == 0) {
--		cfg->iv_offset = 1 + get_random_u32_below(MAX_ALGAPI_ALIGNMASK);
-+		cfg->iv_offset = get_random_u32_inclusive(1, MAX_ALGAPI_ALIGNMASK);
- 		p += scnprintf(p, end - p, " iv_offset=%u", cfg->iv_offset);
- 	}
- 
- 	if (get_random_u32_below(2) == 0) {
--		cfg->key_offset = 1 + get_random_u32_below(MAX_ALGAPI_ALIGNMASK);
-+		cfg->key_offset = get_random_u32_inclusive(1, MAX_ALGAPI_ALIGNMASK);
- 		p += scnprintf(p, end - p, " key_offset=%u", cfg->key_offset);
- 	}
- 
-@@ -1653,7 +1653,7 @@ static void generate_random_hash_testvec(struct shash_desc *desc,
- 	if (maxkeysize) {
- 		vec->ksize = maxkeysize;
- 		if (get_random_u32_below(4) == 0)
--			vec->ksize = 1 + get_random_u32_below(maxkeysize);
-+			vec->ksize = get_random_u32_inclusive(1, maxkeysize);
- 		generate_random_bytes((u8 *)vec->key, vec->ksize);
- 
- 		vec->setkey_error = crypto_shash_setkey(desc->tfm, vec->key,
-diff --git a/drivers/bus/mhi/host/internal.h b/drivers/bus/mhi/host/internal.h
-index c73621aabbd1..2e139e76de4c 100644
---- a/drivers/bus/mhi/host/internal.h
-+++ b/drivers/bus/mhi/host/internal.h
-@@ -129,7 +129,7 @@ enum mhi_pm_state {
- #define PRIMARY_CMD_RING				0
- #define MHI_DEV_WAKE_DB					127
- #define MHI_MAX_MTU					0xffff
--#define MHI_RANDOM_U32_NONZERO(bmsk)			(get_random_u32_below(bmsk) + 1)
-+#define MHI_RANDOM_U32_NONZERO(bmsk)			(get_random_u32_inclusive(1, bmsk))
- 
- enum mhi_er_type {
- 	MHI_ER_TYPE_INVALID = 0x0,
-diff --git a/drivers/dma-buf/st-dma-fence-chain.c b/drivers/dma-buf/st-dma-fence-chain.c
-index 9fbad7317d9b..c0979c8049b5 100644
---- a/drivers/dma-buf/st-dma-fence-chain.c
-+++ b/drivers/dma-buf/st-dma-fence-chain.c
-@@ -400,7 +400,7 @@ static int __find_race(void *arg)
- 		struct dma_fence *fence = dma_fence_get(data->fc.tail);
- 		int seqno;
- 
--		seqno = get_random_u32_below(data->fc.chain_length) + 1;
-+		seqno = get_random_u32_inclusive(1, data->fc.chain_length);
- 
- 		err = dma_fence_chain_find_seqno(&fence, seqno);
- 		if (err) {
-diff --git a/drivers/infiniband/core/cma.c b/drivers/infiniband/core/cma.c
-index dd1c703b10df..aacd6254df77 100644
---- a/drivers/infiniband/core/cma.c
-+++ b/drivers/infiniband/core/cma.c
-@@ -3807,7 +3807,7 @@ static int cma_alloc_any_port(enum rdma_ucm_port_space ps,
- 
- 	inet_get_local_port_range(net, &low, &high);
- 	remaining = (high - low) + 1;
--	rover = get_random_u32_below(remaining) + low;
-+	rover = get_random_u32_inclusive(low, remaining + low - 1);
- retry:
- 	if (last_used_port != rover) {
- 		struct rdma_bind_list *bind_list;
-diff --git a/drivers/infiniband/hw/hns/hns_roce_ah.c b/drivers/infiniband/hw/hns/hns_roce_ah.c
-index b37d2a81584d..e77fcc74f15c 100644
---- a/drivers/infiniband/hw/hns/hns_roce_ah.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_ah.c
-@@ -41,9 +41,8 @@ static inline u16 get_ah_udp_sport(const struct rdma_ah_attr *ah_attr)
- 	u16 sport;
- 
- 	if (!fl)
--		sport = get_random_u32_below(IB_ROCE_UDP_ENCAP_VALID_PORT_MAX +
--					     1 - IB_ROCE_UDP_ENCAP_VALID_PORT_MIN) +
--			IB_ROCE_UDP_ENCAP_VALID_PORT_MIN;
-+		sport = get_random_u32_inclusive(IB_ROCE_UDP_ENCAP_VALID_PORT_MIN,
-+						 IB_ROCE_UDP_ENCAP_VALID_PORT_MAX);
- 	else
- 		sport = rdma_flow_label_to_udp_sport(fl);
- 
-diff --git a/drivers/mtd/nand/raw/nandsim.c b/drivers/mtd/nand/raw/nandsim.c
-index 274a31b93100..c21abf748948 100644
---- a/drivers/mtd/nand/raw/nandsim.c
-+++ b/drivers/mtd/nand/raw/nandsim.c
-@@ -1405,7 +1405,7 @@ static void ns_do_bit_flips(struct nandsim *ns, int num)
- 	if (bitflips && get_random_u16() < (1 << 6)) {
- 		int flips = 1;
- 		if (bitflips > 1)
--			flips = get_random_u32_below(bitflips) + 1;
-+			flips = get_random_u32_inclusive(1, bitflips);
- 		while (flips--) {
- 			int pos = get_random_u32_below(num * 8);
- 			ns->buf.byte[pos / 8] ^= (1 << (pos % 8));
-diff --git a/drivers/net/wireguard/selftest/allowedips.c b/drivers/net/wireguard/selftest/allowedips.c
-index 78a916f30c82..78ebe2892a78 100644
---- a/drivers/net/wireguard/selftest/allowedips.c
-+++ b/drivers/net/wireguard/selftest/allowedips.c
-@@ -285,7 +285,7 @@ static __init bool randomized_test(void)
- 
- 	for (i = 0; i < NUM_RAND_ROUTES; ++i) {
- 		get_random_bytes(ip, 4);
--		cidr = get_random_u32_below(32) + 1;
-+		cidr = get_random_u32_inclusive(1, 32);
- 		peer = peers[get_random_u32_below(NUM_PEERS)];
- 		if (wg_allowedips_insert_v4(&t, (struct in_addr *)ip, cidr,
- 					    peer, &mutex) < 0) {
-@@ -311,7 +311,7 @@ static __init bool randomized_test(void)
- 				mutated[k] = (mutated[k] & mutate_mask[k]) |
- 					     (~mutate_mask[k] &
- 					      get_random_u8());
--			cidr = get_random_u32_below(32) + 1;
-+			cidr = get_random_u32_inclusive(1, 32);
- 			peer = peers[get_random_u32_below(NUM_PEERS)];
- 			if (wg_allowedips_insert_v4(&t,
- 						    (struct in_addr *)mutated,
-@@ -329,7 +329,7 @@ static __init bool randomized_test(void)
- 
- 	for (i = 0; i < NUM_RAND_ROUTES; ++i) {
- 		get_random_bytes(ip, 16);
--		cidr = get_random_u32_below(128) + 1;
-+		cidr = get_random_u32_inclusive(1, 128);
- 		peer = peers[get_random_u32_below(NUM_PEERS)];
- 		if (wg_allowedips_insert_v6(&t, (struct in6_addr *)ip, cidr,
- 					    peer, &mutex) < 0) {
-@@ -355,7 +355,7 @@ static __init bool randomized_test(void)
- 				mutated[k] = (mutated[k] & mutate_mask[k]) |
- 					     (~mutate_mask[k] &
- 					      get_random_u8());
--			cidr = get_random_u32_below(128) + 1;
-+			cidr = get_random_u32_inclusive(1, 128);
- 			peer = peers[get_random_u32_below(NUM_PEERS)];
- 			if (wg_allowedips_insert_v6(&t,
- 						    (struct in6_addr *)mutated,
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
-index 23c971b77965..c704ca752138 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
-@@ -1128,7 +1128,7 @@ static void brcmf_p2p_afx_handler(struct work_struct *work)
- 	if (afx_hdl->is_listen && afx_hdl->my_listen_chan)
- 		/* 100ms ~ 300ms */
- 		err = brcmf_p2p_discover_listen(p2p, afx_hdl->my_listen_chan,
--						100 * (1 + get_random_u32_below(3)));
-+						100 * get_random_u32_inclusive(1, 3));
- 	else
- 		err = brcmf_p2p_act_frm_search(p2p, afx_hdl->peer_listen_chan);
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-index 1696fbf1009a..3a7a44bb3c60 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-@@ -1099,7 +1099,7 @@ static void iwl_mvm_mac_ctxt_cmd_fill_ap(struct iwl_mvm *mvm,
- 			iwl_mvm_mac_ap_iterator, &data);
- 
- 		if (data.beacon_device_ts) {
--			u32 rand = get_random_u32_below(64 - 36) + 36;
-+			u32 rand = get_random_u32_inclusive(36, 63);
- 			mvmvif->ap_beacon_time = data.beacon_device_ts +
- 				ieee80211_tu_to_usec(data.beacon_int * rand /
- 						     100);
-diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
-index 334415d946f8..b304692c0cf5 100644
---- a/fs/f2fs/segment.c
-+++ b/fs/f2fs/segment.c
-@@ -2588,7 +2588,7 @@ static void new_curseg(struct f2fs_sb_info *sbi, int type, bool new_sec)
- 	curseg->alloc_type = LFS;
- 	if (F2FS_OPTION(sbi).fs_mode == FS_MODE_FRAGMENT_BLK)
- 		curseg->fragment_remained_chunk =
--				get_random_u32_below(sbi->max_fragment_chunk) + 1;
-+				get_random_u32_inclusive(1, sbi->max_fragment_chunk);
- }
- 
- static int __next_free_blkoff(struct f2fs_sb_info *sbi,
-@@ -2625,9 +2625,9 @@ static void __refresh_next_blkoff(struct f2fs_sb_info *sbi,
- 			/* To allocate block chunks in different sizes, use random number */
- 			if (--seg->fragment_remained_chunk <= 0) {
- 				seg->fragment_remained_chunk =
--				   get_random_u32_below(sbi->max_fragment_chunk) + 1;
-+				   get_random_u32_inclusive(1, sbi->max_fragment_chunk);
- 				seg->next_blkoff +=
--				   get_random_u32_below(sbi->max_fragment_hole) + 1;
-+				   get_random_u32_inclusive(1, sbi->max_fragment_hole);
- 			}
- 		}
- 	}
-diff --git a/kernel/kcsan/selftest.c b/kernel/kcsan/selftest.c
-index 7b619f16a492..8679322450f2 100644
---- a/kernel/kcsan/selftest.c
-+++ b/kernel/kcsan/selftest.c
-@@ -31,7 +31,7 @@ static bool __init test_encode_decode(void)
- 	int i;
- 
- 	for (i = 0; i < ITERS_PER_TEST; ++i) {
--		size_t size = get_random_u32_below(MAX_ENCODABLE_SIZE) + 1;
-+		size_t size = get_random_u32_inclusive(1, MAX_ENCODABLE_SIZE);
- 		bool is_write = !!get_random_u32_below(2);
- 		unsigned long verif_masked_addr;
- 		long encoded_watchpoint;
-diff --git a/lib/test_hexdump.c b/lib/test_hexdump.c
-index efc50fd30a44..bcfff9cbc6dd 100644
---- a/lib/test_hexdump.c
-+++ b/lib/test_hexdump.c
-@@ -149,7 +149,7 @@ static void __init test_hexdump(size_t len, int rowsize, int groupsize,
- static void __init test_hexdump_set(int rowsize, bool ascii)
- {
- 	size_t d = min_t(size_t, sizeof(data_b), rowsize);
--	size_t len = get_random_u32_below(d) + 1;
-+	size_t len = get_random_u32_inclusive(1, d);
- 
- 	test_hexdump(len, rowsize, 4, ascii);
- 	test_hexdump(len, rowsize, 2, ascii);
-@@ -208,11 +208,11 @@ static void __init test_hexdump_overflow(size_t buflen, size_t len,
- static void __init test_hexdump_overflow_set(size_t buflen, bool ascii)
- {
- 	unsigned int i = 0;
--	int rs = (get_random_u32_below(2) + 1) * 16;
-+	int rs = get_random_u32_inclusive(1, 2) * 16;
- 
- 	do {
- 		int gs = 1 << i;
--		size_t len = get_random_u32_below(rs) + gs;
-+		size_t len = get_random_u32_inclusive(gs, rs + gs - 1);
- 
- 		test_hexdump_overflow(buflen, rounddown(len, gs), rs, gs, ascii);
- 	} while (i++ < 3);
-@@ -223,11 +223,11 @@ static int __init test_hexdump_init(void)
- 	unsigned int i;
- 	int rowsize;
- 
--	rowsize = (get_random_u32_below(2) + 1) * 16;
-+	rowsize = get_random_u32_inclusive(1, 2) * 16;
- 	for (i = 0; i < 16; i++)
- 		test_hexdump_set(rowsize, false);
- 
--	rowsize = (get_random_u32_below(2) + 1) * 16;
-+	rowsize = get_random_u32_inclusive(1, 2) * 16;
- 	for (i = 0; i < 16; i++)
- 		test_hexdump_set(rowsize, true);
- 
-diff --git a/lib/test_printf.c b/lib/test_printf.c
-index 6d10187eddac..f098914a48d5 100644
---- a/lib/test_printf.c
-+++ b/lib/test_printf.c
-@@ -126,7 +126,7 @@ __test(const char *expect, int elen, const char *fmt, ...)
- 	 * be able to print it as expected.
- 	 */
- 	failed_tests += do_test(BUF_SIZE, expect, elen, fmt, ap);
--	rand = 1 + get_random_u32_below(elen + 1);
-+	rand = get_random_u32_inclusive(1, elen + 1);
- 	/* Since elen < BUF_SIZE, we have 1 <= rand <= BUF_SIZE. */
- 	failed_tests += do_test(rand, expect, elen, fmt, ap);
- 	failed_tests += do_test(0, expect, elen, fmt, ap);
-diff --git a/lib/test_vmalloc.c b/lib/test_vmalloc.c
-index 104f09ea5fcc..f90d2c27675b 100644
---- a/lib/test_vmalloc.c
-+++ b/lib/test_vmalloc.c
-@@ -151,7 +151,7 @@ static int random_size_alloc_test(void)
- 	int i;
- 
- 	for (i = 0; i < test_loop_count; i++) {
--		n = get_random_u32_below(100) + 1;
-+		n = get_random_u32_inclusive(1, 100);
- 		p = vmalloc(n * PAGE_SIZE);
- 
- 		if (!p)
-@@ -291,12 +291,12 @@ pcpu_alloc_test(void)
- 		return -1;
- 
- 	for (i = 0; i < 35000; i++) {
--		size = get_random_u32_below(PAGE_SIZE / 4) + 1;
-+		size = get_random_u32_inclusive(1, PAGE_SIZE / 4);
- 
- 		/*
- 		 * Maximum PAGE_SIZE
- 		 */
--		align = 1 << (get_random_u32_below(11) + 1);
-+		align = 1 << get_random_u32_inclusive(1, 11);
- 
- 		pcpu[i] = __alloc_percpu(size, align);
- 		if (!pcpu[i])
-diff --git a/mm/kasan/kasan_test.c b/mm/kasan/kasan_test.c
-index 640f9c7f8e44..54181eba3e24 100644
---- a/mm/kasan/kasan_test.c
-+++ b/mm/kasan/kasan_test.c
-@@ -1299,7 +1299,7 @@ static void match_all_not_assigned(struct kunit *test)
- 	KASAN_TEST_NEEDS_CONFIG_OFF(test, CONFIG_KASAN_GENERIC);
- 
- 	for (i = 0; i < 256; i++) {
--		size = get_random_u32_below(1024) + 1;
-+		size = get_random_u32_inclusive(1, 1024);
- 		ptr = kmalloc(size, GFP_KERNEL);
- 		KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ptr);
- 		KUNIT_EXPECT_GE(test, (u8)get_tag(ptr), (u8)KASAN_TAG_MIN);
-@@ -1308,7 +1308,7 @@ static void match_all_not_assigned(struct kunit *test)
- 	}
- 
- 	for (i = 0; i < 256; i++) {
--		order = get_random_u32_below(4) + 1;
-+		order = get_random_u32_inclusive(1, 4);
- 		pages = alloc_pages(GFP_KERNEL, order);
- 		ptr = page_address(pages);
- 		KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ptr);
-@@ -1321,7 +1321,7 @@ static void match_all_not_assigned(struct kunit *test)
- 		return;
- 
- 	for (i = 0; i < 256; i++) {
--		size = get_random_u32_below(1024) + 1;
-+		size = get_random_u32_inclusive(1, 1024);
- 		ptr = vmalloc(size);
- 		KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ptr);
- 		KUNIT_EXPECT_GE(test, (u8)get_tag(ptr), (u8)KASAN_TAG_MIN);
-diff --git a/mm/kfence/kfence_test.c b/mm/kfence/kfence_test.c
-index 20028c179796..b5d66a69200d 100644
---- a/mm/kfence/kfence_test.c
-+++ b/mm/kfence/kfence_test.c
-@@ -532,7 +532,7 @@ static void test_free_bulk(struct kunit *test)
- 	int iter;
- 
- 	for (iter = 0; iter < 5; iter++) {
--		const size_t size = setup_test_cache(test, 8 + get_random_u32_below(300),
-+		const size_t size = setup_test_cache(test, get_random_u32_inclusive(8, 307),
- 						     0, (iter & 1) ? ctor_set_x : NULL);
- 		void *objects[] = {
- 			test_alloc(test, size, GFP_KERNEL, ALLOCATE_RIGHT),
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index e9318305a24a..4ee31056d3f8 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -772,8 +772,7 @@ static void set_cluster_next(struct swap_info_struct *si, unsigned long next)
- 		/* No free swap slots available */
- 		if (si->highest_bit <= si->lowest_bit)
- 			return;
--		next = si->lowest_bit +
--			get_random_u32_below(si->highest_bit - si->lowest_bit + 1);
-+		next = get_random_u32_inclusive(si->lowest_bit, si->highest_bit);
- 		next = ALIGN_DOWN(next, SWAP_ADDRESS_SPACE_PAGES);
- 		next = max_t(unsigned int, next, si->lowest_bit);
- 	}
-@@ -3089,7 +3088,7 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
- 		 */
- 		for_each_possible_cpu(cpu) {
- 			per_cpu(*p->cluster_next_cpu, cpu) =
--				1 + get_random_u32_below(p->highest_bit);
-+				get_random_u32_inclusive(1, p->highest_bit);
- 		}
- 		nr_cluster = DIV_ROUND_UP(maxpages, SWAPFILE_CLUSTER);
- 
-diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
-index b2f9679066c4..81ce668b0b77 100644
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -7373,9 +7373,8 @@ static int get_conn_info(struct sock *sk, struct hci_dev *hdev, void *data,
- 	/* To avoid client trying to guess when to poll again for information we
- 	 * calculate conn info age as random value between min/max set in hdev.
- 	 */
--	conn_info_age = hdev->conn_info_min_age +
--			get_random_u32_below(hdev->conn_info_max_age -
--					     hdev->conn_info_min_age);
-+	conn_info_age = get_random_u32_inclusive(hdev->conn_info_min_age,
-+						 hdev->conn_info_max_age - 1);
- 
- 	/* Query controller to refresh cached values if they are too old or were
- 	 * never read.
-diff --git a/net/core/pktgen.c b/net/core/pktgen.c
-index 95da2ddc1c20..760238196db1 100644
---- a/net/core/pktgen.c
-+++ b/net/core/pktgen.c
-@@ -2380,9 +2380,8 @@ static void set_cur_queue_map(struct pktgen_dev *pkt_dev)
- 	else if (pkt_dev->queue_map_min <= pkt_dev->queue_map_max) {
- 		__u16 t;
- 		if (pkt_dev->flags & F_QUEUE_MAP_RND) {
--			t = get_random_u32_below(pkt_dev->queue_map_max -
--						 pkt_dev->queue_map_min + 1) +
--			    pkt_dev->queue_map_min;
-+			t = get_random_u32_inclusive(pkt_dev->queue_map_min,
-+						     pkt_dev->queue_map_max);
- 		} else {
- 			t = pkt_dev->cur_queue_map + 1;
- 			if (t > pkt_dev->queue_map_max)
-@@ -2478,9 +2477,8 @@ static void mod_cur_headers(struct pktgen_dev *pkt_dev)
- 
- 	if (pkt_dev->udp_src_min < pkt_dev->udp_src_max) {
- 		if (pkt_dev->flags & F_UDPSRC_RND)
--			pkt_dev->cur_udp_src = get_random_u32_below(
--				pkt_dev->udp_src_max - pkt_dev->udp_src_min) +
--				pkt_dev->udp_src_min;
-+			pkt_dev->cur_udp_src = get_random_u32_inclusive(pkt_dev->udp_src_min,
-+									pkt_dev->udp_src_max - 1);
- 
- 		else {
- 			pkt_dev->cur_udp_src++;
-@@ -2491,9 +2489,8 @@ static void mod_cur_headers(struct pktgen_dev *pkt_dev)
- 
- 	if (pkt_dev->udp_dst_min < pkt_dev->udp_dst_max) {
- 		if (pkt_dev->flags & F_UDPDST_RND) {
--			pkt_dev->cur_udp_dst = get_random_u32_below(
--				pkt_dev->udp_dst_max - pkt_dev->udp_dst_min) +
--				pkt_dev->udp_dst_min;
-+			pkt_dev->cur_udp_dst = get_random_u32_inclusive(pkt_dev->udp_dst_min,
-+									pkt_dev->udp_dst_max - 1);
- 		} else {
- 			pkt_dev->cur_udp_dst++;
- 			if (pkt_dev->cur_udp_dst >= pkt_dev->udp_dst_max)
-@@ -2508,7 +2505,7 @@ static void mod_cur_headers(struct pktgen_dev *pkt_dev)
- 		if (imn < imx) {
- 			__u32 t;
- 			if (pkt_dev->flags & F_IPSRC_RND)
--				t = get_random_u32_below(imx - imn) + imn;
-+				t = get_random_u32_inclusive(imn, imx - 1);
- 			else {
- 				t = ntohl(pkt_dev->cur_saddr);
- 				t++;
-@@ -2530,8 +2527,7 @@ static void mod_cur_headers(struct pktgen_dev *pkt_dev)
- 				if (pkt_dev->flags & F_IPDST_RND) {
- 
- 					do {
--						t = get_random_u32_below(imx - imn) +
--						    imn;
-+						t = get_random_u32_inclusive(imn, imx - 1);
- 						s = htonl(t);
- 					} while (ipv4_is_loopback(s) ||
- 						ipv4_is_multicast(s) ||
-@@ -2578,9 +2574,8 @@ static void mod_cur_headers(struct pktgen_dev *pkt_dev)
- 	if (pkt_dev->min_pkt_size < pkt_dev->max_pkt_size) {
- 		__u32 t;
- 		if (pkt_dev->flags & F_TXSIZE_RND) {
--			t = get_random_u32_below(pkt_dev->max_pkt_size -
--						 pkt_dev->min_pkt_size) +
--			    pkt_dev->min_pkt_size;
-+			t = get_random_u32_inclusive(pkt_dev->min_pkt_size,
-+						     pkt_dev->max_pkt_size - 1);
- 		} else {
- 			t = pkt_dev->cur_pkt_size + 1;
- 			if (t > pkt_dev->max_pkt_size)
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 3b076e5ba932..23cf418efe4f 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -3647,7 +3647,7 @@ static void tcp_send_challenge_ack(struct sock *sk)
- 
- 		WRITE_ONCE(net->ipv4.tcp_challenge_timestamp, now);
- 		WRITE_ONCE(net->ipv4.tcp_challenge_count,
--			   half + get_random_u32_below(ack_limit));
-+			   get_random_u32_inclusive(half, ack_limit + half - 1));
- 	}
- 	count = READ_ONCE(net->ipv4.tcp_challenge_count);
- 	if (count > 0) {
-diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-index daf89a2eb492..d720f6f5de3f 100644
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -104,7 +104,7 @@ static inline u32 cstamp_delta(unsigned long cstamp)
- static inline s32 rfc3315_s14_backoff_init(s32 irt)
- {
- 	/* multiply 'initial retransmission time' by 0.9 .. 1.1 */
--	u64 tmp = (900000 + get_random_u32_below(200001)) * (u64)irt;
-+	u64 tmp = get_random_u32_inclusive(900000, 1100000) * (u64)irt;
- 	do_div(tmp, 1000000);
- 	return (s32)tmp;
- }
-@@ -112,11 +112,11 @@ static inline s32 rfc3315_s14_backoff_init(s32 irt)
- static inline s32 rfc3315_s14_backoff_update(s32 rt, s32 mrt)
- {
- 	/* multiply 'retransmission timeout' by 1.9 .. 2.1 */
--	u64 tmp = (1900000 + get_random_u32_below(200001)) * (u64)rt;
-+	u64 tmp = get_random_u32_inclusive(1900000, 2100000) * (u64)rt;
- 	do_div(tmp, 1000000);
- 	if ((s32)tmp > mrt) {
- 		/* multiply 'maximum retransmission time' by 0.9 .. 1.1 */
--		tmp = (900000 + get_random_u32_below(200001)) * (u64)mrt;
-+		tmp = get_random_u32_inclusive(900000, 1100000) * (u64)mrt;
- 		do_div(tmp, 1000000);
- 	}
- 	return (s32)tmp;
-diff --git a/net/netfilter/nf_nat_helper.c b/net/netfilter/nf_nat_helper.c
-index bf591e6af005..67e56456615f 100644
---- a/net/netfilter/nf_nat_helper.c
-+++ b/net/netfilter/nf_nat_helper.c
-@@ -223,7 +223,7 @@ u16 nf_nat_exp_find_port(struct nf_conntrack_expect *exp, u16 port)
- 		if (res != -EBUSY || (--attempts_left < 0))
- 			break;
- 
--		port = min + get_random_u32_below(range);
-+		port = get_random_u32_inclusive(min, range + min - 1);
- 	}
- 
- 	return 0;
-diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index 40f831854774..d63a3644ee1a 100644
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -2072,7 +2072,7 @@ int xfrm_alloc_spi(struct xfrm_state *x, u32 low, u32 high)
- 	} else {
- 		u32 spi = 0;
- 		for (h = 0; h < high-low+1; h++) {
--			spi = low + get_random_u32_below(high - low + 1);
-+			spi = get_random_u32_inclusive(low, high);
- 			x0 = xfrm_state_lookup(net, mark, &x->id.daddr, htonl(spi), x->id.proto, x->props.family);
- 			if (x0 == NULL) {
- 				newspi = htonl(spi);
--- 
-2.38.1
+But you only are doing this for one platform, that's not any
+unification.  APIs don't really work unless they can handle 3 users, as
+then you really understand if they work or not.
 
+Right now you wrote this code and it only has one user, that's a
+platform-specific-filesystem-only so far.
+
+> Similar to the common place securityfs provides for LSMs to interact with
+> kernel security objects, fwsecurityfs would provide a common place for all
+> firmware security objects, which interact with the firmware rather than the
+> kernel. Although at the API level, the two filesystem look similar, the
+> requirements for firmware and kernel objects are different. Therefore,
+> reusing securityfs wasn't a good fit for the firmware use case and we are
+> proposing a similar but different filesystem -  fwsecurityfs - focused for
+> firmware security.
+
+What other platforms will use this?  Who is going to move their code
+over to it?
+
+> > And again, how are you going to get all Linux distros to now mount your
+> > new filesystem?
+> 
+> It would be analogous to the way securityfs is mounted.
+
+That did not answer the question.  The question is how are you going to
+get the distros to mount your new filesystem specifically?  How will
+they know that they need to modify their init scripts to do this?  Who
+is going to do that?  For what distro?  On what timeline?
+
+Oh, and it looks like this series doesn't pass the kernel testing bot at
+all, so I'll not review the code until that's all fixed up at the very
+least.
+
+thanks,
+
+greg k-h
