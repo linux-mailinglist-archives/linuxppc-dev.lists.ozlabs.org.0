@@ -1,79 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9537A62FB17
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Nov 2022 18:03:56 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB75E62FB64
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Nov 2022 18:15:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NDNRG2vJjz3f3T
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Nov 2022 04:03:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NDNj36HZ8z3f3S
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Nov 2022 04:15:51 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=LS+hNeQ4;
-	dkim=fail reason="signature verification failed" header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=khb2AjlS;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aRZ9CdGo;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=softfail (domain owner discourages use of this host) smtp.mailfrom=suse.cz (client-ip=2001:67c:2178:6::1d; helo=smtp-out2.suse.de; envelope-from=vbabka@suse.cz; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=song@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=LS+hNeQ4;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=khb2AjlS;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aRZ9CdGo;
 	dkim-atps=neutral
-X-Greylist: delayed 2571 seconds by postgrey-1.36 at boromir; Sat, 19 Nov 2022 04:03:05 AEDT
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NDNQK6LkNz3bjw
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Nov 2022 04:03:05 +1100 (AEDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NDNh82S5sz3cBX
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Nov 2022 04:15:04 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id D4BF31FDA4;
-	Fri, 18 Nov 2022 17:03:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1668790981; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fK2sdLfZqlxwdzyzeVC6Yy7wx8vYkqbsaxCq7BgcB58=;
-	b=LS+hNeQ4geGgj4IXWO5+0pS41T+O+kbhrtYk+pP+vVRIoeuKs+oW13F6Ht+tR7USTuEyYF
-	w44h38vtDK2kFPU+O2RCals0tqkM1nJKUf86qC24NucyatqLyr4TTvgkMY8PsBAD2uBX+L
-	cHUUR5s7utA0uOsl3r11W1mUfWblbh8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1668790981;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fK2sdLfZqlxwdzyzeVC6Yy7wx8vYkqbsaxCq7BgcB58=;
-	b=khb2AjlSZXqyWGI6UYbr+/ZmYWHGQEHMU8He9yK4yvl4DWCKZ0jYtp3ha5rFTfTmR/yC2u
-	C7/yrrNfpsGvyLBA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 41DED1345B;
-	Fri, 18 Nov 2022 17:03:01 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id kEZlD8W6d2PfGAAAMHmgww
-	(envelope-from <vbabka@suse.cz>); Fri, 18 Nov 2022 17:03:01 +0000
-Message-ID: <e4dd50b8-7ae9-a6fd-8765-2b2dd90ea1a8@suse.cz>
-Date: Fri, 18 Nov 2022 18:03:00 +0100
+	by dfw.source.kernel.org (Postfix) with ESMTPS id AF1D862697
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Nov 2022 17:14:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20B69C43470
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Nov 2022 17:14:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1668791699;
+	bh=aGeNjGPP8dZqmetYNEd9VnRo9dFM5dECRmcaKXKx9eY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=aRZ9CdGoQcFqHGqM1EJ8/vLQtWJgf//zBNew9wpzdt1r4Grm7ONnH6wCnLT0Px1qr
+	 o69zcXpOLzA43jU9bl7mgZS8x+cn1vm+F5PTZGYDAqzHnPTH+yo3Dq7dIjA3ModHiM
+	 IPgz8DmBwvJ+cnveUFihaE/d9nqyNKWI5ECqCjD18hAmUC8rIisDARhZnd7kC3Ryh9
+	 pdqmwAsc4zp+TrKMUEFLjS/bYNbEUaZnAOjD79L/lNniEYBufdWhqh3EWIOaaY/X7k
+	 S/hrZsYvIQ0sRhlU+cGkkJGsR3D/4Y+OJA1gE1094VmFY6vcHZsM64lQH3BdGiqeEK
+	 GDwnUSKUEMVCw==
+Received: by mail-ed1-f51.google.com with SMTP id z18so8022306edb.9
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Nov 2022 09:14:59 -0800 (PST)
+X-Gm-Message-State: ANoB5pl4PaMpmh4Mj3haRLtj6vG+wmuXJaLe3X2d6s12CxObx2lASOIT
+	y6jYOFJq9z5rbFdKnENFpF164tzdTzVWJIdpsQA=
+X-Google-Smtp-Source: AA0mqf5vmlW8qp/K/O9wIXdvysgv/PQikRZVOikEvoR7n1HGHbtgOsu76Fyk4A8Fs1YuHDx0tCwF5kll65JjGlipyYU=
+X-Received: by 2002:a05:6402:538a:b0:458:fbd9:e3b1 with SMTP id
+ ew10-20020a056402538a00b00458fbd9e3b1mr6950969edb.6.1668791697320; Fri, 18
+ Nov 2022 09:14:57 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [PATCH mm-unstable v1 05/20] mm: add early FAULT_FLAG_WRITE
- consistency checks
-Content-Language: en-US
-To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
-References: <20221116102659.70287-1-david@redhat.com>
- <20221116102659.70287-6-david@redhat.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-In-Reply-To: <20221116102659.70287-6-david@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20220901171252.2148348-1-song@kernel.org> <Y3expGRt4cPoZgHL@alley>
+In-Reply-To: <Y3expGRt4cPoZgHL@alley>
+From: Song Liu <song@kernel.org>
+Date: Fri, 18 Nov 2022 09:14:44 -0800
+X-Gmail-Original-Message-ID: <CAPhsuW4MaiJBTNnwVhqkmxPxBn8e1cn9PPGm9PkgF6YaO0AWKQ@mail.gmail.com>
+Message-ID: <CAPhsuW4MaiJBTNnwVhqkmxPxBn8e1cn9PPGm9PkgF6YaO0AWKQ@mail.gmail.com>
+Subject: Re: [PATCH v6] livepatch: Clear relocation targets on a module removal
+To: Petr Mladek <pmladek@suse.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,52 +67,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, dri-devel@lists.freedesktop.org, linux-mm@kvack.org, Nadav Amit <namit@vmware.com>, linux-kselftest@vger.kernel.org, sparclinux@vger.kernel.org, Shuah Khan <shuah@kernel.org>, Andrea Arcangeli <aarcange@redhat.com>, linux-samsung-soc@vger.kernel.org, linux-rdma@vger.kernel.org, David Airlie <airlied@gmail.com>, x86@kernel.org, Hugh Dickins <hughd@google.com>, Matthew Wilcox <willy@infradead.org>, Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, linux-media@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, John Hubbard <jhubbard@nvidia.com>, linux-um@lists.infradead.org, etnaviv@lists.freedesktop.org, Alex Williamson <alex.williamson@redhat.com>, Peter Xu <peterx@redhat.com>, Muchun Song <songmuchun@bytedance.com>, linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, Oded Gabbay <ogabbay@kernel.org>, linux-mips@vger.kernel.org, linux-perf-users@vger.kernel.org, linux-se
- curity-module@vger.kernel.org, linux-alpha@vger.kernel.org, linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, Lucas Stach <l.stach@pengutronix.de>, Linus Torvalds <torvalds@linux-foundation.org>, Mike Kravetz <mike.kravetz@oracle.com>
+Cc: jikos@kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, joe.lawrence@redhat.com, Josh Poimboeuf <jpoimboe@redhat.com>, live-patching@vger.kernel.org, mbenes@suse.cz, linuxppc-dev@lists.ozlabs.org, jpoimboe@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 11/16/22 11:26, David Hildenbrand wrote:
-> Let's catch abuse of FAULT_FLAG_WRITE early, such that we don't have to
-> care in all other handlers and might get "surprises" if we forget to do
-> so.
-> 
-> Write faults without VM_MAYWRITE don't make any sense, and our
-> maybe_mkwrite() logic could have hidden such abuse for now.
-> 
-> Write faults without VM_WRITE on something that is not a COW mapping is
-> similarly broken, and e.g., do_wp_page() could end up placing an
-> anonymous page into a shared mapping, which would be bad.
-> 
-> This is a preparation for reliable R/O long-term pinning of pages in
-> private mappings, whereby we want to make sure that we will never break
-> COW in a read-only private mapping.
-> 
-> Signed-off-by: David Hildenbrand <david@redhat.com>
+Hi Petr,
 
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+On Fri, Nov 18, 2022 at 8:24 AM Petr Mladek <pmladek@suse.com> wrote:
+>
+> On Thu 2022-09-01 10:12:52, Song Liu wrote:
+[...]
+> >
+> >  arch/powerpc/kernel/module_32.c |  10 ++++
+> >  arch/powerpc/kernel/module_64.c |  49 +++++++++++++++
+> >  arch/s390/kernel/module.c       |   8 +++
+> >  arch/x86/kernel/module.c        | 102 +++++++++++++++++++++++---------
+> >  include/linux/moduleloader.h    |   7 +++
+> >  kernel/livepatch/core.c         |  41 ++++++++++++-
+>
+> First, thanks a lot for working on this.
+>
+> I can't check or test the powerpc and s390 code easily.
+>
+> I am going to comment only x86 and generic code. It looks good
+> but it needs some changes to improve maintainability.
 
-> ---
->  mm/memory.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
-> 
-> diff --git a/mm/memory.c b/mm/memory.c
-> index e014435a87db..c4fa378ec2a0 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -5170,6 +5170,14 @@ static vm_fault_t sanitize_fault_flags(struct vm_area_struct *vma,
->  		 */
->  		if (!is_cow_mapping(vma->vm_flags))
->  			*flags &= ~FAULT_FLAG_UNSHARE;
-> +	} else if (*flags & FAULT_FLAG_WRITE) {
-> +		/* Write faults on read-only mappings are impossible ... */
-> +		if (WARN_ON_ONCE(!(vma->vm_flags & VM_MAYWRITE)))
-> +			return VM_FAULT_SIGSEGV;
-> +		/* ... and FOLL_FORCE only applies to COW mappings. */
-> +		if (WARN_ON_ONCE(!(vma->vm_flags & VM_WRITE) &&
-> +				 !is_cow_mapping(vma->vm_flags)))
-> +			return VM_FAULT_SIGSEGV;
->  	}
->  	return 0;
->  }
+Thanks for these comments and suggestions. I will work on them
+and send v4.
 
+Song
