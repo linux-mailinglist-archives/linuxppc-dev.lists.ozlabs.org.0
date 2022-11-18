@@ -1,148 +1,94 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 741E362EE8F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Nov 2022 08:41:09 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5745D62EFC3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Nov 2022 09:40:32 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ND7xv1xcHz3cKW
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Nov 2022 18:41:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ND9GQ25Kqz3f3D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Nov 2022 19:40:30 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=SB8DcceI;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YAyot0D/;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.43; helo=mga05.intel.com; envelope-from=kevin.tian@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=SB8DcceI;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YAyot0D/;
 	dkim-atps=neutral
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ND7ww6nZgz3bjQ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Nov 2022 18:40:16 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1668757217; x=1700293217;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=Citel6HyNQHt48ukVUDnIEl9QkUxRAgq/IkpddkmkwY=;
-  b=SB8DcceIHWrDpoG7KdZtA7JDHFAkBHwj89cISoGYCraE7L6/Kp9+CcEE
-   9rgeqcpGFCKJxnjhY0EVPKTUzeNMBYwntpEa6mVKFiMb8XG5V+bhOwFTs
-   Ea7GNYtFxVplYjPDMcmrjeYBiCIxf4hCDKULcKJFDTao6XFHyO95/Kjzv
-   E8oGbm/DAKrrprzYj42d3X57sSAIstQUq9xqrHI3rWtGrllWn7vsaJqjF
-   lVpHUjZVzW8bFGJTXc9ehlpp2BYFnEDx3dlq5SlnXhXt1SIJuahxpNKQf
-   ubDbN5Gi8RrA28E5RuE+b0t1Lr+YL8gcLePMvSdrW30tkpZGAo4x9NNZk
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10534"; a="399365077"
-X-IronPort-AV: E=Sophos;i="5.96,173,1665471600"; 
-   d="scan'208";a="399365077"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2022 23:40:14 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10534"; a="671233971"
-X-IronPort-AV: E=Sophos;i="5.96,173,1665471600"; 
-   d="scan'208";a="671233971"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
-  by orsmga008.jf.intel.com with ESMTP; 17 Nov 2022 23:40:13 -0800
-Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Thu, 17 Nov 2022 23:40:13 -0800
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
- fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31 via Frontend Transport; Thu, 17 Nov 2022 23:40:13 -0800
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.109)
- by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2375.31; Thu, 17 Nov 2022 23:40:12 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=MqYcBxu5Mkbl36dQe+HqvS9HUZxo55/Kavh0h0MDWUfPoy3Hd4Qdq1uyEzuQnmQrofwRMYGl8dHGnAoQbDaxCICE0wadfZ3ZNu5W2B8CKk7jEJOff92r+SQjyewRaT2b7vSAxhXe2Sgo0Hc2IFxb8AcU2oLlUU21gZRrUi2l9CvQ1rebBfDhBwBtEB/cYQbjoU3qMJScvRekH9M3VQiWAc9bX/jZWQe8VcQi1+h+XkHjE7ocNApKGISc65Ha7KYYmc6FuLo6A7hqjGyUxC1ZnZkp+l+5tctB7jJ6pCWVFaHXXnkeB/R/lmI2ubLmx7m7btnn35SDaO4piUsFf2JZNA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=R+Da7tpCmtXA1XY+7UmlYBZHZsppseJyRTTtDN6Kpzk=;
- b=mJ+8Iujm/o/fDhxZRapQgfA34P6/TXTdOHnHUN2uAMvz8/J/jRCpLwtXoGe9SnFhTijT2/0yMpJ+1VM+AUaKHnvVJQQgCNb0mQHKaaXs0tiaW7i0O37+H1RtBZDP2b/7CxiL0cGWff7+PfSG7/q9T3PYM8LqTNzplJCQ4d4TGV8H8rrp90XtnIrh+Oz1T5qa7TxoJJbM5qzPI3CaMhI4oZGYV3nT/gmLSfx+TSbJsdBHyjzFUaKTHJ3QJSEdzf6UCzZxkYPuCQdRPxYnWjUiAyi/GcJ1eoCMw7wmX/I+BblZpspAMiHb06EiD6J3JJnmp126CKu0sD09pp82k4slbQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from BN9PR11MB5276.namprd11.prod.outlook.com (2603:10b6:408:135::18)
- by SJ0PR11MB6576.namprd11.prod.outlook.com (2603:10b6:a03:478::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5834.9; Fri, 18 Nov
- 2022 07:40:06 +0000
-Received: from BN9PR11MB5276.namprd11.prod.outlook.com
- ([fe80::9929:858c:3d20:9489]) by BN9PR11MB5276.namprd11.prod.outlook.com
- ([fe80::9929:858c:3d20:9489%4]) with mapi id 15.20.5813.019; Fri, 18 Nov 2022
- 07:40:06 +0000
-From: "Tian, Kevin" <kevin.tian@intel.com>
-To: Thomas Gleixner <tglx@linutronix.de>, LKML <linux-kernel@vger.kernel.org>
-Subject: RE: [patch 00/39] genirq, PCI/MSI: Support for per device MSI and
- PCI/IMS - Part 1 cleanups
-Thread-Topic: [patch 00/39] genirq, PCI/MSI: Support for per device MSI and
- PCI/IMS - Part 1 cleanups
-Thread-Index: AQHY9dUd//4IwYgyckilRdIEBndJ/65EVfgw
-Date: Fri, 18 Nov 2022 07:40:06 +0000
-Message-ID: <BN9PR11MB5276D4ED4AF3CAD095250ADF8C099@BN9PR11MB5276.namprd11.prod.outlook.com>
-References: <20221111120501.026511281@linutronix.de>
-In-Reply-To: <20221111120501.026511281@linutronix.de>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BN9PR11MB5276:EE_|SJ0PR11MB6576:EE_
-x-ms-office365-filtering-correlation-id: 79b88d64-5dd0-4a8a-deac-08dac9381c9c
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: UfPvzFB2icmgKNKhWFocWna6paAUrg6Al7S0rHNAhqwueC1bhH2lidHExNDjVLTWSnBaxN50bR9sdWJt7Z5ZXGfX5UW7S00dyxsJgMfjyD1tWSbMZxkDEOHZm/j9VfvtQeDUks9pNL0TZ8I2r4b9UH0mJSSDA6MerMkSZpQNQxGOPvwbu+dUvuPFVva270cwxch0K/j6LvJ4WVIGMZKIueWDo7CFaHjNYRagk3Wh0KafB5KSKjSnoyrIUJ7jLNlGoNJCFFxxLtyCS7mKXe/qnJOmCjx/DB7iQTGJZgS3uI7Q6kAea5PTFRl3EIXMP7vcmFdphiu0ndsi/L/ZJqZWu3CoW6WF1DMAuYmhOqV4LovqTRQFJwdCR7QMX/NcRYJLwsxX0PdUE1QV7W/LX7eByKAhxOO9QWYXrfkK+Wnv9Y0yOdOpXYnBnIqE49L5274xR/R0jNacFxu3bjf8tpCTFKNB0YF487FsmoPFcWV3uBQNOXnnVcO5KFpoQgGWl9QL+0Ez+B6ceYcqXQNxNEpbQm+sXg5tuob8wM/CpulW4UOWUQCXVYmZwgCWUOa9L0dKEDLqaoQ7DFGm5gPOYh5Qmks2W8OtcihA73PEA/vk3cQXTzcF0bvt0/q91nf0vgfE1E8LwAWfLWOoGR+piSghmdifU31N3jjvb4Xpv/+ZgeiSstGYIECE7rf9lkP5vJLeZCgLYwdy3IA3rhKks6qpSw==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR11MB5276.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(396003)(376002)(136003)(39860400002)(366004)(346002)(451199015)(8676002)(478600001)(4326008)(64756008)(186003)(76116006)(66446008)(66556008)(66476007)(66946007)(52536014)(122000001)(5660300002)(82960400001)(86362001)(38100700002)(7416002)(54906003)(316002)(41300700001)(4744005)(8936002)(33656002)(110136005)(9686003)(6506007)(7696005)(2906002)(107886003)(71200400001)(55016003)(26005)(38070700005);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?TsxfQWJlr0jejqBxzNJGYDEXcWxeKNKr/WwSxPUAJab5ebPttvEuJZmNwspo?=
- =?us-ascii?Q?Tj2ftCJhbVArE52CESoJ+YfNLw+APpRA2Ls3lRRKj0l6kePPr+e4MDRtCxPK?=
- =?us-ascii?Q?N8IvKhZVhHJ631OmLfpl1sGsZwRUodyUgeHofY4DMSFZrK8V7Q8UBi6GwEMJ?=
- =?us-ascii?Q?RbT1gjG6DcCQ9PULyzArFoeuzDdbgIhVYNA/iEbkWjFR6DkJuutumWGWVr8q?=
- =?us-ascii?Q?hiqZUttNkByKbQKjHLa9z6jps0igWXQ0SzEWx8DaIqT68K598R8VrJvmKWQx?=
- =?us-ascii?Q?8h2le5xMN01m1CVLOTliiKbSCe/cd0dQG0wxIqrUilouRSFnckCUXpPYNlF4?=
- =?us-ascii?Q?/ejAKj/61qSkvogwT1lyjFH8JKNolejMxnEQLr9fVuB7aBYRY+ZsexMZaEkK?=
- =?us-ascii?Q?eEv+gvy8GOmK7ZUBkCNjebVCyvViERaN2ZEC4luAFQ5zkxfj6gublkcXMT6J?=
- =?us-ascii?Q?LMzR+KqhyVRN3oFj9WWQScIfv3UFZInMR2g93TSnyvO+O+Bdytp2YoKSmhCl?=
- =?us-ascii?Q?6+JhvKEBQW4PeiaBTkwtbib+EMTHEbHCtoTV345W6u2+P4CABrg3fPXXfu0q?=
- =?us-ascii?Q?SZFXsuQf9yVvap6VTMPNZcb221ajXMxAG6Wx4ErcFjqPJRHYObCowAZgp744?=
- =?us-ascii?Q?XL+H5recwkREk/O3KE8Vn0PR+EdHYPdYk1ZIDdLU5EsZq8oRmIAVvhE6wLLk?=
- =?us-ascii?Q?zkL4T/te1a3HA7YDV4/xjJ9r6V2EqfxNKN9wAoXFR2ryHsMBKuAyWuvCCilO?=
- =?us-ascii?Q?PyxUR/f8v5zAe92txbdGjwi5TjZIr2knr43NTPHyZmp6G07AbCy8uaDl3eQt?=
- =?us-ascii?Q?StHJ/dhtpifJowzRDA5NlhXLBihecrKvjXRYNiFcGJtcMdjqe/a40Xr8RrT5?=
- =?us-ascii?Q?jn9U7h/q45hqivctTDvhPqY4rbnhuyD1LxSKv12yKyN+k8WQOQX/QOyiZcOc?=
- =?us-ascii?Q?AW+wWmblODwIDf+ut+zCrO3jmIua8lZZSZApjzBcg/cezhgCcey3lpr/IZkU?=
- =?us-ascii?Q?a849w/LwYdRzDcAqHtums17nhdf+BCPtiloqFoz/PUV7YIFVxE5FieokW/Og?=
- =?us-ascii?Q?PSKI3syvQiEO2b7fuvg51kL2Tnuo9XWQqgFgMl67CM7a5jadccXCTNOVJQqv?=
- =?us-ascii?Q?qNdHYMG9+3ogedj7gwm1EKSRFk0TRdzF8sVP2tfcMo+CWV31pV4KQePsmlP9?=
- =?us-ascii?Q?FJTXRoUqfuIPLJJ6gTt5Wtnjc+JrIJX1Ds/tegBbWv4tMqssYPKDqYNXSSFL?=
- =?us-ascii?Q?7dfxOTXlUvcAiHPV5Rb5vLYKIsY5AhQpYWHP9WR1kdSbXE5+M0yVwQsTT40Y?=
- =?us-ascii?Q?Cp7WWX/R0C9ZV0pwQwwr/zZR5ZFnaWhC11mCRRUj3xQeDCTLifYVQ/gl1IqU?=
- =?us-ascii?Q?xTx66+4WKf5AR5B0je9eq4MZ7wh/CSS3SE9OIMI3smAdla7qZQsOB0QajHWB?=
- =?us-ascii?Q?+iKq2BQyglHVGMGGhNDQtNQzTwemYFC0FZM6WUcpVamzNQYS2OxaA9HWuF7P?=
- =?us-ascii?Q?w3Z5z5YR2EVUnSupfGopdg4305HvfA+yMOKuEBrlJcKre5m7L5DBZUjbQbGC?=
- =?us-ascii?Q?N3CIDV2zYOexGyeKhAbpHCxLSiksJH6n3oYqI/fa?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ND9FQ3QMqz3bj0
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Nov 2022 19:39:38 +1100 (AEDT)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AI60CB2013946;
+	Fri, 18 Nov 2022 08:39:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=+Imp8ylruXrj3FwF+4PIwF8h6kbMHJxQzMHhh3KvlwQ=;
+ b=YAyot0D/81sFXgEmVSrkvhY+WTc59m/76ySAUSXn3ddCNdXPeIU5aqv7k7YqGtoidBQC
+ EHWtdBQeMEJS882NLUPorDz5PXz4TzDFOC06xm6Xmo5DPp0cXwRgfkRteDh/U0JU4/zu
+ cvV+M+Z8JTsqx5TirqzqRkys67dIArMia2shftD4VtL/swSKwIFwSB+2ywATmZS81tiO
+ +UFZ+G6zxyIoPJW/4W4r+Nndjis5//DanTMObyNRYGOzByeWoljZ4gnVRski4T+s4wuF
+ bHP3hLLovPSUZ082wYJtEPNoh74x+48FycxpkPLDtpRDTOtNvKrrUYnJs9X4UW7DG+Ik EA== 
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3kx1566ts9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 18 Nov 2022 08:39:18 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+	by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2AI8aUO3027518;
+	Fri, 18 Nov 2022 08:39:17 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+	by ppma04ams.nl.ibm.com with ESMTP id 3kwtp50pr2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 18 Nov 2022 08:39:16 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+	by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2AI8dESI14680498
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 18 Nov 2022 08:39:14 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A6F88A4054;
+	Fri, 18 Nov 2022 08:39:14 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7490DA405B;
+	Fri, 18 Nov 2022 08:39:10 +0000 (GMT)
+Received: from [9.211.152.48] (unknown [9.211.152.48])
+	by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Fri, 18 Nov 2022 08:39:09 +0000 (GMT)
+Message-ID: <9d5c390a-31db-4f93-203d-281b0831d37f@linux.ibm.com>
+Date: Fri, 18 Nov 2022 14:09:07 +0530
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BN9PR11MB5276.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 79b88d64-5dd0-4a8a-deac-08dac9381c9c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Nov 2022 07:40:06.1584
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: owmF78Fjttp5uEruLG7oUTZ7zb4EhhoUwnG+80PwdCc+0OVMtqGSwaMLgqOXT0cViy+nbb1vsn6SV4sQpcikSw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB6576
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.1
+Subject: Re: [RFC PATCH 0/3] enable bpf_prog_pack allocator for powerpc
+Content-Language: en-US
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        "bpf@vger.kernel.org" <bpf@vger.kernel.org>
+References: <20221110184303.393179-1-hbathini@linux.ibm.com>
+ <00efe9b1-d9fd-441c-9eb4-cbf25d82baf2@csgroup.eu>
+ <5b59b7df-d2ec-1664-f0fb-764c9b93417c@linux.ibm.com>
+ <bf0af91e-861c-1608-7150-d31578be9b02@csgroup.eu>
+ <e0266414-843f-db48-a56d-1d8a8944726a@csgroup.eu>
+ <6151f5c6-2e64-5f2d-01b1-6f517f4301c0@linux.ibm.com>
+ <02496f7a-51d8-4fc0-161d-b29d5e657089@csgroup.eu>
+From: Hari Bathini <hbathini@linux.ibm.com>
+In-Reply-To: <02496f7a-51d8-4fc0-161d-b29d5e657089@csgroup.eu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: z_Jt8nEYvBmqIMLO_dgCg05Et_Vx8vb-
+X-Proofpoint-GUID: z_Jt8nEYvBmqIMLO_dgCg05Et_Vx8vb-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-11-17_06,2022-11-17_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 adultscore=0
+ bulkscore=0 clxscore=1015 mlxscore=0 malwarescore=0 mlxlogscore=999
+ impostorscore=0 priorityscore=1501 suspectscore=0 spamscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2210170000 definitions=main-2211180054
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -154,30 +100,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Logan Gunthorpe <logang@deltatee.com>, Allen Hubbe <allenbh@gmail.com>, Lorenzo
- Pieralisi <lorenzo.pieralisi@arm.com>, "Jiang, Dave" <dave.jiang@intel.com>, "Raj, Ashok" <ashok.raj@intel.com>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, Joerg Roedel <joro@8bytes.org>, "x86@kernel.org" <x86@kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "Chatre, Reinette" <reinette.chatre@intel.com>, Alex Williamson <alex.williamson@redhat.com>, Jason Gunthorpe <jgg@mellanox.com>, Marc Zyngier <maz@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, "Williams, Dan J" <dan.j.williams@intel.com>, Jon Mason <jdmason@kudzu.us>, Will
- Deacon <will@kernel.org>, "Ahmed S. Darwish" <darwi@linutronix.de>
+Cc: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Song Liu <songliubraving@fb.com>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> From: Thomas Gleixner <tglx@linutronix.de>
-> Sent: Friday, November 11, 2022 9:54 PM
->=20
-> Enough of history and theory. Here comes part 1:
->=20
-> This is just a cleanup and a reorganisation of the PCI/MSI code which
-> became quite an unreadable mess over time. There is no intentional
-> functional change in this series.
->=20
-> It's just a separate step to make the subsequent changes in the
-> infrastructure easier both to implement and to review.
->=20
-> Thanks,
->=20
-> 	tglx
 
-The entire series looks good to me except a couple nits replied in
-individual patches:
 
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+On 17/11/22 12:29 pm, Christophe Leroy wrote:
+> 
+> 
+> Le 16/11/2022 à 18:01, Hari Bathini a écrit :
+>>
+>>
+>> On 16/11/22 12:14 am, Christophe Leroy wrote:
+>>>
+>>>
+>>> Le 14/11/2022 à 18:27, Christophe Leroy a écrit :
+>>>>
+>>>>
+>>>> Le 14/11/2022 à 15:47, Hari Bathini a écrit :
+>>>>> Hi Christophe,
+>>>>>
+>>>>> On 11/11/22 4:55 pm, Christophe Leroy wrote:
+>>>>>> Le 10/11/2022 à 19:43, Hari Bathini a écrit :
+>>>>>>> Most BPF programs are small, but they consume a page each. For
+>>>>>>> systems
+>>>>>>> with busy traffic and many BPF programs, this may also add
+>>>>>>> significant
+>>>>>>> pressure on instruction TLB. High iTLB pressure usually slows down
+>>>>>>> the
+>>>>>>> whole system causing visible performance degradation for production
+>>>>>>> workloads.
+>>>>>>>
+>>>>>>> bpf_prog_pack, a customized allocator that packs multiple bpf
+>>>>>>> programs
+>>>>>>> into preallocated memory chunks, was proposed [1] to address it. This
+>>>>>>> series extends this support on powerpc.
+>>>>>>>
+>>>>>>> Patches 1 & 2 add the arch specific functions needed to support this
+>>>>>>> feature. Patch 3 enables the support for powerpc. The last patch
+>>>>>>> ensures cleanup is handled racefully.
+>>>>>>>
+>>>>>
+>>>>>>> Tested the changes successfully on a PowerVM. patch_instruction(),
+>>>>>>> needed for bpf_arch_text_copy(), is failing for ppc32. Debugging it.
+>>>>>>> Posting the patches in the meanwhile for feedback on these changes.
+>>>>>>
+>>>>>> I did a quick test on ppc32, I don't get such a problem, only
+>>>>>> something
+>>>>>> wrong in the dump print as traps intructions only are dumped, but
+>>>>>> tcpdump works as expected:
+>>>>>
+>>>>> Thanks for the quick test. Could you please share the config you used.
+>>>>> I am probably missing a few knobs in my conifg...
+>>>>>
+>>>>
+>>>
+>>> I also managed to test it on QEMU. The config is based on
+>>> pmac32_defconfig.
+>>
+>> I had the same config but hit this problem:
+>>
+>>       # echo 1 > /proc/sys/net/core/bpf_jit_enable; modprobe test_bpf
+>>       test_bpf: #0 TAX
+>>       ------------[ cut here ]------------
+>>       WARNING: CPU: 0 PID: 96 at arch/powerpc/net/bpf_jit_comp.c:367
+>> bpf_int_jit_compile+0x8a0/0x9f8
+> 
+> I get no such problem, on QEMU, and I checked the .config has:
+
+> CONFIG_STRICT_KERNEL_RWX=y
+> CONFIG_STRICT_MODULE_RWX=y
+
+Yeah. That did the trick. These options were missing in my config and
+the pmac config you shared. I could not run the other config you shared
+on QEMU. Thanks for all the pointers.
+
+- Hari
