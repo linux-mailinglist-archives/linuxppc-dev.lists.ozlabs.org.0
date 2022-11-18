@@ -2,89 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17A4562F8E7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Nov 2022 16:08:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5875662F92A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Nov 2022 16:20:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NDKtS6zMtz3f3B
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Nov 2022 02:08:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NDL891hyvz3fF5
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Nov 2022 02:20:41 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=kg6GNNtQ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EVPv5GPq;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=kg6GNNtQ;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EVPv5GPq;
 	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NDKsV5NHTz3bdC
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Nov 2022 02:07:58 +1100 (AEDT)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AIE7u43030631
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NDKsp2pDTz3dtj
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Nov 2022 02:08:14 +1100 (AEDT)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AIE81dK028195
 	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Nov 2022 15:07:56 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=A6vzetbjGKxX9YGD+UokdVBjWu9akFi4bStd7Z2ATEM=;
- b=kg6GNNtQXX/iP8DFHaD6LbAwk9HMMp/jsLZ6oX3P1bPkQRlJkxuA4QVk7j7M4xTUtldg
- LnUWaKPubcYGJieOgiZNDK7Dxt1Gy1bYYsfPdUPcGFmQh+48irtPdeiCecq4HsDGIp1d
- q7P7J6En/BpZboNowy3eVgeucFkF65fVtHZ8n4oLrYJwSCdM2BQ/oBAO5mWXyNheX5tF
- NxsT+hLYJco4+cXPts6qW7syxah0R7F55YVPW+8n+fZmj0cFwFB3W2kudhsGKVGiui8Q
- jYAZ5lC8+/sULH5JHTtS/f64XsMpy5afuK8hrcxLFZYeB1dVz5xH57TQ4AzXKbSU47i3 yQ== 
+ bh=7Ou6ZwDVSwhUL6Ac3M7kHuQWQgtGDyNeC5gxMiuzSB8=;
+ b=EVPv5GPqZQsJ2gGCgb21xadsgKOrabD1i4b/MDwk3scUJmLSBGf2C389dItS2XUCEZrd
+ n/39xVMqDZnEuCmrCX0ADTe8ItjEQ3Pwx8vlwlhaNPnzvZDjcrCM8GbwwofrS6JWKqZO
+ yTMxXMZcxLcUrpF76mNQqpsqF5nBmx38B+xPynkkNR4VhTrgFfr6F2GJR3O8LQEqWHIz
+ seTSBTazldBeW4csUQ9IeWa/ahB1tt/3rKpaTtJadl5mGhpom1biuOpw2N2/xmGd+kmd
+ DDfGBPCFoxK/ojhNOXjhq0gJPMp1sbqqLS7+KBcLojQuSG08whkMubjW8Yj0GaKubEF8 xQ== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3kxa0tc3ut-1
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3kx8w0wwf3-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Nov 2022 15:07:55 +0000
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2AIF3esT022777
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Nov 2022 15:07:55 GMT
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com [169.63.121.186])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3kxa0tc3ug-1
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Nov 2022 15:07:56 +0000
+Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2AIE8pwh030861
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Nov 2022 15:07:56 GMT
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.10])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3kx8w0wwew-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 18 Nov 2022 15:07:56 +0000
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+	by ppma02dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2AIF7U5B012318;
+	Fri, 18 Nov 2022 15:07:55 GMT
+Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com [9.57.198.29])
+	by ppma02dal.us.ibm.com with ESMTP id 3kt34aj5d0-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Fri, 18 Nov 2022 15:07:55 +0000
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
-	by ppma03wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2AIF6w38003613;
-	Fri, 18 Nov 2022 15:07:54 GMT
-Received: from b03cxnp07029.gho.boulder.ibm.com (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
-	by ppma03wdc.us.ibm.com with ESMTP id 3kt34ar5x9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 18 Nov 2022 15:07:54 +0000
-Received: from smtpav03.dal12v.mail.ibm.com ([9.208.128.129])
-	by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2AIF7pAQ42730082
+Received: from smtpav05.wdc07v.mail.ibm.com ([9.208.128.117])
+	by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2AIF7rnb10158746
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 18 Nov 2022 15:07:52 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1939558061;
+	Fri, 18 Nov 2022 15:07:54 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C5C9F58043;
 	Fri, 18 Nov 2022 15:07:53 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E537758056;
-	Fri, 18 Nov 2022 15:07:52 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7FA975805F;
+	Fri, 18 Nov 2022 15:07:53 +0000 (GMT)
 Received: from localhost (unknown [9.211.69.164])
-	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 18 Nov 2022 15:07:52 +0000 (GMT)
+	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 18 Nov 2022 15:07:53 +0000 (GMT)
 From: Nathan Lynch <nathanl@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 03/13] powerpc/rtas: avoid device tree lookups in rtas_os_term()
-Date: Fri, 18 Nov 2022 09:07:41 -0600
-Message-Id: <20221118150751.469393-4-nathanl@linux.ibm.com>
+Subject: [PATCH 04/13] powerpc/rtas: avoid scheduling in rtas_os_term()
+Date: Fri, 18 Nov 2022 09:07:42 -0600
+Message-Id: <20221118150751.469393-5-nathanl@linux.ibm.com>
 X-Mailer: git-send-email 2.37.3
 In-Reply-To: <20221118150751.469393-1-nathanl@linux.ibm.com>
 References: <20221118150751.469393-1-nathanl@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: tn08NBkwIr__vgtJypIU8ahW2E5IyOzG
-X-Proofpoint-GUID: cYrOAr3hB3M36aw91SJmc4kV6gqjN4U7
+X-Proofpoint-ORIG-GUID: EDZ68v7iblTSIjP_YbGLy9S99ZuNF81Q
+X-Proofpoint-GUID: vXkIxpVonmFP5asVa4brS5LXvjQ4PLhj
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
  definitions=2022-11-18_02,2022-11-18_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- malwarescore=0 priorityscore=1501 mlxlogscore=999 suspectscore=0
- bulkscore=0 clxscore=1015 impostorscore=0 mlxscore=0 spamscore=0
- adultscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2210170000 definitions=main-2211180084
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 adultscore=0
+ clxscore=1015 lowpriorityscore=0 malwarescore=0 suspectscore=0 mlxscore=0
+ bulkscore=0 impostorscore=0 priorityscore=1501 spamscore=0 mlxlogscore=553
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2210170000
+ definitions=main-2211180084
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,66 +100,56 @@ Cc: tyreld@linux.ibm.com, nnac123@linux.ibm.com, ldufour@linux.ibm.com, ajd@linu
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-rtas_os_term() is called during panic. Its behavior depends on a
-couple of conditions in the /rtas node of the device tree, the
-traversal of which entails locking and local IRQ state changes. If the
-kernel panics while devtree_lock is held, rtas_os_term() as currently
-written could hang.
+It's unsafe to use rtas_busy_delay() to handle a busy status from
+the ibm,os-term RTAS function in rtas_os_term():
 
-Instead of discovering the relevant characteristics at panic time,
-cache them in file-static variables at boot. Note the lookup for
-"ibm,extended-os-term" is converted to of_property_read_bool() since
-it is a boolean property, not a RTAS function token.
+Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b
+BUG: sleeping function called from invalid context at arch/powerpc/kernel/rtas.c:618
+in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 1, name: swapper/0
+preempt_count: 2, expected: 0
+CPU: 7 PID: 1 Comm: swapper/0 Tainted: G      D            6.0.0-rc5-02182-gf8553a572277-dirty #9
+Call Trace:
+[c000000007b8f000] [c000000001337110] dump_stack_lvl+0xb4/0x110 (unreliable)
+[c000000007b8f040] [c0000000002440e4] __might_resched+0x394/0x3c0
+[c000000007b8f0e0] [c00000000004f680] rtas_busy_delay+0x120/0x1b0
+[c000000007b8f100] [c000000000052d04] rtas_os_term+0xb8/0xf4
+[c000000007b8f180] [c0000000001150fc] pseries_panic+0x50/0x68
+[c000000007b8f1f0] [c000000000036354] ppc_panic_platform_handler+0x34/0x50
+[c000000007b8f210] [c0000000002303c4] notifier_call_chain+0xd4/0x1c0
+[c000000007b8f2b0] [c0000000002306cc] atomic_notifier_call_chain+0xac/0x1c0
+[c000000007b8f2f0] [c0000000001d62b8] panic+0x228/0x4d0
+[c000000007b8f390] [c0000000001e573c] do_exit+0x140c/0x1420
+[c000000007b8f480] [c0000000001e586c] make_task_dead+0xdc/0x200
+
+Use rtas_busy_delay_time() instead, which signals without side effects
+whether to attempt the ibm,os-term RTAS call again.
 
 Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
 ---
- arch/powerpc/kernel/rtas.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ arch/powerpc/kernel/rtas.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-index c12dd5ed5e00..81e4996012b7 100644
+index 81e4996012b7..51f0508593a7 100644
 --- a/arch/powerpc/kernel/rtas.c
 +++ b/arch/powerpc/kernel/rtas.c
-@@ -947,6 +947,8 @@ void __noreturn rtas_halt(void)
- 
- /* Must be in the RMO region, so we place it here */
- static char rtas_os_term_buf[2048];
-+static s32 ibm_os_term_token = RTAS_UNKNOWN_SERVICE;
-+static bool ibm_extended_os_term;
- 
- void rtas_os_term(char *str)
- {
-@@ -958,14 +960,13 @@ void rtas_os_term(char *str)
- 	 * this property may terminate the partition which we want to avoid
- 	 * since it interferes with panic_timeout.
- 	 */
--	if (RTAS_UNKNOWN_SERVICE == rtas_token("ibm,os-term") ||
--	    RTAS_UNKNOWN_SERVICE == rtas_token("ibm,extended-os-term"))
-+	if (ibm_os_term_token == RTAS_UNKNOWN_SERVICE || !ibm_extended_os_term)
- 		return;
+@@ -965,10 +965,15 @@ void rtas_os_term(char *str)
  
  	snprintf(rtas_os_term_buf, 2048, "OS panic: %s", str);
  
- 	do {
--		status = rtas_call(rtas_token("ibm,os-term"), 1, 1, NULL,
-+		status = rtas_call(ibm_os_term_token, 1, 1, NULL,
- 				   __pa(rtas_os_term_buf));
- 	} while (rtas_busy_delay(status));
- 
-@@ -1335,6 +1336,13 @@ void __init rtas_initialize(void)
- 	no_entry = of_property_read_u32(rtas.dev, "linux,rtas-entry", &entry);
- 	rtas.entry = no_entry ? rtas.base : entry;
- 
 +	/*
-+	 * Discover these now to avoid device tree lookups in the
-+	 * panic path.
++	 * Keep calling as long as RTAS returns a "try again" status,
++	 * but don't use rtas_busy_delay(), which potentially
++	 * schedules.
 +	 */
-+	ibm_os_term_token = rtas_token("ibm,os-term");
-+	ibm_extended_os_term = of_property_read_bool(rtas.dev, "ibm,extended-os-term");
-+
- 	/* If RTAS was found, allocate the RMO buffer for it and look for
- 	 * the stop-self token if any
- 	 */
+ 	do {
+ 		status = rtas_call(ibm_os_term_token, 1, 1, NULL,
+ 				   __pa(rtas_os_term_buf));
+-	} while (rtas_busy_delay(status));
++	} while (rtas_busy_delay_time(status));
+ 
+ 	if (status != 0)
+ 		printk(KERN_EMERG "ibm,os-term call failed %d\n", status);
 -- 
 2.37.1
 
