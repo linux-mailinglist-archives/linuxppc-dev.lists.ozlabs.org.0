@@ -2,53 +2,99 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B77D62FA2D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Nov 2022 17:25:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EE3062FA8A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Nov 2022 17:43:40 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NDMZM17Hbz3f2p
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Nov 2022 03:24:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NDMzt38wWz3f35
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Nov 2022 03:43:38 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=sDm8w6n6;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=is4sSZob;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=is4sSZob;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2001:67c:2178:6::1d; helo=smtp-out2.suse.de; envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bristot@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=sDm8w6n6;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=is4sSZob;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=is4sSZob;
 	dkim-atps=neutral
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NDMYN62Xlz3cKD
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Nov 2022 03:24:07 +1100 (AEDT)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-	by smtp-out2.suse.de (Postfix) with ESMTP id E63131FD42;
-	Fri, 18 Nov 2022 16:24:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1668788644; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NDMyv4nkWz3cMs
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Nov 2022 03:42:45 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1668789760;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=qr94mBts7Tg7djDvAk8xY0jbfoze+lyUFDJ0niaddco=;
-	b=sDm8w6n6FIXPkYgQQi+mur1gToC1gsnY6I7eXu1vTz+HfSNpRGAGCcBL8bqGb0I75oSX89
-	R5NuXjrwHvY+n0u8pH+3j08iTJlbMG5cPc6viYx14SdhghLIeewt2Hys5IexxBuAMRkawM
-	nVK7Uxa+T0Onbjgz1Cqp6+9xqutZ8VY=
-Received: from suse.cz (unknown [10.100.201.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by relay2.suse.de (Postfix) with ESMTPS id 7B3D32C141;
-	Fri, 18 Nov 2022 16:24:04 +0000 (UTC)
-Date: Fri, 18 Nov 2022 17:24:04 +0100
-From: Petr Mladek <pmladek@suse.com>
-To: Song Liu <song@kernel.org>
-Subject: Re: [PATCH v6] livepatch: Clear relocation targets on a module
- removal
-Message-ID: <Y3expGRt4cPoZgHL@alley>
-References: <20220901171252.2148348-1-song@kernel.org>
+	bh=iCeupirs0oRwfAYdrtKDNR33oxtw0kRHF9WhmcxURbs=;
+	b=is4sSZobXPguOsrAJb7JAyhMO5SpS8UcYWAE+R5d34fjCAKvqtZg6QBIcFoLw5h6mr3RCt
+	5EPAB+vTGhKztvDccZH+7yoUS2r4oeOVsIgMWRoR4f+xF1kMvXGjusdUOr+rokCcXgyAxz
+	YUK1G/bzc2+QiGQxJI9KYRjL7cpX4AI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1668789760;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iCeupirs0oRwfAYdrtKDNR33oxtw0kRHF9WhmcxURbs=;
+	b=is4sSZobXPguOsrAJb7JAyhMO5SpS8UcYWAE+R5d34fjCAKvqtZg6QBIcFoLw5h6mr3RCt
+	5EPAB+vTGhKztvDccZH+7yoUS2r4oeOVsIgMWRoR4f+xF1kMvXGjusdUOr+rokCcXgyAxz
+	YUK1G/bzc2+QiGQxJI9KYRjL7cpX4AI=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-533-YrJx8rbqPZy9fTs_iNnZ8g-1; Fri, 18 Nov 2022 11:42:38 -0500
+X-MC-Unique: YrJx8rbqPZy9fTs_iNnZ8g-1
+Received: by mail-ed1-f71.google.com with SMTP id y20-20020a056402271400b004630f3a32c3so3273641edd.15
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Nov 2022 08:42:38 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=iCeupirs0oRwfAYdrtKDNR33oxtw0kRHF9WhmcxURbs=;
+        b=MAulsYcPbJSkc/kATwcxhGb0hlgdSkj5p94KwH8gPIGjMzBkeDGahiPL/v87ZIjn9s
+         07ewSVG9YUj+WwADUw4N20HcWmNiJEgi8c5vHY7lP7SKwlvwe6y6iw+6Ms9yS4yowjnv
+         r5g6nwhI3zTIThitKEP3OtvouwERFdo9IRCGewInx1kne8e5MiOGLV/ptxDN//ah8DxB
+         DS83V4+EGWOPQM6v75v6nnn4UPiXpf8R7iPsdyQvDeUnzpL20rWR1WioUoL1DpaPIITR
+         De/05uuGPYP8EBuVn5Lp/m/WacbBI+xvSJGbOEanyecUIycm/MTeAEGVTY2B/0AZKFIJ
+         B9tg==
+X-Gm-Message-State: ANoB5pnEbys4rlgJ+8eTV1qrUYdCPvvAsF/GHIIaJuaCBC9T8SishOr9
+	eJp8yk9vH0JqIy4wwsKNMG9hrMpQYlX60Lh5t9OySn7mPgyraiqYJI1AQgNdxr6SaYEnM8ApTDf
+	GJaiftlAgC5quXnUYskJwjWHv4A==
+X-Received: by 2002:aa7:d4cf:0:b0:461:a9ce:5408 with SMTP id t15-20020aa7d4cf000000b00461a9ce5408mr6997415edr.201.1668789757506;
+        Fri, 18 Nov 2022 08:42:37 -0800 (PST)
+X-Google-Smtp-Source: AA0mqf5TaV9WywAgyEkJUjIKk83rbFXBQR8khfDHnlKNNSiUU8k8aohx0CjQn5lly7hEq5+W3BWrVw==
+X-Received: by 2002:aa7:d4cf:0:b0:461:a9ce:5408 with SMTP id t15-20020aa7d4cf000000b00461a9ce5408mr6997376edr.201.1668789757207;
+        Fri, 18 Nov 2022 08:42:37 -0800 (PST)
+Received: from [192.168.0.46] (host-95-248-159-81.retail.telecomitalia.it. [95.248.159.81])
+        by smtp.gmail.com with ESMTPSA id b10-20020a1709063caa00b0073d83f80b05sm1912134ejh.94.2022.11.18.08.42.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 18 Nov 2022 08:42:36 -0800 (PST)
+Message-ID: <1ab5082c-bec5-53f2-501b-f15f7e8edbd9@redhat.com>
+Date: Fri, 18 Nov 2022 17:42:34 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220901171252.2148348-1-song@kernel.org>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.1
+Subject: Re: [RFC PATCH v2 8/8] sched, smp: Trace smp callback causing an IPI
+To: Peter Zijlstra <peterz@infradead.org>,
+ Valentin Schneider <vschneid@redhat.com>
+References: <20221102182949.3119584-1-vschneid@redhat.com>
+ <20221102183336.3120536-7-vschneid@redhat.com>
+ <Y3ZBUMteJysc1/lA@hirez.programming.kicks-ass.net>
+ <xhsmhfsehy706.mognet@vschneid.remote.csb>
+ <Y3dMiyFn6TG1s5g3@hirez.programming.kicks-ass.net>
+From: Daniel Bristot de Oliveira <bristot@redhat.com>
+In-Reply-To: <Y3dMiyFn6TG1s5g3@hirez.programming.kicks-ass.net>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,421 +106,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: jikos@kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, joe.lawrence@redhat.com, Josh Poimboeuf <jpoimboe@redhat.com>, live-patching@vger.kernel.org, mbenes@suse.cz, linuxppc-dev@lists.ozlabs.org, jpoimboe@kernel.org
+Cc: Juri Lelli <juri.lelli@redhat.com>, Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Dave Hansen <dave.hansen@linux.intel.com>, linux-mips@vger.kernel.org, Guo Ren <guoren@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, Marc Zyngier <maz@kernel.org>, linux-hexagon@vger.kernel.org, x86@kernel.org, Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org, Ingo Molnar <mingo@redhat.com>, linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org, "Paul E. McKenney" <paulmck@kernel.org>, Frederic Weisbecker <frederic@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, openrisc@lists.librecores.org, Borislav Petkov <bp@alien8.de>, Nicholas Piggin <npiggin@gmail.com>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.
+ org, Marcelo Tosatti <mtosatti@redhat.com>, linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu 2022-09-01 10:12:52, Song Liu wrote:
-> From: Miroslav Benes <mbenes@suse.cz>
+On 11/18/22 10:12, Peter Zijlstra wrote:
+> On Thu, Nov 17, 2022 at 02:45:29PM +0000, Valentin Schneider wrote:
 > 
-> Josh reported a bug:
+>>> +	if (trace_ipi_send_cpumask_enabled()) {
+>>> +		call_single_data_t *csd;
+>>> +		smp_call_func_t func;
+>>> +
+>>> +		csd = container_of(node, call_single_data_t, node.llist);
+>>> +
+>>> +		func = sched_ttwu_pending;
+>>> +		if (CSD_TYPE(csd) != CSD_TYPE_TTWU)
+>>> +			func = csd->func;
+>>> +
+>>> +		if (raw_smp_call_single_queue(cpu, node))
+>>> +			trace_ipi_send_cpumask(cpumask_of(cpu), _RET_IP_, func);
+>> So I went with the tracepoint being placed *before* the actual IPI gets
+>> sent to have a somewhat sane ordering between trace_ipi_send_cpumask() and
+>> e.g. trace_call_function_single_entry().
+>>
+>> Packaging the call_single_queue logic makes the code less horrible, but it
+>> does mix up the event ordering...
+> Keeps em sharp ;-)
 > 
->   When the object to be patched is a module, and that module is
->   rmmod'ed and reloaded, it fails to load with:
-> 
->   module: x86/modules: Skipping invalid relocation target, existing value is nonzero for type 2, loc 00000000ba0302e9, val ffffffffa03e293c
->   livepatch: failed to initialize patch 'livepatch_nfsd' for module 'nfsd' (-8)
->   livepatch: patch 'livepatch_nfsd' failed for module 'nfsd', refusing to load module 'nfsd'
-> 
->   The livepatch module has a relocation which references a symbol
->   in the _previous_ loading of nfsd. When apply_relocate_add()
->   tries to replace the old relocation with a new one, it sees that
->   the previous one is nonzero and it errors out.
-> 
-> We thus decided to reverse the relocation patching (clear all relocation
-> targets on x86_64). The solution is not
-> universal and is too much arch-specific, but it may prove to be simpler
-> in the end.
->
->  arch/powerpc/kernel/module_32.c |  10 ++++
->  arch/powerpc/kernel/module_64.c |  49 +++++++++++++++
->  arch/s390/kernel/module.c       |   8 +++
->  arch/x86/kernel/module.c        | 102 +++++++++++++++++++++++---------
->  include/linux/moduleloader.h    |   7 +++
->  kernel/livepatch/core.c         |  41 ++++++++++++-
 
-First, thanks a lot for working on this.
+Having the trace before the IPI avoids the (non ideal) case where the trace stops because of
+an IPI execution before we have trace about who sent it... :-(.
 
-I can't check or test the powerpc and s390 code easily.
+-- Daniel
 
-I am going to comment only x86 and generic code. It looks good
-but it needs some changes to improve maintainability.
-
->  6 files changed, 189 insertions(+), 28 deletions(-)
-> 
-> diff --git a/arch/powerpc/kernel/module_32.c b/arch/powerpc/kernel/module_32.c
-> index ea6536171778..e3c312770453 100644
-> --- a/arch/powerpc/kernel/module_32.c
-> +++ b/arch/powerpc/kernel/module_32.c
-> @@ -285,6 +285,16 @@ int apply_relocate_add(Elf32_Shdr *sechdrs,
->  	return 0;
->  }
->  
-> +#ifdef CONFIG_LIVEPATCH
-> +void clear_relocate_add(Elf32_Shdr *sechdrs,
-> +		   const char *strtab,
-> +		   unsigned int symindex,
-> +		   unsigned int relsec,
-> +		   struct module *me)
-> +{
-> +}
-> +#endif
-> +
->  #ifdef CONFIG_DYNAMIC_FTRACE
->  notrace int module_trampoline_target(struct module *mod, unsigned long addr,
->  				     unsigned long *target)
-> diff --git a/arch/powerpc/kernel/module_64.c b/arch/powerpc/kernel/module_64.c
-> index 7e45dc98df8a..514951f97391 100644
-> --- a/arch/powerpc/kernel/module_64.c
-> +++ b/arch/powerpc/kernel/module_64.c
-> @@ -739,6 +739,55 @@ int apply_relocate_add(Elf64_Shdr *sechdrs,
->  	return 0;
->  }
->  
-> +#ifdef CONFIG_LIVEPATCH
-> +void clear_relocate_add(Elf64_Shdr *sechdrs,
-> +		       const char *strtab,
-> +		       unsigned int symindex,
-> +		       unsigned int relsec,
-> +		       struct module *me)
-> +{
-> +	unsigned int i;
-> +	Elf64_Rela *rela = (void *)sechdrs[relsec].sh_addr;
-> +	Elf64_Sym *sym;
-> +	unsigned long *location;
-> +	const char *symname;
-> +	u32 *instruction;
-> +
-> +	pr_debug("Clearing ADD relocate section %u to %u\n", relsec,
-> +		 sechdrs[relsec].sh_info);
-> +
-> +	for (i = 0; i < sechdrs[relsec].sh_size / sizeof(*rela); i++) {
-> +		location = (void *)sechdrs[sechdrs[relsec].sh_info].sh_addr
-> +			+ rela[i].r_offset;
-> +		sym = (Elf64_Sym *)sechdrs[symindex].sh_addr
-> +			+ ELF64_R_SYM(rela[i].r_info);
-> +		symname = me->core_kallsyms.strtab
-> +			+ sym->st_name;
-> +
-> +		if (ELF64_R_TYPE(rela[i].r_info) != R_PPC_REL24)
-> +			continue;
-> +		/*
-> +		 * reverse the operations in apply_relocate_add() for case
-> +		 * R_PPC_REL24.
-> +		 */
-> +		if (sym->st_shndx != SHN_UNDEF &&
-> +		    sym->st_shndx != SHN_LIVEPATCH)
-> +			continue;
-> +
-> +		instruction = (u32 *)location;
-> +		if (is_mprofile_ftrace_call(symname))
-> +			continue;
-> +
-> +		if (!instr_is_relative_link_branch(ppc_inst(*instruction)))
-> +			continue;
-> +
-> +		instruction += 1;
-> +		patch_instruction(instruction, ppc_inst(PPC_RAW_NOP()));
-> +	}
-> +
-> +}
-
-This looks like a lot of duplicated code. Isn't it?
-
-> +#endif
-> +
->  #ifdef CONFIG_DYNAMIC_FTRACE
->  int module_trampoline_target(struct module *mod, unsigned long addr,
->  			     unsigned long *target)
-> --- a/arch/x86/kernel/module.c
-> +++ b/arch/x86/kernel/module.c
-> @@ -128,18 +128,20 @@ int apply_relocate(Elf32_Shdr *sechdrs,
->  	return 0;
->  }
->  #else /*X86_64*/
-> -static int __apply_relocate_add(Elf64_Shdr *sechdrs,
-> +static int __apply_clear_relocate_add(Elf64_Shdr *sechdrs,
-
-Nit: Honestly, the combination of 4 verbs: "apply", "clear, "relocate", and "add"
-     is really crazy. It is far from obvious what the function does.
-
-     The name was not ideal even before. Let's not make it worse and
-     use on 3 verbs again.
-
-     What about __update_relocate_add or __write_relocate_add()?
-
-     Note that the "__" prefix is still needed, see below.
-
-
->  		   const char *strtab,
->  		   unsigned int symindex,
->  		   unsigned int relsec,
->  		   struct module *me,
-> -		   void *(*write)(void *dest, const void *src, size_t len))
-> +		   void *(*write)(void *dest, const void *src, size_t len),
-> +		   bool clear)
->  {
->  	unsigned int i;
->  	Elf64_Rela *rel = (void *)sechdrs[relsec].sh_addr;
->  	Elf64_Sym *sym;
->  	void *loc;
->  	u64 val;
-> +	u64 zero = 0ULL;
->  
->  	DEBUGP("Applying relocate section %u to %u\n",
->  	       relsec, sechdrs[relsec].sh_info);
-> @@ -163,40 +165,60 @@ static int __apply_relocate_add(Elf64_Shdr *sechdrs,
->  		case R_X86_64_NONE:
->  			break;
->  		case R_X86_64_64:
-> -			if (*(u64 *)loc != 0)
-> -				goto invalid_relocation;
-> -			write(loc, &val, 8);
-> +			if (!clear) {
-
-Nit: I would prefer to use positive check when both if/else branches
-     are used. I would call the parameter "apply".
-
-> +				if (*(u64 *)loc != 0)
-> +					goto invalid_relocation;
-> +				write(loc, &val, 8);
-> +			} else {
-> +				write(loc, &zero, 8);
-> +			}
->  			break;
->  		case R_X86_64_32:
-> -			if (*(u32 *)loc != 0)
-> -				goto invalid_relocation;
-> -			write(loc, &val, 4);
-> -			if (val != *(u32 *)loc)
-> -				goto overflow;
-> +			if (!clear) {
-> +				if (*(u32 *)loc != 0)
-> +					goto invalid_relocation;
-> +				write(loc, &val, 4);
-> +				if (val != *(u32 *)loc)
-> +					goto overflow;
-> +			} else {
-> +				write(loc, &zero, 4);
-> +			}
->  			break;
->  		case R_X86_64_32S:
-> -			if (*(s32 *)loc != 0)
-> -				goto invalid_relocation;
-> -			write(loc, &val, 4);
-> -			if ((s64)val != *(s32 *)loc)
-> -				goto overflow;
-> +			if (!clear) {
-> +				if (*(s32 *)loc != 0)
-> +					goto invalid_relocation;
-> +				write(loc, &val, 4);
-> +				if ((s64)val != *(s32 *)loc)
-> +					goto overflow;
-> +			} else {
-> +				write(loc, &zero, 4);
-> +			}
->  			break;
->  		case R_X86_64_PC32:
->  		case R_X86_64_PLT32:
-> -			if (*(u32 *)loc != 0)
-> -				goto invalid_relocation;
-> -			val -= (u64)loc;
-> -			write(loc, &val, 4);
-> +			if (!clear) {
-> +				if (*(u32 *)loc != 0)
-> +					goto invalid_relocation;
-> +				val -= (u64)loc;
-> +				write(loc, &val, 4);
->  #if 0
-> -			if ((s64)val != *(s32 *)loc)
-> -				goto overflow;
-> +				if ((s64)val != *(s32 *)loc)
-> +					goto overflow;
->  #endif
-> +			} else {
-> +				write(loc, &zero, 4);
-> +			}
->  			break;
->  		case R_X86_64_PC64:
-> -			if (*(u64 *)loc != 0)
-> -				goto invalid_relocation;
-> -			val -= (u64)loc;
-> -			write(loc, &val, 8);
-> +			if (!clear) {
-> +				if (*(u64 *)loc != 0)
-> +					goto invalid_relocation;
-> +				val -= (u64)loc;
-> +				write(loc, &val, 8);
-> +			} else {
-> +				write(loc, &zero, 8);
-> +			}
->  			break;
->  		default:
->  			pr_err("%s: Unknown rela relocation: %llu\n",
-> @@ -245,6 +267,32 @@ int apply_relocate_add(Elf64_Shdr *sechdrs,
->  	return ret;
->  }
->  
-> +#ifdef CONFIG_LIVEPATCH
-> +
-> +void clear_relocate_add(Elf64_Shdr *sechdrs,
-> +			const char *strtab,
-> +			unsigned int symindex,
-> +			unsigned int relsec,
-> +			struct module *me)
-> +{
-> +	bool early = me->state == MODULE_STATE_UNFORMED;
-> +	void *(*write)(void *, const void *, size_t) = memcpy;
-> +
-> +	if (!early) {
-> +		write = text_poke;
-> +		mutex_lock(&text_mutex);
-> +	}
-> +
-> +	__apply_clear_relocate_add(sechdrs, strtab, symindex, relsec, me,
-> +				   write, true /* clear */);
-> +
-> +	if (!early) {
-> +		text_poke_sync();
-> +		mutex_unlock(&text_mutex);
-> +	}
-> +}
-
-This duplicates a lot of code. Please, rename apply_relocate_add() the
-same way as __apply_clear_relocate_add() and add the "apply" parameter.
-Then add the wrappers for this:
-
-int write_relocate_add(Elf64_Shdr *sechdrs,
-		       const char *strtab,
-		       unsigned int symindex,
-		       unsigned int relsec,
-		       struct module *me,
-		       bool apply)
-{
-	int ret;
-	bool early = me->state == MODULE_STATE_UNFORMED;
-	void *(*write)(void *, const void *, size_t) = memcpy;
-
-	if (!early) {
-		write = text_poke;
-		mutex_lock(&text_mutex);
-	}
-
-	ret = __write_relocate_add(sechdrs, strtab, symindex, relsec, me,
-					 write, apply);
-
-	if (!early) {
-		text_poke_sync();
-		mutex_unlock(&text_mutex);
-	}
-
-	return ret;
-}
-
-int apply_relocate_add(Elf64_Shdr *sechdrs,
-		       const char *strtab,
-		       unsigned int symindex,
-		       unsigned int relsec,
-		       struct module *me)
-{
-	return write_relocate_add(sechdrs, strtab, symindex, relsec, me, true);
-}
-
-#ifdef CONFIG_LIVEPATCH
-void apply_relocate_add(Elf64_Shdr *sechdrs,
-			const char *strtab,
-			unsigned int symindex,
-			unsigned int relsec,
-			struct module *me)
-{
-	write_relocate_add(sechdrs, strtab, symindex, relsec, me, false);
-}
-#endif
-
-
-> +#endif
-> +
->  #endif
->  
->  int module_finalize(const Elf_Ehdr *hdr,
-> --- a/kernel/livepatch/core.c
-> +++ b/kernel/livepatch/core.c
-> @@ -316,6 +316,45 @@ int klp_apply_section_relocs(struct module *pmod, Elf_Shdr *sechdrs,
->  	return apply_relocate_add(sechdrs, strtab, symndx, secndx, pmod);
->  }
->  
-> +static void klp_clear_object_relocations(struct module *pmod,
-> +					struct klp_object *obj)
-> +{
-> +	int i, cnt;
-> +	const char *objname, *secname;
-> +	char sec_objname[MODULE_NAME_LEN];
-> +	Elf_Shdr *sec;
-> +
-> +	objname = klp_is_module(obj) ? obj->name : "vmlinux";
-> +
-> +	/* For each klp relocation section */
-> +	for (i = 1; i < pmod->klp_info->hdr.e_shnum; i++) {
-> +		sec = pmod->klp_info->sechdrs + i;
-> +		secname = pmod->klp_info->secstrings + sec->sh_name;
-> +		if (!(sec->sh_flags & SHF_RELA_LIVEPATCH))
-> +			continue;
-> +
-> +		/*
-> +		 * Format: .klp.rela.sec_objname.section_name
-> +		 * See comment in klp_resolve_symbols() for an explanation
-> +		 * of the selected field width value.
-> +		 */
-> +		secname = pmod->klp_info->secstrings + sec->sh_name;
-> +		cnt = sscanf(secname, ".klp.rela.%55[^.]", sec_objname);
-> +		if (cnt != 1) {
-> +			pr_err("section %s has an incorrectly formatted name\n",
-> +			       secname);
-> +			continue;
-> +		}
-> +
-> +		if (strcmp(objname, sec_objname))
-> +			continue;
-> +
-> +		clear_relocate_add(pmod->klp_info->sechdrs,
-> +				   pmod->core_kallsyms.strtab,
-> +				   pmod->klp_info->symndx, i, pmod);
-> +	}
-> +}
-
-Huh, this duplicates a lot of tricky code.
-
-It is even worse because this squashed code from two functions
-klp_apply_section_relocs() and klp_apply_object_relocs()
-into a single function. As a result, the code duplication is not
-even obvious.
-
-Also the suffix "_reloacations() does not match the suffix of
-the related funciton:
-
-	+ klp_apply_object_relocs()		(existing)
-	+ klp_clear_object_relocations()        (new)
-
-This all would complicate maintenance of the code.
-
-Please, implement a common:
-
-int klp_write_section_relocs(struct module *pmod, Elf_Shdr *sechdrs,
-			     const char *shstrtab, const char *strtab,
-			     unsigned int symndx, unsigned int secndx,
-			     const char *objname, bool apply);
-
-and
-
-int klp_write_object_relocs(struct klp_patch *patch,
-			    struct klp_object *obj,
-			    bool apply);
-
-and add the respective wrappers:
-
-int klp_apply_section_relocs();   /* also needed in module/main.c */
-int klp_apply_object_relocs();
-void klp_clear_object_relocs();
-
-Best Regards,
-Petr
