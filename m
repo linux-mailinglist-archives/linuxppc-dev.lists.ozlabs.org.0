@@ -1,96 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7702762F17F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Nov 2022 10:40:51 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAA5C62F19E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Nov 2022 10:43:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NDBc12xDWz3dvS
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Nov 2022 20:40:49 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LIlrG51n;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NDBfW03l3z3f4v
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Nov 2022 20:42:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LIlrG51n;
-	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NDBb114xnz3bgR
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Nov 2022 20:39:56 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AI8q6Ic010416;
-	Fri, 18 Nov 2022 09:39:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=ApGhgdgxwbo//4e8BI/r7ZLAAUWOn9Ws0+lfryVpQTI=;
- b=LIlrG51nw5xO8T2SRisyjV5LmPoUwo7QwP4af9F5jrSOe0rWFqvDItbXnbIyR4T/yxAy
- V/ZITCaAVuyu35wtA7k2Wr6yDMf3xJvOPKo2+LHZly+SB3+EWhIuBNDVCQnUICfqjckI
- ov9fpII9WPEgiQ04kuog0x0WV/qciA723UorCA4g+mocmK+oWTlIdiR0/icOpBfHtLTH
- HlCwvETB5Ap4GurYacmkWqcg0HQw2FvixVIFnZ+vIvdB1mrQO3OOjeltWwPNFbVuActa
- 5tDDREmrBuYOeH8W35Ng9ytYsNjogDi4BBJmqnBaPUN2T04dtsgGxmlEyAB6CycgWzKf VA== 
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3kx6wqh0r0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 18 Nov 2022 09:39:36 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
-	by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2AI9avF7014616;
-	Fri, 18 Nov 2022 09:39:34 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
-	by ppma03ams.nl.ibm.com with ESMTP id 3kwthe0s6m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 18 Nov 2022 09:39:34 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
-	by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2AI9eCEY51904950
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 18 Nov 2022 09:40:12 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3773742042;
-	Fri, 18 Nov 2022 09:39:32 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CBC1642041;
-	Fri, 18 Nov 2022 09:39:28 +0000 (GMT)
-Received: from [9.211.152.48] (unknown [9.211.152.48])
-	by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Fri, 18 Nov 2022 09:39:28 +0000 (GMT)
-Message-ID: <548de735-52d7-f5bb-5c85-370a1c233a08@linux.ibm.com>
-Date: Fri, 18 Nov 2022 15:09:26 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.1
-Subject: Re: [RFC PATCH 0/3] enable bpf_prog_pack allocator for powerpc
-Content-Language: en-US
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        "bpf@vger.kernel.org" <bpf@vger.kernel.org>
-References: <20221110184303.393179-1-hbathini@linux.ibm.com>
- <00efe9b1-d9fd-441c-9eb4-cbf25d82baf2@csgroup.eu>
- <5b59b7df-d2ec-1664-f0fb-764c9b93417c@linux.ibm.com>
- <bf0af91e-861c-1608-7150-d31578be9b02@csgroup.eu>
- <e0266414-843f-db48-a56d-1d8a8944726a@csgroup.eu>
- <6151f5c6-2e64-5f2d-01b1-6f517f4301c0@linux.ibm.com>
- <02496f7a-51d8-4fc0-161d-b29d5e657089@csgroup.eu>
- <9d5c390a-31db-4f93-203d-281b0831d37f@linux.ibm.com>
- <c651bd44-d0ca-e3cf-0639-6b42b33f4666@csgroup.eu>
-From: Hari Bathini <hbathini@linux.ibm.com>
-In-Reply-To: <c651bd44-d0ca-e3cf-0639-6b42b33f4666@csgroup.eu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 1rc3Sq6bJrCr4aKtC77Pj-POMcvAj6AL
-X-Proofpoint-GUID: 1rc3Sq6bJrCr4aKtC77Pj-POMcvAj6AL
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-11-17_06,2022-11-17_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 suspectscore=0
- priorityscore=1501 phishscore=0 clxscore=1015 bulkscore=0 mlxscore=0
- adultscore=0 malwarescore=0 mlxlogscore=999 impostorscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2210170000 definitions=main-2211180057
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=loongson.cn (client-ip=114.242.206.163; helo=loongson.cn; envelope-from=yangtiezhu@loongson.cn; receiver=<UNKNOWN>)
+X-Greylist: delayed 108 seconds by postgrey-1.36 at boromir; Fri, 18 Nov 2022 20:42:29 AEDT
+Received: from loongson.cn (mail.loongson.cn [114.242.206.163])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NDBdx4DV5z3045
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Nov 2022 20:42:29 +1100 (AEDT)
+Received: from loongson.cn (unknown [113.200.148.30])
+	by gateway (Coremail) with SMTP id _____8DxTtsQU3djAZQIAA--.24350S3;
+	Fri, 18 Nov 2022 17:40:33 +0800 (CST)
+Received: from linux.localdomain (unknown [113.200.148.30])
+	by localhost.localdomain (Coremail) with SMTP id AQAAf8CxLuINU3djeXMWAA--.59010S2;
+	Fri, 18 Nov 2022 17:40:30 +0800 (CST)
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH] powerpc: Use "grep -E" instead of "egrep"
+Date: Fri, 18 Nov 2022 17:40:29 +0800
+Message-Id: <1668764429-11540-1-git-send-email-yangtiezhu@loongson.cn>
+X-Mailer: git-send-email 2.1.0
+X-CM-TRANSID: AQAAf8CxLuINU3djeXMWAA--.59010S2
+X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
+X-Coremail-Antispam: 1Uk129KBjvJXoW7uFWUCFyxZFykWw1UWw1ftFb_yoW8JF4xpa
+	yvgrn7tws3ArykJF4UtF43XrW7trn5Aa1rX3y8K397ArsxXas3ZF1fXFs2qF47XrWkA3s5
+	ArZ3K34qvwsxuaDanT9S1TB71UUUUjUqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
+	qI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUIcSsGvfJTRUUU
+	b3AYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s
+	1l1IIY67AEw4v_Jrv_JF1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xv
+	wVC0I7IYx2IY67AKxVW8JVW5JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwA2z4
+	x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4UJVWxJr1l
+	n4kS14v26r1Y6r17M2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6x
+	ACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r126r1DMcIj6I8E
+	87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41l42xK82
+	IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2Iq
+	xVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r
+	126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY
+	6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67
+	AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuY
+	vjxU466zUUUUU
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,98 +58,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Song Liu <songliubraving@fb.com>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+The latest version of grep claims the egrep is now obsolete so the build
+now contains warnings that look like:
+	egrep: warning: egrep is obsolescent; using grep -E
+fix this up by moving the related file to use "grep -E" instead.
 
+  sed -i "s/egrep/grep -E/g" `grep egrep -rwl arch/powerpc`
 
-On 18/11/22 2:21 pm, Christophe Leroy wrote:
-> 
-> 
-> Le 18/11/2022 à 09:39, Hari Bathini a écrit :
->>
->>
->> On 17/11/22 12:29 pm, Christophe Leroy wrote:
->>>
->>>
->>> Le 16/11/2022 à 18:01, Hari Bathini a écrit :
->>>>
->>>>
->>>> On 16/11/22 12:14 am, Christophe Leroy wrote:
->>>>>
->>>>>
->>>>> Le 14/11/2022 à 18:27, Christophe Leroy a écrit :
->>>>>>
->>>>>>
->>>>>> Le 14/11/2022 à 15:47, Hari Bathini a écrit :
->>>>>>> Hi Christophe,
->>>>>>>
->>>>>>> On 11/11/22 4:55 pm, Christophe Leroy wrote:
->>>>>>>> Le 10/11/2022 à 19:43, Hari Bathini a écrit :
->>>>>>>>> Most BPF programs are small, but they consume a page each. For
->>>>>>>>> systems
->>>>>>>>> with busy traffic and many BPF programs, this may also add
->>>>>>>>> significant
->>>>>>>>> pressure on instruction TLB. High iTLB pressure usually slows down
->>>>>>>>> the
->>>>>>>>> whole system causing visible performance degradation for production
->>>>>>>>> workloads.
->>>>>>>>>
->>>>>>>>> bpf_prog_pack, a customized allocator that packs multiple bpf
->>>>>>>>> programs
->>>>>>>>> into preallocated memory chunks, was proposed [1] to address it.
->>>>>>>>> This
->>>>>>>>> series extends this support on powerpc.
->>>>>>>>>
->>>>>>>>> Patches 1 & 2 add the arch specific functions needed to support
->>>>>>>>> this
->>>>>>>>> feature. Patch 3 enables the support for powerpc. The last patch
->>>>>>>>> ensures cleanup is handled racefully.
->>>>>>>>>
->>>>>>>
->>>>>>>>> Tested the changes successfully on a PowerVM. patch_instruction(),
->>>>>>>>> needed for bpf_arch_text_copy(), is failing for ppc32. Debugging
->>>>>>>>> it.
->>>>>>>>> Posting the patches in the meanwhile for feedback on these changes.
->>>>>>>>
->>>>>>>> I did a quick test on ppc32, I don't get such a problem, only
->>>>>>>> something
->>>>>>>> wrong in the dump print as traps intructions only are dumped, but
->>>>>>>> tcpdump works as expected:
->>>>>>>
->>>>>>> Thanks for the quick test. Could you please share the config you
->>>>>>> used.
->>>>>>> I am probably missing a few knobs in my conifg...
->>>>>>>
->>>>>>
->>>>>
->>>>> I also managed to test it on QEMU. The config is based on
->>>>> pmac32_defconfig.
->>>>
->>>> I had the same config but hit this problem:
->>>>
->>>>        # echo 1 > /proc/sys/net/core/bpf_jit_enable; modprobe test_bpf
->>>>        test_bpf: #0 TAX
->>>>        ------------[ cut here ]------------
->>>>        WARNING: CPU: 0 PID: 96 at arch/powerpc/net/bpf_jit_comp.c:367
->>>> bpf_int_jit_compile+0x8a0/0x9f8
->>>
->>> I get no such problem, on QEMU, and I checked the .config has:
->>
->>> CONFIG_STRICT_KERNEL_RWX=y
->>> CONFIG_STRICT_MODULE_RWX=y
->>
->> Yeah. That did the trick.
-> 
-> Interesting. I guess we have to find out why it fails when those config
-> are missing.
-> 
-> Maybe module code plays with RO and NX flags even if
-> CONFIG_STRICT_MODULE_RWX is not selected ?
+Here are the steps to install the latest grep:
 
-Need to look at the code closely but fwiw, observing same failure on
-64-bit as well with !STRICT_RWX...
+  wget http://ftp.gnu.org/gnu/grep/grep-3.8.tar.gz
+  tar xf grep-3.8.tar.gz
+  cd grep-3.8 && ./configure && make
+  sudo make install
+  export PATH=/usr/local/bin:$PATH
 
-Thanks
-Hari
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+---
+ arch/powerpc/boot/wrapper | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/boot/wrapper b/arch/powerpc/boot/wrapper
+index 5bdd4dd..a86ae11 100755
+--- a/arch/powerpc/boot/wrapper
++++ b/arch/powerpc/boot/wrapper
+@@ -581,7 +581,7 @@ ps3)
+     # reached, then enter the system reset vector of the partially decompressed
+     # image.  No warning is issued.
+     rm -f "$odir"/{otheros,otheros-too-big}.bld
+-    size=$(${CROSS}nm --no-sort --radix=d "$ofile" | egrep ' _end$' | cut -d' ' -f1)
++    size=$(${CROSS}nm --no-sort --radix=d "$ofile" | grep -E ' _end$' | cut -d' ' -f1)
+     bld="otheros.bld"
+     if [ $size -gt $((0x1000000)) ]; then
+         bld="otheros-too-big.bld"
+-- 
+2.1.0
+
