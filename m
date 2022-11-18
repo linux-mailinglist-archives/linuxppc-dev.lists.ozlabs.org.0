@@ -2,60 +2,95 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CBD962F0C2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Nov 2022 10:14:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7702762F17F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Nov 2022 10:40:51 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NDB1m2m98z3ccl
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Nov 2022 20:14:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NDBc12xDWz3dvS
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Nov 2022 20:40:49 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=ab3Y1GXh;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LIlrG51n;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=ab3Y1GXh;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LIlrG51n;
 	dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NDB0j4xcKz3bZY
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Nov 2022 20:13:41 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=mwt73Igv1Cbi6CXwxAPKd0Pr+R9hvpBvRt03pYQ3bys=; b=ab3Y1GXh5hZN4kYCUal3zeuK3Q
-	7SRG1cvzhO7eKodvFDYyuRae96G8g5PWd/XWhtSWcEI5MUsYEab5Ovzc8ze8gBOk9y9y/n4/VG6QA
-	kxoDu7O/fG1a2giqiMnnG8GWp7V1BxUra+Jgp+oiupx2occO6L51vWUZQgeu4+7U3imdC7NUUUJ2N
-	J5VaNoVksNMD06l+gxDbRhfwA3keSj0mXPL1+LX088MVxqFi6HWwWMGwF0jamw9uSp14pYO1PV0sb
-	dSKJCydBYVIQlrwj2um9MWjTnI+ZTo1PEgHrvF9BZHJpiPATdBDwJ3bT9CqtMVsKHp/fep69BWHYQ
-	1FAlMbCA==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1ovxQb-00287L-Gd; Fri, 18 Nov 2022 09:12:54 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 78E20300487;
-	Fri, 18 Nov 2022 10:12:43 +0100 (CET)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 5E8232C316131; Fri, 18 Nov 2022 10:12:43 +0100 (CET)
-Date: Fri, 18 Nov 2022 10:12:43 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Valentin Schneider <vschneid@redhat.com>
-Subject: Re: [RFC PATCH v2 8/8] sched, smp: Trace smp callback causing an IPI
-Message-ID: <Y3dMiyFn6TG1s5g3@hirez.programming.kicks-ass.net>
-References: <20221102182949.3119584-1-vschneid@redhat.com>
- <20221102183336.3120536-7-vschneid@redhat.com>
- <Y3ZBUMteJysc1/lA@hirez.programming.kicks-ass.net>
- <xhsmhfsehy706.mognet@vschneid.remote.csb>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NDBb114xnz3bgR
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Nov 2022 20:39:56 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AI8q6Ic010416;
+	Fri, 18 Nov 2022 09:39:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=ApGhgdgxwbo//4e8BI/r7ZLAAUWOn9Ws0+lfryVpQTI=;
+ b=LIlrG51nw5xO8T2SRisyjV5LmPoUwo7QwP4af9F5jrSOe0rWFqvDItbXnbIyR4T/yxAy
+ V/ZITCaAVuyu35wtA7k2Wr6yDMf3xJvOPKo2+LHZly+SB3+EWhIuBNDVCQnUICfqjckI
+ ov9fpII9WPEgiQ04kuog0x0WV/qciA723UorCA4g+mocmK+oWTlIdiR0/icOpBfHtLTH
+ HlCwvETB5Ap4GurYacmkWqcg0HQw2FvixVIFnZ+vIvdB1mrQO3OOjeltWwPNFbVuActa
+ 5tDDREmrBuYOeH8W35Ng9ytYsNjogDi4BBJmqnBaPUN2T04dtsgGxmlEyAB6CycgWzKf VA== 
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3kx6wqh0r0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 18 Nov 2022 09:39:36 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+	by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2AI9avF7014616;
+	Fri, 18 Nov 2022 09:39:34 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+	by ppma03ams.nl.ibm.com with ESMTP id 3kwthe0s6m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 18 Nov 2022 09:39:34 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+	by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2AI9eCEY51904950
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 18 Nov 2022 09:40:12 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3773742042;
+	Fri, 18 Nov 2022 09:39:32 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CBC1642041;
+	Fri, 18 Nov 2022 09:39:28 +0000 (GMT)
+Received: from [9.211.152.48] (unknown [9.211.152.48])
+	by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Fri, 18 Nov 2022 09:39:28 +0000 (GMT)
+Message-ID: <548de735-52d7-f5bb-5c85-370a1c233a08@linux.ibm.com>
+Date: Fri, 18 Nov 2022 15:09:26 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <xhsmhfsehy706.mognet@vschneid.remote.csb>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.1
+Subject: Re: [RFC PATCH 0/3] enable bpf_prog_pack allocator for powerpc
+Content-Language: en-US
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        "bpf@vger.kernel.org" <bpf@vger.kernel.org>
+References: <20221110184303.393179-1-hbathini@linux.ibm.com>
+ <00efe9b1-d9fd-441c-9eb4-cbf25d82baf2@csgroup.eu>
+ <5b59b7df-d2ec-1664-f0fb-764c9b93417c@linux.ibm.com>
+ <bf0af91e-861c-1608-7150-d31578be9b02@csgroup.eu>
+ <e0266414-843f-db48-a56d-1d8a8944726a@csgroup.eu>
+ <6151f5c6-2e64-5f2d-01b1-6f517f4301c0@linux.ibm.com>
+ <02496f7a-51d8-4fc0-161d-b29d5e657089@csgroup.eu>
+ <9d5c390a-31db-4f93-203d-281b0831d37f@linux.ibm.com>
+ <c651bd44-d0ca-e3cf-0639-6b42b33f4666@csgroup.eu>
+From: Hari Bathini <hbathini@linux.ibm.com>
+In-Reply-To: <c651bd44-d0ca-e3cf-0639-6b42b33f4666@csgroup.eu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 1rc3Sq6bJrCr4aKtC77Pj-POMcvAj6AL
+X-Proofpoint-GUID: 1rc3Sq6bJrCr4aKtC77Pj-POMcvAj6AL
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-11-17_06,2022-11-17_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 suspectscore=0
+ priorityscore=1501 phishscore=0 clxscore=1015 bulkscore=0 mlxscore=0
+ adultscore=0 malwarescore=0 mlxlogscore=999 impostorscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2210170000 definitions=main-2211180057
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,52 +102,98 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juri Lelli <juri.lelli@redhat.com>, Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Dave Hansen <dave.hansen@linux.intel.com>, linux-mips@vger.kernel.org, Guo Ren <guoren@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, Marc Zyngier <maz@kernel.org>, linux-hexagon@vger.kernel.org, x86@kernel.org, Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org, Ingo Molnar <mingo@redhat.com>, linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org, "Paul E. McKenney" <paulmck@kernel.org>, Frederic Weisbecker <frederic@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, openrisc@lists.librecores.org, Borislav Petkov <bp@alien8.de>, Nicholas Piggin <npiggin@gmail.com>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.
- org, Daniel Bristot de Oliveira <bristot@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>, linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Song Liu <songliubraving@fb.com>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Nov 17, 2022 at 02:45:29PM +0000, Valentin Schneider wrote:
 
-> > +	if (trace_ipi_send_cpumask_enabled()) {
-> > +		call_single_data_t *csd;
-> > +		smp_call_func_t func;
-> > +
-> > +		csd = container_of(node, call_single_data_t, node.llist);
-> > +
-> > +		func = sched_ttwu_pending;
-> > +		if (CSD_TYPE(csd) != CSD_TYPE_TTWU)
-> > +			func = csd->func;
-> > +
-> > +		if (raw_smp_call_single_queue(cpu, node))
-> > +			trace_ipi_send_cpumask(cpumask_of(cpu), _RET_IP_, func);
+
+On 18/11/22 2:21 pm, Christophe Leroy wrote:
 > 
-> So I went with the tracepoint being placed *before* the actual IPI gets
-> sent to have a somewhat sane ordering between trace_ipi_send_cpumask() and
-> e.g. trace_call_function_single_entry().
 > 
-> Packaging the call_single_queue logic makes the code less horrible, but it
-> does mix up the event ordering...
-
-Keeps em sharp ;-)
-
-> > +		return;
-> > +	}
-> > +
-> > +	raw_smp_call_single_queue(cpu, node);
-> >  }
-> >
-> >  /*
-> > @@ -983,10 +1017,13 @@ static void smp_call_function_many_cond(
-> >                * number of CPUs might be zero due to concurrent changes to the
-> >                * provided mask.
-> >                */
-> > -		if (nr_cpus == 1)
-> > +		if (nr_cpus == 1) {
-> > +			trace_ipi_send_cpumask(cpumask_of(last_cpu), _RET_IP_, func);
-> >                       send_call_function_single_ipi(last_cpu);
+> Le 18/11/2022 à 09:39, Hari Bathini a écrit :
+>>
+>>
+>> On 17/11/22 12:29 pm, Christophe Leroy wrote:
+>>>
+>>>
+>>> Le 16/11/2022 à 18:01, Hari Bathini a écrit :
+>>>>
+>>>>
+>>>> On 16/11/22 12:14 am, Christophe Leroy wrote:
+>>>>>
+>>>>>
+>>>>> Le 14/11/2022 à 18:27, Christophe Leroy a écrit :
+>>>>>>
+>>>>>>
+>>>>>> Le 14/11/2022 à 15:47, Hari Bathini a écrit :
+>>>>>>> Hi Christophe,
+>>>>>>>
+>>>>>>> On 11/11/22 4:55 pm, Christophe Leroy wrote:
+>>>>>>>> Le 10/11/2022 à 19:43, Hari Bathini a écrit :
+>>>>>>>>> Most BPF programs are small, but they consume a page each. For
+>>>>>>>>> systems
+>>>>>>>>> with busy traffic and many BPF programs, this may also add
+>>>>>>>>> significant
+>>>>>>>>> pressure on instruction TLB. High iTLB pressure usually slows down
+>>>>>>>>> the
+>>>>>>>>> whole system causing visible performance degradation for production
+>>>>>>>>> workloads.
+>>>>>>>>>
+>>>>>>>>> bpf_prog_pack, a customized allocator that packs multiple bpf
+>>>>>>>>> programs
+>>>>>>>>> into preallocated memory chunks, was proposed [1] to address it.
+>>>>>>>>> This
+>>>>>>>>> series extends this support on powerpc.
+>>>>>>>>>
+>>>>>>>>> Patches 1 & 2 add the arch specific functions needed to support
+>>>>>>>>> this
+>>>>>>>>> feature. Patch 3 enables the support for powerpc. The last patch
+>>>>>>>>> ensures cleanup is handled racefully.
+>>>>>>>>>
+>>>>>>>
+>>>>>>>>> Tested the changes successfully on a PowerVM. patch_instruction(),
+>>>>>>>>> needed for bpf_arch_text_copy(), is failing for ppc32. Debugging
+>>>>>>>>> it.
+>>>>>>>>> Posting the patches in the meanwhile for feedback on these changes.
+>>>>>>>>
+>>>>>>>> I did a quick test on ppc32, I don't get such a problem, only
+>>>>>>>> something
+>>>>>>>> wrong in the dump print as traps intructions only are dumped, but
+>>>>>>>> tcpdump works as expected:
+>>>>>>>
+>>>>>>> Thanks for the quick test. Could you please share the config you
+>>>>>>> used.
+>>>>>>> I am probably missing a few knobs in my conifg...
+>>>>>>>
+>>>>>>
+>>>>>
+>>>>> I also managed to test it on QEMU. The config is based on
+>>>>> pmac32_defconfig.
+>>>>
+>>>> I had the same config but hit this problem:
+>>>>
+>>>>        # echo 1 > /proc/sys/net/core/bpf_jit_enable; modprobe test_bpf
+>>>>        test_bpf: #0 TAX
+>>>>        ------------[ cut here ]------------
+>>>>        WARNING: CPU: 0 PID: 96 at arch/powerpc/net/bpf_jit_comp.c:367
+>>>> bpf_int_jit_compile+0x8a0/0x9f8
+>>>
+>>> I get no such problem, on QEMU, and I checked the .config has:
+>>
+>>> CONFIG_STRICT_KERNEL_RWX=y
+>>> CONFIG_STRICT_MODULE_RWX=y
+>>
+>> Yeah. That did the trick.
 > 
-> This'll yield an IPI event even if no IPI is sent due to the idle task
-> polling, no?
+> Interesting. I guess we have to find out why it fails when those config
+> are missing.
+> 
+> Maybe module code plays with RO and NX flags even if
+> CONFIG_STRICT_MODULE_RWX is not selected ?
 
-Oh, right..
+Need to look at the code closely but fwiw, observing same failure on
+64-bit as well with !STRICT_RWX...
+
+Thanks
+Hari
