@@ -1,75 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C27F762EC55
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Nov 2022 04:27:16 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0C2C62EC56
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Nov 2022 04:28:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ND2Jy4Xdsz3dv8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Nov 2022 14:27:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ND2Kz1Ydyz3f6c
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Nov 2022 14:28:07 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=McHst7l/;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=aU25zccR;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2607:f8b0:4864:20::82f; helo=mail-qt1-x82f.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::102e; helo=mail-pj1-x102e.google.com; envelope-from=keescook@chromium.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=McHst7l/;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=aU25zccR;
 	dkim-atps=neutral
-Received: from mail-qt1-x82f.google.com (mail-qt1-x82f.google.com [IPv6:2607:f8b0:4864:20::82f])
+Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NCwrM5hxcz3bk8
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Nov 2022 10:20:35 +1100 (AEDT)
-Received: by mail-qt1-x82f.google.com with SMTP id jr19so2161221qtb.7
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Nov 2022 15:20:35 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NCyQB6fZ6z2xkD
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Nov 2022 11:31:28 +1100 (AEDT)
+Received: by mail-pj1-x102e.google.com with SMTP id d13-20020a17090a3b0d00b00213519dfe4aso3579897pjc.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Nov 2022 16:31:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y0Zl62KafxDJ8AwrDahi1bqb4Xk/32bDlmDdXpQC/2I=;
-        b=McHst7l/f7KmgETncU4ax8Cz1+X0pDSSDz+NpOo85KKRbSTGF3eq2IAlrIRy/FELSJ
-         Y7C0SIlyu5mGQyhzPLIjsCXMOXUrzD5TZH+dJcbaF2LHrVuVcof8hyWOL3D9pZZx4wAD
-         8LINQRolzJh6QXumNwKV51jsDIdF9sMEo4+5s=
+        d=chromium.org; s=google;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=SdXW0qNT9EJ55g7ZecMibSPRKy2hZHqw3Yh8nMlwERE=;
+        b=aU25zccRjTs3wP43k0MIJn4DgVbsnZCNuzNnI2CpXWYIZxXulCGxIQevzOUHHZBnNX
+         P9dqjL6CLaVk8Gd/8VV9yHkQnYw6wZLIF25d9n4/Hz+qw11dfo4C3uVe8ugX4akyWpVq
+         2j/LOKCC5xRDK3aE2eqqxuB+wZP/Rdy2IY2yY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Y0Zl62KafxDJ8AwrDahi1bqb4Xk/32bDlmDdXpQC/2I=;
-        b=nT0RhmTYgxiNgs9uzLHygOXbwvCGXwtydQmRyY6askTvJ3m5abl4eXJ3+/bbnotjJ4
-         /T53bKIlUySHrc4fDdouagjb+ljNCVB9kk+68YpVOGzqos9/TUTVEcTMe5D1XZQxpVR1
-         9D/61rxviS9jBlGDTSnR1D9/fI4FqlIw2p1zMq1asoBDJ8NXqgD5uPJjNaW7hBRKyRLx
-         8wYeHXSa4lIEn2KBypfzEqsS0iApYJ3/vy5MOz75tA/PLs/KvRQMmWDRrDWOSPCdD7Nf
-         qxUVsVUrKxpaybaRpMgan5+fofw+LcpsQ9/D/tBWUbtKFh7QLIKt2qK7fgc03RBxwuEh
-         1sdg==
-X-Gm-Message-State: ANoB5pnq1cXp1ZawSdgtIXeTvlQWNLy11laU3T6P9vUpJMoAH1D01F0P
-	veas2Zgjd4x2bv2LChYD/0cf30TZOwHcCA==
-X-Google-Smtp-Source: AA0mqf6/5cUSyW/yMIjHbdwnI/YPQgnRKKsCpNX7jtypQRXuyhxQJthKAa3hwK+EZvp1K2+dZGcHQQ==
-X-Received: by 2002:ac8:7fc3:0:b0:35d:42d0:25f with SMTP id b3-20020ac87fc3000000b0035d42d0025fmr4576204qtk.18.1668727220162;
-        Thu, 17 Nov 2022 15:20:20 -0800 (PST)
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com. [209.85.219.41])
-        by smtp.gmail.com with ESMTPSA id fg22-20020a05622a581600b003a580cd979asm1133722qtb.58.2022.11.17.15.20.17
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 17 Nov 2022 15:20:17 -0800 (PST)
-Received: by mail-qv1-f41.google.com with SMTP id s18so686568qvo.9
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Nov 2022 15:20:17 -0800 (PST)
-X-Received: by 2002:ad4:4101:0:b0:4b1:856b:4277 with SMTP id
- i1-20020ad44101000000b004b1856b4277mr4665856qvp.129.1668727216978; Thu, 17
- Nov 2022 15:20:16 -0800 (PST)
-MIME-Version: 1.0
-References: <20221116102659.70287-1-david@redhat.com> <20221116102659.70287-21-david@redhat.com>
- <CAHk-=wgtEwpR-rE_=cXzecHMZ+zgrx5zf9UfvH0w-mKgckn4=Q@mail.gmail.com> <202211171439.CDE720EAD@keescook>
-In-Reply-To: <202211171439.CDE720EAD@keescook>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Thu, 17 Nov 2022 15:20:01 -0800
-X-Gmail-Original-Message-ID: <CAHk-=wjykbz-4xVTWF7vkvGJnFoTSXNVeMzfsXaLnGm3CRd8rQ@mail.gmail.com>
-Message-ID: <CAHk-=wjykbz-4xVTWF7vkvGJnFoTSXNVeMzfsXaLnGm3CRd8rQ@mail.gmail.com>
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SdXW0qNT9EJ55g7ZecMibSPRKy2hZHqw3Yh8nMlwERE=;
+        b=nqMfRLUZMf+XFTBSVRauHngcoKOxnabKAldCQDo6KZ5GMWdJlZ4zD/0If7klksDYiX
+         NzCmpZJDBjdbc2F4S57p1g0hfeIvSvopLtDAt6XUKfnHbWi5r2Wvyk1oyozLTujS3MBZ
+         vh52kQApiyNYjMaIS5l3f2UpH6y+xIGgpMNdsXvnUowPsNd8wHkZXya6XR7PTCcFMXJP
+         LgPRLcNvgy0f+EwxQ81VSAy+9dAdwoNlahNNJOtbcbGDKlNsHT8nYU8+XdL5wkB2LJvG
+         ztUwqP4Rn4MUn97qTTHbirgQSFI8a6J93zRUFY2yq/0M6mp/stnBlWOMqsM0SpSHa0/T
+         28TA==
+X-Gm-Message-State: ANoB5pmcdnPJoaeuKB0K1Zj/iapqE7nCBjFNHs6TlMP07zgkBtUnP/Pn
+	g+OcPc+IMeqCzP/MhSkL9Z6NXw==
+X-Google-Smtp-Source: AA0mqf5v9a25yS9udq+0hjAH7K4QJBzDVw1q+3i4WQlXa259MMuJPBokO+S42xwRehI9PQV15PiKuw==
+X-Received: by 2002:a17:902:a508:b0:17c:7aaa:c67d with SMTP id s8-20020a170902a50800b0017c7aaac67dmr4961099plq.171.1668731485478;
+        Thu, 17 Nov 2022 16:31:25 -0800 (PST)
+Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id u11-20020a17090a1d4b00b0020aacde1964sm4046602pju.32.2022.11.17.16.31.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Nov 2022 16:31:25 -0800 (PST)
+Date: Thu, 17 Nov 2022 16:31:24 -0800
+From: Kees Cook <keescook@chromium.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
 Subject: Re: [PATCH mm-unstable v1 20/20] mm: rename FOLL_FORCE to FOLL_PTRACE
-To: Kees Cook <keescook@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <202211171630.8EABF5EDD@keescook>
+References: <20221116102659.70287-1-david@redhat.com>
+ <20221116102659.70287-21-david@redhat.com>
+ <CAHk-=wgtEwpR-rE_=cXzecHMZ+zgrx5zf9UfvH0w-mKgckn4=Q@mail.gmail.com>
+ <202211171439.CDE720EAD@keescook>
+ <CAHk-=wjykbz-4xVTWF7vkvGJnFoTSXNVeMzfsXaLnGm3CRd8rQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wjykbz-4xVTWF7vkvGJnFoTSXNVeMzfsXaLnGm3CRd8rQ@mail.gmail.com>
 X-Mailman-Approved-At: Fri, 18 Nov 2022 14:25:36 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -88,24 +85,29 @@ Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org, David Hilde
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Nov 17, 2022 at 2:58 PM Kees Cook <keescook@chromium.org> wrote:
->
-> Oh, er, why does get_arg_page() even need FOLL_FORCE? This is writing the
-> new stack contents to the nascent brpm->vma, which was newly allocated
-> with VM_STACK_FLAGS, which an arch can override, but they all appear to include
-> VM_WRITE | VM_MAYWRITE.
+On Thu, Nov 17, 2022 at 03:20:01PM -0800, Linus Torvalds wrote:
+> On Thu, Nov 17, 2022 at 2:58 PM Kees Cook <keescook@chromium.org> wrote:
+> >
+> > Oh, er, why does get_arg_page() even need FOLL_FORCE? This is writing the
+> > new stack contents to the nascent brpm->vma, which was newly allocated
+> > with VM_STACK_FLAGS, which an arch can override, but they all appear to include
+> > VM_WRITE | VM_MAYWRITE.
+> 
+> Yeah, it does seem entirely superfluous.
+> 
+> It's been there since the very beginning (although in that original
+> commit b6a2fea39318 it was there as a '1' to the 'force' argument to
+> get_user_pages()).
+> 
+> I *think* it can be just removed. But as long as it exists, it should
+> most definitely not be renamed to FOLL_PTRACE.
+> 
+> There's a slight worry that it currently hides some other setup issue
+> that makes it matter, since it's been that way so long, but I can't
+> see what it is.
 
-Yeah, it does seem entirely superfluous.
+My test system boots happily with it removed. I'll throw it into -next
+and see if anything melts...
 
-It's been there since the very beginning (although in that original
-commit b6a2fea39318 it was there as a '1' to the 'force' argument to
-get_user_pages()).
-
-I *think* it can be just removed. But as long as it exists, it should
-most definitely not be renamed to FOLL_PTRACE.
-
-There's a slight worry that it currently hides some other setup issue
-that makes it matter, since it's been that way so long, but I can't
-see what it is.
-
-             Linus
+-- 
+Kees Cook
