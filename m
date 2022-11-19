@@ -2,74 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 109F8630E90
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Nov 2022 12:51:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38C73630F00
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Nov 2022 14:33:16 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NDsRn6m9xz3fbl
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Nov 2022 22:51:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NDvjk0fdxz3dwc
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Nov 2022 00:33:14 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Li+Cd9f2;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=fjPjkKK9;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1031; helo=mail-pj1-x1031.google.com; envelope-from=ritesh.list@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=softfail (domain owner discourages use of this host) smtp.mailfrom=kernel.org (client-ip=202.248.20.74; helo=condef-09.nifty.com; envelope-from=masahiroy@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Li+Cd9f2;
+	dkim=pass (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=fjPjkKK9;
 	dkim-atps=neutral
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NDsNr3dyQz3fBS
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Nov 2022 22:48:27 +1100 (AEDT)
-Received: by mail-pj1-x1031.google.com with SMTP id v4-20020a17090a088400b00212cb0ed97eso7358205pjc.5
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Nov 2022 03:48:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=o9rax4FYMHEb547bH//upiZ4fWNtX6HGAiatJ0B5KnU=;
-        b=Li+Cd9f2NbxvaipGdSKNRKGOXCqcC0A9ty2Hid1W6VAz5eMylxnedWgcyV9qekkn7T
-         JCiXkaDo8STa9G2DerltgmgDi0R48Q4xoJqyosNg9x/pSZV62ooybmkJP8h4dwjvbdhW
-         rt/rAvRDZMiXjpPJEqhgXI40zz+deFiGPpkWjmh/CfoUFilC6qTuK67RZ1PpKltYw3Ut
-         JPUx5jt8A0nF99ma96ojCxfit1aWia6eD4BfwkPcHhBNHPb9CQhtU/d8gTMDHpzMwSSL
-         qaqq1VfvyieFuthOaLvA9ONC09GJDIk7YOUI6h2i9l+N+I5q7AP6MlUzEC4wYpvXpOMu
-         lOXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=o9rax4FYMHEb547bH//upiZ4fWNtX6HGAiatJ0B5KnU=;
-        b=rn8Pzt1a7odVR3lo/OUTBy6Eq5U6gq6ao8ocbC4IVoJwtwMpIRc9oyQ6sKXAYc3DF0
-         6iiFxglNE2fW7wNdifA9fNLlEgXGmG+ccY4SKLniI8CGU/1g/r7KY799i8oqjCF5rYYs
-         OR42H0wIn8SkS7Faak1eQ14ss19U8Xmz4kFJ7NSGCkrsEjnh5/MNMEfRrcHzO8znkjZU
-         dzlUeLdtWwYebcj/6+Ukj+8pvcP903vcSSpd8bpoMOWGFNu3+77Zjyyq1XxyRqJFVY6+
-         sGhP7NNn/LoAovzHFvRd9SL73TnQx0zRGXFbv8ClxtsvUYnLfVAYUZ56Qq0/ymgvY9l2
-         0mrw==
-X-Gm-Message-State: ANoB5pkjNGRGIHI2wFh6ta4Hu0YyOH9wUzXIHHcaXeFuEVElor6vcJ83
-	LCYb935SNhsXtPo741w0Nhw=
-X-Google-Smtp-Source: AA0mqf7P6jcJsjQXvLal1h/ppkR43bLZK00uIGIYM+K8pwUk5a2M3yzRQjUExDLjUVbGY/+dyYdhpg==
-X-Received: by 2002:a17:90b:394e:b0:20a:6106:a283 with SMTP id oe14-20020a17090b394e00b0020a6106a283mr2037841pjb.107.1668858505491;
-        Sat, 19 Nov 2022 03:48:25 -0800 (PST)
-Received: from localhost ([2406:7400:63:f20b:f6ca:e236:f59f:8c18])
-        by smtp.gmail.com with ESMTPSA id 189-20020a6218c6000000b0056299fd2ba2sm4885404pfy.162.2022.11.19.03.48.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Nov 2022 03:48:24 -0800 (PST)
-Date: Sat, 19 Nov 2022 17:18:20 +0530
-From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-To: Nayna <nayna@linux.vnet.ibm.com>
-Subject: Re: [PATCH 2/4] fs: define a firmware security filesystem named
- fwsecurityfs
-Message-ID: <20221119114234.nnfxsqx4zxiku2h6@riteshh-domain>
-References: <20221106210744.603240-1-nayna@linux.ibm.com>
- <20221106210744.603240-3-nayna@linux.ibm.com>
- <Y2uvUFQ9S2oaefSY@kroah.com>
- <8447a726-c45d-8ebb-2a74-a4d759631e64@linux.vnet.ibm.com>
+X-Greylist: delayed 122 seconds by postgrey-1.36 at boromir; Sun, 20 Nov 2022 00:32:22 AEDT
+Received: from condef-09.nifty.com (condef-09.nifty.com [202.248.20.74])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NDvhk1m2Wz3cJY
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Nov 2022 00:32:22 +1100 (AEDT)
+Received: from conssluserg-04.nifty.com ([10.126.8.83])by condef-09.nifty.com with ESMTP id 2AJDS69B024115
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Nov 2022 22:28:06 +0900
+Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com [209.85.161.52]) (authenticated)
+	by conssluserg-04.nifty.com with ESMTP id 2AJDRfte000710
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Nov 2022 22:27:41 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-04.nifty.com 2AJDRfte000710
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+	s=dec2015msa; t=1668864461;
+	bh=wAXMhSJey5VSvKgw6HCvXuj93I1hlQIEOyp+rwYZByg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=fjPjkKK9o2dUO+O5tZMdi9H7hQlTp5JAl9WDB5W2yXwju7VXI1sfRR6mRuh0t6oGv
+	 mNtYC6N6Uw7LRFAGIEuGUNj4QzNCpISk2oFrs2kHUh/4ZrpOYK8fy5hT+Q34bVg84L
+	 yBB3ziyOIZgqDh08/QxDBDoT/RRWCrSSmKPM65FuiLJkHpNKKAcaD7fxcBvw9x6act
+	 A4nHH9W8keDqZQFRAwNmH8e2+UY+2G12gR13+JWFEM3OpBeVIacIUcb5sVqja5QWRL
+	 NUMIMX0FXivq0W1Z9tRKvFlq1lGsFBhp7FcGUeTNePqfD4/7JL8c5UtYTmFdFzZ1Sv
+	 mKTUXrqKMwy7A==
+X-Nifty-SrcIP: [209.85.161.52]
+Received: by mail-oo1-f52.google.com with SMTP id t15-20020a4a96cf000000b0049f7e18db0dso1177690ooi.10
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Nov 2022 05:27:41 -0800 (PST)
+X-Gm-Message-State: ANoB5pn/M50vV9Okmt5Mx2lP20Co/1lT0YFlzJYz5AdRJ8oy+05XpH9t
+	nRIFWXGsO5ILwBpyKiD/DcCJlBudnD2+0+JmOqk=
+X-Google-Smtp-Source: AA0mqf6XzWLHsPIdmgP8chub/cRX8/Fvp3IqeLVQ+n1Vo/B1UPAu+IZq+JU5ZzzXJJHhnxFBp6Y5zZaukuR/pAQrwFU=
+X-Received: by 2002:a4a:b145:0:b0:49f:449a:5f6c with SMTP id
+ e5-20020a4ab145000000b0049f449a5f6cmr5352439ooo.93.1668864460545; Sat, 19 Nov
+ 2022 05:27:40 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8447a726-c45d-8ebb-2a74-a4d759631e64@linux.vnet.ibm.com>
+References: <20221118150351.GV28810@kitsune.suse.cz> <b8191c01-4d78-537b-9650-a783e14e5997@infradead.org>
+In-Reply-To: <b8191c01-4d78-537b-9650-a783e14e5997@infradead.org>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Sat, 19 Nov 2022 22:27:04 +0900
+X-Gmail-Original-Message-ID: <CAK7LNASBhTvzkjXuJDH8ePCVXnZ=GUYdNa-OU+QURbBp3oyEBQ@mail.gmail.com>
+Message-ID: <CAK7LNASBhTvzkjXuJDH8ePCVXnZ=GUYdNa-OU+QURbBp3oyEBQ@mail.gmail.com>
+Subject: Re: build failure in linux-next: offb missing fb helpers
+To: Randy Dunlap <rdunlap@infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,168 +67,152 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Matthew Garrett <mjg59@srcf.ucam.org>, linux-efi@vger.kernel.org, Andrew Donnellan <ajd@linux.ibm.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Nayna Jain <nayna@linux.ibm.com>, linux-kernel@vger.kernel.org, npiggin@gmail.com, Dov Murik <dovmurik@linux.ibm.com>, Dave Hansen <dave.hansen@intel.com>, linux-security-module <linux-security-module@vger.kernel.org>, Paul Mackerras <paulus@samba.org>, linux-fsdevel@vger.kernel.org, George Wilson <gcwilson@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, "Serge E. Hallyn" <serge@hallyn.com>, Stefan Berger <stefanb@linux.ibm.com>
+Cc: linux-fbdev@vger.kernel.org, =?UTF-8?Q?Michal_Such=C3=A1nek?= <msuchanek@suse.de>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello Nayna, 
+On Sat, Nov 19, 2022 at 3:20 PM Randy Dunlap <rdunlap@infradead.org> wrote:
+>
+> Hi--
+>
+> [adding Masahiro-san]
+>
+>
+> On 11/18/22 07:03, Michal Such=C3=A1nek wrote:
+> > Hello,
+> >
+> > I am seeing these errors:
+> >
+> > [ 3825s]   AR      built-in.a
+> > [ 3827s]   AR      vmlinux.a
+> > [ 3835s]   LD      vmlinux.o
+> > [ 3835s]   OBJCOPY modules.builtin.modinfo
+> > [ 3835s]   GEN     modules.builtin
+> > [ 3835s]   GEN     .vmlinux.objs
+> > [ 3848s]   MODPOST Module.symvers
+> > [ 3848s]   CC      .vmlinux.export.o
+> > [ 3849s]   UPD     include/generated/utsversion.h
+> > [ 3849s]   CC      init/version-timestamp.o
+> > [ 3849s]   LD      .tmp_vmlinux.btf
+> > [ 3864s] ld: drivers/video/fbdev/offb.o:(.data.rel.ro+0x58): undefined
+> > reference to `cfb_fillrect'
+> > [ 3864s] ld: drivers/video/fbdev/offb.o:(.data.rel.ro+0x60): undefined
+> > reference to `cfb_copyarea'
+> > [ 3864s] ld: drivers/video/fbdev/offb.o:(.data.rel.ro+0x68): undefined
+> > reference to `cfb_imageblit'
+> >
+> > cfb_fillrect is provided by drivers/video/fbdev/core/cfbfillrect.c
+> >
+> > It is compiled when CONFIG_FB_CFB_FILLRECT
+> > drivers/video/fbdev/core/Makefile:obj-$(CONFIG_FB_CFB_FILLRECT)  +=3D c=
+fbfillrect.o
+> >
+> > drivers/video/fbdev/Makefile:obj-$(CONFIG_FB_OF)               +=3D off=
+b.o
+> > is compiled when CONFIG_FB_OF
+> >
+> > It selects CONFIG_FB_CFB_FILLRECT
+> > config FB_OF
+> >         bool "Open Firmware frame buffer device support"
+> >         depends on (FB =3D y) && PPC && (!PPC_PSERIES || PCI)
+> >         select APERTURE_HELPERS
+> >         select FB_CFB_FILLRECT
+> >         select FB_CFB_COPYAREA
+> >         select FB_CFB_IMAGEBLIT
+> >         select FB_MACMODES
+> >
+> > The config has FB_OF built-in and FB_CFB_FILLRECT modular
+> > config/ppc64le/vanilla:CONFIG_FB_CFB_FILLRECT=3Dm
+> > config/ppc64le/vanilla:CONFIG_FB_CFB_COPYAREA=3Dm
+> > config/ppc64le/vanilla:CONFIG_FB_CFB_IMAGEBLIT=3Dm
+> > config/ppc64le/vanilla:CONFIG_FB_OF=3Dy
+> >
+> > It only depends on FB which mut be built-in for FB_OF
+> > config FB_CFB_FILLRECT
+> >         tristate
+> >         depends on FB
+> >
+> > Is select in kconfig broken?
+> >
+> > Attachnig the config in question.
+>
+> The symbol info from xconfig says:
+>
+> Symbol: FB_CFB_FILLRECT [=3Dm]
+> Type : tristate
+> Defined at drivers/video/fbdev/Kconfig:69
+> Depends on: HAS_IOMEM [=3Dy] && FB [=3Dy]
+> Selected by [m]:
+> [deleted]
+> - FB_OF [=3Dy] && HAS_IOMEM [=3Dy] && FB [=3Dy]=3Dy && PPC [=3Dy] && (!PP=
+C_PSERIES [=3Dy] || PCI [=3Dy]) && !DRM_OFDRM [=3Dm]
+>
+> I don't see why the 'select' from (bool) FB_OF would leave FB_CFB_FILLREC=
+T (and the others)
+> as =3Dm instead of =3Dy.
+>
+> Hopefully Masahiro can shed some light on this.
+>
+> --
+> ~Randy
 
-On 22/11/09 03:10PM, Nayna wrote:
-> 
-> On 11/9/22 08:46, Greg Kroah-Hartman wrote:
-> > On Sun, Nov 06, 2022 at 04:07:42PM -0500, Nayna Jain wrote:
-> > > securityfs is meant for Linux security subsystems to expose policies/logs
-> > > or any other information. However, there are various firmware security
-> > > features which expose their variables for user management via the kernel.
-> > > There is currently no single place to expose these variables. Different
-> > > platforms use sysfs/platform specific filesystem(efivarfs)/securityfs
-> > > interface as they find it appropriate. Thus, there is a gap in kernel
-> > > interfaces to expose variables for security features.
-> > > 
-> > > Define a firmware security filesystem (fwsecurityfs) to be used by
-> > > security features enabled by the firmware. These variables are platform
-> > > specific. This filesystem provides platforms a way to implement their
-> > >   own underlying semantics by defining own inode and file operations.
-> > > 
-> > > Similar to securityfs, the firmware security filesystem is recommended
-> > > to be exposed on a well known mount point /sys/firmware/security.
-> > > Platforms can define their own directory or file structure under this path.
-> > > 
-> > > Example:
-> > > 
-> > > # mount -t fwsecurityfs fwsecurityfs /sys/firmware/security
-> > Why not juset use securityfs in /sys/security/firmware/ instead?  Then
-> > you don't have to create a new filesystem and convince userspace to
-> > mount it in a specific location?
 
-I am also curious to know on why not use securityfs, given the similarity
-between the two. :)
-More specifics on that below...
+The reason is shown in your paste of help message:
 
-> 
-> From man 5 sysfs page:
-> 
-> /sys/firmware: This subdirectory contains interfaces for viewing and
-> manipulating firmware-specific objects and attributes.
-> 
-> /sys/kernel: This subdirectory contains various files and subdirectories
-> that provide information about the running kernel.
-> 
-> The security variables which are being exposed via fwsecurityfs are managed
-> by firmware, stored in firmware managed space and also often consumed by
-> firmware for enabling various security features.
+"&& !DRM_OFDRM [=3Dm]" downgrades it to "selected by m"
 
-That's ok. As I see it users of securityfs can define their own fileops
-(like how you are doing in fwsecurityfs).
-See securityfs_create_file() & securityfs_create_symlink(), can accept the fops
-& iops. Except maybe securityfs_create_dir(), that could be since there might
-not be a usecase for it. But do you also need it in your case is the question to
-ask.
+To aid this particular case, the following will select
+FB_CFB_FILLRECT=3Dy.
 
-> 
-> From git commit b67dbf9d4c1987c370fd18fdc4cf9d8aaea604c2, the purpose of
-> securityfs(/sys/kernel/security) is to provide a common place for all kernel
-> LSMs. The idea of
 
-Which was then seperated out by commit,
-da31894ed7b654e2 ("securityfs: do not depend on CONFIG_SECURITY").
 
-securityfs now has a seperate CONFIG_SECURITYFS config option. In fact I was even
-thinking of why shouldn't we move security/inode.c into fs/securityfs/inode.c .
-fs/* is a common place for all filesystems. Users of securityfs can call it's 
-exported kernel APIs to create files/dirs/symlinks.
 
-If we move security/inode.c to fs/security/inode.c, then...
-...below call within securityfs_init() should be moved into some lsm sepecific 
-file.
+diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
+index 66f36b69e8f3..2bcf8627819f 100644
+--- a/drivers/video/fbdev/Kconfig
++++ b/drivers/video/fbdev/Kconfig
+@@ -458,7 +458,7 @@ config FB_ATARI
+ config FB_OF
+        bool "Open Firmware frame buffer device support"
+        depends on (FB =3D y) && PPC && (!PPC_PSERIES || PCI)
+-       depends on !DRM_OFDRM
++       depends on DRM_OFDRM !=3D y
+        select APERTURE_HELPERS
+        select FB_CFB_FILLRECT
+        select FB_CFB_COPYAREA
 
-#ifdef CONFIG_SECURITY
-static struct dentry *lsm_dentry;
-static ssize_t lsm_read(struct file *filp, char __user *buf, size_t count,
-			loff_t *ppos)
-{
-	return simple_read_from_buffer(buf, count, ppos, lsm_names,
-		strlen(lsm_names));
-}
 
-static const struct file_operations lsm_ops = {
-	.read = lsm_read,
-	.llseek = generic_file_llseek,
-};
-#endif
 
-securityfs_init()
 
-#ifdef CONFIG_SECURITY
-	lsm_dentry = securityfs_create_file("lsm", 0444, NULL, NULL,
-						&lsm_ops);
-#endif
+Or, perhaps "depends on DRM_OFDRM =3D n"
+I do not know the intention of this dependency.
 
-So why not move it? Maybe others, can comment more on whether it's a good idea 
-to move security/inode.c into fs/security/inode.c? 
-This should then help others identify securityfs filesystem in fs/security/ 
-for everyone to notice and utilize for their use?
+Recommendation is to use "depends on" instead of "select" though.
 
-> fwsecurityfs(/sys/firmware/security) is to similarly provide a common place
-> for all firmware security objects.
-> 
-> /sys/firmware already exists. The patch now defines a new /security
-> directory in it for firmware security features. Using /sys/kernel/security
-> would mean scattering firmware objects in multiple places and confusing the
-> purpose of /sys/kernel and /sys/firmware.
 
-We can also think of it this way that, all security related exports should 
-happen via /sys/kernel/security/. Then /sys/kernel/security/firmware/ becomes 
-the security related firmware exports.
 
-If you see find /sys -iname firmware, I am sure you will find other firmware
-specifics directories related to other specific subsystems
-(e.g. 
-root@qemu:/home/qemu# find /sys -iname firmware
-/sys/devices/ndbus0/nmem0/firmware
-/sys/devices/ndbus0/firmware
-/sys/firmware
-)
+BTW, this is similar to what you asked before.
 
-But it could be, I am not an expert here, although I was thinking a good 
-Documentation might solve this problem.
+https://lore.kernel.org/linux-kbuild/e1a6228d-1341-6264-d97a-e2bd52a65c82@i=
+nfradead.org/
 
-> 
-> Even though fwsecurityfs code is based on securityfs, since the two
-> filesystems expose different types of objects and have different
-> requirements, there are distinctions:
-> 
-> 1. fwsecurityfs lets users create files in userspace, securityfs only allows
-> kernel subsystems to create files.
 
-Sorry could you please elaborate how? both securityfs & fwsecurityfs
-calls simple_fill_super() which uses the same inode (i_op) and inode file 
-operations (i_fop) from fs/libfs.c for their root inode. So how it is enabling
-user (as in userspace) to create a file in this filesystem?
+I tried to fix it in the past, but the issue was not as shallow as I
+had expected.
+I did not get around to revisiting this topic.
 
-So am I missing anything?
+https://patchwork.kernel.org/project/linux-kbuild/patch/1543216969-2227-1-g=
+it-send-email-yamada.masahiro@socionext.com/
 
-> 
-> 2. firmware and kernel objects may have different requirements. For example,
-> consideration of namespacing. As per my understanding, namespacing is
-> applied to kernel resources and not firmware resources. That's why it makes
-> sense to add support for namespacing in securityfs, but we concluded that
-> fwsecurityfs currently doesn't need it. Another but similar example of it
 
-It "currently" doesn't need it. But can it in future? Then why not go with
-securityfs which has an additional namespacing feature available?
-That's actually also the point of utilizing an existing FS which can get 
-features like this in future. As long as it doesn't affect the functionality 
-of your use case, we simply need not reject securityfs, no?
 
-> is: TPM space, which is exposed from hardware. For containers, the TPM would
-> be made as virtual/software TPM. Similarly for firmware space for
-> containers, it would have to be something virtualized/software version of
-> it.
-> 
-> 3. firmware objects are persistent and read at boot time by interaction with
-> firmware, unlike kernel objects which are not persistent.
 
-I think this got addressed in a seperate thread.
 
--ritesh
+
+
+
+
+
+--
+Best Regards
+Masahiro Yamada
