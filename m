@@ -1,51 +1,43 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CB3B630E10
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Nov 2022 11:17:02 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85E6F630E22
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Nov 2022 11:47:23 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NDqMJ3FRlz3f5L
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Nov 2022 21:17:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NDr2K2dPHz3f5G
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Nov 2022 21:47:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33; helo=metis.ext.pengutronix.de; envelope-from=ukl@pengutronix.de; receiver=<UNKNOWN>)
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.189; helo=szxga03-in.huawei.com; envelope-from=cuigaosheng1@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NDqLk2zscz3bjQ
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Nov 2022 21:16:29 +1100 (AEDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1owKtQ-00089M-Nr; Sat, 19 Nov 2022 11:16:12 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1owKtG-005EhI-Oa; Sat, 19 Nov 2022 11:16:03 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1owKtG-0006ZF-Ax; Sat, 19 Nov 2022 11:16:02 +0100
-Date: Sat, 19 Nov 2022 11:16:02 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH 289/606] macintosh: ams/ams-i2c: Convert to i2c's
- .probe_new()
-Message-ID: <20221119101602.kfreiw4mdbjf7prj@pengutronix.de>
-References: <20221118224540.619276-1-uwe@kleine-koenig.org>
- <20221118224540.619276-290-uwe@kleine-koenig.org>
- <1d2ae1bb-d4ba-35cf-63b6-f23a0187a223@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NDr1n2G0hz3bky
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Nov 2022 21:46:50 +1100 (AEDT)
+Received: from kwepemi500012.china.huawei.com (unknown [172.30.72.57])
+	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4NDqxv1xhGzFq83;
+	Sat, 19 Nov 2022 18:43:31 +0800 (CST)
+Received: from cgs.huawei.com (10.244.148.83) by
+ kwepemi500012.china.huawei.com (7.221.188.12) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Sat, 19 Nov 2022 18:46:42 +0800
+From: Gaosheng Cui <cuigaosheng1@huawei.com>
+To: <mpe@ellerman.id.au>, <npiggin@gmail.com>, <christophe.leroy@csgroup.eu>,
+	<peterhuewe@gmx.de>, <jarkko@kernel.org>, <jgg@ziepe.ca>,
+	<adlai@linux.vnet.ibm.com>, <key@linux.vnet.ibm.com>,
+	<cuigaosheng1@huawei.com>
+Subject: [PATCH] tpm: ibmvtpm: free irq on the error path in tpm_ibmvtpm_probe()
+Date: Sat, 19 Nov 2022 18:46:42 +0800
+Message-ID: <20221119104642.3964551-1-cuigaosheng1@huawei.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="fhfkp732a2k6imuh"
-Content-Disposition: inline
-In-Reply-To: <1d2ae1bb-d4ba-35cf-63b6-f23a0187a223@csgroup.eu>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.244.148.83]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ kwepemi500012.china.huawei.com (7.221.188.12)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,99 +49,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Minghao Chi <chi.minghao@zte.com.cn>, Wolfram Sang <wsa@kernel.org>, Angel Iglesias <ang.iglesiasg@gmail.com>, "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>, "kernel@pengutronix.de" <kernel@pengutronix.de>, Grant Likely <grant.likely@linaro.org>, Lee Jones <lee.jones@linaro.org>
+Cc: linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+In tpm_ibmvtpm_probe(), vio_dev->irq has not been freed on the
+init_irq_cleanup error path, we need to free it. Fix it.
 
---fhfkp732a2k6imuh
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Fixes: 132f76294744 ("drivers/char/tpm: Add new device driver to support IBM vTPM")
+Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
+---
+ drivers/char/tpm/tpm_ibmvtpm.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Hello Christophe,
+diff --git a/drivers/char/tpm/tpm_ibmvtpm.c b/drivers/char/tpm/tpm_ibmvtpm.c
+index d3989b257f42..8c23aabdfc24 100644
+--- a/drivers/char/tpm/tpm_ibmvtpm.c
++++ b/drivers/char/tpm/tpm_ibmvtpm.c
+@@ -649,7 +649,7 @@ static int tpm_ibmvtpm_probe(struct vio_dev *vio_dev,
+ 			 tpm_ibmvtpm_driver_name, ibmvtpm);
+ 	if (rc) {
+ 		dev_err(dev, "Error %d register irq 0x%x\n", rc, vio_dev->irq);
+-		goto init_irq_cleanup;
++		goto req_irq_cleanup;
+ 	}
+ 
+ 	rc = vio_enable_interrupts(vio_dev);
+@@ -702,6 +702,8 @@ static int tpm_ibmvtpm_probe(struct vio_dev *vio_dev,
+ 
+ 	return tpm_chip_register(chip);
+ init_irq_cleanup:
++	free_irq(vio_dev->irq, ibmvtpm);
++req_irq_cleanup:
+ 	do {
+ 		rc1 = plpar_hcall_norets(H_FREE_CRQ, vio_dev->unit_address);
+ 	} while (rc1 == H_BUSY || H_IS_LONG_BUSY(rc1));
+-- 
+2.25.1
 
-On Sat, Nov 19, 2022 at 07:38:58AM +0000, Christophe Leroy wrote:
-> Le 18/11/2022 =E0 23:40, Uwe Kleine-K=F6nig a =E9crit=A0:
-> > From: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> >=20
-> > The probe function doesn't make use of the i2c_device_id * parameter so=
- it
-> > can be trivially converted.
-> >=20
-> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
->=20
-> The patch itself and the others seems ok. But can you group all=20
-> macintosh changes into a single patch instead of the 9 patches you sent ?
->=20
-> See the process about submitting patches,=20
-> https://docs.kernel.org/process/submitting-patches.html and especially=20
-> the "NO!!!! No more huge patch bombs to linux-kernel@vger.kernel.org=20
-> people!" and the associated reference=20
-> https://lore.kernel.org/all/20050711.125305.08322243.davem@davemloft.net/=
- :
->=20
-> 	If you feel the need to send, say, more than 15 patches at once,=20
-> reconsider.
-
-Thanks for your feedback.
-
-Let me point out in response to the request to squash patches together
-that this wish doesn't seem to be the universal right thing to do.
-
-Last time I did a conversion grouped by subsystem, one of the replies
-was:
-
-	Reviewed-by: ...
-	if you split on per driver basis.
-
-(https://lore.kernel.org/linux-iio/20220808085526.280066-1-u.kleine-koenig@=
-pengutronix.de)
-
-The obvious upside of a split per driver is that the individual bits are
-easier to review, an Ack can be limited to a certain set of drivers, and
-(probably most important): If a driver later gets a commit that needs
-backporting, a patch that only touches this single driver can more
-easily be backported as a dependency.
-
-Also the request to not send everything at once but keep back some
-patches has an obvious downside. I.e. I have to restart yet more often
-to rebase + test to get all patches applied in the end. And you could
-argue that the sum of the work load on the mail servers doesn't get
-smaller in sum if the 600 patches are sent over (say) 2 months.
-(To prevent a flame war here: Yeah, I agree there are downsides of a
-single big series, too.)
-
-All in all my personal opinion is that the advantages of a split per
-driver slightly outweight the disadvantages. But obviously that's
-subjective.
-
-I will wait a while before sending updates to this series, so don't
-expect a new patch very soon. (This has the nice effect that it gives
-you some time to reconsider your argument and maybe apply the patches as
-they are now, preventing another mail to the lists with the cumulated
-macintosh changes ;-)
-
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---fhfkp732a2k6imuh
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmN4rN8ACgkQwfwUeK3K
-7Al6Vgf8CS2jQ6ydt/mU5uUF2/1EdeFIaEgWWYM8GEO/WO3ITiDMmhcPxvxIiMZ0
-3oK9RQOVW5svEcjiGpenqG2JzVC3qN1g86tlnFlbVnr2fNllDVn+UX4yqQIV/MHM
-uOROopD1mejOWEeuyKGWSFaOJa+ZnQa94AW9NCnTqz9ZCbbtg1/da8nw7okMtupm
-kXwMuuZee0TCK02/9mKYs3H0hWHoTt/2deYHVLrtfNurq5hKPZlqfXSokz1EH19v
-rPmnAsQvxBubGj+6uKtx6bzmG+aNwqJe/3j5UbHGe7eIp1i7q4kXjzpi6ioxZ9ef
-1lRlkwcKHui3hUwv5kuzN6BIi+ZrAQ==
-=vViA
------END PGP SIGNATURE-----
-
---fhfkp732a2k6imuh--
