@@ -2,60 +2,44 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38C73630F00
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Nov 2022 14:33:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F10E630F35
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Nov 2022 15:47:10 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NDvjk0fdxz3dwc
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Nov 2022 00:33:14 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=fjPjkKK9;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NDxM01RHXz3dvQ
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Nov 2022 01:47:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=softfail (domain owner discourages use of this host) smtp.mailfrom=kernel.org (client-ip=202.248.20.74; helo=condef-09.nifty.com; envelope-from=masahiroy@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=fjPjkKK9;
-	dkim-atps=neutral
-X-Greylist: delayed 122 seconds by postgrey-1.36 at boromir; Sun, 20 Nov 2022 00:32:22 AEDT
-Received: from condef-09.nifty.com (condef-09.nifty.com [202.248.20.74])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NDvhk1m2Wz3cJY
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Nov 2022 00:32:22 +1100 (AEDT)
-Received: from conssluserg-04.nifty.com ([10.126.8.83])by condef-09.nifty.com with ESMTP id 2AJDS69B024115
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Nov 2022 22:28:06 +0900
-Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com [209.85.161.52]) (authenticated)
-	by conssluserg-04.nifty.com with ESMTP id 2AJDRfte000710
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Nov 2022 22:27:41 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-04.nifty.com 2AJDRfte000710
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-	s=dec2015msa; t=1668864461;
-	bh=wAXMhSJey5VSvKgw6HCvXuj93I1hlQIEOyp+rwYZByg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=fjPjkKK9o2dUO+O5tZMdi9H7hQlTp5JAl9WDB5W2yXwju7VXI1sfRR6mRuh0t6oGv
-	 mNtYC6N6Uw7LRFAGIEuGUNj4QzNCpISk2oFrs2kHUh/4ZrpOYK8fy5hT+Q34bVg84L
-	 yBB3ziyOIZgqDh08/QxDBDoT/RRWCrSSmKPM65FuiLJkHpNKKAcaD7fxcBvw9x6act
-	 A4nHH9W8keDqZQFRAwNmH8e2+UY+2G12gR13+JWFEM3OpBeVIacIUcb5sVqja5QWRL
-	 NUMIMX0FXivq0W1Z9tRKvFlq1lGsFBhp7FcGUeTNePqfD4/7JL8c5UtYTmFdFzZ1Sv
-	 mKTUXrqKMwy7A==
-X-Nifty-SrcIP: [209.85.161.52]
-Received: by mail-oo1-f52.google.com with SMTP id t15-20020a4a96cf000000b0049f7e18db0dso1177690ooi.10
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Nov 2022 05:27:41 -0800 (PST)
-X-Gm-Message-State: ANoB5pn/M50vV9Okmt5Mx2lP20Co/1lT0YFlzJYz5AdRJ8oy+05XpH9t
-	nRIFWXGsO5ILwBpyKiD/DcCJlBudnD2+0+JmOqk=
-X-Google-Smtp-Source: AA0mqf6XzWLHsPIdmgP8chub/cRX8/Fvp3IqeLVQ+n1Vo/B1UPAu+IZq+JU5ZzzXJJHhnxFBp6Y5zZaukuR/pAQrwFU=
-X-Received: by 2002:a4a:b145:0:b0:49f:449a:5f6c with SMTP id
- e5-20020a4ab145000000b0049f449a5f6cmr5352439ooo.93.1668864460545; Sat, 19 Nov
- 2022 05:27:40 -0800 (PST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.255; helo=szxga08-in.huawei.com; envelope-from=yangyingliang@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NDxLL0sQgz3cJY
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Nov 2022 01:46:30 +1100 (AEDT)
+Received: from dggpemm500024.china.huawei.com (unknown [172.30.72.53])
+	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4NDxKb6HwHz15Mdf;
+	Sat, 19 Nov 2022 22:45:55 +0800 (CST)
+Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
+ dggpemm500024.china.huawei.com (7.185.36.203) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Sat, 19 Nov 2022 22:46:21 +0800
+Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
+ (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Sat, 19 Nov
+ 2022 22:46:21 +0800
+From: Yang Yingliang <yangyingliang@huawei.com>
+To: <fbarrat@linux.ibm.com>, <ajd@linux.ibm.com>, <arnd@arndb.de>,
+	<gregkh@linuxfoundation.org>
+Subject: [PATCH] ocxl: fix pci device refcount leak when calling get_function_0()
+Date: Sat, 19 Nov 2022 22:44:33 +0800
+Message-ID: <20221119144433.2454759-1-yangyingliang@huawei.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20221118150351.GV28810@kitsune.suse.cz> <b8191c01-4d78-537b-9650-a783e14e5997@infradead.org>
-In-Reply-To: <b8191c01-4d78-537b-9650-a783e14e5997@infradead.org>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Sat, 19 Nov 2022 22:27:04 +0900
-X-Gmail-Original-Message-ID: <CAK7LNASBhTvzkjXuJDH8ePCVXnZ=GUYdNa-OU+QURbBp3oyEBQ@mail.gmail.com>
-Message-ID: <CAK7LNASBhTvzkjXuJDH8ePCVXnZ=GUYdNa-OU+QURbBp3oyEBQ@mail.gmail.com>
-Subject: Re: build failure in linux-next: offb missing fb helpers
-To: Randy Dunlap <rdunlap@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.175.103.91]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ dggpemm500007.china.huawei.com (7.185.36.183)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,152 +51,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-fbdev@vger.kernel.org, =?UTF-8?Q?Michal_Such=C3=A1nek?= <msuchanek@suse.de>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, yangyingliang@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Nov 19, 2022 at 3:20 PM Randy Dunlap <rdunlap@infradead.org> wrote:
->
-> Hi--
->
-> [adding Masahiro-san]
->
->
-> On 11/18/22 07:03, Michal Such=C3=A1nek wrote:
-> > Hello,
-> >
-> > I am seeing these errors:
-> >
-> > [ 3825s]   AR      built-in.a
-> > [ 3827s]   AR      vmlinux.a
-> > [ 3835s]   LD      vmlinux.o
-> > [ 3835s]   OBJCOPY modules.builtin.modinfo
-> > [ 3835s]   GEN     modules.builtin
-> > [ 3835s]   GEN     .vmlinux.objs
-> > [ 3848s]   MODPOST Module.symvers
-> > [ 3848s]   CC      .vmlinux.export.o
-> > [ 3849s]   UPD     include/generated/utsversion.h
-> > [ 3849s]   CC      init/version-timestamp.o
-> > [ 3849s]   LD      .tmp_vmlinux.btf
-> > [ 3864s] ld: drivers/video/fbdev/offb.o:(.data.rel.ro+0x58): undefined
-> > reference to `cfb_fillrect'
-> > [ 3864s] ld: drivers/video/fbdev/offb.o:(.data.rel.ro+0x60): undefined
-> > reference to `cfb_copyarea'
-> > [ 3864s] ld: drivers/video/fbdev/offb.o:(.data.rel.ro+0x68): undefined
-> > reference to `cfb_imageblit'
-> >
-> > cfb_fillrect is provided by drivers/video/fbdev/core/cfbfillrect.c
-> >
-> > It is compiled when CONFIG_FB_CFB_FILLRECT
-> > drivers/video/fbdev/core/Makefile:obj-$(CONFIG_FB_CFB_FILLRECT)  +=3D c=
-fbfillrect.o
-> >
-> > drivers/video/fbdev/Makefile:obj-$(CONFIG_FB_OF)               +=3D off=
-b.o
-> > is compiled when CONFIG_FB_OF
-> >
-> > It selects CONFIG_FB_CFB_FILLRECT
-> > config FB_OF
-> >         bool "Open Firmware frame buffer device support"
-> >         depends on (FB =3D y) && PPC && (!PPC_PSERIES || PCI)
-> >         select APERTURE_HELPERS
-> >         select FB_CFB_FILLRECT
-> >         select FB_CFB_COPYAREA
-> >         select FB_CFB_IMAGEBLIT
-> >         select FB_MACMODES
-> >
-> > The config has FB_OF built-in and FB_CFB_FILLRECT modular
-> > config/ppc64le/vanilla:CONFIG_FB_CFB_FILLRECT=3Dm
-> > config/ppc64le/vanilla:CONFIG_FB_CFB_COPYAREA=3Dm
-> > config/ppc64le/vanilla:CONFIG_FB_CFB_IMAGEBLIT=3Dm
-> > config/ppc64le/vanilla:CONFIG_FB_OF=3Dy
-> >
-> > It only depends on FB which mut be built-in for FB_OF
-> > config FB_CFB_FILLRECT
-> >         tristate
-> >         depends on FB
-> >
-> > Is select in kconfig broken?
-> >
-> > Attachnig the config in question.
->
-> The symbol info from xconfig says:
->
-> Symbol: FB_CFB_FILLRECT [=3Dm]
-> Type : tristate
-> Defined at drivers/video/fbdev/Kconfig:69
-> Depends on: HAS_IOMEM [=3Dy] && FB [=3Dy]
-> Selected by [m]:
-> [deleted]
-> - FB_OF [=3Dy] && HAS_IOMEM [=3Dy] && FB [=3Dy]=3Dy && PPC [=3Dy] && (!PP=
-C_PSERIES [=3Dy] || PCI [=3Dy]) && !DRM_OFDRM [=3Dm]
->
-> I don't see why the 'select' from (bool) FB_OF would leave FB_CFB_FILLREC=
-T (and the others)
-> as =3Dm instead of =3Dy.
->
-> Hopefully Masahiro can shed some light on this.
->
-> --
-> ~Randy
+As comment of pci_get_domain_bus_and_slot() says, it returns
+a pci device with refcount increment, so when finish using it,
+pci_dev_put() needs be called.
 
+In get_dvsec_vendor0(), in normal path, the returned pci device
+is passed to dev0, so after using dev0 in the callers, it need
+be put, in error path, pci_dev_put() also needs be called.
 
-The reason is shown in your paste of help message:
+pci_get_domain_bus_and_slot() is called when PCI_FUNC() returns
+non-zero, check this before put.
 
-"&& !DRM_OFDRM [=3Dm]" downgrades it to "selected by m"
+Fixes: 87db7579ebd5 ("ocxl: control via sysfs whether the FPGA is reloaded on a link reset")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+---
+ drivers/misc/ocxl/config.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-To aid this particular case, the following will select
-FB_CFB_FILLRECT=3Dy.
+diff --git a/drivers/misc/ocxl/config.c b/drivers/misc/ocxl/config.c
+index e401a51596b9..4da5a2b8514c 100644
+--- a/drivers/misc/ocxl/config.c
++++ b/drivers/misc/ocxl/config.c
+@@ -196,16 +196,21 @@ static int read_dvsec_vendor(struct pci_dev *dev)
+ static int get_dvsec_vendor0(struct pci_dev *dev, struct pci_dev **dev0,
+ 			     int *out_pos)
+ {
++	bool need_put;
+ 	int pos;
+ 
+ 	if (PCI_FUNC(dev->devfn) != 0) {
+ 		dev = get_function_0(dev);
+ 		if (!dev)
+ 			return -1;
++		need_put = true;
+ 	}
+ 	pos = find_dvsec(dev, OCXL_DVSEC_VENDOR_ID);
+-	if (!pos)
++	if (!pos) {
++		if (need_put)
++			pci_dev_put(dev);
+ 		return -1;
++	}
+ 	*dev0 = dev;
+ 	*out_pos = pos;
+ 	return 0;
+@@ -222,6 +227,8 @@ int ocxl_config_get_reset_reload(struct pci_dev *dev, int *val)
+ 
+ 	pci_read_config_dword(dev0, pos + OCXL_DVSEC_VENDOR_RESET_RELOAD,
+ 			      &reset_reload);
++	if (PCI_FUNC(dev->devfn) != 0)
++		pci_dev_put(dev0);
+ 	*val = !!(reset_reload & BIT(0));
+ 	return 0;
+ }
+@@ -243,6 +250,8 @@ int ocxl_config_set_reset_reload(struct pci_dev *dev, int val)
+ 		reset_reload &= ~BIT(0);
+ 	pci_write_config_dword(dev0, pos + OCXL_DVSEC_VENDOR_RESET_RELOAD,
+ 			       reset_reload);
++	if (PCI_FUNC(dev->devfn) != 0)
++		pci_dev_put(dev0);
+ 	return 0;
+ }
+ 
+-- 
+2.25.1
 
-
-
-
-diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
-index 66f36b69e8f3..2bcf8627819f 100644
---- a/drivers/video/fbdev/Kconfig
-+++ b/drivers/video/fbdev/Kconfig
-@@ -458,7 +458,7 @@ config FB_ATARI
- config FB_OF
-        bool "Open Firmware frame buffer device support"
-        depends on (FB =3D y) && PPC && (!PPC_PSERIES || PCI)
--       depends on !DRM_OFDRM
-+       depends on DRM_OFDRM !=3D y
-        select APERTURE_HELPERS
-        select FB_CFB_FILLRECT
-        select FB_CFB_COPYAREA
-
-
-
-
-Or, perhaps "depends on DRM_OFDRM =3D n"
-I do not know the intention of this dependency.
-
-Recommendation is to use "depends on" instead of "select" though.
-
-
-
-BTW, this is similar to what you asked before.
-
-https://lore.kernel.org/linux-kbuild/e1a6228d-1341-6264-d97a-e2bd52a65c82@i=
-nfradead.org/
-
-
-I tried to fix it in the past, but the issue was not as shallow as I
-had expected.
-I did not get around to revisiting this topic.
-
-https://patchwork.kernel.org/project/linux-kbuild/patch/1543216969-2227-1-g=
-it-send-email-yamada.masahiro@socionext.com/
-
-
-
-
-
-
-
-
-
-
---
-Best Regards
-Masahiro Yamada
