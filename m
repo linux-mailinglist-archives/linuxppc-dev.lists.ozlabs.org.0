@@ -2,83 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 344766314A6
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Nov 2022 15:18:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E724B6314E6
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Nov 2022 16:31:27 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NFXgW3YxCz3dxq
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Nov 2022 01:18:31 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TwWnIFg9;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NFZHd4v5wz3f4r
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Nov 2022 02:31:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=sachinp@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TwWnIFg9;
-	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.160.53; helo=mail-oa1-f53.google.com; envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-oa1-f53.google.com (mail-oa1-f53.google.com [209.85.160.53])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NFXfW1yNDz2yph
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Nov 2022 01:17:38 +1100 (AEDT)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AKDKVFQ025901;
-	Sun, 20 Nov 2022 14:17:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : content-type :
- subject : message-id : date : cc : to : content-transfer-encoding :
- mime-version; s=pp1; bh=gnutQR7hOoWC6FKmPPevnGWiiamdM5j9qEgpT0D6cYs=;
- b=TwWnIFg9v4bt0suDDYJrKMtdtBehG9UB5hugGWhSzk/DnBL9NcGNceQ1XgSwZkHsAyC5
- j2WcOpF/xRHfcobDI34QXEISy89PxuCMEzsOWCaZH56uhPJDPRg917E0uT+RN6yGPEMl
- LzLfdIKlceikMEy7oWtAgc6K7AQEMp8jY+VS5eDRwYk8YCpo5tDo6wS7cUNirFBvI3mK
- fgg56JWHOYVJ6fbQBf6YrenYfW737z5u2P65zAji8+hYJBaF/OY6BuFPcy7lKYYdN7YA
- 4nMCrvcRicTnP+vHdPFEXbkuHJ3ct95Cyea9GsdpH1R1Zc94AdrANTYed8NpRXfQhb+O fg== 
-Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com [149.81.74.107])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3ky9a1jpxr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 20 Nov 2022 14:17:32 +0000
-Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
-	by ppma03fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2AKE8Bun010818;
-	Sun, 20 Nov 2022 14:17:30 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
-	by ppma03fra.de.ibm.com with ESMTP id 3kxps911d7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 20 Nov 2022 14:17:30 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
-	by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2AKEHSnn39453424
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 20 Nov 2022 14:17:28 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3B289AE045;
-	Sun, 20 Nov 2022 14:17:28 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3C803AE04D;
-	Sun, 20 Nov 2022 14:17:27 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.43.20.12])
-	by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Sun, 20 Nov 2022 14:17:27 +0000 (GMT)
-From: Sachin Sant <sachinp@linux.ibm.com>
-Content-Type: text/plain;
-	charset=us-ascii
-Subject: [6.1.0-rc5-next-20221118] Kernel crash (alloc_buddy_hugetlb_folio) -
- THP tests
-Message-Id: <EA3E3887-24D7-4EA6-9F24-37979FDF1ECD@linux.ibm.com>
-Date: Sun, 20 Nov 2022 19:47:16 +0530
-To: linux-mm@kvack.org, sidhartha.kumar@oracle.com
-X-Mailer: Apple Mail (2.3731.200.110.1.12)
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 6WAwQuzjI8reJ4MOCHGyEOwUkt70W3Nd
-X-Proofpoint-GUID: 6WAwQuzjI8reJ4MOCHGyEOwUkt70W3Nd
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NFZH229nHz3bnM
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Nov 2022 02:30:52 +1100 (AEDT)
+Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-141ca09c2fbso11215948fac.6
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Nov 2022 07:30:52 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JVXsWKmUu84AHlrYVgKd8m6jeh7lnHZqLNxGPaZlsRo=;
+        b=dbsRTPg6BjRws/WRJx7Pbp+vAuaDA/7fgNyPFT30756DWYI03K92EztpcHE5ihTvkD
+         IYV5db1Bb9v8xqtI/9ndP2LwU3q8/vfEoCMh6wl6WNZfdIUkhTjgywvovCghpKPMVL2W
+         IJzs5fJgpjMVQS4oa0mGOoH+WkD5IJvnFAQ5dYWWvdRBl9A1ei9WKfEUtCzI4wXNhUJh
+         xHL240o8rkDlwWP+xLp+ST+UVBwmG8PNGmrMUmEnx3nhBP5M890i1l4NhgnLScRje57y
+         7nTtWSzzd3JtWtOAhE+LH2cDJq6yBOFC2OktDf7d9dnnJ/InN/prUgqqNN3376BUmR9Q
+         ehlw==
+X-Gm-Message-State: ANoB5pmxshjCaJphgh9pcdw5n3XIHX2gN59C0YGhziOfc0aqsoUluOgu
+	DjIXJbfm7H/ZH1S4JIr/Og==
+X-Google-Smtp-Source: AA0mqf6VfeJvk+z6L9WRgBnkJFM21HtxaOk/a6KyEBk+TdNGXuE9m7pjso+JVkWxi/wjwZ8ESSgz9Q==
+X-Received: by 2002:a05:6870:ab06:b0:142:d9b9:c4ae with SMTP id gu6-20020a056870ab0600b00142d9b9c4aemr1120231oab.179.1668958249285;
+        Sun, 20 Nov 2022 07:30:49 -0800 (PST)
+Received: from robh_at_kernel.org ([2605:ef80:80f6:1a48:29f6:113d:266f:a78e])
+        by smtp.gmail.com with ESMTPSA id a18-20020a056870d61200b0012b298699dbsm4808953oaq.1.2022.11.20.07.30.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 20 Nov 2022 07:30:48 -0800 (PST)
+Received: (nullmailer pid 3092241 invoked by uid 1000);
+	Sun, 20 Nov 2022 15:30:49 -0000
+Date: Sun, 20 Nov 2022 09:30:49 -0600
+From: Rob Herring <robh@kernel.org>
+To: Ash Logan <ash@heyquark.com>
+Subject: Re: [PATCH v4 01/11] dt-bindings: wiiu: Document the Nintendo Wii U
+ devicetree
+Message-ID: <20221120153049.GA3081277-robh@kernel.org>
+References: <20220628133144.142185-1-ash@heyquark.com>
+ <20221119113041.284419-1-ash@heyquark.com>
+ <20221119113041.284419-2-ash@heyquark.com>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-11-20_09,2022-11-18_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- lowpriorityscore=0 phishscore=0 suspectscore=0 bulkscore=0 spamscore=0
- clxscore=1011 mlxscore=0 adultscore=0 malwarescore=0 priorityscore=1501
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2210170000 definitions=main-2211200120
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221119113041.284419-2-ash@heyquark.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,128 +65,453 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, open list <linux-kernel@vger.kernel.org>
+Cc: devicetree@vger.kernel.org, linkmauve@linkmauve.fr, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, joel@jms.id.au, paulus@samba.org, rw-r-r-0644@protonmail.com, krzysztof.kozlowski+dt@linaro.org, pali@kernel.org, j.ne@posteo.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-While running transparent hugepage defragmentation test [1]
-on Power10 server following crash was seen
+On Sat, Nov 19, 2022 at 10:30:31PM +1100, Ash Logan wrote:
+> Adds schema for the various Wii U devicetree nodes used.
+> 
+> Signed-off-by: Ash Logan <ash@heyquark.com>
+> ---
+> v3->v4: Rework to match expected style and conciceness.
+> 
+>  .../bindings/powerpc/nintendo/wiiu.yaml       | 25 +++++++++
+>  .../powerpc/nintendo/wiiu/espresso-pic.yaml   | 48 ++++++++++++++++
+>  .../bindings/powerpc/nintendo/wiiu/gpu7.yaml  | 42 ++++++++++++++
+>  .../powerpc/nintendo/wiiu/latte-ahci.yaml     | 50 +++++++++++++++++
+>  .../powerpc/nintendo/wiiu/latte-dsp.yaml      | 35 ++++++++++++
+>  .../powerpc/nintendo/wiiu/latte-pic.yaml      | 55 +++++++++++++++++++
+>  .../powerpc/nintendo/wiiu/latte-sdhci.yaml    | 46 ++++++++++++++++
+>  .../bindings/powerpc/nintendo/wiiu/latte.yaml | 31 +++++++++++
+>  .../devicetree/bindings/usb/generic-ehci.yaml |  1 +
+>  9 files changed, 333 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/powerpc/nintendo/wiiu.yaml
+>  create mode 100644 Documentation/devicetree/bindings/powerpc/nintendo/wiiu/espresso-pic.yaml
+>  create mode 100644 Documentation/devicetree/bindings/powerpc/nintendo/wiiu/gpu7.yaml
+>  create mode 100644 Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-ahci.yaml
+>  create mode 100644 Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-dsp.yaml
+>  create mode 100644 Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-pic.yaml
+>  create mode 100644 Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-sdhci.yaml
+>  create mode 100644 Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/powerpc/nintendo/wiiu.yaml b/Documentation/devicetree/bindings/powerpc/nintendo/wiiu.yaml
+> new file mode 100644
+> index 000000000000..23703b1052d0
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/powerpc/nintendo/wiiu.yaml
+> @@ -0,0 +1,25 @@
+> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/powerpc/nintendo/wiiu.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Nintendo Wii U bindings
 
-[11725.379229] Kernel attempted to read user page (8) - exploit attempt? (u=
-id: 0)
-[11725.379251] BUG: Kernel NULL pointer dereference on read at 0x00000008
-[11725.379257] Faulting instruction address: 0xc0000000004da04c
-[11725.379266] Oops: Kernel access of bad area, sig: 11 [#1]
-[11725.379269] LE PAGE_SIZE=3D64K MMU=3DRadix SMP NR_CPUS=3D2048 NUMA pSeri=
-es
-[11725.379275] Modules linked in: nvram(E) rpadlpar_io(E) rpaphp(E) uinput(=
-E) torture(E) vmac(E) poly1305_generic(E) chacha_generic(E) chacha20poly130=
-5(E) n_gsm(E) pps_ldisc(E) ppp_synctty(E) ppp_async(E) ppp_generic(E) serpo=
-rt(E) slcan(E) can_dev(E) slip(E) slhc(E) snd_hrtimer(E) snd_seq(E) snd_seq=
-_device(E) snd_timer(E) snd(E) soundcore(E) pcrypt(E) crypto_user(E) n_hdlc=
-(E) dummy(E) veth(E) nfsv3(E) nfs_acl(E) nfs(E) lockd(E) grace(E) fscache(E=
-) netfs(E) tun(E) brd(E) overlay(E) exfat(E) vfat(E) fat(E) btrfs(E) blake2=
-b_generic(E) xor(E) raid6_pq(E) zstd_compress(E) xfs(E) loop(E) sctp(E) ip6=
-_udp_tunnel(E) udp_tunnel(E) dm_mod(E) nft_fib_inet(E) nft_fib_ipv4(E) nft_=
-fib_ipv6(E) nft_fib(E) nft_reject_inet(E) nf_reject_ipv4(E) nf_reject_ipv6(=
-E) nft_reject(E) nft_ct(E) nft_chain_nat(E) nf_nat(E) nf_conntrack(E) nf_de=
-frag_ipv6(E) nf_defrag_ipv4(E) bonding(E) rfkill(E) tls(E) ip_set(E) nf_tab=
-les(E) libcrc32c(E) nfnetlink(E) sunrpc(E) pseries_rng(E) vmx_crypto(E) ext=
-4(E) mbcache(E) jbd2(E)
-[11725.379333] sd_mod(E) t10_pi(E) crc64_rocksoft(E) crc64(E) sg(E) ibmvscs=
-i(E) scsi_transport_srp(E) ibmveth(E) fuse(E) [last unloaded: ipistorm(OE)]
-[11725.379371] CPU: 1 PID: 2273459 Comm: sysctl Tainted: G OE 6.1.0-rc5-nex=
-t-20221118 #1
-[11725.379376] Hardware name: IBM,9080-HEX POWER10 (raw) 0x800200 0xf000006=
- of:IBM,FW1030.00 (NH1030_026) hv:phyp pSeries
-[11725.379381] NIP: c0000000004da04c LR: c0000000004d9f94 CTR: 000000000000=
-0000
-[11725.379385] REGS: c00000000872b740 TRAP: 0300 Tainted: G OE (6.1.0-rc5-n=
-ext-20221118)
-[11725.379390] MSR: 800000000280b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE> CR: =
-24048224 XER: 00000001
-[11725.379402] CFAR: c0000000004d9fa0 DAR: 0000000000000008 DSISR: 40000000=
- IRQMASK: 0=20
-[11725.379402] GPR00: c0000000004d9f94 c00000000872b9e0 c0000000013bee00 00=
-00000000000000=20
-[11725.379402] GPR04: c000000002ac8ac0 c000000001218470 0000000000000005 c0=
-00000471d7e280=20
-[11725.379402] GPR08: 0000000000000000 0000000000000000 0000000000000002 00=
-00000000000000=20
-[11725.379402] GPR12: 0000000024048242 c000000efffff300 0000000000000000 00=
-00000000000000=20
-[11725.379402] GPR16: 0000000000000000 0000000000000000 0000000000000000 c0=
-0000000872bb18=20
-[11725.379402] GPR20: 0000000000000001 0000000000000100 0000000000300cca 00=
-00000000000001=20
-[11725.379402] GPR24: c00000000872bb18 c000000002ac8ac0 0000000000000002 00=
-00000000000000=20
-[11725.379402] GPR28: 0000000000000001 0000000000000005 0000000000000001 00=
-00000000346cca=20
-[11725.379455] NIP [c0000000004da04c] alloc_buddy_hugetlb_folio+0x17c/0x250
-[11725.379464] LR [c0000000004d9f94] alloc_buddy_hugetlb_folio+0xc4/0x250
-[11725.379469] Call Trace:
-[11725.379471] [c00000000872b9e0] [c0000000004dc004] alloc_fresh_hugetlb_fo=
-lio.part.78+0x224/0x2f0 (unreliable)
-[11725.379478] [c00000000872ba70] [c0000000004dfa38] alloc_pool_huge_page+0=
-x118/0x190
-[11725.379484] [c00000000872bac0] [c0000000004dff8c] __nr_hugepages_store_c=
-ommon+0x4dc/0x610
-[11725.379490] [c00000000872bba0] [c0000000004e036c] hugetlb_sysctl_handler=
-_common+0x13c/0x180
-[11725.379496] [c00000000872bc40] [c0000000006413b0] proc_sys_call_handler+=
-0x210/0x350
-[11725.379503] [c00000000872bcc0] [c00000000055da10] vfs_write+0x2e0/0x460
-[11725.379508] [c00000000872bd80] [c00000000055dd6c] ksys_write+0x7c/0x140
-[11725.379513] [c00000000872bdd0] [c000000000035220] system_call_exception+=
-0x140/0x350
-[11725.379519] [c00000000872be10] [c00000000000c6d4] system_call_common+0xf=
-4/0x278
-[11725.379525] --- interrupt: c00 at 0x7fff7fb20c34
-[11725.379530] NIP: 00007fff7fb20c34 LR: 0000000134d554bc CTR: 000000000000=
-0000
-[11725.379533] REGS: c00000000872be80 TRAP: 0c00 Tainted: G OE (6.1.0-rc5-n=
-ext-20221118)
-[11725.379538] MSR: 800000000280f033 <SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE> C=
-R: 28002202 XER: 00000000
-[11725.379548] IRQMASK: 0=20
-[11725.379548] GPR00: 0000000000000004 00007fffedd64fc0 00007fff7fc07300 00=
-00000000000003=20
-[11725.379548] GPR04: 000000014eac37f0 0000000000000006 fffffffffffffff6 00=
-00000000000000=20
-[11725.379548] GPR08: 000000014eac37f0 0000000000000000 0000000000000000 00=
-00000000000000=20
-[11725.379548] GPR12: 0000000000000000 00007fff80000940 0000000000000000 00=
-00000000000000=20
-[11725.379548] GPR16: 0000000000000000 0000000000000000 0000000000000000 00=
-00000000000000=20
-[11725.379548] GPR20: 0000000000000000 0000000000000000 0000000000000000 00=
-00000000000000=20
-[11725.379548] GPR24: 0000000000000001 0000000000000010 0000000000000006 00=
-0000014eac5800=20
-[11725.379548] GPR28: 00007fff7fbfc2c8 000000014eac5800 0000000000000006 00=
-0000014eac0fc0=20
-[11725.379589] NIP [00007fff7fb20c34] 0x7fff7fb20c34
-[11725.379593] LR [0000000134d554bc] 0x134d554bc
-[11725.379596] --- interrupt: c00
-[11725.379598] Instruction dump:
-[11725.379601] 39400001 55283032 7d291ef4 7fc8f050 7f184a14 7d49f036 7d40c0=
-a8 7d4a4b78=20
-[11725.379609] 7d40c1ad 40c2fff4 39200000 382100b0 <e9490008> e8010010 8181=
-0008 eae1ffb8=20
-[11725.379616] ---[ end trace 0000000000000000 ]---
-[11725.380328]=20
-[11726.380333] Kernel panic - not syncing: Fatal exception
-[11726.392564] Rebooting in 10 seconds..
+Everything is a binding, so drop 'bindings'. 
 
-Git bisect points to following patch
-commit 7a410b1d773853d1d6ec522a871869541fe48c22 (refs/bisect/bad)
-Date:   Thu Nov 17 13:15:01 2022 -0800
-    mm/hugetlb: change hugetlb allocation functions to return a folio
+> +
+> +maintainers:
+> +  - Ash Logan <ash@heyquark.com>
+> +  - Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
+> +
+> +description: |
 
-Reverting this patch allows the test to run to completion.
+Don't need '|' if no formatting.
 
-- Sachin
+> +  Nintendo Wii U video game console binding.
+> +
+> +properties:
+> +  $nodename:
+> +    const: "/"
+> +
+> +  compatible:
+> +    const: nintendo,wiiu
+> +
+> +additionalProperties: true
+> +
+> +...
+> diff --git a/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/espresso-pic.yaml b/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/espresso-pic.yaml
+> new file mode 100644
+> index 000000000000..476a8ccda7a1
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/espresso-pic.yaml
+> @@ -0,0 +1,48 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/powerpc/nintendo/wiiu/espresso-pic.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Nintendo Wii U "Espresso" interrupt controller
+> +
+> +maintainers:
+> +  - Ash Logan <ash@heyquark.com>
+> +  - Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
+> +
+> +description: |
+> +  Interrupt controller found on the Nintendo Wii U for the "Espresso" processor.
+> +
+> +allOf:
+> +  - $ref: "/schemas/interrupt-controller.yaml#"
 
-[1]  https://github.com/avocado-framework-tests/avocado-misc-tests/blob/mas=
-ter/memory/transparent_hugepages_defrag.py=
+Drop quotes.
+
+> +
+> +properties:
+> +  compatible:
+> +    const: nintendo,espresso-pic
+> +
+> +  '#interrupt-cells':
+> +    # Interrupt numbers 0-32 in one cell
+> +    const: 1
+> +
+> +  interrupt-controller: true
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +required:
+> +  - compatible
+> +  - '#interrupt-cells'
+> +  - interrupt-controller
+> +  - reg
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    interrupt-controller@c000078 {
+> +        compatible = "nintendo,espresso-pic";
+> +        reg = <0x0c000078 0x18>;
+> +        #interrupt-cells = <1>;
+> +        interrupt-controller;
+> +    };
+> +...
+> diff --git a/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/gpu7.yaml b/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/gpu7.yaml
+> new file mode 100644
+> index 000000000000..d44ebe0d866c
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/gpu7.yaml
+> @@ -0,0 +1,42 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/powerpc/nintendo/wiiu/gpu7.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Nintendo Wii U Latte "GPU7" graphics processor
+> +
+> +maintainers:
+> +  - Ash Logan <ash@heyquark.com>
+> +  - Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
+> +
+> +description: |
+> +  GPU7 graphics processor, also known as "GX2", found in the Latte multifunction chip of the
+
+Wrap lines at 80 unless some advantage to 100.
+
+> +  Nintendo Wii U.
+> +
+> +properties:
+> +  compatible:
+> +    const: nintendo,latte-gpu7
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    gpu@c200000 {
+> +        compatible = "nintendo,latte-gpu7";
+> +        reg = <0x0c200000 0x80000>;
+> +        interrupts = <2>;
+> +        interrupt-parent = <&espresso_pic>;
+> +    };
+> +...
+> diff --git a/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-ahci.yaml b/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-ahci.yaml
+> new file mode 100644
+> index 000000000000..a53971a11e89
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-ahci.yaml
+> @@ -0,0 +1,50 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/powerpc/nintendo/wiiu/latte-ahci.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Nintendo Wii U Latte AHCI controller
+> +
+> +maintainers:
+> +  - Ash Logan <ash@heyquark.com>
+> +  - Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
+> +
+> +description: |
+> +  Nintendo Wii U AHCI SATA controller, as found in the Latte chip.
+> +
+> +allOf:
+> +  - $ref: "/schemas/ata/ahci-common.yaml#"
+> +
+> +properties:
+> +  compatible:
+> +    const: nintendo,latte-ahci
+> +
+> +  reg:
+> +    items:
+> +      - description: |
+> +          HBA memory registers. Note that unlike the spec, space for only 6 ports exist, with 2 vendor
+> +          registers afterwards, thus register space should be 0x408 long (0x100+0x80*6+0x8).
+> +
+> +  interrupts:
+> +    items:
+> +      - description: Main HBA interrupt
+> +      - description: Vendor debugging interrupt
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    sata@d160400 {
+> +        compatible = "nintendo,latte-ahci";
+> +        reg = <0x0d160400 0x408>;
+> +
+> +        interrupt-parent = <&latte_pic>;
+> +        interrupts = <38>, <28>;
+> +    };
+> +...
+> diff --git a/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-dsp.yaml b/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-dsp.yaml
+> new file mode 100644
+> index 000000000000..772afe0c298c
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-dsp.yaml
+> @@ -0,0 +1,35 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/powerpc/nintendo/wiiu/latte-dsp.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Nintendo Wii U Latte DSP
+> +
+> +maintainers:
+> +  - Ash Logan <ash@heyquark.com>
+> +  - Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
+> +
+> +description: |
+> +  Nintendo Wii U digital signal processor, as found in the Latte chip.
+> +
+> +properties:
+> +  compatible:
+> +    const: nintendo,latte-dsp
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    dsp@c005000 {
+> +        compatible = "nintendo,latte-dsp";
+> +        reg = <0x0c005000 0x200>;
+> +    };
+> +...
+> diff --git a/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-pic.yaml b/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-pic.yaml
+> new file mode 100644
+> index 000000000000..4b71d6b9b14d
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-pic.yaml
+> @@ -0,0 +1,55 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/powerpc/nintendo/wiiu/latte-pic.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Nintendo Wii U Latte interrupt controller
+> +
+> +maintainers:
+> +  - Ash Logan <ash@heyquark.com>
+> +  - Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
+> +
+> +description: |
+> +  Interrupt controller found on the Nintendo Wii U for the "Latte" devices.
+> +
+> +allOf:
+> +  - $ref: "/schemas/interrupt-controller.yaml#"
+> +
+> +properties:
+> +  compatible:
+> +    const: nintendo,latte-pic
+> +
+> +  '#interrupt-cells':
+> +    # Interrupt numbers 0-64 in one cell.
+> +    const: 1
+> +
+> +  interrupt-controller: true
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    items:
+> +      - description: Cascade interrupt for Espresso PIC
+> +
+> +required:
+> +  - compatible
+> +  - '#interrupt-cells'
+> +  - interrupt-controller
+> +  - reg
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    interrupt-controller@d800440 {
+> +        compatible = "nintendo,latte-pic";
+> +        #interrupt-cells = <1>;
+> +        interrupt-controller;
+> +        reg = <0x0d800440 0x30>;
+> +
+> +        interrupt-parent = <&espresso_pic>;
+> +        interrupts = <24>;
+> +    };
+> +...
+> diff --git a/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-sdhci.yaml b/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-sdhci.yaml
+> new file mode 100644
+> index 000000000000..25d474fca679
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-sdhci.yaml
+> @@ -0,0 +1,46 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/powerpc/nintendo/wiiu/latte-sdhci.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Nintendo Wii U Latte SD Host controller
+> +
+> +maintainers:
+> +  - Ash Logan <ash@heyquark.com>
+> +  - Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
+> +
+> +description: |
+> +  SDHCI hosts found on the Nintendo Wii U's Latte SoC for SD cards and SDIO devices.
+> +
+> +allOf:
+> +  - $ref: "/schemas/mmc/mmc-controller.yaml#"
+> +
+> +properties:
+> +  compatible:
+> +    items:
+> +      - const: nintendo,latte-sdhci
+> +      - const: sdhci
+
+Just 'sdhci' is not too useful. *All* SDHCI controllers have quirks.
+
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    mmc@d070000 {
+> +        compatible = "nintendo,latte-sdhci", "sdhci";
+> +        reg = <0x0d070000 0x200>;
+> +        interrupts = <7>;
+> +        interrupt-parent = <&latte_pic>;
+> +    };
+> +...
+> diff --git a/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte.yaml b/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte.yaml
+> new file mode 100644
+> index 000000000000..6fdf93622fcc
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte.yaml
+> @@ -0,0 +1,31 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/powerpc/nintendo/wiiu/latte.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Latte system bus
+> +
+> +maintainers:
+> +  - Ash Logan <ash@heyquark.com>
+> +  - Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
+> +
+> +description: |
+> +  Latte multi-function SoC, containing many of the devices found on the Nintendo Wii U.
+> +
+> +allOf:
+> +  - $ref: "/schemas/simple-bus.yaml#"
+> +
+> +properties:
+> +  compatible:
+> +    items:
+> +      - const: nintendo,latte
+> +      - const: simple-bus
+
+If truly 'simple', then you don't need 'nintendo,latte'.
+
+Otherwise, you need a custom 'select' schema to not select all cases of 
+'simple-bus'.
+
+> +
+> +
+
+one blank line
+
+> +required:
+> +  - compatible
+> +
+> +additionalProperties: true
+> +
+> +...
+> diff --git a/Documentation/devicetree/bindings/usb/generic-ehci.yaml b/Documentation/devicetree/bindings/usb/generic-ehci.yaml
+> index c5f629c5bc61..9f69b5ab21ff 100644
+> --- a/Documentation/devicetree/bindings/usb/generic-ehci.yaml
+> +++ b/Documentation/devicetree/bindings/usb/generic-ehci.yaml
+> @@ -69,6 +69,7 @@ properties:
+>                - ibm,usb-ehci-440epx
+>                - ibm,usb-ehci-460ex
+>                - nintendo,hollywood-usb-ehci
+> +              - nintendo,latte-ehci
+>                - st,spear600-ehci
+>            - const: usb-ehci
+>        - enum:
+> -- 
+> 2.38.1
+> 
+> 
