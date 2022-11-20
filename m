@@ -2,58 +2,103 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A971F6316FB
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Nov 2022 23:53:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EDCA63174E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Nov 2022 00:27:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NFm693lR9z3cMt
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Nov 2022 09:53:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NFmrg43krz3f4K
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Nov 2022 10:27:15 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=eTDOl2wC;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=iwPEPv+d;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=collabora.com (client-ip=2a00:1098:0:82:1000:25:2eeb:e5ab; helo=madras.collabora.co.uk; envelope-from=sebastian.reichel@collabora.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=eTDOl2wC;
-	dkim-atps=neutral
-X-Greylist: delayed 528 seconds by postgrey-1.36 at boromir; Mon, 21 Nov 2022 06:52:46 AEDT
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NFh5B1RVgz2yRS
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Nov 2022 06:52:46 +1100 (AEDT)
-Received: from mercury (unknown [185.209.196.162])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NFmpg2lP2z3bjv
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Nov 2022 10:25:31 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=iwPEPv+d;
+	dkim-atps=neutral
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	by gandalf.ozlabs.org (Postfix) with ESMTP id 4NFmpg2L5xz4xN5
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Nov 2022 10:25:31 +1100 (AEDT)
+Received: by gandalf.ozlabs.org (Postfix)
+	id 4NFmpg2Hf5z4xN6; Mon, 21 Nov 2022 10:25:31 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: gandalf.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=iwPEPv+d;
+	dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	(Authenticated sender: sre)
-	by madras.collabora.co.uk (Postfix) with ESMTPSA id 981D16602381;
-	Sun, 20 Nov 2022 19:43:45 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1668973425;
-	bh=T3nU7r4TDRBfUE21qBPtx6/vbbqNd5aTZrUhEKVEpe8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eTDOl2wCVRsu/tyZH+YPJZtqzX+lTk+zyDWIOt7B5OERtVQXV05JqgkECzvZaxhvq
-	 GWHynwzbAdTGjQc4EiizPb4JzuNJErOOA6MGMcIE1OOBJsR2nJxdyKqik4rZXW8I8S
-	 YL9hLYJH9B0qYNlv0ofE25pkedfO3Zr0ukRr6nTWoiYIF0ElBn0uG1ehB/KKpnJkB6
-	 LmHZCe95IKsjPugXIHsbUyR3TPbe/Uz/FTgEe5YV5fHfIiRZ+dwYB8lU4/MgAmu4vM
-	 BZjO4bgM9A0wAKu6Ub+wy7zE/lgrgtzyeA/1iFwakjmg/vd8UL0auYvToqpQCZqsxv
-	 +Bmg67/Ow+Rwg==
-Received: by mercury (Postfix, from userid 1000)
-	id 1C1D2106F223; Sun, 20 Nov 2022 20:43:43 +0100 (CET)
-Date: Sun, 20 Nov 2022 20:43:43 +0100
-From: Sebastian Reichel <sebastian.reichel@collabora.com>
-To: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>
-Subject: Re: [PATCH 000/606] i2c: Complete conversion to i2c_probe_new
-Message-ID: <20221120194343.nnpzhgjapep7iwqk@mercury.elektranox.org>
-References: <20221118224540.619276-1-uwe@kleine-koenig.org>
+	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4NFmpf6CCtz4xN5
+	for <linuxppc-dev@ozlabs.org>; Mon, 21 Nov 2022 10:25:30 +1100 (AEDT)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AKIm0oq004928;
+	Sun, 20 Nov 2022 23:25:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=OeykIeKsiEdhFXOlNQDo29+n6oblNzJKBTP6z+Z658c=;
+ b=iwPEPv+dB06ajxzc98bY3FCfynLiTKdLfEpgeYPb/k7IIMJgVIqiHuCyoizDIIf5lILz
+ GVtjcDXnStbLo2T108itpmBLvRPBqTMj1C1gqn7xQ5YrMFHw+Ti5hui4AErfiT1Knclr
+ vox84iEyRFsTPC+npAAbGhxVh/k5ZdlJd2LfIV7V7wQGEgp7DNp1MjSmpXWQQIcI0IXe
+ 8Y0NqpMWAwOsMEFvfwS2jGnhJMp/JAVVpOml/sIFwWsnA5WvdRxS8MCCxSM8rCOGipgg
+ Qg13nX5ENtdiNkWX5UOSUQ5O7UgAxIOT6aGmOUfzLzWCs5bXQE8X+4gLrhcQ9eqcvUrT fw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3ky9311rkg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 20 Nov 2022 23:25:17 +0000
+Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2AKNPGur001378;
+	Sun, 20 Nov 2022 23:25:16 GMT
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3ky9311rk4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 20 Nov 2022 23:25:16 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+	by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2AKNKUxU026988;
+	Sun, 20 Nov 2022 23:25:14 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+	by ppma03ams.nl.ibm.com with ESMTP id 3kxps8st0e-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 20 Nov 2022 23:25:14 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
+	by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2AKNPCcr32834234
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sun, 20 Nov 2022 23:25:12 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 27A9EAE051;
+	Sun, 20 Nov 2022 23:25:12 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F218BAE04D;
+	Sun, 20 Nov 2022 23:25:09 +0000 (GMT)
+Received: from sjain014.ibmuc.com (unknown [9.43.9.248])
+	by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Sun, 20 Nov 2022 23:25:09 +0000 (GMT)
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+To: linuxppc-dev@ozlabs.org, mpe@ellerman.id.au
+Subject: [PATCH v5 0/6] In kernel handling of CPU hotplug events for crash kernel
+Date: Mon, 21 Nov 2022 04:55:02 +0530
+Message-Id: <20221120232508.327554-1-sourabhjain@linux.ibm.com>
+X-Mailer: git-send-email 2.38.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: afmmt3s4TbSyp-nR9D7-_xIlou-d1zDg
+X-Proofpoint-ORIG-GUID: BRTKl8kN5t-8rGc7ug6CgvqRjLmnOVae
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="wvm2z6appxwdd5fa"
-Content-Disposition: inline
-In-Reply-To: <20221118224540.619276-1-uwe@kleine-koenig.org>
-X-Mailman-Approved-At: Mon, 21 Nov 2022 09:53:06 +1100
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-11-20_13,2022-11-18_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxscore=0
+ impostorscore=0 mlxlogscore=999 lowpriorityscore=0 malwarescore=0
+ adultscore=0 clxscore=1011 bulkscore=0 suspectscore=0 priorityscore=1501
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2210170000 definitions=main-2211200194
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,103 +110,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, linux-staging@lists.linux.dev, linux-pwm@vger.kernel.org, linux-iio@vger.kernel.org, linux-fbdev@vger.kernel.org, platform-driver-x86@vger.kernel.org, linux-mtd@lists.infradead.org, linux-i2c@vger.kernel.org, Lee Jones <lee.jones@linaro.org>, linux-stm32@st-md-mailman.stormreply.com, linux-leds@vger.kernel.org, linux-rtc@vger.kernel.org, linux-renesas-soc@vger.kernel.org, linux-samsung-soc@vger.kernel.org, linux-pm@vger.kernel.org, Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, linux-serial@vger.kernel.org, linux-input@vger.kernel.org, Grant Likely <grant.likely@linaro.org>, linux-media@vger.kernel.org, devicetree@vger.kernel.org, linux-watchdog@vger.kernel.org, chrome-platform@lists.linux.dev, linux-actions@lists.infradead.org, linux-gpio@vger.kernel.org, Angel Iglesias <ang.iglesiasg@gmail.com>, linux-rpi-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org, openipmi-developer@lists.sourceforge.net, linux-omap
- @vger.kernel.org, linux-arm-kernel@lists.infradead.org, Purism Kernel Team <kernel@puri.sm>, patches@opensource.cirrus.com, linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org, Wolfram Sang <wsa@kernel.org>, linux-crypto@vger.kernel.org, kernel@pengutronix.de, netdev@vger.kernel.org, linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: mahesh@linux.vnet.ibm.com, eric.devolder@oracle.com, kexec@lists.infradead.org, bhe@redhat.com, hbathini@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+This patch series implements the crash hotplug handler on PowerPC introduced
+by https://lkml.org/lkml/2022/10/31/854 patch series.
 
---wvm2z6appxwdd5fa
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-Hi,
+The Problem:
+============
+Post hotplug/DLPAR events the capture kernel holds stale information about the
+system. Dump collection with stale capture kernel might end up in dump capture
+failure or an inaccurate dump collection.
 
-On Fri, Nov 18, 2022 at 11:35:34PM +0100, Uwe Kleine-K=F6nig wrote:
-> Hello,
->=20
-> since commit b8a1a4cd5a98 ("i2c: Provide a temporary .probe_new()
-> call-back type") from 2016 there is a "temporary" alternative probe
-> callback for i2c drivers.
->=20
-> This series completes all drivers to this new callback (unless I missed
-> something). It's based on current next/master.
-> A part of the patches depend on commit 662233731d66 ("i2c: core:
-> Introduce i2c_client_get_device_id helper function"), there is a branch t=
-hat
-> you can pull into your tree to get it:
->=20
-> 	https://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux.git i2c/client=
-_device_id_helper-immutable
->=20
-> I don't think it's feasable to apply this series in one go, so I ask the
-> maintainers of the changed files to apply via their tree. I guess it
-> will take a few kernel release iterations until all patch are in, but I
-> think a single tree creates too much conflicts.
->=20
-> The last patch changes i2c_driver::probe, all non-converted drivers will
-> fail to compile then. So I hope the build bots will tell me about any
-> driver I missed to convert. This patch is obviously not for application
-> now.
->=20
-> I dropped most individuals from the recipents of this mail to not
-> challenge the mail servers and mailing list filters too much. Sorry if
-> you had extra efforts to find this mail.
->=20
-> Best regards
-> Uwe
 
-=2E..
+Existing solution:
+==================
+The existing solution to keep the capture kernel up-to-date by monitoring
+hotplug event via udev rule and trigger a full capture kernel reload for
+every hotplug event.
 
->   power: supply: adp5061: Convert to i2c's .probe_new()
->   power: supply: bq2415x: Convert to i2c's .probe_new()
->   power: supply: bq24190: Convert to i2c's .probe_new()
->   power: supply: bq24257: Convert to i2c's .probe_new()
->   power: supply: bq24735: Convert to i2c's .probe_new()
->   power: supply: bq2515x: Convert to i2c's .probe_new()
->   power: supply: bq256xx: Convert to i2c's .probe_new()
->   power: supply: bq25890: Convert to i2c's .probe_new()
->   power: supply: bq25980: Convert to i2c's .probe_new()
->   power: supply: bq27xxx: Convert to i2c's .probe_new()
->   power: supply: ds2782: Convert to i2c's .probe_new()
->   power: supply: lp8727: Convert to i2c's .probe_new()
->   power: supply: ltc2941: Convert to i2c's .probe_new()
->   power: supply: ltc4162-l: Convert to i2c's .probe_new()
->   power: supply: max14656: Convert to i2c's .probe_new()
->   power: supply: max17040: Convert to i2c's .probe_new()
->   power: supply: max17042_battery: Convert to i2c's .probe_new()
->   power: supply: rt5033_battery: Convert to i2c's .probe_new()
->   power: supply: rt9455: Convert to i2c's .probe_new()
->   power: supply: sbs: Convert to i2c's .probe_new()
->   power: supply: sbs-manager: Convert to i2c's .probe_new()
->   power: supply: smb347: Convert to i2c's .probe_new()
->   power: supply: ucs1002: Convert to i2c's .probe_new()
->   power: supply: z2_battery: Convert to i2c's .probe_new()
->   [...]
+Shortcomings:
+------------------------------------------------
+- Leaves a window where kernel crash might not lead to a successful dump
+  collection.
+- Reloading all kexec components for each hotplug is inefficient.
+- udev rules are prone to races if hotplug events are frequent.
 
-Thanks, I queued patches 513-536 to the power-supply subsystem.
+More about issues with an existing solution is posted here:
+ - https://lkml.org/lkml/2020/12/14/532
+ - https://lists.ozlabs.org/pipermail/linuxppc-dev/2022-February/240254.html
 
--- Sebastian
+Proposed Solution:
+==================
+Instead of reloading all kexec segments on hotplug event, this patch series
+focuses on updating only the relevant kexec segment. Once the kexec segments
+are loaded in the kernel reserved area then an arch-specific hotplug handler
+will update the relevant kexec segment based on hotplug event type.
 
---wvm2z6appxwdd5fa
-Content-Type: application/pgp-signature; name="signature.asc"
+---
+Changelog:
 
------BEGIN PGP SIGNATURE-----
+v5 -> v6
+  - Added crash memory hotplug support
 
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmN6g2YACgkQ2O7X88g7
-+pocPA/+MG7rp45xJuAH0zlIFTM8ovBviXnLvra0hpvK+vMB8SVdh4K8vRCAoeoT
-lxML9oRVfhraHzo/3X6+7V87cw+QzEx3GZbYsIasGqic46MoFYkbA2i3Q8s8hS5y
-qpAcKn/efXJaBtdIxWQnOc0xU0YCiteiIik8Idb9MjHFupUspLxtIjCzTAmvKQ0k
-hJ5u5cqv3d/MP6VpsOCUYPDet9nS9ByPeg8Kr9Ux1a0WEldPYUO+dU0ObqRdhliZ
-agftaEtCvFYkfO9k8ubBL/x00gTn002xOB7gp+5s0V0D3wKfT5EPVYOoUZbeYMIu
-QOZaLHkNkBtV85kGm18h7IFdQZQY9ahcaGTYZplyz/YzHlK/AlfjA2umKS1+rs5m
-A+DDqnAkuWw9fLg0MJ4dLSPwOSPX3VfgmVS3By3Do2gotQkCqXsRdhrG1cIoE1aL
-AZYpSwLTn2rAYF59poL3rgSqx/MhgrLwmKQOH3fjwZ3R7PIAWFhYP1We2UtKdCEM
-Gjpr7QfAUiOuXDKi5OrBbWr4m2eX26A4uifwR62OyldwH8pUWAq3umgkw3rotQAA
-hdwOOPM+cHTyLbtP8kaP1XSR6u0ybuTbw8OQE/XPDNVceoMqR4XxUSYbs0Q0UzY6
-fwljGfbakuGbaNlb7s2LBsy0ESZuiz64Za/0gfJhI5rP1eNRR1U=
-=Dh+o
------END PGP SIGNATURE-----
+v4 -> v5:
+  - Replace COFNIG_CRASH_HOTPLUG with CONFIG_HOTPLUG_CPU.
+  - Move fdt segment identification for kexec_load case to load path
+    instead of crash hotplug handler
+  - Keep new attribute defined under kimage_arch to track FDT segment
+    under CONFIG_HOTPLUG_CPU config.
 
---wvm2z6appxwdd5fa--
+v3 -> v4:
+  - Update the logic to find the additional space needed for hotadd CPUs post
+    kexec load. Refer "[RFC v4 PATCH 4/5] powerpc/crash hp: add crash hotplug
+    support for kexec_file_load" patch to know more about the change.
+  - Fix a couple of typo.
+  - Replace pr_err to pr_info_once to warn user about memory hotplug
+    support.
+  - In crash hotplug handle exit the for loop if FDT segment is found.
+
+v2 -> v3
+  - Move fdt_index and fdt_index_vaild variables to kimage_arch struct.
+  - Rebase patche on top of https://lkml.org/lkml/2022/3/3/674 [v5]
+  - Fixed warning reported by checpatch script
+
+v1 -> v2:
+  - Use generic hotplug handler introduced by https://lkml.org/lkml/2022/2/9/1406, a
+    significant change from v1.
+---
+
+Sourabh Jain (6):
+  powerpc/kexec: turn some static helper functions public
+  powerpc/crash: update kimage_arch struct
+  crash: add phdr for possible CPUs in elfcorehdr
+  powerpc/crash: add crash CPU hotplug support
+  crash: forward memory_notify args to arch crash hotplug handler
+  powerpc/kexec: add crash memory hotplug support
+
+ arch/powerpc/include/asm/kexec.h        |  19 ++
+ arch/powerpc/include/asm/kexec_ranges.h |   1 +
+ arch/powerpc/kexec/core_64.c            | 293 ++++++++++++++++++++++++
+ arch/powerpc/kexec/elf_64.c             |  72 +++++-
+ arch/powerpc/kexec/file_load_64.c       | 179 ++-------------
+ arch/powerpc/kexec/ranges.c             |  60 +++++
+ arch/x86/include/asm/kexec.h            |   2 +-
+ arch/x86/kernel/crash.c                 |   3 +-
+ include/linux/kexec.h                   |   3 +-
+ kernel/crash_core.c                     |  25 +-
+ 10 files changed, 477 insertions(+), 180 deletions(-)
+
+-- 
+2.38.1
+
