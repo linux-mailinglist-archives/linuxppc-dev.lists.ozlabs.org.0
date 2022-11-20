@@ -1,58 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFB6B63152A
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Nov 2022 17:24:45 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34E9863156F
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Nov 2022 18:19:50 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NFbT75Ynxz3dtw
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Nov 2022 03:24:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NFchh0mlJz3cMH
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Nov 2022 04:19:48 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=aIVe/EjL;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jpI/mKzl;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=aIVe/EjL;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jpI/mKzl;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NFbS911Vqz2yRV
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Nov 2022 03:23:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NFcgk5NTmz30F7
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Nov 2022 04:18:58 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 73C6B60BBA;
-	Sun, 20 Nov 2022 16:23:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90CF3C433D6;
-	Sun, 20 Nov 2022 16:23:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1668961427;
-	bh=VEJFrHA3qn6Rwg4Teu5pGnSV2TQDYMG+LACbP7i1H4U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aIVe/EjLxTjJRpEYUbRy4/jlY4n20uQ/Ks7yVzv7byfrCKj1SxALQR5AviL9TGWNM
-	 Qs7NhTH5XJ2DOcNN2yPVnkMXYA8Cem1IjKH1LO9B0FogH8mclb99sNBwl9YMjAiikX
-	 ZIjmCDCv4H78R91ZVIeWE4TauaBx9CA+FR0cv9jg=
-Date: Sun, 20 Nov 2022 17:13:11 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Nayna <nayna@linux.vnet.ibm.com>
-Subject: Re: [PATCH 2/4] fs: define a firmware security filesystem named
- fwsecurityfs
-Message-ID: <Y3pSF2MRIXd6aH14@kroah.com>
-References: <20221106210744.603240-1-nayna@linux.ibm.com>
- <20221106210744.603240-3-nayna@linux.ibm.com>
- <Y2uvUFQ9S2oaefSY@kroah.com>
- <8447a726-c45d-8ebb-2a74-a4d759631e64@linux.vnet.ibm.com>
- <Y2zLRw/TzV/sWgqO@kroah.com>
- <44191f02-7360-bca3-be8f-7809c1562e68@linux.vnet.ibm.com>
- <Y3anQukokMcQr+iE@kroah.com>
- <d615180d-6fe5-d977-da6a-e88fd8bf5345@linux.vnet.ibm.com>
+	by ams.source.kernel.org (Postfix) with ESMTPS id BC207B8092B
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Nov 2022 17:18:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 4D518C433C1
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Nov 2022 17:18:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1668964733;
+	bh=uoLVRyacUUZBRXMxv7WosWbFYR5+KdL5JUtPO6sHuJE=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=jpI/mKzlZTBRKbaiGfIj59K98rj7aY1jsMbIQOAob92VZ13ybreTUYwQL20VLC+m3
+	 JnPEVOGUjB76qXGZOaUZEqFnv6sGU3CfyUo9r90D1h//1IMD8uU6e11TyltEO6VbeN
+	 DFlsU5/Y+HQlYrtQ3ffDVxlgmhnoj00ee9iZhWf4VX9ZFkzMGuS92fxKZhLomm6UQL
+	 7uMURYozO1SDbRSO/hWJVD5GB/4PTe45cmaqwIkk2sUqhbCPaCNwrot01KqajWZ/Yg
+	 RCqFImTijzaFidFCn/em4EJCEO0erOV0kkZ33p55ei4dFNYLUMof0RdTUP1YaTqy6a
+	 pqdIWi0jTedvA==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
+	id 253A9C433E4; Sun, 20 Nov 2022 17:18:53 +0000 (UTC)
+From: bugzilla-daemon@kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 206203] kmemleak reports various leaks in drivers/of/unittest.c
+Date: Sun, 20 Nov 2022 17:18:52 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-64
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: erhard_f@mailbox.org
+X-Bugzilla-Status: REOPENED
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: bug_status resolution
+Message-ID: <bug-206203-206035-ZuygdhsOVn@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-206203-206035@https.bugzilla.kernel.org/>
+References: <bug-206203-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d615180d-6fe5-d977-da6a-e88fd8bf5345@linux.vnet.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,110 +78,176 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Matthew Garrett <mjg59@srcf.ucam.org>, linux-efi@vger.kernel.org, Andrew Donnellan <ajd@linux.ibm.com>, Nayna Jain <nayna@linux.ibm.com>, linux-kernel@vger.kernel.org, npiggin@gmail.com, Dov Murik <dovmurik@linux.ibm.com>, Dave Hansen <dave.hansen@intel.com>, linux-security-module <linux-security-module@vger.kernel.org>, Paul Mackerras <paulus@samba.org>, linux-fsdevel@vger.kernel.org, George Wilson <gcwilson@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Stefan Berger <stefanb@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Nov 19, 2022 at 01:20:09AM -0500, Nayna wrote:
-> 
-> On 11/17/22 16:27, Greg Kroah-Hartman wrote:
-> > On Mon, Nov 14, 2022 at 06:03:43PM -0500, Nayna wrote:
-> > > On 11/10/22 04:58, Greg Kroah-Hartman wrote:
-> > > > On Wed, Nov 09, 2022 at 03:10:37PM -0500, Nayna wrote:
-> > > > > On 11/9/22 08:46, Greg Kroah-Hartman wrote:
-> > > > > > On Sun, Nov 06, 2022 at 04:07:42PM -0500, Nayna Jain wrote:
-> > > > > > > securityfs is meant for Linux security subsystems to expose policies/logs
-> > > > > > > or any other information. However, there are various firmware security
-> > > > > > > features which expose their variables for user management via the kernel.
-> > > > > > > There is currently no single place to expose these variables. Different
-> > > > > > > platforms use sysfs/platform specific filesystem(efivarfs)/securityfs
-> > > > > > > interface as they find it appropriate. Thus, there is a gap in kernel
-> > > > > > > interfaces to expose variables for security features.
-> > > > > > > 
-> > > > > > > Define a firmware security filesystem (fwsecurityfs) to be used by
-> > > > > > > security features enabled by the firmware. These variables are platform
-> > > > > > > specific. This filesystem provides platforms a way to implement their
-> > > > > > >     own underlying semantics by defining own inode and file operations.
-> > > > > > > 
-> > > > > > > Similar to securityfs, the firmware security filesystem is recommended
-> > > > > > > to be exposed on a well known mount point /sys/firmware/security.
-> > > > > > > Platforms can define their own directory or file structure under this path.
-> > > > > > > 
-> > > > > > > Example:
-> > > > > > > 
-> > > > > > > # mount -t fwsecurityfs fwsecurityfs /sys/firmware/security
-> > > > > > Why not juset use securityfs in /sys/security/firmware/ instead?  Then
-> > > > > > you don't have to create a new filesystem and convince userspace to
-> > > > > > mount it in a specific location?
-> > > > >   From man 5 sysfs page:
-> > > > > 
-> > > > > /sys/firmware: This subdirectory contains interfaces for viewing and
-> > > > > manipulating firmware-specific objects and attributes.
-> > > > > 
-> > > > > /sys/kernel: This subdirectory contains various files and subdirectories
-> > > > > that provide information about the running kernel.
-> > > > > 
-> > > > > The security variables which are being exposed via fwsecurityfs are managed
-> > > > > by firmware, stored in firmware managed space and also often consumed by
-> > > > > firmware for enabling various security features.
-> > > > Ok, then just use the normal sysfs interface for /sys/firmware, why do
-> > > > you need a whole new filesystem type?
-> > > > 
-> > > > >   From git commit b67dbf9d4c1987c370fd18fdc4cf9d8aaea604c2, the purpose of
-> > > > > securityfs(/sys/kernel/security) is to provide a common place for all kernel
-> > > > > LSMs. The idea of
-> > > > > fwsecurityfs(/sys/firmware/security) is to similarly provide a common place
-> > > > > for all firmware security objects.
-> > > > > 
-> > > > > /sys/firmware already exists. The patch now defines a new /security
-> > > > > directory in it for firmware security features. Using /sys/kernel/security
-> > > > > would mean scattering firmware objects in multiple places and confusing the
-> > > > > purpose of /sys/kernel and /sys/firmware.
-> > > > sysfs is confusing already, no problem with making it more confusing :)
-> > > > 
-> > > > Just document where you add things and all should be fine.
-> > > > 
-> > > > > Even though fwsecurityfs code is based on securityfs, since the two
-> > > > > filesystems expose different types of objects and have different
-> > > > > requirements, there are distinctions:
-> > > > > 
-> > > > > 1. fwsecurityfs lets users create files in userspace, securityfs only allows
-> > > > > kernel subsystems to create files.
-> > > > Wait, why would a user ever create a file in this filesystem?  If you
-> > > > need that, why not use configfs?  That's what that is for, right?
-> > > The purpose of fwsecurityfs is not to expose configuration items but rather
-> > > security objects used for firmware security features. I think these are more
-> > > comparable to EFI variables, which are exposed via an EFI-specific
-> > > filesystem, efivarfs, rather than configfs.
-> > > 
-> > > > > 2. firmware and kernel objects may have different requirements. For example,
-> > > > > consideration of namespacing. As per my understanding, namespacing is
-> > > > > applied to kernel resources and not firmware resources. That's why it makes
-> > > > > sense to add support for namespacing in securityfs, but we concluded that
-> > > > > fwsecurityfs currently doesn't need it. Another but similar example of it
-> > > > > is: TPM space, which is exposed from hardware. For containers, the TPM would
-> > > > > be made as virtual/software TPM. Similarly for firmware space for
-> > > > > containers, it would have to be something virtualized/software version of
-> > > > > it.
-> > > > I do not understand, sorry.  What does namespaces have to do with this?
-> > > > sysfs can already handle namespaces just fine, why not use that?
-> > > Firmware objects are not namespaced. I mentioned it here as an example of
-> > > the difference between firmware and kernel objects. It is also in response
-> > > to the feedback from James Bottomley in RFC v2 [https://lore.kernel.org/linuxppc-dev/41ca51e8db9907d9060cc38adb59a66dcae4c59b.camel@HansenPartnership.com/].
-> > I do not understand, sorry.  Do you want to use a namespace for these or
-> > not?  The code does not seem to be using namespaces.  You can use sysfs
-> > with, or without, a namespace so I don't understand the issue here.
-> > 
-> > With your code, there is no namespace.
-> 
-> You are correct. There's no namespace for these.
+https://bugzilla.kernel.org/show_bug.cgi?id=3D206203
 
-So again, I do not understand.  Do you want to use filesystem
-namespaces, or do you not?
+Erhard F. (erhard_f@mailbox.org) changed:
 
-How again can you not use sysfs or securityfs due to namespaces?  What
-is missing?
+           What    |Removed                     |Added
+----------------------------------------------------------------------------
+             Status|RESOLVED                    |REOPENED
+         Resolution|OBSOLETE                    |---
 
-confused,
+--- Comment #22 from Erhard F. (erhard_f@mailbox.org) ---
+As the kmemleak output pretty much the same and as it's the same PowerMac G=
+4 DP
+I reopened this bug. Seems some OF changes meanwhile lead to memory leaks
+again.
 
-greg k-h
+This is 6.1-rc5:
+
+[...]
+    [<46e6ec0a>] __of_add_property_sysfs+0xb8/0x128
+    [<d8832181>] __of_attach_node_sysfs+0xc0/0x170
+    [<2592df33>] of_core_init+0xf8/0x23c
+    [<e5e36822>] driver_init+0x4c/0x80
+    [<9cac2ddd>] kernel_init_freeable+0x138/0x354
+    [<fcc01e1e>] kernel_init+0x28/0x154
+    [<0cec001f>] ret_from_kernel_thread+0x5c/0x64
+unreferenced object 0xc140b820 (size 16):
+  comm "swapper/0", pid 1, jiffies 4294877302 (age 1153.234s)
+  hex dump (first 16 bytes):
+    63 6f 6d 70 61 74 69 62 6c 65 00 6b 6b 6b 6b a5  compatible.kkkk.
+  backtrace:
+    [<92345f14>] kstrdup+0x44/0x9c
+    [<46e6ec0a>] __of_add_property_sysfs+0xb8/0x128
+    [<d8832181>] __of_attach_node_sysfs+0xc0/0x170
+    [<2592df33>] of_core_init+0xf8/0x23c
+    [<e5e36822>] driver_init+0x4c/0x80
+    [<9cac2ddd>] kernel_init_freeable+0x138/0x354
+    [<fcc01e1e>] kernel_init+0x28/0x154
+    [<0cec001f>] ret_from_kernel_thread+0x5c/0x64
+unreferenced object 0xc140b2b0 (size 16):
+  comm "swapper/0", pid 1, jiffies 4294877302 (age 1153.234s)
+  hex dump (first 16 bytes):
+    73 65 72 69 61 6c 2d 6e 75 6d 62 65 72 00 6b a5  serial-number.k.
+  backtrace:
+    [<92345f14>] kstrdup+0x44/0x9c
+    [<46e6ec0a>] __of_add_property_sysfs+0xb8/0x128
+    [<d8832181>] __of_attach_node_sysfs+0xc0/0x170
+    [<2592df33>] of_core_init+0xf8/0x23c
+    [<e5e36822>] driver_init+0x4c/0x80
+    [<9cac2ddd>] kernel_init_freeable+0x138/0x354
+    [<fcc01e1e>] kernel_init+0x28/0x154
+    [<0cec001f>] ret_from_kernel_thread+0x5c/0x64
+unreferenced object 0xc1470f20 (size 32):
+  comm "swapper/0", pid 1, jiffies 4294877302 (age 1153.234s)
+  hex dump (first 32 bytes):
+    63 75 73 74 6f 6d 65 72 2d 73 77 2d 63 6f 6e 66  customer-sw-conf
+    69 67 00 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b a5  ig.kkkkkkkkkkkk.
+  backtrace:
+    [<92345f14>] kstrdup+0x44/0x9c
+    [<46e6ec0a>] __of_add_property_sysfs+0xb8/0x128
+    [<d8832181>] __of_attach_node_sysfs+0xc0/0x170
+...skipping...
+  backtrace:
+    [<92345f14>] kstrdup+0x44/0x9c
+    [<8e6fdf66>] kobject_set_name_vargs+0x34/0xcc
+    [<0ebf4a99>] kobject_add+0x88/0x110
+    [<21cfd1b6>] __of_attach_node_sysfs+0x94/0x170
+    [<2592df33>] of_core_init+0xf8/0x23c
+    [<e5e36822>] driver_init+0x4c/0x80
+    [<9cac2ddd>] kernel_init_freeable+0x138/0x354
+    [<fcc01e1e>] kernel_init+0x28/0x154
+    [<0cec001f>] ret_from_kernel_thread+0x5c/0x64
+unreferenced object 0xc17341c0 (size 16):
+  comm "swapper/0", pid 1, jiffies 4294877309 (age 1153.314s)
+  hex dump (first 16 bytes):
+    64 65 76 69 63 65 5f 74 79 70 65 00 6b 6b 6b a5  device_type.kkk.
+  backtrace:
+    [<92345f14>] kstrdup+0x44/0x9c
+    [<46e6ec0a>] __of_add_property_sysfs+0xb8/0x128
+    [<d8832181>] __of_attach_node_sysfs+0xc0/0x170
+    [<2592df33>] of_core_init+0xf8/0x23c
+    [<e5e36822>] driver_init+0x4c/0x80
+    [<9cac2ddd>] kernel_init_freeable+0x138/0x354
+    [<fcc01e1e>] kernel_init+0x28/0x154
+    [<0cec001f>] ret_from_kernel_thread+0x5c/0x64
+unreferenced object 0xc1739168 (size 8):
+  comm "swapper/0", pid 1, jiffies 4294877309 (age 1153.314s)
+  hex dump (first 8 bytes):
+    72 65 67 00 6b 6b 6b a5                          reg.kkk.
+  backtrace:
+    [<92345f14>] kstrdup+0x44/0x9c
+    [<46e6ec0a>] __of_add_property_sysfs+0xb8/0x128
+    [<d8832181>] __of_attach_node_sysfs+0xc0/0x170
+    [<2592df33>] of_core_init+0xf8/0x23c
+    [<e5e36822>] driver_init+0x4c/0x80
+    [<9cac2ddd>] kernel_init_freeable+0x138/0x354
+    [<fcc01e1e>] kernel_init+0x28/0x154
+    [<0cec001f>] ret_from_kernel_thread+0x5c/0x64
+unreferenced object 0xc17396c8 (size 8):
+  comm "swapper/0", pid 1, jiffies 4294877309 (age 1153.314s)
+  hex dump (first 8 bytes):
+    70 68 61 6e 64 6c 65 00                          phandle.
+  backtrace:
+    [<92345f14>] kstrdup+0x44/0x9c
+    [<46e6ec0a>] __of_add_property_sysfs+0xb8/0x128
+    [<d8832181>] __of_attach_node_sysfs+0xc0/0x170
+    [<2592df33>] of_core_init+0xf8/0x23c
+    [<e5e36822>] driver_init+0x4c/0x80
+    [<9cac2ddd>] kernel_init_freeable+0x138/0x354
+    [<fcc01e1e>] kernel_init+0x28/0x154
+    [<0cec001f>] ret_from_kernel_thread+0x5c/0x64
+unreferenced object 0xc1739708 (size 8):
+  comm "swapper/0", pid 1, jiffies 4294877309 (age 1153.314s)
+  hex dump (first 8 bytes):
+    6e 61 6d 65 00 6b 6b a5                          name.kk.
+  backtrace:
+    [<92345f14>] kstrdup+0x44/0x9c
+    [<46e6ec0a>] __of_add_property_sysfs+0xb8/0x128
+    [<d8832181>] __of_attach_node_sysfs+0xc0/0x170
+    [<2592df33>] of_core_init+0xf8/0x23c
+    [<e5e36822>] driver_init+0x4c/0x80
+    [<9cac2ddd>] kernel_init_freeable+0x138/0x354
+    [<fcc01e1e>] kernel_init+0x28/0x154
+    [<0cec001f>] ret_from_kernel_thread+0x5c/0x64
+...skipping...
+unreferenced object 0xc1405588 (size 8):
+  comm "swapper/0", pid 1, jiffies 4294877302 (age 1153.234s)
+  hex dump (first 8 bytes):
+    62 61 73 65 00 6b 6b a5                          base.kk.
+  backtrace:
+    [<92345f14>] kstrdup+0x44/0x9c
+    [<8e6fdf66>] kobject_set_name_vargs+0x34/0xcc
+    [<0ebf4a99>] kobject_add+0x88/0x110
+    [<21cfd1b6>] __of_attach_node_sysfs+0x94/0x170
+    [<2592df33>] of_core_init+0xf8/0x23c
+    [<e5e36822>] driver_init+0x4c/0x80
+    [<9cac2ddd>] kernel_init_freeable+0x138/0x354
+    [<fcc01e1e>] kernel_init+0x28/0x154
+    [<0cec001f>] ret_from_kernel_thread+0x5c/0x64
+unreferenced object 0xc1405568 (size 8):
+  comm "swapper/0", pid 1, jiffies 4294877302 (age 1153.234s)
+  hex dump (first 8 bytes):
+    6d 6f 64 65 6c 00 6b a5                          model.k.
+  backtrace:
+    [<92345f14>] kstrdup+0x44/0x9c
+    [<46e6ec0a>] __of_add_property_sysfs+0xb8/0x128
+    [<d8832181>] __of_attach_node_sysfs+0xc0/0x170
+    [<2592df33>] of_core_init+0xf8/0x23c
+    [<e5e36822>] driver_init+0x4c/0x80
+    [<9cac2ddd>] kernel_init_freeable+0x138/0x354
+    [<fcc01e1e>] kernel_init+0x28/0x154
+    [<0cec001f>] ret_from_kernel_thread+0x5c/0x64
+unreferenced object 0xc140b820 (size 16):
+  comm "swapper/0", pid 1, jiffies 4294877302 (age 1153.234s)
+  hex dump (first 16 bytes):
+    63 6f 6d 70 61 74 69 62 6c 65 00 6b 6b 6b 6b a5  compatible.kkkk.
+  backtrace:
+    [<92345f14>] kstrdup+0x44/0x9c
+    [<46e6ec0a>] __of_add_property_sysfs+0xb8/0x128
+    [<d8832181>] __of_attach_node_sysfs+0xc0/0x170
+    [<2592df33>] of_core_init+0xf8/0x23c
+    [<e5e36822>] driver_init+0x4c/0x80
+    [<9cac2ddd>] kernel_init_freeable+0x138/0x354
+    [<fcc01e1e>] kernel_init+0x28/0x154
+    [<0cec001f>] ret_from_kernel_thread+0x5c/0x64
+
+--=20
+You may reply to this email to add a comment.
+
+You are receiving this mail because:
+You are watching the assignee of the bug.=
