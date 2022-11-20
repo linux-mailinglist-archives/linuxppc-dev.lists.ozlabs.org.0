@@ -1,106 +1,106 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9837D63174D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Nov 2022 00:26:23 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27717631751
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Nov 2022 00:28:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NFmqd2YFbz3ccn
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Nov 2022 10:26:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NFmsj0JHtz3cMt
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Nov 2022 10:28:09 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JCRVtopL;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=NnTRpnhl;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NFmpg1Dw2z2yQH
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Nov 2022 10:25:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NFmph2FPVz3bjv
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Nov 2022 10:25:32 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JCRVtopL;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=NnTRpnhl;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	by gandalf.ozlabs.org (Postfix) with ESMTP id 4NFmpf49jdz4xN4
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Nov 2022 10:25:30 +1100 (AEDT)
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	by gandalf.ozlabs.org (Postfix) with ESMTP id 4NFmph1hn0z4xN6
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Nov 2022 10:25:32 +1100 (AEDT)
 Received: by gandalf.ozlabs.org (Postfix)
-	id 4NFmpf46nNz4xN5; Mon, 21 Nov 2022 10:25:30 +1100 (AEDT)
+	id 4NFmph1f6rz4xN7; Mon, 21 Nov 2022 10:25:32 +1100 (AEDT)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: gandalf.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JCRVtopL;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=NnTRpnhl;
 	dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4NFmpf1sy5z4xN4
-	for <linuxppc-dev@ozlabs.org>; Mon, 21 Nov 2022 10:25:30 +1100 (AEDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AKJI4TX023062;
-	Sun, 20 Nov 2022 23:25:22 GMT
+	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4NFmpg67mjz4xN6
+	for <linuxppc-dev@ozlabs.org>; Mon, 21 Nov 2022 10:25:31 +1100 (AEDT)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AKIWOxS001495;
+	Sun, 20 Nov 2022 23:25:25 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=mVjn6+yuOzUPyUP/B+8v+91dgUnn+bACNdt6p+nF6d8=;
- b=JCRVtopLTn+wBMFXBdOPOhnpHpx0J8/nqUAVFiCA7i3PIDfB+SB4oKJsVgnqek9M1Hb5
- VRiNT7I+NhdUUM9n2V2n8sTo/NUvn5pY/3/cOU/4btj83oaTNyM35WMGRbebH/QekmPw
- Ka7Fhh0fg4EVuVcFvrgAn7oZNyKHnbhp5g/Y8fDNxFf0jTBYppynNynWhyCOf2A4dML6
- XQfUicML7eAs6qthd++iVAT9QjZC94L597XcLIcivmiLXMNADBgbNhmWJjbXSnmnb4E6
- fcKXakl8CgMRkDP10bq4n1cQc56+zzVXmoAqrnSc74nLi9lOWGUXXyB29QnK2kcvzC+/ Kg== 
+ bh=O6dqXTns8cG15zu1RgAWEa+DTa2avc/SfDmbcu1+qrA=;
+ b=NnTRpnhlMKExbDDt+2DmMSoxk76q9zJJKCERQGHa6/V+4e5hxzuD++ui41lCZ99nl/Fe
+ 1wH2/G0PpCt8HCHSLeKoXajXu/e24RppOkzFhQv0Qx7KmTKvTMJmVSP1/yn8StI7EVLi
+ 8tswPkmPrMiId+JPHqUJ/A/YjLEo49Z0o34Zwdn4p8XK43gxJwEonk/xyxxHHb+zBSDV
+ tT0Bl0ej/6c/K4fUIC9WHH2oLUw6twKI+WcP6A7E37J2fvHNMrHwfvCZZjPBvwsNxhca
+ NuBd/dxx3pGcAGnGo3t76IRUGoRlDU9Wst8Toe0feNdByqpopkGOCzejYgqMMlIq2HeW yw== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ky8yqhu02-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ky8khj6hq-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 20 Nov 2022 23:25:22 +0000
-Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2AKNDnOl022825;
-	Sun, 20 Nov 2022 23:25:21 GMT
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ky8yqhtyg-1
+	Sun, 20 Nov 2022 23:25:25 +0000
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2AKNPMPF022291;
+	Sun, 20 Nov 2022 23:25:24 GMT
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ky8khj6hc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 20 Nov 2022 23:25:24 +0000
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+	by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2AKNLGGp007776;
+	Sun, 20 Nov 2022 23:25:22 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+	by ppma02fra.de.ibm.com with ESMTP id 3kxps8sbe0-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Sun, 20 Nov 2022 23:25:21 +0000
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
-	by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2AKNLQSm022247;
-	Sun, 20 Nov 2022 23:25:19 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
-	by ppma06ams.nl.ibm.com with ESMTP id 3kxpdhste0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 20 Nov 2022 23:25:19 +0000
 Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
-	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2AKNPHXL6750944
+	by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2AKNPJ1k29491918
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 20 Nov 2022 23:25:17 GMT
+	Sun, 20 Nov 2022 23:25:19 GMT
 Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F0744AE051;
-	Sun, 20 Nov 2022 23:25:16 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 5AED0AE051;
+	Sun, 20 Nov 2022 23:25:19 +0000 (GMT)
 Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0619DAE04D;
-	Sun, 20 Nov 2022 23:25:15 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 64C8BAE04D;
+	Sun, 20 Nov 2022 23:25:17 +0000 (GMT)
 Received: from sjain014.ibmuc.com (unknown [9.43.9.248])
 	by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Sun, 20 Nov 2022 23:25:14 +0000 (GMT)
+	Sun, 20 Nov 2022 23:25:17 +0000 (GMT)
 From: Sourabh Jain <sourabhjain@linux.ibm.com>
 To: linuxppc-dev@ozlabs.org, mpe@ellerman.id.au
-Subject: [PATCH v5 2/6] powerpc/crash: update kimage_arch struct
-Date: Mon, 21 Nov 2022 04:55:04 +0530
-Message-Id: <20221120232508.327554-3-sourabhjain@linux.ibm.com>
+Subject: [PATCH v5 3/6] crash: add phdr for possible CPUs in elfcorehdr
+Date: Mon, 21 Nov 2022 04:55:05 +0530
+Message-Id: <20221120232508.327554-4-sourabhjain@linux.ibm.com>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20221120232508.327554-1-sourabhjain@linux.ibm.com>
 References: <20221120232508.327554-1-sourabhjain@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 0Aci-ZrEuaedtP_348DKmRkkPJ0xNXLb
-X-Proofpoint-GUID: BK0eyaMeKHxhrQgHrNSf-MrUoemlQeiq
+X-Proofpoint-GUID: fpwGs08pRRQdf-GskU8y36akY3H_BAxZ
+X-Proofpoint-ORIG-GUID: PCI_M2EUuHepL9A2uMx0JC-HUJh8dhQo
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
  definitions=2022-11-20_13,2022-11-18_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 clxscore=1015
- lowpriorityscore=0 adultscore=0 priorityscore=1501 mlxscore=0
- mlxlogscore=999 phishscore=0 malwarescore=0 spamscore=0 bulkscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2210170000 definitions=main-2211200194
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ mlxlogscore=999 malwarescore=0 lowpriorityscore=0 spamscore=0
+ clxscore=1015 adultscore=0 impostorscore=0 mlxscore=0 bulkscore=0
+ suspectscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2210170000 definitions=main-2211200194
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -116,121 +116,45 @@ Cc: mahesh@linux.vnet.ibm.com, eric.devolder@oracle.com, kexec@lists.infradead.o
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add a new member "fdt_index" to kimage_arch struct to hold the index of
-the FDT (Flattened Device Tree) segment in the kexec segment array.
-Having direct access to FDT segment will help arch crash hotplug handler
-to avoid looping kexec segment array to identify the FDT segment index
-for every FDT update on hotplug events.
+On architectures like PowerPC the crash notes are available for all
+possible CPUs. So let's populate the elfcorehdr for all possible
+CPUs having crash notes to avoid updating elfcorehdr during in-kernel
+crash update on CPU hotplug events.
 
-The fdt_index is initialized during the kexec load for both kexec_load and
-kexec_file_load system call.
+The similar technique was used in kexec-tool for kexec_load case.
 
 Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
 ---
- arch/powerpc/include/asm/kexec.h  |  9 +++++++++
- arch/powerpc/kexec/core_64.c      | 27 +++++++++++++++++++++++++++
- arch/powerpc/kexec/elf_64.c       |  6 ++++++
- arch/powerpc/kexec/file_load_64.c |  5 +++++
- 4 files changed, 47 insertions(+)
+ kernel/crash_core.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/kexec.h b/arch/powerpc/include/asm/kexec.h
-index 8090ad7d97d9d..fee742ddaf9a6 100644
---- a/arch/powerpc/include/asm/kexec.h
-+++ b/arch/powerpc/include/asm/kexec.h
-@@ -103,6 +103,12 @@ void kexec_copy_flush(struct kimage *image);
- struct crash_mem;
- int update_cpus_node(void *fdt);
- int get_crash_memory_ranges(struct crash_mem **mem_ranges);
-+
-+#if defined(CONFIG_HOTPLUG_CPU) || defined(CONFIG_MEMORY_HOTPLUG)
-+
-+int machine_kexec_post_load(struct kimage *image);
-+#define machine_kexec_post_load machine_kexec_post_load
-+#endif
- #endif
+diff --git a/kernel/crash_core.c b/kernel/crash_core.c
+index bca1b198d9e55..f6cccdcadc9f3 100644
+--- a/kernel/crash_core.c
++++ b/kernel/crash_core.c
+@@ -364,16 +364,19 @@ int crash_prepare_elf64_headers(struct kimage *image, struct crash_mem *mem,
+ 	ehdr->e_ehsize = sizeof(Elf64_Ehdr);
+ 	ehdr->e_phentsize = sizeof(Elf64_Phdr);
  
- #if defined(CONFIG_CRASH_DUMP) && defined(CONFIG_PPC_RTAS)
-@@ -118,6 +124,9 @@ extern const struct kexec_file_ops kexec_elf64_ops;
- struct kimage_arch {
- 	struct crash_mem *exclude_ranges;
+-	/* Prepare one phdr of type PT_NOTE for each present CPU */
+-	for_each_present_cpu(cpu) {
++	/* Prepare one phdr of type PT_NOTE for possible CPU with crash note. */
++	for_each_possible_cpu(cpu) {
+ 		if (IS_ENABLED(CONFIG_HOTPLUG_CPU)) {
+ 			/* Skip the soon-to-be offlined cpu */
+ 			if (image->hotplug_event && (cpu == image->offlinecpu))
+ 				continue;
+ 		}
  
-+#if defined(CONFIG_HOTPLUG_CPU) || defined(CONFIG_MEMORY_HOTPLUG)
-+	int fdt_index;
-+#endif
- 	unsigned long backup_start;
- 	void *backup_buf;
- 	void *fdt;
-diff --git a/arch/powerpc/kexec/core_64.c b/arch/powerpc/kexec/core_64.c
-index 0b292f93a74cc..0b8e2f8084afb 100644
---- a/arch/powerpc/kexec/core_64.c
-+++ b/arch/powerpc/kexec/core_64.c
-@@ -77,6 +77,33 @@ int machine_kexec_prepare(struct kimage *image)
- 	return 0;
- }
- 
-+#if defined(CONFIG_HOTPLUG_CPU) || defined(CONFIG_MEMORY_HOTPLUG)
-+int machine_kexec_post_load(struct kimage *kimage)
-+{
-+	int i;
-+	void *ptr;
-+	unsigned long mem;
+-		phdr->p_type = PT_NOTE;
+ 		notes_addr = per_cpu_ptr_to_phys(per_cpu_ptr(crash_notes, cpu));
++		if (!notes_addr)
++			continue;
 +
-+	/* Mark fdt_index invalid */
-+	kimage->arch.fdt_index = -1;
-+
-+	if (kimage->type != KEXEC_TYPE_CRASH)
-+		return 0;
-+
-+	for (i = 0; i < kimage->nr_segments; i++) {
-+		mem = kimage->segment[i].mem;
-+		ptr = __va(mem);
-+
-+		if (ptr && fdt_magic(ptr) == FDT_MAGIC) {
-+			kimage->arch.fdt_index = i;
-+			break;
-+		}
-+	}
-+
-+	return 0;
-+}
-+#endif
-+
- /* Called during kexec sequence with MMU off */
- static notrace void copy_segments(unsigned long ind)
- {
-diff --git a/arch/powerpc/kexec/elf_64.c b/arch/powerpc/kexec/elf_64.c
-index eeb258002d1e0..6272d49b49eb4 100644
---- a/arch/powerpc/kexec/elf_64.c
-+++ b/arch/powerpc/kexec/elf_64.c
-@@ -123,6 +123,12 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
- 	kbuf.buf_align = PAGE_SIZE;
- 	kbuf.top_down = true;
- 	kbuf.mem = KEXEC_BUF_MEM_UNKNOWN;
-+
-+#if defined(CONFIG_HOTPLUG_CPU) || defined(CONFIG_MEMORY_HOTPLUG)
-+	image->arch.fdt_index = image->nr_segments;
-+#endif
-+	kbuf.memsz = fdt_totalsize(fdt);
-+
- 	ret = kexec_add_buffer(&kbuf);
- 	if (ret)
- 		goto out_free_fdt;
-diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
-index ca65aa3a69240..87de3fc59159a 100644
---- a/arch/powerpc/kexec/file_load_64.c
-+++ b/arch/powerpc/kexec/file_load_64.c
-@@ -1096,6 +1096,11 @@ int arch_kexec_kernel_image_probe(struct kimage *image, void *buf,
- 		return ret;
- 	}
- 
-+#if defined(CONFIG_HOTPLUG_CPU)
-+	/* Mark fdt_index invalid */
-+	image->arch.fdt_index = -1;
-+#endif
-+
- 	return kexec_image_probe_default(image, buf, buf_len);
- }
- 
++		phdr->p_type = PT_NOTE;
+ 		phdr->p_offset = phdr->p_paddr = notes_addr;
+ 		phdr->p_filesz = phdr->p_memsz = sizeof(note_buf_t);
+ 		(ehdr->e_phnum)++;
 -- 
 2.38.1
 
