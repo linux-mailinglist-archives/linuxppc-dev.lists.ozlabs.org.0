@@ -1,67 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 339CF632178
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Nov 2022 12:58:16 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CB21632550
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Nov 2022 15:15:10 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NG5WB0C3Qz3cM0
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Nov 2022 22:58:14 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Bg5U0clU;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NG8Y80bKRz3f47
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Nov 2022 01:15:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::233; helo=mail-lj1-x233.google.com; envelope-from=kernelfans@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Bg5U0clU;
-	dkim-atps=neutral
-Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kaod.org (client-ip=46.105.45.231; helo=8.mo548.mail-out.ovh.net; envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
+X-Greylist: delayed 2429 seconds by postgrey-1.36 at boromir; Tue, 22 Nov 2022 01:14:37 AEDT
+Received: from 8.mo548.mail-out.ovh.net (8.mo548.mail-out.ovh.net [46.105.45.231])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NG5VH0qNJz300l
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Nov 2022 22:57:26 +1100 (AEDT)
-Received: by mail-lj1-x233.google.com with SMTP id a15so14222158ljb.7
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Nov 2022 03:57:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=vxmELrfnlhiJH56czijj6cc+20yGhxjI5SFSU/qzaXs=;
-        b=Bg5U0clUuFBJcnbVO7dashZFPnVYYFDDEWYEPHmHkGGPYRKtkCwycfLz2S11DKfJB8
-         nFvMKK4Qt2zCIR03EahaQnXBTUeKbypT9qkcErWQElmCEkp5RsiwD3pB0tP2YiC6wXV8
-         Z7g8/5sZIDEyz6PWEwXMIJwCIoY/fSW7IB1HCaBwAc1AAXxmZ9Z3weXWouMvS1v8Q99g
-         HaMiWRTdjihHWEyfSnoemSNrLQsE0oFkuMm56dwihq0gP5J3HKZ95nnbVVXzJakzeTaz
-         6Aj7A6OGPg6D1d3pTDVDfdVChpu4aEHl6mfOzKcBL+uI0fO2NEkmaQPBcoszfdWPANff
-         daRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=vxmELrfnlhiJH56czijj6cc+20yGhxjI5SFSU/qzaXs=;
-        b=mn4TPUt4Oul2DgXv3l3HwMsKT8qrPzijs9825cQk2LN+f1FidQpIWzQVcPb6TJWMZe
-         O01i+EdrL4PJNlXqv//2tdttawHoNPZ6F/vYQM5cCK13vJg+fREjE/roW5voSNlfmgKU
-         NfPItPognSBBoYOSbp8KQGElvwmCNINxdVPLnh3FzmZYsTN11XXJmMO58Rfdu+pEUIzV
-         dmz2XEUAxPvE2Pol/2c6S/n0Z1IlKbmBe9uYfxi+Mz+BhxtYKGLkSPQYFX5ukdnO3WpN
-         jFrOFYV0QcFiYaOonVVBjD3qsOU4deXQ+1xGa5PucM6dpzoyUaeuQEp1HlumUry6eZl4
-         2rdQ==
-X-Gm-Message-State: ANoB5pmqn09UWNqFM+sIV4y+CIgAAoeo6Oz3in06pl07e8gCK4WVFoIV
-	WGpfbyUZninTtaO+W2uvw8De7YyXefYZXFfftGUu3o4GkQ==
-X-Google-Smtp-Source: AA0mqf5MfBzkTjsRcmQ0jH/USZGD/mrpYSF62WJPb964AknnTVxXmmfsx3772PhkcBvQkY5ICBiD8Kgbf9WeYb4otbQ=
-X-Received: by 2002:a2e:b891:0:b0:277:8df:88a7 with SMTP id
- r17-20020a2eb891000000b0027708df88a7mr6045147ljp.139.1669031839189; Mon, 21
- Nov 2022 03:57:19 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NG8XY57pWz3c71
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Nov 2022 01:14:33 +1100 (AEDT)
+Received: from mxplan5.mail.ovh.net (unknown [10.108.4.102])
+	by mo548.mail-out.ovh.net (Postfix) with ESMTPS id 6C2302422E;
+	Mon, 21 Nov 2022 12:57:17 +0000 (UTC)
+Received: from kaod.org (37.59.142.100) by DAG4EX2.mxp5.local (172.16.2.32)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.16; Mon, 21 Nov
+ 2022 13:57:16 +0100
+Authentication-Results: garm.ovh; auth=pass (GARM-100R003451810f8-7c3a-435c-bfd4-d3ca38bdca17,
+                    3566E06BB212195A431F287D26CC7E6D91335DD7) smtp.auth=clg@kaod.org
+X-OVh-ClientIp: 82.64.250.170
+Message-ID: <61dc96ad-f60e-932f-c063-d1b377006b78@kaod.org>
+Date: Mon, 21 Nov 2022 13:57:16 +0100
 MIME-Version: 1.0
-References: <CAFgQCTuz3n5uNKwOOXaL9xT-ftJT0nfo4OfdNepvMGbi0Zqh7Q@mail.gmail.com>
-In-Reply-To: <CAFgQCTuz3n5uNKwOOXaL9xT-ftJT0nfo4OfdNepvMGbi0Zqh7Q@mail.gmail.com>
-From: Pingfan Liu <kernelfans@gmail.com>
-Date: Mon, 21 Nov 2022 19:57:07 +0800
-Message-ID: <CAFgQCTv6R_P0W16ak=9D481NKWqaXwd26CKHHqRbuMygP1u4Aw@mail.gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
 Subject: Re: // a kdump hang caused by PPC pci patch series
-To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Language: en-US
+To: Pingfan Liu <kernelfans@gmail.com>, linuxppc-dev
+	<linuxppc-dev@lists.ozlabs.org>
+References: <CAFgQCTuz3n5uNKwOOXaL9xT-ftJT0nfo4OfdNepvMGbi0Zqh7Q@mail.gmail.com>
+ <CAFgQCTv6R_P0W16ak=9D481NKWqaXwd26CKHHqRbuMygP1u4Aw@mail.gmail.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <CAFgQCTv6R_P0W16ak=9D481NKWqaXwd26CKHHqRbuMygP1u4Aw@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [37.59.142.100]
+X-ClientProxiedBy: DAG2EX2.mxp5.local (172.16.2.12) To DAG4EX2.mxp5.local
+ (172.16.2.32)
+X-Ovh-Tracer-GUID: 1ecdde95-3bd1-40c2-a7fb-d4f9ba5dbbf1
+X-Ovh-Tracer-Id: 8479433675835280349
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvgedrheeigdeghecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfevfhfhjggtgfhisehtjeertddtfeejnecuhfhrohhmpeevrogurhhitgcunfgvucfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepuedutdetleegjefhieekgeffkefhleevgfefjeevffejieevgeefhefgtdfgiedtnecukfhppeduvdejrddtrddtrddupdefjedrheelrddugedvrddutddtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepuddvjedrtddrtddruddpmhgrihhlfhhrohhmpeeotghlgheskhgrohgurdhorhhgqedpnhgspghrtghpthhtohepuddprhgtphhtthhopehkvghrnhgvlhhfrghnshesghhmrghilhdrtghomhdplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrghdptghogihusehrvgguhhgrthdrtghomhdpoffvtefjohhsthepmhhoheegkedpmhhouggvpehsmhhtphhouhht
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,45 +61,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Coiby Xu <coxu@redhat.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Cc: Coiby Xu <coxu@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Sorry that forget a subject.
+On 11/21/22 12:57, Pingfan Liu wrote:
+> Sorry that forget a subject.
+> 
+> On Mon, Nov 21, 2022 at 7:54 PM Pingfan Liu <kernelfans@gmail.com> wrote:
+>>
+>> Hello Powerpc folks,
+>>
+>> I encounter an kdump bug, which I bisect and pin commit 174db9e7f775
+>> ("powerpc/pseries/pci: Add support of MSI domains to PHB hotplug")
+>> In that case, using Fedora 36 as host, the mentioned commit as the
+>> guest kernel, and virto-block disk, the kdump kernel will hang:
 
-On Mon, Nov 21, 2022 at 7:54 PM Pingfan Liu <kernelfans@gmail.com> wrote:
->
-> Hello Powerpc folks,
->
-> I encounter an kdump bug, which I bisect and pin commit 174db9e7f775
-> ("powerpc/pseries/pci: Add support of MSI domains to PHB hotplug")
->
-> In that case, using Fedora 36 as host, the mentioned commit as the
-> guest kernel, and virto-block disk, the kdump kernel will hang:
->
-> [    0.000000] Kernel command line: elfcorehdr=0x22c00000
-> no_timer_check net.ifnames=0 console=tty0 console=hvc0,115200n8
-> irqpoll maxcpus=1 noirqdistrib reset_devices cgroup_disable=memory
->      numa=off udev.children-max=2 ehea.use_mcs=0 panic=10
-> kvm_cma_resv_ratio=0 transparent_hugepage=never novmcoredd
-> hugetlb_cma=0
->     ...
->     [    7.763260] virtio_blk virtio2: 32/0/0 default/read/poll queues
->     [    7.771391] virtio_blk virtio2: [vda] 20971520 512-byte logical
-> blocks (10.7 GB/10.0 GiB)
->     [   68.398234] systemd-udevd[187]: virtio2: Worker [190]
-> processing SEQNUM=1193 is taking a long time
->     [  188.398258] systemd-udevd[187]: virtio2: Worker [190]
-> processing SEQNUM=1193 killed
->
->
-> During my test, I found that in very rare cases, the kdump can success
-> (I guess it may be due to the cpu id).  And if using either maxcpus=2
-> or using scsi-disk, then kdump can also success.  And before the
-> mentioned commit, kdump can also success.
->
-> The attachment contains the xml to reproduce that bug.
->
-> Do you have any ideas?
->
-> Thanks
+The host kernel should be using the PowerNV platform and not pseries
+or are you running a nested L2 guest on KVM/pseries L1 ?
+
+And as far as I remember, the patch above only impacts the IBM PowerVM
+hypervisor, not KVM, and PHB hotplug, or kdump induces some hot-plugging
+I am not aware of.
+
+Also, if indeed, this is a L2 guest, the XIVE interrupt controller is
+emulated in QEMU, "info pic" should return:
+
+   ...
+   irqchip: emulated
+
+>>
+>> [    0.000000] Kernel command line: elfcorehdr=0x22c00000
+>> no_timer_check net.ifnames=0 console=tty0 console=hvc0,115200n8
+>> irqpoll maxcpus=1 noirqdistrib reset_devices cgroup_disable=memory
+>>       numa=off udev.children-max=2 ehea.use_mcs=0 panic=10
+>> kvm_cma_resv_ratio=0 transparent_hugepage=never novmcoredd
+>> hugetlb_cma=0
+>>      ...
+>>      [    7.763260] virtio_blk virtio2: 32/0/0 default/read/poll queues
+>>      [    7.771391] virtio_blk virtio2: [vda] 20971520 512-byte logical
+>> blocks (10.7 GB/10.0 GiB)
+>>      [   68.398234] systemd-udevd[187]: virtio2: Worker [190]
+>> processing SEQNUM=1193 is taking a long time
+>>      [  188.398258] systemd-udevd[187]: virtio2: Worker [190]
+>> processing SEQNUM=1193 killed
+>>
+>>
+>> During my test, I found that in very rare cases, the kdump can success
+>> (I guess it may be due to the cpu id).  And if using either maxcpus=2
+>> or using scsi-disk, then kdump can also success.  And before the
+>> mentioned commit, kdump can also success.
+>>
+>> The attachment contains the xml to reproduce that bug.
+>>
+>> Do you have any ideas?
+
+Most certainly an interrupt not being delivered. You can check the status
+on the host with :
+
+   virsh qemu-monitor-command --hmp <domain>  "info pic"
+
+
+
+Thanks,
+
+C.
