@@ -2,60 +2,97 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9ED263274F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Nov 2022 16:06:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52602632849
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Nov 2022 16:33:45 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NG9hr5HFtz3cKk
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Nov 2022 02:06:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NGBHq1VWlz3cL1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Nov 2022 02:33:43 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=wgEmmbjY;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=K7o49WGe;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=K7o49WGe;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=joe.lawrence@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=wgEmmbjY;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=K7o49WGe;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=K7o49WGe;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NG9gt2Hllz2yRV
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Nov 2022 02:06:00 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 191D6B81088;
-	Mon, 21 Nov 2022 15:05:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D4A6C433D6;
-	Mon, 21 Nov 2022 15:05:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1669043155;
-	bh=69fnffLkz/ILK6bYr21czslsgeqwii9nzQ1KmDeEAF8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=wgEmmbjYMxg528j5wuwTzPboE9RBUDUwjIV2gNsrOBwiIFh7KjwAVpFzD9dRUycw6
-	 LGvn+xCfvrRYuDHNEFnQENBJpbGO6vP97nFlevknNth7LVb7SLaAmUZl7BdwzraGNC
-	 hZmKPSHWuadxhFWfGEsvQJpgTCv4levVp/MeYLcA=
-Date: Mon, 21 Nov 2022 16:05:52 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: James Bottomley <James.Bottomley@hansenpartnership.com>
-Subject: Re: [PATCH 2/4] fs: define a firmware security filesystem named
- fwsecurityfs
-Message-ID: <Y3uT0PJ5g86TAj6t@kroah.com>
-References: <Y2uvUFQ9S2oaefSY@kroah.com>
- <8447a726-c45d-8ebb-2a74-a4d759631e64@linux.vnet.ibm.com>
- <Y2zLRw/TzV/sWgqO@kroah.com>
- <44191f02-7360-bca3-be8f-7809c1562e68@linux.vnet.ibm.com>
- <Y3anQukokMcQr+iE@kroah.com>
- <d615180d-6fe5-d977-da6a-e88fd8bf5345@linux.vnet.ibm.com>
- <Y3pSF2MRIXd6aH14@kroah.com>
- <88111914afc6204b2a3fb82ded5d9bfb6420bca6.camel@HansenPartnership.com>
- <Y3tbhmL4oG1YTyT/@kroah.com>
- <10c85b8f4779700b82596c4a968daead65a29801.camel@HansenPartnership.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NGBGG2Rl3z3cJv
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Nov 2022 02:32:21 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1669044737;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aAnNSC79PB+nEOAdqHzoVvnCbPLv+tVDX8zsNeLu1uI=;
+	b=K7o49WGekkO8f2GwroPK7CenXe2r6iiacCUBEwlejsIo1QML1p5+oCskZJ/fOmdNu2t5Rm
+	FzRsn/LXkCM3zpFjxxb7H/Sg8LxJ/p+Lpwa8DqmUrIqXJ4bUbrI6lpzp0zBw+MpqIavaBv
+	b4FGyc8MJ6XBBlt6al1x/95uUbzJfr4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1669044737;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aAnNSC79PB+nEOAdqHzoVvnCbPLv+tVDX8zsNeLu1uI=;
+	b=K7o49WGekkO8f2GwroPK7CenXe2r6iiacCUBEwlejsIo1QML1p5+oCskZJ/fOmdNu2t5Rm
+	FzRsn/LXkCM3zpFjxxb7H/Sg8LxJ/p+Lpwa8DqmUrIqXJ4bUbrI6lpzp0zBw+MpqIavaBv
+	b4FGyc8MJ6XBBlt6al1x/95uUbzJfr4=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-42-SeawZv6dMzimdgn-JF9oHg-1; Mon, 21 Nov 2022 10:32:13 -0500
+X-MC-Unique: SeawZv6dMzimdgn-JF9oHg-1
+Received: by mail-qk1-f199.google.com with SMTP id bj1-20020a05620a190100b006fa12a05188so15842592qkb.4
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Nov 2022 07:32:13 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:content-language:in-reply-to:mime-version
+         :user-agent:date:message-id:from:references:cc:to:subject
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=aAnNSC79PB+nEOAdqHzoVvnCbPLv+tVDX8zsNeLu1uI=;
+        b=NWiwSWI8MHqSDma9P2z6/BNHdVEhNgTvqrJra++4Wya6/2dUXTzV5lGk+56vnax8RP
+         lPngLOQa17IlXe2/+/O9rfTEFQjzTeK5/aH4SR08jA7lzS6qymGnUhwbhVSbQiX/86/h
+         JkUycfugHISPNMdMJ3nkCBXjNp7NspfIz942EbGGDstI0RfnsqSXe+YDUqt3Tlla7lJS
+         NBuDSAhECQEq/g2ogD1ewQgB0ayc5j0LGlSBSlCsYTVi99O0clC/RDnf5AdoatSapdGY
+         +yq1CdGYUzAyQ2yv0OABfWqKxw+PSOqI02MCceN3X6DsCViTaDd7s/wH2hmRE9yrmvg1
+         cbNA==
+X-Gm-Message-State: ANoB5pljq3shwYcbhu8HQwpMxBdjWA5HJE1+KSN1DqKXy9CyssL09pao
+	Dj4YmWkHQQybOFlLxLLKGAMtTP6Sg+cJ838WmdsRlnj0U5QKI17c7+i693jilazMoZxLR38d28w
+	ITdPtpXiYKGpkZbZZgovPZnF3kQ==
+X-Received: by 2002:a05:620a:c02:b0:6ec:54d6:ea87 with SMTP id l2-20020a05620a0c0200b006ec54d6ea87mr16526649qki.245.1669044733168;
+        Mon, 21 Nov 2022 07:32:13 -0800 (PST)
+X-Google-Smtp-Source: AA0mqf5QzcKpByoH5IFOBRZhUId/n1mZE/TJWamNTXtflc+eRaSTrKwX2lDdC7dfI+/Rue70ehtUbg==
+X-Received: by 2002:a05:620a:c02:b0:6ec:54d6:ea87 with SMTP id l2-20020a05620a0c0200b006ec54d6ea87mr16526622qki.245.1669044732744;
+        Mon, 21 Nov 2022 07:32:12 -0800 (PST)
+Received: from [192.168.1.9] (pool-68-160-135-240.bstnma.fios.verizon.net. [68.160.135.240])
+        by smtp.gmail.com with ESMTPSA id k7-20020ac80747000000b003a4d5fed8c3sm6718285qth.85.2022.11.21.07.32.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 21 Nov 2022 07:32:11 -0800 (PST)
+Subject: Re: [PATCH v6] livepatch: Clear relocation targets on a module
+ removal
+To: Song Liu <song@kernel.org>
+References: <20220901171252.2148348-1-song@kernel.org>
+ <Y3expGRt4cPoZgHL@alley>
+ <CAPhsuW4MaiJBTNnwVhqkmxPxBn8e1cn9PPGm9PkgF6YaO0AWKQ@mail.gmail.com>
+From: Joe Lawrence <joe.lawrence@redhat.com>
+Message-ID: <09ac46a0-45fe-e280-cabb-682e05c7fddc@redhat.com>
+Date: Mon, 21 Nov 2022 10:32:17 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <10c85b8f4779700b82596c4a968daead65a29801.camel@HansenPartnership.com>
+In-Reply-To: <CAPhsuW4MaiJBTNnwVhqkmxPxBn8e1cn9PPGm9PkgF6YaO0AWKQ@mail.gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,84 +104,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Matthew Garrett <mjg59@srcf.ucam.org>, linux-efi@vger.kernel.org, Nayna <nayna@linux.vnet.ibm.com>, Andrew Donnellan <ajd@linux.ibm.com>, Nayna Jain <nayna@linux.ibm.com>, linux-kernel@vger.kernel.org, npiggin@gmail.com, Dov Murik <dovmurik@linux.ibm.com>, Dave Hansen <dave.hansen@intel.com>, linux-security-module <linux-security-module@vger.kernel.org>, Paul Mackerras <paulus@samba.org>, linux-fsdevel@vger.kernel.org, George Wilson <gcwilson@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Stefan Berger <stefanb@linux.ibm.com>
+Cc: Petr Mladek <pmladek@suse.com>, jikos@kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, Josh Poimboeuf <jpoimboe@redhat.com>, live-patching@vger.kernel.org, mbenes@suse.cz, linuxppc-dev@lists.ozlabs.org, jpoimboe@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Nov 21, 2022 at 09:03:18AM -0500, James Bottomley wrote:
-> On Mon, 2022-11-21 at 12:05 +0100, Greg Kroah-Hartman wrote:
-> > On Sun, Nov 20, 2022 at 10:14:26PM -0500, James Bottomley wrote:
-> > > On Sun, 2022-11-20 at 17:13 +0100, Greg Kroah-Hartman wrote:
-> > > > On Sat, Nov 19, 2022 at 01:20:09AM -0500, Nayna wrote:
-> > > > > 
-> > > > > On 11/17/22 16:27, Greg Kroah-Hartman wrote:
-> > > > > > On Mon, Nov 14, 2022 at 06:03:43PM -0500, Nayna wrote:
-> > > > > > > On 11/10/22 04:58, Greg Kroah-Hartman wrote:
-> > > [...]
-> > > > > > > > I do not understand, sorry.  What does namespaces have to
-> > > > > > > > do
-> > > > > > > > with this?
-> > > > > > > > sysfs can already handle namespaces just fine, why not
-> > > > > > > > use
-> > > > > > > > that?
-> > > > > > > Firmware objects are not namespaced. I mentioned it here as
-> > > > > > > an
-> > > > > > > example of the difference between firmware and kernel
-> > > > > > > objects.
-> > > > > > > It is also in response to the feedback from James Bottomley
-> > > > > > > in
-> > > > > > > RFC v2 [
-> > > > > > > https://lore.kernel.org/linuxppc-dev/41ca51e8db9907d9060cc38ad
-> > > > > > > b59a66dcae4c59b.camel@HansenPartnership.com/].
-> > > > > > I do not understand, sorry.  Do you want to use a namespace
-> > > > > > for
-> > > > > > these or not?  The code does not seem to be using
-> > > > > > namespaces. 
-> > > > > > You can use sysfs with, or without, a namespace so I don't
-> > > > > > understand the issue here.
-> > > > > > 
-> > > > > > With your code, there is no namespace.
-> > > > > 
-> > > > > You are correct. There's no namespace for these.
-> > > > 
-> > > > So again, I do not understand.  Do you want to use filesystem
-> > > > namespaces, or do you not?
-> > > 
-> > > Since this seems to go back to my email quoted again, let me
-> > > repeat: the question isn't if this patch is namespaced; I think
-> > > you've agreed several times it isn't.  The question is if the
-> > > exposed properties would ever need to be namespaced.  This is a
-> > > subtle and complex question which isn't at all explored by the
-> > > above interchange.
-> > > 
-> > > > How again can you not use sysfs or securityfs due to namespaces? 
-> > > > What is missing?
-> > > 
-> > > I already explained in the email that sysfs contains APIs like
-> > > simple_pin_... which are completely inimical to namespacing.
-> > 
-> > Then how does the networking code handle the namespace stuff in
-> > sysfs?
-> > That seems to work today, or am I missing something?
+On 11/18/22 12:14 PM, Song Liu wrote:
+> Hi Petr,
 > 
-> have you actually tried?
+> On Fri, Nov 18, 2022 at 8:24 AM Petr Mladek <pmladek@suse.com> wrote:
+>>
+>> On Thu 2022-09-01 10:12:52, Song Liu wrote:
+> [...]
+>>>
+>>>  arch/powerpc/kernel/module_32.c |  10 ++++
+>>>  arch/powerpc/kernel/module_64.c |  49 +++++++++++++++
+>>>  arch/s390/kernel/module.c       |   8 +++
+>>>  arch/x86/kernel/module.c        | 102 +++++++++++++++++++++++---------
+>>>  include/linux/moduleloader.h    |   7 +++
+>>>  kernel/livepatch/core.c         |  41 ++++++++++++-
+>>
+>> First, thanks a lot for working on this.
+>>
+>> I can't check or test the powerpc and s390 code easily.
+>>
+>> I am going to comment only x86 and generic code. It looks good
+>> but it needs some changes to improve maintainability.
 > 
-> jejb@lingrow:~> sudo unshare --net bash
-> lingrow:/home/jejb # ls /sys/class/net/
-> lo  tun0  tun10  wlan0
-> lingrow:/home/jejb # ip link show
-> 1: lo: <LOOPBACK> mtu 65536 qdisc noop state DOWN mode DEFAULT group
-> default qlen 1000
->     link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+> Thanks for these comments and suggestions. I will work on them
+> and send v4.
 > 
-> So, as you see, I've entered a network namespace and ip link shows me
-> the only interface I can see in that namespace (a down loopback) but
-> sysfs shows me every interface on the system outside the namespace.
 
-Then all of the code in include/kobject_ns.h is not being used?  We have
-a whole kobject namespace set up for networking, I just assumed they
-were using it.  If not, I'm all for ripping it out.
+Hi Song,
 
-thanks,
+I'll help with testing the arches (at least ppc64le and s390x, I can
+only cross-build ppc32).  I can either pick up the patches from the list
+when you post, or if you want to run them through testing first, lmk.
 
-greg k-h
+Thanks,
+
+-- 
+Joe
+
