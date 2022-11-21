@@ -1,88 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EE826319BA
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Nov 2022 07:32:41 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 346656319ED
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Nov 2022 07:51:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NFyHW162Wz3cMw
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Nov 2022 17:32:39 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gZm8vdMh;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NFyjT6ql1z3dvF
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Nov 2022 17:51:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gZm8vdMh;
-	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.255; helo=szxga08-in.huawei.com; envelope-from=yangyingliang@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NFyGX6lnxz3c7B
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Nov 2022 17:31:48 +1100 (AEDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AL51cb9011591;
-	Mon, 21 Nov 2022 06:31:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=9GAyWkKzDEndYhiStTUbKVzIJ6UXbLEHzrGCpzwBTpA=;
- b=gZm8vdMh7eTgcYYgQEeWzQT5n+h7N+JwMW/VSh2oyjdDIhpMiQzfJaT46rQznGAU/pBW
- l42aksozWF7HiJ322DAhTLGw9NQ3IHl44oyUHBE+MiAD/lT663b6CFT4zOS/PZ41ceGL
- fBH3WK/m4KIpLTPt88i/Ecf+DGv0byFO6VE+A+9DJDMqRAGTBMgj7Lel9xj2Zj0GxOSt
- 9YEMk/7PYUk1W/JzhsfR54/SI2E3rVUITl/njitGwgRpnSl1wgR/xrX3MMJYwmOVbNLz
- OVeg9jztFfzugqN7whBL1ua1fUFAF+PyRjj0dFZqtuROhX1jrAWR1HhLD2M1dcsK+rZD fQ== 
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ky9798m41-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 21 Nov 2022 06:31:35 +0000
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
-	by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2AL6LIAX030304;
-	Mon, 21 Nov 2022 06:31:33 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
-	by ppma02fra.de.ibm.com with ESMTP id 3kxps8smb5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 21 Nov 2022 06:31:33 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
-	by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2AL6VVBB34865632
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 21 Nov 2022 06:31:31 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 471575208D;
-	Mon, 21 Nov 2022 06:31:31 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 9C49252071;
-	Mon, 21 Nov 2022 06:31:30 +0000 (GMT)
-Received: from [10.61.2.128] (haven.au.ibm.com [9.192.254.114])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 18BF46032A;
-	Mon, 21 Nov 2022 17:31:29 +1100 (AEDT)
-Message-ID: <b37b30140cefea48e18a44106f53bb8057dec462.camel@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NFyhs43Qvz3c7B
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Nov 2022 17:51:06 +1100 (AEDT)
+Received: from dggpemm500021.china.huawei.com (unknown [172.30.72.57])
+	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4NFyh708LWz15Mmc;
+	Mon, 21 Nov 2022 14:50:31 +0800 (CST)
+Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
+ dggpemm500021.china.huawei.com (7.185.36.109) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Mon, 21 Nov 2022 14:50:58 +0800
+Received: from [10.174.178.174] (10.174.178.174) by
+ dggpemm500007.china.huawei.com (7.185.36.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Mon, 21 Nov 2022 14:50:58 +0800
 Subject: Re: [PATCH] ocxl: fix pci device refcount leak when calling
  get_function_0()
-From: Andrew Donnellan <ajd@linux.ibm.com>
-To: Yang Yingliang <yangyingliang@huawei.com>, fbarrat@linux.ibm.com,
-        arnd@arndb.de, gregkh@linuxfoundation.org
-Date: Mon, 21 Nov 2022 17:31:28 +1100
-In-Reply-To: <20221119144433.2454759-1-yangyingliang@huawei.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, "fbarrat@linux.ibm.com"
+	<fbarrat@linux.ibm.com>, "ajd@linux.ibm.com" <ajd@linux.ibm.com>,
+	"arnd@arndb.de" <arnd@arndb.de>, "gregkh@linuxfoundation.org"
+	<gregkh@linuxfoundation.org>
 References: <20221119144433.2454759-1-yangyingliang@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
+ <cb876db2-0f45-f254-84e6-046003eb86f7@csgroup.eu>
+From: Yang Yingliang <yangyingliang@huawei.com>
+Message-ID: <1e9bc46d-e47e-c13e-d162-6f938a7a7095@huawei.com>
+Date: Mon, 21 Nov 2022 14:50:57 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: R5tCrashTA3SebOzbm6s8QyfvfuqO4Cf
-X-Proofpoint-ORIG-GUID: R5tCrashTA3SebOzbm6s8QyfvfuqO4Cf
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-11-21_04,2022-11-18_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- impostorscore=0 phishscore=0 lowpriorityscore=0 spamscore=0 adultscore=0
- clxscore=1015 bulkscore=0 mlxscore=0 mlxlogscore=999 suspectscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2210170000 definitions=main-2211210047
+In-Reply-To: <cb876db2-0f45-f254-84e6-046003eb86f7@csgroup.eu>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-Originating-IP: [10.174.178.174]
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ dggpemm500007.china.huawei.com (7.185.36.183)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,66 +59,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, yangyingliang@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-T24gU2F0LCAyMDIyLTExLTE5IGF0IDIyOjQ0ICswODAwLCBZYW5nIFlpbmdsaWFuZyB3cm90ZToK
-PiBBcyBjb21tZW50IG9mIHBjaV9nZXRfZG9tYWluX2J1c19hbmRfc2xvdCgpIHNheXMsIGl0IHJl
-dHVybnMKPiBhIHBjaSBkZXZpY2Ugd2l0aCByZWZjb3VudCBpbmNyZW1lbnQsIHNvIHdoZW4gZmlu
-aXNoIHVzaW5nIGl0LAo+IHBjaV9kZXZfcHV0KCkgbmVlZHMgYmUgY2FsbGVkLgo+IAo+IEluIGdl
-dF9kdnNlY192ZW5kb3IwKCksIGluIG5vcm1hbCBwYXRoLCB0aGUgcmV0dXJuZWQgcGNpIGRldmlj
-ZQo+IGlzIHBhc3NlZCB0byBkZXYwLCBzbyBhZnRlciB1c2luZyBkZXYwIGluIHRoZSBjYWxsZXJz
-LCBpdCBuZWVkCj4gYmUgcHV0LCBpbiBlcnJvciBwYXRoLCBwY2lfZGV2X3B1dCgpIGFsc28gbmVl
-ZHMgYmUgY2FsbGVkLgo+IAo+IHBjaV9nZXRfZG9tYWluX2J1c19hbmRfc2xvdCgpIGlzIGNhbGxl
-ZCB3aGVuIFBDSV9GVU5DKCkgcmV0dXJucwo+IG5vbi16ZXJvLCBjaGVjayB0aGlzIGJlZm9yZSBw
-dXQuCj4gCj4gRml4ZXM6IDg3ZGI3NTc5ZWJkNSAoIm9jeGw6IGNvbnRyb2wgdmlhIHN5c2ZzIHdo
-ZXRoZXIgdGhlIEZQR0EgaXMKPiByZWxvYWRlZCBvbiBhIGxpbmsgcmVzZXQiKQo+IFNpZ25lZC1v
-ZmYtYnk6IFlhbmcgWWluZ2xpYW5nIDx5YW5neWluZ2xpYW5nQGh1YXdlaS5jb20+CgpJdCBtaWdo
-dCBiZSBuZWF0ZXIgdG8gdGFrZSBhbiBhZGRpdGlvbmFsIHJlZmVyZW5jZSBvbiBkZXYgaW4KZ2V0
-X2R2c2VjX3ZlbmRvcjAoKSBpbiB0aGUgY2FzZSB3aGVyZSBkZXYgaXMgZnVuY3Rpb24gMCwgd2hp
-Y2ggd291bGQKbWVhbiB5b3UgY291bGQgY2FsbCBwY2lfZGV2X3B1dCgpIHVuY29uZGl0aW9uYWxs
-eSBpbiB0aGUgY2FsbGVycz8KCkVpdGhlciB3YXkgLSBJIHRoaW5rIHRoZXJlIG5lZWRzIHRvIGJl
-IGEgY29tbWVudCBhYm92ZQpnZXRfZHZzZWNfdmVuZG9yMCgpIGRvY3VtZW50aW5nIHdoZW4gYW4g
-YWRkaXRpb25hbCByZWZlcmVuY2UgbmVlZHMgdG8KYmUgcmVsZWFzZWQuCgo+IC0tLQo+IMKgZHJp
-dmVycy9taXNjL29jeGwvY29uZmlnLmMgfCAxMSArKysrKysrKysrLQo+IMKgMSBmaWxlIGNoYW5n
-ZWQsIDEwIGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkKPiAKPiBkaWZmIC0tZ2l0IGEvZHJp
-dmVycy9taXNjL29jeGwvY29uZmlnLmMgYi9kcml2ZXJzL21pc2Mvb2N4bC9jb25maWcuYwo+IGlu
-ZGV4IGU0MDFhNTE1OTZiOS4uNGRhNWEyYjg1MTRjIDEwMDY0NAo+IC0tLSBhL2RyaXZlcnMvbWlz
-Yy9vY3hsL2NvbmZpZy5jCj4gKysrIGIvZHJpdmVycy9taXNjL29jeGwvY29uZmlnLmMKPiBAQCAt
-MTk2LDE2ICsxOTYsMjEgQEAgc3RhdGljIGludCByZWFkX2R2c2VjX3ZlbmRvcihzdHJ1Y3QgcGNp
-X2Rldgo+ICpkZXYpCj4gwqBzdGF0aWMgaW50IGdldF9kdnNlY192ZW5kb3IwKHN0cnVjdCBwY2lf
-ZGV2ICpkZXYsIHN0cnVjdCBwY2lfZGV2Cj4gKipkZXYwLAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGludCAqb3V0X3BvcykKPiDCoHsK
-PiArwqDCoMKgwqDCoMKgwqBib29sIG5lZWRfcHV0Owo+IMKgwqDCoMKgwqDCoMKgwqBpbnQgcG9z
-Owo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoGlmIChQQ0lfRlVOQyhkZXYtPmRldmZuKSAhPSAwKSB7
-Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkZXYgPSBnZXRfZnVuY3Rpb25fMChk
-ZXYpOwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWYgKCFkZXYpCj4gwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcmV0dXJuIC0xOwo+ICvC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBuZWVkX3B1dCA9IHRydWU7Cj4gwqDCoMKgwqDC
-oMKgwqDCoH0KPiDCoMKgwqDCoMKgwqDCoMKgcG9zID0gZmluZF9kdnNlYyhkZXYsIE9DWExfRFZT
-RUNfVkVORE9SX0lEKTsKPiAtwqDCoMKgwqDCoMKgwqBpZiAoIXBvcykKPiArwqDCoMKgwqDCoMKg
-wqBpZiAoIXBvcykgewo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZiAobmVlZF9w
-dXQpCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBwY2lf
-ZGV2X3B1dChkZXYpOwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcmV0dXJuIC0x
-Owo+ICvCoMKgwqDCoMKgwqDCoH0KPiDCoMKgwqDCoMKgwqDCoMKgKmRldjAgPSBkZXY7Cj4gwqDC
-oMKgwqDCoMKgwqDCoCpvdXRfcG9zID0gcG9zOwo+IMKgwqDCoMKgwqDCoMKgwqByZXR1cm4gMDsK
-PiBAQCAtMjIyLDYgKzIyNyw4IEBAIGludCBvY3hsX2NvbmZpZ19nZXRfcmVzZXRfcmVsb2FkKHN0
-cnVjdCBwY2lfZGV2Cj4gKmRldiwgaW50ICp2YWwpCj4gwqAKPiDCoMKgwqDCoMKgwqDCoMKgcGNp
-X3JlYWRfY29uZmlnX2R3b3JkKGRldjAsIHBvcyArCj4gT0NYTF9EVlNFQ19WRU5ET1JfUkVTRVRf
-UkVMT0FELAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqAgJnJlc2V0X3JlbG9hZCk7Cj4gK8KgwqDCoMKgwqDCoMKgaWYgKFBDSV9GVU5D
-KGRldi0+ZGV2Zm4pICE9IDApCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHBjaV9k
-ZXZfcHV0KGRldjApOwo+IMKgwqDCoMKgwqDCoMKgwqAqdmFsID0gISEocmVzZXRfcmVsb2FkICYg
-QklUKDApKTsKPiDCoMKgwqDCoMKgwqDCoMKgcmV0dXJuIDA7Cj4gwqB9Cj4gQEAgLTI0Myw2ICsy
-NTAsOCBAQCBpbnQgb2N4bF9jb25maWdfc2V0X3Jlc2V0X3JlbG9hZChzdHJ1Y3QgcGNpX2Rldgo+
-ICpkZXYsIGludCB2YWwpCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqByZXNldF9y
-ZWxvYWQgJj0gfkJJVCgwKTsKPiDCoMKgwqDCoMKgwqDCoMKgcGNpX3dyaXRlX2NvbmZpZ19kd29y
-ZChkZXYwLCBwb3MgKwo+IE9DWExfRFZTRUNfVkVORE9SX1JFU0VUX1JFTE9BRCwKPiDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgcmVz
-ZXRfcmVsb2FkKTsKPiArwqDCoMKgwqDCoMKgwqBpZiAoUENJX0ZVTkMoZGV2LT5kZXZmbikgIT0g
-MCkKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcGNpX2Rldl9wdXQoZGV2MCk7Cj4g
-wqDCoMKgwqDCoMKgwqDCoHJldHVybiAwOwo+IMKgfQo+IMKgCgotLSAKQW5kcmV3IERvbm5lbGxh
-biAgICBPekxhYnMsIEFETCBDYW5iZXJyYQphamRAbGludXguaWJtLmNvbSAgIElCTSBBdXN0cmFs
-aWEgTGltaXRlZAo=
+Hi,
 
+On 2022/11/21 14:28, Christophe Leroy wrote:
+>
+> Le 19/11/2022 à 15:44, Yang Yingliang a écrit :
+>> As comment of pci_get_domain_bus_and_slot() says, it returns
+>> a pci device with refcount increment, so when finish using it,
+>> pci_dev_put() needs be called.
+>>
+>> In get_dvsec_vendor0(), in normal path, the returned pci device
+>> is passed to dev0, so after using dev0 in the callers, it need
+>> be put, in error path, pci_dev_put() also needs be called.
+>>
+>> pci_get_domain_bus_and_slot() is called when PCI_FUNC() returns
+>> non-zero, check this before put.
+>>
+>> Fixes: 87db7579ebd5 ("ocxl: control via sysfs whether the FPGA is reloaded on a link reset")
+>> Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+>> ---
+>>    drivers/misc/ocxl/config.c | 11 ++++++++++-
+>>    1 file changed, 10 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/misc/ocxl/config.c b/drivers/misc/ocxl/config.c
+>> index e401a51596b9..4da5a2b8514c 100644
+>> --- a/drivers/misc/ocxl/config.c
+>> +++ b/drivers/misc/ocxl/config.c
+>> @@ -196,16 +196,21 @@ static int read_dvsec_vendor(struct pci_dev *dev)
+>>    static int get_dvsec_vendor0(struct pci_dev *dev, struct pci_dev **dev0,
+>>    			     int *out_pos)
+>>    {
+>> +	bool need_put;
+>>    	int pos;
+>>    
+>>    	if (PCI_FUNC(dev->devfn) != 0) {
+>>    		dev = get_function_0(dev);
+>>    		if (!dev)
+>>    			return -1;
+>> +		need_put = true;
+> Why introduce that 'need_put' boolean ? Why not just use
+> PCI_FUNC(dev->devfn) != 0 as you do in other places ?
+The 'dev' is reassigned by get_function_0(), it is not the origin one.
+
+Thanks,
+Yang
+>
+>>    	}
+>>    	pos = find_dvsec(dev, OCXL_DVSEC_VENDOR_ID);
+>> -	if (!pos)
+>> +	if (!pos) {
+>> +		if (need_put)
+>> +			pci_dev_put(dev);
+>>    		return -1;
+>> +	}
+>>    	*dev0 = dev;
+>>    	*out_pos = pos;
+>>    	return 0;
+>> @@ -222,6 +227,8 @@ int ocxl_config_get_reset_reload(struct pci_dev *dev, int *val)
+>>    
+>>    	pci_read_config_dword(dev0, pos + OCXL_DVSEC_VENDOR_RESET_RELOAD,
+>>    			      &reset_reload);
+>> +	if (PCI_FUNC(dev->devfn) != 0)
+> The != 0 is useless, just do:
+>
+> 	if (PCI_FUNC(dev->devfn))
+>
+>> +		pci_dev_put(dev0);
+>>    	*val = !!(reset_reload & BIT(0));
+>>    	return 0;
+>>    }
+>> @@ -243,6 +250,8 @@ int ocxl_config_set_reset_reload(struct pci_dev *dev, int val)
+>>    		reset_reload &= ~BIT(0);
+>>    	pci_write_config_dword(dev0, pos + OCXL_DVSEC_VENDOR_RESET_RELOAD,
+>>    			       reset_reload);
+>> +	if (PCI_FUNC(dev->devfn) != 0)
+> Same
+>
+>> +		pci_dev_put(dev0);
+>>    	return 0;
+>>    }
+>>    
