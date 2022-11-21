@@ -2,103 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0563D632D0D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Nov 2022 20:35:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B9B66330F5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Nov 2022 00:48:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NGHgB6hQNz3cMf
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Nov 2022 06:35:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NGPGV16gWz3cMk
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Nov 2022 10:48:18 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=IGIVHLPb;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Opj/itLb;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nayna@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=lee@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=IGIVHLPb;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Opj/itLb;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NGHf85g5hz2yRV
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Nov 2022 06:34:55 +1100 (AEDT)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2ALJ0A1I011420;
-	Mon, 21 Nov 2022 19:34:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=XMHX4r6tWaG5HyFsSipFN4RQm3o8bUhS5ONbNFz1Ozw=;
- b=IGIVHLPbMkPs/3cWttBg0CqOuwscPUTK973cpDih5m6gAcuTg/Z8p52E13Sg0PJQjBAv
- OLo9mh99wtquF7xr9fdxHv5Kat1PTuTmNI43P8zeZO0NMG2m2EgtLyllRSgfPTAezCVW
- 7TvKI8+/MaHcytFy7SeE1Y1AUn+h8HvbQJ3FOtfS0owj6UPgiRWme2riextJ4AJOMW8A
- FB7/TeDVWr+7ENjxjez4iclu5uh+PDEP0MDW3Qy93ofGhZoID0dIhxEe9GZ5IMIve+u4
- C2kK7NYadT48Y7JSPABP6YpYQDPgX+HYhKYNpwf7oAE4NX7kbvJ46IxumNoC46RdkQCf Rg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m0d3g3r04-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 21 Nov 2022 19:34:49 +0000
-Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2ALJOXHE016414;
-	Mon, 21 Nov 2022 19:34:49 GMT
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com [169.55.85.253])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m0d3g3qyu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 21 Nov 2022 19:34:49 +0000
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
-	by ppma01wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2ALJLD0K019431;
-	Mon, 21 Nov 2022 19:34:47 GMT
-Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com [9.57.198.28])
-	by ppma01wdc.us.ibm.com with ESMTP id 3kxps97c3g-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 21 Nov 2022 19:34:47 +0000
-Received: from smtpav06.wdc07v.mail.ibm.com ([9.208.128.115])
-	by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2ALJYkh67602782
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 21 Nov 2022 19:34:47 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 535EA58054;
-	Mon, 21 Nov 2022 19:34:46 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C6E0458056;
-	Mon, 21 Nov 2022 19:34:44 +0000 (GMT)
-Received: from [9.163.61.172] (unknown [9.163.61.172])
-	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 21 Nov 2022 19:34:44 +0000 (GMT)
-Message-ID: <84ddfea2-c2b7-6e84-718d-739ff00e957e@linux.vnet.ibm.com>
-Date: Mon, 21 Nov 2022 14:34:44 -0500
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NG2l44Cpfz3bjX
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Nov 2022 20:53:20 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id D8EB560F97;
+	Mon, 21 Nov 2022 09:53:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06F83C433C1;
+	Mon, 21 Nov 2022 09:53:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1669024397;
+	bh=m9yZHwnTEqGasYZNomMe1mRJHVzf8B7M3LDSNHYcXeA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Opj/itLbJtFE0syJxd+qkemdvm+GfbfZ1pccF1SGR++3DJnkeyD3YQtGhN+blIjub
+	 US8fX8iushvScwunkPr7LKirCchaNKKAU/twl0oVnqHEwdHsHxi0M0d/wgtlpEZqG7
+	 k4ovt/Znm0DICj47Y+N6I+Yw47E1MyyiN0e/92S2h9qHrb149jszKe3FalK/2rVJQ+
+	 ZppAyMp4v8rjq+XBX9JSBl1ysXWpcIvX0EVYeK13kfbg9IEzo070nVbf9UiCPP9DpS
+	 bXABnzNPLB0lPKqHS3KQR0EQyUsQW7BynY23b8Z2+QTbLFxJQgHRN0fjhkCpVJB9+z
+	 k93zjyweI0uEQ==
+Date: Mon, 21 Nov 2022 09:53:05 +0000
+From: Lee Jones <lee@kernel.org>
+To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <uwe@kleine-koenig.org>
+Subject: Re: [PATCH 000/606] i2c: Complete conversion to i2c_probe_new
+Message-ID: <Y3tKgXPJP7S48i3j@google.com>
+References: <20221118224540.619276-1-uwe@kleine-koenig.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [PATCH 2/4] fs: define a firmware security filesystem named
- fwsecurityfs
-Content-Language: en-US
-To: James Bottomley <James.Bottomley@HansenPartnership.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-References: <20221106210744.603240-1-nayna@linux.ibm.com>
- <20221106210744.603240-3-nayna@linux.ibm.com> <Y2uvUFQ9S2oaefSY@kroah.com>
- <8447a726-c45d-8ebb-2a74-a4d759631e64@linux.vnet.ibm.com>
- <Y2zLRw/TzV/sWgqO@kroah.com>
- <44191f02-7360-bca3-be8f-7809c1562e68@linux.vnet.ibm.com>
- <Y3anQukokMcQr+iE@kroah.com>
- <d615180d-6fe5-d977-da6a-e88fd8bf5345@linux.vnet.ibm.com>
- <Y3pSF2MRIXd6aH14@kroah.com>
- <88111914afc6204b2a3fb82ded5d9bfb6420bca6.camel@HansenPartnership.com>
-From: Nayna <nayna@linux.vnet.ibm.com>
-In-Reply-To: <88111914afc6204b2a3fb82ded5d9bfb6420bca6.camel@HansenPartnership.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 5qwyL1VGEDwEbovNCVAiJnFzbjnzziHD
-X-Proofpoint-GUID: wyCxSb4iOI18wGF1voQk7RF8fnGsXigr
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-11-21_16,2022-11-18_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0
- lowpriorityscore=0 phishscore=0 mlxlogscore=743 clxscore=1011
- malwarescore=0 suspectscore=0 spamscore=0 impostorscore=0
- priorityscore=1501 mlxscore=0 bulkscore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2210170000
- definitions=main-2211210147
+In-Reply-To: <20221118224540.619276-1-uwe@kleine-koenig.org>
+X-Mailman-Approved-At: Tue, 22 Nov 2022 10:47:31 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -110,53 +61,134 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Matthew Garrett <mjg59@srcf.ucam.org>, linux-efi@vger.kernel.org, Andrew Donnellan <ajd@linux.ibm.com>, Nayna Jain <nayna@linux.ibm.com>, linux-kernel@vger.kernel.org, npiggin@gmail.com, Dov Murik <dovmurik@linux.ibm.com>, Dave Hansen <dave.hansen@intel.com>, linux-security-module <linux-security-module@vger.kernel.org>, Paul Mackerras <paulus@samba.org>, linux-fsdevel@vger.kernel.org, George Wilson <gcwilson@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Stefan Berger <stefanb@linux.ibm.com>
+Cc: alsa-devel@alsa-project.org, linux-staging@lists.linux.dev, linux-pwm@vger.kernel.org, linux-iio@vger.kernel.org, linux-fbdev@vger.kernel.org, platform-driver-x86@vger.kernel.org, linux-mtd@lists.infradead.org, linux-i2c@vger.kernel.org, Lee Jones <lee.jones@linaro.org>, linux-stm32@st-md-mailman.stormreply.com, linux-leds@vger.kernel.org, linux-rtc@vger.kernel.org, linux-renesas-soc@vger.kernel.org, linux-samsung-soc@vger.kernel.org, linux-pm@vger.kernel.org, Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, linux-serial@vger.kernel.org, linux-input@vger.kernel.org, Grant Likely <grant.likely@linaro.org>, linux-media@vger.kernel.org, devicetree@vger.kernel.org, linux-watchdog@vger.kernel.org, chrome-platform@lists.linux.dev, linux-actions@lists.infradead.org, linux-gpio@vger.kernel.org, Angel Iglesias <ang.iglesiasg@gmail.com>, linux-rpi-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org, openipmi-developer@lists.sourceforge.net, linux-omap
+ @vger.kernel.org, linux-arm-kernel@lists.infradead.org, Purism Kernel Team <kernel@puri.sm>, patches@opensource.cirrus.com, linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org, Wolfram Sang <wsa@kernel.org>, linux-crypto@vger.kernel.org, kernel@pengutronix.de, netdev@vger.kernel.org, linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Fri, 18 Nov 2022, Uwe Kleine-König wrote:
 
-On 11/20/22 22:14, James Bottomley wrote:
-> On Sun, 2022-11-20 at 17:13 +0100, Greg Kroah-Hartman wrote:
->> On Sat, Nov 19, 2022 at 01:20:09AM -0500, Nayna wrote:
->>> On 11/17/22 16:27, Greg Kroah-Hartman wrote:
->>>> On Mon, Nov 14, 2022 at 06:03:43PM -0500, Nayna wrote:
->>>>> On 11/10/22 04:58, Greg Kroah-Hartman wrote:
-> [...]
->>>
+> Hello,
+> 
+> since commit b8a1a4cd5a98 ("i2c: Provide a temporary .probe_new()
+> call-back type") from 2016 there is a "temporary" alternative probe
+> callback for i2c drivers.
+
+Oh yeah, this!  Thanks for picking this up Uwe, I guess I've been
+distracted for the past 6 years or so. :)
+
+> This series completes all drivers to this new callback (unless I missed
+> something). It's based on current next/master.
+> A part of the patches depend on commit 662233731d66 ("i2c: core:
+> Introduce i2c_client_get_device_id helper function"), there is a branch that
+> you can pull into your tree to get it:
+> 
+> 	https://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux.git i2c/client_device_id_helper-immutable
+> 
+> I don't think it's feasable to apply this series in one go, so I ask the
+> maintainers of the changed files to apply via their tree. I guess it
+> will take a few kernel release iterations until all patch are in, but I
+> think a single tree creates too much conflicts.
+> 
+> The last patch changes i2c_driver::probe, all non-converted drivers will
+> fail to compile then. So I hope the build bots will tell me about any
+> driver I missed to convert. This patch is obviously not for application
+> now.
+> 
+> I dropped most individuals from the recipents of this mail to not
+> challenge the mail servers and mailing list filters too much. Sorry if
+> you had extra efforts to find this mail.
+
 [...]
->>> You are correct. There's no namespace for these.
->> So again, I do not understand.  Do you want to use filesystem
->> namespaces, or do you not?
-> Since this seems to go back to my email quoted again, let me repeat:
-> the question isn't if this patch is namespaced; I think you've agreed
-> several times it isn't.  The question is if the exposed properties
-> would ever need to be namespaced.  This is a subtle and complex
-> question which isn't at all explored by the above interchange.
->
->> How again can you not use sysfs or securityfs due to namespaces?
->> What is missing?
-> I already explained in the email that sysfs contains APIs like
-> simple_pin_... which are completely inimical to namespacing.  Currently
-> securityfs contains them as well, so in that regard they're both no
-> better than each other.  The point I was making is that securityfs is
-> getting namespaced by the IMA namespace rework (which is pretty complex
-> due to having to replace the simple_pin_... APIs), so when (perhaps if)
-> the IMA namespace is accepted, securityfs will make a good home for
-> quantities that need namespacing.  That's not to say you can't
-> namespace things in sysfs, you can, in the same way that you can get a
-> round peg into a square hole if you bang hard enough.
->
-> So perhaps we could get back to the original question of whether these
-> quantities would ever be namespaced ... or, conversely, whether they
-> would never need namespacing.
 
-To clarify, I brought up in the discussion about namespacing 
-considerations because I was asked about them. However, I determined 
-there were none because firmware object interactions are invariant 
-across namespaces.  I don't see this changing in the future given that 
-the firmware objects have no notion of namespacing.
+>  drivers/mfd/88pm800.c                            |  5 ++---
+>  drivers/mfd/88pm805.c                            |  5 ++---
+>  drivers/mfd/aat2870-core.c                       |  5 ++---
+>  drivers/mfd/act8945a.c                           |  5 ++---
+>  drivers/mfd/adp5520.c                            |  6 +++---
+>  drivers/mfd/arizona-i2c.c                        |  6 +++---
+>  drivers/mfd/as3711.c                             |  5 ++---
+>  drivers/mfd/as3722.c                             |  5 ++---
+>  drivers/mfd/atc260x-i2c.c                        |  5 ++---
+>  drivers/mfd/axp20x-i2c.c                         |  5 ++---
+>  drivers/mfd/bcm590xx.c                           |  5 ++---
+>  drivers/mfd/bd9571mwv.c                          |  5 ++---
+>  drivers/mfd/da903x.c                             |  6 +++---
+>  drivers/mfd/da9052-i2c.c                         |  6 +++---
+>  drivers/mfd/da9055-i2c.c                         |  5 ++---
+>  drivers/mfd/da9062-core.c                        |  6 +++---
+>  drivers/mfd/da9063-i2c.c                         |  6 +++---
+>  drivers/mfd/da9150-core.c                        |  5 ++---
+>  drivers/mfd/khadas-mcu.c                         |  5 ++---
+>  drivers/mfd/lm3533-core.c                        |  5 ++---
+>  drivers/mfd/lp3943.c                             |  4 ++--
+>  drivers/mfd/lp873x.c                             |  5 ++---
+>  drivers/mfd/lp87565.c                            |  5 ++---
+>  drivers/mfd/lp8788.c                             |  4 ++--
+>  drivers/mfd/madera-i2c.c                         |  6 +++---
+>  drivers/mfd/max14577.c                           |  6 +++---
+>  drivers/mfd/max77620.c                           |  6 +++---
+>  drivers/mfd/max77693.c                           |  6 +++---
+>  drivers/mfd/max77843.c                           |  6 +++---
+>  drivers/mfd/max8907.c                            |  5 ++---
+>  drivers/mfd/max8925-i2c.c                        |  5 ++---
+>  drivers/mfd/max8997.c                            |  6 +++---
+>  drivers/mfd/max8998.c                            |  6 +++---
+>  drivers/mfd/mc13xxx-i2c.c                        |  6 +++---
+>  drivers/mfd/menelaus.c                           |  5 ++---
+>  drivers/mfd/menf21bmc.c                          |  4 ++--
+>  drivers/mfd/palmas.c                             |  5 ++---
+>  drivers/mfd/pcf50633-core.c                      |  5 ++---
+>  drivers/mfd/rc5t583.c                            |  5 ++---
+>  drivers/mfd/retu-mfd.c                           |  4 ++--
+>  drivers/mfd/rk808.c                              |  5 ++---
+>  drivers/mfd/rohm-bd718x7.c                       |  5 ++---
+>  drivers/mfd/rsmu_i2c.c                           |  6 +++---
+>  drivers/mfd/rt5033.c                             |  5 ++---
+>  drivers/mfd/sec-core.c                           |  5 ++---
+>  drivers/mfd/si476x-i2c.c                         |  6 +++---
+>  drivers/mfd/sky81452.c                           |  5 ++---
+>  drivers/mfd/stmfx.c                              |  5 ++---
+>  drivers/mfd/stmpe-i2c.c                          |  5 +++--
+>  drivers/mfd/stpmic1.c                            |  5 ++---
+>  drivers/mfd/stw481x.c                            |  5 ++---
+>  drivers/mfd/tc3589x.c                            |  6 +++---
+>  drivers/mfd/ti-lmu.c                             |  5 +++--
+>  drivers/mfd/tps6105x.c                           |  5 ++---
+>  drivers/mfd/tps65010.c                           |  6 +++---
+>  drivers/mfd/tps6507x.c                           |  5 ++---
+>  drivers/mfd/tps65086.c                           |  5 ++---
+>  drivers/mfd/tps65090.c                           |  5 ++---
+>  drivers/mfd/tps65218.c                           |  5 ++---
+>  drivers/mfd/tps6586x.c                           |  5 ++---
+>  drivers/mfd/tps65910.c                           |  6 +++---
+>  drivers/mfd/tps65912-i2c.c                       |  5 ++---
+>  drivers/mfd/twl-core.c                           |  5 +++--
+>  drivers/mfd/twl6040.c                            |  5 ++---
+>  drivers/mfd/wl1273-core.c                        |  5 ++---
+>  drivers/mfd/wm831x-i2c.c                         |  6 +++---
+>  drivers/mfd/wm8350-i2c.c                         |  5 ++---
+>  drivers/mfd/wm8400-core.c                        |  5 ++---
+>  drivers/mfd/wm8994-core.c                        |  6 +++---
 
-Thanks & Regards,
+For my own reference (apply this as-is to your sign-off block):
 
-     - Nayna
+  Acked-for-MFD-by: Lee Jones <lee@kernel.org>
 
+>  drivers/video/backlight/adp8860_bl.c             |  6 +++---
+>  drivers/video/backlight/adp8870_bl.c             |  6 +++---
+>  drivers/video/backlight/arcxcnn_bl.c             |  4 ++--
+>  drivers/video/backlight/bd6107.c                 |  5 ++---
+>  drivers/video/backlight/lm3630a_bl.c             |  5 ++---
+>  drivers/video/backlight/lm3639_bl.c              |  5 ++---
+>  drivers/video/backlight/lp855x_bl.c              |  5 +++--
+>  drivers/video/backlight/lv5207lp.c               |  5 ++---
+>  drivers/video/backlight/tosa_bl.c                |  5 ++---
+>  drivers/video/fbdev/matrox/matroxfb_maven.c      |  5 ++---
+
+For my own reference (apply this as-is to your sign-off block):
+
+  Acked-for-Backlight-by: Lee Jones <lee@kernel.org>
+
+-- 
+Lee Jones [李琼斯]
