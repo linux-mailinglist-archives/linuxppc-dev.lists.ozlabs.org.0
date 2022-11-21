@@ -2,73 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0CE76318E1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Nov 2022 04:24:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 842C463190E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Nov 2022 04:52:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NFt695Tv4z3dvQ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Nov 2022 14:24:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NFtl033Znz3dvM
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Nov 2022 14:52:44 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.a=rsa-sha256 header.s=20151216 header.b=P2IcUTk9;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.a=rsa-sha256 header.s=20151216 header.b=P2IcUTk9;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=G3+BJ6h3;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=hansenpartnership.com (client-ip=2607:fcd0:100:8a00::2; helo=bedivere.hansenpartnership.com; envelope-from=james.bottomley@hansenpartnership.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::534; helo=mail-pg1-x534.google.com; envelope-from=zhouzhouyi@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.a=rsa-sha256 header.s=20151216 header.b=P2IcUTk9;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.a=rsa-sha256 header.s=20151216 header.b=P2IcUTk9;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=G3+BJ6h3;
 	dkim-atps=neutral
-X-Greylist: delayed 529 seconds by postgrey-1.36 at boromir; Mon, 21 Nov 2022 14:23:25 AEDT
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [IPv6:2607:fcd0:100:8a00::2])
+Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NFt595Qphz30Ky
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Nov 2022 14:23:25 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1669000470;
-	bh=lpZgnMAIPQYWEsczCTUzFV69l9Fd2DYhbsoIEDC3ECs=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=P2IcUTk9hKaJ2w074QgS5zNElUbLshmqP8b1qYqP+whvHuvLbN/tyIBjZwlXo5EMN
-	 x2K3CWSGdtIyl1khT8nrcIsznm5wBDQFyGoAv2BPV/xCQuNYSMH6zAQUx+7ZnhKL5h
-	 DFJxIh79TqxJxcVnMeBxXAPb7EkRxow6sg6OD0l8=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id C51E31285D2A;
-	Sun, 20 Nov 2022 22:14:30 -0500 (EST)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-	by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id FrVsRsd6AIFW; Sun, 20 Nov 2022 22:14:30 -0500 (EST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1669000470;
-	bh=lpZgnMAIPQYWEsczCTUzFV69l9Fd2DYhbsoIEDC3ECs=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=P2IcUTk9hKaJ2w074QgS5zNElUbLshmqP8b1qYqP+whvHuvLbN/tyIBjZwlXo5EMN
-	 x2K3CWSGdtIyl1khT8nrcIsznm5wBDQFyGoAv2BPV/xCQuNYSMH6zAQUx+7ZnhKL5h
-	 DFJxIh79TqxJxcVnMeBxXAPb7EkRxow6sg6OD0l8=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::c14])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id E7AF21285CE5;
-	Sun, 20 Nov 2022 22:14:28 -0500 (EST)
-Message-ID: <88111914afc6204b2a3fb82ded5d9bfb6420bca6.camel@HansenPartnership.com>
-Subject: Re: [PATCH 2/4] fs: define a firmware security filesystem named
- fwsecurityfs
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Nayna
-	 <nayna@linux.vnet.ibm.com>
-Date: Sun, 20 Nov 2022 22:14:26 -0500
-In-Reply-To: <Y3pSF2MRIXd6aH14@kroah.com>
-References: <20221106210744.603240-1-nayna@linux.ibm.com>
-	 <20221106210744.603240-3-nayna@linux.ibm.com> <Y2uvUFQ9S2oaefSY@kroah.com>
-	 <8447a726-c45d-8ebb-2a74-a4d759631e64@linux.vnet.ibm.com>
-	 <Y2zLRw/TzV/sWgqO@kroah.com>
-	 <44191f02-7360-bca3-be8f-7809c1562e68@linux.vnet.ibm.com>
-	 <Y3anQukokMcQr+iE@kroah.com>
-	 <d615180d-6fe5-d977-da6a-e88fd8bf5345@linux.vnet.ibm.com>
-	 <Y3pSF2MRIXd6aH14@kroah.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NFtk14Zmzz2yQH
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Nov 2022 14:51:52 +1100 (AEDT)
+Received: by mail-pg1-x534.google.com with SMTP id f3so10061654pgc.2
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Nov 2022 19:51:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=GxntLd/ct95PDR+cb+voA3PVWvgQd225Bxlaz4kUMug=;
+        b=G3+BJ6h3S2AwsBJvMKzpLcRAMmfnvNbqghjwS3l9dKG7H2nqHRd+WuWvUxxO4V9t7o
+         pSkW2ykPq5piIQ6mXp6Jk628w6L1iflshHCNR7Rk9ja3KpcvZVkXod+WBOpoTGddqns4
+         aYz9RO+oEVhTlg7TbVQ8KS/5s4DKt7L+GUMxrPRsn1rvd97A1Ir+OszygWwOKvVmmvOZ
+         7jSHc4PX2jnGsX6hOL9G/KVsr7G28ajHEBhISEL00cgRSDqdHgSBEAtjOsK4TanESi0F
+         +W65wypspVWFZHnYM5w2Scbxv2l99dKfkH7N6xwNvQeI6JXAOlKDnMaR3tDTRQ6UiFlD
+         qBfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GxntLd/ct95PDR+cb+voA3PVWvgQd225Bxlaz4kUMug=;
+        b=umIxzoRP/1W3Vhl2jrUF3N4RDHKSFITtR3mAwSoUmmwE5XOjH3hEgHvr+zVETQIUfX
+         iVG5XN43tz80Xxp87Ktw9Qj7Dx93nswhlYWSCYu2X+hMKJVDZBHC6KosP00PNqHPeDB/
+         6hY0UEtghK7IuL6aQWfjtnnNJuurBTCLmiQpISAS2Bi+aEV6eCmVMTUEnAJ5LahUJJ7l
+         jvzpjcaKURz3IW4o+YH/kC/PHXh5401WVmx9zzrXEnXr+G41xBUplZ9Q7wN6ffYkU5AB
+         FbmLs0nywucXr2+da2nBQljhJcucKh0yEV25S2ikNZPZsI0DCL322SU4ZJs7cT3m/uZf
+         5OqQ==
+X-Gm-Message-State: ANoB5plDDWnVczghOgajogeUxH0MaYvGCTt1VM9YgF1Ed6yzp/j/pTnS
+	/7dAYaRiRhIdaZ4LrKZYX7A=
+X-Google-Smtp-Source: AA0mqf6GmmnIaAXxRDWdzo2mwsMABgOBqxpoLd1EYj+5NiHrODlNUWz1ysL61n9/fPCAgD3u6ATjwg==
+X-Received: by 2002:a63:d241:0:b0:439:8688:a98d with SMTP id t1-20020a63d241000000b004398688a98dmr5641021pgi.424.1669002709390;
+        Sun, 20 Nov 2022 19:51:49 -0800 (PST)
+Received: from localhost.localdomain ([194.5.48.82])
+        by smtp.gmail.com with ESMTPSA id o14-20020a170902d4ce00b00186acb14c4asm8476124plg.67.2022.11.20.19.51.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 20 Nov 2022 19:51:49 -0800 (PST)
+From: Zhouyi Zhou <zhouzhouyi@gmail.com>
+To: fweisbec@gmail.com,
+	tglx@linutronix.de,
+	mingo@kernel.org,
+	dave@stgolabs.net,
+	paulmck@kernel.org,
+	josh@joshtriplett.org,
+	mpe@ellerman.id.au,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH linux-next][RFC]torture: avoid offline tick_do_timer_cpu
+Date: Mon, 21 Nov 2022 11:51:40 +0800
+Message-Id: <20221121035140.118651-1-zhouzhouyi@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -82,64 +83,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Matthew Garrett <mjg59@srcf.ucam.org>, linux-efi@vger.kernel.org, Andrew Donnellan <ajd@linux.ibm.com>, Nayna Jain <nayna@linux.ibm.com>, linux-kernel@vger.kernel.org, npiggin@gmail.com, Dov Murik <dovmurik@linux.ibm.com>, Dave Hansen <dave.hansen@intel.com>, linux-security-module <linux-security-module@vger.kernel.org>, Paul Mackerras <paulus@samba.org>, linux-fsdevel@vger.kernel.org, George Wilson <gcwilson@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Stefan Berger <stefanb@linux.ibm.com>
+Cc: Zhouyi Zhou <zhouzhouyi@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, 2022-11-20 at 17:13 +0100, Greg Kroah-Hartman wrote:
-> On Sat, Nov 19, 2022 at 01:20:09AM -0500, Nayna wrote:
-> > 
-> > On 11/17/22 16:27, Greg Kroah-Hartman wrote:
-> > > On Mon, Nov 14, 2022 at 06:03:43PM -0500, Nayna wrote:
-> > > > On 11/10/22 04:58, Greg Kroah-Hartman wrote:
-[...]
-> > > > > I do not understand, sorry.  What does namespaces have to do
-> > > > > with this?
-> > > > > sysfs can already handle namespaces just fine, why not use
-> > > > > that?
-> > > > Firmware objects are not namespaced. I mentioned it here as an
-> > > > example of the difference between firmware and kernel objects.
-> > > > It is also in response to the feedback from James Bottomley in
-> > > > RFC v2 [
-> > > > https://lore.kernel.org/linuxppc-dev/41ca51e8db9907d9060cc38ad
-> > > > b59a66dcae4c59b.camel@HansenPartnership.com/].
-> > > I do not understand, sorry.  Do you want to use a namespace for
-> > > these or not?  The code does not seem to be using namespaces. 
-> > > You can use sysfs with, or without, a namespace so I don't
-> > > understand the issue here.
-> > > 
-> > > With your code, there is no namespace.
-> > 
-> > You are correct. There's no namespace for these.
-> 
-> So again, I do not understand.  Do you want to use filesystem
-> namespaces, or do you not?
+During CPU-hotplug torture (CONFIG_NO_HZ_FULL=y), if we try to
+offline tick_do_timer_cpu, the operation will fail because in
+function tick_nohz_cpu_down:
+```
+if (tick_nohz_full_running && tick_do_timer_cpu == cpu)
+      return -EBUSY;
+```
+Above bug was first discovered in torture tests performed in PPC VM
+of Open Source Lab of Oregon State University, and reproducable in RISC-V
+and X86-64 (with additional kernel commandline cpu0_hotplug).
 
-Since this seems to go back to my email quoted again, let me repeat:
-the question isn't if this patch is namespaced; I think you've agreed
-several times it isn't.  The question is if the exposed properties
-would ever need to be namespaced.  This is a subtle and complex
-question which isn't at all explored by the above interchange.
+In this patch, we avoid offline tick_do_timer_cpu by distribute
+the offlining cpu among remaining cpus.
 
-> How again can you not use sysfs or securityfs due to namespaces? 
-> What is missing?
+Signed-off-by: Zhouyi Zhou <zhouzhouyi@gmail.com>
+---
+ include/linux/tick.h        |  1 +
+ kernel/time/tick-common.c   |  1 +
+ kernel/time/tick-internal.h |  1 -
+ kernel/torture.c            | 10 ++++++++++
+ 4 files changed, 12 insertions(+), 1 deletion(-)
 
-I already explained in the email that sysfs contains APIs like
-simple_pin_... which are completely inimical to namespacing.  Currently
-securityfs contains them as well, so in that regard they're both no
-better than each other.  The point I was making is that securityfs is
-getting namespaced by the IMA namespace rework (which is pretty complex
-due to having to replace the simple_pin_... APIs), so when (perhaps if)
-the IMA namespace is accepted, securityfs will make a good home for
-quantities that need namespacing.  That's not to say you can't
-namespace things in sysfs, you can, in the same way that you can get a
-round peg into a square hole if you bang hard enough.
-
-So perhaps we could get back to the original question of whether these
-quantities would ever be namespaced ... or, conversely, whether they
-would never need namespacing.
-
-James
-
-
+diff --git a/include/linux/tick.h b/include/linux/tick.h
+index bfd571f18cfd..23cc0b205853 100644
+--- a/include/linux/tick.h
++++ b/include/linux/tick.h
+@@ -14,6 +14,7 @@
+ #include <linux/rcupdate.h>
+ 
+ #ifdef CONFIG_GENERIC_CLOCKEVENTS
++extern int tick_do_timer_cpu __read_mostly;
+ extern void __init tick_init(void);
+ /* Should be core only, but ARM BL switcher requires it */
+ extern void tick_suspend_local(void);
+diff --git a/kernel/time/tick-common.c b/kernel/time/tick-common.c
+index 46789356f856..87b9b9afa320 100644
+--- a/kernel/time/tick-common.c
++++ b/kernel/time/tick-common.c
+@@ -48,6 +48,7 @@ ktime_t tick_next_period;
+  *    procedure also covers cpu hotplug.
+  */
+ int tick_do_timer_cpu __read_mostly = TICK_DO_TIMER_BOOT;
++EXPORT_SYMBOL_GPL(tick_do_timer_cpu);
+ #ifdef CONFIG_NO_HZ_FULL
+ /*
+  * tick_do_timer_boot_cpu indicates the boot CPU temporarily owns
+diff --git a/kernel/time/tick-internal.h b/kernel/time/tick-internal.h
+index 649f2b48e8f0..8953dca10fdd 100644
+--- a/kernel/time/tick-internal.h
++++ b/kernel/time/tick-internal.h
+@@ -15,7 +15,6 @@
+ 
+ DECLARE_PER_CPU(struct tick_device, tick_cpu_device);
+ extern ktime_t tick_next_period;
+-extern int tick_do_timer_cpu __read_mostly;
+ 
+ extern void tick_setup_periodic(struct clock_event_device *dev, int broadcast);
+ extern void tick_handle_periodic(struct clock_event_device *dev);
+diff --git a/kernel/torture.c b/kernel/torture.c
+index 789aeb0e1159..bccbdd33dda2 100644
+--- a/kernel/torture.c
++++ b/kernel/torture.c
+@@ -33,6 +33,7 @@
+ #include <linux/delay.h>
+ #include <linux/stat.h>
+ #include <linux/slab.h>
++#include <linux/tick.h>
+ #include <linux/trace_clock.h>
+ #include <linux/ktime.h>
+ #include <asm/byteorder.h>
+@@ -358,7 +359,16 @@ torture_onoff(void *arg)
+ 			schedule_timeout_interruptible(HZ / 10);
+ 			continue;
+ 		}
++#ifdef CONFIG_NO_HZ_FULL
++		/* do not offline tick do timer cpu */
++		if (tick_nohz_full_running) {
++			cpu = (torture_random(&rand) >> 4) % maxcpu;
++			if (cpu >= tick_do_timer_cpu)
++				cpu = (cpu + 1) % (maxcpu + 1);
++		} else
++#else
+ 		cpu = (torture_random(&rand) >> 4) % (maxcpu + 1);
++#endif
+ 		if (!torture_offline(cpu,
+ 				     &n_offline_attempts, &n_offline_successes,
+ 				     &sum_offline, &min_offline, &max_offline))
+-- 
+2.34.1
 
