@@ -1,98 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52602632849
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Nov 2022 16:33:45 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFCF8632883
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Nov 2022 16:46:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NGBHq1VWlz3cL1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Nov 2022 02:33:43 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=K7o49WGe;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=K7o49WGe;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NGBZ25sCcz3f4P
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Nov 2022 02:46:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=joe.lawrence@redhat.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=K7o49WGe;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=K7o49WGe;
-	dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.189; helo=szxga03-in.huawei.com; envelope-from=yangyingliang@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NGBGG2Rl3z3cJv
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Nov 2022 02:32:21 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1669044737;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aAnNSC79PB+nEOAdqHzoVvnCbPLv+tVDX8zsNeLu1uI=;
-	b=K7o49WGekkO8f2GwroPK7CenXe2r6iiacCUBEwlejsIo1QML1p5+oCskZJ/fOmdNu2t5Rm
-	FzRsn/LXkCM3zpFjxxb7H/Sg8LxJ/p+Lpwa8DqmUrIqXJ4bUbrI6lpzp0zBw+MpqIavaBv
-	b4FGyc8MJ6XBBlt6al1x/95uUbzJfr4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1669044737;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aAnNSC79PB+nEOAdqHzoVvnCbPLv+tVDX8zsNeLu1uI=;
-	b=K7o49WGekkO8f2GwroPK7CenXe2r6iiacCUBEwlejsIo1QML1p5+oCskZJ/fOmdNu2t5Rm
-	FzRsn/LXkCM3zpFjxxb7H/Sg8LxJ/p+Lpwa8DqmUrIqXJ4bUbrI6lpzp0zBw+MpqIavaBv
-	b4FGyc8MJ6XBBlt6al1x/95uUbzJfr4=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-42-SeawZv6dMzimdgn-JF9oHg-1; Mon, 21 Nov 2022 10:32:13 -0500
-X-MC-Unique: SeawZv6dMzimdgn-JF9oHg-1
-Received: by mail-qk1-f199.google.com with SMTP id bj1-20020a05620a190100b006fa12a05188so15842592qkb.4
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Nov 2022 07:32:13 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:content-language:in-reply-to:mime-version
-         :user-agent:date:message-id:from:references:cc:to:subject
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aAnNSC79PB+nEOAdqHzoVvnCbPLv+tVDX8zsNeLu1uI=;
-        b=NWiwSWI8MHqSDma9P2z6/BNHdVEhNgTvqrJra++4Wya6/2dUXTzV5lGk+56vnax8RP
-         lPngLOQa17IlXe2/+/O9rfTEFQjzTeK5/aH4SR08jA7lzS6qymGnUhwbhVSbQiX/86/h
-         JkUycfugHISPNMdMJ3nkCBXjNp7NspfIz942EbGGDstI0RfnsqSXe+YDUqt3Tlla7lJS
-         NBuDSAhECQEq/g2ogD1ewQgB0ayc5j0LGlSBSlCsYTVi99O0clC/RDnf5AdoatSapdGY
-         +yq1CdGYUzAyQ2yv0OABfWqKxw+PSOqI02MCceN3X6DsCViTaDd7s/wH2hmRE9yrmvg1
-         cbNA==
-X-Gm-Message-State: ANoB5pljq3shwYcbhu8HQwpMxBdjWA5HJE1+KSN1DqKXy9CyssL09pao
-	Dj4YmWkHQQybOFlLxLLKGAMtTP6Sg+cJ838WmdsRlnj0U5QKI17c7+i693jilazMoZxLR38d28w
-	ITdPtpXiYKGpkZbZZgovPZnF3kQ==
-X-Received: by 2002:a05:620a:c02:b0:6ec:54d6:ea87 with SMTP id l2-20020a05620a0c0200b006ec54d6ea87mr16526649qki.245.1669044733168;
-        Mon, 21 Nov 2022 07:32:13 -0800 (PST)
-X-Google-Smtp-Source: AA0mqf5QzcKpByoH5IFOBRZhUId/n1mZE/TJWamNTXtflc+eRaSTrKwX2lDdC7dfI+/Rue70ehtUbg==
-X-Received: by 2002:a05:620a:c02:b0:6ec:54d6:ea87 with SMTP id l2-20020a05620a0c0200b006ec54d6ea87mr16526622qki.245.1669044732744;
-        Mon, 21 Nov 2022 07:32:12 -0800 (PST)
-Received: from [192.168.1.9] (pool-68-160-135-240.bstnma.fios.verizon.net. [68.160.135.240])
-        by smtp.gmail.com with ESMTPSA id k7-20020ac80747000000b003a4d5fed8c3sm6718285qth.85.2022.11.21.07.32.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 21 Nov 2022 07:32:11 -0800 (PST)
-Subject: Re: [PATCH v6] livepatch: Clear relocation targets on a module
- removal
-To: Song Liu <song@kernel.org>
-References: <20220901171252.2148348-1-song@kernel.org>
- <Y3expGRt4cPoZgHL@alley>
- <CAPhsuW4MaiJBTNnwVhqkmxPxBn8e1cn9PPGm9PkgF6YaO0AWKQ@mail.gmail.com>
-From: Joe Lawrence <joe.lawrence@redhat.com>
-Message-ID: <09ac46a0-45fe-e280-cabb-682e05c7fddc@redhat.com>
-Date: Mon, 21 Nov 2022 10:32:17 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NGBYT27Ssz3bc5
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Nov 2022 02:45:29 +1100 (AEDT)
+Received: from dggpemm500023.china.huawei.com (unknown [172.30.72.56])
+	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4NGBTW327tzFqSM;
+	Mon, 21 Nov 2022 23:42:07 +0800 (CST)
+Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
+ dggpemm500023.china.huawei.com (7.185.36.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Mon, 21 Nov 2022 23:45:21 +0800
+Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
+ (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Mon, 21 Nov
+ 2022 23:45:21 +0800
+From: Yang Yingliang <yangyingliang@huawei.com>
+To: <fbarrat@linux.ibm.com>, <ajd@linux.ibm.com>, <arnd@arndb.de>,
+	<gregkh@linuxfoundation.org>, <mpe@ellerman.id.au>
+Subject: [PATCH v2] ocxl: fix pci device refcount leak when calling get_function_0()
+Date: Mon, 21 Nov 2022 23:43:39 +0800
+Message-ID: <20221121154339.4088935-1-yangyingliang@huawei.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <CAPhsuW4MaiJBTNnwVhqkmxPxBn8e1cn9PPGm9PkgF6YaO0AWKQ@mail.gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.175.103.91]
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ dggpemm500007.china.huawei.com (7.185.36.183)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,44 +51,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Petr Mladek <pmladek@suse.com>, jikos@kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, Josh Poimboeuf <jpoimboe@redhat.com>, live-patching@vger.kernel.org, mbenes@suse.cz, linuxppc-dev@lists.ozlabs.org, jpoimboe@kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, yangyingliang@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 11/18/22 12:14 PM, Song Liu wrote:
-> Hi Petr,
-> 
-> On Fri, Nov 18, 2022 at 8:24 AM Petr Mladek <pmladek@suse.com> wrote:
->>
->> On Thu 2022-09-01 10:12:52, Song Liu wrote:
-> [...]
->>>
->>>  arch/powerpc/kernel/module_32.c |  10 ++++
->>>  arch/powerpc/kernel/module_64.c |  49 +++++++++++++++
->>>  arch/s390/kernel/module.c       |   8 +++
->>>  arch/x86/kernel/module.c        | 102 +++++++++++++++++++++++---------
->>>  include/linux/moduleloader.h    |   7 +++
->>>  kernel/livepatch/core.c         |  41 ++++++++++++-
->>
->> First, thanks a lot for working on this.
->>
->> I can't check or test the powerpc and s390 code easily.
->>
->> I am going to comment only x86 and generic code. It looks good
->> but it needs some changes to improve maintainability.
-> 
-> Thanks for these comments and suggestions. I will work on them
-> and send v4.
-> 
+get_function_0() calls pci_get_domain_bus_and_slot(), as comment
+says, it returns a pci device with refcount increment, so after
+using it, pci_dev_put() needs be called.
 
-Hi Song,
+Get the device reference when get_function_0() is not called, so
+pci_dev_put() can be called in the error path and callers
+unconditionally. And add comment above get_dvsec_vendor0() to tell
+callers to call pci_dev_put().
 
-I'll help with testing the arches (at least ppc64le and s390x, I can
-only cross-build ppc32).  I can either pick up the patches from the list
-when you post, or if you want to run them through testing first, lmk.
+Fixes: 87db7579ebd5 ("ocxl: control via sysfs whether the FPGA is reloaded on a link reset")
+Suggested-by: Andrew Donnellan <ajd@linux.ibm.com>
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+---
+v1 -> v2:
+  Add comment above get_dvsec_vendor0().
+  Get reference where dev is function 0, and call pci_dev_put()
+  unconditionally in callers.
+---
+ drivers/misc/ocxl/config.c | 20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
 
-Thanks,
-
+diff --git a/drivers/misc/ocxl/config.c b/drivers/misc/ocxl/config.c
+index e401a51596b9..92ab49705f64 100644
+--- a/drivers/misc/ocxl/config.c
++++ b/drivers/misc/ocxl/config.c
+@@ -193,6 +193,18 @@ static int read_dvsec_vendor(struct pci_dev *dev)
+ 	return 0;
+ }
+ 
++/**
++ * get_dvsec_vendor0() - Find a related PCI device (function 0)
++ * @dev: PCI device to match
++ * @dev0: The PCI device (function 0) found
++ * @out_pos: The position of PCI device (function 0)
++ *
++ * Returns 0 on success, negative on failure.
++ *
++ * NOTE: If it's successful, the reference of dev0 is increased,
++ * so after using it, the callers must call pci_dev_put() to give
++ * up the reference.
++ */
+ static int get_dvsec_vendor0(struct pci_dev *dev, struct pci_dev **dev0,
+ 			     int *out_pos)
+ {
+@@ -202,10 +214,14 @@ static int get_dvsec_vendor0(struct pci_dev *dev, struct pci_dev **dev0,
+ 		dev = get_function_0(dev);
+ 		if (!dev)
+ 			return -1;
++	} else {
++		dev = pci_dev_get(dev);
+ 	}
+ 	pos = find_dvsec(dev, OCXL_DVSEC_VENDOR_ID);
+-	if (!pos)
++	if (!pos) {
++		pci_dev_put(dev);
+ 		return -1;
++	}
+ 	*dev0 = dev;
+ 	*out_pos = pos;
+ 	return 0;
+@@ -222,6 +238,7 @@ int ocxl_config_get_reset_reload(struct pci_dev *dev, int *val)
+ 
+ 	pci_read_config_dword(dev0, pos + OCXL_DVSEC_VENDOR_RESET_RELOAD,
+ 			      &reset_reload);
++	pci_dev_put(dev0);
+ 	*val = !!(reset_reload & BIT(0));
+ 	return 0;
+ }
+@@ -243,6 +260,7 @@ int ocxl_config_set_reset_reload(struct pci_dev *dev, int val)
+ 		reset_reload &= ~BIT(0);
+ 	pci_write_config_dword(dev0, pos + OCXL_DVSEC_VENDOR_RESET_RELOAD,
+ 			       reset_reload);
++	pci_dev_put(dev0);
+ 	return 0;
+ }
+ 
 -- 
-Joe
+2.25.1
 
