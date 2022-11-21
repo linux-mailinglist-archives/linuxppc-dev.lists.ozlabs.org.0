@@ -2,73 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCA80631781
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Nov 2022 01:20:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0CE76318E1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Nov 2022 04:24:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NFp1X5FpPz3000
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Nov 2022 11:20:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NFt695Tv4z3dvQ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Nov 2022 14:24:17 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NLc2hrKL;
+	dkim=pass (1024-bit key; secure) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.a=rsa-sha256 header.s=20151216 header.b=P2IcUTk9;
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.a=rsa-sha256 header.s=20151216 header.b=P2IcUTk9;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=hansenpartnership.com (client-ip=2607:fcd0:100:8a00::2; helo=bedivere.hansenpartnership.com; envelope-from=james.bottomley@hansenpartnership.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NLc2hrKL;
+	dkim=pass (1024-bit key; secure) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.a=rsa-sha256 header.s=20151216 header.b=P2IcUTk9;
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.a=rsa-sha256 header.s=20151216 header.b=P2IcUTk9;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+X-Greylist: delayed 529 seconds by postgrey-1.36 at boromir; Mon, 21 Nov 2022 14:23:25 AEDT
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [IPv6:2607:fcd0:100:8a00::2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NFp0Y5BzVz2ybK
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Nov 2022 11:19:09 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 32AF7B80C8B
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Nov 2022 00:19:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id EB46FC433D6
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Nov 2022 00:19:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1668989945;
-	bh=iHkNdDT7+g8X+tRzTkBRLQqzBJkAy2hjLmoOXulZcPg=;
-	h=From:To:Subject:Date:From;
-	b=NLc2hrKL/KCHT9bt7CTuJRFaZ2JjBNjnMciL3Hcm5cQ8fwTUEFeRYTo4S6IUCtcbr
-	 8gpDRer7ZbOqHlXKeIzWKGD1aipTOZpuddH/dPjR/MYcDSxhwbyNpROQrETf7W8tec
-	 7v8mR1Nax+jUy2lLCCJ8pPRSld7pqvlHnQXxDp0dlERs4vCyVeex9r7hf69xxpO3te
-	 xzUUrWjYfFGjPKPTpGpAVUDDO7UR34bElKHlnstKqlV3HMM8aapCr5O+cm5Ts1i6mM
-	 Zws1Qs4Jn4Kmqn9jTuSs9WdBrAJM52oF6c3IoBqh6PciwZlbST4N+MLRfw1y7vZbl+
-	 rrKrcM2yZzHEg==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id C9B1CC433E4; Mon, 21 Nov 2022 00:19:04 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 216715] New: kernel 6.1-rc5 + KASAN_OUTLINE fails to boot at
- very early stage when DEBUG_PAGEALLOC_ENABLE_DEFAULT is enabled (PowerMac G4
- 3,6)
-Date: Mon, 21 Nov 2022 00:19:04 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: new
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-32
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: erhard_f@mailbox.org
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: bug_id short_desc product version
- cf_kernel_version rep_platform op_sys cf_tree bug_status bug_severity
- priority component assigned_to reporter cc cf_regression attachments.created
-Message-ID: <bug-216715-206035@https.bugzilla.kernel.org/>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NFt595Qphz30Ky
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Nov 2022 14:23:25 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1669000470;
+	bh=lpZgnMAIPQYWEsczCTUzFV69l9Fd2DYhbsoIEDC3ECs=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=P2IcUTk9hKaJ2w074QgS5zNElUbLshmqP8b1qYqP+whvHuvLbN/tyIBjZwlXo5EMN
+	 x2K3CWSGdtIyl1khT8nrcIsznm5wBDQFyGoAv2BPV/xCQuNYSMH6zAQUx+7ZnhKL5h
+	 DFJxIh79TqxJxcVnMeBxXAPb7EkRxow6sg6OD0l8=
+Received: from localhost (localhost [127.0.0.1])
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id C51E31285D2A;
+	Sun, 20 Nov 2022 22:14:30 -0500 (EST)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+	by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id FrVsRsd6AIFW; Sun, 20 Nov 2022 22:14:30 -0500 (EST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1669000470;
+	bh=lpZgnMAIPQYWEsczCTUzFV69l9Fd2DYhbsoIEDC3ECs=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=P2IcUTk9hKaJ2w074QgS5zNElUbLshmqP8b1qYqP+whvHuvLbN/tyIBjZwlXo5EMN
+	 x2K3CWSGdtIyl1khT8nrcIsznm5wBDQFyGoAv2BPV/xCQuNYSMH6zAQUx+7ZnhKL5h
+	 DFJxIh79TqxJxcVnMeBxXAPb7EkRxow6sg6OD0l8=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::c14])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id E7AF21285CE5;
+	Sun, 20 Nov 2022 22:14:28 -0500 (EST)
+Message-ID: <88111914afc6204b2a3fb82ded5d9bfb6420bca6.camel@HansenPartnership.com>
+Subject: Re: [PATCH 2/4] fs: define a firmware security filesystem named
+ fwsecurityfs
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Nayna
+	 <nayna@linux.vnet.ibm.com>
+Date: Sun, 20 Nov 2022 22:14:26 -0500
+In-Reply-To: <Y3pSF2MRIXd6aH14@kroah.com>
+References: <20221106210744.603240-1-nayna@linux.ibm.com>
+	 <20221106210744.603240-3-nayna@linux.ibm.com> <Y2uvUFQ9S2oaefSY@kroah.com>
+	 <8447a726-c45d-8ebb-2a74-a4d759631e64@linux.vnet.ibm.com>
+	 <Y2zLRw/TzV/sWgqO@kroah.com>
+	 <44191f02-7360-bca3-be8f-7809c1562e68@linux.vnet.ibm.com>
+	 <Y3anQukokMcQr+iE@kroah.com>
+	 <d615180d-6fe5-d977-da6a-e88fd8bf5345@linux.vnet.ibm.com>
+	 <Y3pSF2MRIXd6aH14@kroah.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+User-Agent: Evolution 3.42.4 
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,46 +82,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Matthew Garrett <mjg59@srcf.ucam.org>, linux-efi@vger.kernel.org, Andrew Donnellan <ajd@linux.ibm.com>, Nayna Jain <nayna@linux.ibm.com>, linux-kernel@vger.kernel.org, npiggin@gmail.com, Dov Murik <dovmurik@linux.ibm.com>, Dave Hansen <dave.hansen@intel.com>, linux-security-module <linux-security-module@vger.kernel.org>, Paul Mackerras <paulus@samba.org>, linux-fsdevel@vger.kernel.org, George Wilson <gcwilson@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Stefan Berger <stefanb@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D216715
+On Sun, 2022-11-20 at 17:13 +0100, Greg Kroah-Hartman wrote:
+> On Sat, Nov 19, 2022 at 01:20:09AM -0500, Nayna wrote:
+> > 
+> > On 11/17/22 16:27, Greg Kroah-Hartman wrote:
+> > > On Mon, Nov 14, 2022 at 06:03:43PM -0500, Nayna wrote:
+> > > > On 11/10/22 04:58, Greg Kroah-Hartman wrote:
+[...]
+> > > > > I do not understand, sorry.  What does namespaces have to do
+> > > > > with this?
+> > > > > sysfs can already handle namespaces just fine, why not use
+> > > > > that?
+> > > > Firmware objects are not namespaced. I mentioned it here as an
+> > > > example of the difference between firmware and kernel objects.
+> > > > It is also in response to the feedback from James Bottomley in
+> > > > RFC v2 [
+> > > > https://lore.kernel.org/linuxppc-dev/41ca51e8db9907d9060cc38ad
+> > > > b59a66dcae4c59b.camel@HansenPartnership.com/].
+> > > I do not understand, sorry.  Do you want to use a namespace for
+> > > these or not?  The code does not seem to be using namespaces. 
+> > > You can use sysfs with, or without, a namespace so I don't
+> > > understand the issue here.
+> > > 
+> > > With your code, there is no namespace.
+> > 
+> > You are correct. There's no namespace for these.
+> 
+> So again, I do not understand.  Do you want to use filesystem
+> namespaces, or do you not?
 
-            Bug ID: 216715
-           Summary: kernel 6.1-rc5 + KASAN_OUTLINE fails to boot at very
-                    early stage when DEBUG_PAGEALLOC_ENABLE_DEFAULT is
-                    enabled (PowerMac G4 3,6)
-           Product: Platform Specific/Hardware
-           Version: 2.5
-    Kernel Version: 6.1-rc5
-          Hardware: PPC-32
-                OS: Linux
-              Tree: Mainline
-            Status: NEW
-          Severity: normal
-          Priority: P1
-         Component: PPC-32
-          Assignee: platform_ppc-32@kernel-bugs.osdl.org
-          Reporter: erhard_f@mailbox.org
-                CC: christophe.leroy@csgroup.eu
-        Regression: No
+Since this seems to go back to my email quoted again, let me repeat:
+the question isn't if this patch is namespaced; I think you've agreed
+several times it isn't.  The question is if the exposed properties
+would ever need to be namespaced.  This is a subtle and complex
+question which isn't at all explored by the above interchange.
 
-Created attachment 303245
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D303245&action=3Dedit
-kernel .config (6.1-rc5, PowerMac G4 DP)
+> How again can you not use sysfs or securityfs due to namespaces? 
+> What is missing?
 
-Kernel 6.1-rc5 fails to boot on my PowerMac G4 3,6 at a very early stage
-(OpenFirmware console, white background) when built with CONFIG_KASAN_OUTLI=
-NE=3Dy
-and CONFIG_DEBUG_PAGEALLOC_ENABLE_DEFAULT=3Dy.
+I already explained in the email that sysfs contains APIs like
+simple_pin_... which are completely inimical to namespacing.  Currently
+securityfs contains them as well, so in that regard they're both no
+better than each other.  The point I was making is that securityfs is
+getting namespaced by the IMA namespace rework (which is pretty complex
+due to having to replace the simple_pin_... APIs), so when (perhaps if)
+the IMA namespace is accepted, securityfs will make a good home for
+quantities that need namespacing.  That's not to say you can't
+namespace things in sysfs, you can, in the same way that you can get a
+round peg into a square hole if you bang hard enough.
 
-Same kernel .config without CONFIG_DEBUG_PAGEALLOC_ENABLE_DEFAULT just boots
-fine, even when Outline KASAN is enabled and CONFIG_DEBUG_PAGEALLOC=3Dy is =
-set.
-Only CONFIG_DEBUG_PAGEALLOC_ENABLE_DEFAULT seems to provoke the issue.
+So perhaps we could get back to the original question of whether these
+quantities would ever be namespaced ... or, conversely, whether they
+would never need namespacing.
 
---=20
-You may reply to this email to add a comment.
+James
 
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+
+
