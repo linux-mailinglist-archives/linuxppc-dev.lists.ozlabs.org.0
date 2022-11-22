@@ -1,49 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6429E6347FE
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Nov 2022 21:18:57 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A9D86348CB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Nov 2022 21:58:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NGwZR2Qnbz3cck
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Nov 2022 07:18:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NGxRl33zvz3dvB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Nov 2022 07:58:11 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=X7rHdLp7;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33; helo=metis.ext.pengutronix.de; envelope-from=ukl@pengutronix.de; receiver=<UNKNOWN>)
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::336; helo=mail-wm1-x336.google.com; envelope-from=irogers@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=X7rHdLp7;
+	dkim-atps=neutral
+Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NGwYt5rMGz3cKv
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Nov 2022 07:18:23 +1100 (AEDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1oxZhX-0006Qx-Bo; Tue, 22 Nov 2022 21:17:03 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1oxZhR-005v1B-UM; Tue, 22 Nov 2022 21:16:58 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1oxZhS-000s7U-3N; Tue, 22 Nov 2022 21:16:58 +0100
-Date: Tue, 22 Nov 2022 21:16:54 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Jonathan Cameron <jic23@kernel.org>
-Subject: Re: [PATCH 000/606] i2c: Complete conversion to i2c_probe_new
-Message-ID: <20221122201654.5rdaisqho33buibj@pengutronix.de>
-References: <20221118224540.619276-1-uwe@kleine-koenig.org>
- <20221122185818.3740200d@jic23-huawei>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NGxQq4s0Lz3bjW
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Nov 2022 07:57:22 +1100 (AEDT)
+Received: by mail-wm1-x336.google.com with SMTP id i64-20020a1c3b43000000b003d016c21100so6648039wma.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Nov 2022 12:57:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JKuICPYKZ9k0XZnBRysJX6NiMCJfmExtlbNu8FtJP1I=;
+        b=X7rHdLp79aV6wbOZPObE1MOz+0+MDECt6wlNvu+uY1NNoOlYVIqCJL5DvgsG8KQFdF
+         BIc1lKsonKr3A7YnLdZc2/QOOwjpbmzw7wpOvmlvG7wSbyaVbQjwHFHX1f/TbjrIS2X5
+         QPoF0PPuoXqDFuT2Aux8kGN0Zx7KMwcki8kzjob8WgN5o9wBPpNLwobv39BSnE+p/kS9
+         9Z5VeoOsorHu+4AN+vLBSaAQ9CSqo6WnFNaRJEUCSpMvtLWsYpmZvf+Q1SqAkcnr2Srj
+         3zM1T3fntRpoKo1z2GfCznG4kXdpyU4mDcIW5Xl0Z138dL1mgrEAnqqzJbnan15gVwlR
+         b8Fw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=JKuICPYKZ9k0XZnBRysJX6NiMCJfmExtlbNu8FtJP1I=;
+        b=PtBjDe2YMTfH6l57wnEDvFvUqlPv4YxHdw/pjPGp3PwaAz5iAlTQg5giYgpBdfC4At
+         ujtPcZhYXmY2U/+hU2k8eZcbLLNtmXWfTb/zYlvRD24ekzFtoIylbRZv/1DhionMLViU
+         gTo2GbGaoNbjsvdaTzhQUTl0Exp3OG/dJ2T6RS1AUtGDpWsysjmaVoWDAw3R0I8uK3N2
+         5yZsIu8mD1LO/YkeVi/D2AR5JBHvptZSdlVCGeqBlAOcke1Sbie/+/sW/OwkSmP+3XHN
+         UHYMONksmicA/TaTXansviSPVOvtyj/bp7kRR8K1QiUzLpuUecJSeCY3Ui3hUhecA+q2
+         B2Fw==
+X-Gm-Message-State: ANoB5pli2Wrn7Hs623WnG7FN6wny+u0nQCXXbJVG2gpX9n5CVDI8jsRW
+	mBDoyufUXOY8VjEBAtVWIz5OnhwVSJaWjZfsc3Cdkw==
+X-Google-Smtp-Source: AA0mqf4F3pkKVLj9jQvWXUefdlx4PRRlHhEv8mRnnvN19zNb002yc4JGoH2K+TPdkcxmELriKHapH/fusiuvCszRuw0=
+X-Received: by 2002:a05:600c:4920:b0:3cf:8b23:549c with SMTP id
+ f32-20020a05600c492000b003cf8b23549cmr10830757wmp.174.1669150637535; Tue, 22
+ Nov 2022 12:57:17 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="t3mjk627u66tfbb3"
-Content-Disposition: inline
-In-Reply-To: <20221122185818.3740200d@jic23-huawei>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
+References: <20221121102747.208289-1-naveen.n.rao@linux.vnet.ibm.com> <a9f0f8f1-96cd-f6a8-9dda-d4744b938f97@csgroup.eu>
+In-Reply-To: <a9f0f8f1-96cd-f6a8-9dda-d4744b938f97@csgroup.eu>
+From: Ian Rogers <irogers@google.com>
+Date: Tue, 22 Nov 2022 12:57:05 -0800
+Message-ID: <CAP-5=fXJf+1V5RF-m3e+AhK0Qg-yaJ1_2HL0CTOvp1xkK-1fDg@mail.gmail.com>
+Subject: Re: [PATCH] perf test: Skip watchpoint tests if no watchpoints available
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,73 +75,95 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, devicetree@vger.kernel.org, linux-iio@vger.kernel.org, linux-fbdev@vger.kernel.org, platform-driver-x86@vger.kernel.org, netdev@vger.kernel.org, linux-mtd@lists.infradead.org, linux-i2c@vger.kernel.org, Lee Jones <lee.jones@linaro.org>, linux-stm32@st-md-mailman.stormreply.com, linux-leds@vger.kernel.org, linux-rtc@vger.kernel.org, chrome-platform@lists.linux.dev, linux-samsung-soc@vger.kernel.org, linux-staging@lists.linux.dev, Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, linux-serial@vger.kernel.org, linux-input@vger.kernel.org, Grant Likely <grant.likely@linaro.org>, linux-media@vger.kernel.org, linux-pwm@vger.kernel.org, linux-watchdog@vger.kernel.org, Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>, linux-pm@vger.kernel.org, linux-actions@lists.infradead.org, Wolfram Sang <wsa@kernel.org>, linux-gpio@vger.kernel.org, Angel Iglesias <ang.iglesiasg@gmail.com>, linux-rpi-kernel@lists.infradead.org, linux-am
- logic@lists.infradead.org, openipmi-developer@lists.sourceforge.net, linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Purism Kernel Team <kernel@puri.sm>, gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org, linux-renesas-soc@vger.kernel.org, linux-crypto@vger.kernel.org, kernel@pengutronix.de, patches@opensource.cirrus.com, linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Ravi Bangoria <ravi.bangoria@amd.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Arnaldo Carvalho de Melo <acme@kernel.org>, "linux-perf-users@vger.kernel.org" <linux-perf-users@vger.kernel.org>, "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>, Disha Goel <disgoel@linux.vnet.ibm.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Tue, Nov 22, 2022 at 11:19 AM Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
+>
+>
+>
+> Le 21/11/2022 =C3=A0 11:27, Naveen N. Rao a =C3=A9crit :
+> > On IBM Power9, perf watchpoint tests fail since no hardware breakpoints
+> > are available. Detect this by checking the error returned by
+> > perf_event_open() and skip the tests in that case.
+> >
+> > Reported-by: Disha Goel <disgoel@linux.vnet.ibm.com>
+> > Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+> > ---
+> >   tools/perf/tests/wp.c | 12 +++++++-----
+> >   1 file changed, 7 insertions(+), 5 deletions(-)
+> >
+> > diff --git a/tools/perf/tests/wp.c b/tools/perf/tests/wp.c
+> > index 56455da30341b4..cc8719609b19ea 100644
+> > --- a/tools/perf/tests/wp.c
+> > +++ b/tools/perf/tests/wp.c
+> > @@ -59,8 +59,10 @@ static int __event(int wp_type, void *wp_addr, unsig=
+ned long wp_len)
+> >       get__perf_event_attr(&attr, wp_type, wp_addr, wp_len);
+> >       fd =3D sys_perf_event_open(&attr, 0, -1, -1,
+> >                                perf_event_open_cloexec_flag());
+> > -     if (fd < 0)
+> > +     if (fd < 0) {
+> > +             fd =3D -errno;
+> >               pr_debug("failed opening event %x\n", attr.bp_type);
+> > +     }
+>
+> Do you really need that ?
+>
+> Can't you directly check errno in the caller ?
 
---t3mjk627u66tfbb3
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+errno is very easily clobbered and not clearly set on success - ie,
+it'd be better not to do that.
 
-On Tue, Nov 22, 2022 at 06:58:18PM +0000, Jonathan Cameron wrote:
->=20
-> Queued all of the below:
-> with one tweaked as per your suggestion and the highlighted one dropped o=
-n basis
-> I was already carrying the equivalent - as you pointed out.
->=20
-> I was already carrying the required dependency.
->=20
-> Includes the IIO ones in staging.
->=20
-> Thanks,
->=20
-> Jonathan
->=20
-> p.s. I perhaps foolishly did this in a highly manual way so as to
-> also pick up Andy's RB.  So might have dropped one...
+Acked-by: Ian Rogers <irogers@google.com>
 
-You could have done:
+Thanks,
+Ian
 
-	H=3D$(git rev-parse @)
-	b4 am -P 49-190 20221118224540.619276-1-uwe@kleine-koenig.org
-	git am ...
-	git filter-branch -f --msg-filter "grep -v 'Signed-off-by: Jonathan'; echo=
- 'Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>'; echo '=
-Signed-off-by: Jonathan Cameron <jic23@kernel.org>'" $H..
-
-(untested, but you get the idea).
-
-> Definitely would have been better as one patch per subsystem with
-> a cover letter suitable for replies like Andy's to be picked up
-> by b4.
-
-Next time I will go for one series per subsystem which I like better
-than one patch per subsystem.
-
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---t3mjk627u66tfbb3
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmN9LjMACgkQwfwUeK3K
-7An96wf/RMtsCSXVJy8BDrXiXMhey9OEm8p08ulRn0lKYlG54KR8nU/s77uuMjGS
-99aUfUU56Abxk02DuBv6N5Bax8nlFyIlUgkfaYPP9iN1TkF5XiucQ0Se4/haYL4A
-q11UqWIcKBS+5BL3K6Bl1Cqv4dPYpRvs99X3jlU6JmhFqJPPhPgAu0p74arSvLie
-kN6wgOGVdCjZTRD+Z7FxfIQPZqvVo7anPAynyk7XfgTXMSAK80JPR2UeMfvQ7yr2
-W28htsacTaJSnPOb1VIrhN8OytpxASYa120EJ8augNmBXC0IzvjosWI0LZnNljAU
-izPd/d6lzDCP0Mz/LU9QCBYUR1jxuQ==
-=KmMu
------END PGP SIGNATURE-----
-
---t3mjk627u66tfbb3--
+> >
+> >       return fd;
+> >   }
+> > @@ -77,7 +79,7 @@ static int test__wp_ro(struct test_suite *test __mayb=
+e_unused,
+> >
+> >       fd =3D __event(HW_BREAKPOINT_R, (void *)&data1, sizeof(data1));
+> >       if (fd < 0)
+> > -             return -1;
+> > +             return fd =3D=3D -ENODEV ? TEST_SKIP : -1;
+> >
+> >       tmp =3D data1;
+> >       WP_TEST_ASSERT_VAL(fd, "RO watchpoint", 1);
+> > @@ -101,7 +103,7 @@ static int test__wp_wo(struct test_suite *test __ma=
+ybe_unused,
+> >
+> >       fd =3D __event(HW_BREAKPOINT_W, (void *)&data1, sizeof(data1));
+> >       if (fd < 0)
+> > -             return -1;
+> > +             return fd =3D=3D -ENODEV ? TEST_SKIP : -1;
+> >
+> >       tmp =3D data1;
+> >       WP_TEST_ASSERT_VAL(fd, "WO watchpoint", 0);
+> > @@ -126,7 +128,7 @@ static int test__wp_rw(struct test_suite *test __ma=
+ybe_unused,
+> >       fd =3D __event(HW_BREAKPOINT_R | HW_BREAKPOINT_W, (void *)&data1,
+> >                    sizeof(data1));
+> >       if (fd < 0)
+> > -             return -1;
+> > +             return fd =3D=3D -ENODEV ? TEST_SKIP : -1;
+> >
+> >       tmp =3D data1;
+> >       WP_TEST_ASSERT_VAL(fd, "RW watchpoint", 1);
+> > @@ -150,7 +152,7 @@ static int test__wp_modify(struct test_suite *test =
+__maybe_unused, int subtest _
+> >
+> >       fd =3D __event(HW_BREAKPOINT_W, (void *)&data1, sizeof(data1));
+> >       if (fd < 0)
+> > -             return -1;
+> > +             return fd =3D=3D -ENODEV ? TEST_SKIP : -1;
+> >
+> >       data1 =3D tmp;
+> >       WP_TEST_ASSERT_VAL(fd, "Modify watchpoint", 1);
+> >
+> > base-commit: 63a3bf5e8d9e79ce456c8f73d4395a5a51d841b1
