@@ -2,95 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51FE56338FD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Nov 2022 10:49:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1394633EC0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Nov 2022 15:21:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NGfbc16PYz3cMk
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Nov 2022 20:49:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NGmds2RBZz3cLr
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Nov 2022 01:21:21 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MKDf1CqY;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=ONiDsrks;
+	dkim=fail reason="signature verification failed" header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=uarCxHzX;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=softfail (domain owner discourages use of this host) smtp.mailfrom=suse.cz (client-ip=2001:67c:2178:6::1c; helo=smtp-out1.suse.de; envelope-from=vbabka@suse.cz; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MKDf1CqY;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=ONiDsrks;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=uarCxHzX;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NGfZZ1rfDz30JR
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Nov 2022 20:48:05 +1100 (AEDT)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AM7SX5l005059;
-	Tue, 22 Nov 2022 09:47:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : subject :
- to : cc : references : in-reply-to : mime-version : message-id :
- content-type : content-transfer-encoding; s=pp1;
- bh=NFAyZLaovr/F9jGI1O5jH8acNqLSRKi2iVgWNogMCMM=;
- b=MKDf1CqY+5vgoitedVZG9koxje4nuV7gN1eeMfSI8QOgtzX5gBzbpvY2H9MrERoUZZh4
- ZIRnZe1oW6qQ54JH3d+Q8lV4M+2uPz7DlMx384fQO4UP+fXFCpzle9arZEtyqpZVL/Yp
- a/lev6uXl8t1h95j9rpmtlBj2UV18mTRB0xtbPS8Vff053Py7t9+LceEVOd1jx3s35ar
- 3MvApEg5ip8J38zrEEEQtpc3hnqjouk31sb6cS9dwS1Vh2hatK0kqkw8b6OxbhAom4Ne
- J0vFm7IRz3Ky1OUx/q5LP/wriPJB4hdjPVpaZpRoBlh0tdPZCkWw5lXSTWaWdtDQcPq3 qQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m0t2mu2vb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 22 Nov 2022 09:47:34 +0000
-Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2AM9Zn6R013339;
-	Tue, 22 Nov 2022 09:47:33 GMT
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m0t2mu2um-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 22 Nov 2022 09:47:33 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-	by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2AM9atqp003789;
-	Tue, 22 Nov 2022 09:47:30 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
-	by ppma04ams.nl.ibm.com with ESMTP id 3kxps8uwke-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 22 Nov 2022 09:47:30 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
-	by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2AM9m9Zp36569348
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 22 Nov 2022 09:48:09 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 57E4A11C050;
-	Tue, 22 Nov 2022 09:47:28 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BDD3111C04C;
-	Tue, 22 Nov 2022 09:47:27 +0000 (GMT)
-Received: from localhost (unknown [9.43.65.119])
-	by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Tue, 22 Nov 2022 09:47:27 +0000 (GMT)
-Date: Tue, 22 Nov 2022 15:17:26 +0530
-From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: [PATCH] powerpc/bpf/32: Fix Oops on tail call tests
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Michael Ellerman
-	<mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>
-References: 	<8a0b9f7e4fe208a8b518c0c4310472f99d9fdb55.1668876211.git.christophe.leroy@csgroup.eu>
-	<1669101940.sfs1m92svc.naveen@linux.ibm.com>
-	<f333e28c-a4ff-62eb-4b75-ee301e5ea53f@csgroup.eu>
-In-Reply-To: <f333e28c-a4ff-62eb-4b75-ee301e5ea53f@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NGmcw5ZN1z3cFv
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Nov 2022 01:20:31 +1100 (AEDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 2F670220C7;
+	Tue, 22 Nov 2022 14:20:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1669126824; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sH9ni1mWjwD99/t20LozYjCgs14d4WSa0QQZ5/xw57A=;
+	b=ONiDsrks6Adh9kmLKRG5hX7BqNe+hBnscyawkgvu1AJz8qGmtAZIZ+hXnS6VAoj0OrAugk
+	o40tROK3kM3fcR+iRbpZ9PF8GZdkPa5vCpRePpRrCzRDrYRdaQdlrBhTLjbiqdgGW8ubhN
+	aliL9MBnPxAi22usfZx72R5a86MXxhI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1669126824;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sH9ni1mWjwD99/t20LozYjCgs14d4WSa0QQZ5/xw57A=;
+	b=uarCxHzXrpMaljr4S9hN6puiDtHJ7KzEH6f0QN+PEco61ECA0/JD1fNHaEc4r+5V2Q/nrm
+	T3EfGohG+a+5HLDA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 9FB2913AA1;
+	Tue, 22 Nov 2022 14:20:23 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id amktJqfafGMkbgAAMHmgww
+	(envelope-from <vbabka@suse.cz>); Tue, 22 Nov 2022 14:20:23 +0000
+Message-ID: <d6140b16-38c0-30d5-8ed8-0fcffa98a951@suse.cz>
+Date: Tue, 22 Nov 2022 15:20:23 +0100
 MIME-Version: 1.0
-User-Agent: astroid/4d6b06ad (https://github.com/astroidmail/astroid)
-Message-Id: <1669108894.f58czzpqdm.naveen@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: jHemxqz0CGp1WxzXj0t_JLVmJmXGJ5QV
-X-Proofpoint-GUID: udMV-6y-Z86dG3q5UpnvMUfvpzVDnbiN
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-11-22_04,2022-11-18_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 priorityscore=1501
- impostorscore=0 malwarescore=0 lowpriorityscore=0 clxscore=1015
- suspectscore=0 phishscore=0 bulkscore=0 mlxlogscore=999 spamscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2210170000 definitions=main-2211220070
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
+Subject: Re: [PATCH mm-unstable v1 06/20] mm: rework handling in do_wp_page()
+ based on private vs. shared mappings
+Content-Language: en-US
+To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
+References: <20221116102659.70287-1-david@redhat.com>
+ <20221116102659.70287-7-david@redhat.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+In-Reply-To: <20221116102659.70287-7-david@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,165 +84,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Hao Luo <haoluo@google.com>, Daniel Borkmann <daniel@iogearbox.net>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, John Fastabend <john.fastabend@gmail.com>, Andrii Nakryiko <andrii@kernel.org>, "stable@vger.kernel.org" <stable@vger.kernel.org>, Alexei Starovoitov <ast@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, Stanislav Fomichev <sdf@google.com>, Jiri Olsa <jolsa@kernel.org>, KP Singh <kpsingh@kernel.org>, Yonghong Song <yhs@fb.com>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-ia64@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, dri-devel@lists.freedesktop.org, linux-mm@kvack.org, Nadav Amit <namit@vmware.com>, linux-kselftest@vger.kernel.org, sparclinux@vger.kernel.org, Shuah Khan <shuah@kernel.org>, Andrea Arcangeli <aarcange@redhat.com>, linux-samsung-soc@vger.kernel.org, linux-rdma@vger.kernel.org, David Airlie <airlied@gmail.com>, x86@kernel.org, Hugh Dickins <hughd@google.com>, Matthew Wilcox <willy@infradead.org>, Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, linux-media@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, John Hubbard <jhubbard@nvidia.com>, linux-um@lists.infradead.org, etnaviv@lists.freedesktop.org, Alex Williamson <alex.williamson@redhat.com>, Peter Xu <peterx@redhat.com>, Muchun Song <songmuchun@bytedance.com>, linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, Oded Gabbay <ogabbay@kernel.org>, linux-mips@vger.kernel.org, linux-perf-users@vger.kernel.org, linux-se
+ curity-module@vger.kernel.org, linux-alpha@vger.kernel.org, linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, Lucas Stach <l.stach@pengutronix.de>, Linus Torvalds <torvalds@linux-foundation.org>, Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy wrote:
->=20
->=20
-> Le 22/11/2022 =C3=A0 08:33, Naveen N. Rao a =C3=A9crit=C2=A0:
->> Christophe Leroy wrote:
->>>
->>> This is a tentative to write above the stack. The problem is encoutered
->>> with tests added by commit 38608ee7b690 ("bpf, tests: Add load store
->>> test case for tail call")
->>>
->>> This happens because tail call is done to a BPF prog with a different
->>> stack_depth. At the time being, the stack is kept as is when the caller
->>> tail calls its callee. But at exit, the callee restores the stack based
->>> on its own properties. Therefore here, at each run, r1 is erroneously
->>> increased by 32 - 16 =3D 16 bytes.
->>>
->>> This was done that way in order to pass the tail call count from caller
->>> to callee through the stack. As powerpc32 doesn't have a red zone in
->>> the stack, it was necessary the maintain the stack as is for the tail
->>> call. But it was not anticipated that the BPF frame size could be
->>> different.
->>>
->>> Let's take a new approach. Use register r0 to carry the tail call count
->>> during the tail call, and save it into the stack at function entry if
->>> required. That's a deviation from the ppc32 ABI, but after all the way
->>> tail calls are implemented is already not in accordance with the ABI.
->>=20
->> Can we pass the tail call count in r4 instead?
->=20
-> It's a bit tricky.
->=20
-> When entering the function through the normal entry point, the input=20
-> parameter is a 32 bits pointer and is in r3.
-> But at the begining of the function it gets moved to r4 and r3 is=20
-> cleared because it becomes a 64 bits parameter.
->=20
-> When using the tailcall entry point, it is already in r4, and until now=20
-> r3 was containing garbage, with this patch r3 gets cleared as well.
->=20
-> We could move the input pointer back into r3 for the tailcall as well,=20
-> but it would mean unnecessary register move.
->=20
-> Or we can use r3 for the tailcall counter.
+On 11/16/22 11:26, David Hildenbrand wrote:
+> We want to extent FAULT_FLAG_UNSHARE support to anything mapped into a
+> COW mapping (pagecache page, zeropage, PFN, ...), not just anonymous pages.
+> Let's prepare for that by handling shared mappings first such that we can
+> handle private mappings last.
+> 
+> While at it, use folio-based functions instead of page-based functions
+> where we touch the code either way.
+> 
+> Signed-off-by: David Hildenbrand <david@redhat.com>
 
-Regarding zero'ing out r5, you're right -- we don't use the second=20
-parameter for a tail call, so that should be fine.
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
 
-Using r3 will be difficult since it is used when you come in first.
-My suggestion was something like the below (untested). Using r5 might be=20
-fine too.
-
-- Naveen
-
---
-diff --git a/arch/powerpc/net/bpf_jit_comp32.c b/arch/powerpc/net/bpf_jit_c=
-omp32.c
-index 43f1c76d48cea9..6319283ce4ef01 100644
---- a/arch/powerpc/net/bpf_jit_comp32.c
-+++ b/arch/powerpc/net/bpf_jit_comp32.c
-@@ -113,24 +113,19 @@ void bpf_jit_build_prologue(u32 *image, struct codege=
-n_context *ctx)
- {
- 	int i;
-=20
-+	/* Initialize tail_call_cnt, to be skipped if we do tail calls. */
-+	EMIT(PPC_RAW_LI(_R4, 0));
-+
-+#define BPF_TAILCALL_PROLOGUE_SIZE	4
-+
-+	if (ctx->seen & SEEN_TAILCALL)
-+		EMIT(PPC_RAW_STW(_R4, _R1, bpf_jit_stack_offsetof(ctx, BPF_PPC_TC)));
-+
- 	/* First arg comes in as a 32 bits pointer. */
- 	EMIT(PPC_RAW_MR(bpf_to_ppc(BPF_REG_1), _R3));
- 	EMIT(PPC_RAW_LI(bpf_to_ppc(BPF_REG_1) - 1, 0));
- 	EMIT(PPC_RAW_STWU(_R1, _R1, -BPF_PPC_STACKFRAME(ctx)));
-=20
--	/*
--	 * Initialize tail_call_cnt in stack frame if we do tail calls.
--	 * Otherwise, put in NOPs so that it can be skipped when we are
--	 * invoked through a tail call.
--	 */
--	if (ctx->seen & SEEN_TAILCALL)
--		EMIT(PPC_RAW_STW(bpf_to_ppc(BPF_REG_1) - 1, _R1,
--				 bpf_jit_stack_offsetof(ctx, BPF_PPC_TC)));
--	else
--		EMIT(PPC_RAW_NOP());
--
--#define BPF_TAILCALL_PROLOGUE_SIZE	16
--
- 	/*
- 	 * We need a stack frame, but we don't necessarily need to
- 	 * save/restore LR unless we call other functions
-@@ -170,24 +165,24 @@ static void bpf_jit_emit_common_epilogue(u32 *image, =
-struct codegen_context *ctx
- 	for (i =3D BPF_PPC_NVR_MIN; i <=3D 31; i++)
- 		if (bpf_is_seen_register(ctx, i))
- 			EMIT(PPC_RAW_LWZ(i, _R1, bpf_jit_stack_offsetof(ctx, i)));
--}
--
--void bpf_jit_build_epilogue(u32 *image, struct codegen_context *ctx)
--{
--	EMIT(PPC_RAW_MR(_R3, bpf_to_ppc(BPF_REG_0)));
--
--	bpf_jit_emit_common_epilogue(image, ctx);
--
--	/* Tear down our stack frame */
-=20
- 	if (ctx->seen & SEEN_FUNC)
- 		EMIT(PPC_RAW_LWZ(_R0, _R1, BPF_PPC_STACKFRAME(ctx) + PPC_LR_STKOFF));
-=20
-+	/* Tear down our stack frame */
- 	EMIT(PPC_RAW_ADDI(_R1, _R1, BPF_PPC_STACKFRAME(ctx)));
-=20
- 	if (ctx->seen & SEEN_FUNC)
- 		EMIT(PPC_RAW_MTLR(_R0));
-=20
-+}
-+
-+void bpf_jit_build_epilogue(u32 *image, struct codegen_context *ctx)
-+{
-+	EMIT(PPC_RAW_MR(_R3, bpf_to_ppc(BPF_REG_0)));
-+
-+	bpf_jit_emit_common_epilogue(image, ctx);
-+
- 	EMIT(PPC_RAW_BLR());
- }
-=20
-@@ -244,7 +239,6 @@ static int bpf_jit_emit_tail_call(u32 *image, struct co=
-degen_context *ctx, u32 o
- 	EMIT(PPC_RAW_RLWINM(_R3, b2p_index, 2, 0, 29));
- 	EMIT(PPC_RAW_ADD(_R3, _R3, b2p_bpf_array));
- 	EMIT(PPC_RAW_LWZ(_R3, _R3, offsetof(struct bpf_array, ptrs)));
--	EMIT(PPC_RAW_STW(_R0, _R1, bpf_jit_stack_offsetof(ctx, BPF_PPC_TC)));
-=20
- 	/*
- 	 * if (prog =3D=3D NULL)
-@@ -255,18 +249,11 @@ static int bpf_jit_emit_tail_call(u32 *image, struct =
-codegen_context *ctx, u32 o
-=20
- 	/* goto *(prog->bpf_func + prologue_size); */
- 	EMIT(PPC_RAW_LWZ(_R3, _R3, offsetof(struct bpf_prog, bpf_func)));
--
--	if (ctx->seen & SEEN_FUNC)
--		EMIT(PPC_RAW_LWZ(_R0, _R1, BPF_PPC_STACKFRAME(ctx) + PPC_LR_STKOFF));
--
- 	EMIT(PPC_RAW_ADDIC(_R3, _R3, BPF_TAILCALL_PROLOGUE_SIZE));
--
--	if (ctx->seen & SEEN_FUNC)
--		EMIT(PPC_RAW_MTLR(_R0));
--
- 	EMIT(PPC_RAW_MTCTR(_R3));
-=20
- 	EMIT(PPC_RAW_MR(_R3, bpf_to_ppc(BPF_REG_1)));
-+	EMIT(PPC_RAW_MR(_R4, _R0));
-=20
- 	/* tear restore NVRs, ... */
- 	bpf_jit_emit_common_epilogue(image, ctx);
