@@ -2,87 +2,97 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00EFD634AFD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Nov 2022 00:18:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7952634B05
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Nov 2022 00:22:27 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NH0YT6KQKz3cXX
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Nov 2022 10:18:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NH0f95rHMz3dv8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Nov 2022 10:22:25 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LMPFOhn4;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JHAeISiJ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=bgray@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nayna@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LMPFOhn4;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JHAeISiJ;
 	dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NH0QK5xLgz3cKb
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Nov 2022 10:12:09 +1100 (AEDT)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AMK9WgL021907;
-	Tue, 22 Nov 2022 23:12:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=FEWyNkqeQ+IMjZkGZMJrRWoRTsy1UZCBkGpClPUxhSI=;
- b=LMPFOhn4409yrHIf13P9+qJ9OOY5/wbDcipfd/F7dbcX2GsbSTXKPUT6zTU+aFrhwIdr
- D6aXhAwLL32IN+TlLqGYI1cEgLDt7BYm53+HEppFIxG2UVkTykzjq4f9WK2amdWXb3YZ
- t2k9JNCswPWNLKH1QyJ6tV653Y2q/+J8UixhQhPX3GWvDHha6rKA9L3wGr785YgFbNqI
- +z2SdlDfd/oM2gojNJdzmLvmVN06zPJJSxIjwFjNyMbLpkECVg4ofd9Bjt00bqme27op
- NI9ZMBm4Fp66jLSMhuz0rSwPFlRMTTsMuOPZXdUMWxSL4eYrh97AKsp2TsJpsVI+qCr8 SA== 
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m11529q9u-1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NH0dF16DWz2x9J
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Nov 2022 10:21:36 +1100 (AEDT)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AMMIkd7039599;
+	Tue, 22 Nov 2022 23:21:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=oC+XCMatKOqJAPTjzW1TpIq92DjrOmvsufQ1aYb6wEU=;
+ b=JHAeISiJntvnrNOSKgwUl5BmInZf6wvMboXQNH3jh5MtYpsdcxBdqea9PsEM7t1/+P6O
+ chyy8BDAEdXl51nS+4Dte6sI1ueFQAdkhOyE9iAFhvQs22jb+pYl0cXS4WCwRGMObkSg
+ Q88nvP1kjW0iY52MpecarOSbFabU17jKc3VdH3ffDZr4a3ei/DjSEzZf4XsS9YOzRosV
+ gPgQucSKzmfVzE7jCn7oDevFId4fYryM9f3Q0JYmuxRcEfH3DulaODY747B6ccWeWoHx
+ 3oVGGcPuJmJ3tqH9jbC99dEpDfyt2coTD6wn3D+K1giLjAuPYE/WBE6BC9DrDDAb00+w nQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m10ff3hwq-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 22 Nov 2022 23:12:06 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-	by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2AMN4xRB020244;
-	Tue, 22 Nov 2022 23:12:04 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
-	by ppma04ams.nl.ibm.com with ESMTP id 3kxps8vugt-1
+	Tue, 22 Nov 2022 23:21:16 +0000
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2AMNAaos017423;
+	Tue, 22 Nov 2022 23:21:16 GMT
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.11])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m10ff3hw3-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 22 Nov 2022 23:12:04 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
-	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2AMNC1wR26804634
+	Tue, 22 Nov 2022 23:21:15 +0000
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+	by ppma03dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2AMN5Xx3030809;
+	Tue, 22 Nov 2022 23:21:14 GMT
+Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com [9.57.198.27])
+	by ppma03dal.us.ibm.com with ESMTP id 3kxpsacwxe-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 22 Nov 2022 23:21:14 +0000
+Received: from smtpav06.wdc07v.mail.ibm.com ([9.208.128.115])
+	by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2AMNLDAp65274116
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 22 Nov 2022 23:12:01 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C9F514C040;
-	Tue, 22 Nov 2022 23:12:01 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2B71C4C046;
-	Tue, 22 Nov 2022 23:12:01 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Tue, 22 Nov 2022 23:12:01 +0000 (GMT)
-Received: from li-0d7fa1cc-2c9d-11b2-a85c-aed20764436d.ibm.com (haven.au.ibm.com [9.192.254.114])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id BB2EC60426;
-	Wed, 23 Nov 2022 10:11:56 +1100 (AEDT)
-From: Benjamin Gray <bgray@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 7/7] selftests/powerpc: Add automatically allocating read_file
-Date: Wed, 23 Nov 2022 10:11:03 +1100
-Message-Id: <20221122231103.15829-8-bgray@linux.ibm.com>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20221122231103.15829-1-bgray@linux.ibm.com>
-References: <20221122231103.15829-1-bgray@linux.ibm.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	Tue, 22 Nov 2022 23:21:13 GMT
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D9DB458060;
+	Tue, 22 Nov 2022 23:21:12 +0000 (GMT)
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1EF435803F;
+	Tue, 22 Nov 2022 23:21:11 +0000 (GMT)
+Received: from [9.163.61.172] (unknown [9.163.61.172])
+	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 22 Nov 2022 23:21:11 +0000 (GMT)
+Message-ID: <d3e8df29-d9b0-5e8e-4a53-d191762fe7f2@linux.vnet.ibm.com>
+Date: Tue, 22 Nov 2022 18:21:10 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Subject: Re: [PATCH 2/4] fs: define a firmware security filesystem named
+ fwsecurityfs
+Content-Language: en-US
+To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+References: <20221106210744.603240-1-nayna@linux.ibm.com>
+ <20221106210744.603240-3-nayna@linux.ibm.com> <Y2uvUFQ9S2oaefSY@kroah.com>
+ <8447a726-c45d-8ebb-2a74-a4d759631e64@linux.vnet.ibm.com>
+ <20221119114234.nnfxsqx4zxiku2h6@riteshh-domain>
+From: Nayna <nayna@linux.vnet.ibm.com>
+In-Reply-To: <20221119114234.nnfxsqx4zxiku2h6@riteshh-domain>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: i5w89Qtk24lJDxkXuNZkGHDlkMfVRcc2
-X-Proofpoint-GUID: i5w89Qtk24lJDxkXuNZkGHDlkMfVRcc2
+X-Proofpoint-ORIG-GUID: rx6IXruI8J7qA8U13iaDwj3sbvme2lXD
+X-Proofpoint-GUID: pm16FMvUALsLfnxbRgs7NJS99XGmi9by
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
  definitions=2022-11-22_13,2022-11-18_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 spamscore=0
- malwarescore=0 impostorscore=0 lowpriorityscore=0 bulkscore=0 phishscore=0
- adultscore=0 priorityscore=1501 mlxscore=0 mlxlogscore=999 clxscore=1015
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2210170000
- definitions=main-2211220174
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
+ priorityscore=1501 spamscore=0 clxscore=1011 lowpriorityscore=0
+ bulkscore=0 suspectscore=0 impostorscore=0 malwarescore=0 mlxscore=0
+ adultscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2210170000 definitions=main-2211220174
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,288 +104,203 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Benjamin Gray <bgray@linux.ibm.com>, ajd@linux.ibm.com
+Cc: Matthew Garrett <mjg59@srcf.ucam.org>, linux-efi@vger.kernel.org, Andrew Donnellan <ajd@linux.ibm.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Nayna Jain <nayna@linux.ibm.com>, linux-kernel@vger.kernel.org, npiggin@gmail.com, Dov Murik <dovmurik@linux.ibm.com>, Dave Hansen <dave.hansen@intel.com>, linux-security-module <linux-security-module@vger.kernel.org>, Paul Mackerras <paulus@samba.org>, linux-fsdevel@vger.kernel.org, George Wilson <gcwilson@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, "Serge E. Hallyn" <serge@hallyn.com>, Stefan Berger <stefanb@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-A couple of tests roll their own auto-allocating file read logic.
 
-Add a generic implementation and convert them to use it.
+On 11/19/22 06:48, Ritesh Harjani (IBM) wrote:
+> Hello Nayna,
 
-Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
----
- .../testing/selftests/powerpc/include/utils.h |  1 +
- .../selftests/powerpc/nx-gzip/gzfht_test.c    | 37 +--------
- .../selftests/powerpc/syscalls/Makefile       |  2 +-
- .../selftests/powerpc/syscalls/rtas_filter.c  | 80 +++----------------
- tools/testing/selftests/powerpc/utils.c       | 63 +++++++++++++++
- 5 files changed, 75 insertions(+), 108 deletions(-)
+Hi Ritesh,
 
-diff --git a/tools/testing/selftests/powerpc/include/utils.h b/tools/testing/selftests/powerpc/include/utils.h
-index 044b0236df38..95f3a24a4569 100644
---- a/tools/testing/selftests/powerpc/include/utils.h
-+++ b/tools/testing/selftests/powerpc/include/utils.h
-@@ -40,6 +40,7 @@ int parse_ulong(const char *buffer, size_t count, unsigned long *result, int bas
- 
- int read_file(const char *path, char *buf, size_t count, size_t *len);
- int write_file(const char *path, const char *buf, size_t count);
-+int read_file_alloc(const char *path, char **buf, size_t *len);
- int read_long(const char *path, long *result, int base);
- int write_long(const char *path, long result, int base);
- int read_ulong(const char *path, unsigned long *result, int base);
-diff --git a/tools/testing/selftests/powerpc/nx-gzip/gzfht_test.c b/tools/testing/selftests/powerpc/nx-gzip/gzfht_test.c
-index a6a226e1b8ba..4de079923ccb 100644
---- a/tools/testing/selftests/powerpc/nx-gzip/gzfht_test.c
-+++ b/tools/testing/selftests/powerpc/nx-gzip/gzfht_test.c
-@@ -143,41 +143,6 @@ int gzip_header_blank(char *buf)
- 	return i;
- }
- 
--/* Caller must free the allocated buffer return nonzero on error. */
--int read_alloc_input_file(char *fname, char **buf, size_t *bufsize)
--{
--	int err;
--	struct stat statbuf;
--	char *p;
--	size_t num_bytes;
--
--	if (stat(fname, &statbuf)) {
--		perror(fname);
--		return -1;
--	}
--
--	assert(NULL != (p = (char *) malloc(statbuf.st_size)));
--
--	if ((err = read_file(fname, p, statbuf.st_size, &num_bytes))) {
--		fprintf(stderr, "Failed to read file: %s\n", strerror(err));
--		goto fail;
--	}
--
--	if (num_bytes != statbuf.st_size) {
--		fprintf(stderr, "Actual bytes != expected bytes\n");
--		err = -1;
--		goto fail;
--	}
--
--	*buf = p;
--	*bufsize = num_bytes;
--	return 0;
--
--fail:
--	free(p);
--	return err;
--}
--
- /*
-  * Z_SYNC_FLUSH as described in zlib.h.
-  * Returns number of appended bytes
-@@ -244,7 +209,7 @@ int compress_file(int argc, char **argv, void *handle)
- 		fprintf(stderr, "usage: %s <fname>\n", argv[0]);
- 		exit(-1);
- 	}
--	if (read_alloc_input_file(argv[1], &inbuf, &inlen))
-+	if (read_file_alloc(argv[1], &inbuf, &inlen))
- 		exit(-1);
- 	fprintf(stderr, "file %s read, %ld bytes\n", argv[1], inlen);
- 
-diff --git a/tools/testing/selftests/powerpc/syscalls/Makefile b/tools/testing/selftests/powerpc/syscalls/Makefile
-index b63f8459c704..54ff5cfffc63 100644
---- a/tools/testing/selftests/powerpc/syscalls/Makefile
-+++ b/tools/testing/selftests/powerpc/syscalls/Makefile
-@@ -6,4 +6,4 @@ CFLAGS += -I../../../../../usr/include
- top_srcdir = ../../../../..
- include ../../lib.mk
- 
--$(TEST_GEN_PROGS): ../harness.c
-+$(TEST_GEN_PROGS): ../harness.c ../utils.c
-diff --git a/tools/testing/selftests/powerpc/syscalls/rtas_filter.c b/tools/testing/selftests/powerpc/syscalls/rtas_filter.c
-index 03b487f18d00..05f25f12556f 100644
---- a/tools/testing/selftests/powerpc/syscalls/rtas_filter.c
-+++ b/tools/testing/selftests/powerpc/syscalls/rtas_filter.c
-@@ -8,6 +8,7 @@
- #include <byteswap.h>
- #include <stdint.h>
- #include <inttypes.h>
-+#include <linux/limits.h>
- #include <stdio.h>
- #include <string.h>
- #include <sys/syscall.h>
-@@ -50,70 +51,16 @@ struct region {
- 	struct region *next;
- };
- 
--int read_entire_file(int fd, char **buf, size_t *len)
--{
--	size_t buf_size = 0;
--	size_t off = 0;
--	int rc;
--
--	*buf = NULL;
--	do {
--		buf_size += BLOCK_SIZE;
--		if (*buf == NULL)
--			*buf = malloc(buf_size);
--		else
--			*buf = realloc(*buf, buf_size);
--
--		if (*buf == NULL)
--			return -ENOMEM;
--
--		rc = read(fd, *buf + off, BLOCK_SIZE);
--		if (rc < 0)
--			return -EIO;
--
--		off += rc;
--	} while (rc == BLOCK_SIZE);
--
--	if (len)
--		*len = off;
--
--	return 0;
--}
--
--static int open_prop_file(const char *prop_path, const char *prop_name, int *fd)
--{
--	char *path;
--	int len;
--
--	/* allocate enough for two string, a slash and trailing NULL */
--	len = strlen(prop_path) + strlen(prop_name) + 1 + 1;
--	path = malloc(len);
--	if (path == NULL)
--		return -ENOMEM;
--
--	snprintf(path, len, "%s/%s", prop_path, prop_name);
--
--	*fd = open(path, O_RDONLY);
--	free(path);
--	if (*fd < 0)
--		return -errno;
--
--	return 0;
--}
--
- static int get_property(const char *prop_path, const char *prop_name,
- 			char **prop_val, size_t *prop_len)
- {
--	int rc, fd;
--
--	rc = open_prop_file(prop_path, prop_name, &fd);
--	if (rc)
--		return rc;
-+	char path[PATH_MAX];
- 
--	rc = read_entire_file(fd, prop_val, prop_len);
--	close(fd);
-+	int len = snprintf(path, sizeof(path), "%s/%s", prop_path, prop_name);
-+	if (len < 0 || len >= sizeof(path))
-+		return -ENOMEM;
- 
--	return rc;
-+	return read_file_alloc(path, prop_val, prop_len);
- }
- 
- int rtas_token(const char *call_name)
-@@ -138,22 +85,13 @@ int rtas_token(const char *call_name)
- static int read_kregion_bounds(struct region *kregion)
- {
- 	char *buf;
--	int fd;
--	int rc;
-+	int err;
- 
--	fd = open("/proc/ppc64/rtas/rmo_buffer", O_RDONLY);
--	if (fd < 0) {
--		printf("Could not open rmo_buffer file\n");
-+	if ((err = read_file_alloc("/proc/ppc64/rtas/rmo_buffer", &buf, NULL))) {
-+		fprintf(stderr, "Error reading rmo_buffer: %s\n", strerror(err));
- 		return RTAS_IO_ASSERT;
- 	}
- 
--	rc = read_entire_file(fd, &buf, NULL);
--	close(fd);
--	if (rc) {
--		free(buf);
--		return rc;
--	}
--
- 	sscanf(buf, "%" SCNx64 " %x", &kregion->addr, &kregion->size);
- 	free(buf);
- 
-diff --git a/tools/testing/selftests/powerpc/utils.c b/tools/testing/selftests/powerpc/utils.c
-index 32a96c8967ac..b8402d0de451 100644
---- a/tools/testing/selftests/powerpc/utils.c
-+++ b/tools/testing/selftests/powerpc/utils.c
-@@ -59,6 +59,69 @@ int read_file(const char *path, char *buf, size_t count, size_t *len)
- 	return err;
- }
- 
-+int read_file_alloc(const char *path, char **buf, size_t *len)
-+{
-+	ssize_t rc;
-+	char *buffer;
-+	size_t read_offset;
-+	size_t length;
-+	int fd;
-+	int err;
-+
-+
-+	if ((fd = open(path, O_RDONLY)) < 0)
-+		return -errno;
-+
-+	/*
-+	 * We don't use stat & preallocate st_size because some non-files
-+	 * report 0 file size. Instead just dynamically grow the buffer
-+	 * as needed.
-+	 */
-+	length = 4096;
-+	buffer = malloc(length);
-+	read_offset = 0;
-+
-+	if (!buffer) {
-+		err = errno;
-+		goto out;
-+	}
-+
-+	while (1) {
-+		if ((rc = read(fd, buffer + read_offset, length - read_offset)) < 0) {
-+			err = errno;
-+			goto out;
-+		}
-+
-+		if (rc == 0)
-+			break;
-+
-+		read_offset += rc;
-+
-+		if (read_offset > length / 2) {
-+			char *next_buffer;
-+
-+			length *= 2;
-+			next_buffer = realloc(buffer, length);
-+			if (!next_buffer) {
-+				err = errno;
-+				free(buffer);
-+				goto out;
-+			}
-+			buffer = next_buffer;
-+		}
-+	}
-+
-+	*buf = buffer;
-+	if (len)
-+		*len = read_offset;
-+
-+	err = 0;
-+
-+out:
-+	close(fd);
-+	return err;
-+}
-+
- int write_file(const char *path, const char *buf, size_t count)
- {
- 	int fd;
--- 
-2.38.1
+>
+> On 22/11/09 03:10PM, Nayna wrote:
+>> On 11/9/22 08:46, Greg Kroah-Hartman wrote:
+>>> On Sun, Nov 06, 2022 at 04:07:42PM -0500, Nayna Jain wrote:
+>>>> securityfs is meant for Linux security subsystems to expose policies/logs
+>>>> or any other information. However, there are various firmware security
+>>>> features which expose their variables for user management via the kernel.
+>>>> There is currently no single place to expose these variables. Different
+>>>> platforms use sysfs/platform specific filesystem(efivarfs)/securityfs
+>>>> interface as they find it appropriate. Thus, there is a gap in kernel
+>>>> interfaces to expose variables for security features.
+>>>>
+>>>> Define a firmware security filesystem (fwsecurityfs) to be used by
+>>>> security features enabled by the firmware. These variables are platform
+>>>> specific. This filesystem provides platforms a way to implement their
+>>>>    own underlying semantics by defining own inode and file operations.
+>>>>
+>>>> Similar to securityfs, the firmware security filesystem is recommended
+>>>> to be exposed on a well known mount point /sys/firmware/security.
+>>>> Platforms can define their own directory or file structure under this path.
+>>>>
+>>>> Example:
+>>>>
+>>>> # mount -t fwsecurityfs fwsecurityfs /sys/firmware/security
+>>> Why not juset use securityfs in /sys/security/firmware/ instead?  Then
+>>> you don't have to create a new filesystem and convince userspace to
+>>> mount it in a specific location?
+> I am also curious to know on why not use securityfs, given the similarity
+> between the two. :)
+> More specifics on that below...
+>
+>>  From man 5 sysfs page:
+>>
+>> /sys/firmware: This subdirectory contains interfaces for viewing and
+>> manipulating firmware-specific objects and attributes.
+>>
+>> /sys/kernel: This subdirectory contains various files and subdirectories
+>> that provide information about the running kernel.
+>>
+>> The security variables which are being exposed via fwsecurityfs are managed
+>> by firmware, stored in firmware managed space and also often consumed by
+>> firmware for enabling various security features.
+> That's ok. As I see it users of securityfs can define their own fileops
+> (like how you are doing in fwsecurityfs).
+> See securityfs_create_file() & securityfs_create_symlink(), can accept the fops
+> & iops. Except maybe securityfs_create_dir(), that could be since there might
+> not be a usecase for it. But do you also need it in your case is the question to
+> ask.
+
+Please refer to the function plpks_secvars_init() in Patch 4/4.
+
+>
+>>  From git commit b67dbf9d4c1987c370fd18fdc4cf9d8aaea604c2, the purpose of
+>> securityfs(/sys/kernel/security) is to provide a common place for all kernel
+>> LSMs. The idea of
+> Which was then seperated out by commit,
+> da31894ed7b654e2 ("securityfs: do not depend on CONFIG_SECURITY").
+>
+> securityfs now has a seperate CONFIG_SECURITYFS config option. In fact I was even
+> thinking of why shouldn't we move security/inode.c into fs/securityfs/inode.c .
+> fs/* is a common place for all filesystems. Users of securityfs can call it's
+> exported kernel APIs to create files/dirs/symlinks.
+>
+> If we move security/inode.c to fs/security/inode.c, then...
+> ...below call within securityfs_init() should be moved into some lsm sepecific
+> file.
+>
+> #ifdef CONFIG_SECURITY
+> static struct dentry *lsm_dentry;
+> static ssize_t lsm_read(struct file *filp, char __user *buf, size_t count,
+> 			loff_t *ppos)
+> {
+> 	return simple_read_from_buffer(buf, count, ppos, lsm_names,
+> 		strlen(lsm_names));
+> }
+>
+> static const struct file_operations lsm_ops = {
+> 	.read = lsm_read,
+> 	.llseek = generic_file_llseek,
+> };
+> #endif
+>
+> securityfs_init()
+>
+> #ifdef CONFIG_SECURITY
+> 	lsm_dentry = securityfs_create_file("lsm", 0444, NULL, NULL,
+> 						&lsm_ops);
+> #endif
+>
+> So why not move it? Maybe others, can comment more on whether it's a good idea
+> to move security/inode.c into fs/security/inode.c?
+> This should then help others identify securityfs filesystem in fs/security/
+> for everyone to notice and utilize for their use?
+>> fwsecurityfs(/sys/firmware/security) is to similarly provide a common place
+>> for all firmware security objects.
+>>
+>> /sys/firmware already exists. The patch now defines a new /security
+>> directory in it for firmware security features. Using /sys/kernel/security
+>> would mean scattering firmware objects in multiple places and confusing the
+>> purpose of /sys/kernel and /sys/firmware.
+> We can also think of it this way that, all security related exports should
+> happen via /sys/kernel/security/. Then /sys/kernel/security/firmware/ becomes
+> the security related firmware exports.
+>
+> If you see find /sys -iname firmware, I am sure you will find other firmware
+> specifics directories related to other specific subsystems
+> (e.g.
+> root@qemu:/home/qemu# find /sys -iname firmware
+> /sys/devices/ndbus0/nmem0/firmware
+> /sys/devices/ndbus0/firmware
+> /sys/firmware
+> )
+>
+> But it could be, I am not an expert here, although I was thinking a good
+> Documentation might solve this problem.
+
+Documentation on 
+sysfs(https://man7.org/linux/man-pages/man5/sysfs.5.html) already 
+differentiates /sys/firmware and /sys/kernel as I responded earlier.  
+The objects we are exposing are firmware objects and not kernel objects.
+
+>
+>> Even though fwsecurityfs code is based on securityfs, since the two
+>> filesystems expose different types of objects and have different
+>> requirements, there are distinctions:
+>>
+>> 1. fwsecurityfs lets users create files in userspace, securityfs only allows
+>> kernel subsystems to create files.
+> Sorry could you please elaborate how? both securityfs & fwsecurityfs
+> calls simple_fill_super() which uses the same inode (i_op) and inode file
+> operations (i_fop) from fs/libfs.c for their root inode. So how it is enabling
+> user (as in userspace) to create a file in this filesystem?
+>
+> So am I missing anything?
+
+The ability to let user(as in userspace) to create a file in a 
+filesystem comes by allowing to define inode operations.
+
+Please look at the implementation differences for functions 
+xxx_create_dir() and xxx_create_dentry() of securityfs vs fwsecurityfs.  
+Also refer to Patch 4/4 for use of fwsecurityfs_create_dir() where inode 
+operations are defined.
+
+>
+>> 2. firmware and kernel objects may have different requirements. For example,
+>> consideration of namespacing. As per my understanding, namespacing is
+>> applied to kernel resources and not firmware resources. That's why it makes
+>> sense to add support for namespacing in securityfs, but we concluded that
+>> fwsecurityfs currently doesn't need it. Another but similar example of it
+> It "currently" doesn't need it. But can it in future? Then why not go with
+> securityfs which has an additional namespacing feature available?
+> That's actually also the point of utilizing an existing FS which can get
+> features like this in future. As long as it doesn't affect the functionality
+> of your use case, we simply need not reject securityfs, no?
+
+Thanks for your review and feedback. To summarize:
+
+ From the perspective of our use case, we need to expose firmware 
+security objects to userspace for management. Not all of the objects 
+pre-exist and we would like to allow root to create them from userspace.
+
+ From a unification perspective, I have considered a common location at 
+/sys/firmware/security for managing any platform's security objects. And 
+I've proposed a generic filesystem, which could be used by any platform 
+to represent firmware security objects via /sys/firmware/security.
+
+Here are some alternatives to generic filesystem in discussion:
+
+1. Start with a platform-specific filesystem. If more platforms would 
+like to use the approach, it can be made generic. We would still have a 
+common location of /sys/firmware/security and new code would live in 
+arch. This is my preference and would be the best fit for our use case.
+
+2. Use securityfs.  This would mean modifying it to satisfy other use 
+cases, including supporting userspace file creation. I don't know if the 
+securityfs maintainer would find that acceptable. I would also still 
+want some way to expose variables at /sys/firmware/security.
+
+3. Use a sysfs-based approach. This would be a platform-specific 
+implementation. However, sysfs has a similar issue to securityfs for 
+file creation. When I tried it in RFC v1[1], I had to implement a 
+workaround to achieve that.
+
+[1] 
+https://lore.kernel.org/linuxppc-dev/20220122005637.28199-3-nayna@linux.ibm.com/
+
+Thanks & Regards,
+
+      - Nayna
 
