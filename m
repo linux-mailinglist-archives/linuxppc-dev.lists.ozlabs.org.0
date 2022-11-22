@@ -2,97 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AB826333D7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Nov 2022 04:22:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00D676333F3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Nov 2022 04:30:54 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NGV233sdPz3cZp
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Nov 2022 14:22:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NGVCJ6JLKz3cd4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Nov 2022 14:30:52 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EPkLRjaA;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=nh3VlyHP;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::230; helo=mail-lj1-x230.google.com; envelope-from=kernelfans@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EPkLRjaA;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=nh3VlyHP;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NGV175dRVz2xFx
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Nov 2022 14:22:03 +1100 (AEDT)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AM1VZP8026592
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Nov 2022 03:22:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=Eaot04oK1Qa/WbKhI9z8h4wU/5KiO3B5Dpn9FUwkVi4=;
- b=EPkLRjaAPBQvriRAiUsrmUboC6BvlxqegseB4FClvWH1lu/9QJoDDnF7T3wy9JOhzSBe
- 5itz4bMftnq3CJKUHVbhhDLMdfh6UtEpZeqAXh7Aw1EUeD9aPw87pLTA7bQp0oUOLeOL
- IHjrOMpDNUQrcD4a1gOyqTLOT3wlSXxgZhK3aLacKyfY+9aXzVXqPbIBaH4tpnd/idtj
- TArAczD/ZtRqpuL7oXyvUI/9RVNRRt2ui7xb/Xy6/YbkT4OAv6WvWOvmsFegmzVuF6ST
- JkzBSflOJsUfaxIRlvkG4bACNrX8hGjQEavTxACrTt/1LAiGsFf/eZLIwh4tIshpJhVE sA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m0mu7hwbv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Nov 2022 03:22:01 +0000
-Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2AM3M0mc007749
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Nov 2022 03:22:00 GMT
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com [149.81.74.108])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m0mu7hwbc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 22 Nov 2022 03:22:00 +0000
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
-	by ppma05fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2AM3L56J007167;
-	Tue, 22 Nov 2022 03:21:57 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
-	by ppma05fra.de.ibm.com with ESMTP id 3kxps8jk26-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 22 Nov 2022 03:21:57 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
-	by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2AM3LtFR4194850
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 22 Nov 2022 03:21:55 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0D473A405B;
-	Tue, 22 Nov 2022 03:21:55 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id ACB03A4054;
-	Tue, 22 Nov 2022 03:21:54 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Tue, 22 Nov 2022 03:21:54 +0000 (GMT)
-Received: from [10.61.2.128] (haven.au.ibm.com [9.192.254.114])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 9088D60151;
-	Tue, 22 Nov 2022 14:21:53 +1100 (AEDT)
-Message-ID: <062d064cbf64be465b6fe553f8ea31e977e80297.camel@linux.ibm.com>
-Subject: Re: [PATCH 05/13] powerpc/pseries/eeh: use correct API for error
- log size
-From: Andrew Donnellan <ajd@linux.ibm.com>
-To: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Date: Tue, 22 Nov 2022 14:21:53 +1100
-In-Reply-To: <20221118150751.469393-6-nathanl@linux.ibm.com>
-References: <20221118150751.469393-1-nathanl@linux.ibm.com>
-	 <20221118150751.469393-6-nathanl@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NGVBK4mbGz2xCd
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Nov 2022 14:29:59 +1100 (AEDT)
+Received: by mail-lj1-x230.google.com with SMTP id b9so16565922ljr.5
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Nov 2022 19:29:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JZHAbFpbK8NadXCjAK/heNZ7lPOq0hiWZyz4LbGJ4kQ=;
+        b=nh3VlyHP4JyQ7/qxPpvQWeGf8Dk/smiiCxwVCFsjCN3TNiegoAACDhDL5iLOg6JM44
+         xRNx6UEx+1j30fcYl2m/AwVdIkyNXdfEus7mVcTbHon+jksicLB+dUDniseurvXtdxkS
+         7HKWs2fYmMy//iLPIMUXgpVbwZwp/PftoFyuQNNxkqaSm2uKfOOEdKFkzgVvuPpCrNSQ
+         EYmGvWErkKAfhpbzeI1OKD3D4Fa0JC3g7gfiqR0lGGcNu0vCBg4yydRmz4AzU3sg4aUD
+         mGQv4XmBDosh01qPhTMwDSDYeqC85sKWHTd7ddbaS2fr7qnP4QDlN+0/56ZK4KdA9xfe
+         ifEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=JZHAbFpbK8NadXCjAK/heNZ7lPOq0hiWZyz4LbGJ4kQ=;
+        b=jzkHTf2u35fcM+RWbA72nbtSihuSwHiiXCqzX/cO2OWOcsDmPI1v1JF4eyr7kvOktP
+         aCaB14TFRJ63dvW4YVPnuaCqWR3Im0YX6aPfn8yT7pvZycXHpVBMUDS2sLZMufZXouO1
+         tjAgAzL/LbgXAyAlSILtVWZGkz8whPpy9o72W0FMAsx1bL8XS2rChSVpB0Vl5y8aaSbO
+         fcxZ/MqqhUdzcvbTJNrAlRzHoOKdR8UqvKOQn63JHS45pMoXaUrUWNeJWiE1MI5ItKsO
+         +cny8exYxtPiP9YaIgv1geeCRfj9rxM+w7STJB+yDB+ZneNbwlsP/LbwsdG0lYRKi8EW
+         u2jw==
+X-Gm-Message-State: ANoB5plX628V6GYhiKjpLA3uEX/TYWXLOAIsIRO1zUH5uuiTW61J4OPg
+	riZlC898G4w6Wf5iqp4EhxAAy93SZGdJYi60pA==
+X-Google-Smtp-Source: AA0mqf6p0k1GLsMfDuxzu3tMSMUyfaT3sN4BxQl7l1dEuTtvmifyuBLZa+6vPLcFovHR4Sq2o9GsXropgIeMcw2HQxU=
+X-Received: by 2002:a2e:a90a:0:b0:26d:ccb6:1d47 with SMTP id
+ j10-20020a2ea90a000000b0026dccb61d47mr1383260ljq.199.1669087792761; Mon, 21
+ Nov 2022 19:29:52 -0800 (PST)
+MIME-Version: 1.0
+References: <CAFgQCTuz3n5uNKwOOXaL9xT-ftJT0nfo4OfdNepvMGbi0Zqh7Q@mail.gmail.com>
+ <CAFgQCTv6R_P0W16ak=9D481NKWqaXwd26CKHHqRbuMygP1u4Aw@mail.gmail.com> <61dc96ad-f60e-932f-c063-d1b377006b78@kaod.org>
+In-Reply-To: <61dc96ad-f60e-932f-c063-d1b377006b78@kaod.org>
+From: Pingfan Liu <kernelfans@gmail.com>
+Date: Tue, 22 Nov 2022 11:29:41 +0800
+Message-ID: <CAFgQCTvfFW57nKvFpUwtQO-HozfFRf2XqBFcQ0rGqrXQS=seig@mail.gmail.com>
+Subject: Re: // a kdump hang caused by PPC pci patch series
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
-MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: gkPymxe_rND_hQo35-67U6w_eB7hpEFT
-X-Proofpoint-ORIG-GUID: 6VDrpVwRkYKlilNyOZXJMPe8sZyOER-v
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-11-21_18,2022-11-18_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 malwarescore=0
- spamscore=0 impostorscore=0 suspectscore=0 adultscore=0 clxscore=1015
- lowpriorityscore=0 priorityscore=1501 mlxscore=0 bulkscore=0
- mlxlogscore=975 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2210170000 definitions=main-2211220020
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,49 +76,101 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: tyreld@linux.ibm.com, nnac123@linux.ibm.com, ldufour@linux.ibm.com, npiggin@gmail.com
+Cc: Coiby Xu <coxu@redhat.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 2022-11-18 at 09:07 -0600, Nathan Lynch wrote:
-> rtas-error-log-max is not the name of an RTAS function, so
-> rtas_token() is not the appropriate API for retrieving its value. We
-> already have rtas_get_error_log_max() which returns a sensible value
-> if the property is absent for any reason, so use that instead.
->=20
-> Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
-> Fixes: 8d633291b4fc ("powerpc/eeh: pseries platform EEH error log
-> retrieval")
-> ---
-> =C2=A0arch/powerpc/platforms/pseries/eeh_pseries.c | 2 +-
-> =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/arch/powerpc/platforms/pseries/eeh_pseries.c
-> b/arch/powerpc/platforms/pseries/eeh_pseries.c
-> index 8e40ccac0f44..e5e4f4aa5afd 100644
-> --- a/arch/powerpc/platforms/pseries/eeh_pseries.c
-> +++ b/arch/powerpc/platforms/pseries/eeh_pseries.c
-> @@ -848,7 +848,7 @@ static int __init eeh_pseries_init(void)
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
-> =C2=A0
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/* Initialize error log s=
-ize */
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0eeh_error_buf_size =3D rtas_to=
-ken("rtas-error-log-max");
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0eeh_error_buf_size =3D rtas_ge=
-t_error_log_max();
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (eeh_error_buf_size =
-=3D=3D RTAS_UNKNOWN_SERVICE) {
+Hi Gedric,
 
-This is now impossible, and the whole block makes little sense after
-the next patch
+Appreciate your insight. Please see the comment inline below.
 
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0pr_info("%s: unknown EEH error log size\n",
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0__f=
-unc__);
+On Mon, Nov 21, 2022 at 8:57 PM C=C3=A9dric Le Goater <clg@kaod.org> wrote:
+>
+> On 11/21/22 12:57, Pingfan Liu wrote:
+> > Sorry that forget a subject.
+> >
+> > On Mon, Nov 21, 2022 at 7:54 PM Pingfan Liu <kernelfans@gmail.com> wrot=
+e:
+> >>
+> >> Hello Powerpc folks,
+> >>
+> >> I encounter an kdump bug, which I bisect and pin commit 174db9e7f775
+> >> ("powerpc/pseries/pci: Add support of MSI domains to PHB hotplug")
+> >> In that case, using Fedora 36 as host, the mentioned commit as the
+> >> guest kernel, and virto-block disk, the kdump kernel will hang:
+>
+> The host kernel should be using the PowerNV platform and not pseries
+> or are you running a nested L2 guest on KVM/pseries L1 ?
+>
 
---=20
-Andrew Donnellan    OzLabs, ADL Canberra
-ajd@linux.ibm.com   IBM Australia Limited
+Host kernel ran on P9 bare metal. And here PowerKVM is used.
+
+> And as far as I remember, the patch above only impacts the IBM PowerVM
+> hypervisor, not KVM, and PHB hotplug, or kdump induces some hot-plugging
+> I am not aware of.
+>
+
+Sorry that my information is not clear.
+The suspect series is "[PATCH 00/31] powerpc: Modernize the PCI/MSI
+support", and in the main line, beginning from commit 786e5b102a00
+("powerpc/pseries/pci: Introduce __find_pe_total_msi()").
+
+I tried to bisect, and the commit a5f3d2c17b07 ("powerpc/pseries/pci:
+Add MSI domains") even hangs the first kernel. So I went ahead to find
+the next functional change on pseries, which is commit 174db9e7f775
+("powerpc/pseries/pci: Add support of MSI domains to PHB hotplug").
+
+
+> Also, if indeed, this is a L2 guest, the XIVE interrupt controller is
+> emulated in QEMU, "info pic" should return:
+>
+>    ...
+>    irqchip: emulated
+>
+> >>
+> >> [    0.000000] Kernel command line: elfcorehdr=3D0x22c00000
+> >> no_timer_check net.ifnames=3D0 console=3Dtty0 console=3Dhvc0,115200n8
+> >> irqpoll maxcpus=3D1 noirqdistrib reset_devices cgroup_disable=3Dmemory
+> >>       numa=3Doff udev.children-max=3D2 ehea.use_mcs=3D0 panic=3D10
+> >> kvm_cma_resv_ratio=3D0 transparent_hugepage=3Dnever novmcoredd
+> >> hugetlb_cma=3D0
+> >>      ...
+> >>      [    7.763260] virtio_blk virtio2: 32/0/0 default/read/poll queue=
+s
+> >>      [    7.771391] virtio_blk virtio2: [vda] 20971520 512-byte logica=
+l
+> >> blocks (10.7 GB/10.0 GiB)
+> >>      [   68.398234] systemd-udevd[187]: virtio2: Worker [190]
+> >> processing SEQNUM=3D1193 is taking a long time
+> >>      [  188.398258] systemd-udevd[187]: virtio2: Worker [190]
+> >> processing SEQNUM=3D1193 killed
+> >>
+> >>
+> >> During my test, I found that in very rare cases, the kdump can success
+> >> (I guess it may be due to the cpu id).  And if using either maxcpus=3D=
+2
+> >> or using scsi-disk, then kdump can also success.  And before the
+> >> mentioned commit, kdump can also success.
+> >>
+> >> The attachment contains the xml to reproduce that bug.
+> >>
+> >> Do you have any ideas?
+>
+> Most certainly an interrupt not being delivered. You can check the status
+> on the host with :
+>
+>    virsh qemu-monitor-command --hmp <domain>  "info pic"
+>
+
+OK, I will try to occupy a P9 machine and have a shot. I will update
+the info later.
+
+
+Thanks,
+
+Pingfa
+>
+>
+> Thanks,
+>
+> C.
