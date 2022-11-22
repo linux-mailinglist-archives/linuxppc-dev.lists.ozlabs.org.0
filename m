@@ -2,54 +2,97 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5D6863323D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Nov 2022 02:38:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27226633372
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Nov 2022 03:40:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NGRk34NMXz3cK5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Nov 2022 12:38:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NGT5J028Sz3cMN
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Nov 2022 13:40:36 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iooDK4IB;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oH7NZ4oc;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=srs0=hi7z=3w=paulmck-thinkpad-p17-gen-1.home=paulmck@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iooDK4IB;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oH7NZ4oc;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NGRj40Prbz2yyZ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Nov 2022 12:37:59 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NGT4J0MBQz2yR9
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Nov 2022 13:39:43 +1100 (AEDT)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AM13PT5021510
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Nov 2022 02:39:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=ClJcO/6WuwzroOpKrRX6LWCXxKzwLyLOOuDDsrdw5rU=;
+ b=oH7NZ4ocgVpVHOGc1txtdmt7ugagDNCHXq/N9FZZNbZCwwxo/53AElPMqffSTWwtRQIg
+ LsAmCs+N4P+XygtqMB9hc1by14Ap4jPXtf4Uydk1TOdbCjRmgl7uKSG+vR6raQI+ZsLf
+ qpPGxUtaet/ZgVt0OQyMmxA+8zxAtYk3bEcmy3HKx/DBM8CrOpMGw3dUBEuRofoul1sb
+ KAREXkpHmKKeTph8/ObV//qXBZakt2vvDQpW5Q8Aq1Xk1Dun9mUR1992bcbFGMtr8FwX
+ aJghqOCA638Mk++TO6OZ4I0CpcxP+H2+PFN7Y6xRaBPD2O5wFXWpjb1Q9CVjjeLddibX Zw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m0hg2nuud-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Nov 2022 02:39:41 +0000
+Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2AM22ujp005807
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Nov 2022 02:39:40 GMT
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m0hg2nuu0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 22 Nov 2022 02:39:40 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+	by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2AM2YjUu013134;
+	Tue, 22 Nov 2022 02:39:38 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+	by ppma03ams.nl.ibm.com with ESMTP id 3kxps8ufgm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 22 Nov 2022 02:39:38 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
+	by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2AM2daTT28442952
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 22 Nov 2022 02:39:36 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1EB4F42042;
+	Tue, 22 Nov 2022 02:39:36 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BD4BB42041;
+	Tue, 22 Nov 2022 02:39:35 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Tue, 22 Nov 2022 02:39:35 +0000 (GMT)
+Received: from [10.61.2.128] (haven.au.ibm.com [9.192.254.114])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id F0587B80B2F;
-	Tue, 22 Nov 2022 01:37:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A49E3C433C1;
-	Tue, 22 Nov 2022 01:37:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1669081074;
-	bh=QcONz78rL0Sk+f9V0abznXKrHZ2DoMdZuXQELbeKy4A=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-	b=iooDK4IBUeRwKAN/9vC+xPpwR+SCQ88Cbf4UYRDhNWFqJMe/W8RY3wYdidBBWBL6a
-	 Rxw4IZTlwYJos4i4Q5y/dtUWlm9FvusqNf3F+/hNqspeQNSWUk6CGV7cjbbHlFgc1z
-	 1KUkKENH/g5ZpK23jaMUlqH5wJ4Kj/xkQpre1ft7+lleVFA6KrsZuQAYQamonAZr0/
-	 /I3pd1plrVjPtJVCWbatStdIz65msSoTNPGGoyZfgqut0+Xcbf08yFQpua27sFQEoj
-	 y/1WGq00HPY16Kvm8MXEDbgEe97iPq8qpbp2KEUf6iQe1xF8POKHWP1cvAdBn36IuX
-	 kouHFTFN32u9Q==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id 36CF05C0641; Mon, 21 Nov 2022 17:37:54 -0800 (PST)
-Date: Mon, 21 Nov 2022 17:37:54 -0800
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: Zhouyi Zhou <zhouzhouyi@gmail.com>
-Subject: Re: [PATCH linux-next][RFC]torture: avoid offline tick_do_timer_cpu
-Message-ID: <20221122013754.GY4001@paulmck-ThinkPad-P17-Gen-1>
-References: <20221121035140.118651-1-zhouzhouyi@gmail.com>
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 3F6B6600F3;
+	Tue, 22 Nov 2022 13:39:32 +1100 (AEDT)
+Message-ID: <75044c47f1fa65ed1b9338022b653df0b80b8a3c.camel@linux.ibm.com>
+Subject: Re: [PATCH 02/13] powerpc/rtasd: use correct OF API for event scan
+ rate
+From: Andrew Donnellan <ajd@linux.ibm.com>
+To: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Date: Tue, 22 Nov 2022 13:39:32 +1100
+In-Reply-To: <20221118150751.469393-3-nathanl@linux.ibm.com>
+References: <20221118150751.469393-1-nathanl@linux.ibm.com>
+	 <20221118150751.469393-3-nathanl@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221121035140.118651-1-zhouzhouyi@gmail.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: B73ZTdUCydePF607gJiL7IpC-trrEeg_
+X-Proofpoint-ORIG-GUID: WkWldH4bQ1ffCzBkduYMS0WhcQRQs5xI
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-11-21_18,2022-11-18_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
+ lowpriorityscore=0 malwarescore=0 phishscore=0 bulkscore=0 mlxscore=0
+ clxscore=1015 suspectscore=0 mlxlogscore=999 impostorscore=0
+ priorityscore=1501 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2210170000 definitions=main-2211220015
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,114 +104,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: paulmck@kernel.org
-Cc: dave@stgolabs.net, josh@joshtriplett.org, linux-kernel@vger.kernel.org, fweisbec@gmail.com, tglx@linutronix.de, linuxppc-dev@lists.ozlabs.org, mingo@kernel.org
+Cc: tyreld@linux.ibm.com, nnac123@linux.ibm.com, ldufour@linux.ibm.com, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Nov 21, 2022 at 11:51:40AM +0800, Zhouyi Zhou wrote:
-> During CPU-hotplug torture (CONFIG_NO_HZ_FULL=y), if we try to
-> offline tick_do_timer_cpu, the operation will fail because in
-> function tick_nohz_cpu_down:
-> ```
-> if (tick_nohz_full_running && tick_do_timer_cpu == cpu)
->       return -EBUSY;
-> ```
-> Above bug was first discovered in torture tests performed in PPC VM
-> of Open Source Lab of Oregon State University, and reproducable in RISC-V
-> and X86-64 (with additional kernel commandline cpu0_hotplug).
-> 
-> In this patch, we avoid offline tick_do_timer_cpu by distribute
-> the offlining cpu among remaining cpus.
-> 
-> Signed-off-by: Zhouyi Zhou <zhouzhouyi@gmail.com>
+On Fri, 2022-11-18 at 09:07 -0600, Nathan Lynch wrote:
+> rtas_token() should be used only for properties that are RTAS
+> function
+> tokens. "rtas-event-scan-rate" does not contain a function token, but
+> it
+> has the same size/format as token properties so reading it with
+> rtas_token() happens to work.
+>=20
+> Convert to of_property_read_u32().
+>=20
+> Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
 
-Good show chasing this down!
+Did a quick grep for the other OF device tree properties listed in R1-
+7.2.6-3 of PAPR to see if we make the same mistake elsewhere, and the
+only other one is rtas-error-log-max which I see you clean up later in
+the series.
 
-A couple of questions below.
+Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
 
 > ---
->  include/linux/tick.h        |  1 +
->  kernel/time/tick-common.c   |  1 +
->  kernel/time/tick-internal.h |  1 -
->  kernel/torture.c            | 10 ++++++++++
->  4 files changed, 12 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/linux/tick.h b/include/linux/tick.h
-> index bfd571f18cfd..23cc0b205853 100644
-> --- a/include/linux/tick.h
-> +++ b/include/linux/tick.h
-> @@ -14,6 +14,7 @@
->  #include <linux/rcupdate.h>
->  
->  #ifdef CONFIG_GENERIC_CLOCKEVENTS
-> +extern int tick_do_timer_cpu __read_mostly;
->  extern void __init tick_init(void);
->  /* Should be core only, but ARM BL switcher requires it */
->  extern void tick_suspend_local(void);
-> diff --git a/kernel/time/tick-common.c b/kernel/time/tick-common.c
-> index 46789356f856..87b9b9afa320 100644
-> --- a/kernel/time/tick-common.c
-> +++ b/kernel/time/tick-common.c
-> @@ -48,6 +48,7 @@ ktime_t tick_next_period;
->   *    procedure also covers cpu hotplug.
->   */
->  int tick_do_timer_cpu __read_mostly = TICK_DO_TIMER_BOOT;
-> +EXPORT_SYMBOL_GPL(tick_do_timer_cpu);
->  #ifdef CONFIG_NO_HZ_FULL
->  /*
->   * tick_do_timer_boot_cpu indicates the boot CPU temporarily owns
-> diff --git a/kernel/time/tick-internal.h b/kernel/time/tick-internal.h
-> index 649f2b48e8f0..8953dca10fdd 100644
-> --- a/kernel/time/tick-internal.h
-> +++ b/kernel/time/tick-internal.h
-> @@ -15,7 +15,6 @@
->  
->  DECLARE_PER_CPU(struct tick_device, tick_cpu_device);
->  extern ktime_t tick_next_period;
-> -extern int tick_do_timer_cpu __read_mostly;
->  
->  extern void tick_setup_periodic(struct clock_event_device *dev, int broadcast);
->  extern void tick_handle_periodic(struct clock_event_device *dev);
-> diff --git a/kernel/torture.c b/kernel/torture.c
-> index 789aeb0e1159..bccbdd33dda2 100644
-> --- a/kernel/torture.c
-> +++ b/kernel/torture.c
-> @@ -33,6 +33,7 @@
->  #include <linux/delay.h>
->  #include <linux/stat.h>
->  #include <linux/slab.h>
-> +#include <linux/tick.h>
->  #include <linux/trace_clock.h>
->  #include <linux/ktime.h>
->  #include <asm/byteorder.h>
-> @@ -358,7 +359,16 @@ torture_onoff(void *arg)
->  			schedule_timeout_interruptible(HZ / 10);
->  			continue;
->  		}
-> +#ifdef CONFIG_NO_HZ_FULL
-> +		/* do not offline tick do timer cpu */
-> +		if (tick_nohz_full_running) {
-> +			cpu = (torture_random(&rand) >> 4) % maxcpu;
-> +			if (cpu >= tick_do_timer_cpu)
+> =C2=A0arch/powerpc/kernel/rtasd.c | 7 +++++--
+> =C2=A01 file changed, 5 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/arch/powerpc/kernel/rtasd.c
+> b/arch/powerpc/kernel/rtasd.c
+> index 5270b450bbde..cc56ac6ba4b0 100644
+> --- a/arch/powerpc/kernel/rtasd.c
+> +++ b/arch/powerpc/kernel/rtasd.c
+> @@ -9,6 +9,7 @@
+> =C2=A0#include <linux/errno.h>
+> =C2=A0#include <linux/sched.h>
+> =C2=A0#include <linux/kernel.h>
+> +#include <linux/of.h>
+> =C2=A0#include <linux/poll.h>
+> =C2=A0#include <linux/proc_fs.h>
+> =C2=A0#include <linux/init.h>
+> @@ -499,6 +500,8 @@ EXPORT_SYMBOL_GPL(rtas_cancel_event_scan);
+> =C2=A0
+> =C2=A0static int __init rtas_event_scan_init(void)
+> =C2=A0{
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0int err;
+> +
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (!machine_is(pseries) =
+&& !machine_is(chrp))
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0return 0;
+> =C2=A0
+> @@ -509,8 +512,8 @@ static int __init rtas_event_scan_init(void)
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0return -ENODEV;
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
+> =C2=A0
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0rtas_event_scan_rate =3D rtas_=
+token("rtas-event-scan-rate");
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (rtas_event_scan_rate =3D=
+=3D RTAS_UNKNOWN_SERVICE) {
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0err =3D of_property_read_u32(r=
+tas.dev, "rtas-event-scan-rate",
+> &rtas_event_scan_rate);
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (err) {
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0printk(KERN_ERR "rtasd: no rtas-event-scan-rate on
+> system\n");
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0return -ENODEV;
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
 
-Why is this ">=" instead of "=="?
-
-> +				cpu = (cpu + 1) % (maxcpu + 1);
-> +		} else
-> +#else
->  		cpu = (torture_random(&rand) >> 4) % (maxcpu + 1);
-> +#endif
-
-What happens if the value of tick_do_timer_cpu changes between the time of
-the check above and the call to torture_offline() below?  Alternatively,
-how is such a change in value prevented?
-
-							Thanx, Paul
-
->  		if (!torture_offline(cpu,
->  				     &n_offline_attempts, &n_offline_successes,
->  				     &sum_offline, &min_offline, &max_offline))
-> -- 
-> 2.34.1
-> 
+--=20
+Andrew Donnellan    OzLabs, ADL Canberra
+ajd@linux.ibm.com   IBM Australia Limited
