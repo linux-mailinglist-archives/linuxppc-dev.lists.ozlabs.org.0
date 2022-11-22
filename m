@@ -2,52 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 080E86341AD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Nov 2022 17:40:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 110BB6341C5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Nov 2022 17:44:10 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NGqk36SG5z3ccv
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Nov 2022 03:40:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NGqpb6mWyz3cMb
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Nov 2022 03:44:07 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=lMpGWyMN;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=ai29wCwr;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=geoff@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=lMpGWyMN;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=ai29wCwr;
 	dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NGqj6031zz3c5w
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Nov 2022 03:39:17 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description;
-	bh=zlnWwWyuJzePEoAKK8voPt9LaS882cfk1wH3b90GorY=; b=lMpGWyMNffvl68KHZ0puQRpaTo
-	vAsjEW0TXHXnk2/KFpAOaRxvfq7pSMAg6wZl5Ynnl8ThZANvWKlIWkvFP55yQNrjpbPqrlHZfuisS
-	aCRLO4mIHnFuoaNTTzTMvzJUtQwP/xmzQl+tUOGr/pGcz3SP1qdCEXW0SIGaHd0rZUZI60sxppMcB
-	MiM6/4F5V86IcHW7s0b81JoFOmvQbmzwNSq1FI4o/FkScjVQKQexDOEtiW751PnOs+T7sg4jqg2V8
-	6ifiQCfpTUGSTl0f66cmIzrL6EeBB13CxU9rS64+U61uqHTGVFY3DpHsT/hdqtDlB3/rkxpGkERVx
-	hLpBwyJA==;
-Received: from 108-90-42-56.lightspeed.sntcca.sbcglobal.net ([108.90.42.56] helo=[192.168.1.80])
-	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oxWIg-006YGS-Gt; Tue, 22 Nov 2022 16:39:10 +0000
-Message-ID: <5ed29ecb-1ab9-061b-664b-fd380ba77005@infradead.org>
-Date: Tue, 22 Nov 2022 08:39:00 -0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NGqnd51TXz3c5w
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Nov 2022 03:43:17 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id A8C9CB81CBD;
+	Tue, 22 Nov 2022 16:43:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7CD1C433D6;
+	Tue, 22 Nov 2022 16:43:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1669135392;
+	bh=HhGB03f7yfLJTw6SIRqhGxERi9Gom4x4ToervBUNQF8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ai29wCwrSrFMalECnQg3VZFE6JJ7w1PVvNsX/nUcTdZGvwJT9FgVXh0Qu1fP/KZjg
+	 gLL1mmmGyJUPfkwUZ8U8rfzyORb4k7cg2ocWkdlYVwXPJu4ByDHKX8FbqktGuqI0/r
+	 L84ihOeSNwOdUyo5JUrjvyIoAUgVxWDKIToY6zCM=
+Date: Tue, 22 Nov 2022 17:43:08 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: John Ogness <john.ogness@linutronix.de>
+Subject: Re: [PATCH printk v5 00/40] reduce console_lock scope
+Message-ID: <Y3z8HOt0yOd1nceY@kroah.com>
+References: <20221116162152.193147-1-john.ogness@linutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [PATCH] powerpc/ps3: mark ps3_system_bus_type static
-To: Christoph Hellwig <hch@lst.de>, mpe@ellerman.id.au, npiggin@gmail.com
-References: <20221122072225.423432-1-hch@lst.de>
-Content-Language: en-US
-From: Geoff Levand <geoff@infradead.org>
-In-Reply-To: <20221122072225.423432-1-hch@lst.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221116162152.193147-1-john.ogness@linutronix.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,26 +56,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-fbdev@vger.kernel.org, linux-efi@vger.kernel.org, Geert Uytterhoeven <geert+renesas@glider.be>, Peter Zijlstra <peterz@infradead.org>, kgdb-bugreport@lists.sourceforge.net, dri-devel@lists.freedesktop.org, Douglas Anderson <dianders@chromium.org>, Eric Dumazet <edumazet@google.com>, Alim Akhtar <alim.akhtar@samsung.com>, Jiri Slaby <jirislaby@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, Daniel Thompson <daniel.thompson@linaro.org>, linux-samsung-soc@vger.kernel.org, Tom Rix <trix@redhat.com>, Richard Weinberger <richard@nod.at>, Helge Deller <deller@gmx.de>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Geert Uytterhoeven <geert@linux-m68k.org>, linux-serial@vger.kernel.org, Aaron Tomlin <atomlin@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>, Paolo Abeni <pabeni@redhat.com>, Petr Mladek <pmladek@suse.com>, Michal Simek <michal.simek@xilinx.com>, linux-u
+ m@lists.infradead.org, Steven Rostedt <rostedt@goodmis.org>, linux-m68k@lists.linux-m68k.org, Jakub Kicinski <kuba@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, linux-arm-kernel@lists.infradead.org, Juergen Gross <jgross@suse.com>, Mathias Nyman <mathias.nyman@linux.intel.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, netdev@vger.kernel.org, linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, Sergey Senozhatsky <senozhatsky@chromium.org>, Luis Chamberlain <mcgrof@kernel.org>, Lukas Wunner <lukas@wunner.de>, Thomas Zimmermann <tzimmermann@suse.de>, Jason Wessel <jason.wessel@windriver.com>, linux-fsdevel@vger.kernel.org, Javier Martinez Canillas <javierm@redhat.com>, Johannes Berg <johannes@sipsolutions.net>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Christoph,
-
-On 11/21/22 23:22, Christoph Hellwig wrote:
-> ps3_system_bus_type is only used inside of system-bus.c, so remove
-> the external declaration and the very outdated comment next to it.
+On Wed, Nov 16, 2022 at 05:27:12PM +0106, John Ogness wrote:
+> This is v5 of a series to prepare for threaded/atomic
+> printing. v4 is here [0]. This series focuses on reducing the
+> scope of the BKL console_lock. It achieves this by switching to
+> SRCU and a dedicated mutex for console list iteration and
+> modification, respectively. The console_lock will no longer
+> offer this protection.
 > 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  arch/powerpc/include/asm/ps3.h          | 4 ----
->  arch/powerpc/platforms/ps3/system-bus.c | 2 +-
->  2 files changed, 1 insertion(+), 5 deletions(-)
+> Also, during the review of v2 it came to our attention that
+> many console drivers are checking CON_ENABLED to see if they
+> are registered. Because this flag can change without
+> unregistering and because this flag does not represent an
+> atomic point when an (un)registration process is complete,
+> a new console_is_registered() function is introduced. This
+> function uses the console_list_lock to synchronize with the
+> (un)registration process to provide a reliable status.
+> 
+> All users of the console_lock for list iteration have been
+> modified. For the call sites where the console_lock is still
+> needed (for other reasons), comments are added to explain
+> exactly why the console_lock is needed.
+> 
+> All users of CON_ENABLED for registration status have been
+> modified to use console_is_registered(). Note that there are
+> still users of CON_ENABLED, but this is for legitimate purposes
+> about a registered console being able to print.
+> 
+> The base commit for this series is from Paul McKenney's RCU tree
+> and provides an NMI-safe SRCU implementation [1]. Without the
+> NMI-safe SRCU implementation, this series is not less safe than
+> mainline. But we will need the NMI-safe SRCU implementation for
+> atomic consoles anyway, so we might as well get it in
+> now. Especially since it _does_ increase the reliability for
+> mainline in the panic path.
+> 
+> Changes since v4:
+> 
+> printk:
+> 
+> - Introduce console_init_seq() to handle the now rather complex
+>   procedure to find an appropriate start sequence number for a
+>   new console upon registration.
+> 
+> - When registering a non-boot console and boot consoles are
+>   registered, try to flush all the consoles to get the next @seq
+>   value before falling back to use the @seq of the enabled boot
+>   console that is furthest behind.
+> 
+> - For console_force_preferred_locked(), make the console the
+>   head of the console list.
+> 
 
-I tested this applied to v6.1-rc6 and it seems to be OK.  Thanks
-for submitting.
 
-Acked-by: Geoff Levand <geoff@infradead.org>
-
-
-
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
