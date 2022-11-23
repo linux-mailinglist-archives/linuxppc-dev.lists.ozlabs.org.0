@@ -2,51 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28AD66354D6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Nov 2022 10:12:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE631635498
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Nov 2022 10:10:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NHFkS6fZHz3cKb
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Nov 2022 20:12:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NHFhG3Xvcz3dvX
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Nov 2022 20:10:06 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=tTDWWV/i;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=RyeD1XMc;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=OcMnfzyI;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=66.111.4.25; helo=out1-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=tTDWWV/i;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=RyeD1XMc;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=OcMnfzyI;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NHFjW42R4z3cGD
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Nov 2022 20:11:11 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id D064361B14;
-	Wed, 23 Nov 2022 09:11:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72099C433D7;
-	Wed, 23 Nov 2022 09:11:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1669194667;
-	bh=GXMwyAFHH9LtUUd0vupv4sOaQtEdgJicv+5Xo2PzPp4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tTDWWV/i8ylNnUWJxVvj8KqwYxHX714nE3j4F0xJMRsvPCoterdNRmDk2JVHw2ajU
-	 yug61nlIFnIfEZBwTnbV2scDW45w4UM/28BUclpF6i65Q2wCz75leSH2ppLd7S/vLn
-	 SOQIULes3lczErsuWPh0jNlPEVMEAiyjU+1jWeQ0=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Subject: [PATCH 5.4 027/156] perf stat: Fix printing os->prefix in CSV metrics output
-Date: Wed, 23 Nov 2022 09:49:44 +0100
-Message-Id: <20221123084558.941921215@linuxfoundation.org>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20221123084557.816085212@linuxfoundation.org>
-References: <20221123084557.816085212@linuxfoundation.org>
-User-Agent: quilt/0.67
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NHFgD6pGWz3cGD
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Nov 2022 20:09:11 +1100 (AEDT)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+	by mailout.nyi.internal (Postfix) with ESMTP id DAE9A5C01CA;
+	Wed, 23 Nov 2022 04:09:07 -0500 (EST)
+Received: from imap51 ([10.202.2.101])
+  by compute3.internal (MEProxy); Wed, 23 Nov 2022 04:09:07 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-type:date:date:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:sender:subject
+	:subject:to:to; s=fm3; t=1669194547; x=1669280947; bh=xTbvnTor0y
+	2z6py9bJZ/CyzeYDZ3IglF6k6GbnfGf90=; b=RyeD1XMcC11R/wWlR6Kw9Z/s+B
+	yYNFDO2itauhDGN7djvzeRxog/bHS97xeesDA2MPUs+womvGyaPvlJMJuIxqM7Y8
+	Lk8pPbjUQntRRynAT1Lb830UtJCGOAs5v8Jg5doYNS+7oY9+2pwfZcyZzmHuC8Cs
+	UeBEVlHgba9uAMuGjNLCwaXX/Q3JAUYeIzmvqV83v5IFtqGNhuolfrs/VIzT9rXx
+	ibzdTZxCPUdWJA6H6ZNfT9NoznHNH2A2K88+6l/8hc8MI7OB251xnEBHpRG/4MCV
+	VJd2sj2gVxS7MWRF+ARA/8ujXfzfevS5YdxTaIO/VdM3l1MYp2BlqxCJpItQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
+	:feedback-id:from:from:in-reply-to:in-reply-to:message-id
+	:mime-version:references:reply-to:sender:subject:subject:to:to
+	:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm1; t=1669194547; x=1669280947; bh=xTbvnTor0y2z6py9bJZ/CyzeYDZ3
+	IglF6k6GbnfGf90=; b=OcMnfzyI6uIlpUfmFl567RrMUW788ReIXHlcU8Rx1pdL
+	hNdLwjkaUtvOAWqj9C26zWXdJ+jeSG+xrg6m2uX13LR7sktE66kK1xb0YzYM407V
+	eWW3Y4ZZdDlqVRNKI1b9FcrWH6wnEytjCucQJtcgVwRkP+NtSR9GIuknkpsT0462
+	RQoSnzPan9TcssZH1L9jrRR08To4FOlm/LWUzTe/AJkRxAxs3bjhwd74KegQQa7c
+	yWXyRHTDz6vDU7Eb1fUrlg13doZ1ovRS4i+AMGmj3ieoHU0Pd6+ncSz2KvNAgNfs
+	NnaV6bJN+VOtd/Oi8X8ON9UhDlAlq/UYfYv7gcwS8A==
+X-ME-Sender: <xms:MuN9Y_mrc4w5lK3MzR6I6lKzl3rq6tBlFgMpSevG2yOLX0kx33xMqA>
+    <xme:MuN9Yy0LRHmN3sYSvCglTcL53YjwQnIfotJdiy6UWOuohjtnqljb4Jt1MxaLije3U
+    9MZSpBhZpfiawxw2S4>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvgedriedtgdduvdekucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
+    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
+    htvghrnhepleetgfekhfetvdfhjeffvdfffedtleejjefhjeffieeuvdetieeffeehleeu
+    jeffnecuffhomhgrihhnpehrvghlrdhrohenucevlhhushhtvghrufhiiigvpedtnecurf
+    grrhgrmhepmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggv
+X-ME-Proxy: <xmx:M-N9Y1qI3w4VbqUDkq2JfzV4EtLKbfFZxle35PZ_KKdObiMZtZgejA>
+    <xmx:M-N9Y3lWiS1U-xmgGkTjByyEHPF3sRdLW4oaBrttJ8acsPx9eel75w>
+    <xmx:M-N9Y91L-qhlWAPhOPLXO7Ic5wQpggycvjz3f_IOTDX_O80iO8-Vvw>
+    <xmx:M-N9Y6m6KjWmT2vfKsQfnFN_YnkKkx1jr2SR8UrWUkFTK4W2RRWq4Q>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id E5024B60086; Wed, 23 Nov 2022 04:09:06 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.7.0-alpha0-1115-g8b801eadce-fm-20221102.001-g8b801ead
+Mime-Version: 1.0
+Message-Id: <4b10b87d-f255-4839-8700-858d98ffb801@app.fastmail.com>
+In-Reply-To: <20221123031605.16680-1-rdunlap@infradead.org>
+References: <20221123031605.16680-1-rdunlap@infradead.org>
+Date: Wed, 23 Nov 2022 10:08:45 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Randy Dunlap" <rdunlap@infradead.org>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH -next] fbdev: offb: allow build when DRM_OFDRM=m
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,128 +91,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Ian Rogers <irogers@google.com>, Andi Kleen <ak@linux.intel.com>, Nageswara R Sastry <rnsastry@linux.ibm.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Madhavan Srinivasan <maddy@linux.vnet.ibm.com>, patches@lists.linux.dev, Arnaldo Carvalho de Melo <acme@redhat.com>, Athira Jajeev <atrajeev@linux.vnet.ibm.com>, James Clark <james.clark@arm.com>, Jiri Olsa <jolsa@kernel.org>, Kajol Jain <kjain@linux.ibm.com>, Namhyung Kim <namhyung@kernel.org>, Disha Goel <disgoel@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-fbdev@vger.kernel.org, Thomas Zimmermann <tzimmermann@suse.de>, Masahiro Yamada <masahiroy@kernel.org>, dri-devel@lists.freedesktop.org, Daniel Vetter <daniel@ffwll.ch>, Michal Suchanek <msuchanek@suse.de>, linuxppc-dev@lists.ozlabs.org, Helge Deller <deller@gmx.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+On Wed, Nov 23, 2022, at 04:16, Randy Dunlap wrote:
+> Fix build when CONFIG_FB_OF=y and CONFIG_DRM_OFDRM=m.
+> When the latter symbol is =m, kconfig downgrades (limits) the 'select's
+> under FB_OF to modular (=m). This causes undefined symbol references:
+>
+> powerpc64-linux-ld: drivers/video/fbdev/offb.o:(.data.rel.ro+0x58): 
+> undefined reference to `cfb_fillrect'
+> powerpc64-linux-ld: drivers/video/fbdev/offb.o:(.data.rel.ro+0x60): 
+> undefined reference to `cfb_copyarea'
+> powerpc64-linux-ld: drivers/video/fbdev/offb.o:(.data.rel.ro+0x68): 
+> undefined reference to `cfb_imageblit'
+>
+> Fix this by allowing FB_OF any time that DRM_OFDRM != y so that the
+> selected FB_CFB_* symbols will become =y instead of =m.
+>
+> In tristate logic (for DRM_OFDRM), this changes the dependency from
+>     !DRM_OFDRM	== 2 - 1 == 1 => modular only (or disabled)
+> to (boolean)
+>     DRM_OFDRM != y == y, allowing the 'select's to cause the
+> FB_CFB_* symbols to =y instead of =m.
+>
 
-[ Upstream commit ad353b710c7493df3d4fc2d3a51819126bed2e81 ]
+Is it actually a useful configuration to have OFDRM=m and
+FB_OF=y though? I would expect in that case that the OFDRM
+driver never binds to a device because it's already owned
+by FB_OF.
 
-'perf stat' with CSV output option prints an extra empty string as first
-field in metrics output line.  Sample output below:
+> diff -- a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
+> --- a/drivers/video/fbdev/Kconfig
+> +++ b/drivers/video/fbdev/Kconfig
+> @@ -455,7 +455,7 @@ config FB_ATARI
+>  config FB_OF
+>  	bool "Open Firmware frame buffer device support"
+>  	depends on (FB = y) && PPC && (!PPC_PSERIES || PCI)
+> -	depends on !DRM_OFDRM
+> +	depends on DRM_OFDRM != y
+>  	select APERTURE_HELPERS
 
-	# ./perf stat -x, --per-socket -a -C 1 ls
-	S0,1,1.78,msec,cpu-clock,1785146,100.00,0.973,CPUs utilized
-	S0,1,26,,context-switches,1781750,100.00,0.015,M/sec
-	S0,1,1,,cpu-migrations,1780526,100.00,0.561,K/sec
-	S0,1,1,,page-faults,1779060,100.00,0.561,K/sec
-	S0,1,875807,,cycles,1769826,100.00,0.491,GHz
-	S0,1,85281,,stalled-cycles-frontend,1767512,100.00,9.74,frontend cycles idle
-	S0,1,576839,,stalled-cycles-backend,1766260,100.00,65.86,backend cycles idle
-	S0,1,288430,,instructions,1762246,100.00,0.33,insn per cycle
-====>	,S0,1,,,,,,,2.00,stalled cycles per insn
+I would instead make this 'depends on DRM_OFDRM=n', which
+completely eliminates configs that have both driver enabled.
 
-The above command line uses field separator as "," via "-x," option and
-per-socket option displays socket value as first field. But here the
-last line for "stalled cycles per insn" has "," in the beginning.
+A nicer change would be to make FB_OF a tristate symbol,
+which makes it possible to load one of the two modules if
+both are enabled =m, while only allowing one of them to
+be =y if the other is completely disabled. It looks like
+offb was originally written to be usable as a loadable module,
+but Kconfig has prevented this since at least the start of
+the git history.
 
-Sample output using interval mode:
-
-	# ./perf stat -I 1000 -x, --per-socket -a -C 1 ls
-	0.001813453,S0,1,1.87,msec,cpu-clock,1872052,100.00,0.002,CPUs utilized
-	0.001813453,S0,1,2,,context-switches,1868028,100.00,1.070,K/sec
-	------
-	0.001813453,S0,1,85379,,instructions,1856754,100.00,0.32,insn per cycle
-====>	0.001813453,,S0,1,,,,,,,1.34,stalled cycles per insn
-
-Above result also has an extra CSV separator after
-the timestamp. Patch addresses extra field separator
-in the beginning of the metric output line.
-
-The counter stats are displayed by function
-"perf_stat__print_shadow_stats" in code
-"util/stat-shadow.c". While printing the stats info
-for "stalled cycles per insn", function "new_line_csv"
-is used as new_line callback.
-
-The new_line_csv function has check for "os->prefix"
-and if prefix is not null, it will be printed along
-with cvs separator.
-Snippet from "new_line_csv":
-	if (os->prefix)
-               fprintf(os->fh, "%s%s", os->prefix, config->csv_sep);
-
-Here os->prefix gets printed followed by ","
-which is the cvs separator. The os->prefix is
-used in interval mode option ( -I ), to print
-time stamp on every new line. But prefix is
-already set to contain CSV separator when used
-in interval mode for CSV option.
-
-Reference: Function "static void print_interval"
-Snippet:
-	sprintf(prefix, "%6lu.%09lu%s", ts->tv_sec, ts->tv_nsec, config->csv_sep);
-
-Also if prefix is not assigned (if not used with
--I option), it gets set to empty string.
-Reference: function printout() in util/stat-display.c
-Snippet:
-	.prefix = prefix ? prefix : "",
-
-Since prefix already set to contain cvs_sep in interval
-option, patch removes printing config->csv_sep in
-new_line_csv function to avoid printing extra field.
-
-After the patch:
-
-	# ./perf stat -x, --per-socket -a -C 1 ls
-	S0,1,2.04,msec,cpu-clock,2045202,100.00,1.013,CPUs utilized
-	S0,1,2,,context-switches,2041444,100.00,979.289,/sec
-	S0,1,0,,cpu-migrations,2040820,100.00,0.000,/sec
-	S0,1,2,,page-faults,2040288,100.00,979.289,/sec
-	S0,1,254589,,cycles,2036066,100.00,0.125,GHz
-	S0,1,82481,,stalled-cycles-frontend,2032420,100.00,32.40,frontend cycles idle
-	S0,1,113170,,stalled-cycles-backend,2031722,100.00,44.45,backend cycles idle
-	S0,1,88766,,instructions,2030942,100.00,0.35,insn per cycle
-	S0,1,,,,,,,1.27,stalled cycles per insn
-
-Fixes: 92a61f6412d3a09d ("perf stat: Implement CSV metrics output")
-Reported-by: Disha Goel <disgoel@linux.vnet.ibm.com>
-Reviewed-By: Kajol Jain <kjain@linux.ibm.com>
-Signed-off-by: Athira Jajeev <atrajeev@linux.vnet.ibm.com>
-Tested-by: Disha Goel <disgoel@linux.vnet.ibm.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: James Clark <james.clark@arm.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nageswara R Sastry <rnsastry@linux.ibm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/20221018085605.63834-1-atrajeev@linux.vnet.ibm.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- tools/perf/util/stat-display.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/tools/perf/util/stat-display.c b/tools/perf/util/stat-display.c
-index 93147cc40162..e18c26501a7f 100644
---- a/tools/perf/util/stat-display.c
-+++ b/tools/perf/util/stat-display.c
-@@ -193,7 +193,7 @@ static void new_line_csv(struct perf_stat_config *config, void *ctx)
- 
- 	fputc('\n', os->fh);
- 	if (os->prefix)
--		fprintf(os->fh, "%s%s", os->prefix, config->csv_sep);
-+		fprintf(os->fh, "%s", os->prefix);
- 	aggr_printout(config, os->evsel, os->id, os->nr);
- 	for (i = 0; i < os->nfields; i++)
- 		fputs(config->csv_sep, os->fh);
--- 
-2.35.1
-
-
-
+     Arnd
