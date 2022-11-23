@@ -1,101 +1,97 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7542D63695E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Nov 2022 19:59:11 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D00D6369EA
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Nov 2022 20:33:37 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NHVlx2Wq0z3dvF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Nov 2022 05:59:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NHWWf5HjRz3chn
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Nov 2022 06:33:34 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=q4bGZ/Sw;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=S6yHipUk;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=nayna@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nnac123@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=q4bGZ/Sw;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=S6yHipUk;
 	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NHVl10hYSz2xl5
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Nov 2022 05:58:20 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2ANI3vju030703;
-	Wed, 23 Nov 2022 18:58:04 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NHWVg5Lmzz2yxc
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Nov 2022 06:32:43 +1100 (AEDT)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2ANJDMLm014359
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Nov 2022 19:32:40 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=OWd1TMAtI9YXm3ugWju/m0erSY+DisOV9bmg4+k/m3k=;
- b=q4bGZ/SwCdcxMTCDce8bjFBUoDMN0CZ31q6DI7oTd3Lf9e8FOZgCgHZQ48zOuuWvzCUO
- g65mPRAX6xpkXngwmP/wW2GD7kRr8pBWi2zh25utGJupBCeSK8g2Bmri4qiorULyb0Qb
- l2lA14Gg2WxhPDnONXZDVVOXVwiFAvhq8uROjB5r8tWrD96R7LXyRZsTdvmb8I76XwXL
- 7vVlWY8kND9j0qkhpFUgym5pBE3b+hqvo6qmV5+7CivPva8+Xj8Dc4HsLsSzR6hg2QFm
- 2FGPRDZBXW/QdGmFtJBOtR5PtYtTO6s3vgGSnrKfZyvQ6qG+yzPHRYuSxvw5Tg+dp7lY Wg== 
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=v1y4CJRgzDNKx37bTX+klI9/mH53byRTQ1pD38AVuRU=;
+ b=S6yHipUkyH9mehJW+6NMUUfg38KLgh/pNL3Tj8nWlvXl23i3BF97PYXOj0odUW0Obp2u
+ 8kbAfYe3cp0kzvbxdhcyXt40IE4itKdMn0XnzuBpLcZSL3tf1LmEZDlxEpRuvpH/rm0t
+ MwtThtaG0TEsEpUiNRCbZ8Q1yXYEYuMjJbFOGvOQy+Opfc79dNXrQJRTUGjD2USLvrQV
+ 2x/Ow3rY4ZKrhSnAgoHzwrHCAV/ESDxdla8zU0mYPE2iwNEUGrqTU7VvCnfHgF1AeqFR
+ yQkO9AkcO5h3kNw3SX0aJ6/oVKfW86Cr+T59VtiAi4fok1mYVmwpeCawt058Xl0/cRpH wA== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m0x813evb-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m10pgfh4j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Nov 2022 19:32:40 +0000
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2ANJRfn5011083
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Nov 2022 19:32:39 GMT
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com [169.47.144.26])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m10pgfh43-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 23 Nov 2022 18:58:04 +0000
-Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2ANIvaif024504;
-	Wed, 23 Nov 2022 18:58:03 GMT
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.11])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m0x813ev0-1
+	Wed, 23 Nov 2022 19:32:39 +0000
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+	by ppma04wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2ANJL7XJ030326;
+	Wed, 23 Nov 2022 19:32:38 GMT
+Received: from b03cxnp08026.gho.boulder.ibm.com (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
+	by ppma04wdc.us.ibm.com with ESMTP id 3kxps9muwa-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 23 Nov 2022 18:58:03 +0000
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
-	by ppma03dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2ANIpeoh007133;
-	Wed, 23 Nov 2022 18:58:02 GMT
-Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com [9.57.198.28])
-	by ppma03dal.us.ibm.com with ESMTP id 3kxpsakr3n-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 23 Nov 2022 18:58:02 +0000
-Received: from smtpav04.wdc07v.mail.ibm.com ([9.208.128.116])
-	by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2ANIw0Ji6030060
+	Wed, 23 Nov 2022 19:32:38 +0000
+Received: from smtpav05.dal12v.mail.ibm.com ([9.208.128.132])
+	by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2ANJWg6C54854048
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 23 Nov 2022 18:58:01 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C7C4258045;
-	Wed, 23 Nov 2022 18:58:00 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0A7DC5805F;
-	Wed, 23 Nov 2022 18:57:59 +0000 (GMT)
-Received: from [9.163.61.172] (unknown [9.163.61.172])
-	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 23 Nov 2022 18:57:58 +0000 (GMT)
-Message-ID: <6f2a4a5f-ab5b-8c1b-47d5-d4e6dca5fc3a@linux.vnet.ibm.com>
-Date: Wed, 23 Nov 2022 13:57:58 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [PATCH 2/4] fs: define a firmware security filesystem named
- fwsecurityfs
-Content-Language: en-US
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-References: <20221106210744.603240-1-nayna@linux.ibm.com>
- <20221106210744.603240-3-nayna@linux.ibm.com> <Y2uvUFQ9S2oaefSY@kroah.com>
- <8447a726-c45d-8ebb-2a74-a4d759631e64@linux.vnet.ibm.com>
- <20221119114234.nnfxsqx4zxiku2h6@riteshh-domain>
- <d3e8df29-d9b0-5e8e-4a53-d191762fe7f2@linux.vnet.ibm.com>
- <a2752fdf-c89f-6f57-956e-ad035d32aec6@linux.vnet.ibm.com>
- <Y35C9O27J29bUDjA@kroah.com>
-From: Nayna <nayna@linux.vnet.ibm.com>
-In-Reply-To: <Y35C9O27J29bUDjA@kroah.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 2YrEmH-Vwbi1pRZxNLbmgvdX-b8wwU50
-X-Proofpoint-ORIG-GUID: _wOu0IfhLy4hU6MJ6gGyX-1HjXY9bgsf
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	Wed, 23 Nov 2022 19:32:42 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0AC4C58052;
+	Wed, 23 Nov 2022 19:32:37 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 648EB5805D;
+	Wed, 23 Nov 2022 19:32:36 +0000 (GMT)
+Received: from [9.160.73.107] (unknown [9.160.73.107])
+	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 23 Nov 2022 19:32:36 +0000 (GMT)
+Message-ID: <c183a039-2001-eb3a-7028-f8a0813987cf@linux.ibm.com>
+Date: Wed, 23 Nov 2022 13:32:35 -0600
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
+Subject: Re: [PATCH 10/13] powerpc/rtas: improve function information lookups
+To: Andrew Donnellan <ajd@linux.ibm.com>,
+        Nathan Lynch
+ <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+References: <20221118150751.469393-1-nathanl@linux.ibm.com>
+ <20221118150751.469393-11-nathanl@linux.ibm.com>
+ <5b4c4316bfe88a3f231ffe416ce34192189549db.camel@linux.ibm.com>
+Content-Language: en-US
+From: Nick Child <nnac123@linux.ibm.com>
+In-Reply-To: <5b4c4316bfe88a3f231ffe416ce34192189549db.camel@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: Du-ZjJuuInpgWArCbWE06M_04rK_Lrdv
+X-Proofpoint-GUID: el-JTb8wxEfVvg4eZC7Lq4heRAr73Y9W
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-11-23_10,2022-11-23_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 adultscore=0
- malwarescore=0 mlxscore=0 mlxlogscore=999 spamscore=0 phishscore=0
- bulkscore=0 suspectscore=0 priorityscore=1501 clxscore=1015
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2210170000 definitions=main-2211230137
+ definitions=2022-11-23_11,2022-11-23_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ priorityscore=1501 adultscore=0 spamscore=0 phishscore=0 mlxscore=0
+ lowpriorityscore=0 bulkscore=0 malwarescore=0 clxscore=1011
+ impostorscore=0 mlxlogscore=697 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2210170000 definitions=main-2211230144
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,60 +103,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Matthew Garrett <mjg59@srcf.ucam.org>, linux-efi@vger.kernel.org, Andrew Donnellan <ajd@linux.ibm.com>, Nayna Jain <nayna@linux.ibm.com>, "Ritesh Harjani \(IBM\)" <ritesh.list@gmail.com>, linux-kernel@vger.kernel.org, npiggin@gmail.com, Dov Murik <dovmurik@linux.ibm.com>, Dave Hansen <dave.hansen@intel.com>, linux-security-module <linux-security-module@vger.kernel.org>, Paul Mackerras <paulus@samba.org>, linux-fsdevel@vger.kernel.org, George Wilson <gcwilson@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, "Serge E. Hallyn" <serge@hallyn.com>, Stefan Berger <stefanb@linux.ibm.com>
+Cc: tyreld@linux.ibm.com, ldufour@linux.ibm.com, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On 11/22/22 20:51, Andrew Donnellan wrote:
+> On Fri, 2022-11-18 at 09:07 -0600, Nathan Lynch wrote:
+>> +enum rtas_function_flags {
+>> +       RTAS_FN_FLAG_BANNED_FOR_SYSCALL_ON_LE = (1 << 0),
+>> +};
+> 
+> This seems to be new, what's the justification?
+> 
 
-On 11/23/22 10:57, Greg Kroah-Hartman wrote:
-> On Wed, Nov 23, 2022 at 10:05:49AM -0500, Nayna wrote:
->> On 11/22/22 18:21, Nayna wrote:
->>>  From the perspective of our use case, we need to expose firmware
->>> security objects to userspace for management. Not all of the objects
->>> pre-exist and we would like to allow root to create them from userspace.
->>>
->>>  From a unification perspective, I have considered a common location at
->>> /sys/firmware/security for managing any platform's security objects. And
->>> I've proposed a generic filesystem, which could be used by any platform
->>> to represent firmware security objects via /sys/firmware/security.
->>>
->>> Here are some alternatives to generic filesystem in discussion:
->>>
->>> 1. Start with a platform-specific filesystem. If more platforms would
->>> like to use the approach, it can be made generic. We would still have a
->>> common location of /sys/firmware/security and new code would live in
->>> arch. This is my preference and would be the best fit for our use case.
->>>
->>> 2. Use securityfs.  This would mean modifying it to satisfy other use
->>> cases, including supporting userspace file creation. I don't know if the
->>> securityfs maintainer would find that acceptable. I would also still
->>> want some way to expose variables at /sys/firmware/security.
->>>
->>> 3. Use a sysfs-based approach. This would be a platform-specific
->>> implementation. However, sysfs has a similar issue to securityfs for
->>> file creation. When I tried it in RFC v1[1], I had to implement a
->>> workaround to achieve that.
->>>
->>> [1] https://lore.kernel.org/linuxppc-dev/20220122005637.28199-3-nayna@linux.ibm.com/
->>>
->> Hi Greg,
->>
->> Based on the discussions so far, is Option 1, described above, an acceptable
->> next step?
-> No, as I said almost a year ago, I do not want to see platform-only
-> filesystems going and implementing stuff that should be shared by all
-> platforms.
+Seems to be a run-time replacement of:
+#ifdef CONFIG_CPU_BIG_ENDIAN
+	{ "ibm,suspend-me", -1, -1, -1, -1, -1 },
+	{ "ibm,update-nodes", -1, 0, -1, -1, -1, 4096 },
+	{ "ibm,update-properties", -1, 0, -1, -1, -1, 4096 },
+#endif
 
-Given there are no other exploiters for fwsecurityfs and there should be 
-no platform-specific fs, would modifying sysfs now to let userspace 
-create files cleanly be the way forward? Or, if we should strongly 
-consider securityfs, which would result in updating securityfs to allow 
-userspace creation of files and then expose variables via a more 
-platform-specific directory /sys/kernel/security/pks? We want to pick 
-the best available option and would find some hints on direction helpful 
-before we develop the next patch.
+It looks to be handled logically:
++ if (IS_ENABLED(CONFIG_CPU_LITTLE_ENDIAN) &&
++	    (func->flags & RTAS_FN_FLAG_BANNED_FOR_SYSCALL_ON_LE))
++		goto err;
 
-Thanks & Regards,
-
-       - Nayna
-
+Perhaps, also allow the addition of any future special cases
+for rtas functions easier to maintain?
