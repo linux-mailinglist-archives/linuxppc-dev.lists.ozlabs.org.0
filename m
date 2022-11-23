@@ -1,112 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6EB1636408
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Nov 2022 16:39:42 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 624B0636515
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Nov 2022 16:58:38 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NHQKm5FNMz3dvT
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Nov 2022 02:39:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NHQlc2Gwpz3f3S
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Nov 2022 02:58:36 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GPyscqsK;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=mhiplsOi;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NHQJn12CWz2xkx
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Nov 2022 02:38:49 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GPyscqsK;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=mhiplsOi;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	by gandalf.ozlabs.org (Postfix) with ESMTP id 4NHQJf3Sf7z4wgr
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Nov 2022 02:38:42 +1100 (AEDT)
-Received: by gandalf.ozlabs.org (Postfix)
-	id 4NHQJf2cjJz4xGj; Thu, 24 Nov 2022 02:38:42 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: gandalf.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GPyscqsK;
-	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4NHQJd6fRyz4wgr
-	for <linuxppc-dev@ozlabs.org>; Thu, 24 Nov 2022 02:38:41 +1100 (AEDT)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2ANEbGXZ023226;
-	Wed, 23 Nov 2022 15:38:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=cySktFEMS84THhMv3PuuPAmyrTxjANqkYfeixc770nc=;
- b=GPyscqsKREJpC5jIGPiB+29nJZPIDYsyDp0XjFtoqL2vsTdQcT2nzkSoWrkrAUUWWm1S
- lBvQcwsO5jVSQG3LO5lFMIuzOeF4xmLd9Xfp/t26NPW41hvz1HmZRPGvo6m+o0vzuZV3
- vWhsFykOM6T9TQLlUVRm53MSV0vNnQZw1rHmRgeRFj0xeQrNoFFxoHoteq3OnyEa9VXG
- J8ds6TlxcEjJ1EPzLB6xTPtMUGqfTd2yZiiovCkDnM9MylS8puc37atPT10Pa6TZykvE
- /GPEWBHN8B15yPYjtzhuTzqbUwoN0xAGGjfKCrNOuVPnZi01WEnXz5j7F2cy+9UBlOu5 AA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m10w606u0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 23 Nov 2022 15:38:28 +0000
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2ANFAfJF029626;
-	Wed, 23 Nov 2022 15:38:28 GMT
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com [149.81.74.106])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m10w606tg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 23 Nov 2022 15:38:27 +0000
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
-	by ppma04fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2ANFZPZ7015516;
-	Wed, 23 Nov 2022 15:38:26 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
-	by ppma04fra.de.ibm.com with ESMTP id 3kxps8vg1d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 23 Nov 2022 15:38:25 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
-	by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2ANFcNxw47710558
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 23 Nov 2022 15:38:23 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 87AF34203F;
-	Wed, 23 Nov 2022 15:38:23 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0F59942041;
-	Wed, 23 Nov 2022 15:38:21 +0000 (GMT)
-Received: from [9.43.47.46] (unknown [9.43.47.46])
-	by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Wed, 23 Nov 2022 15:38:20 +0000 (GMT)
-Message-ID: <32cf60d8-d0dd-ac7a-329b-1db1f99beac8@linux.ibm.com>
-Date: Wed, 23 Nov 2022 21:08:19 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NHQkj3SZxz3045
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Nov 2022 02:57:48 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 5D2C3B82141;
+	Wed, 23 Nov 2022 15:57:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2E49C433C1;
+	Wed, 23 Nov 2022 15:57:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1669219063;
+	bh=Q0SEQR3uc6eCtl05I/8Xe29JQKDtlOnHtgnxpmvfeK0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mhiplsOioxUX4b7OWO/JF0jiV4e9OaOyeXb1vLr7BIXe2hSqp14HiG3LS60tfKiXR
+	 XYHklTI6LnIYJ+JdVdOx89JEMI34ZRFLWpqBlzMQsRqI8TmEAFjO9/8CnTgju7xKis
+	 AnxSbQ0zYNV4rEJno4YOqL/ulKqGxpwcGux1giIg=
+Date: Wed, 23 Nov 2022 16:57:40 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Nayna <nayna@linux.vnet.ibm.com>
+Subject: Re: [PATCH 2/4] fs: define a firmware security filesystem named
+ fwsecurityfs
+Message-ID: <Y35C9O27J29bUDjA@kroah.com>
+References: <20221106210744.603240-1-nayna@linux.ibm.com>
+ <20221106210744.603240-3-nayna@linux.ibm.com>
+ <Y2uvUFQ9S2oaefSY@kroah.com>
+ <8447a726-c45d-8ebb-2a74-a4d759631e64@linux.vnet.ibm.com>
+ <20221119114234.nnfxsqx4zxiku2h6@riteshh-domain>
+ <d3e8df29-d9b0-5e8e-4a53-d191762fe7f2@linux.vnet.ibm.com>
+ <a2752fdf-c89f-6f57-956e-ad035d32aec6@linux.vnet.ibm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.1
-Subject: Re: [PATCH v5 3/6] crash: add phdr for possible CPUs in elfcorehdr
-Content-Language: en-US
-To: Eric DeVolder <eric.devolder@oracle.com>, linuxppc-dev@ozlabs.org,
-        mpe@ellerman.id.au
-References: <20221120232508.327554-1-sourabhjain@linux.ibm.com>
- <20221120232508.327554-4-sourabhjain@linux.ibm.com>
- <0af5f619-3b39-7118-66c6-ba5b0c85c3dd@oracle.com>
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-In-Reply-To: <0af5f619-3b39-7118-66c6-ba5b0c85c3dd@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: I6KFSVSucNYWbPhWsL5zKYEL7PTCfD9L
-X-Proofpoint-ORIG-GUID: kcr2Qryt57NMcIbXXVC0g0XZbVvYr7Wx
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-11-23_08,2022-11-23_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 malwarescore=0
- bulkscore=0 adultscore=0 mlxscore=0 lowpriorityscore=0 suspectscore=0
- impostorscore=0 priorityscore=1501 spamscore=0 phishscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2210170000 definitions=main-2211230114
+In-Reply-To: <a2752fdf-c89f-6f57-956e-ad035d32aec6@linux.vnet.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -118,63 +64,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mahesh@linux.vnet.ibm.com, kexec@lists.infradead.org, bhe@redhat.com, hbathini@linux.ibm.com
+Cc: Matthew Garrett <mjg59@srcf.ucam.org>, linux-efi@vger.kernel.org, Andrew Donnellan <ajd@linux.ibm.com>, Nayna Jain <nayna@linux.ibm.com>, "Ritesh Harjani \(IBM\)" <ritesh.list@gmail.com>, linux-kernel@vger.kernel.org, npiggin@gmail.com, Dov Murik <dovmurik@linux.ibm.com>, Dave Hansen <dave.hansen@intel.com>, linux-security-module <linux-security-module@vger.kernel.org>, Paul Mackerras <paulus@samba.org>, linux-fsdevel@vger.kernel.org, George Wilson <gcwilson@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, "Serge E. Hallyn" <serge@hallyn.com>, Stefan Berger <stefanb@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Wed, Nov 23, 2022 at 10:05:49AM -0500, Nayna wrote:
+> 
+> On 11/22/22 18:21, Nayna wrote:
+> > 
+> > From the perspective of our use case, we need to expose firmware
+> > security objects to userspace for management. Not all of the objects
+> > pre-exist and we would like to allow root to create them from userspace.
+> > 
+> > From a unification perspective, I have considered a common location at
+> > /sys/firmware/security for managing any platform's security objects. And
+> > I've proposed a generic filesystem, which could be used by any platform
+> > to represent firmware security objects via /sys/firmware/security.
+> > 
+> > Here are some alternatives to generic filesystem in discussion:
+> > 
+> > 1. Start with a platform-specific filesystem. If more platforms would
+> > like to use the approach, it can be made generic. We would still have a
+> > common location of /sys/firmware/security and new code would live in
+> > arch. This is my preference and would be the best fit for our use case.
+> > 
+> > 2. Use securityfs.� This would mean modifying it to satisfy other use
+> > cases, including supporting userspace file creation. I don't know if the
+> > securityfs maintainer would find that acceptable. I would also still
+> > want some way to expose variables at /sys/firmware/security.
+> > 
+> > 3. Use a sysfs-based approach. This would be a platform-specific
+> > implementation. However, sysfs has a similar issue to securityfs for
+> > file creation. When I tried it in RFC v1[1], I had to implement a
+> > workaround to achieve that.
+> > 
+> > [1] https://lore.kernel.org/linuxppc-dev/20220122005637.28199-3-nayna@linux.ibm.com/
+> > 
+> Hi Greg,
+> 
+> Based on the discussions so far, is Option 1, described above, an acceptable
+> next step?
 
-On 22/11/22 23:28, Eric DeVolder wrote:
->
->
-> On 11/20/22 17:25, Sourabh Jain wrote:
->> On architectures like PowerPC the crash notes are available for all
->> possible CPUs. So let's populate the elfcorehdr for all possible
->> CPUs having crash notes to avoid updating elfcorehdr during in-kernel
->> crash update on CPU hotplug events.
->>
->> The similar technique was used in kexec-tool for kexec_load case.
->>
->> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
->> ---
->>   kernel/crash_core.c | 9 ++++++---
->>   1 file changed, 6 insertions(+), 3 deletions(-)
->>
->> diff --git a/kernel/crash_core.c b/kernel/crash_core.c
->> index bca1b198d9e55..f6cccdcadc9f3 100644
->> --- a/kernel/crash_core.c
->> +++ b/kernel/crash_core.c
->> @@ -364,16 +364,19 @@ int crash_prepare_elf64_headers(struct kimage 
->> *image, struct crash_mem *mem,
->>       ehdr->e_ehsize = sizeof(Elf64_Ehdr);
->>       ehdr->e_phentsize = sizeof(Elf64_Phdr);
->>   -    /* Prepare one phdr of type PT_NOTE for each present CPU */
->> -    for_each_present_cpu(cpu) {
->> +    /* Prepare one phdr of type PT_NOTE for possible CPU with crash 
->> note. */
->> +    for_each_possible_cpu(cpu) {
->>           if (IS_ENABLED(CONFIG_HOTPLUG_CPU)) {
->>               /* Skip the soon-to-be offlined cpu */
->>               if (image->hotplug_event && (cpu == image->offlinecpu))
->>                   continue;
->>           }
->>   -        phdr->p_type = PT_NOTE;
->>           notes_addr = per_cpu_ptr_to_phys(per_cpu_ptr(crash_notes, 
->> cpu));
->> +        if (!notes_addr)
->> +            continue;
->> +
->> +        phdr->p_type = PT_NOTE;
->>           phdr->p_offset = phdr->p_paddr = notes_addr;
->>           phdr->p_filesz = phdr->p_memsz = sizeof(note_buf_t);
->>           (ehdr->e_phnum)++;
->>
->
-> I did a quick test of this for x86_64 and it works.
->
-> Reviewed-by: Eric DeVolder <eric.devolder@oracle.com>
+No, as I said almost a year ago, I do not want to see platform-only
+filesystems going and implementing stuff that should be shared by all
+platforms.
 
+thanks,
 
-Thanks for testing it out.
-
-- Sourabh Jain
-
+greg k-h
