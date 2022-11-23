@@ -2,97 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7952634B05
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Nov 2022 00:22:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E280A634DCB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Nov 2022 03:24:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NH0f95rHMz3dv8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Nov 2022 10:22:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NH4h25xNNz3dvn
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Nov 2022 13:24:18 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JHAeISiJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=LJY60C9h;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nayna@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::636; helo=mail-pl1-x636.google.com; envelope-from=zhouzhouyi@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JHAeISiJ;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=LJY60C9h;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NH0dF16DWz2x9J
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Nov 2022 10:21:36 +1100 (AEDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AMMIkd7039599;
-	Tue, 22 Nov 2022 23:21:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=oC+XCMatKOqJAPTjzW1TpIq92DjrOmvsufQ1aYb6wEU=;
- b=JHAeISiJntvnrNOSKgwUl5BmInZf6wvMboXQNH3jh5MtYpsdcxBdqea9PsEM7t1/+P6O
- chyy8BDAEdXl51nS+4Dte6sI1ueFQAdkhOyE9iAFhvQs22jb+pYl0cXS4WCwRGMObkSg
- Q88nvP1kjW0iY52MpecarOSbFabU17jKc3VdH3ffDZr4a3ei/DjSEzZf4XsS9YOzRosV
- gPgQucSKzmfVzE7jCn7oDevFId4fYryM9f3Q0JYmuxRcEfH3DulaODY747B6ccWeWoHx
- 3oVGGcPuJmJ3tqH9jbC99dEpDfyt2coTD6wn3D+K1giLjAuPYE/WBE6BC9DrDDAb00+w nQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m10ff3hwq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 22 Nov 2022 23:21:16 +0000
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2AMNAaos017423;
-	Tue, 22 Nov 2022 23:21:16 GMT
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.11])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m10ff3hw3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 22 Nov 2022 23:21:15 +0000
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
-	by ppma03dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2AMN5Xx3030809;
-	Tue, 22 Nov 2022 23:21:14 GMT
-Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com [9.57.198.27])
-	by ppma03dal.us.ibm.com with ESMTP id 3kxpsacwxe-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 22 Nov 2022 23:21:14 +0000
-Received: from smtpav06.wdc07v.mail.ibm.com ([9.208.128.115])
-	by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2AMNLDAp65274116
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 22 Nov 2022 23:21:13 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D9DB458060;
-	Tue, 22 Nov 2022 23:21:12 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1EF435803F;
-	Tue, 22 Nov 2022 23:21:11 +0000 (GMT)
-Received: from [9.163.61.172] (unknown [9.163.61.172])
-	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 22 Nov 2022 23:21:11 +0000 (GMT)
-Message-ID: <d3e8df29-d9b0-5e8e-4a53-d191762fe7f2@linux.vnet.ibm.com>
-Date: Tue, 22 Nov 2022 18:21:10 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [PATCH 2/4] fs: define a firmware security filesystem named
- fwsecurityfs
-Content-Language: en-US
-To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-References: <20221106210744.603240-1-nayna@linux.ibm.com>
- <20221106210744.603240-3-nayna@linux.ibm.com> <Y2uvUFQ9S2oaefSY@kroah.com>
- <8447a726-c45d-8ebb-2a74-a4d759631e64@linux.vnet.ibm.com>
- <20221119114234.nnfxsqx4zxiku2h6@riteshh-domain>
-From: Nayna <nayna@linux.vnet.ibm.com>
-In-Reply-To: <20221119114234.nnfxsqx4zxiku2h6@riteshh-domain>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: rx6IXruI8J7qA8U13iaDwj3sbvme2lXD
-X-Proofpoint-GUID: pm16FMvUALsLfnxbRgs7NJS99XGmi9by
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NH4g1601Rz3cMw
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Nov 2022 13:23:24 +1100 (AEDT)
+Received: by mail-pl1-x636.google.com with SMTP id p12so15408426plq.4
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Nov 2022 18:23:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=MhsEomGEcHS0ITrqbixOcvOCHqtbhvqSM8S3bsVjuhw=;
+        b=LJY60C9hm82Ajktbt56J964gyIfZ54hQakqP+9JsoTzhGcASSBupESEzfFhC1ztM2s
+         HiL53/9c/jaw0PF9LDHlu1OHxtZ2zagtdcaTeGlcX8TOV3lPjekZupUIO/wpULT7kaSl
+         mbMKtQWl6b3azlYxFblm+q1LmMXohPIsnCVnd32al1eRsrrMQiEFVe3ADMw2hy8agotb
+         nRcNg3zkbYFf/w5Nlc/4VEKUYEu/hebU4TbfMGgCe8p5AmeG+YsSCzYCLWe/2OD//+nv
+         pJr2gzQe/jsJiCFB3Ev7gSgUq58EUZcR/M5Xn0R/pbnBVn70C58QPMrcHmBOp1LwiV5s
+         +VTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MhsEomGEcHS0ITrqbixOcvOCHqtbhvqSM8S3bsVjuhw=;
+        b=mYP/B+9t6hZQRKJGg7QPT07YBe0gurd0QXSJ2Bw9klRAt5g4OU++xf2BbmUL2hH4uE
+         q26hp5P/clwSwXu1YcHgsnmvJMcCh+1Q0b9Pu1e4FAjOUdoWqe9WD7q+2LQAjNI3tA7P
+         Nh0nUOHoUjKyaxc4OHEwvH/yuGsnF+KGa1a1bJs8bvT0bmhlJIBu3aVxeykUwQ921GZw
+         HSlWTBG7HFM0r7QX6/WZt/iLIjU540HGhcE1GHqaKQJIvR5Sh2dIkua1A7sro5+VTXvA
+         zlLHh8Qg/NYZboDPLzQXkMUdkacHnVIprP1w1QZSgPVV41O1+SgiKMVqzm1krxOZLRY4
+         R9AA==
+X-Gm-Message-State: ANoB5plfA/NnbPpFuOipwb7KTvYKamEI1DrAoX+JNyYivSVNv7EmmV1G
+	0lagoRmMUBdWQrkgWTIHqLhkbl/O7KA3xTbFG2Q=
+X-Google-Smtp-Source: AA0mqf5DzRfWvrQG/Bl7rr76l1lOWBNm9IPBe18oEPOXIHBRs4mQ59hc13n+lkHpHP9XCgc3CCVrsr6dKZEPIGA4J0Y=
+X-Received: by 2002:a17:90a:9403:b0:218:6a4e:e44a with SMTP id
+ r3-20020a17090a940300b002186a4ee44amr29392875pjo.6.1669170202991; Tue, 22 Nov
+ 2022 18:23:22 -0800 (PST)
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-11-22_13,2022-11-18_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
- priorityscore=1501 spamscore=0 clxscore=1011 lowpriorityscore=0
- bulkscore=0 suspectscore=0 impostorscore=0 malwarescore=0 mlxscore=0
- adultscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2210170000 definitions=main-2211220174
+References: <20221121035140.118651-1-zhouzhouyi@gmail.com> <20221122013754.GY4001@paulmck-ThinkPad-P17-Gen-1>
+In-Reply-To: <20221122013754.GY4001@paulmck-ThinkPad-P17-Gen-1>
+From: Zhouyi Zhou <zhouzhouyi@gmail.com>
+Date: Wed, 23 Nov 2022 10:23:11 +0800
+Message-ID: <CAABZP2z5CLJg4tabNwDMopiNZTZYGC++Z9w6ZOhhGrXQHGMGUA@mail.gmail.com>
+Subject: Re: [PATCH linux-next][RFC]torture: avoid offline tick_do_timer_cpu
+To: paulmck@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,203 +73,137 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Matthew Garrett <mjg59@srcf.ucam.org>, linux-efi@vger.kernel.org, Andrew Donnellan <ajd@linux.ibm.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Nayna Jain <nayna@linux.ibm.com>, linux-kernel@vger.kernel.org, npiggin@gmail.com, Dov Murik <dovmurik@linux.ibm.com>, Dave Hansen <dave.hansen@intel.com>, linux-security-module <linux-security-module@vger.kernel.org>, Paul Mackerras <paulus@samba.org>, linux-fsdevel@vger.kernel.org, George Wilson <gcwilson@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, "Serge E. Hallyn" <serge@hallyn.com>, Stefan Berger <stefanb@linux.ibm.com>
+Cc: dave@stgolabs.net, josh@joshtriplett.org, linux-kernel@vger.kernel.org, fweisbec@gmail.com, tglx@linutronix.de, linuxppc-dev@lists.ozlabs.org, mingo@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-On 11/19/22 06:48, Ritesh Harjani (IBM) wrote:
-> Hello Nayna,
-
-Hi Ritesh,
-
+On Tue, Nov 22, 2022 at 9:37 AM Paul E. McKenney <paulmck@kernel.org> wrote:
 >
-> On 22/11/09 03:10PM, Nayna wrote:
->> On 11/9/22 08:46, Greg Kroah-Hartman wrote:
->>> On Sun, Nov 06, 2022 at 04:07:42PM -0500, Nayna Jain wrote:
->>>> securityfs is meant for Linux security subsystems to expose policies/logs
->>>> or any other information. However, there are various firmware security
->>>> features which expose their variables for user management via the kernel.
->>>> There is currently no single place to expose these variables. Different
->>>> platforms use sysfs/platform specific filesystem(efivarfs)/securityfs
->>>> interface as they find it appropriate. Thus, there is a gap in kernel
->>>> interfaces to expose variables for security features.
->>>>
->>>> Define a firmware security filesystem (fwsecurityfs) to be used by
->>>> security features enabled by the firmware. These variables are platform
->>>> specific. This filesystem provides platforms a way to implement their
->>>>    own underlying semantics by defining own inode and file operations.
->>>>
->>>> Similar to securityfs, the firmware security filesystem is recommended
->>>> to be exposed on a well known mount point /sys/firmware/security.
->>>> Platforms can define their own directory or file structure under this path.
->>>>
->>>> Example:
->>>>
->>>> # mount -t fwsecurityfs fwsecurityfs /sys/firmware/security
->>> Why not juset use securityfs in /sys/security/firmware/ instead?  Then
->>> you don't have to create a new filesystem and convince userspace to
->>> mount it in a specific location?
-> I am also curious to know on why not use securityfs, given the similarity
-> between the two. :)
-> More specifics on that below...
+> On Mon, Nov 21, 2022 at 11:51:40AM +0800, Zhouyi Zhou wrote:
+> > During CPU-hotplug torture (CONFIG_NO_HZ_FULL=y), if we try to
+> > offline tick_do_timer_cpu, the operation will fail because in
+> > function tick_nohz_cpu_down:
+> > ```
+> > if (tick_nohz_full_running && tick_do_timer_cpu == cpu)
+> >       return -EBUSY;
+> > ```
+> > Above bug was first discovered in torture tests performed in PPC VM
+> > of Open Source Lab of Oregon State University, and reproducable in RISC-V
+> > and X86-64 (with additional kernel commandline cpu0_hotplug).
+> >
+> > In this patch, we avoid offline tick_do_timer_cpu by distribute
+> > the offlining cpu among remaining cpus.
+> >
+> > Signed-off-by: Zhouyi Zhou <zhouzhouyi@gmail.com>
 >
->>  From man 5 sysfs page:
->>
->> /sys/firmware: This subdirectory contains interfaces for viewing and
->> manipulating firmware-specific objects and attributes.
->>
->> /sys/kernel: This subdirectory contains various files and subdirectories
->> that provide information about the running kernel.
->>
->> The security variables which are being exposed via fwsecurityfs are managed
->> by firmware, stored in firmware managed space and also often consumed by
->> firmware for enabling various security features.
-> That's ok. As I see it users of securityfs can define their own fileops
-> (like how you are doing in fwsecurityfs).
-> See securityfs_create_file() & securityfs_create_symlink(), can accept the fops
-> & iops. Except maybe securityfs_create_dir(), that could be since there might
-> not be a usecase for it. But do you also need it in your case is the question to
-> ask.
-
-Please refer to the function plpks_secvars_init() in Patch 4/4.
-
+> Good show chasing this down!
+Thank Paul for your guidance and encouragement!
 >
->>  From git commit b67dbf9d4c1987c370fd18fdc4cf9d8aaea604c2, the purpose of
->> securityfs(/sys/kernel/security) is to provide a common place for all kernel
->> LSMs. The idea of
-> Which was then seperated out by commit,
-> da31894ed7b654e2 ("securityfs: do not depend on CONFIG_SECURITY").
+> A couple of questions below.
+The answers below.
 >
-> securityfs now has a seperate CONFIG_SECURITYFS config option. In fact I was even
-> thinking of why shouldn't we move security/inode.c into fs/securityfs/inode.c .
-> fs/* is a common place for all filesystems. Users of securityfs can call it's
-> exported kernel APIs to create files/dirs/symlinks.
+> > ---
+> >  include/linux/tick.h        |  1 +
+> >  kernel/time/tick-common.c   |  1 +
+> >  kernel/time/tick-internal.h |  1 -
+> >  kernel/torture.c            | 10 ++++++++++
+> >  4 files changed, 12 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/include/linux/tick.h b/include/linux/tick.h
+> > index bfd571f18cfd..23cc0b205853 100644
+> > --- a/include/linux/tick.h
+> > +++ b/include/linux/tick.h
+> > @@ -14,6 +14,7 @@
+> >  #include <linux/rcupdate.h>
+> >
+> >  #ifdef CONFIG_GENERIC_CLOCKEVENTS
+> > +extern int tick_do_timer_cpu __read_mostly;
+> >  extern void __init tick_init(void);
+> >  /* Should be core only, but ARM BL switcher requires it */
+> >  extern void tick_suspend_local(void);
+> > diff --git a/kernel/time/tick-common.c b/kernel/time/tick-common.c
+> > index 46789356f856..87b9b9afa320 100644
+> > --- a/kernel/time/tick-common.c
+> > +++ b/kernel/time/tick-common.c
+> > @@ -48,6 +48,7 @@ ktime_t tick_next_period;
+> >   *    procedure also covers cpu hotplug.
+> >   */
+> >  int tick_do_timer_cpu __read_mostly = TICK_DO_TIMER_BOOT;
+> > +EXPORT_SYMBOL_GPL(tick_do_timer_cpu);
+> >  #ifdef CONFIG_NO_HZ_FULL
+> >  /*
+> >   * tick_do_timer_boot_cpu indicates the boot CPU temporarily owns
+> > diff --git a/kernel/time/tick-internal.h b/kernel/time/tick-internal.h
+> > index 649f2b48e8f0..8953dca10fdd 100644
+> > --- a/kernel/time/tick-internal.h
+> > +++ b/kernel/time/tick-internal.h
+> > @@ -15,7 +15,6 @@
+> >
+> >  DECLARE_PER_CPU(struct tick_device, tick_cpu_device);
+> >  extern ktime_t tick_next_period;
+> > -extern int tick_do_timer_cpu __read_mostly;
+> >
+> >  extern void tick_setup_periodic(struct clock_event_device *dev, int broadcast);
+> >  extern void tick_handle_periodic(struct clock_event_device *dev);
+> > diff --git a/kernel/torture.c b/kernel/torture.c
+> > index 789aeb0e1159..bccbdd33dda2 100644
+> > --- a/kernel/torture.c
+> > +++ b/kernel/torture.c
+> > @@ -33,6 +33,7 @@
+> >  #include <linux/delay.h>
+> >  #include <linux/stat.h>
+> >  #include <linux/slab.h>
+> > +#include <linux/tick.h>
+> >  #include <linux/trace_clock.h>
+> >  #include <linux/ktime.h>
+> >  #include <asm/byteorder.h>
+> > @@ -358,7 +359,16 @@ torture_onoff(void *arg)
+> >                       schedule_timeout_interruptible(HZ / 10);
+> >                       continue;
+> >               }
+> > +#ifdef CONFIG_NO_HZ_FULL
+> > +             /* do not offline tick do timer cpu */
+> > +             if (tick_nohz_full_running) {
+> > +                     cpu = (torture_random(&rand) >> 4) % maxcpu;
+> > +                     if (cpu >= tick_do_timer_cpu)
 >
-> If we move security/inode.c to fs/security/inode.c, then...
-> ...below call within securityfs_init() should be moved into some lsm sepecific
-> file.
+> Why is this ">=" instead of "=="?
+I use probability theory here to let the remaining cpu distribute evenly.
+Example:
+we have cpus: 0 1 2 3 4 5 6 7
+maxcpu = 7
+tick_do_timer_cpu = 2
+remaining cpus are: 0 1 3 4 5 6 7
+if the offline cpu candidate is 2, then the result cpu is 2+1
+else if the offline cpu candidate is 3, then the result cpu is 3+1
+...
+else if the offline cpu candidate is 6, then the result cpu is 6+1
 >
-> #ifdef CONFIG_SECURITY
-> static struct dentry *lsm_dentry;
-> static ssize_t lsm_read(struct file *filp, char __user *buf, size_t count,
-> 			loff_t *ppos)
-> {
-> 	return simple_read_from_buffer(buf, count, ppos, lsm_names,
-> 		strlen(lsm_names));
-> }
+> > +                             cpu = (cpu + 1) % (maxcpu + 1);
+we could just use cpu = cpu + 1 here
+> > +             } else
+> > +#else
+> >               cpu = (torture_random(&rand) >> 4) % (maxcpu + 1);
+> > +#endif
 >
-> static const struct file_operations lsm_ops = {
-> 	.read = lsm_read,
-> 	.llseek = generic_file_llseek,
-> };
-> #endif
+> What happens if the value of tick_do_timer_cpu changes between the time of
+> the check above and the call to torture_offline() below?  Alternatively,
+> how is such a change in value prevented?
+I did a preliminary research about the above question, this is quite
+complicated for me
+(because I think I must not bring locks to kernel just because our
+test frame need them),
+Please give me some days to perform intensive research.
+
+Thanks again
+Cheers
+Zhouyi
 >
-> securityfs_init()
+>                                                         Thanx, Paul
 >
-> #ifdef CONFIG_SECURITY
-> 	lsm_dentry = securityfs_create_file("lsm", 0444, NULL, NULL,
-> 						&lsm_ops);
-> #endif
->
-> So why not move it? Maybe others, can comment more on whether it's a good idea
-> to move security/inode.c into fs/security/inode.c?
-> This should then help others identify securityfs filesystem in fs/security/
-> for everyone to notice and utilize for their use?
->> fwsecurityfs(/sys/firmware/security) is to similarly provide a common place
->> for all firmware security objects.
->>
->> /sys/firmware already exists. The patch now defines a new /security
->> directory in it for firmware security features. Using /sys/kernel/security
->> would mean scattering firmware objects in multiple places and confusing the
->> purpose of /sys/kernel and /sys/firmware.
-> We can also think of it this way that, all security related exports should
-> happen via /sys/kernel/security/. Then /sys/kernel/security/firmware/ becomes
-> the security related firmware exports.
->
-> If you see find /sys -iname firmware, I am sure you will find other firmware
-> specifics directories related to other specific subsystems
-> (e.g.
-> root@qemu:/home/qemu# find /sys -iname firmware
-> /sys/devices/ndbus0/nmem0/firmware
-> /sys/devices/ndbus0/firmware
-> /sys/firmware
-> )
->
-> But it could be, I am not an expert here, although I was thinking a good
-> Documentation might solve this problem.
-
-Documentation on 
-sysfs(https://man7.org/linux/man-pages/man5/sysfs.5.html) already 
-differentiates /sys/firmware and /sys/kernel as I responded earlier.  
-The objects we are exposing are firmware objects and not kernel objects.
-
->
->> Even though fwsecurityfs code is based on securityfs, since the two
->> filesystems expose different types of objects and have different
->> requirements, there are distinctions:
->>
->> 1. fwsecurityfs lets users create files in userspace, securityfs only allows
->> kernel subsystems to create files.
-> Sorry could you please elaborate how? both securityfs & fwsecurityfs
-> calls simple_fill_super() which uses the same inode (i_op) and inode file
-> operations (i_fop) from fs/libfs.c for their root inode. So how it is enabling
-> user (as in userspace) to create a file in this filesystem?
->
-> So am I missing anything?
-
-The ability to let user(as in userspace) to create a file in a 
-filesystem comes by allowing to define inode operations.
-
-Please look at the implementation differences for functions 
-xxx_create_dir() and xxx_create_dentry() of securityfs vs fwsecurityfs.  
-Also refer to Patch 4/4 for use of fwsecurityfs_create_dir() where inode 
-operations are defined.
-
->
->> 2. firmware and kernel objects may have different requirements. For example,
->> consideration of namespacing. As per my understanding, namespacing is
->> applied to kernel resources and not firmware resources. That's why it makes
->> sense to add support for namespacing in securityfs, but we concluded that
->> fwsecurityfs currently doesn't need it. Another but similar example of it
-> It "currently" doesn't need it. But can it in future? Then why not go with
-> securityfs which has an additional namespacing feature available?
-> That's actually also the point of utilizing an existing FS which can get
-> features like this in future. As long as it doesn't affect the functionality
-> of your use case, we simply need not reject securityfs, no?
-
-Thanks for your review and feedback. To summarize:
-
- From the perspective of our use case, we need to expose firmware 
-security objects to userspace for management. Not all of the objects 
-pre-exist and we would like to allow root to create them from userspace.
-
- From a unification perspective, I have considered a common location at 
-/sys/firmware/security for managing any platform's security objects. And 
-I've proposed a generic filesystem, which could be used by any platform 
-to represent firmware security objects via /sys/firmware/security.
-
-Here are some alternatives to generic filesystem in discussion:
-
-1. Start with a platform-specific filesystem. If more platforms would 
-like to use the approach, it can be made generic. We would still have a 
-common location of /sys/firmware/security and new code would live in 
-arch. This is my preference and would be the best fit for our use case.
-
-2. Use securityfs.  This would mean modifying it to satisfy other use 
-cases, including supporting userspace file creation. I don't know if the 
-securityfs maintainer would find that acceptable. I would also still 
-want some way to expose variables at /sys/firmware/security.
-
-3. Use a sysfs-based approach. This would be a platform-specific 
-implementation. However, sysfs has a similar issue to securityfs for 
-file creation. When I tried it in RFC v1[1], I had to implement a 
-workaround to achieve that.
-
-[1] 
-https://lore.kernel.org/linuxppc-dev/20220122005637.28199-3-nayna@linux.ibm.com/
-
-Thanks & Regards,
-
-      - Nayna
-
+> >               if (!torture_offline(cpu,
+> >                                    &n_offline_attempts, &n_offline_successes,
+> >                                    &sum_offline, &min_offline, &max_offline))
+> > --
+> > 2.34.1
+> >
