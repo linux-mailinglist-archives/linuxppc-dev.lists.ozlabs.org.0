@@ -2,66 +2,96 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E280A634DCB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Nov 2022 03:24:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18BC3634E08
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Nov 2022 03:52:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NH4h25xNNz3dvn
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Nov 2022 13:24:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NH5JH6Fbmz3dvj
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Nov 2022 13:52:15 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=LJY60C9h;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aaYuKc5Q;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::636; helo=mail-pl1-x636.google.com; envelope-from=zhouzhouyi@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=LJY60C9h;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aaYuKc5Q;
 	dkim-atps=neutral
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NH4g1601Rz3cMw
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Nov 2022 13:23:24 +1100 (AEDT)
-Received: by mail-pl1-x636.google.com with SMTP id p12so15408426plq.4
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Nov 2022 18:23:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=MhsEomGEcHS0ITrqbixOcvOCHqtbhvqSM8S3bsVjuhw=;
-        b=LJY60C9hm82Ajktbt56J964gyIfZ54hQakqP+9JsoTzhGcASSBupESEzfFhC1ztM2s
-         HiL53/9c/jaw0PF9LDHlu1OHxtZ2zagtdcaTeGlcX8TOV3lPjekZupUIO/wpULT7kaSl
-         mbMKtQWl6b3azlYxFblm+q1LmMXohPIsnCVnd32al1eRsrrMQiEFVe3ADMw2hy8agotb
-         nRcNg3zkbYFf/w5Nlc/4VEKUYEu/hebU4TbfMGgCe8p5AmeG+YsSCzYCLWe/2OD//+nv
-         pJr2gzQe/jsJiCFB3Ev7gSgUq58EUZcR/M5Xn0R/pbnBVn70C58QPMrcHmBOp1LwiV5s
-         +VTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MhsEomGEcHS0ITrqbixOcvOCHqtbhvqSM8S3bsVjuhw=;
-        b=mYP/B+9t6hZQRKJGg7QPT07YBe0gurd0QXSJ2Bw9klRAt5g4OU++xf2BbmUL2hH4uE
-         q26hp5P/clwSwXu1YcHgsnmvJMcCh+1Q0b9Pu1e4FAjOUdoWqe9WD7q+2LQAjNI3tA7P
-         Nh0nUOHoUjKyaxc4OHEwvH/yuGsnF+KGa1a1bJs8bvT0bmhlJIBu3aVxeykUwQ921GZw
-         HSlWTBG7HFM0r7QX6/WZt/iLIjU540HGhcE1GHqaKQJIvR5Sh2dIkua1A7sro5+VTXvA
-         zlLHh8Qg/NYZboDPLzQXkMUdkacHnVIprP1w1QZSgPVV41O1+SgiKMVqzm1krxOZLRY4
-         R9AA==
-X-Gm-Message-State: ANoB5plfA/NnbPpFuOipwb7KTvYKamEI1DrAoX+JNyYivSVNv7EmmV1G
-	0lagoRmMUBdWQrkgWTIHqLhkbl/O7KA3xTbFG2Q=
-X-Google-Smtp-Source: AA0mqf5DzRfWvrQG/Bl7rr76l1lOWBNm9IPBe18oEPOXIHBRs4mQ59hc13n+lkHpHP9XCgc3CCVrsr6dKZEPIGA4J0Y=
-X-Received: by 2002:a17:90a:9403:b0:218:6a4e:e44a with SMTP id
- r3-20020a17090a940300b002186a4ee44amr29392875pjo.6.1669170202991; Tue, 22 Nov
- 2022 18:23:22 -0800 (PST)
-MIME-Version: 1.0
-References: <20221121035140.118651-1-zhouzhouyi@gmail.com> <20221122013754.GY4001@paulmck-ThinkPad-P17-Gen-1>
-In-Reply-To: <20221122013754.GY4001@paulmck-ThinkPad-P17-Gen-1>
-From: Zhouyi Zhou <zhouzhouyi@gmail.com>
-Date: Wed, 23 Nov 2022 10:23:11 +0800
-Message-ID: <CAABZP2z5CLJg4tabNwDMopiNZTZYGC++Z9w6ZOhhGrXQHGMGUA@mail.gmail.com>
-Subject: Re: [PATCH linux-next][RFC]torture: avoid offline tick_do_timer_cpu
-To: paulmck@kernel.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NH5HL1BP0z3bjQ
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Nov 2022 13:51:25 +1100 (AEDT)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AN2RJhO009901
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Nov 2022 02:51:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=QELBcZ/o3wjy8YVPPAL/kwXiY3pSMp4Xs1aOacdQlTo=;
+ b=aaYuKc5QDhYgbGSuPmXngSuNQGWmhQ1k4gUCMa1a+fSz7Ki07GBM251G4OhhfTa1ypDn
+ wlEqz3mB1M9aOrIAZZpsjQ97A8Lo7D7L/jAF/Nve6aSN/BQuJ7JWJlBqIzdOwuyeDL/k
+ MeBZlYA0ui9NyY9hdzQIwad2b26ZLAt9/+swNwMWP/8Z0ZEs2/sapPhCukYjQRE0F2+R
+ GdFPsmygAbW3i2xF2xQo5cB7HmZ+Qbb737Qt0+8DmXPwcoRpw5RaCJyKngLRlA8DKNe+
+ Ct7AQAaP+78WwfUtzvuDy1REMYs/Bz7ja40Ihf5PDigTAB0pDAexljql97kHQ5AoFSn9 AQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m10w5eqm2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Nov 2022 02:51:22 +0000
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2AN2msLw024787
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Nov 2022 02:51:21 GMT
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m10w5eqkg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 23 Nov 2022 02:51:21 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+	by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2AN2pKtC028358;
+	Wed, 23 Nov 2022 02:51:20 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+	by ppma04ams.nl.ibm.com with ESMTP id 3kxps8w0np-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 23 Nov 2022 02:51:20 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
+	by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2AN2pHFh4194980
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 23 Nov 2022 02:51:17 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D03714C04A;
+	Wed, 23 Nov 2022 02:51:17 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7AD964C040;
+	Wed, 23 Nov 2022 02:51:17 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Wed, 23 Nov 2022 02:51:17 +0000 (GMT)
+Received: from [10.61.2.128] (haven.au.ibm.com [9.192.254.114])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 5DDC66005B;
+	Wed, 23 Nov 2022 13:51:16 +1100 (AEDT)
+Message-ID: <5b4c4316bfe88a3f231ffe416ce34192189549db.camel@linux.ibm.com>
+Subject: Re: [PATCH 10/13] powerpc/rtas: improve function information lookups
+From: Andrew Donnellan <ajd@linux.ibm.com>
+To: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Date: Wed, 23 Nov 2022 13:51:06 +1100
+In-Reply-To: <20221118150751.469393-11-nathanl@linux.ibm.com>
+References: <20221118150751.469393-1-nathanl@linux.ibm.com>
+	 <20221118150751.469393-11-nathanl@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.1 (3.46.1-1.fc37) 
+MIME-Version: 1.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 8GqmW1JEPdDVbmrpIeodZVpIqMXFBp61
+X-Proofpoint-ORIG-GUID: 9MebyBSJTuLkcvGYCr2dxcfc7dQO10j4
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-11-22_13,2022-11-18_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 malwarescore=0
+ bulkscore=0 adultscore=0 mlxscore=0 lowpriorityscore=0 suspectscore=0
+ impostorscore=0 priorityscore=1501 spamscore=0 phishscore=0
+ mlxlogscore=839 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2210170000 definitions=main-2211230017
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,137 +103,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dave@stgolabs.net, josh@joshtriplett.org, linux-kernel@vger.kernel.org, fweisbec@gmail.com, tglx@linutronix.de, linuxppc-dev@lists.ozlabs.org, mingo@kernel.org
+Cc: tyreld@linux.ibm.com, nnac123@linux.ibm.com, ldufour@linux.ibm.com, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Nov 22, 2022 at 9:37 AM Paul E. McKenney <paulmck@kernel.org> wrote:
->
-> On Mon, Nov 21, 2022 at 11:51:40AM +0800, Zhouyi Zhou wrote:
-> > During CPU-hotplug torture (CONFIG_NO_HZ_FULL=y), if we try to
-> > offline tick_do_timer_cpu, the operation will fail because in
-> > function tick_nohz_cpu_down:
-> > ```
-> > if (tick_nohz_full_running && tick_do_timer_cpu == cpu)
-> >       return -EBUSY;
-> > ```
-> > Above bug was first discovered in torture tests performed in PPC VM
-> > of Open Source Lab of Oregon State University, and reproducable in RISC-V
-> > and X86-64 (with additional kernel commandline cpu0_hotplug).
-> >
-> > In this patch, we avoid offline tick_do_timer_cpu by distribute
-> > the offlining cpu among remaining cpus.
-> >
-> > Signed-off-by: Zhouyi Zhou <zhouzhouyi@gmail.com>
->
-> Good show chasing this down!
-Thank Paul for your guidance and encouragement!
->
-> A couple of questions below.
-The answers below.
->
-> > ---
-> >  include/linux/tick.h        |  1 +
-> >  kernel/time/tick-common.c   |  1 +
-> >  kernel/time/tick-internal.h |  1 -
-> >  kernel/torture.c            | 10 ++++++++++
-> >  4 files changed, 12 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/include/linux/tick.h b/include/linux/tick.h
-> > index bfd571f18cfd..23cc0b205853 100644
-> > --- a/include/linux/tick.h
-> > +++ b/include/linux/tick.h
-> > @@ -14,6 +14,7 @@
-> >  #include <linux/rcupdate.h>
-> >
-> >  #ifdef CONFIG_GENERIC_CLOCKEVENTS
-> > +extern int tick_do_timer_cpu __read_mostly;
-> >  extern void __init tick_init(void);
-> >  /* Should be core only, but ARM BL switcher requires it */
-> >  extern void tick_suspend_local(void);
-> > diff --git a/kernel/time/tick-common.c b/kernel/time/tick-common.c
-> > index 46789356f856..87b9b9afa320 100644
-> > --- a/kernel/time/tick-common.c
-> > +++ b/kernel/time/tick-common.c
-> > @@ -48,6 +48,7 @@ ktime_t tick_next_period;
-> >   *    procedure also covers cpu hotplug.
-> >   */
-> >  int tick_do_timer_cpu __read_mostly = TICK_DO_TIMER_BOOT;
-> > +EXPORT_SYMBOL_GPL(tick_do_timer_cpu);
-> >  #ifdef CONFIG_NO_HZ_FULL
-> >  /*
-> >   * tick_do_timer_boot_cpu indicates the boot CPU temporarily owns
-> > diff --git a/kernel/time/tick-internal.h b/kernel/time/tick-internal.h
-> > index 649f2b48e8f0..8953dca10fdd 100644
-> > --- a/kernel/time/tick-internal.h
-> > +++ b/kernel/time/tick-internal.h
-> > @@ -15,7 +15,6 @@
-> >
-> >  DECLARE_PER_CPU(struct tick_device, tick_cpu_device);
-> >  extern ktime_t tick_next_period;
-> > -extern int tick_do_timer_cpu __read_mostly;
-> >
-> >  extern void tick_setup_periodic(struct clock_event_device *dev, int broadcast);
-> >  extern void tick_handle_periodic(struct clock_event_device *dev);
-> > diff --git a/kernel/torture.c b/kernel/torture.c
-> > index 789aeb0e1159..bccbdd33dda2 100644
-> > --- a/kernel/torture.c
-> > +++ b/kernel/torture.c
-> > @@ -33,6 +33,7 @@
-> >  #include <linux/delay.h>
-> >  #include <linux/stat.h>
-> >  #include <linux/slab.h>
-> > +#include <linux/tick.h>
-> >  #include <linux/trace_clock.h>
-> >  #include <linux/ktime.h>
-> >  #include <asm/byteorder.h>
-> > @@ -358,7 +359,16 @@ torture_onoff(void *arg)
-> >                       schedule_timeout_interruptible(HZ / 10);
-> >                       continue;
-> >               }
-> > +#ifdef CONFIG_NO_HZ_FULL
-> > +             /* do not offline tick do timer cpu */
-> > +             if (tick_nohz_full_running) {
-> > +                     cpu = (torture_random(&rand) >> 4) % maxcpu;
-> > +                     if (cpu >= tick_do_timer_cpu)
->
-> Why is this ">=" instead of "=="?
-I use probability theory here to let the remaining cpu distribute evenly.
-Example:
-we have cpus: 0 1 2 3 4 5 6 7
-maxcpu = 7
-tick_do_timer_cpu = 2
-remaining cpus are: 0 1 3 4 5 6 7
-if the offline cpu candidate is 2, then the result cpu is 2+1
-else if the offline cpu candidate is 3, then the result cpu is 3+1
-...
-else if the offline cpu candidate is 6, then the result cpu is 6+1
->
-> > +                             cpu = (cpu + 1) % (maxcpu + 1);
-we could just use cpu = cpu + 1 here
-> > +             } else
-> > +#else
-> >               cpu = (torture_random(&rand) >> 4) % (maxcpu + 1);
-> > +#endif
->
-> What happens if the value of tick_do_timer_cpu changes between the time of
-> the check above and the call to torture_offline() below?  Alternatively,
-> how is such a change in value prevented?
-I did a preliminary research about the above question, this is quite
-complicated for me
-(because I think I must not bring locks to kernel just because our
-test frame need them),
-Please give me some days to perform intensive research.
+On Fri, 2022-11-18 at 09:07 -0600, Nathan Lynch wrote:
+> Convert rtas_token() to use a lockless binary search on the function
+> table. Fall back to the old behavior for lookups against names that
+> are not known to be RTAS functions, but issue a warning. rtas_token()
+> is for function names; it is not a general facility for accessing
+> arbitrary properties of the /rtas node. All known misuses of
+> rtas_token() have been converted to more appropriate of_ APIs in
+> preceding changes.
 
-Thanks again
-Cheers
-Zhouyi
->
->                                                         Thanx, Paul
->
-> >               if (!torture_offline(cpu,
-> >                                    &n_offline_attempts, &n_offline_successes,
-> >                                    &sum_offline, &min_offline, &max_offline))
-> > --
-> > 2.34.1
-> >
+For in-kernel users, why not go all the way: make rtas_token() static
+and use it purely for the userspace API, and switch kernel users over
+to using rtas_function_index directly?
+
+> +enum rtas_function_flags {
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0RTAS_FN_FLAG_BANNED_FOR_SYSCAL=
+L_ON_LE =3D (1 << 0),
+> +};
+
+This seems to be new, what's the justification?
+
+--=20
+Andrew Donnellan    OzLabs, ADL Canberra
+ajd@linux.ibm.com   IBM Australia Limited
