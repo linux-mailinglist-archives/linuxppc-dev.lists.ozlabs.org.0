@@ -1,55 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 607F3637D74
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Nov 2022 17:05:06 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 480B6637FAB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Nov 2022 20:31:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NJ2rc2GZ5z3f3y
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Nov 2022 03:05:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NJ7R10Ylhz3dvX
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Nov 2022 06:31:41 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WlxvzM22;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Wn5sbZN4;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.31; helo=mga06.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WlxvzM22;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Wn5sbZN4;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NJ2qj63Tlz3cHl
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Nov 2022 03:04:17 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 382A7B82874;
-	Thu, 24 Nov 2022 16:04:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4356C433D6;
-	Thu, 24 Nov 2022 16:04:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1669305852;
-	bh=IvHYWDLn1DgR8LH4t7rSubz36Ju+jzSqmPmYrOhNPlo=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=WlxvzM22NwMDCoQChrQhXcrqFDVCZNvtWkzovYYg2PyBCYEXL4YaJuKbp1dQByKcF
-	 FmlwRuCiw0oQRKp2ZSDzDV/aqXNW4V8kWhrIBPIdh+/S7edLrqRPFuSS4MdSBm7BLH
-	 IDnPtjktIvP1hka5/d8VaQhqX7Yn6GZ5Hx+IOBEDhJbY4qMOFPtHIuaB8I1wIuGdL6
-	 g1de0tQjk0TcZc+A64jFItQC3XsxmvpZZRqGF7esQ3Lb9AgP1rdwW/lFgi93zL+mqf
-	 sGYMjME4SGIBJuwf4qC9yYSwep3N56gpSQJ5vy76O58xNPbhd+xJcjeFicKz9acOhD
-	 lG4G9UHzWi0mA==
-From: Mark Brown <broonie@kernel.org>
-To: Uwe Kleine-König <uwe@kleine-koenig.org>, Lee Jones <lee.jones@linaro.org>, Wolfram Sang <wsa@kernel.org>,
- Angel Iglesias <ang.iglesiasg@gmail.com>, Grant Likely <grant.likely@linaro.org>
-In-Reply-To: <20221118224540.619276-1-uwe@kleine-koenig.org>
-References: <20221118224540.619276-1-uwe@kleine-koenig.org>
-Subject: Re: (subset) [PATCH 000/606] i2c: Complete conversion to i2c_probe_new
-Message-Id: <166930584463.436148.7438729312416805991.b4-ty@kernel.org>
-Date: Thu, 24 Nov 2022 16:04:04 +0000
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NJ7Q26LMPz3cMn
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Nov 2022 06:30:45 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1669318251; x=1700854251;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=bHTOzMzFXVcaodmnHlYzawapV3y1nvrCEByICL6XbKc=;
+  b=Wn5sbZN4FU0LnrHM/7tGfEqoO82A8HnsXe5t2O3DGRrlmZ1copr7EzIP
+   twFSTCusv9xeeIFjpfKpajEyUwcBZ1RX8JTptTe70+AKuYSgpSpWR4a9r
+   L8dFyPX06gNx30GuQbyPtLcfHRYXW2gIVI8p4QoBE5H1ur80XWYVZOakK
+   nXsnluUdCm7nS4/jgkRPYi2wKnrrntjBnMn1Dmh+eEaA8dOJoaoJQvFFg
+   72sGlWrGI9ihzzQRMu9D3PN27o2v3lsj6HJLRKmtSQrQZq+6sqZ+p2hUe
+   n+GbMrLEOdQLSvQjeoPD6hgY8w/iXXAqeh3cayi4lM1uW9kYjsBB0uQnn
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10541"; a="376500574"
+X-IronPort-AV: E=Sophos;i="5.96,191,1665471600"; 
+   d="scan'208";a="376500574"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2022 11:30:41 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10541"; a="748339411"
+X-IronPort-AV: E=Sophos;i="5.96,191,1665471600"; 
+   d="scan'208";a="748339411"
+Received: from lkp-server01.sh.intel.com (HELO 64a2d449c951) ([10.239.97.150])
+  by fmsmga002.fm.intel.com with ESMTP; 24 Nov 2022 11:30:33 -0800
+Received: from kbuild by 64a2d449c951 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1oyHvd-0004BZ-03;
+	Thu, 24 Nov 2022 19:30:33 +0000
+Date: Fri, 25 Nov 2022 03:29:39 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: [linux-next:master] BUILD REGRESSION
+ c35bd4e428856ed8c1fae7f7dfa08a9141c153d1
+Message-ID: <637fc623.F26g8M0ZuGkeOPM2%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.10.0-dev-fc921
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,90 +70,174 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-fbdev@vger.kernel.org, devicetree@vger.kernel.org, linux-iio@vger.kernel.org, alsa-devel@alsa-project.org, platform-driver-x86@vger.kernel.org, linux-mtd@lists.infradead.org, linux-i2c@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, linux-leds@vger.kernel.org, linux-rtc@vger.kernel.org, chrome-platform@lists.linux.dev, linux-samsung-soc@vger.kernel.org, linux-staging@lists.linux.dev, Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, linux-serial@vger.kernel.org, linux-input@vger.kernel.org, linux-media@vger.kernel.org, linux-pwm@vger.kernel.org, linux-watchdog@vger.kernel.org, linux-pm@vger.kernel.org, linux-actions@lists.infradead.org, linux-gpio@vger.kernel.org, linux-rpi-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org, openipmi-developer@lists.sourceforge.net, linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Purism Kernel Team <kernel@puri.sm>, patches@opensource.cirrus.com, linux-usb@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org, linux-renesas-soc@vger.kernel.org, linux-crypto@vger.kernel.org, kernel@pengutronix.de, netdev@vger.kernel.org, linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: linux-iio@vger.kernel.org, nouveau@lists.freedesktop.org, linux-usb@vger.kernel.org, dri-devel@lists.freedesktop.org, Linux Memory Management List <linux-mm@kvack.org>, coreteam@netfilter.org, netfilter-devel@vger.kernel.org, amd-gfx@lists.freedesktop.org, linuxppc-dev@lists.ozlabs.org, linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 18 Nov 2022 23:35:34 +0100, Uwe Kleine-König wrote:
-> since commit b8a1a4cd5a98 ("i2c: Provide a temporary .probe_new()
-> call-back type") from 2016 there is a "temporary" alternative probe
-> callback for i2c drivers.
-> 
-> This series completes all drivers to this new callback (unless I missed
-> something). It's based on current next/master.
-> A part of the patches depend on commit 662233731d66 ("i2c: core:
-> Introduce i2c_client_get_device_id helper function"), there is a branch that
-> you can pull into your tree to get it:
-> 
-> [...]
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: c35bd4e428856ed8c1fae7f7dfa08a9141c153d1  Add linux-next specific files for 20221124
 
-Applied to
+Error/Warning reports:
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
+https://lore.kernel.org/oe-kbuild-all/202211090634.RyFKK0WS-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202211241736.K6437e7j-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202211242021.FDZRFNA8-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202211242120.MzZVGULn-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202211250227.grPjpxyN-lkp@intel.com
 
-Thanks!
+Error/Warning: (recently discovered and may have been fixed)
 
-[538/606] regulator: act8865-regulator: Convert to i2c's .probe_new()
-          commit: 3d2a78ae5df5d7f48c002e5f73d18d8c7628d266
-[539/606] regulator: ad5398: Convert to i2c's .probe_new()
-          commit: 7f69edba960bbdcbc829d8d0995b1117ce29e8b1
-[540/606] regulator: da9121-regulator: Convert to i2c's .probe_new()
-          commit: 020cf73b47414a84b666d3e6736a6ae957e27840
-[541/606] regulator: fan53555: Convert to i2c's .probe_new()
-          commit: 655425650f5e361224a86aa11bf3c044bf04df2a
-[542/606] regulator: isl6271a-regulator: Convert to i2c's .probe_new()
-          commit: 69518d21deaa448be65b7c0be67aab230e88eaa7
-[543/606] regulator: lp3972: Convert to i2c's .probe_new()
-          commit: 2532d5f8d5c20d5a0a8a0d57a311bc5df00dea04
-[544/606] regulator: lp872x: Convert to i2c's .probe_new()
-          commit: 87feccb347b25f5dc6ff451123b832c9ad5dddfe
-[545/606] regulator: lp8755: Convert to i2c's .probe_new()
-          commit: cb28f74b4809a00b40fdf0c44ccf51ab950581d3
-[546/606] regulator: ltc3589: Convert to i2c's .probe_new()
-          commit: 78c8f6cdb51d471928d481ed3b2c82dbc110a1ed
-[547/606] regulator: max1586: Convert to i2c's .probe_new()
-          commit: 3d54f7ba248b0ad1791bc356e9ad3d9020a1c472
-[548/606] regulator: max8649: Convert to i2c's .probe_new()
-          commit: 3cf4417385d0ac8f02f22888e12a6d21d97d89fc
-[549/606] regulator: max8660: Convert to i2c's .probe_new()
-          commit: dbf31dac703009174226bb87b3914bd092040327
-[550/606] regulator: max8952: Convert to i2c's .probe_new()
-          commit: c20c36735949b3b7984692fbab3d92b0e8a845ec
-[551/606] regulator: max8973-regulator: Convert to i2c's .probe_new()
-          commit: 4e85e5d64f66ac5e4b0286ee4b6f8e8ce1044d42
-[552/606] regulator: pca9450-regulator: Convert to i2c's .probe_new()
-          commit: ed56fa6e804cb13bbe29e9214792308817f6e553
-[553/606] regulator: pfuze100-regulator: Convert to i2c's .probe_new()
-          commit: 8348c710b51bac713a6fd2e07d64eb71d5680e2e
-[554/606] regulator: pv88080-regulator: Convert to i2c's .probe_new()
-          commit: c9f9ef15b84222f4cc686b1013ee3fd192b0bab8
-[555/606] regulator: rpi-panel-attiny-regulator: Convert to i2c's .probe_new()
-          commit: d85d02d17a608b558d44510e9824668c5d4fe5d8
-[556/606] regulator: tps51632-regulator: Convert to i2c's .probe_new()
-          commit: d4885f306304ff29eec06b9ad5f526a1099e0418
-[557/606] regulator: tps62360-regulator: Convert to i2c's .probe_new()
-          commit: 18804160277ec2ab992373385f86c6af2322b28b
-[558/606] regulator: tps6286x-regulator: Convert to i2c's .probe_new()
-          commit: e34782316281c78c5911f86d4699d4f35a607c9d
-[559/606] regulator: tps65023-regulator: Convert to i2c's .probe_new()
-          commit: 3b5b07dde998f6ade7433a8db019cf816c7e35af
+arch/arm/mach-s3c/devs.c:32:10: fatal error: linux/platform_data/dma-s3c24xx.h: No such file or directory
+arch/powerpc/kernel/kvm_emul.o: warning: objtool: kvm_template_end(): can't find starting instruction
+arch/powerpc/kernel/optprobes_head.o: warning: objtool: optprobe_template_end(): can't find starting instruction
+drivers/clk/clk.c:1022:5: error: redefinition of 'clk_prepare'
+drivers/clk/clk.c:1268:6: error: redefinition of 'clk_is_enabled_when_prepared'
+drivers/clk/clk.c:941:6: error: redefinition of 'clk_unprepare'
+drivers/gpu/drm/amd/amdgpu/../display/dc/core/dc.c:4968: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
+drivers/gpu/drm/amd/amdgpu/../display/dc/core/dc_link_dp.c:5075:24: warning: implicit conversion from 'enum <anonymous>' to 'enum dc_status' [-Wenum-conversion]
+drivers/gpu/drm/amd/amdgpu/../display/dc/irq/dcn201/irq_service_dcn201.c:40:20: warning: no previous prototype for 'to_dal_irq_source_dcn201' [-Wmissing-prototypes]
+drivers/gpu/drm/nouveau/nvkm/engine/fifo/gf100.c:451:1: warning: no previous prototype for 'gf100_fifo_nonstall_block' [-Wmissing-prototypes]
+drivers/gpu/drm/nouveau/nvkm/engine/fifo/gf100.c:451:1: warning: no previous prototype for function 'gf100_fifo_nonstall_block' [-Wmissing-prototypes]
+drivers/gpu/drm/nouveau/nvkm/engine/fifo/runl.c:34:1: warning: no previous prototype for 'nvkm_engn_cgrp_get' [-Wmissing-prototypes]
+drivers/gpu/drm/nouveau/nvkm/engine/fifo/runl.c:34:1: warning: no previous prototype for function 'nvkm_engn_cgrp_get' [-Wmissing-prototypes]
+drivers/gpu/drm/nouveau/nvkm/engine/gr/tu102.c:210:1: warning: no previous prototype for 'tu102_gr_load' [-Wmissing-prototypes]
+drivers/gpu/drm/nouveau/nvkm/engine/gr/tu102.c:210:1: warning: no previous prototype for function 'tu102_gr_load' [-Wmissing-prototypes]
+drivers/gpu/drm/nouveau/nvkm/nvfw/acr.c:49:1: warning: no previous prototype for 'wpr_generic_header_dump' [-Wmissing-prototypes]
+drivers/gpu/drm/nouveau/nvkm/nvfw/acr.c:49:1: warning: no previous prototype for function 'wpr_generic_header_dump' [-Wmissing-prototypes]
+drivers/gpu/drm/nouveau/nvkm/subdev/acr/lsfw.c:221:21: warning: variable 'loc' set but not used [-Wunused-but-set-variable]
+drivers/iio/addac/ad74115.c:320:27: warning: 'ad74115_dac_slew_rate_hz_tbl' defined but not used [-Wunused-const-variable=]
+mm/vmscan.c:4090:30: error: implicit declaration of function 'pmd_young'; did you mean 'pte_young'? [-Werror=implicit-function-declaration]
+net/netfilter/nf_conntrack_netlink.c:2674:6: warning: unused variable 'mark' [-Wunused-variable]
+vmlinux.o: warning: objtool: __btrfs_map_block+0x1d77: unreachable instruction
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+Unverified Error/Warning (likely false positive, please contact us if interested):
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+drivers/usb/fotg210/fotg210-udc.c:632:17: sparse: sparse: restricted __le16 degrades to integer
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+Error/Warning ids grouped by kconfigs:
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+gcc_recent_errors
+|-- alpha-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-core-dc.c:warning:This-comment-starts-with-but-isn-t-a-kernel-doc-comment.-Refer-Documentation-doc-guide-kernel-doc.rst
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-core-dc_link_dp.c:warning:implicit-conversion-from-enum-anonymous-to-enum-dc_status
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-gf100_fifo_nonstall_block
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-nvkm_engn_cgrp_get
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-tu102_gr_load
+|   |-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-wpr_generic_header_dump
+|   `-- drivers-gpu-drm-nouveau-nvkm-subdev-acr-lsfw.c:warning:variable-loc-set-but-not-used
+|-- alpha-randconfig-r005-20221124
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-core-dc.c:warning:This-comment-starts-with-but-isn-t-a-kernel-doc-comment.-Refer-Documentation-doc-guide-kernel-doc.rst
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-core-dc_link_dp.c:warning:implicit-conversion-from-enum-anonymous-to-enum-dc_status
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-gf100_fifo_nonstall_block
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-nvkm_engn_cgrp_get
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-tu102_gr_load
+|   |-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-wpr_generic_header_dump
+|   `-- drivers-gpu-drm-nouveau-nvkm-subdev-acr-lsfw.c:warning:variable-loc-set-but-not-used
+|-- alpha-randconfig-r016-20221124
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-gf100_fifo_nonstall_block
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-nvkm_engn_cgrp_get
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-tu102_gr_load
+|   |-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-wpr_generic_header_dump
+|   `-- drivers-gpu-drm-nouveau-nvkm-subdev-acr-lsfw.c:warning:variable-loc-set-but-not-used
+|-- arc-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-core-dc.c:warning:This-comment-starts-with-but-isn-t-a-kernel-doc-comment.-Refer-Documentation-doc-guide-kernel-doc.rst
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-core-dc_link_dp.c:warning:implicit-conversion-from-enum-anonymous-to-enum-dc_status
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-gf100_fifo_nonstall_block
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-nvkm_engn_cgrp_get
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-tu102_gr_load
+|   |-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-wpr_generic_header_dump
+|   `-- drivers-gpu-drm-nouveau-nvkm-subdev-acr-lsfw.c:warning:variable-loc-set-but-not-used
+|-- arc-randconfig-r004-20221124
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-gf100_fifo_nonstall_block
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-nvkm_engn_cgrp_get
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-tu102_gr_load
+|   |-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-wpr_generic_header_dump
+|   `-- drivers-gpu-drm-nouveau-nvkm-subdev-acr-lsfw.c:warning:variable-loc-set-but-not-used
+|-- arc-randconfig-r043-20221124
+|   `-- mm-vmscan.c:error:implicit-declaration-of-function-pmd_young
+|-- arm-allyesconfig
+|   |-- arch-arm-mach-s3c-devs.c:fatal-error:linux-platform_data-dma-s3c24xx.h:No-such-file-or-directory
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-core-dc.c:warning:This-comment-starts-with-but-isn-t-a-kernel-doc-comment.-Refer-Documentation-doc-guide-kernel-doc.rst
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-core-dc_link_dp.c:warning:implicit-conversion-from-enum-anonymous-to-enum-dc_status
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-gf100_fifo_nonstall_block
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-nvkm_engn_cgrp_get
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-tu102_gr_load
+|   |-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-wpr_generic_header_dump
+clang_recent_errors
+|-- i386-randconfig-a013
+|   `-- net-netfilter-nf_conntrack_netlink.c:warning:unused-variable-mark
+`-- riscv-randconfig-r042-20221124
+    |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-function-gf100_fifo_nonstall_block
+    |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-function-nvkm_engn_cgrp_get
+    |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-function-tu102_gr_load
+    `-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-function-wpr_generic_header_dump
 
-Thanks,
-Mark
+elapsed time: 731m
+
+configs tested: 53
+configs skipped: 2
+
+gcc tested configs:
+um                             i386_defconfig
+um                           x86_64_defconfig
+x86_64                              defconfig
+arc                                 defconfig
+s390                             allmodconfig
+arm                                 defconfig
+alpha                               defconfig
+arc                  randconfig-r043-20221124
+s390                                defconfig
+x86_64                           rhel-8.3-syz
+x86_64                         rhel-8.3-kunit
+x86_64                           rhel-8.3-kvm
+x86_64                               rhel-8.3
+x86_64                           allyesconfig
+ia64                             allmodconfig
+x86_64                        randconfig-a002
+i386                          randconfig-a014
+s390                             allyesconfig
+arm                              allyesconfig
+i386                          randconfig-a001
+i386                                defconfig
+x86_64                          rhel-8.3-func
+i386                          randconfig-a003
+x86_64                    rhel-8.3-kselftests
+m68k                             allmodconfig
+powerpc                           allnoconfig
+x86_64                        randconfig-a006
+powerpc                          allmodconfig
+i386                          randconfig-a005
+arc                              allyesconfig
+i386                          randconfig-a012
+arm64                            allyesconfig
+x86_64                        randconfig-a004
+sh                               allmodconfig
+i386                          randconfig-a016
+alpha                            allyesconfig
+mips                             allyesconfig
+m68k                             allyesconfig
+i386                             allyesconfig
+
+clang tested configs:
+hexagon              randconfig-r041-20221124
+hexagon              randconfig-r045-20221124
+s390                 randconfig-r044-20221124
+i386                          randconfig-a013
+riscv                randconfig-r042-20221124
+x86_64                        randconfig-a001
+i386                          randconfig-a011
+i386                          randconfig-a002
+i386                          randconfig-a006
+x86_64                        randconfig-a003
+i386                          randconfig-a004
+x86_64                        randconfig-a005
+i386                          randconfig-a015
+x86_64                          rhel-8.3-rust
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
