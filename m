@@ -1,57 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6604636DFF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Nov 2022 00:01:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2545636FDE
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Nov 2022 02:30:29 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NHc7N4SbFz3dvL
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Nov 2022 10:01:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NHgRQ4s3Fz3cbV
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Nov 2022 12:30:26 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nctdZzry;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=CmW7wn48;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=srs0=/r7r=3x=paulmck-thinkpad-p17-gen-1.home=paulmck@kernel.org; receiver=<UNKNOWN>)
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NHgQW3vdjz3bsK
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Nov 2022 12:29:39 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nctdZzry;
+	dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=CmW7wn48;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NHc6V286yz2xl6
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Nov 2022 10:00:34 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 42F4661B47;
-	Wed, 23 Nov 2022 23:00:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BEE0C433D6;
-	Wed, 23 Nov 2022 23:00:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1669244431;
-	bh=xMQEI5/UaBXleLy7rFHYc25uhmr6Xx1RJf02gKDCj3M=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-	b=nctdZzryom/KqAWlqstK1IX3ZErCw0/X5k4uA/2V6MLzCwgUcTqhN4zH6R9bAbRI9
-	 KvJyEzaOpSCZ3ORLjDsLGWheT4XrAAIncCtfo7+TOyBRUHqFdCNoXfHUma9WYp7r/w
-	 AjrCdqDjbUaJ7H33vIY+y/E10XveRVZvolFq6R14QZ4kUfxeGp3J4mMg+qp3VFmI8f
-	 uVv6JLbhmdLY6Rnl7LglwezKbF7G4hjzaOhwWZQIYfVrmOu2RGyMhv1L1QJhLhISWt
-	 GyN5jx9bWPP3agxPdRvTOFG60AAJtrVGSHtKRLuOJBISHW8HCwMGKdDcm1XNTJ8NE3
-	 MrXg92lfYJAgg==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id 37FD85C0DF2; Wed, 23 Nov 2022 15:00:31 -0800 (PST)
-Date: Wed, 23 Nov 2022 15:00:31 -0800
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: Frederic Weisbecker <frederic@kernel.org>
-Subject: Re: [PATCH linux-next][RFC]torture: avoid offline tick_do_timer_cpu
-Message-ID: <20221123230031.GL4001@paulmck-ThinkPad-P17-Gen-1>
-References: <20221121035140.118651-1-zhouzhouyi@gmail.com>
- <20221122013754.GY4001@paulmck-ThinkPad-P17-Gen-1>
- <20221123222543.GB1395324@lothringen>
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NHgQS5PfWz4x2c;
+	Thu, 24 Nov 2022 12:29:36 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+	s=201702; t=1669253377;
+	bh=JBoFldnbFkQx64zlIrUVvIYpX+G+3s4hlaGLmsO4DLc=;
+	h=Date:From:To:Cc:Subject:From;
+	b=CmW7wn482iyoUrRheIscrEyn6EGtgKfYyL6ulcErqB3VafsnutmmWgnDZ18WmCqWu
+	 HB4R/G7DpoGcZWestJx3AxYrx5+eB1nrbWwxM1EkVy6QgHL41/bH0nHXck8viqvNb6
+	 T1rWTUGFu402173F6e5tvwjmAtEUbHRruukTKn8g/3iDQ8jSh4DeVuy+Zcf1tpcQLd
+	 LuQpWtvFxkAx3+vQ7zGQPKLwnQs5YfVl6NOTFo7lAv52FpMlET36+P6QHQcBprDz50
+	 nuUVB+TXLZAURbB1SAxREtmhUsX8R3CNnXgKq4m1tDz3/aE1gbj4kbela6T5go8v8/
+	 ID2qwCrcBPJSA==
+Date: Thu, 24 Nov 2022 12:29:31 +1100
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, Peter Zijlstra <peterz@infradead.org>,
+ Michael Ellerman <mpe@ellerman.id.au>
+Subject: linux-next: manual merge of the tip tree with the powerpc-objtool
+ tree
+Message-ID: <20221124122931.266df8c7@canb.auug.org.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221123222543.GB1395324@lothringen>
+Content-Type: multipart/signed; boundary="Sig_/=_lk_MtKlnjXeIX3zrvFugy";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,54 +59,147 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: paulmck@kernel.org
-Cc: dave@stgolabs.net, Zhouyi Zhou <zhouzhouyi@gmail.com>, josh@joshtriplett.org, linux-kernel@vger.kernel.org, fweisbec@gmail.com, tglx@linutronix.de, linuxppc-dev@lists.ozlabs.org, mingo@kernel.org
+Cc: Linux Next Mailing List <linux-next@vger.kernel.org>, PowerPC <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Nov 23, 2022 at 11:25:43PM +0100, Frederic Weisbecker wrote:
-> On Mon, Nov 21, 2022 at 05:37:54PM -0800, Paul E. McKenney wrote:
-> > On Mon, Nov 21, 2022 at 11:51:40AM +0800, Zhouyi Zhou wrote:
-> > > @@ -358,7 +359,16 @@ torture_onoff(void *arg)
-> > >  			schedule_timeout_interruptible(HZ / 10);
-> > >  			continue;
-> > >  		}
-> > > +#ifdef CONFIG_NO_HZ_FULL
-> > > +		/* do not offline tick do timer cpu */
-> > > +		if (tick_nohz_full_running) {
-> > > +			cpu = (torture_random(&rand) >> 4) % maxcpu;
-> > > +			if (cpu >= tick_do_timer_cpu)
-> > 
-> > Why is this ">=" instead of "=="?
-> > 
-> > > +				cpu = (cpu + 1) % (maxcpu + 1);
-> > > +		} else
-> > > +#else
-> > >  		cpu = (torture_random(&rand) >> 4) % (maxcpu + 1);
-> > > +#endif
-> > 
-> > What happens if the value of tick_do_timer_cpu changes between the time of
-> > the check above and the call to torture_offline() below?  Alternatively,
-> > how is such a change in value prevented?
-> 
-> It can't, currently tick_do_timer_cpu is fixed when nohz_full is running.
-> It can however have special values at early boot such as TICK_DO_TIMER_NONE.
-> But if rcutorture is initialized after smp, it should be ok.
+--Sig_/=_lk_MtKlnjXeIX3zrvFugy
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Ah, getting ahead of myself, thank you for the info!
+Hi all,
 
-So the thing to do would be to generate only maxcpu-1 choices.
+Today's linux-next merge of the tip tree got a conflict in:
 
-							Thanx, Paul
+  tools/objtool/check.c
 
-> Thanks.
-> 
-> > 
-> > 							Thanx, Paul
-> > 
-> > >  		if (!torture_offline(cpu,
-> > >  				     &n_offline_attempts, &n_offline_successes,
-> > >  				     &sum_offline, &min_offline, &max_offline))
-> > > -- 
-> > > 2.34.1
-> > > 
+between commit:
+
+  efb11fdb3e1a ("objtool: Fix SEGFAULT")
+
+from the powerpc-objtool tree and commit:
+
+  dbcdbdfdf137 ("objtool: Rework instruction -> symbol mapping")
+
+from the tip tree.
+
+I fixed it up (see below) and can carry the fix as necessary. This
+is now fixed as far as linux-next is concerned, but any non trivial
+conflicts should be mentioned to your upstream maintainer when your tree
+is submitted for merging.  You may also want to consider cooperating
+with the maintainer of the conflicting tree to minimise any particularly
+complex conflicts.
+
+--=20
+Cheers,
+Stephen Rothwell
+
+diff --cc tools/objtool/check.c
+index 7580c66ca5c8,4f1a7384426b..000000000000
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@@ -207,7 -204,7 +204,7 @@@ static bool __dead_end_function(struct=20
+  		return false;
+ =20
+  	insn =3D find_insn(file, func->sec, func->offset);
+- 	if (!insn || !insn->func)
+ -	if (!insn_func(insn))
+++	if (!insn || !insn_func(insn))
+  		return false;
+ =20
+  	func_for_each_insn(file, func, insn) {
+@@@ -850,11 -861,73 +861,73 @@@ static int create_ibt_endbr_seal_sectio
+  	return 0;
+  }
+ =20
++ static int create_cfi_sections(struct objtool_file *file)
++ {
++ 	struct section *sec, *s;
++ 	struct symbol *sym;
++ 	unsigned int *loc;
++ 	int idx;
++=20
++ 	sec =3D find_section_by_name(file->elf, ".cfi_sites");
++ 	if (sec) {
++ 		INIT_LIST_HEAD(&file->call_list);
++ 		WARN("file already has .cfi_sites section, skipping");
++ 		return 0;
++ 	}
++=20
++ 	idx =3D 0;
++ 	for_each_sec(file, s) {
++ 		if (!s->text)
++ 			continue;
++=20
++ 		list_for_each_entry(sym, &s->symbol_list, list) {
++ 			if (sym->type !=3D STT_FUNC)
++ 				continue;
++=20
++ 			if (strncmp(sym->name, "__cfi_", 6))
++ 				continue;
++=20
++ 			idx++;
++ 		}
++ 	}
++=20
++ 	sec =3D elf_create_section(file->elf, ".cfi_sites", 0, sizeof(unsigned i=
+nt), idx);
++ 	if (!sec)
++ 		return -1;
++=20
++ 	idx =3D 0;
++ 	for_each_sec(file, s) {
++ 		if (!s->text)
++ 			continue;
++=20
++ 		list_for_each_entry(sym, &s->symbol_list, list) {
++ 			if (sym->type !=3D STT_FUNC)
++ 				continue;
++=20
++ 			if (strncmp(sym->name, "__cfi_", 6))
++ 				continue;
++=20
++ 			loc =3D (unsigned int *)sec->data->d_buf + idx;
++ 			memset(loc, 0, sizeof(unsigned int));
++=20
++ 			if (elf_add_reloc_to_insn(file->elf, sec,
++ 						  idx * sizeof(unsigned int),
++ 						  R_X86_64_PC32,
++ 						  s, sym->offset))
++ 				return -1;
++=20
++ 			idx++;
++ 		}
++ 	}
++=20
++ 	return 0;
++ }
++=20
+  static int create_mcount_loc_sections(struct objtool_file *file)
+  {
+ -	struct section *sec;
+ -	unsigned long *loc;
+ +	int addrsize =3D elf_class_addrsize(file->elf);
+  	struct instruction *insn;
+ +	struct section *sec;
+  	int idx;
+ =20
+  	sec =3D find_section_by_name(file->elf, "__mcount_loc");
+
+--Sig_/=_lk_MtKlnjXeIX3zrvFugy
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmN+yPsACgkQAVBC80lX
+0GxNGwgAka10ZR9jqsjEV10zj0WtinoZKzPS8c78O50jJxhdtkn6bh6sjaGogYjV
+ja4yM7EvEyuEsi87F/npale9JxLv1Qo/no35/sil1Q0wQ5thA9qqNI7X78kgbyqX
+MS0kC9he2UNCNQXewZMhVaOqi4ifBVd778te5YgXVR5XG9z5a+aRzhYivyp6xSuo
+QzPZzefOtFkrqZBprc3cIDW4DQvbGA2GyEb1IBC5lauK2ttmZjOaSkOCwnyCsfxI
+NPoGame/aA5MHsUKW7KlDL+0tNlQSnUlo+2jA/yFJS7rIPX+autao7WfjUTMkzXZ
+027Tb6m8GcZG9R8XWBKB/Pkv0cN1RA==
+=c0cG
+-----END PGP SIGNATURE-----
+
+--Sig_/=_lk_MtKlnjXeIX3zrvFugy--
