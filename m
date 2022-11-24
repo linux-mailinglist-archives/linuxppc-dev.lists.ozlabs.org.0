@@ -2,96 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC9F3637A83
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Nov 2022 14:50:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15E83637A86
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Nov 2022 14:51:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NHzsn4VC9z3dvD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Nov 2022 00:50:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NHztn6J2Vz3dwd
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Nov 2022 00:51:45 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HJ20RjgQ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Hi20oGxz;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HJ20RjgQ;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Hi20oGxz;
 	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NHzrp0fqXz3cNJ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Nov 2022 00:50:01 +1100 (AEDT)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AOBvlrN016263;
-	Thu, 24 Nov 2022 13:49:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : subject :
- to : cc : references : in-reply-to : mime-version : message-id :
- content-type : content-transfer-encoding; s=pp1;
- bh=CKBTzyYz4k5+pwEvAeINjs848dzyyjMsSd6z7ezPC1o=;
- b=HJ20RjgQE6wEmLhGtx2hhex8mJm0hjemLVcdnVKq8j9p5LaNlpZyvw0/DlyPVHefm9Va
- cvMgNNxKXlNC1bXZT/xvjKy7RKN389p+WGorDqdo+bES44HLwovARNg8eNzzxNWDvu1d
- WVTACeo9hOPRmSiyjoU2fjZzwdqN7j8lCAMDCZ2l00YulobHTqNzDwABdKXiQO+4eeZc
- a35vEyMsECYYZ+piEIYMI1C26XUwsWXodPt7Ebjnqt1Ys6OmY3eUDP8MKDvl6cBTFJY9
- rdO0d0cUFpr0DLb9FtgH+sRYB/ofJhPTLcZ3bFcxOIUflpd9yc2bYJbTWhhjj7p68iQF fA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m10w6skpt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 24 Nov 2022 13:49:36 +0000
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2AOD8Tcc031065;
-	Thu, 24 Nov 2022 13:49:36 GMT
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m10w6skp4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 24 Nov 2022 13:49:36 +0000
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
-	by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2AODZTmh012896;
-	Thu, 24 Nov 2022 13:49:34 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
-	by ppma02fra.de.ibm.com with ESMTP id 3kxps8wye5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 24 Nov 2022 13:49:33 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
-	by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2AODhEXh7144008
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 24 Nov 2022 13:43:14 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B9B35A4055;
-	Thu, 24 Nov 2022 13:49:31 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 23B38A4051;
-	Thu, 24 Nov 2022 13:49:31 +0000 (GMT)
-Received: from localhost (unknown [9.43.36.53])
-	by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Thu, 24 Nov 2022 13:49:31 +0000 (GMT)
-Date: Thu, 24 Nov 2022 19:19:29 +0530
-From: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
-Subject: Re: [PATCH] powerpc/bpf: Only update ldimm64 during extra pass when
- it is an address
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Michael Ellerman
-	<mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>
-References: 	<3f6d302a2068d9e357efda2d92c8da99a0f2d0b2.1669278892.git.christophe.leroy@csgroup.eu>
-	<1669284441.66eunvaboi.naveen@linux.ibm.com>
-	<9f17237f-94da-f58f-4f4b-0068851b4123@csgroup.eu>
-In-Reply-To: <9f17237f-94da-f58f-4f4b-0068851b4123@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NHzsj1v1Zz3dvj
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Nov 2022 00:50:49 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 028D6620F4;
+	Thu, 24 Nov 2022 13:50:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6776AC4347C;
+	Thu, 24 Nov 2022 13:50:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1669297846;
+	bh=vSDY92xmrOtkiq1FJrC4dGUzlqSkjlYU9twgxHBDx1E=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=Hi20oGxzkmEg74j6qRD7Lfpoa1kcTrQCKK089dVyyzd4Ms62GyYEcriKLOdYnSnIB
+	 BaTy90c7xln7bVVdzp+tZfTor2YCDJ4PfhCFqr+4U1blkF+BSGk+wqWNbDs1GjRxEP
+	 5zngiMi62+XsaI5cdT+5MW5QXkwvuvZTdh1mYSgYk++n5bXwjsiaFEUQhZ7smrgwyJ
+	 TLSH8t2DGrVJraC9jirkwbs0YSutluzSGLevyrPQzPM1RecM+sjiSCNDXdUbmWoX0j
+	 UbEkRvn5n0p6b+FOMJ6yy/o81uO1xyfZHDSqUS0YA3une+k6GKCtZ+YH0Sav4kxmgU
+	 3opwvJAPSvwcQ==
+From: Mark Brown <broonie@kernel.org>
+To: Wolfram Sang <wsa@kernel.org>, Angel Iglesias <ang.iglesiasg@gmail.com>, Lee Jones <lee.jones@linaro.org>,
+ Grant Likely <grant.likely@linaro.org>, Uwe Kleine-König <uwe@kleine-koenig.org>
+In-Reply-To: <20221118224540.619276-1-uwe@kleine-koenig.org>
+References: <20221118224540.619276-1-uwe@kleine-koenig.org>
+Subject: Re: (subset) [PATCH 000/606] i2c: Complete conversion to i2c_probe_new
+Message-Id: <166929783812.276133.16916757100694771073.b4-ty@kernel.org>
+Date: Thu, 24 Nov 2022 13:50:38 +0000
 MIME-Version: 1.0
-User-Agent: astroid/4d6b06ad (https://github.com/astroidmail/astroid)
-Message-Id: <1669297066.kxu8xl391n.naveen@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 8R5RM1Sg9FNLOIPesftNdoPdw9MqmtEP
-X-Proofpoint-ORIG-GUID: ghvVsLyCUsPc8rn2_dn7-PFU18bhALVR
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-11-24_10,2022-11-24_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 malwarescore=0
- bulkscore=0 adultscore=0 mlxscore=0 lowpriorityscore=0 suspectscore=0
- impostorscore=0 priorityscore=1501 spamscore=0 phishscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2210170000 definitions=main-2211240104
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.10.0-dev-fc921
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,45 +61,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Hao Luo <haoluo@google.com>, Daniel Borkmann <daniel@iogearbox.net>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, John Fastabend <john.fastabend@gmail.com>, Andrii Nakryiko <andrii@kernel.org>, Alexei Starovoitov <ast@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, Stanislav Fomichev <sdf@google.com>, Jiri Olsa <jolsa@kernel.org>, KP Singh <kpsingh@kernel.org>, =?iso-8859-1?q?Yonghong=0A?= Song <yhs@fb.com>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: alsa-devel@alsa-project.org, devicetree@vger.kernel.org, linux-iio@vger.kernel.org, linux-fbdev@vger.kernel.org, platform-driver-x86@vger.kernel.org, linux-mtd@lists.infradead.org, linux-i2c@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, linux-leds@vger.kernel.org, linux-rtc@vger.kernel.org, chrome-platform@lists.linux.dev, linux-samsung-soc@vger.kernel.org, linux-staging@lists.linux.dev, Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, linux-serial@vger.kernel.org, linux-input@vger.kernel.org, linux-media@vger.kernel.org, linux-pwm@vger.kernel.org, linux-watchdog@vger.kernel.org, linux-pm@vger.kernel.org, linux-actions@lists.infradead.org, linux-gpio@vger.kernel.org, linux-rpi-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org, openipmi-developer@lists.sourceforge.net, linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Purism Kernel Team <kernel@puri.sm>, netdev@vger.kernel.org, linux-usb@vger.kernel.org, linux-k
+ ernel@vger.kernel.org, linux-spi@vger.kernel.org, linux-renesas-soc@vger.kernel.org, linux-crypto@vger.kernel.org, kernel@pengutronix.de, patches@opensource.cirrus.com, linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy wrote:
->=20
->=20
-> Le 24/11/2022 =C3=A0 11:13, Naveen N. Rao a =C3=A9crit=C2=A0:
->> Christophe Leroy wrote:
->>> ldimm64 is not only used for loading function addresses, and
->>=20
->> That's probably true today, but I worry that that can change upstream=20
->> and we may not notice at all.
->=20
-> Not sure what you mean.
->=20
-> Today POWERPC considers that ldimm64 is _always_ loading a function=20
-> address whereas upstream BPF considers that ldimm64 is a function only=20
-> when it is flagged BPF_PSEUDO_FUNC.
+On Fri, 18 Nov 2022 23:35:34 +0100, Uwe Kleine-König wrote:
+> since commit b8a1a4cd5a98 ("i2c: Provide a temporary .probe_new()
+> call-back type") from 2016 there is a "temporary" alternative probe
+> callback for i2c drivers.
+> 
+> This series completes all drivers to this new callback (unless I missed
+> something). It's based on current next/master.
+> A part of the patches depend on commit 662233731d66 ("i2c: core:
+> Introduce i2c_client_get_device_id helper function"), there is a branch that
+> you can pull into your tree to get it:
+> 
+> [...]
 
-Not sure why you think we consider ldimm64 to always be loading a=20
-function address. Perhaps it is due to the poorly chosen variable name=20
-func_addr in bpf_jit_fixup_addresses(), or due to the fact that we=20
-always update the JIT code for ldimm64. In any case, we simply overwrite=20
-imm64 load instructions to ensure we are using the updated address.
+Applied to
 
->=20
-> In what direction could that change in the future ?
->=20
-> For me if they change that it becomes an API change.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
 
-More of an extension, which is exactly what we had when BPF_PSEUDO_FUNC=20
-was introduced. Took us nearly a year before we noticed.
+Thanks!
 
-Because we do not do a full JIT during the extra pass today like other=20
-architectures, we are the exception - there is always the risk of bpf=20
-core changes breaking our JIT. So, I still think it is better if we do a=20
-full JIT during extra pass.
+[538/606] regulator: act8865-regulator: Convert to i2c's .probe_new()
+          (no commit info)
+[539/606] regulator: ad5398: Convert to i2c's .probe_new()
+          commit: 7f69edba960bbdcbc829d8d0995b1117ce29e8b1
+[540/606] regulator: da9121-regulator: Convert to i2c's .probe_new()
+          commit: 020cf73b47414a84b666d3e6736a6ae957e27840
+[541/606] regulator: fan53555: Convert to i2c's .probe_new()
+          (no commit info)
+[542/606] regulator: isl6271a-regulator: Convert to i2c's .probe_new()
+          (no commit info)
+[543/606] regulator: lp3972: Convert to i2c's .probe_new()
+          commit: 2532d5f8d5c20d5a0a8a0d57a311bc5df00dea04
+[544/606] regulator: lp872x: Convert to i2c's .probe_new()
+          commit: 87feccb347b25f5dc6ff451123b832c9ad5dddfe
+[545/606] regulator: lp8755: Convert to i2c's .probe_new()
+          commit: cb28f74b4809a00b40fdf0c44ccf51ab950581d3
+[546/606] regulator: ltc3589: Convert to i2c's .probe_new()
+          commit: 78c8f6cdb51d471928d481ed3b2c82dbc110a1ed
+[547/606] regulator: max1586: Convert to i2c's .probe_new()
+          commit: 3d54f7ba248b0ad1791bc356e9ad3d9020a1c472
+[548/606] regulator: max8649: Convert to i2c's .probe_new()
+          commit: 3cf4417385d0ac8f02f22888e12a6d21d97d89fc
+[549/606] regulator: max8660: Convert to i2c's .probe_new()
+          commit: dbf31dac703009174226bb87b3914bd092040327
+[550/606] regulator: max8952: Convert to i2c's .probe_new()
+          commit: c20c36735949b3b7984692fbab3d92b0e8a845ec
+[551/606] regulator: max8973-regulator: Convert to i2c's .probe_new()
+          commit: 4e85e5d64f66ac5e4b0286ee4b6f8e8ce1044d42
+[552/606] regulator: pca9450-regulator: Convert to i2c's .probe_new()
+          commit: ed56fa6e804cb13bbe29e9214792308817f6e553
+[553/606] regulator: pfuze100-regulator: Convert to i2c's .probe_new()
+          (no commit info)
+[554/606] regulator: pv88080-regulator: Convert to i2c's .probe_new()
+          (no commit info)
+[555/606] regulator: rpi-panel-attiny-regulator: Convert to i2c's .probe_new()
+          commit: d85d02d17a608b558d44510e9824668c5d4fe5d8
+[556/606] regulator: tps51632-regulator: Convert to i2c's .probe_new()
+          commit: d4885f306304ff29eec06b9ad5f526a1099e0418
+[557/606] regulator: tps62360-regulator: Convert to i2c's .probe_new()
+          commit: 18804160277ec2ab992373385f86c6af2322b28b
+[558/606] regulator: tps6286x-regulator: Convert to i2c's .probe_new()
+          commit: e34782316281c78c5911f86d4699d4f35a607c9d
+[559/606] regulator: tps65023-regulator: Convert to i2c's .probe_new()
+          commit: 3b5b07dde998f6ade7433a8db019cf816c7e35af
 
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-- Naveen
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
