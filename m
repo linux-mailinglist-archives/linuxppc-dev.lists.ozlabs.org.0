@@ -1,60 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A1F9637434
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Nov 2022 09:40:31 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D635637510
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Nov 2022 10:24:51 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NHrzd0DzVz3cNY
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Nov 2022 19:40:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NHsyh4b7pz3f57
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Nov 2022 20:24:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kaod.org (client-ip=46.105.54.81; helo=smtpout3.mo529.mail-out.ovh.net; envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
+X-Greylist: delayed 1801 seconds by postgrey-1.36 at boromir; Thu, 24 Nov 2022 20:24:12 AEDT
+Received: from smtpout3.mo529.mail-out.ovh.net (smtpout3.mo529.mail-out.ovh.net [46.105.54.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NHrz55Mj8z3cBP
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Nov 2022 19:40:01 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4NHrz12mK7z9shv;
-	Thu, 24 Nov 2022 09:39:57 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id WchORCaqqNge; Thu, 24 Nov 2022 09:39:57 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4NHrz06t34z9shP;
-	Thu, 24 Nov 2022 09:39:56 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id DAA968B78B;
-	Thu, 24 Nov 2022 09:39:56 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id JFZpC7am0SjR; Thu, 24 Nov 2022 09:39:56 +0100 (CET)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [172.25.230.108])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id AD7C18B763;
-	Thu, 24 Nov 2022 09:39:56 +0100 (CET)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 2AO8dkua3221470
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 24 Nov 2022 09:39:46 +0100
-Received: (from chleroy@localhost)
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 2AO8dk7h3221465;
-	Thu, 24 Nov 2022 09:39:46 +0100
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
-        "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
-Subject: [PATCH] powerpc/bpf: Only update ldimm64 during extra pass when it is an address
-Date: Thu, 24 Nov 2022 09:39:38 +0100
-Message-Id: <3f6d302a2068d9e357efda2d92c8da99a0f2d0b2.1669278892.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.38.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NHsy40NSjz3cG9
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Nov 2022 20:24:08 +1100 (AEDT)
+Received: from mxplan5.mail.ovh.net (unknown [10.108.1.6])
+	by mo529.mail-out.ovh.net (Postfix) with ESMTPS id 9203014341765;
+	Thu, 24 Nov 2022 09:44:51 +0100 (CET)
+Received: from kaod.org (37.59.142.97) by DAG4EX2.mxp5.local (172.16.2.32)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.16; Thu, 24 Nov
+ 2022 09:44:50 +0100
+Authentication-Results: garm.ovh; auth=pass (GARM-97G0028fd172a9-085e-468d-a07b-13a5fc366bfd,
+                    6D26B16FDA19C88FA8EEDD5DCE2FF0553E2274F5) smtp.auth=clg@kaod.org
+X-OVh-ClientIp: 82.64.250.170
+Message-ID: <1d5614e4-4726-c066-db43-039ce2656767@kaod.org>
+Date: Thu, 24 Nov 2022 09:44:50 +0100
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1669279174; l=3014; s=20211009; h=from:subject:message-id; bh=+S4KRYqAQ4K62MmHbsCFH4Gyg8GYGcPtfQe/xrukDhE=; b=SGsPF4zlrdXAmx5hZ6L/Mj0KXGgVVQwCQjS+/l1Of/4GO4YL2yDuj2UEB7tQ5hY1YKDXQyhkL9Rz Gx7wHOzjBWFwMfVZbSfDzE0dk1L1fzDXltaKp/0QcuJ/i/BpuLDw
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
+Subject: Re: // a kdump hang caused by PPC pci patch series
+Content-Language: en-US
+To: Pingfan Liu <kernelfans@gmail.com>
+References: <CAFgQCTuz3n5uNKwOOXaL9xT-ftJT0nfo4OfdNepvMGbi0Zqh7Q@mail.gmail.com>
+ <CAFgQCTv6R_P0W16ak=9D481NKWqaXwd26CKHHqRbuMygP1u4Aw@mail.gmail.com>
+ <61dc96ad-f60e-932f-c063-d1b377006b78@kaod.org>
+ <CAFgQCTsincoTxrcW-C6=5Ao5ZLUkZjYeJxtmFP7H_7+J-fTRiQ@mail.gmail.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <CAFgQCTsincoTxrcW-C6=5Ao5ZLUkZjYeJxtmFP7H_7+J-fTRiQ@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Originating-IP: [37.59.142.97]
+X-ClientProxiedBy: DAG8EX1.mxp5.local (172.16.2.71) To DAG4EX2.mxp5.local
+ (172.16.2.32)
+X-Ovh-Tracer-GUID: d912ba44-2fb1-415a-a969-4a602ca75647
+X-Ovh-Tracer-Id: 3387551348986055645
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvgedriedvgdduvddtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvvehfhfgjtgfgihesthekredttdefjeenucfhrhhomhepveorughrihgtucfnvgcuifhorghtvghruceotghlgheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpeffudefleeiudejfeffhfejffeigffhhffhvdekieejheelvdeufffhjedtheeggeenucfkphepuddvjedrtddrtddruddpfeejrdehledrudegvddrleejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepuddvjedrtddrtddruddpmhgrihhlfhhrohhmpeeotghlgheskhgrohgurdhorhhgqedpnhgspghrtghpthhtohepuddprhgtphhtthhopehkvghrnhgvlhhfrghnshesghhmrghilhdrtghomhdplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrghdptghogihusehrvgguhhgrthdrtghomhdpoffvtefjohhsthepmhhohedvledpmhhouggvpehsmhhtphhouhht
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,80 +61,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Hao Luo <haoluo@google.com>, Daniel Borkmann <daniel@iogearbox.net>, Song Liu <song@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, John Fastabend <john.fastabend@gmail.com>, linux-kernel@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, Stanislav Fomichev <sdf@google.com>, Jiri Olsa <jolsa@kernel.org>, KP Singh <kpsingh@kernel.org>, Yonghong Song <yhs@fb.com>, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Coiby Xu <coxu@redhat.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-ldimm64 is not only used for loading function addresses, and
-the NOPs added for padding are impacting performance, so avoid
-them when not necessary.
+On 11/24/22 09:31, Pingfan Liu wrote:
+> On Mon, Nov 21, 2022 at 8:57 PM Cédric Le Goater <clg@kaod.org> wrote:
+>>
+>> On 11/21/22 12:57, Pingfan Liu wrote:
+>>> Sorry that forget a subject.
+>>>
+>>> On Mon, Nov 21, 2022 at 7:54 PM Pingfan Liu <kernelfans@gmail.com> wrote:
+>>>>
+>>>> Hello Powerpc folks,
+>>>>
+>>>> I encounter an kdump bug, which I bisect and pin commit 174db9e7f775
+>>>> ("powerpc/pseries/pci: Add support of MSI domains to PHB hotplug")
+>>>> In that case, using Fedora 36 as host, the mentioned commit as the
+>>>> guest kernel, and virto-block disk, the kdump kernel will hang:
+>>
+>> The host kernel should be using the PowerNV platform and not pseries
+>> or are you running a nested L2 guest on KVM/pseries L1 ?
+>>
+>> And as far as I remember, the patch above only impacts the IBM PowerVM
+>> hypervisor, not KVM, and PHB hotplug, or kdump induces some hot-plugging
+>> I am not aware of.
+>>
+>> Also, if indeed, this is a L2 guest, the XIVE interrupt controller is
+>> emulated in QEMU, "info pic" should return:
+>>
+>>     ...
+>>     irqchip: emulated
+>>
+>>>>
+>>>> [    0.000000] Kernel command line: elfcorehdr=0x22c00000
+>>>> no_timer_check net.ifnames=0 console=tty0 console=hvc0,115200n8
+>>>> irqpoll maxcpus=1 noirqdistrib reset_devices cgroup_disable=memory
+>>>>        numa=off udev.children-max=2 ehea.use_mcs=0 panic=10
+>>>> kvm_cma_resv_ratio=0 transparent_hugepage=never novmcoredd
+>>>> hugetlb_cma=0
+>>>>       ...
+>>>>       [    7.763260] virtio_blk virtio2: 32/0/0 default/read/poll queues
+>>>>       [    7.771391] virtio_blk virtio2: [vda] 20971520 512-byte logical
+>>>> blocks (10.7 GB/10.0 GiB)
+>>>>       [   68.398234] systemd-udevd[187]: virtio2: Worker [190]
+>>>> processing SEQNUM=1193 is taking a long time
+>>>>       [  188.398258] systemd-udevd[187]: virtio2: Worker [190]
+>>>> processing SEQNUM=1193 killed
+>>>>
+>>>>
+>>>> During my test, I found that in very rare cases, the kdump can success
+>>>> (I guess it may be due to the cpu id).  And if using either maxcpus=2
+>>>> or using scsi-disk, then kdump can also success.  And before the
+>>>> mentioned commit, kdump can also success.
+>>>>
+>>>> The attachment contains the xml to reproduce that bug.
+>>>>
+>>>> Do you have any ideas?
+>>
+>> Most certainly an interrupt not being delivered. You can check the status
+>> on the host with :
+>>
+>>     virsh qemu-monitor-command --hmp <domain>  "info pic"
+>>
+> 
+> Please pick it up from the attachment.
 
-On QEMU mac99, with the patch:
+Nothing wrong on the guest side. No pending interrupts. Not before or
+after kdump. Next step is to look at KVM. I suggest you file a bug.
 
-test_bpf: #829 ALU64_MOV_K: all immediate value magnitudes jited:1 167436810 PASS
-test_bpf: #831 ALU64_OR_K: all immediate value magnitudes jited:1 170702940 PASS
+Thanks,
 
-Without the patch:
-
-test_bpf: #829 ALU64_MOV_K: all immediate value magnitudes jited:1 173012360 PASS
-test_bpf: #831 ALU64_OR_K: all immediate value magnitudes jited:1 176424090 PASS
-
-That's a 3.5% performance improvement.
-
-Fixes: f9320c49993c ("powerpc/bpf: Update ldimm64 instructions during extra pass")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/net/bpf_jit_comp.c   | 3 ++-
- arch/powerpc/net/bpf_jit_comp32.c | 5 +++--
- arch/powerpc/net/bpf_jit_comp64.c | 5 +++--
- 3 files changed, 8 insertions(+), 5 deletions(-)
-
-diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_comp.c
-index 43e634126514..206b698723a3 100644
---- a/arch/powerpc/net/bpf_jit_comp.c
-+++ b/arch/powerpc/net/bpf_jit_comp.c
-@@ -68,7 +68,8 @@ static int bpf_jit_fixup_addresses(struct bpf_prog *fp, u32 *image,
- 			 * of the JITed sequence remains unchanged.
- 			 */
- 			ctx->idx = tmp_idx;
--		} else if (insn[i].code == (BPF_LD | BPF_IMM | BPF_DW)) {
-+		} else if (insn[i].code == (BPF_LD | BPF_IMM | BPF_DW) &&
-+			   insn[i].src_reg == BPF_PSEUDO_FUNC) {
- 			tmp_idx = ctx->idx;
- 			ctx->idx = addrs[i] / 4;
- #ifdef CONFIG_PPC32
-diff --git a/arch/powerpc/net/bpf_jit_comp32.c b/arch/powerpc/net/bpf_jit_comp32.c
-index a379b0ce19ff..878f8a88d83e 100644
---- a/arch/powerpc/net/bpf_jit_comp32.c
-+++ b/arch/powerpc/net/bpf_jit_comp32.c
-@@ -960,8 +960,9 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *
- 			PPC_LI32(dst_reg_h, (u32)insn[i + 1].imm);
- 			PPC_LI32(dst_reg, (u32)insn[i].imm);
- 			/* padding to allow full 4 instructions for later patching */
--			for (j = ctx->idx - tmp_idx; j < 4; j++)
--				EMIT(PPC_RAW_NOP());
-+			if (insn[i].src_reg == BPF_PSEUDO_FUNC)
-+				for (j = ctx->idx - tmp_idx; j < 4; j++)
-+					EMIT(PPC_RAW_NOP());
- 			/* Adjust for two bpf instructions */
- 			addrs[++i] = ctx->idx * 4;
- 			break;
-diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
-index 29ee306d6302..af8bdb5553cd 100644
---- a/arch/powerpc/net/bpf_jit_comp64.c
-+++ b/arch/powerpc/net/bpf_jit_comp64.c
-@@ -938,8 +938,9 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *
- 			tmp_idx = ctx->idx;
- 			PPC_LI64(dst_reg, imm64);
- 			/* padding to allow full 5 instructions for later patching */
--			for (j = ctx->idx - tmp_idx; j < 5; j++)
--				EMIT(PPC_RAW_NOP());
-+			if (insn[i].src_reg == BPF_PSEUDO_FUNC)
-+				for (j = ctx->idx - tmp_idx; j < 5; j++)
-+					EMIT(PPC_RAW_NOP());
- 			/* Adjust for two bpf instructions */
- 			addrs[++i] = ctx->idx * 4;
- 			break;
--- 
-2.38.1
+C.
 
