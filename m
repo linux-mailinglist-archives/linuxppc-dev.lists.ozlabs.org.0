@@ -2,54 +2,94 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D635637510
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Nov 2022 10:24:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90CF4637602
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Nov 2022 11:15:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NHsyh4b7pz3f57
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Nov 2022 20:24:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NHv4z31bjz3f2r
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Nov 2022 21:15:15 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=r0Nb51Pr;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kaod.org (client-ip=46.105.54.81; helo=smtpout3.mo529.mail-out.ovh.net; envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
-X-Greylist: delayed 1801 seconds by postgrey-1.36 at boromir; Thu, 24 Nov 2022 20:24:12 AEDT
-Received: from smtpout3.mo529.mail-out.ovh.net (smtpout3.mo529.mail-out.ovh.net [46.105.54.81])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=r0Nb51Pr;
+	dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NHsy40NSjz3cG9
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Nov 2022 20:24:08 +1100 (AEDT)
-Received: from mxplan5.mail.ovh.net (unknown [10.108.1.6])
-	by mo529.mail-out.ovh.net (Postfix) with ESMTPS id 9203014341765;
-	Thu, 24 Nov 2022 09:44:51 +0100 (CET)
-Received: from kaod.org (37.59.142.97) by DAG4EX2.mxp5.local (172.16.2.32)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.16; Thu, 24 Nov
- 2022 09:44:50 +0100
-Authentication-Results: garm.ovh; auth=pass (GARM-97G0028fd172a9-085e-468d-a07b-13a5fc366bfd,
-                    6D26B16FDA19C88FA8EEDD5DCE2FF0553E2274F5) smtp.auth=clg@kaod.org
-X-OVh-ClientIp: 82.64.250.170
-Message-ID: <1d5614e4-4726-c066-db43-039ce2656767@kaod.org>
-Date: Thu, 24 Nov 2022 09:44:50 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NHv406tbyz3045
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Nov 2022 21:14:24 +1100 (AEDT)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AOAAN3s014389;
+	Thu, 24 Nov 2022 10:13:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : subject :
+ to : cc : references : in-reply-to : mime-version : message-id :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=/jYKHwVqi5Bb3zOWYzhgtzks4VPghnmXgxJb0Lk/TDg=;
+ b=r0Nb51Prs0/h6RY+oQv+0Ue7AEzG4ORNOilG007yr3PZnQtLmLV2amBOlDCyh56hVQwF
+ TvZfGdooH2Ro/9V/mEA4hqzSEAr9VWBh9EJ5JvDlCEXpVN6q6+RVAWbhrF5N0Yp1r9/u
+ nGV7UTokh3flXlQ2H8gpebqNBY3/CLgErWy9afnCPkfFzLBMNA+boibcaCpiSnxdLYxF
+ D7qrF1c9JESy/VdOq+lbT1NIOr821VNrVwBuL/HqVBa9km/Zvqxgcrhh3L8o9hUaPsl5
+ KVK1g1QnAbCLXcb8D92AcHPgJ4bkrucCX20in0Sakj+KyqiJRMKJhPuu9LeaV4B6fdtP Nw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m10ph0k8a-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 24 Nov 2022 10:13:58 +0000
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2AO9N3YQ031846;
+	Thu, 24 Nov 2022 10:13:57 GMT
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m10ph0k7b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 24 Nov 2022 10:13:57 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+	by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2AOA7e57009899;
+	Thu, 24 Nov 2022 10:13:55 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+	by ppma06ams.nl.ibm.com with ESMTP id 3kxpdj00b4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 24 Nov 2022 10:13:54 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
+	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2AOADqgt42139944
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 24 Nov 2022 10:13:52 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8F58D42042;
+	Thu, 24 Nov 2022 10:13:52 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 272A74203F;
+	Thu, 24 Nov 2022 10:13:52 +0000 (GMT)
+Received: from localhost (unknown [9.43.36.53])
+	by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Thu, 24 Nov 2022 10:13:52 +0000 (GMT)
+Date: Thu, 24 Nov 2022 15:43:50 +0530
+From: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
+Subject: Re: [PATCH] powerpc/bpf: Only update ldimm64 during extra pass when
+ it is an address
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Michael Ellerman
+	<mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>
+References: 	<3f6d302a2068d9e357efda2d92c8da99a0f2d0b2.1669278892.git.christophe.leroy@csgroup.eu>
+In-Reply-To: 	<3f6d302a2068d9e357efda2d92c8da99a0f2d0b2.1669278892.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Subject: Re: // a kdump hang caused by PPC pci patch series
-Content-Language: en-US
-To: Pingfan Liu <kernelfans@gmail.com>
-References: <CAFgQCTuz3n5uNKwOOXaL9xT-ftJT0nfo4OfdNepvMGbi0Zqh7Q@mail.gmail.com>
- <CAFgQCTv6R_P0W16ak=9D481NKWqaXwd26CKHHqRbuMygP1u4Aw@mail.gmail.com>
- <61dc96ad-f60e-932f-c063-d1b377006b78@kaod.org>
- <CAFgQCTsincoTxrcW-C6=5Ao5ZLUkZjYeJxtmFP7H_7+J-fTRiQ@mail.gmail.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <CAFgQCTsincoTxrcW-C6=5Ao5ZLUkZjYeJxtmFP7H_7+J-fTRiQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [37.59.142.97]
-X-ClientProxiedBy: DAG8EX1.mxp5.local (172.16.2.71) To DAG4EX2.mxp5.local
- (172.16.2.32)
-X-Ovh-Tracer-GUID: d912ba44-2fb1-415a-a969-4a602ca75647
-X-Ovh-Tracer-Id: 3387551348986055645
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvgedriedvgdduvddtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvvehfhfgjtgfgihesthekredttdefjeenucfhrhhomhepveorughrihgtucfnvgcuifhorghtvghruceotghlgheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpeffudefleeiudejfeffhfejffeigffhhffhvdekieejheelvdeufffhjedtheeggeenucfkphepuddvjedrtddrtddruddpfeejrdehledrudegvddrleejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepuddvjedrtddrtddruddpmhgrihhlfhhrohhmpeeotghlgheskhgrohgurdhorhhgqedpnhgspghrtghpthhtohepuddprhgtphhtthhopehkvghrnhgvlhhfrghnshesghhmrghilhdrtghomhdplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrghdptghogihusehrvgguhhgrthdrtghomhdpoffvtefjohhsthepmhhohedvledpmhhouggvpehsmhhtphhouhht
+User-Agent: astroid/4d6b06ad (https://github.com/astroidmail/astroid)
+Message-Id: <1669284441.66eunvaboi.naveen@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: _MbERAMhLbV9ShnTyyIoUxaOAONes4jL
+X-Proofpoint-GUID: RZOUyJmB4of1rqkOBNDGVb-Jn9vO60P5
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-11-24_07,2022-11-24_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ priorityscore=1501 adultscore=0 spamscore=0 phishscore=0 mlxscore=0
+ lowpriorityscore=0 bulkscore=0 malwarescore=0 clxscore=1011
+ impostorscore=0 mlxlogscore=770 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2210170000 definitions=main-2211240079
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,76 +101,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Coiby Xu <coxu@redhat.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Hao Luo <haoluo@google.com>, Daniel Borkmann <daniel@iogearbox.net>, linux-kernel@vger.kernel.org, John Fastabend <john.fastabend@gmail.com>, Andrii Nakryiko <andrii@kernel.org>, Alexei Starovoitov <ast@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, Stanislav Fomichev <sdf@google.com>, Jiri Olsa <jolsa@kernel.org>, KP Singh <kpsingh@kernel.org>, Yonghong Song <yhs@fb.com>, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 11/24/22 09:31, Pingfan Liu wrote:
-> On Mon, Nov 21, 2022 at 8:57 PM Cédric Le Goater <clg@kaod.org> wrote:
->>
->> On 11/21/22 12:57, Pingfan Liu wrote:
->>> Sorry that forget a subject.
->>>
->>> On Mon, Nov 21, 2022 at 7:54 PM Pingfan Liu <kernelfans@gmail.com> wrote:
->>>>
->>>> Hello Powerpc folks,
->>>>
->>>> I encounter an kdump bug, which I bisect and pin commit 174db9e7f775
->>>> ("powerpc/pseries/pci: Add support of MSI domains to PHB hotplug")
->>>> In that case, using Fedora 36 as host, the mentioned commit as the
->>>> guest kernel, and virto-block disk, the kdump kernel will hang:
->>
->> The host kernel should be using the PowerNV platform and not pseries
->> or are you running a nested L2 guest on KVM/pseries L1 ?
->>
->> And as far as I remember, the patch above only impacts the IBM PowerVM
->> hypervisor, not KVM, and PHB hotplug, or kdump induces some hot-plugging
->> I am not aware of.
->>
->> Also, if indeed, this is a L2 guest, the XIVE interrupt controller is
->> emulated in QEMU, "info pic" should return:
->>
->>     ...
->>     irqchip: emulated
->>
->>>>
->>>> [    0.000000] Kernel command line: elfcorehdr=0x22c00000
->>>> no_timer_check net.ifnames=0 console=tty0 console=hvc0,115200n8
->>>> irqpoll maxcpus=1 noirqdistrib reset_devices cgroup_disable=memory
->>>>        numa=off udev.children-max=2 ehea.use_mcs=0 panic=10
->>>> kvm_cma_resv_ratio=0 transparent_hugepage=never novmcoredd
->>>> hugetlb_cma=0
->>>>       ...
->>>>       [    7.763260] virtio_blk virtio2: 32/0/0 default/read/poll queues
->>>>       [    7.771391] virtio_blk virtio2: [vda] 20971520 512-byte logical
->>>> blocks (10.7 GB/10.0 GiB)
->>>>       [   68.398234] systemd-udevd[187]: virtio2: Worker [190]
->>>> processing SEQNUM=1193 is taking a long time
->>>>       [  188.398258] systemd-udevd[187]: virtio2: Worker [190]
->>>> processing SEQNUM=1193 killed
->>>>
->>>>
->>>> During my test, I found that in very rare cases, the kdump can success
->>>> (I guess it may be due to the cpu id).  And if using either maxcpus=2
->>>> or using scsi-disk, then kdump can also success.  And before the
->>>> mentioned commit, kdump can also success.
->>>>
->>>> The attachment contains the xml to reproduce that bug.
->>>>
->>>> Do you have any ideas?
->>
->> Most certainly an interrupt not being delivered. You can check the status
->> on the host with :
->>
->>     virsh qemu-monitor-command --hmp <domain>  "info pic"
->>
-> 
-> Please pick it up from the attachment.
+Christophe Leroy wrote:
+> ldimm64 is not only used for loading function addresses, and
 
-Nothing wrong on the guest side. No pending interrupts. Not before or
-after kdump. Next step is to look at KVM. I suggest you file a bug.
+That's probably true today, but I worry that that can change upstream=20
+and we may not notice at all.
 
-Thanks,
+> the NOPs added for padding are impacting performance, so avoid
+> them when not necessary.
+>=20
+> On QEMU mac99, with the patch:
+>=20
+> test_bpf: #829 ALU64_MOV_K: all immediate value magnitudes jited:1 167436=
+810 PASS
+> test_bpf: #831 ALU64_OR_K: all immediate value magnitudes jited:1 1707029=
+40 PASS
+>=20
+> Without the patch:
+>=20
+> test_bpf: #829 ALU64_MOV_K: all immediate value magnitudes jited:1 173012=
+360 PASS
+> test_bpf: #831 ALU64_OR_K: all immediate value magnitudes jited:1 1764240=
+90 PASS
+>=20
+> That's a 3.5% performance improvement.
 
-C.
+A better approach would be to do a full JIT during the extra pass.=20
+That's what most other architectures do today. And, as long as we can=20
+ensure that the JIT'ed program size can never increase during the=20
+extra pass, we should be ok to do a single extra pass.
 
+
+- Naveen
