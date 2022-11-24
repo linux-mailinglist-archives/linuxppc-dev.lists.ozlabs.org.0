@@ -1,94 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0885C63765C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Nov 2022 11:27:44 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63B87637696
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Nov 2022 11:38:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NHvMK5k4Xz3dvf
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Nov 2022 21:27:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NHvbF23klz3dvM
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Nov 2022 21:38:01 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=R7SmWUVY;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=WTQM3Tmv;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=R7SmWUVY;
-	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NHvLM0swhz3bjy
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Nov 2022 21:26:50 +1100 (AEDT)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AO954h0008036;
-	Thu, 24 Nov 2022 10:26:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : subject :
- to : cc : references : in-reply-to : mime-version : message-id :
- content-type : content-transfer-encoding; s=pp1;
- bh=h0OaRJdxPrOEvjS/JN+gFuwD0ahqFo+ShpVhiflB7sc=;
- b=R7SmWUVYN8xdq4fdRJtRVTCYFkcwAG3HLaXrOJAcbs7DJYKRTd7fnphTuCPl4InPbVRn
- SLAL1BBcRRhgM1ZrXKZi/qdhQgcXeDMpi9FYknG/h5dhF5KfuCPrrjHmPIhXYstVGUPk
- 2Wsz5BX8l7heLSrzWQG/j5sMx3O5Tsc6AIwbGGc6TdHxbq1v7/w8iJGDd7phLgr6H9vf
- oxelAQDN12tWAsyv6rAifXQ2xmuuBDDEFqJmvDtIez2mmy0btERCKNzD734Kj5Qhieg1
- JHqu187yFMLQmw2feZVxO/YBPqxIhia/x8lnai2SMHl+Re0YeOfSAc4Rjxb4Rk/4znxY MA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m10w6np16-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 24 Nov 2022 10:26:23 +0000
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2AOABepN021262;
-	Thu, 24 Nov 2022 10:26:22 GMT
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m10w6np0k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 24 Nov 2022 10:26:22 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-	by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2AOALCnx002733;
-	Thu, 24 Nov 2022 10:26:20 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
-	by ppma04ams.nl.ibm.com with ESMTP id 3kxps8yyud-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 24 Nov 2022 10:26:20 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
-	by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2AOAQIKZ37618238
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 24 Nov 2022 10:26:18 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 05CB2A404D;
-	Thu, 24 Nov 2022 10:26:18 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 613BEA4040;
-	Thu, 24 Nov 2022 10:26:17 +0000 (GMT)
-Received: from localhost (unknown [9.43.36.53])
-	by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Thu, 24 Nov 2022 10:26:17 +0000 (GMT)
-Date: Thu, 24 Nov 2022 15:56:15 +0530
-From: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
-Subject: Re: [PATCH v2] powerpc/bpf/32: Fix Oops on tail call tests
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Michael Ellerman
-	<mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>
-References: 	<757acccb7fbfc78efa42dcf3c974b46678198905.1669278887.git.christophe.leroy@csgroup.eu>
-In-Reply-To: 	<757acccb7fbfc78efa42dcf3c974b46678198905.1669278887.git.christophe.leroy@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NHvZJ2zNZz3045
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Nov 2022 21:37:12 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=WTQM3Tmv;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NHvZF2rbqz4xGK;
+	Thu, 24 Nov 2022 21:37:09 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1669286230;
+	bh=qw+Z/V+WEes04qNv/mzj8igXJLhyM6g0KYA314bdhzs=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=WTQM3TmvCQjU8d1/xLc6gcRqiJ82JqVe8B0saYWpj+F2ImP+TrxQknHUto7rgp/9A
+	 DKVXcKEsYhxN/RKsQqzpKcRPu4FmJ5eN4D84ltSBeQ3JCoNcxc27/Z0rghjisSq52Y
+	 VcW7n+6rAi5pyFqupaSQ4YSjARQAXDJDAvCDngWERMunE0odEKMZiDSO7Zqdpy3UUx
+	 Fgr/Blk+ViSvMHXUBjz3md6spYizJ+4aJMdIyed79zn2H57k+w7EeFfgKOWiT8pZKs
+	 Sk4kiJU9FzD4r60dLhTY7/9qA1OFyscvJJH3/Ols9/t+opFXTGYHhOkB6iaq9TLwo+
+	 Hodp0cB3S3O/A==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Stephen Rothwell
+ <sfr@canb.auug.org.au>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar
+ <mingo@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>, Peter Zijlstra
+ <peterz@infradead.org>
+Subject: Re: linux-next: manual merge of the tip tree with the
+ powerpc-objtool tree
+In-Reply-To: <de806b36-2b5c-3040-22c2-129bc9b5ddd4@csgroup.eu>
+References: <20221124122931.266df8c7@canb.auug.org.au>
+ <de806b36-2b5c-3040-22c2-129bc9b5ddd4@csgroup.eu>
+Date: Thu, 24 Nov 2022 21:37:06 +1100
+Message-ID: <878rk0d4fh.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-User-Agent: astroid/4d6b06ad (https://github.com/astroidmail/astroid)
-Message-Id: <1669285523.t5gbams47i.naveen@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 7Et1NJoogkaVUd8SzfCTQ0cNFQr_Dw7B
-X-Proofpoint-ORIG-GUID: MaI_DwSJSsWRn0AvUqHpwdA-DhJ90lHU
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-11-24_07,2022-11-23_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 malwarescore=0
- bulkscore=0 adultscore=0 mlxscore=0 lowpriorityscore=0 suspectscore=0
- impostorscore=0 priorityscore=1501 spamscore=0 phishscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2210170000 definitions=main-2211240079
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,95 +63,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Hao Luo <haoluo@google.com>, Daniel Borkmann <daniel@iogearbox.net>, linux-kernel@vger.kernel.org, John Fastabend <john.fastabend@gmail.com>, Andrii Nakryiko <andrii@kernel.org>, stable@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, Stanislav Fomichev <sdf@google.com>, Jiri Olsa <jolsa@kernel.org>, KP Singh <kpsingh@kernel.org>, Yonghong Song <yhs@fb.com>, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Linux Next Mailing List <linux-next@vger.kernel.org>, PowerPC <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy wrote:
-> test_bpf tail call tests end up as:
->=20
->   test_bpf: #0 Tail call leaf jited:1 85 PASS
->   test_bpf: #1 Tail call 2 jited:1 111 PASS
->   test_bpf: #2 Tail call 3 jited:1 145 PASS
->   test_bpf: #3 Tail call 4 jited:1 170 PASS
->   test_bpf: #4 Tail call load/store leaf jited:1 190 PASS
->   test_bpf: #5 Tail call load/store jited:1
->   BUG: Unable to handle kernel data access on write at 0xf1b4e000
->   Faulting instruction address: 0xbe86b710
->   Oops: Kernel access of bad area, sig: 11 [#1]
->   BE PAGE_SIZE=3D4K MMU=3DHash PowerMac
->   Modules linked in: test_bpf(+)
->   CPU: 0 PID: 97 Comm: insmod Not tainted 6.1.0-rc4+ #195
->   Hardware name: PowerMac3,1 750CL 0x87210 PowerMac
->   NIP:  be86b710 LR: be857e88 CTR: be86b704
->   REGS: f1b4df20 TRAP: 0300   Not tainted  (6.1.0-rc4+)
->   MSR:  00009032 <EE,ME,IR,DR,RI>  CR: 28008242  XER: 00000000
->   DAR: f1b4e000 DSISR: 42000000
->   GPR00: 00000001 f1b4dfe0 c11d2280 00000000 00000000 00000000 00000002 0=
-0000000
->   GPR08: f1b4e000 be86b704 f1b4e000 00000000 00000000 100d816a f2440000 f=
-e73baa8
->   GPR16: f2458000 00000000 c1941ae4 f1fe2248 00000045 c0de0000 f2458030 0=
-0000000
->   GPR24: 000003e8 0000000f f2458000 f1b4dc90 3e584b46 00000000 f24466a0 c=
-1941a00
->   NIP [be86b710] 0xbe86b710
->   LR [be857e88] __run_one+0xec/0x264 [test_bpf]
->   Call Trace:
->   [f1b4dfe0] [00000002] 0x2 (unreliable)
->   Instruction dump:
->   XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX
->   XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX
->   ---[ end trace 0000000000000000 ]---
->=20
-> This is a tentative to write above the stack. The problem is encoutered
-> with tests added by commit 38608ee7b690 ("bpf, tests: Add load store
-> test case for tail call")
->=20
-> This happens because tail call is done to a BPF prog with a different
-> stack_depth. At the time being, the stack is kept as is when the caller
-> tail calls its callee. But at exit, the callee restores the stack based
-> on its own properties. Therefore here, at each run, r1 is erroneously
-> increased by 32 - 16 =3D 16 bytes.
->=20
-> This was done that way in order to pass the tail call count from caller
-> to callee through the stack. As powerpc32 doesn't have a red zone in
-> the stack, it was necessary the maintain the stack as is for the tail
-> call. But it was not anticipated that the BPF frame size could be
-> different.
->=20
-> Let's take a new approach. Use register r4 to carry the tail call count
-> during the tail call, and save it into the stack at function entry if
-> required. This means the input parameter must be in r3, which is more
-> correct as it is a 32 bits parameter, then tail call better match with
-> normal BPF function entry, the down side being that we move that input
-> parameter back and forth between r3 and r4. That can be optimised later.
->=20
-> Doing that also has the advantage of maximising the common parts between
-> tail calls and a normal function exit.
->=20
-> With the fix, tail call tests are now successfull:
->=20
->   test_bpf: #0 Tail call leaf jited:1 53 PASS
->   test_bpf: #1 Tail call 2 jited:1 115 PASS
->   test_bpf: #2 Tail call 3 jited:1 154 PASS
->   test_bpf: #3 Tail call 4 jited:1 165 PASS
->   test_bpf: #4 Tail call load/store leaf jited:1 101 PASS
->   test_bpf: #5 Tail call load/store jited:1 141 PASS
->   test_bpf: #6 Tail call error path, max count reached jited:1 994 PASS
->   test_bpf: #7 Tail call count preserved across function calls jited:1 14=
-0975 PASS
->   test_bpf: #8 Tail call error path, NULL target jited:1 110 PASS
->   test_bpf: #9 Tail call error path, index out of range jited:1 69 PASS
->   test_bpf: test_tail_calls: Summary: 10 PASSED, 0 FAILED, [10/10 JIT'ed]
->=20
-> Suggested-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
-> Fixes: 51c66ad849a7 ("powerpc/bpf: Implement extended BPF on PPC32")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> Le 24/11/2022 =C3=A0 02:29, Stephen Rothwell a =C3=A9crit=C2=A0:
+>> Hi all,
+>>=20
+>> Today's linux-next merge of the tip tree got a conflict in:
+>>=20
+>>    tools/objtool/check.c
+>>=20
+>> between commit:
+>>=20
+>>    efb11fdb3e1a ("objtool: Fix SEGFAULT")
+>>=20
+>> from the powerpc-objtool tree and commit:
+>>=20
+>>    dbcdbdfdf137 ("objtool: Rework instruction -> symbol mapping")
+>>=20
+>> from the tip tree.
+>>=20
+>> I fixed it up (see below) and can carry the fix as necessary. This
+>> is now fixed as far as linux-next is concerned, but any non trivial
+>> conflicts should be mentioned to your upstream maintainer when your tree
+>> is submitted for merging.  You may also want to consider cooperating
+>> with the maintainer of the conflicting tree to minimise any particularly
+>> complex conflicts.
+>>=20
+>
+> Maybe it would be better to perform the check of insn inside the new=20
+> insn_func() then ?
 
-Tested-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com
+I don't think it would.
 
+Many of the other uses of insn_func() know that insn is not NULL,
+because they've already checked it or have dereferenced some other
+member of insn before the call. So in those cases checking it in
+insn_func() would be redundant.
 
-Thanks,
-Naveen
+But ultimately up to the objtool maintainers.
+
+cheers
