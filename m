@@ -2,100 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E83C637107
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Nov 2022 04:29:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C049663724C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Nov 2022 07:20:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NHk4w6vk3z3f37
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Nov 2022 14:29:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NHntH559Jz3f3b
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Nov 2022 17:20:39 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=OSkNGXHi;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=ALEa6F/K;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=OSkNGXHi;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=ALEa6F/K;
 	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NHk3y4BMWz3bsK
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Nov 2022 14:28:45 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AO2dlnO030676
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Nov 2022 03:28:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=bGIpLgBHLUId1sc2ik3jF3yvi9EjrdTnkp2r+GTndLI=;
- b=OSkNGXHiXa4XdK1ncB97fPQQwY6OFRrljAeNB8S1cJev73taZt4TcFSgEEixNlK2fUPO
- pc9x0/uNK18BOREeb8NAK/6gMYtCAArNTC/AVm+D+0xaxHKNNGvgLGjgwZiFj+UrOihG
- sAjV6qnWST9WnM+DROPG/s6nQQui5saosVQwFdIGvxd0cpF+x8YNIOg81GAYkPgf8AxG
- BJ5DSCpZ8kimuaBr0PXHvIOP0DaO+40nxe2udCH2nXfk48I1pmcu9CeCB3/CKjXgubO4
- jWxKohUFKr12+9PwQctW5n/KQ4Roy0mkHlrZbnGMwhOC6j+ZWQ+gV8CW/oZ2DY3qJQoj Rg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m0x81cpds-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Nov 2022 03:28:41 +0000
-Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2AO3SEEV016958
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Nov 2022 03:28:41 GMT
-Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com [149.81.74.107])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m0x81cpde-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 24 Nov 2022 03:28:41 +0000
-Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
-	by ppma03fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2AO3Jl0J023713;
-	Thu, 24 Nov 2022 03:28:39 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
-	by ppma03fra.de.ibm.com with ESMTP id 3kxps95eqh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 24 Nov 2022 03:28:39 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
-	by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2AO3MLjJ64356738
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 24 Nov 2022 03:22:21 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6646B4C046;
-	Thu, 24 Nov 2022 03:28:37 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 120494C044;
-	Thu, 24 Nov 2022 03:28:37 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Thu, 24 Nov 2022 03:28:37 +0000 (GMT)
-Received: from [10.61.2.128] (haven.au.ibm.com [9.192.254.114])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 058246032A;
-	Thu, 24 Nov 2022 14:28:31 +1100 (AEDT)
-Message-ID: <2ba2809a545d0f84b336f78baf2dbe2ff20dc105.camel@linux.ibm.com>
-Subject: Re: [PATCH 10/13] powerpc/rtas: improve function information lookups
-From: Andrew Donnellan <ajd@linux.ibm.com>
-To: Nick Child <nnac123@linux.ibm.com>, Nathan Lynch
- <nathanl@linux.ibm.com>,
-        linuxppc-dev@lists.ozlabs.org
-Date: Thu, 24 Nov 2022 14:28:30 +1100
-In-Reply-To: <c183a039-2001-eb3a-7028-f8a0813987cf@linux.ibm.com>
-References: <20221118150751.469393-1-nathanl@linux.ibm.com>
-	 <20221118150751.469393-11-nathanl@linux.ibm.com>
-	 <5b4c4316bfe88a3f231ffe416ce34192189549db.camel@linux.ibm.com>
-	 <c183a039-2001-eb3a-7028-f8a0813987cf@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.1 (3.46.1-1.fc37) 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NHnsK145jz3cG9
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Nov 2022 17:19:46 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=P23NM4nqAWcCFp4nIBC+iBFsGGXl6v5G4NOLEXdr/Fo=; b=ALEa6F/KeLi9otJnpTEIXidIiY
+	BFrnoWsAtTXugJqm+QRWGfg9/rmGmGBu/LbDgTioAVHHxH7fJDhZH35Gm4pyekz7M8+ErAUzlM7bz
+	ufs3lnyNUorX6063iEGamdHk5TXDnowAkWn1qbcvt0RE0FBxE6haf0IUhO165E3eAyAiAN6vHr6su
+	v3ROavVTG594onRGtOezIurHgM4IjcxYilnTs1MZMWmU7W2Gpg1abgB8KM+g7OUxjVGiniJH4IGV5
+	c45CFGDxaDagLvx+PsEUMyYX4zjFcozktjd4Al17U1CUS9RQSKenqP2ceJXmmvlDmzI0hBm0mal4E
+	BtrwWUTQ==;
+Received: from [2601:1c2:d80:3110::a2e7] (helo=casper.infradead.org)
+	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1oy5a6-008RmS-7B; Thu, 24 Nov 2022 06:19:30 +0000
+From: Randy Dunlap <rdunlap@infradead.org>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH] powerpc/mpc52xx_lpbfifo: fix all kernel-doc warnings
+Date: Wed, 23 Nov 2022 22:19:18 -0800
+Message-Id: <20221124061918.1967-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: F0t4hpzVeDTloYdKh_93YhZDpRmZgLk9
-X-Proofpoint-ORIG-GUID: 0VZwgyVqagH5ula5Xd0rKLLNNdnwQLkA
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-11-24_02,2022-11-23_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 adultscore=0
- malwarescore=0 mlxscore=0 mlxlogscore=638 spamscore=0 phishscore=0
- bulkscore=0 suspectscore=0 priorityscore=1501 clxscore=1015
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2210170000 definitions=main-2211240022
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,47 +54,95 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: tyreld@linux.ibm.com, ldufour@linux.ibm.com, npiggin@gmail.com
+Cc: Anatolij Gustschin <agust@denx.de>, kernel test robot <lkp@intel.com>, Randy Dunlap <rdunlap@infradead.org>, John Bonesio <bones@secretlab.ca>, Mauro Carvalho Chehab <mchehab@kernel.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2022-11-23 at 13:32 -0600, Nick Child wrote:
-> On 11/22/22 20:51, Andrew Donnellan wrote:
-> > On Fri, 2022-11-18 at 09:07 -0600, Nathan Lynch wrote:
-> > > +enum rtas_function_flags {
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0RTAS_FN_FLAG_BANNED_FOR_SY=
-SCALL_ON_LE =3D (1 << 0),
-> > > +};
-> >=20
-> > This seems to be new, what's the justification?
-> >=20
->=20
-> Seems to be a run-time replacement of:
-> #ifdef CONFIG_CPU_BIG_ENDIAN
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0{ "ibm,suspend-me", -1, -=
-1, -1, -1, -1 },
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0{ "ibm,update-nodes", -1,=
- 0, -1, -1, -1, 4096 },
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0{ "ibm,update-properties"=
-, -1, 0, -1, -1, -1, 4096 },
-> #endif
->=20
-> It looks to be handled logically:
-> + if (IS_ENABLED(CONFIG_CPU_LITTLE_ENDIAN) &&
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 (func->flag=
-s & RTAS_FN_FLAG_BANNED_FOR_SYSCALL_ON_LE))
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0goto err;
->=20
-> Perhaps, also allow the addition of any future special cases
-> for rtas functions easier to maintain?
+Fix multiple kernel-doc warnings in mpc52xx_lpbfifo.c:
 
-Makes sense, though I'm slightly confused about the original rationale
-for the ifdef and why it's not being fixed in userspace.
+arch/powerpc/platforms/52xx/mpc52xx_lpbfifo.c:377: warning: expecting prototype for mpc52xx_lpbfifo_bcom_poll(). Prototype was for mpc52xx_lpbfifo_poll() instead
 
-Slightly clunky name though, something like
-RTAS_FN_FLAG_SYSCALL_BE_ONLY might be less clunky?
+mpc52xx_lpbfifo.c:221: warning: No description found for return value of 'mpc52xx_lpbfifo_irq'
+mpc52xx_lpbfifo.c:327: warning: No description found for return value of 'mpc52xx_lpbfifo_bcom_irq'
+mpc52xx_lpbfifo.c:398: warning: No description found for return value of 'mpc52xx_lpbfifo_submit'
 
---=20
-Andrew Donnellan    OzLabs, ADL Canberra
-ajd@linux.ibm.com   IBM Australia Limited
+mpc52xx_lpbfifo.c:64: warning: Function parameter or member 'req' not described in 'mpc52xx_lpbfifo_kick'
+mpc52xx_lpbfifo.c:220: warning: contents before sections
+mpc52xx_lpbfifo.c:223: warning: Function parameter or member 'irq' not described in 'mpc52xx_lpbfifo_irq'
+mpc52xx_lpbfifo.c:223: warning: Function parameter or member 'dev_id' not described in 'mpc52xx_lpbfifo_irq'
+mpc52xx_lpbfifo.c:328: warning: contents before sections
+mpc52xx_lpbfifo.c:331: warning: Function parameter or member 'irq' not described in 'mpc52xx_lpbfifo_bcom_irq'
+mpc52xx_lpbfifo.c:331: warning: Function parameter or member 'dev_id' not described in 'mpc52xx_lpbfifo_bcom_irq'
+
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: John Bonesio <bones@secretlab.ca>
+Cc: Anatolij Gustschin <agust@denx.de>
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/platforms/52xx/mpc52xx_lpbfifo.c |   14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
+
+diff -- a/arch/powerpc/platforms/52xx/mpc52xx_lpbfifo.c b/arch/powerpc/platforms/52xx/mpc52xx_lpbfifo.c
+--- a/arch/powerpc/platforms/52xx/mpc52xx_lpbfifo.c
++++ b/arch/powerpc/platforms/52xx/mpc52xx_lpbfifo.c
+@@ -59,6 +59,8 @@ static struct mpc52xx_lpbfifo lpbfifo;
+ 
+ /**
+  * mpc52xx_lpbfifo_kick - Trigger the next block of data to be transferred
++ *
++ * @req: Pointer to request structure
+  */
+ static void mpc52xx_lpbfifo_kick(struct mpc52xx_lpbfifo_request *req)
+ {
+@@ -178,6 +180,8 @@ static void mpc52xx_lpbfifo_kick(struct
+ 
+ /**
+  * mpc52xx_lpbfifo_irq - IRQ handler for LPB FIFO
++ * @irq: IRQ number to be handled
++ * @dev_id: device ID cookie
+  *
+  * On transmit, the dma completion irq triggers before the fifo completion
+  * triggers.  Handle the dma completion here instead of the LPB FIFO Bestcomm
+@@ -216,6 +220,8 @@ static void mpc52xx_lpbfifo_kick(struct
+  * or nested spinlock condition.  The out path is non-trivial, so
+  * extra fiddling is done to make sure all paths lead to the same
+  * outbound code.
++ *
++ * Return: irqreturn code (%IRQ_HANDLED)
+  */
+ static irqreturn_t mpc52xx_lpbfifo_irq(int irq, void *dev_id)
+ {
+@@ -320,8 +326,12 @@ static irqreturn_t mpc52xx_lpbfifo_irq(i
+ 
+ /**
+  * mpc52xx_lpbfifo_bcom_irq - IRQ handler for LPB FIFO Bestcomm task
++ * @irq: IRQ number to be handled
++ * @dev_id: device ID cookie
+  *
+  * Only used when receiving data.
++ *
++ * Return: irqreturn code (%IRQ_HANDLED)
+  */
+ static irqreturn_t mpc52xx_lpbfifo_bcom_irq(int irq, void *dev_id)
+ {
+@@ -372,7 +382,7 @@ static irqreturn_t mpc52xx_lpbfifo_bcom_
+ }
+ 
+ /**
+- * mpc52xx_lpbfifo_bcom_poll - Poll for DMA completion
++ * mpc52xx_lpbfifo_poll - Poll for DMA completion
+  */
+ void mpc52xx_lpbfifo_poll(void)
+ {
+@@ -393,6 +403,8 @@ EXPORT_SYMBOL(mpc52xx_lpbfifo_poll);
+ /**
+  * mpc52xx_lpbfifo_submit - Submit an LPB FIFO transfer request.
+  * @req: Pointer to request structure
++ *
++ * Return: %0 on success, -errno code on error
+  */
+ int mpc52xx_lpbfifo_submit(struct mpc52xx_lpbfifo_request *req)
+ {
