@@ -1,64 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0FCD63860A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Nov 2022 10:24:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D115A638B22
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Nov 2022 14:26:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NJTvX4f24z3f2n
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Nov 2022 20:24:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NJbGz6GcBz3f5N
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Nov 2022 00:26:19 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Ozsj+Squ;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=rZs6Opav;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.24; helo=mga09.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Ozsj+Squ;
-	dkim-atps=neutral
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NJTtb6Gtyz3c2j
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Nov 2022 20:23:13 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1669368200; x=1700904200;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=F0n4x50XolHAWHFV5SOZ2SPqtsFWuMtQtecqyeyVlGk=;
-  b=Ozsj+Squf6wYvJyr7QAp72xTDr5xUcnTIbQUN+JLl2GrhnuQl5o4ReeD
-   v3y+F37dYlrJT6yTJKI1rqoi8ZLNq3GlPE5fS5bnYRxfLtdJJosFVRTYU
-   FGE7L0JI7u0h4wbstALJJO9WAcP8O13PnLElk6M7eS6YfcaPg1PCrbJ1j
-   m0cpWBK7srx+OQza1Vxp7iA4UzNLZaa4I+5pxMkUOJpBVYmI55qx6ZQwj
-   e8VnvJco5aGDXM6NjdksbHC3wrczp1t551+lmstnUa3StlvgJxhKQoWKm
-   GkmvjKYP/278+xr/PfVX9fCEDJJg9/2r5cv3ZISBxAAvXZSEfKjLUpBu4
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10541"; a="315603490"
-X-IronPort-AV: E=Sophos;i="5.96,193,1665471600"; 
-   d="scan'208";a="315603490"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2022 01:23:09 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10541"; a="673489455"
-X-IronPort-AV: E=Sophos;i="5.96,193,1665471600"; 
-   d="scan'208";a="673489455"
-Received: from lkp-server01.sh.intel.com (HELO 64a2d449c951) ([10.239.97.150])
-  by orsmga008.jf.intel.com with ESMTP; 25 Nov 2022 01:23:08 -0800
-Received: from kbuild by 64a2d449c951 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1oyUvM-0004yN-0N;
-	Fri, 25 Nov 2022 09:23:08 +0000
-Date: Fri, 25 Nov 2022 17:23:04 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:merge] BUILD SUCCESS
- 101d1141d3d6a31fcf480c0cd4d3f77aca60c436
-Message-ID: <63808978.UIyo1K09V235U3HX%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NJbG16FNVz3dvq
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Nov 2022 00:25:29 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=rZs6Opav;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NJbFz68xmz4x1D;
+	Sat, 26 Nov 2022 00:25:27 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1669382727;
+	bh=zh+0gIKb4BZkMxWnPlVhvp/oirtCMJTF3W0+S/PWmwc=;
+	h=From:To:Subject:Date:From;
+	b=rZs6Opavc//Fb2cHx1V12nIGXB7XedaGEYqS64P69p05dUgonWDFvu8C7FMRBASNc
+	 pYoQp9Z2glR75O2C/8eFEyWiM6L1QLiJpWZyVikWmZS3xZmYRj6iZMzDnjmvAqttre
+	 4vCd3Oe9atJNV76k+Lr3z6+2x8Sa9+6XrK6s50+4JIq0WCqmcgOys5D242lUtI7Vm+
+	 /iDFjpDFwYaN7ylLA2x4uTtLHwudZ+bsknfuRJ2oYHw42JTOihIQM/AvQ3oHxv94/5
+	 wy9M78tVNhynQGXqcMFJdM/Z4Ih4nA9FpBtoXZGFX8qzC5QUide/H51h+MmHmt6YHA
+	 aId6/s7RKn7sQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: <linuxppc-dev@lists.ozlabs.org>
+Subject: [PATCH] powerpc/64s: Add missing declaration for machine_check_early_boot()
+Date: Sat, 26 Nov 2022 00:25:21 +1100
+Message-Id: <20221125132521.2167039-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,83 +56,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
-branch HEAD: 101d1141d3d6a31fcf480c0cd4d3f77aca60c436  powerpc/ci: Disable network tests
+There's no declaration for machine_check_early_boot(), which leads to a
+build failure with W=1. Add one.
 
-elapsed time: 1131m
+Fixes: 2f5182cffa43 ("powerpc/64s: early boot machine check handler")
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/include/asm/interrupt.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-configs tested: 58
-configs skipped: 2
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-um                             i386_defconfig
-um                           x86_64_defconfig
-arc                                 defconfig
-alpha                               defconfig
-s390                                defconfig
-s390                             allmodconfig
-s390                             allyesconfig
-powerpc                           allnoconfig
-mips                             allyesconfig
-powerpc                          allmodconfig
-sh                               allmodconfig
-arc                  randconfig-r043-20221124
-alpha                            allyesconfig
-arc                              allyesconfig
-m68k                             allmodconfig
-m68k                             allyesconfig
-x86_64                          rhel-8.3-func
-x86_64                    rhel-8.3-kselftests
-i386                          randconfig-a014
-i386                          randconfig-a012
-i386                          randconfig-a016
-x86_64                           rhel-8.3-syz
-x86_64                         rhel-8.3-kunit
-x86_64                           rhel-8.3-kvm
-x86_64                        randconfig-a013
-x86_64                        randconfig-a011
-x86_64                        randconfig-a015
-i386                          randconfig-a001
-i386                          randconfig-a003
-x86_64                        randconfig-a004
-x86_64                        randconfig-a002
-i386                          randconfig-a005
-x86_64                        randconfig-a006
-x86_64                              defconfig
-i386                                defconfig
-x86_64                               rhel-8.3
-x86_64                           allyesconfig
-i386                             allyesconfig
-ia64                             allmodconfig
-arm                                 defconfig
-arm64                            allyesconfig
-arm                              allyesconfig
-
-clang tested configs:
-riscv                randconfig-r042-20221124
-hexagon              randconfig-r041-20221124
-hexagon              randconfig-r045-20221124
-s390                 randconfig-r044-20221124
-i386                          randconfig-a013
-i386                          randconfig-a011
-i386                          randconfig-a015
-x86_64                        randconfig-a014
-x86_64                        randconfig-a012
-x86_64                        randconfig-a016
-i386                          randconfig-a002
-x86_64                        randconfig-a001
-x86_64                        randconfig-a003
-i386                          randconfig-a004
-i386                          randconfig-a006
-x86_64                        randconfig-a005
-
+diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/asm/interrupt.h
+index 4745bb9998bd..6d8492b6e2b8 100644
+--- a/arch/powerpc/include/asm/interrupt.h
++++ b/arch/powerpc/include/asm/interrupt.h
+@@ -602,6 +602,7 @@ ____##func(struct pt_regs *regs)
+ /* kernel/traps.c */
+ DECLARE_INTERRUPT_HANDLER_NMI(system_reset_exception);
+ #ifdef CONFIG_PPC_BOOK3S_64
++DECLARE_INTERRUPT_HANDLER_RAW(machine_check_early_boot);
+ DECLARE_INTERRUPT_HANDLER_ASYNC(machine_check_exception_async);
+ #endif
+ DECLARE_INTERRUPT_HANDLER_NMI(machine_check_exception);
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.38.1
+
