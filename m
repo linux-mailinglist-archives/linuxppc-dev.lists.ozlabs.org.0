@@ -1,57 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2EC2639863
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Nov 2022 23:16:57 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D485639866
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Nov 2022 23:18:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NKR0l6Gxsz3f5b
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Nov 2022 09:16:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NKR2z4Pfcz3f5H
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Nov 2022 09:18:51 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=r4RPRmXr;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=IDbDsci9;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=softfail (domain owner discourages use of this host) smtp.mailfrom=kernel.org (client-ip=202.248.20.72; helo=condef-07.nifty.com; envelope-from=masahiroy@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=softfail (domain owner discourages use of this host) smtp.mailfrom=kernel.org (client-ip=210.131.2.82; helo=conssluserg-03.nifty.com; envelope-from=masahiroy@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=r4RPRmXr;
+	dkim=pass (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=IDbDsci9;
 	dkim-atps=neutral
-Received: from condef-07.nifty.com (condef-07.nifty.com [202.248.20.72])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NKQzh61vfz3bjd
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Nov 2022 09:16:00 +1100 (AEDT)
-Received: from conssluserg-01.nifty.com ([10.126.8.80])by condef-07.nifty.com with ESMTP id 2AQMELIZ027183
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Nov 2022 07:14:21 +0900
-Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45]) (authenticated)
-	by conssluserg-01.nifty.com with ESMTP id 2AQMDuo3012287
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Nov 2022 07:13:57 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-01.nifty.com 2AQMDuo3012287
+X-Greylist: delayed 221 seconds by postgrey-1.36 at boromir; Sun, 27 Nov 2022 09:18:02 AEDT
+Received: from conssluserg-03.nifty.com (conssluserg-03.nifty.com [210.131.2.82])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NKR221YRqz3bjd
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Nov 2022 09:18:01 +1100 (AEDT)
+Received: from mail-oi1-f177.google.com (mail-oi1-f177.google.com [209.85.167.177]) (authenticated)
+	by conssluserg-03.nifty.com with ESMTP id 2AQMHlbQ013427
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Nov 2022 07:17:48 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-03.nifty.com 2AQMHlbQ013427
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-	s=dec2015msa; t=1669500837;
-	bh=s0a/zjAuK1ndkJmMZDENgzv3OKHe1ZW/pI+qHIjiGXc=;
+	s=dec2015msa; t=1669501068;
+	bh=uMYjlILPqJ8SrLVYqEu74wUNH0+GPpNjC8d5G2tGxQY=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=r4RPRmXrX2+AHDAToBmubkRg7hqChal7AwE/5XsNlEXRH4u+hVz9/l+w9P+qTSVJD
-	 uMYcUjwZzYuw9gkg7lVWjSSzpQX63kvmPMf15/0lwmAuayYD4xck+oggIIUEOLJ8Gn
-	 4KjPJBI8/mhgWGytSLujQUunIrfs7vG6A4gbpFlKWiD2hVMfqKY7/KF+WII1CZG/pL
-	 8zA1mlFtp5wX9V0/x3LfmenKbK6Dcc26QcmPbkhdHUToSIB8XveWtDUVMXsvwVMhRq
-	 smwHUHz+mzbxry6N6qF78pnzxcAkiHd632TDf8LXrzmBiq+wGf/YQsNr3V3rV8YWYI
-	 JqRDS/x9kWffw==
-X-Nifty-SrcIP: [209.85.161.45]
-Received: by mail-oo1-f45.google.com with SMTP id e11-20020a4ab14b000000b0049be568062bso1134458ooo.4
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Nov 2022 14:13:57 -0800 (PST)
-X-Gm-Message-State: ANoB5pm/rRhwG4aZ/XiZUE1QCLvJXac7OxW1/5jz7wU1kf9pu46gwDD+
-	u5V0LRTRfEiuMtCiFOPyZqhmvXw0OaWadoSHX7g=
-X-Google-Smtp-Source: AA0mqf76l2wK3mKIAJDJVFArHaLGuBw/aE77Bp4mfFOjNad9WnYlYwpqmqrPYE5zkcyqlZw2pKl6aDCh1wOE1MLpfdw=
-X-Received: by 2002:a4a:b145:0:b0:49f:449a:5f6c with SMTP id
- e5-20020a4ab145000000b0049f449a5f6cmr10807854ooo.93.1669500836106; Sat, 26
- Nov 2022 14:13:56 -0800 (PST)
+	b=IDbDsci9+nVR6gmDtSDJ27gLlrD3FoCIDzRzjzVasT2OMAbycfkQIri8cOe3Pwjto
+	 iaQUiV6xz/cGk16/IMGJDCRZF7GHQdUReg8IjN9vpgLu5kUMMDsXUTHD/DdldJ7p4D
+	 c+DBjOoop1l42hsbDTwP33vav+0Z7BFtzrLTi5j4w6Zr/bKH5HesccasItRo0wBYCr
+	 4EofMiJoOZVbhnhYQrAIAAcBi0MS4mZMD3ialo547Z5idYxrJ0db9fbt5jMcqwDPEe
+	 Vymmw2dihAIS0nwZCMtzBV2df5IVzmpJBndTJphCSASqjoaWKAW+n3xwt3NvcnGe64
+	 EiXMxQCbrZxQw==
+X-Nifty-SrcIP: [209.85.167.177]
+Received: by mail-oi1-f177.google.com with SMTP id t62so7893153oib.12
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Nov 2022 14:17:48 -0800 (PST)
+X-Gm-Message-State: ANoB5pn6B+mdG/Fo/FW9b5xT53uBVXU8N8l8WjIj/QwK0LcxQUyo7efI
+	eFKlRqBKtOI57ybsNr82+Uj9EZ8ObMWwbJcfDVE=
+X-Google-Smtp-Source: AA0mqf7DrCgQxqlmM/2+u7mcCqohRJuQjWmra2YCG3G/NdsvlzOWmND2/oMnaB4DLAstZR1kdTqNdgKSkiGc+gfTJGg=
+X-Received: by 2002:aca:1c06:0:b0:354:28ae:23b3 with SMTP id
+ c6-20020aca1c06000000b0035428ae23b3mr13083821oic.287.1669501066859; Sat, 26
+ Nov 2022 14:17:46 -0800 (PST)
 MIME-Version: 1.0
-References: <20221126051002.123199-1-linux@weissschuh.net>
-In-Reply-To: <20221126051002.123199-1-linux@weissschuh.net>
+References: <20221126051002.123199-1-linux@weissschuh.net> <20221126051002.123199-2-linux@weissschuh.net>
+In-Reply-To: <20221126051002.123199-2-linux@weissschuh.net>
 From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Sun, 27 Nov 2022 07:13:19 +0900
-X-Gmail-Original-Message-ID: <CAK7LNASre69jM6symHY3h2fDPmN=kmZqOVGVrrVAvZ+8UzXxqA@mail.gmail.com>
-Message-ID: <CAK7LNASre69jM6symHY3h2fDPmN=kmZqOVGVrrVAvZ+8UzXxqA@mail.gmail.com>
-Subject: Re: [PATCH 1/3] firmware_loader: remove #include <generated/utsrelease.h>
+Date: Sun, 27 Nov 2022 07:17:10 +0900
+X-Gmail-Original-Message-ID: <CAK7LNATPW2QE8ZnE56hC_ayWeG9s8nBkArae9a1d9Sqw=Xy_gg@mail.gmail.com>
+Message-ID: <CAK7LNATPW2QE8ZnE56hC_ayWeG9s8nBkArae9a1d9Sqw=Xy_gg@mail.gmail.com>
+Subject: Re: [PATCH 2/3] powerpc/book3e: remove #include <generated/utsrelease.h>
 To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -73,40 +74,46 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 On Sat, Nov 26, 2022 at 2:10 PM Thomas Wei=C3=9Fschuh <linux@weissschuh.net=
 > wrote:
 >
-> utsrelease.h is potentially generated on each build.
-> By removing this unused include we can get rid of some spurious
-> recompilations.
+> Commit 7ad4bd887d27 ("powerpc/book3e: get rid of #include <generated/comp=
+ile.h>")
+> removed the usage of the define UTS_VERSION but forgot to drop the
+> include.
 >
+> Fixes: 7ad4bd887d27 ("powerpc/book3e: get rid of #include <generated/comp=
+ile.h>")
 > Signed-off-by: Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
 > ---
+
+
+Assuming you will fix the commit description,
 
 Reviewed-by: Masahiro Yamada <masahiroy@kernel.org>
 
 
->  drivers/base/firmware_loader/firmware.h | 2 --
->  1 file changed, 2 deletions(-)
+
+
+>  arch/powerpc/mm/nohash/kaslr_booke.c | 1 -
+>  1 file changed, 1 deletion(-)
 >
-> diff --git a/drivers/base/firmware_loader/firmware.h b/drivers/base/firmw=
-are_loader/firmware.h
-> index fe77e91c38a2..bf549d6500d7 100644
-> --- a/drivers/base/firmware_loader/firmware.h
-> +++ b/drivers/base/firmware_loader/firmware.h
-> @@ -9,8 +9,6 @@
->  #include <linux/list.h>
->  #include <linux/completion.h>
->
+> diff --git a/arch/powerpc/mm/nohash/kaslr_booke.c b/arch/powerpc/mm/nohas=
+h/kaslr_booke.c
+> index 0d04f9d5da8d..2fb3edafe9ab 100644
+> --- a/arch/powerpc/mm/nohash/kaslr_booke.c
+> +++ b/arch/powerpc/mm/nohash/kaslr_booke.c
+> @@ -19,7 +19,6 @@
+>  #include <asm/cacheflush.h>
+>  #include <asm/kdump.h>
+>  #include <mm/mmu_decl.h>
 > -#include <generated/utsrelease.h>
-> -
->  /**
->   * enum fw_opt - options to control firmware loading behaviour
->   *
 >
-> base-commit: 0b1dcc2cf55ae6523c6fbd0d741b3ac28c9f4536
+>  struct regions {
+>         unsigned long pa_start;
 > --
 > 2.38.1
 >
 
 
---=20
+--
 Best Regards
+
 Masahiro Yamada
