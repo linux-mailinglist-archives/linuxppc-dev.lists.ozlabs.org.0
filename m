@@ -1,72 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DF43639540
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Nov 2022 11:16:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8525563963C
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Nov 2022 14:41:45 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NK714288wz3fXp
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Nov 2022 21:16:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NKCZH3H9Wz3f24
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Nov 2022 00:41:43 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=mmZW66co;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=SIyt6qAc;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=iXiYIYfZ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::536; helo=mail-pg1-x536.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=tzimmermann@suse.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=mmZW66co;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=SIyt6qAc;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=iXiYIYfZ;
 	dkim-atps=neutral
-Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com [IPv6:2607:f8b0:4864:20::536])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NK6g95pVyz3f56
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Nov 2022 21:00:37 +1100 (AEDT)
-Received: by mail-pg1-x536.google.com with SMTP id 136so5786553pga.1
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Nov 2022 02:00:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rEGJDewpv09S0gFfTmgnPDtO7efHwYjo4HjTISWJlio=;
-        b=mmZW66co9BPoouqOpOBHVHafX3DVMJSEAG72V8fCU83TZV69jq2ov5nLxOaXqemu3s
-         RgdnAaTvsQrSBYCpwAErqk90ZmGRrdPbgg/poFUWmkdI/J0tlvHMBjKYZ0IB7ZekuSzr
-         hkvFNVPlfaejdbpIAw8jHqJRY8fofhK85u2kmTFi/91PvDWcf81ERXJd9oDEwdmx61YJ
-         kr6FCUlffa+VgH40+296gPiHpU9B1c2wGNBbQPrzy0BSJWGSCgHvxJv9Uws+sADIkpS1
-         3F/m8va56YxGhVbZWB7yfHkwiqD2pbiWeZljidyPbQJq/jjXEnWm3/mK0GW97OEixPH5
-         pBwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rEGJDewpv09S0gFfTmgnPDtO7efHwYjo4HjTISWJlio=;
-        b=vnaRxez70aR5Ww2x2DjBHAPFatZE/F1Ydq+IWG7mO/ggpWeCadJ64Q0cNQRAhLLLFa
-         GRsar718W0pMKGR7TQhd3TndmZtw0hQFStn+v7srM3z64Wd6EOS3Sn6sXqn3rbPuGeM2
-         z9TbM27Si0LHYQbNBnCgsWNoVONl5Mo95XMFNFcfsbAbzHyW3ONOP4SlZAr6h7jyrRjq
-         xdpMoKD7yUNv23iIfJ9wcJ9WmtSiwS+FuQ7Rqwy0lkoay1iUxfwL4davSDioTS6zAbh0
-         r9NEC7lCrUfeyZMCWfE4uBDCZWnRl7s9Bs+B69kdC3YZD/9zFyJkH/uvAAheIt4dGLUg
-         1yjA==
-X-Gm-Message-State: ANoB5pnz2f05HZkkynOg8QOutvWyXglLGxs2m2oetX/D+SNUmRdVDdJ2
-	GvvAsOvVTBbOP0hJtmIbQN/Xz/CzVOf3Nw==
-X-Google-Smtp-Source: AA0mqf7icrlTe3nxBQES7D7loSmTGSNHeH28L2/L6d/gYQ7J8wgGdZAI35Q/TMbybWLBMSNiZnmf5g==
-X-Received: by 2002:a63:f95a:0:b0:46f:5be0:feb9 with SMTP id q26-20020a63f95a000000b0046f5be0feb9mr37035270pgk.485.1669456835095;
-        Sat, 26 Nov 2022 02:00:35 -0800 (PST)
-Received: from bobo.ozlabs.ibm.com (110-174-181-90.tpgi.com.au. [110.174.181.90])
-        by smtp.gmail.com with ESMTPSA id j3-20020a17090a94c300b00213202d77d9sm4239243pjw.43.2022.11.26.02.00.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Nov 2022 02:00:34 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3 17/17] powerpc/qspinlock: add compile-time tuning adjustments
-Date: Sat, 26 Nov 2022 19:59:32 +1000
-Message-Id: <20221126095932.1234527-18-npiggin@gmail.com>
-X-Mailer: git-send-email 2.37.2
-In-Reply-To: <20221126095932.1234527-1-npiggin@gmail.com>
-References: <20221126095932.1234527-1-npiggin@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NKCYG6VpDz3cC5
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Nov 2022 00:40:50 +1100 (AEDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 1A2C221B3D;
+	Sat, 26 Nov 2022 13:40:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1669470041; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BoGl6Fm7p2wFv2CwtdQxNHqKs/HFx08iy/uRCX9zFjU=;
+	b=SIyt6qAciTDNvEAg09j748/wQATsUA/Uj85V8pa3X798Hb7CVGZYXJmBzTBPlvGd1ERn21
+	Jo1hoFCv0CEpbCLESRyBHQoyg9TLmLcEulzdYD3+pYn7dnV6xrJuZX7prlLm9yC+OW3PqA
+	ERg9P2ARB71DVcyHnT72oVHdAT8SBNM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1669470041;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BoGl6Fm7p2wFv2CwtdQxNHqKs/HFx08iy/uRCX9zFjU=;
+	b=iXiYIYfZymLvkVxSItVy4pxnnMwc0LmU+cd++qbaXJUzKvdIyCBDd9FFUIVkuFjM7kLC4C
+	zk1AZU+49bs0XgDg==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id D7D411326E;
+	Sat, 26 Nov 2022 13:40:40 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id 4jGuM1gXgmO+EgAAMHmgww
+	(envelope-from <tzimmermann@suse.de>); Sat, 26 Nov 2022 13:40:40 +0000
+Message-ID: <46e8cf0d-ab47-59b1-6c87-53d2d63a5bf6@suse.de>
+Date: Sat, 26 Nov 2022 14:40:40 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
+Subject: Re: [PATCH] fbdev: make offb driver tristate
+To: Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org
+References: <20221126000401.25302-1-rdunlap@infradead.org>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+In-Reply-To: <20221126000401.25302-1-rdunlap@infradead.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------Ki0pK44NuJYH6e0YyzbOqHJf"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,252 +81,93 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jordan Niethe <jniethe5@gmail.com>, Laurent Dufour <ldufour@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
+Cc: linux-fbdev@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, Masahiro Yamada <masahiroy@kernel.org>, dri-devel@lists.freedesktop.org, Daniel Vetter <daniel@ffwll.ch>, =?UTF-8?Q?Michal_Such=c3=a1nek?= <msuchanek@suse.de>, linuxppc-dev@lists.ozlabs.org, Helge Deller <deller@gmx.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This adds compile-time options that allow the EH lock hint bit to be
-enabled or disabled, and adds some new options that may or may not
-help matters. To help with experimentation and tuning.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------Ki0pK44NuJYH6e0YyzbOqHJf
+Content-Type: multipart/mixed; boundary="------------vJuoS16oKQcn9uhxcFoFCUdr";
+ protected-headers="v1"
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org
+Cc: Arnd Bergmann <arnd@arndb.de>, Masahiro Yamada <masahiroy@kernel.org>,
+ =?UTF-8?Q?Michal_Such=c3=a1nek?= <msuchanek@suse.de>,
+ linuxppc-dev@lists.ozlabs.org, Daniel Vetter <daniel@ffwll.ch>,
+ Helge Deller <deller@gmx.de>, linux-fbdev@vger.kernel.org,
+ dri-devel@lists.freedesktop.org
+Message-ID: <46e8cf0d-ab47-59b1-6c87-53d2d63a5bf6@suse.de>
+Subject: Re: [PATCH] fbdev: make offb driver tristate
+References: <20221126000401.25302-1-rdunlap@infradead.org>
+In-Reply-To: <20221126000401.25302-1-rdunlap@infradead.org>
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/include/asm/qspinlock.h | 61 ++++++++++++++++++++++++++--
- arch/powerpc/lib/qspinlock.c         | 39 ++++++++++++++++--
- 2 files changed, 94 insertions(+), 6 deletions(-)
+--------------vJuoS16oKQcn9uhxcFoFCUdr
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-diff --git a/arch/powerpc/include/asm/qspinlock.h b/arch/powerpc/include/asm/qspinlock.h
-index c9fa83bba1d5..9e71f8de7b12 100644
---- a/arch/powerpc/include/asm/qspinlock.h
-+++ b/arch/powerpc/include/asm/qspinlock.h
-@@ -5,15 +5,68 @@
- #include <linux/compiler.h>
- #include <asm/qspinlock_types.h>
- 
-+#ifdef CONFIG_PPC64
-+/*
-+ * Use the EH=1 hint for accesses that result in the lock being acquired.
-+ * The hardware is supposed to optimise this pattern by holding the lock
-+ * cacheline longer, and releasing when a store to the same memory (the
-+ * unlock) is performed.
-+ */
-+#define _Q_SPIN_EH_HINT 1
-+#else
-+#define _Q_SPIN_EH_HINT 0
-+#endif
-+
- /*
-  * The trylock itself may steal. This makes trylocks slightly stronger, and
-- * might make spin locks slightly more efficient when stealing.
-+ * makes locks slightly more efficient when stealing.
-  *
-  * This is compile-time, so if true then there may always be stealers, so the
-  * nosteal paths become unused.
-  */
- #define _Q_SPIN_TRY_LOCK_STEAL 1
- 
-+/*
-+ * Put a speculation barrier after testing the lock/node and finding it
-+ * busy. Try to prevent pointless speculation in slow paths.
-+ *
-+ * Slows down the lockstorm microbenchmark with no stealing, where locking
-+ * is purely FIFO through the queue. May have more benefit in real workload
-+ * where speculating into the wrong place could have a greater cost.
-+ */
-+#define _Q_SPIN_SPEC_BARRIER 0
-+
-+#ifdef CONFIG_PPC64
-+/*
-+ * Execute a miso instruction after passing the MCS lock ownership to the
-+ * queue head. Miso is intended to make stores visible to other CPUs sooner.
-+ *
-+ * This seems to make the lockstorm microbenchmark nospin test go slightly
-+ * faster on POWER10, but disable for now.
-+ */
-+#define _Q_SPIN_MISO 0
-+#else
-+#define _Q_SPIN_MISO 0
-+#endif
-+
-+#ifdef CONFIG_PPC64
-+/*
-+ * This executes miso after an unlock of the lock word, having ownership
-+ * pass to the next CPU sooner. This will slow the uncontended path to some
-+ * degree. Not evidence it helps yet.
-+ */
-+#define _Q_SPIN_MISO_UNLOCK 0
-+#else
-+#define _Q_SPIN_MISO_UNLOCK 0
-+#endif
-+
-+/*
-+ * Seems to slow down lockstorm microbenchmark, suspect queue node just
-+ * has to become shared again right afterwards when its waiter spins on
-+ * the lock field.
-+ */
-+#define _Q_SPIN_PREFETCH_NEXT 0
-+
- static __always_inline int queued_spin_is_locked(struct qspinlock *lock)
- {
- 	return READ_ONCE(lock->val);
-@@ -51,7 +104,7 @@ static __always_inline int __queued_spin_trylock_nosteal(struct qspinlock *lock)
- "2:									\n"
- 	: "=&r" (prev)
- 	: "r" (&lock->val), "r" (new),
--	  "i" (IS_ENABLED(CONFIG_PPC64))
-+	  "i" (_Q_SPIN_EH_HINT)
- 	: "cr0", "memory");
- 
- 	return likely(prev == 0);
-@@ -75,7 +128,7 @@ static __always_inline int __queued_spin_trylock_steal(struct qspinlock *lock)
- "2:									\n"
- 	: "=&r" (prev), "=&r" (tmp)
- 	: "r" (&lock->val), "r" (new), "r" (_Q_TAIL_CPU_MASK),
--	  "i" (IS_ENABLED(CONFIG_PPC64))
-+	  "i" (_Q_SPIN_EH_HINT)
- 	: "cr0", "memory");
- 
- 	return likely(!(prev & ~_Q_TAIL_CPU_MASK));
-@@ -100,6 +153,8 @@ static __always_inline void queued_spin_lock(struct qspinlock *lock)
- static inline void queued_spin_unlock(struct qspinlock *lock)
- {
- 	smp_store_release(&lock->locked, 0);
-+	if (_Q_SPIN_MISO_UNLOCK)
-+		asm volatile("miso" ::: "memory");
- }
- 
- #define arch_spin_is_locked(l)		queued_spin_is_locked(l)
-diff --git a/arch/powerpc/lib/qspinlock.c b/arch/powerpc/lib/qspinlock.c
-index 9a31b6147a23..2eab84774911 100644
---- a/arch/powerpc/lib/qspinlock.c
-+++ b/arch/powerpc/lib/qspinlock.c
-@@ -48,6 +48,12 @@ static bool pv_prod_head __read_mostly = false;
- static DEFINE_PER_CPU_ALIGNED(struct qnodes, qnodes);
- static DEFINE_PER_CPU_ALIGNED(u64, sleepy_lock_seen_clock);
- 
-+#if _Q_SPIN_SPEC_BARRIER == 1
-+#define spec_barrier() do { asm volatile("ori 31,31,0" ::: "memory"); } while (0)
-+#else
-+#define spec_barrier() do { } while (0)
-+#endif
-+
- static __always_inline bool recently_sleepy(void)
- {
- 	/* pv_sleepy_lock is true when this is called */
-@@ -137,7 +143,7 @@ static __always_inline u32 trylock_clean_tail(struct qspinlock *lock, u32 tail)
- 	: "r" (&lock->val), "r"(tail), "r" (newval),
- 	  "i" (_Q_LOCKED_VAL),
- 	  "r" (_Q_TAIL_CPU_MASK),
--	  "i" (IS_ENABLED(CONFIG_PPC64))
-+	  "i" (_Q_SPIN_EH_HINT)
- 	: "cr0", "memory");
- 
- 	return prev;
-@@ -475,6 +481,7 @@ static __always_inline bool try_to_steal_lock(struct qspinlock *lock, bool parav
- 		val = READ_ONCE(lock->val);
- 		if (val & _Q_MUST_Q_VAL)
- 			break;
-+		spec_barrier();
- 
- 		if (unlikely(!(val & _Q_LOCKED_VAL))) {
- 			spin_end();
-@@ -540,6 +547,7 @@ static __always_inline void queued_spin_lock_mcs_queue(struct qspinlock *lock, b
- 
- 	qnodesp = this_cpu_ptr(&qnodes);
- 	if (unlikely(qnodesp->count >= MAX_NODES)) {
-+		spec_barrier();
- 		while (!queued_spin_trylock(lock))
- 			cpu_relax();
- 		return;
-@@ -576,9 +584,12 @@ static __always_inline void queued_spin_lock_mcs_queue(struct qspinlock *lock, b
- 		/* Wait for mcs node lock to be released */
- 		spin_begin();
- 		while (!node->locked) {
-+			spec_barrier();
-+
- 			if (yield_to_prev(lock, node, old, paravirt))
- 				seen_preempted = true;
- 		}
-+		spec_barrier();
- 		spin_end();
- 
- 		/* Clear out stale propagated yield_cpu */
-@@ -586,6 +597,17 @@ static __always_inline void queued_spin_lock_mcs_queue(struct qspinlock *lock, b
- 			node->yield_cpu = -1;
- 
- 		smp_rmb(); /* acquire barrier for the mcs lock */
-+
-+		/*
-+		 * Generic qspinlocks have this prefetch here, but it seems
-+		 * like it could cause additional line transitions because
-+		 * the waiter will keep loading from it.
-+		 */
-+		if (_Q_SPIN_PREFETCH_NEXT) {
-+			next = READ_ONCE(node->next);
-+			if (next)
-+				prefetchw(next);
-+		}
- 	}
- 
- 	/* We're at the head of the waitqueue, wait for the lock. */
-@@ -597,6 +619,7 @@ static __always_inline void queued_spin_lock_mcs_queue(struct qspinlock *lock, b
- 		val = READ_ONCE(lock->val);
- 		if (!(val & _Q_LOCKED_VAL))
- 			break;
-+		spec_barrier();
- 
- 		if (paravirt && pv_sleepy_lock && maybe_stealers) {
- 			if (!sleepy) {
-@@ -637,6 +660,7 @@ static __always_inline void queued_spin_lock_mcs_queue(struct qspinlock *lock, b
- 			val |= _Q_MUST_Q_VAL;
- 		}
- 	}
-+	spec_barrier();
- 	spin_end();
- 
- 	/* If we're the last queued, must clean up the tail. */
-@@ -657,6 +681,7 @@ static __always_inline void queued_spin_lock_mcs_queue(struct qspinlock *lock, b
- 			cpu_relax();
- 		spin_end();
- 	}
-+	spec_barrier();
- 
- 	/*
- 	 * Unlock the next mcs waiter node. Release barrier is not required
-@@ -668,10 +693,14 @@ static __always_inline void queued_spin_lock_mcs_queue(struct qspinlock *lock, b
- 	if (paravirt && pv_prod_head) {
- 		int next_cpu = next->cpu;
- 		WRITE_ONCE(next->locked, 1);
-+		if (_Q_SPIN_MISO)
-+			asm volatile("miso" ::: "memory");
- 		if (vcpu_is_preempted(next_cpu))
- 			prod_cpu(next_cpu);
- 	} else {
- 		WRITE_ONCE(next->locked, 1);
-+		if (_Q_SPIN_MISO)
-+			asm volatile("miso" ::: "memory");
- 	}
- 
- release:
-@@ -686,12 +715,16 @@ void queued_spin_lock_slowpath(struct qspinlock *lock)
- 	 * is passed as the paravirt argument to the functions.
- 	 */
- 	if (IS_ENABLED(CONFIG_PARAVIRT_SPINLOCKS) && is_shared_processor()) {
--		if (try_to_steal_lock(lock, true))
-+		if (try_to_steal_lock(lock, true)) {
-+			spec_barrier();
- 			return;
-+		}
- 		queued_spin_lock_mcs_queue(lock, true);
- 	} else {
--		if (try_to_steal_lock(lock, false))
-+		if (try_to_steal_lock(lock, false)) {
-+			spec_barrier();
- 			return;
-+		}
- 		queued_spin_lock_mcs_queue(lock, false);
- 	}
- }
--- 
-2.37.2
+DQoNCkFtIDI2LjExLjIyIHVtIDAxOjA0IHNjaHJpZWIgUmFuZHkgRHVubGFwOg0KPiBNYWtl
+IHRoZSBvZmZiIChPcGVuIEZpcm13YXJlIGZyYW1lIGJ1ZmZlcikgZHJpdmVyIHRyaXN0YXRl
+LA0KPiBpLmUuLCBzbyB0aGF0IGl0IGNhbiBiZSBidWlsdCBhcyBhIGxvYWRhYmxlIG1vZHVs
+ZS4NCj4gDQo+IEhvd2V2ZXIsIGl0IHN0aWxsIGRlcGVuZHMgb24gdGhlIHNldHRpbmcgb2Yg
+RFJNX09GRFJNDQo+IHNvIHRoYXQgYm90aCBvZiB0aGVzZSBkcml2ZXJzIGNhbm5vdCBiZSBi
+dWlsdGluIGF0IHRoZSBzYW1lIHRpbWUNCj4gbm9yIGNhbiBvbmUgYmUgYnVpbHRpbiBhbmQg
+dGhlIG90aGVyIG9uZSBhIGxvYWRhYmxlIG1vZHVsZS4NCj4gDQo+IEJ1aWxkLXRlc3RlZCBz
+dWNjZXNzZnVsbHkgd2l0aCBhbGwgY29tYmluYXRpb24gb2YgRFJNX09GRFJNIGFuZCBGQl9P
+Ri4NCj4gDQo+IFRoaXMgZml4ZXMgYSBidWlsZCBpc3N1ZSB0aGF0IE1pY2hhbCByZXBvcnRl
+ZCB3aGVuIEZCX09GPXkgYW5kDQo+IERSTV9PRkRSTT1tOg0KPiANCj4gcG93ZXJwYzY0LWxp
+bnV4LWxkOiBkcml2ZXJzL3ZpZGVvL2ZiZGV2L29mZmIubzooLmRhdGEucmVsLnJvKzB4NTgp
+OiB1bmRlZmluZWQgcmVmZXJlbmNlIHRvIGBjZmJfZmlsbHJlY3QnDQo+IHBvd2VycGM2NC1s
+aW51eC1sZDogZHJpdmVycy92aWRlby9mYmRldi9vZmZiLm86KC5kYXRhLnJlbC5ybysweDYw
+KTogdW5kZWZpbmVkIHJlZmVyZW5jZSB0byBgY2ZiX2NvcHlhcmVhJw0KPiBwb3dlcnBjNjQt
+bGludXgtbGQ6IGRyaXZlcnMvdmlkZW8vZmJkZXYvb2ZmYi5vOiguZGF0YS5yZWwucm8rMHg2
+OCk6IHVuZGVmaW5lZCByZWZlcmVuY2UgdG8gYGNmYl9pbWFnZWJsaXQnDQo+IA0KPiBTaWdu
+ZWQtb2ZmLWJ5OiBSYW5keSBEdW5sYXAgPHJkdW5sYXBAaW5mcmFkZWFkLm9yZz4NCj4gU3Vn
+Z2VzdGVkLWJ5OiBBcm5kIEJlcmdtYW5uIDxhcm5kQGFybmRiLmRlPg0KPiBDYzogTWFzYWhp
+cm8gWWFtYWRhIDxtYXNhaGlyb3lAa2VybmVsLm9yZz4NCj4gQ2M6IFRob21hcyBaaW1tZXJt
+YW5uIDx0emltbWVybWFubkBzdXNlLmRlPg0KPiBDYzogTWljaGFsIFN1Y2jDoW5layA8bXN1
+Y2hhbmVrQHN1c2UuZGU+DQo+IENjOiBsaW51eHBwYy1kZXZAbGlzdHMub3psYWJzLm9yZw0K
+PiBDYzogRGFuaWVsIFZldHRlciA8ZGFuaWVsQGZmd2xsLmNoPg0KPiBDYzogSGVsZ2UgRGVs
+bGVyIDxkZWxsZXJAZ214LmRlPg0KPiBDYzogbGludXgtZmJkZXZAdmdlci5rZXJuZWwub3Jn
+DQo+IENjOiBkcmktZGV2ZWxAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQoNCkFja2VkLWJ5OiBU
+aG9tYXMgWmltbWVybWFubiA8dHppbW1lcm1hbm5Ac3VzZS5kZT4NCg0KPiANCj4gLS0tDQo+
+ICAgZHJpdmVycy92aWRlby9mYmRldi9LY29uZmlnIHwgICAgNCArKy0tDQo+ICAgMSBmaWxl
+IGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMoLSkNCj4gDQo+IGRpZmYg
+LS0gYS9kcml2ZXJzL3ZpZGVvL2ZiZGV2L0tjb25maWcgYi9kcml2ZXJzL3ZpZGVvL2ZiZGV2
+L0tjb25maWcNCj4gLS0tIGEvZHJpdmVycy92aWRlby9mYmRldi9LY29uZmlnDQo+ICsrKyBi
+L2RyaXZlcnMvdmlkZW8vZmJkZXYvS2NvbmZpZw0KPiBAQCAtNDU2LDggKzQ1Niw4IEBAIGNv
+bmZpZyBGQl9BVEFSSQ0KPiAgIAkgIGNoaXBzZXQgZm91bmQgaW4gQXRhcmlzLg0KPiAgIA0K
+PiAgIGNvbmZpZyBGQl9PRg0KPiAtCWJvb2wgIk9wZW4gRmlybXdhcmUgZnJhbWUgYnVmZmVy
+IGRldmljZSBzdXBwb3J0Ig0KPiAtCWRlcGVuZHMgb24gKEZCID0geSkgJiYgUFBDICYmICgh
+UFBDX1BTRVJJRVMgfHwgUENJKQ0KPiArCXRyaXN0YXRlICJPcGVuIEZpcm13YXJlIGZyYW1l
+IGJ1ZmZlciBkZXZpY2Ugc3VwcG9ydCINCj4gKwlkZXBlbmRzIG9uIEZCICYmIFBQQyAmJiAo
+IVBQQ19QU0VSSUVTIHx8IFBDSSkNCj4gICAJZGVwZW5kcyBvbiAhRFJNX09GRFJNDQo+ICAg
+CXNlbGVjdCBBUEVSVFVSRV9IRUxQRVJTDQo+ICAgCXNlbGVjdCBGQl9DRkJfRklMTFJFQ1QN
+Cg0KLS0gDQpUaG9tYXMgWmltbWVybWFubg0KR3JhcGhpY3MgRHJpdmVyIERldmVsb3Blcg0K
+U1VTRSBTb2Z0d2FyZSBTb2x1dGlvbnMgR2VybWFueSBHbWJIDQpNYXhmZWxkc3RyLiA1LCA5
+MDQwOSBOw7xybmJlcmcsIEdlcm1hbnkNCihIUkIgMzY4MDksIEFHIE7DvHJuYmVyZykNCkdl
+c2Now6RmdHNmw7xocmVyOiBJdm8gVG90ZXYNCg==
 
+--------------vJuoS16oKQcn9uhxcFoFCUdr--
+
+--------------Ki0pK44NuJYH6e0YyzbOqHJf
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature"
+
+-----BEGIN PGP SIGNATURE-----
+
+wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmOCF1gFAwAAAAAACgkQlh/E3EQov+CJ
+vw/+ONumJQjV+7LoEpcMdQywoYRDLqpBwO/cB5TlRWktE2eLaRwMG88S2rOde8UcNu++iKAndzYZ
+q6v9TbZGx2dFV6dWPxefOd6UxgZVuPVffPlzGs71iaaDmr33yoQXvA+XYMs62JX2RSLmxx9lW5lU
+BsloOKY15g7sh64e7UfL3V2nlC+I6nScpa8lmC+tOkX0pzEEpDlMmBa7QsNhfvf0oZ0VJFzvDoIL
+lMgxjVpBv5YAmhOaMf2pQXgjfHbJnEL18o4iRvWLWKaU0B12J46KxTqTafok/TmASdRugRH5NIP1
+wa5V7f1twwtJdczhLCfPzq1Iiv86JgD0CyN3af/LIBwN/FwZkI3LftRvWJtgU7ikD5FymPmhhc+a
+YcxjmVhwUcUnh4vhA0CuhA3zA77XJFbBdtrBP2gchSvA4tZ/vJqtZm1DOSVdzGt1xqwvdzamwUse
+mDome8RBkhqbbFmQZAjvJiAOxHkdtFaOy8NS0hYH7bgRCc34eccBz+t3vjtB9k/bcx3c9DASN5Rd
+uWcXN6yuRce4HuwVHTidZKWmclxRZiZYfwJmLGLEpf8ReJvTetBtuMmoJ7i0OG26K4Kh4Kmag8t3
+UjqXVYGVY4stIdA3/sq3H9u9h6hp6jSDJiWlq4Or5iNGuiL4wd/WZyAyODk2+HxXpx5SwIhll1Xi
+J9c=
+=nzHm
+-----END PGP SIGNATURE-----
+
+--------------Ki0pK44NuJYH6e0YyzbOqHJf--
