@@ -1,68 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EECA6396EA
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Nov 2022 16:45:09 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01B9063972D
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Nov 2022 17:24:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NKGJf71Fnz3f51
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Nov 2022 02:45:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NKH9m4z95z3f2p
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Nov 2022 03:24:12 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kpYYeFZW;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=arEckJ9u;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.31; helo=mga06.intel.com; envelope-from=andriy.shevchenko@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kpYYeFZW;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=arEckJ9u;
 	dkim-atps=neutral
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NKGHh3gyRz2xrL
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Nov 2022 02:44:09 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1669477456; x=1701013456;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=TYZva1qhZaDDzx7ssD6565IlpCg24ayIFbcaC7tY8Tc=;
-  b=kpYYeFZWfR98ToB4QhZ2T8NZj8HKl7h+wcfI15XRGoE+9FZ5D6wPh48M
-   pwsHA9Yl4+8k45AybR+xSAb7IRwIPpLCw4GlCCKnRBbt842h2GgHo4c6G
-   f8b8Rmx1ed+CldtaxQbEmS021BXeUAC8pxLpxGnTlMnzQvHFrr/FgWQyA
-   ydKevZai1zqNMclmtdkCRa+Y2/NXcbjuhI15Mtr51VudCCLqUqscu0S8D
-   Kpc1JJnNlvXrSmCSNNSlrGxh7s6GFiP+Bs/nupSD/hJp7VYmsI0j4k2ed
-   yNGbZtEL+cElnU6MiQz266csJ6bdh5oyFBVKav5Dn1bXgu9OyaEG5xnKN
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10543"; a="376747253"
-X-IronPort-AV: E=Sophos;i="5.96,196,1665471600"; 
-   d="scan'208";a="376747253"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Nov 2022 07:44:06 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10543"; a="620587303"
-X-IronPort-AV: E=Sophos;i="5.96,196,1665471600"; 
-   d="scan'208";a="620587303"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga006.jf.intel.com with ESMTP; 26 Nov 2022 07:43:54 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1oyxLL-000Bco-1n;
-	Sat, 26 Nov 2022 17:43:51 +0200
-Date: Sat, 26 Nov 2022 17:43:51 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Subject: Re: [PATCH 000/606] i2c: Complete conversion to i2c_probe_new
-Message-ID: <Y4I0N3KpU/LSJYpd@smile.fi.intel.com>
-References: <20221118224540.619276-1-uwe@kleine-koenig.org>
- <20221122185818.3740200d@jic23-huawei>
- <20221122201654.5rdaisqho33buibj@pengutronix.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NKH8n5NJDz3cFZ
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Nov 2022 03:23:21 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id DBCACB81186;
+	Sat, 26 Nov 2022 16:23:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7479BC433C1;
+	Sat, 26 Nov 2022 16:23:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1669479796;
+	bh=ZiMoEvPiAbm9Zd5prrCmD+tFBUbmTzfO59TPPLSrPmY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=arEckJ9udIDYet5J0h5PreVs0TvbcXS0A9NGvxaBSt9KLPzxondRvGVp1oJKyF9FC
+	 sZA/Haad684xQ84QhFDztacxz2ZcULoRZSx5fvl1ubZHE+2uIaQnvzQkMqUQ6gXiiI
+	 wFaGFMIq5keklr8yxI+EAZZN6ltx/St/WgIej8DL0mdMJhMLobC1VG3HMDXTGJEcvn
+	 z01dytIwc6yw3Lg39d2ci3cQLnHw0J7utJE0HvpYQyQYx0IymowmnqPBzioegFPeqo
+	 xd50XjiHe/JaMyNeiTo+6Y5wMBdt6t0YrjDD70b6W48nQBhPlO7ofFsteuruMXX14d
+	 fiG54LCfY1GNw==
+Received: by pali.im (Postfix)
+	id 84A627B2; Sat, 26 Nov 2022 17:23:13 +0100 (CET)
+Date: Sat, 26 Nov 2022 17:23:13 +0100
+From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+	Paul Mackerras <paulus@samba.org>
+Subject: Re: [PATCH] powerpc/fsl-pci: Choose PCI host bridge with alias pci0
+ as the primary
+Message-ID: <20221126162313.kn7ibopmwwfwrfvx@pali>
+References: <20220820123327.20551-1-pali@kernel.org>
+ <20221009110808.agfixtgneshui47o@pali>
+ <20221101221909.3u5ateevc7ka2ysv@pali>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20221122201654.5rdaisqho33buibj@pengutronix.de>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20221101221909.3u5ateevc7ka2ysv@pali>
+User-Agent: NeoMutt/20180716
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,43 +68,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, devicetree@vger.kernel.org, linux-iio@vger.kernel.org, linux-fbdev@vger.kernel.org, platform-driver-x86@vger.kernel.org, netdev@vger.kernel.org, linux-mtd@lists.infradead.org, linux-i2c@vger.kernel.org, Lee Jones <lee.jones@linaro.org>, linux-stm32@st-md-mailman.stormreply.com, linux-leds@vger.kernel.org, linux-rtc@vger.kernel.org, chrome-platform@lists.linux.dev, linux-samsung-soc@vger.kernel.org, linux-staging@lists.linux.dev, Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, linux-serial@vger.kernel.org, linux-input@vger.kernel.org, Grant Likely <grant.likely@linaro.org>, linux-media@vger.kernel.org, linux-pwm@vger.kernel.org, linux-watchdog@vger.kernel.org, Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <uwe@kleine-koenig.org>, linux-pm@vger.kernel.org, linux-actions@lists.infradead.org, Wolfram Sang <wsa@kernel.org>, linux-gpio@vger.kernel.org, Angel Iglesias <ang.iglesiasg@gmail.com>, linux-rpi-kernel@lists.infradead.org, linux-
- amlogic@lists.infradead.org, openipmi-developer@lists.sourceforge.net, linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Purism Kernel Team <kernel@puri.sm>, gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org, linux-renesas-soc@vger.kernel.org, linux-crypto@vger.kernel.org, kernel@pengutronix.de, patches@opensource.cirrus.com, linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Jonathan Cameron <jic23@kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Nov 22, 2022 at 09:16:54PM +0100, Uwe Kleine-K�nig wrote:
-> On Tue, Nov 22, 2022 at 06:58:18PM +0000, Jonathan Cameron wrote:
+PING?
 
-> > Queued all of the below:
-> > with one tweaked as per your suggestion and the highlighted one dropped on basis
-> > I was already carrying the equivalent - as you pointed out.
-> > 
-> > I was already carrying the required dependency.
-> > 
-> > Includes the IIO ones in staging.
-> > 
-
-> > p.s. I perhaps foolishly did this in a highly manual way so as to
-> > also pick up Andy's RB.  So might have dropped one...
+On Tuesday 01 November 2022 23:19:09 Pali Rohár wrote:
+> Hello! I would like to remind this patch.
 > 
-> You could have done:
-> 
-> 	H=$(git rev-parse @)
-> 	b4 am -P 49-190 20221118224540.619276-1-uwe@kleine-koenig.org
-> 	git am ...
-> 	git filter-branch -f --msg-filter "grep -v 'Signed-off-by: Jonathan'; echo 'Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>'; echo 'Signed-off-by: Jonathan Cameron <jic23@kernel.org>'" $H..
-> 
-> (untested, but you get the idea).
-
-That's, for example (just last from the history as is), how I usually do it
-(tested):
-
- git filter-branch --msg-filter 'sed -e "/Signed-off-by: Andy Shevchenko/ a Tested-by: Daniel Scally <dan.scally@ideasonboard.com>"' -f HEAD~4..HEAD
-
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+> On Sunday 09 October 2022 13:08:08 Pali Rohár wrote:
+> > Hello! Any opinion on this patch?
+> > 
+> > On Saturday 20 August 2022 14:33:27 Pali Rohár wrote:
+> > > If there's no PCI host bridge with ISA then check for PCI host bridge with
+> > > alias "pci0" (first PCI host bridge) and if it exists then choose it as the
+> > > primary PCI host bridge.
+> > > 
+> > > This makes choice of primary PCI host bridge more stable across boots and
+> > > updates as the last fallback candidate for primary PCI host bridge (if
+> > > there is no choice) is selected arbitrary.
+> > > 
+> > > Signed-off-by: Pali Rohár <pali@kernel.org>
+> > > ---
+> > >  arch/powerpc/sysdev/fsl_pci.c | 13 +++++++++++++
+> > >  1 file changed, 13 insertions(+)
+> > > 
+> > > diff --git a/arch/powerpc/sysdev/fsl_pci.c b/arch/powerpc/sysdev/fsl_pci.c
+> > > index 1011cfea2e32..e4b703943dd3 100644
+> > > --- a/arch/powerpc/sysdev/fsl_pci.c
+> > > +++ b/arch/powerpc/sysdev/fsl_pci.c
+> > > @@ -1125,6 +1125,19 @@ void __init fsl_pci_assign_primary(void)
+> > >  			return;
+> > >  	}
+> > >  
+> > > +	/*
+> > > +	 * If there's no PCI host bridge with ISA then check for
+> > > +	 * PCI host bridge with alias "pci0" (first PCI host bridge).
+> > > +	 */
+> > > +	np = of_find_node_by_path("pci0");
+> > > +	if (np && of_match_node(pci_ids, np) && of_device_is_available(np)) {
+> > > +		fsl_pci_primary = np;
+> > > +		of_node_put(np);
+> > > +		return;
+> > > +	}
+> > > +	if (np)
+> > > +		of_node_put(np);
+> > > +
+> > >  	/*
+> > >  	 * If there's no PCI host bridge with ISA, arbitrarily
+> > >  	 * designate one as primary.  This can go away once
+> > > -- 
+> > > 2.20.1
+> > > 
