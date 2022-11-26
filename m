@@ -2,59 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37B5E639757
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Nov 2022 18:06:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2EC2639863
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Nov 2022 23:16:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NKJ5y6Tjmz3f4b
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Nov 2022 04:05:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NKR0l6Gxsz3f5b
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Nov 2022 09:16:55 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=a1vG6WIH;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=dam0KkoH;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=r4RPRmXr;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=softfail (domain owner discourages use of this host) smtp.mailfrom=kernel.org (client-ip=202.248.20.72; helo=condef-07.nifty.com; envelope-from=masahiroy@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=a1vG6WIH;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=dam0KkoH;
+	dkim=pass (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=r4RPRmXr;
 	dkim-atps=neutral
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NKJ534Tbcz3bYF
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Nov 2022 04:05:11 +1100 (AEDT)
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1669482305;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=w5Ts30MespxUKzsUT1l7gvsIpD/wCNbmSDwi0rq7pWo=;
-	b=a1vG6WIHLX8A8l4bbess8p3ebtC0MNf7n88bWD/3PqTxJ1uhpyZ9s4hHJK5DzlNe5lhmJq
-	DaD7vanZVw80QrUdkx4pDbIeUFASYcJ0R8qUmJKJKu5LlvELuECNSOvYLnguyeU/rNhBr9
-	jBdZbt1LJfYwVinnQYZHUTrz9PU0VAWM7s21Ns7DrDdaYEr14ZjT3l+3b8CsXbWhoJOxeF
-	3fDxV9pGenyolZ3GybsEdHv4BUst2bFjEGi5oGzmFOgveySWzE3JrjCSOORfUHqxnkBrc0
-	LDumya6APS4Pev3plwpVgtQ3GfSLVFWVVa1d8+r+nE3Wp/I+lxxKTgnQxz4nJw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1669482305;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=w5Ts30MespxUKzsUT1l7gvsIpD/wCNbmSDwi0rq7pWo=;
-	b=dam0KkoHF7cMdxbvjVFLp64t7BNxpbeugIF7gW3X6Ip03wY3HHGZ0SDANtDVhfQCIenvje
-	LRzxWKBGTevPKMCw==
-To: Zhouyi Zhou <zhouzhouyi@gmail.com>, fweisbec@gmail.com,
- mingo@kernel.org, dave@stgolabs.net, paulmck@kernel.org,
- josh@joshtriplett.org, mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH linux-next][RFC]torture: avoid offline tick_do_timer_cpu
-In-Reply-To: <20221121035140.118651-1-zhouzhouyi@gmail.com>
-References: <20221121035140.118651-1-zhouzhouyi@gmail.com>
-Date: Sat, 26 Nov 2022 18:05:05 +0100
-Message-ID: <87y1rxwsse.ffs@tglx>
+Received: from condef-07.nifty.com (condef-07.nifty.com [202.248.20.72])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NKQzh61vfz3bjd
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Nov 2022 09:16:00 +1100 (AEDT)
+Received: from conssluserg-01.nifty.com ([10.126.8.80])by condef-07.nifty.com with ESMTP id 2AQMELIZ027183
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Nov 2022 07:14:21 +0900
+Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45]) (authenticated)
+	by conssluserg-01.nifty.com with ESMTP id 2AQMDuo3012287
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Nov 2022 07:13:57 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-01.nifty.com 2AQMDuo3012287
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+	s=dec2015msa; t=1669500837;
+	bh=s0a/zjAuK1ndkJmMZDENgzv3OKHe1ZW/pI+qHIjiGXc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=r4RPRmXrX2+AHDAToBmubkRg7hqChal7AwE/5XsNlEXRH4u+hVz9/l+w9P+qTSVJD
+	 uMYcUjwZzYuw9gkg7lVWjSSzpQX63kvmPMf15/0lwmAuayYD4xck+oggIIUEOLJ8Gn
+	 4KjPJBI8/mhgWGytSLujQUunIrfs7vG6A4gbpFlKWiD2hVMfqKY7/KF+WII1CZG/pL
+	 8zA1mlFtp5wX9V0/x3LfmenKbK6Dcc26QcmPbkhdHUToSIB8XveWtDUVMXsvwVMhRq
+	 smwHUHz+mzbxry6N6qF78pnzxcAkiHd632TDf8LXrzmBiq+wGf/YQsNr3V3rV8YWYI
+	 JqRDS/x9kWffw==
+X-Nifty-SrcIP: [209.85.161.45]
+Received: by mail-oo1-f45.google.com with SMTP id e11-20020a4ab14b000000b0049be568062bso1134458ooo.4
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Nov 2022 14:13:57 -0800 (PST)
+X-Gm-Message-State: ANoB5pm/rRhwG4aZ/XiZUE1QCLvJXac7OxW1/5jz7wU1kf9pu46gwDD+
+	u5V0LRTRfEiuMtCiFOPyZqhmvXw0OaWadoSHX7g=
+X-Google-Smtp-Source: AA0mqf76l2wK3mKIAJDJVFArHaLGuBw/aE77Bp4mfFOjNad9WnYlYwpqmqrPYE5zkcyqlZw2pKl6aDCh1wOE1MLpfdw=
+X-Received: by 2002:a4a:b145:0:b0:49f:449a:5f6c with SMTP id
+ e5-20020a4ab145000000b0049f449a5f6cmr10807854ooo.93.1669500836106; Sat, 26
+ Nov 2022 14:13:56 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20221126051002.123199-1-linux@weissschuh.net>
+In-Reply-To: <20221126051002.123199-1-linux@weissschuh.net>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Sun, 27 Nov 2022 07:13:19 +0900
+X-Gmail-Original-Message-ID: <CAK7LNASre69jM6symHY3h2fDPmN=kmZqOVGVrrVAvZ+8UzXxqA@mail.gmail.com>
+Message-ID: <CAK7LNASre69jM6symHY3h2fDPmN=kmZqOVGVrrVAvZ+8UzXxqA@mail.gmail.com>
+Subject: Re: [PATCH 1/3] firmware_loader: remove #include <generated/utsrelease.h>
+To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,65 +66,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Zhouyi Zhou <zhouzhouyi@gmail.com>
+Cc: Russ Weight <russell.h.weight@intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Luis Chamberlain <mcgrof@kernel.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Nov 21 2022 at 11:51, Zhouyi Zhou wrote:
-> During CPU-hotplug torture (CONFIG_NO_HZ_FULL=y), if we try to
-> offline tick_do_timer_cpu, the operation will fail because in
-> function tick_nohz_cpu_down:
-> ```
-> if (tick_nohz_full_running && tick_do_timer_cpu == cpu)
->       return -EBUSY;
-> ```
-> Above bug was first discovered in torture tests performed in PPC VM
-
-How is this a bug?
-
-> of Open Source Lab of Oregon State University, and reproducable in RISC-V
-> and X86-64 (with additional kernel commandline cpu0_hotplug).
+On Sat, Nov 26, 2022 at 2:10 PM Thomas Wei=C3=9Fschuh <linux@weissschuh.net=
+> wrote:
 >
-> In this patch, we avoid offline tick_do_timer_cpu by distribute
-> the offlining cpu among remaining cpus.
-
-Please read Documentation/process. Search for 'this patch'...
-
+> utsrelease.h is potentially generated on each build.
+> By removing this unused include we can get rid of some spurious
+> recompilations.
 >
-> Signed-off-by: Zhouyi Zhou <zhouzhouyi@gmail.com>
+> Signed-off-by: Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
 > ---
->  include/linux/tick.h        |  1 +
->  kernel/time/tick-common.c   |  1 +
->  kernel/time/tick-internal.h |  1 -
->  kernel/torture.c            | 10 ++++++++++
->  4 files changed, 12 insertions(+), 1 deletion(-)
+
+Reviewed-by: Masahiro Yamada <masahiroy@kernel.org>
+
+
+>  drivers/base/firmware_loader/firmware.h | 2 --
+>  1 file changed, 2 deletions(-)
 >
-> diff --git a/include/linux/tick.h b/include/linux/tick.h
-> index bfd571f18cfd..23cc0b205853 100644
-> --- a/include/linux/tick.h
-> +++ b/include/linux/tick.h
-> @@ -14,6 +14,7 @@
->  #include <linux/rcupdate.h>
->  
->  #ifdef CONFIG_GENERIC_CLOCKEVENTS
-> +extern int tick_do_timer_cpu __read_mostly;
->  extern void __init tick_init(void);
->  /* Should be core only, but ARM BL switcher requires it */
->  extern void tick_suspend_local(void);
-> diff --git a/kernel/time/tick-common.c b/kernel/time/tick-common.c
-> index 46789356f856..87b9b9afa320 100644
-> --- a/kernel/time/tick-common.c
-> +++ b/kernel/time/tick-common.c
-> @@ -48,6 +48,7 @@ ktime_t tick_next_period;
->   *    procedure also covers cpu hotplug.
->   */
->  int tick_do_timer_cpu __read_mostly = TICK_DO_TIMER_BOOT;
-> +EXPORT_SYMBOL_GPL(tick_do_timer_cpu);
+> diff --git a/drivers/base/firmware_loader/firmware.h b/drivers/base/firmw=
+are_loader/firmware.h
+> index fe77e91c38a2..bf549d6500d7 100644
+> --- a/drivers/base/firmware_loader/firmware.h
+> +++ b/drivers/base/firmware_loader/firmware.h
+> @@ -9,8 +9,6 @@
+>  #include <linux/list.h>
+>  #include <linux/completion.h>
+>
+> -#include <generated/utsrelease.h>
+> -
+>  /**
+>   * enum fw_opt - options to control firmware loading behaviour
+>   *
+>
+> base-commit: 0b1dcc2cf55ae6523c6fbd0d741b3ac28c9f4536
+> --
+> 2.38.1
+>
 
-No. We are not exporting this just to make a bogus test case happy.
 
-Fix the torture code to handle -EBUSY correctly.
-
-Thanks,
-
-        tglx
+--=20
+Best Regards
+Masahiro Yamada
