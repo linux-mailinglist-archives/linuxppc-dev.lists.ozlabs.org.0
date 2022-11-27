@@ -2,66 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 120D6639A9C
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Nov 2022 13:50:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3095A639AA0
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Nov 2022 13:51:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NKpNx6pFMz3cJ2
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Nov 2022 23:50:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NKpPy0X53z3cGV
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Nov 2022 23:51:34 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=PFWQSDQt;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=E0nyRvWR;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::534; helo=mail-pg1-x534.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1032; helo=mail-pj1-x1032.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=PFWQSDQt;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=E0nyRvWR;
 	dkim-atps=neutral
-Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
+Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NKpN24YrMz2xsD
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Nov 2022 23:49:53 +1100 (AEDT)
-Received: by mail-pg1-x534.google.com with SMTP id f3so7649739pgc.2
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Nov 2022 04:49:53 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NKpN26PB4z2ybK
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Nov 2022 23:49:54 +1100 (AEDT)
+Received: by mail-pj1-x1032.google.com with SMTP id hd14-20020a17090b458e00b0021909875bccso4480884pjb.1
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Nov 2022 04:49:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=RwMLZWYxereVNt+QC+1dKbaDprRFk7Ed+UlCUvjR76Y=;
-        b=PFWQSDQtYZuRJIv6tYLsm0zWan6ypjl1RQEU0P3RR2Ic5/9isbrA42GZB42XKEpxyh
-         ugrwkAhJFQHwEQwYgwNfWnghk+DWULhXO1DkdvMWnXo32ORujBXCTJGJpAwEfazPUsUr
-         vHLWgv/3jBs58mhV0onQ7XHf5EA3mYHKEtjiI09KNq2kT7CSXAOFMWBZYDu6W+USdGW7
-         hT1T+G4gNFDb7gcSsFd4z0AKXW3Bw1qOdZgHU52Z65YsmI45OtVvjqnVm0SgsDzOr+0j
-         JoZpCqdaUkYllrHUgDV9b7JSQVSIA6xz5acsNhjIw9TFyehpYgCalCqCQ8///6M5IH5u
-         LjPg==
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=I039xe31Ak5/E+235zwUTSDTerSrz6o+caYlOZbPo68=;
+        b=E0nyRvWRepVwbx3YjlXYQxfvHaWGmicXAemkmQ2KiCEDI0PF6u10RPz5i06rNocdLP
+         3ac/YfsatNM/hBvo2OGKEI7Yazzto9pDtBheQIikARxZRs44D0o6PgwesRBhrBiDKWkd
+         Lj9cCkak5U6QCAigbqQdc3q+TmbNy/iGcCx2C2WgxCGrzotIDhvaP7qZK1ghI7uP4tL9
+         wUPUb6S15p+DNk5cyuVOIuZu2zFXfvYo0x1edZiRTBVjQ/p76h1uqH3DEIYZft0Q2lrg
+         //0F9R+fDrdbwJhQBZyxLg3ft9ycyvvWELpM5Loy/d7O16bMlrx793JNybo3nkPuJUYt
+         rY9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=RwMLZWYxereVNt+QC+1dKbaDprRFk7Ed+UlCUvjR76Y=;
-        b=sMmW1pml5EXjLN+9AtkzXdb7g9bQP4RIkz8wwzr+rm8KGZjokKYwCmjE3FQr19esvz
-         DPr/4i8Nc4cfObN+FjCAc+OZIjHTeaAdsmN6yHLeXxxHya8l7Oac1QgmqvGngB1FM1bk
-         Dy5CkoRIOHK8/ltn8KiJ2B9Ndxczj8NNasMf3yxAVo4pLDrGkP0ywEPz7RSF+rwWlsN0
-         Twf+6xtBJOQbBKPNi+R/Lhr5ChfQJf9NFH0E9l5Ui6+Hiz5aadhxs8O2LOaQIwQO34h3
-         6Ks56YCnt7WR8jbpGBZantWDO+olRWMJ/Bj6yZryYVijNn+AAbeA2oJrDoNQ6ODLoj3b
-         Ty9w==
-X-Gm-Message-State: ANoB5pm45DFeSKOzsz0EHEQJyfGNcz1DD1yZfywq3diMpAWh84EI4yxN
-	2tHRN9t4Yj776lrzXCeyae/gnEf/1sM=
-X-Google-Smtp-Source: AA0mqf6GrbwBs4As20NLGzJphYWRDjgI6A/B++hYj+36ugsbZSdckBpSmElR/vdEVGXRRUG39ZI0LQ==
-X-Received: by 2002:a05:6a00:d69:b0:55a:d8f6:c65 with SMTP id n41-20020a056a000d6900b0055ad8f60c65mr27429624pfv.32.1669553389377;
-        Sun, 27 Nov 2022 04:49:49 -0800 (PST)
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=I039xe31Ak5/E+235zwUTSDTerSrz6o+caYlOZbPo68=;
+        b=wS02/ooq4tJ6vXSoTUOJjVjUPT2JALhHNNzRHIo7WmoGQFp+SxMGCAcCoXebo3zndC
+         +SA74pbsGbQz+Y6BXUOe+L8tpl5Yt9PN5Kal37OZcwHFMwrYcaiBdgV3ofCaQWCx8tns
+         O3/01uBzYGaNrgDJ9O70PkB9eLB0wZccZOIpcmCN+kKZ50HLK9qcDdedEWBE/eGB7WmA
+         +mA2OAMip4DxQPYghPXrLp2WBbH77phInikJ6uPXTWE2RsdOMcXK+iPXoM+Tz9yaYKFD
+         FGSKN4rpSvLGsE8+yO0DiyKjX4PBa0k7eKenljqCFxg+6xcOtEZ18cyTEbeswyBPMLuz
+         r+Pg==
+X-Gm-Message-State: ANoB5pk6YQ6QkC+vUkQhLfpCrilo0PFpvdOXJTkI8UT5/Y2j6n7UyB4t
+	Fhr7+LYdgxAh4QgtaVTccL2fUM0u1Yl55g==
+X-Google-Smtp-Source: AA0mqf58/6hG/bb7/D4FoGgI5Ocsukk4S3Ul31b6FQx1jyHmTvq8N4ofTRF/pTwwbPTam93I30RL5Q==
+X-Received: by 2002:a17:90b:3d8a:b0:20c:4f5b:f6cb with SMTP id pq10-20020a17090b3d8a00b0020c4f5bf6cbmr55727365pjb.153.1669553391869;
+        Sun, 27 Nov 2022 04:49:51 -0800 (PST)
 Received: from bobo.ozlabs.ibm.com ([220.240.231.60])
-        by smtp.gmail.com with ESMTPSA id q13-20020a63e20d000000b00473c36ea150sm5102287pgh.92.2022.11.27.04.49.46
+        by smtp.gmail.com with ESMTPSA id q13-20020a63e20d000000b00473c36ea150sm5102287pgh.92.2022.11.27.04.49.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Nov 2022 04:49:48 -0800 (PST)
+        Sun, 27 Nov 2022 04:49:51 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 00/17] powerpc: Remove STACK_FRAME_OVERHEAD
-Date: Sun, 27 Nov 2022 22:49:25 +1000
-Message-Id: <20221127124942.1665522-1-npiggin@gmail.com>
+Subject: [PATCH 01/17] KVM: PPC: Book3E: Fix CONFIG_TRACE_IRQFLAGS support
+Date: Sun, 27 Nov 2022 22:49:26 +1000
+Message-Id: <20221127124942.1665522-2-npiggin@gmail.com>
 X-Mailer: git-send-email 2.37.2
+In-Reply-To: <20221127124942.1665522-1-npiggin@gmail.com>
+References: <20221127124942.1665522-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -79,75 +82,80 @@ Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Since RFC:
-- Fix a compile bug.
-- Fix BookE KVM properly. Hopefully -- I don't have a BookE
-  KVM environment to test. Can QEMU do it? Is it still tested?
-- Drop the last two patches that changed the stack layout, they
-  can be done later.
-- Drop the load/store-multiple change to 32-bit.
+32-bit does not trace_irqs_off() to match the trace_irqs_on() call in
+kvmppc_fix_ee_before_entry(). This can lead to irqs being enabled twice
+in the trace, and the irqs-off region between guest exit and the host
+enabling local irqs again is not properly traced.
 
-Thanks,
-Nick
+64-bit code does call this, but from asm code where volatiles are live
+and so incorrectly get clobbered.
 
-Nicholas Piggin (17):
-  KVM: PPC: Book3E: Fix CONFIG_TRACE_IRQFLAGS support
-  powerpc/64: Remove asm interrupt tracing call helpers
-  powerpc/perf: callchain validate kernel stack pointer bounds
-  powerpc: Rearrange copy_thread child stack creation
-  powerpc/pseries: hvcall stack frame overhead
-  powerpc: simplify ppc_save_regs
-  powerpc: add definition for pt_regs offset within an interrupt frame
-  powerpc: add a definition for the marker offset within the interrupt
-    frame
-  powerpc: Rename STACK_FRAME_MARKER and derive it from frame offset
-  powerpc: add a define for the user interrupt frame size
-  powerpc: add a define for the switch frame size and regs offset
-  powerpc: copy_thread fill in interrupt frame marker and back chain
-  powerpc: copy_thread add a back chain to the switch stack frame
-  powerpc: split validate_sp into two functions
-  powerpc: allow minimum sized kernel stack frames
-  powerpc/64: ELFv2 use minimal stack frames in int and switch frame
-    sizes
-  powerpc: remove STACK_FRAME_OVERHEAD
+Move the irq reconcile into C to fix both problems.
 
- arch/powerpc/include/asm/irqflags.h           | 58 -------------
- arch/powerpc/include/asm/kvm_ppc.h            | 12 +++
- arch/powerpc/include/asm/processor.h          | 15 +++-
- arch/powerpc/include/asm/ptrace.h             | 37 ++++++---
- arch/powerpc/kernel/asm-offsets.c             |  9 +-
- arch/powerpc/kernel/entry_32.S                | 14 ++--
- arch/powerpc/kernel/exceptions-64e.S          | 44 +++++-----
- arch/powerpc/kernel/exceptions-64s.S          | 82 +++++++++----------
- arch/powerpc/kernel/head_32.h                 |  4 +-
- arch/powerpc/kernel/head_40x.S                |  2 +-
- arch/powerpc/kernel/head_44x.S                |  6 +-
- arch/powerpc/kernel/head_64.S                 |  6 +-
- arch/powerpc/kernel/head_85xx.S               |  8 +-
- arch/powerpc/kernel/head_8xx.S                |  2 +-
- arch/powerpc/kernel/head_book3s_32.S          |  4 +-
- arch/powerpc/kernel/head_booke.h              |  4 +-
- arch/powerpc/kernel/interrupt_64.S            | 32 ++++----
- arch/powerpc/kernel/irq.c                     |  4 +-
- arch/powerpc/kernel/kgdb.c                    |  2 +-
- arch/powerpc/kernel/misc_32.S                 |  2 +-
- arch/powerpc/kernel/misc_64.S                 |  4 +-
- arch/powerpc/kernel/optprobes_head.S          |  4 +-
- arch/powerpc/kernel/ppc_save_regs.S           | 57 ++++---------
- arch/powerpc/kernel/process.c                 | 54 +++++++-----
- arch/powerpc/kernel/smp.c                     |  2 +-
- arch/powerpc/kernel/stacktrace.c              | 10 +--
- arch/powerpc/kernel/tm.S                      |  8 +-
- arch/powerpc/kernel/trace/ftrace_mprofile.S   |  2 +-
- arch/powerpc/kvm/book3s_hv_rmhandlers.S       |  2 +-
- arch/powerpc/kvm/booke.c                      |  3 +
- arch/powerpc/kvm/bookehv_interrupts.S         |  9 --
- .../lib/test_emulate_step_exec_instr.S        |  2 +-
- arch/powerpc/perf/callchain.c                 |  9 +-
- arch/powerpc/platforms/pseries/hvCall.S       | 38 +++++----
- arch/powerpc/xmon/xmon.c                      | 10 +--
- 35 files changed, 259 insertions(+), 302 deletions(-)
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ arch/powerpc/include/asm/kvm_ppc.h    | 12 ++++++++++++
+ arch/powerpc/kvm/booke.c              |  3 +++
+ arch/powerpc/kvm/bookehv_interrupts.S |  9 ---------
+ 3 files changed, 15 insertions(+), 9 deletions(-)
 
+diff --git a/arch/powerpc/include/asm/kvm_ppc.h b/arch/powerpc/include/asm/kvm_ppc.h
+index bfacf12784dd..eae9619b6190 100644
+--- a/arch/powerpc/include/asm/kvm_ppc.h
++++ b/arch/powerpc/include/asm/kvm_ppc.h
+@@ -1014,6 +1014,18 @@ static inline void kvmppc_fix_ee_before_entry(void)
+ #endif
+ }
+ 
++static inline void kvmppc_fix_ee_after_exit(void)
++{
++#ifdef CONFIG_PPC64
++	/* Only need to enable IRQs by hard enabling them after this */
++	local_paca->irq_happened = PACA_IRQ_HARD_DIS;
++	irq_soft_mask_set(IRQS_ALL_DISABLED);
++#endif
++
++	trace_hardirqs_off();
++}
++
++
+ static inline ulong kvmppc_get_ea_indexed(struct kvm_vcpu *vcpu, int ra, int rb)
+ {
+ 	ulong ea;
+diff --git a/arch/powerpc/kvm/booke.c b/arch/powerpc/kvm/booke.c
+index 7b4920e9fd26..0dce93ccaadf 100644
+--- a/arch/powerpc/kvm/booke.c
++++ b/arch/powerpc/kvm/booke.c
+@@ -1015,6 +1015,9 @@ int kvmppc_handle_exit(struct kvm_vcpu *vcpu, unsigned int exit_nr)
+ 	u32 last_inst = KVM_INST_FETCH_FAILED;
+ 	enum emulation_result emulated = EMULATE_DONE;
+ 
++	/* Fix irq state (pairs with kvmppc_fix_ee_before_entry()) */
++	kvmppc_fix_ee_after_exit();
++
+ 	/* update before a new last_exit_type is rewritten */
+ 	kvmppc_update_timing_stats(vcpu);
+ 
+diff --git a/arch/powerpc/kvm/bookehv_interrupts.S b/arch/powerpc/kvm/bookehv_interrupts.S
+index 8262c14fc9e6..b5fe6fb53c66 100644
+--- a/arch/powerpc/kvm/bookehv_interrupts.S
++++ b/arch/powerpc/kvm/bookehv_interrupts.S
+@@ -424,15 +424,6 @@ _GLOBAL(kvmppc_resume_host)
+ 	mtspr	SPRN_EPCR, r3
+ 	isync
+ 
+-#ifdef CONFIG_64BIT
+-	/*
+-	 * We enter with interrupts disabled in hardware, but
+-	 * we need to call RECONCILE_IRQ_STATE to ensure
+-	 * that the software state is kept in sync.
+-	 */
+-	RECONCILE_IRQ_STATE(r3,r5)
+-#endif
+-
+ 	/* Switch to kernel stack and jump to handler. */
+ 	mr	r3, r4
+ 	mr	r5, r14 /* intno */
 -- 
 2.37.2
 
