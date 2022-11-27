@@ -1,67 +1,100 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0118639933
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Nov 2022 03:46:39 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C565C6399E2
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Nov 2022 11:36:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NKXzx3Vn1z3f4b
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Nov 2022 13:46:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NKlPr5JrJz3c8V
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Nov 2022 21:36:16 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=O2xOwuAq;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=O27xJtPp;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KAY1ggBj;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::435; helo=mail-pf1-x435.google.com; envelope-from=zhouzhouyi@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=O2xOwuAq;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=O27xJtPp;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KAY1ggBj;
 	dkim-atps=neutral
-Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NKXz13kZxz3057
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Nov 2022 13:45:48 +1100 (AEDT)
-Received: by mail-pf1-x435.google.com with SMTP id q12so3291425pfn.10
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Nov 2022 18:45:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ppae8YkGxihHdolp7H9Ytm/fuY6Yp4IGxdByEhiVIp0=;
-        b=O2xOwuAqWd42vmpaztCU+N0Zt7qwCJ+HxM+oeF/R/Gj78hawuSuBKUWUiUq7nriKCE
-         LXgj9dd2Y8h6yoGZ98JNK9rt2CFthOzB9ISvDyTsm996HEY84YepKQ1lmA3YKTGbqdfS
-         mZYY3HcYNv+rwoedu1KmAvTk9QCvqoATnvSwbk8KhsqeTscHgGX9mujcI5woUWdPOMEs
-         4CCoP/7Ov1iBFRXxGUv6s2OlEGFERatM1Gdb5Oa+k2sM4c0A6+b6jO3vxTs8rcRfRCW8
-         M22qGsW3PQAJ6X6AY74nYB2fn3GraeQtDLGqaZkcLvU8YBFhVjvAnC3tcNli0r+YBO5N
-         bzcw==
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NKlNn3vXTz2xkD
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Nov 2022 21:35:19 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1669545314;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=a/FKhEJUKr4Au5jEDV0nA39boCfv1uOAmeL78/XZzlw=;
+	b=O27xJtPpaXX+WGWtRHYJetfQf0LitOuWyYASTvh9BOIc76OBbAvqAJoksVcyj8ihyyybuL
+	K0BzXUXxU998BrnvTHmhdCmjqJ56s5MlltXbtXEOh8pcP8m9+etTCwEOVSMLMxVzLD+KhE
+	02JICc1N+vm9jg/GhumwHtE2HYBwStg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1669545315;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=a/FKhEJUKr4Au5jEDV0nA39boCfv1uOAmeL78/XZzlw=;
+	b=KAY1ggBja+xLxU+qgBSmoeX+1QRRXnyvIIrzKncszqGvUmNHx20HFOOM1hXSj16SDqXx2p
+	wGiUlKpAsQLFo2n/TSrCv2ZoaLiVaX+DPLc/8zKOoAVdiyKNldV7f/GzaIlas0yf+PCk4e
+	p22wLw4D791CTinA0LF6VWd6Etozys8=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-156-sG5BGRfCOiKCwiTNpNCUlQ-1; Sun, 27 Nov 2022 05:35:13 -0500
+X-MC-Unique: sG5BGRfCOiKCwiTNpNCUlQ-1
+Received: by mail-wr1-f70.google.com with SMTP id p2-20020adfaa02000000b00241d7fb17d7so1297136wrd.5
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Nov 2022 02:35:12 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        h=content-transfer-encoding:in-reply-to:subject:organization:from
+         :content-language:references:cc:to:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ppae8YkGxihHdolp7H9Ytm/fuY6Yp4IGxdByEhiVIp0=;
-        b=7iNYbTSIASB1R8q0ncHv2Z1zd421troZ8iOZ68OXRkoFcktpwSIn3kVKOTtibTLlgl
-         v+59cnuRlqu4SJiirG1vZDyXjk5YB4VHZq/QuIyHBcZALPF7ihuX3GdjhK35IOvyiFyH
-         zh27wgQsJyKUHC4ZAjbMP6W6xDTUKmZOtLEnwFFpQm2zhfKhJGeBSqYWSBzuw04+2Rzw
-         0NVBBC1e9gU7eSvQONE5XQe1o2ubtQKMY5iojRYmwyT1GoXH2dIAbJi9tLPzVhqez3di
-         EP7jprlaOgGYokw/8hOg3Qcu/dd0hDexj8EbeJQAIWPbAw0NdNMkmRpwlVNMWx1CcsHO
-         0u3Q==
-X-Gm-Message-State: ANoB5pmxbCqZ6sShRs+GqISF4PcUfa2AlERaPyoLNeuDweMl+4VNB4PP
-	JRW9IGQtfFnSXqS9d1wjcJMG9NPwZxBKe1hQSTw=
-X-Google-Smtp-Source: AA0mqf6YciwvlYw43Lh0nHr5XuZ1gXzzHQykeXjeIoYNZhlpSYxSR4xj6cT/+28H978gFdAz/Dp8UCqc83Ro3cy9dEM=
-X-Received: by 2002:a65:45ce:0:b0:44b:2928:f868 with SMTP id
- m14-20020a6545ce000000b0044b2928f868mr31009871pgr.384.1669517145674; Sat, 26
- Nov 2022 18:45:45 -0800 (PST)
+        bh=a/FKhEJUKr4Au5jEDV0nA39boCfv1uOAmeL78/XZzlw=;
+        b=zUHmINlbKBT2PdO47pUKsT8HslgOPDAQ5zM5wjQr9ZlWwnlsnFJk5EG2uNJe5G+qfM
+         /BeGo2UJ95GFacUZWxIETMjFpEb9GsCNEUhwg0Gr56RESWm3oQcduotkv5C+CgF90AJT
+         pU/A8JUAz7Y8ZO7XRspSD0IkMFETapA5UnR2vTvP00cYhf5Uo0rSOfMLrOnzE8UvgJkE
+         KOmtDEoWd3DhuLaOBZFS24QvLBEZWHfXHT9JXvm87dacHUpM+7baFHrcsYjtThucZfYI
+         5Soi8Qx1csUQiCW0Jz6KKGANuv+jGPs/G++2DS+qJ4i0HAba2j14W888m/7DFnpuMxaq
+         LMvw==
+X-Gm-Message-State: ANoB5pkyFPU58cDsv3RklzWLauwZ2enHddRBGkKmHsf/DHwDfpKbdqI2
+	kVkOn9xJ30k1CRm65uvg9NwbKIm08dkk2PbbBPh+lqjugY3Sy5e0Ll2XYIeAeLuZEtLUSIke+L0
+	ZG2wN8TIYnQtAQoR3mn+J3GDZow==
+X-Received: by 2002:a05:600c:4e88:b0:3b5:477:1e80 with SMTP id f8-20020a05600c4e8800b003b504771e80mr34594851wmq.200.1669545311986;
+        Sun, 27 Nov 2022 02:35:11 -0800 (PST)
+X-Google-Smtp-Source: AA0mqf44zTk6J1KBaqs1seffTqR2+v9TqwwPSmjBWI2JrtJKUPaYELfhGu32bDJHUXiVwBKDfUuj3g==
+X-Received: by 2002:a05:600c:4e88:b0:3b5:477:1e80 with SMTP id f8-20020a05600c4e8800b003b504771e80mr34594816wmq.200.1669545311706;
+        Sun, 27 Nov 2022 02:35:11 -0800 (PST)
+Received: from ?IPV6:2003:cb:c724:dc00:5ea8:da59:8609:7da? (p200300cbc724dc005ea8da59860907da.dip0.t-ipconnect.de. [2003:cb:c724:dc00:5ea8:da59:8609:7da])
+        by smtp.gmail.com with ESMTPSA id u10-20020a05600c19ca00b003c5571c27a1sm14797024wmq.32.2022.11.27.02.35.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 27 Nov 2022 02:35:11 -0800 (PST)
+Message-ID: <81fb0fa3-2e06-b765-56ac-a7d981194e59@redhat.com>
+Date: Sun, 27 Nov 2022 11:35:09 +0100
 MIME-Version: 1.0
-References: <20221121035140.118651-1-zhouzhouyi@gmail.com> <87y1rxwsse.ffs@tglx>
-In-Reply-To: <87y1rxwsse.ffs@tglx>
-From: Zhouyi Zhou <zhouzhouyi@gmail.com>
-Date: Sun, 27 Nov 2022 10:45:34 +0800
-Message-ID: <CAABZP2xNTbrx9iV+KH3VZx1c9Yi97+izNA=XSJQBuOJ4WENFZg@mail.gmail.com>
-Subject: Re: [PATCH linux-next][RFC]torture: avoid offline tick_do_timer_cpu
-To: Thomas Gleixner <tglx@linutronix.de>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.1
+To: linux-kernel@vger.kernel.org, Hans Verkuil <hverkuil@xs4all.nl>,
+ Andrew Morton <akpm@linux-foundation.org>
+References: <20221116102659.70287-1-david@redhat.com>
+ <20221116102659.70287-17-david@redhat.com>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+Subject: Re: [PATCH mm-unstable v1 16/20] mm/frame-vector: remove FOLL_FORCE
+ usage
+In-Reply-To: <20221116102659.70287-17-david@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,91 +106,114 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dave@stgolabs.net, paulmck@kernel.org, josh@joshtriplett.org, linux-kernel@vger.kernel.org, fweisbec@gmail.com, linuxppc-dev@lists.ozlabs.org, mingo@kernel.org
+Cc: linux-ia64@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, dri-devel@lists.freedesktop.org, linux-mm@kvack.org, Nadav Amit <namit@vmware.com>, linux-kselftest@vger.kernel.org, sparclinux@vger.kernel.org, Shuah Khan <shuah@kernel.org>, Marek Szyprowski <m.szyprowski@samsung.com>, Andrea Arcangeli <aarcange@redhat.com>, linux-samsung-soc@vger.kernel.org, linux-rdma@vger.kernel.org, David Airlie <airlied@gmail.com>, x86@kernel.org, Hugh Dickins <hughd@google.com>, Matthew Wilcox <willy@infradead.org>, Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@suse.cz>, linux-media@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, John Hubbard <jhubbard@nvidia.com>, linux-um@lists.infradead.org, etnaviv@lists.freedesktop.org, Alex Williamson <alex.williamson@redhat.com>, Peter Xu <peterx@redhat.com>, Muchun Song <songmuchun@bytedance.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, linux-arm-kernel@lists.infradead.org, linuxppc-dev
+ @lists.ozlabs.org, Oded Gabbay <ogabbay@kernel.org>, linux-mips@vger.kernel.org, Tomasz Figa <tfiga@chromium.org>, linux-perf-users@vger.kernel.org, linux-security-module@vger.kernel.org, linux-alpha@vger.kernel.org, linux-fsdevel@vger.kernel.org, Lucas Stach <l.stach@pengutronix.de>, Linus Torvalds <torvalds@linux-foundation.org>, Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Thank Thomas for your guidance
+On 16.11.22 11:26, David Hildenbrand wrote:
+> FOLL_FORCE is really only for ptrace access. According to commit
+> 707947247e95 ("media: videobuf2-vmalloc: get_userptr: buffers are always
+> writable"), get_vaddr_frames() currently pins all pages writable as a
+> workaround for issues with read-only buffers.
+> 
+> FOLL_FORCE, however, seems to be a legacy leftover as it predates
+> commit 707947247e95 ("media: videobuf2-vmalloc: get_userptr: buffers are
+> always writable"). Let's just remove it.
+> 
+> Once the read-only buffer issue has been resolved, FOLL_WRITE could
+> again be set depending on the DMA direction.
+> 
+> Cc: Hans Verkuil <hverkuil@xs4all.nl>
+> Cc: Marek Szyprowski <m.szyprowski@samsung.com>
+> Cc: Tomasz Figa <tfiga@chromium.org>
+> Cc: Marek Szyprowski <m.szyprowski@samsung.com>
+> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> ---
+>   drivers/media/common/videobuf2/frame_vector.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/media/common/videobuf2/frame_vector.c b/drivers/media/common/videobuf2/frame_vector.c
+> index 542dde9d2609..062e98148c53 100644
+> --- a/drivers/media/common/videobuf2/frame_vector.c
+> +++ b/drivers/media/common/videobuf2/frame_vector.c
+> @@ -50,7 +50,7 @@ int get_vaddr_frames(unsigned long start, unsigned int nr_frames,
+>   	start = untagged_addr(start);
+>   
+>   	ret = pin_user_pages_fast(start, nr_frames,
+> -				  FOLL_FORCE | FOLL_WRITE | FOLL_LONGTERM,
+> +				  FOLL_WRITE | FOLL_LONGTERM,
+>   				  (struct page **)(vec->ptrs));
+>   	if (ret > 0) {
+>   		vec->got_ref = true;
 
-On Sun, Nov 27, 2022 at 1:05 AM Thomas Gleixner <tglx@linutronix.de> wrote:
->
-> On Mon, Nov 21 2022 at 11:51, Zhouyi Zhou wrote:
-> > During CPU-hotplug torture (CONFIG_NO_HZ_FULL=y), if we try to
-> > offline tick_do_timer_cpu, the operation will fail because in
-> > function tick_nohz_cpu_down:
-> > ```
-> > if (tick_nohz_full_running && tick_do_timer_cpu == cpu)
-> >       return -EBUSY;
-> > ```
-> > Above bug was first discovered in torture tests performed in PPC VM
->
-> How is this a bug?
-Yes, this is a false positive instead.
->
-> > of Open Source Lab of Oregon State University, and reproducable in RISC-V
-> > and X86-64 (with additional kernel commandline cpu0_hotplug).
-> >
-> > In this patch, we avoid offline tick_do_timer_cpu by distribute
-> > the offlining cpu among remaining cpus.
->
-> Please read Documentation/process. Search for 'this patch'...
-Documentation/process/submitting-patches.rst says:
-"Describe your changes in imperative mood, e.g. "make xyzzy do frotz"
-instead of "[This patch] makes xyzzy do frotz" or "[I] changed xyzzy
-to do frotz", as if you are giving orders to the codebase to change
-its behaviour."
 
-So, I should construct my patch as:
-We avoid ... by ...
->
-> >
-> > Signed-off-by: Zhouyi Zhou <zhouzhouyi@gmail.com>
-> > ---
-> >  include/linux/tick.h        |  1 +
-> >  kernel/time/tick-common.c   |  1 +
-> >  kernel/time/tick-internal.h |  1 -
-> >  kernel/torture.c            | 10 ++++++++++
-> >  4 files changed, 12 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/include/linux/tick.h b/include/linux/tick.h
-> > index bfd571f18cfd..23cc0b205853 100644
-> > --- a/include/linux/tick.h
-> > +++ b/include/linux/tick.h
-> > @@ -14,6 +14,7 @@
-> >  #include <linux/rcupdate.h>
-> >
-> >  #ifdef CONFIG_GENERIC_CLOCKEVENTS
-> > +extern int tick_do_timer_cpu __read_mostly;
-> >  extern void __init tick_init(void);
-> >  /* Should be core only, but ARM BL switcher requires it */
-> >  extern void tick_suspend_local(void);
-> > diff --git a/kernel/time/tick-common.c b/kernel/time/tick-common.c
-> > index 46789356f856..87b9b9afa320 100644
-> > --- a/kernel/time/tick-common.c
-> > +++ b/kernel/time/tick-common.c
-> > @@ -48,6 +48,7 @@ ktime_t tick_next_period;
-> >   *    procedure also covers cpu hotplug.
-> >   */
-> >  int tick_do_timer_cpu __read_mostly = TICK_DO_TIMER_BOOT;
-> > +EXPORT_SYMBOL_GPL(tick_do_timer_cpu);
->
-> No. We are not exporting this just to make a bogus test case happy.
->
-> Fix the torture code to handle -EBUSY correctly.
-I am going to do a study on this, for now, I do a grep in the kernel tree:
-find . -name "*.c"|xargs grep cpuhp_setup_state|wc -l
-The result of the grep command shows that there are 268
-cpuhp_setup_state* cases.
-which may make our task more complicated.
+Hi Andrew,
 
-After my study, should we also take Frederic's proposal as a possible option?
-(construct a function for this)
-https://lore.kernel.org/lkml/20221123223658.GC1395324@lothringen/
+see the discussion at [1] regarding a conflict and how to proceed with
+upstreaming. The conflict would be easy to resolve, however, also
+the patch description doesn't make sense anymore with [1].
 
-I learned a lot during this process
-Many thanks
-Zhouyi
->
-> Thanks,
->
->         tglx
+
+On top of mm-unstable, reverting this patch and applying [1] gives me
+an updated patch:
+
+
+ From 1e66c25f1467c1f1e5f275312f2c6df29308d4df Mon Sep 17 00:00:00 2001
+From: David Hildenbrand <david@redhat.com>
+Date: Wed, 16 Nov 2022 11:26:55 +0100
+Subject: [PATCH] mm/frame-vector: remove FOLL_FORCE usage
+
+GUP now supports reliable R/O long-term pinning in COW mappings, such
+that we break COW early. MAP_SHARED VMAs only use the shared zeropage so
+far in one corner case (DAXFS file with holes), which can be ignored
+because GUP does not support long-term pinning in fsdax (see
+check_vma_flags()).
+
+Consequently, FOLL_FORCE | FOLL_WRITE | FOLL_LONGTERM is no longer required
+for reliable R/O long-term pinning: FOLL_LONGTERM is sufficient. So stop
+using FOLL_FORCE, which is really only for ptrace access.
+
+Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+Acked-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Cc: Hans Verkuil <hverkuil@xs4all.nl>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Tomasz Figa <tfiga@chromium.org>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: David Hildenbrand <david@redhat.com>
+---
+  drivers/media/common/videobuf2/frame_vector.c | 2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/media/common/videobuf2/frame_vector.c b/drivers/media/common/videobuf2/frame_vector.c
+index aad72640f055..8606fdacf5b8 100644
+--- a/drivers/media/common/videobuf2/frame_vector.c
++++ b/drivers/media/common/videobuf2/frame_vector.c
+@@ -41,7 +41,7 @@ int get_vaddr_frames(unsigned long start, unsigned int nr_frames, bool write,
+  	int ret_pin_user_pages_fast = 0;
+  	int ret = 0;
+  	int err;
+-	unsigned int gup_flags = FOLL_FORCE | FOLL_LONGTERM;
++	unsigned int gup_flags = FOLL_LONGTERM;
+  
+  	if (nr_frames == 0)
+  		return 0;
+-- 
+2.38.1
+
+
+
+Please let me know how you want to proceed. Ideally, you'd pick up
+[1] and apply this updated patch. Also, please tell me if I should
+send this updated patch in a separate mail (e.g., as reply to this mail).
+
+
+[1] https://lkml.kernel.org/r/71bdd3cf-b044-3f12-df58-7c16d5749587@xs4all.nl
+
+-- 
+Thanks,
+
+David / dhildenb
+
