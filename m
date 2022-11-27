@@ -1,67 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3F48639ABB
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Nov 2022 13:59:53 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D003639ABE
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Nov 2022 14:00:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NKpbW3JbTz3fFR
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Nov 2022 23:59:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NKpcX0Qcbz3f5x
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Nov 2022 00:00:44 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=GOM4xFNK;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=e/P9MxuR;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62c; helo=mail-pl1-x62c.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::436; helo=mail-pf1-x436.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=GOM4xFNK;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=e/P9MxuR;
 	dkim-atps=neutral
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
+Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NKpNS0yNHz3cKb
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Nov 2022 23:50:15 +1100 (AEDT)
-Received: by mail-pl1-x62c.google.com with SMTP id y4so7793550plb.2
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Nov 2022 04:50:15 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NKpNV3NMkz3bjd
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Nov 2022 23:50:18 +1100 (AEDT)
+Received: by mail-pf1-x436.google.com with SMTP id 130so8045270pfu.8
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Nov 2022 04:50:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=wrnqkbxJ5S/2fsEj9nqhBEzQDP0Edmb8mbzDHTO8vos=;
-        b=GOM4xFNKkkP4FMh5YJg9S8hZqLpsRCxb/6KFIgc5S4wuBc+qi4Dwgn06aF+9YjU+pf
-         b+nZztP0oLiwsg28zFjR/gRoT3PKJbM5ewjfsg4zwCYrozf1+nZ7Q3i7LvAgUHhmxBz9
-         VmE6wLgtJKkyJmqOo7en/V/3wjYwgTU9Axn0vRByn5K9rmODJXHvpSK7jdnaUkHWrLUo
-         faYlt3ZbkeoARVc1VtMHE5YO4cjh+Bf24QV6yjcKM0R/9R9uf9+pDf121w1KD79QyA7c
-         81pTpisivVmvUMD7yzZW2E0BPXtgEe9ZLhrq67v/64ahnMA7FT2cdHZD9pLrdRQt8GoR
-         7yHg==
+        bh=+krTD53JDTgykVep/jbTUJb7DjigcW/bUrKL0peNZGM=;
+        b=e/P9MxuR8USYtsCHCeOaxuS28kISWuTekUfjw5Q9cZUXEBgk9mVAXcbXDfLjtdFukk
+         e5TNDM48h3UX4e8phh93lY8ys979gL3y7yYsnkrxsG4FsW9OY8l1hlWFxYOtBcTaoZ8Z
+         rW0zRNi94nDnPY/DgdXRPl1SWvg+NKAvBf/EIHmsB0q3mqk3jAZQzfys71dIFXay9cRE
+         3V3lb1Wx4dFsb6ELaHc2FLYcfnMDwGjMJTO+IOsJ0RXuOyQoFLkDL4cQJ7KeehRnGmbI
+         fcYVFKttXDz0kFuUazdNUvKlaxX/cmgHApAeOIs7NSDDv5lbeqFSTH+IopKqF3liLIBe
+         ivbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=wrnqkbxJ5S/2fsEj9nqhBEzQDP0Edmb8mbzDHTO8vos=;
-        b=rFrIk8HLjVwe5GQu46ScAhzP1IYGW41FWXOfBiK05OxwUHKwIqEnpsTiq3cXs+29yK
-         ECAAueQosl5HqXJ0t4XMXedfxvrbtjLL5VaPOg2IAVgf2PYnlXoOu0SL0nbCSGBdGHd1
-         r4ifoEwdekdT1Mjgs1+gZ0KYWdFGKTrLKXDsBCxtST45n6Ka00hcIuOTnPFFa8DD5Ssd
-         3JYi16kCEftkjoKBqT4Ej3Qcm+0YugiR5sJAvJL8MHNUO2n1vTrTYDLB4n9NkDHs+nH+
-         So6z5IivcOFRSX7WqU+WVmFEHTvci0E/VwmwKLG1xzV3TqaBXb6SH+1msCC1xd8rk/sH
-         XJMg==
-X-Gm-Message-State: ANoB5plnV+VI7aPvdZ+TfkZ+Atr07je6accuIFwlYm6lbML1DMJ/YMLS
-	/AgXHQGUddNl1ttSw6/RBKg3jqrvi+5rnQ==
-X-Google-Smtp-Source: AA0mqf6kcWj/aLvVRYA9jxbaGOgt1igZbV8EAO4OdZPupcq3FaA+bUD4gjEXRv6CVCY+uP1y72vvIg==
-X-Received: by 2002:a17:90b:e18:b0:219:31ed:22be with SMTP id ge24-20020a17090b0e1800b0021931ed22bemr1604052pjb.75.1669553413415;
-        Sun, 27 Nov 2022 04:50:13 -0800 (PST)
+        bh=+krTD53JDTgykVep/jbTUJb7DjigcW/bUrKL0peNZGM=;
+        b=VHj4hWuXwcsgumE2CavQsVuwFgqeHcJDRXutBypMcCIRHBWg95d1W72t8oUGI/Ddda
+         WJ2N1KfxrAFpMIGZG/suTkbWcfhEVU6y7YKL86grzCS6qrGzC/PMmga/D1xJpIBj03+J
+         ufytx7ItlCuKpTIsF7Oiu1duoD9aeJP5vXhO0O3a4t+g3/b5Y0RNMB81lwLy0118DHnb
+         9Zv6dKi2rpZaLoMbwXeb3g57eD+NsPm6l8JTEM7GN176uKm7i+hTtzi+VsRJyh9Gssvn
+         ei9AeCk9M2YQWC7T7ql5ksEcnpa9x2Gd/fSCKdIv4lGmx1Fo5otFuTF99eF2Rdgxk50i
+         F6sQ==
+X-Gm-Message-State: ANoB5pknImhpOZP1QdNl0Zar/GP2rhbpoRPlaWzwDSmzIkZp9jRUIpNY
+	GYQy+t1DELRImdXvxpo/D89yui4iAVcP9A==
+X-Google-Smtp-Source: AA0mqf78RajhynKoDMzkvwfSzHMaU/qtPVSQbrADTbccq9jmFfzkhCvl/LSHmA7W6fgYFNzzgMOWuA==
+X-Received: by 2002:aa7:8a0c:0:b0:56c:2a86:d74 with SMTP id m12-20020aa78a0c000000b0056c2a860d74mr27410710pfa.73.1669553415746;
+        Sun, 27 Nov 2022 04:50:15 -0800 (PST)
 Received: from bobo.ozlabs.ibm.com ([220.240.231.60])
-        by smtp.gmail.com with ESMTPSA id q13-20020a63e20d000000b00473c36ea150sm5102287pgh.92.2022.11.27.04.50.11
+        by smtp.gmail.com with ESMTPSA id q13-20020a63e20d000000b00473c36ea150sm5102287pgh.92.2022.11.27.04.50.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Nov 2022 04:50:12 -0800 (PST)
+        Sun, 27 Nov 2022 04:50:15 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 10/17] powerpc: add a define for the user interrupt frame size
-Date: Sun, 27 Nov 2022 22:49:35 +1000
-Message-Id: <20221127124942.1665522-11-npiggin@gmail.com>
+Subject: [PATCH 11/17] powerpc: add a define for the switch frame size and regs offset
+Date: Sun, 27 Nov 2022 22:49:36 +1000
+Message-Id: <20221127124942.1665522-12-npiggin@gmail.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20221127124942.1665522-1-npiggin@gmail.com>
 References: <20221127124942.1665522-1-npiggin@gmail.com>
@@ -82,92 +82,119 @@ Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The user interrupt frame is a different size from the kernel frame, so
-give it its own name.
+This is open-coded in process.c, ppc32 uses a different define with the
+same value, and the C definition is name differently which makes it an
+extra indirection to grep for.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/include/asm/ptrace.h | 6 +++---
- arch/powerpc/kernel/process.c     | 6 +++---
- arch/powerpc/kernel/stacktrace.c  | 4 ++--
- 3 files changed, 8 insertions(+), 8 deletions(-)
+ arch/powerpc/include/asm/ptrace.h |  6 ++++--
+ arch/powerpc/kernel/asm-offsets.c |  2 +-
+ arch/powerpc/kernel/entry_32.S    |  6 +++---
+ arch/powerpc/kernel/process.c     | 12 ++++++++----
+ 4 files changed, 16 insertions(+), 10 deletions(-)
 
 diff --git a/arch/powerpc/include/asm/ptrace.h b/arch/powerpc/include/asm/ptrace.h
-index fdd50648df56..705ce26ae887 100644
+index 705ce26ae887..412ef0749775 100644
 --- a/arch/powerpc/include/asm/ptrace.h
 +++ b/arch/powerpc/include/asm/ptrace.h
-@@ -122,8 +122,7 @@ struct pt_regs
+@@ -97,8 +97,6 @@ struct pt_regs
+ #endif
  
- #define STACK_FRAME_OVERHEAD	112	/* size of minimum stack frame */
- #define STACK_FRAME_LR_SAVE	2	/* Location of LR in stack frame */
--#define STACK_INT_FRAME_SIZE	(sizeof(struct pt_regs) + \
--				 STACK_FRAME_OVERHEAD + KERNEL_REDZONE_SIZE)
-+#define STACK_USER_INT_FRAME_SIZE	(sizeof(struct pt_regs) + STACK_FRAME_OVERHEAD)
+ 
+-#define STACK_FRAME_WITH_PT_REGS (STACK_FRAME_OVERHEAD + sizeof(struct pt_regs))
+-
+ // Always displays as "REGS" in memory dumps
+ #ifdef CONFIG_CPU_BIG_ENDIAN
+ #define STACK_FRAME_REGS_MARKER	ASM_CONST(0x52454753)
+@@ -125,6 +123,8 @@ struct pt_regs
+ #define STACK_USER_INT_FRAME_SIZE	(sizeof(struct pt_regs) + STACK_FRAME_OVERHEAD)
  #define STACK_INT_FRAME_REGS	STACK_FRAME_OVERHEAD
  #define STACK_INT_FRAME_MARKER	(STACK_FRAME_OVERHEAD - 16)
++#define STACK_SWITCH_FRAME_SIZE	(sizeof(struct pt_regs) + STACK_FRAME_OVERHEAD)
++#define STACK_SWITCH_FRAME_REGS	STACK_FRAME_OVERHEAD
  
-@@ -143,7 +142,7 @@ struct pt_regs
- #define KERNEL_REDZONE_SIZE	0
- #define STACK_FRAME_OVERHEAD	16	/* size of minimum stack frame */
- #define STACK_FRAME_LR_SAVE	1	/* Location of LR in stack frame */
--#define STACK_INT_FRAME_SIZE	(sizeof(struct pt_regs) + STACK_FRAME_OVERHEAD)
-+#define STACK_USER_INT_FRAME_SIZE	(sizeof(struct pt_regs) + STACK_FRAME_OVERHEAD)
+ #ifdef CONFIG_PPC64_ELF_ABI_V2
+ #define STACK_FRAME_MIN_SIZE	32
+@@ -146,6 +146,8 @@ struct pt_regs
  #define STACK_INT_FRAME_REGS	STACK_FRAME_OVERHEAD
  #define STACK_INT_FRAME_MARKER	(STACK_FRAME_OVERHEAD - 8)
  #define STACK_FRAME_MIN_SIZE	STACK_FRAME_OVERHEAD
-@@ -153,6 +152,7 @@ struct pt_regs
++#define STACK_SWITCH_FRAME_SIZE	(sizeof(struct pt_regs) + STACK_FRAME_OVERHEAD)
++#define STACK_SWITCH_FRAME_REGS	STACK_FRAME_OVERHEAD
  
- #endif /* __powerpc64__ */
+ /* Size of stack frame allocated when calling signal handler. */
+ #define __SIGNAL_FRAMESIZE	64
+diff --git a/arch/powerpc/kernel/asm-offsets.c b/arch/powerpc/kernel/asm-offsets.c
+index db5e66c1d031..f7dff906c24b 100644
+--- a/arch/powerpc/kernel/asm-offsets.c
++++ b/arch/powerpc/kernel/asm-offsets.c
+@@ -260,7 +260,7 @@ int main(void)
  
-+#define STACK_INT_FRAME_SIZE	(KERNEL_REDZONE_SIZE + STACK_USER_INT_FRAME_SIZE)
- #define STACK_INT_FRAME_MARKER_LONGS	(STACK_INT_FRAME_MARKER/sizeof(long))
+ 	/* Interrupt register frame */
+ 	DEFINE(INT_FRAME_SIZE, STACK_INT_FRAME_SIZE);
+-	DEFINE(SWITCH_FRAME_SIZE, STACK_FRAME_WITH_PT_REGS);
++	DEFINE(SWITCH_FRAME_SIZE, STACK_SWITCH_FRAME_SIZE);
+ 	STACK_PT_REGS_OFFSET(GPR0, gpr[0]);
+ 	STACK_PT_REGS_OFFSET(GPR1, gpr[1]);
+ 	STACK_PT_REGS_OFFSET(GPR2, gpr[2]);
+diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
+index 2f61b7d3677c..6e99ec10be89 100644
+--- a/arch/powerpc/kernel/entry_32.S
++++ b/arch/powerpc/kernel/entry_32.S
+@@ -215,9 +215,9 @@ ret_from_kernel_thread:
+  * in arch/ppc/kernel/process.c
+  */
+ _GLOBAL(_switch)
+-	stwu	r1,-INT_FRAME_SIZE(r1)
++	stwu	r1,-SWITCH_FRAME_SIZE(r1)
+ 	mflr	r0
+-	stw	r0,INT_FRAME_SIZE+4(r1)
++	stw	r0,SWITCH_FRAME_SIZE+4(r1)
+ 	/* r3-r12 are caller saved -- Cort */
+ 	SAVE_NVGPRS(r1)
+ 	stw	r0,_NIP(r1)	/* Return to switch caller */
+@@ -248,7 +248,7 @@ _GLOBAL(_switch)
  
- #ifndef __ASSEMBLY__
+ 	lwz	r4,_NIP(r1)	/* Return to _switch caller in new task */
+ 	mtlr	r4
+-	addi	r1,r1,INT_FRAME_SIZE
++	addi	r1,r1,SWITCH_FRAME_SIZE
+ 	blr
+ 
+ 	.globl	fast_exception_return
 diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index b0a9e5eeec4c..d6daf0d073b3 100644
+index d6daf0d073b3..a097879b0474 100644
 --- a/arch/powerpc/kernel/process.c
 +++ b/arch/powerpc/kernel/process.c
-@@ -1727,15 +1727,15 @@ int copy_thread(struct task_struct *p, const struct kernel_clone_args *args)
- 	klp_init_thread_info(p);
- 
- 	/* Create initial stack frame. */
--	sp -= (sizeof(struct pt_regs) + STACK_FRAME_OVERHEAD);
-+	sp -= STACK_USER_INT_FRAME_SIZE;
- 	((unsigned long *)sp)[0] = 0;
- 
- 	/* Copy registers */
--	childregs = (struct pt_regs *)(sp + STACK_FRAME_OVERHEAD);
-+	childregs = (struct pt_regs *)(sp + STACK_INT_FRAME_REGS);
- 	if (unlikely(args->fn)) {
- 		/* kernel thread */
- 		memset(childregs, 0, sizeof(struct pt_regs));
--		childregs->gpr[1] = sp + (sizeof(struct pt_regs) + STACK_FRAME_OVERHEAD);
-+		childregs->gpr[1] = sp + STACK_USER_INT_FRAME_SIZE;
- 		/* function */
- 		if (args->fn)
- 			childregs->gpr[14] = ppc_function_entry((void *)args->fn);
-diff --git a/arch/powerpc/kernel/stacktrace.c b/arch/powerpc/kernel/stacktrace.c
-index 7efa0ec9dd77..453ac317a6cf 100644
---- a/arch/powerpc/kernel/stacktrace.c
-+++ b/arch/powerpc/kernel/stacktrace.c
-@@ -77,7 +77,7 @@ int __no_sanitize_address arch_stack_walk_reliable(stack_trace_consume_fn consum
+@@ -1779,10 +1779,10 @@ int copy_thread(struct task_struct *p, const struct kernel_clone_args *args)
+ 	 * do some house keeping and then return from the fork or clone
+ 	 * system call, using the stack frame created above.
+ 	 */
+-	sp -= sizeof(struct pt_regs);
+-	kregs = (struct pt_regs *) sp;
+-	sp -= STACK_FRAME_OVERHEAD;
++	sp -= STACK_SWITCH_FRAME_SIZE;
++	kregs = (struct pt_regs *)(sp + STACK_SWITCH_FRAME_REGS);
+ 	p->thread.ksp = sp;
++
+ #ifdef CONFIG_HAVE_HW_BREAKPOINT
+ 	for (i = 0; i < nr_wp_slots(); i++)
+ 		p->thread.ptrace_bps[i] = NULL;
+@@ -2232,8 +2232,12 @@ void __no_sanitize_address show_stack(struct task_struct *tsk,
  		/*
- 		 * For user tasks, this is the SP value loaded on
- 		 * kernel entry, see "PACAKSAVE(r13)" in _switch() and
--		 * system_call_common()/EXCEPTION_PROLOG_COMMON().
-+		 * system_call_common().
- 		 *
- 		 * Likewise for non-swapper kernel threads,
- 		 * this also happens to be the top of the stack
-@@ -88,7 +88,7 @@ int __no_sanitize_address arch_stack_walk_reliable(stack_trace_consume_fn consum
- 		 * an unreliable stack trace until it's been
- 		 * _switch()'ed to for the first time.
+ 		 * See if this is an exception frame.
+ 		 * We look for the "regs" marker in the current frame.
++		 *
++		 * STACK_SWITCH_FRAME_SIZE being the smallest frame that
++		 * could hold a pt_regs, if that does not fit then it can't
++		 * have regs.
  		 */
--		stack_end -= STACK_FRAME_OVERHEAD + sizeof(struct pt_regs);
-+		stack_end -= STACK_USER_INT_FRAME_SIZE;
- 	} else {
- 		/*
- 		 * idle tasks have a custom stack layout,
+-		if (validate_sp(sp, tsk, STACK_FRAME_WITH_PT_REGS)
++		if (validate_sp(sp, tsk, STACK_SWITCH_FRAME_SIZE)
+ 		    && stack[STACK_INT_FRAME_MARKER_LONGS] == STACK_FRAME_REGS_MARKER) {
+ 			struct pt_regs *regs = (struct pt_regs *)
+ 				(sp + STACK_INT_FRAME_REGS);
 -- 
 2.37.2
 
