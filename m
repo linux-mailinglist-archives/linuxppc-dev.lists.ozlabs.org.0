@@ -2,58 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5FF5639A93
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Nov 2022 13:41:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 120D6639A9C
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Nov 2022 13:50:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NKpBC5CzNz3f3R
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Nov 2022 23:41:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NKpNx6pFMz3cJ2
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Nov 2022 23:50:41 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=tG6JfF9G;
-	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=/rsDEyIP;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=PFWQSDQt;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::534; helo=mail-pg1-x534.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=tG6JfF9G;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=/rsDEyIP;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=PFWQSDQt;
 	dkim-atps=neutral
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NKp9G5rQ2z2ybK
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Nov 2022 23:40:34 +1100 (AEDT)
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1669552828;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EB/53VcoNSyoAbWn3SJg3+Ux/MQhVRpr/mqLNU0o7js=;
-	b=tG6JfF9GryBdY5R1ayDhFW5nVcj8BNhfdr0APEKiJba1hQz6qIiOe5efb58RfrjIUOwt5+
-	RugHbJd3u8HkXb/ai/VxhC6/hCxeh3ST002BnKf/61ZC1YlVr+luurAddWDJpKonqY08u5
-	G6wDSaoK8gzLbH05rJK7EnLlO4ZPF1zQrBKPTpnJRVnmy5BInef7LZ89XaXIae7ktv+2GN
-	9gK9TF4uM5I+E3SgXO0k5zWyqsAOu+ZeTn2arHQiEEUtqXSz9QY6QgQf68GZuEJanLslt2
-	zYmML/fl0TgfyLMdkAslGLznJWKaAl50FVGekChjqc6HJ/3z1yOLZQdy/OaK0A==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1669552828;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EB/53VcoNSyoAbWn3SJg3+Ux/MQhVRpr/mqLNU0o7js=;
-	b=/rsDEyIP1zkZFV+paA9RKRugWWLeuR7RpzdUbBmFNIrfaI1E7mu2cmLePwxTvbwFW0vLz8
-	cV9QL3HaPKBt0RDA==
-To: Zhouyi Zhou <zhouzhouyi@gmail.com>
-Subject: Re: [PATCH linux-next][RFC]torture: avoid offline tick_do_timer_cpu
-In-Reply-To: <CAABZP2xNTbrx9iV+KH3VZx1c9Yi97+izNA=XSJQBuOJ4WENFZg@mail.gmail.com>
-References: <20221121035140.118651-1-zhouzhouyi@gmail.com>
- <87y1rxwsse.ffs@tglx>
- <CAABZP2xNTbrx9iV+KH3VZx1c9Yi97+izNA=XSJQBuOJ4WENFZg@mail.gmail.com>
-Date: Sun, 27 Nov 2022 13:40:28 +0100
-Message-ID: <87v8n0woxv.ffs@tglx>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NKpN24YrMz2xsD
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Nov 2022 23:49:53 +1100 (AEDT)
+Received: by mail-pg1-x534.google.com with SMTP id f3so7649739pgc.2
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Nov 2022 04:49:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=RwMLZWYxereVNt+QC+1dKbaDprRFk7Ed+UlCUvjR76Y=;
+        b=PFWQSDQtYZuRJIv6tYLsm0zWan6ypjl1RQEU0P3RR2Ic5/9isbrA42GZB42XKEpxyh
+         ugrwkAhJFQHwEQwYgwNfWnghk+DWULhXO1DkdvMWnXo32ORujBXCTJGJpAwEfazPUsUr
+         vHLWgv/3jBs58mhV0onQ7XHf5EA3mYHKEtjiI09KNq2kT7CSXAOFMWBZYDu6W+USdGW7
+         hT1T+G4gNFDb7gcSsFd4z0AKXW3Bw1qOdZgHU52Z65YsmI45OtVvjqnVm0SgsDzOr+0j
+         JoZpCqdaUkYllrHUgDV9b7JSQVSIA6xz5acsNhjIw9TFyehpYgCalCqCQ8///6M5IH5u
+         LjPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=RwMLZWYxereVNt+QC+1dKbaDprRFk7Ed+UlCUvjR76Y=;
+        b=sMmW1pml5EXjLN+9AtkzXdb7g9bQP4RIkz8wwzr+rm8KGZjokKYwCmjE3FQr19esvz
+         DPr/4i8Nc4cfObN+FjCAc+OZIjHTeaAdsmN6yHLeXxxHya8l7Oac1QgmqvGngB1FM1bk
+         Dy5CkoRIOHK8/ltn8KiJ2B9Ndxczj8NNasMf3yxAVo4pLDrGkP0ywEPz7RSF+rwWlsN0
+         Twf+6xtBJOQbBKPNi+R/Lhr5ChfQJf9NFH0E9l5Ui6+Hiz5aadhxs8O2LOaQIwQO34h3
+         6Ks56YCnt7WR8jbpGBZantWDO+olRWMJ/Bj6yZryYVijNn+AAbeA2oJrDoNQ6ODLoj3b
+         Ty9w==
+X-Gm-Message-State: ANoB5pm45DFeSKOzsz0EHEQJyfGNcz1DD1yZfywq3diMpAWh84EI4yxN
+	2tHRN9t4Yj776lrzXCeyae/gnEf/1sM=
+X-Google-Smtp-Source: AA0mqf6GrbwBs4As20NLGzJphYWRDjgI6A/B++hYj+36ugsbZSdckBpSmElR/vdEVGXRRUG39ZI0LQ==
+X-Received: by 2002:a05:6a00:d69:b0:55a:d8f6:c65 with SMTP id n41-20020a056a000d6900b0055ad8f60c65mr27429624pfv.32.1669553389377;
+        Sun, 27 Nov 2022 04:49:49 -0800 (PST)
+Received: from bobo.ozlabs.ibm.com ([220.240.231.60])
+        by smtp.gmail.com with ESMTPSA id q13-20020a63e20d000000b00473c36ea150sm5102287pgh.92.2022.11.27.04.49.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 27 Nov 2022 04:49:48 -0800 (PST)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 00/17] powerpc: Remove STACK_FRAME_OVERHEAD
+Date: Sun, 27 Nov 2022 22:49:25 +1000
+Message-Id: <20221127124942.1665522-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,49 +75,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dave@stgolabs.net, paulmck@kernel.org, josh@joshtriplett.org, linux-kernel@vger.kernel.org, fweisbec@gmail.com, linuxppc-dev@lists.ozlabs.org, mingo@kernel.org
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Zhouyi,
-
-On Sun, Nov 27 2022 at 10:45, Zhouyi Zhou wrote:
-> On Sun, Nov 27, 2022 at 1:05 AM Thomas Gleixner <tglx@linutronix.de> wrote:
->
-> So, I should construct my patch as:
-> We avoid ... by ...
-
-Not "We avoid".
-
-Avoid this behaviour by ....
-
->> No. We are not exporting this just to make a bogus test case happy.
->>
->> Fix the torture code to handle -EBUSY correctly.
-> I am going to do a study on this, for now, I do a grep in the kernel tree:
-> find . -name "*.c"|xargs grep cpuhp_setup_state|wc -l
-> The result of the grep command shows that there are 268
-> cpuhp_setup_state* cases.
-> which may make our task more complicated.
-
-Why? The whole point of this torture thing is to stress the
-infrastructure.
-
-There are quite some reasons why a CPU-hotplug or a hot-unplug operation
-can fail, which is not a fatal problem, really.
-
-So if a CPU hotplug operation fails, then why can't the torture test
-just move on and validate that the system still behaves correctly?
-
-That gives us more coverage than just testing the good case and giving
-up when something unexpected happens.
-
-I even argue that the torture test should inject random failures into
-the hotplug state machine to achieve extended code coverage.
+Since RFC:
+- Fix a compile bug.
+- Fix BookE KVM properly. Hopefully -- I don't have a BookE
+  KVM environment to test. Can QEMU do it? Is it still tested?
+- Drop the last two patches that changed the stack layout, they
+  can be done later.
+- Drop the load/store-multiple change to 32-bit.
 
 Thanks,
+Nick
 
-        tglx
+Nicholas Piggin (17):
+  KVM: PPC: Book3E: Fix CONFIG_TRACE_IRQFLAGS support
+  powerpc/64: Remove asm interrupt tracing call helpers
+  powerpc/perf: callchain validate kernel stack pointer bounds
+  powerpc: Rearrange copy_thread child stack creation
+  powerpc/pseries: hvcall stack frame overhead
+  powerpc: simplify ppc_save_regs
+  powerpc: add definition for pt_regs offset within an interrupt frame
+  powerpc: add a definition for the marker offset within the interrupt
+    frame
+  powerpc: Rename STACK_FRAME_MARKER and derive it from frame offset
+  powerpc: add a define for the user interrupt frame size
+  powerpc: add a define for the switch frame size and regs offset
+  powerpc: copy_thread fill in interrupt frame marker and back chain
+  powerpc: copy_thread add a back chain to the switch stack frame
+  powerpc: split validate_sp into two functions
+  powerpc: allow minimum sized kernel stack frames
+  powerpc/64: ELFv2 use minimal stack frames in int and switch frame
+    sizes
+  powerpc: remove STACK_FRAME_OVERHEAD
 
+ arch/powerpc/include/asm/irqflags.h           | 58 -------------
+ arch/powerpc/include/asm/kvm_ppc.h            | 12 +++
+ arch/powerpc/include/asm/processor.h          | 15 +++-
+ arch/powerpc/include/asm/ptrace.h             | 37 ++++++---
+ arch/powerpc/kernel/asm-offsets.c             |  9 +-
+ arch/powerpc/kernel/entry_32.S                | 14 ++--
+ arch/powerpc/kernel/exceptions-64e.S          | 44 +++++-----
+ arch/powerpc/kernel/exceptions-64s.S          | 82 +++++++++----------
+ arch/powerpc/kernel/head_32.h                 |  4 +-
+ arch/powerpc/kernel/head_40x.S                |  2 +-
+ arch/powerpc/kernel/head_44x.S                |  6 +-
+ arch/powerpc/kernel/head_64.S                 |  6 +-
+ arch/powerpc/kernel/head_85xx.S               |  8 +-
+ arch/powerpc/kernel/head_8xx.S                |  2 +-
+ arch/powerpc/kernel/head_book3s_32.S          |  4 +-
+ arch/powerpc/kernel/head_booke.h              |  4 +-
+ arch/powerpc/kernel/interrupt_64.S            | 32 ++++----
+ arch/powerpc/kernel/irq.c                     |  4 +-
+ arch/powerpc/kernel/kgdb.c                    |  2 +-
+ arch/powerpc/kernel/misc_32.S                 |  2 +-
+ arch/powerpc/kernel/misc_64.S                 |  4 +-
+ arch/powerpc/kernel/optprobes_head.S          |  4 +-
+ arch/powerpc/kernel/ppc_save_regs.S           | 57 ++++---------
+ arch/powerpc/kernel/process.c                 | 54 +++++++-----
+ arch/powerpc/kernel/smp.c                     |  2 +-
+ arch/powerpc/kernel/stacktrace.c              | 10 +--
+ arch/powerpc/kernel/tm.S                      |  8 +-
+ arch/powerpc/kernel/trace/ftrace_mprofile.S   |  2 +-
+ arch/powerpc/kvm/book3s_hv_rmhandlers.S       |  2 +-
+ arch/powerpc/kvm/booke.c                      |  3 +
+ arch/powerpc/kvm/bookehv_interrupts.S         |  9 --
+ .../lib/test_emulate_step_exec_instr.S        |  2 +-
+ arch/powerpc/perf/callchain.c                 |  9 +-
+ arch/powerpc/platforms/pseries/hvCall.S       | 38 +++++----
+ arch/powerpc/xmon/xmon.c                      | 10 +--
+ 35 files changed, 259 insertions(+), 302 deletions(-)
 
+-- 
+2.37.2
 
