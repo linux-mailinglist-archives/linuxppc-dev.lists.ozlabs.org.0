@@ -2,71 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC0B6639ACB
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Nov 2022 14:06:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CEF6639C23
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Nov 2022 18:54:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NKpkt3YYGz3fWt
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Nov 2022 00:06:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NKx7D0rkJz3cMS
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Nov 2022 04:54:16 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=KmdPwE0G;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rTPtL2mt;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::636; helo=mail-pl1-x636.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=srs0=sxgl=33=paulmck-thinkpad-p17-gen-1.home=paulmck@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=KmdPwE0G;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rTPtL2mt;
 	dkim-atps=neutral
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NKpNm19KFz3cKG
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Nov 2022 23:50:32 +1100 (AEDT)
-Received: by mail-pl1-x636.google.com with SMTP id k7so7772502pll.6
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Nov 2022 04:50:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zNplP6Rypuxe4WObOy5GbURQb1CZMQaa/LwOjoenJtk=;
-        b=KmdPwE0GYRjbSi+qHPlZrsWYx+sZPTRULN+fpy/HiKD21odb4gn3Skp7X1cXjZ1Rp+
-         8APWpSoCy4VBKCUxx2s+TwVW745Kcu/5gVBp66AiXhkavQGnzFlPkt7G+VJF5FMbcTPk
-         4ywRemvqmtIVV0CBeD+sc5j8GCbTaK3TWhIrMs/BXGMoggCAmIPji1ZpNDcQehh2nozF
-         qEudiNlsFVHBqek9wMOOJajf2ifvj2DD8/aFHCG3d7hsn3Fu/81ulWxeJDCYOPlkrYgt
-         +Czpv8oFaGs9PH2hTpe5gZd5d8z8hvGKSmBdLVFbSn2/9I9kYFxemvoelOHLQBn8jv/E
-         Eqdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zNplP6Rypuxe4WObOy5GbURQb1CZMQaa/LwOjoenJtk=;
-        b=J41GwzuISurC2l04FUHhc8dr0AIhxnMyzhA1kYoK48AQe1+QG+KL6eD32EOn08kWd2
-         LQMDme1eE9LC6xRA1GqRqUA2lV1OMiGDfzfOFJwldpwMcshfjFiE1X3gD7bL8mouAUr6
-         aTv8bPQQBMCTosDVbH0IwGhmJQphbMfsoPGils3NXeR/T02qLp8xRwOVRvxvwZuQ+c4X
-         nPxlRDM2v6Wvl0hCzFYjHnOg/ykPQCv2hJjK75TnGDyGq2rwv/7OSNphhu935gR6oeSL
-         0sDdEGfuTj6dsU3Wi0RTqe4EZpkMgibmuWKbMOImTu2uuPm8RVJCI5YjPTfax2zP0mcF
-         Cyew==
-X-Gm-Message-State: ANoB5pnP4zYFIGxl4cxjJPKmjhRxcdzcsyshjelNgb96bV/pJsH3BW0w
-	Bhigv+CigAi9X/pyOVnsiEzfgUJxVVolIA==
-X-Google-Smtp-Source: AA0mqf7EQy5cHzc2Kba2aCRDmDI2MAkCGVafIMg8Ulq69EM3DDr4mcyuLhzEw67YlP8epz0TMdEAAA==
-X-Received: by 2002:a17:902:b40b:b0:188:75bb:36d4 with SMTP id x11-20020a170902b40b00b0018875bb36d4mr28356419plr.55.1669553429641;
-        Sun, 27 Nov 2022 04:50:29 -0800 (PST)
-Received: from bobo.ozlabs.ibm.com ([220.240.231.60])
-        by smtp.gmail.com with ESMTPSA id q13-20020a63e20d000000b00473c36ea150sm5102287pgh.92.2022.11.27.04.50.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Nov 2022 04:50:29 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 17/17] powerpc: remove STACK_FRAME_OVERHEAD
-Date: Sun, 27 Nov 2022 22:49:42 +1000
-Message-Id: <20221127124942.1665522-18-npiggin@gmail.com>
-X-Mailer: git-send-email 2.37.2
-In-Reply-To: <20221127124942.1665522-1-npiggin@gmail.com>
-References: <20221127124942.1665522-1-npiggin@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NKx6C6cXZz3057
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Nov 2022 04:53:23 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 0F081B80B3C;
+	Sun, 27 Nov 2022 17:53:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B73F0C433C1;
+	Sun, 27 Nov 2022 17:53:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1669571597;
+	bh=cR4oVWEUk67TAnV7gA291l8sois74FLMYSBwf6j79kg=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+	b=rTPtL2mt8FWmVx2GP8FAoATCIpkEzeWETxEmypyD2s5cVOjNNGDxffAIzVp+JJSPB
+	 kXga7F2X5leOvfu67vLAf22y9LWndAsNNtso1+hYnONzBoYwsbPea9x6HAYJhOqrbZ
+	 kQPhGkpCqyLtZcsQE1OMPX7i65c2RVrOHqdjDKQMjUD+TA21q8VcuykyyfPCHavjpE
+	 qwxiLu+LltpusRu+su7+zAmRVho0hshDG+lP3LSwlnMoBt6/dG/IUwEZBVsO8BZtOQ
+	 9QBOozQ1iuvtJmf9oHp2ax8RE4QTE2Asb9XM3T3frPojd4+jTSxUSOv9AO8DfTuBGf
+	 tpIV1md3I+68A==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id 555555C09B0; Sun, 27 Nov 2022 09:53:17 -0800 (PST)
+Date: Sun, 27 Nov 2022 09:53:17 -0800
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [PATCH linux-next][RFC]torture: avoid offline tick_do_timer_cpu
+Message-ID: <20221127175317.GF4001@paulmck-ThinkPad-P17-Gen-1>
+References: <20221121035140.118651-1-zhouzhouyi@gmail.com>
+ <87y1rxwsse.ffs@tglx>
+ <CAABZP2xNTbrx9iV+KH3VZx1c9Yi97+izNA=XSJQBuOJ4WENFZg@mail.gmail.com>
+ <87v8n0woxv.ffs@tglx>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87v8n0woxv.ffs@tglx>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,69 +64,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Reply-To: paulmck@kernel.org
+Cc: dave@stgolabs.net, linuxppc-dev@lists.ozlabs.org, josh@joshtriplett.org, linux-kernel@vger.kernel.org, Zhouyi Zhou <zhouzhouyi@gmail.com>, fweisbec@gmail.com, mingo@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is equal to STACK_FRAME_MIN_SIZE on 32-bit and 64-bit ELFv1, and no
-longer used in 64-bit ELFv2, so replace STACK_FRAME_OVERHEAD occurrences
-with STACK_FRAME_MIN_SIZE.
+On Sun, Nov 27, 2022 at 01:40:28PM +0100, Thomas Gleixner wrote:
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/include/asm/ptrace.h | 24 +++++++++++-------------
- 1 file changed, 11 insertions(+), 13 deletions(-)
+[ . . . ]
 
-diff --git a/arch/powerpc/include/asm/ptrace.h b/arch/powerpc/include/asm/ptrace.h
-index a9dfce62a5eb..a53c580388e2 100644
---- a/arch/powerpc/include/asm/ptrace.h
-+++ b/arch/powerpc/include/asm/ptrace.h
-@@ -117,7 +117,6 @@ struct pt_regs
- #define USER_REDZONE_SIZE	512
- #define KERNEL_REDZONE_SIZE	288
- 
--#define STACK_FRAME_OVERHEAD	112	/* size of minimum stack frame */
- #define STACK_FRAME_LR_SAVE	2	/* Location of LR in stack frame */
- 
- #ifdef CONFIG_PPC64_ELF_ABI_V2
-@@ -134,11 +133,11 @@ struct pt_regs
-  * so the second from last one of those is used for the frame marker.
-  */
- #define STACK_FRAME_MIN_SIZE	112
--#define STACK_USER_INT_FRAME_SIZE	(sizeof(struct pt_regs) + STACK_FRAME_OVERHEAD)
--#define STACK_INT_FRAME_REGS	STACK_FRAME_OVERHEAD
--#define STACK_INT_FRAME_MARKER	(STACK_FRAME_OVERHEAD - 16)
--#define STACK_SWITCH_FRAME_SIZE	(sizeof(struct pt_regs) + STACK_FRAME_OVERHEAD)
--#define STACK_SWITCH_FRAME_REGS	STACK_FRAME_OVERHEAD
-+#define STACK_USER_INT_FRAME_SIZE	(sizeof(struct pt_regs) + STACK_FRAME_MIN_SIZE)
-+#define STACK_INT_FRAME_REGS	STACK_FRAME_MIN_SIZE
-+#define STACK_INT_FRAME_MARKER	(STACK_FRAME_MIN_SIZE - 16)
-+#define STACK_SWITCH_FRAME_SIZE	(sizeof(struct pt_regs) + STACK_FRAME_MIN_SIZE)
-+#define STACK_SWITCH_FRAME_REGS	STACK_FRAME_MIN_SIZE
- #endif
- 
- /* Size of dummy stack frame allocated when calling signal handler. */
-@@ -149,14 +148,13 @@ struct pt_regs
- 
- #define USER_REDZONE_SIZE	0
- #define KERNEL_REDZONE_SIZE	0
--#define STACK_FRAME_OVERHEAD	16	/* size of minimum stack frame */
-+#define STACK_FRAME_MIN_SIZE	16
- #define STACK_FRAME_LR_SAVE	1	/* Location of LR in stack frame */
--#define STACK_USER_INT_FRAME_SIZE	(sizeof(struct pt_regs) + STACK_FRAME_OVERHEAD)
--#define STACK_INT_FRAME_REGS	STACK_FRAME_OVERHEAD
--#define STACK_INT_FRAME_MARKER	(STACK_FRAME_OVERHEAD - 8)
--#define STACK_FRAME_MIN_SIZE	STACK_FRAME_OVERHEAD
--#define STACK_SWITCH_FRAME_SIZE	(sizeof(struct pt_regs) + STACK_FRAME_OVERHEAD)
--#define STACK_SWITCH_FRAME_REGS	STACK_FRAME_OVERHEAD
-+#define STACK_USER_INT_FRAME_SIZE	(sizeof(struct pt_regs) + STACK_FRAME_MIN_SIZE)
-+#define STACK_INT_FRAME_REGS	STACK_FRAME_MIN_SIZE
-+#define STACK_INT_FRAME_MARKER	(STACK_FRAME_MIN_SIZE - 8)
-+#define STACK_SWITCH_FRAME_SIZE	(sizeof(struct pt_regs) + STACK_FRAME_MIN_SIZE)
-+#define STACK_SWITCH_FRAME_REGS	STACK_FRAME_MIN_SIZE
- 
- /* Size of stack frame allocated when calling signal handler. */
- #define __SIGNAL_FRAMESIZE	64
--- 
-2.37.2
+> >> No. We are not exporting this just to make a bogus test case happy.
+> >>
+> >> Fix the torture code to handle -EBUSY correctly.
+> > I am going to do a study on this, for now, I do a grep in the kernel tree:
+> > find . -name "*.c"|xargs grep cpuhp_setup_state|wc -l
+> > The result of the grep command shows that there are 268
+> > cpuhp_setup_state* cases.
+> > which may make our task more complicated.
+> 
+> Why? The whole point of this torture thing is to stress the
+> infrastructure.
 
+Indeed.
+
+> There are quite some reasons why a CPU-hotplug or a hot-unplug operation
+> can fail, which is not a fatal problem, really.
+> 
+> So if a CPU hotplug operation fails, then why can't the torture test
+> just move on and validate that the system still behaves correctly?
+> 
+> That gives us more coverage than just testing the good case and giving
+> up when something unexpected happens.
+
+Agreed, with access to a function like the tick_nohz_full_timekeeper()
+suggested earlier in this email thread, then yes, it would make sense to
+try to offline the CPU anyway, then forgive the failure in cases where
+the CPU matches that indicated by tick_nohz_full_timekeeper().
+
+> I even argue that the torture test should inject random failures into
+> the hotplug state machine to achieve extended code coverage.
+
+I could imagine torture_onoff() telling various CPU-hotplug notifiers
+to refuse the transition using some TBD interface.  That would better
+test the CPU-hotplug common code's ability to deal with failures.
+
+Or did you have something else/additional in mind?
+
+							Thanx, Paul
