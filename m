@@ -1,69 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98F9263A06E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Nov 2022 05:16:40 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2FB063A07D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Nov 2022 05:18:32 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NLBxL30Nmz3f3K
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Nov 2022 15:16:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NLBzV0GZyz3f6V
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Nov 2022 15:18:30 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=j7194bFE;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=npDM7XRV;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::436; helo=mail-pf1-x436.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1033; helo=mail-pj1-x1033.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=j7194bFE;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=npDM7XRV;
 	dkim-atps=neutral
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
+Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NLBwR39dsz3c7t
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Nov 2022 15:15:49 +1100 (AEDT)
-Received: by mail-pf1-x436.google.com with SMTP id q12so5199529pfn.10
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Nov 2022 20:15:49 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NLBwb2Xhbz3cL1
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Nov 2022 15:15:59 +1100 (AEDT)
+Received: by mail-pj1-x1033.google.com with SMTP id 3-20020a17090a098300b00219041dcbe9so7892818pjo.3
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Nov 2022 20:15:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=sRpFw3OeO/vLJZ1WJwARqXVTUFA41mm8ZoGpWsgy6+4=;
-        b=j7194bFEJymcnVuCEAb9JHO9sWsAmKDXSSn49w/YyLTwA9zol2Fsrd4PbERyxgJ8Bt
-         hQwt3jYEx6mbcuJxEROUs1QzjHECBMiPwbuzODjIjDJmqceTxoTkdawWUuyqsYydIHSe
-         xdDrMVx0BjWY+w8IAt0LY0LKmr52y817Xlszj+Dj1EFPs38wSo6KEL7m162C3AClYJ42
-         3rXjT/W47+HyW1lgEBUU8pZ92NOC4MhWA7YA/P6GsE4NxFKdQAmoLu3qYKMOXZwEeXMF
-         irE/uOE9HiinBzIWaHSkqYtuT9B8R9hNGUR7CyDogzhdlehkYRvvLpqFO9k1PaqmRaLh
-         SHoA==
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=a7R9heIoAg42vgnWEBRYpJlNY18RAwQzKTaUAUkLcfg=;
+        b=npDM7XRVYF8htHZG1hHMVYU6dbZokUzEHgDICho41UI7ruvizp8f5hWtlEupd95SMt
+         XuXumM5OHkF/8ShVGEfDbhjS0s1r/BmJVwILKP13k0WCcez+pD8nmKZvm+3o+jZ6TVSV
+         GIjsVf6tTEcw/P1yVt4f0j7PYRulu0a/6JJYPv0JiNH5hlFCZ9bjeNVHo7H1WY5AmjlC
+         DfsA8MoCuk6kWG1ONRlC1ibTsRyQ9v97I3izrQhwytvGsMBG5f709C5FaaRa84HMRKMH
+         ku2pe6sQ+Shf+3FYS9ktwK5hOioqrtvoyeCxf4F/R8cszxtqbti+0swV17RIXEPtbmfm
+         wdMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=sRpFw3OeO/vLJZ1WJwARqXVTUFA41mm8ZoGpWsgy6+4=;
-        b=orPwIZC3XFn4ESoJ83kuCO3OSOaaS13UEEQO3S7DhzbUBOoMmGn9ty199JgEjPPDH0
-         0ULu0+maJVAqEdfFLX9IVwW9U+56jnnwE2hy7zDhYqhjQWp19CFn1aBbA53mgby0NbW4
-         QVfcpGJO7diH11lGFsF+zGYiloE6kTKXm8NGjGGd+6GJ/Nm8er9F/ZuZe9i7iI9SRxSC
-         TODaWJjmcdGPqd/+ECg/R+af/MN96JEzEfy+zy1uc06YMHAUudj5XP7ARBvjSnMdEkBN
-         p2QsdRp4+kEVYqs49j9LEr2u7LIHKLdp3fxIqTbFwZvgM+j6AoGG51+mzJyakhuXF+yI
-         v6SA==
-X-Gm-Message-State: ANoB5plbv9Bq7/Xmy33Af5f+/H3SZI+xf7fZ4Z3aAkd+0Ur+KSgf7xCq
-	x7PUHkgn4YYHaJQ6wSIry/2G5FuKFq4=
-X-Google-Smtp-Source: AA0mqf5kzwhKEJVu0MS/vrry2sAH0s4dpHAvcCdTCLY0+xjAhf4Zg+5aZitELbCml1vhTAYut1i/dw==
-X-Received: by 2002:a63:f962:0:b0:477:1bb8:bbf4 with SMTP id q34-20020a63f962000000b004771bb8bbf4mr26140270pgk.19.1669608946909;
-        Sun, 27 Nov 2022 20:15:46 -0800 (PST)
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=a7R9heIoAg42vgnWEBRYpJlNY18RAwQzKTaUAUkLcfg=;
+        b=piy9cBVYer+7qsYoOjv/CiqLtCOil4l26pdzuJza7J2exOfTFDFbv33MH2SgSKUpyV
+         CqDyrlDNx5d2UORlt7QdAPFH97O7lh97ZKcu43fY24xZ7UguPXmlKBIoFIwR/y47bK2G
+         diABX/Ij2mvrRnYLzsieNrXDNnQIFeHiZYRrl/7tcPTgdO4ECtJUMsu7Hql7MNT1LouP
+         4lbcW8idJiDlnRo9rv7P+OUBDhH/kLkZTH81B3NeN/7njCrlEHY3J2OBEfKB0Sg/Gspr
+         B8RnZWohaLgkldOCXz6A1FmdaVDXBdLwU7ly+1P62EP0G+UOI2v4m81K8K2YDDexrBU/
+         5B6Q==
+X-Gm-Message-State: ANoB5pkyGn0f2NGtetiK81JK/IYEch3kwNMBjFelMRH+eRUuJuTdIc6k
+	6zogGMUr0XiLQmGcuDb5ZB4eG2tvJS4=
+X-Google-Smtp-Source: AA0mqf5ld6vlEQt9yisUzJ+hVwunoUL0MM0ltj7rnkorwWz9iBCJwQtFUyRTib6MgmwFZT3d6NTDoQ==
+X-Received: by 2002:a17:902:e80f:b0:186:f4ba:a817 with SMTP id u15-20020a170902e80f00b00186f4baa817mr35546670plg.97.1669608951177;
+        Sun, 27 Nov 2022 20:15:51 -0800 (PST)
 Received: from bobo.ozlabs.ibm.com ([220.240.231.60])
-        by smtp.gmail.com with ESMTPSA id y28-20020aa79afc000000b0057489a78979sm6905670pfp.21.2022.11.27.20.15.43
+        by smtp.gmail.com with ESMTPSA id y28-20020aa79afc000000b0057489a78979sm6905670pfp.21.2022.11.27.20.15.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Nov 2022 20:15:46 -0800 (PST)
+        Sun, 27 Nov 2022 20:15:50 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v6 0/4] Option to build big-endian with ELFv2 ABI
-Date: Mon, 28 Nov 2022 14:15:35 +1000
-Message-Id: <20221128041539.1742489-1-npiggin@gmail.com>
+Subject: [PATCH v6 1/4] module: add module_elf_check_arch for module-specific checks
+Date: Mon, 28 Nov 2022 14:15:36 +1000
+Message-Id: <20221128041539.1742489-2-npiggin@gmail.com>
 X-Mailer: git-send-email 2.37.2
+In-Reply-To: <20221128041539.1742489-1-npiggin@gmail.com>
+References: <20221128041539.1742489-1-npiggin@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -76,38 +78,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Luis Chamberlain <mcgrof@kernel.org>, =?UTF-8?q?Michal=20Such=C3=A1nek?= <msuchanek@suse.de>, Nicholas Piggin <npiggin@gmail.com>
+Cc: Luis Chamberlain <mcgrof@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Jessica Yu <jeyu@kernel.org>, =?UTF-8?q?Michal=20Such=C3=A1nek?= <msuchanek@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is hopefully the final attempt. Luis was happy for the module
-patch to go via the powerpc tree, so I've put the the ELFv2 for big
-endian build patches into the series. Hopefully we can deprecate
-the ELFv1 ABI 
+The elf_check_arch() function is also used to test compatibility of
+usermode binaries. Kernel modules may have more specific requirements,
+for example powerpc would like to test for ABI version compatibility.
 
-Since v5, I cleaned up patch 2 as per Christophe's review. And patch
-4 I removed the EXPERT depends so it's easier to test. It's marked as
-experimental, but we should soon make it default and try to deprecate
-the v1 ABI so we can eventually remove it.
+Add a weak module_elf_check_arch() that defaults to true, and call it
+from elf_validity_check().
 
-Thanks,
-Nick
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Jessica Yu <jeyu@kernel.org>
+[np: added changelog, adjust name, rebase]
+Acked-by: Luis Chamberlain <mcgrof@kernel.org>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ include/linux/moduleloader.h |  3 +++
+ kernel/module/main.c         | 10 ++++++++++
+ 2 files changed, 13 insertions(+)
 
-Nicholas Piggin (4):
-  module: add module_elf_check_arch for module-specific checks
-  powerpc/64: Add module check for ELF ABI version
-  powerpc/64: Add big-endian ELFv2 flavour to crypto VMX asm generation
-  powerpc/64: Option to build big-endian with ELFv2 ABI
-
- arch/powerpc/Kconfig                   | 21 +++++++++++++++++++++
- arch/powerpc/kernel/module_64.c        | 10 ++++++++++
- arch/powerpc/platforms/Kconfig.cputype |  4 ++--
- drivers/crypto/vmx/Makefile            | 12 +++++++++++-
- drivers/crypto/vmx/ppc-xlate.pl        | 10 ++++++----
- include/linux/moduleloader.h           |  3 +++
- kernel/module/main.c                   | 10 ++++++++++
- 7 files changed, 63 insertions(+), 7 deletions(-)
-
+diff --git a/include/linux/moduleloader.h b/include/linux/moduleloader.h
+index 9e09d11ffe5b..7b4587a19189 100644
+--- a/include/linux/moduleloader.h
++++ b/include/linux/moduleloader.h
+@@ -13,6 +13,9 @@
+  * must be implemented by each architecture.
+  */
+ 
++/* arch may override to do additional checking of ELF header architecture */
++bool module_elf_check_arch(Elf_Ehdr *hdr);
++
+ /* Adjust arch-specific sections.  Return 0 on success.  */
+ int module_frob_arch_sections(Elf_Ehdr *hdr,
+ 			      Elf_Shdr *sechdrs,
+diff --git a/kernel/module/main.c b/kernel/module/main.c
+index d02d39c7174e..7b3f6fb0d428 100644
+--- a/kernel/module/main.c
++++ b/kernel/module/main.c
+@@ -1674,6 +1674,11 @@ static int elf_validity_check(struct load_info *info)
+ 		       info->hdr->e_machine);
+ 		goto no_exec;
+ 	}
++	if (!module_elf_check_arch(info->hdr)) {
++		pr_err("Invalid module architecture in ELF header: %u\n",
++		       info->hdr->e_machine);
++		goto no_exec;
++	}
+ 	if (info->hdr->e_shentsize != sizeof(Elf_Shdr)) {
+ 		pr_err("Invalid ELF section header size\n");
+ 		goto no_exec;
+@@ -2247,6 +2252,11 @@ static void flush_module_icache(const struct module *mod)
+ 			   (unsigned long)mod->core_layout.base + mod->core_layout.size);
+ }
+ 
++bool __weak module_elf_check_arch(Elf_Ehdr *hdr)
++{
++	return true;
++}
++
+ int __weak module_frob_arch_sections(Elf_Ehdr *hdr,
+ 				     Elf_Shdr *sechdrs,
+ 				     char *secstrings,
 -- 
 2.37.2
 
