@@ -1,67 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97E3463A074
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Nov 2022 05:17:32 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D67D963A07E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Nov 2022 05:19:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NLByL2pYvz3f3S
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Nov 2022 15:17:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NLC0V11TPz3f89
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Nov 2022 15:19:22 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=l/iLDT8f;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=YuK7cDIw;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1034; helo=mail-pj1-x1034.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::535; helo=mail-pg1-x535.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=l/iLDT8f;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=YuK7cDIw;
 	dkim-atps=neutral
-Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
+Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com [IPv6:2607:f8b0:4864:20::535])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NLBwY4Vmzz3cC5
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Nov 2022 15:15:57 +1100 (AEDT)
-Received: by mail-pj1-x1034.google.com with SMTP id t11-20020a17090a024b00b0021932afece4so1835950pje.5
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Nov 2022 20:15:57 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NLBwf27Dqz3cMf
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Nov 2022 15:16:01 +1100 (AEDT)
+Received: by mail-pg1-x535.google.com with SMTP id 136so8895309pga.1
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Nov 2022 20:16:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=vWgWrGLeB+xoOH8mvK1ujoMXEg/wPFZ3hsl6zxq8pJw=;
-        b=l/iLDT8fdITMMgPTM1OEBl2VpkbMGHTdHD68WEayeoPTUc9kMCCdaPwDayAsHoWy8P
-         KLAmiOe2+7hxSqpRgiqO0qBXrzBIdRXOKV3lMATbgCjJWMj00R7QgfgeAcMjUcn4Ng0+
-         FHyD/G2JHnEz76WGN3AWg6pdTwBXepFUAGDE25DoZ5Qf5g5tNOUGqDeDW5LOUhHcn2aM
-         EKrd1YyUgI6AlFpklti+e7p3o7HYoK7YKOzq+5aIPmSo3IrqJYwcubYOteI4Yi68J8D4
-         rMLppqGqewLXNHTDklSYb3Q+HB9goDMCmYR7qll5YiOYXsmDpd4RofId9QKCcqdEQqvM
-         B00g==
+        bh=1UNoFZjpqfGudip0kcMOvEq1qB17vDLLLPW/9fqGP8Y=;
+        b=YuK7cDIwgwKHS54DS4Csqsf2PgHKcd+EzUrKIzTIOyFfwZQrvdE0uDkn+9KhMAoj3S
+         a0ERrSjVjDlTlZ31bJYHoPevbIuM1TDx4wiuRnjz4cIPPnzGoShwCycQi47hbEFJm/XC
+         1AH472k1D1nLuVeKdk0GVy4CCFLYjxViV8NabpFQYRhwVQjwvWtUEMSrlpBVA8aZnKpl
+         tEy079TDOK29ao83qCBagqZeyK/WsbqF7qksG6ziI5IHnTnglfimdQcqykS6GjVaqhVs
+         X4rSgEcvq51PhI3uwSzqrnTRS2km8j3PnskPWovDZecg1aHz25RpSw/BsYCJXXmOchQZ
+         2sZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=vWgWrGLeB+xoOH8mvK1ujoMXEg/wPFZ3hsl6zxq8pJw=;
-        b=nw8tPLtm+UMuOD6o4+OZsU2SbfF7OLDF5kNURZc+poQpOVMgFOhLzhHOjj3JOFZpTP
-         iewQCFE/s/h+kMW0hJtk+07mJp1Uz4zUWX+xgc7CYUKApPNE94H6rQt7/+mp0upAi7+r
-         AfFponR6KhqeJjnw540b3EsRfKY0tFWRDqvKdH5iB9Doo94+8e0qVPlVeL+HJD354nI7
-         iQqwy2Wm7gL2Nna3+N/967wYdjWvqAvzKSwE5SYRUq8IYIOENMNdUjoPfE1POtfYoc4+
-         OJg4khwaSZA7QY/q7gANn7gtXChbnWRkhEmGtdsrR6o4G7+KCcPpC8L4FGWnWGx5NVck
-         ktfA==
-X-Gm-Message-State: ANoB5plQAi3eD4LGGki0AbIubgZNQBUrCDCa8c4+P1FRNwOACYkINYkC
-	K0rTwAJEZQptohwQeJFSWRxG0iOOORY=
-X-Google-Smtp-Source: AA0mqf5j+1Lr/RaqQvmrrufa8o64AA1/RlnUbPLuebbHNCs23UhLdo97GkvIz6MX/F5zcroxHdio5g==
-X-Received: by 2002:a17:902:ccce:b0:185:4880:91cd with SMTP id z14-20020a170902ccce00b00185488091cdmr30167065ple.130.1669608955319;
-        Sun, 27 Nov 2022 20:15:55 -0800 (PST)
+        bh=1UNoFZjpqfGudip0kcMOvEq1qB17vDLLLPW/9fqGP8Y=;
+        b=w/6lDDpbu83mvxvZ1KCM4YQWQKB/6YPxMYQs9GUVUGYFn0NIKTFBhJhAmLGWo50CpT
+         gwJA1bnSeF6CUM3eMLh4LDs46q/zWhJrztNifhG3Bhot7MYZUi4CQ0zm5M8G2DKHVuVC
+         Ast866d72BoUFSzGPE+eqKNcKIj5IWwxkivBuVfjUdMf6j8SHEQ5fI14klFeQtENFQbw
+         Ml0EUN6BMpsW/5xHlrFx1wuW/90KwuQX02I3/EZdTBe+KTV460SUNhnNpW6oiU2G2Jt+
+         tc3kz7zG/HmVC2sQAK/kJLNDHCc/NhNdnI5joyVQNeCAz79pxRoyg3vhLb6sI8Zpz7GN
+         wORg==
+X-Gm-Message-State: ANoB5plc25Ue8Z2+tg0+RSchSv5mTr6yN6v5pn9HQm8qmyn3U2Eb33Wb
+	Pd4Yrdt55EGYla68rMbLP0aNxiBIZSc=
+X-Google-Smtp-Source: AA0mqf4LO1D2cXSejQO9SQP9ABk2k9Efb00/Uwli0Zfe3d2tGwmou2ft5Rky9inB6JOJtKR9talZDA==
+X-Received: by 2002:a63:b01:0:b0:477:d8c5:3ac2 with SMTP id 1-20020a630b01000000b00477d8c53ac2mr14694421pgl.339.1669608959518;
+        Sun, 27 Nov 2022 20:15:59 -0800 (PST)
 Received: from bobo.ozlabs.ibm.com ([220.240.231.60])
-        by smtp.gmail.com with ESMTPSA id y28-20020aa79afc000000b0057489a78979sm6905670pfp.21.2022.11.27.20.15.51
+        by smtp.gmail.com with ESMTPSA id y28-20020aa79afc000000b0057489a78979sm6905670pfp.21.2022.11.27.20.15.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Nov 2022 20:15:54 -0800 (PST)
+        Sun, 27 Nov 2022 20:15:59 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v6 2/4] powerpc/64: Add module check for ELF ABI version
-Date: Mon, 28 Nov 2022 14:15:37 +1000
-Message-Id: <20221128041539.1742489-3-npiggin@gmail.com>
+Subject: [PATCH v6 3/4] powerpc/64: Add big-endian ELFv2 flavour to crypto VMX asm generation
+Date: Mon, 28 Nov 2022 14:15:38 +1000
+Message-Id: <20221128041539.1742489-4-npiggin@gmail.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20221128041539.1742489-1-npiggin@gmail.com>
 References: <20221128041539.1742489-1-npiggin@gmail.com>
@@ -78,43 +78,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Luis Chamberlain <mcgrof@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Jessica Yu <jeyu@kernel.org>, =?UTF-8?q?Michal=20Such=C3=A1nek?= <msuchanek@suse.de>
+Cc: Luis Chamberlain <mcgrof@kernel.org>, =?UTF-8?q?Michal=20Such=C3=A1nek?= <msuchanek@suse.de>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Override the generic module ELF check to provide a check for the ELF ABI
-version. This becomes important if we allow big-endian ELF ABI V2 builds
-but it doesn't hurt to check now.
+This allows asm generation for big-endian ELFv2 builds.
 
-Cc: Jessica Yu <jeyu@kernel.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-[np: split patch, added changelog, adjust to Jessica's proposal]
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/module_64.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/crypto/vmx/Makefile     | 12 +++++++++++-
+ drivers/crypto/vmx/ppc-xlate.pl | 10 ++++++----
+ 2 files changed, 17 insertions(+), 5 deletions(-)
 
-diff --git a/arch/powerpc/kernel/module_64.c b/arch/powerpc/kernel/module_64.c
-index 7e45dc98df8a..ff045644f13f 100644
---- a/arch/powerpc/kernel/module_64.c
-+++ b/arch/powerpc/kernel/module_64.c
-@@ -31,6 +31,16 @@
-    this, and makes other things simpler.  Anton?
-    --RR.  */
+diff --git a/drivers/crypto/vmx/Makefile b/drivers/crypto/vmx/Makefile
+index 2560cfea1dec..e33c7238e7f8 100644
+--- a/drivers/crypto/vmx/Makefile
++++ b/drivers/crypto/vmx/Makefile
+@@ -2,8 +2,18 @@
+ obj-$(CONFIG_CRYPTO_DEV_VMX_ENCRYPT) += vmx-crypto.o
+ vmx-crypto-objs := vmx.o aesp8-ppc.o ghashp8-ppc.o aes.o aes_cbc.o aes_ctr.o aes_xts.o ghash.o
  
-+bool module_elf_check_arch(Elf_Ehdr *hdr)
-+{
-+	unsigned long abi_level = hdr->e_flags & 0x3;
++ifeq ($(CONFIG_CPU_LITTLE_ENDIAN),y)
++override flavour := linux-ppc64le
++else
++ifdef CONFIG_PPC64_ELF_ABI_V2
++override flavour := linux-ppc64-elfv2
++else
++override flavour := linux-ppc64
++endif
++endif
 +
-+	if (IS_ENABLED(CONFIG_PPC64_ELF_ABI_V2))
-+		return abi_level == 2;
-+	else
-+		return abi_level < 2;
-+}
-+
- #ifdef CONFIG_PPC64_ELF_ABI_V2
+ quiet_cmd_perl = PERL    $@
+-      cmd_perl = $(PERL) $< $(if $(CONFIG_CPU_LITTLE_ENDIAN), linux-ppc64le, linux-ppc64) > $@
++      cmd_perl = $(PERL) $< $(flavour) > $@
  
- static func_desc_t func_desc(unsigned long addr)
+ targets += aesp8-ppc.S ghashp8-ppc.S
+ 
+diff --git a/drivers/crypto/vmx/ppc-xlate.pl b/drivers/crypto/vmx/ppc-xlate.pl
+index 36db2ef09e5b..b583898c11ae 100644
+--- a/drivers/crypto/vmx/ppc-xlate.pl
++++ b/drivers/crypto/vmx/ppc-xlate.pl
+@@ -9,6 +9,8 @@ open STDOUT,">$output" || die "can't open $output: $!";
+ 
+ my %GLOBALS;
+ my $dotinlocallabels=($flavour=~/linux/)?1:0;
++my $elfv2abi=(($flavour =~ /linux-ppc64le/) or ($flavour =~ /linux-ppc64-elfv2/))?1:0;
++my $dotfunctions=($elfv2abi=~1)?0:1;
+ 
+ ################################################################
+ # directives which need special treatment on different platforms
+@@ -40,7 +42,7 @@ my $globl = sub {
+ };
+ my $text = sub {
+     my $ret = ($flavour =~ /aix/) ? ".csect\t.text[PR],7" : ".text";
+-    $ret = ".abiversion	2\n".$ret	if ($flavour =~ /linux.*64le/);
++    $ret = ".abiversion	2\n".$ret	if ($elfv2abi);
+     $ret;
+ };
+ my $machine = sub {
+@@ -56,8 +58,8 @@ my $size = sub {
+     if ($flavour =~ /linux/)
+     {	shift;
+ 	my $name = shift; $name =~ s|^[\.\_]||;
+-	my $ret  = ".size	$name,.-".($flavour=~/64$/?".":"").$name;
+-	$ret .= "\n.size	.$name,.-.$name" if ($flavour=~/64$/);
++	my $ret  = ".size	$name,.-".($dotfunctions?".":"").$name;
++	$ret .= "\n.size	.$name,.-.$name" if ($dotfunctions);
+ 	$ret;
+     }
+     else
+@@ -142,7 +144,7 @@ my $vmr = sub {
+ 
+ # Some ABIs specify vrsave, special-purpose register #256, as reserved
+ # for system use.
+-my $no_vrsave = ($flavour =~ /linux-ppc64le/);
++my $no_vrsave = ($elfv2abi);
+ my $mtspr = sub {
+     my ($f,$idx,$ra) = @_;
+     if ($idx == 256 && $no_vrsave) {
 -- 
 2.37.2
 
