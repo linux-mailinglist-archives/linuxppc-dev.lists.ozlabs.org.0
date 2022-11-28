@@ -1,69 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E246C63A09F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Nov 2022 05:37:24 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05AEB63A287
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Nov 2022 09:13:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NLCPG5WZDz3cLJ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Nov 2022 15:37:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NLJBT5lSFz3cLm
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Nov 2022 19:13:21 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=N5bjqbL8;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=RVM1J6xm;
+	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=N+FP099L;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42b; helo=mail-pf1-x42b.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=N5bjqbL8;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=RVM1J6xm;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=N+FP099L;
 	dkim-atps=neutral
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NLCNM3rJfz2xGH
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Nov 2022 15:36:33 +1100 (AEDT)
-Received: by mail-pf1-x42b.google.com with SMTP id w129so9320384pfb.5
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Nov 2022 20:36:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=fyzonERo/7/wMELyl/DX6MsqH35hQ9y/qycz4oXh9TQ=;
-        b=N5bjqbL8Tkh4AItJ7rnh7XgPxzcWmKQL30xnr5mg1OUA1oOcOExclkC1mLeYPq/F6J
-         vnvv4sgJEcrcjmddWme2dyNWZHU3fzar8HnVMfcQwC4lMRi4wlIUSp8sibLkUk7TJz8W
-         xTpuNHfgugP4E7xIkKMrmBknRqHGvHFRehFYK/M7wOeB65FrhOzcyWuuLfbs3EbYridr
-         R31GltrBEuYeHLVEyIJYWrgMYaY4aFdd6nGzXdPwa3ImFwcxAxDYcz8BhJLJ9mndeLAN
-         WrN4U8853R6+g6SNLW+jnSlDEmOk7v78Aryq/Y5fO02bgAXsBQQPiXbLtnEWc+rl2k5i
-         TulQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fyzonERo/7/wMELyl/DX6MsqH35hQ9y/qycz4oXh9TQ=;
-        b=n60MiEfLIpj6dqmPQnRztHENxQxzfxFutyupZXP62Yhd9rGmk/d98ljw/+u/ot6j5L
-         PR/MlrZBIsUpMbvriPJEIri+1RGlqtUeBjW0tyBQClbXH8sIriV2M2orAKnBv0yM1LkA
-         YJu0EXumKRMbvPu2hMy+thfKWqHg0TgKQF0LpJjLli+SyPkapaUZKwvwW8HZoTtAF4H3
-         y579IRjwaLbKongM5+dtntkrZ4MOPkKxCWYpb3lUo01fXK+NYp/NqjELw4kOfrkqD/aC
-         26I0K2Ho6P3MVaQbIJLh1UmnxSC6zLqeV9hq3CF/ZYb125Ie/P/b7RDl59KwO74aQm86
-         cT9A==
-X-Gm-Message-State: ANoB5pnSaNoDU7S7MQ75IvUWPY3ZVtgosWlp2tAocYMd1SiCnSA5fxjE
-	kuxbAUYyeUcvaEmIR62gcX+BeoSMxt0=
-X-Google-Smtp-Source: AA0mqf4HZJ5tRF12wOlEXnlQozfyhUKL3WWEhFLBsulVXx20JA/vD3au6ugfB6jWOfNjlgFKDsByWw==
-X-Received: by 2002:a05:6a00:4c0b:b0:562:ebc8:6195 with SMTP id ea11-20020a056a004c0b00b00562ebc86195mr30129816pfb.38.1669610191040;
-        Sun, 27 Nov 2022 20:36:31 -0800 (PST)
-Received: from bobo.ozlabs.ibm.com (193-116-97-39.tpgi.com.au. [193.116.97.39])
-        by smtp.gmail.com with ESMTPSA id p1-20020a17090a348100b002132f3e71c6sm4886486pjb.52.2022.11.27.20.36.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Nov 2022 20:36:30 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [RFC PATCH] Disable Book-E KVM support?
-Date: Mon, 28 Nov 2022 14:36:23 +1000
-Message-Id: <20221128043623.1745708-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.37.2
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NLJ9Z6fVDz3bXR
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Nov 2022 19:12:34 +1100 (AEDT)
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1669623148;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VptkHmPTPSs5eOtCUMB4/TKM/fssvk4H/apqtf0JHkw=;
+	b=RVM1J6xmynemcQ48SmviPVnGKjkS+iQ7y+Dybo1n8DoWIBaaWEuXyAytD5l2OzjuGo+XFS
+	Vk7ZKnYbH9kZZHEqug/eGckC2Pv+UOu8Nc49FWtne4+UPkyRZFdp5R50cRKgl5Yje2cxQo
+	jAFdjHPp2hCdTAwi0J07qx20DkIEXxjb2mxvrN8i+p33hWoydbH9RsGFmRn8K7id0rHBBe
+	LZbAIf2A/fEmq1cQEdvprJhMCpT2iyaxrvhrj2HHZg32ZEt0Di+ZMNxPiznaaJMaopGPIM
+	7VoGy40TdxuFU0Tj0dEQKOTf1dvvoc9WqzkxraB5SxTENJJk8X3lsAcRA8L7sw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1669623148;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VptkHmPTPSs5eOtCUMB4/TKM/fssvk4H/apqtf0JHkw=;
+	b=N+FP099LREZdAsl3iwZTUkFtZExrnpVx38wkGZq8p/XNiiqKi2AVZkLug7YXt+xE9Tn1yG
+	OP1gD3qu12stZLBw==
+To: paulmck@kernel.org
+Subject: Re: [PATCH linux-next][RFC]torture: avoid offline tick_do_timer_cpu
+In-Reply-To: <20221127175317.GF4001@paulmck-ThinkPad-P17-Gen-1>
+References: <20221121035140.118651-1-zhouzhouyi@gmail.com>
+ <87y1rxwsse.ffs@tglx>
+ <CAABZP2xNTbrx9iV+KH3VZx1c9Yi97+izNA=XSJQBuOJ4WENFZg@mail.gmail.com>
+ <87v8n0woxv.ffs@tglx> <20221127175317.GF4001@paulmck-ThinkPad-P17-Gen-1>
+Date: Mon, 28 Nov 2022 09:12:28 +0100
+Message-ID: <87sfi3wl8z.ffs@tglx>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,48 +66,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Scott Wood <oss@buserror.net>, Nicholas Piggin <npiggin@gmail.com>, Laurentiu Tudor <laurentiu.tudor@nxp.com>
+Cc: dave@stgolabs.net, linuxppc-dev@lists.ozlabs.org, josh@joshtriplett.org, linux-kernel@vger.kernel.org, Zhouyi Zhou <zhouzhouyi@gmail.com>, fweisbec@gmail.com, mingo@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-BookE KVM is in a deep maintenance state, I'm not sure how much testing
-it gets. I don't have a test setup, and it does not look like QEMU has
-any HV architecture enabled. It hasn't been too painful but there are
-some cases where it causes a bit of problem not being able to test, e.g.,
+On Sun, Nov 27 2022 at 09:53, Paul E. McKenney wrote:
+> On Sun, Nov 27, 2022 at 01:40:28PM +0100, Thomas Gleixner wrote:
+>> There are quite some reasons why a CPU-hotplug or a hot-unplug operation
+>> can fail, which is not a fatal problem, really.
+>> 
+>> So if a CPU hotplug operation fails, then why can't the torture test
+>> just move on and validate that the system still behaves correctly?
+>> 
+>> That gives us more coverage than just testing the good case and giving
+>> up when something unexpected happens.
+>
+> Agreed, with access to a function like the tick_nohz_full_timekeeper()
+> suggested earlier in this email thread, then yes, it would make sense to
+> try to offline the CPU anyway, then forgive the failure in cases where
+> the CPU matches that indicated by tick_nohz_full_timekeeper().
 
-https://lists.ozlabs.org/pipermail/linuxppc-dev/2022-November/251452.html
+Why special casing this? There are other valid reasons why offlining can
+fail. So we special case timekeeper today and then next week we special
+case something else just because. That does not make sense. If it fails
+there is a reason and you can log it. The important part is that the
+system is functional and stable after the fail and the rollback.
 
-Time to begin removal process, or are there still people using it? I'm
-happy to to keep making occasional patches to try keep it going if
-there are people testing upstream. Getting HV support into QEMU would
-help with long term support, not sure how big of a job that would be.
+>> I even argue that the torture test should inject random failures into
+>> the hotplug state machine to achieve extended code coverage.
+>
+> I could imagine torture_onoff() telling various CPU-hotplug notifiers
+> to refuse the transition using some TBD interface.
+
+There is already an interface which is exposed to sysfs which allows you
+to enforce a "fail" at a defined hotplug state.
+
+> That would better test the CPU-hotplug common code's ability to deal
+> with failures.
+
+Correct.
+
+> Or did you have something else/additional in mind?
+
+No.
 
 Thanks,
-Nick
----
- arch/powerpc/kvm/Kconfig | 2 ++
- 1 file changed, 2 insertions(+)
 
-diff --git a/arch/powerpc/kvm/Kconfig b/arch/powerpc/kvm/Kconfig
-index a9f57dad6d91..6c9458741cb3 100644
---- a/arch/powerpc/kvm/Kconfig
-+++ b/arch/powerpc/kvm/Kconfig
-@@ -191,6 +191,7 @@ config KVM_EXIT_TIMING
- 
- config KVM_E500V2
- 	bool "KVM support for PowerPC E500v2 processors"
-+	depends on false
- 	depends on PPC_E500 && !PPC_E500MC
- 	depends on !CONTEXT_TRACKING_USER
- 	select KVM
-@@ -207,6 +208,7 @@ config KVM_E500V2
- 
- config KVM_E500MC
- 	bool "KVM support for PowerPC E500MC/E5500/E6500 processors"
-+	depends on false
- 	depends on PPC_E500MC
- 	depends on !CONTEXT_TRACKING_USER
- 	select KVM
--- 
-2.37.2
-
+        tglx
