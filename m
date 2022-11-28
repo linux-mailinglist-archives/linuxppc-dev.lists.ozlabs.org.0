@@ -2,73 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B32E3639EC3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Nov 2022 02:21:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13680639F08
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Nov 2022 02:43:18 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NL73C40bHz3dtk
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Nov 2022 12:21:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NL7XM6rl1z3dvc
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Nov 2022 12:43:15 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Fs+r8YGZ;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=fKxEdncm;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::436; helo=mail-pf1-x436.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62f; helo=mail-pl1-x62f.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Fs+r8YGZ;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=fKxEdncm;
 	dkim-atps=neutral
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NL72H2KFVz30JR
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Nov 2022 12:20:37 +1100 (AEDT)
-Received: by mail-pf1-x436.google.com with SMTP id q12so4940000pfn.10
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Nov 2022 17:20:37 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NL7WT3x9mz2xrL
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Nov 2022 12:42:28 +1100 (AEDT)
+Received: by mail-pl1-x62f.google.com with SMTP id p12so8784104plq.4
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Nov 2022 17:42:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=in-reply-to:references:to:from:subject:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=YJd6+e8mhcCcTivAC/HlgoAd1qiwjLY2uyKhidA3xg4=;
-        b=Fs+r8YGZ3cbCTHkuVKyUuLjHDBcq5XFLjc1JWFMwFJ8getRNfxDYHUrz4n2Hc2Z/0b
-         Ozws+n2eNC8XZTsARq07YQflGkLptdkeOjFuNLM5328Ngdi3eABfxDdQt7unkYU0aFc5
-         Rpl89htMhQzVWgFJW/q6LJ2INJc7tFiv2SZPXLSWAxgB53zKmG+ASMnDdd3yUo35neU6
-         M/ER0mSKfED1Y/qlt3nSrYmXmO86kGIxqvWouakCyXmK8V7TS+yVZ//NoBE60bjkSrLn
-         db7fGpkZJjCwhIF/dKL9zhojv53Zrpdwhz5RHt//yqaGnSvKhsix2wrrQ4Ka+uFKdeQq
-         M3BQ==
+        bh=bskDi/tzRvAHv5SpbGwEfMZB0mlS9VwAzcLgi2nmEqc=;
+        b=fKxEdncm6i6dH21EDg1abGc/1ZFVTcEPRZivNKjFDsP4CNqe6quDiYkWUVVL4VzrLy
+         HuHXo7maSyTZnMsXD1twdLXbO4oAHEiHRJIbntPPd8UbMhhQtFGhuBpDJ2l86gg6aDOg
+         sWdVMy6k1d6j7UnjG7UdNdtXIQO/GNjfOUkW+uP9+0tV+YPDWHAo+DoJL7OAiRQRnVV9
+         e8BW+3BecvkbeXsSq5HlR1Hrc2GQZDbnCYOOTAm4iLzDPSpg1cQbzQMIhb9G/Y1l5ynI
+         ZgFJpoWwsLFNHNKUlbm7GR98V/KPF0xTKOqagcC3xnjc2Q61q9lhdeIAc5hAravByWtG
+         8nUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:references:to:from:subject:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=YJd6+e8mhcCcTivAC/HlgoAd1qiwjLY2uyKhidA3xg4=;
-        b=pUNV+tF5LLYZtFjBfF/E5B4+GVz3jlrX67ACB5FXOXai4ImlImj8lJRjzzt98OPLXX
-         e0bRB/oeQ/aIkxzQpHTV8R8hMNAHMvUOH8n8UIVunMdMTFTsqI3MMCQhbJkFzwjtF7go
-         rE9IxdIGYK5uf7yINz55krJ70tHOtajjGK8xeZxpH7snFZxXP6CrPF0Fws8WJay5EgRL
-         leph8gN0B74ceVk2KIMqCxPzh7+XMabgfC0z9HtpA2G3KKSJUOI129CXzHusfZ4VZd6F
-         KC0xp8Ae+HjpAjk1VTZNP84RC+NBqoy99X084ovWqOklGQCD30C75+Q39r1U4eQLXABV
-         DJoA==
-X-Gm-Message-State: ANoB5plb9KODvWEuEecqBiVdr4YpKWwbhbj92KcjABGhWTxbMV7nGyGQ
-	5kW3WO5OCwyxM/Ec+wgi85ZTyr3ANcg=
-X-Google-Smtp-Source: AA0mqf7iRiPqx0a5Er2MUuU1/h/RqsQCxFNdf8BbpVve+kiWovY8rB5REL1SFuuAttPHdO8oTcaTmA==
-X-Received: by 2002:a63:164f:0:b0:477:f9fa:2a1e with SMTP id 15-20020a63164f000000b00477f9fa2a1emr7599686pgw.87.1669598435015;
-        Sun, 27 Nov 2022 17:20:35 -0800 (PST)
+        bh=bskDi/tzRvAHv5SpbGwEfMZB0mlS9VwAzcLgi2nmEqc=;
+        b=reIXUb8wh5hK20VEfkm6bmpHOFDDt+lKgCfU9pJYn0kxbgotAZUHC+KpK/OzDEfTzt
+         GqiXOsno3Amc4CqVuwLwQ0br8t7YFXvR5hGsSLGozbOaax7YYfz68H3cOzY/oIM1b0w5
+         G9ziSFVYsqk03+UWufkT1QqyMECCTLEWaP+WEKxukr4eCe3lUWpNjQ4jWLi/f6xAafQo
+         ciNVdCpNRygQDy7R0Lsum07kmk3iugqeXlqUflMLt8WQ0AXKnXRrJo3lkHQVQ8UERHHL
+         D7RgeEeVZj7Bij50itLVltwbwu1PIRo8G0HFRdgFwW+JFjV0tdbEK6hkIjkX65u7zp6T
+         eJKg==
+X-Gm-Message-State: ANoB5pnkORnFFsD0/MycI9t1UPyCAOJ+TYpE1HdTRqJEDe6lsEQE1NQH
+	6t5Z8OrR9QDEVER9JPzhXqcrhxP+HSo=
+X-Google-Smtp-Source: AA0mqf7p1Dj3lfa+7izUEoKmIVMtjvW+rrqAk++++KuWg2E/0uqsVuV52kB6ZSV0eOBFzZqBesbx5g==
+X-Received: by 2002:a17:90a:7847:b0:219:d47:eec8 with SMTP id y7-20020a17090a784700b002190d47eec8mr13956374pjl.178.1669599745874;
+        Sun, 27 Nov 2022 17:42:25 -0800 (PST)
 Received: from localhost ([220.240.231.60])
-        by smtp.gmail.com with ESMTPSA id b7-20020a170902650700b001801aec1f6bsm7427872plk.141.2022.11.27.17.20.33
+        by smtp.gmail.com with ESMTPSA id u13-20020a170902e80d00b00186ad73e2d5sm7439364plg.208.2022.11.27.17.42.23
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 27 Nov 2022 17:20:34 -0800 (PST)
+        Sun, 27 Nov 2022 17:42:25 -0800 (PST)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 28 Nov 2022 11:20:30 +1000
-Message-Id: <CONJ8YH1QG4L.NJTVBL81SQ6V@bobo>
-Subject: Re: [PATCH] powerpc/64s: Add missing declaration for
- machine_check_early_boot()
+Date: Mon, 28 Nov 2022 11:42:21 +1000
+Message-Id: <CONJPOMT85Y6.1OYP0BGZY6IG3@bobo>
+Subject: Re: [PATCH v2 1/4] powerpc/64: Add INTERRUPT_SANITIZE_REGISTERS
+ Kconfig
 From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Michael Ellerman" <mpe@ellerman.id.au>, <linuxppc-dev@lists.ozlabs.org>
+To: "Christophe Leroy" <christophe.leroy@csgroup.eu>, "Rohan McLure"
+ <rmclure@linux.ibm.com>, "linuxppc-dev@lists.ozlabs.org"
+ <linuxppc-dev@lists.ozlabs.org>
 X-Mailer: aerc 0.13.0
-References: <20221125132521.2167039-1-mpe@ellerman.id.au>
-In-Reply-To: <20221125132521.2167039-1-mpe@ellerman.id.au>
+References: <20221107033202.1375238-1-rmclure@linux.ibm.com>
+ <e436f57a-41fa-b91a-80cd-2f5ece074421@csgroup.eu>
+In-Reply-To: <e436f57a-41fa-b91a-80cd-2f5ece074421@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,32 +86,35 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri Nov 25, 2022 at 11:25 PM AEST, Michael Ellerman wrote:
-> There's no declaration for machine_check_early_boot(), which leads to a
-> build failure with W=3D1. Add one.
+On Tue Nov 8, 2022 at 12:28 AM AEST, Christophe Leroy wrote:
 >
-> Fixes: 2f5182cffa43 ("powerpc/64s: early boot machine check handler")
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-
-Acked-by: Nicholas Piggin <npiggin@gmail.com>
-
-> ---
->  arch/powerpc/include/asm/interrupt.h | 1 +
->  1 file changed, 1 insertion(+)
 >
-> diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/=
-asm/interrupt.h
-> index 4745bb9998bd..6d8492b6e2b8 100644
-> --- a/arch/powerpc/include/asm/interrupt.h
-> +++ b/arch/powerpc/include/asm/interrupt.h
-> @@ -602,6 +602,7 @@ ____##func(struct pt_regs *regs)
->  /* kernel/traps.c */
->  DECLARE_INTERRUPT_HANDLER_NMI(system_reset_exception);
->  #ifdef CONFIG_PPC_BOOK3S_64
-> +DECLARE_INTERRUPT_HANDLER_RAW(machine_check_early_boot);
->  DECLARE_INTERRUPT_HANDLER_ASYNC(machine_check_exception_async);
->  #endif
->  DECLARE_INTERRUPT_HANDLER_NMI(machine_check_exception);
-> --=20
-> 2.38.1
+> Le 07/11/2022 =C3=A0 04:31, Rohan McLure a =C3=A9crit=C2=A0:
+> > Add Kconfig option for enabling clearing of registers on arrival in an
+> > interrupt handler. This reduces the speculation influence of registers
+> > on kernel internals. The option will be consumed by 64-bit systems that
+> > feature speculation and wish to implement this mitigation.
+> >=20
+> > This patch only introduces the Kconfig option, no actual mitigations.
+>
+> If that has to do with speculation, do we need a new Kconfig option ?=20
+> Can't we use CONFIG_PPC_BARRIER_NOSPEC for that ?
+
+NOSPEC barrier adds runtime-patchable hardware barrier and that config
+is a build implementation detail. Also that spec barrier is for bounds
+checks speculation that is easy to get the kernel to do something like
+speculatively branch to arbitrary address.
+
+Interrupt/syscall register sanitization is more handwavy. It could be
+a bandaid for cases where the above speculation barrier was missed
+for exampel. But at some point, at least for syscalls, registers have to
+contain some values influenced by userspace so if we were paranoid
+we would have to put barriers before every branch while any registers
+contained a value from userspace.
+
+A security option menu might be a good idea though. There's some other
+build time options like rop protection that we might want to add.
+
+Thanks,
+Nick
 
