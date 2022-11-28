@@ -1,90 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 280B563B48C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Nov 2022 22:58:11 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3B2963B571
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Nov 2022 00:00:26 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NLfV874Vtz3dwd
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Nov 2022 08:58:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NLgt04WDfz3f3f
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Nov 2022 10:00:24 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=IBopjRXj;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=p/c6sfRX;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux-foundation.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=IBopjRXj;
+	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=p/c6sfRX;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NLfTD32Dmz2xmg
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Nov 2022 08:57:19 +1100 (AEDT)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2ASLssXB031729
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Nov 2022 21:57:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=qVdkYzmSoH91ESmWgEhVO4LiXV51+Xykgpj1o9V5ANE=;
- b=IBopjRXjh9uV5DXbsMtMi3ARCxhoGMzzMIWGHtauIJgDqVwwd8NXLCcG/q8Roq7nmHsi
- xZorsjmjqBLp7Knzdp/CKAveYfdU9p4mm95fgoqd0kQID1hJ1d0q/OA4JVjOVKp5oGox
- xOYyIJag6QmQ0y+2q9KOnezUMl+PoGjT0TvpmDI2Jqa5JgUV2Z7hLCA3Lo2DrP++Hsyn
- jz5XyROKOw8OjI/XC0q7M6g7azR4GBp+7UmoT4ejopz6r6DTLneg1vNff2ud27GiE8MJ
- 85jGpwKk8Yao6QP60L9byqV9ZlgPIBu/yhVprBS2GWvv2qCX5m7fzDF2TvHdoid437fI fQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m55arg1s4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Nov 2022 21:57:17 +0000
-Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2ASLvFem007958
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Nov 2022 21:57:16 GMT
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com [169.47.144.27])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m55arg1rp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 28 Nov 2022 21:57:16 +0000
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
-	by ppma05wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2ASLpa3k030422;
-	Mon, 28 Nov 2022 21:57:15 GMT
-Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com [9.57.198.23])
-	by ppma05wdc.us.ibm.com with ESMTP id 3m3t71c6f3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 28 Nov 2022 21:57:15 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com ([9.208.128.117])
-	by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2ASLvEQn55574826
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 28 Nov 2022 21:57:14 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4664B58066;
-	Mon, 28 Nov 2022 21:57:14 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1DDC458059;
-	Mon, 28 Nov 2022 21:57:14 +0000 (GMT)
-Received: from localhost (unknown [9.211.69.164])
-	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 28 Nov 2022 21:57:14 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: Nick Child <nnac123@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 10/13] powerpc/rtas: improve function information lookups
-In-Reply-To: <43451bb2-7ed9-e538-4334-2f4a462c7805@linux.ibm.com>
-References: <20221118150751.469393-1-nathanl@linux.ibm.com>
- <20221118150751.469393-11-nathanl@linux.ibm.com>
- <43451bb2-7ed9-e538-4334-2f4a462c7805@linux.ibm.com>
-Date: Mon, 28 Nov 2022 15:57:13 -0600
-Message-ID: <87wn7e91za.fsf@linux.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 2hoPbH57i22fZ86RiMRfp6M93h8yme-0
-X-Proofpoint-GUID: JeCDFlv92d4UhceQhLKKknTAI2N6w-KZ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-11-28_17,2022-11-28_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 adultscore=0
- priorityscore=1501 lowpriorityscore=0 spamscore=0 suspectscore=0
- mlxlogscore=965 impostorscore=0 phishscore=0 bulkscore=0 malwarescore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2210170000 definitions=main-2211280154
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NLgs42lHRz3bjH
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Nov 2022 09:59:35 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by sin.source.kernel.org (Postfix) with ESMTPS id 7ACDFCE109D;
+	Mon, 28 Nov 2022 22:59:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A99DC433D6;
+	Mon, 28 Nov 2022 22:59:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1669676369;
+	bh=8eUsQnXrojDc3xf/FA0TCQqqadaNCz4PLnjHT4xDE/M=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=p/c6sfRX9un7PSA9WHRKHQPKKlq0P4NHxZWk+3LaBZS7DQenvFmjKk0jQBgH6o535
+	 rwsyByROkiEJmDN58P/Z53hmZWo4xmybXT0VaPtvGqyQZyuQQjThzncIMjLPHHFdpc
+	 3v4hl13h6A47jhJOM5850oDp2I/9vqahh0Q1uqps=
+Date: Mon, 28 Nov 2022 14:59:27 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH mm-unstable v1 16/20] mm/frame-vector: remove FOLL_FORCE
+ usage
+Message-Id: <20221128145927.df895bf1966cfa125cae9668@linux-foundation.org>
+In-Reply-To: <9d0bf98a-3d6a-1082-e992-1338e1525935@redhat.com>
+References: <20221116102659.70287-1-david@redhat.com>
+	<20221116102659.70287-17-david@redhat.com>
+	<81fb0fa3-2e06-b765-56ac-a7d981194e59@redhat.com>
+	<08b65ac6-6786-1080-18f8-d2be109c85fc@xs4all.nl>
+	<9d0bf98a-3d6a-1082-e992-1338e1525935@redhat.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-redhat-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,94 +62,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: tyreld@linux.ibm.com, ldufour@linux.ibm.com, ajd@linux.ibm.com, npiggin@gmail.com
+Cc: linux-ia64@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, dri-devel@lists.freedesktop.org, linux-mips@vger.kernel.org, Hans Verkuil <hverkuil@xs4all.nl>, linux-mm@kvack.org, Nadav Amit <namit@vmware.com>, linux-kselftest@vger.kernel.org, sparclinux@vger.kernel.org, Shuah Khan <shuah@kernel.org>, Marek Szyprowski <m.szyprowski@samsung.com>, Andrea Arcangeli <aarcange@redhat.com>, linux-samsung-soc@vger.kernel.org, linux-rdma@vger.kernel.org, David Airlie <airlied@gmail.com>, x86@kernel.org, Hugh Dickins <hughd@google.com>, Matthew Wilcox <willy@infradead.org>, Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@suse.cz>, linux-media@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, John Hubbard <jhubbard@nvidia.com>, linux-um@lists.infradead.org, etnaviv@lists.freedesktop.org, Alex Williamson <alex.williamson@redhat.com>, Peter Xu <peterx@redhat.com>, Muchun Song <songmuchun@bytedance.com>, Mauro Carvalho Chehab <mchehab@
+ kernel.org>, linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, Oded Gabbay <ogabbay@kernel.org>, linux-kernel@vger.kernel.org, Tomasz Figa <tfiga@chromium.org>, linux-perf-users@vger.kernel.org, linux-security-module@vger.kernel.org, linux-alpha@vger.kernel.org, linux-fsdevel@vger.kernel.org, Lucas Stach <l.stach@pengutronix.de>, Linus Torvalds <torvalds@linux-foundation.org>, Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nick Child <nnac123@linux.ibm.com> writes:
-> On 11/18/22 09:07, Nathan Lynch wrote:
->> +static int __init rtas_token_to_function_xarray_init(void)
->> +{
->> +	int err = 0;
->> +
->> +	for (size_t i = 0; i < ARRAY_SIZE(rtas_function_table); ++i) {
->> +		const struct rtas_function *func = &rtas_function_table[i];
->> +		const s32 token = func->token;
->> +
->> +		if (token == RTAS_UNKNOWN_SERVICE)
->> +			continue;
->> +
->> +		err = xa_err(xa_store(&rtas_token_to_function_xarray,
->> +				      token, (void *)func, GFP_KERNEL));
->> +		if (err)
->> +			break;
->> +	}
->> +
->> +	return err;
->> +}
->> +arch_initcall(rtas_token_to_function_xarray_init);
->> +
->> +static const struct rtas_function *rtas_token_to_function(s32 token)
->> +{
->> +	const struct rtas_function *func;
->> +
->> +	if (WARN_ONCE(token < 0, "invalid token %d", token))
->> +		return NULL;
->> +
->> +	func = xa_load(&rtas_token_to_function_xarray, (unsigned long)token);
->> +
-> Why typecast token here and not in xa_store?
+On Mon, 28 Nov 2022 09:18:47 +0100 David Hildenbrand <david@redhat.com> wrote:
 
-No good reason. I'll add it to the xa_store() call site.
+> > Less chances of things going wrong that way.
+> > 
+> > Just mention in the v2 cover letter that the first patch was added to
+> > make it easy to backport that fix without being hampered by merge
+> > conflicts if it was added after your frame_vector.c patch.
+> 
+> Yes, that's the way I would naturally do, it, however, Andrew prefers 
+> delta updates for minor changes.
+> 
+> @Andrew, whatever you prefer!
 
->> +static void __init rtas_function_table_init(void)
->> +{
->> +	struct property *prop;
->> +
->> +	for (size_t i = 0; i < ARRAY_SIZE(rtas_function_table); ++i) {
->> +		struct rtas_function *curr = &rtas_function_table[i];
->> +		struct rtas_function *prior;
->> +		int cmp;
->> +
->> +		curr->token = RTAS_UNKNOWN_SERVICE;
->> +
->> +		if (i == 0)
->> +			continue;
->> +		/*
->> +		 * Ensure table is sorted correctly for binary search
->> +		 * on function names.
->> +		 */
->> +		prior = &rtas_function_table[i - 1];
->> +
->> +		cmp = strcmp(prior->name, curr->name);
->> +		if (cmp < 0)
->> +			continue;
->> +
->> +		if (cmp == 0) {
->> +			pr_err("'%s' has duplicate function table entries\n",
->> +			       curr->name);
->> +		} else {
->> +			pr_err("function table unsorted: '%s' wrongly precedes '%s'\n",
->> +			       prior->name, curr->name);
->> +		}
->> +	}
-> Just a thought, would it be simpler to use sort()? you already have the
-> cmp_func implemented for bsearch().
+I'm inclined to let things sit as they are.  Cross-tree conflicts
+happen, and Linus handles them.  I'll flag this (very simple) conflict
+in the pull request, if MM merges second.  If v4l merges second then
+hopefully they will do the same.  But this one is so simple that Linus
+hardly needs our help.
 
-It's an option, but I think a tradeoff is that we would have to
-sacrifice some const-ness in the data structures (i.e. remove the const
-qualifier from struct rtas_function's fields). And the table has to be
-in *some* order, so it may as well be sorted by name from the start.
-
-That said, I don't love resorting to a boot-time check for this. We
-could sidestep the issue by generating the C code for the table and
-indexes at build time, but it's hard to justify the effort when the set
-of RTAS functions changes very slowly over time.
-
-> As for the series as a whole:
-> I am no RTAS expert but was able to build, boot and mess around with new
-> tracepoints without errors:
->
-> Tested-by: Nick Child <nnac123@linux.ibm.com>
-
-Thanks for testing and reviewing!
+But Linus won't be editing changelogs so that the changelog makes more
+sense after both trees are joined.  I'm inclined to let the changelog
+sit as it is as well.
