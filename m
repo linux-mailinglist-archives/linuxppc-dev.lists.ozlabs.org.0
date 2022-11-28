@@ -2,95 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AA0563B418
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Nov 2022 22:20:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 280B563B48C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Nov 2022 22:58:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NLdfS6dk3z3dvZ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Nov 2022 08:20:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NLfV874Vtz3dwd
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Nov 2022 08:58:08 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ECaYyu7E;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=IBopjRXj;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ECaYyu7E;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=IBopjRXj;
 	dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NLddV2JFPz2xkx
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Nov 2022 08:19:25 +1100 (AEDT)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2ASJsafj001194
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Nov 2022 21:19:22 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NLfTD32Dmz2xmg
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Nov 2022 08:57:19 +1100 (AEDT)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2ASLssXB031729
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Nov 2022 21:57:17 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
  : in-reply-to : references : date : message-id : mime-version :
- content-type : content-transfer-encoding; s=pp1;
- bh=Ek3oHTkxELsTqH32dxGb57jq4fLJSchwZqBQWwlrgNs=;
- b=ECaYyu7EOnlDV7f65lZ5kHtlYzKzvUjAjJpYWura0O/eY3ZlW+URZbgFf+PeM+2XRpRb
- N8Mfo+qgvhPV0xj17SQBRSPuneX2F1JRUlTzFAs0zA/LI3DKSS25E39q7tmfBNMBdfFR
- 6zHahOwpFrV4DCD+826x+xYh6RduQzyq/6MusBJzsX9Aja+N7bzYaAwrOjywD/h7XjQi
- Of1VwjYUWatwSD00Sf4QxvMyCczi5JVkV4JCjp8Xm4W4pNwz8zB28SdKZqFMjTtmNYqM
- CvGFElc2Z+Crxt7Pul1GD7q47WOFtvFM+WpyLas3U83ZOvSwz4uPew9ugidS1GhizgyW ag== 
+ content-type; s=pp1; bh=qVdkYzmSoH91ESmWgEhVO4LiXV51+Xykgpj1o9V5ANE=;
+ b=IBopjRXjh9uV5DXbsMtMi3ARCxhoGMzzMIWGHtauIJgDqVwwd8NXLCcG/q8Roq7nmHsi
+ xZorsjmjqBLp7Knzdp/CKAveYfdU9p4mm95fgoqd0kQID1hJ1d0q/OA4JVjOVKp5oGox
+ xOYyIJag6QmQ0y+2q9KOnezUMl+PoGjT0TvpmDI2Jqa5JgUV2Z7hLCA3Lo2DrP++Hsyn
+ jz5XyROKOw8OjI/XC0q7M6g7azR4GBp+7UmoT4ejopz6r6DTLneg1vNff2ud27GiE8MJ
+ 85jGpwKk8Yao6QP60L9byqV9ZlgPIBu/yhVprBS2GWvv2qCX5m7fzDF2TvHdoid437fI fQ== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m53je1ue1-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m55arg1s4-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Nov 2022 21:19:22 +0000
-Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2ASKOkDD032661
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Nov 2022 21:19:22 GMT
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com [169.53.41.122])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m53je1udq-1
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Nov 2022 21:57:17 +0000
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2ASLvFem007958
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Nov 2022 21:57:16 GMT
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com [169.47.144.27])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m55arg1rp-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 28 Nov 2022 21:19:22 +0000
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
-	by ppma04dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2ASL5t5o021548;
-	Mon, 28 Nov 2022 21:19:21 GMT
-Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com [9.57.198.27])
-	by ppma04dal.us.ibm.com with ESMTP id 3m3ae9v39g-1
+	Mon, 28 Nov 2022 21:57:16 +0000
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+	by ppma05wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2ASLpa3k030422;
+	Mon, 28 Nov 2022 21:57:15 GMT
+Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com [9.57.198.23])
+	by ppma05wdc.us.ibm.com with ESMTP id 3m3t71c6f3-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 28 Nov 2022 21:19:21 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com ([9.208.128.113])
-	by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2ASLJJeG8061444
+	Mon, 28 Nov 2022 21:57:15 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com ([9.208.128.117])
+	by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2ASLvEQn55574826
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 28 Nov 2022 21:19:20 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5B65E5805B;
-	Mon, 28 Nov 2022 21:19:19 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2DB5458063;
-	Mon, 28 Nov 2022 21:19:19 +0000 (GMT)
+	Mon, 28 Nov 2022 21:57:14 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4664B58066;
+	Mon, 28 Nov 2022 21:57:14 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1DDC458059;
+	Mon, 28 Nov 2022 21:57:14 +0000 (GMT)
 Received: from localhost (unknown [9.211.69.164])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 28 Nov 2022 21:19:19 +0000 (GMT)
+	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 28 Nov 2022 21:57:14 +0000 (GMT)
 From: Nathan Lynch <nathanl@linux.ibm.com>
-To: Andrew Donnellan <ajd@linux.ibm.com>, Nick Child
- <nnac123@linux.ibm.com>,
-        linuxppc-dev@lists.ozlabs.org
+To: Nick Child <nnac123@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Subject: Re: [PATCH 10/13] powerpc/rtas: improve function information lookups
-In-Reply-To: <2ba2809a545d0f84b336f78baf2dbe2ff20dc105.camel@linux.ibm.com>
+In-Reply-To: <43451bb2-7ed9-e538-4334-2f4a462c7805@linux.ibm.com>
 References: <20221118150751.469393-1-nathanl@linux.ibm.com>
  <20221118150751.469393-11-nathanl@linux.ibm.com>
- <5b4c4316bfe88a3f231ffe416ce34192189549db.camel@linux.ibm.com>
- <c183a039-2001-eb3a-7028-f8a0813987cf@linux.ibm.com>
- <2ba2809a545d0f84b336f78baf2dbe2ff20dc105.camel@linux.ibm.com>
-Date: Mon, 28 Nov 2022 15:19:18 -0600
-Message-ID: <87zgca93qh.fsf@linux.ibm.com>
+ <43451bb2-7ed9-e538-4334-2f4a462c7805@linux.ibm.com>
+Date: Mon, 28 Nov 2022 15:57:13 -0600
+Message-ID: <87wn7e91za.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: ZDYcCVl9B-8PsWvNIYl-ea1IaIlH4I4q
-X-Proofpoint-ORIG-GUID: GEIr2GEJLWZsM0LFqDQWB7uYL_-JrokT
+X-Proofpoint-ORIG-GUID: 2hoPbH57i22fZ86RiMRfp6M93h8yme-0
+X-Proofpoint-GUID: JeCDFlv92d4UhceQhLKKknTAI2N6w-KZ
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
  definitions=2022-11-28_17,2022-11-28_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 malwarescore=0
- impostorscore=0 suspectscore=0 mlxscore=0 lowpriorityscore=0 bulkscore=0
- spamscore=0 mlxlogscore=999 adultscore=0 phishscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2210170000
- definitions=main-2211280151
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 adultscore=0
+ priorityscore=1501 lowpriorityscore=0 spamscore=0 suspectscore=0
+ mlxlogscore=965 impostorscore=0 phishscore=0 bulkscore=0 malwarescore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2210170000 definitions=main-2211280154
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,72 +96,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: tyreld@linux.ibm.com, ldufour@linux.ibm.com, npiggin@gmail.com
+Cc: tyreld@linux.ibm.com, ldufour@linux.ibm.com, ajd@linux.ibm.com, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Andrew Donnellan <ajd@linux.ibm.com> writes:
-> On Wed, 2022-11-23 at 13:32 -0600, Nick Child wrote:
->> On 11/22/22 20:51, Andrew Donnellan wrote:
->> > On Fri, 2022-11-18 at 09:07 -0600, Nathan Lynch wrote:
->> > > +enum rtas_function_flags {
->> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0RTAS_FN_FLAG_BANNED_FOR_S=
-YSCALL_ON_LE =3D (1 << 0),
->> > > +};
->> >=20
->> > This seems to be new, what's the justification?
->> >=20
->>=20
->> Seems to be a run-time replacement of:
->> #ifdef CONFIG_CPU_BIG_ENDIAN
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0{ "ibm,suspend-me", -1, =
--1, -1, -1, -1 },
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0{ "ibm,update-nodes", -1=
-, 0, -1, -1, -1, 4096 },
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0{ "ibm,update-properties=
-", -1, 0, -1, -1, -1, 4096 },
->> #endif
->>=20
->> It looks to be handled logically:
->> + if (IS_ENABLED(CONFIG_CPU_LITTLE_ENDIAN) &&
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 (func->fla=
-gs & RTAS_FN_FLAG_BANNED_FOR_SYSCALL_ON_LE))
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0goto err;
->>=20
->> Perhaps, also allow the addition of any future special cases
->> for rtas functions easier to maintain?
+Nick Child <nnac123@linux.ibm.com> writes:
+> On 11/18/22 09:07, Nathan Lynch wrote:
+>> +static int __init rtas_token_to_function_xarray_init(void)
+>> +{
+>> +	int err = 0;
+>> +
+>> +	for (size_t i = 0; i < ARRAY_SIZE(rtas_function_table); ++i) {
+>> +		const struct rtas_function *func = &rtas_function_table[i];
+>> +		const s32 token = func->token;
+>> +
+>> +		if (token == RTAS_UNKNOWN_SERVICE)
+>> +			continue;
+>> +
+>> +		err = xa_err(xa_store(&rtas_token_to_function_xarray,
+>> +				      token, (void *)func, GFP_KERNEL));
+>> +		if (err)
+>> +			break;
+>> +	}
+>> +
+>> +	return err;
+>> +}
+>> +arch_initcall(rtas_token_to_function_xarray_init);
+>> +
+>> +static const struct rtas_function *rtas_token_to_function(s32 token)
+>> +{
+>> +	const struct rtas_function *func;
+>> +
+>> +	if (WARN_ONCE(token < 0, "invalid token %d", token))
+>> +		return NULL;
+>> +
+>> +	func = xa_load(&rtas_token_to_function_xarray, (unsigned long)token);
+>> +
+> Why typecast token here and not in xa_store?
+
+No good reason. I'll add it to the xa_store() call site.
+
+>> +static void __init rtas_function_table_init(void)
+>> +{
+>> +	struct property *prop;
+>> +
+>> +	for (size_t i = 0; i < ARRAY_SIZE(rtas_function_table); ++i) {
+>> +		struct rtas_function *curr = &rtas_function_table[i];
+>> +		struct rtas_function *prior;
+>> +		int cmp;
+>> +
+>> +		curr->token = RTAS_UNKNOWN_SERVICE;
+>> +
+>> +		if (i == 0)
+>> +			continue;
+>> +		/*
+>> +		 * Ensure table is sorted correctly for binary search
+>> +		 * on function names.
+>> +		 */
+>> +		prior = &rtas_function_table[i - 1];
+>> +
+>> +		cmp = strcmp(prior->name, curr->name);
+>> +		if (cmp < 0)
+>> +			continue;
+>> +
+>> +		if (cmp == 0) {
+>> +			pr_err("'%s' has duplicate function table entries\n",
+>> +			       curr->name);
+>> +		} else {
+>> +			pr_err("function table unsorted: '%s' wrongly precedes '%s'\n",
+>> +			       prior->name, curr->name);
+>> +		}
+>> +	}
+> Just a thought, would it be simpler to use sort()? you already have the
+> cmp_func implemented for bsearch().
+
+It's an option, but I think a tradeoff is that we would have to
+sacrifice some const-ness in the data structures (i.e. remove the const
+qualifier from struct rtas_function's fields). And the table has to be
+in *some* order, so it may as well be sorted by name from the start.
+
+That said, I don't love resorting to a boot-time check for this. We
+could sidestep the issue by generating the C code for the table and
+indexes at build time, but it's hard to justify the effort when the set
+of RTAS functions changes very slowly over time.
+
+> As for the series as a whole:
+> I am no RTAS expert but was able to build, boot and mess around with new
+> tracepoints without errors:
 >
-> Makes sense, though I'm slightly confused about the original rationale
-> for the ifdef and why it's not being fixed in userspace.
+> Tested-by: Nick Child <nnac123@linux.ibm.com>
 
-Nick C's explanation is correct. I will make the commit message more
-explicit about the conversion, and document the flag in the code.
-
-The original rationale:
-
-commit de0f7349a0dd072e54b5fc04c305907b22d28a5f
-Author: Nathan Lynch <nathanl@linux.ibm.com>
-Date:   Mon Dec 7 15:51:33 2020 -0600
-
-    powerpc/rtas: prevent suspend-related sys_rtas use on LE
-
-    While drmgr has had work in some areas to make its RTAS syscall
-    interactions endian-neutral, its code for performing partition
-    migration via the syscall has never worked on LE. While it is able to
-    complete ibm,suspend-me successfully, it crashes when attempting the
-    subsequent ibm,update-nodes call.
-
-    drmgr is the only known (or plausible) user of ibm,suspend-me,
-    ibm,update-nodes, and ibm,update-properties, so allow them only in
-    big-endian configurations.
-
-To summarize: we know these functions have never had working users via
-sys_rtas on ppc64le, and we want to keep it that way.
-
-> Slightly clunky name though, something like
-> RTAS_FN_FLAG_SYSCALL_BE_ONLY might be less clunky?
-
-RTAS_FN_FLAG_BANNED_FOR_SYSCALL_ON_LE is verbose, but I think it
-communicates better that we are consciously imposing a policy in a
-specific context.
+Thanks for testing and reviewing!
