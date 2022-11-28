@@ -2,72 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E125A63A07F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Nov 2022 05:20:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B0D663A084
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Nov 2022 05:22:16 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NLC1V1Q7Gz3f7g
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Nov 2022 15:20:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NLC3p0rhVz3f7s
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Nov 2022 15:22:14 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=CT61j/eO;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KLpdXQ3q;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1033; helo=mail-pj1-x1033.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=bgray@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=CT61j/eO;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KLpdXQ3q;
 	dkim-atps=neutral
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NLBwj15Cxz3cQl
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Nov 2022 15:16:04 +1100 (AEDT)
-Received: by mail-pj1-x1033.google.com with SMTP id t17so8320303pjo.3
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Nov 2022 20:16:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Vysrk3dGTGyq4JoEtNOlnGeU0Y9RTh57n/bH2voLswM=;
-        b=CT61j/eO21oJFoArWdo5BXt9PjYN56dxU7TxhKm8eGie18UtMCh6x7M8nf6RhHrohE
-         KCetcywpvOt+OuN5lHvMqvqnUpcU/U7NL90xfg2l6oxRgws9Pb9eLi/0D230cNpNsga1
-         BFTr2l71QoZy8xXcHMP78h8OK885PwSzMjP4RBv1I+YTgCwBoidYcxga/h5Vi9K0mw7H
-         1hndDv/iVkqi1YjDEcSC2nrRRyE+z7MeEelm7Gks57kBdgZEM1DG4b7noSkquVOH8DKG
-         k5tyrIA4X8QrNHW4X6cnY4/Lwjex1kCKy0i6RnHo/A0VhRAid/Q9dbv2fIncq5K0R6eG
-         vmPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Vysrk3dGTGyq4JoEtNOlnGeU0Y9RTh57n/bH2voLswM=;
-        b=nxO/2L/Z4q4pg3DFcNjp09GsJlhwiBGrz6FHJPkDGf66YEsEjlMM+0CcTPlh3U5VTx
-         zO7m2v7yfHLUpSEp4PgL7q8K6STqklugsC6sCWKiVQbpniWUcK3OCiiZG2LPDPQxErCv
-         NCFIkAq1NOpCkmaOCufZYyXjxMndB6xif9dSI3811suaNBbBmCVz0WDMfqHsGpnm/I19
-         zXunVs16JSjUb7xbjw8wCFu7HvJ8MxwqRyfoBtXGXbxqE2K7ARgfWHeI63SsFMlYpaYa
-         opvlhLZX9ru1BQsiawjEhBFb8noAhaWr4oF6KQCRfg9v6u5D5PHyYTpKm9aIb1xsPl8Q
-         XoUQ==
-X-Gm-Message-State: ANoB5pkXGV/zyxu+mlqMsIloB7mz8Su+koMhrCUhA+FsjwC4HwCVchEq
-	WYEe0AuEGQJKslyXt2Cuh2MP7Gm0R4Y=
-X-Google-Smtp-Source: AA0mqf61Q9PHfLeMkWB4Z3x5rPv5/rLH2A0u1Sxu5ThZlDdD9zvRWmcj4fNMDlgzGkTjjDyzoulPvw==
-X-Received: by 2002:a17:90a:440f:b0:218:9894:62c1 with SMTP id s15-20020a17090a440f00b00218989462c1mr43569056pjg.205.1669608962923;
-        Sun, 27 Nov 2022 20:16:02 -0800 (PST)
-Received: from bobo.ozlabs.ibm.com ([220.240.231.60])
-        by smtp.gmail.com with ESMTPSA id y28-20020aa79afc000000b0057489a78979sm6905670pfp.21.2022.11.27.20.15.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Nov 2022 20:16:02 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NLC1r4xtvz3cJG
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Nov 2022 15:20:32 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AS1RYqI008724;
+	Mon, 28 Nov 2022 04:20:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=ZV57ptr8RIZ6QMbsMyPYheR+8kLQUfPZZPbF5b7oFgY=;
+ b=KLpdXQ3qoUsiV/ms+C0iNEw18ppT9CUMu/tQspadu9/7l477xv2YHplMyA1e1KXQA7Eh
+ 95IP5Sl/Y20jfEqSv8Ytp03UPYPEGEXwWZH3T5P/M88RVcLFef7LZ8Jh0TMUl8IvxzGc
+ pfwhcKVspNSaotFWvJcnTyRiO5tjZ6U0PuTp/jWj2qXROP3aazGjh/D2u2TwoDwN4QDC
+ TgRCQRu2sSqxNjmwMy6Y3ddaNBHPBnY7DVtblCeHoQAwJd4oYsYWYBKLdBaAss00x3tH
+ 1Z0bewl4m0vCqraN2GcVYrO5VtrSkBeum32QiuwwzIY/zzLP4GCI787fXW6pG2s5LdVF 8Q== 
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m3vfjd8jq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 28 Nov 2022 04:20:29 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+	by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2AS45Gaw027639;
+	Mon, 28 Nov 2022 04:20:27 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+	by ppma03ams.nl.ibm.com with ESMTP id 3m3ae99wrn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 28 Nov 2022 04:20:27 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
+	by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2AS4KP3x8323658
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 28 Nov 2022 04:20:25 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5E6084C044;
+	Mon, 28 Nov 2022 04:20:25 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 08CDE4C040;
+	Mon, 28 Nov 2022 04:20:25 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Mon, 28 Nov 2022 04:20:24 +0000 (GMT)
+Received: from li-0d7fa1cc-2c9d-11b2-a85c-aed20764436d.ibm.com (haven.au.ibm.com [9.192.254.114])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id E48DE60306;
+	Mon, 28 Nov 2022 15:20:22 +1100 (AEDT)
+From: Benjamin Gray <bgray@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v6 4/4] powerpc/64: Option to build big-endian with ELFv2 ABI
-Date: Mon, 28 Nov 2022 14:15:39 +1000
-Message-Id: <20221128041539.1742489-5-npiggin@gmail.com>
-X-Mailer: git-send-email 2.37.2
-In-Reply-To: <20221128041539.1742489-1-npiggin@gmail.com>
-References: <20221128041539.1742489-1-npiggin@gmail.com>
+Subject: [PATCH v3 0/7] Expand selftest utils
+Date: Mon, 28 Nov 2022 15:19:41 +1100
+Message-Id: <20221128041948.58339-1-bgray@linux.ibm.com>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: dSdIDy4HqTWBMOehkXjXQ_zx8m4ojvDL
+X-Proofpoint-GUID: dSdIDy4HqTWBMOehkXjXQ_zx8m4ojvDL
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-11-28_04,2022-11-25_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 phishscore=0
+ mlxscore=0 malwarescore=0 bulkscore=0 adultscore=0 spamscore=0
+ priorityscore=1501 lowpriorityscore=0 mlxlogscore=999 clxscore=1015
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2210170000 definitions=main-2211280026
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,86 +91,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Luis Chamberlain <mcgrof@kernel.org>, =?UTF-8?q?Michal=20Such=C3=A1nek?= <msuchanek@suse.de>, Nicholas Piggin <npiggin@gmail.com>
+Cc: Benjamin Gray <bgray@linux.ibm.com>, ajd@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Provide an option to build big-endian kernels using the ELFv2 ABI. This
-works on GCC only for now. Clang is rumored to support this, but core
-build files need updating first, at least.
+Started this when writing tests for a feature I'm working on, needing a way to
+read/write numbers to system files. After writing some utils to safely handle
+file IO and parsing, I realised I'd made the ~6th file read/write implementation
+and only(?) number parser that checks all the failure modes when expecting to
+parse a single number from a file.
 
-This gives big-endian kernels useful advantages of the ELFv2 ABI, e.g.,
-less stack usage, -mprofile-kernel support, better compatibility with
-eBPF tools.
+So these utils ended up becoming this series. I also modified some other test
+utils I came across while doing so. My understanding is selftests are not expected
+to be backported, so I wasn't concerned about only introducing new utils and leaving
+the existing implementations be.
 
-BE+ELFv2 is not officially supported by the GNU toolchain, but it works
-fine in testing and has been used by some userspace for some time (e.g.,
-Void Linux).
+V3:	* Add reviewed-by from previous version
+	* Fix write(2) call to include creation mode
 
-Tested-by: Michal Suchánek <msuchanek@suse.de>
-Reviewed-by: Segher Boessenkool <segher@kernel.crashing.org>
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/Kconfig                   | 21 +++++++++++++++++++++
- arch/powerpc/platforms/Kconfig.cputype |  4 ++--
- 2 files changed, 23 insertions(+), 2 deletions(-)
+Benjamin Gray (7):
+  selftests/powerpc: Use mfspr/mtspr macros
+  selftests/powerpc: Add ptrace setup_core_pattern() null-terminator
+  selftests/powerpc: Add generic read/write file util
+  selftests/powerpc: Add read/write debugfs file, int
+  selftests/powerpc: Parse long/unsigned long value safely
+  selftests/powerpc: Add {read,write}_{long,ulong}
+  selftests/powerpc: Add automatically allocating read_file
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 2ca5418457ed..2d0d80bcc24a 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -1,6 +1,9 @@
- # SPDX-License-Identifier: GPL-2.0
- source "arch/powerpc/platforms/Kconfig.cputype"
- 
-+config CC_HAS_ELFV2
-+	def_bool PPC64 && $(cc-option, -mabi=elfv2)
-+
- config 32BIT
- 	bool
- 	default y if PPC32
-@@ -583,6 +586,24 @@ config KEXEC_FILE
- config ARCH_HAS_KEXEC_PURGATORY
- 	def_bool KEXEC_FILE
- 
-+config PPC64_BIG_ENDIAN_ELF_ABI_V2
-+	bool "Build big-endian kernel using ELF ABI V2 (EXPERIMENTAL)"
-+	depends on PPC64 && CPU_BIG_ENDIAN
-+	depends on CC_HAS_ELFV2
-+	depends on LD_IS_BFD && LD_VERSION >= 22400
-+	default n
-+	help
-+	  This builds the kernel image using the "Power Architecture 64-Bit ELF
-+	  V2 ABI Specification", which has a reduced stack overhead and faster
-+	  function calls. This internal kernel ABI option does not affect
-+          userspace compatibility.
-+
-+	  The V2 ABI is standard for 64-bit little-endian, but for big-endian
-+	  it is less well tested by kernel and toolchain. However some distros
-+	  build userspace this way, and it can produce a functioning kernel.
-+
-+	  This requires GCC and binutils 2.24 or newer.
-+
- config RELOCATABLE
- 	bool "Build a relocatable kernel"
- 	depends on PPC64 || (FLATMEM && (44x || PPC_85xx))
-diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
-index 0c4eed9aea80..6e94d45f3baa 100644
---- a/arch/powerpc/platforms/Kconfig.cputype
-+++ b/arch/powerpc/platforms/Kconfig.cputype
-@@ -575,10 +575,10 @@ config CPU_LITTLE_ENDIAN
- endchoice
- 
- config PPC64_ELF_ABI_V1
--	def_bool PPC64 && CPU_BIG_ENDIAN
-+	def_bool PPC64 && (CPU_BIG_ENDIAN && !PPC64_BIG_ENDIAN_ELF_ABI_V2)
- 
- config PPC64_ELF_ABI_V2
--	def_bool PPC64 && CPU_LITTLE_ENDIAN
-+	def_bool PPC64 && !PPC64_ELF_ABI_V1
- 
- config PPC64_BOOT_WRAPPER
- 	def_bool n
--- 
-2.37.2
+ tools/testing/selftests/powerpc/dscr/dscr.h   |  56 +---
+ .../selftests/powerpc/dscr/dscr_sysfs_test.c  |  23 +-
+ .../testing/selftests/powerpc/include/utils.h |  18 +-
+ .../selftests/powerpc/nx-gzip/gzfht_test.c    |  52 +--
+ tools/testing/selftests/powerpc/pmu/lib.c     |  35 +-
+ .../selftests/powerpc/ptrace/core-pkey.c      |  28 +-
+ .../selftests/powerpc/ptrace/ptrace-hwbreak.c |   6 +-
+ .../testing/selftests/powerpc/ptrace/ptrace.h |   5 +-
+ .../selftests/powerpc/security/entry_flush.c  |  12 +-
+ .../selftests/powerpc/security/flush_utils.c  |   3 +-
+ .../selftests/powerpc/security/rfi_flush.c    |  12 +-
+ .../powerpc/security/uaccess_flush.c          |  18 +-
+ .../selftests/powerpc/syscalls/Makefile       |   2 +-
+ .../selftests/powerpc/syscalls/rtas_filter.c  |  80 +----
+ tools/testing/selftests/powerpc/utils.c       | 314 ++++++++++++++----
+ 15 files changed, 341 insertions(+), 323 deletions(-)
 
+
+base-commit: 247f34f7b80357943234f93f247a1ae6b6c3a740
+--
+2.38.1
