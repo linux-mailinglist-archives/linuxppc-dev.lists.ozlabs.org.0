@@ -1,59 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90BA463BD07
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Nov 2022 10:35:07 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B32D63BD15
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Nov 2022 10:36:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NLxyK3dNpz3bW6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Nov 2022 20:35:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NLy081d9tz3bTq
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Nov 2022 20:36:40 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=xVQmEFZ1;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=iu8wmfQ9;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=softfail (domain owner discourages use of this host) smtp.mailfrom=kernel.org (client-ip=210.131.2.83; helo=conssluserg-04.nifty.com; envelope-from=masahiroy@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=softfail (domain owner discourages use of this host) smtp.mailfrom=kernel.org (client-ip=210.131.2.80; helo=conssluserg-01.nifty.com; envelope-from=masahiroy@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=xVQmEFZ1;
+	dkim=pass (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=iu8wmfQ9;
 	dkim-atps=neutral
-Received: from conssluserg-04.nifty.com (conssluserg-04.nifty.com [210.131.2.83])
+Received: from conssluserg-01.nifty.com (conssluserg-01.nifty.com [210.131.2.80])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NLxxP4jjtz2yxB
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Nov 2022 20:34:17 +1100 (AEDT)
-Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180]) (authenticated)
-	by conssluserg-04.nifty.com with ESMTP id 2AT9Xv7S020023
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Nov 2022 18:33:58 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-04.nifty.com 2AT9Xv7S020023
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NLxzB174bz2yxQ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Nov 2022 20:35:49 +1100 (AEDT)
+Received: from mail-oa1-f53.google.com (mail-oa1-f53.google.com [209.85.160.53]) (authenticated)
+	by conssluserg-01.nifty.com with ESMTP id 2AT9ZGno019811
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Nov 2022 18:35:16 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-01.nifty.com 2AT9ZGno019811
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-	s=dec2015msa; t=1669714438;
-	bh=W7/cBOhC6ZWzKLNByGDtoOjb1UE7rlpyI0vm5uWvnSw=;
+	s=dec2015msa; t=1669714517;
+	bh=Q7xi3f1N/meKASk0USS2l24LMBp1S+Lf4JZEEmqBqZ0=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=xVQmEFZ1CE9o3mHpfyU7Q+Ga+U8knXckkKGGpOLb/IMTb3Pq5j40cX2JZGWtePMtv
-	 LJ/6uv1ZyZtlYT4A1tLP2TQi7vUr/Mh7yJTQVrTZ9QQmsYK2JjqabOpHK++rNGXIy8
-	 fQWTIqVvpGcPthYl9m7iucm5qqFiSi9466FoCNZod759lFHpJU/AFK3sP52RjlvXmJ
-	 V2GTEvMwhP7tOhhyZG1Ilcr9XnqOvPQTyfvZ6L/lIWu3ZHKHoNhmsgM3J+tr0yJpeJ
-	 hR2PB0sEYSTfg8qGivjnm1T/kNjwQsIx87ChVX3I1jolT35Xho+tvi8/+4yfg288O4
-	 DhlErQTSCiVgw==
-X-Nifty-SrcIP: [209.85.167.180]
-Received: by mail-oi1-f180.google.com with SMTP id m204so14544848oib.6
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Nov 2022 01:33:58 -0800 (PST)
-X-Gm-Message-State: ANoB5pm2a5XKQPx0K4VAYW6RfN39Sd65x9Vg3g5A/QBSmc0yFZnlNrzL
-	b4Ts8YCc1FfkJHXN9O7KTMBmjykdFFcVNMZq8sM=
-X-Google-Smtp-Source: AA0mqf7vHeDdYzAXYz0tuXeexOFIFTJiCn/xCThNETAbcH1WOB0n2+wXfFWCa2ytnJNfBnXFSmMWIjoKu/QkpHjK1B8=
-X-Received: by 2002:a05:6808:3009:b0:354:94a6:a721 with SMTP id
- ay9-20020a056808300900b0035494a6a721mr17933150oib.194.1669714437267; Tue, 29
- Nov 2022 01:33:57 -0800 (PST)
+	b=iu8wmfQ9D9rAAP7mWoxw8h2LRApApWINFKiihUGcgIGNK6jfBtoHWQSIZUwKwnOzw
+	 irqBc87cUAgwfQsoXxDTNDKChTNvOgC2zN9AyEIG2+SrZMU6IrkURbPJduSqZzTB/o
+	 oW8JeTFZM181JJ9lApleFQO0De+uRb+LMneWY270NsVUqAjcnskpvP4jwAYAFT5NaF
+	 uqypyS06NXu8ZhU4bbr7J1fxnJ2CPjLsJSMa1Ap4zgT/D2YWQaLWFANo0VQWnS6zzv
+	 yqsK0FhWsh2tC5qBcCTQnCOyb6/mZTH0S3p4pEc2qXLrPLa9h62jvbb1yBmqluoBHO
+	 9oAa/hU17XPbg==
+X-Nifty-SrcIP: [209.85.160.53]
+Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-141ca09c2fbso16320736fac.6
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Nov 2022 01:35:16 -0800 (PST)
+X-Gm-Message-State: ANoB5pl+MFoe3JqMd+JHiG7WZAw4TCiQPPG+12H5dzITwyXKERjCyxH0
+	ELlM5O2NZMbcGXBEToauDdSTPpLX5iLufNEsJho=
+X-Google-Smtp-Source: AA0mqf6J+oTxURdJK5Agpkp0/EJAXlORqpOujR9dCeA/lWt4niw0dV/3a7s/MpqS4A7v0PXydp7QwqhjqqWdkA57n28=
+X-Received: by 2002:a05:6870:ea8e:b0:13b:a31f:45fd with SMTP id
+ s14-20020a056870ea8e00b0013ba31f45fdmr33753310oap.194.1669714515803; Tue, 29
+ Nov 2022 01:35:15 -0800 (PST)
 MIME-Version: 1.0
-References: <20221126051002.123199-1-linux@weissschuh.net> <20221126051002.123199-3-linux@weissschuh.net>
- <CAK7LNAREVSp_5d1SaFOLyBHJJrJ6zE_qxSYWAFFnfoz3d0w3-Q@mail.gmail.com>
-In-Reply-To: <CAK7LNAREVSp_5d1SaFOLyBHJJrJ6zE_qxSYWAFFnfoz3d0w3-Q@mail.gmail.com>
+References: <20221126051002.123199-1-linux@weissschuh.net> <20221126051002.123199-2-linux@weissschuh.net>
+ <03859890-bf90-4ad0-1926-4b8cb8dbfa57@csgroup.eu> <8f8b12fd-2e25-49e4-a1fa-247f08f56454@t-8ch.de>
+ <87r0xoatrg.fsf@mpe.ellerman.id.au>
+In-Reply-To: <87r0xoatrg.fsf@mpe.ellerman.id.au>
 From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Tue, 29 Nov 2022 18:33:21 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAQmk3_L3_QwpsBR_uKN+3kE8F5h-QdOGLz8WOSx05CFRg@mail.gmail.com>
-Message-ID: <CAK7LNAQmk3_L3_QwpsBR_uKN+3kE8F5h-QdOGLz8WOSx05CFRg@mail.gmail.com>
-Subject: Re: [PATCH 3/3] init/version.c: remove #include <generated/utsversion.h>
-To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Date: Tue, 29 Nov 2022 18:34:39 +0900
+X-Gmail-Original-Message-ID: <CAK7LNATjaVerkr8GFVFQwqGnjC1Jz23E+C5f9+0LTLhX4gNmZA@mail.gmail.com>
+Message-ID: <CAK7LNATjaVerkr8GFVFQwqGnjC1Jz23E+C5f9+0LTLhX4gNmZA@mail.gmail.com>
+Subject: Re: [PATCH 2/3] powerpc/book3e: remove #include <generated/utsrelease.h>
+To: Michael Ellerman <mpe@ellerman.id.au>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -67,87 +68,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Russ Weight <russell.h.weight@intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Luis Chamberlain <mcgrof@kernel.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch <linux-arch@vger.kernel.org>, Russ Weight <russell.h.weight@intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Nov 27, 2022 at 7:18 AM Masahiro Yamada <masahiroy@kernel.org> wrot=
-e:
+On Mon, Nov 28, 2022 at 7:59 AM Michael Ellerman <mpe@ellerman.id.au> wrote=
+:
 >
-> On Sat, Nov 26, 2022 at 2:10 PM Thomas Wei=C3=9Fschuh <linux@weissschuh.n=
-et> wrote:
+> Thomas Wei=C3=9Fschuh <linux@weissschuh.net> writes:
+> > On 2022-11-26 07:36+0000, Christophe Leroy wrote:
+> >> Le 26/11/2022 =C3=A0 06:10, Thomas Wei=C3=9Fschuh a =C3=A9crit :
+> >>> Commit 7ad4bd887d27 ("powerpc/book3e: get rid of #include <generated/=
+compile.h>")
+> >>> removed the usage of the define UTS_VERSION but forgot to drop the
+> >>> include.
+> >>
+> >> What about:
+> >> arch/powerpc/platforms/52xx/efika.c
+> >> arch/powerpc/platforms/amigaone/setup.c
+> >> arch/powerpc/platforms/chrp/setup.c
+> >> arch/powerpc/platforms/powermac/bootx_init.c
+> >>
+> >> I believe you can do a lot more than what you did in your series.
 > >
-> > Commit 2df8220cc511 ("kbuild: build init/built-in.a just once") moved
-> > the usage of the define UTS_VERSION to the file version-timestamp.c.
+> > The commit messages are wrong.
+> > They should have said UTS_RELEASE instead of UTS_VERSION.
+> >
+> > Could the maintainers fix this up when applying?
+> > I also changed it locally so it will be fixed for v2.
 >
-> With s/UTS_VERSION/UTS_RELEASE/,
+> I'll take this patch, but not the others.
 >
->
-> Reviewed-by: Masahiro Yamada <masahiroy@kernel.org>
->
-> >
-> > version-timestamp.c in turn is included from version.c but already
-> > includes utsversion.h itself properly.
-> >
-> > The unneeded include of utsversion.h from version.c can be dropped.
-> >
-> > Fixes: 2df8220cc511 ("kbuild: build init/built-in.a just once")
-> > Signed-off-by: Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
-> > ---
-> >  init/version.c | 1 -
-> >  1 file changed, 1 deletion(-)
-> >
-> > diff --git a/init/version.c b/init/version.c
-> > index 01d4ab05f0ba..f117921811b4 100644
-> > --- a/init/version.c
-> > +++ b/init/version.c
-> > @@ -15,7 +15,6 @@
-> >  #include <linux/printk.h>
-> >  #include <linux/uts.h>
-> >  #include <linux/utsname.h>
-> > -#include <generated/utsrelease.h>
-> >  #include <linux/proc_ns.h>
-> >
-> >  static int __init early_hostname(char *arg)
-> > --
-> > 2.38.1
-> >
->
->
-> --
-> Best Regards
-> Masahiro Yamada
+> cheers
 
 
-
-This patch is so confusing because the subject is also wrong.
-
-
-
-I fixed up the commit description:
-
-
-
-    init/version.c: remove #include <generated/utsrelease.h>
-
-    Commit 2df8220cc511 ("kbuild: build init/built-in.a just once") moved
-    the usage of the define UTS_RELEASE to the file version-timestamp.c.
-
-    version-timestamp.c in turn is included from version.c but already
-    includes utsrelease.h itself properly.
-
-    The unneeded include of utsrelease.h from version.c can be dropped.
-
-    Fixes: 2df8220cc511 ("kbuild: build init/built-in.a just once")
-    Signed-off-by: Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
-    Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-
-
-
-Applied to linux-kbuild.
-Thanks.
-
-
+Okay, I applied 1/3 and 3/3 to the kbuild tree.
 
 
 
