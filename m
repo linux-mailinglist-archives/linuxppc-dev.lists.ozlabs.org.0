@@ -2,61 +2,92 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1FD263C79F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Nov 2022 19:57:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CC0163C935
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Nov 2022 21:26:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NMBQx73vMz3bZh
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 05:57:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NMDPP1Gkwz3bX0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 07:26:01 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EqVmxaBr;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DugerKvZ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EqVmxaBr;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DugerKvZ;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMBPy3FWhz30QS
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Nov 2022 05:56:22 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id A4B0A618A3;
-	Tue, 29 Nov 2022 18:56:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A686AC433D6;
-	Tue, 29 Nov 2022 18:56:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1669748177;
-	bh=RGuIOhXviKMq41t9CeKW7AFIl48krHdo1X9sgB4ZdIQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EqVmxaBrBK/XMgdJsfjXkBWJMoeKNTSD6JzHwzxEnFDViQ6xizXwo81TcHZGu4FIZ
-	 Utbh2JbHpkcwTIuMXC6hoxkUM+ZCRlNieNOWq6TcrVg4SWj8i/LqXVg99SzZYhvpBf
-	 s47s0MEJ3FtXp/ung6zU1M/CpE8euE0ZLLsc3qGAHEFTtopCJX/UYzhVRSByPFTGnS
-	 HSNRV7lidXOd2iZzCkzOVgGhPfwxvtAI7EZYPLlvpZe7iveych5nYEirbR9GPu6Udk
-	 HqYUzDqsas0wusqbQqT8oS4lfCVkYg0HRK1eJl9FHYDOt5UagIqkFQR8Jj3pTaXK8j
-	 FVMCAlodl4WiQ==
-Received: by pali.im (Postfix)
-	id B3076898; Tue, 29 Nov 2022 19:56:13 +0100 (CET)
-Date: Tue, 29 Nov 2022 19:56:13 +0100
-From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc: dts: turris1x.dts: Add channel labels for
- temperature sensor
-Message-ID: <20221129185613.gunub5hgjfgvroh5@pali>
-References: <20220930123901.10251-1-pali@kernel.org>
- <20220930124618.kyaansrl7ls5kn3i@pali>
- <20221009120506.itwa4n25nljn2tll@pali>
- <20221101224348.xkpzucskunn46i5z@pali>
- <87k03eblsr.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMDNP2wcfz30RH
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Nov 2022 07:25:08 +1100 (AEDT)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2ATJBr4Q003828;
+	Tue, 29 Nov 2022 20:25:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=ELKfZcQKST1hX1cZ2BkkTiTSslhlKaDdsRGP+5ItdYQ=;
+ b=DugerKvZcQbiYTvllowK2UolOuTV1kGI/N1fh0E9GJv2GA6yUEcMxiP80AVDR3XICuWE
+ h6bvmhNgb/uH35xIEWcjnnQa4JaDVPC3LZRg/ljYY2IzRobWmYWjOU4z87lEDyQSBNd4
+ qob9G36KvVu8rPpgp446Z77o+IWZMHiBAB6lZCGEu2pv5GEPVCkaF/mHwBCD8J7HNTch
+ lhL/PwiRO8IbMmUo31oYqnEQfZpjK4Ti50qTclVVauXzKP8VfmUH/AcYRBQ7MhK26Xa2
+ +z9MQgd4yM3CtjTVHjdBZZeFevRT75xszlcxK/4QtHcj9XoiE0viYZttZDSbwV+EZsM7 rA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m5r179nfu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 29 Nov 2022 20:25:00 +0000
+Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2ATKNXRT021920;
+	Tue, 29 Nov 2022 20:24:59 GMT
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com [169.63.121.186])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m5r179nfk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 29 Nov 2022 20:24:59 +0000
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+	by ppma03wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2ATKLRLS025683;
+	Tue, 29 Nov 2022 20:24:58 GMT
+Received: from b03cxnp07027.gho.boulder.ibm.com (b03cxnp07027.gho.boulder.ibm.com [9.17.130.14])
+	by ppma03wdc.us.ibm.com with ESMTP id 3m3ae9fakb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 29 Nov 2022 20:24:58 +0000
+Received: from smtpav05.dal12v.mail.ibm.com ([9.208.128.132])
+	by b03cxnp07027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2ATKOvAY46924420
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 29 Nov 2022 20:24:57 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 32B7A5805D;
+	Tue, 29 Nov 2022 20:24:57 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 15CFF58052;
+	Tue, 29 Nov 2022 20:24:57 +0000 (GMT)
+Received: from localhost (unknown [9.211.69.164])
+	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 29 Nov 2022 20:24:57 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin
+ <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 13/13] powerpc/rtas: place tracepoints in do_enter_rtas()
+In-Reply-To: <87mt8abn4f.fsf@mpe.ellerman.id.au>
+References: <20221118150751.469393-1-nathanl@linux.ibm.com>
+ <20221118150751.469393-14-nathanl@linux.ibm.com>
+ <CONLJ0VXR77H.JM4D75GQAF62@bobo> <87tu2i8x0e.fsf@linux.ibm.com>
+ <87mt8abn4f.fsf@mpe.ellerman.id.au>
+Date: Tue, 29 Nov 2022 14:24:56 -0600
+Message-ID: <87ilix8q5j.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87k03eblsr.fsf@mpe.ellerman.id.au>
-User-Agent: NeoMutt/20180716
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: TTuXNK85HzMVv5hcp-yNQ-eHBOmW_rev
+X-Proofpoint-GUID: kjop11HO8O1eqXHFB4lqWvbz7anZGjlx
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-11-29_11,2022-11-29_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 spamscore=0
+ clxscore=1011 suspectscore=0 priorityscore=1501 malwarescore=0
+ lowpriorityscore=0 mlxlogscore=847 bulkscore=0 impostorscore=0
+ adultscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2210170000 definitions=main-2211290116
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,95 +99,133 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Marek =?utf-8?B?QmVow7pu?= <kabel@kernel.org>, linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Josef Schlehofer <josef.schlehofer@nic.cz>, linuxppc-dev@lists.ozlabs.org
+Cc: tyreld@linux.ibm.com, nnac123@linux.ibm.com, ldufour@linux.ibm.com, ajd@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tuesday 29 November 2022 12:18:28 Michael Ellerman wrote:
-> Pali Rohár <pali@kernel.org> writes:
-> > Michael, could you take this patch?
-> 
-> Yep.
-> 
-> With these dts patches it always helps if you tell me that it passes the
-> DT schema checks, so that I don't get yelled at by the DT people :)
+Michael Ellerman <mpe@ellerman.id.au> writes:
+> Nathan Lynch <nathanl@linux.ibm.com> writes:
+>> "Nicholas Piggin" <npiggin@gmail.com> writes:
+>>> On Sat Nov 19, 2022 at 1:07 AM AEST, Nathan Lynch wrote:
+>>>> Call the just-added rtas tracepoints in do_enter_rtas(), taking care
+>>>> to avoid function name lookups in the CPU offline path.
+>>>>
+>>>> Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+>>>> ---
+>>>>  arch/powerpc/kernel/rtas.c | 23 +++++++++++++++++++++++
+>>>>  1 file changed, 23 insertions(+)
+>>>>
+>>>> diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
+>>>> index 198366d641d0..3487b42cfbf7 100644
+>>>> --- a/arch/powerpc/kernel/rtas.c
+>>>> +++ b/arch/powerpc/kernel/rtas.c
+>>>> @@ -38,6 +38,7 @@
+>>>>  #include <asm/page.h>
+>>>>  #include <asm/rtas.h>
+>>>>  #include <asm/time.h>
+>>>> +#include <asm/trace.h>
+>>>>  #include <asm/udbg.h>
+>>>>  
+>>>>  enum rtas_function_flags {
+>>>> @@ -525,6 +526,7 @@ void enter_rtas(unsigned long);
+>>>>  static void do_enter_rtas(struct rtas_args *args)
+>>>>  {
+>>>>  	unsigned long msr;
+>>>> +	const char *name = NULL;
+>>>>  
+>>>>  	/*
+>>>>  	 * Make sure MSR[RI] is currently enabled as it will be forced later
+>>>> @@ -537,9 +539,30 @@ static void do_enter_rtas(struct rtas_args *args)
+>>>>  
+>>>>  	hard_irq_disable(); /* Ensure MSR[EE] is disabled on PPC64 */
+>>>>  
+>>>> +	if ((trace_rtas_input_enabled() || trace_rtas_output_enabled())) {
+>>>> +		/*
+>>>> +		 * rtas_token_to_function() uses xarray which uses RCU,
+>>>> +		 * but this code can run in the CPU offline path
+>>>> +		 * (e.g. stop-self), after it's become invalid to call
+>>>> +		 * RCU APIs.
+>>>> +		 */
+>>>
+>>> We can call this in real-mode via pseries_machine_check_realmode
+>>> -> fwnmi_release_errinfo, so tracing should be disabled for that
+>>> case too... Does this_cpu_set_ftrace_enabled(0) in the early
+>>> machine check handler cover that sufficiently?
+>>
+>> I suspect so, but I'd like to verify. Do you know how I could exercise
+>> this path in qemu or LPAR?
+>
+> On a P9 or P10 LPAR you should be able to use tools/testing/selftests/powerpc/mce/inject-ra-err
 
-Mostly dt schemas for p1/p2 are incomplete, I sent more patches but they
-are waiting and I was not able to setup & run dt schema checker. Hence
-I tested everything on the hardware to ensure that it works correctly.
-And this patch works on Turris 1.1 board, I also tested sensors tool.
-So the important is what is in DTS file, the stuff which is used on HW.
+Nice. Looks like I was too optimistic. From a P10 LPAR:
 
-> cheers
-> 
-> > On Sunday 09 October 2022 14:05:06 Pali Rohár wrote:
-> >> On Friday 30 September 2022 14:46:18 Pali Rohár wrote:
-> >> > + CC hwmon ML
-> >> > 
-> >> > On Friday 30 September 2022 14:39:01 Pali Rohár wrote:
-> >> > > Channel 0 of SA56004ED chip refers to internal SA56004ED chip sensor (chip
-> >> > > itself is located on the board) and channel 1 of SA56004ED chip refers to
-> >> > > external sensor which is connected to temperature diode of the P2020 CPU.
-> >> > > 
-> >> > > Fixes: 54c15ec3b738 ("powerpc: dts: Add DTS file for CZ.NIC Turris 1.x routers")
-> >> > > Signed-off-by: Pali Rohár <pali@kernel.org>
-> >> > > ---
-> >> > > With this change userspace 'sensors' applications prints labels:
-> >> > > 
-> >> > >     $ sensors
-> >> > >     sa56004-i2c-0-4c
-> >> > >     Adapter: MPC adapter (i2c@3000)
-> >> > >     board:        +34.2°C  (low  =  +0.0°C, high = +70.0°C)
-> >> > >                            (crit = +85.0°C, hyst = +75.0°C)
-> >> > >     cpu:          +58.9°C  (low  =  +0.0°C, high = +70.0°C)
-> >> > >                            (crit = +85.0°C, hyst = +75.0°C)
-> >> > > 
-> >> > > And without this change it prints just generic tempX names:
-> >> > > 
-> >> > >     $ sensors
-> >> > >     sa56004-i2c-0-4c
-> >> > >     Adapter: MPC adapter (i2c@3000)
-> >> > >     temp1:        +43.0°C  (low  =  +0.0°C, high = +70.0°C)
-> >> > >                            (crit = +85.0°C, hyst = +75.0°C)
-> >> > >     temp2:        +63.4°C  (low  =  +0.0°C, high = +70.0°C)
-> >> > >                            (crit = +85.0°C, hyst = +75.0°C)
-> >> > > ---
-> >> > >  arch/powerpc/boot/dts/turris1x.dts | 14 ++++++++++++++
-> >> > >  1 file changed, 14 insertions(+)
-> >> > > 
-> >> > > diff --git a/arch/powerpc/boot/dts/turris1x.dts b/arch/powerpc/boot/dts/turris1x.dts
-> >> > > index 4033c554b06a..5b5278c32e43 100644
-> >> > > --- a/arch/powerpc/boot/dts/turris1x.dts
-> >> > > +++ b/arch/powerpc/boot/dts/turris1x.dts
-> >> > > @@ -69,6 +69,20 @@
-> >> > >  				interrupt-parent = <&gpio>;
-> >> > >  				interrupts = <12 IRQ_TYPE_LEVEL_LOW>, /* GPIO12 - ALERT pin */
-> >> > >  					     <13 IRQ_TYPE_LEVEL_LOW>; /* GPIO13 - CRIT pin */
-> >> > > +				#address-cells = <1>;
-> >> > > +				#size-cells = <0>;
-> >> > > +
-> >> > > +				/* Local temperature sensor (SA56004ED internal) */
-> >> > > +				channel@0 {
-> >> > > +					reg = <0>;
-> >> > > +					label = "board";
-> >> > > +				};
-> >> > > +
-> >> > > +				/* Remote temperature sensor (D+/D- connected to P2020 CPU Temperature Diode) */
-> >> > > +				channel@1 {
-> >> > > +					reg = <1>;
-> >> > > +					label = "cpu";
-> >> > > +				};
-> >> > 
-> >> > I'm not sure if you want UPPERCASE, lowercase, PascalCase, kebab-case
-> >> > or snake_case format of labels. Or if you want also "temp" or
-> >> > "temperature" keyword in the label. So please adjust label to the
-> >> > preferred one, if proposed format is not the correct.
-> >> 
-> >> Ok, if nobody complains then please take this patch as is.
-> >> 
-> >> > >  			};
-> >> > >  
-> >> > >  			/* DDR3 SPD/EEPROM */
-> >> > > -- 
-> >> > > 2.20.1
-> >> > > 
+# trace-cmd record -T -e powerpc:rtas_input -- \
+  sh -c 'sleep 10; ./inject-ra-err' && trace-cmd report
+     kworker/7:1-73    [007]    72.882159: rtas_input:           event-scan arguments: 4294967295 0 80419368 2048
+     kworker/7:1-73    [007]    72.882165: kernel_stack:         <stack trace >
+=> do_enter_rtas (c000000000045180)
+=> rtas_call (c000000000045da8)
+=> rtas_event_scan (c000000000049458)
+=> process_one_work (c0000000001c7618)
+=> worker_thread (c0000000001c7bd8)
+=> kthread (c0000000001d6858)
+=> ret_from_kernel_thread (c00000000000cf5c)
+   inject-ra-err-1080  [001]    78.386947: rtas_input:           ibm,nmi-interlock arguments: 
+   inject-ra-err-1080  [001]    78.386950: kernel_stack:         <stack trace >
+=> do_enter_rtas (c000000000045180)
+=> rtas_call_unlocked (c000000000046ff4)
+=> pseries_machine_check_realmode (c0000000000e8db8)
+=> machine_check_early (c0000000000400c4)
+=> machine_check_early_common (c00000000000836c)
+
+So... that's bad. (right?)
+
+I guess this patch needs something like this?
+
+diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
+index 998aab967400..3086b5f6c6fc 100644
+--- a/arch/powerpc/kernel/rtas.c
++++ b/arch/powerpc/kernel/rtas.c
+@@ -541,6 +541,7 @@ static void do_enter_rtas(struct rtas_args *args)
+ {
+        unsigned long msr;
+        const char *name = NULL;
++       bool can_trace;
+ 
+        /*
+         * Make sure MSR[RI] is currently enabled as it will be forced later
+@@ -553,7 +554,9 @@ static void do_enter_rtas(struct rtas_args *args)
+ 
+        hard_irq_disable(); /* Ensure MSR[EE] is disabled on PPC64 */
+ 
+-       if ((trace_rtas_input_enabled() || trace_rtas_output_enabled())) {
++       can_trace = (msr & MSR_IR) && (msr & MSR_DR);
++
++       if (can_trace && (trace_rtas_input_enabled() || trace_rtas_output_enabled())) {
+                /*
+                 * rtas_token_to_function() uses xarray which uses RCU,
+                 * but this code can run in the CPU offline path
+@@ -568,15 +571,19 @@ static void do_enter_rtas(struct rtas_args *args)
+                }
+        }
+ 
+-       trace_rtas_input(args, name);
+-       trace_rtas_ll_entry(args);
++       if (can_trace) {
++               trace_rtas_input(args, name);
++               trace_rtas_ll_entry(args);
++       }
+ 
+        enter_rtas(__pa(args));
+ 
+        srr_regs_clobbered(); /* rtas uses SRRs, invalidate */
+ 
+-       trace_rtas_ll_exit(args);
+-       trace_rtas_output(args, name);
++       if (can_trace) {
++               trace_rtas_ll_exit(args);
++               trace_rtas_output(args, name);
++       }
+ }
+ 
+ struct rtas_t rtas = {
