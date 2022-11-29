@@ -1,53 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A95763CBBD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 00:24:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDD4E63CBC6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 00:26:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NMJLq1SFGz3bby
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 10:24:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NMJPF4sdPz3bX4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 10:26:09 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=oBPkt6FJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sddN2ZVg;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux-foundation.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=gjoyce@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=oBPkt6FJ;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sddN2ZVg;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMJKs2YSlz30RG
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Nov 2022 10:23:11 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 17AB86193C;
-	Tue, 29 Nov 2022 23:23:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A426C433C1;
-	Tue, 29 Nov 2022 23:23:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1669764188;
-	bh=0fdNX9QhucmvGYsJWGOg9jQeFn+znvsZsA3GeeD73CM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=oBPkt6FJJWfvsgtGvs6SjxHs/2kYEDb40oxeDjWBuNGLbmZH0jVfpuraJ/TrV9+F4
-	 hqoAFA2+L/RlQ1wICENr1s9GsmPkIDc9zBUGenqCJRgb4PHm3qYEnMhYXx+xLEakLb
-	 I+GNCiUTX4XFglOckyjmCJUxKp2DIu33twwtFObY=
-Date: Tue, 29 Nov 2022 15:23:06 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Yicong Yang <yangyicong@huawei.com>
-Subject: Re: [PATCH v7 1/2] mm/tlbbatch: Introduce
- arch_tlbbatch_should_defer()
-Message-Id: <20221129152306.54b6d439e2a0ca7ece1d1afa@linux-foundation.org>
-In-Reply-To: <20221117082648.47526-2-yangyicong@huawei.com>
-References: <20221117082648.47526-1-yangyicong@huawei.com>
-	<20221117082648.47526-2-yangyicong@huawei.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMJNK2LJhz2xVr
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Nov 2022 10:25:21 +1100 (AEDT)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2ATMDkts025447;
+	Tue, 29 Nov 2022 23:25:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=WboJhXA+3D0c9oX9kVjsq7SefegsZAj6UY8UwbC3AS8=;
+ b=sddN2ZVgoQDZcRKAqTochzc7gZDx0pH9rSsWgYey1Wp+Au390zXYqv6ggIGMhzrtfILj
+ HdmuFaxr6/InuhhaHjpgEmXrkx42q8I/3uPrCo4v5qwBFTnzsPRt7FpxZ8fNXs4eVRKN
+ TVWAFSw1M0QlumvaDUXzDl3Cl3VdwmUq3KgFYix3bc7xIF9oKnvUZbtoK0YVW48uz2y5
+ Y7rFeNub74u4IqO0oTvvZVJT5FRdn3s1NBodq1HD7cJWu22SndW9OjL82zkAIZWwqLcR
+ eipLoNShPg6O9taZQ8JfJjnFE0DBYlr7A2LNTXm0RK64JXl0Vwf6L3M5iGe7Wv7kLrKI 6Q== 
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com [169.63.121.186])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3m5tpahgx0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 29 Nov 2022 23:25:11 +0000
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+	by ppma03wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2ATNLQbx019689;
+	Tue, 29 Nov 2022 23:25:11 GMT
+Received: from b03cxnp07028.gho.boulder.ibm.com (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
+	by ppma03wdc.us.ibm.com with ESMTP id 3m3ae9g5b6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 29 Nov 2022 23:25:11 +0000
+Received: from smtpav03.dal12v.mail.ibm.com ([9.208.128.129])
+	by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2ATNPCaG45744742
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 29 Nov 2022 23:25:12 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D92355803F;
+	Tue, 29 Nov 2022 23:25:09 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BA33658060;
+	Tue, 29 Nov 2022 23:25:08 +0000 (GMT)
+Received: from rhel-laptop.ibm.com.com (unknown [9.160.99.100])
+	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 29 Nov 2022 23:25:08 +0000 (GMT)
+From: gjoyce@linux.vnet.ibm.com
+To: linux-block@vger.kernel.org
+Subject: [PATCH v3 0/3] sed-opal: keyrings, discovery, revert, key store
+Date: Tue, 29 Nov 2022 17:25:03 -0600
+Message-Id: <20221129232506.3735672-1-gjoyce@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.31.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: hpgfMOaHUaxc0efIFlizZvSnGXKQX7yq
+X-Proofpoint-ORIG-GUID: hpgfMOaHUaxc0efIFlizZvSnGXKQX7yq
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-11-29_13,2022-11-29_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ suspectscore=0 mlxlogscore=999 mlxscore=0 phishscore=0 lowpriorityscore=0
+ clxscore=1015 impostorscore=0 malwarescore=0 spamscore=0 adultscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2210170000 definitions=main-2211290138
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,78 +86,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: wangkefeng.wang@huawei.com, prime.zeng@hisilicon.com, realmz6@gmail.com, linux-doc@vger.kernel.org, peterz@infradead.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, punit.agrawal@bytedance.com, linux-riscv@lists.infradead.org, will@kernel.org, Anshuman Khandual <khandual@linux.vnet.ibm.com>, linux-s390@vger.kernel.org, zhangshiming@oppo.com, lipeifeng@oppo.com, corbet@lwn.net, x86@kernel.org, Barry Song <21cnbao@gmail.com>, arnd@arndb.de, anshuman.khandual@arm.com, openrisc@lists.librecores.org, darren@os.amperecomputing.com, yangyicong@hisilicon.com, linux-arm-kernel@lists.infradead.org, Barry Song <baohua@kernel.org>, guojian@oppo.com, xhao@linux.alibaba.com, linux-mips@vger.kernel.org, huzhanyuan@oppo.com, linuxppc-dev@lists.ozlabs.org
+Cc: axboe@kernel.dk, gjoyce@linux.vnet.ibm.com, nayna@linux.ibm.com, keyrings@vger.kernel.org, jonathan.derrick@linux.dev, brking@linux.vnet.ibm.com, akpm@linux-foundation.org, msuchanek@suse.de, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 17 Nov 2022 16:26:47 +0800 Yicong Yang <yangyicong@huawei.com> wrote:
+From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
 
-> From: Anshuman Khandual <khandual@linux.vnet.ibm.com>
-> 
-> The entire scheme of deferred TLB flush in reclaim path rests on the
-> fact that the cost to refill TLB entries is less than flushing out
-> individual entries by sending IPI to remote CPUs. But architecture
-> can have different ways to evaluate that. Hence apart from checking
-> TTU_BATCH_FLUSH in the TTU flags, rest of the decision should be
-> architecture specific.
-> 
-> ...
->
-> --- a/arch/x86/include/asm/tlbflush.h
-> +++ b/arch/x86/include/asm/tlbflush.h
-> @@ -240,6 +240,18 @@ static inline void flush_tlb_page(struct vm_area_struct *vma, unsigned long a)
->  	flush_tlb_mm_range(vma->vm_mm, a, a + PAGE_SIZE, PAGE_SHIFT, false);
->  }
->  
-> +static inline bool arch_tlbbatch_should_defer(struct mm_struct *mm)
-> +{
-> +	bool should_defer = false;
-> +
-> +	/* If remote CPUs need to be flushed then defer batch the flush */
-> +	if (cpumask_any_but(mm_cpumask(mm), get_cpu()) < nr_cpu_ids)
-> +		should_defer = true;
-> +	put_cpu();
-> +
-> +	return should_defer;
-> +}
-> +
->  static inline u64 inc_mm_tlb_gen(struct mm_struct *mm)
->  {
->  	/*
-> diff --git a/mm/rmap.c b/mm/rmap.c
-> index 2ec925e5fa6a..a9ab10bc0144 100644
-> --- a/mm/rmap.c
-> +++ b/mm/rmap.c
-> @@ -685,17 +685,10 @@ static void set_tlb_ubc_flush_pending(struct mm_struct *mm, bool writable)
->   */
->  static bool should_defer_flush(struct mm_struct *mm, enum ttu_flags flags)
->  {
-> -	bool should_defer = false;
-> -
->  	if (!(flags & TTU_BATCH_FLUSH))
->  		return false;
->  
-> -	/* If remote CPUs need to be flushed then defer batch the flush */
-> -	if (cpumask_any_but(mm_cpumask(mm), get_cpu()) < nr_cpu_ids)
-> -		should_defer = true;
-> -	put_cpu();
-> -
-> -	return should_defer;
-> +	return arch_tlbbatch_should_defer(mm);
->  }
+TCG SED Opal is a specification from The Trusted Computing Group
+that allows self encrypting storage devices (SED) to be locked at
+power on and require an authentication key to unlock the drive.
 
-I think this conversion could have been done better.
+The current SED Opal implementation in the block driver
+requires that authentication keys be provided in an ioctl
+so that they can be presented to the underlying SED
+capable drive. Currently, the key is typically entered by
+a user with an application like sedutil or sedcli. While
+this process works, it does not lend itself to automation
+like unlock by a udev rule.
 
-should_defer_flush() is compiled if
-CONFIG_ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH.  So the patch implicitly
-assumes that only x86 implements
-CONFIG_ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH.  Presently true, but what
-happens if sparc (for example) wants to set
-CONFIG_ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH?  Now sparc needs its private
-version of arch_tlbbatch_should_defer(), even if that is identical to
-x86's.
+The SED block driver has been extended so it can alternatively
+obtain a key from a sed-opal kernel keyring. The SED ioctls
+will indicate the source of the key, either directly in the
+ioctl data or from the keyring.
 
-Wouldn't it be better to make arch_tlbbatch_should_defer() a __weak
-function in rmap.c, or a static inline inside #ifndef
-ARCH_HAS_ARCH_TLBBATCH_SHOULD_DEFER, or whatever technique best fits?
+Two new SED ioctls have also been added. These are:
+  1) IOC_OPAL_REVERT_LSP to revert LSP state
+  2) IOC_OPAL_DISCOVERY to discover drive capabilities/state
+
+change log:
+	- rebase to 6.x
+	- added latest reviews
+        - removed platform functions for persistent key storage
+        - replaced key update logic with key_create_or_update()
+        - minor bracing and padding changes
+        - add error returns
+        - opal_key structure is application provided but kernel
+          verified
+        - added brief description of TCG SED Opal
+
+
+Greg Joyce (3):
+  block: sed-opal: Implement IOC_OPAL_DISCOVERY
+  block: sed-opal: Implement IOC_OPAL_REVERT_LSP
+  block: sed-opal: keyring support for SED keys
+
+ block/Kconfig                 |   1 +
+ block/opal_proto.h            |   4 +
+ block/sed-opal.c              | 252 +++++++++++++++++++++++++++++++++-
+ include/linux/sed-opal.h      |   5 +
+ include/uapi/linux/sed-opal.h |  25 +++-
+ 5 files changed, 281 insertions(+), 6 deletions(-)
+
+Signed-off-by: Greg Joyce <gjoyce@linux.vnet.ibm.com>
+base-commit: 59d0d52c30d4991ac4b329f049cc37118e00f5b0
+-- 
+gjoyce@linux.vnet.ibm.com
 
