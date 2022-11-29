@@ -2,97 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34FEB63CAEA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Nov 2022 23:05:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4659263CAF8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Nov 2022 23:13:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NMGbv089Sz3bWV
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 09:05:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NMGn10fVBz3bbY
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 09:13:09 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YDt/sRLO;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=e+713zTd;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=bgray@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=sstabellini@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YDt/sRLO;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=e+713zTd;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMGZw333tz2ybK
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Nov 2022 09:04:24 +1100 (AEDT)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2ATKZ2Of014057;
-	Tue, 29 Nov 2022 22:04:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=f9mI2EBvu8nr25/8LzdML+KOEqFBwP1Q3nhzFVYjJvM=;
- b=YDt/sRLOKkjcRN/SKr1ZGxRXcY7OibX78Fa0B6E4CGdoRR+AGkESJ5uoC3n4rH0ZJ6uJ
- PSOxu0j0g0K4L9VvLGS0tEkjFNZUrJXh9jwNcbGNS51emMdCx0WdwNsBZc3rO/pf+nk6
- +A9qtY5UY3xJqwtgU1FROleKcVe/4Qku+41b3ijyxwk86zqt6pCyZwDJCd/I9uNRi1Yf
- yy6sDZwXdUonXjt8ZKrNH+tgU1uQKkaOfWqHBBiYcNYjpOMbMuwUbiy66Zu3ACWhyspF
- iPrD3f40geTdMAoR12Eaa66Sqx3jecO150kyDt+jVYi9mlVMlFujy495KLau6sdtEZmx Hg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3m5q9yn5c0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 29 Nov 2022 22:04:14 +0000
-Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2ATK30NZ020375;
-	Tue, 29 Nov 2022 22:04:14 GMT
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3m5q9yn5aw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 29 Nov 2022 22:04:14 +0000
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
-	by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2ATLoM2O015464;
-	Tue, 29 Nov 2022 22:04:12 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
-	by ppma06ams.nl.ibm.com with ESMTP id 3m3a2hvsg8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 29 Nov 2022 22:04:12 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
-	by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2ATM4qxR64422328
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 29 Nov 2022 22:04:52 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DE9C842041;
-	Tue, 29 Nov 2022 22:04:09 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3F73E4203F;
-	Tue, 29 Nov 2022 22:04:09 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Tue, 29 Nov 2022 22:04:09 +0000 (GMT)
-Received: from li-0d7fa1cc-2c9d-11b2-a85c-aed20764436d.ibm.com (haven.au.ibm.com [9.192.254.114])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMGm313pYz305Y
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Nov 2022 09:12:18 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 1FB33602FD;
-	Wed, 30 Nov 2022 09:04:03 +1100 (AEDT)
-Message-ID: <53d5c0793e3eb2176a19b4fe75d23cc3bc675329.camel@linux.ibm.com>
-Subject: Re: [RFC PATCH 03/13] powerpc/dexcr: Handle hashchk exception
-From: Benjamin Gray <bgray@linux.ibm.com>
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Date: Wed, 30 Nov 2022 09:04:02 +1100
-In-Reply-To: <COOPRF72WR3V.1WPE5NI7M8V7J@bobo>
-References: <20221128024458.46121-1-bgray@linux.ibm.com>
-	 <20221128024458.46121-4-bgray@linux.ibm.com>
-	 <COOPRF72WR3V.1WPE5NI7M8V7J@bobo>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.1 (3.46.1-1.fc37) 
+	by ams.source.kernel.org (Postfix) with ESMTPS id 5B7F8B8196F;
+	Tue, 29 Nov 2022 22:12:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E382C433C1;
+	Tue, 29 Nov 2022 22:12:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1669759934;
+	bh=4RuzJ7BL/FNTfCIqwW3Nd0sZ43y1DcZWKvFgBlC79Bk=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=e+713zTdnBG5bqmBw1GuwUkAD9XOWKXqxw7XYNHaRrqoT3BkU+ZEivAGBOEtpdtJr
+	 uJYLYoMCoGj18nBRzGXNQv7KnWVdcW6xxrqttiseiOt9JoG6m9tOGsRDWUC7rIXN/L
+	 3G0vCXtbgPs7zaQ9E1J7nNu7Gm2etSc7PUpWrDc0aeYo4/9AgGTZd+/bkPkKUj4soQ
+	 J2HhcACKyzKeAWP5jn+Q2MiBLP5kEJXgwEVxif1RJRHnshOZ8mEAQ0UcPIXtukdkB5
+	 hr2elIJAs/xUjmkN991e7/bLC2EFVaUeZBsayv5rbJAJluKTwmWVcimvi+hL+LvbM2
+	 RROj9X2TqT19g==
+Date: Tue, 29 Nov 2022 14:12:10 -0800 (PST)
+From: Stefano Stabellini <sstabellini@kernel.org>
+X-X-Sender: sstabellini@ubuntu-linux-20-04-desktop
+To: Roger Pau Monne <roger.pau@citrix.com>
+Subject: Re: [PATCH] hvc/xen: prevent concurrent accesses to the shared
+ ring
+In-Reply-To: <20221129120107.2942-1-roger.pau@citrix.com>
+Message-ID: <alpine.DEB.2.22.394.2211291351160.4039@ubuntu-linux-20-04-desktop>
+References: <20221129120107.2942-1-roger.pau@citrix.com>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 6CgXXraI-ooQGJEur6jiiOW1aaHD4ZBs
-X-Proofpoint-ORIG-GUID: pPnkiAmnPiZpEMBTo77ku2XtFvADPSYb
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-11-29_13,2022-11-29_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- suspectscore=0 mlxlogscore=999 impostorscore=0 adultscore=0 phishscore=0
- malwarescore=0 clxscore=1015 lowpriorityscore=0 mlxscore=0 spamscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2210170000 definitions=main-2211290131
+Content-Type: multipart/mixed; BOUNDARY="8323329-1290527983-1669759303=:4039"
+Content-ID: <alpine.DEB.2.22.394.2211291402170.4039@ubuntu-linux-20-04-desktop>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,161 +62,142 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hardening@vger.kernel.org, ajd@linux.ibm.com, cmr@bluescreens.de, linux-kernel@vger.kernel.org
+Cc: Juergen Gross <jgross@suse.com>, Stefano Stabellini <sstabellini@kernel.org>, Jeremy Fitzhardinge <jeremy@xensource.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Chris Wright <chrisw@sous-sol.org>, Jan Beulich <jbeulich@suse.com>, Olof Johansson <olof@lixom.net>, xen-devel@lists.xenproject.org, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Jiri Slaby <jirislaby@kernel.org>, Ingo Molnar <mingo@elte.hu>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2022-11-29 at 20:39 +1000, Nicholas Piggin wrote:
-> On Mon Nov 28, 2022 at 12:44 PM AEST, Benjamin Gray wrote:
-> > Recognise and pass the appropriate signal to the user program when
-> > a
-> > hashchk instruction triggers. This is independent of allowing
-> > configuration of DEXCR[NPHIE], as a hypervisor can enforce this
-> > aspect
-> > regardless of the kernel.
-> >=20
-> > Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
-> > ---
-> > =C2=A0arch/powerpc/include/asm/ppc-opcode.h |=C2=A0 1 +
-> > =C2=A0arch/powerpc/include/asm/processor.h=C2=A0 |=C2=A0 6 ++++++
-> > =C2=A0arch/powerpc/kernel/dexcr.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 | 22 ++++++++++++++++++++++
-> > =C2=A0arch/powerpc/kernel/traps.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 6 ++++++
-> > =C2=A04 files changed, 35 insertions(+)
-> >=20
-> > diff --git a/arch/powerpc/include/asm/ppc-opcode.h
-> > b/arch/powerpc/include/asm/ppc-opcode.h
-> > index 21e33e46f4b8..89b316466ed1 100644
-> > --- a/arch/powerpc/include/asm/ppc-opcode.h
-> > +++ b/arch/powerpc/include/asm/ppc-opcode.h
-> > @@ -215,6 +215,7 @@
-> > =C2=A0#define OP_31_XOP_STFSX=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 663
-> > =C2=A0#define OP_31_XOP_STFSUX=C2=A0=C2=A0=C2=A0 695
-> > =C2=A0#define OP_31_XOP_STFDX=C2=A0=C2=A0=C2=A0=C2=A0 727
-> > +#define OP_31_XOP_HASHCHK=C2=A0=C2=A0 754
-> > =C2=A0#define OP_31_XOP_STFDUX=C2=A0=C2=A0=C2=A0 759
-> > =C2=A0#define OP_31_XOP_LHBRX=C2=A0=C2=A0=C2=A0=C2=A0 790
-> > =C2=A0#define OP_31_XOP_LFIWAX=C2=A0=C2=A0=C2=A0 855
-> > diff --git a/arch/powerpc/include/asm/processor.h
-> > b/arch/powerpc/include/asm/processor.h
-> > index 0a8a793b8b8b..c17ec1e44c86 100644
-> > --- a/arch/powerpc/include/asm/processor.h
-> > +++ b/arch/powerpc/include/asm/processor.h
-> > @@ -448,10 +448,16 @@ void *exit_vmx_ops(void *dest);
-> > =C2=A0
-> > =C2=A0#ifdef CONFIG_PPC_BOOK3S_64
-> > =C2=A0
-> > +bool is_hashchk_trap(struct pt_regs const *regs);
-> > =C2=A0unsigned long get_thread_dexcr(struct thread_struct const *t);
-> > =C2=A0
-> > =C2=A0#else
-> > =C2=A0
-> > +static inline bool is_hashchk_trap(struct pt_regs const *regs)
-> > +{
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return false;
-> > +}
-> > +
-> > =C2=A0static inline unsigned long get_thread_dexcr(struct thread_struct
-> > const *t)
-> > =C2=A0{
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return 0;
-> > diff --git a/arch/powerpc/kernel/dexcr.c
-> > b/arch/powerpc/kernel/dexcr.c
-> > index 32a0a69ff638..11515e67afac 100644
-> > --- a/arch/powerpc/kernel/dexcr.c
-> > +++ b/arch/powerpc/kernel/dexcr.c
-> > @@ -3,6 +3,9 @@
-> > =C2=A0
-> > =C2=A0#include <asm/cpu_has_feature.h>
-> > =C2=A0#include <asm/cputable.h>
-> > +#include <asm/disassemble.h>
-> > +#include <asm/inst.h>
-> > +#include <asm/ppc-opcode.h>
-> > =C2=A0#include <asm/processor.h>
-> > =C2=A0#include <asm/reg.h>
-> > =C2=A0
-> > @@ -19,6 +22,25 @@ static int __init dexcr_init(void)
-> > =C2=A0}
-> > =C2=A0early_initcall(dexcr_init);
-> > =C2=A0
-> > +bool is_hashchk_trap(struct pt_regs const *regs)
-> > +{
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0ppc_inst_t insn;
-> > +
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (!cpu_has_feature(CPU_FTR=
-_DEXCR_NPHIE))
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0return false;
-> > +
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (get_user_instr(insn, (vo=
-id __user *)regs->nip)) {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0WARN_ON(1);
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0return false;
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
->=20
-> Nice series, just starting to have a look at it.
->=20
-> You probably don't want a WARN_ON() here because it's user
-> triggerable
-> and isn't necessarily even indiciating a problem or attack if the app
-> is doing code unmapping in order to get faults.
->=20
-> Check some of the other instruction emulation for what to do in case
-> of
-> an EFAULT.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Alright, I'll take a look
+--8323329-1290527983-1669759303=:4039
+Content-Type: text/plain; CHARSET=UTF-8
+Content-Transfer-Encoding: 8BIT
+Content-ID: <alpine.DEB.2.22.394.2211291402171.4039@ubuntu-linux-20-04-desktop>
 
-> > +
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (ppc_inst_primary_opcode(=
-insn) =3D=3D 31 &&
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 get_xop(p=
-pc_inst_val(insn)) =3D=3D OP_31_XOP_HASHCHK)
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0return true;
-> > +
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return false;
-> > +}
-> > +
-> > =C2=A0unsigned long get_thread_dexcr(struct thread_struct const *t)
-> > =C2=A0{
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return DEFAULT_DEXCR;
-> > diff --git a/arch/powerpc/kernel/traps.c
-> > b/arch/powerpc/kernel/traps.c
-> > index 9bdd79aa51cf..b83f5b382f24 100644
-> > --- a/arch/powerpc/kernel/traps.c
-> > +++ b/arch/powerpc/kernel/traps.c
-> > @@ -1516,6 +1516,12 @@ static void do_program_check(struct pt_regs
-> > *regs)
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return;
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-}
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0}
-> > +
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0if (user_mode(regs) && is_hashchk_trap(regs)) {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0_excep=
-tion(SIGILL, regs, ILL_ILLOPN, regs-
-> > >nip);
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return=
-;
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0}
->=20
-> I guess ILLOPN makes sense. Do you know if any other archs do
-> similar?
+On Tue, 29 Nov 2022, Roger Pau Monne wrote:
+> The hvc machinery registers both a console and a tty device based on
+> the hv ops provided by the specific implementation.  Those two
+> interfaces however have different locks, and there's no single locks
+> that's shared between the tty and the console implementations, hence
+> the driver needs to protect itself against concurrent accesses.
+> Otherwise concurrent calls using the split interfaces are likely to
+> corrupt the ring indexes, leaving the console unusable.
+>
+> Introduce a lock to xencons_info to serialize accesses to the shared
+> ring.  This is only required when using the shared memory console,
+> concurrent accesses to the hypercall based console implementation are
+> not an issue.
+> 
+> Note the conditional logic in domU_read_console() is slightly modified
+> so the notify_daemon() call can be done outside of the locked region:
+> it's an hypercall and there's no need for it to be done with the lock
+> held.
+> 
+> Fixes: b536b4b96230 ('xen: use the hvc console infrastructure for Xen console')
+> Signed-off-by: Roger Pau Monné <roger.pau@citrix.com>
+> ---
+> While the write handler (domU_write_console()) is used by both the
+> console and the tty ops, that's not the case for the read side
+> (domU_read_console()).  It's not obvious to me whether we could get
+> concurrent poll calls from the poll_get_char tty hook, hence stay on
+> the safe side also serialize read accesses in domU_read_console().
 
-Ah sorry, when refactoring Chris' patches I forgot to put back in the
-commit message that this is how ARM reports their similar check
-failure. For example, their FPAC handler in
-arch/arm64/kernel/traps.c:518 does this.
+I think domU_read_console doesn't need it. struct hv_ops and struct
+console are both already locked although independently locked.
+
+I think we shouldn't add an unrequired lock there.
+
+
+> ---
+>  drivers/tty/hvc/hvc_xen.c | 16 ++++++++++++++--
+>  1 file changed, 14 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/tty/hvc/hvc_xen.c b/drivers/tty/hvc/hvc_xen.c
+> index 7c23112dc923..d65741983837 100644
+> --- a/drivers/tty/hvc/hvc_xen.c
+> +++ b/drivers/tty/hvc/hvc_xen.c
+> @@ -43,6 +43,7 @@ struct xencons_info {
+>  	int irq;
+>  	int vtermno;
+>  	grant_ref_t gntref;
+> +	spinlock_t ring_lock;
+>  };
+>  
+>  static LIST_HEAD(xenconsoles);
+> @@ -84,12 +85,15 @@ static int __write_console(struct xencons_info *xencons,
+>  	XENCONS_RING_IDX cons, prod;
+>  	struct xencons_interface *intf = xencons->intf;
+>  	int sent = 0;
+> +	unsigned long flags;
+>  
+> +	spin_lock_irqsave(&xencons->ring_lock, flags);
+>  	cons = intf->out_cons;
+>  	prod = intf->out_prod;
+>  	mb();			/* update queue values before going on */
+>  
+>  	if ((prod - cons) > sizeof(intf->out)) {
+> +		spin_unlock_irqrestore(&xencons->ring_lock, flags);
+>  		pr_err_once("xencons: Illegal ring page indices");
+>  		return -EINVAL;
+>  	}
+> @@ -99,6 +103,7 @@ static int __write_console(struct xencons_info *xencons,
+>  
+>  	wmb();			/* write ring before updating pointer */
+>  	intf->out_prod = prod;
+> +	spin_unlock_irqrestore(&xencons->ring_lock, flags);
+>  
+>  	if (sent)
+>  		notify_daemon(xencons);
+> @@ -141,16 +146,19 @@ static int domU_read_console(uint32_t vtermno, char *buf, int len)
+>  	int recv = 0;
+>  	struct xencons_info *xencons = vtermno_to_xencons(vtermno);
+>  	unsigned int eoiflag = 0;
+> +	unsigned long flags;
+>  
+>  	if (xencons == NULL)
+>  		return -EINVAL;
+>  	intf = xencons->intf;
+>  
+> +	spin_lock_irqsave(&xencons->ring_lock, flags);
+>  	cons = intf->in_cons;
+>  	prod = intf->in_prod;
+>  	mb();			/* get pointers before reading ring */
+>  
+>  	if ((prod - cons) > sizeof(intf->in)) {
+> +		spin_unlock_irqrestore(&xencons->ring_lock, flags);
+>  		pr_err_once("xencons: Illegal ring page indices");
+>  		return -EINVAL;
+>  	}
+> @@ -174,10 +182,13 @@ static int domU_read_console(uint32_t vtermno, char *buf, int len)
+>  		xencons->out_cons = intf->out_cons;
+>  		xencons->out_cons_same = 0;
+>  	}
+> +	if (!recv && xencons->out_cons_same++ > 1) {
+> +		eoiflag = XEN_EOI_FLAG_SPURIOUS;
+> +	}
+> +	spin_unlock_irqrestore(&xencons->ring_lock, flags);
+> +
+>  	if (recv) {
+>  		notify_daemon(xencons);
+> -	} else if (xencons->out_cons_same++ > 1) {
+> -		eoiflag = XEN_EOI_FLAG_SPURIOUS;
+>  	}
+>  
+>  	xen_irq_lateeoi(xencons->irq, eoiflag);
+> @@ -576,6 +587,7 @@ static int __init xen_hvc_init(void)
+>  
+>  		info = vtermno_to_xencons(HVC_COOKIE);
+>  		info->irq = bind_evtchn_to_irq_lateeoi(info->evtchn);
+> +		spin_lock_init(&info->ring_lock);
+
+Don't we also need a call to spin_lock_init in xencons_connect_backend
+and xen_cons_init and xenboot_console_setup ?
+
+
+>  	}
+>  	if (info->irq < 0)
+>  		info->irq = 0; /* NO_IRQ */
+> -- 
+> 2.37.3
+> 
+--8323329-1290527983-1669759303=:4039--
