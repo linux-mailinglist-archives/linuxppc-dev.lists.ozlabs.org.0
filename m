@@ -1,55 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 616BA63CB07
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Nov 2022 23:26:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A95763CBBD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 00:24:05 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NMH402JLvz3bYB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 09:26:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NMJLq1SFGz3bby
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 10:24:03 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bcuwe401;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=oBPkt6FJ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=sstabellini@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux-foundation.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bcuwe401;
+	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=oBPkt6FJ;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMH340BN0z305Y
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Nov 2022 09:25:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMJKs2YSlz30RG
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Nov 2022 10:23:11 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 66E00B8197E;
-	Tue, 29 Nov 2022 22:25:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEBD4C433D6;
-	Tue, 29 Nov 2022 22:25:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1669760715;
-	bh=MTi3eCesRlzQNLX++3E0N9zK19ByIHxrBbpWGeJzPsc=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=bcuwe4011W1EV7m7lqiLQCoubqhZSBuRQ4IFeHON2n+irELW9/XO4T1BNRrd3sFQG
-	 C8iloTFvWqOLLjrasPmVZmRvL21w4m6XgrxeaQN0n4oMWpI5BcMR7N1pRcEDfOKd6l
-	 qXAWhElGrrP2DeS840ArAoGgl089SvzMDKI7/ex75BkDHXInBDU4I0NddEENZLVRQv
-	 iicP73qxnn1g0HG4cOdXTIzzhHBtWPP3wYxFDpAREURYvnonHpJ2DMGLPlUgEZrEnZ
-	 1AFf1zpagYRmQrVpTa5kXCcEa1QdfAR0C2uN9O1uzX9dqGVrTqTYdfMPg4D8nRlPOF
-	 ycJ+Oe2l21X8A==
-Date: Tue, 29 Nov 2022 14:25:12 -0800 (PST)
-From: Stefano Stabellini <sstabellini@kernel.org>
-X-X-Sender: sstabellini@ubuntu-linux-20-04-desktop
-To: Roger Pau Monne <roger.pau@citrix.com>
-Subject: Re: [PATCH] hvc/xen: lock console list traversal
-In-Reply-To: <20221129143145.4234-1-roger.pau@citrix.com>
-Message-ID: <alpine.DEB.2.22.394.2211291416540.4039@ubuntu-linux-20-04-desktop>
-References: <20221129143145.4234-1-roger.pau@citrix.com>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
-MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="8323329-503985613-1669760387=:4039"
-Content-ID: <alpine.DEB.2.22.394.2211291420410.4039@ubuntu-linux-20-04-desktop>
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 17AB86193C;
+	Tue, 29 Nov 2022 23:23:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A426C433C1;
+	Tue, 29 Nov 2022 23:23:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1669764188;
+	bh=0fdNX9QhucmvGYsJWGOg9jQeFn+znvsZsA3GeeD73CM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=oBPkt6FJJWfvsgtGvs6SjxHs/2kYEDb40oxeDjWBuNGLbmZH0jVfpuraJ/TrV9+F4
+	 hqoAFA2+L/RlQ1wICENr1s9GsmPkIDc9zBUGenqCJRgb4PHm3qYEnMhYXx+xLEakLb
+	 I+GNCiUTX4XFglOckyjmCJUxKp2DIu33twwtFObY=
+Date: Tue, 29 Nov 2022 15:23:06 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Yicong Yang <yangyicong@huawei.com>
+Subject: Re: [PATCH v7 1/2] mm/tlbbatch: Introduce
+ arch_tlbbatch_should_defer()
+Message-Id: <20221129152306.54b6d439e2a0ca7ece1d1afa@linux-foundation.org>
+In-Reply-To: <20221117082648.47526-2-yangyicong@huawei.com>
+References: <20221117082648.47526-1-yangyicong@huawei.com>
+	<20221117082648.47526-2-yangyicong@huawei.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,75 +59,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juergen Gross <jgross@suse.com>, Stefano Stabellini <sstabellini@kernel.org>, Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Jan Beulich <jbeulich@suse.com>, xen-devel@lists.xenproject.org, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Jiri Slaby <jirislaby@kernel.org>
+Cc: wangkefeng.wang@huawei.com, prime.zeng@hisilicon.com, realmz6@gmail.com, linux-doc@vger.kernel.org, peterz@infradead.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, punit.agrawal@bytedance.com, linux-riscv@lists.infradead.org, will@kernel.org, Anshuman Khandual <khandual@linux.vnet.ibm.com>, linux-s390@vger.kernel.org, zhangshiming@oppo.com, lipeifeng@oppo.com, corbet@lwn.net, x86@kernel.org, Barry Song <21cnbao@gmail.com>, arnd@arndb.de, anshuman.khandual@arm.com, openrisc@lists.librecores.org, darren@os.amperecomputing.com, yangyicong@hisilicon.com, linux-arm-kernel@lists.infradead.org, Barry Song <baohua@kernel.org>, guojian@oppo.com, xhao@linux.alibaba.com, linux-mips@vger.kernel.org, huzhanyuan@oppo.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On Thu, 17 Nov 2022 16:26:47 +0800 Yicong Yang <yangyicong@huawei.com> wrote:
 
---8323329-503985613-1669760387=:4039
-Content-Type: text/plain; CHARSET=UTF-8
-Content-Transfer-Encoding: 8BIT
-Content-ID: <alpine.DEB.2.22.394.2211291420411.4039@ubuntu-linux-20-04-desktop>
-
-On Tue, 29 Nov 2022, Roger Pau Monne wrote:
-> The currently lockless access to the xen console list in
-> vtermno_to_xencons() is incorrect, as additions and removals from the
-> list can happen anytime, and as such the traversal of the list to get
-> the private console data for a given termno needs to happen with the
-> lock held.  Note users that modify the list already do so with the
-> lock taken.
+> From: Anshuman Khandual <khandual@linux.vnet.ibm.com>
 > 
-> While there switch from using list_for_each_entry_safe to
-> list_for_each_entry: the current entry cursor won't be removed as
-> part of the code in the loop body, so using the _safe variant is
-> pointless.
+> The entire scheme of deferred TLB flush in reclaim path rests on the
+> fact that the cost to refill TLB entries is less than flushing out
+> individual entries by sending IPI to remote CPUs. But architecture
+> can have different ways to evaluate that. Hence apart from checking
+> TTU_BATCH_FLUSH in the TTU flags, rest of the decision should be
+> architecture specific.
 > 
-> Fixes: 02e19f9c7cac ('hvc_xen: implement multiconsole support')
-> Signed-off-by: Roger Pau Monné <roger.pau@citrix.com>
-> ---
->  drivers/tty/hvc/hvc_xen.c | 13 +++++++++----
->  1 file changed, 9 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/tty/hvc/hvc_xen.c b/drivers/tty/hvc/hvc_xen.c
-> index d65741983837..117dc48f980e 100644
-> --- a/drivers/tty/hvc/hvc_xen.c
-> +++ b/drivers/tty/hvc/hvc_xen.c
-> @@ -53,17 +53,22 @@ static DEFINE_SPINLOCK(xencons_lock);
->  
->  static struct xencons_info *vtermno_to_xencons(int vtermno)
->  {
-> -	struct xencons_info *entry, *n, *ret = NULL;
-> +	struct xencons_info *entry, *ret = NULL;
-> +	unsigned long flags;
->  
-> -	if (list_empty(&xenconsoles))
-> -			return NULL;
-> +	spin_lock_irqsave(&xencons_lock, flags);
-
-If xencons_lock requires irqsave then we need to change all the
-xencons_lock spinlocks to call irqsave, including the ones in
-xen_hvm_console_init if they can happen at runtime.
-
-
-> +	if (list_empty(&xenconsoles)) {
-> +		spin_unlock_irqrestore(&xencons_lock, flags);
-> +		return NULL;
-> +	}
->  
-> -	list_for_each_entry_safe(entry, n, &xenconsoles, list) {
-> +	list_for_each_entry(entry, &xenconsoles, list) {
->  		if (entry->vtermno == vtermno) {
->  			ret  = entry;
->  			break;
->  		}
->  	}
-> +	spin_unlock_irqrestore(&xencons_lock, flags);
->  
->  	return ret;
+> ...
+>
+> --- a/arch/x86/include/asm/tlbflush.h
+> +++ b/arch/x86/include/asm/tlbflush.h
+> @@ -240,6 +240,18 @@ static inline void flush_tlb_page(struct vm_area_struct *vma, unsigned long a)
+>  	flush_tlb_mm_range(vma->vm_mm, a, a + PAGE_SIZE, PAGE_SHIFT, false);
 >  }
-> -- 
-> 2.37.3
-> 
---8323329-503985613-1669760387=:4039--
+>  
+> +static inline bool arch_tlbbatch_should_defer(struct mm_struct *mm)
+> +{
+> +	bool should_defer = false;
+> +
+> +	/* If remote CPUs need to be flushed then defer batch the flush */
+> +	if (cpumask_any_but(mm_cpumask(mm), get_cpu()) < nr_cpu_ids)
+> +		should_defer = true;
+> +	put_cpu();
+> +
+> +	return should_defer;
+> +}
+> +
+>  static inline u64 inc_mm_tlb_gen(struct mm_struct *mm)
+>  {
+>  	/*
+> diff --git a/mm/rmap.c b/mm/rmap.c
+> index 2ec925e5fa6a..a9ab10bc0144 100644
+> --- a/mm/rmap.c
+> +++ b/mm/rmap.c
+> @@ -685,17 +685,10 @@ static void set_tlb_ubc_flush_pending(struct mm_struct *mm, bool writable)
+>   */
+>  static bool should_defer_flush(struct mm_struct *mm, enum ttu_flags flags)
+>  {
+> -	bool should_defer = false;
+> -
+>  	if (!(flags & TTU_BATCH_FLUSH))
+>  		return false;
+>  
+> -	/* If remote CPUs need to be flushed then defer batch the flush */
+> -	if (cpumask_any_but(mm_cpumask(mm), get_cpu()) < nr_cpu_ids)
+> -		should_defer = true;
+> -	put_cpu();
+> -
+> -	return should_defer;
+> +	return arch_tlbbatch_should_defer(mm);
+>  }
+
+I think this conversion could have been done better.
+
+should_defer_flush() is compiled if
+CONFIG_ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH.  So the patch implicitly
+assumes that only x86 implements
+CONFIG_ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH.  Presently true, but what
+happens if sparc (for example) wants to set
+CONFIG_ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH?  Now sparc needs its private
+version of arch_tlbbatch_should_defer(), even if that is identical to
+x86's.
+
+Wouldn't it be better to make arch_tlbbatch_should_defer() a __weak
+function in rmap.c, or a static inline inside #ifndef
+ARCH_HAS_ARCH_TLBBATCH_SHOULD_DEFER, or whatever technique best fits?
+
