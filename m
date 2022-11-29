@@ -2,61 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B32D63BD15
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Nov 2022 10:36:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1076463BD1F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Nov 2022 10:41:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NLy081d9tz3bTq
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Nov 2022 20:36:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NLy6B691Pz3bPL
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Nov 2022 20:41:54 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=iu8wmfQ9;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=g6teJcRA;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=softfail (domain owner discourages use of this host) smtp.mailfrom=kernel.org (client-ip=210.131.2.80; helo=conssluserg-01.nifty.com; envelope-from=masahiroy@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1030; helo=mail-pj1-x1030.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=iu8wmfQ9;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=g6teJcRA;
 	dkim-atps=neutral
-Received: from conssluserg-01.nifty.com (conssluserg-01.nifty.com [210.131.2.80])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NLxzB174bz2yxQ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Nov 2022 20:35:49 +1100 (AEDT)
-Received: from mail-oa1-f53.google.com (mail-oa1-f53.google.com [209.85.160.53]) (authenticated)
-	by conssluserg-01.nifty.com with ESMTP id 2AT9ZGno019811
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Nov 2022 18:35:16 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-01.nifty.com 2AT9ZGno019811
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-	s=dec2015msa; t=1669714517;
-	bh=Q7xi3f1N/meKASk0USS2l24LMBp1S+Lf4JZEEmqBqZ0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=iu8wmfQ9D9rAAP7mWoxw8h2LRApApWINFKiihUGcgIGNK6jfBtoHWQSIZUwKwnOzw
-	 irqBc87cUAgwfQsoXxDTNDKChTNvOgC2zN9AyEIG2+SrZMU6IrkURbPJduSqZzTB/o
-	 oW8JeTFZM181JJ9lApleFQO0De+uRb+LMneWY270NsVUqAjcnskpvP4jwAYAFT5NaF
-	 uqypyS06NXu8ZhU4bbr7J1fxnJ2CPjLsJSMa1Ap4zgT/D2YWQaLWFANo0VQWnS6zzv
-	 yqsK0FhWsh2tC5qBcCTQnCOyb6/mZTH0S3p4pEc2qXLrPLa9h62jvbb1yBmqluoBHO
-	 9oAa/hU17XPbg==
-X-Nifty-SrcIP: [209.85.160.53]
-Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-141ca09c2fbso16320736fac.6
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Nov 2022 01:35:16 -0800 (PST)
-X-Gm-Message-State: ANoB5pl+MFoe3JqMd+JHiG7WZAw4TCiQPPG+12H5dzITwyXKERjCyxH0
-	ELlM5O2NZMbcGXBEToauDdSTPpLX5iLufNEsJho=
-X-Google-Smtp-Source: AA0mqf6J+oTxURdJK5Agpkp0/EJAXlORqpOujR9dCeA/lWt4niw0dV/3a7s/MpqS4A7v0PXydp7QwqhjqqWdkA57n28=
-X-Received: by 2002:a05:6870:ea8e:b0:13b:a31f:45fd with SMTP id
- s14-20020a056870ea8e00b0013ba31f45fdmr33753310oap.194.1669714515803; Tue, 29
- Nov 2022 01:35:15 -0800 (PST)
-MIME-Version: 1.0
-References: <20221126051002.123199-1-linux@weissschuh.net> <20221126051002.123199-2-linux@weissschuh.net>
- <03859890-bf90-4ad0-1926-4b8cb8dbfa57@csgroup.eu> <8f8b12fd-2e25-49e4-a1fa-247f08f56454@t-8ch.de>
- <87r0xoatrg.fsf@mpe.ellerman.id.au>
-In-Reply-To: <87r0xoatrg.fsf@mpe.ellerman.id.au>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Tue, 29 Nov 2022 18:34:39 +0900
-X-Gmail-Original-Message-ID: <CAK7LNATjaVerkr8GFVFQwqGnjC1Jz23E+C5f9+0LTLhX4gNmZA@mail.gmail.com>
-Message-ID: <CAK7LNATjaVerkr8GFVFQwqGnjC1Jz23E+C5f9+0LTLhX4gNmZA@mail.gmail.com>
-Subject: Re: [PATCH 2/3] powerpc/book3e: remove #include <generated/utsrelease.h>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NLy5C52CZz2yxQ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Nov 2022 20:41:02 +1100 (AEDT)
+Received: by mail-pj1-x1030.google.com with SMTP id b11so12134713pjp.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Nov 2022 01:41:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=q5g+tj/yKi8alTc9Rxu5SEVWr3VUBDIneqMcER2WZKw=;
+        b=g6teJcRAW3MiT9Fz2oIVH0UoNZzL5F3a0q7x4tqE0P3i+DqXDmyuJAscXZICSoCefc
+         kfNclBMQnIUY/byKelKOI6P+6EiqkQuex+z/yDC3shcbPZn3WMycsGc1sMEwtsRYIYJk
+         C/38LRhns64qVDg381vmjCfY30wH19emVODRRXD3WPCW8zpOztPWQ9ttFB3T8lBgXxvM
+         rrBN9QxcXZNaWiVN6QNtFIOrTOCXXMI7Zf1hCqw4NZ/ElcohPCJzqWo7v/oniEMJhSgz
+         xB4byAADPxV4phHlrfgusQPbwfoy5itked2wikRPOKznVlWa8eBM5xwAovG9y9mAbbqz
+         uw1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=q5g+tj/yKi8alTc9Rxu5SEVWr3VUBDIneqMcER2WZKw=;
+        b=2yeCRdconE1s+f0CbLEJYOhin6Zp2EuV1EOoC/oj/LtMy9a6Nz76ACTtkNZt3Ke7C5
+         SR8Hc/32LBgx4Q35fCJv4HOhC6mRS+F0in4WTjVyb4jn+AJ3jOq1XBV0RM0ka3bLA+vy
+         x5bdQJrfAsbBgCFUJGeuOJ9//g8rVnEAOrTGjFmyh5h4Q3RR0CrkQ114IVaA4SJpCuqG
+         jB5p0H9DdWxBkXfeaGkGM5sH7w6LgqPa9Atg8zxyYWolMEoKwnG1nXdZfzytvIuiahhj
+         HNZL0AZs+jwNLcvl2CF9t//1/a8EaFnm2Is3fmU9XUelT+DyWOt59vgviMISHLkGMJLY
+         dwfA==
+X-Gm-Message-State: ANoB5pllSWhGlscn47WmCMEpJlvELv66hkqG+VdhxSYRPOuSggCkToHS
+	rqmGfgROP/hB9HiRAVurfss=
+X-Google-Smtp-Source: AA0mqf6FY88K6axRN8AyDkDfoFh75Jd16MnoFtU3D39r8k3m8ERoJwtVTeqU0hzVFmCAj/WcXvMAkw==
+X-Received: by 2002:a17:902:8b89:b0:188:77a7:eb4 with SMTP id ay9-20020a1709028b8900b0018877a70eb4mr36684185plb.32.1669714858348;
+        Tue, 29 Nov 2022 01:40:58 -0800 (PST)
+Received: from localhost (193-116-112-94.tpgi.com.au. [193.116.112.94])
+        by smtp.gmail.com with ESMTPSA id u13-20020a170902e80d00b00189947bd9f7sm2263658plg.50.2022.11.29.01.40.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 29 Nov 2022 01:40:57 -0800 (PST)
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 29 Nov 2022 19:40:53 +1000
+Message-Id: <COOOIMD7QY99.Z9IEKFIG9P44@bobo>
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Rohan McLure" <rmclure@linux.ibm.com>, <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: [PATCH v4 2/7] powerpc/64: Add interrupt register sanitisation
+ macros
+X-Mailer: aerc 0.13.0
+References: <20221129044354.1836018-1-rmclure@linux.ibm.com>
+ <20221129044354.1836018-2-rmclure@linux.ibm.com>
+In-Reply-To: <20221129044354.1836018-2-rmclure@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,45 +81,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>, Russ Weight <russell.h.weight@intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Nov 28, 2022 at 7:59 AM Michael Ellerman <mpe@ellerman.id.au> wrote=
-:
+On Tue Nov 29, 2022 at 2:43 PM AEST, Rohan McLure wrote:
+> Include in asm/ppc_asm.h macros to be used in multiple successive
+> patches to implement zeroising architected registers in interrupt
+> handlers. Registers will be sanitised in this fashion in future patches
+> to reduce the speculation influence of user-controlled register values.
+> These mitigations will be configurable through the
+> CONFIG_INTERRUPT_SANITIZE_REGISTERS Kconfig option.
 >
-> Thomas Wei=C3=9Fschuh <linux@weissschuh.net> writes:
-> > On 2022-11-26 07:36+0000, Christophe Leroy wrote:
-> >> Le 26/11/2022 =C3=A0 06:10, Thomas Wei=C3=9Fschuh a =C3=A9crit :
-> >>> Commit 7ad4bd887d27 ("powerpc/book3e: get rid of #include <generated/=
-compile.h>")
-> >>> removed the usage of the define UTS_VERSION but forgot to drop the
-> >>> include.
-> >>
-> >> What about:
-> >> arch/powerpc/platforms/52xx/efika.c
-> >> arch/powerpc/platforms/amigaone/setup.c
-> >> arch/powerpc/platforms/chrp/setup.c
-> >> arch/powerpc/platforms/powermac/bootx_init.c
-> >>
-> >> I believe you can do a lot more than what you did in your series.
-> >
-> > The commit messages are wrong.
-> > They should have said UTS_RELEASE instead of UTS_VERSION.
-> >
-> > Could the maintainers fix this up when applying?
-> > I also changed it locally so it will be fixed for v2.
+> Included are macros for conditionally zeroising registers and restoring
+> as required with the mitigation enabled. With the mitigation disabled,
+> non-volatiles must be restored on demand at separate locations to
+> those required by the mitigation.
 >
-> I'll take this patch, but not the others.
+> Signed-off-by: Rohan McLure <rmclure@linux.ibm.com>
+
+Thanks. You might just call them SANITIZE_NVGPRS() etc if it's not
+functionally important that they're zero. But I don't mind long names
+too much.
+
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+
+> ---
+> v4: New patch
+> ---
+>  arch/powerpc/include/asm/ppc_asm.h | 17 +++++++++++++++++
+>  1 file changed, 17 insertions(+)
 >
-> cheers
+> diff --git a/arch/powerpc/include/asm/ppc_asm.h b/arch/powerpc/include/as=
+m/ppc_asm.h
+> index 753a2757bcd4..272b2795c36a 100644
+> --- a/arch/powerpc/include/asm/ppc_asm.h
+> +++ b/arch/powerpc/include/asm/ppc_asm.h
+> @@ -74,6 +74,23 @@
+>  #define SAVE_GPR(n, base)		SAVE_GPRS(n, n, base)
+>  #define REST_GPR(n, base)		REST_GPRS(n, n, base)
+> =20
+> +/* macros for handling user register sanitisation */
+> +#ifdef CONFIG_INTERRUPT_SANITIZE_REGISTERS
+> +#define SANITIZE_ZEROIZE_SYSCALL_GPRS()		ZEROIZE_GPR(0);		\
+> +						ZEROIZE_GPRS(5, 12);	\
+> +						ZEROIZE_NVGPRS()
+> +#define SANITIZE_ZEROIZE_INTERRUPT_NVGPRS()	ZEROIZE_NVGPRS()
+> +#define SANITIZE_ZEROIZE_NVGPRS()		ZEROIZE_NVGPRS()
+> +#define SANITIZE_RESTORE_NVGPRS()		REST_NVGPRS(r1)
+> +#define HANDLER_RESTORE_NVGPRS()
+> +#else
+> +#define SANITIZE_ZEROIZE_INTERRUPT_NVGPRS()
+> +#define SANITIZE_ZEROIZE_SYSCALL_GPRS()
+> +#define SANITIZE_ZEROIZE_NVGPRS()
+> +#define SANITIZE_RESTORE_NVGPRS()
+> +#define HANDLER_RESTORE_NVGPRS()		REST_NVGPRS(r1)
+> +#endif /* CONFIG_INTERRUPT_SANITIZE_REGISTERS */
+> +
+>  #define SAVE_FPR(n, base)	stfd	n,8*TS_FPRWIDTH*(n)(base)
+>  #define SAVE_2FPRS(n, base)	SAVE_FPR(n, base); SAVE_FPR(n+1, base)
+>  #define SAVE_4FPRS(n, base)	SAVE_2FPRS(n, base); SAVE_2FPRS(n+2, base)
+> --=20
+> 2.37.2
 
-
-Okay, I applied 1/3 and 3/3 to the kbuild tree.
-
-
-
-
---=20
-Best Regards
-Masahiro Yamada
