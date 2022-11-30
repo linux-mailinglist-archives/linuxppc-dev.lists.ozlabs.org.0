@@ -2,66 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D7DD63E57A
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 00:31:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 859EA63E57D
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 00:32:10 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NMwSh3G5Nz3fkK
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 10:31:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NMwTh335kz3fmC
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 10:32:08 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=YOeUjr5k;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=h6rsUUCp;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::64a; helo=mail-pl1-x64a.google.com; envelope-from=32okhywykdn8tfbokdhpphmf.dpnmjovyqqd-efwmjtut.pambct.psh@flex--seanjc.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::649; helo=mail-pl1-x649.google.com; envelope-from=32ukhywykdoevhdqmfjrrjoh.frpolqxassf-ghyolvwv.rcodev.ruj@flex--seanjc.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=YOeUjr5k;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=h6rsUUCp;
 	dkim-atps=neutral
-Received: from mail-pl1-x64a.google.com (mail-pl1-x64a.google.com [IPv6:2607:f8b0:4864:20::64a])
+Received: from mail-pl1-x649.google.com (mail-pl1-x649.google.com [IPv6:2607:f8b0:4864:20::649])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMw0V2gCrz3bgD
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Dec 2022 10:10:18 +1100 (AEDT)
-Received: by mail-pl1-x64a.google.com with SMTP id t1-20020a170902b20100b001893ac9f0feso19029471plr.4
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Nov 2022 15:10:18 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMw0W1PTLz3bgc
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Dec 2022 10:10:19 +1100 (AEDT)
+Received: by mail-pl1-x649.google.com with SMTP id b6-20020a170902d50600b00189a5536820so5305599plg.16
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Nov 2022 15:10:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=content-transfer-encoding:cc:to:from:subject:message-id:references
          :mime-version:in-reply-to:date:reply-to:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=2E/ZNfNVjTWUDx7EclAA9RDMNJ28SDYbq0FBSTNkEW0=;
-        b=YOeUjr5k1nRXALq3v0KKdNU/RoNOZHvdJ287PzEh8mewFol14vSXSy8/3fYRK98ogf
-         DM6/FhXti4G1BKHQNvzjRV1tWyFhTyxYu+zxNSNi9IlHcolXKLZsPssVX0dsnM50iavV
-         x2ODcftM6fP7S5M9f/kxN+kBZaYtyIW+z4R08Rc0Nfjpphi6e+XsI1tHwJnKWXkQaHpN
-         Fvd9/AR9wQma2szpaVgVzc80G2d6HwNcimfP60MChrBcVuLXdfKe+wSSxLqRYu4pvEyL
-         hD29cSFZ9nNlD/40iFEC/0Ct0+nb0Drk9Ewou2J1g8F1lSQpSFp12LOPbSOpy+zVepWe
-         HB6A==
+        bh=5yXQhNujyCn0BKG7v31c4OGaNv+fuibQffzvzfRXOMY=;
+        b=h6rsUUCphQInF8YIuJSydp7y3K+kWTxAbyRCfeyJQKJ+Y6qbtiTSAEs1qGlDllqT/J
+         MMyCWI1z6QQ9M7p7Zu6QpSl/9m1uIwFhUqPqC0VY2dNxBAtSmKEBK4CCdgkZqO6Ul8Kx
+         fACOhEYDJb6v1xuMAezabk8g2ZSsJuhT+lDS/T3ozQuYyR/lRYpg7LUF046Tas5T+NY5
+         CeL2ERbYxquxucrniWQA910RogetkvuImYcNKj0ET57pNLum/MqlKCc6KP+V5OUAEk8P
+         PnX37vQ/dZrpTC3Oabzm833Uf9cuKd5yhE1OeJVb9W6pQwUrjh0B5ijm+gc3WgDVn+HL
+         6XjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:cc:to:from:subject:message-id:references
          :mime-version:in-reply-to:date:reply-to:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=2E/ZNfNVjTWUDx7EclAA9RDMNJ28SDYbq0FBSTNkEW0=;
-        b=5cnc9LL+DO4BlcKoKG/fhBqwGqxzOVdGwu0NIacOSuVA5Fmd6M0ZJsf9APV4Lq7clT
-         /JVUCIYu7DjBpg6+IIToC1fkbwtDLebYwekwjiXwRkIfEfmzBxxQxQy7TXfGONv+P/wT
-         Tg1ZfOPM0svb0G10HtD4I0aqwOk/pNp7w+MeCWDYRUpo6UL8i2UckzaUFW1pMwgluM4H
-         cNlsuS0RzIGLECWsbxfV5OpqBsKeieC5bnhMfXSa+LaizBnzxnDw2q5VnuhKDSeKuiX2
-         i9h5O9zMFlMFgAoI71AzqaUB8HyGog7uEGxQtsVH5x2qS9nUkyErjMGbvXSghlFabusK
-         w7IA==
-X-Gm-Message-State: ANoB5plu+S2u8JhZ//ivW9YDfOco2T02y77syAR9Rjwk3qFBzriLInJB
-	2CGreoAvmPUW1ikaFAXUunipivLQlBk=
-X-Google-Smtp-Source: AA0mqf6fouTIX68sTKIWP0zUhpW+UmWGK5D4PKuHk4dF0PG0spJwJY42lnPZuN8WAPveTbTZZSc8FEJYBlE=
+        bh=5yXQhNujyCn0BKG7v31c4OGaNv+fuibQffzvzfRXOMY=;
+        b=hHz4FN5C7muzxZNPZiw8d4BTlmOi+Ajt+oCKgys5guyn8ri5jPM50mXsktIUx9wis2
+         XkACcxZVUHPDQGTPQA78MrvbnF1VyBGNFRS7kYjEi17KE3JwlPEDzHsXzUbA7oLfQxGU
+         49VXMam3f7dlFVUcOhMeRtTaA3qqqLsKdHV0BLi1nQ7N6c5KX85UjvI0wX8WqkNRtqFx
+         yEneDBQOogwKhndTz9F6reXMFhzzXuF7oG/Vo+o+nRdoxEYZI1gcLboAQC0y67nYKFsQ
+         UUR2bebSg7EOO+/MLVL1+vnyiWTCPhYIOGPOmonA0aWavAAIoLV63z8VGhegQErVtzlS
+         J6tg==
+X-Gm-Message-State: ANoB5pnqh9kzAEb8UWGL3dthcJJjP/ncpjfcce63YlOYqquamUC8ToLo
+	xcmEJmIOjFIjwUJBBVAy1zrqCfrQxTw=
+X-Google-Smtp-Source: AA0mqf4uayK8uJVSnmaHjmcUzYqE9zwUJpBZYJxTpzlvsNbotM7JFJFGgIIUFhNbqetWZOK5ykPGKeuQP1w=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a62:6045:0:b0:575:f66b:75a9 with SMTP id
- u66-20020a626045000000b00575f66b75a9mr3406091pfb.2.1669849816681; Wed, 30 Nov
- 2022 15:10:16 -0800 (PST)
-Date: Wed, 30 Nov 2022 23:09:07 +0000
+ (user=seanjc job=sendgmr) by 2002:a17:902:ec8a:b0:188:640f:f400 with SMTP id
+ x10-20020a170902ec8a00b00188640ff400mr45576276plg.143.1669849818577; Wed, 30
+ Nov 2022 15:10:18 -0800 (PST)
+Date: Wed, 30 Nov 2022 23:09:08 +0000
 In-Reply-To: <20221130230934.1014142-1-seanjc@google.com>
 Mime-Version: 1.0
 References: <20221130230934.1014142-1-seanjc@google.com>
 X-Mailer: git-send-email 2.38.1.584.g0f3c55d4c2-goog
-Message-ID: <20221130230934.1014142-24-seanjc@google.com>
-Subject: [PATCH v2 23/50] KVM: MIPS: Register die notifier prior to kvm_init()
+Message-ID: <20221130230934.1014142-25-seanjc@google.com>
+Subject: [PATCH v2 24/50] KVM: RISC-V: Do arch init directly in riscv_kvm_init()
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
 	Huacai Chen <chenhuacai@kernel.org>, 
@@ -90,42 +90,61 @@ Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Atish Patra <atis
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Call kvm_init() only after _all_ setup is complete, as kvm_init() exposes
-/dev/kvm to userspace and thus allows userspace to create VMs (and call
-other ioctls).
+Fold the guts of kvm_arch_init() into riscv_kvm_init() instead of
+bouncing through kvm_init()=3D>kvm_arch_init().  Functionally, this is a
+glorified nop as invoking kvm_arch_init() is the very first action
+performed by kvm_init().
+
+Moving setup to riscv_kvm_init(), which is tagged __init, will allow
+tagging more functions and data with __init and __ro_after_init.  And
+emptying kvm_arch_init() will allow dropping the hook entirely once all
+architecture implementations are nops.
+
+No functional change intended.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+Acked-by: Anup Patel <anup@brainfault.org>
 ---
- arch/mips/kvm/mips.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ arch/riscv/kvm/main.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
-index 75681281e2df..ae7a24342fdf 100644
---- a/arch/mips/kvm/mips.c
-+++ b/arch/mips/kvm/mips.c
-@@ -1640,16 +1640,17 @@ static int __init kvm_mips_init(void)
- 	if (ret)
- 		return ret;
-=20
--	ret =3D kvm_init(NULL, sizeof(struct kvm_vcpu), 0, THIS_MODULE);
--
--	if (ret)
--		return ret;
-=20
- 	if (boot_cpu_type() =3D=3D CPU_LOONGSON64)
- 		kvm_priority_to_irq =3D kvm_loongson3_priority_to_irq;
-=20
- 	register_die_notifier(&kvm_mips_csr_die_notifier);
-=20
-+	ret =3D kvm_init(NULL, sizeof(struct kvm_vcpu), 0, THIS_MODULE);
-+	if (ret) {
-+		unregister_die_notifier(&kvm_mips_csr_die_notifier);
-+		return ret;
-+	}
- 	return 0;
+diff --git a/arch/riscv/kvm/main.c b/arch/riscv/kvm/main.c
+index a146fa0ce4d2..cb063b8a9a0f 100644
+--- a/arch/riscv/kvm/main.c
++++ b/arch/riscv/kvm/main.c
+@@ -66,6 +66,15 @@ void kvm_arch_hardware_disable(void)
  }
 =20
+ int kvm_arch_init(void *opaque)
++{
++	return 0;
++}
++
++void kvm_arch_exit(void)
++{
++}
++
++static int __init riscv_kvm_init(void)
+ {
+ 	const char *str;
+=20
+@@ -110,15 +119,6 @@ int kvm_arch_init(void *opaque)
+=20
+ 	kvm_info("VMID %ld bits available\n", kvm_riscv_gstage_vmid_bits());
+=20
+-	return 0;
+-}
+-
+-void kvm_arch_exit(void)
+-{
+-}
+-
+-static int __init riscv_kvm_init(void)
+-{
+ 	return kvm_init(NULL, sizeof(struct kvm_vcpu), 0, THIS_MODULE);
+ }
+ module_init(riscv_kvm_init);
 --=20
 2.38.1.584.g0f3c55d4c2-goog
 
