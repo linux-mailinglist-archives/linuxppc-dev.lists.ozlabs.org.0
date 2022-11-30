@@ -1,67 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41BD163E56E
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 00:28:34 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2379E63E571
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 00:29:34 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NMwPX0RqJz3fdp
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 10:28:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NMwQh0GMXz3fDq
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 10:29:32 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=YGsrV5Ku;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=CQKSwij2;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::54a; helo=mail-pg1-x54a.google.com; envelope-from=30-khywykdnooa6jf8ckkcha.8kihejqtll8-9arheopo.kvh67o.knc@flex--seanjc.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::104a; helo=mail-pj1-x104a.google.com; envelope-from=31ekhywykdnwqc8lhaemmejc.amkjglsvnna-bctjgqrq.mxj89q.mpe@flex--seanjc.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=YGsrV5Ku;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=CQKSwij2;
 	dkim-atps=neutral
-Received: from mail-pg1-x54a.google.com (mail-pg1-x54a.google.com [IPv6:2607:f8b0:4864:20::54a])
+Received: from mail-pj1-x104a.google.com (mail-pj1-x104a.google.com [IPv6:2607:f8b0:4864:20::104a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMw0P3C94z3bfN
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Dec 2022 10:10:13 +1100 (AEDT)
-Received: by mail-pg1-x54a.google.com with SMTP id r126-20020a632b84000000b004393806c06eso99596pgr.4
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Nov 2022 15:10:13 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMw0R0F7gz3bfm
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Dec 2022 10:10:15 +1100 (AEDT)
+Received: by mail-pj1-x104a.google.com with SMTP id n4-20020a17090a2fc400b002132adb9485so232106pjm.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Nov 2022 15:10:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=3BC2drmUMjdnOC7WIltOukKCPGc/yDYCLrgkhCSnIdk=;
-        b=YGsrV5KuqWky+lighgQlv33uN6TwyWOw7ZjDjl8H2VM/InBtNrKtgi3AE1+Pa3FxoS
-         VjAsnz/+c2wsBky5orpKInmhzBGPVYoP/B5fYfdArAxuwNSGL9rRbJefubbRt521PLbq
-         VJZy1NnktHeex4CXiQzYHer4WCY65riuybUak4zKWYQuPcGGKfYI8VbVUaNOQjh0qGqH
-         gjd9MLaKVgSY9z40QaM2Q907gnSBBcku+H84gGn6LKhrTgOTTeJyLRHrLae8ZGVKB04l
-         kH8QPnptSLFgmbAVZGxyjpoKeXWF/QtK8G+/7v325DYRzYamQ4880n7+wfuUtS9r5LfU
-         9liw==
+        bh=grdSlJzFo0VwdV8xgzvuVpRwKnA9GO3Mob4PH+ot8/0=;
+        b=CQKSwij2dM5sxTN5vEM9Pg0UGQR7vXxLholFOCIYMDxZ1/3rA7vH+RqFmN1n0beWlD
+         7+BAU4/MoU1Z2zohEeDLQA2mrNFcLMI1vaNT8JUT+3n3Smxr3wpQu7rVUMeYIUjzYrKM
+         QQRXU+fmSvdsXsp/lH1ncccopWZ+njKFlSsnkmBo5RgV0L2uInmLnHD4wZGB2dqPvFNW
+         AFZHsbz5az7ZAwj41de9s/UvOppce1LN8jHb5JWdYWBnJ4FReLvafLy5jclWK6UngF05
+         cPIBeGpzAB3DL/mtUhAd3V5apiG8/mbBEcTlCsb8iWOJpXlQdaq+hFXcxIhaHoaH5jmv
+         rjIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=3BC2drmUMjdnOC7WIltOukKCPGc/yDYCLrgkhCSnIdk=;
-        b=LXAP2Q5xF28dYJ8ReLFrGxnqtn8hs5UIMxxVlTC6tmNHThAwjrJDIzAk5f8pK8Yip5
-         y0lR6+jmIafxMJKFzrlOT1EW5Sz8SXT31OyC9YD9E09BXny24+KKJqdVqCaoQrgJG1d0
-         64sKhMM1A1SDEuI6S+HhslECZ/FeV9RM5ubz+jUzNUViGg7LB20YjymBP40baOo3XckT
-         bTniWkFrkFjQXNkMK91InVWySgNRWzdVugwgeb0HV76OZ8Tt8H0M8RXciLW12ZgEQpDN
-         VxxyPKJigRJrbwUMAUEi9huxLYDuzHQs8ItS24XdJzdYrI1nUiZddk2CCoxYUmFp1T/p
-         uAkg==
-X-Gm-Message-State: ANoB5pkgQFAV/aYcHJvsvrxzN4lG1ffFzPVwpfQeQmuqDmgBHiwk1qGM
-	mQzE+lby7ZvcbBR6JOJJ35KzAaW0+iU=
-X-Google-Smtp-Source: AA0mqf4ADxnOnSQj6vdSg+J2NFb0XMbramF+YIkp88XixF7GZdq8v4WDhYryE5oDdkJid5mOEvVBPhcVI6g=
+        bh=grdSlJzFo0VwdV8xgzvuVpRwKnA9GO3Mob4PH+ot8/0=;
+        b=UJcduBT4TZrwFL1rz4pmTTfgqyTlUKtBT+80DuZc1BA+ZyzlUOaq5GTH+EFavV+/C9
+         tFrmg9IDzOzzx9vt0mRTMurrOLhEJWGrsVSrzkZCi6OjiTfowX1eN3HKzd6SV3miJe3a
+         nIPFaGVJb7V+YsHvxniG1EqdySn6WZokmqG3fMxwQUuHOzNAomXcb+69o5aRoCWczeln
+         4MlJVCzWLX9oBJlrjalsJ303pFLw11bKS+Z7KV5FOr5tA+ycGO5WtvV+f36eWMr7I9Lz
+         4NJpbaHSPqMAP1YBh/m5Mm+UXsWFNERm9nxuFchuit3dleYap9LG0dKsYKQla8Vh+FHP
+         5+7w==
+X-Gm-Message-State: ANoB5pln3onc7WIbtb3XLVa8HCjgWfRPhbR9QxTVVcsjk7O2/CaiVtWD
+	ONfT34F77M7FWC2qIhkzyK8biiVxdQ0=
+X-Google-Smtp-Source: AA0mqf5utOkOs36wj8G4rTpG0ELlL4JMVDy82zEmZIH7sIXiucVOps+Q5AZsFyLWVU+C/qKz+GIkdE+8/9Y=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a63:1055:0:b0:46e:f011:9548 with SMTP id
- 21-20020a631055000000b0046ef0119548mr37809846pgq.553.1669849811606; Wed, 30
- Nov 2022 15:10:11 -0800 (PST)
-Date: Wed, 30 Nov 2022 23:09:04 +0000
+ (user=seanjc job=sendgmr) by 2002:a62:648a:0:b0:572:76dd:3756 with SMTP id
+ y132-20020a62648a000000b0057276dd3756mr45058073pfb.9.1669849813287; Wed, 30
+ Nov 2022 15:10:13 -0800 (PST)
+Date: Wed, 30 Nov 2022 23:09:05 +0000
 In-Reply-To: <20221130230934.1014142-1-seanjc@google.com>
 Mime-Version: 1.0
 References: <20221130230934.1014142-1-seanjc@google.com>
 X-Mailer: git-send-email 2.38.1.584.g0f3c55d4c2-goog
-Message-ID: <20221130230934.1014142-21-seanjc@google.com>
-Subject: [PATCH v2 20/50] KVM: arm64: Mark kvm_arm_init() and its unique
- descendants as __init
+Message-ID: <20221130230934.1014142-22-seanjc@google.com>
+Subject: [PATCH v2 21/50] KVM: MIPS: Hardcode callbacks to hardware
+ virtualization extensions
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
 	Huacai Chen <chenhuacai@kernel.org>, 
@@ -89,396 +89,124 @@ Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Atish Patra <atis
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Tag kvm_arm_init() and its unique helper as __init, and tag data that is
-only ever modified under the kvm_arm_init() umbrella as read-only after
-init.
+Now that KVM no longer supports trap-and-emulate (see commit 45c7e8af4a5e
+"MIPS: Remove KVM_TE support"), hardcode the MIPS callbacks to the
+virtualization callbacks.
 
-Opportunistically name the boolean param in kvm_timer_hyp_init()'s
-prototype to match its definition.
+Harcoding the callbacks eliminates the technically-unnecessary check on
+non-NULL kvm_mips_callbacks in kvm_arch_init().  MIPS has never supported
+multiple in-tree modules, i.e. barring an out-of-tree module, where
+copying and renaming kvm.ko counts as "out-of-tree", KVM could never
+encounter a non-NULL set of callbacks during module init.
+
+The callback check is also subtly broken, as it is not thread safe,
+i.e. if there were multiple modules, loading both concurrently would
+create a race between checking and setting kvm_mips_callbacks.
+
+Given that out-of-tree shenanigans are not the kernel's responsibility,
+hardcode the callbacks to simplify the code.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/arm64/include/asm/kvm_host.h | 14 ++++++-------
- arch/arm64/include/asm/kvm_mmu.h  |  4 ++--
- arch/arm64/kvm/arch_timer.c       |  2 +-
- arch/arm64/kvm/arm.c              | 34 +++++++++++++++----------------
- arch/arm64/kvm/mmu.c              | 12 +++++------
- arch/arm64/kvm/reset.c            |  8 ++++----
- arch/arm64/kvm/sys_regs.c         |  6 +++---
- arch/arm64/kvm/vmid.c             |  6 +++---
- include/kvm/arm_arch_timer.h      |  2 +-
- 9 files changed, 44 insertions(+), 44 deletions(-)
+ arch/mips/include/asm/kvm_host.h |  2 +-
+ arch/mips/kvm/Makefile           |  2 +-
+ arch/mips/kvm/callback.c         | 14 --------------
+ arch/mips/kvm/mips.c             |  9 ++-------
+ arch/mips/kvm/vz.c               |  7 ++++---
+ 5 files changed, 8 insertions(+), 26 deletions(-)
+ delete mode 100644 arch/mips/kvm/callback.c
 
-diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-index 5d5a887e63a5..4863fe356be1 100644
---- a/arch/arm64/include/asm/kvm_host.h
-+++ b/arch/arm64/include/asm/kvm_host.h
-@@ -66,8 +66,8 @@ enum kvm_mode kvm_get_mode(void);
+diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
+index 28f0ba97db71..2803c9c21ef9 100644
+--- a/arch/mips/include/asm/kvm_host.h
++++ b/arch/mips/include/asm/kvm_host.h
+@@ -758,7 +758,7 @@ struct kvm_mips_callbacks {
+ 	void (*vcpu_reenter)(struct kvm_vcpu *vcpu);
+ };
+ extern struct kvm_mips_callbacks *kvm_mips_callbacks;
+-int kvm_mips_emulation_init(struct kvm_mips_callbacks **install_callbacks);
++int kvm_mips_emulation_init(void);
  
- DECLARE_STATIC_KEY_FALSE(userspace_irqchip_in_use);
+ /* Debug: dump vcpu state */
+ int kvm_arch_vcpu_dump_regs(struct kvm_vcpu *vcpu);
+diff --git a/arch/mips/kvm/Makefile b/arch/mips/kvm/Makefile
+index 21ff75bcdbc4..805aeea2166e 100644
+--- a/arch/mips/kvm/Makefile
++++ b/arch/mips/kvm/Makefile
+@@ -17,4 +17,4 @@ kvm-$(CONFIG_CPU_LOONGSON64) += loongson_ipi.o
  
--extern unsigned int kvm_sve_max_vl;
--int kvm_arm_init_sve(void);
-+extern unsigned int __ro_after_init kvm_sve_max_vl;
-+int __init kvm_arm_init_sve(void);
+ kvm-y		+= vz.o
+ obj-$(CONFIG_KVM)	+= kvm.o
+-obj-y			+= callback.o tlb.o
++obj-y			+= tlb.o
+diff --git a/arch/mips/kvm/callback.c b/arch/mips/kvm/callback.c
+deleted file mode 100644
+index d88aa2173fb0..000000000000
+--- a/arch/mips/kvm/callback.c
++++ /dev/null
+@@ -1,14 +0,0 @@
+-/*
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- *
+- * Copyright (C) 2012  MIPS Technologies, Inc.  All rights reserved.
+- * Authors: Yann Le Du <ledu@kymasys.com>
+- */
+-
+-#include <linux/export.h>
+-#include <linux/kvm_host.h>
+-
+-struct kvm_mips_callbacks *kvm_mips_callbacks;
+-EXPORT_SYMBOL_GPL(kvm_mips_callbacks);
+diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
+index af29490d9740..f0a6c245d1ff 100644
+--- a/arch/mips/kvm/mips.c
++++ b/arch/mips/kvm/mips.c
+@@ -1012,17 +1012,12 @@ long kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
  
- u32 __attribute_const__ kvm_target_cpu(void);
- int kvm_reset_vcpu(struct kvm_vcpu *vcpu);
-@@ -793,7 +793,7 @@ int kvm_handle_cp10_id(struct kvm_vcpu *vcpu);
- 
- void kvm_reset_sys_regs(struct kvm_vcpu *vcpu);
- 
--int kvm_sys_reg_table_init(void);
-+int __init kvm_sys_reg_table_init(void);
- 
- /* MMIO helpers */
- void kvm_mmio_write_buf(void *buf, unsigned int len, unsigned long data);
-@@ -824,9 +824,9 @@ int kvm_arm_pvtime_get_attr(struct kvm_vcpu *vcpu,
- int kvm_arm_pvtime_has_attr(struct kvm_vcpu *vcpu,
- 			    struct kvm_device_attr *attr);
- 
--extern unsigned int kvm_arm_vmid_bits;
--int kvm_arm_vmid_alloc_init(void);
--void kvm_arm_vmid_alloc_free(void);
-+extern unsigned int __ro_after_init kvm_arm_vmid_bits;
-+int __init kvm_arm_vmid_alloc_init(void);
-+void __init kvm_arm_vmid_alloc_free(void);
- void kvm_arm_vmid_update(struct kvm_vmid *kvm_vmid);
- void kvm_arm_vmid_clear_active(void);
- 
-@@ -909,7 +909,7 @@ static inline void kvm_clr_pmu_events(u32 clr) {}
- void kvm_vcpu_load_sysregs_vhe(struct kvm_vcpu *vcpu);
- void kvm_vcpu_put_sysregs_vhe(struct kvm_vcpu *vcpu);
- 
--int kvm_set_ipa_limit(void);
-+int __init kvm_set_ipa_limit(void);
- 
- #define __KVM_HAVE_ARCH_VM_ALLOC
- struct kvm *kvm_arch_alloc_vm(void);
-diff --git a/arch/arm64/include/asm/kvm_mmu.h b/arch/arm64/include/asm/kvm_mmu.h
-index 7784081088e7..ced5b0028933 100644
---- a/arch/arm64/include/asm/kvm_mmu.h
-+++ b/arch/arm64/include/asm/kvm_mmu.h
-@@ -163,7 +163,7 @@ int create_hyp_io_mappings(phys_addr_t phys_addr, size_t size,
- 			   void __iomem **haddr);
- int create_hyp_exec_mappings(phys_addr_t phys_addr, size_t size,
- 			     void **haddr);
--void free_hyp_pgds(void);
-+void __init free_hyp_pgds(void);
- 
- void stage2_unmap_vm(struct kvm *kvm);
- int kvm_init_stage2_mmu(struct kvm *kvm, struct kvm_s2_mmu *mmu);
-@@ -175,7 +175,7 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu);
- 
- phys_addr_t kvm_mmu_get_httbr(void);
- phys_addr_t kvm_get_idmap_vector(void);
--int kvm_mmu_init(u32 *hyp_va_bits);
-+int __init kvm_mmu_init(u32 *hyp_va_bits);
- 
- static inline void *__kvm_vector_slot2addr(void *base,
- 					   enum arm64_hyp_spectre_vector slot)
-diff --git a/arch/arm64/kvm/arch_timer.c b/arch/arm64/kvm/arch_timer.c
-index 33fca1a691a5..23346585a294 100644
---- a/arch/arm64/kvm/arch_timer.c
-+++ b/arch/arm64/kvm/arch_timer.c
-@@ -1113,7 +1113,7 @@ static int kvm_irq_init(struct arch_timer_kvm_info *info)
- 	return 0;
+ int kvm_arch_init(void *opaque)
+ {
+-	if (kvm_mips_callbacks) {
+-		kvm_err("kvm: module already exists\n");
+-		return -EEXIST;
+-	}
+-
+-	return kvm_mips_emulation_init(&kvm_mips_callbacks);
++	return kvm_mips_emulation_init();
  }
  
--int kvm_timer_hyp_init(bool has_gic)
-+int __init kvm_timer_hyp_init(bool has_gic)
+ void kvm_arch_exit(void)
  {
- 	struct arch_timer_kvm_info *info;
- 	int err;
-diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-index d3a4db1abf32..4d34abcfc9a9 100644
---- a/arch/arm64/kvm/arm.c
-+++ b/arch/arm64/kvm/arm.c
-@@ -1513,7 +1513,7 @@ static int kvm_init_vector_slots(void)
- 	return 0;
+-	kvm_mips_callbacks = NULL;
++
  }
  
--static void cpu_prepare_hyp_mode(int cpu)
-+static void __init cpu_prepare_hyp_mode(int cpu)
- {
- 	struct kvm_nvhe_init_params *params = per_cpu_ptr_nvhe_sym(kvm_init_params, cpu);
- 	unsigned long tcr;
-@@ -1739,26 +1739,26 @@ static struct notifier_block hyp_init_cpu_pm_nb = {
- 	.notifier_call = hyp_init_cpu_pm_notifier,
+ int kvm_arch_vcpu_ioctl_get_sregs(struct kvm_vcpu *vcpu,
+diff --git a/arch/mips/kvm/vz.c b/arch/mips/kvm/vz.c
+index c706f5890a05..dafab003ea0d 100644
+--- a/arch/mips/kvm/vz.c
++++ b/arch/mips/kvm/vz.c
+@@ -3304,7 +3304,10 @@ static struct kvm_mips_callbacks kvm_vz_callbacks = {
+ 	.vcpu_reenter = kvm_vz_vcpu_reenter,
  };
  
--static void hyp_cpu_pm_init(void)
-+static void __init hyp_cpu_pm_init(void)
+-int kvm_mips_emulation_init(struct kvm_mips_callbacks **install_callbacks)
++/* FIXME: Get rid of the callbacks now that trap-and-emulate is gone. */
++struct kvm_mips_callbacks *kvm_mips_callbacks = &kvm_vz_callbacks;
++
++int kvm_mips_emulation_init(void)
  {
- 	if (!is_protected_kvm_enabled())
- 		cpu_pm_register_notifier(&hyp_init_cpu_pm_nb);
- }
--static void hyp_cpu_pm_exit(void)
-+static void __init hyp_cpu_pm_exit(void)
- {
- 	if (!is_protected_kvm_enabled())
- 		cpu_pm_unregister_notifier(&hyp_init_cpu_pm_nb);
- }
- #else
--static inline void hyp_cpu_pm_init(void)
-+static inline void __init hyp_cpu_pm_init(void)
- {
- }
--static inline void hyp_cpu_pm_exit(void)
-+static inline void __init hyp_cpu_pm_exit(void)
- {
- }
- #endif
+ 	if (!cpu_has_vz)
+ 		return -ENODEV;
+@@ -3318,7 +3321,5 @@ int kvm_mips_emulation_init(struct kvm_mips_callbacks **install_callbacks)
+ 		return -ENODEV;
  
--static void init_cpu_logical_map(void)
-+static void __init init_cpu_logical_map(void)
- {
- 	unsigned int cpu;
- 
-@@ -1775,7 +1775,7 @@ static void init_cpu_logical_map(void)
- #define init_psci_0_1_impl_state(config, what)	\
- 	config.psci_0_1_ ## what ## _implemented = psci_ops.what
- 
--static bool init_psci_relay(void)
-+static bool __init init_psci_relay(void)
- {
- 	/*
- 	 * If PSCI has not been initialized, protected KVM cannot install
-@@ -1798,7 +1798,7 @@ static bool init_psci_relay(void)
- 	return true;
- }
- 
--static int init_subsystems(void)
-+static int __init init_subsystems(void)
- {
- 	int err = 0;
- 
-@@ -1848,13 +1848,13 @@ static int init_subsystems(void)
- 	return err;
- }
- 
--static void teardown_subsystems(void)
-+static void __init teardown_subsystems(void)
- {
- 	kvm_unregister_perf_callbacks();
- 	hyp_cpu_pm_exit();
- }
- 
--static void teardown_hyp_mode(void)
-+static void __init teardown_hyp_mode(void)
- {
- 	int cpu;
- 
-@@ -1865,7 +1865,7 @@ static void teardown_hyp_mode(void)
- 	}
- }
- 
--static int do_pkvm_init(u32 hyp_va_bits)
-+static int __init do_pkvm_init(u32 hyp_va_bits)
- {
- 	void *per_cpu_base = kvm_ksym_ref(kvm_arm_hyp_percpu_base);
- 	int ret;
-@@ -1887,7 +1887,7 @@ static int do_pkvm_init(u32 hyp_va_bits)
- 	return ret;
- }
- 
--static int kvm_hyp_init_protection(u32 hyp_va_bits)
-+static int __init kvm_hyp_init_protection(u32 hyp_va_bits)
- {
- 	void *addr = phys_to_virt(hyp_mem_base);
- 	int ret;
-@@ -1917,7 +1917,7 @@ static int kvm_hyp_init_protection(u32 hyp_va_bits)
- /**
-  * Inits Hyp-mode on all online CPUs
-  */
--static int init_hyp_mode(void)
-+static int __init init_hyp_mode(void)
- {
- 	u32 hyp_va_bits;
- 	int cpu;
-@@ -2099,7 +2099,7 @@ static int init_hyp_mode(void)
- 	return err;
- }
- 
--static void _kvm_host_prot_finalize(void *arg)
-+static void __init _kvm_host_prot_finalize(void *arg)
- {
- 	int *err = arg;
- 
-@@ -2107,7 +2107,7 @@ static void _kvm_host_prot_finalize(void *arg)
- 		WRITE_ONCE(*err, -EINVAL);
- }
- 
--static int pkvm_drop_host_privileges(void)
-+static int __init pkvm_drop_host_privileges(void)
- {
- 	int ret = 0;
- 
-@@ -2120,7 +2120,7 @@ static int pkvm_drop_host_privileges(void)
- 	return ret;
- }
- 
--static int finalize_hyp_mode(void)
-+static int __init finalize_hyp_mode(void)
- {
- 	if (!is_protected_kvm_enabled())
- 		return 0;
-@@ -2195,7 +2195,7 @@ void kvm_arch_irq_bypass_start(struct irq_bypass_consumer *cons)
- /**
-  * Initialize Hyp-mode and memory mappings on all CPUs.
-  */
--int kvm_arm_init(void)
-+static __init int kvm_arm_init(void)
- {
- 	int err;
- 	bool in_hyp_mode;
-diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-index f154d4a7fae0..be1d904d3e44 100644
---- a/arch/arm64/kvm/mmu.c
-+++ b/arch/arm64/kvm/mmu.c
-@@ -25,11 +25,11 @@
- static struct kvm_pgtable *hyp_pgtable;
- static DEFINE_MUTEX(kvm_hyp_pgd_mutex);
- 
--static unsigned long hyp_idmap_start;
--static unsigned long hyp_idmap_end;
--static phys_addr_t hyp_idmap_vector;
-+static unsigned long __ro_after_init hyp_idmap_start;
-+static unsigned long __ro_after_init hyp_idmap_end;
-+static phys_addr_t __ro_after_init hyp_idmap_vector;
- 
--static unsigned long io_map_base;
-+static unsigned long __ro_after_init io_map_base;
- 
- static phys_addr_t stage2_range_addr_end(phys_addr_t addr, phys_addr_t end)
- {
-@@ -261,7 +261,7 @@ static void stage2_flush_vm(struct kvm *kvm)
- /**
-  * free_hyp_pgds - free Hyp-mode page tables
-  */
--void free_hyp_pgds(void)
-+void __init free_hyp_pgds(void)
- {
- 	mutex_lock(&kvm_hyp_pgd_mutex);
- 	if (hyp_pgtable) {
-@@ -1615,7 +1615,7 @@ static struct kvm_pgtable_mm_ops kvm_hyp_mm_ops = {
- 	.virt_to_phys		= kvm_host_pa,
- };
- 
--int kvm_mmu_init(u32 *hyp_va_bits)
-+int __init kvm_mmu_init(u32 *hyp_va_bits)
- {
- 	int err;
- 
-diff --git a/arch/arm64/kvm/reset.c b/arch/arm64/kvm/reset.c
-index 5ae18472205a..dd58a8629a2e 100644
---- a/arch/arm64/kvm/reset.c
-+++ b/arch/arm64/kvm/reset.c
-@@ -30,7 +30,7 @@
- #include <asm/virt.h>
- 
- /* Maximum phys_shift supported for any VM on this host */
--static u32 kvm_ipa_limit;
-+static u32 __ro_after_init kvm_ipa_limit;
- 
- /*
-  * ARMv8 Reset Values
-@@ -41,9 +41,9 @@ static u32 kvm_ipa_limit;
- #define VCPU_RESET_PSTATE_SVC	(PSR_AA32_MODE_SVC | PSR_AA32_A_BIT | \
- 				 PSR_AA32_I_BIT | PSR_AA32_F_BIT)
- 
--unsigned int kvm_sve_max_vl;
-+unsigned int __ro_after_init kvm_sve_max_vl;
- 
--int kvm_arm_init_sve(void)
-+int __init kvm_arm_init_sve(void)
- {
- 	if (system_supports_sve()) {
- 		kvm_sve_max_vl = sve_max_virtualisable_vl();
-@@ -352,7 +352,7 @@ u32 get_kvm_ipa_limit(void)
- 	return kvm_ipa_limit;
- }
- 
--int kvm_set_ipa_limit(void)
-+int __init kvm_set_ipa_limit(void)
- {
- 	unsigned int parange;
- 	u64 mmfr0;
-diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
-index f4a7c5abcbca..0359f57c2c44 100644
---- a/arch/arm64/kvm/sys_regs.c
-+++ b/arch/arm64/kvm/sys_regs.c
-@@ -82,7 +82,7 @@ void vcpu_write_sys_reg(struct kvm_vcpu *vcpu, u64 val, int reg)
- }
- 
- /* 3 bits per cache level, as per CLIDR, but non-existent caches always 0 */
--static u32 cache_levels;
-+static u32 __ro_after_init cache_levels;
- 
- /* CSSELR values; used to index KVM_REG_ARM_DEMUX_ID_CCSIDR */
- #define CSSELR_MAX 14
-@@ -2620,7 +2620,7 @@ static void get_ctr_el0(struct kvm_vcpu *v, const struct sys_reg_desc *r)
- }
- 
- /* ->val is filled in by kvm_sys_reg_table_init() */
--static struct sys_reg_desc invariant_sys_regs[] = {
-+static struct sys_reg_desc invariant_sys_regs[] __ro_after_init = {
- 	{ SYS_DESC(SYS_MIDR_EL1), NULL, get_midr_el1 },
- 	{ SYS_DESC(SYS_REVIDR_EL1), NULL, get_revidr_el1 },
- 	{ SYS_DESC(SYS_CLIDR_EL1), NULL, get_clidr_el1 },
-@@ -2944,7 +2944,7 @@ int kvm_arm_copy_sys_reg_indices(struct kvm_vcpu *vcpu, u64 __user *uindices)
- 	return write_demux_regids(uindices);
- }
- 
--int kvm_sys_reg_table_init(void)
-+int __init kvm_sys_reg_table_init(void)
- {
- 	bool valid = true;
- 	unsigned int i;
-diff --git a/arch/arm64/kvm/vmid.c b/arch/arm64/kvm/vmid.c
-index d78ae63d7c15..08978d0672e7 100644
---- a/arch/arm64/kvm/vmid.c
-+++ b/arch/arm64/kvm/vmid.c
-@@ -16,7 +16,7 @@
- #include <asm/kvm_asm.h>
- #include <asm/kvm_mmu.h>
- 
--unsigned int kvm_arm_vmid_bits;
-+unsigned int __ro_after_init kvm_arm_vmid_bits;
- static DEFINE_RAW_SPINLOCK(cpu_vmid_lock);
- 
- static atomic64_t vmid_generation;
-@@ -172,7 +172,7 @@ void kvm_arm_vmid_update(struct kvm_vmid *kvm_vmid)
- /*
-  * Initialize the VMID allocator
-  */
--int kvm_arm_vmid_alloc_init(void)
-+int __init kvm_arm_vmid_alloc_init(void)
- {
- 	kvm_arm_vmid_bits = kvm_get_vmid_bits();
- 
-@@ -190,7 +190,7 @@ int kvm_arm_vmid_alloc_init(void)
+ 	pr_info("Starting KVM with MIPS VZ extensions\n");
+-
+-	*install_callbacks = &kvm_vz_callbacks;
  	return 0;
  }
- 
--void kvm_arm_vmid_alloc_free(void)
-+void __init kvm_arm_vmid_alloc_free(void)
- {
- 	kfree(vmid_map);
- }
-diff --git a/include/kvm/arm_arch_timer.h b/include/kvm/arm_arch_timer.h
-index 1638418f72dd..71916de7c6c4 100644
---- a/include/kvm/arm_arch_timer.h
-+++ b/include/kvm/arm_arch_timer.h
-@@ -60,7 +60,7 @@ struct arch_timer_cpu {
- 	bool			enabled;
- };
- 
--int kvm_timer_hyp_init(bool);
-+int __init kvm_timer_hyp_init(bool has_gic);
- int kvm_timer_enable(struct kvm_vcpu *vcpu);
- int kvm_timer_vcpu_reset(struct kvm_vcpu *vcpu);
- void kvm_timer_vcpu_init(struct kvm_vcpu *vcpu);
 -- 
 2.38.1.584.g0f3c55d4c2-goog
 
