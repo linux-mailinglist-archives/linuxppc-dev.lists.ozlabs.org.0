@@ -1,83 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2451A63CBD0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 00:28:52 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A5E863CD2B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 03:08:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NMJSK6gtQz3cJv
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 10:28:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NMN120w67z3bfT
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 13:08:54 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tZgRpw3L;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=nm96mhN3;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=gjoyce@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.136; helo=mga12.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tZgRpw3L;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=nm96mhN3;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMJNN277Nz2xVr
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Nov 2022 10:25:24 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2ATMH6DN009962;
-	Tue, 29 Nov 2022 23:25:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=+gyXyUsX4kilIrul4pzFQT9/qDWpnd/x0Cp591ZxdSw=;
- b=tZgRpw3LcL/N1/2eoLt8K4OMf6KGFo9xKhMrU06s3Ze3Yr5+2HJ+alLwgNBNbfzdJhgp
- 1Sh7xuLqnMYOaPHiA9hLNypJ6rVxr75JrPZG9p5vR2BlSI0funLUqEleVygee15KIrSz
- qYJhqawqGvONXkIJFcIh6BzVuqrfoGqExWCF+ha4YOlKAcDJ1/2Y6QGJIKEYUte8eK1B
- GEb1YW2u1u6sw9Nw3bgoy3UDbVw7CeJof+5RclFqoN0sNa9j5za80u/zlRCmOtBju2cB
- CeQUXzKzWRJn1BqbMIxYPQkvu28usOnbVmilt9v9wocETEdY+XBVS2rQUc8HB1mD4kuC Ow== 
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.10])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m5r60nbw3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 29 Nov 2022 23:25:16 +0000
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
-	by ppma02dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2ATNK53e009154;
-	Tue, 29 Nov 2022 23:25:15 GMT
-Received: from b03cxnp07027.gho.boulder.ibm.com (b03cxnp07027.gho.boulder.ibm.com [9.17.130.14])
-	by ppma02dal.us.ibm.com with ESMTP id 3m3ae9p1f4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 29 Nov 2022 23:25:15 +0000
-Received: from smtpav03.dal12v.mail.ibm.com ([9.208.128.129])
-	by b03cxnp07027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2ATNPErW47645288
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 29 Nov 2022 23:25:14 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B8E8B5806A;
-	Tue, 29 Nov 2022 23:25:13 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9B12E5803F;
-	Tue, 29 Nov 2022 23:25:12 +0000 (GMT)
-Received: from rhel-laptop.ibm.com.com (unknown [9.160.99.100])
-	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 29 Nov 2022 23:25:12 +0000 (GMT)
-From: gjoyce@linux.vnet.ibm.com
-To: linux-block@vger.kernel.org
-Subject: [PATCH v3 3/3] block: sed-opal: keyring support for SED keys
-Date: Tue, 29 Nov 2022 17:25:06 -0600
-Message-Id: <20221129232506.3735672-4-gjoyce@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20221129232506.3735672-1-gjoyce@linux.vnet.ibm.com>
-References: <20221129232506.3735672-1-gjoyce@linux.vnet.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMN031dgHz3bM7
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Nov 2022 13:07:57 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1669774083; x=1701310083;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=kRAnFVoywB5JdDPCEk+rJyURGXgmhorGUMpy5nbYuAg=;
+  b=nm96mhN3c3GDpIdRnt1RtwTVcOIv09Jl3u3DQ6QxOZMXOAxHrlUug2l6
+   TrjsNvJ1vI30TlkWiRsJktbzXpqevbXCf3zd0Xi92J4CavYSQcODL1MoC
+   dE1/hXrGE9qQanZoWCP9u6WNISVaM3fk05joyRSGWpnBCBicwsMw4vwyT
+   544zrYpnPDA3CZvqtXUuR1I72Q3W8JESmxcWD1pbAhNkUFRWBkWlJ8IT+
+   ashktpw5vj1OEKi1Ijr+7v0uIXecI5ICAEWdS9F302h7a0zFqsGidQHo3
+   oZ2a03oIl8cvWmkDh3Y46CpRldCJCuKf4pO5Z6nyqLZ2PhRKMQMgSKIBn
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10546"; a="294977335"
+X-IronPort-AV: E=Sophos;i="5.96,204,1665471600"; 
+   d="scan'208";a="294977335"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Nov 2022 18:07:40 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10546"; a="707466656"
+X-IronPort-AV: E=Sophos;i="5.96,204,1665471600"; 
+   d="scan'208";a="707466656"
+Received: from lkp-server01.sh.intel.com (HELO 64a2d449c951) ([10.239.97.150])
+  by fmsmga008.fm.intel.com with ESMTP; 29 Nov 2022 18:07:37 -0800
+Received: from kbuild by 64a2d449c951 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1p0CVd-0009Mp-0e;
+	Wed, 30 Nov 2022 02:07:37 +0000
+Date: Wed, 30 Nov 2022 10:07:09 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: [linux-next:master] BUILD REGRESSION
+ 13ee7ef407cfcf63f4f047460ac5bb6ba5a3447d
+Message-ID: <6386bacd.F2D609B/YFO52Ftz%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: s06jIYtTO-YxgM6hrEjfKpYTX3wYZLHs
-X-Proofpoint-GUID: s06jIYtTO-YxgM6hrEjfKpYTX3wYZLHs
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-11-29_13,2022-11-29_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
- suspectscore=0 adultscore=0 phishscore=0 malwarescore=0 mlxlogscore=999
- lowpriorityscore=0 priorityscore=1501 spamscore=0 clxscore=1015
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2210170000 definitions=main-2211290138
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,394 +70,201 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: axboe@kernel.dk, gjoyce@linux.vnet.ibm.com, nayna@linux.ibm.com, keyrings@vger.kernel.org, jonathan.derrick@linux.dev, brking@linux.vnet.ibm.com, akpm@linux-foundation.org, msuchanek@suse.de, linuxppc-dev@lists.ozlabs.org
+Cc: nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org, Linux Memory Management List <linux-mm@kvack.org>, coreteam@netfilter.org, netfilter-devel@vger.kernel.org, amd-gfx@lists.freedesktop.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: 13ee7ef407cfcf63f4f047460ac5bb6ba5a3447d  Add linux-next specific files for 20221129
 
-Extend the SED block driver so it can alternatively
-obtain a key from a sed-opal kernel keyring. The SED
-ioctls will indicate the source of the key, either
-directly in the ioctl data or from the keyring.
+Error/Warning reports:
 
-This allows the use of SED commands in scripts such as
-udev scripts so that drives may be automatically unlocked
-as they become available.
+https://lore.kernel.org/oe-kbuild-all/202211041320.coq8EELJ-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202211090634.RyFKK0WS-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202211110149.0ETIfpy6-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202211242021.FDZRFNA8-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202211242120.MzZVGULn-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202211282102.QUr7HHrW-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202211300947.Ley0l6at-lkp@intel.com
 
-Signed-off-by: Greg Joyce <gjoyce@linux.vnet.ibm.com>
-Reviewed-by: Jonathan Derrick <jonathan.derrick@linux.dev>
----
- block/Kconfig                 |   1 +
- block/sed-opal.c              | 174 +++++++++++++++++++++++++++++++++-
- include/linux/sed-opal.h      |   3 +
- include/uapi/linux/sed-opal.h |   8 +-
- 4 files changed, 183 insertions(+), 3 deletions(-)
+Error/Warning: (recently discovered and may have been fixed)
 
-diff --git a/block/Kconfig b/block/Kconfig
-index 444c5ab3b67e..b46f93ac8405 100644
---- a/block/Kconfig
-+++ b/block/Kconfig
-@@ -181,6 +181,7 @@ config BLK_DEBUG_FS_ZONED
- 
- config BLK_SED_OPAL
- 	bool "Logic for interfacing with Opal enabled SEDs"
-+	depends on KEYS
- 	help
- 	Builds Logic for interfacing with Opal enabled controllers.
- 	Enabling this option enables users to setup/unlock/lock
-diff --git a/block/sed-opal.c b/block/sed-opal.c
-index 993b2b7cc4c2..a8729892178b 100644
---- a/block/sed-opal.c
-+++ b/block/sed-opal.c
-@@ -20,6 +20,9 @@
- #include <linux/sed-opal.h>
- #include <linux/string.h>
- #include <linux/kdev_t.h>
-+#include <linux/key.h>
-+#include <linux/key-type.h>
-+#include <keys/user-type.h>
- 
- #include "opal_proto.h"
- 
-@@ -29,6 +32,8 @@
- /* Number of bytes needed by cmd_finalize. */
- #define CMD_FINALIZE_BYTES_NEEDED 7
- 
-+static struct key *sed_opal_keyring;
-+
- struct opal_step {
- 	int (*fn)(struct opal_dev *dev, void *data);
- 	void *data;
-@@ -265,6 +270,101 @@ static void print_buffer(const u8 *ptr, u32 length)
- #endif
- }
- 
-+/*
-+ * Allocate/update a SED Opal key and add it to the SED Opal keyring.
-+ */
-+static int update_sed_opal_key(const char *desc, u_char *key_data, int keylen)
-+{
-+	key_ref_t kr;
-+
-+	if (!sed_opal_keyring)
-+		return -ENOKEY;
-+
-+	kr = key_create_or_update(make_key_ref(sed_opal_keyring, true), "user",
-+				  desc, (const void *)key_data, keylen,
-+				  KEY_USR_VIEW | KEY_USR_SEARCH | KEY_USR_WRITE,
-+				  KEY_ALLOC_NOT_IN_QUOTA | KEY_ALLOC_BUILT_IN |
-+					KEY_ALLOC_BYPASS_RESTRICTION);
-+	if (IS_ERR(kr)) {
-+		pr_err("Error adding SED key (%ld)\n", PTR_ERR(kr));
-+		return PTR_ERR(kr);
-+	}
-+
-+	return 0;
-+}
-+
-+/*
-+ * Read a SED Opal key from the SED Opal keyring.
-+ */
-+static int read_sed_opal_key(const char *key_name, u_char *buffer, int buflen)
-+{
-+	int ret;
-+	key_ref_t kref;
-+	struct key *key;
-+
-+	if (!sed_opal_keyring)
-+		return -ENOKEY;
-+
-+	kref = keyring_search(make_key_ref(sed_opal_keyring, true),
-+			      &key_type_user, key_name, true);
-+
-+	if (IS_ERR(kref))
-+		ret = PTR_ERR(kref);
-+
-+	key = key_ref_to_ptr(kref);
-+	down_read(&key->sem);
-+	ret = key_validate(key);
-+	if (ret == 0) {
-+		if (buflen > key->datalen)
-+			buflen = key->datalen;
-+
-+		ret = key->type->read(key, (char *)buffer, buflen);
-+	}
-+	up_read(&key->sem);
-+
-+	key_ref_put(kref);
-+
-+	return ret;
-+}
-+
-+static int opal_get_key(struct opal_dev *dev, struct opal_key *key)
-+{
-+	int ret = 0;
-+
-+	switch (key->key_type) {
-+	case OPAL_INCLUDED:
-+		/* the key is ready to use */
-+		break;
-+	case OPAL_KEYRING:
-+		/* the key is in the keyring */
-+		ret = read_sed_opal_key(OPAL_AUTH_KEY, key->key, OPAL_KEY_MAX);
-+		if (ret > 0) {
-+			if (ret > 255) {
-+				ret = -ENOSPC;
-+				goto error;
-+			}
-+			key->key_len = ret;
-+			key->key_type = OPAL_INCLUDED;
-+		}
-+		break;
-+	default:
-+		ret = -EINVAL;
-+		break;
-+	}
-+	if (ret < 0)
-+		goto error;
-+
-+	/* must have a PEK by now or it's an error */
-+	if (key->key_type != OPAL_INCLUDED || key->key_len == 0) {
-+		ret = -EINVAL;
-+		goto error;
-+	}
-+	return 0;
-+error:
-+	pr_debug("Error getting password: %d\n", ret);
-+	return ret;
-+}
-+
- static bool check_tper(const void *data)
- {
- 	const struct d0_tper_features *tper = data;
-@@ -2269,6 +2369,9 @@ static int opal_secure_erase_locking_range(struct opal_dev *dev,
- 	};
- 	int ret;
- 
-+	ret = opal_get_key(dev, &opal_session->opal_key);
-+	if (ret)
-+		return ret;
- 	mutex_lock(&dev->dev_lock);
- 	setup_opal_dev(dev);
- 	ret = execute_steps(dev, erase_steps, ARRAY_SIZE(erase_steps));
-@@ -2302,6 +2405,9 @@ static int opal_revertlsp(struct opal_dev *dev, struct opal_revert_lsp *rev)
- 	};
- 	int ret;
- 
-+	ret = opal_get_key(dev, &rev->key);
-+	if (ret)
-+		return ret;
- 	mutex_lock(&dev->dev_lock);
- 	setup_opal_dev(dev);
- 	ret = execute_steps(dev, steps, ARRAY_SIZE(steps));
-@@ -2320,6 +2426,9 @@ static int opal_erase_locking_range(struct opal_dev *dev,
- 	};
- 	int ret;
- 
-+	ret = opal_get_key(dev, &opal_session->opal_key);
-+	if (ret)
-+		return ret;
- 	mutex_lock(&dev->dev_lock);
- 	setup_opal_dev(dev);
- 	ret = execute_steps(dev, erase_steps, ARRAY_SIZE(erase_steps));
-@@ -2348,6 +2457,9 @@ static int opal_enable_disable_shadow_mbr(struct opal_dev *dev,
- 	    opal_mbr->enable_disable != OPAL_MBR_DISABLE)
- 		return -EINVAL;
- 
-+	ret = opal_get_key(dev, &opal_mbr->key);
-+	if (ret)
-+		return ret;
- 	mutex_lock(&dev->dev_lock);
- 	setup_opal_dev(dev);
- 	ret = execute_steps(dev, mbr_steps, ARRAY_SIZE(mbr_steps));
-@@ -2373,6 +2485,9 @@ static int opal_set_mbr_done(struct opal_dev *dev,
- 	    mbr_done->done_flag != OPAL_MBR_NOT_DONE)
- 		return -EINVAL;
- 
-+	ret = opal_get_key(dev, &mbr_done->key);
-+	if (ret)
-+		return ret;
- 	mutex_lock(&dev->dev_lock);
- 	setup_opal_dev(dev);
- 	ret = execute_steps(dev, mbr_steps, ARRAY_SIZE(mbr_steps));
-@@ -2394,6 +2509,9 @@ static int opal_write_shadow_mbr(struct opal_dev *dev,
- 	if (info->size == 0)
- 		return 0;
- 
-+	ret = opal_get_key(dev, &info->key);
-+	if (ret)
-+		return ret;
- 	mutex_lock(&dev->dev_lock);
- 	setup_opal_dev(dev);
- 	ret = execute_steps(dev, mbr_steps, ARRAY_SIZE(mbr_steps));
-@@ -2450,6 +2568,9 @@ static int opal_add_user_to_lr(struct opal_dev *dev,
- 		return -EINVAL;
- 	}
- 
-+	ret = opal_get_key(dev, &lk_unlk->session.opal_key);
-+	if (ret)
-+		return ret;
- 	mutex_lock(&dev->dev_lock);
- 	setup_opal_dev(dev);
- 	ret = execute_steps(dev, steps, ARRAY_SIZE(steps));
-@@ -2472,6 +2593,10 @@ static int opal_reverttper(struct opal_dev *dev, struct opal_key *opal, bool psi
- 
- 	int ret;
- 
-+	ret = opal_get_key(dev, opal);
-+
-+	if (ret)
-+		return ret;
- 	mutex_lock(&dev->dev_lock);
- 	setup_opal_dev(dev);
- 	if (psid)
-@@ -2534,6 +2659,9 @@ static int opal_lock_unlock(struct opal_dev *dev,
- 	if (lk_unlk->session.who > OPAL_USER9)
- 		return -EINVAL;
- 
-+	ret = opal_get_key(dev, &lk_unlk->session.opal_key);
-+	if (ret)
-+		return ret;
- 	mutex_lock(&dev->dev_lock);
- 	ret = __opal_lock_unlock(dev, lk_unlk);
- 	mutex_unlock(&dev->dev_lock);
-@@ -2556,6 +2684,9 @@ static int opal_take_ownership(struct opal_dev *dev, struct opal_key *opal)
- 	if (!dev)
- 		return -ENODEV;
- 
-+	ret = opal_get_key(dev, opal);
-+	if (ret)
-+		return ret;
- 	mutex_lock(&dev->dev_lock);
- 	setup_opal_dev(dev);
- 	ret = execute_steps(dev, owner_steps, ARRAY_SIZE(owner_steps));
-@@ -2578,6 +2709,9 @@ static int opal_activate_lsp(struct opal_dev *dev,
- 	if (!opal_lr_act->num_lrs || opal_lr_act->num_lrs > OPAL_MAX_LRS)
- 		return -EINVAL;
- 
-+	ret = opal_get_key(dev, &opal_lr_act->key);
-+	if (ret)
-+		return ret;
- 	mutex_lock(&dev->dev_lock);
- 	setup_opal_dev(dev);
- 	ret = execute_steps(dev, active_steps, ARRAY_SIZE(active_steps));
-@@ -2596,6 +2730,9 @@ static int opal_setup_locking_range(struct opal_dev *dev,
- 	};
- 	int ret;
- 
-+	ret = opal_get_key(dev, &opal_lrs->session.opal_key);
-+	if (ret)
-+		return ret;
- 	mutex_lock(&dev->dev_lock);
- 	setup_opal_dev(dev);
- 	ret = execute_steps(dev, lr_steps, ARRAY_SIZE(lr_steps));
-@@ -2622,6 +2759,14 @@ static int opal_set_new_pw(struct opal_dev *dev, struct opal_new_pw *opal_pw)
- 	ret = execute_steps(dev, pw_steps, ARRAY_SIZE(pw_steps));
- 	mutex_unlock(&dev->dev_lock);
- 
-+	if (ret)
-+		return ret;
-+
-+	/* update keyring with new password */
-+	ret = update_sed_opal_key(OPAL_AUTH_KEY,
-+				  opal_pw->new_user_pw.opal_key.key,
-+				  opal_pw->new_user_pw.opal_key.key_len);
-+
- 	return ret;
- }
- 
-@@ -2642,6 +2787,9 @@ static int opal_activate_user(struct opal_dev *dev,
- 		return -EINVAL;
- 	}
- 
-+	ret = opal_get_key(dev, &opal_session->opal_key);
-+	if (ret)
-+		return ret;
- 	mutex_lock(&dev->dev_lock);
- 	setup_opal_dev(dev);
- 	ret = execute_steps(dev, act_steps, ARRAY_SIZE(act_steps));
-@@ -2728,6 +2876,9 @@ static int opal_generic_read_write_table(struct opal_dev *dev,
- {
- 	int ret, bit_set;
- 
-+	ret = opal_get_key(dev, &rw_tbl->key);
-+	if (ret)
-+		return ret;
- 	mutex_lock(&dev->dev_lock);
- 	setup_opal_dev(dev);
- 
-@@ -2776,9 +2927,9 @@ int sed_ioctl(struct opal_dev *dev, unsigned int cmd, void __user *arg)
- 	if (!capable(CAP_SYS_ADMIN))
- 		return -EACCES;
- 	if (!dev)
--		return -ENOTSUPP;
-+		return -EOPNOTSUPP;
- 	if (!(dev->flags & OPAL_FL_SUPPORTED))
--		return -ENOTSUPP;
-+		return -EOPNOTSUPP;
- 
- 	if (cmd & IOC_IN) {
- 		p = memdup_user(arg, _IOC_SIZE(cmd));
-@@ -2854,3 +3005,22 @@ int sed_ioctl(struct opal_dev *dev, unsigned int cmd, void __user *arg)
- 	return ret;
- }
- EXPORT_SYMBOL_GPL(sed_ioctl);
-+
-+static int __init sed_opal_init(void)
-+{
-+	struct key *kr;
-+
-+	kr = keyring_alloc(".sed_opal",
-+			   GLOBAL_ROOT_UID, GLOBAL_ROOT_GID, current_cred(),
-+			   (KEY_POS_ALL & ~KEY_POS_SETATTR) | KEY_USR_VIEW |
-+			   KEY_USR_READ | KEY_USR_SEARCH | KEY_USR_WRITE,
-+			   KEY_ALLOC_NOT_IN_QUOTA,
-+			   NULL, NULL);
-+	if (IS_ERR(kr))
-+		return PTR_ERR(kr);
-+
-+	sed_opal_keyring = kr;
-+
-+	return 0;
-+}
-+late_initcall(sed_opal_init);
-diff --git a/include/linux/sed-opal.h b/include/linux/sed-opal.h
-index 7131d7f0eec2..57d483506b4a 100644
---- a/include/linux/sed-opal.h
-+++ b/include/linux/sed-opal.h
-@@ -24,6 +24,9 @@ bool opal_unlock_from_suspend(struct opal_dev *dev);
- struct opal_dev *init_opal_dev(void *data, sec_send_recv *send_recv);
- int sed_ioctl(struct opal_dev *dev, unsigned int cmd, void __user *ioctl_ptr);
- 
-+#define	OPAL_AUTH_KEY           "opal-boot-pin"
-+#define	OPAL_AUTH_KEY_PREV      "opal-boot-pin-prev"
-+
- static inline bool is_sed_ioctl(unsigned int cmd)
- {
- 	switch (cmd) {
-diff --git a/include/uapi/linux/sed-opal.h b/include/uapi/linux/sed-opal.h
-index fccde168e90c..6b79cdcf9518 100644
---- a/include/uapi/linux/sed-opal.h
-+++ b/include/uapi/linux/sed-opal.h
-@@ -44,10 +44,16 @@ enum opal_lock_state {
- 	OPAL_LK = 0x04, /* 0100 */
- };
- 
-+enum opal_key_type {
-+	OPAL_INCLUDED = 0,	/* key[] is the key */
-+	OPAL_KEYRING,		/* key is in keyring */
-+};
-+
- struct opal_key {
- 	__u8 lr;
- 	__u8 key_len;
--	__u8 __align[6];
-+	__u8 key_type;
-+	__u8 __align[5];
- 	__u8 key[OPAL_KEY_MAX];
- };
- 
+./include/media/dvbdev.h:207: warning: expecting prototype for dvb_device_get(). Prototype was for dvb_device_put() instead
+arch/arm/mach-s3c/devs.c:32:10: fatal error: 'linux/platform_data/dma-s3c24xx.h' file not found
+arch/arm/mach-s3c/devs.c:32:10: fatal error: linux/platform_data/dma-s3c24xx.h: No such file or directory
+arch/powerpc/kernel/kvm_emul.o: warning: objtool: kvm_template_end(): can't find starting instruction
+arch/powerpc/kernel/optprobes_head.o: warning: objtool: optprobe_template_end(): can't find starting instruction
+drivers/gpu/drm/amd/amdgpu/../display/dc/irq/dcn201/irq_service_dcn201.c:40:20: warning: no previous prototype for 'to_dal_irq_source_dcn201' [-Wmissing-prototypes]
+drivers/gpu/drm/nouveau/nvkm/engine/fifo/gf100.c:451:1: warning: no previous prototype for 'gf100_fifo_nonstall_block' [-Wmissing-prototypes]
+drivers/gpu/drm/nouveau/nvkm/engine/fifo/gf100.c:451:1: warning: no previous prototype for function 'gf100_fifo_nonstall_block' [-Wmissing-prototypes]
+drivers/gpu/drm/nouveau/nvkm/engine/fifo/runl.c:34:1: warning: no previous prototype for 'nvkm_engn_cgrp_get' [-Wmissing-prototypes]
+drivers/gpu/drm/nouveau/nvkm/engine/fifo/runl.c:34:1: warning: no previous prototype for function 'nvkm_engn_cgrp_get' [-Wmissing-prototypes]
+drivers/gpu/drm/nouveau/nvkm/engine/gr/tu102.c:210:1: warning: no previous prototype for 'tu102_gr_load' [-Wmissing-prototypes]
+drivers/gpu/drm/nouveau/nvkm/engine/gr/tu102.c:210:1: warning: no previous prototype for function 'tu102_gr_load' [-Wmissing-prototypes]
+drivers/gpu/drm/nouveau/nvkm/nvfw/acr.c:49:1: warning: no previous prototype for 'wpr_generic_header_dump' [-Wmissing-prototypes]
+drivers/gpu/drm/nouveau/nvkm/nvfw/acr.c:49:1: warning: no previous prototype for function 'wpr_generic_header_dump' [-Wmissing-prototypes]
+drivers/gpu/drm/nouveau/nvkm/subdev/acr/lsfw.c:221:21: warning: variable 'loc' set but not used [-Wunused-but-set-variable]
+drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c:1849:38: warning: unused variable 'mt8173_jpeg_drvdata' [-Wunused-const-variable]
+drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c:1864:38: warning: unused variable 'mtk_jpeg_drvdata' [-Wunused-const-variable]
+drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c:1890:38: warning: unused variable 'mtk8195_jpegdec_drvdata' [-Wunused-const-variable]
+net/netfilter/nf_conntrack_netlink.c:2674:6: warning: unused variable 'mark' [-Wunused-variable]
+vmlinux.o: warning: objtool: __btrfs_map_block+0x21ad: unreachable instruction
+
+Error/Warning ids grouped by kconfigs:
+
+gcc_recent_errors
+|-- alpha-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-gf100_fifo_nonstall_block
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-nvkm_engn_cgrp_get
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-tu102_gr_load
+|   |-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-wpr_generic_header_dump
+|   `-- drivers-gpu-drm-nouveau-nvkm-subdev-acr-lsfw.c:warning:variable-loc-set-but-not-used
+|-- arc-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-gf100_fifo_nonstall_block
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-nvkm_engn_cgrp_get
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-tu102_gr_load
+|   |-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-wpr_generic_header_dump
+|   `-- drivers-gpu-drm-nouveau-nvkm-subdev-acr-lsfw.c:warning:variable-loc-set-but-not-used
+|-- arm-allyesconfig
+|   |-- arch-arm-mach-s3c-devs.c:fatal-error:linux-platform_data-dma-s3c24xx.h:No-such-file-or-directory
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-gf100_fifo_nonstall_block
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-nvkm_engn_cgrp_get
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-tu102_gr_load
+|   |-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-wpr_generic_header_dump
+|   `-- drivers-gpu-drm-nouveau-nvkm-subdev-acr-lsfw.c:warning:variable-loc-set-but-not-used
+|-- arm-defconfig
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-gf100_fifo_nonstall_block
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-nvkm_engn_cgrp_get
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-tu102_gr_load
+|   |-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-wpr_generic_header_dump
+|   `-- drivers-gpu-drm-nouveau-nvkm-subdev-acr-lsfw.c:warning:variable-loc-set-but-not-used
+|-- arm64-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-gf100_fifo_nonstall_block
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-nvkm_engn_cgrp_get
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-tu102_gr_load
+|   |-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-wpr_generic_header_dump
+|   `-- drivers-gpu-drm-nouveau-nvkm-subdev-acr-lsfw.c:warning:variable-loc-set-but-not-used
+|-- csky-randconfig-r014-20221128
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
+|-- csky-randconfig-r034-20221128
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-gf100_fifo_nonstall_block
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-nvkm_engn_cgrp_get
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-tu102_gr_load
+|   |-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-wpr_generic_header_dump
+|   `-- drivers-gpu-drm-nouveau-nvkm-subdev-acr-lsfw.c:warning:variable-loc-set-but-not-used
+|-- i386-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-gf100_fifo_nonstall_block
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-nvkm_engn_cgrp_get
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-tu102_gr_load
+|   |-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-wpr_generic_header_dump
+|   `-- drivers-gpu-drm-nouveau-nvkm-subdev-acr-lsfw.c:warning:variable-loc-set-but-not-used
+clang_recent_errors
+|-- arm-randconfig-r036-20221128
+|   |-- arch-arm-mach-s3c-devs.c:fatal-error:linux-platform_data-dma-s3c24xx.h-file-not-found
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-function-gf100_fifo_nonstall_block
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-function-nvkm_engn_cgrp_get
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-function-tu102_gr_load
+|   `-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-function-wpr_generic_header_dump
+|-- hexagon-randconfig-r041-20221128
+|   |-- drivers-media-platform-mediatek-jpeg-mtk_jpeg_core.c:warning:unused-variable-mt8173_jpeg_drvdata
+|   |-- drivers-media-platform-mediatek-jpeg-mtk_jpeg_core.c:warning:unused-variable-mtk8195_jpegdec_drvdata
+|   `-- drivers-media-platform-mediatek-jpeg-mtk_jpeg_core.c:warning:unused-variable-mtk_jpeg_drvdata
+|-- i386-randconfig-a014-20221128
+|   `-- net-netfilter-nf_conntrack_netlink.c:warning:unused-variable-mark
+|-- powerpc-buildonly-randconfig-r003-20221128
+|   `-- arch-powerpc-kernel-kvm_emul.o:warning:objtool:kvm_template_end():can-t-find-starting-instruction
+|-- riscv-randconfig-r021-20221128
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-function-gf100_fifo_nonstall_block
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-function-nvkm_engn_cgrp_get
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-function-tu102_gr_load
+|   `-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-function-wpr_generic_header_dump
+|-- s390-randconfig-r022-20221128
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-function-gf100_fifo_nonstall_block
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-function-nvkm_engn_cgrp_get
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-function-tu102_gr_load
+|   `-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-function-wpr_generic_header_dump
+|-- s390-randconfig-r044-20221128
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-function-gf100_fifo_nonstall_block
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-function-nvkm_engn_cgrp_get
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-function-tu102_gr_load
+|   `-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-function-wpr_generic_header_dump
+|-- x86_64-randconfig-a013-20221128
+|   `-- vmlinux.o:warning:objtool:handle_bug:call-to-kmsan_unpoison_entry_regs()-leaves-.noinstr.text-section
+`-- x86_64-randconfig-a015-20221128
+    `-- vmlinux.o:warning:objtool:handle_bug:call-to-kmsan_unpoison_entry_regs()-leaves-.noinstr.text-section
+
+elapsed time: 1342m
+
+configs tested: 58
+configs skipped: 2
+
+gcc tested configs:
+um                             i386_defconfig
+um                           x86_64_defconfig
+arm                                 defconfig
+x86_64               randconfig-a001-20221128
+x86_64               randconfig-a003-20221128
+x86_64               randconfig-a004-20221128
+x86_64               randconfig-a002-20221128
+x86_64               randconfig-a005-20221128
+ia64                             allmodconfig
+x86_64               randconfig-a006-20221128
+i386                                defconfig
+arc                                 defconfig
+arm                              allyesconfig
+alpha                               defconfig
+arm64                            allyesconfig
+i386                 randconfig-a002-20221128
+i386                 randconfig-a003-20221128
+i386                 randconfig-a001-20221128
+i386                 randconfig-a004-20221128
+x86_64                              defconfig
+x86_64                          rhel-8.3-func
+s390                             allmodconfig
+powerpc                           allnoconfig
+arc                  randconfig-r043-20221128
+s390                             allyesconfig
+x86_64                    rhel-8.3-kselftests
+i386                 randconfig-a005-20221128
+s390                                defconfig
+mips                             allyesconfig
+i386                 randconfig-a006-20221128
+x86_64                               rhel-8.3
+powerpc                          allmodconfig
+x86_64                           rhel-8.3-syz
+m68k                             allyesconfig
+x86_64                         rhel-8.3-kunit
+alpha                            allyesconfig
+x86_64                           rhel-8.3-kvm
+i386                             allyesconfig
+sh                               allmodconfig
+x86_64                           allyesconfig
+arc                              allyesconfig
+m68k                             allmodconfig
+
+clang tested configs:
+i386                 randconfig-a012-20221128
+s390                 randconfig-r044-20221128
+i386                 randconfig-a014-20221128
+i386                 randconfig-a015-20221128
+i386                 randconfig-a016-20221128
+i386                 randconfig-a011-20221128
+i386                 randconfig-a013-20221128
+hexagon              randconfig-r045-20221128
+hexagon              randconfig-r041-20221128
+riscv                randconfig-r042-20221128
+x86_64               randconfig-a011-20221128
+x86_64               randconfig-a016-20221128
+x86_64               randconfig-a015-20221128
+x86_64               randconfig-a013-20221128
+x86_64               randconfig-a012-20221128
+x86_64               randconfig-a014-20221128
+
 -- 
-gjoyce@linux.vnet.ibm.com
-
+0-DAY CI Kernel Test Service
+https://01.org/lkp
