@@ -1,33 +1,33 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33A1763D24C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 10:44:51 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2366F63D280
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 10:53:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NMZ750y0Vz3fqq
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 20:44:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NMZJV6zSBz3hWq
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 20:52:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMYtb1mxdz3fPB
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Nov 2022 20:33:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMYtr5FKbz3fRZ
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Nov 2022 20:34:12 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NMYtZ6Cjbz4xZp;
-	Wed, 30 Nov 2022 20:33:58 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NMYtr3fSDz4y3T;
+	Wed, 30 Nov 2022 20:34:12 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Nayna Jain <nayna@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-In-Reply-To: <20221106205839.600442-1-nayna@linux.ibm.com>
-References: <20221106205839.600442-1-nayna@linux.ibm.com>
-Subject: Re: [PATCH 0/6] powerpc/pseries - bugfixes/cleanups for PLPKS driver
-Message-Id: <166980025961.3017288.7063318917911926713.b4-ty@ellerman.id.au>
-Date: Wed, 30 Nov 2022 20:24:19 +1100
+To: Yang Yingliang <yangyingliang@huawei.com>, linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20221111145929.2429271-1-yangyingliang@huawei.com>
+References: <20221111145929.2429271-1-yangyingliang@huawei.com>
+Subject: Re: [PATCH] misc: ocxl: fix possible name leak in ocxl_file_register_afu()
+Message-Id: <166980026184.3017288.6312216104301377979.b4-ty@ellerman.id.au>
+Date: Wed, 30 Nov 2022 20:24:21 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -42,36 +42,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: gjoyce@linux.vnet.ibm.com, George Wilson <gcwilson@linux.ibm.com>, bjking1@us.ibm.com, npiggin@gmail.com, Andrew Donnellan <ajd@linux.ibm.com>
+Cc: fbarrat@linux.ibm.com, gregkh@linuxfoundation.org, ajd@linux.ibm.com, arnd@arndb.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, 6 Nov 2022 15:58:33 -0500, Nayna Jain wrote:
-> This patchset fixes some bugs and does some cleanups.
-> 
-> Nayna Jain (6):
->   powerpc/pseries: fix the object owners enum value in plpks driver
->   powerpc/pseries: Fix the H_CALL error code in PLPKS driver
->   powerpc/pseries: Return -EIO instead of -EINTR for H_ABORTED error
->   powerpc/pseries: cleanup error logs in plpks driver
->   powerpc/pseries: replace kmalloc with kzalloc in PLPKS driver
->   powerpc/pseries: fix plpks_read_var() code for different consumers
+On Fri, 11 Nov 2022 22:59:29 +0800, Yang Yingliang wrote:
+> If device_register() returns error in ocxl_file_register_afu(),
+> the name allocated by dev_set_name() need be freed. As comment
+> of device_register() says, it should use put_device() to give
+> up the reference in the error path. So fix this by calling
+> put_device(), then the name can be freed in kobject_cleanup(),
+> and info is freed in info_release().
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/6] powerpc/pseries: fix the object owners enum value in plpks driver
-      https://git.kernel.org/powerpc/c/2330757e0be0acad88852e211dcd6106390a729b
-[2/6] powerpc/pseries: Fix the H_CALL error code in PLPKS driver
-      https://git.kernel.org/powerpc/c/af223e1728c448073d1e12fe464bf344310edeba
-[3/6] powerpc/pseries: Return -EIO instead of -EINTR for H_ABORTED error
-      https://git.kernel.org/powerpc/c/bb8e4c7cb759b90a04f2e94056b50288ff46a0ed
-[4/6] powerpc/pseries: cleanup error logs in plpks driver
-      https://git.kernel.org/powerpc/c/8888ea772972323362660e9a1339175294664a6c
-[5/6] powerpc/pseries: replace kmalloc with kzalloc in PLPKS driver
-      https://git.kernel.org/powerpc/c/212dd5cfbee7815f3c665a51c501701edb881599
-[6/6] powerpc/pseries: fix plpks_read_var() code for different consumers
-      https://git.kernel.org/powerpc/c/1f622f3f80cbf8999ff5955a2fcfbd801a1f32e0
+[1/1] misc: ocxl: fix possible name leak in ocxl_file_register_afu()
+      https://git.kernel.org/powerpc/c/295faa17722a11cac8dbf51e4c9f9405a5e07ef1
 
 cheers
