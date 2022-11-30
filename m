@@ -1,197 +1,86 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69E3763D8F4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 16:11:59 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FB3A63D926
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 16:20:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NMjNY28wwz3bgj
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 02:11:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NMjZT389Mz3bf3
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 02:20:33 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=citrix.com header.i=@citrix.com header.a=rsa-sha256 header.s=securemail header.b=QBd8mVMn;
-	dkim=pass (1024-bit key; unprotected) header.d=citrix.onmicrosoft.com header.i=@citrix.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-citrix-onmicrosoft-com header.b=ugTRHSsa;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SOhHyLS6;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=citrix.com (client-ip=216.71.145.155; helo=esa3.hc3370-68.iphmx.com; envelope-from=prvs=3264ca9f5=roger.pau@citrix.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=gjoyce@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=citrix.com header.i=@citrix.com header.a=rsa-sha256 header.s=securemail header.b=QBd8mVMn;
-	dkim=pass (1024-bit key; unprotected) header.d=citrix.onmicrosoft.com header.i=@citrix.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-citrix-onmicrosoft-com header.b=ugTRHSsa;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SOhHyLS6;
 	dkim-atps=neutral
-Received: from esa3.hc3370-68.iphmx.com (esa3.hc3370-68.iphmx.com [216.71.145.155])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMjMW5yBJz2xJ6
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Dec 2022 02:11:02 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=citrix.com; s=securemail; t=1669821063;
-  h=from:to:cc:subject:date:message-id:
-   content-transfer-encoding:mime-version;
-  bh=yRZuZYESRTpPHJ5S0tLdmAUG8W1yOwAN/mIDBKSAHgo=;
-  b=QBd8mVMnVttYLKPQgDeQQ8DVGdWF3aImkBMMjZEQ+3WnwVOoEuJ2+9WL
-   W5CHwfIoYjotAFkhJOn5Z4J8nN0TuNr5a/EVe1ckQmI+Cuc12ByhhVk9D
-   w7G/0VkdAKSaheazR+KHdo3G6STlj8aw1cs3gzfWC6MGj0cuy9uQsSgxe
-   E=;
-X-IronPort-RemoteIP: 104.47.56.174
-X-IronPort-MID: 85866557
-X-IronPort-Reputation: None
-X-IronPort-Listener: OutboundMail
-X-IronPort-SenderGroup: RELAY_O365
-X-IronPort-MailFlowPolicy: $RELAYED
-IronPort-Data: A9a23:8F70CaryVtnMDWlj9TV6lxdbeydeBmJjZRIvgKrLsJaIsI4StFCzt
- garIBnUPv/eMDbzKYp3b9+1pkoF7cXRmN9qGQpvpXo3FngUpZuZCYyVIHmrMnLJJKUvbq7FA
- +Y2MYCccZ9uHhcwgj/3b9ANeFEljfngqoLUUbKCYWYpAFc+E0/NsDo788YhmIlknNOlNA2Ev
- NL2sqX3NUSsnjV5KQr40YrawP9UlKm06W1wUmAWP6gR5gaHzCFNVvrzGInqR5fGatgMdgKFb
- 76rIIGRpgvx4xorA9W5pbf3GmVirmn6ZFXmZtJ+AsBOszAazsAA+v9T2Mk0MC+7vw6hjdFpo
- OihgLTrIesf0g8gr8xGO/VQO3kW0aSrY9YrK1Dn2SCY5xWun3cBX5yCpaz5VGEV0r8fPI1Ay
- RAXACkNSQm8uaXs+ZiYGutrhON9C/Tue4xK7xmMzRmBZRonabbqZvyToPR/hXI3jM0IGuvCb
- c0EbzYpdA7HfxBEJlYQDtQ5gfusgX78NTZfrTp5p4JuuzSVkFM3jearaYWJEjCJbZw9ckKwv
- GXJ8n6/GhgHHNee1SCE4jSngeqncSbTCN9CSuPlq6ECbFu74StLLSwwFniCiPiohnXuZe9wM
- WEI5X97xUQ13AnxJjXnZDW8oXiZrlsfVsBWHukS9g6A0OzX7hyfC2xCSSROAPQ2uclzSTE02
- 1uhm9LyGScpoLCTUWia9LqfsXW1Iyd9BWAYaCAHTSMB4t/+sI80kxTDR8piF6jzicf6cRnyw
- iqLtyw3jaQ7jsMR0ai/u1fdjFqEpJfTSRUuzh7KRW/j5QR8DKanbYG17VnQ7d5bMZ2UCFKGu
- RAskc+E7ftICoqRjiuTW+YcNLaz7v2BPXvXhlsHN4I66z2n9nqnfIZRyDJzPkFkNoADYzCBS
- ETTowJK+7dIO2axKLRwZ8S2EctC5a3hE9vifv3QctcIYoUZXAiD+y9GYU+A2GWrlkUw+Yk7O
- JGGYd60BjMWBLpPyDutW/xb1q0vzyolg2TJSvjGIw+P1LOfYDueTu4DOV7XN+Qhtvrb/EPS7
- spVMNaMx1NHSuribyLL8IkVa1cXMXw8ApOwoMtSHgKeHjdb9KgaI6e56dscl0ZNxsy5Ss+gE
- qmBZ3Jl
-IronPort-HdrOrdr: A9a23:wN1koKmTrUoItLas/FvBjALTOpbpDfNYiWdD5ihNYBxZY6Wkfp
- +V8cjzhCWftN9OYhodcLC7V5Voj0msl6KdhrNhRYtKPTOWwVdASbsP0WKM+UyFJ8STzI5gPM
- RbAtVD4aPLfD9HZK/BiWHXcurIqOP3ipxA7t2uqkuFIzsaCJ2JuGxCe32m+wBNNX17LKt8MK
- DZyttMpjKmd3hSRsOnBkMdV+yGi8zXmIngaRsmAQdizAWVlzun5JPzDhDdh34lInty6IZn1V
- KAvx3y562lvf3+4hjA11XL55ATtMr9xsBFDMmsjNFQDjn3kA6naKloRrXHljEop+OE7kosjb
- D30l4dFvU2z0mUUnC+oBPr1QWl+DEy60X6wVvdpXf4u8T2SB8zFsIE3OtiA23kwntlmOs5/L
- NA3mqfuZYSJRTcnB7l79yNcx1xjEK7rVcrjOZWpX1CVok1bqNXsOUkjTRoOaZFOBi/xJEsEe
- FoAs2ZzPFKcWmCZ3SchWVryMzEZAVBIj62Bmw5/uCF2Tlfm350i2ECwtYEo3sG/JUhD7FZ+u
- XtKM1T5f1zZ/5TSZg4KPYKQMOxBGCIawnLKniuLVPuE7xCE27RqqTw/K4+6IiRCdE1JaMJ6d
- r8uW5jxC8PkxqEM7zP4HQLyGGGfIyFZ0Wj9ikEjKIJ+YEVR9LQQF2+oR4V4omdSs4kc7Pmss
- aISe5r6sDYXBTT8P5yrmvDsrlpWAsjuZ4uy6MGcmPLhP73AavXkcGeWMrvBdPWYEcZsyXEcz
- A+YAQ=
-X-IronPort-AV: E=Sophos;i="5.96,206,1665460800"; 
-   d="scan'208";a="85866557"
-Received: from mail-co1nam11lp2174.outbound.protection.outlook.com (HELO NAM11-CO1-obe.outbound.protection.outlook.com) ([104.47.56.174])
-  by ob1.hc3370-68.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 30 Nov 2022 10:10:56 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=iH6HN18S03N5HgH1+Xrwa4laecsxw3iaWyUrJ/lvEXPEzmY5Ji75NzxT5/dBswF3I4WEY5oTdeIhF0X0fuMTXOwqK1TbnS6cLYNwTxWf7gyq8Bpubn1FcDnDXAoqm7pml81kXMVghXxEXZXyRO+Qusn+n3iDIeXEbbyHD/kOpvFswRXzx36tlJVlNmJV7xRu5RNt1lXDd0D52ISBYosMPjIkSaVsVmKg3YIgRW4BiOsGvPNB678157Zk5GawF7iY5ezlSAdDDPlmf1zf3lLbdQzuNVztrcSxeO2KuGG0LIqU8sK/1NoQJZornOgHylHxWyg7dWU4BEw6ubmCsC2+Ug==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uZu0f4REIMCta0o/FGi0CGBdzmQ6cRIU6CKr6+ow/1Y=;
- b=EyD6nnK3skT+cN6Q+NToM6zFo3rYbZqFon/sHq80w2R79EhLSdexUNpBdSTgfLYjqy1fZRhwF3yKkJwnAa71nzSg+dOOGVQ3Oe/8Ms+9A13NW1kHBY0M5gv7ZAR6DiuTTQHNm4B/hIHI+ewm1Ni4hby0iUCM+WIZpblMXLpKIEpAxErcWOg5agCinGRwujLs7LqTDFm8jnXL1SfQP7BeqfexuBGNzukmZ42cAJ8TRVsw8bXtKqtBepv6wYiX7qCRz4LT8bIV8EUPHJbu5C5EBC8y1AvOl5JJ4yATsrEvdhIATP7GRowsudqR0wPDS8t4IT8KDLjcg1zrZC0fCHlDpw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=citrix.com; dmarc=pass action=none header.from=citrix.com;
- dkim=pass header.d=citrix.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=citrix.onmicrosoft.com; s=selector2-citrix-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uZu0f4REIMCta0o/FGi0CGBdzmQ6cRIU6CKr6+ow/1Y=;
- b=ugTRHSsa6sG4ugzi1rgO4E425SdSnniU6A/gWXpN9+Xxwnvg8dhibb8yz4+8TxCciXuCWMTc/gXpzSbNgtJyqsP9FtrztIhYX/iQMliHh8syHSpjh7qsOBzEHRJFHw/jAfgtzhQA45tQJUfSQ1sSc6AZnBjcG80f3egciADXf/E=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=citrix.com;
-Received: from SJ0PR03MB6360.namprd03.prod.outlook.com (2603:10b6:a03:395::11)
- by MN2PR03MB5149.namprd03.prod.outlook.com (2603:10b6:208:1a4::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5857.23; Wed, 30 Nov
- 2022 15:10:54 +0000
-Received: from SJ0PR03MB6360.namprd03.prod.outlook.com
- ([fe80::740b:4e0a:7de4:5ab1]) by SJ0PR03MB6360.namprd03.prod.outlook.com
- ([fe80::740b:4e0a:7de4:5ab1%9]) with mapi id 15.20.5857.023; Wed, 30 Nov 2022
- 15:10:54 +0000
-From: Roger Pau Monne <roger.pau@citrix.com>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH v2] hvc/xen: prevent concurrent accesses to the shared ring
-Date: Wed, 30 Nov 2022 16:09:11 +0100
-Message-Id: <20221130150919.13935-1-roger.pau@citrix.com>
-X-Mailer: git-send-email 2.37.3
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: LO2P265CA0165.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:9::33) To SJ0PR03MB6360.namprd03.prod.outlook.com
- (2603:10b6:a03:395::11)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ0PR03MB6360:EE_|MN2PR03MB5149:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5b9baf0c-59ea-4337-3e39-08dad2e51343
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	xo2ptJEmCY92/7dFY1PDP/VqgTLmRrQjLa5z1qS6qluoSkcstOK2PjaoDlXUcOUrnab6qi1GPw4sjgxVCdK5iUjV59IDEnL68v6Kb0LcdKwxsyTj0svMXeAzYdz7p8LwAf0rIFTb14O160KeTBUHHEQYlF/9G0my1Cegc7jIQMPMCaCbcHOpi63ItTqwM2pUwAr2Ni0nq+/1zBMt69pJoWeFR/b3vWr9962uNJbi9xP/JzOmvmmkI/JGC+amM9xF84pFbyeySM1d+yygbU7MWbwabXJNAI4mlS4LJyAVmZSDsmBMu1hqt8EpiR7VDQHxiSynpT21JvDm+T4N4ffHxPtbb9f/BzBNvK33ErEmp/IKRKtzB5m0WlyExjFg3QnhF1JqhD4b3ST1JxKtyrk9a4oaYvcdDrb0L24HFL9YDTSRIsImyJXnP4D+oUrsoUmdoo1dT6OJ1EmJGp9ne28U85ac/3Lp2Vm6OY3L/SUM7p4PpAFEHKw3/9teMKWpciOspqffOAWXxWKa8lBQNVGmWlJjBR8gSyQ8wYWXFbLmm4PSBQb1M1sUp2wV1rbqYliN1eH6E2ArhApjlc6RsCjpCEPJ2pWbnkZgmMjo1GmhP+phYY8YdwN4yhPkeUnLI7avSWF6DmcGLEUbgVqAgbr0HA==
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR03MB6360.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(136003)(376002)(39860400002)(346002)(396003)(366004)(451199015)(36756003)(7416002)(86362001)(6506007)(478600001)(6486002)(186003)(2906002)(316002)(66476007)(41300700001)(66556008)(6666004)(4326008)(66946007)(5660300002)(8676002)(8936002)(54906003)(6916009)(2616005)(38100700002)(26005)(1076003)(83380400001)(6512007)(82960400001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?utf-8?B?VUxlOHp1OUUxdnowS3pqTEhib2RuL1hPaGZCUDlRbGxrV1BzcnZPcXVCSDNM?=
- =?utf-8?B?NmQvTXNmTi9PVUpUZGY2M2FVN3hReTFpYVlSK3V1c3R3cHBJdU80eWlsVUdD?=
- =?utf-8?B?ZWxUNkt6QXdZdFhOa0RtM2NTUW41RkFtRnd5cWQ5bXpEZ2lTWkFiQklsWU8z?=
- =?utf-8?B?VzhyTmRLWksvTk93Z0ZMb0QvZXlJcTdJSjdseGpwSk9kNStPZjU1WGFQWHhq?=
- =?utf-8?B?S05WeDBFOHF5NS94czNoYVZaZHd1NmVtVlAybDQxalc3cXJra1QweWRTd250?=
- =?utf-8?B?T1ZMQ1FmTHNJY1ZIUmNCWWdvdDd0aG1CTm1tcVo3WWcvcWh1am1mMEtnT2Rs?=
- =?utf-8?B?NnNNN2l5Z2lkVFBneXJiME9URHBEUFA2UWlpU3R5U2xZdzNZWTVhbmpTR05a?=
- =?utf-8?B?VmRMRldvWkkyU3lzV2pBZU54UmJ6b21adlA0bzV5dENwTUk2V0pJUVNPMnVj?=
- =?utf-8?B?OFM3TUVlYlRSREdCOHBydDYvdWp2aUpteHA0RE9qM0dlNS9JTWoyMUk0WWpK?=
- =?utf-8?B?SVpSL0F6eHBIcVFkblFEck5Hc21UbG81WE9rS2dSOHR4dk9pbHhqcEh5ZFVF?=
- =?utf-8?B?YVplRE51UDhncEcyK1lPUXFUOFJXYk1qM1d6dWVrK01jZnNFTFhBWEpWTW0z?=
- =?utf-8?B?QnFNOHZ2QUlyQ3Jkdkl1NUtSWGNjQ0N5TlJrbFhTVFJ0UDFZblYyaHJ4RHg4?=
- =?utf-8?B?NTdBeVRSL0RXVlZ2R0tCUHRTeHlZa3BZQkh4TWRpMXNET25LWDlEdi9saEc4?=
- =?utf-8?B?aUdkMW1KMWNvM0NhTkZtd0RiMm5yaUdLb0VQdVpaTUVyTTR2TG1nbC9CdWlq?=
- =?utf-8?B?ZUJyR2pSM2k1Ry9yMWlUcXJVUklXdDVhQ0MrdHV3WFg2ZUd4ankyb1Jkd0ht?=
- =?utf-8?B?Rk03R29yeENFYkJxWTR3OWxaVTdsQXFDZUlXbWFvc28rZUg3ZmsvSjZPUzE5?=
- =?utf-8?B?b052VVFPdmZjbW1RamxkdVpwMTdJN1pQOExxTWd3aExkcytMYlRLTTNxTnpR?=
- =?utf-8?B?eHhucmVkNlJPVlZNWDZhVnJxdUtHMjY4bDZvMEFMQTE1blBLL0tyOFQ2SjQ5?=
- =?utf-8?B?N2loYW1sVzhEU0JKS1NxdldKYU53aWMvR0tQWS94NlNGRUU2VFZKZ0pBOUUw?=
- =?utf-8?B?b0xZb21meVpTMWkyS3JiY1grMDA1UldpZ3piVEVWWVREblFIRVVaUFBPaW43?=
- =?utf-8?B?TzNRaThZRW1Ib3JDcXlKQURQay92czZwVlA2ekQva2V6cjNvQXJkQzVwOGly?=
- =?utf-8?B?V3cwMkRNM0V0UjhGZUFSWnBURUR1dG9BT2kvdzRBYzZZek1zOUdJanNLZm5m?=
- =?utf-8?B?ZCt4WC8zNWtacGl1YWY5YkhqNm9jenBQOXdIdUczanErZDF4eUVZNFVwd0c3?=
- =?utf-8?B?SHBaY1BiU0YvVUltNlQwRCtrQXZCUEFzRDQyVUhmNDZlb2JtakIvRUtIRjNX?=
- =?utf-8?B?Ri82SGFrMUlrSVRSQUczRmlPSVJkOWw5QUtyN28yLzNjZzJHeTRhZnNkM29J?=
- =?utf-8?B?QnIrWEFOWERRS2dYOHdCWXdxUmxEWGNHTURKUE0wM3ZDY3V2dVhpNkdQSk1w?=
- =?utf-8?B?TmNQcnMwOGVoeEZHcmhvWWdyUkVyQy9DaG1udTZjejBFZUdBcWRCM2FQMTli?=
- =?utf-8?B?d3JCTXVuTDljWXZBWUNtZmc1Wld2ZnVoL0VKSml0eUpmdk1jeURRTFBLTkdK?=
- =?utf-8?B?b1FvUHJjZHZUazdXd0I0NVV3MXFzcG95RTBaTDZURmVzVE9xR3gzUnFJNkFs?=
- =?utf-8?B?b1c4RmpQbmJTTTVlaURLYytQYnNBSndyMkJnZW55azV1Mlc1Tk1OT0dJdnIy?=
- =?utf-8?B?eGw1d3g0cWZ6WWRoYlp5dEl5T0daMDZ0NGhqNjBXVE5JMHJUd2UxbXkrcnZi?=
- =?utf-8?B?NnhLTTFneFBNanpybXlHdkNVZ2JOUVhlOS8rd2Y4QkZjanRxb1RPYjZCQTJJ?=
- =?utf-8?B?MmNkaHYySEVtQkVtT0RTVHNjNkNhbGxhUW8vQnFmVHFMai9WTDVBQVVWSkRp?=
- =?utf-8?B?c2RzU2tXMDZVM3E4VnBzdWdPTjFDR0Niay9VaXFIYVZlZzNveEtaUUIvc0NW?=
- =?utf-8?B?dXlJdXNOVlBnME8wNzdXSXFWWXVXN1d5aTllN0xEb29lb3dxVVR4cndhRzNH?=
- =?utf-8?Q?fAWR8cQ9vVuXwqFgGgPiIseIa?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 	=?utf-8?B?VER2Y3F0SkdwMi9LMkxaWTgxVXMzazFoVld1czdjZkZhbmpiQWVtRWZEcVZx?=
- =?utf-8?B?VjJNeXkrVUFpL0h6ZmxhanZDODJ5MmpZVTRkMEhUdzZrNlBhSmg4MnZvZEd5?=
- =?utf-8?B?d1dpU2pDcTZFWThLcWZYSFFKYmVTT0Q0V1hQUVF2YWhybjV1MUU3Q1k1RDgv?=
- =?utf-8?B?cGhpTzFhejhiVkRSaCtUMDNQenpuNXNxNUxVN1VKWGU0dXdHQWROQjVmSWpH?=
- =?utf-8?B?WXh1UEZlRko2eWM0RnlubnZKWFR5aUNHblFHTUFBTnZZeCtKbkEyekNZVGhK?=
- =?utf-8?B?dS8wRFJ0RExvWmtlbVBYeEFGYTRYS2dDdDJwNjVrVkRWOTAwTzQwek1yMVJB?=
- =?utf-8?B?cisyb1RnemZBdkhaZDJmaHlFTGpDTCtXSFpFUUxRWDNnMUlGOWYwMEtxS0VX?=
- =?utf-8?B?aG9FN3Bnb2ZXWVp2amFmaTJjbEgvWkp5czd4MnZkMlBJaDVYeVhYYkpYUmNX?=
- =?utf-8?B?YS9pN3B5aGFNMjJrS1k4ODB4eC9LU2RTb2hjbzNZdm1xUS9LSVZhMVdEaFE3?=
- =?utf-8?B?VFlZNGk1VzQ1akFNakFEVWpDODBDWkdkOGVKcWlpbjNUSzhDYTFaSXlvN04w?=
- =?utf-8?B?K2k5eDFDVjc1ajRlVy9FNmFVTDJtbWhyS25oNHMzZEMvU3ZkSVg5WmNYR1Rt?=
- =?utf-8?B?bEQ1Qzc2cjY5VWY1MHZxd0dkUGQ1UlZ6RUxPT2dzaHV2SVJXdytXRnpXb2Nr?=
- =?utf-8?B?SFNoWFYzN0FKWFRzR2ljNThYU2RJYVl5OEIwbUVGck1XYkg4OE5Rby9VWTdv?=
- =?utf-8?B?N2ZrR3RJSHNFRlRSUkhkbUFuZHNUNnR5SVN2SGxKM1pkZ2lYYWpZRXBIcGNU?=
- =?utf-8?B?cGJtcnRNR1lIT1NxdnhpeHR3eEl5WFlHc00zdXRGY2VyUGlUbE8zZE9TTkJz?=
- =?utf-8?B?NXNpWTMxa08yd3lxYm1oQmZ4YXpvU0I2VHVzNTlVV0lqaEVNSEU4Vjg3dGhP?=
- =?utf-8?B?VjB1MlFzajFSaVorRitwdWVQangzWGpvdUtEZURRaVY1N3pKUGNyZHEvMUJi?=
- =?utf-8?B?a1FNVUc5SlFubTNWc1hPVDZLS2tHdmdoanEyU1ZERk5rYXdMc295b1hKeVhJ?=
- =?utf-8?B?bHVNMS9VMkpQMCtodGJzM090S1pvcCtOREFDclB5emJzNEhIREpod0Mrck1j?=
- =?utf-8?B?c1ZmV1lDRkFNa1FROHc5R3dZcWErYkM2VkRCM0lnc3Zhb2h5em5va2kweS9i?=
- =?utf-8?B?a3pBcU9UMnQxRU1VN2RCdngvcWM4M2pFZVpvZzhTYmZManZLb3pMZUtZN3Fy?=
- =?utf-8?B?YkVPTUlta0ZEMy9vVkJ5SUxpWTJHalZYSEFsSU93Mk9zTy9TeHJhWmZHV0F1?=
- =?utf-8?B?eWJSbzVUV3dOb3pzeUt2cTV2QnExV0FpaTlaMUpUUGJtbTVPY2hiK1lOdmxN?=
- =?utf-8?B?cTVXZVVXTkxvMEVoMzMyR3NFNTgvcXVSODVIUElPcnNQNW5zZjZla21NOUQ1?=
- =?utf-8?B?S0pKblhWUm4vV0xZNWo4eVpSMy9RczZZZk1yNjdNb3NWa3BGd0JGckl1NFVF?=
- =?utf-8?Q?FpEufFxKZvcLWBjWVJ+VhHRBfSi?=
-X-OriginatorOrg: citrix.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5b9baf0c-59ea-4337-3e39-08dad2e51343
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR03MB6360.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Nov 2022 15:10:54.2457
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 335836de-42ef-43a2-b145-348c2ee9ca5b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kiSLTWgBuEIhT9ho2XTv3uD1zByPNmYi7F6/DFCgKhYnHhFRg6Mot9jZzwLlKe7eFRKujLMY5Kou2msvnGpXFQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR03MB5149
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMjYS6TMYz2xZV
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Dec 2022 02:19:40 +1100 (AEDT)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AUEVfmR028040;
+	Wed, 30 Nov 2022 15:19:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : reply-to : to : cc : date : in-reply-to : references : content-type
+ : mime-version : content-transfer-encoding; s=pp1;
+ bh=kWXjYI+BIjW0OtcXq/yLUWoEmn0RVRwj3sdx749ueOk=;
+ b=SOhHyLS6JCm4ZRu3Z5axySDjzonO566do/WojAWav32uablDxZfPshwmx12NaNbMm3R9
+ LiCxqA8hEHDHSpcTbIehBK7uTnLPWm7ljEw/XEmZZd7PipkQQMwIPSi0Znl07KKUObE7
+ edMBs4K8xv54NJQUlyFOE6pvQ9TvlObNO4ypUEf2wkKdD8nJ/NVM5Q05MFMDJ2Hn+3v1
+ c4o9Inyzd4q0C5JsZTZ5Mweogdc0pSH8kiJQXjXPxj8pxxZtsQtxTyIxmlKGzqMCnBbo
+ NJZTXFhj6AHQ18ORFNrRdq3P7+4eZ9QXZ5Z8sDtxWxqc+MCeu3W5YsqQVNF3Moe8dNVz AQ== 
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com [169.55.91.170])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m66yc4shs-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 30 Nov 2022 15:19:29 +0000
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+	by ppma02wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2AUF51w4021684;
+	Wed, 30 Nov 2022 15:19:28 GMT
+Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com [9.57.198.26])
+	by ppma02wdc.us.ibm.com with ESMTP id 3m3aea4pc9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 30 Nov 2022 15:19:28 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com ([9.208.128.117])
+	by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2AUFJR2G22741888
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 30 Nov 2022 15:19:27 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 325AC58043;
+	Wed, 30 Nov 2022 15:19:27 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B4A3958059;
+	Wed, 30 Nov 2022 15:19:25 +0000 (GMT)
+Received: from rhel-laptop.ibm.com (unknown [9.160.99.100])
+	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 30 Nov 2022 15:19:25 +0000 (GMT)
+Message-ID: <2133c00e5e7c53c458dbb709204c955bac8bee88.camel@linux.vnet.ibm.com>
+Subject: Re: [PATCH v3 3/3] block: sed-opal: keyring support for SED keys
+From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
+To: Hannes Reinecke <hare@suse.de>, linux-block@vger.kernel.org
+Date: Wed, 30 Nov 2022 09:19:25 -0600
+In-Reply-To: <c78edd60-b6ae-6ec0-9ce4-73b9a92b9b32@suse.de>
+References: <20221129232506.3735672-1-gjoyce@linux.vnet.ibm.com>
+	 <20221129232506.3735672-4-gjoyce@linux.vnet.ibm.com>
+	 <c78edd60-b6ae-6ec0-9ce4-73b9a92b9b32@suse.de>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 1CISUeUwtIkrWIXeo_KBekEE1JYGNeK9
+X-Proofpoint-ORIG-GUID: 1CISUeUwtIkrWIXeo_KBekEE1JYGNeK9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-11-30_04,2022-11-30_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ bulkscore=0 spamscore=0 impostorscore=0 suspectscore=0 mlxscore=0
+ mlxlogscore=999 adultscore=0 clxscore=1011 phishscore=0 malwarescore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2210170000 definitions=main-2211300105
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -203,141 +92,454 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juergen Gross <jgross@suse.com>, Stefano Stabellini <sstabellini@kernel.org>, Jeremy Fitzhardinge <jeremy@xensource.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linuxppc-dev@lists.ozlabs.org, Chris Wright <chrisw@sous-sol.org>, Jan Beulich <jbeulich@suse.com>, Olof Johansson <olof@lixom.net>, xen-devel@lists.xenproject.org, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Jiri Slaby <jirislaby@kernel.org>, Ingo Molnar <mingo@elte.hu>, Roger Pau Monne <roger.pau@citrix.com>
+Reply-To: gjoyce@linux.vnet.ibm.com
+Cc: axboe@kernel.dk, nayna@linux.ibm.com, keyrings@vger.kernel.org, jonathan.derrick@linux.dev, brking@linux.vnet.ibm.com, akpm@linux-foundation.org, msuchanek@suse.de, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The hvc machinery registers both a console and a tty device based on
-the hv ops provided by the specific implementation.  Those two
-interfaces however have different locks, and there's no single locks
-that's shared between the tty and the console implementations, hence
-the driver needs to protect itself against concurrent accesses.
-Otherwise concurrent calls using the split interfaces are likely to
-corrupt the ring indexes, leaving the console unusable.
+On Wed, 2022-11-30 at 08:00 +0100, Hannes Reinecke wrote:
+> On 11/30/22 00:25, gjoyce@linux.vnet.ibm.com wrote:
+> > From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
+> > 
+> > Extend the SED block driver so it can alternatively
+> > obtain a key from a sed-opal kernel keyring. The SED
+> > ioctls will indicate the source of the key, either
+> > directly in the ioctl data or from the keyring.
+> > 
+> > This allows the use of SED commands in scripts such as
+> > udev scripts so that drives may be automatically unlocked
+> > as they become available.
+> > 
+> > Signed-off-by: Greg Joyce <gjoyce@linux.vnet.ibm.com>
+> > Reviewed-by: Jonathan Derrick <jonathan.derrick@linux.dev>
+> > ---
+> >   block/Kconfig                 |   1 +
+> >   block/sed-opal.c              | 174
+> > +++++++++++++++++++++++++++++++++-
+> >   include/linux/sed-opal.h      |   3 +
+> >   include/uapi/linux/sed-opal.h |   8 +-
+> >   4 files changed, 183 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/block/Kconfig b/block/Kconfig
+> > index 444c5ab3b67e..b46f93ac8405 100644
+> > --- a/block/Kconfig
+> > +++ b/block/Kconfig
+> > @@ -181,6 +181,7 @@ config BLK_DEBUG_FS_ZONED
+> >   
+> >   config BLK_SED_OPAL
+> >   	bool "Logic for interfacing with Opal enabled SEDs"
+> > +	depends on KEYS
+> >   	help
+> >   	Builds Logic for interfacing with Opal enabled controllers.
+> >   	Enabling this option enables users to setup/unlock/lock
+> > diff --git a/block/sed-opal.c b/block/sed-opal.c
+> > index 993b2b7cc4c2..a8729892178b 100644
+> > --- a/block/sed-opal.c
+> > +++ b/block/sed-opal.c
+> > @@ -20,6 +20,9 @@
+> >   #include <linux/sed-opal.h>
+> >   #include <linux/string.h>
+> >   #include <linux/kdev_t.h>
+> > +#include <linux/key.h>
+> > +#include <linux/key-type.h>
+> > +#include <keys/user-type.h>
+> >   
+> >   #include "opal_proto.h"
+> >   
+> > @@ -29,6 +32,8 @@
+> >   /* Number of bytes needed by cmd_finalize. */
+> >   #define CMD_FINALIZE_BYTES_NEEDED 7
+> >   
+> > +static struct key *sed_opal_keyring;
+> > +
+> >   struct opal_step {
+> >   	int (*fn)(struct opal_dev *dev, void *data);
+> >   	void *data;
+> > @@ -265,6 +270,101 @@ static void print_buffer(const u8 *ptr, u32
+> > length)
+> >   #endif
+> >   }
+> >   
+> > +/*
+> > + * Allocate/update a SED Opal key and add it to the SED Opal
+> > keyring.
+> > + */
+> > +static int update_sed_opal_key(const char *desc, u_char *key_data,
+> > int keylen)
+> > +{
+> > +	key_ref_t kr;
+> > +
+> > +	if (!sed_opal_keyring)
+> > +		return -ENOKEY;
+> > +
+> > +	kr = key_create_or_update(make_key_ref(sed_opal_keyring, true),
+> > "user",
+> > +				  desc, (const void *)key_data, keylen,
+> > +				  KEY_USR_VIEW | KEY_USR_SEARCH |
+> > KEY_USR_WRITE,
+> > +				  KEY_ALLOC_NOT_IN_QUOTA |
+> > KEY_ALLOC_BUILT_IN |
+> > +					KEY_ALLOC_BYPASS_RESTRICTION);
+> > +	if (IS_ERR(kr)) {
+> > +		pr_err("Error adding SED key (%ld)\n", PTR_ERR(kr));
+> > +		return PTR_ERR(kr);
+> > +	}
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +/*
+> > + * Read a SED Opal key from the SED Opal keyring.
+> > + */
+> > +static int read_sed_opal_key(const char *key_name, u_char *buffer,
+> > int buflen)
+> > +{
+> > +	int ret;
+> > +	key_ref_t kref;
+> > +	struct key *key;
+> > +
+> > +	if (!sed_opal_keyring)
+> > +		return -ENOKEY;
+> > +
+> > +	kref = keyring_search(make_key_ref(sed_opal_keyring, true),
+> > +			      &key_type_user, key_name, true);
+> > +
+> > +	if (IS_ERR(kref))
+> > +		ret = PTR_ERR(kref);
+> > +
+> > +	key = key_ref_to_ptr(kref);
+> > +	down_read(&key->sem);
+> > +	ret = key_validate(key);
+> > +	if (ret == 0) {
+> > +		if (buflen > key->datalen)
+> > +			buflen = key->datalen;
+> > +
+> > +		ret = key->type->read(key, (char *)buffer, buflen);
+> > +	}
+> > +	up_read(&key->sem);
+> > +
+> > +	key_ref_put(kref);
+> > +
+> > +	return ret;
+> > +}
+> > +
+> > +static int opal_get_key(struct opal_dev *dev, struct opal_key
+> > *key)
+> > +{
+> > +	int ret = 0;
+> > +
+> > +	switch (key->key_type) {
+> > +	case OPAL_INCLUDED:
+> > +		/* the key is ready to use */
+> > +		break;
+> > +	case OPAL_KEYRING:
+> > +		/* the key is in the keyring */
+> > +		ret = read_sed_opal_key(OPAL_AUTH_KEY, key->key,
+> > OPAL_KEY_MAX);
+> > +		if (ret > 0) {
+> > +			if (ret > 255) {
+> 
+> Why is a key longer than 255 an error?
+> If this is a requirement, why not move the check into
+> read_sed_opal_key() such that one only has to check for
+> ret < 0 on errors?
 
-Introduce a lock to xencons_info to serialize accesses to the shared
-ring.  This is only required when using the shared memory console,
-concurrent accesses to the hypercall based console implementation are
-not an issue.
+The check is done here because the SED Opal spec stipulates 255 as the
+maximum key length. The key length (key->key_len) in the existing data
+structures is __u8, so a length greater than 255 can not be conveyed.
+For defensive purposes, I though it best to check here.
 
-Note the conditional logic in domU_read_console() is slightly modified
-so the notify_daemon() call can be done outside of the locked region:
-it's an hypercall and there's no need for it to be done with the lock
-held.
-
-Fixes: b536b4b96230 ('xen: use the hvc console infrastructure for Xen console')
-Signed-off-by: Roger Pau Monné <roger.pau@citrix.com>
----
-Changes since v1:
- - Properly initialize the introduced lock in all paths.
----
- drivers/tty/hvc/hvc_xen.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/tty/hvc/hvc_xen.c b/drivers/tty/hvc/hvc_xen.c
-index 7c23112dc923..e63c1761a361 100644
---- a/drivers/tty/hvc/hvc_xen.c
-+++ b/drivers/tty/hvc/hvc_xen.c
-@@ -43,6 +43,7 @@ struct xencons_info {
- 	int irq;
- 	int vtermno;
- 	grant_ref_t gntref;
-+	spinlock_t ring_lock;
- };
- 
- static LIST_HEAD(xenconsoles);
-@@ -84,12 +85,15 @@ static int __write_console(struct xencons_info *xencons,
- 	XENCONS_RING_IDX cons, prod;
- 	struct xencons_interface *intf = xencons->intf;
- 	int sent = 0;
-+	unsigned long flags;
- 
-+	spin_lock_irqsave(&xencons->ring_lock, flags);
- 	cons = intf->out_cons;
- 	prod = intf->out_prod;
- 	mb();			/* update queue values before going on */
- 
- 	if ((prod - cons) > sizeof(intf->out)) {
-+		spin_unlock_irqrestore(&xencons->ring_lock, flags);
- 		pr_err_once("xencons: Illegal ring page indices");
- 		return -EINVAL;
- 	}
-@@ -99,6 +103,7 @@ static int __write_console(struct xencons_info *xencons,
- 
- 	wmb();			/* write ring before updating pointer */
- 	intf->out_prod = prod;
-+	spin_unlock_irqrestore(&xencons->ring_lock, flags);
- 
- 	if (sent)
- 		notify_daemon(xencons);
-@@ -141,16 +146,19 @@ static int domU_read_console(uint32_t vtermno, char *buf, int len)
- 	int recv = 0;
- 	struct xencons_info *xencons = vtermno_to_xencons(vtermno);
- 	unsigned int eoiflag = 0;
-+	unsigned long flags;
- 
- 	if (xencons == NULL)
- 		return -EINVAL;
- 	intf = xencons->intf;
- 
-+	spin_lock_irqsave(&xencons->ring_lock, flags);
- 	cons = intf->in_cons;
- 	prod = intf->in_prod;
- 	mb();			/* get pointers before reading ring */
- 
- 	if ((prod - cons) > sizeof(intf->in)) {
-+		spin_unlock_irqrestore(&xencons->ring_lock, flags);
- 		pr_err_once("xencons: Illegal ring page indices");
- 		return -EINVAL;
- 	}
-@@ -174,10 +182,13 @@ static int domU_read_console(uint32_t vtermno, char *buf, int len)
- 		xencons->out_cons = intf->out_cons;
- 		xencons->out_cons_same = 0;
- 	}
-+	if (!recv && xencons->out_cons_same++ > 1) {
-+		eoiflag = XEN_EOI_FLAG_SPURIOUS;
-+	}
-+	spin_unlock_irqrestore(&xencons->ring_lock, flags);
-+
- 	if (recv) {
- 		notify_daemon(xencons);
--	} else if (xencons->out_cons_same++ > 1) {
--		eoiflag = XEN_EOI_FLAG_SPURIOUS;
- 	}
- 
- 	xen_irq_lateeoi(xencons->irq, eoiflag);
-@@ -234,6 +245,7 @@ static int xen_hvm_console_init(void)
- 		info = kzalloc(sizeof(struct xencons_info), GFP_KERNEL);
- 		if (!info)
- 			return -ENOMEM;
-+		spin_lock_init(&info->ring_lock);
- 	} else if (info->intf != NULL) {
- 		/* already configured */
- 		return 0;
-@@ -270,6 +282,7 @@ static int xen_hvm_console_init(void)
- 
- static int xencons_info_pv_init(struct xencons_info *info, int vtermno)
- {
-+	spin_lock_init(&info->ring_lock);
- 	info->evtchn = xen_start_info->console.domU.evtchn;
- 	/* GFN == MFN for PV guest */
- 	info->intf = gfn_to_virt(xen_start_info->console.domU.mfn);
-@@ -318,6 +331,7 @@ static int xen_initial_domain_console_init(void)
- 		info = kzalloc(sizeof(struct xencons_info), GFP_KERNEL);
- 		if (!info)
- 			return -ENOMEM;
-+		spin_lock_init(&info->ring_lock);
- 	}
- 
- 	info->irq = bind_virq_to_irq(VIRQ_CONSOLE, 0, false);
-@@ -472,6 +486,7 @@ static int xencons_probe(struct xenbus_device *dev,
- 	info = kzalloc(sizeof(struct xencons_info), GFP_KERNEL);
- 	if (!info)
- 		return -ENOMEM;
-+	spin_lock_init(&info->ring_lock);
- 	dev_set_drvdata(&dev->dev, info);
- 	info->xbdev = dev;
- 	info->vtermno = xenbus_devid_to_vtermno(devid);
--- 
-2.37.3
+> 
+> > +				ret = -ENOSPC;
+> > +				goto error;
+> > +			}
+> > +			key->key_len = ret;
+> > +			key->key_type = OPAL_INCLUDED;
+> > +		}
+> > +		break;
+> > +	default:
+> > +		ret = -EINVAL;
+> > +		break;
+> > +	}
+> > +	if (ret < 0)
+> > +		goto error;
+> > +
+> > +	/* must have a PEK by now or it's an error */
+> > +	if (key->key_type != OPAL_INCLUDED || key->key_len == 0) {
+> > +		ret = -EINVAL;
+> > +		goto error;
+> > +	}
+> > +	return 0;
+> > +error:
+> > +	pr_debug("Error getting password: %d\n", ret);
+> > +	return ret;
+> > +}
+> > +
+> >   static bool check_tper(const void *data)
+> >   {
+> >   	const struct d0_tper_features *tper = data;
+> > @@ -2269,6 +2369,9 @@ static int
+> > opal_secure_erase_locking_range(struct opal_dev *dev,
+> >   	};
+> >   	int ret;
+> >   
+> > +	ret = opal_get_key(dev, &opal_session->opal_key);
+> > +	if (ret)
+> > +		return ret;
+> >   	mutex_lock(&dev->dev_lock);
+> >   	setup_opal_dev(dev);
+> >   	ret = execute_steps(dev, erase_steps, ARRAY_SIZE(erase_steps));
+> > @@ -2302,6 +2405,9 @@ static int opal_revertlsp(struct opal_dev
+> > *dev, struct opal_revert_lsp *rev)
+> >   	};
+> >   	int ret;
+> >   
+> > +	ret = opal_get_key(dev, &rev->key);
+> > +	if (ret)
+> > +		return ret;
+> >   	mutex_lock(&dev->dev_lock);
+> >   	setup_opal_dev(dev);
+> >   	ret = execute_steps(dev, steps, ARRAY_SIZE(steps));
+> > @@ -2320,6 +2426,9 @@ static int opal_erase_locking_range(struct
+> > opal_dev *dev,
+> >   	};
+> >   	int ret;
+> >   
+> > +	ret = opal_get_key(dev, &opal_session->opal_key);
+> > +	if (ret)
+> > +		return ret;
+> >   	mutex_lock(&dev->dev_lock);
+> >   	setup_opal_dev(dev);
+> >   	ret = execute_steps(dev, erase_steps, ARRAY_SIZE(erase_steps));
+> > @@ -2348,6 +2457,9 @@ static int
+> > opal_enable_disable_shadow_mbr(struct opal_dev *dev,
+> >   	    opal_mbr->enable_disable != OPAL_MBR_DISABLE)
+> >   		return -EINVAL;
+> >   
+> > +	ret = opal_get_key(dev, &opal_mbr->key);
+> > +	if (ret)
+> > +		return ret;
+> >   	mutex_lock(&dev->dev_lock);
+> >   	setup_opal_dev(dev);
+> >   	ret = execute_steps(dev, mbr_steps, ARRAY_SIZE(mbr_steps));
+> > @@ -2373,6 +2485,9 @@ static int opal_set_mbr_done(struct opal_dev
+> > *dev,
+> >   	    mbr_done->done_flag != OPAL_MBR_NOT_DONE)
+> >   		return -EINVAL;
+> >   
+> > +	ret = opal_get_key(dev, &mbr_done->key);
+> > +	if (ret)
+> > +		return ret;
+> >   	mutex_lock(&dev->dev_lock);
+> >   	setup_opal_dev(dev);
+> >   	ret = execute_steps(dev, mbr_steps, ARRAY_SIZE(mbr_steps));
+> > @@ -2394,6 +2509,9 @@ static int opal_write_shadow_mbr(struct
+> > opal_dev *dev,
+> >   	if (info->size == 0)
+> >   		return 0;
+> >   
+> > +	ret = opal_get_key(dev, &info->key);
+> > +	if (ret)
+> > +		return ret;
+> >   	mutex_lock(&dev->dev_lock);
+> >   	setup_opal_dev(dev);
+> >   	ret = execute_steps(dev, mbr_steps, ARRAY_SIZE(mbr_steps));
+> > @@ -2450,6 +2568,9 @@ static int opal_add_user_to_lr(struct
+> > opal_dev *dev,
+> >   		return -EINVAL;
+> >   	}
+> >   
+> > +	ret = opal_get_key(dev, &lk_unlk->session.opal_key);
+> > +	if (ret)
+> > +		return ret;
+> >   	mutex_lock(&dev->dev_lock);
+> >   	setup_opal_dev(dev);
+> >   	ret = execute_steps(dev, steps, ARRAY_SIZE(steps));
+> > @@ -2472,6 +2593,10 @@ static int opal_reverttper(struct opal_dev
+> > *dev, struct opal_key *opal, bool psi
+> >   
+> >   	int ret;
+> >   
+> > +	ret = opal_get_key(dev, opal);
+> > +
+> > +	if (ret)
+> > +		return ret;
+> >   	mutex_lock(&dev->dev_lock);
+> >   	setup_opal_dev(dev);
+> >   	if (psid)
+> > @@ -2534,6 +2659,9 @@ static int opal_lock_unlock(struct opal_dev
+> > *dev,
+> >   	if (lk_unlk->session.who > OPAL_USER9)
+> >   		return -EINVAL;
+> >   
+> > +	ret = opal_get_key(dev, &lk_unlk->session.opal_key);
+> > +	if (ret)
+> > +		return ret;
+> >   	mutex_lock(&dev->dev_lock);
+> >   	ret = __opal_lock_unlock(dev, lk_unlk);
+> >   	mutex_unlock(&dev->dev_lock);
+> > @@ -2556,6 +2684,9 @@ static int opal_take_ownership(struct
+> > opal_dev *dev, struct opal_key *opal)
+> >   	if (!dev)
+> >   		return -ENODEV;
+> >   
+> > +	ret = opal_get_key(dev, opal);
+> > +	if (ret)
+> > +		return ret;
+> >   	mutex_lock(&dev->dev_lock);
+> >   	setup_opal_dev(dev);
+> >   	ret = execute_steps(dev, owner_steps, ARRAY_SIZE(owner_steps));
+> > @@ -2578,6 +2709,9 @@ static int opal_activate_lsp(struct opal_dev
+> > *dev,
+> >   	if (!opal_lr_act->num_lrs || opal_lr_act->num_lrs >
+> > OPAL_MAX_LRS)
+> >   		return -EINVAL;
+> >   
+> > +	ret = opal_get_key(dev, &opal_lr_act->key);
+> > +	if (ret)
+> > +		return ret;
+> >   	mutex_lock(&dev->dev_lock);
+> >   	setup_opal_dev(dev);
+> >   	ret = execute_steps(dev, active_steps,
+> > ARRAY_SIZE(active_steps));
+> > @@ -2596,6 +2730,9 @@ static int opal_setup_locking_range(struct
+> > opal_dev *dev,
+> >   	};
+> >   	int ret;
+> >   
+> > +	ret = opal_get_key(dev, &opal_lrs->session.opal_key);
+> > +	if (ret)
+> > +		return ret;
+> >   	mutex_lock(&dev->dev_lock);
+> >   	setup_opal_dev(dev);
+> >   	ret = execute_steps(dev, lr_steps, ARRAY_SIZE(lr_steps));
+> > @@ -2622,6 +2759,14 @@ static int opal_set_new_pw(struct opal_dev
+> > *dev, struct opal_new_pw *opal_pw)
+> >   	ret = execute_steps(dev, pw_steps, ARRAY_SIZE(pw_steps));
+> >   	mutex_unlock(&dev->dev_lock);
+> >   
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	/* update keyring with new password */
+> > +	ret = update_sed_opal_key(OPAL_AUTH_KEY,
+> > +				  opal_pw->new_user_pw.opal_key.key,
+> > +				  opal_pw-
+> > >new_user_pw.opal_key.key_len);
+> > +
+> >   	return ret;
+> >   }
+> >   
+> What about key revocation?
+> You only allow to set a new key, but what happens with the old ones?
+> 
+> > @@ -2642,6 +2787,9 @@ static int opal_activate_user(struct opal_dev
+> > *dev,
+> >   		return -EINVAL;
+> >   	}
+> >   
+> > +	ret = opal_get_key(dev, &opal_session->opal_key);
+> > +	if (ret)
+> > +		return ret;
+> >   	mutex_lock(&dev->dev_lock);
+> >   	setup_opal_dev(dev);
+> >   	ret = execute_steps(dev, act_steps, ARRAY_SIZE(act_steps));
+> > @@ -2728,6 +2876,9 @@ static int
+> > opal_generic_read_write_table(struct opal_dev *dev,
+> >   {
+> >   	int ret, bit_set;
+> >   
+> > +	ret = opal_get_key(dev, &rw_tbl->key);
+> > +	if (ret)
+> > +		return ret;
+> >   	mutex_lock(&dev->dev_lock);
+> >   	setup_opal_dev(dev);
+> >   
+> > @@ -2776,9 +2927,9 @@ int sed_ioctl(struct opal_dev *dev, unsigned
+> > int cmd, void __user *arg)
+> >   	if (!capable(CAP_SYS_ADMIN))
+> >   		return -EACCES;
+> >   	if (!dev)
+> > -		return -ENOTSUPP;
+> > +		return -EOPNOTSUPP;
+> >   	if (!(dev->flags & OPAL_FL_SUPPORTED))
+> > -		return -ENOTSUPP;
+> > +		return -EOPNOTSUPP;
+> >   
+> >   	if (cmd & IOC_IN) {
+> >   		p = memdup_user(arg, _IOC_SIZE(cmd));
+> > @@ -2854,3 +3005,22 @@ int sed_ioctl(struct opal_dev *dev, unsigned
+> > int cmd, void __user *arg)
+> >   	return ret;
+> >   }
+> >   EXPORT_SYMBOL_GPL(sed_ioctl);
+> > +
+> > +static int __init sed_opal_init(void)
+> > +{
+> > +	struct key *kr;
+> > +
+> > +	kr = keyring_alloc(".sed_opal",
+> > +			   GLOBAL_ROOT_UID, GLOBAL_ROOT_GID,
+> > current_cred(),
+> > +			   (KEY_POS_ALL & ~KEY_POS_SETATTR) |
+> > KEY_USR_VIEW |
+> > +			   KEY_USR_READ | KEY_USR_SEARCH |
+> > KEY_USR_WRITE,
+> > +			   KEY_ALLOC_NOT_IN_QUOTA,
+> > +			   NULL, NULL);
+> > +	if (IS_ERR(kr))
+> > +		return PTR_ERR(kr);
+> > +
+> > +	sed_opal_keyring = kr;
+> > +
+> > +	return 0;
+> > +}
+> > +late_initcall(sed_opal_init);
+> 
+> Shouldn't you free the keyring on exit?
+> 
+> > diff --git a/include/linux/sed-opal.h b/include/linux/sed-opal.h
+> > index 7131d7f0eec2..57d483506b4a 100644
+> > --- a/include/linux/sed-opal.h
+> > +++ b/include/linux/sed-opal.h
+> > @@ -24,6 +24,9 @@ bool opal_unlock_from_suspend(struct opal_dev
+> > *dev);
+> >   struct opal_dev *init_opal_dev(void *data, sec_send_recv
+> > *send_recv);
+> >   int sed_ioctl(struct opal_dev *dev, unsigned int cmd, void __user
+> > *ioctl_ptr);
+> >   
+> > +#define	OPAL_AUTH_KEY           "opal-boot-pin"
+> > +#define	OPAL_AUTH_KEY_PREV      "opal-boot-pin-prev"
+> > +
+> >   static inline bool is_sed_ioctl(unsigned int cmd)
+> >   {
+> >   	switch (cmd) {
+> > diff --git a/include/uapi/linux/sed-opal.h
+> > b/include/uapi/linux/sed-opal.h
+> > index fccde168e90c..6b79cdcf9518 100644
+> > --- a/include/uapi/linux/sed-opal.h
+> > +++ b/include/uapi/linux/sed-opal.h
+> > @@ -44,10 +44,16 @@ enum opal_lock_state {
+> >   	OPAL_LK = 0x04, /* 0100 */
+> >   };
+> >   
+> > +enum opal_key_type {
+> > +	OPAL_INCLUDED = 0,	/* key[] is the key */
+> > +	OPAL_KEYRING,		/* key is in keyring */
+> > +};
+> > +
+> >   struct opal_key {
+> >   	__u8 lr;
+> >   	__u8 key_len;
+> > -	__u8 __align[6];
+> > +	__u8 key_type;
+> > +	__u8 __align[5];
+> >   	__u8 key[OPAL_KEY_MAX];
+> >   };
+> >   
+> 
+> Cheers,
+> 
+> Hannes
 
