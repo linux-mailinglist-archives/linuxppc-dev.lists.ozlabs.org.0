@@ -2,32 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB19363D212
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 10:35:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 131ED63D265
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 10:48:26 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NMYw54zYyz3fFn
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 20:35:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NMZCC6pG4z3fSN
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 20:48:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMYqj4Gt0z3bZJ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Nov 2022 20:31:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMYth6c2Nz3fQC
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Nov 2022 20:34:04 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NMYqj38mfz4xQr;
-	Wed, 30 Nov 2022 20:31:29 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NMYtg6NjXz4xV1;
+	Wed, 30 Nov 2022 20:34:03 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Michael Ellerman <mpe@ellerman.id.au>, Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-In-Reply-To: <7b8b5915a2c7c1616b33e8433ebe0a0bf07070a2.1665312579.git.christophe.jaillet@wanadoo.fr>
-References: <7b8b5915a2c7c1616b33e8433ebe0a0bf07070a2.1665312579.git.christophe.jaillet@wanadoo.fr>
-Subject: Re: [PATCH] powerpc/sysdev: Remove some duplicate prefix in some messages
-Message-Id: <166980024656.3017288.14591621572057347121.b4-ty@ellerman.id.au>
-Date: Wed, 30 Nov 2022 20:24:06 +1100
+To: Stephen Rothwell <sfr@canb.auug.org.au>, Michael Ellerman <mpe@ellerman.id.au>
+In-Reply-To: <20221010165721.106267e6@canb.auug.org.au>
+References: <20221010165721.106267e6@canb.auug.org.au>
+Subject: Re: [PATCH] powerpc: suppress some linker warnings in recent linker versions
+Message-Id: <166980024734.3017288.12071068399388319871.b4-ty@ellerman.id.au>
+Date: Wed, 30 Nov 2022 20:24:07 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -42,25 +42,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel-janitors@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: PowerPC <linuxppc-dev@lists.ozlabs.org>, Joel Stanley <joel@jms.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, 9 Oct 2022 12:49:50 +0200, Christophe JAILLET wrote:
-> At the beginning of the file, we have:
->    #define pr_fmt(fmt) "xive: " fmt
+On Mon, 10 Oct 2022 16:57:21 +1100, Stephen Rothwell wrote:
+> This is a follow on from commit
 > 
-> So, there is no need to duplicate "XIVE:" in debug and error messages.
+>   0d362be5b142 ("Makefile: link with -z noexecstack --no-warn-rwx-segments")
 > 
-> For the records, these useless prefix have been added in commit
-> 5af50993850a ("KVM: PPC: Book3S HV: Native usage of the XIVE interrupt
-> controller")
+> for arch/powerpc/boot to address wanrings like:
+> 
+>   ld: warning: opal-calls.o: missing .note.GNU-stack section implies executable stack
+>   ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker
+>   ld: warning: arch/powerpc/boot/zImage.epapr has a LOAD segment with RWX permissions
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc/sysdev: Remove some duplicate prefix in some messages
-      https://git.kernel.org/powerpc/c/2cb1dfac6f792f9e4a092793215f0d26e9f8d5b2
+[1/1] powerpc: suppress some linker warnings in recent linker versions
+      https://git.kernel.org/powerpc/c/579aee9fc594af94c242068c011b0233563d4bbf
 
 cheers
