@@ -1,33 +1,33 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC9F763D268
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 10:48:55 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D933463D292
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 10:55:29 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NMZCn4QCXz3h49
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 20:48:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NMZMM5gFLz3hpt
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 20:55:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMYtk3bNnz3fQT
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Nov 2022 20:34:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMYtw4Vcrz3bXd
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Nov 2022 20:34:16 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NMYtj2PK0z4xvr;
-	Wed, 30 Nov 2022 20:34:05 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NMYtw14nfz4y4d;
+	Wed, 30 Nov 2022 20:34:16 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Stephen Kitt <steve@sk2.org>, Benjamin Herrenschmidt <benh@kernel.crashing.org>
-In-Reply-To: <20220616170425.1346081-1-steve@sk2.org>
-References: <20220616170425.1346081-1-steve@sk2.org>
-Subject: Re: [PATCH v2] macintosh: via-pmu-backlight: Use backlight helper
-Message-Id: <166980022506.3017288.12402115611479311613.b4-ty@ellerman.id.au>
-Date: Wed, 30 Nov 2022 20:23:45 +1100
+To: benh@kernel.crashing.org, Li zeming <zeming@nfschina.com>
+In-Reply-To: <20220707015352.3391-1-zeming@nfschina.com>
+References: <20220707015352.3391-1-zeming@nfschina.com>
+Subject: Re: [PATCH] macintosh/ams/ams: Add header file macro definition
+Message-Id: <166980022660.3017288.7896305939076980976.b4-ty@ellerman.id.au>
+Date: Wed, 30 Nov 2022 20:23:46 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -42,26 +42,18 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Daniel Thompson <daniel.thompson@linaro.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 16 Jun 2022 19:04:24 +0200, Stephen Kitt wrote:
-> backlight_properties.fb_blank is deprecated. The states it represents
-> are handled by other properties; but instead of accessing those
-> properties directly, drivers should use the helpers provided by
-> backlight.h.
+On Thu, 7 Jul 2022 09:53:52 +0800, Li zeming wrote:
+> Add header file macro definition.
 > 
-> Instead of retrieving the backlight brightness in struct
-> backlight_properties manually, and then checking whether the backlight
-> should be on at all, use backlight_get_brightness() which does all
-> this and insulates this from future changes.
 > 
-> [...]
 
 Applied to powerpc/next.
 
-[1/1] macintosh: via-pmu-backlight: Use backlight helper
-      https://git.kernel.org/powerpc/c/a0542d2c45a64162e63ad2d80684e57de0566271
+[1/1] macintosh/ams/ams: Add header file macro definition
+      https://git.kernel.org/powerpc/c/2dfcace75e1e1dfbd89af63fce1bfe8aebe38427
 
 cheers
