@@ -2,32 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C862963D295
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 10:55:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19A9D63D282
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 10:53:31 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NMZMx5F1wz3htD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 20:55:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NMZK509S9z3hY6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 20:53:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMYty1fhBz3fB3
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Nov 2022 20:34:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMYts27znz3fQQ
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Nov 2022 20:34:13 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NMYtx0P3Vz4yFl;
-	Wed, 30 Nov 2022 20:34:17 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NMYts0j9Mz4y3f;
+	Wed, 30 Nov 2022 20:34:13 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: benh@kernel.crashing.org, Li zeming <zeming@nfschina.com>
-In-Reply-To: <20220707015949.3733-1-zeming@nfschina.com>
-References: <20220707015949.3733-1-zeming@nfschina.com>
-Subject: Re: [PATCH] macintosh/windfarm_pid: Add header file macro definition
-Message-Id: <166980022736.3017288.3449497203584355891.b4-ty@ellerman.id.au>
-Date: Wed, 30 Nov 2022 20:23:47 +1100
+To: Yang Yingliang <yangyingliang@huawei.com>, linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20220916141638.685575-1-yangyingliang@huawei.com>
+References: <20220916141638.685575-1-yangyingliang@huawei.com>
+Subject: Re: [PATCH -next] macintosh: Switch to use for_each_child_of_node() macro
+Message-Id: <166980022813.3017288.10373654666386232072.b4-ty@ellerman.id.au>
+Date: Wed, 30 Nov 2022 20:23:48 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -42,19 +42,18 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel@nfschina.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 7 Jul 2022 09:59:49 +0800, Li zeming wrote:
-> I think the header file could avoid redefinition errors.
->  at compile time by adding macro definitions.
+On Fri, 16 Sep 2022 22:16:38 +0800, Yang Yingliang wrote:
+> Use for_each_child_of_node() macro instead of open coding it.
+> No functional change.
 > 
 > 
 
 Applied to powerpc/next.
 
-[1/1] macintosh/windfarm_pid: Add header file macro definition
-      https://git.kernel.org/powerpc/c/e3e528d29d13c01289f382a0d3ddb5312ac3dae3
+[1/1] macintosh: Switch to use for_each_child_of_node() macro
+      https://git.kernel.org/powerpc/c/3aa16303dc98b7b8baa2adbc3210fd513ec0e810
 
 cheers
