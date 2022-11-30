@@ -2,32 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A642D63D240
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 10:43:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE17963D263
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 10:47:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NMZ5M4GDNz3fKQ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 20:43:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NMZBd69Mkz3gx5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 20:47:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMYqx4BgLz3bh8
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Nov 2022 20:31:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMYtg3JVKz3fQ1
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Nov 2022 20:34:03 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NMYqx2sTKz4xmp;
-	Wed, 30 Nov 2022 20:31:41 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NMYtg00tCz4xvP;
+	Wed, 30 Nov 2022 20:34:02 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Nicholas Piggin <npiggin@gmail.com>, "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>
-In-Reply-To: <cover.1666262278.git.naveen.n.rao@linux.vnet.ibm.com>
-References: <cover.1666262278.git.naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: (subset) [PATCH 0/5] powerpc/kprobes: preempt related changes and cleanups
-Message-Id: <166980025104.3017288.582464543238999463.b4-ty@ellerman.id.au>
-Date: Wed, 30 Nov 2022 20:24:11 +1100
+To: linuxppc-dev@lists.ozlabs.org, Russell Currey <ruscur@russell.cc>
+In-Reply-To: <20221024041346.103608-1-ruscur@russell.cc>
+References: <20221024041346.103608-1-ruscur@russell.cc>
+Subject: Re: [PATCH] powerpc/8xx: Fix warning in hw_breakpoint_handler()
+Message-Id: <166980025260.3017288.11889101044901537576.b4-ty@ellerman.id.au>
+Date: Wed, 30 Nov 2022 20:24:12 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -42,27 +42,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jordan Niethe <jniethe5@gmail.com>, linuxppc-dev@lists.ozlabs.org, Masami Hiramatsu <mhiramat@kernel.org>
+Cc: ravi.bangoria@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 20 Oct 2022 22:58:56 +0530, Naveen N. Rao wrote:
-> This series attempts to address some of the concerns raised in
-> https://github.com/linuxppc/issues/issues/440
+On Mon, 24 Oct 2022 15:13:46 +1100, Russell Currey wrote:
+> In hw_breakpoint_handler(), ea is set by wp_get_instr_detail() except
+> for 8xx, leading the variable to be passed uninitialised to
+> wp_check_constraints().  This is safe as wp_check_constraints() returns
+> early without using ea, so just set it to make the compiler happy.
 > 
-> The last two patches are minor cleanups in related kprobes code.
 > 
-> - Naveen
-> 
-> [...]
 
 Applied to powerpc/next.
 
-[1/5] powerpc/kprobes: Remove preempt disable around call to get_kprobe() in arch_prepare_kprobe()
-      https://git.kernel.org/powerpc/c/2fa9482334b0593b7edc371a13c0cca81daaa89e
-[2/5] powerpc/kprobes: Have optimized_callback() use preempt_enable()
-      https://git.kernel.org/powerpc/c/04ec5d5782fb346c291a05a2efe59483d8ada4c4
-[3/5] powerpc/kprobes: Use preempt_enable() rather than the no_resched variant
-      https://git.kernel.org/powerpc/c/266b1991a433cd55bb86a933216b3f6762737d47
+[1/1] powerpc/8xx: Fix warning in hw_breakpoint_handler()
+      https://git.kernel.org/powerpc/c/f668027521561d1071ccf54500c82a58a1918b2b
 
 cheers
