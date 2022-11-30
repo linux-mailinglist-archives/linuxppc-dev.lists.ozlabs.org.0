@@ -1,33 +1,33 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B500563D215
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 10:36:18 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E52C763D238
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 10:41:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NMYxD4nZKz3fkB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 20:36:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NMZ2w5VH5z3fF0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 20:41:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMYqk4KvRz3bdf
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Nov 2022 20:31:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMYqs5F85z30F7
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Nov 2022 20:31:37 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NMYqk3D0wz4xP9;
-	Wed, 30 Nov 2022 20:31:30 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NMYqs3tjNz4xV1;
+	Wed, 30 Nov 2022 20:31:37 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Michael Ellerman <mpe@ellerman.id.au>
-In-Reply-To: <65f76300de07091a59a042a3db2d0ce9b939a05c.1664346532.git.christophe.leroy@csgroup.eu>
-References: <65f76300de07091a59a042a3db2d0ce9b939a05c.1664346532.git.christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] powerpc/8xx: Simplify pte_update() with 16k pages
-Message-Id: <166980023807.3017288.13472562694365213076.b4-ty@ellerman.id.au>
-Date: Wed, 30 Nov 2022 20:23:58 +1100
+To: Joel Stanley <joel@jms.id.au>, linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20220930065012.2860577-1-joel@jms.id.au>
+References: <20220930065012.2860577-1-joel@jms.id.au>
+Subject: Re: [PATCH v2] powerpc/microwatt: Add litesd
+Message-Id: <166980024344.3017288.952556883567387271.b4-ty@ellerman.id.au>
+Date: Wed, 30 Nov 2022 20:24:03 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -42,28 +42,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Jeremy Kerr <jk@codeconstruct.com.au>, Matt Johnston <matt@codeconstruct.com.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 28 Sep 2022 08:29:00 +0200, Christophe Leroy wrote:
-> While looking at code generated for code patching, I saw that
-> pte_clear generated:
+On Fri, 30 Sep 2022 16:20:12 +0930, Joel Stanley wrote:
+> This is the register layout of the litesd peripheral for the fusesoc
+> based Microwatt SoC.
 > 
->  2d8:	38 a0 00 00 	li      r5,0
->  2dc:	38 e0 10 00 	li      r7,4096
->  2e0:	39 00 20 00 	li      r8,8192
->  2e4:	39 40 30 00 	li      r10,12288
->  2e8:	90 a9 00 00 	stw     r5,0(r9)
->  2ec:	90 e9 00 04 	stw     r7,4(r9)
->  2f0:	91 09 00 08 	stw     r8,8(r9)
->  2f4:	91 49 00 0c 	stw     r10,12(r9)
+> It requires a description of the system clock, which is hardcoded to
+> 100MHz.
+> 
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc/8xx: Simplify pte_update() with 16k pages
-      https://git.kernel.org/powerpc/c/f2c45962cc618c12f69fd46e6ebc20b9cd7f15ac
+[1/1] powerpc/microwatt: Add litesd
+      https://git.kernel.org/powerpc/c/5825603f67bc5ff445a1847302884154f0afa627
 
 cheers
