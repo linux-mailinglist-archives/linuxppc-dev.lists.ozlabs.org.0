@@ -2,66 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FEF363E581
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 00:33:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CA0B63E588
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 00:34:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NMwVr1CvZz3fpw
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 10:33:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NMwWq6tQsz3fss
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 10:33:59 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=FdJXVaCe;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=Q7q/5TXz;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::44a; helo=mail-pf1-x44a.google.com; envelope-from=33okhywykdomxjfsohlttlqj.htrqnszcuuh-ijaqnxyx.teqfgx.twl@flex--seanjc.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::114a; helo=mail-yw1-x114a.google.com; envelope-from=33ukhywykdouzlhuqjnvvnsl.jvtspubewwj-klcspzaz.vgshiz.vyn@flex--seanjc.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=FdJXVaCe;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=Q7q/5TXz;
 	dkim-atps=neutral
-Received: from mail-pf1-x44a.google.com (mail-pf1-x44a.google.com [IPv6:2607:f8b0:4864:20::44a])
+Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMw0Z0ctVz3bfd
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Dec 2022 10:10:22 +1100 (AEDT)
-Received: by mail-pf1-x44a.google.com with SMTP id a18-20020a62bd12000000b0056e7b61ec78so161680pff.17
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Nov 2022 15:10:22 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMw0d2vs5z3bg0
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Dec 2022 10:10:25 +1100 (AEDT)
+Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-3cf0762f741so66709437b3.16
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Nov 2022 15:10:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=sCL5nUY5jVECdqbz+DtfaNancd0JoKLrDsCNzQeZ4VM=;
-        b=FdJXVaCerL0aYXlSKCNZGaBsvhStCr0raOxBeYIkp4Eahw58g8dUGOpjjTZmNCmTe0
-         mkfDd/jmN5dDwhAszOU5fy3Z2W7/1AljlI0GNy9pf8gtw1DfpMPRyWAgaw/dH7x/k+e6
-         ElYy/YZxg7mPUT8eVlsbEwMxRfjFKCESq4lpHqyvLKLyNyU3+0kw+OatGoe/LZdK65Gm
-         iDCtq/GyihCca4Nix9chWcnsGAukForJwZUR0+JY1L+Pf5Gk3bKEFqAVQzlBFWu3/frk
-         9DcYaRLE/q/y1bYN4asBB9T511P9HVDAxCLbepbuuyEkNPOgwPqEFTJkjpVg81LSfjfV
-         pvJw==
+        bh=Ajf/v6plBmBpvMRb25eu7yZbuYHVVa1MLg3BBW1ApnM=;
+        b=Q7q/5TXzNDPohOMoxUDiD0nnqEk1FoSW4RF/EEt8HMYjM52gPxj46PgYF/68/eUC70
+         R52IpECaCvp222vr9xTL7j44GbL8VsDvPS5HArvcL4xJanWkN6UNBVlmOIcOzEnjqYoe
+         h8mvG1+Ri644iv9eVrF8AA62rM3of5sqQn2h8l1NJ4Hp9LBXQlFjVGfCJ0M8iuidAG/g
+         r3QoWBzS8+6cQpNc7qHKOescERK5wH+DxZ5oURQjRLgPy9Nq0G8eKIEZQN5DdxTswpJO
+         dO7YdMWEfCe6tuDQ8/4qvPOOW5vLDHcu9lY8BtQx5KXbThVrpdnPftQhmMi0Ij7DKBRT
+         iKQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=sCL5nUY5jVECdqbz+DtfaNancd0JoKLrDsCNzQeZ4VM=;
-        b=EbWaAaAnLdEg6RJt5KbqG6MoTJuYDUNsCeWyRLMvkAzfwvplhpSmMSUkVh4Nt0AlVB
-         sG58MeHLjZ4BJs1lCJ+a25OW/R+j1qga+5bzlOSX98aBnMKYplkdTfSUtDyIvd+eE3uM
-         UcCwlFcfJ8IsxoWC4usCGi9JF1cT+Q0xgPL7u/RuETpGGhn7Ub1YamOItik1qfi7cpg0
-         m0J0W0Uh384vEPkL5nHQ/Ba20oJAN2mY5zCtuJqKAjDGYNIyhDo4HVq5VROYYHy8u9bz
-         zBlXKcIy4fxFlkKw6Ey+Td8jFgmO0BiN2yl/gPIiw7LXuoO8B9vkXsHJQX6hvWtJVdlg
-         JMiQ==
-X-Gm-Message-State: ANoB5pnuh0O1ax7ES3e+suCadA5ww1D5OIPgPExdQUMi9luvE7Ui/6mE
-	eyxiwNZwGY0oiO0DRg5GA+UqeXGyGTs=
-X-Google-Smtp-Source: AA0mqf5VFykTikxn6Nmxzh1/iLDcJ+DMZWcjAIIeDPd3Nna5HVSkx0xzOx2E3cTUFx7HQ+ZbJkQjtPKQzYw=
+        bh=Ajf/v6plBmBpvMRb25eu7yZbuYHVVa1MLg3BBW1ApnM=;
+        b=ZzvsVMZNbd11oK2kKuesHxqah0iBUGKb3KdHT6YwT8bzBqkRJ6l3jBil0cJGIMPb3c
+         bzBlb7C4qeOxLqlOVgBPkH/aSMg/CqSLMKzFCzH3EMy0tEqzAWpELRftgd+gCUww30+r
+         Z2hBE6tBVSrBY4JugVQvXkbNu2UhFnWJUax2Yu2HLzzFNATWH0zYvzZ3vlpTV/S+zxQA
+         Z/PKzt5Eow90MPP+jSJimoMAwZSux1CWrAXpdueiWF6AAS3gr/ECW/kINIWGgvSx0IZh
+         3Gv3I/N4aeusFZJSdgVfrqpbYV6cc7McLIa5cV1epPiVbHHbPXpXPHdLt+u5gFSaa8Vl
+         Rx2g==
+X-Gm-Message-State: ANoB5plyAI5WizrUUeT5u/uGd6FqtcKlkNPCiBHgsk6Rj1YXO1m/NJA0
+	/PPghllqgP0vSpjKSmvZcQAjdX7dqZc=
+X-Google-Smtp-Source: AA0mqf6Y4D7Qf+J2WKP5H4v6O2gU4VSt61bmL1SListQ4TvwmtEqTFXL/Zt8AS/4xR6esIpeSKRCzrkbQ9o=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:aa7:8493:0:b0:563:8d32:abdc with SMTP id
- u19-20020aa78493000000b005638d32abdcmr44676437pfn.47.1669849820421; Wed, 30
- Nov 2022 15:10:20 -0800 (PST)
-Date: Wed, 30 Nov 2022 23:09:09 +0000
+ (user=seanjc job=sendgmr) by 2002:a25:8401:0:b0:6f1:4590:92b9 with SMTP id
+ u1-20020a258401000000b006f1459092b9mr33613349ybk.430.1669849822483; Wed, 30
+ Nov 2022 15:10:22 -0800 (PST)
+Date: Wed, 30 Nov 2022 23:09:10 +0000
 In-Reply-To: <20221130230934.1014142-1-seanjc@google.com>
 Mime-Version: 1.0
 References: <20221130230934.1014142-1-seanjc@google.com>
 X-Mailer: git-send-email 2.38.1.584.g0f3c55d4c2-goog
-Message-ID: <20221130230934.1014142-26-seanjc@google.com>
-Subject: [PATCH v2 25/50] KVM: RISC-V: Tag init functions and data with
- __init, __ro_after_init
+Message-ID: <20221130230934.1014142-27-seanjc@google.com>
+Subject: [PATCH v2 26/50] KVM: PPC: Move processor compatibility check to
+ module init
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
 	Huacai Chen <chenhuacai@kernel.org>, 
@@ -89,92 +89,112 @@ Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Atish Patra <atis
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Now that KVM setup is handled directly in riscv_kvm_init(), tag functions
-and data that are used/set only during init with __init/__ro_after_init.
+Move KVM PPC's compatibility checks to their respective module_init()
+hooks, there's no need to wait until KVM's common compat check, nor is
+there a need to perform the check on every CPU (provided by common KVM's
+hook), as the compatibility checks operate on global data.
 
+  arch/powerpc/include/asm/cputable.h: extern struct cpu_spec *cur_cpu_spec;
+  arch/powerpc/kvm/book3s.c: return 0
+  arch/powerpc/kvm/e500.c: strcmp(cur_cpu_spec->cpu_name, "e500v2")
+  arch/powerpc/kvm/e500mc.c: strcmp(cur_cpu_spec->cpu_name, "e500mc")
+                             strcmp(cur_cpu_spec->cpu_name, "e5500")
+                             strcmp(cur_cpu_spec->cpu_name, "e6500")
+
+Cc: Fabiano Rosas <farosas@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
-Acked-by: Anup Patel <anup@brainfault.org>
 ---
- arch/riscv/include/asm/kvm_host.h |  6 +++---
- arch/riscv/kvm/mmu.c              | 12 ++++++------
- arch/riscv/kvm/vmid.c             |  4 ++--
- 3 files changed, 11 insertions(+), 11 deletions(-)
+ arch/powerpc/include/asm/kvm_ppc.h |  1 -
+ arch/powerpc/kvm/book3s.c          | 10 ----------
+ arch/powerpc/kvm/e500.c            |  4 ++--
+ arch/powerpc/kvm/e500mc.c          |  4 ++++
+ arch/powerpc/kvm/powerpc.c         |  2 +-
+ 5 files changed, 7 insertions(+), 14 deletions(-)
 
-diff --git a/arch/riscv/include/asm/kvm_host.h b/arch/riscv/include/asm/kvm_host.h
-index 8c771fc4f5d2..778ff0f282b7 100644
---- a/arch/riscv/include/asm/kvm_host.h
-+++ b/arch/riscv/include/asm/kvm_host.h
-@@ -295,11 +295,11 @@ int kvm_riscv_gstage_map(struct kvm_vcpu *vcpu,
- int kvm_riscv_gstage_alloc_pgd(struct kvm *kvm);
- void kvm_riscv_gstage_free_pgd(struct kvm *kvm);
- void kvm_riscv_gstage_update_hgatp(struct kvm_vcpu *vcpu);
--void kvm_riscv_gstage_mode_detect(void);
--unsigned long kvm_riscv_gstage_mode(void);
-+void __init kvm_riscv_gstage_mode_detect(void);
-+unsigned long __init kvm_riscv_gstage_mode(void);
- int kvm_riscv_gstage_gpa_bits(void);
+diff --git a/arch/powerpc/include/asm/kvm_ppc.h b/arch/powerpc/include/asm/kvm_ppc.h
+index bfacf12784dd..51a1824b0a16 100644
+--- a/arch/powerpc/include/asm/kvm_ppc.h
++++ b/arch/powerpc/include/asm/kvm_ppc.h
+@@ -118,7 +118,6 @@ extern int kvmppc_xlate(struct kvm_vcpu *vcpu, ulong eaddr,
+ extern int kvmppc_core_vcpu_create(struct kvm_vcpu *vcpu);
+ extern void kvmppc_core_vcpu_free(struct kvm_vcpu *vcpu);
+ extern int kvmppc_core_vcpu_setup(struct kvm_vcpu *vcpu);
+-extern int kvmppc_core_check_processor_compat(void);
+ extern int kvmppc_core_vcpu_translate(struct kvm_vcpu *vcpu,
+                                       struct kvm_translation *tr);
  
--void kvm_riscv_gstage_vmid_detect(void);
-+void __init kvm_riscv_gstage_vmid_detect(void);
- unsigned long kvm_riscv_gstage_vmid_bits(void);
- int kvm_riscv_gstage_vmid_init(struct kvm *kvm);
- bool kvm_riscv_gstage_vmid_ver_changed(struct kvm_vmid *vmid);
-diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
-index 3620ecac2fa1..f42a34c7879a 100644
---- a/arch/riscv/kvm/mmu.c
-+++ b/arch/riscv/kvm/mmu.c
-@@ -20,12 +20,12 @@
- #include <asm/pgtable.h>
+diff --git a/arch/powerpc/kvm/book3s.c b/arch/powerpc/kvm/book3s.c
+index 6d525285dbe8..87283a0e33d8 100644
+--- a/arch/powerpc/kvm/book3s.c
++++ b/arch/powerpc/kvm/book3s.c
+@@ -999,16 +999,6 @@ int kvmppc_h_logical_ci_store(struct kvm_vcpu *vcpu)
+ }
+ EXPORT_SYMBOL_GPL(kvmppc_h_logical_ci_store);
  
- #ifdef CONFIG_64BIT
--static unsigned long gstage_mode = (HGATP_MODE_SV39X4 << HGATP_MODE_SHIFT);
--static unsigned long gstage_pgd_levels = 3;
-+static unsigned long gstage_mode __ro_after_init = (HGATP_MODE_SV39X4 << HGATP_MODE_SHIFT);
-+static unsigned long gstage_pgd_levels __ro_after_init = 3;
- #define gstage_index_bits	9
- #else
--static unsigned long gstage_mode = (HGATP_MODE_SV32X4 << HGATP_MODE_SHIFT);
--static unsigned long gstage_pgd_levels = 2;
-+static unsigned long gstage_mode __ro_after_init = (HGATP_MODE_SV32X4 << HGATP_MODE_SHIFT);
-+static unsigned long gstage_pgd_levels __ro_after_init = 2;
- #define gstage_index_bits	10
- #endif
- 
-@@ -760,7 +760,7 @@ void kvm_riscv_gstage_update_hgatp(struct kvm_vcpu *vcpu)
- 		kvm_riscv_local_hfence_gvma_all();
+-int kvmppc_core_check_processor_compat(void)
+-{
+-	/*
+-	 * We always return 0 for book3s. We check
+-	 * for compatibility while loading the HV
+-	 * or PR module
+-	 */
+-	return 0;
+-}
+-
+ int kvmppc_book3s_hcall_implemented(struct kvm *kvm, unsigned long hcall)
+ {
+ 	return kvm->arch.kvm_ops->hcall_implemented(hcall);
+diff --git a/arch/powerpc/kvm/e500.c b/arch/powerpc/kvm/e500.c
+index c8b2b4478545..0ea61190ec04 100644
+--- a/arch/powerpc/kvm/e500.c
++++ b/arch/powerpc/kvm/e500.c
+@@ -314,7 +314,7 @@ static void kvmppc_core_vcpu_put_e500(struct kvm_vcpu *vcpu)
+ 	kvmppc_booke_vcpu_put(vcpu);
  }
  
--void kvm_riscv_gstage_mode_detect(void)
-+void __init kvm_riscv_gstage_mode_detect(void)
+-int kvmppc_core_check_processor_compat(void)
++static int kvmppc_e500_check_processor_compat(void)
  {
- #ifdef CONFIG_64BIT
- 	/* Try Sv57x4 G-stage mode */
-@@ -784,7 +784,7 @@ void kvm_riscv_gstage_mode_detect(void)
- #endif
+ 	int r;
+ 
+@@ -507,7 +507,7 @@ static int __init kvmppc_e500_init(void)
+ 	unsigned long handler_len;
+ 	unsigned long max_ivor = 0;
+ 
+-	r = kvmppc_core_check_processor_compat();
++	r = kvmppc_e500_check_processor_compat();
+ 	if (r)
+ 		goto err_out;
+ 
+diff --git a/arch/powerpc/kvm/e500mc.c b/arch/powerpc/kvm/e500mc.c
+index 57e0ad6a2ca3..795667f7ebf0 100644
+--- a/arch/powerpc/kvm/e500mc.c
++++ b/arch/powerpc/kvm/e500mc.c
+@@ -388,6 +388,10 @@ static int __init kvmppc_e500mc_init(void)
+ {
+ 	int r;
+ 
++	r = kvmppc_e500mc_check_processor_compat();
++	if (r)
++		return kvmppc_e500mc;
++
+ 	r = kvmppc_booke_init();
+ 	if (r)
+ 		goto err_out;
+diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+index 5faf69421f13..d44b85ba8cef 100644
+--- a/arch/powerpc/kvm/powerpc.c
++++ b/arch/powerpc/kvm/powerpc.c
+@@ -442,7 +442,7 @@ int kvm_arch_hardware_enable(void)
+ 
+ int kvm_arch_check_processor_compat(void *opaque)
+ {
+-	return kvmppc_core_check_processor_compat();
++	return 0;
  }
  
--unsigned long kvm_riscv_gstage_mode(void)
-+unsigned long __init kvm_riscv_gstage_mode(void)
- {
- 	return gstage_mode >> HGATP_MODE_SHIFT;
- }
-diff --git a/arch/riscv/kvm/vmid.c b/arch/riscv/kvm/vmid.c
-index 6cd93995fb65..5246da1c9167 100644
---- a/arch/riscv/kvm/vmid.c
-+++ b/arch/riscv/kvm/vmid.c
-@@ -17,10 +17,10 @@
- 
- static unsigned long vmid_version = 1;
- static unsigned long vmid_next;
--static unsigned long vmid_bits;
-+static unsigned long vmid_bits __ro_after_init;
- static DEFINE_SPINLOCK(vmid_lock);
- 
--void kvm_riscv_gstage_vmid_detect(void)
-+void __init kvm_riscv_gstage_vmid_detect(void)
- {
- 	unsigned long old;
- 
+ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
 -- 
 2.38.1.584.g0f3c55d4c2-goog
 
