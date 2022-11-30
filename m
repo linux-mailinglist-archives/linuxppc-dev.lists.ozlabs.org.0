@@ -1,67 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5854363E5BA
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 00:49:07 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AA8563E5B7
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 00:47:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NMwsF17Z6z3fhr
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 10:49:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NMwq36V5Xz3gKg
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 10:47:11 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=hHwMew+J;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=hivL5TC6;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2001:4860:4864:20::4a; helo=mail-oa1-x4a.google.com; envelope-from=36ekhywykdpakwsfbuyggydw.ugedafmphhu-vwndaklk.grdstk.gjy@flex--seanjc.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::64a; helo=mail-pl1-x64a.google.com; envelope-from=36ukhywykdpelxtgcvzhhzex.vhfebgnqiiv-wxoeblml.hsetul.hkz@flex--seanjc.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=hHwMew+J;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=hivL5TC6;
 	dkim-atps=neutral
-Received: from mail-oa1-x4a.google.com (mail-oa1-x4a.google.com [IPv6:2001:4860:4864:20::4a])
+Received: from mail-pl1-x64a.google.com (mail-pl1-x64a.google.com [IPv6:2607:f8b0:4864:20::64a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMw0v3Frbz3bgW
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Dec 2022 10:10:39 +1100 (AEDT)
-Received: by mail-oa1-x4a.google.com with SMTP id 586e51a60fabf-143248a54e5so127281fac.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Nov 2022 15:10:39 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMw0s0Q3Dz3bjv
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Dec 2022 10:10:37 +1100 (AEDT)
+Received: by mail-pl1-x64a.google.com with SMTP id z10-20020a170902ccca00b001898329db72so13113610ple.21
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Nov 2022 15:10:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:reply-to:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aKa4qX4aDdx6gvF0cYN6nETCrhJ4tNYpG1mvb7syK3o=;
-        b=hHwMew+JSB9FkzxQMaX/4lXjqBXrsR2HJcdv2uakADxR3kWcZRlQ7C2hYI2R6wh2j+
-         soQ37LpW03hcFXp8lJe1iL1E9NkgwaBOnfMN9lm4y4oXg28LND1TqJT1wRbBYqaPal/k
-         tCOOIhtq66PSMoAtSgQhsAQ3pRw7PI30nJWGUPRypWo66CD+Gfn2yExb5G/kSSTH+qsi
-         vDk8o1GMNBG21DRimYUtdxku+SkaYSkrVg0OW+HosZG84kC5BNrvHX1FxdetpLCfaQGl
-         ngY1QSkOkzNCayJ5MpPvpJWGgQ3ZJsUwWjrB9/naUfSCBSqc4tz9oYHVPQdICLf6YKOj
-         UOig==
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
+        bh=Vo4Z77dzNvKrehTzYt4K2iI8Cmx6h54XHztU8GehcL8=;
+        b=hivL5TC6LdtOW2OmuNQou4Gy4U4tXiu2+6M2wfmsMZujN2ItoQgS8dZtbchvpp7Sy7
+         gQP8KJQ85CZqnMEDc6KXPFPpNulQ0aQGew3NpHF0ryb6ACX+mCcZQj6XUPxiNhI1xHp0
+         rD08FH6W6Tc9mMBWGEmLcFaU5I8qQn9La/dT9kb2EVRIeOnNi6kCex/5Q2SGr2bRQoGy
+         G1EteOn3rd3vULZF1PgE4auaSNRlpUDh4ixH2iWSNr973dhsYVWWF6gRbX3Yo5SuVqh0
+         qNdORoE9jtDj45oUX7KBmjx++vi1W+JogYW4rHwuh1tKXtb0Sz6z/D5a80vr3bmmUG42
+         8e0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:reply-to:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=aKa4qX4aDdx6gvF0cYN6nETCrhJ4tNYpG1mvb7syK3o=;
-        b=pFZ1WQrIKm6sGwKF4z8z3hzGP7NTMP8eN8/MWKaAYHZ5HXY7UL4aOPJ04GR2CK5Ffq
-         OuV81AmnCk/HzR8qvGEv93T8+CYQgWrrPnoVqDzyY4KY3i+Ol+s/390JzVMAekC1u4Nw
-         sU4jnGrmmeEZMh0zsT9HztCJ/L/B5SJQpEiL+xoLhMqSgWAFJOBbS81JjhVCsvzT0UKO
-         L7bEw3nOKcauqyYLwbbSoj8FClW/Xd+5ATSMyHDLU33lslpGcfU9DhTo2wlMa3nPh0ct
-         5bpQtT9RJ7Pg6Ni1SaMREUUrBzlB3/C+goRj4kSQUSfhbUJUPSkbq7hFq91EmspuP1Um
-         KabA==
-X-Gm-Message-State: ANoB5plJSbOCxyk+wADW9Fo6ZMHGKPVFN1cTzyJoBnUrdp2Cik/+3hTZ
-	Jf0K1pwASw9YQoq+bVdT2Syx8eODdA4=
-X-Google-Smtp-Source: AA0mqf51u5a2rRyiNdjg5YBoKgU3OlNqfaadebl2G6/Q2GTnKp0Tsp1t65U5NTGk3wy62Y7NHB25PAFR6bU=
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Vo4Z77dzNvKrehTzYt4K2iI8Cmx6h54XHztU8GehcL8=;
+        b=FUXejJIYI5SVNIYTrnk/vSnO5ATK0i+a93azR0CYjPELgKT56FEhovWOsZY2xvZmnf
+         v3ewD8Y5W+EFOyQRLpAxWRZUPoRfAhqTLTdvkEgS0kJsbw7PVhu9dhsL9IIu1XRmRQk1
+         h2CJzVQD6ip0eiyEulUIgJ3SvfpYHeBHSu4P3cWymNu6pWkSKRYsgo92hLGBzor3v28u
+         35ObsYvz97czi3ihrtsXsvrwrr3VOiAiHMi2PoBbhuOXg0zNr+4cuZJwLILKjYvy4u6E
+         VZHVsTHT2F3xcOlcmwFR4Rnq73allImg6VfJ4/A7f4/BxAEeeeakqU2ZGhKtrP2Kga5D
+         sKrA==
+X-Gm-Message-State: ANoB5pk6quQsZMuvuelMmRuHbGDTLo/k1HnEOH1aDiusgr61OxtYqHxy
+	hcuFjpaLFPOZVVhX3rBbgWQlqQ8NfqU=
+X-Google-Smtp-Source: AA0mqf57HeX+xXTuMleSA1eLy2x+uTa7n6xyJaGs3rJOB3hWgy2t3owM2xuaTXoQ+YAD0k4pCSHrJ5hlSv0=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a05:6870:a78a:b0:13b:c612:b5ae with SMTP id
- x10-20020a056870a78a00b0013bc612b5aemr26861133oao.203.1669849833136; Wed, 30
- Nov 2022 15:10:33 -0800 (PST)
-Date: Wed, 30 Nov 2022 23:09:16 +0000
+ (user=seanjc job=sendgmr) by 2002:a17:90b:f89:b0:219:5b3b:2b9f with SMTP id
+ ft9-20020a17090b0f8900b002195b3b2b9fmr848562pjb.2.1669849834864; Wed, 30 Nov
+ 2022 15:10:34 -0800 (PST)
+Date: Wed, 30 Nov 2022 23:09:17 +0000
 In-Reply-To: <20221130230934.1014142-1-seanjc@google.com>
 Mime-Version: 1.0
 References: <20221130230934.1014142-1-seanjc@google.com>
 X-Mailer: git-send-email 2.38.1.584.g0f3c55d4c2-goog
-Message-ID: <20221130230934.1014142-33-seanjc@google.com>
-Subject: [PATCH v2 32/50] KVM: Drop kvm_arch_check_processor_compat() hook
+Message-ID: <20221130230934.1014142-34-seanjc@google.com>
+Subject: [PATCH v2 33/50] KVM: x86: Use KBUILD_MODNAME to specify vendor
+ module name
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
 	Huacai Chen <chenhuacai@kernel.org>, 
@@ -73,7 +73,6 @@ To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>,
 	Sean Christopherson <seanjc@google.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
 	David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,297 +89,46 @@ Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Atish Patra <atis
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Drop kvm_arch_check_processor_compat() and its support code now that all
-architecture implementations are nops.
+Use KBUILD_MODNAME to specify the vendor module name instead of manually
+writing out the name to make it a bit more obvious that the name isn't
+completely arbitrary.  A future patch will also use KBUILD_MODNAME to
+define pr_fmt, at which point using KBUILD_MODNAME for kvm_x86_ops.name
+further reinforces the intended usage of kvm_x86_ops.name.
+
+No functional change intended.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
-Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-Reviewed-by: Eric Farman <farman@linux.ibm.com>	# s390
-Acked-by: Anup Patel <anup@brainfault.org>
 ---
- arch/arm64/kvm/arm.c       |  7 +------
- arch/mips/kvm/mips.c       |  7 +------
- arch/powerpc/kvm/book3s.c  |  2 +-
- arch/powerpc/kvm/e500.c    |  2 +-
- arch/powerpc/kvm/e500mc.c  |  2 +-
- arch/powerpc/kvm/powerpc.c |  5 -----
- arch/riscv/kvm/main.c      |  7 +------
- arch/s390/kvm/kvm-s390.c   |  7 +------
- arch/x86/kvm/svm/svm.c     |  4 ++--
- arch/x86/kvm/vmx/vmx.c     |  4 ++--
- arch/x86/kvm/x86.c         |  5 -----
- include/linux/kvm_host.h   |  4 +---
- virt/kvm/kvm_main.c        | 24 +-----------------------
- 13 files changed, 13 insertions(+), 67 deletions(-)
+ arch/x86/kvm/svm/svm.c | 2 +-
+ arch/x86/kvm/vmx/vmx.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-index 936ef7d1ea94..e915b1d9f2cd 100644
---- a/arch/arm64/kvm/arm.c
-+++ b/arch/arm64/kvm/arm.c
-@@ -63,11 +63,6 @@ int kvm_arch_vcpu_should_kick(struct kvm_vcpu *vcpu)
- 	return kvm_vcpu_exiting_guest_mode(vcpu) =3D=3D IN_GUEST_MODE;
- }
-=20
--int kvm_arch_check_processor_compat(void *opaque)
--{
--	return 0;
--}
--
- int kvm_vm_ioctl_enable_cap(struct kvm *kvm,
- 			    struct kvm_enable_cap *cap)
- {
-@@ -2273,7 +2268,7 @@ static __init int kvm_arm_init(void)
- 	 * FIXME: Do something reasonable if kvm_init() fails after pKVM
- 	 * hypervisor protection is finalized.
- 	 */
--	err =3D kvm_init(NULL, sizeof(struct kvm_vcpu), 0, THIS_MODULE);
-+	err =3D kvm_init(sizeof(struct kvm_vcpu), 0, THIS_MODULE);
- 	if (err)
- 		goto out_subs;
-=20
-diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
-index 3cade648827a..36c8991b5d39 100644
---- a/arch/mips/kvm/mips.c
-+++ b/arch/mips/kvm/mips.c
-@@ -135,11 +135,6 @@ void kvm_arch_hardware_disable(void)
- 	kvm_mips_callbacks->hardware_disable();
- }
-=20
--int kvm_arch_check_processor_compat(void *opaque)
--{
--	return 0;
--}
--
- extern void kvm_init_loongson_ipi(struct kvm *kvm);
-=20
- int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
-@@ -1636,7 +1631,7 @@ static int __init kvm_mips_init(void)
-=20
- 	register_die_notifier(&kvm_mips_csr_die_notifier);
-=20
--	ret =3D kvm_init(NULL, sizeof(struct kvm_vcpu), 0, THIS_MODULE);
-+	ret =3D kvm_init(sizeof(struct kvm_vcpu), 0, THIS_MODULE);
- 	if (ret) {
- 		unregister_die_notifier(&kvm_mips_csr_die_notifier);
- 		return ret;
-diff --git a/arch/powerpc/kvm/book3s.c b/arch/powerpc/kvm/book3s.c
-index 87283a0e33d8..57f4e7896d67 100644
---- a/arch/powerpc/kvm/book3s.c
-+++ b/arch/powerpc/kvm/book3s.c
-@@ -1052,7 +1052,7 @@ static int kvmppc_book3s_init(void)
- {
- 	int r;
-=20
--	r =3D kvm_init(NULL, sizeof(struct kvm_vcpu), 0, THIS_MODULE);
-+	r =3D kvm_init(sizeof(struct kvm_vcpu), 0, THIS_MODULE);
- 	if (r)
- 		return r;
- #ifdef CONFIG_KVM_BOOK3S_32_HANDLER
-diff --git a/arch/powerpc/kvm/e500.c b/arch/powerpc/kvm/e500.c
-index 0ea61190ec04..b0f695428733 100644
---- a/arch/powerpc/kvm/e500.c
-+++ b/arch/powerpc/kvm/e500.c
-@@ -531,7 +531,7 @@ static int __init kvmppc_e500_init(void)
- 	flush_icache_range(kvmppc_booke_handlers, kvmppc_booke_handlers +
- 			   ivor[max_ivor] + handler_len);
-=20
--	r =3D kvm_init(NULL, sizeof(struct kvmppc_vcpu_e500), 0, THIS_MODULE);
-+	r =3D kvm_init(sizeof(struct kvmppc_vcpu_e500), 0, THIS_MODULE);
- 	if (r)
- 		goto err_out;
- 	kvm_ops_e500.owner =3D THIS_MODULE;
-diff --git a/arch/powerpc/kvm/e500mc.c b/arch/powerpc/kvm/e500mc.c
-index 795667f7ebf0..611532a0dedc 100644
---- a/arch/powerpc/kvm/e500mc.c
-+++ b/arch/powerpc/kvm/e500mc.c
-@@ -404,7 +404,7 @@ static int __init kvmppc_e500mc_init(void)
- 	 */
- 	kvmppc_init_lpid(KVMPPC_NR_LPIDS/threads_per_core);
-=20
--	r =3D kvm_init(NULL, sizeof(struct kvmppc_vcpu_e500), 0, THIS_MODULE);
-+	r =3D kvm_init(sizeof(struct kvmppc_vcpu_e500), 0, THIS_MODULE);
- 	if (r)
- 		goto err_out;
- 	kvm_ops_e500mc.owner =3D THIS_MODULE;
-diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
-index 01d0f9935e6c..f5b4ff6bfc89 100644
---- a/arch/powerpc/kvm/powerpc.c
-+++ b/arch/powerpc/kvm/powerpc.c
-@@ -440,11 +440,6 @@ int kvm_arch_hardware_enable(void)
- 	return 0;
- }
-=20
--int kvm_arch_check_processor_compat(void *opaque)
--{
--	return 0;
--}
--
- int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
- {
- 	struct kvmppc_ops *kvm_ops =3D NULL;
-diff --git a/arch/riscv/kvm/main.c b/arch/riscv/kvm/main.c
-index 4710a6751687..34c3dece6990 100644
---- a/arch/riscv/kvm/main.c
-+++ b/arch/riscv/kvm/main.c
-@@ -20,11 +20,6 @@ long kvm_arch_dev_ioctl(struct file *filp,
- 	return -EINVAL;
- }
-=20
--int kvm_arch_check_processor_compat(void *opaque)
--{
--	return 0;
--}
--
- int kvm_arch_hardware_enable(void)
- {
- 	unsigned long hideleg, hedeleg;
-@@ -110,6 +105,6 @@ static int __init riscv_kvm_init(void)
-=20
- 	kvm_info("VMID %ld bits available\n", kvm_riscv_gstage_vmid_bits());
-=20
--	return kvm_init(NULL, sizeof(struct kvm_vcpu), 0, THIS_MODULE);
-+	return kvm_init(sizeof(struct kvm_vcpu), 0, THIS_MODULE);
- }
- module_init(riscv_kvm_init);
-diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-index 25b08b956888..7ad8252e92c2 100644
---- a/arch/s390/kvm/kvm-s390.c
-+++ b/arch/s390/kvm/kvm-s390.c
-@@ -262,11 +262,6 @@ int kvm_arch_hardware_enable(void)
- 	return 0;
- }
-=20
--int kvm_arch_check_processor_compat(void *opaque)
--{
--	return 0;
--}
--
- /* forward declarations */
- static void kvm_gmap_notifier(struct gmap *gmap, unsigned long start,
- 			      unsigned long end);
-@@ -5716,7 +5711,7 @@ static int __init kvm_s390_init(void)
- 	if (r)
- 		return r;
-=20
--	r =3D kvm_init(NULL, sizeof(struct kvm_vcpu), 0, THIS_MODULE);
-+	r =3D kvm_init(sizeof(struct kvm_vcpu), 0, THIS_MODULE);
- 	if (r) {
- 		__kvm_s390_exit();
- 		return r;
 diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index d7ea1c1175c2..d9a54590591d 100644
+index d9a54590591d..a875cf7b2942 100644
 --- a/arch/x86/kvm/svm/svm.c
 +++ b/arch/x86/kvm/svm/svm.c
-@@ -5103,8 +5103,8 @@ static int __init svm_init(void)
- 	 * Common KVM initialization _must_ come last, after this, /dev/kvm is
- 	 * exposed to userspace!
- 	 */
--	r =3D kvm_init(NULL, sizeof(struct vcpu_svm),
--		     __alignof__(struct vcpu_svm), THIS_MODULE);
-+	r =3D kvm_init(sizeof(struct vcpu_svm), __alignof__(struct vcpu_svm),
-+		     THIS_MODULE);
- 	if (r)
- 		goto err_kvm_init;
-=20
+@@ -4695,7 +4695,7 @@ static int svm_vm_init(struct kvm *kvm)
+ }
+ 
+ static struct kvm_x86_ops svm_x86_ops __initdata = {
+-	.name = "kvm_amd",
++	.name = KBUILD_MODNAME,
+ 
+ 	.hardware_unsetup = svm_hardware_unsetup,
+ 	.hardware_enable = svm_hardware_enable,
 diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 8deb1bd60c10..b6f08a0a1435 100644
+index b6f08a0a1435..229a9cf485f0 100644
 --- a/arch/x86/kvm/vmx/vmx.c
 +++ b/arch/x86/kvm/vmx/vmx.c
-@@ -8592,8 +8592,8 @@ static int __init vmx_init(void)
- 	 * Common KVM initialization _must_ come last, after this, /dev/kvm is
- 	 * exposed to userspace!
- 	 */
--	r =3D kvm_init(NULL, sizeof(struct vcpu_vmx),
--		     __alignof__(struct vcpu_vmx), THIS_MODULE);
-+	r =3D kvm_init(sizeof(struct vcpu_vmx), __alignof__(struct vcpu_vmx),
-+		     THIS_MODULE);
- 	if (r)
- 		goto err_kvm_init;
-=20
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 3571bc968cf8..566156b34314 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -12071,11 +12071,6 @@ void kvm_arch_hardware_disable(void)
- 	drop_user_return_notifiers();
+@@ -8102,7 +8102,7 @@ static void vmx_vm_destroy(struct kvm *kvm)
  }
-=20
--int kvm_arch_check_processor_compat(void *opaque)
--{
--	return 0;
--}
--
- bool kvm_vcpu_is_reset_bsp(struct kvm_vcpu *vcpu)
- {
- 	return vcpu->kvm->arch.bsp_vcpu_id =3D=3D vcpu->vcpu_id;
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 7dde28333e7c..616e8e90558b 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -953,8 +953,7 @@ static inline void kvm_irqfd_exit(void)
- {
- }
- #endif
--int kvm_init(void *opaque, unsigned vcpu_size, unsigned vcpu_align,
--		  struct module *module);
-+int kvm_init(unsigned vcpu_size, unsigned vcpu_align, struct module *modul=
-e);
- void kvm_exit(void);
-=20
- void kvm_get_kvm(struct kvm *kvm);
-@@ -1460,7 +1459,6 @@ static inline void kvm_create_vcpu_debugfs(struct kvm=
-_vcpu *vcpu) {}
-=20
- int kvm_arch_hardware_enable(void);
- void kvm_arch_hardware_disable(void);
--int kvm_arch_check_processor_compat(void *opaque);
- int kvm_arch_vcpu_runnable(struct kvm_vcpu *vcpu);
- bool kvm_arch_vcpu_in_kernel(struct kvm_vcpu *vcpu);
- int kvm_arch_vcpu_should_kick(struct kvm_vcpu *vcpu);
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index a4a10a0b322f..3900bd3d75cb 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -5833,36 +5833,14 @@ void kvm_unregister_perf_callbacks(void)
- }
- #endif
-=20
--struct kvm_cpu_compat_check {
--	void *opaque;
--	int *ret;
--};
--
--static void check_processor_compat(void *data)
-+int kvm_init(unsigned vcpu_size, unsigned vcpu_align, struct module *modul=
-e)
- {
--	struct kvm_cpu_compat_check *c =3D data;
--
--	*c->ret =3D kvm_arch_check_processor_compat(c->opaque);
--}
--
--int kvm_init(void *opaque, unsigned vcpu_size, unsigned vcpu_align,
--		  struct module *module)
--{
--	struct kvm_cpu_compat_check c;
- 	int r;
- 	int cpu;
-=20
- 	if (!zalloc_cpumask_var(&cpus_hardware_enabled, GFP_KERNEL))
- 		return -ENOMEM;
-=20
--	c.ret =3D &r;
--	c.opaque =3D opaque;
--	for_each_online_cpu(cpu) {
--		smp_call_function_single(cpu, check_processor_compat, &c, 1);
--		if (r < 0)
--			goto out_free_2;
--	}
--
- 	r =3D cpuhp_setup_state_nocalls(CPUHP_AP_KVM_STARTING, "kvm/cpu:starting"=
-,
- 				      kvm_starting_cpu, kvm_dying_cpu);
- 	if (r)
---=20
+ 
+ static struct kvm_x86_ops vmx_x86_ops __initdata = {
+-	.name = "kvm_intel",
++	.name = KBUILD_MODNAME,
+ 
+ 	.hardware_unsetup = vmx_hardware_unsetup,
+ 
+-- 
 2.38.1.584.g0f3c55d4c2-goog
 
