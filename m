@@ -1,46 +1,98 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60B8E63CD56
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 03:25:08 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4449C63CD92
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 03:57:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NMNMk2H8Xz3bhP
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 13:25:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NMP4c3sFvz3bYL
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 13:57:04 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DQ1ReAaJ;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com; envelope-from=yangyicong@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DQ1ReAaJ;
+	dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMNM66bzqz30hh
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Nov 2022 13:24:31 +1100 (AEDT)
-Received: from canpemm500009.china.huawei.com (unknown [172.30.72.53])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4NMNFY6J5yzqSpv;
-	Wed, 30 Nov 2022 10:19:45 +0800 (CST)
-Received: from [10.67.102.169] (10.67.102.169) by
- canpemm500009.china.huawei.com (7.192.105.203) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Wed, 30 Nov 2022 10:23:47 +0800
-Subject: Re: [PATCH v7 1/2] mm/tlbbatch: Introduce
- arch_tlbbatch_should_defer()
-To: Andrew Morton <akpm@linux-foundation.org>
-References: <20221117082648.47526-1-yangyicong@huawei.com>
- <20221117082648.47526-2-yangyicong@huawei.com>
- <20221129152306.54b6d439e2a0ca7ece1d1afa@linux-foundation.org>
-From: Yicong Yang <yangyicong@huawei.com>
-Message-ID: <9999b87d-5f7e-275b-d99f-b51ef19361eb@huawei.com>
-Date: Wed, 30 Nov 2022 10:23:47 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMP3d5Pc7z3bTf
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Nov 2022 13:56:13 +1100 (AEDT)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AU1btGT037490;
+	Wed, 30 Nov 2022 02:56:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=7FipXzZjVN/5jb2NAxQoE9zidEIBBfse6psmRp9L8hU=;
+ b=DQ1ReAaJTUwUJUiONuDDbai6QskLOIguhNv/2ttzMLAXeIhb++LiAa6X7/7KXBPHCEog
+ eSLwy6wN94zz2ueLKs8B7pblv182GuZmYCSVW8cDY6ySGxnkgABxamaRzGtu/oBYFtIS
+ BzibZ2etX+Q1o0fQGAZhp5Z53j0j0h5XoLUGWYcR2yj/NoELXXh5hNwnaHj4NnRBldQy
+ RtRf6dNGu95Wf/Jy8US//TGVTILpcJRPWvNLAT8xyswuPFd2MtaROYmzOpizHge2XKmc
+ xc1Tm3HTPVXd7gmnxruz/xO2ZdI0Du5cZrVXn6jFwSMVJmrvBnU0zW7Y2/MrqpRndxpm ig== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m5vv0jdej-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 30 Nov 2022 02:56:04 +0000
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2AU2UGj0001671;
+	Wed, 30 Nov 2022 02:56:03 GMT
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com [159.122.73.72])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m5vv0jddv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 30 Nov 2022 02:56:03 +0000
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+	by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2AU2oeH6013099;
+	Wed, 30 Nov 2022 02:56:01 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+	by ppma06fra.de.ibm.com with ESMTP id 3m3a2hun3b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 30 Nov 2022 02:56:01 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
+	by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2AU2twa366781514
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 30 Nov 2022 02:55:58 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8CFBCAE051;
+	Wed, 30 Nov 2022 02:55:58 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 37F15AE04D;
+	Wed, 30 Nov 2022 02:55:58 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Wed, 30 Nov 2022 02:55:58 +0000 (GMT)
+Received: from [10.61.2.128] (haven.au.ibm.com [9.192.254.114])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 6C1C4600A5;
+	Wed, 30 Nov 2022 13:55:53 +1100 (AEDT)
+Message-ID: <6e3bdb31c06b1b9b8d85595a97468cb4310f43e9.camel@linux.ibm.com>
+Subject: Re: [PATCH 3/6] powerpc/pseries: Return -EIO instead of -EINTR for
+ H_ABORTED error
+From: Andrew Donnellan <ajd@linux.ibm.com>
+To: Nayna Jain <nayna@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Date: Wed, 30 Nov 2022 13:55:52 +1100
+In-Reply-To: <20221106205839.600442-4-nayna@linux.ibm.com>
+References: <20221106205839.600442-1-nayna@linux.ibm.com>
+	 <20221106205839.600442-4-nayna@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.1 (3.46.1-1.fc37) 
 MIME-Version: 1.0
-In-Reply-To: <20221129152306.54b6d439e2a0ca7ece1d1afa@linux-foundation.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.67.102.169]
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- canpemm500009.china.huawei.com (7.192.105.203)
-X-CFilter-Loop: Reflected
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: DLlg0fQeRBQQq9um4WUfVOkw6AKFi00e
+X-Proofpoint-GUID: TZsdqdnE3fOaPuMNwVXibWVbiyY_qE3g
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-11-30_02,2022-11-29_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 mlxscore=0
+ lowpriorityscore=0 malwarescore=0 impostorscore=0 spamscore=0 phishscore=0
+ clxscore=1015 priorityscore=1501 bulkscore=0 adultscore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2210170000
+ definitions=main-2211300016
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,99 +104,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: wangkefeng.wang@huawei.com, prime.zeng@hisilicon.com, realmz6@gmail.com, linux-doc@vger.kernel.org, peterz@infradead.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, punit.agrawal@bytedance.com, linux-riscv@lists.infradead.org, will@kernel.org, Anshuman Khandual <khandual@linux.vnet.ibm.com>, linux-s390@vger.kernel.org, zhangshiming@oppo.com, lipeifeng@oppo.com, corbet@lwn.net, x86@kernel.org, Barry Song <21cnbao@gmail.com>, arnd@arndb.de, anshuman.khandual@arm.com, openrisc@lists.librecores.org, darren@os.amperecomputing.com, yangyicong@hisilicon.com, linux-arm-kernel@lists.infradead.org, Barry Song <baohua@kernel.org>, guojian@oppo.com, xhao@linux.alibaba.com, linux-mips@vger.kernel.org, huzhanyuan@oppo.com, linuxppc-dev@lists.ozlabs.org
+Cc: gjoyce@linux.vnet.ibm.com, npiggin@gmail.com, brking@linux.ibm.com, George Wilson <gcwilson@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2022/11/30 7:23, Andrew Morton wrote:
-> On Thu, 17 Nov 2022 16:26:47 +0800 Yicong Yang <yangyicong@huawei.com> wrote:
-> 
->> From: Anshuman Khandual <khandual@linux.vnet.ibm.com>
->>
->> The entire scheme of deferred TLB flush in reclaim path rests on the
->> fact that the cost to refill TLB entries is less than flushing out
->> individual entries by sending IPI to remote CPUs. But architecture
->> can have different ways to evaluate that. Hence apart from checking
->> TTU_BATCH_FLUSH in the TTU flags, rest of the decision should be
->> architecture specific.
->>
->> ...
->>
->> --- a/arch/x86/include/asm/tlbflush.h
->> +++ b/arch/x86/include/asm/tlbflush.h
->> @@ -240,6 +240,18 @@ static inline void flush_tlb_page(struct vm_area_struct *vma, unsigned long a)
->>  	flush_tlb_mm_range(vma->vm_mm, a, a + PAGE_SIZE, PAGE_SHIFT, false);
->>  }
->>  
->> +static inline bool arch_tlbbatch_should_defer(struct mm_struct *mm)
->> +{
->> +	bool should_defer = false;
->> +
->> +	/* If remote CPUs need to be flushed then defer batch the flush */
->> +	if (cpumask_any_but(mm_cpumask(mm), get_cpu()) < nr_cpu_ids)
->> +		should_defer = true;
->> +	put_cpu();
->> +
->> +	return should_defer;
->> +}
->> +
->>  static inline u64 inc_mm_tlb_gen(struct mm_struct *mm)
->>  {
->>  	/*
->> diff --git a/mm/rmap.c b/mm/rmap.c
->> index 2ec925e5fa6a..a9ab10bc0144 100644
->> --- a/mm/rmap.c
->> +++ b/mm/rmap.c
->> @@ -685,17 +685,10 @@ static void set_tlb_ubc_flush_pending(struct mm_struct *mm, bool writable)
->>   */
->>  static bool should_defer_flush(struct mm_struct *mm, enum ttu_flags flags)
->>  {
->> -	bool should_defer = false;
->> -
->>  	if (!(flags & TTU_BATCH_FLUSH))
->>  		return false;
->>  
->> -	/* If remote CPUs need to be flushed then defer batch the flush */
->> -	if (cpumask_any_but(mm_cpumask(mm), get_cpu()) < nr_cpu_ids)
->> -		should_defer = true;
->> -	put_cpu();
->> -
->> -	return should_defer;
->> +	return arch_tlbbatch_should_defer(mm);
->>  }
-> 
-> I think this conversion could have been done better.
-> 
-> should_defer_flush() is compiled if
-> CONFIG_ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH.  So the patch implicitly
-> assumes that only x86 implements
-> CONFIG_ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH.  Presently true, but what
-> happens if sparc (for example) wants to set
-> CONFIG_ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH?  Now sparc needs its private
-> version of arch_tlbbatch_should_defer(), even if that is identical to
-> x86's.
-> 
+On Sun, 2022-11-06 at 15:58 -0500, Nayna Jain wrote:
+> Some commands for eg. "cat" might continue to retry on encountering
+> EINTR. This is not expected for original error code H_ABORTED.
+>=20
+> Map H_ABORTED to more relevant Linux error code EIO.
+>=20
+> Fixes: 2454a7af0f2a ("powerpc/pseries: define driver for Platform
+> KeyStore")
+> Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
 
-The current logic is if architecture want to enable batched TLB flush, they
-need to implement their own version of arch_tlbbatch_should_defer() (for the
-hint to defer the TLB flush) and arch_tlbbatch_add_mm() (for pending TLB flush)
-and select ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH. That's what we do in Patch 2/2 for
-enabling this on arm64.
+The interface spec states that, for PKS-related hcalls, H_Aborted means
+"error occurred processing request" rather than something that would
+specifically map to EINTR, so I think EIO is appropriate here.
 
-Since it is architecture specific, we must rely on the architecture to implement
-these two functions. Only select the ARCH_HAS_ARCH_TLBBATCH_SHOULD_DEFER is not
-enough.
+Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
 
-> Wouldn't it be better to make should_defer_flush() a __weak
-> function in rmap.c, or a static inline inside #ifndef
-> ARCH_HAS_ARCH_TLBBATCH_SHOULD_DEFER, or whatever technique best fits?
-> 
+> ---
+> =C2=A0arch/powerpc/platforms/pseries/plpks.c | 2 +-
+> =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/arch/powerpc/platforms/pseries/plpks.c
+> b/arch/powerpc/platforms/pseries/plpks.c
+> index 32ce4d780d8f..cbea447122ca 100644
+> --- a/arch/powerpc/platforms/pseries/plpks.c
+> +++ b/arch/powerpc/platforms/pseries/plpks.c
+> @@ -111,7 +111,7 @@ static int pseries_status_to_err(int rc)
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0err =3D -EEXIST;
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0break;
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0case H_ABORTED:
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0err =3D -EINTR;
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0err =3D -EIO;
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0break;
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0default:
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0err =3D -EINVAL;
 
-When ARCH_HAS_ARCH_TLBBATCH_SHOULD_DEFER is not selected, should_defer_flush()
-is implemented to only return false. I think this match what you want already.
-
-Thanks.
-
-
-
-
+--=20
+Andrew Donnellan    OzLabs, ADL Canberra
+ajd@linux.ibm.com   IBM Australia Limited
