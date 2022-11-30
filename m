@@ -2,31 +2,31 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2BC263D270
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 10:50:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC9F763D268
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 10:48:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NMZFV5MkZz3hDb
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 20:50:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NMZCn4QCXz3h49
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 20:48:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMYtn3mhJz3fQ9
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Nov 2022 20:34:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMYtk3bNnz3fQT
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Nov 2022 20:34:06 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NMYtn2VYfz4xvs;
-	Wed, 30 Nov 2022 20:34:09 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NMYtj2PK0z4xvr;
+	Wed, 30 Nov 2022 20:34:05 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Deming Wang <wangdeming@inspur.com>, mpe@ellerman.id.au
-In-Reply-To: <20220701094553.1722-1-wangdeming@inspur.com>
-References: <20220701094553.1722-1-wangdeming@inspur.com>
-Subject: Re: [PATCH] powerpc: Fix formatting problems to make code look more beautiful
-Message-Id: <166980022583.3017288.6500427851554298863.b4-ty@ellerman.id.au>
+To: Stephen Kitt <steve@sk2.org>, Benjamin Herrenschmidt <benh@kernel.crashing.org>
+In-Reply-To: <20220616170425.1346081-1-steve@sk2.org>
+References: <20220616170425.1346081-1-steve@sk2.org>
+Subject: Re: [PATCH v2] macintosh: via-pmu-backlight: Use backlight helper
+Message-Id: <166980022506.3017288.12402115611479311613.b4-ty@ellerman.id.au>
 Date: Wed, 30 Nov 2022 20:23:45 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -42,18 +42,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, paulus@samba.org
+Cc: Daniel Thompson <daniel.thompson@linaro.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 1 Jul 2022 05:45:53 -0400, Deming Wang wrote:
-> Operators should be separated by spaces in tce_buildmulti_pSeriesLP
+On Thu, 16 Jun 2022 19:04:24 +0200, Stephen Kitt wrote:
+> backlight_properties.fb_blank is deprecated. The states it represents
+> are handled by other properties; but instead of accessing those
+> properties directly, drivers should use the helpers provided by
+> backlight.h.
 > 
+> Instead of retrieving the backlight brightness in struct
+> backlight_properties manually, and then checking whether the backlight
+> should be on at all, use backlight_get_brightness() which does all
+> this and insulates this from future changes.
 > 
+> [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc: Fix formatting problems to make code look more beautiful
-      https://git.kernel.org/powerpc/c/14b5d59a261b1947db287b3b52f4bb1dc496dede
+[1/1] macintosh: via-pmu-backlight: Use backlight helper
+      https://git.kernel.org/powerpc/c/a0542d2c45a64162e63ad2d80684e57de0566271
 
 cheers
