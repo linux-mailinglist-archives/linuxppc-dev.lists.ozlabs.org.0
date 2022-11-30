@@ -1,33 +1,33 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6895863D224
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 10:38:47 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DB1A63D234
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 10:40:45 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NMZ052W0mz3g1l
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 20:38:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NMZ2M2yGqz3gBm
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 20:40:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMYqp2wbkz3bfV
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Nov 2022 20:31:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMYqs0qztz3bf7
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Nov 2022 20:31:37 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NMYqn6plFz4xYQ;
-	Wed, 30 Nov 2022 20:31:33 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NMYqr6mR0z4xN4;
+	Wed, 30 Nov 2022 20:31:36 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: mpe@ellerman.id.au, Disha Goel <disgoel@linux.vnet.ibm.com>
-In-Reply-To: <20220916105736.268153-1-disgoel@linux.vnet.ibm.com>
-References: <20220916105736.268153-1-disgoel@linux.vnet.ibm.com>
-Subject: Re: [PATCH v2 0/2] Remove unused macros from asm-offset
-Message-Id: <166980023498.3017288.13262429077014011611.b4-ty@ellerman.id.au>
-Date: Wed, 30 Nov 2022 20:23:54 +1100
+To: Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Michael Ellerman <mpe@ellerman.id.au>, "Gustavo A. R. Silva" <gustavoars@kernel.org>
+In-Reply-To: <YySE6FHiOcbWWR+9@work>
+References: <YySE6FHiOcbWWR+9@work>
+Subject: Re: [PATCH][next] powerpc/xmon: Fix -Wswitch-unreachable warning in bpt_cmds
+Message-Id: <166980023574.3017288.3366504099438296796.b4-ty@ellerman.id.au>
+Date: Wed, 30 Nov 2022 20:23:55 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -42,29 +42,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kjain@linux.ibm.com, atrajeev@linux.vnet.ibm.com, maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com
+Cc: linuxppc-dev@lists.ozlabs.org, linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 16 Sep 2022 16:27:34 +0530, Disha Goel wrote:
-> The kvm code was refactored to convert some of kvm assembly routines to C.
-> This includes commits which moved code path for the kvm guest entry/exit
-> for p7/8 from aseembly to C. As part of the code changes, usage of some of
-> the macros were removed. But definitions still exist in the assembly files.
-> Commits are listed below:
+On Fri, 16 Sep 2022 15:15:04 +0100, Gustavo A. R. Silva wrote:
+> When building with automatic stack variable initialization, GCC 12
+> complains about variables defined outside of switch case statements.
+> Move the variable into the case that uses it, which silences the warning:
 > 
-> Commit 2e1ae9cd56f8 ("KVM: PPC: Book3S HV: Implement radix prefetch workaround by disabling MMU")
-> Commit 9769a7fd79b6 ("KVM: PPC: Book3S HV: Remove radix guest support from P7/8 path")
-> Commit fae5c9f3664b ("KVM: PPC: Book3S HV: remove ISA v3.0 and v3.1 support from P7/8 path")
-> Commit 57dc0eed73ca ("KVM: PPC: Book3S HV P9: Implement PMU save/restore in C")
+> arch/powerpc/xmon/xmon.c: In function ‘bpt_cmds’:
+> arch/powerpc/xmon/xmon.c:1529:13: warning: statement will never be executed [-Wswitch-unreachable]
+>  1529 |         int mode;
+>       |             ^~~~
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/2] powerpc/kvm: Remove unused macros from asm-offset
-      https://git.kernel.org/powerpc/c/2223552256dfc48435e0699dbe1e9b8d2cd56b06
-[2/2] powerpc/kvm: Remove unused references for MMCR3/SIER2/SIER3 registers
-      https://git.kernel.org/powerpc/c/4ac9d3187cc7ccba25f76a3faef3e08a366f77b9
+[1/1] powerpc/xmon: Fix -Wswitch-unreachable warning in bpt_cmds
+      https://git.kernel.org/powerpc/c/1c4a4a4c8410be4a231a58b23e7a30923ff954ac
 
 cheers
