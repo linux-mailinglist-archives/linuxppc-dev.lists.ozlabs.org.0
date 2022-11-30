@@ -2,31 +2,31 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF1E263D23F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 10:42:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCB7A63D20E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 10:34:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NMZ4n6MyNz3chq
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 20:42:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NMYts5tMLz3fS0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 20:34:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMYqw3DZwz3bgT
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Nov 2022 20:31:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMYqf3CYtz30F7
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Nov 2022 20:31:26 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NMYqw1zSKz4xYV;
-	Wed, 30 Nov 2022 20:31:40 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NMYqd3FGjz4xND;
+	Wed, 30 Nov 2022 20:31:25 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: oohall@gmail.com, Bo Liu <liubo03@inspur.com>, npiggin@gmail.com, christophe.leroy@csgroup.eu, mpe@ellerman.id.au, mahesh@linux.ibm.com
-In-Reply-To: <20221031063706.2770-1-liubo03@inspur.com>
-References: <20221031063706.2770-1-liubo03@inspur.com>
-Subject: Re: [PATCH] powerpc/pseries/eeh: Fix some kernel-doc warnings
-Message-Id: <166980025413.3017288.12453883360878326670.b4-ty@ellerman.id.au>
+To: Chen Lifu <chenlifu@huawei.com>, npiggin@gmail.com, linux-kernel@vger.kernel.org, zhengzucheng@huawei.com, christophe.leroy@csgroup.eu, nick.child@ibm.com, benh@kernel.crashing.org, mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20221103070122.340773-1-chenlifu@huawei.com>
+References: <20221103070122.340773-1-chenlifu@huawei.com>
+Subject: Re: [PATCH v3 -next] powerpc/powermac: Fix symbol not declared warnings
+Message-Id: <166980025492.3017288.18013184822257737231.b4-ty@ellerman.id.au>
 Date: Wed, 30 Nov 2022 20:24:14 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -42,23 +42,22 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 31 Oct 2022 02:37:06 -0400, Bo Liu wrote:
-> Fixes the following W=1 kernel build warning(s):
->   arch/powerpc/platforms/pseries/eeh_pseries.c:163: warning: Function parameter or member 'config_addr' not described in 'pseries_eeh_phb_reset'
->   arch/powerpc/platforms/pseries/eeh_pseries.c:163: warning: Excess function parameter 'config_adddr' description in 'pseries_eeh_phb_reset'
->   arch/powerpc/platforms/pseries/eeh_pseries.c:198: warning: Function parameter or member 'config_addr' not described in 'pseries_eeh_phb_configure_bridge'
->   arch/powerpc/platforms/pseries/eeh_pseries.c:198: warning: Excess function parameter 'config_adddr' description in 'pseries_eeh_phb_configure_bridge'
+On Thu, 3 Nov 2022 15:01:22 +0800, Chen Lifu wrote:
+> 1. ppc_override_l2cr and ppc_override_l2cr_value are only used in
+>     l2cr_init() function, remove them and used *l2cr directly.
+> 2. has_l2cache is not used outside of the file, so mark it static and
+>     do not initialise statics to 0.
 > 
+> Fixes the following warning:
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc/pseries/eeh: Fix some kernel-doc warnings
-      https://git.kernel.org/powerpc/c/afa1cda4097077e37639ca7098c2147e1885b2df
+[1/1] powerpc/powermac: Fix symbol not declared warnings
+      https://git.kernel.org/powerpc/c/59dc2d94bc12dac53a5d2368ad97ca24e7cc5682
 
 cheers
