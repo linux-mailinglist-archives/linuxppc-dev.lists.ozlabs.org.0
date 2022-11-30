@@ -1,33 +1,33 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E88963D20A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 10:33:48 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01BFD63D1EC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 10:31:51 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NMYtK6rXdz3bf2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 20:33:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NMYr46j3Nz3bk8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 20:31:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMYqd0Symz2xVr
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Nov 2022 20:31:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMYqb4hLTz2xVr
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Nov 2022 20:31:23 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NMYqc69sCz4xN8;
-	Wed, 30 Nov 2022 20:31:24 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NMYqZ60kRz4xN2;
+	Wed, 30 Nov 2022 20:31:22 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
 To: Haowen Bai <baihaowen@meizu.com>, masahiroy@kernel.org, benh@kernel.crashing.org, adobriyan@gmail.com
-In-Reply-To: <1647484953-15249-1-git-send-email-baihaowen@meizu.com>
-References: <1647484953-15249-1-git-send-email-baihaowen@meizu.com>
-Subject: Re: [PATCH] macintosh: windfarm_pm91: Fix warning comparing pointer to 0
-Message-Id: <166980021800.3017288.6852877951128523618.b4-ty@ellerman.id.au>
-Date: Wed, 30 Nov 2022 20:23:38 +1100
+In-Reply-To: <1647509089-4280-1-git-send-email-baihaowen@meizu.com>
+References: <1647509089-4280-1-git-send-email-baihaowen@meizu.com>
+Subject: Re: [PATCH] macintosh: macio-adb: Fix warning comparing pointer to 0
+Message-Id: <166980021952.3017288.3406807239244244769.b4-ty@ellerman.id.au>
+Date: Wed, 30 Nov 2022 20:23:39 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -46,14 +46,14 @@ Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 17 Mar 2022 10:42:33 +0800, Haowen Bai wrote:
+On Thu, 17 Mar 2022 17:24:49 +0800, Haowen Bai wrote:
 > Avoid pointer type value compared with 0 to make code clear.
 > 
 > 
 
 Applied to powerpc/next.
 
-[1/1] macintosh: windfarm_pm91: Fix warning comparing pointer to 0
-      https://git.kernel.org/powerpc/c/88316944c3b3aa3ce3249c51689ef1621049df9d
+[1/1] macintosh: macio-adb: Fix warning comparing pointer to 0
+      https://git.kernel.org/powerpc/c/fc21ed8f26d980428f9b4e08e0fb72c7f7ffc9b8
 
 cheers
