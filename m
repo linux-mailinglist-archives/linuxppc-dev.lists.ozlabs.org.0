@@ -1,33 +1,33 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EAFC63D249
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 10:44:21 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB19363D212
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 10:35:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NMZ6W2Bt3z3gWN
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 20:44:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NMYw54zYyz3fFn
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Nov 2022 20:35:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMYr00dYpz3bjY
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Nov 2022 20:31:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMYqj4Gt0z3bZJ
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Nov 2022 20:31:29 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NMYqw67Phz4xbN;
-	Wed, 30 Nov 2022 20:31:40 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NMYqj38mfz4xQr;
+	Wed, 30 Nov 2022 20:31:29 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
-In-Reply-To: <20221006032019.1128624-1-mpe@ellerman.id.au>
-References: <20221006032019.1128624-1-mpe@ellerman.id.au>
-Subject: Re: [PATCH 1/2] powerpc: Make instruction dump work with scripts/decodecode
-Message-Id: <166980024503.3017288.6934056498312508193.b4-ty@ellerman.id.au>
-Date: Wed, 30 Nov 2022 20:24:05 +1100
+To: Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Michael Ellerman <mpe@ellerman.id.au>, Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+In-Reply-To: <7b8b5915a2c7c1616b33e8433ebe0a0bf07070a2.1665312579.git.christophe.jaillet@wanadoo.fr>
+References: <7b8b5915a2c7c1616b33e8433ebe0a0bf07070a2.1665312579.git.christophe.jaillet@wanadoo.fr>
+Subject: Re: [PATCH] powerpc/sysdev: Remove some duplicate prefix in some messages
+Message-Id: <166980024656.3017288.14591621572057347121.b4-ty@ellerman.id.au>
+Date: Wed, 30 Nov 2022 20:24:06 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -42,25 +42,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: kernel-janitors@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 6 Oct 2022 14:20:18 +1100, Michael Ellerman wrote:
-> Matt reported that scripts/decodecode doesn't work for the instruction
-> dump in the powerpc oops output. Although there are scripts around that
-> can decode it, it would be preferable if the standard in-tree script
-> worked.
+On Sun, 9 Oct 2022 12:49:50 +0200, Christophe JAILLET wrote:
+> At the beginning of the file, we have:
+>    #define pr_fmt(fmt) "xive: " fmt
 > 
-> All other arches prefix the instruction dump with "Code:", and that's
-> what the script looks for, so use that.
+> So, there is no need to duplicate "XIVE:" in debug and error messages.
+> 
+> For the records, these useless prefix have been added in commit
+> 5af50993850a ("KVM: PPC: Book3S HV: Native usage of the XIVE interrupt
+> controller")
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/2] powerpc: Make instruction dump work with scripts/decodecode
-      https://git.kernel.org/powerpc/c/3e65412709293d5fb65249408e8e801b23b72635
-[2/2] powerpc: Print instruction dump on a single line
-      https://git.kernel.org/powerpc/c/d90bb7b4fdaff3f2fa68c7af85de2ce9e70189b1
+[1/1] powerpc/sysdev: Remove some duplicate prefix in some messages
+      https://git.kernel.org/powerpc/c/2cb1dfac6f792f9e4a092793215f0d26e9f8d5b2
 
 cheers
