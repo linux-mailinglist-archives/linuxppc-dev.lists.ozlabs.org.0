@@ -1,52 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2688D63E807
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 03:50:45 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C73B763E9DE
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 07:22:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NN0tp5Ltkz3bjQ
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 13:50:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NN5bf5DNjz3bfP
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 17:22:54 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=benboeckel.net header.i=@benboeckel.net header.a=rsa-sha256 header.s=fm1 header.b=k1flX33X;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=F3i2JKvW;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=loongson.cn (client-ip=114.242.206.163; helo=loongson.cn; envelope-from=yangtiezhu@loongson.cn; receiver=<UNKNOWN>)
-Received: from loongson.cn (mail.loongson.cn [114.242.206.163])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NN0t86QtRz30R8
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Dec 2022 13:50:07 +1100 (AEDT)
-Received: from loongson.cn (unknown [113.200.148.30])
-	by gateway (Coremail) with SMTP id _____8Bx1vBYFohjmHwCAA--.5793S3;
-	Thu, 01 Dec 2022 10:50:00 +0800 (CST)
-Received: from linux.localdomain (unknown [113.200.148.30])
-	by localhost.localdomain (Coremail) with SMTP id AQAAf8BxTuBVFohjHwQjAA--.21270S2;
-	Thu, 01 Dec 2022 10:49:58 +0800 (CST)
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
-To: Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Shuah Khan <shuah@kernel.org>
-Subject: [PATCH] selftests: powerpc: Use "grep -E" instead of "egrep"
-Date: Thu,  1 Dec 2022 10:49:57 +0800
-Message-Id: <1669862997-31335-1-git-send-email-yangtiezhu@loongson.cn>
-X-Mailer: git-send-email 2.1.0
-X-CM-TRANSID: AQAAf8BxTuBVFohjHwQjAA--.21270S2
-X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
-X-Coremail-Antispam: 1Uk129KBjvJXoW7uFWUCFyxXF1ktF47ur45Wrg_yoW8Gw1xpa
-	48C34YvrZagFy7XF4UGF42gFW8KF4kArW8WFWrJrWDZFs8Zas2qryftF47JFnxWrWkta1r
-	ua9akayFkr47G3DanT9S1TB71UUUUUJqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
-	qI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUIcSsGvfJTRUUU
-	b3kYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s
-	1l1IIY67AEw4v_Jrv_JF1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xv
-	wVC0I7IYx2IY67AKxVW8JVW5JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwA2z4
-	x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4UJVWxJr1l
-	n4kS14v26r1Y6r17M2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6x
-	ACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r126r1DMcIj6I8E
-	87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41l42xK82
-	IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2Iq
-	xVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r
-	126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY
-	6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67
-	AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x
-	07j5xhLUUUUU=
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=benboeckel.net (client-ip=66.111.4.25; helo=out1-smtp.messagingengine.com; envelope-from=me@benboeckel.net; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=benboeckel.net header.i=@benboeckel.net header.a=rsa-sha256 header.s=fm1 header.b=k1flX33X;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=F3i2JKvW;
+	dkim-atps=neutral
+X-Greylist: delayed 576 seconds by postgrey-1.36 at boromir; Thu, 01 Dec 2022 14:55:52 AEDT
+Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NN2L016YMz30R8
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Dec 2022 14:55:52 +1100 (AEDT)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+	by mailout.nyi.internal (Postfix) with ESMTP id 8C7DF5C00C1;
+	Wed, 30 Nov 2022 22:46:10 -0500 (EST)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute3.internal (MEProxy); Wed, 30 Nov 2022 22:46:10 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=benboeckel.net;
+	 h=cc:cc:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:sender
+	:subject:subject:to:to; s=fm1; t=1669866370; x=1669952770; bh=IE
+	SJHOtcUSkXCEqZm4KWkM9Tzwy8cx/dN5nGJgfkLqE=; b=k1flX33XzZRRIa3rZE
+	tsZ4vckUNst/LFgq6QK7J5TfgGd0DnaNrZ/KihsGoNY5jvS7ZMGOsVHFuex2uZex
+	6U/Zs/3pEQPGz/Rzy7MTuFSkW4QOb1Kso+XXy1R52xqcv4ZKFk+yzBHtzgP2NzYN
+	NQ3f3aCDJCYpKKTe5ogNBvcuUKg3duL7IkC1mJWcMgKebpdg/CdOO496dwjQMe24
+	ctLKE7SlSZWWTBsC5FZ8gWMWrOth45SD+cPUqyDJfE5xb7Hr+PWF4iF2UbwWYeuS
+	4hiS5H2eNj3mmtV30vx1Zjo3325IUyumSfQH3RWKBMBH740l8vvkxZtEw0gDSVCm
+	lviA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
+	:feedback-id:from:from:in-reply-to:in-reply-to:message-id
+	:mime-version:references:reply-to:sender:subject:subject:to:to
+	:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm1; t=1669866370; x=1669952770; bh=IESJHOtcUSkXCEqZm4KWkM9Tzwy8
+	cx/dN5nGJgfkLqE=; b=F3i2JKvWwHf9O9SeM58LC+fDBrkr5Z1r3FReoTT05GhZ
+	KtNFZkmdgyUlCJThjYgzyDjctMHRmTDb145k9/Zt6BiuC0MuZOyJs4MFMSLTQFNv
+	0uU3JQpdO/5xZ9HHkLjkZ9KWgweSMcUKHGajlhIsq29uzv6jQpVgLa1XKQBXYqYF
+	svXG4zMkm8NbHwB+2AgsYpeo6BfsvRdHpfu5Gvh6cEIDuaUoXpuLiOD1DwaMBhrV
+	ReXnbXFIHtfDPMQLTPG8bhwXENWvBgjYQIu+GcyBmRsTCSWqbnqZLBMiWTXiNs5F
+	9hmeWLA8bYC1/CNNyQvjgixT5SK5gD1FqJSCPpJ9VA==
+X-ME-Sender: <xms:gSOIYzrtNsFK4azwOefuQEHzCsDdqZsiXfcEYmvodhbqD4L2hbYAZQ>
+    <xme:gSOIY9o58-I4dkg5qGrsKMhcqrTqAvAYkiVt-ptVlF7V-e29pOcQdHHY60jJl1FJA
+    di7DikeECYWZJyefOo>
+X-ME-Received: <xmr:gSOIYwPW4X8BdSCu1hTAxWUhWznDwgFRNqb4jpR8sh7BDi6m057tmuCR4GDcDo5nY2gVyMQ8ItgSvK1TtKsoOGCWAPDanCIg1ORs>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrtdeggdeigecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvvefukfhfgggtuggjfgesthdtredttderjeenucfhrhhomhepuegvnhcu
+    uehovggtkhgvlhcuoehmvgessggvnhgsohgvtghkvghlrdhnvghtqeenucggtffrrghtth
+    gvrhhnpeffleegffevleekffekheeigfdtleeuvddtgffhtddvfefgjeehffduueevkedv
+    vdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehmvg
+    essggvnhgsohgvtghkvghlrdhnvght
+X-ME-Proxy: <xmx:giOIY249FoMgjmgBy8iZTsDxXHAdJ31kwUiqJGtMCZUaqFN-7i8sYg>
+    <xmx:giOIYy7AVA08T-sADk_N2-1pcrE84kvyJJQw8VP4mZpWoqpG-Zjk4w>
+    <xmx:giOIY-jDDWFaCqF27SV4S7jybNr1M2UxV1x4dNoEj4OeQfo4nNbmhw>
+    <xmx:giOIY_y5Q_Fj--2gXXFj2JnWgr1NOE4A9ltKtUVJMmIr-OYJbRj1XQ>
+Feedback-ID: iffc1478b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 30 Nov 2022 22:46:09 -0500 (EST)
+Date: Wed, 30 Nov 2022 22:46:09 -0500
+From: Ben Boeckel <me@benboeckel.net>
+To: Greg Joyce <gjoyce@linux.vnet.ibm.com>
+Subject: Re: [PATCH v3 3/3] block: sed-opal: keyring support for SED keys
+Message-ID: <Y4gjgf2xHOYTVnSc@farprobe>
+References: <20221129232506.3735672-1-gjoyce@linux.vnet.ibm.com>
+ <20221129232506.3735672-4-gjoyce@linux.vnet.ibm.com>
+ <c78edd60-b6ae-6ec0-9ce4-73b9a92b9b32@suse.de>
+ <2133c00e5e7c53c458dbb709204c955bac8bee88.camel@linux.vnet.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <2133c00e5e7c53c458dbb709204c955bac8bee88.camel@linux.vnet.ibm.com>
+User-Agent: Mutt/2.2.7 (2022-08-07)
+X-Mailman-Approved-At: Thu, 01 Dec 2022 17:22:05 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,46 +98,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Cc: axboe@kernel.dk, nayna@linux.ibm.com, linux-block@vger.kernel.org, keyrings@vger.kernel.org, Hannes Reinecke <hare@suse.de>, jonathan.derrick@linux.dev, brking@linux.vnet.ibm.com, akpm@linux-foundation.org, msuchanek@suse.de, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The latest version of grep claims the egrep is now obsolete so the build
-now contains warnings that look like:
-	egrep: warning: egrep is obsolescent; using grep -E
-fix this using "grep -E" instead.
+On Wed, Nov 30, 2022 at 09:19:25 -0600, Greg Joyce wrote:
+> On Wed, 2022-11-30 at 08:00 +0100, Hannes Reinecke wrote:
+> > On 11/30/22 00:25, gjoyce@linux.vnet.ibm.com wrote:
+> > > +	case OPAL_KEYRING:
+> > > +		/* the key is in the keyring */
+> > > +		ret = read_sed_opal_key(OPAL_AUTH_KEY, key->key,
+> > > OPAL_KEY_MAX);
+> > > +		if (ret > 0) {
+> > > +			if (ret > 255) {
+> > 
+> > Why is a key longer than 255 an error?
+> > If this is a requirement, why not move the check into
+> > read_sed_opal_key() such that one only has to check for
+> > ret < 0 on errors?
+> 
+> The check is done here because the SED Opal spec stipulates 255 as the
+> maximum key length. The key length (key->key_len) in the existing data
+> structures is __u8, so a length greater than 255 can not be conveyed.
+> For defensive purposes, I though it best to check here.
 
-  sed -i "s/egrep/grep -E/g" `grep egrep -rwl tools/testing/selftests/powerpc`
+Perhaps naming it `OPAL_MAX_KEY_LEN` would help clarify this?
 
-Here are the steps to install the latest grep:
-
-  wget http://ftp.gnu.org/gnu/grep/grep-3.8.tar.gz
-  tar xf grep-3.8.tar.gz
-  cd grep-3.8 && ./configure && make
-  sudo make install
-  export PATH=/usr/local/bin:$PATH
-
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
----
-
-As Shuah suggested, this patch should go through powerpc/linux.git
-
- tools/testing/selftests/powerpc/scripts/hmi.sh | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/tools/testing/selftests/powerpc/scripts/hmi.sh b/tools/testing/selftests/powerpc/scripts/hmi.sh
-index dcdb392..bcc7b6b 100755
---- a/tools/testing/selftests/powerpc/scripts/hmi.sh
-+++ b/tools/testing/selftests/powerpc/scripts/hmi.sh
-@@ -36,7 +36,7 @@ trap "ppc64_cpu --smt-snooze-delay=100" 0 1
- 
- # for each chip+core combination
- # todo - less fragile parsing
--egrep -o 'OCC: Chip [0-9a-f]+ Core [0-9a-f]' < /sys/firmware/opal/msglog |
-+grep -E -o 'OCC: Chip [0-9a-f]+ Core [0-9a-f]' < /sys/firmware/opal/msglog |
- while read chipcore; do
- 	chip=$(echo "$chipcore"|awk '{print $3}')
- 	core=$(echo "$chipcore"|awk '{print $5}')
--- 
-2.1.0
-
+--Ben
