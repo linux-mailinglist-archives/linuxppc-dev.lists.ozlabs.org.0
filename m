@@ -1,90 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69A0463F3BE
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 16:23:57 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C56363F423
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 16:37:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NNKbt10gZz3bYL
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Dec 2022 02:23:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NNKv40V4gz3bcf
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Dec 2022 02:37:04 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=B+Uzk/aU;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Nag0keCd;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=G9bLF70K;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=vkuznets@redhat.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=gjoyce@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=B+Uzk/aU;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Nag0keCd;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=G9bLF70K;
 	dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NNKZr0Jz0z3bXJ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Dec 2022 02:22:57 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1669908172;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0uolOOp7yoOC/673O4rWJ2SQim3eJ9tGJUopqkFhibc=;
-	b=B+Uzk/aU+G0kyeVnZME32d4YN4l7sLEVdy7VP6JuIJVqdFtpi6L4u9AR4foUS4yhJn04ji
-	IbCpdEjCFiv/Ox5p9ri3H0diiVKuINuS06MGQTlm7eAeA92w2eMUUp1TObuZXodswa8hnv
-	xYmqwHPcu0DVGFsFXIzPOza1/s2AbEU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1669908173;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0uolOOp7yoOC/673O4rWJ2SQim3eJ9tGJUopqkFhibc=;
-	b=Nag0keCdiCH3WT3SjS51bcH8YAmNcKPZZL3zL3dy3L6DbmOKn5ZFSdvE6i4kv9sMkZCkMB
-	XS/OHx1MSv30Vbme7bAfuWLfzhlPJ2yDpNxC3+L26cZWb5NmvxhXTNL0KnLIt0b8U3vEZW
-	l4CEXtkDaOag2VCs1FfSit93qcxiGNI=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-488-jUxfhWUhPc2tINngJG0ETA-1; Thu, 01 Dec 2022 10:22:51 -0500
-X-MC-Unique: jUxfhWUhPc2tINngJG0ETA-1
-Received: by mail-wm1-f70.google.com with SMTP id bi19-20020a05600c3d9300b003cf9d6c4016so2676243wmb.8
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Dec 2022 07:22:51 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0uolOOp7yoOC/673O4rWJ2SQim3eJ9tGJUopqkFhibc=;
-        b=ZFF4G/hX1ndwD0sGZv7u+QWvBH9R2xm0xu6HTGMTyPHNuUUZm9hZPxTu6srPiwXdhs
-         i/vCdS8SkvjxGTYMPvxgo6TVvp04YdQlUMsFmsx3FK23PPtibNruGD6s1bq7x5RnB/48
-         pk/BkntJ1/wmLcqYYhlGy9RrBr9mOvgksqNm6snLjt8VrJ/UgW1wq0HY8LoFilnQzZ+m
-         gkVNlQCvQ8wWhw2m1/aNB2FDi1nvtsJKe384sAJevQQuPNjZqsGmLRUJPO3Qppljg4Nf
-         gm0ZWaG78bhsLtqCvdNJUz2j2NcP5fj2Ib5NG4j5fX9QHACr6EchXgUDymQpkQKfyMvt
-         K5Hg==
-X-Gm-Message-State: ANoB5pnsxw3Yb7w6OVXpMYdUS5e6POf204sQOYfZ/510+Tm5IRAl09qW
-	XlJytsXGEg1zsF1X+1es5uVRTvOFQztFmXbyMxXCPyiQLK7U9yYnnmSM6Hd5taiAKjQCMtXQGJ6
-	RAYMUWY7QUYkle8bNlxPHO//VgA==
-X-Received: by 2002:adf:f54e:0:b0:242:1534:7b57 with SMTP id j14-20020adff54e000000b0024215347b57mr14035633wrp.404.1669908170126;
-        Thu, 01 Dec 2022 07:22:50 -0800 (PST)
-X-Google-Smtp-Source: AA0mqf4+3YusiSWHR13O3MACnIQbSphop/g7AmmIFME21D1fv2+5ZYUMJJrVIeLUQmj0nQTJeAmHuA==
-X-Received: by 2002:adf:f54e:0:b0:242:1534:7b57 with SMTP id j14-20020adff54e000000b0024215347b57mr14035606wrp.404.1669908169821;
-        Thu, 01 Dec 2022 07:22:49 -0800 (PST)
-Received: from ovpn-194-141.brq.redhat.com (nat-2.ign.cz. [91.219.240.2])
-        by smtp.gmail.com with ESMTPSA id j11-20020a05600c190b00b003b47e75b401sm10593279wmq.37.2022.12.01.07.22.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Dec 2022 07:22:49 -0800 (PST)
-From: Vitaly Kuznetsov <vkuznets@redhat.com>
-To: Sean Christopherson <seanjc@google.com>
-Subject: Re: [PATCH v2 12/50] KVM: VMX: Move Hyper-V eVMCS initialization to
- helper
-In-Reply-To: <20221130230934.1014142-13-seanjc@google.com>
-References: <20221130230934.1014142-1-seanjc@google.com>
- <20221130230934.1014142-13-seanjc@google.com>
-Date: Thu, 01 Dec 2022 16:22:45 +0100
-Message-ID: <87k03bf8sa.fsf@ovpn-194-141.brq.redhat.com>
-MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NNKt211RKz3bY1
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Dec 2022 02:36:09 +1100 (AEDT)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2B1FOf0M013550;
+	Thu, 1 Dec 2022 15:35:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : reply-to : to : cc : date : in-reply-to : references : content-type
+ : mime-version : content-transfer-encoding; s=pp1;
+ bh=Xk/l0U+Cz7PYE5CVeOcthMKdyGJyTMeO5xaBAtu53ps=;
+ b=G9bLF70KykG6TWmEzNzjyCBteyzp0RxfqDaqnZ6XSjHmqgQxXRg2DOwQjNcKtmxy2VMl
+ iMjwSRJ1NVgnWCt4vLTrPOVLoITg2qWeqe3EjxD/R6vCXtYH0nrwEitQRu/gPq6kthfD
+ LT3MymtQqzy+xnXtZB1fvAw1GcmImVtrRKbJ8mmfCycuuB06FkGvAsBhOQFiJQauOPZ8
+ TX6OaflzchNzwQLdjlUvTavVI+wS7PgS2icIG70ws/i/Ke3Y9u2qTVKNEdnn6d81kVRj
+ xHGjlSqFTIhLyyS/xtwUnCQYIBeVup+MbpRL+nuHHCwO1l9xU6/5NIZxCYICZdf+c5YL og== 
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3m6xvs0bgs-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 01 Dec 2022 15:35:55 +0000
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+	by ppma01dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2B1FLlJ4018218;
+	Thu, 1 Dec 2022 15:30:54 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([9.208.129.114])
+	by ppma01dal.us.ibm.com with ESMTP id 3m3aeanw4x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 01 Dec 2022 15:30:54 +0000
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2B1FTcEa18940552
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 1 Dec 2022 15:29:38 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4BDDB5805A;
+	Thu,  1 Dec 2022 15:29:38 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BFF7C5805D;
+	Thu,  1 Dec 2022 15:29:36 +0000 (GMT)
+Received: from rhel-laptop.ibm.com (unknown [9.160.99.100])
+	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  1 Dec 2022 15:29:36 +0000 (GMT)
+Message-ID: <044c90dc7feb3959b5740154addc230ba9a57216.camel@linux.vnet.ibm.com>
+Subject: Re: [PATCH v3 3/3] block: sed-opal: keyring support for SED keys
+From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
+To: Ben Boeckel <me@benboeckel.net>
+Date: Thu, 01 Dec 2022 09:29:36 -0600
+In-Reply-To: <Y4gjgf2xHOYTVnSc@farprobe>
+References: <20221129232506.3735672-1-gjoyce@linux.vnet.ibm.com>
+	 <20221129232506.3735672-4-gjoyce@linux.vnet.ibm.com>
+	 <c78edd60-b6ae-6ec0-9ce4-73b9a92b9b32@suse.de>
+	 <2133c00e5e7c53c458dbb709204c955bac8bee88.camel@linux.vnet.ibm.com>
+	 <Y4gjgf2xHOYTVnSc@farprobe>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: RN6-zXpnA45xPOTAP4vXVTMBnrGVxftM
+X-Proofpoint-GUID: RN6-zXpnA45xPOTAP4vXVTMBnrGVxftM
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-12-01_11,2022-12-01_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 impostorscore=0
+ lowpriorityscore=0 phishscore=0 mlxlogscore=999 spamscore=0 mlxscore=0
+ clxscore=1011 suspectscore=0 bulkscore=0 malwarescore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2210170000
+ definitions=main-2212010113
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,134 +94,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Atish Patra <atishp@atishpatra.org>, linux-kernel@vger.kernel.org, Kai Huang <kai.huang@intel.com>, linux-riscv@lists.infradead.org, Claudio Imbrenda <imbrenda@linux.ibm.com>, kvmarm@lists.cs.columbia.edu, linux-s390@vger.kernel.org, Janosch Frank <frankja@linux.ibm.com>, Huacai Chen <chenhuacai@kernel.org>, Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, David Woodhouse <dwmw2@infradead.org>, Matthew Rosato <mjrosato@linux.ibm.com>, Chao Gao <chao.gao@intel.com>, Eric Farman <farman@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Suzuki K Poulose <suzuki.poulose@arm.com>, Sean Christopherson <seanjc@google.com>, Paul Durrant <paul@xen.org>, Paul Walmsley <paul.walmsley@sifive.com>, Yuan Yao <yuan.yao@intel.com>, kvmarm@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, Alexandru Elisei <alexandru.elisei@arm.com>, linux-a
- rm-kernel@lists.infradead.org, Isaku Yamahata <isaku.yamahata@intel.com>, Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Fabiano Rosas <farosas@linux.ibm.com>, Anup Patel <anup@brainfault.org>, Cornelia Huck <cohuck@redhat.com>, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, James Morse <james.morse@arm.com>, kvm-riscv@lists.infradead.org, Marc Zyngier <maz@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org
+Reply-To: gjoyce@linux.vnet.ibm.com
+Cc: axboe@kernel.dk, nayna@linux.ibm.com, linux-block@vger.kernel.org, keyrings@vger.kernel.org, Hannes Reinecke <hare@suse.de>, jonathan.derrick@linux.dev, brking@linux.vnet.ibm.com, akpm@linux-foundation.org, msuchanek@suse.de, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Sean Christopherson <seanjc@google.com> writes:
+On Wed, 2022-11-30 at 22:46 -0500, Ben Boeckel wrote:
+> On Wed, Nov 30, 2022 at 09:19:25 -0600, Greg Joyce wrote:
+> > On Wed, 2022-11-30 at 08:00 +0100, Hannes Reinecke wrote:
+> > > On 11/30/22 00:25, gjoyce@linux.vnet.ibm.com wrote:
+> > > > +	case OPAL_KEYRING:
+> > > > +		/* the key is in the keyring */
+> > > > +		ret = read_sed_opal_key(OPAL_AUTH_KEY, key-
+> > > > >key,
+> > > > OPAL_KEY_MAX);
+> > > > +		if (ret > 0) {
+> > > > +			if (ret > 255) {
+> > > 
+> > > Why is a key longer than 255 an error?
+> > > If this is a requirement, why not move the check into
+> > > read_sed_opal_key() such that one only has to check for
+> > > ret < 0 on errors?
+> > 
+> > The check is done here because the SED Opal spec stipulates 255 as
+> > the
+> > maximum key length. The key length (key->key_len) in the existing
+> > data
+> > structures is __u8, so a length greater than 255 can not be
+> > conveyed.
+> > For defensive purposes, I though it best to check here.
+> 
+> Perhaps naming it `OPAL_MAX_KEY_LEN` would help clarify this?
+> 
+> --Ben
 
-> Move Hyper-V's eVMCS initialization to a dedicated helper to clean up
-> vmx_init(), and add a comment to call out that the Hyper-V init code
-> doesn't need to be unwound if vmx_init() ultimately fails.
->
-> No functional change intended.
->
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
->  arch/x86/kvm/vmx/vmx.c | 73 +++++++++++++++++++++++++-----------------
->  1 file changed, 43 insertions(+), 30 deletions(-)
->
-> diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-> index c0de7160700b..b8bf95b9710d 100644
-> --- a/arch/x86/kvm/vmx/vmx.c
-> +++ b/arch/x86/kvm/vmx/vmx.c
-> @@ -523,6 +523,8 @@ static inline void vmx_segment_cache_clear(struct vcpu_vmx *vmx)
->  static unsigned long host_idt_base;
->  
->  #if IS_ENABLED(CONFIG_HYPERV)
-> +static struct kvm_x86_ops vmx_x86_ops __initdata;
-> +
->  static bool __read_mostly enlightened_vmcs = true;
->  module_param(enlightened_vmcs, bool, 0444);
->  
-> @@ -551,6 +553,43 @@ static int hv_enable_l2_tlb_flush(struct kvm_vcpu *vcpu)
->  	return 0;
->  }
->  
-> +static __init void hv_init_evmcs(void)
-> +{
-> +	int cpu;
-> +
-> +	if (!enlightened_vmcs)
-> +		return;
-> +
-> +	/*
-> +	 * Enlightened VMCS usage should be recommended and the host needs
-> +	 * to support eVMCS v1 or above.
-> +	 */
-> +	if (ms_hyperv.hints & HV_X64_ENLIGHTENED_VMCS_RECOMMENDED &&
-> +	    (ms_hyperv.nested_features & HV_X64_ENLIGHTENED_VMCS_VERSION) >=
-> +	     KVM_EVMCS_VERSION) {
-> +
-> +		/* Check that we have assist pages on all online CPUs */
-> +		for_each_online_cpu(cpu) {
-> +			if (!hv_get_vp_assist_page(cpu)) {
-> +				enlightened_vmcs = false;
-> +				break;
-> +			}
-> +		}
-> +
-> +		if (enlightened_vmcs) {
-> +			pr_info("KVM: vmx: using Hyper-V Enlightened VMCS\n");
-> +			static_branch_enable(&enable_evmcs);
-> +		}
-> +
-> +		if (ms_hyperv.nested_features & HV_X64_NESTED_DIRECT_FLUSH)
-> +			vmx_x86_ops.enable_l2_tlb_flush
-> +				= hv_enable_l2_tlb_flush;
-> +
-> +	} else {
-> +		enlightened_vmcs = false;
-> +	}
-> +}
-> +
->  static void hv_reset_evmcs(void)
->  {
->  	struct hv_vp_assist_page *vp_ap;
-> @@ -577,6 +616,7 @@ static void hv_reset_evmcs(void)
->  }
->  
->  #else /* IS_ENABLED(CONFIG_HYPERV) */
-> +static void hv_init_evmcs(void) {}
->  static void hv_reset_evmcs(void) {}
->  #endif /* IS_ENABLED(CONFIG_HYPERV) */
->  
-> @@ -8500,38 +8540,11 @@ static int __init vmx_init(void)
->  {
->  	int r, cpu;
->  
-> -#if IS_ENABLED(CONFIG_HYPERV)
->  	/*
-> -	 * Enlightened VMCS usage should be recommended and the host needs
-> -	 * to support eVMCS v1 or above. We can also disable eVMCS support
-> -	 * with module parameter.
-> +	 * Note, hv_init_evmcs() touches only VMX knobs, i.e. there's nothing
-> +	 * to unwind if a later step fails.
->  	 */
-> -	if (enlightened_vmcs &&
-> -	    ms_hyperv.hints & HV_X64_ENLIGHTENED_VMCS_RECOMMENDED &&
-> -	    (ms_hyperv.nested_features & HV_X64_ENLIGHTENED_VMCS_VERSION) >=
-> -	    KVM_EVMCS_VERSION) {
-> -
-> -		/* Check that we have assist pages on all online CPUs */
-> -		for_each_online_cpu(cpu) {
-> -			if (!hv_get_vp_assist_page(cpu)) {
-> -				enlightened_vmcs = false;
-> -				break;
-> -			}
-> -		}
-> -
-> -		if (enlightened_vmcs) {
-> -			pr_info("KVM: vmx: using Hyper-V Enlightened VMCS\n");
-> -			static_branch_enable(&enable_evmcs);
-> -		}
-> -
-> -		if (ms_hyperv.nested_features & HV_X64_NESTED_DIRECT_FLUSH)
-> -			vmx_x86_ops.enable_l2_tlb_flush
-> -				= hv_enable_l2_tlb_flush;
-> -
-> -	} else {
-> -		enlightened_vmcs = false;
-> -	}
-> -#endif
-> +	hv_init_evmcs();
->  
->  	r = kvm_init(&vmx_init_ops, sizeof(struct vcpu_vmx),
->  		     __alignof__(struct vcpu_vmx), THIS_MODULE);
+I'm not averse to changing it because it would be clearer. My concern
+is that it's been OPAL_KEY_MAX for 5+ years (the original SED Opal
+commit). Unless there is strong consensus to change it, I'm going to
+leave it as the original name.
 
-Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
-
--- 
-Vitaly
+-Greg
 
