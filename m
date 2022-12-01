@@ -1,65 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9CE763E949
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 06:22:29 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5FC663E9E1
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 07:23:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NN4Fv4qzPz3bg8
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 16:22:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NN5cg4nZ2z30hw
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 17:23:47 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=J5OxG6kI;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=PvHY6dBE;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::22a; helo=mail-oi1-x22a.google.com; envelope-from=sergio.paracuellos@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=PvHY6dBE;
+	dkim-atps=neutral
+Received: from mail-oi1-x22a.google.com (mail-oi1-x22a.google.com [IPv6:2607:f8b0:4864:20::22a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NN4Dx4ryYz30QQ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Dec 2022 16:21:37 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=J5OxG6kI;
-	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NN4Dq6Zmxz4x1V;
-	Thu,  1 Dec 2022 16:21:31 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1669872096;
-	bh=N0orzYmQiDoqaJ7NYGjlM3UnNxlX/cknbPTGfPB6WFM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=J5OxG6kIMoR1klHiq+pJUaSgDwQrXyp2IQVExgmmPNs6d5M2zalc/rFARJpzB6LCF
-	 mIrvgM+Yk6zmcYrbL1HL6byl4gygucjhaR6xhicDvgiER8ov5k6cvGvblLKfkLL79G
-	 Qr4K7TgrY7ozLHH4Rz1BcWO+Y6BxcTIrY8j51NIdM6oHGO3QrlQNIe919bNypOKqe4
-	 YHuJsYYV/nFeRurQTMfOCln/DE+Mz3BkBkR/vDvI86w1ePXtODUCbkiSWEC3PK7pVj
-	 7hgwt5pYqLFahDmf67Gs9PQJ8p24LtR4/LQuAP00TNjl2lawnoAD2XkoV81D7xf9C5
-	 T4FWO6qMAX8YQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen
- <chenhuacai@kernel.org>, Aleksandar Markovic
- <aleksandar.qemu.devel@gmail.com>, Anup Patel <anup@brainfault.org>, Paul
- Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Christian Borntraeger
- <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>, Matthew Rosato
- <mjrosato@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>, Sean
- Christopherson <seanjc@google.com>, Vitaly Kuznetsov
- <vkuznets@redhat.com>, David Woodhouse <dwmw2@infradead.org>, Paul Durrant
- <paul@xen.org>
-Subject: Re: [PATCH v2 26/50] KVM: PPC: Move processor compatibility check
- to module init
-In-Reply-To: <20221130230934.1014142-27-seanjc@google.com>
-References: <20221130230934.1014142-1-seanjc@google.com>
- <20221130230934.1014142-27-seanjc@google.com>
-Date: Thu, 01 Dec 2022 16:21:31 +1100
-Message-ID: <87cz93snqc.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NN5C506L6z30Qq
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Dec 2022 17:05:02 +1100 (AEDT)
+Received: by mail-oi1-x22a.google.com with SMTP id e205so988895oif.11
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Nov 2022 22:05:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SQ6eCCvP2RIqVFnGOfA4yG/2BtjQTMpdxc/JWs/IikY=;
+        b=PvHY6dBEyebJE6QNI6Wjq2MneXIl4rTpGS7fBC7Qv6R/Yiga7OIh4/Pj4BgHnrpndG
+         GrmgooNZOVFverQjG/PwQwa+jNTTeu5eaofi0fQ6sUgKspL/GgqiAAoT7DsAPA/bcNeL
+         CuuBxemNVt9HiH103qegQcLdL8byYtx9q2Sy8nfwvxBZulJQ2g5EAZZ4I/KTXdccwea1
+         xayFiXCzBGxNpmCBPyhigLfeSVQaNBWPI/KTZtc4+CqnxGM8xxSJGEpvpTJVaXAoUIMI
+         LhDFRKO2nzxUjEipEZonE2WghJNoafzVk4PIFC+1xTm7vj4OLlTNuK0dUH2dye1MdJio
+         EOHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SQ6eCCvP2RIqVFnGOfA4yG/2BtjQTMpdxc/JWs/IikY=;
+        b=wkT1UzsnKP5mhywV60tR+Epn3vNTUgfdCzNBO16EiQbvErUClfIb7Z+1d5Q21EZCuc
+         pDPv2Uj/okszf9UyDkDWISdklheErvELcEGJIpOEF4qfMj6e7llM8kdLpFIgV+Pore9q
+         sOrAMHUaPxjlWadqIouC5yKCmFsWjQeAdJz2RD/R6l+abvKOk44KT1B+2TIZSBlKIlQC
+         tN9Vw88QPGJG8kuUaLY1ZSa99lx7uGjAbxNHbS3stZXK+KnmJoBVw482SdUKNKE2t0WP
+         xpys0iL98d7RRQ8ttm1zg+fqh+X3hiiUtAS/Av2YA7Rx52y4NFG2d4k7GOrP/tnJQj4T
+         8NeQ==
+X-Gm-Message-State: ANoB5pl14brahfb7h/aORb0rkFAPFZKcfEW8CdUuuQsNgU6PvL7h5he9
+	B3L+1yQX9XGvpdvp48qvdOglE/ZdnAXtzDlmdGQ=
+X-Google-Smtp-Source: AA0mqf5l2e4XTILLZHTH7QTRBPvz28RAyHNavvCrAHgTBlylFcIYKmUFvkgoGR7uLixlsP/mcB3a5GSDsiHvA3KSd08=
+X-Received: by 2002:aca:60c6:0:b0:35a:51fc:2134 with SMTP id
+ u189-20020aca60c6000000b0035a51fc2134mr22358640oib.144.1669874698405; Wed, 30
+ Nov 2022 22:04:58 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20221130141040.32447-1-arinc.unal@arinc9.com> <20221130141040.32447-5-arinc.unal@arinc9.com>
+In-Reply-To: <20221130141040.32447-5-arinc.unal@arinc9.com>
+From: Sergio Paracuellos <sergio.paracuellos@gmail.com>
+Date: Thu, 1 Dec 2022 07:04:47 +0100
+Message-ID: <CAMhs-H_yk4_ieChz9ZaMgZiQNSO7RxhAXPN0nHWWxbox=qY_mw@mail.gmail.com>
+Subject: Re: [PATCH 4/5] mips: dts: remove label = "cpu" from DSA dt-binding
+To: =?UTF-8?B?QXLEsW7DpyDDnE5BTA==?= <arinc.unal@arinc9.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Mailman-Approved-At: Thu, 01 Dec 2022 17:22:05 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,89 +76,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Atish Patra <atishp@atishpatra.org>, linux-kernel@vger.kernel.org, Kai Huang <kai.huang@intel.com>, linux-riscv@lists.infradead.org, kvmarm@lists.cs.columbia.edu, linux-s390@vger.kernel.org, Chao Gao <chao.gao@intel.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, Yuan Yao <yuan.yao@intel.com>, kvmarm@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, Alexandru Elisei <alexandru.elisei@arm.com>, linux-arm-kernel@lists.infradead.org, Isaku Yamahata <isaku.yamahata@intel.com>, Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Fabiano Rosas <farosas@linux.ibm.com>, Cornelia Huck <cohuck@redhat.com>, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, James Morse <james.morse@arm.com>, kvm-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
+Cc: Andrew Lunn <andrew@lunn.ch>, Alexandre Belloni <alexandre.belloni@bootlin.com>, Heiko Stuebner <heiko@sntech.de>, Geert Uytterhoeven <geert+renesas@glider.be>, Tim Harvey <tharvey@gateworks.com>, Vladimir Oltean <vladimir.oltean@nxp.com>, Linus Walleij <linus.walleij@linaro.org>, Konrad Dybcio <konrad.dybcio@somainline.org>, Alexandre Torgue <alexandre.torgue@foss.st.com>, Stefan Agner <stefan@agner.ch>, linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Oleksij Rempel <linux@rempel-privat.de>, Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>, Florian Fainelli <f.fainelli@gmail.com>, Samuel Holland <samuel@sholland.org>, Gregory Clement <gregory.clement@bootlin.com>, =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>, Russell King <linux@armlinux.org.uk>, Jernej Skrabec <jernej.skrabec@gmail.com>, linux-stm32@st-md-mailman.stormreply.com, linux-rockchip@lists.infradead.org, Chen-Yu Tsai <wens
+ @csie.org>, Andy Gross <agross@kernel.org>, Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, NXP Linux Team <linux-imx@nxp.com>, Ray Jui <rjui@broadcom.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Sascha Hauer <s.hauer@pengutronix.de>, Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Frank Wunderlich <frank-w@public-files.de>, Hauke Mehrtens <hauke@hauke-m.de>, Hans Ulli Kroll <ulli.kroll@googlemail.com>, linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>, linux-mips@vger.kernel.org, soc@kernel.org, Rob Herring <robh+dt@kernel.org>, linux-mediatek@lists.infradead.org, Matthias Brugger <matthias.bgg@gmail.com>, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Scott Branden <sbranden@broadcom.com>, netdev@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>, Rasm
+ us Villemoes <rasmus.villemoes@prevas.dk>, Nicolas Ferre <nicolas.ferre@microchip.com>, "David S. Miller" <davem@davemloft.net>, linux-renesas-soc@vger.kernel.org, linux-sunxi@lists.linux.dev, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Claudiu Beznea <claudiu.beznea@microchip.com>, Michael Riesch <michael.riesch@wolfvision.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Sean Christopherson <seanjc@google.com> writes:
-> Move KVM PPC's compatibility checks to their respective module_init()
-> hooks, there's no need to wait until KVM's common compat check, nor is
-> there a need to perform the check on every CPU (provided by common KVM's
-> hook), as the compatibility checks operate on global data.
+On Wed, Nov 30, 2022 at 3:14 PM Ar=C4=B1n=C3=A7 =C3=9CNAL <arinc.unal@arinc=
+9.com> wrote:
 >
->   arch/powerpc/include/asm/cputable.h: extern struct cpu_spec *cur_cpu_sp=
-ec;
->   arch/powerpc/kvm/book3s.c: return 0
->   arch/powerpc/kvm/e500.c: strcmp(cur_cpu_spec->cpu_name, "e500v2")
->   arch/powerpc/kvm/e500mc.c: strcmp(cur_cpu_spec->cpu_name, "e500mc")
->                              strcmp(cur_cpu_spec->cpu_name, "e5500")
->                              strcmp(cur_cpu_spec->cpu_name, "e6500")
+> This is not used by the DSA dt-binding, so remove it from all devicetrees=
+.
+>
+> Signed-off-by: Ar=C4=B1n=C3=A7 =C3=9CNAL <arinc.unal@arinc9.com>
+> ---
+>  arch/mips/boot/dts/ralink/mt7621.dtsi | 1 -
 
-I'm not sure that output is really useful in the change log unless you
-explain more about what it is.
+Acked-by: Sergio Paracuellos <sergio.paracuellos@gmail.com>
 
-> diff --git a/arch/powerpc/kvm/e500mc.c b/arch/powerpc/kvm/e500mc.c
-> index 57e0ad6a2ca3..795667f7ebf0 100644
-> --- a/arch/powerpc/kvm/e500mc.c
-> +++ b/arch/powerpc/kvm/e500mc.c
-> @@ -388,6 +388,10 @@ static int __init kvmppc_e500mc_init(void)
->  {
->  	int r;
->=20=20
-> +	r =3D kvmppc_e500mc_check_processor_compat();
-> +	if (r)
-> +		return kvmppc_e500mc;
-=20
-This doesn't build:
-
-linux/arch/powerpc/kvm/e500mc.c: In function =E2=80=98kvmppc_e500mc_init=E2=
-=80=99:
-linux/arch/powerpc/kvm/e500mc.c:391:13: error: implicit declaration of func=
-tion =E2=80=98kvmppc_e500mc_check_processor_compat=E2=80=99; did you mean =
-=E2=80=98kvmppc_core_check_processor_compat=E2=80=99? [-Werror=3Dimplicit-f=
-unction-declaration]
-  391 |         r =3D kvmppc_e500mc_check_processor_compat();
-      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      |             kvmppc_core_check_processor_compat
-linux/arch/powerpc/kvm/e500mc.c:393:24: error: =E2=80=98kvmppc_e500mc=E2=80=
-=99 undeclared (first use in this function); did you mean =E2=80=98kvm_ops_=
-e500mc=E2=80=99?
-  393 |                 return kvmppc_e500mc;
-      |                        ^~~~~~~~~~~~~
-      |                        kvm_ops_e500mc
-linux/arch/powerpc/kvm/e500mc.c:393:24: note: each undeclared identifier is=
- reported only once for each function it appears in
-
-
-It needs the delta below to compile.
-
-With that:
-
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
-
-cheers
-
-
-diff --git a/arch/powerpc/kvm/e500mc.c b/arch/powerpc/kvm/e500mc.c
-index 795667f7ebf0..4564aa27edcf 100644
---- a/arch/powerpc/kvm/e500mc.c
-+++ b/arch/powerpc/kvm/e500mc.c
-@@ -168,7 +168,7 @@ static void kvmppc_core_vcpu_put_e500mc(struct kvm_vcpu=
- *vcpu)
- 	kvmppc_booke_vcpu_put(vcpu);
- }
-=20
--int kvmppc_core_check_processor_compat(void)
-+int kvmppc_e500mc_check_processor_compat(void)
- {
- 	int r;
-=20
-@@ -390,7 +390,7 @@ static int __init kvmppc_e500mc_init(void)
-=20
- 	r =3D kvmppc_e500mc_check_processor_compat();
- 	if (r)
--		return kvmppc_e500mc;
-+		goto err_out;
-=20
- 	r =3D kvmppc_booke_init();
- 	if (r)
+Thanks,
+    Sergio Paracuellos
