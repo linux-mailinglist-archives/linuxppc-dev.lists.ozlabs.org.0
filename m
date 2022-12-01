@@ -1,58 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBD5463EAA6
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 08:57:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9A6B63EAB0
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 08:58:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NN7ht4t72z3bgP
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 18:57:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NN7kB5ghlz3cBP
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 18:58:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NN7hJ6Gtvz30F7
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Dec 2022 18:57:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NN7hT31jYz3bXd
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Dec 2022 18:57:13 +1100 (AEDT)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4NN7h83gxDz9sZb;
-	Thu,  1 Dec 2022 08:56:56 +0100 (CET)
+	by localhost (Postfix) with ESMTP id 4NN7hF2Bj9z9sb3;
+	Thu,  1 Dec 2022 08:57:01 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
 	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id e49hW9rQN97v; Thu,  1 Dec 2022 08:56:56 +0100 (CET)
+	with ESMTP id U755w7Mnx6tw; Thu,  1 Dec 2022 08:57:01 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4NN7h82T17z9sXw;
-	Thu,  1 Dec 2022 08:56:56 +0100 (CET)
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4NN7hD3KzMz9sXw;
+	Thu,  1 Dec 2022 08:57:00 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 4195E8B780;
-	Thu,  1 Dec 2022 08:56:56 +0100 (CET)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 5D0688B78D;
+	Thu,  1 Dec 2022 08:57:00 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id ybp9-llyLvPx; Thu,  1 Dec 2022 08:56:56 +0100 (CET)
+	with ESMTP id HysRZHYumzPh; Thu,  1 Dec 2022 08:57:00 +0100 (CET)
 Received: from PO20335.IDSI0.si.c-s.fr (unknown [172.25.230.108])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 138308B763;
-	Thu,  1 Dec 2022 08:56:56 +0100 (CET)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id D153E8B787;
+	Thu,  1 Dec 2022 08:56:59 +0100 (CET)
 Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 2B17unOY130791
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 2B17uuGB130806
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 1 Dec 2022 08:56:49 +0100
+	Thu, 1 Dec 2022 08:56:56 +0100
 Received: (from chleroy@localhost)
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 2B17umb4130779;
-	Thu, 1 Dec 2022 08:56:48 +0100
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 2B17uuau130794;
+	Thu, 1 Dec 2022 08:56:56 +0100
 X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
         "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
-Subject: [PATCH v1 01/10] powerpc/bpf/32: Fix Oops on tail call tests
-Date: Thu,  1 Dec 2022 08:56:26 +0100
-Message-Id: <fa025537f584599c0271fc129c5cf4f57fbe7505.1669881248.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v1 02/10] powerpc: Remove __kernel_text_address() in show_instructions()
+Date: Thu,  1 Dec 2022 08:56:27 +0100
+Message-Id: <96a35025667d6e44f5253f82f61bb49b0a6ecf2a.1669881248.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.38.1
+In-Reply-To: <fa025537f584599c0271fc129c5cf4f57fbe7505.1669881248.git.christophe.leroy@csgroup.eu>
+References: <fa025537f584599c0271fc129c5cf4f57fbe7505.1669881248.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1669881390; l=7581; s=20211009; h=from:subject:message-id; bh=mTdJVaQfMyXbnPuQ7zaafwCQVYscHE9YBgdQhOwKvMM=; b=kxBgTIRCPz6IPZjtyYFofoT48bO9f5x0Jgv7ZxGlGeAC9MxadoQueJ/Rjap1eMPbkPEwOWkABrN4 Dc4Ko9t+A+wpyR+sbyAkGeeQ/hD1SgGUcsf+6fW6n4ekJFR5MmMC
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1669881390; l=1412; s=20211009; h=from:subject:message-id; bh=/zpH2ZZvEoJhCvxUe4ujuN1Lgf9RLeBH5yxOMRR6WTo=; b=VO+bDKToRC6Z5qShLIgfWwHi4YRQyWdYTYB6ld+4YoQvb5mLByEIdDa3Pk7kXIovhVtsg6pGixkz x7bgqbDbBxts/Evn0oZmXOnVq3gJ9+QZTXiuGSLkD57Qv+Byc1IZ
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -66,195 +68,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: stable@vger.kernel.org, Hao Luo <haoluo@google.com>, Daniel Borkmann <daniel@iogearbox.net>, Song Liu <song@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, John Fastabend <john.fastabend@gmail.com>, linux-kernel@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, Stanislav Fomichev <sdf@google.com>, Jiri Olsa <jolsa@kernel.org>, KP Singh <kpsingh@kernel.org>, Yonghong Song <yhs@fb.com>, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "Naveen N . Rao" <naveen.n.rao@linux.vnet.ibm.com>
+Cc: Hao Luo <haoluo@google.com>, Daniel Borkmann <daniel@iogearbox.net>, Song Liu <song@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, John Fastabend <john.fastabend@gmail.com>, linux-kernel@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, Stanislav Fomichev <sdf@google.com>, Jiri Olsa <jolsa@kernel.org>, KP Singh <kpsingh@kernel.org>, Yonghong Song <yhs@fb.com>, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-test_bpf tail call tests end up as:
+That test was introducted in 2006 by
+commit 00ae36de49cc ("[POWERPC] Better check in show_instructions").
+At that time, there was no BPF progs.
 
-  test_bpf: #0 Tail call leaf jited:1 85 PASS
-  test_bpf: #1 Tail call 2 jited:1 111 PASS
-  test_bpf: #2 Tail call 3 jited:1 145 PASS
-  test_bpf: #3 Tail call 4 jited:1 170 PASS
-  test_bpf: #4 Tail call load/store leaf jited:1 190 PASS
-  test_bpf: #5 Tail call load/store jited:1
-  BUG: Unable to handle kernel data access on write at 0xf1b4e000
-  Faulting instruction address: 0xbe86b710
-  Oops: Kernel access of bad area, sig: 11 [#1]
-  BE PAGE_SIZE=4K MMU=Hash PowerMac
-  Modules linked in: test_bpf(+)
-  CPU: 0 PID: 97 Comm: insmod Not tainted 6.1.0-rc4+ #195
-  Hardware name: PowerMac3,1 750CL 0x87210 PowerMac
-  NIP:  be86b710 LR: be857e88 CTR: be86b704
-  REGS: f1b4df20 TRAP: 0300   Not tainted  (6.1.0-rc4+)
-  MSR:  00009032 <EE,ME,IR,DR,RI>  CR: 28008242  XER: 00000000
-  DAR: f1b4e000 DSISR: 42000000
-  GPR00: 00000001 f1b4dfe0 c11d2280 00000000 00000000 00000000 00000002 00000000
-  GPR08: f1b4e000 be86b704 f1b4e000 00000000 00000000 100d816a f2440000 fe73baa8
-  GPR16: f2458000 00000000 c1941ae4 f1fe2248 00000045 c0de0000 f2458030 00000000
-  GPR24: 000003e8 0000000f f2458000 f1b4dc90 3e584b46 00000000 f24466a0 c1941a00
-  NIP [be86b710] 0xbe86b710
-  LR [be857e88] __run_one+0xec/0x264 [test_bpf]
-  Call Trace:
-  [f1b4dfe0] [00000002] 0x2 (unreliable)
-  Instruction dump:
-  XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX
-  XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX
-  ---[ end trace 0000000000000000 ]---
+As seen in message of commit 89d21e259a94 ("powerpc/bpf/32: Fix Oops
+on tail call tests"), when a page fault occurs in test_bpf.ko for
+instance, the code is dumped as XXXXXXXXs. Allthough
+__kernel_text_address() checks is_bpf_text_address(), it seems it is
+not enough.
 
-This is a tentative to write above the stack. The problem is encoutered
-with tests added by commit 38608ee7b690 ("bpf, tests: Add load store
-test case for tail call")
+Today, show_instructions() uses get_kernel_nofault() to read the code,
+so there is no real need for additional verifications.
 
-This happens because tail call is done to a BPF prog with a different
-stack_depth. At the time being, the stack is kept as is when the caller
-tail calls its callee. But at exit, the callee restores the stack based
-on its own properties. Therefore here, at each run, r1 is erroneously
-increased by 32 - 16 = 16 bytes.
+ARM64 and x86 don't do any additional check before dumping
+instructions. Do the same and remove __kernel_text_address()
+in show_instructions().
 
-This was done that way in order to pass the tail call count from caller
-to callee through the stack. As powerpc32 doesn't have a red zone in
-the stack, it was necessary the maintain the stack as is for the tail
-call. But it was not anticipated that the BPF frame size could be
-different.
-
-Let's take a new approach. Use register r4 to carry the tail call count
-during the tail call, and save it into the stack at function entry if
-required. This means the input parameter must be in r3, which is more
-correct as it is a 32 bits parameter, then tail call better match with
-normal BPF function entry, the down side being that we move that input
-parameter back and forth between r3 and r4. That can be optimised later.
-
-Doing that also has the advantage of maximising the common parts between
-tail calls and a normal function exit.
-
-With the fix, tail call tests are now successfull:
-
-  test_bpf: #0 Tail call leaf jited:1 53 PASS
-  test_bpf: #1 Tail call 2 jited:1 115 PASS
-  test_bpf: #2 Tail call 3 jited:1 154 PASS
-  test_bpf: #3 Tail call 4 jited:1 165 PASS
-  test_bpf: #4 Tail call load/store leaf jited:1 101 PASS
-  test_bpf: #5 Tail call load/store jited:1 141 PASS
-  test_bpf: #6 Tail call error path, max count reached jited:1 994 PASS
-  test_bpf: #7 Tail call count preserved across function calls jited:1 140975 PASS
-  test_bpf: #8 Tail call error path, NULL target jited:1 110 PASS
-  test_bpf: #9 Tail call error path, index out of range jited:1 69 PASS
-  test_bpf: test_tail_calls: Summary: 10 PASSED, 0 FAILED, [10/10 JIT'ed]
-
-Suggested-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
-Fixes: 51c66ad849a7 ("powerpc/bpf: Implement extended BPF on PPC32")
-Cc: stable@vger.kernel.org
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Tested-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/757acccb7fbfc78efa42dcf3c974b46678198905.1669278887.git.christophe.leroy@csgroup.eu
 ---
- arch/powerpc/net/bpf_jit_comp32.c | 52 +++++++++++++------------------
- 1 file changed, 21 insertions(+), 31 deletions(-)
+ arch/powerpc/kernel/process.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/net/bpf_jit_comp32.c b/arch/powerpc/net/bpf_jit_comp32.c
-index 43f1c76d48ce..a379b0ce19ff 100644
---- a/arch/powerpc/net/bpf_jit_comp32.c
-+++ b/arch/powerpc/net/bpf_jit_comp32.c
-@@ -113,23 +113,19 @@ void bpf_jit_build_prologue(u32 *image, struct codegen_context *ctx)
- {
- 	int i;
+diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
+index e3e1feaa536a..c4e9f090ad22 100644
+--- a/arch/powerpc/kernel/process.c
++++ b/arch/powerpc/kernel/process.c
+@@ -1373,8 +1373,7 @@ static void show_instructions(struct pt_regs *regs)
+ 	for (i = 0; i < NR_INSN_TO_PRINT; i++) {
+ 		int instr;
  
--	/* First arg comes in as a 32 bits pointer. */
--	EMIT(PPC_RAW_MR(bpf_to_ppc(BPF_REG_1), _R3));
--	EMIT(PPC_RAW_LI(bpf_to_ppc(BPF_REG_1) - 1, 0));
-+	/* Initialize tail_call_cnt, to be skipped if we do tail calls. */
-+	EMIT(PPC_RAW_LI(_R4, 0));
-+
-+#define BPF_TAILCALL_PROLOGUE_SIZE	4
-+
- 	EMIT(PPC_RAW_STWU(_R1, _R1, -BPF_PPC_STACKFRAME(ctx)));
- 
--	/*
--	 * Initialize tail_call_cnt in stack frame if we do tail calls.
--	 * Otherwise, put in NOPs so that it can be skipped when we are
--	 * invoked through a tail call.
--	 */
- 	if (ctx->seen & SEEN_TAILCALL)
--		EMIT(PPC_RAW_STW(bpf_to_ppc(BPF_REG_1) - 1, _R1,
--				 bpf_jit_stack_offsetof(ctx, BPF_PPC_TC)));
--	else
--		EMIT(PPC_RAW_NOP());
-+		EMIT(PPC_RAW_STW(_R4, _R1, bpf_jit_stack_offsetof(ctx, BPF_PPC_TC)));
- 
--#define BPF_TAILCALL_PROLOGUE_SIZE	16
-+	/* First arg comes in as a 32 bits pointer. */
-+	EMIT(PPC_RAW_MR(bpf_to_ppc(BPF_REG_1), _R3));
-+	EMIT(PPC_RAW_LI(bpf_to_ppc(BPF_REG_1) - 1, 0));
- 
- 	/*
- 	 * We need a stack frame, but we don't necessarily need to
-@@ -170,24 +166,24 @@ static void bpf_jit_emit_common_epilogue(u32 *image, struct codegen_context *ctx
- 	for (i = BPF_PPC_NVR_MIN; i <= 31; i++)
- 		if (bpf_is_seen_register(ctx, i))
- 			EMIT(PPC_RAW_LWZ(i, _R1, bpf_jit_stack_offsetof(ctx, i)));
--}
--
--void bpf_jit_build_epilogue(u32 *image, struct codegen_context *ctx)
--{
--	EMIT(PPC_RAW_MR(_R3, bpf_to_ppc(BPF_REG_0)));
--
--	bpf_jit_emit_common_epilogue(image, ctx);
--
--	/* Tear down our stack frame */
- 
- 	if (ctx->seen & SEEN_FUNC)
- 		EMIT(PPC_RAW_LWZ(_R0, _R1, BPF_PPC_STACKFRAME(ctx) + PPC_LR_STKOFF));
- 
-+	/* Tear down our stack frame */
- 	EMIT(PPC_RAW_ADDI(_R1, _R1, BPF_PPC_STACKFRAME(ctx)));
- 
- 	if (ctx->seen & SEEN_FUNC)
- 		EMIT(PPC_RAW_MTLR(_R0));
- 
-+}
-+
-+void bpf_jit_build_epilogue(u32 *image, struct codegen_context *ctx)
-+{
-+	EMIT(PPC_RAW_MR(_R3, bpf_to_ppc(BPF_REG_0)));
-+
-+	bpf_jit_emit_common_epilogue(image, ctx);
-+
- 	EMIT(PPC_RAW_BLR());
- }
- 
-@@ -244,7 +240,6 @@ static int bpf_jit_emit_tail_call(u32 *image, struct codegen_context *ctx, u32 o
- 	EMIT(PPC_RAW_RLWINM(_R3, b2p_index, 2, 0, 29));
- 	EMIT(PPC_RAW_ADD(_R3, _R3, b2p_bpf_array));
- 	EMIT(PPC_RAW_LWZ(_R3, _R3, offsetof(struct bpf_array, ptrs)));
--	EMIT(PPC_RAW_STW(_R0, _R1, bpf_jit_stack_offsetof(ctx, BPF_PPC_TC)));
- 
- 	/*
- 	 * if (prog == NULL)
-@@ -255,19 +250,14 @@ static int bpf_jit_emit_tail_call(u32 *image, struct codegen_context *ctx, u32 o
- 
- 	/* goto *(prog->bpf_func + prologue_size); */
- 	EMIT(PPC_RAW_LWZ(_R3, _R3, offsetof(struct bpf_prog, bpf_func)));
--
--	if (ctx->seen & SEEN_FUNC)
--		EMIT(PPC_RAW_LWZ(_R0, _R1, BPF_PPC_STACKFRAME(ctx) + PPC_LR_STKOFF));
--
- 	EMIT(PPC_RAW_ADDIC(_R3, _R3, BPF_TAILCALL_PROLOGUE_SIZE));
--
--	if (ctx->seen & SEEN_FUNC)
--		EMIT(PPC_RAW_MTLR(_R0));
--
- 	EMIT(PPC_RAW_MTCTR(_R3));
- 
- 	EMIT(PPC_RAW_MR(_R3, bpf_to_ppc(BPF_REG_1)));
- 
-+	/* Put tail_call_cnt in r4 */
-+	EMIT(PPC_RAW_MR(_R4, _R0));
-+
- 	/* tear restore NVRs, ... */
- 	bpf_jit_emit_common_epilogue(image, ctx);
- 
+-		if (!__kernel_text_address(pc) ||
+-		    get_kernel_nofault(instr, (const void *)pc)) {
++		if (get_kernel_nofault(instr, (const void *)pc)) {
+ 			pr_cont("XXXXXXXX ");
+ 		} else {
+ 			if (nip == pc)
 -- 
 2.38.1
 
