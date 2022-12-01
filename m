@@ -2,53 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D3EE63EE14
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 11:40:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5523263F1DB
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 14:40:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NNCKK0j5cz3bb3
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 21:40:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NNHHy1jcKz3bZ8
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Dec 2022 00:39:58 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=mtH77xWq;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=NqfMGu7T;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=nw7rEaNx;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=tiwai@suse.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=NqfMGu7T;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=nw7rEaNx;
+	dkim-atps=neutral
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NNCJP0L9Xz30QQ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Dec 2022 21:40:05 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=mtH77xWq;
-	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NNHGY4wZgz3bcT
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Dec 2022 00:38:45 +1100 (AEDT)
+Received: from imap1.suse-dmz.suse.de (imap1.suse-dmz.suse.de [192.168.254.73])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NNCJN4W7qz4xFy;
-	Thu,  1 Dec 2022 21:40:04 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1669891204;
-	bh=KTDVN/7lIjIrER/XXkOz9H8eWtf2nxvkUgRAGM5il/U=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=mtH77xWqReqw3bUURmWOaOMUgI1fnhJeqxa/jFrTE2AiPxZgRHJOdcrEogd7m6t+K
-	 hSD5E6U7i+ckFXkoXJyBCf9GV9mhqfTh6a2EhgZiI/SRGv0KENZChmJYXHVWQJ6yRk
-	 6YrETuvLSFH3GLBrIHlAqPWESejuap3arDVMjfILKy+BGr1aGCqxlVdA7HLC4kSTkB
-	 h2Fc1q1HQQmg4WuwySsEcmNguqQitD5GKa/mEHq6/vneU8YBjQFOfp9St3mhaor2x1
-	 6DM3kpUr8F1g1c/fjGREENP6GL+7W1pjUv9OMijMtZXQ/VLwrb7rHigKdo6xpjkop7
-	 l5PmypY+0tAfg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: =?utf-8?B?QXLEsW7DpyDDnE5BTA==?= <arinc.unal@arinc9.com>, Pali
- =?utf-8?Q?Roh=C3=A1r?= <pali@kernel.org>
-Subject: Re: [PATCH 5/5] powerpc: dts: remove label = "cpu" from DSA dt-binding
-In-Reply-To: <20221130141040.32447-6-arinc.unal@arinc9.com>
-References: <20221130141040.32447-1-arinc.unal@arinc9.com>
- <20221130141040.32447-6-arinc.unal@arinc9.com>
-Date: Thu, 01 Dec 2022 21:40:03 +1100
-Message-ID: <87a647s8zg.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+	by smtp-out1.suse.de (Postfix) with ESMTPS id B988B21BD8;
+	Thu,  1 Dec 2022 13:38:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1669901914; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EpPEbhYU/ZSzBergbxPG18rF6z3xaGTMJpY/KD4hdN0=;
+	b=NqfMGu7TOFopplQnGWvsL3EJ6f6cvD2+3UqnIH9MgHg26FPG3wmd98hqR7V6xsdZ0c8Vke
+	owU1O7TeMPowfni/Y4/f0++Diu8+bvrgj83AyE4Hl4Mhktx4gC0hH22a1j6phJ4cxlwt0g
+	M51CMPmyt3PVadDP6oU7dmktdW+cvjE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1669901914;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EpPEbhYU/ZSzBergbxPG18rF6z3xaGTMJpY/KD4hdN0=;
+	b=nw7rEaNxj44kK7pb8ca9iO9xzjrguRhX54wAGxllFfQlwK4FxfX2KJCahutRLs8Vm8Lynh
+	/90IUhYauTmvsgBQ==
+Received: from imap1.suse-dmz.suse.de (imap1.suse-dmz.suse.de [192.168.254.73])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap1.suse-dmz.suse.de (Postfix) with ESMTPS id F010C1320E;
+	Thu,  1 Dec 2022 13:38:33 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap1.suse-dmz.suse.de with ESMTPSA
+	id xfi6OVmuiGPRFwAAGKfGzw
+	(envelope-from <tiwai@suse.de>); Thu, 01 Dec 2022 13:38:33 +0000
+Date: Thu, 01 Dec 2022 14:38:33 +0100
+Message-ID: <87v8mvmeg6.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Oliver Neukum <oneukum@suse.com>
+Subject: Re: [PATCH v8 3/3] ASoC: SOF: Fix deadlock when shutdown a frozen userspace
+In-Reply-To: <d3730d1d-6f92-700a-06c4-0e0a35e270b0@suse.com>
+References: <20221127-snd-freeze-v8-0-3bc02d09f2ce@chromium.org>
+	<20221127-snd-freeze-v8-3-3bc02d09f2ce@chromium.org>
+	<716e5175-7a44-7ae8-b6bb-10d9807552e6@suse.com>
+	<CANiDSCtwSb50sjn5tM7jJ6W2UpeKzpuzng+RdJuywiC3-j2zdg@mail.gmail.com>
+	<d3730d1d-6f92-700a-06c4-0e0a35e270b0@suse.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,55 +81,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Cc: Daniel Baluta <daniel.baluta@nxp.com>, alsa-devel@alsa-project.org, x86@kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>, linux-pci@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, linux-hyperv@vger.kernel.org, Jaroslav Kysela <perex@perex.cz>, linux-efi@vger.kernel.org, Pavel Machek <pavel@ucw.cz>, "H. Peter Anvin" <hpa@zytor.com>, Joel Fernandes <joel@joelfernandes.org>, "K. Y. Srinivasan" <kys@microsoft.com>, Bard Liao <yung-chuan.liao@linux.intel.com>, Ard Biesheuvel <ardb@kernel.org>, sound-open-firmware@alsa-project.org, Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>, Wei Liu <wei.liu@kernel.org>, Takashi Iwai <tiwai@suse.com>, Dexuan Cui <decui@microsoft.com>, Ranjani Sridharan <ranjani.sridharan@linux.intel.com>, Chromeos Kdump <chromeos-kdump@google.com>, xen-devel@lists.xenproject.org, Len Brown <len.brown@intel.com>, linux-pm@vger.kernel.org, Haiyang Zhang <haiyangz@microsoft.com>, Nicholas Piggin <npiggin@gmail.com>, Mark Brown <broonie@kern
+ el.org>, Borislav Petkov <bp@alien8.de>, Steven Rostedt <rostedt@goodmis.org>, Bjorn Helgaas <bhelgaas@google.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Peter Ujfalusi <peter.ujfalusi@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, Juergen Gross <jgross@suse.com>, Kai Vehmanen <kai.vehmanen@linux.intel.com>, kexec@lists.infradead.org, Liam Girdwood <lgirdwood@gmail.com>, stable@vger.kernel.org, linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, Eric Biederman <ebiederm@xmission.com>, Ricardo Ribalda <ribalda@chromium.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Ar=C4=B1n=C3=A7 =C3=9CNAL <arinc.unal@arinc9.com> writes:
-> This is not used by the DSA dt-binding, so remove it from all devicetrees.
->
-> Signed-off-by: Ar=C4=B1n=C3=A7 =C3=9CNAL <arinc.unal@arinc9.com>
-> ---
->  arch/powerpc/boot/dts/turris1x.dts | 2 --
->  1 file changed, 2 deletions(-)
+On Thu, 01 Dec 2022 14:22:12 +0100,
+Oliver Neukum wrote:
+> 
+> On 01.12.22 14:03, Ricardo Ribalda wrote:
+> 
+> Hi,
+>  
+> > This patchset does not modify this behaviour. It simply fixes the
+> > stall for kexec().
+> > 
+> > The  patch that introduced the stall:
+> > 83bfc7e793b5 ("ASoC: SOF: core: unregister clients and machine drivers
+> > in .shutdown")
+> 
+> That patch is problematic. I would go as far as saying that
+> it needs to be reverted.
 
-Adding Pali to Cc.
+... or fixed.
 
-These were only recently updated in commit:
+> > was sent as a generalised version of:
+> > https://github.com/thesofproject/linux/pull/3388
+> > 
+> > AFAIK, we would need a similar patch for every single board.... which
+> > I am not sure it is doable in a reasonable timeframe.
+> > 
+> > On the meantime this seems like a decent compromises. Yes, a
+> > miss-behaving userspace can still stall during suspend, but that was
+> > not introduced in this patch.
+> 
+> Well, I mean if you know what wrong then I'd say at least return to
+> a sanely broken state.
+> 
+> The whole approach is wrong. You need to be able to deal with user
+> space talking to removed devices by returning an error and keeping
+> the resources association with the open file allocated until
+> user space calls close()
 
-  8bf056f57f1d ("powerpc: dts: turris1x.dts: Fix labels in DSA cpu port nod=
-es")
+As I already mentioned in another thread, if the user-space action has
+to be cut off, we just need to call snd_card_disconnect() instead
+without sync.  A quick hack would be like below (totally untested and
+might be wrong, though).
 
-Which said:
-
-  DSA cpu port node has to be marked with "cpu" label.
-
-But if the binding doesn't use them then I'm confused why they needed to
-be updated.
-
-cheers
+In anyway, Ricardo, please stop spinning too frequently; v8 in a few 
+days is way too much, and now the recipient list became unmanageable.
+Let's give people some time to review and consider a better solution
+at first.
 
 
-> diff --git a/arch/powerpc/boot/dts/turris1x.dts b/arch/powerpc/boot/dts/t=
-urris1x.dts
-> index 045af668e928..3841c8d96d00 100644
-> --- a/arch/powerpc/boot/dts/turris1x.dts
-> +++ b/arch/powerpc/boot/dts/turris1x.dts
-> @@ -147,7 +147,6 @@ ports {
->=20=20
->  					port@0 {
->  						reg =3D <0>;
-> -						label =3D "cpu";
->  						ethernet =3D <&enet1>;
->  						phy-mode =3D "rgmii-id";
->=20=20
-> @@ -184,7 +183,6 @@ port@5 {
->=20=20
->  					port@6 {
->  						reg =3D <6>;
-> -						label =3D "cpu";
->  						ethernet =3D <&enet0>;
->  						phy-mode =3D "rgmii-id";
->=20=20
-> --=20
-> 2.34.1
+thanks,
+
+Takashi
+
+-- 8< --
+--- a/sound/soc/sof/core.c
++++ b/sound/soc/sof/core.c
+@@ -475,7 +475,7 @@ EXPORT_SYMBOL(snd_sof_device_remove);
+ int snd_sof_device_shutdown(struct device *dev)
+ {
+ 	struct snd_sof_dev *sdev = dev_get_drvdata(dev);
+-	struct snd_sof_pdata *pdata = sdev->pdata;
++	struct snd_soc_component *component;
+ 
+ 	if (IS_ENABLED(CONFIG_SND_SOC_SOF_PROBE_WORK_QUEUE))
+ 		cancel_work_sync(&sdev->probe_work);
+@@ -484,9 +484,9 @@ int snd_sof_device_shutdown(struct device *dev)
+ 	 * make sure clients and machine driver(s) are unregistered to force
+ 	 * all userspace devices to be closed prior to the DSP shutdown sequence
+ 	 */
+-	sof_unregister_clients(sdev);
+-
+-	snd_sof_machine_unregister(sdev, pdata);
++	component = snd_soc_lookup_component(sdev->dev, NULL);
++	if (component && component->card && component->card->snd_card)
++		snd_card_disconnect(component->card->snd_card);
+ 
+ 	if (sdev->fw_state == SOF_FW_BOOT_COMPLETE)
+ 		return snd_sof_shutdown(sdev);
+
+
+
+
