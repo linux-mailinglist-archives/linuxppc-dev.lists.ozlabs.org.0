@@ -1,55 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 803BA63F679
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 18:45:08 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93E6363F687
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 18:46:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NNNkp2M23z3fB7
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Dec 2022 04:45:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NNNlq33rFz3f57
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Dec 2022 04:45:59 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=XMDViV6C;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=AzHg60Uf;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::32c; helo=mail-wm1-x32c.google.com; envelope-from=xadimgnik@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=AzHg60Uf;
+	dkim-atps=neutral
+Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NNCLw2flwz2xCj
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Dec 2022 21:42:16 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=XMDViV6C;
-	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NNCLc4QCXz4xFy;
-	Thu,  1 Dec 2022 21:42:00 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1669891334;
-	bh=4hif7EODqPU9RIQoNSM7f4kViT96m8PqRMy1FOSRqmw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=XMDViV6CFDY+O8nTTE8IlEWWvY7H8YPqwD0Tn3KS84kUAblouGGNC2+Nia8sW2MYv
-	 qiQITUGJnoNf2rF8FqcIgIFTtKJlyIpcKBWiNrEakO5NLQ+ickTPEjtr01+GlyanLx
-	 mzZ9YX/t1jp5UON6rpZmvdKzHLeuceJXW2c99G//FjEB6EQyCPN8TlRw5ClPGntYn1
-	 1lstUDxUIwXt5rogz0qwgKe9XH3/+5CPLNT6DZ3ksaq4/yXNeIe6xOWsdnc3/9h44G
-	 yfuCxdwdv4chZHzuDDmEcJxiTEJT36pr3DPrHlRrFjnXSjff4fqmP4a9zPs8OfNA43
-	 pIMyXosyZ93DA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: =?utf-8?B?QXLEsW7DpyDDnE5BTA==?= <arinc.unal@arinc9.com>, Andrew Lunn
- <andrew@lunn.ch>
-Subject: Re: [PATCH 0/5] remove label = "cpu" from DSA dt-binding
-In-Reply-To: <32638470-b074-3b14-bfb2-10b49307b9e3@arinc9.com>
-References: <20221130141040.32447-1-arinc.unal@arinc9.com>
- <Y4d9B7VSHvqJn0iS@lunn.ch>
- <32638470-b074-3b14-bfb2-10b49307b9e3@arinc9.com>
-Date: Thu, 01 Dec 2022 21:42:00 +1100
-Message-ID: <877czbs8w7.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NNCNJ3Qznz2yQH
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Dec 2022 21:43:28 +1100 (AEDT)
+Received: by mail-wm1-x32c.google.com with SMTP id l39-20020a05600c1d2700b003cf93c8156dso1160389wms.4
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Dec 2022 02:43:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:organization:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=34xRbeJm4Ksf3agn72vdHuQrCy+xFaOAkMI20jSUs8E=;
+        b=AzHg60UfqWIuniRDwSV0kUn58L84AxRbLj1KxaWUpkExnaz9Jf0mpMJsRIxs0KObgd
+         soQ1W7t6DClFqZL5Sz4pVLJxPODSdcfWH2JFiVW2zEBMerlLvjkR1+DJoc4+WpNBKL+I
+         PW6xkLEEUmN/Se6yT0vIWJph39WzqIA+SJPH1Jsv7h7dKXsKvjwPoKUClZhTIgXjAbFD
+         m9zWUx0GIE8Dv1vkZzsH73Fq4mPpvgYZnpRmT8AL17xzVUC4+XcR3wej4y3vY5DfOIdr
+         5pF7L9v5/ffa3NIJyyFg3JxW0kRC69giw2m5lejSbkJhsGZxR9w1oE4BDHpBORKVLYtO
+         3/ZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:organization:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=34xRbeJm4Ksf3agn72vdHuQrCy+xFaOAkMI20jSUs8E=;
+        b=XoXKNOhm0Ucm4Bmd4bJhDOrZUhlUff4JcUZXFsqTLOc0RLLMZL9r4oM/CTCV2iP/74
+         3PwAIJjvi4rQygwJcZEt9+rxMxWyRvaLdp1DJUH4wquJKlbzItT0qt4c22iNSXxODaqN
+         uk+zEkv9t1yMNrfzZSENaWznqXLfa5vwrdwTvmzWaaIkCnhNosjjE+iegzth+Mfap4j3
+         Xfvq40/Rup4l+BKzheRPjQIpMnqFPjZQbEHwvMyE+FUx/pcW0z7D5JoCJ8+4rTZO/Q/b
+         09B4ESPAxS3VPdHSvAws2B+Zd1ccc8UIfuLZ9jqfKtAZ2zpOqJJuz+x/9tjCTcmQvqV7
+         HTkg==
+X-Gm-Message-State: ANoB5pk+enBcQ8Qu03sIxRHGywr75RAAiBMpEwjLOzQbHXWYuuNLQSBq
+	tgGgTuOrHmOmjFU2n9z7TAw=
+X-Google-Smtp-Source: AA0mqf6f8L9W/LFpuxiieU1hwL0SgbBmWKJep4VDP/7W75bGJuJSe0KFg6OoADvN7w7dpRP5siL0uQ==
+X-Received: by 2002:a05:600c:1f16:b0:3cf:66a2:d440 with SMTP id bd22-20020a05600c1f1600b003cf66a2d440mr47429561wmb.108.1669891402569;
+        Thu, 01 Dec 2022 02:43:22 -0800 (PST)
+Received: from [192.168.0.248] (54-240-197-238.amazon.com. [54.240.197.238])
+        by smtp.gmail.com with ESMTPSA id i10-20020a1c540a000000b003cfc02ab8basm8303094wmb.33.2022.12.01.02.43.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 01 Dec 2022 02:43:22 -0800 (PST)
+From: Paul Durrant <xadimgnik@gmail.com>
+X-Google-Original-From: Paul Durrant <paul@xen.org>
+Message-ID: <aa3be096-4f05-b653-b801-e102abe01903@xen.org>
+Date: Thu, 1 Dec 2022 10:43:18 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
+Subject: Re: [PATCH v2 34/50] KVM: x86: Unify pr_fmt to use module name for
+ all KVM modules
+Content-Language: en-US
+To: Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>,
+ Huacai Chen <chenhuacai@kernel.org>,
+ Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>,
+ Anup Patel <anup@brainfault.org>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Janosch Frank <frankja@linux.ibm.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>, David Woodhouse <dwmw2@infradead.org>
+References: <20221130230934.1014142-1-seanjc@google.com>
+ <20221130230934.1014142-35-seanjc@google.com>
+Organization: Xen Project
+In-Reply-To: <20221130230934.1014142-35-seanjc@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Mailman-Approved-At: Fri, 02 Dec 2022 04:43:21 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -62,49 +96,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>, Heiko Stuebner <heiko@sntech.de>, Geert Uytterhoeven <geert+renesas@glider.be>, Tim Harvey <tharvey@gateworks.com>, Vladimir Oltean <vladimir.oltean@nxp.com>, Linus Walleij <linus.walleij@linaro.org>, Konrad Dybcio <konrad.dybcio@somainline.org>, Alexandre Torgue <alexandre.torgue@foss.st.com>, Stefan Agner <stefan@agner.ch>, linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Oleksij Rempel <linux@rempel-privat.de>, Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>, Florian Fainelli <f.fainelli@gmail.com>, Samuel Holland <samuel@sholland.org>, linux-rockchip@lists.infradead.org, Gregory Clement <gregory.clement@bootlin.com>, =?utf-8?Q?Rafa?= =?utf-8?Q?=C5=82_Mi=C5=82ecki?= <zajec5@gmail.com>, Russell King <linux@armlinux.org.uk>, Jernej Skrabec <jernej.skrabec@gmail.com>, linux-stm32@st-md-mailman.stormreply.com, Sergio Paracuellos <sergio.parac
- uellos@gmail.com>, Chen-Yu Tsai <wens@csie.org>, Andy Gross <agross@kernel.org>, Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, NXP Linux Team <linux-imx@nxp.com>, Ray Jui <rjui@broadcom.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Sascha Hauer <s.hauer@pengutronix.de>, Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Frank Wunderlich <frank-w@public-files.de>, Hauke Mehrtens <hauke@hauke-m.de>, Hans Ulli Kroll <ulli.kroll@googlemail.com>, linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>, linux-mips@vger.kernel.org, soc@kernel.org, Rob Herring <robh+dt@kernel.org>, linux-mediatek@lists.infradead.org, Matthias Brugger <matthias.bgg@gmail.com>, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Scott Branden <sbranden@broadcom.com>, netdev@vger.kernel.org, Bjorn A
- ndersson <andersson@kernel.org>, Rasmus Villemoes <rasmus.villemoes@prevas.dk>, Nicolas Ferre <nicolas.ferre@microchip.com>, "David S. Miller" <davem@davemloft.net>, linux-renesas-soc@vger.kernel.org, linux-sunxi@lists.linux.dev, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Claudiu Beznea <claudiu.beznea@microchip.com>, Michael Riesch <michael.riesch@wolfvision.net>
+Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Atish Patra <atishp@atishpatra.org>, linux-kernel@vger.kernel.org, Kai Huang <kai.huang@intel.com>, linux-riscv@lists.infradead.org, kvmarm@lists.cs.columbia.edu, linux-s390@vger.kernel.org, Chao Gao <chao.gao@intel.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, Yuan Yao <yuan.yao@intel.com>, kvmarm@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, Alexandru Elisei <alexandru.elisei@arm.com>, linux-arm-kernel@lists.infradead.org, Isaku Yamahata <isaku.yamahata@intel.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>, Fabiano Rosas <farosas@linux.ibm.com>, Cornelia Huck <cohuck@redhat.com>, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, James Morse <james.morse@arm.com>, kvm-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Ar=C4=B1n=C3=A7 =C3=9CNAL <arinc.unal@arinc9.com> writes:
-> On 30.11.2022 18:55, Andrew Lunn wrote:
->> On Wed, Nov 30, 2022 at 05:10:35PM +0300, Ar=C4=B1n=C3=A7 =C3=9CNAL wrot=
-e:
->>> Hello folks,
->>>
->>> With this patch series, we're completely getting rid of 'label =3D "cpu=
-";'
->>> which is not used by the DSA dt-binding at all.
->>>
->>> Information for taking the patches for maintainers:
->>> Patch 1: netdev maintainers (based off netdev/net-next.git main)
->>> Patch 2-3: SoC maintainers (based off soc/soc.git soc/dt)
->>> Patch 4: MIPS maintainers (based off mips/linux.git mips-next)
->>> Patch 5: PowerPC maintainers (based off powerpc/linux.git next-test)
->>=20
->> Hi Ar=C4=B1n=C3=A7
->>=20
->> So your plan is that each architecture maintainer merges one patch?
->
-> Initially, I sent this series to soc@kernel.org to take it all but Rob=20
-> said it must be this way instead.
->
->>=20
->> That is fine, but it is good to be explicit, otherwise patches will
->> fall through the cracks because nobody picks them up. I generally use
->> To: to indicate who i expect to merge a patch, and everybody else in
->> the Cc:
->
-> Thanks for this, I'll follow suit if I don't see any activity for a few=20
-> weeks.
+On 30/11/2022 23:09, Sean Christopherson wrote:
+> Define pr_fmt using KBUILD_MODNAME for all KVM x86 code so that printks
+> use consistent formatting across common x86, Intel, and AMD code.  In
+> addition to providing consistent print formatting, using KBUILD_MODNAME,
+> e.g. kvm_amd and kvm_intel, allows referencing SVM and VMX (and SEV and
+> SGX and ...) as technologies without generating weird messages, and
+> without causing naming conflicts with other kernel code, e.g. "SEV: ",
+> "tdx: ", "sgx: " etc.. are all used by the kernel for non-KVM subsystems.
+> 
+> Opportunistically move away from printk() for prints that need to be
+> modified anyways, e.g. to drop a manual "kvm: " prefix.
+> 
+> Opportunistically convert a few SGX WARNs that are similarly modified to
+> WARN_ONCE; in the very unlikely event that the WARNs fire, odds are good
+> that they would fire repeatedly and spam the kernel log without providing
+> unique information in each print.
+> 
+> Note, defining pr_fmt yields undesirable results for code that uses KVM's
+> printk wrappers, e.g. vcpu_unimpl().  But, that's a pre-existing problem
+> as SVM/kvm_amd already defines a pr_fmt, and thankfully use of KVM's
+> wrappers is relatively limited in KVM x86 code.
+> 
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> ---
+[snip]
+> diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
+> index b246decb53a9..3bf7d69373cf 100644
+> --- a/arch/x86/kvm/xen.c
+> +++ b/arch/x86/kvm/xen.c
+> @@ -5,6 +5,7 @@
+>    *
+>    * KVM Xen emulation
+>    */
+> +#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+>   
+>   #include "x86.h"
+>   #include "xen.h"
 
-IMHO the best solution if the patches are truly independent is to send
-them independantly to each maintainer. That way there's no confusion
-about whether someone else will take the series.
+Reviewed-by: Paul Durrant <paul@xen.org>
 
-It's also simpler for maintainers to apply a single standalone patch vs
-pick a single patch from a larger series.
-
-cheers
