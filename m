@@ -1,75 +1,90 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5523263F1DB
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 14:40:00 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69A0463F3BE
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 16:23:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NNHHy1jcKz3bZ8
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Dec 2022 00:39:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NNKbt10gZz3bYL
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Dec 2022 02:23:54 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=NqfMGu7T;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=nw7rEaNx;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=B+Uzk/aU;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Nag0keCd;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=tiwai@suse.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=vkuznets@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=NqfMGu7T;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=nw7rEaNx;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=B+Uzk/aU;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Nag0keCd;
 	dkim-atps=neutral
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NNHGY4wZgz3bcT
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Dec 2022 00:38:45 +1100 (AEDT)
-Received: from imap1.suse-dmz.suse.de (imap1.suse-dmz.suse.de [192.168.254.73])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id B988B21BD8;
-	Thu,  1 Dec 2022 13:38:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1669901914; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NNKZr0Jz0z3bXJ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Dec 2022 02:22:57 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1669908172;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=EpPEbhYU/ZSzBergbxPG18rF6z3xaGTMJpY/KD4hdN0=;
-	b=NqfMGu7TOFopplQnGWvsL3EJ6f6cvD2+3UqnIH9MgHg26FPG3wmd98hqR7V6xsdZ0c8Vke
-	owU1O7TeMPowfni/Y4/f0++Diu8+bvrgj83AyE4Hl4Mhktx4gC0hH22a1j6phJ4cxlwt0g
-	M51CMPmyt3PVadDP6oU7dmktdW+cvjE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1669901914;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	bh=0uolOOp7yoOC/673O4rWJ2SQim3eJ9tGJUopqkFhibc=;
+	b=B+Uzk/aU+G0kyeVnZME32d4YN4l7sLEVdy7VP6JuIJVqdFtpi6L4u9AR4foUS4yhJn04ji
+	IbCpdEjCFiv/Ox5p9ri3H0diiVKuINuS06MGQTlm7eAeA92w2eMUUp1TObuZXodswa8hnv
+	xYmqwHPcu0DVGFsFXIzPOza1/s2AbEU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1669908173;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=EpPEbhYU/ZSzBergbxPG18rF6z3xaGTMJpY/KD4hdN0=;
-	b=nw7rEaNxj44kK7pb8ca9iO9xzjrguRhX54wAGxllFfQlwK4FxfX2KJCahutRLs8Vm8Lynh
-	/90IUhYauTmvsgBQ==
-Received: from imap1.suse-dmz.suse.de (imap1.suse-dmz.suse.de [192.168.254.73])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap1.suse-dmz.suse.de (Postfix) with ESMTPS id F010C1320E;
-	Thu,  1 Dec 2022 13:38:33 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap1.suse-dmz.suse.de with ESMTPSA
-	id xfi6OVmuiGPRFwAAGKfGzw
-	(envelope-from <tiwai@suse.de>); Thu, 01 Dec 2022 13:38:33 +0000
-Date: Thu, 01 Dec 2022 14:38:33 +0100
-Message-ID: <87v8mvmeg6.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Oliver Neukum <oneukum@suse.com>
-Subject: Re: [PATCH v8 3/3] ASoC: SOF: Fix deadlock when shutdown a frozen userspace
-In-Reply-To: <d3730d1d-6f92-700a-06c4-0e0a35e270b0@suse.com>
-References: <20221127-snd-freeze-v8-0-3bc02d09f2ce@chromium.org>
-	<20221127-snd-freeze-v8-3-3bc02d09f2ce@chromium.org>
-	<716e5175-7a44-7ae8-b6bb-10d9807552e6@suse.com>
-	<CANiDSCtwSb50sjn5tM7jJ6W2UpeKzpuzng+RdJuywiC3-j2zdg@mail.gmail.com>
-	<d3730d1d-6f92-700a-06c4-0e0a35e270b0@suse.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
+	bh=0uolOOp7yoOC/673O4rWJ2SQim3eJ9tGJUopqkFhibc=;
+	b=Nag0keCdiCH3WT3SjS51bcH8YAmNcKPZZL3zL3dy3L6DbmOKn5ZFSdvE6i4kv9sMkZCkMB
+	XS/OHx1MSv30Vbme7bAfuWLfzhlPJ2yDpNxC3+L26cZWb5NmvxhXTNL0KnLIt0b8U3vEZW
+	l4CEXtkDaOag2VCs1FfSit93qcxiGNI=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-488-jUxfhWUhPc2tINngJG0ETA-1; Thu, 01 Dec 2022 10:22:51 -0500
+X-MC-Unique: jUxfhWUhPc2tINngJG0ETA-1
+Received: by mail-wm1-f70.google.com with SMTP id bi19-20020a05600c3d9300b003cf9d6c4016so2676243wmb.8
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Dec 2022 07:22:51 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0uolOOp7yoOC/673O4rWJ2SQim3eJ9tGJUopqkFhibc=;
+        b=ZFF4G/hX1ndwD0sGZv7u+QWvBH9R2xm0xu6HTGMTyPHNuUUZm9hZPxTu6srPiwXdhs
+         i/vCdS8SkvjxGTYMPvxgo6TVvp04YdQlUMsFmsx3FK23PPtibNruGD6s1bq7x5RnB/48
+         pk/BkntJ1/wmLcqYYhlGy9RrBr9mOvgksqNm6snLjt8VrJ/UgW1wq0HY8LoFilnQzZ+m
+         gkVNlQCvQ8wWhw2m1/aNB2FDi1nvtsJKe384sAJevQQuPNjZqsGmLRUJPO3Qppljg4Nf
+         gm0ZWaG78bhsLtqCvdNJUz2j2NcP5fj2Ib5NG4j5fX9QHACr6EchXgUDymQpkQKfyMvt
+         K5Hg==
+X-Gm-Message-State: ANoB5pnsxw3Yb7w6OVXpMYdUS5e6POf204sQOYfZ/510+Tm5IRAl09qW
+	XlJytsXGEg1zsF1X+1es5uVRTvOFQztFmXbyMxXCPyiQLK7U9yYnnmSM6Hd5taiAKjQCMtXQGJ6
+	RAYMUWY7QUYkle8bNlxPHO//VgA==
+X-Received: by 2002:adf:f54e:0:b0:242:1534:7b57 with SMTP id j14-20020adff54e000000b0024215347b57mr14035633wrp.404.1669908170126;
+        Thu, 01 Dec 2022 07:22:50 -0800 (PST)
+X-Google-Smtp-Source: AA0mqf4+3YusiSWHR13O3MACnIQbSphop/g7AmmIFME21D1fv2+5ZYUMJJrVIeLUQmj0nQTJeAmHuA==
+X-Received: by 2002:adf:f54e:0:b0:242:1534:7b57 with SMTP id j14-20020adff54e000000b0024215347b57mr14035606wrp.404.1669908169821;
+        Thu, 01 Dec 2022 07:22:49 -0800 (PST)
+Received: from ovpn-194-141.brq.redhat.com (nat-2.ign.cz. [91.219.240.2])
+        by smtp.gmail.com with ESMTPSA id j11-20020a05600c190b00b003b47e75b401sm10593279wmq.37.2022.12.01.07.22.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 01 Dec 2022 07:22:49 -0800 (PST)
+From: Vitaly Kuznetsov <vkuznets@redhat.com>
+To: Sean Christopherson <seanjc@google.com>
+Subject: Re: [PATCH v2 12/50] KVM: VMX: Move Hyper-V eVMCS initialization to
+ helper
+In-Reply-To: <20221130230934.1014142-13-seanjc@google.com>
+References: <20221130230934.1014142-1-seanjc@google.com>
+ <20221130230934.1014142-13-seanjc@google.com>
+Date: Thu, 01 Dec 2022 16:22:45 +0100
+Message-ID: <87k03bf8sa.fsf@ovpn-194-141.brq.redhat.com>
+MIME-Version: 1.0
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,89 +96,134 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Daniel Baluta <daniel.baluta@nxp.com>, alsa-devel@alsa-project.org, x86@kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>, linux-pci@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, linux-hyperv@vger.kernel.org, Jaroslav Kysela <perex@perex.cz>, linux-efi@vger.kernel.org, Pavel Machek <pavel@ucw.cz>, "H. Peter Anvin" <hpa@zytor.com>, Joel Fernandes <joel@joelfernandes.org>, "K. Y. Srinivasan" <kys@microsoft.com>, Bard Liao <yung-chuan.liao@linux.intel.com>, Ard Biesheuvel <ardb@kernel.org>, sound-open-firmware@alsa-project.org, Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>, Wei Liu <wei.liu@kernel.org>, Takashi Iwai <tiwai@suse.com>, Dexuan Cui <decui@microsoft.com>, Ranjani Sridharan <ranjani.sridharan@linux.intel.com>, Chromeos Kdump <chromeos-kdump@google.com>, xen-devel@lists.xenproject.org, Len Brown <len.brown@intel.com>, linux-pm@vger.kernel.org, Haiyang Zhang <haiyangz@microsoft.com>, Nicholas Piggin <npiggin@gmail.com>, Mark Brown <broonie@kern
- el.org>, Borislav Petkov <bp@alien8.de>, Steven Rostedt <rostedt@goodmis.org>, Bjorn Helgaas <bhelgaas@google.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Peter Ujfalusi <peter.ujfalusi@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, Juergen Gross <jgross@suse.com>, Kai Vehmanen <kai.vehmanen@linux.intel.com>, kexec@lists.infradead.org, Liam Girdwood <lgirdwood@gmail.com>, stable@vger.kernel.org, linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, Eric Biederman <ebiederm@xmission.com>, Ricardo Ribalda <ribalda@chromium.org>, linuxppc-dev@lists.ozlabs.org
+Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Atish Patra <atishp@atishpatra.org>, linux-kernel@vger.kernel.org, Kai Huang <kai.huang@intel.com>, linux-riscv@lists.infradead.org, Claudio Imbrenda <imbrenda@linux.ibm.com>, kvmarm@lists.cs.columbia.edu, linux-s390@vger.kernel.org, Janosch Frank <frankja@linux.ibm.com>, Huacai Chen <chenhuacai@kernel.org>, Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, David Woodhouse <dwmw2@infradead.org>, Matthew Rosato <mjrosato@linux.ibm.com>, Chao Gao <chao.gao@intel.com>, Eric Farman <farman@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Suzuki K Poulose <suzuki.poulose@arm.com>, Sean Christopherson <seanjc@google.com>, Paul Durrant <paul@xen.org>, Paul Walmsley <paul.walmsley@sifive.com>, Yuan Yao <yuan.yao@intel.com>, kvmarm@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, Alexandru Elisei <alexandru.elisei@arm.com>, linux-a
+ rm-kernel@lists.infradead.org, Isaku Yamahata <isaku.yamahata@intel.com>, Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Fabiano Rosas <farosas@linux.ibm.com>, Anup Patel <anup@brainfault.org>, Cornelia Huck <cohuck@redhat.com>, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, James Morse <james.morse@arm.com>, kvm-riscv@lists.infradead.org, Marc Zyngier <maz@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 01 Dec 2022 14:22:12 +0100,
-Oliver Neukum wrote:
-> 
-> On 01.12.22 14:03, Ricardo Ribalda wrote:
-> 
-> Hi,
+Sean Christopherson <seanjc@google.com> writes:
+
+> Move Hyper-V's eVMCS initialization to a dedicated helper to clean up
+> vmx_init(), and add a comment to call out that the Hyper-V init code
+> doesn't need to be unwound if vmx_init() ultimately fails.
+>
+> No functional change intended.
+>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> ---
+>  arch/x86/kvm/vmx/vmx.c | 73 +++++++++++++++++++++++++-----------------
+>  1 file changed, 43 insertions(+), 30 deletions(-)
+>
+> diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+> index c0de7160700b..b8bf95b9710d 100644
+> --- a/arch/x86/kvm/vmx/vmx.c
+> +++ b/arch/x86/kvm/vmx/vmx.c
+> @@ -523,6 +523,8 @@ static inline void vmx_segment_cache_clear(struct vcpu_vmx *vmx)
+>  static unsigned long host_idt_base;
 >  
-> > This patchset does not modify this behaviour. It simply fixes the
-> > stall for kexec().
-> > 
-> > The  patch that introduced the stall:
-> > 83bfc7e793b5 ("ASoC: SOF: core: unregister clients and machine drivers
-> > in .shutdown")
-> 
-> That patch is problematic. I would go as far as saying that
-> it needs to be reverted.
+>  #if IS_ENABLED(CONFIG_HYPERV)
+> +static struct kvm_x86_ops vmx_x86_ops __initdata;
+> +
+>  static bool __read_mostly enlightened_vmcs = true;
+>  module_param(enlightened_vmcs, bool, 0444);
+>  
+> @@ -551,6 +553,43 @@ static int hv_enable_l2_tlb_flush(struct kvm_vcpu *vcpu)
+>  	return 0;
+>  }
+>  
+> +static __init void hv_init_evmcs(void)
+> +{
+> +	int cpu;
+> +
+> +	if (!enlightened_vmcs)
+> +		return;
+> +
+> +	/*
+> +	 * Enlightened VMCS usage should be recommended and the host needs
+> +	 * to support eVMCS v1 or above.
+> +	 */
+> +	if (ms_hyperv.hints & HV_X64_ENLIGHTENED_VMCS_RECOMMENDED &&
+> +	    (ms_hyperv.nested_features & HV_X64_ENLIGHTENED_VMCS_VERSION) >=
+> +	     KVM_EVMCS_VERSION) {
+> +
+> +		/* Check that we have assist pages on all online CPUs */
+> +		for_each_online_cpu(cpu) {
+> +			if (!hv_get_vp_assist_page(cpu)) {
+> +				enlightened_vmcs = false;
+> +				break;
+> +			}
+> +		}
+> +
+> +		if (enlightened_vmcs) {
+> +			pr_info("KVM: vmx: using Hyper-V Enlightened VMCS\n");
+> +			static_branch_enable(&enable_evmcs);
+> +		}
+> +
+> +		if (ms_hyperv.nested_features & HV_X64_NESTED_DIRECT_FLUSH)
+> +			vmx_x86_ops.enable_l2_tlb_flush
+> +				= hv_enable_l2_tlb_flush;
+> +
+> +	} else {
+> +		enlightened_vmcs = false;
+> +	}
+> +}
+> +
+>  static void hv_reset_evmcs(void)
+>  {
+>  	struct hv_vp_assist_page *vp_ap;
+> @@ -577,6 +616,7 @@ static void hv_reset_evmcs(void)
+>  }
+>  
+>  #else /* IS_ENABLED(CONFIG_HYPERV) */
+> +static void hv_init_evmcs(void) {}
+>  static void hv_reset_evmcs(void) {}
+>  #endif /* IS_ENABLED(CONFIG_HYPERV) */
+>  
+> @@ -8500,38 +8540,11 @@ static int __init vmx_init(void)
+>  {
+>  	int r, cpu;
+>  
+> -#if IS_ENABLED(CONFIG_HYPERV)
+>  	/*
+> -	 * Enlightened VMCS usage should be recommended and the host needs
+> -	 * to support eVMCS v1 or above. We can also disable eVMCS support
+> -	 * with module parameter.
+> +	 * Note, hv_init_evmcs() touches only VMX knobs, i.e. there's nothing
+> +	 * to unwind if a later step fails.
+>  	 */
+> -	if (enlightened_vmcs &&
+> -	    ms_hyperv.hints & HV_X64_ENLIGHTENED_VMCS_RECOMMENDED &&
+> -	    (ms_hyperv.nested_features & HV_X64_ENLIGHTENED_VMCS_VERSION) >=
+> -	    KVM_EVMCS_VERSION) {
+> -
+> -		/* Check that we have assist pages on all online CPUs */
+> -		for_each_online_cpu(cpu) {
+> -			if (!hv_get_vp_assist_page(cpu)) {
+> -				enlightened_vmcs = false;
+> -				break;
+> -			}
+> -		}
+> -
+> -		if (enlightened_vmcs) {
+> -			pr_info("KVM: vmx: using Hyper-V Enlightened VMCS\n");
+> -			static_branch_enable(&enable_evmcs);
+> -		}
+> -
+> -		if (ms_hyperv.nested_features & HV_X64_NESTED_DIRECT_FLUSH)
+> -			vmx_x86_ops.enable_l2_tlb_flush
+> -				= hv_enable_l2_tlb_flush;
+> -
+> -	} else {
+> -		enlightened_vmcs = false;
+> -	}
+> -#endif
+> +	hv_init_evmcs();
+>  
+>  	r = kvm_init(&vmx_init_ops, sizeof(struct vcpu_vmx),
+>  		     __alignof__(struct vcpu_vmx), THIS_MODULE);
 
-... or fixed.
+Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
 
-> > was sent as a generalised version of:
-> > https://github.com/thesofproject/linux/pull/3388
-> > 
-> > AFAIK, we would need a similar patch for every single board.... which
-> > I am not sure it is doable in a reasonable timeframe.
-> > 
-> > On the meantime this seems like a decent compromises. Yes, a
-> > miss-behaving userspace can still stall during suspend, but that was
-> > not introduced in this patch.
-> 
-> Well, I mean if you know what wrong then I'd say at least return to
-> a sanely broken state.
-> 
-> The whole approach is wrong. You need to be able to deal with user
-> space talking to removed devices by returning an error and keeping
-> the resources association with the open file allocated until
-> user space calls close()
-
-As I already mentioned in another thread, if the user-space action has
-to be cut off, we just need to call snd_card_disconnect() instead
-without sync.  A quick hack would be like below (totally untested and
-might be wrong, though).
-
-In anyway, Ricardo, please stop spinning too frequently; v8 in a few 
-days is way too much, and now the recipient list became unmanageable.
-Let's give people some time to review and consider a better solution
-at first.
-
-
-thanks,
-
-Takashi
-
--- 8< --
---- a/sound/soc/sof/core.c
-+++ b/sound/soc/sof/core.c
-@@ -475,7 +475,7 @@ EXPORT_SYMBOL(snd_sof_device_remove);
- int snd_sof_device_shutdown(struct device *dev)
- {
- 	struct snd_sof_dev *sdev = dev_get_drvdata(dev);
--	struct snd_sof_pdata *pdata = sdev->pdata;
-+	struct snd_soc_component *component;
- 
- 	if (IS_ENABLED(CONFIG_SND_SOC_SOF_PROBE_WORK_QUEUE))
- 		cancel_work_sync(&sdev->probe_work);
-@@ -484,9 +484,9 @@ int snd_sof_device_shutdown(struct device *dev)
- 	 * make sure clients and machine driver(s) are unregistered to force
- 	 * all userspace devices to be closed prior to the DSP shutdown sequence
- 	 */
--	sof_unregister_clients(sdev);
--
--	snd_sof_machine_unregister(sdev, pdata);
-+	component = snd_soc_lookup_component(sdev->dev, NULL);
-+	if (component && component->card && component->card->snd_card)
-+		snd_card_disconnect(component->card->snd_card);
- 
- 	if (sdev->fw_state == SOF_FW_BOOT_COMPLETE)
- 		return snd_sof_shutdown(sdev);
-
-
-
+-- 
+Vitaly
 
