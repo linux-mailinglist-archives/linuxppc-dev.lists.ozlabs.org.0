@@ -2,53 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B6AB63E6F6
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 02:12:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 349DD63E71E
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 02:35:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NMyjm07svz3bdV
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 12:12:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NMzDL007bz3bgF
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 12:35:45 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dIH078pH;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YdJk8dQ+;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=sstabellini@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.93; helo=mga11.intel.com; envelope-from=robert.hu@linux.intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dIH078pH;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YdJk8dQ+;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMyhr4zXSz2xGn
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Dec 2022 12:11:56 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 17969B81AD6;
-	Thu,  1 Dec 2022 01:11:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5679AC433B5;
-	Thu,  1 Dec 2022 01:11:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1669857113;
-	bh=Cn7d5c1HM/HfMC8q2kd3oQKNeEpuHBhp1yz/hZ7/kV8=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=dIH078pHAHy01H3xD9BwApkD8WjAL3r9/Y7Na8gLSRGigs9r832+Tzl+ywiilKHqn
-	 /JGanG+BIAtQlheHMT3XiMYJ4rN8DIwtKS1ftndKOEiHw78xrrEup/dNaALuBmRTko
-	 yIFSqj6JbC4oM/OqckU7bqWcj0P7cVB/CkkIwe+M70Bx6C5eddoWETcFEOFN5K3m9j
-	 WvXl9BTgmuCxRc5cL1YtQKsNc9rlX8BYtOks8ppJqPjvgWhoYxMKo9/vyDv8rtkYYh
-	 a2dlKWoFm2fWusmbjnYo8do1Bm2VDjEt5L1eT6t/a+RvkyEjpYNy52hVkE/NBkpNU3
-	 9Bt9PPCk35Vgg==
-Date: Wed, 30 Nov 2022 17:11:50 -0800 (PST)
-From: Stefano Stabellini <sstabellini@kernel.org>
-X-X-Sender: sstabellini@ubuntu-linux-20-04-desktop
-To: Roger Pau Monne <roger.pau@citrix.com>
-Subject: Re: [PATCH v2] hvc/xen: lock console list traversal
-In-Reply-To: <20221130163611.14686-1-roger.pau@citrix.com>
-Message-ID: <alpine.DEB.2.22.394.2211301710270.4039@ubuntu-linux-20-04-desktop>
-References: <20221130163611.14686-1-roger.pau@citrix.com>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
-MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-1211100887-1669857113=:4039"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NMzCM20Pvz3bNg
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Dec 2022 12:34:53 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1669858495; x=1701394495;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=YopNAk0o4R/Gm+eGMQdhkQKi75mYgT2RAg4YlRHu29c=;
+  b=YdJk8dQ+bFNpu6TynNStDvk8+cOrTPjLupAc6Q2Xic5XJWp6wT/yh0n/
+   zCgAcKHz6VQuSyM2uiFzQGRNZ2gbMY/kclLqkgYuwEj7sDpmbyi33gbS/
+   ljsRWKKlkjjE/KvtOtkHsheL2o5KfjzdYSPSjtwyovUBz9yCp/Qljr5Wz
+   U29OAyDSbpyTvSbB+emkLAUllKf3XpFLdy0xEXgkQVOuH/T5ZgppLzXBw
+   +SFqzUlNwo6IHgrOn2Rq20OdYXCwS3XVkdhPUBFjsjWg6ouRxm73QuJB/
+   7r8yWnGdyZEQTo3fOwC62K+chWC+pEQx/LbvwvddP85dJKk/8WJyY32h4
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10547"; a="313186495"
+X-IronPort-AV: E=Sophos;i="5.96,207,1665471600"; 
+   d="scan'208";a="313186495"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Nov 2022 17:34:46 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10547"; a="707875700"
+X-IronPort-AV: E=Sophos;i="5.96,207,1665471600"; 
+   d="scan'208";a="707875700"
+Received: from sqa-gate.sh.intel.com (HELO robert-ivt.tsp.org) ([10.239.48.212])
+  by fmsmga008.fm.intel.com with ESMTP; 30 Nov 2022 17:34:38 -0800
+Message-ID: <ceb3bb1e98a3933c3bf34641d731c69b67d761b4.camel@linux.intel.com>
+Subject: Re: [PATCH 32/44] KVM: x86: Unify pr_fmt to use module name for all
+ KVM modules
+From: Robert Hoo <robert.hu@linux.intel.com>
+To: Sean Christopherson <seanjc@google.com>
+Date: Thu, 01 Dec 2022 09:34:37 +0800
+In-Reply-To: <Y4fg+MO2DusqMSZO@google.com>
+References: <20221102231911.3107438-1-seanjc@google.com>
+	 <20221102231911.3107438-33-seanjc@google.com>
+	 <ff0e8701d02ee161d064f92c8b742c2cc061bce0.camel@linux.intel.com>
+	 <Y20r2NR9MaBbOGLn@google.com> <Y4fg+MO2DusqMSZO@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5 (3.28.5-10.el7) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,194 +71,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juergen Gross <jgross@suse.com>, Stefano Stabellini <sstabellini@kernel.org>, Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Jan Beulich <jbeulich@suse.com>, xen-devel@lists.xenproject.org, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Jiri Slaby <jirislaby@kernel.org>
+Cc: Matthew Rosato <mjrosato@linux.ibm.com>, David Hildenbrand <david@redhat.com>, Yuan Yao <yuan.yao@intel.com>, Paul Walmsley <paul.walmsley@sifive.com>, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, Claudio Imbrenda <imbrenda@linux.ibm.com>, kvmarm@lists.cs.columbia.edu, linux-s390@vger.kernel.org, Janosch Frank <frankja@linux.ibm.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>, James Morse <james.morse@arm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Chao Gao <chao.gao@intel.com>, Eric Farman <farman@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org, Atish Patra <atishp@atishpatra.org>, kvmarm@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, Alexandru Elisei <alexandru.elisei@arm.com>, linux-arm-kernel@lists.infradead.org, Isaku Yamahata <isaku.yamahata@intel.com>, Fabiano Rosas <farosas@linux.ibm.com>, 
+ linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, Palmer Dabbelt <palmer@dabbelt.com>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
-
---8323329-1211100887-1669857113=:4039
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-
-On Wed, 30 Nov 2022, Roger Pau Monne wrote:
-> The currently lockless access to the xen console list in
-> vtermno_to_xencons() is incorrect, as additions and removals from the
-> list can happen anytime, and as such the traversal of the list to get
-> the private console data for a given termno needs to happen with the
-> lock held.  Note users that modify the list already do so with the
-> lock taken.
+On Wed, 2022-11-30 at 23:02 +0000, Sean Christopherson wrote:
+> On Thu, Nov 10, 2022, Sean Christopherson wrote:
+> > On Thu, Nov 10, 2022, Robert Hoo wrote:
+> > > After this patch set, still find some printk()s left in
+> > > arch/x86/kvm/*,
+> > > consider clean all of them up?
+> > 
+> > Hmm, yeah, I suppose at this point it makes sense to tack on a
+> > patch to clean
+> > them up.
 > 
-> Adjust current lock takers to use the _irq{save,restore} helpers,
-> since the context in which vtermno_to_xencons() is called can have
-> interrupts disabled.  Use the _irq{save,restore} set of helpers to
-> switch the current callers to disable interrupts in the locked region.
-> I haven't checked if existing users could instead use the _irq
-> variant, as I think it's safer to use _irq{save,restore} upfront.
-> 
-> While there switch from using list_for_each_entry_safe to
-> list_for_each_entry: the current entry cursor won't be removed as
-> part of the code in the loop body, so using the _safe variant is
-> pointless.
-> 
-> Fixes: 02e19f9c7cac ('hvc_xen: implement multiconsole support')
-> Signed-off-by: Roger Pau Monné <roger.pau@citrix.com>
+> Actually, I'm going to pass on this for now.  The series is already
+> too big.  I'll
+> add this to my todo list for the future.
 
-Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
+That's all right, thanks for update.
 
-
-> ---
-> Changes since v1:
->  - Switch current lock users to disable interrupts in the locked
->    region.
-> ---
->  drivers/tty/hvc/hvc_xen.c | 46 ++++++++++++++++++++++++---------------
->  1 file changed, 29 insertions(+), 17 deletions(-)
-> 
-> diff --git a/drivers/tty/hvc/hvc_xen.c b/drivers/tty/hvc/hvc_xen.c
-> index e63c1761a361..d9d023275328 100644
-> --- a/drivers/tty/hvc/hvc_xen.c
-> +++ b/drivers/tty/hvc/hvc_xen.c
-> @@ -53,17 +53,22 @@ static DEFINE_SPINLOCK(xencons_lock);
->  
->  static struct xencons_info *vtermno_to_xencons(int vtermno)
->  {
-> -	struct xencons_info *entry, *n, *ret = NULL;
-> +	struct xencons_info *entry, *ret = NULL;
-> +	unsigned long flags;
->  
-> -	if (list_empty(&xenconsoles))
-> -			return NULL;
-> +	spin_lock_irqsave(&xencons_lock, flags);
-> +	if (list_empty(&xenconsoles)) {
-> +		spin_unlock_irqrestore(&xencons_lock, flags);
-> +		return NULL;
-> +	}
->  
-> -	list_for_each_entry_safe(entry, n, &xenconsoles, list) {
-> +	list_for_each_entry(entry, &xenconsoles, list) {
->  		if (entry->vtermno == vtermno) {
->  			ret  = entry;
->  			break;
->  		}
->  	}
-> +	spin_unlock_irqrestore(&xencons_lock, flags);
->  
->  	return ret;
->  }
-> @@ -234,7 +239,7 @@ static int xen_hvm_console_init(void)
->  {
->  	int r;
->  	uint64_t v = 0;
-> -	unsigned long gfn;
-> +	unsigned long gfn, flags;
->  	struct xencons_info *info;
->  
->  	if (!xen_hvm_domain())
-> @@ -270,9 +275,9 @@ static int xen_hvm_console_init(void)
->  		goto err;
->  	info->vtermno = HVC_COOKIE;
->  
-> -	spin_lock(&xencons_lock);
-> +	spin_lock_irqsave(&xencons_lock, flags);
->  	list_add_tail(&info->list, &xenconsoles);
-> -	spin_unlock(&xencons_lock);
-> +	spin_unlock_irqrestore(&xencons_lock, flags);
->  
->  	return 0;
->  err:
-> @@ -296,6 +301,7 @@ static int xencons_info_pv_init(struct xencons_info *info, int vtermno)
->  static int xen_pv_console_init(void)
->  {
->  	struct xencons_info *info;
-> +	unsigned long flags;
->  
->  	if (!xen_pv_domain())
->  		return -ENODEV;
-> @@ -312,9 +318,9 @@ static int xen_pv_console_init(void)
->  		/* already configured */
->  		return 0;
->  	}
-> -	spin_lock(&xencons_lock);
-> +	spin_lock_irqsave(&xencons_lock, flags);
->  	xencons_info_pv_init(info, HVC_COOKIE);
-> -	spin_unlock(&xencons_lock);
-> +	spin_unlock_irqrestore(&xencons_lock, flags);
->  
->  	return 0;
->  }
-> @@ -322,6 +328,7 @@ static int xen_pv_console_init(void)
->  static int xen_initial_domain_console_init(void)
->  {
->  	struct xencons_info *info;
-> +	unsigned long flags;
->  
->  	if (!xen_initial_domain())
->  		return -ENODEV;
-> @@ -337,9 +344,9 @@ static int xen_initial_domain_console_init(void)
->  	info->irq = bind_virq_to_irq(VIRQ_CONSOLE, 0, false);
->  	info->vtermno = HVC_COOKIE;
->  
-> -	spin_lock(&xencons_lock);
-> +	spin_lock_irqsave(&xencons_lock, flags);
->  	list_add_tail(&info->list, &xenconsoles);
-> -	spin_unlock(&xencons_lock);
-> +	spin_unlock_irqrestore(&xencons_lock, flags);
->  
->  	return 0;
->  }
-> @@ -394,10 +401,12 @@ static void xencons_free(struct xencons_info *info)
->  
->  static int xen_console_remove(struct xencons_info *info)
->  {
-> +	unsigned long flags;
-> +
->  	xencons_disconnect_backend(info);
-> -	spin_lock(&xencons_lock);
-> +	spin_lock_irqsave(&xencons_lock, flags);
->  	list_del(&info->list);
-> -	spin_unlock(&xencons_lock);
-> +	spin_unlock_irqrestore(&xencons_lock, flags);
->  	if (info->xbdev != NULL)
->  		xencons_free(info);
->  	else {
-> @@ -478,6 +487,7 @@ static int xencons_probe(struct xenbus_device *dev,
->  {
->  	int ret, devid;
->  	struct xencons_info *info;
-> +	unsigned long flags;
->  
->  	devid = dev->nodename[strlen(dev->nodename) - 1] - '0';
->  	if (devid == 0)
-> @@ -497,9 +507,9 @@ static int xencons_probe(struct xenbus_device *dev,
->  	ret = xencons_connect_backend(dev, info);
->  	if (ret < 0)
->  		goto error;
-> -	spin_lock(&xencons_lock);
-> +	spin_lock_irqsave(&xencons_lock, flags);
->  	list_add_tail(&info->list, &xenconsoles);
-> -	spin_unlock(&xencons_lock);
-> +	spin_unlock_irqrestore(&xencons_lock, flags);
->  
->  	return 0;
->  
-> @@ -599,10 +609,12 @@ static int __init xen_hvc_init(void)
->  
->  	info->hvc = hvc_alloc(HVC_COOKIE, info->irq, ops, 256);
->  	if (IS_ERR(info->hvc)) {
-> +		unsigned long flags;
-> +
->  		r = PTR_ERR(info->hvc);
-> -		spin_lock(&xencons_lock);
-> +		spin_lock_irqsave(&xencons_lock, flags);
->  		list_del(&info->list);
-> -		spin_unlock(&xencons_lock);
-> +		spin_unlock_irqrestore(&xencons_lock, flags);
->  		if (info->irq)
->  			unbind_from_irqhandler(info->irq, NULL);
->  		kfree(info);
-> -- 
-> 2.37.3
-> 
---8323329-1211100887-1669857113=:4039--
