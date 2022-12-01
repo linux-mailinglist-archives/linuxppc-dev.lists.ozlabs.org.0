@@ -1,74 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25B8163F6D6
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 18:50:54 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 710AE63F6DA
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 18:51:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NNNsS067cz3fP5
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Dec 2022 04:50:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NNNtT1nrTz3f9s
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Dec 2022 04:51:45 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=I14/3bSr;
+	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=arinc9.com header.i=arinc.unal@arinc9.com header.a=rsa-sha256 header.s=zmail header.b=Sxoe6pf0;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::532; helo=mail-ed1-x532.google.com; envelope-from=shentey@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arinc9.com (client-ip=136.143.188.14; helo=sender4-op-o14.zoho.com; envelope-from=arinc.unal@arinc9.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=I14/3bSr;
+	dkim=pass (1024-bit key; secure) header.d=arinc9.com header.i=arinc.unal@arinc9.com header.a=rsa-sha256 header.s=zmail header.b=Sxoe6pf0;
 	dkim-atps=neutral
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from sender4-op-o14.zoho.com (sender4-op-o14.zoho.com [136.143.188.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NNDGR43RDz3bTB
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Dec 2022 22:23:25 +1100 (AEDT)
-Received: by mail-ed1-x532.google.com with SMTP id s12so1914194edd.5
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Dec 2022 03:23:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:references
-         :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+S/O0TPxY4r5bx3eEGM1onYSYaAFsABt6PFjLS9v3Jk=;
-        b=I14/3bSrjlEhbLS4u8LK9MTkoE5FmSEqjFsP9c/bSnBb+kqUmNIe002n4HhhkNx/IX
-         eFl+l7xHzP2AHQWuKl8fF3x+ZZTXSBOyzqxZsdS7beoZSUlKxWIqAUc663jccTOmVE/L
-         z9ZHBUTCybEJVWrEON2JopPbFFNSvkBVxMKLO3CTWaR/8oy0ZqvVavvgy5fwrDgWrTWq
-         jarDM9IRm8sRUl96QPAEYVGubZTQK4FVmG/VXux3E07qVdIt3tWhl+NzTFCzbWakQS4K
-         GSGKbeL9kBYkhTKRMPe8IiOCsVqQ+bQh2Fm3WuadSjoK2JauxBnoCoQsswFE3uf4dF/B
-         SyYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:references
-         :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+S/O0TPxY4r5bx3eEGM1onYSYaAFsABt6PFjLS9v3Jk=;
-        b=TjrM4wtJrop52SVgMshPzTM7VY6+Nba+p1ZFrOSdOKT6vaVlYNPuQNT9ycHJ+LfOJ9
-         A2qCIaqQOTVbQKlaEO/cUOMBSqN9Jaki31EX8EZOJqJTVqxFgTy2zlg+JdCCGXHOwBLF
-         MBt/RFaQMeuWAuBqLbro9zh04xLF1RIg+knXZap75gNxYGj44b531ABwOPF6FAN3iTc1
-         ad8y1UnCqaxggq2KAxHKlXp0SADsslw4IbQMQjXVHuPEQsFsZyEE7JYEqIqOL30/BP/y
-         E0iYdwRAspao23+5rSxxJh8IS70t06uPHjsGxvzJwW3dZzQ50IM6RofyzCTL0vnDWQ4i
-         QXuw==
-X-Gm-Message-State: ANoB5pld0uoAkvsxAR7GFVEDWc07i5q0mIjvLb8q+Dt5a5HlqdLJxDDy
-	pngCLabiuDMDVmBKSpDSIr0=
-X-Google-Smtp-Source: AA0mqf4l++TBWCmvOjjD8xY5CtumuoWZSdWM/DQN4gtLhBYBTYietHulrFiaXuGjc/dC9NP9138Tbw==
-X-Received: by 2002:a05:6402:1103:b0:46a:779:4c6a with SMTP id u3-20020a056402110300b0046a07794c6amr38938182edv.201.1669893801181;
-        Thu, 01 Dec 2022 03:23:21 -0800 (PST)
-Received: from [127.0.0.1] (dynamic-077-183-205-107.77.183.pool.telefonica.de. [77.183.205.107])
-        by smtp.gmail.com with ESMTPSA id z5-20020aa7cf85000000b0045d74aa401fsm1592876edx.60.2022.12.01.03.23.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 01 Dec 2022 03:23:20 -0800 (PST)
-Date: Thu, 01 Dec 2022 11:23:08 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: Nicholas Piggin <npiggin@gmail.com>, Crystal Wood <oss@buserror.net>,
- linuxppc-dev@lists.ozlabs.org
-Subject: Re: [RFC PATCH] Disable Book-E KVM support?
-In-Reply-To: <COQ97E42D81J.FQM2WRVT7HIY@bobo>
-References: <20221128043623.1745708-1-npiggin@gmail.com> <3d1a6cde6c8e108be77fa4a47666e14d06a91d74.camel@buserror.net> <COQ97E42D81J.FQM2WRVT7HIY@bobo>
-Message-ID: <39875EC0-09BD-4ABF-9AB2-426E99C2FFD8@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NNDdZ3v1Cz30R8
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Dec 2022 22:40:02 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1669894669; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=QTQmm9pOeLgmKb8bWo/bk1tmntAG21CY8mqL5Y7GzMv84vMVC3VrVna9NzX1hngi7eK1jcFyuiSXXvVA9bOp7v2JNs+2P/yWem+qMtXkZfdIeULvLO4Rfg8yQmTObIt1kyNHO2k94mTkgHZvRKbMyIMAcRvOxm9qMfK6qb3t88g=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1669894669; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
+	bh=dfOEXnlaPDTQyh5hwojKntKZbR0Ct6BYQNOU/3518PU=; 
+	b=OYF7SwvD1mv3O+HAFCbq9CfMSGf7fvV73aJ926EunEgVq/bUTdRUCCmRrZD9+8rTw9wNG3PDjimgO76TJJ6VPC/P/vttun+Obu5Dzyp0sS31x9L5iYLvG+rdO6kZvZ2wtK6Gn86PgqwwiOO9sfMtbOWsOMExVMcejf44MYA+nAo=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=arinc9.com;
+	spf=pass  smtp.mailfrom=arinc.unal@arinc9.com;
+	dmarc=pass header.from=<arinc.unal@arinc9.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1669894669;
+	s=zmail; d=arinc9.com; i=arinc.unal@arinc9.com;
+	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=dfOEXnlaPDTQyh5hwojKntKZbR0Ct6BYQNOU/3518PU=;
+	b=Sxoe6pf0viFvg95RBI3wMeoXYd0syHO9a0cEcwxKEbUeNP5X1PyRVz24a8qLfztM
+	cNOs3+XlOAmEYW4Cspyrx9xPr6rdVmINXwU/r6bTSOpPefuylQ7S/DIWSUhazWPCj3l
+	ohbSEg1Td2+qDT3JhrnQZaDjIZ9aCibjEQyIlKI4=
+Received: from [10.10.10.3] (37.120.152.236 [37.120.152.236]) by mx.zohomail.com
+	with SMTPS id 1669894667415837.5294444284028; Thu, 1 Dec 2022 03:37:47 -0800 (PST)
+Message-ID: <83ed1490-4d87-98c5-2616-54b5f1ab64b7@arinc9.com>
+Date: Thu, 1 Dec 2022 14:37:31 +0300
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.2
+Subject: Re: [PATCH 0/5] remove label = "cpu" from DSA dt-binding
+To: Michael Ellerman <mpe@ellerman.id.au>, Andrew Lunn <andrew@lunn.ch>
+References: <20221130141040.32447-1-arinc.unal@arinc9.com>
+ <Y4d9B7VSHvqJn0iS@lunn.ch> <32638470-b074-3b14-bfb2-10b49307b9e3@arinc9.com>
+ <877czbs8w7.fsf@mpe.ellerman.id.au>
+Content-Language: en-US
+From: =?UTF-8?B?QXLEsW7DpyDDnE5BTA==?= <arinc.unal@arinc9.com>
+In-Reply-To: <877czbs8w7.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 X-Mailman-Approved-At: Fri, 02 Dec 2022 04:43:21 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -81,89 +69,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: qemu-ppc@nongnu.org, Laurentiu Tudor <laurentiu.tudor@nxp.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>, Heiko Stuebner <heiko@sntech.de>, Geert Uytterhoeven <geert+renesas@glider.be>, Tim Harvey <tharvey@gateworks.com>, Vladimir Oltean <vladimir.oltean@nxp.com>, Linus Walleij <linus.walleij@linaro.org>, Konrad Dybcio <konrad.dybcio@somainline.org>, Alexandre Torgue <alexandre.torgue@foss.st.com>, Stefan Agner <stefan@agner.ch>, linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Oleksij Rempel <linux@rempel-privat.de>, Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>, Florian Fainelli <f.fainelli@gmail.com>, Samuel Holland <samuel@sholland.org>, linux-rockchip@lists.infradead.org, Gregory Clement <gregory.clement@bootlin.com>, =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>, Russell King <linux@armlinux.org.uk>, Jernej Skrabec <jernej.skrabec@gmail.com>, linux-stm32@st-md-mailman.stormreply.com, Sergio Paracuellos <sergio.paracuellos@gmail.com
+ >, Chen-Yu Tsai <wens@csie.org>, Andy Gross <agross@kernel.org>, Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, NXP Linux Team <linux-imx@nxp.com>, Ray Jui <rjui@broadcom.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Sascha Hauer <s.hauer@pengutronix.de>, Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Frank Wunderlich <frank-w@public-files.de>, Hauke Mehrtens <hauke@hauke-m.de>, Hans Ulli Kroll <ulli.kroll@googlemail.com>, linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>, linux-mips@vger.kernel.org, soc@kernel.org, Rob Herring <robh+dt@kernel.org>, linux-mediatek@lists.infradead.org, Matthias Brugger <matthias.bgg@gmail.com>, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Scott Branden <sbranden@broadcom.com>, netdev@vger.kernel.org, Bjorn Andersson <anders
+ son@kernel.org>, Rasmus Villemoes <rasmus.villemoes@prevas.dk>, Nicolas Ferre <nicolas.ferre@microchip.com>, "David S. Miller" <davem@davemloft.net>, linux-renesas-soc@vger.kernel.org, linux-sunxi@lists.linux.dev, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Claudiu Beznea <claudiu.beznea@microchip.com>, Michael Riesch <michael.riesch@wolfvision.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Am 1=2E Dezember 2022 06:06:16 UTC schrieb Nicholas Piggin <npiggin@gmail=
-=2Ecom>:
->On Thu Dec 1, 2022 at 6:45 AM AEST, Crystal Wood wrote:
->> On Mon, 2022-11-28 at 14:36 +1000, Nicholas Piggin wrote:
->> > BookE KVM is in a deep maintenance state, I'm not sure how much testi=
-ng
->> > it gets=2E I don't have a test setup, and it does not look like QEMU =
-has
->> > any HV architecture enabled=2E It hasn't been too painful but there a=
-re
->> > some cases where it causes a bit of problem not being able to test, e=
-=2Eg=2E,
->> >=20
->> > https://lists=2Eozlabs=2Eorg/pipermail/linuxppc-dev/2022-November/251=
-452=2Ehtml
->> >=20
->> > Time to begin removal process, or are there still people using it? I'=
-m
->> > happy to to keep making occasional patches to try keep it going if
->> > there are people testing upstream=2E Getting HV support into QEMU wou=
-ld
->> > help with long term support, not sure how big of a job that would be=
-=2E
+On 1.12.2022 13:42, Michael Ellerman wrote:
+> Arınç ÜNAL <arinc.unal@arinc9.com> writes:
+>> On 30.11.2022 18:55, Andrew Lunn wrote:
+>>> On Wed, Nov 30, 2022 at 05:10:35PM +0300, Arınç ÜNAL wrote:
+>>>> Hello folks,
+>>>>
+>>>> With this patch series, we're completely getting rid of 'label = "cpu";'
+>>>> which is not used by the DSA dt-binding at all.
+>>>>
+>>>> Information for taking the patches for maintainers:
+>>>> Patch 1: netdev maintainers (based off netdev/net-next.git main)
+>>>> Patch 2-3: SoC maintainers (based off soc/soc.git soc/dt)
+>>>> Patch 4: MIPS maintainers (based off mips/linux.git mips-next)
+>>>> Patch 5: PowerPC maintainers (based off powerpc/linux.git next-test)
+>>>
+>>> Hi Arınç
+>>>
+>>> So your plan is that each architecture maintainer merges one patch?
 >>
->> Not sure what you mean about QEMU not having e500 HV support?  I don't =
-know if
->> it's bitrotted, but it's there=2E
+>> Initially, I sent this series to soc@kernel.org to take it all but Rob
+>> said it must be this way instead.
 >>
->> I don't know whether anyone is still using this, but if they are, it's
->> probably e500mc and not e500v2 (which involved a bunch of hacks to get =
-almost-
->> sorta-usable performance out of hardware not designed for virtualizatio=
-n)=2E  I
->> do see that there have been a few recent patches on QEMU e500 (beyond t=
-he
->> treewide cleanup type stuff), though I don't know if they're using KVM=
-=2E  CCing
->> them and the QEMU list=2E
+>>>
+>>> That is fine, but it is good to be explicit, otherwise patches will
+>>> fall through the cracks because nobody picks them up. I generally use
+>>> To: to indicate who i expect to merge a patch, and everybody else in
+>>> the Cc:
+>>
+>> Thanks for this, I'll follow suit if I don't see any activity for a few
+>> weeks.
+> 
+> IMHO the best solution if the patches are truly independent is to send
+> them independantly to each maintainer. That way there's no confusion
+> about whether someone else will take the series.
+> 
+> It's also simpler for maintainers to apply a single standalone patch vs
+> pick a single patch from a larger series.
 
-Thanks for CCing!
+I agree. I'll do that next time.
 
-No, I'm not using KVM on e500=2E The goal of my patches is to run software=
- in QEMU on an x86_64 host rather than on a real PPC machine to optimize ou=
-r development process=2E
-
-Best regards,
-Bernhard
-
->Well I could be wrong about it, but it doesn't look it implements LPIDR
->or GSPRs=2E The only use of MSR_GS seems to be a couple of places
->including an instruction that aborts because no HV implementation=2E It
->does have an MMU index selector but before d764184ddb22 that apparently
->didn't really work=2E
->
->QEMU probably should be able to run BookE KVM in PR mode at least=2E
->
->> I have an e6500 I could occasionally test on, if it turns out people do=
- still
->> care about this=2E  Don't count me as the use case, though=2E :-)
->
->Do you have a KVM setup on it? And it works with recentish upstream?
->
->> FWIW, as far as the RECONCILE_IRQ_STATE issue, that used to be done in
->> kvmppc_handle_exit(), but was moved in commit 9bd880a2c882 to be "clean=
-er and
->> faster"=2E :-P
->
->Yeah that was probably reasonable at the time, that was the common way
->to do it and thie patch avoids an unnecessary expensive write to MSR
->(which my patch retains)=2E
->
->I think it must have always clobbered r4 though=2E It's possible it wasn'=
-t
->tested with the right build option, or the right tracer active, or maybe
->the call was simple enough that it was lucky and the compiler didn't use
->r4=2E Easy bug to miss when it's not obvious that macro can call into C=
-=2E
->
->Thanks,
->Nick
+Cheers.
+Arınç
