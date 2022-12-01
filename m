@@ -1,62 +1,150 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 710AE63F6DA
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 18:51:47 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D5F463F6DD
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 18:52:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NNNtT1nrTz3f9s
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Dec 2022 04:51:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NNNvW3gWBz3chb
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Dec 2022 04:52:39 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=arinc9.com header.i=arinc.unal@arinc9.com header.a=rsa-sha256 header.s=zmail header.b=Sxoe6pf0;
+	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=selector1 header.b=i5HTMCKQ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arinc9.com (client-ip=136.143.188.14; helo=sender4-op-o14.zoho.com; envelope-from=arinc.unal@arinc9.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2a01:111:f400:7e1b::610; helo=eur05-am6-obe.outbound.protection.outlook.com; envelope-from=oneukum@suse.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=arinc9.com header.i=arinc.unal@arinc9.com header.a=rsa-sha256 header.s=zmail header.b=Sxoe6pf0;
+	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=selector1 header.b=i5HTMCKQ;
 	dkim-atps=neutral
-Received: from sender4-op-o14.zoho.com (sender4-op-o14.zoho.com [136.143.188.14])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on20610.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e1b::610])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NNDdZ3v1Cz30R8
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Dec 2022 22:40:02 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1669894669; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=QTQmm9pOeLgmKb8bWo/bk1tmntAG21CY8mqL5Y7GzMv84vMVC3VrVna9NzX1hngi7eK1jcFyuiSXXvVA9bOp7v2JNs+2P/yWem+qMtXkZfdIeULvLO4Rfg8yQmTObIt1kyNHO2k94mTkgHZvRKbMyIMAcRvOxm9qMfK6qb3t88g=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1669894669; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
-	bh=dfOEXnlaPDTQyh5hwojKntKZbR0Ct6BYQNOU/3518PU=; 
-	b=OYF7SwvD1mv3O+HAFCbq9CfMSGf7fvV73aJ926EunEgVq/bUTdRUCCmRrZD9+8rTw9wNG3PDjimgO76TJJ6VPC/P/vttun+Obu5Dzyp0sS31x9L5iYLvG+rdO6kZvZ2wtK6Gn86PgqwwiOO9sfMtbOWsOMExVMcejf44MYA+nAo=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=arinc9.com;
-	spf=pass  smtp.mailfrom=arinc.unal@arinc9.com;
-	dmarc=pass header.from=<arinc.unal@arinc9.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1669894669;
-	s=zmail; d=arinc9.com; i=arinc.unal@arinc9.com;
-	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=dfOEXnlaPDTQyh5hwojKntKZbR0Ct6BYQNOU/3518PU=;
-	b=Sxoe6pf0viFvg95RBI3wMeoXYd0syHO9a0cEcwxKEbUeNP5X1PyRVz24a8qLfztM
-	cNOs3+XlOAmEYW4Cspyrx9xPr6rdVmINXwU/r6bTSOpPefuylQ7S/DIWSUhazWPCj3l
-	ohbSEg1Td2+qDT3JhrnQZaDjIZ9aCibjEQyIlKI4=
-Received: from [10.10.10.3] (37.120.152.236 [37.120.152.236]) by mx.zohomail.com
-	with SMTPS id 1669894667415837.5294444284028; Thu, 1 Dec 2022 03:37:47 -0800 (PST)
-Message-ID: <83ed1490-4d87-98c5-2616-54b5f1ab64b7@arinc9.com>
-Date: Thu, 1 Dec 2022 14:37:31 +0300
-MIME-Version: 1.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NNFkX505Gz3bWj
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Dec 2022 23:29:21 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=lMUZOpW+08Pr4puRhRggg9VrJtaXw2+UQxlztPvMJw4esFd6ZnjQJZqtO/J118VALfhxAAiwjtMxq5evUZk6VHGixdJOE40/Qk2uC7gH5CuExCmrcbYL3vP+SUOXkiY7+mWDQ7YnAwPo977PpGqpB6qyrap/psnE2fKk+eWp5Y40rIbk7odz3MrINbmBMwWqQEERpppFrEuKfEfWqGRRwUSTMKfXylH/e8rtJn2L0ImjWv/clP2qmvrXwdWJTyLxsCeu4HSOw760JM4GktV1B5pV2toMmuPGPD5K6If4fzuENn4282JMRaWAy+xdpiEbqC1ODnYWaCkP1WTkUa2Ifg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=kbPn24pTxFwoaROkJViyJRGM1iepzDiLGCKo3Kahd6I=;
+ b=DLZC45v+Md9T0/1zuhu7SidMtxE9cV4UifK8Gk60QTirxWkM5bWuMIyF2reZ44X/O7iVacLAjhZ9LVM90YiwVwiOlc9GVxWfLputafoitNBJMMmWyx3AacmkatLs79El/TtmTx/iP2v0O9XNuFilGMGgdEg8nLkbEkP5vDKsA/H90G6BsgO8ytLgIq1oG5hNz1GYK/3OUe74SXFc8F3CBqqxSFUuvNw2nZaDXmZflCzDZJIqsQ5N2HlFCm5NXdlKfUG7T1j8iu9NeWOVq08JsUsOKpn4IrFaDLqIHgukuLnU+B2z//oNoHA4kHO3myy5mBGi7PpFKx76WA0S26AHlw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=suse.com; dmarc=pass action=none header.from=suse.com;
+ dkim=pass header.d=suse.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kbPn24pTxFwoaROkJViyJRGM1iepzDiLGCKo3Kahd6I=;
+ b=i5HTMCKQRLoAOCdnQMR+32SxyS9ve6LOjsF3ZUbHCPWLPvgZokA7OuSHlhKgt5tuF/sDjpJN99oScj9QJWVwMab3GTMoIMD8YH4xIxBWKkr1WY8YtSY5Ui2WqFQBL6f44Dy7v8oQTQljVvkT9HVNfuf8SFu7XZkABG3oCutf3Caj5F3Ud/eVxP8aNI+KTh4ZYtAmxt+B3tO/qcIbyuGKKJYUOU8c311VOssEnq8OquLydHLe61Ntk94fB3ZzJa1ypWH9WNPRkOOPPVUPnPi64VluDsxt5NpqLAQdDtgqZJkr0ltT26n5MydSrCSde4l8hpLraT5Pj1wzOhDjNTNFEw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=suse.com;
+Received: from VI1PR04MB7104.eurprd04.prod.outlook.com (2603:10a6:800:126::9)
+ by AM9PR04MB8455.eurprd04.prod.outlook.com (2603:10a6:20b:414::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5857.21; Thu, 1 Dec
+ 2022 12:28:56 +0000
+Received: from VI1PR04MB7104.eurprd04.prod.outlook.com
+ ([fe80::ae59:a542:9cbc:5b3]) by VI1PR04MB7104.eurprd04.prod.outlook.com
+ ([fe80::ae59:a542:9cbc:5b3%7]) with mapi id 15.20.5857.023; Thu, 1 Dec 2022
+ 12:28:56 +0000
+Message-ID: <716e5175-7a44-7ae8-b6bb-10d9807552e6@suse.com>
+Date: Thu, 1 Dec 2022 13:28:50 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [PATCH 0/5] remove label = "cpu" from DSA dt-binding
-To: Michael Ellerman <mpe@ellerman.id.au>, Andrew Lunn <andrew@lunn.ch>
-References: <20221130141040.32447-1-arinc.unal@arinc9.com>
- <Y4d9B7VSHvqJn0iS@lunn.ch> <32638470-b074-3b14-bfb2-10b49307b9e3@arinc9.com>
- <877czbs8w7.fsf@mpe.ellerman.id.au>
+ Thunderbird/102.2.2
+Subject: Re: [PATCH v8 3/3] ASoC: SOF: Fix deadlock when shutdown a frozen
+ userspace
+To: Ricardo Ribalda <ribalda@chromium.org>, Juergen Gross <jgross@suse.com>,
+ Mark Brown <broonie@kernel.org>, Chromeos Kdump <chromeos-kdump@google.com>,
+ Daniel Baluta <daniel.baluta@nxp.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Len Brown <len.brown@intel.com>, Ard Biesheuvel <ardb@kernel.org>,
+ Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ Eric Biederman <ebiederm@xmission.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Jaroslav Kysela <perex@perex.cz>,
+ Joel Fernandes <joel@joelfernandes.org>, Liam Girdwood
+ <lgirdwood@gmail.com>, Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+ Pavel Machek <pavel@ucw.cz>,
+ Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+ Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+ Steven Rostedt <rostedt@goodmis.org>, "K. Y. Srinivasan"
+ <kys@microsoft.com>, Ingo Molnar <mingo@redhat.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, Dexuan Cui <decui@microsoft.com>,
+ Takashi Iwai <tiwai@suse.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ Bard Liao <yung-chuan.liao@linux.intel.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@alien8.de>,
+ x86@kernel.org
+References: <20221127-snd-freeze-v8-0-3bc02d09f2ce@chromium.org>
+ <20221127-snd-freeze-v8-3-3bc02d09f2ce@chromium.org>
 Content-Language: en-US
-From: =?UTF-8?B?QXLEsW7DpyDDnE5BTA==?= <arinc.unal@arinc9.com>
-In-Reply-To: <877czbs8w7.fsf@mpe.ellerman.id.au>
+From: Oliver Neukum <oneukum@suse.com>
+In-Reply-To: <20221127-snd-freeze-v8-3-3bc02d09f2ce@chromium.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR3P281CA0014.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:1d::7) To VI1PR04MB7104.eurprd04.prod.outlook.com
+ (2603:10a6:800:126::9)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VI1PR04MB7104:EE_|AM9PR04MB8455:EE_
+X-MS-Office365-Filtering-Correlation-Id: 29c366d0-5774-4a3b-97b7-08dad3979d37
+X-LD-Processed: f7a17af6-1c5c-4a36-aa8b-f5be247aa4ba,ExtFwd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	zVbWyMn4/DuS8MYtN3KTtDv4rUlNzeen87tWNvTVUVcr5esyw72ceS4hYCqUUB400bUO4vwZ5DyHr3ybZCgmkm47mTdTNRdiDGypM3Laj/sgHa5NlcC5WHJy6NAtBPgj9cRxjludZUjzXD8qhN3vuKt2/+lAP/ucCeXOLvV8o0SE/k6VT41+/KjKkbWqevbg7U16v4lDFfRGO7/Adb5A1iTXPZurSBfMPOV9b51tdoW9zg3sMbxxBXQffwvSyMVB/nUwhkboS4gwCUuoP1wwQp0byiryMb3TTLTIPHVacO1B/Dpj4uA54Z2sZ6BlVvuYFQYXWNbC6vGX5GSd4/dsj0EVoASvq23HLJZwKwn/QdMz9hHRZS+FyhpUao1l1IPpuA2r6HjA86Noxe85XM9a+wWpsdP6t7K6uQQ+JP47J/9b+TumDx9gs2ATXYpwAombbO6p9sGW5WDiZTEMmwndFW1PPsrdc43IeuW2/cjt+WsdcUmpT0M8n+NagenZCc9Tap0gv0w1vx6fT7j6JDVCroeM5ZjBLHwrfd6y296yRDesM/SNvT+pB7gwv2XhoeCaNPndrLKJKKS99tkz3Y0vOPP6vAUmR5zRAeKlkvA/w86QBRVY+Oo+NJm932Vbeu/A351RnLCj0bauS4g+rIj4qNSX8xUaGNshS82fPYKFEE0g2Jr16m16VXeeRiKFPLHqqvBXYhDZ/ZQ7JlUhMgOag+fJCW4QcELjQqnH7JTqwzc=
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR04MB7104.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(376002)(396003)(136003)(39860400002)(346002)(366004)(451199015)(7406005)(4744005)(921005)(36756003)(66556008)(7416002)(66946007)(6666004)(110136005)(38100700002)(5660300002)(6512007)(316002)(186003)(31696002)(41300700001)(6506007)(8936002)(66476007)(2616005)(8676002)(4326008)(6486002)(478600001)(2906002)(31686004)(86362001)(53546011)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?utf-8?B?OVlrZ1ptbTI2dlFISXNpbEFvdjZKM0E0K29tTytkNlJuNGN5R1pRSWR5aEIv?=
+ =?utf-8?B?TnNOODBhaWVpbGlUUzZzMm0rQ2wzM0dacjlWcFdISVhQUEREL0xhQTNReCtD?=
+ =?utf-8?B?MlhnNEUyckVMZElXa3lRc0xWN0JpQmU2QUlZYmRCYXZZRFJCd0hyeDdZb3BC?=
+ =?utf-8?B?eFdiUzhZQm94blZ0NHBFOFlibzVITlM2RmpFWDBMUFRydkxOcy9NUXloR0E2?=
+ =?utf-8?B?a2srNSt0T2pPK09uNGhFT2lmZ21HcXFua01jeTJhNjZJcnArYS9HZWVmWGNm?=
+ =?utf-8?B?M29XT3ZpMmh1MUJ4clIxaEp0SWZpODJ2VjBMc1dyak9GSjV4Wk1meE1WL2N1?=
+ =?utf-8?B?b3dSZ2NnVWpHUVYySEI3MUFKMkRGVUlZSUgrREdIM2FCejh2dUt0eWZLN2ZZ?=
+ =?utf-8?B?Rk9keUdqNDVzZUxIRUJwQ1R1c2cwMFVhK3l2blpvRXkxbEFMUThqUEx1UUp2?=
+ =?utf-8?B?QXBFNys3LzFNb0JLZlRWaU1UWlBiK2RQMUZUSVAxV1dzekt5eWtpTmY1WWx4?=
+ =?utf-8?B?R2NnUndyL3ZJSDNnZ3lKUFB4ck5ENkhqNkRqRjFnR29HOGJKVWlhUHFqbDk2?=
+ =?utf-8?B?M2toWmtnUnZWNkNTMnk4MHNMTHhXSkJEcC91cEdYcVh3aU1YQ1l5SFpjWXE3?=
+ =?utf-8?B?cmRGd09NRk1jdExtNngzUW5lOW9zbEp3V09aMWRMbExXRmdVeERMWUJCa1JZ?=
+ =?utf-8?B?WE94SXZOMkxIUW9GL25STlZ4Ymxrd3o0aWFPeWFGVU8zMUtER1RPeVZhOFBT?=
+ =?utf-8?B?aE5mSllnaVFjS2ZVS0UyYmFGMkZvelh5cWJHYWc4Zko2aUdEUkVsZEZYTk1K?=
+ =?utf-8?B?cit2WGRINzVXRHJMR2xrdG13QWpWTUFVbG9Lem9Ld0xZbStZblJ6MHYxNnZ4?=
+ =?utf-8?B?YW9idUwwdlViZzQ0NzBHN2h5QTYyaUd3eGxNTElYUXVIV255NVVmbDk3Qllr?=
+ =?utf-8?B?ZXJPeVA2Ukdib0ZhUjhGaE0zWjVTSmNnK0svVmRSNWMvUGJMdUJjZU5TWlVs?=
+ =?utf-8?B?SHVRTG84VjB3djl4UmRhcWdnR1BWMmt2REcrdVBWSnZnbFUxZTJPM1lPOGxm?=
+ =?utf-8?B?Q0NpN1JJQUJvNzBQakoxZ0lWZVYySXlhcjZMeEcrYjRhanZQdDcvUUxtWFN6?=
+ =?utf-8?B?WFVVWTdJeUFmcGFsSW1nWXgvc2MvekdOSGlVaTRmQ0JFUHcvSDZxRk1KMElZ?=
+ =?utf-8?B?VkUwcjFnRGlTSUF3R2p3REhTRnhNZkpWVTNqdGxQU2xjdnBkMFVnTnpBTmgv?=
+ =?utf-8?B?a1RCUGRudjdpeCtFUGxjMU5PL0puajdlMEkyaXYzTjZ0c1ArbytBdmgxK3dS?=
+ =?utf-8?B?TnpoUmUwTUhieVNtOG52Y1ZyaStjMGZheVFlbHlObnZIODJjTnNZTEQ5TURE?=
+ =?utf-8?B?V09TMWcxa29FbERBaVQzRlZRelAvWDNxMlllbHQwcUNqYU41NkpnN2Y4ZTVQ?=
+ =?utf-8?B?aGt6NUhkMmlCN0NhcXUvc2VZTTY4T3BjL3FBclBhV0FxVHhOeW94Y3JhMnRK?=
+ =?utf-8?B?SmxTN1RFSVdIY2RQdkdrSGpLa2xNaEZ5bmRGYjIvOVBmOVEwaTJkNWVmaEM2?=
+ =?utf-8?B?bVhEZVZEd0JmeDVvb2EzTlRMM0hFbFNTZVNhcDVtVU5aQlhLaGJtcXVPOXpW?=
+ =?utf-8?B?YzJ6TS9HaTI2WUtvTzErd3J6dEp5d0pJa1RTeCtEN2dkMXZOc2VLTWFkNVZy?=
+ =?utf-8?B?Z2NPdXZnTzJHMXNDcFBlOGdZZDhaL0VnTG9qUVpLZDFyaGZBOUpURnd0UXgy?=
+ =?utf-8?B?dU9QWGcxdVVZaXYybnphazN4L1dKUHBScjFGZEliRGo5UGpuYWF2bVhBazZY?=
+ =?utf-8?B?VGpjVVNXY1VPZEp3L0gvRnRjMUdTTGtCL1FiblhlbXFYbTI5cVhLMWRIUEpm?=
+ =?utf-8?B?Tk0xa3FNRkt2aDFUVUZ2cWJiWVB5WkZDVWhVbm10Q2twY2prd3ZWZlo5V1Bi?=
+ =?utf-8?B?WG1ZSFFXK01aR1R3Yk1EZHhLZlEzNzQ0dXJqakpMMFRNOEVaRUtqRFVYVlYv?=
+ =?utf-8?B?bmNlOVVQQjllT1RvblhMbjVIOWtBRS81VU1hcTlncmZmc0QydFBHNTRLLzhS?=
+ =?utf-8?B?T21RMmZOK1pWM3QveldCWW90ZWUrbU9ScDYwRFVqRVl4U0lORUEyaDRvcDB4?=
+ =?utf-8?B?NGp6QkpjYTRNR0piSnRPU1dZZEpDMzROWjNMdmYwenZ3UnhjbG84bVVoSU8x?=
+ =?utf-8?Q?JFcao0VCb3jYRTJVFTLNZGmc5RBKCYEQxjcQNk2JFBOc?=
+X-OriginatorOrg: suse.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 29c366d0-5774-4a3b-97b7-08dad3979d37
+X-MS-Exchange-CrossTenant-AuthSource: VI1PR04MB7104.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Dec 2022 12:28:56.0173
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: f7a17af6-1c5c-4a36-aa8b-f5be247aa4ba
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: sy2UDu5ykQolAf69IiRIuk8PvYqQdxYUYZRj7WM4ObYqmqhC0KI8te3qkmjREbzF6vXnR7/FSIW5WTl3+D0Vxw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8455
 X-Mailman-Approved-At: Fri, 02 Dec 2022 04:43:21 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -69,51 +157,22 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>, Heiko Stuebner <heiko@sntech.de>, Geert Uytterhoeven <geert+renesas@glider.be>, Tim Harvey <tharvey@gateworks.com>, Vladimir Oltean <vladimir.oltean@nxp.com>, Linus Walleij <linus.walleij@linaro.org>, Konrad Dybcio <konrad.dybcio@somainline.org>, Alexandre Torgue <alexandre.torgue@foss.st.com>, Stefan Agner <stefan@agner.ch>, linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Oleksij Rempel <linux@rempel-privat.de>, Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>, Florian Fainelli <f.fainelli@gmail.com>, Samuel Holland <samuel@sholland.org>, linux-rockchip@lists.infradead.org, Gregory Clement <gregory.clement@bootlin.com>, =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>, Russell King <linux@armlinux.org.uk>, Jernej Skrabec <jernej.skrabec@gmail.com>, linux-stm32@st-md-mailman.stormreply.com, Sergio Paracuellos <sergio.paracuellos@gmail.com
- >, Chen-Yu Tsai <wens@csie.org>, Andy Gross <agross@kernel.org>, Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, NXP Linux Team <linux-imx@nxp.com>, Ray Jui <rjui@broadcom.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Sascha Hauer <s.hauer@pengutronix.de>, Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Frank Wunderlich <frank-w@public-files.de>, Hauke Mehrtens <hauke@hauke-m.de>, Hans Ulli Kroll <ulli.kroll@googlemail.com>, linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>, linux-mips@vger.kernel.org, soc@kernel.org, Rob Herring <robh+dt@kernel.org>, linux-mediatek@lists.infradead.org, Matthias Brugger <matthias.bgg@gmail.com>, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Scott Branden <sbranden@broadcom.com>, netdev@vger.kernel.org, Bjorn Andersson <anders
- son@kernel.org>, Rasmus Villemoes <rasmus.villemoes@prevas.dk>, Nicolas Ferre <nicolas.ferre@microchip.com>, "David S. Miller" <davem@davemloft.net>, linux-renesas-soc@vger.kernel.org, linux-sunxi@lists.linux.dev, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Claudiu Beznea <claudiu.beznea@microchip.com>, Michael Riesch <michael.riesch@wolfvision.net>
+Cc: alsa-devel@alsa-project.org, linux-efi@vger.kernel.org, linux-pm@vger.kernel.org, linux-pci@vger.kernel.org, kexec@lists.infradead.org, linux-hyperv@vger.kernel.org, stable@vger.kernel.org, linux-kernel@vger.kernel.org, xen-devel@lists.xenproject.org, linuxppc-dev@lists.ozlabs.org, sound-open-firmware@alsa-project.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 1.12.2022 13:42, Michael Ellerman wrote:
-> Arınç ÜNAL <arinc.unal@arinc9.com> writes:
->> On 30.11.2022 18:55, Andrew Lunn wrote:
->>> On Wed, Nov 30, 2022 at 05:10:35PM +0300, Arınç ÜNAL wrote:
->>>> Hello folks,
->>>>
->>>> With this patch series, we're completely getting rid of 'label = "cpu";'
->>>> which is not used by the DSA dt-binding at all.
->>>>
->>>> Information for taking the patches for maintainers:
->>>> Patch 1: netdev maintainers (based off netdev/net-next.git main)
->>>> Patch 2-3: SoC maintainers (based off soc/soc.git soc/dt)
->>>> Patch 4: MIPS maintainers (based off mips/linux.git mips-next)
->>>> Patch 5: PowerPC maintainers (based off powerpc/linux.git next-test)
->>>
->>> Hi Arınç
->>>
->>> So your plan is that each architecture maintainer merges one patch?
->>
->> Initially, I sent this series to soc@kernel.org to take it all but Rob
->> said it must be this way instead.
->>
->>>
->>> That is fine, but it is good to be explicit, otherwise patches will
->>> fall through the cracks because nobody picks them up. I generally use
->>> To: to indicate who i expect to merge a patch, and everybody else in
->>> the Cc:
->>
->> Thanks for this, I'll follow suit if I don't see any activity for a few
->> weeks.
+On 01.12.22 12:08, Ricardo Ribalda wrote:
+> If we are shutting down due to kexec and the userspace is frozen, the
+> system will stall forever waiting for userspace to complete.
 > 
-> IMHO the best solution if the patches are truly independent is to send
-> them independantly to each maintainer. That way there's no confusion
-> about whether someone else will take the series.
-> 
-> It's also simpler for maintainers to apply a single standalone patch vs
-> pick a single patch from a larger series.
+> Do not wait for the clients to complete in that case.
 
-I agree. I'll do that next time.
+Hi,
 
-Cheers.
-Arınç
+I am afraid I have to state that this approach is bad in every case,
+not just this corner case. It basically means that user space can stall
+the kernel for an arbitrary amount of time. And we cannot have that.
+
+	Regards
+		Oliver
+
