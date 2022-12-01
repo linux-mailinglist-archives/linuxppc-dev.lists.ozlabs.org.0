@@ -2,75 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A477863FAEC
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Dec 2022 23:50:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E6B363FC33
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Dec 2022 00:44:40 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NNWVj4C5tz3bg1
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Dec 2022 09:50:05 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=Lo1VVBU0;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NNXjf3xZpz3c9x
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Dec 2022 10:44:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::1029; helo=mail-pj1-x1029.google.com; envelope-from=seanjc@google.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=Lo1VVBU0;
-	dkim-atps=neutral
-Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.160.49; helo=mail-oa1-f49.google.com; envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NNWTl4qp7z3bPR
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Dec 2022 09:49:14 +1100 (AEDT)
-Received: by mail-pj1-x1029.google.com with SMTP id l22-20020a17090a3f1600b00212fbbcfb78so6599780pjc.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Dec 2022 14:49:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=mKF7ACqUicTgwRFQrz4oBsMFvmn+mRrenbI3VwK9VtA=;
-        b=Lo1VVBU0quIBqwSjUL/IX6jsQ3Rcbq3kNXFx1b09LmjnR9bQqqs8Qnjl452IWYkBSY
-         P1KTyvwrHEdLgoshrms0r4SI8z1ngo83OqCHRxrURyBE+yArcM+Cs5TCeq44GobVkF0m
-         IuDj+iWRP2zVVwjI1HJslgwJO64iafu01Owc+4A3/mvkEjyzFr8iFAR19fNs0LBLJTf3
-         Kg1ZIMc5fZ0ipGhmHdhLOXnD8uVTRyQX02DQttBjsyjAKjRvEJFav2gCuZ5FSQ6cpVhK
-         zD3GLCkmoDFgDHZV7t7XBqH0jElTPRdTcydGeJqtHoccQFH5HqfiAwKx6tg04wXmDFCc
-         QADQ==
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NNXj154wWz30RN
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Dec 2022 10:44:04 +1100 (AEDT)
+Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-1433ef3b61fso3942145fac.10
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Dec 2022 15:44:04 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mKF7ACqUicTgwRFQrz4oBsMFvmn+mRrenbI3VwK9VtA=;
-        b=flxS9u4Vg0uyPFXK3lQPRcvhB8fMVn4IRQeP1xsUrwo/qJ0p10YXxRh2hm8HRIb8G9
-         whaTPRhKyM6L/C/8GsSeUFYJqbtTVLQ1MMmINwrHt7ZX7jdsx/hIh06ENIj239gusOfT
-         geQQ/g4cGdENP/8x66BUZOwyS0ZR+6fy/swm+7oefepkWmxBJ+hYNVR4K8CkdfEhPqdb
-         WhZ9jJzQj3SGDc/qgSf3ziiBVSOrZaSBUsFynmxa+Gy1luDUysFuaAcRYsgjJyXBVuWW
-         Mjc/A6iIbsCyJdZw0FKe5xQK7e03mvgoIsIMy5E4sElPdQ9OtFVPA774R169s4TA4wjO
-         /DCg==
-X-Gm-Message-State: ANoB5plIjc+gLaE7EmYNtQcSmeFJOVEvWpeh6v1hQyiK8Wtoze9facA2
-	FSWJxjGBP81qrsTg2EQ26xKhjg==
-X-Google-Smtp-Source: AA0mqf4Wt8uYV/bEa16p+0WrrISPwxZH3fHAX4g+Oh8a2UKzOEMh4LEyPBB3ZTgiAtA3/myS/mdVQA==
-X-Received: by 2002:a17:903:32ce:b0:189:a0eb:4a26 with SMTP id i14-20020a17090332ce00b00189a0eb4a26mr13829305plr.162.1669934951343;
-        Thu, 01 Dec 2022 14:49:11 -0800 (PST)
-Received: from google.com (7.104.168.34.bc.googleusercontent.com. [34.168.104.7])
-        by smtp.gmail.com with ESMTPSA id c73-20020a624e4c000000b0056bc742d21esm3854175pfb.176.2022.12.01.14.49.10
+        bh=zBjMeuRLVfB0Q1K91g+RhzJYDgpvITGQ3Wa0hVWnVFA=;
+        b=w4SIvEx5fCnAEdiwm5vGbnUgQda2JG6zAdvvYBPE+hHXIwjCELX9FEPbYgxwRiNnTf
+         85w+3ADZPbSUPPNW0VtDFy/A39aMOgKw3o3MPkqN16eUP9hcE6AXa1W7c68+2y2M8xK2
+         WSxJ62jp/tR7iGGwH1wAHSC5B0VYL/v5CA2GcPdCY/Ynq5yhlDhDzb3YvvaupM8P4nEZ
+         ddf2rFku20ngEXhOvGzgnabA4aeo0jPsVZTautP/7gBF0PNR9ZYGqkFMmjceHMKSgs+h
+         E7HS/RFqwBrktQjwEKkUFE+xr6/xYthFin7EZiAHNv+Velxd6dUL/fjCemdQyBJgYxPX
+         pQOA==
+X-Gm-Message-State: ANoB5plXk2JDTuALWEyjdsYRb9a0HkhGr/Y5OxIJIv46Dw+spl5A9Tnb
+	is0/P9o7bWgW9smzKsK/9A==
+X-Google-Smtp-Source: AA0mqf4pknopJGrWOequ2EqipgdRgXWSNsM2LgM3UzqF3aEUNXODvGWLmMXX/V+42xajku68ybLwaA==
+X-Received: by 2002:a05:6870:3c0f:b0:143:53aa:5813 with SMTP id gk15-20020a0568703c0f00b0014353aa5813mr21218698oab.161.1669938241401;
+        Thu, 01 Dec 2022 15:44:01 -0800 (PST)
+Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id r81-20020aca5d54000000b0035b99bbe30bsm2344462oib.54.2022.12.01.15.44.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Dec 2022 14:49:10 -0800 (PST)
-Date: Thu, 1 Dec 2022 22:49:06 +0000
-From: Sean Christopherson <seanjc@google.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Subject: Re: [PATCH v2 21/50] KVM: MIPS: Hardcode callbacks to hardware
- virtualization extensions
-Message-ID: <Y4kvYlCbhj87rceF@google.com>
-References: <20221130230934.1014142-1-seanjc@google.com>
- <20221130230934.1014142-22-seanjc@google.com>
- <beb697c2-dfad-780e-4638-76b229f28731@linaro.org>
+        Thu, 01 Dec 2022 15:44:00 -0800 (PST)
+Received: (nullmailer pid 1700884 invoked by uid 1000);
+	Thu, 01 Dec 2022 23:44:00 -0000
+Date: Thu, 1 Dec 2022 17:44:00 -0600
+From: Rob Herring <robh@kernel.org>
+To: Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>
+Subject: Re: [PATCH 5/5] powerpc: dts: remove label = "cpu" from DSA
+ dt-binding
+Message-ID: <20221201234400.GA1692656-robh@kernel.org>
+References: <20221130141040.32447-1-arinc.unal@arinc9.com>
+ <20221130141040.32447-6-arinc.unal@arinc9.com>
+ <87a647s8zg.fsf@mpe.ellerman.id.au>
+ <20221201173902.zrtpeq4mkk3i3vpk@pali>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <beb697c2-dfad-780e-4638-76b229f28731@linaro.org>
+In-Reply-To: <20221201173902.zrtpeq4mkk3i3vpk@pali>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,52 +67,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Matthew Rosato <mjrosato@linux.ibm.com>, Paul Durrant <paul@xen.org>, Yuan Yao <yuan.yao@intel.com>, Paul Walmsley <paul.walmsley@sifive.com>, David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org, Kai Huang <kai.huang@intel.com>, linux-riscv@lists.infradead.org, Claudio Imbrenda <imbrenda@linux.ibm.com>, kvmarm@lists.cs.columbia.edu, linux-s390@vger.kernel.org, Janosch Frank <frankja@linux.ibm.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>, James Morse <james.morse@arm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Chao Gao <chao.gao@intel.com>, Eric Farman <farman@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org, Atish Patra <atishp@atishpatra.org>, kvmarm@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, Alexandru Elisei <alexandru.elisei@arm.com>, linux-arm-kernel@lists.infradead.org, Isaku Yamahata <isak
- u.yamahata@intel.com>, Fabiano Rosas <farosas@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Cornelia Huck <cohuck@redhat.com>, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, Palmer Dabbelt <palmer@dabbelt.com>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, David Woodhouse <dwmw2@infradead.org>
+Cc: Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>, devicetree@vger.kernel.org, =?utf-8?B?QXLEsW7DpyDDnE5BTA==?= <arinc.unal@arinc9.com>, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Dec 01, 2022, Philippe Mathieu-Daud� wrote:
-> On 1/12/22 00:09, Sean Christopherson wrote:
-> > Now that KVM no longer supports trap-and-emulate (see commit 45c7e8af4a5e
-> > "MIPS: Remove KVM_TE support"), hardcode the MIPS callbacks to the
-> > virtualization callbacks.
+On Thu, Dec 01, 2022 at 06:39:02PM +0100, Pali Rohár wrote:
+> On Thursday 01 December 2022 21:40:03 Michael Ellerman wrote:
+> > Arınç ÜNAL <arinc.unal@arinc9.com> writes:
+> > > This is not used by the DSA dt-binding, so remove it from all devicetrees.
+> > >
+> > > Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
+> > > ---
+> > >  arch/powerpc/boot/dts/turris1x.dts | 2 --
+> > >  1 file changed, 2 deletions(-)
 > > 
-> > Harcoding the callbacks eliminates the technically-unnecessary check on
-> > non-NULL kvm_mips_callbacks in kvm_arch_init().  MIPS has never supported
-> > multiple in-tree modules, i.e. barring an out-of-tree module, where
-> > copying and renaming kvm.ko counts as "out-of-tree", KVM could never
-> > encounter a non-NULL set of callbacks during module init.
+> > Adding Pali to Cc.
 > > 
-> > The callback check is also subtly broken, as it is not thread safe,
-> > i.e. if there were multiple modules, loading both concurrently would
-> > create a race between checking and setting kvm_mips_callbacks.
+> > These were only recently updated in commit:
 > > 
-> > Given that out-of-tree shenanigans are not the kernel's responsibility,
-> > hardcode the callbacks to simplify the code.
+> >   8bf056f57f1d ("powerpc: dts: turris1x.dts: Fix labels in DSA cpu port nodes")
 > > 
-> > Signed-off-by: Sean Christopherson <seanjc@google.com>
-> > ---
-> >   arch/mips/include/asm/kvm_host.h |  2 +-
-> >   arch/mips/kvm/Makefile           |  2 +-
-> >   arch/mips/kvm/callback.c         | 14 --------------
-> >   arch/mips/kvm/mips.c             |  9 ++-------
-> >   arch/mips/kvm/vz.c               |  7 ++++---
-> >   5 files changed, 8 insertions(+), 26 deletions(-)
-> >   delete mode 100644 arch/mips/kvm/callback.c
+> > Which said:
 > > 
-> > diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
-> > index 28f0ba97db71..2803c9c21ef9 100644
-> > --- a/arch/mips/include/asm/kvm_host.h
-> > +++ b/arch/mips/include/asm/kvm_host.h
-> > @@ -758,7 +758,7 @@ struct kvm_mips_callbacks {
-> >   	void (*vcpu_reenter)(struct kvm_vcpu *vcpu);
-> >   };
-> >   extern struct kvm_mips_callbacks *kvm_mips_callbacks;
+> >   DSA cpu port node has to be marked with "cpu" label.
+> > 
+> > But if the binding doesn't use them then I'm confused why they needed to
+> > be updated.
+> > 
+> > cheers
 > 
-> IIUC we could even constify this pointer.
+> I was told by Marek (CCed) that DSA port connected to CPU should have
+> label "cpu" and not "cpu<number>". Modern way for specifying CPU port is
+> by defining reference to network device, which there is already (&enet1
+> and &enet0). So that change just "fixed" incorrect naming cpu0 and cpu1.
+> 
+> So probably linux kernel does not need label = "cpu" in DTS anymore. But
+> this is not the reason to remove this property. Linux kernel does not
+> use lot of other nodes and properties too... Device tree should describe
+> hardware and not its usage in Linux. "label" property is valid in device
+> tree and it exactly describes what or where is this node connected. And
+> it may be used for other systems.
+> 
+> So I do not see a point in removing "label" properties from turris1x.dts
+> file, nor from any other dts file.
 
-Good point.  Protecting the pointer itself is a bit gross, but it is a nice
-stopgap until the callbacks are gone.  I'll fold this in.  Thanks!
+Well, it seems like a bit of an abuse of 'label' to me. 'label' should 
+be aligned with a sticker or other identifier identifying something to a 
+human. Software should never care what the value of 'label' is.
 
-  extern const struct kvm_mips_callbacks * const kvm_mips_callbacks;
+Rob
