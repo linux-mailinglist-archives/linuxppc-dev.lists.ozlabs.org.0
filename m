@@ -2,50 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24FFE63FECF
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Dec 2022 04:32:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC3E363FF43
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Dec 2022 04:54:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NNdm90W9vz3bf3
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Dec 2022 14:32:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NNfFV56JFz3bfM
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Dec 2022 14:54:06 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=IqwSsQev;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=kyUmij4P;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NNdl75c0Kz3057
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Dec 2022 14:31:15 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=IqwSsQev;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=kyUmij4P;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NNdl54qh8z4x1V;
-	Fri,  2 Dec 2022 14:31:13 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
-	s=201702; t=1669951875;
-	bh=dGmf72ncD/4NdOoAGiGfp2ldEHsmrOX7GeYxxIlw1iI=;
-	h=Date:From:To:Cc:Subject:From;
-	b=IqwSsQevBvTlcZghD8RrbvK/OS1wagK/DoQO2amlxJp9gve2/yirsqhJvflP01OMy
-	 O+JRzcYLYc63mCysVf2ase6i7kAOk15Nn73eaedITQEohbVom+5XlHXx+fcPgMIq/w
-	 jemmvGcw3801mcrgqjyv6aU27PvYQSWDEU28hZGWvbn0mB1pQJymPLXYNEx3STmHJC
-	 pyYWKTW01v0zFiG6b94/nl0l61JYWlDcCMzHke7kcCQKN33YMs6dtTytyVKWNGBn41
-	 tp9v7a1eO7g0AcRjqXF1OubW1kiqhMX/bNi8/cB9jc+PTfuQz6sMl5x1lbYxGFGky2
-	 9AWg/asmYeY/Q==
-Date: Fri, 2 Dec 2022 14:31:10 +1100
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Michael Ellerman <mpe@ellerman.id.au>, PowerPC
- <linuxppc-dev@lists.ozlabs.org>
-Subject: linux-next: boot failure after merge of the powerpc tree
-Message-ID: <20221202143110.0f00c3e5@canb.auug.org.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NNfDW4FGVz3bTs
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Dec 2022 14:53:14 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2B231NJ4001684;
+	Fri, 2 Dec 2022 03:53:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=M84laHatoYgt9t3f4COpI+woRzRZNREcBdPZMJuuHfE=;
+ b=kyUmij4PG9rD3nTQjyh9qv5fF418tqgSz3Tz+59WvmpSkaANJR+TcCBtrTZh05hXISZy
+ 0TQSyxJ32lgBiexrmZDxGqTLk8Fw0X5Xtfg3dHFlqC76NIdmqWX559juYoOE0mfIXwTg
+ RoAzrhUHNyNwGQirKsiESKz27lDyT6sRg7vsqF2SBIhBzUdjl9K0wX9CDRW4YVr2x2SJ
+ aZ2ZKSUl5Oonl9/QxnyiigDZMnhXyHuu+bIRbK0Ts7YrV2kQvKbTngxxx/pm0Tr7phC4
+ 2eajGGOGL1WDQ/Xr50EMGD7aX5rDiRS38Mtex/KfG+78N4BVKhw++dMcXE7/9EFPfdrI zQ== 
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com [149.81.74.106])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m793g0vha-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 02 Dec 2022 03:53:11 +0000
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+	by ppma04fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2B22ZeMp002714;
+	Fri, 2 Dec 2022 03:53:10 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+	by ppma04fra.de.ibm.com with ESMTP id 3m3ae96368-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 02 Dec 2022 03:53:09 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+	by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2B23r7Vg11272860
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 2 Dec 2022 03:53:07 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7387DA4054;
+	Fri,  2 Dec 2022 03:53:07 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1E57DA405C;
+	Fri,  2 Dec 2022 03:53:07 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Fri,  2 Dec 2022 03:53:07 +0000 (GMT)
+Received: from [10.61.2.128] (haven.au.ibm.com [9.192.254.114])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id E9166602FD;
+	Fri,  2 Dec 2022 14:52:58 +1100 (AEDT)
+Message-ID: <42ea8c518ce1db9bd09c7fc48e21aa16a468d138.camel@linux.ibm.com>
+Subject: Re: [PATCH v3 2/7] selftests/powerpc: Add ptrace
+ setup_core_pattern() null-terminator
+From: Andrew Donnellan <ajd@linux.ibm.com>
+To: Benjamin Gray <bgray@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Date: Fri, 02 Dec 2022 14:52:58 +1100
+In-Reply-To: <20221128041948.58339-3-bgray@linux.ibm.com>
+References: <20221128041948.58339-1-bgray@linux.ibm.com>
+	 <20221128041948.58339-3-bgray@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.1 (3.46.1-1.fc37) 
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/BjbHU/pbGfn0Mh7nb5lWnVd";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: gY3j70P-LcxDtRcSsuEg7gVrJ31YjNIR
+X-Proofpoint-ORIG-GUID: gY3j70P-LcxDtRcSsuEg7gVrJ31YjNIR
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-12-01_14,2022-12-01_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ priorityscore=1501 adultscore=0 spamscore=0 clxscore=1015 malwarescore=0
+ mlxscore=0 bulkscore=0 mlxlogscore=999 suspectscore=0 phishscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2210170000 definitions=main-2212020018
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,101 +97,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Next Mailing List <linux-next@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, "Christopher M. Riedl" <cmr@bluescreens.de>, Benjamin Gray <bgray@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/BjbHU/pbGfn0Mh7nb5lWnVd
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On Mon, 2022-11-28 at 15:19 +1100, Benjamin Gray wrote:
+> - malloc() does not zero the buffer,
+> - fread() does not null-terminate it's output,
+> - `cat /proc/sys/kernel/core_pattern | hexdump -C` shows the file is
+> =C2=A0 not inherently null-terminated
+>=20
+> So using string operations on the buffer is risky. Explicitly add a
+> null
+> character to the end to make it safer.
+>=20
+> Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
 
-Hi all,
+Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
 
-After merging all the trees, today's linux-next qemu run (powerpc
-pseries_le_defconfig with kvm) crashed like this:
-
-Memory: 2029504K/2097152K available (14592K kernel code, 2944K rwdata, 1817=
-6K rodata, 5120K init, 1468K bss, 67648K reserved, 0K cma-reserved)
-SLUB: HWalign=3D128, Order=3D0-3, MinObjects=3D0, CPUs=3D1, Nodes=3D1
-BUG: Kernel NULL pointer dereference on read at 0x0000001c
-Faulting instruction address: 0xc00000000047e9bc
-Oops: Kernel access of bad area, sig: 7 [#1]
-LE PAGE_SIZE=3D64K MMU=3DRadix SMP NR_CPUS=3D2048 NUMA pSeries
-Modules linked in:
-CPU: 0 PID: 0 Comm: swapper Not tainted 6.1.0-rc7 #1
-Hardware name: IBM pSeries (emulated by qemu) POWER9 (raw) 0x4e1202 0xf0000=
-05 of:SLOF,HEAD hv:linux,kvm pSeries
-NIP:  c00000000047e9bc LR: c000000000e06718 CTR: c00000000047e970
-REGS: c000000002773770 TRAP: 0300   Not tainted  (6.1.0-rc7)
-MSR:  8000000002001033 <SF,VEC,ME,IR,DR,RI,LE>  CR: 22004220  XER: 00000000
-CFAR: c000000000070508 DAR: 000000000000001c DSISR: 00080000 IRQMASK: 3=20
-GPR00: c000000000e06718 c000000002773a10 c00000000116fc00 0000000000000000=
-=20
-GPR04: 0000000000002900 0000000000002800 0000000000000000 0000000000000000=
-=20
-GPR08: 000000000000000e c0000000027afc00 0000000000000000 0000000000004000=
-=20
-GPR12: c00000000047e970 c000000002950000 0000000000000000 00000000013c8ff0=
-=20
-GPR16: 000000000000000d 0000000002be00d0 0000000000000001 00000000013c8e60=
-=20
-GPR20: 00000000013c8fa8 00000000013c8d90 c0000000027b2160 0000000000000000=
-=20
-GPR24: 0000000000000005 c0000000027b3568 c000000000e06718 0000000000002900=
-=20
-GPR28: 0000000000002900 0000000007fff33f 0000000000000000 c000000002773bc8=
-=20
-NIP [c00000000047e9bc] kmem_cache_alloc+0x5c/0x610
-LR [c000000000e06718] mas_alloc_nodes+0xe8/0x350
-Call Trace:
-[c000000002773a10] [0040000000000000] 0x40000000000000 (unreliable)
-[c000000002773a70] [c000000000e06718] mas_alloc_nodes+0xe8/0x350
-[c000000002773ad0] [c000000000e0f7f4] mas_expected_entries+0x94/0x110
-[c000000002773b10] [c00000000012cc44] dup_mmap+0x194/0x730
-[c000000002773c80] [c00000000012d260] dup_mm+0x80/0x180
-[c000000002773cc0] [c00000000008e7c0] text_area_cpu_up_mm+0x20/0x1a0
-[c000000002773d20] [c00000000013367c] cpuhp_invoke_callback+0x15c/0x810
-[c000000002773db0] [c0000000001348dc] cpuhp_issue_call+0x28c/0x2a0
-[c000000002773e00] [c000000000134e44] __cpuhp_setup_state_cpuslocked+0x154/=
-0x3e0
-[c000000002773eb0] [c000000000135180] __cpuhp_setup_state+0xb0/0x1d0
-[c000000002773f10] [c000000002016f9c] poking_init+0x40/0x9c
-[c000000002773f30] [c00000000200434c] start_kernel+0x598/0x914
-[c000000002773fe0] [c00000000000d990] start_here_common+0x1c/0x20
-Code: fb81ffe0 7c9b2378 3b293968 fbc1fff0 f8010010 7c7e1b78 fba1ffe8 fbe1ff=
-f8 91610008 f821ffa1 f8410018 83b90000 <83e3001c> 7fbd2038 7bbc0020 7f84e37=
-8=20
----[ end trace 0000000000000000 ]---
-
-Kernel panic - not syncing: Attempted to kill the idle task!
-
-Reverting commits
-
-  55a02e6ea958 ("powerpc/code-patching: Use temporary mm for Radix MMU")
-  d0462ee02fdd ("powerpc/code-patching: Consolidate and cache per-cpu patch=
-ing context")
-(this second just because it follows the other and modifies the same file)
-
-fixes the panic.  I have done that in linux-next today.
+> ---
+> =C2=A0tools/testing/selftests/powerpc/ptrace/core-pkey.c | 4 +++-
+> =C2=A01 file changed, 3 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/tools/testing/selftests/powerpc/ptrace/core-pkey.c
+> b/tools/testing/selftests/powerpc/ptrace/core-pkey.c
+> index bbc05ffc5860..5c82ed9e7c65 100644
+> --- a/tools/testing/selftests/powerpc/ptrace/core-pkey.c
+> +++ b/tools/testing/selftests/powerpc/ptrace/core-pkey.c
+> @@ -383,7 +383,7 @@ static int setup_core_pattern(char
+> **core_pattern_, bool *changed_)
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0goto out;
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
+> =C2=A0
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0ret =3D fread(core_pattern, 1,=
+ PATH_MAX, f);
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0ret =3D fread(core_pattern, 1,=
+ PATH_MAX - 1, f);
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0fclose(f);
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (!ret) {
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0perror("Error reading core_pattern file");
+> @@ -391,6 +391,8 @@ static int setup_core_pattern(char
+> **core_pattern_, bool *changed_)
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0goto out;
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
+> =C2=A0
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0core_pattern[ret] =3D '\0';
+> +
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/* Check whether we can p=
+redict the name of the core file. */
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (!strcmp(core_pattern,=
+ "core") || !strcmp(core_pattern,
+> "core.%p"))
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0*changed_ =3D false;
 
 --=20
-Cheers,
-Stephen Rothwell
-
---Sig_/BjbHU/pbGfn0Mh7nb5lWnVd
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmOJcX4ACgkQAVBC80lX
-0GwWOwgAjqKajQf1EBA6Y9xvIrOMk/sU97LDyRymafQAqS80fWM650XoDOfaJR4v
-PwvLMBEXnXJKqf3Flhr2GxDC0o6SuSRm2oK7/DnPovpyZgnxatLq4wfpGF3YWIlj
-D9EfIgNXzt78xTMrDu2O9oFnso1m4WSzQa+FqMm0DFZNRCIkqLMOv3BPqn48ofD3
-3rtrk5xuShrqxnHtdyUXBO/C9IB9dSHW6OLCECBipVUATQEjcDkavogDkNpIMeWk
-bXO/CiZDphejKIP8W003wuVbHXwy5SkvxrLv86/xjQpTwKM81vuIfZPNJ+XjagJ0
-+SA9Dd10CDQLrPgsNnA4RO9XLE6eyQ==
-=NakJ
------END PGP SIGNATURE-----
-
---Sig_/BjbHU/pbGfn0Mh7nb5lWnVd--
+Andrew Donnellan    OzLabs, ADL Canberra
+ajd@linux.ibm.com   IBM Australia Limited
