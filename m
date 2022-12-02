@@ -2,51 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DE0D640578
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Dec 2022 12:05:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EA0C640684
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Dec 2022 13:15:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NNqpz1gc7z3bbX
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Dec 2022 22:05:15 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Q8lIMESf;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NNsMQ3QK3z3bg8
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Dec 2022 23:14:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kaod.org (client-ip=46.105.37.156; helo=8.mo552.mail-out.ovh.net; envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
+X-Greylist: delayed 2162 seconds by postgrey-1.36 at boromir; Fri, 02 Dec 2022 23:14:26 AEDT
+Received: from 8.mo552.mail-out.ovh.net (8.mo552.mail-out.ovh.net [46.105.37.156])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NNqp027QMz3bNB
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Dec 2022 22:04:24 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Q8lIMESf;
-	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NNqp00nknz4x2c;
-	Fri,  2 Dec 2022 22:04:23 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1669979064;
-	bh=dPGUWdiET8VZ8KvCbL64c02UhsXFltcWaVcuoyS4+yo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Q8lIMESf5gq7qNWMJa8GQxVZR200aGM9plf5zaedjn243ZRSNQGtul6+HTGiK5byk
-	 dgTtBdH7G/EEo0kUv0Tbn05k7c4kpWfTbGYHlzROeSDwFnyag9uRybs7WZWg2K1wmZ
-	 Mpca5dCPW2AvfqMhLX801tf2Y/T6RrEph2LcmcGheesB1/hHdcAWVwralXwU2VT8/U
-	 9ZUaa/DlIzC+UjnyfiUkNjOM5nDRKmw5MsgdUYSGg5Zqns4oFops9iIXTz34ODVFqL
-	 7o5dLG5FXrxxw+BBuhc6dWWYQefbY4WeY9TmzN2dJ9If82Kdoj0SvgnQJLTdNMhc0J
-	 2Ihr0KhgeFA2A==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Benjamin Gray <bgray@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v3 3/7] selftests/powerpc: Add generic read/write file util
-In-Reply-To: <20221128041948.58339-4-bgray@linux.ibm.com>
-References: <20221128041948.58339-1-bgray@linux.ibm.com>
- <20221128041948.58339-4-bgray@linux.ibm.com>
-Date: Fri, 02 Dec 2022 22:04:20 +1100
-Message-ID: <87iliu12yz.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NNsLp0HnSz3bXQ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Dec 2022 23:14:22 +1100 (AEDT)
+Received: from mxplan5.mail.ovh.net (unknown [10.109.146.241])
+	by mo552.mail-out.ovh.net (Postfix) with ESMTPS id A65562C917;
+	Fri,  2 Dec 2022 11:38:14 +0000 (UTC)
+Received: from kaod.org (37.59.142.95) by DAG4EX2.mxp5.local (172.16.2.32)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.16; Fri, 2 Dec
+ 2022 12:38:14 +0100
+Authentication-Results: garm.ovh; auth=pass (GARM-95G00144eb74ec-a39a-4530-9259-7097822f44a2,
+                    DD67DF67F3B0AB7776FDCC71B54CDE51ACBF4E27) smtp.auth=clg@kaod.org
+X-OVh-ClientIp: 82.64.250.170
+Message-ID: <bea99ec1-ab6f-da7a-723b-68c32e5042af@kaod.org>
+Date: Fri, 2 Dec 2022 12:38:13 +0100
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
+Subject: Re: [RFC PATCH] Disable Book-E KVM support?
+Content-Language: en-US
+To: Daniel Henrique Barboza <danielhb413@gmail.com>, Crystal Wood
+	<oss@buserror.net>, Nicholas Piggin <npiggin@gmail.com>,
+	<linuxppc-dev@lists.ozlabs.org>, Benjamin Herrenschmidt
+	<benh@kernel.crashing.org>
+References: <20221128043623.1745708-1-npiggin@gmail.com>
+ <3d1a6cde6c8e108be77fa4a47666e14d06a91d74.camel@buserror.net>
+ <caaa2ef9-d6df-8cf4-0489-1a0dd4623244@gmail.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <caaa2ef9-d6df-8cf4-0489-1a0dd4623244@gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [37.59.142.95]
+X-ClientProxiedBy: DAG9EX1.mxp5.local (172.16.2.81) To DAG4EX2.mxp5.local
+ (172.16.2.32)
+X-Ovh-Tracer-GUID: f9de8023-e484-44a2-b2e1-c6720e7ad2d9
+X-Ovh-Tracer-Id: 16403798694496275308
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedrtdekgddtiecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfevfhfhjggtgfhisehtkeertddtfeejnecuhfhrohhmpeevrogurhhitgcunfgvucfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepgeduieegtdfggfejfeelvefhgedtkeethfegleeigeelvdfgjeethefhfeejteeinecuffhomhgrihhnpehoiihlrggsshdrohhrghdpkhgvrhhnvghlrdhorhhgnecukfhppeduvdejrddtrddtrddupdefjedrheelrddugedvrdelheenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduvdejrddtrddtrddupdhmrghilhhfrhhomhepoegtlhhgsehkrghougdrohhrgheqpdhnsggprhgtphhtthhopedupdhrtghpthhtohepuggrnhhivghlhhgsgedufeesghhmrghilhdrtghomhdpohhsshessghushgvrhhrohhrrdhnvghtpdhnphhighhgihhnsehgmhgrihhlrdgtohhmpdhlihhnuhigphhptgdquggvvheslhhishhtshdrohiilhgrsghsrdhorhhgpdgsvghnhheskhgvrhhnvghlrdgtrhgrshhhihhnghdrohhrghdplhgruhhrvghnthhiuhdrthhuughorhesnhigphdrtghomhdpshhhvghnthgvhiesghhmrghilhdrtghomh
+ dpqhgvmhhuqdhpphgtsehnohhnghhnuhdrohhrghdpoffvtefjohhsthepmhhoheehvddpmhhouggvpehsmhhtphhouhht
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,62 +65,83 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ajd@linux.ibm.com, Benjamin Gray <bgray@linux.ibm.com>
+Cc: qemu-ppc@nongnu.org, Bernhard Beschow <shentey@gmail.com>, Laurentiu Tudor <laurentiu.tudor@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Benjamin Gray <bgray@linux.ibm.com> writes:
-> File read/write is reimplemented in about 5 different ways in the
-> various PowerPC selftests. This indicates it should be a common util.
+On 12/2/22 12:04, Daniel Henrique Barboza wrote:
+> 
+> 
+> On 11/30/22 17:45, Crystal Wood wrote:
+>> On Mon, 2022-11-28 at 14:36 +1000, Nicholas Piggin wrote:
+>>> BookE KVM is in a deep maintenance state, I'm not sure how much testing
+>>> it gets. I don't have a test setup, and it does not look like QEMU has
+>>> any HV architecture enabled. It hasn't been too painful but there are
+>>> some cases where it causes a bit of problem not being able to test, e.g.,
+>>>
+>>> https://lists.ozlabs.org/pipermail/linuxppc-dev/2022-November/251452.html
+>>>
+>>> Time to begin removal process, or are there still people using it? I'm
+>>> happy to to keep making occasional patches to try keep it going if
+>>> there are people testing upstream. Getting HV support into QEMU would
+>>> help with long term support, not sure how big of a job that would be.
+>>
+>> Not sure what you mean about QEMU not having e500 HV support?  I don't know if
+>> it's bitrotted, but it's there.
+> 
+> AFAIK all QEMU ppc boards, aside from pSeries and the Mac ones, are always used in
+> emulated mode in an use case similar to what Bernhard described in his reply (run
+> in x86 due to lack of ppc hardware).
+> 
+> I am not aware of e500 KVM support in QEMU since I never attempted it. But yes,
+> it is present, but poorly tested - if tested at all. And the reason why there's
+> no push on our side to removed it from QEMU is because its code is so entwined
+> with pSeries KVM that it would take too much effort.
 >
-> Add a common read_file / write_file implementation and convert users
-> to it where (easily) possible.
->
-> Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
-> ---
->  tools/testing/selftests/powerpc/dscr/dscr.h   |  36 ++----
->  .../selftests/powerpc/dscr/dscr_sysfs_test.c  |  19 +--
->  .../testing/selftests/powerpc/include/utils.h |   2 +
->  .../selftests/powerpc/nx-gzip/gzfht_test.c    |  49 +++-----
->  tools/testing/selftests/powerpc/pmu/lib.c     |  27 +----
->  .../selftests/powerpc/ptrace/core-pkey.c      |  30 ++---
->  tools/testing/selftests/powerpc/utils.c       | 108 ++++++++++--------
->  7 files changed, 107 insertions(+), 164 deletions(-)
->
-> diff --git a/tools/testing/selftests/powerpc/dscr/dscr.h b/tools/testing/selftests/powerpc/dscr/dscr.h
-> index b703714e7d98..9a69d473ffdf 100644
-> --- a/tools/testing/selftests/powerpc/dscr/dscr.h
-> +++ b/tools/testing/selftests/powerpc/dscr/dscr.h
-> @@ -64,48 +64,30 @@ inline void set_dscr_usr(unsigned long val)
->  /* Default DSCR access */
->  unsigned long get_default_dscr(void)
->  {
-> -	int fd = -1, ret;
-> -	char buf[16];
-> +	int err;
-> +	char buf[16] = {0};
->  	unsigned long val;
->  
-> -	if (fd == -1) {
-> -		fd = open(DSCR_DEFAULT, O_RDONLY);
-> -		if (fd == -1) {
-> -			perror("open() failed");
-> -			exit(1);
-> -		}
-> -	}
-> -	memset(buf, 0, sizeof(buf));
-> -	lseek(fd, 0, SEEK_SET);
-> -	ret = read(fd, buf, sizeof(buf));
-> -	if (ret == -1) {
-> -		perror("read() failed");
-> +	if ((err = read_file(DSCR_DEFAULT, buf, sizeof(buf) - 1, NULL))) {
-> +		fprintf(stderr, "get_default_dscr() read failed: %s\n", strerror(err));
+> Do not take the presence of e500 KVM support in QEMU as a blocker to disabled it in
+> the kernel. As far as the current QEMU usage goes e500 KVM can be removed without
+> too much drama from our side.
+> 
+> Cedric, do you have any opinions about it?
 
-I don't particularly like doing the assignment to err in the if.
+I can not tell how much e500 KVM is used. The last report we had
+on the topic was :
 
-And checkpatch flags it as an error, which means even if we did like it
-we'd be setting ourselves up for a stream of fixup patches :)
+   https://lore.kernel.org/all/R4OPHT$7F12C66D1107397991E0E4C978FE6AF1@locati.it/
 
-So please just do the assignment and the if separately.
+and the last commit mentioning e500 VMs I could find is cb3778a045,
+which brings us back to QEMU 2.2 or so.
 
-cheers
+It would be nice to 'quickly' check the state of the KVM stack on
+such boards and, may be, plan for more cleanups.
+
+
+Thanks,
+
+C.
+
+> 
+> 
+> 
+> Daniel
+> 
+> 
+>>
+>> I don't know whether anyone is still using this, but if they are, it's
+>> probably e500mc and not e500v2 (which involved a bunch of hacks to get almost-
+>> sorta-usable performance out of hardware not designed for virtualization).  I
+>> do see that there have been a few recent patches on QEMU e500 (beyond the
+>> treewide cleanup type stuff), though I don't know if they're using KVM.  CCing
+>> them and the QEMU list.
+>>
+>> I have an e6500 I could occasionally test on, if it turns out people do still
+>> care about this.  Don't count me as the use case, though. :-)
+>>
+>> FWIW, as far as the RECONCILE_IRQ_STATE issue, that used to be done in
+>> kvmppc_handle_exit(), but was moved in commit 9bd880a2c882 to be "cleaner and
+>> faster". :-P
+>>
+>> -Crystal
+>>
+>>
+
