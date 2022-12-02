@@ -1,51 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3072B640378
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Dec 2022 10:38:25 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DE0D640578
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Dec 2022 12:05:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NNntk6NfJz3bgK
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Dec 2022 20:38:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NNqpz1gc7z3bbX
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Dec 2022 22:05:15 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=hUJ5Sizc;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Q8lIMESf;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NNnsr2Bw8z30QQ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Dec 2022 20:37:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NNqp027QMz3bNB
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Dec 2022 22:04:24 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=hUJ5Sizc;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Q8lIMESf;
 	dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NNnsl2Zc0z4xN3;
-	Fri,  2 Dec 2022 20:37:31 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NNqp00nknz4x2c;
+	Fri,  2 Dec 2022 22:04:23 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1669973851;
-	bh=HgOcyu133X5TabU40GR4c197EsaCaAilQufyZi+kGao=;
+	s=201909; t=1669979064;
+	bh=dPGUWdiET8VZ8KvCbL64c02UhsXFltcWaVcuoyS4+yo=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=hUJ5Sizc5PF+l8d6uuAz1aiHNHMYZmJEjA+o/a4DRn4kF+bpIJCaDkstxMo8U9SrM
-	 3UUbz50tIK9+Mljqx6Fpwsrw2cygz/IQ/Vph6GCS6VZ+sJSFpnAyP66VesL8cMNUb4
-	 63xXRvQFfxOq6mETqBhTzFITfn+zaX+vIQSF9wifSUk50lUr1pMK7Cln6wfhQquMac
-	 vYv3eA3XIY1OyiDg/m9L3E4mJjQdeCyHW2b/sccYMSpe8OspZKpB+66sgNrIZrZyWx
-	 9sqiZkIl8DYE4AizWEc9NPXoo0JtBIP+tJLQFW2m37fYxztqulpntDXfd8j/zE+Apo
-	 oif0ZdnohENSg==
+	b=Q8lIMESf5gq7qNWMJa8GQxVZR200aGM9plf5zaedjn243ZRSNQGtul6+HTGiK5byk
+	 dgTtBdH7G/EEo0kUv0Tbn05k7c4kpWfTbGYHlzROeSDwFnyag9uRybs7WZWg2K1wmZ
+	 Mpca5dCPW2AvfqMhLX801tf2Y/T6RrEph2LcmcGheesB1/hHdcAWVwralXwU2VT8/U
+	 9ZUaa/DlIzC+UjnyfiUkNjOM5nDRKmw5MsgdUYSGg5Zqns4oFops9iIXTz34ODVFqL
+	 7o5dLG5FXrxxw+BBuhc6dWWYQefbY4WeY9TmzN2dJ9If82Kdoj0SvgnQJLTdNMhc0J
+	 2Ihr0KhgeFA2A==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Stephen Rothwell <sfr@canb.auug.org.au>, Thomas Gleixner
- <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, "H. Peter Anvin"
- <hpa@zytor.com>, Peter Zijlstra <peterz@infradead.org>
-Subject: Re: linux-next: build failure after merge of the tip tree
-In-Reply-To: <20221202112646.5813c34b@canb.auug.org.au>
-References: <20221202112646.5813c34b@canb.auug.org.au>
-Date: Fri, 02 Dec 2022 20:37:29 +1100
-Message-ID: <87lenq16zq.fsf@mpe.ellerman.id.au>
+To: Benjamin Gray <bgray@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v3 3/7] selftests/powerpc: Add generic read/write file util
+In-Reply-To: <20221128041948.58339-4-bgray@linux.ibm.com>
+References: <20221128041948.58339-1-bgray@linux.ibm.com>
+ <20221128041948.58339-4-bgray@linux.ibm.com>
+Date: Fri, 02 Dec 2022 22:04:20 +1100
+Message-ID: <87iliu12yz.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -59,42 +58,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Next Mailing List <linux-next@vger.kernel.org>, PowerPC <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, "Christopher M. Riedl" <cmr@bluescreens.de>, Benjamin Gray <bgray@linux.ibm.com>
+Cc: ajd@linux.ibm.com, Benjamin Gray <bgray@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Stephen Rothwell <sfr@canb.auug.org.au> writes:
-> Hi all,
+Benjamin Gray <bgray@linux.ibm.com> writes:
+> File read/write is reimplemented in about 5 different ways in the
+> various PowerPC selftests. This indicates it should be a common util.
 >
-> After merging the tip tree, today's linux-next build (powerpc
-> ppc64_defconfig) failed like this:
+> Add a common read_file / write_file implementation and convert users
+> to it where (easily) possible.
 >
-> arch/powerpc/lib/code-patching.c: In function 'text_area_cpu_up_mm':
-> arch/powerpc/lib/code-patching.c:157:14: error: implicit declaration of function 'copy_init_mm' [-Werror=implicit-function-declaration]
->   157 |         mm = copy_init_mm();
->       |              ^~~~~~~~~~~~
+> Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
+> ---
+>  tools/testing/selftests/powerpc/dscr/dscr.h   |  36 ++----
+>  .../selftests/powerpc/dscr/dscr_sysfs_test.c  |  19 +--
+>  .../testing/selftests/powerpc/include/utils.h |   2 +
+>  .../selftests/powerpc/nx-gzip/gzfht_test.c    |  49 +++-----
+>  tools/testing/selftests/powerpc/pmu/lib.c     |  27 +----
+>  .../selftests/powerpc/ptrace/core-pkey.c      |  30 ++---
+>  tools/testing/selftests/powerpc/utils.c       | 108 ++++++++++--------
+>  7 files changed, 107 insertions(+), 164 deletions(-)
 >
-> Caused by commit
->
->   107b6828a7cd ("x86/mm: Use mm_alloc() in poking_init()")
->
-> interacting with commit
->
->   55a02e6ea958 ("powerpc/code-patching: Use temporary mm for Radix MMU")
->
-> from the powerpc tree.
->
-> I partially reverted commit 107b6828a7cd - I left the change to
-> arch/x86/mm/init.c applied.  Though, I wonder if the powerpc tree should
-> use mm_alloc() instead of copy_init_mm() as well?  The tip tree commit
-> says:
->
->     Instead of duplicating init_mm, allocate a fresh mm. The advantage is
->     that mm_alloc() has much simpler dependencies. Additionally it makes
->     more conceptual sense, init_mm has no (and must not have) user state
->     to duplicate.
+> diff --git a/tools/testing/selftests/powerpc/dscr/dscr.h b/tools/testing/selftests/powerpc/dscr/dscr.h
+> index b703714e7d98..9a69d473ffdf 100644
+> --- a/tools/testing/selftests/powerpc/dscr/dscr.h
+> +++ b/tools/testing/selftests/powerpc/dscr/dscr.h
+> @@ -64,48 +64,30 @@ inline void set_dscr_usr(unsigned long val)
+>  /* Default DSCR access */
+>  unsigned long get_default_dscr(void)
+>  {
+> -	int fd = -1, ret;
+> -	char buf[16];
+> +	int err;
+> +	char buf[16] = {0};
+>  	unsigned long val;
+>  
+> -	if (fd == -1) {
+> -		fd = open(DSCR_DEFAULT, O_RDONLY);
+> -		if (fd == -1) {
+> -			perror("open() failed");
+> -			exit(1);
+> -		}
+> -	}
+> -	memset(buf, 0, sizeof(buf));
+> -	lseek(fd, 0, SEEK_SET);
+> -	ret = read(fd, buf, sizeof(buf));
+> -	if (ret == -1) {
+> -		perror("read() failed");
+> +	if ((err = read_file(DSCR_DEFAULT, buf, sizeof(buf) - 1, NULL))) {
+> +		fprintf(stderr, "get_default_dscr() read failed: %s\n", strerror(err));
 
-I needed to rebase my next anyway, so I've squashed in a change to use
-mm_alloc() in the powerpc commit. So this issue will be gone on Monday.
+I don't particularly like doing the assignment to err in the if.
+
+And checkpatch flags it as an error, which means even if we did like it
+we'd be setting ourselves up for a stream of fixup patches :)
+
+So please just do the assignment and the if separately.
 
 cheers
