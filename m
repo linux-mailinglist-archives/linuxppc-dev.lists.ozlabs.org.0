@@ -1,76 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65EDF640A40
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Dec 2022 17:08:03 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5DAE640A4A
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Dec 2022 17:09:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NNyXK1QXdz3fNF
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Dec 2022 03:08:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NNyYQ3lv7z2xH9
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Dec 2022 03:08:58 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=NpcRjd8P;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=kw0qyCOM;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::102f; helo=mail-pj1-x102f.google.com; envelope-from=seanjc@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::434; helo=mail-pf1-x434.google.com; envelope-from=seanjc@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=NpcRjd8P;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=kw0qyCOM;
 	dkim-atps=neutral
-Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
+Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NNyS31wj8z3c6d
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  3 Dec 2022 03:04:18 +1100 (AEDT)
-Received: by mail-pj1-x102f.google.com with SMTP id q17-20020a17090aa01100b002194cba32e9so8728178pjp.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 02 Dec 2022 08:04:18 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NNyXX2Vypz3bfd
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  3 Dec 2022 03:08:12 +1100 (AEDT)
+Received: by mail-pf1-x434.google.com with SMTP id c7so1922100pfc.12
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 02 Dec 2022 08:08:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=b2GsRYGpugbtZSHFD2RurCZ4JW4xZuzTsOfxXrCkfT8=;
-        b=NpcRjd8PL93RDmu18EFPPR+cTZLP3kvCDAEAva9wUQzgEtv6dhPvDs1R9Q9+h2mN7N
-         H42dGaT+sl8xeMuYK2rfUD+midQutKuG+T3MUl21HeEIW4MolVpdsUIo9SmBbkggNx39
-         8eN3yXePSJelVozj19wEaq9z6VDhzvEr0ForIWyEXE5qa5rozQa3WxAYewh7SubIBKmO
-         02PPePyseXuLiMMtCMvFiCLdBEv6hZUEsP/WY2KPh2svytXFAqt8tvoUSmd0DdfZmIR5
-         sLez1JP4ikgagdRRPh2k9RbfsucGTq+KVdolkDHLvc/Uk58Zr0iw+nxpff3e47GDmBB4
-         X4Mw==
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=LMdFvNSIKdTJxppFI5JflU3ZXHxkZjSJ4fG5U4tk7Tk=;
+        b=kw0qyCOMp2u+ojev0wrASw/lF7r9rOnRJHqLy08FIIr+f+qpPtSFohe59bJmaOi/rJ
+         xcGzBwmHctfDCuY/HsZstsw01nTTKqB9D0ItsIVCZBuDkF6U4LFd8/XxyiMZ9HQQBawu
+         5Br6kbHRMEkmhVdkrdlpAnXBg7aXr8x1ngEkT987D0vDq9wJ1LYSA7pyGWl0PB6S36YX
+         Ye0BXjX/JFQwCFB0idj1kNjBh1WOFf2yIueArh18nn+f3Kk6RhG95XRHvHGlIJTCnyAw
+         T+Hf0HOA9lpO63L3167YfTmLHua9wbiTHz1XwCqkS0us3SdkuoK9a/bX1aNd1tZdIG9m
+         GSrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=b2GsRYGpugbtZSHFD2RurCZ4JW4xZuzTsOfxXrCkfT8=;
-        b=0WqvqSrZoIsV15vwpJy7FcUx/6jhfYPP5oDfbqYkAi//tqA+MMvfs70QvCY9/FldEk
-         KJACqySagWsHUJAIMWDL3/46+zh92Amtp+BaC2d2On3E8I4dom2qCLgU3EjsXt+hNSTo
-         TBY13Huv0sc481C5eZ2CM8WVKGauA0bQHxrp0r7ImD7+1or5g6/WGBZhTBRadbB3Amwh
-         hIN6WQ9E+gNpxKW9hO8b6msh4W2MHlOV9r7TUffTe9og8jLahbJYCZ8WFNbTh5J0Y1in
-         MpZ9izsUWt1TvGZ0syUGodFwY57c6QUgI4ILWhGPNNsX7i5D0F4GjK9CGm6N+AF8xvq8
-         n52w==
-X-Gm-Message-State: ANoB5pmKY3zecxsWC8oWJRkb76Ctd1E2zU637r8cqNDGLkmGTjpm4eXH
-	immFRx3QWfqSRvpz2Y1SbauBEw==
-X-Google-Smtp-Source: AA0mqf7w0TN/IsoZof5JEkNGBQ8Yd2Zjjhh4wCVFAlaPO07IGqPcQWl6OiCMwNp3DG6Q8B9rQJAiYA==
-X-Received: by 2002:a17:90a:9a98:b0:219:2f90:4fb3 with SMTP id e24-20020a17090a9a9800b002192f904fb3mr28837193pjp.109.1669997053879;
-        Fri, 02 Dec 2022 08:04:13 -0800 (PST)
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LMdFvNSIKdTJxppFI5JflU3ZXHxkZjSJ4fG5U4tk7Tk=;
+        b=SYZ+x6ZJKqzmn3uPWxFfZWBo+o/bpoENlFzWclxltVrt0yIDaw4vSvTaEeAiPtXcWT
+         +/zVWK0oFvcCsRwn0WYweD3CAPd2iiYYJAh98RQ0BMcBtWa45WCFJcn5o7G27VOIhcnj
+         cQ6oRXxdMmwiHlvBUJ/96paly1cVJudZwcemDDDzLyWnqZm6S9Kfzpsz451uBKEPc+K7
+         QWi+xMvx5BKInMez3DDEEueBnVrq6sE9vuzloOPX8it0sFRwcIwf27Jekp8eOk47VsSV
+         1xt4BaFFRJRBGewO10vb6SXvZGdoeuulrabKA5EJAKHdjxmEsDnvLeHknQDjzh/1UYFD
+         terQ==
+X-Gm-Message-State: ANoB5pkd3nHxDk0blsWIsAqdZv4iCQMmagKFOMHQhYaVJ6z50TieSPO/
+	Qf6d0aSnjNHMcjiHILRIED0B3g==
+X-Google-Smtp-Source: AA0mqf5a5KU+HXt1yCJ0zhlFtswkW2r0VasQIXpEBIwwE2hKQw/T3gXBywz5nj+1M/Ux52wSBF1P1g==
+X-Received: by 2002:a63:495e:0:b0:470:75a1:c6d7 with SMTP id y30-20020a63495e000000b0047075a1c6d7mr47336241pgk.120.1669997286584;
+        Fri, 02 Dec 2022 08:08:06 -0800 (PST)
 Received: from google.com (7.104.168.34.bc.googleusercontent.com. [34.168.104.7])
-        by smtp.gmail.com with ESMTPSA id q42-20020a17090a1b2d00b00219752c8ea5sm3349337pjq.37.2022.12.02.08.04.12
+        by smtp.gmail.com with ESMTPSA id w23-20020a1709026f1700b00189667acf19sm5714233plk.95.2022.12.02.08.08.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Dec 2022 08:04:13 -0800 (PST)
-Date: Fri, 2 Dec 2022 16:04:09 +0000
+        Fri, 02 Dec 2022 08:08:06 -0800 (PST)
+Date: Fri, 2 Dec 2022 16:08:02 +0000
 From: Sean Christopherson <seanjc@google.com>
 To: "Huang, Kai" <kai.huang@intel.com>
-Subject: Re: [PATCH v2 40/50] KVM: x86: Do compatibility checks when onlining
- CPU
-Message-ID: <Y4oh+XsbifA2BSj9@google.com>
+Subject: Re: [PATCH v2 41/50] KVM: Rename and move CPUHP_AP_KVM_STARTING to
+ ONLINE section
+Message-ID: <Y4oi4oRk7jsCqYJO@google.com>
 References: <20221130230934.1014142-1-seanjc@google.com>
- <20221130230934.1014142-41-seanjc@google.com>
- <cf755389c21c73e8367d8162cabc83629d3f9a74.camel@intel.com>
+ <20221130230934.1014142-42-seanjc@google.com>
+ <c74c88ba6a17da2d36e2d340ce22af127bda8383.camel@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <cf755389c21c73e8367d8162cabc83629d3f9a74.camel@intel.com>
+In-Reply-To: <c74c88ba6a17da2d36e2d340ce22af127bda8383.camel@intel.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,37 +87,25 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 On Fri, Dec 02, 2022, Huang, Kai wrote:
 > On Wed, 2022-11-30 at 23:09 +0000, Sean Christopherson wrote:
-> > --- a/arch/x86/kvm/x86.c
-> > +++ b/arch/x86/kvm/x86.c
-> > @@ -11967,6 +11967,11 @@ int kvm_arch_hardware_enable(void)
-> >  	bool stable, backwards_tsc = false;
-> >  
-> >  	kvm_user_return_msr_cpu_online();
-> > +
-> > +	ret = kvm_x86_check_processor_compatibility();
-> > +	if (ret)
-> > +		return ret;
-> > +
-> >  	ret = static_call(kvm_x86_hardware_enable)();
-> >  	if (ret != 0)
-> >  		return ret;
+> > From: Chao Gao <chao.gao@intel.com>
+> > 
+> ...
 > 
-> Thinking more, AFAICT, kvm_x86_vendor_init() so far still does the compatibility
-> check on all online cpus.  Since now kvm_arch_hardware_enable() also does the
-> compatibility check, IIUC the compatibility check will be done twice -- one in
-> kvm_x86_vendor_init() and one in hardware_enable_all() when creating the first
-> VM.
+> > 
+> > Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+> > Signed-off-by: Chao Gao <chao.gao@intel.com>
+> > Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 > 
-> Do you think it's still worth to do compatibility check in vm_x86_vendor_init()?
-> 
-> The behaviour difference should be "KVM module fail to load" vs "failing to
-> create the first VM" IIUC.  I don't know whether the former is better than the
-> better, but it seems duplicated compatibility checking isn't needed?
+> Perhaps I am wrong, but I have memory that if someone has SoB but isn't the
+> original author should also have a Co-developed-by?
 
-It's not strictly needed, but I think it's worth keeping.  The duplicate checking
-annoys me too, and I considered removing it multiple times when creating this
-series.  But, if there is a hardware incompatibility for whatever reason, failing
-to load and thus not instantiating /dev/kvm is friendlier to userspace, e.g.
-userspace can immediately flag the platform as potentially flaky, whereas
-detecting the likely hardware issue when VM creation fails would essentialy require
-scraping the kernel logs.
+This is the case where a patched is passed along as-is, e.g. same as when
+maintainers apply a patch.  Isaku posted Chao's patch, and then I came along and
+grabbed the patch that Isaku posted.  I could go back and grab Chao's patch
+directly, but Yuan's review was provided for the version Isaku posted, so I
+grabbed that version.
+
+> > Reviewed-by: Yuan Yao <yuan.yao@intel.com>
+> > [sean: drop WARN that IRQs are disabled]
+> > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> 
