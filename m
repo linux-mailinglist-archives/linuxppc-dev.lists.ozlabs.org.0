@@ -1,62 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A477C640236
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Dec 2022 09:33:42 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E262C640371
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Dec 2022 10:37:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NNmS43bPCz3bgd
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Dec 2022 19:33:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NNnsH5zXvz3bh2
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Dec 2022 20:37:07 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=DduO9Ner;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NNmQP2r0fz3bh6
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Dec 2022 19:32:13 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4NNmQG1lDcz9sYc;
-	Fri,  2 Dec 2022 09:32:06 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id NXpXyakorzIP; Fri,  2 Dec 2022 09:32:06 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4NNmQF3JRjz9sYf;
-	Fri,  2 Dec 2022 09:32:05 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 617918B763;
-	Fri,  2 Dec 2022 09:32:05 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id fir5lhI6-aKN; Fri,  2 Dec 2022 09:32:05 +0100 (CET)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.6.19])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 075E78B781;
-	Fri,  2 Dec 2022 09:32:04 +0100 (CET)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 2B28VqQG273735
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 2 Dec 2022 09:31:52 +0100
-Received: (from chleroy@localhost)
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 2B28VqNn273734;
-	Fri, 2 Dec 2022 09:31:52 +0100
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
-        bgray@linux.ibm.com
-Subject: [PATCH v2 5/5] powerpc/code-patching: Remove protection against patching init addresses after init
-Date: Fri,  2 Dec 2022 09:31:43 +0100
-Message-Id: <504310828f473d424e2ed229eff57bf075f52796.1669969781.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <f67d2a109404d03e8fdf1ea15388c8778337a76b.1669969781.git.christophe.leroy@csgroup.eu>
-References: <f67d2a109404d03e8fdf1ea15388c8778337a76b.1669969781.git.christophe.leroy@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NNnrL5xdvz3bTq
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Dec 2022 20:36:18 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=DduO9Ner;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NNnrK045yz4x2c;
+	Fri,  2 Dec 2022 20:36:16 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1669973777;
+	bh=Nm1HRqZFK+owzgcR0yWNsnCBLzY5ME9lFmrn7VxV1I0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=DduO9NerQke7ER7es/eZZZAx7mwSDT9dUdHskEeVwCpnzI9iqIHiNSZhUBgdGjEKi
+	 bzwJnG7ArVj6xR1IUhIZylKYMgzibmJHy4D0u5/LL4xny1oZoOJP9ErTQH1U/BU0d0
+	 Jh1l0gl7r2jmAl43RUSIVxcQkrWkLRSaOTCwTylv4F1AoHIFOgWdnt+MAG3ZPSBUfM
+	 oiP2UfDllEKXLrA250Uaz6t8bKLIlbyT/A3zxtn6rGTFdVCuBK3dzgo8v/IKvjFk5m
+	 PIg/2oFfXNO2lRnEiha/pKiWJwrySvbaqI4FoIpF45oZ9ZBB2y6/ioE2AOE+EJEUrK
+	 jtCU10Z7bQwEA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Stephen Rothwell <sfr@canb.auug.org.au>, PowerPC
+ <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: linux-next: boot failure after merge of the powerpc tree
+In-Reply-To: <20221202143110.0f00c3e5@canb.auug.org.au>
+References: <20221202143110.0f00c3e5@canb.auug.org.au>
+Date: Fri, 02 Dec 2022 20:36:12 +1100
+Message-ID: <87o7sm171v.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1669969790; l=2535; s=20211009; h=from:subject:message-id; bh=nOnMnzMbg/uGrb4Fx/wPKbQFpaiwBP9S4AOq00Fb1JI=; b=3ovNCqJz4ZfpWdiIHGgXE2+7LbK7EZ8oo6+EWngQ4Q9YW/dYOW93/T7VWBgs90bpm7nChPSrjO54 JEGZjDYkDtw+KpvHs4wxK/irKxkeJpQyMADahXv5zXmgEsinM1pl
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,85 +58,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Linux Next Mailing List <linux-next@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, "Christopher M. Riedl" <cmr@bluescreens.de>, Benjamin Gray <bgray@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Once init section is freed, attempting to patch init code
-ends up in the weed.
+Stephen Rothwell <sfr@canb.auug.org.au> writes:
+> Hi all,
+>
+> After merging all the trees, today's linux-next qemu run (powerpc
+> pseries_le_defconfig with kvm) crashed like this:
+>
+> Memory: 2029504K/2097152K available (14592K kernel code, 2944K rwdata, 18176K rodata, 5120K init, 1468K bss, 67648K reserved, 0K cma-reserved)
+> SLUB: HWalign=128, Order=0-3, MinObjects=0, CPUs=1, Nodes=1
+> BUG: Kernel NULL pointer dereference on read at 0x0000001c
+> Faulting instruction address: 0xc00000000047e9bc
+> Oops: Kernel access of bad area, sig: 7 [#1]
+> LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA pSeries
+> Modules linked in:
+> CPU: 0 PID: 0 Comm: swapper Not tainted 6.1.0-rc7 #1
+> Hardware name: IBM pSeries (emulated by qemu) POWER9 (raw) 0x4e1202 0xf000005 of:SLOF,HEAD hv:linux,kvm pSeries
+> NIP:  c00000000047e9bc LR: c000000000e06718 CTR: c00000000047e970
+> REGS: c000000002773770 TRAP: 0300   Not tainted  (6.1.0-rc7)
+> MSR:  8000000002001033 <SF,VEC,ME,IR,DR,RI,LE>  CR: 22004220  XER: 00000000
+> CFAR: c000000000070508 DAR: 000000000000001c DSISR: 00080000 IRQMASK: 3 
+> GPR00: c000000000e06718 c000000002773a10 c00000000116fc00 0000000000000000 
+> GPR04: 0000000000002900 0000000000002800 0000000000000000 0000000000000000 
+> GPR08: 000000000000000e c0000000027afc00 0000000000000000 0000000000004000 
+> GPR12: c00000000047e970 c000000002950000 0000000000000000 00000000013c8ff0 
+> GPR16: 000000000000000d 0000000002be00d0 0000000000000001 00000000013c8e60 
+> GPR20: 00000000013c8fa8 00000000013c8d90 c0000000027b2160 0000000000000000 
+> GPR24: 0000000000000005 c0000000027b3568 c000000000e06718 0000000000002900 
+> GPR28: 0000000000002900 0000000007fff33f 0000000000000000 c000000002773bc8 
+> NIP [c00000000047e9bc] kmem_cache_alloc+0x5c/0x610
+> LR [c000000000e06718] mas_alloc_nodes+0xe8/0x350
+> Call Trace:
+> [c000000002773a10] [0040000000000000] 0x40000000000000 (unreliable)
+> [c000000002773a70] [c000000000e06718] mas_alloc_nodes+0xe8/0x350
+> [c000000002773ad0] [c000000000e0f7f4] mas_expected_entries+0x94/0x110
+> [c000000002773b10] [c00000000012cc44] dup_mmap+0x194/0x730
+> [c000000002773c80] [c00000000012d260] dup_mm+0x80/0x180
+> [c000000002773cc0] [c00000000008e7c0] text_area_cpu_up_mm+0x20/0x1a0
+> [c000000002773d20] [c00000000013367c] cpuhp_invoke_callback+0x15c/0x810
+> [c000000002773db0] [c0000000001348dc] cpuhp_issue_call+0x28c/0x2a0
+> [c000000002773e00] [c000000000134e44] __cpuhp_setup_state_cpuslocked+0x154/0x3e0
+> [c000000002773eb0] [c000000000135180] __cpuhp_setup_state+0xb0/0x1d0
+> [c000000002773f10] [c000000002016f9c] poking_init+0x40/0x9c
+> [c000000002773f30] [c00000000200434c] start_kernel+0x598/0x914
+> [c000000002773fe0] [c00000000000d990] start_here_common+0x1c/0x20
+> Code: fb81ffe0 7c9b2378 3b293968 fbc1fff0 f8010010 7c7e1b78 fba1ffe8 fbe1fff8 91610008 f821ffa1 f8410018 83b90000 <83e3001c> 7fbd2038 7bbc0020 7f84e378 
+> ---[ end trace 0000000000000000 ]---
+>
+> Kernel panic - not syncing: Attempted to kill the idle task!
+>
+> Reverting commits
+>
+>   55a02e6ea958 ("powerpc/code-patching: Use temporary mm for Radix MMU")
 
-Commit 51c3c62b58b3 ("powerpc: Avoid code patching freed init sections")
-protected patch_instruction() against that, but it is the responsibility
-of the caller to ensure that the patched memory is valid.
+Looks like this is related to the conflict you got merging tip.
 
-All callers have now been verified and fixed so the check
-can be removed.
+If I switch the powerpc code to use mm_alloc() then I don't see the
+above crash.
 
-This improves ftrace activation by about 2% on 8xx.
+I needed to rebase anyway so I've squashed that change in for Monday.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/include/asm/code-patching.h |  2 --
- arch/powerpc/lib/code-patching.c         | 13 +------------
- arch/powerpc/mm/mem.c                    |  1 -
- 3 files changed, 1 insertion(+), 15 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/code-patching.h b/arch/powerpc/include/asm/code-patching.h
-index 1c6316ec4b74..3f881548fb61 100644
---- a/arch/powerpc/include/asm/code-patching.h
-+++ b/arch/powerpc/include/asm/code-patching.h
-@@ -22,8 +22,6 @@
- #define BRANCH_SET_LINK	0x1
- #define BRANCH_ABSOLUTE	0x2
- 
--DECLARE_STATIC_KEY_FALSE(init_mem_is_free);
--
- /*
-  * Powerpc branch instruction is :
-  *
-diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
-index 98a7bbfc8f67..eae355892396 100644
---- a/arch/powerpc/lib/code-patching.c
-+++ b/arch/powerpc/lib/code-patching.c
-@@ -349,7 +349,7 @@ static int __do_patch_instruction(u32 *addr, ppc_inst_t instr)
- 	return err;
- }
- 
--static int do_patch_instruction(u32 *addr, ppc_inst_t instr)
-+int patch_instruction(u32 *addr, ppc_inst_t instr)
- {
- 	int err;
- 	unsigned long flags;
-@@ -372,17 +372,6 @@ static int do_patch_instruction(u32 *addr, ppc_inst_t instr)
- 
- 	return err;
- }
--
--__ro_after_init DEFINE_STATIC_KEY_FALSE(init_mem_is_free);
--
--int patch_instruction(u32 *addr, ppc_inst_t instr)
--{
--	/* Make sure we aren't patching a freed init section */
--	if (static_branch_likely(&init_mem_is_free) && init_section_contains(addr, 4))
--		return 0;
--
--	return do_patch_instruction(addr, instr);
--}
- NOKPROBE_SYMBOL(patch_instruction);
- 
- int patch_branch(u32 *addr, unsigned long target, int flags)
-diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
-index 84d171953ba4..8b121df7b08f 100644
---- a/arch/powerpc/mm/mem.c
-+++ b/arch/powerpc/mm/mem.c
-@@ -344,7 +344,6 @@ void free_initmem(void)
- {
- 	ppc_md.progress = ppc_printk_progress;
- 	mark_initmem_nx();
--	static_branch_enable(&init_mem_is_free);
- 	free_initmem_default(POISON_FREE_INITMEM);
- 	ftrace_free_init_tramp();
- }
--- 
-2.38.1
-
+cheers
