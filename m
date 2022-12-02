@@ -2,60 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E6B363FC33
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Dec 2022 00:44:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3C6163FD09
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Dec 2022 01:27:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NNXjf3xZpz3c9x
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Dec 2022 10:44:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NNYgP61ZXz3bh3
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Dec 2022 11:27:45 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=eRy4KME6;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.160.49; helo=mail-oa1-f49.google.com; envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NNXj154wWz30RN
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Dec 2022 10:44:04 +1100 (AEDT)
-Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-1433ef3b61fso3942145fac.10
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Dec 2022 15:44:04 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zBjMeuRLVfB0Q1K91g+RhzJYDgpvITGQ3Wa0hVWnVFA=;
-        b=w4SIvEx5fCnAEdiwm5vGbnUgQda2JG6zAdvvYBPE+hHXIwjCELX9FEPbYgxwRiNnTf
-         85w+3ADZPbSUPPNW0VtDFy/A39aMOgKw3o3MPkqN16eUP9hcE6AXa1W7c68+2y2M8xK2
-         WSxJ62jp/tR7iGGwH1wAHSC5B0VYL/v5CA2GcPdCY/Ynq5yhlDhDzb3YvvaupM8P4nEZ
-         ddf2rFku20ngEXhOvGzgnabA4aeo0jPsVZTautP/7gBF0PNR9ZYGqkFMmjceHMKSgs+h
-         E7HS/RFqwBrktQjwEKkUFE+xr6/xYthFin7EZiAHNv+Velxd6dUL/fjCemdQyBJgYxPX
-         pQOA==
-X-Gm-Message-State: ANoB5plXk2JDTuALWEyjdsYRb9a0HkhGr/Y5OxIJIv46Dw+spl5A9Tnb
-	is0/P9o7bWgW9smzKsK/9A==
-X-Google-Smtp-Source: AA0mqf4pknopJGrWOequ2EqipgdRgXWSNsM2LgM3UzqF3aEUNXODvGWLmMXX/V+42xajku68ybLwaA==
-X-Received: by 2002:a05:6870:3c0f:b0:143:53aa:5813 with SMTP id gk15-20020a0568703c0f00b0014353aa5813mr21218698oab.161.1669938241401;
-        Thu, 01 Dec 2022 15:44:01 -0800 (PST)
-Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id r81-20020aca5d54000000b0035b99bbe30bsm2344462oib.54.2022.12.01.15.44.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Dec 2022 15:44:00 -0800 (PST)
-Received: (nullmailer pid 1700884 invoked by uid 1000);
-	Thu, 01 Dec 2022 23:44:00 -0000
-Date: Thu, 1 Dec 2022 17:44:00 -0600
-From: Rob Herring <robh@kernel.org>
-To: Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>
-Subject: Re: [PATCH 5/5] powerpc: dts: remove label = "cpu" from DSA
- dt-binding
-Message-ID: <20221201234400.GA1692656-robh@kernel.org>
-References: <20221130141040.32447-1-arinc.unal@arinc9.com>
- <20221130141040.32447-6-arinc.unal@arinc9.com>
- <87a647s8zg.fsf@mpe.ellerman.id.au>
- <20221201173902.zrtpeq4mkk3i3vpk@pali>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NNYfS2DXfz30R8
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Dec 2022 11:26:56 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=eRy4KME6;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NNYfK0zhDz4xFy;
+	Fri,  2 Dec 2022 11:26:48 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+	s=201702; t=1669940810;
+	bh=ugbbf+g7FOT3/DhiyoQYo3Jh4xdDh8TDWCJ3xQUbmFo=;
+	h=Date:From:To:Cc:Subject:From;
+	b=eRy4KME6mkbN+Zs+XRb1ipt9GDtDBEDNBwTSYmirGi2bNEOwLevAQEz/ijxNiWWQm
+	 f7PGAV9SDO6ikoY10n71k3jDUaI1OgwbgyK7y5t/U4znV7rM9rFQToxPXD3Bm3bl5h
+	 rxFEfE8Z3nAoE4o+hKTfUyCamx0bRqgDQu6yWABrlRbGmqNGf307ofrEWtH2NhOjnN
+	 FCy5MveKPOXlD8NYQWOhLUooXRY+Y/XyPMPo07+hELwaTGVjEWPC8wnyapfgrEcjTV
+	 XAtnGgIBw+BHcsguLKXWk2l6rzjRSg4j0jKiL7R+sBdK/lGIht0cvXvf2yUAuWCJQS
+	 VIkGYIySynPnQ==
+Date: Fri, 2 Dec 2022 11:26:46 +1100
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, Peter Zijlstra <peterz@infradead.org>,
+ Michael Ellerman <mpe@ellerman.id.au>
+Subject: linux-next: build failure after merge of the tip tree
+Message-ID: <20221202112646.5813c34b@canb.auug.org.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20221201173902.zrtpeq4mkk3i3vpk@pali>
+Content-Type: multipart/signed; boundary="Sig_/Y+3=Ny4zt/XJbrXO8h=gy+i";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,52 +58,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>, devicetree@vger.kernel.org, =?utf-8?B?QXLEsW7DpyDDnE5BTA==?= <arinc.unal@arinc9.com>, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Linux Next Mailing List <linux-next@vger.kernel.org>, PowerPC <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, "Christopher M. Riedl" <cmr@bluescreens.de>, Benjamin Gray <bgray@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Dec 01, 2022 at 06:39:02PM +0100, Pali Rohár wrote:
-> On Thursday 01 December 2022 21:40:03 Michael Ellerman wrote:
-> > Arınç ÜNAL <arinc.unal@arinc9.com> writes:
-> > > This is not used by the DSA dt-binding, so remove it from all devicetrees.
-> > >
-> > > Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
-> > > ---
-> > >  arch/powerpc/boot/dts/turris1x.dts | 2 --
-> > >  1 file changed, 2 deletions(-)
-> > 
-> > Adding Pali to Cc.
-> > 
-> > These were only recently updated in commit:
-> > 
-> >   8bf056f57f1d ("powerpc: dts: turris1x.dts: Fix labels in DSA cpu port nodes")
-> > 
-> > Which said:
-> > 
-> >   DSA cpu port node has to be marked with "cpu" label.
-> > 
-> > But if the binding doesn't use them then I'm confused why they needed to
-> > be updated.
-> > 
-> > cheers
-> 
-> I was told by Marek (CCed) that DSA port connected to CPU should have
-> label "cpu" and not "cpu<number>". Modern way for specifying CPU port is
-> by defining reference to network device, which there is already (&enet1
-> and &enet0). So that change just "fixed" incorrect naming cpu0 and cpu1.
-> 
-> So probably linux kernel does not need label = "cpu" in DTS anymore. But
-> this is not the reason to remove this property. Linux kernel does not
-> use lot of other nodes and properties too... Device tree should describe
-> hardware and not its usage in Linux. "label" property is valid in device
-> tree and it exactly describes what or where is this node connected. And
-> it may be used for other systems.
-> 
-> So I do not see a point in removing "label" properties from turris1x.dts
-> file, nor from any other dts file.
+--Sig_/Y+3=Ny4zt/XJbrXO8h=gy+i
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Well, it seems like a bit of an abuse of 'label' to me. 'label' should 
-be aligned with a sticker or other identifier identifying something to a 
-human. Software should never care what the value of 'label' is.
+Hi all,
 
-Rob
+After merging the tip tree, today's linux-next build (powerpc
+ppc64_defconfig) failed like this:
+
+arch/powerpc/lib/code-patching.c: In function 'text_area_cpu_up_mm':
+arch/powerpc/lib/code-patching.c:157:14: error: implicit declaration of fun=
+ction 'copy_init_mm' [-Werror=3Dimplicit-function-declaration]
+  157 |         mm =3D copy_init_mm();
+      |              ^~~~~~~~~~~~
+
+Caused by commit
+
+  107b6828a7cd ("x86/mm: Use mm_alloc() in poking_init()")
+
+interacting with commit
+
+  55a02e6ea958 ("powerpc/code-patching: Use temporary mm for Radix MMU")
+
+from the powerpc tree.
+
+I partially reverted commit 107b6828a7cd - I left the change to
+arch/x86/mm/init.c applied.  Though, I wonder if the powerpc tree should
+use mm_alloc() instead of copy_init_mm() as well?  The tip tree commit
+says:
+
+    Instead of duplicating init_mm, allocate a fresh mm. The advantage is
+    that mm_alloc() has much simpler dependencies. Additionally it makes
+    more conceptual sense, init_mm has no (and must not have) user state
+    to duplicate.
+
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/Y+3=Ny4zt/XJbrXO8h=gy+i
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmOJRkYACgkQAVBC80lX
+0GyRJQf9FNRiyemVrBXmHbzEklHgNrDnYcojZAaBaQ3fDlII3K5YYgNmzzE2BnAj
+mjcEPplhkgyL92H1zT+G62MVlKWzgPzythpJcExyGkd8hL7TXUm7HLHot2e2Up76
+8kiaeKXeVhqaX8LGCO3LeTVENP6GaB3du7n7dLXFo6iE9XBTXhzVnIWK5vfmJGs4
+25d1hiw24xIVLGz+KFMEHodG+qZ+0kbhsto42v11MZBWwl8RLJdm2I+GM7Fr4rdO
+BJCsSYk5/4+/hlv3Jge6Z+oJ81hRVvcM51zcxZNoPiN0CV0NDF+ldDwcSY+62+v4
+P5VuTIq3vz6nTqW8Ws7EfP1oud9D7A==
+=+Mjg
+-----END PGP SIGNATURE-----
+
+--Sig_/Y+3=Ny4zt/XJbrXO8h=gy+i--
