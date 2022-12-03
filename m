@@ -2,92 +2,92 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34DD5641155
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Dec 2022 00:06:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C355A6416CE
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Dec 2022 14:10:05 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NP7qY02tgz3cjH
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Dec 2022 10:06:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NPVXV4LCmz3brQ
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Dec 2022 00:10:02 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Gc7FGUPt;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=IpTDWkg/;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=svaidy@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::430; helo=mail-wr1-x430.google.com; envelope-from=philmd@linaro.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Gc7FGUPt;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=IpTDWkg/;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NNr5n4FQXz3bTB
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Dec 2022 22:18:04 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2B29renV028801;
-	Fri, 2 Dec 2022 11:17:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
- subject : message-id : reply-to : references : mime-version : content-type
- : in-reply-to; s=pp1; bh=w8QnfNkid6UTnNGXM21duE5bA1AQOmkNrsrwQVgCEB8=;
- b=Gc7FGUPtcHp6MCwzxNzKEg4ahmsnSgL1Jj6wPiF8aBuvepcbhvvS6sshOiVhHa15CY0P
- xe9stdnXPz2TxEFNkbWt4sBNTIZJCXWTTXsv5hVF66yT88NRRQVlNFOAtQ11abrw3bgF
- vFCwQw5o9KgiYouK8P3EMgJJaebBpvPScwuAwyzn1YsrKXW7VveXIikiHXDU+XaXqTlW
- NGz48QNP70o1DyuH/Sml41xa09sCMC1OhtVEP7hnHztqO6GmGk5jJ8nlTRZ/r9e8PQ9e
- ACPw87d05K7HTgF13zz3rcipYaRObLOQfJRVfylfJV2zew5is3xnIUVau0r/KnX5EIO7 sw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m77x1v9u3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 02 Dec 2022 11:17:59 +0000
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2B2BEZJq011569;
-	Fri, 2 Dec 2022 11:17:58 GMT
-Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com [149.81.74.107])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m77x1v9tb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 02 Dec 2022 11:17:58 +0000
-Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
-	by ppma03fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2B2B6Ao3010110;
-	Fri, 2 Dec 2022 11:17:56 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
-	by ppma03fra.de.ibm.com with ESMTP id 3m3ae8xk44-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 02 Dec 2022 11:17:55 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
-	by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2B2BBJC94784708
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 2 Dec 2022 11:11:19 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 912E3AE053;
-	Fri,  2 Dec 2022 11:17:53 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D4829AE051;
-	Fri,  2 Dec 2022 11:17:51 +0000 (GMT)
-Received: from drishya.in.ibm.com (unknown [9.109.202.50])
-	by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
-	Fri,  2 Dec 2022 11:17:51 +0000 (GMT)
-Date: Fri, 2 Dec 2022 16:47:41 +0530
-From: Vaidyanathan Srinivasan <svaidy@linux.ibm.com>
-To: Vishal Chourasia <vishalc@linux.vnet.ibm.com>
-Subject: Re: [PATCH v2] powerpc/cpuidle: Set CPUIDLE_FLAG_POLLING for snooze
- state
-Message-ID: <Y4ne1Yzab02YHlxn@drishya.in.ibm.com>
-References: <20221114073154.30407-1-aboorvad@linux.vnet.ibm.com>
- <20221114145611.37669-1-aboorvad@linux.vnet.ibm.com>
- <Y3iYsI8FFkwTFfPO@li-05afa54c-330e-11b2-a85c-e3f3aa0db1e9.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NPVWV1TGzz2xCj
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  4 Dec 2022 00:09:08 +1100 (AEDT)
+Received: by mail-wr1-x430.google.com with SMTP id f18so11903920wrj.5
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 03 Dec 2022 05:09:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=he4pvbcj9k7gldXO1AUh5F+PmpcqjQDOE40QJU9PQgY=;
+        b=IpTDWkg/+W6qtb6/BO+Rextf9MvVMSlQQo2APxxM4BQDnn7qkZcjkB9FFMGn9O0vXJ
+         xmbYFo0ZqKzC+reWi5Ui9m8ZE1DJ75WQ/bFAPBwaB3yh9eWT2bus6awgqTyx7PNgfhCI
+         BIvAAuR9hVxe/O2K+n3uaJUi0elOaR19s/Wse5pkabhXyOshgLmtSwZzqtvZqzXN08Qn
+         kDzAwrurvkG00GxtgVAhvrZdg82nMPvqvv+CKvcporDHyn64rgrQ7nLeu1tWshBlJ8TS
+         GDHMfMYnKweZp0ELa2PUHmSv5lLnkW7A+qy+Wew81JoaPQynn0ljjylNO17zoxC18jz1
+         TURQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=he4pvbcj9k7gldXO1AUh5F+PmpcqjQDOE40QJU9PQgY=;
+        b=s5CFr5DNdXPxqa4DqxewpTm0G40bGF4LBgcRQQDX3262cEiD0bYKMBdvZRVOFBkJXK
+         rytyBVCaPD4xZ2rMCDOdQ7aDxHwF2rhq3aWuZaeMR3AJXP551L+VonXt/znW7And0Wx3
+         xKQzQ7fSuIEodXKbIptzMmZYll0joaWjZxC+g/lHO8k8dLneXBkyyiq0Uj5BEME7XiQW
+         GQExaCyFbgv5KxD7CX0Z/rQyGM9F1LWpJfdkUFYhmL1HEhP1LsmYM+tg2y6l5xTXoWJf
+         LuoZMWGEN2c50eT06JQXgw08QzaCCk1O1YEK4Pn7OQ1D7lH05x0cn/ufAvyRZiPfNyGB
+         NJUQ==
+X-Gm-Message-State: ANoB5plrwdhH9svYdm0ZM4eGYehl9jYU9G+YE5ernvfK5cf+HLgOlv+P
+	a0X+6RX5+3kwTijqDEr7aAsB0g==
+X-Google-Smtp-Source: AA0mqf7FEFUrgBHbSYwX9vCImy4IPfSr1vGLJ8MA6ZSfnzZGkyWh6DJhnsHrk4VGpak6bs/xb0bb7g==
+X-Received: by 2002:adf:eb92:0:b0:236:80a8:485e with SMTP id t18-20020adfeb92000000b0023680a8485emr38696645wrn.362.1670072944015;
+        Sat, 03 Dec 2022 05:09:04 -0800 (PST)
+Received: from [192.168.1.115] ([185.126.107.38])
+        by smtp.gmail.com with ESMTPSA id n3-20020a05600c3b8300b003cfbbd54178sm19062878wms.2.2022.12.03.05.09.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 03 Dec 2022 05:09:03 -0800 (PST)
+Message-ID: <9bd630af-6f88-baa7-7bd4-e99d818fb977@linaro.org>
+Date: Sat, 3 Dec 2022 14:09:00 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <Y3iYsI8FFkwTFfPO@li-05afa54c-330e-11b2-a85c-e3f3aa0db1e9.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: e0a69plKNKMnOU-XrbgzHZRALQU0DOas
-X-Proofpoint-GUID: kqUPPTppsA7ThScTuKWdZQldNE16p_yb
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-12-02_04,2022-12-01_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 suspectscore=0
- adultscore=0 spamscore=0 priorityscore=1501 clxscore=1011 impostorscore=0
- phishscore=0 bulkscore=0 mlxscore=0 mlxlogscore=999 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2210170000
- definitions=main-2212020086
-X-Mailman-Approved-At: Sat, 03 Dec 2022 10:04:15 +1100
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.5.0
+Subject: Re: [PATCH 00/11] Fix pca954x i2c-mux node names
+Content-Language: en-US
+To: Geert Uytterhoeven <geert+renesas@glider.be>,
+ =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
+ Tony Lindgren <tony@atomide.com>, Joel Stanley <joel@jms.id.au>,
+ Andrew Jeffery <andrew@aj.id.au>, Avi Fishman <avifishman70@gmail.com>,
+ Tomer Maimon <tmaimon77@gmail.com>, Tali Perry <tali.perry1@gmail.com>,
+ Patrick Venture <venture@google.com>, Nancy Yuen <yuenn@google.com>,
+ Benjamin Fair <benjaminfair@google.com>, Dinh Nguyen <dinguyen@kernel.org>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Stefan Agner <stefan@agner.ch>, Li Yang <leoyang.li@nxp.com>,
+ Russell King <linux@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>,
+ Gregory Clement <gregory.clement@bootlin.com>,
+ Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+ Magnus Damm <magnus.damm@gmail.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ UNGLinuxDriver@microchip.com, Thomas Bogendoerfer
+ <tsbogend@alpha.franken.de>, Michael Ellerman <mpe@ellerman.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>
+References: <cover.1669999298.git.geert+renesas@glider.be>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <cover.1669999298.git.geert+renesas@glider.be>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,61 +99,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: svaidy@linux.ibm.com
-Cc: srikar@linux.vnet.ibm.com, linux-pm@vger.kernel.org, Aboorva Devarajan <aboorvad@linux.vnet.ibm.com>, daniel.lezcano@linaro.org, npiggin@gmail.com, rafael@kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: devicetree@vger.kernel.org, linux-aspeed@lists.ozlabs.org, openbmc@lists.ozlabs.org, linux-mips@vger.kernel.org, linux-renesas-soc@vger.kernel.org, Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, linux-omap@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-* Vishal Chourasia <vishalc@linux.vnet.ibm.com> [2022-11-19 14:19:52]:
+On 2/12/22 17:49, Geert Uytterhoeven wrote:
+> 	Hi all,
+> 
+> According to the I2C bus multiplexer/switch DT bindings, i2c-mux nodes
+> should be named "i2c-mux" (or something similar).
+> This patch series renames nodes for pca954x i2c-muxes that are flagged
+> by
+> 
+>      make dtbs_checK DT_SCHEMA_FILES=Documentation/devicetree/bindings/i2c/i2c-mux-pca954x.yaml
+> 
+> Please apply where appropriate.
+> Thanks!
+> 
+> Geert Uytterhoeven (11):
+>    ARM: dts: ti: Fix pca954x i2c-mux node names
+>    ARM: dts: aspeed: Fix pca954x i2c-mux node names
+>    ARM: dts: imx: Fix pca9547 i2c-mux node name
+>    ARM: dts: nuvoton: Fix pca954x i2c-mux node names
+>    ARM: dts: socfpga: Fix pca9548 i2c-mux node name
+>    ARM: dts: vf610: Fix pca9548 i2c-mux node names
+>    arm64: dts: freescale: Fix pca954x i2c-mux node names
+>    arm64: dts: marvell: Fix pca954x i2c-mux node names
+>    arm64: dts: renesas: ulcb-kf: Fix pca9548 i2c-mux node names
+>    MIPS: mscc: jaguar2: Fix pca9545 i2c-mux node names
+>    powerpc: dts: fsl: Fix pca954x i2c-mux node names
 
-> On Mon, Nov 14, 2022 at 08:26:11PM +0530, Aboorva Devarajan wrote:
-> > During the comparative study of cpuidle governors, it is noticed that the
-> > menu governor does not select CEDE state in some scenarios even though when
-> > the sleep duration of the CPU exceeds the target residency of the CEDE idle
-> > state this is because the CPU exits the snooze "polling" state when snooze
-> > time limit is reached in the snooze_loop(), which is not a real wake up
-> > and it just means that the polling state selection was not adequate.
-> > 
-> > cpuidle governors rely on CPUIDLE_FLAG_POLLING flag to be set for the
-> > polling states to handle the condition mentioned above.
-> > 
-> > Hence, set the CPUIDLE_FLAG_POLLING flag for snooze state (polling state)
-> > in powerpc arch to make the cpuidle governor work as expected.
-> > 
-> > Reference Commits:
-> > 
-> > - Timeout enabled for snooze state:
-> >   commit 78eaa10f027c
-> >   ("cpuidle: powernv/pseries: Auto-promotion of snooze to deeper idle state")
-> > 
-> > - commit dc2251bf98c6
-> >   ("cpuidle: Eliminate the CPUIDLE_DRIVER_STATE_START symbol")
-> > 
-> > - Fix wakeup stats in governor for polling states
-> >   commit 5f26bdceb9c0
-> >   ("cpuidle: menu: Fix wakeup statistics updates for polling state")
-> > 
-> > Signed-off-by: Aboorva Devarajan <aboorvad@linux.vnet.ibm.com>
-> > ---
-> > 
-> > Changelog: (v1 -> v2)
-> > 
-> > Added CPUIDLE_POLLING_FLAG to the correct cpuidle_state struct.
-> > 
-> > Previous version of the patch is stale which was sent by mistake, this 
-> > is the correct version which is tested on powernv, pseries (shared and 
-> > dedicated partitions)
-> > 
-> >  drivers/cpuidle/cpuidle-powernv.c | 5 ++++-
-> >  drivers/cpuidle/cpuidle-pseries.c | 8 ++++++--
-> >  2 files changed, 10 insertions(+), 3 deletions(-)
-
-Hi Aboorva,
-
-Thanks for the patch. This fixes the unpredictable idle state
-selection issue under differ idle interval patterns.
-
-Reviewed-by: Vaidyanathan Srinivasan <svaidy@linux.ibm.com>
-
---Vaidy
+Series:
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
