@@ -1,85 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62E5E641CD3
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Dec 2022 13:11:41 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6561D641CE1
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Dec 2022 13:24:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NQ5Bg205Tz3bgT
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Dec 2022 23:11:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NQ5Tj6yQ5z3bjX
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Dec 2022 23:24:41 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=Bt3t+pCv;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=DxeCgNBV;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=ldFgnTyB;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=66.111.4.25; helo=out1-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.50; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=Bt3t+pCv;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=DxeCgNBV;
+	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=ldFgnTyB;
 	dkim-atps=neutral
-Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.50])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NQ59d41d1z3bNs
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  4 Dec 2022 23:10:44 +1100 (AEDT)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-	by mailout.nyi.internal (Postfix) with ESMTP id 284E55C00FF;
-	Sun,  4 Dec 2022 07:10:40 -0500 (EST)
-Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Sun, 04 Dec 2022 07:10:40 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:date:date:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:sender:subject
-	:subject:to:to; s=fm1; t=1670155840; x=1670242240; bh=CoGojBldvp
-	8vts1WXDufl3QTeeG6RrXZWoBhB7qP5HI=; b=Bt3t+pCvXTostL74alusXgNN2I
-	oLhoOcA34WlUK1HpM8zYrIq09NT6vJeDNBj/QdZnjHPCSY+ZUy+12uImKcNpjSPM
-	o0Qr+CIcrehvro9ebDcKpmBO8KNVO0BSLyVsZqv9jkmom0XPxGpvLeiycBhyso/8
-	pWUyCCDG5sY1PPjQhiPvm7NU5068KCV9X/PWB2P1GHq+0C96bygXAKrn+V5Ukhl7
-	s7lNWObcsg2gwh4/61eV3/1UOs8rIoQb6FB3dYEy/Ck7h0skHoTgrMXUYD92caiH
-	LVymfXQoewwpqSKzAiqVC6quJzrOTZYuY02ME7g19RNKqeqgpVhO3za9ITpg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-	:feedback-id:from:from:in-reply-to:in-reply-to:message-id
-	:mime-version:references:reply-to:sender:subject:subject:to:to
-	:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm1; t=1670155840; x=1670242240; bh=CoGojBldvp8vts1WXDufl3QTeeG6
-	RrXZWoBhB7qP5HI=; b=DxeCgNBVAAMM2gNNTDGahzTQIA8E/3lkh9laTq8iI5JI
-	oocBov/dRgohjG7gGHMhodEsrIvcUGfX70TlrC5hErvHwlfTVVTfGqKcTDhS329l
-	rD+FaM0sMNpM3jsx9euuXm8KFkx502Dwdn3v5snXh5/yrmCGjVUmHg4VFsC3IQOm
-	rLgVcc1ZcgdX7GJ2QRCaCaXSBBv1eAIhu8iM2xjO6xiG+7n3ECRMdG0oJq9aKmiI
-	6SG12snIId67D0+6rJud3wzLSmPtuY+EFsHc/yywdYZFUwR088jM6Mk0ITGUNKvn
-	qf3WI/ip6fDNv+zXdoNPQCXdP6unHlzazkw2UySLnA==
-X-ME-Sender: <xms:P46MYzvkUIE9aAbyhKZ5xYdb6E_zNjnLgcSXVed3u_JPDYFlalAFUA>
-    <xme:P46MY0dL2JSgQQQFPD_QnBCs9YwuQ0hZCxxxWbYhrsT-7PbvOO3waNCDVA8UBJ5Jd
-    sc6wTVP5DdQ_oSIErY>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedruddvgdefkecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
-    ugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtth
-    gvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedtkeet
-    ffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrh
-    hnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:P46MY2wvjqIL0WULSDsDjK2-iWTcNk577njI8u8urdyWK-INhkIjdw>
-    <xmx:P46MYyOlmJlUGLbTFFm1o1B00hIvptlHzyHb1bGuRvSjePi_cyJwKw>
-    <xmx:P46MYz-G41yzfBtB2Sie70DPf6o0D0uviTpg1dU4jIB6f2uxc1rpew>
-    <xmx:QI6MY_TKF5dWc-RYdd4P32M5mWDH0VGUvz1FAOLC-6R8Be_t2ivPsQ>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 623A3B60086; Sun,  4 Dec 2022 07:10:39 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.7.0-alpha0-1115-g8b801eadce-fm-20221102.001-g8b801ead
-Mime-Version: 1.0
-Message-Id: <81a7715b-559f-4c5c-bdb6-1aa00d409155@app.fastmail.com>
-In-Reply-To: <Y4wnGgMLOr04RwvU@google.com>
-References: <Y4wnGgMLOr04RwvU@google.com>
-Date: Sun, 04 Dec 2022 13:10:19 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Dmitry Torokhov" <dmitry.torokhov@gmail.com>, soc@kernel.org
-Subject: Re: [RESEND PATCH] soc: fsl: qe: request pins non-exclusively
-Content-Type: text/plain
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NQ5Sk602Nz2yxQ
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  4 Dec 2022 23:23:48 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1670156609;
+    s=strato-dkim-0002; d=xenosoft.de;
+    h=In-Reply-To:References:To:From:Subject:Date:Message-ID:Cc:Date:From:
+    Subject:Sender;
+    bh=P2/gWA4gg/Qt55+z7kbkxiciOidfYua4lngchkTKFKk=;
+    b=ldFgnTyBOjzPMH+sSjlbipqr+21FbYxzrZajdusz9hyQuQUTcS5kwkRxUmNp204L7g
+    rn8pmdyQvlpLVy3SM/h5ikKbDUYkVhBElHCSWcueZo+95IpmibCL+0QNnuQteb+TkYHt
+    /v9UNNZPU/hkkroRAVJxMHdlHzjrSPEpxQb+QdNqxXcRE1dBfFev51/Mcy+g+t04puoT
+    rFszMgbI/sU1WVkCRvJteXSp1VFEHAz6TK3cVx7uon50+wcue/EsWFyf8FNQSJLwf5MF
+    UYNGvFnmsNS384ig9oewU3MuvB5y9lf4wqPS53+ZwLYm6izlp3Nbmb1YDRnXVSQKlv38
+    wR4w==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBfio0GngadwiD6Iv9t+Ju2Dhgae599ixpr/qFMA=="
+X-RZG-CLASS-ID: mo00
+Received: from [IPV6:2a02:8109:8980:4474:f153:4ac5:8bfd:7188]
+    by smtp.strato.de (RZmta 48.2.1 AUTH)
+    with ESMTPSA id e28afdyB4CNSzVY
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Sun, 4 Dec 2022 13:23:28 +0100 (CET)
+Message-ID: <9da18e57-c0ce-1ac3-d045-3e2b590cc0f5@xenosoft.de>
+Date: Sun, 4 Dec 2022 13:23:28 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.5.1
+Subject: Re: [RFC PATCH] Disable Book-E KVM support?
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+To: mad skateman <madskateman@gmail.com>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
+ Christian Zigotzky <info@xenosoft.de>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Matthew Leaman <matthew@a-eon.biz>, Darren Stevens <darren@stevens-zone.net>
+References: <fc43f9eb-a60f-5c4a-a694-83029234a9c4@xenosoft.de>
+In-Reply-To: <fc43f9eb-a60f-5c4a-a694-83029234a9c4@xenosoft.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,57 +69,216 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Linus Walleij <linus.walleij@linaro.org>, linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, Li Yang <leoyang.li@nxp.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, Qiang Zhao <qiang.zhao@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Dec 4, 2022, at 05:50, Dmitry Torokhov wrote:
+Further information: 
+https://lists.nongnu.org/archive/html/qemu-ppc/2022-12/msg00000.html
+
+-- Christian
+
+
+On 04 December 2022 at 12:33 pm, Christian Zigotzky wrote:
+> Hi All,
 >
-> SoC team, the problematic patch has been in next for a while and it
-> would be great to get the fix in to make sure the driver is not broken
-> in 6.2. Thanks!
+> We regularly use QEMU with KVM HV on our A-EON AmigaOne X5000 machines 
+> (book3e). It works fast and without any problems.
+>
+> Screenshot tour of QEMU/KVM HV on our AmigaOnes:
+>
+> - https://i.ibb.co/m4vgwNT/Kernel-6-1-rc3-Power-PC.png
+> - https://i.ibb.co/Fwdjf7Z/Kernel-6-0-rc6-Power-PC.png
+> - https://i.ibb.co/LYnJGdF/Kernel-5-19-rc5-Power-PC-2.png
+> - https://i.ibb.co/vz1Wm5z/QEMU-with-9p-and-USB-sound.png
+> - https://i.ibb.co/ScMjtp7/Kernel-5-17-alpha5-Power-PC.png
+> - https://i.ibb.co/LQryFcK/Kernel-5-17-alpha4-Power-PC.png
+> - https://i.ibb.co/kKLx9mf/Kernel-5-10-89-Power-PC.png
+> - https://i.ibb.co/LRG1RDV/Kernel-5-10-89-Power-PC-2.png
+> - https://i.ibb.co/NCFqY0k/QEMU-USB-Audio-on-Void-PPC.png
+> - https://i.ibb.co/N1vL5Kd/Kernel-5-16-alpha3-Power-PC.png
+> - https://i.ibb.co/SwjTyJk/Kernel-5-16-alpha1-Power-PC.png
+> - https://i.ibb.co/LkpWNPx/Kernel-5-15-rc5-Power-PC.png
+> - https://i.ibb.co/F8q1jDR/Kernel-5-15-rc4-Power-PC.png
+> - https://i.ibb.co/zZxrbhV/Kernel-5-15-alpha6-Power-PC.png
+> - 
+> https://i.pinimg.com/originals/a8/8b/42/a88b422870201887fc01ef44ddc1a235.png
+> - 
+> https://i.pinimg.com/originals/57/d9/83/57d98324cd055b7ae00a87ad5a45a42f.png
+> - 
+> https://i.pinimg.com/originals/f2/a5/e3/f2a5e34e2015381b0cb87cc51232a8bc.png
+> - 
+> https://i.pinimg.com/originals/c5/0d/85/c50d85d7e8f20b4caa1a439faf751964.png
+> - 
+> https://i.pinimg.com/originals/6e/3b/59/6e3b59fe10276c5644b15622a81f43f1.png
+>
+> We solved some issues:
+>
+> - https://forum.hyperion-entertainment.com/viewtopic.php?p=54357#p54357
+> - 
+> https://lists.ozlabs.org/pipermail/linuxppc-dev/2021-November/236307.html
+> - 
+> https://lists.ozlabs.org/pipermail/linuxppc-dev/2022-September/249021.html
+> - https://lists.ozlabs.org/pipermail/linuxppc-dev/2021-May/229103.html
+> - 
+> https://lists.ozlabs.org/pipermail/linuxppc-dev/2021-January/223342.html
+> - https://lists.ozlabs.org/pipermail/linuxppc-dev/2020-August/216379.html
+> - 
+> https://forum.hyperion-entertainment.com/viewtopic.php?f=58&t=4655&p=53393&hilit=KVM#p53393
+> - https://forum.hyperion-entertainment.com/viewtopic.php?p=53209#p53209
+>
+> Please, do not remove KVM support from Book3e because it works without 
+> any problems and fast. We need it for our work.
+>
+> Thanks,
+> Christian
+>
+>
+>
+>
+>     On 12/2/22 12:04, Daniel Henrique Barboza wrote:
+>
+>         On 11/30/22 17:45, Crystal Wood wrote:
+>
+>             On Mon, 2022-11-28 at 14:36 +1000, Nicholas Piggin wrote:
+>
+>                 BookE KVM is in a deep maintenance state, I'm not sure 
+> how much testing
+>                 it gets. I don't have a test setup, and it does not 
+> look like QEMU has
+>                 any HV architecture enabled. It hasn't been too 
+> painful but there are
+>                 some cases where it causes a bit of problem not being 
+> able to test, e.g.,
+>
+> https://lists.ozlabs.org/pipermail/linuxppc-dev/2022-November/251452.html
+>
+>                 Time to begin removal process, or are there still 
+> people using it? I'm
+>                 happy to to keep making occasional patches to try keep 
+> it going if
+>                 there are people testing upstream. Getting HV support 
+> into QEMU would
+>                 help with long term support, not sure how big of a job 
+> that would be.
+>
+>
+>             Not sure what you mean about QEMU not having e500 HV 
+> support?  I don't know if
+>             it's bitrotted, but it's there.
+>
+>
+>         AFAIK all QEMU ppc boards, aside from pSeries and the Mac 
+> ones, are always used
+>         in
+>         emulated mode in an use case similar to what Bernhard 
+> described in his reply
+>         (run
+>         in x86 due to lack of ppc hardware).
+>
+>         I am not aware of e500 KVM support in QEMU since I never 
+> attempted it. But yes,
+>         it is present, but poorly tested - if tested at all. And the 
+> reason why there's
+>         no push on our side to removed it from QEMU is because its 
+> code is so entwined
+>         with pSeries KVM that it would take too much effort.
+>
+>         Do not take the presence of e500 KVM support in QEMU as a 
+> blocker to disabled
+>         it in
+>         the kernel. As far as the current QEMU usage goes e500 KVM can 
+> be removed
+>         without
+>         too much drama from our side.
+>
+>         Cedric, do you have any opinions about it?
+>
+>
+>
+>     I can not tell how much e500 KVM is used. The last report we had
+>     on the topic was :
+>
+> https://lore.kernel.org/all/R4OPHT$7F12C66D1107397991E0E4C978FE6AF1@locati.it/ 
+>
+>
+>     and the last commit mentioning e500 VMs I could find is cb3778a045,
+>     which brings us back to QEMU 2.2 or so.
+>
+>     It would be nice to 'quickly' check the state of the KVM stack on
+>     such boards and, may be, plan for more cleanups.
+>
+>
+>     Thanks,
+>
+>     C.
+>
+>
+>
+>         Daniel
+>
+>
+>
+>             I don't know whether anyone is still using this, but if 
+> they are, it's
+>             probably e500mc and not e500v2 (which involved a bunch of 
+> hacks to get almost-
+>             sorta-usable performance out of hardware not designed for 
+> virtualization).  I
+>             do see that there have been a few recent patches on QEMU 
+> e500 (beyond the
+>             treewide cleanup type stuff), though I don't know if 
+> they're using KVM.  CCing
+>             them and the QEMU list.
+>
+>             I have an e6500 I could occasionally test on, if it turns 
+> out people do still
+>             care about this.  Don't count me as the use case, though. :-)
+>
+>             FWIW, as far as the RECONCILE_IRQ_STATE issue, that used 
+> to be done in
+>             kvmppc_handle_exit(), but was moved in commit 9bd880a2c882 
+> to be "cleaner and
+>             faster". :-P
+>
+>             -Crystal
+>
+>
+>
+> Dear all,
+> please, do not proceed removing KVM support to Book3e.
+>
+> The PowerProgressCommunity, our not-for-profit organisation of PowerPC 
+> and alternative platforms enthusiasts is in the process of hardware 
+> testing our new “Powerboard Tyche”, a fully open hardware motherboard 
+> for a laptop based on a NXP T2080 which is a Book3e e6500 CPU (4 
+> physical cores, 8 logical cores), see our recent blog post about it
+> https://www.powerpc-notebook.org/2022/12/prototypes-produced-lets-go-on-hardware-tests/ 
+>
+>
+> With such a board we hope to have a new small niche group of users of 
+> a PowerPC Book3e platform that will be more than happy to keep using 
+> QEMU with KVM enabled as using VMs without KVM is way too slow.
+>
+> At the moment we still have a working NXP DevKit based on the same 
+> T2080 CPU and thank to a patch submitted back in December 2021 we can 
+> use QEMU with KVM enable on it.
+> The only issue we have so far is that it only starts when setting it 
+> as “e5500” (that does not have altivec) because starting it with e6500 
+> (that has altivec) it does not start.
+>
+> We published a blog post about QEMU with KVM enable back in December 
+> 2021, I made a screenshot with multiple QEMU instances
+> https://www.powerpc-notebook.org/2021/12/december-2021-updates-facing-electronic-components-shortages/ 
+>
+>
+> I am also aware of users of the A-Eon AmigaOne X5000 computers (still 
+> being produced and sold) that successfully use QEMU with KVM enabled, 
+> their system are based either on a NXP P5020 or P5040, both Book3e 
+> e5500, so without altivec.
+>
+> So, again, please, do not remove KVM support to Book3e we need that!
+>
+> Regards,
+> Mario
+>
 
-I have no problem taking thsi patch, but I get a merge conflict that
-I'm not sure how to resolve:
-
-
-@@@ -186,23 -182,27 +180,43 @@@ struct qe_pin *qe_pin_request(struct de
-        if (WARN_ON(!gc)) {
-                err = -ENODEV;
-                goto err0;
-++<<<<<<< HEAD
- +      }
- +      qe_pin->gpiod = gpiod;
- +      qe_pin->controller = gpiochip_get_data(gc);
- +      /*
- +       * FIXME: this gets the local offset on the gpio_chip so that the driver
- +       * can manipulate pin control settings through its custom API. The real
- +       * solution is to create a real pin control driver for this.
- +       */
- +      qe_pin->num = gpio_chip_hwgpio(gpiod);
- +
- +      if (!of_device_is_compatible(gc->of_node, "fsl,mpc8323-qe-pario-bank")) {
- +              pr_debug("%s: tried to get a non-qe pin\n", __func__);
- +              gpiod_put(gpiod);
-++=======
-+       } else if (!fwnode_device_is_compatible(gc->fwnode,
-+                                               "fsl,mpc8323-qe-pario-bank")) {
-+               dev_dbg(dev, "%s: tried to get a non-qe pin\n", __func__);
-++>>>>>>> soc: fsl: qe: request pins non-exclusively
-                err = -EINVAL;
--               goto err0;
-+       } else {
-+               qe_pin->controller = gpiochip_get_data(gc);
-+               /*
-+                * FIXME: this gets the local offset on the gpio_chip so that
-+                * the driver can manipulate pin control settings through its
-+                * custom API. The real solution is to create a real pin control
-+                * driver for this.
-+                */
-+               qe_pin->num = desc_to_gpio(gpiod) - gc->base;
-        }
-
-Could you rebase the patch on top of the soc/driver branch in the
-soc tree and send the updated version?
-
-       Arnd
