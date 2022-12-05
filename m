@@ -1,65 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA7A66428B4
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Dec 2022 13:44:34 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C66F36428C0
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Dec 2022 13:49:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NQjt84DNcz3bb6
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Dec 2022 23:44:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NQk0K50Gjz3bh5
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Dec 2022 23:49:53 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=izd1cNLG;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=g08hwSlB;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.43; helo=mga05.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=acme@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=izd1cNLG;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=g08hwSlB;
 	dkim-atps=neutral
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NQjs96wdMz3bVZ
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Dec 2022 23:43:40 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1670244222; x=1701780222;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=IUKqw4fNGwWQubPbN+4XH14TACNyuJfdZTat+2XlqW8=;
-  b=izd1cNLGsrUQJ/qDdLQW8w8UT3UW1skl7rcxYxD3R7Q16kVBYZaDP5x2
-   tHH+iVhcRp3jYaWIEbVD3UB4TVF161S95jYyCj8z3nlHCBmna6uphIfQU
-   +Z4ilch7ZcYn6aEbtFwnIvnemRqXaiSwzF9096vWelITlvBSEOvxLvZtp
-   KXugG9f9rnkaOQx/JIu8gwruuzNsTHw1lzct3g8K/K9fghR8tarPw0i1z
-   Pm8GxhLGpv9FXMVVHKsr+hevhTVo98fJ9Ha0ZhFRXcwmJmcoDMm8C08Sw
-   JZEbgxiiOlOjPSjBVNOicBdanv9y7Kt0I+O8mZWyG35XVjgP6Naoz5w9Q
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10551"; a="402610090"
-X-IronPort-AV: E=Sophos;i="5.96,219,1665471600"; 
-   d="scan'208";a="402610090"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2022 04:43:37 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10551"; a="974670732"
-X-IronPort-AV: E=Sophos;i="5.96,219,1665471600"; 
-   d="scan'208";a="974670732"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga005.fm.intel.com with ESMTP; 05 Dec 2022 04:43:34 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1p2Aol-004sBg-2w;
-	Mon, 05 Dec 2022 14:43:31 +0200
-Date: Mon, 5 Dec 2022 14:43:31 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: Re: [PATCH v2] soc: fsl: qe: request pins non-exclusively
-Message-ID: <Y43ncwKEsZbej2tk@smile.fi.intel.com>
-References: <Y400YXnWBdz1e/L5@google.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NQjzN2LK3z2xZp
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Dec 2022 23:49:04 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 7A1A861084;
+	Mon,  5 Dec 2022 12:49:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3EE1C433C1;
+	Mon,  5 Dec 2022 12:49:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1670244540;
+	bh=mFqYvD3gjKGJzFiKSWb9kYyT39RDNofZBd2/IEHHBJk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=g08hwSlB1Ay3rj2Hp7MNezdxgR06AYJAnNMmknUp1LeYKZlM/XSQnRL7HFSftc24q
+	 HBCgfVhtS8ABVm2ZPlD2HEuW62wmJClVcbVZi1v/Jg0KB7yZEd8C+ZL+LSKtmkiAG+
+	 cB4i7njMhHF9U5VXcoyx/clAoxqXoQlmbHy6K75Q+G+aaqR5mx78Q3v78jWh11O+sS
+	 +8Ys9Z2oWBj1wFGzBSPusgQeKRy1dJBmzwHcsiRyYvWxpdprINtGoGujMq1g3tn2zz
+	 nQg3aFdk812ewGX1U6Fn8nQeqvjSaWKiI01htBfEp8IKfgpb9RG9vnwmdvj3t4SgzP
+	 xRoxGWNFNbT3Q==
+Received: by quaco.ghostprotocols.net (Postfix, from userid 1000)
+	id 8165040404; Mon,  5 Dec 2022 09:48:57 -0300 (-03)
+Date: Mon, 5 Dec 2022 09:48:57 -0300
+From: Arnaldo Carvalho de Melo <acme@kernel.org>
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Subject: Re: [V3] tools/perf: Fix printing field separator in CSV metrics
+ output
+Message-ID: <Y43ouXptBn/fAdIq@kernel.org>
+References: <20221205042852.83382-1-atrajeev@linux.vnet.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Y400YXnWBdz1e/L5@google.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20221205042852.83382-1-atrajeev@linux.vnet.ibm.com>
+X-Url: http://acmel.wordpress.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,230 +63,118 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Linus Walleij <linus.walleij@linaro.org>, linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, Li Yang <leoyang.li@nxp.com>, soc@kernel.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, Qiang Zhao <qiang.zhao@nxp.com>
+Cc: irogers@google.com, ak@linux.intel.com, rnsastry@linux.ibm.com, linux-perf-users@vger.kernel.org, maddy@linux.vnet.ibm.com, james.clark@arm.com, jolsa@kernel.org, kjain@linux.ibm.com, namhyung@kernel.org, disgoel@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Dec 04, 2022 at 03:59:29PM -0800, Dmitry Torokhov wrote:
-> Commit 84582f9ed090 ("soc: fsl: qe: Avoid using gpio_to_desc()") changed
-> qe_pin_request() to request and hold GPIO corresponding to a given pin.
-> Unfortunately this does not work, as fhci-hcd requests these GPIOs
-> first, befor calling qe_pin_request() (see
-
-before ?
-
-> drivers/usb/host/fhci-hcd.c::of_fhci_probe()).
-> To fix it change qe_pin_request() to request GPIOs non-exclusively, and
-> free them once the code determines GPIO controller and offset for each
-> GPIO/pin.
+Em Mon, Dec 05, 2022 at 09:58:52AM +0530, Athira Rajeev escreveu:
+> In perf stat with CSV output option, number of fields
+> in metrics output is not matching with number of fields
+> in other event output lines.
 > 
-> Also reaching deep into gpiolib implementation is not the best idea. We
-> should either export gpio_chip_hwgpio() or keep converting to the global
-> gpio numbers space until we fix the driver to implement proper pin
+> Sample output below after applying patch to fix
+> printing os->prefix.
+> 
+> 	# ./perf stat -x, --per-socket -a -C 1 ls
+> 	S0,1,82.11,msec,cpu-clock,82111626,100.00,1.000,CPUs utilized
+> 	S0,1,2,,context-switches,82109314,100.00,24.358,/sec
+> 	------
+> ====>	S0,1,,,,,,,1.71,stalled cycles per insn
 
-GPIO number
+Thanks, tested and applied.
 
-> control.
-
-With or without being rebased on top of the PR that in conflict with this
-change,
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-(see some nit-picks below)
-
-> Fixes: 84582f9ed090 ("soc: fsl: qe: Avoid using gpio_to_desc()")
-> Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+- Arnaldo
+ 
+> The above command line uses field separator as ","
+> via "-x," option and per-socket option displays
+> socket value as first field. But here the last line
+> for "stalled cycles per insn" has more separators.
+> Each csv output line is expected to have 8 field
+> separators (for the 9 fields), where as last line
+> has 9 "," in the result. Patch fixes this issue.
+> 
+> The counter stats are displayed by function
+> "perf_stat__print_shadow_stats" in code
+> "util/stat-shadow.c". While printing the stats info
+> for "stalled cycles per insn", function "new_line_csv"
+> is used as new_line callback.
+> 
+> The fields printed in each line contains:
+> "Socket_id,aggr nr,Avg,unit,event_name,run,enable_percent,ratio,unit"
+> 
+> The metric output prints Socket_id, aggr nr, ratio
+> and unit. It has to skip through remaining five fields
+> ie, Avg,unit,event_name,run,enable_percent. The csv
+> line callback uses "os->nfields" to know the number of
+> fields to skip to match with other lines.
+> Currently it is set as:
+> 	os.nfields = 3 + aggr_fields[config->aggr_mode] + (counter->cgrp ? 1 : 0);
+> 
+> But in case of aggregation modes, csv_sep already
+> gets printed along with each field (Function "aggr_printout"
+> in util/stat-display.c). So aggr_fields can be
+> removed from nfields. And fixed number of fields to
+> skip has to be "4". This is to skip fields for:
+> "avg, unit, event name, run, enable_percent"
+> 
+> This needs 4 csv separators. Patch removes aggr_fields
+> and uses 4 as fixed number of os->nfields to skip.
+> 
+> After the patch:
+> 
+> 	# ./perf stat -x, --per-socket -a -C 1 ls
+> 	S0,1,79.08,msec,cpu-clock,79085956,100.00,1.000,CPUs utilized
+> 	S0,1,7,,context-switches,79084176,100.00,88.514,/sec
+> 	------
+> ====>	S0,1,,,,,,0.81,stalled cycles per insn
+> 
+> Fixes: 92a61f6412d3 ("perf stat: Implement CSV metrics output")
+> Reported-by: Disha Goel <disgoel@linux.vnet.ibm.com>
+> Reviewed-by: Kajol Jain <kjain@linux.ibm.com>
+> Tested-by: Disha Goel<disgoel@linux.vnet.ibm.com>
+> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 > ---
+> Changelog:
+> v2 -> v3:
+> - Rebased on top of tmp.perf/core
 > 
-> v2:
+> v1 -> v2:
+> - Rebased on top of latest source.
+> - Added Reviewed-by and Tested-by from Kajol and
+>   Disha.
 > 
->  - rebased on top of soc/driver. This will conflict with
->    c9eb6e546a23 soc: fsl: qe: Switch to use fwnode instead of of_node
->    found in next, the resolution is trivial: accept
->    fwnode_device_is_compatible() line found in next.
->  - fixed leak of gpiod when gc is not found
->  - dropped Linus' reviewed-by as the patch changed
+>  tools/perf/util/stat-display.c | 13 +------------
+>  1 file changed, 1 insertion(+), 12 deletions(-)
 > 
->  drivers/soc/fsl/qe/gpio.c   | 51 +++++++++++++++++--------------------
->  drivers/usb/host/fhci-hcd.c |  2 +-
->  include/soc/fsl/qe/qe.h     |  5 ++--
->  3 files changed, 28 insertions(+), 30 deletions(-)
-> 
-> diff --git a/drivers/soc/fsl/qe/gpio.c b/drivers/soc/fsl/qe/gpio.c
-> index af9193e7e49b..1440922341d8 100644
-> --- a/drivers/soc/fsl/qe/gpio.c
-> +++ b/drivers/soc/fsl/qe/gpio.c
-> @@ -13,19 +13,12 @@
->  #include <linux/err.h>
->  #include <linux/io.h>
->  #include <linux/of.h>
-> -#include <linux/of_gpio.h>
-> +#include <linux/of_gpio.h>	/* for of_mm_gpio_chip */
->  #include <linux/gpio/consumer.h>
->  #include <linux/gpio/driver.h>
->  #include <linux/slab.h>
->  #include <linux/export.h>
->  #include <soc/fsl/qe/qe.h>
-> -/*
-> - * FIXME: this is legacy code that is accessing gpiolib internals in order
-> - * to implement a custom pin controller. The proper solution is to create
-> - * a real combined pin control and GPIO driver in drivers/pinctrl. However
-> - * this hack is here for legacy code reasons.
-> - */
-> -#include "../../../gpio/gpiolib.h"
+> diff --git a/tools/perf/util/stat-display.c b/tools/perf/util/stat-display.c
+> index f1ee4b052198..4e9696f4096f 100644
+> --- a/tools/perf/util/stat-display.c
+> +++ b/tools/perf/util/stat-display.c
+> @@ -686,20 +686,9 @@ static void printout(struct perf_stat_config *config, struct outstate *os,
+>  	struct evsel *counter = os->evsel;
 >  
->  struct qe_gpio_chip {
->  	struct of_mm_gpio_chip mm_gc;
-> @@ -147,65 +140,70 @@ struct qe_pin {
->  	 * something like qe_pio_controller. Someday.
->  	 */
->  	struct qe_gpio_chip *controller;
-> -	struct gpio_desc *gpiod;
->  	int num;
->  };
->  
->  /**
->   * qe_pin_request - Request a QE pin
-> - * @np:		device node to get a pin from
-> - * @index:	index of a pin in the device tree
-> + * @dev:	device to get the pin from
-> + * @index:	index of the pin in the device tree
->   * Context:	non-atomic
->   *
->   * This function return qe_pin so that you could use it with the rest of
->   * the QE Pin Multiplexing API.
->   */
-> -struct qe_pin *qe_pin_request(struct device_node *np, int index)
-> +struct qe_pin *qe_pin_request(struct device *dev, int index)
->  {
->  	struct qe_pin *qe_pin;
->  	struct gpio_chip *gc;
->  	struct gpio_desc *gpiod;
-> +	int gpio_num;
->  	int err;
->  
->  	qe_pin = kzalloc(sizeof(*qe_pin), GFP_KERNEL);
->  	if (!qe_pin) {
-> -		pr_debug("%s: can't allocate memory\n", __func__);
-> +		dev_dbg(dev, "%s: can't allocate memory\n", __func__);
->  		return ERR_PTR(-ENOMEM);
->  	}
->  
-> -	gpiod = fwnode_gpiod_get_index(of_fwnode_handle(np), NULL, index, GPIOD_ASIS, "qe");
-> -	if (IS_ERR(gpiod)) {
-> -		err = PTR_ERR(gpiod);
-> -		goto err0;
-> -	}
-> -	if (!gpiod) {
-> -		err = -EINVAL;
-> +	/*
-> +	 * Request gpio as nonexclusive as it was likely reserved by the
-
-GPIO
-
-> +	 * caller, and we are not planning on controlling it, we only need
-> +	 * the descriptor to the to the gpio chip structure.
-
-GPIO
-
-> +	 */
-> +	gpiod = gpiod_get_index(dev, NULL, index,
-> +			        GPIOD_ASIS | GPIOD_FLAGS_BIT_NONEXCLUSIVE);
-> +	err = PTR_ERR_OR_ZERO(gpiod);
-> +	if (err)
->  		goto err0;
-> -	}
-> +
->  	gc = gpiod_to_chip(gpiod);
-> +	gpio_num = desc_to_gpio(gpiod);
-> +	/* We no longer need this descriptor */
-> +	gpiod_put(gpiod);
-> +
->  	if (WARN_ON(!gc)) {
->  		err = -ENODEV;
->  		goto err0;
->  	}
-> -	qe_pin->gpiod = gpiod;
-> +
->  	qe_pin->controller = gpiochip_get_data(gc);
->  	/*
->  	 * FIXME: this gets the local offset on the gpio_chip so that the driver
->  	 * can manipulate pin control settings through its custom API. The real
->  	 * solution is to create a real pin control driver for this.
->  	 */
-> -	qe_pin->num = gpio_chip_hwgpio(gpiod);
-> +	qe_pin->num = gpio_num - gc->base;
->  
->  	if (!of_device_is_compatible(gc->of_node, "fsl,mpc8323-qe-pario-bank")) {
-> -		pr_debug("%s: tried to get a non-qe pin\n", __func__);
-> -		gpiod_put(gpiod);
-> +		dev_dbg(dev, "%s: tried to get a non-qe pin\n", __func__);
->  		err = -EINVAL;
->  		goto err0;
->  	}
->  	return qe_pin;
->  err0:
->  	kfree(qe_pin);
-> -	pr_debug("%s failed with status %d\n", __func__, err);
-
-> +	dev_dbg(dev, "%s failed with status %d\n", __func__, err);
-
-You can kill these __func__ in dev_dbg():s.
-
->  	return ERR_PTR(err);
->  }
->  EXPORT_SYMBOL(qe_pin_request);
-> @@ -220,7 +218,6 @@ EXPORT_SYMBOL(qe_pin_request);
->   */
->  void qe_pin_free(struct qe_pin *qe_pin)
->  {
-> -	gpiod_put(qe_pin->gpiod);
->  	kfree(qe_pin);
->  }
->  EXPORT_SYMBOL(qe_pin_free);
-> diff --git a/drivers/usb/host/fhci-hcd.c b/drivers/usb/host/fhci-hcd.c
-> index 95a44462bed0..1f666804fa91 100644
-> --- a/drivers/usb/host/fhci-hcd.c
-> +++ b/drivers/usb/host/fhci-hcd.c
-> @@ -651,7 +651,7 @@ static int of_fhci_probe(struct platform_device *ofdev)
->  	}
->  
->  	for (j = 0; j < NUM_PINS; j++) {
-> -		fhci->pins[j] = qe_pin_request(node, j);
-> +		fhci->pins[j] = qe_pin_request(dev, j);
->  		if (IS_ERR(fhci->pins[j])) {
->  			ret = PTR_ERR(fhci->pins[j]);
->  			dev_err(dev, "can't get pin %d: %d\n", j, ret);
-> diff --git a/include/soc/fsl/qe/qe.h b/include/soc/fsl/qe/qe.h
-> index b02e9fe69146..eb5079904cc8 100644
-> --- a/include/soc/fsl/qe/qe.h
-> +++ b/include/soc/fsl/qe/qe.h
-> @@ -172,14 +172,15 @@ static inline int par_io_data_set(u8 port, u8 pin, u8 val) { return -ENOSYS; }
->  /*
->   * Pin multiplexing functions.
->   */
-> +struct device;
->  struct qe_pin;
->  #ifdef CONFIG_QE_GPIO
-> -extern struct qe_pin *qe_pin_request(struct device_node *np, int index);
-> +extern struct qe_pin *qe_pin_request(struct device *dev, int index);
->  extern void qe_pin_free(struct qe_pin *qe_pin);
->  extern void qe_pin_set_gpio(struct qe_pin *qe_pin);
->  extern void qe_pin_set_dedicated(struct qe_pin *pin);
->  #else
-> -static inline struct qe_pin *qe_pin_request(struct device_node *np, int index)
-> +static inline struct qe_pin *qe_pin_request(struct device *dev, int index)
->  {
->  	return ERR_PTR(-ENOSYS);
->  }
+>  	if (config->csv_output) {
+> -		static const int aggr_fields[AGGR_MAX] = {
+> -			[AGGR_NONE] = 1,
+> -			[AGGR_GLOBAL] = 0,
+> -			[AGGR_SOCKET] = 2,
+> -			[AGGR_DIE] = 2,
+> -			[AGGR_CORE] = 2,
+> -			[AGGR_THREAD] = 1,
+> -			[AGGR_UNSET] = 0,
+> -			[AGGR_NODE] = 1,
+> -		};
+> -
+>  		pm = config->metric_only ? print_metric_only_csv : print_metric_csv;
+>  		nl = config->metric_only ? new_line_metric : new_line_csv;
+> -		os->nfields = 3 + aggr_fields[config->aggr_mode] + (counter->cgrp ? 1 : 0);
+> +		os->nfields = 4 + (counter->cgrp ? 1 : 0);
+>  	} else if (config->json_output) {
+>  		pm = config->metric_only ? print_metric_only_json : print_metric_json;
+>  		nl = config->metric_only ? new_line_metric : new_line_json;
 > -- 
-> 2.39.0.rc0.267.gcb52ba06e7-goog
-> 
-> 
-> -- 
-> Dmitry
+> 2.31.1
 
 -- 
-With Best Regards,
-Andy Shevchenko
 
-
+- Arnaldo
