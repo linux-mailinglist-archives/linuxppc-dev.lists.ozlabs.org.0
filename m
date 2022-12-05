@@ -2,99 +2,99 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 515EE642DBA
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Dec 2022 17:50:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B60D0642DD9
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Dec 2022 17:51:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NQqLJ1Ymbz3chV
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Dec 2022 03:50:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NQqML4PwLz3f9y
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Dec 2022 03:51:42 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=outlook.com header.i=@outlook.com header.a=rsa-sha256 header.s=selector1 header.b=dx3eJWRa;
+	dkim=pass (2048-bit key; unprotected) header.d=outlook.com header.i=@outlook.com header.a=rsa-sha256 header.s=selector1 header.b=ZFVihfly;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=outlook.com (client-ip=2a01:111:f403:700c::814; helo=jpn01-os0-obe.outbound.protection.outlook.com; envelope-from=set_pte_at@outlook.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=outlook.com header.i=@outlook.com header.a=rsa-sha256 header.s=selector1 header.b=dx3eJWRa;
+	dkim=pass (2048-bit key; unprotected) header.d=outlook.com header.i=@outlook.com header.a=rsa-sha256 header.s=selector1 header.b=ZFVihfly;
 	dkim-atps=neutral
 Received: from JPN01-OS0-obe.outbound.protection.outlook.com (mail-os0jpn01olkn20814.outbound.protection.outlook.com [IPv6:2a01:111:f403:700c::814])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NQnjh07bzz3bXd
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NQnjh3W2tz3bXd
 	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Dec 2022 02:37:28 +1100 (AEDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=lG8uj8NBjE5PUuzn6Ic/I2wJdxn5/mJzy48ndim6z1trD8Lmi4GBfKgXXDLmxuIs/4g1fCKUSa2ZuqeQU4jHE1Xinpr3CwIlEHiihlpmErHywIrvyFCBIlFohjSjNSd3nGmEUGwm9Ou5pygtvweNiQQ9aFl2hBudTdnoYtPbAI/Ec6dkNQDW4dpRABX+zhrb6zygJQJJU/QDdtZGcHbXzBiKQPkH6C6oaTsYvB6DzVg7qsraTIWISBfl01hKdq8w108YjJKpwgiAWLeWuMFxZ0oZwgHSIQbVMiTpdsW0bo/e7/v/bQCZJVFUQjGmeaubgUUJYhNEq1QUct6VMRNprA==
+ b=IfU52xENsK/eGoxr26Dl7mVnudaTTOEbzczINgjQSLby8bJrEamE12FZRQXoWN4wmujJ9CUdorHT4/IMc3A2XgtgRWaYEZ4ftq6wz7aaibdvXGUuM9qd61eF/YIeM+3UWzoVu+OoLQSeJtmtROMG4v2rN8l8pUds0wET3rjBgkgI0tOK8IQylOpGGc4zeILtlF4nDLl6wWw0EsMMthhkIOor/auJHgNUpvmfAcbJuk7furgTGnn+rBUTr0EqWvqVuPkF6uXqdAg8owqMeAVfhImkM9BqLaoVJQn/de6yIvDPOBanJMiTw6RoFedT1SKrtpScuzEObz3P/HRmy0ds/A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wE0/eQ+6q+25iqD5ZenU2/gHmtgukmMINoE3za9MCQE=;
- b=JD9x2ZO7WGaw9uDcFTbKoNqcSNJbIMdCHH1TMgTgpnyYslO345m8Fjutjy2Zn1DKFpjUTZ9wioL2uATH7+F6oMEuDkzEcDvOCkqDxhsbGfW1urFOQZMppq7lTdu/jBK6HDq7gobGAp3HFSQ/8/DSj6I9Spmh7bthg5a55BUapM2RKjv+YPgJ2wbV2L+bnQM2tkTiZtDMmj4bc590+GoOA5l3ZPzklGsghyzIsXmKor2QDZej9YE/yFCw35AePw4nK+qcz2/5dhw6Ff6Q6+WPIUaK6uqA4mCWtS8X60fr0oNvgsu8A1SEbR+Pw/hfAVPfCgqJ33wNfNljG/d/WLhAwQ==
+ bh=0iPM31kHRQF4aOShKwTu6rsQv7lE4UX1YT/WZYMS6xw=;
+ b=WptfS67OFK97N/z+zyMVWsq0Co8va/7GFod+fn2Aemw2hBOzjVpbGH/LpJg8v8bFsgJN6hO6IhOiNwrr8Fiz+89PEL6yMRNqEZDYHgtUbbwF/w+esDOgfXb1BrmCv6IXjrz2sZhpFVUeJuLzVILxYB1fyMaWeFHT4mt3p6bVhJ7ADvjV0Wl+tPBRNJKGSR0Neoj4lxAZFvLyMdrJHP3NJjNhhKdUqm32GLxMD+elrTkBmph1I4Eq0a/wxUGczNx8zVZzuzyJqf+r324ukPzL5HNhhxf/EJ3qRxfg3bswxsFKSJ+NmUskpR7TMeXrNO06QN5nxoTr4pDFdkr7Kdij6w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
  dkim=none; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wE0/eQ+6q+25iqD5ZenU2/gHmtgukmMINoE3za9MCQE=;
- b=dx3eJWRaBTBpNwCoHkYi2RXXcegnG2VYD8lU60lzx5bw1EOyNycZqgb/9eatsqH8hdTlupt1L0Et3uB4zfm87Dm8tZPMAFSluMDbDeQip6DWY6laPJSHk61AmrNy0yvc9uC5YtjmZWULZf4Igy2+48D1A9bjK+e4soZ2AV8if1GyuP++c4uDx+0GNhgCcTsif/w1z3gtKkPoeOUGEGCdZxxxSc8QkETrTgeyBosfKu686VbZsjccfjoLNd32GJC1BvvwkxwxyXcSpTCS4R5r5Ll4DEIuA8v4uS9Blf44Lx+/+iwKf2MHcmydM5VyBa16rXTMJOK5z0nK6PP/aglmMg==
+ bh=0iPM31kHRQF4aOShKwTu6rsQv7lE4UX1YT/WZYMS6xw=;
+ b=ZFVihflyqyex2iZV58qrHhHts7l/bPLYgMSYjNy2RX6GDC12YZCkNA1nPXREKaKmMk3T+pZC74k4aR8vd+sKU32afXtAiAippD/6ikvqAKnHBHsPt25AqPa00VLj5EjEomJUqFnYGEtQ+YC2DKFmZ9/SFqdutL1QXGKdZ997o3hII6Snp2+UWd2rl3spFtib58lPM2J9GOfvuUMb5zhVxCeSweVaymIQVzMbS2hcTLw2AlFQsV4h8VSAbqu6ESjBUKtW9ya/NJcwVBZ9hFmO0dkENO9FIA/MDHbiVAC5gOdIlQnQAspDEASfTQvqDFsgTN3wK5qhO11gxPfz2gaHBQ==
 Received: from TYCP286MB2323.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:152::9)
  by TYYP286MB1787.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:f9::8) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5880.14; Mon, 5 Dec
- 2022 15:37:07 +0000
+ 2022 15:37:11 +0000
 Received: from TYCP286MB2323.JPNP286.PROD.OUTLOOK.COM
  ([fe80::ff96:9cb6:e047:c605]) by TYCP286MB2323.JPNP286.PROD.OUTLOOK.COM
  ([fe80::ff96:9cb6:e047:c605%5]) with mapi id 15.20.5880.014; Mon, 5 Dec 2022
- 15:37:07 +0000
+ 15:37:11 +0000
 From: Dawei Li <set_pte_at@outlook.com>
 To: gregkh@linuxfoundation.org
-Subject: [PATCH 2/6] macio: Make remove callback of macio driver void returned
-Date: Mon,  5 Dec 2022 23:36:40 +0800
-Message-ID:  <TYCP286MB2323FCDC7ECD87F8D97CB74BCA189@TYCP286MB2323.JPNP286.PROD.OUTLOOK.COM>
+Subject: [PATCH 3/6] apr: make remove callback of apr driver void returned
+Date: Mon,  5 Dec 2022 23:36:41 +0800
+Message-ID:  <TYCP286MB2323DBD1F01BF918ADD0ABCECA189@TYCP286MB2323.JPNP286.PROD.OUTLOOK.COM>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20221205153644.60909-1-set_pte_at@outlook.com>
 References: <20221205153644.60909-1-set_pte_at@outlook.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-TMN: [xkiGoP8CYtlHfMaNN+v2tHJgza4DLRGN]
+X-TMN: [KQ6Iu1DlV9BM4en0T0h6pGIzaDkslhnW]
 X-ClientProxiedBy: SG2PR02CA0046.apcprd02.prod.outlook.com
  (2603:1096:3:18::34) To TYCP286MB2323.JPNP286.PROD.OUTLOOK.COM
  (2603:1096:400:152::9)
-X-Microsoft-Original-Message-ID:  <20221205153644.60909-3-set_pte_at@outlook.com>
+X-Microsoft-Original-Message-ID:  <20221205153644.60909-4-set_pte_at@outlook.com>
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: TYCP286MB2323:EE_|TYYP286MB1787:EE_
-X-MS-Office365-Filtering-Correlation-Id: 192953c7-e272-4eaf-ac9c-08dad6d69148
-X-MS-Exchange-SLBlob-MailProps: 	/OoUGmN/RpVKD6y7RJd2fRTadJ6Pq1otARSEbI97kVRmQMivREdx/fj4xvoyz2Zq9680D287XvcJfvbpYLWgzmmRjngDq0kGxb/k5K6aOfp2gz1qD+4htLUHYy4q0uG6RtozbuMbhaPV54ULJjuqx0X/uqMnZEyOUq1/s2fYGDtf/3uVSMEisii35FvUzi12oL4x/WSREC0moS45NWFGeif8HLP0FMgivzl1phxJQV6Xiy54UqsasQPza7cAhpw0Yi45OnLh7EtTtBo4qfqktDg4rpH++FaEBWI+mKxMZYziAiASW4Rqx6JlQE+0qKNuF/cODHfxLAYMTR/arsAlFcUKKjVyC6szIaq6q5TF+06W9CT5D2y9G6DcypuHbgq8KenMt7CIqt7y1NH20Rhg0wDQh/ULFvd487BWo1st6EUra7IyKKRRga+Gf226dSPsmwl7yyXLWfkHR6hsqgE+4II6VnVGnJ3bhXisgVHKWOPC296OcJipkalvfT7ulyR6M1YObXLAGxGROXlc02+XLIUAYZTA1zNPlQnFN1zSAY9kPcLd4YOx1Pzx2nU7obCOarZJikcBhVBRby2lLi0eWnEeTa0rt047HMEzgbwsn905UGRUJKyiIg/PEn8Cfh3/raGhf11h3VadG4Oe6+I+e6i/YY6bXFgRdCtJyDXIVZ4TzYE2lm7vRgyPl/2HyLDZtF+xKwZyn+R7hfCiRcNlqsTsjr5zCWw5VrwxxiV6Op9OjJkFj/CrZBzoJ+z/E251
+X-MS-Office365-Filtering-Correlation-Id: a13fb080-54be-4566-c675-08dad6d69389
+X-MS-Exchange-SLBlob-MailProps: 	i0w2f8qhTbr6OkeYxPWJvHH8J+DLRu5yohmcQaqGGfrlnPL7m1GYjqVxL/OSoNG54e076UYL2JyWZ2Vpknv4nFCLMqkYeCQTNbN3S+hlFgJXUSF9yLcaSmFOUA1lRwrbTJzQz6CEIotKtgEqK58h9JVdbYO5v4+JKS/PkI/Bs17Uxw6pNfe8DC8xu0iZT7mssf0DyzIgIue/e4S10Il7X3vhphF7VtOztTk+avMRv38LKuDRDj5/iIcqUspAb9BUcpRWImWYeAFsuYdJ5EalX73HrQioL7F/KkNlQjM4UVr1MOHjqgJhefFCKa6iwptu1eZClaCgAwkQ3m6bYDE4jIxfb3wEUaGIE6tmroepaCC9DeyuWmv3ILXPg+1dC6mHm+sxTO7eAkH28hbfHa13/bIy8+u9WjJL1aVNOvEJL+6m+FrQavQwAnSqPPLq6t/YrgEAqgwyafL7BuZybUfTMRUCvp+MSEulKJOuX67kx7VGMaL2rWcrgRMN3TcFnSGl7avmAV2hiJBu0IyqoDfp6BO9ZG/xu2+0QdUo4M4Y0nn1d9muamGnxwhM4Pony0rit9/DEhFQQMAXSPs3UN79d5sKkWCrsw3V2NMQTgqY18gVOw41buDAhRquTE1saYy+Hkip5XO+EvpxCynAPeUtZtguAgyNdGdTOVxMyh6//LfFv0xDKRZwuJXKwGNXPQ4L/bOSe9QK21ZfJS4ZROykObndS5JNuZR4
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	mBT40HvRhGQ0coBwCX43Ch3gb9SuzktfgyO0+BO0iqhKuEqM7S+gZlMSg51OAZiGMv5x7EbrqhtDJZUhP8fgVj6BBSW2UcSvpwwTnBo4E59dw9dgPHb8G0dzDRzCA55U177yvnf6BuHb9wyHIigIkNMn2bei193EVo15Gi7DbCYfdHaztrI3OyqThhvDWV75dPuLmdHjZWu2xjiR5wvNF48pv7uNJgxwlgZXsCPKqqpmMWHcUYp+AGZ8B9K/vX5vsERqC9QQOUfud8YFUHmYaoMwgIA4awKCBrtTzR/MzbJLuOWkTRcCgBCV7Cn5+OA2qPCeDXFfalVpuEYT6BH4bYofviJolpe1X9O/iyix6sz2G1nprpxQbiruGyDXAWSlK591weGFhsdUH5a+iINRjAPBFwV1L6a8E+zm2Vj9WggBQz1Bqdpb9Y7h/M1mao1njsrTjK5VuBHVEy9lMEXn4wYxawE1E1LEzqEm11mD6sZgPAlPJ9dUhx/n8PFH2SqYuAFzU+rgRkVcQnI1xdIyOXaHajS7wQ4aU24mmrnsGmfQL4vSKCLgyYO9VLJqgtLXTBbQN5YgszMIU692viVQ4AVlbXD+qA4UM2vvqrWLOLHMaAvr7DnNi1GUwXZbJQiAsURY9XMAyR/FeJnAf1ftYQ==
+X-Microsoft-Antispam-Message-Info: 	UNIHCTi5RWgBmG1UV4+mnMKCqTf51IU2TVW/+uu0Ma9yTQfsclgqnV+C2IFoJcDpfhRTWexoftXw1O4Rvsagc0qjYix2kFU37Fr2Jtgjy7bLc8fMD3EE4UJ0KLuNCKw1ituoOpKYUJR4X5/UEyjtgR/Ieaoss9vjpr5EjBpeKzAk9rgqy41vhsUIwXEGsROsc/RSWbvUjJltm+1176mjEDMJoibixKYxSaPxIPFu4OJKWHFCNoQzibUpM8BkF4Vsxin+2Ex8o0ubdGDTk6JCRm6bahUejb3qjyMqCkl7qK3Gw5nXbZdCbClb+Jr+5+6Gt5EZedvlDN1ER9V5ePWMV0rmXIscH+nyHViW2OeFOAUo23z09uNAj6SyFmMuKXyTvYelR3wl2l5ctmngemG+z+D3yVylGyYLI7UJJS7iV7Pmi4CFEGKfLuZXhorngRkOwkORCrA4AvExXKyYlsIo2nzzwvDy6twBLITWGsdwlCTgSHg7QeOJv+UJb+ye3A3XTU//L1yT1ZXfbIzZJQ2d7LmANp0q7RCUDMKAbl6uuRl+m1hKgiSJ5ZLFkFArmPMWj4YCUVYOxmlKYMJGDr0ZnQVFsKkFA0tTn0QNSPWbsf8tBdOQQXbf7un+qatdukYr/SbJGSR2xZ4URFhdXyf+Dw==
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?rQg4ccoCdqEz63snTfCGUwVdDcppMyb7YVU/lhVPvlUYjOatj8zx6LwhbfxY?=
- =?us-ascii?Q?QSSmemqqzUUJfeR8YUjNVVDyr42vgAa67IBg1iALDNIvIPLgEL9lC9wvyCiC?=
- =?us-ascii?Q?oTb4DREah1ZjSCbm3j7HeVj+4jLa4lmHtFEvMMvzP7n0xWyN5fzGRd4I0hfF?=
- =?us-ascii?Q?vsd33pcMNrPYRQTB0YR8WENQtsDNtP45sLEgcEcnkfssvwuYfI7fHYAFEb6R?=
- =?us-ascii?Q?j9gy3tOn40nBr6zZDby8P5jiszu4OABXuXpb0l/lt8CDgxMtN2l9KfAbuEUK?=
- =?us-ascii?Q?nhC0AD9Callt7p6K9FItkSzkNmk6C/zJCFdCCJ8QRYub8n4lq92X/o7drubk?=
- =?us-ascii?Q?XyrQTrZ+5Nk8bVTzQc2qa9jOxMzPUyhEGSQQB6D/J5FfjC5Fcufk1mMBdDtP?=
- =?us-ascii?Q?5Drk56dqpzW3fVvm+flwBEvNzQcc8EN5cdt4X3ePhBdj/YALGj+gY+Y1ifUy?=
- =?us-ascii?Q?PE+aEEgUwscI6C689R1Gz9MKeadBC/7zGhP8a8vlpedhIaZ0zPABqkgbVXQ0?=
- =?us-ascii?Q?p2i2h8tVEWSusu30p4FOuCpuOyQfdI7icct6WvWMcLDwLX+1hEP8Vj6L7G+J?=
- =?us-ascii?Q?/LvZuuIoy9sOAIVcMhp7708o2TqSyBlHdQceaNljjHRpQh3Jp97zdubsaqsf?=
- =?us-ascii?Q?PfMk14HHPvqfuMmee+5WOvkemrCjABalSTPPBLiFPxyasdJBLMtyaqQxtWSn?=
- =?us-ascii?Q?+drueudJ7twriHfwaH2gX7iNYtLdCg/iOLvwvhIYn/FHMDG+eIWZsOmDdw3z?=
- =?us-ascii?Q?926DsSq1VeneXGBZCSrbVuq3lR6EfY5AsPVdTmxkjKe0F4SZNgNBeUNBbWur?=
- =?us-ascii?Q?yVAcUh0nMr6Jzw9O/rF3PHTs1L2q/JsdGZQv/Uom+wRInssmOKjS42SJExr+?=
- =?us-ascii?Q?Rf2QDTd8LMmecI/zwu9By4Uuxl2Yvenkct6xfpW7kIcXZmWrXfJzGhlPvJaH?=
- =?us-ascii?Q?/tjmRlmWhkyH7qaZpADJEq9Sp/6veieJYR0To5t3+79m9xAgzPjvesrdGqB8?=
- =?us-ascii?Q?sQD7I9GK9zAA5cQaYt5DaUy3f/rV/CxICWHOR8MzwYO6hpqzaM7tP3cHkJ8/?=
- =?us-ascii?Q?UAGvkxnr4g7w9qF2wovwJ3FzVjfWMwVN5JI2rSZAJZtHdtHnl6kR5V9tTqsF?=
- =?us-ascii?Q?SA4K5iwHBqtj+uBhMpXgXRVBFgWVoHgL5ZjMJ8rM11XhkHfsit4293mcBfYm?=
- =?us-ascii?Q?x7nvAh7dF79tMGy97eIgn3rgJuQuyxYhTxcxx2xwp2qFYuVKomuKD4GMxkcE?=
- =?us-ascii?Q?8D4NT8vvglovbn0srcEcODNX8raPQbdK42TzCKEErQ=3D=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?VsDQdBNLVK4HqSt7FcmTP3iCA2bNSYg3VVF9MmJupP1n7AS+ZJVGtHXOgJFg?=
+ =?us-ascii?Q?8jmm0NzZEPrN1IxHB62fW1mUabz3A2paF/vGIEZSpznVwwQYgtArOmtjGTU0?=
+ =?us-ascii?Q?ewL80f3710YPIbfKgEwTsXPx8wyKkJHnHk5a2mJOocmkjntZwKfW1BAM09Yb?=
+ =?us-ascii?Q?JzlgqzYwmsP2jIqrTS+hoTJIYq9KbSaSV/6/ujkMVN4h7O16ltTxdtHc0Drj?=
+ =?us-ascii?Q?mykLw5818nZok4PvJMmo3WO6Mq6YqAGThD+qd7jppFiltsYWsNXCshGifzWz?=
+ =?us-ascii?Q?0w945JkyZ0CMMn1NKftr0eSO82ZXaezW+dN7YIE2kQgpMEY3W4cSZhReBsJs?=
+ =?us-ascii?Q?SrMMQEJDxEXFHz5k0n+23cYXU2XZpozOyMEbdYhAXocrZv6GLgwd/v/bCGE7?=
+ =?us-ascii?Q?N5NeltvTCegkZlpFqR8IFLQLtVKkRw9P0gqkRIGAV0DBHjO4ilpO49gH/0na?=
+ =?us-ascii?Q?VWnO3tUuCQl4Ih5lA/to5RPXop+ScDpcdrBdjzyRIRd6jZn8T2x6GBvwNUAU?=
+ =?us-ascii?Q?U+IhCmobNLQP+bjPu5mC0Mza0lqjhzmk+Z2Q4ufndkjRqTPNqsiAGnOsqw38?=
+ =?us-ascii?Q?x08OSwVx/UG3Ty25XeapBLU4p4G7czx8hlnGU+tknUCKxzAU+RrpjCaNMhaZ?=
+ =?us-ascii?Q?Qd0HvXFqgPUDJBnYi2i+BzaaZiAdDt+yBsydwXi0aE88S01xnR7BCvGLs5s2?=
+ =?us-ascii?Q?pJKKdpTzTLuz8/nOYWjbKBnY8i9i1JKo+m4RcwUSxfI9iOEePYz9KaFT3Bnq?=
+ =?us-ascii?Q?d7lzoKmIqHLgbKdy5c9q8QxLXtvtDicnEQKgJjjIdRFZKQUYE511nvHz3wls?=
+ =?us-ascii?Q?AVpLDzXBV3ZG4qj0Xwg5GBJy4J6qoSxFW9a/wMROOSPv+KUM0GmeVpV1MfHl?=
+ =?us-ascii?Q?VGv0bsIn2TbB4171iFaTVcx+OW9Ji07rhg+fRxSFnL3/F4nSo+xKUgM3ZuDi?=
+ =?us-ascii?Q?C8+AjcqLT5hfi/t9/eS6Ge6tGMygqfMfPXn3NnUkt8qc0be2Mfb8x99powNj?=
+ =?us-ascii?Q?UwYvZUAQA/UlzWl2in36lObaesXu1KiszvE3caMC56idC5fOHXcs0gP1/tri?=
+ =?us-ascii?Q?SNaxffKtlSfit/PfKxvcVK7YFh4LlLEPs3xyo3xrOrbzoAuKAWSOnsqeAtwE?=
+ =?us-ascii?Q?Av6nBVKE974LnWX98B1U1BCXImx2nyGJkQOoxnvgdmQKI0o3Sw7METDfvPYo?=
+ =?us-ascii?Q?3WurRpsV70GYVN6fflOZuKOJewHBL4aSj0FkJhR3rHuTweXvGs6L7s2OC21O?=
+ =?us-ascii?Q?FpeZhiZdFma5/Bx2HidWX9AA/86WohISOiqfYRA58g=3D=3D?=
 X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 192953c7-e272-4eaf-ac9c-08dad6d69148
+X-MS-Exchange-CrossTenant-Network-Message-Id: a13fb080-54be-4566-c675-08dad6d69389
 X-MS-Exchange-CrossTenant-AuthSource: TYCP286MB2323.JPNP286.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Dec 2022 15:37:07.7806
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Dec 2022 15:37:11.5471
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
@@ -116,265 +116,54 @@ Cc: jgross@suse.com, wei.liu@kernel.org, sstabellini@kernel.org, linux-hyperv@vg
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Commit fc7a6209d571 ("bus: Make remove callback return
+Since commit fc7a6209d571 ("bus: Make remove callback return
 void") forces bus_type::remove be void-returned, it doesn't
 make much sense for any bus based driver implementing remove
 callbalk to return non-void to its caller.
 
-This change is for macio bus based drivers.
+This change is for apr bus based drivers.
 
 Signed-off-by: Dawei Li <set_pte_at@outlook.com>
 ---
- arch/powerpc/include/asm/macio.h                | 12 ++++++------
- drivers/ata/pata_macio.c                        |  4 +---
- drivers/macintosh/rack-meter.c                  |  4 +---
- drivers/net/ethernet/apple/bmac.c               |  4 +---
- drivers/net/ethernet/apple/mace.c               |  4 +---
- drivers/net/wireless/intersil/orinoco/airport.c |  4 +---
- drivers/scsi/mac53c94.c                         |  5 +----
- drivers/scsi/mesh.c                             |  5 +----
- drivers/tty/serial/pmac_zilog.c                 |  7 ++-----
- sound/aoa/soundbus/i2sbus/core.c                |  4 +---
- 10 files changed, 16 insertions(+), 37 deletions(-)
+ include/linux/soc/qcom/apr.h  | 2 +-
+ sound/soc/qcom/qdsp6/q6core.c | 4 +---
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/macio.h b/arch/powerpc/include/asm/macio.h
-index ff5fd82d9ff0..f641c730c3b7 100644
---- a/arch/powerpc/include/asm/macio.h
-+++ b/arch/powerpc/include/asm/macio.h
-@@ -124,15 +124,15 @@ static inline struct pci_dev *macio_get_pci_dev(struct macio_dev *mdev)
-  */
- struct macio_driver
- {
--	int	(*probe)(struct macio_dev* dev, const struct of_device_id *match);
--	int	(*remove)(struct macio_dev* dev);
-+	int	(*probe)(struct macio_dev *dev, const struct of_device_id *match);
-+	void	(*remove)(struct macio_dev *dev);
+diff --git a/include/linux/soc/qcom/apr.h b/include/linux/soc/qcom/apr.h
+index 23c5b30f3511..be98aebcb3e1 100644
+--- a/include/linux/soc/qcom/apr.h
++++ b/include/linux/soc/qcom/apr.h
+@@ -153,7 +153,7 @@ typedef struct apr_device gpr_device_t;
  
--	int	(*suspend)(struct macio_dev* dev, pm_message_t state);
--	int	(*resume)(struct macio_dev* dev);
--	int	(*shutdown)(struct macio_dev* dev);
-+	int	(*suspend)(struct macio_dev *dev, pm_message_t state);
-+	int	(*resume)(struct macio_dev *dev);
-+	int	(*shutdown)(struct macio_dev *dev);
- 
- #ifdef CONFIG_PMAC_MEDIABAY
--	void	(*mediabay_event)(struct macio_dev* dev, int mb_state);
-+	void	(*mediabay_event)(struct macio_dev *dev, int mb_state);
- #endif
- 	struct device_driver	driver;
- };
-diff --git a/drivers/ata/pata_macio.c b/drivers/ata/pata_macio.c
-index 9ccaac9e2bc3..653106716a4b 100644
---- a/drivers/ata/pata_macio.c
-+++ b/drivers/ata/pata_macio.c
-@@ -1187,7 +1187,7 @@ static int pata_macio_attach(struct macio_dev *mdev,
- 	return rc;
- }
- 
--static int pata_macio_detach(struct macio_dev *mdev)
-+static void pata_macio_detach(struct macio_dev *mdev)
- {
- 	struct ata_host *host = macio_get_drvdata(mdev);
- 	struct pata_macio_priv *priv = host->private_data;
-@@ -1202,8 +1202,6 @@ static int pata_macio_detach(struct macio_dev *mdev)
- 	ata_host_detach(host);
- 
- 	unlock_media_bay(priv->mdev->media_bay);
--
--	return 0;
- }
- 
- #ifdef CONFIG_PM_SLEEP
-diff --git a/drivers/macintosh/rack-meter.c b/drivers/macintosh/rack-meter.c
-index c28893e41a8b..f2f83c4f3af5 100644
---- a/drivers/macintosh/rack-meter.c
-+++ b/drivers/macintosh/rack-meter.c
-@@ -523,7 +523,7 @@ static int rackmeter_probe(struct macio_dev* mdev,
- 	return rc;
- }
- 
--static int rackmeter_remove(struct macio_dev* mdev)
-+static void rackmeter_remove(struct macio_dev *mdev)
- {
- 	struct rackmeter *rm = dev_get_drvdata(&mdev->ofdev.dev);
- 
-@@ -558,8 +558,6 @@ static int rackmeter_remove(struct macio_dev* mdev)
- 
- 	/* Get rid of me */
- 	kfree(rm);
--
--	return 0;
- }
- 
- static int rackmeter_shutdown(struct macio_dev* mdev)
-diff --git a/drivers/net/ethernet/apple/bmac.c b/drivers/net/ethernet/apple/bmac.c
-index 334de0d93c89..8b37ac1cc3d1 100644
---- a/drivers/net/ethernet/apple/bmac.c
-+++ b/drivers/net/ethernet/apple/bmac.c
-@@ -1591,7 +1591,7 @@ bmac_proc_info(char *buffer, char **start, off_t offset, int length)
- }
- #endif
- 
--static int bmac_remove(struct macio_dev *mdev)
-+static void bmac_remove(struct macio_dev *mdev)
- {
- 	struct net_device *dev = macio_get_drvdata(mdev);
- 	struct bmac_data *bp = netdev_priv(dev);
-@@ -1609,8 +1609,6 @@ static int bmac_remove(struct macio_dev *mdev)
- 	macio_release_resources(mdev);
- 
- 	free_netdev(dev);
--
--	return 0;
- }
- 
- static const struct of_device_id bmac_match[] =
-diff --git a/drivers/net/ethernet/apple/mace.c b/drivers/net/ethernet/apple/mace.c
-index d0a771b65e88..b214524a5964 100644
---- a/drivers/net/ethernet/apple/mace.c
-+++ b/drivers/net/ethernet/apple/mace.c
-@@ -272,7 +272,7 @@ static int mace_probe(struct macio_dev *mdev, const struct of_device_id *match)
- 	return rc;
- }
- 
--static int mace_remove(struct macio_dev *mdev)
-+static void mace_remove(struct macio_dev *mdev)
- {
- 	struct net_device *dev = macio_get_drvdata(mdev);
- 	struct mace_data *mp;
-@@ -296,8 +296,6 @@ static int mace_remove(struct macio_dev *mdev)
- 	free_netdev(dev);
- 
- 	macio_release_resources(mdev);
--
--	return 0;
- }
- 
- static void dbdma_reset(volatile struct dbdma_regs __iomem *dma)
-diff --git a/drivers/net/wireless/intersil/orinoco/airport.c b/drivers/net/wireless/intersil/orinoco/airport.c
-index a890bfa0d5cc..276a06cdd1f5 100644
---- a/drivers/net/wireless/intersil/orinoco/airport.c
-+++ b/drivers/net/wireless/intersil/orinoco/airport.c
-@@ -85,7 +85,7 @@ airport_resume(struct macio_dev *mdev)
- 	return err;
- }
- 
--static int
-+static void
- airport_detach(struct macio_dev *mdev)
- {
- 	struct orinoco_private *priv = dev_get_drvdata(&mdev->ofdev.dev);
-@@ -111,8 +111,6 @@ airport_detach(struct macio_dev *mdev)
- 
- 	macio_set_drvdata(mdev, NULL);
- 	free_orinocodev(priv);
--
--	return 0;
- }
- 
- static int airport_hard_reset(struct orinoco_private *priv)
-diff --git a/drivers/scsi/mac53c94.c b/drivers/scsi/mac53c94.c
-index f75928f7773e..42648ca9b8ed 100644
---- a/drivers/scsi/mac53c94.c
-+++ b/drivers/scsi/mac53c94.c
-@@ -508,7 +508,7 @@ static int mac53c94_probe(struct macio_dev *mdev, const struct of_device_id *mat
- 	return rc;
- }
- 
--static int mac53c94_remove(struct macio_dev *mdev)
-+static void mac53c94_remove(struct macio_dev *mdev)
- {
- 	struct fsc_state *fp = (struct fsc_state *)macio_get_drvdata(mdev);
- 	struct Scsi_Host *host = fp->host;
-@@ -526,11 +526,8 @@ static int mac53c94_remove(struct macio_dev *mdev)
- 	scsi_host_put(host);
- 
- 	macio_release_resources(mdev);
--
--	return 0;
- }
- 
--
- static struct of_device_id mac53c94_match[] = 
- {
- 	{
-diff --git a/drivers/scsi/mesh.c b/drivers/scsi/mesh.c
-index 84b541a57b7b..cd2575b88c85 100644
---- a/drivers/scsi/mesh.c
-+++ b/drivers/scsi/mesh.c
-@@ -1986,7 +1986,7 @@ static int mesh_probe(struct macio_dev *mdev, const struct of_device_id *match)
- 	return -ENODEV;
- }
- 
--static int mesh_remove(struct macio_dev *mdev)
-+static void mesh_remove(struct macio_dev *mdev)
- {
- 	struct mesh_state *ms = (struct mesh_state *)macio_get_drvdata(mdev);
- 	struct Scsi_Host *mesh_host = ms->host;
-@@ -2013,11 +2013,8 @@ static int mesh_remove(struct macio_dev *mdev)
- 	macio_release_resources(mdev);
- 
- 	scsi_host_put(mesh_host);
--
--	return 0;
- }
- 
--
- static struct of_device_id mesh_match[] = 
- {
- 	{
-diff --git a/drivers/tty/serial/pmac_zilog.c b/drivers/tty/serial/pmac_zilog.c
-index fe2e4ec423f7..b8e2279cf60c 100644
---- a/drivers/tty/serial/pmac_zilog.c
-+++ b/drivers/tty/serial/pmac_zilog.c
-@@ -1509,12 +1509,12 @@ static int pmz_attach(struct macio_dev *mdev, const struct of_device_id *match)
-  * That one should not be called, macio isn't really a hotswap device,
-  * we don't expect one of those serial ports to go away...
-  */
--static int pmz_detach(struct macio_dev *mdev)
-+static void pmz_detach(struct macio_dev *mdev)
- {
- 	struct uart_pmac_port	*uap = dev_get_drvdata(&mdev->ofdev.dev);
- 	
- 	if (!uap)
--		return -ENODEV;
-+		return;
- 
- 	uart_remove_one_port(&pmz_uart_reg, &uap->port);
- 
-@@ -1525,11 +1525,8 @@ static int pmz_detach(struct macio_dev *mdev)
- 	dev_set_drvdata(&mdev->ofdev.dev, NULL);
- 	uap->dev = NULL;
- 	uap->port.dev = NULL;
--	
--	return 0;
- }
- 
--
- static int pmz_suspend(struct macio_dev *mdev, pm_message_t pm_state)
- {
- 	struct uart_pmac_port *uap = dev_get_drvdata(&mdev->ofdev.dev);
-diff --git a/sound/aoa/soundbus/i2sbus/core.c b/sound/aoa/soundbus/i2sbus/core.c
-index 51ed2f34b276..35f39727994d 100644
---- a/sound/aoa/soundbus/i2sbus/core.c
-+++ b/sound/aoa/soundbus/i2sbus/core.c
-@@ -364,15 +364,13 @@ static int i2sbus_probe(struct macio_dev* dev, const struct of_device_id *match)
+ struct apr_driver {
+ 	int	(*probe)(struct apr_device *sl);
+-	int	(*remove)(struct apr_device *sl);
++	void	(*remove)(struct apr_device *sl);
+ 	int	(*callback)(struct apr_device *a,
+ 			    struct apr_resp_pkt *d);
+ 	int	(*gpr_callback)(struct gpr_resp_pkt *d, void *data, int op);
+diff --git a/sound/soc/qcom/qdsp6/q6core.c b/sound/soc/qcom/qdsp6/q6core.c
+index 5358fefd4210..49cfb32cd209 100644
+--- a/sound/soc/qcom/qdsp6/q6core.c
++++ b/sound/soc/qcom/qdsp6/q6core.c
+@@ -339,7 +339,7 @@ static int q6core_probe(struct apr_device *adev)
  	return 0;
  }
  
--static int i2sbus_remove(struct macio_dev* dev)
-+static void i2sbus_remove(struct macio_dev *dev)
+-static int q6core_exit(struct apr_device *adev)
++static void q6core_exit(struct apr_device *adev)
  {
- 	struct i2sbus_control *control = dev_get_drvdata(&dev->ofdev.dev);
- 	struct i2sbus_dev *i2sdev, *tmp;
+ 	struct q6core *core = dev_get_drvdata(&adev->dev);
  
- 	list_for_each_entry_safe(i2sdev, tmp, &control->list, item)
- 		soundbus_remove_one(&i2sdev->sound);
+@@ -350,8 +350,6 @@ static int q6core_exit(struct apr_device *adev)
+ 
+ 	g_core = NULL;
+ 	kfree(core);
 -
 -	return 0;
  }
  
- #ifdef CONFIG_PM
+ #ifdef CONFIG_OF
 -- 
 2.25.1
 
