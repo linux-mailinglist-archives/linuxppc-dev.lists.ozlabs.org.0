@@ -2,128 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21246643742
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Dec 2022 22:47:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5257A64382E
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Dec 2022 23:33:29 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NQxwq64VRz3bgT
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Dec 2022 08:47:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NQyxg0cS5z3bhl
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Dec 2022 09:33:27 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256 header.s=selector1 header.b=ne3bFZOS;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LmerRZV1;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=efficios.com (client-ip=2a01:111:f403:7052::629; helo=can01-yqb-obe.outbound.protection.outlook.com; envelope-from=mjeanson@efficios.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256 header.s=selector1 header.b=ne3bFZOS;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LmerRZV1;
 	dkim-atps=neutral
-Received: from CAN01-YQB-obe.outbound.protection.outlook.com (mail-yqbcan01on20629.outbound.protection.outlook.com [IPv6:2a01:111:f403:7052::629])
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NQxvq1qf7z306l
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Dec 2022 08:46:45 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=PR3KD4LjHn5URRzxE8CN7rmCwj/fR7tMvd31h/RzHyqRtN5xtgcWFe0fZZ56knCzOqS0V2TuTTPXJ6hSGXIew9CuoXXalbkvNaKrKUy0f25g12j3SD/wb10mI4pWRTu7F/BgAsMhWCx8yaCuAKMsv9mpowPCmh/dzMvS0id/TAtqREIDMjuET4mL1X/zqPkhOhrbzSrp5qVhv0VCbOYbFQ1cBkIzR3qcpT0TU019aYrF29f58wBkDevZrz/lFA9pjStpEnZ3EpBwOVgjBsRG1yj99t0koBsVb0TyUmev9EtgbZoUoLlzrOTVDlK78qN7o/RUm6w3l5TDTb/1yHvZmA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6rE/MkSHEjAXiLj8hxFHYkDyfdTJh5iCbuauJNidYtU=;
- b=SXHs5l7mvZJ8X5SfQ/TsWM2ezdEjfrbFYqDN21ldVTuFApjvVuStGYgD5YR2bfpzk0MjwZ/NeUnbO6ARK7+DuGIrbioX49+MtC0LxGpuDZfm/8Ivwdok80wA5ZAtzH1Wz5S8YF5JOrY9UphgAQbZgCewIGREm9Emsfr/r5LGIiDdI7dfz2TqCxgi77FMPSuqb3QT3JaC673z4qlBzOucA0TDq/snjtlD8h+O9JbQ15lA4rCMhZRGR0vflQuoQdeNTDaoNLM2XVNbLcdIB8s+DcNKuYbnMDbYRJ2AfXLFgzUeT9LJ0ysPRX4MTV8fXmSzREvqR9QAeSGpHuH0KulpaA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=efficios.com; dmarc=pass action=none header.from=efficios.com;
- dkim=pass header.d=efficios.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6rE/MkSHEjAXiLj8hxFHYkDyfdTJh5iCbuauJNidYtU=;
- b=ne3bFZOS6keVCmbtY1hZr2JuiOL4yeNap8FstDnDQj0aYlZoXCsvujZOKNqGsRUNO1XNGJve22XfKCpJjwF/ZINm6ABzDET//TasXiCxPqkl75HRr8h7UEKo3vIpB4eVugEicM3xtgM+RUFfFnEFvZ/jltLiLiB6K1OMq8McoxSRMnImWycWZqNNhdE7w4TOdNbVg11a1U4at945iapBx5GvgK08IVeoTyaW9N9c3P6j+ovRLdmeGIVG9eTdtEgjEsCoCoogIYVIPDBwIp0MciXAQWK4YwZS+MXlPRQdYEb59iaARquBPkW6yliNuVefJn5HR/HIo4Py1QDahiSj2A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=efficios.com;
-Received: from YQBPR0101MB5080.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:c01:24::5)
- by YT2PR01MB5773.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:4d::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5880.14; Mon, 5 Dec
- 2022 21:46:22 +0000
-Received: from YQBPR0101MB5080.CANPRD01.PROD.OUTLOOK.COM
- ([fe80::2bff:5fa3:434e:517]) by YQBPR0101MB5080.CANPRD01.PROD.OUTLOOK.COM
- ([fe80::2bff:5fa3:434e:517%9]) with mapi id 15.20.5880.014; Mon, 5 Dec 2022
- 21:46:22 +0000
-Message-ID: <dfe0b9ba-828d-e1a5-f9a3-416c6b5b1cf3@efficios.com>
-Date: Mon, 5 Dec 2022 16:46:18 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Subject: Re: [PATCH] powerpc/ftrace: fix syscall tracing on PPC64_ELF_ABI_V1
-Content-Language: en-US
-From: Michael Jeanson <mjeanson@efficios.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Michael Ellerman <mpe@ellerman.id.au>, Steven Rostedt <rostedt@goodmis.org>
-References: <20221201161442.2127231-1-mjeanson@efficios.com>
- <87pmcys9ae.fsf@mpe.ellerman.id.au>
- <d5dd1491-5d59-7987-9b5b-83f5fb1b29ee@efficios.com>
- <219580de-7473-f142-5ef2-1ed40e41d13d@csgroup.eu>
- <323f83c7-38fe-8a12-d77a-0a7249aad316@efficios.com>
-In-Reply-To: <323f83c7-38fe-8a12-d77a-0a7249aad316@efficios.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: YT4P288CA0040.CANP288.PROD.OUTLOOK.COM
- (2603:10b6:b01:d3::21) To YQBPR0101MB5080.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:c01:24::5)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NQywm39kWz3045
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Dec 2022 09:32:40 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 24AD3B81598;
+	Mon,  5 Dec 2022 22:32:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A51E1C433D7;
+	Mon,  5 Dec 2022 22:32:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1670279554;
+	bh=twc81D3fz7hgH5I0d5mqqU6YSPMlz+/dTZIQZDfy3pY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=LmerRZV1yaSepemQWm8AsmqLnoTj4/lTY0q34Yb/8YKlo5a8O8Xk1+5bQfheq+sRw
+	 DbOyfO088yMPdTdQuZL6bKyMArPbJVC68puDWA6Z+AHF1lGfwl0FYQq/eyV3tsW6AV
+	 TQ5yibbN3XqA2dC9Yy4xptxyNfc28Z7VtRy/Yrihy9X03K+szly0SMw6ZKwLoI3BKN
+	 xD3HVB6YMlXJ+oszsN3RJRUyq2SJQPQHzjLuw3vMzyZ+clEY5GFuwRpt0QkG2YAG24
+	 FicPqbbd2MiV6tOkvUvWeX7eGIdx5sacqW2YKsToy4vt5Kd7ZrARpXafeD9Gfsm3AG
+	 ACoDPBW/nfdJA==
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Frederic Barrat <fbarrat@linux.ibm.com>,
+	Andrew Donnellan <ajd@linux.ibm.com>
+Subject: [PATCH] cxl: Remove unnecessary cxl_pci_window_alignment()
+Date: Mon,  5 Dec 2022 16:32:31 -0600
+Message-Id: <20221205223231.1268085-1-helgaas@kernel.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: YQBPR0101MB5080:EE_|YT2PR01MB5773:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0ceaf85e-0e89-436f-e458-08dad70a256a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	gMU3nW+OC3RtV00fc5qXcFkVBR91XRJr5gtjyZEgfKvmQ5TnvgWwuDYXWaNx+PHKsuRX2G0tJ1O+ETmAx1LNFTpBLZz0QvjUyXquyLC1ATNS9/4tyz0ViUa+wgIlLAqRDfFjV2RZAiBEt7c5i7BE2lSEJnFfGQY6OtelUxQ92BtoBvoRde06IAAGJqH3vQIqnkqw7lfKN2CTDYgXZGFhHd3Ge5l8GZBrD7zMoymBWcmuDsWK4N6Vaoa2JSqVH+FG+FuqZ9Vx1IILLKP09FA5Va2jPrpKSPEgt8mLutaHhDr5IKD//HFp14ah2cypDlSwqZ+e23dGth6pJJwR+zNmBiw48i8vkczm1bTvlS4YBoj55IbBpPuw2XqDLEsjG8AQNNYFvXfGOruhG1WnWTlWaRWfhwCihrOjKjjdojJ9gPstB0/v67whv0N6xCCp3DpHV3x5JCRBHD6OOfb2uC0JZlJyxQor9u3G7PVu5ZOomNImGKO7sv5sHrF0hAeg+gxfo8vqr46E0cgwIx+ngBGdgiF7AWbOSXOBWSSzTRvth7ZS5gLoJuMc0eA0ks1/GIyMWu5mVCnVoJkO+k1WFJBetBzA2JwCjVLjlQsATTcyDphn11vzbMqLu4e5Ub/1AQ8j4FCV9L4J5DSJLtiIBqsMfHMAV5VafBU2u7Ujr29XYsajD+TsJRMyMC0IxeH1nIEq0DqPOSC5eLBSxkYUVo7MZDtNUpzgBHb5SThPWyo13VQ=
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:YQBPR0101MB5080.CANPRD01.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230022)(346002)(396003)(136003)(376002)(366004)(39830400003)(451199015)(8936002)(83380400001)(38100700002)(53546011)(5660300002)(4744005)(31686004)(7416002)(2616005)(36756003)(2906002)(41300700001)(6486002)(186003)(478600001)(6666004)(107886003)(4326008)(6506007)(31696002)(66476007)(66946007)(66556008)(8676002)(6512007)(26005)(86362001)(316002)(110136005)(54906003)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?utf-8?B?OWhmei9WbitWaDZGcnY5M1ZWREJaRWNOTHQxeXhiQ2lYZkY5SFZMMnlwVFpo?=
- =?utf-8?B?S1dnZWIrbVg2TTJFTGc2WVhBNnNvQ25BZWhRQlRlRGFjVFNGY0creE4vVDcx?=
- =?utf-8?B?aE93ZkNIb1FSZkl0OEIxSHlsbGIvY3lCZE1Mc2lsdlY5N2hwVkZsd2xaTUky?=
- =?utf-8?B?QVU5ZEFycERvMjNyZnpKWWRnU0RsNnFsQjRvZk9NeGNzalBBUnkzZ09VV1F6?=
- =?utf-8?B?Lzkxb0d5OWRmTE5tSXRqamo2SGhIRkxKdnNDc0k5MEtxYS85S1lqcHlteStB?=
- =?utf-8?B?Y2V4dzI0T0lZK24zRFczTjI0dGZ2UitGdzBkbUZSK1U1WDgyc2gvTEZzL2NC?=
- =?utf-8?B?M1FUeVZHT2lzQTdqZUttcFBBV3RrODAycEtRRnZJclNmdFdmb3lDVGg2ZkhM?=
- =?utf-8?B?ZVBKeW80NTZ6VVNEWkF3Z2dxTHlrM3dMLy9Ed0xvQmVyWXdWT0lxU21nNXhz?=
- =?utf-8?B?dnJpNWdjV0FlSWdiYkJpT3FhNjNhQjNyVGhZamtXRUxjdzVHMHFmRHFSbnFD?=
- =?utf-8?B?TTlpaG81N0FvaHJKZld6amNuWDMzYzgvWWQ4S1N2aHJQVTVFSThZUlVodXhV?=
- =?utf-8?B?SUhuVVU5RG5HNmtYUGhMTVJsOGpjbjRCMHFwMGJQR1RtaFRoaXYvdTZrbzZL?=
- =?utf-8?B?b2ZNS0ZuYU9oR0VncnNiTGFzZXZaNFh2ZFVIYjA5aVA5Tis1c096Qmwrak94?=
- =?utf-8?B?S2Q1aE5tQ1pxeUVmUU5UT1lHVEtCaEFubVZrQ3FpN0lQa3ZPMDBEZ1B0MFlH?=
- =?utf-8?B?Z09sVWduRFAyWFpSQy9FTUQxMkNDODlad09KKzZOa1ZNbVN0TXMvOXdFTzhl?=
- =?utf-8?B?SVlDWkhtMzFwUHJYa2Z4ZmgzMVpQWGYzSGFWSnNhNjlDSFVxbVEzVHZvNUov?=
- =?utf-8?B?RnpGY1JYd094WGxJcllNakdabW5ZSFBpcmxUVVl0dERFQWU0TWZUTUVpcGsy?=
- =?utf-8?B?WDNURU1TeGhrcjN1TVF4SnBtbzRtTG5jeFdYN2xUd2RPU2hzRXVpbURCM0py?=
- =?utf-8?B?S0pRdUg4WGNYVnZ4aXBERTNGby9WZjdKSFNpS3hkZmtRcnY0ZmVPbHJXNXZl?=
- =?utf-8?B?dm92MnVvdENwWWp1dk85eTlyQnJDT3VOVkZYTi80bE9ROGtVcDRwN01lMXdh?=
- =?utf-8?B?Z1l5WEp4cWZaaEJsN1hBankrOTd3UXpTZTFqRldKMU4wWXJaVUQ5TEFMV1kr?=
- =?utf-8?B?ZEFIRTRnRnNqQ082a0NnSDUwUE9lMlFuRHVYNUFNZXZaMnRUSENsd29hUmo4?=
- =?utf-8?B?MTEyNkkxUHQxSmpJaDk4dzBHOG1GdmxaL2cwQ3RqWUpBVGFvOTZMWjcwTzJU?=
- =?utf-8?B?Q0t0bXYzS1BwQ3BwV3lVeXA3amxTd3ZMZzJZeitjOEVCOHBrUFRpZEhMeFlN?=
- =?utf-8?B?aWh4T3pCZWI0WlY1cEI2WlZaSCtCU3B5dWpUSVZ1UnFyTlplbDRzcmF6NFNB?=
- =?utf-8?B?NXQrMEh5ZllXUm5LTmhiNi9KaFZVUFZLNDNrNklnUnpFenNDUExOVlU0SnZk?=
- =?utf-8?B?ZS84QXZzTTZ0WW9wZytlQTQ1eGFEakh5b3B6YzJTZjhYUFdXSEtlNk4xbzht?=
- =?utf-8?B?TkJML0cvWWNxek54bkc2NW9XeDJrZTl1UEdWUWtxWk92Wm1JRDRRSjNGTnJz?=
- =?utf-8?B?dWNuUXV4QlF0R2pKQUNvdXQ4dk81SjR6N1kxRnptQThXajRteXJOOEJaYk82?=
- =?utf-8?B?Wkd4T016V1Z5UGVuUTNMTFpFSkNGVnJ4N3dKZTduOFBpdmZ2Qm5uTVZjczJs?=
- =?utf-8?B?eEdRQTVTbGhDY3A3cnF6b0ZCU0RNcFF6VW1NME5WM0Q5eFZHeTJTajR0c3li?=
- =?utf-8?B?RUMzS3dXeTZScnNPYlhWdk84Z25hekE4QkV4YWdJQ0tVTDVRdHlwK0FEN0lT?=
- =?utf-8?B?OTRIOThtUEpBUXFQUWNoMUYyeEU3Q3ZJVEttbVpHekpITlRwMklTandQczZQ?=
- =?utf-8?B?VUNSVXYyQnV6anB5YnN4M1d2d3ZCOHRJUkNGNC93WnFKWElsNm1DTktMVUwx?=
- =?utf-8?B?bW1Hald0dzU0cDUwMVRQTzd0WGROM052YytxZ21McWRpTW5NNHAyU0tVWjda?=
- =?utf-8?B?V1BURmxMd0RhN2YvWm0yK1V4dU9HM3QxS3VnaHprTDcxYXo2Wk51OUtaRXVQ?=
- =?utf-8?Q?tiU/YD2SQdsCnYsMw63XsXfSj?=
-X-OriginatorOrg: efficios.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0ceaf85e-0e89-436f-e458-08dad70a256a
-X-MS-Exchange-CrossTenant-AuthSource: YQBPR0101MB5080.CANPRD01.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Dec 2022 21:46:21.9534
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4f278736-4ab6-415c-957e-1f55336bd31e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bs/NY5apc/A9eToPrDs5nk13zgga/ooRJmnuvECFmEOxB7sbjzxitm/d2//48QkPSHFanStPCKgqAiYlVaIKXw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: YT2PR01MB5773
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -135,33 +58,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Masami Hiramatsu <mhiramat@kernel.org>, "stable@vger.kernel.org" <stable@vger.kernel.org>, Michal Suchanek <msuchanek@suse.de>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-pci@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2022-12-05 15:11, Michael Jeanson wrote:
->>>> Michael Jeanson <mjeanson@efficios.com> writes:
->>>>> In v5.7 the powerpc syscall entry/exit logic was rewritten in C, on
->>>>> PPC64_ELF_ABI_V1 this resulted in the symbols in the syscall table
->>>>> changing from their dot prefixed variant to the non-prefixed ones.
->>>>>
->>>>> Since ftrace prefixes a dot to the syscall names when matching them to
->>>>> build its syscall event list, this resulted in no syscall events being
->>>>> available.
->>>>>
->>>>> Remove the PPC64_ELF_ABI_V1 specific version of
->>>>> arch_syscall_match_sym_name to have the same behavior across all powerpc
->>>>> variants.
->>>>
->>>> This doesn't seem to work for me.
->>>>
->>>> Event with it applied I still don't see anything in
->>>> /sys/kernel/debug/tracing/events/syscalls
->>>>
->>>> Did we break it in some other way recently?
->>>>
->>>> cheers
+From: Bjorn Helgaas <bhelgaas@google.com>
 
-I did some further testing, my config also enabled KALLSYMS_ALL, when I remove 
-it there is indeed no syscall events.
+cxl_pci_window_alignment() is referenced only via the struct
+pci_controller_ops.window_alignment function pointer, and only in the
+powerpc implementation of pcibios_window_alignment().
+
+pcibios_window_alignment() defaults to returning 1 if the function pointer
+is NULL, which is the same was what cxl_pci_window_alignment() does.
+
+cxl_pci_window_alignment() is unnecessary, so remove it.  No functional
+change intended.
+
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+---
+ drivers/misc/cxl/vphb.c | 7 -------
+ 1 file changed, 7 deletions(-)
+
+diff --git a/drivers/misc/cxl/vphb.c b/drivers/misc/cxl/vphb.c
+index 1264253cc07b..6332db8044bd 100644
+--- a/drivers/misc/cxl/vphb.c
++++ b/drivers/misc/cxl/vphb.c
+@@ -67,12 +67,6 @@ static void cxl_pci_disable_device(struct pci_dev *dev)
+ 	}
+ }
+ 
+-static resource_size_t cxl_pci_window_alignment(struct pci_bus *bus,
+-						unsigned long type)
+-{
+-	return 1;
+-}
+-
+ static void cxl_pci_reset_secondary_bus(struct pci_dev *dev)
+ {
+ 	/* Should we do an AFU reset here ? */
+@@ -200,7 +194,6 @@ static struct pci_controller_ops cxl_pci_controller_ops =
+ 	.enable_device_hook = cxl_pci_enable_device_hook,
+ 	.disable_device = cxl_pci_disable_device,
+ 	.release_device = cxl_pci_disable_device,
+-	.window_alignment = cxl_pci_window_alignment,
+ 	.reset_secondary_bus = cxl_pci_reset_secondary_bus,
+ 	.setup_msi_irqs = cxl_setup_msi_irqs,
+ 	.teardown_msi_irqs = cxl_teardown_msi_irqs,
+-- 
+2.25.1
 
