@@ -2,49 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C020E642C6B
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Dec 2022 17:01:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BCD3642C70
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Dec 2022 17:03:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NQpFr49cWz3bm9
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Dec 2022 03:01:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NQpHW30tTz3bjx
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Dec 2022 03:03:19 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=EXkPiPH9;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=o8sllyzq;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=EXkPiPH9;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=o8sllyzq;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NQpDt1H1mz3bVP
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Dec 2022 03:01:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NQpGc3JBzz30Qx
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Dec 2022 03:02:32 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id BC54BB81144;
-	Mon,  5 Dec 2022 16:00:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D945AC433B5;
-	Mon,  5 Dec 2022 16:00:54 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 822B661188;
+	Mon,  5 Dec 2022 16:02:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59369C433D6;
+	Mon,  5 Dec 2022 16:02:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1670256055;
-	bh=trNrKrfKjsfA/iJHoM4RlcQMgCcsX15/LCiL4T/xuJ0=;
+	s=korg; t=1670256148;
+	bh=fUCRk5umyyi3F3OQ84Ugjf+XIjegvMCAtqFGwoNUqqc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EXkPiPH9jpu2QDhpC1k592OE6zoYsvZ6Cm6TtkRBZj9flj8DPe/+/ck94MscE/Hy+
-	 PVn+ynbqHg6LhzriIAOKH+7f1fPldEuUHPztcK+v0tQmwdicxIaCw7If8OtrPmpjh+
-	 OYAzWhpAg9ucHwpcZ/6qG8GRvR0WojmPy76I8FYg=
-Date: Mon, 5 Dec 2022 17:00:52 +0100
+	b=o8sllyzqWv2DzA+KUc9+w2ABl/BVpS0Lah/qIWLxT+W/phFpqpqdbXN1oOWepc2y6
+	 1CM6I2RlaNDAfcFYCSOSYzTwNVhYoEmdiIQoSi0gEVkPf+sgz5otQ4QNZFNjb4x0YQ
+	 NNzgKtGndHDakAGEC+w4etUgbRYKrSRN7qSWH+MA=
+Date: Mon, 5 Dec 2022 17:02:26 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
 To: Dawei Li <set_pte_at@outlook.com>
-Subject: Re: [PATCH 0/6] Make remove() of any bus based driver void returned
-Message-ID: <Y44VtN/rmjIU6sDC@kroah.com>
-References: <TYCP286MB23234ABCCF40E3FC42FD09A4CA189@TYCP286MB2323.JPNP286.PROD.OUTLOOK.COM>
+Subject: Re: [PATCH 4/6] xen: make remove callback of xen driver void returned
+Message-ID: <Y44WEkKh9tdNjMlW@kroah.com>
+References: <20221205153644.60909-1-set_pte_at@outlook.com>
+ <TYCP286MB232333CB411691110A8B9D96CA189@TYCP286MB2323.JPNP286.PROD.OUTLOOK.COM>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <TYCP286MB23234ABCCF40E3FC42FD09A4CA189@TYCP286MB2323.JPNP286.PROD.OUTLOOK.COM>
+In-Reply-To: <TYCP286MB232333CB411691110A8B9D96CA189@TYCP286MB2323.JPNP286.PROD.OUTLOOK.COM>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,37 +61,20 @@ Cc: jgross@suse.com, wei.liu@kernel.org, sstabellini@kernel.org, linux-hyperv@vg
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Dec 05, 2022 at 11:36:38PM +0800, Dawei Li wrote:
-> For bus-based driver, device removal is implemented as:
-> device_remove() => bus->remove() => driver->remove()
-> 
-> Driver core needs no feedback from bus driver about the result of
-> remove callback. In which case, commit fc7a6209d571 ("bus: Make
-> remove callback return void") forces bus_type::remove be void-returned.
-> 
-> Now we have the situation that both 1st & 2nd part of calling chain
-> are void returned, so it does not make much sense for the last one
-> (driver->remove) to return non-void to its caller.
-> 
-> So the basic idea behind this patchset is making remove() callback of
-> any bus-based driver to be void returned.
-> 
-> This patchset includes changes for drivers below:
-> 1. hyperv
-> 2. macio
-> 3. apr
-> 4. xen
-> 5. ac87
-> 6. soundbus
+On Mon, Dec 05, 2022 at 11:36:42PM +0800, Dawei Li wrote:
+> Since commit fc7a6209d571 ("bus: Make remove callback return
+> void") forces bus_type::remove be void-returned, it doesn't
+> make much sense for any bus based driver implementing remove
+> callbalk to return non-void to its caller.
 
-Then that should be 6 different patchsets going to 6 different
-subsystems.  No need to make this seems like a unified set of patches at
-all.
+Please wrap changelogs at 72 columns.
 
-> Q: Why not platform drivers?
-> A: Too many of them.(maybe 4K+)
+And this should go through the maintainers of the Xen bus code, not me,
+right?
 
-That will have to be done eventually, right?
+And why wasn't this attached to the 0/6 email properly?  Did you use
+different tools?  If so, our tools can't find the link to keep them in
+sync either :(
 
 thanks,
 
