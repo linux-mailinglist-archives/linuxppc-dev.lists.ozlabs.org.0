@@ -1,52 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C9586422C2
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Dec 2022 06:35:46 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B6466424F3
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Dec 2022 09:45:38 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NQXMN30xJz3bgg
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Dec 2022 16:35:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NQcZS3NV0z3bhT
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Dec 2022 19:45:36 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=PJRBsMYB;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=VHG9BGw4;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::435; helo=mail-pf1-x435.google.com; envelope-from=linmq006@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=VHG9BGw4;
+	dkim-atps=neutral
+Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NQXLR1cYkz3bW2
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Dec 2022 16:34:55 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=PJRBsMYB;
-	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NQXLN2j8Wz4xFr;
-	Mon,  5 Dec 2022 16:34:51 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1670218494;
-	bh=LZM/dOQ5o1Fzq95MgbgafsjU5PRMxGu0sQRONJPy2b8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=PJRBsMYB8VhCGc+x3Xz8vv/KcTg4s2ARgnKNIcEc7w0H61ggLNz/ZJNLytP1BAo0p
-	 Xj2a+anTUWCEYXLEM8IeiBYQ04zLotcKr75wFa2j921f9Mnt2IJQGstYQp7OIpzsKE
-	 9PfqUH0x40QLfSKFSO6uN8ENnZTmqhIymKEOUyqm8loeI7N/VZ+u3WZhpmcYOeWqXF
-	 Usla1e1QW/qqrDvX508v4RPMT9cXRH2thKaTHLESsujL33GP4W9NTCqmjos+Na7O0/
-	 CkUEaAuBOCfudLzXRiub9fi8Yn+N4+izJajUa2A1MtJ9bzcceehUVmW09fk6IEihsZ
-	 ClySslHjWnWFQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Michael Jeanson <mjeanson@efficios.com>, Steven Rostedt
- <rostedt@goodmis.org>
-Subject: Re: [PATCH] powerpc/ftrace: fix syscall tracing on PPC64_ELF_ABI_V1
-In-Reply-To: <20221201161442.2127231-1-mjeanson@efficios.com>
-References: <20221201161442.2127231-1-mjeanson@efficios.com>
-Date: Mon, 05 Dec 2022 16:34:49 +1100
-Message-ID: <87pmcys9ae.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NQcYV30vbz2yRV
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Dec 2022 19:44:45 +1100 (AEDT)
+Received: by mail-pf1-x435.google.com with SMTP id 21so10683171pfw.4
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 05 Dec 2022 00:44:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=mfpI91j/Y0e7n9kSIKkB1eB3wJUrqLVm9u9ZvFip/8I=;
+        b=VHG9BGw4G2xPBjZhyKDaIVmzz/QAFQ7pTzfNThhC9EAw3R6E9hL+pCGISJoH7Kz7eC
+         2I2RPf1nH8+0duwh0RdsypagnCjxw+XFIlVu8cuxAS16n71Yr8pETszT7ulv9XX1I5qD
+         IZiGDrk4Ldmb1G3zJQyFsOH90LoVGs0uFAaeq81cAWyZ92RZ0Ki6ECCkXprPRRIx0qwa
+         pGkWE5f+CtAxa18zPZS4Vbgtz2rVfYJYPUdCiDr+CYR9lN1icqOJtb+x6u2RFibOhpXr
+         PImnH+5qkcnb/ZAm7Is56SmkXjSvOVmnEFo8L/k6ECSo8hCm1nXmuQej0DhyHV/T19KG
+         VPLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=mfpI91j/Y0e7n9kSIKkB1eB3wJUrqLVm9u9ZvFip/8I=;
+        b=v6UYF6yIHIvEM5wGckIpDc3J/Twe7KxgdK0yT7D41DpKxgTSE9fz/ODGvuYOpmbQbz
+         HAUlSSMOoAkMTlx1Wfw21BRcK+BT/ce/M7cEcMmowaTims25mYcBdjMFZjsRuwtTqvuw
+         d2XER6kXlU4YWV0wQj1BvlbwKNfT+WxVV2r6bVPTSeODpVC7ctDCj/PKex5BuRZEGl4T
+         OVW0uDTfLZypUo0+p48eEMm9xU1TgTezptXTDZsxcOfecXzUGIqWVGyp72+U6ch+i7NK
+         DqEnl5cOYuRfajOi7PMybxNr7zPPKa67rpcksm5Vit651MS4LUaDzgo8xVf24BbHlm69
+         b54A==
+X-Gm-Message-State: ANoB5plzvys3RUGFlqdnmy+RezMnqKJbr/RvgPMbucACDvb06gQ1EsKf
+	VXNjWhU4+DI27k8vw3+pToc=
+X-Google-Smtp-Source: AA0mqf4c9Aw2+V+i2qnJjaDCHslItpgdR1g1SCuzHmCPiG/NYtL3k6ZxQnBTweH92Q4OiFFuyJIKfA==
+X-Received: by 2002:a63:941:0:b0:478:a350:77ed with SMTP id 62-20020a630941000000b00478a35077edmr7255134pgj.417.1670229882404;
+        Mon, 05 Dec 2022 00:44:42 -0800 (PST)
+Received: from localhost.localdomain ([202.120.234.246])
+        by smtp.googlemail.com with ESMTPSA id u11-20020a170902e80b00b0018996404dd5sm10045370plg.109.2022.12.05.00.44.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Dec 2022 00:44:41 -0800 (PST)
+From: Miaoqian Lin <linmq006@gmail.com>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Shuah Khan <shuah@kernel.org>,
+	Miaoqian Lin <linmq006@gmail.com>,
+	Anshuman Khandual <khandual@linux.vnet.ibm.com>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] selftests/powerpc: Fix resource leaks
+Date: Mon,  5 Dec 2022 12:44:27 +0400
+Message-Id: <20221205084429.570654-1-linmq006@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,78 +82,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, linux-kernel@vger.kernel.org, Michael Jeanson <mjeanson@efficios.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Nicholas Piggin <npiggin@gmail.com>, stable@vger.kernel.org, Michal Suchanek <msuchanek@suse.de>, linuxppc-dev@lists.ozlabs.org, Masami Hiramatsu <mhiramat@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michael Jeanson <mjeanson@efficios.com> writes:
-> In v5.7 the powerpc syscall entry/exit logic was rewritten in C, on
-> PPC64_ELF_ABI_V1 this resulted in the symbols in the syscall table
-> changing from their dot prefixed variant to the non-prefixed ones.
->
-> Since ftrace prefixes a dot to the syscall names when matching them to
-> build its syscall event list, this resulted in no syscall events being
-> available.
->
-> Remove the PPC64_ELF_ABI_V1 specific version of
-> arch_syscall_match_sym_name to have the same behavior across all powerpc
-> variants.
+In check_all_cpu_dscr_defaults, opendir() opens the directory stream.
+Add missing closedir() in the error path to release it.
 
-This doesn't seem to work for me.
+In check_cpu_dscr_default, open() creates an open file descriptor.
+Add missing close() in the error path to release it.
 
-Event with it applied I still don't see anything in /sys/kernel/debug/tracing/events/syscalls
+Fixes: ebd5858c904b ("selftests/powerpc: Add test for all DSCR sysfs interfaces")
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+---
+ tools/testing/selftests/powerpc/dscr/dscr_sysfs_test.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-Did we break it in some other way recently?
+diff --git a/tools/testing/selftests/powerpc/dscr/dscr_sysfs_test.c b/tools/testing/selftests/powerpc/dscr/dscr_sysfs_test.c
+index fbbdffdb2e5d..f20d1c166d1e 100644
+--- a/tools/testing/selftests/powerpc/dscr/dscr_sysfs_test.c
++++ b/tools/testing/selftests/powerpc/dscr/dscr_sysfs_test.c
+@@ -24,6 +24,7 @@ static int check_cpu_dscr_default(char *file, unsigned long val)
+ 	rc = read(fd, buf, sizeof(buf));
+ 	if (rc == -1) {
+ 		perror("read() failed");
++		close(fd);
+ 		return 1;
+ 	}
+ 	close(fd);
+@@ -65,8 +66,10 @@ static int check_all_cpu_dscr_defaults(unsigned long val)
+ 		if (access(file, F_OK))
+ 			continue;
+ 
+-		if (check_cpu_dscr_default(file, val))
++		if (check_cpu_dscr_default(file, val)) {
++			closedir(sysfs);
+ 			return 1;
++		}
+ 	}
+ 	closedir(sysfs);
+ 	return 0;
+-- 
+2.25.1
 
-cheers
-
-
-> Fixes: 68b34588e202 ("powerpc/64/sycall: Implement syscall entry/exit logic in C")
-> Cc: stable@vger.kernel.org # v5.7+
-> Cc: Steven Rostedt <rostedt@goodmis.org>
-> Cc: Masami Hiramatsu <mhiramat@kernel.org>
-> Cc: Mark Rutland <mark.rutland@arm.com>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Cc: Michal Suchanek <msuchanek@suse.de>
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-kernel@vger.kernel.org
-> Signed-off-by: Michael Jeanson <mjeanson@efficios.com>
-> Reviewed-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-> ---
->  arch/powerpc/include/asm/ftrace.h | 12 ------------
->  1 file changed, 12 deletions(-)
->
-> diff --git a/arch/powerpc/include/asm/ftrace.h b/arch/powerpc/include/asm/ftrace.h
-> index 3cee7115441b..e3d1f377bc5b 100644
-> --- a/arch/powerpc/include/asm/ftrace.h
-> +++ b/arch/powerpc/include/asm/ftrace.h
-> @@ -64,17 +64,6 @@ void ftrace_graph_func(unsigned long ip, unsigned long parent_ip,
->   * those.
->   */
->  #define ARCH_HAS_SYSCALL_MATCH_SYM_NAME
-> -#ifdef CONFIG_PPC64_ELF_ABI_V1
-> -static inline bool arch_syscall_match_sym_name(const char *sym, const char *name)
-> -{
-> -	/* We need to skip past the initial dot, and the __se_sys alias */
-> -	return !strcmp(sym + 1, name) ||
-> -		(!strncmp(sym, ".__se_sys", 9) && !strcmp(sym + 6, name)) ||
-> -		(!strncmp(sym, ".ppc_", 5) && !strcmp(sym + 5, name + 4)) ||
-> -		(!strncmp(sym, ".ppc32_", 7) && !strcmp(sym + 7, name + 4)) ||
-> -		(!strncmp(sym, ".ppc64_", 7) && !strcmp(sym + 7, name + 4));
-> -}
-> -#else
->  static inline bool arch_syscall_match_sym_name(const char *sym, const char *name)
->  {
->  	return !strcmp(sym, name) ||
-> @@ -83,7 +72,6 @@ static inline bool arch_syscall_match_sym_name(const char *sym, const char *name
->  		(!strncmp(sym, "ppc32_", 6) && !strcmp(sym + 6, name + 4)) ||
->  		(!strncmp(sym, "ppc64_", 6) && !strcmp(sym + 6, name + 4));
->  }
-> -#endif /* CONFIG_PPC64_ELF_ABI_V1 */
->  #endif /* CONFIG_FTRACE_SYSCALLS */
->  
->  #if defined(CONFIG_PPC64) && defined(CONFIG_FUNCTION_TRACER)
-> -- 
-> 2.34.1
