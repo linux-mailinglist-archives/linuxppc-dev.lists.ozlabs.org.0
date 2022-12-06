@@ -2,95 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 253F164411D
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Dec 2022 11:15:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D6CC644242
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Dec 2022 12:38:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NRGWz099Lz3bhM
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Dec 2022 21:15:43 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=CxCV2iAw;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NRJM004Dzz3c69
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Dec 2022 22:38:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=CxCV2iAw;
-	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.221.45; helo=mail-wr1-f45.google.com; envelope-from=wei.liu.linux@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NRGVz2MHVz2yN9
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Dec 2022 21:14:50 +1100 (AEDT)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2B681iNn011870;
-	Tue, 6 Dec 2022 10:14:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : subject :
- to : cc : references : in-reply-to : message-id : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=xP+fE3zfeq7Cma8fKqUf/J6GY4b4v0vDQ9LWsl5xUaE=;
- b=CxCV2iAwdqdN9mf9vgFsB05jtM1ewnD7HjVYa5NrZSCY02d8w/paB+ehcpKx21z4oFQE
- WEBPO9BT0fxbd86ps7hzSw/TD8pDLKbTK7NKXuGKd5uMhrpy56EZ9U5KhsFDK47SWerB
- FlVZsbVGgLBm2wfv0lL0DkxVZcXkbzIlrC1exr595Zpx7w+0NGJ8IxHuqsTjv7MvRILX
- ZMZoEZ2VGQJfljhGh2d04VmXxvgut52TOBPpfFSQ6RSXRLxGFHCCxBVtTUEhYoI22LGv
- 8HNrlS3L6B4FF8cvMJ18jr2fIJ9WEYnvwQoD9rQ7SwPJLmB5z5u48GZ0LQSoGfywgtpI 0g== 
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3m8gm46xvm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 06 Dec 2022 10:14:28 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
-	by ppma03ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 2B696TPX008300;
-	Tue, 6 Dec 2022 10:14:26 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma03ams.nl.ibm.com (PPS) with ESMTPS id 3m9m5y1602-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 06 Dec 2022 10:14:26 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com ([9.149.105.160])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2B6AEOgf43843942
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 6 Dec 2022 10:14:24 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 18ADFA4067;
-	Tue,  6 Dec 2022 10:14:24 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8A948A4062;
-	Tue,  6 Dec 2022 10:14:23 +0000 (GMT)
-Received: from localhost (unknown [9.124.31.136])
-	by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Tue,  6 Dec 2022 10:14:23 +0000 (GMT)
-Date: Tue, 06 Dec 2022 15:44:22 +0530
-From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: linux-next: build warnings after merge of the powerpc-objtool
- tree
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
-        PowerPC
-	<linuxppc-dev@lists.ozlabs.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "peterz@infradead.org" <peterz@infradead.org>,
-        Stephen Rothwell
-	<sfr@canb.auug.org.au>,
-        Sathvika Vasireddy <sv@linux.ibm.com>
-References: <20221125143012.6426c2b9@canb.auug.org.au>
-	<6cdad32e-782d-5bb5-f7e9-a44fb0b6444d@linux.ibm.com>
-	<c0ed0d60-6014-4c5f-e610-b4d3bd9e9e33@csgroup.eu>
-	<74552090-c654-5356-773d-47ead2d63ab2@linux.ibm.com>
-In-Reply-To: <74552090-c654-5356-773d-47ead2d63ab2@linux.ibm.com>
-User-Agent: astroid/4d6b06ad (https://github.com/astroidmail/astroid)
-Message-Id: <1670317359.hj45ajyl9d.naveen@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: olsnCQvttZOY4sF1sHKJ-y4bBqYE_GNk
-X-Proofpoint-GUID: olsnCQvttZOY4sF1sHKJ-y4bBqYE_GNk
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NRJLR3fBJz3bTs
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Dec 2022 22:37:33 +1100 (AEDT)
+Received: by mail-wr1-f45.google.com with SMTP id h10so13506219wrx.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Dec 2022 03:37:33 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2dEEPgYHWLWGN87zsbE4biUqCxTkyL0Hp4s+LmxL1OA=;
+        b=c+ZhVmXcFBcBYZ1CqnAuO2BT4uDt/GoBVl/FSV7k7maqIQ9jw3ettvRtUBqKt6olcT
+         Gc48TfH4lgpUu8yqhUrEFgxO9Xna+0zlL/aAZ2tK5iQ1vUgpyYY1JcA51f8R1khN1xLR
+         y6z2qgdJSqXgUOUghDyKAIod+mQN08DxcEBFjKXa7LSzm4G8eRZP7vWnRQSrb2849J0i
+         C4sw21jsI7A2CrN1A/YqLR8IRdhiefJU8rJZuZLVKV1XqPtCylh9jI15wYYgBG47NU/y
+         JW+2UGi8ZHSJlOTQUULENyka6YSTekuQZ+d10qFF6UZqeATYgtrHT6YTjaimlBVDUglp
+         C+/g==
+X-Gm-Message-State: ANoB5pnF/zy5FcrVA8zTzggd/K4n4vh8htx5dzRiTzfEBymwHmaX14mF
+	BOaKs8N3oM97YXPxtG47UKA=
+X-Google-Smtp-Source: AA0mqf5IQao7pI3S55ozIZ3UILwG0zwLXEWSh3JhE8Rsg0wuM8pdCGyXY1E8JKqEYaIaMJ9EdjlENQ==
+X-Received: by 2002:a5d:5385:0:b0:242:f8d:fcee with SMTP id d5-20020a5d5385000000b002420f8dfceemr27418643wrv.86.1670326648777;
+        Tue, 06 Dec 2022 03:37:28 -0800 (PST)
+Received: from liuwe-devbox-debian-v2 ([51.145.34.42])
+        by smtp.gmail.com with ESMTPSA id q17-20020a05600000d100b0024207ed4ce0sm16635553wrx.58.2022.12.06.03.37.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Dec 2022 03:37:27 -0800 (PST)
+Date: Tue, 6 Dec 2022 11:37:26 +0000
+From: Wei Liu <wei.liu@kernel.org>
+To: Dawei Li <set_pte_at@outlook.com>
+Subject: Re: [PATCH 1/6] hyperv: Make remove callback of hyperv driver void
+ returned
+Message-ID: <Y48pdr9DEmXShhFR@liuwe-devbox-debian-v2>
+References: <20221205153644.60909-1-set_pte_at@outlook.com>
+ <TYCP286MB232373567792ED1AC5E0849FCA189@TYCP286MB2323.JPNP286.PROD.OUTLOOK.COM>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-12-06_05,2022-12-06_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- phishscore=0 spamscore=0 clxscore=1011 mlxscore=0 suspectscore=0
- lowpriorityscore=0 impostorscore=0 bulkscore=0 mlxlogscore=999
- adultscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2210170000 definitions=main-2212060078
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <TYCP286MB232373567792ED1AC5E0849FCA189@TYCP286MB2323.JPNP286.PROD.OUTLOOK.COM>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,120 +62,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Next Mailing List <linux-next@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc: jgross@suse.com, wei.liu@kernel.org, sstabellini@kernel.org, linux-hyperv@vger.kernel.org, gregkh@linuxfoundation.org, haiyangz@microsoft.com, linuxppc-dev@lists.ozlabs.org, decui@microsoft.com, alsa-devel@alsa-project.org, npiggin@gmail.com, linux-kernel@vger.kernel.org, oleksandr_tyshchenko@epam.com, srinivas.kandagatla@linaro.org, bgoswami@quicinc.com, xen-devel@lists.xenproject.org, johannes@sipsolutions.net, kys@microsoft.com, robert.jarzmik@free.fr, roger.pau@citrix.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Sathvika Vasireddy wrote:
->=20
-> On 29/11/22 20:58, Christophe Leroy wrote:
->>
->> Le 29/11/2022 =C3=A0 16:13, Sathvika Vasireddy a =C3=A9crit=C2=A0:
->>> Hi all,
->>>
->>> On 25/11/22 09:00, Stephen Rothwell wrote:
->>>> Hi all,
->>>>
->>>> After merging the powerpc-objtool tree, today's linux-next build (powe=
-rpc
->>>> pseries_le_defconfig) produced these warnings:
->>>>
->>>> arch/powerpc/kernel/head_64.o: warning: objtool: end_first_256B():
->>>> can't find starting instruction
->>>> arch/powerpc/kernel/optprobes_head.o: warning: objtool:
->>>> optprobe_template_end(): can't find starting instruction
->>>>
->>>> I have no idea what started this (they may have been there yesterday).
->>> I was able to recreate the above mentioned warnings with
->>> pseries_le_defconfig and powernv_defconfig. The regression report also
->>> mentions a warning
->>> (https://lore.kernel.org/oe-kbuild-all/202211282102.QUr7HHrW-lkp@intel.=
-com/) seen with arch/powerpc/kernel/kvm_emul.S assembly file.
->>>
->>>   =C2=A0[1] arch/powerpc/kernel/optprobes_head.o: warning: objtool:
->>> optprobe_template_end(): can't find starting instruction
->>>   =C2=A0[2] arch/powerpc/kernel/kvm_emul.o: warning: objtool:
->>> kvm_template_end(): can't find starting instruction
->>>   =C2=A0[3] arch/powerpc/kernel/head_64.o: warning: objtool: end_first_=
-256B():
->>> can't find starting instruction
->>>
->>> The warnings [1] and [2] go away after adding 'nop' instruction. Below
->>> diff fixes it for me:
->> You have to add NOPs just because those labels are at the end of the
->> files. That's a bit odd.
->> I think either we are missing some kind of flagging for the symbols, or
->> objtool has a bug. In both cases, I'm not sure adding an artificial
->> 'nop' is the solution. At least there should be a big hammer warning
->> explaining why.
+On Mon, Dec 05, 2022 at 11:36:39PM +0800, Dawei Li wrote:
+> Since commit fc7a6209d571 ("bus: Make remove callback return
+> void") forces bus_type::remove be void-returned, it doesn't
+> make much sense for any bus based driver implementing remove
+> callbalk to return non-void to its caller.
+> 
+> This change is for hyperv bus based drivers.
+> 
+> Signed-off-by: Dawei Li <set_pte_at@outlook.com>
+[...]
+> -static int netvsc_remove(struct hv_device *dev)
+> +static void netvsc_remove(struct hv_device *dev)
+>  {
+>  	struct net_device_context *ndev_ctx;
+>  	struct net_device *vf_netdev, *net;
+> @@ -2603,7 +2603,6 @@ static int netvsc_remove(struct hv_device *dev)
+>  	net = hv_get_drvdata(dev);
+>  	if (net == NULL) {
+>  		dev_err(&dev->device, "No net device to remove\n");
+> -		return 0;
 
-The problem looks to be that commit dbcdbdfdf137b4 ("objtool: Rework=20
-instruction -> symbol mapping"), which was referenced by Sathvika below,=20
-changes how STT_NOTYPE symbols are handled. In the files throwing that=20
-warning, there are labels either at the very end of the file, or at the=20
-end of a section with no subsequent instruction. Before that commit, we=20
-didn't used to expect an instruction for STT_NOTYPE symbols.
+This is wrong. You are introducing a NULL pointer dereference.
 
->=20
-> I don't see these warnings with powerpc/topic/objtool branch. However,=20
-> they are seen with linux-next master branch.
-> Commit dbcdbdfdf137b49144204571f1a5e5dc01b8aaad objtool: Rework=20
-> instruction -> symbol mapping in linux-next is resulting in objtool=20
-> can't find starting instruction warnings on powerpc.
->=20
-> Reverting this particular hunk (pasted below), resolves it and we don't=20
-> see the problem anymore.
->=20
-> @@ -427,7 +427,10 @@ static int decode_instructions(struct objtool_file=20
-> *file)
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 }
->=20
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 list_for_each_entry(func, &sec->symbol_list, list) {
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (func->type=
- !=3D STT_FUNC || func->alias !=3D func)
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (func->type=
- !=3D STT_NOTYPE && func->type !=3D=20
-> STT_FUNC)
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 continue;
-> +
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (func->retu=
-rn_thunk || func->alias !=3D func)
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 continue;
->=20
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!fin=
-d_insn(file, sec, func->offset)) {
+>  	}
+>  
+>  	ndev_ctx = netdev_priv(net);
+> @@ -2637,7 +2636,6 @@ static int netvsc_remove(struct hv_device *dev)
+>  
+>  	free_percpu(ndev_ctx->vf_stats);
+>  	free_netdev(net);
+> -	return 0;
+>  }
+>  
+>  static int netvsc_suspend(struct hv_device *dev)
+> diff --git a/drivers/pci/controller/pci-hyperv.c b/drivers/pci/controller/pci-hyperv.c
+> index ba64284eaf9f..3a09de70d6ea 100644
+> --- a/drivers/pci/controller/pci-hyperv.c
+> +++ b/drivers/pci/controller/pci-hyperv.c
+> @@ -3756,7 +3756,7 @@ static int hv_pci_bus_exit(struct hv_device *hdev, bool keep_devs)
+>   *
+>   * Return: 0 on success, -errno on failure
+>   */
 
-We are currently bailing out if find_insn() there fails. Should we=20
-instead just continue by not setting insn->sym?
+This comment is no longer needed in the new world.
 
-@@ -430,11 +430,8 @@ static int decode_instructions(struct objtool_file *fi=
-le)
-                        if (func->return_thunk || func->alias !=3D func)
-                                continue;
-=20
--                       if (!find_insn(file, sec, func->offset)) {
--                               WARN("%s(): can't find starting instruction=
-",
--                                    func->name);
--                               return -1;
--                       }
-+                       if (!find_insn(file, sec, func->offset))
-+                               continue;
-=20
-                        sym_for_each_insn(file, func, insn) {
-                                insn->sym =3D func;
+But, are you sure you're modifying the correct piece of code?
 
+hv_pci_remove is not a hook in the base bus type. It is used in struct
+hv_driver.
 
+The same comment applies to all other modifications.
 
-- Naveen
-
+Thanks,
+Wei.
