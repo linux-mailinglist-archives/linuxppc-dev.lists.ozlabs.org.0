@@ -2,49 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F71D6440B0
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Dec 2022 10:53:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AA756440C7
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Dec 2022 10:54:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NRG2m01Fpz3cF6
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Dec 2022 20:53:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NRG3m2Cczz3fCG
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Dec 2022 20:54:44 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=W3kM5c5H;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=tvUuC84f;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=W3kM5c5H;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=tvUuC84f;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NRFyz6VJLz3bm9
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Dec 2022 20:50:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NRFz24p6Mz3bW2
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Dec 2022 20:50:38 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 2AD93B818E3;
-	Tue,  6 Dec 2022 09:50:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D73E7C433C1;
-	Tue,  6 Dec 2022 09:50:29 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 21D036160D;
+	Tue,  6 Dec 2022 09:50:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 855B9C43148;
+	Tue,  6 Dec 2022 09:50:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1670320231;
-	bh=auDQjwHm6h2ALybttMU6AStHAYjCwp3thiNoP+tCx8I=;
-	h=From:To:Cc:Subject:Date:From;
-	b=W3kM5c5HeGF67FMxswHU35XnrPmQlW3GGi+R4RB4ddeaxmPrD3isjrXxtR4U8vd3i
-	 ijfU90HGzgVHMtzsa9N6iqTQ35fSvN3LhEv3vpgrX5k1IQ6oV3xFLPilVlJ81xm3y1
-	 GXnlM040C7IOltxV8UGo5WBSddPzx+D7g1gx3fsI5biKQ/wPytUw72AFLpPi5DdHj9
-	 E0f8G6pJGDA+JoYj5ZaWMXhWKJzrr5VqBgsZZVqRQuaCmEkf81xk+ltHvC18+8msEl
-	 a3k3qvgm1xM4fHs1pufte76srhtN1zm/xsgtjBjt+f7g+D2Nyuq7vBr6P6Eeznp32u
-	 sDMdFQ1oChj3A==
+	s=k20201202; t=1670320234;
+	bh=fnYpf1KMAowkcUXWPb36W/ocy6bzlV1c1fTke1mPyUk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=tvUuC84fQHFCf78pQ0fxsC4nHTa9rfrAArVivVGFmhROf9+jcuoyIC7ml+faJ3IR/
+	 +NVVckO1RDcFa+VbCzcLCzv/v22QWA3rB472V0WAx3pTsWG0n17sPMvQcvRDjdc32/
+	 ryDC52MyBG963nLepBwnr9jix7qHCLwaNGBffWJXkIfL0ijl/DZ3caCXZju9wWyN8I
+	 CP/4Z2pLD09w9ZzC8jTMJeHvlIahpN4pXp3eIDh7Ky0sp7pmsErxUT/1FvIU4g+ket
+	 GId8LsssFDnTkhSr4fnIrVr7HzR7BxbxnGpxLnyB03/7hVILO9CDKao7FSFwnwaXsH
+	 bWWO+K9zuxj6Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 01/10] ASoC: fsl_micfil: explicitly clear software reset bit
-Date: Tue,  6 Dec 2022 04:50:18 -0500
-Message-Id: <20221206095027.987587-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 02/10] ASoC: fsl_micfil: explicitly clear CHnF flags
+Date: Tue,  6 Dec 2022 04:50:19 -0500
+Message-Id: <20221206095027.987587-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20221206095027.987587-1-sashal@kernel.org>
+References: <20221206095027.987587-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -66,37 +68,39 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit 292709b9cf3ba470af94b62c9bb60284cc581b79 ]
+[ Upstream commit b776c4a4618ec1b5219d494c423dc142f23c4e8f ]
 
-SRES is self-cleared bit, but REG_MICFIL_CTRL1 is defined as
-non volatile register, it still remain in regmap cache after set,
-then every update of REG_MICFIL_CTRL1, software reset happens.
-to avoid this, clear it explicitly.
+There may be failure when start 1 channel recording after
+8 channels recording. The reason is that the CHnF
+flags are not cleared successfully by software reset.
+
+This issue is triggerred by the change of clearing
+software reset bit.
+
+CHnF flags are write 1 clear bits. Clear them by force
+write.
 
 Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Link: https://lore.kernel.org/r/1651925654-32060-1-git-send-email-shengjiu.wang@nxp.com
+Link: https://lore.kernel.org/r/1651925654-32060-2-git-send-email-shengjiu.wang@nxp.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_micfil.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ sound/soc/fsl/fsl_micfil.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
 diff --git a/sound/soc/fsl/fsl_micfil.c b/sound/soc/fsl/fsl_micfil.c
-index efc5daf53bba..ead4bfa13561 100644
+index ead4bfa13561..6c794605e33c 100644
 --- a/sound/soc/fsl/fsl_micfil.c
 +++ b/sound/soc/fsl/fsl_micfil.c
-@@ -190,6 +190,17 @@ static int fsl_micfil_reset(struct device *dev)
+@@ -201,6 +201,14 @@ static int fsl_micfil_reset(struct device *dev)
+ 	if (ret)
  		return ret;
- 	}
  
 +	/*
-+	 * SRES is self-cleared bit, but REG_MICFIL_CTRL1 is defined
-+	 * as non-volatile register, so SRES still remain in regmap
-+	 * cache after set, that every update of REG_MICFIL_CTRL1,
-+	 * software reset happens. so clear it explicitly.
++	 * Set SRES should clear CHnF flags, But even add delay here
++	 * the CHnF may not be cleared sometimes, so clear CHnF explicitly.
 +	 */
-+	ret = regmap_clear_bits(micfil->regmap, REG_MICFIL_CTRL1,
-+				MICFIL_CTRL1_SRES);
++	ret = regmap_write_bits(micfil->regmap, REG_MICFIL_STAT, 0xFF, 0xFF);
 +	if (ret)
 +		return ret;
 +
