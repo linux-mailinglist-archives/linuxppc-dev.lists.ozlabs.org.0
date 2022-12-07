@@ -2,46 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 079D16455EC
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Dec 2022 09:59:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B7A1645935
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Dec 2022 12:47:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NRrn40Mlyz3cJM
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Dec 2022 19:59:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NRwWh4k5Dz3bym
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Dec 2022 22:47:44 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Gsn1e37q;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=inspur.com (client-ip=210.51.26.146; helo=unicom146.biz-email.net; envelope-from=wangchuanlei@inspur.com; receiver=<UNKNOWN>)
-X-Greylist: delayed 62 seconds by postgrey-1.36 at boromir; Wed, 07 Dec 2022 17:55:16 AEDT
-Received: from unicom146.biz-email.net (unicom146.biz-email.net [210.51.26.146])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NRp2D5SW0z305v
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Dec 2022 17:55:16 +1100 (AEDT)
-Received: from ([60.208.111.195])
-        by unicom146.biz-email.net ((D)) with ASMTP (SSL) id BII00059;
-        Wed, 07 Dec 2022 14:53:59 +0800
-Received: from localhost.localdomain (10.180.204.101) by
- jtjnmail201609.home.langchao.com (10.100.2.9) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.16; Wed, 7 Dec 2022 14:53:59 +0800
-From: wangchuanlei <wangchuanlei@inspur.com>
-To: <mpe@ellerman.id.au>, <npiggin@gmail.com>, <christophe.leroy@csgroup.eu>,
-	<aik@ozlabs.ru>
-Subject: [PATCH] [PATCH net-next] powerpc: iommu: delete redundant row
-Date: Wed, 7 Dec 2022 01:53:55 -0500
-Message-ID: <20221207065355.4070022-1-wangchuanlei@inspur.com>
-X-Mailer: git-send-email 2.27.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NRwVn1GGyz3bVf
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Dec 2022 22:46:57 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Gsn1e37q;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NRwVl60Gfz4xN4;
+	Wed,  7 Dec 2022 22:46:55 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1670413615;
+	bh=S+YjT48UExrzda5adY5AaltmhmcH0vh/HXnqPGGw8JY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=Gsn1e37qP/hsJL7zdykRPekxtQaQuAAMFZuLhk8MhxcO3jZcE6+TgIxux7Dx38XIA
+	 jiPJSt0NeDxmlsFJImG+bj0Di2G4OeY1ohZ5c+4MzBfLdxSFi+vowDXab8hyvCrFsk
+	 PWer91ENY8Ajcsa01IMlIhclxzEd34+3uGHOSvo2Oxh+PAsbiEhd6+t6etrV86c5KX
+	 LWVQpGRHV3EfPiIjhV05Rik04yjptdaWc09/rXqc0Y2/efutkn41YyQiONRw1fsIon
+	 2ywLDfgrIZZoazAkc2hO/3o0+3u7O08Se3sQjNfMDOVYrUfEwvNb6coVvDIsy5NTSH
+	 1sQyiQC4XXpkA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Rohan McLure <rmclure@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] powerpc: qspinlock: Use asm-generic definition for
+ queued_spin_lock
+In-Reply-To: <20221206055155.2774695-1-rmclure@linux.ibm.com>
+References: <20221206055155.2774695-1-rmclure@linux.ibm.com>
+Date: Wed, 07 Dec 2022 22:46:52 +1100
+Message-ID: <87a63zsafn.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Originating-IP: [10.180.204.101]
-X-ClientProxiedBy: Jtjnmail201614.home.langchao.com (10.100.2.14) To
- jtjnmail201609.home.langchao.com (10.100.2.9)
-tUid: 20221207145359ec80c3b64be1d5aef652dd31f6be9120
-X-Abuse-Reports-To: service@corp-email.com
-Abuse-Reports-To: service@corp-email.com
-X-Complaints-To: service@corp-email.com
-X-Report-Abuse-To: service@corp-email.com
-X-Mailman-Approved-At: Wed, 07 Dec 2022 19:58:36 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,27 +58,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: wangchuanlei <wangchuanlei@inspur.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, wangpeihui@inspur.com
+Cc: Rohan McLure <rmclure@linux.ibm.com>, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Signed-off-by: wangchuanlei <wangchuanlei@inspur.com>
----
- arch/powerpc/kernel/iommu.c | 1 -
- 1 file changed, 1 deletion(-)
+Rohan McLure <rmclure@linux.ibm.com> writes:
+> asm-generic/qspinlock.h provides an identical implementation of
+> queued_spin_lock. Remove the variant in asm/qspinlock.h.
 
-diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
-index caebe1431596..dd010a733404 100644
---- a/arch/powerpc/kernel/iommu.c
-+++ b/arch/powerpc/kernel/iommu.c
-@@ -953,7 +953,6 @@ void iommu_free_coherent(struct iommu_table *tbl, size_t size,
- 		size = PAGE_ALIGN(size);
- 		nio_pages = size >> tbl->it_page_shift;
- 		iommu_free(tbl, dma_handle, nio_pages);
--		size = PAGE_ALIGN(size);
- 		free_pages((unsigned long)vaddr, get_order(size));
- 	}
- }
--- 
-2.27.0
+This code has changed recently, so this patch no longer applies.
 
+See 9f61521c7a28 ("powerpc/qspinlock: powerpc qspinlock implementation")
+in powerpc/next.
+
+cheers
+
+
+> diff --git a/arch/powerpc/include/asm/qspinlock.h b/arch/powerpc/include/asm/qspinlock.h
+> index b676c4fb90fd..bf5ba0f00258 100644
+> --- a/arch/powerpc/include/asm/qspinlock.h
+> +++ b/arch/powerpc/include/asm/qspinlock.h
+> @@ -33,17 +33,6 @@ static inline void queued_spin_unlock(struct qspinlock *lock)
+>  extern void queued_spin_lock_slowpath(struct qspinlock *lock, u32 val);
+>  #endif
+>  
+> -static __always_inline void queued_spin_lock(struct qspinlock *lock)
+> -{
+> -	u32 val = 0;
+> -
+> -	if (likely(arch_atomic_try_cmpxchg_lock(&lock->val, &val, _Q_LOCKED_VAL)))
+> -		return;
+> -
+> -	queued_spin_lock_slowpath(lock, val);
+> -}
+> -#define queued_spin_lock queued_spin_lock
+> -
+>  #ifdef CONFIG_PARAVIRT_SPINLOCKS
+>  #define SPIN_THRESHOLD (1<<15) /* not tuned */
+>  
+> -- 
+> 2.37.2
