@@ -1,64 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 331FC64519D
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Dec 2022 02:57:35 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 272D76451C6
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Dec 2022 03:10:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NRgQg2YD6z3bh6
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Dec 2022 12:57:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NRgjB0fzpz3bgM
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Dec 2022 13:10:06 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=IdXzCiFN;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=QM4X/72H;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.88; helo=mga01.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=IdXzCiFN;
-	dkim-atps=neutral
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NRgPj2NZSz2xKX
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Dec 2022 12:56:34 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1670378201; x=1701914201;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=fDd07MsmV/z0w9Fkk/aVEFJbIoq/lKLIEmqLw4lmqGU=;
-  b=IdXzCiFN3aj61W2aMLCG+frg9KMe4z7u3UuPfq+8fpueLkkWwnX9LNBH
-   KbLLJ3Tph011ZcoM3AILWrQaf3rvtyc1YZ3cFrPjSXH1LzqQTHRCdtoa2
-   JKIR6x891JaQXPaoGcqU7/JwN5fXMhW8+blYf5KpwxdESCXZCS8ILCoGa
-   K23whnQB53nyL6JUXuVsgnMasuNCZA8TFSlIjVBjMtSxm5uV97k0A2pPK
-   zocrEflSLUXkrIELK8pUtBoRI8ITgtIb5PYNhkEUHljs1cglvd/x7JwP7
-   6TTHynYHvC78etsZLP+bjlgoBJpYpenKZMOmWwX+CfZWNVSl+Fl2XAQR5
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10553"; a="343809842"
-X-IronPort-AV: E=Sophos;i="5.96,223,1665471600"; 
-   d="scan'208";a="343809842"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2022 17:56:30 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10553"; a="820791624"
-X-IronPort-AV: E=Sophos;i="5.96,223,1665471600"; 
-   d="scan'208";a="820791624"
-Received: from lkp-server01.sh.intel.com (HELO b3c45e08cbc1) ([10.239.97.150])
-  by orsmga005.jf.intel.com with ESMTP; 06 Dec 2022 17:56:29 -0800
-Received: from kbuild by b3c45e08cbc1 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1p2jfg-0001RR-2B;
-	Wed, 07 Dec 2022 01:56:28 +0000
-Date: Wed, 07 Dec 2022 09:55:50 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next] BUILD SUCCESS
- 5ddcc03a07ae1ab5062f89a946d9495f1fd8eaa4
-Message-ID: <638ff2a6.PJR1DRd5paSlW59i%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NRghC5lttz2xkD
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Dec 2022 13:09:15 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=QM4X/72H;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NRgh83Bwsz4x1H;
+	Wed,  7 Dec 2022 13:09:12 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1670378955;
+	bh=qPerjcvxj//99SC+VDDOAu42pbFJqpbWCha/nmMfhU8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=QM4X/72HsNwe9GIAqJf/W3dEcno9m5vWla3jduhaunahlWgrN0o87ypohobZgUo1N
+	 fS4lotKKdSDs+mOGFhr3eZVjpmaQL+/MiGsdQ2KYY3cqfO0MvebGoPkGBOgTBUvsRg
+	 JMoblaoJN2VUJN6fRJM1AIXRINgrtOg+PFxdz0OauFEcZ86hpdKlu3S7Z/q75tE1sy
+	 mmQmlOeB5mJpRnbBgD+1q9wpmXKbIwCVE3GfHUhFrTK0FJ0aQLkHAJHV8hn1HXgEDh
+	 83k4E+aVSgLCyC85MHSO0IWj2s53AdYldwOlVuHc4E0ioytSnBeAtTo7GViPhSLSOl
+	 Nb6WZk9SolZZg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Michael Jeanson
+ <mjeanson@efficios.com>, Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Steven Rostedt <rostedt@goodmis.org>
+Subject: Re: [PATCH] powerpc/ftrace: fix syscall tracing on PPC64_ELF_ABI_V1
+In-Reply-To: <484763aa-e77b-b599-4786-ef4cdf16d7bd@efficios.com>
+References: <20221201161442.2127231-1-mjeanson@efficios.com>
+ <87pmcys9ae.fsf@mpe.ellerman.id.au>
+ <d5dd1491-5d59-7987-9b5b-83f5fb1b29ee@efficios.com>
+ <219580de-7473-f142-5ef2-1ed40e41d13d@csgroup.eu>
+ <323f83c7-38fe-8a12-d77a-0a7249aad316@efficios.com>
+ <dfe0b9ba-828d-e1a5-f9a3-416c6b5b1cf3@efficios.com>
+ <87mt81sbxb.fsf@mpe.ellerman.id.au>
+ <484763aa-e77b-b599-4786-ef4cdf16d7bd@efficios.com>
+Date: Wed, 07 Dec 2022 13:09:05 +1100
+Message-ID: <87cz8wrmm6.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,85 +66,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Mark Rutland <mark.rutland@arm.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Masami Hiramatsu <mhiramat@kernel.org>, "stable@vger.kernel.org" <stable@vger.kernel.org>, Michal Suchanek <msuchanek@suse.de>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-branch HEAD: 5ddcc03a07ae1ab5062f89a946d9495f1fd8eaa4  powerpc/cpuidle: Set CPUIDLE_FLAG_POLLING for snooze state
+Mathieu Desnoyers <mathieu.desnoyers@efficios.com> writes:
+> On 2022-12-05 17:50, Michael Ellerman wrote:
+>> Michael Jeanson <mjeanson@efficios.com> writes:
+>>> On 2022-12-05 15:11, Michael Jeanson wrote:
+>>>>>>> Michael Jeanson <mjeanson@efficios.com> writes:
+>>>>>>>> In v5.7 the powerpc syscall entry/exit logic was rewritten in C, on
+>>>>>>>> PPC64_ELF_ABI_V1 this resulted in the symbols in the syscall table
+>>>>>>>> changing from their dot prefixed variant to the non-prefixed ones.
+>>>>>>>>
+>>>>>>>> Since ftrace prefixes a dot to the syscall names when matching them to
+>>>>>>>> build its syscall event list, this resulted in no syscall events being
+>>>>>>>> available.
+>>>>>>>>
+>>>>>>>> Remove the PPC64_ELF_ABI_V1 specific version of
+>>>>>>>> arch_syscall_match_sym_name to have the same behavior across all powerpc
+>>>>>>>> variants.
+>>>>>>>
+>>>>>>> This doesn't seem to work for me.
+>>>>>>>
+>>>>>>> Event with it applied I still don't see anything in
+>>>>>>> /sys/kernel/debug/tracing/events/syscalls
+>>>>>>>
+>>>>>>> Did we break it in some other way recently?
+>>>>>>>
+>>>>>>> cheers
+>>>
+>>> I did some further testing, my config also enabled KALLSYMS_ALL, when I remove
+>>> it there is indeed no syscall events.
+>> 
+>> Aha, OK that explains it I guess.
+>> 
+>> I was using ppc64_guest_defconfig which has ABI_V1 and FTRACE_SYSCALLS,
+>> but does not have KALLSYMS_ALL. So I guess there's some other bug
+>> lurking in there.
+>
+> I don't have the setup handy to validate it, but I suspect it is caused 
+> by the way scripts/kallsyms.c:symbol_valid() checks whether a symbol 
+> entry needs to be integrated into the assembler output when 
+> --all-symbols is not specified. It only keeps symbols which addresses 
+> are in the text range. On PPC64_ELF_ABI_V1, this means only the 
+> dot-prefixed symbols will be kept (those point to the function begin), 
+> leaving out the non-dot-prefixed symbols (those point to the function 
+> descriptors).
 
-elapsed time: 728m
+OK. So I guess it never worked without KALLSYMS_ALL.
 
-configs tested: 60
-configs skipped: 2
+It seems like most distros enable KALLSYMS_ALL, so I guess that's why
+we've never noticed.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+> So I see two possible solutions there: either we ensure that 
+> FTRACE_SYSCALLS selects KALLSYMS_ALL on PPC64_ELF_ABI_V1, or we modify 
+> scripts/kallsyms.c:symbol_valid() to also include function descriptor 
+> symbols. This would mean accepting symbols pointing into the .opd ELF 
+> section.
 
-gcc tested configs:
-um                             i386_defconfig
-um                           x86_64_defconfig
-powerpc                           allnoconfig
-arc                                 defconfig
-s390                             allmodconfig
-alpha                               defconfig
-x86_64                         rhel-8.3-kunit
-x86_64                           rhel-8.3-kvm
-s390                                defconfig
-x86_64                           rhel-8.3-syz
-sh                               allmodconfig
-s390                             allyesconfig
-i386                                defconfig
-powerpc                          allmodconfig
-mips                             allyesconfig
-arm                                 defconfig
-x86_64                          rhel-8.3-rust
-x86_64                    rhel-8.3-kselftests
-x86_64                              defconfig
-x86_64                          rhel-8.3-func
-arm                  randconfig-r046-20221206
-i386                          randconfig-a014
-arc                  randconfig-r043-20221206
-i386                          randconfig-a012
-i386                          randconfig-a016
-arm64                            allyesconfig
-arm                              allyesconfig
-x86_64                        randconfig-a013
-i386                          randconfig-a001
-x86_64                        randconfig-a011
-x86_64                        randconfig-a004
-i386                          randconfig-a003
-i386                             allyesconfig
-x86_64                        randconfig-a002
-x86_64                               rhel-8.3
-x86_64                        randconfig-a015
-x86_64                        randconfig-a006
-x86_64                           allyesconfig
-i386                          randconfig-a005
-m68k                             allyesconfig
-m68k                             allmodconfig
-ia64                             allmodconfig
-arc                              allyesconfig
-alpha                            allyesconfig
+My only worry is that will cause some other breakage, because .opd
+symbols are not really "text" in the normal sense, ie. you can't execute
+them directly.
 
-clang tested configs:
-hexagon              randconfig-r041-20221206
-i386                          randconfig-a013
-hexagon              randconfig-r045-20221206
-s390                 randconfig-r044-20221206
-riscv                randconfig-r042-20221206
-i386                          randconfig-a011
-i386                          randconfig-a015
-i386                          randconfig-a002
-x86_64                        randconfig-a012
-x86_64                        randconfig-a001
-i386                          randconfig-a004
-x86_64                        randconfig-a003
-x86_64                        randconfig-a014
-x86_64                        randconfig-a016
-x86_64                        randconfig-a005
-i386                          randconfig-a006
+On the other hand the help for KALLSYMS_ALL says:
 
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+  "Normally kallsyms only contains the symbols of functions"
+
+But without .opd included that's not really true. In practice it
+probably doesn't really matter, because eg. backtraces will point to dot
+symbols which can be resolved.
+
+> IMHO the second option would be better because it does not increase the 
+> kernel image size as much as KALLSYMS_ALL.
+
+Yes I agree.
+
+Even if that did break something, any breakage would be limited to
+arches which uses function descriptors, which are now all rare.
+
+Relatedly we have a patch in next to optionally use ABIv2 for 64-bit big
+endian builds.
+
+cheers
