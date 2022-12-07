@@ -1,60 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 272D76451C6
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Dec 2022 03:10:08 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A1FD6451E2
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Dec 2022 03:18:40 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NRgjB0fzpz3bgM
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Dec 2022 13:10:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NRgtz1GV3z3bfM
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Dec 2022 13:18:35 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=QM4X/72H;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rshxMWMb;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NRghC5lttz2xkD
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Dec 2022 13:09:15 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=sboyd@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=QM4X/72H;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rshxMWMb;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NRgh83Bwsz4x1H;
-	Wed,  7 Dec 2022 13:09:12 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1670378955;
-	bh=qPerjcvxj//99SC+VDDOAu42pbFJqpbWCha/nmMfhU8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=QM4X/72HsNwe9GIAqJf/W3dEcno9m5vWla3jduhaunahlWgrN0o87ypohobZgUo1N
-	 fS4lotKKdSDs+mOGFhr3eZVjpmaQL+/MiGsdQ2KYY3cqfO0MvebGoPkGBOgTBUvsRg
-	 JMoblaoJN2VUJN6fRJM1AIXRINgrtOg+PFxdz0OauFEcZ86hpdKlu3S7Z/q75tE1sy
-	 mmQmlOeB5mJpRnbBgD+1q9wpmXKbIwCVE3GfHUhFrTK0FJ0aQLkHAJHV8hn1HXgEDh
-	 83k4E+aVSgLCyC85MHSO0IWj2s53AdYldwOlVuHc4E0ioytSnBeAtTo7GViPhSLSOl
-	 Nb6WZk9SolZZg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Michael Jeanson
- <mjeanson@efficios.com>, Christophe Leroy <christophe.leroy@csgroup.eu>,
- Steven Rostedt <rostedt@goodmis.org>
-Subject: Re: [PATCH] powerpc/ftrace: fix syscall tracing on PPC64_ELF_ABI_V1
-In-Reply-To: <484763aa-e77b-b599-4786-ef4cdf16d7bd@efficios.com>
-References: <20221201161442.2127231-1-mjeanson@efficios.com>
- <87pmcys9ae.fsf@mpe.ellerman.id.au>
- <d5dd1491-5d59-7987-9b5b-83f5fb1b29ee@efficios.com>
- <219580de-7473-f142-5ef2-1ed40e41d13d@csgroup.eu>
- <323f83c7-38fe-8a12-d77a-0a7249aad316@efficios.com>
- <dfe0b9ba-828d-e1a5-f9a3-416c6b5b1cf3@efficios.com>
- <87mt81sbxb.fsf@mpe.ellerman.id.au>
- <484763aa-e77b-b599-4786-ef4cdf16d7bd@efficios.com>
-Date: Wed, 07 Dec 2022 13:09:05 +1100
-Message-ID: <87cz8wrmm6.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NRgt14MV8z2yyZ
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Dec 2022 13:17:45 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 49659611DD;
+	Wed,  7 Dec 2022 02:17:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3596C433C1;
+	Wed,  7 Dec 2022 02:17:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1670379462;
+	bh=lxh+qkWtrAkQD6FWNVfNsV2V1Ki+c1iwrz1a+xcetr0=;
+	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+	b=rshxMWMbp4jY5A3Nq2O5c7KmmaX6MZr80aizs8RFHHgf5gnyu5edJNDFxhhk7z7/Y
+	 ckBIRqkHc0yxl7ApXxB+NTs8/dTIiruW8ELggtlnE7epcE0x7bWR2SWPuX8q5hf4fG
+	 dVeJLhQrgpM5XWrCuJbWrbCcY5C5HrE7HmFyHyBM4pakwkMAj9Urz9TrRAWFu2d0QO
+	 vvDb4UkZZXe0rhD+MGA6otPd8oBVuFRPrVns2+L6zwtkorJou3Z7aXhSdwdphbsaFU
+	 wgJQBRZPAyOXQVs6C1I0uwvoGkcQl0R06amskDTpcv7UMC1TLnWflgELbrNjep7c4U
+	 tyLzbSifoOr9A==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <45463950-7a4f-758d-d6a1-b8fdf9bfd319@seco.com>
+References: <20221027191113.403712-1-sean.anderson@seco.com> <20221027191113.403712-5-sean.anderson@seco.com> <20221027230331.19C2FC433D6@smtp.kernel.org> <5f00ede6-10f5-c11c-ee21-54460c1f98b0@seco.com> <d13ff3b2-79f0-2a72-c9da-2c310c4e3bb8@seco.com> <20221101201020.B6180C433C1@smtp.kernel.org> <45463950-7a4f-758d-d6a1-b8fdf9bfd319@seco.com>
+Subject: Re: [PATCH v8 4/9] phy: fsl: Add Lynx 10G SerDes driver
+From: Stephen Boyd <sboyd@kernel.org>
+To: Kishon Vijay Abraham I <kishon@ti.com>, Sean Anderson <sean.anderson@seco.com>, Vinod Koul <vkoul@kernel.org>, linux-phy@lists.infradead.org
+Date: Tue, 06 Dec 2022 18:17:40 -0800
+User-Agent: alot/0.10
+Message-Id: <20221207021742.A3596C433C1@smtp.kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,86 +60,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Masami Hiramatsu <mhiramat@kernel.org>, "stable@vger.kernel.org" <stable@vger.kernel.org>, Michal Suchanek <msuchanek@suse.de>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: devicetree@vger.kernel.org, Bagas Sanjaya <bagasdotme@gmail.com>, Madalin Bucur <madalin.bucur@nxp.com>, Michael Turquette <mturquette@baylibre.com>, Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org, Rob Herring <robh+dt@kernel.org>, Camelia Alexandra Groza <camelia.groza@nxp.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Ioana Ciornei <ioana.ciornei@nxp.com>, linuxppc-dev@lists.ozlabs.org, linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Mathieu Desnoyers <mathieu.desnoyers@efficios.com> writes:
-> On 2022-12-05 17:50, Michael Ellerman wrote:
->> Michael Jeanson <mjeanson@efficios.com> writes:
->>> On 2022-12-05 15:11, Michael Jeanson wrote:
->>>>>>> Michael Jeanson <mjeanson@efficios.com> writes:
->>>>>>>> In v5.7 the powerpc syscall entry/exit logic was rewritten in C, on
->>>>>>>> PPC64_ELF_ABI_V1 this resulted in the symbols in the syscall table
->>>>>>>> changing from their dot prefixed variant to the non-prefixed ones.
->>>>>>>>
->>>>>>>> Since ftrace prefixes a dot to the syscall names when matching them to
->>>>>>>> build its syscall event list, this resulted in no syscall events being
->>>>>>>> available.
->>>>>>>>
->>>>>>>> Remove the PPC64_ELF_ABI_V1 specific version of
->>>>>>>> arch_syscall_match_sym_name to have the same behavior across all powerpc
->>>>>>>> variants.
->>>>>>>
->>>>>>> This doesn't seem to work for me.
->>>>>>>
->>>>>>> Event with it applied I still don't see anything in
->>>>>>> /sys/kernel/debug/tracing/events/syscalls
->>>>>>>
->>>>>>> Did we break it in some other way recently?
->>>>>>>
->>>>>>> cheers
->>>
->>> I did some further testing, my config also enabled KALLSYMS_ALL, when I remove
->>> it there is indeed no syscall events.
->> 
->> Aha, OK that explains it I guess.
->> 
->> I was using ppc64_guest_defconfig which has ABI_V1 and FTRACE_SYSCALLS,
->> but does not have KALLSYMS_ALL. So I guess there's some other bug
->> lurking in there.
->
-> I don't have the setup handy to validate it, but I suspect it is caused 
-> by the way scripts/kallsyms.c:symbol_valid() checks whether a symbol 
-> entry needs to be integrated into the assembler output when 
-> --all-symbols is not specified. It only keeps symbols which addresses 
-> are in the text range. On PPC64_ELF_ABI_V1, this means only the 
-> dot-prefixed symbols will be kept (those point to the function begin), 
-> leaving out the non-dot-prefixed symbols (those point to the function 
-> descriptors).
+Quoting Sean Anderson (2022-11-01 16:27:21)
+> On 11/1/22 16:10, Stephen Boyd wrote:
+> >>=20
+> >> Oh, I remember why I did this. I need the reference clock for clk_hw_r=
+ound_rate,
+> >> which is AFAICT the only correct way to implement round_rate.
+> >>=20
+> >=20
+> > Is the reference clk the parent of the clk implementing
+> > clk_ops::round_rate()?
+>=20
+> Yes. We may be able to produce a given output with multiple reference
+> rates. However, the clock API provides no mechanism to say "Don't ask
+> for the parent clock to be rate X, you just tried it and the parent
+> clock can't support it." So instead, we loop over the possible reference
+> rates and pick the first one which the parent says it can round to.
+>=20
 
-OK. So I guess it never worked without KALLSYMS_ALL.
-
-It seems like most distros enable KALLSYMS_ALL, so I guess that's why
-we've never noticed.
-
-> So I see two possible solutions there: either we ensure that 
-> FTRACE_SYSCALLS selects KALLSYMS_ALL on PPC64_ELF_ABI_V1, or we modify 
-> scripts/kallsyms.c:symbol_valid() to also include function descriptor 
-> symbols. This would mean accepting symbols pointing into the .opd ELF 
-> section.
-
-My only worry is that will cause some other breakage, because .opd
-symbols are not really "text" in the normal sense, ie. you can't execute
-them directly.
-
-On the other hand the help for KALLSYMS_ALL says:
-
-  "Normally kallsyms only contains the symbols of functions"
-
-But without .opd included that's not really true. In practice it
-probably doesn't really matter, because eg. backtraces will point to dot
-symbols which can be resolved.
-
-> IMHO the second option would be better because it does not increase the 
-> kernel image size as much as KALLSYMS_ALL.
-
-Yes I agree.
-
-Even if that did break something, any breakage would be limited to
-arches which uses function descriptors, which are now all rare.
-
-Relatedly we have a patch in next to optionally use ABIv2 for 64-bit big
-endian builds.
-
-cheers
+Sorry, I'm lost. Why can't you loop over possible reference rates in
+determine_rate/round_rate clk op here?
