@@ -1,33 +1,33 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12EB364700D
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Dec 2022 13:51:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4E1C647021
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Dec 2022 13:54:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NSYtt05J1z3fHJ
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Dec 2022 23:51:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NSYyS3d3Mz3fdM
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Dec 2022 23:54:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NSYrg3yyyz2xKX
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Dec 2022 23:49:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NSYrv5w1fz3cB4
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Dec 2022 23:49:51 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NSYrc40Kjz4xTx;
-	Thu,  8 Dec 2022 23:49:36 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NSYrv36sgz4xvS;
+	Thu,  8 Dec 2022 23:49:51 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: benh@kernel.crashing.org, XueBing Chen <chenxuebing@jari.cn>, mpe@ellerman.id.au, seanjc@google.com, aik@ozlabs.ru, clg@kaod.org, paulus@samba.org
-In-Reply-To: <13b2c857.beb.181725bad35.Coremail.chenxuebing@jari.cn>
-References: <13b2c857.beb.181725bad35.Coremail.chenxuebing@jari.cn>
-Subject: Re: [PATCH] KVM: PPC: use __func__ to get funcion's name in an output message
-Message-Id: <167050315478.1457988.6983450516071083505.b4-ty@ellerman.id.au>
-Date: Thu, 08 Dec 2022 23:39:14 +1100
+To: Zhang Jiaming <jiaming@nfschina.com>, benh@kernel.crashing.org, mpe@ellerman.id.au, paulus@samba.org
+In-Reply-To: <20220623102031.15359-1-jiaming@nfschina.com>
+References: <20220623102031.15359-1-jiaming@nfschina.com>
+Subject: Re: [PATCH] KVM: Fix spelling mistake
+Message-Id: <167050315544.1457988.12211386518984944248.b4-ty@ellerman.id.au>
+Date: Thu, 08 Dec 2022 23:39:15 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -42,19 +42,19 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: liqiong@nfschina.com, linuxppc-dev@lists.ozlabs.org, renyu@nfschina.com, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 17 Jun 2022 23:50:19 +0800 (GMT+08:00), XueBing Chen wrote:
-> Prefer using '"%s...", __func__' to get current function's name in
-> an output message.
+On Thu, 23 Jun 2022 18:20:31 +0800, Zhang Jiaming wrote:
+> Change 'subsquent' to 'subsequent'.
+> Change 'accross' to 'across'.
 > 
 > 
 
 Applied to powerpc/next.
 
-[1/1] KVM: PPC: use __func__ to get funcion's name in an output message
-      https://git.kernel.org/powerpc/c/61119786de40f61b8843aa57217b678361763d67
+[1/1] KVM: Fix spelling mistake
+      https://git.kernel.org/powerpc/c/392a58f1eaab0c90b80d7ba4a03dbf6eaaeabe60
 
 cheers
