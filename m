@@ -1,53 +1,35 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA40C646B92
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Dec 2022 10:10:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0784F646D9C
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Dec 2022 11:53:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NSSzt50yJz2xZp
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Dec 2022 20:10:34 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QEtT/hxn;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NSWGN6XtQz3cMb
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Dec 2022 21:53:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=jirislaby@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QEtT/hxn;
-	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NSSwy6R3tz2xmg
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Dec 2022 20:08:02 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id DAAED61E0D;
-	Thu,  8 Dec 2022 09:08:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3317C43470;
-	Thu,  8 Dec 2022 09:07:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1670490480;
-	bh=/+A5oXIkfPVqlkdsYp0NLY4/uVwf3XSTDvcavOu+uhM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QEtT/hxnWyXsDOquDQcYrJHOU+tUBHorP+rwZ5QfoNYvcJpM8gsnhSaA5eynkskUB
-	 7k4QmLPwbfVNjvp+Kio+uBrLcplK8KL43Sa4RpXMaNED+YZ20iw15+95J+DXKYt+2c
-	 wDRST3S8vXKSzjkwB5fbcunqSLFfP+2mcJqsKGZKgDTxxCsYKJFTGR8q7W5HogLk9s
-	 lKiXt90jsqDhNQ1+LacP0KRvNcrFZUmugb9MvDk1sUcsrXlr0NQVx9X8lj6CUKs+WG
-	 KW47TQW5kW/icnbnBka0Pg8DXCrcQhiGD8ynaicHbQeYiS0wLtPonZad5eAXXz9SZP
-	 lOZE2Q4TLlEZA==
-From: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
-To: gregkh@linuxfoundation.org
-Subject: [PATCH 3/3] USB: sisusbvga: use module_usb_driver()
-Date: Thu,  8 Dec 2022 10:07:48 +0100
-Message-Id: <20221208090749.28056-3-jirislaby@kernel.org>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20221208090749.28056-1-jirislaby@kernel.org>
-References: <20221208090749.28056-1-jirislaby@kernel.org>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=alpha.franken.de (client-ip=193.175.24.41; helo=elvis.franken.de; envelope-from=tsbogend@alpha.franken.de; receiver=<UNKNOWN>)
+Received: from elvis.franken.de (elvis.franken.de [193.175.24.41])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NSWFr6Tdwz2xml
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Dec 2022 21:52:45 +1100 (AEDT)
+Received: from uucp (helo=alpha)
+	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+	id 1p3EW2-0002wy-01; Thu, 08 Dec 2022 11:52:34 +0100
+Received: by alpha.franken.de (Postfix, from userid 1000)
+	id 99685C2487; Thu,  8 Dec 2022 11:36:47 +0100 (CET)
+Date: Thu, 8 Dec 2022 11:36:47 +0100
+From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+To: Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: Re: [PATCH 10/11] MIPS: mscc: jaguar2: Fix pca9545 i2c-mux node names
+Message-ID: <20221208103647.GB8388@alpha.franken.de>
+References: <cover.1669999298.git.geert+renesas@glider.be>
+ <5eb01c348c5dd90887b33e866555df8f1067e9df.1669999298.git.geert+renesas@glider.be>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5eb01c348c5dd90887b33e866555df8f1067e9df.1669999298.git.geert+renesas@glider.be>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,53 +41,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, Yoshinori Sato <ysato@users.sourceforge.jp>, linux-sh@vger.kernel.org, Thomas Winischhofer <thomas@winischhofer.net>, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-usb@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-serial@vger.kernel.org, "Jiri Slaby \(SUSE\)" <jirislaby@kernel.org>
+Cc: Andrew Lunn <andrew@lunn.ch>, Alexandre Belloni <alexandre.belloni@bootlin.com>, Tomer Maimon <tmaimon77@gmail.com>, linux-aspeed@lists.ozlabs.org, Tony Lindgren <tony@atomide.com>, Andrew Jeffery <andrew@aj.id.au>, Stefan Agner <stefan@agner.ch>, Tali Perry <tali.perry1@gmail.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, UNGLinuxDriver@microchip.com, Benjamin Fair <benjaminfair@google.com>, Gregory Clement <gregory.clement@bootlin.com>, Russell King <linux@armlinux.org.uk>, Nancy Yuen <yuenn@google.com>, Joel Stanley <joel@jms.id.au>, Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, devicetree@vger.kernel.org, Pengutronix Kernel Team <kernel@pengutronix.de>, Sascha Hauer <s.hauer@pengutronix.de>, linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>, Rob Herring <robh+dt@kernel.org>, linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Avi Fishman <avifishman70@gmail.com>, Patrick Venture <venture@google.com>, linux-mips@vger.ke
+ rnel.org, Li Yang <leoyang.li@nxp.com>, linux-renesas-soc@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>, Shawn Guo <shawnguo@kernel.org>, openbmc@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Now, that we only do usb_register() and usb_sisusb_exit() in
-module_init() and module_exit() respectivelly, we can simply use
-module_usb_driver().
+On Fri, Dec 02, 2022 at 05:49:25PM +0100, Geert Uytterhoeven wrote:
+> "make dtbs_check":
+> 
+>     arch/mips/boot/dts/mscc/jaguar2_pcb110.dtb: pca9545@70: $nodename:0: 'pca9545@70' does not match '^(i2c-?)?mux'
+> 	    From schema: Documentation/devicetree/bindings/i2c/i2c-mux-pca954x.yaml
+>     arch/mips/boot/dts/mscc/jaguar2_pcb110.dtb: pca9545@70: Unevaluated properties are not allowed ('#address-cells', '#size-cells', 'i2c@0', 'i2c@1', 'i2c@2', 'i2c@3' were unexpected)
+> 	    From schema: Documentation/devicetree/bindings/i2c/i2c-mux-pca954x.yaml
+>     ...
+> 
+> Fix this by renaming PCA9545 nodes to "i2c-mux", to match the I2C bus
+> multiplexer/switch DT bindings and the Generic Names Recommendation in
+> the Devicetree Specification.
+> 
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> ---
+>  arch/mips/boot/dts/mscc/jaguar2_pcb110.dts | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: Rich Felker <dalias@libc.org>
-Cc: Thomas Winischhofer <thomas@winischhofer.net>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-sh@vger.kernel.org
-Cc: linux-usb@vger.kernel.org
-Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
----
- drivers/usb/misc/sisusbvga/sisusbvga.c | 13 +------------
- 1 file changed, 1 insertion(+), 12 deletions(-)
+applied to mips-next.
 
-diff --git a/drivers/usb/misc/sisusbvga/sisusbvga.c b/drivers/usb/misc/sisusbvga/sisusbvga.c
-index a0d5ba8058f8..654a79fd3231 100644
---- a/drivers/usb/misc/sisusbvga/sisusbvga.c
-+++ b/drivers/usb/misc/sisusbvga/sisusbvga.c
-@@ -2947,18 +2947,7 @@ static struct usb_driver sisusb_driver = {
- 	.id_table =	sisusb_table,
- };
- 
--static int __init usb_sisusb_init(void)
--{
--	return usb_register(&sisusb_driver);
--}
--
--static void __exit usb_sisusb_exit(void)
--{
--	usb_deregister(&sisusb_driver);
--}
--
--module_init(usb_sisusb_init);
--module_exit(usb_sisusb_exit);
-+module_usb_driver(sisusb_driver);
- 
- MODULE_AUTHOR("Thomas Winischhofer <thomas@winischhofer.net>");
- MODULE_DESCRIPTION("sisusbvga - Driver for Net2280/SiS315-based USB2VGA dongles");
+Thomas.
+
 -- 
-2.38.1
-
+Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
+good idea.                                                [ RFC1925, 2.3 ]
