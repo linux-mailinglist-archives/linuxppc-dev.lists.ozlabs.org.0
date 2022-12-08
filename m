@@ -2,100 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 704FA646B28
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Dec 2022 09:56:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D29E6646B7F
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Dec 2022 10:08:52 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NSSgy1sp2z3brQ
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Dec 2022 19:56:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NSSxt4fTKz3c9s
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Dec 2022 20:08:50 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QPFkG++A;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QPFkG++A;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NZN3eslI;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=jirislaby@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QPFkG++A;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QPFkG++A;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NZN3eslI;
 	dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NSSg20j3Pz2xHJ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Dec 2022 19:55:57 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1670489755;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qZzQND0XXn/ac1VVVRiwKzVF2wPIGejtH8QPoB1hHfA=;
-	b=QPFkG++A/8JL5La+pALQpMxgOwAt4ktwVCkc0B7GKmSOmsQdJwO6bUe02qtZHfivaxVdc3
-	G9Wjgdcy6CTAaGzTr8Cckc2sdx+1EbdNMrC++y5ZAPBbYS5RMOrBZy9yOPYliW8bDkf1S/
-	1Ay3qqX5PGov4onlFtRbv5LxaYRg05Q=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1670489755;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qZzQND0XXn/ac1VVVRiwKzVF2wPIGejtH8QPoB1hHfA=;
-	b=QPFkG++A/8JL5La+pALQpMxgOwAt4ktwVCkc0B7GKmSOmsQdJwO6bUe02qtZHfivaxVdc3
-	G9Wjgdcy6CTAaGzTr8Cckc2sdx+1EbdNMrC++y5ZAPBbYS5RMOrBZy9yOPYliW8bDkf1S/
-	1Ay3qqX5PGov4onlFtRbv5LxaYRg05Q=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-177-WVFmO68kPsm5N1LUZaICaA-1; Thu, 08 Dec 2022 03:55:54 -0500
-X-MC-Unique: WVFmO68kPsm5N1LUZaICaA-1
-Received: by mail-wm1-f71.google.com with SMTP id bi19-20020a05600c3d9300b003cf9d6c4016so2102678wmb.8
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Dec 2022 00:55:53 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:organization:references:cc:to
-         :from:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qZzQND0XXn/ac1VVVRiwKzVF2wPIGejtH8QPoB1hHfA=;
-        b=Of3D9OGgm5XxXo1CYEYKgNbdSUzTuHwTi5CbmWirRXF6HzZLPZtLmD86ouhcHiNDcG
-         fOXm0HTtebBz5qljkVlvq3MR4iHZXFZTykfU+7fGyF9h5721X/EFz5BOpFxK5+cXNRhR
-         4wrkrAh5bJ/9G/p/RZ5A3vqXHVk+dia5q9RkUCM0tzRRF4W2LDPSm7QmyPckE4ob0Bxv
-         975ql3tmrU2sYScvmkr0Yo4EEe+Td/8tVhXtjjbFzmup4j16YL+r80XqFZqgA4CQ4EBF
-         Ypj2TDNMx/0oa/C/jHfmvdvFm6ipWy3BuXWM9FX6UBT+kjih4Jo08BWQrZckWtHpySpN
-         3uwQ==
-X-Gm-Message-State: ANoB5pnKYBiDHXPA41UpI5vbsFwU4oaASNBcXRRHAkvxQqELifauqUD1
-	Bjp39cbH5LbHFwZClfyrSOASBsxML6ZkganoNzZxfLoPCxIDYspUZyDAC97Oisc8YuujBeZrRRQ
-	5JEgbWtb9pVRcMrFxUgTlQMjKBg==
-X-Received: by 2002:a5d:504d:0:b0:242:246c:2f89 with SMTP id h13-20020a5d504d000000b00242246c2f89mr22919595wrt.108.1670489752974;
-        Thu, 08 Dec 2022 00:55:52 -0800 (PST)
-X-Google-Smtp-Source: AA0mqf668NfxbMXQWSDBD6iCzqqUG4mJSCJROvTfbJs0ERpg3lPeZTVH/8wev7o0MHbpIs1xArxqSg==
-X-Received: by 2002:a5d:504d:0:b0:242:246c:2f89 with SMTP id h13-20020a5d504d000000b00242246c2f89mr22919565wrt.108.1670489752626;
-        Thu, 08 Dec 2022 00:55:52 -0800 (PST)
-Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7? ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
-        by smtp.gmail.com with ESMTPSA id o29-20020adfa11d000000b0024278304ef6sm6288982wro.13.2022.12.08.00.55.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 Dec 2022 00:55:52 -0800 (PST)
-Message-ID: <c904aa67-1add-119c-162f-e35d8243a11a@redhat.com>
-Date: Thu, 8 Dec 2022 09:55:49 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NSSwt2L30z2xmg
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Dec 2022 20:07:58 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id DFFBF61E14;
+	Thu,  8 Dec 2022 09:07:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04C87C433C1;
+	Thu,  8 Dec 2022 09:07:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1670490474;
+	bh=aSIESiqsU2JOKxbcwd3dLdqYYt/u0D350/tjiSbDhCo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=NZN3eslI31rQG2hLqELElfvZwii00jBBIzh1Iqp3wHfI2Qu33xhW2cJCDp0TGHsAU
+	 8IK52Vd7w0vqJbRxjh+teG1SJJxY8FKv/+p9SwVjHwb3+rNkIglJu/IslEg/JRvV+j
+	 PCLJLbjEOPhQi0OQHRNswhLzVk4Y2b+VSJ3ccYEudsXzcXTcc0EGcyUSpnKPnhj96B
+	 7ornwj1pa1qDu3P332wQqlCY9aYSw2ayW6BpIBCaa60kEYH/c3liVFogUv4hyStZ48
+	 Lei+FKPSD7W9t0CCCgpVvoCs56Ese8WvEzt/Iuw45iOTEBMW+oABtz8eXxMDyWQw+y
+	 MfWcWPKAX7bZw==
+From: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
+To: gregkh@linuxfoundation.org
+Subject: [PATCH 1/3] USB: sisusbvga: remove console support
+Date: Thu,  8 Dec 2022 10:07:46 +0100
+Message-Id: <20221208090749.28056-1-jirislaby@kernel.org>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Subject: Re: [PATCH mm-unstable RFC 17/26] powerpc/mm: support
- __HAVE_ARCH_PTE_SWP_EXCLUSIVE on 32bit book3s
-From: David Hildenbrand <david@redhat.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20221206144730.163732-1-david@redhat.com>
- <20221206144730.163732-18-david@redhat.com>
- <8be167b6-3836-25c3-9f69-b8b3916ee5b4@csgroup.eu>
- <0b5b1303-8bcb-c19d-5f63-0e4a3517fea5@redhat.com>
-Organization: Red Hat
-In-Reply-To: <0b5b1303-8bcb-c19d-5f63-0e4a3517fea5@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -108,91 +57,3213 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>, "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>, Yang Shi <shy828301@gmail.com>, Peter Xu <peterx@redhat.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>, Nadav Amit <namit@vmware.com>, "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>, "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, Andrea Arcangeli <aarcange@redhat.com>, "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, "linux-hexagon@vger.kernel.org" <linux-hexagon@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>, Hugh Dickins <hughd@google.com>, "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>, Mike Rapoport <rppt@linux.ibm.com>, Vlastimil Babka <vbabka@suse.cz>, Jason Gunthorpe <jgg@nvidia.com>, "linux-snps-arc@lists.infradead.org" <linux-snps-arc@lists.infradead.org>, "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>, John Hubbard <jhubbard@nvidia.com>, "linux-um@lists.infradead.org" <linux-um@list
- s.infradead.org>, Nicholas Piggin <npiggin@gmail.com>, "linux-m68k@lists.linux-m68k.org" <linux-m68k@lists.linux-m68k.org>, "openrisc@lists.librecores.org" <openrisc@lists.librecores.org>, "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: Rich Felker <dalias@libc.org>, Yoshinori Sato <ysato@users.sourceforge.jp>, linux-sh@vger.kernel.org, Thomas Winischhofer <thomas@winischhofer.net>, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-usb@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-serial@vger.kernel.org, "Jiri Slaby \(SUSE\)" <jirislaby@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 08.12.22 09:52, David Hildenbrand wrote:
-> On 07.12.22 14:55, Christophe Leroy wrote:
->>
->>
->> Le 06/12/2022 à 15:47, David Hildenbrand a écrit :
->>> We already implemented support for 64bit book3s in commit bff9beaa2e80
->>> ("powerpc/pgtable: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE for book3s")
->>>
->>> Let's support __HAVE_ARCH_PTE_SWP_EXCLUSIVE also in 32bit by reusing yet
->>> unused LSB 2 / MSB 29. There seems to be no real reason why that bit cannot
->>> be used, and reusing it avoids having to steal one bit from the swap
->>> offset.
->>>
->>> While at it, mask the type in __swp_entry().
->>>
->>> Cc: Michael Ellerman <mpe@ellerman.id.au>
->>> Cc: Nicholas Piggin <npiggin@gmail.com>
->>> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
->>> Signed-off-by: David Hildenbrand <david@redhat.com>
->>> ---
->>>     arch/powerpc/include/asm/book3s/32/pgtable.h | 38 +++++++++++++++++---
->>>     1 file changed, 33 insertions(+), 5 deletions(-)
->>>
->>> diff --git a/arch/powerpc/include/asm/book3s/32/pgtable.h b/arch/powerpc/include/asm/book3s/32/pgtable.h
->>> index 75823f39e042..8107835b38c1 100644
->>> --- a/arch/powerpc/include/asm/book3s/32/pgtable.h
->>> +++ b/arch/powerpc/include/asm/book3s/32/pgtable.h
->>> @@ -42,6 +42,9 @@
->>>     #define _PMD_PRESENT_MASK (PAGE_MASK)
->>>     #define _PMD_BAD	(~PAGE_MASK)
->>>     
->>> +/* We borrow the _PAGE_USER bit to store the exclusive marker in swap PTEs. */
->>> +#define _PAGE_SWP_EXCLUSIVE	_PAGE_USER
->>> +
->>>     /* And here we include common definitions */
->>>     
->>>     #define _PAGE_KERNEL_RO		0
->>> @@ -363,17 +366,42 @@ static inline void __ptep_set_access_flags(struct vm_area_struct *vma,
->>>     #define pmd_page(pmd)		pfn_to_page(pmd_pfn(pmd))
->>>     
->>>     /*
->>> - * Encode and decode a swap entry.
->>> - * Note that the bits we use in a PTE for representing a swap entry
->>> - * must not include the _PAGE_PRESENT bit or the _PAGE_HASHPTE bit (if used).
->>> - *   -- paulus
->>> + * Encode/decode swap entries and swap PTEs. Swap PTEs are all PTEs that
->>> + * are !pte_none() && !pte_present().
->>> + *
->>> + * Format of swap PTEs (32bit PTEs):
->>> + *
->>> + *                         1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 3 3
->>> + *   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
->>> + *   E H P <- type --> <----------------- offset ------------------>
->>
->> That's in reversed order. _PAGE_HASHPTE is bit 30 and should be on the
->> right hand side. Etc ...
-> 
-> Ugh, messed it up while converting back and forth between LSB 0 and MSB 0.
-> 
-> /*
->    * Format of swap PTEs (32bit PTEs):
->    *
->    *                         1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 3 3
->    *   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
->    *   <----------------- offset ------------------> <- type --> E H P
-> 
-> 
+It was marked as BROKEN since commit 862ee699fefe (USB: sisusbvga: Make
+console support depend on BROKEN) 2 years ago. Since noone stepped up to
+fix it, remove it completely.
 
-Still wrong, the type is only 5 bits:
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+Cc: Rich Felker <dalias@libc.org>
+Cc: Thomas Winischhofer <thomas@winischhofer.net>
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-sh@vger.kernel.org
+Cc: linux-usb@vger.kernel.org
+Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+---
+ arch/powerpc/configs/ppc6xx_defconfig    |    1 -
+ arch/sh/configs/landisk_defconfig        |    1 -
+ drivers/usb/misc/sisusbvga/Kconfig       |   34 -
+ drivers/usb/misc/sisusbvga/Makefile      |    1 -
+ drivers/usb/misc/sisusbvga/sisusb.c      |  276 +---
+ drivers/usb/misc/sisusbvga/sisusb.h      |   21 -
+ drivers/usb/misc/sisusbvga/sisusb_con.c  | 1496 ----------------------
+ drivers/usb/misc/sisusbvga/sisusb_init.c |  955 --------------
+ drivers/usb/misc/sisusbvga/sisusb_init.h |  180 ---
+ 9 files changed, 6 insertions(+), 2959 deletions(-)
+ delete mode 100644 drivers/usb/misc/sisusbvga/sisusb_con.c
+ delete mode 100644 drivers/usb/misc/sisusbvga/sisusb_init.c
+ delete mode 100644 drivers/usb/misc/sisusbvga/sisusb_init.h
 
-+ * Format of swap PTEs (32bit PTEs):
-+ *
-+ *                         1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 3 3
-+ *   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-+ *   <----------------- offset --------------------> < type -> E H P
-+ *
-
-
+diff --git a/arch/powerpc/configs/ppc6xx_defconfig b/arch/powerpc/configs/ppc6xx_defconfig
+index 115d40be5481..110258277959 100644
+--- a/arch/powerpc/configs/ppc6xx_defconfig
++++ b/arch/powerpc/configs/ppc6xx_defconfig
+@@ -911,7 +911,6 @@ CONFIG_USB_IDMOUSE=m
+ CONFIG_USB_FTDI_ELAN=m
+ CONFIG_USB_APPLEDISPLAY=m
+ CONFIG_USB_SISUSBVGA=m
+-CONFIG_USB_SISUSBVGA_CON=y
+ CONFIG_USB_LD=m
+ CONFIG_USB_TRANCEVIBRATOR=m
+ CONFIG_USB_IOWARRIOR=m
+diff --git a/arch/sh/configs/landisk_defconfig b/arch/sh/configs/landisk_defconfig
+index 492a0a2e0e36..7037320b654a 100644
+--- a/arch/sh/configs/landisk_defconfig
++++ b/arch/sh/configs/landisk_defconfig
+@@ -92,7 +92,6 @@ CONFIG_USB_SERIAL_PL2303=m
+ CONFIG_USB_EMI62=m
+ CONFIG_USB_EMI26=m
+ CONFIG_USB_SISUSBVGA=m
+-CONFIG_USB_SISUSBVGA_CON=y
+ CONFIG_EXT2_FS=y
+ CONFIG_EXT3_FS=y
+ # CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
+diff --git a/drivers/usb/misc/sisusbvga/Kconfig b/drivers/usb/misc/sisusbvga/Kconfig
+index c12cdd015410..42f81c8eaa92 100644
+--- a/drivers/usb/misc/sisusbvga/Kconfig
++++ b/drivers/usb/misc/sisusbvga/Kconfig
+@@ -3,7 +3,6 @@
+ config USB_SISUSBVGA
+ 	tristate "USB 2.0 SVGA dongle support (Net2280/SiS315)"
+ 	depends on (USB_MUSB_HDRC || USB_EHCI_HCD)
+-	select FONT_SUPPORT if USB_SISUSBVGA_CON
+ 	help
+ 	  Say Y here if you intend to attach a USB2VGA dongle based on a
+ 	  Net2280 and a SiS315 chip.
+@@ -13,36 +12,3 @@ config USB_SISUSBVGA
+ 
+ 	  To compile this driver as a module, choose M here; the module will be
+ 	  called sisusbvga. If unsure, say N.
+-
+-config USB_SISUSBVGA_CON
+-	bool "Text console and mode switching support" if USB_SISUSBVGA
+-	depends on VT && BROKEN
+-	select FONT_8x16
+-	help
+-	  Say Y here if you want a VGA text console via the USB dongle or
+-	  want to support userland applications that utilize the driver's
+-	  display mode switching capabilities.
+-
+-	  Note that this console supports VGA/EGA text mode only.
+-
+-	  By default, the console part of the driver will not kick in when
+-	  the driver is initialized. If you want the driver to take over
+-	  one or more of the consoles, you need to specify the number of
+-	  the first and last consoles (starting at 1) as driver parameters.
+-
+-	  For example, if the driver is compiled as a module:
+-
+-	     modprobe sisusbvga first=1 last=5
+-
+-	  If you use hotplug, add this to your modutils config files with
+-	  the "options" keyword, such as eg.
+-
+-	     options sisusbvga first=1 last=5
+-
+-	  If the driver is compiled into the kernel image, the parameters
+-	  must be given in the kernel command like, such as
+-
+-	     sisusbvga.first=1 sisusbvga.last=5
+-
+-
+-
+diff --git a/drivers/usb/misc/sisusbvga/Makefile b/drivers/usb/misc/sisusbvga/Makefile
+index 6551bce68ac5..93265de80eb9 100644
+--- a/drivers/usb/misc/sisusbvga/Makefile
++++ b/drivers/usb/misc/sisusbvga/Makefile
+@@ -6,4 +6,3 @@
+ obj-$(CONFIG_USB_SISUSBVGA) += sisusbvga.o
+ 
+ sisusbvga-y := sisusb.o
+-sisusbvga-$(CONFIG_USB_SISUSBVGA_CON) += sisusb_con.o sisusb_init.o
+diff --git a/drivers/usb/misc/sisusbvga/sisusb.c b/drivers/usb/misc/sisusbvga/sisusb.c
+index f08de33d9ff3..a0d5ba8058f8 100644
+--- a/drivers/usb/misc/sisusbvga/sisusb.c
++++ b/drivers/usb/misc/sisusbvga/sisusb.c
+@@ -51,25 +51,11 @@
+ #include <linux/vmalloc.h>
+ 
+ #include "sisusb.h"
+-#include "sisusb_init.h"
+-
+-#ifdef CONFIG_USB_SISUSBVGA_CON
+-#include <linux/font.h>
+-#endif
+ 
+ #define SISUSB_DONTSYNC
+ 
+ /* Forward declarations / clean-up routines */
+ 
+-#ifdef CONFIG_USB_SISUSBVGA_CON
+-static int sisusb_first_vc;
+-static int sisusb_last_vc;
+-module_param_named(first, sisusb_first_vc, int, 0);
+-module_param_named(last, sisusb_last_vc, int, 0);
+-MODULE_PARM_DESC(first, "Number of first console to take over (1 - MAX_NR_CONSOLES)");
+-MODULE_PARM_DESC(last, "Number of last console to take over (1 - MAX_NR_CONSOLES)");
+-#endif
+-
+ static struct usb_driver sisusb_driver;
+ 
+ static void sisusb_free_buffers(struct sisusb_usb_data *sisusb)
+@@ -1198,19 +1184,7 @@ static int sisusb_read_mem_bulk(struct sisusb_usb_data *sisusb, u32 addr,
+ 
+ /* High level: Gfx (indexed) register access */
+ 
+-#ifdef CONFIG_USB_SISUSBVGA_CON
+-int sisusb_setreg(struct sisusb_usb_data *sisusb, u32 port, u8 data)
+-{
+-	return sisusb_write_memio_byte(sisusb, SISUSB_TYPE_IO, port, data);
+-}
+-
+-int sisusb_getreg(struct sisusb_usb_data *sisusb, u32 port, u8 *data)
+-{
+-	return sisusb_read_memio_byte(sisusb, SISUSB_TYPE_IO, port, data);
+-}
+-#endif
+-
+-int sisusb_setidxreg(struct sisusb_usb_data *sisusb, u32 port,
++static int sisusb_setidxreg(struct sisusb_usb_data *sisusb, u32 port,
+ 		u8 index, u8 data)
+ {
+ 	int ret;
+@@ -1220,7 +1194,7 @@ int sisusb_setidxreg(struct sisusb_usb_data *sisusb, u32 port,
+ 	return ret;
+ }
+ 
+-int sisusb_getidxreg(struct sisusb_usb_data *sisusb, u32 port,
++static int sisusb_getidxreg(struct sisusb_usb_data *sisusb, u32 port,
+ 		u8 index, u8 *data)
+ {
+ 	int ret;
+@@ -1230,7 +1204,7 @@ int sisusb_getidxreg(struct sisusb_usb_data *sisusb, u32 port,
+ 	return ret;
+ }
+ 
+-int sisusb_setidxregandor(struct sisusb_usb_data *sisusb, u32 port, u8 idx,
++static int sisusb_setidxregandor(struct sisusb_usb_data *sisusb, u32 port, u8 idx,
+ 		u8 myand, u8 myor)
+ {
+ 	int ret;
+@@ -1258,13 +1232,13 @@ static int sisusb_setidxregmask(struct sisusb_usb_data *sisusb,
+ 	return ret;
+ }
+ 
+-int sisusb_setidxregor(struct sisusb_usb_data *sisusb, u32 port,
++static int sisusb_setidxregor(struct sisusb_usb_data *sisusb, u32 port,
+ 		u8 index, u8 myor)
+ {
+ 	return sisusb_setidxregandor(sisusb, port, index, 0xff, myor);
+ }
+ 
+-int sisusb_setidxregand(struct sisusb_usb_data *sisusb, u32 port,
++static int sisusb_setidxregand(struct sisusb_usb_data *sisusb, u32 port,
+ 		u8 idx, u8 myand)
+ {
+ 	return sisusb_setidxregandor(sisusb, port, idx, myand, 0x00);
+@@ -1272,38 +1246,6 @@ int sisusb_setidxregand(struct sisusb_usb_data *sisusb, u32 port,
+ 
+ /* Write/read video ram */
+ 
+-#ifdef CONFIG_USB_SISUSBVGA_CON
+-int sisusb_writeb(struct sisusb_usb_data *sisusb, u32 adr, u8 data)
+-{
+-	return sisusb_write_memio_byte(sisusb, SISUSB_TYPE_MEM, adr, data);
+-}
+-
+-int sisusb_readb(struct sisusb_usb_data *sisusb, u32 adr, u8 *data)
+-{
+-	return sisusb_read_memio_byte(sisusb, SISUSB_TYPE_MEM, adr, data);
+-}
+-
+-int sisusb_copy_memory(struct sisusb_usb_data *sisusb, u8 *src,
+-		u32 dest, int length)
+-{
+-	size_t dummy;
+-
+-	return sisusb_write_mem_bulk(sisusb, dest, src, length,
+-			NULL, 0, &dummy);
+-}
+-
+-#ifdef SISUSBENDIANTEST
+-static int sisusb_read_memory(struct sisusb_usb_data *sisusb, char *dest,
+-		u32 src, int length)
+-{
+-	size_t dummy;
+-
+-	return sisusb_read_mem_bulk(sisusb, src, dest, length,
+-			NULL, &dummy);
+-}
+-#endif
+-#endif
+-
+ #ifdef SISUSBENDIANTEST
+ static void sisusb_testreadwrite(struct sisusb_usb_data *sisusb)
+ {
+@@ -2252,131 +2194,6 @@ static int sisusb_init_gfxdevice(struct sisusb_usb_data *sisusb, int initscreen)
+ 	return ret;
+ }
+ 
+-
+-#ifdef CONFIG_USB_SISUSBVGA_CON
+-
+-/* Set up default text mode:
+- * - Set text mode (0x03)
+- * - Upload default font
+- * - Upload user font (if available)
+- */
+-
+-int sisusb_reset_text_mode(struct sisusb_usb_data *sisusb, int init)
+-{
+-	int ret = 0, slot = sisusb->font_slot, i;
+-	const struct font_desc *myfont;
+-	u8 *tempbuf;
+-	u16 *tempbufb;
+-	static const char bootstring[] =
+-		"SiSUSB VGA text console, (C) 2005 Thomas Winischhofer.";
+-	static const char bootlogo[] = "(o_ //\\ V_/_";
+-
+-	/* sisusb->lock is down */
+-
+-	if (!sisusb->SiS_Pr)
+-		return 1;
+-
+-	sisusb->SiS_Pr->IOAddress = SISUSB_PCI_IOPORTBASE + 0x30;
+-	sisusb->SiS_Pr->sisusb = (void *)sisusb;
+-
+-	/* Set mode 0x03 */
+-	SiSUSBSetMode(sisusb->SiS_Pr, 0x03);
+-
+-	myfont = find_font("VGA8x16");
+-	if (!myfont)
+-		return 1;
+-
+-	tempbuf = vmalloc(8192);
+-	if (!tempbuf)
+-		return 1;
+-
+-	for (i = 0; i < 256; i++)
+-		memcpy(tempbuf + (i * 32), myfont->data + (i * 16), 16);
+-
+-	/* Upload default font */
+-	ret = sisusbcon_do_font_op(sisusb, 1, 0, tempbuf, 8192,
+-			0, 1, NULL, 16, 0);
+-
+-	vfree(tempbuf);
+-
+-	/* Upload user font (and reset current slot) */
+-	if (sisusb->font_backup) {
+-		ret |= sisusbcon_do_font_op(sisusb, 1, 2, sisusb->font_backup,
+-				8192, sisusb->font_backup_512, 1, NULL,
+-				sisusb->font_backup_height, 0);
+-		if (slot != 2)
+-			sisusbcon_do_font_op(sisusb, 1, 0, NULL, 0, 0, 1,
+-					NULL, 16, 0);
+-	}
+-
+-	if (init && !sisusb->scrbuf) {
+-
+-		tempbuf = vmalloc(8192);
+-		if (tempbuf) {
+-
+-			i = 4096;
+-			tempbufb = (u16 *)tempbuf;
+-			while (i--)
+-				*(tempbufb++) = 0x0720;
+-
+-			i = 0;
+-			tempbufb = (u16 *)tempbuf;
+-			while (bootlogo[i]) {
+-				*(tempbufb++) = 0x0700 | bootlogo[i++];
+-				if (!(i % 4))
+-					tempbufb += 76;
+-			}
+-
+-			i = 0;
+-			tempbufb = (u16 *)tempbuf + 6;
+-			while (bootstring[i])
+-				*(tempbufb++) = 0x0700 | bootstring[i++];
+-
+-			ret |= sisusb_copy_memory(sisusb, tempbuf,
+-					sisusb->vrambase, 8192);
+-
+-			vfree(tempbuf);
+-
+-		}
+-
+-	} else if (sisusb->scrbuf) {
+-		ret |= sisusb_copy_memory(sisusb, (u8 *)sisusb->scrbuf,
+-				sisusb->vrambase, sisusb->scrbuf_size);
+-	}
+-
+-	if (sisusb->sisusb_cursor_size_from >= 0 &&
+-			sisusb->sisusb_cursor_size_to >= 0) {
+-		sisusb_setidxreg(sisusb, SISCR, 0x0a,
+-				sisusb->sisusb_cursor_size_from);
+-		sisusb_setidxregandor(sisusb, SISCR, 0x0b, 0xe0,
+-				sisusb->sisusb_cursor_size_to);
+-	} else {
+-		sisusb_setidxreg(sisusb, SISCR, 0x0a, 0x2d);
+-		sisusb_setidxreg(sisusb, SISCR, 0x0b, 0x0e);
+-		sisusb->sisusb_cursor_size_to = -1;
+-	}
+-
+-	slot = sisusb->sisusb_cursor_loc;
+-	if (slot < 0)
+-		slot = 0;
+-
+-	sisusb->sisusb_cursor_loc = -1;
+-	sisusb->bad_cursor_pos = 1;
+-
+-	sisusb_set_cursor(sisusb, slot);
+-
+-	sisusb_setidxreg(sisusb, SISCR, 0x0c, (sisusb->cur_start_addr >> 8));
+-	sisusb_setidxreg(sisusb, SISCR, 0x0d, (sisusb->cur_start_addr & 0xff));
+-
+-	sisusb->textmodedestroyed = 0;
+-
+-	/* sisusb->lock is down */
+-
+-	return ret;
+-}
+-
+-#endif
+-
+ /* fops */
+ 
+ static int sisusb_open(struct inode *inode, struct file *file)
+@@ -2434,7 +2251,7 @@ static int sisusb_open(struct inode *inode, struct file *file)
+ 	return 0;
+ }
+ 
+-void sisusb_delete(struct kref *kref)
++static void sisusb_delete(struct kref *kref)
+ {
+ 	struct sisusb_usb_data *sisusb = to_sisusb_dev(kref);
+ 
+@@ -2446,9 +2263,6 @@ void sisusb_delete(struct kref *kref)
+ 	sisusb->sisusb_dev = NULL;
+ 	sisusb_free_buffers(sisusb);
+ 	sisusb_free_urbs(sisusb);
+-#ifdef CONFIG_USB_SISUSBVGA_CON
+-	kfree(sisusb->SiS_Pr);
+-#endif
+ 	kfree(sisusb);
+ }
+ 
+@@ -2842,53 +2656,7 @@ static int sisusb_handle_command(struct sisusb_usb_data *sisusb,
+ 
+ 	case SUCMD_HANDLETEXTMODE:
+ 		retval = 0;
+-#ifdef CONFIG_USB_SISUSBVGA_CON
+-		/* Gfx core must be initialized, SiS_Pr must exist */
+-		if (!sisusb->gfxinit || !sisusb->SiS_Pr)
+-			return -ENODEV;
+-
+-		switch (y->data0) {
+-		case 0:
+-			retval = sisusb_reset_text_mode(sisusb, 0);
+-			break;
+-		case 1:
+-			sisusb->textmodedestroyed = 1;
+-			break;
+-		}
+-#endif
+-		break;
+-
+-#ifdef CONFIG_USB_SISUSBVGA_CON
+-	case SUCMD_SETMODE:
+-		/* Gfx core must be initialized, SiS_Pr must exist */
+-		if (!sisusb->gfxinit || !sisusb->SiS_Pr)
+-			return -ENODEV;
+-
+-		retval = 0;
+-
+-		sisusb->SiS_Pr->IOAddress = SISUSB_PCI_IOPORTBASE + 0x30;
+-		sisusb->SiS_Pr->sisusb = (void *)sisusb;
+-
+-		if (SiSUSBSetMode(sisusb->SiS_Pr, y->data3))
+-			retval = -EINVAL;
+-
+-		break;
+-
+-	case SUCMD_SETVESAMODE:
+-		/* Gfx core must be initialized, SiS_Pr must exist */
+-		if (!sisusb->gfxinit || !sisusb->SiS_Pr)
+-			return -ENODEV;
+-
+-		retval = 0;
+-
+-		sisusb->SiS_Pr->IOAddress = SISUSB_PCI_IOPORTBASE + 0x30;
+-		sisusb->SiS_Pr->sisusb = (void *)sisusb;
+-
+-		if (SiSUSBSetVESAMode(sisusb->SiS_Pr, y->data3))
+-			retval = -EINVAL;
+-
+ 		break;
+-#endif
+ 
+ 	default:
+ 		retval = -EINVAL;
+@@ -2942,11 +2710,7 @@ static long sisusb_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ 		x.sisusb_vramsize = sisusb->vramsize;
+ 		x.sisusb_minor = sisusb->minor;
+ 		x.sisusb_fbdevactive = 0;
+-#ifdef CONFIG_USB_SISUSBVGA_CON
+-		x.sisusb_conactive  = sisusb->haveconsole ? 1 : 0;
+-#else
+ 		x.sisusb_conactive  = 0;
+-#endif
+ 		memset(x.sisusb_reserved, 0, sizeof(x.sisusb_reserved));
+ 
+ 		if (copy_to_user((void __user *)arg, &x, sizeof(x)))
+@@ -3090,15 +2854,6 @@ static int sisusb_probe(struct usb_interface *intf,
+ 	dev_info(&sisusb->sisusb_dev->dev, "Allocated %d output buffers\n",
+ 			sisusb->numobufs);
+ 
+-#ifdef CONFIG_USB_SISUSBVGA_CON
+-	/* Allocate our SiS_Pr */
+-	sisusb->SiS_Pr = kmalloc(sizeof(struct SiS_Private), GFP_KERNEL);
+-	if (!sisusb->SiS_Pr) {
+-		retval = -ENOMEM;
+-		goto error_4;
+-	}
+-#endif
+-
+ 	/* Do remaining init stuff */
+ 
+ 	init_waitqueue_head(&sisusb->wait_q);
+@@ -3111,12 +2866,6 @@ static int sisusb_probe(struct usb_interface *intf,
+ 
+ 	if (dev->speed == USB_SPEED_HIGH || dev->speed >= USB_SPEED_SUPER) {
+ 		int initscreen = 1;
+-#ifdef CONFIG_USB_SISUSBVGA_CON
+-		if (sisusb_first_vc > 0 && sisusb_last_vc > 0 &&
+-				sisusb_first_vc <= sisusb_last_vc &&
+-				sisusb_last_vc <= MAX_NR_CONSOLES)
+-			initscreen = 0;
+-#endif
+ 		if (sisusb_init_gfxdevice(sisusb, initscreen))
+ 			dev_err(&sisusb->sisusb_dev->dev,
+ 					"Failed to early initialize device\n");
+@@ -3133,10 +2882,6 @@ static int sisusb_probe(struct usb_interface *intf,
+ 	dev_dbg(&sisusb->sisusb_dev->dev, "*** RWTEST END ***\n");
+ #endif
+ 
+-#ifdef CONFIG_USB_SISUSBVGA_CON
+-	sisusb_console_init(sisusb, sisusb_first_vc, sisusb_last_vc);
+-#endif
+-
+ 	return 0;
+ 
+ error_4:
+@@ -3159,10 +2904,6 @@ static void sisusb_disconnect(struct usb_interface *intf)
+ 	if (!sisusb)
+ 		return;
+ 
+-#ifdef CONFIG_USB_SISUSBVGA_CON
+-	sisusb_console_exit(sisusb);
+-#endif
+-
+ 	usb_deregister_dev(intf, &usb_sisusb_class);
+ 
+ 	mutex_lock(&sisusb->lock);
+@@ -3208,11 +2949,6 @@ static struct usb_driver sisusb_driver = {
+ 
+ static int __init usb_sisusb_init(void)
+ {
+-
+-#ifdef CONFIG_USB_SISUSBVGA_CON
+-	sisusb_init_concode();
+-#endif
+-
+ 	return usb_register(&sisusb_driver);
+ }
+ 
+diff --git a/drivers/usb/misc/sisusbvga/sisusb.h b/drivers/usb/misc/sisusbvga/sisusb.h
+index c0fb9e1c5361..e5b1228655d0 100644
+--- a/drivers/usb/misc/sisusbvga/sisusb.h
++++ b/drivers/usb/misc/sisusbvga/sisusb.h
+@@ -48,7 +48,6 @@
+ 
+ /* Include console and mode switching code? */
+ 
+-#include <linux/console.h>
+ #include <linux/vt_kern.h>
+ #include "sisusb_struct.h"
+ 
+@@ -126,26 +125,6 @@ struct sisusb_usb_data {
+ 	unsigned char gfxinit;	/* graphics core initialized? */
+ 	unsigned short chipid, chipvendor;
+ 	unsigned short chiprevision;
+-#ifdef CONFIG_USB_SISUSBVGA_CON
+-	struct SiS_Private *SiS_Pr;
+-	unsigned long scrbuf;
+-	unsigned int scrbuf_size;
+-	int haveconsole, con_first, con_last;
+-	int havethisconsole[MAX_NR_CONSOLES];
+-	int textmodedestroyed;
+-	unsigned int sisusb_num_columns;	/* real number, not vt's idea */
+-	int cur_start_addr, con_rolled_over;
+-	int sisusb_cursor_loc, bad_cursor_pos;
+-	int sisusb_cursor_size_from;
+-	int sisusb_cursor_size_to;
+-	int current_font_height, current_font_512;
+-	int font_backup_size, font_backup_height, font_backup_512;
+-	char *font_backup;
+-	int font_slot;
+-	struct vc_data *sisusb_display_fg;
+-	int is_gfx;
+-	int con_blanked;
+-#endif
+ };
+ 
+ #define to_sisusb_dev(d) container_of(d, struct sisusb_usb_data, kref)
+diff --git a/drivers/usb/misc/sisusbvga/sisusb_con.c b/drivers/usb/misc/sisusbvga/sisusb_con.c
+deleted file mode 100644
+index fcb95fb639e0..000000000000
+--- a/drivers/usb/misc/sisusbvga/sisusb_con.c
++++ /dev/null
+@@ -1,1496 +0,0 @@
+-// SPDX-License-Identifier: (GPL-2.0 OR BSD-3-Clause)
+-/*
+- * sisusb - usb kernel driver for SiS315(E) based USB2VGA dongles
+- *
+- * VGA text mode console part
+- *
+- * Copyright (C) 2005 by Thomas Winischhofer, Vienna, Austria
+- *
+- * If distributed as part of the Linux kernel, this code is licensed under the
+- * terms of the GPL v2.
+- *
+- * Otherwise, the following license terms apply:
+- *
+- * * Redistribution and use in source and binary forms, with or without
+- * * modification, are permitted provided that the following conditions
+- * * are met:
+- * * 1) Redistributions of source code must retain the above copyright
+- * *    notice, this list of conditions and the following disclaimer.
+- * * 2) Redistributions in binary form must reproduce the above copyright
+- * *    notice, this list of conditions and the following disclaimer in the
+- * *    documentation and/or other materials provided with the distribution.
+- * * 3) The name of the author may not be used to endorse or promote products
+- * *    derived from this software without specific psisusbr written permission.
+- * *
+- * * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESSED OR
+- * * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+- * * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+- * * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+- * * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- * * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+- * * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+- * * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+- * * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- * * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- * Author: Thomas Winischhofer <thomas@winischhofer.net>
+- *
+- * Portions based on vgacon.c which are
+- *	Created 28 Sep 1997 by Geert Uytterhoeven
+- *      Rewritten by Martin Mares <mj@ucw.cz>, July 1998
+- *      based on code Copyright (C) 1991, 1992  Linus Torvalds
+- *			    1995  Jay Estabrook
+- *
+- * A note on using in_atomic() in here: We can't handle console
+- * calls from non-schedulable context due to our USB-dependend
+- * nature. For now, this driver just ignores any calls if it
+- * detects this state.
+- *
+- */
+-
+-#include <linux/mutex.h>
+-#include <linux/module.h>
+-#include <linux/kernel.h>
+-#include <linux/signal.h>
+-#include <linux/fs.h>
+-#include <linux/usb.h>
+-#include <linux/tty.h>
+-#include <linux/console.h>
+-#include <linux/string.h>
+-#include <linux/kd.h>
+-#include <linux/init.h>
+-#include <linux/vt_kern.h>
+-#include <linux/selection.h>
+-#include <linux/spinlock.h>
+-#include <linux/kref.h>
+-#include <linux/ioport.h>
+-#include <linux/interrupt.h>
+-#include <linux/vmalloc.h>
+-
+-#include "sisusb.h"
+-#include "sisusb_init.h"
+-
+-/* vc_data -> sisusb conversion table */
+-static struct sisusb_usb_data *mysisusbs[MAX_NR_CONSOLES];
+-
+-/* Forward declaration */
+-static const struct consw sisusb_con;
+-
+-static inline void
+-sisusbcon_memsetw(u16 *s, u16 c, unsigned int count)
+-{
+-	memset16(s, c, count / 2);
+-}
+-
+-static inline void
+-sisusb_initialize(struct sisusb_usb_data *sisusb)
+-{
+-	/* Reset cursor and start address */
+-	if (sisusb_setidxreg(sisusb, SISCR, 0x0c, 0x00))
+-		return;
+-	if (sisusb_setidxreg(sisusb, SISCR, 0x0d, 0x00))
+-		return;
+-	if (sisusb_setidxreg(sisusb, SISCR, 0x0e, 0x00))
+-		return;
+-	sisusb_setidxreg(sisusb, SISCR, 0x0f, 0x00);
+-}
+-
+-static inline void
+-sisusbcon_set_start_address(struct sisusb_usb_data *sisusb, struct vc_data *c)
+-{
+-	sisusb->cur_start_addr = (c->vc_visible_origin - sisusb->scrbuf) / 2;
+-
+-	sisusb_setidxreg(sisusb, SISCR, 0x0c, (sisusb->cur_start_addr >> 8));
+-	sisusb_setidxreg(sisusb, SISCR, 0x0d, (sisusb->cur_start_addr & 0xff));
+-}
+-
+-void
+-sisusb_set_cursor(struct sisusb_usb_data *sisusb, unsigned int location)
+-{
+-	if (sisusb->sisusb_cursor_loc == location)
+-		return;
+-
+-	sisusb->sisusb_cursor_loc = location;
+-
+-	/* Hardware bug: Text cursor appears twice or not at all
+-	 * at some positions. Work around it with the cursor skew
+-	 * bits.
+-	 */
+-
+-	if ((location & 0x0007) == 0x0007) {
+-		sisusb->bad_cursor_pos = 1;
+-		location--;
+-		if (sisusb_setidxregandor(sisusb, SISCR, 0x0b, 0x1f, 0x20))
+-			return;
+-	} else if (sisusb->bad_cursor_pos) {
+-		if (sisusb_setidxregand(sisusb, SISCR, 0x0b, 0x1f))
+-			return;
+-		sisusb->bad_cursor_pos = 0;
+-	}
+-
+-	if (sisusb_setidxreg(sisusb, SISCR, 0x0e, (location >> 8)))
+-		return;
+-	sisusb_setidxreg(sisusb, SISCR, 0x0f, (location & 0xff));
+-}
+-
+-static inline struct sisusb_usb_data *
+-sisusb_get_sisusb(unsigned short console)
+-{
+-	return mysisusbs[console];
+-}
+-
+-static inline int
+-sisusb_sisusb_valid(struct sisusb_usb_data *sisusb)
+-{
+-	if (!sisusb->present || !sisusb->ready || !sisusb->sisusb_dev)
+-		return 0;
+-
+-	return 1;
+-}
+-
+-static struct sisusb_usb_data *
+-sisusb_get_sisusb_lock_and_check(unsigned short console)
+-{
+-	struct sisusb_usb_data *sisusb;
+-
+-	/* We can't handle console calls in non-schedulable
+-	 * context due to our locks and the USB transport.
+-	 * So we simply ignore them. This should only affect
+-	 * some calls to printk.
+-	 */
+-	if (in_atomic())
+-		return NULL;
+-
+-	sisusb = sisusb_get_sisusb(console);
+-	if (!sisusb)
+-		return NULL;
+-
+-	mutex_lock(&sisusb->lock);
+-
+-	if (!sisusb_sisusb_valid(sisusb) ||
+-	    !sisusb->havethisconsole[console]) {
+-		mutex_unlock(&sisusb->lock);
+-		return NULL;
+-	}
+-
+-	return sisusb;
+-}
+-
+-static int
+-sisusb_is_inactive(struct vc_data *c, struct sisusb_usb_data *sisusb)
+-{
+-	if (sisusb->is_gfx ||
+-	    sisusb->textmodedestroyed ||
+-	    c->vc_mode != KD_TEXT)
+-		return 1;
+-
+-	return 0;
+-}
+-
+-/* con_startup console interface routine */
+-static const char *
+-sisusbcon_startup(void)
+-{
+-	return "SISUSBCON";
+-}
+-
+-/* con_init console interface routine */
+-static void
+-sisusbcon_init(struct vc_data *c, int init)
+-{
+-	struct sisusb_usb_data *sisusb;
+-	int cols, rows;
+-
+-	/* This is called by do_take_over_console(),
+-	 * ie by us/under our control. It is
+-	 * only called after text mode and fonts
+-	 * are set up/restored.
+-	 */
+-
+-	sisusb = sisusb_get_sisusb(c->vc_num);
+-	if (!sisusb)
+-		return;
+-
+-	mutex_lock(&sisusb->lock);
+-
+-	if (!sisusb_sisusb_valid(sisusb)) {
+-		mutex_unlock(&sisusb->lock);
+-		return;
+-	}
+-
+-	c->vc_can_do_color = 1;
+-
+-	c->vc_complement_mask = 0x7700;
+-
+-	c->vc_hi_font_mask = sisusb->current_font_512 ? 0x0800 : 0;
+-
+-	sisusb->haveconsole = 1;
+-
+-	sisusb->havethisconsole[c->vc_num] = 1;
+-
+-	/* We only support 640x400 */
+-	c->vc_scan_lines = 400;
+-
+-	c->vc_font.height = sisusb->current_font_height;
+-
+-	/* We only support width = 8 */
+-	cols = 80;
+-	rows = c->vc_scan_lines / c->vc_font.height;
+-
+-	/* Increment usage count for our sisusb.
+-	 * Doing so saves us from upping/downing
+-	 * the disconnect semaphore; we can't
+-	 * lose our sisusb until this is undone
+-	 * in con_deinit. For all other console
+-	 * interface functions, it suffices to
+-	 * use sisusb->lock and do a quick check
+-	 * of sisusb for device disconnection.
+-	 */
+-	kref_get(&sisusb->kref);
+-
+-	if (!*c->uni_pagedict_loc)
+-		con_set_default_unimap(c);
+-
+-	mutex_unlock(&sisusb->lock);
+-
+-	if (init) {
+-		c->vc_cols = cols;
+-		c->vc_rows = rows;
+-	} else
+-		vc_resize(c, cols, rows);
+-}
+-
+-/* con_deinit console interface routine */
+-static void
+-sisusbcon_deinit(struct vc_data *c)
+-{
+-	struct sisusb_usb_data *sisusb;
+-	int i;
+-
+-	/* This is called by do_take_over_console()
+-	 * and others, ie not under our control.
+-	 */
+-
+-	sisusb = sisusb_get_sisusb(c->vc_num);
+-	if (!sisusb)
+-		return;
+-
+-	mutex_lock(&sisusb->lock);
+-
+-	/* Clear ourselves in mysisusbs */
+-	mysisusbs[c->vc_num] = NULL;
+-
+-	sisusb->havethisconsole[c->vc_num] = 0;
+-
+-	/* Free our font buffer if all consoles are gone */
+-	if (sisusb->font_backup) {
+-		for(i = 0; i < MAX_NR_CONSOLES; i++) {
+-			if (sisusb->havethisconsole[c->vc_num])
+-				break;
+-		}
+-		if (i == MAX_NR_CONSOLES) {
+-			vfree(sisusb->font_backup);
+-			sisusb->font_backup = NULL;
+-		}
+-	}
+-
+-	mutex_unlock(&sisusb->lock);
+-
+-	/* decrement the usage count on our sisusb */
+-	kref_put(&sisusb->kref, sisusb_delete);
+-}
+-
+-/* interface routine */
+-static u8
+-sisusbcon_build_attr(struct vc_data *c, u8 color, enum vc_intensity intensity,
+-			    bool blink, bool underline, bool reverse,
+-			    bool unused)
+-{
+-	u8 attr = color;
+-
+-	if (underline)
+-		attr = (attr & 0xf0) | c->vc_ulcolor;
+-	else if (intensity == VCI_HALF_BRIGHT)
+-		attr = (attr & 0xf0) | c->vc_halfcolor;
+-
+-	if (reverse)
+-		attr = ((attr) & 0x88) |
+-		       ((((attr) >> 4) |
+-		       ((attr) << 4)) & 0x77);
+-
+-	if (blink)
+-		attr ^= 0x80;
+-
+-	if (intensity == VCI_BOLD)
+-		attr ^= 0x08;
+-
+-	return attr;
+-}
+-
+-/* Interface routine */
+-static void
+-sisusbcon_invert_region(struct vc_data *vc, u16 *p, int count)
+-{
+-	/* Invert a region. This is called with a pointer
+-	 * to the console's internal screen buffer. So we
+-	 * simply do the inversion there and rely on
+-	 * a call to putc(s) to update the real screen.
+-	 */
+-
+-	while (count--) {
+-		u16 a = *p;
+-
+-		*p++ = ((a) & 0x88ff)        |
+-		       (((a) & 0x7000) >> 4) |
+-		       (((a) & 0x0700) << 4);
+-	}
+-}
+-
+-static inline void *sisusb_vaddr(const struct sisusb_usb_data *sisusb,
+-		const struct vc_data *c, unsigned int x, unsigned int y)
+-{
+-	return (u16 *)c->vc_origin + y * sisusb->sisusb_num_columns + x;
+-}
+-
+-static inline unsigned long sisusb_haddr(const struct sisusb_usb_data *sisusb,
+-	      const struct vc_data *c, unsigned int x, unsigned int y)
+-{
+-	unsigned long offset = c->vc_origin - sisusb->scrbuf;
+-
+-	/* 2 bytes per each character */
+-	offset += 2 * (y * sisusb->sisusb_num_columns + x);
+-
+-	return sisusb->vrambase + offset;
+-}
+-
+-/* Interface routine */
+-static void
+-sisusbcon_putc(struct vc_data *c, int ch, int y, int x)
+-{
+-	struct sisusb_usb_data *sisusb;
+-
+-	sisusb = sisusb_get_sisusb_lock_and_check(c->vc_num);
+-	if (!sisusb)
+-		return;
+-
+-	/* sisusb->lock is down */
+-	if (sisusb_is_inactive(c, sisusb)) {
+-		mutex_unlock(&sisusb->lock);
+-		return;
+-	}
+-
+-	sisusb_copy_memory(sisusb, sisusb_vaddr(sisusb, c, x, y),
+-				sisusb_haddr(sisusb, c, x, y), 2);
+-
+-	mutex_unlock(&sisusb->lock);
+-}
+-
+-/* Interface routine */
+-static void
+-sisusbcon_putcs(struct vc_data *c, const unsigned short *s,
+-		         int count, int y, int x)
+-{
+-	struct sisusb_usb_data *sisusb;
+-
+-	sisusb = sisusb_get_sisusb_lock_and_check(c->vc_num);
+-	if (!sisusb)
+-		return;
+-
+-	/* sisusb->lock is down */
+-
+-	/* Need to put the characters into the buffer ourselves,
+-	 * because the vt does this AFTER calling us.
+-	 */
+-
+-	memcpy(sisusb_vaddr(sisusb, c, x, y), s, count * 2);
+-
+-	if (sisusb_is_inactive(c, sisusb)) {
+-		mutex_unlock(&sisusb->lock);
+-		return;
+-	}
+-
+-	sisusb_copy_memory(sisusb, sisusb_vaddr(sisusb, c, x, y),
+-			sisusb_haddr(sisusb, c, x, y), count * 2);
+-
+-	mutex_unlock(&sisusb->lock);
+-}
+-
+-/* Interface routine */
+-static void
+-sisusbcon_clear(struct vc_data *c, int y, int x, int height, int width)
+-{
+-	struct sisusb_usb_data *sisusb;
+-	u16 eattr = c->vc_video_erase_char;
+-	int i, length, cols;
+-	u16 *dest;
+-
+-	if (width <= 0 || height <= 0)
+-		return;
+-
+-	sisusb = sisusb_get_sisusb_lock_and_check(c->vc_num);
+-	if (!sisusb)
+-		return;
+-
+-	/* sisusb->lock is down */
+-
+-	/* Need to clear buffer ourselves, because the vt does
+-	 * this AFTER calling us.
+-	 */
+-
+-	dest = sisusb_vaddr(sisusb, c, x, y);
+-
+-	cols = sisusb->sisusb_num_columns;
+-
+-	if (width > cols)
+-		width = cols;
+-
+-	if (x == 0 && width >= c->vc_cols) {
+-
+-		sisusbcon_memsetw(dest, eattr, height * cols * 2);
+-
+-	} else {
+-
+-		for (i = height; i > 0; i--, dest += cols)
+-			sisusbcon_memsetw(dest, eattr, width * 2);
+-
+-	}
+-
+-	if (sisusb_is_inactive(c, sisusb)) {
+-		mutex_unlock(&sisusb->lock);
+-		return;
+-	}
+-
+-	length = ((height * cols) - x - (cols - width - x)) * 2;
+-
+-
+-	sisusb_copy_memory(sisusb, sisusb_vaddr(sisusb, c, x, y),
+-			sisusb_haddr(sisusb, c, x, y), length);
+-
+-	mutex_unlock(&sisusb->lock);
+-}
+-
+-/* interface routine */
+-static int
+-sisusbcon_switch(struct vc_data *c)
+-{
+-	struct sisusb_usb_data *sisusb;
+-	int length;
+-
+-	/* Returnvalue 0 means we have fully restored screen,
+-	 *	and vt doesn't need to call do_update_region().
+-	 * Returnvalue != 0 naturally means the opposite.
+-	 */
+-
+-	sisusb = sisusb_get_sisusb_lock_and_check(c->vc_num);
+-	if (!sisusb)
+-		return 0;
+-
+-	/* sisusb->lock is down */
+-
+-	/* Don't write to screen if in gfx mode */
+-	if (sisusb_is_inactive(c, sisusb)) {
+-		mutex_unlock(&sisusb->lock);
+-		return 0;
+-	}
+-
+-	/* That really should not happen. It would mean we are
+-	 * being called while the vc is using its private buffer
+-	 * as origin.
+-	 */
+-	if (c->vc_origin == (unsigned long)c->vc_screenbuf) {
+-		mutex_unlock(&sisusb->lock);
+-		dev_dbg(&sisusb->sisusb_dev->dev, "ASSERT ORIGIN != SCREENBUF!\n");
+-		return 0;
+-	}
+-
+-	/* Check that we don't copy too much */
+-	length = min((int)c->vc_screenbuf_size,
+-			(int)(sisusb->scrbuf + sisusb->scrbuf_size - c->vc_origin));
+-
+-	/* Restore the screen contents */
+-	memcpy((u16 *)c->vc_origin, (u16 *)c->vc_screenbuf, length);
+-
+-	sisusb_copy_memory(sisusb, (u8 *)c->vc_origin,
+-			sisusb_haddr(sisusb, c, 0, 0), length);
+-
+-	mutex_unlock(&sisusb->lock);
+-
+-	return 0;
+-}
+-
+-/* interface routine */
+-static void
+-sisusbcon_save_screen(struct vc_data *c)
+-{
+-	struct sisusb_usb_data *sisusb;
+-	int length;
+-
+-	/* Save the current screen contents to vc's private
+-	 * buffer.
+-	 */
+-
+-	sisusb = sisusb_get_sisusb_lock_and_check(c->vc_num);
+-	if (!sisusb)
+-		return;
+-
+-	/* sisusb->lock is down */
+-
+-	if (sisusb_is_inactive(c, sisusb)) {
+-		mutex_unlock(&sisusb->lock);
+-		return;
+-	}
+-
+-	/* Check that we don't copy too much */
+-	length = min((int)c->vc_screenbuf_size,
+-			(int)(sisusb->scrbuf + sisusb->scrbuf_size - c->vc_origin));
+-
+-	/* Save the screen contents to vc's private buffer */
+-	memcpy((u16 *)c->vc_screenbuf, (u16 *)c->vc_origin, length);
+-
+-	mutex_unlock(&sisusb->lock);
+-}
+-
+-/* interface routine */
+-static void
+-sisusbcon_set_palette(struct vc_data *c, const unsigned char *table)
+-{
+-	struct sisusb_usb_data *sisusb;
+-	int i, j;
+-
+-	/* Return value not used by vt */
+-
+-	if (!con_is_visible(c))
+-		return;
+-
+-	sisusb = sisusb_get_sisusb_lock_and_check(c->vc_num);
+-	if (!sisusb)
+-		return;
+-
+-	/* sisusb->lock is down */
+-
+-	if (sisusb_is_inactive(c, sisusb)) {
+-		mutex_unlock(&sisusb->lock);
+-		return;
+-	}
+-
+-	for (i = j = 0; i < 16; i++) {
+-		if (sisusb_setreg(sisusb, SISCOLIDX, table[i]))
+-			break;
+-		if (sisusb_setreg(sisusb, SISCOLDATA, c->vc_palette[j++] >> 2))
+-			break;
+-		if (sisusb_setreg(sisusb, SISCOLDATA, c->vc_palette[j++] >> 2))
+-			break;
+-		if (sisusb_setreg(sisusb, SISCOLDATA, c->vc_palette[j++] >> 2))
+-			break;
+-	}
+-
+-	mutex_unlock(&sisusb->lock);
+-}
+-
+-/* interface routine */
+-static int
+-sisusbcon_blank(struct vc_data *c, int blank, int mode_switch)
+-{
+-	struct sisusb_usb_data *sisusb;
+-	u8 sr1, cr17, pmreg, cr63;
+-	int ret = 0;
+-
+-	sisusb = sisusb_get_sisusb_lock_and_check(c->vc_num);
+-	if (!sisusb)
+-		return 0;
+-
+-	/* sisusb->lock is down */
+-
+-	if (mode_switch)
+-		sisusb->is_gfx = blank ? 1 : 0;
+-
+-	if (sisusb_is_inactive(c, sisusb)) {
+-		mutex_unlock(&sisusb->lock);
+-		return 0;
+-	}
+-
+-	switch (blank) {
+-
+-	case 1:		/* Normal blanking: Clear screen */
+-	case -1:
+-		sisusbcon_memsetw((u16 *)c->vc_origin,
+-				c->vc_video_erase_char,
+-				c->vc_screenbuf_size);
+-		sisusb_copy_memory(sisusb, (u8 *)c->vc_origin,
+-				sisusb_haddr(sisusb, c, 0, 0),
+-				c->vc_screenbuf_size);
+-		sisusb->con_blanked = 1;
+-		ret = 1;
+-		break;
+-
+-	default:	/* VESA blanking */
+-		switch (blank) {
+-		case 0: /* Unblank */
+-			sr1   = 0x00;
+-			cr17  = 0x80;
+-			pmreg = 0x00;
+-			cr63  = 0x00;
+-			ret = 1;
+-			sisusb->con_blanked = 0;
+-			break;
+-		case VESA_VSYNC_SUSPEND + 1:
+-			sr1   = 0x20;
+-			cr17  = 0x80;
+-			pmreg = 0x80;
+-			cr63  = 0x40;
+-			break;
+-		case VESA_HSYNC_SUSPEND + 1:
+-			sr1   = 0x20;
+-			cr17  = 0x80;
+-			pmreg = 0x40;
+-			cr63  = 0x40;
+-			break;
+-		case VESA_POWERDOWN + 1:
+-			sr1   = 0x20;
+-			cr17  = 0x00;
+-			pmreg = 0xc0;
+-			cr63  = 0x40;
+-			break;
+-		default:
+-			mutex_unlock(&sisusb->lock);
+-			return -EINVAL;
+-		}
+-
+-		sisusb_setidxregandor(sisusb, SISSR, 0x01, ~0x20, sr1);
+-		sisusb_setidxregandor(sisusb, SISCR, 0x17, 0x7f, cr17);
+-		sisusb_setidxregandor(sisusb, SISSR, 0x1f, 0x3f, pmreg);
+-		sisusb_setidxregandor(sisusb, SISCR, 0x63, 0xbf, cr63);
+-
+-	}
+-
+-	mutex_unlock(&sisusb->lock);
+-
+-	return ret;
+-}
+-
+-/* interface routine */
+-static void
+-sisusbcon_scrolldelta(struct vc_data *c, int lines)
+-{
+-	struct sisusb_usb_data *sisusb;
+-
+-	sisusb = sisusb_get_sisusb_lock_and_check(c->vc_num);
+-	if (!sisusb)
+-		return;
+-
+-	/* sisusb->lock is down */
+-
+-	if (sisusb_is_inactive(c, sisusb)) {
+-		mutex_unlock(&sisusb->lock);
+-		return;
+-	}
+-
+-	vc_scrolldelta_helper(c, lines, sisusb->con_rolled_over,
+-			(void *)sisusb->scrbuf, sisusb->scrbuf_size);
+-
+-	sisusbcon_set_start_address(sisusb, c);
+-
+-	mutex_unlock(&sisusb->lock);
+-}
+-
+-/* Interface routine */
+-static void
+-sisusbcon_cursor(struct vc_data *c, int mode)
+-{
+-	struct sisusb_usb_data *sisusb;
+-	int from, to, baseline;
+-
+-	sisusb = sisusb_get_sisusb_lock_and_check(c->vc_num);
+-	if (!sisusb)
+-		return;
+-
+-	/* sisusb->lock is down */
+-
+-	if (sisusb_is_inactive(c, sisusb)) {
+-		mutex_unlock(&sisusb->lock);
+-		return;
+-	}
+-
+-	if (c->vc_origin != c->vc_visible_origin) {
+-		c->vc_visible_origin = c->vc_origin;
+-		sisusbcon_set_start_address(sisusb, c);
+-	}
+-
+-	if (mode == CM_ERASE) {
+-		sisusb_setidxregor(sisusb, SISCR, 0x0a, 0x20);
+-		sisusb->sisusb_cursor_size_to = -1;
+-		mutex_unlock(&sisusb->lock);
+-		return;
+-	}
+-
+-	sisusb_set_cursor(sisusb, (c->vc_pos - sisusb->scrbuf) / 2);
+-
+-	baseline = c->vc_font.height - (c->vc_font.height < 10 ? 1 : 2);
+-
+-	switch (CUR_SIZE(c->vc_cursor_type)) {
+-		case CUR_BLOCK:		from = 1;
+-					to   = c->vc_font.height;
+-					break;
+-		case CUR_TWO_THIRDS:	from = c->vc_font.height / 3;
+-					to   = baseline;
+-					break;
+-		case CUR_LOWER_HALF:	from = c->vc_font.height / 2;
+-					to   = baseline;
+-					break;
+-		case CUR_LOWER_THIRD:	from = (c->vc_font.height * 2) / 3;
+-					to   = baseline;
+-					break;
+-		case CUR_NONE:		from = 31;
+-					to = 30;
+-					break;
+-		default:
+-		case CUR_UNDERLINE:	from = baseline - 1;
+-					to   = baseline;
+-					break;
+-	}
+-
+-	if (sisusb->sisusb_cursor_size_from != from ||
+-	    sisusb->sisusb_cursor_size_to != to) {
+-
+-		sisusb_setidxreg(sisusb, SISCR, 0x0a, from);
+-		sisusb_setidxregandor(sisusb, SISCR, 0x0b, 0xe0, to);
+-
+-		sisusb->sisusb_cursor_size_from = from;
+-		sisusb->sisusb_cursor_size_to   = to;
+-	}
+-
+-	mutex_unlock(&sisusb->lock);
+-}
+-
+-static bool
+-sisusbcon_scroll_area(struct vc_data *c, struct sisusb_usb_data *sisusb,
+-		unsigned int t, unsigned int b, enum con_scroll dir,
+-		unsigned int lines)
+-{
+-	int cols = sisusb->sisusb_num_columns;
+-	int length = ((b - t) * cols) * 2;
+-	u16 eattr = c->vc_video_erase_char;
+-
+-	/* sisusb->lock is down */
+-
+-	/* Scroll an area which does not match the
+-	 * visible screen's dimensions. This needs
+-	 * to be done separately, as it does not
+-	 * use hardware panning.
+-	 */
+-
+-	switch (dir) {
+-
+-		case SM_UP:
+-			memmove(sisusb_vaddr(sisusb, c, 0, t),
+-					   sisusb_vaddr(sisusb, c, 0, t + lines),
+-					   (b - t - lines) * cols * 2);
+-			sisusbcon_memsetw(sisusb_vaddr(sisusb, c, 0, b - lines),
+-					eattr, lines * cols * 2);
+-			break;
+-
+-		case SM_DOWN:
+-			memmove(sisusb_vaddr(sisusb, c, 0, t + lines),
+-					   sisusb_vaddr(sisusb, c, 0, t),
+-					   (b - t - lines) * cols * 2);
+-			sisusbcon_memsetw(sisusb_vaddr(sisusb, c, 0, t), eattr,
+-					  lines * cols * 2);
+-			break;
+-	}
+-
+-	sisusb_copy_memory(sisusb, sisusb_vaddr(sisusb, c, 0, t),
+-			sisusb_haddr(sisusb, c, 0, t), length);
+-
+-	mutex_unlock(&sisusb->lock);
+-
+-	return true;
+-}
+-
+-/* Interface routine */
+-static bool
+-sisusbcon_scroll(struct vc_data *c, unsigned int t, unsigned int b,
+-		enum con_scroll dir, unsigned int lines)
+-{
+-	struct sisusb_usb_data *sisusb;
+-	u16 eattr = c->vc_video_erase_char;
+-	int copyall = 0;
+-	unsigned long oldorigin;
+-	unsigned int delta = lines * c->vc_size_row;
+-
+-	/* Returning != 0 means we have done the scrolling successfully.
+-	 * Returning 0 makes vt do the scrolling on its own.
+-	 * Note that con_scroll is only called if the console is
+-	 * visible. In that case, the origin should be our buffer,
+-	 * not the vt's private one.
+-	 */
+-
+-	if (!lines)
+-		return true;
+-
+-	sisusb = sisusb_get_sisusb_lock_and_check(c->vc_num);
+-	if (!sisusb)
+-		return false;
+-
+-	/* sisusb->lock is down */
+-
+-	if (sisusb_is_inactive(c, sisusb)) {
+-		mutex_unlock(&sisusb->lock);
+-		return false;
+-	}
+-
+-	/* Special case */
+-	if (t || b != c->vc_rows)
+-		return sisusbcon_scroll_area(c, sisusb, t, b, dir, lines);
+-
+-	if (c->vc_origin != c->vc_visible_origin) {
+-		c->vc_visible_origin = c->vc_origin;
+-		sisusbcon_set_start_address(sisusb, c);
+-	}
+-
+-	/* limit amount to maximum realistic size */
+-	if (lines > c->vc_rows)
+-		lines = c->vc_rows;
+-
+-	oldorigin = c->vc_origin;
+-
+-	switch (dir) {
+-
+-	case SM_UP:
+-
+-		if (c->vc_scr_end + delta >=
+-				sisusb->scrbuf + sisusb->scrbuf_size) {
+-			memcpy((u16 *)sisusb->scrbuf,
+-					  (u16 *)(oldorigin + delta),
+-					  c->vc_screenbuf_size - delta);
+-			c->vc_origin = sisusb->scrbuf;
+-			sisusb->con_rolled_over = oldorigin - sisusb->scrbuf;
+-			copyall = 1;
+-		} else
+-			c->vc_origin += delta;
+-
+-		sisusbcon_memsetw(
+-			(u16 *)(c->vc_origin + c->vc_screenbuf_size - delta),
+-					eattr, delta);
+-
+-		break;
+-
+-	case SM_DOWN:
+-
+-		if (oldorigin - delta < sisusb->scrbuf) {
+-			memmove((void *)sisusb->scrbuf + sisusb->scrbuf_size -
+-					c->vc_screenbuf_size + delta,
+-					(u16 *)oldorigin,
+-					c->vc_screenbuf_size - delta);
+-			c->vc_origin = sisusb->scrbuf +
+-					sisusb->scrbuf_size -
+-					c->vc_screenbuf_size;
+-			sisusb->con_rolled_over = 0;
+-			copyall = 1;
+-		} else
+-			c->vc_origin -= delta;
+-
+-		c->vc_scr_end = c->vc_origin + c->vc_screenbuf_size;
+-
+-		scr_memsetw((u16 *)(c->vc_origin), eattr, delta);
+-
+-		break;
+-	}
+-
+-	if (copyall)
+-		sisusb_copy_memory(sisusb,
+-			(u8 *)c->vc_origin,
+-			sisusb_haddr(sisusb, c, 0, 0),
+-			c->vc_screenbuf_size);
+-	else if (dir == SM_UP)
+-		sisusb_copy_memory(sisusb,
+-			(u8 *)c->vc_origin + c->vc_screenbuf_size - delta,
+-			sisusb_haddr(sisusb, c, 0, 0) +
+-					c->vc_screenbuf_size - delta,
+-			delta);
+-	else
+-		sisusb_copy_memory(sisusb,
+-			(u8 *)c->vc_origin,
+-			sisusb_haddr(sisusb, c, 0, 0),
+-			delta);
+-
+-	c->vc_scr_end = c->vc_origin + c->vc_screenbuf_size;
+-	c->vc_visible_origin = c->vc_origin;
+-
+-	sisusbcon_set_start_address(sisusb, c);
+-
+-	c->vc_pos = c->vc_pos - oldorigin + c->vc_origin;
+-
+-	mutex_unlock(&sisusb->lock);
+-
+-	return true;
+-}
+-
+-/* Interface routine */
+-static int
+-sisusbcon_set_origin(struct vc_data *c)
+-{
+-	struct sisusb_usb_data *sisusb;
+-
+-	/* Returning != 0 means we were successful.
+-	 * Returning 0 will vt make to use its own
+-	 *	screenbuffer as the origin.
+-	 */
+-
+-	sisusb = sisusb_get_sisusb_lock_and_check(c->vc_num);
+-	if (!sisusb)
+-		return 0;
+-
+-	/* sisusb->lock is down */
+-
+-	if (sisusb_is_inactive(c, sisusb) || sisusb->con_blanked) {
+-		mutex_unlock(&sisusb->lock);
+-		return 0;
+-	}
+-
+-	c->vc_origin = c->vc_visible_origin = sisusb->scrbuf;
+-
+-	sisusbcon_set_start_address(sisusb, c);
+-
+-	sisusb->con_rolled_over = 0;
+-
+-	mutex_unlock(&sisusb->lock);
+-
+-	return true;
+-}
+-
+-/* Interface routine */
+-static int
+-sisusbcon_resize(struct vc_data *c, unsigned int newcols, unsigned int newrows,
+-		 unsigned int user)
+-{
+-	struct sisusb_usb_data *sisusb;
+-	int fh;
+-
+-	sisusb = sisusb_get_sisusb_lock_and_check(c->vc_num);
+-	if (!sisusb)
+-		return -ENODEV;
+-
+-	fh = sisusb->current_font_height;
+-
+-	mutex_unlock(&sisusb->lock);
+-
+-	/* We are quite unflexible as regards resizing. The vt code
+-	 * handles sizes where the line length isn't equal the pitch
+-	 * quite badly. As regards the rows, our panning tricks only
+-	 * work well if the number of rows equals the visible number
+-	 * of rows.
+-	 */
+-
+-	if (newcols != 80 || c->vc_scan_lines / fh != newrows)
+-		return -EINVAL;
+-
+-	return 0;
+-}
+-
+-int
+-sisusbcon_do_font_op(struct sisusb_usb_data *sisusb, int set, int slot,
+-			u8 *arg, int cmapsz, int ch512, int dorecalc,
+-			struct vc_data *c, int fh, int uplock)
+-{
+-	int font_select = 0x00, i, err = 0;
+-	u32 offset = 0;
+-	u8 dummy;
+-
+-	/* sisusb->lock is down */
+-
+-	/*
+-	 * The default font is kept in slot 0.
+-	 * A user font is loaded in slot 2 (256 ch)
+-	 * or 2+3 (512 ch).
+-	 */
+-
+-	if ((slot != 0 && slot != 2) || !fh) {
+-		if (uplock)
+-			mutex_unlock(&sisusb->lock);
+-		return -EINVAL;
+-	}
+-
+-	if (set)
+-		sisusb->font_slot = slot;
+-
+-	/* Default font is always 256 */
+-	if (slot == 0)
+-		ch512 = 0;
+-	else
+-		offset = 4 * cmapsz;
+-
+-	font_select = (slot == 0) ? 0x00 : (ch512 ? 0x0e : 0x0a);
+-
+-	err |= sisusb_setidxreg(sisusb, SISSR, 0x00, 0x01); /* Reset */
+-	err |= sisusb_setidxreg(sisusb, SISSR, 0x02, 0x04); /* Write to plane 2 */
+-	err |= sisusb_setidxreg(sisusb, SISSR, 0x04, 0x07); /* Memory mode a0-bf */
+-	err |= sisusb_setidxreg(sisusb, SISSR, 0x00, 0x03); /* Reset */
+-
+-	if (err)
+-		goto font_op_error;
+-
+-	err |= sisusb_setidxreg(sisusb, SISGR, 0x04, 0x03); /* Select plane read 2 */
+-	err |= sisusb_setidxreg(sisusb, SISGR, 0x05, 0x00); /* Disable odd/even */
+-	err |= sisusb_setidxreg(sisusb, SISGR, 0x06, 0x00); /* Address range a0-bf */
+-
+-	if (err)
+-		goto font_op_error;
+-
+-	if (arg) {
+-		if (set)
+-			for (i = 0; i < cmapsz; i++) {
+-				err |= sisusb_writeb(sisusb,
+-					sisusb->vrambase + offset + i,
+-					arg[i]);
+-				if (err)
+-					break;
+-			}
+-		else
+-			for (i = 0; i < cmapsz; i++) {
+-				err |= sisusb_readb(sisusb,
+-					sisusb->vrambase + offset + i,
+-					&arg[i]);
+-				if (err)
+-					break;
+-			}
+-
+-		/*
+-		 * In 512-character mode, the character map is not contiguous if
+-		 * we want to remain EGA compatible -- which we do
+-		 */
+-
+-		if (ch512) {
+-			if (set)
+-				for (i = 0; i < cmapsz; i++) {
+-					err |= sisusb_writeb(sisusb,
+-						sisusb->vrambase + offset +
+-							(2 * cmapsz) + i,
+-						arg[cmapsz + i]);
+-					if (err)
+-						break;
+-				}
+-			else
+-				for (i = 0; i < cmapsz; i++) {
+-					err |= sisusb_readb(sisusb,
+-						sisusb->vrambase + offset +
+-							(2 * cmapsz) + i,
+-						&arg[cmapsz + i]);
+-					if (err)
+-						break;
+-				}
+-		}
+-	}
+-
+-	if (err)
+-		goto font_op_error;
+-
+-	err |= sisusb_setidxreg(sisusb, SISSR, 0x00, 0x01); /* Reset */
+-	err |= sisusb_setidxreg(sisusb, SISSR, 0x02, 0x03); /* Write to planes 0+1 */
+-	err |= sisusb_setidxreg(sisusb, SISSR, 0x04, 0x03); /* Memory mode a0-bf */
+-	if (set)
+-		sisusb_setidxreg(sisusb, SISSR, 0x03, font_select);
+-	err |= sisusb_setidxreg(sisusb, SISSR, 0x00, 0x03); /* Reset end */
+-
+-	if (err)
+-		goto font_op_error;
+-
+-	err |= sisusb_setidxreg(sisusb, SISGR, 0x04, 0x00); /* Select plane read 0 */
+-	err |= sisusb_setidxreg(sisusb, SISGR, 0x05, 0x10); /* Enable odd/even */
+-	err |= sisusb_setidxreg(sisusb, SISGR, 0x06, 0x06); /* Address range b8-bf */
+-
+-	if (err)
+-		goto font_op_error;
+-
+-	if ((set) && (ch512 != sisusb->current_font_512)) {
+-
+-		/* Font is shared among all our consoles.
+-		 * And so is the hi_font_mask.
+-		 */
+-		for (i = 0; i < MAX_NR_CONSOLES; i++) {
+-			struct vc_data *d = vc_cons[i].d;
+-			if (d && d->vc_sw == &sisusb_con)
+-				d->vc_hi_font_mask = ch512 ? 0x0800 : 0;
+-		}
+-
+-		sisusb->current_font_512 = ch512;
+-
+-		/* color plane enable register:
+-			256-char: enable intensity bit
+-			512-char: disable intensity bit */
+-		sisusb_getreg(sisusb, SISINPSTAT, &dummy);
+-		sisusb_setreg(sisusb, SISAR, 0x12);
+-		sisusb_setreg(sisusb, SISAR, ch512 ? 0x07 : 0x0f);
+-
+-		sisusb_getreg(sisusb, SISINPSTAT, &dummy);
+-		sisusb_setreg(sisusb, SISAR, 0x20);
+-		sisusb_getreg(sisusb, SISINPSTAT, &dummy);
+-	}
+-
+-	if (dorecalc) {
+-
+-		/*
+-		 * Adjust the screen to fit a font of a certain height
+-		 */
+-
+-		unsigned char ovr, vde, fsr;
+-		int rows = 0, maxscan = 0;
+-
+-		if (c) {
+-
+-			/* Number of video rows */
+-			rows = c->vc_scan_lines / fh;
+-			/* Scan lines to actually display-1 */
+-			maxscan = rows * fh - 1;
+-
+-			/*printk(KERN_DEBUG "sisusb recalc rows %d maxscan %d fh %d sl %d\n",
+-				rows, maxscan, fh, c->vc_scan_lines);*/
+-
+-			sisusb_getidxreg(sisusb, SISCR, 0x07, &ovr);
+-			vde = maxscan & 0xff;
+-			ovr = (ovr & 0xbd) |
+-			      ((maxscan & 0x100) >> 7) |
+-			      ((maxscan & 0x200) >> 3);
+-			sisusb_setidxreg(sisusb, SISCR, 0x07, ovr);
+-			sisusb_setidxreg(sisusb, SISCR, 0x12, vde);
+-
+-		}
+-
+-		sisusb_getidxreg(sisusb, SISCR, 0x09, &fsr);
+-		fsr = (fsr & 0xe0) | (fh - 1);
+-		sisusb_setidxreg(sisusb, SISCR, 0x09, fsr);
+-		sisusb->current_font_height = fh;
+-
+-		sisusb->sisusb_cursor_size_from = -1;
+-		sisusb->sisusb_cursor_size_to   = -1;
+-
+-	}
+-
+-	if (uplock)
+-		mutex_unlock(&sisusb->lock);
+-
+-	if (dorecalc && c) {
+-		int rows = c->vc_scan_lines / fh;
+-
+-		/* Now adjust our consoles' size */
+-
+-		for (i = 0; i < MAX_NR_CONSOLES; i++) {
+-			struct vc_data *vc = vc_cons[i].d;
+-
+-			if (vc && vc->vc_sw == &sisusb_con) {
+-				if (con_is_visible(vc)) {
+-					vc->vc_sw->con_cursor(vc, CM_DRAW);
+-				}
+-				vc->vc_font.height = fh;
+-				vc_resize(vc, 0, rows);
+-			}
+-		}
+-	}
+-
+-	return 0;
+-
+-font_op_error:
+-	if (uplock)
+-		mutex_unlock(&sisusb->lock);
+-
+-	return -EIO;
+-}
+-
+-/* Interface routine */
+-static int
+-sisusbcon_font_set(struct vc_data *c, struct console_font *font,
+-		   unsigned int flags)
+-{
+-	struct sisusb_usb_data *sisusb;
+-	unsigned charcount = font->charcount;
+-
+-	if (font->width != 8 || (charcount != 256 && charcount != 512))
+-		return -EINVAL;
+-
+-	sisusb = sisusb_get_sisusb_lock_and_check(c->vc_num);
+-	if (!sisusb)
+-		return -ENODEV;
+-
+-	/* sisusb->lock is down */
+-
+-	/* Save the user-provided font into a buffer. This
+-	 * is used for restoring text mode after quitting
+-	 * from X and for the con_getfont routine.
+-	 */
+-	if (sisusb->font_backup) {
+-		if (sisusb->font_backup_size < charcount) {
+-			vfree(sisusb->font_backup);
+-			sisusb->font_backup = NULL;
+-		}
+-	}
+-
+-	if (!sisusb->font_backup)
+-		sisusb->font_backup = vmalloc(array_size(charcount, 32));
+-
+-	if (sisusb->font_backup) {
+-		memcpy(sisusb->font_backup, font->data, array_size(charcount, 32));
+-		sisusb->font_backup_size = charcount;
+-		sisusb->font_backup_height = font->height;
+-		sisusb->font_backup_512 = (charcount == 512) ? 1 : 0;
+-	}
+-
+-	/* do_font_op ups sisusb->lock */
+-
+-	return sisusbcon_do_font_op(sisusb, 1, 2, font->data,
+-			8192, (charcount == 512),
+-			(!(flags & KD_FONT_FLAG_DONT_RECALC)) ? 1 : 0,
+-			c, font->height, 1);
+-}
+-
+-/* Interface routine */
+-static int
+-sisusbcon_font_get(struct vc_data *c, struct console_font *font)
+-{
+-	struct sisusb_usb_data *sisusb;
+-
+-	sisusb = sisusb_get_sisusb_lock_and_check(c->vc_num);
+-	if (!sisusb)
+-		return -ENODEV;
+-
+-	/* sisusb->lock is down */
+-
+-	font->width = 8;
+-	font->height = c->vc_font.height;
+-	font->charcount = 256;
+-
+-	if (!font->data) {
+-		mutex_unlock(&sisusb->lock);
+-		return 0;
+-	}
+-
+-	if (!sisusb->font_backup) {
+-		mutex_unlock(&sisusb->lock);
+-		return -ENODEV;
+-	}
+-
+-	/* Copy 256 chars only, like vgacon */
+-	memcpy(font->data, sisusb->font_backup, 256 * 32);
+-
+-	mutex_unlock(&sisusb->lock);
+-
+-	return 0;
+-}
+-
+-/*
+- *  The console `switch' structure for the sisusb console
+- */
+-
+-static const struct consw sisusb_con = {
+-	.owner =		THIS_MODULE,
+-	.con_startup =		sisusbcon_startup,
+-	.con_init =		sisusbcon_init,
+-	.con_deinit =		sisusbcon_deinit,
+-	.con_clear =		sisusbcon_clear,
+-	.con_putc =		sisusbcon_putc,
+-	.con_putcs =		sisusbcon_putcs,
+-	.con_cursor =		sisusbcon_cursor,
+-	.con_scroll =		sisusbcon_scroll,
+-	.con_switch =		sisusbcon_switch,
+-	.con_blank =		sisusbcon_blank,
+-	.con_font_set =		sisusbcon_font_set,
+-	.con_font_get =		sisusbcon_font_get,
+-	.con_set_palette =	sisusbcon_set_palette,
+-	.con_scrolldelta =	sisusbcon_scrolldelta,
+-	.con_build_attr =	sisusbcon_build_attr,
+-	.con_invert_region =	sisusbcon_invert_region,
+-	.con_set_origin =	sisusbcon_set_origin,
+-	.con_save_screen =	sisusbcon_save_screen,
+-	.con_resize =		sisusbcon_resize,
+-};
+-
+-/* Our very own dummy console driver */
+-
+-static const char *sisusbdummycon_startup(void)
+-{
+-    return "SISUSBVGADUMMY";
+-}
+-
+-static void sisusbdummycon_init(struct vc_data *vc, int init)
+-{
+-    vc->vc_can_do_color = 1;
+-    if (init) {
+-	vc->vc_cols = 80;
+-	vc->vc_rows = 25;
+-    } else
+-	vc_resize(vc, 80, 25);
+-}
+-
+-static void sisusbdummycon_deinit(struct vc_data *vc) { }
+-static void sisusbdummycon_clear(struct vc_data *vc, int sy, int sx,
+-				 int height, int width) { }
+-static void sisusbdummycon_putc(struct vc_data *vc, int c, int ypos,
+-				int xpos) { }
+-static void sisusbdummycon_putcs(struct vc_data *vc, const unsigned short *s,
+-				 int count, int ypos, int xpos) { }
+-static void sisusbdummycon_cursor(struct vc_data *vc, int mode) { }
+-
+-static bool sisusbdummycon_scroll(struct vc_data *vc, unsigned int top,
+-				  unsigned int bottom, enum con_scroll dir,
+-				  unsigned int lines)
+-{
+-	return false;
+-}
+-
+-static int sisusbdummycon_switch(struct vc_data *vc)
+-{
+-	return 0;
+-}
+-
+-static int sisusbdummycon_blank(struct vc_data *vc, int blank, int mode_switch)
+-{
+-	return 0;
+-}
+-
+-static const struct consw sisusb_dummy_con = {
+-	.owner =		THIS_MODULE,
+-	.con_startup =		sisusbdummycon_startup,
+-	.con_init =		sisusbdummycon_init,
+-	.con_deinit =		sisusbdummycon_deinit,
+-	.con_clear =		sisusbdummycon_clear,
+-	.con_putc =		sisusbdummycon_putc,
+-	.con_putcs =		sisusbdummycon_putcs,
+-	.con_cursor =		sisusbdummycon_cursor,
+-	.con_scroll =		sisusbdummycon_scroll,
+-	.con_switch =		sisusbdummycon_switch,
+-	.con_blank =		sisusbdummycon_blank,
+-};
+-
+-int
+-sisusb_console_init(struct sisusb_usb_data *sisusb, int first, int last)
+-{
+-	int i, ret;
+-
+-	mutex_lock(&sisusb->lock);
+-
+-	/* Erm.. that should not happen */
+-	if (sisusb->haveconsole || !sisusb->SiS_Pr) {
+-		mutex_unlock(&sisusb->lock);
+-		return 1;
+-	}
+-
+-	sisusb->con_first = first;
+-	sisusb->con_last  = last;
+-
+-	if (first > last ||
+-	    first > MAX_NR_CONSOLES ||
+-	    last > MAX_NR_CONSOLES) {
+-		mutex_unlock(&sisusb->lock);
+-		return 1;
+-	}
+-
+-	/* If gfxcore not initialized or no consoles given, quit graciously */
+-	if (!sisusb->gfxinit || first < 1 || last < 1) {
+-		mutex_unlock(&sisusb->lock);
+-		return 0;
+-	}
+-
+-	sisusb->sisusb_cursor_loc       = -1;
+-	sisusb->sisusb_cursor_size_from = -1;
+-	sisusb->sisusb_cursor_size_to   = -1;
+-
+-	/* Set up text mode (and upload  default font) */
+-	if (sisusb_reset_text_mode(sisusb, 1)) {
+-		mutex_unlock(&sisusb->lock);
+-		dev_err(&sisusb->sisusb_dev->dev, "Failed to set up text mode\n");
+-		return 1;
+-	}
+-
+-	/* Initialize some gfx registers */
+-	sisusb_initialize(sisusb);
+-
+-	for (i = first - 1; i <= last - 1; i++) {
+-		/* Save sisusb for our interface routines */
+-		mysisusbs[i] = sisusb;
+-	}
+-
+-	/* Initial console setup */
+-	sisusb->sisusb_num_columns = 80;
+-
+-	/* Use a 32K buffer (matches b8000-bffff area) */
+-	sisusb->scrbuf_size = 32 * 1024;
+-
+-	/* Allocate screen buffer */
+-	if (!(sisusb->scrbuf = (unsigned long)vmalloc(sisusb->scrbuf_size))) {
+-		mutex_unlock(&sisusb->lock);
+-		dev_err(&sisusb->sisusb_dev->dev, "Failed to allocate screen buffer\n");
+-		return 1;
+-	}
+-
+-	mutex_unlock(&sisusb->lock);
+-
+-	/* Now grab the desired console(s) */
+-	console_lock();
+-	ret = do_take_over_console(&sisusb_con, first - 1, last - 1, 0);
+-	console_unlock();
+-	if (!ret)
+-		sisusb->haveconsole = 1;
+-	else {
+-		for (i = first - 1; i <= last - 1; i++)
+-			mysisusbs[i] = NULL;
+-	}
+-
+-	return ret;
+-}
+-
+-void
+-sisusb_console_exit(struct sisusb_usb_data *sisusb)
+-{
+-	int i;
+-
+-	/* This is called if the device is disconnected
+-	 * and while disconnect and lock semaphores
+-	 * are up. This should be save because we
+-	 * can't lose our sisusb any other way but by
+-	 * disconnection (and hence, the disconnect
+-	 * sema is for protecting all other access
+-	 * functions from disconnection, not the
+-	 * other way round).
+-	 */
+-
+-	/* Now what do we do in case of disconnection:
+-	 * One alternative would be to simply call
+-	 * give_up_console(). Nah, not a good idea.
+-	 * give_up_console() is obviously buggy as it
+-	 * only discards the consw pointer from the
+-	 * driver_map, but doesn't adapt vc->vc_sw
+-	 * of the affected consoles. Hence, the next
+-	 * call to any of the console functions will
+-	 * eventually take a trip to oops county.
+-	 * Also, give_up_console for some reason
+-	 * doesn't decrement our module refcount.
+-	 * Instead, we switch our consoles to a private
+-	 * dummy console. This, of course, keeps our
+-	 * refcount up as well, but it works perfectly.
+-	 */
+-
+-	if (sisusb->haveconsole) {
+-		for (i = 0; i < MAX_NR_CONSOLES; i++)
+-			if (sisusb->havethisconsole[i]) {
+-				console_lock();
+-				do_take_over_console(&sisusb_dummy_con, i, i, 0);
+-				console_unlock();
+-				/* At this point, con_deinit for all our
+-				 * consoles is executed by do_take_over_console().
+-				 */
+-			}
+-		sisusb->haveconsole = 0;
+-	}
+-
+-	vfree((void *)sisusb->scrbuf);
+-	sisusb->scrbuf = 0;
+-
+-	vfree(sisusb->font_backup);
+-	sisusb->font_backup = NULL;
+-}
+-
+-void __init sisusb_init_concode(void)
+-{
+-	int i;
+-
+-	for (i = 0; i < MAX_NR_CONSOLES; i++)
+-		mysisusbs[i] = NULL;
+-}
+diff --git a/drivers/usb/misc/sisusbvga/sisusb_init.c b/drivers/usb/misc/sisusbvga/sisusb_init.c
+deleted file mode 100644
+index 7c11198d5dda..000000000000
+--- a/drivers/usb/misc/sisusbvga/sisusb_init.c
++++ /dev/null
+@@ -1,955 +0,0 @@
+-// SPDX-License-Identifier: (GPL-2.0 OR BSD-3-Clause)
+-/*
+- * sisusb - usb kernel driver for SiS315(E) based USB2VGA dongles
+- *
+- * Display mode initializing code
+- *
+- * Copyright (C) 2001-2005 by Thomas Winischhofer, Vienna, Austria
+- *
+- * If distributed as part of the Linux kernel, this code is licensed under the
+- * terms of the GPL v2.
+- *
+- * Otherwise, the following license terms apply:
+- *
+- * * Redistribution and use in source and binary forms, with or without
+- * * modification, are permitted provided that the following conditions
+- * * are met:
+- * * 1) Redistributions of source code must retain the above copyright
+- * *    notice, this list of conditions and the following disclaimer.
+- * * 2) Redistributions in binary form must reproduce the above copyright
+- * *    notice, this list of conditions and the following disclaimer in the
+- * *    documentation and/or other materials provided with the distribution.
+- * * 3) The name of the author may not be used to endorse or promote products
+- * *    derived from this software without specific prior written permission.
+- * *
+- * * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+- * * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+- * * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+- * * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+- * * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- * * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+- * * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+- * * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+- * * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- * * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- * Author:	Thomas Winischhofer <thomas@winischhofer.net>
+- *
+- */
+-
+-#include <linux/module.h>
+-#include <linux/kernel.h>
+-#include <linux/errno.h>
+-#include <linux/poll.h>
+-#include <linux/spinlock.h>
+-
+-#include "sisusb.h"
+-#include "sisusb_init.h"
+-#include "sisusb_tables.h"
+-
+-/*********************************************/
+-/*         POINTER INITIALIZATION            */
+-/*********************************************/
+-
+-static void SiSUSB_InitPtr(struct SiS_Private *SiS_Pr)
+-{
+-	SiS_Pr->SiS_ModeResInfo = SiSUSB_ModeResInfo;
+-	SiS_Pr->SiS_StandTable = SiSUSB_StandTable;
+-
+-	SiS_Pr->SiS_SModeIDTable = SiSUSB_SModeIDTable;
+-	SiS_Pr->SiS_EModeIDTable = SiSUSB_EModeIDTable;
+-	SiS_Pr->SiS_RefIndex = SiSUSB_RefIndex;
+-	SiS_Pr->SiS_CRT1Table = SiSUSB_CRT1Table;
+-
+-	SiS_Pr->SiS_VCLKData = SiSUSB_VCLKData;
+-}
+-
+-/*********************************************/
+-/*          HELPER: SetReg, GetReg           */
+-/*********************************************/
+-
+-static void
+-SiS_SetReg(struct SiS_Private *SiS_Pr, unsigned long port,
+-	   unsigned short index, unsigned short data)
+-{
+-	sisusb_setidxreg(SiS_Pr->sisusb, port, index, data);
+-}
+-
+-static void
+-SiS_SetRegByte(struct SiS_Private *SiS_Pr, unsigned long port,
+-	       unsigned short data)
+-{
+-	sisusb_setreg(SiS_Pr->sisusb, port, data);
+-}
+-
+-static unsigned char
+-SiS_GetReg(struct SiS_Private *SiS_Pr, unsigned long port, unsigned short index)
+-{
+-	u8 data;
+-
+-	sisusb_getidxreg(SiS_Pr->sisusb, port, index, &data);
+-
+-	return data;
+-}
+-
+-static unsigned char
+-SiS_GetRegByte(struct SiS_Private *SiS_Pr, unsigned long port)
+-{
+-	u8 data;
+-
+-	sisusb_getreg(SiS_Pr->sisusb, port, &data);
+-
+-	return data;
+-}
+-
+-static void
+-SiS_SetRegANDOR(struct SiS_Private *SiS_Pr, unsigned long port,
+-		unsigned short index, unsigned short DataAND,
+-		unsigned short DataOR)
+-{
+-	sisusb_setidxregandor(SiS_Pr->sisusb, port, index, DataAND, DataOR);
+-}
+-
+-static void
+-SiS_SetRegAND(struct SiS_Private *SiS_Pr, unsigned long port,
+-	      unsigned short index, unsigned short DataAND)
+-{
+-	sisusb_setidxregand(SiS_Pr->sisusb, port, index, DataAND);
+-}
+-
+-static void
+-SiS_SetRegOR(struct SiS_Private *SiS_Pr, unsigned long port,
+-	     unsigned short index, unsigned short DataOR)
+-{
+-	sisusb_setidxregor(SiS_Pr->sisusb, port, index, DataOR);
+-}
+-
+-/*********************************************/
+-/*      HELPER: DisplayOn, DisplayOff        */
+-/*********************************************/
+-
+-static void SiS_DisplayOn(struct SiS_Private *SiS_Pr)
+-{
+-	SiS_SetRegAND(SiS_Pr, SiS_Pr->SiS_P3c4, 0x01, 0xDF);
+-}
+-
+-/*********************************************/
+-/*        HELPER: Init Port Addresses        */
+-/*********************************************/
+-
+-static void SiSUSBRegInit(struct SiS_Private *SiS_Pr, unsigned long BaseAddr)
+-{
+-	SiS_Pr->SiS_P3c4 = BaseAddr + 0x14;
+-	SiS_Pr->SiS_P3d4 = BaseAddr + 0x24;
+-	SiS_Pr->SiS_P3c0 = BaseAddr + 0x10;
+-	SiS_Pr->SiS_P3ce = BaseAddr + 0x1e;
+-	SiS_Pr->SiS_P3c2 = BaseAddr + 0x12;
+-	SiS_Pr->SiS_P3ca = BaseAddr + 0x1a;
+-	SiS_Pr->SiS_P3c6 = BaseAddr + 0x16;
+-	SiS_Pr->SiS_P3c7 = BaseAddr + 0x17;
+-	SiS_Pr->SiS_P3c8 = BaseAddr + 0x18;
+-	SiS_Pr->SiS_P3c9 = BaseAddr + 0x19;
+-	SiS_Pr->SiS_P3cb = BaseAddr + 0x1b;
+-	SiS_Pr->SiS_P3cc = BaseAddr + 0x1c;
+-	SiS_Pr->SiS_P3cd = BaseAddr + 0x1d;
+-	SiS_Pr->SiS_P3da = BaseAddr + 0x2a;
+-	SiS_Pr->SiS_Part1Port = BaseAddr + SIS_CRT2_PORT_04;
+-}
+-
+-/*********************************************/
+-/*             HELPER: GetSysFlags           */
+-/*********************************************/
+-
+-static void SiS_GetSysFlags(struct SiS_Private *SiS_Pr)
+-{
+-	SiS_Pr->SiS_MyCR63 = 0x63;
+-}
+-
+-/*********************************************/
+-/*         HELPER: Init PCI & Engines        */
+-/*********************************************/
+-
+-static void SiSInitPCIetc(struct SiS_Private *SiS_Pr)
+-{
+-	SiS_SetReg(SiS_Pr, SiS_Pr->SiS_P3c4, 0x20, 0xa1);
+-	/*  - Enable 2D (0x40)
+-	 *  - Enable 3D (0x02)
+-	 *  - Enable 3D vertex command fetch (0x10)
+-	 *  - Enable 3D command parser (0x08)
+-	 *  - Enable 3D G/L transformation engine (0x80)
+-	 */
+-	SiS_SetRegOR(SiS_Pr, SiS_Pr->SiS_P3c4, 0x1E, 0xDA);
+-}
+-
+-/*********************************************/
+-/*        HELPER: SET SEGMENT REGISTERS      */
+-/*********************************************/
+-
+-static void SiS_SetSegRegLower(struct SiS_Private *SiS_Pr, unsigned short value)
+-{
+-	unsigned short temp;
+-
+-	value &= 0x00ff;
+-	temp = SiS_GetRegByte(SiS_Pr, SiS_Pr->SiS_P3cb) & 0xf0;
+-	temp |= (value >> 4);
+-	SiS_SetRegByte(SiS_Pr, SiS_Pr->SiS_P3cb, temp);
+-	temp = SiS_GetRegByte(SiS_Pr, SiS_Pr->SiS_P3cd) & 0xf0;
+-	temp |= (value & 0x0f);
+-	SiS_SetRegByte(SiS_Pr, SiS_Pr->SiS_P3cd, temp);
+-}
+-
+-static void SiS_SetSegRegUpper(struct SiS_Private *SiS_Pr, unsigned short value)
+-{
+-	unsigned short temp;
+-
+-	value &= 0x00ff;
+-	temp = SiS_GetRegByte(SiS_Pr, SiS_Pr->SiS_P3cb) & 0x0f;
+-	temp |= (value & 0xf0);
+-	SiS_SetRegByte(SiS_Pr, SiS_Pr->SiS_P3cb, temp);
+-	temp = SiS_GetRegByte(SiS_Pr, SiS_Pr->SiS_P3cd) & 0x0f;
+-	temp |= (value << 4);
+-	SiS_SetRegByte(SiS_Pr, SiS_Pr->SiS_P3cd, temp);
+-}
+-
+-static void SiS_SetSegmentReg(struct SiS_Private *SiS_Pr, unsigned short value)
+-{
+-	SiS_SetSegRegLower(SiS_Pr, value);
+-	SiS_SetSegRegUpper(SiS_Pr, value);
+-}
+-
+-static void SiS_ResetSegmentReg(struct SiS_Private *SiS_Pr)
+-{
+-	SiS_SetSegmentReg(SiS_Pr, 0);
+-}
+-
+-static void
+-SiS_SetSegmentRegOver(struct SiS_Private *SiS_Pr, unsigned short value)
+-{
+-	unsigned short temp = value >> 8;
+-
+-	temp &= 0x07;
+-	temp |= (temp << 4);
+-	SiS_SetReg(SiS_Pr, SiS_Pr->SiS_P3c4, 0x1d, temp);
+-	SiS_SetSegmentReg(SiS_Pr, value);
+-}
+-
+-static void SiS_ResetSegmentRegOver(struct SiS_Private *SiS_Pr)
+-{
+-	SiS_SetSegmentRegOver(SiS_Pr, 0);
+-}
+-
+-static void SiS_ResetSegmentRegisters(struct SiS_Private *SiS_Pr)
+-{
+-	SiS_ResetSegmentReg(SiS_Pr);
+-	SiS_ResetSegmentRegOver(SiS_Pr);
+-}
+-
+-/*********************************************/
+-/*           HELPER: SearchModeID            */
+-/*********************************************/
+-
+-static int
+-SiS_SearchModeID(struct SiS_Private *SiS_Pr, unsigned short *ModeNo,
+-		 unsigned short *ModeIdIndex)
+-{
+-	if ((*ModeNo) <= 0x13) {
+-
+-		if ((*ModeNo) != 0x03)
+-			return 0;
+-
+-		(*ModeIdIndex) = 0;
+-
+-	} else {
+-
+-		for (*ModeIdIndex = 0;; (*ModeIdIndex)++) {
+-
+-			if (SiS_Pr->SiS_EModeIDTable[*ModeIdIndex].Ext_ModeID ==
+-			    (*ModeNo))
+-				break;
+-
+-			if (SiS_Pr->SiS_EModeIDTable[*ModeIdIndex].Ext_ModeID ==
+-			    0xFF)
+-				return 0;
+-		}
+-
+-	}
+-
+-	return 1;
+-}
+-
+-/*********************************************/
+-/*            HELPER: ENABLE CRT1            */
+-/*********************************************/
+-
+-static void SiS_HandleCRT1(struct SiS_Private *SiS_Pr)
+-{
+-	/* Enable CRT1 gating */
+-	SiS_SetRegAND(SiS_Pr, SiS_Pr->SiS_P3d4, SiS_Pr->SiS_MyCR63, 0xbf);
+-}
+-
+-/*********************************************/
+-/*           HELPER: GetColorDepth           */
+-/*********************************************/
+-
+-static unsigned short
+-SiS_GetColorDepth(struct SiS_Private *SiS_Pr, unsigned short ModeNo,
+-		  unsigned short ModeIdIndex)
+-{
+-	static const unsigned short ColorDepth[6] = { 1, 2, 4, 4, 6, 8 };
+-	unsigned short modeflag;
+-	short index;
+-
+-	if (ModeNo <= 0x13) {
+-		modeflag = SiS_Pr->SiS_SModeIDTable[ModeIdIndex].St_ModeFlag;
+-	} else {
+-		modeflag = SiS_Pr->SiS_EModeIDTable[ModeIdIndex].Ext_ModeFlag;
+-	}
+-
+-	index = (modeflag & ModeTypeMask) - ModeEGA;
+-	if (index < 0)
+-		index = 0;
+-	return ColorDepth[index];
+-}
+-
+-/*********************************************/
+-/*             HELPER: GetOffset             */
+-/*********************************************/
+-
+-static unsigned short
+-SiS_GetOffset(struct SiS_Private *SiS_Pr, unsigned short ModeNo,
+-	      unsigned short ModeIdIndex, unsigned short rrti)
+-{
+-	unsigned short xres, temp, colordepth, infoflag;
+-
+-	infoflag = SiS_Pr->SiS_RefIndex[rrti].Ext_InfoFlag;
+-	xres = SiS_Pr->SiS_RefIndex[rrti].XRes;
+-
+-	colordepth = SiS_GetColorDepth(SiS_Pr, ModeNo, ModeIdIndex);
+-
+-	temp = xres / 16;
+-
+-	if (infoflag & InterlaceMode)
+-		temp <<= 1;
+-
+-	temp *= colordepth;
+-
+-	if (xres % 16)
+-		temp += (colordepth >> 1);
+-
+-	return temp;
+-}
+-
+-/*********************************************/
+-/*                   SEQ                     */
+-/*********************************************/
+-
+-static void
+-SiS_SetSeqRegs(struct SiS_Private *SiS_Pr, unsigned short StandTableIndex)
+-{
+-	unsigned char SRdata;
+-	int i;
+-
+-	SiS_SetReg(SiS_Pr, SiS_Pr->SiS_P3c4, 0x00, 0x03);
+-
+-	SRdata = SiS_Pr->SiS_StandTable[StandTableIndex].SR[0] | 0x20;
+-	SiS_SetReg(SiS_Pr, SiS_Pr->SiS_P3c4, 0x01, SRdata);
+-
+-	for (i = 2; i <= 4; i++) {
+-		SRdata = SiS_Pr->SiS_StandTable[StandTableIndex].SR[i - 1];
+-		SiS_SetReg(SiS_Pr, SiS_Pr->SiS_P3c4, i, SRdata);
+-	}
+-}
+-
+-/*********************************************/
+-/*                  MISC                     */
+-/*********************************************/
+-
+-static void
+-SiS_SetMiscRegs(struct SiS_Private *SiS_Pr, unsigned short StandTableIndex)
+-{
+-	unsigned char Miscdata = SiS_Pr->SiS_StandTable[StandTableIndex].MISC;
+-
+-	SiS_SetRegByte(SiS_Pr, SiS_Pr->SiS_P3c2, Miscdata);
+-}
+-
+-/*********************************************/
+-/*                  CRTC                     */
+-/*********************************************/
+-
+-static void
+-SiS_SetCRTCRegs(struct SiS_Private *SiS_Pr, unsigned short StandTableIndex)
+-{
+-	unsigned char CRTCdata;
+-	unsigned short i;
+-
+-	SiS_SetRegAND(SiS_Pr, SiS_Pr->SiS_P3d4, 0x11, 0x7f);
+-
+-	for (i = 0; i <= 0x18; i++) {
+-		CRTCdata = SiS_Pr->SiS_StandTable[StandTableIndex].CRTC[i];
+-		SiS_SetReg(SiS_Pr, SiS_Pr->SiS_P3d4, i, CRTCdata);
+-	}
+-}
+-
+-/*********************************************/
+-/*                   ATT                     */
+-/*********************************************/
+-
+-static void
+-SiS_SetATTRegs(struct SiS_Private *SiS_Pr, unsigned short StandTableIndex)
+-{
+-	unsigned char ARdata;
+-	unsigned short i;
+-
+-	for (i = 0; i <= 0x13; i++) {
+-		ARdata = SiS_Pr->SiS_StandTable[StandTableIndex].ATTR[i];
+-		SiS_GetRegByte(SiS_Pr, SiS_Pr->SiS_P3da);
+-		SiS_SetRegByte(SiS_Pr, SiS_Pr->SiS_P3c0, i);
+-		SiS_SetRegByte(SiS_Pr, SiS_Pr->SiS_P3c0, ARdata);
+-	}
+-	SiS_GetRegByte(SiS_Pr, SiS_Pr->SiS_P3da);
+-	SiS_SetRegByte(SiS_Pr, SiS_Pr->SiS_P3c0, 0x14);
+-	SiS_SetRegByte(SiS_Pr, SiS_Pr->SiS_P3c0, 0x00);
+-
+-	SiS_GetRegByte(SiS_Pr, SiS_Pr->SiS_P3da);
+-	SiS_SetRegByte(SiS_Pr, SiS_Pr->SiS_P3c0, 0x20);
+-	SiS_GetRegByte(SiS_Pr, SiS_Pr->SiS_P3da);
+-}
+-
+-/*********************************************/
+-/*                   GRC                     */
+-/*********************************************/
+-
+-static void
+-SiS_SetGRCRegs(struct SiS_Private *SiS_Pr, unsigned short StandTableIndex)
+-{
+-	unsigned char GRdata;
+-	unsigned short i;
+-
+-	for (i = 0; i <= 0x08; i++) {
+-		GRdata = SiS_Pr->SiS_StandTable[StandTableIndex].GRC[i];
+-		SiS_SetReg(SiS_Pr, SiS_Pr->SiS_P3ce, i, GRdata);
+-	}
+-
+-	if (SiS_Pr->SiS_ModeType > ModeVGA) {
+-		/* 256 color disable */
+-		SiS_SetRegAND(SiS_Pr, SiS_Pr->SiS_P3ce, 0x05, 0xBF);
+-	}
+-}
+-
+-/*********************************************/
+-/*          CLEAR EXTENDED REGISTERS         */
+-/*********************************************/
+-
+-static void SiS_ClearExt1Regs(struct SiS_Private *SiS_Pr, unsigned short ModeNo)
+-{
+-	int i;
+-
+-	for (i = 0x0A; i <= 0x0E; i++) {
+-		SiS_SetReg(SiS_Pr, SiS_Pr->SiS_P3c4, i, 0x00);
+-	}
+-
+-	SiS_SetRegAND(SiS_Pr, SiS_Pr->SiS_P3c4, 0x37, 0xFE);
+-}
+-
+-/*********************************************/
+-/*              Get rate index               */
+-/*********************************************/
+-
+-static unsigned short
+-SiS_GetRatePtr(struct SiS_Private *SiS_Pr, unsigned short ModeNo,
+-	       unsigned short ModeIdIndex)
+-{
+-	unsigned short rrti, i, index, temp;
+-
+-	if (ModeNo <= 0x13)
+-		return 0xFFFF;
+-
+-	index = SiS_GetReg(SiS_Pr, SiS_Pr->SiS_P3d4, 0x33) & 0x0F;
+-	if (index > 0)
+-		index--;
+-
+-	rrti = SiS_Pr->SiS_EModeIDTable[ModeIdIndex].REFindex;
+-	ModeNo = SiS_Pr->SiS_RefIndex[rrti].ModeID;
+-
+-	i = 0;
+-	do {
+-		if (SiS_Pr->SiS_RefIndex[rrti + i].ModeID != ModeNo)
+-			break;
+-
+-		temp =
+-		    SiS_Pr->SiS_RefIndex[rrti + i].Ext_InfoFlag & ModeTypeMask;
+-		if (temp < SiS_Pr->SiS_ModeType)
+-			break;
+-
+-		i++;
+-		index--;
+-	} while (index != 0xFFFF);
+-
+-	i--;
+-
+-	return (rrti + i);
+-}
+-
+-/*********************************************/
+-/*                  SYNC                     */
+-/*********************************************/
+-
+-static void SiS_SetCRT1Sync(struct SiS_Private *SiS_Pr, unsigned short rrti)
+-{
+-	unsigned short sync = SiS_Pr->SiS_RefIndex[rrti].Ext_InfoFlag >> 8;
+-	sync &= 0xC0;
+-	sync |= 0x2f;
+-	SiS_SetRegByte(SiS_Pr, SiS_Pr->SiS_P3c2, sync);
+-}
+-
+-/*********************************************/
+-/*                  CRTC/2                   */
+-/*********************************************/
+-
+-static void
+-SiS_SetCRT1CRTC(struct SiS_Private *SiS_Pr, unsigned short ModeNo,
+-		unsigned short ModeIdIndex, unsigned short rrti)
+-{
+-	unsigned char index;
+-	unsigned short temp, i, j, modeflag;
+-
+-	SiS_SetRegAND(SiS_Pr, SiS_Pr->SiS_P3d4, 0x11, 0x7f);
+-
+-	modeflag = SiS_Pr->SiS_EModeIDTable[ModeIdIndex].Ext_ModeFlag;
+-
+-	index = SiS_Pr->SiS_RefIndex[rrti].Ext_CRT1CRTC;
+-
+-	for (i = 0, j = 0; i <= 7; i++, j++) {
+-		SiS_SetReg(SiS_Pr, SiS_Pr->SiS_P3d4, j,
+-			   SiS_Pr->SiS_CRT1Table[index].CR[i]);
+-	}
+-	for (j = 0x10; i <= 10; i++, j++) {
+-		SiS_SetReg(SiS_Pr, SiS_Pr->SiS_P3d4, j,
+-			   SiS_Pr->SiS_CRT1Table[index].CR[i]);
+-	}
+-	for (j = 0x15; i <= 12; i++, j++) {
+-		SiS_SetReg(SiS_Pr, SiS_Pr->SiS_P3d4, j,
+-			   SiS_Pr->SiS_CRT1Table[index].CR[i]);
+-	}
+-	for (j = 0x0A; i <= 15; i++, j++) {
+-		SiS_SetReg(SiS_Pr, SiS_Pr->SiS_P3c4, j,
+-			   SiS_Pr->SiS_CRT1Table[index].CR[i]);
+-	}
+-
+-	temp = SiS_Pr->SiS_CRT1Table[index].CR[16] & 0xE0;
+-	SiS_SetReg(SiS_Pr, SiS_Pr->SiS_P3c4, 0x0E, temp);
+-
+-	temp = ((SiS_Pr->SiS_CRT1Table[index].CR[16]) & 0x01) << 5;
+-	if (modeflag & DoubleScanMode)
+-		temp |= 0x80;
+-	SiS_SetRegANDOR(SiS_Pr, SiS_Pr->SiS_P3d4, 0x09, 0x5F, temp);
+-
+-	if (SiS_Pr->SiS_ModeType > ModeVGA)
+-		SiS_SetReg(SiS_Pr, SiS_Pr->SiS_P3d4, 0x14, 0x4F);
+-}
+-
+-/*********************************************/
+-/*               OFFSET & PITCH              */
+-/*********************************************/
+-/*  (partly overruled by SetPitch() in XF86) */
+-/*********************************************/
+-
+-static void
+-SiS_SetCRT1Offset(struct SiS_Private *SiS_Pr, unsigned short ModeNo,
+-		  unsigned short ModeIdIndex, unsigned short rrti)
+-{
+-	unsigned short du = SiS_GetOffset(SiS_Pr, ModeNo, ModeIdIndex, rrti);
+-	unsigned short infoflag = SiS_Pr->SiS_RefIndex[rrti].Ext_InfoFlag;
+-	unsigned short temp;
+-
+-	temp = (du >> 8) & 0x0f;
+-	SiS_SetRegANDOR(SiS_Pr, SiS_Pr->SiS_P3c4, 0x0E, 0xF0, temp);
+-
+-	SiS_SetReg(SiS_Pr, SiS_Pr->SiS_P3d4, 0x13, (du & 0xFF));
+-
+-	if (infoflag & InterlaceMode)
+-		du >>= 1;
+-
+-	du <<= 5;
+-	temp = (du >> 8) & 0xff;
+-	if (du & 0xff)
+-		temp++;
+-	temp++;
+-	SiS_SetReg(SiS_Pr, SiS_Pr->SiS_P3c4, 0x10, temp);
+-}
+-
+-/*********************************************/
+-/*                  VCLK                     */
+-/*********************************************/
+-
+-static void
+-SiS_SetCRT1VCLK(struct SiS_Private *SiS_Pr, unsigned short ModeNo,
+-		unsigned short rrti)
+-{
+-	unsigned short index = SiS_Pr->SiS_RefIndex[rrti].Ext_CRTVCLK;
+-	unsigned short clka = SiS_Pr->SiS_VCLKData[index].SR2B;
+-	unsigned short clkb = SiS_Pr->SiS_VCLKData[index].SR2C;
+-
+-	SiS_SetRegAND(SiS_Pr, SiS_Pr->SiS_P3c4, 0x31, 0xCF);
+-
+-	SiS_SetReg(SiS_Pr, SiS_Pr->SiS_P3c4, 0x2B, clka);
+-	SiS_SetReg(SiS_Pr, SiS_Pr->SiS_P3c4, 0x2C, clkb);
+-	SiS_SetReg(SiS_Pr, SiS_Pr->SiS_P3c4, 0x2D, 0x01);
+-}
+-
+-/*********************************************/
+-/*                  FIFO                     */
+-/*********************************************/
+-
+-static void
+-SiS_SetCRT1FIFO_310(struct SiS_Private *SiS_Pr, unsigned short ModeNo,
+-		    unsigned short mi)
+-{
+-	unsigned short modeflag = SiS_Pr->SiS_EModeIDTable[mi].Ext_ModeFlag;
+-
+-	/* disable auto-threshold */
+-	SiS_SetRegAND(SiS_Pr, SiS_Pr->SiS_P3c4, 0x3D, 0xFE);
+-
+-	SiS_SetReg(SiS_Pr, SiS_Pr->SiS_P3c4, 0x08, 0xAE);
+-	SiS_SetRegAND(SiS_Pr, SiS_Pr->SiS_P3c4, 0x09, 0xF0);
+-
+-	if (ModeNo <= 0x13)
+-		return;
+-
+-	if ((!(modeflag & DoubleScanMode)) || (!(modeflag & HalfDCLK))) {
+-		SiS_SetReg(SiS_Pr, SiS_Pr->SiS_P3c4, 0x08, 0x34);
+-		SiS_SetRegOR(SiS_Pr, SiS_Pr->SiS_P3c4, 0x3D, 0x01);
+-	}
+-}
+-
+-/*********************************************/
+-/*              MODE REGISTERS               */
+-/*********************************************/
+-
+-static void
+-SiS_SetVCLKState(struct SiS_Private *SiS_Pr, unsigned short ModeNo,
+-		 unsigned short rrti)
+-{
+-	unsigned short data = 0, VCLK = 0, index = 0;
+-
+-	if (ModeNo > 0x13) {
+-		index = SiS_Pr->SiS_RefIndex[rrti].Ext_CRTVCLK;
+-		VCLK = SiS_Pr->SiS_VCLKData[index].CLOCK;
+-	}
+-
+-	if (VCLK >= 166)
+-		data |= 0x0c;
+-	SiS_SetRegANDOR(SiS_Pr, SiS_Pr->SiS_P3c4, 0x32, 0xf3, data);
+-
+-	if (VCLK >= 166)
+-		SiS_SetRegAND(SiS_Pr, SiS_Pr->SiS_P3c4, 0x1f, 0xe7);
+-
+-	/* DAC speed */
+-	data = 0x03;
+-	if (VCLK >= 260)
+-		data = 0x00;
+-	else if (VCLK >= 160)
+-		data = 0x01;
+-	else if (VCLK >= 135)
+-		data = 0x02;
+-
+-	SiS_SetRegANDOR(SiS_Pr, SiS_Pr->SiS_P3c4, 0x07, 0xF8, data);
+-}
+-
+-static void
+-SiS_SetCRT1ModeRegs(struct SiS_Private *SiS_Pr, unsigned short ModeNo,
+-		    unsigned short ModeIdIndex, unsigned short rrti)
+-{
+-	unsigned short data, infoflag = 0, modeflag;
+-
+-	if (ModeNo <= 0x13)
+-		modeflag = SiS_Pr->SiS_SModeIDTable[ModeIdIndex].St_ModeFlag;
+-	else {
+-		modeflag = SiS_Pr->SiS_EModeIDTable[ModeIdIndex].Ext_ModeFlag;
+-		infoflag = SiS_Pr->SiS_RefIndex[rrti].Ext_InfoFlag;
+-	}
+-
+-	/* Disable DPMS */
+-	SiS_SetRegAND(SiS_Pr, SiS_Pr->SiS_P3c4, 0x1F, 0x3F);
+-
+-	data = 0;
+-	if (ModeNo > 0x13) {
+-		if (SiS_Pr->SiS_ModeType > ModeEGA) {
+-			data |= 0x02;
+-			data |= ((SiS_Pr->SiS_ModeType - ModeVGA) << 2);
+-		}
+-		if (infoflag & InterlaceMode)
+-			data |= 0x20;
+-	}
+-	SiS_SetRegANDOR(SiS_Pr, SiS_Pr->SiS_P3c4, 0x06, 0xC0, data);
+-
+-	data = 0;
+-	if (infoflag & InterlaceMode) {
+-		/* data = (Hsync / 8) - ((Htotal / 8) / 2) + 3 */
+-		unsigned short hrs =
+-		    (SiS_GetReg(SiS_Pr, SiS_Pr->SiS_P3d4, 0x04) |
+-		     ((SiS_GetReg(SiS_Pr, SiS_Pr->SiS_P3c4, 0x0b) & 0xc0) << 2))
+-		    - 3;
+-		unsigned short hto =
+-		    (SiS_GetReg(SiS_Pr, SiS_Pr->SiS_P3d4, 0x00) |
+-		     ((SiS_GetReg(SiS_Pr, SiS_Pr->SiS_P3c4, 0x0b) & 0x03) << 8))
+-		    + 5;
+-		data = hrs - (hto >> 1) + 3;
+-	}
+-	SiS_SetReg(SiS_Pr, SiS_Pr->SiS_P3d4, 0x19, (data & 0xFF));
+-	SiS_SetRegANDOR(SiS_Pr, SiS_Pr->SiS_P3d4, 0x1a, 0xFC, (data >> 8));
+-
+-	if (modeflag & HalfDCLK)
+-		SiS_SetRegOR(SiS_Pr, SiS_Pr->SiS_P3c4, 0x01, 0x08);
+-
+-	data = 0;
+-	if (modeflag & LineCompareOff)
+-		data = 0x08;
+-	SiS_SetRegANDOR(SiS_Pr, SiS_Pr->SiS_P3c4, 0x0F, 0xB7, data);
+-
+-	if ((SiS_Pr->SiS_ModeType == ModeEGA) && (ModeNo > 0x13))
+-		SiS_SetRegOR(SiS_Pr, SiS_Pr->SiS_P3c4, 0x0F, 0x40);
+-
+-	SiS_SetRegAND(SiS_Pr, SiS_Pr->SiS_P3c4, 0x31, 0xfb);
+-
+-	data = 0x60;
+-	if (SiS_Pr->SiS_ModeType != ModeText) {
+-		data ^= 0x60;
+-		if (SiS_Pr->SiS_ModeType != ModeEGA)
+-			data ^= 0xA0;
+-	}
+-	SiS_SetRegANDOR(SiS_Pr, SiS_Pr->SiS_P3c4, 0x21, 0x1F, data);
+-
+-	SiS_SetVCLKState(SiS_Pr, ModeNo, rrti);
+-
+-	if (SiS_GetReg(SiS_Pr, SiS_Pr->SiS_P3d4, 0x31) & 0x40)
+-		SiS_SetReg(SiS_Pr, SiS_Pr->SiS_P3d4, 0x52, 0x2c);
+-	else
+-		SiS_SetReg(SiS_Pr, SiS_Pr->SiS_P3d4, 0x52, 0x6c);
+-}
+-
+-/*********************************************/
+-/*                 LOAD DAC                  */
+-/*********************************************/
+-
+-static void
+-SiS_WriteDAC(struct SiS_Private *SiS_Pr, unsigned long DACData,
+-	     unsigned short shiftflag, unsigned short dl, unsigned short ah,
+-	     unsigned short al, unsigned short dh)
+-{
+-	unsigned short d1, d2, d3;
+-
+-	switch (dl) {
+-	case 0:
+-		d1 = dh;
+-		d2 = ah;
+-		d3 = al;
+-		break;
+-	case 1:
+-		d1 = ah;
+-		d2 = al;
+-		d3 = dh;
+-		break;
+-	default:
+-		d1 = al;
+-		d2 = dh;
+-		d3 = ah;
+-	}
+-	SiS_SetRegByte(SiS_Pr, DACData, (d1 << shiftflag));
+-	SiS_SetRegByte(SiS_Pr, DACData, (d2 << shiftflag));
+-	SiS_SetRegByte(SiS_Pr, DACData, (d3 << shiftflag));
+-}
+-
+-static void
+-SiS_LoadDAC(struct SiS_Private *SiS_Pr, unsigned short ModeNo,
+-	    unsigned short mi)
+-{
+-	unsigned short data, data2, time, i, j, k, m, n, o;
+-	unsigned short si, di, bx, sf;
+-	unsigned long DACAddr, DACData;
+-	const unsigned char *table = NULL;
+-
+-	if (ModeNo < 0x13)
+-		data = SiS_Pr->SiS_SModeIDTable[mi].St_ModeFlag;
+-	else
+-		data = SiS_Pr->SiS_EModeIDTable[mi].Ext_ModeFlag;
+-
+-	data &= DACInfoFlag;
+-
+-	j = time = 64;
+-	if (data == 0x00)
+-		table = SiS_MDA_DAC;
+-	else if (data == 0x08)
+-		table = SiS_CGA_DAC;
+-	else if (data == 0x10)
+-		table = SiS_EGA_DAC;
+-	else {
+-		j = 16;
+-		time = 256;
+-		table = SiS_VGA_DAC;
+-	}
+-
+-	DACAddr = SiS_Pr->SiS_P3c8;
+-	DACData = SiS_Pr->SiS_P3c9;
+-	sf = 0;
+-	SiS_SetRegByte(SiS_Pr, SiS_Pr->SiS_P3c6, 0xFF);
+-
+-	SiS_SetRegByte(SiS_Pr, DACAddr, 0x00);
+-
+-	for (i = 0; i < j; i++) {
+-		data = table[i];
+-		for (k = 0; k < 3; k++) {
+-			data2 = 0;
+-			if (data & 0x01)
+-				data2 += 0x2A;
+-			if (data & 0x02)
+-				data2 += 0x15;
+-			SiS_SetRegByte(SiS_Pr, DACData, (data2 << sf));
+-			data >>= 2;
+-		}
+-	}
+-
+-	if (time == 256) {
+-		for (i = 16; i < 32; i++) {
+-			data = table[i] << sf;
+-			for (k = 0; k < 3; k++)
+-				SiS_SetRegByte(SiS_Pr, DACData, data);
+-		}
+-		si = 32;
+-		for (m = 0; m < 9; m++) {
+-			di = si;
+-			bx = si + 4;
+-			for (n = 0; n < 3; n++) {
+-				for (o = 0; o < 5; o++) {
+-					SiS_WriteDAC(SiS_Pr, DACData, sf, n,
+-						     table[di], table[bx],
+-						     table[si]);
+-					si++;
+-				}
+-				si -= 2;
+-				for (o = 0; o < 3; o++) {
+-					SiS_WriteDAC(SiS_Pr, DACData, sf, n,
+-						     table[di], table[si],
+-						     table[bx]);
+-					si--;
+-				}
+-			}
+-			si += 5;
+-		}
+-	}
+-}
+-
+-/*********************************************/
+-/*         SET CRT1 REGISTER GROUP           */
+-/*********************************************/
+-
+-static void
+-SiS_SetCRT1Group(struct SiS_Private *SiS_Pr, unsigned short ModeNo,
+-		 unsigned short ModeIdIndex)
+-{
+-	unsigned short StandTableIndex, rrti;
+-
+-	SiS_Pr->SiS_CRT1Mode = ModeNo;
+-
+-	if (ModeNo <= 0x13)
+-		StandTableIndex = 0;
+-	else
+-		StandTableIndex = 1;
+-
+-	SiS_ResetSegmentRegisters(SiS_Pr);
+-	SiS_SetSeqRegs(SiS_Pr, StandTableIndex);
+-	SiS_SetMiscRegs(SiS_Pr, StandTableIndex);
+-	SiS_SetCRTCRegs(SiS_Pr, StandTableIndex);
+-	SiS_SetATTRegs(SiS_Pr, StandTableIndex);
+-	SiS_SetGRCRegs(SiS_Pr, StandTableIndex);
+-	SiS_ClearExt1Regs(SiS_Pr, ModeNo);
+-
+-	rrti = SiS_GetRatePtr(SiS_Pr, ModeNo, ModeIdIndex);
+-
+-	if (rrti != 0xFFFF) {
+-		SiS_SetCRT1Sync(SiS_Pr, rrti);
+-		SiS_SetCRT1CRTC(SiS_Pr, ModeNo, ModeIdIndex, rrti);
+-		SiS_SetCRT1Offset(SiS_Pr, ModeNo, ModeIdIndex, rrti);
+-		SiS_SetCRT1VCLK(SiS_Pr, ModeNo, rrti);
+-	}
+-
+-	SiS_SetCRT1FIFO_310(SiS_Pr, ModeNo, ModeIdIndex);
+-
+-	SiS_SetCRT1ModeRegs(SiS_Pr, ModeNo, ModeIdIndex, rrti);
+-
+-	SiS_LoadDAC(SiS_Pr, ModeNo, ModeIdIndex);
+-
+-	SiS_DisplayOn(SiS_Pr);
+-}
+-
+-/*********************************************/
+-/*                 SiSSetMode()              */
+-/*********************************************/
+-
+-int SiSUSBSetMode(struct SiS_Private *SiS_Pr, unsigned short ModeNo)
+-{
+-	unsigned short ModeIdIndex;
+-	unsigned long BaseAddr = SiS_Pr->IOAddress;
+-
+-	SiSUSB_InitPtr(SiS_Pr);
+-	SiSUSBRegInit(SiS_Pr, BaseAddr);
+-	SiS_GetSysFlags(SiS_Pr);
+-
+-	if (!(SiS_SearchModeID(SiS_Pr, &ModeNo, &ModeIdIndex)))
+-		return 0;
+-
+-	SiS_SetReg(SiS_Pr, SiS_Pr->SiS_P3c4, 0x05, 0x86);
+-
+-	SiSInitPCIetc(SiS_Pr);
+-
+-	ModeNo &= 0x7f;
+-
+-	SiS_Pr->SiS_ModeType =
+-	    SiS_Pr->SiS_EModeIDTable[ModeIdIndex].Ext_ModeFlag & ModeTypeMask;
+-
+-	SiS_Pr->SiS_SetFlag = LowModeTests;
+-
+-	/* Set mode on CRT1 */
+-	SiS_SetCRT1Group(SiS_Pr, ModeNo, ModeIdIndex);
+-
+-	SiS_HandleCRT1(SiS_Pr);
+-
+-	SiS_DisplayOn(SiS_Pr);
+-	SiS_SetRegByte(SiS_Pr, SiS_Pr->SiS_P3c6, 0xFF);
+-
+-	/* Store mode number */
+-	SiS_SetReg(SiS_Pr, SiS_Pr->SiS_P3d4, 0x34, ModeNo);
+-
+-	return 1;
+-}
+-
+-int SiSUSBSetVESAMode(struct SiS_Private *SiS_Pr, unsigned short VModeNo)
+-{
+-	unsigned short ModeNo = 0;
+-	int i;
+-
+-	SiSUSB_InitPtr(SiS_Pr);
+-
+-	if (VModeNo == 0x03) {
+-
+-		ModeNo = 0x03;
+-
+-	} else {
+-
+-		i = 0;
+-		do {
+-
+-			if (SiS_Pr->SiS_EModeIDTable[i].Ext_VESAID == VModeNo) {
+-				ModeNo = SiS_Pr->SiS_EModeIDTable[i].Ext_ModeID;
+-				break;
+-			}
+-
+-		} while (SiS_Pr->SiS_EModeIDTable[i++].Ext_ModeID != 0xff);
+-
+-	}
+-
+-	if (!ModeNo)
+-		return 0;
+-
+-	return SiSUSBSetMode(SiS_Pr, ModeNo);
+-}
+diff --git a/drivers/usb/misc/sisusbvga/sisusb_init.h b/drivers/usb/misc/sisusbvga/sisusb_init.h
+deleted file mode 100644
+index b5cd77ae941d..000000000000
+--- a/drivers/usb/misc/sisusbvga/sisusb_init.h
++++ /dev/null
+@@ -1,180 +0,0 @@
+-/* SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause) */
+-/* $XFree86$ */
+-/* $XdotOrg$ */
+-/*
+- * Data and prototypes for init.c
+- *
+- * Copyright (C) 2001-2005 by Thomas Winischhofer, Vienna, Austria
+- *
+- * If distributed as part of the Linux kernel, the following license terms
+- * apply:
+- *
+- * * This program is free software; you can redistribute it and/or modify
+- * * it under the terms of the GNU General Public License as published by
+- * * the Free Software Foundation; either version 2 of the named License,
+- * * or any later version.
+- * *
+- * * This program is distributed in the hope that it will be useful,
+- * * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+- * * GNU General Public License for more details.
+- * *
+- * * You should have received a copy of the GNU General Public License
+- * * along with this program; if not, write to the Free Software
+- * * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA
+- *
+- * Otherwise, the following license terms apply:
+- *
+- * * Redistribution and use in source and binary forms, with or without
+- * * modification, are permitted provided that the following conditions
+- * * are met:
+- * * 1) Redistributions of source code must retain the above copyright
+- * *    notice, this list of conditions and the following disclaimer.
+- * * 2) Redistributions in binary form must reproduce the above copyright
+- * *    notice, this list of conditions and the following disclaimer in the
+- * *    documentation and/or other materials provided with the distribution.
+- * * 3) The name of the author may not be used to endorse or promote products
+- * *    derived from this software without specific prior written permission.
+- * *
+- * * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+- * * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+- * * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+- * * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+- * * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- * * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+- * * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+- * * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+- * * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- * * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- * Author:	Thomas Winischhofer <thomas@winischhofer.net>
+- *
+- */
+-
+-#ifndef _SISUSB_INIT_H_
+-#define _SISUSB_INIT_H_
+-
+-/* SiS_ModeType */
+-#define ModeText		0x00
+-#define ModeCGA			0x01
+-#define ModeEGA			0x02
+-#define ModeVGA			0x03
+-#define Mode15Bpp		0x04
+-#define Mode16Bpp		0x05
+-#define Mode24Bpp		0x06
+-#define Mode32Bpp		0x07
+-
+-#define ModeTypeMask		0x07
+-#define IsTextMode		0x07
+-
+-#define DACInfoFlag		0x0018
+-#define MemoryInfoFlag		0x01E0
+-#define MemorySizeShift		5
+-
+-/* modeflag */
+-#define Charx8Dot		0x0200
+-#define LineCompareOff		0x0400
+-#define CRT2Mode		0x0800
+-#define HalfDCLK		0x1000
+-#define NoSupportSimuTV		0x2000
+-#define NoSupportLCDScale	0x4000	/* SiS bridge: No scaling possible (no matter what panel) */
+-#define DoubleScanMode		0x8000
+-
+-/* Infoflag */
+-#define SupportTV		0x0008
+-#define SupportTV1024		0x0800
+-#define SupportCHTV		0x0800
+-#define Support64048060Hz	0x0800	/* Special for 640x480 LCD */
+-#define SupportHiVision		0x0010
+-#define SupportYPbPr750p	0x1000
+-#define SupportLCD		0x0020
+-#define SupportRAMDAC2		0x0040	/* All           (<= 100Mhz) */
+-#define SupportRAMDAC2_135	0x0100	/* All except DH (<= 135Mhz) */
+-#define SupportRAMDAC2_162	0x0200	/* B, C          (<= 162Mhz) */
+-#define SupportRAMDAC2_202	0x0400	/* C             (<= 202Mhz) */
+-#define InterlaceMode		0x0080
+-#define SyncPP			0x0000
+-#define SyncPN			0x4000
+-#define SyncNP			0x8000
+-#define SyncNN			0xc000
+-
+-/* SetFlag */
+-#define ProgrammingCRT2		0x0001
+-#define LowModeTests		0x0002
+-#define LCDVESATiming		0x0008
+-#define EnableLVDSDDA		0x0010
+-#define SetDispDevSwitchFlag	0x0020
+-#define CheckWinDos		0x0040
+-#define SetDOSMode		0x0080
+-
+-/* Index in ModeResInfo table */
+-#define SIS_RI_320x200		0
+-#define SIS_RI_320x240		1
+-#define SIS_RI_320x400		2
+-#define SIS_RI_400x300		3
+-#define SIS_RI_512x384		4
+-#define SIS_RI_640x400		5
+-#define SIS_RI_640x480		6
+-#define SIS_RI_800x600		7
+-#define SIS_RI_1024x768		8
+-#define SIS_RI_1280x1024	9
+-#define SIS_RI_1600x1200	10
+-#define SIS_RI_1920x1440	11
+-#define SIS_RI_2048x1536	12
+-#define SIS_RI_720x480		13
+-#define SIS_RI_720x576		14
+-#define SIS_RI_1280x960		15
+-#define SIS_RI_800x480		16
+-#define SIS_RI_1024x576		17
+-#define SIS_RI_1280x720		18
+-#define SIS_RI_856x480		19
+-#define SIS_RI_1280x768		20
+-#define SIS_RI_1400x1050	21
+-#define SIS_RI_1152x864		22	/* Up to here SiS conforming */
+-#define SIS_RI_848x480		23
+-#define SIS_RI_1360x768		24
+-#define SIS_RI_1024x600		25
+-#define SIS_RI_1152x768		26
+-#define SIS_RI_768x576		27
+-#define SIS_RI_1360x1024	28
+-#define SIS_RI_1680x1050	29
+-#define SIS_RI_1280x800		30
+-#define SIS_RI_1920x1080	31
+-#define SIS_RI_960x540		32
+-#define SIS_RI_960x600		33
+-
+-#define SIS_VIDEO_CAPTURE	0x00 - 0x30
+-#define SIS_VIDEO_PLAYBACK	0x02 - 0x30
+-#define SIS_CRT2_PORT_04	0x04 - 0x30
+-
+-int SiSUSBSetMode(struct SiS_Private *SiS_Pr, unsigned short ModeNo);
+-int SiSUSBSetVESAMode(struct SiS_Private *SiS_Pr, unsigned short VModeNo);
+-
+-extern int sisusb_setreg(struct sisusb_usb_data *sisusb, u32 port, u8 data);
+-extern int sisusb_getreg(struct sisusb_usb_data *sisusb, u32 port, u8 * data);
+-extern int sisusb_setidxreg(struct sisusb_usb_data *sisusb, u32 port,
+-			    u8 index, u8 data);
+-extern int sisusb_getidxreg(struct sisusb_usb_data *sisusb, u32 port,
+-			    u8 index, u8 * data);
+-extern int sisusb_setidxregandor(struct sisusb_usb_data *sisusb, u32 port,
+-				 u8 idx, u8 myand, u8 myor);
+-extern int sisusb_setidxregor(struct sisusb_usb_data *sisusb, u32 port,
+-			      u8 index, u8 myor);
+-extern int sisusb_setidxregand(struct sisusb_usb_data *sisusb, u32 port,
+-			       u8 idx, u8 myand);
+-
+-void sisusb_delete(struct kref *kref);
+-int sisusb_writeb(struct sisusb_usb_data *sisusb, u32 adr, u8 data);
+-int sisusb_readb(struct sisusb_usb_data *sisusb, u32 adr, u8 * data);
+-int sisusb_copy_memory(struct sisusb_usb_data *sisusb, u8 *src,
+-		       u32 dest, int length);
+-int sisusb_reset_text_mode(struct sisusb_usb_data *sisusb, int init);
+-int sisusbcon_do_font_op(struct sisusb_usb_data *sisusb, int set, int slot,
+-			 u8 * arg, int cmapsz, int ch512, int dorecalc,
+-			 struct vc_data *c, int fh, int uplock);
+-void sisusb_set_cursor(struct sisusb_usb_data *sisusb, unsigned int location);
+-int sisusb_console_init(struct sisusb_usb_data *sisusb, int first, int last);
+-void sisusb_console_exit(struct sisusb_usb_data *sisusb);
+-void sisusb_init_concode(void);
+-
+-#endif
 -- 
-Thanks,
-
-David / dhildenb
+2.38.1
 
