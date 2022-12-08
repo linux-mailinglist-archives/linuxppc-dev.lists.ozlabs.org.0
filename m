@@ -2,32 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20264647061
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Dec 2022 14:03:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 574A8647064
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Dec 2022 14:04:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NSZ940VL7z3gg5
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Dec 2022 00:03:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NSZ9f21hTz3glJ
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Dec 2022 00:04:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NSYsB57tgz3bym
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Dec 2022 23:50:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NSYv40GpYz3fJr
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Dec 2022 23:51:44 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NSYsB3cMNz4y42;
-	Thu,  8 Dec 2022 23:50:06 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NSYv36FR5z4xN1;
+	Thu,  8 Dec 2022 23:51:43 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Michael Ellerman <mpe@ellerman.id.au>, Shuah Khan <shuah@kernel.org>, Tiezhu Yang <yangtiezhu@loongson.cn>
-In-Reply-To: <1669862997-31335-1-git-send-email-yangtiezhu@loongson.cn>
-References: <1669862997-31335-1-git-send-email-yangtiezhu@loongson.cn>
-Subject: Re: [PATCH] selftests: powerpc: Use "grep -E" instead of "egrep"
-Message-Id: <167050320175.1457988.16657172776968236622.b4-ty@ellerman.id.au>
-Date: Thu, 08 Dec 2022 23:40:01 +1100
+To: Yang Yingliang <yangyingliang@huawei.com>, linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20221029111626.429971-1-yangyingliang@huawei.com>
+References: <20221029111626.429971-1-yangyingliang@huawei.com>
+Subject: Re: [PATCH v2] powerpc/83xx/mpc832x_rdb: call platform_device_put() in error case in of_fsl_spi_probe()
+Message-Id: <167050320391.1457988.4385187375237659109.b4-ty@ellerman.id.au>
+Date: Thu, 08 Dec 2022 23:40:03 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -42,23 +42,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Cc: oss@buserror.net, galak@kernel.crashing.org, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 1 Dec 2022 10:49:57 +0800, Tiezhu Yang wrote:
-> The latest version of grep claims the egrep is now obsolete so the build
-> now contains warnings that look like:
-> 	egrep: warning: egrep is obsolescent; using grep -E
-> fix this using "grep -E" instead.
+On Sat, 29 Oct 2022 19:16:26 +0800, Yang Yingliang wrote:
+> If platform_device_add() is not called or failed, it can not call
+> platform_device_del() to clean up memory, it should call
+> platform_device_put() in error case.
 > 
->   sed -i "s/egrep/grep -E/g" `grep egrep -rwl tools/testing/selftests/powerpc`
 > 
-> [...]
 
 Applied to powerpc/next.
 
-[1/1] selftests: powerpc: Use "grep -E" instead of "egrep"
-      https://git.kernel.org/powerpc/c/5921eb36d2a1b276b16a24e529788550e6a65449
+[1/1] powerpc/83xx/mpc832x_rdb: call platform_device_put() in error case in of_fsl_spi_probe()
+      https://git.kernel.org/powerpc/c/4d0eea415216fe3791da2f65eb41399e70c7bedf
 
 cheers
