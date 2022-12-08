@@ -1,136 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 763F26476E3
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Dec 2022 20:58:59 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93137647AE2
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Dec 2022 01:43:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NSlN12nQJz3cBP
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Dec 2022 06:58:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NSsgr2wWxz3bjQ
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Dec 2022 11:43:04 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=ohb+vKqW;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=UnB1BeOf;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e19::619; helo=fra01-mr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.24; helo=mga09.intel.com; envelope-from=alison.schofield@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=ohb+vKqW;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=UnB1BeOf;
 	dkim-atps=neutral
-Received: from FRA01-MR2-obe.outbound.protection.outlook.com (mail-mr2fra01on20619.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e19::619])
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NSlLz64qRz30Qy
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Dec 2022 06:58:01 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=cqDOBvJOh6SuLzx+t9y6MdX717Q643nBI5FZMaWnBb+b981fbeCo94AwtDK8zuggbuy9wsnEcTIvFZbdp0V1/4zF5Kzi1mvzn/x5fw2NN8et/jaK+leBq+nfhPapGRDEoPaY/cRmuFM3GCIAOsOeVd9sBJCOko+HbCol4avzaKXkfTBvMiSfdc4HLHc0QEmMDlusnm7Nso42zubIImlWI9qzNA03KEjKpVQmuRTZ8Jtq5a9K76kQz0AAuMua38aYEqMk8N7bdFWY2x0Rgpb8eBdltbOkAwyQxkqbpBv644qr5F5UTQBacHofvv5iirKQehkQhBUIeZ+I6EWsI/UKzg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Jjq9+dvzpyDYSFVkzv7vwoC+liUoAHV72db/y/h5H7k=;
- b=Z2lYHgbAtrfjGRB0Ocl3C5rHOn1L7bbOVJIkYkzpySA6Uw5R0buup40AcMqF/damVuRxW25WSNUfPZP59Wgz3kQAMEp3c1nvlOTk+nRoomDefywCieQdRjiBGuDKcdWd7OngR0+mpAeSAaU25UV5PVuJd4E1TAD7uhVNReX4RMdpX53kUF74YtU6bPF/hxEnPe321K4wT2APwezs/DR0nvEqrIgWpFGQP4gsj5mG1LQosV2KmA8oQWVivZnwb53DOv3zcfuSqHShlCwakBQ66RC4tmnxlekEEQs8q9t+JS8RWg+ymFEfr5E4eWnhUOez+GlAsIrU5Z4Z4aq/9q3u6A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Jjq9+dvzpyDYSFVkzv7vwoC+liUoAHV72db/y/h5H7k=;
- b=ohb+vKqWxw3svrsxtsgNhMNs8h1RSh+R6lz7Oxru6swT9qspD2+V0gUEmHjXok98Zh5Pzzh9pUeXFXJ9T3bfqHluSHi99Q5y+8WYOtbjvjM5Kfr8vke3L+IQe3ZqujdQD3a6OUWmr73YWa91tATlR+JdTG2NY6MGMpll3FQNvnV/LKzV6IvfGxji++xOQAdLmD244oV2ss87kydC8dzXekOcQT26nkmOtlZsnN5Nvm7vov/wyshzRMOp5m/NnMtUZM/vTDQW3UCmpCSJffSQoYjxwa2g/7wJ5TCdeXrSn8sSorzBGCHBQ79j7IkVDW/49ga16pxBtAksGsHBSg5e4g==
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by PR1P264MB3408.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:1c::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5880.14; Thu, 8 Dec
- 2022 19:57:39 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::a85b:a9b6:cb36:fa6]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::a85b:a9b6:cb36:fa6%9]) with mapi id 15.20.5880.014; Thu, 8 Dec 2022
- 19:57:39 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: =?utf-8?B?UGFsaSBSb2jDoXI=?= <pali@kernel.org>
-Subject: Re: [PATCH v3] powerpc/boot: Don't always pass -mcpu=powerpc when
- building 32-bit uImage
-Thread-Topic: [PATCH v3] powerpc/boot: Don't always pass -mcpu=powerpc when
- building 32-bit uImage
-Thread-Index:  AQHYusSLeJySvCAqP0OhPUxxriPKGa3Eku+AgAABwQCAAACcgIAAAKWAgKBniwCAAAuhgA==
-Date: Thu, 8 Dec 2022 19:57:39 +0000
-Message-ID: <aca70dc9-2185-9def-7bc0-b415bec8a5c6@csgroup.eu>
-References: <20220820105200.30425-1-pali@kernel.org>
- <20220828095659.4061-1-pali@kernel.org>
- <e3cb2642-20e4-6c26-104d-329a04260946@csgroup.eu>
- <c8d657db-02da-7840-5b40-755e47277a2c@csgroup.eu>
- <20220828174135.rcql4uiunqbnn5gh@pali>
- <d49c5905-ff68-00e9-ddaf-d60d5e5ebe65@csgroup.eu>
- <20221208191602.diywrt3g2f6zmt4s@pali>
-In-Reply-To: <20221208191602.diywrt3g2f6zmt4s@pali>
-Accept-Language: fr-FR, en-US
-Content-Language: fr-FR
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MRZP264MB2988:EE_|PR1P264MB3408:EE_
-x-ms-office365-filtering-correlation-id: 317088d5-50fa-49b8-0549-08dad95675e0
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  QOsUbZrVN/tkCZFzfqezYwZbSqdpI+hZmIawFSUIOeMNLzRO6wqEeKkPM+CAlJ3VCqykqxO5YDU20wwSEG4fE0q70a3f/VrqklEkSlm4Aq05YinsreHcMhA9XuW0SleQokM4G5/9SCG+Tc1ssDLeb4paSH1Tq05knmxwrL+bDmrtCM32W0HXZIVmndBkQ/simt3gAU+CTQ4F6g8teOXcAYMmTjDj2ug4CMcQc2E/2WJUZwqMxmIuOD1tmOvd9xCfq1Fc9mBII1CmXQ9mbdq12rpzx5eGBteVvFvnHVxiFpaMPudicXNn7I9IeD7FDvmvRiD1HsgCZH+dWjA94iH/V/3pk6HuMhAX+3xIHH43O0VKv3WVCQFMt/uZAWwAiBjU886r8SAaTEeN2AUbq551DKIEKFI33In09ARr2bCcJscAcDJD6yl+eYn/w3+1aUutolB6cLxxLnJ09051RPZAbmPo8aJCTFFgMfoEkQMdylxqEsqy9fS3bjbsXqQSta1JHUOIGjUnB2SCjsUbIubf+Cwsa6JssZxZkzmGGBKoPkzU36SJmSru51JhdT2T0WcuHCjC6C5HLUulFaobPnZWKVYDcDUpXT31hmOXx8Qundu1dRu3+DncW/lCLZZVVUGtTfMjfz+S2Pjc/g29cWXHDvqGjv0CyGUxp4k45IpY+zMJZqfe7zRqzNsHm6LuTfMOjLPzqg1P6QG4VhDt0UMAOCVUS8N1kuoCar/YSZi/47hFi99meyganTnDRY/mNunGeKoUfIkCqUEA4tSCfIwiOc20+qeDi4fdGqhSuZx1XO4=
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230022)(4636009)(366004)(376002)(396003)(39860400002)(346002)(136003)(451199015)(36756003)(54906003)(66574015)(83380400001)(6916009)(41300700001)(186003)(316002)(2906002)(2616005)(31686004)(966005)(6486002)(71200400001)(478600001)(38100700002)(5660300002)(6506007)(86362001)(44832011)(31696002)(6512007)(8676002)(38070700005)(91956017)(122000001)(26005)(8936002)(66476007)(4326008)(66946007)(66446008)(66556008)(76116006)(64756008)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?bkcxdTVPMmNmYVVOUUZiN2RZWHp1R1MyenZCZ2RqK2NvaWhKemt4VmVSNjNw?=
- =?utf-8?B?Q1hNQmw4L0VKMDNSOE9XeE1XSWRLc3h1ejZUVDRENG5mbTV2bjlIc2lkdDBu?=
- =?utf-8?B?d2F4R055TGZCWExWOHcvRHZxRVlDNjVzdHhSdkZTdnBBNzNKcW5ucjVVRHFl?=
- =?utf-8?B?emxLZG5kSFBvbzVnMWRGbUV3ZjZSU3VWU0dici9kdEJIKzZPZUJ4Vmxyb1Ju?=
- =?utf-8?B?RmhYNnZ4ak9MbTYzeE8zUEhnT0R1ME9WMzJuNXN6bmNSdExrYytoeXpCcXQz?=
- =?utf-8?B?ZEtnQ25Ha040WjF1Y0MrdjB3WnRndk9SU1RwRkxoMjNoaDRpS2NWZ2xHRWdQ?=
- =?utf-8?B?YWVYZC9SNUl5TVFBaVY3UmlSUFJxQTZWUHhNa1ZvOVNEdjNETllYL2JZY1V4?=
- =?utf-8?B?U0hGTWVrT21zbUR4QlZTZFlPM0F1ZFMzZGxERHNSK3FKcU8weXYrNjdlRWIx?=
- =?utf-8?B?dGR0VHcrMzJ1WjJpZU9yOUpralBkV2VjSHA5UEorYUlnSTRrbGpkRUF0MC9w?=
- =?utf-8?B?SHRyblBtb1BhcitQR1FQNXZHYWNMOFhUVkJGdXpYbzBKR2xXdGF1aDkrNTE3?=
- =?utf-8?B?VzNmbmtvMlg0SCtUeVl4YlluK3lRemhBOXJqd1oxbGxhdXEwcVYvaEVqTzBr?=
- =?utf-8?B?Y3NUczhYWmt4N3VIbk05dmFUZXU1Y1pIZklERTBHQjlvWEZUTkwzbVIxMnJT?=
- =?utf-8?B?ZFQzcTNQNlByUUdHV2ZMSEZhWVNoMmJzTmRGV1FkcXZJaEpNa0lsRzYyLzRQ?=
- =?utf-8?B?eUZHVTVZd0crVmJnbU5NR09LVUc5MUR6M1ZoZHNlUy95NHBTVHRqQ01tTFRy?=
- =?utf-8?B?RC8xS1JyZGxtVkZ0bk43WmRtdlJzWFhqSW0wQkZFL1RyckordVBXclBxNzgz?=
- =?utf-8?B?c0lJaDlYbi8vR08wWXBKUXNmaWxOSGZtSHpYNlNDV2xMVXhLc2JxbCtURFNS?=
- =?utf-8?B?Z09ZVnE1TGwzbktrQmhaUjRxaHBvTzBFeTB5OXBGSVJOeUg0SkVGODUrSHda?=
- =?utf-8?B?ZEQwNjVPQmlBMC9temxYdUVRNFRLTHNJR28yMHg3S2tLRUQ5ZjhpMTdaNzJH?=
- =?utf-8?B?VDJ3QWxNSS9HVXYwTUNqamZiK0RyRmU0VzdPM1Z3aGFia081NEtrNWJwZjJu?=
- =?utf-8?B?RzFlcGlWK3pPcHdxRXVadmp6ZkdvMitFamt1aDR2cGFLVFlwandrOVJtaTRH?=
- =?utf-8?B?RXpZa3kwY2Uvb2tSOCtjM2NMaURmZ3gza2ZFVUFSZWpZYTVMR0lRdEp4VkNB?=
- =?utf-8?B?MlFudlRpblh1WWV1OForNTV0dndOVlpyZzR6QWhqT3N2MUdrVHM2WkVTdXd4?=
- =?utf-8?B?YjhNWU9SRjZYTlBRNFFlOW0rQ3NJaFkvd3dpci93bWpFN09oWjN2d0k4Mk9O?=
- =?utf-8?B?VzNnWWpxaUpHOUhaVnpjbHpqV2krWUJYSWs5b21CYUFmZjJQdFRMVzFnWGJG?=
- =?utf-8?B?TFRoYjhPYy9teWxPekdOR2lqcXlmcGtrZGNBOFZnZndqRmhvdVRKaTVkbFVi?=
- =?utf-8?B?b25peTlidFpUcFJRSFFHQndJZ0c2TW4rdUUreTQ5UitYSTQwSVM1OGgvUTRG?=
- =?utf-8?B?K2hsYnY5b1A3RG9Jclp6NFBXOFRWWlJudkhXMVVjRFBGZk40V2pINkNiRzV4?=
- =?utf-8?B?Mi9tQ3V5azViZFJ3RnQ4TjdGQTlONTNmQ2txT2wraCt2V2ZxWVF2U2ZVY2lY?=
- =?utf-8?B?YXNUZnZjQnJja3g3Z2JlT3NWVVEvY2RGaDZvczNIaE8wUkdMQVMrTzdmL3J3?=
- =?utf-8?B?ci80UndHZGx2Y2wrZHllVEFoR0tvemxpRjRiOHpCY2pTZHNVdHcrNE1ic1hC?=
- =?utf-8?B?a1dxd3ZYTXhQYmtjS0g0cHU2MFZoUGpKc2JEY254MGVGenNNY281UGZvMFla?=
- =?utf-8?B?bWVURld3R05CMGpibG8xUkRONmdxcUpNSXRTVVNYMjR1WTltVHNJemNsZ2p1?=
- =?utf-8?B?b2hHVzNQVlNOQ2ZRTWJlYXgyTG0xaXRmTUVHNFErOTZHbEsrWjJ0VHFQb0g0?=
- =?utf-8?B?c0l3b3BhR05RSjhEKzZObFBYdlVtdEdnckRkKy9ybzRFN1NoMmtra2RaRE9w?=
- =?utf-8?B?NUxQN2pseHFFdjVyTGI5dU1wQkNMMUgydHd2WCtZYm81L0dqTkxTRS96eW5s?=
- =?utf-8?B?dDR0dVlEenF6MERoSEZJYmRVUVNuSy9PRklDaDQrUDNUTWRGMnBhNGR6RXd1?=
- =?utf-8?B?Qmc9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <7D4785E0622E37408BDCD8D0D7B31B66@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NSn8b2Pwwz2xfS
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Dec 2022 08:19:04 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1670534351; x=1702070351;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=daCo9aJnrElRYa5owQZwNuiIR5bcMFlsrMklej38QaA=;
+  b=UnB1BeOf4dZ/q7nCZceKsHK3iRaZFuMIYZx1vCzKLYOlQ8Hj+S1AbokF
+   wApYpaCpXYV0no8X3lnEuHFvPHS7lqV8PV5bLKOjW9iek3FQDj2rzQGyD
+   ohFQtJdCujUmO+BKATCg7NMUUV2WVVTph1mjRVHdFbx/9N+yo380R2Qhv
+   Q15rMxZn/bmcdjEIzzaJrFA4ql3tdFZkRbp1uTptte/dvCdlZe1VDf9bE
+   FeOhgNVyxIAQTlYTONHu1fMULhiydFLizjbnoHiCxj3qnWtbpCGX3REv1
+   Gh6JlF5xHTaTMI7CkObTQzM/Q6IQsuB3rRBAFVE3XIqLVvKoq+sQGM0fQ
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10555"; a="318456973"
+X-IronPort-AV: E=Sophos;i="5.96,228,1665471600"; 
+   d="scan'208";a="318456973"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Dec 2022 13:19:01 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10555"; a="679692168"
+X-IronPort-AV: E=Sophos;i="5.96,228,1665471600"; 
+   d="scan'208";a="679692168"
+Received: from aschofie-mobl2.amr.corp.intel.com (HELO aschofie-mobl2) ([10.212.199.197])
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Dec 2022 13:19:00 -0800
+Date: Thu, 8 Dec 2022 13:18:59 -0800
+From: Alison Schofield <alison.schofield@intel.com>
+To: Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH] cxl/pci: Move tracepoint definitions to drivers/cxl/core/
+Message-ID: <Y5JUw8pepX9McceV@aschofie-mobl2>
+References: <167051869176.436579.9728373544811641087.stgit@dwillia2-xfh.jf.intel.com>
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 317088d5-50fa-49b8-0549-08dad95675e0
-X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Dec 2022 19:57:39.3752
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: OUtSOvgJqFVHmfx5jdoF9zcJneBQnSUQbGkTmN5ZHQdbD435ZCdqF6WzMbHu2mX7woprZ9SXkX+QqNDTfek6+hMZjpXbRjuLHmgDe/Ny06Q=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR1P264MB3408
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <167051869176.436579.9728373544811641087.stgit@dwillia2-xfh.jf.intel.com>
+X-Mailman-Approved-At: Fri, 09 Dec 2022 11:42:17 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -142,55 +66,425 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Paul Mackerras <paulus@samba.org>, Joel Stanley <joel@jms.id.au>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-pci@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Steven Rostedt <rostedt@goodmis.org>, linux-cxl@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCkxlIDA4LzEyLzIwMjIgw6AgMjA6MTYsIFBhbGkgUm9ow6FyIGEgw6ljcml0wqA6DQo+IE9u
-IFN1bmRheSAyOCBBdWd1c3QgMjAyMiAxNzo0Mzo1MyBDaHJpc3RvcGhlIExlcm95IHdyb3RlOg0K
-Pj4gTGUgMjgvMDgvMjAyMiDDoCAxOTo0MSwgUGFsaSBSb2jDoXIgYSDDqWNyaXTCoDoNCj4+PiBP
-biBTdW5kYXkgMjggQXVndXN0IDIwMjIgMTc6Mzk6MjUgQ2hyaXN0b3BoZSBMZXJveSB3cm90ZToN
-Cj4+Pj4gTGUgMjgvMDgvMjAyMiDDoCAxOTozMywgQ2hyaXN0b3BoZSBMZXJveSBhIMOpY3JpdMKg
-Og0KPj4+Pj4NCj4+Pj4+DQo+Pj4+PiBMZSAyOC8wOC8yMDIyIMOgIDExOjU2LCBQYWxpIFJvaMOh
-ciBhIMOpY3JpdMKgOg0KPj4+Pj4+IFdoZW4gQ09ORklHX1RBUkdFVF9DUFUgaXMgc3BlY2lmaWVk
-IHRoZW4gcGFzcyBpdHMgdmFsdWUgdG8gdGhlIGNvbXBpbGVyDQo+Pj4+Pj4gLW1jcHUgb3B0aW9u
-LiBUaGlzIGZpeGVzIGZvbGxvd2luZyBidWlsZCBlcnJvciB3aGVuIGJ1aWxkaW5nIGtlcm5lbCB3
-aXRoDQo+Pj4+Pj4gcG93ZXJwYyBlNTAwIFNQRSBjYXBhYmxlIGNyb3NzIGNvbXBpbGVyczoNCj4+
-Pj4+Pg0KPj4+Pj4+ICAgwqDCoMKgwqAgQk9PVEFTwqAgYXJjaC9wb3dlcnBjL2Jvb3QvY3J0MC5v
-DQo+Pj4+Pj4gICDCoMKgIHBvd2VycGMtbGludXgtZ251c3BlLWdjYzogZXJyb3I6IHVucmVjb2du
-aXplZCBhcmd1bWVudCBpbiBvcHRpb24NCj4+Pj4+PiDigJgtbWNwdT1wb3dlcnBj4oCZDQo+Pj4+
-Pj4gICDCoMKgIHBvd2VycGMtbGludXgtZ251c3BlLWdjYzogbm90ZTogdmFsaWQgYXJndW1lbnRz
-IHRvIOKAmC1tY3B1PeKAmSBhcmU6DQo+Pj4+Pj4gODU0MCA4NTQ4IG5hdGl2ZQ0KPj4+Pj4+ICAg
-wqDCoCBtYWtlWzFdOiAqKiogW2FyY2gvcG93ZXJwYy9ib290L01ha2VmaWxlOjIzMToNCj4+Pj4+
-PiBhcmNoL3Bvd2VycGMvYm9vdC9jcnQwLm9dIEVycm9yIDENCj4+Pj4+DQo+Pj4+PiBjb3JlbmV0
-NjRfc21wX2RlZmNvbmZpZyA6DQo+Pj4+Pg0KPj4+Pj4gICAgwqAgQk9PVEFTwqAgYXJjaC9wb3dl
-cnBjL2Jvb3QvY3J0MC5vDQo+Pj4+PiBwb3dlcnBjNjQtbGludXgtZ2NjOiBlcnJvcjogbWlzc2lu
-ZyBhcmd1bWVudCB0byAnLW1jcHU9Jw0KPj4+Pj4gbWFrZVsxXTogKioqIFthcmNoL3Bvd2VycGMv
-Ym9vdC9NYWtlZmlsZToyMzcgOiBhcmNoL3Bvd2VycGMvYm9vdC9jcnQwLm9dDQo+Pj4+PiBFcnJl
-dXIgMQ0KPj4+Pj4gbWFrZTogKioqIFthcmNoL3Bvd2VycGMvTWFrZWZpbGU6MjUzIDogdUltYWdl
-XSBFcnJldXIgMg0KPj4+Pj4NCj4+Pj4+DQo+Pj4+DQo+Pj4+IFNlZW1zIGxpa2UgaW4gZmFjdCwg
-RTU1MDBfQ1BVIGFuZCBFNjUwMF9DUFUgYXJlIG5vdCB0YWtlbiBpbnRvIGFjY291bnQNCj4+Pj4g
-aW4gQ09ORklHX1RBUkdFVF9DUFUsIGFuZCBnZXQgc3BlY2lhbCB0cmVhdG1lbnQgZGlyZWN0bHkg
-aW4NCj4+Pj4gYXJjaC9wb3dlcnBjL01ha2VmaWxlLg0KPj4+Pg0KPj4+PiBUaGlzIGdvZXMgdW5u
-b3RpY2VkIGJlY2F1c2Ugb2YgQ0ZMQUdTLSQoQ09ORklHX1RBUkdFVF9DUFVfQk9PTCkgKz0NCj4+
-Pj4gJChjYWxsIGNjLW9wdGlvbiwtbWNwdT0kKENPTkZJR19UQVJHRVRfQ1BVKSkNCj4+Pj4NCj4+
-Pj4gSSB0aGluayB3ZSBuZWVkIHRvIGZpeCB0aGF0IHByaW9yIHRvIHlvdXIgcGF0Y2guDQo+Pj4N
-Cj4+PiBJdCBsb29rcyBsaWtlIHRoYXQgQ09ORklHX1RBUkdFVF9DUFUgaXMgYnJva2VuLg0KPj4+
-DQo+Pj4gICAgICQgbWFrZSBBUkNIPXBvd2VycGMgY29yZW5ldDY0X3NtcF9kZWZjb25maWcgQ1JP
-U1NfQ09NUElMRT1wb3dlcnBjNjQtbGludXgtZ251LQ0KPj4+ICAgICAuLi4NCj4+PiAgICAgIyBj
-b25maWd1cmF0aW9uIHdyaXR0ZW4gdG8gLmNvbmZpZw0KPj4+DQo+Pj4gICAgICQgZ3JlcCBDT05G
-SUdfVEFSR0VUX0NQVSAuY29uZmlnDQo+Pj4gICAgIENPTkZJR19UQVJHRVRfQ1BVX0JPT0w9eQ0K
-Pj4+DQo+Pj4gQ09ORklHX1RBUkdFVF9DUFVfQk9PTCBpcyBzZXQgYnV0IENPTkZJR19UQVJHRVRf
-Q1BVIG5vdCENCj4+DQo+PiBZZXMsIGJlY2F1c2UgdGhlcmUgaXMgbm8gZGVmYXVsdCB2YWx1ZSBm
-b3IgRTU1MDBfQ1BVIGFuZCBFNjUwMF9DUFUuIFdlDQo+PiBuZWVkIHRvIGFkZCBvbmUgZm9yIGVh
-Y2guDQo+IA0KPiBXaXRoICJbUEFUQ0ggdjFdIHBvd2VycGMvNjQ6IFNldCBkZWZhdWx0IENQVSBp
-biBLY29uZmlnIiBwYXRjaCBmcm9tDQo+IGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2xpbnV4cHBj
-LWRldi8zZmQ2MGMyZDhhMjg2NjhhNDJiNzY2YjE4MzYyYTUyNmVmNDdlNzU3LjE2NzA0MjAyODEu
-Z2l0LmNocmlzdG9waGUubGVyb3lAY3Nncm91cC5ldS8NCj4gdGhpcyBjaGFuZ2UgZG9lcyBub3Qg
-dGhyb3cgYWJvdmUgY29tcGlsZSBlcnJvciBhbnltb3JlLg0KDQoNClRoYXQgcGF0Y2ggc2hvdWxk
-IGxhbmQgaW4gcG93ZXJwYy9uZXh0IHNvb24uIFdoZW4gaXQgaGFzIGxhbmRlZCwgY291bGQgDQp5
-b3UgcmVzZW50IHRoaXMgcGF0Y2ggc28gdGhhdCBzbm93cGF0Y2ggY2hlY2tzIHRoZSBidWlsZCBh
-Z2FpbiA/DQoNCkJlY2F1c2UgYXQgdGhlIHRpbWUgYmVpbmcgaXQgaXMgZmxhZ2dlZCBhcyAiZmFp
-bGVkIiwgc2VlIA0KaHR0cHM6Ly9wYXRjaHdvcmsub3psYWJzLm9yZy9wcm9qZWN0L2xpbnV4cHBj
-LWRldi9wYXRjaC8yMDIyMDgyODA5NTY1OS40MDYxLTEtcGFsaUBrZXJuZWwub3JnLw0KDQpDaHJp
-c3RvcGhlDQo=
+On Thu, Dec 08, 2022 at 09:02:00AM -0800, Dan Williams wrote:
+> CXL is using tracepoints for reporting RAS capability register payloads
+> for AER events, and has plans to use tracepoints for the output payload
+> of Get Poison List and Get Event Records commands. For organization
+> purposes it would be nice to keep those all under a single + local CXL
+> trace system. This also organization also potentially helps in the
+> future when CXL drivers expand beyond generic memory expanders, however
+> that would also entail a move away from the expander-specific
+> cxl_dev_state context, save that for later.
+> 
+> Note that the powerpc-specific drivers/misc/cxl/ also defines a 'cxl'
+> trace system, however, it is unlikely that a single platform will ever
+> load both drivers simultaneously.
+
+Verified this on top of cxl/next with the get-poison-list patchset
+using the new trace file layout.
+
+Also, confirmed that the cxl_aer_*_error events appeared correctly
+in sys/kernel/debug/tracing/events/ and that 'cxl monitor' could 
+be run.
+
+Tested-by: Alison Schofield <alison.schofield@intel.com>
+
+> 
+> Cc: Steven Rostedt <rostedt@goodmis.org>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> ---
+> This patch is targeting v6.3.  I am sending it out now to enable the
+> in-flight Event and Poison list patch sets to build upon. It will not
+> move to a non-rebasing branch until after v6.2-rc2, but in the meantime
+> I can throw it out on the list and the cxl/preview branch.
+> 
+>  drivers/cxl/core/Makefile  |    3 +
+>  drivers/cxl/core/pci.c     |  112 ++++++++++++++++++++++++++++++++++++++++++++
+>  drivers/cxl/core/trace.c   |    5 ++
+>  drivers/cxl/core/trace.h   |   11 ++--
+>  drivers/cxl/cxl.h          |    2 +
+>  drivers/cxl/cxlpci.h       |    3 +
+>  drivers/cxl/pci.c          |  111 --------------------------------------------
+>  tools/testing/cxl/Kbuild   |    2 +
+>  8 files changed, 131 insertions(+), 118 deletions(-)
+>  create mode 100644 drivers/cxl/core/trace.c
+>  rename include/trace/events/cxl.h => drivers/cxl/core/trace.h (94%)
+> 
+> diff --git a/drivers/cxl/core/Makefile b/drivers/cxl/core/Makefile
+> index 79c7257f4107..ca4ae31d8f57 100644
+> --- a/drivers/cxl/core/Makefile
+> +++ b/drivers/cxl/core/Makefile
+> @@ -3,6 +3,8 @@ obj-$(CONFIG_CXL_BUS) += cxl_core.o
+>  obj-$(CONFIG_CXL_SUSPEND) += suspend.o
+>  
+>  ccflags-y += -I$(srctree)/drivers/cxl
+> +CFLAGS_trace.o = -DTRACE_INCLUDE_PATH=. -I$(src)
+> +
+>  cxl_core-y := port.o
+>  cxl_core-y += pmem.o
+>  cxl_core-y += regs.o
+> @@ -10,4 +12,5 @@ cxl_core-y += memdev.o
+>  cxl_core-y += mbox.o
+>  cxl_core-y += pci.o
+>  cxl_core-y += hdm.o
+> +cxl_core-$(CONFIG_TRACING) += trace.o
+>  cxl_core-$(CONFIG_CXL_REGION) += region.o
+> diff --git a/drivers/cxl/core/pci.c b/drivers/cxl/core/pci.c
+> index 57764e9cd19d..1d1492440287 100644
+> --- a/drivers/cxl/core/pci.c
+> +++ b/drivers/cxl/core/pci.c
+> @@ -9,6 +9,7 @@
+>  #include <cxlmem.h>
+>  #include <cxl.h>
+>  #include "core.h"
+> +#include "trace.h"
+>  
+>  /**
+>   * DOC: cxl core pci
+> @@ -622,3 +623,114 @@ void read_cdat_data(struct cxl_port *port)
+>  	}
+>  }
+>  EXPORT_SYMBOL_NS_GPL(read_cdat_data, CXL);
+> +
+> +void cxl_cor_error_detected(struct pci_dev *pdev)
+> +{
+> +	struct cxl_dev_state *cxlds = pci_get_drvdata(pdev);
+> +	struct cxl_memdev *cxlmd = cxlds->cxlmd;
+> +	struct device *dev = &cxlmd->dev;
+> +	void __iomem *addr;
+> +	u32 status;
+> +
+> +	if (!cxlds->regs.ras)
+> +		return;
+> +
+> +	addr = cxlds->regs.ras + CXL_RAS_CORRECTABLE_STATUS_OFFSET;
+> +	status = readl(addr);
+> +	if (status & CXL_RAS_CORRECTABLE_STATUS_MASK) {
+> +		writel(status & CXL_RAS_CORRECTABLE_STATUS_MASK, addr);
+> +		trace_cxl_aer_correctable_error(dev, status);
+> +	}
+> +}
+> +EXPORT_SYMBOL_NS_GPL(cxl_cor_error_detected, CXL);
+> +
+> +/* CXL spec rev3.0 8.2.4.16.1 */
+> +static void header_log_copy(struct cxl_dev_state *cxlds, u32 *log)
+> +{
+> +	void __iomem *addr;
+> +	u32 *log_addr;
+> +	int i, log_u32_size = CXL_HEADERLOG_SIZE / sizeof(u32);
+> +
+> +	addr = cxlds->regs.ras + CXL_RAS_HEADER_LOG_OFFSET;
+> +	log_addr = log;
+> +
+> +	for (i = 0; i < log_u32_size; i++) {
+> +		*log_addr = readl(addr);
+> +		log_addr++;
+> +		addr += sizeof(u32);
+> +	}
+> +}
+> +
+> +/*
+> + * Log the state of the RAS status registers and prepare them to log the
+> + * next error status. Return 1 if reset needed.
+> + */
+> +static bool cxl_report_and_clear(struct cxl_dev_state *cxlds)
+> +{
+> +	struct cxl_memdev *cxlmd = cxlds->cxlmd;
+> +	struct device *dev = &cxlmd->dev;
+> +	u32 hl[CXL_HEADERLOG_SIZE_U32];
+> +	void __iomem *addr;
+> +	u32 status;
+> +	u32 fe;
+> +
+> +	if (!cxlds->regs.ras)
+> +		return false;
+> +
+> +	addr = cxlds->regs.ras + CXL_RAS_UNCORRECTABLE_STATUS_OFFSET;
+> +	status = readl(addr);
+> +	if (!(status & CXL_RAS_UNCORRECTABLE_STATUS_MASK))
+> +		return false;
+> +
+> +	/* If multiple errors, log header points to first error from ctrl reg */
+> +	if (hweight32(status) > 1) {
+> +		addr = cxlds->regs.ras + CXL_RAS_CAP_CONTROL_OFFSET;
+> +		fe = BIT(FIELD_GET(CXL_RAS_CAP_CONTROL_FE_MASK, readl(addr)));
+> +	} else {
+> +		fe = status;
+> +	}
+> +
+> +	header_log_copy(cxlds, hl);
+> +	trace_cxl_aer_uncorrectable_error(dev, status, fe, hl);
+> +	writel(status & CXL_RAS_UNCORRECTABLE_STATUS_MASK, addr);
+> +
+> +	return true;
+> +}
+> +
+> +pci_ers_result_t cxl_error_detected(struct pci_dev *pdev,
+> +				    pci_channel_state_t state)
+> +{
+> +	struct cxl_dev_state *cxlds = pci_get_drvdata(pdev);
+> +	struct cxl_memdev *cxlmd = cxlds->cxlmd;
+> +	struct device *dev = &cxlmd->dev;
+> +	bool ue;
+> +
+> +	/*
+> +	 * A frozen channel indicates an impending reset which is fatal to
+> +	 * CXL.mem operation, and will likely crash the system. On the off
+> +	 * chance the situation is recoverable dump the status of the RAS
+> +	 * capability registers and bounce the active state of the memdev.
+> +	 */
+> +	ue = cxl_report_and_clear(cxlds);
+> +
+> +	switch (state) {
+> +	case pci_channel_io_normal:
+> +		if (ue) {
+> +			device_release_driver(dev);
+> +			return PCI_ERS_RESULT_NEED_RESET;
+> +		}
+> +		return PCI_ERS_RESULT_CAN_RECOVER;
+> +	case pci_channel_io_frozen:
+> +		dev_warn(&pdev->dev,
+> +			 "%s: frozen state error detected, disable CXL.mem\n",
+> +			 dev_name(dev));
+> +		device_release_driver(dev);
+> +		return PCI_ERS_RESULT_NEED_RESET;
+> +	case pci_channel_io_perm_failure:
+> +		dev_warn(&pdev->dev,
+> +			 "failure state error detected, request disconnect\n");
+> +		return PCI_ERS_RESULT_DISCONNECT;
+> +	}
+> +	return PCI_ERS_RESULT_NEED_RESET;
+> +}
+> +EXPORT_SYMBOL_NS_GPL(cxl_error_detected, CXL);
+> diff --git a/drivers/cxl/core/trace.c b/drivers/cxl/core/trace.c
+> new file mode 100644
+> index 000000000000..29ae7ce81dc5
+> --- /dev/null
+> +++ b/drivers/cxl/core/trace.c
+> @@ -0,0 +1,5 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/* Copyright(c) 2022 Intel Corporation. All rights reserved. */
+> +
+> +#define CREATE_TRACE_POINTS
+> +#include "trace.h"
+> diff --git a/include/trace/events/cxl.h b/drivers/cxl/core/trace.h
+> similarity index 94%
+> rename from include/trace/events/cxl.h
+> rename to drivers/cxl/core/trace.h
+> index ad085a2534ef..20ca2fe2ca8e 100644
+> --- a/include/trace/events/cxl.h
+> +++ b/drivers/cxl/core/trace.h
+> @@ -1,15 +1,14 @@
+> -/* SPDX-License-Identifier: GPL-2.0 */
+> +// SPDX-License-Identifier: GPL-2.0
+> +/* Copyright(c) 2022 Intel Corporation. All rights reserved. */
+>  #undef TRACE_SYSTEM
+>  #define TRACE_SYSTEM cxl
+>  
+>  #if !defined(_CXL_EVENTS_H) || defined(TRACE_HEADER_MULTI_READ)
+>  #define _CXL_EVENTS_H
+>  
+> +#include <cxl.h>
+>  #include <linux/tracepoint.h>
+>  
+> -#define CXL_HEADERLOG_SIZE		SZ_512
+> -#define CXL_HEADERLOG_SIZE_U32		SZ_512 / sizeof(u32)
+> -
+>  #define CXL_RAS_UC_CACHE_DATA_PARITY	BIT(0)
+>  #define CXL_RAS_UC_CACHE_ADDR_PARITY	BIT(1)
+>  #define CXL_RAS_UC_CACHE_BE_PARITY	BIT(2)
+> @@ -106,7 +105,5 @@ TRACE_EVENT(cxl_aer_correctable_error,
+>  
+>  #endif /* _CXL_EVENTS_H */
+>  
+> -/* This part must be outside protection */
+> -#undef TRACE_INCLUDE_FILE
+> -#define TRACE_INCLUDE_FILE cxl
+> +#define TRACE_INCLUDE_FILE trace
+>  #include <trace/define_trace.h>
+> diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
+> index 1b1cf459ac77..aa3af3bb73b2 100644
+> --- a/drivers/cxl/cxl.h
+> +++ b/drivers/cxl/cxl.h
+> @@ -140,6 +140,8 @@ static inline int ways_to_eiw(unsigned int ways, u8 *eiw)
+>  #define CXL_RAS_CAP_CONTROL_FE_MASK GENMASK(5, 0)
+>  #define CXL_RAS_HEADER_LOG_OFFSET 0x18
+>  #define CXL_RAS_CAPABILITY_LENGTH 0x58
+> +#define CXL_HEADERLOG_SIZE SZ_512
+> +#define CXL_HEADERLOG_SIZE_U32 SZ_512 / sizeof(u32)
+>  
+>  /* CXL 2.0 8.2.8.1 Device Capabilities Array Register */
+>  #define CXLDEV_CAP_ARRAY_OFFSET 0x0
+> diff --git a/drivers/cxl/cxlpci.h b/drivers/cxl/cxlpci.h
+> index 920909791bb9..77dbdb980b12 100644
+> --- a/drivers/cxl/cxlpci.h
+> +++ b/drivers/cxl/cxlpci.h
+> @@ -66,4 +66,7 @@ int devm_cxl_port_enumerate_dports(struct cxl_port *port);
+>  struct cxl_dev_state;
+>  int cxl_hdm_decode_init(struct cxl_dev_state *cxlds, struct cxl_hdm *cxlhdm);
+>  void read_cdat_data(struct cxl_port *port);
+> +void cxl_cor_error_detected(struct pci_dev *pdev);
+> +pci_ers_result_t cxl_error_detected(struct pci_dev *pdev,
+> +				    pci_channel_state_t state);
+>  #endif /* __CXL_PCI_H__ */
+> diff --git a/drivers/cxl/pci.c b/drivers/cxl/pci.c
+> index 33083a522fd1..3a66aadb4df0 100644
+> --- a/drivers/cxl/pci.c
+> +++ b/drivers/cxl/pci.c
+> @@ -14,8 +14,6 @@
+>  #include "cxlmem.h"
+>  #include "cxlpci.h"
+>  #include "cxl.h"
+> -#define CREATE_TRACE_POINTS
+> -#include <trace/events/cxl.h>
+>  
+>  /**
+>   * DOC: cxl pci
+> @@ -514,96 +512,6 @@ static const struct pci_device_id cxl_mem_pci_tbl[] = {
+>  };
+>  MODULE_DEVICE_TABLE(pci, cxl_mem_pci_tbl);
+>  
+> -/* CXL spec rev3.0 8.2.4.16.1 */
+> -static void header_log_copy(struct cxl_dev_state *cxlds, u32 *log)
+> -{
+> -	void __iomem *addr;
+> -	u32 *log_addr;
+> -	int i, log_u32_size = CXL_HEADERLOG_SIZE / sizeof(u32);
+> -
+> -	addr = cxlds->regs.ras + CXL_RAS_HEADER_LOG_OFFSET;
+> -	log_addr = log;
+> -
+> -	for (i = 0; i < log_u32_size; i++) {
+> -		*log_addr = readl(addr);
+> -		log_addr++;
+> -		addr += sizeof(u32);
+> -	}
+> -}
+> -
+> -/*
+> - * Log the state of the RAS status registers and prepare them to log the
+> - * next error status. Return 1 if reset needed.
+> - */
+> -static bool cxl_report_and_clear(struct cxl_dev_state *cxlds)
+> -{
+> -	struct cxl_memdev *cxlmd = cxlds->cxlmd;
+> -	struct device *dev = &cxlmd->dev;
+> -	u32 hl[CXL_HEADERLOG_SIZE_U32];
+> -	void __iomem *addr;
+> -	u32 status;
+> -	u32 fe;
+> -
+> -	if (!cxlds->regs.ras)
+> -		return false;
+> -
+> -	addr = cxlds->regs.ras + CXL_RAS_UNCORRECTABLE_STATUS_OFFSET;
+> -	status = readl(addr);
+> -	if (!(status & CXL_RAS_UNCORRECTABLE_STATUS_MASK))
+> -		return false;
+> -
+> -	/* If multiple errors, log header points to first error from ctrl reg */
+> -	if (hweight32(status) > 1) {
+> -		addr = cxlds->regs.ras + CXL_RAS_CAP_CONTROL_OFFSET;
+> -		fe = BIT(FIELD_GET(CXL_RAS_CAP_CONTROL_FE_MASK, readl(addr)));
+> -	} else {
+> -		fe = status;
+> -	}
+> -
+> -	header_log_copy(cxlds, hl);
+> -	trace_cxl_aer_uncorrectable_error(dev, status, fe, hl);
+> -	writel(status & CXL_RAS_UNCORRECTABLE_STATUS_MASK, addr);
+> -
+> -	return true;
+> -}
+> -
+> -static pci_ers_result_t cxl_error_detected(struct pci_dev *pdev,
+> -					   pci_channel_state_t state)
+> -{
+> -	struct cxl_dev_state *cxlds = pci_get_drvdata(pdev);
+> -	struct cxl_memdev *cxlmd = cxlds->cxlmd;
+> -	struct device *dev = &cxlmd->dev;
+> -	bool ue;
+> -
+> -	/*
+> -	 * A frozen channel indicates an impending reset which is fatal to
+> -	 * CXL.mem operation, and will likely crash the system. On the off
+> -	 * chance the situation is recoverable dump the status of the RAS
+> -	 * capability registers and bounce the active state of the memdev.
+> -	 */
+> -	ue = cxl_report_and_clear(cxlds);
+> -
+> -	switch (state) {
+> -	case pci_channel_io_normal:
+> -		if (ue) {
+> -			device_release_driver(dev);
+> -			return PCI_ERS_RESULT_NEED_RESET;
+> -		}
+> -		return PCI_ERS_RESULT_CAN_RECOVER;
+> -	case pci_channel_io_frozen:
+> -		dev_warn(&pdev->dev,
+> -			 "%s: frozen state error detected, disable CXL.mem\n",
+> -			 dev_name(dev));
+> -		device_release_driver(dev);
+> -		return PCI_ERS_RESULT_NEED_RESET;
+> -	case pci_channel_io_perm_failure:
+> -		dev_warn(&pdev->dev,
+> -			 "failure state error detected, request disconnect\n");
+> -		return PCI_ERS_RESULT_DISCONNECT;
+> -	}
+> -	return PCI_ERS_RESULT_NEED_RESET;
+> -}
+> -
+>  static pci_ers_result_t cxl_slot_reset(struct pci_dev *pdev)
+>  {
+>  	struct cxl_dev_state *cxlds = pci_get_drvdata(pdev);
+> @@ -628,25 +536,6 @@ static void cxl_error_resume(struct pci_dev *pdev)
+>  		 dev->driver ? "successful" : "failed");
+>  }
+>  
+> -static void cxl_cor_error_detected(struct pci_dev *pdev)
+> -{
+> -	struct cxl_dev_state *cxlds = pci_get_drvdata(pdev);
+> -	struct cxl_memdev *cxlmd = cxlds->cxlmd;
+> -	struct device *dev = &cxlmd->dev;
+> -	void __iomem *addr;
+> -	u32 status;
+> -
+> -	if (!cxlds->regs.ras)
+> -		return;
+> -
+> -	addr = cxlds->regs.ras + CXL_RAS_CORRECTABLE_STATUS_OFFSET;
+> -	status = readl(addr);
+> -	if (status & CXL_RAS_CORRECTABLE_STATUS_MASK) {
+> -		writel(status & CXL_RAS_CORRECTABLE_STATUS_MASK, addr);
+> -		trace_cxl_aer_correctable_error(dev, status);
+> -	}
+> -}
+> -
+>  static const struct pci_error_handlers cxl_error_handlers = {
+>  	.error_detected	= cxl_error_detected,
+>  	.slot_reset	= cxl_slot_reset,
+> diff --git a/tools/testing/cxl/Kbuild b/tools/testing/cxl/Kbuild
+> index 0805f08af8b3..12af1c9270ff 100644
+> --- a/tools/testing/cxl/Kbuild
+> +++ b/tools/testing/cxl/Kbuild
+> @@ -17,6 +17,7 @@ CXL_SRC := $(DRIVERS)/cxl
+>  CXL_CORE_SRC := $(DRIVERS)/cxl/core
+>  ccflags-y := -I$(srctree)/drivers/cxl/
+>  ccflags-y += -D__mock=__weak
+> +ccflags-y += -DTRACE_INCLUDE_PATH=$(CXL_CORE_SRC) -I$(srctree)/drivers/cxl/core/
+>  
+>  obj-m += cxl_acpi.o
+>  
+> @@ -49,6 +50,7 @@ cxl_core-y += $(CXL_CORE_SRC)/memdev.o
+>  cxl_core-y += $(CXL_CORE_SRC)/mbox.o
+>  cxl_core-y += $(CXL_CORE_SRC)/pci.o
+>  cxl_core-y += $(CXL_CORE_SRC)/hdm.o
+> +cxl_core-$(CONFIG_TRACING) += $(CXL_CORE_SRC)/trace.o
+>  cxl_core-$(CONFIG_CXL_REGION) += $(CXL_CORE_SRC)/region.o
+>  cxl_core-y += config_check.o
+>  
+> 
