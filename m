@@ -2,33 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1A8A64701A
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Dec 2022 13:53:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4726164700C
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Dec 2022 13:51:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NSYwk57vYz3fSb
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Dec 2022 23:53:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NSYtJ1ddGz3fCn
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Dec 2022 23:51:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NSYrs09zcz3bhJ;
-	Thu,  8 Dec 2022 23:49:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NSYrf3w9vz2xKX
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Dec 2022 23:49:38 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NSYrj1Gmbz4xZg;
-	Thu,  8 Dec 2022 23:49:41 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NSYrZ0Zg9z4xN1;
+	Thu,  8 Dec 2022 23:49:34 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Benjamin Fair <benjaminfair@google.com>, Joel Stanley <joel@jms.id.au>, Christophe Leroy <christophe.leroy@csgroup.eu>, Geert Uytterhoeven <geert+renesas@glider.be>, Tony Lindgren <tony@atomide.com>, Patrick Venture <venture@google.com>, Tali Perry <tali.perry1@gmail.com>, Nancy Yuen <yuenn@google.com>, Alexandre Belloni <alexandre.belloni@bootlin.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, Magnus Damm <magnus.damm@gmail.com>, Gregory Clement <gregory.clement@bootlin.com>, Avi Fishman <avifishman70@gmail.com>, Li Yang <leoyang.li@nxp.com>, Russell King <linux@armlinux.org.uk>, Andrew Jeffery <andrew@aj.id.au>, Nicholas Piggin <npiggin@gmail.com>, Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Dinh Nguyen <dinguyen@kernel.org>, Shawn Guo <shawnguo@kernel.org>, UNGLinuxDriver@microchip.com, Benoît Cousson <bcousson@baylibre.com>, Michael Ellerman <mpe@ellerman.id.au>, Stefan Agner <stefan@agner.ch>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Andrew Lunn 
- <andrew@lunn.ch>, Tomer Maimon <tmaimon77@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>
-In-Reply-To: <cover.1669999298.git.geert+renesas@glider.be>
-References: <cover.1669999298.git.geert+renesas@glider.be>
-Subject: Re: (subset) [PATCH 00/11] Fix pca954x i2c-mux node names
-Message-Id: <167050321678.1457988.4158904572849937193.b4-ty@ellerman.id.au>
-Date: Thu, 08 Dec 2022 23:40:16 +1100
+To: rafael@kernel.org, npiggin@gmail.com, Aboorva Devarajan <aboorvad@linux.vnet.ibm.com>, mpe@ellerman.id.au, daniel.lezcano@linaro.org, svaidy@linux.vnet.ibm.com
+In-Reply-To: <20221114145611.37669-1-aboorvad@linux.vnet.ibm.com>
+References: <20221114073154.30407-1-aboorvad@linux.vnet.ibm.com> <20221114145611.37669-1-aboorvad@linux.vnet.ibm.com>
+Subject: Re: [PATCH v2] powerpc/cpuidle: Set CPUIDLE_FLAG_POLLING for snooze state
+Message-Id: <167050321754.1457988.14917789901150069869.b4-ty@ellerman.id.au>
+Date: Thu, 08 Dec 2022 23:40:17 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -43,23 +42,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linux-aspeed@lists.ozlabs.org, openbmc@lists.ozlabs.org, linux-mips@vger.kernel.org, linux-renesas-soc@vger.kernel.org, Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, linux-omap@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: linuxppc-dev@lists.ozlabs.org, srikar@linux.vnet.ibm.com, linux-pm@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 2 Dec 2022 17:49:15 +0100, Geert Uytterhoeven wrote:
-> 	Hi all,
-> 
-> According to the I2C bus multiplexer/switch DT bindings, i2c-mux nodes
-> should be named "i2c-mux" (or something similar).
-> This patch series renames nodes for pca954x i2c-muxes that are flagged
-> by
+On Mon, 14 Nov 2022 20:26:11 +0530, Aboorva Devarajan wrote:
+> During the comparative study of cpuidle governors, it is noticed that the
+> menu governor does not select CEDE state in some scenarios even though when
+> the sleep duration of the CPU exceeds the target residency of the CEDE idle
+> state this is because the CPU exits the snooze "polling" state when snooze
+> time limit is reached in the snooze_loop(), which is not a real wake up
+> and it just means that the polling state selection was not adequate.
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[11/11] powerpc: dts: fsl: Fix pca954x i2c-mux node names
-        https://git.kernel.org/powerpc/c/3ae7c96dd51025550c8001c6f833337f11d00807
+[1/1] powerpc/cpuidle: Set CPUIDLE_FLAG_POLLING for snooze state
+      https://git.kernel.org/powerpc/c/5ddcc03a07ae1ab5062f89a946d9495f1fd8eaa4
 
 cheers
