@@ -1,33 +1,33 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4726164700C
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Dec 2022 13:51:06 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B93B764702B
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Dec 2022 13:56:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NSYtJ1ddGz3fCn
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Dec 2022 23:51:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NSZ0l4BChz3fsL
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Dec 2022 23:56:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NSYrf3w9vz2xKX
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Dec 2022 23:49:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NSYrx6Clfz3bm9
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Dec 2022 23:49:53 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NSYrZ0Zg9z4xN1;
-	Thu,  8 Dec 2022 23:49:34 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NSYrx530Kz4xvX;
+	Thu,  8 Dec 2022 23:49:53 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: rafael@kernel.org, npiggin@gmail.com, Aboorva Devarajan <aboorvad@linux.vnet.ibm.com>, mpe@ellerman.id.au, daniel.lezcano@linaro.org, svaidy@linux.vnet.ibm.com
-In-Reply-To: <20221114145611.37669-1-aboorvad@linux.vnet.ibm.com>
-References: <20221114073154.30407-1-aboorvad@linux.vnet.ibm.com> <20221114145611.37669-1-aboorvad@linux.vnet.ibm.com>
-Subject: Re: [PATCH v2] powerpc/cpuidle: Set CPUIDLE_FLAG_POLLING for snooze state
-Message-Id: <167050321754.1457988.14917789901150069869.b4-ty@ellerman.id.au>
-Date: Thu, 08 Dec 2022 23:40:17 +1100
+To: npiggin@gmail.com, christophe.leroy@csgroup.eu, mpe@ellerman.id.au, Laurent Dufour <ldufour@linux.ibm.com>
+In-Reply-To: <20221110180619.15796-1-ldufour@linux.ibm.com>
+References: <20221110180619.15796-1-ldufour@linux.ibm.com>
+Subject: Re: [PATCH v2 0/2] Consider the size of the added CPU nodes in the kexec FDT
+Message-Id: <167050321905.1457988.13607875299113419626.b4-ty@ellerman.id.au>
+Date: Thu, 08 Dec 2022 23:40:19 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -42,23 +42,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, srikar@linux.vnet.ibm.com, linux-pm@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 14 Nov 2022 20:26:11 +0530, Aboorva Devarajan wrote:
-> During the comparative study of cpuidle governors, it is noticed that the
-> menu governor does not select CEDE state in some scenarios even though when
-> the sleep duration of the CPU exceeds the target residency of the CEDE idle
-> state this is because the CPU exits the snooze "polling" state when snooze
-> time limit is reached in the snooze_loop(), which is not a real wake up
-> and it just means that the polling state selection was not adequate.
+On Thu, 10 Nov 2022 19:06:17 +0100, Laurent Dufour wrote:
+> When adding CPUs to an already big system (test show it seems to start with
+> more than 256 CPUs), the kernel is showing error messages when building the
+> FDT for the kexec kernel (kdump or kexec).
+> 
+> It's worth to mention that the kdump kernel is reloaded after a CPU add
+> operation.
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc/cpuidle: Set CPUIDLE_FLAG_POLLING for snooze state
-      https://git.kernel.org/powerpc/c/5ddcc03a07ae1ab5062f89a946d9495f1fd8eaa4
+[1/2] powerpc: export the CPU node count
+      https://git.kernel.org/powerpc/c/e13d23a404f2e6dfaf8b1ef7d161a0836fce4fa5
+[2/2] powerpc: Take in account addition CPU node when building kexec FDT
+      https://git.kernel.org/powerpc/c/340a4a9f8773e102cc5ef531665970a686dfa245
 
 cheers
