@@ -2,32 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18D58647037
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Dec 2022 13:58:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1F14647014
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Dec 2022 13:52:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NSZ2c6gbdz3g3J
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Dec 2022 23:58:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NSYw13cVCz3fD2
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Dec 2022 23:52:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NSYs16g5gz3bhn
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Dec 2022 23:49:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NSYrh660Mz2xKX
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Dec 2022 23:49:40 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NSYs021q9z4xvd;
-	Thu,  8 Dec 2022 23:49:56 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NSYrh50JTz4xZ7;
+	Thu,  8 Dec 2022 23:49:40 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Steven Rostedt <rostedt@goodmis.org>, Michael Jeanson <mjeanson@efficios.com>
-In-Reply-To: <20221201161442.2127231-1-mjeanson@efficios.com>
-References: <20221201161442.2127231-1-mjeanson@efficios.com>
-Subject: Re: [PATCH] powerpc/ftrace: fix syscall tracing on PPC64_ELF_ABI_V1
-Message-Id: <167050321063.1457988.11365233998356574445.b4-ty@ellerman.id.au>
-Date: Thu, 08 Dec 2022 23:40:10 +1100
+To: bgray@linux.ibm.com, Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <f67d2a109404d03e8fdf1ea15388c8778337a76b.1669969781.git.christophe.leroy@csgroup.eu>
+References: <f67d2a109404d03e8fdf1ea15388c8778337a76b.1669969781.git.christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v2 1/5] powerpc/code-patching: Remove #ifdef CONFIG_STRICT_KERNEL_RWX
+Message-Id: <167050321439.1457988.16908884696488370128.b4-ty@ellerman.id.au>
+Date: Thu, 08 Dec 2022 23:40:14 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -42,24 +42,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org, stable@vger.kernel.org, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Michal Suchanek <msuchanek@suse.de>, linuxppc-dev@lists.ozlabs.org, Masami Hiramatsu <mhiramat@kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 1 Dec 2022 11:14:42 -0500, Michael Jeanson wrote:
-> In v5.7 the powerpc syscall entry/exit logic was rewritten in C, on
-> PPC64_ELF_ABI_V1 this resulted in the symbols in the syscall table
-> changing from their dot prefixed variant to the non-prefixed ones.
+On Fri, 2 Dec 2022 09:31:39 +0100, Christophe Leroy wrote:
+> No need to have one implementation of patch_instruction() for
+> CONFIG_STRICT_KERNEL_RWX and one for !CONFIG_STRICT_KERNEL_RWX.
 > 
-> Since ftrace prefixes a dot to the syscall names when matching them to
-> build its syscall event list, this resulted in no syscall events being
-> available.
+> In patch_instruction(), call raw_patch_instruction() when
+> !CONFIG_STRICT_KERNEL_RWX.
+> 
+> In poking_init(), bail out immediately, it will be equivalent
+> to the weak default implementation.
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc/ftrace: fix syscall tracing on PPC64_ELF_ABI_V1
-      https://git.kernel.org/powerpc/c/ad050d2390fccb22aa3e6f65e11757ce7a5a7ca5
+[1/5] powerpc/code-patching: Remove #ifdef CONFIG_STRICT_KERNEL_RWX
+      https://git.kernel.org/powerpc/c/84ecfe6f38ae4ee779ebd97ee173937fff565bf9
+[2/5] powerpc/feature-fixups: Refactor entry fixups patching
+      https://git.kernel.org/powerpc/c/6076dc349b1c587c74c37027efff76f0fa4646f4
+[3/5] powerpc/feature-fixups: Refactor other fixups patching
+      https://git.kernel.org/powerpc/c/3d1dbbca33a9c6dd3aafd4d14aaea9cc310723e1
+[4/5] powerpc/feature-fixups: Do not patch init section after init
+      https://git.kernel.org/powerpc/c/b988e7797d09379057cf991ae082f9ad7a309a63
+[5/5] powerpc/code-patching: Remove protection against patching init addresses after init
+      https://git.kernel.org/powerpc/c/6f3a81b60091031c2c14eb2373d1937b027deb46
 
 cheers
