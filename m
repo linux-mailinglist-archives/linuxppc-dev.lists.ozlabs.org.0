@@ -1,57 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3CC06483AB
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Dec 2022 15:21:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A23F648866
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Dec 2022 19:23:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NTCqm66tSz3bqw
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Dec 2022 01:21:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NTKBq24Wzz3bhW
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Dec 2022 05:22:59 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=S9KPDqoE;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bJOM/Cem;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=song@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=S9KPDqoE;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bJOM/Cem;
 	dkim-atps=neutral
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NTCpp5tP5z3bZJ
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Dec 2022 01:20:17 +1100 (AEDT)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-	by smtp-out1.suse.de (Postfix) with ESMTP id 519BF229E8;
-	Fri,  9 Dec 2022 14:20:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1670595614; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Nzwv4m3Hgg/uWdoPi0O3B5YBmF8eSTJJtprw/dS4JvI=;
-	b=S9KPDqoEIBpJEb0CYzWi/31c4xU81n60FczF8mVTo/65TE9V/WYhYGIo+p3iAOaE8yb7LI
-	9EFZT/TtHuRtVToHzZ+MvaH+6zE8eDtFeaD+Z0MZ3VH09k+EsrWz6c7g/1dgokCsdBWqI6
-	X4Kk0boP5CGTvvybOrWwYtg3WoIsVrI=
-Received: from suse.cz (unknown [10.100.201.202])
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by relay2.suse.de (Postfix) with ESMTPS id 2DABF2C141;
-	Fri,  9 Dec 2022 14:20:14 +0000 (UTC)
-Date: Fri, 9 Dec 2022 15:20:13 +0100
-From: Petr Mladek <pmladek@suse.com>
-To: Song Liu <song@kernel.org>
-Subject: Re: [PATCH v6] livepatch: Clear relocation targets on a module
- removal
-Message-ID: <Y5NEHdSSMSyec6S+@alley>
-References: <20220901171252.2148348-1-song@kernel.org>
- <Y3expGRt4cPoZgHL@alley>
- <CAPhsuW4qYpX7wzHn5J5Hn9cnOFSZwwQPCjTM_HPTt_zbBS03ww@mail.gmail.com>
- <Y5M+AoKHDK4rn6/i@alley>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NTK9n2nz2z2xH6
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Dec 2022 05:22:05 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 45CE5B828C8
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Dec 2022 18:22:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB835C433D2
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Dec 2022 18:21:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1670610119;
+	bh=oRuHbrET4tyPKkEdzgT2+8zaXtSoNF/Y59VTItF6/tY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=bJOM/CemrNI3QfkHchz3Hn0e+8N7Va6vCCPmM8XhBVtH+RUsm4TSnX1p5Yv7HqrkI
+	 /gXOJwc1aWoaGAt6L3kldJKGVQbHhfTCqAwG9nmFkojlFGVeZ/Dg3PXPGf6nodIrVc
+	 7YG0hKkZy1L9SKesNhBT5UhnhTKSnyD8EVKF5br+7+84jrG/1WunNONg/L2HbAnoR8
+	 CGAq66p/4gBEJ8oqGZLWTeyxvtXVIRVHOCxAZf6BcMNU1fC/G9tZnvZaVivk0pzByG
+	 MYIgli0F5oQ5My1jIzkwmOTwc6y1D+MduSZ2Aald5X3fyNmCmV7DNTSS1z7S3mbmI/
+	 9p70pcfPtEa/Q==
+Received: by mail-ej1-f52.google.com with SMTP id n21so13367239ejb.9
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 09 Dec 2022 10:21:58 -0800 (PST)
+X-Gm-Message-State: ANoB5pl+j3kNpW+Hl+bK51UHv8oCr6R2oD1vaVhIHXuMd81BqdkAV93O
+	M/facGSOjTDf1vx9gAZ230FwWjtPHV4PMDSmHb4=
+X-Google-Smtp-Source: AA0mqf63HKo2ld9Tzy3TiCXZp5HMXIOF6Ow8FZgiGs0uO/US4vcgX4pFPBfkBqnHxf+N1/NJZwAsyttE0d3IzIjOh/E=
+X-Received: by 2002:a17:906:9f09:b0:7bc:db1b:206f with SMTP id
+ fy9-20020a1709069f0900b007bcdb1b206fmr16313254ejc.719.1670610117154; Fri, 09
+ Dec 2022 10:21:57 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20220901171252.2148348-1-song@kernel.org> <Y3expGRt4cPoZgHL@alley>
+ <CAPhsuW4qYpX7wzHn5J5Hn9cnOFSZwwQPCjTM_HPTt_zbBS03ww@mail.gmail.com> <Y5M+AoKHDK4rn6/i@alley>
 In-Reply-To: <Y5M+AoKHDK4rn6/i@alley>
+From: Song Liu <song@kernel.org>
+Date: Fri, 9 Dec 2022 10:21:45 -0800
+X-Gmail-Original-Message-ID: <CAPhsuW6nsh4AZNhsE_r91rnHEgeRtuhjSa=5OpWvd5Po1dV9BA@mail.gmail.com>
+Message-ID: <CAPhsuW6nsh4AZNhsE_r91rnHEgeRtuhjSa=5OpWvd5Po1dV9BA@mail.gmail.com>
+Subject: Re: [PATCH v6] livepatch: Clear relocation targets on a module removal
+To: Petr Mladek <pmladek@suse.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,33 +72,146 @@ Cc: jikos@kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, joe.lawrence
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri 2022-12-09 14:54:10, Petr Mladek wrote:
+On Fri, Dec 9, 2022 at 5:54 AM Petr Mladek <pmladek@suse.com> wrote:
+>
 > On Mon 2022-11-28 17:57:06, Song Liu wrote:
 > > On Fri, Nov 18, 2022 at 8:24 AM Petr Mladek <pmladek@suse.com> wrote:
 > > > > --- a/kernel/livepatch/core.c
 > > > > +++ b/kernel/livepatch/core.c
+> > > > @@ -316,6 +316,45 @@ int klp_apply_section_relocs(struct module *pmod, Elf_Shdr *sechdrs,
+> > > >       return apply_relocate_add(sechdrs, strtab, symndx, secndx, pmod);
+> > > >  }
+> > > >
+> > > > +static void klp_clear_object_relocations(struct module *pmod,
+> > > > +                                     struct klp_object *obj)
+> > > > +{
+> > > > +     int i, cnt;
+> > > > +     const char *objname, *secname;
+> > > > +     char sec_objname[MODULE_NAME_LEN];
+> > > > +     Elf_Shdr *sec;
+> > > > +
+> > > > +     objname = klp_is_module(obj) ? obj->name : "vmlinux";
+> > > > +
+> > > > +     /* For each klp relocation section */
+> > > > +     for (i = 1; i < pmod->klp_info->hdr.e_shnum; i++) {
+> > > > +             sec = pmod->klp_info->sechdrs + i;
+> > > > +             secname = pmod->klp_info->secstrings + sec->sh_name;
+>
+> secname = ...
+>
+> > > > +             if (!(sec->sh_flags & SHF_RELA_LIVEPATCH))
+> > > > +                     continue;
+> > > > +
+> > > > +             /*
+> > > > +              * Format: .klp.rela.sec_objname.section_name
+> > > > +              * See comment in klp_resolve_symbols() for an explanation
+> > > > +              * of the selected field width value.
+> > > > +              */
+> > > > +             secname = pmod->klp_info->secstrings + sec->sh_name;
+>
+> secname = ...    same a above.
+>
+> > > > +             cnt = sscanf(secname, ".klp.rela.%55[^.]", sec_objname);
+> > > > +             if (cnt != 1) {
+> > > > +                     pr_err("section %s has an incorrectly formatted name\n",
+> > > > +                            secname);
+> > > > +                     continue;
+> > > > +             }
+> >
+> > Actually, I think we don't need the cnt check here. Once it is removed,
+> > there isn't much duplicated logic.
+>
+> Seriously?
+>
+> A section with this error was skipped in klp_apply_section_relocs().
+> I did not cause rejecting the module! Why is it suddenly safe to
+> process it, please?
+
+Hmm.. I think you are right, we still need the check.
+
+>
+>
 > I see that you removed also:
-> 
-> 	if (strcmp(objname ? objname : "vmlinux", sec_objname))
-> 		return 0;
-> 
+>
+>         if (strcmp(objname ? objname : "vmlinux", sec_objname))
+>                 return 0;
+>
 > This is another bug in your "simplification".
-
-This actually is not a bug. It was replaced by the strcmp() check below.
-
+>
+>
 > > > > +
 > > > > +             if (strcmp(objname, sec_objname))
 > > > > +                     continue;
+> > > > +
+> > > > +             clear_relocate_add(pmod->klp_info->sechdrs,
+> > > > +                                pmod->core_kallsyms.strtab,
+> > > > +                                pmod->klp_info->symndx, i, pmod);
+> > > > +     }
+> > > > +}
+> > >
+> > > Huh, this duplicates a lot of tricky code.
+> > >
+> > > It is even worse because this squashed code from two functions
+> > > klp_apply_section_relocs() and klp_apply_object_relocs()
+> > > into a single function. As a result, the code duplication is not
+> > > even obvious.
+> > >
+> > > Also the suffix "_reloacations() does not match the suffix of
+> > > the related funciton:
+> > >
+> > >         + klp_apply_object_relocs()             (existing)
+> > >         + klp_clear_object_relocations()        (new)
+> > >
+> > > This all would complicate maintenance of the code.
+> > >
+> > > Please, implement a common:
+> > >
+> > > int klp_write_section_relocs(struct module *pmod, Elf_Shdr *sechdrs,
+> > >                              const char *shstrtab, const char *strtab,
+> > >                              unsigned int symndx, unsigned int secndx,
+> > >                              const char *objname, bool apply);
+> > >
+> > > and
+> > >
+> > > int klp_write_object_relocs(struct klp_patch *patch,
+> > >                             struct klp_object *obj,
+> > >                             bool apply);
+> > >
+> > > and add the respective wrappers:
+> > >
+> > > int klp_apply_section_relocs();   /* also needed in module/main.c */
+> > > int klp_apply_object_relocs();
+> > > void klp_clear_object_relocs();
+> >
+> > With the above simplification (removing cnt check), do we still need
+> > all these wrappers? Personally, I think they will make the code more
+> > difficult to follow..
+>
+> Sigh.
+>
+> klp_apply_section_relocs() has 25 lines of code.
+> klp_apply_object_relocs() has 18 lines of code.
+>
+> The only difference should be that klp_clear_object_relocs():
+>
+>    + does not need to call klp_resolve_symbols()
+>    + need to call clear_relocate_add() instead of apply_relocate_add()
+>
+> It is 7 different lines from in the existing 25 + 18 = 43 lines.
+> The duplication does not look like a good deal even from this POV.
+>
+> If we introduce update_relocate_add(..., bool apply) parameter
+> then we could call update_relocate_add() in both situations.
+>
+> Let me repeat from the last mail. klp_clear_object_relocs() even
+> reshuffled the duplicated code. It was even harder to find differences.
+>
+> Do I still need to explain how bad idea was the code duplication,
+> please?
 
-But this works only because the function is not called for "vmlinux".
-It can't be unloaded.
+No objections that code duplication is not ideal. It is just that sometimes
+it is hard to follow the difference between functions with similar names.
+Well, it is probably my own problem.
 
-Well, this optimization is not worth it. IMHO, it is better when
-the API is able to handle "vmlinux" object a safe way.
-
-We always try to make the livepatch API as error-proof as possible.
-It is the main idea of livepatching. It should fix bugs without
-breaking the running system.
-
-Best Regards,
-Petr
+Thanks,
+Song
