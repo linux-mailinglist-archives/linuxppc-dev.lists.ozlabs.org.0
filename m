@@ -1,64 +1,94 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15E3E647D0D
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Dec 2022 05:49:59 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72F96647E8E
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Dec 2022 08:28:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NSz8h6yRtz3cGT
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Dec 2022 15:49:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NT2h44K7Qz3bbb
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Dec 2022 18:28:52 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=CXCQ6g3r;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KKYi4Clp;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.65; helo=mga03.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=CXCQ6g3r;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KKYi4Clp;
 	dkim-atps=neutral
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NSz6h3HwTz3bP6
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Dec 2022 15:48:08 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1670561292; x=1702097292;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=qxZ72E001tHTwWgb4jQGIxxiSxVEpc5K5bzOf7nSv8Y=;
-  b=CXCQ6g3rUfL3JoubMK9wbRQeiMoC4TTNQYE+EpB6K/LedpP1bikMvd+0
-   gdBHgG6DTUQDYrNUMG4Cenx9OxW2qGERPSa/JOlVLANZeixVAfcl0BX2K
-   KdjSejzKyS0881AeUhKAUbY91M2IB3ow6ZHAY5bFvt/KgCNC02zUEHn4J
-   WP+7seFJD79mbQhGlgZTJpzaCMvz7vSBejjCrESo71ZBqWHSGISRj8ypu
-   l5efoBT1Pioxk0CVNO9sOOs3xksMEpuFj2HfCZg1XWQLOkRbJoBmCyoDz
-   oX1WMLArjW847npXCQJJcMkvBD55m+3AaMsgJ4xTXDz6N7YFuS0QUODMe
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10555"; a="319240503"
-X-IronPort-AV: E=Sophos;i="5.96,230,1665471600"; 
-   d="scan'208";a="319240503"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Dec 2022 20:48:05 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10555"; a="640901295"
-X-IronPort-AV: E=Sophos;i="5.96,230,1665471600"; 
-   d="scan'208";a="640901295"
-Received: from lkp-server01.sh.intel.com (HELO b5d47979f3ad) ([10.239.97.150])
-  by orsmga007.jf.intel.com with ESMTP; 08 Dec 2022 20:48:04 -0800
-Received: from kbuild by b5d47979f3ad with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1p3VIp-0001d2-0I;
-	Fri, 09 Dec 2022 04:48:03 +0000
-Date: Fri, 09 Dec 2022 12:47:13 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next-test] BUILD SUCCESS
- f2636eaac7dee1d7d096cc115ff4f5111b0c508c
-Message-ID: <6392bdd1.3myMWvGKxfs3Y5tG%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NT2g325QYz3bSk
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Dec 2022 18:27:58 +1100 (AEDT)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2B972YbX033145;
+	Fri, 9 Dec 2022 07:27:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
+ mime-version : subject : from : in-reply-to : date : cc :
+ content-transfer-encoding : message-id : references : to; s=pp1;
+ bh=ZovSt246CY/w7iCDgoDCzU29PGkYU975CgLk0RZzccU=;
+ b=KKYi4ClpHLTcsT+NwPPvDsmY1kKC/ISerQXYRwJLvQUahaN15PoWOsgCKDmq1fyMxTiV
+ sj8TeXWdTqQAcQNkncTZZlRLvvh9w06VKWxvpl4vDdnZ7di3/l6nq7gEYvlBcK6hqPHK
+ SwJ90WwO6En8dNHyKPMjUaINjozBcxSxKoFyX0bKOrlI4ShzkI2qp/plJDVSGPq0fSsM
+ 01XDa0xZHKNqvZgYjRdTXqWx9b3O/zUbyY2iWQ2GNeou/zDBUhH/AO4RmAFaV+jGHPRc
+ bf/itrAQJQWcoWpbWotrZgAMUaXCboDvtbLTNhRsX5ybPA+FTLXTtYi4e6NvAOLdIckE TA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3mbk0gadce-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 09 Dec 2022 07:27:46 +0000
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2B97H8XT021749;
+	Fri, 9 Dec 2022 07:27:45 GMT
+Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com [149.81.74.108])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3mbk0gadbu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 09 Dec 2022 07:27:45 +0000
+Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
+	by ppma05fra.de.ibm.com (8.17.1.19/8.16.1.2) with ESMTP id 2B8DnU8d018459;
+	Fri, 9 Dec 2022 07:27:42 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma05fra.de.ibm.com (PPS) with ESMTPS id 3m9m7rc32k-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 09 Dec 2022 07:27:42 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2B97RcrE22217354
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 9 Dec 2022 07:27:38 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C36C520049;
+	Fri,  9 Dec 2022 07:27:38 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4370D20043;
+	Fri,  9 Dec 2022 07:27:36 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.43.0.55])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Fri,  9 Dec 2022 07:27:36 +0000 (GMT)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.1\))
+Subject: Re: [PATCH] perf test: Update event group check for support of uncore
+ event
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <9c0ade1e-1c7b-90f5-0385-a568545567db@amd.com>
+Date: Fri, 9 Dec 2022 12:57:34 +0530
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <3C59F3E6-B7DE-485B-9483-703EBDE9AC41@linux.vnet.ibm.com>
+References: <20221207165815.774-1-atrajeev@linux.vnet.ibm.com>
+ <9c0ade1e-1c7b-90f5-0385-a568545567db@amd.com>
+To: Ravi Bangoria <ravi.bangoria@amd.com>
+X-Mailer: Apple Mail (2.3696.120.41.1.1)
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: oKrKF23C0F-EY_51NuFo0xQGfcp1tVoL
+X-Proofpoint-ORIG-GUID: fe_Auwwm9Tj4313KUasvE77sgeijWQ0B
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-12-09_02,2022-12-08_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 impostorscore=0
+ phishscore=0 mlxlogscore=999 malwarescore=0 suspectscore=0 mlxscore=0
+ clxscore=1015 adultscore=0 lowpriorityscore=0 bulkscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2210170000 definitions=main-2212090060
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,85 +100,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Ian Rogers <irogers@google.com>, maddy@linux.vnet.ibm.com, Nageswara Sastry <rnsastry@linux.ibm.com>, Kajol Jain <kjain@linux.ibm.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, linux-perf-users@vger.kernel.org, James Clark <james.clark@arm.com>, Jiri Olsa <jolsa@kernel.org>, Namhyung Kim <namhyung@kernel.org>, disgoel@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
-branch HEAD: f2636eaac7dee1d7d096cc115ff4f5111b0c508c  powerpc/64: Set default CPU in Kconfig
 
-elapsed time: 728m
 
-configs tested: 60
-configs skipped: 2
+> On 08-Dec-2022, at 9:48 AM, Ravi Bangoria <ravi.bangoria@amd.com> =
+wrote:
+>=20
+> On 07-Dec-22 10:28 PM, Athira Rajeev wrote:
+>> Event group test checks group creation for combinations of
+>> hw, sw and uncore PMU events. Some of the uncore pmus may
+>> require additional permission to access the counters.
+>> For example, in case of hv_24x7, partition need to have
+>> permissions to access hv_24x7 pmu counters. If not, event_open
+>> will fail. Hence add a sanity check to see if event_open
+>> succeeds before proceeding with the test.
+>>=20
+>> Fixes: b20d9215a35f ("perf test: Add event group test for events in =
+multiple PMUs")
+>> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+>=20
+> Acked-by: Ravi Bangoria <ravi.bangoria@amd.com>
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Thanks Ravi for checking the patch
 
-gcc tested configs:
-powerpc                           allnoconfig
-arc                                 defconfig
-s390                             allmodconfig
-alpha                               defconfig
-um                             i386_defconfig
-um                           x86_64_defconfig
-s390                                defconfig
-arc                  randconfig-r043-20221207
-m68k                             allyesconfig
-m68k                             allmodconfig
-sh                               allmodconfig
-s390                             allyesconfig
-mips                             allyesconfig
-arc                              allyesconfig
-x86_64                           rhel-8.3-syz
-powerpc                          allmodconfig
-x86_64                         rhel-8.3-kunit
-alpha                            allyesconfig
-riscv                randconfig-r042-20221207
-x86_64                               rhel-8.3
-x86_64                           rhel-8.3-kvm
-i386                                defconfig
-s390                 randconfig-r044-20221207
-x86_64                              defconfig
-x86_64                    rhel-8.3-kselftests
-x86_64                          rhel-8.3-func
-x86_64                          rhel-8.3-rust
-x86_64                        randconfig-a004
-x86_64                        randconfig-a002
-i386                          randconfig-a001
-i386                          randconfig-a003
-x86_64                        randconfig-a006
-ia64                             allmodconfig
-i386                          randconfig-a005
-x86_64                        randconfig-a015
-x86_64                        randconfig-a013
-i386                          randconfig-a014
-x86_64                        randconfig-a011
-i386                          randconfig-a012
-i386                          randconfig-a016
-arm                                 defconfig
-x86_64                           allyesconfig
-i386                             allyesconfig
-arm64                            allyesconfig
-arm                              allyesconfig
+Athira
+>=20
+> Thanks,
+> Ravi
 
-clang tested configs:
-arm                  randconfig-r046-20221207
-hexagon              randconfig-r041-20221207
-hexagon              randconfig-r045-20221207
-x86_64                        randconfig-a001
-x86_64                        randconfig-a003
-i386                          randconfig-a013
-i386                          randconfig-a002
-x86_64                        randconfig-a005
-i386                          randconfig-a004
-i386                          randconfig-a015
-x86_64                        randconfig-a014
-x86_64                        randconfig-a016
-i386                          randconfig-a011
-x86_64                        randconfig-a012
-i386                          randconfig-a006
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
