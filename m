@@ -1,78 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 027DA648969
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Dec 2022 21:14:17 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1C716488F3
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Dec 2022 20:25:37 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NTMgB5jJ6z3bgj
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Dec 2022 07:14:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NTLb34N7vz3bfY
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Dec 2022 06:25:35 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=blV6eki9;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=o+uByTIM;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::62f; helo=mail-ej1-x62f.google.com; envelope-from=robert.foss@linaro.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=song@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=blV6eki9;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=o+uByTIM;
 	dkim-atps=neutral
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NT8jn5r61z3bXL
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Dec 2022 23:00:43 +1100 (AEDT)
-Received: by mail-ej1-x62f.google.com with SMTP id gh17so10977415ejb.6
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 09 Dec 2022 04:00:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CCwzWMPdgO9Dcc0FuYTNg8nT6gaYsC62geOPdirkTlQ=;
-        b=blV6eki9f/dE3yt8k9vQjmYbdmKqtjXhWL8aRDi0+PTy9DZ7PoASn6Hb4YDawt6/Pq
-         TOTWkNyJ1bQ0LXeAOKmZsgrohPEAxg4I9Vxq8Iql4MCfOpzd9bk59Kg8A1l2aCabzc1i
-         Pwb8zUD5pTagBDWz9wlqw8be8RXHOe4ntLhBEh7HXgPppKgizTPX68btz3fJ69iSfJef
-         zAFAyKFjvCY4s0mBfuw+77i/sj6ivMcyXsKkk5Q+7miuQY1uqqYMcxvazgbad3gQhSeN
-         osKwSC1CYREx2mikz7Rsbjiro/V/gVq1uBZVJYbtUMGcexuFEHFb/xJK0jJPCO1YVyoF
-         GpZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CCwzWMPdgO9Dcc0FuYTNg8nT6gaYsC62geOPdirkTlQ=;
-        b=VP43sSDw3XChe+DWXa7N5crhJoUIj3CZItO6J8/ddX3JorGat9wtbJIA2M0DDMR+aA
-         ns3elv/9E104zLvpdH34IpvpdQT3n9n/hp5gKaaijAueInQeIz7RosmYHenSZhK9a22T
-         2hvOT/7BRt7Wqvujahy/enyEhrSHL9E5waJQokWkECsTbZBfsm8SQGFFt/AJb3jVuaHO
-         Fdm0zHi2mz9bVxSGzEo63ch56tP0RijDBILpXrZuDWRFBJtZKsuhJ3csoJ3faHIAXq4r
-         j1yTBfceVUwN+ZqKFIjz4BRTo0etAVQIjaWA0jGWBAWL1nXSjgAM0kGpTTii0oeV1X7K
-         /kPg==
-X-Gm-Message-State: ANoB5pn5rhk0BGIudXh/TmT16w9j9oH0yPSCNm+iUjtRgzxl7FOOm6jF
-	E6JjXU+na2ORH+idBHmhXAEsWw==
-X-Google-Smtp-Source: AA0mqf7P1uuFrcKToZQL1Qs7OSMRUELHntqUphTx86r+y9eGx8OMntNtg5Twtz4wxSVo6DNFFYUZgg==
-X-Received: by 2002:a17:906:4907:b0:7c0:d4fa:3151 with SMTP id b7-20020a170906490700b007c0d4fa3151mr4765674ejq.17.1670587236522;
-        Fri, 09 Dec 2022 04:00:36 -0800 (PST)
-Received: from prec5560.. (freifunk-gw.bsa1-cpe1.syseleven.net. [176.74.57.43])
-        by smtp.gmail.com with ESMTPSA id o23-20020a170906861700b007c0a7286c0asm489597ejx.58.2022.12.09.04.00.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Dec 2022 04:00:35 -0800 (PST)
-From: Robert Foss <robert.foss@linaro.org>
-To: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>,
-	Wolfram Sang <wsa@kernel.org>,
-	Angel Iglesias <ang.iglesiasg@gmail.com>,
-	Grant Likely <grant.likely@linaro.org>,
-	Lee Jones <lee.jones@linaro.org>
-Subject: Re: (subset) [PATCH 000/606] i2c: Complete conversion to i2c_probe_new
-Date: Fri,  9 Dec 2022 13:00:14 +0100
-Message-Id: <167058708567.1651663.18170722235132459286.b4-ty@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20221118224540.619276-1-uwe@kleine-koenig.org>
-References: <20221118224540.619276-1-uwe@kleine-koenig.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NTLZ6053Mz30Qy
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Dec 2022 06:24:45 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id AC094622FA
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Dec 2022 19:24:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09D93C433F1
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Dec 2022 19:24:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1670613883;
+	bh=tOYtwqHozmknhMUKtwgTT6asrmy6Qi5D4CXEZwEJFvA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=o+uByTIMqF7RUXv3I6g1DZkmGKf30295zJ5Yy+usR/Yre92mgZ9FLZTDV0fUhIKRw
+	 eZOEwGalOjtsJ8vriXEbEhULwugKKKTADBg5k2x6qjBaXyFQwZN60klJR+0Codn8x8
+	 VrGp/+MG9rFXv2O2FpFty7lTeENJPwPN3cqCmPe5uc815/F60KYufIR03ol5ug1M17
+	 R6hLK2rR4J7hsdGPmEr5p58Oip8nGVrZS2L7MCdAA7i9atz1+TwKgutTr+6p/EM2nO
+	 22ps+mD4Gl5n5uB6TjmH4rH/wf6okQF14H0WBnaHvLSLbRR7ZFdc9VfbuCgpktcK8C
+	 1/+8WgligIhiA==
+Received: by mail-ej1-f46.google.com with SMTP id m18so13736620eji.5
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 09 Dec 2022 11:24:42 -0800 (PST)
+X-Gm-Message-State: ANoB5pkYgN1qkmdMx7mVIc4NAWx2kuOtixVnR10R27DahgMp/0szZpDz
+	huZ72W2RWXLICAMgbg0OzNhDdSVseKMoR7mBvpI=
+X-Google-Smtp-Source: AA0mqf7aAgHrQfEzZdzeILDHgJ9onlTpQ2Xs+zasDCpKDyDGwI5bKDRQye5Tl8FgSfid1YFAkOyyngd4VTMK1bAq2Fg=
+X-Received: by 2002:a17:907:2c68:b0:7c0:999d:1767 with SMTP id
+ ib8-20020a1709072c6800b007c0999d1767mr30991365ejc.301.1670613881161; Fri, 09
+ Dec 2022 11:24:41 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Sat, 10 Dec 2022 07:12:35 +1100
+References: <20220901171252.2148348-1-song@kernel.org> <alpine.LSU.2.21.2212091352370.18933@pobox.suse.cz>
+ <CAPhsuW53njtTrL=w33QBY5AiSftNxZ=UOQ1_qZ+qsp5VL1vU0g@mail.gmail.com> <7ddc326c-0c55-4901-16df-3e4e376e2570@csgroup.eu>
+In-Reply-To: <7ddc326c-0c55-4901-16df-3e4e376e2570@csgroup.eu>
+From: Song Liu <song@kernel.org>
+Date: Fri, 9 Dec 2022 11:24:29 -0800
+X-Gmail-Original-Message-ID: <CAPhsuW5YXqYcerxeR+nkZ5DpgvDe8fQ1iZXFeq4DcfY1a4VmwQ@mail.gmail.com>
+Message-ID: <CAPhsuW5YXqYcerxeR+nkZ5DpgvDe8fQ1iZXFeq4DcfY1a4VmwQ@mail.gmail.com>
+Subject: Re: [PATCH v6] livepatch: Clear relocation targets on a module removal
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,82 +69,99 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-fbdev@vger.kernel.org, devicetree@vger.kernel.org, linux-iio@vger.kernel.org, alsa-devel@alsa-project.org, platform-driver-x86@vger.kernel.org, linux-mtd@lists.infradead.org, linux-i2c@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, linux-leds@vger.kernel.org, linux-rtc@vger.kernel.org, chrome-platform@lists.linux.dev, linux-samsung-soc@vger.kernel.org, linux-staging@lists.linux.dev, Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, linux-serial@vger.kernel.org, linux-input@vger.kernel.org, linux-media@vger.kernel.org, linux-pwm@vger.kernel.org, linux-watchdog@vger.kernel.org, linux-pm@vger.kernel.org, linux-actions@lists.infradead.org, linux-gpio@vger.kernel.org, linux-rpi-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org, openipmi-developer@lists.sourceforge.net, linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Purism Kernel Team <kernel@puri.sm>, netdev@vger.kernel.org, linux-usb@vger.kernel.org, linux-k
- ernel@vger.kernel.org, Robert Foss <robert.foss@linaro.org>, linux-spi@vger.kernel.org, linux-renesas-soc@vger.kernel.org, linux-crypto@vger.kernel.org, kernel@pengutronix.de, patches@opensource.cirrus.com, linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: "pmladek@suse.com" <pmladek@suse.com>, "x86@kernel.org" <x86@kernel.org>, "jikos@kernel.org" <jikos@kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "joe.lawrence@redhat.com" <joe.lawrence@redhat.com>, Josh Poimboeuf <jpoimboe@redhat.com>, "live-patching@vger.kernel.org" <live-patching@vger.kernel.org>, Miroslav Benes <mbenes@suse.cz>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "jpoimboe@kernel.org" <jpoimboe@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 18 Nov 2022 23:35:34 +0100, Uwe Kleine-König wrote:
-> since commit b8a1a4cd5a98 ("i2c: Provide a temporary .probe_new()
-> call-back type") from 2016 there is a "temporary" alternative probe
-> callback for i2c drivers.
-> 
-> This series completes all drivers to this new callback (unless I missed
-> something). It's based on current next/master.
-> A part of the patches depend on commit 662233731d66 ("i2c: core:
-> Introduce i2c_client_get_device_id helper function"), there is a branch that
-> you can pull into your tree to get it:
-> 
-> [...]
+On Fri, Dec 9, 2022 at 10:52 AM Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
+>
+>
+>
+> Le 09/12/2022 =C3=A0 19:30, Song Liu a =C3=A9crit :
+> > On Fri, Dec 9, 2022 at 4:55 AM Miroslav Benes <mbenes@suse.cz> wrote:
+> >>
+> >> Hi,
+> >>
+> >> first thank you for taking over and I also appologize for not replying
+> >> much sooner.
+> >>
+> >> On Thu, 1 Sep 2022, Song Liu wrote:
+> >>
+> >>> From: Miroslav Benes <mbenes@suse.cz>
+> >>>
+> >>> Josh reported a bug:
+> >>>
+> >>>    When the object to be patched is a module, and that module is
+> >>>    rmmod'ed and reloaded, it fails to load with:
+> >>>
+> >>>    module: x86/modules: Skipping invalid relocation target, existing =
+value is nonzero for type 2, loc 00000000ba0302e9, val ffffffffa03e293c
+> >>>    livepatch: failed to initialize patch 'livepatch_nfsd' for module =
+'nfsd' (-8)
+> >>>    livepatch: patch 'livepatch_nfsd' failed for module 'nfsd', refusi=
+ng to load module 'nfsd'
+> >>>
+> >>>    The livepatch module has a relocation which references a symbol
+> >>>    in the _previous_ loading of nfsd. When apply_relocate_add()
+> >>>    tries to replace the old relocation with a new one, it sees that
+> >>>    the previous one is nonzero and it errors out.
+> >>>
+> >>>    On ppc64le, we have a similar issue:
+> >>>
+> >>>    module_64: livepatch_nfsd: Expected nop after call, got e8410018 a=
+t e_show+0x60/0x548 [livepatch_nfsd]
+> >>>    livepatch: failed to initialize patch 'livepatch_nfsd' for module =
+'nfsd' (-8)
+> >>>    livepatch: patch 'livepatch_nfsd' failed for module 'nfsd', refusi=
+ng to load module 'nfsd'
+> >>>
+> >>> He also proposed three different solutions. We could remove the error
+> >>> check in apply_relocate_add() introduced by commit eda9cec4c9a1
+> >>> ("x86/module: Detect and skip invalid relocations"). However the chec=
+k
+> >>> is useful for detecting corrupted modules.
+> >>>
+> >>> We could also deny the patched modules to be removed. If it proved to=
+ be
+> >>> a major drawback for users, we could still implement a different
+> >>> approach. The solution would also complicate the existing code a lot.
+> >>>
+> >>> We thus decided to reverse the relocation patching (clear all relocat=
+ion
+> >>> targets on x86_64). The solution is not
+> >>> universal and is too much arch-specific, but it may prove to be simpl=
+er
+> >>> in the end.
+> >>>
+> >>> Reported-by: Josh Poimboeuf <jpoimboe@redhat.com>
+> >>> Signed-off-by: Miroslav Benes <mbenes@suse.cz>
+> >>> Signed-off-by: Song Liu <song@kernel.org>
+> >>
+> >> Petr has commented on the code aspects. I will just add that s390x was=
+ not
+> >> dealt with at the time because there was no live patching support for
+> >> s390x back then if I remember correctly and my notes do not lie. The s=
+ame
+> >> applies to powerpc32. I think that both should be fixed as well with t=
+his
+> >> patch. It might also help to clean up the ifdeffery in the patch a bit=
+.
+> >
+> > I don't have test environments for s390 and powerpc, so I really don't =
+know
+> > whether I am doing something sane for them.
+> >
+> > Would you have time to finish these parts? (Or maybe the whole patch..)
+>
+> Setting up a powerpc test environment is fairly easy with QEMU.
+>
+> Some information below:
+> - https://github.com/linuxppc/wiki/wiki
+> - https://wiki.qemu.org/Documentation/Platforms/PowerPC
 
-Applied all patches that build.
+Thanks for these pointers! I will give it a try.
 
-Patches excluded:
- - ps8622
- - ti-sn65dsi83
- - adv7511
+Song
 
-Repo: https://cgit.freedesktop.org/drm/drm-misc/
-
-
-[014/606] drm/bridge: adv7511: Convert to i2c's .probe_new()
-          (no commit info)
-[015/606] drm/bridge/analogix/anx6345: Convert to i2c's .probe_new()
-          (no commit info)
-[016/606] drm/bridge/analogix/anx78xx: Convert to i2c's .probe_new()
-          (no commit info)
-[017/606] drm/bridge: anx7625: Convert to i2c's .probe_new()
-          (no commit info)
-[018/606] drm/bridge: icn6211: Convert to i2c's .probe_new()
-          (no commit info)
-[019/606] drm/bridge: chrontel-ch7033: Convert to i2c's .probe_new()
-          commit: 8dc6de280f01c0f7b8d40435736f3c975368ad70
-[020/606] drm/bridge: it6505: Convert to i2c's .probe_new()
-          (no commit info)
-[021/606] drm/bridge: it66121: Convert to i2c's .probe_new()
-          (no commit info)
-[022/606] drm/bridge: lt8912b: Convert to i2c's .probe_new()
-          (no commit info)
-[023/606] drm/bridge: lt9211: Convert to i2c's .probe_new()
-          (no commit info)
-[024/606] drm/bridge: lt9611: Convert to i2c's .probe_new()
-          (no commit info)
-[025/606] drm/bridge: lt9611uxc: Convert to i2c's .probe_new()
-          (no commit info)
-[026/606] drm/bridge: megachips: Convert to i2c's .probe_new()
-          (no commit info)
-[027/606] drm/bridge: nxp-ptn3460: Convert to i2c's .probe_new()
-          (no commit info)
-[028/606] drm/bridge: parade-ps8622: Convert to i2c's .probe_new()
-          (no commit info)
-[029/606] drm/bridge: sii902x: Convert to i2c's .probe_new()
-          (no commit info)
-[030/606] drm/bridge: sii9234: Convert to i2c's .probe_new()
-          (no commit info)
-[031/606] drm/bridge: sii8620: Convert to i2c's .probe_new()
-          (no commit info)
-[032/606] drm/bridge: tc358767: Convert to i2c's .probe_new()
-          (no commit info)
-[033/606] drm/bridge: tc358768: Convert to i2c's .probe_new()
-          (no commit info)
-[034/606] drm/bridge/tc358775: Convert to i2c's .probe_new()
-          (no commit info)
-[035/606] drm/bridge: ti-sn65dsi83: Convert to i2c's .probe_new()
-          (no commit info)
-[037/606] drm/bridge: tfp410: Convert to i2c's .probe_new()
-          (no commit info)
-
-
-
-rob
-
+PS: Sometimes I am just lazy, you know..
