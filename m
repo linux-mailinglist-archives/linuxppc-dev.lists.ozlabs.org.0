@@ -2,62 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ED3D648966
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Dec 2022 21:13:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 027DA648969
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Dec 2022 21:14:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NTMfB1t2Xz3bgH
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Dec 2022 07:13:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NTMgB5jJ6z3bgj
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Dec 2022 07:14:14 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=RqtUEPxN;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=blV6eki9;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=134.134.136.20; helo=mga02.intel.com; envelope-from=kai.vehmanen@linux.intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::62f; helo=mail-ej1-x62f.google.com; envelope-from=robert.foss@linaro.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=RqtUEPxN;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=blV6eki9;
 	dkim-atps=neutral
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NT8Z36qsXz3bZh
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Dec 2022 22:54:02 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1670586844; x=1702122844;
-  h=date:from:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=i6l99AsOk7Ek/fC/JJlzKRTZl8kQmivMJCaJu9pD6WY=;
-  b=RqtUEPxNPW0mUUEpWWcgAOnRpzup4gXAobGCZpjDqJPU+IPtOnZfBl9G
-   Dre+nHifFPCjNcFC5zvmKiOFxLPCT2HC+HZ3jO1x7QQOW7Z0W7NfvKtDD
-   a/JN+hVt00FevEw+k2kY1015GBBsZ3uieIApa4RxeUDK2rVBrCvdX7y7/
-   4Lj/L9PDr1VO1eSJTvxeMLZUnSyLMXHox3EtKmGJBzM42ZzIkbidW781F
-   PXUmPeMlQPNOcPcBuyhFvkHaswEsj3I5ZQYi3UgnIZhyhfwB0SlV+x80u
-   Cp/0cwpb1p/k1LFHmTbVTETE3T86Km0PrjUWyriF7VplQEXOs8QngFLlw
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10555"; a="305085948"
-X-IronPort-AV: E=Sophos;i="5.96,230,1665471600"; 
-   d="scan'208";a="305085948"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2022 03:53:59 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10555"; a="736191278"
-X-IronPort-AV: E=Sophos;i="5.96,230,1665471600"; 
-   d="scan'208";a="736191278"
-Received: from eliteleevi.tm.intel.com ([10.237.54.20])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2022 03:53:50 -0800
-Date: Fri, 9 Dec 2022 13:53:31 +0200 (EET)
-From: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-X-X-Sender: kvehmane@eliteleevi.tm.intel.com
-To: Ricardo Ribalda <ribalda@chromium.org>
-Subject: Re: [PATCH v8 3/3] ASoC: SOF: Fix deadlock when shutdown a frozen
- userspace
-In-Reply-To: <CANiDSCtm7dCst_atiWk=ZcK_D3=VzvD0+kWXVQr4gEn--JjGkw@mail.gmail.com>
-Message-ID: <alpine.DEB.2.22.394.2212091349310.3532114@eliteleevi.tm.intel.com>
-References: <20221127-snd-freeze-v8-0-3bc02d09f2ce@chromium.org> <20221127-snd-freeze-v8-3-3bc02d09f2ce@chromium.org> <716e5175-7a44-7ae8-b6bb-10d9807552e6@suse.com> <CANiDSCtwSb50sjn5tM7jJ6W2UpeKzpuzng+RdJuywiC3-j2zdg@mail.gmail.com>
- <d3730d1d-6f92-700a-06c4-0e0a35e270b0@suse.com> <CANiDSCtm7dCst_atiWk=ZcK_D3=VzvD0+kWXVQr4gEn--JjGkw@mail.gmail.com>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7 02160 Espoo
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NT8jn5r61z3bXL
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Dec 2022 23:00:43 +1100 (AEDT)
+Received: by mail-ej1-x62f.google.com with SMTP id gh17so10977415ejb.6
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 09 Dec 2022 04:00:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CCwzWMPdgO9Dcc0FuYTNg8nT6gaYsC62geOPdirkTlQ=;
+        b=blV6eki9f/dE3yt8k9vQjmYbdmKqtjXhWL8aRDi0+PTy9DZ7PoASn6Hb4YDawt6/Pq
+         TOTWkNyJ1bQ0LXeAOKmZsgrohPEAxg4I9Vxq8Iql4MCfOpzd9bk59Kg8A1l2aCabzc1i
+         Pwb8zUD5pTagBDWz9wlqw8be8RXHOe4ntLhBEh7HXgPppKgizTPX68btz3fJ69iSfJef
+         zAFAyKFjvCY4s0mBfuw+77i/sj6ivMcyXsKkk5Q+7miuQY1uqqYMcxvazgbad3gQhSeN
+         osKwSC1CYREx2mikz7Rsbjiro/V/gVq1uBZVJYbtUMGcexuFEHFb/xJK0jJPCO1YVyoF
+         GpZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=CCwzWMPdgO9Dcc0FuYTNg8nT6gaYsC62geOPdirkTlQ=;
+        b=VP43sSDw3XChe+DWXa7N5crhJoUIj3CZItO6J8/ddX3JorGat9wtbJIA2M0DDMR+aA
+         ns3elv/9E104zLvpdH34IpvpdQT3n9n/hp5gKaaijAueInQeIz7RosmYHenSZhK9a22T
+         2hvOT/7BRt7Wqvujahy/enyEhrSHL9E5waJQokWkECsTbZBfsm8SQGFFt/AJb3jVuaHO
+         Fdm0zHi2mz9bVxSGzEo63ch56tP0RijDBILpXrZuDWRFBJtZKsuhJ3csoJ3faHIAXq4r
+         j1yTBfceVUwN+ZqKFIjz4BRTo0etAVQIjaWA0jGWBAWL1nXSjgAM0kGpTTii0oeV1X7K
+         /kPg==
+X-Gm-Message-State: ANoB5pn5rhk0BGIudXh/TmT16w9j9oH0yPSCNm+iUjtRgzxl7FOOm6jF
+	E6JjXU+na2ORH+idBHmhXAEsWw==
+X-Google-Smtp-Source: AA0mqf7P1uuFrcKToZQL1Qs7OSMRUELHntqUphTx86r+y9eGx8OMntNtg5Twtz4wxSVo6DNFFYUZgg==
+X-Received: by 2002:a17:906:4907:b0:7c0:d4fa:3151 with SMTP id b7-20020a170906490700b007c0d4fa3151mr4765674ejq.17.1670587236522;
+        Fri, 09 Dec 2022 04:00:36 -0800 (PST)
+Received: from prec5560.. (freifunk-gw.bsa1-cpe1.syseleven.net. [176.74.57.43])
+        by smtp.gmail.com with ESMTPSA id o23-20020a170906861700b007c0a7286c0asm489597ejx.58.2022.12.09.04.00.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Dec 2022 04:00:35 -0800 (PST)
+From: Robert Foss <robert.foss@linaro.org>
+To: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>,
+	Wolfram Sang <wsa@kernel.org>,
+	Angel Iglesias <ang.iglesiasg@gmail.com>,
+	Grant Likely <grant.likely@linaro.org>,
+	Lee Jones <lee.jones@linaro.org>
+Subject: Re: (subset) [PATCH 000/606] i2c: Complete conversion to i2c_probe_new
+Date: Fri,  9 Dec 2022 13:00:14 +0100
+Message-Id: <167058708567.1651663.18170722235132459286.b4-ty@linaro.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20221118224540.619276-1-uwe@kleine-koenig.org>
+References: <20221118224540.619276-1-uwe@kleine-koenig.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailman-Approved-At: Sat, 10 Dec 2022 07:12:35 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -70,40 +84,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Daniel Baluta <daniel.baluta@nxp.com>, Alsa-devel <alsa-devel@alsa-project.org>, x86@kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>, linux-pci@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, linux-hyperv@vger.kernel.org, Jaroslav Kysela <perex@perex.cz>, linux-efi@vger.kernel.org, Pavel Machek <pavel@ucw.cz>, "H. Peter Anvin" <hpa@zytor.com>, Joel Fernandes <joel@joelfernandes.org>, "K. Y. Srinivasan" <kys@microsoft.com>, Bard Liao <yung-chuan.liao@linux.intel.com>, Ard Biesheuvel <ardb@kernel.org>, sound-open-firmware@alsa-project.org, Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>, Wei Liu <wei.liu@kernel.org>, Takashi Iwai <tiwai@suse.com>, Dexuan Cui <decui@microsoft.com>, Ranjani Sridharan <ranjani.sridharan@linux.intel.com>, Chromeos Kdump <chromeos-kdump@google.com>, xen-devel@lists.xenproject.org, Len Brown <len.brown@intel.com>, linux-pm@vger.kernel.org, Haiyang Zhang <haiyangz@microsoft.com>, Nicholas Piggin <npiggin@gmail.com>, Mark Brown 
- <broonie@kernel.org>, Borislav Petkov <bp@alien8.de>, Steven Rostedt <rostedt@goodmis.org>, Bjorn Helgaas <bhelgaas@google.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Peter Ujfalusi <peter.ujfalusi@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, Juergen Gross <jgross@suse.com>, Kai Vehmanen <kai.vehmanen@linux.intel.com>, Oliver Neukum <oneukum@suse.com>, kexec@lists.infradead.org, Liam Girdwood <lgirdwood@gmail.com>, stable@vger.kernel.org, linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, Eric Biederman <ebiederm@xmission.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-fbdev@vger.kernel.org, devicetree@vger.kernel.org, linux-iio@vger.kernel.org, alsa-devel@alsa-project.org, platform-driver-x86@vger.kernel.org, linux-mtd@lists.infradead.org, linux-i2c@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, linux-leds@vger.kernel.org, linux-rtc@vger.kernel.org, chrome-platform@lists.linux.dev, linux-samsung-soc@vger.kernel.org, linux-staging@lists.linux.dev, Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, linux-serial@vger.kernel.org, linux-input@vger.kernel.org, linux-media@vger.kernel.org, linux-pwm@vger.kernel.org, linux-watchdog@vger.kernel.org, linux-pm@vger.kernel.org, linux-actions@lists.infradead.org, linux-gpio@vger.kernel.org, linux-rpi-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org, openipmi-developer@lists.sourceforge.net, linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Purism Kernel Team <kernel@puri.sm>, netdev@vger.kernel.org, linux-usb@vger.kernel.org, linux-k
+ ernel@vger.kernel.org, Robert Foss <robert.foss@linaro.org>, linux-spi@vger.kernel.org, linux-renesas-soc@vger.kernel.org, linux-crypto@vger.kernel.org, kernel@pengutronix.de, patches@opensource.cirrus.com, linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
-
-On Thu, 1 Dec 2022, Ricardo Ribalda wrote:
-
-> On Thu, 1 Dec 2022 at 14:22, 'Oliver Neukum' via Chromeos Kdump <chromeos-kdump@google.com> wrote:
-> >
-> > On 01.12.22 14:03, Ricardo Ribalda wrote:
-> > > This patchset does not modify this behaviour. It simply fixes the
-> > > stall for kexec().
-> > >
-> > > The  patch that introduced the stall:
-> > > 83bfc7e793b5 ("ASoC: SOF: core: unregister clients and machine drivers
-> > > in .shutdown")
-> >
-> > That patch is problematic. I would go as far as saying that
-> > it needs to be reverted.
+On Fri, 18 Nov 2022 23:35:34 +0100, Uwe Kleine-König wrote:
+> since commit b8a1a4cd5a98 ("i2c: Provide a temporary .probe_new()
+> call-back type") from 2016 there is a "temporary" alternative probe
+> callback for i2c drivers.
 > 
-> It fixes a real issue. We have not had any complaints until we tried
-> to kexec in the platform.
-> I wont recommend reverting it until we have an alternative implementation.
+> This series completes all drivers to this new callback (unless I missed
+> something). It's based on current next/master.
+> A part of the patches depend on commit 662233731d66 ("i2c: core:
+> Introduce i2c_client_get_device_id helper function"), there is a branch that
+> you can pull into your tree to get it:
 > 
-> kexec is far less common than suspend/reboot.
+> [...]
 
-I've posted an alternative to ALSA list that reverts the problematic
-patch and fixes the problem (the patch was originally addressing)
-in a different way:
+Applied all patches that build.
 
-https://mailman.alsa-project.org/pipermail/alsa-devel/2022-December/209776.html
+Patches excluded:
+ - ps8622
+ - ti-sn65dsi83
+ - adv7511
 
-No changes outside sound/soc/ are needed with this approach.
+Repo: https://cgit.freedesktop.org/drm/drm-misc/
 
-Br, Kai
+
+[014/606] drm/bridge: adv7511: Convert to i2c's .probe_new()
+          (no commit info)
+[015/606] drm/bridge/analogix/anx6345: Convert to i2c's .probe_new()
+          (no commit info)
+[016/606] drm/bridge/analogix/anx78xx: Convert to i2c's .probe_new()
+          (no commit info)
+[017/606] drm/bridge: anx7625: Convert to i2c's .probe_new()
+          (no commit info)
+[018/606] drm/bridge: icn6211: Convert to i2c's .probe_new()
+          (no commit info)
+[019/606] drm/bridge: chrontel-ch7033: Convert to i2c's .probe_new()
+          commit: 8dc6de280f01c0f7b8d40435736f3c975368ad70
+[020/606] drm/bridge: it6505: Convert to i2c's .probe_new()
+          (no commit info)
+[021/606] drm/bridge: it66121: Convert to i2c's .probe_new()
+          (no commit info)
+[022/606] drm/bridge: lt8912b: Convert to i2c's .probe_new()
+          (no commit info)
+[023/606] drm/bridge: lt9211: Convert to i2c's .probe_new()
+          (no commit info)
+[024/606] drm/bridge: lt9611: Convert to i2c's .probe_new()
+          (no commit info)
+[025/606] drm/bridge: lt9611uxc: Convert to i2c's .probe_new()
+          (no commit info)
+[026/606] drm/bridge: megachips: Convert to i2c's .probe_new()
+          (no commit info)
+[027/606] drm/bridge: nxp-ptn3460: Convert to i2c's .probe_new()
+          (no commit info)
+[028/606] drm/bridge: parade-ps8622: Convert to i2c's .probe_new()
+          (no commit info)
+[029/606] drm/bridge: sii902x: Convert to i2c's .probe_new()
+          (no commit info)
+[030/606] drm/bridge: sii9234: Convert to i2c's .probe_new()
+          (no commit info)
+[031/606] drm/bridge: sii8620: Convert to i2c's .probe_new()
+          (no commit info)
+[032/606] drm/bridge: tc358767: Convert to i2c's .probe_new()
+          (no commit info)
+[033/606] drm/bridge: tc358768: Convert to i2c's .probe_new()
+          (no commit info)
+[034/606] drm/bridge/tc358775: Convert to i2c's .probe_new()
+          (no commit info)
+[035/606] drm/bridge: ti-sn65dsi83: Convert to i2c's .probe_new()
+          (no commit info)
+[037/606] drm/bridge: tfp410: Convert to i2c's .probe_new()
+          (no commit info)
+
+
+
+rob
+
