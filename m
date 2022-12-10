@@ -1,63 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8406464895B
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Dec 2022 21:00:49 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 694DE648FD4
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Dec 2022 17:41:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NTMMg3GZSz3bhY
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Dec 2022 07:00:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NTtvk0XbHz3c71
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Dec 2022 03:41:54 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ei1w6rkT;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=gmx.de header.i=@gmx.de header.a=rsa-sha256 header.s=s31663417 header.b=hAwEbCco;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=song@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmx.de (client-ip=212.227.17.21; helo=mout.gmx.net; envelope-from=deller@gmx.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ei1w6rkT;
+	dkim=pass (2048-bit key; secure) header.d=gmx.de header.i=@gmx.de header.a=rsa-sha256 header.s=s31663417 header.b=hAwEbCco;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+X-Greylist: delayed 321 seconds by postgrey-1.36 at boromir; Sun, 11 Dec 2022 03:41:01 AEDT
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NTMLh5pxGz3bcw
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Dec 2022 06:59:56 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 9CDFFB82907
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Dec 2022 19:59:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD8B4C433D2
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Dec 2022 19:59:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1670615989;
-	bh=2pRNCKcx+i/2M8U3jcMWgUdti6tr4GG5KNF2eAQP4h8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ei1w6rkTpoCOrZByMzmU6oIfniP14jEO8wLveqCL6uOOKGPG61lzBU5/Rg0SUqUgR
-	 u1qW21EICqdTdAPTK9WyXLAsiX2hTbL7mXnK1vzltmrh2DIqKqQ+xrf5wkkxY9G0KV
-	 6dLdpu8BxyYjNU3Ok1bQ9QJxpOr24FZVs8KaO7FLQnPqEHl81P+pSLv+WVmL80RUX5
-	 RpEdShAcfiIPdK2frOOnG6rAPXS7Y+Po2ApOgHNYw1wncxs1osFKAhimvD1kA02usj
-	 Af9R8zL32ZhOJiZXpZZ5Trk4o+KVFAQwEC6TvSnh8UflJc36F+kG9TArF5cw1yMiQP
-	 5yRRp9t+P0zcA==
-Received: by mail-ej1-f42.google.com with SMTP id vp12so13926313ejc.8
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 09 Dec 2022 11:59:49 -0800 (PST)
-X-Gm-Message-State: ANoB5pkmJHg7xrkMfBGqgGmndipUfgNl6Be/mCFV+VYDH0tOzz7IuM0E
-	fuyEiL9Mwzyg/KU/89wIkxceA47qylUB1+WxGpo=
-X-Google-Smtp-Source: AA0mqf5N+MHdzv0AWM6a+1eLCTIN06JvpjHTPV3WoGK/6sQfl/2nPDCMAb9CxcqMvxTa/B7fVazmmSShMdXYy+kJ+gk=
-X-Received: by 2002:a17:906:a198:b0:7b4:bc42:3b44 with SMTP id
- s24-20020a170906a19800b007b4bc423b44mr73801661ejy.101.1670615988052; Fri, 09
- Dec 2022 11:59:48 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NTttj47mQz3bNx
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Dec 2022 03:41:00 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+	t=1670690457; bh=hULunELhZdtE1GkCID2SUUW9EZF1DKJ0BvrmvOkyd/U=;
+	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=hAwEbCcoWJ/q0lH9bINboeiPxKxMCqPiGpc+WSHiJZjmwSitA2ueLTenJoW+rPeMs
+	 J8wNn1BwPjJT6sxJhBYavYBVbVZsbk5E1QoC1+IZ9lXRfb6mMl2wFNSyGvCzpZCkPx
+	 U8zkwD4E2u6fFyvnUp/qp6bU2rWqK88v03Dx7xhrbubhOhsjNo/4IGaqDvzrAo7hVe
+	 CRlT3O403uFg4l3RdSyh+bnAhqXYoYcLDujJaeSdDSQfvEVO2m/rDevQKsHWv/FtAM
+	 iYHvzchwenu4VBiC83heJC8TCDWdGY7VrEKLOZbsps4EIRLvpLMDcH+Hj3L+5mDtu1
+	 Gp0PTGll8EPaw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([92.116.157.120]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MBDj4-1pESvq0s9e-00CjAD; Sat, 10
+ Dec 2022 17:35:08 +0100
+Message-ID: <f8c6eb94-10ee-07a8-ea48-d4fae60fc9ae@gmx.de>
+Date: Sat, 10 Dec 2022 17:35:06 +0100
 MIME-Version: 1.0
-References: <20220901171252.2148348-1-song@kernel.org> <Y3expGRt4cPoZgHL@alley>
- <CAPhsuW4qYpX7wzHn5J5Hn9cnOFSZwwQPCjTM_HPTt_zbBS03ww@mail.gmail.com> <Y5Me5dTGv+GznvtO@alley>
-In-Reply-To: <Y5Me5dTGv+GznvtO@alley>
-From: Song Liu <song@kernel.org>
-Date: Fri, 9 Dec 2022 11:59:35 -0800
-X-Gmail-Original-Message-ID: <CAPhsuW4pt7vfHTj8KorTRCx5zJaoUiyYUOLy8uXZDbTbur4RRA@mail.gmail.com>
-Message-ID: <CAPhsuW4pt7vfHTj8KorTRCx5zJaoUiyYUOLy8uXZDbTbur4RRA@mail.gmail.com>
-Subject: Re: powerpc-part: was: Re: [PATCH v6] livepatch: Clear relocation
- targets on a module removal
-To: Petr Mladek <pmladek@suse.com>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.1
+Subject: Re: [PATCH] fbdev: make offb driver tristate
+Content-Language: en-US
+To: Thomas Zimmermann <tzimmermann@suse.de>,
+ Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org
+References: <20221126000401.25302-1-rdunlap@infradead.org>
+ <46e8cf0d-ab47-59b1-6c87-53d2d63a5bf6@suse.de>
+From: Helge Deller <deller@gmx.de>
+In-Reply-To: <46e8cf0d-ab47-59b1-6c87-53d2d63a5bf6@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:3Q0WJF64Q10zFZW6VO/GCqoYxns0l0hOMM9nr71J/mwrFHaUIW0
+ hHaa21eYA8KaBbR8FgN6lOCWFk6XJsBMqiz2o0hSJFz8baJzpzOmfJhel4aAbnw3E07zDZ4
+ g/3b042iW+L+MvTBCSUknRi3WUJRyWFHZzydh/p3Wg/R/adLxtJIIcWYI1tvdQinLd8MtjU
+ H+4y4GF/teZ1STuzK0M7A==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:liZ5UrO/QYg=;l2PnyWectd3j8pkgT5cBE6bb/C3
+ /jtPg5GsYUd6lZUOrs86xNQl29CnIMAyzYdqCUzbl2zcn2Fh9b8Vq/khwMyPDqj8VaZHaUrSg
+ F7i/dACeFahyqq557Qo9PScrnkORc5wNQm5kq0Tjz40C7zp6K/MPQ9rdBBsd6fDJ+sZ95JjdW
+ TEpODUgneTg2c2ck0AmP4jp4lLdCHowjCGMAHJM0lVWJaKYGiSSGtR4QKevdJDbYKobemGu/4
+ LSJffiGQP3lloEk1OEIjcKMkQR7oSvfbCRCJXYDVzod6KVhra6XlX3LHDqjt5cNA/9Tn4dEMQ
+ QFev19QJJ6ZDI4u2ei3p/Pv/B6Vl7U8ItoXoLQzbfm4Z1NYuP3AZo4cm+wIivMh/Vd7P8v/Z3
+ jMha3ikpEwi/YOlwrprEVSegI6jR81b/bwQGmGSFfFem7Tx8u3LUCLdRTpTkoH6/eDa6O2YGc
+ OVjHHNjQhvWa4/XxMqOssulJTzLMrNdfJjt6tMb+FgH0H5UnevMOy3fYPTvd9EQRvWidTvLEx
+ bU1PeILUtlma336mXB1ymRG4U9fgL4cQpiurrg5UaC/S2XhlOJSrPLg7FZb+cuNAdUUMdjAYv
+ RwPJRC3jFNP17k9GIhMoJIiDORlOyTe33B/3XKg5jfa6gFJvD+9Fh/2SDAu8Jo0ZOdONalUUE
+ lYKMfzHx7BwlumMfGfQtw4wHoC51GwgXOn7BTwoTCNm3yaegL72qimgdX+Q24YUjKA0tEd+g6
+ Xf6duosBfl7tnYGOjWFX4JdwwEEVV37g4rR/D69NJ+wiGgToFek9reAaz9iZ0yBFPIxDY2mt+
+ GMJ6lquXreCEXxOTeRUA9gshCFm2IxyMdnBIHpIIYvvHc0Rvllut0NqIkqlEBTqKHJ3XHpGQq
+ GMk9nwt5zCoSFSa3257rSr9GREgq2qPcrtNmuEKhEwswYPjw5TDf76xIlMYWh4Sq0HA0Ya69J
+ JqS10Q==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,193 +82,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: jikos@kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>, joe.lawrence@redhat.com, Josh Poimboeuf <jpoimboe@redhat.com>, live-patching@vger.kernel.org, mbenes@suse.cz, linuxppc-dev@lists.ozlabs.org, jpoimboe@kernel.org
+Cc: linux-fbdev@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, Masahiro Yamada <masahiroy@kernel.org>, dri-devel@lists.freedesktop.org, Daniel Vetter <daniel@ffwll.ch>, =?UTF-8?Q?Michal_Such=c3=a1nek?= <msuchanek@suse.de>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Dec 9, 2022 at 3:41 AM Petr Mladek <pmladek@suse.com> wrote:
+On 11/26/22 14:40, Thomas Zimmermann wrote:
+> Am 26.11.22 um 01:04 schrieb Randy Dunlap:
+>> Make the offb (Open Firmware frame buffer) driver tristate,
+>> i.e., so that it can be built as a loadable module.
+>>
+>> However, it still depends on the setting of DRM_OFDRM
+>> so that both of these drivers cannot be builtin at the same time
+>> nor can one be builtin and the other one a loadable module.
+>>
+>> Build-tested successfully with all combination of DRM_OFDRM and FB_OF.
+>>
+>> This fixes a build issue that Michal reported when FB_OF=3Dy and
+>> DRM_OFDRM=3Dm:
+>>
+>> powerpc64-linux-ld: drivers/video/fbdev/offb.o:(.data.rel.ro+0x58): und=
+efined reference to `cfb_fillrect'
+>> powerpc64-linux-ld: drivers/video/fbdev/offb.o:(.data.rel.ro+0x60): und=
+efined reference to `cfb_copyarea'
+>> powerpc64-linux-ld: drivers/video/fbdev/offb.o:(.data.rel.ro+0x68): und=
+efined reference to `cfb_imageblit'
+>>
+>> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+>> Suggested-by: Arnd Bergmann <arnd@arndb.de>
+>> Cc: Masahiro Yamada <masahiroy@kernel.org>
+>> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+>> Cc: Michal Such=C3=A1nek <msuchanek@suse.de>
+>> Cc: linuxppc-dev@lists.ozlabs.org
+>> Cc: Daniel Vetter <daniel@ffwll.ch>
+>> Cc: Helge Deller <deller@gmx.de>
+>> Cc: linux-fbdev@vger.kernel.org
+>> Cc: dri-devel@lists.freedesktop.org
 >
-> Hi,
->
-> this reply is only about the powerpc-specific part.
->
-> Also adding Kamalesh and Michael into Cc who worked on the related
-> commit a443bf6e8a7674b86221f49 ("powerpc/modules: Add REL24 relocation
-> support of livepatch symbols").
->
->
-> On Mon 2022-11-28 17:57:06, Song Liu wrote:
-> > On Fri, Nov 18, 2022 at 8:24 AM Petr Mladek <pmladek@suse.com> wrote:
-> > >
-> > > > --- a/arch/powerpc/kernel/module_64.c
-> > > > +++ b/arch/powerpc/kernel/module_64.c
->
-> I put back the name of the modified file so that it is easier
-> to know what changes we are talking about.
->
-> [...]
-> > > > +#ifdef CONFIG_LIVEPATCH
-> > > > +void clear_relocate_add(Elf64_Shdr *sechdrs,
-> > > > +                    const char *strtab,
-> > > > +                    unsigned int symindex,
-> > > > +                    unsigned int relsec,
-> > > > +                    struct module *me)
-> > > > +{
-> > > > +     unsigned int i;
-> > > > +     Elf64_Rela *rela = (void *)sechdrs[relsec].sh_addr;
-> > > > +     Elf64_Sym *sym;
-> > > > +     unsigned long *location;
-> > > > +     const char *symname;
-> > > > +     u32 *instruction;
-> > > > +
-> > > > +     pr_debug("Clearing ADD relocate section %u to %u\n", relsec,
-> > > > +              sechdrs[relsec].sh_info);
-> > > > +
-> > > > +     for (i = 0; i < sechdrs[relsec].sh_size / sizeof(*rela); i++) {
-> > > > +             location = (void *)sechdrs[sechdrs[relsec].sh_info].sh_addr
-> > > > +                     + rela[i].r_offset;
-> > > > +             sym = (Elf64_Sym *)sechdrs[symindex].sh_addr
-> > > > +                     + ELF64_R_SYM(rela[i].r_info);
-> > > > +             symname = me->core_kallsyms.strtab
-> > > > +                     + sym->st_name;
->
-> The above calculation is quite complex. It seems to be copied from
-> apply_relocate_add(). If I maintained this code I would want to avoid
-> the duplication. definitely.
->
->
-> > > > +
-> > > > +             if (ELF64_R_TYPE(rela[i].r_info) != R_PPC_REL24)
-> > > > +                     continue;
->
-> Why are we interested only into R_PPC_REL24 relocation types, please?
->
-> The code for generating the special SHN_LIVEPATCH section is not in
-> the mainline so it is not well defined.
->
-> I guess that R_PPC_REL24 relocation type is used by kPatch. Are we
-> sure that other relocation types wont be needed?
->
-> Anyway, we must warn when an unsupported type is used in SHN_LIVEPATCH
-> section here.
->
->
-> > > > +             /*
-> > > > +              * reverse the operations in apply_relocate_add() for case
-> > > > +              * R_PPC_REL24.
-> > > > +              */
-> > > > +             if (sym->st_shndx != SHN_UNDEF &&
->
-> Do we want to handle SHN_UNDEF symbols here?
->
-> The commit a443bf6e8a7674b86221f49 ("powerpc/modules: Add REL24
-> relocation support of livepatch symbols") explains that
-> R_PPC_REL24 relocations in SHN_LIVEPATCH section are handled
-> __like__ relocations in SHN_UNDEF sections.
->
-> My understanding is that R_PPC_REL24 reallocation type has
-> two variants. Where the variant used in SHN_UNDEF and
-> SHN_LIVEPATCH sections need some preprocessing.
->
-> Anyway, if this function is livepatch-specific that we should
-> clear only symbols from SHN_LIVEPATCH sections. I mean that
-> we should probably ignore SHN_UNDEF here.
->
-> > > > +                 sym->st_shndx != SHN_LIVEPATCH)
-> > > > +                     continue;
-> > > > +
-> > > > +
-> > > > +             instruction = (u32 *)location;
-> > > > +             if (is_mprofile_ftrace_call(symname))
-> > > > +                     continue;
->
-> Why do we ignore these symbols?
->
-> I can't find any counter-part in apply_relocate_add(). It looks super
-> tricky. It would deserve a comment.
->
-> And I have no idea how we could maintain these exceptions.
->
-> > > > +             if (!instr_is_relative_link_branch(ppc_inst(*instruction)))
-> > > > +                     continue;
->
-> Same here. It looks super tricky and there is no explanation.
+> Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
 
-The two checks are from restore_r2(). But I cannot really remember
-why we needed them. It is probably an updated version from an earlier
-version (3 year earlier..).
+applied.
 
->
-> > > > +             instruction += 1;
-> > > > +             patch_instruction(instruction, ppc_inst(PPC_RAW_NOP()));
-> > > > +     }
-> > > > +
-> > > > +}
-> > >
-> > > This looks like a lot of duplicated code. Isn't it?
-> >
-> > TBH, I think the duplicated code is not really bad.
->
-> How exactly do you mean it, please?
->
-> Do you think that the amount of duplicated code is small enough?
-> Or that the new function looks better that updating the existing one?
->
-> > apply_relocate_add() is a much more complicated function, I would
-> > rather not mess it up to make this function a little simpler.
->
-> IMHO, the duplicated code is quite tricky. And if we really do
-> not need to clear all relocation types then we could avoid
-> the duplication another way, for example:
->
-> int update_relocate_add(Elf64_Shdr *sechdrs,
->                        const char *strtab,
->                        unsigned int symindex,
->                        unsigned int relsec,
->                        struct module *me,
->                        bool apply)
-> {
->         unsigned int i;
->         Elf64_Rela *rela = (void *)sechdrs[relsec].sh_addr;
->         Elf64_Sym *sym;
->         Elf64_Xword r_type;
->         unsigned long *location;
->
->         if (apply) {
->                 pr_debug("Applying ADD relocate section %u to %u\n", relsec,
->                        sechdrs[relsec].sh_info);
->         } else {
->                 pr_debug("Clearing ADD relocate section %u\n", relsec");
->         }
->
->         for (i = 0; i < sechdrs[relsec].sh_size / sizeof(*rela); i++) {
->                 /* This is where to make the change */
->                 location = (void *)sechdrs[sechdrs[relsec].sh_info].sh_addr
->                         + rela[i].r_offset;
->                 /* This is the symbol it is referring to */
->                 sym = (Elf64_Sym *)sechdrs[symindex].sh_addr
->                         + ELF64_R_SYM(rela[i].r_info);
->
->                 r_type = ELF64_R_TYPE(rela[i].r_info);
->
->                 if (apply) {
->                         apply_relocate_location(sym, location, r_type, rela[i].r_addend);
->                 } else {
->                         clear_relocate_location(sym, location, r_type);
->                 }
+Thanks!
+Helge
 
-I personally don't like too many "if (apply) {...} else {...}" patterns in
-a function. And these new functions confuse me sometimes:
 
-    update_relocate_add(..., apply);
-    apply_relocate_location();
-    clear_relocate_location();
 
-And I did think there wasn't too much duplicated code.
+>>
+>> ---
+>> =C2=A0 drivers/video/fbdev/Kconfig |=C2=A0=C2=A0=C2=A0 4 ++--
+>> =C2=A0 1 file changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff -- a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
+>> --- a/drivers/video/fbdev/Kconfig
+>> +++ b/drivers/video/fbdev/Kconfig
+>> @@ -456,8 +456,8 @@ config FB_ATARI
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 chipset found in Ataris.
+>> =C2=A0 config FB_OF
+>> -=C2=A0=C2=A0=C2=A0 bool "Open Firmware frame buffer device support"
+>> -=C2=A0=C2=A0=C2=A0 depends on (FB =3D y) && PPC && (!PPC_PSERIES || PC=
+I)
+>> +=C2=A0=C2=A0=C2=A0 tristate "Open Firmware frame buffer device support=
+"
+>> +=C2=A0=C2=A0=C2=A0 depends on FB && PPC && (!PPC_PSERIES || PCI)
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 depends on !DRM_OFDRM
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 select APERTURE_HELPERS
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 select FB_CFB_FILLRECT
+>
 
-I know this is very personal. And I can understand your preference.
-I can make the code to remove more duplicated code. But I guess
-I need a better understanding of powerpc logic..
-
-Thanks,
-Song
