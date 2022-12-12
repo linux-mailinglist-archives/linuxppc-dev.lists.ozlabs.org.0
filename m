@@ -2,75 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08CFF649976
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Dec 2022 08:20:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DB5D649977
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Dec 2022 08:21:45 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NVtMP6rfVz3c8C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Dec 2022 18:20:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NVtNR1yL4z3cKj
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Dec 2022 18:21:43 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=XnOpfaWb;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=I9VHRhMO;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::433; helo=mail-pf1-x433.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=XnOpfaWb;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=I9VHRhMO;
 	dkim-atps=neutral
-Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NVtLQ4tWlz3bZh
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Dec 2022 18:19:56 +1100 (AEDT)
-Received: by mail-pf1-x433.google.com with SMTP id x66so7933190pfx.3
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Dec 2022 23:19:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+hTKPZ2IkODq2IFTDJ5q/3atNgAWsoEz6btRtA3DXcI=;
-        b=XnOpfaWbY/mn1r7ZUan7KVW8n6e+W3iWTCUZowgMpRmy4QBWV7VmL10CUkBH7DU4wl
-         F9Pgay7G3hkN2vKRL1cEH3hvbRdVRa9HOBbMlt/OGQ6HXjIvePw9RQJVkXVJvD8kpB7a
-         /JnmDpcZKe5V/rhhvAElty0sJGrQ0rrSjtnol9IbYrq1Ef0IUe6nnlA/jOmnTVvNflJy
-         sIfWphXZiCVUptQtNqO7VtUcySWyc/soFeXtvWeTfuNRknEDXYKhsgLWjlBCx2faaIyu
-         vD2x4TsPQpq2z2qkp7ABObRFi2xtr5LGdFs9j/lu9b+egl3tSOmdup6YLxTv+OJ4VYYE
-         kuGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=+hTKPZ2IkODq2IFTDJ5q/3atNgAWsoEz6btRtA3DXcI=;
-        b=0Pm+wL2mzyQMLQoE5DhaGSSQDzJwQnCWfYBLIeajJk3WrXBbZVDTgoVmiocY9pvH/w
-         4GM/lmFSCyB1WoAhss24uq8NC4MgQa6NYpXb0TrZCzuYPe/CcGKe/UbZUHwsfgwJNu1f
-         CnF4lR8MEohNTW7TmnUPInw3q4tZqjyBzRSir1rGLbnAgdOesQnT/3d+IMLJikx0qe9U
-         bQ7Sqy/5tLUYiuuhF5dxGau5WuaUDptK58HcVt09c2kyfiRSRRvbtcj50cC36/ba/c0h
-         O0hoJAsiBWEpQaHwnJ0pm8reVoGvsP6LVe5IW1Hj5CenCvn83DY2KyZ/YnrbGbV9ka26
-         6Y3A==
-X-Gm-Message-State: ANoB5pmU1gZcsoYyC4rb+e2f9naPIFEJHHboKVE7Roocrsco2yLPHbr3
-	0k5V1IfZkbn4Y19BUU/XIgg=
-X-Google-Smtp-Source: AA0mqf6HtTAoq9j6IsVnHBcvSSIQHjaVSnpCbe1bODi8OlzdIGcw0eXaflwdU+h1msUG4Fiu3iTseA==
-X-Received: by 2002:aa7:8b4d:0:b0:56c:962:fe7e with SMTP id i13-20020aa78b4d000000b0056c0962fe7emr14947057pfd.32.1670829593534;
-        Sun, 11 Dec 2022 23:19:53 -0800 (PST)
-Received: from localhost (58-6-248-8.tpgi.com.au. [58.6.248.8])
-        by smtp.gmail.com with ESMTPSA id e15-20020a056a0000cf00b00574ab0e053bsm5068095pfj.187.2022.12.11.23.19.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 11 Dec 2022 23:19:52 -0800 (PST)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 12 Dec 2022 17:19:48 +1000
-Message-Id: <COZNNOOVX33Q.1PAWG5MP5JM55@bobo>
-Subject: Re: [Bug 214913] [xfstests generic/051] BUG: Kernel NULL pointer
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NVtLR6sbVz3bZh
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Dec 2022 18:19:59 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 6066A60EA9
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Dec 2022 07:19:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id C3066C433EF
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Dec 2022 07:19:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1670829596;
+	bh=V4HBr8xY+aZbPWguxi0Kt06cxttQ5cfgpdDm19JSz0g=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=I9VHRhMO0Kz8wuyOMN/CbiLZW0s7/IT6O8RTBZWC7MmsX6dL+B1l4HN2sdnE36wkq
+	 Tg4USqGQ1xXVpHNI50IJY5vfIV5zpcC7ssnyHYG7JStyBfyKsWc0Q5BkUMeQMRvCel
+	 RgLzbDiClqrr022IiaQTBfrQGu+waWDhPfYyewFquC5qtnlYRkEQ3i7PtxAkbhQRF6
+	 Lyotgp9L9dW/PdqTvY4pQtMoIhwYvZjf+acRr7LAs/pvZvjiDwNSOXrY3RKI6L/bjB
+	 5Qe3TXaZ6z0/pv0nlFHqqrj/dlQnxVGlRqlIUiWccFKpRXCJvAXiR4IctsFXu3Ua5/
+	 /c6F64ZAMaU0Q==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
+	id A7670C43143; Mon, 12 Dec 2022 07:19:56 +0000 (UTC)
+From: bugzilla-daemon@kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 214913] [xfstests generic/051] BUG: Kernel NULL pointer
  dereference on read at 0x00000108 NIP [c0000000000372e4]
  tm_cgpr_active+0x14/0x40
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: <bugzilla-daemon@kernel.org>, <linuxppc-dev@lists.ozlabs.org>
-X-Mailer: aerc 0.13.0
+Date: Mon, 12 Dec 2022 07:19:56 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-64
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: npiggin@gmail.com
+X-Bugzilla-Status: NEEDINFO
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-214913-206035-QBfF9VcPdT@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-214913-206035@https.bugzilla.kernel.org/>
 References: <bug-214913-206035@https.bugzilla.kernel.org/>
- <bug-214913-206035-9pRSjAqPTs@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-214913-206035-9pRSjAqPTs@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
+MIME-Version: 1.0
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,10 +80,12 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Eric Biederman <ebiederm@xmission.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+https://bugzilla.kernel.org/show_bug.cgi?id=3D214913
+
+--- Comment #10 from npiggin@gmail.com ---
 On Mon Dec 12, 2022 at 3:57 PM AEST,  wrote:
 > https://bugzilla.kernel.org/show_bug.cgi?id=3D214913
 >
@@ -109,3 +109,9 @@ PF_IO_WORKER in the coredump gathering?
 
 Thanks,
 Nick
+
+--=20
+You may reply to this email to add a comment.
+
+You are receiving this mail because:
+You are watching the assignee of the bug.=
