@@ -2,57 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A689264A59F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Dec 2022 18:12:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3B0A64A7C0
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Dec 2022 19:58:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NW7Vc43WDz3cB8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Dec 2022 04:12:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NW9rX66Sbz3c7B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Dec 2022 05:58:36 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=b1h4XM65;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mnffZYAP;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2001:67c:2178:6::1c; helo=smtp-out1.suse.de; envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=acme@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=b1h4XM65;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mnffZYAP;
 	dkim-atps=neutral
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NW7Tf0t5gz3bVK
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Dec 2022 04:12:04 +1100 (AEDT)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-	by smtp-out1.suse.de (Postfix) with ESMTP id DE1C333B5B;
-	Mon, 12 Dec 2022 17:11:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1670865116; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pLYj/5iGdEaNmhtULWfyoYEn+dFzseYwp+heXXcU6m0=;
-	b=b1h4XM65SnmJan79cLr4+sH+ANplNLCSLihdoCCfGxHH7CsLz0aIYBJIX/dPRNZao9FWLi
-	mFUF4SvnivOJJjnKtgnkoxT0oCstk+CCBJCEClDpnWQKUU5jYfr+Pzxx87cqWvEgiCwARM
-	Fid8h5EyzZVUhW6ET3CcQ4aIpqdzBOk=
-Received: from suse.cz (unknown [10.100.208.146])
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by relay2.suse.de (Postfix) with ESMTPS id 19BC72C141;
-	Mon, 12 Dec 2022 17:11:56 +0000 (UTC)
-Date: Mon, 12 Dec 2022 18:11:55 +0100
-From: Petr Mladek <pmladek@suse.com>
-To: Song Liu <song@kernel.org>
-Subject: Re: powerpc-part: was: Re: [PATCH v6] livepatch: Clear relocation
- targets on a module removal
-Message-ID: <Y5dg25LV24mBRf4t@alley>
-References: <20220901171252.2148348-1-song@kernel.org>
- <Y3expGRt4cPoZgHL@alley>
- <CAPhsuW4qYpX7wzHn5J5Hn9cnOFSZwwQPCjTM_HPTt_zbBS03ww@mail.gmail.com>
- <Y5Me5dTGv+GznvtO@alley>
- <CAPhsuW4pt7vfHTj8KorTRCx5zJaoUiyYUOLy8uXZDbTbur4RRA@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NW9qW1FtDz3bXL
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Dec 2022 05:57:42 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 85EEEB80DFF;
+	Mon, 12 Dec 2022 18:57:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F2C7C433EF;
+	Mon, 12 Dec 2022 18:57:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1670871452;
+	bh=oLM1EmBJn70XGRt7X/jZ1WyagJTgINmDi8SvRBD1y0Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mnffZYAP4zA3NP9Q+akqnk35ot/lF9sBRjGhSjIilwwEyu1Aakcx5r9OUUzPoscBC
+	 1BrXkXihTZPONsWjIicjvJLYlcMCQmRNPFkYP6cBKVR7Q6C1nKsawxMifqOPo3jjol
+	 sYxjvky9w90ngvV9Bvuf75lGaqsTEAVqBGo4DIeiar0zkpbAdUFEY7RqE4g5jegBlN
+	 1gsNhtYbH7w7Z7RhElcX0DDWCxTsy2ssQ5pfi+OF/IxRDbE46W1QWpF05c1owGyrG9
+	 5oozGAPEROul9Dmpnc5xK/jZglrLOrVeH1qhzLOGY7Lswf9WwBnwIwD9LYa/E6KdyJ
+	 GCZLfIwt7J/Gg==
+Received: by quaco.ghostprotocols.net (Postfix, from userid 1000)
+	id CC2A240483; Mon, 12 Dec 2022 15:57:29 -0300 (-03)
+Date: Mon, 12 Dec 2022 15:57:29 -0300
+From: Arnaldo Carvalho de Melo <acme@kernel.org>
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Subject: Re: [PATCH] perf test bpf: Skip test if kernel-debuginfo is not
+ present
+Message-ID: <Y5d5mfyCEcUqI61Y@kernel.org>
+References: <20221028154230.140709-1-kjain@linux.ibm.com>
+ <A7B7E3F1-161D-4B1A-A4FE-E4A77EE06F1A@linux.vnet.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAPhsuW4pt7vfHTj8KorTRCx5zJaoUiyYUOLy8uXZDbTbur4RRA@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <A7B7E3F1-161D-4B1A-A4FE-E4A77EE06F1A@linux.vnet.ibm.com>
+X-Url: http://acmel.wordpress.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,155 +65,112 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: jikos@kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>, joe.lawrence@redhat.com, Josh Poimboeuf <jpoimboe@redhat.com>, live-patching@vger.kernel.org, mbenes@suse.cz, linuxppc-dev@lists.ozlabs.org, jpoimboe@kernel.org
+Cc: Ian Rogers <irogers@google.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Nageswara Sastry <rnsastry@linux.ibm.com>, Kajol Jain <kjain@linux.ibm.com>, linux-perf-users@vger.kernel.org, Jiri Olsa <jolsa@kernel.org>, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri 2022-12-09 11:59:35, Song Liu wrote:
-> On Fri, Dec 9, 2022 at 3:41 AM Petr Mladek <pmladek@suse.com> wrote:
-> > On Mon 2022-11-28 17:57:06, Song Liu wrote:
-> > > On Fri, Nov 18, 2022 at 8:24 AM Petr Mladek <pmladek@suse.com> wrote:
-> > > >
-> > > > > --- a/arch/powerpc/kernel/module_64.c
-> > > > > +++ b/arch/powerpc/kernel/module_64.c
-> > > > > +#ifdef CONFIG_LIVEPATCH
-> > > > > +void clear_relocate_add(Elf64_Shdr *sechdrs,
-> > > > > +                    const char *strtab,
-> > > > > +                    unsigned int symindex,
-> > > > > +                    unsigned int relsec,
-> > > > > +                    struct module *me)
-> > > > > +{
-
-[...]
-
-> > > > > +
-> > > > > +             instruction = (u32 *)location;
-> > > > > +             if (is_mprofile_ftrace_call(symname))
-> > > > > +                     continue;
-> >
-> > Why do we ignore these symbols?
-> >
-> > I can't find any counter-part in apply_relocate_add(). It looks super
-> > tricky. It would deserve a comment.
-> >
-> > And I have no idea how we could maintain these exceptions.
-> >
-> > > > > +             if (!instr_is_relative_link_branch(ppc_inst(*instruction)))
-> > > > > +                     continue;
-> >
-> > Same here. It looks super tricky and there is no explanation.
+Em Thu, Nov 03, 2022 at 12:27:01PM +0530, Athira Rajeev escreveu:
+> > On 28-Oct-2022, at 9:12 PM, Kajol Jain <kjain@linux.ibm.com> wrote:
+> > 
+> > Perf BPF filter test fails in environment where "kernel-debuginfo"
+> > is not installed.
+> > 
+> > Test failure logs:
+> > <<>>
+> > 42: BPF filter                            :
+> > 42.1: Basic BPF filtering                 : Ok
+> > 42.2: BPF pinning                         : Ok
+> > 42.3: BPF prologue generation             : FAILED!
+> > <<>>
+> > 
+> > Enabling verbose option provided debug logs, which says debuginfo
+> > needs to be installed. Snippet of verbose logs:
+> > 
+> > <<>>
+> > 42.3: BPF prologue generation                                       :
+> > --- start ---
+> > test child forked, pid 28218
+> > <<>>
+> > Rebuild with CONFIG_DEBUG_INFO=y, or install an appropriate debuginfo
+> > package.
+> > bpf_probe: failed to convert perf probe events
+> > Failed to add events selected by BPF
+> > test child finished with -1
+> > ---- end ----
+> > BPF filter subtest 3: FAILED!
+> > <<>>
+> > 
+> > Here subtest, "BPF prologue generation" failed and
+> > logs shows debuginfo is needed. After installing
+> > kernel-debuginfo package, testcase passes.
+> > 
+> > Subtest "BPF prologue generation" failed because, the "do_test"
+> > function returns "TEST_FAIL" without checking the error type
+> > returned by "parse_events_load_bpf_obj" function.
+> > Function parse_events_load_bpf_obj can also return error of type
+> > "-ENOENT" incase kernel-debuginfo package is not installed. Fix this
+> > by adding check for -ENOENT error.
+> > 
+> > Test result after the patch changes:
+> > 
+> > Test failure logs:
+> > <<>>
+> > 42: BPF filter                 :
+> > 42.1: Basic BPF filtering      : Ok
+> > 42.2: BPF pinning              : Ok
+> > 42.3: BPF prologue generation  : Skip (clang/debuginfo isn't
+> > installed or environment missing BPF support)
+> > 
+> > Fixes: ba1fae431e74bb42 ("perf test: Add 'perf test BPF'")
+> > Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+> > Reviewed-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+> > ---
+> > tools/perf/tests/bpf.c | 6 +++++-
+> > 1 file changed, 5 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/tools/perf/tests/bpf.c b/tools/perf/tests/bpf.c
+> > index 17c023823713..57cecadc1da2 100644
+> > --- a/tools/perf/tests/bpf.c
+> > +++ b/tools/perf/tests/bpf.c
+> > @@ -126,6 +126,10 @@ static int do_test(struct bpf_object *obj, int (*func)(void),
+> > 
+> > 	err = parse_events_load_bpf_obj(&parse_state, &parse_state.list, obj, NULL);
+> > 	parse_events_error__exit(&parse_error);
+> > +	if (err == -ENOENT) {
+> > +		pr_debug("Failed to add events selected by BPF, debuginfo package not installed\n");
+> > +		return TEST_SKIP;
+> > +	}
 > 
-> The two checks are from restore_r2(). But I cannot really remember
-> why we needed them. It is probably an updated version from an earlier
-> version (3 year earlier..).
-
-This is a good sign that it has to be explained in a comment.
-Or even better, it should not by copy pasted.
-
-> > > > > +             instruction += 1;
-> > > > > +             patch_instruction(instruction, ppc_inst(PPC_RAW_NOP()));
-
-I believe that this is not enough. apply_relocate_add() does this:
-
-int apply_relocate_add(Elf64_Shdr *sechdrs,
-[...]
-		       struct module *me)
-{
-[...]
-		case R_PPC_REL24:
-			/* FIXME: Handle weak symbols here --RR */
-			if (sym->st_shndx == SHN_UNDEF ||
-			    sym->st_shndx == SHN_LIVEPATCH) {
-[...]
-			if (!restore_r2(strtab + sym->st_name,
-							(u32 *)location + 1, me))
-[...]					return -ENOEXEC;
-
---->			if (patch_instruction((u32 *)location, ppc_inst(value)))
-				return -EFAULT;
-
-, where restore_r2() does:
-
-static int restore_r2(const char *name, u32 *instruction, struct module *me)
-{
-[...]
-	/* ld r2,R2_STACK_OFFSET(r1) */
---->	if (patch_instruction(instruction, ppc_inst(PPC_INST_LD_TOC)))
-		return 0;
-[...]
-}
-
-By other words, apply_relocate_add() modifies two instructions:
-
-   + patch_instruction() called in restore_r2() writes into "location + 1"
-   + patch_instruction() called in apply_relocate_add() writes into "location"
-
-IMHO, we have to clear both.
-
-IMHO, we need to implement a function that reverts the changes done
-in restore_r2(). Also we need to revert the changes done in
-apply_relocate_add().
-
-Please, avoid code duplication as much as possible. Especially,
-the two checks is_mprofile_ftrace_call() and
-instr_is_relative_link_branch() must be shared. IMHO, it is
-the only way to keep the code maintainable. We must make sure that
-we will clear the instructions only when they were patched. And
-copy pasting various tricky exceptions is a way to hell.
-
-
-> > int update_relocate_add(Elf64_Shdr *sechdrs,
-> >                        const char *strtab,
-> >                        unsigned int symindex,
-> >                        unsigned int relsec,
-> >                        struct module *me,
-> >                        bool apply)
-> > {
-> >         unsigned int i;
-> >         Elf64_Rela *rela = (void *)sechdrs[relsec].sh_addr;
-> >         Elf64_Sym *sym;
-> >         Elf64_Xword r_type;
-> >         unsigned long *location;
-> >
-> >         if (apply) {
-> >                 pr_debug("Applying ADD relocate section %u to %u\n", relsec,
-> >                        sechdrs[relsec].sh_info);
-> >         } else {
-> >                 pr_debug("Clearing ADD relocate section %u\n", relsec");
-> >         }
-> >
-> >         for (i = 0; i < sechdrs[relsec].sh_size / sizeof(*rela); i++) {
-> >                 /* This is where to make the change */
-> >                 location = (void *)sechdrs[sechdrs[relsec].sh_info].sh_addr
-> >                         + rela[i].r_offset;
-> >                 /* This is the symbol it is referring to */
-> >                 sym = (Elf64_Sym *)sechdrs[symindex].sh_addr
-> >                         + ELF64_R_SYM(rela[i].r_info);
-> >
-> >                 r_type = ELF64_R_TYPE(rela[i].r_info);
-> >
-> >                 if (apply) {
-> >                         apply_relocate_location(sym, location, r_type, rela[i].r_addend);
-> >                 } else {
-> >                         clear_relocate_location(sym, location, r_type);
-> >                 }
+> Hi Kajol,
 > 
-> I personally don't like too many "if (apply) {...} else {...}" patterns in
-> a function. And these new functions confuse me sometimes:
+> Here, you have used ENOENT to skip the test. But there could be other places in the code path for “parse_events_load_bpf_obj”
+> which also returns ENOENT. In that case, for any exit that returns ENOENT, test will get skipped.
 > 
->     update_relocate_add(..., apply);
->     apply_relocate_location();
->     clear_relocate_location();
+> Can we look at the logs, example we have this in commit logs:
+> 
+> 	Rebuild with CONFIG_DEBUG_INFO=y, or install an appropriate debuginfo
+> 	package.
+> 
+> so as to decide whether to skip for debug info ?
 
-Feel free to come up with another way how to avoid code duplication.
+Kajol?
 
-> And I did think there wasn't too much duplicated code.
-
-I think that it looks very different when you are writing or reading
-or mantainting the code. It might be easier to write code and modify
-it. It is more complicated to find the differences later. Also it is
-more complicated to do the same changes many times when the common
-code is updated later.
-
-Best Regards,
-Petr
+- Arnaldo
+ 
+> Thanks
+> Athira
+> 
+> > 	if (err || list_empty(&parse_state.list)) {
+> > 		pr_debug("Failed to add events selected by BPF\n");
+> > 		return TEST_FAIL;
+> > @@ -368,7 +372,7 @@ static struct test_case bpf_tests[] = {
+> > 			"clang isn't installed or environment missing BPF support"),
+> > #ifdef HAVE_BPF_PROLOGUE
+> > 	TEST_CASE_REASON("BPF prologue generation", bpf_prologue_test,
+> > -			"clang isn't installed or environment missing BPF support"),
+> > +			"clang/debuginfo isn't installed or environment missing BPF support"),
+> > #else
+> > 	TEST_CASE_REASON("BPF prologue generation", bpf_prologue_test, "not compiled in"),
+> > #endif
+> > -- 
+> > 2.31.1
