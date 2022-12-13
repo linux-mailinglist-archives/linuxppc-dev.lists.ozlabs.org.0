@@ -1,59 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E91564BB85
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Dec 2022 19:04:19 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05E7B64BBFC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Dec 2022 19:30:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NWmbN53p9z3dvb
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Dec 2022 05:04:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NWn9V6hwlz3bXc
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Dec 2022 05:30:22 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YjSSRwZF;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.93; helo=mga11.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YjSSRwZF;
+	dkim-atps=neutral
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NWmZm6H1Tz3bWb
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Dec 2022 05:03:41 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4NWmZf5rWVz9smn;
-	Tue, 13 Dec 2022 19:03:38 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id UCqxqYXXsQ8T; Tue, 13 Dec 2022 19:03:38 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4NWmZf4ybRz9smJ;
-	Tue, 13 Dec 2022 19:03:38 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 998358B773;
-	Tue, 13 Dec 2022 19:03:38 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id U_aiRmb3iWhf; Tue, 13 Dec 2022 19:03:38 +0100 (CET)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.7.67])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 5EEE98B766;
-	Tue, 13 Dec 2022 19:03:38 +0100 (CET)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 2BDI3NBF737221
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Tue, 13 Dec 2022 19:03:23 +0100
-Received: (from chleroy@localhost)
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 2BDI3LhP737213;
-	Tue, 13 Dec 2022 19:03:21 +0100
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: gregkh@linuxfoundation.org, stable@vger.kernel.org
-Subject: [PATCH] [BACKPORT FOR 4.14] libtraceevent: Fix build with binutils 2.35
-Date: Tue, 13 Dec 2022 19:03:07 +0100
-Message-Id: <c4629a12d4a2a21ff131624d3ef1d9f8b5fd64ad.1670954579.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.38.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NWn8W2Hd9z2xJ6
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Dec 2022 05:29:25 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1670956171; x=1702492171;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=4QPyqb1pvMS81Vaf94Si1tAEYfCAa6LBQX4nMxoXvDU=;
+  b=YjSSRwZFL/nNDb4NOh3QFA+hpndLZXX++wDMggvvZB7O+BabBfE7404d
+   fW3KwOkQvcbH0SvO/h2X3eZRMvmvm5nFODm+lGwRpvZAlWtEwfHzke4U7
+   ibqzstmiWsA9O74uWNg9sEFrd3Z4HHmBwALdsFfQKA1XBEWL40g7PykLs
+   u42f/REwCPKRhwieuXqixOXYR+ERuSXyGV1UnJSBCBbyBjOpfS4dclo2Q
+   /Zf6vg+CYHDnRfguyEyc+ktqkDdwG4rA/+o+Ak4FKqHyklt8VUKfWhGZa
+   LxJiaiFFMNGHsPop7ZILO1zhwevvtft2gjUWcUEtcl6bQJ+ve5VCff9t2
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10560"; a="315843089"
+X-IronPort-AV: E=Sophos;i="5.96,242,1665471600"; 
+   d="scan'208";a="315843089"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2022 10:29:22 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10560"; a="893997924"
+X-IronPort-AV: E=Sophos;i="5.96,242,1665471600"; 
+   d="scan'208";a="893997924"
+Received: from lkp-server01.sh.intel.com (HELO b5d47979f3ad) ([10.239.97.150])
+  by fmsmga006.fm.intel.com with ESMTP; 13 Dec 2022 10:29:19 -0800
+Received: from kbuild by b5d47979f3ad with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1p5A1m-0004el-1S;
+	Tue, 13 Dec 2022 18:29:18 +0000
+Date: Wed, 14 Dec 2022 02:28:39 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: [linux-next:master] BUILD REGRESSION
+ 39ab32797f072eaf86b1faa7384ac73450684110
+Message-ID: <6398c457.hhPKRJ7/7EGjTQb/%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1670954585; l=1329; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=S7mrLyJvmUixcNAmwGFNK/txVTz4era2R9aIZnLMX2Y=; b=/7rRXy1Mh+5nF/pPOHuSwoiroRaCdraCGJQld2g8Ep1FH0UJXy92iMLkftOIuueBuB6hbY+h8pY8 nA3glJxhDvKjfUqzznkqivLGN+x/vFel/1wSLkc0SIdwNFRFDL22
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,43 +70,190 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>, Arnaldo Carvalho de Melo <acme@redhat.com>, linux-trace-devel@vger.kernel.org, Ben Hutchings <ben@decadent.org.uk>, Salvatore Bonaccorso <carnil@debian.org>
+Cc: linux-xfs@vger.kernel.org, ntfs3@lists.linux.dev, linux-iio@vger.kernel.org, netdev@vger.kernel.org, amd-gfx@lists.freedesktop.org, lvs-devel@vger.kernel.org, Linux Memory Management List <linux-mm@kvack.org>, linux-arm-msm@vger.kernel.org, linux-omap@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Ben Hutchings <ben@decadent.org.uk>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: 39ab32797f072eaf86b1faa7384ac73450684110  Add linux-next specific files for 20221213
 
-[upstream commit 39efdd94e314336f4acbac4c07e0f37bdc3bef71]
+Error/Warning reports:
 
-In binutils 2.35, 'nm -D' changed to show symbol versions along with
-symbol names, with the usual @@ separator.  When generating
-libtraceevent-dynamic-list we need just the names, so strip off the
-version suffix if present.
+https://lore.kernel.org/oe-kbuild-all/202211142244.sGkXbWO2-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202211150003.LkfYS4HE-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202211242120.MzZVGULn-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202211282102.QUr7HHrW-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202211301634.cejLlTJP-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202212020520.0OkMIno3-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202212040713.rVney9e8-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202212051759.cEv6fyHy-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202212111423.XqZdM0Kt-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202212132047.wvOyEPMA-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202212132110.CvE3HjB8-lkp@intel.com
 
-Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
-Tested-by: Salvatore Bonaccorso <carnil@debian.org>
-Reviewed-by: Steven Rostedt <rostedt@goodmis.org>
-Cc: linux-trace-devel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- tools/lib/traceevent/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Error/Warning: (recently discovered and may have been fixed)
 
-diff --git a/tools/lib/traceevent/Makefile b/tools/lib/traceevent/Makefile
-index a0ac01c647f5..2d6989f8a87c 100644
---- a/tools/lib/traceevent/Makefile
-+++ b/tools/lib/traceevent/Makefile
-@@ -263,7 +263,7 @@ define do_generate_dynamic_list_file
- 	xargs echo "U w W" | tr 'w ' 'W\n' | sort -u | xargs echo`;\
- 	if [ "$$symbol_type" = "U W" ];then				\
- 		(echo '{';						\
--		$(NM) -u -D $1 | awk 'NF>1 {print "\t"$$2";"}' | sort -u;\
-+		$(NM) -u -D $1 | awk 'NF>1 {sub("@.*", "", $$2); print "\t"$$2";"}' | sort -u;\
- 		echo '};';						\
- 		) > $2;							\
- 	else								\
+Documentation/networking/devlink/etas_es58x.rst: WARNING: document isn't included in any toctree
+arch/powerpc/kernel/kvm_emul.o: warning: objtool: kvm_template_end(): can't find starting instruction
+arch/powerpc/kernel/optprobes_head.o: warning: objtool: optprobe_template_end(): can't find starting instruction
+drivers/gpu/drm/amd/amdgpu/../display/dc/irq/dcn201/irq_service_dcn201.c:139:43: warning: unused variable 'dmub_outbox_irq_info_funcs' [-Wunused-const-variable]
+drivers/gpu/drm/amd/amdgpu/../display/dc/irq/dcn201/irq_service_dcn201.c:40:20: warning: no previous prototype for 'to_dal_irq_source_dcn201' [-Wmissing-prototypes]
+drivers/gpu/drm/amd/amdgpu/../display/dc/irq/dcn201/irq_service_dcn201.c:40:20: warning: no previous prototype for function 'to_dal_irq_source_dcn201' [-Wmissing-prototypes]
+drivers/regulator/tps65219-regulator.c:310:32: warning: parameter 'dev' set but not used [-Wunused-but-set-parameter]
+drivers/regulator/tps65219-regulator.c:310:60: warning: parameter 'dev' set but not used [-Wunused-but-set-parameter]
+drivers/regulator/tps65219-regulator.c:370:26: sparse:    int
+drivers/regulator/tps65219-regulator.c:370:26: sparse:    struct regulator_dev *[assigned] rdev
+drivers/regulator/tps65219-regulator.c:370:26: warning: ordered comparison of pointer with integer zero [-Wextra]
+include/linux/compiler_types.h:357:45: error: call to '__compiletime_assert_270' declared with attribute error: BUILD_BUG_ON failed: sizeof(priv_tbl->probs) % 16
+net/netfilter/ipvs/ip_vs_est.c:688:17: sparse:    signed long long *
+net/netfilter/ipvs/ip_vs_est.c:688:17: sparse:    unsigned long long [usertype] *
+
+Unverified Error/Warning (likely false positive, please contact us if interested):
+
+drivers/i2c/busses/i2c-qcom-geni.c:1028:28: sparse: sparse: symbol 'i2c_master_hub' was not declared. Should it be static?
+drivers/iio/adc/twl6030-gpadc.c:955:16-23: duplicated argument to & or |
+drivers/iio/light/tsl2563.c:768:8-33: WARNING: Threaded IRQ with no primary handler requested without IRQF_ONESHOT (unless it is nested IRQ)
+fs/xfs/xfs_iomap.c:86:29: sparse: sparse: symbol 'xfs_iomap_page_ops' was not declared. Should it be static?
+
+Error/Warning ids grouped by kconfigs:
+
+gcc_recent_errors
+|-- alpha-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- arc-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- arm-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- arm-randconfig-s032-20221213
+|   `-- include-linux-compiler_types.h:error:call-to-__compiletime_assert_NNN-declared-with-attribute-error:BUILD_BUG_ON-failed:sizeof(priv_tbl-probs)
+|-- arm64-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- i386-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- i386-randconfig-s002
+|   `-- fs-xfs-xfs_iomap.c:sparse:sparse:symbol-xfs_iomap_page_ops-was-not-declared.-Should-it-be-static
+|-- ia64-buildonly-randconfig-r001-20221213
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
+|-- ia64-randconfig-c034-20221213
+|   `-- drivers-iio-light-tsl2563.c:WARNING:Threaded-IRQ-with-no-primary-handler-requested-without-IRQF_ONESHOT-(unless-it-is-nested-IRQ)
+|-- ia64-randconfig-s043-20221213
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
+|   `-- fs-xfs-xfs_iomap.c:sparse:sparse:symbol-xfs_iomap_page_ops-was-not-declared.-Should-it-be-static
+|-- loongarch-buildonly-randconfig-r005-20221213
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- m68k-allmodconfig
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- m68k-allyesconfig
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- m68k-randconfig-r004-20221213
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- microblaze-randconfig-c043-20221213
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
+|-- microblaze-randconfig-s052-20221213
+|   `-- fs-xfs-xfs_iomap.c:sparse:sparse:symbol-xfs_iomap_page_ops-was-not-declared.-Should-it-be-static
+|-- mips-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-to_dal_irq_source_dcn201
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+clang_recent_errors
+|-- arm64-randconfig-r023-20221213
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:no-previous-prototype-for-function-to_dal_irq_source_dcn201
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dcn201-irq_service_dcn201.c:warning:unused-variable-dmub_outbox_irq_info_funcs
+|-- hexagon-randconfig-r002-20221213
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- i386-allmodconfig
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+`-- powerpc-randconfig-r026-20221213
+    |-- arch-powerpc-kernel-kvm_emul.o:warning:objtool:kvm_template_end():can-t-find-starting-instruction
+    |-- arch-powerpc-kernel-optprobes_head.o:warning:objtool:optprobe_template_end():can-t-find-starting-instruction
+    `-- arch-powerpc-kernel-prom_init.o:warning:objtool:prom_init:unannotated-intra-function-call
+
+elapsed time: 738m
+
+configs tested: 64
+configs skipped: 7
+
+gcc tested configs:
+um                             i386_defconfig
+um                           x86_64_defconfig
+powerpc                           allnoconfig
+x86_64                            allnoconfig
+x86_64                              defconfig
+x86_64                           allyesconfig
+m68k                          sun3x_defconfig
+sh                             espt_defconfig
+x86_64                               rhel-8.3
+x86_64                           rhel-8.3-bpf
+m68k                       m5275evb_defconfig
+x86_64                           rhel-8.3-syz
+arc                  randconfig-r043-20221213
+x86_64                         rhel-8.3-kunit
+x86_64                           rhel-8.3-kvm
+arm                  randconfig-r046-20221213
+powerpc                     rainier_defconfig
+i386                          randconfig-c001
+i386                          randconfig-a001
+i386                          randconfig-a003
+i386                          randconfig-a014
+arm                          iop32x_defconfig
+i386                          randconfig-a012
+i386                          randconfig-a016
+powerpc                        cell_defconfig
+i386                          randconfig-a005
+sh                               j2_defconfig
+sh                          sdk7780_defconfig
+sh                      rts7751r2d1_defconfig
+sh                           se7712_defconfig
+mips                         bigsur_defconfig
+sh                               allmodconfig
+mips                             allyesconfig
+i386                                defconfig
+powerpc                          allmodconfig
+x86_64                          rhel-8.3-rust
+x86_64                          rhel-8.3-func
+x86_64                    rhel-8.3-kselftests
+arm                                 defconfig
+m68k                             allyesconfig
+m68k                             allmodconfig
+i386                             allyesconfig
+arc                              allyesconfig
+alpha                            allyesconfig
+arm64                            allyesconfig
+arm                              allyesconfig
+
+clang tested configs:
+arm                       mainstone_defconfig
+mips                           ip28_defconfig
+hexagon              randconfig-r041-20221213
+riscv                randconfig-r042-20221213
+powerpc                     kilauea_defconfig
+arm                   milbeaut_m10v_defconfig
+hexagon              randconfig-r045-20221213
+s390                 randconfig-r044-20221213
+powerpc                     mpc512x_defconfig
+i386                          randconfig-a013
+i386                          randconfig-a002
+i386                          randconfig-a004
+mips                     cu1830-neo_defconfig
+i386                          randconfig-a015
+i386                          randconfig-a011
+powerpc                     tqm8560_defconfig
+i386                          randconfig-a006
+arm                       netwinder_defconfig
+
 -- 
-2.38.1
-
+0-DAY CI Kernel Test Service
+https://01.org/lkp
