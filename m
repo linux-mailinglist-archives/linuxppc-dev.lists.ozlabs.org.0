@@ -2,130 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B17A664B06B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Dec 2022 08:31:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F06364B0E3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Dec 2022 09:15:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NWVXk41Ybz3cGv
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Dec 2022 18:31:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NWWWQ3RZ7z3cGr
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Dec 2022 19:14:58 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=gD0KM3gw;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=thufXt/C;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=40.107.12.74; helo=fra01-pr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=song@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=gD0KM3gw;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=thufXt/C;
 	dkim-atps=neutral
-Received: from FRA01-PR2-obe.outbound.protection.outlook.com (mail-pr2fra01on2074.outbound.protection.outlook.com [40.107.12.74])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NWVWm055Zz3bcT
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Dec 2022 18:30:10 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=BXPe17iqcxzBk8FFauCRd/Wo/pexBuqw/+ek/Gyo0MziqPk5rJtA1Wv7myWDSGxDdrbsF4uADZ0+kzgvDRRQAPceetMLcUnxwdLUzOpiWuWrp9E3s4HWNF0Dyx2sdbwQ31ZAf0u5IWyRw9amb/kMwjpeFj0LCU4pkdlmRgUNTDeKT7jjTlTuZrZJrl4wJsbUnVWgcB+8FsDy9q5zD9sOHukOe0vsJWLUXK1/Ki/zkVY0sOBA8qSqQ++RuYrevdGnPjzTpaS61ZOceY+LyQsUI53yQyCIeGlhG1hRsCbgg2Mlc4yUZiCiBPwt2V56bs3J5poAO4dqnsXgQtmz5KWlxQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0lwTymY4FgaNaJBs4HjjqwQ+NZ/XQr+B6URCQKmN8Gg=;
- b=RQkw9oXam+N4SOX8dflLlimZ80IOm6PRDJcIGTzAFeRCA0ZqL6K/42x3HsP0KSXYk5Cke/7ZX/imcfrCdTVOskylZsoQBfSR1ASAfOFCNMXOSJrw6d75YA0NqI18hUb85Zo88vUL+c2JUP2InE6c55VTEvyZpXhVEowacroEOopDOf7+vC4ra7fxidzvRzb11Z+2BU6A/D9Ft6G791IbT6TaipKhtjrCe7p0+Tzj9JYTRJEVVU9QDbab/LojwxOyaHM7E3bmY4Fomoj7FqFiV0IlhPPZSGOO0LgKdPzyTrVFZ7DuPH3ak9oLReubLkK0HhugrN5L0UJsuv7LB/d2IA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0lwTymY4FgaNaJBs4HjjqwQ+NZ/XQr+B6URCQKmN8Gg=;
- b=gD0KM3gw9On1MqJ7mZFCeIkPEBfvbcbZT+HlVkuVZVhv5AXIvPmx8BLd7djNmG3cLcO8W613d82WrbAkEal65baHXx3fDC9jvk8TaxeN3hj/hpKaPUcPLVV7yXMXCIQGCz7ynL6qLLgjMer+lnNqE+NQ9nHXs3Ke3oR7Y5oABoWy/T6fCvNYj6aq6tNQUtZeiGtUkcQk40jCfoHOtTsZKlmgFhAo8O2MptBNBl458l0oIQVy8mwr8LPhHXcUm6ZcsZnxXsrs7HnmyWp/I3fIo0ZPnmMdXIN4CYio2eeR1xq9MNtAxusUxcYuLkkHKeF/wUbZ3bOnHYC4Hj1jNbR/Bw==
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by PR1P264MB2048.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:1b3::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5880.19; Tue, 13 Dec
- 2022 07:29:50 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::a85b:a9b6:cb36:fa6]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::a85b:a9b6:cb36:fa6%9]) with mapi id 15.20.5880.019; Tue, 13 Dec 2022
- 07:29:50 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Michael Jeanson <mjeanson@efficios.com>, "linuxppc-dev@lists.ozlabs.org"
-	<linuxppc-dev@lists.ozlabs.org>
-Subject: Re: [RFC PATCH] Syscall tracing on PPC64_ELF_ABI_V1 without
- KALLSYMS_ALL
-Thread-Topic: [RFC PATCH] Syscall tracing on PPC64_ELF_ABI_V1 without
- KALLSYMS_ALL
-Thread-Index: AQHZDm/UBtWhlvS25UGRWg8dV8YpkK5rbH2A
-Date: Tue, 13 Dec 2022 07:29:50 +0000
-Message-ID: <39c53bd1-432f-15f6-4cbd-b8551fc261cf@csgroup.eu>
-References: <20221212212159.3435046-1-mjeanson@efficios.com>
-In-Reply-To: <20221212212159.3435046-1-mjeanson@efficios.com>
-Accept-Language: fr-FR, en-US
-Content-Language: fr-FR
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MRZP264MB2988:EE_|PR1P264MB2048:EE_
-x-ms-office365-filtering-correlation-id: a2cb3caf-e66e-4517-257a-08dadcdbd202
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  A1cvJSstesvowLSJKwKpWgDg2Q8v4AJzdPktK2lsqEYZYxHQL8kglsdWx0ev4ED5wjynLX1FaW/Ty+GmBJUlVEKVW69tCBAxLdVYF59IiQz+WhN/l6BmLN+td9hcdQXNQI6jyIS9H/z1LeOhb5qTa5yTi5y5gW5EnMro7cgmT+1jmtqPagwDvBDsSvWH5DbWm1n/b+geytleK3zCH9pwA/ojzbdf47wo4z4zw7IWzUH8mMniW6elbGtQFU8Ki/wrscYD2yLWHNWZZT3tr1iMxgiD2HWnjYkWOyUn/TMV5P6DzE6plwniIj9q6/0D3T3IEIwWhOjaRyIKLQm5IijFBe5ZXhbOcgblyXkGCm2dczV4px7JeFJ7J3uEN6XC6AI2IUdE7VliBZ7fi1C5BEzpNKghvfbqu1Cjy+/rhjivdscwdg9N4t/V11P45j9OD/tmZhRP6vet3kzwhryh4UIiXN4PjIi3JYVl2T//CFpPJ/2eYnHDC4/ktNzSGGvH2ZxQ8Eyr0H6YmSYmKJ1D3u2vXn+xbVktJQQzxzqj1DYhmY+op34HiwId2hsE9dHhjZRIO6x7qFsPEdXYX3Pv6TjMyY3HSPgzFB8lNplGUM/rVWVN/VrAMg5oClnqjzqn/bWMERU7neOEk1gtsb8LZkpZTOsAQumY5b15G5LZ9Y7W6tk0ssPGZDt1sThv9bat8WvuQNrpCWhzrSLzvNXfdzlyPZvLKzn3KLSAih1sp30pW62OajVgyvmXlHjEBlNezpzmp/l3+dmF8nnFXO0XUWb/FA==
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230022)(4636009)(136003)(396003)(346002)(376002)(366004)(39850400004)(451199015)(38100700002)(122000001)(2906002)(4326008)(86362001)(31696002)(66556008)(66946007)(316002)(66446008)(54906003)(91956017)(38070700005)(76116006)(64756008)(8676002)(41300700001)(110136005)(66476007)(44832011)(2616005)(5660300002)(7416002)(8936002)(478600001)(186003)(71200400001)(6512007)(26005)(6506007)(31686004)(6486002)(36756003)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?MldRdFVML3UrRlZuUno2NnlaUTNEM25neEhLeHJFM3VGS2FObHZ2eWF4ajVK?=
- =?utf-8?B?blpzV2tlTmN0MG5sZ1QyL3lmSzhZWFFUY29UUnpocVp1bXljbzN1VElqU1RI?=
- =?utf-8?B?NzNUcmRlK2RSQmloZGdwbzlkV0FFaFk0dld6TGpBNmtCQnVYZE4yeG5DaVdy?=
- =?utf-8?B?MS84cjliT0hWZjJiM2FXdVE4ZUlVL1ByaUtXS1hSVU80THl0OFNBcTRBRVRC?=
- =?utf-8?B?Z2FJQnd0SnhiTnZrL3NGeEl0bnBhY3d3aHR5aVZVSFZsZExTcTg4eWJGd1lz?=
- =?utf-8?B?dzVBZHJzVzhKenBXNmNnTU5qeHhWa05OM2Znc1docHFKL2kxdmNlck1iSk5Y?=
- =?utf-8?B?ZVlxZjdlblFST1FvYitZK0p3dy8waGFYOUxxMzVQVERxaEFwVE92M3d1UHpO?=
- =?utf-8?B?WHZRQnZmZitNenluVERpWUFjMUhvR3FKZmZkeFYraHozRDlUY2NzYlRqa0ZI?=
- =?utf-8?B?cVByRTJjd1EyOHFWeEk1L0pzOTlsOGkxdG1ycWJQQzdwSFQ3LzhxcnpjMmlx?=
- =?utf-8?B?NUVKMUowTXJTZ1p2RVdMRFNrcEFxN3RFNWl3b1ZqTU44Y25IanZ4VE45T2xX?=
- =?utf-8?B?WFdueENaRHhsRmtJQzMwTkdyTWhuc2l5TFRjN0llN0tLTXpBczJVdEpqbFl1?=
- =?utf-8?B?UjNCc2FuZGI5Vzg3WDB6NEFZMnUySlIrRy9iWTRTL3IzOVJDWHUzcml0REdU?=
- =?utf-8?B?WEhJV2ZjK3l6NGFTLytQY0NCZWlPVEJ5TDJDZ1lQL3VnMFg3akZsTXZCOTFU?=
- =?utf-8?B?VXJxQUM3eFljZG5CMllVUGNPSGpCeDdFdGQ3UCtBQThwVFczNjFGTXFuZnlU?=
- =?utf-8?B?ams1ZG1BYVJRK2VLdXArU3BaV1FnVlBidmp4ZjFmTkwzTVRrSkdLMW9CRWNr?=
- =?utf-8?B?QmZFdEpHb0t6Z0cyTzlFcUpRb2Y1VEFDODBuWXNWZkJhTVVSMXZOU01TSCty?=
- =?utf-8?B?dGRMKytPWHNwdldaeE1xa3RTQ3RlQ0JTYThBbkxxaDdpdTZHNk9JZFg5SWpO?=
- =?utf-8?B?K05RZGdoK2VOT09DY1M5NHpwVVlZTlYyTUhpV0RwelhYYkkyTzVPZnY3UUdp?=
- =?utf-8?B?ZVRUK0tmMVh4K1FRb3BlL0MycTFPZ00wUzFnK2g1VEplelQ0TjFoclQ5UHps?=
- =?utf-8?B?Smd4RFZCZlk2bEh2VGw0QXVUalFvaUV5K09mbHdMTjVJU20wR1dweEk0bmpo?=
- =?utf-8?B?c2wrQklEdTFHR3RBb2t0LzFvZ2RReGFITkNBMmlJR3dUbHMrU0ZtNlN2OVBH?=
- =?utf-8?B?Mld1Q2M0LzdMaGtVM1plb2dmWFdyV1A2YU1pZStJV1hCSjhjMDFJSG5Bc3Zj?=
- =?utf-8?B?UldWRDhWa3FQMTNzdjR0V2c3SDlWcTl0YjQ5MzZvZTZscnpGWUVweWtlZy9t?=
- =?utf-8?B?T1RxY0haUUZzT3lFY1ZnVVcrZStHd1VvNUZWbE8vNVgxTVRXVGFBbkppbG5X?=
- =?utf-8?B?eUZsRlRuSmIrUGVoL1ptWm54L28yRkxXNTFCU2dmMlQxY0F5THZLaEp1c0Y4?=
- =?utf-8?B?eG9WN3EzK3Vkc1lJM21RWVlxL1k3RnR5ellZWXRkL0lUUmxLUVd2Ukw4dmlY?=
- =?utf-8?B?aUNBMzYwaGNOYlNIdWlabWgrTGpHeG53UXdxUFg5SzgyRCsvUGtyWXVHakFD?=
- =?utf-8?B?SmhRWkp1aFVCQlovN3ZnajFpVHlBSjNDTHhHSUV3UFRSd3VvZ05FSU11UGZa?=
- =?utf-8?B?c1g3bXFDdE9CUWZaRk1YZEMyT0kwYXFsODAwUm1JMTl0eTVJS3pFTDlKTzJI?=
- =?utf-8?B?Qlh1elc3bitmWUl1R1Q4cVhrejBiTHdacXJhMEdzd0ZNRjBaUEI2SzBoaDJM?=
- =?utf-8?B?YnBkWmdLR1NGOGEyZCtKMXpRNlgrbEF1TU9XR3ZTdG9zbEhWSE51OUE1ZUhH?=
- =?utf-8?B?R2xjNi9qY3FZUmlZSWo1ZCt5OExDa095NHBTU2lmbEN4ZFd3c1Y3RXUrY2ll?=
- =?utf-8?B?cmFZNEMxMFZwWTVnL2xiYVVNamxOc3hiVU9nRXpoeHVKVTNXUTEyckVPUTlu?=
- =?utf-8?B?SEJBbnJER2ZNMUdha004UUhOSHlZL3ZOd3U4RU13bGVmK1dva2l1SWFwRS9K?=
- =?utf-8?B?clJLRytXZCswdEZRbTcvMTRWOGtTSEI3dlA1bGZSQ0Z3VHRRU0dXRHJMWTFl?=
- =?utf-8?B?QzlNR0pGN0hENndEUFRKSVpIbzhSekJEVWp6a3g3UlN2T0JUNFlOMjhWekdF?=
- =?utf-8?B?dFE9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <0703909A6910204C967AE69FA5A968BF@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NWWVQ3h8tz3bXW
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Dec 2022 19:14:06 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id A5A1161355
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Dec 2022 08:14:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E41CFC433F2
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Dec 2022 08:14:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1670919241;
+	bh=7xPEbrei0NyX/mGLvOAro3hLbHbX35N6d2BWlufUqBY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=thufXt/C2idr1pAvoqvCSS7Tyb9V6MrcxejLJ6Owpg8YjRTMLkozWeZ0oHN5hcx+M
+	 9N7mUgPisJrKIDOl4ckrTC0ON3okVhBFPvhfIgpStwedXMfXML3h0gLb8COffeAFYg
+	 KscklPw83es5TZpJU2H6NTZWh2/x5NEDggwn1Tv626EO+sICg4TXHDgoFrbr6E0BzJ
+	 3VWnGFVE1a8zP2R1CJEMR8j0jq3XpPEAcIF4BSVRtyz/L9w8PoFgFckfpaKQc4DstX
+	 Na3lMHiNN3oTi8h7mRtiT/yL8Fx8u0dgAPNDXwA2pvKTyeQLQaveTSl4vGN33YIvqE
+	 XMCzKXmijoBhQ==
+Received: by mail-ed1-f49.google.com with SMTP id a16so16584813edb.9
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Dec 2022 00:14:01 -0800 (PST)
+X-Gm-Message-State: ANoB5pkmUfnNrhqedIgLxHTC/DDKIGPuSY1BRruoJeaOu9RSWtWhzKjP
+	9gMVb/A3TR0SA9dM9q9YbmjnTOie1PU/5vcLorI=
+X-Google-Smtp-Source: AA0mqf71UOGF6I0rG8JS82bKCoXozbJrtc5xXMM60ai97cWLvWF2mzMa1fOE5BUnFghraHCMUbFT7CZ8Wu/LbCEonGk=
+X-Received: by 2002:aa7:cd4d:0:b0:46a:832a:b851 with SMTP id
+ v13-20020aa7cd4d000000b0046a832ab851mr58908656edw.127.1670919240038; Tue, 13
+ Dec 2022 00:14:00 -0800 (PST)
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: a2cb3caf-e66e-4517-257a-08dadcdbd202
-X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Dec 2022 07:29:50.5494
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: xgdFUj7EusPXQzJwMT1mSWI7KZt4JP3vsSrQuRvWp9kTSO6t9iyYeIaR+mwMa9qB11viS2KTKXaBsCsE5W/tv5lmRB+oVAQtUZ2SosGV2Hs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR1P264MB2048
+References: <20220901171252.2148348-1-song@kernel.org> <Y3expGRt4cPoZgHL@alley>
+ <CAPhsuW4qYpX7wzHn5J5Hn9cnOFSZwwQPCjTM_HPTt_zbBS03ww@mail.gmail.com>
+ <Y5Me5dTGv+GznvtO@alley> <CAPhsuW4pt7vfHTj8KorTRCx5zJaoUiyYUOLy8uXZDbTbur4RRA@mail.gmail.com>
+ <Y5dg25LV24mBRf4t@alley>
+In-Reply-To: <Y5dg25LV24mBRf4t@alley>
+From: Song Liu <song@kernel.org>
+Date: Tue, 13 Dec 2022 00:13:46 -0800
+X-Gmail-Original-Message-ID: <CAPhsuW7y1GzT8+quk4vJEqM6SagqDqc=HXA3jtdmfTfC=Gsv-Q@mail.gmail.com>
+Message-ID: <CAPhsuW7y1GzT8+quk4vJEqM6SagqDqc=HXA3jtdmfTfC=Gsv-Q@mail.gmail.com>
+Subject: Re: powerpc-part: was: Re: [PATCH v6] livepatch: Clear relocation
+ targets on a module removal
+To: Petr Mladek <pmladek@suse.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -137,88 +71,206 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>, "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>, "open list:PARISC ARCHITECTURE" <linux-parisc@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>, Steven Rostedt <rostedt@goodmis.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Masami Hiramatsu <mhiramat@kernel.org>
+Cc: jikos@kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>, joe.lawrence@redhat.com, Josh Poimboeuf <jpoimboe@redhat.com>, live-patching@vger.kernel.org, mbenes@suse.cz, linuxppc-dev@lists.ozlabs.org, jpoimboe@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-VGhlIGNoYW5nZXMgYXJlIGFic29sdXRlbHkgbm90IHNwZWNpZmljIHRvIHBvd2VycGMuIFlvdSBz
-aG91bGQgYWRqdXN0IA0KdGhlIHN1YmplY3QgYWNjb3JkaW5nbHksIGFuZCBjb3B5IGxpbnV4LWFy
-Y2ggYW5kIHRyYWNpbmcgYW5kIHByb2JhYmx5IA0KYWxzbyBpYTY0IGFuZCBwYXJpc2MuDQoNCkxl
-IDEyLzEyLzIwMjIgw6AgMjI6MjEsIE1pY2hhZWwgSmVhbnNvbiBhIMOpY3JpdMKgOg0KPiBJbiBh
-ZDA1MGQyMzkwZmNjYjIyYWEzZTZmNjVlMTE3NTdjZTdhNWE3Y2E1IHdlIGZpeGVkIGZ0cmFjZSBz
-eXNjYWxsDQo+IHRyYWNpbmcgb24gUFBDNjRfRUxGX0FCSV9WMSBieSBsb29raW5nIGZvciB0aGUg
-bm9uLWRvdCBwcmVmaXhlZCBzeW1ib2wNCj4gb2YgYSBzeXNjYWxsLg0KDQpTaG91bGQgYmUgd3Jp
-dHRlbiBhczoNCg0KQ29tbWl0IGFkMDUwZDIzOTBmYyAoInBvd2VycGMvZnRyYWNlOiBmaXggc3lz
-Y2FsbCB0cmFjaW5nIG9uIA0KUFBDNjRfRUxGX0FCSV9WMSIpIGZpeGVkIC4uLi4NCg0KDQo+IA0K
-PiBGdHJhY2UgdXNlcyBrYWxsc3ltcyB0byBsb2NhdGUgc3lzY2FsbCBzeW1ib2xzIGFuZCB0aG9z
-ZSBub24tZG90DQo+IHByZWZpeGVkIHN5bWJvbHMgcmVzaWRlIGluIGEgc2VwYXJhdGUgJy5vcGQn
-IHNlY3Rpb24gd2hpY2ggaXMgbm90DQo+IGluY2x1ZGVkIGJ5IGthbGxzeW1zLg0KPiANCj4gU28g
-d2UgZWl0aGVyIG5lZWQgdG8gaGF2ZSBGVFJBQ0VfU1lTQ0FMTFMgc2VsZWN0IEtBTExTWU1TX0FM
-TCBvbg0KPiBQUEM2NF9FTEZfQUJJX1YxIG9yIGFkZCB0aGUgJy5vcGQnIHNlY3Rpb24gc3ltYm9s
-cyB0byBrYWxsc3ltcy4NCj4gDQo+IFRoaXMgcGF0Y2ggZG9lcyB0aGUgbWluaW11bSB0byBhY2hp
-ZXZlIHRoZSBsYXR0ZXIsIGl0J3MgdGVzdGVkIG9uIGENCj4gY29yZW5ldDY0X3NtcF9kZWZjb25m
-aWcgd2l0aCBLQUxMU1lNU19BTEwgdHVybmVkIG9mZi4NCj4gDQo+IEknbSB1bnN1cmUgd2hpY2gg
-b2YgdGhlIGFsdGVybmF0aXZlcyB3b3VsZCBiZSBiZXR0ZXIuDQo+IA0KPiAtLS0NCj4gSW4gJ2tl
-cm5lbC9tb2R1bGUva2FsbHN5bXMuYycgdGhlICdpc19jb3JlX3N5bWJvbCcgZnVuY3Rpb24gbWln
-aHQgYWxzbw0KPiByZXF1aXJlIHNvbWUgdHdlYWtpbmcgdG8gbWFrZSBhbGwgb3BkIHN5bWJvbHMg
-YXZhaWxhYmxlIHRvIGthbGxzeW1zIGJ1dA0KPiB0aGF0IGRvZXNuJ3QgaW1wYWN0IGZ0cmFjZSBz
-eXNjYWxsIHRyYWNpbmcuDQo+IA0KPiBDYzogTWljaGFlbCBFbGxlcm1hbiA8bXBlQGVsbGVybWFu
-LmlkLmF1Pg0KPiBDYzogQ2hyaXN0b3BoZSBMZXJveSA8Y2hyaXN0b3BoZS5sZXJveUBjc2dyb3Vw
-LmV1Pg0KPiBDYzogTWF0aGlldSBEZXNub3llcnMgPG1hdGhpZXUuZGVzbm95ZXJzQGVmZmljaW9z
-LmNvbT4NCj4gU2lnbmVkLW9mZi1ieTogTWljaGFlbCBKZWFuc29uIDxtamVhbnNvbkBlZmZpY2lv
-cy5jb20+DQo+IC0tLQ0KPiAgIGluY2x1ZGUvYXNtLWdlbmVyaWMvc2VjdGlvbnMuaCB8IDE0ICsr
-KysrKysrKysrKysrDQo+ICAgaW5jbHVkZS9saW51eC9rYWxsc3ltcy5oICAgICAgIHwgIDMgKysr
-DQo+ICAga2VybmVsL2thbGxzeW1zLmMgICAgICAgICAgICAgIHwgIDIgKysNCj4gICBzY3JpcHRz
-L2thbGxzeW1zLmMgICAgICAgICAgICAgfCAgMSArDQo+ICAgNCBmaWxlcyBjaGFuZ2VkLCAyMCBp
-bnNlcnRpb25zKCspDQo+IA0KPiBkaWZmIC0tZ2l0IGEvaW5jbHVkZS9hc20tZ2VuZXJpYy9zZWN0
-aW9ucy5oIGIvaW5jbHVkZS9hc20tZ2VuZXJpYy9zZWN0aW9ucy5oDQo+IGluZGV4IGRiMTNiYjYy
-MGY1Mi4uMTQxMDU2Njk1N2U1IDEwMDY0NA0KPiAtLS0gYS9pbmNsdWRlL2FzbS1nZW5lcmljL3Nl
-Y3Rpb25zLmgNCj4gKysrIGIvaW5jbHVkZS9hc20tZ2VuZXJpYy9zZWN0aW9ucy5oDQo+IEBAIC0x
-ODAsNiArMTgwLDIwIEBAIHN0YXRpYyBpbmxpbmUgYm9vbCBpc19rZXJuZWxfcm9kYXRhKHVuc2ln
-bmVkIGxvbmcgYWRkcikNCj4gICAJICAgICAgIGFkZHIgPCAodW5zaWduZWQgbG9uZylfX2VuZF9y
-b2RhdGE7DQo+ICAgfQ0KPiAgIA0KPiArLyoqDQo+ICsgKiBpc19rZXJuZWxfb3BkIC0gY2hlY2tz
-IGlmIHRoZSBwb2ludGVyIGFkZHJlc3MgaXMgbG9jYXRlZCBpbiB0aGUNCj4gKyAqICAgICAgICAg
-ICAgICAgICAub3BkIHNlY3Rpb24NCj4gKyAqDQo+ICsgKiBAYWRkcjogYWRkcmVzcyB0byBjaGVj
-aw0KPiArICoNCj4gKyAqIFJldHVybnM6IHRydWUgaWYgdGhlIGFkZHJlc3MgaXMgbG9jYXRlZCBp
-biAub3BkLCBmYWxzZSBvdGhlcndpc2UuDQo+ICsgKi8NCj4gK3N0YXRpYyBpbmxpbmUgYm9vbCBp
-c19rZXJuZWxfb3BkKHVuc2lnbmVkIGxvbmcgYWRkcikNCj4gK3sNCg0KSSB3b3VsZCBhZGQgYSBj
-aGVjayBvZiBDT05GSUdfSEFWRV9GVU5DVElPTl9ERVNDUklQVE9SUzoNCg0KCWlmICghSVNfRU5B
-QkxFRChDT05GSUdfSEFWRV9GVU5DVElPTl9ERVNDUklQVE9SUykpDQoJCXJldHVybiBmYWxzZTsN
-Cg0KPiArCXJldHVybiBhZGRyID49ICh1bnNpZ25lZCBsb25nKV9fc3RhcnRfb3BkICYmDQo+ICsJ
-ICAgICAgIGFkZHIgPCAodW5zaWduZWQgbG9uZylfX2VuZF9vcGQ7DQo+ICt9DQo+ICsNCj4gICAv
-KioNCj4gICAgKiBpc19rZXJuZWxfaW5pdHRleHQgLSBjaGVja3MgaWYgdGhlIHBvaW50ZXIgYWRk
-cmVzcyBpcyBsb2NhdGVkIGluIHRoZQ0KPiAgICAqICAgICAgICAgICAgICAgICAgICAgIC5pbml0
-LnRleHQgc2VjdGlvbg0KPiBkaWZmIC0tZ2l0IGEvaW5jbHVkZS9saW51eC9rYWxsc3ltcy5oIGIv
-aW5jbHVkZS9saW51eC9rYWxsc3ltcy5oDQo+IGluZGV4IDY0OWZhYWMzMWRkYi4uOWJmYjRkOGQ0
-MWE1IDEwMDY0NA0KPiAtLS0gYS9pbmNsdWRlL2xpbnV4L2thbGxzeW1zLmgNCj4gKysrIGIvaW5j
-bHVkZS9saW51eC9rYWxsc3ltcy5oDQo+IEBAIC00Myw2ICs0Myw5IEBAIHN0YXRpYyBpbmxpbmUg
-aW50IGlzX2tzeW1fYWRkcih1bnNpZ25lZCBsb25nIGFkZHIpDQo+ICAgCWlmIChJU19FTkFCTEVE
-KENPTkZJR19LQUxMU1lNU19BTEwpKQ0KPiAgIAkJcmV0dXJuIGlzX2tlcm5lbChhZGRyKTsNCj4g
-ICANCj4gKwlpZiAoSVNfRU5BQkxFRChDT05GSUdfSEFWRV9GVU5DVElPTl9ERVNDUklQVE9SUykp
-DQo+ICsJCXJldHVybiBpc19rZXJuZWxfdGV4dChhZGRyKSB8fCBpc19rZXJuZWxfaW5pdHRleHQo
-YWRkcikgfHwgaXNfa2VybmVsX29wZChhZGRyKTsNCj4gKw0KDQpXaXRoIHRoZSBjaGVjayBpbnNp
-ZGUgaXNfa2VybmVsX29wZCgpLCB5b3UgY2FuIG1ha2UgaXQgc2ltcGxlcjoNCg0KCXJldHVybiBp
-c19rZXJuZWxfdGV4dChhZGRyKSB8fCBpc19rZXJuZWxfaW5pdHRleHQoYWRkcikgfHwgDQppc19r
-ZXJuZWxfb3BkKGFkZHIpOw0KDQo+ICAgCXJldHVybiBpc19rZXJuZWxfdGV4dChhZGRyKSB8fCBp
-c19rZXJuZWxfaW5pdHRleHQoYWRkcik7DQo+ICAgfQ0KPiAgIA0KPiBkaWZmIC0tZ2l0IGEva2Vy
-bmVsL2thbGxzeW1zLmMgYi9rZXJuZWwva2FsbHN5bXMuYw0KPiBpbmRleCA2MGMyMGYzMDFhNmIu
-LjAwOWIxY2EyMTYxOCAxMDA2NDQNCj4gLS0tIGEva2VybmVsL2thbGxzeW1zLmMNCj4gKysrIGIv
-a2VybmVsL2thbGxzeW1zLmMNCj4gQEAgLTI4MSw2ICsyODEsOCBAQCBzdGF0aWMgdW5zaWduZWQg
-bG9uZyBnZXRfc3ltYm9sX3Bvcyh1bnNpZ25lZCBsb25nIGFkZHIsDQo+ICAgCQkJc3ltYm9sX2Vu
-ZCA9ICh1bnNpZ25lZCBsb25nKV9laW5pdHRleHQ7DQo+ICAgCQllbHNlIGlmIChJU19FTkFCTEVE
-KENPTkZJR19LQUxMU1lNU19BTEwpKQ0KPiAgIAkJCXN5bWJvbF9lbmQgPSAodW5zaWduZWQgbG9u
-ZylfZW5kOw0KPiArCQllbHNlIGlmIChJU19FTkFCTEVEKENPTkZJR19IQVZFX0ZVTkNUSU9OX0RF
-U0NSSVBUT1JTKSAmJiBpc19rZXJuZWxfb3BkKGFkZHIpKQ0KPiArCQkJc3ltYm9sX2VuZCA9ICh1
-bnNpZ25lZCBsb25nKV9fZW5kX29wZDsNCg0KU2FtZSwgd2l0aCB0aGUgY2hlY2sgaW5jbHVkZWQg
-aW5zaWRlIGlzX2tlcm5lbF9vcGQoKSB5b3UgZG9uJ3QgbmVlZCB0aGUgDQpJU19FTkFCTEVEKENP
-TkZJR19IQVZFX0ZVTkNUSU9OX0RFU0NSSVBUT1JTKSBoZXJlLg0KDQo+ICAgCQllbHNlDQo+ICAg
-CQkJc3ltYm9sX2VuZCA9ICh1bnNpZ25lZCBsb25nKV9ldGV4dDsNCj4gICAJfQ0KPiBkaWZmIC0t
-Z2l0IGEvc2NyaXB0cy9rYWxsc3ltcy5jIGIvc2NyaXB0cy9rYWxsc3ltcy5jDQo+IGluZGV4IDAz
-ZmEwN2FkNDVkOS4uZGVjZjMxYzQ5N2Y1IDEwMDY0NA0KPiAtLS0gYS9zY3JpcHRzL2thbGxzeW1z
-LmMNCj4gKysrIGIvc2NyaXB0cy9rYWxsc3ltcy5jDQo+IEBAIC02NCw2ICs2NCw3IEBAIHN0YXRp
-YyB1bnNpZ25lZCBsb25nIGxvbmcgcmVsYXRpdmVfYmFzZTsNCj4gICBzdGF0aWMgc3RydWN0IGFk
-ZHJfcmFuZ2UgdGV4dF9yYW5nZXNbXSA9IHsNCj4gICAJeyAiX3N0ZXh0IiwgICAgICJfZXRleHQi
-ICAgICB9LA0KPiAgIAl7ICJfc2luaXR0ZXh0IiwgIl9laW5pdHRleHQiIH0sDQo+ICsJeyAiX19z
-dGFydF9vcGQiLCAiX19lbmRfb3BkIiB9LA0KPiAgIH07DQo+ICAgI2RlZmluZSB0ZXh0X3Jhbmdl
-X3RleHQgICAgICgmdGV4dF9yYW5nZXNbMF0pDQo+ICAgI2RlZmluZSB0ZXh0X3JhbmdlX2luaXR0
-ZXh0ICgmdGV4dF9yYW5nZXNbMV0pDQo=
+)() ()On Mon, Dec 12, 2022 at 9:12 AM Petr Mladek <pmladek@suse.com> wrote:
+>
+> On Fri 2022-12-09 11:59:35, Song Liu wrote:
+> > On Fri, Dec 9, 2022 at 3:41 AM Petr Mladek <pmladek@suse.com> wrote:
+> > > On Mon 2022-11-28 17:57:06, Song Liu wrote:
+> > > > On Fri, Nov 18, 2022 at 8:24 AM Petr Mladek <pmladek@suse.com> wrote:
+> > > > >
+> > > > > > --- a/arch/powerpc/kernel/module_64.c
+> > > > > > +++ b/arch/powerpc/kernel/module_64.c
+> > > > > > +#ifdef CONFIG_LIVEPATCH
+> > > > > > +void clear_relocate_add(Elf64_Shdr *sechdrs,
+> > > > > > +                    const char *strtab,
+> > > > > > +                    unsigned int symindex,
+> > > > > > +                    unsigned int relsec,
+> > > > > > +                    struct module *me)
+> > > > > > +{
+>
+> [...]
+>
+> > > > > > +
+> > > > > > +             instruction = (u32 *)location;
+> > > > > > +             if (is_mprofile_ftrace_call(symname))
+> > > > > > +                     continue;
+> > >
+> > > Why do we ignore these symbols?
+> > >
+> > > I can't find any counter-part in apply_relocate_add(). It looks super
+> > > tricky. It would deserve a comment.
+> > >
+> > > And I have no idea how we could maintain these exceptions.
+> > >
+> > > > > > +             if (!instr_is_relative_link_branch(ppc_inst(*instruction)))
+> > > > > > +                     continue;
+> > >
+> > > Same here. It looks super tricky and there is no explanation.
+> >
+> > The two checks are from restore_r2(). But I cannot really remember
+> > why we needed them. It is probably an updated version from an earlier
+> > version (3 year earlier..).
+>
+> This is a good sign that it has to be explained in a comment.
+> Or even better, it should not by copy pasted.
+>
+> > > > > > +             instruction += 1;
+> > > > > > +             patch_instruction(instruction, ppc_inst(PPC_RAW_NOP()));
+>
+> I believe that this is not enough. apply_relocate_add() does this:
+>
+> int apply_relocate_add(Elf64_Shdr *sechdrs,
+> [...]
+>                        struct module *me)
+> {
+> [...]
+>                 case R_PPC_REL24:
+>                         /* FIXME: Handle weak symbols here --RR */
+>                         if (sym->st_shndx == SHN_UNDEF ||
+>                             sym->st_shndx == SHN_LIVEPATCH) {
+> [...]
+>                         if (!restore_r2(strtab + sym->st_name,
+>                                                         (u32 *)location + 1, me))
+> [...]                                   return -ENOEXEC;
+>
+> --->                    if (patch_instruction((u32 *)location, ppc_inst(value)))
+>                                 return -EFAULT;
+>
+> , where restore_r2() does:
+>
+> static int restore_r2(const char *name, u32 *instruction, struct module *me)
+> {
+> [...]
+>         /* ld r2,R2_STACK_OFFSET(r1) */
+> --->    if (patch_instruction(instruction, ppc_inst(PPC_INST_LD_TOC)))
+>                 return 0;
+> [...]
+> }
+>
+> By other words, apply_relocate_add() modifies two instructions:
+>
+>    + patch_instruction() called in restore_r2() writes into "location + 1"
+>    + patch_instruction() called in apply_relocate_add() writes into "location"
+>
+> IMHO, we have to clear both.
+>
+> IMHO, we need to implement a function that reverts the changes done
+> in restore_r2(). Also we need to revert the changes done in
+> apply_relocate_add().
+
+I finally got time to read all the details again and recalled what
+happened with the code.
+
+The failure happens when we
+1) call apply_relocate_add() on klp load (or module first load,
+   if klp was loaded first);
+2) do nothing when the module is unloaded;
+3) call apply_relocate_add() on module reload, which failed.
+
+The failure happens at this check in restore_r2():
+
+        if (*instruction != PPC_RAW_NOP()) {
+                pr_err("%s: Expected nop after call, got %08x at %pS\n",
+                        me->name, *instruction, instruction);
+                return 0;
+        }
+
+Therefore, apply_relocate_add only fails when "location + 1"
+is not NOP. And to make it not fail, we only need to write NOP to
+"location + 1" in clear_relocate_add().
+
+IIUC, you want clear_relocate_add() to undo everything we did
+in apply_relocate_add(); while I was writing clear_relocate_add()
+to make the next apply_relocate_add() not fail.
+
+I agree that, based on the name, clear_relocate_add() should
+undo everything by apply_relocate_add(). But I am not sure how
+to handle some cases. For example, how do we undo
+
+                case R_PPC64_ADDR32:
+                        /* Simply set it */
+                        *(u32 *)location = value;
+                       break;
+
+Shall we just write zeros? I don't think this matters.
+
+I think this is the question we should answer first:
+What shall clear_relocate_add() do?
+1) undo everything by apply_relocate_add();
+2) only do things needed to make the next
+   apply_relocate_add succeed;
+3) something between 1) and 2).
+
+WDYT?
+
+Thanks,
+Song
+
+>
+> Please, avoid code duplication as much as possible. Especially,
+> the two checks is_mprofile_ftrace_call() and
+> instr_is_relative_link_branch() must be shared. IMHO, it is
+> the only way to keep the code maintainable. We must make sure that
+> we will clear the instructions only when they were patched. And
+> copy pasting various tricky exceptions is a way to hell.
+>
+>
+> > > int update_relocate_add(Elf64_Shdr *sechdrs,
+> > >                        const char *strtab,
+> > >                        unsigned int symindex,
+> > >                        unsigned int relsec,
+> > >                        struct module *me,
+> > >                        bool apply)
+> > > {
+> > >         unsigned int i;
+> > >         Elf64_Rela *rela = (void *)sechdrs[relsec].sh_addr;
+> > >         Elf64_Sym *sym;
+> > >         Elf64_Xword r_type;
+> > >         unsigned long *location;
+> > >
+> > >         if (apply) {
+> > >                 pr_debug("Applying ADD relocate section %u to %u\n", relsec,
+> > >                        sechdrs[relsec].sh_info);
+> > >         } else {
+> > >                 pr_debug("Clearing ADD relocate section %u\n", relsec");
+> > >         }
+> > >
+> > >         for (i = 0; i < sechdrs[relsec].sh_size / sizeof(*rela); i++) {
+> > >                 /* This is where to make the change */
+> > >                 location = (void *)sechdrs[sechdrs[relsec].sh_info].sh_addr
+> > >                         + rela[i].r_offset;
+> > >                 /* This is the symbol it is referring to */
+> > >                 sym = (Elf64_Sym *)sechdrs[symindex].sh_addr
+> > >                         + ELF64_R_SYM(rela[i].r_info);
+> > >
+> > >                 r_type = ELF64_R_TYPE(rela[i].r_info);
+> > >
+> > >                 if (apply) {
+> > >                         apply_relocate_location(sym, location, r_type, rela[i].r_addend);
+> > >                 } else {
+> > >                         clear_relocate_location(sym, location, r_type);
+> > >                 }
+> >
+> > I personally don't like too many "if (apply) {...} else {...}" patterns in
+> > a function. And these new functions confuse me sometimes:
+> >
+> >     update_relocate_add(..., apply);
+> >     apply_relocate_location();
+> >     clear_relocate_location();
+>
+> Feel free to come up with another way how to avoid code duplication.
+>
+> > And I did think there wasn't too much duplicated code.
+>
+> I think that it looks very different when you are writing or reading
+> or mantainting the code. It might be easier to write code and modify
+> it. It is more complicated to find the differences later. Also it is
+> more complicated to do the same changes many times when the common
+> code is updated later.
+>
+> Best Regards,
+> Petr
