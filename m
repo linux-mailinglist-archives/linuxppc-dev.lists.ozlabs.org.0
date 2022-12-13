@@ -2,60 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62B4564B125
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Dec 2022 09:29:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2B4364B15A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Dec 2022 09:42:34 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NWWrN2KMRz3bgB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Dec 2022 19:29:40 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QrK3NREL;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NWX7D6WtTz3cCn
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Dec 2022 19:42:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=song@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QrK3NREL;
-	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=lug-owl.de (client-ip=188.68.32.151; helo=lug-owl.de; envelope-from=jbglaw@lug-owl.de; receiver=<UNKNOWN>)
+X-Greylist: delayed 39038 seconds by postgrey-1.36 at boromir; Tue, 13 Dec 2022 19:42:02 AEDT
+Received: from lug-owl.de (lug-owl.de [188.68.32.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NWWqT137Cz3bZx
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Dec 2022 19:28:53 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 3F08F612EA
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Dec 2022 08:28:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7B37C43392
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Dec 2022 08:28:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1670920129;
-	bh=biF+eTAkqIF3JO1B3nBjssgb0I7rUJZqnOdeA52gK48=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=QrK3NRELFIITs1X8Gw7MJg3X3dF0hB/xwQREu98b7mfLZPkM3w/fUW8HrhBM12OCI
-	 GXkSMuybgH9ndTcCMbkOagzkLXcm68Utxdt8TSo8LK7L6ynXowVoOWC7sXlu0l2hQN
-	 PmDCk2wFybWtlwlhiLu81x0unvD7yNaMPWyT/q1+dv1tN5vEf+O19ybixDuf03lel/
-	 L0Fx7j+41aEDox76It7LB58bRCXSlUJKHu72Tr2wj4kTWm8EfDgOMdeo8NznA8yxZu
-	 8rLhKvL9nsrks5imK16kbsGH6L+BtOPC0dIk8zeOctmy3wGffCt+4S6kBf5vC4d+D+
-	 5fR++QaSixYiQ==
-Received: by mail-ej1-f42.google.com with SMTP id u19so16182944ejm.8
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Dec 2022 00:28:49 -0800 (PST)
-X-Gm-Message-State: ANoB5plCNbGqnOY1eJMBThOonj+zY7xmp/1BOnA8KiiiskqfxwJFidbI
-	YxG/YwEoWYhNN23gkvVJFr8hdtEPxpWjfMlmNqc=
-X-Google-Smtp-Source: AA0mqf4vJcEo1LSRY4RhLmFU2YbQkyl5LsUhYjyJyozawpCFk4qzUpBunnKcYc+d3Bkt4qORmVm+XeLuIBwoCK+0dLg=
-X-Received: by 2002:a17:906:a198:b0:7b4:bc42:3b44 with SMTP id
- s24-20020a170906a19800b007b4bc423b44mr75084269ejy.101.1670920127837; Tue, 13
- Dec 2022 00:28:47 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NWX6f4pG7z3bWb
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Dec 2022 19:42:02 +1100 (AEDT)
+Received: by lug-owl.de (Postfix, from userid 1001)
+	id DED2B42065; Tue, 13 Dec 2022 09:41:59 +0100 (CET)
+Date: Tue, 13 Dec 2022 09:41:59 +0100
+From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: Mass-building defconfigs: many fail with assembler errors
+Message-ID: <20221213084159.ozxwohsq7q2yuko3@lug-owl.de>
+References: <20221212215117.aa7255t7qd6yefk4@lug-owl.de>
+ <87bko8j73z.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-References: <20220901171252.2148348-1-song@kernel.org> <alpine.LSU.2.21.2212091352370.18933@pobox.suse.cz>
-In-Reply-To: <alpine.LSU.2.21.2212091352370.18933@pobox.suse.cz>
-From: Song Liu <song@kernel.org>
-Date: Tue, 13 Dec 2022 00:28:34 -0800
-X-Gmail-Original-Message-ID: <CAPhsuW5xb2T5FBXUqG2S+AXBvDYSkLVVvUyDamjrbLQwe-3kVQ@mail.gmail.com>
-Message-ID: <CAPhsuW5xb2T5FBXUqG2S+AXBvDYSkLVVvUyDamjrbLQwe-3kVQ@mail.gmail.com>
-Subject: Re: [PATCH v6] livepatch: Clear relocation targets on a module removal
-To: Miroslav Benes <mbenes@suse.cz>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="axj77vpf7o6rgutp"
+Content-Disposition: inline
+In-Reply-To: <87bko8j73z.fsf@mpe.ellerman.id.au>
+X-Operating-System: Linux chamaeleon 5.14.0-0.bpo.2-amd64 
+X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
+X-gpg-key: wwwkeys.de.pgp.net
+X-Echelon-Enable: howto poison arsenous mail psychological biological nuclear
+ warfare test the bombastical terror of flooding the spy listeners explosion
+ sex drugs and rock'n'roll
+X-TKUeV: howto poison arsenous mail psychological biological nuclear warfare
+ test the bombastical terror of flooding the spy listeners explosion sex
+ drugs and rock'n'roll
+X-message-flag: Please send plain text messages only. Do not send HTML
+ emails. Thank you. 
+User-Agent: NeoMutt/20170113 (1.7.2)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,99 +53,137 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: pmladek@suse.com, jikos@kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, joe.lawrence@redhat.com, Josh Poimboeuf <jpoimboe@redhat.com>, live-patching@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, jpoimboe@kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Dec 9, 2022 at 4:55 AM Miroslav Benes <mbenes@suse.cz> wrote:
->
-> Hi,
->
-> first thank you for taking over and I also appologize for not replying
-> much sooner.
->
-> On Thu, 1 Sep 2022, Song Liu wrote:
->
-> > From: Miroslav Benes <mbenes@suse.cz>
-> >
-> > Josh reported a bug:
-> >
-> >   When the object to be patched is a module, and that module is
-> >   rmmod'ed and reloaded, it fails to load with:
-> >
-> >   module: x86/modules: Skipping invalid relocation target, existing value is nonzero for type 2, loc 00000000ba0302e9, val ffffffffa03e293c
-> >   livepatch: failed to initialize patch 'livepatch_nfsd' for module 'nfsd' (-8)
-> >   livepatch: patch 'livepatch_nfsd' failed for module 'nfsd', refusing to load module 'nfsd'
-> >
-> >   The livepatch module has a relocation which references a symbol
-> >   in the _previous_ loading of nfsd. When apply_relocate_add()
-> >   tries to replace the old relocation with a new one, it sees that
-> >   the previous one is nonzero and it errors out.
-> >
-> >   On ppc64le, we have a similar issue:
-> >
-> >   module_64: livepatch_nfsd: Expected nop after call, got e8410018 at e_show+0x60/0x548 [livepatch_nfsd]
-> >   livepatch: failed to initialize patch 'livepatch_nfsd' for module 'nfsd' (-8)
-> >   livepatch: patch 'livepatch_nfsd' failed for module 'nfsd', refusing to load module 'nfsd'
-> >
-> > He also proposed three different solutions. We could remove the error
-> > check in apply_relocate_add() introduced by commit eda9cec4c9a1
-> > ("x86/module: Detect and skip invalid relocations"). However the check
-> > is useful for detecting corrupted modules.
-> >
-> > We could also deny the patched modules to be removed. If it proved to be
-> > a major drawback for users, we could still implement a different
-> > approach. The solution would also complicate the existing code a lot.
-> >
-> > We thus decided to reverse the relocation patching (clear all relocation
-> > targets on x86_64). The solution is not
-> > universal and is too much arch-specific, but it may prove to be simpler
-> > in the end.
-> >
-> > Reported-by: Josh Poimboeuf <jpoimboe@redhat.com>
-> > Signed-off-by: Miroslav Benes <mbenes@suse.cz>
-> > Signed-off-by: Song Liu <song@kernel.org>
->
-> Petr has commented on the code aspects. I will just add that s390x was not
-> dealt with at the time because there was no live patching support for
-> s390x back then if I remember correctly and my notes do not lie. The same
-> applies to powerpc32. I think that both should be fixed as well with this
-> patch. It might also help to clean up the ifdeffery in the patch a bit.
 
-After reading the code (no testing), I think we don't need any logic for
-ppc32 and s390.
+--axj77vpf7o6rgutp
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-We need clear_relocate_add() to handle module reload failure.
-The failure happens when we
+Hi Michael,
 
-1) call apply_relocate_add() on klp load (or module first load,
-   if klp was loaded first);
-2) do nothing when the module is unloaded;
-3) call apply_relocate_add() on module reload, which failed.
+On Tue, 2022-12-13 14:49:20 +1100, Michael Ellerman <mpe@ellerman.id.au> wr=
+ote:
+> Jan-Benedict Glaw <jbglaw@lug-owl.de> writes:
+> > Is anybody else routinely building current Binutils + GCC, to try to
+> > build all the Linux defconfigs?
+>=20
+> I did for several years, but eventually stopped because it was taking
+> too much time I needed to spend on other things.
 
-This failure happens in the sanity check in
-apply_relocate_add().
+I've got one system at my hands to let it build stuff all day. So I'm
+trying to extend that as far as possible.
 
-For x86, the check is something like:
-                                if (*(s32 *)loc != 0)
-                                        goto invalid_relocation;
+> > For PPC, a good number of those fail,
+> > and I probably don't understand PPC well enough to propose patches. Or
+> > did I pick wrongly targeted toolchains? Most of the time, my suspicion
+> > is that we're not giving the correct -m<cpu> flags in
+> > ./arch/powerpc/boot/?  (My setup for doing test builds is fairly automa=
+ted, I
+> > can easily throw in patches for testing.)
+>=20
+> All the results against <something>.config are invalid or at least
+> dubious. Those files are not standalone defconfigs, they're fragments of
+> defconfigs that are assembled together by arch/powerpc/Makefile using
+> merge_config.sh.
+>=20
+> So your script should exclude all files that end in ".config".
 
-For ppc64, the check is in restore_r2():
+Thanks!  Will just drop those.
 
-        if (*instruction != PPC_RAW_NOP()) {
-                pr_err("%s: Expected nop after call, got %08x at %pS\n",
-                        me->name, *instruction, instruction);
-                return 0;
-        }
+> To find the names of the generated configs you can use something like:
+>=20
+>  $ awk '/PHONY \+=3D .*config/ {print $3}' arch/powerpc/Makefile
 
-I don't think we have similar checks for ppc32 and s390, so
-clear_relocate_add() is not needed for the two.
+=2E..and integrate these instead. Thanks a lot!
 
-OTOH, we can argue that clear_relocate_add() should undo
-everything apply_relocate_add() did. But I do think that
-will be an overkill.
+> > 64-bit.config
+> > 	  powerpc64-linux-gcc -Wp,-MD,arch/powerpc/boot/.opal-calls.o.d -D__AS=
+SEMBLY__ -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-alias=
+ing -O2 -msoft-float -mno-altivec -mno-vsx   -pipe -fomit-frame-pointer -fn=
+o-builtin -fPIC -nostdinc -I./arch/powerpc/include -I./arch/powerpc/include=
+/generated  -I./include -I./arch/powerpc/include/uapi -I./arch/powerpc/incl=
+ude/generated/uapi -I./include/uapi -I./include/generated/uapi -include ./i=
+nclude/linux/compiler-version.h -include ./include/linux/kconfig.h -m32 -mc=
+pu=3Dpowerpc -isystem /var/lib/laminar/run/linux-powerpc-64-bit.config/12/t=
+oolchain/bin/../lib/gcc/powerpc64-linux/13.0.0/include -mbig-endian -nostdi=
+nc -c -o arch/powerpc/boot/opal-calls.o arch/powerpc/boot/opal-calls.S
+> > 	arch/powerpc/boot/opal-calls.S: Assembler messages:
+> > 	arch/powerpc/boot/opal-calls.S:20: Error: unrecognized opcode: `ld'
+> > 	arch/powerpc/boot/opal-calls.S:21: Error: unrecognized opcode: `ld'
+> > 	arch/powerpc/boot/opal-calls.S:32: Error: unrecognized opcode: `std'
+> > 	arch/powerpc/boot/opal-calls.S:49: Error: unrecognized opcode: `ld'
+> > 	arch/powerpc/boot/opal-calls.S:50: Error: unrecognized opcode: `ld'
+> > 	arch/powerpc/boot/opal-calls.S:52: Error: unrecognized opcode: `hrfid'
+> > 	arch/powerpc/boot/opal-calls.S:55: Error: unrecognized opcode: `tdi'
+> > 	arch/powerpc/boot/opal-calls.S:58: Error: unrecognized opcode: `ld'
+> > 	make[1]: *** [arch/powerpc/boot/Makefile:232: arch/powerpc/boot/opal-c=
+alls.o] Error 1
+> > 	make: *** [arch/powerpc/Makefile:247: zImage] Error 2
+>=20
+> ...
+>=20
+> > bamboo_defconfig
+> > 	  powerpc-linux-gcc -Wp,-MD,arch/powerpc/boot/.treeboot-akebono.o.d -W=
+all -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -O2 -ms=
+oft-float -mno-altivec -mno-vsx   -pipe -fomit-frame-pointer -fno-builtin -=
+fPIC -nostdinc -I./arch/powerpc/include -I./arch/powerpc/include/generated =
+ -I./include -I./arch/powerpc/include/uapi -I./arch/powerpc/include/generat=
+ed/uapi -I./include/uapi -I./include/generated/uapi -include ./include/linu=
+x/compiler-version.h -include ./include/linux/kconfig.h -m32 -mcpu=3Dpowerp=
+c -isystem /var/lib/laminar/run/linux-powerpc-bamboo_defconfig/12/toolchain=
+/bin/../lib/gcc/powerpc-linux/13.0.0/include -mbig-endian -fno-stack-protec=
+tor -include ./include/linux/compiler_attributes.h -I./arch/powerpc/boot -I=
+=2E/arch/powerpc/boot -mcpu=3D405 -c -o arch/powerpc/boot/treeboot-akebono.=
+o arch/powerpc/boot/treeboot-akebono.c
+> > 	{standard input}: Assembler messages:
+> > 	{standard input}:94: Error: unrecognized opcode: `mtdcrx'
+> > 	{standard input}:101: Error: unrecognized opcode: `mfdcrx'
+> > 	{standard input}:107: Error: unrecognized opcode: `mtdcrx'
+> > 	{standard input}:306: Error: unrecognized opcode: `mfdcrx'
+> > 	make[1]: *** [arch/powerpc/boot/Makefile:229: arch/powerpc/boot/treebo=
+ot-akebono.o] Error 1
+> > 	make: *** [arch/powerpc/Makefile:247: zImage] Error 2
+>=20
+> Both treeboot-akebono.c and treeboot-currituck.c are for 476 so should
+> probably be built with -mcpu=3D476. eg:
+>=20
+> diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
+> index d32d95aea5d6..acb6eddace8f 100644
+> --- a/arch/powerpc/boot/Makefile
+> +++ b/arch/powerpc/boot/Makefile
+> @@ -88,8 +88,8 @@ $(obj)/cuboot-taishan.o: BOOTCFLAGS +=3D -mcpu=3D440
+>  $(obj)/cuboot-katmai.o: BOOTCFLAGS +=3D -mcpu=3D440
+>  $(obj)/cuboot-acadia.o: BOOTCFLAGS +=3D -mcpu=3D405
+>  $(obj)/treeboot-iss4xx.o: BOOTCFLAGS +=3D -mcpu=3D405
+> -$(obj)/treeboot-currituck.o: BOOTCFLAGS +=3D -mcpu=3D405
+> -$(obj)/treeboot-akebono.o: BOOTCFLAGS +=3D -mcpu=3D405
+> +$(obj)/treeboot-currituck.o: BOOTCFLAGS +=3D -mcpu=3D476
+> +$(obj)/treeboot-akebono.o: BOOTCFLAGS +=3D -mcpu=3D476
+> =20
+>  # The pre-boot decompressors pull in a lot of kernel headers and other s=
+ource
+>  # files. This creates a bit of a dependency headache since we need to co=
+py
 
-WDYT?
+I'll update my scripts to pick up this different config set and drop
+in this patch.
 
-Thanks,
-Song
+MfG, JBG
+
+--=20
+
+--axj77vpf7o6rgutp
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQQlDTvPcScNjKREqWEdvV51g5nhuwUCY5g61QAKCRAdvV51g5nh
+u+ZkAJ9hY3zwP1CAs0OcFBwoVgh/Ntb7wQCfYk8ja5b5FCMplL2o70TaYJO4hrc=
+=FXOL
+-----END PGP SIGNATURE-----
+
+--axj77vpf7o6rgutp--
