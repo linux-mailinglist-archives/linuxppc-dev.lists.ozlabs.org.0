@@ -1,95 +1,46 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A69CD64B2C3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Dec 2022 10:52:28 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FF5964B2EB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Dec 2022 11:01:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NWYgt425yz3bhN
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Dec 2022 20:52:26 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TDONaVlq;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NWYt52M0Nz3cjW
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Dec 2022 21:01:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TDONaVlq;
-	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=lug-owl.de (client-ip=188.68.32.151; helo=lug-owl.de; envelope-from=jbglaw@lug-owl.de; receiver=<UNKNOWN>)
+Received: from lug-owl.de (lug-owl.de [188.68.32.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NWYft17PSz3bgB
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Dec 2022 20:51:33 +1100 (AEDT)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2BD87rYQ026391;
-	Tue, 13 Dec 2022 09:51:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
- mime-version : subject : from : in-reply-to : date : cc :
- content-transfer-encoding : message-id : references : to; s=pp1;
- bh=g1DIiudS6KmmoV92NpIyvnlPPcukeX7bE3zlj3YZONE=;
- b=TDONaVlq8kFbOvAoD8C5L/WuwT13D4eLg3+VjwqEvnc7EArdceyyyWlpwqX4gG+NRUJp
- L1go++qtOO9qobsJDBxERZkToZO3754Wmuw073BbNk5chPfOCNGRozP9I5xIl0raAdFV
- 5hU/olFKBuB5ZscOEn2XoEDqxbSox8c4ZOa9uPK7LN26KxSSEskHNHP9VZY1rvrJC7Vm
- 8y0hjtxlIboitrmqJjbYHKrLcKNVSps8AYUnrWCOqLO5BExShaMLhqhtdNvmK0yDTbWy
- b+pqHtB5LHICnjU6blgDgozXteRDHLDl20u2ShacpT9p+K8s6Ham0RfE29F9Z0HvBqas ew== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3memtdbdw1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 13 Dec 2022 09:51:26 +0000
-Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2BD8sTWi017297;
-	Tue, 13 Dec 2022 09:51:25 GMT
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com [149.81.74.108])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3memtdbdv7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 13 Dec 2022 09:51:25 +0000
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
-	by ppma05fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 2BD1gK00027785;
-	Tue, 13 Dec 2022 09:51:23 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma05fra.de.ibm.com (PPS) with ESMTPS id 3mchr62uay-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 13 Dec 2022 09:51:23 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2BD9pJQW49217834
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 13 Dec 2022 09:51:20 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D456920049;
-	Tue, 13 Dec 2022 09:51:19 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D768A20043;
-	Tue, 13 Dec 2022 09:51:17 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.43.34.192])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue, 13 Dec 2022 09:51:17 +0000 (GMT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.1\))
-Subject: Re: [PATCH] perf test bpf: Skip test if kernel-debuginfo is not
- present
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-In-Reply-To: <Y5d5mfyCEcUqI61Y@kernel.org>
-Date: Tue, 13 Dec 2022 15:21:03 +0530
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <6D5F1D8A-47FF-46CF-8251-20BABDF283F6@linux.vnet.ibm.com>
-References: <20221028154230.140709-1-kjain@linux.ibm.com>
- <A7B7E3F1-161D-4B1A-A4FE-E4A77EE06F1A@linux.vnet.ibm.com>
- <Y5d5mfyCEcUqI61Y@kernel.org>
-To: Arnaldo Carvalho de Melo <acme@kernel.org>
-X-Mailer: Apple Mail (2.3696.120.41.1.1)
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 50EP_d0Y1GLnQ11MAJW8FTr3d2GrqLMk
-X-Proofpoint-ORIG-GUID: VEvvFuwRWDInWpa7NyFFweizM18Eui3b
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-12-13_03,2022-12-12_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxscore=0
- lowpriorityscore=0 spamscore=0 clxscore=1015 malwarescore=0 phishscore=0
- adultscore=0 mlxlogscore=999 priorityscore=1501 impostorscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2210170000 definitions=main-2212130084
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NWYsX18zkz3bXW
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Dec 2022 21:00:47 +1100 (AEDT)
+Received: by lug-owl.de (Postfix, from userid 1001)
+	id 23C8342065; Tue, 13 Dec 2022 11:00:45 +0100 (CET)
+Date: Tue, 13 Dec 2022 11:00:45 +0100
+From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
+To: Segher Boessenkool <segher@kernel.crashing.org>
+Subject: Re: Mass-building defconfigs: many fail with assembler errors
+Message-ID: <20221213100045.xebrbdcniwpopbnq@lug-owl.de>
+References: <20221212215117.aa7255t7qd6yefk4@lug-owl.de>
+ <20221213002613.GG25951@gate.crashing.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="tin5ddckx2t7mlff"
+Content-Disposition: inline
+In-Reply-To: <20221213002613.GG25951@gate.crashing.org>
+X-Operating-System: Linux chamaeleon 5.14.0-0.bpo.2-amd64
+X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
+X-gpg-key: wwwkeys.de.pgp.net
+X-Echelon-Enable: howto poison arsenous mail psychological biological nuclear
+ warfare test the bombastical terror of flooding the spy listeners explosion
+ sex drugs and rock'n'roll
+X-TKUeV: howto poison arsenous mail psychological biological nuclear warfare
+ test the bombastical terror of flooding the spy listeners explosion sex
+ drugs and rock'n'roll
+X-message-flag: Please send plain text messages only. Do not send HTML
+ emails. Thank you.
+User-Agent: NeoMutt/20170113 (1.7.2)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,151 +52,125 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ian Rogers <irogers@google.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Nageswara Sastry <rnsastry@linux.ibm.com>, Kajol Jain <kjain@linux.ibm.com>, linux-perf-users@vger.kernel.org, Jiri Olsa <jolsa@kernel.org>, Disha Goel <disgoel@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
+--tin5ddckx2t7mlff
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> On 13-Dec-2022, at 12:27 AM, Arnaldo Carvalho de Melo =
-<acme@kernel.org> wrote:
+Hi Segher!
+
+On Mon, 2022-12-12 18:26:13 -0600, Segher Boessenkool <segher@kernel.crashi=
+ng.org> wrote:
+> On Mon, Dec 12, 2022 at 10:51:17PM +0100, Jan-Benedict Glaw wrote:
+[...]
+> > For PPC, a good number of those fail,
+> > and I probably don't understand PPC well enough to propose patches. Or
+> > did I pick wrongly targeted toolchains? Most of the time, my suspicion
+> > is that we're not giving the correct -m<cpu> flags in
+> > ./arch/powerpc/boot/?  (My setup for doing test builds is fairly automa=
+ted, I
+> > can easily throw in patches for testing.)
 >=20
-> Em Thu, Nov 03, 2022 at 12:27:01PM +0530, Athira Rajeev escreveu:
->>> On 28-Oct-2022, at 9:12 PM, Kajol Jain <kjain@linux.ibm.com> wrote:
->>>=20
->>> Perf BPF filter test fails in environment where "kernel-debuginfo"
->>> is not installed.
->>>=20
->>> Test failure logs:
->>> <<>>
->>> 42: BPF filter                            :
->>> 42.1: Basic BPF filtering                 : Ok
->>> 42.2: BPF pinning                         : Ok
->>> 42.3: BPF prologue generation             : FAILED!
->>> <<>>
->>>=20
->>> Enabling verbose option provided debug logs, which says debuginfo
->>> needs to be installed. Snippet of verbose logs:
->>>=20
->>> <<>>
->>> 42.3: BPF prologue generation                                       =
-:
->>> --- start ---
->>> test child forked, pid 28218
->>> <<>>
->>> Rebuild with CONFIG_DEBUG_INFO=3Dy, or install an appropriate =
-debuginfo
->>> package.
->>> bpf_probe: failed to convert perf probe events
->>> Failed to add events selected by BPF
->>> test child finished with -1
->>> ---- end ----
->>> BPF filter subtest 3: FAILED!
->>> <<>>
->>>=20
->>> Here subtest, "BPF prologue generation" failed and
->>> logs shows debuginfo is needed. After installing
->>> kernel-debuginfo package, testcase passes.
->>>=20
->>> Subtest "BPF prologue generation" failed because, the "do_test"
->>> function returns "TEST_FAIL" without checking the error type
->>> returned by "parse_events_load_bpf_obj" function.
->>> Function parse_events_load_bpf_obj can also return error of type
->>> "-ENOENT" incase kernel-debuginfo package is not installed. Fix this
->>> by adding check for -ENOENT error.
->>>=20
->>> Test result after the patch changes:
->>>=20
->>> Test failure logs:
->>> <<>>
->>> 42: BPF filter                 :
->>> 42.1: Basic BPF filtering      : Ok
->>> 42.2: BPF pinning              : Ok
->>> 42.3: BPF prologue generation  : Skip (clang/debuginfo isn't
->>> installed or environment missing BPF support)
->>>=20
->>> Fixes: ba1fae431e74bb42 ("perf test: Add 'perf test BPF'")
->>> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
->>> Reviewed-by: Madhavan Srinivasan <maddy@linux.ibm.com>
->>> ---
->>> tools/perf/tests/bpf.c | 6 +++++-
->>> 1 file changed, 5 insertions(+), 1 deletion(-)
->>>=20
->>> diff --git a/tools/perf/tests/bpf.c b/tools/perf/tests/bpf.c
->>> index 17c023823713..57cecadc1da2 100644
->>> --- a/tools/perf/tests/bpf.c
->>> +++ b/tools/perf/tests/bpf.c
->>> @@ -126,6 +126,10 @@ static int do_test(struct bpf_object *obj, int =
-(*func)(void),
->>>=20
->>> 	err =3D parse_events_load_bpf_obj(&parse_state, =
-&parse_state.list, obj, NULL);
->>> 	parse_events_error__exit(&parse_error);
->>> +	if (err =3D=3D -ENOENT) {
->>> +		pr_debug("Failed to add events selected by BPF, =
-debuginfo package not installed\n");
->>> +		return TEST_SKIP;
->>> +	}
->>=20
->> Hi Kajol,
->>=20
->> Here, you have used ENOENT to skip the test. But there could be other =
-places in the code path for =E2=80=9Cparse_events_load_bpf_obj=E2=80=9D
->> which also returns ENOENT. In that case, for any exit that returns =
-ENOENT, test will get skipped.
->>=20
->> Can we look at the logs, example we have this in commit logs:
->>=20
->> 	Rebuild with CONFIG_DEBUG_INFO=3Dy, or install an appropriate =
-debuginfo
->> 	package.
->>=20
->> so as to decide whether to skip for debug info ?
+> Many of those use a 32-bit toolchain with a 64-bit kernel, or they
+> require some e500 specific config but not getting it (or the other way
+> around).
 >=20
-> Kajol?
+> > 64-bit.config
 >=20
-> - Arnaldo
-
-Hi Arnaldo, looking for your suggestion on how to handle the case where =
-debuginfo is missing.
-
-Here the bpf test fails because of missing debuginfo. The function which =
-goes through the debuginfo check is "parse_events_load_bpf_obj" . =
-parse_events_load_bpf_obj internally calls "open_debuginfo" which =
-returns ENOENT when debuginfo is missing. The patch fix from Kajol is to =
-skip the test using error code ENOENT for debuginfo.
-
-But issue with using this return code is that, there are other places in =
-the code path for "parse_events_load_bpf_obj"
-which also returns ENOENT. In that case, for any exit path that returns =
-ENOENT, test will get skipped.
-Hence looking for an alternative way to identify missing debuginfo to =
-skip the test. Please share your thoughts on this.
-
-Thanks
-Athira
-
-
+> > 	=3D=3D> Why "-m32 -mcpu=3Dpowerpc"? Binutils/GCC are for --target=3Dpo=
+werpc64-linux
 >=20
->> Thanks
->> Athira
->>=20
->>> 	if (err || list_empty(&parse_state.list)) {
->>> 		pr_debug("Failed to add events selected by BPF\n");
->>> 		return TEST_FAIL;
->>> @@ -368,7 +372,7 @@ static struct test_case bpf_tests[] =3D {
->>> 			"clang isn't installed or environment missing =
-BPF support"),
->>> #ifdef HAVE_BPF_PROLOGUE
->>> 	TEST_CASE_REASON("BPF prologue generation", bpf_prologue_test,
->>> -			"clang isn't installed or environment missing =
-BPF support"),
->>> +			"clang/debuginfo isn't installed or environment =
-missing BPF support"),
->>> #else
->>> 	TEST_CASE_REASON("BPF prologue generation", bpf_prologue_test, =
-"not compiled in"),
->>> #endif
->>> --=20
->>> 2.31.1
+> Something in your config is forcing that.
 
+That's a configuration that should not have been built. As Michael
+wrote, it's just a fragment for a defconfig, I queued it for a build
+but that was plain wrong. (As well as other *.config files.)
+
+> > 	Compiler ICEs (during GIMPLE pass: ccp) in align.c:
+> >=20
+> > 	  powerpc-linux-gcc -Wp,-MMD,arch/powerpc/kernel/.align.o.d -nostdinc =
+-I./arch/powerpc/include -I./arch/powerpc/include/generated  -I./include -I=
+=2E/arch/powerpc/include/uapi -I./arch/powerpc/include/generated/uapi -I./i=
+nclude/uapi -I./include/generated/uapi -include ./include/linux/compiler-ve=
+rsion.h -include ./include/linux/kconfig.h -include ./include/linux/compile=
+r_types.h -D__KERNEL__ -I ./arch/powerpc -fmacro-prefix-map=3D./=3D -Wall -=
+Wundef -Werror=3Dstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno=
+-common -fshort-wchar -fno-PIE -Werror=3Dimplicit-function-declaration -Wer=
+ror=3Dimplicit-int -Werror=3Dreturn-type -Wno-format-security -std=3Dgnu11 =
+-mbig-endian -m32 -msoft-float -pipe -ffixed-r2 -mmultiple -mno-readonly-in=
+-sdata -mcpu=3D440 -mno-prefixed -mno-pcrel -mno-altivec -mno-vsx -mno-mma =
+-fno-asynchronous-unwind-tables -mno-string -Wa,-m440 -mbig-endian -mstack-=
+protector-guard=3Dtls -mstack-protector-guard-reg=3Dr2 -fno-delete-null-poi=
+nter-checks -Wno-frame-address -Wno-format-truncation -Wno-format-overflow =
+-Wno-address-of-packed-member -O2 -fno-allow-store-data-races -Wframe-large=
+r-than=3D1024 -fstack-protector-strong -Wno-main -Wno-unused-but-set-variab=
+le -Wno-unused-const-variable -Wno-dangling-pointer -fomit-frame-pointer -f=
+trivial-auto-var-init=3Dzero -fno-stack-clash-protection -Wdeclaration-afte=
+r-statement -Wvla -Wno-pointer-sign -Wcast-function-type -Wno-stringop-trun=
+cation -Wno-stringop-overflow -Wno-restrict -Wno-maybe-uninitialized -Wno-a=
+lloc-size-larger-than -Wimplicit-fallthrough=3D5 -fno-strict-overflow -fno-=
+stack-check -fconserve-stack -Werror=3Ddate-time -Werror=3Dincompatible-poi=
+nter-types -Werror=3Ddesignated-init -Wno-packed-not-aligned -g -mstack-pro=
+tector-guard-offset=3D1080 -Werror    -DKBUILD_MODFILE=3D'"arch/powerpc/ker=
+nel/align"' -DKBUILD_BASENAME=3D'"align"' -DKBUILD_MODNAME=3D'"align"' -D__=
+KBUILD_MODNAME=3Dkmod_align -c -o arch/powerpc/kernel/align.o arch/powerpc/=
+kernel/align.c =20
+> > 	during GIMPLE pass: ccp
+> > 	arch/powerpc/kernel/align.c: In function '__copy_inst_from_kernel_nofa=
+ult':
+> > 	arch/powerpc/kernel/align.c:364:1: internal compiler error: in maybe_r=
+egister_def, at tree-into-ssa.cc:1948
+> > 	  364 | }
+> > 	      | ^
+> > 	0x19d8886 internal_error(char const*, ...)
+> > 	   ???:0
+> > 	0x7bb4fe fancy_abort(char const*, int, char const*)
+> > 	   ???:0
+> > 	0x1791bfe dom_walker::walk(basic_block_def*)
+> > 	   ???:0
+> > 	0xe94ec0 update_ssa(unsigned int)
+> > 	   ???:0
+> > 	0x103d6b9 execute_update_addresses_taken()
+> > 	   ???:0
+> > 	Please submit a full bug report, with preprocessed source (by using -f=
+report-bug).
+> > 	Please include the complete backtrace with any bug report.
+> > 	See <https://gcc.gnu.org/bugs/> for instructions.
+> > 	make[3]: *** [scripts/Makefile.build:250: arch/powerpc/kernel/align.o]=
+ Error 1
+> > 	make[2]: *** [scripts/Makefile.build:500: arch/powerpc/kernel] Error 2
+> > 	make[1]: *** [scripts/Makefile.build:500: arch/powerpc] Error 2
+> > 	make: *** [Makefile:1992: .] Error 2
+> >=20
+> > 	=3D=3D> Should probably open a PR for this.
+>=20
+> Yes please!
+
+I'll wait until the current build loop finishes. Looking at
+__copy_inst_from_kernel_nofault(), it uses an asm goto, which I had
+issues with and there was already a fix for it
+(7676235f690e624b7ed41a22b22ce8ccfac1492f,
+https://gcc.gnu.org/bugzilla/show_bug.cgi?id=3D107997) which might fix
+all of those.
+
+Thanks,
+  Jan-Benedict
+
+--=20
+
+--tin5ddckx2t7mlff
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQQlDTvPcScNjKREqWEdvV51g5nhuwUCY5hNSgAKCRAdvV51g5nh
+u+AfAJsH2fcG+55NQ2WGkrRliJAwSM9H+ACfUfKclrypjMPSHsh/mA0aF0QQlQE=
+=v9Ok
+-----END PGP SIGNATURE-----
+
+--tin5ddckx2t7mlff--
