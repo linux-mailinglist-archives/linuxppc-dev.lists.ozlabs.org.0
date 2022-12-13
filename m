@@ -1,46 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FF5964B2EB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Dec 2022 11:01:19 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4DA164B515
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Dec 2022 13:23:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NWYt52M0Nz3cjW
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Dec 2022 21:01:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NWd2Q5Vd4z3cjC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Dec 2022 23:23:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=lug-owl.de (client-ip=188.68.32.151; helo=lug-owl.de; envelope-from=jbglaw@lug-owl.de; receiver=<UNKNOWN>)
-Received: from lug-owl.de (lug-owl.de [188.68.32.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NWYsX18zkz3bXW
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Dec 2022 21:00:47 +1100 (AEDT)
-Received: by lug-owl.de (Postfix, from userid 1001)
-	id 23C8342065; Tue, 13 Dec 2022 11:00:45 +0100 (CET)
-Date: Tue, 13 Dec 2022 11:00:45 +0100
-From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
-To: Segher Boessenkool <segher@kernel.crashing.org>
-Subject: Re: Mass-building defconfigs: many fail with assembler errors
-Message-ID: <20221213100045.xebrbdcniwpopbnq@lug-owl.de>
-References: <20221212215117.aa7255t7qd6yefk4@lug-owl.de>
- <20221213002613.GG25951@gate.crashing.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NWd1q3lmJz30RG
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Dec 2022 23:23:08 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4NWd1g1B4Dz9smY;
+	Tue, 13 Dec 2022 13:23:03 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id wQpv-BK6o0IO; Tue, 13 Dec 2022 13:23:03 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4NWd1g0GVNz9sm8;
+	Tue, 13 Dec 2022 13:23:03 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id EDEC78B773;
+	Tue, 13 Dec 2022 13:23:02 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id a2dakGG70529; Tue, 13 Dec 2022 13:23:02 +0100 (CET)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.7.67])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id B11108B766;
+	Tue, 13 Dec 2022 13:23:02 +0100 (CET)
+Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 2BDCMosN630599
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 13 Dec 2022 13:22:50 +0100
+Received: (from chleroy@localhost)
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 2BDCMnIC630590;
+	Tue, 13 Dec 2022 13:22:49 +0100
+X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: gregkh@linuxfoundation.org, stable@vger.kernel.org
+Subject: [PATCH] [REBASED for 4.14] once: add DO_ONCE_SLOW() for sleepable contexts
+Date: Tue, 13 Dec 2022 13:22:40 +0100
+Message-Id: <df44c3cd06ae0155f04f9d87fff35db67761beea.1670934155.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="tin5ddckx2t7mlff"
-Content-Disposition: inline
-In-Reply-To: <20221213002613.GG25951@gate.crashing.org>
-X-Operating-System: Linux chamaeleon 5.14.0-0.bpo.2-amd64
-X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
-X-gpg-key: wwwkeys.de.pgp.net
-X-Echelon-Enable: howto poison arsenous mail psychological biological nuclear
- warfare test the bombastical terror of flooding the spy listeners explosion
- sex drugs and rock'n'roll
-X-TKUeV: howto poison arsenous mail psychological biological nuclear warfare
- test the bombastical terror of flooding the spy listeners explosion sex
- drugs and rock'n'roll
-X-message-flag: Please send plain text messages only. Do not send HTML
- emails. Thank you.
-User-Agent: NeoMutt/20170113 (1.7.2)
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1670934159; l=5194; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=l/gW9uV8JB+UhiaHzRrRgcxXXLZq3Tnd8dyGrCC7WSQ=; b=3X9VI7eJm5NqUCwR9bw3dR0g6EqtdvEC+5pulqUc5uMYk1TxKqxmRogKnpF5UF/QPd1Ps57wnCmV 8KMtUWLzBbSTHeNxuUHDDtReljWOh85skZtePeE4r5iff+reV2fa
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,125 +65,152 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org, Willy Tarreau <w@1wt.eu>, Eric Dumazet <edumazet@google.com>, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+From: Eric Dumazet <edumazet@google.com>
 
---tin5ddckx2t7mlff
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+[ Upstream commit 62c07983bef9d3e78e71189441e1a470f0d1e653 ]
 
-Hi Segher!
+Christophe Leroy reported a ~80ms latency spike
+happening at first TCP connect() time.
 
-On Mon, 2022-12-12 18:26:13 -0600, Segher Boessenkool <segher@kernel.crashi=
-ng.org> wrote:
-> On Mon, Dec 12, 2022 at 10:51:17PM +0100, Jan-Benedict Glaw wrote:
-[...]
-> > For PPC, a good number of those fail,
-> > and I probably don't understand PPC well enough to propose patches. Or
-> > did I pick wrongly targeted toolchains? Most of the time, my suspicion
-> > is that we're not giving the correct -m<cpu> flags in
-> > ./arch/powerpc/boot/?  (My setup for doing test builds is fairly automa=
-ted, I
-> > can easily throw in patches for testing.)
->=20
-> Many of those use a 32-bit toolchain with a 64-bit kernel, or they
-> require some e500 specific config but not getting it (or the other way
-> around).
->=20
-> > 64-bit.config
->=20
-> > 	=3D=3D> Why "-m32 -mcpu=3Dpowerpc"? Binutils/GCC are for --target=3Dpo=
-werpc64-linux
->=20
-> Something in your config is forcing that.
+This is because __inet_hash_connect() uses get_random_once()
+to populate a perturbation table which became quite big
+after commit 4c2c8f03a5ab ("tcp: increase source port perturb table to 2^16")
 
-That's a configuration that should not have been built. As Michael
-wrote, it's just a fragment for a defconfig, I queued it for a build
-but that was plain wrong. (As well as other *.config files.)
+get_random_once() uses DO_ONCE(), which block hard irqs for the duration
+of the operation.
 
-> > 	Compiler ICEs (during GIMPLE pass: ccp) in align.c:
-> >=20
-> > 	  powerpc-linux-gcc -Wp,-MMD,arch/powerpc/kernel/.align.o.d -nostdinc =
--I./arch/powerpc/include -I./arch/powerpc/include/generated  -I./include -I=
-=2E/arch/powerpc/include/uapi -I./arch/powerpc/include/generated/uapi -I./i=
-nclude/uapi -I./include/generated/uapi -include ./include/linux/compiler-ve=
-rsion.h -include ./include/linux/kconfig.h -include ./include/linux/compile=
-r_types.h -D__KERNEL__ -I ./arch/powerpc -fmacro-prefix-map=3D./=3D -Wall -=
-Wundef -Werror=3Dstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno=
--common -fshort-wchar -fno-PIE -Werror=3Dimplicit-function-declaration -Wer=
-ror=3Dimplicit-int -Werror=3Dreturn-type -Wno-format-security -std=3Dgnu11 =
--mbig-endian -m32 -msoft-float -pipe -ffixed-r2 -mmultiple -mno-readonly-in=
--sdata -mcpu=3D440 -mno-prefixed -mno-pcrel -mno-altivec -mno-vsx -mno-mma =
--fno-asynchronous-unwind-tables -mno-string -Wa,-m440 -mbig-endian -mstack-=
-protector-guard=3Dtls -mstack-protector-guard-reg=3Dr2 -fno-delete-null-poi=
-nter-checks -Wno-frame-address -Wno-format-truncation -Wno-format-overflow =
--Wno-address-of-packed-member -O2 -fno-allow-store-data-races -Wframe-large=
-r-than=3D1024 -fstack-protector-strong -Wno-main -Wno-unused-but-set-variab=
-le -Wno-unused-const-variable -Wno-dangling-pointer -fomit-frame-pointer -f=
-trivial-auto-var-init=3Dzero -fno-stack-clash-protection -Wdeclaration-afte=
-r-statement -Wvla -Wno-pointer-sign -Wcast-function-type -Wno-stringop-trun=
-cation -Wno-stringop-overflow -Wno-restrict -Wno-maybe-uninitialized -Wno-a=
-lloc-size-larger-than -Wimplicit-fallthrough=3D5 -fno-strict-overflow -fno-=
-stack-check -fconserve-stack -Werror=3Ddate-time -Werror=3Dincompatible-poi=
-nter-types -Werror=3Ddesignated-init -Wno-packed-not-aligned -g -mstack-pro=
-tector-guard-offset=3D1080 -Werror    -DKBUILD_MODFILE=3D'"arch/powerpc/ker=
-nel/align"' -DKBUILD_BASENAME=3D'"align"' -DKBUILD_MODNAME=3D'"align"' -D__=
-KBUILD_MODNAME=3Dkmod_align -c -o arch/powerpc/kernel/align.o arch/powerpc/=
-kernel/align.c =20
-> > 	during GIMPLE pass: ccp
-> > 	arch/powerpc/kernel/align.c: In function '__copy_inst_from_kernel_nofa=
-ult':
-> > 	arch/powerpc/kernel/align.c:364:1: internal compiler error: in maybe_r=
-egister_def, at tree-into-ssa.cc:1948
-> > 	  364 | }
-> > 	      | ^
-> > 	0x19d8886 internal_error(char const*, ...)
-> > 	   ???:0
-> > 	0x7bb4fe fancy_abort(char const*, int, char const*)
-> > 	   ???:0
-> > 	0x1791bfe dom_walker::walk(basic_block_def*)
-> > 	   ???:0
-> > 	0xe94ec0 update_ssa(unsigned int)
-> > 	   ???:0
-> > 	0x103d6b9 execute_update_addresses_taken()
-> > 	   ???:0
-> > 	Please submit a full bug report, with preprocessed source (by using -f=
-report-bug).
-> > 	Please include the complete backtrace with any bug report.
-> > 	See <https://gcc.gnu.org/bugs/> for instructions.
-> > 	make[3]: *** [scripts/Makefile.build:250: arch/powerpc/kernel/align.o]=
- Error 1
-> > 	make[2]: *** [scripts/Makefile.build:500: arch/powerpc/kernel] Error 2
-> > 	make[1]: *** [scripts/Makefile.build:500: arch/powerpc] Error 2
-> > 	make: *** [Makefile:1992: .] Error 2
-> >=20
-> > 	=3D=3D> Should probably open a PR for this.
->=20
-> Yes please!
+This patch adds DO_ONCE_SLOW() which uses a mutex instead of a spinlock
+for operations where we prefer to stay in process context.
 
-I'll wait until the current build loop finishes. Looking at
-__copy_inst_from_kernel_nofault(), it uses an asm goto, which I had
-issues with and there was already a fix for it
-(7676235f690e624b7ed41a22b22ce8ccfac1492f,
-https://gcc.gnu.org/bugzilla/show_bug.cgi?id=3D107997) which might fix
-all of those.
+Then __inet_hash_connect() can use get_random_slow_once()
+to populate its perturbation table.
 
-Thanks,
-  Jan-Benedict
+Fixes: 4c2c8f03a5ab ("tcp: increase source port perturb table to 2^16")
+Fixes: 190cc82489f4 ("tcp: change source port randomizarion at connect() time")
+Reported-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Link: https://lore.kernel.org/netdev/CANn89iLAEYBaoYajy0Y9UmGFff5GPxDUoG-ErVB2jDdRNQ5Tug@mail.gmail.com/T/#t
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Willy Tarreau <w@1wt.eu>
+Tested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ include/linux/once.h       | 28 ++++++++++++++++++++++++++++
+ lib/once.c                 | 30 ++++++++++++++++++++++++++++++
+ net/ipv4/inet_hashtables.c |  4 ++--
+ 3 files changed, 60 insertions(+), 2 deletions(-)
 
---=20
+diff --git a/include/linux/once.h b/include/linux/once.h
+index 6790884d3c57..bb091119b754 100644
+--- a/include/linux/once.h
++++ b/include/linux/once.h
+@@ -5,10 +5,18 @@
+ #include <linux/types.h>
+ #include <linux/jump_label.h>
+ 
++/* Helpers used from arbitrary contexts.
++ * Hard irqs are blocked, be cautious.
++ */
+ bool __do_once_start(bool *done, unsigned long *flags);
+ void __do_once_done(bool *done, struct static_key *once_key,
+ 		    unsigned long *flags);
+ 
++/* Variant for process contexts only. */
++bool __do_once_slow_start(bool *done);
++void __do_once_slow_done(bool *done, struct static_key *once_key,
++			 struct module *mod);
++
+ /* Call a function exactly once. The idea of DO_ONCE() is to perform
+  * a function call such as initialization of random seeds, etc, only
+  * once, where DO_ONCE() can live in the fast-path. After @func has
+@@ -52,9 +60,29 @@ void __do_once_done(bool *done, struct static_key *once_key,
+ 		___ret;							     \
+ 	})
+ 
++/* Variant of DO_ONCE() for process/sleepable contexts. */
++#define DO_ONCE_SLOW(func, ...)						     \
++	({								     \
++		bool ___ret = false;					     \
++		static bool ___done = false;				     \
++		static struct static_key ___once_key = STATIC_KEY_INIT_TRUE; \
++		if (static_key_true(&___once_key)) {		     \
++			___ret = __do_once_slow_start(&___done);	     \
++			if (unlikely(___ret)) {				     \
++				func(__VA_ARGS__);			     \
++				__do_once_slow_done(&___done, &___once_key,  \
++						    THIS_MODULE);	     \
++			}						     \
++		}							     \
++		___ret;							     \
++	})
++
+ #define get_random_once(buf, nbytes)					     \
+ 	DO_ONCE(get_random_bytes, (buf), (nbytes))
+ #define get_random_once_wait(buf, nbytes)                                    \
+ 	DO_ONCE(get_random_bytes_wait, (buf), (nbytes))                      \
+ 
++#define get_random_slow_once(buf, nbytes)				     \
++	DO_ONCE_SLOW(get_random_bytes, (buf), (nbytes))
++
+ #endif /* _LINUX_ONCE_H */
+diff --git a/lib/once.c b/lib/once.c
+index bfb7420d0de3..76c7bbc0aa40 100644
+--- a/lib/once.c
++++ b/lib/once.c
+@@ -61,3 +61,33 @@ void __do_once_done(bool *done, struct static_key *once_key,
+ 	once_disable_jump(once_key);
+ }
+ EXPORT_SYMBOL(__do_once_done);
++
++static DEFINE_MUTEX(once_mutex);
++
++bool __do_once_slow_start(bool *done)
++	__acquires(once_mutex)
++{
++	mutex_lock(&once_mutex);
++	if (*done) {
++		mutex_unlock(&once_mutex);
++		/* Keep sparse happy by restoring an even lock count on
++		 * this mutex. In case we return here, we don't call into
++		 * __do_once_done but return early in the DO_ONCE_SLOW() macro.
++		 */
++		__acquire(once_mutex);
++		return false;
++	}
++
++	return true;
++}
++EXPORT_SYMBOL(__do_once_slow_start);
++
++void __do_once_slow_done(bool *done, struct static_key *once_key,
++			 struct module *mod)
++	__releases(once_mutex)
++{
++	*done = true;
++	mutex_unlock(&once_mutex);
++	once_disable_jump(once_key);
++}
++EXPORT_SYMBOL(__do_once_slow_done);
+diff --git a/net/ipv4/inet_hashtables.c b/net/ipv4/inet_hashtables.c
+index 48c7a3a51fc1..590801a7487f 100644
+--- a/net/ipv4/inet_hashtables.c
++++ b/net/ipv4/inet_hashtables.c
+@@ -638,8 +638,8 @@ int __inet_hash_connect(struct inet_timewait_death_row *death_row,
+ 	if (likely(remaining > 1))
+ 		remaining &= ~1U;
+ 
+-	net_get_random_once(table_perturb,
+-			    INET_TABLE_PERTURB_SIZE * sizeof(*table_perturb));
++	get_random_slow_once(table_perturb,
++			     INET_TABLE_PERTURB_SIZE * sizeof(*table_perturb));
+ 	index = port_offset & (INET_TABLE_PERTURB_SIZE - 1);
+ 
+ 	offset = READ_ONCE(table_perturb[index]) + (port_offset >> 32);
+-- 
+2.38.1
 
---tin5ddckx2t7mlff
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQQlDTvPcScNjKREqWEdvV51g5nhuwUCY5hNSgAKCRAdvV51g5nh
-u+AfAJsH2fcG+55NQ2WGkrRliJAwSM9H+ACfUfKclrypjMPSHsh/mA0aF0QQlQE=
-=v9Ok
------END PGP SIGNATURE-----
-
---tin5ddckx2t7mlff--
