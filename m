@@ -1,60 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68F2D64B633
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Dec 2022 14:30:30 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1E7F64B768
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Dec 2022 15:32:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NWfWS2Fv2z3cJ7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Dec 2022 00:30:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NWgtX5wHJz3cBP
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Dec 2022 01:32:04 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=ITNcM/OP;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=Pbvo7a7K;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=195.135.220.29; helo=smtp-out2.suse.de; envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=ITNcM/OP;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=Pbvo7a7K;
 	dkim-atps=neutral
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NWfVY3kqcz300l
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Dec 2022 00:29:40 +1100 (AEDT)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-	by smtp-out2.suse.de (Postfix) with ESMTP id EDD0F1F8B4;
-	Tue, 13 Dec 2022 13:29:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1670938175; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hyr4c+SKac14wkta1jaSfJl4YQdl4MmgZCTJffcE5qg=;
-	b=ITNcM/OPJCUsyRzFdas/Pg/f0lW4KGl5uuFBgsWNjbWdKHS0k/RIR21Se6GDKWu9DRrWEh
-	UwNhLpsGVMgrtk8DLrh/z2yIlafJRG1MESQxDTCP3PWLfUEIed0qzwv4ueMPEkVjACwiJA
-	mpdm+p2jF/AWUfeTzYoYM2RFWqB28Xk=
-Received: from suse.cz (unknown [10.100.208.146])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by relay2.suse.de (Postfix) with ESMTPS id 13C4B2C141;
-	Tue, 13 Dec 2022 13:29:34 +0000 (UTC)
-Date: Tue, 13 Dec 2022 14:29:33 +0100
-From: Petr Mladek <pmladek@suse.com>
-To: Song Liu <song@kernel.org>
-Subject: Re: powerpc-part: was: Re: [PATCH v6] livepatch: Clear relocation
- targets on a module removal
-Message-ID: <Y5h+PX6a1a9yjQPp@alley>
-References: <20220901171252.2148348-1-song@kernel.org>
- <Y3expGRt4cPoZgHL@alley>
- <CAPhsuW4qYpX7wzHn5J5Hn9cnOFSZwwQPCjTM_HPTt_zbBS03ww@mail.gmail.com>
- <Y5Me5dTGv+GznvtO@alley>
- <CAPhsuW4pt7vfHTj8KorTRCx5zJaoUiyYUOLy8uXZDbTbur4RRA@mail.gmail.com>
- <Y5dg25LV24mBRf4t@alley>
- <CAPhsuW7y1GzT8+quk4vJEqM6SagqDqc=HXA3jtdmfTfC=Gsv-Q@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NWgsZ1pGgz3bXC
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Dec 2022 01:31:12 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 0CA186155B;
+	Tue, 13 Dec 2022 14:31:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCFAAC433EF;
+	Tue, 13 Dec 2022 14:31:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1670941869;
+	bh=ZJunwccLyP7VfyFolEsIq9RAMaZzY1QZT7UToBTpj8Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Pbvo7a7K6YUmDxML3SyCX8Ld7C0Cq5pxVmHq7XJ4crSB3niF2OVpUifdz2U4pok1g
+	 Ji4xJVTLktet6hT2LsWAo9IHn4hTENPIKjWDmQKkX9QypqT6cGwhM2NKEQRxVYQFT0
+	 cpZMBy+F0jPXT3QB91hTkbiYzxBM0eWHyFaFd9wY=
+Date: Tue, 13 Dec 2022 15:31:06 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Phil Auld <pauld@redhat.com>
+Subject: Re: sched/debug: CPU hotplug operation suffers in a large cpu systems
+Message-ID: <Y5iMql1nKBkukjJK@kroah.com>
+References: <Y06B0pr8hpwzxEzI@li-05afa54c-330e-11b2-a85c-e3f3aa0db1e9.ibm.com>
+ <Y06ISBWhJflnV+NI@kroah.com>
+ <Y1jVjX9FUuUilcjA@li-05afa54c-330e-11b2-a85c-e3f3aa0db1e9.ibm.com>
+ <Y1jbhCYfktL51zNB@kroah.com>
+ <Y1j5cqbyZCDlyaTn@hirez.programming.kicks-ass.net>
+ <Y2oozs/YgqqRV5hq@li-05afa54c-330e-11b2-a85c-e3f3aa0db1e9.ibm.com>
+ <Y2pKh3H0Ukvmfuco@kroah.com>
+ <Y5d+ZqdxeJD2eIHL@lorien.usersys.redhat.com>
+ <Y5gaerSL8pXZcIjR@kroah.com>
+ <Y5h8sqHD9/RWNeYS@lorien.usersys.redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAPhsuW7y1GzT8+quk4vJEqM6SagqDqc=HXA3jtdmfTfC=Gsv-Q@mail.gmail.com>
+In-Reply-To: <Y5h8sqHD9/RWNeYS@lorien.usersys.redhat.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,161 +65,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: jikos@kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>, joe.lawrence@redhat.com, Josh Poimboeuf <jpoimboe@redhat.com>, live-patching@vger.kernel.org, mbenes@suse.cz, linuxppc-dev@lists.ozlabs.org, jpoimboe@kernel.org
+Cc: ritesh.list@gmail.com, vschneid@redhat.com, vincent.guittot@linaro.org, srikar@linux.vnet.ibm.com, Peter Zijlstra <peterz@infradead.org>, aneesh.kumar@linux.ibm.com, Vishal Chourasia <vishalc@linux.vnet.ibm.com>, linux-kernel@vger.kernel.org, sshegde@linux.ibm.com, mingo@redhat.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue 2022-12-13 00:13:46, Song Liu wrote:
-> )() ()On Mon, Dec 12, 2022 at 9:12 AM Petr Mladek <pmladek@suse.com> wrote:
-> >
-> > On Fri 2022-12-09 11:59:35, Song Liu wrote:
-> > > On Fri, Dec 9, 2022 at 3:41 AM Petr Mladek <pmladek@suse.com> wrote:
-> > > > On Mon 2022-11-28 17:57:06, Song Liu wrote:
-> > > > > On Fri, Nov 18, 2022 at 8:24 AM Petr Mladek <pmladek@suse.com> wrote:
-> > > > > >
-> > > > > > > --- a/arch/powerpc/kernel/module_64.c
-> > > > > > > +++ b/arch/powerpc/kernel/module_64.c
-> > > > > > > +#ifdef CONFIG_LIVEPATCH
-> > > > > > > +void clear_relocate_add(Elf64_Shdr *sechdrs,
-> > > > > > > +                    const char *strtab,
-> > > > > > > +                    unsigned int symindex,
-> > > > > > > +                    unsigned int relsec,
-> > > > > > > +                    struct module *me)
-> > > > > > > +{
-> >
-> > [...]
-> >
-> > > > > > > +
-> > > > > > > +             instruction = (u32 *)location;
-> > > > > > > +             if (is_mprofile_ftrace_call(symname))
-> > > > > > > +                     continue;
-> > > >
-> > > > Why do we ignore these symbols?
-> > > >
-> > > > I can't find any counter-part in apply_relocate_add(). It looks super
-> > > > tricky. It would deserve a comment.
-> > > >
-> > > > And I have no idea how we could maintain these exceptions.
-> > > >
-> > > > > > > +             if (!instr_is_relative_link_branch(ppc_inst(*instruction)))
-> > > > > > > +                     continue;
-> > > >
-> > > > Same here. It looks super tricky and there is no explanation.
-> > >
-> > > The two checks are from restore_r2(). But I cannot really remember
-> > > why we needed them. It is probably an updated version from an earlier
-> > > version (3 year earlier..).
-> >
-> > This is a good sign that it has to be explained in a comment.
-> > Or even better, it should not by copy pasted.
-> >
-> > > > > > > +             instruction += 1;
-> > > > > > > +             patch_instruction(instruction, ppc_inst(PPC_RAW_NOP()));
-> >
-> > I believe that this is not enough. apply_relocate_add() does this:
-> >
-> > int apply_relocate_add(Elf64_Shdr *sechdrs,
-> > [...]
-> >                        struct module *me)
-> > {
-> > [...]
-> >                 case R_PPC_REL24:
-> >                         /* FIXME: Handle weak symbols here --RR */
-> >                         if (sym->st_shndx == SHN_UNDEF ||
-> >                             sym->st_shndx == SHN_LIVEPATCH) {
-> > [...]
-> >                         if (!restore_r2(strtab + sym->st_name,
-> >                                                         (u32 *)location + 1, me))
-> > [...]                                   return -ENOEXEC;
-> >
-> > --->                    if (patch_instruction((u32 *)location, ppc_inst(value)))
-> >                                 return -EFAULT;
-> >
-> > , where restore_r2() does:
-> >
-> > static int restore_r2(const char *name, u32 *instruction, struct module *me)
-> > {
-> > [...]
-> >         /* ld r2,R2_STACK_OFFSET(r1) */
-> > --->    if (patch_instruction(instruction, ppc_inst(PPC_INST_LD_TOC)))
-> >                 return 0;
-> > [...]
-> > }
-> >
-> > By other words, apply_relocate_add() modifies two instructions:
-> >
-> >    + patch_instruction() called in restore_r2() writes into "location + 1"
-> >    + patch_instruction() called in apply_relocate_add() writes into "location"
-> >
-> > IMHO, we have to clear both.
-> >
-> > IMHO, we need to implement a function that reverts the changes done
-> > in restore_r2(). Also we need to revert the changes done in
-> > apply_relocate_add().
+On Tue, Dec 13, 2022 at 08:22:58AM -0500, Phil Auld wrote:
+> On Tue, Dec 13, 2022 at 07:23:54AM +0100 Greg Kroah-Hartman wrote:
+> > On Mon, Dec 12, 2022 at 02:17:58PM -0500, Phil Auld wrote:
+> > > Hi,
+> > > 
+> > > On Tue, Nov 08, 2022 at 01:24:39PM +0100 Greg Kroah-Hartman wrote:
+> > > > On Tue, Nov 08, 2022 at 03:30:46PM +0530, Vishal Chourasia wrote:
+> > > > > 
+> > > > > Thanks Greg & Peter for your direction. 
+> > > > > 
+> > > > > While we pursue the idea of having debugfs based on kernfs, we thought about
+> > > > > having a boot time parameter which would disable creating and updating of the
+> > > > > sched_domain debugfs files and this would also be useful even when the kernfs
+> > > > > solution kicks in, as users who may not care about these debugfs files would
+> > > > > benefit from a faster CPU hotplug operation.
+> > > > 
+> > > > Ick, no, you would be adding a new user/kernel api that you will be
+> > > > required to support for the next 20+ years.  Just to get over a
+> > > > short-term issue before you solve the problem properly.
+> > > 
+> > > I'm not convinced moving these files from debugfs to kernfs is the right
+> > > fix.  That will take it from ~50 back to ~20 _minutes_ on these systems.
+> > > I don't think either of those numbers is reasonable.
+> > > 
+> > > The issue as I see it is the full rebuild for every change with no way to
+> > > batch the changes. How about something like the below?
+> > > 
+> > > This puts the domains/* files under the sched_verbose flag. About the only
+> > > thing under that flag now are the detailed topology discovery printks anyway
+> > > so this fits together nicely.
+> > > 
+> > > This way the files would be off by default (assuming you don't boot with
+> > > sched_verbose) and can be created at runtime by enabling verbose. Multiple
+> > > changes could also be batched by disabling/makeing changes/re-enabling.
+> > > 
+> > > It does not create a new API, uses one that is already there.
+> > 
+> > The idea seems good, the implementation might need a bit of work :)
 > 
-> I finally got time to read all the details again and recalled what
-> happened with the code.
+> More than the one comment below? Let me know.
+
+No idea, resubmit a working patch and I'll review it properly :)
+
+> > > +	r = kstrtobool_from_user(ubuf, cnt, &bv);
+> > > +	if (!r) {
+> > > +		mutex_lock(&sched_domains_mutex);
+> > > +		r = debugfs_file_get(dentry);
+> > > +		if (unlikely(r))
+> > > +			return r;
+> > > +		sched_debug_verbose = bv;
+> > > +		debugfs_file_put(dentry);
+> > 
+> > Why the get/put of the debugfs dentry? for just this single value?
 > 
-> The failure happens when we
-> 1) call apply_relocate_add() on klp load (or module first load,
->    if klp was loaded first);
-> 2) do nothing when the module is unloaded;
-> 3) call apply_relocate_add() on module reload, which failed.
+> That's what debugfs_file_write_bool() does, which is where I got that since
+> that's really what this is doing. I couldn't see a good way to make this
+> just call that.
 > 
-> The failure happens at this check in restore_r2():
+> I suppose the get/put may not be needed since the only way this should
+> go away is under that mutex too.
+
+Yes, it should not be needed.
+
+> ... erm, yeah, that return is a problem ... I'll fix that.
 > 
->         if (*instruction != PPC_RAW_NOP()) {
->                 pr_err("%s: Expected nop after call, got %08x at %pS\n",
->                         me->name, *instruction, instruction);
->                 return 0;
->         }
-> 
-> Therefore, apply_relocate_add only fails when "location + 1"
-> is not NOP. And to make it not fail, we only need to write NOP to
-> "location + 1" in clear_relocate_add().
+> Also, this was originally on v6.1-rc7. I can rebase when I repost but I
+> didn't want to do it on a random commit so I picked (at the time) the latest
+> tag.  Should I just use the head of Linux? 
 
-Yes, this should be enough to pass the existing check.
+Yes, or linux-next.
 
-> IIUC, you want clear_relocate_add() to undo everything we did
-> in apply_relocate_add(); while I was writing clear_relocate_add()
-> to make the next apply_relocate_add() not fail.
-> 
-> I agree that, based on the name, clear_relocate_add() should
-> undo everything by apply_relocate_add(). But I am not sure how
-> to handle some cases. For example, how do we undo
-> 
->                 case R_PPC64_ADDR32:
->                         /* Simply set it */
->                         *(u32 *)location = value;
->                        break;
->
-> Shall we just write zeros? I don't think this matters.
+thanks,
 
-I guess that it would be zeros as we do in x86_64.
-
-
-> I think this is the question we should answer first:
-> What shall clear_relocate_add() do?
-> 1) undo everything by apply_relocate_add();
-> 2) only do things needed to make the next
->    apply_relocate_add succeed;
-> 3) something between 1) and 2).
-
-Good question.
-
-Hmm, the commit a443bf6e8a7674b86221f49 ("powerpc/modules: Add REL24
-relocation support of livepatch symbols") suggests that all symbols
-in the section SHN_LIVEPATCH have the type R_PPC_REL24. AFAIK, the
-kernel livepatches are the only user of the clear_relocate_add()
-feature.
-
-If the above is correct then it might be enough to clear only
-R_PPC_REL24 type. And it might be enough to warn when clear_relocate_add()
-is called for another type so that we know when the relocations
-were not cleared properly.
-
-Good question.  We might need some input from people familiar
-with the architecture and creating the livepatches.
-
-Best Regards,
-Petr
+greg k-h
