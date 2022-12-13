@@ -1,93 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88F3264AF97
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Dec 2022 07:07:51 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 985A664AFD7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Dec 2022 07:24:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NWShj2Y3wz3bhJ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Dec 2022 17:07:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NWT4P3sF4z3cBX
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Dec 2022 17:24:53 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=mmeHsP+K;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=iwraBZKv;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=mmeHsP+K;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=iwraBZKv;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NWSgm3Pflz3bfZ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Dec 2022 17:07:00 +1100 (AEDT)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2BD55RPX012850;
-	Tue, 13 Dec 2022 06:06:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : subject :
- to : cc : references : in-reply-to : mime-version : message-id :
- content-type : content-transfer-encoding; s=pp1;
- bh=5wN/PZUYIjDgYsWaUnqqe2MulVakpONOUdwWG3g0cOE=;
- b=mmeHsP+KXU5bRx5ywi67W52efQYJwnu5b2tlnIyP7GbXMso4600x5AurYLWC379APSqa
- OjF8W6fd/eknR5zN/d6Yn7IHYtZdKETjcpMTt3QgiJ45WOrV1VRnuzaVxHh6gTfucCuN
- P2p4CJP7OCsZ9uJOUbeaJ/lH1OnVG9RFmwvD/kacohUfvJ07+K4jS4ubY3UtOKGgqVfv
- u+AI/7tzDZDkJwFgh10uegU1+VTUHGMwHRMDknz+6fnd8SUsdC6ZLBwmXmNGl5zich76
- YD7b1fw3EPEA3yOoNxwtJbz7U38QD5aTkJ4vG8eXzqYPX9Xp1l37QkcVtyVix9f0iOMK WQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3mejrdsfwy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 13 Dec 2022 06:06:43 +0000
-Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2BD5lnh8012872;
-	Tue, 13 Dec 2022 06:06:42 GMT
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com [159.122.73.72])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3mejrdsfwb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 13 Dec 2022 06:06:42 +0000
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
-	by ppma06fra.de.ibm.com (8.17.1.19/8.16.1.2) with ESMTP id 2BCAD4ra028923;
-	Tue, 13 Dec 2022 06:06:41 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma06fra.de.ibm.com (PPS) with ESMTPS id 3mchcetnru-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 13 Dec 2022 06:06:40 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2BD66ba345875536
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 13 Dec 2022 06:06:37 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 81CD220049;
-	Tue, 13 Dec 2022 06:06:37 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1F3D420043;
-	Tue, 13 Dec 2022 06:06:37 +0000 (GMT)
-Received: from localhost (unknown [9.43.34.217])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 13 Dec 2022 06:06:37 +0000 (GMT)
-Date: Tue, 13 Dec 2022 11:36:36 +0530
-From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: [PATCH] powerpc/pseries: fix potential memory leak in
- init_cpu_associativity()
-To: christophe.leroy@csgroup.eu, mpe@ellerman.id.au, npiggin@gmail.com,
-        Wang Yufen <wangyufen@huawei.com>
-References: <1670463165-20589-1-git-send-email-wangyufen@huawei.com>
-In-Reply-To: <1670463165-20589-1-git-send-email-wangyufen@huawei.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NWT3R4Kmtz3bW6
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Dec 2022 17:24:02 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by sin.source.kernel.org (Postfix) with ESMTPS id 541DCCE129A;
+	Tue, 13 Dec 2022 06:23:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E89E8C433D2;
+	Tue, 13 Dec 2022 06:23:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1670912637;
+	bh=XILhkOe6p+0QqL2sPK2HR37qz6w5rgg+N/ardspCqbk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=iwraBZKvwbxi6uw8CQYPRtMMMV1pnEOs04Aj70AVZf9AcDn/pVDSLT09CeITcMikt
+	 PRBJhf6+HFBZTJdPhFWVKIsHOWnvGuUPttZwswsYnHOAAFjkPENKr9N5zoO7CsVgr5
+	 BhlYGWbBBJPQmvzPeJxbnJipu/4axyxuHDIO2WBM=
+Date: Tue, 13 Dec 2022 07:23:54 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Phil Auld <pauld@redhat.com>
+Subject: Re: sched/debug: CPU hotplug operation suffers in a large cpu systems
+Message-ID: <Y5gaerSL8pXZcIjR@kroah.com>
+References: <Y01kc4g9CVmoyOxj@hirez.programming.kicks-ass.net>
+ <Y01sk3l8yCMvhvYm@kroah.com>
+ <Y06B0pr8hpwzxEzI@li-05afa54c-330e-11b2-a85c-e3f3aa0db1e9.ibm.com>
+ <Y06ISBWhJflnV+NI@kroah.com>
+ <Y1jVjX9FUuUilcjA@li-05afa54c-330e-11b2-a85c-e3f3aa0db1e9.ibm.com>
+ <Y1jbhCYfktL51zNB@kroah.com>
+ <Y1j5cqbyZCDlyaTn@hirez.programming.kicks-ass.net>
+ <Y2oozs/YgqqRV5hq@li-05afa54c-330e-11b2-a85c-e3f3aa0db1e9.ibm.com>
+ <Y2pKh3H0Ukvmfuco@kroah.com>
+ <Y5d+ZqdxeJD2eIHL@lorien.usersys.redhat.com>
 MIME-Version: 1.0
-User-Agent: astroid/4d6b06ad (https://github.com/astroidmail/astroid)
-Message-Id: <1670911471.bu7q0e91m2.naveen@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 6k7sJ45JDzqgj7kXL76FVmcivfKpYhEM
-X-Proofpoint-ORIG-GUID: nGZdASWEPhWB0qyFc4CuMjSB2xFHDvYI
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-12-13_02,2022-12-12_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
- priorityscore=1501 mlxlogscore=999 clxscore=1011 mlxscore=0
- lowpriorityscore=0 malwarescore=0 adultscore=0 spamscore=0 impostorscore=0
- bulkscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2210170000 definitions=main-2212130055
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Y5d+ZqdxeJD2eIHL@lorien.usersys.redhat.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,36 +65,173 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: ritesh.list@gmail.com, vschneid@redhat.com, vincent.guittot@linaro.org, srikar@linux.vnet.ibm.com, Peter Zijlstra <peterz@infradead.org>, aneesh.kumar@linux.ibm.com, Vishal Chourasia <vishalc@linux.vnet.ibm.com>, linux-kernel@vger.kernel.org, sshegde@linux.ibm.com, mingo@redhat.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Wang Yufen wrote:
-> If the vcpu_associativity alloc memory successfully but the
-> pcpu_associativity fails to alloc memory, the vcpu_associativity
-> memory leaks.
->=20
-> Fixes: d62c8deeb6e6 ("powerpc/pseries: Provide vcpu dispatch statistics")
-> Signed-off-by: Wang Yufen <wangyufen@huawei.com>
+On Mon, Dec 12, 2022 at 02:17:58PM -0500, Phil Auld wrote:
+> Hi,
+> 
+> On Tue, Nov 08, 2022 at 01:24:39PM +0100 Greg Kroah-Hartman wrote:
+> > On Tue, Nov 08, 2022 at 03:30:46PM +0530, Vishal Chourasia wrote:
+> > > 
+> > > Thanks Greg & Peter for your direction. 
+> > > 
+> > > While we pursue the idea of having debugfs based on kernfs, we thought about
+> > > having a boot time parameter which would disable creating and updating of the
+> > > sched_domain debugfs files and this would also be useful even when the kernfs
+> > > solution kicks in, as users who may not care about these debugfs files would
+> > > benefit from a faster CPU hotplug operation.
+> > 
+> > Ick, no, you would be adding a new user/kernel api that you will be
+> > required to support for the next 20+ years.  Just to get over a
+> > short-term issue before you solve the problem properly.
+> 
+> I'm not convinced moving these files from debugfs to kernfs is the right
+> fix.  That will take it from ~50 back to ~20 _minutes_ on these systems.
+> I don't think either of those numbers is reasonable.
+> 
+> The issue as I see it is the full rebuild for every change with no way to
+> batch the changes. How about something like the below?
+> 
+> This puts the domains/* files under the sched_verbose flag. About the only
+> thing under that flag now are the detailed topology discovery printks anyway
+> so this fits together nicely.
+> 
+> This way the files would be off by default (assuming you don't boot with
+> sched_verbose) and can be created at runtime by enabling verbose. Multiple
+> changes could also be batched by disabling/makeing changes/re-enabling.
+> 
+> It does not create a new API, uses one that is already there.
+
+The idea seems good, the implementation might need a bit of work :)
+
+> > If you really do not want these debugfs files, just disable debugfs from
+> > your system.  That should be a better short-term solution, right?
+> 
+> We do find these files useful at times for debugging issue and looking
+> at what's going on on the system.
+> 
+> > 
+> > Or better yet, disable SCHED_DEBUG, why can't you do that?
+> 
+> Same with this... useful information with (modulo issues like this)
+> small cost. There are also tuning knobs that are only available
+> with SCHED_DEBUG. 
+> 
+> 
+> Cheers,
+> Phil
+> 
+> ---------------
+> 
+> sched/debug: Put sched/domains files under verbose flag
+> 
+> The debug files under sched/domains can take a long time to regenerate,
+> especially when updates are done one at a time. Move these files under
+> the verbose debug flag. Allow changes to verbose to trigger generation
+> of the files. This lets a user batch the updates but still have the
+> information available.  The detailed topology printk messages are also
+> under verbose.
+> 
+> Signed-off-by: Phil Auld <pauld@redhat.com>
 > ---
->  arch/powerpc/platforms/pseries/lpar.c | 1 +
->  1 file changed, 1 insertion(+)
->=20
-> diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platfor=
-ms/pseries/lpar.c
-> index 97ef649..501ee6c 100644
-> --- a/arch/powerpc/platforms/pseries/lpar.c
-> +++ b/arch/powerpc/platforms/pseries/lpar.c
-> @@ -211,6 +211,7 @@ static int init_cpu_associativity(void)
->=20
->  	if (!vcpu_associativity || !pcpu_associativity) {
->  		pr_err("error allocating memory for associativity information\n");
-> +		kfree(vcpu_associativity);
+>  kernel/sched/debug.c | 68 ++++++++++++++++++++++++++++++++++++++++++--
+>  1 file changed, 66 insertions(+), 2 deletions(-)
+> 
+> diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
+> index 1637b65ba07a..2eb51ee3ccab 100644
+> --- a/kernel/sched/debug.c
+> +++ b/kernel/sched/debug.c
+> @@ -280,6 +280,31 @@ static const struct file_operations sched_dynamic_fops = {
+>  
+>  __read_mostly bool sched_debug_verbose;
+>  
+> +static ssize_t sched_verbose_write(struct file *filp, const char __user *ubuf,
+> +				   size_t cnt, loff_t *ppos);
+> +
+> +static int sched_verbose_show(struct seq_file *m, void *v)
+> +{
+> +	if (sched_debug_verbose)
+> +		seq_puts(m,"Y\n");
+> +	else
+> +		seq_puts(m,"N\n");
+> +	return 0;
+> +}
+> +
+> +static int sched_verbose_open(struct inode *inode, struct file *filp)
+> +{
+> +	return single_open(filp, sched_verbose_show, NULL);
+> +}
+> +
+> +static const struct file_operations sched_verbose_fops = {
+> +	.open		= sched_verbose_open,
+> +	.write		= sched_verbose_write,
+> +	.read		= seq_read,
+> +	.llseek		= seq_lseek,
+> +	.release	= seq_release,
+> +};
+> +
+>  static const struct seq_operations sched_debug_sops;
+>  
+>  static int sched_debug_open(struct inode *inode, struct file *filp)
+> @@ -303,7 +328,7 @@ static __init int sched_init_debug(void)
+>  	debugfs_sched = debugfs_create_dir("sched", NULL);
+>  
+>  	debugfs_create_file("features", 0644, debugfs_sched, NULL, &sched_feat_fops);
+> -	debugfs_create_bool("verbose", 0644, debugfs_sched, &sched_debug_verbose);
+> +	debugfs_create_file("verbose", 0644, debugfs_sched, NULL, &sched_verbose_fops);
+>  #ifdef CONFIG_PREEMPT_DYNAMIC
+>  	debugfs_create_file("preempt", 0644, debugfs_sched, NULL, &sched_dynamic_fops);
+>  #endif
+> @@ -402,15 +427,23 @@ void update_sched_domain_debugfs(void)
+>  	if (!debugfs_sched)
+>  		return;
+>  
+> +	if (!sched_debug_verbose)
+> +		return;
+> +
+>  	if (!cpumask_available(sd_sysctl_cpus)) {
+>  		if (!alloc_cpumask_var(&sd_sysctl_cpus, GFP_KERNEL))
+>  			return;
+>  		cpumask_copy(sd_sysctl_cpus, cpu_possible_mask);
+>  	}
+>  
+> -	if (!sd_dentry)
+> +	if (!sd_dentry) {
+>  		sd_dentry = debugfs_create_dir("domains", debugfs_sched);
+>  
+> +		/* rebuild sd_sysclt_cpus if empty since it gets cleared below */
+> +		if (cpumask_first(sd_sysctl_cpus) >=  nr_cpu_ids)
+> +			cpumask_copy(sd_sysctl_cpus, cpu_online_mask);
+> +	}
+> +
+>  	for_each_cpu(cpu, sd_sysctl_cpus) {
+>  		struct sched_domain *sd;
+>  		struct dentry *d_cpu;
+> @@ -443,6 +476,37 @@ void dirty_sched_domain_sysctl(int cpu)
+>  
+>  #endif /* CONFIG_SMP */
+>  
+> +static ssize_t sched_verbose_write(struct file *filp, const char __user *ubuf,
+> +				   size_t cnt, loff_t *ppos)
+> +{
+> +	struct dentry *dentry = filp->f_path.dentry;
+> +	bool orig = sched_debug_verbose;
+> +	bool bv;
+> +	int r;
+> +
+> +	r = kstrtobool_from_user(ubuf, cnt, &bv);
+> +	if (!r) {
+> +		mutex_lock(&sched_domains_mutex);
+> +		r = debugfs_file_get(dentry);
+> +		if (unlikely(r))
+> +			return r;
+> +		sched_debug_verbose = bv;
+> +		debugfs_file_put(dentry);
 
-I think we should call destroy_cpu_associativity() here instead. We=20
-don't know which allocation failed, so it is better to try and free=20
-both, and also to reset the pointers to 0.
+Why the get/put of the debugfs dentry? for just this single value?
 
+thanks,
 
-- Naveen
-
+greg k-h
