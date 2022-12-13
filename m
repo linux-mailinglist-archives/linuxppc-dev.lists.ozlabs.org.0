@@ -1,54 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3B4264AB9F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Dec 2022 00:38:03 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 488B564ABF3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Dec 2022 01:04:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NWJ2x50mFz3bjl
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Dec 2022 10:38:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NWJdj0lxGz2xBF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Dec 2022 11:04:41 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JqE69Luc;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ESPDmFFe;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=sboyd@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.115; helo=mga14.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JqE69Luc;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ESPDmFFe;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NWJ1z4Mlhz300l
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Dec 2022 10:37:11 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 1204C61281;
-	Mon, 12 Dec 2022 23:37:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C419C433D2;
-	Mon, 12 Dec 2022 23:37:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1670888226;
-	bh=Djj37c4gGhHcy/TCgXVD2eUrZ4pas0KvVlsKKNOhTNQ=;
-	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-	b=JqE69LucO9qZIWAElN4CUCwwAlIBQJxrkL1lTmaYO/UObCARO+ktTV5RySUi3LCB5
-	 7YsLSUmFNNzZl4JewOsbhOvKiKjM0RHsfIuUPfKAbs+Y0mVLq7NFuK9DKtRvBBqbVg
-	 g917KtwjIY2YE0OBF5Udwyf90w+WByk9dUB+vR47v8BuJsrh7ZaUEWK/SHJVeHudyc
-	 0weqMuFrEYAtB9hs/Y0NVpzzfGkDLm6R7QMW09zo1IbcO9ljJkGj2XrSdc5USpUoMs
-	 x+dle18vHpIq8mAvzbihUE4xM/Q2P16omsQBYQeQVpTTMKO9McXduXtcCQhbUhU5Gm
-	 A8S6LgCd3pEqQ==
-Content-Type: text/plain; charset="utf-8"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NWJcj5zH9z300l
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Dec 2022 11:03:44 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1670889830; x=1702425830;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=bzyWzbbzY0+/8ISEOvcGeLkLRwaKhhHoSk9swWOYmBY=;
+  b=ESPDmFFe0yxy7n5ROgWJaR2exI+De+sPdWVSjuwQACyvWLRXPXgbe5PW
+   /fWFLIiRWWLOcqde7Zkqxzvdpgwv/Zj2rhw+F72smK19X4WkXy02CrrOO
+   Ewx7PUClCnaG/inq8ovOA8K3jwI6BJtsFh/A56wp4pK+4LyEU66n2eJFy
+   tEm4/OCfk73SBszpzsb/u1YFhV5Kg7Gxa5iFULgZQWyCpy5LNp53spuzY
+   zuhBBHPX6c4ixiFZFOIQUfB9urmspgLK9rDtH+rV1b8NGFspEtEZdP8GZ
+   oFqlSpCa9uASvVP79YRdeciR3lipRnMrqgEKoUjchK6tZL9gx8DZOYJMN
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10559"; a="318026291"
+X-IronPort-AV: E=Sophos;i="5.96,239,1665471600"; 
+   d="scan'208";a="318026291"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Dec 2022 16:03:41 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10559"; a="822674838"
+X-IronPort-AV: E=Sophos;i="5.96,239,1665471600"; 
+   d="scan'208";a="822674838"
+Received: from lkp-server01.sh.intel.com (HELO b5d47979f3ad) ([10.239.97.150])
+  by orsmga005.jf.intel.com with ESMTP; 12 Dec 2022 16:03:39 -0800
+Received: from kbuild by b5d47979f3ad with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1p4slm-0003yj-2Q;
+	Tue, 13 Dec 2022 00:03:38 +0000
+Date: Tue, 13 Dec 2022 08:03:06 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:next-test] BUILD SUCCESS
+ 825eada7717cd75424d2b5f00cf754ed97d62d87
+Message-ID: <6397c13a.RnlWSakOCtXnWlRs%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <8b42763d-5fc3-3853-c421-227494c0144a@seco.com>
-References: <20221027191113.403712-1-sean.anderson@seco.com> <20221027191113.403712-5-sean.anderson@seco.com> <20221027230331.19C2FC433D6@smtp.kernel.org> <5f00ede6-10f5-c11c-ee21-54460c1f98b0@seco.com> <d13ff3b2-79f0-2a72-c9da-2c310c4e3bb8@seco.com> <20221101201020.B6180C433C1@smtp.kernel.org> <45463950-7a4f-758d-d6a1-b8fdf9bfd319@seco.com> <20221207021742.A3596C433C1@smtp.kernel.org> <8b42763d-5fc3-3853-c421-227494c0144a@seco.com>
-Subject: Re: [PATCH v8 4/9] phy: fsl: Add Lynx 10G SerDes driver
-From: Stephen Boyd <sboyd@kernel.org>
-To: Kishon Vijay Abraham I <kishon@ti.com>, Sean Anderson <sean.anderson@seco.com>, Vinod Koul <vkoul@kernel.org>, linux-phy@lists.infradead.org
-Date: Mon, 12 Dec 2022 15:37:04 -0800
-User-Agent: alot/0.10
-Message-Id: <20221212233706.6C419C433D2@smtp.kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,38 +70,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, Bagas Sanjaya <bagasdotme@gmail.com>, Madalin Bucur <madalin.bucur@nxp.com>, Michael Turquette <mturquette@baylibre.com>, Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org, Rob Herring <robh+dt@kernel.org>, Camelia Alexandra Groza <camelia.groza@nxp.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Ioana Ciornei <ioana.ciornei@nxp.com>, linuxppc-dev@lists.ozlabs.org, linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Quoting Sean Anderson (2022-12-08 07:36:45)
-> On 12/6/22 21:17, Stephen Boyd wrote:
-> > Quoting Sean Anderson (2022-11-01 16:27:21)
-> >> On 11/1/22 16:10, Stephen Boyd wrote:
-> >> >>=20
-> >> >> Oh, I remember why I did this. I need the reference clock for clk_h=
-w_round_rate,
-> >> >> which is AFAICT the only correct way to implement round_rate.
-> >> >>=20
-> >> >=20
-> >> > Is the reference clk the parent of the clk implementing
-> >> > clk_ops::round_rate()?
-> >>=20
-> >> Yes. We may be able to produce a given output with multiple reference
-> >> rates. However, the clock API provides no mechanism to say "Don't ask
-> >> for the parent clock to be rate X, you just tried it and the parent
-> >> clock can't support it." So instead, we loop over the possible referen=
-ce
-> >> rates and pick the first one which the parent says it can round to.
-> >>=20
-> >=20
-> > Sorry, I'm lost. Why can't you loop over possible reference rates in
-> > determine_rate/round_rate clk op here?
->=20
-> This is what I do currently, but you need to have the parent clock to do
-> so. With your suggested method, we never actually get a struct clk(_hw)
-> which we can query for rate support.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
+branch HEAD: 825eada7717cd75424d2b5f00cf754ed97d62d87  powerpc/64: Set default CPU in Kconfig
 
-The clk_hw for the parent is given to the determine_rate clk_op in the
-clk_rate_request structure. It's stored in the best_parent_hw pointer
-when the determine_rate function is called. Does that work for you?
+elapsed time: 721m
+
+configs tested: 67
+configs skipped: 2
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+powerpc                           allnoconfig
+arc                                 defconfig
+s390                             allmodconfig
+alpha                               defconfig
+x86_64                          rhel-8.3-func
+s390                                defconfig
+x86_64                          rhel-8.3-rust
+x86_64                    rhel-8.3-kselftests
+s390                             allyesconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+sh                               allmodconfig
+m68k                             allyesconfig
+m68k                             allmodconfig
+alpha                            allyesconfig
+arc                              allyesconfig
+mips                             allyesconfig
+powerpc                          allmodconfig
+x86_64                           rhel-8.3-syz
+x86_64                         rhel-8.3-kunit
+x86_64                           rhel-8.3-kvm
+ia64                             allmodconfig
+x86_64                           rhel-8.3-bpf
+i386                 randconfig-a013-20221212
+i386                 randconfig-a014-20221212
+i386                 randconfig-a012-20221212
+i386                 randconfig-a011-20221212
+i386                 randconfig-a015-20221212
+i386                 randconfig-a016-20221212
+x86_64                               rhel-8.3
+i386                                defconfig
+x86_64                              defconfig
+arm                                 defconfig
+x86_64               randconfig-a013-20221212
+x86_64               randconfig-a015-20221212
+x86_64               randconfig-a012-20221212
+x86_64               randconfig-a016-20221212
+x86_64               randconfig-a014-20221212
+x86_64               randconfig-a011-20221212
+x86_64                           allyesconfig
+riscv                randconfig-r042-20221212
+arm64                            allyesconfig
+arm                              allyesconfig
+i386                             allyesconfig
+arc                  randconfig-r043-20221211
+arc                  randconfig-r043-20221212
+arm                  randconfig-r046-20221211
+s390                 randconfig-r044-20221212
+
+clang tested configs:
+i386                 randconfig-a002-20221212
+x86_64               randconfig-a002-20221212
+x86_64               randconfig-a001-20221212
+i386                 randconfig-a003-20221212
+i386                 randconfig-a001-20221212
+x86_64               randconfig-a004-20221212
+x86_64               randconfig-a003-20221212
+x86_64               randconfig-a006-20221212
+i386                 randconfig-a004-20221212
+x86_64               randconfig-a005-20221212
+i386                 randconfig-a006-20221212
+i386                 randconfig-a005-20221212
+arm                  randconfig-r046-20221212
+riscv                randconfig-r042-20221211
+hexagon              randconfig-r045-20221211
+hexagon              randconfig-r041-20221211
+hexagon              randconfig-r045-20221212
+s390                 randconfig-r044-20221211
+hexagon              randconfig-r041-20221212
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
