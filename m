@@ -2,58 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1E7F64B768
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Dec 2022 15:32:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C211064B78E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Dec 2022 15:38:27 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NWgtX5wHJz3cBP
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Dec 2022 01:32:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NWh1s47Rkz3bqw
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Dec 2022 01:38:25 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=Pbvo7a7K;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=eMnP3Idp;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=195.135.220.29; helo=smtp-out2.suse.de; envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=Pbvo7a7K;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=eMnP3Idp;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NWh0x107xz3bgF
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Dec 2022 01:37:36 +1100 (AEDT)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+	by smtp-out2.suse.de (Postfix) with ESMTP id 8ADEE1FDB8;
+	Tue, 13 Dec 2022 14:37:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1670942252; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yCoPhJw+GKmzrg8p4DH4Ya6d+PQIKemaInJPhpeXlHU=;
+	b=eMnP3IdpmRft/ER7oin2HnZdMR5P7VHO5Sw/nEemsxB2Ij/yJwJfX7Qw5GQMBH5u6Fzp9j
+	B/k+nQ8blMON5hd8beazuYDg55xA4qnleqSX2yPUaX1FJkK9+lFf9Ix1dIM9V3mpRRdKVk
+	2q5tMlDY577z7rViBRwn73TM11qdHPY=
+Received: from suse.cz (unknown [10.100.208.146])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NWgsZ1pGgz3bXC
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Dec 2022 01:31:12 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 0CA186155B;
-	Tue, 13 Dec 2022 14:31:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCFAAC433EF;
-	Tue, 13 Dec 2022 14:31:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1670941869;
-	bh=ZJunwccLyP7VfyFolEsIq9RAMaZzY1QZT7UToBTpj8Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Pbvo7a7K6YUmDxML3SyCX8Ld7C0Cq5pxVmHq7XJ4crSB3niF2OVpUifdz2U4pok1g
-	 Ji4xJVTLktet6hT2LsWAo9IHn4hTENPIKjWDmQKkX9QypqT6cGwhM2NKEQRxVYQFT0
-	 cpZMBy+F0jPXT3QB91hTkbiYzxBM0eWHyFaFd9wY=
-Date: Tue, 13 Dec 2022 15:31:06 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Phil Auld <pauld@redhat.com>
-Subject: Re: sched/debug: CPU hotplug operation suffers in a large cpu systems
-Message-ID: <Y5iMql1nKBkukjJK@kroah.com>
-References: <Y06B0pr8hpwzxEzI@li-05afa54c-330e-11b2-a85c-e3f3aa0db1e9.ibm.com>
- <Y06ISBWhJflnV+NI@kroah.com>
- <Y1jVjX9FUuUilcjA@li-05afa54c-330e-11b2-a85c-e3f3aa0db1e9.ibm.com>
- <Y1jbhCYfktL51zNB@kroah.com>
- <Y1j5cqbyZCDlyaTn@hirez.programming.kicks-ass.net>
- <Y2oozs/YgqqRV5hq@li-05afa54c-330e-11b2-a85c-e3f3aa0db1e9.ibm.com>
- <Y2pKh3H0Ukvmfuco@kroah.com>
- <Y5d+ZqdxeJD2eIHL@lorien.usersys.redhat.com>
- <Y5gaerSL8pXZcIjR@kroah.com>
- <Y5h8sqHD9/RWNeYS@lorien.usersys.redhat.com>
+	by relay2.suse.de (Postfix) with ESMTPS id 6DB002C142;
+	Tue, 13 Dec 2022 14:37:32 +0000 (UTC)
+Date: Tue, 13 Dec 2022 15:37:32 +0100
+From: Petr Mladek <pmladek@suse.com>
+To: Song Liu <song@kernel.org>
+Subject: Re: [PATCH v6] livepatch: Clear relocation targets on a module
+ removal
+Message-ID: <Y5iOLMTLaMyqsgbL@alley>
+References: <20220901171252.2148348-1-song@kernel.org>
+ <alpine.LSU.2.21.2212091352370.18933@pobox.suse.cz>
+ <CAPhsuW5xb2T5FBXUqG2S+AXBvDYSkLVVvUyDamjrbLQwe-3kVQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Y5h8sqHD9/RWNeYS@lorien.usersys.redhat.com>
+In-Reply-To: <CAPhsuW5xb2T5FBXUqG2S+AXBvDYSkLVVvUyDamjrbLQwe-3kVQ@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,81 +62,93 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ritesh.list@gmail.com, vschneid@redhat.com, vincent.guittot@linaro.org, srikar@linux.vnet.ibm.com, Peter Zijlstra <peterz@infradead.org>, aneesh.kumar@linux.ibm.com, Vishal Chourasia <vishalc@linux.vnet.ibm.com>, linux-kernel@vger.kernel.org, sshegde@linux.ibm.com, mingo@redhat.com, linuxppc-dev@lists.ozlabs.org
+Cc: x86@kernel.org, jikos@kernel.org, linux-kernel@vger.kernel.org, joe.lawrence@redhat.com, Josh Poimboeuf <jpoimboe@redhat.com>, live-patching@vger.kernel.org, Miroslav Benes <mbenes@suse.cz>, linuxppc-dev@lists.ozlabs.org, jpoimboe@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Dec 13, 2022 at 08:22:58AM -0500, Phil Auld wrote:
-> On Tue, Dec 13, 2022 at 07:23:54AM +0100 Greg Kroah-Hartman wrote:
-> > On Mon, Dec 12, 2022 at 02:17:58PM -0500, Phil Auld wrote:
-> > > Hi,
-> > > 
-> > > On Tue, Nov 08, 2022 at 01:24:39PM +0100 Greg Kroah-Hartman wrote:
-> > > > On Tue, Nov 08, 2022 at 03:30:46PM +0530, Vishal Chourasia wrote:
-> > > > > 
-> > > > > Thanks Greg & Peter for your direction. 
-> > > > > 
-> > > > > While we pursue the idea of having debugfs based on kernfs, we thought about
-> > > > > having a boot time parameter which would disable creating and updating of the
-> > > > > sched_domain debugfs files and this would also be useful even when the kernfs
-> > > > > solution kicks in, as users who may not care about these debugfs files would
-> > > > > benefit from a faster CPU hotplug operation.
-> > > > 
-> > > > Ick, no, you would be adding a new user/kernel api that you will be
-> > > > required to support for the next 20+ years.  Just to get over a
-> > > > short-term issue before you solve the problem properly.
-> > > 
-> > > I'm not convinced moving these files from debugfs to kernfs is the right
-> > > fix.  That will take it from ~50 back to ~20 _minutes_ on these systems.
-> > > I don't think either of those numbers is reasonable.
-> > > 
-> > > The issue as I see it is the full rebuild for every change with no way to
-> > > batch the changes. How about something like the below?
-> > > 
-> > > This puts the domains/* files under the sched_verbose flag. About the only
-> > > thing under that flag now are the detailed topology discovery printks anyway
-> > > so this fits together nicely.
-> > > 
-> > > This way the files would be off by default (assuming you don't boot with
-> > > sched_verbose) and can be created at runtime by enabling verbose. Multiple
-> > > changes could also be batched by disabling/makeing changes/re-enabling.
-> > > 
-> > > It does not create a new API, uses one that is already there.
-> > 
-> > The idea seems good, the implementation might need a bit of work :)
+On Tue 2022-12-13 00:28:34, Song Liu wrote:
+> On Fri, Dec 9, 2022 at 4:55 AM Miroslav Benes <mbenes@suse.cz> wrote:
+> >
+> > Hi,
+> >
+> > first thank you for taking over and I also appologize for not replying
+> > much sooner.
+> >
+> > On Thu, 1 Sep 2022, Song Liu wrote:
+> >
+> > > From: Miroslav Benes <mbenes@suse.cz>
+> > >
+> > > Josh reported a bug:
+> > >
+> > >   When the object to be patched is a module, and that module is
+> > >   rmmod'ed and reloaded, it fails to load with:
+> > >
+> > >   module: x86/modules: Skipping invalid relocation target, existing value is nonzero for type 2, loc 00000000ba0302e9, val ffffffffa03e293c
+> > >   livepatch: failed to initialize patch 'livepatch_nfsd' for module 'nfsd' (-8)
+> > >   livepatch: patch 'livepatch_nfsd' failed for module 'nfsd', refusing to load module 'nfsd'
+> > >
+> > >   The livepatch module has a relocation which references a symbol
+> > >   in the _previous_ loading of nfsd. When apply_relocate_add()
+> > >   tries to replace the old relocation with a new one, it sees that
+> > >   the previous one is nonzero and it errors out.
+> > >
+> > >   On ppc64le, we have a similar issue:
+> > >
+> > >   module_64: livepatch_nfsd: Expected nop after call, got e8410018 at e_show+0x60/0x548 [livepatch_nfsd]
+> > >   livepatch: failed to initialize patch 'livepatch_nfsd' for module 'nfsd' (-8)
+> > >   livepatch: patch 'livepatch_nfsd' failed for module 'nfsd', refusing to load module 'nfsd'
+> > >
+> > > He also proposed three different solutions. We could remove the error
+> > > check in apply_relocate_add() introduced by commit eda9cec4c9a1
+> > > ("x86/module: Detect and skip invalid relocations"). However the check
+> > > is useful for detecting corrupted modules.
+> > >
+> > > We could also deny the patched modules to be removed. If it proved to be
+> > > a major drawback for users, we could still implement a different
+> > > approach. The solution would also complicate the existing code a lot.
+> > >
+> > > We thus decided to reverse the relocation patching (clear all relocation
+> > > targets on x86_64). The solution is not
+> > > universal and is too much arch-specific, but it may prove to be simpler
+> > > in the end.
+> > >
+> > > Reported-by: Josh Poimboeuf <jpoimboe@redhat.com>
+> > > Signed-off-by: Miroslav Benes <mbenes@suse.cz>
+> > > Signed-off-by: Song Liu <song@kernel.org>
+> >
+> > Petr has commented on the code aspects. I will just add that s390x was not
+> > dealt with at the time because there was no live patching support for
+> > s390x back then if I remember correctly and my notes do not lie. The same
+> > applies to powerpc32. I think that both should be fixed as well with this
+> > patch. It might also help to clean up the ifdeffery in the patch a bit.
 > 
-> More than the one comment below? Let me know.
-
-No idea, resubmit a working patch and I'll review it properly :)
-
-> > > +	r = kstrtobool_from_user(ubuf, cnt, &bv);
-> > > +	if (!r) {
-> > > +		mutex_lock(&sched_domains_mutex);
-> > > +		r = debugfs_file_get(dentry);
-> > > +		if (unlikely(r))
-> > > +			return r;
-> > > +		sched_debug_verbose = bv;
-> > > +		debugfs_file_put(dentry);
-> > 
-> > Why the get/put of the debugfs dentry? for just this single value?
+> After reading the code (no testing), I think we don't need any logic for
+> ppc32 and s390.
 > 
-> That's what debugfs_file_write_bool() does, which is where I got that since
-> that's really what this is doing. I couldn't see a good way to make this
-> just call that.
+> We need clear_relocate_add() to handle module reload failure.
 > 
-> I suppose the get/put may not be needed since the only way this should
-> go away is under that mutex too.
-
-Yes, it should not be needed.
-
-> ... erm, yeah, that return is a problem ... I'll fix that.
+> I don't think we have similar checks for ppc32 and s390, so
+> clear_relocate_add() is not needed for the two.
 > 
-> Also, this was originally on v6.1-rc7. I can rebase when I repost but I
-> didn't want to do it on a random commit so I picked (at the time) the latest
-> tag.  Should I just use the head of Linux? 
+> OTOH, we can argue that clear_relocate_add() should undo
+> everything apply_relocate_add() did. But I do think that
+> will be an overkill.
 
-Yes, or linux-next.
+It is true that we do not need to clear the relocations if the values
+are not checked in apply_relocated_add().
 
-thanks,
+I do not have strong opinion whether we should do it or not.
 
-greg k-h
+One one hand, the clearing code might introduce a bug if it modifies
+some wrong location. So, it might do more harm then good.
+
+One the other hand, it feels bad when a code is jumping to a
+non-existing address. I know, nobody should call this code.
+But it is still a kind of a security hole.
+
+Well, I think that we could keep the clearing functions empty
+on ppc32 and s390 in this patch(set). It won't be worse than
+it is now. And perfection is the enemy of good.
+
+Best Regards,
+Petr
