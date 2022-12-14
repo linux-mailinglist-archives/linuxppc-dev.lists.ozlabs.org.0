@@ -2,46 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76BAD64C56A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Dec 2022 10:01:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69DF064C831
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Dec 2022 12:40:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NX8V52Mlgz3cMJ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Dec 2022 20:01:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NXD1z1zyPz3cMK
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Dec 2022 22:40:23 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Sp6jLt9R;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=lug-owl.de (client-ip=188.68.32.151; helo=lug-owl.de; envelope-from=jbglaw@lug-owl.de; receiver=<UNKNOWN>)
-Received: from lug-owl.de (lug-owl.de [188.68.32.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1035; helo=mail-pj1-x1035.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Sp6jLt9R;
+	dkim-atps=neutral
+Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NX8TW083Fz3bdn
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Dec 2022 20:00:30 +1100 (AEDT)
-Received: by lug-owl.de (Postfix, from userid 1001)
-	id A6F5D4206E; Wed, 14 Dec 2022 10:00:25 +0100 (CET)
-Date: Wed, 14 Dec 2022 10:00:25 +0100
-From: Jan-Benedict Glaw <jbglaw@lug-owl.de>
-To: Segher Boessenkool <segher@kernel.crashing.org>
-Subject: Re: Mass-building defconfigs: many fail with assembler errors
-Message-ID: <20221214090025.f3k3juinxfhhnr6u@lug-owl.de>
-References: <20221212215117.aa7255t7qd6yefk4@lug-owl.de>
- <20221213002613.GG25951@gate.crashing.org>
- <20221213100045.xebrbdcniwpopbnq@lug-owl.de>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="p2yhttawkqvgtl3i"
-Content-Disposition: inline
-In-Reply-To: <20221213100045.xebrbdcniwpopbnq@lug-owl.de>
-X-Operating-System: Linux chamaeleon 5.14.0-0.bpo.2-amd64 
-X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
-X-gpg-key: wwwkeys.de.pgp.net
-X-Echelon-Enable: howto poison arsenous mail psychological biological nuclear
- warfare test the bombastical terror of flooding the spy listeners explosion
- sex drugs and rock'n'roll
-X-TKUeV: howto poison arsenous mail psychological biological nuclear warfare
- test the bombastical terror of flooding the spy listeners explosion sex
- drugs and rock'n'roll
-X-message-flag: Please send plain text messages only. Do not send HTML
- emails. Thank you. 
-User-Agent: NeoMutt/20170113 (1.7.2)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NXD121hFcz2xJ6
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Dec 2022 22:39:33 +1100 (AEDT)
+Received: by mail-pj1-x1035.google.com with SMTP id e7-20020a17090a77c700b00216928a3917so6842223pjs.4
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Dec 2022 03:39:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4BKmhMmSaZWDa3Wb9Diq13TSrmiqECYBgWVUjNdrHCo=;
+        b=Sp6jLt9RB7A2VFrAxKxORICEcbmRhDvdBMc+D2XXajErHdQUHeKtFHQ8VU4nB4oB3L
+         gLy4YTtAqUDCHL/KoPQPZwVws/1suEgSOCei+ULJff3hVeyXjW5RMBFk5/AZpzKHM3Lm
+         YBG+Pw+PbAiREjcsiLvZxj7p8uutslsdz+xv9FsoNVBwbf0GppaQ3s0iFVRiGGI4Z/oy
+         QYZ33VOJ5m3q29svLbncAZoK9GqQ1TwFzV5JCBQW0YwddMZC0AXcxJZ4kjaK9MDKI4Pk
+         +v59GGp4NeTxofQ03oPEbDNYj79qVjm+pyWugOI1nRfvA5uIrjcY6ZGA+QQmC1+LAxqB
+         1o5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=4BKmhMmSaZWDa3Wb9Diq13TSrmiqECYBgWVUjNdrHCo=;
+        b=23jBuN8Tf3CKN+JnzL+bUKfLFC8TZOej+2Ti74mZWC2u/8yl2N2iyzDaB4kzQOPJzZ
+         eV3Ev5MdCqk23xzLnjQA1737fxIlrFrBKZkBhY+JDr9LryfF8Xg5chovugqHlObS6sOH
+         wz2+0Bbe4lIY62levrz89E2unhC4URPjfU+SnRDbqQmUWFOGyrOIIDtyMLRl4qVaVFNR
+         /IL2Rll7QOC4XaEwrhWOCgUuDW3EWvs3FWTGvapYJGzwwhCL1qLrpzbucF9iz8osHHDC
+         zJkjQ95Vi5A/DcsLl0QU0xqI6fQAwHVzSvWBMsguP5VWbsVh/WU9nzH83/hSSC478TeR
+         VqWQ==
+X-Gm-Message-State: ANoB5pmzjG1u48UwmNu7IVK6CfN4axQ5ZbggqNSm1VG0Y9mTUOv/j0NV
+	hoyV0USRefJojOZUqsjKOag=
+X-Google-Smtp-Source: AA0mqf64cW1pYy4Tb6sxKQVA69m6f1Ld9mA/bup2v5lp3W0ADR1bQQWtW5WitH7p47kPZd5RaVOcSA==
+X-Received: by 2002:a17:90a:ea98:b0:219:2e8c:d1c8 with SMTP id h24-20020a17090aea9800b002192e8cd1c8mr24839653pjz.35.1671017970456;
+        Wed, 14 Dec 2022 03:39:30 -0800 (PST)
+Received: from localhost (14-200-18-82.tpgi.com.au. [14.200.18.82])
+        by smtp.gmail.com with ESMTPSA id 68-20020a17090a09ca00b00219025945dcsm1229798pjo.19.2022.12.14.03.39.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 14 Dec 2022 03:39:29 -0800 (PST)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 14 Dec 2022 21:39:25 +1000
+Message-Id: <CP1IFJNCTTZ4.33ROBE5VAFAKM@bobo>
+Subject: Re: [PATCH] powerpc/64: Implement arch_within_stack_frames
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Christophe Leroy" <christophe.leroy@csgroup.eu>, "Nicholas Miehlbradt"
+ <nicholas@linux.ibm.com>, "linuxppc-dev@lists.ozlabs.org"
+ <linuxppc-dev@lists.ozlabs.org>
+X-Mailer: aerc 0.13.0
+References: <20221214044252.1910657-1-nicholas@linux.ibm.com>
+ <0dfbaab8-c962-9127-b56d-8f9989c095d8@csgroup.eu>
+In-Reply-To: <0dfbaab8-c962-9127-b56d-8f9989c095d8@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,110 +82,141 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
---p2yhttawkqvgtl3i
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hi Segher!
-
-On Tue, 2022-12-13 11:00:45 +0100, Jan-Benedict Glaw <jbglaw@lug-owl.de> wr=
-ote:
-> On Mon, 2022-12-12 18:26:13 -0600, Segher Boessenkool <segher@kernel.cras=
-hing.org> wrote:
-> > On Mon, Dec 12, 2022 at 10:51:17PM +0100, Jan-Benedict Glaw wrote:
-> > > 	Compiler ICEs (during GIMPLE pass: ccp) in align.c:
-> > >=20
-> > > 	  powerpc-linux-gcc -Wp,-MMD,arch/powerpc/kernel/.align.o.d -nostdin=
-c -I./arch/powerpc/include -I./arch/powerpc/include/generated  -I./include =
--I./arch/powerpc/include/uapi -I./arch/powerpc/include/generated/uapi -I./i=
-nclude/uapi -I./include/generated/uapi -include ./include/linux/compiler-ve=
-rsion.h -include ./include/linux/kconfig.h -include ./include/linux/compile=
-r_types.h -D__KERNEL__ -I ./arch/powerpc -fmacro-prefix-map=3D./=3D -Wall -=
-Wundef -Werror=3Dstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno=
--common -fshort-wchar -fno-PIE -Werror=3Dimplicit-function-declaration -Wer=
-ror=3Dimplicit-int -Werror=3Dreturn-type -Wno-format-security -std=3Dgnu11 =
--mbig-endian -m32 -msoft-float -pipe -ffixed-r2 -mmultiple -mno-readonly-in=
--sdata -mcpu=3D440 -mno-prefixed -mno-pcrel -mno-altivec -mno-vsx -mno-mma =
--fno-asynchronous-unwind-tables -mno-string -Wa,-m440 -mbig-endian -mstack-=
-protector-guard=3Dtls -mstack-protector-guard-reg=3Dr2 -fno-delete-null-poi=
-nter-checks -Wno-frame-address -Wno-format-truncation -Wno-format-overflow =
--Wno-address-of-packed-member -O2 -fno-allow-store-data-races -Wframe-large=
-r-than=3D1024 -fstack-protector-strong -Wno-main -Wno-unused-but-set-variab=
-le -Wno-unused-const-variable -Wno-dangling-pointer -fomit-frame-pointer -f=
-trivial-auto-var-init=3Dzero -fno-stack-clash-protection -Wdeclaration-afte=
-r-statement -Wvla -Wno-pointer-sign -Wcast-function-type -Wno-stringop-trun=
-cation -Wno-stringop-overflow -Wno-restrict -Wno-maybe-uninitialized -Wno-a=
-lloc-size-larger-than -Wimplicit-fallthrough=3D5 -fno-strict-overflow -fno-=
-stack-check -fconserve-stack -Werror=3Ddate-time -Werror=3Dincompatible-poi=
-nter-types -Werror=3Ddesignated-init -Wno-packed-not-aligned -g -mstack-pro=
-tector-guard-offset=3D1080 -Werror    -DKBUILD_MODFILE=3D'"arch/powerpc/ker=
-nel/align"' -DKBUILD_BASENAME=3D'"align"' -DKBUILD_MODNAME=3D'"align"' -D__=
-KBUILD_MODNAME=3Dkmod_align -c -o arch/powerpc/kernel/align.o arch/powerpc/=
-kernel/align.c =20
-> > > 	during GIMPLE pass: ccp
-> > > 	arch/powerpc/kernel/align.c: In function '__copy_inst_from_kernel_no=
-fault':
-> > > 	arch/powerpc/kernel/align.c:364:1: internal compiler error: in maybe=
-_register_def, at tree-into-ssa.cc:1948
-> > > 	  364 | }
-> > > 	      | ^
-> > > 	0x19d8886 internal_error(char const*, ...)
-> > > 	   ???:0
-> > > 	0x7bb4fe fancy_abort(char const*, int, char const*)
-> > > 	   ???:0
-> > > 	0x1791bfe dom_walker::walk(basic_block_def*)
-> > > 	   ???:0
-> > > 	0xe94ec0 update_ssa(unsigned int)
-> > > 	   ???:0
-> > > 	0x103d6b9 execute_update_addresses_taken()
-> > > 	   ???:0
-> > > 	Please submit a full bug report, with preprocessed source (by using =
--freport-bug).
-> > > 	Please include the complete backtrace with any bug report.
-> > > 	See <https://gcc.gnu.org/bugs/> for instructions.
-> > > 	make[3]: *** [scripts/Makefile.build:250: arch/powerpc/kernel/align.=
-o] Error 1
-> > > 	make[2]: *** [scripts/Makefile.build:500: arch/powerpc/kernel] Error=
- 2
-> > > 	make[1]: *** [scripts/Makefile.build:500: arch/powerpc] Error 2
-> > > 	make: *** [Makefile:1992: .] Error 2
-> > >=20
-> > > 	=3D=3D> Should probably open a PR for this.
+On Wed Dec 14, 2022 at 6:39 PM AEST, Christophe Leroy wrote:
+>
+>
+> Le 14/12/2022 =C3=A0 05:42, Nicholas Miehlbradt a =C3=A9crit=C2=A0:
+> > Walks the stack when copy_{to,from}_user address is in the stack to
+> > ensure that the object being copied is entirely within a single stack
+> > frame.
 > >=20
-> > Yes please!
+> > Substatially similar to the x86 implementation except using the back
+> > chain to traverse the stack and identify stack frame boundaries.
+> >=20
+> > Signed-off-by: Nicholas Miehlbradt <nicholas@linux.ibm.com>
+> > ---
+> >   arch/powerpc/Kconfig                   |  1 +
+> >   arch/powerpc/include/asm/thread_info.h | 38 +++++++++++++++++++++++++=
++
+> >   2 files changed, 39 insertions(+)
+> >=20
+> > diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> > index 2ca5418457ed..4c59d139ea83 100644
+> > --- a/arch/powerpc/Kconfig
+> > +++ b/arch/powerpc/Kconfig
+> > @@ -198,6 +198,7 @@ config PPC
+> >   	select HAVE_ARCH_KASAN_VMALLOC		if HAVE_ARCH_KASAN
+> >   	select HAVE_ARCH_KFENCE			if ARCH_SUPPORTS_DEBUG_PAGEALLOC
+> >   	select HAVE_ARCH_RANDOMIZE_KSTACK_OFFSET
+> > +	select HAVE_ARCH_WITHIN_STACK_FRAMES	if PPC64
+>
+> Why don't you do something that works for both PPC32 and PPC64 ?
 
-Submitted as https://gcc.gnu.org/bugzilla/show_bug.cgi?id=3D108095:
++1
 
-typedef unsigned u32;
-int __copy_inst_from_kernel_nofault_inst;
-__copy_inst_from_kernel_nofault() {
-  unsigned suffix;
-  asm goto("" : "=3Dr"(*(u32 *)&suffix) : : : Efault);
-  __copy_inst_from_kernel_nofault_inst =3D 0;
-Efault:
-}
+> >   	select HAVE_ARCH_KGDB
+> >   	select HAVE_ARCH_MMAP_RND_BITS
+> >   	select HAVE_ARCH_MMAP_RND_COMPAT_BITS	if COMPAT
+> > diff --git a/arch/powerpc/include/asm/thread_info.h b/arch/powerpc/incl=
+ude/asm/thread_info.h
+> > index af58f1ed3952..efdf39e07884 100644
+> > --- a/arch/powerpc/include/asm/thread_info.h
+> > +++ b/arch/powerpc/include/asm/thread_info.h
+> > @@ -186,6 +186,44 @@ static inline bool test_thread_local_flags(unsigne=
+d int flags)
+> >   #define is_elf2_task() (0)
+> >   #endif
+> >  =20
+> > +#ifdef CONFIG_PPC64
+> > +
+> > +#ifdef CONFIG_PPC64_ELF_ABI_V1
+> > +#define PARAMETER_SAVE_OFFSET 48
+> > +#else
+> > +#define PARAMETER_SAVE_OFFSET 32
+> > +#endif
+>
+> Why not use STACK_INT_FRAME_REGS, defined in asm/ptrace.h ?
 
-ICEs with: `powerpc64-linux-gcc -Os -g -c -o align.o align.i` (Both
-`-Os` and `-g` are needed to produce the ICE.)
+I think use a STACK_FRAME prefixed define in asm/ptrace.h, but maybe
+avoid overloading the STACK_INT_ stuff for this.
 
-MfG, JBG
+>
+> > +
+> > +/*
+> > + * Walks up the stack frames to make sure that the specified object is
+> > + * entirely contained by a single stack frame.
+> > + *
+> > + * Returns:
+> > + *	GOOD_FRAME	if within a frame
+> > + *	BAD_STACK	if placed across a frame boundary (or outside stack)
+> > + */
+> > +static inline int arch_within_stack_frames(const void * const stack,
+> > +					   const void * const stackend,
+> > +					   const void *obj, unsigned long len)
+> > +{
+> > +	const void *frame;
+> > +	const void *oldframe;
+> > +
+> > +	oldframe =3D (const void *)current_stack_pointer;
+> > +	frame =3D *(const void * const *)oldframe;
 
---=20
+This is not the same as x86, they start with the parent of the current
+frame. I assume because the way the caller is set up (with a noinline
+function from an out of line call), then there must be at least one
+stack frame that does not have to be checked, but if I'm wrong about
+that and there is some reason we need to be different it should be
+commented..
 
---p2yhttawkqvgtl3i
-Content-Type: application/pgp-signature; name="signature.asc"
+> > +
+> > +	while (stack <=3D frame && frame < stackend) {
+> > +		if (obj + len <=3D frame)
+> > +			return obj >=3D oldframe + PARAMETER_SAVE_OFFSET ?
+> > +				GOOD_FRAME : BAD_STACK;
+> > +		oldframe =3D frame;
+> > +		frame =3D *(const void * const *)oldframe;
+> > +	}
+> > +
+> > +	return BAD_STACK;
+> > +}
+>
+> What about:
+>
+> +	const void *frame;
+> +	const void *params;
+> +
+> +	params =3D (const void *)current_stack_pointer + STACK_INT_FRAME_REGS;
+> +	frame =3D *(const void * const *)current_stack_pointer;
+> +
+> +	while (stack <=3D frame && frame < stackend) {
+> +		if (obj + len <=3D frame)
+> +			return obj >=3D params ? GOOD_FRAME : BAD_STACK;
+> +		params =3D frame + STACK_INT_FRAME_REGS;
+> +		frame =3D *(const void * const *)frame;
+> +	}
+> +
+> +	return BAD_STACK;
 
------BEGIN PGP SIGNATURE-----
+What about just copying x86's implementation including using
+__builtin_frame_address(1/2)? Are those builtins reliable for all
+our targets and compiler versions?
 
-iF0EABECAB0WIQQlDTvPcScNjKREqWEdvV51g5nhuwUCY5mQpwAKCRAdvV51g5nh
-u1j0AJ0agRqGneEKBhu96iyIB+oRPnBb1ACdF+AUm6e8oYtTMD900fpfiXv19fE=
-=hMyh
------END PGP SIGNATURE-----
+For bonus points, extract the x86 code out into asm-generic and
+make it usable by both -=20
 
---p2yhttawkqvgtl3i--
+static inline int generic_within_stack_frames(unsigned int ptr_offset,
+					      unsigned int vars_offset,
+                                              const void * const stack,
+                                              const void * const stackend,
+                                              const void *obj, unsigned lon=
+g len)
+
+And our arch_within_stack_frames can just be
+
+    return generic_within_stack_frames(0, STACK_FRAME_ARGS_OFFSET,
+                                       stack, stackend, obj, len);
+
+Thanks,
+Nick
