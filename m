@@ -2,84 +2,45 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6991E64C33B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Dec 2022 05:44:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0C9264C412
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Dec 2022 07:52:30 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NX2pW1mhkz3bfV
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Dec 2022 15:44:51 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Ka2Kmaey;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NX5dk63Djz3cKW
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Dec 2022 17:52:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=nicholas@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Ka2Kmaey;
-	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.255; helo=szxga08-in.huawei.com; envelope-from=wangyufen@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NX2nW48R9z3bYD
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Dec 2022 15:43:59 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2BE482s4003549;
-	Wed, 14 Dec 2022 04:43:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=y4AyobDPjfvzMmawvL1EyqPJQ77I6OMiTD3mTjgd0MM=;
- b=Ka2Kmaeyicd98n+G+iYH91wjesZP6QT/P3QpLCN7grFg9Pf3HfFKviVKwrB2ABlsjOW/
- EG3gwVSrN+ia9iyvvz4h5PjwIxLFZoqgT7/XelYFUt/q6pSNiNy0HmFty7bFhor6ykYp
- I0RcZjCqOBGfXecVsBCtIUBaxtGi040Fkkw6klu2BsrMHw4s4wEJpQvUjjJsLo1D41jz
- pfKheWFoxmFiz/Q/Hj2Dph40c4s4PxCElMhTVENwJdO61TE82uKWN9Nktt521x7D7/VM
- VxI2oKXz206eErgCf3fx2nETOEB29v5PxqDpeEHUgw6aN/ytSwLwLeV7L6kdv6G0Hh8a pg== 
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3mf76r0k7p-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 14 Dec 2022 04:43:54 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
-	by ppma03ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 2BDJQkPu024411;
-	Wed, 14 Dec 2022 04:43:53 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma03ams.nl.ibm.com (PPS) with ESMTPS id 3meyjbgfke-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 14 Dec 2022 04:43:52 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2BE4hoAJ51773720
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 14 Dec 2022 04:43:50 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AD45020043;
-	Wed, 14 Dec 2022 04:43:50 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 314B720040;
-	Wed, 14 Dec 2022 04:43:50 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 14 Dec 2022 04:43:50 +0000 (GMT)
-Received: from nicholasmvm.. (haven.au.ibm.com [9.192.254.114])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 252856016D;
-	Wed, 14 Dec 2022 15:43:45 +1100 (AEDT)
-From: Nicholas Miehlbradt <nicholas@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/64: Implement arch_within_stack_frames
-Date: Wed, 14 Dec 2022 04:42:52 +0000
-Message-Id: <20221214044252.1910657-1-nicholas@linux.ibm.com>
-X-Mailer: git-send-email 2.34.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NX5d74g22z3bbD
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Dec 2022 17:51:52 +1100 (AEDT)
+Received: from canpemm500010.china.huawei.com (unknown [172.30.72.53])
+	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4NX5bp5qdCz16LbB;
+	Wed, 14 Dec 2022 14:50:46 +0800 (CST)
+Received: from [10.174.179.191] (10.174.179.191) by
+ canpemm500010.china.huawei.com (7.192.105.118) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.34; Wed, 14 Dec 2022 14:51:44 +0800
+Message-ID: <7f64282d-b749-f2f6-0027-822aab83c9c8@huawei.com>
+Date: Wed, 14 Dec 2022 14:51:44 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.0
+Subject: Re: [PATCH] powerpc/pseries: fix potential memory leak in
+ init_cpu_associativity()
+To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+	<christophe.leroy@csgroup.eu>, <mpe@ellerman.id.au>, <npiggin@gmail.com>
+References: <1670463165-20589-1-git-send-email-wangyufen@huawei.com>
+ <1670911471.bu7q0e91m2.naveen@linux.ibm.com>
+From: wangyufen <wangyufen@huawei.com>
+In-Reply-To: <1670911471.bu7q0e91m2.naveen@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Sd_lV87qYgfwseTcmxVNDi1LlmKU5jxm
-X-Proofpoint-GUID: Sd_lV87qYgfwseTcmxVNDi1LlmKU5jxm
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-12-14_01,2022-12-13_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
- lowpriorityscore=0 clxscore=1011 priorityscore=1501 impostorscore=0
- adultscore=0 phishscore=0 mlxscore=0 malwarescore=0 spamscore=0
- mlxlogscore=985 suspectscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2212070000 definitions=main-2212140034
+X-Originating-IP: [10.174.179.191]
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ canpemm500010.china.huawei.com (7.192.105.118)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,84 +52,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Miehlbradt <nicholas@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Walks the stack when copy_{to,from}_user address is in the stack to
-ensure that the object being copied is entirely within a single stack
-frame.
 
-Substatially similar to the x86 implementation except using the back
-chain to traverse the stack and identify stack frame boundaries.
 
-Signed-off-by: Nicholas Miehlbradt <nicholas@linux.ibm.com>
----
- arch/powerpc/Kconfig                   |  1 +
- arch/powerpc/include/asm/thread_info.h | 38 ++++++++++++++++++++++++++
- 2 files changed, 39 insertions(+)
+在 2022/12/13 14:06, Naveen N. Rao 写道:
+> Wang Yufen wrote:
+>> If the vcpu_associativity alloc memory successfully but the
+>> pcpu_associativity fails to alloc memory, the vcpu_associativity
+>> memory leaks.
+>>
+>> Fixes: d62c8deeb6e6 ("powerpc/pseries: Provide vcpu dispatch statistics")
+>> Signed-off-by: Wang Yufen <wangyufen@huawei.com>
+>> ---
+>>  arch/powerpc/platforms/pseries/lpar.c | 1 +
+>>  1 file changed, 1 insertion(+)
+>>
+>> diff --git a/arch/powerpc/platforms/pseries/lpar.c 
+>> b/arch/powerpc/platforms/pseries/lpar.c
+>> index 97ef649..501ee6c 100644
+>> --- a/arch/powerpc/platforms/pseries/lpar.c
+>> +++ b/arch/powerpc/platforms/pseries/lpar.c
+>> @@ -211,6 +211,7 @@ static int init_cpu_associativity(void)
+>>
+>>      if (!vcpu_associativity || !pcpu_associativity) {
+>>          pr_err("error allocating memory for associativity 
+>> information\n");
+>> +        kfree(vcpu_associativity);
+> 
+> I think we should call destroy_cpu_associativity() here instead. We 
+> don't know which allocation failed, so it is better to try and free 
+> both, and also to reset the pointers to 0.
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 2ca5418457ed..4c59d139ea83 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -198,6 +198,7 @@ config PPC
- 	select HAVE_ARCH_KASAN_VMALLOC		if HAVE_ARCH_KASAN
- 	select HAVE_ARCH_KFENCE			if ARCH_SUPPORTS_DEBUG_PAGEALLOC
- 	select HAVE_ARCH_RANDOMIZE_KSTACK_OFFSET
-+	select HAVE_ARCH_WITHIN_STACK_FRAMES	if PPC64
- 	select HAVE_ARCH_KGDB
- 	select HAVE_ARCH_MMAP_RND_BITS
- 	select HAVE_ARCH_MMAP_RND_COMPAT_BITS	if COMPAT
-diff --git a/arch/powerpc/include/asm/thread_info.h b/arch/powerpc/include/asm/thread_info.h
-index af58f1ed3952..efdf39e07884 100644
---- a/arch/powerpc/include/asm/thread_info.h
-+++ b/arch/powerpc/include/asm/thread_info.h
-@@ -186,6 +186,44 @@ static inline bool test_thread_local_flags(unsigned int flags)
- #define is_elf2_task() (0)
- #endif
- 
-+#ifdef CONFIG_PPC64
-+
-+#ifdef CONFIG_PPC64_ELF_ABI_V1
-+#define PARAMETER_SAVE_OFFSET 48
-+#else
-+#define PARAMETER_SAVE_OFFSET 32
-+#endif
-+
-+/*
-+ * Walks up the stack frames to make sure that the specified object is
-+ * entirely contained by a single stack frame.
-+ *
-+ * Returns:
-+ *	GOOD_FRAME	if within a frame
-+ *	BAD_STACK	if placed across a frame boundary (or outside stack)
-+ */
-+static inline int arch_within_stack_frames(const void * const stack,
-+					   const void * const stackend,
-+					   const void *obj, unsigned long len)
-+{
-+	const void *frame;
-+	const void *oldframe;
-+
-+	oldframe = (const void *)current_stack_pointer;
-+	frame = *(const void * const *)oldframe;
-+
-+	while (stack <= frame && frame < stackend) {
-+		if (obj + len <= frame)
-+			return obj >= oldframe + PARAMETER_SAVE_OFFSET ?
-+				GOOD_FRAME : BAD_STACK;
-+		oldframe = frame;
-+		frame = *(const void * const *)oldframe;
-+	}
-+
-+	return BAD_STACK;
-+}
-+#endif /* CONFIG_PPC64 */
-+
- #endif	/* !__ASSEMBLY__ */
- 
- #endif /* __KERNEL__ */
--- 
-2.34.1
+Hi,
 
+Okay, I'll send a v2 with the following modifications:
+
+--- a/arch/powerpc/platforms/pseries/lpar.c
++++ b/arch/powerpc/platforms/pseries/lpar.c
+@@ -524,8 +524,10 @@ static ssize_t vcpudispatch_stats_write(struct file 
+*file, const char __user *p,
+
+  	if (cmd) {
+  		rc = init_cpu_associativity();
+-		if (rc)
++		if (rc) {
++			destroy_cpu_associativity();
+  			goto out;
++		}
+
+  		for_each_possible_cpu(cpu) {
+  			disp = per_cpu_ptr(&vcpu_disp_data, cpu);
+
+Thanks,
+Wang
+
+> 
+> 
+> - Naveen
+> 
+> 
