@@ -1,56 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 662B364E27A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Dec 2022 21:43:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 398B764E484
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Dec 2022 00:10:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NY41g2B65z3cDM
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Dec 2022 07:43:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NY7HF0Q2Dz3bd0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Dec 2022 10:10:01 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=E3xlF6bU;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=bAQtHBYQ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NY7GL1L7zz2xZV
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Dec 2022 10:09:14 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=E3xlF6bU;
+	dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=bAQtHBYQ;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NY40g1fVYz2yRV
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Dec 2022 07:42:11 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 4585CB81AFA;
-	Thu, 15 Dec 2022 20:42:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0694C433EF;
-	Thu, 15 Dec 2022 20:42:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1671136925;
-	bh=d/a7C/PBOg8rdq9nwXwUdpRZ5tsLNSdSY3Squ2imeAs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=E3xlF6bUMRnZWvVutOYkDDYPoagnHMfAjHcWy839UzoWE65h0njzkehIWK3rHiMFl
-	 pFFVxTqJqLwGMWEH4DVNlk4yVHvfz6tvKF/Y6uIoo1y8pYyIy9DIkd1p5b7LzigHg7
-	 n6EPWk3n6woOvhhKmT0M8USBykiEonQ9P0U8InbXyqZHSyLd5wurBcdSm8pKgCqXpF
-	 5PTeCaHzp+F+wr844bzYtcdsKRBC9uOkObwyCxE2AwhpSmp4bpyNxEKMY/jUgjsrXz
-	 872QztzTey9jImak0Ss0J4YGmhBBZQ1380yW6dMV3svniT6bDiz0YQDOjcShFbpfdT
-	 ieAmiZVdYfVZg==
-Received: by pali.im (Postfix)
-	id 6DA4A5CD; Thu, 15 Dec 2022 21:42:02 +0100 (CET)
-Date: Thu, 15 Dec 2022 21:42:02 +0100
-From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v1] powerpc/64: Set default CPU in Kconfig
-Message-ID: <20221215204202.mbw2ij4ou7t2ttpv@pali>
-References: <3fd60c2d8a28668a42b766b18362a526ef47e757.1670420281.git.christophe.leroy@csgroup.eu>
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NY7GC4hZgz4xG6;
+	Fri, 16 Dec 2022 10:09:07 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+	s=201702; t=1671145750;
+	bh=Llmkiue3cLjus3rNqXb++NFu9PSb6Z8V18DU2c6iraA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=bAQtHBYQ66yQl0Scoi6ywb3ugDIPkBZQXZFiZJ9g+7aYoVlohlrV/76+dQQ1l+/hD
+	 EuMVTVrukfOtfVi/k/VHhf0i7AKxMVbgCSmVqvZyOJgax+IxTRum/4+mQQoDXx1GLc
+	 zKblPNT3ASivVIiwV/hMzlLO47rleofMs3f2vvhxwj61M4Z3r3sSVVnJmkNjvVC9zs
+	 7IL/2qX1T5+dVff+aH86CpoBNynYIkOVw+WsaQDsY6tmJKhvjz1qzJmWMksuu74j8l
+	 NW3jpM4YtIsmviM5VLpDrmLjLV74ceF0mZl8LWOSU3aCD8tQPSe+QcOdZyJQ9c2eWV
+	 bdUbmwFyR36ew==
+Date: Fri, 16 Dec 2022 10:09:05 +1100
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: linux-next: manual merge of the tip tree with the
+ powerpc-objtool tree
+Message-ID: <20221216100905.78f9ecd9@canb.auug.org.au>
+In-Reply-To: <20221124122931.266df8c7@canb.auug.org.au>
+References: <20221124122931.266df8c7@canb.auug.org.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3fd60c2d8a28668a42b766b18362a526ef47e757.1670420281.git.christophe.leroy@csgroup.eu>
-User-Agent: NeoMutt/20180716
+Content-Type: multipart/signed; boundary="Sig_/YZiFqCTqNMQ9KhLJxGw8IT2";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,60 +59,156 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Ingo Molnar <mingo@redhat.com>, Linux Next Mailing List <linux-next@vger.kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Thomas Gleixner <tglx@linutronix.de>, PowerPC <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello!
+--Sig_/YZiFqCTqNMQ9KhLJxGw8IT2
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-On Wednesday 07 December 2022 14:38:40 Christophe Leroy wrote:
-> diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-...
-> @@ -166,11 +153,12 @@ CC_FLAGS_FTRACE += -mprofile-kernel
->  endif
->  endif
->  
-> -CFLAGS-$(CONFIG_TARGET_CPU_BOOL) += $(call cc-option,-mcpu=$(CONFIG_TARGET_CPU))
-> -AFLAGS-$(CONFIG_TARGET_CPU_BOOL) += $(call cc-option,-mcpu=$(CONFIG_TARGET_CPU))
-> +CFLAGS-$(CONFIG_TARGET_CPU_BOOL) += -mcpu=$(CONFIG_TARGET_CPU)
-> +AFLAGS-$(CONFIG_TARGET_CPU_BOOL) += -mcpu=$(CONFIG_TARGET_CPU)
->  
-> -CFLAGS-$(CONFIG_E5500_CPU) += $(call cc-option,-mcpu=e500mc64,-mcpu=powerpc64)
-> -CFLAGS-$(CONFIG_E6500_CPU) += $(call cc-option,-mcpu=e6500,$(E5500_CPU))
-> +CFLAGS-$(CONFIG_POWERPC64_CPU) += $(call cc-option,-mtune=power10,	\
-> +				  $(call cc-option,-mtune=power9,	\
-> +				  $(call cc-option,-mtune=power8)))
->  
->  asinstr := $(call as-instr,lis 9$(comma)foo@high,-DHAVE_AS_ATHIGH=1)
->  
-> diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
-...
-> @@ -251,6 +249,10 @@ config TARGET_CPU
->  	default "power8" if POWER8_CPU
->  	default "power9" if POWER9_CPU
->  	default "power10" if POWER10_CPU
-> +	default "e500mc64" if E5500_CPU
+Hi all,
 
-Now I'm looking at this change again... and should not E5500_CPU rather
-enforce -mcpu=e5500 flag? I know that your patch moves e500mc64 flag
-from the Makefile to Kconfig, but maybe it could be changed in some
-other followup patch...
+On Thu, 24 Nov 2022 12:29:31 +1100 Stephen Rothwell <sfr@canb.auug.org.au> =
+wrote:
+>=20
+> Today's linux-next merge of the tip tree got a conflict in:
+>=20
+>   tools/objtool/check.c
+>=20
+> between commit:
+>=20
+>   efb11fdb3e1a ("objtool: Fix SEGFAULT")
+>=20
+> from the powerpc-objtool tree and commit:
+>=20
+>   dbcdbdfdf137 ("objtool: Rework instruction -> symbol mapping")
+>=20
+> from the tip tree.
+>=20
+> I fixed it up (see below) and can carry the fix as necessary. This
+> is now fixed as far as linux-next is concerned, but any non trivial
+> conflicts should be mentioned to your upstream maintainer when your tree
+> is submitted for merging.  You may also want to consider cooperating
+> with the maintainer of the conflicting tree to minimise any particularly
+> complex conflicts.
+>=20
+> --=20
+> Cheers,
+> Stephen Rothwell
+>=20
+> diff --cc tools/objtool/check.c
+> index 7580c66ca5c8,4f1a7384426b..000000000000
+> --- a/tools/objtool/check.c
+> +++ b/tools/objtool/check.c
+> @@@ -207,7 -204,7 +204,7 @@@ static bool __dead_end_function(struct=20
+>   		return false;
+>  =20
+>   	insn =3D find_insn(file, func->sec, func->offset);
+> - 	if (!insn || !insn->func)
+>  -	if (!insn_func(insn))
+> ++	if (!insn || !insn_func(insn))
+>   		return false;
+>  =20
+>   	func_for_each_insn(file, func, insn) {
+> @@@ -850,11 -861,73 +861,73 @@@ static int create_ibt_endbr_seal_sectio
+>   	return 0;
+>   }
+>  =20
+> + static int create_cfi_sections(struct objtool_file *file)
+> + {
+> + 	struct section *sec, *s;
+> + 	struct symbol *sym;
+> + 	unsigned int *loc;
+> + 	int idx;
+> +=20
+> + 	sec =3D find_section_by_name(file->elf, ".cfi_sites");
+> + 	if (sec) {
+> + 		INIT_LIST_HEAD(&file->call_list);
+> + 		WARN("file already has .cfi_sites section, skipping");
+> + 		return 0;
+> + 	}
+> +=20
+> + 	idx =3D 0;
+> + 	for_each_sec(file, s) {
+> + 		if (!s->text)
+> + 			continue;
+> +=20
+> + 		list_for_each_entry(sym, &s->symbol_list, list) {
+> + 			if (sym->type !=3D STT_FUNC)
+> + 				continue;
+> +=20
+> + 			if (strncmp(sym->name, "__cfi_", 6))
+> + 				continue;
+> +=20
+> + 			idx++;
+> + 		}
+> + 	}
+> +=20
+> + 	sec =3D elf_create_section(file->elf, ".cfi_sites", 0, sizeof(unsigned=
+ int), idx);
+> + 	if (!sec)
+> + 		return -1;
+> +=20
+> + 	idx =3D 0;
+> + 	for_each_sec(file, s) {
+> + 		if (!s->text)
+> + 			continue;
+> +=20
+> + 		list_for_each_entry(sym, &s->symbol_list, list) {
+> + 			if (sym->type !=3D STT_FUNC)
+> + 				continue;
+> +=20
+> + 			if (strncmp(sym->name, "__cfi_", 6))
+> + 				continue;
+> +=20
+> + 			loc =3D (unsigned int *)sec->data->d_buf + idx;
+> + 			memset(loc, 0, sizeof(unsigned int));
+> +=20
+> + 			if (elf_add_reloc_to_insn(file->elf, sec,
+> + 						  idx * sizeof(unsigned int),
+> + 						  R_X86_64_PC32,
+> + 						  s, sym->offset))
+> + 				return -1;
+> +=20
+> + 			idx++;
+> + 		}
+> + 	}
+> +=20
+> + 	return 0;
+> + }
+> +=20
+>   static int create_mcount_loc_sections(struct objtool_file *file)
+>   {
+>  -	struct section *sec;
+>  -	unsigned long *loc;
+>  +	int addrsize =3D elf_class_addrsize(file->elf);
+>   	struct instruction *insn;
+>  +	struct section *sec;
+>   	int idx;
+>  =20
+>   	sec =3D find_section_by_name(file->elf, "__mcount_loc");
 
-Anyway, do you know what is e500mc64 core? I was trying to find some
-information about it, but it looks like some unreleased freescale core
-which predates e5500 core. ISA (without extensions like altivec) seems
-to be same for e500mc64, e5500 and e6500 cores and difference is only
-pipeline definitions in gcc config files. So if my understanding is
-correct then kernel binary compiled with any of these -mcpu= flag should
-work on any of those cores. Just for mismatches core binary will not be
-optimized for speed.
+This is now a conflict between the powerpc tree and Linus' tree.
 
-> +	default "e6500" if E6500_CPU
-> +	default "power4" if POWERPC64_CPU && !CPU_LITTLE_ENDIAN
-> +	default "power8" if POWERPC64_CPU && CPU_LITTLE_ENDIAN
->  	default "405" if 405_CPU
->  	default "440" if 440_CPU
->  	default "464" if 464_CPU
-> -- 
-> 2.38.1
-> 
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/YZiFqCTqNMQ9KhLJxGw8IT2
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmObqREACgkQAVBC80lX
+0Gyevgf+Jaog/4cPR9caBIeop8dVQj+x41sLPTWbYZJwMAdXlf2dRUrTwVuiMMYo
+IRT9KNco030SzNgwEUnSZRRiew0HjWXsqgJYJUcY029C0/6YKDTScWioUZgsSnhA
+LGLOAS5g+tOQTfdiubsfy2P5qnbOXSEerv+KZUnR0AQIpYgAKkBSZJUrCdZs9MeL
+2nAe3PUiKe52zgzAGYd6nmOmh2uI98/0i2+sa3MSDUt3OHnp4q6i3GK0cKZEfSBn
+PLxQQAUdZaR6Y8hMP56vbwD2oRmrjfQi2D9YyzVX/QO8dYzpegMnxhDPI0Lfd+nO
+UwnyRlhbdVDkxsuGNrDEwElx+21paw==
+=q+A3
+-----END PGP SIGNATURE-----
+
+--Sig_/YZiFqCTqNMQ9KhLJxGw8IT2--
