@@ -1,72 +1,96 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 020D464EB29
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Dec 2022 13:04:00 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0783964EB6A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Dec 2022 13:28:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NYSSF5mHMz3fBR
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Dec 2022 23:03:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NYT0C6r2Mz3bym
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Dec 2022 23:28:11 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=kzPbNopU;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dBDPubfQ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::635; helo=mail-pl1-x635.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=kzPbNopU;
-	dkim-atps=neutral
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NYSMT1WZTz3bXL
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Dec 2022 22:59:48 +1100 (AEDT)
-Received: by mail-pl1-x635.google.com with SMTP id d7so2065034pll.9
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Dec 2022 03:59:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jFdtN6Twm/Q4+OPS0op+uuJ+Ke3EoqZ59eFa8lp8vg8=;
-        b=kzPbNopUo66h5349XieMml0MHtHLSr2gUNysz4KZzRCVuqVFDewHZeLyGG35w6r5Ba
-         lRXg0SzBOtimlbNMc2lscMmDfhrwheCZ5AVK1JnTN/6NMLh0RGSiNFRxeOD11EmLiocH
-         hPB1TJHVIEm5y6GzQ4+Vjpfw1ujv4N8A3XOTEmjs/JRIWZt7+MJVRquoD7pqjUTYNaMb
-         xlGHSQQDUlW8kXNFu/gVCZeHGYwrYRerA/VtLOR5q0U5d7Z82JNl5+sUH8pXdVKCv48h
-         t4LleNsLt1rwPyJlJlnRA4d32NMHKHMdynujCPW0mm7wxxltFm+U10FhGolWgecqY7Ki
-         pFRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jFdtN6Twm/Q4+OPS0op+uuJ+Ke3EoqZ59eFa8lp8vg8=;
-        b=VUJ6g8zH8Yhteyr86lqRVQOfxSLyZfHA0Kx/O5D5qbo7eIiuzSZ7YZ6Xuwz3nciyCY
-         bFUPBNEJP4C8FVBrN9wZNQzHUZl3LIJzvfTvxlxTvbPwWQQREGU++FPJLwPYrcRkxybi
-         Lh7U/sq019Ute1NJStNbJupwxo7fC/n+YnZ4O+QQshZmO5LkM7Upo+FkcYUcxScQOEaq
-         35au/jrpNQB/jcClql+YcpucLawXTUFjE/bs9hGuLkJY1M3s0zwanjeaUdSM/+ukpW6n
-         GPreTTyeymfaMwZeLPIC9Ht7f1nx9Kfop5qz0aSOyjsPZ+mvFqWR0pCScHcAM4KxTbFa
-         CWPQ==
-X-Gm-Message-State: ANoB5pms3OsFrRTj6uyeg1PFxmaQRLkhyVZdDpkXrVoosdEL/ESwLlOW
-	5IXtrL9Qrt2CQ098MSA6BDEbuN74bHUKfQ==
-X-Google-Smtp-Source: AA0mqf5BKYE9FM+XiurZWsY8i49rG4DwhuZdJYP8GMKlLdDijFkR3vQGY9O/CEUPOTfgOMeN/q2kcw==
-X-Received: by 2002:a05:6a20:441e:b0:ac:16ae:1082 with SMTP id ce30-20020a056a20441e00b000ac16ae1082mr56647442pzb.32.1671191986408;
-        Fri, 16 Dec 2022 03:59:46 -0800 (PST)
-Received: from bobo.ozlabs.ibm.com (115-64-236-36.tpgi.com.au. [115.64.236.36])
-        by smtp.gmail.com with ESMTPSA id g22-20020a625216000000b0057ef155103asm1289438pfb.155.2022.12.16.03.59.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Dec 2022 03:59:45 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 4/4] powerpc: Skip stack validation checking alternate stacks if they are not allocated
-Date: Fri, 16 Dec 2022 21:59:30 +1000
-Message-Id: <20221216115930.2667772-5-npiggin@gmail.com>
-X-Mailer: git-send-email 2.37.2
-In-Reply-To: <20221216115930.2667772-1-npiggin@gmail.com>
-References: <20221216115930.2667772-1-npiggin@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NYSzC1lVrz3bTF
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Dec 2022 23:27:19 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dBDPubfQ;
+	dkim-atps=neutral
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	by gandalf.ozlabs.org (Postfix) with ESMTP id 4NYSzB4b8jz4xP3
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Dec 2022 23:27:18 +1100 (AEDT)
+Received: by gandalf.ozlabs.org (Postfix)
+	id 4NYSzB4Twrz4xND; Fri, 16 Dec 2022 23:27:18 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: gandalf.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dBDPubfQ;
+	dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4NYSzB1Qmfz4xMy;
+	Fri, 16 Dec 2022 23:27:17 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2BGBhMk8018966;
+	Fri, 16 Dec 2022 12:27:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=wEoS/RqcedrWjNRe4KvKsThGfA65Zb2rli1TbSB4jvc=;
+ b=dBDPubfQ09nDTatNeiOfHTKERHD41xqMuFQ7T51cR88ynBoJWR3eY4D3+B+4VpIaU1Ke
+ OndH4wMmT4F2WWKm5TiW+iWIIcbzXyK6Z3hQi5rFE/V10GRMYGNMMfYXOp257w6eHcug
+ RaKoORL3NJAmXTukKmVVxltx1zgba3syQXElahFWcu+O0XlpPSb8xtDVjE8nBLXrzmdw
+ seO7pY0sCo6+CYEc6T0o6BoaMLOuknE6t7xUd/4yDfkuG+qmj6dAAK8H7BgovOI01CeS
+ UFZuEdgetqjPKi8iiZHE6OWf/GJyZYGZ48wgF46B4uQWJ41mX2EGixUh6Xc5sWL9rrkg nA== 
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3mgnv64f2g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 16 Dec 2022 12:27:15 +0000
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+	by ppma01fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 2BG2Z0l8027909;
+	Fri, 16 Dec 2022 12:27:13 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma01fra.de.ibm.com (PPS) with ESMTPS id 3meyqxu8vf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 16 Dec 2022 12:27:13 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2BGCRBnQ24379884
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 16 Dec 2022 12:27:11 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5A27920043;
+	Fri, 16 Dec 2022 12:27:11 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 68A3B20040;
+	Fri, 16 Dec 2022 12:27:09 +0000 (GMT)
+Received: from sjain014.ibmuc.com (unknown [9.43.82.55])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 16 Dec 2022 12:27:09 +0000 (GMT)
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+To: linuxppc-dev@ozlabs.org, mpe@ellerman.id.au
+Subject: [PATCH] powerpc/kexec_file: print error string on usable memory property update failure
+Date: Fri, 16 Dec 2022 17:57:08 +0530
+Message-Id: <20221216122708.182154-1-sourabhjain@linux.ibm.com>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 8iJ59fUX55QO7unAL5oXPi3VTe4FC6WC
+X-Proofpoint-GUID: 8iJ59fUX55QO7unAL5oXPi3VTe4FC6WC
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-12-16_07,2022-12-15_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ bulkscore=0 spamscore=0 impostorscore=0 mlxscore=0 clxscore=1011
+ lowpriorityscore=0 suspectscore=0 phishscore=0 malwarescore=0 adultscore=0
+ mlxlogscore=719 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2212160107
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,48 +102,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: mahesh@linux.vnet.ibm.com, hbathini@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Stack validation in early boot can just bail out of checking alternate
-stacks if they are not validated yet. Checking against a NULL stack
-could cause NULLish pointer values to be considered valid.
+Print the FDT error description along with the error message if failed
+to set the "linux,drconf-usable-memory" property in the kdump kernel's
+FDT.
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
 ---
- arch/powerpc/kernel/process.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ arch/powerpc/kexec/file_load_64.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index edb46d0806ef..95d605bdff85 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -2118,6 +2118,9 @@ static inline int valid_irq_stack(unsigned long sp, struct task_struct *p,
- 	unsigned long stack_page;
- 	unsigned long cpu = task_cpu(p);
- 
-+	if (!hardirq_ctx[cpu] || !softirq_ctx[cpu])
-+		return 0;
-+
- 	stack_page = (unsigned long)hardirq_ctx[cpu];
- 	if (sp >= stack_page && sp <= stack_page + THREAD_SIZE - nbytes)
- 		return 1;
-@@ -2139,6 +2142,14 @@ static inline int valid_emergency_stack(unsigned long sp, struct task_struct *p,
- 	if (!paca_ptrs)
- 		return 0;
- 
-+	if (!paca_ptrs[cpu]->emergency_sp)
-+		return 0;
-+
-+# ifdef CONFIG_PPC_BOOK3S_64
-+	if (!paca_ptrs[cpu]->nmi_emergency_sp || !paca_ptrs[cpu]->mc_emergency_sp)
-+		return 0;
-+#endif
-+
- 	stack_page = (unsigned long)paca_ptrs[cpu]->emergency_sp - THREAD_SIZE;
- 	if (sp >= stack_page && sp <= stack_page + THREAD_SIZE - nbytes)
- 		return 1;
+diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
+index 349a781cea0b3..7602f7e1e634e 100644
+--- a/arch/powerpc/kexec/file_load_64.c
++++ b/arch/powerpc/kexec/file_load_64.c
+@@ -687,7 +687,8 @@ static int update_usable_mem_fdt(void *fdt, struct crash_mem *usable_mem)
+ 		ret = fdt_setprop(fdt, node, "linux,drconf-usable-memory",
+ 				  um_info.buf, (um_info.idx * sizeof(u64)));
+ 		if (ret) {
+-			pr_err("Failed to update fdt with linux,drconf-usable-memory property");
++			pr_err("Failed to update fdt with linux,drconf-usable-memory property: %s",
++			       fdt_strerror(ret));
+ 			goto out;
+ 		}
+ 	}
 -- 
-2.37.2
+2.38.1
 
