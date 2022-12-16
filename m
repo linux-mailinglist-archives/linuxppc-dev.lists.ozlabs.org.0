@@ -2,58 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DDF064EABC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Dec 2022 12:39:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56DCB64EB15
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Dec 2022 13:00:30 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NYRvx74rmz3cJK
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Dec 2022 22:39:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NYSND15fVz3c3W
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Dec 2022 23:00:28 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=fyekQLQM;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::529; helo=mail-pg1-x529.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=fyekQLQM;
+	dkim-atps=neutral
+Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com [IPv6:2607:f8b0:4864:20::529])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NYRvM5hzlz30RJ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Dec 2022 22:38:54 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4NYRvG3wZ9z9sqg;
-	Fri, 16 Dec 2022 12:38:50 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id UsdrRS_F0m-m; Fri, 16 Dec 2022 12:38:50 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4NYRvG37fyz9sTF;
-	Fri, 16 Dec 2022 12:38:50 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 5B0128B780;
-	Fri, 16 Dec 2022 12:38:50 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id YSjPfFpHUnZN; Fri, 16 Dec 2022 12:38:50 +0100 (CET)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.7.183])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 245128B764;
-	Fri, 16 Dec 2022 12:38:50 +0100 (CET)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 2BGBcasZ1205738
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 16 Dec 2022 12:38:36 +0100
-Received: (from chleroy@localhost)
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 2BGBcY7t1205731;
-	Fri, 16 Dec 2022 12:38:34 +0100
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: FRANJOU Stephane <stephane.franjou@csgroup.eu>, gregkh@linuxfoundation.org,
-        stable@vger.kernel.org
-Subject: [PATCH] [Backport for 4.14] perf script python: Remove explicit shebang from tests/attr.c
-Date: Fri, 16 Dec 2022 12:38:12 +0100
-Message-Id: <3ca0515edb717e0f394f973f3cbbe2c80abb35e4.1671190496.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.38.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NYSMK4xZkz3bTF
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Dec 2022 22:59:39 +1100 (AEDT)
+Received: by mail-pg1-x529.google.com with SMTP id 82so1648351pgc.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Dec 2022 03:59:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=rYcXFMOZFPJ8pKyYwiLdsKPfd5is36mEQmL4sytDQS8=;
+        b=fyekQLQMhWtCQSabYfBagYhmm75TjQnfoy/Yf3c+eThE6Jykk4fqaPzGtWfeA7VHrk
+         JJMBwj4/i2lRW+mZfZUU2xQ/V+V67+JacaIZrfVie1V3TIgBx3TdM8ebdpH1mreHi7mc
+         /AjudfVdvoFzdRDlUjuak+wY182On5NxryPN/HIT+w4ZapHlCVrjXxrI1SX6/cX+91nt
+         +CAygoteF4negQdXbjNOvyC/4XepwXMRsfdw1BrpZrfkQFycJ6/3JFjbIbLPl08kab4L
+         Bmce0qcoC3PcbRaZDPfNCt8SJbPJ7dJzFGZNffUe0DA+r21KkSsF57M7EZTxKljdslVn
+         cqtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rYcXFMOZFPJ8pKyYwiLdsKPfd5is36mEQmL4sytDQS8=;
+        b=6bTOOeyPCMcVPgfNPNY1Qc/6BqnS+QvUz1kqBmr0QxEElppAS5Fn9Ko8T6JhWzsZVw
+         To3I58cwFfnnVure11K+FH8oV3HIXAMLOi5BokIc/kQuEhQ8JJLhWiqafb/xxMklC8Ps
+         2PRQpVv06ukTkmmCsvoVgYhpqBj+JtQ8W3gmc9t9n7WPdacagTB5xkYdzs/I64hbmsR/
+         t2ShVzJ1/7oWVISpIqTOW43Tl2uJNVJBjzkplfkOCmHCraDBmfIL9Z0csY8V8YImWBjf
+         /F4TABanbkYbKgDdrRQfDRUKPbihnW++RXBoGXt3OvSbYp/O2F2t+/WVUGTbDcFiKgHd
+         lSZQ==
+X-Gm-Message-State: ANoB5pnysMZ523vxVLmCZwczvOc7h1Drj/LWbzQINDU7XfxLaxyr5c78
+	ZxDUMaJC32w7g7DErtM16OBNAWR38dzXow==
+X-Google-Smtp-Source: AA0mqf5sQPIeZKGZubU4WkMO/2MhxGT8ER/Y1SSdE2w3nI4Gc066q1YClVe+lsPK3BSbhUITUSHGlw==
+X-Received: by 2002:aa7:920e:0:b0:566:900d:a1de with SMTP id 14-20020aa7920e000000b00566900da1demr30953619pfo.26.1671191976935;
+        Fri, 16 Dec 2022 03:59:36 -0800 (PST)
+Received: from bobo.ozlabs.ibm.com (115-64-236-36.tpgi.com.au. [115.64.236.36])
+        by smtp.gmail.com with ESMTPSA id g22-20020a625216000000b0057ef155103asm1289438pfb.155.2022.12.16.03.59.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Dec 2022 03:59:36 -0800 (PST)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 0/4] powerpc: Misc early boot fixes
+Date: Fri, 16 Dec 2022 21:59:26 +1000
+Message-Id: <20221216115930.2667772-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1671190687; l=1110; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=WfhwuICpkYsCAPjFTSL2xadbipjhMYjzCdLwRf2aTus=; b=ImqOKirkns5rivDho31j4TrXihIe12Fn9rgoJHLogExFhaMaMowiRdPZEfE40tBwsxd1cSlwvDXQ TFdUBq/4A7r0QJZaTUbchNKuwib1ha6OjCRSpnt7QMqYdiNQcWmv
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -66,41 +75,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, Tony Jones <tonyj@suse.de>, Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org, Arnaldo Carvalho de Melo <acme@redhat.com>, Jiri Olsa <jolsa@kernel.org>, linuxppc-dev@lists.ozlabs.org, Seeteena Thoufeek <s1seetee@linux.vnet.ibm.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Tony Jones <tonyj@suse.de>
+The first patch is a fix for a commit that's in powerpc next which
+is a pretty harmless dump_stack(). Except that we had some bugs with
+doing stack unwinding that early when the boot CPU is not zero so
+that ended up crashing badly.
 
-[Upstream commit d72eadbc1d2866fc047edd4535ffb0298fe240be]
+First patch should be relatively safe and solve that problem, but
+only needed if you're testing with stress_hpt. Second patch is a
+relatively minimal fix that should close most of the large window
+where we're running with the wrong task_cpu, but I would not call
+it trivial because it could cause some weird breakage or expose
+another bug. Third patch closes the rest of the window and makes
+the paca allocation a lot better, but it has more possibility for
+regressions. Last patch is independent of the rest and should be
+quite straightforward.
 
-tests/attr.c invokes attr.py via an explicit invocation of Python
-($PYTHON) so there is therefore no need for an explicit shebang.
+Thanks,
+Nick
 
-Also most distros follow pep-0394 which recommends that /usr/bin/python
-refer only to v2 and so may not exist on the system (if PYTHON=python3).
+Nicholas Piggin (4):
+  powerpc/64s: Fix stress_hpt memblock alloc alignment
+  powerpc/64: Fix task_cpu in early boot when booting non-zero cpuid
+  powerpc/64: Move paca allocation to early_setup()
+  powerpc: Skip stack validation checking alternate stacks if they are
+    not allocated
 
-Signed-off-by: Tony Jones <tonyj@suse.de>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Cc: Seeteena Thoufeek <s1seetee@linux.vnet.ibm.com>
-Link: http://lkml.kernel.org/r/20190124005229.16146-5-tonyj@suse.de
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- tools/perf/tests/attr.py | 1 -
- 1 file changed, 1 deletion(-)
+ arch/powerpc/include/asm/paca.h       |  1 -
+ arch/powerpc/include/asm/smp.h        |  1 +
+ arch/powerpc/kernel/process.c         | 11 +++++++++++
+ arch/powerpc/kernel/prom.c            | 12 ++----------
+ arch/powerpc/kernel/setup-common.c    |  4 ++++
+ arch/powerpc/kernel/setup_64.c        | 14 ++++++++------
+ arch/powerpc/mm/book3s64/hash_utils.c |  3 ++-
+ 7 files changed, 28 insertions(+), 18 deletions(-)
 
-diff --git a/tools/perf/tests/attr.py b/tools/perf/tests/attr.py
-index 6c68435585c7..3e07eee33b10 100644
---- a/tools/perf/tests/attr.py
-+++ b/tools/perf/tests/attr.py
-@@ -1,4 +1,3 @@
--#! /usr/bin/env python
- # SPDX-License-Identifier: GPL-2.0
- 
- import os
 -- 
-2.38.1
+2.37.2
 
