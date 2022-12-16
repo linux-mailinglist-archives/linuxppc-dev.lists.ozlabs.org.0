@@ -1,105 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13C0764E96C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Dec 2022 11:26:13 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DDF064EABC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Dec 2022 12:39:28 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NYQHR01qsz3bb6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Dec 2022 21:26:11 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ZnnX8pHU;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NYRvx74rmz3cJK
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Dec 2022 22:39:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NYQGR2ZVzz30RR
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Dec 2022 21:25:19 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ZnnX8pHU;
-	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	by gandalf.ozlabs.org (Postfix) with ESMTP id 4NYQGR1yRBz4xGT
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Dec 2022 21:25:19 +1100 (AEDT)
-Received: by gandalf.ozlabs.org (Postfix)
-	id 4NYQGR1vTlz4xGP; Fri, 16 Dec 2022 21:25:19 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: gandalf.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ZnnX8pHU;
-	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4NYQGQ5rByz4x3w;
-	Fri, 16 Dec 2022 21:25:18 +1100 (AEDT)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2BG8i5TM009059;
-	Fri, 16 Dec 2022 10:25:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=Dvt6dwgmfnyLLV/FmIfHZ508EmfAMqyiJMgnCHGLB+Y=;
- b=ZnnX8pHUdMN52E3stPp5DeUIcnAINqMJ3rBHzxu7OcchXeB7MFj06fYI5/yFVQB+olK6
- LSyYRg8rbJGVmveU44ub/8Y/20NasympLBgUPTQdr4we3i9TUwGp4Mi91TwYCLX5Q2hZ
- iwxwxEWz6TsLumhjUN6sNwUlkMXZgAajKim8m2rNUmr0iLNwmwV+KP7Ffge4HHRLaTvK
- PO77320AF0q5yktuye6IMy027pzXKcFA2uGEp+X7oE7DtKCbz4cIZJ6huJvYUOnzV+tZ
- WERc3b/q9485/tpSR29wDxjTnUSGImvSmnwvAqDo1vkETrQz1s+JixUeinfQEoe2Wiyj EQ== 
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3mgndv2a71-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 16 Dec 2022 10:25:15 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
-	by ppma03ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 2BG2ZXAp027521;
-	Fri, 16 Dec 2022 10:25:13 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma03ams.nl.ibm.com (PPS) with ESMTPS id 3meyjbma98-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 16 Dec 2022 10:25:13 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2BGAPBoo44892540
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 16 Dec 2022 10:25:11 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1C6792007E;
-	Fri, 16 Dec 2022 10:25:11 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DD0A32007C;
-	Fri, 16 Dec 2022 10:25:09 +0000 (GMT)
-Received: from [9.43.82.55] (unknown [9.43.82.55])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 16 Dec 2022 10:25:09 +0000 (GMT)
-Message-ID: <bf32e6b4-1271-e20a-3eb7-003c9b7b4935@linux.ibm.com>
-Date: Fri, 16 Dec 2022 15:55:08 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NYRvM5hzlz30RJ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Dec 2022 22:38:54 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4NYRvG3wZ9z9sqg;
+	Fri, 16 Dec 2022 12:38:50 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id UsdrRS_F0m-m; Fri, 16 Dec 2022 12:38:50 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4NYRvG37fyz9sTF;
+	Fri, 16 Dec 2022 12:38:50 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 5B0128B780;
+	Fri, 16 Dec 2022 12:38:50 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id YSjPfFpHUnZN; Fri, 16 Dec 2022 12:38:50 +0100 (CET)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.7.183])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 245128B764;
+	Fri, 16 Dec 2022 12:38:50 +0100 (CET)
+Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 2BGBcasZ1205738
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 16 Dec 2022 12:38:36 +0100
+Received: (from chleroy@localhost)
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 2BGBcY7t1205731;
+	Fri, 16 Dec 2022 12:38:34 +0100
+X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: FRANJOU Stephane <stephane.franjou@csgroup.eu>, gregkh@linuxfoundation.org,
+        stable@vger.kernel.org
+Subject: [PATCH] [Backport for 4.14] perf script python: Remove explicit shebang from tests/attr.c
+Date: Fri, 16 Dec 2022 12:38:12 +0100
+Message-Id: <3ca0515edb717e0f394f973f3cbbe2c80abb35e4.1671190496.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.1
-Subject: Re: [PATCH] powerpc/kexec_file: account hot-pluggable memory while
- estimating FDT size
-To: Hari Bathini <hbathini@linux.ibm.com>, linuxppc-dev@ozlabs.org,
-        mpe@ellerman.id.au
-References: <20221215083801.301741-1-sourabhjain@linux.ibm.com>
- <8253623b-bf9b-4407-999f-506aa8c7e38f@linux.ibm.com>
-Content-Language: en-US
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-In-Reply-To: <8253623b-bf9b-4407-999f-506aa8c7e38f@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1671190687; l=1110; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=WfhwuICpkYsCAPjFTSL2xadbipjhMYjzCdLwRf2aTus=; b=ImqOKirkns5rivDho31j4TrXihIe12Fn9rgoJHLogExFhaMaMowiRdPZEfE40tBwsxd1cSlwvDXQ TFdUBq/4A7r0QJZaTUbchNKuwib1ha6OjCRSpnt7QMqYdiNQcWmv
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: l7fTHDuyoBd8wzhUhZfOr0CvQhhPCXpN
-X-Proofpoint-GUID: l7fTHDuyoBd8wzhUhZfOr0CvQhhPCXpN
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-12-16_06,2022-12-15_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 suspectscore=0
- adultscore=0 impostorscore=0 priorityscore=1501 lowpriorityscore=0
- mlxlogscore=999 clxscore=1015 mlxscore=0 bulkscore=0 malwarescore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2212160088
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -111,40 +66,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mahesh@linux.vnet.ibm.com
+Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, Tony Jones <tonyj@suse.de>, Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org, Arnaldo Carvalho de Melo <acme@redhat.com>, Jiri Olsa <jolsa@kernel.org>, linuxppc-dev@lists.ozlabs.org, Seeteena Thoufeek <s1seetee@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+From: Tony Jones <tonyj@suse.de>
 
-On 16/12/22 11:45, Hari Bathini wrote:
->
->
-> On 15/12/22 2:08 pm, Sourabh Jain wrote:
->> On Systems where online memory is lesser compared to max memory, the
->> kexec_file_load system call may fail to load the kdump kernel with the
->> below errors:
->>
->>      "Failed to update fdt with linux,drconf-usable-memory property"
->>      "Error setting up usable-memory property for kdump kernel"
->>
->> This happens because the size estimation for usable memory properties
->> for the kdump kernel's FDT is based on the online memory whereas the
->> usable memory properties include max memory. In short, the hot-pluggable
->> memory is not accounted for while estimating the size of the usable
->> memory properties.
->>
->> The issue is addressed by calculating usable memory property size using
->> max hotplug address instead of the last online memory address.
->>
->> Fixes: 2377c92e37fe ("powerpc/kexec_file: fix FDT size estimation for 
->> kdump kernel")
->> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
->
-> Thanks for the fix, Sourabh. Looks good to me.
->
-> Acked-by: Hari Bathini <hbathini@linux.ibm.com>
+[Upstream commit d72eadbc1d2866fc047edd4535ffb0298fe240be]
 
-Thanks Hari.
+tests/attr.c invokes attr.py via an explicit invocation of Python
+($PYTHON) so there is therefore no need for an explicit shebang.
 
-- Sourabh Jain
+Also most distros follow pep-0394 which recommends that /usr/bin/python
+refer only to v2 and so may not exist on the system (if PYTHON=python3).
+
+Signed-off-by: Tony Jones <tonyj@suse.de>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Cc: Seeteena Thoufeek <s1seetee@linux.vnet.ibm.com>
+Link: http://lkml.kernel.org/r/20190124005229.16146-5-tonyj@suse.de
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ tools/perf/tests/attr.py | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/tools/perf/tests/attr.py b/tools/perf/tests/attr.py
+index 6c68435585c7..3e07eee33b10 100644
+--- a/tools/perf/tests/attr.py
++++ b/tools/perf/tests/attr.py
+@@ -1,4 +1,3 @@
+-#! /usr/bin/env python
+ # SPDX-License-Identifier: GPL-2.0
+ 
+ import os
+-- 
+2.38.1
 
