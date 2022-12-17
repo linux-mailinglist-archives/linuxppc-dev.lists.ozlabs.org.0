@@ -1,60 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B38D64F69F
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Dec 2022 02:01:26 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D953064F6B3
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Dec 2022 02:12:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NYnjJ3BHlz3bW2
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Dec 2022 12:01:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NYnxf54F5z3cHs
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Dec 2022 12:12:06 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KoWXmEU1;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=rammhold-de.20210112.gappssmtp.com header.i=@rammhold-de.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=OTXV3ptG;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=rammhold.de (client-ip=2a00:1450:4864:20::52d; helo=mail-ed1-x52d.google.com; envelope-from=andreas@rammhold.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KoWXmEU1;
+	dkim=pass (2048-bit key; unprotected) header.d=rammhold-de.20210112.gappssmtp.com header.i=@rammhold-de.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=OTXV3ptG;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NYngl2v5Nz3bZS
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Dec 2022 12:00:03 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id F132F622E1;
-	Sat, 17 Dec 2022 01:00:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37E4AC433EF;
-	Sat, 17 Dec 2022 01:00:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1671238800;
-	bh=WrZ4Vcwfb8m+T/xdynWjQxbDC5cNDCpPd1ov+C22G5c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KoWXmEU17NQZeo1x10mA1we/WKt8xxbmsz2YQFWjbkGyJiuC48Uo6c7cZtyyD1N4Y
-	 VEaESuT71uZxZLrTA8Sx7+2g1SK/nGmCpsGNj+o5erfhIvcdZs43YID3XVZk2Vrrwt
-	 CKSTeghfH/ZDiNpNkj9hvhG5KA5IizCdsu/8L2qcmk/MsKMP+qzTJYlq6+uLnjwyrl
-	 1Ls9EDJQqo22Jp/JJYdIYBIdYXwgvhMxdWQfeShjFXyCi0qAH0HCcWp3Qk+SXEnfBc
-	 D0YUlqHpcARs1EFkv3pNUnqlqRk7SZeVo93WDZ7PYRV00ORjP2vKrVimr/D0plgXvz
-	 5qooF5hEs70bg==
-Received: by pali.im (Postfix)
-	id 73253B01; Sat, 17 Dec 2022 01:59:57 +0100 (CET)
-Date: Sat, 17 Dec 2022 01:59:57 +0100
-From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To: Segher Boessenkool <segher@kernel.crashing.org>
-Subject: Re: [PATCH v2] powerpc: Pass correct CPU reference to assembler
-Message-ID: <20221217005957.o22gtjcwvw2njnvi@pali>
-References: <01fe73614988e2402a7526fb6b6e903bc3777bb5.1671179743.git.christophe.leroy@csgroup.eu>
- <20221216171821.GA25951@gate.crashing.org>
- <73fc1107-b540-bec3-7625-c6e6d0641bbb@csgroup.eu>
- <20221216181048.GC25951@gate.crashing.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NYnHR3Y2yz2yRV
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Dec 2022 11:42:24 +1100 (AEDT)
+Received: by mail-ed1-x52d.google.com with SMTP id v8so5874000edi.3
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Dec 2022 16:42:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rammhold-de.20210112.gappssmtp.com; s=20210112;
+        h=message-id:date:references:in-reply-to:subject:mime-version:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=1QFKv2TWTiAAUJtUNn93KfAKVJcdR7iRnXXIRoZLyMw=;
+        b=OTXV3ptGWNYqx2UGC2rImTpDTUqU+wDZrKWBdy/UNAoeJvPRPrVSz1tG1jGOl8Ce3e
+         s6M+0zp3iE/xPvJ46gLuHDMM+X+dYn3oSIIkuoF8AqAxuwdnMf3jhdxb358LL+YJDcfS
+         dZ7iY559N/VzN10NYUT2zpg7KukATI1WYLCO3n8YoWy1L2Vv1QLCrv12PzmH3hpdw7+S
+         rHWJyzzNPFxdyh5dz4Jy/tuCgfdBOqEUZVKTu3jNQXrzZT20P3EidtaaPA+3wqG2iGvD
+         h5s1tkyGIxQOWmtZwzxznuihpx9A3d7YWy8DoYbCcGpmaMmXppEFilwGAndn5ZPfW9CD
+         gezQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=message-id:date:references:in-reply-to:subject:mime-version:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1QFKv2TWTiAAUJtUNn93KfAKVJcdR7iRnXXIRoZLyMw=;
+        b=W8QzAoQkUSkmJCTHG9AVkoSnvvRZLdA+OcU6TBNizemgsZnBFYFdtXXTKPivXU7jv9
+         Ifq7RxWLUHeIftEvJ0A7XjkQpY+Jy9frpUAR3lwKrhzxVg+vSa47PyKw6IKPGZ1zSgPz
+         XRAkHU9Cw2uO4w0nGTs4t58ylm4UJDZiYz4UF2q+p4AX7UUzXsU2qt7bGzBq1qrOC2oF
+         r7NCFkFivOlXlGc8oIq8yRsCQV5CvsxfRD/wDbty/gMGl2cSVcJsLw6tbkVWf5umtfd+
+         qWu8tH9+Yzt53G7JbYrzF1gd1a13RqH5eNMEMGmfWZuxNrbH6QuMR0zRe5ko2lpadgY6
+         gj2Q==
+X-Gm-Message-State: AFqh2kry9podWJ/zhYaKa/7EMOn2Dko6UbmVGquYvE3Koi9hK6laaGW1
+	8EQeP+vfytNKOtsymJXosJQCRA==
+X-Google-Smtp-Source: AMrXdXuEXjxQv82egRwfXB6YAxYwW32Z33izAMO7cRGkThTOjWfh0A7Qji8VV9ypvbxJ6Vi/3fflkA==
+X-Received: by 2002:a50:ed81:0:b0:477:ff25:867a with SMTP id h1-20020a50ed81000000b00477ff25867amr97915edr.12.1671237736873;
+        Fri, 16 Dec 2022 16:42:16 -0800 (PST)
+Received: from localhost ([2a00:e67:3f2:a:8c01:9c4e:459b:314f])
+        by smtp.gmail.com with ESMTPSA id j9-20020a1709066dc900b007ad84cf1346sm1379556ejt.110.2022.12.16.16.42.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Dec 2022 16:42:15 -0800 (PST)
+From: Andreas Rammhold <andreas@rammhold.de>
+To: Rob Herring <robh@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20221216181048.GC25951@gate.crashing.org>
-User-Agent: NeoMutt/20180716
+Content-Type: text/plain
+Subject: Re: [PATCH v4] of/fdt: Rework early_init_dt_scan_memory() to call
+ directly
+In-Reply-To: <20211215150102.1303588-1-robh@kernel.org>
+References: <20211215150102.1303588-1-robh@kernel.org>
+Date: Sat, 17 Dec 2022 01:42:14 +0100
+Message-ID: <87bko2x3mh.fsf@rammhold.de>
+X-Mailman-Approved-At: Sat, 17 Dec 2022 12:10:59 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,56 +77,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Jan-Benedict Glaw <jbglaw@lug-owl.de>, Nicholas Piggin <npiggin@gmail.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Joel Stanley <joel@jms.id.au>
+Cc: devicetree@vger.kernel.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Frank Rowand <frowand.list@gmail.com>, linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>, John Crispin <john@phrozen.org>, linuxppc-dev@lists.ozlabs.org, Frank Rowand <frank.rowand@sony.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Friday 16 December 2022 12:10:48 Segher Boessenkool wrote:
-> On Fri, Dec 16, 2022 at 05:57:46PM +0000, Christophe Leroy wrote:
-> > Le 16/12/2022 à 18:18, Segher Boessenkool a écrit :
-> > > On Fri, Dec 16, 2022 at 09:35:50AM +0100, Christophe Leroy wrote:
-> > >> Today we have CONFIG_TARGET_CPU which provides the identification of the
-> > >> expected CPU, it is used for GCC. Use it as well for the assembler.
-> > > 
-> > > Why do you use -Wa, at all for this?  The compiler should already pass
-> > > proper options always!
-> > 
-> > That's historical I guess. Comes from commit 14cf11af6cf6 ("powerpc: 
-> > Merge enough to start building in arch/powerpc.")
-> 
-> Ah.  The patch moves stuff around, I thought more of it is new than it
-> really is.  Sorry.
-> 
-> It would be good to get rid of all such things that do no good and can
-> easily cause problems, of course, but that does not belong to this patch
-> of course.
 
-Just a coincident but u-boot has similar problem...
-https://patchwork.ozlabs.org/project/uboot/patch/20221211141204.8153-1-pali@kernel.org/
+Hi,
 
-So I agree that removal of -Wa,-mXXX is a good idea. I checked that gcc
-pass correct -Wa,-mXXX flag from -mcpu=YYY flag.
+I've just debugged an issue that I traced down to this commit.
 
-> > >> +cpu-as-$(CONFIG_PPC_BOOK3S_64)	+= $(call as-option,-Wa$(comma)-many)
-> > > 
-> > > What is this for?  Using -many is a huge step back, it hides many
-> > > problems :-(
-> > 
-> > The only thing I did is removed the -Wa,-mpower4 from the line, leaving 
-> > the remaining part. Initialy it was:
-> > 
-> > cpu-as-$(CONFIG_PPC_BOOK3S_64) += $(call as-option,-Wa$(comma)-mpower4) 
-> > $(call as-option,-Wa$(comma)-many)
-> > 
-> > It was added in 2018 by commit 960e30029863 ("powerpc/Makefile: Fix 
-> > PPC_BOOK3S_64 ASFLAGS"). There is a long explanation it the commit.
-> > 
-> > Should we remove it ?
-> 
-> The commit says it is a workaround for clang problems, so it needs
-> testing there.  It also needs testing everywhere else, because as I said
-> it hides a lot of problems, so removing it will make a lot of sloppy
-> code that has crept in since 2018 scream bloody murder :-(
-> 
-> 
-> Segher
+My mt7621 based board relies on the soc_info.mem_detect function for
+memblock init which is never being called again with this patch being
+applied.
+
+The code in the original patch as well was on 6.0 doesn't allow any of
+the other (fallback?) memory initialization code to run as
+early_init_dt_scan_memory() always returns 0.
+
+Was this an oversight in the implementation or are some follow-up
+patches missing? Perhaps the code just has to return a different
+value when it has found some blocks of memory that should be used?
+
+
+Andi
