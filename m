@@ -1,71 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D953064F6B3
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Dec 2022 02:12:08 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B187664F6B1
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Dec 2022 02:11:16 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NYnxf54F5z3cHs
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Dec 2022 12:12:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NYnwf4R1zz3bZv
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Dec 2022 12:11:14 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=rammhold-de.20210112.gappssmtp.com header.i=@rammhold-de.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=OTXV3ptG;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GQAQYkJz;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=rammhold.de (client-ip=2a00:1450:4864:20::52d; helo=mail-ed1-x52d.google.com; envelope-from=andreas@rammhold.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=rammhold-de.20210112.gappssmtp.com header.i=@rammhold-de.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=OTXV3ptG;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GQAQYkJz;
 	dkim-atps=neutral
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NYnHR3Y2yz2yRV
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Dec 2022 11:42:24 +1100 (AEDT)
-Received: by mail-ed1-x52d.google.com with SMTP id v8so5874000edi.3
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Dec 2022 16:42:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rammhold-de.20210112.gappssmtp.com; s=20210112;
-        h=message-id:date:references:in-reply-to:subject:mime-version:cc:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=1QFKv2TWTiAAUJtUNn93KfAKVJcdR7iRnXXIRoZLyMw=;
-        b=OTXV3ptGWNYqx2UGC2rImTpDTUqU+wDZrKWBdy/UNAoeJvPRPrVSz1tG1jGOl8Ce3e
-         s6M+0zp3iE/xPvJ46gLuHDMM+X+dYn3oSIIkuoF8AqAxuwdnMf3jhdxb358LL+YJDcfS
-         dZ7iY559N/VzN10NYUT2zpg7KukATI1WYLCO3n8YoWy1L2Vv1QLCrv12PzmH3hpdw7+S
-         rHWJyzzNPFxdyh5dz4Jy/tuCgfdBOqEUZVKTu3jNQXrzZT20P3EidtaaPA+3wqG2iGvD
-         h5s1tkyGIxQOWmtZwzxznuihpx9A3d7YWy8DoYbCcGpmaMmXppEFilwGAndn5ZPfW9CD
-         gezQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=message-id:date:references:in-reply-to:subject:mime-version:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1QFKv2TWTiAAUJtUNn93KfAKVJcdR7iRnXXIRoZLyMw=;
-        b=W8QzAoQkUSkmJCTHG9AVkoSnvvRZLdA+OcU6TBNizemgsZnBFYFdtXXTKPivXU7jv9
-         Ifq7RxWLUHeIftEvJ0A7XjkQpY+Jy9frpUAR3lwKrhzxVg+vSa47PyKw6IKPGZ1zSgPz
-         XRAkHU9Cw2uO4w0nGTs4t58ylm4UJDZiYz4UF2q+p4AX7UUzXsU2qt7bGzBq1qrOC2oF
-         r7NCFkFivOlXlGc8oIq8yRsCQV5CvsxfRD/wDbty/gMGl2cSVcJsLw6tbkVWf5umtfd+
-         qWu8tH9+Yzt53G7JbYrzF1gd1a13RqH5eNMEMGmfWZuxNrbH6QuMR0zRe5ko2lpadgY6
-         gj2Q==
-X-Gm-Message-State: AFqh2kry9podWJ/zhYaKa/7EMOn2Dko6UbmVGquYvE3Koi9hK6laaGW1
-	8EQeP+vfytNKOtsymJXosJQCRA==
-X-Google-Smtp-Source: AMrXdXuEXjxQv82egRwfXB6YAxYwW32Z33izAMO7cRGkThTOjWfh0A7Qji8VV9ypvbxJ6Vi/3fflkA==
-X-Received: by 2002:a50:ed81:0:b0:477:ff25:867a with SMTP id h1-20020a50ed81000000b00477ff25867amr97915edr.12.1671237736873;
-        Fri, 16 Dec 2022 16:42:16 -0800 (PST)
-Received: from localhost ([2a00:e67:3f2:a:8c01:9c4e:459b:314f])
-        by smtp.gmail.com with ESMTPSA id j9-20020a1709066dc900b007ad84cf1346sm1379556ejt.110.2022.12.16.16.42.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Dec 2022 16:42:15 -0800 (PST)
-From: Andreas Rammhold <andreas@rammhold.de>
-To: Rob Herring <robh@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NYnvn39DXz2xZB
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Dec 2022 12:10:29 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 83429B81E4C;
+	Sat, 17 Dec 2022 01:10:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A256C433D2;
+	Sat, 17 Dec 2022 01:10:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1671239424;
+	bh=Qm/lVWvY5E4nVZ/Q+YcB9XTqpC6qJE2EwMv9F0W5Q2M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GQAQYkJzdhrp57gPVbOjQRmjth1uLBE320uqyXsqTW0slFz1tg6JqePJD1BavRmIV
+	 8xt0e+KQ1M/3ewWtrkxSg24JHdLH1C/kckBlDrTxnOKRXDa7jPH4oiBMlULTyxPD7w
+	 bBrkekdZzbtpsKUA2e2DbaiM8iLneDaOpYRDq6fMN9AcTU0FBjapf88inmErRIj2uq
+	 A/le4q700JdH3oCLuXrizDFwKZQZfWW+1/jIhJ209lxhCg/kSevhiVhHwjYK6Qqvom
+	 IQHC2YpwiUAaWj5JrHg2+8cIDDw0sfvAZnurnKgRxvCKupRhURQ5KX+Yzn9iqtj73G
+	 n7S9XUA5D3AFg==
+Received: by pali.im (Postfix)
+	id 70565B01; Sat, 17 Dec 2022 02:10:21 +0100 (CET)
+Date: Sat, 17 Dec 2022 02:10:21 +0100
+From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v2] powerpc: Pass correct CPU reference to assembler
+Message-ID: <20221217011021.zr4k2wqdh5nnryw7@pali>
+References: <01fe73614988e2402a7526fb6b6e903bc3777bb5.1671179743.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-Content-Type: text/plain
-Subject: Re: [PATCH v4] of/fdt: Rework early_init_dt_scan_memory() to call
- directly
-In-Reply-To: <20211215150102.1303588-1-robh@kernel.org>
-References: <20211215150102.1303588-1-robh@kernel.org>
-Date: Sat, 17 Dec 2022 01:42:14 +0100
-Message-ID: <87bko2x3mh.fsf@rammhold.de>
-X-Mailman-Approved-At: Sat, 17 Dec 2022 12:10:59 +1100
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <01fe73614988e2402a7526fb6b6e903bc3777bb5.1671179743.git.christophe.leroy@csgroup.eu>
+User-Agent: NeoMutt/20180716
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,26 +62,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Frank Rowand <frowand.list@gmail.com>, linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>, John Crispin <john@phrozen.org>, linuxppc-dev@lists.ozlabs.org, Frank Rowand <frank.rowand@sony.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Jan-Benedict Glaw <jbglaw@lug-owl.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Friday 16 December 2022 09:35:50 Christophe Leroy wrote:
+> diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
+> index bf5f0a998273..528452ce80b4 100644
+> --- a/arch/powerpc/Makefile
+> +++ b/arch/powerpc/Makefile
+> @@ -201,18 +201,20 @@ KBUILD_CFLAGS += -fno-asynchronous-unwind-tables
+>  # often slow when they are implemented at all
+>  KBUILD_CFLAGS		+= $(call cc-option,-mno-string)
+>  
+> -cpu-as-$(CONFIG_40x)		+= -Wa,-m405
+> -cpu-as-$(CONFIG_44x)		+= -Wa,-m440
+>  cpu-as-$(CONFIG_ALTIVEC)	+= $(call as-option,-Wa$(comma)-maltivec)
+> -cpu-as-$(CONFIG_PPC_E500)		+= -Wa,-me500
+> +
+> +ifeq ($(CONFIG_TARGET_CPU),powerpc)
+> +cpu-as-$(CONFIG_TARGET_CPU_BOOL)	+= -Wa,-mppc
+> +else
+> +cpu-as-$(CONFIG_TARGET_CPU_BOOL)	+= -Wa,-m$(CONFIG_TARGET_CPU)
+> +endif
 
-Hi,
-
-I've just debugged an issue that I traced down to this commit.
-
-My mt7621 based board relies on the soc_info.mem_detect function for
-memblock init which is never being called again with this patch being
-applied.
-
-The code in the original patch as well was on 6.0 doesn't allow any of
-the other (fallback?) memory initialization code to run as
-early_init_dt_scan_memory() always returns 0.
-
-Was this an oversight in the implementation or are some follow-up
-patches missing? Perhaps the code just has to return a different
-value when it has found some blocks of memory that should be used?
-
-
-Andi
+This change will break compilation for e500 cores. Kconfig sets
+CONFIG_TARGET_CPU to string "8540" for e500 cores because gcc uses
+-mcpu=8540 for e500 but GNU AS uses -me500 for e500 cores.
