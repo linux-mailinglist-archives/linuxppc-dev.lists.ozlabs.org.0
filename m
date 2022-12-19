@@ -1,104 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D44626508B8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Dec 2022 09:47:18 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61C95650B2B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Dec 2022 13:08:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NbCxw44zZz3c7X
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Dec 2022 19:47:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NbJPY2KdNz3c88
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Dec 2022 23:08:01 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=A8SX752t;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=rtQCYUPC;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=mhocko@suse.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=rtQCYUPC;
+	dkim-atps=neutral
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NbCwy07FQz2yNX
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Dec 2022 19:46:26 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=A8SX752t;
-	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	by gandalf.ozlabs.org (Postfix) with ESMTP id 4NbCws4fXLz4xwl
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Dec 2022 19:46:21 +1100 (AEDT)
-Received: by gandalf.ozlabs.org (Postfix)
-	id 4NbCws4NhQz4xZj; Mon, 19 Dec 2022 19:46:21 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: gandalf.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=A8SX752t;
-	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NbJNb0tRGz3bPL
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Dec 2022 23:07:11 +1100 (AEDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4NbCwr4Qscz4xG6;
-	Mon, 19 Dec 2022 19:46:19 +1100 (AEDT)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2BJ8Kfts004352;
-	Mon, 19 Dec 2022 08:46:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=6RmFcpJUA23I77W20IfYxOeUx+jokhSqIp1awwkQAtI=;
- b=A8SX752tdzQE4Lqreau0AzBQOpl7LWSoFJXRoCiItauwA77f+CmXqRE2/wMSSjzz0H25
- vwTXnKWPsEQEWQtpaawpzYp8fhlYbSdXJiArTBHHNQL2Fm2EaDaedXDrmxH+iptvYdXA
- 4Ne/01LLZYD/TQkzB2n40PN+Ur47YJrxHjmS/MfcVDZOCl5KK05tNJy2YBafbxdeEpun
- nQBGRE6btRLAwAmsXCE3QwnPxkhrc/h0LaVSHeKvMs2mhsIdAyzVNL+QgFGaQ0BG7ljc
- eZzVbr7eodV+gXkH29S7uvShLvdZ+fJCUWtt7vEVtvVI5Hn0zwU7IZLsccYayzlRv1mJ nw== 
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3mjmc48gjq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 19 Dec 2022 08:46:15 +0000
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
-	by ppma01fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 2BIFMVQC031264;
-	Mon, 19 Dec 2022 08:46:12 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma01fra.de.ibm.com (PPS) with ESMTPS id 3mh6yuhjj8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 19 Dec 2022 08:46:12 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2BJ8kAIf24445262
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 19 Dec 2022 08:46:10 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0AB7B2004D;
-	Mon, 19 Dec 2022 08:46:10 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1EF3020043;
-	Mon, 19 Dec 2022 08:46:09 +0000 (GMT)
-Received: from [9.203.107.3] (unknown [9.203.107.3])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 19 Dec 2022 08:46:08 +0000 (GMT)
-Message-ID: <7118ca5c-f83a-007f-20f0-2fd65c1ef5a7@linux.ibm.com>
-Date: Mon, 19 Dec 2022 14:16:07 +0530
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 5B91837873;
+	Mon, 19 Dec 2022 12:06:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1671451618; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VRA2aH5S0Ze0sw4rTGnG/RKjsdW74LSqAB0FgYf7/K8=;
+	b=rtQCYUPC8WG9/Y5v90R4udOxE0QwjIrtVYsJ2DeTM7KFOrFdLtyfRJ3ckh0cHle6ymJjvZ
+	SLhg2vR3pHJTHuLh0PXwellD9PtLPD1FpdN1GIJjnCPWLz8KnsY1qk+FJLZsVigvT89Rhe
+	5xoSAvalOeCWpZ5NgbA7bRkP9qRL3M8=
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 4173113910;
+	Mon, 19 Dec 2022 12:06:58 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id vvTvD+JToGMtbwAAMHmgww
+	(envelope-from <mhocko@suse.com>); Mon, 19 Dec 2022 12:06:58 +0000
+Date: Mon, 19 Dec 2022 13:06:57 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Mike Kravetz <mike.kravetz@oracle.com>
+Subject: Re: [RFC PATCH] mm: remove zap_page_range and change callers to use
+ zap_vma_page_range
+Message-ID: <Y6A6KqXObGKxvDrX@dhcp22.suse.cz>
+References: <20221216192012.13562-1-mike.kravetz@oracle.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.1
-Subject: Re: [PATCH] powerpc/kexec_file: print error string on usable memory
- property update failure
-Content-Language: en-US
-To: Sourabh Jain <sourabhjain@linux.ibm.com>, linuxppc-dev@ozlabs.org,
-        mpe@ellerman.id.au
-References: <20221216122708.182154-1-sourabhjain@linux.ibm.com>
-From: Hari Bathini <hbathini@linux.ibm.com>
-In-Reply-To: <20221216122708.182154-1-sourabhjain@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: l1Hk859aSOaZxtnTSmOSI4Nn1Y1KqwR9
-X-Proofpoint-GUID: l1Hk859aSOaZxtnTSmOSI4Nn1Y1KqwR9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-12-18_13,2022-12-15_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 malwarescore=0
- phishscore=0 lowpriorityscore=0 bulkscore=0 suspectscore=0 mlxlogscore=999
- impostorscore=0 mlxscore=0 adultscore=0 spamscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2212070000
- definitions=main-2212190074
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221216192012.13562-1-mike.kravetz@oracle.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -110,38 +68,312 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mahesh@linux.vnet.ibm.com
+Cc: Christian Brauner <brauner@kernel.org>, linux-s390@vger.kernel.org, Nadav Amit <nadav.amit@gmail.com>, Dave Hansen <dave.hansen@linux.intel.com>, Will Deacon <will@kernel.org>, David Hildenbrand <david@redhat.com>, netdev@vger.kernel.org, Rik van Riel <riel@surriel.com>, linux-kernel@vger.kernel.org, Peter Xu <peterx@redhat.com>, linux-mm@kvack.org, Eric Dumazet <edumazet@google.com>, Palmer Dabbelt <palmer@dabbelt.com>, Matthew Wilcox <willy@infradead.org>, linux-riscv@lists.infradead.org, Christian Borntraeger <borntraeger@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@suse.cz>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Fri 16-12-22 11:20:12, Mike Kravetz wrote:
+> zap_page_range was originally designed to unmap pages within an address
+> range that could span multiple vmas.  While working on [1], it was
+> discovered that all callers of zap_page_range pass a range entirely within
+> a single vma.  In addition, the mmu notification call within zap_page
+> range does not correctly handle ranges that span multiple vmas as calls
+> should be vma specific.
 
+Could you spend a sentence or two explaining what is wrong here?
 
-On 16/12/22 5:57 pm, Sourabh Jain wrote:
-> Print the FDT error description along with the error message if failed
-> to set the "linux,drconf-usable-memory" property in the kdump kernel's
-> FDT.
+> Instead of fixing zap_page_range, change all callers to use the new
+> routine zap_vma_page_range.  zap_vma_page_range is just a wrapper around
+> zap_page_range_single passing in NULL zap details.  The name is also
+> more in line with other exported routines that operate within a vma.
+> We can then remove zap_page_range.
+
+I would stick with zap_page_range_single rather than adding a new
+wrapper but nothing really critical.
+
+> Also, change madvise_dontneed_single_vma to use this new routine.
 > 
-> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+> [1] https://lore.kernel.org/linux-mm/20221114235507.294320-2-mike.kravetz@oracle.com/
+> Suggested-by: Peter Xu <peterx@redhat.com>
+> Signed-off-by: Mike Kravetz <mike.kravetz@oracle.com>
 
-LGTM
+Other than that LGTM
+Acked-by: Michal Hocko <mhocko@suse.com>
 
-Acked-by: Hari Bathini <hbathini@linux.ibm.com>
+Thanks!
 
 > ---
->   arch/powerpc/kexec/file_load_64.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
+>  arch/arm64/kernel/vdso.c                |  4 ++--
+>  arch/powerpc/kernel/vdso.c              |  2 +-
+>  arch/powerpc/platforms/book3s/vas-api.c |  2 +-
+>  arch/powerpc/platforms/pseries/vas.c    |  2 +-
+>  arch/riscv/kernel/vdso.c                |  4 ++--
+>  arch/s390/kernel/vdso.c                 |  2 +-
+>  arch/s390/mm/gmap.c                     |  2 +-
+>  arch/x86/entry/vdso/vma.c               |  2 +-
+>  drivers/android/binder_alloc.c          |  2 +-
+>  include/linux/mm.h                      |  7 ++++--
+>  mm/madvise.c                            |  4 ++--
+>  mm/memory.c                             | 30 -------------------------
+>  mm/page-writeback.c                     |  2 +-
+>  net/ipv4/tcp.c                          |  6 ++---
+>  14 files changed, 22 insertions(+), 49 deletions(-)
 > 
-> diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
-> index 349a781cea0b3..7602f7e1e634e 100644
-> --- a/arch/powerpc/kexec/file_load_64.c
-> +++ b/arch/powerpc/kexec/file_load_64.c
-> @@ -687,7 +687,8 @@ static int update_usable_mem_fdt(void *fdt, struct crash_mem *usable_mem)
->   		ret = fdt_setprop(fdt, node, "linux,drconf-usable-memory",
->   				  um_info.buf, (um_info.idx * sizeof(u64)));
->   		if (ret) {
-> -			pr_err("Failed to update fdt with linux,drconf-usable-memory property");
-> +			pr_err("Failed to update fdt with linux,drconf-usable-memory property: %s",
-> +			       fdt_strerror(ret));
->   			goto out;
->   		}
->   	}
+> diff --git a/arch/arm64/kernel/vdso.c b/arch/arm64/kernel/vdso.c
+> index e59a32aa0c49..a7b10e182f78 100644
+> --- a/arch/arm64/kernel/vdso.c
+> +++ b/arch/arm64/kernel/vdso.c
+> @@ -141,10 +141,10 @@ int vdso_join_timens(struct task_struct *task, struct time_namespace *ns)
+>  		unsigned long size = vma->vm_end - vma->vm_start;
+>  
+>  		if (vma_is_special_mapping(vma, vdso_info[VDSO_ABI_AA64].dm))
+> -			zap_page_range(vma, vma->vm_start, size);
+> +			zap_vma_page_range(vma, vma->vm_start, size);
+>  #ifdef CONFIG_COMPAT_VDSO
+>  		if (vma_is_special_mapping(vma, vdso_info[VDSO_ABI_AA32].dm))
+> -			zap_page_range(vma, vma->vm_start, size);
+> +			zap_vma_page_range(vma, vma->vm_start, size);
+>  #endif
+>  	}
+>  
+> diff --git a/arch/powerpc/kernel/vdso.c b/arch/powerpc/kernel/vdso.c
+> index 507f8228f983..479d70fe8c55 100644
+> --- a/arch/powerpc/kernel/vdso.c
+> +++ b/arch/powerpc/kernel/vdso.c
+> @@ -123,7 +123,7 @@ int vdso_join_timens(struct task_struct *task, struct time_namespace *ns)
+>  		unsigned long size = vma->vm_end - vma->vm_start;
+>  
+>  		if (vma_is_special_mapping(vma, &vvar_spec))
+> -			zap_page_range(vma, vma->vm_start, size);
+> +			zap_vma_page_range(vma, vma->vm_start, size);
+>  	}
+>  	mmap_read_unlock(mm);
+>  
+> diff --git a/arch/powerpc/platforms/book3s/vas-api.c b/arch/powerpc/platforms/book3s/vas-api.c
+> index eb5bed333750..8f57388b760b 100644
+> --- a/arch/powerpc/platforms/book3s/vas-api.c
+> +++ b/arch/powerpc/platforms/book3s/vas-api.c
+> @@ -414,7 +414,7 @@ static vm_fault_t vas_mmap_fault(struct vm_fault *vmf)
+>  	/*
+>  	 * When the LPAR lost credits due to core removal or during
+>  	 * migration, invalidate the existing mapping for the current
+> -	 * paste addresses and set windows in-active (zap_page_range in
+> +	 * paste addresses and set windows in-active (zap_vma_page_range in
+>  	 * reconfig_close_windows()).
+>  	 * New mapping will be done later after migration or new credits
+>  	 * available. So continue to receive faults if the user space
+> diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platforms/pseries/vas.c
+> index 4ad6e510d405..2aef8d9295a2 100644
+> --- a/arch/powerpc/platforms/pseries/vas.c
+> +++ b/arch/powerpc/platforms/pseries/vas.c
+> @@ -760,7 +760,7 @@ static int reconfig_close_windows(struct vas_caps *vcap, int excess_creds,
+>  		 * is done before the original mmap() and after the ioctl.
+>  		 */
+>  		if (vma)
+> -			zap_page_range(vma, vma->vm_start,
+> +			zap_vma_page_range(vma, vma->vm_start,
+>  					vma->vm_end - vma->vm_start);
+>  
+>  		mmap_write_unlock(task_ref->mm);
+> diff --git a/arch/riscv/kernel/vdso.c b/arch/riscv/kernel/vdso.c
+> index e410275918ac..a405119da2c0 100644
+> --- a/arch/riscv/kernel/vdso.c
+> +++ b/arch/riscv/kernel/vdso.c
+> @@ -127,10 +127,10 @@ int vdso_join_timens(struct task_struct *task, struct time_namespace *ns)
+>  		unsigned long size = vma->vm_end - vma->vm_start;
+>  
+>  		if (vma_is_special_mapping(vma, vdso_info.dm))
+> -			zap_page_range(vma, vma->vm_start, size);
+> +			zap_vma_page_range(vma, vma->vm_start, size);
+>  #ifdef CONFIG_COMPAT
+>  		if (vma_is_special_mapping(vma, compat_vdso_info.dm))
+> -			zap_page_range(vma, vma->vm_start, size);
+> +			zap_vma_page_range(vma, vma->vm_start, size);
+>  #endif
+>  	}
+>  
+> diff --git a/arch/s390/kernel/vdso.c b/arch/s390/kernel/vdso.c
+> index ff7bf4432229..eccfcd505403 100644
+> --- a/arch/s390/kernel/vdso.c
+> +++ b/arch/s390/kernel/vdso.c
+> @@ -63,7 +63,7 @@ int vdso_join_timens(struct task_struct *task, struct time_namespace *ns)
+>  
+>  		if (!vma_is_special_mapping(vma, &vvar_mapping))
+>  			continue;
+> -		zap_page_range(vma, vma->vm_start, size);
+> +		zap_vma_page_range(vma, vma->vm_start, size);
+>  		break;
+>  	}
+>  	mmap_read_unlock(mm);
+> diff --git a/arch/s390/mm/gmap.c b/arch/s390/mm/gmap.c
+> index 74e1d873dce0..67d998152142 100644
+> --- a/arch/s390/mm/gmap.c
+> +++ b/arch/s390/mm/gmap.c
+> @@ -722,7 +722,7 @@ void gmap_discard(struct gmap *gmap, unsigned long from, unsigned long to)
+>  		if (is_vm_hugetlb_page(vma))
+>  			continue;
+>  		size = min(to - gaddr, PMD_SIZE - (gaddr & ~PMD_MASK));
+> -		zap_page_range(vma, vmaddr, size);
+> +		zap_vma_page_range(vma, vmaddr, size);
+>  	}
+>  	mmap_read_unlock(gmap->mm);
+>  }
+> diff --git a/arch/x86/entry/vdso/vma.c b/arch/x86/entry/vdso/vma.c
+> index b8f3f9b9e53c..5aafbd19e869 100644
+> --- a/arch/x86/entry/vdso/vma.c
+> +++ b/arch/x86/entry/vdso/vma.c
+> @@ -116,7 +116,7 @@ int vdso_join_timens(struct task_struct *task, struct time_namespace *ns)
+>  		unsigned long size = vma->vm_end - vma->vm_start;
+>  
+>  		if (vma_is_special_mapping(vma, &vvar_mapping))
+> -			zap_page_range(vma, vma->vm_start, size);
+> +			zap_vma_page_range(vma, vma->vm_start, size);
+>  	}
+>  	mmap_read_unlock(mm);
+>  
+> diff --git a/drivers/android/binder_alloc.c b/drivers/android/binder_alloc.c
+> index 4ad42b0f75cd..f7f10248c742 100644
+> --- a/drivers/android/binder_alloc.c
+> +++ b/drivers/android/binder_alloc.c
+> @@ -1019,7 +1019,7 @@ enum lru_status binder_alloc_free_page(struct list_head *item,
+>  	if (vma) {
+>  		trace_binder_unmap_user_start(alloc, index);
+>  
+> -		zap_page_range(vma, page_addr, PAGE_SIZE);
+> +		zap_vma_page_range(vma, page_addr, PAGE_SIZE);
+>  
+>  		trace_binder_unmap_user_end(alloc, index);
+>  	}
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 6b28eb9c6ea2..706efaf95783 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -1980,10 +1980,13 @@ struct page *vm_normal_page_pmd(struct vm_area_struct *vma, unsigned long addr,
+>  
+>  void zap_vma_ptes(struct vm_area_struct *vma, unsigned long address,
+>  		  unsigned long size);
+> -void zap_page_range(struct vm_area_struct *vma, unsigned long address,
+> -		    unsigned long size);
+>  void zap_page_range_single(struct vm_area_struct *vma, unsigned long address,
+>  			   unsigned long size, struct zap_details *details);
+> +static inline void zap_vma_page_range(struct vm_area_struct *vma,
+> +				 unsigned long address, unsigned long size)
+> +{
+> +	zap_page_range_single(vma, address, size, NULL);
+> +}
+>  void unmap_vmas(struct mmu_gather *tlb, struct maple_tree *mt,
+>  		struct vm_area_struct *start_vma, unsigned long start,
+>  		unsigned long end);
+> diff --git a/mm/madvise.c b/mm/madvise.c
+> index 87703a19bbef..3c4d9829d4e1 100644
+> --- a/mm/madvise.c
+> +++ b/mm/madvise.c
+> @@ -787,7 +787,7 @@ static int madvise_free_single_vma(struct vm_area_struct *vma,
+>   * Application no longer needs these pages.  If the pages are dirty,
+>   * it's OK to just throw them away.  The app will be more careful about
+>   * data it wants to keep.  Be sure to free swap resources too.  The
+> - * zap_page_range_single call sets things up for shrink_active_list to actually
+> + * zap_vma_page_range call sets things up for shrink_active_list to actually
+>   * free these pages later if no one else has touched them in the meantime,
+>   * although we could add these pages to a global reuse list for
+>   * shrink_active_list to pick up before reclaiming other pages.
+> @@ -805,7 +805,7 @@ static int madvise_free_single_vma(struct vm_area_struct *vma,
+>  static long madvise_dontneed_single_vma(struct vm_area_struct *vma,
+>  					unsigned long start, unsigned long end)
+>  {
+> -	zap_page_range_single(vma, start, end - start, NULL);
+> +	zap_vma_page_range(vma, start, end - start);
+>  	return 0;
+>  }
+>  
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 5b2c137dfb2a..e953a0108278 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -1687,36 +1687,6 @@ void unmap_vmas(struct mmu_gather *tlb, struct maple_tree *mt,
+>  	mmu_notifier_invalidate_range_end(&range);
+>  }
+>  
+> -/**
+> - * zap_page_range - remove user pages in a given range
+> - * @vma: vm_area_struct holding the applicable pages
+> - * @start: starting address of pages to zap
+> - * @size: number of bytes to zap
+> - *
+> - * Caller must protect the VMA list
+> - */
+> -void zap_page_range(struct vm_area_struct *vma, unsigned long start,
+> -		unsigned long size)
+> -{
+> -	struct maple_tree *mt = &vma->vm_mm->mm_mt;
+> -	unsigned long end = start + size;
+> -	struct mmu_notifier_range range;
+> -	struct mmu_gather tlb;
+> -	MA_STATE(mas, mt, vma->vm_end, vma->vm_end);
+> -
+> -	lru_add_drain();
+> -	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, vma, vma->vm_mm,
+> -				start, start + size);
+> -	tlb_gather_mmu(&tlb, vma->vm_mm);
+> -	update_hiwater_rss(vma->vm_mm);
+> -	mmu_notifier_invalidate_range_start(&range);
+> -	do {
+> -		unmap_single_vma(&tlb, vma, start, range.end, NULL);
+> -	} while ((vma = mas_find(&mas, end - 1)) != NULL);
+> -	mmu_notifier_invalidate_range_end(&range);
+> -	tlb_finish_mmu(&tlb);
+> -}
+> -
+>  /**
+>   * zap_page_range_single - remove user pages in a given range
+>   * @vma: vm_area_struct holding the applicable pages
+> diff --git a/mm/page-writeback.c b/mm/page-writeback.c
+> index ad608ef2a243..bd9fe6ff6557 100644
+> --- a/mm/page-writeback.c
+> +++ b/mm/page-writeback.c
+> @@ -2713,7 +2713,7 @@ void folio_account_cleaned(struct folio *folio, struct bdi_writeback *wb)
+>   *
+>   * The caller must hold lock_page_memcg().  Most callers have the folio
+>   * locked.  A few have the folio blocked from truncation through other
+> - * means (eg zap_page_range() has it mapped and is holding the page table
+> + * means (eg zap_vma_page_range() has it mapped and is holding the page table
+>   * lock).  This can also be called from mark_buffer_dirty(), which I
+>   * cannot prove is always protected against truncate.
+>   */
+> diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+> index c567d5e8053e..afaad3cfed00 100644
+> --- a/net/ipv4/tcp.c
+> +++ b/net/ipv4/tcp.c
+> @@ -2092,7 +2092,7 @@ static int tcp_zerocopy_vm_insert_batch_error(struct vm_area_struct *vma,
+>  		maybe_zap_len = total_bytes_to_map -  /* All bytes to map */
+>  				*length + /* Mapped or pending */
+>  				(pages_remaining * PAGE_SIZE); /* Failed map. */
+> -		zap_page_range(vma, *address, maybe_zap_len);
+> +		zap_vma_page_range(vma, *address, maybe_zap_len);
+>  		err = 0;
+>  	}
+>  
+> @@ -2100,7 +2100,7 @@ static int tcp_zerocopy_vm_insert_batch_error(struct vm_area_struct *vma,
+>  		unsigned long leftover_pages = pages_remaining;
+>  		int bytes_mapped;
+>  
+> -		/* We called zap_page_range, try to reinsert. */
+> +		/* We called zap_vma_page_range, try to reinsert. */
+>  		err = vm_insert_pages(vma, *address,
+>  				      pending_pages,
+>  				      &pages_remaining);
+> @@ -2234,7 +2234,7 @@ static int tcp_zerocopy_receive(struct sock *sk,
+>  	total_bytes_to_map = avail_len & ~(PAGE_SIZE - 1);
+>  	if (total_bytes_to_map) {
+>  		if (!(zc->flags & TCP_RECEIVE_ZEROCOPY_FLAG_TLB_CLEAN_HINT))
+> -			zap_page_range(vma, address, total_bytes_to_map);
+> +			zap_vma_page_range(vma, address, total_bytes_to_map);
+>  		zc->length = total_bytes_to_map;
+>  		zc->recv_skip_hint = 0;
+>  	} else {
+> -- 
+> 2.38.1
+
+-- 
+Michal Hocko
+SUSE Labs
