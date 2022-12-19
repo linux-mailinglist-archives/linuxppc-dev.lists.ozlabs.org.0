@@ -2,63 +2,115 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E044B650D6B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Dec 2022 15:36:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 852FB651044
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Dec 2022 17:24:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NbMhP5KLXz3cdd
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Dec 2022 01:36:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NbQ5M2MB0z3c6P
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Dec 2022 03:24:23 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Zb7a1xON;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=G0/Lj5DX;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.20; helo=mga02.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=40.107.15.80; helo=eur01-db5-obe.outbound.protection.outlook.com; envelope-from=camelia.groza@nxp.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Zb7a1xON;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=G0/Lj5DX;
 	dkim-atps=neutral
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+Received: from EUR01-DB5-obe.outbound.protection.outlook.com (mail-db5eur01on2080.outbound.protection.outlook.com [40.107.15.80])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NbMgT3d8kz2xWg
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Dec 2022 01:35:15 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1671460517; x=1702996517;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=LVsOQvzkOtTm5a/HbIKG/rvJvKxEXOkq5De3oJvkS9U=;
-  b=Zb7a1xONYE41BUShg8MApOHjFIfRFAgBtuVyle14pS84kFGMIzkxft+C
-   uSE5P7oIixMG/SyjGE6c0Cg6YdwLR51ttbwWzw4u5wfuSNeS3pIePJ7eF
-   Ds2DXziykXHIGQWypT61taDbjtsMhC6eZaz/zw/wXFMifk4wcIGyY6nEj
-   vWuuuHKn+Hy+LWYxVniuW64ayLAI2haHXVeZjREHwOOUxMyiWswKw1zLW
-   6AHaQhp4V8TXWU+L6I3L+kwsX5Q+dVzTuqHFvcTiIjDKtndVDd16tg8rf
-   VnSuarKQR52mhWprOhBKfxjDxDJvTroVsFZkg9f0DwRwxjBLkzwyB3/ve
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10566"; a="307034204"
-X-IronPort-AV: E=Sophos;i="5.96,255,1665471600"; 
-   d="scan'208";a="307034204"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2022 06:35:12 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10566"; a="896064818"
-X-IronPort-AV: E=Sophos;i="5.96,255,1665471600"; 
-   d="scan'208";a="896064818"
-Received: from lkp-server01.sh.intel.com (HELO b5d47979f3ad) ([10.239.97.150])
-  by fmsmga006.fm.intel.com with ESMTP; 19 Dec 2022 06:35:09 -0800
-Received: from kbuild by b5d47979f3ad with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1p7HES-0008kZ-17;
-	Mon, 19 Dec 2022 14:35:08 +0000
-Date: Mon, 19 Dec 2022 22:34:58 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [linux-next:master] BUILD REGRESSION
- d650871875b2ccc670f1044be7f3cc90f276745d
-Message-ID: <63a07692.6I76+dHvnFt0bil/%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NbQ4M6GjDz3bXL
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Dec 2022 03:23:29 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=AcGz8uvuiAOk2fsYCMPOnUW5EhTZ736xvxDdffMpzdifnxMTNDF/FTp0yKr5Bxwz3EmQP7agr3CUs2nqPI3euFdhPnpF1tQ2ReGQJ2IHqRVBh4ZWt4bRv+70/aO/d/9Gcd7r+U5qEQF+jv+QprdQXywfPcVFGEQ5d06RFgnrCHU94YSYStxvBjO50Gz0eYASAvhJ5SBm8kCGOd8KiI9z9eOlAgHs3YccFs8guEet3MNGWbcpfdEWXzJR7k/vqIqa7SaMvmrPV3Lz3pbBC9UMA4Ew5hEEDibynqFVDxh60AUY/9xKUop4UPqVCYeNBiJ8vayiA8jmghxyZ1/AFVg7DA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cmwFLLjge3MUFNaC8kfp2B7iaXIKTpBOxnKzOmLX8E4=;
+ b=evesG8lsKdY9z7p3klele1+kLEvSK/CGqLuLooxbSaboTFHUVHBYI49XZSzth/fMXpWpzZ2abzhU2qXVn4nyoehLJTTnmBjPUJmRcZPFCFYju/e+bzGkRQumOVqUW/VXoDaCXSPK4v09aEnftq2D04StWusv3j8QXF7OwFyAJV88api1VhansopJmVWX1JONCG6APkb/CtkJRtbj6PWFojJgvLHcTFxbvuZas8chiRlKwzSjdPeQsjPV94lZ/RV0PJMZU33jT1bu+wN/4A9NPpsAiJwCdLQ1lLVc2O3+9rsvjJQ2WCp4o2dXfO2JruVnUCY0kZV5I/kIwK1wumEqhQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cmwFLLjge3MUFNaC8kfp2B7iaXIKTpBOxnKzOmLX8E4=;
+ b=G0/Lj5DXEQpqBejVBjCYWG0UwSKlU17xE2zdoQ0TI0toAKtw0W1ZJU/kNDEWqmxN8dZtZm6q5aWM1U/Fh270Po66i3n/WhzYFj6APzdTsvnBAL5SoaHtbICafH5OIuUKerq+xzYsXYHcVL0gUkrm//4gLJOS97tbxe9MIc7zHcI=
+Received: from VI1PR04MB5807.eurprd04.prod.outlook.com (2603:10a6:803:ec::21)
+ by DB9PR04MB9628.eurprd04.prod.outlook.com (2603:10a6:10:30b::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5924.16; Mon, 19 Dec
+ 2022 16:23:09 +0000
+Received: from VI1PR04MB5807.eurprd04.prod.outlook.com
+ ([fe80::75ca:4956:79f9:6d69]) by VI1PR04MB5807.eurprd04.prod.outlook.com
+ ([fe80::75ca:4956:79f9:6d69%7]) with mapi id 15.20.5924.016; Mon, 19 Dec 2022
+ 16:23:09 +0000
+From: Camelia Alexandra Groza <camelia.groza@nxp.com>
+To: Sean Anderson <sean.anderson@seco.com>, "David S . Miller"
+	<davem@davemloft.net>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: RE: [PATCH net v2] powerpc: dts: t208x: Disable 10G on MAC1 and MAC2
+Thread-Topic: [PATCH net v2] powerpc: dts: t208x: Disable 10G on MAC1 and MAC2
+Thread-Index: AQHZEXQBPotIqLiZVkqXNZXBHISHtK51Z8xA
+Date: Mon, 19 Dec 2022 16:23:09 +0000
+Message-ID:  <VI1PR04MB5807014739D89583FF87D43EF2E59@VI1PR04MB5807.eurprd04.prod.outlook.com>
+References: <20221216172937.2960054-1-sean.anderson@seco.com>
+In-Reply-To: <20221216172937.2960054-1-sean.anderson@seco.com>
+Accept-Language: en-GB, ro-RO, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: VI1PR04MB5807:EE_|DB9PR04MB9628:EE_
+x-ms-office365-filtering-correlation-id: 3d9b69bc-f3e2-4c07-9eb5-08dae1dd5133
+x-ld-processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:  m1IwH/xP2FoczxUGxquYWKQ8O67KTSHg/8ducCtCIIoXnC+IgeiM+G14j3RzMr+/7FrrXr5JKIPSISOJ62rQuSCwUU17BuQI9Zar3amRecqAx4owaZheCctRxEmpt1IuWARiLh/eEHZT7RlsHeCG78RWMm1ooKFXdjE4eChEeCqelNhePmbGho4AaBU3qO7J019Je6Eqyo+Hs5l4DQYBv4rp1lYR4FeEZ6+mDzcrNSV2EsZQkKT3wkn9xUdPesFwXA74SOK6Lf/QJwYo76AQiTKF1mw4xyzbYwh9OOfW27Z3jb1BJ49ajw4XfcJRuB3g9gw2pciIAsPhMjoDN3VPOfFc9iDyS3w1Swrv21p3mkyZi4UEuJduXTqRZm6UVmlvY+03Vdb9j4TVPDOAIoRPQzL21MYsDoP9V5gZ7CmmrccuNJBSlypa3HiD6jyHT53mDBLaUYDCgFmISP/BVK4cOWoydGH7hv6tZujdD2+t9j2KleMQL2Z27v6vCJgwslGTWb4hnrxPhrmkPYWcb0uUzq1XqvvVEt4PGCqzTV63yuJGE6QDmiF0mBpn408jPGkCoEr5p+fD8552cRRghwze1kAaZtS7l8lYzp79OuLFH1l6BpPZLK1qBSRZqSnS526/TKMSwh4+c1eGVOXUQ79Ejk8cWo5Q/GSk/j5wOiB9Ky8KCZu8VxJXyCfFSHOkLe5GLT7RGns5lL8CHcrLTbBYFA==
+x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR04MB5807.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(366004)(136003)(346002)(39860400002)(396003)(376002)(451199015)(8676002)(7416002)(4326008)(5660300002)(110136005)(54906003)(52536014)(76116006)(66556008)(66946007)(66446008)(2906002)(66476007)(64756008)(71200400001)(478600001)(6506007)(9686003)(186003)(26005)(41300700001)(7696005)(53546011)(55236004)(86362001)(55016003)(83380400001)(38070700005)(8936002)(38100700002)(316002)(33656002)(122000001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:  =?us-ascii?Q?32RBhJ1PbppLjxNqnMl+0o2gXo9bRyhpTvZ3RKN72UeYGUeqSvC0ZQ38rG5d?=
+ =?us-ascii?Q?kcURpNBi4Ufp/YY1T+yrpibRd3j6Wa9ecL8Jsmu6eq73juf20aew8kT/jLOj?=
+ =?us-ascii?Q?Do/rh4ePU3tO51sgrFvLJmJPsu6wup8nS0gbklkT2tOOlw6Ur4faZSgQHT41?=
+ =?us-ascii?Q?5vWDnSwVLl9ztK7UM8llwCAfxD/dqQnZIRVnn217KV9OfuFukZevE9grVu5b?=
+ =?us-ascii?Q?j4YDhjgpCdPTODrSdqFj26HRSftrx9lTEKwXKxoQ6oyYeNHKHwSWLvVKS4kg?=
+ =?us-ascii?Q?CvuxviMMi33KWUaiTtXa1zFJIauyRS/3nz/K6UuyyJJ/+g+RwBgxpePWZU33?=
+ =?us-ascii?Q?XbPFwLTib+X1b1LZTl9wAk9G29Fp7YCxDboCxQLa3yOpp2MRaShnyWHLgsD1?=
+ =?us-ascii?Q?2BE5ihjSHMFYiW6HITWsSm8CrJVZQPWkvZizLsR6iYwHFRAWURFyfFMgs2Ph?=
+ =?us-ascii?Q?fCsxpAlSOVxl6k8dlFf3iQt8Et4KAKtBzgpi2lcB31CnW3XspT2fFtwR6Mj8?=
+ =?us-ascii?Q?SSaI+pGxV3rVK/kriMvdwUv74k2p5dSeQPaOw+IzAOi8O2oDQMkj3NG5W7nn?=
+ =?us-ascii?Q?GJOGiWscrdsiRPAA43oHMPGjjs8XGMdRTpO3eZgEB+P8ida8h/ebrrdet6Mg?=
+ =?us-ascii?Q?16dh73D1ONx0o61JGyCYD10Y5xFFSRzEpCEAUcp4leVmCV/q4sK97pIWNSoC?=
+ =?us-ascii?Q?h180t3LifcD5jI16FjtIHa+uMWKYN6Bhy9YYYrD6eT55/xRahT5YEYnT8UQy?=
+ =?us-ascii?Q?ZwfWD8BiSs6JdktqeI0JkfOWKd3uBY6DRzu0u0vlezrbMXq4womLrGS9OMuz?=
+ =?us-ascii?Q?y2RRo7fr10KFOYgUmgE4hvnYt5x/eoncJ/Gwh/mL6GK9gmmmaIEs8vsc9hdC?=
+ =?us-ascii?Q?EAc9bsBCrM+tuCMPD2iRk7cxzgJccXrGO18LhjVzMnTCAqOgP+VZSI2s5HG+?=
+ =?us-ascii?Q?f1n9Pu6abKegnPPrr1Tc5OF/5nN4dzu1VewlYIMhqcZFKYfwRN/HA9Mysjn3?=
+ =?us-ascii?Q?LnEkfJai/aADShdlhI0nFKGgBu1XcKrxAijQBsVeAfv6Y30gbXAuuCQMj3DK?=
+ =?us-ascii?Q?BCGKNmIvSwYEBxENfDKwZ11M/Ta/s7jxm8K45LZ219qARg6y7HzsFp4ksIJX?=
+ =?us-ascii?Q?dOaMewAgGssLsJrC6sUYUJVRMkn9g+jGJjMFWHJH6rYG+Df5S9lTfKEFyYH2?=
+ =?us-ascii?Q?IdCD5opTmt87wMlhudToQa0N0Eg/MdT+R01JaLKmTvE6fIuh6VzNHF7Vi6W5?=
+ =?us-ascii?Q?q+h6sUeaB89OWkICi9OgppeWaf1SLob5vbKk+mZPNIPQmW51WjVLrxqeFo+6?=
+ =?us-ascii?Q?GZUgYHRENT44M7OFwe6GhR7iCRCu9tEnvPAb6NU1tMpINqEp8csaoee/SWS2?=
+ =?us-ascii?Q?cvqzmGAxzOEiJ7VvuoTq8yy8StuuMojZZRsBh4nV0DZLDvQDu6US55ThX6xR?=
+ =?us-ascii?Q?juvIeCQw0ouivZhnjAigs+IX0rZF1nTJJIiFE6XypdmffHITB/qdxlhUUzc5?=
+ =?us-ascii?Q?3/4gQn4G6kUI2rJm+0XvO4qYXwPz1sZtSc+0pldWLaBYKEQOT1sK32VwTvlk?=
+ =?us-ascii?Q?kHszc8FsSjO92w32CaazGzc7+2pxbAAc1U7IMLfU?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: VI1PR04MB5807.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3d9b69bc-f3e2-4c07-9eb5-08dae1dd5133
+X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Dec 2022 16:23:09.2237
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: eRpfO/HeHZ8+WfZqQ3a1khcxGv2pRCeuDjhVKXpHDQvD+vkLBT2XA1RD5sV14pJM9HGNcvR7IcgBUufAFo5wPg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9628
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,247 +122,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, netdev@vger.kernel.org, linux-usb@vger.kernel.org, speakup@linux-speakup.org, linux-cxl@vger.kernel.org, linux-can@vger.kernel.org, linux-xfs@vger.kernel.org, Linux Memory Management List <linux-mm@kvack.org>, linux-arm-msm@vger.kernel.org, linux-omap@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org
+Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, Sean Anderson <sean.anderson@seco.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-branch HEAD: d650871875b2ccc670f1044be7f3cc90f276745d  Add linux-next specific files for 20221219
+> -----Original Message-----
+> From: Sean Anderson <sean.anderson@seco.com>
+> Sent: Friday, December 16, 2022 19:30
+> To: David S . Miller <davem@davemloft.net>; netdev@vger.kernel.org
+> Cc: devicetree@vger.kernel.org; Rob Herring <robh+dt@kernel.org>;
+> Christophe Leroy <christophe.leroy@csgroup.eu>; Nicholas Piggin
+> <npiggin@gmail.com>; Michael Ellerman <mpe@ellerman.id.au>; linuxppc-
+> dev@lists.ozlabs.org; Krzysztof Kozlowski
+> <krzysztof.kozlowski+dt@linaro.org>; linux-kernel@vger.kernel.org; Cameli=
+a
+> Alexandra Groza <camelia.groza@nxp.com>; Sean Anderson
+> <sean.anderson@seco.com>
+> Subject: [PATCH net v2] powerpc: dts: t208x: Disable 10G on MAC1 and
+> MAC2
+>=20
+> There aren't enough resources to run these ports at 10G speeds. Disable
+> 10G for these ports, reverting to the previous speed.
+>=20
+> Fixes: 36926a7d70c2 ("powerpc: dts: t208x: Mark MAC1 and MAC2 as 10G")
+> Reported-by: Camelia Alexandra Groza <camelia.groza@nxp.com>
+> Signed-off-by: Sean Anderson <sean.anderson@seco.com>
+> ---
 
-Error/Warning reports:
+Thank you.
 
-https://lore.kernel.org/oe-kbuild-all/202211242120.MzZVGULn-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202212020520.0OkMIno3-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202212040713.rVney9e8-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202212061455.6GE7y0jg-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202212090509.NjAl9tbo-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202212142121.vendKsOc-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202212191708.Xk9yBj52-lkp@intel.com
+Reviewed-by: Camelia Groza <camelia.groza@nxp.com>
+Tested-by: Camelia Groza <camelia.groza@nxp.com>
 
-Error/Warning: (recently discovered and may have been fixed)
+> Changes in v2:
+> - Remove the 10g properties, instead of removing the MAC dtsis.
+>=20
+>  arch/powerpc/boot/dts/fsl/t2081si-post.dtsi | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
+>=20
+> diff --git a/arch/powerpc/boot/dts/fsl/t2081si-post.dtsi
+> b/arch/powerpc/boot/dts/fsl/t2081si-post.dtsi
+> index 74e17e134387..27714dc2f04a 100644
+> --- a/arch/powerpc/boot/dts/fsl/t2081si-post.dtsi
+> +++ b/arch/powerpc/boot/dts/fsl/t2081si-post.dtsi
+> @@ -659,3 +659,19 @@ L2_1: l2-cache-controller@c20000 {
+>  		interrupts =3D <16 2 1 9>;
+>  	};
+>  };
+> +
+> +&fman0_rx_0x08 {
+> +	/delete-property/ fsl,fman-10g-port;
+> +};
+> +
+> +&fman0_tx_0x28 {
+> +	/delete-property/ fsl,fman-10g-port;
+> +};
+> +
+> +&fman0_rx_0x09 {
+> +	/delete-property/ fsl,fman-10g-port;
+> +};
+> +
+> +&fman0_tx_0x29 {
+> +	/delete-property/ fsl,fman-10g-port;
+> +};
+> --
+> 2.35.1.1320.gc452695387.dirty
 
-Documentation/gpu/drm-internals:179: ./include/drm/drm_file.h:411: WARNING: undefined label: drm_accel_node (if the link has no caption the label must precede a section header)
-Documentation/networking/devlink/etas_es58x.rst: WARNING: document isn't included in any toctree
-Warning: tools/power/cpupower/man/cpupower-powercap-info.1 references a file that doesn't exist: Documentation/power/powercap/powercap.txt
-aarch64-linux-ld: ID map text too big or misaligned
-arch/arm/kernel/entry-armv.S:485:5: warning: "CONFIG_ARM_THUMB" is not defined, evaluates to 0 [-Wundef]
-arch/powerpc/kernel/kvm_emul.o: warning: objtool: kvm_template_end(): can't find starting instruction
-arch/powerpc/kernel/optprobes_head.o: warning: objtool: optprobe_template_end(): can't find starting instruction
-cistpl.c:(.text+0x82): undefined reference to `iounmap'
-drivers/regulator/tps65219-regulator.c:310:32: warning: parameter 'dev' set but not used [-Wunused-but-set-parameter]
-drivers/regulator/tps65219-regulator.c:310:60: warning: parameter 'dev' set but not used [-Wunused-but-set-parameter]
-drivers/regulator/tps65219-regulator.c:370:26: warning: ordered comparison of pointer with integer zero [-Wextra]
-irq-al-fic.c:(.init.text+0x2e): undefined reference to `of_iomap'
-lib/dhry_run.c:61:6: warning: variable 'ret' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
-s390x-linux-ld: cistpl.c:(.text+0x210): undefined reference to `iounmap'
-s390x-linux-ld: cistpl.c:(.text+0x222): undefined reference to `ioremap'
-s390x-linux-ld: irq-al-fic.c:(.init.text+0x898): undefined reference to `iounmap'
-
-Unverified Error/Warning (likely false positive, please contact us if interested):
-
-drivers/accessibility/speakup/main.c:1290:26: sparse: sparse: obsolete array initializer, use C99 syntax
-drivers/cxl/core/mbox.c:832:18: sparse: sparse: cast from non-scalar
-drivers/cxl/core/mbox.c:832:18: sparse: sparse: cast to non-scalar
-drivers/i2c/busses/i2c-qcom-geni.c:1028:28: sparse: sparse: symbol 'i2c_master_hub' was not declared. Should it be static?
-drivers/media/test-drivers/visl/visl-video.c:690:22: sparse: sparse: symbol 'visl_qops' was not declared. Should it be static?
-drivers/usb/misc/sisusbvga/sisusbvga.c:528:9: sparse: sparse: incorrect type in assignment (different base types)
-fs/xfs/xfs_iomap.c:86:29: sparse: sparse: symbol 'xfs_iomap_page_ops' was not declared. Should it be static?
-hidma.c:(.text+0x9a): undefined reference to `devm_ioremap_resource'
-s390x-linux-ld: fsl-edma.c:(.text+0x15c): undefined reference to `devm_ioremap_resource'
-s390x-linux-ld: fsl-edma.c:(.text+0x49c): undefined reference to `devm_ioremap_resource'
-timer-of.c:(.init.text+0x1aee): undefined reference to `iounmap'
-timer-of.c:(.init.text+0x5a2): undefined reference to `of_iomap'
-
-Error/Warning ids grouped by kconfigs:
-
-gcc_recent_errors
-|-- alpha-randconfig-s031-20221218
-|   |-- drivers-cxl-core-mbox.c:sparse:sparse:cast-from-non-scalar
-|   `-- drivers-cxl-core-mbox.c:sparse:sparse:cast-to-non-scalar
-|-- arc-randconfig-r031-20221219
-|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
-|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
-|-- arc-randconfig-s033-20221218
-|   |-- drivers-cxl-core-mbox.c:sparse:sparse:cast-from-non-scalar
-|   `-- drivers-cxl-core-mbox.c:sparse:sparse:cast-to-non-scalar
-|-- arm-cerfcube_defconfig
-|   `-- arch-arm-kernel-entry-armv.S:warning:CONFIG_ARM_THUMB-is-not-defined-evaluates-to
-|-- arm-footbridge_defconfig
-|   `-- arch-arm-kernel-entry-armv.S:warning:CONFIG_ARM_THUMB-is-not-defined-evaluates-to
-|-- arm64-allyesconfig
-|   `-- aarch64-linux-ld:ID-map-text-too-big-or-misaligned
-|-- csky-randconfig-s051-20221218
-|   |-- drivers-nvmem-u-boot-env.c:sparse:sparse:cast-to-restricted-__le32
-|   `-- drivers-nvmem-u-boot-env.c:sparse:sparse:restricted-__le32-degrades-to-integer
-|-- i386-allyesconfig
-|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
-|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
-|-- i386-randconfig-s002
-|   `-- fs-xfs-xfs_iomap.c:sparse:sparse:symbol-xfs_iomap_page_ops-was-not-declared.-Should-it-be-static
-|-- ia64-allmodconfig
-|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
-|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
-|-- loongarch-randconfig-s053-20221218
-|   |-- drivers-cxl-core-mbox.c:sparse:sparse:cast-from-non-scalar
-|   |-- drivers-cxl-core-mbox.c:sparse:sparse:cast-to-non-scalar
-|   `-- drivers-media-test-drivers-visl-visl-video.c:sparse:sparse:symbol-visl_qops-was-not-declared.-Should-it-be-static
-|-- microblaze-randconfig-s052-20221218
-|   |-- drivers-cxl-core-mbox.c:sparse:sparse:cast-from-non-scalar
-|   `-- drivers-cxl-core-mbox.c:sparse:sparse:cast-to-non-scalar
-|-- nios2-allyesconfig
-|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
-|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
-|-- openrisc-allyesconfig
-|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
-|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
-|-- openrisc-randconfig-r025-20221219
-|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
-|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
-|-- parisc-allyesconfig
-|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
-|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
-|-- powerpc-allmodconfig
-|   |-- arch-powerpc-kernel-kvm_emul.o:warning:objtool:kvm_template_end():can-t-find-starting-instruction
-|   |-- arch-powerpc-kernel-optprobes_head.o:warning:objtool:optprobe_template_end():can-t-find-starting-instruction
-|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
-|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
-clang_recent_errors
-|-- riscv-randconfig-r024-20221219
-|   |-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
-|   `-- lib-dhry_run.c:warning:variable-ret-is-used-uninitialized-whenever-if-condition-is-false
-|-- s390-randconfig-r003-20221218
-|   |-- hidma.c:(.text):undefined-reference-to-devm_ioremap_resource
-|   |-- irq-al-fic.c:(.init.text):undefined-reference-to-of_iomap
-|   |-- s39-linux-ld:fsl-edma.c:(.text):undefined-reference-to-devm_ioremap_resource
-|   |-- s39-linux-ld:irq-al-fic.c:(.init.text):undefined-reference-to-iounmap
-|   |-- timer-of.c:(.init.text):undefined-reference-to-iounmap
-|   `-- timer-of.c:(.init.text):undefined-reference-to-of_iomap
-|-- s390-randconfig-r036-20221218
-|   |-- cistpl.c:(.text):undefined-reference-to-iounmap
-|   |-- s39-linux-ld:cistpl.c:(.text):undefined-reference-to-ioremap
-|   |-- s39-linux-ld:cistpl.c:(.text):undefined-reference-to-iounmap
-|   `-- s39-linux-ld:fsl-edma.c:(.text):undefined-reference-to-devm_ioremap_resource
-`-- x86_64-rhel-8.3-rust
-    `-- vmlinux.o:warning:objtool:___ksymtab_gpl-_RNvNtCsfATHBUcknU9_6kernel5print16call_printk_cont:data-relocation-to-ENDBR:_RNvNtCsfATHBUcknU9_6kernel5print16call_printk_cont
-
-elapsed time: 745m
-
-configs tested: 109
-configs skipped: 3
-
-gcc tested configs:
-x86_64               randconfig-a002-20221219
-um                             i386_defconfig
-x86_64                            allnoconfig
-x86_64               randconfig-a003-20221219
-x86_64               randconfig-a001-20221219
-um                           x86_64_defconfig
-x86_64               randconfig-a004-20221219
-x86_64               randconfig-a005-20221219
-x86_64               randconfig-a006-20221219
-i386                 randconfig-a001-20221219
-i386                 randconfig-a003-20221219
-arm                            pleb_defconfig
-i386                 randconfig-a002-20221219
-i386                 randconfig-a004-20221219
-i386                 randconfig-a006-20221219
-ia64                             allmodconfig
-i386                 randconfig-a005-20221219
-powerpc                     taishan_defconfig
-powerpc                   currituck_defconfig
-arm                        cerfcube_defconfig
-arc                          axs103_defconfig
-powerpc                     ep8248e_defconfig
-arm                           sama5_defconfig
-openrisc                            defconfig
-powerpc                           allnoconfig
-x86_64                           rhel-8.3-bpf
-x86_64                           rhel-8.3-syz
-i386                                defconfig
-x86_64                    rhel-8.3-kselftests
-riscv                randconfig-r042-20221218
-alpha                            allyesconfig
-m68k                             allyesconfig
-x86_64                         rhel-8.3-kunit
-m68k                             allmodconfig
-x86_64                          rhel-8.3-func
-arc                              allyesconfig
-x86_64                              defconfig
-x86_64                           rhel-8.3-kvm
-sh                               allmodconfig
-arc                                 defconfig
-sh                             sh03_defconfig
-s390                             allmodconfig
-alpha                               defconfig
-mips                             allyesconfig
-arm                                 defconfig
-powerpc                      ppc40x_defconfig
-x86_64                               rhel-8.3
-powerpc                          allmodconfig
-s390                             allyesconfig
-arm64                            allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-arm                              allyesconfig
-mips                      fuloong2e_defconfig
-ia64                                defconfig
-x86_64                           allyesconfig
-m68k                            mac_defconfig
-riscv                               defconfig
-i386                          randconfig-c001
-arc                  randconfig-r043-20221219
-arm                      footbridge_defconfig
-arm                  randconfig-r046-20221219
-powerpc                  storcenter_defconfig
-arc                  randconfig-r043-20221218
-s390                 randconfig-r044-20221218
-mips                    maltaup_xpa_defconfig
-powerpc                  iss476-smp_defconfig
-nios2                               defconfig
-parisc                              defconfig
-riscv                             allnoconfig
-i386                        debian-10.3-kunit
-i386                         debian-10.3-func
-i386                          debian-10.3-kvm
-riscv                    nommu_virt_defconfig
-riscv                    nommu_k210_defconfig
-parisc64                            defconfig
-riscv                          rv32_defconfig
-i386                              debian-10.3
-nios2                            allyesconfig
-parisc                           allyesconfig
-
-clang tested configs:
-powerpc                     ppa8548_defconfig
-arm                          pxa168_defconfig
-x86_64               randconfig-a011-20221219
-x86_64               randconfig-a012-20221219
-mips                       rbtx49xx_defconfig
-arm                         s5pv210_defconfig
-x86_64               randconfig-a014-20221219
-x86_64               randconfig-a015-20221219
-x86_64               randconfig-a013-20221219
-x86_64                          rhel-8.3-rust
-arm                  randconfig-r046-20221218
-x86_64               randconfig-a016-20221219
-i386                 randconfig-a014-20221219
-i386                 randconfig-a012-20221219
-i386                 randconfig-a013-20221219
-i386                 randconfig-a011-20221219
-hexagon              randconfig-r041-20221218
-hexagon              randconfig-r045-20221219
-s390                 randconfig-r044-20221219
-i386                 randconfig-a015-20221219
-hexagon              randconfig-r041-20221219
-powerpc                     tqm8560_defconfig
-i386                 randconfig-a016-20221219
-hexagon              randconfig-r045-20221218
-riscv                randconfig-r042-20221219
-mips                     cu1830-neo_defconfig
-arm                       imx_v4_v5_defconfig
-x86_64                        randconfig-k001
-powerpc                      ppc44x_defconfig
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
