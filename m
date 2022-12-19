@@ -1,60 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13DCB650D4C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Dec 2022 15:31:08 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E044B650D6B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Dec 2022 15:36:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NbMZd6q6wz3c72
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Dec 2022 01:31:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NbMhP5KLXz3cdd
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Dec 2022 01:36:05 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Xd+urscR;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Zb7a1xON;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=pr-tracker-bot@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.20; helo=mga02.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Xd+urscR;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Zb7a1xON;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NbMYg4Sv2z3bXL
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Dec 2022 01:30:15 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 21D20B80E49;
-	Mon, 19 Dec 2022 14:30:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B786FC4339E;
-	Mon, 19 Dec 2022 14:30:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1671460209;
-	bh=4qt2LdLz5LaKTFbclb/By7tWRXSEqkT58KyX1VO652U=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=Xd+urscRAQmKR2F0rse4vov2EzeoNBIy79hZupkPFi5yweEeFK0uaxiQ4fJL3pUo/
-	 TH+brC5ttgC/vTj6aAGXa/HkjVpdZ3aTAyYPTN/BupjWOfF0T97cvsucSMHVGtWUP3
-	 a8I94z70eAe377AjWLY8LO+8CoFKkzB+C8FOj2f0LuJwy8GqV7ENzvoQ/2VGJes1pv
-	 7wcawQqoEsZLE7JOf5rczyF3sgVvzoZHMsPulvPW4/Tv6AyFDR46X+pHJGqpTv5gzs
-	 hlwFFS+ebT/WcjerhJNHlA6LyHGBA2SuTQU9mig+Ni5XcZfy8U4QHhpIeJgZep41Ai
-	 qwskBs0MKlXeA==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id A1A9EE21EF8;
-	Mon, 19 Dec 2022 14:30:09 +0000 (UTC)
-Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-6.2-1 tag
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <87wn6ohwnl.fsf@mpe.ellerman.id.au>
-References: <87wn6ohwnl.fsf@mpe.ellerman.id.au>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <87wn6ohwnl.fsf@mpe.ellerman.id.au>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.2-1
-X-PR-Tracked-Commit-Id: 980411a4d1bb925d28cd9e8d8301dc982ece788d
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 5f6e430f931d245da838db3e10e918681207029b
-Message-Id: <167146020965.28969.16560020138959752454.pr-tracker-bot@kernel.org>
-Date: Mon, 19 Dec 2022 14:30:09 +0000
-To: Michael Ellerman <mpe@ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NbMgT3d8kz2xWg
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Dec 2022 01:35:15 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1671460517; x=1702996517;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=LVsOQvzkOtTm5a/HbIKG/rvJvKxEXOkq5De3oJvkS9U=;
+  b=Zb7a1xONYE41BUShg8MApOHjFIfRFAgBtuVyle14pS84kFGMIzkxft+C
+   uSE5P7oIixMG/SyjGE6c0Cg6YdwLR51ttbwWzw4u5wfuSNeS3pIePJ7eF
+   Ds2DXziykXHIGQWypT61taDbjtsMhC6eZaz/zw/wXFMifk4wcIGyY6nEj
+   vWuuuHKn+Hy+LWYxVniuW64ayLAI2haHXVeZjREHwOOUxMyiWswKw1zLW
+   6AHaQhp4V8TXWU+L6I3L+kwsX5Q+dVzTuqHFvcTiIjDKtndVDd16tg8rf
+   VnSuarKQR52mhWprOhBKfxjDxDJvTroVsFZkg9f0DwRwxjBLkzwyB3/ve
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10566"; a="307034204"
+X-IronPort-AV: E=Sophos;i="5.96,255,1665471600"; 
+   d="scan'208";a="307034204"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2022 06:35:12 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10566"; a="896064818"
+X-IronPort-AV: E=Sophos;i="5.96,255,1665471600"; 
+   d="scan'208";a="896064818"
+Received: from lkp-server01.sh.intel.com (HELO b5d47979f3ad) ([10.239.97.150])
+  by fmsmga006.fm.intel.com with ESMTP; 19 Dec 2022 06:35:09 -0800
+Received: from kbuild by b5d47979f3ad with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1p7HES-0008kZ-17;
+	Mon, 19 Dec 2022 14:35:08 +0000
+Date: Mon, 19 Dec 2022 22:34:58 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: [linux-next:master] BUILD REGRESSION
+ d650871875b2ccc670f1044be7f3cc90f276745d
+Message-ID: <63a07692.6I76+dHvnFt0bil/%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,40 +70,247 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linmq006@gmail.com, steve@sk2.org, geert+renesas@glider.be,
-	peterz@infradead.org, jniethe5@gmail.com,
-	linux-kernel@vger.kernel.org, nicholas@linux.ibm.com,
-	cmr@bluescreens.de, bgray@linux.ibm.com, rdunlap@infra,
-	yangtiezhu@loongson.cn, hch@lst.de, sfr@canb.auug.org.au,
-	ldufour@linux.ibm.com, baihaowen@meizu.com, chenxuebing@jari.cn,
-	nayna@linux.ibm.com, jiaming@nfschina.com, mcgrof@kernel.org,
-	mjeanson@efficios.com, yangyingliang@huawei.com, joel@jms.id.au,
-	liubo03@inspur.com, chenlifu@huawei.com,
-	u.kleine-koenig@pengutronix.de, naveen.n.rao@linux.vnet.ibm.com,
-	colin.i.king@gmail.com, nathanl@linux.ibm.com, studentxswpy@163.com,
-	dead.org@lists.ozlabs.org, ajd@linux.ibm.com, xiujianfeng@huawei.com,
-	aboorvad@linux.vnet.ibm.com, linux@weissschuh.net,
-	wangdeming@inspur.com, npiggin@gmail.com, rmclure@linux.ibm.com,
-	christophe.jaillet@wanadoo.fr, rostedt@goodmis.org,
-	bhelgaas@google.com, disgoel@linux.vnet.ibm.com, jpoimboe@kernel.org,
-	dengshaomin@cdjrlc.com, pali@kernel.org, fthain@linux-m68k.org,
-	geoff@infradead.org, linuxppc-dev@lists.ozlabs.org,
-	dmitry.torokhov@gmail.com, gustavoars@kernel.org,
-	Julia.Lawall@inria.fr, kjain@linux.ibm.com, zeming@nfschina.com,
-	fbarrat@linux.ibm.com, sv@linux.ibm.com,
-	Linus Torvalds <torvalds@linux-foundation.org>, ruanjinjie@huawei.com
+Cc: kvm@vger.kernel.org, netdev@vger.kernel.org, linux-usb@vger.kernel.org, speakup@linux-speakup.org, linux-cxl@vger.kernel.org, linux-can@vger.kernel.org, linux-xfs@vger.kernel.org, Linux Memory Management List <linux-mm@kvack.org>, linux-arm-msm@vger.kernel.org, linux-omap@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The pull request you sent on Mon, 19 Dec 2022 14:58:38 +1100:
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: d650871875b2ccc670f1044be7f3cc90f276745d  Add linux-next specific files for 20221219
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.2-1
+Error/Warning reports:
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/5f6e430f931d245da838db3e10e918681207029b
+https://lore.kernel.org/oe-kbuild-all/202211242120.MzZVGULn-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202212020520.0OkMIno3-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202212040713.rVney9e8-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202212061455.6GE7y0jg-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202212090509.NjAl9tbo-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202212142121.vendKsOc-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202212191708.Xk9yBj52-lkp@intel.com
 
-Thank you!
+Error/Warning: (recently discovered and may have been fixed)
+
+Documentation/gpu/drm-internals:179: ./include/drm/drm_file.h:411: WARNING: undefined label: drm_accel_node (if the link has no caption the label must precede a section header)
+Documentation/networking/devlink/etas_es58x.rst: WARNING: document isn't included in any toctree
+Warning: tools/power/cpupower/man/cpupower-powercap-info.1 references a file that doesn't exist: Documentation/power/powercap/powercap.txt
+aarch64-linux-ld: ID map text too big or misaligned
+arch/arm/kernel/entry-armv.S:485:5: warning: "CONFIG_ARM_THUMB" is not defined, evaluates to 0 [-Wundef]
+arch/powerpc/kernel/kvm_emul.o: warning: objtool: kvm_template_end(): can't find starting instruction
+arch/powerpc/kernel/optprobes_head.o: warning: objtool: optprobe_template_end(): can't find starting instruction
+cistpl.c:(.text+0x82): undefined reference to `iounmap'
+drivers/regulator/tps65219-regulator.c:310:32: warning: parameter 'dev' set but not used [-Wunused-but-set-parameter]
+drivers/regulator/tps65219-regulator.c:310:60: warning: parameter 'dev' set but not used [-Wunused-but-set-parameter]
+drivers/regulator/tps65219-regulator.c:370:26: warning: ordered comparison of pointer with integer zero [-Wextra]
+irq-al-fic.c:(.init.text+0x2e): undefined reference to `of_iomap'
+lib/dhry_run.c:61:6: warning: variable 'ret' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+s390x-linux-ld: cistpl.c:(.text+0x210): undefined reference to `iounmap'
+s390x-linux-ld: cistpl.c:(.text+0x222): undefined reference to `ioremap'
+s390x-linux-ld: irq-al-fic.c:(.init.text+0x898): undefined reference to `iounmap'
+
+Unverified Error/Warning (likely false positive, please contact us if interested):
+
+drivers/accessibility/speakup/main.c:1290:26: sparse: sparse: obsolete array initializer, use C99 syntax
+drivers/cxl/core/mbox.c:832:18: sparse: sparse: cast from non-scalar
+drivers/cxl/core/mbox.c:832:18: sparse: sparse: cast to non-scalar
+drivers/i2c/busses/i2c-qcom-geni.c:1028:28: sparse: sparse: symbol 'i2c_master_hub' was not declared. Should it be static?
+drivers/media/test-drivers/visl/visl-video.c:690:22: sparse: sparse: symbol 'visl_qops' was not declared. Should it be static?
+drivers/usb/misc/sisusbvga/sisusbvga.c:528:9: sparse: sparse: incorrect type in assignment (different base types)
+fs/xfs/xfs_iomap.c:86:29: sparse: sparse: symbol 'xfs_iomap_page_ops' was not declared. Should it be static?
+hidma.c:(.text+0x9a): undefined reference to `devm_ioremap_resource'
+s390x-linux-ld: fsl-edma.c:(.text+0x15c): undefined reference to `devm_ioremap_resource'
+s390x-linux-ld: fsl-edma.c:(.text+0x49c): undefined reference to `devm_ioremap_resource'
+timer-of.c:(.init.text+0x1aee): undefined reference to `iounmap'
+timer-of.c:(.init.text+0x5a2): undefined reference to `of_iomap'
+
+Error/Warning ids grouped by kconfigs:
+
+gcc_recent_errors
+|-- alpha-randconfig-s031-20221218
+|   |-- drivers-cxl-core-mbox.c:sparse:sparse:cast-from-non-scalar
+|   `-- drivers-cxl-core-mbox.c:sparse:sparse:cast-to-non-scalar
+|-- arc-randconfig-r031-20221219
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- arc-randconfig-s033-20221218
+|   |-- drivers-cxl-core-mbox.c:sparse:sparse:cast-from-non-scalar
+|   `-- drivers-cxl-core-mbox.c:sparse:sparse:cast-to-non-scalar
+|-- arm-cerfcube_defconfig
+|   `-- arch-arm-kernel-entry-armv.S:warning:CONFIG_ARM_THUMB-is-not-defined-evaluates-to
+|-- arm-footbridge_defconfig
+|   `-- arch-arm-kernel-entry-armv.S:warning:CONFIG_ARM_THUMB-is-not-defined-evaluates-to
+|-- arm64-allyesconfig
+|   `-- aarch64-linux-ld:ID-map-text-too-big-or-misaligned
+|-- csky-randconfig-s051-20221218
+|   |-- drivers-nvmem-u-boot-env.c:sparse:sparse:cast-to-restricted-__le32
+|   `-- drivers-nvmem-u-boot-env.c:sparse:sparse:restricted-__le32-degrades-to-integer
+|-- i386-allyesconfig
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- i386-randconfig-s002
+|   `-- fs-xfs-xfs_iomap.c:sparse:sparse:symbol-xfs_iomap_page_ops-was-not-declared.-Should-it-be-static
+|-- ia64-allmodconfig
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- loongarch-randconfig-s053-20221218
+|   |-- drivers-cxl-core-mbox.c:sparse:sparse:cast-from-non-scalar
+|   |-- drivers-cxl-core-mbox.c:sparse:sparse:cast-to-non-scalar
+|   `-- drivers-media-test-drivers-visl-visl-video.c:sparse:sparse:symbol-visl_qops-was-not-declared.-Should-it-be-static
+|-- microblaze-randconfig-s052-20221218
+|   |-- drivers-cxl-core-mbox.c:sparse:sparse:cast-from-non-scalar
+|   `-- drivers-cxl-core-mbox.c:sparse:sparse:cast-to-non-scalar
+|-- nios2-allyesconfig
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- openrisc-allyesconfig
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- openrisc-randconfig-r025-20221219
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- parisc-allyesconfig
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- powerpc-allmodconfig
+|   |-- arch-powerpc-kernel-kvm_emul.o:warning:objtool:kvm_template_end():can-t-find-starting-instruction
+|   |-- arch-powerpc-kernel-optprobes_head.o:warning:objtool:optprobe_template_end():can-t-find-starting-instruction
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+clang_recent_errors
+|-- riscv-randconfig-r024-20221219
+|   |-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|   `-- lib-dhry_run.c:warning:variable-ret-is-used-uninitialized-whenever-if-condition-is-false
+|-- s390-randconfig-r003-20221218
+|   |-- hidma.c:(.text):undefined-reference-to-devm_ioremap_resource
+|   |-- irq-al-fic.c:(.init.text):undefined-reference-to-of_iomap
+|   |-- s39-linux-ld:fsl-edma.c:(.text):undefined-reference-to-devm_ioremap_resource
+|   |-- s39-linux-ld:irq-al-fic.c:(.init.text):undefined-reference-to-iounmap
+|   |-- timer-of.c:(.init.text):undefined-reference-to-iounmap
+|   `-- timer-of.c:(.init.text):undefined-reference-to-of_iomap
+|-- s390-randconfig-r036-20221218
+|   |-- cistpl.c:(.text):undefined-reference-to-iounmap
+|   |-- s39-linux-ld:cistpl.c:(.text):undefined-reference-to-ioremap
+|   |-- s39-linux-ld:cistpl.c:(.text):undefined-reference-to-iounmap
+|   `-- s39-linux-ld:fsl-edma.c:(.text):undefined-reference-to-devm_ioremap_resource
+`-- x86_64-rhel-8.3-rust
+    `-- vmlinux.o:warning:objtool:___ksymtab_gpl-_RNvNtCsfATHBUcknU9_6kernel5print16call_printk_cont:data-relocation-to-ENDBR:_RNvNtCsfATHBUcknU9_6kernel5print16call_printk_cont
+
+elapsed time: 745m
+
+configs tested: 109
+configs skipped: 3
+
+gcc tested configs:
+x86_64               randconfig-a002-20221219
+um                             i386_defconfig
+x86_64                            allnoconfig
+x86_64               randconfig-a003-20221219
+x86_64               randconfig-a001-20221219
+um                           x86_64_defconfig
+x86_64               randconfig-a004-20221219
+x86_64               randconfig-a005-20221219
+x86_64               randconfig-a006-20221219
+i386                 randconfig-a001-20221219
+i386                 randconfig-a003-20221219
+arm                            pleb_defconfig
+i386                 randconfig-a002-20221219
+i386                 randconfig-a004-20221219
+i386                 randconfig-a006-20221219
+ia64                             allmodconfig
+i386                 randconfig-a005-20221219
+powerpc                     taishan_defconfig
+powerpc                   currituck_defconfig
+arm                        cerfcube_defconfig
+arc                          axs103_defconfig
+powerpc                     ep8248e_defconfig
+arm                           sama5_defconfig
+openrisc                            defconfig
+powerpc                           allnoconfig
+x86_64                           rhel-8.3-bpf
+x86_64                           rhel-8.3-syz
+i386                                defconfig
+x86_64                    rhel-8.3-kselftests
+riscv                randconfig-r042-20221218
+alpha                            allyesconfig
+m68k                             allyesconfig
+x86_64                         rhel-8.3-kunit
+m68k                             allmodconfig
+x86_64                          rhel-8.3-func
+arc                              allyesconfig
+x86_64                              defconfig
+x86_64                           rhel-8.3-kvm
+sh                               allmodconfig
+arc                                 defconfig
+sh                             sh03_defconfig
+s390                             allmodconfig
+alpha                               defconfig
+mips                             allyesconfig
+arm                                 defconfig
+powerpc                      ppc40x_defconfig
+x86_64                               rhel-8.3
+powerpc                          allmodconfig
+s390                             allyesconfig
+arm64                            allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+arm                              allyesconfig
+mips                      fuloong2e_defconfig
+ia64                                defconfig
+x86_64                           allyesconfig
+m68k                            mac_defconfig
+riscv                               defconfig
+i386                          randconfig-c001
+arc                  randconfig-r043-20221219
+arm                      footbridge_defconfig
+arm                  randconfig-r046-20221219
+powerpc                  storcenter_defconfig
+arc                  randconfig-r043-20221218
+s390                 randconfig-r044-20221218
+mips                    maltaup_xpa_defconfig
+powerpc                  iss476-smp_defconfig
+nios2                               defconfig
+parisc                              defconfig
+riscv                             allnoconfig
+i386                        debian-10.3-kunit
+i386                         debian-10.3-func
+i386                          debian-10.3-kvm
+riscv                    nommu_virt_defconfig
+riscv                    nommu_k210_defconfig
+parisc64                            defconfig
+riscv                          rv32_defconfig
+i386                              debian-10.3
+nios2                            allyesconfig
+parisc                           allyesconfig
+
+clang tested configs:
+powerpc                     ppa8548_defconfig
+arm                          pxa168_defconfig
+x86_64               randconfig-a011-20221219
+x86_64               randconfig-a012-20221219
+mips                       rbtx49xx_defconfig
+arm                         s5pv210_defconfig
+x86_64               randconfig-a014-20221219
+x86_64               randconfig-a015-20221219
+x86_64               randconfig-a013-20221219
+x86_64                          rhel-8.3-rust
+arm                  randconfig-r046-20221218
+x86_64               randconfig-a016-20221219
+i386                 randconfig-a014-20221219
+i386                 randconfig-a012-20221219
+i386                 randconfig-a013-20221219
+i386                 randconfig-a011-20221219
+hexagon              randconfig-r041-20221218
+hexagon              randconfig-r045-20221219
+s390                 randconfig-r044-20221219
+i386                 randconfig-a015-20221219
+hexagon              randconfig-r041-20221219
+powerpc                     tqm8560_defconfig
+i386                 randconfig-a016-20221219
+hexagon              randconfig-r045-20221218
+riscv                randconfig-r042-20221219
+mips                     cu1830-neo_defconfig
+arm                       imx_v4_v5_defconfig
+x86_64                        randconfig-k001
+powerpc                      ppc44x_defconfig
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+0-DAY CI Kernel Test Service
+https://01.org/lkp
