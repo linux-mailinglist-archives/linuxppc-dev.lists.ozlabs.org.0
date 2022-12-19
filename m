@@ -1,88 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD3F0651B71
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Dec 2022 08:19:56 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12780651DCE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Dec 2022 10:43:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Nbnyf53gTz3cd5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Dec 2022 18:19:54 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rC+683Qg;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Nbs86053kz3f9r
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Dec 2022 20:43:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rC+683Qg;
-	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nbnvg013Xz2xKX
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Dec 2022 18:17:18 +1100 (AEDT)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2BK7Bg9H028304;
-	Tue, 20 Dec 2022 07:17:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=HZSRvoYiC7P9BFCEHvxVBTeoRTjTy41yU1nSGjcSUQU=;
- b=rC+683QgZms6NgiOwAcI6ZpqoG92OY8Ahq6pXjgwLEWyJA+2PuikAmUEAOyGlEPsEmpx
- q2CQDDwEIjWoWvdlI+KGEhVTPXEYE9eQc3TBfAYYO7bx/rP9VCEFJcuLvZBsyMNSyiFc
- +ZABcBDpb6rLn8Chosr5cFdoQnPPCfJSTDqbgjr3i2Ckx9eGo33pVZP3t1tWjHn/kmZ3
- 8xhuhQ37LWDqU2vFBWIf2cjM5BSguGQSqquJuQRFxbDI6aqJ8Ton/b1hDQ1yypNN/1TU
- pLImRmRv3/u24dLzVwwTiL6Ov9oYAl81WNgUnTVAbNGWHUpadf+lOHqYBRG5szs+q4ZH FQ== 
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3mk8en055f-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 20 Dec 2022 07:17:16 +0000
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
-	by ppma01fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 2BJLfKKW012459;
-	Tue, 20 Dec 2022 07:17:13 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma01fra.de.ibm.com (PPS) with ESMTPS id 3mh6yujkap-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 20 Dec 2022 07:17:13 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2BK7HBYH30081462
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 20 Dec 2022 07:17:11 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 193BD2004B;
-	Tue, 20 Dec 2022 07:17:11 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1ABF220040;
-	Tue, 20 Dec 2022 07:17:10 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 20 Dec 2022 07:17:10 +0000 (GMT)
-Received: from jarvis-ozlabs-ibm-com.au.ibm.com (unknown [9.192.255.228])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 4D22D604C4;
-	Tue, 20 Dec 2022 18:17:07 +1100 (AEDT)
-From: Andrew Donnellan <ajd@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 4/4] powerpc/pseries: Implement signed update for PLPKS objects
-Date: Tue, 20 Dec 2022 18:16:26 +1100
-Message-Id: <20221220071626.1426786-5-ajd@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nbs5Q5kw7z3bTw
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Dec 2022 20:40:58 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4Nbs543BSmz9t41;
+	Tue, 20 Dec 2022 10:40:40 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id L55WnWaTEvBE; Tue, 20 Dec 2022 10:40:40 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4Nbs4p3dKGz9t3r;
+	Tue, 20 Dec 2022 10:40:26 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 6CCEC8B763;
+	Tue, 20 Dec 2022 10:40:26 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id BMxydHaWU9sN; Tue, 20 Dec 2022 10:40:26 +0100 (CET)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.232.18])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 30E398B773;
+	Tue, 20 Dec 2022 10:40:26 +0100 (CET)
+Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 2BJIkGW91709616
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Mon, 19 Dec 2022 19:46:16 +0100
+Received: (from chleroy@localhost)
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 2BJIkFSf1709615;
+	Mon, 19 Dec 2022 19:46:15 +0100
+X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+        jbglaw@lug-owl.de
+Subject: [PATCH v1 1/5] powerpc/64: Set default CPU in Kconfig
+Date: Mon, 19 Dec 2022 19:45:56 +0100
+Message-Id: <38a8d765ed9149bc6b5484a7142e3bc59ffa3b1a.1671475543.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20221220071626.1426786-1-ajd@linux.ibm.com>
-References: <20221220071626.1426786-1-ajd@linux.ibm.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1671475558; l=4550; s=20211009; h=from:subject:message-id; bh=fss7SjHiP0ppnnpiNMwAp1OxBHWWN3x6mtjNmEGuHKQ=; b=WuZDWOpWHk7l7fdAm68Njgh+fzNxZOCuO4M07fEAu2l8tCxQcZiisAvXFYOIdcpe3mh4e62Gh8Hx rfAmFdoVB1njItnO7lGT3cKY9XGlturOaUr9lePHUkr/s37Zjl8M
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 5F5oSS4h_JCWTdbayteh3v65-ZiFTL34
-X-Proofpoint-ORIG-GUID: 5F5oSS4h_JCWTdbayteh3v65-ZiFTL34
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-12-20_01,2022-12-15_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
- spamscore=0 impostorscore=0 suspectscore=0 adultscore=0 malwarescore=0
- phishscore=0 bulkscore=0 priorityscore=1501 clxscore=1015 mlxlogscore=995
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2212070000
- definitions=main-2212200058
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,195 +67,133 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nayna@linux.ibm.com, gjoyce@linux.ibm.com, bgray@linux.ibm.com, brking@linux.ibm.com, gcwilson@linux.ibm.com, stefanb@linux.ibm.com
+Cc: =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Nayna Jain <nayna@linux.ibm.com>
+Since 0069f3d14e7a ("powerpc/64e: Tie PPC_BOOK3E_64 to PPC_E500MC"), the
+only possible BOOK3E/64 are E500, so no need of a default CPU over the
+E5500.
 
-The Platform Keystore provides a signed update interface which can be used
-to create, replace or append to certain variables in the PKS in a secure
-fashion, with the hypervisor requiring that the update be signed using the
-Platform Key.
+When the user selects book3e, they must have an e500 compatible
+compiler, and it won't work anymore with the default -mcpu=power64, see
+commit d6b551b8f90c ("powerpc/64e: Fix build failure with GCC 12
+(unrecognized opcode: `wrteei')").
 
-Implement an interface to the H_PKS_SIGNED_UPDATE hcall in the plpks
-driver to allow signed updates to PKS objects.
+For book3s/64, replace GENERIC_CPU by POWERPC64_CPU to match the PPC32
+POWERPC_CPU, and set a default mpcu value in Kconfig directly.
 
-(The plpks driver doesn't need to do any cryptography or otherwise handle
-the actual signed variable contents - that will be handled by userspace
-tooling.)
+When a user selects a particular CPU, they must ensure the compiler has
+the requested capability. Therefore, remove hidden fallback, instead
+offer user the possibility to say they want to use the toolchain
+default.
 
-Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
-[ajd: split patch, rewrite commit message, add timeout handling]
-Co-developed-by: Andrew Donnellan <ajd@linux.ibm.com>
-Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
+It also fixes the non existing E5500_CPU which is a leftover of
+commit d6b551b8f90c ("powerpc/64e: Fix build failure with GCC 12
+(unrecognized opcode: `wrteei')")
+
+Fixes: d6b551b8f90c ("powerpc/64e: Fix build failure with GCC 12 (unrecognized opcode: `wrteei')")
+Reported-by: Pali Rohár <pali@kernel.org>
+Tested-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/include/asm/hvcall.h      |  3 +-
- arch/powerpc/platforms/pseries/plpks.c | 81 +++++++++++++++++++++++---
- arch/powerpc/platforms/pseries/plpks.h |  5 ++
- 3 files changed, 79 insertions(+), 10 deletions(-)
+ arch/powerpc/Makefile                  | 22 +++++-----------------
+ arch/powerpc/platforms/Kconfig.cputype | 12 +++++++-----
+ 2 files changed, 12 insertions(+), 22 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
-index 95fd7f9485d5..33b26c0cb69b 100644
---- a/arch/powerpc/include/asm/hvcall.h
-+++ b/arch/powerpc/include/asm/hvcall.h
-@@ -336,7 +336,8 @@
- #define H_SCM_FLUSH		0x44C
- #define H_GET_ENERGY_SCALE_INFO	0x450
- #define H_WATCHDOG		0x45C
--#define MAX_HCALL_OPCODE	H_WATCHDOG
-+#define H_PKS_SIGNED_UPDATE	0x454
-+#define MAX_HCALL_OPCODE	H_PKS_SIGNED_UPDATE
+diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
+index dc4cbf0a5ca9..bf5f0a998273 100644
+--- a/arch/powerpc/Makefile
++++ b/arch/powerpc/Makefile
+@@ -146,19 +146,6 @@ CFLAGS-$(CONFIG_PPC32)	+= $(call cc-option, $(MULTIPLEWORD))
  
- /* Scope args for H_SCM_UNBIND_ALL */
- #define H_UNBIND_SCOPE_ALL (0x1)
-diff --git a/arch/powerpc/platforms/pseries/plpks.c b/arch/powerpc/platforms/pseries/plpks.c
-index c5ae00a8a968..9e4401aabf4f 100644
---- a/arch/powerpc/platforms/pseries/plpks.c
-+++ b/arch/powerpc/platforms/pseries/plpks.c
-@@ -30,9 +30,9 @@
- #define MAX_NAME_SIZE	    239
- #define MAX_DATA_SIZE	    4000
+ CFLAGS-$(CONFIG_PPC32)	+= $(call cc-option,-mno-readonly-in-sdata)
  
--#define PKS_FLUSH_MAX_TIMEOUT 5000 //msec
--#define PKS_FLUSH_SLEEP	      10 //msec
--#define PKS_FLUSH_SLEEP_RANGE 400
-+#define PKS_MAX_TIMEOUT		5000 // msec
-+#define PKS_FLUSH_SLEEP		10 // msec
-+#define PKS_FLUSH_SLEEP_RANGE	400
+-ifdef CONFIG_PPC_BOOK3S_64
+-ifdef CONFIG_CPU_LITTLE_ENDIAN
+-CFLAGS-$(CONFIG_GENERIC_CPU) += -mcpu=power8
+-else
+-CFLAGS-$(CONFIG_GENERIC_CPU) += -mcpu=power4
+-endif
+-CFLAGS-$(CONFIG_GENERIC_CPU) += $(call cc-option,-mtune=power10,	\
+-				  $(call cc-option,-mtune=power9,	\
+-				  $(call cc-option,-mtune=power8)))
+-else ifdef CONFIG_PPC_BOOK3E_64
+-CFLAGS-$(CONFIG_GENERIC_CPU) += -mcpu=powerpc64
+-endif
+-
+ ifdef CONFIG_FUNCTION_TRACER
+ CC_FLAGS_FTRACE := -pg
+ ifdef CONFIG_MPROFILE_KERNEL
+@@ -166,11 +153,12 @@ CC_FLAGS_FTRACE += -mprofile-kernel
+ endif
+ endif
  
- static u8 *ospassword;
- static u16 ospasswordlength;
-@@ -95,6 +95,12 @@ static int pseries_status_to_err(int rc)
- 		err = -ENOENT;
- 		break;
- 	case H_BUSY:
-+	case H_LONG_BUSY_ORDER_1_MSEC:
-+	case H_LONG_BUSY_ORDER_10_MSEC:
-+	case H_LONG_BUSY_ORDER_100_MSEC:
-+	case H_LONG_BUSY_ORDER_1_SEC:
-+	case H_LONG_BUSY_ORDER_10_SEC:
-+	case H_LONG_BUSY_ORDER_100_SEC:
- 		err = -EBUSY;
- 		break;
- 	case H_AUTHORITY:
-@@ -198,14 +204,17 @@ static struct label *construct_label(char *component, u8 varos, u8 *name,
- 				     u16 namelen)
- {
- 	struct label *label;
--	size_t slen;
-+	size_t slen = 0;
+-CFLAGS-$(CONFIG_TARGET_CPU_BOOL) += $(call cc-option,-mcpu=$(CONFIG_TARGET_CPU))
+-AFLAGS-$(CONFIG_TARGET_CPU_BOOL) += $(call cc-option,-mcpu=$(CONFIG_TARGET_CPU))
++CFLAGS-$(CONFIG_TARGET_CPU_BOOL) += -mcpu=$(CONFIG_TARGET_CPU)
++AFLAGS-$(CONFIG_TARGET_CPU_BOOL) += -mcpu=$(CONFIG_TARGET_CPU)
  
- 	if (!name || namelen > MAX_NAME_SIZE)
- 		return ERR_PTR(-EINVAL);
+-CFLAGS-$(CONFIG_E5500_CPU) += $(call cc-option,-mcpu=e500mc64,-mcpu=powerpc64)
+-CFLAGS-$(CONFIG_E6500_CPU) += $(call cc-option,-mcpu=e6500,$(E5500_CPU))
++CFLAGS-$(CONFIG_POWERPC64_CPU) += $(call cc-option,-mtune=power10,	\
++				  $(call cc-option,-mtune=power9,	\
++				  $(call cc-option,-mtune=power8)))
  
--	slen = strlen(component);
--	if (component && slen > sizeof(label->attr.prefix))
--		return ERR_PTR(-EINVAL);
-+	// Support NULL component for signed updates
-+	if (component) {
-+		slen = strlen(component);
-+		if (slen > sizeof(label->attr.prefix))
-+			return ERR_PTR(-EINVAL);
-+	}
+ asinstr := $(call as-instr,lis 9$(comma)foo@high,-DHAVE_AS_ATHIGH=1)
  
- 	// The label structure must not cross a page boundary, so we align to the next power of 2
- 	label = kzalloc(roundup_pow_of_two(sizeof(*label)), GFP_KERNEL);
-@@ -372,7 +381,7 @@ static int plpks_confirm_object_flushed(struct label *label,
- 		usleep_range(PKS_FLUSH_SLEEP,
- 			     PKS_FLUSH_SLEEP + PKS_FLUSH_SLEEP_RANGE);
- 		timeout = timeout + PKS_FLUSH_SLEEP;
--	} while (timeout < PKS_FLUSH_MAX_TIMEOUT);
-+	} while (timeout < PKS_MAX_TIMEOUT);
+diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
+index 9563336e3348..31cea2eeb59e 100644
+--- a/arch/powerpc/platforms/Kconfig.cputype
++++ b/arch/powerpc/platforms/Kconfig.cputype
+@@ -118,19 +118,18 @@ endchoice
  
- 	if (timed_out)
- 		rc = -ETIMEDOUT;
-@@ -382,6 +391,60 @@ static int plpks_confirm_object_flushed(struct label *label,
- 	return rc;
- }
+ choice
+ 	prompt "CPU selection"
+-	default GENERIC_CPU
+ 	help
+ 	  This will create a kernel which is optimised for a particular CPU.
+ 	  The resulting kernel may not run on other CPUs, so use this with care.
  
-+int plpks_signed_update_var(struct plpks_var var, u64 flags)
-+{
-+	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE] = {0};
-+	int rc;
-+	struct label *label;
-+	struct plpks_auth *auth;
-+	u64 continuetoken = 0;
-+	u64 timeout = 0;
-+
-+	if (!var.data || var.datalen <= 0 || var.namelen > MAX_NAME_SIZE)
-+		return -EINVAL;
-+
-+	if (!(var.policy & SIGNEDUPDATE))
-+		return -EINVAL;
-+
-+	auth = construct_auth(PKS_OS_OWNER);
-+	if (IS_ERR(auth))
-+		return PTR_ERR(auth);
-+
-+	label = construct_label(var.component, var.os, var.name, var.namelen);
-+	if (IS_ERR(label)) {
-+		rc = PTR_ERR(label);
-+		goto out;
-+	}
-+
-+	do {
-+		rc = plpar_hcall9(H_PKS_SIGNED_UPDATE, retbuf,
-+				  virt_to_phys(auth), virt_to_phys(label),
-+				  label->size, var.policy, flags,
-+				  virt_to_phys(var.data), var.datalen,
-+				  continuetoken);
-+
-+		continuetoken = retbuf[0];
-+		if (pseries_status_to_err(rc) == -EBUSY) {
-+			int delay_ms = get_longbusy_msecs(rc);
-+			mdelay(delay_ms);
-+			timeout += delay_ms;
-+		}
-+		rc = pseries_status_to_err(rc);
-+	} while (rc == -EBUSY && timeout < PKS_MAX_TIMEOUT);
-+
-+	if (!rc) {
-+		rc = plpks_confirm_object_flushed(label, auth);
-+		rc = pseries_status_to_err(rc);
-+	}
-+
-+	kfree(label);
-+out:
-+	kfree(auth);
-+
-+	return rc;
-+}
-+EXPORT_SYMBOL(plpks_signed_update_var);
-+
- int plpks_write_var(struct plpks_var var)
- {
- 	unsigned long retbuf[PLPAR_HCALL_BUFSIZE] = { 0 };
-@@ -428,7 +491,7 @@ int plpks_remove_var(char *component, u8 varos, struct plpks_var_name vname)
- 	struct label *label;
- 	int rc;
+ 	  If unsure, select Generic.
  
--	if (!component || vname.namelen > MAX_NAME_SIZE)
-+	if (vname.namelen > MAX_NAME_SIZE)
- 		return -EINVAL;
+-config GENERIC_CPU
++config POWERPC64_CPU
+ 	bool "Generic (POWER5 and PowerPC 970 and above)"
+ 	depends on PPC_BOOK3S_64 && !CPU_LITTLE_ENDIAN
+ 	select PPC_64S_HASH_MMU
  
- 	auth = construct_auth(PKS_OS_OWNER);
-diff --git a/arch/powerpc/platforms/pseries/plpks.h b/arch/powerpc/platforms/pseries/plpks.h
-index c89740796660..33cf12809392 100644
---- a/arch/powerpc/platforms/pseries/plpks.h
-+++ b/arch/powerpc/platforms/pseries/plpks.h
-@@ -40,6 +40,11 @@ struct plpks_var_name_list {
- 	struct plpks_var_name varlist[];
- };
+-config GENERIC_CPU
++config POWERPC64_CPU
+ 	bool "Generic (POWER8 and above)"
+ 	depends on PPC_BOOK3S_64 && CPU_LITTLE_ENDIAN
+ 	select ARCH_HAS_FAST_MULTIPLIER
+@@ -233,13 +232,12 @@ config E500MC_CPU
  
-+/**
-+ * Updates the authenticated variable. It expects NULL as the component.
-+ */
-+int plpks_signed_update_var(struct plpks_var var, u64 flags);
-+
- /**
-  * Writes the specified var and its data to PKS.
-  * Any caller of PKS driver should present a valid component type for
+ config TOOLCHAIN_DEFAULT_CPU
+ 	bool "Rely on the toolchain's implicit default CPU"
+-	depends on PPC32
+ 
+ endchoice
+ 
+ config TARGET_CPU_BOOL
+ 	bool
+-	default !GENERIC_CPU && !TOOLCHAIN_DEFAULT_CPU
++	default !TOOLCHAIN_DEFAULT_CPU
+ 
+ config TARGET_CPU
+ 	string
+@@ -251,6 +249,10 @@ config TARGET_CPU
+ 	default "power8" if POWER8_CPU
+ 	default "power9" if POWER9_CPU
+ 	default "power10" if POWER10_CPU
++	default "e500mc64" if E5500_CPU
++	default "e6500" if E6500_CPU
++	default "power4" if POWERPC64_CPU && !CPU_LITTLE_ENDIAN
++	default "power8" if POWERPC64_CPU && CPU_LITTLE_ENDIAN
+ 	default "405" if 405_CPU
+ 	default "440" if 440_CPU
+ 	default "464" if 464_CPU
 -- 
 2.38.1
 
