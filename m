@@ -2,101 +2,131 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 216D8650795
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Dec 2022 07:33:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 497A06507C0
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Dec 2022 07:44:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Nb8zw1hWmz3c7N
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Dec 2022 17:33:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Nb9Cq1DFCz3c9T
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Dec 2022 17:44:07 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HGPaK+8T;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=eW9r6+h1;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nicholas@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=40.107.12.48; helo=fra01-pr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HGPaK+8T;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=eW9r6+h1;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from FRA01-PR2-obe.outbound.protection.outlook.com (mail-pr2fra01on2048.outbound.protection.outlook.com [40.107.12.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nb8yw4m64z2x9C
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Dec 2022 17:32:55 +1100 (AEDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2BJ6Kp1C038913;
-	Mon, 19 Dec 2022 06:32:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=LZR2tFAtF7nOaSU8cE5oJYxhKUK+GqhpZh8WMxI2F8I=;
- b=HGPaK+8Tu4lGyY1PkPVcPvLehetB/2KFb2DWsD3n6C7fwTGgVab0ljH2/yPJygd//rvq
- en3Ph3Ui3hs8WTh/slMqWy9WDZ/gjV7ZnretAs7xOkonXITPfj5iPXz7eMKOqb6RJLLx
- MtlaTTdk9/XYZaLmTRbR9t0MY5P8vM/5jIEtRAoNiMWOGfjpZyyZXkEWLnnzWc3yf7Km
- PTT6KZ8DHI2Ky93LcUdzFYQdaoloGv5YqlewcODsgeIBLSVgtpqFvcBu1jIND9V7ZdsY
- NHXWFOS4l/COIXoHCCHaSj0jGkdzfFjNDFJkDUlWbARrfsLCZ1wHHzk+iufOmOyRvQRd Mg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3mjjm086kd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 19 Dec 2022 06:32:45 +0000
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2BJ6QFWe014375;
-	Mon, 19 Dec 2022 06:32:45 GMT
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com [159.122.73.72])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3mjjm086jh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 19 Dec 2022 06:32:44 +0000
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
-	by ppma06fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 2BJ2aE9Q023068;
-	Mon, 19 Dec 2022 06:32:42 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma06fra.de.ibm.com (PPS) with ESMTPS id 3mh6yxherf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 19 Dec 2022 06:32:42 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2BJ6Weg938732060
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 19 Dec 2022 06:32:40 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 16D7E2004E;
-	Mon, 19 Dec 2022 06:32:40 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1EFB520040;
-	Mon, 19 Dec 2022 06:32:39 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 19 Dec 2022 06:32:39 +0000 (GMT)
-Received: from [10.61.2.106] (haven.au.ibm.com [9.192.254.114])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 4B7AA6043C;
-	Mon, 19 Dec 2022 17:32:34 +1100 (AEDT)
-Message-ID: <ed0bea9b-99a7-ec18-9ff2-845de5be816f@linux.ibm.com>
-Date: Mon, 19 Dec 2022 17:32:19 +1100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nb9Bq4NK6z2xGH
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Dec 2022 17:43:13 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=PMTVVhYgNZgr2C4H2FgqQOec/MFH35vHXJ5D0YVQlWUXZOFGMdXN4NMZ0mAXfu7K+P/+fc23qXVxy3zCosPjnZZB3S1mtd6lg8sl9AAo0yeRj/BMASqua3ZM3lCtunuWzjUUl5+/gGp0o8gXvYD4w63rSeMh2ngk+rdz8odF5H740EkKsCfIgiFfIge7TE6nDwihJAZlTQoyiqs1UHLqN4/shitLvrxXuFXbfJJetdGqYuQ3Qp/Gl5FogEJHtOrlA88vUArfwk3kEHXQjr2yMqxvYNC2Z30I/ZshytG665qAQZ5izHx1RPU8pa5022n5GYZvtLcMaFR7A4BwftODlw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6yx7htsFUsREX/4BGtU4RBH+QtJK1tIhRgnCTormc54=;
+ b=U9csetoUi3VHp581I7wWpzjfSYJJJdoDaCJVUhhYPaFghonpGv5ZPy7cAGnIUhK0n+bG/Hxzffttp/SxODeUA59gvsZUy/OOM5H49XJK1GpPIEL1qyyfqwpASQrAdK4ZMu+XKTvqLobnD8UZpoa0RrnRGIxvsCjB/gq16VaZy7wyoXcT1b8gj0h/xXX+839RcsPsdwCNdx7ZZYzfyAfbQ8A2NT4BtO8jiPK6Pjgi7dEEqr1iLsRK1y2RunE8YqxCts2grYMuWYKzkq2RFyhZuXqTBqW7D9mK5VRr1ZJgOXClubgV+V0OIqZvnh9VzOYB5ONLlAv5klBGy2hoMA8GEQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
+ dkim=pass header.d=csgroup.eu; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6yx7htsFUsREX/4BGtU4RBH+QtJK1tIhRgnCTormc54=;
+ b=eW9r6+h1q34yjh3oP6vTbIhH+vJ09m9xAkIIx1dZPy7sOkRcFskeQXDaVMLK2nlM/YrsnrHJNXrlckfZhGlf+lTNCIzMY8OUvqiNY1G7M87FVDF3AAtZdW+NQeg6A/Y2hTKg7h/Z+vCMP8TlKkKKTXHgm+D+3tK1eQAinR3aYSK9vUaL/jo+1yvj699BaJ3X44aDz270n1Kv7mXVcRQTXJ6F6OOOE/1PUW7N4jO/YFUI+pyp7TU7o2zB4yzu18sPT2IzXSUXk2qllA07JNX5mwk59HXmt+chPIJZojjBOk7rp/Xs5Payrd1Hg2sYi9LINKa69Y7Zfaw3nyjOFUmThg==
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
+ by PR0P264MB2485.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:1e0::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5924.16; Mon, 19 Dec
+ 2022 06:42:53 +0000
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::8e8b:856e:12eb:ff9d]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::8e8b:856e:12eb:ff9d%9]) with mapi id 15.20.5924.016; Mon, 19 Dec 2022
+ 06:42:53 +0000
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Li zeming <zeming@nfschina.com>, "mpe@ellerman.id.au"
+	<mpe@ellerman.id.au>, "npiggin@gmail.com" <npiggin@gmail.com>,
+	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH] boot: simple_alloc: check after increasing memory
+ allocation
+Thread-Topic: [PATCH] boot: simple_alloc: check after increasing memory
+ allocation
+Thread-Index: AQHZE1AzNOD8Sl1IIEaoEgwmTxa0ja50w5yA
+Date: Mon, 19 Dec 2022 06:42:53 +0000
+Message-ID: <107b0173-f0b0-adfd-10e2-e5eb76e91b92@csgroup.eu>
+References: <20221219021816.3012-1-zeming@nfschina.com>
+In-Reply-To: <20221219021816.3012-1-zeming@nfschina.com>
+Accept-Language: fr-FR, en-US
+Content-Language: fr-FR
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=csgroup.eu;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MRZP264MB2988:EE_|PR0P264MB2485:EE_
+x-ms-office365-filtering-correlation-id: cd02ab3e-d263-4fce-dd73-08dae18c4152
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:  01QxsQH/FBKJLZXtPr2VpTdFlg5GXzlVcfX2a1RIDqxVxICUOfOjqfKDDFv1CcSCwxXp0zMYBDX15ykRuIKZNcG7lIqm0Mz4uLHAY7Iqg0hGKurtrxp7nnBM+f9Kb/jKD79GMH2EDJyjJQ7muUbpHYzG93zq+3z0HuhLLdQPLhCqTEg9wkorCP9aMU+HVDD4hOzsX21BgHp6Ck+5sJA45jfcUNPGAY009Yh8dy/bkGoyipEha1Hatt3JXttbyuFmui1irlWgGWRpr09Sk0KDCeEUmeLNEqsOZ0siIbXzSnq8oLcNsVgbkyBcOtPoCctbJFt6w9dAOPFMZw7gm/1zAdcM8sjlx97Uq77owX0zlhYTNohC9SR4QhIqen+igxrzHnm8t0dyoOXGidLnbJP8spvWRcexPC7oZV777Q5RLA0PsVWSWPPU0ajzb8USgoFCGpGQUG3p3ibz8Ktbq2UItFTlioni0uECYPZBWRgiEUY7bomy4lFqAYBqz9VzFylKT4SAJFLQ85rntyGfAaGAjcH55T8vkv2oYpr/zZCys5/ms+y6gUjN0EGxoxewZVTF9rwUncdi3PErqh1NEm50yhYmSaDvLf0pko0OzXfk8km4VaQj3u+jTMommDQMsiqaEcVrj4kRUIafyc+OSxFfAFeVCJ6bWUwhNg5FjmZ381zP/aXQ1R+0NTU1UORyZmEHCnJVpP1idrxNtJ4bN82Yo3OSXQd866bimQOr7dMtePiKmValAfR+Aec7Ua3leV7I
+x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230022)(4636009)(366004)(396003)(376002)(136003)(346002)(39840400004)(451199015)(38070700005)(36756003)(31696002)(316002)(54906003)(71200400001)(6486002)(478600001)(110136005)(2906002)(5660300002)(44832011)(4744005)(8936002)(8676002)(66476007)(66556008)(66446008)(91956017)(66946007)(76116006)(41300700001)(64756008)(4326008)(6512007)(186003)(122000001)(38100700002)(66574015)(2616005)(6506007)(83380400001)(26005)(86362001)(31686004)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?WldoT1RrS3FxUFU1SmNRSE5KMWRsZDV6VW9sTFdxRG1XZGFkQzFjWXJhUFJQ?=
+ =?utf-8?B?WUdMQlRHR3ZSWEh0dzJUaHNINllWeVdqWVMvNVBTTFJkM2lnUFBmUnVTSjhj?=
+ =?utf-8?B?T1pnZzlsK0tTOXpnbkFDOUo2K1ZvTnZGWVp2MThhZkxsNmJZVVIra1lYdWNZ?=
+ =?utf-8?B?Y0F0eUpkNzdDcjMwemJEOTJEai9tMlRsV2gyWnE5aFNRcU05RlY5SHRkS21M?=
+ =?utf-8?B?UG5GZTNFSGtjbmZOQkxnZCtqV3JuWXdWN0FydVFWcWVsWWpSc1FoZDhvZzln?=
+ =?utf-8?B?NVJJRWZvVk9WOGFWNFJaV3NNUFJLRnBrYUNTMnlUUGNnbU1WemY2TEhpT1l6?=
+ =?utf-8?B?YjJWRUV0QjJVdm9hZEpJYjUzVUFSRU54NlVvTzhKbWZ4N2FyKzZCdkJpWWN6?=
+ =?utf-8?B?SytVdzRJMk9VbGc4cTYvQU9OUEVXZkgzM0F2RTA3RWtvR1E0TXY0cG40RW1J?=
+ =?utf-8?B?ZnNDS1ZxMmhrLzNuczZpOXd5NDNPemRTcmI3Ti9NcEVrQnlsampITmloTWsz?=
+ =?utf-8?B?cE8yYzdTUGVYR3NPdnp4UmZrT1NOWE1BNkdjdzBwdUtZWTl0SFBoUjNSRzJY?=
+ =?utf-8?B?dklERzRBZmNJWmdlVmJwNmQ4NDU3YWNRUEJyeUc1MCtHSVZYQ2YzUk9aQkZl?=
+ =?utf-8?B?a2VnTXQwZUhhWTZPbVdLdnFXYThBZ1lvNExCN041STVseUEvQk05T2tMK2s4?=
+ =?utf-8?B?UmZWeTk5Slc1L0FtNG9hcEJSK3U3OUcyM0VBbmE5Wk0rWVNUYm04djlJMkxo?=
+ =?utf-8?B?RWJ3K0Mra3dFQWZMZWVyQ0ZOSVQvR21YU29RRlo0ai8rbHBZNHpaeUx4L1Fn?=
+ =?utf-8?B?Q1poN091V01zZU53dENoZnB3alpjMlJ3TVc4ajRXTTh2V0ZxNkxzREduTDVO?=
+ =?utf-8?B?ZmQrZk1sVG82MFNyRVVYSk5PVHpidnRzUC82RDg2RFdqd2MrbjhhZjBuZFFP?=
+ =?utf-8?B?RGVtWmc5THdZY1BQckMxZjk3MGtrRDBIMG1iRWREVGU0bTVUUXNJYVAwZmw2?=
+ =?utf-8?B?OCtwZFUvTDVEaUhCaGhRRFpDazlWbFhXVlhDNnVDZXlJYjM3Zm0xbENmRC9m?=
+ =?utf-8?B?bUIraVg0bFc2UmtqMUp5RjBHZmNOZ21ydWVac2t2TGx5eEFsUGh2Y0xlUnBS?=
+ =?utf-8?B?Zi9GekI1S3JzSHZtbDJnSXdGejYyMFNPTXpIZEwzdmdHenhWNUx5VkRWRzJJ?=
+ =?utf-8?B?Nnk2bzNYWHZYSGpzQzJWR3dpbktMVG9CcTlkaTZzMm5Id1VPRTJRcXZUZm5l?=
+ =?utf-8?B?R1NlQ2g2ZnFlT2ZyaVF6U2VFaVhZcVFrNExnOENKdWVYZlV1SENXSUtmbW01?=
+ =?utf-8?B?bHVSeFVoRTVCbnhMRGtGczRpM3JtUG9aRmswYUJ6ZXJocjl4L2pGOEY3YllF?=
+ =?utf-8?B?aGRWZll4ZHNYVEpWS0tNR3JIeGwrbU90aDhUM2xERnRwblJFcmdEOGdzeGZw?=
+ =?utf-8?B?YVIwMjZ2TEc0M1dub1lNL2hIeG5jUmU4UDB1MUMzU05UMEx0eDV2a0tteEY1?=
+ =?utf-8?B?VisvU0NxaHM3U2ZuVXlGM1k5YVU5bEI2azZEbjI5SWtTK2lOV0I4U0pDU051?=
+ =?utf-8?B?STZ1aEwzQ0dCSVU3T0VkeFRpVTN1dGNQdklxdUJla2hZRm1zZ2oxRGVQcE1W?=
+ =?utf-8?B?RVdsd29yU0U4N040VElkK1pBbVQrNnAyS0FkNjdEdUV4UVVjcUZTTkIyakNq?=
+ =?utf-8?B?OWZNZzdLNm55L245aXJUa3kyT3orQ1g5aTZiZFgyQ3N5Tzl6QlVHTURBa24w?=
+ =?utf-8?B?cWxNWEtGUEZPcE1NQnozSnFNZDlLS3hadllKTm1ocTk3dUZHalhCRjFyTXQ2?=
+ =?utf-8?B?ay9rSjd2QXlyTEpZNTZZQzJLYlh5UWNUSTdLQzJtNWhtTjRPMEpUcVVjbkJx?=
+ =?utf-8?B?QnJxYkt0U2pNWmErSXRwTVZUVGF1aDFQOENwY0ZwdXAzcGNIVEtiSGlWQVlH?=
+ =?utf-8?B?U1M2VmxjNWJJQkh3Lyt5YWVaZXFENnBmbThtejdIaWhUZ3VzQkFyMlkwbXV0?=
+ =?utf-8?B?SWFIUkJmWXV0c0RTLzIxc2xBV1RqYlBsdDRITWZXcFJRcFlmUGlXRmdNMzdu?=
+ =?utf-8?B?QlJxWDJyM0p4L2lMMjIvZWQzZzEvTGFoalNpVk95VU50YU45cWl2N05PVUtz?=
+ =?utf-8?B?WE4rM1ducTlyK29YUEhaNnBwT3ZnZXRiUzdmeTE5SHpyVXp2S3Q4MnhqdzFZ?=
+ =?utf-8?B?K0E9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <6DE0BF887C30744E95AF62D7732CE0C6@FRAP264.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.5.0
-Subject: Re: [PATCH] powerpc/64: Implement arch_within_stack_frames
-Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-References: <20221214044252.1910657-1-nicholas@linux.ibm.com>
- <0dfbaab8-c962-9127-b56d-8f9989c095d8@csgroup.eu>
- <CP1IFJNCTTZ4.33ROBE5VAFAKM@bobo>
-From: Nicholas Miehlbradt <nicholas@linux.ibm.com>
-In-Reply-To: <CP1IFJNCTTZ4.33ROBE5VAFAKM@bobo>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: e_xPq2d7KC58BLQiItmK2MzsRR2wXG9H
-X-Proofpoint-ORIG-GUID: 6vOsEFiTCOOU2GHEFULZ0qEcozjqgDow
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-12-18_13,2022-12-15_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 clxscore=1011
- adultscore=0 mlxlogscore=999 spamscore=0 priorityscore=1501 suspectscore=0
- impostorscore=0 phishscore=0 malwarescore=0 lowpriorityscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2212070000
- definitions=main-2212190056
+X-OriginatorOrg: csgroup.eu
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: cd02ab3e-d263-4fce-dd73-08dae18c4152
+X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Dec 2022 06:42:53.3342
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: pEuSFrbONjub0BtHxnM9uCrunJviA5zRGAepGJuBQN2qS1xONEnq+Hk7PSH+TWoYx8RxP3afK+zXVM7q3OVY9W8naJFRiC8HKU0lAgjTxGo=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR0P264MB2485
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -108,155 +138,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 14/12/2022 10:39 pm, Nicholas Piggin wrote:
-> On Wed Dec 14, 2022 at 6:39 PM AEST, Christophe Leroy wrote:
->>
->>
->> Le 14/12/2022 à 05:42, Nicholas Miehlbradt a écrit :
->>> Walks the stack when copy_{to,from}_user address is in the stack to
->>> ensure that the object being copied is entirely within a single stack
->>> frame.
->>>
->>> Substatially similar to the x86 implementation except using the back
->>> chain to traverse the stack and identify stack frame boundaries.
->>>
->>> Signed-off-by: Nicholas Miehlbradt <nicholas@linux.ibm.com>
->>> ---
->>>    arch/powerpc/Kconfig                   |  1 +
->>>    arch/powerpc/include/asm/thread_info.h | 38 ++++++++++++++++++++++++++
->>>    2 files changed, 39 insertions(+)
->>>
->>> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
->>> index 2ca5418457ed..4c59d139ea83 100644
->>> --- a/arch/powerpc/Kconfig
->>> +++ b/arch/powerpc/Kconfig
->>> @@ -198,6 +198,7 @@ config PPC
->>>    	select HAVE_ARCH_KASAN_VMALLOC		if HAVE_ARCH_KASAN
->>>    	select HAVE_ARCH_KFENCE			if ARCH_SUPPORTS_DEBUG_PAGEALLOC
->>>    	select HAVE_ARCH_RANDOMIZE_KSTACK_OFFSET
->>> +	select HAVE_ARCH_WITHIN_STACK_FRAMES	if PPC64
->>
->> Why don't you do something that works for both PPC32 and PPC64 ?
-> 
-> +1
-
-I'm not familiar with the 32bit ABI, but from a quick glance through it 
-seems like the only thing that would need to change is to set then 
-PARAMETER_SAVE_OFFSET (to be renamed in the next version as per 
-suggestions) to 8 bytes, the layout of the stack and the back chain 
-remains the same. Is there something else that I am missing or is that it?
-
-> 
->>>    	select HAVE_ARCH_KGDB
->>>    	select HAVE_ARCH_MMAP_RND_BITS
->>>    	select HAVE_ARCH_MMAP_RND_COMPAT_BITS	if COMPAT
->>> diff --git a/arch/powerpc/include/asm/thread_info.h b/arch/powerpc/include/asm/thread_info.h
->>> index af58f1ed3952..efdf39e07884 100644
->>> --- a/arch/powerpc/include/asm/thread_info.h
->>> +++ b/arch/powerpc/include/asm/thread_info.h
->>> @@ -186,6 +186,44 @@ static inline bool test_thread_local_flags(unsigned int flags)
->>>    #define is_elf2_task() (0)
->>>    #endif
->>>    
->>> +#ifdef CONFIG_PPC64
->>> +
->>> +#ifdef CONFIG_PPC64_ELF_ABI_V1
->>> +#define PARAMETER_SAVE_OFFSET 48
->>> +#else
->>> +#define PARAMETER_SAVE_OFFSET 32
->>> +#endif
->>
->> Why not use STACK_INT_FRAME_REGS, defined in asm/ptrace.h ?
-> 
-> I think use a STACK_FRAME prefixed define in asm/ptrace.h, but maybe
-> avoid overloading the STACK_INT_ stuff for this.
-> 
->>
->>> +
->>> +/*
->>> + * Walks up the stack frames to make sure that the specified object is
->>> + * entirely contained by a single stack frame.
->>> + *
->>> + * Returns:
->>> + *	GOOD_FRAME	if within a frame
->>> + *	BAD_STACK	if placed across a frame boundary (or outside stack)
->>> + */
->>> +static inline int arch_within_stack_frames(const void * const stack,
->>> +					   const void * const stackend,
->>> +					   const void *obj, unsigned long len)
->>> +{
->>> +	const void *frame;
->>> +	const void *oldframe;
->>> +
->>> +	oldframe = (const void *)current_stack_pointer;
->>> +	frame = *(const void * const *)oldframe;
-> 
-> This is not the same as x86, they start with the parent of the current
-> frame. I assume because the way the caller is set up (with a noinline
-> function from an out of line call), then there must be at least one
-> stack frame that does not have to be checked, but if I'm wrong about
-> that and there is some reason we need to be different it should be
-> commented..
-> 
-
-Yes, this is something that I overlooked, the current frame is created 
-as a result of the call to copy_{to,from}_user and should therefore not 
-contain any data being copied.
-
->>> +
->>> +	while (stack <= frame && frame < stackend) {
->>> +		if (obj + len <= frame)
->>> +			return obj >= oldframe + PARAMETER_SAVE_OFFSET ?
->>> +				GOOD_FRAME : BAD_STACK;
->>> +		oldframe = frame;
->>> +		frame = *(const void * const *)oldframe;
->>> +	}
->>> +
->>> +	return BAD_STACK;
->>> +}
->>
->> What about:
->>
->> +	const void *frame;
->> +	const void *params;
->> +
->> +	params = (const void *)current_stack_pointer + STACK_INT_FRAME_REGS;
->> +	frame = *(const void * const *)current_stack_pointer;
->> +
->> +	while (stack <= frame && frame < stackend) {
->> +		if (obj + len <= frame)
->> +			return obj >= params ? GOOD_FRAME : BAD_STACK;
->> +		params = frame + STACK_INT_FRAME_REGS;
->> +		frame = *(const void * const *)frame;
->> +	}
->> +
->> +	return BAD_STACK;
-> 
-> What about just copying x86's implementation including using
-> __builtin_frame_address(1/2)? Are those builtins reliable for all
-> our targets and compiler versions?
-> From what I found it has undefined behavior. Since x86 has it's use 
-guarded behind CONFIG_FRAME_POINTER which I couldn't find used in the 
-ppc code I decided it was best to avoid them. Could be wrong though.
-
-> For bonus points, extract the x86 code out into asm-generic and
-> make it usable by both -
-> 
-> static inline int generic_within_stack_frames(unsigned int ptr_offset,
-> 					      unsigned int vars_offset,
->                                                const void * const stack,
->                                                const void * const stackend,
->                                                const void *obj, unsigned long len)
-> 
-> And our arch_within_stack_frames can just be
-> 
->      return generic_within_stack_frames(0, STACK_FRAME_ARGS_OFFSET,
->                                         stack, stackend, obj, len);
-> 
-> Thanks,
-> Nick
+DQoNCkxlIDE5LzEyLzIwMjIgw6AgMDM6MTgsIExpIHplbWluZyBhIMOpY3JpdMKgOg0KPiBUaGUg
+cG9pbnRlciBuZXcgYWRkcyBqdWRnbWVudCBhbmQgc2hvdWxkIGhlbHAgd2l0aCBwcm9ncmFtIHJv
+YnVzdG5lc3MuDQoNClRoaXMgdGV4dCBpcyBub3QgdW5kZXJzdGFuZGFibGUuDQoNCkRvIHlvdSBt
+ZWFuOg0KDQpzaW1wbGVfbWFsbG9jKCkgd2lsbCByZXR1cm4gTlVMTCB3aGVuIHRoZXJlIGlzIG5v
+dyBlbm91Z2ggbWVtb3J5IGxlZnQuDQpDaGVjayBwb2ludGVyICduZXcnIGJlZm9yZSB1c2luZyBp
+dCB0byBjb3B5IHRoZSBvbGQgZGF0YS4NCg0KPiANCj4gU2lnbmVkLW9mZi1ieTogTGkgemVtaW5n
+IDx6ZW1pbmdAbmZzY2hpbmEuY29tPg0KPiAtLS0NCj4gICBhcmNoL3Bvd2VycGMvYm9vdC9zaW1w
+bGVfYWxsb2MuYyB8IDQgKysrLQ0KPiAgIDEgZmlsZSBjaGFuZ2VkLCAzIGluc2VydGlvbnMoKyks
+IDEgZGVsZXRpb24oLSkNCj4gDQo+IGRpZmYgLS1naXQgYS9hcmNoL3Bvd2VycGMvYm9vdC9zaW1w
+bGVfYWxsb2MuYyBiL2FyY2gvcG93ZXJwYy9ib290L3NpbXBsZV9hbGxvYy5jDQo+IGluZGV4IDI2
+N2Q2NTI0Y2FhYy4uZGI5YWFhNWZhY2UzIDEwMDY0NA0KPiAtLS0gYS9hcmNoL3Bvd2VycGMvYm9v
+dC9zaW1wbGVfYWxsb2MuYw0KPiArKysgYi9hcmNoL3Bvd2VycGMvYm9vdC9zaW1wbGVfYWxsb2Mu
+Yw0KPiBAQCAtMTEyLDcgKzExMiw5IEBAIHN0YXRpYyB2b2lkICpzaW1wbGVfcmVhbGxvYyh2b2lk
+ICpwdHIsIHVuc2lnbmVkIGxvbmcgc2l6ZSkNCj4gICAJCXJldHVybiBwdHI7DQo+ICAgDQo+ICAg
+CW5ldyA9IHNpbXBsZV9tYWxsb2Moc2l6ZSk7DQo+IC0JbWVtY3B5KG5ldywgcHRyLCBwLT5zaXpl
+KTsNCj4gKwlpZiAobmV3KQ0KPiArCQltZW1jcHkobmV3LCBwdHIsIHAtPnNpemUpOw0KPiArDQo+
+ICAgCXNpbXBsZV9mcmVlKHB0cik7DQo+ICAgCXJldHVybiBuZXc7DQo+ICAgfQ0K
