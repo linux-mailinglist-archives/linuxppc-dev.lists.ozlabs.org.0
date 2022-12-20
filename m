@@ -2,68 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B5B0651E90
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Dec 2022 11:14:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAD8F6521BB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Dec 2022 14:50:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Nbsr91jGlz3c7Q
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Dec 2022 21:14:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NbydT5V1Bz3c6P
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Dec 2022 00:50:37 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=nLDU6NbS;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Mb2x/rSv;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::634; helo=mail-pl1-x634.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mga17.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=nLDU6NbS;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Mb2x/rSv;
 	dkim-atps=neutral
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NbsqB3fxWz2xGH
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Dec 2022 21:13:40 +1100 (AEDT)
-Received: by mail-pl1-x634.google.com with SMTP id l4so489309pld.13
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Dec 2022 02:13:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=WKWuiWJK1VUk2sx6mP2owWmQ2TcPLqUMaM1CIaK+WNw=;
-        b=nLDU6NbS02qEIso3O1llT91Th+xwxyVdcHH2xvwS0nKtaCIC3aKIRU0gvRLlHrwcrp
-         rQWK1qO4+yi4InODdFkoT4N2zxGnR5jB3KqWNMAuR5lAySOK2i0kF0aoRDMZx2U0n3u9
-         c280ebDXDKhr5j4NquUcsv9m8DITxInf2uHg7fLm+J43GDizKZ/osz7IPEe6uzAPldkA
-         z6ggB8hlDUFI/eQQ9kSLBLe/HMv6aD93gam8WZ0q3gtGMWD3RB879WYaztX4lBh29MJD
-         yCcbjDPvshDsw+kAWLY8jZDXJDX10jtecZKycQAL/0gBEfEnuxF0pxr/2qflwMm8LPSY
-         cH4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=WKWuiWJK1VUk2sx6mP2owWmQ2TcPLqUMaM1CIaK+WNw=;
-        b=plO2g1Osk2RCQEEh9D12ffiqKaOssMoXIRXXpRXpRD6visO0cSJSwFtRzv1wclBw93
-         rbUt1owq1szWL1xr0QVK1XvpuoHlJU1pAnZGzWnYj+goyTKnGozeSe2+c1ERtB0q2Lps
-         hFXczahl9+cTwwH5DwrEIcuDPlFQGxCZP6dVEKrk0h7Lqm6fWE/jOD/+dfNf7zSgqees
-         kbzvpX+gEiAwdZ/9R78sT0kmNsv7lC8x3VawgcOoee2xUXfqfRRC6U7JcD7whGIq30R+
-         4/0sr/rBfLiCud/OGRQWyEq66PfIHrUHcXD6Dzx5oNr/tly79FBLOC+uL/O3l439DpI9
-         4QIg==
-X-Gm-Message-State: ANoB5pnfnaoLsyG2spkjSYjL9t/2giLY3KkU0rMEV2G2uE8NQbid2MzO
-	Qji4bfivv0IK5i6WAcj5rUy3VlfVM34=
-X-Google-Smtp-Source: AA0mqf7Np0s/2XeR23VVVqkPaORBn/PV5YYEGpKvssPmLDbdOtBhOfylLp1que/1ewEJPRQ5FWJ28Q==
-X-Received: by 2002:a17:90a:6be6:b0:219:34cb:476c with SMTP id w93-20020a17090a6be600b0021934cb476cmr48632133pjj.9.1671531217733;
-        Tue, 20 Dec 2022 02:13:37 -0800 (PST)
-Received: from bobo.ozlabs.ibm.com (203-219-149-28.tpgi.com.au. [203.219.149.28])
-        by smtp.gmail.com with ESMTPSA id j3-20020a17090a694300b002190eabb890sm10766225pjm.25.2022.12.20.02.13.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Dec 2022 02:13:37 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: Josh Poimboeuf <jpoimboe@kernel.org>
-Subject: [PATCH] tools/objtool: tolerate STT_NOTYPE symbols at end of section
-Date: Tue, 20 Dec 2022 20:13:23 +1000
-Message-Id: <20221220101323.3119939-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.37.2
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NbycY34rwz2xKx
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Dec 2022 00:49:44 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1671544189; x=1703080189;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=ILvH76aAgDaS9txxLdxKFTa4pafrJSu2zimzPO8hm0o=;
+  b=Mb2x/rSvBTlLsb+r4Z5/MnrecX85WFvqMT4OcIlFh3AC4mfH7hGAIEdn
+   Zjpx95rK1XUD4AMvbe9ZEUBZTL9w440PSVh15QJppcP7k3tZRrpO7EccR
+   +Y/CyqbU8Smh/ZFo9iXWNMtp1EjUxFUUKGBRCem6RMef0EvFEuLqS5W2v
+   eHj/9utW08WuwFUYp78SdzWzM/jGo2qM338Du4sB7oBww1Fw6YYU7GPnl
+   NM6JPkLJ4+B9AXxvS2q+xn/TE5qTE0cqWM/UBYgWH2/cK83Xp8ywLJphl
+   Qzhs0T1xJcxTrrsfH5MhxvcIq8IFJa0sDbCikRhzQGKKeOKb3dvL/coCo
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10567"; a="299956967"
+X-IronPort-AV: E=Sophos;i="5.96,259,1665471600"; 
+   d="scan'208";a="299956967"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2022 05:49:38 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10567"; a="714435955"
+X-IronPort-AV: E=Sophos;i="5.96,259,1665471600"; 
+   d="scan'208";a="714435955"
+Received: from lkp-server01.sh.intel.com (HELO b5d47979f3ad) ([10.239.97.150])
+  by fmsmga008.fm.intel.com with ESMTP; 20 Dec 2022 05:49:34 -0800
+Received: from kbuild by b5d47979f3ad with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1p7czu-0009XY-00;
+	Tue, 20 Dec 2022 13:49:34 +0000
+Date: Tue, 20 Dec 2022 21:49:08 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: [linux-next:master] BUILD REGRESSION
+ e45fb347b630ee76482fe938ba76cf8eab811290
+Message-ID: <63a1bd54.a88xtgO0grxGBbe+%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,51 +70,184 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Peter Zijlstra <peterz@infradead.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>
+Cc: netdev@vger.kernel.org, speakup@linux-speakup.org, linux-cxl@vger.kernel.org, virtualization@lists.linux-foundation.org, linux-xfs@vger.kernel.org, Linux Memory Management List <linux-mm@kvack.org>, linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev, linux-arm-msm@vger.kernel.org, linux-omap@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-can@vger.kernel.org, linux-media@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hand-written asm often contains non-function symbols in executable
-sections. _end symbols for finding the size of instruction blocks
-for runtime processing is one such usage.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: e45fb347b630ee76482fe938ba76cf8eab811290  Add linux-next specific files for 20221220
 
-optprobe_template_end is one example that causes the warning:
+Error/Warning reports:
 
-  objtool: optprobe_template_end(): can't find starting instruction
+https://lore.kernel.org/oe-kbuild-all/202211242120.MzZVGULn-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202212020520.0OkMIno3-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202212040713.rVney9e8-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202212061455.6GE7y0jg-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202212090509.NjAl9tbo-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202212191708.Xk9yBj52-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202212201859.qUGugK1F-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202212202020.qL8Aaqu0-lkp@intel.com
 
-This is because the symbol happens to be at the end of the file (and
-therefore end of a section in the object file).
+Error/Warning: (recently discovered and may have been fixed)
 
-So ignore end-of-section STT_NOTYPE symbols instead of bailing out
-because an instruction can't be found. While we're here, add a more
-descriptive warning for STT_FUNC symbols found at the end of a
-section.
+Documentation/gpu/drm-internals:179: ./include/drm/drm_file.h:411: WARNING: undefined label: drm_accel_node (if the link has no caption the label must precede a section header)
+Documentation/networking/devlink/etas_es58x.rst: WARNING: document isn't included in any toctree
+Warning: tools/power/cpupower/man/cpupower-powercap-info.1 references a file that doesn't exist: Documentation/power/powercap/powercap.txt
+arch/arm/kernel/entry-armv.S:485:5: warning: "CONFIG_ARM_THUMB" is not defined, evaluates to 0 [-Wundef]
+arch/loongarch/kernel/asm-offsets.c:265:6: warning: no previous prototype for 'output_pbe_defines' [-Wmissing-prototypes]
+arch/powerpc/kernel/kvm_emul.o: warning: objtool: kvm_template_end(): can't find starting instruction
+arch/powerpc/kernel/optprobes_head.o: warning: objtool: optprobe_template_end(): can't find starting instruction
+drivers/regulator/tps65219-regulator.c:310:32: warning: parameter 'dev' set but not used [-Wunused-but-set-parameter]
+drivers/regulator/tps65219-regulator.c:310:60: warning: parameter 'dev' set but not used [-Wunused-but-set-parameter]
+drivers/regulator/tps65219-regulator.c:370:26: warning: ordered comparison of pointer with integer zero [-Wextra]
+lib/dhry_run.c:61:6: warning: variable 'ret' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+mm/memfd.c:274:31: warning: unused variable 'ns' [-Wunused-variable]
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- tools/objtool/check.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+Unverified Error/Warning (likely false positive, please contact us if interested):
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 4350be739f4f..4b7c8b33069e 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -427,6 +427,15 @@ static int decode_instructions(struct objtool_file *file)
- 			if (func->type != STT_NOTYPE && func->type != STT_FUNC)
- 				continue;
- 
-+			if (func->offset == sec->sh.sh_size) {
-+				/* Heuristic: likely an "end" symbol */
-+				if (func->type == STT_NOTYPE)
-+					continue;
-+				WARN("%s(): STT_FUNC at end of section",
-+				     func->name);
-+				return -1;
-+			}
-+
- 			if (func->return_thunk || func->alias != func)
- 				continue;
- 
+drivers/accessibility/speakup/main.c:1290:26: sparse: sparse: obsolete array initializer, use C99 syntax
+drivers/cxl/core/mbox.c:832:18: sparse: sparse: cast from non-scalar
+drivers/cxl/core/mbox.c:832:18: sparse: sparse: cast to non-scalar
+drivers/i2c/busses/i2c-qcom-geni.c:1028:28: sparse: sparse: symbol 'i2c_master_hub' was not declared. Should it be static?
+drivers/media/platform/ti/davinci/vpif.c:483:20: sparse: sparse: cast from non-scalar
+drivers/media/platform/ti/davinci/vpif.c:483:20: sparse: sparse: cast to non-scalar
+fs/xfs/xfs_iomap.c:86:29: sparse: sparse: symbol 'xfs_iomap_page_ops' was not declared. Should it be static?
+
+Error/Warning ids grouped by kconfigs:
+
+gcc_recent_errors
+|-- alpha-allyesconfig
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- arc-allyesconfig
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- arm-allyesconfig
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- arm-buildonly-randconfig-r005-20221219
+|   `-- arch-arm-kernel-entry-armv.S:warning:CONFIG_ARM_THUMB-is-not-defined-evaluates-to
+|-- arm64-allyesconfig
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- i386-allyesconfig
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- i386-buildonly-randconfig-r001-20221219
+|   `-- mm-memfd.c:warning:unused-variable-ns
+|-- ia64-allmodconfig
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- loongarch-allyesconfig
+|   `-- arch-loongarch-kernel-asm-offsets.c:warning:no-previous-prototype-for-output_pbe_defines
+|-- loongarch-randconfig-s051-20221218
+|   |-- drivers-i2c-busses-i2c-qcom-geni.c:sparse:sparse:symbol-i2c_master_hub-was-not-declared.-Should-it-be-static
+|   `-- fs-xfs-xfs_iomap.c:sparse:sparse:symbol-xfs_iomap_page_ops-was-not-declared.-Should-it-be-static
+|-- m68k-allmodconfig
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- m68k-allyesconfig
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- mips-allyesconfig
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- powerpc-allmodconfig
+|   |-- arch-powerpc-kernel-kvm_emul.o:warning:objtool:kvm_template_end():can-t-find-starting-instruction
+|   |-- arch-powerpc-kernel-optprobes_head.o:warning:objtool:optprobe_template_end():can-t-find-starting-instruction
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- riscv-randconfig-s041-20221218
+|   |-- drivers-accessibility-speakup-main.c:sparse:sparse:obsolete-array-initializer-use-C99-syntax
+|   `-- fs-xfs-xfs_iomap.c:sparse:sparse:symbol-xfs_iomap_page_ops-was-not-declared.-Should-it-be-static
+|-- riscv-randconfig-s042-20221218
+|   |-- drivers-cxl-core-mbox.c:sparse:sparse:cast-from-non-scalar
+|   |-- drivers-cxl-core-mbox.c:sparse:sparse:cast-to-non-scalar
+|   |-- drivers-net-thunderbolt.c:sparse:sparse:incorrect-type-in-assignment-(different-base-types)-expected-restricted-__le16-usertype-frame_id-got-unsigned-short-usertype
+|   |-- drivers-net-thunderbolt.c:sparse:sparse:incorrect-type-in-assignment-(different-base-types)-expected-restricted-__le16-usertype-frame_index-got-unsigned-short-usertype
+|   |-- drivers-net-thunderbolt.c:sparse:sparse:incorrect-type-in-assignment-(different-base-types)-expected-restricted-__le32-usertype-frame_count-got-unsigned-int-usertype
+clang_recent_errors
+|-- hexagon-allmodconfig
+|   |-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|   `-- lib-dhry_run.c:warning:variable-ret-is-used-uninitialized-whenever-if-condition-is-false
+`-- x86_64-rhel-8.3-rust
+    `-- vmlinux.o:warning:objtool:___ksymtab_gpl-_RNvNtCsfATHBUcknU9_6kernel5print16call_printk_cont:data-relocation-to-ENDBR:_RNvNtCsfATHBUcknU9_6kernel5print16call_printk_cont
+
+elapsed time: 726m
+
+configs tested: 66
+configs skipped: 2
+
+gcc tested configs:
+um                             i386_defconfig
+um                           x86_64_defconfig
+powerpc                           allnoconfig
+arc                                 defconfig
+x86_64                    rhel-8.3-kselftests
+s390                             allmodconfig
+x86_64                          rhel-8.3-func
+alpha                               defconfig
+i386                                defconfig
+s390                                defconfig
+arm                                 defconfig
+sh                               allmodconfig
+s390                             allyesconfig
+x86_64               randconfig-a002-20221219
+x86_64               randconfig-a003-20221219
+alpha                            allyesconfig
+x86_64               randconfig-a001-20221219
+m68k                             allyesconfig
+x86_64               randconfig-a004-20221219
+mips                             allyesconfig
+m68k                             allmodconfig
+powerpc                          allmodconfig
+arc                              allyesconfig
+x86_64               randconfig-a005-20221219
+arc                  randconfig-r043-20221220
+x86_64                           rhel-8.3-bpf
+x86_64               randconfig-a006-20221219
+x86_64                           rhel-8.3-syz
+riscv                randconfig-r042-20221220
+x86_64                         rhel-8.3-kunit
+ia64                             allmodconfig
+x86_64                            allnoconfig
+arm                              allyesconfig
+x86_64                           rhel-8.3-kvm
+arm64                            allyesconfig
+s390                 randconfig-r044-20221220
+i386                             allyesconfig
+i386                 randconfig-a001-20221219
+i386                 randconfig-a003-20221219
+i386                 randconfig-a002-20221219
+i386                 randconfig-a006-20221219
+i386                 randconfig-a005-20221219
+i386                 randconfig-a004-20221219
+powerpc                     ep8248e_defconfig
+powerpc                     rainier_defconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                           allyesconfig
+
+clang tested configs:
+x86_64                          rhel-8.3-rust
+hexagon              randconfig-r041-20221220
+arm                  randconfig-r046-20221220
+i386                 randconfig-a011-20221219
+i386                 randconfig-a014-20221219
+hexagon              randconfig-r045-20221220
+i386                 randconfig-a012-20221219
+i386                 randconfig-a013-20221219
+i386                 randconfig-a015-20221219
+i386                 randconfig-a016-20221219
+x86_64               randconfig-a014-20221219
+x86_64               randconfig-a015-20221219
+x86_64               randconfig-a012-20221219
+x86_64               randconfig-a011-20221219
+arm                             mxs_defconfig
+x86_64               randconfig-a016-20221219
+powerpc                     ppa8548_defconfig
+x86_64               randconfig-a013-20221219
+
 -- 
-2.37.2
-
+0-DAY CI Kernel Test Service
+https://01.org/lkp
