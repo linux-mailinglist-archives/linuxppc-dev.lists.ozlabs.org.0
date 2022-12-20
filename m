@@ -2,90 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37D9F6525AA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Dec 2022 18:39:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A74FB6527A4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Dec 2022 21:14:16 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Nc3jl03HNz3cFP
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Dec 2022 04:39:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Nc7863hSTz3bgm
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Dec 2022 07:14:14 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=f378FLiC;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FoCIps0T;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BNIgEyD2;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=f378FLiC;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FoCIps0T;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BNIgEyD2;
 	dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nc3hm2N30z2ybK
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Dec 2022 04:38:46 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1671557920;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fEfc8sJnHm7K9aruHy33BZirM4UCmBd1CuSTlZNxnWo=;
-	b=f378FLiCTEU48S5bhGhS0vPelNpWAsXVKBiOL2+Jok6qlwUrLKBwmC/e2wJhw/BIznkufV
-	GjiCC5iCGaVAyOlZ8UD0nPkdLvY9pFmHnUPb16gQ/1VQUXjsmOZv29m0tWZwyh6+GbKJny
-	78bwLCFoqyG+rNkcp9/GgJwX+ktk3GE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1671557921;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fEfc8sJnHm7K9aruHy33BZirM4UCmBd1CuSTlZNxnWo=;
-	b=FoCIps0Tl99wRuavn5OKmSrczoo4mXw0PJcZHvklZWbVRdxcu2undnP4cHjBAG7meF+vxN
-	SFFyja40hi9+zS3ACrIb3MUaxJ9XjxBDWQyI1AqCLMRLXZamR6+r0xGMDL2iudj/peeSBc
-	cAo0vJCztbX9i21q9VsWBtVj/W3I/KM=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-102-Ty8kgWUsNb-HPR6uVc_BRg-1; Tue, 20 Dec 2022 12:38:39 -0500
-X-MC-Unique: Ty8kgWUsNb-HPR6uVc_BRg-1
-Received: by mail-qt1-f198.google.com with SMTP id e18-20020ac84912000000b003a96d6f436fso5839282qtq.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Dec 2022 09:38:39 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fEfc8sJnHm7K9aruHy33BZirM4UCmBd1CuSTlZNxnWo=;
-        b=AsTkSM6YJZPcHiz6Ym2PN3t0EmS6QbYCDnv2TY7+YrXMyLJ19HgzxBZL0liSsemDJc
-         bgn/oFqHlNwGSpbfxyyDwygGFHnQd29o96q2O7wh4t6jBQd7bSV7tUb4xyx5hC4t7bNV
-         +OIeTkBgutGMb1mf8kXssGlluqMmzKFuFFrCGLsbhPwpoGg9t+zi9WlGCh0bNISz9JZe
-         O0QWQZpqQVnpKfeEzaDyLQ36/irZNkp9xU90Fy9RWlr1sm8RlE+uZ+bifviwAnt0H60S
-         eX8o+DOf/HVEve7ezJmhBOVMblwRus2cFmEgocnlcNDHfiLN74lvJxa+Owiqk2UFqhO+
-         Sspw==
-X-Gm-Message-State: AFqh2kp4pQ4spZpv3SQNCfHpG9WJYqKQPt5qyta/d2YvSNsLE8s76zgt
-	3QLaxvNmfAHnrWhtS11GSG4du83dzufWLqiCxDU3VdoUPHH4RnFPfKrWvUkw9lwMNqWcUxIoXav
-	F81pZfiarg0dJEX6RApAIqT2gUg==
-X-Received: by 2002:ac8:7404:0:b0:3a9:8610:f9af with SMTP id p4-20020ac87404000000b003a98610f9afmr4892464qtq.14.1671557918844;
-        Tue, 20 Dec 2022 09:38:38 -0800 (PST)
-X-Google-Smtp-Source: AMrXdXtg5R2YbTU53YK6jcMnW9vCQk+xxP9JBp96j27cdKzorbZMYmsqPt75wVleU8oFZr+Onr1Sjg==
-X-Received: by 2002:ac8:7404:0:b0:3a9:8610:f9af with SMTP id p4-20020ac87404000000b003a98610f9afmr4892421qtq.14.1671557918568;
-        Tue, 20 Dec 2022 09:38:38 -0800 (PST)
-Received: from x1n (bras-base-aurron9127w-grc-45-70-31-26-132.dsl.bell.ca. [70.31.26.132])
-        by smtp.gmail.com with ESMTPSA id r17-20020a05620a299100b006fb8239db65sm9360534qkp.43.2022.12.20.09.38.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Dec 2022 09:38:37 -0800 (PST)
-Date: Tue, 20 Dec 2022 12:38:36 -0500
-From: Peter Xu <peterx@redhat.com>
-To: Mike Kravetz <mike.kravetz@oracle.com>
-Subject: Re: [RFC PATCH] mm: remove zap_page_range and change callers to use
- zap_vma_page_range
-Message-ID: <Y6HzHFdXB02Roa7q@x1n>
-References: <20221216192012.13562-1-mike.kravetz@oracle.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nc7745gchz2xWg
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Dec 2022 07:13:20 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id A6E606159E;
+	Tue, 20 Dec 2022 20:13:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2276C433EF;
+	Tue, 20 Dec 2022 20:13:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1671567196;
+	bh=Gv7ILarnqG6VXDv1zDoq4dXMcpli2fdU3fYWtrhD7CU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BNIgEyD2b/kwnXbaR5eP2QBP6UOPAvQD/zXFajZWt6RT74gXhm2s6OW4N4KlIDYfC
+	 Wxj/cb6C47OFZnLUTyNjRVTrtsstBCz34eSTcFuSh8xOdIJfvtKJ0/S3YG8qtuZO+h
+	 LVw/GM01Blb4idgGSfUfT/5N9ejTRXvuE5Mw1vrfiD3+t4k4Xbat5lWBMHcLkl/46L
+	 MZPNmMJsegfvf0rTSEXW5sH0CokCzOrUgUPmh+IzXUqga3I07y9uao2n9w8QT5IQiS
+	 MZzetOEpR2Sv47PnKm1OJ3NaodmMfXpe4ekWd75YuDtjccDI1UPYcXzuqMblveH5rR
+	 DHTVp2kedMNHw==
+Date: Tue, 20 Dec 2022 20:13:14 +0000
+From: Eric Biggers <ebiggers@kernel.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v12 0/6] implement getrandom() in vDSO
+Message-ID: <Y6IXWltScF2CI1v3@gmail.com>
+References: <20221212185347.1286824-1-Jason@zx2c4.com>
+ <86cfa465-2485-ff24-16f5-9014e25a0e98@csgroup.eu>
 MIME-Version: 1.0
-In-Reply-To: <20221216192012.13562-1-mike.kravetz@oracle.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <86cfa465-2485-ff24-16f5-9014e25a0e98@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,34 +61,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Christian Brauner <brauner@kernel.org>, linux-s390@vger.kernel.org, Nadav Amit <nadav.amit@gmail.com>, Michal Hocko <mhocko@suse.com>, Will Deacon <will@kernel.org>, David Hildenbrand <david@redhat.com>, netdev@vger.kernel.org, Rik van Riel <riel@surriel.com>, linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org, Eric Dumazet <edumazet@google.com>, Palmer Dabbelt <palmer@dabbelt.com>, Dave Hansen <dave.hansen@linux.intel.com>, linux-riscv@lists.infradead.org, Christian Borntraeger <borntraeger@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@suse.cz>
+Cc: Florian Weimer <fweimer@redhat.com>, "Jason A. Donenfeld" <Jason@zx2c4.com>, Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>, Carlos O'Donell <carlos@redhat.com>, "linux-api@vger.kernel.org" <linux-api@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "patches@lists.linux.dev" <patches@lists.linux.dev>, "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>, Adhemerval Zanella Netto <adhemerval.zanella@linaro.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Christian Brauner <brauner@kernel.org>, "tglx@linutronix.de" <tglx@linutronix.de>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Dec 16, 2022 at 11:20:12AM -0800, Mike Kravetz wrote:
-> zap_page_range was originally designed to unmap pages within an address
-> range that could span multiple vmas.  While working on [1], it was
-> discovered that all callers of zap_page_range pass a range entirely within
-> a single vma.  In addition, the mmu notification call within zap_page
-> range does not correctly handle ranges that span multiple vmas as calls
-> should be vma specific.
+On Tue, Dec 20, 2022 at 05:17:52PM +0000, Christophe Leroy wrote:
+> Hi Jason,
 > 
-> Instead of fixing zap_page_range, change all callers to use the new
-> routine zap_vma_page_range.  zap_vma_page_range is just a wrapper around
-> zap_page_range_single passing in NULL zap details.  The name is also
-> more in line with other exported routines that operate within a vma.
-> We can then remove zap_page_range.
+> Le 12/12/2022 à 19:53, Jason A. Donenfeld a écrit :
+> > Changes v11->v12:
+> > ----------------
+> > - In order to avoid mlock()ing pages, and the related rlimit and fork
+> >    inheritance issues there, Introduce VM_DROPPABLE to prevent swapping
+> >    while meeting the cache-like requirements of vDSO getrandom().
+> > 
+> >    This has some tenticles in mm/ and arch/x86/ code, so I've marked the
+> >    two patches for that as still RFC, while the rest of the series is not
+> >    RFC.
+> > 
+> > - Mandate that opaque state blobs don't straddle page boundaries, so
+> >    that VM_DROPPABLE can work on page-level granularity rather than
+> >    allocation-level granularity.
+> > 
+> > - Add compiler barriers to vDSO getrandom() to prevent theoretical
+> >    reordering potential.
+> > 
+> > - Initialize the trials loop counter in the chacha test.
 > 
-> Also, change madvise_dontneed_single_vma to use this new routine.
+> I would have liked to give it a try on powerpc, but the series 
+> conflicts. I tried both on v6.1 and on linus/master from now:
 > 
-> [1] https://lore.kernel.org/linux-mm/20221114235507.294320-2-mike.kravetz@oracle.com/
-> Suggested-by: Peter Xu <peterx@redhat.com>
-> Signed-off-by: Mike Kravetz <mike.kravetz@oracle.com>
 
-Acked-by: Peter Xu <peterx@redhat.com>
+Same here, I can't figure out how to apply this series.
 
-Thanks!
+It would help if people always used the --base option to git format-patch...
 
--- 
-Peter Xu
-
+- Eric
