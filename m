@@ -1,69 +1,86 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0475E651B53
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Dec 2022 08:08:20 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB260651B6A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Dec 2022 08:18:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NbnjD71DZz3cBL
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Dec 2022 18:08:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Nbnwb5Bx4z3c8d
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Dec 2022 18:18:07 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=eMolG9vH;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SQc5joOx;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1033; helo=mail-pj1-x1033.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=eMolG9vH;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SQc5joOx;
 	dkim-atps=neutral
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NbnhF5YVnz30Qt
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Dec 2022 18:07:23 +1100 (AEDT)
-Received: by mail-pj1-x1033.google.com with SMTP id v23so6270524pju.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Dec 2022 23:07:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=AwGJvi0Hqvv9JsuJy6Gv715wZTJNC2wfNDuRpG/Z03c=;
-        b=eMolG9vHTtOXK18ugSCIT0pCtnwCyoEsJeJ5PFZQGlEJEv8sGasn8k+mDNhl13PHtY
-         KxdPALt6iNv1ZxEOScug4CjFT4yCtXaPilRS4KpEie5J9Y8SLqmppp5JrDNEKt+UxiZk
-         eqBpTCNCaf/7o148rNd27ULe/kJ9Xn6dxiP231e6ygEywzOKaGrwUesy9DXrmQask2mJ
-         QivmeB3xkmUMw8175037K8srGanPjwIp2+itZCK6uHl1Delon502RC/BOMncaixcxKaP
-         c0p0fyUNurBXLQPHDAAE3x9UdnNFTS36u+ZdnOICTnOxYQF2w5zemVtMudmeT7rOIbzN
-         0jbg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=AwGJvi0Hqvv9JsuJy6Gv715wZTJNC2wfNDuRpG/Z03c=;
-        b=fodhxwKInh3ZzPgAHK3j0xw6U1SRtdUGOeYvzUXbVS1L5XfQYTHzkc64MZ2JgS/bDI
-         eLStElC206blB+/BnDv24TDXsjo/4QwoaAJFf4YqYxoQ2/g4xvPA2edPRfdw6SJNs+GO
-         /BVLaDT1VBlVxcs1wp9tvVE/CKNRIk34ywuvRc1DtbN/YtLZW7zRwpJ7R21zjNtGl1l+
-         +MzHGdy9NjMuLvglWFECYqoFFkhWWWtK98uTIVW9r6tMYlmo+nK5YrVL1EwOd7BBtV2w
-         QevSkd1pf7gvCwU+EeMmlZJP3pCecJHqzIEgDolukSATMQ+6wvSQE/0L63hSC1PND6/y
-         W/yg==
-X-Gm-Message-State: ANoB5plKc2Fav3kMV2a2UGvIhTAXe+zplhsh54fNoJfjB8olGtYyDFCp
-	PKurq10zWM+jLVfzHNI9hUo=
-X-Google-Smtp-Source: AA0mqf4iLIizbzTJRsINqgiMybAadqDLhEvMnVzW3qXyXFfY1t4pTIN5jFY0V6pdOozi2j7p8S7Jsg==
-X-Received: by 2002:a17:90b:1916:b0:21a:4bf:eeb0 with SMTP id mp22-20020a17090b191600b0021a04bfeeb0mr46812820pjb.28.1671520041576;
-        Mon, 19 Dec 2022 23:07:21 -0800 (PST)
-Received: from bobo.ozlabs.ibm.com (203-219-149-28.tpgi.com.au. [203.219.149.28])
-        by smtp.gmail.com with ESMTPSA id f10-20020a17090ace0a00b00219220edf0dsm7074232pju.48.2022.12.19.23.07.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Dec 2022 23:07:20 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH] cputime: remove cputime_to_nsecs fallback
-Date: Tue, 20 Dec 2022 17:07:05 +1000
-Message-Id: <20221220070705.2958959-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.37.2
-MIME-Version: 1.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nbnvg0RVnz3bSn
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Dec 2022 18:17:18 +1100 (AEDT)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2BK79Hwv030418;
+	Tue, 20 Dec 2022 07:17:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=N9zeEuLA4wGi0exsaW0YY9KsnK1MgT1P7KLvo2XSR0Q=;
+ b=SQc5joOx5PfXOrpIDqkK3aNKy0MI1VftvPZ6i7DboiYbwVG/W0rMFYcLfhCn5wY/+gsb
+ bJEC+O4zh2XyX4h7Wa9weN+J69SxYQQ1QDR0bBydMwK1rUhGnZXQgVIi2dBX17A5C/w6
+ peZN0JLdtWRGDkoFIC/qy44mnyqvmHEh4ahVo2GgRVdLeGsE1kZExu7mjw3mq94Fs58U
+ tFwI2ctJWs02bjRO5rKJ5aMiuIR0BgNK0BsauV1RefwF0GqLWVWTBYff+6/qK/IGR1Ol
+ F43o90jCxzMA4ebZcyglKvn5qLrF1585nle6Mn9sSwSKBcA48RfQ4OQ1c8WnryL0rlhl OA== 
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3mk7r9116a-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 20 Dec 2022 07:17:15 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+	by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 2BJLdWli016045;
+	Tue, 20 Dec 2022 07:17:13 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3mh6yy3ks2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 20 Dec 2022 07:17:13 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2BK7HAfZ24379712
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 20 Dec 2022 07:17:10 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A53BC20043;
+	Tue, 20 Dec 2022 07:17:10 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 23A4A20040;
+	Tue, 20 Dec 2022 07:17:10 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 20 Dec 2022 07:17:10 +0000 (GMT)
+Received: from jarvis-ozlabs-ibm-com.au.ibm.com (unknown [9.192.255.228])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 2E57F6043C;
+	Tue, 20 Dec 2022 18:17:07 +1100 (AEDT)
+From: Andrew Donnellan <ajd@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 0/4] PLPKS bugfixes and enhancements
+Date: Tue, 20 Dec 2022 18:16:22 +1100
+Message-Id: <20221220071626.1426786-1-ajd@linux.ibm.com>
+X-Mailer: git-send-email 2.38.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: PAC_4KOD0tHz_RFLoWjAYRjt3b8Ya2N5
+X-Proofpoint-ORIG-GUID: PAC_4KOD0tHz_RFLoWjAYRjt3b8Ya2N5
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-12-20_01,2022-12-15_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 suspectscore=0
+ adultscore=0 mlxscore=0 lowpriorityscore=0 bulkscore=0 mlxlogscore=878
+ impostorscore=0 priorityscore=1501 clxscore=1015 spamscore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2212070000
+ definitions=main-2212200058
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,110 +92,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, Rik van Riel <riel@surriel.com>, Peter Zijlstra <peterz@infradead.org>, Frederic Weisbecker <fweisbec@gmail.com>, Nicholas Piggin <npiggin@gmail.com>, Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org
+Cc: nayna@linux.ibm.com, gjoyce@linux.ibm.com, bgray@linux.ibm.com, brking@linux.ibm.com, gcwilson@linux.ibm.com, stefanb@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The archs that use cputime_to_nsecs() internally provide their own
-definition and don't need the fallback. cputime_to_usecs() unused except
-in this fallback, and is not defined anywhere.
+This series fixes a few miscellaneous bugs in the plpks driver, and adds some
+additional internal APIs that will be used by some patches that are coming
+imminently.
 
-This removes the final remnant of the cputime_t code from the kernel.
+This supersedes Nayna's earlier patch at:
+https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20221106210744.603240-2-nayna@linux.ibm.com/
 
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Frederic Weisbecker <fweisbec@gmail.com>
-Cc: Sven Schnelle <svens@linux.ibm.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-s390@vger.kernel.org
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
-This required a couple of tweaks to s390 includes so we're not pulling
-asm/cputime.h into the core header unnecessarily. In that case maybe
-this can go via s390 tree because the patch should be otherwise quite
-trivial. Could it get an ack or two from a core maintainer to support
-that?
+Many thanks to Russell Currey and Ben Gray for their help on this series.
 
-Thanks,
-Nick
+Andrew Donnellan (2):
+  powerpc/pseries: Fix handling of PLPKS object flushing timeout
+  powerpc/pseries: Fix alignment of PLPKS structures and buffers
 
- arch/s390/kernel/idle.c       | 2 +-
- arch/s390/kernel/vtime.c      | 2 +-
- include/linux/sched/cputime.h | 9 ---------
- kernel/sched/cputime.c        | 4 ++++
- 4 files changed, 6 insertions(+), 11 deletions(-)
+Nayna Jain (2):
+  powerpc/pseries: Expose PLPKS config values, support additional fields
+  powerpc/pseries: Implement signed update for PLPKS objects
 
-diff --git a/arch/s390/kernel/idle.c b/arch/s390/kernel/idle.c
-index 4bf1ee293f2b..a6bbceaf7616 100644
---- a/arch/s390/kernel/idle.c
-+++ b/arch/s390/kernel/idle.c
-@@ -12,9 +12,9 @@
- #include <linux/notifier.h>
- #include <linux/init.h>
- #include <linux/cpu.h>
--#include <linux/sched/cputime.h>
- #include <trace/events/power.h>
- #include <asm/cpu_mf.h>
-+#include <asm/cputime.h>
- #include <asm/nmi.h>
- #include <asm/smp.h>
- #include "entry.h"
-diff --git a/arch/s390/kernel/vtime.c b/arch/s390/kernel/vtime.c
-index 9436f3053b88..e0a88dcaf5cb 100644
---- a/arch/s390/kernel/vtime.c
-+++ b/arch/s390/kernel/vtime.c
-@@ -7,13 +7,13 @@
-  */
- 
- #include <linux/kernel_stat.h>
--#include <linux/sched/cputime.h>
- #include <linux/export.h>
- #include <linux/kernel.h>
- #include <linux/timex.h>
- #include <linux/types.h>
- #include <linux/time.h>
- #include <asm/alternative.h>
-+#include <asm/cputime.h>
- #include <asm/vtimer.h>
- #include <asm/vtime.h>
- #include <asm/cpu_mf.h>
-diff --git a/include/linux/sched/cputime.h b/include/linux/sched/cputime.h
-index ce3c58286062..5f8fd5b24a2e 100644
---- a/include/linux/sched/cputime.h
-+++ b/include/linux/sched/cputime.h
-@@ -8,15 +8,6 @@
-  * cputime accounting APIs:
-  */
- 
--#ifdef CONFIG_VIRT_CPU_ACCOUNTING_NATIVE
--#include <asm/cputime.h>
--
--#ifndef cputime_to_nsecs
--# define cputime_to_nsecs(__ct)	\
--	(cputime_to_usecs(__ct) * NSEC_PER_USEC)
--#endif
--#endif /* CONFIG_VIRT_CPU_ACCOUNTING_NATIVE */
--
- #ifdef CONFIG_VIRT_CPU_ACCOUNTING_GEN
- extern bool task_cputime(struct task_struct *t,
- 			 u64 *utime, u64 *stime);
-diff --git a/kernel/sched/cputime.c b/kernel/sched/cputime.c
-index 95fc77853743..af7952f12e6c 100644
---- a/kernel/sched/cputime.c
-+++ b/kernel/sched/cputime.c
-@@ -3,6 +3,10 @@
-  * Simple CPU accounting cgroup controller
-  */
- 
-+#ifdef CONFIG_VIRT_CPU_ACCOUNTING_NATIVE
-+ #include <asm/cputime.h>
-+#endif
-+
- #ifdef CONFIG_IRQ_TIME_ACCOUNTING
- 
- /*
+ arch/powerpc/include/asm/hvcall.h      |   3 +-
+ arch/powerpc/platforms/pseries/plpks.c | 220 ++++++++++++++++++++++---
+ arch/powerpc/platforms/pseries/plpks.h |  63 +++++++
+ 3 files changed, 259 insertions(+), 27 deletions(-)
+
 -- 
-2.37.2
+2.38.1
 
