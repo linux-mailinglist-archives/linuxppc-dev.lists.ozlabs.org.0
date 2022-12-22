@@ -2,116 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9E9E654471
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Dec 2022 16:42:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15F69654514
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Dec 2022 17:26:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NdF1N5KKrz3bW2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Dec 2022 02:42:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NdG0d03D6z3c4f
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Dec 2022 03:26:41 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=KWjXDPm/;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aBvV5hjg;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=40.107.8.42; helo=eur04-vi1-obe.outbound.protection.outlook.com; envelope-from=camelia.groza@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=masahiroy@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=KWjXDPm/;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aBvV5hjg;
 	dkim-atps=neutral
-Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on2042.outbound.protection.outlook.com [40.107.8.42])
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NdF0M3NY4z2xHb
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Dec 2022 02:41:21 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=hBY7r+7dcnaN8TomWEfkm/d3A1GrDsUOIngZNBBIHjyYq6PFONqCJ4iE89i0FF7Vom85zAGCItmoY1qaj0fo+kSLGVDaWqqKSbI7BB6dP/167u+KDiwjYBZ7/+3NyE/+CEeexJF3+uy5QUxj9ApAo83IwPJhSohFSTm7nnTmCj7wF14JX7ttlWY8kMFlpgVrf2RejN4KM7yCMua6mg49i/bexwBc21CSi/b5QZfhmoeiq9LZBQOS/g6HanycHX74FzSArSeajWaPpobF/GCe3IWXFD+YclmOb5o/ut2T06BZ9O+j9jYm1cjcjStBF65WEO5xmszPz4VivTP9lZFDPQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=49H+3yrgq/xF9Q3aB733Xq780HCQBjI+zAEaIn5tUPo=;
- b=jq0rMdleHnELNZf7sboOsWft+MQ+X9u4iOu7tQxVEFU8Dbo90XftSRPxvLR7Kbzcz4BRr99oih1TGqPY1XEN1XR6DYEbGDTSk86Hs1wGSHBi+baWit7Lmr0NidbfRbe1BIzG00zj8++G+UUbSwY4tm/TbSuPFmllljTl/lctnXL/uIdzZ/j7XC82Hn/YqGWam8Nj4YxeZzkW1jwYpt/Jjw6WHioR/kRpz2J0xB4mktC6cFh8K43VitvC9Eo5QDmoQMmx8bdCQZJrzWpOxAhWWmH44z3Bot8sebEsu2v2+ZUW1pnnBtP+qbRCVvMUXW5CrtCFEPvjVtO0UFESgsWBVA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=49H+3yrgq/xF9Q3aB733Xq780HCQBjI+zAEaIn5tUPo=;
- b=KWjXDPm/WicgEcVFjTF7nldeJ8BNqkbuKiURLTFSgbcD9nO97KOjl62/ECg6aRaesV3VGDFdq5TcskdL8ENlT/WrpE31ikoTyzii5+lfzIJOO4sbImneyYgKpXZNPWSPDF0wnSOXl256ZoKyFNudbNa/7R6/AlOrmZNQ5zJyZ+E=
-Received: from VI1PR04MB5807.eurprd04.prod.outlook.com (2603:10a6:803:ec::21)
- by DBBPR04MB8043.eurprd04.prod.outlook.com (2603:10a6:10:1e7::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5924.16; Thu, 22 Dec
- 2022 15:41:00 +0000
-Received: from VI1PR04MB5807.eurprd04.prod.outlook.com
- ([fe80::75ca:4956:79f9:6d69]) by VI1PR04MB5807.eurprd04.prod.outlook.com
- ([fe80::75ca:4956:79f9:6d69%7]) with mapi id 15.20.5924.016; Thu, 22 Dec 2022
- 15:41:00 +0000
-From: Camelia Alexandra Groza <camelia.groza@nxp.com>
-To: Sean Anderson <sean.anderson@seco.com>, "David S . Miller"
-	<davem@davemloft.net>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: RE: [PATCH net v2] powerpc: dts: t208x: Disable 10G on MAC1 and MAC2
-Thread-Topic: [PATCH net v2] powerpc: dts: t208x: Disable 10G on MAC1 and MAC2
-Thread-Index: AQHZEXQBPotIqLiZVkqXNZXBHISHtK51Z8xAgASou7A=
-Date: Thu, 22 Dec 2022 15:41:00 +0000
-Message-ID:  <VI1PR04MB5807E65FA99FE10D53804445F2E89@VI1PR04MB5807.eurprd04.prod.outlook.com>
-References: <20221216172937.2960054-1-sean.anderson@seco.com>
- <VI1PR04MB5807014739D89583FF87D43EF2E59@VI1PR04MB5807.eurprd04.prod.outlook.com>
-In-Reply-To:  <VI1PR04MB5807014739D89583FF87D43EF2E59@VI1PR04MB5807.eurprd04.prod.outlook.com>
-Accept-Language: en-GB, ro-RO, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: VI1PR04MB5807:EE_|DBBPR04MB8043:EE_
-x-ms-office365-filtering-correlation-id: 02b86093-0771-4158-a66e-08dae432ed50
-x-ld-processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  eAbbeH+HqSfeQutj9ya3G/vMtmshA59XvIRQh9jbOc1F27hW9wqylRBcsIXhLh4DQp4h3hRC0XRJOHKh1M0B+CneKxwtu+5/LWJm+IoZu3Nx67z669foGzdJwR5Hz8TmdAVLl9Hwn8YrEg4Ri14A3/u8K2dKj/PCF1xxzQxzHF6dQJTMytOPmWTCtWb0DMhuYZypjyemvghBIWFyl2U+bbHQZAouSMgCgh52yy60YFYOU+cywmt5z1YYObQwyAfLxNi9GqWhg622HyRT+fC3JyC7HI9V7KZ/63EwbobRwNVgrew7zyVGeGZO89QedIr3prfFf1daXMRSbAWYXCSiPrbiFVNE/jf7bcEk+eETFhz3tpZfhhTig0jKXyyh5k3i1iUfJKPCI/C/94XgVKxiXEb/oIeSpFpDJfq281l8BzwbVDhlW48q2MYRHSK3jKILV+cc0Vctoy2YbnS2U1P2LfWgDYebr02lcX+7YdMqp7aInh3qpXzRHreh3pfHjq3SFUIWfwpqji+IZjSLVC+2MryddlUnJriHHi/0g2ntYYR6u9vphJlRyDGW02E4SF/FR6WHKQ7pbcmTIKuDZEHnJTB6MB4dNkZD1nxnACf2ch3NhIL2HEKyT0waicYcWx0RTsxnGfEs6qtujzRcVvKtV6qiQwLbm5/zSlFf1iqf8ztfopJ3wnIbNIyQxirl/s6no63EyNsxYGKBGll0VSHhtg==
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR04MB5807.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(366004)(346002)(39860400002)(136003)(376002)(396003)(451199015)(8936002)(186003)(8676002)(38070700005)(55016003)(38100700002)(122000001)(5660300002)(7416002)(52536014)(64756008)(66946007)(4326008)(41300700001)(9686003)(26005)(76116006)(83380400001)(66556008)(66476007)(71200400001)(66446008)(86362001)(33656002)(2906002)(53546011)(55236004)(7696005)(478600001)(316002)(6506007)(110136005)(54906003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?us-ascii?Q?oIbFAnND7+ezRzu3DVciswkXA2HjZQ+bNVr4fnE9UClY4PkqwPc5PmmYlBUP?=
- =?us-ascii?Q?wEw55l9JiPn+fIo48CrjPgqMzgj4sn4odFIDZ92pIMTK2fwSsx81obb4Aw1a?=
- =?us-ascii?Q?666ptXpPVO+SYn4lUxGOu+ixu5BgKvMgBEjz5sh24kQN2SgQT3TOfY27hj1I?=
- =?us-ascii?Q?pZDAipEdu3v4c0uVEjKZQagcFJlcssOd6ojVqz7YTmjeDuIpsSN1KVBiA0YK?=
- =?us-ascii?Q?fip8DU9nqd9YFi+K0LccwYp8wjipAgaX3YsZYlmO2jTVOdlvtiuXZ0wgTqvM?=
- =?us-ascii?Q?M+/76lnSEwRdl8iVAL9HJmyohLkYKgTu7HxnplcIf7OZEVDfJduG8mLTbA3m?=
- =?us-ascii?Q?xDPX7/lsVC14CchrHfMGBk69v9X/6LpBSTF+OJWXTE5HIXLoYp6OGeIMT3ev?=
- =?us-ascii?Q?P8qsmAW9Q7vQZGpQjgqDs9mBSg/UPEHTuQ1yskK6hbgpTAVF1NDqtxdZuDW2?=
- =?us-ascii?Q?tcsmdRnmf2YTWdHvmzZvZP0P7JYabEhDhzqvtvv8zuCG22Us9X/rNuIndLHD?=
- =?us-ascii?Q?5ACBAq4sxTW7dmuUEgGnReXHDmiXP1I2QkBU/zzPN1xRPB2mohLD+wWiGm9E?=
- =?us-ascii?Q?28Au4hpX2DYObCctDYhSG5dGEEXynVu+8W0mZXL0l7MraDtYVGzIuxHO19Nw?=
- =?us-ascii?Q?YhEpVGO4/YV9Bhf5RMPUqf/QgctViNAGuWFnxN1od6UbaI9C7r7nDA2jeZdI?=
- =?us-ascii?Q?r40mdWpUJ8oEatpekx8RvQqb39YzB8yfaLuZUMKNMKLIUQkmmasNcPw5B+pK?=
- =?us-ascii?Q?apblgtQfdvDPnnKZYXGlOJDw6kH3KWiyYJfP65e3XLytDWfwXm1JGhjZnrrd?=
- =?us-ascii?Q?Lj9i/bj4XIVoXcZoLHoWg3IhLwD2L8gGr0Vagjz52wwRdIK3BhqfsNAxgOmg?=
- =?us-ascii?Q?E/UnvuPTqUN/Nw93R7W0wNzQu43t+9tvRQJjP4dnvn7sTg6M6CiYVL6ohShG?=
- =?us-ascii?Q?NLMnH3/Eec/WslYMDHOwC+NTRw8b8qfmBEU2xhzlqE5Kox64DxYV0Tdl3xrJ?=
- =?us-ascii?Q?ZoDSfaUbDD2jFg5Mkwt2Edgg+gEntLC1Z3qQcXzxjJrzUJ5wjuSsSAqqqoCF?=
- =?us-ascii?Q?7b1Us6HaxcTVTwkQjVYM7Pnv4WuhnvfSVPqPOyyBZTlGiit9xN+I8NGkjQE8?=
- =?us-ascii?Q?RQlG9kAJA3gYeSRidlYABHTGmFnaPg9e+DUD7uuKLUusF6+3B+UAhTkhf6VN?=
- =?us-ascii?Q?W3glG1ONtUhDzzhFbDGng5pXKjS3cuPifNTiParfp5Hb58cOCYmwQQzdcL4q?=
- =?us-ascii?Q?OO/2+urma0LalOTrJvkdKUiKXdcuT/Yehp3R5qhBeh+5ijZa5XsTs4fPgSD4?=
- =?us-ascii?Q?ap0wyqcWxA9t5WCWcGnocUerSZGcm5BMNKHmpapdgf9y8pO/uirY6cE6WmPn?=
- =?us-ascii?Q?lNOM7OIaD1uLP5TU37QSaOxWq6xElsWtfELSJnGqN2pq94s4XQOPOEwLdI4h?=
- =?us-ascii?Q?sMnkJ3t4i9CEkFrbo5E0A0HlBO7t+BSHBOBomMFYAxnTjCX3JhPLnsVUYlet?=
- =?us-ascii?Q?ilqDtv2VMwYsZAtaLbhu+ZplMwYwx0IayCbb6p7GQ8TPKHNmhFrviX9S1UnK?=
- =?us-ascii?Q?4MA+qbG4UAD+WLOFlqXYhQRRdtE1TbeZGL7uGS/v?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NdFzg4WSxz30RT
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Dec 2022 03:25:51 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 9AEC7B81EB5;
+	Thu, 22 Dec 2022 16:25:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61422C433EF;
+	Thu, 22 Dec 2022 16:25:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1671726345;
+	bh=I1QQ3wj0EZ2LVmZ8RlrxP6BvTX3HOQCzJhPb1JK3S5Y=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=aBvV5hjgmYtdnsRh/a6xDn8u4JdX5WJaAgikE/hwoGibLaiBICdjG89ctJI1/f8bi
+	 ep42tSDdAVcnj6ahLM8Kpf9reEuhobVNB2PxBNIqGbrVZRa+GSAKcZOU4jygQL9m4x
+	 XKaFPvG/r7anSl75C0i8wWTg6CvZSJyFfdK5AoTKDh70xsZjc2wh/ZvY30x2QxklEI
+	 8bbmSrhXUa2KMOUDOdIKHPjxk4byrn1GiOx22dhx6kDKOxEl8q2jbpJHppy5VDYF4j
+	 lCD/S2QHGr9+Ih7rzONuTUaGO7KYxYCWsd3TeJgcFaV2yJTK6wT62N8lpgH4JR5r/o
+	 YclT7GIzx1o0g==
+From: Masahiro Yamada <masahiroy@kernel.org>
+To: linux-kbuild@vger.kernel.org
+Subject: [PATCH 3/5] kbuild: do not print extra logs for V=2
+Date: Fri, 23 Dec 2022 01:25:33 +0900
+Message-Id: <20221222162535.1578462-3-masahiroy@kernel.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20221222162535.1578462-1-masahiroy@kernel.org>
+References: <20221222162535.1578462-1-masahiroy@kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: VI1PR04MB5807.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 02b86093-0771-4158-a66e-08dae432ed50
-X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Dec 2022 15:41:00.6861
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: l+pCr340ciCMd8setf9fHB8G5TmtLd1b9eUlW9mjtZJ268vL5Lbea2ECQa5UKAK1j1ZXxOxvx+GyQaFXDEUF3w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB8043
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -123,86 +59,127 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, Sean Anderson <sean.anderson@seco.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: Zeng Heng <zengheng4@huawei.com>, linuxppc-dev@lists.ozlabs.org, Jonathan Corbet <corbet@lwn.net>, Masahiro Yamada <masahiroy@kernel.org>, linux-doc@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org, David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org, Liam Howlett <liam.howlett@oracle.com>, David Woodhouse <dwmw2@infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> -----Original Message-----
-> From: Camelia Alexandra Groza <camelia.groza@nxp.com>
-> Sent: Monday, December 19, 2022 18:23
-> To: Sean Anderson <sean.anderson@seco.com>; David S . Miller
-> <davem@davemloft.net>; netdev@vger.kernel.org
-> Cc: devicetree@vger.kernel.org; Rob Herring <robh+dt@kernel.org>;
-> Christophe Leroy <christophe.leroy@csgroup.eu>; Nicholas Piggin
-> <npiggin@gmail.com>; Michael Ellerman <mpe@ellerman.id.au>; linuxppc-
-> dev@lists.ozlabs.org; Krzysztof Kozlowski
-> <krzysztof.kozlowski+dt@linaro.org>; linux-kernel@vger.kernel.org; Sean
-> Anderson <sean.anderson@seco.com>
-> Subject: RE: [PATCH net v2] powerpc: dts: t208x: Disable 10G on MAC1 and
-> MAC2
->=20
-> > -----Original Message-----
-> > From: Sean Anderson <sean.anderson@seco.com>
-> > Sent: Friday, December 16, 2022 19:30
-> > To: David S . Miller <davem@davemloft.net>; netdev@vger.kernel.org
-> > Cc: devicetree@vger.kernel.org; Rob Herring <robh+dt@kernel.org>;
-> > Christophe Leroy <christophe.leroy@csgroup.eu>; Nicholas Piggin
-> > <npiggin@gmail.com>; Michael Ellerman <mpe@ellerman.id.au>; linuxppc-
-> > dev@lists.ozlabs.org; Krzysztof Kozlowski
-> > <krzysztof.kozlowski+dt@linaro.org>; linux-kernel@vger.kernel.org;
-> Camelia
-> > Alexandra Groza <camelia.groza@nxp.com>; Sean Anderson
-> > <sean.anderson@seco.com>
-> > Subject: [PATCH net v2] powerpc: dts: t208x: Disable 10G on MAC1 and
-> > MAC2
-> >
-> > There aren't enough resources to run these ports at 10G speeds. Disable
-> > 10G for these ports, reverting to the previous speed.
-> >
-> > Fixes: 36926a7d70c2 ("powerpc: dts: t208x: Mark MAC1 and MAC2 as 10G")
-> > Reported-by: Camelia Alexandra Groza <camelia.groza@nxp.com>
-> > Signed-off-by: Sean Anderson <sean.anderson@seco.com>
-> > ---
->=20
-> Thank you.
->=20
-> Reviewed-by: Camelia Groza <camelia.groza@nxp.com>
-> Tested-by: Camelia Groza <camelia.groza@nxp.com>
+Some scripts increase the verbose level when V=1, but others when
+not V=0.
 
-I see the patch marked Not Applicable in the netdev patchwork.
-What tree will it go through?
+I think the former is correct because V=2 is not a log level but
+a switch to print the reason for rebuilding.
 
-> > Changes in v2:
-> > - Remove the 10g properties, instead of removing the MAC dtsis.
-> >
-> >  arch/powerpc/boot/dts/fsl/t2081si-post.dtsi | 16 ++++++++++++++++
-> >  1 file changed, 16 insertions(+)
-> >
-> > diff --git a/arch/powerpc/boot/dts/fsl/t2081si-post.dtsi
-> > b/arch/powerpc/boot/dts/fsl/t2081si-post.dtsi
-> > index 74e17e134387..27714dc2f04a 100644
-> > --- a/arch/powerpc/boot/dts/fsl/t2081si-post.dtsi
-> > +++ b/arch/powerpc/boot/dts/fsl/t2081si-post.dtsi
-> > @@ -659,3 +659,19 @@ L2_1: l2-cache-controller@c20000 {
-> >  		interrupts =3D <16 2 1 9>;
-> >  	};
-> >  };
-> > +
-> > +&fman0_rx_0x08 {
-> > +	/delete-property/ fsl,fman-10g-port;
-> > +};
-> > +
-> > +&fman0_tx_0x28 {
-> > +	/delete-property/ fsl,fman-10g-port;
-> > +};
-> > +
-> > +&fman0_rx_0x09 {
-> > +	/delete-property/ fsl,fman-10g-port;
-> > +};
-> > +
-> > +&fman0_tx_0x29 {
-> > +	/delete-property/ fsl,fman-10g-port;
-> > +};
-> > --
-> > 2.35.1.1320.gc452695387.dirty
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+---
+
+ Documentation/Makefile                 | 2 +-
+ arch/powerpc/kernel/prom_init_check.sh | 9 ++++-----
+ certs/extract-cert.c                   | 9 ++++++---
+ scripts/asn1_compiler.c                | 4 ++--
+ scripts/kernel-doc                     | 4 ++--
+ 5 files changed, 15 insertions(+), 13 deletions(-)
+
+diff --git a/Documentation/Makefile b/Documentation/Makefile
+index bb73dcb5ed05..023fa658a0a8 100644
+--- a/Documentation/Makefile
++++ b/Documentation/Makefile
+@@ -28,7 +28,7 @@ BUILDDIR      = $(obj)/output
+ PDFLATEX      = xelatex
+ LATEXOPTS     = -interaction=batchmode -no-shell-escape
+ 
+-ifeq ($(KBUILD_VERBOSE),0)
++ifeq ($(findstring 1, $(KBUILD_VERBOSE)),)
+ SPHINXOPTS    += "-q"
+ endif
+ 
+diff --git a/arch/powerpc/kernel/prom_init_check.sh b/arch/powerpc/kernel/prom_init_check.sh
+index 311890d71c4c..5a319863f289 100644
+--- a/arch/powerpc/kernel/prom_init_check.sh
++++ b/arch/powerpc/kernel/prom_init_check.sh
+@@ -51,11 +51,10 @@ do
+ 	# a leading . on the name, so strip it off here.
+ 	UNDEF="${UNDEF#.}"
+ 
+-	if [ $KBUILD_VERBOSE ]; then
+-		if [ $KBUILD_VERBOSE -ne 0 ]; then
+-			echo "Checking prom_init.o symbol '$UNDEF'"
+-		fi
+-	fi
++	case "$KBUILD_VERBOSE" in
++	*1*)
++		echo "Checking prom_init.o symbol '$UNDEF'" ;;
++	esac
+ 
+ 	OK=0
+ 	for WHITE in $WHITELIST
+diff --git a/certs/extract-cert.c b/certs/extract-cert.c
+index 8c1fb9a70d66..d3a0ff2867c0 100644
+--- a/certs/extract-cert.c
++++ b/certs/extract-cert.c
+@@ -78,7 +78,7 @@ static void drain_openssl_errors(void)
+ static const char *key_pass;
+ static BIO *wb;
+ static char *cert_dst;
+-static int kbuild_verbose;
++static bool verbose;
+ 
+ static void write_cert(X509 *x509)
+ {
+@@ -90,19 +90,22 @@ static void write_cert(X509 *x509)
+ 	}
+ 	X509_NAME_oneline(X509_get_subject_name(x509), buf, sizeof(buf));
+ 	ERR(!i2d_X509_bio(wb, x509), "%s", cert_dst);
+-	if (kbuild_verbose)
++	if (verbose)
+ 		fprintf(stderr, "Extracted cert: %s\n", buf);
+ }
+ 
+ int main(int argc, char **argv)
+ {
+ 	char *cert_src;
++	char *kbuild_verbose;
+ 
+ 	OpenSSL_add_all_algorithms();
+ 	ERR_load_crypto_strings();
+ 	ERR_clear_error();
+ 
+-	kbuild_verbose = atoi(getenv("KBUILD_VERBOSE")?:"0");
++	kbuild_verbose = getenv("KBUILD_VERBOSE");
++	if (kbuild_verbose && strchr(kbuild_verbose, '1'))
++		verbose = true;
+ 
+         key_pass = getenv("KBUILD_SIGN_PIN");
+ 
+diff --git a/scripts/asn1_compiler.c b/scripts/asn1_compiler.c
+index 71d4a7c87900..7b6756a8c15d 100644
+--- a/scripts/asn1_compiler.c
++++ b/scripts/asn1_compiler.c
+@@ -567,8 +567,8 @@ int main(int argc, char **argv)
+ 	int fd;
+ 
+ 	kbuild_verbose = getenv("KBUILD_VERBOSE");
+-	if (kbuild_verbose)
+-		verbose_opt = atoi(kbuild_verbose);
++	if (kbuild_verbose && strchr(kbuild_verbose, '1'))
++		verbose_opt = true;
+ 
+ 	while (argc > 4) {
+ 		if (strcmp(argv[1], "-v") == 0)
+diff --git a/scripts/kernel-doc b/scripts/kernel-doc
+index 54b0893cae66..8ad0a7d68d9a 100755
+--- a/scripts/kernel-doc
++++ b/scripts/kernel-doc
+@@ -175,8 +175,8 @@ my $declaration_start_line;
+ my ($type, $declaration_name, $return_type);
+ my ($newsection, $newcontents, $prototype, $brcount, %source_map);
+ 
+-if (defined($ENV{'KBUILD_VERBOSE'})) {
+-	$verbose = "$ENV{'KBUILD_VERBOSE'}";
++if (defined($ENV{'KBUILD_VERBOSE'}) && $ENV{'KBUILD_VERBOSE'} =~ '1') {
++	$verbose = 1;
+ }
+ 
+ if (defined($ENV{'KCFLAGS'})) {
+-- 
+2.34.1
 
