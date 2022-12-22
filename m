@@ -2,48 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C1206541E5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Dec 2022 14:31:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2CAC6541F3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Dec 2022 14:32:45 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NdB6v5vmbz3cFp
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Dec 2022 00:31:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NdB7v5981z3fCZ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Dec 2022 00:32:43 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=P8edrKlM;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=bONwT7GP;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.120; helo=mga04.intel.com; envelope-from=andrzej.hajda@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=P8edrKlM;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=bONwT7GP;
 	dkim-atps=neutral
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nd7pv1VfMz2xCB
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nd7pw1HnVz2xCB
 	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Dec 2022 22:47:51 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1671709671; x=1703245671;
+  t=1671709672; x=1703245672;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=/UDTi8Vls0g/+nnPnB+HCzMyNgpTxrVUoGQF5kbhC34=;
-  b=P8edrKlMDaevgD9Njty3S4TlHZIZqVFGgu1GuuCVxBhnA4MDdBWJIgNF
-   MoknmkP/rdQSUgu4wFmzO2poRGMoCIhyDqIWnHY2QFbbAeaRyY+6SYEpT
-   ONjeKLQU7CQpvKoc4FO3zBODVKgoPEV72aHSqubZckLhpAhb+k55HObJA
-   elrVA9m37RZ6PjwL8CmmdPzfj4vhJYM+0vFA6DJrpC+3KC1mgiCQSY+oH
-   oevxIEQWf/qhgXogUnBiHFg4KKsKC4RmEEONDVGI6IQXCtrGLM6KoN13v
-   oLRmMWASftJEFkO4ep8jSA2hvZjdCVHQuPnPspSOE/fCKZkQTXUgX9wwO
+  bh=IbMw6br59U86nejRLG71yUeJj71gbGKIdiufP6FjbTQ=;
+  b=bONwT7GPBF0vEhOZw0F23UzyryEmVCqRP1X8GRYj43rN0+wBFcx0P28P
+   3gMJe1xv/u0WBhL1XGDmq/9ZrdHCd3YXXNTXlqfjzDAgunYISeIOKw5ej
+   1p9lsp5ai3eaRWPMLOPlu25FiXo02TE0zlUw5smXbm0HnqVUH1pQoa1WI
+   hFp/v9ShJqVUOE22BaulD87yGTRotxeT/Lqxk1E4uZ9HyEQhDXGixsYb5
+   Qs2WOQ40xzlhhFczZhwOJ4HRZ9DReva3HfhrhPqIivnuAwBbQS5mfsjNl
+   j1eTRoFFMWiTLCJnKNMmTXj96Cif1PwDpnGD5HUZ6s1Dv7435a6R5baiF
    g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10568"; a="318804484"
+X-IronPort-AV: E=McAfee;i="6500,9779,10568"; a="318804519"
 X-IronPort-AV: E=Sophos;i="5.96,265,1665471600"; 
-   d="scan'208";a="318804484"
+   d="scan'208";a="318804519"
 Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Dec 2022 03:47:36 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10568"; a="629504368"
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Dec 2022 03:47:42 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10568"; a="629504419"
 X-IronPort-AV: E=Sophos;i="5.96,265,1665471600"; 
-   d="scan'208";a="629504368"
+   d="scan'208";a="629504419"
 Received: from lab-ah.igk.intel.com ([10.91.215.196])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Dec 2022 03:47:30 -0800
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Dec 2022 03:47:36 -0800
 From: Andrzej Hajda <andrzej.hajda@intel.com>
 To: linux-alpha@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
@@ -64,9 +64,9 @@ To: linux-alpha@vger.kernel.org,
 	linux-xtensa@linux-xtensa.org,
 	intel-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH 02/19] arch/arc: rename internal name __xchg to __arch_xchg
-Date: Thu, 22 Dec 2022 12:46:18 +0100
-Message-Id: <20221222114635.1251934-3-andrzej.hajda@intel.com>
+Subject: [PATCH 03/19] arch/arm: rename internal name __xchg to __arch_xchg
+Date: Thu, 22 Dec 2022 12:46:19 +0100
+Message-Id: <20221222114635.1251934-4-andrzej.hajda@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20221222114635.1251934-1-andrzej.hajda@intel.com>
 References: <20221222114635.1251934-1-andrzej.hajda@intel.com>
@@ -93,31 +93,31 @@ __xchg will be used for non-atomic xchg macro.
 
 Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
 ---
- arch/arc/include/asm/cmpxchg.h | 4 ++--
+ arch/arm/include/asm/cmpxchg.h | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arc/include/asm/cmpxchg.h b/arch/arc/include/asm/cmpxchg.h
-index c5b544a5fe8106..e138fde067dea5 100644
---- a/arch/arc/include/asm/cmpxchg.h
-+++ b/arch/arc/include/asm/cmpxchg.h
-@@ -85,7 +85,7 @@
-  */
- #ifdef CONFIG_ARC_HAS_LLSC
+diff --git a/arch/arm/include/asm/cmpxchg.h b/arch/arm/include/asm/cmpxchg.h
+index 4dfe538dfc689b..6953fc05a97886 100644
+--- a/arch/arm/include/asm/cmpxchg.h
++++ b/arch/arm/include/asm/cmpxchg.h
+@@ -25,7 +25,7 @@
+ #define swp_is_buggy
+ #endif
  
--#define __xchg(ptr, val)						\
-+#define __arch_xchg(ptr, val)						\
- ({									\
- 	__asm__ __volatile__(						\
- 	"	ex  %0, [%1]	\n"	/* set new value */	        \
-@@ -102,7 +102,7 @@
- 									\
- 	switch(sizeof(*(_p_))) {					\
- 	case 4:								\
--		_val_ = __xchg(_p_, _val_);				\
-+		_val_ = __arch_xchg(_p_, _val_);			\
- 		break;							\
- 	default:							\
- 		BUILD_BUG();						\
+-static inline unsigned long __xchg(unsigned long x, volatile void *ptr, int size)
++static inline unsigned long __arch_xchg(unsigned long x, volatile void *ptr, int size)
+ {
+ 	extern void __bad_xchg(volatile void *, int);
+ 	unsigned long ret;
+@@ -115,7 +115,7 @@ static inline unsigned long __xchg(unsigned long x, volatile void *ptr, int size
+ }
+ 
+ #define arch_xchg_relaxed(ptr, x) ({					\
+-	(__typeof__(*(ptr)))__xchg((unsigned long)(x), (ptr),		\
++	(__typeof__(*(ptr)))__arch_xchg((unsigned long)(x), (ptr),		\
+ 				   sizeof(*(ptr)));			\
+ })
+ 
 -- 
 2.34.1
 
