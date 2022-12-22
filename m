@@ -2,48 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1328654212
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Dec 2022 14:43:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6F98654213
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Dec 2022 14:44:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NdBN05ds9z3fQN
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Dec 2022 00:43:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NdBP14N4lz3chK
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Dec 2022 00:44:05 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=k1qe+xtp;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=XGPcr+nS;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.120; helo=mga04.intel.com; envelope-from=andrzej.hajda@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=k1qe+xtp;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=XGPcr+nS;
 	dkim-atps=neutral
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nd7r82Q2Fz3bVK
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Dec 2022 22:48:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nd7rH2HY1z3bVD
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Dec 2022 22:49:03 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1671709736; x=1703245736;
+  t=1671709743; x=1703245743;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=WISTUsk2o+/CiLC/dmDma5HABMnb/JSTbRj0TToQGYg=;
-  b=k1qe+xtp55ll9Bsz6YDMLi+ewMw7vQdnRO76pl0eMn+ZLcmqr+cckxaq
-   bifNIDJc4QUC2IMy3tI7YV769sDydvgOCjA21SMSGkAd6kV/xeadQgn1h
-   zDzPuVDQgMh5Lb5nR/a55MplD59ZqC62eRtZ1Ig/PHn95Ywgriogoyok9
-   OsF2KfgUEB0c2wPA2gOSxK0CLHLMWnZhoJmNNk2rAF/pyfeLFU97YmIZW
-   AeCgQpN18uFuQV78Pp2nTKZl6h2YIlayGe1uT7xSA4r1ZoQDE9c/RR5tK
-   XvM5DM0qYhZ6rosL0OdQY/bE9R/H2/RamZEXpiUW0Pb323Szm0rfu9zuU
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10568"; a="318804857"
+  bh=hqPNEu1dGLHX4INM1uJ+E07/4aKzMUY3q5RTm6bJ5ag=;
+  b=XGPcr+nSPP+T8SzFdAIgHa1gmIJYIAebtRxBKwzzSzW5/k4QpqFn3bwL
+   y6CxBCrOmTLCcZTSuTxGrXaLy1dOQD2lsZms4N0ugNd05F/sdSreXoTl6
+   fLM3dQRDmna4GjR0nUuRZF6weKA5Vpz722sB8mJ0C4aDbBHikQbFLn9NG
+   aFo081ZKHslJy2kmoYQGe+5o8/bcbeUr7pkCJ6PGDHI1zHzGVDzbfZ92I
+   4PPf7HpJvYUSB4khKK9EqtUmT1tMZQIercRPBeTPqx8OGrgmtGnbpQC6D
+   /78roowQHvf3VvlJQ5w0rA9E1x3FSrpedsbCKZouOY+8/BOwN1rubvdwC
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10568"; a="318804883"
 X-IronPort-AV: E=Sophos;i="5.96,265,1665471600"; 
-   d="scan'208";a="318804857"
+   d="scan'208";a="318804883"
 Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Dec 2022 03:48:54 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10568"; a="629504874"
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Dec 2022 03:49:00 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10568"; a="629504902"
 X-IronPort-AV: E=Sophos;i="5.96,265,1665471600"; 
-   d="scan'208";a="629504874"
+   d="scan'208";a="629504902"
 Received: from lab-ah.igk.intel.com ([10.91.215.196])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Dec 2022 03:48:48 -0800
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Dec 2022 03:48:54 -0800
 From: Andrzej Hajda <andrzej.hajda@intel.com>
 To: linux-alpha@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
@@ -64,9 +64,9 @@ To: linux-alpha@vger.kernel.org,
 	linux-xtensa@linux-xtensa.org,
 	intel-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH 15/19] arch/sh: rename internal name __xchg to __arch_xchg
-Date: Thu, 22 Dec 2022 12:46:31 +0100
-Message-Id: <20221222114635.1251934-16-andrzej.hajda@intel.com>
+Subject: [PATCH 16/19] arch/sparc: rename internal name __xchg to __arch_xchg
+Date: Thu, 22 Dec 2022 12:46:32 +0100
+Message-Id: <20221222114635.1251934-17-andrzej.hajda@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20221222114635.1251934-1-andrzej.hajda@intel.com>
 References: <20221222114635.1251934-1-andrzej.hajda@intel.com>
@@ -93,31 +93,54 @@ __xchg will be used for non-atomic xchg macro.
 
 Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
 ---
- arch/sh/include/asm/cmpxchg.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/sparc/include/asm/cmpxchg_32.h | 4 ++--
+ arch/sparc/include/asm/cmpxchg_64.h | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/sh/include/asm/cmpxchg.h b/arch/sh/include/asm/cmpxchg.h
-index 0ed9b3f4a57796..288f6f38d98fb4 100644
---- a/arch/sh/include/asm/cmpxchg.h
-+++ b/arch/sh/include/asm/cmpxchg.h
-@@ -22,7 +22,7 @@
+diff --git a/arch/sparc/include/asm/cmpxchg_32.h b/arch/sparc/include/asm/cmpxchg_32.h
+index 27a57a3a7597eb..7a1339533d1d7e 100644
+--- a/arch/sparc/include/asm/cmpxchg_32.h
++++ b/arch/sparc/include/asm/cmpxchg_32.h
+@@ -15,7 +15,7 @@
+ unsigned long __xchg_u32(volatile u32 *m, u32 new);
+ void __xchg_called_with_bad_pointer(void);
  
- extern void __xchg_called_with_bad_pointer(void);
+-static inline unsigned long __xchg(unsigned long x, __volatile__ void * ptr, int size)
++static inline unsigned long __arch_xchg(unsigned long x, __volatile__ void * ptr, int size)
+ {
+ 	switch (size) {
+ 	case 4:
+@@ -25,7 +25,7 @@ static inline unsigned long __xchg(unsigned long x, __volatile__ void * ptr, int
+ 	return x;
+ }
  
--#define __xchg(ptr, x, size)				\
-+#define __arch_xchg(ptr, x, size)				\
- ({							\
- 	unsigned long __xchg__res;			\
- 	volatile void *__xchg_ptr = (ptr);		\
-@@ -46,7 +46,7 @@ extern void __xchg_called_with_bad_pointer(void);
+-#define arch_xchg(ptr,x) ({(__typeof__(*(ptr)))__xchg((unsigned long)(x),(ptr),sizeof(*(ptr)));})
++#define arch_xchg(ptr,x) ({(__typeof__(*(ptr)))__arch_xchg((unsigned long)(x),(ptr),sizeof(*(ptr)));})
+ 
+ /* Emulate cmpxchg() the same way we emulate atomics,
+  * by hashing the object address and indexing into an array
+diff --git a/arch/sparc/include/asm/cmpxchg_64.h b/arch/sparc/include/asm/cmpxchg_64.h
+index 12d00a42c0a3ed..4c22fd9110c945 100644
+--- a/arch/sparc/include/asm/cmpxchg_64.h
++++ b/arch/sparc/include/asm/cmpxchg_64.h
+@@ -55,7 +55,7 @@ static inline unsigned long xchg64(__volatile__ unsigned long *m, unsigned long
+ #define arch_xchg(ptr,x)							\
+ ({	__typeof__(*(ptr)) __ret;					\
+ 	__ret = (__typeof__(*(ptr)))					\
+-		__xchg((unsigned long)(x), (ptr), sizeof(*(ptr)));	\
++		__arch_xchg((unsigned long)(x), (ptr), sizeof(*(ptr)));	\
+ 	__ret;								\
  })
  
- #define arch_xchg(ptr,x)	\
--	((__typeof__(*(ptr)))__xchg((ptr),(unsigned long)(x), sizeof(*(ptr))))
-+	((__typeof__(*(ptr)))__arch_xchg((ptr),(unsigned long)(x), sizeof(*(ptr))))
+@@ -87,7 +87,7 @@ xchg16(__volatile__ unsigned short *m, unsigned short val)
+ 	return (load32 & mask) >> bit_shift;
+ }
  
- /* This function doesn't exist, so you'll get a linker error
-  * if something tries to do an invalid cmpxchg(). */
+-static inline unsigned long __xchg(unsigned long x, __volatile__ void * ptr,
++static inline unsigned long __arch_xchg(unsigned long x, __volatile__ void * ptr,
+ 				       int size)
+ {
+ 	switch (size) {
 -- 
 2.34.1
 
