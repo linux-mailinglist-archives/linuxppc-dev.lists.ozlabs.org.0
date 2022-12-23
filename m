@@ -2,64 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E10A654FC4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Dec 2022 12:36:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 203536554EF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Dec 2022 23:20:32 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NdlWK109wz3c9L
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Dec 2022 22:36:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Nf1pQ0ND8z30RT
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Dec 2022 09:20:30 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=KmCVSsSk;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=fjasle.eu (client-ip=217.72.192.75; helo=mout.kundenserver.de; envelope-from=nicolas@fjasle.eu; receiver=<UNKNOWN>)
-X-Greylist: delayed 475 seconds by postgrey-1.36 at boromir; Fri, 23 Dec 2022 22:35:57 AEDT
-Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.75])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.65; helo=mga03.intel.com; envelope-from=alexandr.lobakin@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=KmCVSsSk;
+	dkim-atps=neutral
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NdlVj1SPcz3bTc
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Dec 2022 22:35:44 +1100 (AEDT)
-Received: from leknes.fjasle.eu ([46.142.99.43]) by mrelayeu.kundenserver.de
- (mreue107 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1MFslN-1p5gp12y1X-00HSLg; Fri, 23 Dec 2022 12:24:04 +0100
-Received: from localhost.fjasle.eu (bergen.fjasle.eu [IPv6:fdda:8718:be81:0:6f0:21ff:fe91:394])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(Client did not present a certificate)
-	by leknes.fjasle.eu (Postfix) with ESMTPS id CF3693C1BD;
-	Fri, 23 Dec 2022 12:23:50 +0100 (CET)
-Authentication-Results: leknes.fjasle.eu; dkim=none; dkim-atps=neutral
-Received: by localhost.fjasle.eu (Postfix, from userid 1000)
-	id ADC623615; Fri, 23 Dec 2022 12:23:50 +0100 (CET)
-Date: Fri, 23 Dec 2022 12:23:50 +0100
-From: Nicolas Schier <nicolas@fjasle.eu>
-To: Masahiro Yamada <masahiroy@kernel.org>
-Subject: Re: [PATCH 3/5] kbuild: do not print extra logs for V=2
-Message-ID: <Y6WPxmUSHAOcFiXc@bergen.fjasle.eu>
-References: <20221222162535.1578462-1-masahiroy@kernel.org>
- <20221222162535.1578462-3-masahiroy@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NdqCz5CSTz3bVK
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Dec 2022 01:23:21 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1671805407; x=1703341407;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=ELTp1mLG7Y9aCL8aO+3yggqOoksNOYkU+LC/pmwgzyA=;
+  b=KmCVSsSkxdDFlcn2qGUcYwIEsAQOLBrl82ph7QdzrfPcKzWVJN6Q0H6X
+   pvbErSE/ViHyzddoTJzF4bkpF/ieOzJd5CBn5PiEoS6kCjEMc5/vY5KoE
+   Eg0pmGMnLn4a0qI5vCtaQ8hyo3gi4r5z6sac0AFcGOlcpIo6BFXv8YNaA
+   /iJzBpkEWWw32PMGToEn/ZzvuewJg9WDj9/Ay4sht/pL3w1cB6Ska9APj
+   ryc6m2waHNP3BeZifE3GB7h+3oHI0RK74ZbT4T64qqyP0nsrb0Vzp1W3N
+   yNQSLne0pFmrHR7KzD4+ZEnax6jGCpqvUiFYOfvjYNl87NOpg9s41PoF8
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10570"; a="322279542"
+X-IronPort-AV: E=Sophos;i="5.96,268,1665471600"; 
+   d="scan'208";a="322279542"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Dec 2022 06:23:18 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10570"; a="897539227"
+X-IronPort-AV: E=Sophos;i="5.96,268,1665471600"; 
+   d="scan'208";a="897539227"
+Received: from irvmail001.ir.intel.com ([10.43.11.63])
+  by fmsmga006.fm.intel.com with ESMTP; 23 Dec 2022 06:23:13 -0800
+Received: from newjersey.igk.intel.com (newjersey.igk.intel.com [10.102.20.203])
+	by irvmail001.ir.intel.com (8.14.3/8.13.6/MailSET/Hub) with ESMTP id 2BNENBXm013561;
+	Fri, 23 Dec 2022 14:23:11 GMT
+From: Alexander Lobakin <alexandr.lobakin@intel.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH 00/19] Introduce __xchg, non-atomic xchg
+Date: Fri, 23 Dec 2022 15:23:00 +0100
+Message-Id: <20221223142300.1820652-1-alexandr.lobakin@intel.com>
+X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20221222092147.d2bb177c67870884f2e59a9b@linux-foundation.org>
+References: <20221222114635.1251934-1-andrzej.hajda@intel.com> <20221222092147.d2bb177c67870884f2e59a9b@linux-foundation.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="MOyNmKm5mYc+g3ky"
-Content-Disposition: inline
-In-Reply-To: <20221222162535.1578462-3-masahiroy@kernel.org>
-Jabber-ID: nicolas@fjasle.eu
-X-Operating-System: Debian GNU/Linux bookworm/sid
-X-Provags-ID: V03:K1:Gt71Tj7jfrMEnuIBlN1aGujpmmp/GpuSdUh5qo5mNnf3e++ISDT
- AFT1CvhAB7vMd8Ig/nxGP9iMBXE073ttmIEJOIi8lc+KiCSG8bkCxAx3qRaeAJF5DdCqB2u
- vOcvTCKYT3m50DiFCBBUoONVkAzi12EBPMCrKvEpWg6XRyL5/Y21+Pev6joZPgRLMHTDLsX
- kVnnQBCDuR8CNBg+MtT3g==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:BjL5cjn846s=;z83r6XXJHIhGA5kkz9tAzMdYLFC
- ktAn0Cr1u3AKwrNJBkvtoMC8iofKwmDBi12d57OZKJJ5rjKBFAVPvliYzzYNEW8CsIRStrU/m
- Ih8tk7r38e+DcncUAe8XHvWJ2erbB1zJpt2rbJZ18SvLbCxBqL07udoM5LDUyY0BkTcKEr9yY
- 4X5rHyxrUQe59CO3DQzW+EBwQ6svy6xqvFezV8whCBoXPzO3xIJMWVKHRIknpge1GdUZd3zyW
- b16Ni48cotFR0w2TNnqy5xOdV1mrQ7LFQutiVVyZeuDlLXWgR9qvrudK0d+jpE03T+D60dnxy
- U2PYn7RcDqRnRahhQnJAbVuFjvAZ4LAtKiIFKXh8EhyWIObjCBcAL7p+xbrkQyaBs/OWCJNk5
- hhPzfZGi4wk3LrVewghlV/zEWKX8NQqInlJDXTbyLFomTz4JmvZwBJd5TcUiBu+UeQYfx2IOJ
- htgZYjtZ+HUMt7GdK4PqtjLUfSemLPEXryaglgALcJnbc8WEDKG4d9b54A8brVRmwf2LUaS5P
- sXFydKtjZjq8vYkvyLejoikqOjDfkBcKZcW1gntpD/2BtGbtDjQ7AB7BwqLCf/ZmonhfXOLLY
- +tNcyP3+zxAC6HeZAfZ3u7+3aqVS3SbVSPnOS5uNd6Hpd32xZf/1YWOLJmVSvRzCkVMYSRz4d
- HDafUDUaP4dl6DdMVKPafS2a6R8E71G8TyNX5IcS0LTff0Im89R9cGcubi2u1N5czWNsHyqah
- WUgfpH9DSqgdg4FwpGTU67l+Mt+jg2jmQ==
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Sat, 24 Dec 2022 09:19:43 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,54 +71,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Zeng Heng <zengheng4@huawei.com>, linuxppc-dev@lists.ozlabs.org, linux-doc@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, linux-kbuild@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org, David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org, Liam Howlett <liam.howlett@oracle.com>, David Woodhouse <dwmw2@infradead.org>
+Cc: Mark Rutland <mark.rutland@arm.com>, linux-m68k@vger.kernel.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, dri-devel@lists.freedesktop.org, linux-mips@vger.kernel.org, Andrzej Hajda <andrzej.hajda@intel.com>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-snps-arc@lists.infradead.org, Boqun Feng <boqun.feng@gmail.com>, linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>, intel-gfx@lists.freedesktop.org, openrisc@lists.librecores.org, Alexander Lobakin <alexandr.lobakin@intel.com>, loongarch@lists.linux.dev, Rodrigo Vivi <rodrigo.vivi@intel.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+From: Andrew Morton <akpm@linux-foundation.org>
+Date: Thu, 22 Dec 2022 09:21:47 -0800
 
---MOyNmKm5mYc+g3ky
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> On Thu, 22 Dec 2022 12:46:16 +0100 Andrzej Hajda <andrzej.hajda@intel.com> wrote:
+> 
+> > Hi all,
+> > 
+> > I hope there will be place for such tiny helper in kernel.
+> > Quick cocci analyze shows there is probably few thousands places
+> > where it could be useful.
+> 
+> So to clarify, the intent here is a simple readability cleanup for
+> existing open-coded exchange operations.  The intent is *not* to
+> identify existing xchg() sites which are unnecessarily atomic and to
+> optimize them by using the non-atomic version.
+> 
+> Have you considered the latter?
+> 
+> > I am not sure who is good person to review/ack such patches,
+> 
+> I can take 'em.
+> 
+> > so I've used my intuition to construct to/cc lists, sorry for mistakes.
+> > This is the 2nd approach of the same idea, with comments addressed[0].
+> > 
+> > The helper is tiny and there are advices we can leave without it, so
+> > I want to present few arguments why it would be good to have it:
+> > 
+> > 1. Code readability/simplification/number of lines:
+> > 
+> > Real example from drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c:
+> > -       previous_min_rate = evport->qos.min_rate;
+> > -       evport->qos.min_rate = min_rate;
+> > +       previous_min_rate = __xchg(evport->qos.min_rate, min_rate);
+> > 
+> > For sure the code is more compact, and IMHO more readable.
+> > 
+> > 2. Presence of similar helpers in other somehow related languages/libs:
+> > 
+> > a) Rust[1]: 'replace' from std::mem module, there is also 'take'
+> >     helper (__xchg(&x, 0)), which is the same as private helper in
+> >     i915 - fetch_and_zero, see latest patch.
+> > b) C++ [2]: 'exchange' from utility header.
+> > 
+> > If the idea is OK there are still 2 qestions to answer:
+> > 
+> > 1. Name of the helper, __xchg follows kernel conventions,
+> >     but for me Rust names are also OK.
+> 
+> I like replace(), or, shockingly, exchange().
+> 
+> But...   Can we simply make swap() return the previous value?
+> 
+> 	previous_min_rate = swap(&evport->qos.min_rate, min_rate);
 
-On Fri 23 Dec 2022 01:25:33 GMT, Masahiro Yamada wrote:
-> Some scripts increase the verbose level when V=3D1, but others when
-> not V=3D0.
->=20
-> I think the former is correct because V=3D2 is not a log level but
-> a switch to print the reason for rebuilding.
->=20
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-> ---
->=20
->  Documentation/Makefile                 | 2 +-
->  arch/powerpc/kernel/prom_init_check.sh | 9 ++++-----
->  certs/extract-cert.c                   | 9 ++++++---
->  scripts/asn1_compiler.c                | 4 ++--
->  scripts/kernel-doc                     | 4 ++--
->  5 files changed, 15 insertions(+), 13 deletions(-)
->=20
+Unforunately, swap()'s arguments get passed by names, not as
+pointers, so you can't do
 
-Reviewed-by: Nicolas Schier <nicolas@fjasle.eu>
+	swap(some_ptr, NULL);
 
---MOyNmKm5mYc+g3ky
-Content-Type: application/pgp-signature; name="signature.asc"
+ -- pretty common pattern for xchg.
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEh0E3p4c3JKeBvsLGB1IKcBYmEmkFAmOlj8YACgkQB1IKcBYm
-EmkVNw/8CL/ubhKUFMOA9zeW/scQHRiMh6alvKn8TaMvoJ+htOm/riO0zQ7fzTkZ
-7JffTDASXN2SL0Pwll404qStccCWgdYRK1W39DJ4/7eRXdfWoiEVNuRb5L1R33CN
-N7qCeW+odreG1nikMMQe2mpJDoib7bgWRTGvC5iB1yqxVX7kGVE8fCx2OFjgqqwG
-dxQz4REyJl8Gjxe3WOPcZdsFtAwA2tczeTepngKiAZjciUMj6zBcIuooDzDUyTwN
-86GDkLq4CEOmmbYb1ASeASyHsrYEQax2sgAZbgUcR6uGlrAzAeJpmb/uDETFOTbn
-ixAay3fFdnzXRO9+o5JvCHFH1crlCgnpgNtimTiknxNyHq1WRjZ/4vsAF59IRT8W
-bcY3xokEhNMRpCselInHWeR7ZWaIOQv8+FC24fmqznyGeqeGrkW+NZ94QyNpuR7O
-gx1NG6jBrXBLP/QJz9vrLF/P4oAGpGN+hAqYvAnwn8FLHwFCNdCoyzuQU36t9EOp
-mMcFbY6o/eFEU7d9TYMrj236YCSeYDBMNQAb0il4Ow/JGubX5SoC565WBm/zJxao
-4xm0uve1jNz9i5CGsTljRbSPNLthHdoATqfGNvVjN4uVsE1FEcTXqH3ynQcFzFO5
-TBETLnZQM3HlHrpHS/ONO0dVyHcCdOVtsckOh4VwtD6AKtCHcTs=
-=iH0k
------END PGP SIGNATURE-----
-
---MOyNmKm5mYc+g3ky--
+Thanks,
+Olek
