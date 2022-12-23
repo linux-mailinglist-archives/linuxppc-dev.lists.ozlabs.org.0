@@ -1,64 +1,46 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 203536554EF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Dec 2022 23:20:32 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6A516554F0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Dec 2022 23:21:05 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Nf1pQ0ND8z30RT
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Dec 2022 09:20:30 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=KmCVSsSk;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Nf1q35H9yz3cJB
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Dec 2022 09:21:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.65; helo=mga03.intel.com; envelope-from=alexandr.lobakin@intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=KmCVSsSk;
-	dkim-atps=neutral
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=astralinux.ru (client-ip=217.74.38.119; helo=mail.astralinux.ru; envelope-from=eesina@astralinux.ru; receiver=<UNKNOWN>)
+X-Greylist: delayed 479 seconds by postgrey-1.36 at boromir; Sat, 24 Dec 2022 01:41:27 AEDT
+Received: from mail.astralinux.ru (mail.astralinux.ru [217.74.38.119])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NdqCz5CSTz3bVK
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Dec 2022 01:23:21 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1671805407; x=1703341407;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=ELTp1mLG7Y9aCL8aO+3yggqOoksNOYkU+LC/pmwgzyA=;
-  b=KmCVSsSkxdDFlcn2qGUcYwIEsAQOLBrl82ph7QdzrfPcKzWVJN6Q0H6X
-   pvbErSE/ViHyzddoTJzF4bkpF/ieOzJd5CBn5PiEoS6kCjEMc5/vY5KoE
-   Eg0pmGMnLn4a0qI5vCtaQ8hyo3gi4r5z6sac0AFcGOlcpIo6BFXv8YNaA
-   /iJzBpkEWWw32PMGToEn/ZzvuewJg9WDj9/Ay4sht/pL3w1cB6Ska9APj
-   ryc6m2waHNP3BeZifE3GB7h+3oHI0RK74ZbT4T64qqyP0nsrb0Vzp1W3N
-   yNQSLne0pFmrHR7KzD4+ZEnax6jGCpqvUiFYOfvjYNl87NOpg9s41PoF8
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10570"; a="322279542"
-X-IronPort-AV: E=Sophos;i="5.96,268,1665471600"; 
-   d="scan'208";a="322279542"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Dec 2022 06:23:18 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10570"; a="897539227"
-X-IronPort-AV: E=Sophos;i="5.96,268,1665471600"; 
-   d="scan'208";a="897539227"
-Received: from irvmail001.ir.intel.com ([10.43.11.63])
-  by fmsmga006.fm.intel.com with ESMTP; 23 Dec 2022 06:23:13 -0800
-Received: from newjersey.igk.intel.com (newjersey.igk.intel.com [10.102.20.203])
-	by irvmail001.ir.intel.com (8.14.3/8.13.6/MailSET/Hub) with ESMTP id 2BNENBXm013561;
-	Fri, 23 Dec 2022 14:23:11 GMT
-From: Alexander Lobakin <alexandr.lobakin@intel.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 00/19] Introduce __xchg, non-atomic xchg
-Date: Fri, 23 Dec 2022 15:23:00 +0100
-Message-Id: <20221223142300.1820652-1-alexandr.lobakin@intel.com>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20221222092147.d2bb177c67870884f2e59a9b@linux-foundation.org>
-References: <20221222114635.1251934-1-andrzej.hajda@intel.com> <20221222092147.d2bb177c67870884f2e59a9b@linux-foundation.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ndqcl2pP3z3bWZ
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Dec 2022 01:41:27 +1100 (AEDT)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.astralinux.ru (Postfix) with ESMTP id A8D211864455;
+	Fri, 23 Dec 2022 17:33:18 +0300 (MSK)
+Received: from mail.astralinux.ru ([127.0.0.1])
+	by localhost (rbta-msk-vsrv-mail01.astralinux.ru [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id UFprKO6oY6NS; Fri, 23 Dec 2022 17:33:18 +0300 (MSK)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.astralinux.ru (Postfix) with ESMTP id 5CF381864449;
+	Fri, 23 Dec 2022 17:33:18 +0300 (MSK)
+X-Virus-Scanned: amavisd-new at astralinux.ru
+Received: from mail.astralinux.ru ([127.0.0.1])
+	by localhost (rbta-msk-vsrv-mail01.astralinux.ru [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id oLOt4vvLP2u6; Fri, 23 Dec 2022 17:33:18 +0300 (MSK)
+Received: from localhost.localdomain (unknown [213.87.131.26])
+	by mail.astralinux.ru (Postfix) with ESMTPSA id 1EAF0186441A;
+	Fri, 23 Dec 2022 17:33:17 +0300 (MSK)
+From: Ekaterina Esina <eesina@astralinux.ru>
+To: Zhao Qiang <qiang.zhao@nxp.com>
+Subject: [PATCH] net-wan: Add check for NULL for utdm in ucc_hdlc_probe
+Date: Fri, 23 Dec 2022 17:32:25 +0300
+Message-Id: <20221223143225.23153-1-eesina@astralinux.ru>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 X-Mailman-Approved-At: Sat, 24 Dec 2022 09:19:43 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -71,71 +53,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, linux-m68k@vger.kernel.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, dri-devel@lists.freedesktop.org, linux-mips@vger.kernel.org, Andrzej Hajda <andrzej.hajda@intel.com>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-snps-arc@lists.infradead.org, Boqun Feng <boqun.feng@gmail.com>, linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>, intel-gfx@lists.freedesktop.org, openrisc@lists.librecores.org, Alexander Lobakin <alexandr.lobakin@intel.com>, loongarch@lists.linux.dev, Rodrigo Vivi <rodrigo.vivi@intel.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: lvc-project@linuxtesting.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>, Ekaterina Esina <eesina@astralinux.ru>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Andrew Morton <akpm@linux-foundation.org>
-Date: Thu, 22 Dec 2022 09:21:47 -0800
+If uhdlc_priv_tsa !=3D 1 then utdm is not initialized.
+And if ret !=3D NULL then goto undo_uhdlc_init, where utdm is dereference=
+d.
+Same if dev =3D=3D NULL.
 
-> On Thu, 22 Dec 2022 12:46:16 +0100 Andrzej Hajda <andrzej.hajda@intel.com> wrote:
-> 
-> > Hi all,
-> > 
-> > I hope there will be place for such tiny helper in kernel.
-> > Quick cocci analyze shows there is probably few thousands places
-> > where it could be useful.
-> 
-> So to clarify, the intent here is a simple readability cleanup for
-> existing open-coded exchange operations.  The intent is *not* to
-> identify existing xchg() sites which are unnecessarily atomic and to
-> optimize them by using the non-atomic version.
-> 
-> Have you considered the latter?
-> 
-> > I am not sure who is good person to review/ack such patches,
-> 
-> I can take 'em.
-> 
-> > so I've used my intuition to construct to/cc lists, sorry for mistakes.
-> > This is the 2nd approach of the same idea, with comments addressed[0].
-> > 
-> > The helper is tiny and there are advices we can leave without it, so
-> > I want to present few arguments why it would be good to have it:
-> > 
-> > 1. Code readability/simplification/number of lines:
-> > 
-> > Real example from drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c:
-> > -       previous_min_rate = evport->qos.min_rate;
-> > -       evport->qos.min_rate = min_rate;
-> > +       previous_min_rate = __xchg(evport->qos.min_rate, min_rate);
-> > 
-> > For sure the code is more compact, and IMHO more readable.
-> > 
-> > 2. Presence of similar helpers in other somehow related languages/libs:
-> > 
-> > a) Rust[1]: 'replace' from std::mem module, there is also 'take'
-> >     helper (__xchg(&x, 0)), which is the same as private helper in
-> >     i915 - fetch_and_zero, see latest patch.
-> > b) C++ [2]: 'exchange' from utility header.
-> > 
-> > If the idea is OK there are still 2 qestions to answer:
-> > 
-> > 1. Name of the helper, __xchg follows kernel conventions,
-> >     but for me Rust names are also OK.
-> 
-> I like replace(), or, shockingly, exchange().
-> 
-> But...   Can we simply make swap() return the previous value?
-> 
-> 	previous_min_rate = swap(&evport->qos.min_rate, min_rate);
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Unforunately, swap()'s arguments get passed by names, not as
-pointers, so you can't do
+Signed-off-by: Ekaterina Esina <eesina@astralinux.ru>
+---
+ drivers/net/wan/fsl_ucc_hdlc.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-	swap(some_ptr, NULL);
+diff --git a/drivers/net/wan/fsl_ucc_hdlc.c b/drivers/net/wan/fsl_ucc_hdl=
+c.c
+index 22edea6ca4b8..2ddb0f71e648 100644
+--- a/drivers/net/wan/fsl_ucc_hdlc.c
++++ b/drivers/net/wan/fsl_ucc_hdlc.c
+@@ -1243,7 +1243,9 @@ static int ucc_hdlc_probe(struct platform_device *p=
+dev)
+ free_dev:
+ 	free_netdev(dev);
+ undo_uhdlc_init:
+-	iounmap(utdm->siram);
++	if (utdm !=3D NULL) {
++		iounmap(utdm->siram);
++	}
+ unmap_si_regs:
+ 	iounmap(utdm->si_regs);
+ free_utdm:
+--=20
+2.30.2
 
- -- pretty common pattern for xchg.
-
-Thanks,
-Olek
