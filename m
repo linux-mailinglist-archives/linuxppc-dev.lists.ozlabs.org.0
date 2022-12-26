@@ -1,59 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8750A656256
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Dec 2022 12:59:08 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C944656534
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Dec 2022 22:55:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ngbt1480fz3c4x
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Dec 2022 22:59:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ngs5d2fmjz3c6R
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Dec 2022 08:55:01 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qQZGAToo;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HIJYh6pS;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.43; helo=mga05.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qQZGAToo;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HIJYh6pS;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ngbs40pVXz2xdx
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Dec 2022 22:58:16 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id BD005B80D19;
-	Mon, 26 Dec 2022 11:58:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53192C433D2;
-	Mon, 26 Dec 2022 11:58:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1672055889;
-	bh=wSULAFQ9o5Qp1ccx8+zFcSC7eqa2jblW+biQlW4dd/M=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qQZGATooaviZFEzyHo6BhgpTzbgiQvZ3C+MdkxcjwL86SBfGoTwvj709nXOGCuQOZ
-	 PrWV/ykpvtM+Pvf9xI4MiyoYs2ChMDqNvO4cW6NNV8yhEkwfSppjiVBj/kEaE81st5
-	 8XLNa+GSNckqD38g2ALoU0XBYAUSYXIyHOoCkp5ritRa6vG8iBg7ycGvuH53cQBnNl
-	 0IbVpB2NEeC5+27UuzP8hPRfQQs7QfvKgXNFo4RbekuFnUVeS1/27c0k+qhPp3LmZh
-	 GhJAlsvmLNuovjJMWK0LAGNmYr3BuK0eUkwHbQfBnhiY1IOvjz7MJt0xcbSwDyUZbt
-	 zYD/nAkxvbl7g==
-Received: by pali.im (Postfix)
-	id CE4AA77D; Mon, 26 Dec 2022 12:58:06 +0100 (CET)
-From: =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>
-To: "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Sebastian Reichel <sre@kernel.org>
-Subject: [PATCH v4 3/3] powerpc: dts: turris1x.dts: Set lower priority for CPLD syscon-reboot
-Date: Mon, 26 Dec 2022 12:45:13 +0100
-Message-Id: <20221226114513.4569-3-pali@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20221226114513.4569-1-pali@kernel.org>
-References: <20220820102925.29476-1-pali@kernel.org>
- <20221226114513.4569-1-pali@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ngs4h5RGSz2xtv
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Dec 2022 08:54:06 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1672091652; x=1703627652;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=LcDeqoeQVQnFDY3jF+hFvVOJPiviZWPNvp0zbrDM73E=;
+  b=HIJYh6pS/m5mCKRKhH9FNsMwaZWDmeauRJaHseVg9YfCYbcVCm/DUv5V
+   mWH8afYh7EhwMkcfnxCZAxMmIHDRP58T99Bg1E/wh6SY1df4Zmt2TIE4N
+   wbQMF+3AehtfBl7pOSzMXNH7i4Meiz8MAY4f5oLL6nWZAXkywc6rSEmM5
+   CxAulkQ+STO7A3eJfiOfLVo3ja0KIXUOEAbHdS5Ef2A7PkfDqZ4i6hnXa
+   5P+dgJ3Tz/FKSDa4ohxbGMPfRbXQJfvB6bgSm3lxJnmj2IGMiRTDGvWEK
+   s+JOSfQkWiPdLmIxiVw9Xm1D2fyCJqELIsiL+tryb4FZ0i/SOnedT56Zq
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10572"; a="406875677"
+X-IronPort-AV: E=Sophos;i="5.96,276,1665471600"; 
+   d="scan'208";a="406875677"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Dec 2022 13:54:02 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10572"; a="654840880"
+X-IronPort-AV: E=Sophos;i="5.96,276,1665471600"; 
+   d="scan'208";a="654840880"
+Received: from lkp-server01.sh.intel.com (HELO b5d47979f3ad) ([10.239.97.150])
+  by fmsmga007.fm.intel.com with ESMTP; 26 Dec 2022 13:54:01 -0800
+Received: from kbuild by b5d47979f3ad with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1p9vQ0-000Eg1-1k;
+	Mon, 26 Dec 2022 21:54:00 +0000
+Date: Tue, 27 Dec 2022 05:53:55 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:merge] BUILD SUCCESS
+ 10d7f30201f3ebe724c30ab2cc0d9d1b9684146c
+Message-ID: <63aa17f3.s3yRH6x+TsQfxvkf%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,60 +70,110 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Due to CPLD firmware bugs, set CPLD syscon-reboot priority level to 64
-(between rstcr and watchdog) to ensure that rstcr's global-utilities reset
-method which is preferred stay as default one, and to ensure that CPLD
-syscon-reboot is more preferred than watchdog reset method.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
+branch HEAD: 10d7f30201f3ebe724c30ab2cc0d9d1b9684146c  Automatic merge of 'master' into merge (2022-12-26 20:31)
 
-Fixes: 0531a4abd1c6 ("powerpc: dts: turris1x.dts: Add CPLD reboot node")
-Signed-off-by: Pali Rohár <pali@kernel.org>
----
- arch/powerpc/boot/dts/turris1x.dts | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+elapsed time: 722m
 
-diff --git a/arch/powerpc/boot/dts/turris1x.dts b/arch/powerpc/boot/dts/turris1x.dts
-index e9cda34a140e..c9b619f6ed5c 100644
---- a/arch/powerpc/boot/dts/turris1x.dts
-+++ b/arch/powerpc/boot/dts/turris1x.dts
-@@ -367,11 +367,34 @@
- 			};
- 
- 			reboot@d {
-+				/*
-+				 * CPLD firmware which manages system reset and
-+				 * watchdog registers has bugs. It does not
-+				 * autoclear system reset register after change
-+				 * and watchdog ignores reset line on immediate
-+				 * succeeding reset cycle triggered by watchdog.
-+				 * These bugs have to be workarounded in U-Boot
-+				 * bootloader. So use system reset via syscon as
-+				 * a last resort because older U-Boot versions
-+				 * do not have workaround for watchdog.
-+				 *
-+				 * Reset method via rstcr's global-utilities
-+				 * (the preferred one) has priority level 128,
-+				 * watchdog has priority level 0 and default
-+				 * syscon-reboot priority level is 192.
-+				 *
-+				 * So define syscon-reboot with custom priority
-+				 * level 64 (between rstcr and watchdog) because
-+				 * rstcr should stay as default preferred reset
-+				 * method and reset via watchdog is more broken
-+				 * than system reset via syscon.
-+				 */
- 				compatible = "syscon-reboot";
- 				reg = <0x0d 0x01>;
- 				offset = <0x0d>;
- 				mask = <0x01>;
- 				value = <0x01>;
-+				priority = <64>;
- 			};
- 
- 			led-controller@13 {
+configs tested: 85
+configs skipped: 4
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+um                             i386_defconfig
+um                           x86_64_defconfig
+arc                                 defconfig
+alpha                               defconfig
+powerpc                           allnoconfig
+i386                 randconfig-a012-20221226
+s390                             allmodconfig
+i386                 randconfig-a011-20221226
+i386                 randconfig-a013-20221226
+s390                                defconfig
+i386                 randconfig-a014-20221226
+x86_64                           rhel-8.3-bpf
+x86_64                           rhel-8.3-syz
+i386                 randconfig-a016-20221226
+i386                                defconfig
+x86_64                         rhel-8.3-kunit
+i386                 randconfig-a015-20221226
+x86_64                           rhel-8.3-kvm
+s390                             allyesconfig
+arm                  randconfig-r046-20221225
+arc                  randconfig-r043-20221225
+arc                  randconfig-r043-20221226
+sh                               allmodconfig
+riscv                randconfig-r042-20221226
+s390                 randconfig-r044-20221226
+mips                             allyesconfig
+ia64                             allmodconfig
+powerpc                          allmodconfig
+i386                             allyesconfig
+x86_64                          rhel-8.3-func
+x86_64               randconfig-a014-20221226
+x86_64               randconfig-a013-20221226
+x86_64               randconfig-a011-20221226
+x86_64                              defconfig
+x86_64               randconfig-a012-20221226
+x86_64                    rhel-8.3-kselftests
+arm                                 defconfig
+x86_64               randconfig-a015-20221226
+x86_64               randconfig-a016-20221226
+arm                              allyesconfig
+arm64                            allyesconfig
+x86_64                               rhel-8.3
+powerpc                     rainier_defconfig
+sh                ecovec24-romimage_defconfig
+arm                        multi_v7_defconfig
+x86_64                           allyesconfig
+x86_64                            allnoconfig
+m68k                             allyesconfig
+parisc                           alldefconfig
+arm                          badge4_defconfig
+m68k                             allmodconfig
+powerpc                     mpc83xx_defconfig
+alpha                            allyesconfig
+sh                          rsk7201_defconfig
+arc                              allyesconfig
+mips                     decstation_defconfig
+arm                            zeus_defconfig
+powerpc                       eiger_defconfig
+s390                       zfcpdump_defconfig
+sh                           se7751_defconfig
+
+clang tested configs:
+i386                 randconfig-a001-20221226
+i386                 randconfig-a003-20221226
+i386                 randconfig-a002-20221226
+hexagon              randconfig-r045-20221225
+i386                 randconfig-a006-20221226
+hexagon              randconfig-r041-20221225
+i386                 randconfig-a005-20221226
+i386                 randconfig-a004-20221226
+hexagon              randconfig-r041-20221226
+arm                  randconfig-r046-20221226
+s390                 randconfig-r044-20221225
+hexagon              randconfig-r045-20221226
+riscv                randconfig-r042-20221225
+x86_64                          rhel-8.3-rust
+x86_64               randconfig-a002-20221226
+x86_64               randconfig-a003-20221226
+x86_64               randconfig-a001-20221226
+x86_64               randconfig-a004-20221226
+x86_64               randconfig-a005-20221226
+x86_64               randconfig-a006-20221226
+arm                         orion5x_defconfig
+powerpc                      ppc44x_defconfig
+mips                     loongson2k_defconfig
+powerpc                     mpc5200_defconfig
+arm                        vexpress_defconfig
+
 -- 
-2.20.1
-
+0-DAY CI Kernel Test Service
+https://01.org/lkp
