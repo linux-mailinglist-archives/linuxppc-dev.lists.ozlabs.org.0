@@ -2,55 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D08F656E11
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Dec 2022 19:49:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A97F656EBB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Dec 2022 21:34:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NhNwg2TRwz3c6R
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Dec 2022 05:49:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NhRG36DNFz3c7N
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Dec 2022 07:34:19 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Lo1YFgc4;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UNjlLifk;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=nathan@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Lo1YFgc4;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UNjlLifk;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NhNvj1SYSz304m
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Dec 2022 05:48:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NhRF52my4z2ym7
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Dec 2022 07:33:29 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id AA7A0611D3;
-	Tue, 27 Dec 2022 18:48:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D088C433D2;
-	Tue, 27 Dec 2022 18:48:12 +0000 (UTC)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 07490B81023;
+	Tue, 27 Dec 2022 20:33:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72BFFC43396;
+	Tue, 27 Dec 2022 20:33:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1672166893;
-	bh=jC+G6KggctyJl19lPvX6acqHjopjAKeOdWYT4ODLTZU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Lo1YFgc4wMO579CEmwBJteC/WRWHqg6NmNoHdgr2Myntqw6NsJ/QboLSBLlG0/wQl
-	 GNxFtfJuBD1zNW0kzFB0gkOFhWDXP7vftCIm8u80vENUIrb/sF3LRupDlqdpM7mH8p
-	 Spu9aRXzzs5wSCaFWUx0HinsGxFdV1WgK4abqeTTyC4fyNYrPd6N5EXj06jxX81NYI
-	 hl8HBlrrxBvlWkP7lFICUXqtL7HIHU5/Fh8fT8AxhPEir4aAaHqYdTrPahC6IoZctI
-	 OOIVJmRn7TjXDhhk9ne82b53glBkRNIvZO4zUJaZWpWsVpawEz/rsxgxxNgnkOxk7w
-	 zNVuI+iJztoZw==
-Date: Tue, 27 Dec 2022 11:48:10 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Helge Deller <deller@gmx.de>
-Subject: Re: [PATCH] fbdev: make offb driver tristate
-Message-ID: <Y6s96iuc3NRN5tS4@dev-arch.thelio-3990X>
-References: <20221126000401.25302-1-rdunlap@infradead.org>
- <46e8cf0d-ab47-59b1-6c87-53d2d63a5bf6@suse.de>
- <f8c6eb94-10ee-07a8-ea48-d4fae60fc9ae@gmx.de>
+	s=k20201202; t=1672173203;
+	bh=BrDUbIrVoW2BUe2qufHgJh+G9VbCZValrLnWyScWb6Q=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=UNjlLifk6wXmuOGsmEh3u/46gwSrkGvBaOrzHdoRXszmxDXZ4BgeKjwp/j7WJnUAy
+	 nUizh1dbugEmgOGLJfVqkBhnR3u8lQjXbWPsJIST1kM24AWDcubVV7IFngr+PW7Z8B
+	 Ks97WgFsSu+Zj1deIlIRCsGQTorUJ37uHr5sNsOoF2oM57K61FAVgoy0gc/bhviqj7
+	 SCZ6P/+hF3n0o7hl0O9d+bveYp20/djLSqbXHNWfStyWhgLvyjYmciuH/OUQm0A8LV
+	 3cDGCag4PtA8wRbunsw+44Snw5WoiCeJORjUAn3MJ/Q+cUdT5Ji2kcIeMMdTcWQ/f3
+	 S8cPnEZ1OXc3w==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 21/28] powerpc/rtas: avoid device tree lookups in rtas_os_term()
+Date: Tue, 27 Dec 2022 15:32:42 -0500
+Message-Id: <20221227203249.1213526-21-sashal@kernel.org>
+X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20221227203249.1213526-1-sashal@kernel.org>
+References: <20221227203249.1213526-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <f8c6eb94-10ee-07a8-ea48-d4fae60fc9ae@gmx.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,71 +62,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-fbdev@vger.kernel.org, llvm@lists.linux.dev, Daniel Vetter <daniel@ffwll.ch>, Arnd Bergmann <arnd@arndb.de>, Masahiro Yamada <masahiroy@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, Thomas Zimmermann <tzimmermann@suse.de>, Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>, linuxppc-dev@lists.ozlabs.org
+Cc: Nathan Lynch <nathanl@linux.ibm.com>, Sasha Levin <sashal@kernel.org>, Andrew Donnellan <ajd@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, sourabhjain@linux.ibm.com, ldufour@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Dec 10, 2022 at 05:35:06PM +0100, Helge Deller wrote:
-> On 11/26/22 14:40, Thomas Zimmermann wrote:
-> > Am 26.11.22 um 01:04 schrieb Randy Dunlap:
-> > > Make the offb (Open Firmware frame buffer) driver tristate,
-> > > i.e., so that it can be built as a loadable module.
-> > > 
-> > > However, it still depends on the setting of DRM_OFDRM
-> > > so that both of these drivers cannot be builtin at the same time
-> > > nor can one be builtin and the other one a loadable module.
-> > > 
-> > > Build-tested successfully with all combination of DRM_OFDRM and FB_OF.
-> > > 
-> > > This fixes a build issue that Michal reported when FB_OF=y and
-> > > DRM_OFDRM=m:
-> > > 
-> > > powerpc64-linux-ld: drivers/video/fbdev/offb.o:(.data.rel.ro+0x58): undefined reference to `cfb_fillrect'
-> > > powerpc64-linux-ld: drivers/video/fbdev/offb.o:(.data.rel.ro+0x60): undefined reference to `cfb_copyarea'
-> > > powerpc64-linux-ld: drivers/video/fbdev/offb.o:(.data.rel.ro+0x68): undefined reference to `cfb_imageblit'
-> > > 
-> > > Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> > > Suggested-by: Arnd Bergmann <arnd@arndb.de>
-> > > Cc: Masahiro Yamada <masahiroy@kernel.org>
-> > > Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> > > Cc: Michal Suchánek <msuchanek@suse.de>
-> > > Cc: linuxppc-dev@lists.ozlabs.org
-> > > Cc: Daniel Vetter <daniel@ffwll.ch>
-> > > Cc: Helge Deller <deller@gmx.de>
-> > > Cc: linux-fbdev@vger.kernel.org
-> > > Cc: dri-devel@lists.freedesktop.org
-> > 
-> > Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
-> 
-> applied.
+From: Nathan Lynch <nathanl@linux.ibm.com>
 
-Is this going to make it to Linus soon? We are now seeing this error in
-our CI, which has the configuration describe in this commit.
+[ Upstream commit ed2213bfb192ab51f09f12e9b49b5d482c6493f3 ]
 
-https://github.com/ClangBuiltLinux/continuous-integration2/actions/runs/3785609002/jobs/6437398666#step:5:149
+rtas_os_term() is called during panic. Its behavior depends on a couple
+of conditions in the /rtas node of the device tree, the traversal of
+which entails locking and local IRQ state changes. If the kernel panics
+while devtree_lock is held, rtas_os_term() as currently written could
+hang.
 
-https://storage.tuxsuite.com/public/clangbuiltlinux/continuous-integration2/builds/2JUMSmjAoSJoKfl6PPjfU66JGit/build.log
+Instead of discovering the relevant characteristics at panic time,
+cache them in file-static variables at boot. Note the lookup for
+"ibm,extended-os-term" is converted to of_property_read_bool() since it
+is a boolean property, not an RTAS function token.
 
-Cheers,
-Nathan
+Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
+[mpe: Incorporate suggested change from Nick]
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/20221118150751.469393-4-nathanl@linux.ibm.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/powerpc/kernel/rtas.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-> > > ---
-> > >   drivers/video/fbdev/Kconfig |    4 ++--
-> > >   1 file changed, 2 insertions(+), 2 deletions(-)
-> > > 
-> > > diff -- a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
-> > > --- a/drivers/video/fbdev/Kconfig
-> > > +++ b/drivers/video/fbdev/Kconfig
-> > > @@ -456,8 +456,8 @@ config FB_ATARI
-> > >         chipset found in Ataris.
-> > >   config FB_OF
-> > > -    bool "Open Firmware frame buffer device support"
-> > > -    depends on (FB = y) && PPC && (!PPC_PSERIES || PCI)
-> > > +    tristate "Open Firmware frame buffer device support"
-> > > +    depends on FB && PPC && (!PPC_PSERIES || PCI)
-> > >       depends on !DRM_OFDRM
-> > >       select APERTURE_HELPERS
-> > >       select FB_CFB_FILLRECT
-> > 
-> 
-> 
+diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
+index e847f9b1c5b9..6b5f49c9ad79 100644
+--- a/arch/powerpc/kernel/rtas.c
++++ b/arch/powerpc/kernel/rtas.c
+@@ -889,6 +889,7 @@ void __noreturn rtas_halt(void)
+ 
+ /* Must be in the RMO region, so we place it here */
+ static char rtas_os_term_buf[2048];
++static s32 ibm_os_term_token = RTAS_UNKNOWN_SERVICE;
+ 
+ void rtas_os_term(char *str)
+ {
+@@ -900,14 +901,13 @@ void rtas_os_term(char *str)
+ 	 * this property may terminate the partition which we want to avoid
+ 	 * since it interferes with panic_timeout.
+ 	 */
+-	if (RTAS_UNKNOWN_SERVICE == rtas_token("ibm,os-term") ||
+-	    RTAS_UNKNOWN_SERVICE == rtas_token("ibm,extended-os-term"))
++	if (ibm_os_term_token == RTAS_UNKNOWN_SERVICE)
+ 		return;
+ 
+ 	snprintf(rtas_os_term_buf, 2048, "OS panic: %s", str);
+ 
+ 	do {
+-		status = rtas_call(rtas_token("ibm,os-term"), 1, 1, NULL,
++		status = rtas_call(ibm_os_term_token, 1, 1, NULL,
+ 				   __pa(rtas_os_term_buf));
+ 	} while (rtas_busy_delay(status));
+ 
+@@ -1277,6 +1277,13 @@ void __init rtas_initialize(void)
+ 	no_entry = of_property_read_u32(rtas.dev, "linux,rtas-entry", &entry);
+ 	rtas.entry = no_entry ? rtas.base : entry;
+ 
++	/*
++	 * Discover these now to avoid device tree lookups in the
++	 * panic path.
++	 */
++	if (of_property_read_bool(rtas.dev, "ibm,extended-os-term"))
++		ibm_os_term_token = rtas_token("ibm,os-term");
++
+ 	/* If RTAS was found, allocate the RMO buffer for it and look for
+ 	 * the stop-self token if any
+ 	 */
+-- 
+2.35.1
+
