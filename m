@@ -2,63 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C944656534
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Dec 2022 22:55:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F012F65687C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Dec 2022 09:36:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ngs5d2fmjz3c6R
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Dec 2022 08:55:01 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HIJYh6pS;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Nh7KJ0fr5z3c9r
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Dec 2022 19:36:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.43; helo=mga05.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HIJYh6pS;
-	dkim-atps=neutral
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux-m68k.org (client-ip=2a02:1800:120:4::f00:11; helo=gauss.telenet-ops.be; envelope-from=geert@linux-m68k.org; receiver=<UNKNOWN>)
+Received: from gauss.telenet-ops.be (gauss.telenet-ops.be [IPv6:2a02:1800:120:4::f00:11])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ngs4h5RGSz2xtv
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Dec 2022 08:54:06 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1672091652; x=1703627652;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=LcDeqoeQVQnFDY3jF+hFvVOJPiviZWPNvp0zbrDM73E=;
-  b=HIJYh6pS/m5mCKRKhH9FNsMwaZWDmeauRJaHseVg9YfCYbcVCm/DUv5V
-   mWH8afYh7EhwMkcfnxCZAxMmIHDRP58T99Bg1E/wh6SY1df4Zmt2TIE4N
-   wbQMF+3AehtfBl7pOSzMXNH7i4Meiz8MAY4f5oLL6nWZAXkywc6rSEmM5
-   CxAulkQ+STO7A3eJfiOfLVo3ja0KIXUOEAbHdS5Ef2A7PkfDqZ4i6hnXa
-   5P+dgJ3Tz/FKSDa4ohxbGMPfRbXQJfvB6bgSm3lxJnmj2IGMiRTDGvWEK
-   s+JOSfQkWiPdLmIxiVw9Xm1D2fyCJqELIsiL+tryb4FZ0i/SOnedT56Zq
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10572"; a="406875677"
-X-IronPort-AV: E=Sophos;i="5.96,276,1665471600"; 
-   d="scan'208";a="406875677"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Dec 2022 13:54:02 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10572"; a="654840880"
-X-IronPort-AV: E=Sophos;i="5.96,276,1665471600"; 
-   d="scan'208";a="654840880"
-Received: from lkp-server01.sh.intel.com (HELO b5d47979f3ad) ([10.239.97.150])
-  by fmsmga007.fm.intel.com with ESMTP; 26 Dec 2022 13:54:01 -0800
-Received: from kbuild by b5d47979f3ad with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1p9vQ0-000Eg1-1k;
-	Mon, 26 Dec 2022 21:54:00 +0000
-Date: Tue, 27 Dec 2022 05:53:55 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:merge] BUILD SUCCESS
- 10d7f30201f3ebe724c30ab2cc0d9d1b9684146c
-Message-ID: <63aa17f3.s3yRH6x+TsQfxvkf%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nh7Jg1vcKz2xJR
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Dec 2022 19:35:28 +1100 (AEDT)
+Received: from albert.telenet-ops.be (albert.telenet-ops.be [IPv6:2a02:1800:110:4::f00:1a])
+	by gauss.telenet-ops.be (Postfix) with ESMTPS id 4Nh7JR5sNvz4x0Hx
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Dec 2022 09:35:19 +0100 (CET)
+Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed10:312a:feb:527f:f392])
+	by albert.telenet-ops.be with bizsmtp
+	id 1LbH290023T8eJe06LbH8w; Tue, 27 Dec 2022 09:35:19 +0100
+Received: from geert (helo=localhost)
+	by ramsan.of.borg with local-esmtp (Exim 4.93)
+	(envelope-from <geert@linux-m68k.org>)
+	id 1pA5Qa-001J4O-Tj; Tue, 27 Dec 2022 09:35:16 +0100
+Date: Tue, 27 Dec 2022 09:35:16 +0100 (CET)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+X-X-Sender: geert@ramsan.of.borg
+To: linux-kernel@vger.kernel.org
+Subject: Re: Build regressions/improvements in v6.2-rc1
+In-Reply-To: <20221227082932.798359-1-geert@linux-m68k.org>
+Message-ID: <alpine.DEB.2.22.394.2212270933530.311423@ramsan.of.borg>
+References: <CAHk-=wgf929uGOVpiWALPyC7pv_9KbwB2EAvQ3C4woshZZ5zqQ@mail.gmail.com> <20221227082932.798359-1-geert@linux-m68k.org>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="8323329-1893319093-1672130116=:311423"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,110 +48,95 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-xtensa@linux-xtensa.org, linux-sh@vger.kernel.org, linux-wireless@vger.kernel.org, linux-mips@vger.kernel.org, amd-gfx@lists.freedesktop.org, linux-f2fs-devel@lists.sourceforge.net, kasan-dev@googlegroups.com, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
-branch HEAD: 10d7f30201f3ebe724c30ab2cc0d9d1b9684146c  Automatic merge of 'master' into merge (2022-12-26 20:31)
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-elapsed time: 722m
+--8323329-1893319093-1672130116=:311423
+Content-Type: text/plain; charset=ISO-8859-15; format=flowed
+Content-Transfer-Encoding: 8BIT
 
-configs tested: 85
-configs skipped: 4
+On Tue, 27 Dec 2022, Geert Uytterhoeven wrote:
+> Below is the list of build error/warning regressions/improvements in
+> v6.2-rc1[1] compared to v6.1[2].
+>
+> Summarized:
+>  - build errors: +11/-13
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+amd-gfx@lists.freedesktop.org
+linux-arm-kernel@lists.infradead.org
+linux-media@vger.kernel.org
+linux-wireless@vger.kernel.org
+linux-mips@vger.kernel.org
+linux-sh@vger.kernel.org
+linux-f2fs-devel@lists.sourceforge.net
+linuxppc-dev@lists.ozlabs.org
+kasan-dev@googlegroups.com
+linux-xtensa@linux-xtensa.org
 
-gcc tested configs:
-um                             i386_defconfig
-um                           x86_64_defconfig
-arc                                 defconfig
-alpha                               defconfig
-powerpc                           allnoconfig
-i386                 randconfig-a012-20221226
-s390                             allmodconfig
-i386                 randconfig-a011-20221226
-i386                 randconfig-a013-20221226
-s390                                defconfig
-i386                 randconfig-a014-20221226
-x86_64                           rhel-8.3-bpf
-x86_64                           rhel-8.3-syz
-i386                 randconfig-a016-20221226
-i386                                defconfig
-x86_64                         rhel-8.3-kunit
-i386                 randconfig-a015-20221226
-x86_64                           rhel-8.3-kvm
-s390                             allyesconfig
-arm                  randconfig-r046-20221225
-arc                  randconfig-r043-20221225
-arc                  randconfig-r043-20221226
-sh                               allmodconfig
-riscv                randconfig-r042-20221226
-s390                 randconfig-r044-20221226
-mips                             allyesconfig
-ia64                             allmodconfig
-powerpc                          allmodconfig
-i386                             allyesconfig
-x86_64                          rhel-8.3-func
-x86_64               randconfig-a014-20221226
-x86_64               randconfig-a013-20221226
-x86_64               randconfig-a011-20221226
-x86_64                              defconfig
-x86_64               randconfig-a012-20221226
-x86_64                    rhel-8.3-kselftests
-arm                                 defconfig
-x86_64               randconfig-a015-20221226
-x86_64               randconfig-a016-20221226
-arm                              allyesconfig
-arm64                            allyesconfig
-x86_64                               rhel-8.3
-powerpc                     rainier_defconfig
-sh                ecovec24-romimage_defconfig
-arm                        multi_v7_defconfig
-x86_64                           allyesconfig
-x86_64                            allnoconfig
-m68k                             allyesconfig
-parisc                           alldefconfig
-arm                          badge4_defconfig
-m68k                             allmodconfig
-powerpc                     mpc83xx_defconfig
-alpha                            allyesconfig
-sh                          rsk7201_defconfig
-arc                              allyesconfig
-mips                     decstation_defconfig
-arm                            zeus_defconfig
-powerpc                       eiger_defconfig
-s390                       zfcpdump_defconfig
-sh                           se7751_defconfig
+   + /kisskb/src/drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn31/display_mode_vba_31.c: error: the frame size of 2224 bytes is larger than 2048 bytes [-Werror=frame-larger-than=]:  => 7082:1
+   + /kisskb/src/drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn314/display_mode_vba_314.c: error: the frame size of 2208 bytes is larger than 2048 bytes [-Werror=frame-larger-than=]:  => 7127:1
 
-clang tested configs:
-i386                 randconfig-a001-20221226
-i386                 randconfig-a003-20221226
-i386                 randconfig-a002-20221226
-hexagon              randconfig-r045-20221225
-i386                 randconfig-a006-20221226
-hexagon              randconfig-r041-20221225
-i386                 randconfig-a005-20221226
-i386                 randconfig-a004-20221226
-hexagon              randconfig-r041-20221226
-arm                  randconfig-r046-20221226
-s390                 randconfig-r044-20221225
-hexagon              randconfig-r045-20221226
-riscv                randconfig-r042-20221225
-x86_64                          rhel-8.3-rust
-x86_64               randconfig-a002-20221226
-x86_64               randconfig-a003-20221226
-x86_64               randconfig-a001-20221226
-x86_64               randconfig-a004-20221226
-x86_64               randconfig-a005-20221226
-x86_64               randconfig-a006-20221226
-arm                         orion5x_defconfig
-powerpc                      ppc44x_defconfig
-mips                     loongson2k_defconfig
-powerpc                     mpc5200_defconfig
-arm                        vexpress_defconfig
+arm64-gcc5/arm64-allmodconfig
 
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+   + /kisskb/src/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c: error: array subscript 2 is above array bounds of 'u32[2]' {aka 'unsigned int[2]'} [-Werror=array-bounds]:  => 641:28
+   + /kisskb/src/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c: error: array subscript 3 is above array bounds of 'u32[2]' {aka 'unsigned int[2]'} [-Werror=array-bounds]:  => 641:28
+
+m68k-gcc8/m68k-allmodconfig
+See also https://lore.kernel.org/all/CAMuHMdWpPX2mpqFEWjjbjsQvDBQOXyjjdpKnQu9qURAuVZXmMw@mail.gmail.com
+
+   + /kisskb/src/include/linux/bitfield.h: error: call to '__field_overflow' declared with attribute error: value doesn't fit into mask:  => 151:3
+
+In function 'u32_encode_bits',
+     inlined from 'ieee80211_mlo_multicast_tx' at /kisskb/src/net/mac80211/tx.c:4435:17,
+     inlined from 'ieee80211_subif_start_xmit' at /kisskb/src/net/mac80211/tx.c:4483:3:
+
+mipsel-gcc5/mips-allmodconfig
+
+   + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_262' declared with attribute error: Unsupported access size for {READ,WRITE}_ONCE().:  => 358:45
+   + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_263' declared with attribute error: Unsupported access size for {READ,WRITE}_ONCE().:  => 358:45
+
+In function 'follow_pmd_mask',
+     inlined from 'follow_pud_mask' at /kisskb/src/mm/gup.c:735:9,
+     inlined from 'follow_p4d_mask' at /kisskb/src/mm/gup.c:752:9,
+     inlined from 'follow_page_mask' at /kisskb/src/mm/gup.c:809:9:
+
+sh4-gcc11/sh-defconfig (Günter wondered if pmd_t should use union)
+
+   + /kisskb/src/include/linux/fortify-string.h: error: '__builtin_memcpy' offset [0, 127] is out of the bounds [0, 0] [-Werror=array-bounds]:  => 57:33
+
+/kisskb/src/arch/s390/kernel/setup.c: In function 'setup_lowcore_dat_on':
+s390x-gcc11/s390-all{mod,yes}config
+
+   + /kisskb/src/include/linux/fortify-string.h: error: '__builtin_memset' pointer overflow between offset [28, 898293814] and size [-898293787, -1] [-Werror=array-bounds]:  => 59:33
+
+/kisskb/src/fs/f2fs/inline.c: In function 'f2fs_move_inline_dirents':
+
+powerpc-gcc11/ppc64_book3e_allmodconfig
+powerpc-gcc11/powerpc-all{mod,yes}config
+
+   + /kisskb/src/kernel/kcsan/kcsan_test.c: error: the frame size of 1680 bytes is larger than 1536 bytes [-Werror=frame-larger-than=]:  => 257:1
+
+xtensa-gcc11/xtensa-allmodconfig (patch available)
+
+   + {standard input}: Error: unknown pseudo-op: `.cfi_def_c':  => 1718
+
+sh4-gcc11/sh-allmodconfig (ICE = internal compiler error)
+
+> [1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/1b929c02afd37871d5afb9d498426f83432e71c2/ (all 152 configs)
+> [2] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/830b3c68c1fb1e9176028d02ef86f3cf76aa2476/ (all 152 configs)
+
+Gr{oetje,eeting}s,
+
+ 						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+ 							    -- Linus Torvalds
+--8323329-1893319093-1672130116=:311423--
