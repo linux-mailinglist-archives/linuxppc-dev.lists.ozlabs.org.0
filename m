@@ -2,48 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32DB0656ED9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Dec 2022 21:35:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CFC8656EE4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Dec 2022 21:36:05 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NhRH30yvYz3c7Q
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Dec 2022 07:35:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NhRJ30xnvz3cGC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Dec 2022 07:36:03 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nW5AQyNl;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QhxtH1MT;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nW5AQyNl;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QhxtH1MT;
 	dkim-atps=neutral
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NhRF76MT7z2ym7
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Dec 2022 07:33:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NhRFL2nBfz3bvZ
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Dec 2022 07:33:42 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id F29B0B811FB;
-	Tue, 27 Dec 2022 20:33:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63882C433D2;
-	Tue, 27 Dec 2022 20:33:25 +0000 (UTC)
+	by ams.source.kernel.org (Postfix) with ESMTPS id ED4E2B81023;
+	Tue, 27 Dec 2022 20:33:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80428C433EF;
+	Tue, 27 Dec 2022 20:33:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1672173206;
-	bh=Kraf/OT5O6w4THWZm4s+uGYWNQ7eLa839LN0Hk+iSmo=;
+	s=k20201202; t=1672173218;
+	bh=w1m0A+D7VYsEtmMcIKkAH13aq+/9M4sOnL3xuTJdQyY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nW5AQyNleRjrHtgZbyt/6IyNXiqbdYwECZ3y97Q8lAbdOOeGBtbbHMEZr9wwI3aAb
-	 5YP/tXrbvJ6RKaS2ev7jyzdH9LQa8tmcsdSuy5mpbd6ob8YZSsu4UTeqHx7YxunhDr
-	 HAODPogEtkTY+ihwX0PokOjGbBMhufE/6gOuSl98FOZBgYnbghayadmpRgROv9Na8i
-	 ofnge6uU0zWKF8FLYFSU+CxLRoswPp624grQjG2bT42esxOhQwkLcQj8ttk5s/InVN
-	 xicOngqq4iDFRdNOAewSMeDPopN+Tdzl+9CgYh0dEp4xGeOqfLAqoAJNA7j34onJBF
-	 hhjJIKCwURHgA==
+	b=QhxtH1MTDv8L6B3qWRVnz27e1ZtJ+t+vlUj1+bPUZBB8aa63wRbqhr6tFCdK/oz1/
+	 LmogeUOgcnUTGSM41MKg7H3wooUYndwtcDmFhDWJ6JSF2/HPJlw99H4k5KNv/dpuWR
+	 nccxdbA2EtbeVWaOC89RUNaF45hUye8iRvQOG9ccdCe10vPGeD7bnZ9gFfLFWA3SlX
+	 Na0brjmC/RNzJUmY4j+ZPhU02p2DGQKhbA5dgHdIOHkwTBi7li/gP+9OWSnLhQs0Ex
+	 ivd+TFVckvMUgEops6jVActuWpZY+NXSVAz+lwpc95hovsEbE7zc87xJq1RuyrajLj
+	 SuLonoE+yDyBw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 22/28] powerpc/rtas: avoid scheduling in rtas_os_term()
-Date: Tue, 27 Dec 2022 15:32:43 -0500
-Message-Id: <20221227203249.1213526-22-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 26/28] powerpc/msi: Fix deassociation of MSI descriptors
+Date: Tue, 27 Dec 2022 15:32:47 -0500
+Message-Id: <20221227203249.1213526-26-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20221227203249.1213526-1-sashal@kernel.org>
 References: <20221227203249.1213526-1-sashal@kernel.org>
@@ -62,69 +62,102 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, Sasha Levin <sashal@kernel.org>, Andrew Donnellan <ajd@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, sourabhjain@linux.ibm.com, ldufour@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>, Marc Zyngier <maz@kernel.org>, linuxppc-dev@lists.ozlabs.org, Julia.Lawall@inria.fr, joel@jms.id.au, windhl@126.com, Guenter Roeck <linux@roeck-us.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Nathan Lynch <nathanl@linux.ibm.com>
+From: Marc Zyngier <maz@kernel.org>
 
-[ Upstream commit 6c606e57eecc37d6b36d732b1ff7e55b7dc32dd4 ]
+[ Upstream commit 4545c6a3d6ba71747eaa984c338ddd745e56e23f ]
 
-It's unsafe to use rtas_busy_delay() to handle a busy status from
-the ibm,os-term RTAS function in rtas_os_term():
+Since 2f2940d16823 ("genirq/msi: Remove filter from
+msi_free_descs_free_range()"), the core MSI code relies on the
+msi_desc->irq field to have been cleared before the descriptor
+can be freed, as it indicates that there is no association with
+a device anymore.
 
-Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b
-BUG: sleeping function called from invalid context at arch/powerpc/kernel/rtas.c:618
-in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 1, name: swapper/0
-preempt_count: 2, expected: 0
-CPU: 7 PID: 1 Comm: swapper/0 Tainted: G      D            6.0.0-rc5-02182-gf8553a572277-dirty #9
-Call Trace:
-[c000000007b8f000] [c000000001337110] dump_stack_lvl+0xb4/0x110 (unreliable)
-[c000000007b8f040] [c0000000002440e4] __might_resched+0x394/0x3c0
-[c000000007b8f0e0] [c00000000004f680] rtas_busy_delay+0x120/0x1b0
-[c000000007b8f100] [c000000000052d04] rtas_os_term+0xb8/0xf4
-[c000000007b8f180] [c0000000001150fc] pseries_panic+0x50/0x68
-[c000000007b8f1f0] [c000000000036354] ppc_panic_platform_handler+0x34/0x50
-[c000000007b8f210] [c0000000002303c4] notifier_call_chain+0xd4/0x1c0
-[c000000007b8f2b0] [c0000000002306cc] atomic_notifier_call_chain+0xac/0x1c0
-[c000000007b8f2f0] [c0000000001d62b8] panic+0x228/0x4d0
-[c000000007b8f390] [c0000000001e573c] do_exit+0x140c/0x1420
-[c000000007b8f480] [c0000000001e586c] make_task_dead+0xdc/0x200
+The irq domain code provides this guarantee, and so does s390,
+which is one of the two architectures not using irq domains for
+MSIs.
 
-Use rtas_busy_delay_time() instead, which signals without side effects
-whether to attempt the ibm,os-term RTAS call again.
+Powerpc, however, is missing this particular requirements,
+leading in a splat and leaked MSI descriptors.
 
-Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20221118150751.469393-5-nathanl@linux.ibm.com
+Adding the now required irq reset to the handful of powerpc backends
+that implement MSIs fixes that particular problem.
+
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/70dab88e-6119-0c12-7c6a-61bcbe239f66@roeck-us.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/rtas.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/powerpc/platforms/4xx/hsta_msi.c  | 1 +
+ arch/powerpc/platforms/cell/axon_msi.c | 1 +
+ arch/powerpc/platforms/pasemi/msi.c    | 1 +
+ arch/powerpc/sysdev/fsl_msi.c          | 1 +
+ arch/powerpc/sysdev/mpic_u3msi.c       | 1 +
+ 5 files changed, 5 insertions(+)
 
-diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-index 6b5f49c9ad79..767ab166933b 100644
---- a/arch/powerpc/kernel/rtas.c
-+++ b/arch/powerpc/kernel/rtas.c
-@@ -906,10 +906,15 @@ void rtas_os_term(char *str)
+diff --git a/arch/powerpc/platforms/4xx/hsta_msi.c b/arch/powerpc/platforms/4xx/hsta_msi.c
+index d4f7fff1fc87..e11b57a62b05 100644
+--- a/arch/powerpc/platforms/4xx/hsta_msi.c
++++ b/arch/powerpc/platforms/4xx/hsta_msi.c
+@@ -115,6 +115,7 @@ static void hsta_teardown_msi_irqs(struct pci_dev *dev)
+ 		msi_bitmap_free_hwirqs(&ppc4xx_hsta_msi.bmp, irq, 1);
+ 		pr_debug("%s: Teardown IRQ %u (index %u)\n", __func__,
+ 			 entry->irq, irq);
++		entry->irq = 0;
+ 	}
+ }
  
- 	snprintf(rtas_os_term_buf, 2048, "OS panic: %s", str);
+diff --git a/arch/powerpc/platforms/cell/axon_msi.c b/arch/powerpc/platforms/cell/axon_msi.c
+index 5b012abca773..0c11aad896c7 100644
+--- a/arch/powerpc/platforms/cell/axon_msi.c
++++ b/arch/powerpc/platforms/cell/axon_msi.c
+@@ -289,6 +289,7 @@ static void axon_msi_teardown_msi_irqs(struct pci_dev *dev)
+ 	msi_for_each_desc(entry, &dev->dev, MSI_DESC_ASSOCIATED) {
+ 		irq_set_msi_desc(entry->irq, NULL);
+ 		irq_dispose_mapping(entry->irq);
++		entry->irq = 0;
+ 	}
+ }
  
-+	/*
-+	 * Keep calling as long as RTAS returns a "try again" status,
-+	 * but don't use rtas_busy_delay(), which potentially
-+	 * schedules.
-+	 */
- 	do {
- 		status = rtas_call(ibm_os_term_token, 1, 1, NULL,
- 				   __pa(rtas_os_term_buf));
--	} while (rtas_busy_delay(status));
-+	} while (rtas_busy_delay_time(status));
- 
- 	if (status != 0)
- 		printk(KERN_EMERG "ibm,os-term call failed %d\n", status);
+diff --git a/arch/powerpc/platforms/pasemi/msi.c b/arch/powerpc/platforms/pasemi/msi.c
+index dc1846660005..166c97fff16d 100644
+--- a/arch/powerpc/platforms/pasemi/msi.c
++++ b/arch/powerpc/platforms/pasemi/msi.c
+@@ -66,6 +66,7 @@ static void pasemi_msi_teardown_msi_irqs(struct pci_dev *pdev)
+ 		hwirq = virq_to_hw(entry->irq);
+ 		irq_set_msi_desc(entry->irq, NULL);
+ 		irq_dispose_mapping(entry->irq);
++		entry->irq = 0;
+ 		msi_bitmap_free_hwirqs(&msi_mpic->msi_bitmap, hwirq, ALLOC_CHUNK);
+ 	}
+ }
+diff --git a/arch/powerpc/sysdev/fsl_msi.c b/arch/powerpc/sysdev/fsl_msi.c
+index 73c2d70706c0..57978a44d55b 100644
+--- a/arch/powerpc/sysdev/fsl_msi.c
++++ b/arch/powerpc/sysdev/fsl_msi.c
+@@ -132,6 +132,7 @@ static void fsl_teardown_msi_irqs(struct pci_dev *pdev)
+ 		msi_data = irq_get_chip_data(entry->irq);
+ 		irq_set_msi_desc(entry->irq, NULL);
+ 		irq_dispose_mapping(entry->irq);
++		entry->irq = 0;
+ 		msi_bitmap_free_hwirqs(&msi_data->bitmap, hwirq, 1);
+ 	}
+ }
+diff --git a/arch/powerpc/sysdev/mpic_u3msi.c b/arch/powerpc/sysdev/mpic_u3msi.c
+index 1d8cfdfdf115..492cb03c0b62 100644
+--- a/arch/powerpc/sysdev/mpic_u3msi.c
++++ b/arch/powerpc/sysdev/mpic_u3msi.c
+@@ -108,6 +108,7 @@ static void u3msi_teardown_msi_irqs(struct pci_dev *pdev)
+ 		hwirq = virq_to_hw(entry->irq);
+ 		irq_set_msi_desc(entry->irq, NULL);
+ 		irq_dispose_mapping(entry->irq);
++		entry->irq = 0;
+ 		msi_bitmap_free_hwirqs(&msi_mpic->msi_bitmap, hwirq, 1);
+ 	}
+ }
 -- 
 2.35.1
 
