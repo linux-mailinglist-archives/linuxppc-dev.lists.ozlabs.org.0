@@ -2,41 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F012F65687C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Dec 2022 09:36:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9F916568DB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Dec 2022 10:28:10 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Nh7KJ0fr5z3c9r
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Dec 2022 19:36:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Nh8TN5ZRnz3c8g
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Dec 2022 20:28:08 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=aamR/mAK;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux-m68k.org (client-ip=2a02:1800:120:4::f00:11; helo=gauss.telenet-ops.be; envelope-from=geert@linux-m68k.org; receiver=<UNKNOWN>)
-Received: from gauss.telenet-ops.be (gauss.telenet-ops.be [IPv6:2a02:1800:120:4::f00:11])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62c; helo=mail-pl1-x62c.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=aamR/mAK;
+	dkim-atps=neutral
+Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nh7Jg1vcKz2xJR
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Dec 2022 19:35:28 +1100 (AEDT)
-Received: from albert.telenet-ops.be (albert.telenet-ops.be [IPv6:2a02:1800:110:4::f00:1a])
-	by gauss.telenet-ops.be (Postfix) with ESMTPS id 4Nh7JR5sNvz4x0Hx
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Dec 2022 09:35:19 +0100 (CET)
-Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed10:312a:feb:527f:f392])
-	by albert.telenet-ops.be with bizsmtp
-	id 1LbH290023T8eJe06LbH8w; Tue, 27 Dec 2022 09:35:19 +0100
-Received: from geert (helo=localhost)
-	by ramsan.of.borg with local-esmtp (Exim 4.93)
-	(envelope-from <geert@linux-m68k.org>)
-	id 1pA5Qa-001J4O-Tj; Tue, 27 Dec 2022 09:35:16 +0100
-Date: Tue, 27 Dec 2022 09:35:16 +0100 (CET)
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-X-X-Sender: geert@ramsan.of.borg
-To: linux-kernel@vger.kernel.org
-Subject: Re: Build regressions/improvements in v6.2-rc1
-In-Reply-To: <20221227082932.798359-1-geert@linux-m68k.org>
-Message-ID: <alpine.DEB.2.22.394.2212270933530.311423@ramsan.of.borg>
-References: <CAHk-=wgf929uGOVpiWALPyC7pv_9KbwB2EAvQ3C4woshZZ5zqQ@mail.gmail.com> <20221227082932.798359-1-geert@linux-m68k.org>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nh8RP1NY8z2y6F
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Dec 2022 20:26:23 +1100 (AEDT)
+Received: by mail-pl1-x62c.google.com with SMTP id s7so12735772plk.5
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Dec 2022 01:26:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=UzpuVVJE/4f9S992+1hhG0ZVP4BI2lu1xS7R6Fho8vs=;
+        b=aamR/mAKshjNJmoEv1/QsWs0hmz85etjLEuDf4cuXKNVu34YVy7hIYNrjq65yUp3GD
+         +puawyIz7Xb0XFG/hfLb4LnxA8pHEoj2ZkUnRTiCdMK2n7nt/k9RbO59SXNSbTI4r/un
+         9VIBaR4tLhdzKm95BD6a6uVD3hKH2gOG96qb//FaAEH2mcmh7sZdzKAHJ1Et3K4aFTtH
+         rhqb1CQOQ2fqsn8nQyE6yp7JaaFACTheyarJ0a3E32eoth+sVO6PYHFenSqSnAAzKtWR
+         /In5c57T95jupNwLckN8QItTSAjmYkWNSFbLEe7tOSqrq/EgQzCI8frTltREk9OPVVoW
+         bKww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UzpuVVJE/4f9S992+1hhG0ZVP4BI2lu1xS7R6Fho8vs=;
+        b=Jk1lTJvzPob+e3hAlkps1oDUQ6R3tpaPJEu3qe/E71M8ysJW369U7Gul8dMeVnGExG
+         BjXdWDS/r8tm8Fxvwz1FoDAUxzMOhSFY2MvxWNpqSPXjxbRKKuB5w+76L0YjhySy3991
+         vDCh7/5iqDHstU5OztrY7Jf166vwiVoJWp+rkF5f9BMaoul4IHjU/fxnmLaK1hhpcCuG
+         WoVc/PvUBHMsarPSw2Qv1J26IqnXLquvCVPraFezNHjPyIhTJrphFzaMmuqQU1lji9/5
+         MJuL4hHGXYrl4doFVnbGwixWeVRUuXhPGHOJx8TVY/qD7JYNiSXnQgrmZF340Hw/9qQO
+         Pl6w==
+X-Gm-Message-State: AFqh2koi8UAhQKadH3V9DUasxWCkwYVFhlJU1ny0B157vOZ8PRL2bhCx
+	qqhI0zC9h+/39swrknlHN6kdRzBbSvA=
+X-Google-Smtp-Source: AMrXdXt9JHbk5mn7iivYUPu0mDbeNzM55nUrk22Gcl/y7HT34xUOya46R7BHDUpWCdrfy/MSEeaA4Q==
+X-Received: by 2002:a17:902:728d:b0:191:3993:801e with SMTP id d13-20020a170902728d00b001913993801emr19674931pll.56.1672133178319;
+        Tue, 27 Dec 2022 01:26:18 -0800 (PST)
+Received: from bobo.ozlabs.ibm.com (58-6-252-227.tpgi.com.au. [58.6.252.227])
+        by smtp.gmail.com with ESMTPSA id f2-20020a170902ce8200b00189947bd9f7sm8598998plg.50.2022.12.27.01.26.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Dec 2022 01:26:17 -0800 (PST)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [RFC PATCH 0/9] powerpc/64: Build with PC-Relative addressing
+Date: Tue, 27 Dec 2022 19:26:00 +1000
+Message-Id: <20221227092609.2078908-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-1893319093-1672130116=:311423"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,95 +75,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-xtensa@linux-xtensa.org, linux-sh@vger.kernel.org, linux-wireless@vger.kernel.org, linux-mips@vger.kernel.org, amd-gfx@lists.freedesktop.org, linux-f2fs-devel@lists.sourceforge.net, kasan-dev@googlegroups.com, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org
+Cc: Nicholas Piggin <npiggin@gmail.com>, Alan Modra <amodra@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+This is a more complete change than my earlier hack. Namely fixed the
+boot code so it's more unified rather than adding a special case for
+Book3S+PCREL. Lots of bug fixes, and adding some of the ftrace and BPF
+trampoline/stubs. And added module support, which might be the most
+interesting bit.
 
---8323329-1893319093-1672130116=:311423
-Content-Type: text/plain; charset=ISO-8859-15; format=flowed
-Content-Transfer-Encoding: 8BIT
+This won't see a lot of real use until POWER10 is the oldest supported
+CPU for distros, but being as we're quite a unique user of toolchain I'd
+like to start ironing things out earlier rather than later. I'm making a
+list of observations here, https://github.com/linuxppc/issues/issues/455
+and will take them to toolchan developers after the kernel work is a bit
+further along.
 
-On Tue, 27 Dec 2022, Geert Uytterhoeven wrote:
-> Below is the list of build error/warning regressions/improvements in
-> v6.2-rc1[1] compared to v6.1[2].
->
-> Summarized:
->  - build errors: +11/-13
+Thanks,
+Nick
 
-amd-gfx@lists.freedesktop.org
-linux-arm-kernel@lists.infradead.org
-linux-media@vger.kernel.org
-linux-wireless@vger.kernel.org
-linux-mips@vger.kernel.org
-linux-sh@vger.kernel.org
-linux-f2fs-devel@lists.sourceforge.net
-linuxppc-dev@lists.ozlabs.org
-kasan-dev@googlegroups.com
-linux-xtensa@linux-xtensa.org
+Nicholas Piggin (9):
+  crypto: powerpc - Use address generation helper for asm
+  powerpc/64s: Refactor initialisation after prom
+  powerpc/64e: Simplify address calculation in secondary hold loop
+  powerpc/64: Move initial base and TOC pointer calculation
+  powerpc/64s: Run at the kernel virtual address earlier in boot
+  powerpc: add CFUNC assembly label annotation
+  powerpc/64: Add support to build with prefixed instructions
+  powerpc/64: vmlinux support building with PCREL addresing
+  powerpc/64: modules support building with PCREL addresing
 
-   + /kisskb/src/drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn31/display_mode_vba_31.c: error: the frame size of 2224 bytes is larger than 2048 bytes [-Werror=frame-larger-than=]:  => 7082:1
-   + /kisskb/src/drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn314/display_mode_vba_314.c: error: the frame size of 2208 bytes is larger than 2048 bytes [-Werror=frame-larger-than=]:  => 7127:1
+ arch/powerpc/Kconfig                    |   6 +
+ arch/powerpc/Makefile                   |  10 +
+ arch/powerpc/crypto/crc32-vpmsum_core.S |  13 +-
+ arch/powerpc/include/asm/atomic.h       |  24 +-
+ arch/powerpc/include/asm/io.h           |  37 +++
+ arch/powerpc/include/asm/module.h       |   9 +-
+ arch/powerpc/include/asm/paca.h         |   2 +
+ arch/powerpc/include/asm/ppc-opcode.h   |   8 +
+ arch/powerpc/include/asm/ppc_asm.h      |  24 ++
+ arch/powerpc/include/asm/sections.h     |   5 +
+ arch/powerpc/include/asm/uaccess.h      |  28 +-
+ arch/powerpc/include/uapi/asm/elf.h     |   4 +
+ arch/powerpc/kernel/asm-offsets.c       |   2 +
+ arch/powerpc/kernel/exceptions-64s.S    | 112 ++++----
+ arch/powerpc/kernel/head_64.S           | 179 +++++++-----
+ arch/powerpc/kernel/interrupt_64.S      |  28 +-
+ arch/powerpc/kernel/irq.c               |   8 +
+ arch/powerpc/kernel/misc_64.S           |   2 +-
+ arch/powerpc/kernel/module_64.c         | 344 ++++++++++++++++++++----
+ arch/powerpc/kernel/paca.c              |   2 +
+ arch/powerpc/kernel/trace/ftrace.c      |  52 +++-
+ arch/powerpc/kernel/vdso/gettimeofday.S |   6 +-
+ arch/powerpc/kernel/vector.S            |   6 +
+ arch/powerpc/kernel/vmlinux.lds.S       |   6 +
+ arch/powerpc/kvm/book3s_hv_rmhandlers.S |  16 +-
+ arch/powerpc/lib/copypage_64.S          |   4 +-
+ arch/powerpc/lib/copypage_power7.S      |   4 +-
+ arch/powerpc/lib/copyuser_power7.S      |   8 +-
+ arch/powerpc/lib/hweight_64.S           |   8 +-
+ arch/powerpc/lib/memcmp_64.S            |   4 +-
+ arch/powerpc/lib/memcpy_power7.S        |   6 +-
+ arch/powerpc/net/bpf_jit.h              |  10 +-
+ arch/powerpc/net/bpf_jit_comp64.c       |  35 ++-
+ arch/powerpc/platforms/Kconfig.cputype  |  38 +++
+ arch/powerpc/platforms/pseries/hvCall.S |   4 +-
+ arch/powerpc/xmon/xmon.c                |   2 +
+ 36 files changed, 793 insertions(+), 263 deletions(-)
 
-arm64-gcc5/arm64-allmodconfig
+-- 
+2.37.2
 
-   + /kisskb/src/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c: error: array subscript 2 is above array bounds of 'u32[2]' {aka 'unsigned int[2]'} [-Werror=array-bounds]:  => 641:28
-   + /kisskb/src/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c: error: array subscript 3 is above array bounds of 'u32[2]' {aka 'unsigned int[2]'} [-Werror=array-bounds]:  => 641:28
-
-m68k-gcc8/m68k-allmodconfig
-See also https://lore.kernel.org/all/CAMuHMdWpPX2mpqFEWjjbjsQvDBQOXyjjdpKnQu9qURAuVZXmMw@mail.gmail.com
-
-   + /kisskb/src/include/linux/bitfield.h: error: call to '__field_overflow' declared with attribute error: value doesn't fit into mask:  => 151:3
-
-In function 'u32_encode_bits',
-     inlined from 'ieee80211_mlo_multicast_tx' at /kisskb/src/net/mac80211/tx.c:4435:17,
-     inlined from 'ieee80211_subif_start_xmit' at /kisskb/src/net/mac80211/tx.c:4483:3:
-
-mipsel-gcc5/mips-allmodconfig
-
-   + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_262' declared with attribute error: Unsupported access size for {READ,WRITE}_ONCE().:  => 358:45
-   + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_263' declared with attribute error: Unsupported access size for {READ,WRITE}_ONCE().:  => 358:45
-
-In function 'follow_pmd_mask',
-     inlined from 'follow_pud_mask' at /kisskb/src/mm/gup.c:735:9,
-     inlined from 'follow_p4d_mask' at /kisskb/src/mm/gup.c:752:9,
-     inlined from 'follow_page_mask' at /kisskb/src/mm/gup.c:809:9:
-
-sh4-gcc11/sh-defconfig (Günter wondered if pmd_t should use union)
-
-   + /kisskb/src/include/linux/fortify-string.h: error: '__builtin_memcpy' offset [0, 127] is out of the bounds [0, 0] [-Werror=array-bounds]:  => 57:33
-
-/kisskb/src/arch/s390/kernel/setup.c: In function 'setup_lowcore_dat_on':
-s390x-gcc11/s390-all{mod,yes}config
-
-   + /kisskb/src/include/linux/fortify-string.h: error: '__builtin_memset' pointer overflow between offset [28, 898293814] and size [-898293787, -1] [-Werror=array-bounds]:  => 59:33
-
-/kisskb/src/fs/f2fs/inline.c: In function 'f2fs_move_inline_dirents':
-
-powerpc-gcc11/ppc64_book3e_allmodconfig
-powerpc-gcc11/powerpc-all{mod,yes}config
-
-   + /kisskb/src/kernel/kcsan/kcsan_test.c: error: the frame size of 1680 bytes is larger than 1536 bytes [-Werror=frame-larger-than=]:  => 257:1
-
-xtensa-gcc11/xtensa-allmodconfig (patch available)
-
-   + {standard input}: Error: unknown pseudo-op: `.cfi_def_c':  => 1718
-
-sh4-gcc11/sh-allmodconfig (ICE = internal compiler error)
-
-> [1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/1b929c02afd37871d5afb9d498426f83432e71c2/ (all 152 configs)
-> [2] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/830b3c68c1fb1e9176028d02ef86f3cf76aa2476/ (all 152 configs)
-
-Gr{oetje,eeting}s,
-
- 						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
- 							    -- Linus Torvalds
---8323329-1893319093-1672130116=:311423--
