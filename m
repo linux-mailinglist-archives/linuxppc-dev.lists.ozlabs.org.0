@@ -2,55 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC35B656FA4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Dec 2022 21:53:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC346656FBC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Dec 2022 22:08:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NhRhh59mjz3fc4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Dec 2022 07:53:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NhS1k56wCz3c72
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Dec 2022 08:08:42 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AKGlMheg;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=gmx.de header.i=@gmx.de header.a=rsa-sha256 header.s=s31663417 header.b=DP1X3adL;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmx.de (client-ip=212.227.17.20; helo=mout.gmx.net; envelope-from=deller@gmx.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AKGlMheg;
+	dkim=pass (2048-bit key; secure) header.d=gmx.de header.i=@gmx.de header.a=rsa-sha256 header.s=s31663417 header.b=DP1X3adL;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NhRJk4F1Fz3c8b
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Dec 2022 07:36:38 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id E22506123B;
-	Tue, 27 Dec 2022 20:36:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C954C433D2;
-	Tue, 27 Dec 2022 20:36:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1672173396;
-	bh=4DbaLyjK+L8FjEtEwqJJcQ0TUOVDi51mZo3PubrDSKA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AKGlMheghJpXKstyhtDdD9z+xCD3BqE3omDO4cK7BJ+f5lEajsQzkrVKczPb8wrhF
-	 SCrixB50afzhVB7+EYRnhUkIa9fJz/1p9tGpJ035Wb3159DR7Qp0y6lggl1nlNblWX
-	 Hfmp5yg2HBzj733mZosq4vnr78/+og30AkJOvdH3WlKUdFJ+SWRvGeDexS7TL6tAYj
-	 eb4wcVu9BtTBNXyYtzAsREe+wbMv1MLq9wmdU2skQr1YUZinCTqx78goMzQ8Y+UUx3
-	 cjugNpRmQO2wyn0DRZJpym4Gb/7M78fMyLUyTpY368Ro0djH8FtyvTfkYYC5vW7JlK
-	 7XkoeD/tbFXpw==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 2/3] powerpc/msi: Fix deassociation of MSI descriptors
-Date: Tue, 27 Dec 2022 15:36:24 -0500
-Message-Id: <20221227203626.1214890-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20221227203626.1214890-1-sashal@kernel.org>
-References: <20221227203626.1214890-1-sashal@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NhS0k20Jqz2ywn
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Dec 2022 08:07:47 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+	t=1672175221; bh=OL5WJhJ3/ioUTccUP2H6ZJHZm++nEKN5MiFWcaZshkI=;
+	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=DP1X3adLdzt3xnBG3I0B9VUWlDhKza6IbdAs40Qoe/bPk3oB4A+eZOBtyvYpW0ppF
+	 VKlADVUoLV255aRFH2P6g7Os4xXiKumbLF5yWAhXH6h0IpeuxIs0hsiyIgapKEfIpk
+	 Mr/7enpe72LseWOrkj3IG7rGXXGLRNgmbtEqCPJkM9667QYESkhYbLC7f5ugS883do
+	 w5wlWUPT0LlOyCXAMnTBZpSRkOHCHDZ1DFEyfp5HZMeH2SRqU0V4HT06AA+sPwMImI
+	 dtu9zVhJ2Tdnj3Jz0dCy05W1a4kFLd8W59zYAEX7cFq0kIs1/d40QIyrRkpbRiKEEg
+	 Kn45IwDeNEXlA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([92.116.190.3]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MrQJ5-1oX6Re0szP-00oYBV; Tue, 27
+ Dec 2022 22:07:01 +0100
+Message-ID: <aaf6a109-ac1b-c22a-88b7-0414b3265857@gmx.de>
+Date: Tue, 27 Dec 2022 22:06:59 +0100
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.0
+Subject: Re: [PATCH] fbdev: make offb driver tristate
+To: Nathan Chancellor <nathan@kernel.org>
+References: <20221126000401.25302-1-rdunlap@infradead.org>
+ <46e8cf0d-ab47-59b1-6c87-53d2d63a5bf6@suse.de>
+ <f8c6eb94-10ee-07a8-ea48-d4fae60fc9ae@gmx.de>
+ <Y6s96iuc3NRN5tS4@dev-arch.thelio-3990X>
+Content-Language: en-US
+From: Helge Deller <deller@gmx.de>
+In-Reply-To: <Y6s96iuc3NRN5tS4@dev-arch.thelio-3990X>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:pmufG/yBB7w10j8I7juqQ1B39xUxP8hRiEiNAVefeU+Zrc6CndG
+ P8D13De0yweY4iSpmMFzYgs6fOK5FY/JajFhHgVW2MhBJFSnDzKgrXKxbm67ZiGG77ZOXyu
+ FLsoDQkkcIufDRIPC8QEKCG9C/E/xdgEsK+r6KUlD4LVKleVqgJN1rYSFrY3/kFHkS0k90G
+ 3aibwRR9tFFMx1kg3m9XA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:4m/m/TKe8EY=;8px+0lBpXJqhmDlMMqcatGE6fyR
+ kwdAiq3U2LOYRCxMiNVKvGCCqgYC7ouanOJGEqPMwm2bYQgcwkpZQa8H5cF9bZQj34BAIsZsA
+ 1XaKbiPO6NpfRjtEEMZtMJxLLjyQml/if2W/d9BlP9bs9nHhn/x81lApHGsN8lRiie2Hw5s65
+ CkGmlTfGpZqQFfR3vl7BrvMn8H4VBnh9fqZQP/Qax0iIoCeVG57nvtJwaUGFKx1Te4GHsigtp
+ qyYqRalAbUye9HFVHulSa43FI7QDfWFz2FHzyrboHoSvQ4m2xPUpU6QY+Ux9j2ZRBr78JqaDN
+ cLZz6NQUsojzhZ7gPHpjMdyART5prM6RQozcOlq0WB/yyNqsD7UqbWQWFAsV3oVafcDG8X6gf
+ xAYOzoEoYGRMmpt3htPz1nJYi+fKuvOOWmc2eG6edLfPAH3KtnnZQtpvfgWt7cVkLqbtWWoPC
+ CB8xkIdRQglorW4K8x1cCNApA3rr6y26eFaZKXjO87lEhOg5QOnz5XTSn3XgZ2d9FmFaYsFMc
+ 3NVsCgZ2gE0BFa1lem1NlLGvpU/bgrnCIZppeqOe+xhZ5+fw5t+KVVhVXmg1x1PDaY/o1cJJ5
+ p5YQfhICbF/Eh1NNjPo7XKtVU4NqOxXWhh+SyAiNabpDIxUEx3phW6Iw5RwSvqeOijsriYAT6
+ KBZLy4gdPEg9p0Yq9h6tzRUSB183VmBIaM4L1toY6RF1VO2tS5fCRb9GQUp25gmkTRG8CSVbx
+ ejQSOttkcoVUXEb64ETtnJNUVv6KF5bHR96YTiNAqjSryZd5VJLZJ4Hfagb4S6XgT69FXReDu
+ pmU6YXRpUtZQNzcqZ3A9mqEJPS8H35jtEqXcPR54RKvB+gPOlKqmyw4DEMc5O+Ew+og53U+LL
+ MpDMGXwo0jV2Nu1DrSFMLj6Hw9g9KHRXCGYL6LdvIrIT1jl2QayH61cYho1wZiYKrCMhf+e4c
+ gkwanbkBWZCZ56wz9awOPy+2nJk=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,102 +82,91 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Marc Zyngier <maz@kernel.org>, linuxppc-dev@lists.ozlabs.org, Julia.Lawall@inria.fr, windhl@126.com, Guenter Roeck <linux@roeck-us.net>
+Cc: linux-fbdev@vger.kernel.org, llvm@lists.linux.dev, Daniel Vetter <daniel@ffwll.ch>, Arnd Bergmann <arnd@arndb.de>, Masahiro Yamada <masahiroy@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, Thomas Zimmermann <tzimmermann@suse.de>, =?UTF-8?Q?Michal_Such=c3=a1nek?= <msuchanek@suse.de>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Marc Zyngier <maz@kernel.org>
+On 12/27/22 19:48, Nathan Chancellor wrote:
+> On Sat, Dec 10, 2022 at 05:35:06PM +0100, Helge Deller wrote:
+>> On 11/26/22 14:40, Thomas Zimmermann wrote:
+>>> Am 26.11.22 um 01:04 schrieb Randy Dunlap:
+>>>> Make the offb (Open Firmware frame buffer) driver tristate,
+>>>> i.e., so that it can be built as a loadable module.
+>>>>
+>>>> However, it still depends on the setting of DRM_OFDRM
+>>>> so that both of these drivers cannot be builtin at the same time
+>>>> nor can one be builtin and the other one a loadable module.
+>>>>
+>>>> Build-tested successfully with all combination of DRM_OFDRM and FB_OF=
+.
+>>>>
+>>>> This fixes a build issue that Michal reported when FB_OF=3Dy and
+>>>> DRM_OFDRM=3Dm:
+>>>>
+>>>> powerpc64-linux-ld: drivers/video/fbdev/offb.o:(.data.rel.ro+0x58): u=
+ndefined reference to `cfb_fillrect'
+>>>> powerpc64-linux-ld: drivers/video/fbdev/offb.o:(.data.rel.ro+0x60): u=
+ndefined reference to `cfb_copyarea'
+>>>> powerpc64-linux-ld: drivers/video/fbdev/offb.o:(.data.rel.ro+0x68): u=
+ndefined reference to `cfb_imageblit'
+>>>>
+>>>> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+>>>> Suggested-by: Arnd Bergmann <arnd@arndb.de>
+>>>> Cc: Masahiro Yamada <masahiroy@kernel.org>
+>>>> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+>>>> Cc: Michal Such=C3=A1nek <msuchanek@suse.de>
+>>>> Cc: linuxppc-dev@lists.ozlabs.org
+>>>> Cc: Daniel Vetter <daniel@ffwll.ch>
+>>>> Cc: Helge Deller <deller@gmx.de>
+>>>> Cc: linux-fbdev@vger.kernel.org
+>>>> Cc: dri-devel@lists.freedesktop.org
+>>>
+>>> Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
+>>
+>> applied.
+>
+> Is this going to make it to Linus soon? We are now seeing this error in
+> our CI, which has the configuration describe in this commit.
+>
+> https://github.com/ClangBuiltLinux/continuous-integration2/actions/runs/=
+3785609002/jobs/6437398666#step:5:149
+>
+> https://storage.tuxsuite.com/public/clangbuiltlinux/continuous-integrati=
+on2/builds/2JUMSmjAoSJoKfl6PPjfU66JGit/build.log
 
-[ Upstream commit 4545c6a3d6ba71747eaa984c338ddd745e56e23f ]
 
-Since 2f2940d16823 ("genirq/msi: Remove filter from
-msi_free_descs_free_range()"), the core MSI code relies on the
-msi_desc->irq field to have been cleared before the descriptor
-can be freed, as it indicates that there is no association with
-a device anymore.
+It didn't applied cleanly earlier.
+I've now added it to the fbdev for-next branch, and if no problems
+show up in the next few days I'll push it before next weekend.
+https://git.kernel.org/pub/scm/linux/kernel/git/deller/linux-fbdev.git/log=
+/?h=3Dfor-next
 
-The irq domain code provides this guarantee, and so does s390,
-which is one of the two architectures not using irq domains for
-MSIs.
+Helge
 
-Powerpc, however, is missing this particular requirements,
-leading in a splat and leaked MSI descriptors.
 
-Adding the now required irq reset to the handful of powerpc backends
-that implement MSIs fixes that particular problem.
-
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/70dab88e-6119-0c12-7c6a-61bcbe239f66@roeck-us.net
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/powerpc/platforms/cell/axon_msi.c | 1 +
- arch/powerpc/platforms/pasemi/msi.c    | 1 +
- arch/powerpc/sysdev/fsl_msi.c          | 1 +
- arch/powerpc/sysdev/mpic_u3msi.c       | 1 +
- arch/powerpc/sysdev/ppc4xx_hsta_msi.c  | 1 +
- 5 files changed, 5 insertions(+)
-
-diff --git a/arch/powerpc/platforms/cell/axon_msi.c b/arch/powerpc/platforms/cell/axon_msi.c
-index 8b55c5f19d4c..f78dc043f370 100644
---- a/arch/powerpc/platforms/cell/axon_msi.c
-+++ b/arch/powerpc/platforms/cell/axon_msi.c
-@@ -298,6 +298,7 @@ static void axon_msi_teardown_msi_irqs(struct pci_dev *dev)
- 
- 		irq_set_msi_desc(entry->irq, NULL);
- 		irq_dispose_mapping(entry->irq);
-+		entry->irq = 0;
- 	}
- }
- 
-diff --git a/arch/powerpc/platforms/pasemi/msi.c b/arch/powerpc/platforms/pasemi/msi.c
-index d9cd510c8865..6e54377663db 100644
---- a/arch/powerpc/platforms/pasemi/msi.c
-+++ b/arch/powerpc/platforms/pasemi/msi.c
-@@ -74,6 +74,7 @@ static void pasemi_msi_teardown_msi_irqs(struct pci_dev *pdev)
- 		hwirq = virq_to_hw(entry->irq);
- 		irq_set_msi_desc(entry->irq, NULL);
- 		irq_dispose_mapping(entry->irq);
-+		entry->irq = 0;
- 		msi_bitmap_free_hwirqs(&msi_mpic->msi_bitmap, hwirq, ALLOC_CHUNK);
- 	}
- 
-diff --git a/arch/powerpc/sysdev/fsl_msi.c b/arch/powerpc/sysdev/fsl_msi.c
-index 8a244828782e..aa9dd3a92f2a 100644
---- a/arch/powerpc/sysdev/fsl_msi.c
-+++ b/arch/powerpc/sysdev/fsl_msi.c
-@@ -137,6 +137,7 @@ static void fsl_teardown_msi_irqs(struct pci_dev *pdev)
- 		msi_data = irq_get_chip_data(entry->irq);
- 		irq_set_msi_desc(entry->irq, NULL);
- 		irq_dispose_mapping(entry->irq);
-+		entry->irq = 0;
- 		msi_bitmap_free_hwirqs(&msi_data->bitmap, hwirq, 1);
- 	}
- 
-diff --git a/arch/powerpc/sysdev/mpic_u3msi.c b/arch/powerpc/sysdev/mpic_u3msi.c
-index cfc1c57d760f..26db91c8feff 100644
---- a/arch/powerpc/sysdev/mpic_u3msi.c
-+++ b/arch/powerpc/sysdev/mpic_u3msi.c
-@@ -116,6 +116,7 @@ static void u3msi_teardown_msi_irqs(struct pci_dev *pdev)
- 		hwirq = virq_to_hw(entry->irq);
- 		irq_set_msi_desc(entry->irq, NULL);
- 		irq_dispose_mapping(entry->irq);
-+		entry->irq = 0;
- 		msi_bitmap_free_hwirqs(&msi_mpic->msi_bitmap, hwirq, 1);
- 	}
- 
-diff --git a/arch/powerpc/sysdev/ppc4xx_hsta_msi.c b/arch/powerpc/sysdev/ppc4xx_hsta_msi.c
-index 9926ad67af76..ac5fbb2492aa 100644
---- a/arch/powerpc/sysdev/ppc4xx_hsta_msi.c
-+++ b/arch/powerpc/sysdev/ppc4xx_hsta_msi.c
-@@ -121,6 +121,7 @@ static void hsta_teardown_msi_irqs(struct pci_dev *dev)
- 		msi_bitmap_free_hwirqs(&ppc4xx_hsta_msi.bmp, irq, 1);
- 		pr_debug("%s: Teardown IRQ %u (index %u)\n", __func__,
- 			 entry->irq, irq);
-+		entry->irq = 0;
- 	}
- }
- 
--- 
-2.35.1
+> Cheers,
+> Nathan
+>
+>>>> ---
+>>>>  =C2=A0 drivers/video/fbdev/Kconfig |=C2=A0=C2=A0=C2=A0 4 ++--
+>>>>  =C2=A0 1 file changed, 2 insertions(+), 2 deletions(-)
+>>>>
+>>>> diff -- a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
+>>>> --- a/drivers/video/fbdev/Kconfig
+>>>> +++ b/drivers/video/fbdev/Kconfig
+>>>> @@ -456,8 +456,8 @@ config FB_ATARI
+>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 chipset found in Ataris.
+>>>>  =C2=A0 config FB_OF
+>>>> -=C2=A0=C2=A0=C2=A0 bool "Open Firmware frame buffer device support"
+>>>> -=C2=A0=C2=A0=C2=A0 depends on (FB =3D y) && PPC && (!PPC_PSERIES || =
+PCI)
+>>>> +=C2=A0=C2=A0=C2=A0 tristate "Open Firmware frame buffer device suppo=
+rt"
+>>>> +=C2=A0=C2=A0=C2=A0 depends on FB && PPC && (!PPC_PSERIES || PCI)
+>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 depends on !DRM_OFDRM
+>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 select APERTURE_HELPERS
+>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 select FB_CFB_FILLRECT
+>>>
+>>
+>>
 
