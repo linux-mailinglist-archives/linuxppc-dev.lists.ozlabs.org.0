@@ -1,76 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC346656FBC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Dec 2022 22:08:44 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 472266573B3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Dec 2022 08:38:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NhS1k56wCz3c72
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Dec 2022 08:08:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Nhk0b0dH8z3c6n
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Dec 2022 18:38:39 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=gmx.de header.i=@gmx.de header.a=rsa-sha256 header.s=s31663417 header.b=DP1X3adL;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm3 header.b=GQcC6LqX;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=q4FIVeqB;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmx.de (client-ip=212.227.17.20; helo=mout.gmx.net; envelope-from=deller@gmx.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=russell.cc (client-ip=64.147.123.21; helo=wout5-smtp.messagingengine.com; envelope-from=ruscur@russell.cc; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=gmx.de header.i=@gmx.de header.a=rsa-sha256 header.s=s31663417 header.b=DP1X3adL;
+	dkim=pass (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm3 header.b=GQcC6LqX;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=q4FIVeqB;
 	dkim-atps=neutral
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+X-Greylist: delayed 325 seconds by postgrey-1.36 at boromir; Wed, 28 Dec 2022 18:35:54 AEDT
+Received: from wout5-smtp.messagingengine.com (wout5-smtp.messagingengine.com [64.147.123.21])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NhS0k20Jqz2ywn
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Dec 2022 08:07:47 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-	t=1672175221; bh=OL5WJhJ3/ioUTccUP2H6ZJHZm++nEKN5MiFWcaZshkI=;
-	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=DP1X3adLdzt3xnBG3I0B9VUWlDhKza6IbdAs40Qoe/bPk3oB4A+eZOBtyvYpW0ppF
-	 VKlADVUoLV255aRFH2P6g7Os4xXiKumbLF5yWAhXH6h0IpeuxIs0hsiyIgapKEfIpk
-	 Mr/7enpe72LseWOrkj3IG7rGXXGLRNgmbtEqCPJkM9667QYESkhYbLC7f5ugS883do
-	 w5wlWUPT0LlOyCXAMnTBZpSRkOHCHDZ1DFEyfp5HZMeH2SRqU0V4HT06AA+sPwMImI
-	 dtu9zVhJ2Tdnj3Jz0dCy05W1a4kFLd8W59zYAEX7cFq0kIs1/d40QIyrRkpbRiKEEg
-	 Kn45IwDeNEXlA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([92.116.190.3]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MrQJ5-1oX6Re0szP-00oYBV; Tue, 27
- Dec 2022 22:07:01 +0100
-Message-ID: <aaf6a109-ac1b-c22a-88b7-0414b3265857@gmx.de>
-Date: Tue, 27 Dec 2022 22:06:59 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NhjxQ35W6z306n
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Dec 2022 18:35:53 +1100 (AEDT)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+	by mailout.west.internal (Postfix) with ESMTP id CDE2C3200904;
+	Wed, 28 Dec 2022 02:30:20 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute3.internal (MEProxy); Wed, 28 Dec 2022 02:30:21 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=cc
+	:cc:content-transfer-encoding:date:date:from:from:in-reply-to
+	:message-id:mime-version:reply-to:sender:subject:subject:to:to;
+	 s=fm3; t=1672212620; x=1672299020; bh=kg/f9U9Ol4UD+1uc3IGmsV2dd
+	QbQ6QRH+cPwJ6R0wEk=; b=GQcC6LqX9bOe7C6/VfGcwdWWCcYYpKAcVwi5Sl1Nq
+	1eNL1f0lK5vgpC4d2a3aoXePQqOvivn1QRgzt5rEKKzol9gSVIfY0x5LFMmQWOBJ
+	SHCFBMnHeRcrWDwtWRYSkeZ31F6tZc/5G4JQjIjx9kEaFHcviMd1AOhbUKsHJ9Fo
+	5giFMOggshB8VZQdTTlNauoHokceLN8nkzMVbYn7R7ZtFKlryXepeNTSrOePwzPF
+	idDy0w9V1E4jVANL3AAzylifu/svtWMi5Z0tqsZY2QR/BrS5bmaXDxNQhsyxxaew
+	GXEsSrIJenlKS+1N6CR/xZMNCjRteYVzJOA4Ib+R/NgDA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:message-id
+	:mime-version:reply-to:sender:subject:subject:to:to:x-me-proxy
+	:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1672212620; x=1672299020; bh=kg/f9U9Ol4UD+1uc3IGmsV2ddQbQ6QRH+cP
+	wJ6R0wEk=; b=q4FIVeqBvszFlxGwGJzkQvrKHGMqfSK3LjpxiTehFWF81Vzzfax
+	ur86BYxhRyHMAnQ91pc3I7kwQIThGyTEZi9pjtJnDAT0nCpXNg0BEhOU+MWaI0a8
+	LWb7F8tb6G8xOwJDTTDw8HM5A56ZnykhZQHDFAXuG+sZFfdYa/fp6TW66KgCy8dH
+	N3FIr3KMOXuC7bnjCWskiy1kN14x8XizHalwMApvWRPgPFNX11ySWfQXQA5XrWON
+	OJrEmCycM8QjxELYO8S15lY+InBl7xvWvyjp7tiNQDJp0Myaq4j7vouUGhz6xNd5
+	tJKxrSaqFZ73czFcumbBu1WTn5z/6X30Z+A==
+X-ME-Sender: <xms:i_CrY5D8PDmfB27uMNgFuYjdYIVVe1fTyUH3JzMNUxU8gDnA02zz2g>
+    <xme:i_CrY3gFlyYF6UYZi-d2MbGQ19exMQDRtaid6HWyfOLSl0MbyyMKGPiQzm5sOm19p
+    nVIZIZ-0-01au3hAw>
+X-ME-Received: <xmr:i_CrY0l8Ny_IxehNDvYbUwoZ8Arek5CXbdc0tIRNvRh003D4dd4QLqCibIUIK41bLEgw7eyUW9bDP9v-HTmbpKYs0cE8WKTJw-HlMlJb1q5USg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedriedugdduuddtucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucgfrhhlucfvnfffucdludehmdenucfjughrpefhvf
+    evufffkffoggfgsedtkeertdertddtnecuhfhrohhmpeftuhhsshgvlhhlucevuhhrrhgv
+    hicuoehruhhstghurhesrhhushhsvghllhdrtggtqeenucggtffrrghtthgvrhhnpeejte
+    dvtdegvdeuveegudelgffgjeelteevteffieevjedvvefhueekkeelhfehleenucffohhm
+    rghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+    hmpehmrghilhhfrhhomheprhhushgtuhhrsehruhhsshgvlhhlrdgttg
+X-ME-Proxy: <xmx:i_CrYzzteBqcA9f6fTDxR5gAaxN9SuofXN5XKD5IL5piKJWimuuCAA>
+    <xmx:i_CrY-SuNOI-JX-WQnTtaHVtZxLnNJyAU_ydcN_xXtgDxlBDcB6bHw>
+    <xmx:i_CrY2brpRjwpRDxP8zn6OCKmHMJ2QvR8kcxW9-GXIZksgEkalze2Q>
+    <xmx:jPCrY7TdLGfdpjzMSSW9vVW3Eb334ixQHBMi1NKnXtNbBd9NW_LW4Q>
+Feedback-ID: i4421424f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 28 Dec 2022 02:30:16 -0500 (EST)
+From: Russell Currey <ruscur@russell.cc>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 0/6] pseries dynamic secure boot interface using secvar
+Date: Wed, 28 Dec 2022 18:29:37 +1100
+Message-Id: <20221228072943.429266-1-ruscur@russell.cc>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Subject: Re: [PATCH] fbdev: make offb driver tristate
-To: Nathan Chancellor <nathan@kernel.org>
-References: <20221126000401.25302-1-rdunlap@infradead.org>
- <46e8cf0d-ab47-59b1-6c87-53d2d63a5bf6@suse.de>
- <f8c6eb94-10ee-07a8-ea48-d4fae60fc9ae@gmx.de>
- <Y6s96iuc3NRN5tS4@dev-arch.thelio-3990X>
-Content-Language: en-US
-From: Helge Deller <deller@gmx.de>
-In-Reply-To: <Y6s96iuc3NRN5tS4@dev-arch.thelio-3990X>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:pmufG/yBB7w10j8I7juqQ1B39xUxP8hRiEiNAVefeU+Zrc6CndG
- P8D13De0yweY4iSpmMFzYgs6fOK5FY/JajFhHgVW2MhBJFSnDzKgrXKxbm67ZiGG77ZOXyu
- FLsoDQkkcIufDRIPC8QEKCG9C/E/xdgEsK+r6KUlD4LVKleVqgJN1rYSFrY3/kFHkS0k90G
- 3aibwRR9tFFMx1kg3m9XA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:4m/m/TKe8EY=;8px+0lBpXJqhmDlMMqcatGE6fyR
- kwdAiq3U2LOYRCxMiNVKvGCCqgYC7ouanOJGEqPMwm2bYQgcwkpZQa8H5cF9bZQj34BAIsZsA
- 1XaKbiPO6NpfRjtEEMZtMJxLLjyQml/if2W/d9BlP9bs9nHhn/x81lApHGsN8lRiie2Hw5s65
- CkGmlTfGpZqQFfR3vl7BrvMn8H4VBnh9fqZQP/Qax0iIoCeVG57nvtJwaUGFKx1Te4GHsigtp
- qyYqRalAbUye9HFVHulSa43FI7QDfWFz2FHzyrboHoSvQ4m2xPUpU6QY+Ux9j2ZRBr78JqaDN
- cLZz6NQUsojzhZ7gPHpjMdyART5prM6RQozcOlq0WB/yyNqsD7UqbWQWFAsV3oVafcDG8X6gf
- xAYOzoEoYGRMmpt3htPz1nJYi+fKuvOOWmc2eG6edLfPAH3KtnnZQtpvfgWt7cVkLqbtWWoPC
- CB8xkIdRQglorW4K8x1cCNApA3rr6y26eFaZKXjO87lEhOg5QOnz5XTSn3XgZ2d9FmFaYsFMc
- 3NVsCgZ2gE0BFa1lem1NlLGvpU/bgrnCIZppeqOe+xhZ5+fw5t+KVVhVXmg1x1PDaY/o1cJJ5
- p5YQfhICbF/Eh1NNjPo7XKtVU4NqOxXWhh+SyAiNabpDIxUEx3phW6Iw5RwSvqeOijsriYAT6
- KBZLy4gdPEg9p0Yq9h6tzRUSB183VmBIaM4L1toY6RF1VO2tS5fCRb9GQUp25gmkTRG8CSVbx
- ejQSOttkcoVUXEb64ETtnJNUVv6KF5bHR96YTiNAqjSryZd5VJLZJ4Hfagb4S6XgT69FXReDu
- pmU6YXRpUtZQNzcqZ3A9mqEJPS8H35jtEqXcPR54RKvB+gPOlKqmyw4DEMc5O+Ew+og53U+LL
- MpDMGXwo0jV2Nu1DrSFMLj6Hw9g9KHRXCGYL6LdvIrIT1jl2QayH61cYho1wZiYKrCMhf+e4c
- gkwanbkBWZCZ56wz9awOPy+2nJk=
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,91 +90,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-fbdev@vger.kernel.org, llvm@lists.linux.dev, Daniel Vetter <daniel@ffwll.ch>, Arnd Bergmann <arnd@arndb.de>, Masahiro Yamada <masahiroy@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, Thomas Zimmermann <tzimmermann@suse.de>, =?UTF-8?Q?Michal_Such=c3=a1nek?= <msuchanek@suse.de>, linuxppc-dev@lists.ozlabs.org
+Cc: ajd@linux.ibm.com, gregkh@linuxfoundation.org, nayna@linux.ibm.com, linux-kernel@vger.kernel.org, zohar@linux.ibm.com, Russell Currey <ruscur@russell.cc>, gcwilson@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 12/27/22 19:48, Nathan Chancellor wrote:
-> On Sat, Dec 10, 2022 at 05:35:06PM +0100, Helge Deller wrote:
->> On 11/26/22 14:40, Thomas Zimmermann wrote:
->>> Am 26.11.22 um 01:04 schrieb Randy Dunlap:
->>>> Make the offb (Open Firmware frame buffer) driver tristate,
->>>> i.e., so that it can be built as a loadable module.
->>>>
->>>> However, it still depends on the setting of DRM_OFDRM
->>>> so that both of these drivers cannot be builtin at the same time
->>>> nor can one be builtin and the other one a loadable module.
->>>>
->>>> Build-tested successfully with all combination of DRM_OFDRM and FB_OF=
-.
->>>>
->>>> This fixes a build issue that Michal reported when FB_OF=3Dy and
->>>> DRM_OFDRM=3Dm:
->>>>
->>>> powerpc64-linux-ld: drivers/video/fbdev/offb.o:(.data.rel.ro+0x58): u=
-ndefined reference to `cfb_fillrect'
->>>> powerpc64-linux-ld: drivers/video/fbdev/offb.o:(.data.rel.ro+0x60): u=
-ndefined reference to `cfb_copyarea'
->>>> powerpc64-linux-ld: drivers/video/fbdev/offb.o:(.data.rel.ro+0x68): u=
-ndefined reference to `cfb_imageblit'
->>>>
->>>> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
->>>> Suggested-by: Arnd Bergmann <arnd@arndb.de>
->>>> Cc: Masahiro Yamada <masahiroy@kernel.org>
->>>> Cc: Thomas Zimmermann <tzimmermann@suse.de>
->>>> Cc: Michal Such=C3=A1nek <msuchanek@suse.de>
->>>> Cc: linuxppc-dev@lists.ozlabs.org
->>>> Cc: Daniel Vetter <daniel@ffwll.ch>
->>>> Cc: Helge Deller <deller@gmx.de>
->>>> Cc: linux-fbdev@vger.kernel.org
->>>> Cc: dri-devel@lists.freedesktop.org
->>>
->>> Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
->>
->> applied.
->
-> Is this going to make it to Linus soon? We are now seeing this error in
-> our CI, which has the configuration describe in this commit.
->
-> https://github.com/ClangBuiltLinux/continuous-integration2/actions/runs/=
-3785609002/jobs/6437398666#step:5:149
->
-> https://storage.tuxsuite.com/public/clangbuiltlinux/continuous-integrati=
-on2/builds/2JUMSmjAoSJoKfl6PPjfU66JGit/build.log
+This series exposes an interface to userspace for reading and writing
+secure variables contained within the PowerVM LPAR Platform KeyStore
+(PLPKS) for the purpose of configuring dynamic secure boot.
 
+This series builds on past work by Nayna Jain[0] in exposing PLPKS
+variables to userspace.  Rather than being a generic interface for
+interacting with the keystore, however, we use the existing powerpc
+secvar infrastructure to only expose objects in the keystore used
+for dynamic secure boot.  This has the benefit of leveraging an
+existing interface and making the implementation relatively minimal.
 
-It didn't applied cleanly earlier.
-I've now added it to the fbdev for-next branch, and if no problems
-show up in the next few days I'll push it before next weekend.
-https://git.kernel.org/pub/scm/linux/kernel/git/deller/linux-fbdev.git/log=
-/?h=3Dfor-next
+This series needs to be applied on top of Andrew's recent bugfix
+series[1].
 
-Helge
+There are a few relevant details to note about the implementation:
 
+ * New additions to the secvar API, format() and max_size()
+ * New optional sysfs directory "config/" for arbitrary ASCII variables
+ * Some OPAL-specific code has been relocated from secvar-sysfs.c to
+	powernv platform code.  Would appreciate any powernv testing!
+ * Variable names are fixed and only those used for secure boot are
+ 	exposed.  This is not a generic PLPKS interface, but also
+	doesn't preclude one being added in future.
 
-> Cheers,
-> Nathan
->
->>>> ---
->>>>  =C2=A0 drivers/video/fbdev/Kconfig |=C2=A0=C2=A0=C2=A0 4 ++--
->>>>  =C2=A0 1 file changed, 2 insertions(+), 2 deletions(-)
->>>>
->>>> diff -- a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
->>>> --- a/drivers/video/fbdev/Kconfig
->>>> +++ b/drivers/video/fbdev/Kconfig
->>>> @@ -456,8 +456,8 @@ config FB_ATARI
->>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 chipset found in Ataris.
->>>>  =C2=A0 config FB_OF
->>>> -=C2=A0=C2=A0=C2=A0 bool "Open Firmware frame buffer device support"
->>>> -=C2=A0=C2=A0=C2=A0 depends on (FB =3D y) && PPC && (!PPC_PSERIES || =
-PCI)
->>>> +=C2=A0=C2=A0=C2=A0 tristate "Open Firmware frame buffer device suppo=
-rt"
->>>> +=C2=A0=C2=A0=C2=A0 depends on FB && PPC && (!PPC_PSERIES || PCI)
->>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 depends on !DRM_OFDRM
->>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 select APERTURE_HELPERS
->>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 select FB_CFB_FILLRECT
->>>
->>
->>
+With this series, both powernv and pseries platforms support dynamic
+secure boot through the same interface.
+
+[0]: https://lore.kernel.org/linuxppc-dev/20221106210744.603240-1-nayna@linux.ibm.com/
+[1]: https://lore.kernel.org/linuxppc-dev/20221220071626.1426786-1-ajd@linux.ibm.com/
+
+Russell Currey (6):
+  powerpc/pseries: Log hcall return codes for PLPKS debug
+  powerpc/secvar: WARN_ON_ONCE() if multiple secvar ops are set
+  powerpc/secvar: Handle format string in the consumer
+  powerpc/secvar: Handle max object size in the consumer
+  powerpc/secvar: Extend sysfs to include config vars
+  powerpc/pseries: Implement secvars for dynamic secure boot
+
+ Documentation/ABI/testing/sysfs-secvar        |   8 +
+ arch/powerpc/include/asm/secvar.h             |   5 +
+ arch/powerpc/kernel/secvar-ops.c              |   4 +-
+ arch/powerpc/kernel/secvar-sysfs.c            |  76 +++---
+ arch/powerpc/platforms/powernv/opal-secvar.c  |  44 +++
+ arch/powerpc/platforms/pseries/Kconfig        |  13 +
+ arch/powerpc/platforms/pseries/Makefile       |   4 +-
+ arch/powerpc/platforms/pseries/plpks-secvar.c | 250 ++++++++++++++++++
+ arch/powerpc/platforms/pseries/plpks.c        |   2 +
+ 9 files changed, 365 insertions(+), 41 deletions(-)
+ create mode 100644 arch/powerpc/platforms/pseries/plpks-secvar.c
+
+-- 
+2.38.1
 
