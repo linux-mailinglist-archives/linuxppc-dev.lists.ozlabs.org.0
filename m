@@ -2,39 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB0556574C5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Dec 2022 10:39:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38336657564
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Dec 2022 11:39:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NhmhB66Tmz3cFd
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Dec 2022 20:39:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Nhp0f0pPdz3c65
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Dec 2022 21:38:58 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YX28XbkS;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com; envelope-from=yangyingliang@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=maz@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YX28XbkS;
+	dkim-atps=neutral
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nhmgc5qpBz306l
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Dec 2022 20:39:05 +1100 (AEDT)
-Received: from dggpemm500007.china.huawei.com (unknown [172.30.72.56])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Nhmf82HQGzJqTP;
-	Wed, 28 Dec 2022 17:37:52 +0800 (CST)
-Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
- (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Wed, 28 Dec
- 2022 17:38:58 +0800
-From: Yang Yingliang <yangyingliang@huawei.com>
-To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH -next] powerpc/64s/hash: change stress_hpt_timer_fn to static
-Date: Wed, 28 Dec 2022 17:36:03 +0800
-Message-ID: <20221228093603.3166599-1-yangyingliang@huawei.com>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.175.103.91]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- dggpemm500007.china.huawei.com (7.185.36.183)
-X-CFilter-Loop: Reflected
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nhnzg3WSYz2xl6
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Dec 2022 21:38:07 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id A25E4B81256;
+	Wed, 28 Dec 2022 10:38:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64E2EC433D2;
+	Wed, 28 Dec 2022 10:38:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1672223881;
+	bh=ukEG+mxZCrVb4P02TVQEmq/oWyPRaEZkv/wBhkH7xQg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=YX28XbkSNNpCc0eciXPnPrUXZ5EQPyu+SvGYdTZyutPY8UPeYh5OYGDag7K2X5wS8
+	 0Vs9SBZEXgeK3Lfx6c55LW6he+lW6N6Gq/KiaPbi9/ipM3EXg7bxA8tlz1yopR7xJ7
+	 gINUQKgzgyelxEqvhZdGarNSQP9FggZA/h15FodYRvnonEDLY538xrA4hmWdceNt5m
+	 mGraz180DGYFnP1uMnkdVJbLJbgfDxoMXL/wV9rPyXucwl05pzQho+rBpNsR/lNSVU
+	 dW78Ez/Rhe1AgXwjDC+B3FwIGgq04yk6fNQcAYY5CUAWt0MSDLXx/lDWsDn/6t4EnD
+	 zH29c1DpjuUJA==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1pATot-00FX6g-2A;
+	Wed, 28 Dec 2022 10:37:59 +0000
+Date: Wed, 28 Dec 2022 10:37:58 +0000
+Message-ID: <86fsczbypl.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH AUTOSEL 4.14 3/4] powerpc/msi: Fix deassociation of MSI descriptors
+In-Reply-To: <20221227203611.1214818-3-sashal@kernel.org>
+References: <20221227203611.1214818-1-sashal@kernel.org>
+	<20221227203611.1214818-3-sashal@kernel.org>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/28.2
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: sashal@kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, linux@roeck-us.net, mpe@ellerman.id.au, christophe.leroy@csgroup.eu, windhl@126.com, Julia.Lawall@inria.fr, joel@jms.id.au, linuxppc-dev@lists.ozlabs.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,32 +72,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: npiggin@gmail.com, yangyingliang@huawei.com
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Julia.Lawall@inria.fr, stable@vger.kernel.org, windhl@126.com, Guenter Roeck <linux@roeck-us.net>, joel@jms.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-stress_hpt_timer_fn is only used in hash_utils.c now,
-change it to static.
+On Tue, 27 Dec 2022 20:36:08 +0000,
+Sasha Levin <sashal@kernel.org> wrote:
+> 
+> From: Marc Zyngier <maz@kernel.org>
+> 
+> [ Upstream commit 4545c6a3d6ba71747eaa984c338ddd745e56e23f ]
+> 
+> Since 2f2940d16823 ("genirq/msi: Remove filter from
+> msi_free_descs_free_range()"), the core MSI code relies on the
+> msi_desc->irq field to have been cleared before the descriptor
+> can be freed, as it indicates that there is no association with
+> a device anymore.
+> 
+> The irq domain code provides this guarantee, and so does s390,
+> which is one of the two architectures not using irq domains for
+> MSIs.
+> 
+> Powerpc, however, is missing this particular requirements,
+> leading in a splat and leaked MSI descriptors.
+> 
+> Adding the now required irq reset to the handful of powerpc backends
+> that implement MSIs fixes that particular problem.
+> 
+> Reported-by: Guenter Roeck <linux@roeck-us.net>
+> Signed-off-by: Marc Zyngier <maz@kernel.org>
+> Link: https://lore.kernel.org/r/70dab88e-6119-0c12-7c6a-61bcbe239f66@roeck-us.net
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  arch/powerpc/platforms/4xx/hsta_msi.c  | 1 +
+>  arch/powerpc/platforms/cell/axon_msi.c | 1 +
+>  arch/powerpc/platforms/pasemi/msi.c    | 1 +
+>  arch/powerpc/sysdev/fsl_msi.c          | 1 +
+>  arch/powerpc/sysdev/mpic_u3msi.c       | 1 +
+>  5 files changed, 5 insertions(+)
 
-Fixes: 6b34a099faa1 ("powerpc/64s/hash: add stress_hpt kernel boot option to increase hash faults")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
----
- arch/powerpc/mm/book3s64/hash_utils.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Please drop this patch from all stable branches. It isn't needed
+before 6.2, and doesn't fix anything on its own as nobody uses this
+structure after this point.
 
-diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
-index 80a148c57de8..44a35ed4f686 100644
---- a/arch/powerpc/mm/book3s64/hash_utils.c
-+++ b/arch/powerpc/mm/book3s64/hash_utils.c
-@@ -1012,7 +1012,7 @@ static void __init hash_init_partition_table(phys_addr_t hash_table,
- 
- void hpt_clear_stress(void);
- static struct timer_list stress_hpt_timer;
--void stress_hpt_timer_fn(struct timer_list *timer)
-+static void stress_hpt_timer_fn(struct timer_list *timer)
- {
- 	int next_cpu;
- 
+	M.
+
 -- 
-2.25.1
-
+Without deviation from the norm, progress is not possible.
