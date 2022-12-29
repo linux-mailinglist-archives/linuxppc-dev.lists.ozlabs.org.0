@@ -1,49 +1,95 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFEED65788D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Dec 2022 15:52:37 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1230B658B0F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Dec 2022 10:33:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NhvdH5npzz3cCP
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Dec 2022 01:52:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NjNVq6TMcz3c8F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Dec 2022 20:33:39 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=V/5Cv1Vh;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=iDQJHK36;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33; helo=metis.ext.pengutronix.de; envelope-from=ukl@pengutronix.de; receiver=<UNKNOWN>)
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=66.111.4.27; helo=out3-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=V/5Cv1Vh;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=iDQJHK36;
+	dkim-atps=neutral
+Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com [66.111.4.27])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nhvch3s5Vz3bVs
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Dec 2022 01:52:02 +1100 (AEDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1pAXmQ-0007hS-EY; Wed, 28 Dec 2022 15:51:42 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1pAXmM-002Iu4-K8; Wed, 28 Dec 2022 15:51:38 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1pAXmL-008XdM-NC; Wed, 28 Dec 2022 15:51:37 +0100
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Michael Ellerman <mpe@ellerman.id.au>,
-	Anatolij Gustschin <agust@denx.de>
-Subject: [PATCH] powerpc/mpc52xx_lpbfifo: Drop unused functions
-Date: Wed, 28 Dec 2022 15:51:29 +0100
-Message-Id: <20221228145129.31700-1-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.38.1
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6232; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=qKYoehDSET6RagO3aizGe+M2US4v/dST+TBCb/+4yNw=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBjrFfsv52FI2ikCUHMgsgLaAukLASh02W1RB+v09UJ hqWzsUKJATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCY6xX7AAKCRDB/BR4rcrsCRlOB/ 9yBrDk6Pta5pW3lBg6K9BD6IWyV8xa31a0sRgq7FAyXkYRD8FOq7CVWc4gNCHFPbtDb87wPSx0JlOx SLRT4iUfpyiuRQokKWKEZXTNKH1Hy71ZX/RlYXa35CRzGpF8RldlhZt6n5Zpu5TPj2Z1fRvgyAWCcT 05j0XhlXnVbmE8DmQFsn9uy5GgJc20QlddJPCmj13mSDyxMH0y0KmXMGrAcOxwW0qcxA9/pvtbLvm0 Wn924wcoVmYQUWDSEfchmsPPS/c/7FLSCB7VNU0XJzKL7qGsTSv3YccA9l9dI3KEeCw93D8gk2c2VM tWbpfTevq0tjLn5tZexgdmUK5S5HWC
-X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NjNTp0Nwxz30Mn
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Dec 2022 20:32:44 +1100 (AEDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+	by mailout.nyi.internal (Postfix) with ESMTP id A20595C022E;
+	Thu, 29 Dec 2022 04:32:40 -0500 (EST)
+Received: from imap51 ([10.202.2.101])
+  by compute6.internal (MEProxy); Thu, 29 Dec 2022 04:32:40 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-type:date:date:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:sender:subject
+	:subject:to:to; s=fm1; t=1672306360; x=1672392760; bh=dQitIKz9Zv
+	Mk4oytHD9JLdnkBzb2SNyrpGTj/IDH57g=; b=V/5Cv1VhfpH5iTFAIPNbee37+7
+	fGRfQGhS2cfvaoU5prjYmzEkJOixzWrHBayYA/LAbI8aGtT5NUL+owTmoaFj3n3B
+	LJoHwRocbJtfuMEyHSx/wyanvvQ13DDzevGclpYyw7qeYNEVViTXINcAj0D9vgsh
+	7pfvXG5yZXolmbAG1xnYy8Ot//4tvH7LNGG1PIQsV13T27gAt8TnwFw1loQa0vbD
+	oPcv9yAU1hrNnDzJ4hHBOxfksO9Tu+rLYKEWw8IH2L2YS5xRATHewhb6Zy3ABb5W
+	Th9HksHzXkv0qeIqDaZbZW8EtN2KMBSeSVjD4popm9MiVXhAr8il3YStrrLA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
+	:feedback-id:from:from:in-reply-to:in-reply-to:message-id
+	:mime-version:references:reply-to:sender:subject:subject:to:to
+	:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm2; t=1672306360; x=1672392760; bh=dQitIKz9ZvMk4oytHD9JLdnkBzb2
+	SNyrpGTj/IDH57g=; b=iDQJHK36vHwWh1wRKl4E4QER7+DQKeClUsyglmglgxkg
+	EljL62jR2iZg18aei0CuCeH832VH529cwGFTM79QLvISe5DOGQCCaE9a5nVoNcdT
+	vRyncomABgBeJ3SsaAqCusYLubSRqSwkWTAzvRqkgUp7P/uDuSrSC8oJAPjjHwnG
+	Zd0Dd9LmkVGzRX1+/eSzkb96N8eNNz/u/R6Fm30nUUZjYR3EyVzLMio8jHJyXxIj
+	iQzshYRj6uSLjiurv3YD4ZUHN8c2WtRhXRw4+fHy6C13RBukmzzaZvqF15WJiEkO
+	SQyTebTGPXArLBywDKO2H+WZBi9s4A/HPkn50Hzk8Q==
+X-ME-Sender: <xms:t16tY_xTXyOBxZzRlwIxGAjI2ettOKadK7A9iMGmJP2qRljOTcBayg>
+    <xme:t16tY3RGUfHsWbJR8Ja2QCw0SFyKp0uowcI1CysTjogMdtCluR5C8uHqieGWGVAVH
+    SG9ndtEeyJsrl3xTZI>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrieeggddthecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
+    ugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtth
+    gvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedtkeet
+    ffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrh
+    hnugesrghrnhgusgdruggv
+X-ME-Proxy: <xmx:t16tY5WPN0eRhQuqkXR1eQBdMOuAo-5nAJJ36hmRXP0lPVn6iv5ojg>
+    <xmx:t16tY5hs5xXyUOxLtmXCD1t9iRdCyPGN1E3t5Pc7uUgssA87nClWZw>
+    <xmx:t16tYxCRfWeK3MQh1NvH9n9BHNHyKE86lXXcTf6N2kZ0kJveeEq2-A>
+    <xmx:uF6tY2yAnrmYZFHKR9Art5c4-CoKhKbO440aSm6r1v3bh4Mq4Q8mmQ>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id AA077B60086; Thu, 29 Dec 2022 04:32:39 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.7.0-alpha0-1185-g841157300a-fm-20221208.002-g84115730
+Mime-Version: 1.0
+Message-Id: <78b23407-bdd0-4b1b-bf6e-ecd4c00294ab@app.fastmail.com>
+In-Reply-To: <20221222114635.1251934-3-andrzej.hajda@intel.com>
+References: <20221222114635.1251934-1-andrzej.hajda@intel.com>
+ <20221222114635.1251934-3-andrzej.hajda@intel.com>
+Date: Thu, 29 Dec 2022 10:32:19 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Andrzej Hajda" <andrzej.hajda@intel.com>, linux-alpha@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, linux-hexagon@vger.kernel.org,
+ linux-ia64@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+ openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+ sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+ intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH 02/19] arch/arc: rename internal name __xchg to __arch_xchg
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,225 +101,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org
+Cc: Mark Rutland <mark.rutland@arm.com>, Peter Zijlstra <peterz@infradead.org>, Boqun Feng <boqun.feng@gmail.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, Andrew Morton <akpm@linux-foundation.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The four exported functions mpc52xx_lpbfifo_submit(),
-mpc52xx_lpbfifo_abort(), mpc52xx_lpbfifo_poll(), and
-mpc52xx_lpbfifo_start_xfer() are not used. So they can be dropped and the
-definitions needed to call them can be moved into the driver file.
+On Thu, Dec 22, 2022, at 12:46, Andrzej Hajda wrote:
+> __xchg will be used for non-atomic xchg macro.
+>
+> Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
+> ---
+>  arch/arc/include/asm/cmpxchg.h | 4 ++--
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
----
- arch/powerpc/include/asm/mpc52xx.h            |  41 ------
- arch/powerpc/platforms/52xx/mpc52xx_lpbfifo.c | 134 +++++-------------
- 2 files changed, 33 insertions(+), 142 deletions(-)
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
 
-diff --git a/arch/powerpc/include/asm/mpc52xx.h b/arch/powerpc/include/asm/mpc52xx.h
-index 5ea16a71c2f0..01ae6c351e50 100644
---- a/arch/powerpc/include/asm/mpc52xx.h
-+++ b/arch/powerpc/include/asm/mpc52xx.h
-@@ -285,47 +285,6 @@ extern int mpc52xx_gpt_start_timer(struct mpc52xx_gpt_priv *gpt, u64 period,
- extern u64 mpc52xx_gpt_timer_period(struct mpc52xx_gpt_priv *gpt);
- extern int mpc52xx_gpt_stop_timer(struct mpc52xx_gpt_priv *gpt);
- 
--/* mpc52xx_lpbfifo.c */
--#define MPC52XX_LPBFIFO_FLAG_READ		(0)
--#define MPC52XX_LPBFIFO_FLAG_WRITE		(1<<0)
--#define MPC52XX_LPBFIFO_FLAG_NO_INCREMENT	(1<<1)
--#define MPC52XX_LPBFIFO_FLAG_NO_DMA		(1<<2)
--#define MPC52XX_LPBFIFO_FLAG_POLL_DMA		(1<<3)
--
--struct mpc52xx_lpbfifo_request {
--	struct list_head list;
--
--	/* localplus bus address */
--	unsigned int cs;
--	size_t offset;
--
--	/* Memory address */
--	void *data;
--	phys_addr_t data_phys;
--
--	/* Details of transfer */
--	size_t size;
--	size_t pos;	/* current position of transfer */
--	int flags;
--	int defer_xfer_start;
--
--	/* What to do when finished */
--	void (*callback)(struct mpc52xx_lpbfifo_request *);
--
--	void *priv;		/* Driver private data */
--
--	/* statistics */
--	int irq_count;
--	int irq_ticks;
--	u8 last_byte;
--	int buffer_not_done_cnt;
--};
--
--extern int mpc52xx_lpbfifo_submit(struct mpc52xx_lpbfifo_request *req);
--extern void mpc52xx_lpbfifo_abort(struct mpc52xx_lpbfifo_request *req);
--extern void mpc52xx_lpbfifo_poll(void);
--extern int mpc52xx_lpbfifo_start_xfer(struct mpc52xx_lpbfifo_request *req);
--
- /* mpc52xx_pic.c */
- extern void mpc52xx_init_irq(void);
- extern unsigned int mpc52xx_get_irq(void);
-diff --git a/arch/powerpc/platforms/52xx/mpc52xx_lpbfifo.c b/arch/powerpc/platforms/52xx/mpc52xx_lpbfifo.c
-index 6d1dd6e87478..32fd1345ffeb 100644
---- a/arch/powerpc/platforms/52xx/mpc52xx_lpbfifo.c
-+++ b/arch/powerpc/platforms/52xx/mpc52xx_lpbfifo.c
-@@ -38,6 +38,39 @@ MODULE_LICENSE("GPL");
- #define LPBFIFO_REG_FIFO_CONTROL	(0x48)
- #define LPBFIFO_REG_FIFO_ALARM		(0x4C)
- 
-+#define MPC52XX_LPBFIFO_FLAG_WRITE		(1<<0)
-+#define MPC52XX_LPBFIFO_FLAG_NO_DMA		(1<<2)
-+#define MPC52XX_LPBFIFO_FLAG_POLL_DMA		(1<<3)
-+
-+struct mpc52xx_lpbfifo_request {
-+	struct list_head list;
-+
-+	/* localplus bus address */
-+	unsigned int cs;
-+	size_t offset;
-+
-+	/* Memory address */
-+	void *data;
-+	phys_addr_t data_phys;
-+
-+	/* Details of transfer */
-+	size_t size;
-+	size_t pos;	/* current position of transfer */
-+	int flags;
-+	int defer_xfer_start;
-+
-+	/* What to do when finished */
-+	void (*callback)(struct mpc52xx_lpbfifo_request *);
-+
-+	void *priv;		/* Driver private data */
-+
-+	/* statistics */
-+	int irq_count;
-+	int irq_ticks;
-+	u8 last_byte;
-+	int buffer_not_done_cnt;
-+};
-+
- struct mpc52xx_lpbfifo {
- 	struct device *dev;
- 	phys_addr_t regs_phys;
-@@ -381,107 +414,6 @@ static irqreturn_t mpc52xx_lpbfifo_bcom_irq(int irq, void *dev_id)
- 	return IRQ_HANDLED;
- }
- 
--/**
-- * mpc52xx_lpbfifo_poll - Poll for DMA completion
-- */
--void mpc52xx_lpbfifo_poll(void)
--{
--	struct mpc52xx_lpbfifo_request *req = lpbfifo.req;
--	int dma = !(req->flags & MPC52XX_LPBFIFO_FLAG_NO_DMA);
--	int write = req->flags & MPC52XX_LPBFIFO_FLAG_WRITE;
--
--	/*
--	 * For more information, see comments on the "Fat Lady" 
--	 */
--	if (dma && write)
--		mpc52xx_lpbfifo_irq(0, NULL);
--	else 
--		mpc52xx_lpbfifo_bcom_irq(0, NULL);
--}
--EXPORT_SYMBOL(mpc52xx_lpbfifo_poll);
--
--/**
-- * mpc52xx_lpbfifo_submit - Submit an LPB FIFO transfer request.
-- * @req: Pointer to request structure
-- *
-- * Return: %0 on success, -errno code on error
-- */
--int mpc52xx_lpbfifo_submit(struct mpc52xx_lpbfifo_request *req)
--{
--	unsigned long flags;
--
--	if (!lpbfifo.regs)
--		return -ENODEV;
--
--	spin_lock_irqsave(&lpbfifo.lock, flags);
--
--	/* If the req pointer is already set, then a transfer is in progress */
--	if (lpbfifo.req) {
--		spin_unlock_irqrestore(&lpbfifo.lock, flags);
--		return -EBUSY;
--	}
--
--	/* Setup the transfer */
--	lpbfifo.req = req;
--	req->irq_count = 0;
--	req->irq_ticks = 0;
--	req->buffer_not_done_cnt = 0;
--	req->pos = 0;
--
--	mpc52xx_lpbfifo_kick(req);
--	spin_unlock_irqrestore(&lpbfifo.lock, flags);
--	return 0;
--}
--EXPORT_SYMBOL(mpc52xx_lpbfifo_submit);
--
--int mpc52xx_lpbfifo_start_xfer(struct mpc52xx_lpbfifo_request *req)
--{
--	unsigned long flags;
--
--	if (!lpbfifo.regs)
--		return -ENODEV;
--
--	spin_lock_irqsave(&lpbfifo.lock, flags);
--
--	/*
--	 * If the req pointer is already set and a transfer was
--	 * started on submit, then this transfer is in progress
--	 */
--	if (lpbfifo.req && !lpbfifo.req->defer_xfer_start) {
--		spin_unlock_irqrestore(&lpbfifo.lock, flags);
--		return -EBUSY;
--	}
--
--	/*
--	 * If the req was previously submitted but not
--	 * started, start it now
--	 */
--	if (lpbfifo.req && lpbfifo.req == req &&
--	    lpbfifo.req->defer_xfer_start) {
--		out_8(lpbfifo.regs + LPBFIFO_REG_PACKET_SIZE, 0x01);
--	}
--
--	spin_unlock_irqrestore(&lpbfifo.lock, flags);
--	return 0;
--}
--EXPORT_SYMBOL(mpc52xx_lpbfifo_start_xfer);
--
--void mpc52xx_lpbfifo_abort(struct mpc52xx_lpbfifo_request *req)
--{
--	unsigned long flags;
--
--	spin_lock_irqsave(&lpbfifo.lock, flags);
--	if (lpbfifo.req == req) {
--		/* Put it into reset and clear the state */
--		bcom_gen_bd_rx_reset(lpbfifo.bcom_rx_task);
--		bcom_gen_bd_tx_reset(lpbfifo.bcom_tx_task);
--		out_be32(lpbfifo.regs + LPBFIFO_REG_ENABLE, 0x01010000);
--		lpbfifo.req = NULL;
--	}
--	spin_unlock_irqrestore(&lpbfifo.lock, flags);
--}
--EXPORT_SYMBOL(mpc52xx_lpbfifo_abort);
--
- static int mpc52xx_lpbfifo_probe(struct platform_device *op)
- {
- 	struct resource res;
--- 
-2.38.1
+for all the arch/*/include/asm/cmpxchg.h changes.
 
+Since these patches are all the same, and they have identical
+subject and description texts, I would suggest combining them
+into a single patch to keep the series more compact.
+
+Having them separate would allow merging the patches through
+the individual architecture maintainer trees, but that in turn
+would mean waiting longer to get it all merged, but in this
+case it seems way easier to go through the asm-generic
+tree.
+
+     Arnd
