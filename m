@@ -2,49 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A56465BB52
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Jan 2023 08:39:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5733765BBDC
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Jan 2023 09:16:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NmPkw2FKZz3bmQ
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Jan 2023 18:39:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NmQYH1JfHz3c8P
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Jan 2023 19:16:19 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=wTzy/rAC;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=Rivugukn;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=wTzy/rAC;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=Rivugukn;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NmPjy2LR7z2xWc
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Jan 2023 18:38:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NmQXM2cKNz2yxB
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Jan 2023 19:15:30 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 1B180B80E1C;
-	Tue,  3 Jan 2023 07:38:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B2A6C433EF;
-	Tue,  3 Jan 2023 07:38:36 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 72475611F4;
+	Tue,  3 Jan 2023 08:15:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81206C433EF;
+	Tue,  3 Jan 2023 08:15:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1672731516;
-	bh=Erihbp1cPAKxMFJS5VvKguxAzuVz2fd3BpRZpJdcXPM=;
-	h=Subject:To:Cc:From:Date:From;
-	b=wTzy/rACpzd4OLIBRbJfvut9yrJzbcblI+ONk1H9U6ED2IxERSOAZbTKFhtqCN832
-	 NJySkh0LL1EWUxbFXpc21BI9LrjFpUiW7nzm5A6tp/HO41CakUstzOhbxtxO9GEJtu
-	 3qOtaOIrWdPJWGqIFl4Z3wQTm7RlqP43NAU5l5XI=
-Subject: Patch "powerpc: add support for TIF_NOTIFY_SIGNAL" has been added to the 5.10-stable tree
-To: axboe@kernel.dk,gregkh@linuxfoundation.org,linuxppc-dev@lists.ozlabs.org,mpe@ellerman.id.au
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 03 Jan 2023 08:36:30 +0100
-Message-ID: <1672731390128145@kroah.com>
+	s=korg; t=1672733726;
+	bh=XRaeXSlPdh0yFvfiztqZ/I8H5J2GOdPGm26XZE7GTIQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=RivuguknUptJl3xIPUts3aIJ3KSzTDlOahVabUSBFjzlxblz9gR31C9lulIjdZTDP
+	 xW3fJYzb7BwaChMrvudJ6eOukCkIaCbsb5FkH8AVZztNj+77DqaofLNViVW6iu7EGA
+	 t1LW+oQp0Hj8n2TxQdMxOGJ6RlbJubZA/H8fSuDI=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Subject: [PATCH 5.10 23/63] powerpc: add support for TIF_NOTIFY_SIGNAL
+Date: Tue,  3 Jan 2023 09:13:53 +0100
+Message-Id: <20230103081309.957743460@linuxfoundation.org>
+X-Mailer: git-send-email 2.39.0
+In-Reply-To: <20230103081308.548338576@linuxfoundation.org>
+References: <20230103081308.548338576@linuxfoundation.org>
+User-Agent: quilt/0.67
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-stable: commit
-X-Patchwork-Hint: ignore 
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,30 +58,9 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: stable-commits@vger.kernel.org
+Cc: Jens Axboe <axboe@kernel.dk>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linuxppc-dev@lists.ozlabs.org, patches@lists.linux.dev
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
-
-
-This is a note to let you know that I've just added the patch titled
-
-    powerpc: add support for TIF_NOTIFY_SIGNAL
-
-to the 5.10-stable tree which can be found at:
-    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-
-The filename of the patch is:
-     powerpc-add-support-for-tif_notify_signal.patch
-and it can be found in the queue-5.10 subdirectory.
-
-If you, or anyone else, feels it should not be added to the stable tree,
-please let <stable@vger.kernel.org> know about it.
-
-
-From 616d38f834d91a5af2e3afb08f12ecb8b32e4a96 Mon Sep 17 00:00:00 2001
-From: Jens Axboe <axboe@kernel.dk>
-Date: Thu, 22 Oct 2020 20:11:56 -0600
-Subject: powerpc: add support for TIF_NOTIFY_SIGNAL
 
 From: Jens Axboe <axboe@kernel.dk>
 
@@ -137,69 +118,3 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	}
 
 
-Patches currently in stable-queue which might be from axboe@kernel.dk are
-
-queue-5.10/x86-process-setup-io_threads-more-like-normal-user-space-threads.patch
-queue-5.10/powerpc-add-support-for-tif_notify_signal.patch
-queue-5.10/eventfd-provide-a-eventfd_signal_mask-helper.patch
-queue-5.10/fs-provide-locked-helper-variant-of-close_fd_get_file.patch
-queue-5.10/relay-fix-type-mismatch-when-allocating-memory-in-re.patch
-queue-5.10/eventfd-change-int-to-__u64-in-eventfd_signal-ifndef.patch
-queue-5.10/io_uring-pass-in-epoll_uring_wake-for-eventfd-signaling-and-wakeups.patch
-queue-5.10/blk-mq-fix-possible-memleak-when-register-hctx-faile.patch
-queue-5.10/fix-handling-of-nd-depth-on-lookup_cached-failures-in-try_to_unlazy.patch
-queue-5.10/net-provide-__sys_shutdown_sock-that-takes-a-socket.patch
-queue-5.10/task_work-unconditionally-run-task_work-from-get_signal.patch
-queue-5.10/openrisc-add-support-for-tif_notify_signal.patch
-queue-5.10/signal-add-task_sigpending-helper.patch
-queue-5.10/net-remove-cmsg-restriction-from-io_uring-based-send-recvmsg-calls.patch
-queue-5.10/alpha-add-support-for-tif_notify_signal.patch
-queue-5.10/nios32-add-support-for-tif_notify_signal.patch
-queue-5.10/ia64-don-t-call-handle_signal-unless-there-s-actually-a-signal-queued.patch
-queue-5.10/task_work-remove-legacy-twa_signal-path.patch
-queue-5.10/revert-proc-don-t-allow-async-path-resolution-of-proc-self-components.patch
-queue-5.10/m68k-add-support-for-tif_notify_signal.patch
-queue-5.10/s390-add-support-for-tif_notify_signal.patch
-queue-5.10/um-add-support-for-tif_notify_signal.patch
-queue-5.10/tools-headers-uapi-sync-openat2.h-with-the-kernel-sources.patch
-queue-5.10/kernel-provide-create_io_thread-helper.patch
-queue-5.10/iov_iter-add-helper-to-save-iov_iter-state.patch
-queue-5.10/arc-unbork-5.11-bootup-fix-snafu-in-_tif_notify_signal-handling.patch
-queue-5.10/arch-ensure-parisc-powerpc-handle-pf_io_worker-in-copy_thread.patch
-queue-5.10/csky-add-support-for-tif_notify_signal.patch
-queue-5.10/arm-add-support-for-tif_notify_signal.patch
-queue-5.10/kernel-stop-masking-signals-in-create_io_thread.patch
-queue-5.10/fs-expose-lookup_cached-through-openat2-resolve_cached.patch
-queue-5.10/task_work-add-helper-for-more-targeted-task_work-canceling.patch
-queue-5.10/nds32-add-support-for-tif_notify_signal.patch
-queue-5.10/signal-kill-jobctl_task_work.patch
-queue-5.10/hexagon-add-support-for-tif_notify_signal.patch
-queue-5.10/sh-add-support-for-tif_notify_signal.patch
-queue-5.10/riscv-add-support-for-tif_notify_signal.patch
-queue-5.10/h8300-add-support-for-tif_notify_signal.patch
-queue-5.10/io_uring-import-5.15-stable-io_uring.patch
-queue-5.10/sparc-add-support-for-tif_notify_signal.patch
-queue-5.10/blktrace-fix-output-non-blktrace-event-when-blk_clas.patch
-queue-5.10/eventpoll-add-epoll_uring_wake-poll-wakeup-flag.patch
-queue-5.10/parisc-add-support-for-tif_notify_signal.patch
-queue-5.10/entry-add-support-for-tif_notify_signal.patch
-queue-5.10/x86-wire-up-tif_notify_signal.patch
-queue-5.10/task_work-use-tif_notify_signal-if-available.patch
-queue-5.10/drbd-fix-an-invalid-memory-access-caused-by-incorrec.patch
-queue-5.10/kernel-don-t-call-do_exit-for-pf_io_worker-threads.patch
-queue-5.10/kernel-allow-fork-with-tif_notify_signal-pending.patch
-queue-5.10/pata_ipx4xx_cf-fix-unsigned-comparison-with-less-tha.patch
-queue-5.10/mips-add-support-for-tif_notify_signal.patch
-queue-5.10/xtensa-add-support-for-tif_notify_signal.patch
-queue-5.10/c6x-add-support-for-tif_notify_signal.patch
-queue-5.10/microblaze-add-support-for-tif_notify_signal.patch
-queue-5.10/net-add-accept-helper-not-installing-fd.patch
-queue-5.10/ia64-add-support-for-tif_notify_signal.patch
-queue-5.10/arm64-add-support-for-tif_notify_signal.patch
-queue-5.10/arc-add-support-for-tif_notify_signal.patch
-queue-5.10/revert-proc-don-t-allow-async-path-resolution-of-proc-thread-self-components.patch
-queue-5.10/fs-make-do_renameat2-take-struct-filename.patch
-queue-5.10/kernel-remove-checking-for-tif_notify_signal.patch
-queue-5.10/arch-setup-pf_io_worker-threads-like-pf_kthread.patch
-queue-5.10/nvme-pci-fix-mempool-alloc-size.patch
-queue-5.10/fs-add-support-for-lookup_cached.patch
