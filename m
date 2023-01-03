@@ -2,60 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20CFD65B93B
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Jan 2023 03:04:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BF0965B9E8
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Jan 2023 05:04:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NmGJd07fKz3c7x
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Jan 2023 13:04:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NmJzC1PZdz3c8x
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Jan 2023 15:04:55 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uyWrJ+J5;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=mh0N1VW2;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=robh@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.53; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uyWrJ+J5;
+	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=mh0N1VW2;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.53])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NmGHg0f9Dz3bTk
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Jan 2023 13:03:58 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 675C5B80E1B
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Jan 2023 02:03:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ADCCC433D2
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Jan 2023 02:03:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1672711433;
-	bh=kSq+iZIFlWTfJ390ONeecgeoETkEhfUzhq4zOWoSJkg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=uyWrJ+J5KbT2ZRN5E/VFxqs1azxRJIeNZACb2+N3FM/pt/FgtkdB1rqAL27wmVj2m
-	 kKQyD/9N0Gbat0erKdaY+AdrtrlzsDuU61fTilryug2+AaTkWJGu2h01OoKqVZEzVv
-	 TzNsrGTzulnxjKDe1HeddGGbGx/DajWxA2lfPfkrs4z3HIC63lT3FxE3/rb5RavuOs
-	 vj98PCG+kBc79p6feEwxVZ5ZT1/fqfBMvcAVfoGWdbRRjbd8iW2e0WEbJ+nTylccWM
-	 vTBNOllRIgcO1JWyM08rqvC7FoocFHWe4HJ93ezC/Mx4mabQz/8STQJ+2M5iR1wrpF
-	 seLDiSxUbEqfA==
-Received: by mail-vs1-f43.google.com with SMTP id l184so1814183vsc.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Jan 2023 18:03:53 -0800 (PST)
-X-Gm-Message-State: AFqh2kpv46Bd3bJXAVGkBxqHc5yC6bqWTUQfrPJBP/j//aqEJlYunqi1
-	81o7Y+FadCTeiMMw7iC1L78kxbsFxJvpYBpH0g==
-X-Google-Smtp-Source: AMrXdXt6Ketfzo7B0k0fvdiT7T0XNQEqE1Tg5/7RJIcB20hpJ/mMpIBrS0PxPVrtBbsjLGWjb++1kWbR5g3IUs7R6g0=
-X-Received: by 2002:a67:edd4:0:b0:3b5:1fe4:f1c2 with SMTP id
- e20-20020a67edd4000000b003b51fe4f1c2mr4827766vsp.0.1672711432071; Mon, 02 Jan
- 2023 18:03:52 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NmJyF02zYz2ynD
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Jan 2023 15:04:02 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1672718597;
+    s=strato-dkim-0002; d=xenosoft.de;
+    h=In-Reply-To:References:Cc:To:From:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=x34rSALjTO9AJbmCypdJbQcgKSJTsf0XEQorEUjJXMU=;
+    b=mh0N1VW2tV2kIyWi1Mv0BR5u+K1DZpBasdxGjqWgEnZtj0EMaxr6V938SV6dY42uni
+    yRFQL6fi/LAgzElw6ZkVedfZkAvAqHigi10ygU98xJ6Nevzs0/8CyzkmvBP91YUXnlI5
+    SifSdUkRwY2+4o3027nwTu7sds5ZREiBo7b6PGXL6UDUOMKfj9608BfpgBx625gmzMav
+    XzfX/p9qnXMUVZb1kIFKaB5un4geeDQO9N0WWxUpANnA0ufm2OXFMXNk5V14yVG2WrkY
+    cDsr23nrRcgOdt8jQsT06k/DygCX6HJ8KpndAKAn4olviSFL43Z/9QCj+2CeajWnaBO8
+    3zug==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBfio0GngadwiHvQwieZ0xdBsMaw5dId26M4sA8Q=="
+X-RZG-CLASS-ID: mo00
+Received: from [IPV6:2a02:8109:8980:4474:bd6f:a8f4:de7c:e110]
+    by smtp.strato.de (RZmta 48.2.1 AUTH)
+    with ESMTPSA id e28afdz0343FIbX
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Tue, 3 Jan 2023 05:03:15 +0100 (CET)
+Message-ID: <430001ad-bc25-d4be-6013-673c14e87dba@xenosoft.de>
+Date: Tue, 3 Jan 2023 05:03:14 +0100
 MIME-Version: 1.0
-References: <cover.1672687924.git.geoff@infradead.org> <f3d97d9426eeda9ee16a0ee6f325fc02fa3a2c57.1672687924.git.geoff@infradead.org>
-In-Reply-To: <f3d97d9426eeda9ee16a0ee6f325fc02fa3a2c57.1672687924.git.geoff@infradead.org>
-From: Rob Herring <robh@kernel.org>
-Date: Mon, 2 Jan 2023 20:03:40 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqLPLhe4pP-W+xRXRMjVgJn0maNGnJF9RqQCWX8Pc+GeAA@mail.gmail.com>
-Message-ID: <CAL_JsqLPLhe4pP-W+xRXRMjVgJn0maNGnJF9RqQCWX8Pc+GeAA@mail.gmail.com>
-Subject: Re: [PATCH v1 1/3] powerpc: Fix processing of CONFIG_CMDLINE
-To: Geoff Levand <geoff@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.6.1
+Subject: Re: [FSL P50x0] DPAA Ethernet issue
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+To: Sean Anderson <seanga2@gmail.com>, Madalin Bucur <madalin.bucur@nxp.com>,
+ "David S. Miller" <davem@davemloft.net>
+References: <0bfc8f3d-cb62-25f4-2590-ff424adbe48a@xenosoft.de>
+ <a40020bd-c190-4283-1977-9e4d9627b888@gmail.com>
+ <8be26a07-3f48-cd61-1b74-1605827bfae3@xenosoft.de>
+In-Reply-To: <8be26a07-3f48-cd61-1b74-1605827bfae3@xenosoft.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,45 +69,113 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexander Sverdlin <alexander.sverdlin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Cc: darren@stevens-zone.net, madskateman@gmail.com, sean.anderson@seco.com, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, Eric Dumazet <edumazet@google.com>, rtd2@xtra.co.nz, Jakub Kicinski <kuba@kernel.org>, matthew@a-eon.biz, Paolo Abeni <pabeni@redhat.com>, linuxppc-dev@lists.ozlabs.org, info@xenosoft.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jan 2, 2023 at 1:41 PM Geoff Levand <geoff@infradead.org> wrote:
+On 02 January 2023 at 04:32 am, Christian Zigotzky wrote:
+> On 01 January 2023 at 07:11 pm, Sean Anderson wrote:
 >
-> Commit a7d550f82b445cf218b47a2c1a9c56e97ecb8c7a (of: fdt: Honor CONFIG_CMDLINE*
-> even without /chosen node) moved the processing of the kernel built-in command
-> line (CONFIG_CMDLINE) from the early_init_dt_scan_chosen routine to the
-> early_init_dt_scan_nodes routine.
+> Thank you for testing this. Unfortunately, I have no P-series hardware,
+> so I was unable to test the 10gec/dtsec parts of this conversion. I had
+> hoped that this would get tested by someone with the hardware (at NXP)
+> before now, but it seems you get to be the "lucky" first user.
 >
-> The current powerpc startup code does not call into early_init_dt_scan_nodes, so
-> processing of CONFIG_CMDLINE never happens, even if CONFIG_CMDLINE_FORCE=y.
-> The result is an empty kernel command line, and mounting of the root file system
-> then fails with a kernel panic (not syncing: VFS: Unable to mount root fs).
+> I see you have labeled one of your kernels as supporting QEMU.  Do you
+> happen to have instructions for running Linux on QEMU?
 >
-> The early_init_dt_scan routine calls into early_init_dt_verify and then
-> early_init_dt_scan_nodes.  The powerpc startup routine early_init_devtree
-> currently has a call to early_init_dt_verify.  This change replaces that
-> early_init_dt_verify call to a call to early_init_dt_scan.
+> Can you try the following patch. I think my mail client will mangle 
+> it,  so I have also attached it to this email.
 >
-> Signed-off-by: Geoff Levand <geoff@infradead.org>
-> ---
->  arch/powerpc/kernel/prom.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> ------------
 >
-> diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
-> index 4f1c920aa13e..82c9cd3bdbec 100644
-> --- a/arch/powerpc/kernel/prom.c
-> +++ b/arch/powerpc/kernel/prom.c
-> @@ -761,7 +761,7 @@ void __init early_init_devtree(void *params)
->         DBG(" -> early_init_devtree(%px)\n", params);
+> Hi Sean,
 >
->         /* Too early to BUG_ON(), do it by hand */
-> -       if (!early_init_dt_verify(params))
-> +       if (!early_init_dt_scan(params))
+> Thanks a lot for your answer.
+>
+> I use the virtio-net device in a virtual e5500 QEMU/KVM HV machine. 
+> [1] [2]
+>
+> I will test your patch as soon as possible.
+>
+> Thanks,
+> Christian
+>
+> [1] QEMU command: qemu-system-ppc64 -M ppce500 -cpu e5500 -m 1024 
+> -kernel uImage-6.2 -drive 
+> format=raw,file=void-live-powerpc-20220129.img,index=0,if=virtio 
+> -netdev user,id=mynet0 -device virtio-net,netdev=mynet0 -append "rw 
+> root=/dev/vda2" -device virtio-gpu -device virtio-mouse-pci -device 
+> virtio-keyboard-pci -device pci-ohci,id=newusb -audiodev 
+> id=sndbe,driver=pa,server=/run/user/1000/pulse/native -device 
+> usb-audio,bus=newusb.0 -enable-kvm -smp 4 -fsdev 
+> local,security_model=passthrough,id=fsdev0,path=/home/amigaone/Music 
+> -device virtio-9p-pci,id=fs0,fsdev=fsdev0,mount_tag=hostshare
+>
+> [2] https://forum.hyperion-entertainment.com/viewtopic.php?p=46749
 
-It would be nice if this could be used instead, but it does other
-things like memory setup which I think will not work for some PPC
-platforms.
+Hi Sean,
 
-Rob
+I tested your patch with the RC2 today but unfortunately the kernel 
+doesn't link after compiling.
+
+Error messages:
+
+   LD      .tmp_vmlinux.kallsyms1
+`.exit.text' referenced in section `__bug_table' of crypto/algboss.o: 
+defined in discarded section `.exit.text' of crypto/algboss.o
+`.exit.text' referenced in section `__bug_table' of crypto/algif_hash.o: 
+defined in discarded section `.exit.text' of crypto/algif_hash.o
+`.exit.text' referenced in section `__bug_table' of 
+drivers/char/hw_random/core.o: defined in discarded section `.exit.text' 
+of drivers/char/hw_random/core.o
+make[1]: *** [scripts/Makefile.vmlinux:34: vmlinux] Error 1
+make: *** [Makefile:1252: vmlinux] Error 2
+
+Maybe it is not an issue because of the patch because the RC1 compilied 
+and linked with the patch.
+
+@Dave
+Please test the RC1 with Sean's patch.
+
+Download: http://www.xenosoft.de/uImage-6.2-dpaa-t1
+
+sudo dmesg | grep -i dpaa
+
+[    3.017121] fsl_dpaa_mac ffe4e8000.ethernet: FMan dTSEC version: 
+0x08240101
+[    3.017256] fsl_dpaa_mac ffe4e8000.ethernet: FMan MAC address: 
+00:04:a3:6b:41:65
+[    3.017534] fsl_dpaa_mac ffe4f0000.ethernet: 
+of_get_mac_address(/soc@ffe000000/fman@400000/ethernet@f0000) failed
+[    3.017745] fsl_dpaa_mac ffe4f0000.ethernet: of_get_phy_mode() for 
+/soc@ffe000000/fman@400000/ethernet@f0000 failed. Defaulting to SGMII
+[    3.017975] fsl_dpaa_mac: FMan XGEC version: 0x00010330
+[    3.018293] fsl_dpaa_mac ffe5e8000.ethernet: FMan dTSEC version: 
+0x08240101
+[    3.018413] fsl_dpaa_mac ffe5e8000.ethernet: FMan MAC address: 
+00:1e:c0:f8:01:59
+[    3.018656] fsl_dpaa_mac ffe5f0000.ethernet: 
+of_get_mac_address(/soc@ffe000000/fman@500000/ethernet@f0000) failed
+[    3.018871] fsl_dpaa_mac ffe5f0000.ethernet: of_get_phy_mode() for 
+/soc@ffe000000/fman@500000/ethernet@f0000 failed. Defaulting to SGMII
+[    3.019099] fsl_dpaa_mac: FMan XGEC version: 0x00010330
+[    3.021559] fsl_dpaa_mac ffe4e8000.ethernet eth0: Probed interface eth0
+[    3.023358] fsl_dpaa_mac ffe4f0000.ethernet: Using random MAC 
+address: 5e:d0:6f:2b:29:35
+[    3.024041] fsl_dpaa_mac ffe4f0000.ethernet eth1: Probed interface eth1
+[    3.026381] fsl_dpaa_mac ffe5e8000.ethernet eth2: Probed interface eth2
+[    3.028199] fsl_dpaa_mac ffe5f0000.ethernet: Using random MAC 
+address: c2:ec:b7:35:67:37
+[    3.028878] fsl_dpaa_mac ffe5f0000.ethernet eth3: Probed interface eth3
+[    7.543868] fsl_dpaa_mac ffe4e8000.ethernet eth0: PHY 
+[mdio@ffe4e1120:03] driver [Generic PHY] (irq=POLL)
+[    7.549774] fsl_dpaa_mac ffe4e8000.ethernet eth0: configuring for 
+phy/rgmii link mode
+[    7.583166] fsl_dpaa_mac ffe5e8000.ethernet eth2: PHY 
+[mdio@ffe4e1120:07] driver [Generic PHY] (irq=POLL)
+[    7.589079] fsl_dpaa_mac ffe5e8000.ethernet eth2: configuring for 
+phy/rgmii link mode
+
+Cheers,
+Christian
