@@ -2,80 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8625E65BE69
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Jan 2023 11:51:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6890D65BDA4
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Jan 2023 11:06:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NmTzn3NPbz3c69
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Jan 2023 21:51:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NmT0Y263cz3blr
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Jan 2023 21:06:37 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=NSJleZlG;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KQ8gHflm;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ojaswin@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hca@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=NSJleZlG;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KQ8gHflm;
 	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NmSpY5sR7z30hl
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Jan 2023 20:57:57 +1100 (AEDT)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3036NxG8038590;
-	Tue, 3 Jan 2023 09:57:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=YnVV25GPduJNGRyUDB4bFnWdwPvGy6QVBIvQ/oA/+5A=;
- b=NSJleZlG1L3ghZL1+837YSMjrsM5v4wPXI7r3yBTZPDAmxG9BSH6+kqxaCdEY83++14+
- aBKi91OhzxTzL1//wddbPDcrSobRTX2IXTseNCsurumbItYiZTjgvPTqMg9RQYfFFIn0
- ahj8JXcbqBWmpWXPv2zIZt3QJsJypRwVb/0SGdwD1MnCDmaS3Qlh1Yz0go/J95HuN6g+
- Xql1PqewHmWHFHXRqEA6Az7s9OpWatnbLTEdXSJCWbPNpAewdD2lEAt93skEx7XIJlZK
- BD18Hfd36neBXXNjThjouSXTcQ2EisFmqd1XuBIeY2ebZfXU0j49GwkXNrf+wBhN0Ai/ UQ== 
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3mvf2fbk0c-1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NmSzb5DDBz3bNy
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Jan 2023 21:05:47 +1100 (AEDT)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3037hcSP015068;
+	Tue, 3 Jan 2023 10:02:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=dMHVtFosqWThDyY5SftMoOPjqDlLusCntZAFShOz2mY=;
+ b=KQ8gHflm592WlbRAgwdQmZyTRlHDWh9M3ZAPFV+EMcsIOXJ461PiMpCp5cUVt9BL1e6j
+ zqllDR5Fb/gxAm41jRkoRbn7AyAsUGSUMf7knMuu/spo09IOUdLrV2GM4nc+OlkQbkE7
+ IJzG4uvffHGaWIteJBPi+B7FHAqQUQN3AtsThHUAZCqJQIQDHXbgZuAeeqSo9WeDmPJj
+ eEQnkInKW+xzSa/aKKaqEDcmxJK5+xsGNpjiHiXPohV0tqVjzNS2xI1QFRZv2I9KIldN
+ wQ9mkHaOJ5pKdofCP9qAqPj5s8umAAK+tXrV9dZ+20maLxpkr4T38HkHLw9ablzK3SFk /w== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3mvbt6xp9k-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 03 Jan 2023 09:57:49 +0000
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
-	by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3038kjQC001428;
-	Tue, 3 Jan 2023 09:57:47 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3mtcbfbm9b-1
+	Tue, 03 Jan 2023 10:02:20 +0000
+Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3039LwDp027251;
+	Tue, 3 Jan 2023 10:02:19 GMT
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3mvbt6xp8p-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 03 Jan 2023 09:57:47 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3039vjmt43909494
+	Tue, 03 Jan 2023 10:02:19 +0000
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+	by ppma02fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 302CL8aj017444;
+	Tue, 3 Jan 2023 10:02:16 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma02fra.de.ibm.com (PPS) with ESMTPS id 3mtcq6tmts-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 03 Jan 2023 10:02:16 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 303A2EKB49938694
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 3 Jan 2023 09:57:45 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E820020043;
-	Tue,  3 Jan 2023 09:57:44 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2C35820049;
-	Tue,  3 Jan 2023 09:57:44 +0000 (GMT)
-Received: from li-bb2b2a4c-3307-11b2-a85c-8fa5c3a69313.in.ibm.com (unknown [9.109.253.169])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  3 Jan 2023 09:57:43 +0000 (GMT)
-From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-To: "Michael Ellerman" <mpe@ellerman.id.au>
-Subject: [PATCH] powerpc: Fix a wrong version calculation issue in ld_version
-Date: Tue,  3 Jan 2023 15:27:40 +0530
-Message-Id: <20230103095740.916038-1-ojaswin@linux.ibm.com>
-X-Mailer: git-send-email 2.31.1
+	Tue, 3 Jan 2023 10:02:14 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3B14420071;
+	Tue,  3 Jan 2023 10:02:14 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F230A20069;
+	Tue,  3 Jan 2023 10:02:12 +0000 (GMT)
+Received: from osiris (unknown [9.171.83.23])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue,  3 Jan 2023 10:02:12 +0000 (GMT)
+Date: Tue, 3 Jan 2023 11:02:09 +0100
+From: Heiko Carstens <hca@linux.ibm.com>
+To: Andrzej Hajda <andrzej.hajda@intel.com>
+Subject: Re: [PATCH v3] arch: rename all internal names __xchg to __arch_xchg
+Message-ID: <Y7P9IcR7/jgYWMcq@osiris>
+References: <202212300642.6pdgegGO-lkp@intel.com>
+ <20221230141552.128508-1-andrzej.hajda@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221230141552.128508-1-andrzej.hajda@intel.com>
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: tm3X5iefYWe7aIXWlH4s1F4S5nJ5fo_D
-X-Proofpoint-ORIG-GUID: tm3X5iefYWe7aIXWlH4s1F4S5nJ5fo_D
+X-Proofpoint-ORIG-GUID: JUKgavQnlJumrUvi-CztUW8Qob9IZFEg
+X-Proofpoint-GUID: 0ZquoQ4B0WHjt8os5pwnxRNooiQSYFH8
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2023-01-02_14,2023-01-03_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- bulkscore=0 malwarescore=0 mlxscore=0 adultscore=0 impostorscore=0
- clxscore=1011 priorityscore=1501 mlxlogscore=999 suspectscore=0
- spamscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2301030084
-X-Mailman-Approved-At: Tue, 03 Jan 2023 21:50:14 +1100
+ definitions=2023-01-03_01,2023-01-03_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 clxscore=1011
+ lowpriorityscore=0 mlxlogscore=712 priorityscore=1501 bulkscore=0
+ spamscore=0 adultscore=0 phishscore=0 suspectscore=0 mlxscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2301030088
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,67 +96,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, dri-devel@lists.freedesktop.org, linux-mips@vger.kernel.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-snps-arc@lists.infradead.org, Boqun Feng <boqun.feng@gmail.com>, linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>, intel-gfx@lists.freedesktop.org, linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org, loongarch@lists.linux.dev, Rodrigo Vivi <rodrigo.vivi@intel.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-** The Issue **
+On Fri, Dec 30, 2022 at 03:15:52PM +0100, Andrzej Hajda wrote:
+> __xchg will be used for non-atomic xchg macro.
+> 
+> Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
+> Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+> v2: squashed all arch patches into one
+> v3: fixed alpha/xchg_local, thx to lkp@intel.com
+> ---
+...
+>  arch/s390/include/asm/cmpxchg.h      | 4 ++--
+> diff --git a/arch/s390/include/asm/cmpxchg.h b/arch/s390/include/asm/cmpxchg.h
+> index 84c3f0d576c5b1..efc16f4aac8643 100644
+> --- a/arch/s390/include/asm/cmpxchg.h
+> +++ b/arch/s390/include/asm/cmpxchg.h
+> @@ -14,7 +14,7 @@
+>  
+>  void __xchg_called_with_bad_pointer(void);
+>  
+> -static __always_inline unsigned long __xchg(unsigned long x,
+> +static __always_inline unsigned long __arch_xchg(unsigned long x,
+>  					    unsigned long address, int size)
 
-The ld_version() function seems to compute the wrong version value for
-certain ld versions like the following:
+Please adjust the alignment of the second line.
 
-$ ld --version GNU ld (GNU Binutils; SUSE Linux Enterprise 15)
-2.37.20211103-150100.7.37
+> @@ -77,7 +77,7 @@ static __always_inline unsigned long __xchg(unsigned long x,
+>  	__typeof__(*(ptr)) __ret;					\
+>  									\
+>  	__ret = (__typeof__(*(ptr)))					\
+> -		__xchg((unsigned long)(x), (unsigned long)(ptr),	\
+> +		__arch_xchg((unsigned long)(x), (unsigned long)(ptr),	\
+>  		       sizeof(*(ptr)));					\
 
-For input 2.37.20211103, the value computed is 202348030000 which is way
-more the value for a higher version like 2.39.0, that is 23900000.
+Same here.
 
-This issue was highlighted because with the above ld version, my powerpc
-kernel build started failing with ld error: "unrecognized option
---no-warn-rwx-segments".  This was caused due to the recent patch
-579aee9fc594 added --no-warn-rwx-segments linker flag if the ld version
-was greater than 2.39.
-
-Due to the bug in ld_version(), my ld version (2.37.20111103) was
-wrongly calculated to be greater than 2.39 and the unsupported flag was
-added.
-
-** The fix **
-
-If version is of the form x.y.z and length(z) == 8, then most probably
-it is a date [yyyymmdd]. As an approximation, discard the dd and yyyy
-parts and keep the mm part in the version.
-
-Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
----
-
-This is just an approximation since I'm not sure how common such release
-versions for ld are and I didn't wan't to uneccassarily complicate the
-logic. In case we want more accuracy we can try to use the last 4/5
-digits to represent a more accurate date.  Let me know if that would be
-the preferred way.
-
-PS: This issue also exists in ./scripts/ld-version.sh and I can look
-into fixing that after this patch.
-
- arch/powerpc/boot/wrapper | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/arch/powerpc/boot/wrapper b/arch/powerpc/boot/wrapper
-index af04cea82b94..af2688f79224 100755
---- a/arch/powerpc/boot/wrapper
-+++ b/arch/powerpc/boot/wrapper
-@@ -210,6 +210,10 @@ ld_version()
- 	gsub(".*version ", "");
- 	gsub("-.*", "");
- 	split($1,a, ".");
-+	if( length(a[3]) == "8" )
-+		# a[3] is probably a date of format yyyymmdd. An 8 digit number will break
-+		# the function so just keep the "mm" part as an approximation
-+		a[3] = substr(a[3],5,2);
- 	print a[1]*100000000 + a[2]*1000000 + a[3]*10000;
- 	exit
-     }'
--- 
-2.31.1
-
+The same is true for a couple of other architectures - not sure if
+they care however.
