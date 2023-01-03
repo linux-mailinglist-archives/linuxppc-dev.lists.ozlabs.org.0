@@ -2,129 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 915E465C7F5
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Jan 2023 21:18:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B17D365C90B
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Jan 2023 22:45:37 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NmkZW32wsz3bhn
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Jan 2023 07:18:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NmmW33pLbz3c6V
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Jan 2023 08:45:35 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=Q34yfvFk;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=OWV7xG94;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=seco.com (client-ip=40.107.249.63; helo=eur02-db5-obe.outbound.protection.outlook.com; envelope-from=sean.anderson@seco.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.54; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=Q34yfvFk;
+	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=OWV7xG94;
 	dkim-atps=neutral
-Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2063.outbound.protection.outlook.com [40.107.249.63])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.54])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NmkYX2h52z2yxB
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Jan 2023 07:17:33 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=fhf3DukZSBWx01Jqv1x51NYJ8d/1EyVRAP7Uqx/UTjP4s9vNOURBkxXfj8X0qpWOb6E6amROsyemjTc+/NdU3qA0d+cK20dmppMReatq/MdcmVoGmpRSj+1v5jwB02nqZh0cSaZzsxcahRDrc/yE7zdB6ByzIOX4afH+EfwkEoJ+QsR5bdK8iNN00GaqMg7lCxTlOBWa74AlhYt+/zSUzUJObb5EN01NxIy+y3JXsO5Ugs6CbEg53Dg+1RuECW4gwPoHqowbflDg5gtpFxJp80aM4paNbyZgH2S844DKI6IU3PlKMWy5pf2vYiBhBsQPFc8ijxRIfAYVYCM5h0u6TQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=65zOHUZUmxK4/CQ0kGUcowWVyjfEuj2Rf8yr1O1TIFw=;
- b=Idi3dVWbu2WtIEotWjHbKJ7RwObxZHbAOaRZOSvrP9xj5+7bSY4c6GNTTlDCyQ4NbdyVPADobrYgvkbxSsDe/iW+ic1ccNok+XXry3Rcz4aRhU7H78CndFIe+X4c+PXyPF+JS63qY6xbaX1fjUxidd7uRIY/5EOLiZIGuSuvKbknnJuCoV5siZS0mmsr3n9vJzgCMI7cubpL1GoAfUjyyfPlJ1qEtWECTeatDQYEWXL1qfkWMXE6cwpwWFFMoeYTHjw0LjUfOzay8rdXcoe92yDhSlcTGv6QYH2tzxw4lmTd5db+K3AdyMo7aiADIM1fwpT8zscjoGH+oWxoiHNoeg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=seco.com; dmarc=pass action=none header.from=seco.com;
- dkim=pass header.d=seco.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seco.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=65zOHUZUmxK4/CQ0kGUcowWVyjfEuj2Rf8yr1O1TIFw=;
- b=Q34yfvFkmzLgCjZ7M62HPvS/de1CvyNnhj0YNfdJEp7SCJ5w3uA58AohXHDFuowHw4/BbFMpmn3ujBBnS7NG89kDgP8Ua1d7HNFgNsobLgJn4JiLhvRC+fJICohTMPG63ZU6399g5Jp/k4SNBHUiz4TuU52jZy48nj174KmI0e9h5ZwwNq6sWGHo6n5NNyXEU/f/S2A828j9eBAi+bmSdkVC2GIMuJxQ/QVyLKjivMduIGvx8jnkppm3UrWl1sOx1WMArtu0J13nf89WSm3tAhMiXAbcz+6cnmn7FZPv4efeL4CwRhNNbBzr2m5pnO12uZasRTd3te/RAdVa8uhBYw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=seco.com;
-Received: from DB9PR03MB8847.eurprd03.prod.outlook.com (2603:10a6:10:3dd::13)
- by DU0PR03MB8413.eurprd03.prod.outlook.com (2603:10a6:10:3bb::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5944.19; Tue, 3 Jan
- 2023 20:17:14 +0000
-Received: from DB9PR03MB8847.eurprd03.prod.outlook.com
- ([fe80::2b95:1fe4:5d8f:22fb]) by DB9PR03MB8847.eurprd03.prod.outlook.com
- ([fe80::2b95:1fe4:5d8f:22fb%8]) with mapi id 15.20.5944.019; Tue, 3 Jan 2023
- 20:17:14 +0000
-Message-ID: <460bbe6b-3bbb-2960-be96-8da58b341ef6@seco.com>
-Date: Tue, 3 Jan 2023 15:17:10 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nmk9M2t4dz30CT
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Jan 2023 07:00:05 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1672775998;
+    s=strato-dkim-0002; d=xenosoft.de;
+    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
+    From:Subject:Sender;
+    bh=AfT9k2iKNU82VD838vhRLCA7n1FWjQmZ/wjeb/3a6Vw=;
+    b=OWV7xG948fVJZsrXEsCLiPSzYjM2uybyWxUyVQDUvc+jo9WxlHJJ2tdHacMXXTJAU5
+    ShGZfv9pm2ui5pTtr4ZCi/f8KurHGoqhahypuBH87e72HOgSdENMY+6yzclcjK9+cvGB
+    G1qLwUB1tZHzMIZM5FzUpFpdpHovfTQXdUPrjWBcuVpD6mFwXe4sIUgyujEhVEIbT0Fb
+    WTXYVEbyqnFw5z2jZyWjyJBCDLYgyyIWbbZ9x222/HcBO7zT2qFGIHbNoR00QKJyCbAQ
+    vTJmMuAwBvn6YF76lFxOpkvrdP2bD+3CUyFXqX+b23DqlYpPOqiK3b4dM753qBgI/9VS
+    iafQ==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6KxrfO5Oh7R7b2Yg3rpgwHeJIHZtdizixhiLACOsKYch285IARkW"
+X-RZG-CLASS-ID: mo00
+Received: from smtpclient.apple
+    by smtp.strato.de (RZmta 48.2.1 AUTH)
+    with ESMTPSA id e28afdz03JxvLfj
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Tue, 3 Jan 2023 20:59:57 +0100 (CET)
+Content-Type: multipart/alternative; boundary=Apple-Mail-481E6CEE-7D6E-4F2B-A406-1649F55DD390
+Content-Transfer-Encoding: 7bit
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+Mime-Version: 1.0 (1.0)
 Subject: Re: [FSL P50x0] DPAA Ethernet issue
-Content-Language: en-US
-To: Thorsten Leemhuis <regressions@leemhuis.info>,
- Christian Zigotzky <chzigotzky@xenosoft.de>, davem@davemloft.net,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- mad skateman <madskateman@gmail.com>,
- Darren Stevens <darren@stevens-zone.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
- Matthew Leaman <matthew@a-eon.biz>
-References: <0bfc8f3d-cb62-25f4-2590-ff424adbe48a@xenosoft.de>
- <3a5f08ed-65dc-c6ff-5da5-b9ce6880c6fd@leemhuis.info>
-From: Sean Anderson <sean.anderson@seco.com>
-In-Reply-To: <3a5f08ed-65dc-c6ff-5da5-b9ce6880c6fd@leemhuis.info>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BLAP220CA0001.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:208:32c::6) To DB9PR03MB8847.eurprd03.prod.outlook.com
- (2603:10a6:10:3dd::13)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB9PR03MB8847:EE_|DU0PR03MB8413:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6d0a32f3-c222-4e88-8531-08daedc780bd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	ZE+sSRH9P/+lo2y7T+6G1sdEqvP7EkBdjEJCmqSP+6UDaRo4vtSIbRcQRGh7fPWwKpTTp7lDQZmFcWNwn85DEMlalOKc+ef6c38/4Ef8Xm6Dxot5ueBkk4XY7d3bkFYMQZeBJ/FINvyyGmaqSJXNjFtwjbRSB0WCqfFrITL1UiVldtgsawpiyIjBeVrcjqu5Z2YYsDLzazSDyUW9bLklcVThKXM6bDrZtZFD6JUBqmqqZWHSsiL5PqWz/aLXepAFW9hJgPu7zcb0P8Tb6gByi4Vl3iD+npMllc2UMRnZPDsEu2p16ICm4Mfvlz5uV6YxKDscWGoM+7WUDehnblGB1Ukfz0/UIxGrShVuualUARpGaADVTtr+/rNWKgPvPv9+GQSBM9COco1DEiaUp0t+fmTKnMb8rcM3wpo29XpQvGca9VDLGMONVOYDC8Ku1P37NFDELvjGDpt3SJOrTmFgbfAzjPRsrs9gPX4GxoXIeYBVi+SvORhaHljkEEA+b8ASjiq3jERYvhgwvTHNJOrxRbG7vTYYMGGXcfVDBmM2ofAl+vAD1nOKhP/EjKGoHqG/xJFJt3/DOM2Gs90VRlPtmeplosnC4yAwHcNGRQWcD6EfiFhCEKkvyT1p8MGEyXPSJP5tg2WYE1qDsH4fQ1h00KVvnAoTZ1AED+FGt00pS+FlH9tPtqd+eFXDBOUWq6mgYN6LTXYuqxsj6xhF+HJwoVK+PtUfG6STpvgMkc3a+xDBAN2qFi6wmAJJ/NmbBu/wmh0f7g0TUjoTEVnZ9YhkgAIjZxvxhA+fZ7MFWggJsVnPGyOKmkbzVJw3JkQzI6iR2h9tw55lFVC1DIx+EQVN3A==
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR03MB8847.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(396003)(39850400004)(366004)(136003)(346002)(376002)(451199015)(44832011)(66899015)(31686004)(5660300002)(41300700001)(316002)(2906002)(66476007)(66946007)(4326008)(66556008)(8676002)(8936002)(36756003)(110136005)(53546011)(478600001)(6666004)(6506007)(45080400002)(16799955002)(52116002)(2616005)(26005)(186003)(6512007)(83380400001)(6486002)(966005)(86362001)(31696002)(15188155005)(38350700002)(38100700002)(22166006)(43740500002)(45980500001)(19623215001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?utf-8?B?Nk5KOWtkZGtOTUtxWXZBWWwrVzJVUjRxSTkrVHRVWnZOSklQNGxwUzUyems3?=
- =?utf-8?B?MnlUN1Z6dG0xNmo4YjFFUHBSNkFtYlJ1OGw3cS9WTmQ2VVRVd2NVbVZOYUVw?=
- =?utf-8?B?alRESUpQTEtud25XZ2VjR0xDRTc4aVRnNXJ3Uys3QjlPTncxd1d2L1Bzb1ox?=
- =?utf-8?B?MlpJRHRLTWI1QUhhMWZtZkJCcS9RYjZUT2tEa05FYWh5REl3cThDMWVzZ2Vs?=
- =?utf-8?B?TlhtQVhhQXRwSmh1eUtSWm5hMjNXekczUHVnMm9OVDhNbVRSVWFKcG5CbXZm?=
- =?utf-8?B?UlR4Y0ZIMThpOUgxRklGNTdHY1hxZ3FON0V1ZzhiSWRlMjlvK1kzY3hHZ2pV?=
- =?utf-8?B?SmxFdnozVEZRbkl3MzNNYUtJOERlM3pxWlBkRDNwbDZ4WlJpNjVIekNsMzRE?=
- =?utf-8?B?MnhjdU5DR093dTA0TVlCOXJPSmdLQWVkNUZITG9ROHZWcmQ2L25SZHJJUWtU?=
- =?utf-8?B?VzdZSzNGeFBmVEhOMFhDWG8vNktvMTBRTEhCV2UxV3hNZjRuRHNIQnVITW96?=
- =?utf-8?B?UnE4NGdWblhnOTdoZis2emNVQzJUWFp4dzgyY3VDS3RiZlk1RklYb1VVY0Ry?=
- =?utf-8?B?QTk3ZnBvc2NPdDBGaVp2eDJHSlVyOVlQcTc4MzhxV3UzZFMyR0lVdWIzYUVj?=
- =?utf-8?B?NWlxWUsyaUFkZWU2cDFxMFI2MnUyRXBKZWpNRlFRdHU3bWRHOCtYY3EvUkZr?=
- =?utf-8?B?RDlMZWxUKzZVb254dlVCRmpzaGVQOFJSYnVMYk93dmxiY3hLRll0TjZTdndQ?=
- =?utf-8?B?UkdsV3B2Tzk1dWQ1dDYwbVpvZFZyanZTOWZmOFRJNTBrcUw3NWhUOWloSFNI?=
- =?utf-8?B?bW5lU01zQzIrNTd5VEJkSTF0bHN5Sy9nM2cwaFRCdlA5RnFmSWc5Y0NjK29s?=
- =?utf-8?B?Q25HOTNaUFZoM0VoT3VJaHBuT3NMc3hBTndQakM4ZXpidUEwYW5nSTZSQ0pY?=
- =?utf-8?B?bEY5VkxGYzBLOEFKZmcxRlRwNEl2UDVsYWpDS2syaHZIUndpTWxsbE1DczlE?=
- =?utf-8?B?dVM3M0djSDhxUzY5K280bFJJbjNUb2ZlT1Nqb3F3aFJoYThscW9aWmlaSkd1?=
- =?utf-8?B?RXByMGx3SVpsVEY3UzZLeDVLQ3gvTlFJeXhIcG1YU1RoT0p2Z0JNa1J5aEM1?=
- =?utf-8?B?bDNoNUE5cE9XZEU4M1UzSmRaTVU4SEhKMXVsYUhRVW9oR2FuTFBXVHpXbFVm?=
- =?utf-8?B?TDhLZ3JIc204clBnOVcrOTlHM0N0eVJjN0dKY3p6eG9Jd0s1RUVhRGxNRUZu?=
- =?utf-8?B?S0IwSzJXQ2RxZ1NLTXNGc0hHL1J0bFcyNGtpdmdtVVRWMjR1UklCWjZBbCtC?=
- =?utf-8?B?d0t3N3RvQURHVVQySHF1elIrcVJXa1dyS2NlSnBKME54dG5oYTNOUDJkbDU1?=
- =?utf-8?B?bXZqSVU0NHY2MERLb2E2RnJlWTFBaXBRRGFvRS9NZitncWdJU0s0VmQ2YXVZ?=
- =?utf-8?B?MDlMbWc1RnJiWllZbmRtRVhUM29wQzliUGN2VW5CUmJTMThvNTZEWFlVU0Rx?=
- =?utf-8?B?M2hQamV3bk1lcjMwZ3NQa3paWDc4aGdOUmQxdGNwN25RbFZTRktGdVBVQkpx?=
- =?utf-8?B?RkV3REEvb296bUsxSjdwdEZsaG9pY3hma0EyTEtqbWx2cGxhTy9jT3h3dTFs?=
- =?utf-8?B?ZWtxMXZXTUp0NEFsVW1pbFlYVjdoQXJTS3ZMM0R3eitBQkJ0NW1MUkw2Zndq?=
- =?utf-8?B?YnJEMldsN1lsak9seXFzTFVoV2xMUGdVQWxXTFROeDZ2dm9jbm90THpXalFC?=
- =?utf-8?B?bVNINXVwS1VuaDdET0RGNHIrYWxtUk5WSXBtV0RIdFZPWU43L1JvNWZYbjVk?=
- =?utf-8?B?aWk4ZmdYN3Y0cnBaNVJSall1YTNGcnUwSjN2YVZzYy9ZSmxEUGx4MmYzUytn?=
- =?utf-8?B?ZUo1Z0VlNEVTaGZMM0NEaHhKN0RaREx6ZUZkUkpKS1R6N0FkNllFSzBJRmZX?=
- =?utf-8?B?ekZhbkhzbGFJaGlMNFMzOERENGxPL2JSWDZjM25wYkhkV3ppbjlyUkc4NlUz?=
- =?utf-8?B?UmQzSThGWUtTb29SQXNiOGdNQ2tHdFA3Q21pdDBqdE9hVjI0WXVER0N0b3k0?=
- =?utf-8?B?REZsZVdJL0VCVFhobTREWURrVFJGU3BqblVDc04xdk9BV0pHMnc3Zmtqc1VM?=
- =?utf-8?B?RmVYN204SHZ0Y2hqaXlXVm5CaFQ3RlZiaDZxZzhtMTN0SzZDcGh1NXhoR0Ri?=
- =?utf-8?B?MkE9PQ==?=
-X-OriginatorOrg: seco.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6d0a32f3-c222-4e88-8531-08daedc780bd
-X-MS-Exchange-CrossTenant-AuthSource: DB9PR03MB8847.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jan 2023 20:17:14.2087
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bebe97c3-6438-442e-ade3-ff17aa50e733
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: M76CtTFjuUVB3t8GN1vBgJilLvqcDEI/vqbuh9rcOJnbhXlrfrzQQmTg7Nf9bmYcfYXHdw5UGQSiEpJtTQHJRw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR03MB8413
+Date: Tue, 3 Jan 2023 20:59:47 +0100
+Message-Id: <66698FE4-603A-4648-82B2-7E4B56B2A3CD@xenosoft.de>
+References: <430001ad-bc25-d4be-6013-673c14e87dba@xenosoft.de>
+In-Reply-To: <430001ad-bc25-d4be-6013-673c14e87dba@xenosoft.de>
+To: Sean Anderson <seanga2@gmail.com>,
+ Madalin Bucur <madalin.bucur@nxp.com>,
+ "David S. Miller" <davem@davemloft.net>
+X-Mailer: iPhone Mail (20C65)
+X-Mailman-Approved-At: Wed, 04 Jan 2023 08:44:48 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -136,57 +68,176 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Christian Zigotzky <info@xenosoft.de>
+Cc: darren@stevens-zone.net, madskateman@gmail.com, sean.anderson@seco.com, netdev@vger.kernel.org, Eric Dumazet <edumazet@google.com>, rtd2@xtra.co.nz, Jakub Kicinski <kuba@kernel.org>, matthew@a-eon.biz, Paolo Abeni <pabeni@redhat.com>, linuxppc-dev@lists.ozlabs.org, info@xenosoft.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 1/2/23 02:58, Linux kernel regression tracking (#info) wrote:
-> [TLDR: I'm adding this report to the list of tracked Linux kernel
-> regressions; all text you find below is based on a few templates
-> paragraphs you might have encountered already already in similar form.
-> See link in footer if these mails annoy you.]
-> 
-> On 01.01.23 15:18, Christian Zigotzky wrote:
->> 
->> The DPAA Ethernet doesn’t work anymore on our FSL P5020/P5040 boards [1]
->> since the first updates after the final kernel 6.1 [2].
->> We bisected yesterday [3] and found the problematic commit [4]. I was
->> able to revert it. After that the DPAA Ethernet works again. I created a
->> patch for reverting the commit [4]. After patching and compiling, the
->> DPAA Ethernet also works again.
->> 
->> It seems, that the new driver doesn’t work with our onboard DPAA network
->> interfaces.
->> 
->> Could you please check your commit? [4]
->> 
+
+--Apple-Mail-481E6CEE-7D6E-4F2B-A406-1649F55DD390
+Content-Type: text/plain;
+	charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+
+
+> On 3. Jan 2023, at 05:04, Christian Zigotzky <chzigotzky@xenosoft.de> wrot=
+e:
+>=20
+> =EF=BB=BFOn 02 January 2023 at 04:32 am, Christian Zigotzky wrote:
+>> On 01 January 2023 at 07:11 pm, Sean Anderson wrote:
+>>=20
+>> Thank you for testing this. Unfortunately, I have no P-series hardware,
+>> so I was unable to test the 10gec/dtsec parts of this conversion. I had
+>> hoped that this would get tested by someone with the hardware (at NXP)
+>> before now, but it seems you get to be the "lucky" first user.
+>>=20
+>> I see you have labeled one of your kernels as supporting QEMU.  Do you
+>> happen to have instructions for running Linux on QEMU?
+>>=20
+>> Can you try the following patch. I think my mail client will mangle it,  s=
+o I have also attached it to this email.
+>>=20
+>> ------------
+>>=20
+>> Hi Sean,
+>>=20
+>> Thanks a lot for your answer.
+>>=20
+>> I use the virtio-net device in a virtual e5500 QEMU/KVM HV machine. [1] [=
+2]
+>>=20
+>> I will test your patch as soon as possible.
+>>=20
 >> Thanks,
 >> Christian
->> 
->> [1] http://wiki.amiga.org/index.php?title=X5000
->> [2] https://forum.hyperion-entertainment.com/viewtopic.php?p=56326#p56326
->> [3] https://forum.hyperion-entertainment.com/viewtopic.php?p=56334#p56334
->> [4] lnet: dpaa: Convert to phylink:
->> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?h=v6.1&id=5d93cfcf7360eac9903774fe94f626c9ead2049d
-> 
-> Thanks for the report. To be sure the issue doesn't fall through the
-> cracks unnoticed, I'm adding it to regzbot, the Linux kernel regression
-> tracking bot:
-> 
-> #regzbot ^introduced 5d93cfcf7360
-> #regzbot title lnet: dpaa: Ethernet issues
-> #regzbot ignore-activity
-> 
-> This isn't a regression? This issue or a fix for it are already
-> discussed somewhere else? It was fixed already? You want to clarify when
-> the regression started to happen? Or point out I got the title or
-> something else totally wrong? Then just reply and tell me -- ideally
-> while also telling regzbot about it, as explained by the page listed in
-> the footer of this mail.
-> 
-> Reminder for developers: When fixing the issue, add 'Link:' tags
-> pointing to the report (see page linked in footer for details).
-> 
-> Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+>>=20
+>> [1] QEMU command: qemu-system-ppc64 -M ppce500 -cpu e5500 -m 1024 -kernel=
+ uImage-6.2 -drive format=3Draw,file=3Dvoid-live-powerpc-20220129.img,index=3D=
+0,if=3Dvirtio -netdev user,id=3Dmynet0 -device virtio-net,netdev=3Dmynet0 -a=
+ppend "rw root=3D/dev/vda2" -device virtio-gpu -device virtio-mouse-pci -dev=
+ice virtio-keyboard-pci -device pci-ohci,id=3Dnewusb -audiodev id=3Dsndbe,dr=
+iver=3Dpa,server=3D/run/user/1000/pulse/native -device usb-audio,bus=3Dnewus=
+b.0 -enable-kvm -smp 4 -fsdev local,security_model=3Dpassthrough,id=3Dfsdev0=
+,path=3D/home/amigaone/Music -device virtio-9p-pci,id=3Dfs0,fsdev=3Dfsdev0,m=
+ount_tag=3Dhostshare
+>>=20
+>> [2] https://forum.hyperion-entertainment.com/viewtopic.php?p=3D46749
+>=20
+> Hi Sean,
+>=20
+> I tested your patch with the RC2 today but unfortunately the kernel doesn'=
+t link after compiling.
+>=20
+> Error messages:
+>=20
+>   LD      .tmp_vmlinux.kallsyms1
+> `.exit.text' referenced in section `__bug_table' of crypto/algboss.o: defi=
+ned in discarded section `.exit.text' of crypto/algboss.o
+> `.exit.text' referenced in section `__bug_table' of crypto/algif_hash.o: d=
+efined in discarded section `.exit.text' of crypto/algif_hash.o
+> `.exit.text' referenced in section `__bug_table' of drivers/char/hw_random=
+/core.o: defined in discarded section `.exit.text' of drivers/char/hw_random=
+/core.o
+> make[1]: *** [scripts/Makefile.vmlinux:34: vmlinux] Error 1
+> make: *** [Makefile:1252: vmlinux] Error 2
+>=20
+> Maybe it is not an issue because of the patch because the RC1 compilied an=
+d linked with the patch.
+>=20
+> @Dave
+> Please test the RC1 with Sean's patch.
+>=20
+> Download: http://www.xenosoft.de/uImage-6.2-dpaa-t1
+>=20
+> Cheers,
+> Christian
 
-#regzbot fix: 7dc618385419
+Hi Sean,
+
+Dave successfully tested the DPAA Ethernet with the patched RC1 on his P5020=
+ board (X5000) today.
+
+Link to the test thread: https://forum.hyperion-entertainment.com/viewtopic.=
+php?p=3D56360#p56360
+
+Your patch has solved the issue. Thanks for your help.
+
+Cheers,
+Christian=
+
+--Apple-Mail-481E6CEE-7D6E-4F2B-A406-1649F55DD390
+Content-Type: text/html;
+	charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+<html><head><meta http-equiv=3D"content-type" content=3D"text/html; charset=3D=
+utf-8"></head><body dir=3D"auto"><br><div dir=3D"ltr"><br><blockquote type=3D=
+"cite">On 3. Jan 2023, at 05:04, Christian Zigotzky &lt;chzigotzky@xenosoft.=
+de&gt; wrote:<br><br></blockquote></div><blockquote type=3D"cite"><div dir=3D=
+"ltr">=EF=BB=BF<span>On 02 January 2023 at 04:32 am, Christian Zigotzky wrot=
+e:</span><br><blockquote type=3D"cite"><span>On 01 January 2023 at 07:11 pm,=
+ Sean Anderson wrote:</span><br></blockquote><blockquote type=3D"cite"><span=
+></span><br></blockquote><blockquote type=3D"cite"><span>Thank you for testi=
+ng this. Unfortunately, I have no P-series hardware,</span><br></blockquote>=
+<blockquote type=3D"cite"><span>so I was unable to test the 10gec/dtsec part=
+s of this conversion. I had</span><br></blockquote><blockquote type=3D"cite"=
+><span>hoped that this would get tested by someone with the hardware (at NXP=
+)</span><br></blockquote><blockquote type=3D"cite"><span>before now, but it s=
+eems you get to be the "lucky" first user.</span><br></blockquote><blockquot=
+e type=3D"cite"><span></span><br></blockquote><blockquote type=3D"cite"><spa=
+n>I see you have labeled one of your kernels as supporting QEMU.&nbsp; Do yo=
+u</span><br></blockquote><blockquote type=3D"cite"><span>happen to have inst=
+ructions for running Linux on QEMU?</span><br></blockquote><blockquote type=3D=
+"cite"><span></span><br></blockquote><blockquote type=3D"cite"><span>Can you=
+ try the following patch. I think my mail client will mangle it,&nbsp; so I h=
+ave also attached it to this email.</span><br></blockquote><blockquote type=3D=
+"cite"><span></span><br></blockquote><blockquote type=3D"cite"><span>-------=
+-----</span><br></blockquote><blockquote type=3D"cite"><span></span><br></bl=
+ockquote><blockquote type=3D"cite"><span>Hi Sean,</span><br></blockquote><bl=
+ockquote type=3D"cite"><span></span><br></blockquote><blockquote type=3D"cit=
+e"><span>Thanks a lot for your answer.</span><br></blockquote><blockquote ty=
+pe=3D"cite"><span></span><br></blockquote><blockquote type=3D"cite"><span>I u=
+se the virtio-net device in a virtual e5500 QEMU/KVM HV machine. [1] [2]</sp=
+an><br></blockquote><blockquote type=3D"cite"><span></span><br></blockquote>=
+<blockquote type=3D"cite"><span>I will test your patch as soon as possible.<=
+/span><br></blockquote><blockquote type=3D"cite"><span></span><br></blockquo=
+te><blockquote type=3D"cite"><span>Thanks,</span><br></blockquote><blockquot=
+e type=3D"cite"><span>Christian</span><br></blockquote><blockquote type=3D"c=
+ite"><span></span><br></blockquote><blockquote type=3D"cite"><span>[1] QEMU c=
+ommand: qemu-system-ppc64 -M ppce500 -cpu e5500 -m 1024 -kernel uImage-6.2 -=
+drive format=3Draw,file=3Dvoid-live-powerpc-20220129.img,index=3D0,if=3Dvirt=
+io -netdev user,id=3Dmynet0 -device virtio-net,netdev=3Dmynet0 -append "rw r=
+oot=3D/dev/vda2" -device virtio-gpu -device virtio-mouse-pci -device virtio-=
+keyboard-pci -device pci-ohci,id=3Dnewusb -audiodev id=3Dsndbe,driver=3Dpa,s=
+erver=3D/run/user/1000/pulse/native -device usb-audio,bus=3Dnewusb.0 -enable=
+-kvm -smp 4 -fsdev local,security_model=3Dpassthrough,id=3Dfsdev0,path=3D/ho=
+me/amigaone/Music -device virtio-9p-pci,id=3Dfs0,fsdev=3Dfsdev0,mount_tag=3D=
+hostshare</span><br></blockquote><blockquote type=3D"cite"><span></span><br>=
+</blockquote><blockquote type=3D"cite"><span>[2] https://forum.hyperion-ente=
+rtainment.com/viewtopic.php?p=3D46749</span><br></blockquote><span></span><b=
+r><span>Hi Sean,</span><br><span></span><br><span>I tested your patch with t=
+he RC2 today but unfortunately the kernel doesn't link after compiling.</spa=
+n><br><span></span><br><span>Error messages:</span><br><span></span><br><spa=
+n>&nbsp; LD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .tmp_vmlinux.kallsyms1</span><br><=
+span>`.exit.text' referenced in section `__bug_table' of crypto/algboss.o: d=
+efined in discarded section `.exit.text' of crypto/algboss.o</span><br><span=
+>`.exit.text' referenced in section `__bug_table' of crypto/algif_hash.o: de=
+fined in discarded section `.exit.text' of crypto/algif_hash.o</span><br><sp=
+an>`.exit.text' referenced in section `__bug_table' of drivers/char/hw_rando=
+m/core.o: defined in discarded section `.exit.text' of drivers/char/hw_rando=
+m/core.o</span><br><span>make[1]: *** [scripts/Makefile.vmlinux:34: vmlinux]=
+ Error 1</span><br><span>make: *** [Makefile:1252: vmlinux] Error 2</span><b=
+r><span></span><br><span>Maybe it is not an issue because of the patch becau=
+se the RC1 compilied and linked with the patch.</span><br><span></span><br><=
+span>@Dave</span><br><span>Please test the RC1 with Sean's patch.</span><br>=
+<span></span><br><span>Download: http://www.xenosoft.de/uImage-6.2-dpaa-t1</=
+span><br><span></span><br><span>Cheers,</span><br><span>Christian</span><br>=
+</div></blockquote><br><div>Hi Sean,</div><div><br></div><div>Dave successfu=
+lly tested the DPAA Ethernet with the patched RC1 on his P5020 board (X5000)=
+ today.</div><div><br></div><div>Link to the test thread:&nbsp;<a href=3D"ht=
+tps://forum.hyperion-entertainment.com/viewtopic.php?p=3D56360#p56360">https=
+://forum.hyperion-entertainment.com/viewtopic.php?p=3D56360#p56360</a></div>=
+<div><br></div><div>Your patch has solved the issue. Thanks for your help.</=
+div><div><br></div><div>Cheers,</div><div>Christian</div></body></html>=
+
+--Apple-Mail-481E6CEE-7D6E-4F2B-A406-1649F55DD390--
