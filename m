@@ -2,46 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB03465B6FB
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Jan 2023 20:44:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20CFD65B93B
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Jan 2023 03:04:51 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Nm5t54dtfz3cdm
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Jan 2023 06:44:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NmGJd07fKz3c7x
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Jan 2023 13:04:49 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=merlin.20170209 header.b=2U+VsJj3;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uyWrJ+J5;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1234::107; helo=merlin.infradead.org; envelope-from=geoff@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=robh@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=merlin.20170209 header.b=2U+VsJj3;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uyWrJ+J5;
 	dkim-atps=neutral
-Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1234::107])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nm5p50QQ0z2yPD
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Jan 2023 06:41:16 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=merlin.20170209; h=Date:Cc:To:Subject:From:References:
-	In-Reply-To:Message-Id:Sender:Reply-To:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=3krDOxsAnX7iH4bhXJVjFJ2TndKn4Y0lXoHp4b0cW34=; b=2U+VsJj3HaPttE7sapdSgNJhaU
-	ITa5bs5C3Rs/jScveFk/7ITzR8SyJUSk2O7AY2iR8tznXIv+0Wd6NtTDhcz2rKExxAhLyG5vbj0nZ
-	PMHCbB0w5O5YtHjIw9FLZZUKUoD5rJHA9q29liS7q4Aoj7/Edd/hv5MuroI0LZP3MJ9/3GfRITBBs
-	HFalCPML8R3SxCINGisK3kacaYIpauhoyKNPxdVRYezYJRWjKTCIe2Xl7g1A6DU2kAgM7WnPgfjLd
-	hqUlCiJnUrP1dFk5lIPitywuKTdCzFZtf4HHR4VqBQ/zb+sP1/VCmiZWP3J+mt449o4O1MwsIQBGh
-	l2MMYtVQ==;
-Received: from geoff by merlin.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pCQgF-007RaA-3N; Mon, 02 Jan 2023 19:41:07 +0000
-Message-Id: <760a803c300cb2d10548633fc13ed37a5703b026.1672687924.git.geoff@infradead.org>
-In-Reply-To: <cover.1672687924.git.geoff@infradead.org>
-References: <cover.1672687924.git.geoff@infradead.org>
-From: Geoff Levand <geoff@infradead.org>
-Patch-Date: Mon, 2 Jan 2023 11:24:20 -0800
-Subject: [PATCH v1 3/3] powerpc/ps3: Refresh ps3_defconfig
-To: Michael Ellerman <mpe@ellerman.id.au>
-Date: Mon, 02 Jan 2023 19:41:07 +0000
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NmGHg0f9Dz3bTk
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Jan 2023 13:03:58 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 675C5B80E1B
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Jan 2023 02:03:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ADCCC433D2
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Jan 2023 02:03:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1672711433;
+	bh=kSq+iZIFlWTfJ390ONeecgeoETkEhfUzhq4zOWoSJkg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=uyWrJ+J5KbT2ZRN5E/VFxqs1azxRJIeNZACb2+N3FM/pt/FgtkdB1rqAL27wmVj2m
+	 kKQyD/9N0Gbat0erKdaY+AdrtrlzsDuU61fTilryug2+AaTkWJGu2h01OoKqVZEzVv
+	 TzNsrGTzulnxjKDe1HeddGGbGx/DajWxA2lfPfkrs4z3HIC63lT3FxE3/rb5RavuOs
+	 vj98PCG+kBc79p6feEwxVZ5ZT1/fqfBMvcAVfoGWdbRRjbd8iW2e0WEbJ+nTylccWM
+	 vTBNOllRIgcO1JWyM08rqvC7FoocFHWe4HJ93ezC/Mx4mabQz/8STQJ+2M5iR1wrpF
+	 seLDiSxUbEqfA==
+Received: by mail-vs1-f43.google.com with SMTP id l184so1814183vsc.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Jan 2023 18:03:53 -0800 (PST)
+X-Gm-Message-State: AFqh2kpv46Bd3bJXAVGkBxqHc5yC6bqWTUQfrPJBP/j//aqEJlYunqi1
+	81o7Y+FadCTeiMMw7iC1L78kxbsFxJvpYBpH0g==
+X-Google-Smtp-Source: AMrXdXt6Ketfzo7B0k0fvdiT7T0XNQEqE1Tg5/7RJIcB20hpJ/mMpIBrS0PxPVrtBbsjLGWjb++1kWbR5g3IUs7R6g0=
+X-Received: by 2002:a67:edd4:0:b0:3b5:1fe4:f1c2 with SMTP id
+ e20-20020a67edd4000000b003b51fe4f1c2mr4827766vsp.0.1672711432071; Mon, 02 Jan
+ 2023 18:03:52 -0800 (PST)
+MIME-Version: 1.0
+References: <cover.1672687924.git.geoff@infradead.org> <f3d97d9426eeda9ee16a0ee6f325fc02fa3a2c57.1672687924.git.geoff@infradead.org>
+In-Reply-To: <f3d97d9426eeda9ee16a0ee6f325fc02fa3a2c57.1672687924.git.geoff@infradead.org>
+From: Rob Herring <robh@kernel.org>
+Date: Mon, 2 Jan 2023 20:03:40 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqLPLhe4pP-W+xRXRMjVgJn0maNGnJF9RqQCWX8Pc+GeAA@mail.gmail.com>
+Message-ID: <CAL_JsqLPLhe4pP-W+xRXRMjVgJn0maNGnJF9RqQCWX8Pc+GeAA@mail.gmail.com>
+Subject: Re: [PATCH v1 1/3] powerpc: Fix processing of CONFIG_CMDLINE
+To: Geoff Levand <geoff@infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,116 +67,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Alexander Sverdlin <alexander.sverdlin@gmail.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Refresh ps3_defconfig for v6.2.
+On Mon, Jan 2, 2023 at 1:41 PM Geoff Levand <geoff@infradead.org> wrote:
+>
+> Commit a7d550f82b445cf218b47a2c1a9c56e97ecb8c7a (of: fdt: Honor CONFIG_CMDLINE*
+> even without /chosen node) moved the processing of the kernel built-in command
+> line (CONFIG_CMDLINE) from the early_init_dt_scan_chosen routine to the
+> early_init_dt_scan_nodes routine.
+>
+> The current powerpc startup code does not call into early_init_dt_scan_nodes, so
+> processing of CONFIG_CMDLINE never happens, even if CONFIG_CMDLINE_FORCE=y.
+> The result is an empty kernel command line, and mounting of the root file system
+> then fails with a kernel panic (not syncing: VFS: Unable to mount root fs).
+>
+> The early_init_dt_scan routine calls into early_init_dt_verify and then
+> early_init_dt_scan_nodes.  The powerpc startup routine early_init_devtree
+> currently has a call to early_init_dt_verify.  This change replaces that
+> early_init_dt_verify call to a call to early_init_dt_scan.
+>
+> Signed-off-by: Geoff Levand <geoff@infradead.org>
+> ---
+>  arch/powerpc/kernel/prom.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
+> index 4f1c920aa13e..82c9cd3bdbec 100644
+> --- a/arch/powerpc/kernel/prom.c
+> +++ b/arch/powerpc/kernel/prom.c
+> @@ -761,7 +761,7 @@ void __init early_init_devtree(void *params)
+>         DBG(" -> early_init_devtree(%px)\n", params);
+>
+>         /* Too early to BUG_ON(), do it by hand */
+> -       if (!early_init_dt_verify(params))
+> +       if (!early_init_dt_scan(params))
 
-Signed-off-by: Geoff Levand <geoff@infradead.org>
----
- arch/powerpc/configs/ps3_defconfig | 39 +++++++++++++-----------------
- 1 file changed, 17 insertions(+), 22 deletions(-)
+It would be nice if this could be used instead, but it does other
+things like memory setup which I think will not work for some PPC
+platforms.
 
-diff --git a/arch/powerpc/configs/ps3_defconfig b/arch/powerpc/configs/ps3_defconfig
-index 0a1b42c4f26a..52a8c5450ecb 100644
---- a/arch/powerpc/configs/ps3_defconfig
-+++ b/arch/powerpc/configs/ps3_defconfig
-@@ -1,8 +1,3 @@
--CONFIG_PPC64=y
--CONFIG_CELL_CPU=y
--CONFIG_ALTIVEC=y
--CONFIG_SMP=y
--CONFIG_NR_CPUS=2
- CONFIG_SYSVIPC=y
- CONFIG_POSIX_MQUEUE=y
- CONFIG_HIGH_RES_TIMERS=y
-@@ -10,11 +5,12 @@ CONFIG_BLK_DEV_INITRD=y
- CONFIG_CC_OPTIMIZE_FOR_SIZE=y
- CONFIG_EMBEDDED=y
- # CONFIG_PERF_EVENTS is not set
--# CONFIG_COMPAT_BRK is not set
--CONFIG_SLAB=y
- CONFIG_PROFILING=y
--CONFIG_MODULES=y
--CONFIG_MODULE_UNLOAD=y
-+CONFIG_PPC64=y
-+CONFIG_CELL_CPU=y
-+CONFIG_ALTIVEC=y
-+CONFIG_SMP=y
-+CONFIG_NR_CPUS=2
- # CONFIG_PPC_POWERNV is not set
- # CONFIG_PPC_PSERIES is not set
- # CONFIG_PPC_PMAC is not set
-@@ -27,17 +23,20 @@ CONFIG_PS3_FLASH=y
- CONFIG_PS3_VRAM=m
- CONFIG_PS3_LPM=m
- # CONFIG_PPC_OF_BOOT_TRAMPOLINE is not set
--# CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
--CONFIG_BINFMT_MISC=y
- CONFIG_KEXEC=y
- CONFIG_PPC_4K_PAGES=y
--# CONFIG_SPARSEMEM_VMEMMAP is not set
--# CONFIG_COMPACTION is not set
- CONFIG_SCHED_SMT=y
- CONFIG_PM=y
- CONFIG_PM_DEBUG=y
- # CONFIG_SECCOMP is not set
--# CONFIG_PCI is not set
-+CONFIG_MODULES=y
-+CONFIG_MODULE_UNLOAD=y
-+# CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
-+CONFIG_BINFMT_MISC=y
-+CONFIG_SLAB=y
-+# CONFIG_COMPAT_BRK is not set
-+# CONFIG_SPARSEMEM_VMEMMAP is not set
-+# CONFIG_COMPACTION is not set
- CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_UNIX=y
-@@ -87,7 +86,6 @@ CONFIG_USB_USBNET=m
- # CONFIG_USB_NET_NET1080 is not set
- # CONFIG_USB_NET_CDC_SUBSET is not set
- # CONFIG_USB_NET_ZAURUS is not set
--CONFIG_INPUT_FF_MEMLESS=m
- CONFIG_INPUT_JOYDEV=m
- CONFIG_INPUT_EVDEV=m
- # CONFIG_INPUT_KEYBOARD is not set
-@@ -110,13 +108,10 @@ CONFIG_SND=m
- # CONFIG_SND_DRIVERS is not set
- CONFIG_SND_USB_AUDIO=m
- CONFIG_HIDRAW=y
--CONFIG_HID_APPLE=m
- CONFIG_HID_BELKIN=m
- CONFIG_HID_CHERRY=m
- CONFIG_HID_EZKEY=m
- CONFIG_HID_TWINHAN=m
--CONFIG_HID_LOGITECH=m
--CONFIG_HID_LOGITECH_DJ=m
- CONFIG_HID_MICROSOFT=m
- CONFIG_HID_SUNPLUS=m
- CONFIG_HID_SMARTJOYPLUS=m
-@@ -151,8 +146,12 @@ CONFIG_CIFS=m
- CONFIG_NLS=y
- CONFIG_NLS_CODEPAGE_437=y
- CONFIG_NLS_ISO8859_1=y
-+CONFIG_CRYPTO_PCBC=m
-+CONFIG_CRYPTO_MICHAEL_MIC=m
-+CONFIG_CRYPTO_LZO=m
- CONFIG_CRC_CCITT=m
- CONFIG_CRC_T10DIF=y
-+CONFIG_PRINTK_TIME=y
- CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
- CONFIG_MAGIC_SYSRQ=y
- CONFIG_DEBUG_MEMORY_INIT=y
-@@ -163,7 +162,3 @@ CONFIG_DEBUG_LOCKDEP=y
- CONFIG_DEBUG_LIST=y
- CONFIG_RCU_CPU_STALL_TIMEOUT=60
- # CONFIG_FTRACE is not set
--CONFIG_CRYPTO_PCBC=m
--CONFIG_CRYPTO_MICHAEL_MIC=m
--CONFIG_CRYPTO_LZO=m
--CONFIG_PRINTK_TIME=y
--- 
-2.34.1
-
+Rob
