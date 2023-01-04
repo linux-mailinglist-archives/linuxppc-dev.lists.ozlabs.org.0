@@ -2,58 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAE8365DD4F
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Jan 2023 20:58:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 237BA65DD51
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Jan 2023 20:59:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NnL4x4zfKz3c95
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Jan 2023 06:58:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NnL5x6jk8z3cCy
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Jan 2023 06:59:17 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=L20+yIsB;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GvS9EqaM;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=nathan@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=nathan@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=L20+yIsB;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GvS9EqaM;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NnL121pXBz3bTs
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NnL12385Sz3bWC
 	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Jan 2023 06:55:02 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 0731C61805;
+	by ams.source.kernel.org (Postfix) with ESMTPS id AC1C8B81714;
 	Wed,  4 Jan 2023 19:54:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BACA7C433F1;
-	Wed,  4 Jan 2023 19:54:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A948C433A1;
+	Wed,  4 Jan 2023 19:54:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1672862098;
-	bh=dwmbTzUK1OVhXPLwSXDDMGcNHMUbPdQ43vDX3d7ndH4=;
+	s=k20201202; t=1672862099;
+	bh=f/bdga3DLC0ICmYuLt5jzIvLqqsy/uQ32UMKQcitWkk=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=L20+yIsBiPVGLKKtva0a3kjheU5L+EBnfCygm00ekLoZOdQHM6ktm/vkxIEtR8uiS
-	 o6sUcCRZOaFpz0pwB6BDdzhfrbEDdiXKX9A9rswNMbdBDObbOnIj8Npja30miqZuuI
-	 qe1dKJnMUngvpuhkIU3W+V+pXHBeROxNut8k4H9WiwWCXE5YpARmynojk07LgUdJFE
-	 Q71puWvLGRZBILlFsyrAG6ylddfkWMRDiA0sXPAFKDW6YyUW/rCVWpF/1/6qG1k7Nv
-	 0m+kU2aLb/HfRz3dOSVPibQLYSW9nVjgYLL+TWGvwHO521xzeyDErCXvSg+/GFkmVG
-	 G99mEwLXrofgQ==
+	b=GvS9EqaM2s+hmge+UB6B3qFcOQqV326tXO52kyiVP3AYuYQ6ikQBJmfw2q34xq4kq
+	 FVKViCKfmUp5QLoXUIdmmHbv0u5SVD+otrmk8xjgG7JDjT29wMDhPdCIGLh/ANtku8
+	 bBroSJ7wBayGI56jt64fxIxadPQuJ13hUUCjBaLmEfNz6plyBbFWqbCTixgxJt0+Y7
+	 GgX2f7qyvNgHKoRFhRYZygfGMyuiDzupTSuOm79UyQPaMfVPjH7ScaCI+4h5MN0M3/
+	 QAhrSgKBx2yF/XtiBfJcAZ+iG9ParcRuWTHErtR/u41KE/6oIQhDgXh4PKmBRho64U
+	 u27rBFjr+rffA==
 From: Nathan Chancellor <nathan@kernel.org>
-Date: Wed, 04 Jan 2023 12:54:23 -0700
-Subject: [PATCH 06/14] powerpc/vdso: Remove unused '-s' flag from ASFLAGS
+Date: Wed, 04 Jan 2023 12:54:24 -0700
+Subject: [PATCH 07/14] powerpc/vdso: Improve linker flags
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20221228-drop-qunused-arguments-v1-6-658cbc8fc592@kernel.org>
+Message-Id: <20221228-drop-qunused-arguments-v1-7-658cbc8fc592@kernel.org>
 References: <20221228-drop-qunused-arguments-v1-0-658cbc8fc592@kernel.org>
 In-Reply-To: <20221228-drop-qunused-arguments-v1-0-658cbc8fc592@kernel.org>
 To: masahiroy@kernel.org, ndesaulniers@google.com
 X-Mailer: b4 0.11.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1397; i=nathan@kernel.org;
- h=from:subject:message-id; bh=dwmbTzUK1OVhXPLwSXDDMGcNHMUbPdQ43vDX3d7ndH4=;
- b=owGbwMvMwCEmm602sfCA1DTG02pJDMlbb3ZZzzzyabtinsvetoKDF7j6XZXeK4gGiE5i1ffZt+aO
- VeSnjlIWBjEOBlkxRZbqx6rHDQ3nnGW8cWoSzBxWJpAhDFycAjCRe9GMDFdikz67F7Ia9IRGpyW/WD
- T5JnPxy2Nb6/8syY/rXs30ZzMjwyqN3REaf194STtyum9817qv+e70Bd679FXKC7v+btyeywsA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3597; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=f/bdga3DLC0ICmYuLt5jzIvLqqsy/uQ32UMKQcitWkk=;
+ b=owGbwMvMwCEmm602sfCA1DTG02pJDMlbb3apzJKXc9ueX/+8125m9oMq72PVWX5ec1P6c2McAxc+
+ /jOno5SFQYyDQVZMkaX6sepxQ8M5ZxlvnJoEM4eVCWQIAxenAEzkTzzDH55oKYa1cybLrMnU4kp4cW
+ ta6lSBfNvtjw7+6v1yssVKrZCR4SXLv2kt05+vfT8pRiju7GG3u/knl1s+XCIYdVr1k6okOxMA
 X-Developer-Key: i=nathan@kernel.org; a=openpgp;
  fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -71,15 +71,23 @@ Cc: kernel test robot <lkp@intel.com>, linux-kbuild@vger.kernel.org, trix@redhat
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When clang's -Qunused-arguments is dropped from KBUILD_CPPFLAGS, it
-warns that ASFLAGS contains '-s', which is a linking phase option, so it
-is unused.
+When clang's -Qunused-arguments is dropped from KBUILD_CPPFLAGS, there
+are several warnings in the PowerPC vDSO:
 
-  clang-16: error: argument unused during compilation: '-s' [-Werror,-Wunused-command-line-argument]
+  clang-16: error: -Wl,-soname=linux-vdso32.so.1: 'linker' input unused [-Werror,-Wunused-command-line-argument]
+  clang-16: error: -Wl,--hash-style=both: 'linker' input unused [-Werror,-Wunused-command-line-argument]
+  clang-16: error: argument unused during compilation: '-shared' [-Werror,-Wunused-command-line-argument]
 
-Looking at the GAS sources, '-s' is only useful when targeting Solaris
-and it is ignored for the powerpc target so just drop the flag
-altogether, as it is not needed.
+  clang-16: error: argument unused during compilation: '-nostdinc' [-Werror,-Wunused-command-line-argument]
+  clang-16: error: argument unused during compilation: '-Wa,-maltivec' [-Werror,-Wunused-command-line-argument]
+
+The first group of warnings point out that linker flags were being added
+to all invocations of $(CC), even though they will only be used during
+the final vDSO link. Move those flags to ldflags-y.
+
+The second group of warnings are compiler or assembler flags that will
+be unused during linking. Filter them out from KBUILD_CFLAGS so that
+they are not used during linking.
 
 Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 ---
@@ -88,26 +96,53 @@ Cc: npiggin@gmail.com
 Cc: christophe.leroy@csgroup.eu
 Cc: linuxppc-dev@lists.ozlabs.org
 ---
- arch/powerpc/kernel/vdso/Makefile | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/powerpc/kernel/vdso/Makefile | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
 diff --git a/arch/powerpc/kernel/vdso/Makefile b/arch/powerpc/kernel/vdso/Makefile
-index 6a977b0d8ffc..45c0cc5d34b6 100644
+index 45c0cc5d34b6..769b62832b38 100644
 --- a/arch/powerpc/kernel/vdso/Makefile
 +++ b/arch/powerpc/kernel/vdso/Makefile
-@@ -51,10 +51,10 @@ ccflags-y := -shared -fno-common -fno-builtin -nostdlib -Wl,--hash-style=both
- ccflags-$(CONFIG_LD_IS_LLD) += $(call cc-option,--ld-path=$(LD),-fuse-ld=lld)
+@@ -47,13 +47,17 @@ KCOV_INSTRUMENT := n
+ UBSAN_SANITIZE := n
+ KASAN_SANITIZE := n
  
- CC32FLAGS := -Wl,-soname=linux-vdso32.so.1 -m32
--AS32FLAGS := -D__VDSO32__ -s
-+AS32FLAGS := -D__VDSO32__
+-ccflags-y := -shared -fno-common -fno-builtin -nostdlib -Wl,--hash-style=both
+-ccflags-$(CONFIG_LD_IS_LLD) += $(call cc-option,--ld-path=$(LD),-fuse-ld=lld)
+-
+-CC32FLAGS := -Wl,-soname=linux-vdso32.so.1 -m32
++ccflags-y := -fno-common -fno-builtin
++ldflags-y := -Wl,--hash-style=both -nostdlib -shared
++ldflags-$(CONFIG_LD_IS_LLD) += $(call cc-option,--ld-path=$(LD),-fuse-ld=lld)
++# Filter flags that clang will warn are unused for linking
++ldflags-y += $(filter-out $(CC_FLAGS_FTRACE) -Wa$(comma)%, $(KBUILD_CFLAGS))
++
++CC32FLAGS := -m32
++LD32FLAGS := -Wl,-soname=linux-vdso32.so.1
+ AS32FLAGS := -D__VDSO32__
  
- CC64FLAGS := -Wl,-soname=linux-vdso64.so.1
--AS64FLAGS := -D__VDSO64__ -s
-+AS64FLAGS := -D__VDSO64__
+-CC64FLAGS := -Wl,-soname=linux-vdso64.so.1
++LD64FLAGS := -Wl,-soname=linux-vdso64.so.1
+ AS64FLAGS := -D__VDSO64__
  
  targets += vdso32.lds
- CPPFLAGS_vdso32.lds += -P -C -Upowerpc
+@@ -92,14 +96,14 @@ include/generated/vdso64-offsets.h: $(obj)/vdso64.so.dbg FORCE
+ 
+ # actual build commands
+ quiet_cmd_vdso32ld_and_check = VDSO32L $@
+-      cmd_vdso32ld_and_check = $(VDSOCC) $(c_flags) $(CC32FLAGS) -o $@ -Wl,-T$(filter %.lds,$^) $(filter %.o,$^) -z noexecstack ; $(cmd_vdso_check)
++      cmd_vdso32ld_and_check = $(VDSOCC) $(ldflags-y) $(CC32FLAGS) $(LD32FLAGS) -o $@ -Wl,-T$(filter %.lds,$^) $(filter %.o,$^) -z noexecstack ; $(cmd_vdso_check)
+ quiet_cmd_vdso32as = VDSO32A $@
+       cmd_vdso32as = $(VDSOCC) $(a_flags) $(CC32FLAGS) $(AS32FLAGS) -c -o $@ $<
+ quiet_cmd_vdso32cc = VDSO32C $@
+       cmd_vdso32cc = $(VDSOCC) $(c_flags) $(CC32FLAGS) -c -o $@ $<
+ 
+ quiet_cmd_vdso64ld_and_check = VDSO64L $@
+-      cmd_vdso64ld_and_check = $(VDSOCC) $(c_flags) $(CC64FLAGS) -o $@ -Wl,-T$(filter %.lds,$^) $(filter %.o,$^) -z noexecstack ; $(cmd_vdso_check)
++      cmd_vdso64ld_and_check = $(VDSOCC) $(ldflags-y) $(CC64FLAGS) $(LD64FLAGS) -o $@ -Wl,-T$(filter %.lds,$^) $(filter %.o,$^) -z noexecstack ; $(cmd_vdso_check)
+ quiet_cmd_vdso64as = VDSO64A $@
+       cmd_vdso64as = $(VDSOCC) $(a_flags) $(CC64FLAGS) $(AS64FLAGS) -c -o $@ $<
+ 
 
 -- 
 2.39.0
