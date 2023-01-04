@@ -1,62 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94E3C65CC3B
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Jan 2023 04:46:59 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BF9565CC3C
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Jan 2023 04:47:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NmwX13l2nz3c83
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Jan 2023 14:46:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NmwY31Dc4z3cBP
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Jan 2023 14:47:51 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm3 header.b=A1qXY62t;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=YoP6/R1i;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm3 header.b=Na1lG4DR;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=pqjKnzwj;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=russell.cc (client-ip=66.111.4.27; helo=out3-smtp.messagingengine.com; envelope-from=ruscur@russell.cc; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm3 header.b=A1qXY62t;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=YoP6/R1i;
+	dkim=pass (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm3 header.b=Na1lG4DR;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=pqjKnzwj;
 	dkim-atps=neutral
 Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com [66.111.4.27])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NmwVv5h3gz2xH9
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Jan 2023 14:45:58 +1100 (AEDT)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailout.nyi.internal (Postfix) with ESMTP id AD19F5C011A;
-	Tue,  3 Jan 2023 22:45:54 -0500 (EST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NmwWj0kxmz3c6P
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Jan 2023 14:46:41 +1100 (AEDT)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailout.nyi.internal (Postfix) with ESMTP id 2E3085C00D5;
+	Tue,  3 Jan 2023 22:46:39 -0500 (EST)
 Received: from mailfrontend2 ([10.202.2.163])
-  by compute2.internal (MEProxy); Tue, 03 Jan 2023 22:45:54 -0500
+  by compute5.internal (MEProxy); Tue, 03 Jan 2023 22:46:39 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=cc
 	:cc:content-transfer-encoding:content-type:date:date:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:sender:subject:subject:to:to; s=fm3; t=1672803954; x=
-	1672890354; bh=FK0GQjHoneNJQH44B4MVIKNtyLKlTNU+ijuB/TqrZqo=; b=A
-	1qXY62tLsm4K73NPbX9VbNYgEHuRBbIaalVX0t8kPI42Q8wplTpwnQ46ZXKMgVvG
-	IOpuF2UXq252viBEG/C7xxRnizprghdiOhuzpUh5W2TD+Vn8dWXV2MoE7h+lfAfm
-	Rf2v73kDyPDE5bkmIn/X6nrW/yfvKebt2wtvtJWGh0BvYcJLPO9R19skUPGJdGAn
-	3fEiVm5UP1SAdiPc+53fSzhJY6+/lDSaN1jZapWvLZxHTMRFO7YMq+0DNT4uyz2w
-	ZquF+66lY6duiJN6IeCJnywwlXV0HzlyJm58IVmIla8g82Xm06Ot1g+Imml4bV5L
-	yhSA7KIILMojaTZ61Qblg==
+	:reply-to:sender:subject:subject:to:to; s=fm3; t=1672803999; x=
+	1672890399; bh=gFFDVFxDhdh78/CM4G8bL0eEgbbPLaakK8kfr6x0JhE=; b=N
+	a1lG4DR86EmLpQcrnMJnJqJji9JaMIdpDuywtCJA18f1RTTK9LO16DzXOs3/cne4
+	VpVrsOct8fX4vktFubf1f9u065v3ByjgvA3SllldmBW7jq8ZoMfFNjm17mKSTnES
+	11hKLKF013WFT/LMZepYO/xpzO7WruRNu0Wo6H44Iic1G3IbnZ92H93P7n0yQQh/
+	Zup5aj4jveGSARziTfMqPZFs1aeGgn5lgT07gTPoyUknMIlTTirQiT9L4ZyPDmj0
+	DanIrPm2HYfKlLKz/bJ73CHlgiIGy1MYjO/aw7tliwT3EyFPm+7lim2O/4N3r8dM
+	mHvZLh6jJcLq2EgOzcerA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1672803954; x=
-	1672890354; bh=FK0GQjHoneNJQH44B4MVIKNtyLKlTNU+ijuB/TqrZqo=; b=Y
-	oP6/R1i0p9IuvJq58eoCIVCDijC5MPficoHERasJTlCGc52pGljuo0+qtE31OA4d
-	JDCChnboQACDsfW9+Fech2n3mjg14orPyhOKEXLkXFVWhkBwKVRqh/L9MjtEuNUX
-	TMU9GTCxFNO31aHqOf8isp0kE2QWpDM63VErE6u5bVPhwBzFlN2buTpfhfEWKXkG
-	rkUhdQGOYwTK6nIlt5mlrj+mYtwhVCDgKcEIXba9XLy/2+N7bra81MYawUcuA8QF
-	HNCpRCqDhtHTmngB75tHTFOmZiQ/OOXKTaCMPZxyXQJekDw55Izced6bOMP6sMaY
-	098zjXEpsCIK5KHaQGV0A==
-X-ME-Sender: <xms:cva0Y9ddssmwG3LB6x5bl6qoFs0kZnWqlEmqEfh8mP5mt_8Xps1t5A>
-    <xme:cva0Y7M6a12OlgN7TlXJBBF6mL8Rv4lNcHOeco17TEBvhWlQZtb0DkECV3wjBy6Rz
-    WZ8M7bu2qPsxIBeyg>
-X-ME-Received: <xmr:cva0Y2goyWtgCsC0yDGvzO2wQkPwuusNppkbwBnii4DryHDyzoWjy4362_KJKEN7FhkvTQ0saxLUDU5qdOiLyHY26ZRj0V8LjCGwOU_IIVLqEQ>
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1672803999; x=
+	1672890399; bh=gFFDVFxDhdh78/CM4G8bL0eEgbbPLaakK8kfr6x0JhE=; b=p
+	qjKnzwjD26l/tPMOffdoelalhSmEtGSOT6U8psk0KIXHDIPKol1agMyfc/iSyVcB
+	bc6ikoJo9tN0KRTzNyx62A41G1yJVr1ruNaDjvZ7RZeonLCbfTnqFARlbYk4DTSU
+	tGN1PVdEpYJFbknrNyCeyblzy4C/TtYHi8xeZ0c+wLwzOKpC77FRs5iCz7GTaw1Q
+	Icmx99kC6aKd7G8oQnfVWGztKTAhwmuVBsSV8D9vlXnnsHJ985Q4TTyX2mIyd+Qn
+	IHDebdh1D8E/GRkK3T0D82DQoo9wQTKin4052aCVA5o4kwuKfE8UcqVC9yNmwb/x
+	u7zG3xb9t6h20+AiOQYdg==
+X-ME-Sender: <xms:nva0Y8BVuxib0HIS7fDKuv-AsUoQxUW122YUMeQ0txKC7Y61J7wxAw>
+    <xme:nva0Y-gexKvnDT6d550iaXi1X7Ns0_Nb2N6vIRTrVmB-GRQoWiSRHgTs5p6WbWmgJ
+    Vj54Sydub8MmKUUjg>
+X-ME-Received: <xmr:nva0Y_nwhfs5ZbdOb8XQIG4amABJTMtJCAYfnry7F-S8xdGMterl_oC41f5NpclJl7Ulh3-KJLvyUCRGcvYI6fBzVSKEOHlGdlvis_zfMJIFJQ>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrjeehgdeihecutefuodetggdotefrodftvf
     curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
     uegrihhlohhuthemuceftddtnecufghrlhcuvffnffculdduhedmnecujfgurhepkffuhf
@@ -65,22 +65,22 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrjeehgdeihecutefuodetggdote
     etgfeilefhueefvedvkeehieefjefgfeegheetudekiefguddutdeukeetveelleenucev
     lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehruhhstghurh
     esrhhushhsvghllhdrtggt
-X-ME-Proxy: <xmx:cva0Y28Qt1P6cSEYePFoNL1ganqVVxvdDKy6twC59SMiyJ0q4FgVQw>
-    <xmx:cva0Y5t9TcLjyW6Uy4t8nj-qkJ1XuP4CtinfYfNBR_eqiJust6s6Mg>
-    <xmx:cva0Y1FZog8u9MEA_53LcfxPS7uA1rLN74wY1MqqhaBz3Tb-Ps20bA>
-    <xmx:cva0Y9jm3mvfOO_q6abT6pwqCeKGr36HAeSYk6AJepVMdLGDoMx0WA>
+X-ME-Proxy: <xmx:n_a0Yyy89sb4WHQDesTN1MbvY0UMBSLFlxcqa8v44mHCSBgB6cEfXA>
+    <xmx:n_a0YxRr8UBqaUOPIUGROFW_Vm2yoz2Is-TPWtK_qi9kXHBuSg4ELQ>
+    <xmx:n_a0Y9YrVRxEWn8eDxTr6jnbrrB92gjQAhbQl0Qi7Q6hiT_4qTNPuw>
+    <xmx:n_a0YwGrqUShFhqaSHPY1tIywBUl4k664iOURGyKuyt_XYmfcc6fOw>
 Feedback-ID: i4421424f:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 3 Jan 2023 22:45:51 -0500 (EST)
-Message-ID: <7b29718b8576e272fdb84054a11c007c24ab5ca2.camel@russell.cc>
-Subject: Re: [PATCH 1/4] powerpc/pseries: Fix handling of PLPKS object
- flushing timeout
+ 3 Jan 2023 22:46:36 -0500 (EST)
+Message-ID: <4739e474a2e8d6339f0f37b1bfa6bc1fd71d81d3.camel@russell.cc>
+Subject: Re: [PATCH 2/4] powerpc/pseries: Fix alignment of PLPKS structures
+ and buffers
 From: Russell Currey <ruscur@russell.cc>
 To: Andrew Donnellan <ajd@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Date: Wed, 04 Jan 2023 14:45:47 +1100
-In-Reply-To: <20221220071626.1426786-2-ajd@linux.ibm.com>
+Date: Wed, 04 Jan 2023 14:46:34 +1100
+In-Reply-To: <20221220071626.1426786-3-ajd@linux.ibm.com>
 References: <20221220071626.1426786-1-ajd@linux.ibm.com>
-	 <20221220071626.1426786-2-ajd@linux.ibm.com>
+	 <20221220071626.1426786-3-ajd@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.46.2 (3.46.2-1.fc37) 
@@ -101,32 +101,26 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On Tue, 2022-12-20 at 18:16 +1100, Andrew Donnellan wrote:
-> plpks_confirm_object_flushed() uses the H_PKS_CONFIRM_OBJECT_FLUSHED
-> hcall
-> to check whether changes to an object in the Platform KeyStore have
-> been
-> flushed to non-volatile storage.
+> A number of structures and buffers passed to PKS hcalls have
+> alignment
+> requirements, which could on occasion cause problems:
 >=20
-> The hcall returns two output values, the return code and the flush
-> status.
-> plpks_confirm_object_flushed() polls the hcall until either the flush
-> status has updated, the return code is an error, or a timeout has
-> been
-> exceeded.
+> - Authorisation structures must be 16-byte aligned and must not cross
+> a
+> =C2=A0 page boundary
 >=20
-> While we're still polling, the hcall is returning H_SUCCESS (0) as
-> the
-> return code. In the timeout case, this means that upon exiting the
-> polling
-> loop, rc is 0, and therefore 0 is returned to the user.
+> - Label structures must not cross page coundaries
 >=20
-> Handle the timeout case separately and return ETIMEDOUT if triggered.
+> - Password output buffers must not cross page boundaries
 >=20
+> Round up the allocations of these structures/buffers to the next
+> power of
+> 2 to make sure this happens.
+>=20
+> Reported-by: Benjamin Gray <bgray@linux.ibm.com>
 > Fixes: 2454a7af0f2a ("powerpc/pseries: define driver for Platform
 > KeyStore")
-> Reported-by: Benjamin Gray <bgray@linux.ibm.com>
 > Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
-
-Tested-by: Russell Currey <ruscur@russell.cc>
+>=20
 Reviewed-by: Russell Currey <ruscur@russell.cc>
 
