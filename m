@@ -1,58 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BFAC65EB28
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Jan 2023 13:55:42 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A5E765ECF0
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Jan 2023 14:25:58 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Nnmfh1KQYz3c8m
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Jan 2023 23:55:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NnnKc3JRKz3c9Z
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Jan 2023 00:25:56 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=E3Q2KRda;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=JpMYYfH2;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=acme@kernel.org; receiver=<UNKNOWN>)
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NnnHf1wdZz2ynB
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Jan 2023 00:24:14 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=E3Q2KRda;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=JpMYYfH2;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Nnmdk6RWQz2xvL
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Jan 2023 23:54:50 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 1A36AB81AD3;
-	Thu,  5 Jan 2023 12:54:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85527C433D2;
-	Thu,  5 Jan 2023 12:54:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1672923285;
-	bh=8H1A64Xa4pXy/g+QvOfg6Jt5CrBUyVrj5r5XtaZWq4U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=E3Q2KRdaYV5Skte161CTa8brQV9jSWwS5P5Dx0oe7CRTMO9ZeGpNaUz884Qwi+xmh
-	 MehLjbJGrchlcxVnwPRLF2xu1DZG6TI7CfqKYklCVCtok3GYkih0uShDk3ap5Rxfu0
-	 U69VUMB79XgA7DL5O3otCmxmea+L/8PXr+6Bs2+zp5Hdr7weuRZpf3sYghRKHJwMo3
-	 y8qOeNMLeI/WNLZRmUr6MwBezsh5JWrgrsusAuhZ7qNElTSq8d3qhdK5ii7+KXGe1w
-	 QciwyyyhAK0uWe+2xiS6njXaTCnQeCcuGXT1B2CI1ah8jLl9MvtpIrxqyh1g7TeajW
-	 uIIvI8IOb+Usw==
-Received: by quaco.ghostprotocols.net (Postfix, from userid 1000)
-	id 07F4640468; Thu,  5 Jan 2023 09:54:43 -0300 (-03)
-Date: Thu, 5 Jan 2023 09:54:43 -0300
-From: Arnaldo Carvalho de Melo <acme@kernel.org>
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Subject: Re: [PATCH 2/2] perf test bpf: Skip test if kernel-debuginfo is not
- present
-Message-ID: <Y7bIk77mdE4j8Jyi@kernel.org>
-References: <20230105121742.92249-1-atrajeev@linux.vnet.ibm.com>
- <20230105121742.92249-2-atrajeev@linux.vnet.ibm.com>
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NnnHZ0LZYz4xFv;
+	Fri,  6 Jan 2023 00:24:10 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1672925051;
+	bh=kXnkF0b/OaOC5Nxi/u3bSyBpk6+JvzMFBPMrXrjtg/Y=;
+	h=From:To:Cc:Subject:Date:From;
+	b=JpMYYfH2FCrnCTfmelT45DFH0gd2VP33Kgl71fHMREtAS9q0VH2osMQNv3zucxG1H
+	 TqZsHEHL49sW2gJDZ0Ai/nQRFQZoIo7Yq7GU9XxGHza1s33SGTZLhPrb/x7Jibp1Wi
+	 Sdaj7JIZdSE6+RvzyssDKYUaRrZvrUI49nm2MuSh7Y2XTnQiRUbc3drSCBa+0974Qo
+	 LLXfNYkXx5usjlSk8JaN+FTZZZOP1vd09olfmjU9Rihl7SsHlyY3kUVg56Upqw5sj6
+	 7ZGu5K7Zagh5rVJJWxaCRyVgxyIttibIvIJB7kBMIMveYRd7Y3dJJ7urgaxZgJX3G8
+	 26AXbPyrkSoyQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: <linuxppc-dev@lists.ozlabs.org>
+Subject: [PATCH 1/3] powerpc/vmlinux.lds: Define RUNTIME_DISCARD_EXIT
+Date: Fri,  6 Jan 2023 00:23:47 +1100
+Message-Id: <20230105132349.384666-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230105121742.92249-2-atrajeev@linux.vnet.ibm.com>
-X-Url: http://acmel.wordpress.com
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,103 +56,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: irogers@google.com, ak@linux.intel.com, rnsastry@linux.ibm.com, linux-perf-users@vger.kernel.org, maddy@linux.vnet.ibm.com, james.clark@arm.com, jolsa@kernel.org, kjain@linux.ibm.com, namhyung@kernel.org, disgoel@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch@vger.kernel.org, masahiroy@kernel.org, linux-kernel@vger.kernel.org, nathan@kernel.org, schwab@linux-m68k.org, ardb@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Em Thu, Jan 05, 2023 at 05:47:42PM +0530, Athira Rajeev escreveu:
-> Perf BPF filter test fails in environment where "kernel-debuginfo"
-> is not installed.
+The powerpc linker script explicitly includes .exit.text, because
+otherwise the link fails due to references from __bug_table and
+__ex_table. The code is freed (discarded) at runtime along with
+.init.text and data.
 
-I'll apply this to perf/core, for the next merge window, as its more an
-improvement than a fix, i.e. we know why it fails, we're just improving
-the user reporting to make that clear at first sight.
+That has worked in the past despite powerpc not defining
+RUNTIME_DISCARD_EXIT because DISCARDS appears late in the powerpc linker
+script (line 410), and the explicit inclusion of .exit.text
+earlier (line 280) supersedes the discard.
 
-- Arnaldo
+However commit 99cb0d917ffa ("arch: fix broken BuildID for arm64 and
+riscv") introduced an earlier use of DISCARD as part of the RO_DATA
+macro (line 136). With binutils < 2.36 that causes the DISCARD
+directives later in the script to be applied earlier [1], causing
+.exit.text to actually be discarded at link time, leading to build
+errors:
+
+  '.exit.text' referenced in section '__bug_table' of crypto/algboss.o: defined in
+  discarded section '.exit.text' of crypto/algboss.o
+  '.exit.text' referenced in section '__ex_table' of drivers/nvdimm/core.o: defined in
+  discarded section '.exit.text' of drivers/nvdimm/core.o
+
+Fix it by defining RUNTIME_DISCARD_EXIT, which causes the generic
+DISCARDS macro to not include .exit.text at all.
+
+1: https://lore.kernel.org/lkml/87fscp2v7k.fsf@igel.home/
+
+Fixes: 99cb0d917ffa ("arch: fix broken BuildID for arm64 and riscv")
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/kernel/vmlinux.lds.S | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
+index 8c3862b4c259..c5ea7d03d539 100644
+--- a/arch/powerpc/kernel/vmlinux.lds.S
++++ b/arch/powerpc/kernel/vmlinux.lds.S
+@@ -8,6 +8,7 @@
+ #define BSS_FIRST_SECTIONS *(.bss.prominit)
+ #define EMITS_PT_NOTE
+ #define RO_EXCEPTION_TABLE_ALIGN	0
++#define RUNTIME_DISCARD_EXIT
  
-> Test failure logs:
-> <<>>
-> 42: BPF filter                            :
-> 42.1: Basic BPF filtering                 : Ok
-> 42.2: BPF pinning                         : Ok
-> 42.3: BPF prologue generation             : FAILED!
-> <<>>
-> 
-> Enabling verbose option provided debug logs, which says debuginfo
-> needs to be installed. Snippet of verbose logs:
-> 
-> <<>>
-> 42.3: BPF prologue generation                                       :
-> --- start ---
-> test child forked, pid 28218
-> <<>>
-> Rebuild with CONFIG_DEBUG_INFO=y, or install an appropriate debuginfo
-> package.
-> bpf_probe: failed to convert perf probe events
-> Failed to add events selected by BPF
-> test child finished with -1
-> ---- end ----
-> BPF filter subtest 3: FAILED!
-> <<>>
-> 
-> Here subtest, "BPF prologue generation" failed and
-> logs shows debuginfo is needed. After installing
-> kernel-debuginfo package, testcase passes.
-> 
-> Subtest "BPF prologue generation" failed because, the "do_test"
-> function returns "TEST_FAIL" without checking the error type
-> returned by "parse_events_load_bpf_obj" function.
-> Function parse_events_load_bpf_obj can also return error of type
-> "-ENODATA" incase kernel-debuginfo package is not installed. Fix this
-> by adding check for -ENODATA error.
-> 
-> Test result after the patch changes:
-> 
-> Test failure logs:
-> <<>>
-> 42: BPF filter                 :
-> 42.1: Basic BPF filtering      : Ok
-> 42.2: BPF pinning              : Ok
-> 42.3: BPF prologue generation  : Skip (clang/debuginfo isn't
-> installed or environment missing BPF support)
-> 
-> Fixes: ba1fae431e74 ("perf test: Add 'perf test BPF'")
-> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-> ---
-> Note: This is dependent on patch 1:
->  tools/perf: Update the exit error codes in function
->  try_to_find_probe_trace_event
-> 
->  tools/perf/tests/bpf.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tools/perf/tests/bpf.c b/tools/perf/tests/bpf.c
-> index 17c023823713..6a4235a9cf57 100644
-> --- a/tools/perf/tests/bpf.c
-> +++ b/tools/perf/tests/bpf.c
-> @@ -126,6 +126,10 @@ static int do_test(struct bpf_object *obj, int (*func)(void),
->  
->  	err = parse_events_load_bpf_obj(&parse_state, &parse_state.list, obj, NULL);
->  	parse_events_error__exit(&parse_error);
-> +	if (err == -ENODATA) {
-> +		pr_debug("Failed to add events selected by BPF, debuginfo package not installed\n");
-> +		return TEST_SKIP;
-> +	}
->  	if (err || list_empty(&parse_state.list)) {
->  		pr_debug("Failed to add events selected by BPF\n");
->  		return TEST_FAIL;
-> @@ -368,7 +372,7 @@ static struct test_case bpf_tests[] = {
->  			"clang isn't installed or environment missing BPF support"),
->  #ifdef HAVE_BPF_PROLOGUE
->  	TEST_CASE_REASON("BPF prologue generation", bpf_prologue_test,
-> -			"clang isn't installed or environment missing BPF support"),
-> +			"clang/debuginfo isn't installed or environment missing BPF support"),
->  #else
->  	TEST_CASE_REASON("BPF prologue generation", bpf_prologue_test, "not compiled in"),
->  #endif
-> -- 
-> 2.31.1
-
+ #define SOFT_MASK_TABLE(align)						\
+ 	. = ALIGN(align);						\
 -- 
+2.39.0
 
-- Arnaldo
