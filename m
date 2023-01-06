@@ -1,63 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 033156602E5
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Jan 2023 16:18:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DD2A6602FE
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Jan 2023 16:20:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NpRn56Trqz3cdH
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Jan 2023 02:18:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NpRpm3Tc2z3fCC
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Jan 2023 02:20:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.219.43; helo=mail-qv1-f43.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.160.169; helo=mail-qt1-f169.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NpRmY18HVz2xH6
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Jan 2023 02:18:04 +1100 (AEDT)
-Received: by mail-qv1-f43.google.com with SMTP id d13so1149824qvj.8
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Jan 2023 07:18:04 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NpRnG4YSWz3cCF
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Jan 2023 02:18:42 +1100 (AEDT)
+Received: by mail-qt1-f169.google.com with SMTP id c7so2230638qtw.8
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Jan 2023 07:18:42 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Alz05ZcNgoaQdFl2lti3Hdp2W/onZPDBRRL7a7nm+Vw=;
-        b=GCz2CQZqhbZ0PBv+WSZiiPrRAP13Ygid222Wa7ZOo45rgxpDzCgZhUdAM3oEnoLaoN
-         Eu8/GsSCPffSUNL2l5Z9+KzjuN8nttHhTJU4O9AcusrdOPjrb9m3PQw6rCHAQQ9t5CL7
-         bMv2Z33uK6tMjPugHZNjZhF0/pN+fYjKBKUS/kPfevUL5OHbwSC7gk8Js9OyKRlbs4of
-         S0RH1TwqiRnHrb5Gse/t/7SDE5BqOiaexsrqdcXSnkS9i91zk8tzpTcijaW6E55nrG1C
-         kRGS9j4L2bFH5WmZbUyrk1zJflir3y6DMFvkcLTN/SHCQ6lN5C7XZR3IMd9/WTz02FeF
-         3GOg==
-X-Gm-Message-State: AFqh2krWriK8pj8S5ypoKcBsLPENGhTuVxAED4mKmsHPZOhbir4DN5kB
-	RPscgaBRvUZ/hrtfSTFNCpUoQ6R+xsJuXw==
-X-Google-Smtp-Source: AMrXdXv66fcxplHtQNdmpFPbwkgdKSODEMdA4f4kaoQeVr7yC6N9/37/2gJbH/xSQ2+rPAJdI4hqhQ==
-X-Received: by 2002:ad4:4b6f:0:b0:4c6:eb92:c97b with SMTP id m15-20020ad44b6f000000b004c6eb92c97bmr79695770qvx.50.1673018280123;
-        Fri, 06 Jan 2023 07:18:00 -0800 (PST)
-Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com. [209.85.219.175])
-        by smtp.gmail.com with ESMTPSA id r18-20020a05620a299200b006cebda00630sm654456qkp.60.2023.01.06.07.17.59
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=oLTT10Q08SvcCsbZuYubvWn2TjFc+1wP3y0ZN/T09Wc=;
+        b=uhSsjEAaujbTLK1FCcGDztmVHBKGV/B93/j+1grH8C4bsZy/v69zJr0I8AaXaveD5t
+         C9i3brP6m0NqZw69QBKPJJcNB3Rt3DsY7Jfdyos3iVyHi7bB0YcjcluegftP2s88EvsL
+         k6/Wk84GJ2P+8cEVUKuto4Ef+HxEUils8c9WTDcSBVa0wnB4+ol6H1hEjQIxDZu4W2qM
+         bpm612BV7AR9UpC7f+TqYOOZKj0q2IKxXyFDoiEk1tcje+nh4/1rPHO6xubrNRWpTH0+
+         RyBLf9usUZMj2rzZT/CzhLr8wK3nITKt2IznnM89aqjxaapvW/i7PDg9eYtooyDYbHeY
+         sBFA==
+X-Gm-Message-State: AFqh2kot5BECttgCQ5snwnATj0rfg7rNC7CYXQ4oYNSqQXFPTLiDaEUs
+	y7LvkM0euRuaxNVdB5S+lido4zCbU1StNg==
+X-Google-Smtp-Source: AMrXdXuKJsssKYQZGG1a6j8CgNP5jqo01EA5oZfwNvf+zGppJqXdcfIRODn4g8mW/l7bKpcrT61YTg==
+X-Received: by 2002:ac8:724d:0:b0:3a9:6fa7:8990 with SMTP id l13-20020ac8724d000000b003a96fa78990mr82158350qtp.31.1673018319640;
+        Fri, 06 Jan 2023 07:18:39 -0800 (PST)
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com. [209.85.128.172])
+        by smtp.gmail.com with ESMTPSA id d7-20020ac80607000000b003a7ec97c882sm629189qth.6.2023.01.06.07.18.38
         for <linuxppc-dev@lists.ozlabs.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 Jan 2023 07:17:59 -0800 (PST)
-Received: by mail-yb1-f175.google.com with SMTP id 186so2154167ybe.8
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Jan 2023 07:17:59 -0800 (PST)
-X-Received: by 2002:a25:d84e:0:b0:7b4:6a33:d89f with SMTP id
- p75-20020a25d84e000000b007b46a33d89fmr557375ybg.543.1673018279290; Fri, 06
- Jan 2023 07:17:59 -0800 (PST)
+        Fri, 06 Jan 2023 07:18:39 -0800 (PST)
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-4c15c4fc8ccso26742777b3.4
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Jan 2023 07:18:38 -0800 (PST)
+X-Received: by 2002:a81:17ca:0:b0:46f:bd6:957d with SMTP id
+ 193-20020a8117ca000000b0046f0bd6957dmr4281773ywx.383.1673018318622; Fri, 06
+ Jan 2023 07:18:38 -0800 (PST)
 MIME-Version: 1.0
 References: <CAHk-=wgf929uGOVpiWALPyC7pv_9KbwB2EAvQ3C4woshZZ5zqQ@mail.gmail.com>
  <20221227082932.798359-1-geert@linux-m68k.org> <alpine.DEB.2.22.394.2212270933530.311423@ramsan.of.borg>
- <c05bee5d-0d69-289b-fe4b-98f4cd31a4f5@physik.fu-berlin.de>
-In-Reply-To: <c05bee5d-0d69-289b-fe4b-98f4cd31a4f5@physik.fu-berlin.de>
+ <c05bee5d-0d69-289b-fe4b-98f4cd31a4f5@physik.fu-berlin.de> <CAMuHMdXNJveXHeS=g-aHbnxtyACxq1wCeaTg8LbpYqJTCqk86g@mail.gmail.com>
+In-Reply-To: <CAMuHMdXNJveXHeS=g-aHbnxtyACxq1wCeaTg8LbpYqJTCqk86g@mail.gmail.com>
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Fri, 6 Jan 2023 16:17:47 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdXNJveXHeS=g-aHbnxtyACxq1wCeaTg8LbpYqJTCqk86g@mail.gmail.com>
-Message-ID: <CAMuHMdXNJveXHeS=g-aHbnxtyACxq1wCeaTg8LbpYqJTCqk86g@mail.gmail.com>
+Date: Fri, 6 Jan 2023 16:18:27 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdU8AKSdujbr=nwaBUy4q4z_R=MERnb5CBPPv=A63BVFXA@mail.gmail.com>
+Message-ID: <CAMuHMdU8AKSdujbr=nwaBUy4q4z_R=MERnb5CBPPv=A63BVFXA@mail.gmail.com>
 Subject: Re: Build regressions/improvements in v6.2-rc1
 To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,64 +72,19 @@ Cc: linux-xtensa@linux-xtensa.org, linux-sh@vger.kernel.org, linux-wireless@vger
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi John,
+On Fri, Jan 6, 2023 at 4:17 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+>
+> Hi John,
 
-On Fri, Jan 6, 2023 at 4:10 PM John Paul Adrian Glaubitz
-<glaubitz@physik.fu-berlin.de> wrote:
-> On 12/27/22 09:35, Geert Uytterhoeven wrote:
-> >    + /kisskb/src/include/linux/compiler_types.h: error: call to '__comp=
-iletime_assert_262' declared with attribute error: Unsupported access size =
-for {READ,WRITE}_ONCE().:  =3D> 358:45
-> >    + /kisskb/src/include/linux/compiler_types.h: error: call to '__comp=
-iletime_assert_263' declared with attribute error: Unsupported access size =
-for {READ,WRITE}_ONCE().:  =3D> 358:45
-> >
-> > In function 'follow_pmd_mask',
-> >      inlined from 'follow_pud_mask' at /kisskb/src/mm/gup.c:735:9,
-> >      inlined from 'follow_p4d_mask' at /kisskb/src/mm/gup.c:752:9,
-> >      inlined from 'follow_page_mask' at /kisskb/src/mm/gup.c:809:9:
-> >
-> > sh4-gcc11/sh-defconfig (G=C3=BCnter wondered if pmd_t should use union)
->
-> I'm seeing this, too. Also for sh7785lcr_defconfig.
->
-> > sh4-gcc11/sh-allmodconfig (ICE =3D internal compiler error)
->
-> I'm not seeing this one, but I am getting this one instead:
->
-> In file included from ./arch/sh/include/asm/hw_irq.h:6,
->                   from ./include/linux/irq.h:596,
->                   from ./include/asm-generic/hardirq.h:17,
->                   from ./arch/sh/include/asm/hardirq.h:9,
->                   from ./include/linux/hardirq.h:11,
->                   from ./include/linux/interrupt.h:11,
->                   from ./include/linux/serial_core.h:13,
->                   from ./include/linux/serial_sci.h:6,
->                   from arch/sh/kernel/cpu/sh2/setup-sh7619.c:11:
-> ./include/linux/sh_intc.h:100:63: error: division 'sizeof (void *) / size=
-of (void)' does not compute the number of array elements [-Werror=3Dsizeof-=
-pointer-div]
->    100 | #define _INTC_ARRAY(a) a, __same_type(a, NULL) ? 0 : sizeof(a)/s=
-izeof(*a)
->        |                                                               ^
-> ./include/linux/sh_intc.h:105:31: note: in expansion of macro '_INTC_ARRA=
-Y'
->    105 |         _INTC_ARRAY(vectors), _INTC_ARRAY(groups),      \
->        |                               ^~~~~~~~~~~
-
-The easiest fix for the latter is to disable CONFIG_WERROR.
-Unfortunately I don't know a simple solution to get rid of the warning.
+Bummer, "Hi Adrian", ofc ;-)
 
 Gr{oetje,eeting}s,
 
                         Geert
 
 --
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
                                 -- Linus Torvalds
