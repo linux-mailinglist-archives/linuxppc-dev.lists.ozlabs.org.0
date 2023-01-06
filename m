@@ -2,56 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74A26660225
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Jan 2023 15:30:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76252660263
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Jan 2023 15:42:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NpQjJ2FzCz3c9K
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Jan 2023 01:30:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NpQzx1vWqz3c83
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Jan 2023 01:42:53 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=a4JlKq64;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=o9g+mwDF;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=jikos@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=a4JlKq64;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=o9g+mwDF;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NpQhK4DGJz2ynD
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Jan 2023 01:29:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NpQyy6ZH9z2ynx
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Jan 2023 01:42:02 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id D41E86136C;
-	Fri,  6 Jan 2023 14:29:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A3C4C433EF;
-	Fri,  6 Jan 2023 14:29:14 +0000 (UTC)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 60CC4B81CD0;
+	Fri,  6 Jan 2023 14:41:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 084F1C433D2;
+	Fri,  6 Jan 2023 14:41:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1673015357;
-	bh=Qvr7MD8G9FmZl4anXDch3jsk6CbjpCfuPfm12VW5+Ic=;
-	h=From:To:In-Reply-To:References:Subject:Date:From;
-	b=a4JlKq64k/lKtjCzWB0pqlmdoXg5kMPeZuuS+tg3MGZXfTuCOiKH0E3+pB+cdResy
-	 km6mczt+G0UGYU9+VyLVLSwhcuIu5N8/AWbq0apNP0FtFCzspBiPKUjTCInxj55fR8
-	 1Fb/WGapS/6rHYUlGXZn1U1SC7K30Xu1QLFm6jX0PczPu+o1KH3CWOkdfbX0ttfnQi
-	 44lUxyYR38vGevkv8hyc5MuX3Q5WipfEFkxHkOHHQIZGN4+NTsRNXdjNBv4JWjn0pG
-	 UIOB03YvQyKFdsjpFjJRZqwHmAvxvI3bqnwSN5zKMj9UzgTGF9Zff7Mn1XYy8xouBy
-	 Qq87MKLzNJKjA==
-From: Mark Brown <broonie@kernel.org>
-To: shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com,
- nicoleotsuka@gmail.com, lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com,
- alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Chancel Liu <chancel.liu@nxp.com>
-In-Reply-To: <20230104025754.3019235-1-chancel.liu@nxp.com>
-References: <20230104025754.3019235-1-chancel.liu@nxp.com>
-Subject:  Re: [PATCH] ASoC: fsl_micfil: Correct the number of steps on SX controls
-Message-Id: <167301535488.46037.15431956554804644558.b4-ty@kernel.org>
-Date: Fri, 06 Jan 2023 14:29:14 +0000
+	s=k20201202; t=1673016117;
+	bh=8EsxnIBfDu3hX7I4HWdnma591isFDpzGurRz4gzs2kY=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=o9g+mwDFquqmPxFUFq9UMGp5UDAR8JuWhDSyajBNkn4vwwvK7SViQjcfPszzCy3qS
+	 jDcY/KkA9SrhmsqjuwJXnc/3GAcZEaZwsgkElORhwFktIB9Dnnrz2vTxrLfKkbcxlt
+	 5M0yTuUvIXwveahYCUb6ufZSriYeuyvo2FGd3bqevFrOwn/ZfK1fwguGaTNYwM/ozg
+	 trOqRydyA8B5Z98G2vAaawj1MV6X69TWEEfL+I5PxbMz1P67Q/ZMGNeUhZ0rc0N9tY
+	 7y/B5ud3pUmKVSfcM7qj6CtOGY51Sjmt+g5FCM7+J4kcOjjtlYljuLpkSJomNYL/2Y
+	 0ReMonhgqU/oQ==
+Date: Fri, 6 Jan 2023 15:41:56 +0100 (CET)
+From: Jiri Kosina <jikos@kernel.org>
+To: Christian Zigotzky <chzigotzky@xenosoft.de>
+Subject: Re: [PASEMI] Nemo board doesn't reboot anymore after the commit
+ "HID: usbhid: Add ALWAYS_POLL quirk for some mice"
+In-Reply-To: <75f18191-c311-18f2-bfdb-ac82fb166e1b@xenosoft.de>
+Message-ID: <nycvar.YFH.7.76.2301061540530.1734@cbobk.fhfr.pm>
+References: <747e3240-bb3f-3a0c-e998-02f3b4826704@xenosoft.de> <75f18191-c311-18f2-bfdb-ac82fb166e1b@xenosoft.de>
+User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12-dev-214b3
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,40 +60,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Darren Stevens <darren@stevens-zone.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>, mad skateman <madskateman@gmail.com>, linux-input@vger.kernel.org, Christian Zigotzky <info@xenosoft.de>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, anpatel@nvidia.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 04 Jan 2023 10:57:54 +0800, Chancel Liu wrote:
-> The parameter "max" of SOC_SINGLE_SX_TLV() means the number of steps
-> rather than maximum value. This patch corrects the minimum value to -8
-> and the number of steps to 15.
+On Fri, 6 Jan 2023, Christian Zigotzky wrote:
+
+> Hello,
 > 
+> The reboot issue is still present in the RC2 of kernel 6.2. We still need the
+> usbhid.patch. [1]
 > 
+> Please check the bad commit. [2]
 
-Applied to
+Ankit,
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+have you tested with all the devices that you added the quirk for in your 
+original patch?
 
-Thanks!
-
-[1/1] ASoC: fsl_micfil: Correct the number of steps on SX controls
-      commit: cdfa92eb90f5770b26a79824ef213ebdbbd988b1
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+Unless I hear otherwise, I will just drop 
+the quirk for USB_DEVICE_ID_CHERRY_MOUSE_000C before this gets clarified.
 
 Thanks,
-Mark
+
+-- 
+Jiri Kosina
+SUSE Labs
+
