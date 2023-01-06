@@ -2,70 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35D9966038E
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Jan 2023 16:40:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B118660461
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Jan 2023 17:38:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NpSFz0nzMz3cCc
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Jan 2023 02:40:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NpTYm2qHxz3cDG
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Jan 2023 03:38:52 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=kCHCa/r/;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=o/IsLhnu;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2001:4860:4864:20::30; helo=mail-oa1-x30.google.com; envelope-from=alexdeucher@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::231; helo=relay11.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=kCHCa/r/;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=o/IsLhnu;
 	dkim-atps=neutral
-Received: from mail-oa1-x30.google.com (mail-oa1-x30.google.com [IPv6:2001:4860:4864:20::30])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from relay11.mail.gandi.net (relay11.mail.gandi.net [IPv6:2001:4b98:dc4:8::231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NpSF346B7z3bWj
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Jan 2023 02:39:18 +1100 (AEDT)
-Received: by mail-oa1-x30.google.com with SMTP id 586e51a60fabf-150debe2b7cso1959988fac.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Jan 2023 07:39:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nOU74MfLltUT+h+F/CrT1EH2iRW8ZoWBGIJbj4ikcZg=;
-        b=kCHCa/r/NH7je4QvL7iXn+mGinMO0F8rBjuPT2QnoR6UCmONeCpDaIl710U7xlpmT6
-         ikc1XvbZrH2G6v6Ld0fca1JWE5cOEg+kijfMUaFDYx835qxVEn/NO4CRdNIV1hXhLi6O
-         rrlxk+4D9lTSqnIgV2F/N+SXbUbcjK/Jzijiqx247t8iDkut1B0x8qPdt36ZE01G1QZW
-         /5R0EoDpcDbcFNpofc0nZGeQSzfXDpRT+ZaQn6YmnNmhgSospP8Ca2nKXFCRIl9L06qc
-         0O0Hf1tAT1axF1D8RPs/Aprow4ZU5Du+LmsxjuIoYb/wQtuBG8ejJ4PRaBaX6KY3PrTK
-         u6vQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nOU74MfLltUT+h+F/CrT1EH2iRW8ZoWBGIJbj4ikcZg=;
-        b=m0ys1I9YhKebf2ITV4xM0+hNOxxHm5TZiL+sU8qJLhPI1JV/mc+3QMLmLf+coUXAOT
-         xvUOIIrQh9nKpLtA4KGjwCebAzBNWqye2sCvfJUJJSzqMosWaufauQ/1HdhMiCTVo6Nl
-         LrstaW8TSrBWxiqaLt43A3A7+U8s2Gpz3zlDyAMk+jJbhVKQp+x+Y7AdChtF6N/Jowg+
-         QenWJ3AsuByfsMzjnByOvxRPhYo8cUE9aFgNxfNItW7hxY+fH1QjaOC2udGWiBBAvYwX
-         cBZARAHWGdFSg6XIhm1gxfq4KyX7c3gCgyyxvCk6tkv2PZk9D1J0+J4UhfhZjns1le3c
-         I7ew==
-X-Gm-Message-State: AFqh2kp9t67PAHPM/uOPq/0leuIOpVD63OOxGUmZ0xTBGmRnmrkUJgMN
-	JZD4B/OtOFwWtkFyj9FEZg6RLxoWa2TNGorcMNg=
-X-Google-Smtp-Source: AMrXdXt0/0Yzb/5d06C0pGHF7OeoMwC1Beik/HhdgRVorPYXTJ/t6Z10/P3fO3icF9eUsmYUsIHQhJSZPSADJk9q0Qw=
-X-Received: by 2002:a05:6870:c59c:b0:150:d9aa:4011 with SMTP id
- ba28-20020a056870c59c00b00150d9aa4011mr1145315oab.96.1673019554943; Fri, 06
- Jan 2023 07:39:14 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NpTXr2qycz2xJ4
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Jan 2023 03:38:02 +1100 (AEDT)
+Received: (Authenticated sender: herve.codina@bootlin.com)
+	by mail.gandi.net (Postfix) with ESMTPA id 1AEA4100007;
+	Fri,  6 Jan 2023 16:37:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1673023073;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=wOlG0UFgwPyHibvWeKLz0mSVirAtrO9tROfk5VrpIi4=;
+	b=o/IsLhnuzz4J7IXPyjgToH+TVV87KVOB9oVq/yOCwg8YQW/N5lo2nZPqNeEicVLH0eMV1H
+	zDq1AKJXZyuesBSs/CeLdn9l6y4NTl8zMsqTQFxlkF7aP5Xuj1hZGDlBE2WYInDaNd7ylw
+	31VZif0xxfQ/QADxsHUYFm+ayTZT7/cuVvR/+DFAfdvcHTuqETOo+iQzS0ioTKW8ZxrQbf
+	SPllV1GWfvc1WxlkCgbPXonrIxWainYN2NsgiomhU6lxG/keik6Qss6p8PJj8BScMAV6bF
+	pN19xO8A/S3ipyUnT33HEnWuWIraQAskoJx1KhsbUgsy50c3MGjQP3XPRlehIg==
+From: Herve Codina <herve.codina@bootlin.com>
+To: Herve Codina <herve.codina@bootlin.com>,
+	Li Yang <leoyang.li@nxp.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Qiang Zhao <qiang.zhao@nxp.com>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Xiubo Li <Xiubo.Lee@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Nicolin Chen <nicoleotsuka@gmail.com>
+Subject: [PATCH v2 00/10] Add the PowerQUICC audio support using the QMC
+Date: Fri,  6 Jan 2023 17:37:36 +0100
+Message-Id: <20230106163746.439717-1-herve.codina@bootlin.com>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-References: <CAHk-=wgf929uGOVpiWALPyC7pv_9KbwB2EAvQ3C4woshZZ5zqQ@mail.gmail.com>
- <20221227082932.798359-1-geert@linux-m68k.org> <alpine.DEB.2.22.394.2212270933530.311423@ramsan.of.borg>
-In-Reply-To: <alpine.DEB.2.22.394.2212270933530.311423@ramsan.of.borg>
-From: Alex Deucher <alexdeucher@gmail.com>
-Date: Fri, 6 Jan 2023 10:39:03 -0500
-Message-ID: <CADnq5_PtJ2JxAH7vaQsMHomUmiAxhiOqn4suf1SAQkaqt=sg+g@mail.gmail.com>
-Subject: Re: Build regressions/improvements in v6.2-rc1
-To: Geert Uytterhoeven <geert@linux-m68k.org>, "Siqueira, Rodrigo" <Rodrigo.Siqueira@amd.com>, 
-	"Mahfooz, Hamza" <Hamza.Mahfooz@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,126 +69,83 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-xtensa@linux-xtensa.org, linux-sh@vger.kernel.org, linux-wireless@vger.kernel.org, linux-mips@vger.kernel.org, amd-gfx@lists.freedesktop.org, linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, linux-f2fs-devel@lists.sourceforge.net, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org
+Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Dec 27, 2022 at 10:34 AM Geert Uytterhoeven
-<geert@linux-m68k.org> wrote:
->
-> On Tue, 27 Dec 2022, Geert Uytterhoeven wrote:
-> > Below is the list of build error/warning regressions/improvements in
-> > v6.2-rc1[1] compared to v6.1[2].
-> >
-> > Summarized:
-> >  - build errors: +11/-13
->
-> amd-gfx@lists.freedesktop.org
-> linux-arm-kernel@lists.infradead.org
-> linux-media@vger.kernel.org
-> linux-wireless@vger.kernel.org
-> linux-mips@vger.kernel.org
-> linux-sh@vger.kernel.org
-> linux-f2fs-devel@lists.sourceforge.net
-> linuxppc-dev@lists.ozlabs.org
-> kasan-dev@googlegroups.com
-> linux-xtensa@linux-xtensa.org
->
->    + /kisskb/src/drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn31/displ=
-ay_mode_vba_31.c: error: the frame size of 2224 bytes is larger than 2048 b=
-ytes [-Werror=3Dframe-larger-than=3D]:  =3D> 7082:1
->    + /kisskb/src/drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn314/disp=
-lay_mode_vba_314.c: error: the frame size of 2208 bytes is larger than 2048=
- bytes [-Werror=3Dframe-larger-than=3D]:  =3D> 7127:1
->
+Hi,
 
-@Siqueira, Rodrigo @Mahfooz, Hamza
+This series adds support for audio using the QMC controller
+available in some Freescale PowerQUICC SoCs.
 
-Can you take a look at fixing the DML stack size here up?
+This series contains three parts in order to show the different
+blocks hierarchy and their usage in this support.
 
-Alex
+The first one is related to TSA (Time Slot Assigner).
+The TSA handles the data present at the pin level (TDM with up
+to 64 time slots) and dispatchs them to one or more serial
+controller (SCC).
 
+The second is related to QMC (QUICC Multichannel Controller).
+The QMC handles the data at the serial controller (SCC) level
+and splits again the data to creates some virtual channels.
 
-> arm64-gcc5/arm64-allmodconfig
->
->    + /kisskb/src/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c: error: a=
-rray subscript 2 is above array bounds of 'u32[2]' {aka 'unsigned int[2]'} =
-[-Werror=3Darray-bounds]:  =3D> 641:28
->    + /kisskb/src/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c: error: a=
-rray subscript 3 is above array bounds of 'u32[2]' {aka 'unsigned int[2]'} =
-[-Werror=3Darray-bounds]:  =3D> 641:28
->
-> m68k-gcc8/m68k-allmodconfig
-> See also https://lore.kernel.org/all/CAMuHMdWpPX2mpqFEWjjbjsQvDBQOXyjjdpK=
-nQu9qURAuVZXmMw@mail.gmail.com
->
->    + /kisskb/src/include/linux/bitfield.h: error: call to '__field_overfl=
-ow' declared with attribute error: value doesn't fit into mask:  =3D> 151:3
->
-> In function 'u32_encode_bits',
->      inlined from 'ieee80211_mlo_multicast_tx' at /kisskb/src/net/mac8021=
-1/tx.c:4435:17,
->      inlined from 'ieee80211_subif_start_xmit' at /kisskb/src/net/mac8021=
-1/tx.c:4483:3:
->
-> mipsel-gcc5/mips-allmodconfig
->
->    + /kisskb/src/include/linux/compiler_types.h: error: call to '__compil=
-etime_assert_262' declared with attribute error: Unsupported access size fo=
-r {READ,WRITE}_ONCE().:  =3D> 358:45
->    + /kisskb/src/include/linux/compiler_types.h: error: call to '__compil=
-etime_assert_263' declared with attribute error: Unsupported access size fo=
-r {READ,WRITE}_ONCE().:  =3D> 358:45
->
-> In function 'follow_pmd_mask',
->      inlined from 'follow_pud_mask' at /kisskb/src/mm/gup.c:735:9,
->      inlined from 'follow_p4d_mask' at /kisskb/src/mm/gup.c:752:9,
->      inlined from 'follow_page_mask' at /kisskb/src/mm/gup.c:809:9:
->
-> sh4-gcc11/sh-defconfig (G=C3=BCnter wondered if pmd_t should use union)
->
->    + /kisskb/src/include/linux/fortify-string.h: error: '__builtin_memcpy=
-' offset [0, 127] is out of the bounds [0, 0] [-Werror=3Darray-bounds]:  =
-=3D> 57:33
->
-> /kisskb/src/arch/s390/kernel/setup.c: In function 'setup_lowcore_dat_on':
-> s390x-gcc11/s390-all{mod,yes}config
->
->    + /kisskb/src/include/linux/fortify-string.h: error: '__builtin_memset=
-' pointer overflow between offset [28, 898293814] and size [-898293787, -1]=
- [-Werror=3Darray-bounds]:  =3D> 59:33
->
-> /kisskb/src/fs/f2fs/inline.c: In function 'f2fs_move_inline_dirents':
->
-> powerpc-gcc11/ppc64_book3e_allmodconfig
-> powerpc-gcc11/powerpc-all{mod,yes}config
->
->    + /kisskb/src/kernel/kcsan/kcsan_test.c: error: the frame size of 1680=
- bytes is larger than 1536 bytes [-Werror=3Dframe-larger-than=3D]:  =3D> 25=
-7:1
->
-> xtensa-gcc11/xtensa-allmodconfig (patch available)
->
->    + {standard input}: Error: unknown pseudo-op: `.cfi_def_c':  =3D> 1718
->
-> sh4-gcc11/sh-allmodconfig (ICE =3D internal compiler error)
->
-> > [1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/1b929c02afd37=
-871d5afb9d498426f83432e71c2/ (all 152 configs)
-> > [2] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/830b3c68c1fb1=
-e9176028d02ef86f3cf76aa2476/ (all 152 configs)
->
-> Gr{oetje,eeting}s,
->
->                                                 Geert
->
-> --
-> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m6=
-8k.org
->
-> In personal conversations with technical people, I call myself a hacker. =
-But
-> when I'm talking to journalists I just say "programmer" or something like=
- that.
->                                                             -- Linus Torv=
-alds
+The last one is related to the audio component (QMC audio).
+It is the glue between the QMC controller and the ASoC
+component. It handles one or more QMC virtual channels and
+creates one DAI per QMC virtual channels handled.
+
+Compared to the v1 series, this v2 series fixes errors raised
+by the test kernel robot.
+
+Best regards,
+Herve Codina
+
+Changes v1 -> v2:
+  - patch 2 and 6
+    Fix kernel test robot errors
+
+  - other patches
+    No changes
+
+Herve Codina (10):
+  dt-bindings: soc: fsl: cpm_qe: Add TSA controller
+  soc: fsl: qe: Add support for TSA
+  MAINTAINERS: add the Freescale TSA controller entry
+  powerpc/8xx: Use a larger CPM1 command check mask
+  dt-bindings: soc: fsl: cpm_qe: Add QMC controller
+  soc: fsl: qe: Add support for QMC
+  MAINTAINERS: add the Freescale QMC controller entry
+  dt-bindings: sound: Add support for QMC audio
+  ASoC: fsl: Add support for QMC audio
+  MAINTAINERS: add the Freescale QMC audio entry
+
+ .../bindings/soc/fsl/cpm_qe/fsl,qmc.yaml      |  167 ++
+ .../bindings/soc/fsl/cpm_qe/fsl,tsa.yaml      |  262 +++
+ .../bindings/sound/fsl,qmc-audio.yaml         |  110 ++
+ MAINTAINERS                                   |   25 +
+ arch/powerpc/platforms/8xx/cpm1.c             |    2 +-
+ drivers/soc/fsl/qe/Kconfig                    |   23 +
+ drivers/soc/fsl/qe/Makefile                   |    2 +
+ drivers/soc/fsl/qe/qmc.c                      | 1493 +++++++++++++++++
+ drivers/soc/fsl/qe/tsa.c                      |  783 +++++++++
+ drivers/soc/fsl/qe/tsa.h                      |   43 +
+ include/dt-bindings/soc/fsl-tsa.h             |   15 +
+ include/soc/fsl/qe/qmc.h                      |   71 +
+ sound/soc/fsl/Kconfig                         |    9 +
+ sound/soc/fsl/Makefile                        |    2 +
+ sound/soc/fsl/fsl_qmc_audio.c                 |  731 ++++++++
+ 15 files changed, 3737 insertions(+), 1 deletion(-)
+ create mode 100644 Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qmc.yaml
+ create mode 100644 Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,tsa.yaml
+ create mode 100644 Documentation/devicetree/bindings/sound/fsl,qmc-audio.yaml
+ create mode 100644 drivers/soc/fsl/qe/qmc.c
+ create mode 100644 drivers/soc/fsl/qe/tsa.c
+ create mode 100644 drivers/soc/fsl/qe/tsa.h
+ create mode 100644 include/dt-bindings/soc/fsl-tsa.h
+ create mode 100644 include/soc/fsl/qe/qmc.h
+ create mode 100644 sound/soc/fsl/fsl_qmc_audio.c
+
+-- 
+2.38.1
+
