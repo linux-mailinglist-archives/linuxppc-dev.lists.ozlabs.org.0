@@ -2,40 +2,40 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2EA666094F
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Jan 2023 23:10:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC451660950
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Jan 2023 23:10:37 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Npcvw5m6jz3cdL
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Jan 2023 09:10:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NpcwW5n3Wz3fD7
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Jan 2023 09:10:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=smtpbguseast2.qq.com (client-ip=54.204.34.130; helo=smtpbguseast2.qq.com; envelope-from=tong@infragraf.org; receiver=<UNKNOWN>)
-X-Greylist: delayed 118720 seconds by postgrey-1.36 at boromir; Fri, 06 Jan 2023 23:07:56 AEDT
-Received: from smtpbguseast2.qq.com (smtpbguseast2.qq.com [54.204.34.130])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=smtpbguseast3.qq.com (client-ip=54.243.244.52; helo=smtpbguseast3.qq.com; envelope-from=tong@infragraf.org; receiver=<UNKNOWN>)
+X-Greylist: delayed 1313 seconds by postgrey-1.36 at boromir; Fri, 06 Jan 2023 23:47:58 AEDT
+Received: from smtpbguseast3.qq.com (smtpbguseast3.qq.com [54.243.244.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NpMY80HWpz2xWg
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Jan 2023 23:07:45 +1100 (AEDT)
-X-QQ-mid: bizesmtp83t1673006726tm6ohk77
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NpNRL12kcz2xf2
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Jan 2023 23:47:49 +1100 (AEDT)
+X-QQ-mid: bizesmtp82t1673007793t3uiq0no
 Received: from smtpclient.apple ( [1.202.165.115])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 06 Jan 2023 20:05:23 +0800 (CST)
-X-QQ-SSF: 01000000000000409000000A0000000
-X-QQ-FEAT: aBJFcW+uBGYOrwCcechdHDjJA6m0WzMCM74Y/QJXHqCcuaYdmn1UtSJRBwiNE
-	oypRm0lvgQhTPEOjY554H8fLfxHhHbPiEQj8O6YgbX0+W3D00RzEAh5b9wBhHer+oyp9Xhs
-	9fPB2h1WaB5F14MLx1j8cbaGhcF2xte3wE1Mpo6K2iYIMdnXGUrsEQpBXEoae/7fEkxQO/E
-	bpwvErft+3ONAzsvY4Etb5l+YpVqYO8y0d/spF36iMXJG4qtWfXMZQbXnPgNg/NhZVmEhwP
-	OauDf/+QyFUrj4Zl8lYzfd5VG+BE96NuqhhYL1dsxNdqbif6nqJa+BpmYbCVwkaw2PHLDbD
-	Tq26I1wwAX16TX/zrpgjtBpgD0KQYNRULaszPtwY4rJWbCpFBDRr7Co3WCzFC7vjeZ7W0KJ
-	9+p2tGwhmciSR7z8qcaplQ==
+	id ; Fri, 06 Jan 2023 20:23:10 +0800 (CST)
+X-QQ-SSF: 01000000006000509000B00A0000000
+X-QQ-FEAT: +ynUkgUhZJki3wPRx1Phyo88jjPVeCIhchJcvvZhIf0KkTu/zhUkvdJJlPsLq
+	F+4ESwhg8LMJZAHnEXJ3SGTMIZZXJaWpGaIzdHBSsVuYm4O6eSlwusoL2JCjTigKfC58qMo
+	ySbwEU3h9+KQdI78xu8NinwL4y+rBXoYp1/SwLVIDo/Bl/FeAa03JEzZTt95UnCawfqMq2q
+	SObyyrdJJ+tDFsGYQXYygcNz1CEqngY6RgMj3bmRMl+dNPX8oYfWKfKZzI6zh046P3XMgSG
+	yfuZu7bFJkTEDgqPymUFX5e+jVvCUKHT2Gzi5ZOIq5HqOJ11A9tJYfEaRZb9vvtxSUbrNRW
+	Ipr6pGoMquT0NILwpMhtlFCXAo/o/qq/5+iRSVHTD4zzwpL+NJrJtoycJ5lDj1NmHq/sivu
+	76ozUicO1/49DJ1Kk1UhwAMHNPnMc/hW
 X-QQ-GoodBg: 0
 From: Tonghao Zhang <tong@infragraf.org>
-Message-Id: <5B46D25A-6C27-4731-9DC5-F7676DF665DC@infragraf.org>
+Message-Id: <5C102A53-D247-4EC1-90C6-ED6B03A007BD@infragraf.org>
 Content-Type: multipart/alternative;
-	boundary="Apple-Mail=_808270E9-39BE-41A5-A04F-4122953F24D8"
+	boundary="Apple-Mail=_650E5697-0C57-4F79-A66F-B0DAD2D1765E"
 Mime-Version: 1.0 (Mac OS X Mail 15.0 \(3693.20.0.1.32\))
 Subject: Re: [bpf-next v2] bpf: drop deprecated bpf_jit_enable == 2
-Date: Fri, 6 Jan 2023 20:05:22 +0800
+Date: Fri, 6 Jan 2023 20:23:10 +0800
 In-Reply-To: <ea7673e1-40ec-18be-af89-5f4fd0f71742@csgroup.eu>
 To: Christophe Leroy <christophe.leroy@csgroup.eu>,
  Alexei Starovoitov <ast@kernel.org>
@@ -56,12 +56,12 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: KP Singh <kpsingh@kernel.org>, "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, Jiri Olsa <jolsa@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Hao Luo <haoluo@google.com>, Song Liu <song@kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, John Fastabend <john.fastabend@gmail.com>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, Alexei Starovoitov <ast@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, Andrii Nakryiko <andrii@kernel.org>, Stanislav Fomichev <sdf@google.com>, "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, Hou Tao <houtao1@huawei.com>, "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>, Yonghong Song <yhs@fb.com>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>, "linux-arm-kernel@lists.infradead.or" <linux-arm-kernel@lists.infradead.or>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>
+Cc: "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, Jiri Olsa <jolsa@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Hao Luo <haoluo@google.com>, Song Liu <song@kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, John Fastabend <john.fastabend@gmail.com>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, Alexei Starovoitov <ast@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, Andrii Nakryiko <andrii@kernel.org>, Stanislav Fomichev <sdf@google.com>, "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, Hou Tao <houtao1@huawei.com>, "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>, Yonghong Song <yhs@fb.com>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>, KP Singh <kpsingh@kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
---Apple-Mail=_808270E9-39BE-41A5-A04F-4122953F24D8
+--Apple-Mail=_650E5697-0C57-4F79-A66F-B0DAD2D1765E
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain;
 	charset=utf-8
@@ -136,23 +136,25 @@ JITed instructions.
 > remember the details, I think it was an issue with endianess. Maybe it=20=
 
 > is fixed now, but it needs to be verified.
+[first email is reject by email list]
 
+Hi
 I think bpftool may dump the jited insn too.
+
 > So please, before removing a working and usefull feature, make sure=20
 > there is an alternative available to it for all architectures in all=20=
 
 > configurations.
 >=20
 > Also, I don't think bpftool is usable to dump kernel BPF selftests.=20
+> That's vital when a selftest fails if you want to have a chance to=20
+> understand why it fails.
 Why bpftool does=E2=80=99t work for you ? I think this is a core =
 function for bpf. If you can dump the jited insn using bpf_jit_enable =3D=3D=
  2, you should
 dump the inns tool, while in selftest case.
 
 Alexei any thoughts?
-
-> That's vital when a selftest fails if you want to have a chance to=20
-> understand why it fails.
 > Thanks
 > Christophe
 >=20
@@ -983,7 +985,7 @@ DEFFILEMODE);
 >> 2.27.0
 
 
---Apple-Mail=_808270E9-39BE-41A5-A04F-4122953F24D8
+--Apple-Mail=_650E5697-0C57-4F79-A66F-B0DAD2D1765E
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/html;
 	charset=utf-8
@@ -997,17 +999,17 @@ href=3D"mailto:christophe.leroy@csgroup.eu" =
 class=3D"">christophe.leroy@csgroup.eu</a>&gt; wrote:</div><br =
 class=3D"Apple-interchange-newline"><div class=3D""><meta =
 charset=3D"UTF-8" class=3D""><br style=3D"caret-color: rgb(0, 0, 0); =
-font-family: Menlo-Regular; font-size: 11px; font-style: normal; =
+font-family: Menlo-Regular; font-size: 14px; font-style: normal; =
 font-variant-caps: normal; font-weight: normal; letter-spacing: normal; =
 text-align: start; text-indent: 0px; text-transform: none; white-space: =
 normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
 text-decoration: none;" class=3D""><br style=3D"caret-color: rgb(0, 0, =
-0); font-family: Menlo-Regular; font-size: 11px; font-style: normal; =
+0); font-family: Menlo-Regular; font-size: 14px; font-style: normal; =
 font-variant-caps: normal; font-weight: normal; letter-spacing: normal; =
 text-align: start; text-indent: 0px; text-transform: none; white-space: =
 normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
 text-decoration: none;" class=3D""><span style=3D"caret-color: rgb(0, 0, =
-0); font-family: Menlo-Regular; font-size: 11px; font-style: normal; =
+0); font-family: Menlo-Regular; font-size: 14px; font-style: normal; =
 font-variant-caps: normal; font-weight: normal; letter-spacing: normal; =
 text-align: start; text-indent: 0px; text-transform: none; white-space: =
 normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
@@ -1015,25 +1017,25 @@ text-decoration: none; float: none; display: inline !important;" =
 class=3D"">Le 05/01/2023 =C3=A0 04:06,<span =
 class=3D"Apple-converted-space">&nbsp;</span></span><a =
 href=3D"mailto:tong@infragraf.org" style=3D"font-family: Menlo-Regular; =
-font-size: 11px; font-style: normal; font-variant-caps: normal; =
+font-size: 14px; font-style: normal; font-variant-caps: normal; =
 font-weight: normal; letter-spacing: normal; orphans: auto; text-align: =
 start; text-indent: 0px; text-transform: none; white-space: normal; =
 widows: auto; word-spacing: 0px; -webkit-text-size-adjust: auto; =
 -webkit-text-stroke-width: 0px;" class=3D"">tong@infragraf.org</a><span =
 style=3D"caret-color: rgb(0, 0, 0); font-family: Menlo-Regular; =
-font-size: 11px; font-style: normal; font-variant-caps: normal; =
+font-size: 14px; font-style: normal; font-variant-caps: normal; =
 font-weight: normal; letter-spacing: normal; text-align: start; =
 text-indent: 0px; text-transform: none; white-space: normal; =
 word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
 none; float: none; display: inline !important;" class=3D""><span =
 class=3D"Apple-converted-space">&nbsp;</span>a =C3=A9crit&nbsp;:</span><br=
  style=3D"caret-color: rgb(0, 0, 0); font-family: Menlo-Regular; =
-font-size: 11px; font-style: normal; font-variant-caps: normal; =
+font-size: 14px; font-style: normal; font-variant-caps: normal; =
 font-weight: normal; letter-spacing: normal; text-align: start; =
 text-indent: 0px; text-transform: none; white-space: normal; =
 word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
 none;" class=3D""><blockquote type=3D"cite" style=3D"font-family: =
-Menlo-Regular; font-size: 11px; font-style: normal; font-variant-caps: =
+Menlo-Regular; font-size: 14px; font-style: normal; font-variant-caps: =
 normal; font-weight: normal; letter-spacing: normal; orphans: auto; =
 text-align: start; text-indent: 0px; text-transform: none; white-space: =
 normal; widows: auto; word-spacing: 0px; -webkit-text-size-adjust: auto; =
@@ -1088,28 +1090,28 @@ bpf_jit_binary_pack_finalize is invoked, we copy rw_header to header<br =
 class=3D"">and then image/insn is valid. BTW, we can use the "bpftool =
 prog dump" JITed instructions.<br class=3D""></blockquote><br =
 style=3D"caret-color: rgb(0, 0, 0); font-family: Menlo-Regular; =
-font-size: 11px; font-style: normal; font-variant-caps: normal; =
+font-size: 14px; font-style: normal; font-variant-caps: normal; =
 font-weight: normal; letter-spacing: normal; text-align: start; =
 text-indent: 0px; text-transform: none; white-space: normal; =
 word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
 none;" class=3D""><span style=3D"caret-color: rgb(0, 0, 0); font-family: =
-Menlo-Regular; font-size: 11px; font-style: normal; font-variant-caps: =
+Menlo-Regular; font-size: 14px; font-style: normal; font-variant-caps: =
 normal; font-weight: normal; letter-spacing: normal; text-align: start; =
 text-indent: 0px; text-transform: none; white-space: normal; =
 word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
 none; float: none; display: inline !important;" class=3D"">NACK.</span><br=
  style=3D"caret-color: rgb(0, 0, 0); font-family: Menlo-Regular; =
-font-size: 11px; font-style: normal; font-variant-caps: normal; =
+font-size: 14px; font-style: normal; font-variant-caps: normal; =
 font-weight: normal; letter-spacing: normal; text-align: start; =
 text-indent: 0px; text-transform: none; white-space: normal; =
 word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
 none;" class=3D""><br style=3D"caret-color: rgb(0, 0, 0); font-family: =
-Menlo-Regular; font-size: 11px; font-style: normal; font-variant-caps: =
+Menlo-Regular; font-size: 14px; font-style: normal; font-variant-caps: =
 normal; font-weight: normal; letter-spacing: normal; text-align: start; =
 text-indent: 0px; text-transform: none; white-space: normal; =
 word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
 none;" class=3D""><span style=3D"caret-color: rgb(0, 0, 0); font-family: =
-Menlo-Regular; font-size: 11px; font-style: normal; font-variant-caps: =
+Menlo-Regular; font-size: 14px; font-style: normal; font-variant-caps: =
 normal; font-weight: normal; letter-spacing: normal; text-align: start; =
 text-indent: 0px; text-transform: none; white-space: normal; =
 word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
@@ -1117,45 +1119,45 @@ none; float: none; display: inline !important;" class=3D"">Because the =
 feature is buggy on x86_64, you remove it for all<span =
 class=3D"Apple-converted-space">&nbsp;</span></span><br =
 style=3D"caret-color: rgb(0, 0, 0); font-family: Menlo-Regular; =
-font-size: 11px; font-style: normal; font-variant-caps: normal; =
+font-size: 14px; font-style: normal; font-variant-caps: normal; =
 font-weight: normal; letter-spacing: normal; text-align: start; =
 text-indent: 0px; text-transform: none; white-space: normal; =
 word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
 none;" class=3D""><span style=3D"caret-color: rgb(0, 0, 0); font-family: =
-Menlo-Regular; font-size: 11px; font-style: normal; font-variant-caps: =
+Menlo-Regular; font-size: 14px; font-style: normal; font-variant-caps: =
 normal; font-weight: normal; letter-spacing: normal; text-align: start; =
 text-indent: 0px; text-transform: none; white-space: normal; =
 word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
 none; float: none; display: inline !important;" class=3D"">architectures =
 ?</span><br style=3D"caret-color: rgb(0, 0, 0); font-family: =
-Menlo-Regular; font-size: 11px; font-style: normal; font-variant-caps: =
+Menlo-Regular; font-size: 14px; font-style: normal; font-variant-caps: =
 normal; font-weight: normal; letter-spacing: normal; text-align: start; =
 text-indent: 0px; text-transform: none; white-space: normal; =
 word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
 none;" class=3D""><br style=3D"caret-color: rgb(0, 0, 0); font-family: =
-Menlo-Regular; font-size: 11px; font-style: normal; font-variant-caps: =
+Menlo-Regular; font-size: 14px; font-style: normal; font-variant-caps: =
 normal; font-weight: normal; letter-spacing: normal; text-align: start; =
 text-indent: 0px; text-transform: none; white-space: normal; =
 word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
 none;" class=3D""><span style=3D"caret-color: rgb(0, 0, 0); font-family: =
-Menlo-Regular; font-size: 11px; font-style: normal; font-variant-caps: =
+Menlo-Regular; font-size: 14px; font-style: normal; font-variant-caps: =
 normal; font-weight: normal; letter-spacing: normal; text-align: start; =
 text-indent: 0px; text-transform: none; white-space: normal; =
 word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
 none; float: none; display: inline !important;" class=3D"">On powerpc =
 bpf_jit_enable =3D=3D 2 works and is very usefull.</span><br =
 style=3D"caret-color: rgb(0, 0, 0); font-family: Menlo-Regular; =
-font-size: 11px; font-style: normal; font-variant-caps: normal; =
+font-size: 14px; font-style: normal; font-variant-caps: normal; =
 font-weight: normal; letter-spacing: normal; text-align: start; =
 text-indent: 0px; text-transform: none; white-space: normal; =
 word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
 none;" class=3D""><br style=3D"caret-color: rgb(0, 0, 0); font-family: =
-Menlo-Regular; font-size: 11px; font-style: normal; font-variant-caps: =
+Menlo-Regular; font-size: 14px; font-style: normal; font-variant-caps: =
 normal; font-weight: normal; letter-spacing: normal; text-align: start; =
 text-indent: 0px; text-transform: none; white-space: normal; =
 word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
 none;" class=3D""><span style=3D"caret-color: rgb(0, 0, 0); font-family: =
-Menlo-Regular; font-size: 11px; font-style: normal; font-variant-caps: =
+Menlo-Regular; font-size: 14px; font-style: normal; font-variant-caps: =
 normal; font-weight: normal; letter-spacing: normal; text-align: start; =
 text-indent: 0px; text-transform: none; white-space: normal; =
 word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
@@ -1163,12 +1165,12 @@ none; float: none; display: inline !important;" class=3D"">Last time I =
 tried to use bpftool on powerpc/32 it didn't work. I don't<span =
 class=3D"Apple-converted-space">&nbsp;</span></span><br =
 style=3D"caret-color: rgb(0, 0, 0); font-family: Menlo-Regular; =
-font-size: 11px; font-style: normal; font-variant-caps: normal; =
+font-size: 14px; font-style: normal; font-variant-caps: normal; =
 font-weight: normal; letter-spacing: normal; text-align: start; =
 text-indent: 0px; text-transform: none; white-space: normal; =
 word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
 none;" class=3D""><span style=3D"caret-color: rgb(0, 0, 0); font-family: =
-Menlo-Regular; font-size: 11px; font-style: normal; font-variant-caps: =
+Menlo-Regular; font-size: 14px; font-style: normal; font-variant-caps: =
 normal; font-weight: normal; letter-spacing: normal; text-align: start; =
 text-indent: 0px; text-transform: none; white-space: normal; =
 word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
@@ -1176,39 +1178,40 @@ none; float: none; display: inline !important;" class=3D"">remember the =
 details, I think it was an issue with endianess. Maybe it<span =
 class=3D"Apple-converted-space">&nbsp;</span></span><br =
 style=3D"caret-color: rgb(0, 0, 0); font-family: Menlo-Regular; =
-font-size: 11px; font-style: normal; font-variant-caps: normal; =
+font-size: 14px; font-style: normal; font-variant-caps: normal; =
 font-weight: normal; letter-spacing: normal; text-align: start; =
 text-indent: 0px; text-transform: none; white-space: normal; =
 word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
 none;" class=3D""><span style=3D"caret-color: rgb(0, 0, 0); font-family: =
-Menlo-Regular; font-size: 11px; font-style: normal; font-variant-caps: =
+Menlo-Regular; font-size: 14px; font-style: normal; font-variant-caps: =
 normal; font-weight: normal; letter-spacing: normal; text-align: start; =
 text-indent: 0px; text-transform: none; white-space: normal; =
 word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
 none; float: none; display: inline !important;" class=3D"">is fixed now, =
 but it needs to be verified.</span><br style=3D"caret-color: rgb(0, 0, =
-0); font-family: Menlo-Regular; font-size: 11px; font-style: normal; =
+0); font-family: Menlo-Regular; font-size: 14px; font-style: normal; =
 font-variant-caps: normal; font-weight: normal; letter-spacing: normal; =
 text-align: start; text-indent: 0px; text-transform: none; white-space: =
 normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;" class=3D""></div></blockquote><div><br =
-class=3D""></div>I think bpftool may dump the&nbsp;jited insn too.<br =
-class=3D""><blockquote type=3D"cite" class=3D""><div class=3D""><span =
+text-decoration: none;" class=3D""></div></blockquote>[first email is =
+reject by email list]<br class=3D""><div><br =
+class=3D""></div><div>Hi</div><div>I think bpftool may dump the jited =
+insn too.</div></div><div><br class=3D""><blockquote type=3D"cite" =
+class=3D""><div class=3D""><span style=3D"caret-color: rgb(0, 0, 0); =
+font-family: Menlo-Regular; font-size: 14px; font-style: normal; =
+font-variant-caps: normal; font-weight: normal; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none; float: none; display: inline !important;" =
+class=3D"">So please, before removing a working and usefull feature, =
+make sure<span class=3D"Apple-converted-space">&nbsp;</span></span><br =
 style=3D"caret-color: rgb(0, 0, 0); font-family: Menlo-Regular; =
-font-size: 11px; font-style: normal; font-variant-caps: normal; =
-font-weight: normal; letter-spacing: normal; text-align: start; =
-text-indent: 0px; text-transform: none; white-space: normal; =
-word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
-none; float: none; display: inline !important;" class=3D"">So please, =
-before removing a working and usefull feature, make sure<span =
-class=3D"Apple-converted-space">&nbsp;</span></span><br =
-style=3D"caret-color: rgb(0, 0, 0); font-family: Menlo-Regular; =
-font-size: 11px; font-style: normal; font-variant-caps: normal; =
+font-size: 14px; font-style: normal; font-variant-caps: normal; =
 font-weight: normal; letter-spacing: normal; text-align: start; =
 text-indent: 0px; text-transform: none; white-space: normal; =
 word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
 none;" class=3D""><span style=3D"caret-color: rgb(0, 0, 0); font-family: =
-Menlo-Regular; font-size: 11px; font-style: normal; font-variant-caps: =
+Menlo-Regular; font-size: 14px; font-style: normal; font-variant-caps: =
 normal; font-weight: normal; letter-spacing: normal; text-align: start; =
 text-indent: 0px; text-transform: none; white-space: normal; =
 word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
@@ -1216,28 +1219,28 @@ none; float: none; display: inline !important;" class=3D"">there is an =
 alternative available to it for all architectures in all<span =
 class=3D"Apple-converted-space">&nbsp;</span></span><br =
 style=3D"caret-color: rgb(0, 0, 0); font-family: Menlo-Regular; =
-font-size: 11px; font-style: normal; font-variant-caps: normal; =
+font-size: 14px; font-style: normal; font-variant-caps: normal; =
 font-weight: normal; letter-spacing: normal; text-align: start; =
 text-indent: 0px; text-transform: none; white-space: normal; =
 word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
 none;" class=3D""><span style=3D"caret-color: rgb(0, 0, 0); font-family: =
-Menlo-Regular; font-size: 11px; font-style: normal; font-variant-caps: =
+Menlo-Regular; font-size: 14px; font-style: normal; font-variant-caps: =
 normal; font-weight: normal; letter-spacing: normal; text-align: start; =
 text-indent: 0px; text-transform: none; white-space: normal; =
 word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
 none; float: none; display: inline !important;" =
 class=3D"">configurations.</span><br style=3D"caret-color: rgb(0, 0, 0); =
-font-family: Menlo-Regular; font-size: 11px; font-style: normal; =
+font-family: Menlo-Regular; font-size: 14px; font-style: normal; =
 font-variant-caps: normal; font-weight: normal; letter-spacing: normal; =
 text-align: start; text-indent: 0px; text-transform: none; white-space: =
 normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
 text-decoration: none;" class=3D""><br style=3D"caret-color: rgb(0, 0, =
-0); font-family: Menlo-Regular; font-size: 11px; font-style: normal; =
+0); font-family: Menlo-Regular; font-size: 14px; font-style: normal; =
 font-variant-caps: normal; font-weight: normal; letter-spacing: normal; =
 text-align: start; text-indent: 0px; text-transform: none; white-space: =
 normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
 text-decoration: none;" class=3D""><span style=3D"caret-color: rgb(0, 0, =
-0); font-family: Menlo-Regular; font-size: 11px; font-style: normal; =
+0); font-family: Menlo-Regular; font-size: 14px; font-style: normal; =
 font-variant-caps: normal; font-weight: normal; letter-spacing: normal; =
 text-align: start; text-indent: 0px; text-transform: none; white-space: =
 normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
@@ -1245,67 +1248,63 @@ text-decoration: none; float: none; display: inline !important;" =
 class=3D"">Also, I don't think bpftool is usable to dump kernel BPF =
 selftests.<span class=3D"Apple-converted-space">&nbsp;</span></span><br =
 style=3D"caret-color: rgb(0, 0, 0); font-family: Menlo-Regular; =
-font-size: 11px; font-style: normal; font-variant-caps: normal; =
+font-size: 14px; font-style: normal; font-variant-caps: normal; =
 font-weight: normal; letter-spacing: normal; text-align: start; =
 text-indent: 0px; text-transform: none; white-space: normal; =
 word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
-none;" class=3D""></div></blockquote><div>Why bpftool does=E2=80=99t =
-work for you ? I think this is a core function for bpf. If you can dump =
-the jited insn using bpf_jit_enable =3D=3D 2, you should</div><div>dump =
-the inns tool, while in&nbsp;<font face=3D"Menlo-Regular" class=3D""><span=
- style=3D"font-size: 11px;" =
-class=3D"">selftest</span></font>&nbsp;case.</div><div><br =
-class=3D""></div><div>Alexei&nbsp;any thoughts?</div><br =
-class=3D""><blockquote type=3D"cite" class=3D""><div class=3D""><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: Menlo-Regular; =
-font-size: 11px; font-style: normal; font-variant-caps: normal; =
-font-weight: normal; letter-spacing: normal; text-align: start; =
+none;" class=3D""><span style=3D"caret-color: rgb(0, 0, 0); font-family: =
+Menlo-Regular; font-size: 14px; font-style: normal; font-variant-caps: =
+normal; font-weight: normal; letter-spacing: normal; text-align: start; =
 text-indent: 0px; text-transform: none; white-space: normal; =
 word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
 none; float: none; display: inline !important;" class=3D"">That's vital =
 when a selftest fails if you want to have a chance to<span =
 class=3D"Apple-converted-space">&nbsp;</span></span><br =
 style=3D"caret-color: rgb(0, 0, 0); font-family: Menlo-Regular; =
-font-size: 11px; font-style: normal; font-variant-caps: normal; =
+font-size: 14px; font-style: normal; font-variant-caps: normal; =
 font-weight: normal; letter-spacing: normal; text-align: start; =
 text-indent: 0px; text-transform: none; white-space: normal; =
 word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
 none;" class=3D""><span style=3D"caret-color: rgb(0, 0, 0); font-family: =
-Menlo-Regular; font-size: 11px; font-style: normal; font-variant-caps: =
+Menlo-Regular; font-size: 14px; font-style: normal; font-variant-caps: =
 normal; font-weight: normal; letter-spacing: normal; text-align: start; =
 text-indent: 0px; text-transform: none; white-space: normal; =
 word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
 none; float: none; display: inline !important;" class=3D"">understand =
-why it fails.</span></div></blockquote><blockquote type=3D"cite" =
+why it fails.</span></div></blockquote><div>Why bpftool does=E2=80=99t =
+work for you ? I think this is a core function for bpf. If you can dump =
+the jited insn using bpf_jit_enable =3D=3D 2, you should</div><div>dump =
+the inns tool, while in selftest case.</div><div><br =
+class=3D""></div><div>Alexei any thoughts?</div><blockquote type=3D"cite" =
 class=3D""><div class=3D""><span style=3D"caret-color: rgb(0, 0, 0); =
-font-family: Menlo-Regular; font-size: 11px; font-style: normal; =
+font-family: Menlo-Regular; font-size: 14px; font-style: normal; =
 font-variant-caps: normal; font-weight: normal; letter-spacing: normal; =
 text-align: start; text-indent: 0px; text-transform: none; white-space: =
 normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
 text-decoration: none; float: none; display: inline !important;" =
 class=3D"">Thanks</span><br style=3D"caret-color: rgb(0, 0, 0); =
-font-family: Menlo-Regular; font-size: 11px; font-style: normal; =
+font-family: Menlo-Regular; font-size: 14px; font-style: normal; =
 font-variant-caps: normal; font-weight: normal; letter-spacing: normal; =
 text-align: start; text-indent: 0px; text-transform: none; white-space: =
 normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
 text-decoration: none;" class=3D""><span style=3D"caret-color: rgb(0, 0, =
-0); font-family: Menlo-Regular; font-size: 11px; font-style: normal; =
+0); font-family: Menlo-Regular; font-size: 14px; font-style: normal; =
 font-variant-caps: normal; font-weight: normal; letter-spacing: normal; =
 text-align: start; text-indent: 0px; text-transform: none; white-space: =
 normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
 text-decoration: none; float: none; display: inline !important;" =
 class=3D"">Christophe</span><br style=3D"caret-color: rgb(0, 0, 0); =
-font-family: Menlo-Regular; font-size: 11px; font-style: normal; =
+font-family: Menlo-Regular; font-size: 14px; font-style: normal; =
 font-variant-caps: normal; font-weight: normal; letter-spacing: normal; =
 text-align: start; text-indent: 0px; text-transform: none; white-space: =
 normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
 text-decoration: none;" class=3D""><br style=3D"caret-color: rgb(0, 0, =
-0); font-family: Menlo-Regular; font-size: 11px; font-style: normal; =
+0); font-family: Menlo-Regular; font-size: 14px; font-style: normal; =
 font-variant-caps: normal; font-weight: normal; letter-spacing: normal; =
 text-align: start; text-indent: 0px; text-transform: none; white-space: =
 normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
 text-decoration: none;" class=3D""><blockquote type=3D"cite" =
-style=3D"font-family: Menlo-Regular; font-size: 11px; font-style: =
+style=3D"font-family: Menlo-Regular; font-size: 14px; font-style: =
 normal; font-variant-caps: normal; font-weight: normal; letter-spacing: =
 normal; orphans: auto; text-align: start; text-indent: 0px; =
 text-transform: none; white-space: normal; widows: auto; word-spacing: =
@@ -2409,4 +2408,4 @@ class=3D"">--<br =
 class=3D"">2.27.0</blockquote></div></blockquote></div><br =
 class=3D""></body></html>=
 
---Apple-Mail=_808270E9-39BE-41A5-A04F-4122953F24D8--
+--Apple-Mail=_650E5697-0C57-4F79-A66F-B0DAD2D1765E--
