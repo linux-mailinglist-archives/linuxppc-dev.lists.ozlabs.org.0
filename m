@@ -1,53 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFF1865FF33
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Jan 2023 11:55:27 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D6EA66012F
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Jan 2023 14:25:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4NpKxT4NG7z3cBK
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Jan 2023 21:55:25 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=n8YsKGgV;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4NpPGr6mQ1z3cFK
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Jan 2023 00:25:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=smtpbg153.qq.com (client-ip=13.245.218.24; helo=smtpbg153.qq.com; envelope-from=tong@infragraf.org; receiver=<UNKNOWN>)
+X-Greylist: delayed 122947 seconds by postgrey-1.36 at boromir; Sat, 07 Jan 2023 00:25:08 AEDT
+Received: from smtpbg153.qq.com (smtpbg153.qq.com [13.245.218.24])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4NpKwb11pZz3bPW
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Jan 2023 21:54:39 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=n8YsKGgV;
-	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4NpKwZ6mygz4wgv;
-	Fri,  6 Jan 2023 21:54:38 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1673002479;
-	bh=zpE+WrqklrIwyUmVffTGSNAKKaVZ//kuqJZ75+S6Vwc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=n8YsKGgV74swsuNo2Hx6NmNu7dyThzbGDonDsNz0BDkkQsW3unqhgGP7A1RGfQMPw
-	 HSSSOHjCHN2ACupSCGn3ekz/gKEc4njG9/gG9NNpckQyEwiqZGFU5ijr2YEpXAOAdW
-	 kfdQAiaw7d0fVCk8fLbliC5Rlv6Rsdd9LQMhJewXlE0aIk7agvJByTMm4hO35GmSmL
-	 Mr1ZHFRdbXbz9PUebBjKuxGrReNxCvF2Wb0MyKLxv3dl7+14c+7N5nu1VJA1TabNMl
-	 GE00nzRijOtyKPrxj/+7FXuW2bi53PzL0UWnZn+IZH5n+j269iqDqQams+OpNzK/T0
-	 NQZqEy6KEcJTg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Andrew Donnellan <ajd@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 4/4] powerpc/pseries: Implement signed update for PLPKS
- objects
-In-Reply-To: <20221220071626.1426786-5-ajd@linux.ibm.com>
-References: <20221220071626.1426786-1-ajd@linux.ibm.com>
- <20221220071626.1426786-5-ajd@linux.ibm.com>
-Date: Fri, 06 Jan 2023 21:54:38 +1100
-Message-ID: <87wn60gcgh.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4NpPGD5z1kz30R1
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Jan 2023 00:24:59 +1100 (AEDT)
+X-QQ-mid: bizesmtp64t1673011332tjxj7woq
+Received: from smtpclient.apple ( [1.202.165.115])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Fri, 06 Jan 2023 21:22:09 +0800 (CST)
+X-QQ-SSF: 00000000006000509000B00A0000000
+X-QQ-FEAT: 7YFKcddXaghPqCkYhq10UvUIaEiPyyRVVf51fiVt8VtICWVgf9xlGdRK/ekye
+	omw6Mh6hTOeYg3E9K2+tSvqaAudwxpY/nUHvsa9eDLLFywQdZ2B0bt1Ufcju9IvYHGLj6AN
+	Fyfv9+YFhdoQaCEe5axLJHsgwKAkvOK/u9RVtiVf+VdFapqfeUsmhIhTLsJjMFymJKGNAzh
+	TeircP+0tvFM21L3OvL/sK61biDohj3xeaMdhr5h62XTwNmJY1tUDPSh7bDQqf1hwqxLel2
+	Fd2A/kfG/M6YGdUuezHQRoF0DI3gUd0I4QO/RoNMRBYACJFkh7tLQKmYs5w0gXPtuvfDZWS
+	6w46eNalTlk5BkC4W1RZrFlZS2q1/JBSMOQiIl/6CKibkXPsJ4qBBDrKf/1irgdz4u9PW+8
+	e6lUlnaKtbM=
+X-QQ-GoodBg: 0
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 15.0 \(3693.20.0.1.32\))
+Subject: Re: [bpf-next v2] bpf: drop deprecated bpf_jit_enable == 2
+From: Tonghao Zhang <tong@infragraf.org>
+In-Reply-To: <ea7673e1-40ec-18be-af89-5f4fd0f71742@csgroup.eu>
+Date: Fri, 6 Jan 2023 21:22:09 +0800
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <AFB09E5D-31F1-410F-9FF4-F71576622474@infragraf.org>
+References: <20230105030614.26842-1-tong@infragraf.org>
+ <ea7673e1-40ec-18be-af89-5f4fd0f71742@csgroup.eu>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+X-Mailer: Apple Mail (2.3693.20.0.1.32)
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:infragraf.org:qybglogicsvr:qybglogicsvr5
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,118 +55,925 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nayna@linux.ibm.com, gjoyce@linux.ibm.com, bgray@linux.ibm.com, brking@linux.ibm.com, gcwilson@linux.ibm.com, stefanb@linux.ibm.com
+Cc: "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, Jiri Olsa <jolsa@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Hao Luo <haoluo@google.com>, Song Liu <song@kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, John Fastabend <john.fastabend@gmail.com>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, Alexei Starovoitov <ast@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, Andrii Nakryiko <andrii@kernel.org>, Stanislav Fomichev <sdf@google.com>, "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, Hou Tao <houtao1@huawei.com>, "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>, Yonghong Song <yhs@fb.com>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>, KP Singh <kpsingh@kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Andrew Donnellan <ajd@linux.ibm.com> writes:
-> From: Nayna Jain <nayna@linux.ibm.com>
->
-> The Platform Keystore provides a signed update interface which can be used
-> to create, replace or append to certain variables in the PKS in a secure
-> fashion, with the hypervisor requiring that the update be signed using the
-> Platform Key.
->
-> Implement an interface to the H_PKS_SIGNED_UPDATE hcall in the plpks
-> driver to allow signed updates to PKS objects.
->
-> (The plpks driver doesn't need to do any cryptography or otherwise handle
-> the actual signed variable contents - that will be handled by userspace
-> tooling.)
->
-> Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
-> [ajd: split patch, rewrite commit message, add timeout handling]
-> Co-developed-by: Andrew Donnellan <ajd@linux.ibm.com>
-> Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
-> ---
->  arch/powerpc/include/asm/hvcall.h      |  3 +-
->  arch/powerpc/platforms/pseries/plpks.c | 81 +++++++++++++++++++++++---
->  arch/powerpc/platforms/pseries/plpks.h |  5 ++
->  3 files changed, 79 insertions(+), 10 deletions(-)
->
-> diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
-> index 95fd7f9485d5..33b26c0cb69b 100644
-> --- a/arch/powerpc/include/asm/hvcall.h
-> +++ b/arch/powerpc/include/asm/hvcall.h
-> @@ -336,7 +336,8 @@
->  #define H_SCM_FLUSH		0x44C
->  #define H_GET_ENERGY_SCALE_INFO	0x450
->  #define H_WATCHDOG		0x45C
-> -#define MAX_HCALL_OPCODE	H_WATCHDOG
-> +#define H_PKS_SIGNED_UPDATE	0x454
-> +#define MAX_HCALL_OPCODE	H_PKS_SIGNED_UPDATE
->  
->  /* Scope args for H_SCM_UNBIND_ALL */
->  #define H_UNBIND_SCOPE_ALL (0x1)
-> diff --git a/arch/powerpc/platforms/pseries/plpks.c b/arch/powerpc/platforms/pseries/plpks.c
-> index c5ae00a8a968..9e4401aabf4f 100644
-> --- a/arch/powerpc/platforms/pseries/plpks.c
-> +++ b/arch/powerpc/platforms/pseries/plpks.c
-> @@ -30,9 +30,9 @@
->  #define MAX_NAME_SIZE	    239
->  #define MAX_DATA_SIZE	    4000
->  
-> -#define PKS_FLUSH_MAX_TIMEOUT 5000 //msec
-> -#define PKS_FLUSH_SLEEP	      10 //msec
-> -#define PKS_FLUSH_SLEEP_RANGE 400
-> +#define PKS_MAX_TIMEOUT		5000 // msec
-> +#define PKS_FLUSH_SLEEP		10 // msec
-> +#define PKS_FLUSH_SLEEP_RANGE	400
->  
->  static u8 *ospassword;
->  static u16 ospasswordlength;
-> @@ -95,6 +95,12 @@ static int pseries_status_to_err(int rc)
->  		err = -ENOENT;
->  		break;
->  	case H_BUSY:
-> +	case H_LONG_BUSY_ORDER_1_MSEC:
-> +	case H_LONG_BUSY_ORDER_10_MSEC:
-> +	case H_LONG_BUSY_ORDER_100_MSEC:
-> +	case H_LONG_BUSY_ORDER_1_SEC:
-> +	case H_LONG_BUSY_ORDER_10_SEC:
-> +	case H_LONG_BUSY_ORDER_100_SEC:
->  		err = -EBUSY;
->  		break;
->  	case H_AUTHORITY:
-> @@ -198,14 +204,17 @@ static struct label *construct_label(char *component, u8 varos, u8 *name,
->  				     u16 namelen)
->  {
->  	struct label *label;
-> -	size_t slen;
-> +	size_t slen = 0;
->  
->  	if (!name || namelen > MAX_NAME_SIZE)
->  		return ERR_PTR(-EINVAL);
->  
-> -	slen = strlen(component);
-> -	if (component && slen > sizeof(label->attr.prefix))
-> -		return ERR_PTR(-EINVAL);
-> +	// Support NULL component for signed updates
-> +	if (component) {
-> +		slen = strlen(component);
-> +		if (slen > sizeof(label->attr.prefix))
-> +			return ERR_PTR(-EINVAL);
-> +	}
->  
->  	// The label structure must not cross a page boundary, so we align to the next power of 2
->  	label = kzalloc(roundup_pow_of_two(sizeof(*label)), GFP_KERNEL);
-> @@ -372,7 +381,7 @@ static int plpks_confirm_object_flushed(struct label *label,
->  		usleep_range(PKS_FLUSH_SLEEP,
->  			     PKS_FLUSH_SLEEP + PKS_FLUSH_SLEEP_RANGE);
->  		timeout = timeout + PKS_FLUSH_SLEEP;
-> -	} while (timeout < PKS_FLUSH_MAX_TIMEOUT);
-> +	} while (timeout < PKS_MAX_TIMEOUT);
->  
->  	if (timed_out)
->  		rc = -ETIMEDOUT;
-> @@ -382,6 +391,60 @@ static int plpks_confirm_object_flushed(struct label *label,
->  	return rc;
->  }
->  
-> +int plpks_signed_update_var(struct plpks_var var, u64 flags)
-> +{
 
-I don't see a reason why var is passed by value here? A pointer would be
-more typical.
 
-cheers
+> On Jan 6, 2023, at 1:53 AM, Christophe Leroy =
+<christophe.leroy@csgroup.eu> wrote:
+>=20
+>=20
+>=20
+> Le 05/01/2023 =C3=A0 04:06, tong@infragraf.org a =C3=A9crit :
+>> From: Tonghao Zhang <tong@infragraf.org>
+>>=20
+>> The x86_64 can't dump the valid insn in this way. A test BPF prog
+>> which include subprog:
+>>=20
+>> $ llvm-objdump -d subprog.o
+>> Disassembly of section .text:
+>> 0000000000000000 <subprog>:
+>>        0:       18 01 00 00 73 75 62 70 00 00 00 00 72 6f 67 00 r1 =3D =
+29114459903653235 ll
+>>        2:       7b 1a f8 ff 00 00 00 00 *(u64 *)(r10 - 8) =3D r1
+>>        3:       bf a1 00 00 00 00 00 00 r1 =3D r10
+>>        4:       07 01 00 00 f8 ff ff ff r1 +=3D -8
+>>        5:       b7 02 00 00 08 00 00 00 r2 =3D 8
+>>        6:       85 00 00 00 06 00 00 00 call 6
+>>        7:       95 00 00 00 00 00 00 00 exit
+>> Disassembly of section raw_tp/sys_enter:
+>> 0000000000000000 <entry>:
+>>        0:       85 10 00 00 ff ff ff ff call -1
+>>        1:       b7 00 00 00 00 00 00 00 r0 =3D 0
+>>        2:       95 00 00 00 00 00 00 00 exit
+>>=20
+>> kernel print message:
+>> [  580.775387] flen=3D8 proglen=3D51 pass=3D3 image=3Dffffffffa000c20c =
+from=3Dkprobe-load pid=3D1643
+>> [  580.777236] JIT code: 00000000: cc cc cc cc cc cc cc cc cc cc cc =
+cc cc cc cc cc
+>> [  580.779037] JIT code: 00000010: cc cc cc cc cc cc cc cc cc cc cc =
+cc cc cc cc cc
+>> [  580.780767] JIT code: 00000020: cc cc cc cc cc cc cc cc cc cc cc =
+cc cc cc cc cc
+>> [  580.782568] JIT code: 00000030: cc cc cc
+>>=20
+>> $ bpf_jit_disasm
+>> 51 bytes emitted from JIT compiler (pass:3, flen:8)
+>> ffffffffa000c20c + <x>:
+>>    0:   int3
+>>    1:   int3
+>>    2:   int3
+>>    3:   int3
+>>    4:   int3
+>>    5:   int3
+>>    ...
+>>=20
+>> Until bpf_jit_binary_pack_finalize is invoked, we copy rw_header to =
+header
+>> and then image/insn is valid. BTW, we can use the "bpftool prog dump" =
+JITed instructions.
+>=20
+> NACK.
+>=20
+> Because the feature is buggy on x86_64, you remove it for all=20
+> architectures ?
+>=20
+> On powerpc bpf_jit_enable =3D=3D 2 works and is very usefull.
+>=20
+> Last time I tried to use bpftool on powerpc/32 it didn't work. I don't=20=
+
+> remember the details, I think it was an issue with endianess. Maybe it=20=
+
+> is fixed now, but it needs to be verified.
+>=20
+[so sorry, email is always rejected]
+Hi
+I think bpftool may dump the jited insn too.
+
+> So please, before removing a working and usefull feature, make sure=20
+> there is an alternative available to it for all architectures in all=20=
+
+> configurations.
+>=20
+> Also, I don't think bpftool is usable to dump kernel BPF selftests.=20
+> That's vital when a selftest fails if you want to have a chance to=20
+> understand why it fails.
+Why bpftool does=E2=80=99t work for you ? I think this is a core =
+function for bpf. If you can dump the jited insn using bpf_jit_enable =3D=3D=
+ 2, you should
+dump the inns tool, while in selftest case.
+
+Alexei any thoughts?
+
+> Thanks
+> Christophe
+>=20
+>>=20
+>> Signed-off-by: Tonghao Zhang <tong@infragraf.org>
+>> Suggested-by: Alexei Starovoitov <ast@kernel.org>
+>> Cc: Alexei Starovoitov <ast@kernel.org>
+>> Cc: Daniel Borkmann <daniel@iogearbox.net>
+>> Cc: Andrii Nakryiko <andrii@kernel.org>
+>> Cc: Martin KaFai Lau <martin.lau@linux.dev>
+>> Cc: Song Liu <song@kernel.org>
+>> Cc: Yonghong Song <yhs@fb.com>
+>> Cc: John Fastabend <john.fastabend@gmail.com>
+>> Cc: KP Singh <kpsingh@kernel.org>
+>> Cc: Stanislav Fomichev <sdf@google.com>
+>> Cc: Hao Luo <haoluo@google.com>
+>> Cc: Jiri Olsa <jolsa@kernel.org>
+>> Cc: Hou Tao <houtao1@huawei.com>
+>> ---
+>>  Documentation/admin-guide/sysctl/net.rst |   1 +
+>>  Documentation/networking/filter.rst      |  98 +------
+>>  arch/arm/net/bpf_jit_32.c                |   4 -
+>>  arch/arm64/net/bpf_jit_comp.c            |   4 -
+>>  arch/loongarch/net/bpf_jit.c             |   4 -
+>>  arch/mips/net/bpf_jit_comp.c             |   3 -
+>>  arch/powerpc/net/bpf_jit_comp.c          |  11 -
+>>  arch/riscv/net/bpf_jit_core.c            |   3 -
+>>  arch/s390/net/bpf_jit_comp.c             |   4 -
+>>  arch/sparc/net/bpf_jit_comp_32.c         |   3 -
+>>  arch/sparc/net/bpf_jit_comp_64.c         |  13 -
+>>  arch/x86/net/bpf_jit_comp.c              |   3 -
+>>  arch/x86/net/bpf_jit_comp32.c            |   3 -
+>>  net/core/sysctl_net_core.c               |  12 +-
+>>  tools/bpf/.gitignore                     |   1 -
+>>  tools/bpf/Makefile                       |  10 +-
+>>  tools/bpf/bpf_jit_disasm.c               | 332 =
+-----------------------
+>>  17 files changed, 9 insertions(+), 500 deletions(-)
+>>  delete mode 100644 tools/bpf/bpf_jit_disasm.c
+>>=20
+>> diff --git a/Documentation/admin-guide/sysctl/net.rst =
+b/Documentation/admin-guide/sysctl/net.rst
+>> index 6394f5dc2303..82ca05ca6ed0 100644
+>> --- a/Documentation/admin-guide/sysctl/net.rst
+>> +++ b/Documentation/admin-guide/sysctl/net.rst
+>> @@ -88,6 +88,7 @@ Values:
+>>         - 0 - disable the JIT (default value)
+>>         - 1 - enable the JIT
+>>         - 2 - enable the JIT and ask the compiler to emit traces on =
+kernel log.
+>> +              (deprecated since v6.3, use ``bpftool prog dump jited =
+id <id>`` instead)
+>>=20
+>>  bpf_jit_harden
+>>  --------------
+>> diff --git a/Documentation/networking/filter.rst =
+b/Documentation/networking/filter.rst
+>> index f69da5074860..5f51c050e88f 100644
+>> --- a/Documentation/networking/filter.rst
+>> +++ b/Documentation/networking/filter.rst
+>> @@ -520,102 +520,8 @@ been previously enabled by root::
+>>=20
+>>    echo 1 > /proc/sys/net/core/bpf_jit_enable
+>>=20
+>> -For JIT developers, doing audits etc, each compile run can output =
+the generated
+>> -opcode image into the kernel log via::
+>> -
+>> -  echo 2 > /proc/sys/net/core/bpf_jit_enable
+>> -
+>> -Example output from dmesg::
+>> -
+>> -    [ 3389.935842] flen=3D6 proglen=3D70 pass=3D3 =
+image=3Dffffffffa0069c8f
+>> -    [ 3389.935847] JIT code: 00000000: 55 48 89 e5 48 83 ec 60 48 89 =
+5d f8 44 8b 4f 68
+>> -    [ 3389.935849] JIT code: 00000010: 44 2b 4f 6c 4c 8b 87 d8 00 00 =
+00 be 0c 00 00 00
+>> -    [ 3389.935850] JIT code: 00000020: e8 1d 94 ff e0 3d 00 08 00 00 =
+75 16 be 17 00 00
+>> -    [ 3389.935851] JIT code: 00000030: 00 e8 28 94 ff e0 83 f8 01 75 =
+07 b8 ff ff 00 00
+>> -    [ 3389.935852] JIT code: 00000040: eb 02 31 c0 c9 c3
+>> -
+>> -When CONFIG_BPF_JIT_ALWAYS_ON is enabled, bpf_jit_enable is =
+permanently set to 1 and
+>> -setting any other value than that will return in failure. This is =
+even the case for
+>> -setting bpf_jit_enable to 2, since dumping the final JIT image into =
+the kernel log
+>> -is discouraged and introspection through bpftool (under =
+tools/bpf/bpftool/) is the
+>> -generally recommended approach instead.
+>> -
+>> -In the kernel source tree under tools/bpf/, there's bpf_jit_disasm =
+for
+>> -generating disassembly out of the kernel log's hexdump::
+>> -
+>> -       # ./bpf_jit_disasm
+>> -       70 bytes emitted from JIT compiler (pass:3, flen:6)
+>> -       ffffffffa0069c8f + <x>:
+>> -       0:      push   %rbp
+>> -       1:      mov    %rsp,%rbp
+>> -       4:      sub    $0x60,%rsp
+>> -       8:      mov    %rbx,-0x8(%rbp)
+>> -       c:      mov    0x68(%rdi),%r9d
+>> -       10:     sub    0x6c(%rdi),%r9d
+>> -       14:     mov    0xd8(%rdi),%r8
+>> -       1b:     mov    $0xc,%esi
+>> -       20:     callq  0xffffffffe0ff9442
+>> -       25:     cmp    $0x800,%eax
+>> -       2a:     jne    0x0000000000000042
+>> -       2c:     mov    $0x17,%esi
+>> -       31:     callq  0xffffffffe0ff945e
+>> -       36:     cmp    $0x1,%eax
+>> -       39:     jne    0x0000000000000042
+>> -       3b:     mov    $0xffff,%eax
+>> -       40:     jmp    0x0000000000000044
+>> -       42:     xor    %eax,%eax
+>> -       44:     leaveq
+>> -       45:     retq
+>> -
+>> -       Issuing option `-o` will "annotate" opcodes to resulting =
+assembler
+>> -       instructions, which can be very useful for JIT developers:
+>> -
+>> -       # ./bpf_jit_disasm -o
+>> -       70 bytes emitted from JIT compiler (pass:3, flen:6)
+>> -       ffffffffa0069c8f + <x>:
+>> -       0:      push   %rbp
+>> -               55
+>> -       1:      mov    %rsp,%rbp
+>> -               48 89 e5
+>> -       4:      sub    $0x60,%rsp
+>> -               48 83 ec 60
+>> -       8:      mov    %rbx,-0x8(%rbp)
+>> -               48 89 5d f8
+>> -       c:      mov    0x68(%rdi),%r9d
+>> -               44 8b 4f 68
+>> -       10:     sub    0x6c(%rdi),%r9d
+>> -               44 2b 4f 6c
+>> -       14:     mov    0xd8(%rdi),%r8
+>> -               4c 8b 87 d8 00 00 00
+>> -       1b:     mov    $0xc,%esi
+>> -               be 0c 00 00 00
+>> -       20:     callq  0xffffffffe0ff9442
+>> -               e8 1d 94 ff e0
+>> -       25:     cmp    $0x800,%eax
+>> -               3d 00 08 00 00
+>> -       2a:     jne    0x0000000000000042
+>> -               75 16
+>> -       2c:     mov    $0x17,%esi
+>> -               be 17 00 00 00
+>> -       31:     callq  0xffffffffe0ff945e
+>> -               e8 28 94 ff e0
+>> -       36:     cmp    $0x1,%eax
+>> -               83 f8 01
+>> -       39:     jne    0x0000000000000042
+>> -               75 07
+>> -       3b:     mov    $0xffff,%eax
+>> -               b8 ff ff 00 00
+>> -       40:     jmp    0x0000000000000044
+>> -               eb 02
+>> -       42:     xor    %eax,%eax
+>> -               31 c0
+>> -       44:     leaveq
+>> -               c9
+>> -       45:     retq
+>> -               c3
+>> -
+>> -For BPF JIT developers, bpf_jit_disasm, bpf_asm and bpf_dbg provides =
+a useful
+>> -toolchain for developing and testing the kernel's JIT compiler.
+>> +For JIT developers, doing audits etc, should use `bpftool prog dump` =
+to
+>> +veiw the JIT generated opcode image.
+>>=20
+>>  BPF kernel internals
+>>  --------------------
+>> diff --git a/arch/arm/net/bpf_jit_32.c b/arch/arm/net/bpf_jit_32.c
+>> index 6a1c9fca5260..39301d59b537 100644
+>> --- a/arch/arm/net/bpf_jit_32.c
+>> +++ b/arch/arm/net/bpf_jit_32.c
+>> @@ -1999,10 +1999,6 @@ struct bpf_prog *bpf_int_jit_compile(struct =
+bpf_prog *prog)
+>>         }
+>>         flush_icache_range((u32)header, (u32)(ctx.target + ctx.idx));
+>>=20
+>> -       if (bpf_jit_enable > 1)
+>> -               /* there are 2 passes here */
+>> -               bpf_jit_dump(prog->len, image_size, 2, ctx.target);
+>> -
+>>         bpf_jit_binary_lock_ro(header);
+>>         prog->bpf_func =3D (void *)ctx.target;
+>>         prog->jited =3D 1;
+>> diff --git a/arch/arm64/net/bpf_jit_comp.c =
+b/arch/arm64/net/bpf_jit_comp.c
+>> index 62f805f427b7..59c35b4d77b7 100644
+>> --- a/arch/arm64/net/bpf_jit_comp.c
+>> +++ b/arch/arm64/net/bpf_jit_comp.c
+>> @@ -1567,10 +1567,6 @@ struct bpf_prog *bpf_int_jit_compile(struct =
+bpf_prog *prog)
+>>                 goto out_off;
+>>         }
+>>=20
+>> -       /* And we're done. */
+>> -       if (bpf_jit_enable > 1)
+>> -               bpf_jit_dump(prog->len, prog_size, 2, ctx.image);
+>> -
+>>         bpf_flush_icache(header, ctx.image + ctx.idx);
+>>=20
+>>         if (!prog->is_func || extra_pass) {
+>> diff --git a/arch/loongarch/net/bpf_jit.c =
+b/arch/loongarch/net/bpf_jit.c
+>> index bdcd0c7719a9..ea37f52faa6e 100644
+>> --- a/arch/loongarch/net/bpf_jit.c
+>> +++ b/arch/loongarch/net/bpf_jit.c
+>> @@ -1123,10 +1123,6 @@ struct bpf_prog *bpf_int_jit_compile(struct =
+bpf_prog *prog)
+>>                 goto out_offset;
+>>         }
+>>=20
+>> -       /* And we're done */
+>> -       if (bpf_jit_enable > 1)
+>> -               bpf_jit_dump(prog->len, image_size, 2, ctx.image);
+>> -
+>>         /* Update the icache */
+>>         flush_icache_range((unsigned long)header, (unsigned =
+long)(ctx.image + ctx.idx));
+>>=20
+>> diff --git a/arch/mips/net/bpf_jit_comp.c =
+b/arch/mips/net/bpf_jit_comp.c
+>> index b17130d510d4..ccbb7c231cb0 100644
+>> --- a/arch/mips/net/bpf_jit_comp.c
+>> +++ b/arch/mips/net/bpf_jit_comp.c
+>> @@ -1012,9 +1012,6 @@ struct bpf_prog *bpf_int_jit_compile(struct =
+bpf_prog *prog)
+>>         flush_icache_range((unsigned long)header,
+>>                            (unsigned =
+long)&ctx.target[ctx.jit_index]);
+>>=20
+>> -       if (bpf_jit_enable > 1)
+>> -               bpf_jit_dump(prog->len, image_size, 2, ctx.target);
+>> -
+>>         prog->bpf_func =3D (void *)ctx.target;
+>>         prog->jited =3D 1;
+>>         prog->jited_len =3D image_size;
+>> diff --git a/arch/powerpc/net/bpf_jit_comp.c =
+b/arch/powerpc/net/bpf_jit_comp.c
+>> index 43e634126514..f0f7d8ff2022 100644
+>> --- a/arch/powerpc/net/bpf_jit_comp.c
+>> +++ b/arch/powerpc/net/bpf_jit_comp.c
+>> @@ -262,20 +262,9 @@ struct bpf_prog *bpf_int_jit_compile(struct =
+bpf_prog *fp)
+>>                         goto out_addrs;
+>>                 }
+>>                 bpf_jit_build_epilogue(code_base, &cgctx);
+>> -
+>> -               if (bpf_jit_enable > 1)
+>> -                       pr_info("Pass %d: shrink =3D %d, seen =3D =
+0x%x\n", pass,
+>> -                               proglen - (cgctx.idx * 4), =
+cgctx.seen);
+>>         }
+>>=20
+>>  skip_codegen_passes:
+>> -       if (bpf_jit_enable > 1)
+>> -               /*
+>> -                * Note that we output the base address of the =
+code_base
+>> -                * rather than image, since opcodes are in code_base.
+>> -                */
+>> -               bpf_jit_dump(flen, proglen, pass, code_base);
+>> -
+>>  #ifdef CONFIG_PPC64_ELF_ABI_V1
+>>         /* Function descriptor nastiness: Address + TOC */
+>>         ((u64 *)image)[0] =3D (u64)code_base;
+>> diff --git a/arch/riscv/net/bpf_jit_core.c =
+b/arch/riscv/net/bpf_jit_core.c
+>> index 737baf8715da..ff168c50d46a 100644
+>> --- a/arch/riscv/net/bpf_jit_core.c
+>> +++ b/arch/riscv/net/bpf_jit_core.c
+>> @@ -151,9 +151,6 @@ struct bpf_prog *bpf_int_jit_compile(struct =
+bpf_prog *prog)
+>>         }
+>>         bpf_jit_build_epilogue(ctx);
+>>=20
+>> -       if (bpf_jit_enable > 1)
+>> -               bpf_jit_dump(prog->len, prog_size, pass, ctx->insns);
+>> -
+>>         prog->bpf_func =3D (void *)ctx->insns;
+>>         prog->jited =3D 1;
+>>         prog->jited_len =3D prog_size;
+>> diff --git a/arch/s390/net/bpf_jit_comp.c =
+b/arch/s390/net/bpf_jit_comp.c
+>> index af35052d06ed..13d996e27602 100644
+>> --- a/arch/s390/net/bpf_jit_comp.c
+>> +++ b/arch/s390/net/bpf_jit_comp.c
+>> @@ -1831,10 +1831,6 @@ struct bpf_prog *bpf_int_jit_compile(struct =
+bpf_prog *fp)
+>>                 fp =3D orig_fp;
+>>                 goto free_addrs;
+>>         }
+>> -       if (bpf_jit_enable > 1) {
+>> -               bpf_jit_dump(fp->len, jit.size, pass, jit.prg_buf);
+>> -               print_fn_code(jit.prg_buf, jit.size_prg);
+>> -       }
+>>         if (!fp->is_func || extra_pass) {
+>>                 bpf_jit_binary_lock_ro(header);
+>>         } else {
+>> diff --git a/arch/sparc/net/bpf_jit_comp_32.c =
+b/arch/sparc/net/bpf_jit_comp_32.c
+>> index a74e5004c6c8..08de0ed84831 100644
+>> --- a/arch/sparc/net/bpf_jit_comp_32.c
+>> +++ b/arch/sparc/net/bpf_jit_comp_32.c
+>> @@ -743,9 +743,6 @@ cond_branch:                        f_offset =3D =
+addrs[i + filter[i].jf];
+>>                 oldproglen =3D proglen;
+>>         }
+>>=20
+>> -       if (bpf_jit_enable > 1)
+>> -               bpf_jit_dump(flen, proglen, pass + 1, image);
+>> -
+>>         if (image) {
+>>                 fp->bpf_func =3D (void *)image;
+>>                 fp->jited =3D 1;
+>> diff --git a/arch/sparc/net/bpf_jit_comp_64.c =
+b/arch/sparc/net/bpf_jit_comp_64.c
+>> index fa0759bfe498..14c9e5ce4100 100644
+>> --- a/arch/sparc/net/bpf_jit_comp_64.c
+>> +++ b/arch/sparc/net/bpf_jit_comp_64.c
+>> @@ -1549,16 +1549,6 @@ struct bpf_prog *bpf_int_jit_compile(struct =
+bpf_prog *prog)
+>>                 }
+>>                 build_epilogue(&ctx);
+>>=20
+>> -               if (bpf_jit_enable > 1)
+>> -                       pr_info("Pass %d: size =3D %u, seen =3D =
+[%c%c%c%c%c%c]\n", pass,
+>> -                               ctx.idx * 4,
+>> -                               ctx.tmp_1_used ? '1' : ' ',
+>> -                               ctx.tmp_2_used ? '2' : ' ',
+>> -                               ctx.tmp_3_used ? '3' : ' ',
+>> -                               ctx.saw_frame_pointer ? 'F' : ' ',
+>> -                               ctx.saw_call ? 'C' : ' ',
+>> -                               ctx.saw_tail_call ? 'T' : ' ');
+>> -
+>>                 if (ctx.idx * 4 =3D=3D prev_image_size)
+>>                         break;
+>>                 prev_image_size =3D ctx.idx * 4;
+>> @@ -1596,9 +1586,6 @@ struct bpf_prog *bpf_int_jit_compile(struct =
+bpf_prog *prog)
+>>                 goto out_off;
+>>         }
+>>=20
+>> -       if (bpf_jit_enable > 1)
+>> -               bpf_jit_dump(prog->len, image_size, pass, ctx.image);
+>> -
+>>         bpf_flush_icache(header, (u8 *)header + header->size);
+>>=20
+>>         if (!prog->is_func || extra_pass) {
+>> diff --git a/arch/x86/net/bpf_jit_comp.c =
+b/arch/x86/net/bpf_jit_comp.c
+>> index e3e2b57e4e13..197ff8651a56 100644
+>> --- a/arch/x86/net/bpf_jit_comp.c
+>> +++ b/arch/x86/net/bpf_jit_comp.c
+>> @@ -2551,9 +2551,6 @@ struct bpf_prog *bpf_int_jit_compile(struct =
+bpf_prog *prog)
+>>                 cond_resched();
+>>         }
+>>=20
+>> -       if (bpf_jit_enable > 1)
+>> -               bpf_jit_dump(prog->len, proglen, pass + 1, image);
+>> -
+>>         if (image) {
+>>                 if (!prog->is_func || extra_pass) {
+>>                         /*
+>> diff --git a/arch/x86/net/bpf_jit_comp32.c =
+b/arch/x86/net/bpf_jit_comp32.c
+>> index 429a89c5468b..ca53f20aca73 100644
+>> --- a/arch/x86/net/bpf_jit_comp32.c
+>> +++ b/arch/x86/net/bpf_jit_comp32.c
+>> @@ -2597,9 +2597,6 @@ struct bpf_prog *bpf_int_jit_compile(struct =
+bpf_prog *prog)
+>>                 cond_resched();
+>>         }
+>>=20
+>> -       if (bpf_jit_enable > 1)
+>> -               bpf_jit_dump(prog->len, proglen, pass + 1, image);
+>> -
+>>         if (image) {
+>>                 bpf_jit_binary_lock_ro(header);
+>>                 prog->bpf_func =3D (void *)image;
+>> diff --git a/net/core/sysctl_net_core.c b/net/core/sysctl_net_core.c
+>> index 5b1ce656baa1..562ace48e1c9 100644
+>> --- a/net/core/sysctl_net_core.c
+>> +++ b/net/core/sysctl_net_core.c
+>> @@ -276,14 +276,10 @@ static int =
+proc_dointvec_minmax_bpf_enable(struct ctl_table *table, int write,
+>>         tmp.data =3D &jit_enable;
+>>         ret =3D proc_dointvec_minmax(&tmp, write, buffer, lenp, =
+ppos);
+>>         if (write && !ret) {
+>> -               if (jit_enable < 2 ||
+>> -                   (jit_enable =3D=3D 2 && =
+bpf_dump_raw_ok(current_cred()))) {
+>> -                       *(int *)table->data =3D jit_enable;
+>> -                       if (jit_enable =3D=3D 2)
+>> -                               pr_warn("bpf_jit_enable =3D 2 was =
+set! NEVER use this in production, only for JIT debugging!\n");
+>> -               } else {
+>> -                       ret =3D -EPERM;
+>> -               }
+>> +               *(int *)table->data =3D jit_enable;
+>> +
+>> +               if (jit_enable =3D=3D 2)
+>> +                       pr_warn_once("bpf_jit_enable =3D=3D 2 was =
+deprecated! Use bpftool prog dump instead.\n");
+>>         }
+>>=20
+>>         if (write && ret && min =3D=3D max)
+>> diff --git a/tools/bpf/.gitignore b/tools/bpf/.gitignore
+>> index cf53342175e7..5c70cfb9092e 100644
+>> --- a/tools/bpf/.gitignore
+>> +++ b/tools/bpf/.gitignore
+>> @@ -4,4 +4,3 @@ feature
+>>  bpf_asm
+>>  bpf_dbg
+>>  bpf_exp.yacc.*
+>> -bpf_jit_disasm
+>> diff --git a/tools/bpf/Makefile b/tools/bpf/Makefile
+>> index 243b79f2b451..9264d7b0edf6 100644
+>> --- a/tools/bpf/Makefile
+>> +++ b/tools/bpf/Makefile
+>> @@ -74,14 +74,10 @@ $(OUTPUT)%.yacc.o: $(OUTPUT)%.yacc.c
+>>  $(OUTPUT)%.lex.o: $(OUTPUT)%.lex.c
+>>         $(QUIET_CC)$(CC) $(CFLAGS) -c -o $@ $<
+>>=20
+>> -PROGS =3D $(OUTPUT)bpf_jit_disasm $(OUTPUT)bpf_dbg $(OUTPUT)bpf_asm
+>> +PROGS =3D $(OUTPUT)bpf_dbg $(OUTPUT)bpf_asm
+>>=20
+>>  all: $(PROGS) bpftool runqslower
+>>=20
+>> -$(OUTPUT)bpf_jit_disasm: CFLAGS +=3D -DPACKAGE=3D'bpf_jit_disasm'
+>> -$(OUTPUT)bpf_jit_disasm: $(OUTPUT)bpf_jit_disasm.o
+>> -       $(QUIET_LINK)$(CC) $(CFLAGS) -o $@ $^ -lopcodes -lbfd -ldl
+>> -
+>>  $(OUTPUT)bpf_dbg: $(OUTPUT)bpf_dbg.o
+>>         $(QUIET_LINK)$(CC) $(CFLAGS) -o $@ $^ -lreadline
+>>=20
+>> @@ -94,16 +90,14 @@ $(OUTPUT)bpf_exp.lex.o: $(OUTPUT)bpf_exp.lex.c
+>>=20
+>>  clean: bpftool_clean runqslower_clean resolve_btfids_clean
+>>         $(call QUIET_CLEAN, bpf-progs)
+>> -       $(Q)$(RM) -r -- $(OUTPUT)*.o $(OUTPUT)bpf_jit_disasm =
+$(OUTPUT)bpf_dbg \
+>> +       $(Q)$(RM) -r -- $(OUTPUT)*.o $(OUTPUT)bpf_dbg \
+>>                $(OUTPUT)bpf_asm $(OUTPUT)bpf_exp.yacc.* =
+$(OUTPUT)bpf_exp.lex.*
+>>         $(call QUIET_CLEAN, core-gen)
+>>         $(Q)$(RM) -- $(OUTPUT)FEATURE-DUMP.bpf
+>>         $(Q)$(RM) -r -- $(OUTPUT)feature
+>>=20
+>>  install: $(PROGS) bpftool_install
+>> -       $(call QUIET_INSTALL, bpf_jit_disasm)
+>>         $(Q)$(INSTALL) -m 0755 -d $(DESTDIR)$(prefix)/bin
+>> -       $(Q)$(INSTALL) $(OUTPUT)bpf_jit_disasm =
+$(DESTDIR)$(prefix)/bin/bpf_jit_disasm
+>>         $(call QUIET_INSTALL, bpf_dbg)
+>>         $(Q)$(INSTALL) $(OUTPUT)bpf_dbg =
+$(DESTDIR)$(prefix)/bin/bpf_dbg
+>>         $(call QUIET_INSTALL, bpf_asm)
+>> diff --git a/tools/bpf/bpf_jit_disasm.c b/tools/bpf/bpf_jit_disasm.c
+>> deleted file mode 100644
+>> index a90a5d110f92..000000000000
+>> --- a/tools/bpf/bpf_jit_disasm.c
+>> +++ /dev/null
+>> @@ -1,332 +0,0 @@
+>> -// SPDX-License-Identifier: GPL-2.0-only
+>> -/*
+>> - * Minimal BPF JIT image disassembler
+>> - *
+>> - * Disassembles BPF JIT compiler emitted opcodes back to asm insn's =
+for
+>> - * debugging or verification purposes.
+>> - *
+>> - * To get the disassembly of the JIT code, do the following:
+>> - *
+>> - *  1) `echo 2 > /proc/sys/net/core/bpf_jit_enable`
+>> - *  2) Load a BPF filter (e.g. `tcpdump -p -n -s 0 -i eth1 host =
+192.168.20.0/24`)
+>> - *  3) Run e.g. `bpf_jit_disasm -o` to read out the last JIT code
+>> - *
+>> - * Copyright 2013 Daniel Borkmann <borkmann@redhat.com>
+>> - */
+>> -
+>> -#include <stdint.h>
+>> -#include <stdio.h>
+>> -#include <stdlib.h>
+>> -#include <assert.h>
+>> -#include <unistd.h>
+>> -#include <string.h>
+>> -#include <bfd.h>
+>> -#include <dis-asm.h>
+>> -#include <regex.h>
+>> -#include <fcntl.h>
+>> -#include <sys/klog.h>
+>> -#include <sys/types.h>
+>> -#include <sys/stat.h>
+>> -#include <limits.h>
+>> -#include <tools/dis-asm-compat.h>
+>> -
+>> -#define CMD_ACTION_SIZE_BUFFER         10
+>> -#define CMD_ACTION_READ_ALL            3
+>> -
+>> -static void get_exec_path(char *tpath, size_t size)
+>> -{
+>> -       char *path;
+>> -       ssize_t len;
+>> -
+>> -       snprintf(tpath, size, "/proc/%d/exe", (int) getpid());
+>> -       tpath[size - 1] =3D 0;
+>> -
+>> -       path =3D strdup(tpath);
+>> -       assert(path);
+>> -
+>> -       len =3D readlink(path, tpath, size);
+>> -       tpath[len] =3D 0;
+>> -
+>> -       free(path);
+>> -}
+>> -
+>> -static void get_asm_insns(uint8_t *image, size_t len, int opcodes)
+>> -{
+>> -       int count, i, pc =3D 0;
+>> -       char tpath[PATH_MAX];
+>> -       struct disassemble_info info;
+>> -       disassembler_ftype disassemble;
+>> -       bfd *bfdf;
+>> -
+>> -       memset(tpath, 0, sizeof(tpath));
+>> -       get_exec_path(tpath, sizeof(tpath));
+>> -
+>> -       bfdf =3D bfd_openr(tpath, NULL);
+>> -       assert(bfdf);
+>> -       assert(bfd_check_format(bfdf, bfd_object));
+>> -
+>> -       init_disassemble_info_compat(&info, stdout,
+>> -                                    (fprintf_ftype) fprintf,
+>> -                                    fprintf_styled);
+>> -       info.arch =3D bfd_get_arch(bfdf);
+>> -       info.mach =3D bfd_get_mach(bfdf);
+>> -       info.buffer =3D image;
+>> -       info.buffer_length =3D len;
+>> -
+>> -       disassemble_init_for_target(&info);
+>> -
+>> -#ifdef DISASM_FOUR_ARGS_SIGNATURE
+>> -       disassemble =3D disassembler(info.arch,
+>> -                                  bfd_big_endian(bfdf),
+>> -                                  info.mach,
+>> -                                  bfdf);
+>> -#else
+>> -       disassemble =3D disassembler(bfdf);
+>> -#endif
+>> -       assert(disassemble);
+>> -
+>> -       do {
+>> -               printf("%4x:\t", pc);
+>> -
+>> -               count =3D disassemble(pc, &info);
+>> -
+>> -               if (opcodes) {
+>> -                       printf("\n\t");
+>> -                       for (i =3D 0; i < count; ++i)
+>> -                               printf("%02x ", (uint8_t) image[pc + =
+i]);
+>> -               }
+>> -               printf("\n");
+>> -
+>> -               pc +=3D count;
+>> -       } while(count > 0 && pc < len);
+>> -
+>> -       bfd_close(bfdf);
+>> -}
+>> -
+>> -static char *get_klog_buff(unsigned int *klen)
+>> -{
+>> -       int ret, len;
+>> -       char *buff;
+>> -
+>> -       len =3D klogctl(CMD_ACTION_SIZE_BUFFER, NULL, 0);
+>> -       if (len < 0)
+>> -               return NULL;
+>> -
+>> -       buff =3D malloc(len);
+>> -       if (!buff)
+>> -               return NULL;
+>> -
+>> -       ret =3D klogctl(CMD_ACTION_READ_ALL, buff, len);
+>> -       if (ret < 0) {
+>> -               free(buff);
+>> -               return NULL;
+>> -       }
+>> -
+>> -       *klen =3D ret;
+>> -       return buff;
+>> -}
+>> -
+>> -static char *get_flog_buff(const char *file, unsigned int *klen)
+>> -{
+>> -       int fd, ret, len;
+>> -       struct stat fi;
+>> -       char *buff;
+>> -
+>> -       fd =3D open(file, O_RDONLY);
+>> -       if (fd < 0)
+>> -               return NULL;
+>> -
+>> -       ret =3D fstat(fd, &fi);
+>> -       if (ret < 0 || !S_ISREG(fi.st_mode))
+>> -               goto out;
+>> -
+>> -       len =3D fi.st_size + 1;
+>> -       buff =3D malloc(len);
+>> -       if (!buff)
+>> -               goto out;
+>> -
+>> -       memset(buff, 0, len);
+>> -       ret =3D read(fd, buff, len - 1);
+>> -       if (ret <=3D 0)
+>> -               goto out_free;
+>> -
+>> -       close(fd);
+>> -       *klen =3D ret;
+>> -       return buff;
+>> -out_free:
+>> -       free(buff);
+>> -out:
+>> -       close(fd);
+>> -       return NULL;
+>> -}
+>> -
+>> -static char *get_log_buff(const char *file, unsigned int *klen)
+>> -{
+>> -       return file ? get_flog_buff(file, klen) : =
+get_klog_buff(klen);
+>> -}
+>> -
+>> -static void put_log_buff(char *buff)
+>> -{
+>> -       free(buff);
+>> -}
+>> -
+>> -static uint8_t *get_last_jit_image(char *haystack, size_t hlen,
+>> -                                  unsigned int *ilen)
+>> -{
+>> -       char *ptr, *pptr, *tmp;
+>> -       off_t off =3D 0;
+>> -       unsigned int proglen;
+>> -       int ret, flen, pass, ulen =3D 0;
+>> -       regmatch_t pmatch[1];
+>> -       unsigned long base;
+>> -       regex_t regex;
+>> -       uint8_t *image;
+>> -
+>> -       if (hlen =3D=3D 0)
+>> -               return NULL;
+>> -
+>> -       ret =3D regcomp(&regex, "flen=3D[[:alnum:]]+ =
+proglen=3D[[:digit:]]+ "
+>> -                     "pass=3D[[:digit:]]+ image=3D[[:xdigit:]]+", =
+REG_EXTENDED);
+>> -       assert(ret =3D=3D 0);
+>> -
+>> -       ptr =3D haystack;
+>> -       memset(pmatch, 0, sizeof(pmatch));
+>> -
+>> -       while (1) {
+>> -               ret =3D regexec(&regex, ptr, 1, pmatch, 0);
+>> -               if (ret =3D=3D 0) {
+>> -                       ptr +=3D pmatch[0].rm_eo;
+>> -                       off +=3D pmatch[0].rm_eo;
+>> -                       assert(off < hlen);
+>> -               } else
+>> -                       break;
+>> -       }
+>> -
+>> -       ptr =3D haystack + off - (pmatch[0].rm_eo - pmatch[0].rm_so);
+>> -       ret =3D sscanf(ptr, "flen=3D%d proglen=3D%u pass=3D%d =
+image=3D%lx",
+>> -                    &flen, &proglen, &pass, &base);
+>> -       if (ret !=3D 4) {
+>> -               regfree(&regex);
+>> -               return NULL;
+>> -       }
+>> -       if (proglen > 1000000) {
+>> -               printf("proglen of %d too big, stopping\n", proglen);
+>> -               return NULL;
+>> -       }
+>> -
+>> -       image =3D malloc(proglen);
+>> -       if (!image) {
+>> -               printf("Out of memory\n");
+>> -               return NULL;
+>> -       }
+>> -       memset(image, 0, proglen);
+>> -
+>> -       tmp =3D ptr =3D haystack + off;
+>> -       while ((ptr =3D strtok(tmp, "\n")) !=3D NULL && ulen < =
+proglen) {
+>> -               tmp =3D NULL;
+>> -               if (!strstr(ptr, "JIT code"))
+>> -                       continue;
+>> -               pptr =3D ptr;
+>> -               while ((ptr =3D strstr(pptr, ":")))
+>> -                       pptr =3D ptr + 1;
+>> -               ptr =3D pptr;
+>> -               do {
+>> -                       image[ulen++] =3D (uint8_t) strtoul(pptr, =
+&pptr, 16);
+>> -                       if (ptr =3D=3D pptr) {
+>> -                               ulen--;
+>> -                               break;
+>> -                       }
+>> -                       if (ulen >=3D proglen)
+>> -                               break;
+>> -                       ptr =3D pptr;
+>> -               } while (1);
+>> -       }
+>> -
+>> -       assert(ulen =3D=3D proglen);
+>> -       printf("%u bytes emitted from JIT compiler (pass:%d, =
+flen:%d)\n",
+>> -              proglen, pass, flen);
+>> -       printf("%lx + <x>:\n", base);
+>> -
+>> -       regfree(&regex);
+>> -       *ilen =3D ulen;
+>> -       return image;
+>> -}
+>> -
+>> -static void usage(void)
+>> -{
+>> -       printf("Usage: bpf_jit_disasm [...]\n");
+>> -       printf("       -o          Also display related opcodes =
+(default: off).\n");
+>> -       printf("       -O <file>   Write binary image of code to =
+file, don't disassemble to stdout.\n");
+>> -       printf("       -f <file>   Read last image dump from file or =
+stdin (default: klog).\n");
+>> -       printf("       -h          Display this help.\n");
+>> -}
+>> -
+>> -int main(int argc, char **argv)
+>> -{
+>> -       unsigned int len, klen, opt, opcodes =3D 0;
+>> -       char *kbuff, *file =3D NULL;
+>> -       char *ofile =3D NULL;
+>> -       int ofd;
+>> -       ssize_t nr;
+>> -       uint8_t *pos;
+>> -       uint8_t *image =3D NULL;
+>> -
+>> -       while ((opt =3D getopt(argc, argv, "of:O:")) !=3D -1) {
+>> -               switch (opt) {
+>> -               case 'o':
+>> -                       opcodes =3D 1;
+>> -                       break;
+>> -               case 'O':
+>> -                       ofile =3D optarg;
+>> -                       break;
+>> -               case 'f':
+>> -                       file =3D optarg;
+>> -                       break;
+>> -               default:
+>> -                       usage();
+>> -                       return -1;
+>> -               }
+>> -       }
+>> -
+>> -       bfd_init();
+>> -
+>> -       kbuff =3D get_log_buff(file, &klen);
+>> -       if (!kbuff) {
+>> -               fprintf(stderr, "Could not retrieve log buffer!\n");
+>> -               return -1;
+>> -       }
+>> -
+>> -       image =3D get_last_jit_image(kbuff, klen, &len);
+>> -       if (!image) {
+>> -               fprintf(stderr, "No JIT image found!\n");
+>> -               goto done;
+>> -       }
+>> -       if (!ofile) {
+>> -               get_asm_insns(image, len, opcodes);
+>> -               goto done;
+>> -       }
+>> -
+>> -       ofd =3D open(ofile, O_WRONLY | O_CREAT | O_TRUNC, =
+DEFFILEMODE);
+>> -       if (ofd < 0) {
+>> -               fprintf(stderr, "Could not open file %s for writing: =
+", ofile);
+>> -               perror(NULL);
+>> -               goto done;
+>> -       }
+>> -       pos =3D image;
+>> -       do {
+>> -               nr =3D write(ofd, pos, len);
+>> -               if (nr < 0) {
+>> -                       fprintf(stderr, "Could not write data to %s: =
+", ofile);
+>> -                       perror(NULL);
+>> -                       goto done;
+>> -               }
+>> -               len -=3D nr;
+>> -               pos +=3D nr;
+>> -       } while (len);
+>> -       close(ofd);
+>> -
+>> -done:
+>> -       put_log_buff(kbuff);
+>> -       free(image);
+>> -       return 0;
+>> -}
+>> --
+>> 2.27.0
+
